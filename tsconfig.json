@@ -30,6 +30,12 @@
   "include": [
     "src/**/*.ts",
     "src/**/*.d.ts",
-    "src/**/*.vue"
+    "src/**/*.vue",
+    "demo/**/*.ts",
+    "demo/**/*.vue",
+    "./*.ts",
+    "./*.d.ts",
+    "./postcss.config.js",
+    "tailwind.config.ts"
   ]
 }
