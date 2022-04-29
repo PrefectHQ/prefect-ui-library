@@ -1,0 +1,32 @@
+@mixin breakpoint($breakpoint) {
+  @if $breakpoint == xs {
+    @media only screen and (min-width: 450px) {
+      @content;
+    }
+  }
+  @if $breakpoint == sm {
+    @media only screen and (min-width: 640px) {
+      @content;
+    }
+  }
+  @if $breakpoint == md {
+    @media only screen and (min-width: 768px) {
+      @content;
+    }
+  }
+  @if $breakpoint == lg {
+    @media only screen and (min-width: 1024px) {
+      @content;
+    }
+  }
+  @if $breakpoint == xl {
+    @media only screen and (min-width: 1280px) {
+      @content;
+    }
+  }
+  @if $breakpoint == xxl {
+    @media only screen and (min-width: 1440px) {
+      @content;
+    }
+  }
+}

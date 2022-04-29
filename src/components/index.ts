@@ -1,0 +1,1 @@
+export { default as StateBadge } from './StateBadge.vue'
