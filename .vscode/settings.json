@@ -1,0 +1,19 @@
+{
+    "editor.tabSize": 2,
+    "cSpell.words": [
+        "pinia",
+        "prefecthq",
+        "rrule",
+        "subflow",
+        "vite",
+        "vitejs"
+    ],
+    "search.exclude": {
+        "**/dist": true
+    },
+    "typescript.tsdk": "node_modules/typescript/lib",
+    "files.exclude": {
+        "node_modules": true,
+        "dist": true
+    },
+}
