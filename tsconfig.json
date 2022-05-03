@@ -36,6 +36,6 @@
     "./*.ts",
     "./*.d.ts",
     "./postcss.config.js",
-    "tailwind.config.ts"
+    "./tailwind.config.js"
   ]
 }
