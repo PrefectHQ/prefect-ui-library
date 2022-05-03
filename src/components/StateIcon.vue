@@ -1,5 +1,5 @@
 <template>
-  <component :is="icon" class="state-icon bg-state-completed-50" />
+  <component :is="icon" class="state-icon" />
 </template>
 
 <script lang="ts" setup>
