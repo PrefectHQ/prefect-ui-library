@@ -1,7 +1,7 @@
-import { StateType } from '@/models/StateType'
+import { ServerStateType } from '@/models/StateType'
 
 export type IStateHistoryResponse = {
-  state_type: StateType,
+  state_type: ServerStateType,
   state_name: string,
   count_runs: number,
   sum_estimated_run_time: number,
