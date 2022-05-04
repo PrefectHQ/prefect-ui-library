@@ -1,7 +1,7 @@
 import { InjectionKey } from 'vue'
+import { CreateFlowRun } from '@/models/CreateFlowRun'
 import { Deployment } from '@/models/Deployment'
 import { Flow } from '@/models/Flow'
-import { ICreateFlowRunRequest } from '@/models/ICreateFlowRunRequest'
 import { IDeploymentResponse } from '@/models/IDeploymentResponse'
 import { IFlowResponse } from '@/models/IFlowResponse'
 import { Api, ApiRoute } from '@/services/Api'
@@ -26,8 +26,10 @@ export class DeploymentsApi extends Api {
     return this.post<number>('/count', filter).then(({ data }) => data)
   }
 
-  public createDeploymentFlowRun(deploymentId: string, body: ICreateFlowRunRequest): Promise<Flow> {
-    return this.post<IFlowResponse>(`/${deploymentId}/create_flow_run`, body)
+  public createDeploymentFlowRun(deploymentId: string, body: CreateFlowRun): Promise<Flow> {
+    const request = mapper.map('CreateFlowRun', body, 'CreateFlowRunRequest')
+
+    return this.post<IFlowResponse>(`/${deploymentId}/create_flow_run`, request)
       .then(({ data }) => mapper.map('IFlowResponse', data, 'Flow'))
   }
 

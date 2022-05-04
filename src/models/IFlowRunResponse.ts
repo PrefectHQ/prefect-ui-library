@@ -1,6 +1,6 @@
 import { IFlowRunnerResponse } from '@/models/IFlowRunnerResponse'
 import { IStateResponse } from '@/models/IStateResponse'
-import { StateType } from '@/models/StateType'
+import { ServerStateType } from '@/models/StateType'
 import { DateString } from '@/types/dates'
 
 export type IFlowRunResponse = {
@@ -19,7 +19,7 @@ export type IFlowRunResponse = {
   empirical_config: unknown,
   tags: string[] | null,
   parent_task_run_id: string | null,
-  state_type: StateType | null,
+  state_type: ServerStateType | null,
   run_count: number | null,
   expected_start_time: DateString | null,
   next_scheduled_start_time: DateString | null,

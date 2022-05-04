@@ -5,7 +5,7 @@ import { MapFunction } from '@/services/Mapper'
 
 export const mapIStateHistoryResponseToStateHistory: MapFunction<IStateHistoryResponse, StateHistory> = function(source: IStateHistoryResponse): StateHistory {
   return new StateHistory({
-    stateType: source.state_type,
+    stateType: this.map('ServerStateType', source.state_type, 'StateType'),
     stateName: source.state_name,
     countRuns: source.count_runs,
     sumEstimatedRunTime: source.sum_estimated_run_time,
@@ -15,7 +15,7 @@ export const mapIStateHistoryResponseToStateHistory: MapFunction<IStateHistoryRe
 
 export const mapStateHistoryToIStateHistoryResponse: MapFunction<StateHistory, IStateHistoryResponse> = function(source: StateHistory): IStateHistoryResponse {
   return {
-    'state_type': source.stateType,
+    'state_type': this.map('StateType', source.stateType, 'ServerStateType'),
     'state_name': source.stateName,
     'count_runs': source.countRuns,
     'sum_estimated_run_time': source.sumEstimatedRunTime,
