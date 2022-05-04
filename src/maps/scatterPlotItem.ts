@@ -14,6 +14,6 @@ export const mapUiFlowRunHistoryToScatterPlotItem: MapFunction<UiFlowRunHistory,
     id: source.id,
     x: source.timestamp,
     y: source.duration,
-    itemClass: `scatter-plot-item--${source.stateType.toLowerCase()}`,
+    itemClass: `scatter-plot-item--${source.stateType}`,
   }
 }

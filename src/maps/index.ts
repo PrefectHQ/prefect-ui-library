@@ -1,3 +1,4 @@
+import { mapCreateFlowRunToCreateFlowRunRequest } from './createFlowRun'
 import { mapStringToDate, mapDateToString } from './date'
 import { mapDeploymentToIDeploymentResponse, mapIDeploymentResponseToDeployment } from './deployment'
 import { mapEmpiricalPolicyToIEmpiricalPolicyResponse, mapIEmpiricalPolicyResponseToEmpiricalPolicy } from './empiricalPolicy'
@@ -14,6 +15,7 @@ import { mapScheduleToIScheduleResponse, mapIScheduleResponseToSchedule } from '
 import { mapIStateResponseToIState, mapIStateToIStateResponse } from './state'
 import { mapIStateDetailsResponseToIStateDetails, mapIStateDetailsToIStateDetailsResponse } from './stateDetails'
 import { mapStateHistoryToIStateHistoryResponse, mapIStateHistoryResponseToStateHistory } from './stateHistory'
+import { mapServerStateTypeToStateType, mapStateTypeToServerStateType } from './stateType'
 import { mapTaskInputToITaskInputResponse, mapITaskInputResponseToTaskInput } from './taskInput'
 import { mapTaskRunToITaskRunResponse, mapITaskRunResponseToTaskRun } from './taskRun'
 import { mapUiFlowRunHistoryResponseToUiFlowRunHistory } from './uiFlowRunHistory'
@@ -138,5 +140,14 @@ export const maps = {
   },
   UiFlowRunHistory: {
     ScatterPlotItem: mapUiFlowRunHistoryToScatterPlotItem,
+  },
+  ServerStateType: {
+    StateType: mapServerStateTypeToStateType,
+  },
+  StateType: {
+    ServerStateType: mapStateTypeToServerStateType,
+  },
+  CreateFlowRun: {
+    CreateFlowRunRequest: mapCreateFlowRunToCreateFlowRunRequest,
   },
 }
