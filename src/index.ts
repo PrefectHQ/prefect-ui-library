@@ -8,3 +8,5 @@ export * from './services'
 export * from './stores'
 export * from './types'
 export * from './utilities'
+
+import '@/styles/style.css'
