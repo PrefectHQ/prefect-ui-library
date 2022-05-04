@@ -29,3 +29,10 @@ export function kebabCase(string: string): string {
 export function isString(value: unknown): value is string {
   return typeof value === 'string'
 }
+
+export function capitalize<T extends string>(value: T): Capitalize<T> {
+  const firstLetterCapitalized = value.charAt(0).toUpperCase()
+  const rest = value.slice(1)
+
+  return `${firstLetterCapitalized}${rest}` as Capitalize<T>
+}
