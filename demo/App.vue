@@ -12,9 +12,11 @@
         </a>
       </div>
     </div>
+
+    <StatesSection />
   </div>
 </template>
 
 <script lang="ts" setup>
-//
+  import StatesSection from './sections/states.vue'
 </script>

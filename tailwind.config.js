@@ -23,6 +23,11 @@ module.exports = {
     './demo/**/*.{vue,js,ts,jsx,tsx}',
     './src/**/*.{vue,js,ts,jsx,tsx}',
   ],
+  safelist: [
+    {
+      pattern: /(bg|text)-state-(completed|failed|running|pending|scheduled|cancelled)/,
+    }
+  ],
   theme: {
     extend: {
       colors: {
