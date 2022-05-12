@@ -1,5 +1,6 @@
 import { createApp } from 'vue'
 
+import './style.css'
 import '@prefecthq/prefect-design/dist/style.css'
 import '@/styles/style.css'
 
