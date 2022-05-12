@@ -14,9 +14,11 @@
     </div>
 
     <StatesSection />
+    <ListsSection />
   </div>
 </template>
 
 <script lang="ts" setup>
+  import ListsSection from './sections/ListsSection.vue'
   import StatesSection from './sections/states.vue'
 </script>
