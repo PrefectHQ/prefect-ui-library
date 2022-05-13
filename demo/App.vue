@@ -20,8 +20,8 @@
 
 <script lang="ts" setup>
   import { provide } from 'vue'
-  import LogSection from './sections/logs.vue'
-  import StatesSection from './sections/states.vue'
+  import LogSection from './sections/LogsSection.vue'
+  import StatesSection from './sections/StatesSection.vue'
   import { flowRunsApi, logsApi, taskRunsApi } from './services'
   import { flowRunsApiKey, logsApiKey, taskRunsApiKey } from '@/services'
 

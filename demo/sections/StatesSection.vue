@@ -33,7 +33,7 @@
   import { stateType } from '@/models/StateType'
   import { mocker } from '@/services'
 
-  const states: IState[] = [
+  const states: (IState | null)[] = [
     mocker.create('state', [{ type: 'completed', name: 'Completed ' }]),
     mocker.create('state', [{ type: 'running', name: 'Running ' }]),
     mocker.create('state', [{ type: 'scheduled', name: 'Scheduled ' }]),
@@ -41,6 +41,7 @@
     mocker.create('state', [{ type: 'failed', name: 'Failed ' }]),
     mocker.create('state', [{ type: 'cancelled', name: 'Cancelled ' }]),
     mocker.create('state', [{ type: 'completed', name: 'Custom Name ' }]),
+    null,
   ]
 </script>
 
