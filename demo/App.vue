@@ -18,5 +18,5 @@
 </template>
 
 <script lang="ts" setup>
-  import StatesSection from './sections/states.vue'
+  import StatesSection from './sections/StatesSection.vue'
 </script>
