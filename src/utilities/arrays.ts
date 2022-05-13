@@ -13,6 +13,7 @@ export function toRecord<T extends any[], K extends keyof T[number]>(source: T, 
 // we really do want any here
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function unique<T extends any[]>(array: T): T {
+  // eslint-disable-next-line id-length
   return array.filter((v, i, a) => a.indexOf(v) === i) as T
 }
 
