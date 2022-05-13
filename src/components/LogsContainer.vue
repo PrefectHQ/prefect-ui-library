@@ -49,19 +49,36 @@
 
 <style>
 .logs { @apply
-  grid gap-1 text-xs overscroll-contain;
+  grid
+  gap-1
+  text-xs
+  overscroll-contain;
 }
-
 .logs__divider { @apply
-  flex justify-center w-full bg-slate-700  sticky top-0;
+  flex
+  justify-center
+  w-full
+  bg-slate-700
+  sticky top-0;
 }
-
 .logs__divider:after { @apply
-  absolute block h-[1px] left-0 right-0 top-1/2 bg-slate-600;
+  absolute
+  block
+  h-[1px]
+  left-0
+  right-0
+  top-1/2
+  bg-slate-600;
   content: '';
 }
-
 .logs__divider-time { @apply
-  bg-slate-700 relative rounded px-2 text-center text-xs text-slate-500 z-[1];
+  bg-slate-700
+  relative
+  rounded
+  px-2
+  text-center
+  text-xs
+  text-slate-500
+  z-[1];
 }
 </style>

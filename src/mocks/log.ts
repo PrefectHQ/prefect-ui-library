@@ -3,7 +3,7 @@ import { Log, LogLevel } from '@/models/Log'
 import { MockFunction } from '@/services/Mocker'
 
 
-const logLevels: LogLevel[] = [1, 2, 3, 4, 5]
+export const logLevels: LogLevel[] = [1, 2, 3, 4, 5]
 
 export const randomLogLevel: MockFunction<LogLevel> = function(level?: LogLevel) {
   return logLevels[floor(random() * logLevels.length)]
