@@ -18,6 +18,5 @@
 </template>
 
 <script lang="ts" setup>
-  import ListsSection from './sections/ListsSection.vue'
   import StatesSection from './sections/StatesSection.vue'
 </script>
