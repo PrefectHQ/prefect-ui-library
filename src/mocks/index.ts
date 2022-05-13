@@ -6,7 +6,7 @@ import { randomFlowRun } from './flowRun'
 import { randomFlowRunHistory } from './flowRunHistory'
 import { randomFlowRunnerType } from './flowRunnerType'
 import { randomFlowRunStateHistory } from './flowRunStateHistory'
-import { randomLog } from './log'
+import { randomLogLevel, randomLog } from './log'
 import { randomNumber } from './number'
 import { randomState } from './state'
 import { randomStateType } from './stateType'
@@ -21,6 +21,7 @@ export const mocks = {
   deployment: randomDeployment,
   flow: randomFlow,
   flowRun: randomFlowRun,
+  logLevel: randomLogLevel,
   log: randomLog,
   number: randomNumber,
   paragraph: randomParagraph,

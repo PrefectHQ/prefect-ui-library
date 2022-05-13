@@ -5,15 +5,9 @@ import { Log } from '@/models/Log'
 import { mocker } from '@/services'
 import { LogsRequestFilter } from '@/types/LogsRequestFilter'
 
-const logLevels = [null, 1, 2, 3, 4, 5]
-
-const getRandomLogLevel = (): null | number => {
-  return logLevels[Math.floor(Math.random() * logLevels.length)]
-}
-
 export class LogsApi extends MockedApi {
   public getLogs(filter?: LogsRequestFilter): Promise<Log[]> {
-    return this.promise(Array.from({ length: 10 }, () => mocker.create('log', [{ level: getRandomLogLevel() }])))
+    return this.promise(mocker.createMany('log', 15))
   }
 }
 
