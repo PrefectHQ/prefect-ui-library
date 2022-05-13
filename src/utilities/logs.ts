@@ -13,6 +13,6 @@ export function logLevelLabel(level: number): string {
     case '1':
       return 'Debug'
     default:
-      return 'Not Set'
+      return 'Custom'
   }
 }

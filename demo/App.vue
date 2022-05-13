@@ -14,9 +14,18 @@
     </div>
 
     <StatesSection />
+    <LogSection />
   </div>
 </template>
 
 <script lang="ts" setup>
+  import { provide } from 'vue'
+  import LogSection from './sections/logs.vue'
   import StatesSection from './sections/states.vue'
+  import { flowRunsApi, logsApi, taskRunsApi } from './services'
+  import { flowRunsApiKey, logsApiKey, taskRunsApiKey } from '@/services'
+
+  provide(flowRunsApiKey, flowRunsApi)
+  provide(logsApiKey, logsApi)
+  provide(taskRunsApiKey, taskRunsApi)
 </script>

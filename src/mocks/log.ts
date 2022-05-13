@@ -8,7 +8,7 @@ export const randomLog: MockFunction<Log> = function(log?: Partial<Log>) {
     updated: log?.updated ?? this.create('date'),
     name: log?.name ?? this.create('string'),
     level: log?.level ?? this.create('number'),
-    message: log?.message ?? this.create('string'),
+    message: log?.message ?? Math.random() > 0.75 ? this.create('paragraph') : this.create('sentence'),
     timestamp: log?.timestamp ?? this.create('date'),
     flowRunId: log?.flowRunId ?? this.create('string'),
     taskRunId: log?.taskRunId ?? this.create('string'),

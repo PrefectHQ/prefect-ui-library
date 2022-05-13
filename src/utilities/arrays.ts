@@ -9,6 +9,23 @@ export function toRecord<T extends any[], K extends keyof T[number]>(source: T, 
   }, {})
 }
 
+
+// we really do want any here
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function unique<T extends any[]>(array: T): T {
+  return array.filter((v, i, a) => a.indexOf(v) === i) as T
+}
+
+
+// we really do want any here
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function isNonEmptyArray<T extends any[]>(
+  array: T | undefined,
+): array is T {
+  return array !== undefined && array.length > 0
+}
+
+
 export function asArray<T>(input: T | T[] | null): T[] {
   if (input === null || input === undefined) {
     return []
