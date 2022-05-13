@@ -6,7 +6,7 @@
           <span class="logs__divider-time">{{ formatDateInTimeZone(log.timestamp) }}</span>
         </div>
       </template>
-      <log-row :log="log" />
+      <log-row :log="log" show-task-run-link />
     </template>
     <template v-if="empty">
       <slot name="empty">
