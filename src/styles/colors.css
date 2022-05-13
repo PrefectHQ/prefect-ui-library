@@ -64,4 +64,11 @@ body {
   --state-cancelled-700: #292929;
   --state-cancelled-800: #1E1E1E;
   --state-cancelled-900: #141414;
+
+  --log-level-custom: theme('colors.sky.400');
+  --log-level-info: theme('colors.sky.400');
+  --log-level-debug: theme('colors.indigo.500');
+  --log-level-warning: theme('colors.amber.400');
+  --log-level-error: theme('colors.rose.500');
+  --log-level-critical: theme('colors.rose.700');
 }

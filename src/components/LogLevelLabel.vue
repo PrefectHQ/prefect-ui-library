@@ -23,17 +23,15 @@
 </script>
 
 <style>
-:root {
-  --log-level-custom:  theme('colors.sky.400');
-  --log-level-info: theme('colors.sky.400');
-  --log-level-debug: theme('colors.indigo.500');
-  --log-level-warning: theme('colors.amber.400');
-  --log-level-error:  theme('colors.rose.500');
-  --log-level-critical: theme('colors.rose.700');
-}
-
 .log-level-label { @apply
-  block w-min text-[10px] leading-snug text-white font-semibold uppercase px-2;
+  block
+  w-min
+  text-[10px]
+  leading-snug
+  text-white
+  font-semibold
+  uppercase
+  px-2;
 }
 
 .log-level-label--custom,
