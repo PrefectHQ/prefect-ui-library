@@ -16,7 +16,7 @@ export class FlowRunsApi extends MockedApi {
   }
 
   public getFlowRunsCount(filter: UnionFilters): Promise<number> {
-    return this.promise(20)
+    return this.promise(mocker.create('number'))
   }
 
   public getFlowRunsHistory(filter: FlowRunsHistoryFilter): Promise<RunHistory[]> {
