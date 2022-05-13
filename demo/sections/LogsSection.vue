@@ -37,6 +37,5 @@
 
   const flowRun: IFlowRun = mocker.create('flowRun')
 
-
   const flowRunLogs: ILog[] = Array.from({ length: 10 }, () => mocker.create('log', [{ taskRunId: Math.random() > 0.65 ? '' : null, flowRunId: flowRun.id, level: getRandomLogLevel() }])).sort((a, b) => a.timestamp.getTime() - b.timestamp.getTime())
 </script>

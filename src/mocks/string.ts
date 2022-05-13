@@ -1,3 +1,5 @@
+import { uniform } from './math'
+import { paragraph, sentence } from './sentences/generateText'
 import { generateName } from './starnames'
 import { MockFunction } from '@/services/Mocker'
 
@@ -15,22 +17,12 @@ export const randomString: MockFunction<string> = function(chars?: number) {
   return new Array(chars).fill(null).map(() => this.create('char')).join('')
 }
 
-export const randomSentence: MockFunction<string> = function(words?: number) {
-  if (!words) {
-    words = this.create('number', [5, 10])
-  }
-
-  const [first, ...rest] = new Array(words).fill(null).map(() => this.create('string'))
-
-  return `${first.charAt(0).toUpperCase()}${first.slice(1)} ${rest.join(' ')}.`
+export const randomSentence: MockFunction<string> = function() {
+  return sentence()
 }
 
 export const randomParagraph: MockFunction<string> = function(sentences?: number) {
-  if (!sentences) {
-    sentences = this.create('number', [2, 10])
-  }
-
-  return new Array(sentences).fill(null).map(() => this.create('sentence')).join(' ')
+  return paragraph(sentences ? sentences : uniform(2, 5))
 }
 
 export const randomName: MockFunction<string> = function() {
