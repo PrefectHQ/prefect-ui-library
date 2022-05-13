@@ -54,13 +54,16 @@
   text-xs
   overscroll-contain;
 }
+
 .logs__divider { @apply
   flex
   justify-center
   w-full
   bg-slate-700
-  sticky top-0;
+  sticky
+  -top-2;
 }
+
 .logs__divider:after { @apply
   absolute
   block
@@ -71,11 +74,13 @@
   bg-slate-600;
   content: '';
 }
+
 .logs__divider-time { @apply
   bg-slate-700
   relative
   rounded
   px-2
+  py-2
   text-center
   text-xs
   text-slate-500
