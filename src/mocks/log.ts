@@ -1,8 +1,8 @@
 import { floor, random } from '@/mocks/math'
-import { Log } from '@/models/Log'
+import { Log, LogLevel } from '@/models/Log'
 import { MockFunction } from '@/services/Mocker'
 
-type LogLevel = 1 | 2 | 3 | 4 | 5
+
 const logLevels: LogLevel[] = [1, 2, 3, 4, 5]
 
 export const randomLogLevel: MockFunction<LogLevel> = function(level?: LogLevel) {

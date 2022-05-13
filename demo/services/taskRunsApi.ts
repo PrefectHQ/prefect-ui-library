@@ -1,5 +1,4 @@
 import { createActions } from '@prefecthq/vue-compositions'
-import { InjectionKey } from 'vue'
 import { MockedApi } from './MockedApi'
 import { TaskRun } from '@/models/TaskRun'
 import { mocker } from '@/services'
@@ -20,5 +19,4 @@ export class TaskRunsApi extends MockedApi {
 
 }
 
-export const taskRunsApiKey: InjectionKey<TaskRunsApi> = Symbol('taskRunsApiKey')
 export const taskRunsApi = createActions(new TaskRunsApi())

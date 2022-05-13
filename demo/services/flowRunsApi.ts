@@ -1,5 +1,4 @@
 import { createActions } from '@prefecthq/vue-compositions'
-import { InjectionKey } from 'vue'
 import { MockedApi } from './MockedApi'
 import { FlowRun } from '@/models/FlowRun'
 import { RunHistory } from '@/models/RunHistory'
@@ -8,7 +7,7 @@ import { UnionFilters, FlowRunsHistoryFilter } from '@/types/UnionFilters'
 
 export class FlowRunsApi extends MockedApi {
   public getFlowRun(id: string): Promise<FlowRun> {
-    return this.promise(mocker.create('flowRun', [{ id: id, name: 'ostentatious-axolotl' }]))
+    return this.promise(mocker.create('flowRun', [{ id: id }]))
   }
 
   public getFlowRuns(filter: UnionFilters): Promise<FlowRun[]> {
@@ -24,5 +23,4 @@ export class FlowRunsApi extends MockedApi {
   }
 }
 
-export const flowRunsApiKey: InjectionKey<FlowRunsApi> = Symbol('flowRunsApiKey')
 export const flowRunsApi = createActions(new FlowRunsApi())

@@ -1,5 +1,4 @@
 import { createActions } from '@prefecthq/vue-compositions'
-import { InjectionKey } from 'vue'
 import { MockedApi } from './MockedApi'
 import { Log } from '@/models/Log'
 import { mocker } from '@/services'
@@ -11,5 +10,4 @@ export class LogsApi extends MockedApi {
   }
 }
 
-export const logsApiKey: InjectionKey<LogsApi> = Symbol('logsApiKey')
 export const logsApi = createActions(new LogsApi())

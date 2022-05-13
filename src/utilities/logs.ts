@@ -1,4 +1,6 @@
-export function logLevelLabel(level: number): string {
+import { LogLevel } from '@/models'
+
+export function logLevelLabel(level: LogLevel): string {
   const [first] = level.toString()
 
   switch (first) {

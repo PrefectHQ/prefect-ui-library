@@ -3,7 +3,7 @@
     <SubSection heading="Levels">
       <div class="flex gap-1 flex-wrap">
         <template v-for="level in 5" :key="level">
-          <log-level-label :level="level" />
+          <log-level-label :level="level as LogLevel" />
         </template>
       </div>
     </SubSection>
@@ -26,7 +26,7 @@
   import LogLevelLabel from '@/components/LogLevelLabel.vue'
   import LogRow from '@/components/LogRow.vue'
   import LogsContainer from '@/components/LogsContainer.vue'
-  import { IFlowRun, ILog } from '@/models'
+  import { IFlowRun, ILog, LogLevel } from '@/models'
   import { mocker } from '@/services'
 
 

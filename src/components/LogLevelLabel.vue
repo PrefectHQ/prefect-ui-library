@@ -7,15 +7,13 @@
 <script lang="ts" setup>
   import { PTag } from '@prefecthq/prefect-design'
   import { computed } from 'vue'
+  import { LogLevel } from '@/models/Log'
   import { logLevelLabel } from '@/utilities/logs'
   import { snakeCase } from '@/utilities/strings'
 
-  const props = defineProps({
-    level: {
-      type: Number,
-      required: true,
-    },
-  })
+  const props = defineProps<{
+    level: LogLevel,
+  }>()
 
   const label = computed(() => logLevelLabel(props.level))
 
