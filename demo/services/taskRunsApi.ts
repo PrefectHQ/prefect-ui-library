@@ -7,7 +7,7 @@ import { UnionFilters } from '@/types/UnionFilters'
 
 export class TaskRunsApi extends MockedApi {
   public getTaskRun(id: string): Promise<TaskRun> {
-    return this.promise(mocker.create('taskRun', [{ name: 'delicious-candycorn' }]))
+    return this.promise(mocker.create('taskRun', [{ id }]))
   }
 
   public getTaskRuns(filter: UnionFilters): Promise<TaskRun[]> {
@@ -15,7 +15,7 @@ export class TaskRunsApi extends MockedApi {
   }
 
   public getTaskRunsCount(filter: UnionFilters): Promise<number> {
-    return this.promise(100)
+    return this.promise(mocker.create('number'))
   }
 
 }

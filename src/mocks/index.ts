@@ -10,7 +10,7 @@ import { randomLog } from './log'
 import { randomNumber } from './number'
 import { randomState } from './state'
 import { randomStateType } from './stateType'
-import { randomChar, randomString, randomSentence, randomParagraph } from './string'
+import { randomChar, randomString, randomSentence, randomParagraph, randomName } from './string'
 import { randomTaskRun } from './taskRun'
 import { randomWorkQueue, randomWorkQueueFilter } from './workQueue'
 
@@ -28,6 +28,7 @@ export const mocks = {
   state: randomState,
   stateType: randomStateType,
   string: randomString,
+  runName: randomName,
   taskRun: randomTaskRun,
   workQueue: randomWorkQueue,
   workQueueFilter: randomWorkQueueFilter,
