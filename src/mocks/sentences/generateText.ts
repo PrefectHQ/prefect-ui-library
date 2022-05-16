@@ -11,7 +11,7 @@ import {
   generator,
   GeneratorKey
 } from './utils'
-import { uniform, random } from '@/mocks/math'
+import { uniform, random } from '@/utilities/math'
 
 
 export {

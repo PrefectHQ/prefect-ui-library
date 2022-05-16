@@ -1,5 +1,5 @@
 import { names, prefixes, suffixes } from '.'
-import { choice, weightedNumber, coinflip } from '@/mocks/math'
+import { choice, weightedNumber, coinflip } from '@/utilities/math'
 
 
 const generateStarName = (): string => {

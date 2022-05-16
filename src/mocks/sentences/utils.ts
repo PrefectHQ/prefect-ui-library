@@ -4,8 +4,8 @@ import {
   nouns,
   adjectives
 } from './sample'
-import { uniform } from '@/mocks/math'
 import { vowels } from '@/utilities'
+import { uniform } from '@/utilities/math'
 
 
 export const rand = (str: string[]): string => {
