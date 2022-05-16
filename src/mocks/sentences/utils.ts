@@ -1,12 +1,12 @@
 // Adapted from https://github.com/ndaidong/txtgen/blob/main/src/util.js
 
 import {
-  vowels,
   nouns,
   adjectives
 } from './sample'
-
 import { uniform } from '@/mocks/math'
+import { vowels } from '@/utilities'
+
 
 export const rand = (str: string[]): string => {
   let word

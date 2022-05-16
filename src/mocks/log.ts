@@ -1,12 +1,12 @@
-import { floor, random } from '@/mocks/math'
+import { random, uniform } from '@/mocks/math'
 import { Log, LogLevel } from '@/models/Log'
 import { MockFunction } from '@/services/Mocker'
 
 
 export const logLevels: LogLevel[] = [1, 2, 3, 4, 5]
 
-export const randomLogLevel: MockFunction<LogLevel> = function(level?: LogLevel) {
-  return logLevels[floor(random() * logLevels.length)]
+export const randomLogLevel: MockFunction<LogLevel> = function() {
+  return logLevels[uniform(0, logLevels.length)]
 }
 
 export const randomLog: MockFunction<Log> = function(log?: Partial<Log>) {
