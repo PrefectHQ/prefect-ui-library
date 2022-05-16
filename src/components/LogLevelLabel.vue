@@ -15,8 +15,6 @@
     level: LogLevel,
   }>()
 
-  console.log('props.level', props.level)
-
   const label = computed(() => logLevelLabel(props.level))
 
   const classes = computed(() => {
