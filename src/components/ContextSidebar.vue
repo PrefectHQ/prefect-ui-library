@@ -18,8 +18,10 @@
     </template>
 
     <template #bottom-links>
-      <hr class="border-none h-[1px] bg-slate-600 my-1 -mx-3">
-      <p-context-nav-item title="Settings" icon="CogIcon" to="/settings" />
+      <slot name="trailing-content">
+        <hr class="border-none h-[1px] bg-slate-600 my-1 -mx-3">
+        <p-context-nav-item title="Settings" icon="CogIcon" to="/settings" />
+      </slot>
     </template>
   </p-context-sidebar>
 </template>
