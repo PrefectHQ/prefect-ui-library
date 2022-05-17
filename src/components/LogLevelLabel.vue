@@ -31,6 +31,7 @@
   text-white
   font-semibold
   uppercase
+  font-sans
   px-2;
 }
 
