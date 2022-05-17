@@ -20,7 +20,7 @@ export const randomFlowRun: MockFunction<FlowRun> = function(flowRun?: Partial<F
     totalRunTime: flowRun?.totalRunTime ?? this.create('number'),
     startTime: flowRun?.startTime ?? this.create('date'),
     endTime: flowRun?.endTime ?? this.create('date'),
-    name: flowRun?.name ?? this.create('string'),
+    name: flowRun?.name ?? this.create('runName'),
     parentTaskRunId: flowRun?.parentTaskRunId ?? this.create('string'),
     stateId: flowRun?.stateId ?? this.create('string'),
     stateType: flowRun?.stateType ?? this.create('stateType'),

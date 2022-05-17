@@ -6,11 +6,11 @@ import { randomFlowRun } from './flowRun'
 import { randomFlowRunHistory } from './flowRunHistory'
 import { randomFlowRunnerType } from './flowRunnerType'
 import { randomFlowRunStateHistory } from './flowRunStateHistory'
-import { randomLog } from './log'
+import { randomLogLevel, randomLog } from './log'
 import { randomNumber } from './number'
 import { randomState } from './state'
 import { randomStateType } from './stateType'
-import { randomChar, randomString, randomSentence, randomParagraph } from './string'
+import { randomChar, randomString, randomSentence, randomParagraph, randomRunName } from './string'
 import { randomTaskRun } from './taskRun'
 import { randomWorkQueue, randomWorkQueueFilter } from './workQueue'
 
@@ -21,6 +21,7 @@ export const mocks = {
   deployment: randomDeployment,
   flow: randomFlow,
   flowRun: randomFlowRun,
+  logLevel: randomLogLevel,
   log: randomLog,
   number: randomNumber,
   paragraph: randomParagraph,
@@ -28,6 +29,7 @@ export const mocks = {
   state: randomState,
   stateType: randomStateType,
   string: randomString,
+  runName: randomRunName,
   taskRun: randomTaskRun,
   workQueue: randomWorkQueue,
   workQueueFilter: randomWorkQueueFilter,

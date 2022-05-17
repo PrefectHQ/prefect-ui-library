@@ -1,0 +1,2 @@
+const suffixes = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'k', 'm', 'n', 'p', 'q', 'r', 'v', 'x', 'y', 'z', 'adjunct', 'anomaly', 'band', 'boundary', 'cloud', 'cluster', 'collapse', 'conflux', 'expanse', 'field', 'fringe', 'instability', 'manifold', 'mass', 'nebula', 'nebula', 'point', 'quadrant', 'reach', 'ring', 'sector', 'shift', 'tensor', 'terminus', 'vector', 'void', 'warp']
+export { suffixes }

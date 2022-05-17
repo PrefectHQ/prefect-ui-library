@@ -14,11 +14,20 @@
     </div>
 
     <StatesSection />
+    <LogSection />
     <ListsSection />
   </div>
 </template>
 
 <script lang="ts" setup>
-  import ListsSection from './sections/ListsSection.vue'
+  import { provide } from 'vue'
+  import LogSection from './sections/LogsSection.vue'
   import StatesSection from './sections/StatesSection.vue'
+  import { flowRunsApi, logsApi, taskRunsApi } from './services'
+  import { flowRunsApiKey, logsApiKey, taskRunsApiKey } from '@/services'
+  import StatesSection from './sections/StatesSection.vue'
+
+  provide(flowRunsApiKey, flowRunsApi)
+  provide(logsApiKey, logsApi)
+  provide(taskRunsApiKey, taskRunsApi)
 </script>
