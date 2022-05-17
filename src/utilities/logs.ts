@@ -1,4 +1,6 @@
-export function logLevelLabel(level: number): string {
+import { LogLevel } from '@/models'
+
+export function logLevelLabel(level: LogLevel): string {
   const [first] = level.toString()
 
   switch (first) {
@@ -13,6 +15,6 @@ export function logLevelLabel(level: number): string {
     case '1':
       return 'Debug'
     default:
-      return 'Not Set'
+      return 'Custom'
   }
 }

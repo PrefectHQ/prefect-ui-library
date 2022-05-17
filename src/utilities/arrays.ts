@@ -1,3 +1,5 @@
+import { floor, random } from './math'
+
 // we really do want any here
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function toRecord<T extends any[], K extends keyof T[number]>(source: T, key: K): Record<K, T> {
@@ -8,6 +10,29 @@ export function toRecord<T extends any[], K extends keyof T[number]>(source: T, 
     return result
   }, {})
 }
+
+// Random element selector equivalent to python's choice method
+export const choice = <T = unknown>(list: T[]): T => list[floor(random() * list.length)]
+
+export const range = (min: number, max: number): number[] => Array.from({ length: max - min }, (x, i) => min + i)
+
+
+// we really do want any here
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function unique<T extends any[]>(array: T): T {
+  // eslint-disable-next-line id-length
+  return array.filter((v, i, a) => a.indexOf(v) === i) as T
+}
+
+
+// we really do want any here
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function isNonEmptyArray<T extends any[]>(
+  array: T | undefined,
+): array is T {
+  return array !== undefined && array.length > 0
+}
+
 
 export function asArray<T>(input: T | T[] | null): T[] {
   if (input === null || input === undefined) {

@@ -1,9 +1,11 @@
+export type LogLevel = 1 | 2 | 3 | 4 | 5
+
 export interface ILog {
   id: string,
   created: Date,
   updated: Date,
   name: string,
-  level: number,
+  level: LogLevel,
   message: string,
   timestamp: Date,
   flowRunId: string,
@@ -15,7 +17,7 @@ export class Log implements ILog {
   public readonly created: Date
   public readonly updated: Date
   public name: string
-  public level: number
+  public level: LogLevel
   public message: string
   public timestamp: Date
   public flowRunId: string

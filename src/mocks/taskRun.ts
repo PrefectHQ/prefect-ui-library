@@ -1,7 +1,7 @@
 import { TaskRun } from '@/models/TaskRun'
 import { MockFunction } from '@/services/Mocker'
 
-export const randomTaskRun: MockFunction<TaskRun> = function(taskRun: Partial<TaskRun>) {
+export const randomTaskRun: MockFunction<TaskRun> = function(taskRun: Partial<TaskRun> = {}) {
   return new TaskRun({
     id: taskRun.id ?? this.create('string'),
     flowRunId: taskRun.flowRunId ?? this.create('string'),
@@ -16,7 +16,7 @@ export const randomTaskRun: MockFunction<TaskRun> = function(taskRun: Partial<Ta
     expectedStartTime: taskRun.expectedStartTime ?? this.create('date'),
     nextScheduledStartTime: taskRun.nextScheduledStartTime ?? this.create('boolean') ? this.create('string') : null,
     runCount: taskRun.runCount ?? this.create('number'),
-    name: taskRun.name ?? this.create('string'),
+    name: taskRun.name ?? this.create('runName'),
     taskInputs: taskRun.taskInputs ?? {},
     taskKey: taskRun.taskKey ?? this.create('string'),
     taskVersion: taskRun.taskVersion ?? this.create('string'),
