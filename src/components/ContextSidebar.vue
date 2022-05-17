@@ -7,20 +7,20 @@
     <template #upper-links>
       <slot name="leading-content">
         <hr class="border-none sm:h-0 sm:my-0 h-[1px] bg-slate-600 my-1 -mx-3">
-        <p-context-nav-item title="Flows" icon="Flow" to="/flows" />
+        <p-context-nav-item title="Flows" icon="Flow" :to="{ name: 'flows' }" />
 
         <hr class="border-none sm:h-0 sm:my-0 h-[1px] bg-slate-600 my-1 -mx-3">
-        <p-context-nav-item title="Deployments" icon="LocationMarkerIcon" to="/deployments" />
+        <p-context-nav-item title="Deployments" icon="LocationMarkerIcon" :to="{ name: 'deployments' }" />
 
         <hr class="border-none sm:h-0 sm:my-0 h-[1px] bg-slate-600 my-1 -mx-3">
-        <p-context-nav-item title="Queues" icon="DatabaseIcon" to="/queues" />
+        <p-context-nav-item title="Queues" icon="DatabaseIcon" :to="{ name: 'queues' }" />
       </slot>
     </template>
 
     <template #bottom-links>
       <slot name="trailing-content">
         <hr class="border-none h-[1px] bg-slate-600 my-1 -mx-3">
-        <p-context-nav-item title="Settings" icon="CogIcon" to="/settings" />
+        <p-context-nav-item title="Settings" icon="CogIcon" :to="{ name: 'settings' }" />
       </slot>
     </template>
   </p-context-sidebar>

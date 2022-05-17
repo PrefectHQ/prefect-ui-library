@@ -14,6 +14,11 @@ const routeRecords: RouteRecordRaw[] = [
     component: () => import('../App.vue'),
   },
   {
+    name: 'queues',
+    path: '/queues',
+    component: () => import('../App.vue'),
+  },
+  {
     name: 'settings',
     path: '/settings',
     component: () => import('../App.vue'),
