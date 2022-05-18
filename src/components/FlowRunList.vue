@@ -8,8 +8,8 @@
 
 <script lang="ts" setup>
   import { computed } from 'vue'
-  import FlowRunListItem from './FlowRunListItem.vue'
-  import VirtualScroller from './VirtualScroller.vue'
+  import FlowRunListItem from '@/components/FlowRunListItem.vue'
+  import VirtualScroller from '@/components/VirtualScroller.vue'
   import { FlowRun } from '@/models/FlowRun'
 
   const props = defineProps<{
