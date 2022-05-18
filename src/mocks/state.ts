@@ -1,10 +1,14 @@
 import { IState } from '@/models/State'
 import { MockFunction } from '@/services/Mocker'
+import { capitalize } from '@/utilities'
 
 export const randomState: MockFunction<IState> = function(state?: Partial<IState>) {
+  const type = this.create('stateType')
+  const name = capitalize(state?.type ?? type)
+
   return {
     id: state?.id ?? this.create('string'),
-    type: state?.type ?? this.create('stateType'),
+    type: state?.type ?? type,
     message: state?.message ?? this.create('string'),
     stateDetails: state?.stateDetails ?? {
       flowRunId: this.create('string'),
@@ -19,6 +23,6 @@ export const randomState: MockFunction<IState> = function(state?: Partial<IState
       blob: this.create('string'),
     },
     timestamp: state?.timestamp ?? this.create('string'),
-    name: state?.name ?? this.create('string'),
+    name: state?.name ?? name,
   }
 }

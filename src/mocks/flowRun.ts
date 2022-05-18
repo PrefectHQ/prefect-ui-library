@@ -25,7 +25,7 @@ export const randomFlowRun: MockFunction<FlowRun> = function(flowRun?: Partial<F
     stateId: flowRun?.stateId ?? this.create('string'),
     stateType: flowRun?.stateType ?? this.create('stateType'),
     state: flowRun?.state ?? this.create('state'),
-    tags: flowRun?.tags ?? this.createMany('string', 3),
+    tags: flowRun?.tags ?? this.createMany('noun', this.create('number', [0, 10])),
     runCount: flowRun?.runCount ?? this.create('number'),
     created: flowRun?.created ?? this.create('date'),
     updated: flowRun?.updated ?? this.create('date'),

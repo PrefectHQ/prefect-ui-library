@@ -1,6 +1,16 @@
 <template>
   <p-list-item-input v-model:selected="model" :value="value" class="state-list-item-input" :class="classes" disabled>
-    <slot />
+    <div class="state-list-item-input__content">
+      <div class="state-list-item-input__name">
+        <slot name="name" />
+      </div>
+      <div class="state-list-item-input__meta">
+        <slot name="meta" />
+      </div>
+      <div class="state-list-item-input__tags">
+        <slot name="tags" />
+      </div>
+    </div>
   </p-list-item-input>
 </template>
 
@@ -56,5 +66,70 @@
 
 .state-list-item-input--cancelled .list-item-input__checkbox { @apply
   bg-state-cancelled-500
+}
+
+.state-list-item-input__content { @apply
+  grid
+  gap-2
+}
+
+.state-list-item-input__content {
+  grid-template-areas: 'name'
+                       'meta'
+                       'tags';
+}
+
+@media screen and (min-width: 768px) {
+  .state-list-item-input__content {
+    grid-template-columns: min-content 1fr;
+    grid-template-areas: 'name tags'
+                         'meta meta';
+  }
+}
+
+.state-list-item-input__name { @apply
+ text-base
+ text-slate-700
+ shrink-0
+ whitespace-nowrap
+ grow-0
+ text-ellipsis
+ overflow-hidden
+}
+
+.state-list-item-input__meta { @apply
+  flex
+  flex-col
+  items-start
+  gap-2
+  whitespace-nowrap
+  mr-1
+}
+
+@media screen and (min-width: 768px) {
+  .state-list-item-input__meta { @apply
+    items-center
+    flex-wrap
+    flex-row
+  }
+}
+
+.state-list-item-input__tags { @apply
+  place-self-end
+  min-w-0
+  w-full
+  grow
+}
+
+.state-list-item-input__name {
+  grid-area: name;
+}
+
+.state-list-item-input__meta {
+  grid-area: meta;
+}
+
+.state-list-item-input__tags {
+  grid-area: tags;
 }
 </style>
