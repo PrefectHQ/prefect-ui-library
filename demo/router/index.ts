@@ -8,15 +8,12 @@ const routeRecords: RouteRecordRaw[] = [
     component: () => import('../App.vue'),
   },
   {
-    path: '*',
-    redirect: '/'
-  }
+    path: '/:catchAll(.*)',
+    redirect: '/',
+  },
 ]
 
-const router = createRouter({
+export const router = createRouter({
   history: createWebHistory(),
   routes: routeRecords,
 })
-
-
-export default router
