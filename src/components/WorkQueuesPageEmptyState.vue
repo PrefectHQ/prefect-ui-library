@@ -15,14 +15,19 @@
     </template>
 
     <template #actions>
-      <p-button inset>
-        Create Queue
-        <p-icon icon="PlusIcon" class="ml-2 w-4 h-4" />
-      </p-button>
+      <a :href="documentationLink" target="_blank">
+        <p-button>
+          Create Queue
+          <p-icon icon="PlusIcon" class="ml-2 w-4 h-4" />
+        </p-button>
+      </a>
     </template>
   </p-empty-state>
 </template>
 
 <script lang="ts" setup>
   import { PEmptyState, PButton, PIcon } from '@prefecthq/prefect-design'
+
+  import { computed } from 'vue'
+  const documentationLink = computed(() => 'https://orion-docs.prefect.io/concepts/work-queues/')
 </script>
