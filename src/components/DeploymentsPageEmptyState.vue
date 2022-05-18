@@ -17,7 +17,7 @@
 
     <template #actions>
       <a :href="documentationLink" target="_blank">
-        <p-button>
+        <p-button inset>
           Create Deployment
           <p-icon icon="ExternalLinkIcon" class="empty-deployment--link-icon" />
         </p-button>
