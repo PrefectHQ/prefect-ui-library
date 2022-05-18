@@ -27,7 +27,4 @@
 
 <script lang="ts" setup>
   import { PEmptyState, PButton, PIcon } from '@prefecthq/prefect-design'
-
-  import { computed } from 'vue'
-  const documentationLink = computed(() => 'https://orion-docs.prefect.io/concepts/work-queues/')
 </script>
