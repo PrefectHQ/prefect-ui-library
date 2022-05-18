@@ -1,7 +1,7 @@
 <template>
   <VirtualScroller :items="taskRuns" class="task-run-list">
     <template #default="{ item: taskRun }">
-      <TaskRunListItem v-model:selected="model" v-bind="{ taskRun, disabled }" />
+      <TaskRunListItem v-model:selected="model" v-bind="{ taskRun, disabled }" class="task-run-list__item" />
     </template>
   </VirtualScroller>
 </template>
@@ -31,3 +31,9 @@
     },
   })
 </script>
+
+<style>
+.task-run-list {
+  --virtual-scroller-item-gap: theme('spacing.2')
+}
+</style>

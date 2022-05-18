@@ -12,6 +12,7 @@
 </template>
 
 <script lang="ts" setup>
+  import { Pixels } from '@prefecthq/prefect-design'
   import { computed, onMounted, ref, watch, withDefaults } from 'vue'
   import VirtualScrollerChunk from './VirtualScrollerChunk.vue'
   import { useIntersectionObserver } from '@/compositions/useIntersectionObserver'
@@ -69,3 +70,10 @@
     observe(bottom)
   })
 </script>
+
+<style>
+  .virtual-scroller-chunk > *,
+  .virtual-scroller-chunk:nth-last-child(2) > *:not(:last-child) {
+    margin-bottom: var(--virtual-scroller-item-gap)
+  }
+</style>

@@ -1,5 +1,5 @@
 <template>
-  <VirtualScroller :items="flowRuns" class="flow-run-list">
+  <VirtualScroller :items="flowRuns" class="flow-run-list" gap="8px">
     <template #default="{ item: flowRun }">
       <FlowRunListItem v-model:selected="model" v-bind="{ flowRun, disabled }" />
     </template>
@@ -31,3 +31,9 @@
     },
   })
 </script>
+
+<style>
+.flow-run-list {
+  --virtual-scroller-item-gap: theme('spacing.2')
+}
+</style>
