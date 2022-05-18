@@ -12,7 +12,6 @@
 </template>
 
 <script lang="ts" setup>
-  import { Pixels } from '@prefecthq/prefect-design'
   import { computed, onMounted, ref, watch, withDefaults } from 'vue'
   import VirtualScrollerChunk from './VirtualScrollerChunk.vue'
   import { useIntersectionObserver } from '@/compositions/useIntersectionObserver'

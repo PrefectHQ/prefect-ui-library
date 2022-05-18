@@ -1,7 +1,7 @@
 <template>
-  <VirtualScroller :items="taskRuns" class="task-run-list">
+  <VirtualScroller :items="taskRuns" class="task-run-list" @bottom="emit('bottom')">
     <template #default="{ item: taskRun }">
-      <TaskRunListItem v-model:selected="model" v-bind="{ taskRun, disabled }" class="task-run-list__item" />
+      <TaskRunListItem v-model:selected="model" v-bind="{ taskRun, disabled }" />
     </template>
   </VirtualScroller>
 </template>
@@ -20,6 +20,7 @@
 
   const emit = defineEmits<{
     (event: 'update:selected', value: string[]): void,
+    (event: 'bottom'): void,
   }>()
 
   const model = computed({
