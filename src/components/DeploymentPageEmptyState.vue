@@ -16,8 +16,8 @@
     </template>
 
     <template #actions>
-      <a class="deployment-page-link" :href="documentationLink" target="_blank">
-        <p-button inset>
+      <a :href="documentationLink" target="_blank">
+        <p-button class="deployment-page-link">
           Create Deployment
           <p-icon icon="ExternalLinkIcon" class="ml-2 w-4 h-4" />
         </p-button>
@@ -32,3 +32,10 @@
   import { computed } from 'vue'
   const documentationLink = computed(() => 'https://orion-docs.prefect.io/tutorials/deployments/')
 </script>
+
+<style>
+/* .deployment-page-link { @apply
+  text-blue-700
+  font-medium
+} */
+</style>

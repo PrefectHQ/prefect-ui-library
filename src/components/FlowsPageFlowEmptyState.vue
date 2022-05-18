@@ -13,8 +13,8 @@
     </template>
 
     <template #actions>
-      <a class="flow-page-link" :href="documentationLink" target="_blank">
-        <p-button inset>
+      <a :href="documentationLink" target="_blank">
+        <p-button inset class="flow-page-link">
           View Docs
           <p-icon icon="ExternalLinkIcon" class="ml-2 w-4 h-4" />
         </p-button>
@@ -29,3 +29,10 @@
 
   const documentationLink = computed(() => 'https://orion-docs.prefect.io/concepts/flows/')
 </script>
+
+<style>
+.flow-page-link { @apply
+  text-blue-700
+  font-medium
+}
+</style>
