@@ -1,3 +1,7 @@
 @import "https://rsms.me/inter/inter.css";
 @import 'https://fonts.googleapis.com/css2?family=Inconsolata&display=swap';
+
 @import "./colors.css";
+
+@tailwind components;
+@tailwind utilities;
