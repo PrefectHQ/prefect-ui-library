@@ -44,6 +44,7 @@
 
   const classes = computed(() => `state-list-item-input--${props.stateType ?? 'unknown'}`)
   const justify = computed(() => media.md ? 'right' : 'left')
+  const tags = computed(() => props.tags ?? [])
 </script>
 
 <style>
