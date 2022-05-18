@@ -1,9 +1,9 @@
 <template>
   <p-empty-state>
     <template #icon>
-      <p-icon icon="Flow" class="w-12 h-12" />
-      <p-icon icon="DotsHorizontalIcon" class="w-12 h-12" />
-      <p-icon icon="DatabaseIcon" class="w-12 h-12" />
+      <p-icon icon="Flow" class="empty-work-queue--icon " />
+      <p-icon icon="DotsHorizontalIcon" class="empty-work-queue--icon " />
+      <p-icon icon="DatabaseIcon" class="empty-work-queue--icon " />
     </template>
 
     <template #heading>
@@ -18,7 +18,7 @@
       <router-link to="/queues/new">
         <p-button>
           Create Queue
-          <p-icon icon="PlusIcon" class="ml-2 w-4 h-4" />
+          <p-icon icon="PlusIcon" class="empty-work-queue--link-icon" />
         </p-button>
       </router-link>
     </template>
@@ -28,3 +28,16 @@
 <script lang="ts" setup>
   import { PEmptyState, PButton, PIcon } from '@prefecthq/prefect-design'
 </script>
+
+<style>
+.empty-work-queue--icon { @apply
+  w-12
+  h-12
+}
+
+.empty-work-queue--link-icon { @apply
+  ml-2
+  w-4
+  h-4
+}
+</style>

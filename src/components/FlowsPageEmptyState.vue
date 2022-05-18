@@ -1,7 +1,7 @@
 <template>
   <p-empty-state>
     <template #icon>
-      <p-icon icon="Flow" class="w-12 h-12" />
+      <p-icon icon="Flow" class="empty-flow--icon" />
     </template>
 
     <template #heading>
@@ -14,9 +14,9 @@
 
     <template #actions>
       <a :href="documentationLink" target="_blank">
-        <p-button inset class="flow-page-link">
+        <p-button inset class="empty-flow--link ">
           View Docs
-          <p-icon icon="ExternalLinkIcon" class="ml-2 w-4 h-4" />
+          <p-icon icon="ExternalLinkIcon" class="empty-flow--link-icon" />
         </p-button>
       </a>
     </template>
@@ -31,8 +31,19 @@
 </script>
 
 <style>
-.flow-page-link { @apply
-  text-blue-700
+.empty-flow--icon { @apply
+  w-12
+  h-12
+}
+
+.empty-flow--link { @apply
+  text-state-running-600
   font-medium
+}
+
+.empty-flow--link-icon { @apply
+  ml-2
+  w-4
+  h-4
 }
 </style>
