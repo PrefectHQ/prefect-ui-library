@@ -70,7 +70,8 @@
 
 .state-list-item-input__content { @apply
   grid
-  gap-2
+  gap-x-4
+  gap-y-2
 }
 
 .state-list-item-input__content {
