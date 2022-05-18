@@ -17,29 +17,27 @@
 </template>
 
 <script lang="ts" setup>
-  import { PListItemInput } from '@prefecthq/prefect-design'
+  import { PListItemInput, CheckboxModel } from '@prefecthq/prefect-design'
   import { computed } from 'vue'
   import { StateType } from '@/models/StateType'
   import { media } from '@/utilities/media'
 
-  type Selected = boolean | unknown[] | undefined
-
   const props = defineProps<{
-    selected: Selected | null,
+    selected: CheckboxModel | null,
     value: unknown,
     stateType: StateType | null | undefined,
     tags?: string[] | null,
   }>()
 
   const emit = defineEmits<{
-    (event: 'update:selected', value: Selected): void,
+    (event: 'update:selected', value: CheckboxModel): void,
   }>()
 
   const model = computed({
     get() {
       return props.selected ?? undefined
     },
-    set(value: Selected) {
+    set(value: CheckboxModel) {
       emit('update:selected', value)
     },
   })

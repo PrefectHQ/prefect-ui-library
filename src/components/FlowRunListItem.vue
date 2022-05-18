@@ -1,5 +1,5 @@
 <template>
-  <StateListItemInput v-model:selected="model" v-bind="{ value, disabled, tags, stateType }" class="flow-run-list-item-input">
+  <StateListItem v-model:selected="model" v-bind="{ value, disabled, tags, stateType }" class="flow-run-list-item">
     <template #name>
       <span>{{ flowRun.name }}</span>
     </template>
@@ -15,44 +15,43 @@
         </p-icon-text>
       </template>
     </template>
-  </StateListItemInput>
+  </StateListItem>
 </template>
 
 <script lang="ts" setup>
+  import { CheckboxModel } from '@prefecthq/prefect-design'
   import { useSubscription } from '@prefecthq/vue-compositions'
   import { computed } from 'vue'
   import FlowRunListItemDate from './FlowRunListItemDate.vue'
-  import StateListItemInput from './StateListItemInput.vue'
+  import StateListItem from './StateListItem.vue'
   import StateBadge from '@/components/StateBadge.vue'
   import { FlowRun } from '@/models/FlowRun'
   import { taskRunsApiKey } from '@/services/TaskRunsApi'
   import { inject } from '@/utilities'
   import { secondsToApproximateString } from '@/utilities/seconds'
 
-  type Selected = boolean | unknown[] | undefined
-
   const props = defineProps<{
-    selected: Selected | null,
-    value: unknown,
+    selected: CheckboxModel | null,
     flowRun: FlowRun,
     disabled?: boolean,
   }>()
 
   const emit = defineEmits<{
-    (event: 'update:selected', value: Selected): void,
+    (event: 'update:selected', value: CheckboxModel): void,
   }>()
 
   const model = computed({
     get() {
       return props.selected ?? undefined
     },
-    set(value: Selected) {
+    set(value: CheckboxModel) {
       emit('update:selected', value)
     },
   })
 
   const stateType = computed(() => props.flowRun.state?.type)
   const tags = computed(() => props.flowRun.tags)
+  const value = computed(() => props.flowRun.id)
 
   const taskRunsApi = inject(taskRunsApiKey)
 

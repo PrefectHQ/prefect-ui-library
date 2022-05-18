@@ -1,5 +1,5 @@
 <template>
-  <StateListItemInput v-model:selected="model" v-bind="{ value, disabled, tags, stateType }" class="task-run-list-item-input">
+  <StateListItem v-model:selected="model" v-bind="{ value, disabled, tags, stateType }" class="task-run-list-item">
     <template #name>
       <span>{{ taskRun.name }}</span>
     </template>
@@ -17,39 +17,38 @@
         </template>
       </p-icon-text>
     </template>
-  </StateListItemInput>
+  </StateListItem>
 </template>
 
 <script lang="ts" setup>
+  import { CheckboxModel } from '@prefecthq/prefect-design'
   import { computed } from 'vue'
-  import StateListItemInput from './StateListItemInput.vue'
+  import StateListItem from './StateListItem.vue'
   import StateBadge from '@/components/StateBadge.vue'
   import { TaskRun } from '@/models/TaskRun'
   import { formatDateTimeNumeric } from '@/utilities/dates'
   import { secondsToApproximateString } from '@/utilities/seconds'
 
-  type Selected = boolean | unknown[] | undefined
-
   const props = defineProps<{
-    selected: Selected | null,
-    value: unknown,
+    selected: CheckboxModel | null,
     taskRun: TaskRun,
     disabled?: boolean,
   }>()
 
   const emit = defineEmits<{
-    (event: 'update:selected', value: Selected): void,
+    (event: 'update:selected', value: CheckboxModel): void,
   }>()
 
   const model = computed({
     get() {
       return props.selected ?? undefined
     },
-    set(value: Selected) {
+    set(value: CheckboxModel) {
       emit('update:selected', value)
     },
   })
 
   const stateType = computed(() => props.taskRun.state?.type)
   const tags = computed(() => props.taskRun.tags)
+  const value = computed(() => props.taskRun.id)
 </script>
