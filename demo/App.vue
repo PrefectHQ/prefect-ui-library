@@ -15,6 +15,7 @@
 
     <StatesSection />
     <LogSection />
+    <EmptyStateSection />
     <ContextSidebarSection />
   </div>
 </template>
@@ -22,6 +23,7 @@
 <script lang="ts" setup>
   import { provide } from 'vue'
   import ContextSidebarSection from './sections/ContextSidebarSection.vue'
+  import EmptyStateSection from './sections/EmptyStateSection.vue'
   import LogSection from './sections/LogsSection.vue'
   import StatesSection from './sections/StatesSection.vue'
   import { flowRunsApi, logsApi, taskRunsApi } from './services'
