@@ -15,12 +15,12 @@
     </template>
 
     <template #actions>
-      <a :href="documentationLink" target="_blank">
+      <router-link to="/queues/new">
         <p-button>
           Create Queue
           <p-icon icon="PlusIcon" class="ml-2 w-4 h-4" />
         </p-button>
-      </a>
+      </router-link>
     </template>
   </p-empty-state>
 </template>
