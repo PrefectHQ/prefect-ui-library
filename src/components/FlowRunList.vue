@@ -1,5 +1,5 @@
 <template>
-  <VirtualScroller :items="flowRuns" class="flow-run-list" @bottom="emit('bottom')">
+  <VirtualScroller :items="flowRuns" class="flow-run-list">
     <template #default="{ item: flowRun }">
       <FlowRunListItem v-model:selected="model" v-bind="{ flowRun, disabled }" />
     </template>
@@ -20,7 +20,6 @@
 
   const emit = defineEmits<{
     (event: 'update:selected', value: string[]): void,
-    (event: 'bottom'): void,
   }>()
 
   const model = computed({
