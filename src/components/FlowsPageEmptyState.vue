@@ -13,7 +13,7 @@
     </template>
 
     <template #actions>
-      <a :href="documentationLink" target="_blank">
+      <a href="https://orion-docs.prefect.io/concepts/flows/" target="_blank">
         <p-button inset class="empty-flow--link ">
           View Docs
           <p-icon icon="ExternalLinkIcon" class="empty-flow--link-icon" />
@@ -25,9 +25,6 @@
 
 <script lang="ts" setup>
   import { PEmptyState, PButton, PIcon } from '@prefecthq/prefect-design'
-  import { computed } from 'vue'
-
-  const documentationLink = computed(() => 'https://orion-docs.prefect.io/concepts/flows/')
 </script>
 
 <style>

@@ -16,7 +16,7 @@
     </template>
 
     <template #actions>
-      <a :href="documentationLink" target="_blank">
+      <a href="https://orion-docs.prefect.io/tutorials/deployments/" target="_blank">
         <p-button>
           Create Deployment
           <p-icon icon="ExternalLinkIcon" class="empty-deployment--link-icon" />
@@ -28,9 +28,6 @@
 
 <script lang="ts" setup>
   import { PEmptyState, PButton, PIcon } from '@prefecthq/prefect-design'
-
-  import { computed } from 'vue'
-  const documentationLink = computed(() => 'https://orion-docs.prefect.io/tutorials/deployments/')
 </script>
 
 <style>
