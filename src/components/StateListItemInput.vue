@@ -8,7 +8,9 @@
         <slot name="meta" />
       </div>
       <div class="state-list-item-input__tags">
-        <slot name="tags" />
+        <slot name="tags">
+          <p-tag-wrapper class="task-run-list-item-input__tags" v-bind="{ tags, justify }" />
+        </slot>
       </div>
     </div>
   </p-list-item-input>
@@ -18,6 +20,7 @@
   import { PListItemInput } from '@prefecthq/prefect-design'
   import { computed } from 'vue'
   import { StateType } from '@/models/StateType'
+  import { media } from '@/utilities/media'
 
   type Selected = boolean | unknown[] | undefined
 
@@ -25,6 +28,7 @@
     selected: Selected | null,
     value: unknown,
     stateType: StateType | null | undefined,
+    tags?: string[] | null,
   }>()
 
   const emit = defineEmits<{
@@ -41,6 +45,7 @@
   })
 
   const classes = computed(() => `state-list-item-input--${props.stateType ?? 'unknown'}`)
+  const justify = computed(() => media.md ? 'right' : 'left')
 </script>
 
 <style>

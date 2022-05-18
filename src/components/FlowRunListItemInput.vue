@@ -1,5 +1,5 @@
 <template>
-  <StateListItemInput v-model:selected="model" v-bind="{ value, disabled, stateType }" class="flow-run-list-item-input">
+  <StateListItemInput v-model:selected="model" v-bind="{ value, disabled, tags, stateType }" class="flow-run-list-item-input">
     <template #name>
       <span>{{ flowRun.name }}</span>
     </template>
@@ -13,11 +13,6 @@
         <p-icon-text icon="Task">
           {{ tasksCount.response }} task runs
         </p-icon-text>
-      </template>
-    </template>
-    <template #tags>
-      <template v-if="flowRun.tags?.length">
-        <p-tag-wrapper class="flow-run-list-item-input__tags" :tags="flowRun.tags" justify="right" />
       </template>
     </template>
   </StateListItemInput>
@@ -56,9 +51,11 @@
     },
   })
 
+  const stateType = computed(() => props.flowRun.state?.type)
+  const tags = computed(() => props.flowRun.tags)
+
   const taskRunsApi = inject(taskRunsApiKey)
 
-  const stateType = computed(() => props.flowRun.state?.type)
   const tasksCountFilter = computed(() => ({
     flow_runs: {
       id: {

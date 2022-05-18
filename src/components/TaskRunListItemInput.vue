@@ -1,5 +1,5 @@
 <template>
-  <StateListItemInput v-model:selected="model" v-bind="{ value, disabled, stateType }" class="task-run-list-item-input">
+  <StateListItemInput v-model:selected="model" v-bind="{ value, disabled, tags, stateType }" class="task-run-list-item-input">
     <template #name>
       <span>{{ taskRun.name }}</span>
     </template>
@@ -16,11 +16,6 @@
           {{ formatDateTimeNumeric(taskRun.expectedStartTime) }}
         </template>
       </p-icon-text>
-    </template>
-    <template #tags>
-      <template v-if="taskRun.tags?.length">
-        <p-tag-wrapper class="task-run-list-item-input__tags" :tags="taskRun.tags" justify="right" />
-      </template>
     </template>
   </StateListItemInput>
 </template>
@@ -56,4 +51,5 @@
   })
 
   const stateType = computed(() => props.taskRun.state?.type)
+  const tags = computed(() => props.taskRun.tags)
 </script>
