@@ -51,7 +51,7 @@
 .logs { @apply
   grid
   gap-1
-  text-xs
+  text-sm
   overscroll-contain;
 }
 

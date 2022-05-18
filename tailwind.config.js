@@ -1,3 +1,5 @@
+const defaultTheme = require('tailwindcss/defaultTheme')
+
 const states = ['completed', 'failed', 'running', 'pending', 'scheduled', 'cancelled']
 
 const stateColors = states.reduce((colors, state) => {
@@ -26,9 +28,13 @@ module.exports = {
   safelist: [
     {
       pattern: /(bg|text)-state-(completed|failed|running|pending|scheduled|cancelled)/,
-    }
+    },
   ],
   theme: {
+    fontFamily: {
+      sans: ['Inter var', ...defaultTheme.fontFamily.sans],
+      mono: ['Inconsolata', ...defaultTheme.fontFamily.mono],
+    },
     extend: {
       colors: {
         ...stateColors,
