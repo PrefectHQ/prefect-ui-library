@@ -35,11 +35,11 @@ export const pluralize = (word: string): string => {
 }
 
 export const normalize = (word: string): string => {
-  let a = 'a'
+  let article = 'a'
   if (word.match(/^(a|e|heir|herb|hour|i|o)/)) {
-    a = 'an'
+    article = 'an'
   }
-  return `${a} ${word}`
+  return `${article} ${word}`
 }
 
 export type GeneratorKey = 'noun' | 'aNoun' | 'nouns' | 'adjective' | 'anAdjective'
