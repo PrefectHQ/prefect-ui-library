@@ -14,7 +14,7 @@
 
     <template #actions>
       <a href="https://orion-docs.prefect.io/concepts/flows/" target="_blank">
-        <p-button inset class="empty-flow--link ">
+        <p-button inset class="empty-flow--link">
           View Docs
           <p-icon icon="ExternalLinkIcon" class="empty-flow--link-icon" />
         </p-button>

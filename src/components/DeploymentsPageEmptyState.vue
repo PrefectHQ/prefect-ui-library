@@ -17,7 +17,7 @@
 
     <template #actions>
       <a href="https://orion-docs.prefect.io/tutorials/deployments/" target="_blank">
-        <p-button inset>
+        <p-button inset class="empty-deployment--link">
           Create Deployment
           <p-icon icon="ExternalLinkIcon" class="empty-deployment--link-icon" />
         </p-button>
@@ -34,6 +34,11 @@
 .empty-deployment--icon { @apply
   w-12
   h-12
+}
+
+.empty-deployment--link { @apply
+  text-state-running-600
+  font-medium
 }
 
 .empty-deployment--link-icon { @apply
