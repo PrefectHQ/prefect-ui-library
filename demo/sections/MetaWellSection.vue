@@ -16,7 +16,7 @@
   </Section>
 </template>
 
-    <script lang="ts" setup>
+<script lang="ts" setup>
   import Section from '../components/section.vue'
   import SubSection from '../components/subSection.vue'
   import DeploymentMetaWell from '@/components/DeploymentMetaWell.vue'
@@ -25,7 +25,6 @@
   import { mocker } from '@/services'
 
   const flowData = mocker.create('flow')
-
 
   const deploymentData = mocker.create('deployment')
 
