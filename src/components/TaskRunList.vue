@@ -8,8 +8,8 @@
 
 <script lang="ts" setup>
   import { computed } from 'vue'
-  import TaskRunListItem from './TaskRunListItem.vue'
-  import VirtualScroller from './VirtualScroller.vue'
+  import TaskRunListItem from '@/components/TaskRunListItem.vue'
+  import VirtualScroller from '@/components/VirtualScroller.vue'
   import { TaskRun } from '@/models/TaskRun'
 
   const props = defineProps<{

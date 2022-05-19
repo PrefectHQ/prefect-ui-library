@@ -84,7 +84,7 @@
                        'tags';
 }
 
-@media screen and (min-width: 768px) {
+@screen sm {
   .state-list-item-input__content {
     grid-template-columns: min-content 1fr;
     grid-template-areas: 'name tags'
