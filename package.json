@@ -1,6 +1,6 @@
 {
     "name": "@prefecthq/orion-design",
-    "version": "1.0.0-0",
+    "version": "1.0.0-1",
     "private": false,
     "keywords": [
         "prefect 2.0",
@@ -42,9 +42,9 @@
         "vue-tsc": "0.34.15"
     },
     "peerDependencies": {
-        "pinia": "2.0.11",
-        "vue": "3.2.33",
-        "vue-router": "4.0.12"
+        "pinia": "^2.0.14",
+        "vue": "^3.2.34",
+        "vue-router": "^4.0.12"
     },
     "dependencies": {
         "@prefecthq/prefect-design": "0.0.8",
