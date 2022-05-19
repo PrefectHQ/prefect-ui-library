@@ -1,13 +1,13 @@
 <template>
-  <p-list-item-input v-model:selected="model" :value="value" class="state-list-item-input" :class="classes" disabled>
-    <div class="state-list-item-input__content">
-      <div class="state-list-item-input__name">
+  <p-list-item-input v-model:selected="model" :value="value" class="state-list-item" :class="classes" disabled>
+    <div class="state-list-item__content">
+      <div class="state-list-item__name">
         <slot name="name" />
       </div>
-      <div class="state-list-item-input__meta">
+      <div class="state-list-item__meta">
         <slot name="meta" />
       </div>
-      <div class="state-list-item-input__tags">
+      <div class="state-list-item__tags">
         <slot name="tags">
           <p-tag-wrapper class="task-run-list-item-input__tags" v-bind="{ tags, justify }" />
         </slot>
@@ -42,57 +42,57 @@
     },
   })
 
-  const classes = computed(() => `state-list-item-input--${props.stateType ?? 'unknown'}`)
+  const classes = computed(() => `state-list-item--${props.stateType ?? 'unknown'}`)
   const justify = computed(() => media.md ? 'right' : 'left')
   const tags = computed(() => props.tags ?? [])
 </script>
 
 <style>
-.state-list-item-input--completed .list-item-input__checkbox { @apply
+.state-list-item--completed .list-item-input__checkbox { @apply
   bg-state-completed-500
 }
 
-.state-list-item-input--running .list-item-input__checkbox { @apply
+.state-list-item--running .list-item-input__checkbox { @apply
   bg-state-running-500
 }
 
-.state-list-item-input--scheduled .list-item-input__checkbox { @apply
+.state-list-item--scheduled .list-item-input__checkbox { @apply
   bg-state-scheduled-500
 }
 
-.state-list-item-input--pending .list-item-input__checkbox { @apply
+.state-list-item--pending .list-item-input__checkbox { @apply
   bg-state-pending-500
 }
 
-.state-list-item-input--failed .list-item-input__checkbox { @apply
+.state-list-item--failed .list-item-input__checkbox { @apply
   bg-state-failed-500
 }
 
-.state-list-item-input--cancelled .list-item-input__checkbox { @apply
+.state-list-item--cancelled .list-item-input__checkbox { @apply
   bg-state-cancelled-500
 }
 
-.state-list-item-input__content { @apply
+.state-list-item__content { @apply
   grid
   gap-x-4
   gap-y-2
 }
 
-.state-list-item-input__content {
+.state-list-item__content {
   grid-template-areas: 'name'
                        'meta'
                        'tags';
 }
 
 @screen sm {
-  .state-list-item-input__content {
+  .state-list-item__content {
     grid-template-columns: min-content 1fr;
     grid-template-areas: 'name tags'
                          'meta meta';
   }
 }
 
-.state-list-item-input__name { @apply
+.state-list-item__name { @apply
  text-base
  text-slate-700
  shrink-0
@@ -102,7 +102,7 @@
  overflow-hidden
 }
 
-.state-list-item-input__meta { @apply
+.state-list-item__meta { @apply
   flex
   flex-col
   items-start
@@ -112,29 +112,29 @@
 }
 
 @media screen and (min-width: 768px) {
-  .state-list-item-input__meta { @apply
+  .state-list-item__meta { @apply
     items-center
     flex-wrap
     flex-row
   }
 }
 
-.state-list-item-input__tags { @apply
+.state-list-item__tags { @apply
   place-self-end
   min-w-0
   w-full
   grow
 }
 
-.state-list-item-input__name {
+.state-list-item__name {
   grid-area: name;
 }
 
-.state-list-item-input__meta {
+.state-list-item__meta {
   grid-area: meta;
 }
 
-.state-list-item-input__tags {
+.state-list-item__tags {
   grid-area: tags;
 }
 </style>

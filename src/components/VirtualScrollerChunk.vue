@@ -16,7 +16,7 @@
   }>()
 
   const styles = computed(() => ({
-    height: !visible.value ? `${height.value ?? props.height}px` : undefined,
+    height: visible.value ? undefined : `${height.value ?? props.height}px`,
   }))
 
   const el = ref<HTMLDivElement>()
