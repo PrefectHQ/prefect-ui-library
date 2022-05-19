@@ -18,6 +18,7 @@
     <EmptyStateSection />
     <ContextSidebarSection />
     <ListsSection />
+    <ToggleSection />
   </div>
 </template>
 
@@ -28,6 +29,7 @@
   import ListsSection from './sections/ListsSection.vue'
   import LogSection from './sections/LogsSection.vue'
   import StatesSection from './sections/StatesSection.vue'
+  import ToggleSection from './sections/ToggleSection.vue'
   import { flowRunsApi, logsApi, taskRunsApi } from './services'
   import { flowRunsApiKey, logsApiKey, taskRunsApiKey } from '@/services'
 
