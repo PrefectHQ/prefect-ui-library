@@ -44,7 +44,7 @@
   import { PKeyValue } from '@prefecthq/prefect-design'
   import StateBadge from '@/components/StateBadge.vue'
   import { FlowRunMeta } from '@/types/meta'
-  ''
+
   defineProps<{
     flowRunMeta: FlowRunMeta,
   }>()
