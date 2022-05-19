@@ -46,7 +46,7 @@
       <p-key-value label="Idempotency Key" :value="flowRunMeta.idempotencyKey" />
     </template>
 
-    <p-key-value label="Run Count" :value="flowRunMeta.runCount" />
+    <p-key-value label="Run Count" :value="flowRunMeta.runCount ? flowRunMeta.runCount : 0" />
 
     <p-key-value label="Flow Runner">
       <template #value>
