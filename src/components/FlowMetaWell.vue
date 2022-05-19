@@ -1,7 +1,11 @@
 <template>
   <div class="flow-meta-well">
-    <p-key-value label="Flow ID" :value="flowMeta.flowId" />
-    <p-key-value label="Created" :value="flowMeta.created" />
+    <p-key-value label="Flow ID" :value="flowMeta.id" />
+    <p-key-value label="Created">
+      <template #value>
+        {{ flowMeta.created }}
+      </template>
+    </p-key-value>
     <p-key-value label="Tags">
       <template #value>
         <p-tag v-for="tag in flowMeta.tags" :key="tag" class="flow-meta-well__tags">
@@ -14,11 +18,10 @@
 
 <script lang="ts" setup>
   import { PKeyValue, PTag } from '@prefecthq/prefect-design'
-  import { FlowMeta } from '@/types/meta'
-
+  import { Flow } from '@/models'
 
   defineProps<{
-    flowMeta: FlowMeta,
+    flowMeta: Flow,
   }>()
 </script>
 
