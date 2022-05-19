@@ -24,33 +24,10 @@
   import FlowRunMetaWell from '@/components/FlowRunMetaWell.vue'
   import { mocker } from '@/services'
 
-  const flowData = {
-    flowId: '3fa85f64',
-    created: '2022-04-27T21:22:32.524Z',
-    tags: ['db', 'etl', 'production', 'dev', 'marketing', 'sales', 'k8s', 'eks', 'staging'],
-  }
+  const flowData = mocker.create('flow')
 
-  const deploymentData = {
-    deploymentId: '93cd33ac',
-    flowId: '74df52bg',
-    created: '2022-04-27T21:22:32.524Z',
-    tags: ['db', 'etl', 'production', 'dev', 'marketing', 'sales', 'k8s', 'eks', 'staging'],
-  }
 
-  const flowRunData = {
-    stateBadge: mocker.create('state', [{ type: 'completed', name: 'Completed ' }]),
-    duration: '1h 25m 16s',
-    startTime: '7 Jan 2020',
-    flowName: 'ETL',
-    deploymentName: 'Nightly ETL',
-    flowRunId: '3fa85f64',
-    flowId: '74df52bg',
-    deploymentId: '93cd33ac',
-    created: '2022-04-27T21:22:32.524Z',
-    flowVersion: '1.0',
-    idempotencyKey: '2c963f66afa6',
-    runCount: 1,
-    flowRunner: 'Kubernetes',
-    tags: ['db', 'etl', 'production', 'dev', 'marketing', 'sales', 'k8s', 'eks', 'staging'],
-  }
+  const deploymentData = mocker.create('deployment')
+
+  const flowRunData = mocker.create('flowRun')
 </script>
