@@ -13,12 +13,12 @@
       </div>
     </div>
 
-    <MetaWellSection />
     <StatesSection />
     <LogSection />
     <EmptyStateSection />
     <ContextSidebarSection />
     <ListsSection />
+    <MetaWellSection />
   </div>
 </template>
 
