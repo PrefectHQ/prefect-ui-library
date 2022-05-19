@@ -1,8 +1,8 @@
 import { plugin as PrefectDesign } from '@prefecthq/prefect-design'
 import { createApp } from 'vue'
 
-import '@/styles/style.css'
 import '@prefecthq/prefect-design/dist/style.css'
+import '@/styles/style.css'
 
 import App from './App.vue'
 import { router } from './router'
