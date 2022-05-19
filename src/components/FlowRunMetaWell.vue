@@ -16,35 +16,53 @@
       </p-icon-text>
     </router-link>
 
-    <router-link :to="`/deployments/${flowRunMeta.flowId}`">
-      <p-icon-text icon="LocationMarkerIcon">
-        <span>{{ deploymentName }}</span>
-      </p-icon-text>
-    </router-link>
+    <template v-if="flowRunMeta.deploymentId">
+      <router-link :to="`/deployments/${flowRunMeta.deploymentId}`">
+        <p-icon-text icon="LocationMarkerIcon">
+          <span>{{ deploymentName }}</span>
+        </p-icon-text>
+      </router-link>
+    </template>
 
     <p-key-value label="Flow Run ID" :value="flowRunMeta.id" />
+
     <p-key-value label="Flow ID" :value="flowRunMeta.flowId" />
-    <p-key-value label="Deployment ID" :value="flowRunMeta.deploymentId" />
+
+    <template v-if="flowRunMeta.deploymentId">
+      <p-key-value label="Deployment ID" :value="flowRunMeta.deploymentId" />
+    </template>
+
     <p-key-value label="Created">
       <template #value>
         {{ flowRunMeta.created }}
       </template>
     </p-key-value>
-    <p-key-value label="Flow Version" :value="flowRunMeta.flowVersion" />
-    <p-key-value label="Idempotency Key" :value="flowRunMeta.idempotencyKey" />
+
+    <template v-if="flowRunMeta.flowVersion">
+      <p-key-value label="Flow Version" :value="flowRunMeta.flowVersion" />
+    </template>
+
+    <template v-if="flowRunMeta.idempotencyKey">
+      <p-key-value label="Idempotency Key" :value="flowRunMeta.idempotencyKey" />
+    </template>
+
     <p-key-value label="Run Count" :value="flowRunMeta.runCount" />
+
     <p-key-value label="Flow Runner">
       <template #value>
         <slot name="flow-runner" />
       </template>
     </p-key-value>
-    <p-key-value label="Tags">
-      <template #value>
-        <p-tag v-for="tag in flowRunMeta.tags" :key="tag" class="flow-run-meta-well__tags">
-          {{ tag }}
-        </p-tag>
-      </template>
-    </p-key-value>
+
+    <template v-if="flowRunMeta.tags">
+      <p-key-value label="Tags">
+        <template #value>
+          <p-tag v-for="tag in flowRunMeta.tags" :key="tag" class="flow-run-meta-well__tags">
+            {{ tag }}
+          </p-tag>
+        </template>
+      </p-key-value>
+    </template>
   </div>
 </template>
 
@@ -54,7 +72,8 @@
   import { computed } from 'vue'
   import StateBadge from '@/components/StateBadge.vue'
   import { FlowRun } from '@/models/FlowRun'
-  import { deploymentsApiKey, flowsApiKey } from '@/services'
+  import { deploymentsApiKey } from '@/services/DeploymentsApi'
+  import { flowsApiKey } from '@/services/FlowsApi'
   import { inject } from '@/utilities/inject'
 
 
