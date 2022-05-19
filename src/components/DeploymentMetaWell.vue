@@ -1,8 +1,15 @@
 <template>
   <div class="deployment-meta-well">
-    <p-key-value label="Deployment ID" :value="deploymentMeta.deploymentId" />
+    <p-key-value label="Deployment ID" :value="deploymentMeta.id" />
+
     <p-key-value label="Flow ID" :value="deploymentMeta.flowId" />
-    <p-key-value label="Created" :value="deploymentMeta.created" />
+
+    <p-key-value label="Created">
+      <template #value>
+        {{ deploymentMeta.created }}
+      </template>
+    </p-key-value>
+
     <p-key-value label="Tags">
       <template #value>
         <p-tag v-for="tag in deploymentMeta.tags" :key="tag" class="deployment-meta-well__tags">
@@ -15,10 +22,10 @@
 
 <script lang="ts" setup>
   import { PKeyValue } from '@prefecthq/prefect-design'
-  import { DeploymentMeta } from '@/types/meta'
+  import { Deployment } from '@/models'
 
   defineProps<{
-    deploymentMeta: DeploymentMeta,
+    deploymentMeta: Deployment,
   }>()
 </script>
 
