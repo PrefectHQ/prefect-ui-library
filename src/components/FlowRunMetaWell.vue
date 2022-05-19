@@ -50,7 +50,9 @@
 
     <p-key-value label="Flow Runner">
       <template #value>
-        <slot name="flow-runner" />
+        <slot name="flow-runner">
+          --
+        </slot>
       </template>
     </p-key-value>
 
