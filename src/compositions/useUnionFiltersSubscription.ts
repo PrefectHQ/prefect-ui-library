@@ -1,7 +1,4 @@
-
-import { useSubscription } from '@prefecthq/vue-compositions'
-import { ActionArguments, ActionResponse, SubscribeArguments, UseSubscription } from '@prefecthq/vue-compositions/src/subscribe/types'
-import { unrefArgs, watchableArgs } from '@prefecthq/vue-compositions/src/subscribe/utilities'
+import { useSubscription, ActionArguments, ActionResponse, SubscribeArguments, UseSubscription, unrefArgs, watchableArgs } from '@prefecthq/vue-compositions'
 import { computed, getCurrentInstance, onUnmounted, reactive, ref, watch } from 'vue'
 import { UnionFilters } from '@/types/UnionFilters'
 

@@ -1,4 +1,4 @@
-import { UseSubscription } from '@prefecthq/vue-compositions/src/subscribe/types'
+import { UseSubscription } from '@prefecthq/vue-compositions'
 import { InjectionKey } from 'vue'
 import { DeploymentsApi } from '@/services/DeploymentsApi'
 import { FlowsApi } from '@/services/FlowsApi'

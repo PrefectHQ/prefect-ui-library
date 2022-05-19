@@ -9,16 +9,16 @@ function tryMatchMedia(media: string): Ref<boolean> | boolean {
   }
 }
 
-const xs = tryMatchMedia('(min-width: 450px)')
 const sm = tryMatchMedia('(min-width: 640px)')
-const md = tryMatchMedia('(min-width: 1024px)')
-const lg = tryMatchMedia('(min-width: 1280px)')
-const xl = tryMatchMedia('(min-width: 1440px)')
+const md = tryMatchMedia('(min-width: 768px)')
+const lg = tryMatchMedia('(min-width: 1024px)')
+const xl = tryMatchMedia('(min-width: 1280px)')
+const xxl = tryMatchMedia('(min-width: 1536px)')
 
 export const media = reactive({
-  xs,
   sm,
   md,
   lg,
   xl,
+  xxl,
 })
