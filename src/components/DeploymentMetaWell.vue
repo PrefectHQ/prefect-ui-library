@@ -1,11 +1,11 @@
 <template>
-  <div class="flow-meta-well">
-    <p-key-value label="Flow ID" :value="deploymentMeta.deploymentId" />
+  <div class="deployment-meta-well">
+    <p-key-value label="Deployment ID" :value="deploymentMeta.deploymentId" />
     <p-key-value label="Flow ID" :value="deploymentMeta.flowId" />
     <p-key-value label="Created" :value="deploymentMeta.created" />
     <p-key-value label="Tags">
       <template #value>
-        <p-tag v-for="tag in deploymentMeta.tags" :key="tag" class="flow-meta-well__tags">
+        <p-tag v-for="tag in deploymentMeta.tags" :key="tag" class="deployment-meta-well__tags">
           {{ tag }}
         </p-tag>
       </template>
@@ -23,14 +23,14 @@
 </script>
 
 <style>
-  .flow-meta-well {
+  .deployment-meta-well {
     @apply
     flex
     flex-col
     gap-3
   }
 
-  .flow-meta-well__tags {
+  .deployment-meta-well__tags {
     @apply
     mb-1
     mr-1
