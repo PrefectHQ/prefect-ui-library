@@ -2,15 +2,15 @@
   <Section heading="Meta Wells">
     <div class="flex flex-wrap gap-8">
       <SubSection heading="Flow Run Meta Well">
-        <FlowRunMetaWell :flow-run-meta="flowRunData" class="w-[250px] border-2 border-slate-100" />
+        <FlowRunMetaWell :flow-run-meta="flowRunData" class="w-[250px] border-2 border-blue-200 border-dashed" />
       </SubSection>
 
       <SubSection heading="Flow Meta Well">
-        <FlowMetaWell :flow-meta="flowData" class="w-[250px] border-2 border-slate-100" />
+        <FlowMetaWell :flow-meta="flowData" class="w-[250px] border-2 border-blue-200 border-dashed" />
       </SubSection>
 
       <SubSection heading="Deployment Meta Well">
-        <DeploymentMetaWell :deployment-meta="deploymentData" class="w-[250px] border-2 border-slate-100" />
+        <DeploymentMetaWell :deployment-meta="deploymentData" class="w-[250px] border-2 border-blue-200 border-dashed" />
       </SubSection>
     </div>
   </Section>
