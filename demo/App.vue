@@ -30,10 +30,12 @@
   import LogSection from './sections/LogsSection.vue'
   import MetaWellSection from './sections/MetaWellSection.vue'
   import StatesSection from './sections/StatesSection.vue'
-  import { flowRunsApi, logsApi, taskRunsApi } from './services'
-  import { flowRunsApiKey, logsApiKey, taskRunsApiKey } from '@/services'
+  import { flowRunsApi, logsApi, taskRunsApi, flowsApi, deploymentsApi } from './services'
+  import { flowRunsApiKey, logsApiKey, taskRunsApiKey, flowsApiKey, deploymentsApiKey } from '@/services'
 
   provide(flowRunsApiKey, flowRunsApi)
   provide(logsApiKey, logsApi)
   provide(taskRunsApiKey, taskRunsApi)
+  provide(flowsApiKey, flowsApi)
+  provide(deploymentsApiKey, deploymentsApi)
 </script>
