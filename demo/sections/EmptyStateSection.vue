@@ -1,20 +1,20 @@
 <template>
-  <Section heading="Empty States">
-    <SubSection heading="Flow">
+  <DemoSection heading="Empty States">
+    <DemoSubSection heading="Flow">
       <FlowsPageEmptyState />
-    </SubSection>
-    <SubSection heading="Deployments">
+    </DemoSubSection>
+    <DemoSubSection heading="Deployments">
       <DeploymentsPageEmptyState />
-    </SubSection>
-    <SubSection heading="Queues">
+    </DemoSubSection>
+    <DemoSubSection heading="Queues">
       <WorkQueuesPageEmptyState />
-    </SubSection>
-  </Section>
+    </DemoSubSection>
+  </DemoSection>
 </template>
 
 <script lang="ts" setup>
-  import Section from '../components/section.vue'
-  import SubSection from '../components/subSection.vue'
+  import DemoSection from '../components/DemoSection.vue'
+  import DemoSubSection from '../components/DemoSubSection.vue'
   import DeploymentsPageEmptyState from '@/components/DeploymentsPageEmptyState.vue'
   import FlowsPageEmptyState from '@/components/FlowsPageEmptyState.vue'
   import WorkQueuesPageEmptyState from '@/components/WorkQueuesPageEmptyState.vue'

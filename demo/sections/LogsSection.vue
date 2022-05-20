@@ -1,28 +1,28 @@
 <template>
-  <Section heading="Logs">
-    <SubSection heading="Levels">
+  <DemoSection heading="Logs">
+    <DemoSubSection heading="Levels">
       <div class="flex gap-1 flex-wrap">
         <template v-for="level in logLevels" :key="level">
           <log-level-label :level="level" />
         </template>
       </div>
-    </SubSection>
+    </DemoSubSection>
 
-    <SubSection heading="Log Rows">
+    <DemoSubSection heading="Log Rows">
       <template v-for="log in flowRunLogs" :key="log.id">
         <log-row :log="log" show-task-run-link />
       </template>
-    </SubSection>
+    </DemoSubSection>
 
-    <SubSection heading="Logs">
+    <DemoSubSection heading="Logs">
       <logs-container :logs="flowRunLogs" class="h-[400px] overflow-auto" />
-    </SubSection>
-  </Section>
+    </DemoSubSection>
+  </DemoSection>
 </template>
 
 <script lang="ts" setup>
-  import Section from '../components/section.vue'
-  import SubSection from '../components/subSection.vue'
+  import DemoSection from '../components/DemoSection.vue'
+  import DemoSubSection from '../components/DemoSubSection.vue'
   import LogLevelLabel from '@/components/LogLevelLabel.vue'
   import LogRow from '@/components/LogRow.vue'
   import LogsContainer from '@/components/LogsContainer.vue'
