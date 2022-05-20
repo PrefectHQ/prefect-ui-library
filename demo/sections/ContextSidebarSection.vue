@@ -1,5 +1,5 @@
 <template>
-  <Section heading="Context Sidebar">
+  <DemoSection heading="Context Sidebar">
     <div class="bg-slate-300 h-96">
       <ContextSidebar class="sm:h-full sm:w-64 w-full">
         <template #header>
@@ -11,10 +11,10 @@
         </template>
       </ContextSidebar>
     </div>
-  </Section>
+  </DemoSection>
 </template>
 
 <script lang="ts" setup>
-  import Section from '../components/section.vue'
+  import DemoSection from '../components/DemoSection.vue'
   import ContextSidebar from '@/components/ContextSidebar.vue'
 </script>
