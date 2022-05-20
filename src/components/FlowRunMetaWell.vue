@@ -8,14 +8,14 @@
 
     <FlowRunStartTime :flow-run="flowRun" />
 
-    <router-link :to="`/flows/${flowRun.flowId}`">
+    <router-link :to="flowRoute">
       <p-icon-text icon="Flow">
         <span>{{ flowName }}</span>
       </p-icon-text>
     </router-link>
 
     <template v-if="flowRun.deploymentId">
-      <router-link :to="`/deployments/${flowRun.deploymentId}`">
+      <router-link :to="deploymentRoute">
         <p-icon-text icon="LocationMarkerIcon">
           <span>{{ deploymentName }}</span>
         </p-icon-text>
@@ -67,6 +67,7 @@
   import FlowRunStartTime from '@/components/FlowRunStartTime.vue'
   import StateBadge from '@/components/StateBadge.vue'
   import { FlowRun } from '@/models/FlowRun'
+  import { deploymentRouteKey, flowRouteKey } from '@/router'
   import { deploymentsApiKey } from '@/services/DeploymentsApi'
   import { flowsApiKey } from '@/services/FlowsApi'
   import { formatDateTimeNumeric } from '@/utilities/dates'
@@ -85,6 +86,9 @@
   const deploymentId = computed(() => props.flowRun.deploymentId ?? '')
   const deploymentsSubscription = useSubscription(deploymentsApi.getDeployment, [deploymentId])
   const deploymentName = computed(() => deploymentsSubscription.response?.name)
+
+  const deploymentRoute = inject(deploymentRouteKey)
+  const flowRoute = inject(flowRouteKey)
 </script>
 
 <style>
