@@ -1,4 +1,6 @@
+import { FlowRunnerType } from '@/types'
+
 export type IFlowRunnerResponse = {
-  type: string,
+  type: FlowRunnerType,
   config: unknown,
 }

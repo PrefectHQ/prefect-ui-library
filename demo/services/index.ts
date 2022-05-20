@@ -1,3 +1,5 @@
 export * from './taskRunsApi'
 export * from './logsApi'
 export * from './flowRunsApi'
+export * from './flowsApi'
+export * from './deploymentsApi'

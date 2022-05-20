@@ -1,10 +1,12 @@
+import { FlowRunnerType } from '@/types'
+
 export interface IFlowRunner {
-  type: string,
+  type: FlowRunnerType,
   config: unknown,
 }
 
 export class FlowRunner implements IFlowRunner {
-  public type: string
+  public type: FlowRunnerType
   public config: unknown
 
   public constructor(flowRunner: IFlowRunner) {
