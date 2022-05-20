@@ -36,7 +36,6 @@
   import { deploymentRouteKey, flowRouteKey } from '@/router'
   import { flowRunsApiKey, logsApiKey, taskRunsApiKey, flowsApiKey, deploymentsApiKey } from '@/services'
 
-
   provide(flowRunsApiKey, flowRunsApi)
   provide(logsApiKey, logsApi)
   provide(taskRunsApiKey, taskRunsApi)
