@@ -1,21 +1,21 @@
 <template>
-  <Section heading="Lists">
-    <SubSection heading="Flow Run List" class="mt-auto">
+  <DemoSection heading="Lists">
+    <DemoSubSection heading="Flow Run List" class="mt-auto">
       <FlowRunList v-model:selected="selectedFlowRuns" :flow-runs="flowRuns" />
       {{ selectedFlowRuns }}
-    </SubSection>
+    </DemoSubSection>
 
-    <SubSection heading="Task Run List" class="mt-auto">
+    <DemoSubSection heading="Task Run List" class="mt-auto">
       <TaskRunList v-model:selected="selectedTaskRuns" :task-runs="taskRuns" />
       {{ selectedTaskRuns }}
-    </SubSection>
-  </Section>
+    </DemoSubSection>
+  </DemoSection>
 </template>
 
 <script lang="ts" setup>
   import { ref } from '@vue/reactivity'
-  import Section from '../components/section.vue'
-  import SubSection from '../components/subSection.vue'
+  import DemoSection from '../components/DemoSection.vue'
+  import DemoSubSection from '../components/DemoSubSection.vue'
   import FlowRunList from '@/components/FlowRunList.vue'
   import TaskRunList from '@/components/TaskRunList.vue'
   import { mocker } from '@/services'
