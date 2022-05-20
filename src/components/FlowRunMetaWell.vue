@@ -46,13 +46,9 @@
 
     <p-key-value label="Run Count" :value="flowRun.runCount ?? 0" />
 
-    <p-key-value label="Flow Runner">
-      <template #value>
-        <slot name="flow-runner">
-          --
-        </slot>
-      </template>
-    </p-key-value>
+    <template v-if="flowRun.flowRunner">
+      <p-key-value label="Flow Runner" :value="flowRun.flowRunner?.type" />
+    </template>
 
     <template v-if="flowRun.tags">
       <p-key-value label="Tags">
