@@ -8,14 +8,14 @@
 
     <FlowRunStartTime :flow-run="flowRun" />
 
-    <router-link :to="flowRoute">
+    <router-link :to="flowRoute(flowRun.flowId)">
       <p-icon-text icon="Flow">
         <span>{{ flowName }}</span>
       </p-icon-text>
     </router-link>
 
     <template v-if="flowRun.deploymentId">
-      <router-link :to="deploymentRoute">
+      <router-link :to="deploymentRoute(flowRun.deploymentId)">
         <p-icon-text icon="LocationMarkerIcon">
           <span>{{ deploymentName }}</span>
         </p-icon-text>
