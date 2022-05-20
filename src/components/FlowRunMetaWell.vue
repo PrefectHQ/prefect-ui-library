@@ -3,7 +3,7 @@
     <StateBadge :state="flowRun.state" />
 
     <p-icon-text icon="ClockIcon">
-      <span>{{ flowRun.duration }}</span>
+      <span>{{ secondsToApproximateString(flowRun.duration) }}</span>
     </p-icon-text>
 
     <p-icon-text icon="CalendarIcon">
@@ -79,6 +79,7 @@
   import { deploymentsApiKey } from '@/services/DeploymentsApi'
   import { flowsApiKey } from '@/services/FlowsApi'
   import { inject } from '@/utilities/inject'
+  import { secondsToApproximateString } from '@/utilities/seconds'
 
 
   const props = defineProps<{
