@@ -1,7 +1,7 @@
 <template>
-  <p-toggle v-model="value">
+  <p-toggle v-model="isActive">
     <template #append>
-      <span>{{ isActive }}</span>
+      <span>{{ toggleVal }}</span>
     </template>
   </p-toggle>
 </template>
@@ -11,32 +11,40 @@
   import { computed } from 'vue'
   import { Deployment } from '@/models'
 
-  const emits = defineEmits<{
-    (event: 'update:modelValue', value: boolean): void,
+  const props = defineProps<{
+    values: Deployment,
   }>()
 
-  const isActive = computed(() => {
-    if (value.value) {
-      showToast(`${props.deployment.name} is active`, 'success', undefined, 3000)
-      return 'Active'
-    }
-    showToast(`${props.deployment.name} is paused`, 'error', undefined, 3000)
-    return 'Paused'
+  const emit = defineEmits<{
+    (event: 'update:values', value: Deployment): void,
+
+  }>()
+
+  const internalValue = computed({
+    get() {
+      return props.values
+    },
+    set(value: Deployment) {
+      emit('update:values', value)
+    },
   })
 
-
-  const props = defineProps<{
-    modelValue: boolean,
-    deployment: Deployment,
-  }>()
-
-  const value = computed({
+  const isActive = computed({
     get() {
-      return props.modelValue
+      return !internalValue.value.isScheduleActive
     },
     set(value: boolean) {
-      emits('update:modelValue', value)
+      internalValue.value = new Deployment({ ...internalValue.value, isScheduleActive: !value })
     },
+  })
+
+  const toggleVal = computed(() => {
+    if (isActive.value) {
+      showToast(`${props.values.name} is active`, 'success', undefined, 3000)
+      return 'Active'
+    }
+    showToast(`${props.values.name} is paused`, 'error', undefined, 3000)
+    return 'Paused'
   })
 </script>
 

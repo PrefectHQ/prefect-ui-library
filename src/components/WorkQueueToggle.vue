@@ -1,7 +1,7 @@
 <template>
-  <p-toggle v-model="value">
+  <p-toggle v-model="isActive">
     <template #append>
-      <span>{{ isActive }}</span>
+      <span>{{ toggleVal }}</span>
     </template>
   </p-toggle>
 </template>
@@ -11,32 +11,40 @@
   import { computed } from 'vue'
   import { WorkQueue } from '@/models'
 
-  const emits = defineEmits<{
-    (event: 'update:modelValue', value: boolean): void,
+  const props = defineProps<{
+    values: WorkQueue,
   }>()
 
-  const isActive = computed(() => {
-    if (value.value) {
-      showToast(`${props.workQueue.name} is active`, 'success', undefined, 3000)
-      return 'Active'
-    }
-    showToast(`${props.workQueue.name} is paused`, 'error', undefined, 3000)
-    return 'Paused'
+  const emit = defineEmits<{
+    (event: 'update:values', value: WorkQueue): void,
+
+  }>()
+
+  const internalValue = computed({
+    get() {
+      return props.values
+    },
+    set(value: WorkQueue) {
+      emit('update:values', value)
+    },
   })
 
-
-  const props = defineProps<{
-    modelValue: boolean,
-    workQueue: WorkQueue,
-  }>()
-
-  const value = computed({
+  const isActive = computed({
     get() {
-      return props.modelValue
+      return !internalValue.value.isPaused
     },
     set(value: boolean) {
-      emits('update:modelValue', value)
+      internalValue.value = new WorkQueue({ ...internalValue.value, isPaused: !value })
     },
+  })
+
+  const toggleVal = computed(() => {
+    if (isActive.value) {
+      showToast(`${props.values.name} is active`, 'success', undefined, 3000)
+      return 'Active'
+    }
+    showToast(`${props.values.name} is paused`, 'error', undefined, 3000)
+    return 'Paused'
   })
 </script>
 
