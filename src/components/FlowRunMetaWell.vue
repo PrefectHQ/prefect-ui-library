@@ -44,7 +44,7 @@
       <p-key-value label="Idempotency Key" :value="flowRun.idempotencyKey" />
     </template>
 
-    <p-key-value label="Run Count" :value="flowRun.runCount ? flowRun.runCount : 0" />
+    <p-key-value label="Run Count" :value="flowRun.runCount ?? 0" />
 
     <p-key-value label="Flow Runner">
       <template #value>
