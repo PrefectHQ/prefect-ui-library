@@ -1,19 +1,19 @@
 <template>
-  <Section heading="Toggle">
-    <SubSection heading="Work Queues Toggle" class="mt-auto">
+  <DemoSection heading="Toggle">
+    <DemoSubSection heading="Work Queues Toggle" class="mt-auto">
       <WorkQueueToggle v-model:values="workQueue" />
-    </SubSection>
+    </DemoSubSection>
 
-    <SubSection heading="Deployments Toggle" class="mt-auto">
+    <DemoSubSection heading="Deployments Toggle" class="mt-auto">
       <DeploymentToggle v-model:values="deployment" />
-    </SubSection>
-  </Section>
+    </DemoSubSection>
+  </DemoSection>
 </template>
 
 <script lang="ts" setup>
   import { ref } from 'vue'
-  import Section from '../components/section.vue'
-  import SubSection from '../components/subSection.vue'
+  import DemoSection from '../components/DemoSection.vue'
+  import DemoSubSection from '../components/DemoSubSection.vue'
   import DeploymentToggle from '@/components/DeploymentToggle.vue'
   import WorkQueueToggle from '@/components/WorkQueueToggle.vue'
   import { mocker } from '@/services'
