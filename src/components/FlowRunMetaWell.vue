@@ -1,6 +1,6 @@
 <template>
   <div class="flow-run-meta-well">
-    <StateBadge :state="flowRun.state" class="flow-run-meta-well__badge" />
+    <StateBadge :state="flowRun.state" />
 
     <p-icon-text icon="ClockIcon">
       <span>{{ flowRun.duration }}</span>
@@ -23,6 +23,8 @@
         </p-icon-text>
       </router-link>
     </template>
+
+    <hr class="flow-run-meta-well__divider">
 
     <p-key-value label="Flow Run ID" :value="flowRun.id" />
 
@@ -98,12 +100,15 @@
     flex
     flex-col
     gap-3
+    items-start
   }
 
-  .flow-run-meta-well__badge {
+  .flow-run-meta-well__divider {
     @apply
-    h-6
-    w-max
+    border-none
+    h-[1px]
+    bg-slate-200
+    w-full
   }
 
   .flow-run-meta-well__tags {
