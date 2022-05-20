@@ -4,11 +4,7 @@
 
     <p-key-value label="Flow ID" :value="deployment.flowId" />
 
-    <p-key-value label="Created">
-      <template #value>
-        {{ deployment.created }}
-      </template>
-    </p-key-value>
+    <p-key-value label="Created" :value="formatDateTimeNumeric(deployment.created)" />
 
     <p-key-value label="Tags">
       <template #value>
@@ -23,6 +19,7 @@
 <script lang="ts" setup>
   import { PKeyValue } from '@prefecthq/prefect-design'
   import { Deployment } from '@/models'
+  import { formatDateTimeNumeric } from '@/utilities/dates'
 
   defineProps<{
     deployment: Deployment,

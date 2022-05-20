@@ -2,11 +2,7 @@
   <div class="flow-meta-well">
     <p-key-value label="Flow ID" :value="flow.id" />
 
-    <p-key-value label="Created">
-      <template #value>
-        {{ flow.created }}
-      </template>
-    </p-key-value>
+    <p-key-value label="Created" :value="formatDateTimeNumeric(flow.created)" />
 
     <p-key-value label="Tags">
       <template #value>
@@ -21,6 +17,7 @@
 <script lang="ts" setup>
   import { PKeyValue, PTag } from '@prefecthq/prefect-design'
   import { Flow } from '@/models'
+  import { formatDateTimeNumeric } from '@/utilities/dates'
 
   defineProps<{
     flow: Flow,

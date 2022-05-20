@@ -7,7 +7,7 @@
     </p-icon-text>
 
     <p-icon-text icon="CalendarIcon">
-      <span>Started on {{ flowRun.startTime }}</span>
+      <span>Started on {{ formatDate(flowRun.startTime!) }}</span>
     </p-icon-text>
 
     <router-link :to="`/flows/${flowRun.flowId}`">
@@ -34,11 +34,7 @@
       <p-key-value label="Deployment ID" :value="flowRun.deploymentId" />
     </template>
 
-    <p-key-value label="Created">
-      <template #value>
-        {{ flowRun.created }}
-      </template>
-    </p-key-value>
+    <p-key-value label="Created" :value="formatDateTimeNumeric(flowRun.created)" />
 
     <template v-if="flowRun.flowVersion">
       <p-key-value label="Flow Version" :value="flowRun.flowVersion" />
@@ -78,6 +74,7 @@
   import { FlowRun } from '@/models/FlowRun'
   import { deploymentsApiKey } from '@/services/DeploymentsApi'
   import { flowsApiKey } from '@/services/FlowsApi'
+  import { formatDate, formatDateTimeNumeric } from '@/utilities/dates'
   import { inject } from '@/utilities/inject'
   import { secondsToApproximateString } from '@/utilities/seconds'
 
