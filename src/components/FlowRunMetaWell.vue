@@ -6,9 +6,7 @@
       <span>{{ secondsToApproximateString(flowRun.duration) }}</span>
     </p-icon-text>
 
-    <p-icon-text icon="CalendarIcon">
-      <span>Started on {{ formatDate(flowRun.startTime!) }}</span>
-    </p-icon-text>
+    <FlowRunStartTime :flow-run="flowRun" />
 
     <router-link :to="`/flows/${flowRun.flowId}`">
       <p-icon-text icon="Flow">
@@ -66,14 +64,14 @@
   import { PKeyValue } from '@prefecthq/prefect-design'
   import { useSubscription } from '@prefecthq/vue-compositions'
   import { computed } from 'vue'
+  import FlowRunStartTime from '@/components/FlowRunStartTime.vue'
   import StateBadge from '@/components/StateBadge.vue'
   import { FlowRun } from '@/models/FlowRun'
   import { deploymentsApiKey } from '@/services/DeploymentsApi'
   import { flowsApiKey } from '@/services/FlowsApi'
-  import { formatDate, formatDateTimeNumeric } from '@/utilities/dates'
+  import { formatDateTimeNumeric } from '@/utilities/dates'
   import { inject } from '@/utilities/inject'
   import { secondsToApproximateString } from '@/utilities/seconds'
-
 
   const props = defineProps<{
     flowRun: FlowRun,

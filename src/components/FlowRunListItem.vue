@@ -8,7 +8,7 @@
       <p-icon-text icon="ClockIcon">
         {{ secondsToApproximateString(flowRun.duration) }}
       </p-icon-text>
-      <FlowRunListItemDate :flow-run="flowRun" />
+      <FlowRunStartTime :flow-run="flowRun" />
       <template v-if="tasksCount.response">
         <p-icon-text icon="Task">
           {{ tasksCount.response }} task runs
@@ -22,7 +22,7 @@
   import { CheckboxModel } from '@prefecthq/prefect-design'
   import { useSubscription } from '@prefecthq/vue-compositions'
   import { computed } from 'vue'
-  import FlowRunListItemDate from '@/components/FlowRunListItemDate.vue'
+  import FlowRunStartTime from '@/components/FlowRunStartTime.vue'
   import StateBadge from '@/components/StateBadge.vue'
   import StateListItem from '@/components/StateListItem.vue'
   import { FlowRun } from '@/models/FlowRun'
