@@ -1,24 +1,24 @@
 <template>
-  <Section heading="Meta Wells">
+  <DemoSection heading="Meta Wells">
     <div class="flex flex-wrap gap-8">
-      <SubSection heading="Flow Run Meta Well">
+      <DemoSubSection heading="Flow Run Meta Well">
         <FlowRunMetaWell :flow-run="flowRunData" class="w-[250px] border-2 border-blue-200 border-dashed" />
-      </SubSection>
+      </DemoSubSection>
 
-      <SubSection heading="Flow Meta Well">
+      <DemoSubSection heading="Flow Meta Well">
         <FlowMetaWell :flow="flowData" class="w-[250px] border-2 border-blue-200 border-dashed" />
-      </SubSection>
+      </DemoSubSection>
 
-      <SubSection heading="Deployment Meta Well">
+      <DemoSubSection heading="Deployment Meta Well">
         <DeploymentMetaWell :deployment="deploymentData" class="w-[250px] border-2 border-blue-200 border-dashed" />
-      </SubSection>
+      </DemoSubSection>
     </div>
-  </Section>
+  </DemoSection>
 </template>
 
 <script lang="ts" setup>
-  import Section from '../components/section.vue'
-  import SubSection from '../components/subSection.vue'
+  import DemoSection from '../components/DemoSection.vue'
+  import DemoSubSection from '../components/DemoSubSection.vue'
   import DeploymentMetaWell from '@/components/DeploymentMetaWell.vue'
   import FlowMetaWell from '@/components/FlowMetaWell.vue'
   import FlowRunMetaWell from '@/components/FlowRunMetaWell.vue'
