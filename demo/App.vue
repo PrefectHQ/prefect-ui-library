@@ -18,6 +18,7 @@
     <EmptyStateSection />
     <ContextSidebarSection />
     <ListsSection />
+    <MetaWellSection />
   </div>
 </template>
 
@@ -27,11 +28,17 @@
   import EmptyStateSection from './sections/EmptyStateSection.vue'
   import ListsSection from './sections/ListsSection.vue'
   import LogSection from './sections/LogsSection.vue'
+  import MetaWellSection from './sections/MetaWellSection.vue'
   import StatesSection from './sections/StatesSection.vue'
-  import { flowRunsApi, logsApi, taskRunsApi } from './services'
-  import { flowRunsApiKey, logsApiKey, taskRunsApiKey } from '@/services'
+  import { flowRunsApi, logsApi, taskRunsApi, flowsApi, deploymentsApi } from './services'
+  import { deploymentRouteKey, flowRouteKey } from '@/router'
+  import { flowRunsApiKey, logsApiKey, taskRunsApiKey, flowsApiKey, deploymentsApiKey } from '@/services'
 
   provide(flowRunsApiKey, flowRunsApi)
   provide(logsApiKey, logsApi)
   provide(taskRunsApiKey, taskRunsApi)
+  provide(flowsApiKey, flowsApi)
+  provide(deploymentsApiKey, deploymentsApi)
+  provide(flowRouteKey, () => ({ name: 'main' }))
+  provide(deploymentRouteKey, () => ({ name: 'main' }))
 </script>

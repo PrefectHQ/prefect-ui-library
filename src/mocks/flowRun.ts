@@ -12,6 +12,7 @@ export const randomFlowRun: MockFunction<FlowRun> = function(flowRun?: Partial<F
     nextScheduledStartTime: flowRun?.nextScheduledStartTime ?? this.create('string'),
     parameters: flowRun?.parameters ?? {},
     autoScheduled: flowRun?.autoScheduled ?? this.create('boolean'),
+    flowRunner: flowRun?.flowRunner ?? this.create('flowRunner'),
     context: flowRun?.context ?? {},
     empiricalConfig: flowRun?.empiricalConfig ?? {},
     empiricalPolicy: flowRun?.empiricalPolicy ?? {},

@@ -1,6 +1,6 @@
+import { IFlowRunner } from '@/models/FlowRunner'
 import { IState } from '@/models/State'
 import { StateType } from '@/models/StateType'
-
 export interface IFlowRun {
   id: string,
   flowId: string,
@@ -11,6 +11,7 @@ export interface IFlowRun {
   nextScheduledStartTime: string | null,
   parameters: unknown,
   autoScheduled: boolean | null,
+  flowRunner: IFlowRunner | null,
   context: unknown,
   empiricalConfig: unknown,
   empiricalPolicy: unknown,
@@ -40,6 +41,7 @@ export class FlowRun implements IFlowRun {
   public nextScheduledStartTime: string | null
   public parameters: unknown
   public autoScheduled: boolean | null
+  public flowRunner: IFlowRunner | null
   public context: unknown
   public empiricalConfig: unknown
   public empiricalPolicy: unknown
@@ -68,6 +70,7 @@ export class FlowRun implements IFlowRun {
     this.nextScheduledStartTime = flow.nextScheduledStartTime
     this.parameters = flow.parameters
     this.autoScheduled = flow.autoScheduled
+    this.flowRunner = flow.flowRunner
     this.context = flow.context
     this.empiricalConfig = flow.empiricalConfig
     this.empiricalPolicy = flow.empiricalPolicy

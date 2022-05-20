@@ -13,6 +13,7 @@ export const mapIFlowRunResponseToFlowRun: MapFunction<IFlowRunResponse, FlowRun
     nextScheduledStartTime: source.next_scheduled_start_time,
     parameters: source.parameters,
     autoScheduled: source.auto_scheduled,
+    flowRunner: source.flow_runner,
     context: source.context,
     empiricalConfig: source.empirical_config,
     empiricalPolicy: source.empirical_policy,
@@ -44,6 +45,7 @@ export const mapFlowRunToIFlowRunResponse: MapFunction<FlowRun, IFlowRunResponse
     'next_scheduled_start_time': source.nextScheduledStartTime,
     'parameters': source.parameters,
     'auto_scheduled': source.autoScheduled,
+    'flow_runner': source.flowRunner,
     'context': source.context,
     'empirical_config': source.empiricalConfig,
     'empirical_policy': source.empiricalPolicy,
@@ -61,7 +63,5 @@ export const mapFlowRunToIFlowRunResponse: MapFunction<FlowRun, IFlowRunResponse
     'run_count': source.runCount,
     'created': this.map('Date', source.created, 'string'),
     'updated': this.map('Date', source.updated, 'string'),
-    // doesn't exist on FlowRun?
-    'flow_runner': null,
   }
 }
