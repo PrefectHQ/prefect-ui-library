@@ -1,6 +1,6 @@
 import { ILogResponse } from '@/models/ILogResponse'
 
-export type LogsRequestSort = `${Uppercase<keyof ILogResponse>}_${'ASC' | 'DSC'}`
+export type LogsRequestSort = `${Uppercase<keyof ILogResponse>}_${'ASC' | 'DESC'}`
 
 export interface LogsRequestFilter {
   limit?: number,
