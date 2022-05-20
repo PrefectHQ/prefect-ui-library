@@ -7,8 +7,7 @@
 </template>
 
 <script lang="ts" setup>
-  import { PToggle } from '@prefecthq/prefect-design'
-  // import { showToast } from '@prefecthq/prefect-design/dist/types/src/plugins/Toast'
+  import { PToggle, showToast } from '@prefecthq/prefect-design'
   import { computed } from 'vue'
   import { Deployment } from '@/models'
 
@@ -18,10 +17,10 @@
 
   const isActive = computed(() => {
     if (value.value) {
-      // showToast(`${props.deployment.name} is active`, 'success', undefined, 3000)
+      showToast(`${props.deployment.name} is active`, 'success', undefined, 3000)
       return 'Active'
     }
-    // showToast(`${props.deployment.name} is paused`, 'success', undefined, 3000)
+    showToast(`${props.deployment.name} is paused`, 'error', undefined, 3000)
     return 'Paused'
   })
 
