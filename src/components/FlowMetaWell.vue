@@ -1,16 +1,16 @@
 <template>
   <div class="flow-meta-well">
-    <p-key-value label="Flow ID" :value="flowMeta.id" />
+    <p-key-value label="Flow ID" :value="flow.id" />
 
     <p-key-value label="Created">
       <template #value>
-        {{ flowMeta.created }}
+        {{ flow.created }}
       </template>
     </p-key-value>
 
     <p-key-value label="Tags">
       <template #value>
-        <p-tag v-for="tag in flowMeta.tags" :key="tag" class="flow-meta-well__tags">
+        <p-tag v-for="tag in flow.tags" :key="tag" class="flow-meta-well__tags">
           {{ tag }}
         </p-tag>
       </template>
@@ -23,7 +23,7 @@
   import { Flow } from '@/models'
 
   defineProps<{
-    flowMeta: Flow,
+    flow: Flow,
   }>()
 </script>
 

@@ -1,52 +1,52 @@
 <template>
   <div class="flow-run-meta-well">
-    <StateBadge :state="flowRunMeta.state" class="flow-run-meta-well__badge" />
+    <StateBadge :state="flowRun.state" class="flow-run-meta-well__badge" />
 
     <p-icon-text icon="ClockIcon">
-      <span>{{ flowRunMeta.duration }}</span>
+      <span>{{ flowRun.duration }}</span>
     </p-icon-text>
 
     <p-icon-text icon="CalendarIcon">
-      <span>Started on {{ flowRunMeta.startTime }}</span>
+      <span>Started on {{ flowRun.startTime }}</span>
     </p-icon-text>
 
-    <router-link :to="`/flows/${flowRunMeta.flowId}`">
+    <router-link :to="`/flows/${flowRun.flowId}`">
       <p-icon-text icon="Flow">
         <span>{{ flowName }}</span>
       </p-icon-text>
     </router-link>
 
-    <template v-if="flowRunMeta.deploymentId">
-      <router-link :to="`/deployments/${flowRunMeta.deploymentId}`">
+    <template v-if="flowRun.deploymentId">
+      <router-link :to="`/deployments/${flowRun.deploymentId}`">
         <p-icon-text icon="LocationMarkerIcon">
           <span>{{ deploymentName }}</span>
         </p-icon-text>
       </router-link>
     </template>
 
-    <p-key-value label="Flow Run ID" :value="flowRunMeta.id" />
+    <p-key-value label="Flow Run ID" :value="flowRun.id" />
 
-    <p-key-value label="Flow ID" :value="flowRunMeta.flowId" />
+    <p-key-value label="Flow ID" :value="flowRun.flowId" />
 
-    <template v-if="flowRunMeta.deploymentId">
-      <p-key-value label="Deployment ID" :value="flowRunMeta.deploymentId" />
+    <template v-if="flowRun.deploymentId">
+      <p-key-value label="Deployment ID" :value="flowRun.deploymentId" />
     </template>
 
     <p-key-value label="Created">
       <template #value>
-        {{ flowRunMeta.created }}
+        {{ flowRun.created }}
       </template>
     </p-key-value>
 
-    <template v-if="flowRunMeta.flowVersion">
-      <p-key-value label="Flow Version" :value="flowRunMeta.flowVersion" />
+    <template v-if="flowRun.flowVersion">
+      <p-key-value label="Flow Version" :value="flowRun.flowVersion" />
     </template>
 
-    <template v-if="flowRunMeta.idempotencyKey">
-      <p-key-value label="Idempotency Key" :value="flowRunMeta.idempotencyKey" />
+    <template v-if="flowRun.idempotencyKey">
+      <p-key-value label="Idempotency Key" :value="flowRun.idempotencyKey" />
     </template>
 
-    <p-key-value label="Run Count" :value="flowRunMeta.runCount ? flowRunMeta.runCount : 0" />
+    <p-key-value label="Run Count" :value="flowRun.runCount ? flowRun.runCount : 0" />
 
     <p-key-value label="Flow Runner">
       <template #value>
@@ -56,10 +56,10 @@
       </template>
     </p-key-value>
 
-    <template v-if="flowRunMeta.tags">
+    <template v-if="flowRun.tags">
       <p-key-value label="Tags">
         <template #value>
-          <p-tag v-for="tag in flowRunMeta.tags" :key="tag" class="flow-run-meta-well__tags">
+          <p-tag v-for="tag in flowRun.tags" :key="tag" class="flow-run-meta-well__tags">
             {{ tag }}
           </p-tag>
         </template>
@@ -80,15 +80,15 @@
 
 
   const props = defineProps<{
-    flowRunMeta: FlowRun,
+    flowRun: FlowRun,
   }>()
 
   const flowsApi = inject(flowsApiKey)
-  const flowsSubscription = useSubscription(flowsApi.getFlow, [props.flowRunMeta.flowId])
+  const flowsSubscription = useSubscription(flowsApi.getFlow, [props.flowRun.flowId])
   const flowName = computed(() => flowsSubscription.response?.name)
 
   const deploymentsApi = inject(deploymentsApiKey)
-  const deploymentsSubscription = useSubscription(deploymentsApi.getDeployment, [props.flowRunMeta.deploymentId!])
+  const deploymentsSubscription = useSubscription(deploymentsApi.getDeployment, [props.flowRun.deploymentId!])
   const deploymentName = computed(() => deploymentsSubscription.response?.name)
 </script>
 
