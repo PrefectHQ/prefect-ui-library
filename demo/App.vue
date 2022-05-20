@@ -39,6 +39,6 @@
   provide(taskRunsApiKey, taskRunsApi)
   provide(flowsApiKey, flowsApi)
   provide(deploymentsApiKey, deploymentsApi)
-  provide(flowRouteKey, '/flow-123')
-  provide(deploymentRouteKey, '/deployment-123')
+  provide(flowRouteKey, { name: 'main' })
+  provide(deploymentRouteKey, { name: 'main' })
 </script>
