@@ -7,8 +7,7 @@
 </template>
 
 <script lang="ts" setup>
-  import { PToggle } from '@prefecthq/prefect-design'
-  import { showToast } from '@prefecthq/prefect-design/dist/types/src/plugins/Toast'
+  import  { PToggle } from '@prefecthq/prefect-design'
 
   import { computed } from 'vue'
   import { WorkQueue } from '@/models'
