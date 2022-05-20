@@ -84,7 +84,8 @@
   const flowName = computed(() => flowsSubscription.response?.name)
 
   const deploymentsApi = inject(deploymentsApiKey)
-  const deploymentsSubscription = useSubscription(deploymentsApi.getDeployment, [props.flowRun.deploymentId!])
+  const deploymentId = computed(() => props.flowRun.deploymentId ?? '')
+  const deploymentsSubscription = useSubscription(deploymentsApi.getDeployment, [deploymentId])
   const deploymentName = computed(() => deploymentsSubscription.response?.name)
 </script>
 
