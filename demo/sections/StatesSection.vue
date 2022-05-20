@@ -21,7 +21,7 @@
         </template>
       </div>
     </DemoSubSection>
-    <DemoSubSection heading="Badges - Combobox">
+    <DemoSubSection heading="Badges - Select">
       <template v-if="multiple">
         <StateSelect v-model:stateType="selectedStateTypes" multiple />
         {{ selectedStateTypes }}
