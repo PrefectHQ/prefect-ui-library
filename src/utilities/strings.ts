@@ -1,6 +1,5 @@
 export const vowels: string[] = ['a', 'e', 'i', 'o', 'u', 'y']
 
-
 export const pluralize = (word: string): string => {
   if (word.endsWith('s')) {
     return word
@@ -17,7 +16,11 @@ export const pluralize = (word: string): string => {
   return `${word}s`
 }
 
-export function toPluralString(word: string): string {
+export function toPluralString(word: string, count?: number): string {
+  if (count === 1) {
+    return word
+  }
+
   return pluralize(word)
 }
 
