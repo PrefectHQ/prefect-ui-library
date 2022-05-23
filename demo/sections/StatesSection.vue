@@ -21,16 +21,30 @@
         </template>
       </div>
     </DemoSubSection>
+    <DemoSubSection heading="Badges - Select">
+      <template v-if="multiple">
+        <StateSelect v-model:stateType="selectedStateTypes" multiple empty-message="All Tags" />
+        {{ JSON.stringify(selectedStateTypes) }}
+      </template>
+      <template v-else>
+        <StateSelect v-model:stateType="selectedStateType" empty-message="All Tags" />
+        {{ JSON.stringify(selectedStateType) }}
+      </template>
+      <p-checkbox v-model="multiple" label="Multiple" @update:model-value="clearSelectedStates" />
+    </DemoSubSection>
   </DemoSection>
 </template>
 
 <script lang="ts" setup>
+  import { PCheckbox } from '@prefecthq/prefect-design'
+  import { ref } from 'vue'
   import DemoSection from '../components/DemoSection.vue'
   import DemoSubSection from '../components/DemoSubSection.vue'
   import StateBadge from '@/components/StateBadge.vue'
   import StateIcon from '@/components/StateIcon.vue'
+  import StateSelect from '@/components/StateSelect.vue'
   import { IState } from '@/models'
-  import { stateType } from '@/models/StateType'
+  import { StateType, stateType } from '@/models/StateType'
   import { mocker } from '@/services'
 
   const states: (IState | null)[] = [
@@ -43,6 +57,15 @@
     mocker.create('state', [{ type: 'completed', name: 'Custom Name ' }]),
     null,
   ]
+
+  const selectedStateTypes = ref<StateType[]>([])
+  const selectedStateType = ref<StateType | null>(null)
+  const multiple = ref(false)
+
+  function clearSelectedStates(): void {
+    selectedStateType.value = null
+    selectedStateTypes.value = []
+  }
 </script>
 
 <style></style>

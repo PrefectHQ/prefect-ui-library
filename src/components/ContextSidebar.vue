@@ -1,26 +1,19 @@
 <template>
   <p-context-sidebar class="context-sidebar">
-    <template #header>
+    <template v-if="slots.header" #header>
       <slot name="header" />
     </template>
 
-    <template #upper-links>
-      <slot name="leading-content">
-        <hr class="context-sidebar__divider context-sidebar__divider--mobile">
-        <p-context-nav-item title="Flows" icon="Flow" to="/flows" />
+    <slot>
+      <p-context-nav-item title="Runs" icon="FlowRun" :to="flowRunsRoute()" />
+      <p-context-nav-item title="Flows" icon="Flow" :to="flowsRoute()" />
+      <p-context-nav-item title="Deployments" icon="LocationMarkerIcon" :to="deploymentsRoute()" />
+      <p-context-nav-item title="Queues" icon="DatabaseIcon" :to="queuesRoute()" />
+    </slot>
 
-        <hr class="context-sidebar__divider context-sidebar__divider--mobile">
-        <p-context-nav-item title="Deployments" icon="LocationMarkerIcon" to="/deployments" />
-
-        <hr class="context-sidebar__divider context-sidebar__divider--mobile">
-        <p-context-nav-item title="Queues" icon="DatabaseIcon" to="/queues" />
-      </slot>
-    </template>
-
-    <template #bottom-links>
-      <slot name="trailing-content">
-        <hr class="context-sidebar__divider">
-        <p-context-nav-item title="Settings" icon="CogIcon" to="/settings" />
+    <template #footer>
+      <slot name="footer">
+        <p-context-nav-item title="Settings" icon="CogIcon" :to="settingsRoute()" />
       </slot>
     </template>
   </p-context-sidebar>
@@ -28,21 +21,15 @@
 
 <script lang="ts" setup>
   import { PContextSidebar, PContextNavItem } from '@prefecthq/prefect-design'
+  import { useSlots } from 'vue'
+  import { flowRunsRouteKey, flowsRouteKey, deploymentsRouteKey, queuesRouteKey, settingsRouteKey } from '@/router'
+  import { inject } from '@/utilities'
+
+  const slots = useSlots()
+
+  const flowRunsRoute = inject(flowRunsRouteKey)
+  const flowsRoute = inject(flowsRouteKey)
+  const deploymentsRoute = inject(deploymentsRouteKey)
+  const queuesRoute = inject(queuesRouteKey)
+  const settingsRoute = inject(settingsRouteKey)
 </script>
-
-<style>
-.context-sidebar__divider {
-  @apply
-  border-none
-  h-[1px]
-  bg-slate-600
-  my-1
-  -mx-3
-}
-
-.context-sidebar__divider--mobile {
-  @apply
-  sm:h-0
-  sm:my-0
-}
-</style>
