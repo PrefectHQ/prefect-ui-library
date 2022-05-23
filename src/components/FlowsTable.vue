@@ -1,20 +1,20 @@
 <template>
-  <p-table :data="flows">
+  <p-table :data="flows" class="flows-table">
     <p-table-head>
       <template #row>
         <p-table-header>
           Name
         </p-table-header>
 
-        <p-table-header class="hidden sm:table-cell">
+        <p-table-header class="flows-table__cell">
           Activity
         </p-table-header>
 
-        <p-table-header class="hidden sm:table-cell">
+        <p-table-header class="flows-table__cell">
           Tags
         </p-table-header>
 
-        <p-table-header class="hidden sm:table-cell">
+        <p-table-header class="flows-table__cell">
           <span class="sr-only"> Actions</span>
         </p-table-header>
       </template>
@@ -24,26 +24,26 @@
       <template #row="{ row }">
         <p-table-data>
           {{ row.name }}
-          <dl class="sm:hidden">
+          <dl class="flows-table__mobile-cell">
             <dt>
               <!-- Activity -->
               Activity
             </dt>
             <dt>
-              <p-tag-wrapper class="h-[48px]" :tags="row.tags" justify="left" />
+              <p-tag-wrapper :tags="row.tags" justify="left" />
             </dt>
           </dl>
         </p-table-data>
 
-        <p-table-data class="hidden sm:table-cell">
+        <p-table-data class="flows-table__cell">
           <!-- Activity -->
         </p-table-data>
 
-        <p-table-data class="hidden sm:table-cell">
-          <p-tag-wrapper class="h-[48px]" :tags="row.tags" justify="left" />
+        <p-table-data class="flows-table__cell">
+          <p-tag-wrapper :tags="row.tags" justify="left" />
         </p-table-data>
 
-        <p-table-data class="hidden sm:table-cell">
+        <p-table-data class="flows-table__cell">
           <!-- Actions -->
           <slot name="actions" />
         </p-table-data>
@@ -60,3 +60,16 @@
     flows: Flow[],
   }>()
 </script>
+
+<style>
+  .flows-table__cell {
+    @apply
+    hidden
+    sm:table-cell
+  }
+
+  .flows-table__mobile-cell {
+    @apply
+     sm:hidden
+  }
+</style>
