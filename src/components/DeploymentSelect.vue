@@ -30,6 +30,7 @@
   })
 
   const deploymentsApi = inject(deploymentsApiKey)
+  // todo: this is limited to 200 results
   const deploymentsSubscription = useSubscription(deploymentsApi.getDeployments, [props.filter])
   const deployments = computed(() => deploymentsSubscription.response ?? [])
   const flowOptions = computed(() => deployments.value.map(({ name, id }) => ({ label: name, value: id })))

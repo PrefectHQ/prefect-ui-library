@@ -30,6 +30,7 @@
   })
 
   const flowsApi = inject(flowsApiKey)
+  // todo: this is limited to 200 results
   const flowsSubscription = useSubscription(flowsApi.getFlows, [props.filter])
   const flows = computed(() => flowsSubscription.response ?? [])
   const flowOptions = computed(() => flows.value.map(({ name, id }) => ({ label: name, value: id })))
