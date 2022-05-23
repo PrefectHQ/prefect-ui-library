@@ -9,11 +9,11 @@ export class DeploymentsApi extends MockedApi {
   }
 
   public pauseDeployment(id: string): Promise<void> {
-    return new Promise<void>(resolve => resolve())
+    return this.void()
   }
 
   public resumeDeployment(id: string): Promise<void> {
-    return new Promise<void>(resolve => resolve())
+    return this.void()
   }
 }
 
