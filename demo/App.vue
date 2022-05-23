@@ -20,6 +20,7 @@
     <ListsSection />
     <ToggleSection />
     <MetaWellSection />
+    <SelectsSection />
   </div>
 </template>
 
@@ -31,6 +32,7 @@
   import ListsSection from './sections/ListsSection.vue'
   import LogSection from './sections/LogsSection.vue'
   import MetaWellSection from './sections/MetaWellSection.vue'
+  import SelectsSection from './sections/SelectsSection.vue'
   import StatesSection from './sections/StatesSection.vue'
   import ToggleSection from './sections/ToggleSection.vue'
   import { flowRunsApi, logsApi, taskRunsApi, flowsApi, deploymentsApi, workQueueApi } from './services'
