@@ -32,15 +32,16 @@
   import MetaWellSection from './sections/MetaWellSection.vue'
   import StatesSection from './sections/StatesSection.vue'
   import ToggleSection from './sections/ToggleSection.vue'
-  import { flowRunsApi, logsApi, taskRunsApi, flowsApi, deploymentsApi } from './services'
+  import { flowRunsApi, logsApi, taskRunsApi, flowsApi, deploymentsApi, workQueueApi } from './services'
   import { deploymentRouteKey, flowRouteKey } from '@/router'
-  import { flowRunsApiKey, logsApiKey, taskRunsApiKey, flowsApiKey, deploymentsApiKey } from '@/services'
+  import { flowRunsApiKey, logsApiKey, taskRunsApiKey, flowsApiKey, deploymentsApiKey, workQueuesApiKey } from '@/services'
 
   provide(flowRunsApiKey, flowRunsApi)
   provide(logsApiKey, logsApi)
   provide(taskRunsApiKey, taskRunsApi)
   provide(flowsApiKey, flowsApi)
   provide(deploymentsApiKey, deploymentsApi)
+  provide(workQueuesApiKey, workQueueApi)
   provide(flowRouteKey, () => ({ name: 'main' }))
   provide(deploymentRouteKey, () => ({ name: 'main' }))
 </script>

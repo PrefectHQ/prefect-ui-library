@@ -33,6 +33,14 @@ export class DeploymentsApi extends Api {
       .then(({ data }) => mapper.map('IFlowResponse', data, 'Flow'))
   }
 
+  public pauseDeployment(id: string): Promise<void> {
+    return this.patch(`/${id}/set_schedule_active`, { 'is_schedule_active': true })
+  }
+
+  public resumeDeployment(id: string): Promise<void> {
+    return this.patch(`/${id}/set_schedule_active`, { 'is_schedule_active': false })
+  }
+
   public deleteDeployment(deploymentId: string): Promise<void> {
     return this.delete(`/${deploymentId}`)
   }
