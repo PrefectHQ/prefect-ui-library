@@ -1,11 +1,13 @@
 import { createActions } from '@prefecthq/vue-compositions'
 import { MockedApi } from './MockedApi'
-import { WorkQueue } from '@/models/WorkQueue'
-import { mocker } from '@/services'
 
 export class WorkQueueApi extends MockedApi {
-  public getWorkQueue(id: string): Promise<WorkQueue> {
-    return this.promise(mocker.create('workQueue', [{ id: id }]))
+  public pauseWorkQueue(id: string): Promise<void> {
+    return new Promise<void>(resolve => resolve())
+  }
+
+  public resumeWorkQueue(id: string): Promise<void> {
+    return new Promise<void>(resolve => resolve())
   }
 }
 

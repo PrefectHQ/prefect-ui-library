@@ -8,7 +8,6 @@
   import { WorkQueue } from '@/models'
   import { workQueuesApiKey } from '@/services/WorkQueuesApi'
   import { inject } from '@/utilities'
-
   const props = defineProps<{
     values: WorkQueue,
   }>()
