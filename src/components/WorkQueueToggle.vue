@@ -28,7 +28,14 @@
     },
   })
 
+  let shouldUpdate: boolean = true
+
   const setToggle = async (value: boolean): Promise<void> => {
+    if (!shouldUpdate) {
+      shouldUpdate = true
+      return
+    }
+
     try {
       if (value) {
         await workQueuesApi.resumeWorkQueue(props.workQueue.id)
@@ -39,6 +46,9 @@
       }
     } catch (error) {
       showToast(`${error}`, 'error', undefined, 3000)
+
+      shouldUpdate = false
+      isActive.value = !isActive.value
     }
   }
 
