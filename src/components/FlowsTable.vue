@@ -53,7 +53,7 @@
 </template>
 
 <script lang="ts" setup>
-  import { PTable, PTableData } from '@prefecthq/prefect-design'
+  import { PTable, PTableData, PTableBody, PTableHead, PTableHeader, PTagWrapper } from '@prefecthq/prefect-design'
   import { Flow } from '@/models'
 
   defineProps<{
