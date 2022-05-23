@@ -4,7 +4,7 @@ import { IStateDetailsResponse } from '@/models/IStateDetailsResponse'
 
 export type IStateResponse = {
   id: string,
-  type: StateType,
+  type: Uppercase<StateType>,
   message: string,
   state_details: IStateDetailsResponse | null,
   data: IFlowData | null,
