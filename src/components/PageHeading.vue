@@ -24,5 +24,15 @@
 </script>
 
 <style>
-.page-heading { }
+.page-heading { @apply
+  block;
+}
+
+.page-heading__leading { @apply
+  flex items-center justify-start;
+}
+
+.page-heading__leading-slot { @apply
+  ml-2;
+}
 </style>
