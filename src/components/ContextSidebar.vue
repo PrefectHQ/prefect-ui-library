@@ -1,6 +1,6 @@
 <template>
   <p-context-sidebar class="context-sidebar">
-    <template #header>
+    <template v-if="slots.header" #header>
       <slot name="header" />
     </template>
 
@@ -21,8 +21,11 @@
 
 <script lang="ts" setup>
   import { PContextSidebar, PContextNavItem } from '@prefecthq/prefect-design'
+  import { useSlots } from 'vue'
   import { flowRunsRouteKey, flowsRouteKey, deploymentsRouteKey, queuesRouteKey, settingsRouteKey } from '@/router'
   import { inject } from '@/utilities'
+
+  const slots = useSlots()
 
   const flowRunsRoute = inject(flowRunsRouteKey)
   const flowsRoute = inject(flowsRouteKey)
