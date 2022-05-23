@@ -8,11 +8,11 @@
 <script lang="ts" setup>
   import { computed } from 'vue'
   import StateIcon from './StateIcon.vue'
-  import { IState } from '@/models/State'
+  import { StateType } from '@/models/StateType'
   import { TailwindColor } from '@/types/tailwind'
 
   const props = defineProps<{
-    state: IState | null,
+    state: { name: string, type: StateType } | null,
     flat?: boolean,
   }>()
 
