@@ -9,33 +9,33 @@
   import { workQueuesApiKey } from '@/services/WorkQueuesApi'
   import { inject } from '@/utilities'
   const props = defineProps<{
-    values: WorkQueue,
+    workQueue: WorkQueue,
   }>()
 
   const workQueuesApi = inject(workQueuesApiKey)
 
   const emit = defineEmits<{
-    (event: 'update:values', value: WorkQueue): void,
+    (event: 'update:workQueue', value: WorkQueue): void,
 
   }>()
 
   const internalValue = computed({
     get() {
-      return props.values
+      return props.workQueue
     },
     set(value: WorkQueue) {
-      emit('update:values', value)
+      emit('update:workQueue', value)
     },
   })
 
   const setToggle = async (value: boolean): Promise<void> => {
     try {
       if (value) {
-        await workQueuesApi.resumeWorkQueue(props.values.id)
-        showToast(`${props.values.name} active`, 'success', undefined, 3000)
+        await workQueuesApi.resumeWorkQueue(props.workQueue.id)
+        showToast(`${props.workQueue.name} active`, 'success', undefined, 3000)
       } else {
-        await workQueuesApi.pauseWorkQueue(props.values.id)
-        showToast(`${props.values.name} paused`, 'error', undefined, 3000)
+        await workQueuesApi.pauseWorkQueue(props.workQueue.id)
+        showToast(`${props.workQueue.name} paused`, 'error', undefined, 3000)
       }
     } catch (error) {
       showToast(`${error}`, 'error', undefined, 3000)

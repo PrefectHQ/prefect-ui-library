@@ -10,32 +10,32 @@
   import { inject } from '@/utilities'
 
   const props = defineProps<{
-    values: Deployment,
+    deployment: Deployment,
   }>()
 
   const emit = defineEmits<{
-    (event: 'update:values', value: Deployment): void,
+    (event: 'update:deployment', value: Deployment): void,
   }>()
 
   const deploymentsApi = inject(deploymentsApiKey)
 
   const internalValue = computed({
     get() {
-      return props.values
+      return props.deployment
     },
     set(value: Deployment) {
-      emit('update:values', value)
+      emit('update:deployment', value)
     },
   })
 
   const setToggle = async (value: boolean): Promise<void> => {
     try {
       if (value) {
-        await deploymentsApi.resumeDeployment(props.values.id)
-        showToast(`${props.values.name} active`, 'success', undefined, 3000)
+        await deploymentsApi.resumeDeployment(props.deployment.id)
+        showToast(`${props.deployment.name} active`, 'success', undefined, 3000)
       } else {
-        await deploymentsApi.pauseDeployment(props.values.id)
-        showToast(`${props.values.name} paused`, 'error', undefined, 3000)
+        await deploymentsApi.pauseDeployment(props.deployment.id)
+        showToast(`${props.deployment.name} paused`, 'error', undefined, 3000)
       }
     } catch (error) {
       showToast(`${error}`, 'error', undefined, 3000)

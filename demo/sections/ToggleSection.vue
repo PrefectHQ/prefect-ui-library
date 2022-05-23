@@ -1,11 +1,11 @@
 <template>
   <DemoSection heading="Toggle">
     <DemoSubSection heading="Work Queues Toggle" class="mt-auto">
-      <WorkQueueToggle v-model:values="workQueue" />
+      <WorkQueueToggle v-model:workQueue="workQueue" />
     </DemoSubSection>
 
     <DemoSubSection heading="Deployments Toggle" class="mt-auto">
-      <DeploymentToggle v-model:values="deployment" />
+      <DeploymentToggle v-model:deployment="deployment" />
     </DemoSubSection>
   </DemoSection>
 </template>
