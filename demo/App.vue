@@ -13,6 +13,7 @@
       </div>
     </div>
 
+    <TablesSection />
     <StatesSection />
     <LogSection />
     <EmptyStateSection />
@@ -31,6 +32,7 @@
   import LogSection from './sections/LogsSection.vue'
   import MetaWellSection from './sections/MetaWellSection.vue'
   import StatesSection from './sections/StatesSection.vue'
+  import TablesSection from './sections/TablesSection.vue'
   import { flowRunsApi, logsApi, taskRunsApi, flowsApi, deploymentsApi } from './services'
   import { deploymentRouteKey, flowRouteKey, flowRunsRouteKey, flowsRouteKey, deploymentsRouteKey, queuesRouteKey, settingsRouteKey } from '@/router'
   import { flowRunsApiKey, logsApiKey, taskRunsApiKey, flowsApiKey, deploymentsApiKey } from '@/services'
