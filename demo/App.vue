@@ -13,6 +13,7 @@
       </div>
     </div>
 
+    <PageHeadingsSection />
     <StatesSection />
     <LogSection />
     <EmptyStateSection />
@@ -30,6 +31,7 @@
   import ListsSection from './sections/ListsSection.vue'
   import LogSection from './sections/LogsSection.vue'
   import MetaWellSection from './sections/MetaWellSection.vue'
+  import PageHeadingsSection from './sections/PageHeadingsSection.vue'
   import StatesSection from './sections/StatesSection.vue'
   import { flowRunsApi, logsApi, taskRunsApi, flowsApi, deploymentsApi } from './services'
   import { deploymentRouteKey, flowRouteKey, flowRunsRouteKey, flowsRouteKey, deploymentsRouteKey, queuesRouteKey, settingsRouteKey } from '@/router'
