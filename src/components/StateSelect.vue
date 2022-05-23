@@ -7,65 +7,61 @@
           <span>{{ option.label }}</span>
         </div>
       </template>
-      <template #default="{ selectedOption }">
-        <template v-if="Array.isArray(selectedOption) && selectedOption.length !== 1">
-          {{ getMultipleDisplayValue(selectedOption) }}
+      <div class="state-select__option">
+        <template v-if="!selectedStateType.length">
+          <span>{{ emptyMessage }}</span>
         </template>
-        <template v-else-if="selectedOption">
-          <div class="state-select__option">
-            <StateIcon :state-type="getSingleSelected(selectedOption).value" />
-            <span>{{ getSingleSelected(selectedOption).label }}</span>
-          </div>
+        <template v-else-if="selectedStateType.length === 1">
+          <StateIcon :state-type="selectedStateType[0]" />
+          <span>{{ selectedStateType[0] }}</span>
         </template>
-      </template>
+        <template v-else>
+          {{ selectedStateType.length }} {{ toPluralString('state', selectedStateType.length) }}
+        </template>
+      </div>
     </p-select>
   </div>
 </template>
 
 <script lang="ts" setup>
-  import { PSelect, SelectOption } from '@prefecthq/prefect-design'
+  import { PSelect } from '@prefecthq/prefect-design'
   import { computed } from 'vue'
   import StateIcon from '@/components/StateIcon.vue'
-  import { stateType, StateType } from '@/models/StateType'
+  import { StateType, stateType } from '@/models/StateType'
   import { toPluralString } from '@/utilities/strings'
-
-  type StateOption = SelectOption & { value: StateType }
 
   const props = defineProps<{
     stateType: string | string[] | null | undefined,
     multiple?: boolean,
+    emptyMessage?: string,
   }>()
 
   const emits = defineEmits<{
     (event: 'update:stateType', value: string | string[] | null): void,
   }>()
 
-  const selectedStateType = computed({
+  const selectedStateType = computed<StateType[]>({
     get() {
-      return props.stateType ?? null
+      if (!props.stateType) {
+        return []
+      }
+
+      if (!Array.isArray(props.stateType)) {
+        return [props.stateType as StateType]
+      }
+
+      return props.stateType as StateType[]
     },
-    set(value: string | string[] | null) {
-      emits('update:stateType', value)
+    set(value: StateType[]) {
+      if (!props.multiple) {
+        emits('update:stateType', value.pop() ?? null)
+      } else {
+        emits('update:stateType', value)
+      }
     },
   })
 
   const options = computed(() => [...stateType, 'late'])
-
-  function getSingleSelected(selected: StateOption | StateOption[]): StateOption {
-    if (Array.isArray(selected)) {
-      [selected] = selected
-    }
-
-    return selected
-  }
-
-  function getMultipleDisplayValue(selected: StateOption[]): string {
-    if (!selected.length) {
-      return ''
-    }
-
-    return `${selected.length} ${toPluralString('state', selected.length)}`
-  }
 </script>
 
 <style>

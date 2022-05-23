@@ -23,12 +23,12 @@
     </DemoSubSection>
     <DemoSubSection heading="Badges - Select">
       <template v-if="multiple">
-        <StateSelect v-model:stateType="selectedStateTypes" multiple />
-        {{ selectedStateTypes }}
+        <StateSelect v-model:stateType="selectedStateTypes" multiple empty-message="All Tags" />
+        {{ JSON.stringify(selectedStateTypes) }}
       </template>
       <template v-else>
-        <StateSelect v-model:stateType="selectedStateType" />
-        {{ selectedStateType }}
+        <StateSelect v-model:stateType="selectedStateType" empty-message="All Tags" />
+        {{ JSON.stringify(selectedStateType) }}
       </template>
       <p-checkbox v-model="multiple" label="Multiple" @update:model-value="clearSelectedStates" />
     </DemoSubSection>
