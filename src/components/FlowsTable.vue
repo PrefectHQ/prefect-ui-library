@@ -43,7 +43,7 @@
           <p-tag-wrapper :tags="row.tags" justify="left" />
         </p-table-data>
 
-        <p-table-data class="flows-table__cell">
+        <p-table-data>
           <!-- Actions -->
           <slot name="actions" />
         </p-table-data>
