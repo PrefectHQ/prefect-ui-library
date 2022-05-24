@@ -14,11 +14,16 @@
   import { PIconButtonMenu } from '@prefecthq/prefect-design'
   import { computed } from 'vue'
   import PageHeading from '@/components/PageHeading.vue'
-  import { Deployment } from '@/models'
+  import { Deployment, Flow } from '@/models'
+  import { flowsRouteKey } from '@/router'
+  import { inject } from '@/utilities'
+
+  const flowsRoute = inject(flowsRouteKey)
 
   const props = defineProps<{
     deployment: Deployment,
+    flow: Flow,
   }>()
 
-  const crumbs = computed(() => [{ text: props.deployment.name }])
+  const crumbs = computed(() => [{ text: props.flow.name, to: flowsRoute }, { text: props.deployment.name }])
 </script>

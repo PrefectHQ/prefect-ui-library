@@ -9,9 +9,9 @@
 
     <DemoSubSection heading="Object Pages">
       <page-heading-flow :flow="flow" />
-      <page-heading-deployment :deployment="deployment" />
+      <page-heading-deployment :deployment="deployment" :flow="flow" />
       <page-heading-queue :queue="queue" />
-      <page-heading-flow-run :flow-run="flowRun" />
+      <page-heading-flow-run :flow-run="flowRun" :flow="flow" />
     </DemoSubSection>
   </DemoSection>
 </template>
