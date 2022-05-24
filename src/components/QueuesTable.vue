@@ -5,7 +5,15 @@
         <span>{{ row.name }}</span>
       </router-link>
     </template>
-    <template #action />
+
+    <template #action>
+      <p-icon-button-menu>
+        <template #default>
+          <p-overflow-menu-item label="Copy ID" />
+          <p-overflow-menu-item label="Delete" />
+        </template>
+      </p-icon-button-menu>
+    </template>
   </p-table>
 </template>
 
@@ -32,7 +40,7 @@
       label: 'Concurrency',
     },
     {
-      label: '',
+      label: 'Action',
       width: '100px',
     },
   ]
