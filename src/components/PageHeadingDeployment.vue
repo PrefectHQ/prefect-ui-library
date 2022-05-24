@@ -19,21 +19,26 @@
 
 <script lang="ts" setup>
   import { PIconButtonMenu, PIcon, PButton } from '@prefecthq/prefect-design'
+  import { useSubscription } from '@prefecthq/vue-compositions'
   import { computed } from 'vue'
   import DeploymentToggle from '@/components/DeploymentToggle.vue'
   import PageHeading from '@/components/PageHeading.vue'
-  import { Deployment, Flow } from '@/models'
+  import { Deployment } from '@/models'
   import { flowsRouteKey } from '@/router'
+  import { flowsApiKey } from '@/services'
   import { inject } from '@/utilities'
 
   const flowsRoute = inject(flowsRouteKey)
+  const flowsApi = inject(flowsApiKey)
 
   const props = defineProps<{
     deployment: Deployment,
-    flow: Flow,
   }>()
 
-  const crumbs = computed(() => [{ text: props.flow.name, to: flowsRoute() }, { text: props.deployment.name }])
+  const flowSubscription = useSubscription(flowsApi.getFlow, [props.deployment.flowId])
+  const flowName = computed(() => flowSubscription.response?.name ?? '')
+
+  const crumbs = computed(() => [{ text: flowName.value, to: flowsRoute() }, { text: props.deployment.name }])
 </script>
 
 <style>
