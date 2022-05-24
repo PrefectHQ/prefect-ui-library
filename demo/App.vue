@@ -9,7 +9,7 @@
   import { provide } from 'vue'
   import { RouteLocationRaw } from 'vue-router'
   import AppSidebar from './components/AppSidebar.vue'
-  import { flowRunsApi, logsApi, taskRunsApi, flowsApi, deploymentsApi,  workQueueApi } from './services'
+  import { flowRunsApi, logsApi, taskRunsApi, flowsApi, deploymentsApi, workQueueApi } from './services'
   import { deploymentRouteKey, flowRouteKey, flowRunsRouteKey, flowsRouteKey, deploymentsRouteKey, queuesRouteKey, settingsRouteKey, workQueueRouteKey } from '@/router'
   import { flowRunsApiKey, logsApiKey, taskRunsApiKey, flowsApiKey, deploymentsApiKey, workQueuesApiKey } from '@/services'
 
