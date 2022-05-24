@@ -40,7 +40,7 @@
       label: 'Tags',
     },
     {
-      label: 'Action',
+      label: '',
       width: '100px',
     },
   ]
