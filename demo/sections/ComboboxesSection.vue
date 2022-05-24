@@ -22,15 +22,15 @@
   import FlowCombobox from '@/components/FlowCombobox.vue'
 
   const multipleFlows = ref(true)
-  const selectedFlow = ref(null)
-  const selectedFlows = ref([])
+  const selectedFlow = ref<string | null>(null)
+  const selectedFlows = ref<string[]>([])
 
   const flowsValue = computed({
     get() {
       return multipleFlows.value ? selectedFlows.value : selectedFlow.value
     },
-    set(value: string | string[]) {
-      if (multipleFlows.value && Array.isArray(value)) {
+    set(value: string | string[] | null) {
+      if (Array.isArray(value)) {
         selectedFlows.value = value
       } else {
         selectedFlow.value = value
@@ -39,15 +39,15 @@
   })
 
   const multipleDeployments = ref(true)
-  const selectedDeployment = ref(null)
-  const selectedDeployments = ref([])
+  const selectedDeployment = ref<string | null>(null)
+  const selectedDeployments = ref<string[]>([])
 
   const deploymentsValue = computed({
     get() {
       return multipleDeployments.value ? selectedDeployments.value : selectedDeployment.value
     },
-    set(value: string | string[]) {
-      if (multipleDeployments.value && Array.isArray(value)) {
+    set(value: string | string[] | null) {
+      if (Array.isArray(value)) {
         selectedDeployments.value = value
       } else {
         selectedDeployment.value = value
