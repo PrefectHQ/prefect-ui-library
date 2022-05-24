@@ -1,4 +1,5 @@
 export * from './arrays'
+export * from './copy'
 export * from './dates'
 export * from './filters'
 export * from './httpStatus'
