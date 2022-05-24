@@ -14,7 +14,7 @@
       <page-heading-flow :flow="flow" />
       <page-heading-deployment :deployment="deployment" :flow="flow" />
       <page-heading-queue :queue="queue" />
-      <page-heading-flow-run :flow-run="flowRun" :flow="flow" />
+      <page-heading-flow-run :flow-run="flowRun" />
     </DemoSubSection>
   </DemoSection>
 </template>

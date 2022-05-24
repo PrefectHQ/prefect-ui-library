@@ -12,20 +12,26 @@
 
 <script lang="ts" setup>
   import { PIconButtonMenu } from '@prefecthq/prefect-design'
+  import { useSubscription } from '@prefecthq/vue-compositions'
   import { computed } from 'vue'
   import PageHeading from '@/components/PageHeading.vue'
-  import { FlowRun, Flow } from '@/models'
+  import { FlowRun } from '@/models'
   import { flowsRouteKey } from '@/router'
+  import { flowsApiKey } from '@/services'
   import { inject } from '@/utilities'
 
+
   const flowsRoute = inject(flowsRouteKey)
+  const flowsApi = inject(flowsApiKey)
 
   const props = defineProps<{
     flowRun: FlowRun,
-    flow: Flow,
   }>()
+
+  const subscription = useSubscription(flowsApi.getFlow, [props.flowRun.flowId])
+  const flowName = computed(() => subscription.response?.name)
 
   // It doesn't seem like we should need to coalesce here but
   // the flow run model dictates the flow run name can be null
-  const crumbs = computed(() => [{ text: props.flow.name, to: flowsRoute() }, { text: props.flowRun.name ?? '' }])
+  const crumbs = computed(() => [{ text: flowName.value ?? '', to: flowsRoute() }, { text: props.flowRun.name ?? '' }])
 </script>
