@@ -12,3 +12,4 @@ export const flowRunRouteKey: InjectionKey<(flowRunId: string) => RouteLocationR
 export const taskRunRouteKey: InjectionKey<(taskRunId: string) => RouteLocationRaw> = Symbol('taskRunRouteKey')
 export const flowRouteKey: InjectionKey<(flowId: string) => RouteLocationRaw> = Symbol('flowRouteKey')
 export const deploymentRouteKey: InjectionKey<(deploymentId: string) => RouteLocationRaw> = Symbol('deploymentRouteKey')
+export const workQueueRouteKey: InjectionKey<(workQueueId: string) => RouteLocationRaw> = Symbol('workQueueRouteKey')

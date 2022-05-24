@@ -1,17 +1,24 @@
 <template>
   <p-table :data="flows" :columns="columns">
+    <template #name="{ row }">
+      <router-link :to="flowRoute(row.id)">
+        <span>{{ row.name }}</span>
+      </router-link>
+    </template>
     <template #tags="{ row }">
       <p-tag-wrapper :tags="row.tags" justify="left" />
     </template>
-    <template #action>
-      <slot name="table-action" />
-    </template>
+    <template #action />
   </p-table>
 </template>
 
 <script lang="ts" setup>
   import { PTable, PTagWrapper } from '@prefecthq/prefect-design'
   import { Flow } from '@/models'
+  import { flowRouteKey } from '@/router'
+  import { inject } from '@/utilities/inject'
+
+  const flowRoute = inject(flowRouteKey)
 
   defineProps<{
     flows: Flow[],
