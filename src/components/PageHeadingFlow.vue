@@ -3,7 +3,7 @@
     <template #actions>
       <p-icon-button-menu>
         <template #default="{ close }">
-          <p-overflow-menu-item label="Copy ID" @click="copyToClipboard(flow.id); close()" />
+          <copy-overflow-menu-item label="Copy ID" :close="close" :item="flow.id" />
           <p-overflow-menu-item label="Delete" />
         </template>
       </p-icon-button-menu>
@@ -14,9 +14,9 @@
 <script lang="ts" setup>
   import { PIconButtonMenu } from '@prefecthq/prefect-design'
   import { computed } from 'vue'
+  import CopyOverflowMenuItem from './CopyOverflowMenuItem.vue'
   import PageHeading from '@/components/PageHeading.vue'
   import { Flow } from '@/models'
-  import { copyToClipboard } from '@/utilities/copy'
 
   const props = defineProps<{
     flow: Flow,

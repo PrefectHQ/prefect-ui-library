@@ -15,7 +15,7 @@
     <template #action="{ row }">
       <p-icon-button-menu size="xs">
         <template #default="{ close }">
-          <p-overflow-menu-item label="Copy ID" @click="copyToClipboard(row.id); close()" />
+          <copy-overflow-menu-item label="Copy ID" :close="close" :item="row.id" />
           <p-overflow-menu-item label="Run" class="deployments-table__hide-on-desktop" />
           <p-overflow-menu-item label="Delete" />
         </template>
@@ -26,9 +26,9 @@
 
 <script lang="ts" setup>
   import { PTable, PTagWrapper, PIconButtonMenu, POverflowMenuItem } from '@prefecthq/prefect-design'
+  import CopyOverflowMenuItem from './CopyOverflowMenuItem.vue'
   import { Deployment } from '@/models'
   import { deploymentRouteKey } from '@/router'
-  import { copyToClipboard } from '@/utilities/copy'
   import { inject } from '@/utilities/inject'
 
   const deploymentRoute = inject(deploymentRouteKey)

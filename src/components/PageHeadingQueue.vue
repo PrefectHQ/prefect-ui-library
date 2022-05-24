@@ -5,7 +5,7 @@
 
       <p-icon-button-menu>
         <template #default="{ close }">
-          <p-overflow-menu-item label="Copy ID" @click="copyToClipboard(queue.id); close()" />
+          <copy-overflow-menu-item label="Copy ID" :close="close" :item="queue.id" />
           <p-overflow-menu-item label="Edit" />
           <p-overflow-menu-item label="Delete" />
         </template>
@@ -17,10 +17,10 @@
 <script lang="ts" setup>
   import { PIconButtonMenu } from '@prefecthq/prefect-design'
   import { computed } from 'vue'
+  import CopyOverflowMenuItem from './CopyOverflowMenuItem.vue'
   import PageHeading from '@/components/PageHeading.vue'
   import WorkQueueToggle from '@/components/WorkQueueToggle.vue'
   import { WorkQueue } from '@/models'
-  import { copyToClipboard } from '@/utilities/copy'
 
   const props = defineProps<{
     queue: WorkQueue,

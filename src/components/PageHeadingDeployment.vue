@@ -10,7 +10,7 @@
 
       <p-icon-button-menu>
         <template #default="{ close }">
-          <p-overflow-menu-item label="Copy ID" @click="copyToClipboard(deployment.id); close()" />
+          <copy-overflow-menu-item label="Copy ID" :close="close" :item="deployment.id" />
           <p-overflow-menu-item label="Delete" />
         </template>
       </p-icon-button-menu>
@@ -22,13 +22,13 @@
   import { PIconButtonMenu, PIcon, PButton } from '@prefecthq/prefect-design'
   import { useSubscription } from '@prefecthq/vue-compositions'
   import { computed } from 'vue'
+  import CopyOverflowMenuItem from './CopyOverflowMenuItem.vue'
   import DeploymentToggle from '@/components/DeploymentToggle.vue'
   import PageHeading from '@/components/PageHeading.vue'
   import { Deployment } from '@/models'
   import { flowsRouteKey } from '@/router'
   import { flowsApiKey } from '@/services'
   import { inject } from '@/utilities'
-  import { copyToClipboard } from '@/utilities/copy'
 
   const flowsRoute = inject(flowsRouteKey)
   const flowsApi = inject(flowsApiKey)
