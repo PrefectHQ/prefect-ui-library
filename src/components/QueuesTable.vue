@@ -9,10 +9,10 @@
     <template #action-heading>
       <span />
     </template>
-    <template #action>
+    <template #action="{ row }">
       <p-icon-button-menu size="xs">
-        <template #default>
-          <p-overflow-menu-item label="Copy ID" />
+        <template #default="{ close }">
+          <p-overflow-menu-item label="Copy ID" @click="copyId(row.id); close()" />
           <p-overflow-menu-item label="Delete" />
         </template>
       </p-icon-button-menu>
@@ -24,6 +24,7 @@
   import { PTable } from '@prefecthq/prefect-design'
   import { WorkQueue } from '@/models'
   import { workQueueRouteKey } from '@/router'
+  import { copyId } from '@/utilities/copy'
   import { inject } from '@/utilities/inject'
 
   const workQueueRoute = inject(workQueueRouteKey)
