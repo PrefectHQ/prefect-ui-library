@@ -1,7 +1,12 @@
 <template>
-  <page-heading :crumbs="crumbs">
+  <page-heading class="page-heading-deployment" :crumbs="crumbs">
     <template #actions>
       <p-toggle v-model="active" />
+
+      <p-button inset>
+        Run
+        <p-icon class="page-heading-deployment__run-icon" icon="PlayIcon" solid />
+      </p-button>
 
       <p-icon-button-menu>
         <template #default="{ close }">
@@ -13,7 +18,7 @@
 </template>
 
 <script lang="ts" setup>
-  import { PIconButtonMenu } from '@prefecthq/prefect-design'
+  import { PIconButtonMenu, PIcon, PButton, PToggle } from '@prefecthq/prefect-design'
   import { computed, ref } from 'vue'
   import PageHeading from '@/components/PageHeading.vue'
   import { Deployment, Flow } from '@/models'
@@ -30,3 +35,10 @@
   const crumbs = computed(() => [{ text: props.flow.name, to: flowsRoute }, { text: props.deployment.name }])
   const active = ref(Math.random() > 0.5)
 </script>
+
+<style>
+.page-heading-deployment__run-icon { @apply
+  w-5
+  h-5
+}
+</style>
