@@ -8,7 +8,6 @@
       </div>
     </div>
 
-
     <div class="page-heading__trailing">
       <slot name="actions" />
     </div>
