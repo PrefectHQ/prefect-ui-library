@@ -28,10 +28,10 @@
     flowRun: FlowRun,
   }>()
 
-  const subscription = useSubscription(flowsApi.getFlow, [props.flowRun.flowId])
-  const flowName = computed(() => subscription.response?.name)
+  const flowSubscription = useSubscription(flowsApi.getFlow, [props.flowRun.flowId])
+  const flowName = computed(() => flowSubscription.response?.name ?? '')
 
   // It doesn't seem like we should need to coalesce here but
   // the flow run model dictates the flow run name can be null
-  const crumbs = computed(() => [{ text: flowName.value ?? '', to: flowsRoute() }, { text: props.flowRun.name ?? '' }])
+  const crumbs = computed(() => [{ text: flowName.value, to: flowsRoute() }, { text: props.flowRun.name ?? '' }])
 </script>
