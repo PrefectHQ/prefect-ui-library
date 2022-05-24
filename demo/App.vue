@@ -36,9 +36,9 @@
 <style>
 .app { @apply
   max-w-full
-  min-h-full;
-
-  display: grid;
-  grid-template-columns: 256px minmax(0, 1fr);
+  min-h-full
+  grid
+  grid-cols-1
+  sm:grid-cols-[256px_minmax(0,_1fr)]
 }
 </style>

@@ -2,8 +2,10 @@
   <page-heading class="page-heading-flow-run" :crumbs="crumbs">
     <template #actions>
       <p-icon-button-menu>
-        <template #default="{ close }">
-          <p-overflow-menu-item label="Copy ID" icon="DocumentDuplicateIcon" @click="close" />
+        <template #default>
+          <p-overflow-menu-item label="Copy ID" />
+          <p-overflow-menu-item label="Set State" />
+          <p-overflow-menu-item label="Delete" />
         </template>
       </p-icon-button-menu>
     </template>

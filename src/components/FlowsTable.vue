@@ -8,12 +8,23 @@
     <template #tags="{ row }">
       <p-tag-wrapper :tags="row.tags" justify="left" />
     </template>
-    <template #action />
+
+    <template #action-heading>
+      <span />
+    </template>
+    <template #action>
+      <p-icon-button-menu size="xs">
+        <template #default>
+          <p-overflow-menu-item label="Copy ID" />
+          <p-overflow-menu-item label="Delete" />
+        </template>
+      </p-icon-button-menu>
+    </template>
   </p-table>
 </template>
 
 <script lang="ts" setup>
-  import { PTable, PTagWrapper } from '@prefecthq/prefect-design'
+  import { PTable, PTagWrapper, PIconButtonMenu, POverflowMenuItem } from '@prefecthq/prefect-design'
   import { Flow } from '@/models'
   import { flowRouteKey } from '@/router'
   import { inject } from '@/utilities/inject'
@@ -40,8 +51,8 @@
       label: 'Tags',
     },
     {
-      label: '',
-      width: '100px',
+      label: 'Action',
+      width: '42px',
     },
   ]
 </script>
