@@ -1,6 +1,7 @@
 import { plugin as PrefectDesign } from '@prefecthq/prefect-design'
 import { createApp } from 'vue'
 
+import '@prefecthq/vue-charts/dist/style.css'
 import '@prefecthq/prefect-design/dist/style.css'
 import '@/styles/style.css'
 

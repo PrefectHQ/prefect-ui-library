@@ -1,6 +1,6 @@
 <template>
   <page-heading class="page-heading-queues" :crumbs="crumbs">
-    <router-link :to="newQueueRoute">
+    <router-link :to="newQueueRoute()">
       <p-button inset size="xs" icon="PlusIcon" />
     </router-link>
   </page-heading>
