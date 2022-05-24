@@ -13,6 +13,7 @@ import { randomState } from './state'
 import { randomStateType } from './stateType'
 import { randomChar, randomString, randomSentence, randomParagraph, randomRunName, randomNoun } from './string'
 import { randomTaskRun } from './taskRun'
+import { randomUiFlowRunHistory } from './UiFlowRunHistory'
 import { randomWorkQueue, randomWorkQueueFilter } from './workQueue'
 
 export const mocks = {
@@ -39,4 +40,5 @@ export const mocks = {
   flowRunHistory: randomFlowRunHistory,
   flowRunStateHistory: randomFlowRunStateHistory,
   noun: randomNoun,
+  uiFlowRunHistory: randomUiFlowRunHistory,
 }
