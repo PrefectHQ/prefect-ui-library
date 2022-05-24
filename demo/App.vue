@@ -13,17 +13,22 @@
       </div>
     </div>
 
+
     <StatesSection />
-    <LogSection />
-    <EmptyStateSection />
-    <ContextSidebarSection />
-    <ListsSection />
-    <MetaWellSection />
+    <!--
+      <LogSection />
+      <EmptyStateSection />
+      <ContextSidebarSection />
+      <ListsSection />
+      <MetaWellSection />
+    -->
+    <ComboboxesSection />
   </div>
 </template>
 
 <script lang="ts" setup>
   import { provide } from 'vue'
+  import ComboboxesSection from './sections/ComboboxesSection.vue'
   import ContextSidebarSection from './sections/ContextSidebarSection.vue'
   import EmptyStateSection from './sections/EmptyStateSection.vue'
   import ListsSection from './sections/ListsSection.vue'
