@@ -9,6 +9,9 @@
       <p-tag-wrapper :tags="row.tags" justify="left" />
     </template>
 
+    <template #action-heading>
+      <span />
+    </template>
     <template #action>
       <p-icon-button-menu>
         <template #default>
@@ -49,7 +52,7 @@
     },
     {
       label: 'Action',
-      width: '100px',
+      width: '42px',
     },
   ]
 </script>
