@@ -38,7 +38,6 @@
       return props.stateType ?? null
     },
     set(value: string | string[] | null) {
-      console.log({ value })
       if (!value) {
         emits('update:stateType', null)
       } else if (multiple.value) {
