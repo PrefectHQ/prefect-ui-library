@@ -1,5 +1,5 @@
 <template>
-  <page-heading :crumbs="crumbs">
+  <page-heading class="page-heading-flow" :crumbs="crumbs">
     <template #actions>
       <p-icon-button-menu>
         <template #default="{ close }">

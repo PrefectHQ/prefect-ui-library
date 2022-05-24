@@ -32,7 +32,7 @@
     flow: Flow,
   }>()
 
-  const crumbs = computed(() => [{ text: props.flow.name, to: flowsRoute }, { text: props.deployment.name }])
+  const crumbs = computed(() => [{ text: props.flow.name, to: flowsRoute() }, { text: props.deployment.name }])
   const active = ref(Math.random() > 0.5)
 </script>
 

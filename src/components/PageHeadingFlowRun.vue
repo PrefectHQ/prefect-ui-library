@@ -1,5 +1,5 @@
 <template>
-  <page-heading :crumbs="crumbs">
+  <page-heading class="page-heading-flow-run" :crumbs="crumbs">
     <template #actions>
       <p-icon-button-menu>
         <template #default="{ close }">
@@ -27,5 +27,5 @@
 
   // It doesn't seem like we should need to coalesce here but
   // the flow run model dictates the flow run name can be null
-  const crumbs = computed(() => [{ text: props.flow.name, to: flowsRoute }, { text: props.flowRun.name ?? '' }])
+  const crumbs = computed(() => [{ text: props.flow.name, to: flowsRoute() }, { text: props.flowRun.name ?? '' }])
 </script>

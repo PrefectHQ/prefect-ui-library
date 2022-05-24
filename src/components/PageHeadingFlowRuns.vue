@@ -1,5 +1,5 @@
 <template>
-  <page-heading :crumbs="crumbs" />
+  <page-heading class="page-heading-flow-runs" :crumbs="crumbs" />
 </template>
 
 <script lang="ts" setup>

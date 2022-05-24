@@ -1,5 +1,5 @@
 <template>
-  <page-heading :crumbs="crumbs">
+  <page-heading class="page-heading-deployments" :crumbs="crumbs">
     <p-button inset size="xs" icon="PlusIcon" />
   </page-heading>
 </template>

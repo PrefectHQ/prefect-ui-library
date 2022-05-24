@@ -1,5 +1,5 @@
 <template>
-  <page-heading :crumbs="crumbs">
+  <page-heading class="page-heading-queue" :crumbs="crumbs">
     <template #actions>
       <p-toggle v-model="active" />
 
