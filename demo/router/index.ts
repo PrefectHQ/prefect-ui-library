@@ -5,8 +5,12 @@ import { RouteRecordRaw, createRouter, createWebHistory } from 'vue-router'
 const routeRecords: RouteRecordRaw[] = [
   {
     path: '/',
-    name: 'main',
-    component: () => import('../App.vue'),
+    redirect: '/components',
+  },
+  {
+    path: '/components',
+    name: 'components',
+    component: () => import('../pages/Components.vue'),
   },
   {
     path: '/:catchAll(.*)',
