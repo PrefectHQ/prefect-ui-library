@@ -57,21 +57,11 @@
   border-white
 }
 
-.scatter-plot-item--running,
-.scatter-plot-item--scheduled,
-.scatter-plot-item--pending,
-.scatter-plot-item--cancelled,
-.scatter-plot-item--completed,
-.scatter-plot-item--failed {
+.scatter-plot-item {
   opacity: var(--dot-opacity-medium);
 }
 
-.scatter-plot-item--running:hover,
-.scatter-plot-item--scheduled:hover,
-.scatter-plot-item--pending:hover,
-.scatter-plot-item--cancelled:hover,
-.scatter-plot-item--completed:hover,
-.scatter-plot-item--failed:hover {
+.scatter-plot-item:hover {
   opacity: var(--dot-opacity-high);
   z-index: 1000;
 }
