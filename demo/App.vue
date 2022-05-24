@@ -20,6 +20,7 @@
     <ListsSection />
     <ToggleSection />
     <MetaWellSection />
+    <TablesSection />
   </div>
 </template>
 
@@ -32,9 +33,10 @@
   import LogSection from './sections/LogsSection.vue'
   import MetaWellSection from './sections/MetaWellSection.vue'
   import StatesSection from './sections/StatesSection.vue'
+  import TablesSection from './sections/TablesSection.vue'
   import ToggleSection from './sections/ToggleSection.vue'
   import { flowRunsApi, logsApi, taskRunsApi, flowsApi, deploymentsApi, workQueueApi } from './services'
-  import { deploymentRouteKey, flowRouteKey, flowRunsRouteKey, flowsRouteKey, deploymentsRouteKey, queuesRouteKey, settingsRouteKey } from '@/router'
+  import { deploymentRouteKey, flowRouteKey, flowRunsRouteKey, flowsRouteKey, deploymentsRouteKey, queuesRouteKey, settingsRouteKey, workQueueRouteKey } from '@/router'
   import { flowRunsApiKey, logsApiKey, taskRunsApiKey, flowsApiKey, deploymentsApiKey, workQueuesApiKey } from '@/services'
 
   const emptyRoute = (): RouteLocationRaw => ({ path: '/nothing' })
@@ -52,4 +54,5 @@
   provide(deploymentsRouteKey, emptyRoute)
   provide(queuesRouteKey, emptyRoute)
   provide(settingsRouteKey, emptyRoute)
+  provide(workQueueRouteKey, emptyRoute)
 </script>
