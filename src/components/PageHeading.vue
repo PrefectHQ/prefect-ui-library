@@ -25,6 +25,7 @@
 
 <style>
 .page-heading { @apply
+  min-h-[42px]
   flex
   justify-between;
 }
