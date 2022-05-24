@@ -25,7 +25,6 @@
 
 <script lang="ts" setup>
   import { provide } from 'vue'
-  import { RouteLocationRaw } from 'vue-router'
   import ContextSidebarSection from './sections/ContextSidebarSection.vue'
   import EmptyStateSection from './sections/EmptyStateSection.vue'
   import ListsSection from './sections/ListsSection.vue'
@@ -34,10 +33,10 @@
   import StatesSection from './sections/StatesSection.vue'
   import ToggleSection from './sections/ToggleSection.vue'
   import { flowRunsApi, logsApi, taskRunsApi, flowsApi, deploymentsApi, workQueueApi } from './services'
-  import { deploymentRouteKey, flowRouteKey, flowRunsRouteKey, flowsRouteKey, deploymentsRouteKey, queuesRouteKey, settingsRouteKey } from '@/router'
+  import { deploymentRouteKey, flowRouteKey, flowRunsRouteKey, flowsRouteKey, deploymentsRouteKey, queuesRouteKey, settingsRouteKey, flowRunRouteKey, Route } from '@/router'
   import { flowRunsApiKey, logsApiKey, taskRunsApiKey, flowsApiKey, deploymentsApiKey, workQueuesApiKey } from '@/services'
 
-  const emptyRoute = (): RouteLocationRaw => ({ path: '/nothing' })
+  const emptyRoute = (): Route => ({ path: '/nothing' })
 
   provide(flowRunsApiKey, flowRunsApi)
   provide(logsApiKey, logsApi)
@@ -46,6 +45,7 @@
   provide(deploymentsApiKey, deploymentsApi)
   provide(workQueuesApiKey, workQueueApi)
   provide(flowRouteKey, emptyRoute)
+  provide(flowRunRouteKey, emptyRoute)
   provide(deploymentRouteKey, emptyRoute)
   provide(flowRunsRouteKey, emptyRoute)
   provide(flowsRouteKey, emptyRoute)
