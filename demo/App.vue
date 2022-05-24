@@ -19,6 +19,7 @@
     <ContextSidebarSection />
     <ListsSection />
     <MetaWellSection />
+    <SortSection />
   </div>
 </template>
 
@@ -29,6 +30,7 @@
   import ListsSection from './sections/ListsSection.vue'
   import LogSection from './sections/LogsSection.vue'
   import MetaWellSection from './sections/MetaWellSection.vue'
+  import SortSection from './sections/SortSections.vue'
   import StatesSection from './sections/StatesSection.vue'
   import { flowRunsApi, logsApi, taskRunsApi, flowsApi, deploymentsApi } from './services'
   import { deploymentRouteKey, flowRouteKey } from '@/router'
