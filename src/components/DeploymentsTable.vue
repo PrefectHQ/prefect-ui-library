@@ -4,7 +4,7 @@
       <p-tag-wrapper :tags="row.tags" justify="left" />
     </template>
     <template #action>
-      No Actions
+      <slot name="table-action" />
     </template>
   </p-table>
 </template>

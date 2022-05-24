@@ -1,7 +1,7 @@
 <template>
   <p-table :data="queues" :columns="columns">
     <template #action>
-      No Actions
+      <slot name="table-action" />
     </template>
   </p-table>
 </template>

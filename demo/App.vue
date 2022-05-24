@@ -13,7 +13,7 @@
       </div>
     </div>
 
-    <TablesSection />
+
     <StatesSection />
     <LogSection />
     <EmptyStateSection />
@@ -21,6 +21,7 @@
     <ListsSection />
     <ToggleSection />
     <MetaWellSection />
+    <TablesSection />
   </div>
 </template>
 
