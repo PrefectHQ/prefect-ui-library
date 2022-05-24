@@ -14,13 +14,18 @@
   import { PIconButtonMenu } from '@prefecthq/prefect-design'
   import { computed } from 'vue'
   import PageHeading from '@/components/PageHeading.vue'
-  import { FlowRun } from '@/models'
+  import { FlowRun, Flow } from '@/models'
+  import { flowsRouteKey } from '@/router'
+  import { inject } from '@/utilities'
+
+  const flowsRoute = inject(flowsRouteKey)
 
   const props = defineProps<{
     flowRun: FlowRun,
+    flow: Flow,
   }>()
 
   // It doesn't seem like we should need to coalesce here but
   // the flow run model dictates the flow run name can be null
-  const crumbs = computed(() => [{ text: props.flowRun.name ?? '' }])
+  const crumbs = computed(() => [{ text: props.flow.name, to: flowsRoute }, { text: props.flowRun.name ?? '' }])
 </script>
