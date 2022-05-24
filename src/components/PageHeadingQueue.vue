@@ -1,7 +1,7 @@
 <template>
   <page-heading class="page-heading-queue" :crumbs="crumbs">
     <template #actions>
-      <p-toggle v-model="active" />
+      <WorkQueueToggle :work-queue="queue" />
 
       <p-icon-button-menu>
         <template #default="{ close }">
@@ -14,8 +14,9 @@
 
 <script lang="ts" setup>
   import { PIconButtonMenu } from '@prefecthq/prefect-design'
-  import { computed, ref } from 'vue'
+  import { computed } from 'vue'
   import PageHeading from '@/components/PageHeading.vue'
+  import WorkQueueToggle from '@/components/WorkQueueToggle.vue'
   import { WorkQueue } from '@/models'
 
   const props = defineProps<{
@@ -23,5 +24,4 @@
   }>()
 
   const crumbs = computed(() => [{ text: props.queue.name }])
-  const active = ref(Math.random() > 0.5)
 </script>

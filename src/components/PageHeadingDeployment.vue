@@ -1,7 +1,7 @@
 <template>
   <page-heading class="page-heading-deployment" :crumbs="crumbs">
     <template #actions>
-      <p-toggle v-model="active" />
+      <DeploymentToggle :deployment="deployment" />
 
       <p-button inset>
         Run
@@ -18,8 +18,9 @@
 </template>
 
 <script lang="ts" setup>
-  import { PIconButtonMenu, PIcon, PButton, PToggle } from '@prefecthq/prefect-design'
-  import { computed, ref } from 'vue'
+  import { PIconButtonMenu, PIcon, PButton } from '@prefecthq/prefect-design'
+  import { computed } from 'vue'
+  import DeploymentToggle from '@/components/DeploymentToggle.vue'
   import PageHeading from '@/components/PageHeading.vue'
   import { Deployment, Flow } from '@/models'
   import { flowsRouteKey } from '@/router'
@@ -33,7 +34,6 @@
   }>()
 
   const crumbs = computed(() => [{ text: props.flow.name, to: flowsRoute() }, { text: props.deployment.name }])
-  const active = ref(Math.random() > 0.5)
 </script>
 
 <style>
