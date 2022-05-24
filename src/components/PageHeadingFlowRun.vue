@@ -2,8 +2,8 @@
   <page-heading class="page-heading-flow-run" :crumbs="crumbs">
     <template #actions>
       <p-icon-button-menu>
-        <template #default>
-          <p-overflow-menu-item label="Copy ID" />
+        <template #default="{ close }">
+          <p-overflow-menu-item label="Copy ID" @click="copyId(flowRun.id); close()" />
           <p-overflow-menu-item label="Set State" />
           <p-overflow-menu-item label="Delete" />
         </template>
@@ -21,7 +21,7 @@
   import { flowsRouteKey } from '@/router'
   import { flowsApiKey } from '@/services'
   import { inject } from '@/utilities'
-
+  import { copyId } from '@/utilities/copy'
 
   const flowsRoute = inject(flowsRouteKey)
   const flowsApi = inject(flowsApiKey)

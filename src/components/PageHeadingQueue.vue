@@ -4,8 +4,8 @@
       <WorkQueueToggle :work-queue="queue" />
 
       <p-icon-button-menu>
-        <template #default>
-          <p-overflow-menu-item label="Copy ID" />
+        <template #default="{ close }">
+          <p-overflow-menu-item label="Copy ID" @click="copyId(queue.id); close()" />
           <p-overflow-menu-item label="Edit" />
           <p-overflow-menu-item label="Delete" />
         </template>
@@ -20,6 +20,7 @@
   import PageHeading from '@/components/PageHeading.vue'
   import WorkQueueToggle from '@/components/WorkQueueToggle.vue'
   import { WorkQueue } from '@/models'
+  import { copyId } from '@/utilities/copy'
 
   const props = defineProps<{
     queue: WorkQueue,

@@ -2,8 +2,8 @@
   <page-heading class="page-heading-flow" :crumbs="crumbs">
     <template #actions>
       <p-icon-button-menu>
-        <template #default>
-          <p-overflow-menu-item label="Copy ID" />
+        <template #default="{ close }">
+          <p-overflow-menu-item label="Copy ID" @click="copyId(flow.id); close()" />
           <p-overflow-menu-item label="Delete" />
         </template>
       </p-icon-button-menu>
@@ -16,6 +16,7 @@
   import { computed } from 'vue'
   import PageHeading from '@/components/PageHeading.vue'
   import { Flow } from '@/models'
+  import { copyId } from '@/utilities/copy'
 
   const props = defineProps<{
     flow: Flow,
