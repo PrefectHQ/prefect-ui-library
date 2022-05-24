@@ -1,5 +1,5 @@
 <template>
-  <div class="flow-run-sort">
+  <div class="flow-runs-sort">
     <p-select v-model="internalValue" :options="flowRunSortOptions" />
   </div>
 </template>
@@ -35,5 +35,5 @@
 </script>
 
 <style>
-  .flow-run-sort{}
+  .flow-runs-sort{}
 </style>
