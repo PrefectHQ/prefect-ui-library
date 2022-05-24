@@ -3,7 +3,7 @@
     <DemoSubSection heading="Flow Runs Sort">
       <FlowRunsSort v-model="selectedFlowRunSortOption" />
     </DemoSubSection>
-    <DemoSubSection heading="Flow Runs Sort">
+    <DemoSubSection heading="Task Runs Sort">
       <TaskRunsSort v-model="selectedTaskRunSortOption" />
     </DemoSubSection>
   </DemoSection>
