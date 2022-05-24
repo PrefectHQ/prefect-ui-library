@@ -3,7 +3,7 @@
     <template #actions>
       <p-icon-button-menu>
         <template #default="{ close }">
-          <p-overflow-menu-item label="Copy ID" @click="copyId(flow.id); close()" />
+          <p-overflow-menu-item label="Copy ID" @click="copyToClipboard(flow.id); close()" />
           <p-overflow-menu-item label="Delete" />
         </template>
       </p-icon-button-menu>
@@ -16,7 +16,7 @@
   import { computed } from 'vue'
   import PageHeading from '@/components/PageHeading.vue'
   import { Flow } from '@/models'
-  import { copyId } from '@/utilities/copy'
+  import { copyToClipboard } from '@/utilities/copy'
 
   const props = defineProps<{
     flow: Flow,

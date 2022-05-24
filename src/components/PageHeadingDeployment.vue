@@ -10,7 +10,7 @@
 
       <p-icon-button-menu>
         <template #default="{ close }">
-          <p-overflow-menu-item label="Copy ID" @click="copyId(deployment.id); close()" />
+          <p-overflow-menu-item label="Copy ID" @click="copyToClipboard(deployment.id); close()" />
           <p-overflow-menu-item label="Delete" />
         </template>
       </p-icon-button-menu>
@@ -28,7 +28,7 @@
   import { flowsRouteKey } from '@/router'
   import { flowsApiKey } from '@/services'
   import { inject } from '@/utilities'
-  import { copyId } from '@/utilities/copy'
+  import { copyToClipboard } from '@/utilities/copy'
 
   const flowsRoute = inject(flowsRouteKey)
   const flowsApi = inject(flowsApiKey)

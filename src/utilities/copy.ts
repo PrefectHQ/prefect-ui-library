@@ -1,7 +1,7 @@
 import { showToast } from '@prefecthq/prefect-design'
 
-export function copyId(id: string): void {
-  navigator.clipboard.writeText(id)
+export function copyToClipboard(text: string, message: string ='ID copied to clipboard!'): void {
+  navigator.clipboard.writeText(text)
 
-  showToast('ID copied to clipboard!', 'success', undefined, 3000)
+  showToast(message, 'success', undefined, 3000)
 }

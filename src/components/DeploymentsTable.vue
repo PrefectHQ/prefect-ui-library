@@ -15,7 +15,7 @@
     <template #action="{ row }">
       <p-icon-button-menu size="xs">
         <template #default="{ close }">
-          <p-overflow-menu-item label="Copy ID" @click="copyId(row.id); close()" />
+          <p-overflow-menu-item label="Copy ID" @click="copyToClipboard(row.id); close()" />
           <p-overflow-menu-item label="Run" class="deployments-table__hide-on-desktop" />
           <p-overflow-menu-item label="Delete" />
         </template>
@@ -28,7 +28,7 @@
   import { PTable, PTagWrapper, PIconButtonMenu, POverflowMenuItem } from '@prefecthq/prefect-design'
   import { Deployment } from '@/models'
   import { deploymentRouteKey } from '@/router'
-  import { copyId } from '@/utilities/copy'
+  import { copyToClipboard } from '@/utilities/copy'
   import { inject } from '@/utilities/inject'
 
   const deploymentRoute = inject(deploymentRouteKey)
