@@ -1,7 +1,7 @@
 import { LogLevel } from './Log'
 
 
-export type ISettingsResponse = {
+export type OrionSettings = {
 
   PREFECT_HOME: string,
   PREFECT_DEBUG_MODE: boolean,
