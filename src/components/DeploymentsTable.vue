@@ -1,5 +1,5 @@
 <template>
-  <p-table :data="deployments" :columns="columns">
+  <p-table :data="deployments" :columns="columns" class="deployments-table">
     <template #name="{ row }">
       <router-link :to="deploymentRoute(row.id)">
         <span>{{ row.name }}</span>
@@ -8,12 +8,20 @@
     <template #tags="{ row }">
       <p-tag-wrapper :tags="row.tags" justify="left" />
     </template>
-    <template #action />
+    <template #action>
+      <p-icon-button-menu>
+        <template #default>
+          <p-overflow-menu-item label="Copy ID" />
+          <p-overflow-menu-item label="Run" class="deployments-table__hide-on-desktop" />
+          <p-overflow-menu-item label="Delete" />
+        </template>
+      </p-icon-button-menu>
+    </template>
   </p-table>
 </template>
 
 <script lang="ts" setup>
-  import { PTable, PTagWrapper } from '@prefecthq/prefect-design'
+  import { PTable, PTagWrapper, PIconButtonMenu, POverflowMenuItem } from '@prefecthq/prefect-design'
   import { Deployment } from '@/models'
   import { deploymentRouteKey } from '@/router'
   import { inject } from '@/utilities/inject'
@@ -40,8 +48,15 @@
       label: 'Tags',
     },
     {
-      label: '',
+      label: 'Action',
       width: '100px',
     },
   ]
 </script>
+
+<style>
+.deployments-table__hide-on-desktop {
+  @apply
+  sm:hidden
+}
+</style>
