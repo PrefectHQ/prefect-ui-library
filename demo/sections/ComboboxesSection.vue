@@ -1,12 +1,12 @@
 <template>
   <DemoSection heading="Filter Comboboxes">
     <DemoSubSection heading="Flows">
-      <FlowCombobox v-model:selectedFlowId="flowsValue" empty-message="All Flows" />
+      <FlowCombobox v-model:selected="flowsValue" empty-message="All Flows" />
       {{ JSON.stringify(flowsValue) }}
       <p-checkbox v-model="multipleFlows" label="Multiple" @update:model-value="clearFlows" />
     </DemoSubSection>
     <DemoSubSection heading="Deployments">
-      <DeploymentCombobox v-model:selectedDeploymentId="deploymentsValue" empty-message="All Deployments" />
+      <DeploymentCombobox v-model:selected="deploymentsValue" empty-message="All Deployments" />
       {{ JSON.stringify(deploymentsValue) }}
       <p-checkbox v-model="multipleDeployments" label="Multiple" @update:model-value="clearDeployments" />
     </DemoSubSection>
