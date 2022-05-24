@@ -1,6 +1,6 @@
 <template>
-  <div class="flow-run-scatter-plot">
-    <div class="flow-run-scatter-plot__duration">
+  <div class="flow-runs-scatter-plot-plot">
+    <div class="flow-runs-scatter-plot-plot__duration">
       Duration
     </div>
     <ScatterPlot :items="items" :dot-diameter="16">
@@ -25,26 +25,26 @@
 </script>
 
 <style>
-.flow-run-scatter-plot { @apply
+.flow-runs-scatter-plot-plot { @apply
   border-gray-300
   border-2
   rounded
   p-1
 }
 
-.flow-run-scatter-plot {
+.flow-runs-scatter-plot-plot {
   --dot-opacity-high: 1;
   --dot-opacity-medium: 0.5;
   --dot-opacity-low: 0.1;
   position: relative;
 }
 
-.flow-run-scatter-plot__duration { @apply
+.flow-runs-scatter-plot-plot__duration { @apply
   text-sm
   text-gray-500
 }
 
-.flow-run-scatter-plot__duration {
+.flow-runs-scatter-plot-plot__duration {
   position: absolute;
   transform: rotate(-90deg) translate(0, -50%);
   transform-origin: 50% 50%;
