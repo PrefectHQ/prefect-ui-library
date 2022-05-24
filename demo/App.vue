@@ -15,19 +15,19 @@
 
 
     <StatesSection />
-    <!--
-      <LogSection />
-      <EmptyStateSection />
-      <ContextSidebarSection />
-      <ListsSection />
-      <MetaWellSection />
-    -->
+    <LogSection />
+    <EmptyStateSection />
+    <ContextSidebarSection />
+    <ListsSection />
+    <ToggleSection />
+    <MetaWellSection />
     <ComboboxesSection />
   </div>
 </template>
 
 <script lang="ts" setup>
   import { provide } from 'vue'
+  import { RouteLocationRaw } from 'vue-router'
   import ComboboxesSection from './sections/ComboboxesSection.vue'
   import ContextSidebarSection from './sections/ContextSidebarSection.vue'
   import EmptyStateSection from './sections/EmptyStateSection.vue'
@@ -35,15 +35,24 @@
   import LogSection from './sections/LogsSection.vue'
   import MetaWellSection from './sections/MetaWellSection.vue'
   import StatesSection from './sections/StatesSection.vue'
-  import { flowRunsApi, logsApi, taskRunsApi, flowsApi, deploymentsApi } from './services'
-  import { deploymentRouteKey, flowRouteKey } from '@/router'
-  import { flowRunsApiKey, logsApiKey, taskRunsApiKey, flowsApiKey, deploymentsApiKey } from '@/services'
+  import ToggleSection from './sections/ToggleSection.vue'
+  import { flowRunsApi, logsApi, taskRunsApi, flowsApi, deploymentsApi, workQueueApi } from './services'
+  import { deploymentRouteKey, flowRouteKey, flowRunsRouteKey, flowsRouteKey, deploymentsRouteKey, queuesRouteKey, settingsRouteKey } from '@/router'
+  import { flowRunsApiKey, logsApiKey, taskRunsApiKey, flowsApiKey, deploymentsApiKey, workQueuesApiKey } from '@/services'
+
+  const emptyRoute = (): RouteLocationRaw => ({ path: '/nothing' })
 
   provide(flowRunsApiKey, flowRunsApi)
   provide(logsApiKey, logsApi)
   provide(taskRunsApiKey, taskRunsApi)
   provide(flowsApiKey, flowsApi)
   provide(deploymentsApiKey, deploymentsApi)
-  provide(flowRouteKey, () => ({ name: 'main' }))
-  provide(deploymentRouteKey, () => ({ name: 'main' }))
+  provide(workQueuesApiKey, workQueueApi)
+  provide(flowRouteKey, emptyRoute)
+  provide(deploymentRouteKey, emptyRoute)
+  provide(flowRunsRouteKey, emptyRoute)
+  provide(flowsRouteKey, emptyRoute)
+  provide(deploymentsRouteKey, emptyRoute)
+  provide(queuesRouteKey, emptyRoute)
+  provide(settingsRouteKey, emptyRoute)
 </script>
