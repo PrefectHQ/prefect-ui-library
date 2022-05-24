@@ -25,25 +25,25 @@
   import { stateType } from '@/models/StateType'
 
   const props = defineProps<{
-    stateType: string | string[] | null | undefined,
+    selected: string | string[] | null | undefined,
     emptyMessage?: string,
   }>()
 
   const emits = defineEmits<{
-    (event: 'update:stateType', value: string | string[] | null): void,
+    (event: 'update:selected', value: string | string[] | null): void,
   }>()
 
   const internalValue = computed({
     get() {
-      return props.stateType ?? null
+      return props.selected ?? null
     },
     set(value: string | string[] | null) {
       if (!value) {
-        emits('update:stateType', null)
+        emits('update:selected', null)
       } else if (multiple.value) {
-        emits('update:stateType', Array.isArray(value) ? value : [value])
+        emits('update:selected', Array.isArray(value) ? value : [value])
       } else {
-        emits('update:stateType', value)
+        emits('update:selected', value)
       }
     },
   })
