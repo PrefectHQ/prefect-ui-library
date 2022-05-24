@@ -22,14 +22,8 @@
       </div>
     </DemoSubSection>
     <DemoSubSection heading="Badges - Select">
-      <template v-if="multiple">
-        <StateSelect v-model:stateType="selectedStateTypes" multiple empty-message="All Tags" />
-        {{ JSON.stringify(selectedStateTypes) }}
-      </template>
-      <template v-else>
-        <StateSelect v-model:stateType="selectedStateType" empty-message="All Tags" />
-        {{ JSON.stringify(selectedStateType) }}
-      </template>
+      <StateSelect v-model:selected="selected" empty-message="All Tags" />
+      {{ JSON.stringify(selected) }}
       <p-checkbox v-model="multiple" label="Multiple" @update:model-value="clearSelectedStates" />
     </DemoSubSection>
   </DemoSection>
@@ -37,7 +31,7 @@
 
 <script lang="ts" setup>
   import { PCheckbox } from '@prefecthq/prefect-design'
-  import { ref } from 'vue'
+  import { computed, ref } from 'vue'
   import DemoSection from '../components/DemoSection.vue'
   import DemoSubSection from '../components/DemoSubSection.vue'
   import StateBadge from '@/components/StateBadge.vue'
@@ -60,7 +54,20 @@
 
   const selectedStateTypes = ref<StateType[]>([])
   const selectedStateType = ref<StateType | null>(null)
-  const multiple = ref(false)
+  const multiple = ref(true)
+
+  const selected = computed({
+    get() {
+      return multiple.value ? selectedStateTypes.value : selectedStateType.value
+    },
+    set(value: StateType | null | StateType[]) {
+      if (Array.isArray(value)) {
+        selectedStateTypes.value = value
+      } else {
+        selectedStateType.value = value
+      }
+    },
+  })
 
   function clearSelectedStates(): void {
     selectedStateType.value = null
