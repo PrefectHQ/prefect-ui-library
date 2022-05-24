@@ -38,16 +38,14 @@
 }
 
 .page-heading__trailing { @apply
-  flex
   items-center
-  justify-start;
+  justify-start
+  grid
+  grid-flow-col
+  gap-2;
 }
 
-.page-heading__trailing > * { @apply
-  mr-2;
-}
-
-@screen sm {
+@screen md {
   .page-heading { @apply
     min-h-[42px]
     flex
@@ -55,13 +53,9 @@
   }
 
   .page-heading__trailing { @apply
-    flex
-    items-center
-    justify-end;
-  }
-
-  .page-heading__trailing > * { @apply
-    ml-2;
+    grid
+    gap-2
+    grid-flow-col;
   }
 }
 </style>
