@@ -13,7 +13,7 @@
       <span />
     </template>
     <template #action>
-      <p-icon-button-menu>
+      <p-icon-button-menu size="xs">
         <template #default>
           <p-overflow-menu-item label="Copy ID" />
           <p-overflow-menu-item label="Run" class="deployments-table__hide-on-desktop" />
