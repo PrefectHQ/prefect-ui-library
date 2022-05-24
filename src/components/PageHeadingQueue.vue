@@ -1,6 +1,8 @@
 <template>
   <page-heading :crumbs="crumbs">
     <template #actions>
+      <p-toggle v-model="active" />
+
       <p-icon-button-menu>
         <template #default="{ close }">
           <p-overflow-menu-item label="Copy ID" icon="DocumentDuplicateIcon" @click="close" />
@@ -12,7 +14,7 @@
 
 <script lang="ts" setup>
   import { PIconButtonMenu } from '@prefecthq/prefect-design'
-  import { computed } from 'vue'
+  import { computed, ref } from 'vue'
   import PageHeading from '@/components/PageHeading.vue'
   import { WorkQueue } from '@/models'
 
@@ -21,4 +23,5 @@
   }>()
 
   const crumbs = computed(() => [{ text: props.queue.name }])
+  const active = ref(Math.random() > 0.5)
 </script>

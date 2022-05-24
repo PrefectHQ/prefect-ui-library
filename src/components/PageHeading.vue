@@ -38,4 +38,14 @@
 .page-heading__leading-slot { @apply
   ml-2;
 }
+
+.page-heading__trailing { @apply
+  flex
+  items-center
+  justify-end;
+}
+
+.page-heading__trailing > * { @apply
+  ml-2;
+}
 </style>
