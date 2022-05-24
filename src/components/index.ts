@@ -1,3 +1,5 @@
+
+
 export { default as ContextSidebar } from './ContextSidebar.vue'
 export { default as DeploymentMetaWell } from './DeploymentMetaWell.vue'
 export { default as DeploymentsPageEmptyState } from './DeploymentsPageEmptyState.vue'
@@ -5,6 +7,7 @@ export { default as FlowMetaWell } from './FlowMetaWell.vue'
 export { default as FlowRunList } from './FlowRunList.vue'
 export { default as FlowRunListItem } from './FlowRunListItem.vue'
 export { default as FlowRunMetaWell } from './FlowRunMetaWell.vue'
+export { default as FlowRunsSort } from './FlowRunsSort.vue'
 export { default as FlowRunStartTime } from './FlowRunStartTime.vue'
 export { default as FlowsPageEmptyState } from './FlowsPageEmptyState.vue'
 export { default as LogLevelLabel } from './LogLevelLabel.vue'
