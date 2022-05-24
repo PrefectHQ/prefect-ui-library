@@ -25,9 +25,7 @@
 
 <style>
 .page-heading { @apply
-  min-h-[42px]
-  flex
-  justify-between;
+  block;
 }
 
 .page-heading__leading { @apply
@@ -43,10 +41,28 @@
 .page-heading__trailing { @apply
   flex
   items-center
-  justify-end;
+  justify-start;
 }
 
 .page-heading__trailing > * { @apply
-  ml-2;
+  mr-2;
+}
+
+@screen sm {
+  .page-heading { @apply
+    min-h-[42px]
+    flex
+    justify-between;
+  }
+
+  .page-heading__trailing { @apply
+    flex
+    items-center
+    justify-end;
+  }
+
+  .page-heading__trailing > * { @apply
+    ml-2;
+  }
 }
 </style>
