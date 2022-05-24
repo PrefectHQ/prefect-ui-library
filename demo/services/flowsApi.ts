@@ -7,6 +7,10 @@ export class FlowsApi extends MockedApi {
   public getFlow(id: string): Promise<Flow> {
     return this.promise(mocker.create('flow', [{ id: id }]))
   }
+
+  public getFlows(): Promise<Flow[]> {
+    return this.promise(mocker.createMany('flow', mocker.create('number', [1, 100])))
+  }
 }
 
 export const flowsApi = createActions(new FlowsApi())
