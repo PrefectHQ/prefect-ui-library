@@ -9,8 +9,9 @@
       </p-button>
 
       <p-icon-button-menu>
-        <template #default="{ close }">
-          <p-overflow-menu-item label="Copy ID" icon="DocumentDuplicateIcon" @click="close" />
+        <template #default>
+          <p-overflow-menu-item label="Copy ID" />
+          <p-overflow-menu-item label="Delete" />
         </template>
       </p-icon-button-menu>
     </template>
