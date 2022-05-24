@@ -23,7 +23,7 @@
     </DemoSubSection>
     <DemoSubSection heading="Badges - Select">
       <StateSelect v-model:stateType="selected" empty-message="All Tags" />
-      {{ JSON.stringify(selectedStateTypes) }}
+      {{ JSON.stringify(selected) }}
       <p-checkbox v-model="multiple" label="Multiple" @update:model-value="clearSelectedStates" />
     </DemoSubSection>
   </DemoSection>
