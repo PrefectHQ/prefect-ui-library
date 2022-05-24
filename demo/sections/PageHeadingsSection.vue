@@ -11,7 +11,7 @@
       <page-heading-flow :flow="flow" />
       <page-heading-deployment :deployment="deployment" />
       <page-heading-queue :queue="queue" />
-      <!-- <page-heading-flow-run /> -->
+      <page-heading-flow-run :flow-run="flowRun" />
     </DemoSubSection>
   </DemoSection>
 </template>
@@ -22,6 +22,7 @@
   import PageHeadingDeployment from '@/components/PageHeadingDeployment.vue'
   import PageHeadingDeployments from '@/components/PageHeadingDeployments.vue'
   import PageHeadingFlow from '@/components/PageHeadingFlow.vue'
+  import PageHeadingFlowRun from '@/components/PageHeadingFlowRun.vue'
   import PageHeadingFlowRuns from '@/components/PageHeadingFlowRuns.vue'
   import PageHeadingFlows from '@/components/PageHeadingFlows.vue'
   import PageHeadingQueue from '@/components/PageHeadingQueue.vue'
@@ -31,4 +32,5 @@
   const flow = mocker.create('flow', [{ name: 'ETL' }])
   const deployment = mocker.create('deployment', [{ name: 'Production' }])
   const queue = mocker.create('workQueue', [{ name: 'ECS - Prod' }])
+  const flowRun = mocker.create('flowRun')
 </script>
