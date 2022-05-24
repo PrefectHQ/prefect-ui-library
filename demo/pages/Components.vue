@@ -9,11 +9,13 @@
     <ToggleSection />
     <MetaWellSection />
     <SortSections />
+    <ComboboxesSection />
   </p-layout-default>
 </template>
 
 <script lang="ts" setup>
   import { PLayoutDefault } from '@prefecthq/prefect-design'
+  import ComboboxesSection from '../sections/ComboboxesSection.vue'
   import ContextSidebarSection from '../sections/ContextSidebarSection.vue'
   import EmptyStateSection from '../sections/EmptyStateSection.vue'
   import ListsSection from '../sections/ListsSection.vue'
