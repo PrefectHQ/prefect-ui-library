@@ -25,11 +25,14 @@
 
 <style>
 .page-heading { @apply
-  block;
+  flex
+  justify-between;
 }
 
 .page-heading__leading { @apply
-  flex items-center justify-start;
+  flex
+  items-center
+  justify-start;
 }
 
 .page-heading__leading-slot { @apply
