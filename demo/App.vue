@@ -20,6 +20,7 @@
     <ListsSection />
     <ToggleSection />
     <MetaWellSection />
+    <TablesSection />
   </div>
 </template>
 
@@ -31,9 +32,10 @@
   import LogSection from './sections/LogsSection.vue'
   import MetaWellSection from './sections/MetaWellSection.vue'
   import StatesSection from './sections/StatesSection.vue'
+  import TablesSection from './sections/TablesSection.vue'
   import ToggleSection from './sections/ToggleSection.vue'
   import { flowRunsApi, logsApi, taskRunsApi, flowsApi, deploymentsApi, workQueueApi } from './services'
-  import { deploymentRouteKey, flowRouteKey, flowRunsRouteKey, flowsRouteKey, deploymentsRouteKey, queuesRouteKey, settingsRouteKey, flowRunRouteKey, Route } from '@/router'
+  import { deploymentRouteKey, flowRouteKey, flowRunsRouteKey, flowsRouteKey, deploymentsRouteKey, queuesRouteKey, settingsRouteKey, workQueueRouteKey, Route } from '@/router'
   import { flowRunsApiKey, logsApiKey, taskRunsApiKey, flowsApiKey, deploymentsApiKey, workQueuesApiKey } from '@/services'
 
   const emptyRoute = (): Route => ({ path: '/nothing' })
@@ -45,11 +47,12 @@
   provide(deploymentsApiKey, deploymentsApi)
   provide(workQueuesApiKey, workQueueApi)
   provide(flowRouteKey, emptyRoute)
-  provide(flowRunRouteKey, emptyRoute)
+  provide(flowRunsRouteKey, emptyRoute)
   provide(deploymentRouteKey, emptyRoute)
   provide(flowRunsRouteKey, emptyRoute)
   provide(flowsRouteKey, emptyRoute)
   provide(deploymentsRouteKey, emptyRoute)
   provide(queuesRouteKey, emptyRoute)
   provide(settingsRouteKey, emptyRoute)
+  provide(workQueueRouteKey, emptyRoute)
 </script>

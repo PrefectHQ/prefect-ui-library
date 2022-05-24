@@ -13,3 +13,4 @@ export const flowRunRouteKey: InjectionKey<(flowRunId: string) => Route> = Symbo
 export const taskRunRouteKey: InjectionKey<(taskRunId: string) => Route> = Symbol('taskRunRouteKey')
 export const flowRouteKey: InjectionKey<(flowId: string) => Route> = Symbol('flowRouteKey')
 export const deploymentRouteKey: InjectionKey<(deploymentId: string) => Route> = Symbol('deploymentRouteKey')
+export const workQueueRouteKey: InjectionKey<(workQueueId: string) => RouteLocationRaw> = Symbol('workQueueRouteKey')
