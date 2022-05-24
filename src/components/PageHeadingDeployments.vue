@@ -1,6 +1,6 @@
 <template>
   <page-heading class="page-heading-deployments" :crumbs="crumbs">
-    <p-button inset size="xs" icon="PlusIcon" />
+    <p-button v-if="false" inset size="xs" icon="PlusIcon" />
   </page-heading>
 </template>
 
