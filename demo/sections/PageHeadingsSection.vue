@@ -10,10 +10,8 @@
     <DemoSubSection heading="Object Pages">
       <page-heading-flow :flow="flow" />
       <page-heading-deployment :deployment="deployment" />
-      <!--
-        <page-heading-queue />
-        <page-heading-flow-run />
-      -->
+      <page-heading-queue :queue="queue" />
+      <!-- <page-heading-flow-run /> -->
     </DemoSubSection>
   </DemoSection>
 </template>
@@ -26,9 +24,11 @@
   import PageHeadingFlow from '@/components/PageHeadingFlow.vue'
   import PageHeadingFlowRuns from '@/components/PageHeadingFlowRuns.vue'
   import PageHeadingFlows from '@/components/PageHeadingFlows.vue'
+  import PageHeadingQueue from '@/components/PageHeadingQueue.vue'
   import PageHeadingQueues from '@/components/PageHeadingQueues.vue'
   import { mocker } from '@/services'
 
   const flow = mocker.create('flow', [{ name: 'ETL' }])
   const deployment = mocker.create('deployment', [{ name: 'Production' }])
+  const queue = mocker.create('workQueue', [{ name: 'ECS - Prod' }])
 </script>
