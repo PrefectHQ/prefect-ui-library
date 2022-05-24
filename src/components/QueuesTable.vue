@@ -32,7 +32,7 @@
       label: 'Concurrency',
     },
     {
-      label: 'Action',
+      label: '',
       width: '100px',
     },
   ]
