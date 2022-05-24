@@ -1,8 +1,8 @@
 <template>
-  <span class="state-badge" :class="classes">
-    <state-icon :state-type="state?.type" :shade="iconShade" class="w-4 h-4" />
-    {{ name }}
-  </span>
+  <p-tag class="state-badge" :class="classes" :dismissible="dismissible">
+    <StateIcon :state-type="state?.type" :shade="iconShade" class="state-badge__icon" />
+    <span>{{ name }}</span>
+  </p-tag>
 </template>
 
 <script lang="ts" setup>
@@ -14,6 +14,7 @@
   const props = defineProps<{
     state: { name: string, type: StateType } | null,
     flat?: boolean,
+    dismissible?: boolean,
   }>()
 
   const type = computed(() => props.state?.type ?? 'unknown')
@@ -38,6 +39,11 @@
   rounded-full
   py-0.5
   px-2.5
+}
+
+.state-badge__icon { @apply
+  w-4
+  h-4
 }
 
 .state-badge--completed { @apply

@@ -1,24 +1,19 @@
 <template>
   <div class="state-select">
-    <p-select v-model="selectedStateType" :options="options" :multiple="multiple">
+    <p-select v-model="internalValue" :options="options" :empty-message="emptyMessage">
       <template #option="{ option }">
-        <div class="state-select__option">
-          <StateIcon :state-type="option.value" />
-          <span>{{ option.label }}</span>
-        </div>
+        <StateBadge flat :state="{ name: option.value, type: option.value }" />
       </template>
-      <div class="state-select__option">
-        <template v-if="!selectedStateType.length">
-          <span>{{ emptyMessage }}</span>
-        </template>
-        <template v-else-if="selectedStateType.length === 1">
-          <StateIcon :state-type="selectedStateType[0]" />
-          <span>{{ selectedStateType[0] }}</span>
-        </template>
-        <template v-else>
-          {{ selectedStateType.length }} {{ toPluralString('state', selectedStateType.length) }}
-        </template>
-      </div>
+      <template #default="{ selectedOption, unselectOption }">
+        <StateBadge
+          class="state-select__option"
+          :class="{ 'state-select__option--multiple': multiple }"
+          :state="{ name: selectedOption.value, type: selectedOption.value }"
+          :flat="!multiple"
+          :dismissible="multiple"
+          @dismiss="unselectOption"
+        />
+      </template>
     </p-select>
   </div>
 </template>
@@ -26,54 +21,46 @@
 <script lang="ts" setup>
   import { PSelect } from '@prefecthq/prefect-design'
   import { computed } from 'vue'
-  import StateIcon from '@/components/StateIcon.vue'
-  import { StateType, stateType } from '@/models/StateType'
-  import { toPluralString } from '@/utilities/strings'
+  import StateBadge from '@/components/StateBadge.vue'
+  import { stateType } from '@/models/StateType'
 
   const props = defineProps<{
-    stateType: string | string[] | null | undefined,
-    multiple?: boolean,
+    selected: string | string[] | null | undefined,
     emptyMessage?: string,
   }>()
 
   const emits = defineEmits<{
-    (event: 'update:stateType', value: string | string[] | null): void,
+    (event: 'update:selected', value: string | string[] | null): void,
   }>()
 
-  const selectedStateType = computed<StateType[]>({
+  const internalValue = computed({
     get() {
-      if (!props.stateType) {
-        return []
-      }
-
-      if (!Array.isArray(props.stateType)) {
-        return [props.stateType as StateType]
-      }
-
-      return props.stateType as StateType[]
+      return props.selected ?? null
     },
-    set(value: StateType[]) {
-      if (!props.multiple) {
-        emits('update:stateType', value.pop() ?? null)
+    set(value: string | string[] | null) {
+      if (!value) {
+        emits('update:selected', null)
+      } else if (multiple.value) {
+        emits('update:selected', Array.isArray(value) ? value : [value])
       } else {
-        emits('update:stateType', value)
+        emits('update:selected', value)
       }
     },
   })
+
+  const multiple = computed(() => Array.isArray(internalValue.value))
 
   const options = computed(() => [...stateType, 'late'])
 </script>
 
 <style>
-.state-select__option { @apply
-  flex
-  items-center
-  gap-2
-  capitalize
+.state-select__option:not(.state-select__option--multiple) { @apply
+  text-base
+  font-normal
 }
 
-.state-select__option svg { @apply
-  h-4
-  w-4
+.state-select__option:not(.state-select__option--multiple) .state-badge__icon { @apply
+  w-5
+  h-5
 }
 </style>
