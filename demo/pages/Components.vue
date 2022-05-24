@@ -5,6 +5,7 @@
     <EmptyStateSection />
     <ContextSidebarSection />
     <ListsSection />
+    <TablesSection />
     <ToggleSection />
     <MetaWellSection />
   </p-layout-default>
@@ -18,5 +19,6 @@
   import LogSection from '../sections/LogsSection.vue'
   import MetaWellSection from '../sections/MetaWellSection.vue'
   import StatesSection from '../sections/StatesSection.vue'
+  import TablesSection from '../sections/TablesSection.vue'
   import ToggleSection from '../sections/ToggleSection.vue'
 </script>
