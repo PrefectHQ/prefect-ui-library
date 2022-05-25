@@ -1,8 +1,8 @@
 <template>
-  <p-label for="search" label="flowRunSearch" class="flow-runs-search--label" />
-  <p-text-input v-model="internalValue" type="search" :placeholder="placeholderText" class="flow-runs-search--input">
+  <p-label for="search" label="runSearch" class="runs-search--label" />
+  <p-text-input v-model="internalValue" type="search" :placeholder="placeholderText" class="runs-search--input">
     <template #prepend>
-      <p-icon icon="SearchIcon" class="flow-runs-search--icon" />
+      <p-icon icon="SearchIcon" class="runs-search--icon" />
     </template>
   </p-text-input>
 </template>
@@ -20,7 +20,7 @@
     (event: 'update:modelValue', value: string | null | undefined): void,
   }>()
 
-  const debounceEmit = debounce((value: string) => {
+  const debounceEmit = debounce((value: string | null | undefined) => {
     emits('update:modelValue', value)
   }, 500)
 
@@ -38,15 +38,15 @@
 </script>
 
 <style>
-.flow-runs-search--label {
+.runs-search--label {
   @apply sr-only
 }
 
-.flow-runs-search--input {
+.runs-search--input {
   @apply w-auto
 }
 
-.flow-runs-search--icon {
+.runs-search--icon {
   @apply h-5 w-5 text-gray-500 ml-2
 }
 </style>
