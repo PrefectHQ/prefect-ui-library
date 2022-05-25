@@ -25,7 +25,7 @@
     </template>
 
     <template #actions>
-      <p-button class="w-full bg-red-500 inline-flex justify-center sm:w-auto sm:text-sm">
+      <p-button class="w-full bg-red-500 inline-flex justify-center sm:w-auto sm:text-sm" @click="initiateDelete">
         Delete
       </p-button>
     </template>
@@ -36,9 +36,16 @@
   import { POverflowMenuItem } from '@prefecthq/prefect-design'
   import { ref } from 'vue'
 
-  const showModal = ref(false)
   defineProps<{
     id: string,
     name: string,
   }>()
+
+  const showModal = ref(false)
+  const emit = defineEmits(['remove'])
+
+  const initiateDelete = (): void => {
+    emit('remove')
+    showModal.value = false
+  }
 </script>
