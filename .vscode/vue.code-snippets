@@ -56,41 +56,6 @@
         ],
         "description": "vue-demo"
     },
-    "vue-demo-section": {
-        "scope": "vue",
-        "prefix": "vue",
-        "body": [
-            "<template>",
-            "  <DemoSection heading=\"${1}\">",
-            "",
-            "  </DemoSection>",
-            "</template>",
-            "",
-            "<script lang=\"ts\" setup>",
-            "  import DemoSection from '../components/DemoSection.vue'",
-            "</script>"
-        ],
-        "description": "vue-demo"
-    },
-    "vue-demo-section-sub-section": {
-        "scope": "vue",
-        "prefix": "vue",
-        "body": [
-          "<template>",
-          "  <DemoSection heading=\"${1}\">",
-          "    <DemoSubSection heading=\"${2}\">",
-          "",
-          "    </DemoSubSection>",
-          "  </DemoSection>",
-          "</template>",
-          "",
-          "<script lang=\"ts\" setup>",
-          "  import DemoSection from '../components/DemoSection.vue'",
-          "  import DemoSubSection from '../components/DemoSubSection.vue'",
-          "</script>"
-        ],
-        "description": "vue-demo"
-    },
     "template": {
         "scope": "vue",
         "prefix": "template",
