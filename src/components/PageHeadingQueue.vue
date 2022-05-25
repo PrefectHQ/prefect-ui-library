@@ -5,7 +5,7 @@
 
       <p-icon-button-menu>
         <template #default="{ close }">
-          <copy-overflow-menu-item label="Copy ID" :close="close" :item="queue.id" />
+          <copy-overflow-menu-item label="Copy ID" :item="queue.id" @click="close" />
           <p-overflow-menu-item label="Edit" />
           <p-overflow-menu-item label="Delete" />
         </template>

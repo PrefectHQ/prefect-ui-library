@@ -3,7 +3,7 @@
     <template #actions>
       <p-icon-button-menu>
         <template #default="{ close }">
-          <copy-overflow-menu-item label="Copy ID" :close="close" :item="flow.id" />
+          <copy-overflow-menu-item label="Copy ID" :item="flow.id" @click="close" />
           <p-overflow-menu-item label="Delete" />
         </template>
       </p-icon-button-menu>

@@ -1,21 +1,12 @@
 <template>
-  <p-overflow-menu-item :label="label" @click="copy(close)" />
+  <p-overflow-menu-item :label="label" @click="copyToClipboard(item)" />
 </template>
 
 <script lang="ts" setup>
   import { copyToClipboard } from '@/utilities/copy'
 
-  const props = defineProps<{
-    close?: any,
+  defineProps<{
     item: string,
     label: string,
   }>()
-
-  const copy = (close?: () => void): void => {
-    copyToClipboard(props.item)
-
-    if (close) {
-      close()
-    }
-  }
 </script>

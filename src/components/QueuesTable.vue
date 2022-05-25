@@ -12,7 +12,7 @@
     <template #action="{ row }">
       <p-icon-button-menu size="xs">
         <template #default="{ close }">
-          <copy-overflow-menu-item label="Copy ID" :close="close" :item="row.id" />
+          <copy-overflow-menu-item label="Copy ID" :item="row.id" @click="close" />
           <p-overflow-menu-item label="Delete" />
         </template>
       </p-icon-button-menu>
