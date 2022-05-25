@@ -2,7 +2,7 @@
   <div class="virtual-scroller">
     <template v-for="(chunk, index) in chunks" :key="index">
       <VirtualScrollerChunk :height="itemEstimateHeight * chunk.length" v-bind="{ observerOptions }">
-        <template v-for="(item, itemIndex) in chunk" :key="itemIndex">
+        <template v-for="(item) in chunk" :key="item[itemKey]">
           <slot :item="item as any" />
         </template>
       </VirtualScrollerChunk>
@@ -21,10 +21,12 @@
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     items: Record<string, any>[],
     itemEstimateHeight?: number,
+    itemKey: string,
     chunkSize?: number,
     observerOptions?: IntersectionObserverInit,
   }>(), {
     itemEstimateHeight: 50,
+    itemKey: 'id',
     chunkSize: 50,
     observerOptions: () =>({
       rootMargin: '200px',
