@@ -1,11 +1,11 @@
 <template>
-  <p-select v-model="internalValue" :options="flowRunSortOptions" />
+  <p-select v-model="internalValue" :options="taskRunSortOptions" />
 </template>
 
 <script lang="ts" setup>
   import { PSelect, SelectModelValue } from '@prefecthq/prefect-design'
   import { computed } from 'vue'
-  import { FlowRunSortOptions } from  '../types/SortOptionTypes'
+  import { TaskRunSortOptions } from  '../types/SortOptionTypes'
 
   const props = defineProps<{
     modelValue: string,
@@ -24,10 +24,8 @@
     },
   })
 
-  const flowRunSortOptions: FlowRunSortOptions = [
+  const taskRunSortOptions: TaskRunSortOptions = [
     { label: 'Newest to Oldest', value: 'EXPECTED_START_TIME_DESC' },
     { label: 'Oldest to Newest', value: 'EXPECTED_START_TIME_ASC' },
-    { label: 'A to Z', value: 'NAME_ASC' },
-    { label: 'Z to A', value: 'NAME_DESC' },
   ]
 </script>
