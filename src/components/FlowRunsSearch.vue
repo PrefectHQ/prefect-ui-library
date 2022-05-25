@@ -15,7 +15,7 @@
 
 
   const props = defineProps<{
-    modelValue: string,
+    modelValue: string | null | undefined,
   }>()
 
   const emits = defineEmits<{
