@@ -1,7 +1,5 @@
 <template>
-  <div class="flow-runs-sort">
-    <p-select v-model="internalValue" :options="flowRunSortOptions" />
-  </div>
+  <p-select v-model="internalValue" :options="flowRunSortOptions" />
 </template>
 
 <script lang="ts" setup>
@@ -33,7 +31,3 @@
     { label: 'Z to A', value: 'NAME_DESC' },
   ]
 </script>
-
-<style>
-  .flow-runs-sort{}
-</style>
