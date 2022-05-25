@@ -1,7 +1,5 @@
 <template>
-  <div class="task-runs-sort">
-    <p-select v-model="internalValue" :options="taskRunSortOptions" />
-  </div>
+  <p-select v-model="internalValue" :options="taskRunSortOptions" />
 </template>
 
 <script lang="ts" setup>
@@ -31,7 +29,3 @@
     { label: 'Oldest to Newest', value: 'EXPECTED_START_TIME_ASC' },
   ]
 </script>
-
-<style>
-  .task-runs-sort{}
-</style>
