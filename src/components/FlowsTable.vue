@@ -16,7 +16,7 @@
       <p-icon-button-menu size="xs">
         <template #default="{ close }">
           <copy-overflow-menu-item label="Copy ID" :item="row.id" @click="close" />
-          <delete-overflow-menu-item :id="row.id" :name="row.name" />
+          <delete-overflow-menu-item :id="row.id" :name="row.name" @remove="deleteFlow(row.id)" />
         </template>
       </p-icon-button-menu>
     </template>
@@ -24,14 +24,16 @@
 </template>
 
 <script lang="ts" setup>
-  import { PTable, PTagWrapper, PIconButtonMenu } from '@prefecthq/prefect-design'
+  import { PTable, PTagWrapper, PIconButtonMenu, showToast } from '@prefecthq/prefect-design'
   import CopyOverflowMenuItem from './CopyOverflowMenuItem.vue'
   import DeleteOverflowMenuItem from './DeleteOverflowMenuItem.vue'
   import { Flow } from '@/models'
   import { flowRouteKey } from '@/router'
+  import { flowsApiKey } from '@/services/FlowsApi'
   import { inject } from '@/utilities/inject'
 
   const flowRoute = inject(flowRouteKey)
+  const flowsApi = inject(flowsApiKey)
 
   defineProps<{
     flows: Flow[],
@@ -57,4 +59,17 @@
       width: '42px',
     },
   ]
+
+  const emit = defineEmits(['refresh'])
+
+  const deleteFlow = async (id: string): Promise<void> => {
+    try {
+      await flowsApi.deleteFlow(id)
+      showToast('Flow deleted successfully!', 'success', undefined, 3000)
+      emit('refresh')
+    } catch (error) {
+      showToast('Failed to delete flow!', 'error', undefined, 3000)
+      console.error(error)
+    }
+  }
 </script>
