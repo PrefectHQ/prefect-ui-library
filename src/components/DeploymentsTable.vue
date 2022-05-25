@@ -17,7 +17,7 @@
         <template #default="{ close }">
           <copy-overflow-menu-item label="Copy ID" :item="row.id" @click="close" />
           <p-overflow-menu-item label="Run" class="deployments-table__hide-on-desktop" />
-          <delete-overflow-menu-item :id="row.id" :name="row.name" @remove="deleteDeployment(row.id)" />
+          <delete-overflow-menu-item :name="row.name" @remove="deleteDeployment(row.id)" />
         </template>
       </p-icon-button-menu>
     </template>
@@ -67,10 +67,10 @@
   const deleteDeployment = async (id: string): Promise<void> => {
     try {
       await deploymentsApi.deleteDeployment(id)
-      showToast('Flow deleted successfully!', 'success', undefined, 3000)
+      showToast('Deployment deleted successfully!', 'success', undefined, 3000)
       emit('refresh')
     } catch (error) {
-      showToast('Failed to delete flow!', 'error', undefined, 3000)
+      showToast('Failed to delete deployment', 'error', undefined, 3000)
       console.error(error)
     }
   }

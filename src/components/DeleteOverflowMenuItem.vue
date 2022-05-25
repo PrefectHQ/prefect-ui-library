@@ -37,7 +37,6 @@
   import { ref } from 'vue'
 
   defineProps<{
-    id: string,
     name: string,
   }>()
 

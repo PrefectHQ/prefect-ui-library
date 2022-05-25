@@ -16,7 +16,7 @@
       <p-icon-button-menu size="xs">
         <template #default="{ close }">
           <copy-overflow-menu-item label="Copy ID" :item="row.id" @click="close" />
-          <delete-overflow-menu-item :id="row.id" :name="row.name" @remove="deleteFlow(row.id)" />
+          <delete-overflow-menu-item :name="row.name" @remove="deleteFlow(row.id)" />
         </template>
       </p-icon-button-menu>
     </template>
@@ -68,7 +68,7 @@
       showToast('Flow deleted successfully!', 'success', undefined, 3000)
       emit('refresh')
     } catch (error) {
-      showToast('Failed to delete flow!', 'error', undefined, 3000)
+      showToast('Failed to delete flow', 'error', undefined, 3000)
       console.error(error)
     }
   }
