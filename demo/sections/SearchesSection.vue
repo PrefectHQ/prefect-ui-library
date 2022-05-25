@@ -1,7 +1,7 @@
 <template>
   <DemoSection heading="Searches">
     <DemoSubSection heading="Flow Runs Search">
-      <FlowRunsSearch v-model="flowRunSearchInput" />
+      <RunsSearch v-model="runSearchInput" />
     </DemoSubSection>
   </DemoSection>
 </template>
@@ -10,7 +10,7 @@
   import { ref } from 'vue'
   import DemoSection from '../components/DemoSection.vue'
   import DemoSubSection from '../components/DemoSubSection.vue'
-  import { FlowRunsSearch } from '@/components'
+  import { RunsSearch } from '@/components'
 
-  const flowRunSearchInput = ref<string | null | undefined>(null)
+  const runSearchInput = ref<string | null | undefined>(null)
 </script>
