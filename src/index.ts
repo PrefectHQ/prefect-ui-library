@@ -1,3 +1,5 @@
+import '@prefecthq/vue-charts/dist/style.css'
+
 export * from './components'
 export * from './compositions'
 export * from './mocks'
@@ -9,5 +11,4 @@ export * from './stores'
 export * from './types'
 export * from './utilities'
 
-import '@prefecthq/vue-charts/dist/style.css'
 import '@/styles/style.css'
