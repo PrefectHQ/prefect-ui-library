@@ -39,8 +39,7 @@ export function useFlowRunFilter(filters: UseFlowRunFilterArgs): Ref<UnionFilter
     }
 
     if (filters.states?.value.length) {
-      // eslint-disable-next-line camelcase
-      response.flow_runs = {
+      response['flow_runs'] = {
         state: {
           type: {
             any_: mapper.map('StateType', filters.states.value, 'ServerStateType'),
