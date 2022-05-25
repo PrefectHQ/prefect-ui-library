@@ -17,7 +17,7 @@
         <template #default="{ close }">
           <copy-overflow-menu-item label="Copy ID" :item="row.id" @click="close" />
           <p-overflow-menu-item label="Run" class="deployments-table__hide-on-desktop" />
-          <p-overflow-menu-item label="Delete" />
+          <delete-overflow-menu-item :id="row.id" :name="row.name" @remove="deleteDeployment(row.id)" />
         </template>
       </p-icon-button-menu>
     </template>
@@ -25,10 +25,12 @@
 </template>
 
 <script lang="ts" setup>
-  import { PTable, PTagWrapper, PIconButtonMenu, POverflowMenuItem } from '@prefecthq/prefect-design'
+  import { PTable, PTagWrapper, PIconButtonMenu, POverflowMenuItem, showToast } from '@prefecthq/prefect-design'
   import CopyOverflowMenuItem from './CopyOverflowMenuItem.vue'
+  import DeleteOverflowMenuItem from './DeleteOverflowMenuItem.vue'
   import { Deployment } from '@/models'
   import { deploymentRouteKey } from '@/router'
+  import { deploymentsApiKey } from '@/services/DeploymentsApi'
   import { inject } from '@/utilities/inject'
 
   const deploymentRoute = inject(deploymentRouteKey)
@@ -36,6 +38,8 @@
   defineProps<{
     deployments: Deployment[],
   }>()
+
+  const deploymentsApi = inject(deploymentsApiKey)
 
   const columns = [
     {
@@ -57,6 +61,19 @@
       width: '42px',
     },
   ]
+
+  const emit = defineEmits(['refresh'])
+
+  const deleteDeployment = async (id: string): Promise<void> => {
+    try {
+      await deploymentsApi.deleteDeployment(id)
+      showToast('Flow deleted successfully!', 'success', undefined, 3000)
+      emit('refresh')
+    } catch (error) {
+      showToast('Failed to delete flow!', 'error', undefined, 3000)
+      console.error(error)
+    }
+  }
 </script>
 
 <style>
