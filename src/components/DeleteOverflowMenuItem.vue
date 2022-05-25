@@ -25,7 +25,7 @@
     </template>
 
     <template #actions>
-      <p-button class="w-full bg-red-500 inline-flex justify-center sm:w-auto sm:text-sm" @click="initiateDelete">
+      <p-button class="w-full bg-red-500 inline-flex justify-center sm:w-auto sm:text-sm" @click="remove">
         Delete
       </p-button>
     </template>
@@ -43,7 +43,7 @@
   const showModal = ref(false)
   const emit = defineEmits(['remove'])
 
-  const initiateDelete = (): void => {
+  const remove = (): void => {
     emit('remove')
     showModal.value = false
   }
