@@ -31,8 +31,7 @@ export function useFlowRunFilter(filters: UseFlowRunFilterArgs): Ref<UnionFilter
     }
 
     if (filters.tags?.value.length) {
-      // eslint-disable-next-line camelcase
-      response.flow_runs = {
+      response['flow_runs'] = {
         tags: {
           all_: filters.tags.value,
         },
