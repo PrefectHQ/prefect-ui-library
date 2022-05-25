@@ -2,8 +2,8 @@
   <page-heading class="page-heading-flow" :crumbs="crumbs">
     <template #actions>
       <p-icon-button-menu>
-        <template #default>
-          <p-overflow-menu-item label="Copy ID" />
+        <template #default="{ close }">
+          <copy-overflow-menu-item label="Copy ID" :item="flow.id" @click="close" />
           <p-overflow-menu-item label="Delete" />
         </template>
       </p-icon-button-menu>
@@ -14,6 +14,7 @@
 <script lang="ts" setup>
   import { PIconButtonMenu } from '@prefecthq/prefect-design'
   import { computed } from 'vue'
+  import CopyOverflowMenuItem from './CopyOverflowMenuItem.vue'
   import PageHeading from '@/components/PageHeading.vue'
   import { Flow } from '@/models'
 

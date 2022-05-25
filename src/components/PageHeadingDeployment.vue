@@ -9,8 +9,8 @@
       </p-button>
 
       <p-icon-button-menu>
-        <template #default>
-          <p-overflow-menu-item label="Copy ID" />
+        <template #default="{ close }">
+          <copy-overflow-menu-item label="Copy ID" :item="deployment.id" @click="close" />
           <p-overflow-menu-item label="Delete" />
         </template>
       </p-icon-button-menu>
@@ -22,6 +22,7 @@
   import { PIconButtonMenu, PIcon, PButton } from '@prefecthq/prefect-design'
   import { useSubscription } from '@prefecthq/vue-compositions'
   import { computed } from 'vue'
+  import CopyOverflowMenuItem from './CopyOverflowMenuItem.vue'
   import DeploymentToggle from '@/components/DeploymentToggle.vue'
   import PageHeading from '@/components/PageHeading.vue'
   import { Deployment } from '@/models'

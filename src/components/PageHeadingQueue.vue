@@ -4,8 +4,8 @@
       <WorkQueueToggle :work-queue="queue" />
 
       <p-icon-button-menu>
-        <template #default>
-          <p-overflow-menu-item label="Copy ID" />
+        <template #default="{ close }">
+          <copy-overflow-menu-item label="Copy ID" :item="queue.id" @click="close" />
           <p-overflow-menu-item label="Edit" />
           <p-overflow-menu-item label="Delete" />
         </template>
@@ -17,6 +17,7 @@
 <script lang="ts" setup>
   import { PIconButtonMenu } from '@prefecthq/prefect-design'
   import { computed } from 'vue'
+  import CopyOverflowMenuItem from './CopyOverflowMenuItem.vue'
   import PageHeading from '@/components/PageHeading.vue'
   import WorkQueueToggle from '@/components/WorkQueueToggle.vue'
   import { WorkQueue } from '@/models'

@@ -12,10 +12,10 @@
     <template #action-heading>
       <span />
     </template>
-    <template #action>
+    <template #action="{ row }">
       <p-icon-button-menu size="xs">
-        <template #default>
-          <p-overflow-menu-item label="Copy ID" />
+        <template #default="{ close }">
+          <copy-overflow-menu-item label="Copy ID" :item="row.id" @click="close" />
           <p-overflow-menu-item label="Delete" />
         </template>
       </p-icon-button-menu>
@@ -25,6 +25,7 @@
 
 <script lang="ts" setup>
   import { PTable, PTagWrapper, PIconButtonMenu, POverflowMenuItem } from '@prefecthq/prefect-design'
+  import CopyOverflowMenuItem from './CopyOverflowMenuItem.vue'
   import { Flow } from '@/models'
   import { flowRouteKey } from '@/router'
   import { inject } from '@/utilities/inject'

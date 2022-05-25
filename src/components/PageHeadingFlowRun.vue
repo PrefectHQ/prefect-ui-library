@@ -2,8 +2,8 @@
   <page-heading class="page-heading-flow-run" :crumbs="crumbs">
     <template #actions>
       <p-icon-button-menu>
-        <template #default>
-          <p-overflow-menu-item label="Copy ID" />
+        <template #default="{ close }">
+          <copy-overflow-menu-item label="Copy ID" :item="flowRun.id" @click="close" />
           <p-overflow-menu-item label="Set State" />
           <p-overflow-menu-item label="Delete" />
         </template>
@@ -16,12 +16,12 @@
   import { PIconButtonMenu } from '@prefecthq/prefect-design'
   import { useSubscription } from '@prefecthq/vue-compositions'
   import { computed } from 'vue'
+  import CopyOverflowMenuItem from './CopyOverflowMenuItem.vue'
   import PageHeading from '@/components/PageHeading.vue'
   import { FlowRun } from '@/models'
   import { flowsRouteKey } from '@/router'
   import { flowsApiKey } from '@/services'
   import { inject } from '@/utilities'
-
 
   const flowsRoute = inject(flowsRouteKey)
   const flowsApi = inject(flowsApiKey)
