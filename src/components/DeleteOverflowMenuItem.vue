@@ -2,9 +2,7 @@
   <div class="delete-overflow-menu-item">
     <p-overflow-menu-item label="Delete" @click="showModal = true" />
 
-    <p-modal
-      v-model:showModal="showModal"
-    >
+    <p-modal v-model:showModal="showModal">
       <template #title>
         <div class="delete-overflow-menu-item__title">
           <p-icon icon="ExclamationCircleIcon" class="delete-overflow-menu-item__title-icon" />
