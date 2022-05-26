@@ -8,7 +8,7 @@
       <DeploymentsTable :deployments="deploymentsData" />
     </DemoSubSection>
 
-    <DemoSubSection heading="Deployments table">
+    <DemoSubSection heading="Queues table">
       <QueuesTable :queues="queuesData" />
     </DemoSubSection>
   </DemoSection>
