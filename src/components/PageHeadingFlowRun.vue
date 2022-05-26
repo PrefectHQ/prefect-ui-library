@@ -5,7 +5,7 @@
         <template #default="{ close }">
           <copy-overflow-menu-item label="Copy ID" :item="flowRun.id" @click="close" />
           <p-overflow-menu-item label="Set State" />
-          <delete-overflow-menu-item :name="flowRun.name!" @remove="deleteFlowRun(flowRun.id)" />
+          <delete-overflow-menu-item :name="flowRun.name!" @delete="deleteFlowRun(flowRun.id)" />
         </template>
       </p-icon-button-menu>
     </template>

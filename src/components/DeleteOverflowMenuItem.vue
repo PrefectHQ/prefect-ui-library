@@ -39,10 +39,10 @@
   }>()
 
   const showModal = ref(false)
-  const emit = defineEmits(['remove'])
+  const emit = defineEmits(['delete'])
 
   const remove = (): void => {
-    emit('remove')
+    emit('delete')
     showModal.value = false
   }
 </script>

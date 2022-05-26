@@ -13,7 +13,7 @@
       <p-icon-button-menu size="xs">
         <template #default="{ close }">
           <copy-overflow-menu-item label="Copy ID" :item="row.id" @click="close" />
-          <delete-overflow-menu-item :name="row.name" @remove="deleteWorkQueue(row.id)" />
+          <delete-overflow-menu-item :name="row.name" @delete="deleteWorkQueue(row.id)" />
         </template>
       </p-icon-button-menu>
     </template>

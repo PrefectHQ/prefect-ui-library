@@ -11,7 +11,7 @@
       <p-icon-button-menu>
         <template #default="{ close }">
           <copy-overflow-menu-item label="Copy ID" :item="deployment.id" @click="close" />
-          <delete-overflow-menu-item :name="deployment.name" @remove="deleteDeployment(deployment.id)" />
+          <delete-overflow-menu-item :name="deployment.name" @delete="deleteDeployment(deployment.id)" />
         </template>
       </p-icon-button-menu>
     </template>

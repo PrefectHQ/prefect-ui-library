@@ -4,7 +4,7 @@
       <p-icon-button-menu>
         <template #default="{ close }">
           <copy-overflow-menu-item label="Copy ID" :item="flow.id" @click="close" />
-          <delete-overflow-menu-item :name="flow.name" @remove="deleteFlow(flow.id)" />
+          <delete-overflow-menu-item :name="flow.name" @delete="deleteFlow(flow.id)" />
         </template>
       </p-icon-button-menu>
     </template>
