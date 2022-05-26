@@ -22,18 +22,22 @@
   import PageHeading from '@/components/PageHeading.vue'
   import WorkQueueToggle from '@/components/WorkQueueToggle.vue'
   import { WorkQueue } from '@/models'
+  import { workQueuesApiKey } from '@/services/WorkQueuesApi'
   import { deleteItem } from '@/utilities'
+  import { inject } from '@/utilities/inject'
 
   const props = defineProps<{
     queue: WorkQueue,
   }>()
+
+  const workQueuesApi = inject(workQueuesApiKey)
 
   const crumbs = computed(() => [{ text: props.queue.name }])
 
   const emit = defineEmits(['refresh'])
 
   const deleteWorkQueue = (id: string): void => {
-    deleteItem(id, 'Work queue')
+    deleteItem(id, workQueuesApi.deleteWorkQueue, 'Work queue')
     emit('refresh')
   }
 </script>
