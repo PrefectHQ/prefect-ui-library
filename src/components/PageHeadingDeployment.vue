@@ -11,7 +11,7 @@
       <p-icon-button-menu>
         <template #default="{ close }">
           <copy-overflow-menu-item label="Copy ID" :item="deployment.id" @click="close" />
-          <p-overflow-menu-item label="Delete" />
+          <delete-overflow-menu-item :name="deployment.name" @remove="deleteDeployment(deployment.id)" />
         </template>
       </p-icon-button-menu>
     </template>
@@ -19,15 +19,17 @@
 </template>
 
 <script lang="ts" setup>
-  import { PIconButtonMenu, PIcon, PButton } from '@prefecthq/prefect-design'
+  import { PIconButtonMenu, PIcon, PButton, showToast } from '@prefecthq/prefect-design'
   import { useSubscription } from '@prefecthq/vue-compositions'
   import { computed } from 'vue'
   import CopyOverflowMenuItem from './CopyOverflowMenuItem.vue'
+  import DeleteOverflowMenuItem from './DeleteOverflowMenuItem.vue'
   import DeploymentToggle from '@/components/DeploymentToggle.vue'
   import PageHeading from '@/components/PageHeading.vue'
   import { Deployment } from '@/models'
   import { flowsRouteKey } from '@/router'
   import { flowsApiKey } from '@/services'
+  import { deploymentsApiKey } from '@/services/DeploymentsApi'
   import { inject } from '@/utilities'
 
   const flowsRoute = inject(flowsRouteKey)
@@ -37,10 +39,25 @@
     deployment: Deployment,
   }>()
 
+  const deploymentsApi = inject(deploymentsApiKey)
+
   const flowSubscription = useSubscription(flowsApi.getFlow, [props.deployment.flowId])
   const flowName = computed(() => flowSubscription.response?.name ?? '')
 
   const crumbs = computed(() => [{ text: flowName.value, to: flowsRoute() }, { text: props.deployment.name }])
+
+  const emit = defineEmits(['refresh'])
+
+  const deleteDeployment = async (id: string): Promise<void> => {
+    try {
+      await deploymentsApi.deleteDeployment(id)
+      showToast('Deployment deleted successfully!', 'success', undefined, 3000)
+      emit('refresh')
+    } catch (error) {
+      showToast('Failed to delete deployment', 'error', undefined, 3000)
+      console.error(error)
+    }
+  }
 </script>
 
 <style>
