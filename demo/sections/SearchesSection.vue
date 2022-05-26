@@ -5,6 +5,7 @@
     </DemoSubSection>
     <DemoSubSection heading="Flows Search">
       <FlowSearch v-model="flowSearchInput" />
+      <div>{{ flowsData }}</div>
     </DemoSubSection>
   </DemoSection>
 </template>
