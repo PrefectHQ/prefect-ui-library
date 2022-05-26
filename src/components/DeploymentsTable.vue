@@ -62,11 +62,11 @@
     },
   ]
 
-  const emit = defineEmits(['refresh'])
+  const emit = defineEmits(['delete'])
 
   const deleteDeployment = (id: string): void => {
     deleteItem(id, deploymentsApi.deleteDeployment, 'Deployment')
-    emit('refresh')
+    emit('delete', id)
   }
 </script>
 

@@ -29,10 +29,10 @@
 
   const crumbs = computed(() => [{ text: props.flow.name }])
 
-  const emit = defineEmits(['refresh'])
+  const emit = defineEmits(['delete'])
 
   const deleteFlow = (id: string): void => {
     deleteItem(id, flowsApi.deleteFlow, 'Flow')
-    emit('refresh')
+    emit('delete', id)
   }
 </script>

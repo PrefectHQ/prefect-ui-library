@@ -46,11 +46,11 @@
 
   const crumbs = computed(() => [{ text: flowName.value, to: flowsRoute() }, { text: props.deployment.name }])
 
-  const emit = defineEmits(['refresh'])
+  const emit = defineEmits(['delete'])
 
   const deleteDeployment = (id: string): void => {
     deleteItem(id, deploymentsApi.deleteDeployment, 'Deployment')
-    emit('refresh')
+    emit('delete', id)
   }
 </script>
 

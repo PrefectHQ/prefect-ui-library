@@ -52,10 +52,10 @@
     },
   ]
 
-  const emit = defineEmits(['refresh'])
+  const emit = defineEmits(['delete'])
 
   const deleteWorkQueue = (id: string): void => {
     deleteItem(id, workQueuesApi.deleteWorkQueue, 'Work queue')
-    emit('refresh')
+    emit('delete', id)
   }
 </script>

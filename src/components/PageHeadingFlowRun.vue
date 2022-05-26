@@ -39,10 +39,10 @@
   // the flow run model dictates the flow run name can be null
   const crumbs = computed(() => [{ text: flowName.value, to: flowsRoute() }, { text: props.flowRun.name ?? '' }])
 
-  const emit = defineEmits(['refresh'])
+  const emit = defineEmits(['delete'])
 
   const deleteFlowRun = (id: string): void => {
     deleteItem(id, flowRunsApi.deleteFlowRun, 'Flow run')
-    emit('refresh')
+    emit('delete', id)
   }
 </script>
