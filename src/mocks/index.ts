@@ -3,10 +3,12 @@ import { randomDate } from './date'
 import { randomDeployment } from './deployment'
 import { randomFlow } from './flow'
 import { randomFlowRun } from './flowRun'
+import { randomFlowRunGraph, randomGraphNode } from './flowRunGraph'
 import { randomFlowRunHistory } from './flowRunHistory'
 import { randomFlowRunner } from './flowRunner'
 import { randomFlowRunnerType } from './flowRunnerType'
 import { randomFlowRunStateHistory } from './flowRunStateHistory'
+import { randomId } from './id'
 import { randomLogLevel, randomLog } from './log'
 import { randomNumber } from './number'
 import { randomState } from './state'
@@ -23,6 +25,9 @@ export const mocks = {
   deployment: randomDeployment,
   flow: randomFlow,
   flowRun: randomFlowRun,
+  flowRunGraph: randomFlowRunGraph,
+  graphNode: randomGraphNode,
+  id: randomId,
   logLevel: randomLogLevel,
   log: randomLog,
   number: randomNumber,
