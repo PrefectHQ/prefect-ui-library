@@ -13,7 +13,7 @@
 </template>
 
 <script lang="ts" setup>
-  import { PIconButtonMenu, showToast } from '@prefecthq/prefect-design'
+  import { PIconButtonMenu } from '@prefecthq/prefect-design'
   import { useSubscription } from '@prefecthq/vue-compositions'
   import { computed } from 'vue'
   import CopyOverflowMenuItem from './CopyOverflowMenuItem.vue'
@@ -22,7 +22,7 @@
   import { FlowRun } from '@/models'
   import { flowsRouteKey } from '@/router'
   import { flowRunsApiKey, flowsApiKey } from '@/services'
-  import { inject } from '@/utilities'
+  import { deleteItem, inject } from '@/utilities'
 
   const flowsRoute = inject(flowsRouteKey)
   const flowsApi = inject(flowsApiKey)
@@ -42,13 +42,7 @@
   const emit = defineEmits(['refresh'])
 
   const deleteFlowRun = async (id: string): Promise<void> => {
-    try {
-      await flowRunsApi.deleteFlowRun(id)
-      showToast('Flow run deleted successfully!', 'success', undefined, 3000)
-      emit('refresh')
-    } catch (error) {
-      showToast('Failed to delete flow run', 'error', undefined, 3000)
-      console.error(error)
-    }
+    deleteItem(id, flowRunsApi.deleteFlowRun, 'Flow run')
+    emit('refresh')
   }
 </script>

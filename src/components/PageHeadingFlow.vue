@@ -12,14 +12,14 @@
 </template>
 
 <script lang="ts" setup>
-  import { PIconButtonMenu, showToast } from '@prefecthq/prefect-design'
+  import { PIconButtonMenu } from '@prefecthq/prefect-design'
   import { computed } from 'vue'
   import CopyOverflowMenuItem from './CopyOverflowMenuItem.vue'
   import DeleteOverflowMenuItem from './DeleteOverflowMenuItem.vue'
   import PageHeading from '@/components/PageHeading.vue'
   import { Flow } from '@/models'
   import { flowsApiKey } from '@/services/FlowsApi'
-  import { inject } from '@/utilities/inject'
+  import { deleteItem, inject } from '@/utilities'
 
   const props = defineProps<{
     flow: Flow,
@@ -32,13 +32,7 @@
   const emit = defineEmits(['refresh'])
 
   const deleteFlow = async (id: string): Promise<void> => {
-    try {
-      await flowsApi.deleteFlow(id)
-      showToast('Flow deleted successfully!', 'success', undefined, 3000)
-      emit('refresh')
-    } catch (error) {
-      showToast('Failed to delete flow', 'error', undefined, 3000)
-      console.error(error)
-    }
+    deleteItem(id, flowsApi.deleteFlow, 'Flow')
+    emit('refresh')
   }
 </script>

@@ -23,8 +23,7 @@
   import WorkQueueToggle from '@/components/WorkQueueToggle.vue'
   import { WorkQueue } from '@/models'
   import { workQueuesApiKey } from '@/services/WorkQueuesApi'
-  import { deleteItem } from '@/utilities'
-  import { inject } from '@/utilities/inject'
+  import { deleteItem, inject } from '@/utilities'
 
   const props = defineProps<{
     queue: WorkQueue,
