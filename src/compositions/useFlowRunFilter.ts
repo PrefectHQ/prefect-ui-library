@@ -50,14 +50,14 @@ export function useFlowRunFilter(filters: UseFlowRunFilterArgs): Ref<UnionFilter
       response.flow_runs ??= {}
       response.flow_runs.expected_start_time ??= {}
 
-      response.flow_runs.expected_start_time.after_ = filters.startDate.value.toISOString()
+      response.flow_runs.expected_start_time.after_ = mapper.map('Date', filters.startDate.value, 'string')
     }
 
     if (filters.endDate?.value) {
       response.flow_runs ??= {}
       response.flow_runs.expected_start_time ??= {}
 
-      response.flow_runs.expected_start_time.before_ = filters.endDate.value.toISOString()
+      response.flow_runs.expected_start_time.before_ = mapper.map('Date', filters.endDate.value, 'string')
     }
 
     return response
