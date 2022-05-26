@@ -9,9 +9,7 @@
           <span class="delete-overflow-menu-item__title-name">Delete {{ name }}</span>
           <p-icon icon="XIcon" class="delete-overflow-menu-item__close-icon" @click="showModal = false" />
         </div>
-        <hr
-          class="delete-overflow-menu-item__divider"
-        >
+        <hr class="delete-overflow-menu-item__divider">
       </template>
 
       <template #content>
