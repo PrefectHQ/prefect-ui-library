@@ -5,7 +5,7 @@ import { mapEmpiricalPolicyToIEmpiricalPolicyResponse, mapIEmpiricalPolicyRespon
 import { mapFlowToIFlowResponse, mapIFlowResponseToFlow } from './flow'
 import { mapFlowDataToIFlowDataResponse, mapIFlowDataResponseToFlowData } from './flowData'
 import { mapFlowRunToIFlowRunResponse, mapIFlowRunResponseToFlowRun } from './flowRun'
-import { mapFlowRunGraphToIFlowRunGraphResponse, mapIFlowRunGraphResponseToFlowRunGraph } from './flowRunGraph'
+import { mapGraphNodeToIFlowRunGraphResponse, mapIFlowRunGraphResponseToGraphNode } from './flowRunGraph'
 import { mapRunHistoryToIFlowRunHistoryResponse, mapIFlowRunHistoryResponseToRunHistory } from './flowRunHistory'
 import { mapFlowRunnerToIFlowRunnerResponse, mapIFlowRunnerResponseToFlowRunner } from './flowRunner'
 import { mapLogToILogResponse, mapILogResponseToLog } from './logs'
@@ -60,11 +60,11 @@ export const maps = {
   IFlowRunResponse: {
     FlowRun: mapIFlowRunResponseToFlowRun,
   },
-  FlowRunGraph: {
-    IFlowRunGraphResponse: mapFlowRunGraphToIFlowRunGraphResponse,
+  GraphNode: {
+    IFlowRunGraphResponse: mapGraphNodeToIFlowRunGraphResponse,
   },
   IFlowRunGraphResponse: {
-    FlowRunGraph: mapIFlowRunGraphResponseToFlowRunGraph,
+    GraphNode: mapIFlowRunGraphResponseToGraphNode,
   },
   RunHistory: {
     IFlowRunHistoryResponse: mapRunHistoryToIFlowRunHistoryResponse,

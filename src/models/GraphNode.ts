@@ -2,7 +2,7 @@ import { IState } from '@/models/State'
 
 export type TaskRunInputType = 'constant' | 'parameter' | 'task_run'
 
-export interface IFlowRunGraph {
+export interface IGraphNode {
   id: string,
   upstreamDependencies: {
     inputType: TaskRunInputType,
@@ -16,7 +16,7 @@ export interface IFlowRunGraph {
   endTime: Date | null,
 }
 
-export class FlowRunGraph implements IFlowRunGraph {
+export class GraphNode implements IGraphNode {
   public readonly id: string
   public upstreamDependencies: { inputType: TaskRunInputType, id: string }[]
   public state: IState | null
@@ -26,14 +26,14 @@ export class FlowRunGraph implements IFlowRunGraph {
   public startTime: Date | null
   public endTime: Date | null
 
-  public constructor(flowRunGraph: FlowRunGraph) {
-    this.id = flowRunGraph.id
-    this.upstreamDependencies = flowRunGraph.upstreamDependencies
-    this.state = flowRunGraph.state
-    this.expectedStartTime = flowRunGraph.expectedStartTime
-    this.estimatedRunTime = flowRunGraph.estimatedRunTime
-    this.totalRunTime = flowRunGraph.totalRunTime
-    this.startTime = flowRunGraph.startTime
-    this.endTime = flowRunGraph.endTime
+  public constructor(graphNode: GraphNode) {
+    this.id = graphNode.id
+    this.upstreamDependencies = graphNode.upstreamDependencies
+    this.state = graphNode.state
+    this.expectedStartTime = graphNode.expectedStartTime
+    this.estimatedRunTime = graphNode.estimatedRunTime
+    this.totalRunTime = graphNode.totalRunTime
+    this.startTime = graphNode.startTime
+    this.endTime = graphNode.endTime
   }
 }
