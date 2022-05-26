@@ -21,13 +21,13 @@
 </template>
 
 <script lang="ts" setup>
-  import { PTable, showToast } from '@prefecthq/prefect-design'
+  import { PTable } from '@prefecthq/prefect-design'
   import CopyOverflowMenuItem from './CopyOverflowMenuItem.vue'
   import DeleteOverflowMenuItem from './DeleteOverflowMenuItem.vue'
   import { WorkQueue } from '@/models'
   import { workQueueRouteKey } from '@/router'
   import { workQueuesApiKey } from '@/services/WorkQueuesApi'
-  import { inject } from '@/utilities/inject'
+  import { inject, deleteItem } from '@/utilities'
 
   const workQueueRoute = inject(workQueueRouteKey)
   const workQueuesApi = inject(workQueuesApiKey)
@@ -54,14 +54,8 @@
 
   const emit = defineEmits(['refresh'])
 
-  const deleteWorkQueue = async (id: string): Promise<void> => {
-    try {
-      await workQueuesApi.deleteWorkQueue(id)
-      showToast('Work queue deleted successfully!', 'success', undefined, 3000)
-      emit('refresh')
-    } catch (error) {
-      showToast('Failed to delete work queue', 'error', undefined, 3000)
-      console.error(error)
-    }
+  const deleteWorkQueue = (id: string): void => {
+    deleteItem(id, workQueuesApi.deleteWorkQueue, 'Work queue')
+    emit('refresh')
   }
 </script>

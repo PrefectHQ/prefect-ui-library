@@ -24,13 +24,13 @@
 </template>
 
 <script lang="ts" setup>
-  import { PTable, PTagWrapper, PIconButtonMenu, showToast } from '@prefecthq/prefect-design'
+  import { PTable, PTagWrapper, PIconButtonMenu } from '@prefecthq/prefect-design'
   import CopyOverflowMenuItem from './CopyOverflowMenuItem.vue'
   import DeleteOverflowMenuItem from './DeleteOverflowMenuItem.vue'
   import { Flow } from '@/models'
   import { flowRouteKey } from '@/router'
   import { flowsApiKey } from '@/services/FlowsApi'
-  import { inject } from '@/utilities/inject'
+  import { inject, deleteItem } from '@/utilities'
 
   const flowRoute = inject(flowRouteKey)
   const flowsApi = inject(flowsApiKey)
@@ -62,14 +62,8 @@
 
   const emit = defineEmits(['refresh'])
 
-  const deleteFlow = async (id: string): Promise<void> => {
-    try {
-      await flowsApi.deleteFlow(id)
-      showToast('Flow deleted successfully!', 'success', undefined, 3000)
-      emit('refresh')
-    } catch (error) {
-      showToast('Failed to delete flow', 'error', undefined, 3000)
-      console.error(error)
-    }
+  const deleteFlow = (id: string): void => {
+    deleteItem(id, flowsApi.deleteFlow, 'Flow')
+    emit('refresh')
   }
 </script>

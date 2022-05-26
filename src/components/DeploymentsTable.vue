@@ -25,13 +25,13 @@
 </template>
 
 <script lang="ts" setup>
-  import { PTable, PTagWrapper, PIconButtonMenu, POverflowMenuItem, showToast } from '@prefecthq/prefect-design'
+  import { PTable, PTagWrapper, PIconButtonMenu, POverflowMenuItem } from '@prefecthq/prefect-design'
   import CopyOverflowMenuItem from './CopyOverflowMenuItem.vue'
   import DeleteOverflowMenuItem from './DeleteOverflowMenuItem.vue'
   import { Deployment } from '@/models'
   import { deploymentRouteKey } from '@/router'
   import { deploymentsApiKey } from '@/services/DeploymentsApi'
-  import { inject } from '@/utilities/inject'
+  import { deleteItem, inject } from '@/utilities'
 
   const deploymentRoute = inject(deploymentRouteKey)
 
@@ -64,15 +64,9 @@
 
   const emit = defineEmits(['refresh'])
 
-  const deleteDeployment = async (id: string): Promise<void> => {
-    try {
-      await deploymentsApi.deleteDeployment(id)
-      showToast('Deployment deleted successfully!', 'success', undefined, 3000)
-      emit('refresh')
-    } catch (error) {
-      showToast('Failed to delete deployment', 'error', undefined, 3000)
-      console.error(error)
-    }
+  const deleteDeployment = (id: string): void => {
+    deleteItem(id, deploymentsApi.deleteDeployment, 'Deployment')
+    emit('refresh')
   }
 </script>
 
