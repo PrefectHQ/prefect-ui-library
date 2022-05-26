@@ -16,7 +16,7 @@
       <p-icon-button-menu size="xs">
         <template #default="{ close }">
           <copy-overflow-menu-item label="Copy ID" :item="row.id" @click="close" />
-          <p-overflow-menu-item label="Delete" />
+          <delete-overflow-menu-item :name="row.name" @delete="deleteFlow(row.id)" />
         </template>
       </p-icon-button-menu>
     </template>
@@ -24,13 +24,16 @@
 </template>
 
 <script lang="ts" setup>
-  import { PTable, PTagWrapper, PIconButtonMenu, POverflowMenuItem } from '@prefecthq/prefect-design'
+  import { PTable, PTagWrapper, PIconButtonMenu } from '@prefecthq/prefect-design'
   import CopyOverflowMenuItem from './CopyOverflowMenuItem.vue'
+  import DeleteOverflowMenuItem from './DeleteOverflowMenuItem.vue'
   import { Flow } from '@/models'
   import { flowRouteKey } from '@/router'
-  import { inject } from '@/utilities/inject'
+  import { flowsApiKey } from '@/services/FlowsApi'
+  import { inject, deleteItem } from '@/utilities'
 
   const flowRoute = inject(flowRouteKey)
+  const flowsApi = inject(flowsApiKey)
 
   defineProps<{
     flows: Flow[],
@@ -56,4 +59,11 @@
       width: '42px',
     },
   ]
+
+  const emit = defineEmits(['delete'])
+
+  const deleteFlow = (id: string): void => {
+    deleteItem(id, flowsApi.deleteFlow, 'Flow')
+    emit('delete', id)
+  }
 </script>

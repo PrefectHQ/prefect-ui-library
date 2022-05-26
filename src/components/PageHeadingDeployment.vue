@@ -11,7 +11,7 @@
       <p-icon-button-menu>
         <template #default="{ close }">
           <copy-overflow-menu-item label="Copy ID" :item="deployment.id" @click="close" />
-          <p-overflow-menu-item label="Delete" />
+          <delete-overflow-menu-item :name="deployment.name" @delete="deleteDeployment(deployment.id)" />
         </template>
       </p-icon-button-menu>
     </template>
@@ -23,12 +23,14 @@
   import { useSubscription } from '@prefecthq/vue-compositions'
   import { computed } from 'vue'
   import CopyOverflowMenuItem from './CopyOverflowMenuItem.vue'
+  import DeleteOverflowMenuItem from './DeleteOverflowMenuItem.vue'
   import DeploymentToggle from '@/components/DeploymentToggle.vue'
   import PageHeading from '@/components/PageHeading.vue'
   import { Deployment } from '@/models'
   import { flowsRouteKey } from '@/router'
   import { flowsApiKey } from '@/services'
-  import { inject } from '@/utilities'
+  import { deploymentsApiKey } from '@/services/DeploymentsApi'
+  import { deleteItem, inject } from '@/utilities'
 
   const flowsRoute = inject(flowsRouteKey)
   const flowsApi = inject(flowsApiKey)
@@ -37,10 +39,19 @@
     deployment: Deployment,
   }>()
 
+  const deploymentsApi = inject(deploymentsApiKey)
+
   const flowSubscription = useSubscription(flowsApi.getFlow, [props.deployment.flowId])
   const flowName = computed(() => flowSubscription.response?.name ?? '')
 
   const crumbs = computed(() => [{ text: flowName.value, to: flowsRoute() }, { text: props.deployment.name }])
+
+  const emit = defineEmits(['delete'])
+
+  const deleteDeployment = (id: string): void => {
+    deleteItem(id, deploymentsApi.deleteDeployment, 'Deployment')
+    emit('delete', id)
+  }
 </script>
 
 <style>

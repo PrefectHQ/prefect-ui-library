@@ -23,6 +23,9 @@ export class FlowsApi extends Api {
     return this.post<number>('/count', filter).then(({ data }) => data)
   }
 
+  public deleteFlow(flowId: string): Promise<void> {
+    return this.delete(`/${flowId}`)
+  }
 }
 
 export const flowsApiKey: InjectionKey<FlowsApi> = Symbol('flowsApiKey')

@@ -36,6 +36,10 @@ export class FlowRunsApi extends Api {
     return this.get<IFlowRunGraphResponse[]>(`/${id}/graph`)
       .then(({ data }) => mapper.map('IFlowRunGraphResponse', data, 'FlowRunGraph'))
   }
+
+  public deleteFlowRun(flowRunId: string): Promise<void> {
+    return this.delete(`/${flowRunId}`)
+  }
 }
 
 export const flowRunsApiKey: InjectionKey<FlowRunsApi> = Symbol('flowRunsApiKey')

@@ -1,4 +1,6 @@
 export { default as ContextSidebar } from './ContextSidebar.vue'
+export { default as CopyOverflowMenuItem } from './CopyOverflowMenuItem.vue'
+export { default as DeleteOverflowMenuItem } from './DeleteOverflowMenuItem.vue'
 export { default as DeploymentCombobox } from './DeploymentCombobox.vue'
 export { default as DeploymentMetaWell } from './DeploymentMetaWell.vue'
 export { default as DeploymentsPageEmptyState } from './DeploymentsPageEmptyState.vue'

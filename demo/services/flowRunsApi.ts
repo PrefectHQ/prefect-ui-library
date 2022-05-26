@@ -21,6 +21,10 @@ export class FlowRunsApi extends MockedApi {
   public getFlowRunsHistory(filter: FlowRunsHistoryFilter): Promise<RunHistory[]> {
     return this.promise(mocker.createMany('flowRunHistory', 15))
   }
+
+  public deleteFlowRun(id: string): Promise<void> {
+    return this.void()
+  }
 }
 
 export const flowRunsApi = createActions(new FlowRunsApi())
