@@ -12,6 +12,7 @@ export type UseFlowRunFilterArgs = {
   startDate?: Ref<Date>,
   endDate?: Ref<Date>,
   sort?: Ref<FlowRunSortValues>,
+  name?: Ref<string>,
 }
 
 export function useFlowRunFilter(filters: UseFlowRunFilterArgs): Ref<UnionFilters> {
@@ -63,6 +64,13 @@ export function useFlowRunFilter(filters: UseFlowRunFilterArgs): Ref<UnionFilter
 
     if (filters.sort?.value) {
       response.sort = filters.sort.value
+    }
+
+    if (filters.name?.value) {
+      response.flow_runs ??= {}
+      response.flow_runs.name ??= {}
+
+      response.flow_runs.name.any_ = [filters.name.value]
     }
 
     return response
