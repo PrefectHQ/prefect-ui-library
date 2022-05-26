@@ -31,7 +31,7 @@
 
   const emit = defineEmits(['refresh'])
 
-  const deleteFlow = async (id: string): Promise<void> => {
+  const deleteFlow = (id: string): void => {
     deleteItem(id, flowsApi.deleteFlow, 'Flow')
     emit('refresh')
   }

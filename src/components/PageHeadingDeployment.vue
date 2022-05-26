@@ -48,7 +48,7 @@
 
   const emit = defineEmits(['refresh'])
 
-  const deleteDeployment = async (id: string): Promise<void> => {
+  const deleteDeployment = (id: string): void => {
     deleteItem(id, deploymentsApi.deleteDeployment, 'Deployment')
     emit('refresh')
   }
