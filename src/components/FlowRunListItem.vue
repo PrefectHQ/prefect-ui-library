@@ -14,7 +14,7 @@
       <FlowRunStartTime :flow-run="flowRun" />
       <template v-if="tasksCount.response">
         <p-icon-text icon="Task">
-          {{ tasksCount.response }} task runs
+          {{ tasksCount.response }} task {{ toPluralString('run', tasksCount.response) }}
         </p-icon-text>
       </template>
     </template>
@@ -32,7 +32,7 @@
   import { FlowRun } from '@/models/FlowRun'
   import { flowRunRouteKey } from '@/router'
   import { taskRunsApiKey } from '@/services/TaskRunsApi'
-  import { inject } from '@/utilities'
+  import { inject, toPluralString } from '@/utilities'
   import { secondsToApproximateString } from '@/utilities/seconds'
 
   const props = defineProps<{
