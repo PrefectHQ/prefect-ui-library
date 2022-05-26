@@ -2,7 +2,7 @@
 import { computed, Ref } from 'vue'
 import { StateType } from '@/models'
 import { mapper } from '@/services'
-import { UnionFilters } from '@/types'
+import { FlowRunSortValues, UnionFilters } from '@/types'
 
 export type UseFlowRunFilterArgs = {
   flows?: Ref<string[]>,
@@ -11,6 +11,7 @@ export type UseFlowRunFilterArgs = {
   states?: Ref<StateType[]>,
   startDate?: Ref<Date>,
   endDate?: Ref<Date>,
+  sort?: Ref<FlowRunSortValues>,
 }
 
 export function useFlowRunFilter(filters: UseFlowRunFilterArgs): Ref<UnionFilters> {
@@ -58,6 +59,10 @@ export function useFlowRunFilter(filters: UseFlowRunFilterArgs): Ref<UnionFilter
       response.flow_runs.expected_start_time ??= {}
 
       response.flow_runs.expected_start_time.before_ = mapper.map('Date', filters.endDate.value, 'string')
+    }
+
+    if (filters.sort?.value) {
+      response.sort = filters.sort.value
     }
 
     return response
