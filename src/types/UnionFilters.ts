@@ -1,3 +1,5 @@
+import { FlowRunSortValues, TaskRunSortValues } from './SortOptionTypes'
+
 /** A list where results will be returned only if they match all the values in the list */
 type all_ = { all_?: string[] }
 
@@ -76,6 +78,10 @@ type Sortable<T extends Filter> = PaginatedFilter & {
   sort?: `${Uppercase<StringKeys<T>>}_${'ASC' | 'DESC'}`,
 }
 
+type RunSort<T extends string> = PaginatedFilter & {
+  sort?: T,
+}
+
 export type DeploymentsFilter = { deployments?: DeploymentFilter }
 export type FlowsFilter = { flows?: FlowFilter }
 export type TaskRunsFilter = { task_runs?: TaskRunFilter }
@@ -86,7 +92,7 @@ export type UnionFilters =
   & DeploymentsFilter
   & FlowRunsFilter
   & TaskRunsFilter
-  & Sortable<FlowFilter & DeploymentFilter & TaskRunFilter & FlowRunFilter>
+  & (Sortable<FlowFilter & DeploymentFilter> | RunSort<FlowRunSortValues | TaskRunSortValues>)
 
 interface Historical {
   history_start: string,
