@@ -15,34 +15,25 @@
 </template>
 
 <script lang="ts" setup>
-  import { PIconButtonMenu, showToast } from '@prefecthq/prefect-design'
+  import { PIconButtonMenu } from '@prefecthq/prefect-design'
   import { computed } from 'vue'
   import CopyOverflowMenuItem from './CopyOverflowMenuItem.vue'
   import DeleteOverflowMenuItem from './DeleteOverflowMenuItem.vue'
   import PageHeading from '@/components/PageHeading.vue'
   import WorkQueueToggle from '@/components/WorkQueueToggle.vue'
   import { WorkQueue } from '@/models'
-  import { workQueuesApiKey } from '@/services/WorkQueuesApi'
-  import { inject } from '@/utilities/inject'
+  import { deleteItem } from '@/utilities'
 
   const props = defineProps<{
     queue: WorkQueue,
   }>()
 
-  const workQueuesApi = inject(workQueuesApiKey)
-
   const crumbs = computed(() => [{ text: props.queue.name }])
 
   const emit = defineEmits(['refresh'])
 
-  const deleteWorkQueue = async (id: string): Promise<void> => {
-    try {
-      await workQueuesApi.deleteWorkQueue(id)
-      showToast('Work queue deleted successfully!', 'success', undefined, 3000)
-      emit('refresh')
-    } catch (error) {
-      showToast('Failed to delete work queue', 'error', undefined, 3000)
-      console.error(error)
-    }
+  const deleteWorkQueue = (id: string): void => {
+    deleteItem(id, 'Work queue')
+    emit('refresh')
   }
 </script>
