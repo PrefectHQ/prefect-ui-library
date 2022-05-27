@@ -35,8 +35,8 @@
 
   const emit = defineEmits(['delete'])
 
-  const deleteWorkQueue = (id: string): void => {
-    deleteItem(id, workQueuesApi.deleteWorkQueue, 'Work queue')
+  const deleteWorkQueue = async (id: string): Promise<void> => {
+    await deleteItem(id, workQueuesApi.deleteWorkQueue, 'Work queue')
     emit('delete', id)
   }
 </script>
