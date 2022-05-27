@@ -9,6 +9,7 @@
         </template>
       </p-icon-button-menu>
     </template>
+    <slot />
   </page-heading>
 </template>
 
