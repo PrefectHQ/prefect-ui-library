@@ -23,7 +23,7 @@
     },
   })
 
-  const options = [
+  const options: { label: string, value: LogLevel }[] = [
     { label: 'Critical only', value: 50 },
     { label: 'Error and above', value: 40 },
     { label: 'Warning and above', value: 30 },
