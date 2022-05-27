@@ -26,7 +26,7 @@
 .page-heading,
 .page-heading__leading { @apply
   grid
-  gap-1
+  gap-2
 }
 
 .page-heading {
