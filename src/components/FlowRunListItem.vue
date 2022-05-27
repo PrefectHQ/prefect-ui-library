@@ -8,9 +8,7 @@
     </template>
     <template #meta>
       <StateBadge :state="flowRun.state" />
-      <p-icon-text icon="ClockIcon">
-        {{ secondsToApproximateString(flowRun.duration) }}
-      </p-icon-text>
+      <DurationIconText :duration="flowRun.duration" />
       <FlowRunStartTime :flow-run="flowRun" />
       <template v-if="tasksCount.response">
         <p-icon-text icon="Task">
@@ -25,6 +23,7 @@
   import { CheckboxModel } from '@prefecthq/prefect-design'
   import { useSubscription } from '@prefecthq/vue-compositions'
   import { computed } from 'vue'
+  import DurationIconText from './DurationIconText.vue'
   import FlowRouterLink from './FlowRouterLink.vue'
   import FlowRunStartTime from '@/components/FlowRunStartTime.vue'
   import StateBadge from '@/components/StateBadge.vue'
@@ -33,7 +32,6 @@
   import { flowRunRouteKey } from '@/router'
   import { taskRunsApiKey } from '@/services/TaskRunsApi'
   import { inject, toPluralString } from '@/utilities'
-  import { secondsToApproximateString } from '@/utilities/seconds'
 
   const props = defineProps<{
     selected: CheckboxModel | null,
