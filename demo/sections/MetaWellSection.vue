@@ -2,7 +2,7 @@
   <DemoSection heading="Meta Wells">
     <div class="flex flex-wrap gap-8">
       <DemoSubSection heading="Flow Run Meta Well">
-        <FlowRunMetaWell :flow-run="flowRunData" class="w-[250px] border-2 border-blue-200 border-dashed" />
+        <FlowRunDetails :flow-run="flowRunData" class="w-[250px] border-2 border-blue-200 border-dashed" />
       </DemoSubSection>
 
       <DemoSubSection heading="Flow Meta Well">
@@ -21,7 +21,7 @@
   import DemoSubSection from '../components/DemoSubSection.vue'
   import DeploymentMetaWell from '@/components/DeploymentMetaWell.vue'
   import FlowMetaWell from '@/components/FlowMetaWell.vue'
-  import FlowRunMetaWell from '@/components/FlowRunMetaWell.vue'
+  import FlowRunDetails from '@/components/FlowRunDetails.vue'
   import { mocker } from '@/services'
 
   const flowData = mocker.create('flow')
