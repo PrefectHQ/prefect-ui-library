@@ -15,18 +15,11 @@
 
   const props = defineProps<{
     flowId: string,
-    flowName?: string,
   }>()
 
   const flowRoute = inject(flowRouteKey)
 
   const flowsApi = inject(flowsApiKey)
-  const flowsSubscription = props.flowName ?? useSubscription(flowsApi.getFlow, [props.flowId])
-  const flowName = computed(() => {
-    if (typeof flowsSubscription === 'string') {
-      return props.flowName
-    }
-
-    return flowsSubscription.response?.name
-  })
+  const flowsSubscription =  useSubscription(flowsApi.getFlow, [props.flowId])
+  const flowName = computed(() => flowsSubscription.response?.name)
 </script>

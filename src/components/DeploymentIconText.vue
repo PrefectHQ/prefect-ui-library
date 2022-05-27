@@ -15,18 +15,11 @@
 
   const props = defineProps<{
     deploymentId: string,
-    deploymentName?: string,
   }>()
 
   const deploymentRoute = inject(deploymentRouteKey)
 
   const deploymentsApi = inject(deploymentsApiKey)
-  const deploymentsSubscription = props.deploymentName ?? useSubscription(deploymentsApi.getDeployment, [props.deploymentId])
-  const deploymentName = computed(() => {
-    if (typeof deploymentsSubscription === 'string') {
-      return props.deploymentName
-    }
-
-    return deploymentsSubscription.response?.name
-  })
+  const deploymentsSubscription = useSubscription(deploymentsApi.getDeployment, [props.deploymentId])
+  const deploymentName = computed(() => deploymentsSubscription.response?.name)
 </script>
