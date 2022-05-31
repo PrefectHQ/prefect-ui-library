@@ -1,7 +1,7 @@
 <template>
   <ORadarNode class="radar-node-task-run">
     <template #aside>
-      <div class="radar-node-task-run__aside" :class="classes.asideClass">
+      <div class="radar-node-task-run__aside" :class="classes.asideClass" :title="stateName">
         <StateIcon :state-type="stateType" />
       </div>
     </template>
@@ -23,7 +23,6 @@
 </template>
 
 <script lang="ts" setup>
-  import { RadarNode } from '@prefecthq/radar'
   import { useSubscription } from '@prefecthq/vue-compositions'
   import { computed } from 'vue'
   import DurationIconText from './DurationIconText.vue'
@@ -36,7 +35,6 @@
   const props = defineProps<{
     graphNode: GraphNode,
   }>()
-
 
   const taskRunsApi = inject(taskRunsApiKey)
   const subscription = useSubscription(taskRunsApi.getTaskRun, [props.graphNode.id])
@@ -54,6 +52,10 @@
 
   const stateType = computed<StateType | undefined>(() => {
     return state.value?.type
+  })
+
+  const stateName = computed<string | undefined>(() => {
+    return state.value?.name
   })
 
   const duration = computed<number>(() => {
