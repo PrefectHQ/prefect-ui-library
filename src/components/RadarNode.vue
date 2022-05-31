@@ -55,12 +55,12 @@
   import { computed } from 'vue'
 
   const props = defineProps<{
-    downstreamNodes?: number,
-    toggle?: () => void,
-    highlightNode?: () => void,
-    selectNode?: () => void,
-    panToNode?: () => void,
     collapsed?: Map<string, RadarNode>,
+    downstreamNodes?: number,
+    highlightNode?: () => void,
+    panToNode?: () => void,
+    selectNode?: () => void,
+    toggle?: () => void,
   }>()
 
 

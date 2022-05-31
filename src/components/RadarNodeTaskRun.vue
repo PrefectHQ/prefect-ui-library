@@ -34,10 +34,6 @@
   import { inject } from '@/utilities/inject'
 
   const props = defineProps<{
-    // this was Radar from @prefecthq/radar but until the exports
-    // for that package are fixed we can't import the type
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    node?: RadarNode,
     graphNode: GraphNode,
   }>()
 
