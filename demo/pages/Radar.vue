@@ -1,9 +1,7 @@
 <template>
-  <p-layout-full class="radar">
-    <p-layout-default>
-      <RadarNodeSection />
-    </p-layout-default>
-  </p-layout-full>
+  <p-layout-default class="radar">
+    <RadarNodeSection />
+  </p-layout-default>
 </template>
 
 <script lang="ts" setup>
