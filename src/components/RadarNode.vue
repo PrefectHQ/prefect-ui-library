@@ -89,7 +89,7 @@
   shadow
   hover:shadow-md
   focus:bg-slate-50
-  focus:outline-double
+  focus:outline
   flex
   relative
   rounded
