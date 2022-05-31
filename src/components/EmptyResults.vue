@@ -13,6 +13,7 @@
 .empty-list {
   @apply text-center text-base
 }
+
 .empty-list--message {
   @apply text-slate-500
 }
