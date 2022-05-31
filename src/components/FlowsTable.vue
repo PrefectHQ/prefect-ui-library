@@ -16,7 +16,7 @@
       <p-icon-button-menu size="xs">
         <template #default="{ close }">
           <copy-overflow-menu-item label="Copy ID" :item="row.id" @click="close" />
-          <delete-overflow-menu-item :name="row.name" @delete="deleteFlow(row.id)" />
+          <delete-overflow-menu-item :name="row.name" @delete="deleteFlow(row.id, close)" />
         </template>
       </p-icon-button-menu>
     </template>
@@ -62,8 +62,9 @@
 
   const emit = defineEmits(['delete'])
 
-  const deleteFlow = (id: string): void => {
-    deleteItem(id, flowsApi.deleteFlow, 'Flow')
+  const deleteFlow = async (id: string, close: () => void): Promise<void> => {
+    close()
+    await deleteItem(id, flowsApi.deleteFlow, 'Flow')
     emit('delete', id)
   }
 </script>

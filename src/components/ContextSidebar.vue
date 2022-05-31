@@ -5,7 +5,7 @@
     </template>
 
     <slot>
-      <p-context-nav-item title="Runs" icon="FlowRun" :to="flowRunsRoute()" />
+      <p-context-nav-item title="Flow Runs" icon="FlowRun" :to="flowRunsRoute()" />
       <p-context-nav-item title="Flows" icon="Flow" :to="flowsRoute()" />
       <p-context-nav-item title="Deployments" icon="LocationMarkerIcon" :to="deploymentsRoute()" />
       <p-context-nav-item title="Queues" icon="DatabaseIcon" :to="queuesRoute()" />

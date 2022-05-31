@@ -17,7 +17,7 @@
         <template #default="{ close }">
           <copy-overflow-menu-item label="Copy ID" :item="row.id" @click="close" />
           <p-overflow-menu-item label="Run" class="deployments-table__hide-on-desktop" />
-          <delete-overflow-menu-item :name="row.name" @delete="deleteDeployment(row.id)" />
+          <delete-overflow-menu-item :name="row.name" @delete="deleteDeployment(row.id, close)" />
         </template>
       </p-icon-button-menu>
     </template>
@@ -64,8 +64,9 @@
 
   const emit = defineEmits(['delete'])
 
-  const deleteDeployment = (id: string): void => {
-    deleteItem(id, deploymentsApi.deleteDeployment, 'Deployment')
+  const deleteDeployment = async (id: string, close: () => void): Promise<void> => {
+    close()
+    await deleteItem(id, deploymentsApi.deleteDeployment, 'Deployment')
     emit('delete', id)
   }
 </script>
