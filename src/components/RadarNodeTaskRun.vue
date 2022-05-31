@@ -11,27 +11,25 @@
     <div
       class="radar-node__icon"
     >
-      <i
-        class="pi text--white pi-lg"
-        :class="classes.iconClass"
-      />
+      <state-icon :state-type="data.state?.type" />
     </div>
 
     <div
       class="radar-node__content"
     >
-      <div v-skeleton="!taskRun?.name" class="text-truncate">
+      <!-- v-skeleton="!taskRun?.name" -->
+      <div class="text-truncate">
         {{ taskRun?.name }}
       </div>
       <div class="d-flex align-center justify-space-between">
         <div
-          v-skeleton="!taskRun?.name"
+
           class="radar-node__duration text-truncate font--secondary caption"
         >
           {{ duration }}
         </div>
         <a
-          v-if="node.downstreamNodes.size > 0"
+          v-if="node?.downstreamNodes.size > 0"
           class="radar-node__collapse-link caption-small flex-shrink"
           tabindex="-1"
           @click.stop="toggle"
@@ -51,6 +49,7 @@
 <script lang="ts" setup>
   import { useSubscription } from '@prefecthq/vue-compositions'
   import { computed } from 'vue'
+  import StateIcon from './StateIcon.vue'
   import { TaskRun, GraphNode, StateType } from '@/models'
   import { taskRunsApiKey } from '@/services/TaskRunsApi'
   import { secondsToApproximateString } from '@/utilities'
@@ -61,7 +60,7 @@
     // this was Radar from @prefecthq/radar but until the exports
     // for that package are fixed we can't import the type
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    node: any,
+    node?: any,
     data: GraphNode,
     toggle?: () => void,
     highlightNode?: () => void,
