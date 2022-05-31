@@ -1,9 +1,11 @@
 <template>
   <div class="search">
-    <p-label for="search" :label="label" class="search--label" />
-    <p-text-input v-model="internalValue" type="search" :placeholder="placeholder" class="runs-search--input">
+    <template v-if="label">
+      <p-label for="search" :label="label" class="search__label" />
+    </template>
+    <p-text-input v-model="internalValue" type="search" :placeholder="placeholder" class="search__input">
       <template #prepend>
-        <p-icon icon="SearchIcon" class="search--icon" />
+        <p-icon icon="SearchIcon" class="search__icon" />
       </template>
     </p-text-input>
   </div>
@@ -11,13 +13,16 @@
 
 <script lang="ts" setup>
   import { PTextInput, PIcon, PLabel } from '@prefecthq/prefect-design'
-  import { computed } from 'vue'
+  import { computed, withDefaults } from 'vue'
 
-  const props = defineProps<{
+  const props = withDefaults(defineProps<{
     modelValue: string | null | undefined,
     placeholder?: string,
     label?: string,
-  }>()
+  }>(), {
+    placeholder: 'Search...',
+    label: undefined,
+  })
 
   const emits = defineEmits<{
     (event: 'update:modelValue', value: string | null | undefined): void,
@@ -35,15 +40,16 @@
 </script>
 
 <style>
-.search--label {
-  @apply sr-only
+.search__label { @apply
+  sr-only
 }
 
-.search--input {
-  @apply w-auto
+.search__input { @apply
+  w-auto
 }
 
-.search--icon {
-  @apply h-5 w-5 text-gray-500 ml-2
+.search__icon { @apply
+  text-gray-500
+  ml-2
 }
 </style>
