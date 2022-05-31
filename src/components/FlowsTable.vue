@@ -5,6 +5,7 @@
         <span>{{ row.name }}</span>
       </router-link>
     </template>
+
     <template #tags="{ row }">
       <p-tag-wrapper :tags="row.tags" justify="left" />
     </template>
@@ -12,6 +13,7 @@
     <template #action-heading>
       <span />
     </template>
+
     <template #action="{ row }">
       <p-icon-button-menu size="xs">
         <template #default="{ close }">
@@ -20,11 +22,21 @@
         </template>
       </p-icon-button-menu>
     </template>
+
+    <template #empty-state>
+      <PPEmptyResults>
+        <template #actions>
+          <p-button size="sm" secondary @click="emit('clear')">
+            Clear Filters
+          </p-button>
+        </template>
+      </PPEmptyResults>
+    </template>
   </p-table>
 </template>
 
 <script lang="ts" setup>
-  import { PTable, PTagWrapper, PIconButtonMenu } from '@prefecthq/prefect-design'
+  import { PTable, PTagWrapper, PIconButtonMenu, PPEmptyResults } from '@prefecthq/prefect-design'
   import CopyOverflowMenuItem from './CopyOverflowMenuItem.vue'
   import DeleteOverflowMenuItem from './DeleteOverflowMenuItem.vue'
   import { Flow } from '@/models'
@@ -60,7 +72,7 @@
     },
   ]
 
-  const emit = defineEmits(['delete'])
+  const emit = defineEmits(['delete', 'clear'])
 
   const deleteFlow = async (id: string, close: () => void): Promise<void> => {
     close()
