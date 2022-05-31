@@ -7,8 +7,7 @@
     </template>
 
     <template #concurrency="{ row }">
-      <span v-if="row.concurrencyLimit === 0">Unlimited</span>
-      <span v-else>{{ row.concurrencyLimit }}</span>
+      <span> {{ row.concurrencyLimit ?? 'Unlimited' }} </span>
     </template>
 
     <template #action-heading>
