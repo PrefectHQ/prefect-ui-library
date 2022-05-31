@@ -21,7 +21,7 @@
     </p-label>
 
     <p-label label="Favorite Tags" :message="errors.tags" :state="tagsState">
-      <p-tags-input v-model="tags" :state="tagsState" />
+      <p-tags-input v-model:tags="tags" :state="tagsState" />
     </p-label>
 
     <p-label label="I agree to the terms and conditions." :message="errors.agreeToTerms" :state="agreeToTermsState">
