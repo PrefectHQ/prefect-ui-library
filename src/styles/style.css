@@ -2,6 +2,7 @@
 @import 'https://fonts.googleapis.com/css2?family=Inconsolata&display=swap';
 
 @import "./colors.css";
+@import "./states.css";
 
 @tailwind components;
 @tailwind utilities;

@@ -25,14 +25,15 @@
 
           <div class="radar-node__footer-trailing">
             <slot name="footer-trailing">
-              <a
+              <p-link
                 v-if="downstreamNodes && downstreamNodes > 0"
                 class="radar-node__collapse-link"
                 tabindex="-1"
+                role="button"
                 @click.stop="toggle"
               >
                 {{ collapsed ? 'Show' : 'Hide' }}
-              </a>
+              </p-link>
             </slot>
           </div>
         </slot>
@@ -72,6 +73,7 @@
   shadow
   flex
   relative
+  rounded
 }
 
 .radar-node__content {
@@ -87,7 +89,6 @@
   items-center
   justify-center
   shrink-0
-  p-2
 }
 
 .radar-node__footer {
@@ -95,6 +96,11 @@
   flex
   justify-between
   items-center
+}
+
+.radar-node__footer-trailing {
+  @apply
+  text-sm
 }
 
 .radar-node__collapsed-badge {
