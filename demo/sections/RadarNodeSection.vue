@@ -12,11 +12,11 @@
         Main Content
 
         <template #footer-leading>
-          Leading
+          Footer Leading
         </template>
 
         <template #footer-trailing>
-          Trailing
+          Footer Trailing
         </template>
 
         <template #collapsed-badge="{ collapsed }">
