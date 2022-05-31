@@ -1,6 +1,8 @@
 <template>
   <p-layout-full class="radar">
-    <RadarNodeSection />
+    <p-layout-default>
+      <RadarNodeSection />
+    </p-layout-default>
   </p-layout-full>
 </template>
 
