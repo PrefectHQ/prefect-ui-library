@@ -1,5 +1,15 @@
 <template>
-  <p-toggle v-model="isActive" />
+  <div class="work-queue-toggle">
+    <p-toggle v-model="isActive" />
+    <div class="work-queue-toggle__label">
+      <template v-if="isActive">
+        Active
+      </template>
+      <template v-else>
+        Paused
+      </template>
+    </div>
+  </div>
 </template>
 
 <script lang="ts" setup>
@@ -63,3 +73,18 @@
   })
 </script>
 
+<style>
+.work-queue-toggle {
+  @apply
+  flex
+  items-center
+  gap-3
+}
+
+.work-queue-toggle__label {
+ @apply
+ text-sm
+ leading-5
+ font-medium
+}
+</style>
