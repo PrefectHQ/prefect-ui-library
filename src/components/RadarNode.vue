@@ -38,9 +38,12 @@
         </slot>
       </div>
     </div>
+
     <transition name="scale" mode="out-in">
-      <div v-if="collapsed" class="radar-node__collapsed-badge">
-        {{ collapsed.size.toLocaleString() }}
+      <div v-if="collapsed && showCollapsedBadge" class="radar-node__collapsed-badge">
+        <slot name="collapsed-badge" :collapsed="collapsed">
+          {{ collapsed.size.toLocaleString() }}
+        </slot>
       </div>
     </transition>
   </div>
@@ -48,23 +51,58 @@
 
 <script lang="ts" setup>
   import { RadarNode } from '@prefecthq/radar'
+  import { computed } from 'vue'
 
-  defineProps<{
-    node?: RadarNode,
+  const props = defineProps<{
     downstreamNodes?: number,
     toggle?: () => void,
     highlightNode?: () => void,
     selectNode?: () => void,
     panToNode?: () => void,
-    collapsed?: Map<string, Node>,
+    collapsed?: Map<string, RadarNode>,
   }>()
+
+
+  const showCollapsedBadge = computed(() => (props.collapsed?.size ?? 0) > 0)
 </script>
 
 <style>
 .radar-node {
   @apply
-  px-4
-  py-2
   shadow
+  flex
+  relative
+}
+
+.radar-node__content {
+  @apply
+  grow
+  p-2
+}
+
+.radar-node__aside {
+  @apply
+  flex
+  flex-col
+  items-center
+  justify-center
+  shrink-0
+  p-2
+}
+
+.radar-node__footer {
+  @apply
+  flex
+  justify-between
+  items-center
+}
+
+.radar-node__collapsed-badge {
+  @apply
+  absolute
+  right-0
+  top-0
+  translate-x-1/2
+  -translate-y-1/2
 }
 </style>
