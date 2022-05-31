@@ -11,10 +11,14 @@
   const props = defineProps<{
     workQueue: WorkQueue,
   }>()
+
   const workQueuesApi = inject(workQueuesApiKey)
+
   const emit = defineEmits<{
     (event: 'update:workQueue', value: WorkQueue): void,
+
   }>()
+
   const internalValue = computed({
     get() {
       return props.workQueue
@@ -23,12 +27,15 @@
       emit('update:workQueue', value)
     },
   })
+
   let shouldUpdate: boolean = true
+
   const setToggle = async (value: boolean): Promise<void> => {
     if (!shouldUpdate) {
       shouldUpdate = true
       return
     }
+
     try {
       if (value) {
         await workQueuesApi.resumeWorkQueue(props.workQueue.id)
@@ -39,10 +46,12 @@
       }
     } catch (error) {
       showToast(`${error}`, 'error', undefined, 3000)
+
       shouldUpdate = false
       isActive.value = !isActive.value
     }
   }
+
   const isActive = computed({
     get() {
       return !internalValue.value.isPaused
