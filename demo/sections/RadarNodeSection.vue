@@ -34,7 +34,11 @@
     </SubSection>
 
     <SubSection heading="Task run">
-      <RadarNodeTaskRun :graph-node="taskRun" :collapsed="collapsedMap" :downstream-nodes="10" />
+      <RadarNodeTaskRun :graph-node="taskRun" :collapsed="collapsedMap" :downstream-nodes="20" :toggle="toggleCollapsed" />
+    </SubSection>
+
+    <SubSection heading="Flow run">
+      <RadarNodeSubFlowRun :graph-node="flowRun" :collapsed="collapsedMap" :downstream-nodes="20" :toggle="toggleCollapsed" />
     </SubSection>
   </Section>
 </template>
@@ -46,18 +50,31 @@
   import Section from '../components/DemoSection.vue'
   import SubSection from '../components/DemoSubSection.vue'
   import ORadarNode from '@/components/RadarNode.vue'
+  import RadarNodeSubFlowRun from '@/components/RadarNodeSubFlowRun.vue'
   import RadarNodeTaskRun from '@/components/RadarNodeTaskRun.vue'
   import { mocker } from '@/services/Mocker'
 
   const taskRun = mocker.create('graphNode')
-  const radarNode: RadarNode = { id: taskRun.id, cx: 0, cy: 0, radian: 0, data: taskRun, downstreamNodes: new Map(), upstreamNodes: new Map(), ringId: 0 }
-  const collapsedMap = ref(new Map([[taskRun.id, radarNode]]))
+  const flowRun = mocker.create('graphNode')
+
+  const newRadarNode = (id: string): RadarNode => {
+    return { id, cx: 0, cy: 0, radian: 0, data: taskRun, downstreamNodes: new Map(), upstreamNodes: new Map(), ringId: 0 }
+  }
+
+  const newCollapsedMap = (): Map<string, RadarNode> => {
+    return new Map(Array.from({ length: 20 }, () => {
+      const taskRun = mocker.create('graphNode')
+      return [taskRun.id, newRadarNode(taskRun.id)]
+    }))
+  }
+
+  const collapsedMap = ref(newCollapsedMap())
 
   const toggleCollapsed = (): void => {
     if (collapsedMap.value.size > 0) {
       collapsedMap.value = new Map()
     } else {
-      collapsedMap.value = new Map([[taskRun.id, radarNode]])
+      collapsedMap.value = newCollapsedMap()
     }
   }
 </script>

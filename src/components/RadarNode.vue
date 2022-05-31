@@ -32,7 +32,7 @@
                 role="button"
                 @click.stop="toggle"
               >
-                {{ collapsed ? 'Show' : 'Hide' }}
+                {{ collapsed && collapsed.size > 0 ? 'Expand' : 'Collapse' }}
               </p-link>
             </slot>
           </div>
@@ -52,19 +52,34 @@
 
 <script lang="ts" setup>
   import { RadarNode } from '@prefecthq/radar'
-  import { computed } from 'vue'
+  import { computed, withDefaults } from 'vue'
 
-  const props = defineProps<{
+  const props = withDefaults(defineProps<{
     collapsed?: Map<string, RadarNode>,
     downstreamNodes?: number,
     highlightNode?: () => void,
     panToNode?: () => void,
     selectNode?: () => void,
     toggle?: () => void,
-  }>()
+  }>(), {
+    collapsed: undefined,
+    downstreamNodes: 0,
+    highlightNode: (): void => {
+    //
+    },
+    panToNode: (): void => {
+    //
+    },
+    selectNode: (): void => {
+    //
+    },
+    toggle: (): void => {
+    //
+    },
+  })
 
 
-  const showCollapsedBadge = computed(() => (props.collapsed?.size ?? 0) > 0)
+  const showCollapsedBadge = computed(() => props.collapsed.size > 0)
 </script>
 
 <style>
@@ -98,9 +113,9 @@
   items-center
 }
 
-.radar-node__footer-trailing {
+.radar-node__collapse-link {
   @apply
-  text-sm
+  text-xs
 }
 
 .radar-node__collapsed-badge {
