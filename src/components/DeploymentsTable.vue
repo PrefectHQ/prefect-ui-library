@@ -65,8 +65,8 @@
   const emit = defineEmits(['delete'])
 
   const deleteDeployment = async (id: string, close: () => void): Promise<void> => {
-    await deleteItem(id, deploymentsApi.deleteDeployment, 'Deployment')
     close()
+    await deleteItem(id, deploymentsApi.deleteDeployment, 'Deployment')
     emit('delete', id)
   }
 </script>
