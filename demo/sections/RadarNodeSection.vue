@@ -1,9 +1,5 @@
 <template>
-  <Section heading="Radar">
-    <p-button @click="toggleCollapsed">
-      Toggle Collapsed
-    </p-button>
-
+  <Section heading="Radar Nodes">
     <SubSection heading="Base">
       <ORadarNode :collapsed="collapsedMap">
         <template #aside>
@@ -37,7 +33,7 @@
       <RadarNodeTaskRun :graph-node="taskRun" :collapsed="collapsedMap" :downstream-nodes="20" :toggle="toggleCollapsed" />
     </SubSection>
 
-    <SubSection heading="Flow run">
+    <SubSection heading="Sub flow run">
       <RadarNodeSubFlowRun :graph-node="flowRun" :collapsed="collapsedMap" :downstream-nodes="20" :toggle="toggleCollapsed" />
     </SubSection>
   </Section>
