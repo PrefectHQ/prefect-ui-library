@@ -26,18 +26,14 @@
 
     <template v-if="flowRun.tags">
       <p-key-value label="Tags">
-        <template #value>
-          <p-tag v-for="tag in flowRun.tags" :key="tag" class="flow-run-details__tags">
-            {{ tag }}
-          </p-tag>
-        </template>
+        <p-tags :tags="flowRun.tags" />
       </p-key-value>
     </template>
   </div>
 </template>
 
 <script lang="ts" setup>
-  import { PKeyValue } from '@prefecthq/prefect-design'
+  import { PKeyValue, PTags } from '@prefecthq/prefect-design'
   import { FlowRun } from '@/models/FlowRun'
   import { formatDateTimeNumeric } from '@/utilities/dates'
 
