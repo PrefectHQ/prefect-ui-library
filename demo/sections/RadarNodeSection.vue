@@ -74,9 +74,3 @@
     }
   }
 </script>
-
-<style>
-.flow-runs-scatter-plot {
-  height: 400px;
-}
-</style>
