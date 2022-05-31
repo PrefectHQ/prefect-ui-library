@@ -6,6 +6,10 @@
       </router-link>
     </template>
 
+    <template #concurrency="{ row }">
+      <span> {{ row.concurrencyLimit ?? 'Unlimited' }} </span>
+    </template>
+
     <template #action-heading>
       <span />
     </template>
