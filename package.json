@@ -42,7 +42,7 @@
         "vue-tsc": "0.34.16"
     },
     "peerDependencies": {
-        "@prefecthq/prefect-design": "0.0.25",
+        "@prefecthq/prefect-design": "0.0.31",
         "pinia": "^2.0.14",
         "vue": "^3.2.34",
         "vue-router": "^4.0.12"
