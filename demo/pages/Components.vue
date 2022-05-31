@@ -1,5 +1,6 @@
 <template>
   <p-layout-default>
+    <QueueFormSection />
     <PageHeadingsSection />
     <StatesSection />
     <LogSection />
@@ -24,6 +25,7 @@
   import LogSection from '../sections/LogsSection.vue'
   import MetaWellSection from '../sections/MetaWellSection.vue'
   import PageHeadingsSection from '../sections/PageHeadingsSection.vue'
+  import QueueFormSection from '../sections/QueueFormSection.vue'
   import SearchesSection from '../sections/SearchesSection.vue'
   import SortSections from '../sections/SortSections.vue'
   import StatesSection from '../sections/StatesSection.vue'
