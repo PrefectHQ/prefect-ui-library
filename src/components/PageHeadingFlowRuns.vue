@@ -5,5 +5,5 @@
 <script lang="ts" setup>
   import PageHeading from '@/components/PageHeading.vue'
 
-  const crumbs = [{ text: 'Runs' }]
+  const crumbs = [{ text: 'Flow Runs' }]
 </script>
