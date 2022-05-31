@@ -37,9 +37,7 @@
     </p-label>
 
     <p-label label="Flow Runners">
-      <template v-for="flowRunner in internalValue.filter.flowRunnerTypes" :key="flowRunner">
-        <p-checkbox v-model="internalValue.filter.flowRunnerTypes" editor="checkbox" :value="flowRunner" />
-      </template>
+      <p-checkbox v-for="runner in flowRunnerTypes" :key="runner.value" v-model="internalValue.filter.flowRunnerTypes" :label="runner.label" :value="runner.value" />
     </p-label>
   </div>
 </template>
@@ -49,6 +47,7 @@
   import { computed } from 'vue'
   import DeploymentCombobox from '@/components/DeploymentCombobox.vue'
   import { WorkQueue } from '@/models'
+  import { FlowRunnerType } from '@/types/FlowRunnerType'
 
   const props = defineProps<{
     workQueue: WorkQueue,
@@ -66,6 +65,13 @@
       emit('update:workQueue', value)
     },
   })
+
+  const flowRunnerTypes: { label: string, value: FlowRunnerType }[] = [
+    { label: 'Universal', value: 'universal' },
+    { label: 'Kubernetes', value: 'kubernetes' },
+    { label: 'Docker', value: 'docker' },
+    { label: 'Subprocess', value: 'subprocess' },
+  ]
 </script>
 
 <style>
