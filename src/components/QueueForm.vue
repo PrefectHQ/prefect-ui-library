@@ -39,7 +39,7 @@
 
 <script lang="ts" setup>
   import { PLabel, PTextInput, PNumberInput, PTagsInput } from '@prefecthq/prefect-design'
-  import { reactive } from 'vue'
+  import { computed } from 'vue'
   import DeploymentCombobox from '@/components/DeploymentCombobox.vue'
   import WorkQueueToggle from '@/components/WorkQueueToggle.vue'
   import { WorkQueue } from '@/models'
@@ -48,5 +48,16 @@
     workQueue: WorkQueue,
   }>()
 
-  const internalValue = reactive({ ...props.workQueue })
+  const emit = defineEmits<{
+    (event: 'update:workQueue', value: WorkQueue): void,
+  }>()
+
+  const internalValue = computed({
+    get() {
+      return props.workQueue
+    },
+    set(value: WorkQueue) {
+      emit('update:workQueue', value)
+    },
+  })
 </script>
