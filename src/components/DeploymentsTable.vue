@@ -1,9 +1,9 @@
 <template>
   <p-table :data="deployments" :columns="columns" class="deployments-table">
     <template #name="{ row }">
-      <router-link :to="deploymentRoute(row.id)">
+      <p-link :to="deploymentRoute(row.id)">
         <span>{{ row.name }}</span>
-      </router-link>
+      </p-link>
     </template>
 
     <template #tags="{ row }">
@@ -37,7 +37,7 @@
 </template>
 
 <script lang="ts" setup>
-  import { PTable, PTagWrapper, PIconButtonMenu, POverflowMenuItem, PEmptyResults } from '@prefecthq/prefect-design'
+  import { PTable, PTagWrapper, PIconButtonMenu, POverflowMenuItem, PEmptyResults, PLink } from '@prefecthq/prefect-design'
   import CopyOverflowMenuItem from './CopyOverflowMenuItem.vue'
   import DeleteOverflowMenuItem from './DeleteOverflowMenuItem.vue'
   import { Deployment } from '@/models'
