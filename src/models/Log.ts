@@ -1,4 +1,6 @@
-export type LogLevel = 1 | 2 | 3 | 4 | 5
+export const logLevel = [0, 10, 20, 30, 40, 50] as const
+
+export type LogLevel = typeof logLevel[number]
 
 export interface ILog {
   id: string,
