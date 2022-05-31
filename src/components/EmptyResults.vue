@@ -2,7 +2,7 @@
   <div class="empty-list">
     <div class="empty-list--message">
       <slot name="message">
-        No runs
+        No results
       </slot>
     </div>
     <slot name="actions" />
@@ -13,6 +13,7 @@
 .empty-list {
   @apply text-center text-base
 }
+
 .empty-list--message {
   @apply text-slate-500
 }
