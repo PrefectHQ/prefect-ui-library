@@ -6,9 +6,14 @@
       </router-link>
     </template>
 
+    <template #concurrency="{ row }">
+      <span> {{ row.concurrencyLimit ?? 'Unlimited' }} </span>
+    </template>
+
     <template #action-heading>
       <span />
     </template>
+
     <template #action="{ row }">
       <p-icon-button-menu size="xs">
         <template #default="{ close }">
@@ -17,11 +22,21 @@
         </template>
       </p-icon-button-menu>
     </template>
+
+    <template #empty-state>
+      <PEmptyResults>
+        <template #actions>
+          <p-button size="sm" secondary @click="emit('clear')">
+            Clear Filters
+          </p-button>
+        </template>
+      </PEmptyResults>
+    </template>
   </p-table>
 </template>
 
 <script lang="ts" setup>
-  import { PTable } from '@prefecthq/prefect-design'
+  import { PTable, PEmptyResults } from '@prefecthq/prefect-design'
   import CopyOverflowMenuItem from './CopyOverflowMenuItem.vue'
   import DeleteOverflowMenuItem from './DeleteOverflowMenuItem.vue'
   import { WorkQueue } from '@/models'
@@ -52,7 +67,7 @@
     },
   ]
 
-  const emit = defineEmits(['delete'])
+  const emit = defineEmits(['delete', 'clear'])
 
   const deleteWorkQueue = async (id: string, close: () => void): Promise<void> => {
     close()
