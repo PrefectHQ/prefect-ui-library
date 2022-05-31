@@ -1,6 +1,7 @@
 <template>
   <div
     class="radar-node"
+    tabindex="0"
     @click.stop="selectNode"
     @mouseover="highlightNode"
     @mouseout="highlightNode"
@@ -86,6 +87,9 @@
 .radar-node {
   @apply
   shadow
+  hover:shadow-md
+  focus:bg-slate-50
+  focus:outline-double
   flex
   relative
   rounded

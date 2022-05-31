@@ -73,6 +73,12 @@
 .radar-node-task-run {
   @apply
   max-w-sm
+  box-border
+}
+
+.radar-node-task-run:focus {
+  @apply
+  bg-slate-50
 }
 
 .radar-node-task-run__content {
