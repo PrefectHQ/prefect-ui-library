@@ -20,6 +20,10 @@ export class DeploymentsApi extends MockedApi {
   public resumeDeployment(id: string): Promise<void> {
     return this.void()
   }
+
+  public deleteDeployment(id: string): Promise<void> {
+    return this.void()
+  }
 }
 
 export const deploymentsApi = createActions(new DeploymentsApi())

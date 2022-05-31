@@ -1,6 +1,7 @@
 export * from './arrays'
 export * from './copy'
 export * from './dates'
+export * from './delete'
 export * from './filters'
 export * from './httpStatus'
 export * from './inject'

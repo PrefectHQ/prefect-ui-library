@@ -1,7 +1,9 @@
 <template>
   <page-heading class="page-heading-api-keys" :crumbs="crumbs">
-    <!-- Note: This doesn't do anything yet -->
-    <p-button inset size="xs" icon="PlusIcon" />
+    <template #after-crumbs>
+      <!-- Note: This doesn't do anything yet -->
+      <p-button inset size="xs" icon="PlusIcon" />
+    </template>
   </page-heading>
 </template>
 

@@ -13,7 +13,7 @@
       <p-icon-button-menu size="xs">
         <template #default="{ close }">
           <copy-overflow-menu-item label="Copy ID" :item="row.id" @click="close" />
-          <p-overflow-menu-item label="Delete" />
+          <delete-overflow-menu-item :name="row.name" @delete="deleteWorkQueue(row.id)" />
         </template>
       </p-icon-button-menu>
     </template>
@@ -23,11 +23,14 @@
 <script lang="ts" setup>
   import { PTable } from '@prefecthq/prefect-design'
   import CopyOverflowMenuItem from './CopyOverflowMenuItem.vue'
+  import DeleteOverflowMenuItem from './DeleteOverflowMenuItem.vue'
   import { WorkQueue } from '@/models'
   import { workQueueRouteKey } from '@/router'
-  import { inject } from '@/utilities/inject'
+  import { workQueuesApiKey } from '@/services/WorkQueuesApi'
+  import { inject, deleteItem } from '@/utilities'
 
   const workQueueRoute = inject(workQueueRouteKey)
+  const workQueuesApi = inject(workQueuesApiKey)
 
   defineProps<{
     queues: WorkQueue[],
@@ -48,4 +51,11 @@
       width: '42px',
     },
   ]
+
+  const emit = defineEmits(['delete'])
+
+  const deleteWorkQueue = async (id: string): Promise<void> => {
+    await deleteItem(id, workQueuesApi.deleteWorkQueue, 'Work queue')
+    emit('delete', id)
+  }
 </script>

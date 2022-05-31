@@ -9,6 +9,10 @@ export class WorkQueueApi extends MockedApi {
   public resumeWorkQueue(id: string): Promise<void> {
     return this.void()
   }
+
+  public deleteWorkQueue(id: string): Promise<void> {
+    return this.void()
+  }
 }
 
 export const workQueueApi = createActions(new WorkQueueApi())

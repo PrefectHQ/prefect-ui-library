@@ -12,6 +12,10 @@ export class FlowsApi extends MockedApi {
   public getFlows(filter: UnionFilters): Promise<Flow[]> {
     return this.promise(mocker.createMany('flow', mocker.create('number', [1, 100])))
   }
+
+  public deleteFlow(id: string): Promise<void> {
+    return this.void()
+  }
 }
 
 export const flowsApi = createActions(new FlowsApi())
