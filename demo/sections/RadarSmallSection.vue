@@ -1,5 +1,5 @@
 <template>
-  <Section heading="Mini Radar">
+  <Section heading="Radar - Small">
     <div class="h-[200px] w-[200px]">
       <RadarSmall :flow-run-id="flowRun.id" />
     </div>
