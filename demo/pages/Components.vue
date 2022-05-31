@@ -1,6 +1,5 @@
 <template>
   <p-layout-default>
-    <QueueFormSection />
     <PageHeadingsSection />
     <StatesSection />
     <LogSection />
@@ -13,6 +12,7 @@
     <SearchesSection />
     <SortSections />
     <ComboboxesSection />
+    <QueueFormSection />
   </p-layout-default>
 </template>
 
