@@ -9,10 +9,10 @@
     </p-label>
 
     <p-label label="Status">
-      <p-toggle v-model="internalValue.isPaused">
+      <p-toggle v-model="isActive">
         <template #append>
           <div>
-            <template v-if="internalValue.isPaused">
+            <template v-if="isActive">
               Active
             </template>
             <template v-else>
@@ -27,7 +27,10 @@
       <p-number-input v-model="internalValue.concurrencyLimit" />
     </p-label>
 
-    <p>Filters</p>
+    <p class="queue-form__section-header">
+      Filters
+    </p>
+
     <p-label label="Tags">
       <p-tags-input v-model:tags="internalValue.filter.tags" placeholder="Add tag to filter..." />
     </p-label>
@@ -66,6 +69,15 @@
     },
   })
 
+  const isActive = computed({
+    get() {
+      return !internalValue.value.isPaused
+    },
+    set() {
+      internalValue.value.isPaused = !internalValue.value.isPaused
+    },
+  })
+
   const flowRunnerTypes: { label: string, value: FlowRunnerType }[] = [
     { label: 'Universal', value: 'universal' },
     { label: 'Kubernetes', value: 'kubernetes' },
@@ -84,5 +96,11 @@
   flex
   flex-col
   gap-4
+}
+
+.queue-form__section-header {
+  @apply
+  text-base
+  text-gray-500
 }
 </style>
