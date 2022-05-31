@@ -14,6 +14,7 @@
 
     <p-context-nav-item title="Components" icon="PuzzleIcon" to="/components" />
     <p-context-nav-item title="Charts" icon="ChartSquareBarIcon" to="/charts" />
+    <p-context-nav-item title="Radar" icon="ChartPieIcon" to="/radar" />
   </p-context-sidebar>
 </template>
 

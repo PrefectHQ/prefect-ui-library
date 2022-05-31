@@ -18,6 +18,11 @@ const routeRecords: RouteRecordRaw[] = [
     component: () => import('../pages/Charts.vue'),
   },
   {
+    path: '/radar',
+    name: 'radar',
+    component: () => import('../pages/Radar.vue'),
+  },
+  {
     path: '/:catchAll(.*)',
     redirect: '/',
   },
