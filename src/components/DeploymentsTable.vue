@@ -25,19 +25,19 @@
     </template>
 
     <template #empty-state>
-      <PPEmptyResults>
+      <PEmptyResults>
         <template #actions>
           <p-button size="sm" secondary @click="emit('clear')">
             Clear Filters
           </p-button>
         </template>
-      </PPEmptyResults>
+      </PEmptyResults>
     </template>
   </p-table>
 </template>
 
 <script lang="ts" setup>
-  import { PTable, PTagWrapper, PIconButtonMenu, POverflowMenuItem, PPEmptyResults } from '@prefecthq/prefect-design'
+  import { PTable, PTagWrapper, PIconButtonMenu, POverflowMenuItem, PEmptyResults } from '@prefecthq/prefect-design'
   import CopyOverflowMenuItem from './CopyOverflowMenuItem.vue'
   import DeleteOverflowMenuItem from './DeleteOverflowMenuItem.vue'
   import { Deployment } from '@/models'
