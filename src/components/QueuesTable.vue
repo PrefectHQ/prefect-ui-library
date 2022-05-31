@@ -6,6 +6,11 @@
       </router-link>
     </template>
 
+    <template #concurrency="{ row }">
+      <span v-if="row.concurrencyLimit === 0">Unlimited</span>
+      <span v-else>{{ row.concurrencyLimit }}</span>
+    </template>
+
     <template #action-heading>
       <span />
     </template>
