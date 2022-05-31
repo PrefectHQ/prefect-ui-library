@@ -1,7 +1,5 @@
 <template>
-  <p>Edit Work Queue</p>
-  <p>Fill out the details below</p>
-  <div>
+  <div class="queue-form">
     <p-label label="Name">
       <p-text-input v-model="internalValue.name" />
     </p-label>
@@ -11,7 +9,18 @@
     </p-label>
 
     <p-label label="Status">
-      <WorkQueueToggle v-model:workQueue="internalValue" />
+      <p-toggle v-model="internalValue.isPaused">
+        <template #append>
+          <div>
+            <template v-if="internalValue.isPaused">
+              Active
+            </template>
+            <template v-else>
+              Paused
+            </template>
+          </div>
+        </template>
+      </p-toggle>
     </p-label>
 
     <p-label label="Flow Run Concurrency (Optional)">
@@ -29,19 +38,16 @@
 
     <p-label label="Flow Runners">
       <template v-for="flowRunner in internalValue.filter.flowRunnerTypes" :key="flowRunner">
-        <fieldset>
-          <p-checkbox v-model="internalValue.filter.flowRunnerTypes" editor="checkbox" :value="flowRunner.toUpperCase()" />
-        </fieldset>
+        <p-checkbox v-model="internalValue.filter.flowRunnerTypes" editor="checkbox" :value="flowRunner" />
       </template>
     </p-label>
   </div>
 </template>
 
 <script lang="ts" setup>
-  import { PLabel, PTextInput, PNumberInput, PTagsInput } from '@prefecthq/prefect-design'
+  import { PLabel, PTextInput, PNumberInput, PTagsInput, PToggle } from '@prefecthq/prefect-design'
   import { computed } from 'vue'
   import DeploymentCombobox from '@/components/DeploymentCombobox.vue'
-  import WorkQueueToggle from '@/components/WorkQueueToggle.vue'
   import { WorkQueue } from '@/models'
 
   const props = defineProps<{
@@ -61,3 +67,16 @@
     },
   })
 </script>
+
+<style>
+.queue-form {
+  @apply
+  border-[1px]
+  border-gray-300
+  p-7
+  rounded-lg
+  flex
+  flex-col
+  gap-4
+}
+</style>
