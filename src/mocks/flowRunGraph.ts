@@ -56,7 +56,7 @@ export const randomFlowRunGraph: MockFunction<GraphNode[]> = function(options?: 
       rows[row] = []
     }
 
-    for (let i = 0; i < nodes.length; ++i) {
+    nodeLoop: for (let i = 0; i < nodes.length; ++i) {
       if (row == 0) {
         rows.push([nodes[i]])
         incRow()
@@ -77,7 +77,7 @@ export const randomFlowRunGraph: MockFunction<GraphNode[]> = function(options?: 
         if (currLen + 1 >= prevLen * fanMultiplier) {
           rows[row].push(nodes[i])
           incRow()
-          continue
+          continue nodeLoop
         }
       }
 
@@ -86,14 +86,14 @@ export const randomFlowRunGraph: MockFunction<GraphNode[]> = function(options?: 
           if ((currLen + 1) * fanMultiplier >= prevLen) {
             rows[row].push(nodes[i])
             incRow()
-            continue
+            continue nodeLoop
           }
         }
 
         if (currLen + 1 >= prevLen * fanMultiplier) {
           rows[row].push(nodes[i])
           incRow()
-          continue
+          continue nodeLoop
         }
 
       }
