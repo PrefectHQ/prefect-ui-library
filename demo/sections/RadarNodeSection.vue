@@ -1,7 +1,11 @@
 <template>
   <Section heading="Radar">
+    <p-button @click="toggleCollapsed">
+      Toggle Collapsed
+    </p-button>
+
     <SubSection heading="Base">
-      <ORadarNode :collapsed="new Map([[taskRun.id, radarNode]])">
+      <ORadarNode :collapsed="collapsedMap">
         <template #aside>
           <PIcon icon="TemplateIcon" />
           <div>
@@ -30,7 +34,7 @@
     </SubSection>
 
     <SubSection heading="Task run">
-      <RadarNodeTaskRun :graph-node="taskRun" :collapsed="new Map([[taskRun.id, radarNode]])" :downstream-nodes="10" />
+      <RadarNodeTaskRun :graph-node="taskRun" :collapsed="collapsedMap" :downstream-nodes="10" />
     </SubSection>
   </Section>
 </template>
@@ -38,6 +42,7 @@
 <script lang="ts" setup>
   import { PIcon } from '@prefecthq/prefect-design'
   import { RadarNode } from '@prefecthq/radar'
+  import { ref } from 'vue'
   import Section from '../components/DemoSection.vue'
   import SubSection from '../components/DemoSubSection.vue'
   import ORadarNode from '@/components/RadarNode.vue'
@@ -46,6 +51,15 @@
 
   const taskRun = mocker.create('graphNode')
   const radarNode: RadarNode = { id: taskRun.id, cx: 0, cy: 0, radian: 0, data: taskRun, downstreamNodes: new Map(), upstreamNodes: new Map(), ringId: 0 }
+  const collapsedMap = ref(new Map([[taskRun.id, radarNode]]))
+
+  const toggleCollapsed = (): void => {
+    if (collapsedMap.value.size > 0) {
+      collapsedMap.value = new Map()
+    } else {
+      collapsedMap.value = new Map([[taskRun.id, radarNode]])
+    }
+  }
 </script>
 
 <style>

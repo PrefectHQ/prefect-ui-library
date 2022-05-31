@@ -40,7 +40,7 @@
       </div>
     </div>
 
-    <transition name="scale" mode="out-in">
+    <transition name="radar-node__scale" mode="out-in">
       <div v-if="collapsed && showCollapsedBadge" class="radar-node__collapsed-badge">
         <slot name="collapsed-badge" :collapsed="collapsed">
           {{ collapsed.size.toLocaleString() }}
@@ -107,8 +107,18 @@
   @apply
   absolute
   right-0
-  top-0
-  translate-x-1/2
-  -translate-y-1/2
+  top-0;
+
+  transform: translate(50%, -50%) scale(1);
+}
+
+.radar-node__scale-enter-active,
+.radar-node__scale-leave-active {
+  transition: transform 150ms ease;
+}
+
+.radar-node__scale-enter-from,
+.radar-node__scale-leave-to {
+  transform: translate(50%, -50%) scale(0);
 }
 </style>
