@@ -89,6 +89,7 @@
 .radar-node-flow-run {
   @apply
   max-w-sm
+  min-h-[120px]
 }
 
 .radar-node-flow-run__content {

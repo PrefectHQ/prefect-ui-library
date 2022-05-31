@@ -94,6 +94,9 @@
 .radar-node__content {
   @apply
   grow
+  flex
+  flex-col
+  justify-between
   p-2
 }
 
