@@ -72,7 +72,7 @@
 <style>
 .radar-node-task-run {
   @apply
-  max-w-md
+  max-w-sm
 }
 
 .radar-node-task-run__content {
