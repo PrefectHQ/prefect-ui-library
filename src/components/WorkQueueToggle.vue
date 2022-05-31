@@ -1,15 +1,5 @@
 <template>
-  <div class="work-queue-toggle">
-    <p-toggle v-model="isActive" />
-    <div class="work-queue-toggle__label">
-      <template v-if="isActive">
-        Active
-      </template>
-      <template v-else>
-        Paused
-      </template>
-    </div>
-  </div>
+  <p-toggle v-model="isActive" />
 </template>
 
 <script lang="ts" setup>
@@ -21,14 +11,10 @@
   const props = defineProps<{
     workQueue: WorkQueue,
   }>()
-
   const workQueuesApi = inject(workQueuesApiKey)
-
   const emit = defineEmits<{
     (event: 'update:workQueue', value: WorkQueue): void,
-
   }>()
-
   const internalValue = computed({
     get() {
       return props.workQueue
@@ -37,15 +23,12 @@
       emit('update:workQueue', value)
     },
   })
-
   let shouldUpdate: boolean = true
-
   const setToggle = async (value: boolean): Promise<void> => {
     if (!shouldUpdate) {
       shouldUpdate = true
       return
     }
-
     try {
       if (value) {
         await workQueuesApi.resumeWorkQueue(props.workQueue.id)
@@ -56,12 +39,10 @@
       }
     } catch (error) {
       showToast(`${error}`, 'error', undefined, 3000)
-
       shouldUpdate = false
       isActive.value = !isActive.value
     }
   }
-
   const isActive = computed({
     get() {
       return !internalValue.value.isPaused
@@ -72,19 +53,3 @@
     },
   })
 </script>
-
-<style>
-.work-queue-toggle {
-  @apply
-  flex
-  items-center
-  gap-3
-}
-
-.work-queue-toggle__label {
- @apply
- text-sm
- leading-5
- font-medium
-}
-</style>
