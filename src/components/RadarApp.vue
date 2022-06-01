@@ -66,8 +66,12 @@
     flowRunId: string,
   }>()
 
+  const flowRunId = computed(() => {
+    return props.flowRunId
+  })
+
   const flowRunsApi = inject(flowRunsApiKey)
-  const subscription = useSubscription(flowRunsApi.getFlowRunsGraph, [props.flowRunId])
+  const subscription = useSubscription(flowRunsApi.getFlowRunsGraph, [flowRunId])
 
   const graph = computed(() => {
     return subscription.response ?? []
