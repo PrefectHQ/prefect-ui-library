@@ -5,6 +5,7 @@
         <span>{{ row.name }}</span>
       </router-link>
     </template>
+
     <template #tags="{ row }">
       <p-tag-wrapper :tags="row.tags" justify="left" />
     </template>
@@ -12,20 +13,31 @@
     <template #action-heading>
       <span />
     </template>
+
     <template #action="{ row }">
       <p-icon-button-menu size="xs">
         <template #default="{ close }">
           <copy-overflow-menu-item label="Copy ID" :item="row.id" @click="close" />
           <p-overflow-menu-item label="Run" class="deployments-table__hide-on-desktop" />
-          <delete-overflow-menu-item :name="row.name" @delete="deleteDeployment(row.id)" />
+          <delete-overflow-menu-item :name="row.name" @delete="deleteDeployment(row.id, close)" />
         </template>
       </p-icon-button-menu>
+    </template>
+
+    <template #empty-state>
+      <PEmptyResults>
+        <template #actions>
+          <p-button size="sm" secondary @click="emit('clear')">
+            Clear Filters
+          </p-button>
+        </template>
+      </PEmptyResults>
     </template>
   </p-table>
 </template>
 
 <script lang="ts" setup>
-  import { PTable, PTagWrapper, PIconButtonMenu, POverflowMenuItem } from '@prefecthq/prefect-design'
+  import { PTable, PTagWrapper, PIconButtonMenu, POverflowMenuItem, PEmptyResults } from '@prefecthq/prefect-design'
   import CopyOverflowMenuItem from './CopyOverflowMenuItem.vue'
   import DeleteOverflowMenuItem from './DeleteOverflowMenuItem.vue'
   import { Deployment } from '@/models'
@@ -62,9 +74,10 @@
     },
   ]
 
-  const emit = defineEmits(['delete'])
+  const emit = defineEmits(['delete', 'clear'])
 
-  const deleteDeployment = async (id: string): Promise<void> => {
+  const deleteDeployment = async (id: string, close: () => void): Promise<void> => {
+    close()
     await deleteItem(id, deploymentsApi.deleteDeployment, 'Deployment')
     emit('delete', id)
   }

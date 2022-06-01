@@ -5,6 +5,7 @@
         <span>{{ row.name }}</span>
       </router-link>
     </template>
+
     <template #tags="{ row }">
       <p-tag-wrapper :tags="row.tags" justify="left" />
     </template>
@@ -12,19 +13,30 @@
     <template #action-heading>
       <span />
     </template>
+
     <template #action="{ row }">
       <p-icon-button-menu size="xs">
         <template #default="{ close }">
           <copy-overflow-menu-item label="Copy ID" :item="row.id" @click="close" />
-          <delete-overflow-menu-item :name="row.name" @delete="deleteFlow(row.id)" />
+          <delete-overflow-menu-item :name="row.name" @delete="deleteFlow(row.id, close)" />
         </template>
       </p-icon-button-menu>
+    </template>
+
+    <template #empty-state>
+      <PEmptyResults>
+        <template #actions>
+          <p-button size="sm" secondary @click="emit('clear')">
+            Clear Filters
+          </p-button>
+        </template>
+      </PEmptyResults>
     </template>
   </p-table>
 </template>
 
 <script lang="ts" setup>
-  import { PTable, PTagWrapper, PIconButtonMenu } from '@prefecthq/prefect-design'
+  import { PTable, PTagWrapper, PIconButtonMenu, PEmptyResults } from '@prefecthq/prefect-design'
   import CopyOverflowMenuItem from './CopyOverflowMenuItem.vue'
   import DeleteOverflowMenuItem from './DeleteOverflowMenuItem.vue'
   import { Flow } from '@/models'
@@ -60,9 +72,10 @@
     },
   ]
 
-  const emit = defineEmits(['delete'])
+  const emit = defineEmits(['delete', 'clear'])
 
-  const deleteFlow = async (id: string): Promise<void> => {
+  const deleteFlow = async (id: string, close: () => void): Promise<void> => {
+    close()
     await deleteItem(id, flowsApi.deleteFlow, 'Flow')
     emit('delete', id)
   }
