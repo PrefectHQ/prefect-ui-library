@@ -6,15 +6,38 @@
     :edge-color-accessor="getStateColor"
     id-accessor="id"
     upstream-accessor="upstreamDependencies"
-  />
+  >
+    <template #node="{ data, selected, toggle, highlighted, collapsed, panToNode, highlightNode, selectNode }">
+      <component
+        :is="radarNodeComponent(data)"
+        :graph-node="data"
+        :toggle="toggle"
+        :collapsed="collapsed"
+        :highlighted="highlighted"
+        :selected="selected"
+        :pan-to-node="panToNode"
+        :highlight-node="highlightNode"
+        :select-node="selectNode"
+      />
+    </template>
+  </RadarView>
 </template>
 
 <script lang="ts" setup>
   import { RadarView, Item } from '@prefecthq/radar'
   import { useSubscription } from '@prefecthq/vue-compositions'
   import { computed } from 'vue'
+  import RadarNodeSubFlowRun from '@/components/RadarNodeSubFlowRun.vue'
+  import RadarNodeTaskRun from '@/components/RadarNodeTaskRun.vue'
+  import { GraphNode } from '@/models'
   import { flowRunsApiKey } from '@/services'
   import { inject } from '@/utilities/inject'
+
+  const radarNodeComponents = {
+    default: RadarNodeTaskRun,
+    taskRun: RadarNodeTaskRun,
+    subFlowRun: RadarNodeSubFlowRun,
+  }
 
   const computedStyle = getComputedStyle(document.body)
 
@@ -32,6 +55,24 @@
   const getStateColor = (item: Item): string => {
     const color = computedStyle.getPropertyValue(`--state-${item.state?.type}-500`)
     return color
+  }
+
+  const isTaskRun = (item: GraphNode): boolean => {
+    return !item.state?.stateDetails?.childFlowRunId
+  }
+
+  const isSubFlowRun = (item: GraphNode): boolean => {
+    return !!item.state?.stateDetails?.childFlowRunId
+  }
+
+  const radarNodeComponent = (item: GraphNode): typeof RadarNodeTaskRun | typeof RadarNodeSubFlowRun => {
+    if (isTaskRun(item)) {
+      return radarNodeComponents.taskRun
+    } else if (isSubFlowRun(item)) {
+      return radarNodeComponents.subFlowRun
+    }
+
+    return radarNodeComponents.default
   }
 </script>
 

@@ -87,6 +87,7 @@
 .radar-node {
   @apply
   shadow
+  bg-white
   hover:shadow-md
   focus:bg-slate-50
   focus:outline

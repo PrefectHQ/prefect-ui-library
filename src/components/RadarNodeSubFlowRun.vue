@@ -44,10 +44,6 @@
     graphNode: GraphNode,
   }>()
 
-  if (!props.graphNode.state?.stateDetails?.childFlowRunId) {
-    throw new Error('Sub flow run node was invoked for a graph node without a child flow run id')
-  }
-
   const flowRunId = computed(() => {
     return props.graphNode.state!.stateDetails!.childFlowRunId!
   })
@@ -88,7 +84,7 @@
 <style>
 .radar-node-flow-run {
   @apply
-  max-w-sm
+  w-[20rem]
   min-h-[120px]
 }
 

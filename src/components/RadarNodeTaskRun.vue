@@ -72,7 +72,7 @@
 <style>
 .radar-node-task-run {
   @apply
-  max-w-sm
+  w-[18rem]
   box-border
 }
 

@@ -1,6 +1,7 @@
 import { IState } from '@/models/State'
 import { MockFunction } from '@/services/Mocker'
 import { capitalize } from '@/utilities'
+import { random } from '@/utilities/math'
 
 export const randomState: MockFunction<IState> = function(state?: Partial<IState>) {
   const type = this.create('stateType')
@@ -13,7 +14,7 @@ export const randomState: MockFunction<IState> = function(state?: Partial<IState
     stateDetails: state?.stateDetails ?? {
       flowRunId: this.create('string'),
       taskRunId: this.create('string'),
-      childFlowRunId: this.create('string'),
+      childFlowRunId: random() > 0.9 ? this.create('id') : null,
       scheduledTime: this.create('date'),
       cacheKey: this.create('string'),
       cacheExpiration: this.create('date'),
