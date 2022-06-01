@@ -1,6 +1,6 @@
 <template>
   <DemoSection heading="Queue Form">
-    <QueueForm :work-queue="queueData" />
+    <QueueForm :work-queue="queueData" @submit="submit" />
   </DemoSection>
 </template>
 
@@ -10,4 +10,8 @@
   import { mocker } from '@/services'
 
   const queueData = mocker.create('workQueue')
+
+  const submit = (): void => {
+    console.log('Form submitted!')
+  }
 </script>

@@ -1,5 +1,5 @@
 <template>
-  <div class="queue-form">
+  <p-form class="queue-form">
     <p-label label="Name">
       <p-text-input v-model="internalValue.name" />
     </p-label>
@@ -32,49 +32,38 @@
     </p>
 
     <p-label label="Tags">
-      <p-tags-input v-model:tags="internalValue.filter.tags" placeholder="Add tag to filter..." />
+      <p-tags-input v-model:tags="internalValue.filter!.tags" placeholder="Add tag to filter..." />
     </p-label>
 
     <p-label label="Deployments">
-      <DeploymentCombobox v-model:selected="internalValue.filter.deploymentIds" empty-message="Select Deployments to filter..." />
+      <DeploymentCombobox v-model:selected="internalValue.filter!.deploymentIds" empty-message="Select Deployments to filter..." />
     </p-label>
 
     <p-label label="Flow Runners">
-      <p-checkbox v-for="runner in flowRunnerTypes" :key="runner.value" v-model="internalValue.filter.flowRunnerTypes" :label="runner.label" :value="runner.value" />
+      <p-checkbox v-for="runner in flowRunnerTypes" :key="runner.value" v-model="internalValue.filter!.flowRunnerTypes" :label="runner.label" :value="runner.value" />
     </p-label>
-  </div>
+  </p-form>
 </template>
 
 <script lang="ts" setup>
-  import { PLabel, PTextInput, PNumberInput, PTagsInput, PToggle } from '@prefecthq/prefect-design'
-  import { computed } from 'vue'
+  import { PLabel, PTextInput, PNumberInput, PTagsInput, PToggle, PForm } from '@prefecthq/prefect-design'
+  import { computed, reactive } from 'vue'
   import DeploymentCombobox from '@/components/DeploymentCombobox.vue'
   import { WorkQueue } from '@/models'
   import { FlowRunnerType } from '@/types/FlowRunnerType'
 
   const props = defineProps<{
-    workQueue: WorkQueue,
+    workQueue?: WorkQueue,
   }>()
 
-  const emit = defineEmits<{
-    (event: 'update:workQueue', value: WorkQueue): void,
-  }>()
-
-  const internalValue = computed({
-    get() {
-      return props.workQueue
-    },
-    set(value: WorkQueue) {
-      emit('update:workQueue', value)
-    },
-  })
+  const internalValue = reactive({ ...props.workQueue })
 
   const isActive = computed({
     get() {
-      return !internalValue.value.isPaused
+      return !internalValue.isPaused
     },
     set() {
-      internalValue.value.isPaused = !internalValue.value.isPaused
+      internalValue.isPaused = !internalValue.isPaused
     },
   })
 
@@ -91,11 +80,9 @@
   @apply
   border-[1px]
   border-gray-300
-  p-7
+  px-6
+  pb-6
   rounded-lg
-  flex
-  flex-col
-  gap-4
 }
 
 .queue-form__section-header {
