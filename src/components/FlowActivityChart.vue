@@ -9,7 +9,7 @@
       :positive-sentiment-keys="positiveSentimentKeys"
       :negative-sentiment-keys="negativeSentimentKeys"
       static-median
-      :chart-padding="{ top: 4, bottom: 24, middle: 8 }"
+      :chart-padding="{ top: 0, bottom: 0, middle: 4 }"
     >
       <template #default="{ key }">
         <div class="flow-activity-chart__bar" :class="getStateColor(key)" />
@@ -112,7 +112,7 @@
 
 .flow-activity-chart__median {
   @apply
-  h-[2px]
+  h-px
   bg-slate-300
   w-full
 }
