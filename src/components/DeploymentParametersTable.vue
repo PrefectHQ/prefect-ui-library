@@ -2,7 +2,7 @@
   <div class="deployment-parameters-table">
     <div class="deployment-parameters-table__search">
       <ResultsCount :count="filtered.length" />
-      <SearchInput v-model="term" placeholder="Search" label="Search parameters" />
+      <SearchInput v-model="searchTerm" placeholder="Search" label="Search parameters" />
     </div>
     <p-table :data="filtered" :columns="columns">
       <template #empty-state>
@@ -30,7 +30,7 @@
     { label: 'Type', property: 'type', width: '80px' },
   ]
 
-  const term = ref('')
+  const searchTerm = ref('')
 
   const data = computed(() => Object.entries(props.parameters).map(([key, value]) => ({
     key,
@@ -39,7 +39,7 @@
   })))
 
   const filtered = computed(() => {
-    if (term.value.length === 0) {
+    if (searchTerm.value.length === 0) {
       return data.value
     }
 
@@ -47,7 +47,7 @@
   })
 
   function filterParameter({ key, value, type }: { key: string, value: unknown, type: string }): boolean {
-    return `${key} ${value} ${type}`.toLowerCase().includes(term.value)
+    return `${key} ${value} ${type}`.toLowerCase().includes(searchTerm.value.toLowerCase())
   }
 
   function formatParameterValue(value: unknown): string {
