@@ -24,7 +24,7 @@
     </p-label>
 
     <p-label label="Flow Run Concurrency (Optional)">
-      <p-number-input v-model="internalValue.concurrencyLimit" />
+      <p-number-input v-model="internalValue.concurrencyLimit" placeholder="Unlimited" />
     </p-label>
 
     <p class="queue-form__section-header">
@@ -32,7 +32,7 @@
     </p>
 
     <p-label label="Tags">
-      <p-tags-input v-model:tags="internalValue.filter!.tags" placeholder="Add tag to filter..." />
+      <p-tags-input v-model:tags="internalValue.filter!.tags" empty-message="Add tag to filter..." />
     </p-label>
 
     <p-label label="Deployments">
