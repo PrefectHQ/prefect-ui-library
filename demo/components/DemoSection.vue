@@ -1,7 +1,9 @@
 <template>
   <div class="px-4 py-8 sm:px-0">
     <p class="text-2xl mb-3">
-      {{ heading }}
+      <slot name="heading">
+        {{ heading }}
+      </slot>
     </p>
     <div class="border-4 border-dashed border-gray-200 rounded-lg p-4">
       <slot />

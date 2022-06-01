@@ -1,4 +1,4 @@
-import { TaskRunInputType } from '@/models/FlowRunGraph'
+import { TaskRunInputType } from '@/models/GraphNode'
 import { IStateResponse } from '@/models/IStateResponse'
 import { DateString } from '@/types/dates'
 

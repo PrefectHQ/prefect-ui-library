@@ -1,5 +1,6 @@
 import { createActions } from '@prefecthq/vue-compositions'
 import { MockedApi } from './MockedApi'
+import { GraphNode } from '@/models'
 import { FlowRun } from '@/models/FlowRun'
 import { RunHistory } from '@/models/RunHistory'
 import { mocker } from '@/services'
@@ -37,6 +38,10 @@ export class FlowRunsApi extends MockedApi {
     }
 
     return this.promise(runsHistory)
+  }
+
+  public getFlowRunsGraph(id: string): Promise<GraphNode[]> {
+    return this.promise(mocker.create('flowRunGraph', [{ size: mocker.create('number', [3, 40]), shape: 'fanOut', fanMultiplier: 2 }]))
   }
 
   public deleteFlowRun(id: string): Promise<void> {
