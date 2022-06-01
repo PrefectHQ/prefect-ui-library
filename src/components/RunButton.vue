@@ -1,7 +1,7 @@
 <template>
-  <p-button inset @click="run(deployment)">
+  <p-button class="run-button" inset @click="run(deployment)">
     Run
-    <p-icon class="page-heading-deployment__run-icon" icon="PlayIcon" solid />
+    <p-icon class="run-button__run-icon" icon="PlayIcon" solid />
   </p-button>
 </template>
 
@@ -19,17 +19,27 @@
 
   const run = async (deployment: Deployment): Promise<void> => {
     try {
-      await deploymentsApi.createDeploymentFlowRun(deployment.id, {
+      const newRun = await deploymentsApi.createDeploymentFlowRun(deployment.id, {
         state: {
           type: 'scheduled',
           message: 'Run through UI',
         },
       },
       )
+      const runId = newRun.id
+      console.log(runId)
       showToast('Flow run scheduled', 'success')
     } catch (errorMessage) {
+      console.log('error', errorMessage)
       showToast('Failed to schedule flow run', 'error')
     }
   }
 </script>
+
+<style>
+.run-button__run-icon { @apply
+  w-5
+  h-5
+}
+</style>
 

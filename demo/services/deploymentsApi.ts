@@ -14,11 +14,11 @@ export class DeploymentsApi extends MockedApi {
     return this.promise(mocker.createMany('deployment', mocker.create('number', [1, 100])))
   }
 
-  public pauseDeployment(id: string): Promise<void> {
+  public createDeploymentFlowRun(deploymentId: string, body: CreateFlowRun): Promise<void> {
     return this.void()
   }
 
-  public createDeploymentFlowRun(deploymentId: string, body: CreateFlowRun): Promise<void> {
+  public pauseDeployment(id: string): Promise<void> {
     return this.void()
   }
 
