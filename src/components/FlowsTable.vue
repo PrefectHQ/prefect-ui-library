@@ -1,9 +1,9 @@
 <template>
   <p-table :data="flows" :columns="columns">
     <template #name="{ row }">
-      <router-link :to="flowRoute(row.id)">
+      <p-link :to="flowRoute(row.id)">
         <span>{{ row.name }}</span>
-      </router-link>
+      </p-link>
     </template>
 
     <template #tags="{ row }">
@@ -36,7 +36,7 @@
 </template>
 
 <script lang="ts" setup>
-  import { PTable, PTagWrapper, PIconButtonMenu, PEmptyResults } from '@prefecthq/prefect-design'
+  import { PTable, PTagWrapper, PIconButtonMenu, PEmptyResults, PLink } from '@prefecthq/prefect-design'
   import CopyOverflowMenuItem from './CopyOverflowMenuItem.vue'
   import DeleteOverflowMenuItem from './DeleteOverflowMenuItem.vue'
   import { Flow } from '@/models'
