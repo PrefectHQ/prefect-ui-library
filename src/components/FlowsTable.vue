@@ -10,6 +10,10 @@
       <p-tag-wrapper :tags="row.tags" justify="left" />
     </template>
 
+    <template #activity="{ row }">
+      <FlowActivityChart :flow="row" class="flows-table__activity-chart" />
+    </template>
+
     <template #action-heading>
       <span />
     </template>
@@ -39,6 +43,7 @@
   import { PTable, PTagWrapper, PIconButtonMenu, PEmptyResults, PLink } from '@prefecthq/prefect-design'
   import CopyOverflowMenuItem from './CopyOverflowMenuItem.vue'
   import DeleteOverflowMenuItem from './DeleteOverflowMenuItem.vue'
+  import FlowActivityChart from './FlowActivityChart.vue'
   import { Flow } from '@/models'
   import { flowRouteKey } from '@/router'
   import { flowsApiKey } from '@/services/FlowsApi'
@@ -80,3 +85,10 @@
     emit('delete', id)
   }
 </script>
+
+<style>
+.flows-table__activity-chart {
+  @apply
+  h-12
+}
+</style>
