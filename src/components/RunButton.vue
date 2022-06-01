@@ -19,18 +19,15 @@
 
   const run = async (deployment: Deployment): Promise<void> => {
     try {
-      const newRun = await deploymentsApi.createDeploymentFlowRun(deployment.id, {
+      await deploymentsApi.createDeploymentFlowRun(deployment.id, {
         state: {
           type: 'scheduled',
           message: 'Run through UI',
         },
       },
       )
-      const runId = newRun.id
-      console.log(runId)
       showToast('Flow run scheduled', 'success')
     } catch (errorMessage) {
-      console.log('error', errorMessage)
       showToast('Failed to schedule flow run', 'error')
     }
   }
