@@ -8,13 +8,13 @@
     </p-key-value>
     <p-key-value label="Created" :value="formatDateTimeNumeric(deployment.created)" />
 
-    <template v-if="deployment.tags">
-      <p-key-value label="Tags">
-        <template #value>
+    <p-key-value label="Tags">
+      <template #value>
+        <template v-if="deployment.tags?.length">
           <p-tags :tags="deployment.tags" class="deployment-details__tags" />
         </template>
-      </p-key-value>
-    </template>
+      </template>
+    </p-key-value>
   </div>
 </template>
 
