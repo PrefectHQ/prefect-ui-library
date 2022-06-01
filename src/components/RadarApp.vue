@@ -25,23 +25,21 @@
       <RadarNodePlaceholder />
     </template>
 
-    <!--
-      <template #minimap-reset-button>
-      <m-icon-button class="bg--white justify-self-start mr-auto" icon="pi-restart-line" />
-      </template>
+    <template #minimap-reset-button>
+      <p-button inset icon="BanIcon" size="xs" />
+    </template>
 
-      <template #minimap-zoom-in-button>
-      <m-icon-button class="bg--white mr-1" icon="pi-zoom-in-line" />
-      </template>
+    <template #minimap-zoom-in-button>
+      <p-button inset icon="PlusIcon" size="xs" class="radar-app__minimap-button" />
+    </template>
 
-      <template #minimap-zoom-out-button>
-      <m-icon-button class="bg--white mr-1" icon="pi-zoom-out-line" />
-      </template>
+    <template #minimap-zoom-out-button>
+      <p-button inset icon="MinusIcon" size="xs" class="radar-app__minimap-button" />
+    </template>
 
-      <template #minimap-reset-viewport-button>
-      <m-icon-button class="bg--white" icon="pi-fullscreen-fill" />
-      </template>
-    -->
+    <template #minimap-reset-viewport-button>
+      <p-button inset icon="ArrowsExpandIcon" size="xs" />
+    </template>
   </RadarView>
 </template>
 
@@ -104,5 +102,10 @@
   @apply
   w-full
   h-full
+}
+
+.radar-app__minimap-button {
+  @apply
+  mr-1
 }
 </style>
