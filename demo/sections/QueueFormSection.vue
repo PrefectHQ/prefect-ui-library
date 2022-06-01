@@ -11,6 +11,7 @@
   import { DeploymentsApi } from '../services'
   import QueueForm from '@/components/QueueForm.vue'
   import { Deployment } from '@/models/Deployment'
+  import { WorkQueue } from '@/models/WorkQueue'
   import { deploymentsApiKey, mocker } from '@/services'
   import { UnionFilters } from '@/types/UnionFilters'
 
@@ -40,7 +41,7 @@
   provide(deploymentsApiKey, queueFormDeploymentsApi)
 
 
-  const submit = (): void => {
-    console.log('Form submitted!')
+  const submit = (workQueue: Partial<WorkQueue>): void => {
+    console.log('Form submitted!', workQueue)
   }
 </script>

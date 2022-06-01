@@ -1,5 +1,5 @@
 <template>
-  <p-form class="queue-form">
+  <p-form class="queue-form" @submit="submit">
     <p-label label="Name">
       <p-text-input v-model="internalValue.name" />
     </p-label>
@@ -49,11 +49,15 @@
   import { PLabel, PTextInput, PNumberInput, PTagsInput, PToggle, PForm } from '@prefecthq/prefect-design'
   import { computed, reactive } from 'vue'
   import DeploymentCombobox from '@/components/DeploymentCombobox.vue'
-  import { WorkQueue } from '@/models'
+  import { IWorkQueue, WorkQueue } from '@/models'
   import { FlowRunnerType } from '@/types/FlowRunnerType'
 
   const props = defineProps<{
     workQueue?: WorkQueue,
+  }>()
+
+  const emit = defineEmits<{
+    (event: 'submit', value: Partial<IWorkQueue>): void,
   }>()
 
   const internalValue = reactive({ ...props.workQueue })
@@ -73,6 +77,10 @@
     { label: 'Docker', value: 'docker' },
     { label: 'Subprocess', value: 'subprocess' },
   ]
+
+  function submit(): void {
+    emit('submit', internalValue)
+  }
 </script>
 
 <style>
