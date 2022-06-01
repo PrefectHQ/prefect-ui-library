@@ -26,11 +26,15 @@ export function isRequired(value: ValidationValue): boolean {
     return false
   }
 
+  if (isDate(value) && isNaN(value.getTime())) {
+    return false
+  }
+
   return true
 }
 
 export function isEmail(value: ValidationValue): boolean {
-  if (!value || typeof value !== 'string') {
+  if (!isRequired(value)) {
     return false
   }
 
@@ -39,7 +43,7 @@ export function isEmail(value: ValidationValue): boolean {
 
 export function lessThan(max: ValidationValue): ValidateMethod {
   return (value) => {
-    if (!value) {
+    if (!isRequired(value)) {
       return false
     }
 
@@ -61,7 +65,7 @@ export function lessThan(max: ValidationValue): ValidateMethod {
 
 export function lessThanOrEqual(max: ValidationValue): ValidateMethod {
   return (value) => {
-    if (!value) {
+    if (!isRequired(value)) {
       return false
     }
 
@@ -83,7 +87,7 @@ export function lessThanOrEqual(max: ValidationValue): ValidateMethod {
 
 export function greaterThan(min: ValidationValue): ValidateMethod {
   return (value) => {
-    if (!value) {
+    if (!isRequired(value)) {
       return false
     }
 
@@ -105,7 +109,7 @@ export function greaterThan(min: ValidationValue): ValidateMethod {
 
 export function greaterThanOrEqual(min: ValidationValue): ValidateMethod {
   return (value) => {
-    if (!value) {
+    if (!isRequired(value)) {
       return false
     }
 
