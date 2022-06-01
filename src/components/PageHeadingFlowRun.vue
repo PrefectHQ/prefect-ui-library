@@ -9,7 +9,13 @@
         </template>
       </p-icon-button-menu>
     </template>
-    <slot />
+    <slot>
+      <div class="page-heading-flow-run__header-meta">
+        <StateBadge :state="flowRun.state" />
+        <DurationIconText :duration="flowRun.duration" />
+        <FlowIconText :flow-id="flowRun.flowId" />
+      </div>
+    </slot>
   </page-heading>
 </template>
 
@@ -19,7 +25,7 @@
   import { computed } from 'vue'
   import CopyOverflowMenuItem from './CopyOverflowMenuItem.vue'
   import DeleteOverflowMenuItem from './DeleteOverflowMenuItem.vue'
-  import PageHeading from '@/components/PageHeading.vue'
+  import { StateBadge, PageHeading, DurationIconText, FlowIconText } from '@/components'
   import { FlowRun } from '@/models'
   import { flowsRouteKey } from '@/router'
   import { flowRunsApiKey, flowsApiKey } from '@/services'
@@ -47,3 +53,13 @@
     emit('delete', id)
   }
 </script>
+
+<style>
+.page-heading-flow-run__header-meta {
+  @apply
+  flex
+  gap-2
+  items-center
+  xl:hidden
+}
+</style>
