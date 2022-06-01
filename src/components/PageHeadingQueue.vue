@@ -6,7 +6,7 @@
       <p-icon-button-menu>
         <template #default="{ close }">
           <copy-overflow-menu-item label="Copy ID" :item="queue.id" @click="close" />
-          <router-link :to="editQueueRoute()">
+          <router-link :to="editQueueRoute(queue.id)">
             <p-overflow-menu-item label="Edit" />
           </router-link>
           <delete-overflow-menu-item :name="queue.name" @delete="deleteWorkQueue(queue.id)" />

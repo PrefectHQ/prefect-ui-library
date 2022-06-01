@@ -32,24 +32,24 @@
     </p>
 
     <p-label label="Tags">
-      <p-tags-input v-model:tags="internalValue.filter!.tags" empty-message="Add tag to filter..." />
+      <p-tags-input v-model:tags="internalValue.filter.tags" empty-message="Add tag to filter..." />
     </p-label>
 
     <p-label label="Deployments">
-      <DeploymentCombobox v-model:selected="internalValue.filter!.deploymentIds" empty-message="Select Deployments to filter..." />
+      <DeploymentCombobox v-model:selected="internalValue.filter.deploymentIds" empty-message="Select Deployments to filter..." />
     </p-label>
 
     <p-label label="Flow Runners">
-      <p-checkbox v-for="runner in flowRunnerTypes" :key="runner.value" v-model="internalValue.filter!.flowRunnerTypes" :label="runner.label" :value="runner.value" />
+      <p-checkbox v-for="runner in flowRunnerTypes" :key="runner.value" v-model="internalValue.filter.flowRunnerTypes" :label="runner.label" :value="runner.value" />
     </p-label>
   </p-form>
 </template>
 
 <script lang="ts" setup>
   import { PLabel, PTextInput, PNumberInput, PTagsInput, PToggle, PForm } from '@prefecthq/prefect-design'
-  import { computed, reactive } from 'vue'
+  import { computed, reactive, watch } from 'vue'
   import DeploymentCombobox from '@/components/DeploymentCombobox.vue'
-  import { IWorkQueue, WorkQueue } from '@/models'
+  import { IWorkQueueRequest, WorkQueue, WorkQueueFormValues } from '@/models'
   import { FlowRunnerType } from '@/types/FlowRunnerType'
 
   const props = defineProps<{
@@ -57,10 +57,10 @@
   }>()
 
   const emit = defineEmits<{
-    (event: 'submit', value: Partial<IWorkQueue>): void,
+    (event: 'submit', value: IWorkQueueRequest): void,
   }>()
 
-  const internalValue = reactive({ ...props.workQueue })
+  const internalValue = reactive(new WorkQueueFormValues(props.workQueue))
 
   const isActive = computed({
     get() {
@@ -79,8 +79,14 @@
   ]
 
   function submit(): void {
-    emit('submit', internalValue)
+    emit('submit', internalValue.getWorkQueueRequest())
   }
+
+  watch(() => props.workQueue, (val) => {
+    if (val) {
+      Object.assign(internalValue, new WorkQueueFormValues(val))
+    }
+  })
 </script>
 
 <style>
