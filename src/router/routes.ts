@@ -17,3 +17,4 @@ export const workQueueRouteKey: InjectionKey<(workQueueId: string) => RouteLocat
 export const workspaceDashboardKey: InjectionKey<Route> = Symbol('workspaceDashboardKey')
 
 export const newQueueRouteKey: InjectionKey<() => Route> = Symbol('newQueueRouteKey')
+export const editQueueRouteKey: InjectionKey<() => Route> = Symbol('editQueueRouteKey')
