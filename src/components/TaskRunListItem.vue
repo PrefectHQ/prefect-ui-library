@@ -21,13 +21,11 @@
 </template>
 
 <script lang="ts" setup>
-  import { CheckboxModel } from '@prefecthq/prefect-design'
+  import { CheckboxModel, secondsToApproximateString, formatDateTimeNumeric } from '@prefecthq/prefect-design'
   import { computed } from 'vue'
   import StateBadge from '@/components/StateBadge.vue'
   import StateListItem from '@/components/StateListItem.vue'
   import { TaskRun } from '@/models/TaskRun'
-  import { formatDateTimeNumeric } from '@/utilities/dates'
-  import { secondsToApproximateString } from '@/utilities/seconds'
 
   const props = defineProps<{
     selected: CheckboxModel | null,

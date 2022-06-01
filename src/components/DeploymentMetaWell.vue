@@ -17,9 +17,8 @@
 </template>
 
 <script lang="ts" setup>
-  import { PKeyValue } from '@prefecthq/prefect-design'
+  import { PKeyValue, formatDateTimeNumeric } from '@prefecthq/prefect-design'
   import { Deployment } from '@/models'
-  import { formatDateTimeNumeric } from '@/utilities/dates'
 
   defineProps<{
     deployment: Deployment,
