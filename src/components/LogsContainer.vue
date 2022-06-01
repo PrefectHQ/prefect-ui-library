@@ -3,7 +3,7 @@
     <template v-for="(log, index) in logs" :key="log.id">
       <template v-if="showDivider(index)">
         <div class="logs__divider">
-          <span class="logs__divider-time">{{ formatDateInTimeZone(log.timestamp) }}</span>
+          <span class="logs__divider-time">{{ formatDate(log.timestamp) }}</span>
         </div>
       </template>
       <log-row :log="log" show-task-run-link />
@@ -19,12 +19,11 @@
 </template>
 
 <script lang="ts" setup>
-  import { PCode } from '@prefecthq/prefect-design'
+  import { PCode, formatDate } from '@prefecthq/prefect-design'
   import { isSameDay } from 'date-fns'
   import { computed, PropType } from 'vue'
   import LogRow from '@/components/LogRow.vue'
   import { Log } from '@/models/Log'
-  import { formatDateInTimeZone } from '@/utilities/dates'
 
   const props = defineProps({
     logs: {

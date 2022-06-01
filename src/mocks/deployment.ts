@@ -14,7 +14,7 @@ export const randomDeployment: MockFunction<Deployment> = function(deployment?: 
     },
     schedule: deployment?.schedule ?? null,
     isScheduleActive: deployment?.isScheduleActive ?? this.create('boolean'),
-    parameters: deployment?.parameters ?? {},
+    parameters: deployment?.parameters ?? this.create('parameters'),
     tags: deployment?.tags ?? this.createMany('string', 3),
     flowRunner: deployment?.flowRunner ?? null,
   }
