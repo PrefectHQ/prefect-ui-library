@@ -28,7 +28,7 @@
     },
   ]))
 
-  class WorkQueueFormDeploymentsApi extends DeploymentsApi {
+  class QueueFormDeploymentsApi extends DeploymentsApi {
 
     public getDeployments(filter: UnionFilters): Promise<Deployment[]> {
       return this.promise(deployments)
@@ -36,7 +36,7 @@
 
   }
 
-  const queueFormDeploymentsApi = createActions(new WorkQueueFormDeploymentsApi)
+  const queueFormDeploymentsApi = createActions(new QueueFormDeploymentsApi)
 
   provide(deploymentsApiKey, queueFormDeploymentsApi)
 
