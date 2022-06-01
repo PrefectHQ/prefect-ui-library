@@ -1,4 +1,5 @@
 import '@prefecthq/vue-charts/dist/style.css'
+import '@prefecthq/radar/dist/style.css'
 
 export * from './components'
 export * from './compositions'
