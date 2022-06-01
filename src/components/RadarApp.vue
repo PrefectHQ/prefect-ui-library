@@ -20,6 +20,28 @@
         :select-node="selectNode"
       />
     </template>
+
+    <template #node-placeholder>
+      <RadarNodePlaceholder />
+    </template>
+
+    <!--
+      <template #minimap-reset-button>
+      <m-icon-button class="bg--white justify-self-start mr-auto" icon="pi-restart-line" />
+      </template>
+
+      <template #minimap-zoom-in-button>
+      <m-icon-button class="bg--white mr-1" icon="pi-zoom-in-line" />
+      </template>
+
+      <template #minimap-zoom-out-button>
+      <m-icon-button class="bg--white mr-1" icon="pi-zoom-out-line" />
+      </template>
+
+      <template #minimap-reset-viewport-button>
+      <m-icon-button class="bg--white" icon="pi-fullscreen-fill" />
+      </template>
+    -->
   </RadarView>
 </template>
 
@@ -27,6 +49,7 @@
   import { RadarView, Item } from '@prefecthq/radar'
   import { useSubscription } from '@prefecthq/vue-compositions'
   import { computed } from 'vue'
+  import RadarNodePlaceholder from '@/components/RadarNodePlaceholder.vue'
   import RadarNodeSubFlowRun from '@/components/RadarNodeSubFlowRun.vue'
   import RadarNodeTaskRun from '@/components/RadarNodeTaskRun.vue'
   import { GraphNode } from '@/models'
@@ -77,7 +100,7 @@
 </script>
 
 <style>
-.radar-small {
+.radar-app {
   @apply
   w-full
   h-full
