@@ -1,6 +1,6 @@
 <template>
   <DemoSection heading="Queue Form">
-    <QueueForm v-model:work-queue="queueData" @submit="submit" />
+    <WorkQueueForm v-model:work-queue="queueData" @submit="submit" />
   </DemoSection>
 </template>
 
@@ -9,7 +9,7 @@
   import { provide, ref } from 'vue'
   import DemoSection from '../components/DemoSection.vue'
   import { DeploymentsApi } from '../services'
-  import QueueForm from '@/components/QueueForm.vue'
+  import WorkQueueForm from '@/components/WorkQueueForm.vue'
   import { Deployment } from '@/models/Deployment'
   import { WorkQueue } from '@/models/WorkQueue'
   import { deploymentsApiKey, mocker } from '@/services'
@@ -28,7 +28,7 @@
     },
   ]))
 
-  class QueueFormDeploymentsApi extends DeploymentsApi {
+  class WorkQueueFormDeploymentsApi extends DeploymentsApi {
 
     public getDeployments(filter: UnionFilters): Promise<Deployment[]> {
       return this.promise(deployments)
@@ -36,7 +36,7 @@
 
   }
 
-  const queueFormDeploymentsApi = createActions(new QueueFormDeploymentsApi)
+  const queueFormDeploymentsApi = createActions(new WorkQueueFormDeploymentsApi)
 
   provide(deploymentsApiKey, queueFormDeploymentsApi)
 
