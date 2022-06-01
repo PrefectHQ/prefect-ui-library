@@ -6,7 +6,9 @@
       <p-icon-button-menu>
         <template #default="{ close }">
           <copy-overflow-menu-item label="Copy ID" :item="queue.id" @click="close" />
-          <p-overflow-menu-item label="Edit" />
+          <router-link :to="editQueueRoute()">
+            <p-overflow-menu-item label="Edit" />
+          </router-link>
           <delete-overflow-menu-item :name="queue.name" @delete="deleteWorkQueue(queue.id)" />
         </template>
       </p-icon-button-menu>
@@ -22,12 +24,15 @@
   import PageHeading from '@/components/PageHeading.vue'
   import WorkQueueToggle from '@/components/WorkQueueToggle.vue'
   import { WorkQueue } from '@/models'
+  import { editQueueRouteKey } from '@/router/routes'
   import { workQueuesApiKey } from '@/services/WorkQueuesApi'
   import { deleteItem, inject } from '@/utilities'
 
   const props = defineProps<{
     queue: WorkQueue,
   }>()
+
+  const editQueueRoute = inject(editQueueRouteKey)
 
   const workQueuesApi = inject(workQueuesApiKey)
 
