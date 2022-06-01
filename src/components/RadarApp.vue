@@ -7,7 +7,7 @@
     id-accessor="id"
     upstream-accessor="upstreamDependencies"
   >
-    <template #node="{ data, selected, toggle, highlighted, collapsed, panToNode, highlightNode, selectNode }">
+    <template #node="{ node, data, selected, toggle, highlighted, collapsed, panToNode, highlightNode, selectNode }">
       <component
         :is="radarNodeComponent(data)"
         :graph-node="data"
@@ -18,6 +18,7 @@
         :pan-to-node="panToNode"
         :highlight-node="highlightNode"
         :select-node="selectNode"
+        :downstream-nodes="node.downstreamNodes?.size"
       />
     </template>
 
