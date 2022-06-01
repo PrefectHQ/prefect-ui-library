@@ -44,8 +44,9 @@
         "vue-tsc": "0.35.2"
     },
     "peerDependencies": {
-        "@prefecthq/prefect-design": "0.0.35",
+        "@prefecthq/prefect-design": "0.0.37",
         "pinia": "^2.0.14",
+        "vee-validate": "^4.5.11",
         "vue": "^3.2.34",
         "vue-router": "^4.0.12"
     },
