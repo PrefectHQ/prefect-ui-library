@@ -1,29 +1,27 @@
 <template>
-  <div>
-    <DivergingBarChart
-      class="flow-activity-chart"
-      :items="items"
-      :interval-start="intervalStart"
-      :interval-end="intervalEnd"
-      :interval-seconds="intervalSeconds"
-      :positive-sentiment-keys="positiveSentimentKeys"
-      :negative-sentiment-keys="negativeSentimentKeys"
-      static-median
-      :chart-padding="{ top: 0, bottom: 0, middle: 4 }"
-    >
-      <template #default="{ key }">
-        <div class="flow-activity-chart__bar" :class="getStateColor(key)" />
-      </template>
+  <DivergingBarChart
+    class="flow-activity-chart"
+    :items="items"
+    :interval-start="intervalStart"
+    :interval-end="intervalEnd"
+    :interval-seconds="intervalSeconds"
+    :positive-sentiment-keys="positiveSentimentKeys"
+    :negative-sentiment-keys="negativeSentimentKeys"
+    static-median
+    :chart-padding="{ top: 0, bottom: 0, middle: 4 }"
+  >
+    <template #default="{ key }">
+      <div class="flow-activity-chart__bar" :class="getStateColor(key)" />
+    </template>
 
-      <template #median>
-        <div class="flow-activity-chart__median" />
-      </template>
+    <template #median>
+      <div class="flow-activity-chart__median" />
+    </template>
 
-      <template #empty>
-        <div class="flow-activity-chart__empty" />
-      </template>
-    </DivergingBarChart>
-  </div>
+    <template #empty>
+      <div class="flow-activity-chart__empty" />
+    </template>
+  </DivergingBarChart>
 </template>
 
 <script lang="ts" setup>
