@@ -2,13 +2,13 @@
   <div class="state-select">
     <p-select v-model="internalValue" :options="options" :empty-message="emptyMessage">
       <template #option="{ option }">
-        <StateBadge flat :state="{ name: option.value, type: option.value }" />
+        <StateBadge flat :state="{ name: option.label, type: option.value }" />
       </template>
       <template #default="{ selectedOption, unselectOption }">
         <StateBadge
           class="state-select__option"
           :class="{ 'state-select__option--multiple': multiple }"
-          :state="{ name: selectedOption.value, type: selectedOption.value }"
+          :state="{ name: selectedOption.label, type: selectedOption.value }"
           :flat="!multiple"
           :dismissible="multiple"
           @dismiss="unselectOption"
@@ -19,10 +19,11 @@
 </template>
 
 <script lang="ts" setup>
-  import { PSelect } from '@prefecthq/prefect-design'
+  import { PSelect, SelectOption } from '@prefecthq/prefect-design'
   import { computed } from 'vue'
   import StateBadge from '@/components/StateBadge.vue'
   import { stateType } from '@/models/StateType'
+  import { capitalize } from '@/utilities'
 
   const props = defineProps<{
     selected: string | string[] | null | undefined,
@@ -50,7 +51,13 @@
 
   const multiple = computed(() => Array.isArray(internalValue.value))
 
-  const options = computed(() => [...stateType, 'late'])
+  const options = computed<SelectOption[]>(() => {
+    const stateMap = stateType.map((state) => {
+      return { label: capitalize(state), value: state }
+    })
+
+    return [...stateMap, { label: 'Late', value: 'late' }]
+  })
 </script>
 
 <style>
