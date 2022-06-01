@@ -6,7 +6,6 @@
     </div>
     <p-table :data="filtered" :columns="columns">
       <template #empty-state>
-        test
         <PEmptyResults />
       </template>
     </p-table>
@@ -60,6 +59,7 @@
       return JSON.stringify(value)
     }
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     return (value as any).toString()
   }
 
