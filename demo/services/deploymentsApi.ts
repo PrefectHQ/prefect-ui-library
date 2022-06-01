@@ -2,7 +2,7 @@ import { createActions } from '@prefecthq/vue-compositions'
 import { MockedApi } from './MockedApi'
 import { CreateFlowRun } from '@/models/CreateFlowRun'
 import { Deployment } from '@/models/Deployment'
-import { FlowRun } from '@/models/FlowRun'
+import { Flow } from '@/models/Flow'
 import { mocker } from '@/services'
 import { UnionFilters } from '@/types/UnionFilters'
 
@@ -15,8 +15,8 @@ export class DeploymentsApi extends MockedApi {
     return this.promise(mocker.createMany('deployment', mocker.create('number', [1, 100])))
   }
 
-  public createDeploymentFlowRun(deploymentId: string, body: CreateFlowRun): Promise<FlowRun> {
-    return this.promise(mocker.create('flowRun'))
+  public createDeploymentFlowRun(deploymentId: string, body: CreateFlowRun): Promise<Flow> {
+    return this.promise(mocker.create('flow'))
   }
 
   public pauseDeployment(id: string): Promise<void> {
