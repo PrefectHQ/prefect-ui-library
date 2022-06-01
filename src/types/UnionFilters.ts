@@ -100,5 +100,4 @@ interface Historical {
   history_interval_seconds: number,
 }
 
-export type TaskRunsHistoryFilter = { task_runs?: TaskRunFilter } & Historical
-export type FlowRunsHistoryFilter = { flow_runs?: FlowRunFilter } & Historical
+export type FlowRunsHistoryFilter = UnionFilters & Historical

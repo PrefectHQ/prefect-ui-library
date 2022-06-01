@@ -19,7 +19,24 @@ export class FlowRunsApi extends MockedApi {
   }
 
   public getFlowRunsHistory(filter: FlowRunsHistoryFilter): Promise<RunHistory[]> {
-    return this.promise(mocker.createMany('flowRunHistory', 15))
+    const start = new Date(filter.history_start)
+    const end = new Date(filter.history_end)
+    const interval = filter.history_interval_seconds
+
+    const runsHistory = []
+    let curr = start.getTime()
+
+    while (curr < end.getTime()) {
+      const currDate = new Date(curr)
+      const nextDate = new Date(curr + interval * 1000)
+      runsHistory.push(
+        mocker.create('flowRunHistory', [{ intervalStart: currDate, intervalEnd: nextDate }]),
+      )
+
+      curr = nextDate.getTime()
+    }
+
+    return this.promise(runsHistory)
   }
 
   public deleteFlowRun(id: string): Promise<void> {

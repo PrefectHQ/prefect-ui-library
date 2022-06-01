@@ -2,7 +2,7 @@
   <Section heading="Activity Chart">
     <SubSection heading="Flow">
       <div class="activity-chart-section__container">
-        <FlowActivityChart v-for="(activity, i) in activities" :key="i" :history="activity" show-now class="activity-chart-section__flow" />
+        <FlowActivityChart v-for="(flow, i) in flows" :key="i" :flow="flow" show-now class="activity-chart-section__flow" />
       </div>
     </SubSection>
   </Section>
@@ -12,14 +12,14 @@
   import { reactive } from 'vue'
   import Section from '../components/DemoSection.vue'
   import SubSection from '../components/DemoSubSection.vue'
-  import FlowActivityChart from '@/components/FlowRunsScatterPlot.vue'
-  import { UiFlowRunHistory } from '@/models'
+  import FlowActivityChart from '@/components/FlowActivityChart.vue'
+  import { Flow } from '@/models'
   import { mocker } from '@/services/Mocker'
 
-  const activities: UiFlowRunHistory[][] = reactive([])
+  const flows: Flow[] = reactive([])
 
   for (let i = 0; i < 10; ++i) {
-    activities[i] = mocker.createMany('uiFlowRunHistory', mocker.create('number', [10, 100]))
+    flows[i] = mocker.create('flow', [{ created: mocker.create('date', [new Date('2021-10-05'), new Date()]) }])
   }
 </script>
 
@@ -34,5 +34,6 @@
 .activity-chart-section__flow {
   @apply
   h-[200px]
+  max-w-[400px]
 }
 </style>

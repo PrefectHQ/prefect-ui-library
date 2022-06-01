@@ -6,5 +6,6 @@
 </template>
 
 <script lang="ts" setup>
+  import ActivityChartSection from '../sections/ActivityChartSection.vue'
   import ScatterPlotSection from '../sections/ScatterPlotSection.vue'
 </script>
