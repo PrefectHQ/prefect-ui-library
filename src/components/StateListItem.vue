@@ -17,10 +17,9 @@
 </template>
 
 <script lang="ts" setup>
-  import { PListItemInput, CheckboxModel } from '@prefecthq/prefect-design'
+  import { PListItemInput, CheckboxModel, media } from '@prefecthq/prefect-design'
   import { computed } from 'vue'
   import { StateType } from '@/models/StateType'
-  import { media } from '@/utilities/media'
 
   const props = defineProps<{
     selected: CheckboxModel | null,
