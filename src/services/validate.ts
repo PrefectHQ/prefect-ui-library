@@ -1,13 +1,10 @@
 /* eslint-disable no-redeclare */
 import { isDateAfter, isDateAfterOrEqual, isDateBefore, isDateBeforeOrEqual } from '@prefecthq/prefect-design'
+import { isDate } from 'date-fns'
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type ValidationValue = any
 type ValidateMethod = (value: ValidationValue) => boolean
-
-function isDate(value: ValidationValue): value is Date {
-  return typeof value.getTime === 'function'
-}
 
 export function withMessage(validate: (value: ValidationValue) => boolean | Promise<boolean>, message: string) {
   return async (value: ValidationValue) => await validate(value) ? true : message
