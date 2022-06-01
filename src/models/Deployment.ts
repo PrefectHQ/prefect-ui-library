@@ -11,7 +11,7 @@ export interface IDeployment {
   flowData: FlowData,
   schedule: Schedule | null,
   isScheduleActive: boolean | null,
-  parameters: Record<string, string>,
+  parameters: Record<string, unknown>,
   tags: string[] | null,
   flowRunner: FlowRunner | null,
 }
@@ -25,7 +25,7 @@ export class Deployment implements IDeployment {
   public flowData: FlowData
   public schedule: Schedule | null
   public isScheduleActive: boolean | null
-  public parameters: Record<string, string>
+  public parameters: Record<string, unknown>
   public tags: string[] | null
   public flowRunner: FlowRunner | null
 
