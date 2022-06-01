@@ -9,13 +9,5 @@ import { choice } from '@/utilities/arrays'
 const mocks = [randomString, randomNumber, randomBoolean, randomDate]
 
 export const randomAny: MockFunction<any> = function() {
-  const keys = this.createMany('string', this.create('number', [0, 25]))
-  const parameters: Record<string, any> = {}
-  keys.forEach(key => {
-    const mock = choice(Object.values(mocks)).bind(this)
-
-    parameters[key] = mock()
-  })
-
-  return parameters
+  return choice(Object.values(mocks)).bind(this)()
 }
