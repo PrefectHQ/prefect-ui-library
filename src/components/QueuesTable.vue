@@ -1,9 +1,9 @@
 <template>
   <p-table :data="queues" :columns="columns">
     <template #name="{ row }">
-      <router-link :to="workQueueRoute(row.id)">
+      <p-link :to="workQueueRoute(row.id)">
         <span>{{ row.name }}</span>
-      </router-link>
+      </p-link>
     </template>
 
     <template #concurrency="{ row }">
@@ -36,7 +36,7 @@
 </template>
 
 <script lang="ts" setup>
-  import { PTable, PEmptyResults } from '@prefecthq/prefect-design'
+  import { PTable, PEmptyResults, PLink } from '@prefecthq/prefect-design'
   import CopyOverflowMenuItem from './CopyOverflowMenuItem.vue'
   import DeleteOverflowMenuItem from './DeleteOverflowMenuItem.vue'
   import { WorkQueue } from '@/models'

@@ -33,9 +33,8 @@
 </template>
 
 <script lang="ts" setup>
-  import { PKeyValue, PTags } from '@prefecthq/prefect-design'
+  import { PKeyValue, PTags, formatDateTimeNumeric } from '@prefecthq/prefect-design'
   import { FlowRun } from '@/models/FlowRun'
-  import { formatDateTimeNumeric } from '@/utilities/dates'
 
   defineProps<{
     flowRun: FlowRun,

@@ -15,9 +15,8 @@
 </template>
 
 <script lang="ts" setup>
-  import { PKeyValue, PTag } from '@prefecthq/prefect-design'
+  import { PKeyValue, PTag, formatDateTimeNumeric } from '@prefecthq/prefect-design'
   import { Flow } from '@/models'
-  import { formatDateTimeNumeric } from '@/utilities/dates'
 
   defineProps<{
     flow: Flow,
