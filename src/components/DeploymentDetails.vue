@@ -1,7 +1,11 @@
 <template>
   <div class="deployment-details">
     <p-key-value label="Deployment ID" :value="deployment.id" />
-    <p-key-value label="Flow ID" :value="deployment.flowId" />
+    <p-key-value label="Flow ID">
+      <template #value>
+        <FlowIconText :flow-id="deployment.flowId" />
+      </template>
+    </p-key-value>
     <p-key-value label="Created" :value="formatDateTimeNumeric(deployment.created)" />
 
     <template v-if="deployment.tags">
@@ -14,6 +18,7 @@
 
 <script lang="ts" setup>
   import { formatDateTimeNumeric } from '@prefecthq/prefect-design'
+  import FlowIconText from '@/components/FlowIconText.vue'
   import { Deployment } from '@/models/Deployment'
 
   defineProps<{
