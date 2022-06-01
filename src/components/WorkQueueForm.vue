@@ -36,11 +36,11 @@
     </p-label>
 
     <p-label label="Deployments">
-      <DeploymentCombobox v-model:selected="internalValue.filter!.deploymentIds" empty-message="Select Deployments to filter..." />
+      <DeploymentCombobox v-model:selected="internalValue.filter.deploymentIds" empty-message="Select Deployments to filter..." />
     </p-label>
 
     <p-label label="Flow Runners">
-      <p-checkbox v-for="runner in flowRunnerTypes" :key="runner.value" v-model="internalValue.filter!.flowRunnerTypes" :label="runner.label" :value="runner.value" />
+      <p-checkbox v-for="runner in flowRunnerTypes" :key="runner.value" v-model="internalValue.filter.flowRunnerTypes" :label="runner.label" :value="runner.value" />
     </p-label>
   </p-form>
 </template>
