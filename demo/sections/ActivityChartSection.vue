@@ -28,12 +28,12 @@
   @apply
   grid
   grid-cols-2
+  gap-4
   auto-rows-max
 }
 
 .activity-chart-section__flow {
   @apply
   h-[200px]
-  max-w-[400px]
 }
 </style>
