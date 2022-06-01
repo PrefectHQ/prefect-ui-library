@@ -1,6 +1,7 @@
 <template>
   <p-layout-default class="charts">
     <ScatterPlotSection />
+    <ActivityChartSection />
   </p-layout-default>
 </template>
 
