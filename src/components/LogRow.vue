@@ -10,7 +10,7 @@
 
     <div class="log-row__trailing">
       <div>
-        {{ formatTimeNumericInTimeZone(log.timestamp) }}
+        {{ formatTimeNumeric(log.timestamp) }}
       </div>
       <!-- TODO: This should link to a task run page -->
       <div v-if="showTaskRunLink && log.taskRunId && taskRunName">
@@ -21,12 +21,12 @@
 </template>
 
 <script lang="ts" setup>
+  import { formatTimeNumeric } from '@prefecthq/prefect-design'
   import { useSubscription } from '@prefecthq/vue-compositions'
   import { computed } from 'vue'
   import LogLevelLabel from './LogLevelLabel.vue'
   import { ILog } from '@/models'
   import { taskRunsApiKey } from '@/services/TaskRunsApi'
-  import { formatTimeNumericInTimeZone } from '@/utilities/dates'
   import { inject } from '@/utilities/inject'
 
   const props = defineProps<{

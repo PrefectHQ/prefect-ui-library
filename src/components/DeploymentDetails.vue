@@ -20,6 +20,7 @@
 
 <script lang="ts" setup>
   import { formatDateTimeNumeric } from '@prefecthq/prefect-design'
+  import FlowIconText from '@/components/FlowIconText.vue'
   import { Deployment } from '@/models/Deployment'
 
   defineProps<{
