@@ -12,6 +12,7 @@
     <SearchesSection />
     <SortSections />
     <ComboboxesSection />
+    <WorkQueueFormSection />
     <RunButtonSection />
   </p-layout-default>
 </template>
@@ -31,4 +32,5 @@
   import StatesSection from '../sections/StatesSection.vue'
   import TablesSection from '../sections/TablesSection.vue'
   import ToggleSection from '../sections/ToggleSection.vue'
+  import WorkQueueFormSection from '../sections/WorkQueueFormSection.vue'
 </script>
