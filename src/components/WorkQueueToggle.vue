@@ -32,6 +32,7 @@
 
   const toggleWorkQueue = async (value: boolean): Promise<void> => {
     loading.value = true
+
     try {
       if (value) {
         await workQueuesApi.resumeWorkQueue(props.workQueue.id)
