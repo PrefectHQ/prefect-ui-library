@@ -1,7 +1,7 @@
 <template>
   <page-heading class="page-heading-deployment" :crumbs="crumbs">
     <template #actions>
-      <DeploymentToggle :deployment="deployment" />
+      <DeploymentToggle :deployment="deployment" @update="emit('update')" />
 
       <p-button inset>
         Run
@@ -52,11 +52,13 @@
 
   const crumbs = computed(() => [{ text: flowName.value, to: flowsRoute() }, { text: props.deployment.name }])
 
-  const emit = defineEmits(['delete'])
+  const emit = defineEmits<{
+    (event: 'update' | 'delete'): void,
+  }>()
 
   const deleteDeployment = async (id: string): Promise<void> => {
     await deleteItem(id, deploymentsApi.deleteDeployment, 'Deployment')
-    emit('delete', id)
+    emit('delete')
   }
 </script>
 

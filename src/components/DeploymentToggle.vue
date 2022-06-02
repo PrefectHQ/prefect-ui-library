@@ -1,10 +1,10 @@
 <template>
-  <p-toggle v-model="isActive" />
+  <p-toggle v-model="internalValue" :loading="loading" />
 </template>
 
 <script lang="ts" setup>
   import { PToggle, showToast } from '@prefecthq/prefect-design'
-  import { computed } from 'vue'
+  import { computed, ref } from 'vue'
   import { Deployment } from '@/models'
   import { deploymentsApiKey } from '@/services/DeploymentsApi'
   import { inject } from '@/utilities'
@@ -14,27 +14,24 @@
   }>()
 
   const emit = defineEmits<{
-    (event: 'update:deployment', value: Deployment): void,
+    (event: 'update'): void,
   }>()
 
   const deploymentsApi = inject(deploymentsApiKey)
 
   const internalValue = computed({
     get() {
-      return props.deployment
+      return !!props.deployment.isScheduleActive
     },
-    set(value: Deployment) {
-      emit('update:deployment', value)
+    set(value: boolean) {
+      toggleDeploymentSchedule(value)
     },
   })
 
-  let shouldUpdate: boolean  = true
+  const loading = ref(false)
 
-  const setToggle = async (value: boolean): Promise<void> => {
-    if (!shouldUpdate) {
-      shouldUpdate = true
-      return
-    }
+  const toggleDeploymentSchedule = async (value: boolean): Promise<void> => {
+    loading.value = true
 
     try {
       if (value) {
@@ -44,22 +41,14 @@
         await deploymentsApi.pauseDeployment(props.deployment.id)
         showToast(`${props.deployment.name} paused`, 'error', undefined, 3000)
       }
+
+      emit('update')
     } catch (error) {
       showToast(`${error}`, 'error', undefined, 3000)
+    } finally {
+      loading.value = false
 
-      shouldUpdate = false
-      isActive.value = !isActive.value
     }
   }
-
-  const isActive = computed({
-    get() {
-      return !internalValue.value.isScheduleActive
-    },
-    set(value: boolean) {
-      internalValue.value = new Deployment({ ...internalValue.value, isScheduleActive: !value })
-      setToggle(value)
-    },
-  })
 </script>
 
