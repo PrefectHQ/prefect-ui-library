@@ -25,7 +25,7 @@
       </template>
 
       <template #action="{ row }">
-        <DeploymentMenu :deployment="row" @delete="emit('delete')" />
+        <DeploymentMenu :deployment="row" @delete="id => emits('delete', id)" />
       </template>
 
       <template #empty-state>
@@ -58,7 +58,10 @@
     deployments: Deployment[],
   }>()
 
-  const emit = defineEmits(['delete', 'clear'])
+  const emits = defineEmits<{
+    (event: 'delete', value: string): void,
+    (event: 'clear'): void,
+  }>()
 
   const searchTerm = ref('')
 
@@ -97,6 +100,7 @@
 
   function clear(): void {
     searchTerm.value = ''
+    emits('clear')
   }
 </script>
 

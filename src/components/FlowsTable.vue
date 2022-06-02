@@ -19,13 +19,13 @@
     </template>
 
     <template #action="{ row }">
-      <FlowMenu :flow="row" @delete="emit('delete')" />
+      <FlowMenu :flow="row" @delete="id => emits('delete', id)" />
     </template>
 
     <template #empty-state>
       <PEmptyResults>
         <template #actions>
-          <p-button size="sm" secondary @click="emit('clear')">
+          <p-button size="sm" secondary @click="emits('clear')">
             Clear Filters
           </p-button>
         </template>
@@ -48,6 +48,11 @@
     flows: Flow[],
   }>()
 
+  const emits = defineEmits<{
+    (event: 'delete', value: string): void,
+    (event: 'clear'): void,
+  }>()
+
   const columns = [
     {
       property: 'name',
@@ -68,8 +73,6 @@
       width: '42px',
     },
   ]
-
-  const emit = defineEmits(['delete', 'clear'])
 </script>
 
 <style>

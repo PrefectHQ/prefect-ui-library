@@ -34,7 +34,9 @@
     deployment: Deployment,
   }>()
 
-  const emit = defineEmits(['delete'])
+  const emits = defineEmits<{
+    (event: 'delete', value: string): void,
+  }>()
 
   const { showModal, open, close } = useShowModal()
 
@@ -43,6 +45,6 @@
   const deleteDeployment = async (id: string): Promise<void> => {
     close()
     await deleteItem(id, deploymentsApi.deleteDeployment, 'Deployment')
-    emit('delete', id)
+    emits('delete', id)
   }
 </script>

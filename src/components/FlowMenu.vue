@@ -33,7 +33,9 @@
     flow: Flow,
   }>()
 
-  const emit = defineEmits(['delete'])
+  const emits = defineEmits<{
+    (event: 'delete', value: string): void,
+  }>()
 
   const { showModal, open, close } = useShowModal()
 
@@ -42,6 +44,6 @@
   const deleteFlow = async (id: string): Promise<void> => {
     close()
     await deleteItem(id, flowsApi.deleteFlow, 'Flow')
-    emit('delete', id)
+    emits('delete', id)
   }
 </script>

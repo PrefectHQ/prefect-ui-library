@@ -37,7 +37,9 @@
     queue: WorkQueue,
   }>()
 
-  const emit = defineEmits(['delete'])
+  const emits = defineEmits<{
+    (event: 'delete', value: string): void,
+  }>()
 
   const { showModal, open, close } = useShowModal()
 
@@ -47,6 +49,6 @@
   const deleteWorkQueue = async (id: string): Promise<void> => {
     close()
     await deleteItem(id, workQueuesApi.deleteWorkQueue, 'Work queue')
-    emit('delete', id)
+    emits('delete', id)
   }
 </script>
