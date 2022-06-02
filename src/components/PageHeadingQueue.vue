@@ -1,7 +1,7 @@
 <template>
   <page-heading class="page-heading-queue" :crumbs="crumbs">
     <template #actions>
-      <WorkQueueToggle :work-queue="queue" />
+      <WorkQueueToggle :work-queue="queue" @update="emit('update')" />
 
       <p-icon-button-menu>
         <template #default="{ close }">
@@ -38,10 +38,12 @@
 
   const crumbs = computed(() => [{ text: props.queue.name }])
 
-  const emit = defineEmits(['delete'])
+  const emit = defineEmits<{
+    (event: 'update' | 'delete'): void,
+  }>()
 
   const deleteWorkQueue = async (id: string): Promise<void> => {
     await deleteItem(id, workQueuesApi.deleteWorkQueue, 'Work queue')
-    emit('delete', id)
+    emit('delete')
   }
 </script>
