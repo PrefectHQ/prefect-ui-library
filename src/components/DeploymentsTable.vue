@@ -25,13 +25,7 @@
       </template>
 
       <template #action="{ row }">
-        <p-icon-button-menu size="xs">
-          <template #default="{ close }">
-            <copy-overflow-menu-item label="Copy ID" :item="row.id" @click="close" />
-            <p-overflow-menu-item label="Run" class="deployments-table__hide-on-desktop" />
-            <delete-overflow-menu-item :name="row.name" @delete="deleteDeployment(row.id, close)" />
-          </template>
-        </p-icon-button-menu>
+        <DeploymentMenu :deployment="row" @delete="emit('delete')" />
       </template>
 
       <template #empty-state>
@@ -48,16 +42,14 @@
 </template>
 
 <script lang="ts" setup>
-  import { PTable, PTagWrapper, PIconButtonMenu, POverflowMenuItem, PEmptyResults, PLink } from '@prefecthq/prefect-design'
+  import { PTable, PTagWrapper, PEmptyResults, PLink } from '@prefecthq/prefect-design'
   import { ref, computed } from 'vue'
-  import CopyOverflowMenuItem from './CopyOverflowMenuItem.vue'
-  import DeleteOverflowMenuItem from './DeleteOverflowMenuItem.vue'
-  import ResultsCount from './ResultsCount.vue'
-  import SearchInput from './SearchInput.vue'
+  import DeploymentMenu from '@/components/DeploymentMenu.vue'
+  import ResultsCount from '@/components/ResultsCount.vue'
+  import SearchInput from '@/components/SearchInput.vue'
   import { Deployment } from '@/models'
   import { deploymentRouteKey } from '@/router'
-  import { deploymentsApiKey } from '@/services/DeploymentsApi'
-  import { deleteItem, inject } from '@/utilities'
+  import { inject } from '@/utilities'
   import { formatSchedule } from '@/utilities/schedules'
 
   const deploymentRoute = inject(deploymentRouteKey)
@@ -68,7 +60,6 @@
 
   const emit = defineEmits(['delete', 'clear'])
 
-  const deploymentsApi = inject(deploymentsApiKey)
   const searchTerm = ref('')
 
   const columns = [
@@ -102,12 +93,6 @@
 
   function filterDeployment({ name, tags, schedule }: Deployment): boolean {
     return `${name} ${formatSchedule(schedule)} ${tags?.join(' ')}`.toLowerCase().includes(searchTerm.value.toLowerCase())
-  }
-
-  const deleteDeployment = async (id: string, close: () => void): Promise<void> => {
-    close()
-    await deleteItem(id, deploymentsApi.deleteDeployment, 'Deployment')
-    emit('delete', id)
   }
 
   function clear(): void {

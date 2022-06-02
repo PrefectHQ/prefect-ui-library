@@ -12,7 +12,7 @@
     </template>
     <span class="delete-modal__message">
       <slot name="message">
-        Are you sure you want to remove this {{ name.toLowerCase() }}?
+        Are you sure you want to remove {{ name.toLowerCase() }}?
       </slot>
     </span>
     <template #actions>
