@@ -1,9 +1,10 @@
 <template>
   <div class="work-queues-table">
     <div class="work-queues-table__search">
-      <ResultsCount :count="filtered.length" />
-      <SearchInput v-model="searchTerm" placeholder="Search" label="Search parameters" />
+      <ResultsCount :count="filtered.length" label="Queue" />
+      <SearchInput v-model="searchTerm" placeholder="Search work queues" label="Search work queues" />
     </div>
+
     <p-table :data="filtered" :columns="columns">
       <template #name="{ row }">
         <p-link :to="workQueueRoute(row.id)">
@@ -25,6 +26,9 @@
 
       <template #empty-state>
         <PEmptyResults>
+          <template #message>
+            No work queues
+          </template>
           <template #actions>
             <p-button size="sm" secondary @click="clear">
               Clear Filters

@@ -1,8 +1,8 @@
 <template>
   <div class="deployments-table">
     <div class="deployments-table__search">
-      <ResultsCount :count="filtered.length" />
-      <SearchInput v-model="searchTerm" placeholder="Search" label="Search parameters" />
+      <ResultsCount label="Deployment" :count="filtered.length" />
+      <SearchInput v-model="searchTerm" placeholder="Search deployments" label="Search deployments" />
     </div>
 
     <p-table :data="filtered" :columns="columns" class="deployments-table">
@@ -30,6 +30,9 @@
 
       <template #empty-state>
         <PEmptyResults>
+          <template #message>
+            No deployments
+          </template>
           <template v-if="searchTerm.length" #actions>
             <p-button size="sm" secondary @click="clear">
               Clear Filters
