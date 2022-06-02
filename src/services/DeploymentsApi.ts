@@ -34,11 +34,11 @@ export class DeploymentsApi extends Api {
   }
 
   public pauseDeployment(id: string): Promise<void> {
-    return this.patch(`/${id}/set_schedule_active`)
+    return this.post(`/${id}/set_schedule_inactive`)
   }
 
   public resumeDeployment(id: string): Promise<void> {
-    return this.patch(`/${id}/set_schedule_active`)
+    return this.post(`/${id}/set_schedule_active`)
   }
 
   public deleteDeployment(deploymentId: string): Promise<void> {
