@@ -8,7 +8,7 @@ export const randomFlowRun: MockFunction<FlowRun> = function(flowRun?: Partial<F
     deploymentId: flowRun?.deploymentId ?? this.create('string'),
     flowVersion: flowRun?.flowVersion ?? this.create('string'),
     idempotencyKey: flowRun?.idempotencyKey ?? this.create('string'),
-    expectedStartTime: flowRun?.expectedStartTime ?? this.create('string'),
+    expectedStartTime: flowRun?.expectedStartTime ?? this.create('date'),
     nextScheduledStartTime: flowRun?.nextScheduledStartTime ?? this.create('string'),
     parameters: flowRun?.parameters ?? {},
     autoScheduled: flowRun?.autoScheduled ?? this.create('boolean'),
