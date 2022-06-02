@@ -9,11 +9,14 @@
       </p-button>
 
       <p-icon-button-menu>
-        <template #default="{ close }">
-          <copy-overflow-menu-item label="Copy ID" :item="deployment.id" @click="close" />
-          <delete-overflow-menu-item :name="deployment.name" @delete="deleteDeployment(deployment.id)" />
-        </template>
+        <copy-overflow-menu-item label="Copy ID" :item="deployment.id" />
+        <p-overflow-menu-item label="Delete" @click="open" />
       </p-icon-button-menu>
+      <ConfirmDeleteModal
+        v-model:showModal="showModal"
+        :name="deployment.name"
+        @delete="deleteDeployment(deployment.id)"
+      />
     </template>
   </page-heading>
 </template>
@@ -22,10 +25,11 @@
   import { PIconButtonMenu, PIcon, PButton } from '@prefecthq/prefect-design'
   import { useSubscription } from '@prefecthq/vue-compositions'
   import { computed } from 'vue'
-  import CopyOverflowMenuItem from './CopyOverflowMenuItem.vue'
-  import DeleteOverflowMenuItem from './DeleteOverflowMenuItem.vue'
+  import ConfirmDeleteModal from '@/components/ConfirmDeleteModal.vue'
+  import CopyOverflowMenuItem from '@/components/CopyOverflowMenuItem.vue'
   import DeploymentToggle from '@/components/DeploymentToggle.vue'
   import PageHeading from '@/components/PageHeading.vue'
+  import { useShowModal } from '@/compositions/useShowModal'
   import { Deployment } from '@/models'
   import { flowsRouteKey } from '@/router'
   import { flowsApiKey } from '@/services'
@@ -38,6 +42,8 @@
   const props = defineProps<{
     deployment: Deployment,
   }>()
+
+  const { showModal, open } = useShowModal()
 
   const deploymentsApi = inject(deploymentsApiKey)
 

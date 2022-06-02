@@ -19,18 +19,13 @@
     </template>
 
     <template #action="{ row }">
-      <p-icon-button-menu size="xs">
-        <template #default="{ close }">
-          <copy-overflow-menu-item label="Copy ID" :item="row.id" @click="close" />
-          <delete-overflow-menu-item :name="row.name" @delete="deleteFlow(row.id, close)" />
-        </template>
-      </p-icon-button-menu>
+      <FlowMenu :flow="row" @delete="id => emits('delete', id)" />
     </template>
 
     <template #empty-state>
       <PEmptyResults>
         <template #actions>
-          <p-button size="sm" secondary @click="emit('clear')">
+          <p-button size="sm" secondary @click="emits('clear')">
             Clear Filters
           </p-button>
         </template>
@@ -40,20 +35,22 @@
 </template>
 
 <script lang="ts" setup>
-  import { PTable, PTagWrapper, PIconButtonMenu, PEmptyResults, PLink } from '@prefecthq/prefect-design'
-  import CopyOverflowMenuItem from './CopyOverflowMenuItem.vue'
-  import DeleteOverflowMenuItem from './DeleteOverflowMenuItem.vue'
-  import FlowActivityChart from './FlowActivityChart.vue'
+  import { PTable, PTagWrapper, PEmptyResults, PLink } from '@prefecthq/prefect-design'
+  import FlowActivityChart from '@/components/FlowActivityChart.vue'
+  import FlowMenu from '@/components/FlowMenu.vue'
   import { Flow } from '@/models'
   import { flowRouteKey } from '@/router'
-  import { flowsApiKey } from '@/services/FlowsApi'
-  import { inject, deleteItem } from '@/utilities'
+  import { inject } from '@/utilities'
 
   const flowRoute = inject(flowRouteKey)
-  const flowsApi = inject(flowsApiKey)
 
   defineProps<{
     flows: Flow[],
+  }>()
+
+  const emits = defineEmits<{
+    (event: 'delete', value: string): void,
+    (event: 'clear'): void,
   }>()
 
   const columns = [
@@ -76,14 +73,6 @@
       width: '42px',
     },
   ]
-
-  const emit = defineEmits(['delete', 'clear'])
-
-  const deleteFlow = async (id: string, close: () => void): Promise<void> => {
-    close()
-    await deleteItem(id, flowsApi.deleteFlow, 'Flow')
-    emit('delete', id)
-  }
 </script>
 
 <style>

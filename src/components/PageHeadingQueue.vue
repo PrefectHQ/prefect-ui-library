@@ -4,14 +4,17 @@
       <WorkQueueToggle :work-queue="queue" />
 
       <p-icon-button-menu>
-        <template #default="{ close }">
-          <copy-overflow-menu-item label="Copy ID" :item="queue.id" @click="close" />
-          <router-link :to="editQueueRoute(queue.id)">
-            <p-overflow-menu-item label="Edit" />
-          </router-link>
-          <delete-overflow-menu-item :name="queue.name" @delete="deleteWorkQueue(queue.id)" />
-        </template>
+        <copy-overflow-menu-item label="Copy ID" :item="queue.id" />
+        <router-link :to="editQueueRoute(queue.id)">
+          <p-overflow-menu-item label="Edit" />
+        </router-link>
+        <p-overflow-menu-item label="Delete" @click="open" />
       </p-icon-button-menu>
+      <ConfirmDeleteModal
+        v-model:showModal="showModal"
+        :name="queue.name"
+        @delete="deleteWorkQueue(queue.id)"
+      />
     </template>
   </page-heading>
 </template>
@@ -19,10 +22,11 @@
 <script lang="ts" setup>
   import { PIconButtonMenu } from '@prefecthq/prefect-design'
   import { computed } from 'vue'
-  import CopyOverflowMenuItem from './CopyOverflowMenuItem.vue'
-  import DeleteOverflowMenuItem from './DeleteOverflowMenuItem.vue'
+  import ConfirmDeleteModal from '@/components/ConfirmDeleteModal.vue'
+  import CopyOverflowMenuItem from '@/components/CopyOverflowMenuItem.vue'
   import PageHeading from '@/components/PageHeading.vue'
   import WorkQueueToggle from '@/components/WorkQueueToggle.vue'
+  import { useShowModal } from '@/compositions/useShowModal'
   import { WorkQueue } from '@/models'
   import { editQueueRouteKey } from '@/router/routes'
   import { workQueuesApiKey } from '@/services/WorkQueuesApi'
@@ -33,8 +37,9 @@
   }>()
 
   const editQueueRoute = inject(editQueueRouteKey)
-
   const workQueuesApi = inject(workQueuesApiKey)
+
+  const { showModal, open } = useShowModal()
 
   const crumbs = computed(() => [{ text: props.queue.name }])
 
