@@ -1,6 +1,7 @@
+export { default as ConfirmDeleteModal } from './ConfirmDeleteModal.vue'
+export { default as ConfirmDeleteModalWithSlot } from './ConfirmDeleteModalWithSlot.vue'
 export { default as ContextSidebar } from './ContextSidebar.vue'
 export { default as CopyOverflowMenuItem } from './CopyOverflowMenuItem.vue'
-export { default as DeleteOverflowMenuItem } from './DeleteOverflowMenuItem.vue'
 export { default as DeploymentCombobox } from './DeploymentCombobox.vue'
 export { default as DeploymentDetails } from './DeploymentDetails.vue'
 export { default as DeploymentIconText } from './DeploymentIconText.vue'

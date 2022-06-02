@@ -1,0 +1,50 @@
+<template>
+  <p-icon-button-menu size="xs" v-bind="$attrs">
+    <copy-overflow-menu-item label="Copy ID" :item="deployment.id" />
+    <p-overflow-menu-item label="Run" class="deployments-table__hide-on-desktop" />
+    <p-overflow-menu-item label="Delete" @click="open" />
+  </p-icon-button-menu>
+  <ConfirmDeleteModal
+    v-model:showModal="showModal"
+    :name="deployment.name"
+    @delete="deleteDeployment(deployment.id)"
+  />
+</template>
+
+<script lang="ts">
+  import { PIconButtonMenu, POverflowMenuItem } from '@prefecthq/prefect-design'
+  import { defineComponent } from 'vue'
+
+  export default defineComponent({
+    name: 'DeploymentMenu',
+    expose: [],
+    inheritAttrs: false,
+  })
+</script>
+
+<script lang="ts" setup>
+  import ConfirmDeleteModal from '@/components/ConfirmDeleteModal.vue'
+  import CopyOverflowMenuItem from '@/components/CopyOverflowMenuItem.vue'
+  import { useShowModal } from '@/compositions/useShowModal'
+  import { Deployment } from '@/models'
+  import { deploymentsApiKey } from '@/services/DeploymentsApi'
+  import { inject, deleteItem } from '@/utilities'
+
+  defineProps<{
+    deployment: Deployment,
+  }>()
+
+  const emits = defineEmits<{
+    (event: 'delete', value: string): void,
+  }>()
+
+  const { showModal, open, close } = useShowModal()
+
+  const deploymentsApi = inject(deploymentsApiKey)
+
+  const deleteDeployment = async (id: string): Promise<void> => {
+    close()
+    await deleteItem(id, deploymentsApi.deleteDeployment, 'Deployment')
+    emits('delete', id)
+  }
+</script>
