@@ -18,6 +18,9 @@
       <p-icon-button-menu size="xs">
         <template #default="{ close }">
           <copy-overflow-menu-item label="Copy ID" :item="row.id" @click="close" />
+          <router-link :to="editQueueRoute(row.id)">
+            <p-overflow-menu-item label="Edit" />
+          </router-link>
           <delete-overflow-menu-item :name="row.name" @delete="deleteWorkQueue(row.id, close)" />
         </template>
       </p-icon-button-menu>
@@ -40,12 +43,13 @@
   import CopyOverflowMenuItem from './CopyOverflowMenuItem.vue'
   import DeleteOverflowMenuItem from './DeleteOverflowMenuItem.vue'
   import { WorkQueue } from '@/models'
-  import { workQueueRouteKey } from '@/router'
+  import { editQueueRouteKey, workQueueRouteKey } from '@/router'
   import { workQueuesApiKey } from '@/services/WorkQueuesApi'
   import { inject, deleteItem } from '@/utilities'
 
   const workQueueRoute = inject(workQueueRouteKey)
   const workQueuesApi = inject(workQueuesApiKey)
+  const editQueueRoute = inject(editQueueRouteKey)
 
   defineProps<{
     queues: WorkQueue[],
