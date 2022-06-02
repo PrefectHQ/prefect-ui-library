@@ -9,7 +9,7 @@
     </DemoSubSection>
 
     <DemoSubSection heading="Queues table">
-      <QueuesTable :queues="queuesData" />
+      <WorkQueuesTable :work-queues="queuesData" />
     </DemoSubSection>
   </DemoSection>
 </template>
@@ -19,7 +19,7 @@
   import DemoSubSection from '../components/DemoSubSection.vue'
   import DeploymentsTable from '@/components/DeploymentsTable.vue'
   import FlowsTable from '@/components/FlowsTable.vue'
-  import QueuesTable from '@/components/QueuesTable.vue'
+  import WorkQueuesTable from '@/components/WorkQueuesTable.vue'
   import { mocker } from '@/services'
 
   const flowsData = mocker.createMany('flow', 3)

@@ -25,12 +25,14 @@
 
 
 <script lang="ts" setup>
-  import { computed } from 'vue'
+  import { computed, withDefaults } from 'vue'
 
-  const props = defineProps<{
+  const props = withDefaults(defineProps<{
     showModal: boolean,
-    name: string,
-  }>()
+    name?: string,
+  }>(), {
+    name: '',
+  })
 
   const emits = defineEmits<{
     (event: 'update:showModal', value: boolean): void,
