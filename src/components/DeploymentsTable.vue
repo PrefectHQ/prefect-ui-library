@@ -5,7 +5,7 @@
       <SearchInput v-model="searchTerm" placeholder="Search" label="Search parameters" />
     </div>
 
-    <p-table :data="deployments" :columns="columns" class="deployments-table">
+    <p-table :data="filtered" :columns="columns" class="deployments-table">
       <template #name="{ row }">
         <p-link :to="deploymentRoute(row.id)">
           <span>{{ row.name }}</span>
@@ -60,7 +60,6 @@
 
   const emits = defineEmits<{
     (event: 'delete', value: string): void,
-    (event: 'clear'): void,
   }>()
 
   const searchTerm = ref('')
@@ -100,7 +99,6 @@
 
   function clear(): void {
     searchTerm.value = ''
-    emits('clear')
   }
 </script>
 
