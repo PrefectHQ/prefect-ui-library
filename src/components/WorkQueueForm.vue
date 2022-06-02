@@ -1,5 +1,5 @@
 <template>
-  <p-form class="queue-form" @submit="submit">
+  <p-form class="queue-form" @submit="submit" @cancel="cancel">
     <p-label label="Name">
       <p-text-input v-model="internalValue.name" />
     </p-label>
@@ -58,6 +58,7 @@
 
   const emit = defineEmits<{
     (event: 'submit', value: IWorkQueueRequest): void,
+    (event: 'cancel'): void,
   }>()
 
   const internalValue = reactive(new WorkQueueFormValues(props.workQueue))
@@ -80,6 +81,10 @@
 
   function submit(): void {
     emit('submit', internalValue.getWorkQueueRequest())
+  }
+
+  function cancel(): void {
+    emit('cancel')
   }
 
   watch(() => props.workQueue, (val) => {
