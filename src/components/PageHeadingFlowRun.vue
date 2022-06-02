@@ -14,7 +14,13 @@
         @delete="deleteFlowRun(flowRun.id)"
       />
     </template>
-    <slot />
+    <slot>
+      <div class="page-heading-flow-run__header-meta">
+        <StateBadge :state="flowRun.state" />
+        <DurationIconText :duration="flowRun.duration" />
+        <FlowIconText :flow-id="flowRun.flowId" />
+      </div>
+    </slot>
   </page-heading>
 </template>
 
@@ -22,9 +28,7 @@
   import { PIconButtonMenu } from '@prefecthq/prefect-design'
   import { useSubscription } from '@prefecthq/vue-compositions'
   import { computed } from 'vue'
-  import ConfirmDeleteModal from '@/components/ConfirmDeleteModal.vue'
-  import CopyOverflowMenuItem from '@/components/CopyOverflowMenuItem.vue'
-  import PageHeading from '@/components/PageHeading.vue'
+  import { StateBadge, PageHeading, DurationIconText, FlowIconText, CopyOverflowMenuItem, ConfirmDeleteModal } from '@/components'
   import { useShowModal } from '@/compositions/useShowModal'
   import { FlowRun } from '@/models'
   import { flowsRouteKey } from '@/router'
@@ -55,3 +59,13 @@
     emit('delete', id)
   }
 </script>
+
+<style>
+.page-heading-flow-run__header-meta {
+  @apply
+  flex
+  gap-2
+  items-center
+  xl:hidden
+}
+</style>

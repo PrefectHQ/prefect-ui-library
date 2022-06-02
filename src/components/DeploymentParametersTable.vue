@@ -4,6 +4,7 @@
       <ResultsCount :count="filtered.length" />
       <SearchInput v-model="searchTerm" placeholder="Search" label="Search parameters" />
     </div>
+
     <p-table :data="filtered" :columns="columns">
       <template #empty-state>
         <PEmptyResults>
