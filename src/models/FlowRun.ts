@@ -90,7 +90,11 @@ export class FlowRun implements IFlowRun {
     this.updated = flow.updated
   }
 
-  public get duration(): number {
-    return this.totalRunTime ?? this.estimatedRunTime ?? 0
+  public get duration(): number | null {
+    return this.totalRunTime ?? this.estimatedRunTime ?? null
+  }
+
+  public isScheduled(): this is FlowRun & { expectedStartTime: Date } {
+    return this.stateType === 'scheduled'
   }
 }
