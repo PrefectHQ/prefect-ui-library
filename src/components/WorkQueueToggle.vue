@@ -1,13 +1,14 @@
 <template>
-  <p-toggle v-model="internalValue" />
+  <p-toggle v-model="internalValue" :loading="loading" />
 </template>
 
 <script lang="ts" setup>
-  import  { PToggle, showToast } from '@prefecthq/prefect-design'
-  import { computed } from 'vue'
+  import { PToggle, showToast } from '@prefecthq/prefect-design'
+  import { computed, ref } from 'vue'
   import { WorkQueue } from '@/models'
   import { workQueuesApiKey } from '@/services/WorkQueuesApi'
   import { inject } from '@/utilities'
+
   const props = defineProps<{
     workQueue: WorkQueue,
   }>()
@@ -27,8 +28,10 @@
     },
   })
 
+  const loading = ref(false)
 
   const toggleWorkQueue = async (value: boolean): Promise<void> => {
+    loading.value = true
     try {
       if (value) {
         await workQueuesApi.resumeWorkQueue(props.workQueue.id)
@@ -41,6 +44,8 @@
       emit('update')
     } catch (error) {
       showToast(`${error}`, 'error', undefined, 3000)
+    } finally {
+      loading.value = false
     }
   }
 </script>

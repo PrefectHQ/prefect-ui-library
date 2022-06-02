@@ -47,7 +47,6 @@
       showToast(`${error}`, 'error', undefined, 3000)
     } finally {
       loading.value = false
-
     }
   }
 </script>
