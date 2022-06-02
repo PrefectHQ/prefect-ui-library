@@ -1,23 +1,19 @@
 <template>
-  <div class="flows-table">
-    <div class="flows-table__search">
-      <ResultsCount label="Flow" :count="filtered.length" />
-      <SearchInput v-model="searchTerm" placeholder="Search flows" label="Search flows" />
+  <div class="work-queues-table">
+    <div class="work-queues-table__search">
+      <ResultsCount :count="filtered.length" label="Queue" />
+      <SearchInput v-model="searchTerm" placeholder="Search work queues" label="Search work queues" />
     </div>
 
     <p-table :data="filtered" :columns="columns">
       <template #name="{ row }">
-        <p-link :to="flowRoute(row.id)">
+        <p-link :to="workQueueRoute(row.id)">
           <span>{{ row.name }}</span>
         </p-link>
       </template>
 
-      <template #tags="{ row }">
-        <p-tag-wrapper :tags="row.tags" justify="left" />
-      </template>
-
-      <template #activity="{ row }">
-        <FlowActivityChart :flow="row" class="flows-table__activity-chart" />
+      <template #concurrency="{ row }">
+        <span> {{ row.concurrencyLimit ?? 'Unlimited' }} </span>
       </template>
 
       <template #action-heading>
@@ -25,13 +21,13 @@
       </template>
 
       <template #action="{ row }">
-        <FlowMenu :flow="row" @delete="id => emits('delete', id)" />
+        <WorkQueueMenu :queue="row" @delete="id => emits('delete', id)" />
       </template>
 
       <template #empty-state>
         <PEmptyResults>
           <template #message>
-            No flows
+            No work queues
           </template>
           <template #actions>
             <p-button size="sm" secondary @click="clear">
@@ -45,20 +41,19 @@
 </template>
 
 <script lang="ts" setup>
-  import { PTable, PTagWrapper, PEmptyResults, PLink } from '@prefecthq/prefect-design'
+  import { PTable, PEmptyResults, PLink } from '@prefecthq/prefect-design'
   import { computed, ref } from 'vue'
   import ResultsCount from './ResultsCount.vue'
   import SearchInput from './SearchInput.vue'
-  import FlowActivityChart from '@/components/FlowActivityChart.vue'
-  import FlowMenu from '@/components/FlowMenu.vue'
-  import { Flow } from '@/models'
-  import { flowRouteKey } from '@/router'
+  import WorkQueueMenu from '@/components/WorkQueueMenu.vue'
+  import { WorkQueue } from '@/models'
+  import { workQueueRouteKey } from '@/router'
   import { inject } from '@/utilities'
 
-  const flowRoute = inject(flowRouteKey)
+  const workQueueRoute = inject(workQueueRouteKey)
 
   const props = defineProps<{
-    flows: Flow[],
+    workQueues: WorkQueue[],
   }>()
 
   const emits = defineEmits<{
@@ -74,13 +69,8 @@
       width: '150px',
     },
     {
-      property: 'activity',
-      label: 'Activity',
-      width: '200px',
-    },
-    {
-      property: 'tags',
-      label: 'Tags',
+      property: 'concurrencyLimit',
+      label: 'Concurrency',
     },
     {
       label: 'Action',
@@ -90,14 +80,14 @@
 
   const filtered = computed(() => {
     if (searchTerm.value.length === 0) {
-      return props.flows
+      return props.workQueues
     }
 
-    return props.flows.filter(filterFlows)
+    return props.workQueues.filter(filterWorkQueue)
   })
 
-  function filterFlows({ name, tags }: Flow): boolean {
-    return `${name} ${tags.join(' ')}`.toLowerCase().includes(searchTerm.value.toLowerCase())
+  function filterWorkQueue({ name, concurrencyLimit }: WorkQueue): boolean {
+    return `${name} ${concurrencyLimit}`.toLowerCase().includes(searchTerm.value.toLowerCase())
   }
 
   function clear(): void {
@@ -106,15 +96,10 @@
 </script>
 
 <style>
-.flows-table__search { @apply
+.work-queues-table__search { @apply
   flex
   justify-between
   items-center
   mb-4
-}
-
-.flows-table__activity-chart {
-  @apply
-  h-12
 }
 </style>
