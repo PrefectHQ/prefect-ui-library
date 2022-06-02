@@ -52,9 +52,7 @@
   const multiple = computed(() => Array.isArray(internalValue.value))
 
   const options = computed<SelectOption[]>(() => {
-    const stateMap = stateType.map((state) => {
-      return { label: capitalize(state), value: state }
-    })
+    const stateMap = stateType.map((state) => ({ label: capitalize(state), value: state }))
 
     return [...stateMap, { label: 'Late', value: 'late' }]
   })
