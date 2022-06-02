@@ -2,11 +2,14 @@
   <page-heading class="page-heading-flow" :crumbs="crumbs">
     <template #actions>
       <p-icon-button-menu>
-        <template #default="{ close }">
-          <copy-overflow-menu-item label="Copy ID" :item="flow.id" @click="close" />
-          <delete-overflow-menu-item :name="flow.name" @delete="deleteFlow(flow.id)" />
-        </template>
+        <copy-overflow-menu-item label="Copy ID" :item="flow.id" />
+        <p-overflow-menu-item label="Delete" @click="open" />
       </p-icon-button-menu>
+      <ConfirmDeleteModal
+        v-model:showModal="showModal"
+        :name="flow.name"
+        @delete="deleteFlow(flow.id)"
+      />
     </template>
   </page-heading>
 </template>
@@ -14,9 +17,10 @@
 <script lang="ts" setup>
   import { PIconButtonMenu } from '@prefecthq/prefect-design'
   import { computed } from 'vue'
-  import CopyOverflowMenuItem from './CopyOverflowMenuItem.vue'
-  import DeleteOverflowMenuItem from './DeleteOverflowMenuItem.vue'
+  import ConfirmDeleteModal from '@/components/ConfirmDeleteModal.vue'
+  import CopyOverflowMenuItem from '@/components/CopyOverflowMenuItem.vue'
   import PageHeading from '@/components/PageHeading.vue'
+  import { useShowModal } from '@/compositions/useShowModal'
   import { Flow } from '@/models'
   import { flowsApiKey } from '@/services/FlowsApi'
   import { deleteItem, inject } from '@/utilities'
@@ -26,6 +30,8 @@
   }>()
 
   const flowsApi = inject(flowsApiKey)
+
+  const { showModal, open } = useShowModal()
 
   const crumbs = computed(() => [{ text: props.flow.name }])
 

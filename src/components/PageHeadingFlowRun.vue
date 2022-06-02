@@ -2,12 +2,17 @@
   <page-heading class="page-heading-flow-run" :crumbs="crumbs">
     <template #actions>
       <p-icon-button-menu>
-        <template #default="{ close }">
-          <copy-overflow-menu-item label="Copy ID" :item="flowRun.id" @click="close" />
+        <template #default>
+          <copy-overflow-menu-item label="Copy ID" :item="flowRun.id" />
           <p-overflow-menu-item label="Set State" />
-          <delete-overflow-menu-item :name="flowRun.name!" @delete="deleteFlowRun(flowRun.id)" />
+          <p-overflow-menu-item label="Delete" @click="open" />
         </template>
       </p-icon-button-menu>
+      <ConfirmDeleteModal
+        v-model:showModal="showModal"
+        :name="flowRun.name!"
+        @delete="deleteFlowRun(flowRun.id)"
+      />
     </template>
     <slot>
       <div class="page-heading-flow-run__header-meta">
@@ -23,9 +28,8 @@
   import { PIconButtonMenu } from '@prefecthq/prefect-design'
   import { useSubscription } from '@prefecthq/vue-compositions'
   import { computed } from 'vue'
-  import CopyOverflowMenuItem from './CopyOverflowMenuItem.vue'
-  import DeleteOverflowMenuItem from './DeleteOverflowMenuItem.vue'
-  import { StateBadge, PageHeading, DurationIconText, FlowIconText } from '@/components'
+  import { StateBadge, PageHeading, DurationIconText, FlowIconText, CopyOverflowMenuItem, ConfirmDeleteModal } from '@/components'
+  import { useShowModal } from '@/compositions/useShowModal'
   import { FlowRun } from '@/models'
   import { flowsRouteKey } from '@/router'
   import { flowRunsApiKey, flowsApiKey } from '@/services'
@@ -38,6 +42,8 @@
   const props = defineProps<{
     flowRun: FlowRun,
   }>()
+
+  const { showModal, open } = useShowModal()
 
   const flowSubscription = useSubscription(flowsApi.getFlow, [props.flowRun.flowId])
   const flowName = computed(() => flowSubscription.response?.name ?? '')
