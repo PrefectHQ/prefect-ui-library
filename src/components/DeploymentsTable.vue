@@ -1,11 +1,11 @@
 <template>
   <div class="deployments-table">
     <div class="deployments-table__search">
-      <ResultsCount :count="filtered.length" />
-      <SearchInput v-model="searchTerm" placeholder="Search" label="Search parameters" />
+      <ResultsCount label="Deployment" :count="filtered.length" />
+      <SearchInput v-model="searchTerm" placeholder="Search deployments" label="Search deployments" />
     </div>
 
-    <p-table :data="deployments" :columns="columns" class="deployments-table">
+    <p-table :data="filtered" :columns="columns" class="deployments-table">
       <template #name="{ row }">
         <p-link :to="deploymentRoute(row.id)">
           <span>{{ row.name }}</span>
@@ -30,6 +30,9 @@
 
       <template #empty-state>
         <PEmptyResults>
+          <template #message>
+            No deployments
+          </template>
           <template v-if="searchTerm.length" #actions>
             <p-button size="sm" secondary @click="clear">
               Clear Filters
@@ -60,7 +63,6 @@
 
   const emits = defineEmits<{
     (event: 'delete', value: string): void,
-    (event: 'clear'): void,
   }>()
 
   const searchTerm = ref('')
@@ -100,7 +102,6 @@
 
   function clear(): void {
     searchTerm.value = ''
-    emits('clear')
   }
 </script>
 

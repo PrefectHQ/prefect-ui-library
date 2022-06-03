@@ -18,7 +18,7 @@
   import { defineComponent } from 'vue'
 
   export default defineComponent({
-    name: 'QueueMenu',
+    name: 'WorkQueueMenu',
     expose: [],
     inheritAttrs: false,
   })

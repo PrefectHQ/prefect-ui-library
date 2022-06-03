@@ -1,7 +1,7 @@
 <template>
   <page-heading class="page-heading-deployment" :crumbs="crumbs">
     <template #actions>
-      <DeploymentToggle :deployment="deployment" />
+      <DeploymentToggle :deployment="deployment" @update="emit('update')" />
 
       <p-button inset>
         Run
@@ -31,12 +31,12 @@
   import PageHeading from '@/components/PageHeading.vue'
   import { useShowModal } from '@/compositions/useShowModal'
   import { Deployment } from '@/models'
-  import { flowsRouteKey } from '@/router'
+  import { flowRouteKey } from '@/router'
   import { flowsApiKey } from '@/services'
   import { deploymentsApiKey } from '@/services/DeploymentsApi'
   import { deleteItem, inject } from '@/utilities'
 
-  const flowsRoute = inject(flowsRouteKey)
+  const flowRoute = inject(flowRouteKey)
   const flowsApi = inject(flowsApiKey)
 
   const props = defineProps<{
@@ -50,13 +50,15 @@
   const flowSubscription = useSubscription(flowsApi.getFlow, [props.deployment.flowId])
   const flowName = computed(() => flowSubscription.response?.name ?? '')
 
-  const crumbs = computed(() => [{ text: flowName.value, to: flowsRoute() }, { text: props.deployment.name }])
+  const crumbs = computed(() => [{ text: flowName.value, to: flowRoute(props.deployment.flowId) }, { text: props.deployment.name }])
 
-  const emit = defineEmits(['delete'])
+  const emit = defineEmits<{
+    (event: 'update' | 'delete'): void,
+  }>()
 
   const deleteDeployment = async (id: string): Promise<void> => {
     await deleteItem(id, deploymentsApi.deleteDeployment, 'Deployment')
-    emit('delete', id)
+    emit('delete')
   }
 </script>
 

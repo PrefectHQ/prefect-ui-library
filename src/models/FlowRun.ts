@@ -7,7 +7,7 @@ export interface IFlowRun {
   deploymentId: string | null,
   flowVersion: string | null,
   idempotencyKey: string | null,
-  expectedStartTime: string | null,
+  expectedStartTime: Date | null,
   nextScheduledStartTime: string | null,
   parameters: unknown,
   autoScheduled: boolean | null,
@@ -37,7 +37,7 @@ export class FlowRun implements IFlowRun {
   public readonly deploymentId: string | null
   public flowVersion: string | null
   public idempotencyKey: string | null
-  public expectedStartTime: string | null
+  public expectedStartTime: Date | null
   public nextScheduledStartTime: string | null
   public parameters: unknown
   public autoScheduled: boolean | null
@@ -90,7 +90,11 @@ export class FlowRun implements IFlowRun {
     this.updated = flow.updated
   }
 
-  public get duration(): number {
-    return this.totalRunTime ?? this.estimatedRunTime ?? 0
+  public get duration(): number | null {
+    return this.totalRunTime ?? this.estimatedRunTime ?? null
+  }
+
+  public isScheduled(): this is FlowRun & { expectedStartTime: Date } {
+    return this.stateType === 'scheduled'
   }
 }
