@@ -19,7 +19,7 @@
 </template>
 
 <script lang="ts" setup>
-  import { PIconButtonMenu, PIcon, PButton } from '@prefecthq/prefect-design'
+  import { PIconButtonMenu } from '@prefecthq/prefect-design'
   import { useSubscription } from '@prefecthq/vue-compositions'
   import { computed } from 'vue'
   import RunButton from './RunButton.vue'
