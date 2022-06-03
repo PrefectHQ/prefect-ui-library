@@ -2,7 +2,7 @@
   <div class="state-select">
     <p-select v-model="internalValue" :options="options" :empty-message="emptyMessage">
       <template #option="{ option }">
-        <StateBadge flat :state="{ name: option.label, type: option.value }" />
+        <StateBadge :state="{ name: option.label, type: option.value }" />
       </template>
       <template #default="{ selectedOption, unselectOption }">
         <StateBadge
