@@ -40,7 +40,7 @@
     </p-label>
 
     <p-label label="Flow Runners">
-      <p-checkbox v-for="runner in flowRunnerTypes" :key="runner.value" v-model="internalValue.filter.flowRunnerTypes" :label="runner.label" :value="runner.value" />
+      <FlowRunnerCheckboxes v-model:selected="internalValue.filter.flowRunnerTypes" />
     </p-label>
   </p-form>
 </template>
@@ -48,9 +48,9 @@
 <script lang="ts" setup>
   import { PLabel, PTextInput, PNumberInput, PTagsInput, PToggle, PForm } from '@prefecthq/prefect-design'
   import { computed, reactive, watch } from 'vue'
+  import FlowRunnerCheckboxes from './FlowRunnerCheckboxes.vue'
   import DeploymentCombobox from '@/components/DeploymentCombobox.vue'
   import { IWorkQueueRequest, WorkQueue, WorkQueueFormValues } from '@/models'
-  import { FlowRunnerType } from '@/types/FlowRunnerType'
 
   const props = defineProps<{
     workQueue?: WorkQueue,
@@ -71,13 +71,6 @@
       internalValue.isPaused = !internalValue.isPaused
     },
   })
-
-  const flowRunnerTypes: { label: string, value: FlowRunnerType }[] = [
-    { label: 'Universal', value: 'universal' },
-    { label: 'Kubernetes', value: 'kubernetes' },
-    { label: 'Docker', value: 'docker' },
-    { label: 'Subprocess', value: 'subprocess' },
-  ]
 
   function submit(): void {
     emit('submit', internalValue.getWorkQueueRequest())
