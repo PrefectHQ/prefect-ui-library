@@ -25,7 +25,10 @@
       </template>
 
       <template #action="{ row }">
-        <DeploymentMenu :deployment="row" @delete="id => emits('delete', id)" />
+        <div class="deployments-table__actions">
+          <DeploymentToggle :deployment="row" @update="emits('update')" />
+          <DeploymentMenu :deployment="row" @delete="id => emits('delete', id)" />
+        </div>
       </template>
 
       <template #empty-state>
@@ -48,6 +51,7 @@
   import { PTable, PTagWrapper, PEmptyResults, PLink } from '@prefecthq/prefect-design'
   import { ref, computed } from 'vue'
   import DeploymentMenu from '@/components/DeploymentMenu.vue'
+  import DeploymentToggle from '@/components/DeploymentToggle.vue'
   import ResultsCount from '@/components/ResultsCount.vue'
   import SearchInput from '@/components/SearchInput.vue'
   import { Deployment } from '@/models'
@@ -62,6 +66,7 @@
   }>()
 
   const emits = defineEmits<{
+    (event: 'update'): void,
     (event: 'delete', value: string): void,
   }>()
 
@@ -116,5 +121,10 @@
 .deployments-table__hide-on-desktop {
   @apply
   sm:hidden
+}
+
+.deployments-table__actions { @apply
+  flex
+  gap-2
 }
 </style>
