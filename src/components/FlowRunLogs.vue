@@ -21,7 +21,7 @@
             </div>
           </template>
 
-          <template #actions>
+          <template v-if="hasFilter" #actions>
             <p-button size="sm" secondary @click="clear">
               Clear Filters
             </p-button>
@@ -49,6 +49,7 @@
 
   const logLevel = ref<LogLevel>(0)
   const logsSort = ref<LogsRequestSort>('TIMESTAMP_ASC')
+  const hasFilter = computed(() => logLevel.value !== 0)
   const logsFilter = computed<LogsRequestFilter>(() => ({
     logs: {
       flow_run_id: {
