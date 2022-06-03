@@ -21,7 +21,10 @@
       </template>
 
       <template #action="{ row }">
-        <WorkQueueMenu :queue="row" @delete="id => emits('delete', id)" />
+        <div class="work-queues-table__actions">
+          <WorkQueueToggle :work-queue="row" @update="emits('update')" />
+          <WorkQueueMenu :queue="row" @delete="id => emits('delete', id)" />
+        </div>
       </template>
 
       <template #empty-state>
@@ -46,6 +49,7 @@
   import ResultsCount from './ResultsCount.vue'
   import SearchInput from './SearchInput.vue'
   import WorkQueueMenu from '@/components/WorkQueueMenu.vue'
+  import WorkQueueToggle from '@/components/WorkQueueToggle.vue'
   import { WorkQueue } from '@/models'
   import { workQueueRouteKey } from '@/router'
   import { inject } from '@/utilities'
@@ -57,6 +61,7 @@
   }>()
 
   const emits = defineEmits<{
+    (event: 'update'): void,
     (event: 'delete', value: string): void,
   }>()
 
@@ -101,5 +106,10 @@
   justify-between
   items-center
   mb-4
+}
+
+.work-queues-table__actions { @apply
+  flex
+  gap-2
 }
 </style>
