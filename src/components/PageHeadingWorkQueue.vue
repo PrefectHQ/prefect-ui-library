@@ -1,5 +1,5 @@
 <template>
-  <page-heading class="page-heading-queue" :crumbs="crumbs">
+  <page-heading class="page-heading-work-queue" :crumbs="crumbs">
     <template #actions>
       <WorkQueueToggle :work-queue="queue" @update="emit('update')" />
 

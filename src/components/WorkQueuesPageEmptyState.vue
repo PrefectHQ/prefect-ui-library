@@ -7,7 +7,7 @@
     </template>
 
     <template #heading>
-      Create a queue to get started
+      Create a work queue to get started
     </template>
 
     <template #description>
@@ -17,7 +17,7 @@
     <template #actions>
       <router-link to="/queues/new">
         <p-button>
-          Create Queue
+          Create Work Queue
           <p-icon icon="PlusIcon" class="empty-work-queue--link-icon" />
         </p-button>
       </router-link>

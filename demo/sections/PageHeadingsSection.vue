@@ -3,7 +3,7 @@
     <DemoSubSection heading="Top-level Pages">
       <page-heading-flows />
       <page-heading-deployments />
-      <page-heading-queues />
+      <page-heading-work-queues />
       <page-heading-flow-runs />
       <page-heading-workspace-settings />
       <page-heading-api-keys />
@@ -13,7 +13,7 @@
     <DemoSubSection heading="Object Pages">
       <page-heading-flow :flow="flow" />
       <page-heading-deployment :deployment="deployment" />
-      <page-heading-queue :queue="queue" />
+      <page-heading-work-queue :queue="queue" />
       <page-heading-flow-run :flow-run="flowRun" />
     </DemoSubSection>
   </DemoSection>
@@ -30,8 +30,8 @@
   import PageHeadingFlowRun from '@/components/PageHeadingFlowRun.vue'
   import PageHeadingFlowRuns from '@/components/PageHeadingFlowRuns.vue'
   import PageHeadingFlows from '@/components/PageHeadingFlows.vue'
-  import PageHeadingQueue from '@/components/PageHeadingQueue.vue'
-  import PageHeadingQueues from '@/components/PageHeadingQueues.vue'
+  import PageHeadingWorkQueue from '@/components/PageHeadingWorkQueue.vue'
+  import PageHeadingWorkQueues from '@/components/PageHeadingWorkQueues.vue'
   import PageHeadingWorkspaceSettings from '@/components/PageHeadingWorkspaceSettings.vue'
   import { mocker } from '@/services'
 

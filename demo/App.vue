@@ -9,7 +9,7 @@
   import { provide } from 'vue'
   import AppSidebar from './components/AppSidebar.vue'
   import { flowRunsApi, logsApi, taskRunsApi, flowsApi, deploymentsApi, workQueueApi } from './services'
-  import { deploymentRouteKey, flowRouteKey, flowRunsRouteKey, flowsRouteKey, deploymentsRouteKey, queuesRouteKey, settingsRouteKey, workQueueRouteKey, Route, flowRunRouteKey, newQueueRouteKey, editQueueRouteKey } from '@/router'
+  import { deploymentRouteKey, flowRouteKey, flowRunsRouteKey, flowsRouteKey, deploymentsRouteKey, workQueuesRouteKey, settingsRouteKey, workQueueRouteKey, Route, flowRunRouteKey, workQueueCreateRouteKey, editQueueRouteKey } from '@/router'
   import { flowRunsApiKey, logsApiKey, taskRunsApiKey, flowsApiKey, deploymentsApiKey, workQueuesApiKey } from '@/services'
 
   const emptyRoute = (): Route => ({ path: '/nothing' })
@@ -27,10 +27,10 @@
   provide(flowRunsRouteKey, emptyRoute)
   provide(flowsRouteKey, emptyRoute)
   provide(deploymentsRouteKey, emptyRoute)
-  provide(queuesRouteKey, emptyRoute)
+  provide(workQueuesRouteKey, emptyRoute)
   provide(settingsRouteKey, emptyRoute)
   provide(workQueueRouteKey, emptyRoute)
-  provide(newQueueRouteKey, emptyRoute)
+  provide(workQueueCreateRouteKey, emptyRoute)
   provide(editQueueRouteKey, emptyRoute)
 </script>
 

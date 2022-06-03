@@ -1,5 +1,5 @@
 <template>
-  <page-heading class="page-heading-queues" :crumbs="crumbs">
+  <page-heading class="page-heading-work-queues" :crumbs="crumbs">
     <template #after-crumbs>
       <router-link :to="newQueueRoute()">
         <p-button inset size="xs" icon="PlusIcon" />
@@ -10,10 +10,10 @@
 
 <script lang="ts" setup>
   import PageHeading from '@/components/PageHeading.vue'
-  import { newQueueRouteKey } from '@/router/routes'
+  import { workQueueCreateRouteKey } from '@/router/routes'
   import { inject } from '@/utilities'
 
   const crumbs = [{ text: 'Queues' }]
 
-  const newQueueRoute = inject(newQueueRouteKey)
+  const newQueueRoute = inject(workQueueCreateRouteKey)
 </script>

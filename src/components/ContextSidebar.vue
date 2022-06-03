@@ -8,7 +8,7 @@
       <p-context-nav-item title="Flow Runs" icon="FlowRun" :to="flowRunsRoute()" />
       <p-context-nav-item title="Flows" icon="Flow" :to="flowsRoute()" />
       <p-context-nav-item title="Deployments" icon="LocationMarkerIcon" :to="deploymentsRoute()" />
-      <p-context-nav-item title="Queues" icon="DatabaseIcon" :to="queuesRoute()" />
+      <p-context-nav-item title="Work Queues" icon="DatabaseIcon" :to="queuesRoute()" />
     </slot>
 
     <template #footer>
@@ -22,7 +22,7 @@
 <script lang="ts" setup>
   import { PContextSidebar, PContextNavItem } from '@prefecthq/prefect-design'
   import { useSlots } from 'vue'
-  import { flowRunsRouteKey, flowsRouteKey, deploymentsRouteKey, queuesRouteKey, settingsRouteKey } from '@/router'
+  import { flowRunsRouteKey, flowsRouteKey, deploymentsRouteKey, workQueuesRouteKey, settingsRouteKey } from '@/router'
   import { inject } from '@/utilities'
 
   const slots = useSlots()
@@ -30,6 +30,6 @@
   const flowRunsRoute = inject(flowRunsRouteKey)
   const flowsRoute = inject(flowsRouteKey)
   const deploymentsRoute = inject(deploymentsRouteKey)
-  const queuesRoute = inject(queuesRouteKey)
+  const queuesRoute = inject(workQueuesRouteKey)
   const settingsRoute = inject(settingsRouteKey)
 </script>
