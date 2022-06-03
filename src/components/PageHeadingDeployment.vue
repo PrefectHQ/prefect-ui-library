@@ -3,10 +3,7 @@
     <template #actions>
       <DeploymentToggle :deployment="deployment" @update="emit('update')" />
 
-      <p-button inset>
-        Run
-        <p-icon class="page-heading-deployment__run-icon" icon="PlayIcon" solid />
-      </p-button>
+      <RunButton :deployment="deployment" />
 
       <p-icon-button-menu>
         <copy-overflow-menu-item label="Copy ID" :item="deployment.id" />
@@ -25,6 +22,7 @@
   import { PIconButtonMenu, PIcon, PButton } from '@prefecthq/prefect-design'
   import { useSubscription } from '@prefecthq/vue-compositions'
   import { computed } from 'vue'
+  import RunButton from './RunButton.vue'
   import ConfirmDeleteModal from '@/components/ConfirmDeleteModal.vue'
   import CopyOverflowMenuItem from '@/components/CopyOverflowMenuItem.vue'
   import DeploymentToggle from '@/components/DeploymentToggle.vue'
