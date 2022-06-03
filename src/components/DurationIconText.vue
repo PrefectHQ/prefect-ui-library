@@ -1,12 +1,16 @@
 <template>
   <p-icon-text icon="ClockIcon" class="duration-icon-text">
-    <span>{{ secondsToApproximateString(duration) }}</span>
+    <span>{{ label }}</span>
   </p-icon-text>
 </template>
 
 <script lang="ts" setup>
+  import { computed } from 'vue'
   import { secondsToApproximateString } from '@/utilities/seconds'
-  defineProps<{
-    duration: number,
+
+  const props = defineProps<{
+    duration: number | null,
   }>()
+
+  const label = computed(() => props.duration == null ? 'None' : secondsToApproximateString(props.duration))
 </script>

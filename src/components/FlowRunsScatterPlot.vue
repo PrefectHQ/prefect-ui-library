@@ -4,8 +4,8 @@
       Duration
     </div>
     <ScatterPlot :items="items" :dot-diameter="16">
-      <template #default="scope">
-        <slot v-bind="scope" />
+      <template #default="{ item }">
+        <FlowRunPopOver :flow-run-id="item.id" />
       </template>
     </ScatterPlot>
   </div>
@@ -14,6 +14,7 @@
 <script lang="ts" setup>
   import { ScatterPlot } from '@prefecthq/vue-charts'
   import { computed } from 'vue'
+  import FlowRunPopOver from './FlowRunPopOver.vue'
   import { UiFlowRunHistory } from '@/models/UiFlowRunHistory'
   import { mapper } from '@/services/Mapper'
 
