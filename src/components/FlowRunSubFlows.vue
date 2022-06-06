@@ -23,9 +23,9 @@
 
 <script lang="ts" setup>
   import { PEmptyResults } from '@prefecthq/prefect-design'
-  import { useDebouncedRef } from '@prefecthq/vue-compositions'
+  import { useDebouncedRef, useSubscription } from '@prefecthq/vue-compositions'
   import { computed, ref, watch } from 'vue'
-  import { taskRunsApiKey } from '..'
+  import { TaskRun, taskRunsApiKey } from '..'
   import FlowRunList from './FlowRunList.vue'
   import FlowRunsSort from './FlowRunsSort.vue'
   import SearchInput from './SearchInput.vue'
@@ -49,15 +49,12 @@
   const sort = ref<FlowRunSortValues>('EXPECTED_START_TIME_DESC')
   const hasFilters = computed(() => state.value.length || searchTerm.value.length)
 
-  const subFlowRunTasksFilter = computed<UnionFilters>(() => {
+  const subFlowRunTaskRunFilter = computed<UnionFilters>(() => {
     const runFilter: UnionFilters = {
       sort: sort.value,
       flow_runs: {
         id: {
           any_: [props.flowRun.id],
-        },
-        name: {
-          any_: [searchTermDebounced.value],
         },
       },
       task_runs: {
@@ -66,7 +63,6 @@
         },
       },
     }
-
     if (state.value.length) {
       runFilter.task_runs!.state = {
         name: {
@@ -74,36 +70,46 @@
         },
       }
     }
-
+    if (searchTermDebounced.value) {
+      runFilter.task_runs!.name ={
+        any_: [searchTermDebounced.value],
+      }
+    }
     return runFilter
   })
 
   const taskRunsApi = inject(taskRunsApiKey)
-  const subFlowRunTasksSubscription = useUnionFiltersSubscription(taskRunsApi.getTaskRuns, [subFlowRunTasksFilter])
-  const subFlowRunTasks = computed(()=> subFlowRunTasksSubscription.response ?? [])
-  const subFlowRunTaskIds = computed(() => subFlowRunTasks.value.map(({ id }) => id))
+  const subFlowRunTaskRunSubscription = useSubscription(taskRunsApi.getTaskRuns, [subFlowRunTaskRunFilter.value])
+  const subFlowRunTaskRuns = computed(()=> subFlowRunTaskRunSubscription.response ?? [])
+  const subFlowRunIds = computed(() => {
+    return subFlowRunTaskRuns.value.map((run: TaskRun) => run.state?.stateDetails?.childFlowRunId)
+  })
 
-  const subFlowRunsFilter = computed<UnionFilters>(() => ({
-    sort: sort.value,
-    flow_runs: {
-      id: {
-        any_: subFlowRunTaskIds.value,
+  const subFlowRunsFilter = computed<UnionFilters>(() => {
+    const subFlowFilter: UnionFilters = {
+      sort: sort.value,
+      flow_runs: {
+        id: {
+          any_: subFlowRunIds.value as string[],
+        },
       },
-    },
-  }))
+    }
+    return subFlowFilter
+  })
+
 
   const flowRunsApi = inject(flowRunsApiKey)
-  const flowRunsSubscription = useUnionFiltersSubscription(flowRunsApi.getFlowRuns, [subFlowRunsFilter], { interval: 30000 })
+  const flowRunsSubscription = useSubscription(flowRunsApi.getFlowRuns, [subFlowRunsFilter])
+
   const flowRuns = computed<FlowRun[]>(() => flowRunsSubscription.response ?? [])
   const empty = computed(() => flowRunsSubscription.executed && flowRuns.value.length === 0)
 
   function loadMoreSubFlowRuns(): void {
-    const unwatch = watch(subFlowRunTaskIds, () => {
-      flowRunsSubscription.loadMore()
+    const unwatch = watch(subFlowRunIds, () => {
+      // flowRunsSubscription.loadMore()
       unwatch()
     })
-
-    subFlowRunTasksSubscription.loadMore()
+    // subFlowRunTaskRunSubscription.loadMore()
   }
 
   function clear(): void {
