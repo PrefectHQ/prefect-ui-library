@@ -40,7 +40,7 @@
   import { inject } from '@/utilities/inject'
 
   const props = defineProps<{
-    flowRun: FlowRun,
+    flowRunId: string,
   }>()
 
   const state = ref<StateType[]>([])
@@ -54,7 +54,7 @@
       sort: sort.value,
       flow_runs: {
         id: {
-          any_: [props.flowRun.id],
+          any_: [props.flowRunId],
         },
         name: {
           any_: [searchTermDebounced.value],
