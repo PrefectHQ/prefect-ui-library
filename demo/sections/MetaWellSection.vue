@@ -6,11 +6,11 @@
       </DemoSubSection>
 
       <DemoSubSection heading="Flow Meta Well">
-        <FlowMetaWell :flow="flowData" class="w-[250px] border-2 border-blue-200 border-dashed" />
+        <FlowMetaWell :flow="flowData" class="w-[250px] border-2 border-blue-200 border-dashed" alternate />
       </DemoSubSection>
 
       <DemoSubSection heading="Deployment Meta Well">
-        <DeploymentMetaWell :deployment="deploymentData" class="w-[250px] border-2 border-blue-200 border-dashed" />
+        <DeploymentMetaWell :deployment="deploymentData" class="w-[250px] border-2 border-blue-200 border-dashed" alternate />
       </DemoSubSection>
     </div>
   </DemoSection>
