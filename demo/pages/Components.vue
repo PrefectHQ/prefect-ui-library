@@ -1,6 +1,7 @@
 <template>
   <p-layout-default>
     <PageHeadingsSection />
+    <MarketingBannerSection />
     <StatesSection />
     <LogSection />
     <EmptyStateSection />
@@ -24,6 +25,7 @@
   import EmptyStateSection from '../sections/EmptyStateSection.vue'
   import ListsSection from '../sections/ListsSection.vue'
   import LogSection from '../sections/LogsSection.vue'
+  import MarketingBannerSection from '../sections/MarketingBannerSection.vue'
   import MetaWellSection from '../sections/MetaWellSection.vue'
   import PageHeadingsSection from '../sections/PageHeadingsSection.vue'
   import RunButtonSection from '../sections/RunButtonSection.vue'
