@@ -1,7 +1,7 @@
 <template>
   <DemoSection heading="Context Sidebar">
-    <div class="bg-slate-300 h-96">
-      <ContextSidebar class="sm:h-full sm:w-64 w-full">
+    <div class="bg-slate-300 h-[400px] relative">
+      <ContextSidebar class="absolute top-0 right-0 left-0 max-w-full bottom-0 h-auto z-0">
         <template #header>
           <p class="font-normal text-sm mx-3">
             Prefect Design
