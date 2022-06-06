@@ -1,14 +1,16 @@
 <template>
   <div class="deployment-details">
-    <p-key-value label="Deployment ID" :value="deployment.id" />
-    <p-key-value label="Flow">
+    <p-key-value label="Flow" :alternate="alternate">
       <template #value>
         <FlowIconText :flow-id="deployment.flowId" />
       </template>
     </p-key-value>
-    <p-key-value label="Created" :value="formatDateTimeNumeric(deployment.created)" />
 
-    <p-key-value label="Tags">
+    <p-key-value label="Deployment ID" :value="deployment.id" :alternate="alternate" />
+
+    <p-key-value label="Created" :value="formatDateTimeNumeric(deployment.created)" :alternate="alternate" />
+
+    <p-key-value label="Tags" :alternate="alternate">
       <template #value>
         <template v-if="deployment.tags?.length">
           <p-tags :tags="deployment.tags" class="deployment-details__tags" />
@@ -25,6 +27,7 @@
 
   defineProps<{
     deployment: Deployment,
+    alternate?: boolean,
   }>()
 </script>
 

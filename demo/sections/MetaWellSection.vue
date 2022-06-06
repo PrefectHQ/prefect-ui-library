@@ -6,11 +6,11 @@
       </DemoSubSection>
 
       <DemoSubSection heading="Flow Meta Well">
-        <FlowMetaWell :flow="flowData" class="w-[250px] border-2 border-blue-200 border-dashed" alternate />
+        <FlowDetails :flow="flowData" class="w-[250px] border-2 border-blue-200 border-dashed" alternate />
       </DemoSubSection>
 
       <DemoSubSection heading="Deployment Meta Well">
-        <DeploymentMetaWell :deployment="deploymentData" class="w-[250px] border-2 border-blue-200 border-dashed" alternate />
+        <DeploymentDetails :deployment="deploymentData" class="w-[250px] border-2 border-blue-200 border-dashed" alternate />
       </DemoSubSection>
     </div>
   </DemoSection>
@@ -19,8 +19,8 @@
 <script lang="ts" setup>
   import DemoSection from '../components/DemoSection.vue'
   import DemoSubSection from '../components/DemoSubSection.vue'
-  import DeploymentMetaWell from '@/components/DeploymentMetaWell.vue'
-  import FlowMetaWell from '@/components/FlowMetaWell.vue'
+  import DeploymentDetails from '@/components/DeploymentDetails.vue'
+  import FlowDetails from '@/components/FlowDetails.vue'
   import FlowRunDetails from '@/components/FlowRunDetails.vue'
   import { mocker } from '@/services'
 

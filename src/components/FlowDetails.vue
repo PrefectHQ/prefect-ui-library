@@ -1,9 +1,10 @@
 <template>
   <div class="flow-details">
-    <p-key-value label="Flow ID" :value="flow.id" />
-    <p-key-value label="Created" :value="formatDateTimeNumeric(flow.created)" />
+    <p-key-value label="Flow ID" :value="flow.id" :alternate="alternate" />
 
-    <p-key-value label="Tags">
+    <p-key-value label="Created" :value="formatDateTimeNumeric(flow.created)" :alternate="alternate" />
+
+    <p-key-value label="Tags" :alternate="alternate">
       <template v-if="flow.tags.length" #value>
         <p-tags :tags="flow.tags" class="flow-details__tags" />
       </template>
@@ -17,6 +18,7 @@
 
   defineProps<{
     flow: Flow,
+    alternate?: boolean,
   }>()
 </script>
 
