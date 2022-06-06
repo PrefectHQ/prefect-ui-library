@@ -28,7 +28,7 @@
 <style>
 .flow-runs-scatter-plot-plot { @apply
   border-gray-300
-  border-2
+  border
   rounded
   p-1
 }

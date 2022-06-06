@@ -11,11 +11,12 @@
     </template>
 
     <template #description>
-      Work queues choose the criteria for flow runs to be picked up by a corresponding agent process, which runs in your execution environment.
+      Work queues choose the criteria for flow runs to be picked up by a corresponding agent process, which runs in your
+      execution environment.
     </template>
 
     <template #actions>
-      <router-link to="/queues/new">
+      <router-link :to="workQueueCreateRoute()">
         <p-button>
           Create Work Queue
           <p-icon icon="PlusIcon" class="empty-work-queue--link-icon" />
@@ -27,6 +28,10 @@
 
 <script lang="ts" setup>
   import { PEmptyState, PButton, PIcon } from '@prefecthq/prefect-design'
+  import { workQueueCreateRouteKey } from '@/router'
+
+  import { inject } from '@/utilities'
+  const workQueueCreateRoute = inject(workQueueCreateRouteKey)
 </script>
 
 <style>

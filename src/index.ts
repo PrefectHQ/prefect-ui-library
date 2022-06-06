@@ -13,3 +13,14 @@ export * from './types'
 export * from './utilities'
 
 import '@/styles/style.css'
+
+import { ToastPlugin } from '@prefecthq/prefect-design'
+import { App, Plugin } from 'vue'
+
+const plugin: Plugin = {
+  install(app: App) {
+    app.use(ToastPlugin)
+  },
+}
+
+export { plugin }
