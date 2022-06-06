@@ -58,7 +58,11 @@
       sort: sort.value,
     }
 
-    const taskRunsFilter: TaskRunFilter = {}
+    const taskRunsFilter: TaskRunFilter = {
+      subflow_runs: {
+        exists_: false,
+      },
+    }
 
     if (searchTermDebounced.value) {
       taskRunsFilter.name = {
