@@ -29,7 +29,6 @@
   import TaskRunList from './TaskRunList.vue'
   import TaskRunsSort from './TaskRunsSort.vue'
   import { useUnionFiltersSubscription } from '@/compositions/useUnionFiltersSubscription'
-  import { FlowRun } from '@/models/FlowRun'
   import { StateType } from '@/models/StateType'
   import { TaskRun } from '@/models/TaskRun'
   import { mapper } from '@/services/Mapper'
@@ -39,7 +38,7 @@
   import { inject } from '@/utilities/inject'
 
   const props = defineProps<{
-    flowRun: FlowRun,
+    flowRunId: string,
   }>()
 
   const state = ref<StateType[]>([])
@@ -52,7 +51,7 @@
     const runFilter: UnionFilters = {
       flow_runs: {
         id: {
-          any_: [props.flowRun.id],
+          any_: [props.flowRunId],
         },
       },
       sort: sort.value,
