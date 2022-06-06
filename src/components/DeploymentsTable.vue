@@ -7,6 +7,7 @@
 
     <p-table :data="filtered" :columns="columns" class="deployments-table">
       <template #name="{ row }">
+        <FlowRouterLink :flow-id="row.flowId" after=" / " />
         <p-link :to="deploymentRoute(row.id)">
           <span>{{ row.name }}</span>
         </p-link>
@@ -50,6 +51,7 @@
 <script lang="ts" setup>
   import { PTable, PTagWrapper, PEmptyResults, PLink } from '@prefecthq/prefect-design'
   import { ref, computed } from 'vue'
+  import FlowRouterLink from './FlowRouterLink.vue'
   import DeploymentMenu from '@/components/DeploymentMenu.vue'
   import DeploymentToggle from '@/components/DeploymentToggle.vue'
   import ResultsCount from '@/components/ResultsCount.vue'
