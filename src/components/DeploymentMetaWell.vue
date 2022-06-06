@@ -1,12 +1,12 @@
 <template>
   <div class="deployment-meta-well">
-    <p-key-value label="Deployment ID" :value="deployment.id" />
+    <p-key-value label="Deployment ID" :value="deployment.id" alternate />
 
-    <p-key-value label="Flow ID" :value="deployment.flowId" />
+    <p-key-value label="Flow ID" :value="deployment.flowId" alternate />
 
-    <p-key-value label="Created" :value="formatDateTimeNumeric(deployment.created)" />
+    <p-key-value label="Created" :value="formatDateTimeNumeric(deployment.created)" alternate />
 
-    <p-key-value label="Tags">
+    <p-key-value label="Tags" alternate>
       <template #value>
         <p-tag v-for="tag in deployment.tags" :key="tag" class="deployment-meta-well__tags">
           {{ tag }}

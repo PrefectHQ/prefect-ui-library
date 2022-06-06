@@ -2,7 +2,7 @@
   <DemoSection heading="Meta Wells">
     <div class="flex flex-wrap gap-8">
       <DemoSubSection heading="Flow Run Meta Well">
-        <FlowRunDetails :flow-run="flowRunData" class="w-[250px] border-2 border-blue-200 border-dashed" />
+        <FlowRunDetails :flow-run="flowRunData" class="w-[250px] border-2 border-blue-200 border-dashed" alternate />
       </DemoSubSection>
 
       <DemoSubSection heading="Flow Meta Well">
