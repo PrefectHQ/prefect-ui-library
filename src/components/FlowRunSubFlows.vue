@@ -23,7 +23,7 @@
 
 <script lang="ts" setup>
   import { PEmptyResults } from '@prefecthq/prefect-design'
-  import { useDebouncedRef, useSubscription } from '@prefecthq/vue-compositions'
+  import { useDebouncedRef } from '@prefecthq/vue-compositions'
   import { computed, ref, watch } from 'vue'
   import { TaskRun, taskRunsApiKey } from '..'
   import FlowRunList from './FlowRunList.vue'
@@ -79,18 +79,16 @@
   })
 
   const taskRunsApi = inject(taskRunsApiKey)
-  const subFlowRunTaskRunSubscription = useSubscription(taskRunsApi.getTaskRuns, [subFlowRunTaskRunFilter.value])
+  const subFlowRunTaskRunSubscription = useUnionFiltersSubscription(taskRunsApi.getTaskRuns, [subFlowRunTaskRunFilter.value])
   const subFlowRunTaskRuns = computed(()=> subFlowRunTaskRunSubscription.response ?? [])
-  const subFlowRunIds = computed(() => {
-    return subFlowRunTaskRuns.value.map((run: TaskRun) => run.state?.stateDetails?.childFlowRunId)
-  })
+  const subFlowRunIds = computed(() => subFlowRunTaskRuns.value.map((run: TaskRun) => run.state!.stateDetails!.childFlowRunId!))
 
   const subFlowRunsFilter = computed<UnionFilters>(() => {
     const subFlowFilter: UnionFilters = {
       sort: sort.value,
       flow_runs: {
         id: {
-          any_: subFlowRunIds.value as string[],
+          any_: subFlowRunIds.value,
         },
       },
     }
@@ -99,17 +97,19 @@
 
 
   const flowRunsApi = inject(flowRunsApiKey)
-  const flowRunsSubscription = useSubscription(flowRunsApi.getFlowRuns, [subFlowRunsFilter])
+  const flowRunsSubscription = useUnionFiltersSubscription(flowRunsApi.getFlowRuns, [subFlowRunsFilter])
 
   const flowRuns = computed<FlowRun[]>(() => flowRunsSubscription.response ?? [])
   const empty = computed(() => flowRunsSubscription.executed && flowRuns.value.length === 0)
 
   function loadMoreSubFlowRuns(): void {
-    const unwatch = watch(subFlowRunIds, () => {
-      // flowRunsSubscription.loadMore()
-      unwatch()
+    const unwatch = watch(subFlowRunIds, (newValue, oldValue) => {
+      if (newValue.length > oldValue.length) {
+        flowRunsSubscription.loadMore()
+        unwatch()
+      }
     })
-    // subFlowRunTaskRunSubscription.loadMore()
+    subFlowRunTaskRunSubscription.loadMore()
   }
 
   function clear(): void {
