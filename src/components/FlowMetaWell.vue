@@ -1,10 +1,10 @@
 <template>
   <div class="flow-meta-well">
-    <p-key-value label="Flow ID" :value="flow.id" />
+    <p-key-value label="Flow ID" :value="flow.id" :alternate="alternate" />
 
-    <p-key-value label="Created" :value="formatDateTimeNumeric(flow.created)" />
+    <p-key-value label="Created" :value="formatDateTimeNumeric(flow.created)" :alternate="alternate" />
 
-    <p-key-value label="Tags">
+    <p-key-value label="Tags" :alternate="alternate">
       <template #value>
         <p-tag v-for="tag in flow.tags" :key="tag" class="flow-meta-well__tags">
           {{ tag }}
@@ -20,6 +20,7 @@
 
   defineProps<{
     flow: Flow,
+    alternate?: boolean,
   }>()
 </script>
 
