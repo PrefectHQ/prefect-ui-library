@@ -28,6 +28,7 @@
 
 <script lang="ts" setup>
   import { PEmptyState, PButton, PIcon } from '@prefecthq/prefect-design'
+  import { RouterLink } from 'vue-router'
   import { workQueueCreateRouteKey } from '@/router'
 
   import { inject } from '@/utilities'

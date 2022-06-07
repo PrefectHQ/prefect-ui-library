@@ -9,6 +9,7 @@
 <script lang="ts" setup>
   import { useSubscription } from '@prefecthq/vue-compositions'
   import { computed } from 'vue'
+  import { RouterLink } from 'vue-router'
   import { deploymentRouteKey } from '@/router/routes'
   import { deploymentsApiKey } from '@/services/DeploymentsApi'
   import { inject } from '@/utilities/inject'
