@@ -4,7 +4,6 @@
       <p-icon-button-menu>
         <template #default>
           <copy-overflow-menu-item label="Copy ID" :item="flowRun.id" />
-          <p-overflow-menu-item label="Set State" />
           <p-overflow-menu-item label="Delete" @click="open" />
         </template>
       </p-icon-button-menu>
