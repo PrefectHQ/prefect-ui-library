@@ -4,7 +4,7 @@ export const colorModes = [
   'deuteranomaly',
   'protaponia',
   'protanomaly',
-  '',
+  'tritanomaly',
   'tritanopia',
 ] as const
 
