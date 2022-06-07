@@ -9,7 +9,18 @@
     </p-label>
 
     <p-label label="Status">
-      <WorkQueueToggle v-model:workQueue="internalValue" />
+      <p-toggle v-model="isActive">
+        <template #append>
+          <div>
+            <template v-if="isActive">
+              Active
+            </template>
+            <template v-else>
+              Paused
+            </template>
+          </div>
+        </template>
+      </p-toggle>
     </p-label>
 
     <p-label label="Flow Run Concurrency (Optional)">
@@ -35,12 +46,11 @@
 </template>
 
 <script lang="ts" setup>
-  import { PLabel, PTextInput, PNumberInput, PTagsInput, PForm } from '@prefecthq/prefect-design'
+  import { PLabel, PTextInput, PNumberInput, PTagsInput, PToggle, PForm } from '@prefecthq/prefect-design'
   import { useField, useForm } from 'vee-validate'
-  import { reactive } from 'vue'
+  import { computed, reactive, ref, watchEffect } from 'vue'
   import FlowRunnerCheckboxes from './FlowRunnerCheckboxes.vue'
   import DeploymentCombobox from '@/components/DeploymentCombobox.vue'
-  import WorkQueueToggle from '@/components/WorkQueueToggle.vue'
   import { IWorkQueueRequest, WorkQueue, WorkQueueFormValues } from '@/models'
   import { isRequired, withMessage } from '@/services/validate'
   import { FlowRunnerType } from '@/types/FlowRunnerType'
@@ -56,8 +66,19 @@
     name: [withMessage(isRequired, 'Queue name is Required')],
   }
 
+  const paused = ref(props.workQueue?.isPaused)
+  const isActive = computed({
+    get() {
+      return !paused.value
+    },
+    set() {
+      paused.value = !paused.value
+    },
+  })
+
   const { value: name, meta: nameState } = useField<string>('name', rules.name)
   const { value: description } = useField<string|null>('description')
+  const { value: isPaused } = useField<boolean | undefined>('isPaused')
   const { value: concurrencyLimit } = useField<number|null>('concurrencyLimit')
   const { value: tags } = useField<string[]>('filter.tags')
   const { value: deployments } = useField<string[]>('filter.deploymentIds')
@@ -75,6 +96,10 @@
   function cancel(): void {
     emit('cancel')
   }
+
+  watchEffect(() => {
+    isPaused.value = paused.value
+  })
 </script>
 
 <style>
