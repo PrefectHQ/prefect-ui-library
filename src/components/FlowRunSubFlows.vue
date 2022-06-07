@@ -79,7 +79,7 @@
   })
 
   const taskRunsApi = inject(taskRunsApiKey)
-  const subFlowRunTaskRunSubscription = useUnionFiltersSubscription(taskRunsApi.getTaskRuns, [subFlowRunTaskRunFilter.value])
+  const subFlowRunTaskRunSubscription = useUnionFiltersSubscription(taskRunsApi.getTaskRuns, [subFlowRunTaskRunFilter])
   const subFlowRunTaskRuns = computed(()=> subFlowRunTaskRunSubscription.response ?? [])
   const subFlowRunIds = computed(() => subFlowRunTaskRuns.value.map((run: TaskRun) => run.state!.stateDetails!.childFlowRunId!))
 
@@ -94,7 +94,6 @@
     }
     return subFlowFilter
   })
-
 
   const flowRunsApi = inject(flowRunsApiKey)
   const flowRunsSubscription = useUnionFiltersSubscription(flowRunsApi.getFlowRuns, [subFlowRunsFilter])
