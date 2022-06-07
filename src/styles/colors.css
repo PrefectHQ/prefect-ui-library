@@ -75,6 +75,74 @@ body {
   --state-cancelled-900: #141414;
 }
 
+.color-mode-achromatopsia {
+  --state-completed-50:  #F5FDF8;
+  --state-completed-100: #EAFBF1;
+  --state-completed-200: #D5F6E2;
+  --state-completed-300: #C0F1D4;
+  --state-completed-400: #ABEDC5;
+  --state-completed-500: #70E09C;
+  --state-completed-600: #35D474;
+  --state-completed-700: #22A054;
+  --state-completed-800: #166535;
+  --state-completed-900: #092A16;
+
+  --state-failed-50:  #FF6666;
+  --state-failed-100: #FF4747;
+  --state-failed-200: #FF0A0A;
+  --state-failed-300: #CC0000;
+  --state-failed-400: #8E0000;
+  --state-failed-500: #510000;
+  --state-failed-600: #140000;
+  --state-failed-700: #000000;
+  --state-failed-800: #000000;
+  --state-failed-900: #000000;
+
+  --state-running-50:  #F8FAFF;
+  --state-running-100: #D8E5FD;
+  --state-running-200: #9ABAF9;
+  --state-running-300: #5B8FF6;
+  --state-running-400: #1C64F2;
+  --state-running-500: #0B48C1;
+  --state-running-600: #093896;
+  --state-running-700: #06286A;
+  --state-running-800: #04173F;
+  --state-running-900: #010713;
+  
+  --state-pending-50: #FFFFFF;
+  --state-pending-100: #F8F7F8;
+  --state-pending-200: #E4E1E5;
+  --state-pending-300: #D0CBD2;
+  --state-pending-400: #BDB5C0;
+  --state-pending-500: #A99FAD;
+  --state-pending-600: #8E8093;
+  --state-pending-700: #726576;
+  --state-pending-800: #554B58;
+  --state-pending-900: #38313A;
+
+  --state-scheduled-50:  #FFFBF0;
+  --state-scheduled-100: #FEF4D7;
+  --state-scheduled-200: #FDE7A5;
+  --state-scheduled-300: #FDDA72;
+  --state-scheduled-400: #FCCD40;
+  --state-scheduled-500: #FBC00E;
+  --state-scheduled-600: #CD9B03;
+  --state-scheduled-700: #967202;
+  --state-scheduled-800: #5F4802;
+  --state-scheduled-900: #281E01;
+
+  --state-cancelled-50:  #F7F7F7;
+  --state-cancelled-100: #E5E5E5;
+  --state-cancelled-200: #C1C1C1;
+  --state-cancelled-300: #9E9E9E;
+  --state-cancelled-400: #7A7A7A;
+  --state-cancelled-500: #636363;
+  --state-cancelled-600: #4C4C4C;
+  --state-cancelled-700: #353535;
+  --state-cancelled-800: #1E1E1E;
+  --state-cancelled-900: #070707;
+}
+
 .color-mode-protaponia {
   --state-completed-50: #E9FFF9;
   --state-completed-100: #D2FFF0;
