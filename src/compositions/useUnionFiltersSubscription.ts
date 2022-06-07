@@ -44,7 +44,7 @@ export function useUnionFiltersSubscription<T extends UnionFiltersAction>(...[ac
   }
 
   const isSubscribed = (): boolean => {
-    return subscriptions.some(subscription => subscription.isSubscribed())
+    return subscriptions.every(subscription => subscription.isSubscribed())
   }
 
   const loadMore = (): void => {
