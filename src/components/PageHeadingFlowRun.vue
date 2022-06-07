@@ -45,7 +45,8 @@
 
   const { showModal, open } = useShowModal()
 
-  const flowSubscription = useSubscription(flowsApi.getFlow, [props.flowRun.flowId])
+  const flowRunId = computed(() => props.flowRun.flowId)
+  const flowSubscription = useSubscription(flowsApi.getFlow, [flowRunId])
   const flowName = computed(() => flowSubscription.response?.name ?? '')
 
   // It doesn't seem like we should need to coalesce here but
