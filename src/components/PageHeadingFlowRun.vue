@@ -4,7 +4,6 @@
       <p-icon-button-menu>
         <template #default>
           <copy-overflow-menu-item label="Copy ID" :item="flowRun.id" />
-          <p-overflow-menu-item label="Set State" />
           <p-overflow-menu-item label="Delete" @click="open" />
         </template>
       </p-icon-button-menu>
@@ -45,7 +44,8 @@
 
   const { showModal, open } = useShowModal()
 
-  const flowSubscription = useSubscription(flowsApi.getFlow, [props.flowRun.flowId])
+  const flowRunId = computed(() => props.flowRun.flowId)
+  const flowSubscription = useSubscription(flowsApi.getFlow, [flowRunId])
   const flowName = computed(() => flowSubscription.response?.name ?? '')
 
   // It doesn't seem like we should need to coalesce here but
