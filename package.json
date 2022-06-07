@@ -41,7 +41,7 @@
         "tsc-alias": "1.6.9",
         "typescript": "^4.7.3",
         "vite": "2.9.10",
-        "vue-tsc": "0.35.2"
+        "vue-tsc": "0.37.2"
     },
     "peerDependencies": {
         "@prefecthq/prefect-design": "^1.0.0",

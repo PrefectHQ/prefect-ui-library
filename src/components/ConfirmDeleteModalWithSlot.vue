@@ -5,6 +5,7 @@
 </template>
 
 <script lang="ts" setup>
+  import ConfirmDeleteModal from './ConfirmDeleteModal.vue'
   import { useShowModal } from '@/compositions/useShowModal'
 
   const { showModal, isOpen, open, close, toggle } = useShowModal()

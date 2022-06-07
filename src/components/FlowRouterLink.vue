@@ -11,7 +11,7 @@
 <script lang="ts" setup>
   import { useSubscription } from '@prefecthq/vue-compositions'
   import { computed } from 'vue'
-  import { useRoute, useRouter } from 'vue-router'
+  import { RouterLink, useRoute, useRouter } from 'vue-router'
   import { flowRouteKey } from '@/router/routes'
   import { flowsApiKey } from '@/services'
   import { inject } from '@/utilities/inject'

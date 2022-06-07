@@ -9,6 +9,7 @@
 </template>
 
 <script lang="ts" setup>
+  import { RouterLink } from 'vue-router'
   import PageHeading from '@/components/PageHeading.vue'
   import { workQueueCreateRouteKey } from '@/router/routes'
   import { inject } from '@/utilities'

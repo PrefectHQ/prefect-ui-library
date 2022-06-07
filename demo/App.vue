@@ -18,6 +18,7 @@
 <script lang="ts" setup>
   import { media } from '@prefecthq/prefect-design'
   import { computed, provide, ref, watchEffect } from 'vue'
+  import { RouterView } from 'vue-router'
   import AppSidebar from './components/AppSidebar.vue'
   import { flowRunsApi, logsApi, taskRunsApi, flowsApi, deploymentsApi, workQueueApi } from './services'
   import { deploymentRouteKey, flowRouteKey, flowRunsRouteKey, flowsRouteKey, deploymentsRouteKey, workQueuesRouteKey, settingsRouteKey, workQueueRouteKey, Route, flowRunRouteKey, workQueueCreateRouteKey, editQueueRouteKey } from '@/router'
