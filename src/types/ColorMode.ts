@@ -1,5 +1,6 @@
 export const colorModes = [
   'default',
+  'deuteranopia',
   'protaponia',
   'protanomaly',
 ] as const
