@@ -1,5 +1,6 @@
 <template>
   <p-layout-default>
+    <ColorModesSection />
     <PageHeadingsSection />
     <MarketingBannerSection />
     <StatesSection />
@@ -15,7 +16,6 @@
     <ComboboxesSection />
     <WorkQueueFormSection />
     <RunButtonSection />
-    <ColorModesSection />
   </p-layout-default>
 </template>
 
