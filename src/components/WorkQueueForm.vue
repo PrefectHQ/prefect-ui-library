@@ -90,7 +90,6 @@
   }>()
 
   const submit = handleSubmit(workQueueData => {
-    console.log(workQueueData.getWorkQueueRequest())
     emit('submit', workQueueData.getWorkQueueRequest())
   })
   function cancel(): void {
