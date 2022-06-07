@@ -17,7 +17,5 @@ export function isColorMode(value: unknown): value is ColorMode {
 export function applyColorModeClass(mode: ColorMode): void {
   colorModes.forEach(mode => document.body.classList.remove(getColorModeClass(mode)))
 
-  if (mode !== defaultColorMode) {
-    document.body.classList.add(getColorModeClass(mode))
-  }
+  document.body.classList.add(getColorModeClass(mode))
 }
