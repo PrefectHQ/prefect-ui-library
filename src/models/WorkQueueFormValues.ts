@@ -22,7 +22,7 @@ export class WorkQueueFormValues {
     this.isPaused = workQueue?.isPaused ?? false
     this.filter = workQueue?.filter ?? {
       tags: [],
-      flowRunnerTypes: [],
+      flowRunnerTypes: ['docker', 'universal', 'kubernetes', 'subprocess'],
       deploymentIds: [],
     }
   }
