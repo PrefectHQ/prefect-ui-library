@@ -346,3 +346,71 @@ body {
   --state-cancelled-800: #1E1E1E;
   --state-cancelled-900: #141414;
 }
+
+.color-mode-tritanopia {
+  --state-completed-50:  #FBF0FF;
+  --state-completed-100: #F1D6FF;
+  --state-completed-200: #D1A3FF;
+  --state-completed-300: #A070FF;
+  --state-completed-400: #5D3DFF;
+  --state-completed-500: #0A0AFF;
+  --state-completed-600: #0023D1;
+  --state-completed-700: #003399;
+  --state-completed-800: #003061;
+  --state-completed-900: #001B29;
+
+  --state-failed-50:  #FFFEFC;
+  --state-failed-100: #FFEFE0;
+  --state-failed-200: #FFD2A8;
+  --state-failed-300: #FFB570;
+  --state-failed-400: #FF9838;
+  --state-failed-500: #FF7B00;
+  --state-failed-600: #C25D00;
+  --state-failed-700: #854000;
+  --state-failed-800: #472200;
+  --state-failed-900: #0A0500;
+
+  --state-running-50:  #F6FEFD;
+  --state-running-100: #ECFEFA;
+  --state-running-200: #D9FCF5;
+  --state-running-300: #C6FBF1;
+  --state-running-400: #B3F9EC;
+  --state-running-500: #A0F8E7;
+  --state-running-600: #4FF2D3;
+  --state-running-700: #10DBB3;
+  --state-running-800: #0A8A71;
+  --state-running-900: #04392F;
+
+  --state-pending-50:  #FFFFFF;
+  --state-pending-100: #FBFBFD;
+  --state-pending-200: #F0F2F9;
+  --state-pending-300: #C1CBE6;
+  --state-pending-400: #91A9D3;
+  --state-pending-500: #628AC0;
+  --state-pending-600: #406FA0;
+  --state-pending-700: #2D5271;
+  --state-pending-800: #1A3241;
+  --state-pending-900: #070E12;
+
+  --state-scheduled-50:  #FFF2EF;
+  --state-scheduled-100: #FFEDE7;
+  --state-scheduled-200: #FFE5D8;
+  --state-scheduled-300: #FFDEC8;
+  --state-scheduled-400: #FFDAB9;
+  --state-scheduled-500: #FFBB6D;
+  --state-scheduled-600: #FFA720;
+  --state-scheduled-700: #D38D00;
+  --state-scheduled-800: #866300;
+  --state-scheduled-900: #3A2E00;
+
+  --state-cancelled-50: #DEDEDE;
+  --state-cancelled-100: #CCCCCC;
+  --state-cancelled-200: #A8A8A8;
+  --state-cancelled-300: #848484;
+  --state-cancelled-400: #616161;
+  --state-cancelled-500: #3D3D3D;
+  --state-cancelled-600: #333333;
+  --state-cancelled-700: #292929;
+  --state-cancelled-800: #1E1E1E;
+  --state-cancelled-900: #141414;
+}

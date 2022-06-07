@@ -4,6 +4,8 @@ export const colorModes = [
   'deuteranomaly',
   'protaponia',
   'protanomaly',
+  '',
+  'tritanopia',
 ] as const
 
 export type ColorMode = typeof colorModes[number]
