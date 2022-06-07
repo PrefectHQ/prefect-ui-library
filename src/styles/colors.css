@@ -75,15 +75,6 @@ body {
   --state-cancelled-900: #141414;
 }
 
-.color-mode-foo {
-  --state-completed-500: green;
-  --state-failed-500: red;
-  --state-running-500: blue;
-  --state-pending-500: black;
-  --state-scheduled-500: yellow;
-  --state-cancelled-500: grey;
-}
-
 .color-mode-protaponia {
   --state-completed-50: #E9FFF9;
   --state-completed-100: #D2FFF0;
@@ -150,4 +141,72 @@ body {
   --state-cancelled-700: #1E1E1E;
   --state-cancelled-800: #0F0F0F;
   --state-cancelled-900: #000000;
+}
+
+.color-mode-protanomaly {
+  --state-completed-50: #DEF8F0;
+  --state-completed-100: #C9F4E6;
+  --state-completed-200: #9FEBCD;
+  --state-completed-300: #75E2AF;
+  --state-completed-400: #4BD98D;
+  --state-completed-500: #2AC769;
+  --state-completed-600: #219D4B;
+  --state-completed-700: #187330;
+  --state-completed-800: #0F491B;
+  --state-completed-900: #061F0A;
+
+  --state-failed-50: #FFF8EA;
+  --state-failed-100: #FEEFD9;
+  --state-failed-200: #FDD6B6;
+  --state-failed-300: #FDB393;
+  --state-failed-400: #FC8670;
+  --state-failed-500: #FB4E4D;
+  --state-failed-600: #FA1133;
+  --state-failed-700: #C9053E;
+  --state-failed-800: #8D0341;
+  --state-failed-900: #510231;
+
+  --state-running-50: #E9F6FF;
+  --state-running-100: #D2EBFF;
+  --state-running-200: #A4D5FF;
+  --state-running-300: #76BDFF;
+  --state-running-400: #48A2FF;
+  --state-running-500: #1A85FF;
+  --state-running-600: #005FD7;
+  --state-running-700: #003E94;
+  --state-running-800: #002052;
+  --state-running-900: #000610;
+
+  --state-pending-50: #FFFFFF;
+  --state-pending-100: #F8F7F8;
+  --state-pending-200: #E4E1E5;
+  --state-pending-300: #D0CBD2;
+  --state-pending-400: #BDB5C0;
+  --state-pending-500: #A99FAD;
+  --state-pending-600: #8E8093;
+  --state-pending-700: #726576;
+  --state-pending-800: #554B58;
+  --state-pending-900: #38313A;
+
+  --state-scheduled-50: #FFFFFC;
+  --state-scheduled-100: #FEFFE0;
+  --state-scheduled-200: #FFFEA8;
+  --state-scheduled-300: #FFF870;
+  --state-scheduled-400: #FFED38;
+  --state-scheduled-500: #FFDD00;
+  --state-scheduled-600: #C7A400;
+  --state-scheduled-700: #8F7000;
+  --state-scheduled-800: #574000;
+  --state-scheduled-900: #1F1500;
+
+  --state-cancelled-50: #DEDEDE;
+  --state-cancelled-100: #CCCCCC;
+  --state-cancelled-200: #A8A8A8;
+  --state-cancelled-300: #848484;
+  --state-cancelled-400: #616161;
+  --state-cancelled-500: #3D3D3D;
+  --state-cancelled-600: #333333;
+  --state-cancelled-700: #292929;
+  --state-cancelled-800: #1E1E1E;
+  --state-cancelled-900: #141414;
 }
