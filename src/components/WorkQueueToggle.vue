@@ -4,6 +4,7 @@
 
 <script lang="ts" setup>
   import { PToggle, showToast } from '@prefecthq/prefect-design'
+  import { useSubscription } from '@prefecthq/vue-compositions'
   import { computed, ref } from 'vue'
   import { WorkQueue } from '@/models'
   import { workQueuesApiKey } from '@/services/WorkQueuesApi'
@@ -14,6 +15,8 @@
   }>()
 
   const workQueuesApi = inject(workQueuesApiKey)
+  const workQueueSubscription = useSubscription(workQueuesApi.getWorkQueue, [props.workQueue.id])
+  const workQueue = computed(()=> workQueueSubscription.response)
 
   const emit = defineEmits<{
     (event: 'update'): void,
@@ -21,7 +24,7 @@
 
   const internalValue = computed({
     get() {
-      return !props.workQueue.isPaused
+      return !workQueue.value?.isPaused
     },
     set(value: boolean) {
       toggleWorkQueue(value)
@@ -36,12 +39,13 @@
     try {
       if (value) {
         await workQueuesApi.resumeWorkQueue(props.workQueue.id)
+        workQueueSubscription.refresh()
         showToast(`${props.workQueue.name} active`, 'success', undefined, 3000)
       } else {
         await workQueuesApi.pauseWorkQueue(props.workQueue.id)
+        workQueueSubscription.refresh()
         showToast(`${props.workQueue.name} paused`, 'error', undefined, 3000)
       }
-
       emit('update')
     } catch (error) {
       showToast(`${error}`, 'error', undefined, 3000)
