@@ -1,6 +1,6 @@
 export const colorModes = [
   'default',
-  'foo',
+  'protaponia',
 ] as const
 
 export type ColorMode = typeof colorModes[number]
