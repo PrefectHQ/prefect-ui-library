@@ -72,3 +72,12 @@ body {
   --log-level-error: theme('colors.rose.500');
   --log-level-critical: theme('colors.rose.700');
 }
+
+.color-mode-foo {
+  --state-completed-500: green;
+  --state-failed-500: red;
+  --state-running-500: blue;
+  --state-pending-500: black;
+  --state-scheduled-500: yellow;
+  --state-cancelled-500: grey;
+}

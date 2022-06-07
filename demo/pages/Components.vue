@@ -15,11 +15,13 @@
     <ComboboxesSection />
     <WorkQueueFormSection />
     <RunButtonSection />
+    <ColorModesSection />
   </p-layout-default>
 </template>
 
 <script lang="ts" setup>
   import { PLayoutDefault } from '@prefecthq/prefect-design'
+  import ColorModesSection from '../sections/ColorModesSection.vue'
   import ComboboxesSection from '../sections/ComboboxesSection.vue'
   import ContextSidebarSection from '../sections/ContextSidebarSection.vue'
   import EmptyStateSection from '../sections/EmptyStateSection.vue'
