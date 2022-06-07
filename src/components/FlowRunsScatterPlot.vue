@@ -3,7 +3,7 @@
     <div class="flow-runs-scatter-plot-plot__duration">
       Duration
     </div>
-    <ScatterPlot :items="items" :dot-diameter="16">
+    <ScatterPlot :items="items" :start-date="startDate" :end-date="endDate" :dot-diameter="16">
       <template #default="{ item }">
         <FlowRunPopOver :flow-run-id="item.id" />
       </template>
@@ -20,6 +20,8 @@
 
   const props = defineProps<{
     history: UiFlowRunHistory[],
+    startDate?: Date,
+    endDate?: Date,
   }>()
 
   const items = computed(() => mapper.map('UiFlowRunHistory', props.history, 'ScatterPlotItem'))
