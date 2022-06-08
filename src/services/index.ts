@@ -1,6 +1,5 @@
 export * from './AdminApi'
 export * from './Api'
-export * from './ColorMode'
 export * from './DeploymentsApi'
 export * from './FlowRunsApi'
 export * from './FlowsApi'

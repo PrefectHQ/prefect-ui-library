@@ -1,4 +1,5 @@
 export * from './arrays'
+export * from './colorMode'
 export * from './copy'
 export * from './dates'
 export * from './delete'

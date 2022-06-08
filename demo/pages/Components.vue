@@ -1,5 +1,6 @@
 <template>
   <p-layout-default>
+    <ColorModesSection />
     <PageHeadingsSection />
     <MarketingBannerSection />
     <StatesSection />
@@ -20,6 +21,7 @@
 
 <script lang="ts" setup>
   import { PLayoutDefault } from '@prefecthq/prefect-design'
+  import ColorModesSection from '../sections/ColorModesSection.vue'
   import ComboboxesSection from '../sections/ComboboxesSection.vue'
   import ContextSidebarSection from '../sections/ContextSidebarSection.vue'
   import EmptyStateSection from '../sections/EmptyStateSection.vue'
