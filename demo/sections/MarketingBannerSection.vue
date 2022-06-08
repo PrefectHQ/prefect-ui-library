@@ -1,6 +1,7 @@
 <template>
   <DemoSection heading="Marketing Banner">
     <DemoSubSection heading="Default" class="mt-auto">
+      <CodeBanner :command="workspaceCliCommand" title="Workspace is ready to go!" subtitle="Sync flows into your workspace with this CLI command." />
       <MarketingBanner title="Orchestrate Happiness." class="mb-3" />
       <MarketingBanner title="Ready to upgrade?" subtitle="Annual plans, more workspaces, more collaborators, enterprise support." class="mb-3">
         <template #actions>
@@ -40,5 +41,8 @@
 <script lang="ts" setup>
   import DemoSection from '../components/DemoSection.vue'
   import DemoSubSection from '../components/DemoSubSection.vue'
+  import CodeBanner from '@/components/CodeBanner.vue'
   import MarketingBanner from '@/components/MarketingBanner.vue'
+
+  const workspaceCliCommand = 'prefect config set PREFECT_API_URL="..."'
 </script>
