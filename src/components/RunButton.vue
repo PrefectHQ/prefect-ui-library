@@ -1,5 +1,5 @@
 <template>
-  <p-button class="run-button" inset @click="run(deployment)">
+  <p-button class="run-button" inset :loading="loading" @click="run(deployment)">
     Run
     <p-icon class="run-button__run-icon" icon="PlayIcon" solid />
   </p-button>
@@ -7,6 +7,7 @@
 
 <script lang="ts" setup>
   import  { PButton, showToast } from '@prefecthq/prefect-design'
+  import { ref } from 'vue'
   import { Deployment } from '@/models'
   import { deploymentsApiKey } from '@/services/DeploymentsApi'
   import { inject } from '@/utilities'
@@ -16,8 +17,10 @@
   }>()
 
   const deploymentsApi = inject(deploymentsApiKey)
+  const loading = ref(false)
 
   const run = async (deployment: Deployment): Promise<void> => {
+    loading.value = true
     try {
       await deploymentsApi.createDeploymentFlowRun(deployment.id, {
         state: {
@@ -29,6 +32,8 @@
       showToast('Flow run scheduled', 'success')
     } catch (errorMessage) {
       showToast('Failed to schedule flow run', 'error')
+    } finally {
+      loading.value = false
     }
   }
 </script>
