@@ -23,7 +23,7 @@
       </p-toggle>
     </p-label>
 
-    <p-label label="Flow Run Concurrency (Optional)">
+    <p-label label="Flow Run Concurrency">
       <p-number-input v-model="concurrencyLimit" placeholder="Unlimited" />
     </p-label>
 
@@ -63,7 +63,7 @@
   const { handleSubmit, isSubmitting, errors } = useForm({ initialValues: internalValue })
 
   const rules = {
-    name: [withMessage(isRequired, 'Queue name is Required')],
+    name: [withMessage(isRequired, 'Name is required')],
   }
 
   const paused = ref(props.workQueue?.isPaused)
