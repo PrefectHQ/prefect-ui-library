@@ -13,6 +13,7 @@ export type Intervals = {
 }
 export interface Schedule {
   toString: () => string,
+  toProseString: () => string,
 }
 
 export interface IRRuleSchedule extends Schedule {

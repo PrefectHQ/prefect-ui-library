@@ -14,7 +14,7 @@
       </template>
 
       <template #schedule="{ row }">
-        {{ formatSchedule(row.schedule) }}
+        {{ row.schedule }}
       </template>
 
       <template #tags="{ row }">
@@ -59,7 +59,6 @@
   import { Deployment } from '@/models'
   import { deploymentRouteKey } from '@/router'
   import { inject } from '@/utilities'
-  import { formatSchedule } from '@/utilities/schedules'
 
   const deploymentRoute = inject(deploymentRouteKey)
 
@@ -104,7 +103,7 @@
   })
 
   function filterDeployment({ name, tags, schedule }: Deployment): boolean {
-    return `${name} ${formatSchedule(schedule)} ${tags?.join(' ')}`.toLowerCase().includes(searchTerm.value.toLowerCase())
+    return `${name} ${schedule?.toProseString()} ${tags?.join(' ')}`.toLowerCase().includes(searchTerm.value.toLowerCase())
   }
 
   function clear(): void {
