@@ -18,17 +18,31 @@
 
       <section class="mt-4 flex flex-col gap-4">
         <p-key-value label="Raw" :value="intervalSchedule.interval" />
-        <p-key-value label="Display" :value="intervalSchedule" />
+        <p-key-value label="String" :value="intervalSchedule.toString()" />
+        <p-key-value label="Prose" :value="intervalSchedule.toProseString()" />
       </section>
     </demosubsection>
   </DemoSection>
 </template>
+
+<script lang="ts">
+  declare global {
+    interface Intl {
+      supportedValuesOf: (key: string) => [],
+    }
+  }
+
+  if (Intl && !('supportedValuesOf' in Intl)) {
+    Intl.supportedValuesOf = (key: string) => []
+  }
+</script>
 
 <script lang="ts" setup>
   import { ref, computed } from 'vue'
   import DemoSection from '../components/DemoSection.vue'
   import DemoSubSection from '../components/DemoSubSection.vue'
   import { IntervalSchedule } from '@/models'
+
 
   const interval = ref(31540000)
   const intervalTimezone = ref(null)
