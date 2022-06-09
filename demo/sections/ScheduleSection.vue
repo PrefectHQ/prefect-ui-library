@@ -6,12 +6,12 @@
           <p-number-input v-model="interval" />
         </p-label>
 
-        <p-label label="Timezone">
-          <p-combobox v-model="intervalTimezone" :options="timeZoneOptions" />
-        </p-label>
-
         <p-label label="Anchor Date">
           <p-date-input v-model="intervalAnchorDate" />
+        </p-label>
+
+        <p-label label="Timezone">
+          <p-combobox v-model="intervalTimezone" :options="timeZoneOptions" />
         </p-label>
       </div>
 
@@ -21,7 +21,32 @@
         <p-key-value label="String" :value="intervalSchedule.toString()" />
         <p-key-value label="Prose" :value="intervalSchedule.toProseString()" />
       </section>
-    </demosubsection>
+    </DemoSubSection>
+
+    <p-divider class="my-8" />
+
+    <DemoSubSection heading="Cron">
+      <div class="grid grid-cols-3 gap-2">
+        <p-label label="Cron string">
+          <p-text-input v-model="cron" />
+        </p-label>
+
+        <p-label label="Timezone">
+          <p-combobox v-model="cronTimezone" :options="timeZoneOptions" />
+        </p-label>
+      </div>
+
+      <p-label label="Day Or" class="mt-2">
+        <p-toggle v-model="cronDayOr" />
+      </p-label>
+
+
+      <section class="mt-4 flex flex-col gap-4">
+        <p-key-value label="Raw" :value="cronSchedule.cron" />
+        <p-key-value label="String" :value="cronSchedule.toString()" />
+        <p-key-value label="Prose" :value="cronSchedule.toProseString()" />
+      </section>
+    </DemoSubSection>
   </DemoSection>
 </template>
 
@@ -41,12 +66,7 @@
   import { ref, computed } from 'vue'
   import DemoSection from '../components/DemoSection.vue'
   import DemoSubSection from '../components/DemoSubSection.vue'
-  import { IntervalSchedule } from '@/models'
-
-
-  const interval = ref(31540000)
-  const intervalTimezone = ref(null)
-  const intervalAnchorDate = ref(new Date())
+  import { CronSchedule, IntervalSchedule } from '@/models'
 
   // TODO: Doesn't work on Safari
   const timeZoneOptions = [
@@ -55,7 +75,21 @@
     }),
   ]
 
+
+  const interval = ref(31540000)
+  const intervalTimezone = ref(null)
+  const intervalAnchorDate = ref(new Date())
+
   const intervalSchedule = computed(() => {
     return new IntervalSchedule({ interval: interval.value, timezone: intervalTimezone.value, anchorDate: intervalAnchorDate.value })
+  })
+
+
+  const cron = ref('* * * * * *')
+  const cronTimezone = ref(null)
+  const cronDayOr = ref(false)
+
+  const cronSchedule = computed(() => {
+    return new CronSchedule({ cron: cron.value, timezone: cronTimezone.value, dayOr: cronDayOr.value })
   })
 </script>

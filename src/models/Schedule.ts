@@ -16,28 +16,43 @@ export interface Schedule {
   toProseString: () => string,
 }
 
-export interface IRRuleSchedule extends Schedule {
+export interface IRRuleScheduleRaw {
   timezone: string | null,
   rrule: string,
 }
 
-export interface ICronSchedule extends Schedule {
+export type IRRuleSchedule = IRRuleScheduleRaw & Schedule
+
+export interface ICronScheduleRaw {
   timezone: string | null,
   cron: string,
   dayOr: boolean | null,
 }
 
-export interface IIntervalSchedule extends Schedule {
-  timezone: string | null,
+export type ICronSchedule = ICronScheduleRaw & Schedule
+
+
+export interface IIntervalScheduleRaw {
   interval: number,
+  timezone: string | null,
   anchorDate: Date | null,
 }
+
+export type IIntervalSchedule = { getIntervals?: () => Intervals } & IIntervalScheduleRaw & Schedule
 
 export class RRuleSchedule implements IRRuleSchedule {
   public timezone: string | null
   public rrule: string
 
-  public constructor(schedule: IRRuleSchedule) {
+  public toString(): string {
+    return ''
+  }
+
+  public toProseString(): string {
+    return ''
+  }
+
+  public constructor(schedule: IRRuleScheduleRaw) {
     this.timezone = schedule.timezone
     this.rrule = schedule.rrule
   }
@@ -48,7 +63,15 @@ export class CronSchedule implements ICronSchedule {
   public cron: string
   public dayOr: boolean | null
 
-  public constructor(schedule: ICronSchedule) {
+  public toString(): string {
+    return ''
+  }
+
+  public toProseString(): string {
+    return ''
+  }
+
+  public constructor(schedule: ICronScheduleRaw) {
     this.timezone = schedule.timezone
     this.cron = schedule.cron
     this.dayOr = schedule.dayOr
@@ -119,7 +142,7 @@ export class IntervalSchedule implements IIntervalSchedule {
     return strings.reverse().join(', ')
   }
 
-  public constructor(schedule: IIntervalSchedule) {
+  public constructor(schedule: IIntervalScheduleRaw) {
     this.timezone = schedule.timezone
     this.interval = schedule.interval
     this.anchorDate = schedule.anchorDate
