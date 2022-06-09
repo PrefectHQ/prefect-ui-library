@@ -59,8 +59,10 @@
   gap-6
   justify-center
   items-center
-  md:flex-row;
-  background: var(--state-running-600) url(/constellations.svg) center;
+  md:flex-row
+  bg-prefect-600;
+  background-image: url(/constellations.svg);
+  background-position: center;
   background-size: 350px, contain;
 }
 
