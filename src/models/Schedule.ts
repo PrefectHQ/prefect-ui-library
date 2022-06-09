@@ -1,5 +1,6 @@
 /* eslint-disable max-classes-per-file */
 import { formatDate, formatTimeNumeric, toPluralString } from '@prefecthq/prefect-design'
+import { toString as cronToString } from 'cronstrue'
 import { minutesInHour, secondsInMinute } from 'date-fns'
 import { floor } from '@/utilities/math'
 
@@ -64,11 +65,25 @@ export class CronSchedule implements ICronSchedule {
   public dayOr: boolean | null
 
   public toString(): string {
-    return ''
+    try {
+      return cronToString(this.cron)
+    } catch {
+      return 'Invalid'
+    }
   }
 
   public toProseString(): string {
-    return ''
+    const str = this.toString()
+
+    if (str == 'Invalid') {
+      return str
+    }
+
+    if (str == '') {
+      return 'None'
+    }
+
+    return `${str} (${this.timezone ?? 'UTC'})`
   }
 
   public constructor(schedule: ICronScheduleRaw) {
@@ -117,7 +132,7 @@ export class IntervalSchedule implements IIntervalSchedule {
     str = `Every ${str}`
 
     if (this.anchorDate) {
-      str += ` from ${formatDate(this.anchorDate)} at ${formatTimeNumeric(this.anchorDate)} ${this.timezone ?? 'UTC'}`
+      str += ` from ${formatDate(this.anchorDate)} at ${formatTimeNumeric(this.anchorDate)} (${this.timezone ?? 'UTC'})`
     }
 
     return str
