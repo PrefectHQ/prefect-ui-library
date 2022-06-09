@@ -104,14 +104,6 @@ export function getAppPermissions(
   }
 }
 
-export function byPassPermissions(value: boolean): Can {
-  return getAppPermissions(
-    () => value,
-    () => value,
-    () => value,
-  )
-}
-
 export type Can = AppPermissions & AppFeatureFlags
 
 export const canKey: InjectionKey<Can> = Symbol()
