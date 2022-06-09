@@ -26,6 +26,10 @@
     <p-divider class="my-8" />
 
     <DemoSubSection heading="Cron">
+      <sup>
+        Note: Cron display does not currently support cron strings that contain hashes, keyword expressions, or R/RANDOM expressions
+      </sup>
+
       <div class="grid grid-cols-3 gap-2">
         <p-label label="Cron string">
           <p-text-input v-model="cron" />
