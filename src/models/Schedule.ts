@@ -2,6 +2,8 @@
 import { formatDate, formatTimeNumeric, toPluralString } from '@prefecthq/prefect-design'
 import { toString as cronToString } from 'cronstrue'
 import { minutesInHour, secondsInMinute } from 'date-fns'
+import { rrulestr as stringToRRule, RRule } from 'rrule'
+import { capitalize } from '@/utilities'
 import { floor } from '@/utilities/math'
 
 export type ISchedule = IRRuleSchedule | ICronSchedule | IIntervalSchedule
@@ -45,12 +47,24 @@ export class RRuleSchedule implements IRRuleSchedule {
   public timezone: string | null
   public rrule: string
 
+  public getRRule(): RRule {
+    if (!this.rrule) {
+      return new RRule()
+    }
+
+    try {
+      return RRule.fromString(this.rrule)
+    } catch {
+      return new RRule()
+    }
+  }
+
   public toString(): string {
-    return ''
+    return capitalize(this.getRRule().toText())
   }
 
   public toProseString(): string {
-    return ''
+    return capitalize(this.getRRule().toText())
   }
 
   public constructor(schedule: IRRuleScheduleRaw) {

@@ -1,6 +1,10 @@
 <template>
   <DemoSection heading="Schedules">
     <DemoSubSection heading="Interval">
+      <sup>
+        Note: Due to leap seconds/years, interval schedules are only displayed to the day boundary.
+      </sup>
+
       <div class="grid grid-cols-3 gap-2">
         <p-label label="Seconds">
           <p-number-input v-model="interval" />
@@ -27,7 +31,9 @@
 
     <DemoSubSection heading="Cron">
       <sup>
-        Note: This cron display does not currently support cron strings that contain hashes, keyword expressions (e.g. <p-code>@daily</p-code>), <p-code>R</p-code>/<p-code>RANDOM</p-code> expressions, or <p-code>fcron</p-code> strings.
+        Note: This cron display does not currently support cron strings that contain hashes, keyword expressions (e.g.
+        <p-code>@daily</p-code>), <p-code>R</p-code>/<p-code>RANDOM</p-code> expressions, or <p-code>fcron</p-code>
+        strings.
       </sup>
 
       <div class="grid grid-cols-3 gap-2">
@@ -51,6 +57,30 @@
         <p-key-value label="Prose" :value="cronSchedule.toProseString()" />
       </section>
     </DemoSubSection>
+
+    <p-divider class="my-8" />
+
+    <DemoSubSection heading="RRule">
+      <sup>
+        ... nothing yet
+      </sup>
+
+      <div class="grid grid-cols-3 gap-2">
+        <p-label label="RRule">
+          <p-text-input v-model="rrule" />
+        </p-label>
+
+        <p-label label="Timezone">
+          <p-combobox v-model="rruleTimezone" :options="timeZoneOptions" />
+        </p-label>
+      </div>
+
+      <section class="mt-4 flex flex-col gap-4">
+        <p-key-value label="Raw" :value="rruleSchedule.rrule" />
+        <p-key-value label="String" :value="rruleSchedule.toString()" />
+        <p-key-value label="Prose" :value="rruleSchedule.toProseString()" />
+      </section>
+    </DemoSubSection>
   </DemoSection>
 </template>
 
@@ -70,7 +100,7 @@
   import { ref, computed } from 'vue'
   import DemoSection from '../components/DemoSection.vue'
   import DemoSubSection from '../components/DemoSubSection.vue'
-  import { CronSchedule, IntervalSchedule } from '@/models'
+  import { CronSchedule, IntervalSchedule, RRuleSchedule } from '@/models'
 
   // TODO: Doesn't work on Safari
   const timeZoneOptions = [
@@ -95,5 +125,12 @@
 
   const cronSchedule = computed(() => {
     return new CronSchedule({ cron: cron.value, timezone: cronTimezone.value, dayOr: cronDayOr.value })
+  })
+
+  const rrule = ref('DTSTART:20120201T023000Z\nRRULE:FREQ=MONTHLY;COUNT=5')
+  const rruleTimezone = ref(null)
+
+  const rruleSchedule = computed(() => {
+    return new RRuleSchedule({ rrule: rrule.value, timezone: rruleTimezone.value })
   })
 </script>
