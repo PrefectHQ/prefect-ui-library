@@ -38,7 +38,7 @@
   relative
   overflow-hidden
   rounded
-  bg-prefect-500
+  bg-prefect-600
   text-white
 }
 
