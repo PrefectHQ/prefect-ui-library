@@ -25,6 +25,7 @@
 </script>
 
 <script lang="ts" setup>
+  import { RouterLink } from 'vue-router'
   import ConfirmDeleteModal from '@/components/ConfirmDeleteModal.vue'
   import CopyOverflowMenuItem from '@/components/CopyOverflowMenuItem.vue'
   import { useShowModal } from '@/compositions/useShowModal'

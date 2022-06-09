@@ -1,4 +1,13 @@
 body {
+  --log-level-custom: theme('colors.sky.400');
+  --log-level-info: theme('colors.sky.400');
+  --log-level-debug: theme('colors.indigo.500');
+  --log-level-warning: theme('colors.amber.400');
+  --log-level-error: theme('colors.rose.500');
+  --log-level-critical: theme('colors.rose.700');
+}
+
+.color-mode-default {
   --state-completed-50: #DEF8F0;
   --state-completed-100: #C9F4E6;
   --state-completed-200: #9FEBCD;
@@ -64,11 +73,480 @@ body {
   --state-cancelled-700: #292929;
   --state-cancelled-800: #1E1E1E;
   --state-cancelled-900: #141414;
+}
 
-  --log-level-custom: theme('colors.sky.400');
-  --log-level-info: theme('colors.sky.400');
-  --log-level-debug: theme('colors.indigo.500');
-  --log-level-warning: theme('colors.amber.400');
-  --log-level-error: theme('colors.rose.500');
-  --log-level-critical: theme('colors.rose.700');
+.color-mode-achromatopsia {
+  --state-completed-50:  #F5FDF8;
+  --state-completed-100: #EAFBF1;
+  --state-completed-200: #D5F6E2;
+  --state-completed-300: #C0F1D4;
+  --state-completed-400: #ABEDC5;
+  --state-completed-500: #70E09C;
+  --state-completed-600: #35D474;
+  --state-completed-700: #22A054;
+  --state-completed-800: #166535;
+  --state-completed-900: #092A16;
+
+  --state-failed-50:  #FF6666;
+  --state-failed-100: #FF4747;
+  --state-failed-200: #FF0A0A;
+  --state-failed-300: #CC0000;
+  --state-failed-400: #8E0000;
+  --state-failed-500: #510000;
+  --state-failed-600: #140000;
+  --state-failed-700: #000000;
+  --state-failed-800: #000000;
+  --state-failed-900: #000000;
+
+  --state-running-50:  #F8FAFF;
+  --state-running-100: #D8E5FD;
+  --state-running-200: #9ABAF9;
+  --state-running-300: #5B8FF6;
+  --state-running-400: #1C64F2;
+  --state-running-500: #0B48C1;
+  --state-running-600: #093896;
+  --state-running-700: #06286A;
+  --state-running-800: #04173F;
+  --state-running-900: #010713;
+  
+  --state-pending-50: #FFFFFF;
+  --state-pending-100: #F8F7F8;
+  --state-pending-200: #E4E1E5;
+  --state-pending-300: #D0CBD2;
+  --state-pending-400: #BDB5C0;
+  --state-pending-500: #A99FAD;
+  --state-pending-600: #8E8093;
+  --state-pending-700: #726576;
+  --state-pending-800: #554B58;
+  --state-pending-900: #38313A;
+
+  --state-scheduled-50:  #FFFBF0;
+  --state-scheduled-100: #FEF4D7;
+  --state-scheduled-200: #FDE7A5;
+  --state-scheduled-300: #FDDA72;
+  --state-scheduled-400: #FCCD40;
+  --state-scheduled-500: #FBC00E;
+  --state-scheduled-600: #CD9B03;
+  --state-scheduled-700: #967202;
+  --state-scheduled-800: #5F4802;
+  --state-scheduled-900: #281E01;
+
+  --state-cancelled-50:  #F7F7F7;
+  --state-cancelled-100: #E5E5E5;
+  --state-cancelled-200: #C1C1C1;
+  --state-cancelled-300: #9E9E9E;
+  --state-cancelled-400: #7A7A7A;
+  --state-cancelled-500: #636363;
+  --state-cancelled-600: #4C4C4C;
+  --state-cancelled-700: #353535;
+  --state-cancelled-800: #1E1E1E;
+  --state-cancelled-900: #070707;
+}
+
+.color-mode-protaponia {
+  --state-completed-50: #E9FFF9;
+  --state-completed-100: #D2FFF0;
+  --state-completed-200: #A4FFD1;
+  --state-completed-300: #76FFA4;
+  --state-completed-400: #48FF66;
+  --state-completed-500: #1AFF1A;
+  --state-completed-600: #25DC00;
+  --state-completed-700: #359F00;
+  --state-completed-800: #316100;
+  --state-completed-900: #182400;
+
+  --state-failed-50: #F5EBFF;
+  --state-failed-100: #E3C5FF;
+  --state-failed-200: #BE78FF;
+  --state-failed-300: #982CFF;
+  --state-failed-400: #7200DF;
+  --state-failed-500: #4B0092;
+  --state-failed-600: #41007E;
+  --state-failed-700: #360069;
+  --state-failed-800: #2C0055;
+  --state-failed-900: #210040;
+
+  --state-running-50: #E9F3FF;
+  --state-running-100: #D2E7FF;
+  --state-running-200: #A4CEFF;
+  --state-running-300: #76B6FF;
+  --state-running-400: #489DFF;
+  --state-running-500: #1A85FF;
+  --state-running-600: #0067DC;
+  --state-running-700: #004A9F;
+  --state-running-800: #002E61;
+  --state-running-900: #001124;
+
+  --state-pending-50: #FBFCFE;
+  --state-pending-100: #F6F7FB;
+  --state-pending-200: #EBEEF7;
+  --state-pending-300: #BFC9E6;
+  --state-pending-400: #94A4D4;
+  --state-pending-500: #687FC3;
+  --state-pending-600: #445DA9;
+  --state-pending-700: #32457E;
+  --state-pending-800: #212D52;
+  --state-pending-900: #0F1526;
+
+  --state-scheduled-50: #FFFAEC;
+  --state-scheduled-100: #FEF5DA;
+  --state-scheduled-200: #FEECB7;
+  --state-scheduled-300: #FDE394;
+  --state-scheduled-400: #FDDA71;
+  --state-scheduled-500: #FCD14E;
+  --state-scheduled-600: #FBC00D;
+  --state-scheduled-700: #C29303;
+  --state-scheduled-800: #816202;
+  --state-scheduled-900: #403001;
+
+  --state-cancelled-50:  #F5F5F5;
+  --state-cancelled-100: #E0E0E0;
+  --state-cancelled-200: #B7B7B7;
+  --state-cancelled-300: #8F8F8F;
+  --state-cancelled-400: #666666;
+  --state-cancelled-500: #3D3D3D;
+  --state-cancelled-600: #2E2E2E;
+  --state-cancelled-700: #1E1E1E;
+  --state-cancelled-800: #0F0F0F;
+  --state-cancelled-900: #000000;
+}
+
+.color-mode-protanomaly {
+  --state-completed-50: #DEF8F0;
+  --state-completed-100: #C9F4E6;
+  --state-completed-200: #9FEBCD;
+  --state-completed-300: #75E2AF;
+  --state-completed-400: #4BD98D;
+  --state-completed-500: #2AC769;
+  --state-completed-600: #219D4B;
+  --state-completed-700: #187330;
+  --state-completed-800: #0F491B;
+  --state-completed-900: #061F0A;
+
+  --state-failed-50: #FFF8EA;
+  --state-failed-100: #FEEFD9;
+  --state-failed-200: #FDD6B6;
+  --state-failed-300: #FDB393;
+  --state-failed-400: #FC8670;
+  --state-failed-500: #FB4E4D;
+  --state-failed-600: #FA1133;
+  --state-failed-700: #C9053E;
+  --state-failed-800: #8D0341;
+  --state-failed-900: #510231;
+
+  --state-running-50: #E9F6FF;
+  --state-running-100: #D2EBFF;
+  --state-running-200: #A4D5FF;
+  --state-running-300: #76BDFF;
+  --state-running-400: #48A2FF;
+  --state-running-500: #1A85FF;
+  --state-running-600: #005FD7;
+  --state-running-700: #003E94;
+  --state-running-800: #002052;
+  --state-running-900: #000610;
+
+  --state-pending-50: #FFFFFF;
+  --state-pending-100: #F8F7F8;
+  --state-pending-200: #E4E1E5;
+  --state-pending-300: #D0CBD2;
+  --state-pending-400: #BDB5C0;
+  --state-pending-500: #A99FAD;
+  --state-pending-600: #8E8093;
+  --state-pending-700: #726576;
+  --state-pending-800: #554B58;
+  --state-pending-900: #38313A;
+
+  --state-scheduled-50: #FFFFFC;
+  --state-scheduled-100: #FEFFE0;
+  --state-scheduled-200: #FFFEA8;
+  --state-scheduled-300: #FFF870;
+  --state-scheduled-400: #FFED38;
+  --state-scheduled-500: #FFDD00;
+  --state-scheduled-600: #C7A400;
+  --state-scheduled-700: #8F7000;
+  --state-scheduled-800: #574000;
+  --state-scheduled-900: #1F1500;
+
+  --state-cancelled-50: #DEDEDE;
+  --state-cancelled-100: #CCCCCC;
+  --state-cancelled-200: #A8A8A8;
+  --state-cancelled-300: #848484;
+  --state-cancelled-400: #616161;
+  --state-cancelled-500: #3D3D3D;
+  --state-cancelled-600: #333333;
+  --state-cancelled-700: #292929;
+  --state-cancelled-800: #1E1E1E;
+  --state-cancelled-900: #141414;
+}
+
+.color-mode-deuteranopia {
+  --state-completed-50: #F7F8FF;
+  --state-completed-100: #D4DBFF;
+  --state-completed-200: #8CA9FF;
+  --state-completed-300: #4582FF;
+  --state-completed-400: #0068FC;
+  --state-completed-500: #005AB5;
+  --state-completed-600: #00518C;
+  --state-completed-700: #004263;
+  --state-completed-800: #002C3B;
+  --state-completed-900: #000F12;
+
+  --state-failed-50: #FFFAFC;
+  --state-failed-100: #FCDDED;
+  --state-failed-200: #F8A5CC;
+  --state-failed-300: #F36CA7;
+  --state-failed-400: #EF347F;
+  --state-failed-500: #D41159;
+  --state-failed-600: #AA0E42;
+  --state-failed-700: #7F0A2D;
+  --state-failed-800: #55071B;
+  --state-failed-900: #2A030C;
+
+  --state-running-50:  #F5FAFF;
+  --state-running-100: #EBF5FF;
+  --state-running-200: #D6EBFF;
+  --state-running-300: #C2E0FF;
+  --state-running-400: #ADD6FF;
+  --state-running-500: #99CCFF;
+  --state-running-600: #4DA6FF;
+  --state-running-700: #007FFF;
+  --state-running-800: #0059B3;
+  --state-running-900: #003366;
+
+  --state-pending-50: #FFFFFF;
+  --state-pending-100: #F8F7F8;
+  --state-pending-200: #E4E1E5;
+  --state-pending-300: #D0CBD2;
+  --state-pending-400: #BDB5C0;
+  --state-pending-500: #A99FAD;
+  --state-pending-600: #8E8093;
+  --state-pending-700: #726576;
+  --state-pending-800: #554B58;
+  --state-pending-900: #38313A;
+
+  --state-scheduled-50:  #FFFFFC;
+  --state-scheduled-100: #FDFFE0;
+  --state-scheduled-200: #FDFFA8;
+  --state-scheduled-300: #FFFD70;
+  --state-scheduled-400: #FFF538;
+  --state-scheduled-500: #FFEA00;
+  --state-scheduled-600: #C2AB00;
+  --state-scheduled-700: #857100;
+  --state-scheduled-800: #473A00;
+  --state-scheduled-900: #0A0800;
+
+  --state-cancelled-50: #DEDEDE;
+  --state-cancelled-100: #CCCCCC;
+  --state-cancelled-200: #A8A8A8;
+  --state-cancelled-300: #848484;
+  --state-cancelled-400: #616161;
+  --state-cancelled-500: #3D3D3D;
+  --state-cancelled-600: #333333;
+  --state-cancelled-700: #292929;
+  --state-cancelled-800: #1E1E1E;
+  --state-cancelled-900: #141414;
+}
+
+.color-mode-deuteranomaly {
+  --state-completed-50: #DEF8F0;
+  --state-completed-100: #C9F4E6;
+  --state-completed-200: #9FEBCD;
+  --state-completed-300: #75E2AF;
+  --state-completed-400: #4BD98D;
+  --state-completed-500: #2AC769;
+  --state-completed-600: #219D4B;
+  --state-completed-700: #187330;
+  --state-completed-800: #0F491B;
+  --state-completed-900: #061F0A;
+  
+  --state-failed-50: #FFFAFC;
+  --state-failed-100: #FCDDED;
+  --state-failed-200: #F8A5CC;
+  --state-failed-300: #F36CA7;
+  --state-failed-400: #EF347F;
+  --state-failed-500: #D41159;
+  --state-failed-600: #AA0E42;
+  --state-failed-700: #7F0A2D;
+  --state-failed-800: #55071B;
+  --state-failed-900: #2A030C;
+
+  --state-running-50:  #F5FAFF;
+  --state-running-100: #EBF5FF;
+  --state-running-200: #D6EBFF;
+  --state-running-300: #C2E0FF;
+  --state-running-400: #ADD6FF;
+  --state-running-500: #99CCFF;
+  --state-running-600: #4DA6FF;
+  --state-running-700: #007FFF;
+  --state-running-800: #0059B3;
+  --state-running-900: #003366;
+
+  --state-pending-50: #FFFFFF;
+  --state-pending-100: #F8F7F8;
+  --state-pending-200: #E4E1E5;
+  --state-pending-300: #D0CBD2;
+  --state-pending-400: #BDB5C0;
+  --state-pending-500: #A99FAD;
+  --state-pending-600: #8E8093;
+  --state-pending-700: #726576;
+  --state-pending-800: #554B58;
+  --state-pending-900: #38313A;
+
+  --state-scheduled-50:  #FFFFFC;
+  --state-scheduled-100: #FDFFE0;
+  --state-scheduled-200: #FDFFA8;
+  --state-scheduled-300: #FFFD70;
+  --state-scheduled-400: #FFF538;
+  --state-scheduled-500: #FFEA00;
+  --state-scheduled-600: #C2AB00;
+  --state-scheduled-700: #857100;
+  --state-scheduled-800: #473A00;
+  --state-scheduled-900: #0A0800;
+
+  --state-cancelled-50: #DEDEDE;
+  --state-cancelled-100: #CCCCCC;
+  --state-cancelled-200: #A8A8A8;
+  --state-cancelled-300: #848484;
+  --state-cancelled-400: #616161;
+  --state-cancelled-500: #3D3D3D;
+  --state-cancelled-600: #333333;
+  --state-cancelled-700: #292929;
+  --state-cancelled-800: #1E1E1E;
+  --state-cancelled-900: #141414;
+}
+
+.color-mode-tritanopia {
+  --state-completed-50:  #FBF0FF;
+  --state-completed-100: #F1D6FF;
+  --state-completed-200: #D1A3FF;
+  --state-completed-300: #A070FF;
+  --state-completed-400: #5D3DFF;
+  --state-completed-500: #0A0AFF;
+  --state-completed-600: #0023D1;
+  --state-completed-700: #003399;
+  --state-completed-800: #003061;
+  --state-completed-900: #001B29;
+
+  --state-failed-50:  #FFFEFC;
+  --state-failed-100: #FFEFE0;
+  --state-failed-200: #FFD2A8;
+  --state-failed-300: #FFB570;
+  --state-failed-400: #FF9838;
+  --state-failed-500: #FF7B00;
+  --state-failed-600: #C25D00;
+  --state-failed-700: #854000;
+  --state-failed-800: #472200;
+  --state-failed-900: #0A0500;
+
+  --state-running-50:  #F6FEFD;
+  --state-running-100: #ECFEFA;
+  --state-running-200: #D9FCF5;
+  --state-running-300: #C6FBF1;
+  --state-running-400: #B3F9EC;
+  --state-running-500: #A0F8E7;
+  --state-running-600: #4FF2D3;
+  --state-running-700: #10DBB3;
+  --state-running-800: #0A8A71;
+  --state-running-900: #04392F;
+
+  --state-pending-50:  #FFFFFF;
+  --state-pending-100: #FBFBFD;
+  --state-pending-200: #F0F2F9;
+  --state-pending-300: #C1CBE6;
+  --state-pending-400: #91A9D3;
+  --state-pending-500: #628AC0;
+  --state-pending-600: #406FA0;
+  --state-pending-700: #2D5271;
+  --state-pending-800: #1A3241;
+  --state-pending-900: #070E12;
+
+  --state-scheduled-50:  #FFF2EF;
+  --state-scheduled-100: #FFEDE7;
+  --state-scheduled-200: #FFE5D8;
+  --state-scheduled-300: #FFDEC8;
+  --state-scheduled-400: #FFDAB9;
+  --state-scheduled-500: #FFBB6D;
+  --state-scheduled-600: #FFA720;
+  --state-scheduled-700: #D38D00;
+  --state-scheduled-800: #866300;
+  --state-scheduled-900: #3A2E00;
+
+  --state-cancelled-50: #DEDEDE;
+  --state-cancelled-100: #CCCCCC;
+  --state-cancelled-200: #A8A8A8;
+  --state-cancelled-300: #848484;
+  --state-cancelled-400: #616161;
+  --state-cancelled-500: #3D3D3D;
+  --state-cancelled-600: #333333;
+  --state-cancelled-700: #292929;
+  --state-cancelled-800: #1E1E1E;
+  --state-cancelled-900: #141414;
+}
+
+.color-mode-tritanomaly {
+  --state-completed-50:  #FBF0FF;
+  --state-completed-100: #F1D6FF;
+  --state-completed-200: #D1A3FF;
+  --state-completed-300: #A070FF;
+  --state-completed-400: #5D3DFF;
+  --state-completed-500: #0A0AFF;
+  --state-completed-600: #0023D1;
+  --state-completed-700: #003399;
+  --state-completed-800: #003061;
+  --state-completed-900: #001B29;
+
+  --state-failed-50:  #FFFEFC;
+  --state-failed-100: #FFEFE0;
+  --state-failed-200: #FFD2A8;
+  --state-failed-300: #FFB570;
+  --state-failed-400: #FF9838;
+  --state-failed-500: #FF7B00;
+  --state-failed-600: #C25D00;
+  --state-failed-700: #854000;
+  --state-failed-800: #472200;
+  --state-failed-900: #0A0500;
+
+  --state-running-50:  #F6FEFD;
+  --state-running-100: #ECFEFA;
+  --state-running-200: #D9FCF5;
+  --state-running-300: #C6FBF1;
+  --state-running-400: #B3F9EC;
+  --state-running-500: #A0F8E7;
+  --state-running-600: #4FF2D3;
+  --state-running-700: #10DBB3;
+  --state-running-800: #0A8A71;
+  --state-running-900: #04392F;
+
+  --state-pending-50:  #FFFFFF;
+  --state-pending-100: #FBFBFD;
+  --state-pending-200: #F0F2F9;
+  --state-pending-300: #C1CBE6;
+  --state-pending-400: #91A9D3;
+  --state-pending-500: #628AC0;
+  --state-pending-600: #406FA0;
+  --state-pending-700: #2D5271;
+  --state-pending-800: #1A3241;
+  --state-pending-900: #070E12;
+
+  --state-scheduled-50:  #FFFEF8;
+  --state-scheduled-100: #FFF9E3;
+  --state-scheduled-200: #FFF1BB;
+  --state-scheduled-300: #FFE992;
+  --state-scheduled-400: #FFE169;
+  --state-scheduled-500: #FFD427;
+  --state-scheduled-600: #E3B600;
+  --state-scheduled-700: #A18100;
+  --state-scheduled-800: #5F4C00;
+  --state-scheduled-900: #1C1700;
+
+  --state-cancelled-50: #DEDEDE;
+  --state-cancelled-100: #CCCCCC;
+  --state-cancelled-200: #A8A8A8;
+  --state-cancelled-300: #848484;
+  --state-cancelled-400: #616161;
+  --state-cancelled-500: #3D3D3D;
+  --state-cancelled-600: #333333;
+  --state-cancelled-700: #292929;
+  --state-cancelled-800: #1E1E1E;
+  --state-cancelled-900: #141414;
 }

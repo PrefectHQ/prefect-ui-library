@@ -23,6 +23,7 @@
   import { CheckboxModel } from '@prefecthq/prefect-design'
   import { useSubscription } from '@prefecthq/vue-compositions'
   import { computed } from 'vue'
+  import { RouterLink } from 'vue-router'
   import DurationIconText from './DurationIconText.vue'
   import FlowRouterLink from './FlowRouterLink.vue'
   import FlowRunStartTime from '@/components/FlowRunStartTime.vue'

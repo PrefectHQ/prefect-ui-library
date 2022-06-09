@@ -1,14 +1,14 @@
 /* eslint-disable camelcase */
 import { computed, Ref } from 'vue'
-import { StateType } from '@/models'
+import { isStateType } from '@/models'
 import { mapper } from '@/services'
-import { FlowRunSortValues, UnionFilters } from '@/types'
+import { FlowRunSortValues, StateFilter, UnionFilters } from '@/types'
 
 export type UseFlowRunFilterArgs = {
   flows?: Ref<string[]>,
   deployments?: Ref<string[]>,
   tags?: Ref<string[]>,
-  states?: Ref<StateType[]>,
+  states?: Ref<string[]>,
   startDate?: Ref<Date>,
   endDate?: Ref<Date>,
   sort?: Ref<FlowRunSortValues>,
@@ -41,11 +41,22 @@ export function useFlowRunFilter(filters: UseFlowRunFilterArgs): Ref<UnionFilter
     }
 
     if (filters.states?.value.length) {
-      response.flow_runs ??= {}
-      response.flow_runs.state ??= {}
-      response.flow_runs.state.type ??= {}
+      const stateFilter: StateFilter = {}
 
-      response.flow_runs.state.type.any_ = mapper.map('StateType', filters.states.value, 'ServerStateType')
+      filters.states.value.forEach(state => {
+        if (isStateType(state)) {
+          stateFilter.type ??= {}
+          stateFilter.type.any_ ??= []
+          stateFilter.type.any_.push(mapper.map('StateType', state, 'ServerStateType'))
+        } else {
+          stateFilter.name ??= {}
+          stateFilter.name.any_ ??= []
+          stateFilter.name.any_.push(state)
+        }
+      })
+
+      response.flow_runs ??= {}
+      response.flow_runs.state = stateFilter
     }
 
     if (filters.startDate?.value) {
