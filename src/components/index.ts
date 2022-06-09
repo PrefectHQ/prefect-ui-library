@@ -1,3 +1,4 @@
+export { default as CodeBanner } from './CodeBanner.vue'
 export { default as ColorModeSelect } from './ColorModeSelect.vue'
 export { default as ColorModeSelectOption } from './ColorModeSelectOption.vue'
 export { default as ConfirmDeleteModal } from './ConfirmDeleteModal.vue'
