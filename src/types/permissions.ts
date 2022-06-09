@@ -63,6 +63,7 @@ function getAccountPermissions(check: (key: AccountPermissionKey) => boolean): A
 const featureFlags = [
   'billing',
   'collaboration',
+  'notifications',
 ] as const
 export type FeatureFlag = typeof featureFlags[number]
 type FeatureFlagPermissions = Record<FeatureFlag, boolean>
@@ -101,14 +102,6 @@ export function getAppPermissions(
       ...getFeatureFlagPermissions((key) => checkFeatureFlag(key)),
     },
   }
-}
-
-export function byPassPermissions(value: boolean): Can {
-  return getAppPermissions(
-    () => value,
-    () => value,
-    () => value,
-  )
 }
 
 export type Can = AppPermissions & AppFeatureFlags
