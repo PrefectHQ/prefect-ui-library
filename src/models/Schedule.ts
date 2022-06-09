@@ -1,22 +1,28 @@
 /* eslint-disable max-classes-per-file */
-export type ISchedule = IRRuleSchedule | ICronSchedule | IIntervalSchedule
-export type Schedule = RRuleSchedule | CronSchedule | IntervalSchedule
+import { minutesInHour, secondsInMinute } from 'date-fns'
+import { floor } from '@/utilities/math'
 
-export type IRRuleSchedule = {
+export type ISchedule = IRRuleSchedule | ICronSchedule | IIntervalSchedule
+
+export interface Schedule {
+  toString: () => string,
+}
+
+export interface IRRuleSchedule extends Schedule {
   timezone: string | null,
   rrule: string,
 }
 
-export type ICronSchedule = {
+export interface ICronSchedule extends Schedule {
   timezone: string | null,
   cron: string,
   dayOr: boolean | null,
 }
 
-export type IIntervalSchedule = {
+export interface IIntervalSchedule extends Schedule {
   timezone: string | null,
   interval: number,
-  anchorDate: string | null,
+  anchorDate: Date | null,
 }
 
 export class RRuleSchedule implements IRRuleSchedule {
@@ -44,7 +50,27 @@ export class CronSchedule implements ICronSchedule {
 export class IntervalSchedule implements IIntervalSchedule {
   public timezone: string | null
   public interval: number
-  public anchorDate: string | null
+  public anchorDate: Date | null
+
+  public toString(): string {
+    let remainder = this.interval
+
+    const seconds = this.interval % secondsInMinute
+    remainder = floor(remainder / secondsInMinute)
+
+    const minutes = remainder % minutesInHour
+    remainder = floor(remainder / minutesInHour)
+
+    const hours = remainder % 24
+    remainder = floor(remainder / 24)
+
+    const days = remainder % 365
+    remainder = floor(remainder / 365)
+
+    const years = remainder
+
+    return `${years} years, ${days} days, ${hours} hours, ${minutes} minutes, ${seconds} seconds`
+  }
 
   public constructor(schedule: IIntervalSchedule) {
     this.timezone = schedule.timezone
