@@ -15,7 +15,11 @@
         </p-label>
       </div>
 
-      {{ intervalSchedule }}
+
+      <section class="mt-4 flex flex-col gap-4">
+        <p-key-value label="Raw" :value="intervalSchedule.interval" />
+        <p-key-value label="Display" :value="intervalSchedule" />
+      </section>
     </demosubsection>
   </DemoSection>
 </template>
@@ -30,8 +34,9 @@
   const intervalTimezone = ref(null)
   const intervalAnchorDate = ref(new Date())
 
+  // TODO: Doesn't work on Safari
   const timeZoneOptions = [
-    { label: 'UTC', value: null }, ...Intl.supportedValuesOf('timeZone').map((timezone) => {
+    { label: 'UTC', value: null }, ...Intl.supportedValuesOf('timeZone').map((timezone: string) => {
       return { label: timezone, value: timezone }
     }),
   ]

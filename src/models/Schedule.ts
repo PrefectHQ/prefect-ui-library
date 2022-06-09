@@ -1,4 +1,5 @@
 /* eslint-disable max-classes-per-file */
+import { toPluralString } from '@prefecthq/prefect-design'
 import { minutesInHour, secondsInMinute } from 'date-fns'
 import { floor } from '@/utilities/math'
 
@@ -53,23 +54,31 @@ export class IntervalSchedule implements IIntervalSchedule {
   public anchorDate: Date | null
 
   public toString(): string {
+    const strings: string[] = []
     let remainder = this.interval
 
-    const seconds = this.interval % secondsInMinute
+    const seconds = remainder % secondsInMinute
     remainder = floor(remainder / secondsInMinute)
+
+    if (seconds) {
+      strings.push(`${seconds} ${toPluralString('second', seconds)}`)
+    }
 
     const minutes = remainder % minutesInHour
     remainder = floor(remainder / minutesInHour)
 
+    if (minutes) {
+      strings.push(`${minutes} ${toPluralString('minute', minutes)}`)
+    }
+
     const hours = remainder % 24
     remainder = floor(remainder / 24)
 
-    const days = remainder % 365
-    remainder = floor(remainder / 365)
+    if (hours) {
+      strings.push(`${hours} ${toPluralString('hour', hours)}`)
+    }
 
-    const years = remainder
-
-    return `${years} years, ${days} days, ${hours} hours, ${minutes} minutes, ${seconds} seconds`
+    return strings.reverse().join(' ')
   }
 
   public constructor(schedule: IIntervalSchedule) {
