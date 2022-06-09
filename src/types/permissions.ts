@@ -63,6 +63,7 @@ function getAccountPermissions(check: (key: AccountPermissionKey) => boolean): A
 const featureFlags = [
   'billing',
   'collaboration',
+  'notifications',
 ] as const
 export type FeatureFlag = typeof featureFlags[number]
 type FeatureFlagPermissions = Record<FeatureFlag, boolean>
