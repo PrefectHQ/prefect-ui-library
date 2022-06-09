@@ -103,7 +103,7 @@
   })
 
   function filterDeployment({ name, tags, schedule }: Deployment): boolean {
-    return `${name} ${schedule?.toProseString()} ${tags?.join(' ')}`.toLowerCase().includes(searchTerm.value.toLowerCase())
+    return `${name} ${schedule?.toProseString() ?? ''} ${tags?.join(' ')}`.toLowerCase().includes(searchTerm.value.toLowerCase())
   }
 
   function clear(): void {
