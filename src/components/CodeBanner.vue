@@ -3,34 +3,28 @@
     <template v-if="title || slots.title || subtitle || slots.subtitle">
       <div class="code-banner__message">
         <template v-if="title || slots.title">
-          <slot name="title">
-            <div class="code-banner__message-title">
+          <div class="code-banner__message-title">
+            <slot name="title">
               {{ title }}
-            </div>
-          </slot>
+            </slot>
+          </div>
         </template>
         <template v-if="subtitle || slots.subtitle">
-          <slot name="subtitle">
-            <div class="code-banner__message-subtitle">
+          <div class="code-banner__message-subtitle">
+            <slot name="subtitle">
               {{ subtitle }}
-            </div>
-          </slot>
+            </slot>
+          </div>
         </template>
       </div>
     </template>
     <div class="code-banner__terminal">
       <div class="code-banner__terminal-top-bar">
-        <svg
-          width="54"
-          height="12"
-          viewBox="0 0 54 12"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <circle cx="6" cy="6" r="6" fill="#FB4E4E" />
-          <circle cx="27" cy="6" r="6" fill="#F6A609" />
-          <circle cx="48" cy="6" r="6" fill="#2AC769" />
-        </svg>
+        <div class="code-banner__window">
+          <div class="code-banner__window-button" />
+          <div class="code-banner__window-button" />
+          <div class="code-banner__window-button" />
+        </div>
         <p-button size="xs" inset class="code-banner__copy-button" @click="copyToClipboard(command)">
           copy
         </p-button>
@@ -73,6 +67,7 @@
 .code-banner__message { @apply
   text-center
   m-4
+  md:ml-8
 }
 
 .code-banner__message-title { @apply
@@ -101,6 +96,29 @@
   h-5
   flex
   justify-between
+}
+
+.code-banner__window { @apply
+  flex
+  gap-2
+}
+
+.code-banner__window-button { @apply
+  rounded-full
+  h-3
+  w-3
+}
+
+.code-banner__window-button:nth-of-type(1) { @apply
+  bg-[#FB4E4E]
+}
+
+.code-banner__window-button:nth-of-type(2) { @apply
+  bg-[#F6A609]
+}
+
+.code-banner__window-button:nth-of-type(3) { @apply
+  bg-[#2AC769]
 }
 
 .code-banner__terminal-code,
