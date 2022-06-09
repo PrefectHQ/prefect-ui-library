@@ -133,17 +133,21 @@ export class IntervalSchedule implements IIntervalSchedule {
 
     intervals.days = remainder
 
+    console.log(intervals)
+
     return intervals
   }
 
-  public toProseString(): string {
-    let str = this.toString()
+  public toProseString(neat: boolean = true): string {
+    let str = this.toString(neat)
 
     if (str == '') {
       return 'None'
     }
 
-    str = `Every ${str}`
+    if (!str.includes('Every') && !str.includes('Daily') && !str.includes('Hourly')) {
+      str = `Every ${str}`
+    }
 
     if (this.anchorDate) {
       str += ` from ${formatDate(this.anchorDate)} at ${formatTimeNumeric(this.anchorDate)} (${this.timezone ?? 'UTC'})`
@@ -152,20 +156,40 @@ export class IntervalSchedule implements IIntervalSchedule {
     return str
   }
 
-  public toString(): string {
-    const { seconds, minutes, hours } = this.getIntervals()
+  public toString(neat: boolean = true): string {
+    const { seconds, minutes, hours, days } = this.getIntervals()
     const strings: string[] = []
 
     if (seconds) {
-      strings.push(`${seconds} ${toPluralString('second', seconds)}`)
+      if (neat && seconds === 1 && !minutes && !hours && !days) {
+        strings.push('Every second')
+      } else {
+        strings.push(`${seconds} ${toPluralString('second', seconds)}`)
+      }
     }
 
     if (minutes) {
-      strings.push(`${minutes} ${toPluralString('minute', minutes)}`)
+      if (neat && minutes === 1 && !seconds && !hours && !days) {
+        strings.push('Every minute')
+      } else {
+        strings.push(`${minutes} ${toPluralString('minute', minutes)}`)
+      }
     }
 
     if (hours) {
-      strings.push(`${hours} ${toPluralString('hour', hours)}`)
+      if (neat && hours === 1 && !seconds && !minutes && !days) {
+        strings.push('Hourly')
+      } else {
+        strings.push(`${hours} ${toPluralString('hour', hours)}`)
+      }
+    }
+
+    if (days) {
+      if (neat && days === 1 && !seconds && !minutes && !hours) {
+        strings.push('Daily')
+      } else {
+        strings.push(`${days} ${toPluralString('day', days)}`)
+      }
     }
 
     return strings.reverse().join(', ')

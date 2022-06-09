@@ -110,7 +110,7 @@
   ]
 
 
-  const interval = ref(31540000)
+  const interval = ref(3600)
   const intervalTimezone = ref(null)
   const intervalAnchorDate = ref(new Date())
 
