@@ -27,7 +27,7 @@
 
     <DemoSubSection heading="Cron">
       <sup>
-        Note: Cron display does not currently support cron strings that contain hashes, keyword expressions, or R/RANDOM expressions
+        Note: This cron display does not currently support cron strings that contain hashes, keyword expressions (e.g. <p-code>@daily</p-code>), <p-code>R</p-code>/<p-code>RANDOM</p-code> expressions, or <p-code>fcron</p-code> strings.
       </sup>
 
       <div class="grid grid-cols-3 gap-2">
