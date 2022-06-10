@@ -28,9 +28,9 @@
   import { DivergingBarChart, DivergingBarChartData, DivergingBarChartItem } from '@prefecthq/vue-charts'
   import { useSubscription } from '@prefecthq/vue-compositions'
   import { computed, ref } from 'vue'
-  import { FlowRunsHistoryFilter } from '..'
   import { Flow, StateType } from '@/models'
   import { flowRunsApiKey } from '@/services/FlowRunsApi'
+  import { FlowRunsHistoryFilter } from '@/types/UnionFilters'
   import { inject } from '@/utilities/inject'
   import { ceil } from '@/utilities/math'
 
