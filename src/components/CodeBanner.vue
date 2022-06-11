@@ -55,11 +55,10 @@
   rounded
   text-white
   flex
-  flex-col
-  gap-6
+  flex-wrap
+  gap-x-6
   justify-center
   items-center
-  md:flex-row
   bg-prefect-600;
   background-image: url(/constellations.svg);
   background-position: center;
@@ -68,8 +67,7 @@
 
 .code-banner__message { @apply
   text-center
-  m-4
-  md:ml-8
+  m-8
 }
 
 .code-banner__message-title { @apply
@@ -80,18 +78,15 @@
 
 .code-banner__terminal { @apply
   flex
-  flex-grow
   flex-col
+  self-end
   px-5
   py-4
-  gap-3
+  gap-6
+  max-w-2xl
   bg-gray-900
   rounded-t
   w-11/12
-  md:min-h-[136px]
-  md:mx-2
-  md:mt-4
-  md:self-end
 }
 
 .code-banner__terminal-top-bar { @apply
