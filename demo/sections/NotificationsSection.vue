@@ -18,10 +18,10 @@
 
   const notification = mocker.create('notification')
   const emptyNotification = {
-    blockDocumentId: '0987654',
+    blockDocumentId: mocker.create('id'),
     created: mocker.create('date'),
-    id: '1234567889',
-    isActive: false,
+    id: mocker.create('id'),
+    isActive: mocker.create('boolean'),
     name: 'very-important-notification',
     states: [],
     tags: [],
