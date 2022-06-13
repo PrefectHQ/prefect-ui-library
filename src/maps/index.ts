@@ -10,6 +10,7 @@ import { mapGraphNodeToIFlowRunGraphResponse, mapIFlowRunGraphResponseToGraphNod
 import { mapRunHistoryToIFlowRunHistoryResponse, mapIFlowRunHistoryResponseToRunHistory } from '@/maps/flowRunHistory'
 import { mapFlowRunnerToIFlowRunnerResponse, mapIFlowRunnerResponseToFlowRunner } from '@/maps/flowRunner'
 import { mapLogToILogResponse, mapILogResponseToLog } from '@/maps/logs'
+import { mapINotificationResponseToNotification } from '@/maps/notification'
 import { mapNumberToString, mapStringToNumber } from '@/maps/number'
 import { mapUiFlowRunHistoryToScatterPlotItem } from '@/maps/scatterPlotItem'
 import { mapScheduleToIScheduleResponse, mapIScheduleResponseToSchedule } from '@/maps/schedule'
@@ -42,6 +43,7 @@ export const maps = {
   IFlowRunnerResponse: { FlowRunner: mapIFlowRunnerResponseToFlowRunner },
   IFlowRunResponse: { FlowRun: mapIFlowRunResponseToFlowRun },
   ILogResponse: { Log: mapILogResponseToLog },
+  INotificationResponse: { Notification: mapINotificationResponseToNotification },
   IScheduleResponse: { Schedule: mapIScheduleResponseToSchedule },
   IState: { IStateResponse: mapIStateToIStateResponse },
   IStateDetails: { IStateDetailsResponse: mapIStateDetailsToIStateDetailsResponse },

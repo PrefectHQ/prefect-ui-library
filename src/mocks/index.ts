@@ -11,6 +11,7 @@ import { randomFlowRunnerType } from './flowRunnerType'
 import { randomFlowRunStateHistory } from './flowRunStateHistory'
 import { randomId } from './id'
 import { randomLogLevel, randomLog } from './log'
+import { randomNotification } from './notification'
 import { randomNumber } from './number'
 import { randomParameters } from './parameters'
 import { randomState } from './state'
@@ -32,6 +33,7 @@ export const mocks = {
   id: randomId,
   logLevel: randomLogLevel,
   log: randomLog,
+  notification: randomNotification,
   number: randomNumber,
   paragraph: randomParagraph,
   sentence: randomSentence,
