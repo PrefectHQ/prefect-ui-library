@@ -25,9 +25,18 @@
 </template>
 
 <script lang="ts" setup>
-  import { DivergingBarChart, DivergingBarChartData, DivergingBarChartItem } from '@prefecthq/vue-charts'
+  import { DivergingBarChart } from '@prefecthq/vue-charts'
   import { computed } from 'vue'
   import { RunHistory, StateType } from '@/models'
+  import { mapper } from '@/services'
+  import { sortDates } from '@/utilities/dates'
+
+  const props = defineProps<{
+    intervalStart: Date,
+    intervalEnd: Date,
+    intervalSeconds: number,
+    history: RunHistory[],
+  }>()
 
   const StateDirections: ReadonlyMap<StateType, 1 | -1> = new Map([
     ['completed', -1],
@@ -41,31 +50,12 @@
   const positiveSentimentKeys = [...StateDirections.entries()].filter(([, direction]) => direction < 0).map(([key]) => key)
   const negativeSentimentKeys = [...StateDirections.entries()].filter(([, direction]) => direction > 0).map(([key]) => key)
 
-  const props = defineProps<{
-    intervalStart: Date,
-    intervalEnd: Date,
-    intervalSeconds: number,
-    history: RunHistory[],
-  }>()
-
   const getStateColor = (state: StateType): string => `bg-state-${state.toLowerCase()}-500`
 
-  const items = computed<DivergingBarChartItem[]>(() => {
-    const data = props.history.map(item => {
-      return {
-        intervalStart: item.intervalStart,
-        intervalEnd: item.intervalEnd,
-        data: item.states.reduce<DivergingBarChartData>((data, state) => {
-          data[state.stateType] = state.countRuns
-          return data
-        }, {}),
-      }
-    }).sort((itemA, itemB) => {
-      return itemA.intervalStart.getTime() - itemB.intervalStart.getTime()
-    })
-
-    return data
-  })
+  const items = computed(() => mapper
+    .map('RunHistory', props.history, 'DivergingBarChartItem')
+    .sort((itemA, itemB) => sortDates(itemA.intervalStart, itemB.intervalEnd)),
+  )
 </script>
 
 <style>

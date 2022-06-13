@@ -21,11 +21,11 @@
   const flowRunsApi = inject(flowRunsApiKey)
 
   const props = defineProps<{
-    flow?: Flow,
+    flow: Flow,
   }>()
 
   const intervalStart = computed(() => {
-    return new Date(props.flow?.created ?? addMonths(new Date(), -1))
+    return new Date(props.flow.created)
   })
 
   const intervalEnd = ref(new Date())
@@ -34,23 +34,16 @@
     return ceil((intervalEnd.value.getTime() - intervalStart.value.getTime()) / 1000 / 10)
   })
 
-  const historyFilter = computed(() => {
-    const value: FlowRunsHistoryFilter = {
-      history_end: intervalEnd.value.toISOString(),
-      history_start: intervalStart.value.toISOString(),
-      history_interval_seconds: intervalSeconds.value,
-    }
-
-    if (props.flow) {
-      value.flows = {
-        id: {
-          any_: [props.flow.id],
-        },
-      }
-    }
-
-    return value
-  })
+  const historyFilter = computed(() => ({
+    history_end: intervalEnd.value.toISOString(),
+    history_start: intervalStart.value.toISOString(),
+    history_interval_seconds: intervalSeconds.value,
+    flows: {
+      id: {
+        any_: [props.flow.id],
+      },
+    },
+  }))
 
   const historySubscription = useSubscription(flowRunsApi.getFlowRunsHistory, [historyFilter])
   const history = computed(() => historySubscription.response ?? [])
