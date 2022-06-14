@@ -24,7 +24,6 @@ export function toPluralString(word: string, count?: number): string {
   return pluralize(word)
 }
 
-
 export function snakeCase(string: string): string {
   return string
     .replace(/\W+/g, ' ')
@@ -38,6 +37,10 @@ export function kebabCase(string: string): string {
     .replace(/([a-z])([A-Z])/g, '$1-$2')
     .replace(/[\s_]+/g, '-')
     .toLowerCase()
+}
+
+export function camelCase(str: string): string {
+  return str.toLowerCase().replace(/[^a-zA-Z0-9]+(.)/g, (m, chr) => chr.toUpperCase())
 }
 
 export function isString(value: unknown): value is string {

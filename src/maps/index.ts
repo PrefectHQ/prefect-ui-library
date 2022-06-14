@@ -1,8 +1,5 @@
-import { mapBlockDocumentCreateToBlockDocumentCreateRequest } from './blockDocumentCreate'
-import { mapBlockDocumentUpdateToBlockDocumentUpdateRequest } from './blockDocumentUpdate'
 import { mapBlockSchemaFilterToBlockSchemaFilterRequest } from './BlockSchemaFilter'
 import { mapBlockDocumentResponseToBlockDocument } from '@/maps/blockDocument'
-import { mapBlockDocumentFilterToBlockDocumentRequest } from '@/maps/BlockDocumentFilter'
 import { mapBlockSchemaResponseToBlockSchema } from '@/maps/blockSchema'
 import { mapBlockSchemaFieldsResponseToBlockSchemaFields } from '@/maps/blockSchemaFields'
 import { mapBlockTypeResponseToBlockType } from '@/maps/blockType'
@@ -32,12 +29,13 @@ import { mapTaskRunToITaskRunResponse, mapITaskRunResponseToTaskRun } from '@/ma
 import { mapUiFlowRunHistoryResponseToUiFlowRunHistory } from '@/maps/uiFlowRunHistory'
 import { mapWorkQueueToIWorkQueueResponse, mapIWorkQueueResponseToWorkQueue } from '@/maps/workQueue'
 import { mapWorkQueueFilterToIWorkQueueFilterResponse, mapIWorkQueueFilterResponseToWorkQueueFilter } from '@/maps/workQueueFilter'
+import { mapCamelToSnakeCase } from '@/utilities/mapping'
 
 export const maps = {
-  BlockDocumentCreate: { BlockDocumentCreateRequest: mapBlockDocumentCreateToBlockDocumentCreateRequest },
-  BlockDocumentFilter: { BlockDocumentFilterRequest: mapBlockDocumentFilterToBlockDocumentRequest },
+  BlockDocumentCreate: { BlockDocumentCreateRequest: mapCamelToSnakeCase },
+  BlockDocumentFilter: { BlockDocumentFilterRequest: mapCamelToSnakeCase },
   BlockDocumentResponse: { BlockDocument: mapBlockDocumentResponseToBlockDocument },
-  BlockDocumentUpdate: { BlockDocumentUpdateRequest: mapBlockDocumentUpdateToBlockDocumentUpdateRequest },
+  BlockDocumentUpdate: { BlockDocumentUpdateRequest: mapCamelToSnakeCase },
   BlockSchemaFieldsResponse: { BlockSchemaFields: mapBlockSchemaFieldsResponseToBlockSchemaFields },
   BlockSchemaFilter: { BlockSchemaFilterRequest: mapBlockSchemaFilterToBlockSchemaFilterRequest },
   BlockSchemaResponse: { BlockSchema: mapBlockSchemaResponseToBlockSchema },
