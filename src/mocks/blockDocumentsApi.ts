@@ -9,7 +9,6 @@ export const blockDocumentsApiMockFactory: MockFunction<BlockDocumentsApi> = fun
     getBlockDocument: () => Promise.resolve(this.create('blockDocument')),
     createBlockDocument: (request: BlockDocumentCreate) => Promise.resolve(this.create('blockDocument', [request])),
     updateBlockDocument: (blockDocumentId: string, request: BlockDocumentUpdate) => Promise.resolve(this.create('blockDocument', [request])),
-    deleteBlockDocument: () => Promise.resolve(),
     ...overrides,
   })
 }
