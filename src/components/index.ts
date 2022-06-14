@@ -1,3 +1,4 @@
+export { default as ActivityChart } from './ActivityChart.vue'
 export { default as CodeBanner } from './CodeBanner.vue'
 export { default as ColorModeSelect } from './ColorModeSelect.vue'
 export { default as ColorModeSelectOption } from './ColorModeSelectOption.vue'
@@ -13,6 +14,7 @@ export { default as DeploymentsPageEmptyState } from './DeploymentsPageEmptyStat
 export { default as DeploymentsTable } from './DeploymentsTable.vue'
 export { default as DeploymentToggle } from './DeploymentToggle.vue'
 export { default as DurationIconText } from './DurationIconText.vue'
+export { default as FlowActivityChart } from './FlowActivityChart.vue'
 export { default as FlowCombobox } from './FlowCombobox.vue'
 export { default as FlowDetails } from './FlowDetails.vue'
 export { default as FlowIconText } from './FlowIconText.vue'

@@ -71,12 +71,11 @@
 
     if (state.value.length) {
       taskRunsFilter.state = {
-        name: {
+        type: {
           any_: state.value.map(state => mapper.map('StateType', state, 'ServerStateType')),
         },
       }
     }
-
     return  { ...runFilter, task_runs: { ...taskRunsFilter } }
   })
 
