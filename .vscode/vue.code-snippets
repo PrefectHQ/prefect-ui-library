@@ -143,5 +143,66 @@
             "</template>"
         ],
         "description": "Create html tag with v-else"
+    },
+    "mapper": {
+        "prefix": "mapper",
+        "body": [
+            "import { MapFunction } from '@/services/Mapper'",
+            "",
+            "export const map${1}: MapFunction<${2}, ${3}> = function(source: ${2}): ${3} {",
+            "  return ${4}",
+            "}"
+        ],
+        "description": "Map function"
+    },
+    "mocker": {
+        "prefix": "mocker",
+        "body": [
+          "import { MockFunction } from '@/services/Mocker'",
+          "",
+          "export const random${1}: MockFunction<${2}> = function() {",
+          "  return ${3}",
+          "}"
+        ],
+        "description": "Mock function"
+    },
+    "Api Service": {
+        "prefix": "api",
+        "body": [
+          "import { Api, ApiRoute } from './Api'",
+          "import { mapper } from './Mapper'",
+          "",
+          "export class ${TM_FILENAME_BASE} extends Api {",
+          "",
+          "  protected override route: ApiRoute = '/${1}'",
+          "",
+          "}"
+        ],
+        "description": "Api Service"
+    },
+    "model": {
+        "prefix": "model",
+        "body": [
+          "export interface I${TM_FILENAME_BASE} {",
+          "  ${1}",
+          "}",
+          "",
+          "export class ${TM_FILENAME_BASE} implements I${TM_FILENAME_BASE} {",
+          "",
+          "  public constructor(${TM_FILENAME_BASE/(.*)/${1:/camelcase}/}: I${TM_FILENAME_BASE}) {",
+          "",
+          "  }",
+          "}"
+        ],
+        "description": "Typescript model"
+    },
+    "Typescript type": {
+        "prefix": "type",
+        "body": [
+          "export type ${TM_FILENAME_BASE} = {",
+          "  ${1}",
+          "}"
+        ],
+        "description": "Typescript type"
     }
 }

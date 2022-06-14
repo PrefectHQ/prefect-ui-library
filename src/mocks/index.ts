@@ -10,6 +10,7 @@ import { randomFlowRunner } from './flowRunner'
 import { randomFlowRunnerType } from './flowRunnerType'
 import { randomFlowRunStateHistory } from './flowRunStateHistory'
 import { randomId } from './id'
+import { randomImage } from './image'
 import { randomLogLevel, randomLog } from './log'
 import { randomNotification } from './notification'
 import { randomNumber } from './number'
@@ -52,4 +53,5 @@ export const mocks = {
   uiFlowRunHistory: randomUiFlowRunHistory,
   parameters: randomParameters,
   any: randomAny,
+  image: randomImage,
 }
