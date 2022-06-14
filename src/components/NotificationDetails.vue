@@ -2,11 +2,11 @@
   <div class="notification-details">
     If a run of any flow with
     <template v-if="notification.tags.length">
-      <p-tags :tags="allButLastItems(notification.tags)" class="notification-details__tags" />
+      <p-tags :tags="allButLastArrayItems(notification.tags)" class="notification-details__tags" />
       <template v-if="notification.tags.length > 1">
         or
       </template>
-      <p-tag>{{ lastItem(notification.tags) }}</p-tag>
+      <p-tag>{{ lastItemInArray(notification.tags) }}</p-tag>
     </template>
     <template v-else>
       <span class="notification-details__bold">any</span>
@@ -16,14 +16,14 @@
     <template v-if="notification.states.length">
       a
       <span class="notification-details__tags">
-        <template v-for="state in allButLastItems(notification.states)" :key="state.name">
+        <template v-for="state in allButLastArrayItems(notification.states)" :key="state.name">
           <StateBadge :state="state" />
         </template>
-        <template v-if="notification.states.length > 1">
-          or
-        </template>
-        <StateBadge :state="lastItem(notification.states)" />
       </span>
+      <template v-if="notification.states.length > 1">
+        or
+      </template>
+      <StateBadge :state="lastItemInArray(notification.states)" class="notification-details__tags" />
     </template>
     <template v-else>
       <span class="notification-details__bold">any</span>
@@ -46,17 +46,16 @@
 </template>
 
 <script lang="ts" setup>
+  import { PIcon, PTag, PTags } from '@prefecthq/prefect-design'
   import StateBadge from '@/components/StateBadge.vue'
-  import { Notification, IState } from '@/models'
+  import { Notification } from '@/models'
   import { isEmail } from '@/services/validate'
+  import { allButLastArrayItems, lastItemInArray } from '@/utilities/arrays'
 
   defineProps<{
     notification: Notification,
     sendTo: string,
   }>()
-
-  const lastItem = (items: any): any => items[items.length - 1]
-  const allButLastItems = (items: any): any => items.slice(0, -1)
 </script>
 
 <style>
