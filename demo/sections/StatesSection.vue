@@ -12,6 +12,7 @@
         <template v-for="state in states" :key="state">
           <StateBadge :state="state" />
         </template>
+        <StateBadge :state="customState" />
       </div>
     </DemoSubSection>
     <DemoSubSection heading="Badges - Flat">
@@ -51,6 +52,7 @@
     mocker.create('state', [{ type: 'completed', name: 'Custom Name ' }]),
     null,
   ]
+  const customState = { name: 'Typeless Custom Name ' }
 
   const selectedStateTypes = ref<StateType[]>([])
   const selectedStateType = ref<StateType | null>(null)
