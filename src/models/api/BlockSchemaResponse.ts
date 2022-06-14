@@ -1,5 +1,5 @@
-import { BlockSchemaFieldsType, BlockSchemaProperty, BlockTypeCapability } from './BlockSchema'
 import { BlockTypeResponse } from './BlockTypeResponse'
+import { BlockSchemaFieldsType, BlockSchemaProperty, BlockTypeCapability } from '@/models/BlockSchema'
 
 
 export type BlockSchemaFieldsResponse = {
