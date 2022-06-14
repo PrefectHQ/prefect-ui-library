@@ -16,7 +16,7 @@ type CamelToSnakeCase<T> =
         [K in keyof T as CamelToSnakeCase<K & string>]: T[K]
       } : T
 
-export function mapSnakeToCamelCase<T>(source: T): SnakeToCamelCase<T> {
+export function mapSnakeToCamelCase<T extends Record<string, unknown>>(source: T): SnakeToCamelCase<T> {
   const response: Record<string, unknown> = {}
 
   for (const key in source) {
@@ -28,7 +28,7 @@ export function mapSnakeToCamelCase<T>(source: T): SnakeToCamelCase<T> {
   return response as SnakeToCamelCase<T>
 }
 
-export function mapCamelToSnakeCase<T>(source: T): CamelToSnakeCase<T> {
+export function mapCamelToSnakeCase<T extends Record<string, unknown>>(source: T): CamelToSnakeCase<T> {
   const response: Record<string, unknown> = {}
 
   for (const key in source) {
