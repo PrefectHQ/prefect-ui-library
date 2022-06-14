@@ -1,4 +1,3 @@
-import { InjectionKey } from 'vue'
 import { Api, ApiRoute } from './Api'
 import { mapper } from './Mapper'
 import { BlockTypeResponse } from '@/models/api/BlockTypeResponse'
@@ -20,5 +19,3 @@ export class BlockTypesApi extends Api {
   }
 
 }
-
-export const blockTypesApiKey: InjectionKey<BlockTypesApi> = Symbol('blockTypesApiKey')
