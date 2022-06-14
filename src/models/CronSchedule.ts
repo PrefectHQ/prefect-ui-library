@@ -1,29 +1,8 @@
-import { toString as cronToString, default as Cron } from 'cronstrue'
+import { default as Cron } from 'cronstrue'
+import cronstrue from 'cronstrue/i18n'
 import { Schedule } from '@/models'
+import { CronKeyword, isCronKeyword, containsCronRandomExpression, cronKeywordMap } from '@/types/cron'
 
-export const cronKeywords = [
-  '@midnight',
-  '@hourly',
-  '@daily',
-  '@weekly',
-  '@monthly',
-  '@yearly',
-  '@annually',
-] as const
-
-export type CronKeyword = typeof cronKeywords[number]
-
-export type CronKeywordMap = Record<CronKeyword, string>
-
-export const cronKeywordMap = {
-  '@midnight': 'Daily',
-  '@hourly': 'Hourly',
-  '@daily': 'Daily',
-  '@weekly': 'Weekly',
-  '@monthly': 'Monthly',
-  '@yearly': 'Yearly',
-  '@annually': 'Yearly',
-} as const
 
 export interface ICronScheduleRaw {
   timezone: string | null,
@@ -33,9 +12,6 @@ export interface ICronScheduleRaw {
 
 export type ICronSchedule = ICronScheduleRaw & Schedule
 
-function isCronKeyword(cron: string | CronKeyword): cron is CronKeyword {
-  return cron in cronKeywordMap
-}
 
 export class CronSchedule implements ICronSchedule {
   public timezone: string | null
@@ -55,8 +31,12 @@ export class CronSchedule implements ICronSchedule {
       return cronKeywordMap[this.cron]
     }
 
+    if (containsCronRandomExpression(this.cron)) {
+      return 'RANDOM'
+    }
+
     try {
-      return cronToString(this.cron)
+      return cronstrue.toString(this.cron)
     } catch {
       return 'Invalid'
     }

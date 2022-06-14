@@ -119,7 +119,7 @@
   })
 
 
-  const cron = ref('* * * * * *')
+  const cron = ref('0 0 0 * * 1L')
   const cronTimezone = ref(null)
   const cronDayOr = ref(false)
 
