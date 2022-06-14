@@ -10,7 +10,7 @@
   import { inject } from '@/utilities'
 
   const props = defineProps<{
-    block: BlockDocument,
+    blockDocument: BlockDocument,
   }>()
 
   const blocksRoute = inject(blocksRouteKey)
@@ -18,7 +18,7 @@
 
   const crumbs: BreadCrumbs = [
     { text: 'Blocks', to: blocksRoute() },
-    { text: props.block.name, to: blockRoute(props.block.id) },
+    { text: props.blockDocument.name, to: blockRoute(props.blockDocument.id) },
     { text: 'Edit' },
   ]
 </script>

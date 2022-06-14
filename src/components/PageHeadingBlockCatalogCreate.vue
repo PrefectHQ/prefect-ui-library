@@ -1,16 +1,9 @@
 <template>
-  <page-heading class="page-heading-block-catalog-create" :crumbs="crumbs">
-    <template #after-crumbs>
-      <router-link :to="blockCatalogRoute()">
-        <p-button inset size="xs" icon="PlusIcon" />
-      </router-link>
-    </template>
-  </page-heading>
+  <page-heading class="page-heading-block-catalog-create" :crumbs="crumbs" />
 </template>
 
 <script lang="ts" setup>
   import { BreadCrumbs } from '@prefecthq/prefect-design'
-  import { RouterLink } from 'vue-router'
   import PageHeading from '@/components/PageHeading.vue'
   import { BlockType } from '@/models/BlockType'
   import { blocksRouteKey, blockCatalogRouteKey } from '@/router/routes'
