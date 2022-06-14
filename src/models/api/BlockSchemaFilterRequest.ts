@@ -1,4 +1,4 @@
 export type BlockSchemaFilterRequest = {
-  offset: number,
-  limit: number,
+  offset?: number,
+  limit?: number,
 }

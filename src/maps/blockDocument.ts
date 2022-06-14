@@ -7,6 +7,7 @@ export const mapBlockDocumentResponseToBlockDocument: MapFunction<BlockDocumentR
     id: source.id,
     created: this.map('string', source.created, 'Date'),
     updated: this.map('string', source.updated, 'Date'),
+    name: source.name,
     data: source.data,
     blockSchemaId: source.block_schema_id,
     blockSchema: this.map('BlockSchemaResponse', source.block_schema, 'BlockSchema'),
