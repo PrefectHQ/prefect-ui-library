@@ -5,14 +5,14 @@ type SnakeToCamelCase<T> =
     ? T extends `${infer U}_${infer V}`
       ? `${U}${Capitalize<SnakeToCamelCase<V>>}`
       : T
-    : T extends object ? {
+    : T extends Record<string, unknown> ? {
       [K in keyof T as SnakeToCamelCase<K & string>]: T[K]
     } : T
 
 type CamelToSnakeCase<T> =
     T extends string
       ? T extends `${infer U}${infer V}` ? `${U extends Capitalize<U> ? '_' : ''}${Lowercase<U>}${CamelToSnakeCase<V>}` : T
-      : T extends object ? {
+      : T extends Record<string, unknown> ? {
         [K in keyof T as CamelToSnakeCase<K & string>]: T[K]
       } : T
 

@@ -1,9 +1,12 @@
-import { mapBlockSchemaFilterToBlockSchemaFilterRequest } from './BlockSchemaFilter'
 import { mapBlockDocumentResponseToBlockDocument } from '@/maps/blockDocument'
+import { mapBlockDocumentCreateToBlockCreateRequest } from '@/maps/blockDocumentCreate'
+import { mapBlockDocumentFilterToBlockDocumentFilterRequest } from '@/maps/blockDocumentFilter'
+import { mapBlockDocumentUpdateToBlockDocumentUpdateRequest } from '@/maps/blockDocumentUpdate'
 import { mapBlockSchemaResponseToBlockSchema } from '@/maps/blockSchema'
 import { mapBlockSchemaFieldsResponseToBlockSchemaFields } from '@/maps/blockSchemaFields'
+import { mapBlockSchemaFilterToBlockSchemaFilterRequest } from '@/maps/blockSchemaFilter'
 import { mapBlockTypeResponseToBlockType } from '@/maps/blockType'
-import { mapBlockTypeFilterToBlockTypeRequest } from '@/maps/BlockTypeFilter'
+import { mapBlockTypeFilterToBlockTypeRequest } from '@/maps/blockTypeFilter'
 import { mapCreateFlowRunToCreateFlowRunRequest } from '@/maps/createFlowRun'
 import { mapStringToDate, mapDateToString } from '@/maps/date'
 import { mapDeploymentToIDeploymentResponse, mapIDeploymentResponseToDeployment } from '@/maps/deployment'
@@ -29,13 +32,12 @@ import { mapTaskRunToITaskRunResponse, mapITaskRunResponseToTaskRun } from '@/ma
 import { mapUiFlowRunHistoryResponseToUiFlowRunHistory } from '@/maps/uiFlowRunHistory'
 import { mapWorkQueueToIWorkQueueResponse, mapIWorkQueueResponseToWorkQueue } from '@/maps/workQueue'
 import { mapWorkQueueFilterToIWorkQueueFilterResponse, mapIWorkQueueFilterResponseToWorkQueueFilter } from '@/maps/workQueueFilter'
-import { mapCamelToSnakeCase } from '@/utilities/mapping'
 
 export const maps = {
-  BlockDocumentCreate: { BlockDocumentCreateRequest: mapCamelToSnakeCase },
-  BlockDocumentFilter: { BlockDocumentFilterRequest: mapCamelToSnakeCase },
+  BlockDocumentCreate: { BlockDocumentCreateRequest: mapBlockDocumentCreateToBlockCreateRequest },
+  BlockDocumentFilter: { BlockDocumentFilterRequest: mapBlockDocumentFilterToBlockDocumentFilterRequest },
   BlockDocumentResponse: { BlockDocument: mapBlockDocumentResponseToBlockDocument },
-  BlockDocumentUpdate: { BlockDocumentUpdateRequest: mapCamelToSnakeCase },
+  BlockDocumentUpdate: { BlockDocumentUpdateRequest: mapBlockDocumentUpdateToBlockDocumentUpdateRequest },
   BlockSchemaFieldsResponse: { BlockSchemaFields: mapBlockSchemaFieldsResponseToBlockSchemaFields },
   BlockSchemaFilter: { BlockSchemaFilterRequest: mapBlockSchemaFilterToBlockSchemaFilterRequest },
   BlockSchemaResponse: { BlockSchema: mapBlockSchemaResponseToBlockSchema },
