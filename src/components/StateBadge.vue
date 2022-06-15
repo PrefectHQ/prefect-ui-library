@@ -1,6 +1,6 @@
 <template>
   <p-tag class="state-badge" :class="classes" :dismissible="dismissible">
-    <StateIcon v-if="!customState" :state-type="state?.type" :shade="iconShade" class="state-badge__icon" />
+    <StateIcon v-if="!stateWithNoType" :state-type="state?.type" :shade="iconShade" class="state-badge__icon" />
     <span>{{ name }}</span>
   </p-tag>
 </template>
