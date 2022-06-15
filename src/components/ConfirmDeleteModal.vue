@@ -6,18 +6,18 @@
     <template #title>
       <div class="delete-modal__title">
         <slot name="title">
-          {{ `Remove ${name}` }}
+          {{ `${action} ${name}` }}
         </slot>
       </div>
     </template>
     <span class="delete-modal__message">
       <slot name="message">
-        Are you sure you want to remove {{ name.toLowerCase() }}?
+        Are you sure you want to {{ action.toLowerCase() }} {{ name.toLowerCase() }}?
       </slot>
     </span>
     <template #actions>
       <p-button class="delete-modal__delete-button" @click="handleDeleteClick">
-        Delete
+        {{ action }}
       </p-button>
     </template>
   </p-modal>
@@ -30,8 +30,10 @@
   const props = withDefaults(defineProps<{
     showModal: boolean,
     name?: string,
+    action: 'Delete' | 'Remove',
   }>(), {
     name: '',
+    action: 'Delete',
   })
 
   const emits = defineEmits<{
