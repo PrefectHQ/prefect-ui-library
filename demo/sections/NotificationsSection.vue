@@ -7,7 +7,7 @@
       <!--  -->
     </DemoSubSection>
     <DemoSubSection heading="Notification Form">
-      <!--  -->
+      <NotificationForm v-model:notification="notification" @submit="submit" />
     </DemoSubSection>
   </DemoSection>
 </template>
@@ -15,7 +15,10 @@
 <script lang="ts" setup>
   import DemoSection from '../components/DemoSection.vue'
   import DemoSubSection from '../components/DemoSubSection.vue'
+  import { NotificationForm } from '@/components'
+  import { Notification } from '@/models'
   import { mocker } from '@/services'
+
   const notification = mocker.create('notification')
   const emptyNotification = {
     blockDocumentId: mocker.create('id'),
@@ -26,5 +29,9 @@
     states: [],
     tags: [],
     updated: mocker.create('date'),
+  }
+
+  const submit = (notification: Notification): void => {
+    console.log('Form submitted!', notification)
   }
 </script>
