@@ -24,6 +24,7 @@
     </p>
 
     <div class="notification-form__review-block">
+      <!-- Insert NotificationDetails component when it's created -->
       <p>If a run of any flow with a ________ tag enters a _______ state, send a notification to __________</p>
     </div>
   </p-form>
