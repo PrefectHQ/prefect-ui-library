@@ -9,7 +9,7 @@ export const mapINotificationResponseToNotification: MapFunction<INotificationRe
     updated: this.map('string', source.updated, 'Date'),
     name: source.name,
     isActive: source.is_active,
-    stateNames: source.stateNames,
+    stateNames: source.state_names,
     tags: source.tags,
     blockDocumentId: source.block_document_id,
   })
