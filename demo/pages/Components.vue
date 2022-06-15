@@ -1,5 +1,6 @@
 <template>
   <p-layout-default>
+    <NotificationFormSection />
     <ColorModesSection />
     <PageHeadingsSection />
     <MarketingBannerSection />
@@ -29,6 +30,7 @@
   import LogSection from '../sections/LogsSection.vue'
   import MarketingBannerSection from '../sections/MarketingBannerSection.vue'
   import MetaWellSection from '../sections/MetaWellSection.vue'
+  import NotificationFormSection from '../sections/NotificationFormSection.vue'
   import PageHeadingsSection from '../sections/PageHeadingsSection.vue'
   import RunButtonSection from '../sections/RunButtonSection.vue'
   import SearchesSection from '../sections/SearchesSection.vue'
