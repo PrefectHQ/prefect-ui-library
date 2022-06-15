@@ -1,5 +1,5 @@
 import { mapBlockDocumentResponseToBlockDocument } from '@/maps/blockDocument'
-import { mapBlockDocumentCreateToBlockCreateRequest } from '@/maps/blockDocumentCreate'
+import { mapBlockDocumentCreateToBlockDocumentCreateRequest } from '@/maps/blockDocumentCreate'
 import { mapBlockDocumentFilterToBlockDocumentFilterRequest } from '@/maps/blockDocumentFilter'
 import { mapBlockDocumentUpdateToBlockDocumentUpdateRequest } from '@/maps/blockDocumentUpdate'
 import { mapBlockSchemaResponseToBlockSchema } from '@/maps/blockSchema'
@@ -34,7 +34,7 @@ import { mapWorkQueueToIWorkQueueResponse, mapIWorkQueueResponseToWorkQueue } fr
 import { mapWorkQueueFilterToIWorkQueueFilterResponse, mapIWorkQueueFilterResponseToWorkQueueFilter } from '@/maps/workQueueFilter'
 
 export const maps = {
-  BlockDocumentCreate: { BlockDocumentCreateRequest: mapBlockDocumentCreateToBlockCreateRequest },
+  BlockDocumentCreate: { BlockDocumentCreateRequest: mapBlockDocumentCreateToBlockDocumentCreateRequest },
   BlockDocumentFilter: { BlockDocumentFilterRequest: mapBlockDocumentFilterToBlockDocumentFilterRequest },
   BlockDocumentResponse: { BlockDocument: mapBlockDocumentResponseToBlockDocument },
   BlockDocumentUpdate: { BlockDocumentUpdateRequest: mapBlockDocumentUpdateToBlockDocumentUpdateRequest },
