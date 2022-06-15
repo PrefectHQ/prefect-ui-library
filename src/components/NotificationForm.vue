@@ -1,12 +1,31 @@
 <template>
   <p-form class="notification-form" :loading="isSubmitting" @submit="submit" @cancel="cancel">
+    <p class="notification-form__message">
+      Choose which flow run states and tags trigger this notification.
+    </p>
     <p-label label="Run states">
-      <p-combobox v-model="stateNames" :options="['Completed', 'Failed', 'Custom']" />
+      <StateSelect v-model:selected="stateNames" empty-message="All Tags" />
     </p-label>
 
     <p-label label="Tags (Optional)">
       <p-tags-input v-model:tags="tags" empty-message="Select tags..." />
     </p-label>
+
+    <p-label label="Send notifications to">
+      <!--  -->
+    </p-label>
+
+    <p-label label="Addresses">
+      <!--  -->
+    </p-label>
+
+    <p class="notification-form__message">
+      Review your notification.
+    </p>
+
+    <div class="notification-form__review-block">
+      <p>If a run of any flow with a ________ tag enters a _______ state, send a notification to __________</p>
+    </div>
   </p-form>
 </template>
 
@@ -25,23 +44,8 @@
 
   const { handleSubmit, isSubmitting, errors } = useForm<Notification>({ initialValues: props.notification })
 
-  const { value: tags, meta: tagState } = useField<string[]>('tags')
-  const { value: stateNames, meta: stateNamesState } = useField<string[]>('stateNames')
-
-
-  const selectedStateNames = ref<any[]>([])
-
-  const selected = computed({
-    get() {
-      return selectedStateNames.value
-    },
-    set(value: any | null | any[]) {
-      selectedStateNames.value = value
-    },
-  })
-
-  console.log(selected.value)
-
+  const { value: tags } = useField<string[]>('tags')
+  const { value: stateNames } = useField<string[]>('stateNames')
 
   const emit = defineEmits<{
     (event: 'submit', value: Notification): void,
@@ -55,3 +59,28 @@
     emit('cancel')
   }
 </script>
+
+<style>
+.notification-form {
+  @apply
+  border-[1px]
+  border-gray-300
+  p-6
+  rounded-lg
+}
+
+.notification-form__message {
+  @apply
+  text-base
+  text-gray-500
+}
+
+.notification-form__review-block {
+  @apply
+  border-[3px]
+  border-prefect-100
+  rounded-lg
+  p-4
+  pb-6
+}
+</style>
