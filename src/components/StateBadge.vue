@@ -17,7 +17,7 @@
     dismissible?: boolean,
   }>()
 
-  const customState = computed(() => props.state?.name && !props.state.type)
+  const stateWithNoType = computed(() => props.state && !props.state.type)
   const type = computed(() => props.state?.type ?? 'unknown')
   const name = computed(() => props.state?.name ?? 'Unknown')
 
