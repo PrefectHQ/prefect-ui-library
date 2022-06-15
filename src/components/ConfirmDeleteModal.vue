@@ -17,7 +17,7 @@
     </span>
     <template #actions>
       <p-button class="delete-modal__delete-button" @click="handleDeleteClick">
-        Delete
+        Remove
       </p-button>
     </template>
   </p-modal>
