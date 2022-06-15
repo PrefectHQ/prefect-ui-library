@@ -14,6 +14,11 @@ export class BlockTypesApi extends Api {
       .then(({ data }) => mapper.map('BlockTypeResponse', data, 'BlockType'))
   }
 
+  public getBlockTypeByName(blockTypeName: string): Promise<BlockType> {
+    return this.get<BlockTypeResponse>(`/name/${blockTypeName}`)
+      .then(({ data }) => mapper.map('BlockTypeResponse', data, 'BlockType'))
+  }
+
   public getBlockTypes(filter: BlockTypeFilter = {}): Promise<BlockType[]> {
     return this.post<BlockTypeResponse[]>('/filter', mapper.map('BlockTypeFilter', filter, 'BlockTypeFilterRequest'))
       .then(({ data }) => mapper.map('BlockTypeResponse', data, 'BlockType'))
