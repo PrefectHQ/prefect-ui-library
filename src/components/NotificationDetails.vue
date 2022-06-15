@@ -29,7 +29,7 @@
       <span class="notification-details__bold">any</span>
     </template>
 
-    state, send notification to
+    state, send a notification to
     <template v-if="isEmail(sendTo)">
       <span class="notification-details__send-to">
         <p-icon icon="MailIcon" class="notification-details__icon notification-details__icon--mail" />
