@@ -1,6 +1,6 @@
 <template>
   <div class="notification-details">
-    If a run of any flow with
+    If a run of any flow with a
     <template v-if="notification.tags.length">
       <p-tags :tags="allButLastArrayItems(notification.tags)" class="notification-details__tags" />
       <template v-if="notification.tags.length > 1">
