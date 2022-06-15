@@ -30,19 +30,16 @@
 </template>
 
 <script lang="ts" setup>
-  import { PLabel, PTextInput, PNumberInput, PTagsInput, PToggle, PForm } from '@prefecthq/prefect-design'
+  import { PLabel, PTagsInput, PForm } from '@prefecthq/prefect-design'
   import { useField, useForm } from 'vee-validate'
-  import { computed, reactive, ref, watchEffect } from 'vue'
   import StateSelect from '@/components/StateSelect.vue'
   import { Notification } from '@/models'
-  import { isRequired, withMessage } from '@/services/validate'
-
 
   const props = defineProps<{
     notification?: Notification,
   }>()
 
-  const { handleSubmit, isSubmitting, errors } = useForm<Notification>({ initialValues: props.notification })
+  const { handleSubmit, isSubmitting } = useForm<Notification>({ initialValues: props.notification })
 
   const { value: tags } = useField<string[]>('tags')
   const { value: stateNames } = useField<string[]>('stateNames')
