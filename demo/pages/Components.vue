@@ -1,6 +1,5 @@
 <template>
   <p-layout-default>
-    <NotificationsSection />
     <ColorModesSection />
     <PageHeadingsSection />
     <MarketingBannerSection />
