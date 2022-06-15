@@ -13,17 +13,17 @@
     </template>
     tag enters
 
-    <template v-if="notification.states.length">
+    <template v-if="notification.stateNames.length">
       a
       <span class="notification-details__tags">
-        <template v-for="state in allButLastArrayItems(notification.states)" :key="state.name">
-          <StateBadge :state="state" />
+        <template v-for="state in allButLastArrayItems(notification.stateNames)" :key="state">
+          <StateBadge :state="mapStateNameToStateType(state)" />
         </template>
       </span>
-      <template v-if="notification.states.length > 1">
+      <template v-if="notification.stateNames.length > 1">
         or
       </template>
-      <StateBadge :state="lastItemInArray(notification.states)" class="notification-details__tags" />
+      <StateBadge :state="mapLastItem(notification.stateNames)" class="notification-details__tags" />
     </template>
     <template v-else>
       <span class="notification-details__bold">any</span>
@@ -48,14 +48,19 @@
 <script lang="ts" setup>
   import { PIcon, PTag, PTags } from '@prefecthq/prefect-design'
   import StateBadge from '@/components/StateBadge.vue'
-  import { Notification } from '@/models'
+  import { Notification, StateType } from '@/models'
   import { isEmail } from '@/services/validate'
   import { allButLastArrayItems, lastItemInArray } from '@/utilities/arrays'
+  import { mapStateNameToStateType } from '@/utilities/state'
 
   defineProps<{
     notification: Notification,
     sendTo: string,
   }>()
+
+  function mapLastItem(item: string[]): { name: string, type: StateType | null } {
+    return mapStateNameToStateType(lastItemInArray(item))
+  }
 </script>
 
 <style>
