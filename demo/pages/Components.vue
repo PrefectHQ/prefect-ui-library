@@ -16,6 +16,7 @@
     <ComboboxesSection />
     <WorkQueueFormSection />
     <RunButtonSection />
+    <NotificationsSection />
   </p-layout-default>
 </template>
 
@@ -29,6 +30,7 @@
   import LogSection from '../sections/LogsSection.vue'
   import MarketingBannerSection from '../sections/MarketingBannerSection.vue'
   import MetaWellSection from '../sections/MetaWellSection.vue'
+  import NotificationsSection from '../sections/NotificationsSection.vue'
   import PageHeadingsSection from '../sections/PageHeadingsSection.vue'
   import RunButtonSection from '../sections/RunButtonSection.vue'
   import SearchesSection from '../sections/SearchesSection.vue'
