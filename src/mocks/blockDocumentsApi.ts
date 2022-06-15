@@ -43,6 +43,20 @@ export const blockDocumentsApiMockFactory: MockFunction<BlockDocumentsApi> = fun
       })
     },
 
+    deleteBlockDocument: (blockDocumentId: string) => {
+      return new Promise<void>((resolve, reject) => {
+        const index = blockDocuments.findIndex(blockDocument => blockDocument.id === blockDocumentId)
+
+        if (index < 0) {
+          return reject(new AxiosError('Block document not found', '404'))
+        }
+
+        blockDocuments.splice(index, 1)
+
+        resolve()
+      })
+    },
+
     ...overrides,
   })
 }
