@@ -62,7 +62,6 @@ function getAccountPermissions(check: (key: AccountPermissionKey) => boolean): A
 
 const featureFlags = [
   'disable-rate-limiting',
-  'invitations-flag',
   'enable-invitations',
   'enable-billing',
   'enable-notifications',
