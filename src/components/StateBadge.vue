@@ -12,7 +12,7 @@
   import { TailwindColor } from '@/types/tailwind'
 
   const props = defineProps<{
-    state: { name: string, type?: StateType } | null,
+    state: { name: string, type: StateType | null } | null,
     flat?: boolean,
     dismissible?: boolean,
   }>()

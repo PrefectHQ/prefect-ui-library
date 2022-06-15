@@ -12,7 +12,13 @@
         <template v-for="state in states" :key="state">
           <StateBadge :state="state" />
         </template>
-        <StateBadge :state="customState" />
+      </div>
+    </DemoSubSection>
+    <DemoSubSection heading="Badges with custom name mapper">
+      <div class="flex gap-2 flex-wrap mb-3">
+        <template v-for="state in customState" :key="state">
+          <StateBadge :state="state" />
+        </template>
       </div>
     </DemoSubSection>
     <DemoSubSection heading="Badges - Flat">
@@ -41,6 +47,7 @@
   import { IState } from '@/models'
   import { StateType, stateType } from '@/models/StateType'
   import { mocker } from '@/services'
+  import { mapStateNameToStateType } from '@/utilities'
 
   const states: (IState | null)[] = [
     mocker.create('state', [{ type: 'completed', name: 'Completed ' }]),
@@ -52,7 +59,8 @@
     mocker.create('state', [{ type: 'completed', name: 'Custom Name ' }]),
     null,
   ]
-  const customState = { name: 'Typeless Custom Name ' }
+
+  const customState = [mapStateNameToStateType('completed'), mapStateNameToStateType('Failed'), mapStateNameToStateType('Custom Name') ]
 
   const selectedStateTypes = ref<StateType[]>([])
   const selectedStateType = ref<StateType | null>(null)
