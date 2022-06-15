@@ -7,7 +7,6 @@
     <StatesSection />
     <LogSection />
     <EmptyStateSection />
-    <ContextSidebarSection />
     <ListsSection />
     <TablesSection />
     <ToggleSection />
@@ -17,6 +16,7 @@
     <ComboboxesSection />
     <WorkQueueFormSection />
     <RunButtonSection />
+    <NotificationsSection />
   </p-layout-default>
 </template>
 
@@ -24,7 +24,6 @@
   import { PLayoutDefault } from '@prefecthq/prefect-design'
   import ColorModesSection from '../sections/ColorModesSection.vue'
   import ComboboxesSection from '../sections/ComboboxesSection.vue'
-  import ContextSidebarSection from '../sections/ContextSidebarSection.vue'
   import EmptyStateSection from '../sections/EmptyStateSection.vue'
   import ListsSection from '../sections/ListsSection.vue'
   import LogSection from '../sections/LogsSection.vue'

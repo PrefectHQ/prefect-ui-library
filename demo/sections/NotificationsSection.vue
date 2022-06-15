@@ -1,12 +1,16 @@
 <template>
   <DemoSection heading="Notifications">
-    <div class="flex flex-wrap gap-8">
-      <DemoSubSection heading="Notification Detail">
-        <NotificationDetails :notification="notification" send-to="alert-channel" />
-        <p-divider />
-        <NotificationDetails :notification="emptyNotification" send-to="alert@prefect.io" />
-      </DemoSubSection>
-    </div>
+    <DemoSubSection heading="Notification Detail">
+      <NotificationDetails :notification="notification" send-to="alert-channel" />
+      <p-divider />
+      <NotificationDetails :notification="emptyNotification" send-to="alert@prefect.io" />
+    </DemoSubSection>
+    <DemoSubSection heading="Notification Table">
+      <!--  -->
+    </DemoSubSection>
+    <DemoSubSection heading="Notification Form">
+      <!--  -->
+    </DemoSubSection>
   </DemoSection>
 </template>
 

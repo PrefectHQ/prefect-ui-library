@@ -1,4 +1,9 @@
 import { randomAny } from './any'
+import { randomBlockDocument } from './blockDocument'
+import { blockDocumentsApiMockFactory } from './blockDocumentsApi'
+import { randomBlockSchema } from './blockSchema'
+import { randomBlockSchemaFields } from './blockSchemaFields'
+import { randomBlockType } from './blockType'
 import { randomBoolean } from './boolean'
 import { randomDate } from './date'
 import { randomDeployment } from './deployment'
@@ -10,6 +15,7 @@ import { randomFlowRunner } from './flowRunner'
 import { randomFlowRunnerType } from './flowRunnerType'
 import { randomFlowRunStateHistory } from './flowRunStateHistory'
 import { randomId } from './id'
+import { randomImage } from './image'
 import { randomLogLevel, randomLog } from './log'
 import { randomNotification } from './notification'
 import { randomNumber } from './number'
@@ -22,6 +28,12 @@ import { randomUiFlowRunHistory } from './UiFlowRunHistory'
 import { randomWorkQueue, randomWorkQueueFilter } from './workQueue'
 
 export const mocks = {
+  any: randomAny,
+  blockDocument: randomBlockDocument,
+  blockDocumentsApi: blockDocumentsApiMockFactory,
+  blockSchema: randomBlockSchema,
+  blockSchemaFields: randomBlockSchemaFields,
+  blockType: randomBlockType,
   boolean: randomBoolean,
   char: randomChar,
   date: randomDate,
@@ -29,27 +41,27 @@ export const mocks = {
   flow: randomFlow,
   flowRun: randomFlowRun,
   flowRunGraph: randomFlowRunGraph,
+  flowRunHistory: randomFlowRunHistory,
+  flowRunner: randomFlowRunner,
+  flowRunnerType: randomFlowRunnerType,
+  flowRunStateHistory: randomFlowRunStateHistory,
   graphNode: randomGraphNode,
   id: randomId,
-  logLevel: randomLogLevel,
+  image: randomImage,
   log: randomLog,
+  logLevel: randomLogLevel,
   notification: randomNotification,
+  noun: randomNoun,
   number: randomNumber,
   paragraph: randomParagraph,
+  parameters: randomParameters,
+  runName: randomRunName,
   sentence: randomSentence,
   state: randomState,
   stateType: randomStateType,
   string: randomString,
-  runName: randomRunName,
   taskRun: randomTaskRun,
+  uiFlowRunHistory: randomUiFlowRunHistory,
   workQueue: randomWorkQueue,
   workQueueFilter: randomWorkQueueFilter,
-  flowRunnerType: randomFlowRunnerType,
-  flowRunner: randomFlowRunner,
-  flowRunHistory: randomFlowRunHistory,
-  flowRunStateHistory: randomFlowRunStateHistory,
-  noun: randomNoun,
-  uiFlowRunHistory: randomUiFlowRunHistory,
-  parameters: randomParameters,
-  any: randomAny,
 }

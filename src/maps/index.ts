@@ -1,3 +1,12 @@
+import { mapBlockDocumentResponseToBlockDocument } from '@/maps/blockDocument'
+import { mapBlockDocumentCreateToBlockDocumentCreateRequest } from '@/maps/blockDocumentCreate'
+import { mapBlockDocumentFilterToBlockDocumentFilterRequest } from '@/maps/blockDocumentFilter'
+import { mapBlockDocumentUpdateToBlockDocumentUpdateRequest } from '@/maps/blockDocumentUpdate'
+import { mapBlockSchemaResponseToBlockSchema } from '@/maps/blockSchema'
+import { mapBlockSchemaFieldsResponseToBlockSchemaFields } from '@/maps/blockSchemaFields'
+import { mapBlockSchemaFilterToBlockSchemaFilterRequest } from '@/maps/blockSchemaFilter'
+import { mapBlockTypeResponseToBlockType } from '@/maps/blockType'
+import { mapBlockTypeFilterToBlockTypeRequest } from '@/maps/blockTypeFilter'
 import { mapCreateFlowRunToCreateFlowRunRequest } from '@/maps/createFlowRun'
 import { mapStringToDate, mapDateToString } from '@/maps/date'
 import { mapDeploymentToIDeploymentResponse, mapIDeploymentResponseToDeployment } from '@/maps/deployment'
@@ -25,6 +34,15 @@ import { mapWorkQueueToIWorkQueueResponse, mapIWorkQueueResponseToWorkQueue } fr
 import { mapWorkQueueFilterToIWorkQueueFilterResponse, mapIWorkQueueFilterResponseToWorkQueueFilter } from '@/maps/workQueueFilter'
 
 export const maps = {
+  BlockDocumentCreate: { BlockDocumentCreateRequest: mapBlockDocumentCreateToBlockDocumentCreateRequest },
+  BlockDocumentFilter: { BlockDocumentFilterRequest: mapBlockDocumentFilterToBlockDocumentFilterRequest },
+  BlockDocumentResponse: { BlockDocument: mapBlockDocumentResponseToBlockDocument },
+  BlockDocumentUpdate: { BlockDocumentUpdateRequest: mapBlockDocumentUpdateToBlockDocumentUpdateRequest },
+  BlockSchemaFieldsResponse: { BlockSchemaFields: mapBlockSchemaFieldsResponseToBlockSchemaFields },
+  BlockSchemaFilter: { BlockSchemaFilterRequest: mapBlockSchemaFilterToBlockSchemaFilterRequest },
+  BlockSchemaResponse: { BlockSchema: mapBlockSchemaResponseToBlockSchema },
+  BlockTypeFilter: { BlockTypeFilterRequest: mapBlockTypeFilterToBlockTypeRequest },
+  BlockTypeResponse: { BlockType: mapBlockTypeResponseToBlockType },
   CreateFlowRun: { CreateFlowRunRequest: mapCreateFlowRunToCreateFlowRunRequest },
   Date: { string: mapDateToString },
   Deployment: { IDeploymentResponse: mapDeploymentToIDeploymentResponse },
