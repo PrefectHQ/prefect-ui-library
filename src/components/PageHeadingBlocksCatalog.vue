@@ -1,5 +1,5 @@
 <template>
-  <page-heading class="page-heading-block-catalog" :crumbs="crumbs" />
+  <page-heading class="page-heading-blocks-catalog" :crumbs="crumbs" />
 </template>
 
 <script lang="ts" setup>

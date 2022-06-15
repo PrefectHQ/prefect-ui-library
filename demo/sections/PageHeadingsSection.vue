@@ -19,8 +19,8 @@
 
     <DemoSubSection heading="Blocks">
       <PageHeadingBlocks />
-      <PageHeadingBlockCatalog />
-      <PageHeadingBlockCatalogCreate :block-type="blockType" />
+      <PageHeadingBlocksCatalog />
+      <PageHeadingBlocksCatalogCreate :block-type="blockType" />
       <PageHeadingBlock :block-document="blockDocument" />
       <PageHeadingBlockEdit :block-document="blockDocument" />
     </DemoSubSection>
@@ -33,10 +33,10 @@
   import PageHeadingAccountSettings from '@/components/PageHeadingAccountSettings.vue'
   import PageHeadingApiKeys from '@/components/PageHeadingApiKeys.vue'
   import PageHeadingBlock from '@/components/PageHeadingBlock.vue'
-  import PageHeadingBlockCatalog from '@/components/PageHeadingBlockCatalog.vue'
-  import PageHeadingBlockCatalogCreate from '@/components/PageHeadingBlockCatalogCreate.vue'
   import PageHeadingBlockEdit from '@/components/PageHeadingBlockEdit.vue'
   import PageHeadingBlocks from '@/components/PageHeadingBlocks.vue'
+  import PageHeadingBlocksCatalog from '@/components/PageHeadingBlocksCatalog.vue'
+  import PageHeadingBlocksCatalogCreate from '@/components/PageHeadingBlocksCatalogCreate.vue'
   import PageHeadingDeployment from '@/components/PageHeadingDeployment.vue'
   import PageHeadingDeployments from '@/components/PageHeadingDeployments.vue'
   import PageHeadingFlow from '@/components/PageHeadingFlow.vue'
