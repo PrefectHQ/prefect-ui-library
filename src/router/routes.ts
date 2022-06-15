@@ -16,4 +16,9 @@ export const settingsRouteKey: InjectionKey<() => Route> = Symbol('settingsRoute
 export const taskRunRouteKey: InjectionKey<(taskRunId: string) => Route> = Symbol('taskRunRouteKey')
 export const workQueueRouteKey: InjectionKey<(workQueueId: string) => Route> = Symbol('workQueueRouteKey')
 export const workQueuesRouteKey: InjectionKey<() => Route> = Symbol('workQueuesRouteKey')
-export const workspaceDashboardKey: InjectionKey<Route> = Symbol('workspaceDashboardKey')
+
+export const blocksRouteKey: InjectionKey<() => Route> = Symbol('blocks')
+export const blockRouteKey: InjectionKey<(blockDocumentId: string) => Route> = Symbol('block')
+export const blockEditRouteKey: InjectionKey<(blockDocumentId: string) => Route> = Symbol('blockEdit')
+export const blockCatalogRouteKey: InjectionKey<() => Route> = Symbol('blockCreate')
+export const blockCatalogCreateRouteKey: InjectionKey<(blockTypeName: string) => Route> = Symbol('blockCreate')

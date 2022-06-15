@@ -21,8 +21,8 @@
   import { RouterView } from 'vue-router'
   import AppSidebar from './components/AppSidebar.vue'
   import { flowRunsApi, logsApi, taskRunsApi, flowsApi, deploymentsApi, workQueueApi, notificationsApi } from './services'
-  import { deploymentRouteKey, flowRouteKey, flowRunsRouteKey, flowsRouteKey, deploymentsRouteKey, workQueuesRouteKey, settingsRouteKey, workQueueRouteKey, Route, flowRunRouteKey, workQueueCreateRouteKey, editQueueRouteKey, editNotificationRouteKey } from '@/router'
-  import { flowRunsApiKey, logsApiKey, taskRunsApiKey, flowsApiKey, deploymentsApiKey, workQueuesApiKey, notificationsApiKey } from '@/services'
+  import { deploymentRouteKey, flowRouteKey, flowRunsRouteKey, flowsRouteKey, deploymentsRouteKey, workQueuesRouteKey, settingsRouteKey, workQueueRouteKey, Route, flowRunRouteKey, workQueueCreateRouteKey, editQueueRouteKey, blocksRouteKey, blockCatalogRouteKey, blockRouteKey, blockEditRouteKey, editNotificationRouteKey } from '@/router'
+  import { flowRunsApiKey, logsApiKey, taskRunsApiKey, flowsApiKey, deploymentsApiKey, workQueuesApiKey, notificationsApiKey blockDocumentsApiKey, mocker } from '@/services'
 
   const emptyRoute = (): Route => ({ path: '/nothing' })
 
@@ -46,6 +46,11 @@
   provide(workQueueCreateRouteKey, emptyRoute)
   provide(editQueueRouteKey, emptyRoute)
   provide(editNotificationRouteKey, emptyRoute)
+  provide(blocksRouteKey, emptyRoute)
+  provide(blockCatalogRouteKey, emptyRoute)
+  provide(blockRouteKey, emptyRoute)
+  provide(blockEditRouteKey, emptyRoute)
+  provide(blockDocumentsApiKey, mocker.create('blockDocumentsApi'))
 
   const mobileMenuOpen = ref(false)
   const showMenu = computed(() => media.lg || mobileMenuOpen.value)
