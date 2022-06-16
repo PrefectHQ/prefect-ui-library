@@ -32,6 +32,19 @@
       <template #action="{ row }">
         <BlockDocumentMenu :block-document="row" size="xs" />
       </template>
+
+      <template #empty-state>
+        <PEmptyResults>
+          <template #message>
+            No blocks
+          </template>
+          <template #actions>
+            <p-button size="sm" secondary @click="clear">
+              Clear Filters
+            </p-button>
+          </template>
+        </PEmptyResults>
+      </template>
     </p-table>
   </div>
 </template>

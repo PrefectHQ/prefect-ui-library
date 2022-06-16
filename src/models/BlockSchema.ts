@@ -2,11 +2,11 @@ import { BlockType } from './BlockType'
 
 export type BlockSchemaFieldsType = 'object'
 
-export const blockSchemaPropertyType = ['string', 'hash'] as const
-export type BlockSchemaPropertyType = typeof blockSchemaPropertyType[number]
+export const blockSchemaPropertyTypes = ['string', 'hash'] as const
+export type BlockSchemaPropertyType = typeof blockSchemaPropertyTypes[number]
 
-export const blockSchemaCapability = ['writable', 'readable', 'storage'] as const
-export type BlockSchemaCapability = typeof blockSchemaCapability[number]
+export const blockSchemaCapabilities = ['writable', 'readable', 'storage'] as const
+export type BlockSchemaCapability = typeof blockSchemaCapabilities[number]
 
 export type BlockSchemaProperty = {
   title: string,
