@@ -1,8 +1,12 @@
 import { BlockType } from './BlockType'
 
 export type BlockSchemaFieldsType = 'object'
-export type BlockSchemaPropertyType = 'string' | 'hash'
-export type BlockTypeCapability = 'writable' | 'readable' | 'storage'
+
+export const blockSchemaPropertyType = ['string', 'hash'] as const
+export type BlockSchemaPropertyType = typeof blockSchemaPropertyType[number]
+
+export const blockSchemaCapability = ['writable', 'readable', 'storage'] as const
+export type BlockSchemaCapability = typeof blockSchemaCapability[number]
 
 export type BlockSchemaProperty = {
   title: string,
@@ -28,7 +32,7 @@ export interface IBlockSchema {
   fields: BlockSchemaFields,
   blockTypeId: string,
   blockType: BlockType,
-  capabilities: BlockTypeCapability[],
+  capabilities: BlockSchemaCapability[],
 }
 
 export class BlockSchema implements IBlockSchema {
@@ -39,7 +43,7 @@ export class BlockSchema implements IBlockSchema {
   public fields: BlockSchemaFields
   public blockTypeId: string
   public blockType: BlockType
-  public capabilities: BlockTypeCapability[]
+  public capabilities: BlockSchemaCapability[]
 
   public constructor(blockSchema: IBlockSchema) {
     this.id = blockSchema.id

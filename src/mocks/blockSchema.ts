@@ -10,7 +10,7 @@ export const randomBlockSchema: MockFunction<BlockSchema> = function(overrides: 
     fields: this.create('blockSchemaFields'),
     blockTypeId: this.create('string'),
     blockType: this.create('blockType'),
-    capabilities: [],
+    capabilities: this.create('blockSchemaCapabilities'),
     ...overrides,
   })
 }

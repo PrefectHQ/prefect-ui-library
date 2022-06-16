@@ -65,3 +65,19 @@ export function isSame(arrayA: any[], arrayB: any[]): boolean {
     return match
   }))
 }
+
+// shamelessly copied from https://stackoverflow.com/a/2450976/2687861
+export function shuffle<T>(array: T[]): T[] {
+  let currentIndex = array.length
+  let randomIndex = undefined
+
+  while (currentIndex != 0) {
+
+    randomIndex = Math.floor(Math.random() * currentIndex)
+    currentIndex--;
+
+    [array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]]
+  }
+
+  return array
+}

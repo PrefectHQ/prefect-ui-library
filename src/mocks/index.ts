@@ -2,6 +2,8 @@ import { randomAny } from './any'
 import { randomBlockDocument } from './blockDocument'
 import { blockDocumentsApiMockFactory } from './blockDocumentsApi'
 import { randomBlockSchema } from './blockSchema'
+import { randomBlockSchemaCapabilities } from './blockSchemaCapabilities'
+import { randomBlockSchemaCapability } from './blockSchemaCapability'
 import { randomBlockSchemaFields } from './blockSchemaFields'
 import { randomBlockType } from './blockType'
 import { randomBoolean } from './boolean'
@@ -32,6 +34,8 @@ export const mocks = {
   blockDocument: randomBlockDocument,
   blockDocumentsApi: blockDocumentsApiMockFactory,
   blockSchema: randomBlockSchema,
+  blockSchemaCapability: randomBlockSchemaCapability,
+  blockSchemaCapabilities: randomBlockSchemaCapabilities,
   blockSchemaFields: randomBlockSchemaFields,
   blockType: randomBlockType,
   boolean: randomBoolean,
