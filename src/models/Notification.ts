@@ -1,5 +1,3 @@
-import { IState } from './State'
-
 export const notificationStatus = ['all', 'active', 'paused'] as const
 export type NotificationStatus = typeof notificationStatus[number]
 
@@ -9,7 +7,7 @@ export interface INotification {
   updated: Date,
   name: string,
   isActive: boolean,
-  states: IState[],
+  stateNames: string[],
   tags: string[],
   blockDocumentId: string,
 }
@@ -20,7 +18,7 @@ export class Notification implements INotification {
   public updated: Date
   public name: string
   public isActive: boolean
-  public states: IState[]
+  public stateNames: string[]
   public tags: string[]
   public blockDocumentId: string
 
@@ -30,7 +28,7 @@ export class Notification implements INotification {
     this.updated = notification.updated
     this.name = notification.name
     this.isActive = notification.isActive
-    this.states = notification.states
+    this.stateNames = notification.stateNames
     this.tags = notification.tags
     this.blockDocumentId = notification.blockDocumentId
   }
