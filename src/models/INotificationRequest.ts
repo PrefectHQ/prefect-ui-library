@@ -6,3 +6,11 @@ export interface INotificationRequest {
   tags: string[],
   block_document_id: string,
 }
+
+export interface INotificationUpdateRequest {
+  name?: string,
+  is_active?: boolean,
+  state_names?: string[],
+  tags?: string[],
+  block_document_id?: string,
+}
