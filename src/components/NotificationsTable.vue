@@ -10,16 +10,13 @@
         {{ row.name }}
       </template>
 
-      <template #status-heading>
-        <span />
-      </template>
-
       <template #action-heading>
         <span />
       </template>
 
-      <template #status="{ row }">
-        
+      <template #action="{ row }">
+        <NotificationToggle :notification="row" @update="emits('update')" />
+        <NotificationMenu :notification="row" @delete="id => emits('delete', id)" />
       </template>
     </p-table>
   </div>
@@ -28,7 +25,9 @@
 <script lang="ts" setup>
   import { PTable, PEmptyResults } from '@prefecthq/prefect-design'
   import { ref, computed } from 'vue'
+  import NotificationMenu from '@/components/NotificationMenu.vue'
   import NotificationStatusSelect from '@/components/NotificationStatusSelect.vue'
+  import NotificationToggle from '@/components/NotificationToggle.vue'
   import ResultsCount from '@/components/ResultsCount.vue'
   import { Notification, NotificationStatus } from '@/models'
   import { inject } from '@/utilities'
@@ -49,10 +48,6 @@
     {
       property: 'notification',
       label: 'Notification',
-    },
-    {
-      property: 'status',
-      label: 'Status',
     },
     {
       label: 'Action',
