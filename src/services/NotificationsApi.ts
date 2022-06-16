@@ -25,12 +25,13 @@ export class NotificationsApi extends Api {
       .then(({ data }) => mapper.map('INotificationResponse', data, 'Notification'))
   }
 
-  public getNotificationsCount(filter: UnionFilters): Promise<number> {
-    return this.post<number>('/count', filter).then(({ data }) => data)
+  public updateNotification(id: string, notification: INotificationRequest): Promise<Notification> {
+    return this.patch<INotificationResponse>(`/${id}`, notification)
+      .then(({ data }) => mapper.map('INotificationResponse', data, 'Notification'))
   }
 
-  public deleteNotification(NotificationId: string): Promise<void> {
-    return this.delete(`/${NotificationId}`)
+  public deleteNotification(id: string): Promise<void> {
+    return this.delete(`/${id}`)
   }
 }
 
