@@ -19,6 +19,7 @@
   import DemoSection from '../components/DemoSection.vue'
   import DemoSubSection from '../components/DemoSubSection.vue'
   import DeploymentToggle from '@/components/DeploymentToggle.vue'
+  import NotificationToggle from '@/components/NotificationToggle.vue'
   import WorkQueueToggle from '@/components/WorkQueueToggle.vue'
   import { mocker } from '@/services'
 
