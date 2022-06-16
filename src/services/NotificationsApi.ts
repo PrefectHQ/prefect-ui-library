@@ -30,8 +30,8 @@ export class NotificationsApi extends Api {
       .then(({ data }) => mapper.map('INotificationResponse', data, 'Notification'))
   }
 
-  public deleteNotification(NotificationId: string): Promise<void> {
-    return this.delete(`/${NotificationId}`)
+  public deleteNotification(id: string): Promise<void> {
+    return this.delete(`/${id}`)
   }
 }
 
