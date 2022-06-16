@@ -4,15 +4,20 @@ import { BlockTypesApi } from '@/services/BlockTypesApi'
 import { MockFunction } from '@/services/Mocker'
 import { mockClass } from '@/utilities/mocks'
 
-export const blockTypesApiFactory: MockFunction<BlockTypesApi> = function(overrides: Partial<BlockTypesApi> = {}) {
-  const blockTypes = this.createMany('blockType', this.create('number', [2, 20]))
+type BlockTypesApiFactoryParameters = {
+  overrides?: Partial<BlockTypesApi>,
+  blockTypes?: BlockType[],
+}
+
+export const blockTypesApiFactory: MockFunction<BlockTypesApi> = function({ blockTypes, overrides }: BlockTypesApiFactoryParameters = {}) {
+  const types = blockTypes ?? this.createMany('blockType', this.create('number', [2, 20]))
 
   return mockClass(BlockTypesApi, {
-    getBlockTypes: () => Promise.resolve(blockTypes),
+    getBlockTypes: () => Promise.resolve(types),
 
     getBlockType: (blockTypeId: string) => {
       return new Promise<BlockType>((resolve, reject) => {
-        const blockType = blockTypes.find(blockType => blockType.id == blockTypeId)
+        const blockType = types.find(blockType => blockType.id == blockTypeId)
 
         if (blockType === undefined) {
           return reject(new AxiosError('Block type not found', '404'))

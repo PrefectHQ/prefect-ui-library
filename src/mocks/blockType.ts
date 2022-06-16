@@ -6,7 +6,7 @@ export const randomBlockType: MockFunction<BlockType> = function(blockType: Part
     id: blockType.id ?? this.create('string'),
     created: blockType.created ?? this.create('date'),
     updated: blockType.updated ?? this.create('date'),
-    name: blockType.name ?? this.create('string'),
+    name: blockType.name ?? this.create('noun'),
     logoUrl: blockType.logoUrl ?? this.create('image'),
     documentationUrl: blockType.documentationUrl ?? 'orion-docs.prefect.io',
   })

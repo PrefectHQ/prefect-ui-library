@@ -60,6 +60,7 @@
   import BlockTypeSelect from './BlockTypeSelect.vue'
   import ResultsCount from './ResultsCount.vue'
   import SearchInput from './SearchInput.vue'
+  import { BlockSchemaCapability } from '@/models'
   import { BlockDocument } from '@/models/BlockDocument'
   import { blockRouteKey } from '@/router'
   import { inject } from '@/utilities'
@@ -75,8 +76,8 @@
 
   const blockDocumentRoute = inject(blockRouteKey)
   const searchTerm = ref('')
-  const selectedCapability = ref(null)
-  const selectedType = ref(null)
+  const selectedCapability = ref<BlockSchemaCapability | null>(null)
+  const selectedType = ref<string | null>(null)
 
   const columns = computed<TableColumn[]>(() => [
     {
@@ -94,22 +95,27 @@
     },
   ])
 
-  const filtered = computed(() => {
-    if (searchTerm.value.length === 0) {
-      return props.blockDocuments
-    }
-
-    return props.blockDocuments.filter(filterDeployment)
-  })
+  const filtered = computed(() => props.blockDocuments.filter(filterDeployment))
 
   function filterDeployment({ name, blockType, blockSchema }: BlockDocument): boolean {
-    const capabilities = blockSchema.capabilities.join(' ')
+    const { capabilities: blockSchemaCapabilities } = blockSchema
+    const { name: blockTypeName } = blockType
 
-    return `${name} ${blockType.name} ${capabilities}`.toLowerCase().includes(searchTerm.value.toLowerCase())
+    if (selectedCapability.value && !blockSchemaCapabilities.includes(selectedCapability.value)) {
+      return false
+    }
+
+    if (selectedType.value && blockTypeName != selectedType.value) {
+      return false
+    }
+
+    return `${name} ${blockType.name} ${blockSchemaCapabilities.join(' ')}`.toLowerCase().includes(searchTerm.value.toLowerCase())
   }
 
   function clear(): void {
     searchTerm.value = ''
+    selectedCapability.value = null
+    selectedType.value = null
   }
 </script>
 
