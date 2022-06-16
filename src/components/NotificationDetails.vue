@@ -1,7 +1,8 @@
 <template>
   <div class="notification-details">
-    If a run of any flow with a
+    If a run of any flow with
     <template v-if="notification.tags.length">
+      a
       <p-tags :tags="allButLastArrayItems(notification.tags)" class="notification-details__tags" />
       <template v-if="notification.tags.length > 1">
         or
@@ -47,16 +48,19 @@
 
 <script lang="ts" setup>
   import { PIcon, PTag, PTags } from '@prefecthq/prefect-design'
+  import { withDefaults } from 'vue'
   import StateBadge from '@/components/StateBadge.vue'
   import { Notification, StateType } from '@/models'
   import { isEmail } from '@/services/validate'
   import { allButLastArrayItems, lastItemInArray } from '@/utilities/arrays'
   import { mapStateNameToStateType } from '@/utilities/state'
 
-  defineProps<{
+  withDefaults(defineProps<{
     notification: Notification,
-    sendTo: string,
-  }>()
+    sendTo?: string,
+  }>(), {
+    sendTo: 'alert-channel',
+  })
 
   function mapLastItem(item: string[]): { name: string, type: StateType | null } {
     return mapStateNameToStateType(lastItemInArray(item))
