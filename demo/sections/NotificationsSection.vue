@@ -1,5 +1,8 @@
 <template>
   <DemoSection heading="Notifications">
+    <DemoSubSection heading="Notification Overflow Menu">
+      <NotificationMenu :notification="notification" />
+    </DemoSubSection>
     <DemoSubSection heading="Notification Detail">
       <!--  -->
     </DemoSubSection>
@@ -15,6 +18,7 @@
 <script lang="ts" setup>
   import DemoSection from '../components/DemoSection.vue'
   import DemoSubSection from '../components/DemoSubSection.vue'
+  import NotificationMenu from '@/components/NotificationMenu.vue'
   import { mocker } from '@/services'
   const notification = mocker.create('notification')
   const emptyNotification = {
