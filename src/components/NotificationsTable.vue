@@ -24,7 +24,7 @@
       <template #empty-state>
         <PEmptyResults>
           <template #message>
-            No notification
+            No notifications
           </template>
           <template v-if="hasFilter" #actions>
             <p-button size="sm" secondary @click="clear">
