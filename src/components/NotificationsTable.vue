@@ -7,7 +7,9 @@
 
     <p-table :data="filtered" :columns="columns" class="notifications-table">
       <template #notification="{ row }">
-        <NotificationDetails :notification="row" class="notifications-table__details" />
+        <div class="notifications-table__details">
+          <NotificationDetails :notification="row" />
+        </div>
       </template>
 
       <template #action-heading>
