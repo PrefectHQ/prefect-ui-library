@@ -30,7 +30,7 @@
   const props = withDefaults(defineProps<{
     showModal: boolean,
     name?: string,
-    action: 'Delete' | 'Remove',
+    action?: 'Delete' | 'Remove',
   }>(), {
     name: '',
     action: 'Delete',
