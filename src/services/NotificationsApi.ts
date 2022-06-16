@@ -1,5 +1,5 @@
 import { InjectionKey } from 'vue'
-import { INotificationRequest } from '@/models/INotificationRequest'
+import { INotificationRequest, INotificationUpdateRequest } from '@/models/INotificationRequest'
 import { INotificationResponse } from '@/models/INotificationResponse'
 import { Notification } from '@/models/Notification'
 import { NotificationFilter } from '@/models/NotificationFilter'
@@ -25,7 +25,7 @@ export class NotificationsApi extends Api {
       .then(({ data }) => mapper.map('INotificationResponse', data, 'Notification'))
   }
 
-  public updateNotification(id: string, notification: INotificationRequest): Promise<Notification> {
+  public updateNotification(id: string, notification: INotificationUpdateRequest): Promise<Notification> {
     return this.patch<INotificationResponse>(`/${id}`, notification)
       .then(({ data }) => mapper.map('INotificationResponse', data, 'Notification'))
   }
