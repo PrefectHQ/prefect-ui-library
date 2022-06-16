@@ -2,8 +2,8 @@ import { createActions } from '@prefecthq/vue-compositions'
 import { MockedApi } from './MockedApi'
 import { INotificationRequest } from '@/models/INotificationRequest'
 import { Notification } from '@/models/Notification'
+import { NotificationFilter } from '@/models/NotificationFilter'
 import { mocker } from '@/services'
-import { UnionFilters } from '@/types/UnionFilters'
 
 export class NotificationsApi extends MockedApi {
   public getNotification(id: string): Promise<Notification> {
@@ -14,7 +14,7 @@ export class NotificationsApi extends MockedApi {
     return this.promise(mocker.create('notification', [notification]))
   }
 
-  public getNotifications(filter: UnionFilters): Promise<Notification[]> {
+  public getNotifications(filter: NotificationFilter): Promise<Notification[]> {
     return this.promise(mocker.createMany('notification', mocker.create('number', [1, 10])))
   }
 
