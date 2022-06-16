@@ -11,7 +11,9 @@
       </PGlobalSidebar>
     </template>
     <app-sidebar v-if="showMenu" class="app__sidebar" @click="close" />
-    <router-view />
+    <suspense>
+      <router-view />
+    </suspense>
   </div>
 </template>
 

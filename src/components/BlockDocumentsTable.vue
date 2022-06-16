@@ -1,10 +1,10 @@
 <template>
   <div class="block-documents-table">
-    <div class="block-documents-table__search">
-      <ResultsCount label="blocks" :count="filtered.length" />
-      <SearchInput v-model="searchTerm" placeholder="Search blocks" label="Search blocks" />
-      <BlockSchemaCapabilitySelect v-model:selected="selectedCapability" />
-      <BlockTypeSelect v-model:selected="selectedType" />
+    <div class="block-documents-table__filters">
+      <ResultsCount label="blocks" :count="filtered.length" class="block-documents-table__results" />
+      <SearchInput v-model="searchTerm" placeholder="Search blocks" label="Search blocks" class="block-documents-table__search" />
+      <BlockSchemaCapabilitySelect v-model:selected="selectedCapability" class="block-documents-table__capability" />
+      <BlockTypeSelect v-model:selected="selectedType" class="block-documents-table__type" />
     </div>
     <p-table :data="filtered" :columns="columns">
       <template #name="{ row }: { row: BlockDocument }">
@@ -32,7 +32,7 @@
         <span />
       </template>
       <template #action="{ row }">
-        <BlockDocumentMenu :block-document="row" size="xs" />
+        <BlockDocumentMenu :block-document="row" size="xs" @delete="emit('delete')" />
       </template>
 
       <template #empty-state>
@@ -69,9 +69,8 @@
     blockDocuments: BlockDocument[],
   }>()
 
-  const emits = defineEmits<{
-    (event: 'update'): void,
-    (event: 'delete', value: string): void,
+  const emit = defineEmits<{
+    (event: 'delete'): void,
   }>()
 
   const blockDocumentRoute = inject(blockRouteKey)
@@ -120,11 +119,53 @@
 </script>
 
 <style>
-.block-documents-table__search { @apply
-  flex
+.block-documents-table__filters { @apply
+  grid
+  md:flex
+  gap-2
   justify-between
   items-center
   mb-4
+}
+
+.block-documents-table__filters {
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-areas: "search"
+                       "capability"
+                       "type"
+                       "results";
+
+}
+
+@screen sm {
+  .block-documents-table__filters {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    grid-template-areas: "search     search"
+                        "capability type"
+                        "results    results";
+  }
+}
+
+.block-documents-table__results { @apply
+  mt-2
+  md:mt-0
+  md:mr-auto
+}
+
+.block-documents-table__search {
+  grid-area: search;
+}
+
+.block-documents-table__capability {
+  grid-area: capability;
+}
+
+.block-documents-table__type {
+  grid-area: type;
+}
+
+.block-documents-table__results {
+  grid-area: results;
 }
 
 .block-documents-table__name-column { @apply
