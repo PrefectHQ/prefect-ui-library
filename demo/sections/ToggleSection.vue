@@ -7,6 +7,10 @@
     <DemoSubSection heading="Deployments Toggle" class="mt-auto">
       <DeploymentToggle v-model:deployment="deployment" />
     </DemoSubSection>
+
+    <DemoSubSection heading="Notifications Toggle" class="mt-auto">
+      <NotificationToggle v-model:notification="notification" @update="updateNotification" />
+    </DemoSubSection>
   </DemoSection>
 </template>
 
@@ -20,4 +24,7 @@
 
   const workQueue = ref(mocker.create('workQueue'))
   const deployment = ref(mocker.create('deployment'))
+  const notification = ref(mocker.create('notification'))
+
+  const updateNotification = (): void => console.log('not', notification)
 </script>
