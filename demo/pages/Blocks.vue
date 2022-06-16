@@ -3,6 +3,7 @@
     <BlocksPageHeadingsSection />
     <BlockDocumentsSection />
     <BlockSchemaCapabilitiesSection />
+    <BlockTypesSection />
   </p-layout-default>
 </template>
 
@@ -11,4 +12,5 @@
   import BlockDocumentsSection from '../sections/BlockDocumentsSection.vue'
   import BlockSchemaCapabilitiesSection from '../sections/BlockSchemaCapabilitiesSection.vue'
   import BlocksPageHeadingsSection from '../sections/BlocksPageHeadingsSection.vue'
+  import BlockTypesSection from '../sections/BlockTypesSection.vue'
 </script>
