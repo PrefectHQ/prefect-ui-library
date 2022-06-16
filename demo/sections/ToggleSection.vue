@@ -9,7 +9,7 @@
     </DemoSubSection>
 
     <DemoSubSection heading="Notifications Toggle" class="mt-auto">
-      <NotificationToggle v-model:notification="notification" @update="updateNotification" />
+      <NotificationToggle v-model:notification="notification" @update="handleUpdate" />
     </DemoSubSection>
   </DemoSection>
 </template>
@@ -27,5 +27,8 @@
   const deployment = ref(mocker.create('deployment'))
   const notification = ref(mocker.create('notification'))
 
-  const updateNotification = (): void => console.log('not', notification)
+  const handleUpdate = (): void => {
+    const value = notification.value.isActive
+    notification.value.isActive = !value
+  }
 </script>
