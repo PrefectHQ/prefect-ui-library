@@ -83,8 +83,10 @@
     return props.blockDocuments.filter(filterDeployment)
   })
 
-  function filterDeployment({ name, blockType }: BlockDocument): boolean {
-    return `${name} ${blockType.name}`.toLowerCase().includes(searchTerm.value.toLowerCase())
+  function filterDeployment({ name, blockType, blockSchema }: BlockDocument): boolean {
+    const capabilities = blockSchema.capabilities.join(' ')
+
+    return `${name} ${blockType.name} ${capabilities}`.toLowerCase().includes(searchTerm.value.toLowerCase())
   }
 
   function clear(): void {
@@ -93,6 +95,13 @@
 </script>
 
 <style>
+.block-documents-table__search { @apply
+  flex
+  justify-between
+  items-center
+  mb-4
+}
+
 .block-documents-table__name-column { @apply
   flex
   md:items-center
