@@ -1,3 +1,4 @@
+import { InjectionKey } from 'vue'
 import { Api, ApiRoute } from './Api'
 import { mapper } from './Mapper'
 import { BlockDocumentResponse } from '@/models/api/BlockDocumentResponse'
@@ -30,4 +31,10 @@ export class BlockDocumentsApi extends Api {
       .then(({ data }) => mapper.map('BlockDocumentResponse', data, 'BlockDocument'))
   }
 
+  public deleteBlockDocument(blockDocumentId: string): Promise<void> {
+    return this.delete(`/${blockDocumentId}`)
+  }
+
 }
+
+export const blockDocumentsApiKey: InjectionKey<BlockDocumentsApi> = Symbol('blockDocumentsApiKey')

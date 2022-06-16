@@ -1,3 +1,4 @@
+import { InjectionKey } from 'vue'
 import { Api, ApiRoute } from './Api'
 import { mapper } from './Mapper'
 import { BlockTypeResponse } from '@/models/api/BlockTypeResponse'
@@ -13,9 +14,16 @@ export class BlockTypesApi extends Api {
       .then(({ data }) => mapper.map('BlockTypeResponse', data, 'BlockType'))
   }
 
+  public getBlockTypeByName(blockTypeName: string): Promise<BlockType> {
+    return this.get<BlockTypeResponse>(`/name/${blockTypeName}`)
+      .then(({ data }) => mapper.map('BlockTypeResponse', data, 'BlockType'))
+  }
+
   public getBlockTypes(filter: BlockTypeFilter = {}): Promise<BlockType[]> {
     return this.post<BlockTypeResponse[]>('/filter', mapper.map('BlockTypeFilter', filter, 'BlockTypeFilterRequest'))
       .then(({ data }) => mapper.map('BlockTypeResponse', data, 'BlockType'))
   }
 
 }
+
+export const blockTypesApiKey: InjectionKey<BlockTypesApi> = Symbol('blockTypesApiKey')

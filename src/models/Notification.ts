@@ -1,4 +1,8 @@
 import { IState } from './State'
+
+export const notificationStatus = ['all', 'active', 'paused'] as const
+export type NotificationStatus = typeof notificationStatus[number]
+
 export interface INotification {
   id: string,
   created: Date,
