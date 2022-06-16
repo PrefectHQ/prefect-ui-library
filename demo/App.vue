@@ -20,9 +20,9 @@
   import { computed, provide, ref, watchEffect } from 'vue'
   import { RouterView } from 'vue-router'
   import AppSidebar from './components/AppSidebar.vue'
-  import { flowRunsApi, logsApi, taskRunsApi, flowsApi, deploymentsApi, workQueueApi } from './services'
-  import { deploymentRouteKey, flowRouteKey, flowRunsRouteKey, flowsRouteKey, deploymentsRouteKey, workQueuesRouteKey, settingsRouteKey, workQueueRouteKey, Route, flowRunRouteKey, workQueueCreateRouteKey, editQueueRouteKey, blocksRouteKey, blockCatalogRouteKey, blockRouteKey, blockEditRouteKey } from '@/router'
-  import { flowRunsApiKey, logsApiKey, taskRunsApiKey, flowsApiKey, deploymentsApiKey, workQueuesApiKey, blockDocumentsApiKey, mocker } from '@/services'
+  import { flowRunsApi, logsApi, taskRunsApi, flowsApi, deploymentsApi, workQueueApi, notificationsApi } from './services'
+  import { deploymentRouteKey, flowRouteKey, flowRunsRouteKey, flowsRouteKey, deploymentsRouteKey, workQueuesRouteKey, settingsRouteKey, workQueueRouteKey, Route, flowRunRouteKey, workQueueCreateRouteKey, editQueueRouteKey, blocksRouteKey, blockCatalogRouteKey, blockRouteKey, blockEditRouteKey, editNotificationRouteKey } from '@/router'
+  import { flowRunsApiKey, logsApiKey, taskRunsApiKey, flowsApiKey, deploymentsApiKey, workQueuesApiKey, notificationsApiKey, blockDocumentsApiKey, mocker } from '@/services'
 
   const emptyRoute = (): Route => ({ path: '/nothing' })
 
@@ -32,6 +32,7 @@
   provide(flowsApiKey, flowsApi)
   provide(deploymentsApiKey, deploymentsApi)
   provide(workQueuesApiKey, workQueueApi)
+  provide(notificationsApiKey, notificationsApi)
   provide(flowRouteKey, emptyRoute)
   provide(flowRunRouteKey, emptyRoute)
   provide(flowRunsRouteKey, emptyRoute)
@@ -44,6 +45,7 @@
   provide(workQueueRouteKey, emptyRoute)
   provide(workQueueCreateRouteKey, emptyRoute)
   provide(editQueueRouteKey, emptyRoute)
+  provide(editNotificationRouteKey, emptyRoute)
   provide(blocksRouteKey, emptyRoute)
   provide(blockCatalogRouteKey, emptyRoute)
   provide(blockRouteKey, emptyRoute)
