@@ -2,9 +2,9 @@ import { InjectionKey } from 'vue'
 import { INotificationRequest } from '@/models/INotificationRequest'
 import { INotificationResponse } from '@/models/INotificationResponse'
 import { Notification } from '@/models/Notification'
+import { NotificationFilter } from '@/models/NotificationFilter'
 import { Api, ApiRoute } from '@/services/Api'
 import { mapper } from '@/services/Mapper'
-import { UnionFilters } from '@/types/UnionFilters'
 
 export class NotificationsApi extends Api {
 
@@ -20,7 +20,7 @@ export class NotificationsApi extends Api {
       .then(({ data }) => mapper.map('INotificationResponse', data, 'Notification'))
   }
 
-  public getNotifications(filter: UnionFilters): Promise<Notification[]> {
+  public getNotifications(filter: NotificationFilter): Promise<Notification[]> {
     return this.post<INotificationResponse[]>('/filter', filter)
       .then(({ data }) => mapper.map('INotificationResponse', data, 'Notification'))
   }
