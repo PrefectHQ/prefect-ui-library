@@ -36,10 +36,10 @@
     try {
       if (value) {
         await workQueuesApi.resumeWorkQueue(props.workQueue.id)
-        showToast(`${props.workQueue.name} active`, 'success', undefined, 3000)
+        showToast(`${props.workQueue.name} active`, 'success')
       } else {
         await workQueuesApi.pauseWorkQueue(props.workQueue.id)
-        showToast(`${props.workQueue.name} paused`, 'error', undefined, 3000)
+        showToast(`${props.workQueue.name} paused`, 'success')
       }
 
       emit('update')
