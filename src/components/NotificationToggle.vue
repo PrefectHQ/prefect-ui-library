@@ -34,14 +34,8 @@
     loading.value = true
 
     try {
-      const notification = {
-        name: props.notification.name,
-        state_names: props.notification.stateNames,
-        is_active: props.notification.isActive,
-        tags: props.notification.tags,
-        block_document_id: props.notification.blockDocumentId,
-      }
-      notification.is_active = value
+      console.log(value)
+      const notification = { is_active: value }
       await notificationsApi.updateNotification(props.notification.id, notification)
       const activeOrPaused = value ? 'Active' : 'Paused'
       showToast(`${props.notification.name} ${activeOrPaused}`, 'success', undefined, 3000)
