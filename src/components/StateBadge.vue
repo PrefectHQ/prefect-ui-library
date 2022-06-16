@@ -1,6 +1,6 @@
 <template>
   <p-tag class="state-badge" :class="classes" :dismissible="dismissible">
-    <StateIcon :state-type="state?.type" :shade="iconShade" class="state-badge__icon" />
+    <StateIcon v-if="!stateWithNoType" :state-type="state?.type" :shade="iconShade" class="state-badge__icon" />
     <span>{{ name }}</span>
   </p-tag>
 </template>
@@ -12,11 +12,12 @@
   import { TailwindColor } from '@/types/tailwind'
 
   const props = defineProps<{
-    state: { name: string, type: StateType } | null,
+    state: { name: string, type: StateType | null } | null,
     flat?: boolean,
     dismissible?: boolean,
   }>()
 
+  const stateWithNoType = computed(() => props.state && !props.state.type)
   const type = computed(() => props.state?.type ?? 'unknown')
   const name = computed(() => props.state?.name ?? 'Unknown')
 
