@@ -9,7 +9,7 @@ export const randomNotification: MockFunction<Notification> = function(notificat
     updated: notification?.updated ?? this.create('date'),
     name: notification?.name ?? this.create('string'),
     isActive: notification?.isActive ?? this.create('boolean'),
-    states: notification?.states ?? this.createMany('state', 3),
+    stateNames: notification?.stateNames ?? this.createMany('stateType', 3),
     tags: notification?.tags ?? this.createMany('string', 4),
     blockDocumentId: notification?.blockDocumentId ?? this.create('string'),
   })

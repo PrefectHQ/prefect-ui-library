@@ -23,7 +23,7 @@
     id: mocker.create('id'),
     isActive: mocker.create('boolean'),
     name: 'very-important-notification',
-    states: [],
+    stateNames: [],
     tags: [],
     updated: mocker.create('date'),
   }
