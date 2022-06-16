@@ -3,6 +3,8 @@
     <div class="block-documents-table__search">
       <ResultsCount label="blocks" :count="filtered.length" />
       <SearchInput v-model="searchTerm" placeholder="Search blocks" label="Search blocks" />
+      <BlockSchemaCapabilitySelect v-model:selected="selectedCapability" />
+      <BlockTypeSelect v-model:selected="selectedType" />
     </div>
     <p-table :data="filtered" :columns="columns">
       <template #name="{ row }: { row: BlockDocument }">
@@ -54,6 +56,8 @@
   import { computed, ref } from 'vue'
   import BlockDocumentMenu from './BlockDocumentMenu.vue'
   import BlockSchemaCapabilities from './BlockSchemaCapabilities.vue'
+  import BlockSchemaCapabilitySelect from './BlockSchemaCapabilitySelect.vue'
+  import BlockTypeSelect from './BlockTypeSelect.vue'
   import ResultsCount from './ResultsCount.vue'
   import SearchInput from './SearchInput.vue'
   import { BlockDocument } from '@/models/BlockDocument'
@@ -71,6 +75,8 @@
 
   const blockDocumentRoute = inject(blockRouteKey)
   const searchTerm = ref('')
+  const selectedCapability = ref(null)
+  const selectedType = ref(null)
 
   const columns = computed<TableColumn[]>(() => [
     {

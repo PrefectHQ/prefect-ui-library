@@ -10,7 +10,7 @@
   import { useSubscription } from '@prefecthq/vue-compositions'
   import { computed } from 'vue'
   import { blockTypesApiKey } from '@/services'
-  import { capitalize, inject } from '@/utilities'
+  import { inject } from '@/utilities'
 
   const props = defineProps<{
     selected: string | null,
@@ -36,7 +36,7 @@
   const options = computed(() => {
     const allOption = { label: 'All', value: null }
     const capabilityOptions = blockTypes.value.map(({ name }) => ({
-      label: capitalize(name),
+      label: name,
       value: name,
     }))
 
