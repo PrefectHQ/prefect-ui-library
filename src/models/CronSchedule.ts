@@ -15,6 +15,7 @@ export interface ICronScheduleRaw {
 
 export type ICronSchedule = ICronScheduleRaw & Schedule
 
+// This class modifies the underlying Cron class to expose string utilities as public methods
 class PublicCron extends Cron {
   public getFullDescription(): string {
     try {
@@ -104,7 +105,12 @@ export class CronSchedule implements ICronSchedule {
   public cron: string | CronKeyword
   public dayOr: boolean | null
 
-  public toString(): string {
+  public toString(
+    options?: { verbose?: boolean },
+  ): string {
+    const { verbose = false } = options ?? {}
+
+    let parsed = ''
     const cronInstance = new PublicCron(this.cron, {})
     const parts = this.cron.trim().split(' ')
 
@@ -248,28 +254,21 @@ export class CronSchedule implements ICronSchedule {
       description = cronInstance.transformVerbosity(description, false)
       description = capitalize(description.trim())
 
-      return description
+      parsed = description
+    } else {
+      try {
+        parsed = cronstrue.toString(this.cron)
+      } catch {
+        parsed = 'Invalid'
+        return parsed
+      }
     }
 
-    try {
-      return cronstrue.toString(this.cron)
-    } catch {
-      return 'Invalid'
-    }
-  }
-
-  public toProseString(): string {
-    const str = this.toString()
-
-    if (str == 'Invalid') {
-      return str
+    if (verbose) {
+      parsed = `${parsed}${this.timezone ? ` (${this.timezone})` : ' (UTC)'}`
     }
 
-    if (str == '') {
-      return 'None'
-    }
-
-    return `${str} (${this.timezone ?? 'UTC'})`
+    return parsed
   }
 
   public constructor(schedule: ICronScheduleRaw) {

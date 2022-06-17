@@ -31,10 +31,6 @@ export class RRuleSchedule implements IRRuleSchedule {
     return capitalize(this.getRRule().toText())
   }
 
-  public toProseString(): string {
-    return capitalize(this.getRRule().toText())
-  }
-
   public constructor(schedule: IRRuleScheduleRaw) {
     this.timezone = schedule.timezone
     this.rrule = schedule.rrule

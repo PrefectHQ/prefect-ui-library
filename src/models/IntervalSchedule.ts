@@ -48,25 +48,8 @@ export class IntervalSchedule implements IIntervalSchedule {
     return intervals
   }
 
-  public toProseString(neat: boolean = true): string {
-    let str = this.toString(neat)
-
-    if (str == '') {
-      return 'None'
-    }
-
-    if (!str.includes('Every') && !str.includes('Daily') && !str.includes('Hourly')) {
-      str = `Every ${str}`
-    }
-
-    if (this.anchorDate) {
-      str += ` from ${formatDate(this.anchorDate)} at ${formatTimeNumeric(this.anchorDate)} (${this.timezone ?? 'UTC'})`
-    }
-
-    return str
-  }
-
-  public toString(neat: boolean = true): string {
+  public toString(options?: { neat?: boolean, verbose?: boolean }): string {
+    const { neat = true, verbose = false } = options ?? {}
     const { seconds, minutes, hours, days } = this.getIntervals()
     const strings: string[] = []
 
@@ -102,7 +85,25 @@ export class IntervalSchedule implements IIntervalSchedule {
       }
     }
 
-    return strings.reverse().join(', ')
+    let str = strings.reverse().join(', ')
+
+    if (!verbose) {
+      return str
+    }
+
+    if (str == '') {
+      return 'None'
+    }
+
+    if (!str.includes('Every') && !str.includes('Daily') && !str.includes('Hourly')) {
+      str = `Every ${str}`
+    }
+
+    if (this.anchorDate) {
+      str += ` from ${formatDate(this.anchorDate)} at ${formatTimeNumeric(this.anchorDate)} (${this.timezone ?? 'UTC'})`
+    }
+
+    return str
   }
 
   public constructor(schedule: IIntervalScheduleRaw) {

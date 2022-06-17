@@ -23,7 +23,7 @@
       <section class="mt-4 flex flex-col gap-4">
         <p-key-value label="Raw" :value="intervalSchedule.interval" />
         <p-key-value label="String" :value="intervalSchedule.toString()" />
-        <p-key-value label="Prose" :value="intervalSchedule.toProseString()" />
+        <p-key-value label="Verbose" :value="intervalSchedule.toString({ verbose: true })" />
       </section>
     </DemoSubSection>
 
@@ -54,7 +54,7 @@
       <section class="mt-4 flex flex-col gap-4">
         <p-key-value label="Raw" :value="cronSchedule.cron" />
         <p-key-value label="String" :value="cronSchedule.toString()" />
-        <p-key-value label="Prose" :value="cronSchedule.toProseString()" />
+        <p-key-value label="Verbose" :value="cronSchedule.toString({ verbose: true })" />
       </section>
     </DemoSubSection>
 
@@ -78,7 +78,6 @@
       <section class="mt-4 flex flex-col gap-4">
         <p-key-value label="Raw" :value="rruleSchedule.rrule" />
         <p-key-value label="String" :value="rruleSchedule.toString()" />
-        <p-key-value label="Prose" :value="rruleSchedule.toProseString()" />
       </section>
     </DemoSubSection>
   </DemoSection>
