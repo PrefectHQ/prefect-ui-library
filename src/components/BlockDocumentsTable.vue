@@ -9,9 +9,7 @@
     <p-table :data="filtered" :columns="columns">
       <template #name="{ row }: { row: BlockDocument }">
         <div class="block-documents-table__name-column">
-          <template v-if="row.blockType.logoUrl">
-            <img :src="row.blockType.logoUrl" class="block-documents-table__name-img">
-          </template>
+          <BlockTypeLogo :block-type="row.blockType" class="block-documents-table__name-img" />
           <div class="block-documents-table__name-content">
             <span class="block-documents-table__crumbs">
               {{ row.blockType.name }} /
@@ -27,7 +25,7 @@
       </template>
 
       <template #capability="{ row }">
-        <BlockSchemaCapabilities :capabilities="row.blockSchema.capabilities" />
+        <BlockSchemaCapabilities :capabilities="row.blockSchema.capabilities" wrapper />
       </template>
 
       <template #action-heading>
@@ -59,6 +57,7 @@
   import BlockDocumentMenu from './BlockDocumentMenu.vue'
   import BlockSchemaCapabilities from './BlockSchemaCapabilities.vue'
   import BlockSchemaCapabilitySelect from './BlockSchemaCapabilitySelect.vue'
+  import BlockTypeLogo from './BlockTypeLogo.vue'
   import BlockTypeSelect from './BlockTypeSelect.vue'
   import ResultsCount from './ResultsCount.vue'
   import SearchInput from './SearchInput.vue'
@@ -96,9 +95,9 @@
     },
   ])
 
-  const filtered = computed(() => props.blockDocuments.filter(filterDeployment))
+  const filtered = computed(() => props.blockDocuments.filter(filterBlockDocument))
 
-  function filterDeployment({ name, blockType, blockSchema }: BlockDocument): boolean {
+  function filterBlockDocument({ name, blockType, blockSchema }: BlockDocument): boolean {
     const { capabilities: blockSchemaCapabilities } = blockSchema
     const { name: blockTypeName } = blockType
 
@@ -121,13 +120,17 @@
 </script>
 
 <style>
+.block-documents-table { @apply
+  grid
+  gap-4
+}
+
 .block-documents-table__filters { @apply
   grid
   md:flex
   gap-2
   justify-between
   items-center
-  mb-4
 }
 
 .block-documents-table__filters {
@@ -184,11 +187,6 @@
 }
 
 .block-documents-table__name-img { @apply
-  border-gray-300
-  rounded
-  border-[1px]
   mr-1
-  w-8
-  h-8
 }
 </style>
