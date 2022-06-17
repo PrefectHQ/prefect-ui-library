@@ -88,24 +88,15 @@
   </DemoSection>
 </template>
 
-<script lang="ts">
-  if (Intl && !('supportedValuesOf' in Intl)) {
-    Intl.supportedValuesOf = (key: string) => []
-  }
-</script>
-
 <script lang="ts" setup>
   import { ref, computed } from 'vue'
   import DemoSection from '../components/DemoSection.vue'
   import DemoSubSection from '../components/DemoSubSection.vue'
   import { CronSchedule, IntervalSchedule, RRuleSchedule } from '@/models'
+  import { timezones } from 'demo/utilities/intl'
 
   // TODO: Doesn't work on Safari
-  const timeZoneOptions = [
-    { label: 'UTC', value: null }, ...Intl.supportedValuesOf('timeZone').map((timezone: string) => {
-      return { label: timezone, value: timezone }
-    }),
-  ]
+  const timeZoneOptions = timezones
 
 
   const interval = ref(3600)
