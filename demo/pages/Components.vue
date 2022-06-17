@@ -10,7 +10,6 @@
     <TablesSection />
     <ToggleSection />
     <MetaWellSection />
-    <ScheduleSection />
     <SearchesSection />
     <SortSections />
     <ComboboxesSection />
@@ -32,7 +31,6 @@
   import NotificationsSection from '../sections/NotificationsSection.vue'
   import PageHeadingsSection from '../sections/PageHeadingsSection.vue'
   import RunButtonSection from '../sections/RunButtonSection.vue'
-  import ScheduleSection from '../sections/ScheduleSection.vue'
   import SearchesSection from '../sections/SearchesSection.vue'
   import SortSections from '../sections/SortSections.vue'
   import StatesSection from '../sections/StatesSection.vue'

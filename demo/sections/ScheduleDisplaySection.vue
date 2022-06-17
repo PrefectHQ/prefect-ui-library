@@ -89,12 +89,6 @@
 </template>
 
 <script lang="ts">
-  declare global {
-    interface Intl {
-      supportedValuesOf: (key: string) => [],
-    }
-  }
-
   if (Intl && !('supportedValuesOf' in Intl)) {
     Intl.supportedValuesOf = (key: string) => []
   }
