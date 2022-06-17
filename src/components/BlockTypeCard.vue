@@ -1,7 +1,7 @@
 <template>
   <p-card class="block-type-card">
     <BlockTypeLogo :block-type="blockType" class="block-type-card__logo" />
-    <p-link :to="blockCatalogCreateRoute(blockTypeNameRoute)">
+    <p-link :to="blockCatalogCreateRoute(blockTypeNameRoute)" class="block-type-card__name">
       {{ blockType.name }}
     </p-link>
     <template v-if="blockType.description">
@@ -48,8 +48,13 @@
   !h-11
 }
 
+.block-type-card__name { @apply
+  text-base
+}
+
 .block-type-card__description { @apply
   text-gray-500
+  text-sm
   line-clamp-5
 }
 
