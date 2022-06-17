@@ -62,7 +62,12 @@
 
     <DemoSubSection heading="RRule">
       <sup>
-        ... nothing yet
+        It's not entirely clear how timezone should impact the RRule schedules since timezone is also included in the
+        string and could differ from the API model
+
+        <br>
+
+        This schedule parsing isn't stellar so there will be some iffy sentences.
       </sup>
 
       <div class="grid grid-cols-3 gap-2">
@@ -71,7 +76,7 @@
         </p-label>
 
         <p-label label="Timezone">
-          <p-combobox v-model="rruleTimezone" :options="timeZoneOptions" />
+          <p-combobox v-model="rruleTimezone" :options="timeZoneOptions" disabled />
         </p-label>
       </div>
 
