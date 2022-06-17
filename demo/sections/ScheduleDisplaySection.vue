@@ -90,10 +90,10 @@
 
 <script lang="ts" setup>
   import { ref, computed } from 'vue'
+  import { timezones } from '..//utilities/intl'
   import DemoSection from '../components/DemoSection.vue'
   import DemoSubSection from '../components/DemoSubSection.vue'
   import { CronSchedule, IntervalSchedule, RRuleSchedule } from '@/models'
-  import { timezones } from 'demo/utilities/intl'
 
   // TODO: Doesn't work on Safari
   const timeZoneOptions = timezones
