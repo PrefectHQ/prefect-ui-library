@@ -220,6 +220,8 @@ export class CronSchedule implements ICronSchedule {
 
         if (dayOfWeekIsRandom) {
           dayOfWeek = 'of a random day of the week'
+
+          break dateRandom
         }
       }
 
