@@ -31,9 +31,9 @@
 
     <DemoSubSection heading="Cron">
       <sup>
-        Note: This cron display does not currently support cron strings that contain hashes, keyword expressions (e.g.
-        <p-code>@daily</p-code>), <p-code>R</p-code>/<p-code>RANDOM</p-code> expressions, or <p-code>fcron</p-code>
-        strings.
+        Note: this cron display supports keyword (e.g.
+        <p-code>@daily</p-code>) and <p-code>R</p-code>/<p-code>RANDOM</p-code> expressions as singletons but not as
+        part of range, CSV, or hashed expressions.
       </sup>
 
       <div class="grid grid-cols-3 gap-2">
@@ -119,7 +119,7 @@
   })
 
 
-  const cron = ref('0 0 0 * * 1L')
+  const cron = ref('* * * * * *')
   const cronTimezone = ref(null)
   const cronDayOr = ref(false)
 

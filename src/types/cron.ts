@@ -71,7 +71,7 @@ export type CronDayWeekValue = NumberRange<CronDayWeekValueMin, CronDayWeekValue
 export const CronMinuteValues = [] as const
 
 export type CronKeyword = typeof CronKeywords[number]
-export type CronRandomExpression = 'R' | 'r'
+export type CronRandomExpression = AnyCase<'R' | 'RANDOM'>
 export type CronString = string | CronKeyword
 
 export type CronKeywordMap = Record<CronKeyword, string>
@@ -91,6 +91,9 @@ export function isCronKeyword(cron: string | CronKeyword): cron is CronKeyword {
 }
 
 export function containsCronRandomExpression(cron: CronString): boolean {
+  if (!cron) {
+    return false
+  }
   const parts = cron.split(' ')
-  return parts.some((part): part is CronRandomExpression => part === 'R')
+  return parts.some((part): part is CronRandomExpression => part.toUpperCase() == 'R' || part.toUpperCase() == 'RANDOM')
 }
