@@ -19,5 +19,5 @@
   import IntervalScheduleForm from '@/components/IntervalScheduleForm.vue'
   import { IntervalSchedule } from '@/models'
 
-  const intervalSchedule = ref(new IntervalSchedule({ interval: 60, timezone: null, anchorDate: null }))
+  const intervalSchedule = ref(new IntervalSchedule({ interval: 3600, timezone: null, anchorDate: null }))
 </script>
