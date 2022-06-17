@@ -5,6 +5,7 @@ export { default as BlockSchemaCapabilities } from './BlockSchemaCapabilities.vu
 export { default as BlockSchemaCapabilitySelect } from './BlockSchemaCapabilitySelect.vue'
 export { default as BlocksPageEmptyState } from './BlocksPageEmptyState.vue'
 export { default as BlockTypeCard } from './BlockTypeCard.vue'
+export { default as BlockTypeList } from './BlockTypeList.vue'
 export { default as BlockTypeLogo } from './BlockTypeLogo.vue'
 export { default as BlockTypeSelect } from './BlockTypeSelect.vue'
 export { default as CodeBanner } from './CodeBanner.vue'
