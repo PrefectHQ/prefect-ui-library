@@ -34,7 +34,7 @@ export class Mocker<T extends Record<string, Mock>> {
 
     return new Array(count)
       .fill(null)
-      .map(mock)
+      .map(() => mock())
   }
 }
 
