@@ -1,5 +1,5 @@
 <template>
-  <DemoSection heading="Schedules">
+  <DemoSection heading="Schedule Displays">
     <DemoSubSection heading="Interval">
       <sup>
         Note: Due to leap seconds/years, interval schedules are only displayed to the day boundary.
