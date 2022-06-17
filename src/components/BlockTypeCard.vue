@@ -10,9 +10,11 @@
       </p>
     </template>
     <BlockSchemaCapabilities :capabilities="capabilities" class="block-type-card__capabilities" />
-    <p-button inset class="block-type-card__action">
-      Add <p-icon icon="PlusIcon" />
-    </p-button>
+    <p-link :to="blockCatalogCreateRoute(blockTypeNameRoute)" class="block-type-card__action">
+      <p-button inset class="block-type-card__button">
+        Add <p-icon icon="PlusIcon" />
+      </p-button>
+    </p-link>
   </p-card>
 </template>
 
@@ -41,6 +43,7 @@
   flex
   flex-col
   gap-2
+  p-4
 }
 
 .block-type-card__logo { @apply
@@ -63,6 +66,12 @@
 }
 
 .block-type-card__action { @apply
+  block
   mt-auto
+}
+
+.block-type-card__button { @apply
+  block
+  w-full
 }
 </style>
