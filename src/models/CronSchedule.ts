@@ -92,22 +92,6 @@ class PublicCron extends Cron {
     return super.transformVerbosity(description, useVerboseFormat)
   }
 
-  public transformVerbosityOnParts(parts: string[]): string[] {
-    const everyMinute = new RegExp(`, ${this.i18n.everyMinute()}`, 'g')
-    const everyHour = new RegExp(`, ${this.i18n.everyHour()}`, 'g')
-    const everyDay = new RegExp(this.i18n.commaEveryDay(), 'g')
-
-    return parts.map((part) => {
-      // const everyMinute = part.replace(, '')
-      // part =
-      // part = part.replace(new RegExp(`, ${this.i18n.everyHour()}`, 'g'), '')
-      // part = part.replace(new RegExp(this.i18n.commaEveryDay(), 'g'), '')
-      // part = part.replace(/\, ?$/, '')
-
-      return part
-    })
-  }
-
   public constructor(expression: string, options: CronstrueOptions) {
     super(expression, options)
     this.getFullDescription()
