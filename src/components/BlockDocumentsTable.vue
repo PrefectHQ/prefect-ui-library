@@ -54,7 +54,7 @@
 </template>
 
 <script lang="ts" setup>
-  import { media, TableColumn } from '@prefecthq/prefect-design'
+  import { media, TableColumn, PEmptyResults } from '@prefecthq/prefect-design'
   import { computed, ref } from 'vue'
   import BlockDocumentMenu from './BlockDocumentMenu.vue'
   import BlockSchemaCapabilities from './BlockSchemaCapabilities.vue'

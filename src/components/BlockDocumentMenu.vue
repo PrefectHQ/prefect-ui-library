@@ -16,7 +16,7 @@
   import { defineComponent } from 'vue'
 
   export default defineComponent({
-    name: 'DeploymentMenu',
+    name: 'BlockDocumentMenu',
     expose: [],
     inheritAttrs: false,
   })
