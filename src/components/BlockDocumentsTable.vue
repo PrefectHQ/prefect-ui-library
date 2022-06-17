@@ -9,7 +9,9 @@
     <p-table :data="filtered" :columns="columns">
       <template #name="{ row }: { row: BlockDocument }">
         <div class="block-documents-table__name-column">
-          <img :src="row.blockType.logoUrl" class="block-documents-table__name-img">
+          <template v-if="row.blockType.logoUrl">
+            <img :src="row.blockType.logoUrl" class="block-documents-table__name-img">
+          </template>
           <div class="block-documents-table__name-content">
             <span class="block-documents-table__crumbs">
               {{ row.blockType.name }} /
