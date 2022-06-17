@@ -1,5 +1,8 @@
 <template>
   <DemoSection heading="Notifications">
+    <DemoSubSection heading="Notification Overflow Menu">
+      <NotificationMenu :notification="notification" />
+    </DemoSubSection>
     <DemoSubSection heading="Notification Detail">
       <!--  -->
     </DemoSubSection>
@@ -17,6 +20,7 @@
   import { ref } from 'vue'
   import DemoSection from '../components/DemoSection.vue'
   import DemoSubSection from '../components/DemoSubSection.vue'
+  import NotificationMenu from '@/components/NotificationMenu.vue'
   import NotificationStatusSelect from '@/components/NotificationStatusSelect.vue'
   import { NotificationStatus } from '@/models'
   import { mocker } from '@/services'
