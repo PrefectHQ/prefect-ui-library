@@ -1,6 +1,7 @@
 import { MockFunction } from '@/services/Mocker'
+type RandomImageSize = number | { width: number, height: number }
 
-export const randomImage: MockFunction<string> = function(size?: number | { width: number, height: number }) {
+export const randomImage: MockFunction<string, [RandomImageSize?]> = function(size) {
   let width = 100
   let height = 100
 
