@@ -11,7 +11,9 @@
       </PGlobalSidebar>
     </template>
     <app-sidebar v-if="showMenu" class="app__sidebar" @click="close" />
-    <router-view />
+    <suspense>
+      <router-view />
+    </suspense>
   </div>
 </template>
 
@@ -21,8 +23,8 @@
   import { RouterView } from 'vue-router'
   import AppSidebar from './components/AppSidebar.vue'
   import { flowRunsApi, logsApi, taskRunsApi, flowsApi, deploymentsApi, workQueueApi, notificationsApi } from './services'
-  import { deploymentRouteKey, flowRouteKey, flowRunsRouteKey, flowsRouteKey, deploymentsRouteKey, workQueuesRouteKey, settingsRouteKey, workQueueRouteKey, Route, flowRunRouteKey, workQueueCreateRouteKey, editQueueRouteKey, blocksRouteKey, blockCatalogRouteKey, blockRouteKey, blockEditRouteKey, editNotificationRouteKey } from '@/router'
-  import { flowRunsApiKey, logsApiKey, taskRunsApiKey, flowsApiKey, deploymentsApiKey, workQueuesApiKey, notificationsApiKey, blockDocumentsApiKey, mocker } from '@/services'
+  import { deploymentRouteKey, flowRouteKey, flowRunsRouteKey, flowsRouteKey, deploymentsRouteKey, workQueuesRouteKey, settingsRouteKey, workQueueRouteKey, Route, flowRunRouteKey, workQueueCreateRouteKey, editQueueRouteKey, blocksRouteKey, blockCatalogRouteKey, blockRouteKey, blockEditRouteKey, editNotificationRouteKey, blockCatalogCreateRouteKey } from '@/router'
+  import { flowRunsApiKey, logsApiKey, taskRunsApiKey, flowsApiKey, deploymentsApiKey, workQueuesApiKey, notificationsApiKey, blockDocumentsApiKey, mocker, blockTypesApiKey, blockSchemasApiKey } from '@/services'
 
   const emptyRoute = (): Route => ({ path: '/nothing' })
 
@@ -48,9 +50,12 @@
   provide(editNotificationRouteKey, emptyRoute)
   provide(blocksRouteKey, emptyRoute)
   provide(blockCatalogRouteKey, emptyRoute)
+  provide(blockCatalogCreateRouteKey, emptyRoute)
   provide(blockRouteKey, emptyRoute)
   provide(blockEditRouteKey, emptyRoute)
   provide(blockDocumentsApiKey, mocker.create('blockDocumentsApi'))
+  provide(blockTypesApiKey, mocker.create('blockTypesApi'))
+  provide(blockSchemasApiKey, mocker.create('blockSchemasApi'))
 
   const mobileMenuOpen = ref(false)
   const showMenu = computed(() => media.lg || mobileMenuOpen.value)

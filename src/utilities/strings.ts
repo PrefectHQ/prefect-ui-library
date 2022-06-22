@@ -43,6 +43,10 @@ export function camelCase(str: string): string {
   return str.toLowerCase().replace(/[^a-zA-Z0-9]+(.)/g, (match, chr) => chr.toUpperCase())
 }
 
+export function titleCase(str: string): string {
+  return str.replace(/^[-_]*(.)/, (_, c) => c.toUpperCase()).replace(/[-_]+(.)/g, (_, c) => ` ${ c.toUpperCase()}`)
+}
+
 export function isString(value: unknown): value is string {
   return typeof value === 'string'
 }
