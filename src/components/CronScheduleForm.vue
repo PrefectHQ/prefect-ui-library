@@ -37,19 +37,19 @@
   import { CronSchedule } from '@/models'
 
   const props = defineProps<{
-    modelValue: CronSchedule | null,
+    schedule: CronSchedule | null,
   }>()
 
   const emit = defineEmits<{
     (event: 'cancel'): void,
-    (event: 'update:modelValue', value: CronSchedule): void,
+    (event: 'submit', value: CronSchedule): void,
   }>()
 
   const defaultCron = '* * * * *'
 
-  const timezone = ref(props.modelValue?.timezone ?? 'UTC')
-  const cron = ref(props.modelValue?.cron ?? defaultCron)
-  const dayOr = ref(props.modelValue?.dayOr ?? false)
+  const timezone = ref(props.schedule?.timezone ?? 'UTC')
+  const cron = ref(props.schedule?.cron ?? defaultCron)
+  const dayOr = ref(props.schedule?.dayOr ?? false)
 
 
   const internalValue = computed(() => {
@@ -65,7 +65,7 @@
   }
 
   const submit = (): void => {
-    emit('update:modelValue', internalValue.value)
+    emit('submit', internalValue.value)
   }
 </script>
 

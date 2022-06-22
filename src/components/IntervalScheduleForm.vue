@@ -83,20 +83,20 @@
   }
 
   const props = defineProps<{
-    modelValue: IntervalSchedule | null,
+    schedule: IntervalSchedule | null,
   }>()
 
   const emit = defineEmits<{
     (event: 'cancel'): void,
-    (event: 'update:modelValue', value: IntervalSchedule): void,
+    (event: 'submit', value: IntervalSchedule): void,
   }>()
 
   const defaultInterval = 3600
 
-  const anchorDate = ref(props.modelValue?.anchorDate ?? new Date())
-  const timezone = ref(props.modelValue?.timezone ?? 'UTC')
-  const interval = ref(secondsToClosestIntervalValue(props.modelValue?.interval ?? defaultInterval))
-  const intervalOption = ref<IntervalOption>(secondsToClosestIntervalOption(props.modelValue?.interval ?? defaultInterval))
+  const anchorDate = ref(props.schedule?.anchorDate ?? new Date())
+  const timezone = ref(props.schedule?.timezone ?? 'UTC')
+  const interval = ref(secondsToClosestIntervalValue(props.schedule?.interval ?? defaultInterval))
+  const intervalOption = ref<IntervalOption>(secondsToClosestIntervalOption(props.schedule?.interval ?? defaultInterval))
 
 
   const intervalOptions: IntervalOption[] = ['Seconds', 'Minutes', 'Hours', 'Days']
@@ -118,7 +118,7 @@
   }
 
   const submit = (): void => {
-    emit('update:modelValue', internalValue.value)
+    emit('submit', internalValue.value)
   }
 </script>
 

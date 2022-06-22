@@ -1,13 +1,13 @@
 <template>
   <DemoSection heading="Schedule Forms">
     <DemoSubSection heading="Interval">
-      <IntervalScheduleForm v-model="intervalSchedule" />
+      <IntervalScheduleForm :schedule="intervalSchedule" />
     </DemoSubSection>
 
     <p-divider class="my-8" />
 
     <DemoSubSection heading="Cron">
-      <CronScheduleForm v-model="cronSchedule" />
+      <CronScheduleForm :schedule="cronSchedule" />
     </DemoSubSection>
   </DemoSection>
 </template>
