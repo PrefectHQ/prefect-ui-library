@@ -47,7 +47,7 @@
   provide(workQueueRouteKey, emptyRoute)
   provide(workQueueCreateRouteKey, emptyRoute)
   provide(editQueueRouteKey, emptyRoute)
-  PROVIDE(notificationCreateRouteKey, emptyRoute)
+  provide(notificationCreateRouteKey, emptyRoute)
   provide(editNotificationRouteKey, emptyRoute)
   provide(blocksRouteKey, emptyRoute)
   provide(blockCatalogRouteKey, emptyRoute)
