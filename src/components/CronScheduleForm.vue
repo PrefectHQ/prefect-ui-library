@@ -3,6 +3,10 @@
     <div class="cron-schedule-form__row">
       <p-label label="Value" class="cron-schedule-form__column--span-full">
         <p-text-input v-model="cron" />
+
+        <template #message>
+          {{ internalValue }}
+        </template>
       </p-label>
     </div>
 
