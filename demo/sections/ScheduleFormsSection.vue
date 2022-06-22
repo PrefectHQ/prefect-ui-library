@@ -7,7 +7,7 @@
     <p-divider class="my-8" />
 
     <DemoSubSection heading="Cron">
-      <em>Coming soon</em>
+      <CronScheduleForm v-model="cronSchedule" />
     </DemoSubSection>
   </DemoSection>
 </template>
@@ -16,8 +16,10 @@
   import { ref } from 'vue'
   import DemoSection from '../components/DemoSection.vue'
   import DemoSubSection from '../components/DemoSubSection.vue'
+  import CronScheduleForm from '@/components/CronScheduleForm.vue'
   import IntervalScheduleForm from '@/components/IntervalScheduleForm.vue'
-  import { IntervalSchedule } from '@/models'
+  import { IntervalSchedule, CronSchedule } from '@/models'
 
   const intervalSchedule = ref(new IntervalSchedule({ interval: 3600, timezone: null, anchorDate: null }))
+  const cronSchedule = ref(new CronSchedule({ cron: '* * * * *', timezone: null, dayOr: false }))
 </script>
