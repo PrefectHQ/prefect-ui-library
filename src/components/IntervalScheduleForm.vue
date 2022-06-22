@@ -19,6 +19,15 @@
         <TimezoneSelect v-model="timezone" />
       </p-label>
     </div>
+
+    <template #footer>
+      <p-button inset @click="cancel">
+        Cancel
+      </p-button>
+      <p-button type="submit">
+        Save
+      </p-button>
+    </template>
   </p-form>
 </template>
 
@@ -78,6 +87,7 @@
   }>()
 
   const emit = defineEmits<{
+    (event: 'cancel'): void,
     (event: 'update:modelValue', value: IntervalSchedule): void,
   }>()
 
@@ -102,6 +112,10 @@
       timezone: timezone.value,
     })
   })
+
+  const cancel = (): void => {
+    emit('cancel')
+  }
 
   const submit = (): void => {
     emit('update:modelValue', internalValue.value)
