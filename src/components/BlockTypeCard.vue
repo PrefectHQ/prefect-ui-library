@@ -11,7 +11,9 @@
       </p>
     </template>
 
-    <BlockSchemaCapabilities :capabilities="capabilities" class="block-type-card__capabilities" />
+    <template v-if="blockSchema">
+      <BlockSchemaCapabilities :capabilities="blockSchema.capabilities" class="block-type-card__capabilities" />
+    </template>
 
     <template v-if="slots.actions">
       <div class="block-type-card__action">
@@ -22,20 +24,31 @@
 </template>
 
 <script lang="ts" setup>
-  import { useSlots } from 'vue'
+  import { useSubscription } from '@prefecthq/vue-compositions'
+  import { computed, useSlots } from 'vue'
   import BlockSchemaCapabilities from './BlockSchemaCapabilities.vue'
   import BlockTypeLogo from '@/components/BlockTypeLogo.vue'
   import { BlockType } from '@/models/BlockType'
-  import { mocker } from '@/services'
+  import { blockSchemasApiKey } from '@/services'
+  import { inject } from '@/utilities/inject'
 
-  defineProps<{
+  const props = defineProps<{
     blockType: BlockType,
   }>()
 
   const slots = useSlots()
+  const blockSchemasApi = inject(blockSchemasApiKey)
 
-  // todo: update with schema subscription to get capabilities
-  const capabilities = mocker.create('blockSchemaCapabilities')
+  const blockSchemaSubscriptionArgs = computed(() => ({
+    blockSchemas: {
+      blockTypeId: {
+        any_: [props.blockType.id],
+      },
+    },
+  }))
+
+  const blockSchemaSubscription = useSubscription(blockSchemasApi.getBlockSchemas, [blockSchemaSubscriptionArgs])
+  const blockSchema = computed(() => blockSchemaSubscription.response?.[0])
 </script>
 
 <style>
