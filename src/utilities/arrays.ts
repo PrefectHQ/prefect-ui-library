@@ -77,3 +77,19 @@ export function lastItemInArray<T extends any[]>(array: T): T[number] {
 export function allButLastArrayItems<T extends any[]>(array: T): T[number][] {
   return array.slice(0, array.length - 1)
 }
+
+// shamelessly copied from https://stackoverflow.com/a/2450976/2687861
+export function shuffle<T>(array: T[]): T[] {
+  let currentIndex = array.length
+  let randomIndex = undefined
+
+  while (currentIndex != 0) {
+
+    randomIndex = Math.floor(Math.random() * currentIndex)
+    currentIndex--;
+
+    [array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]]
+  }
+
+  return array
+}

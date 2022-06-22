@@ -34,7 +34,6 @@
     loading.value = true
 
     try {
-      console.log(value)
       const notification = { is_active: value }
       await notificationsApi.updateNotification(props.notification.id, notification)
       const activeOrPaused = value ? 'Active' : 'Paused'
