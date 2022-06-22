@@ -11,7 +11,7 @@ export class DeploymentFormValues {
   public tags: string[] | null
   public flowRunner: FlowRunner | null
 
-  public constructor(deployment?: Deployment) {
+  public constructor(deployment?: Partial<Deployment>) {
     this.id = deployment?.id ?? null
     this.name = deployment?.name ?? null
     this.flowId = deployment?.flowId ?? null

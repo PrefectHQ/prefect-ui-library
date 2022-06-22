@@ -16,6 +16,7 @@ export { default as ConfirmDeleteModalWithSlot } from './ConfirmDeleteModalWithS
 export { default as CopyOverflowMenuItem } from './CopyOverflowMenuItem.vue'
 export { default as DeploymentCombobox } from './DeploymentCombobox.vue'
 export { default as DeploymentDetails } from './DeploymentDetails.vue'
+export { default as DeploymentForm } from './DeploymentForm.vue'
 export { default as DeploymentIconText } from './DeploymentIconText.vue'
 export { default as DeploymentParametersTable } from './DeploymentParametersTable.vue'
 export { default as DeploymentsPageEmptyState } from './DeploymentsPageEmptyState.vue'

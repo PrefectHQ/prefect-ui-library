@@ -7,6 +7,7 @@
 <script lang="ts" setup>
   import { ref } from 'vue'
   import DemoSection from '../components/DemoSection.vue'
+  import DeploymentForm from '@/components/DeploymentForm.vue'
   import { Deployment } from '@/models'
   import { mocker } from '@/services/Mocker'
 
