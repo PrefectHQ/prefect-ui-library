@@ -6,7 +6,7 @@
     <StatesSection />
     <LogSection />
     <EmptyStateSection />
-    <DeploymentsFormSection />
+    <DeploymentFormSection />
     <ListsSection />
     <TablesSection />
     <ToggleSection />
@@ -24,6 +24,7 @@
   import { PLayoutDefault } from '@prefecthq/prefect-design'
   import ColorModesSection from '../sections/ColorModesSection.vue'
   import ComboboxesSection from '../sections/ComboboxesSection.vue'
+  import DeploymentFormSection from '../sections/DeploymentFormSection.vue'
   import EmptyStateSection from '../sections/EmptyStateSection.vue'
   import ListsSection from '../sections/ListsSection.vue'
   import LogSection from '../sections/LogsSection.vue'
@@ -38,5 +39,4 @@
   import TablesSection from '../sections/TablesSection.vue'
   import ToggleSection from '../sections/ToggleSection.vue'
   import WorkQueueFormSection from '../sections/WorkQueueFormSection.vue'
-  import DeploymentsFormSection from 'demo/sections/DeploymentsFormSection.vue'
 </script>
