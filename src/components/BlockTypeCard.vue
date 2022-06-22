@@ -1,38 +1,38 @@
 <template>
   <p-card class="block-type-card">
     <BlockTypeLogo :block-type="blockType" class="block-type-card__logo" />
-    <p-link :to="blockCatalogCreateRoute(blockTypeNameRoute)" class="block-type-card__name">
+    <p class="block-type-card__name">
       {{ blockType.name }}
-    </p-link>
+    </p>
+
     <template v-if="blockType.description">
       <p class="block-type-card__description">
         {{ blockType.description }}
       </p>
     </template>
+
     <BlockSchemaCapabilities :capabilities="capabilities" class="block-type-card__capabilities" />
-    <p-link :to="blockCatalogCreateRoute(blockTypeNameRoute)" class="block-type-card__action">
-      <p-button inset class="block-type-card__button">
-        Add <p-icon icon="PlusIcon" />
-      </p-button>
-    </p-link>
+
+    <template v-if="slots.actions">
+      <div class="block-type-card__action">
+        <slot name="actions" />
+      </div>
+    </template>
   </p-card>
 </template>
 
 <script lang="ts" setup>
-  import { computed } from 'vue'
+  import { useSlots } from 'vue'
   import BlockSchemaCapabilities from './BlockSchemaCapabilities.vue'
   import BlockTypeLogo from '@/components/BlockTypeLogo.vue'
   import { BlockType } from '@/models/BlockType'
-  import { blockCatalogCreateRouteKey } from '@/router'
   import { mocker } from '@/services'
-  import { inject, kebabCase } from '@/utilities'
 
-  const props = defineProps<{
+  defineProps<{
     blockType: BlockType,
   }>()
 
-  const blockCatalogCreateRoute = inject(blockCatalogCreateRouteKey)
-  const blockTypeNameRoute = computed(() => kebabCase(props.blockType.name))
+  const slots = useSlots()
 
   // todo: update with schema subscription to get capabilities
   const capabilities = mocker.create('blockSchemaCapabilities')

@@ -1,6 +1,14 @@
 import { BlockSchemaResponse } from './BlockSchemaResponse'
 import { BlockTypeResponse } from './BlockTypeResponse'
 
+export type BlockDocumentResponseReferenceData = {
+  $ref: {
+    block_document_id: string,
+  },
+}
+
+export type BlockDocumentResponseData = Record<string, unknown | BlockDocumentResponseReferenceData>
+
 export type BlockDocumentResponse = {
   id: string,
   created: string,
