@@ -9,6 +9,9 @@
     <DemoSubSection heading="Queues">
       <WorkQueuesPageEmptyState />
     </DemoSubSection>
+    <DemoSubSection heading="Queues">
+      <NotificationsPageEmptyState />
+    </DemoSubSection>
   </DemoSection>
 </template>
 
@@ -17,6 +20,7 @@
   import DemoSubSection from '../components/DemoSubSection.vue'
   import DeploymentsPageEmptyState from '@/components/DeploymentsPageEmptyState.vue'
   import FlowsPageEmptyState from '@/components/FlowsPageEmptyState.vue'
+  import NotificationsPageEmptyState from '@/components/NotificationsPageEmptyState.vue'
   import WorkQueuesPageEmptyState from '@/components/WorkQueuesPageEmptyState.vue'
 </script>
 
