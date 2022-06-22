@@ -435,5 +435,3 @@ if (!('supportedValuesOf' in Intl)) {
 }
 
 export const timezones = ['UTC', ...Intl.supportedValuesOf('timeZone')]
-
-console.log(timezones)
