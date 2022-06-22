@@ -1,6 +1,6 @@
 <template>
   <DemoSection heading="Deployment Form">
-    <DeploymentForm :deployment="deployment" />
+    <DeploymentForm :deployment="deployment" :flow-id="deployment.flowId" />
   </DemoSection>
 </template>
 
