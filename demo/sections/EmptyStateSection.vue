@@ -9,7 +9,7 @@
     <DemoSubSection heading="Queues">
       <WorkQueuesPageEmptyState />
     </DemoSubSection>
-    <DemoSubSection heading="Queues">
+    <DemoSubSection heading="Notifications">
       <NotificationsPageEmptyState />
     </DemoSubSection>
   </DemoSection>
