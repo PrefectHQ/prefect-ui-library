@@ -95,7 +95,6 @@
     return interval.value / intervalOptionsToSecondsMap[intervalOption.value]
   })
 
-
   const internalValue = computed(() => {
     return new IntervalSchedule({
       interval: intervalSeconds.value,

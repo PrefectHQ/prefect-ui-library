@@ -23,7 +23,6 @@
   import TimezoneSelect from './TimezoneSelect.vue'
   import { CronSchedule } from '@/models'
 
-
   const props = defineProps<{
     modelValue: CronSchedule | null,
   }>()
