@@ -6,6 +6,7 @@
     <StatesSection />
     <LogSection />
     <EmptyStateSection />
+    <DeploymentsFormSection />
     <ListsSection />
     <TablesSection />
     <ToggleSection />
@@ -37,4 +38,5 @@
   import TablesSection from '../sections/TablesSection.vue'
   import ToggleSection from '../sections/ToggleSection.vue'
   import WorkQueueFormSection from '../sections/WorkQueueFormSection.vue'
+  import DeploymentsFormSection from 'demo/sections/DeploymentsFormSection.vue'
 </script>

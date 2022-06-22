@@ -2,7 +2,7 @@
 import { default as Cron } from 'cronstrue'
 import { Options as CronstrueOptions } from 'cronstrue/dist/options'
 import cronstrue from 'cronstrue/i18n'
-import { Schedule } from '@/models'
+import { Schedule, ICronScheduleResponse } from '@/models'
 import { CronKeyword, isCronKeyword, containsCronRandomExpression, cronKeywordMap } from '@/types/cron'
 import { capitalize } from '@/utilities'
 
@@ -269,6 +269,14 @@ export class CronSchedule implements ICronSchedule {
     }
 
     return parsed
+  }
+
+  public toResponse(): ICronScheduleResponse {
+    return {
+      'cron': this.cron,
+      'timezone': this.timezone,
+      'day_or': this.dayOr,
+    }
   }
 
   public constructor(schedule: ICronScheduleRaw) {
