@@ -9,7 +9,7 @@
     </template>
 
     <template #description>
-      Send an alert when any flow enters any state you specify, via slack or email.
+      Send an alert when any flow enters any state you specify.
     </template>
 
     <template #actions>
