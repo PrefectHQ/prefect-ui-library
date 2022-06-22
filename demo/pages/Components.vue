@@ -6,7 +6,6 @@
     <StatesSection />
     <LogSection />
     <EmptyStateSection />
-    <DeploymentFormSection />
     <ListsSection />
     <TablesSection />
     <ToggleSection />
@@ -15,6 +14,7 @@
     <SortSections />
     <ComboboxesSection />
     <WorkQueueFormSection />
+    <DeploymentFormSection />
     <RunButtonSection />
     <NotificationsSection />
   </p-layout-default>
