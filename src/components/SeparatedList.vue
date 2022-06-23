@@ -32,6 +32,13 @@
 </script>
 
 <style>
+.separated-list {
+  @apply
+  inline-flex
+  gap-1
+  items-center
+}
+
 .separated-list__tags {
   @apply
   inline-flex
