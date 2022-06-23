@@ -14,22 +14,23 @@ export type UpstreamReference = {
   inputType: TaskRunInputType,
 }
 
-export const randomGraphNode: MockFunction<GraphNode> = function(graphNode?: Partial<GraphNode>) {
+export const randomGraphNode: MockFunction<GraphNode, [Partial<GraphNode>?]> = function(overrides = {}) {
   return new GraphNode({
-    id: graphNode?.id ?? this.create('id'),
-    upstreamDependencies: graphNode?.upstreamDependencies ?? [],
-    state: graphNode?.state ?? this.create('state'),
-    estimatedRunTime: graphNode?.estimatedRunTime ?? this.create('number'),
-    expectedStartTime: graphNode?.expectedStartTime ?? this.create('date'),
-    totalRunTime: graphNode?.totalRunTime ?? this.create('number'),
-    startTime: graphNode?.startTime ?? this.create('date'),
-    endTime: graphNode?.endTime ?? this.create('date'),
+    id: this.create('id'),
+    upstreamDependencies: [],
+    state: this.create('state'),
+    estimatedRunTime: this.create('number'),
+    expectedStartTime: this.create('date'),
+    totalRunTime: this.create('number'),
+    startTime: this.create('date'),
+    endTime: this.create('date'),
+    ...overrides,
   })
 }
 
-export const randomFlowRunGraph: MockFunction<GraphNode[]> = function(options?: GraphOptions) {
+export const randomFlowRunGraph: MockFunction<GraphNode[], [Partial<GraphOptions>?]> = function(options = {}) {
   const nodes: GraphNode[] = []
-  const { size = 3, shape = 'linear', fanMultiplier = 1 } = options ?? {}
+  const { size = 3, shape = 'linear', fanMultiplier = 1 } = options
 
   // Create nodes
   while (nodes.length < size) {
