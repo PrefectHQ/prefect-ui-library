@@ -4,10 +4,6 @@
       <p-text-input v-model="name" :state="nameState" />
     </p-label>
 
-    <p-label label="Flow">
-      <FlowCombobox v-model:selected="flowId" empty-message="Select flow" :disabled="!!props.flowId" />
-    </p-label>
-
     <p-label label="Schedule">
       <template v-if="schedule">
         <p-toggle v-model="isScheduleActive" />
@@ -37,16 +33,15 @@
   import { reactive } from 'vue'
   import DeploymentParametersTable from './DeploymentParametersTable.vue'
   import FlowCombobox from './FlowCombobox.vue'
-  import { Deployment, IDeploymentRequest, DeploymentFormValues, FlowData, Schedule } from '@/models'
+  import { Deployment, IDeploymentRequest, DeploymentFormValues, Schedule } from '@/models'
   import { isRequired, withMessage } from '@/services/validate'
   import { FlowRunnerType } from '@/types/FlowRunnerType'
 
   const props = defineProps<{
-    flowId?: string,
-    deployment?: Deployment,
+    deployment: Deployment,
   }>()
 
-  const internalValue = reactive(new DeploymentFormValues(props.deployment ?? { flowId: props.flowId }))
+  const internalValue = reactive(new DeploymentFormValues(props.deployment))
 
   const { handleSubmit, isSubmitting, errors } = useForm({ initialValues: internalValue })
 
@@ -57,8 +52,8 @@
   const { value: name, meta: nameState } = useField<string>('name', rules.name)
   const { value: flowId } = useField<string>('flowId')
 
-  // How do we handle this??
-  const { value: flowData } = useField<FlowData>('flowData')
+  // // How do we handle this??
+  // const { value: flowData } = useField<FlowData>('flowData')
 
   const { value: schedule } = useField<Schedule>('schedule')
   const { value: isScheduleActive } = useField<boolean>('isScheduleActive')
@@ -67,8 +62,8 @@
 
   const { value: tags } = useField<string[] | null>('tags')
 
-  // How do we handle this??
-  const { value: flowRunner } = useField<FlowRunnerType>('flowRunner')
+  // // How do we handle this??
+  // const { value: flowRunner } = useField<FlowRunnerType>('flowRunner')
 
   const emit = defineEmits<{
     (event: 'submit', value: IDeploymentRequest): void,
