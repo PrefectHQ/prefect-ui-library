@@ -3,8 +3,10 @@ export interface IBlockType {
   created: Date,
   updated: Date,
   name: string,
-  logoUrl: string,
-  documentationUrl: string,
+  logoUrl: string | null,
+  documentationUrl: string | null,
+  description: string | null,
+  codeExample: string | null,
 }
 
 export class BlockType implements IBlockType {
@@ -12,8 +14,10 @@ export class BlockType implements IBlockType {
   public created: Date
   public updated: Date
   public name: string
-  public logoUrl: string
-  public documentationUrl: string
+  public logoUrl: string | null
+  public documentationUrl: string | null
+  public description: string | null
+  public codeExample: string | null
 
   public constructor(blockType: IBlockType) {
     this.id = blockType.id
@@ -22,5 +26,7 @@ export class BlockType implements IBlockType {
     this.name = blockType.name
     this.logoUrl = blockType.logoUrl
     this.documentationUrl = blockType.documentationUrl
+    this.description = blockType.description
+    this.codeExample = blockType.codeExample
   }
 }

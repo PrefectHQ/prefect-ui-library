@@ -5,43 +5,39 @@
 <script lang="ts" setup>
   import { PToggle, showToast } from '@prefecthq/prefect-design'
   import { computed, ref } from 'vue'
-  import { WorkQueue } from '@/models'
-  import { workQueuesApiKey } from '@/services/WorkQueuesApi'
+  import { Notification } from '@/models'
+  import { notificationsApiKey } from '@/services/NotificationsApi'
   import { inject } from '@/utilities'
 
   const props = defineProps<{
-    workQueue: WorkQueue,
+    notification: Notification,
   }>()
-
-  const workQueuesApi = inject(workQueuesApiKey)
 
   const emit = defineEmits<{
     (event: 'update'): void,
   }>()
 
+  const notificationsApi = inject(notificationsApiKey)
+
   const internalValue = computed({
     get() {
-      return !props.workQueue.isPaused
+      return !!props.notification.isActive
     },
     set(value: boolean) {
-      toggleWorkQueue(value)
+      toggleNotification(value)
     },
   })
 
   const loading = ref(false)
 
-  const toggleWorkQueue = async (value: boolean): Promise<void> => {
+  const toggleNotification = async (value: boolean): Promise<void> => {
     loading.value = true
 
     try {
-      if (value) {
-        await workQueuesApi.resumeWorkQueue(props.workQueue.id)
-        showToast(`${props.workQueue.name} active`, 'success')
-      } else {
-        await workQueuesApi.pauseWorkQueue(props.workQueue.id)
-        showToast(`${props.workQueue.name} paused`, 'success')
-      }
-
+      const notification = { is_active: value }
+      await notificationsApi.updateNotification(props.notification.id, notification)
+      const activeOrPaused = value ? 'Active' : 'Paused'
+      showToast(`${props.notification.name} ${activeOrPaused}`, 'success', undefined, 3000)
       emit('update')
     } catch (error) {
       showToast(`${error}`, 'error', undefined, 3000)
