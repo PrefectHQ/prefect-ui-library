@@ -105,6 +105,12 @@ export class CronSchedule implements ICronSchedule {
   public cron: string | CronKeyword
   public dayOr: boolean | null
 
+  public constructor(schedule: ICronScheduleRaw) {
+    this.timezone = schedule.timezone
+    this.cron = schedule.cron
+    this.dayOr = schedule.dayOr
+  }
+
   public toString(
     options?: { verbose?: boolean },
   ): string {
@@ -303,11 +309,5 @@ export class CronSchedule implements ICronSchedule {
 
 
     return parsed
-  }
-
-  public constructor(schedule: ICronScheduleRaw) {
-    this.timezone = schedule.timezone
-    this.cron = schedule.cron
-    this.dayOr = schedule.dayOr
   }
 }

@@ -15,6 +15,11 @@ export class RRuleSchedule implements IRRuleSchedule {
   public timezone: string | null
   public rrule: string
 
+  public constructor(schedule: IRRuleScheduleRaw) {
+    this.timezone = schedule.timezone
+    this.rrule = schedule.rrule
+  }
+
   public getRRule(): RRule {
     if (!this.rrule) {
       return new RRule()
@@ -29,10 +34,5 @@ export class RRuleSchedule implements IRRuleSchedule {
 
   public toString(): string {
     return capitalize(this.getRRule().toText())
-  }
-
-  public constructor(schedule: IRRuleScheduleRaw) {
-    this.timezone = schedule.timezone
-    this.rrule = schedule.rrule
   }
 }
