@@ -35,7 +35,7 @@
 </template>
 
 <script lang="ts" setup>
-  import { Icon, PIcon, PTag } from '@prefecthq/prefect-design'
+  import { Icon, PIcon, PTag, SelectModelValue } from '@prefecthq/prefect-design'
   import { computed } from 'vue'
   import SeparatedList from './SeparatedList.vue'
   import StateBadge from '@/components/StateBadge.vue'
@@ -47,7 +47,7 @@
   const props = defineProps<{
     notification: Partial<Notification>,
     sendToInput?: string[],
-    sendToType?: string,
+    sendToType?: SelectModelValue,
   }>()
 
   const blockDocumentsApi = inject(blockDocumentsApiKey)
@@ -57,7 +57,7 @@
   const blockDocumentDataKey = computed(() => Object.keys(blockDocumentData.value)[0])
   const blockDocumentDataValue = computed(() => blockDocumentData.value[blockDocumentDataKey.value] as string[])
 
-  const sendToMapper = (input: string[], type: string): { value: string[], icon: Icon } => {
+  const sendToMapper = (input: string[], type: string | SelectModelValue): { value: string[], icon: Icon } => {
     switch (type) {
       case 'email_addresses':
         return {
