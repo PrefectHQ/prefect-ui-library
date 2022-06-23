@@ -9,7 +9,7 @@
         <BlockSchemaPropertyReferenceInput
           :selected="getReferenceValue(key)"
           :block-type-name="getReferenceTypeName(key)!"
-          @update:selected="setReferenceValue(key, $event)"
+          @update:selected="setReferenceValue(key, $event!)"
         />
       </template>
       <template v-else>
