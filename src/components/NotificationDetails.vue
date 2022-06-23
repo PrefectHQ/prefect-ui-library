@@ -23,23 +23,19 @@
 
     state, send a notification to
 
-    <template v-if="blockDocumentDataKey == 'email'">
-      <span class="notification-details__send-to">
-        <p-icon icon="MailIcon" class="notification-details__icon notification-details__icon--mail" />
-        {{ blockDocumentDataValue }}
-      </span>
-    </template>
-    <template v-else>
-      <span class="notification-details__send-to">
-        <p-icon icon="Slack" class="notification-details__icon" />
-        #{{ blockDocumentDataValue }}
-      </span>
-    </template>
+    <span class="notification-details__send-to">
+      <template v-for="item in sendTo.value" :key="item">
+        <span class="notification-details__send-to-pair">
+          <p-icon :icon="sendTo.icon" class="notification-details__icon" :class="classes" />
+          {{ item }}
+        </span>
+      </template>
+    </span>
   </div>
 </template>
 
 <script lang="ts" setup>
-  import { PIcon, PTag } from '@prefecthq/prefect-design'
+  import { Icon, PIcon, PTag } from '@prefecthq/prefect-design'
   import { computed } from 'vue'
   import SeparatedList from './SeparatedList.vue'
   import StateBadge from '@/components/StateBadge.vue'
@@ -50,6 +46,8 @@
 
   const props = defineProps<{
     notification: Partial<Notification>,
+    sendToInput?: string[],
+    sendToType?: string,
   }>()
 
   const blockDocumentsApi = inject(blockDocumentsApiKey)
@@ -57,7 +55,37 @@
 
   const blockDocumentData = computed(() => blockDocument.data)
   const blockDocumentDataKey = computed(() => Object.keys(blockDocumentData.value)[0])
-  const blockDocumentDataValue = computed(() => blockDocumentData.value[blockDocumentDataKey.value])
+  const blockDocumentDataValue = computed(() => blockDocumentData.value[blockDocumentDataKey.value] as string[])
+
+  const sendToMapper = (input: string[], type: string): { value: string[], icon: Icon } => {
+    switch (type) {
+      case 'email_addresses':
+        return {
+          value: input,
+          icon: 'MailIcon' as Icon,
+        }
+      case 'slack':
+        return {
+          value: input,
+          icon: 'Slack' as Icon,
+        }
+      default:
+        return { value: input, icon: 'BellIcon' as Icon }
+    }
+  }
+
+
+  const sendTo = computed(() => {
+    if (props.sendToInput) {
+      return sendToMapper(props.sendToInput, props.sendToType!)
+    }
+
+    return sendToMapper(blockDocumentDataValue.value, blockDocumentDataKey.value)
+  })
+
+  const classes = computed(() => ({
+    'notification-details__icon--gray': blockDocumentDataKey.value != 'slack' && props.sendToType != 'slack',
+  }))
 </script>
 
 <style>
@@ -69,19 +97,21 @@
 .notification-details__send-to {
   @apply
   inline-flex
+  gap-1
   flex-wrap
   align-bottom
   font-bold
 }
 
- .notification-details__icon {
+.notification-details__send-to-pair {
   @apply
-  h-auto
-  mr-[2px]
+  inline-flex
+  items-center
+  gap-[1px]
 }
 
-  .notification-details__icon--mail {
-    @apply
-  stroke-gray-400
-  }
+.notification-details__icon--gray {
+  @apply
+stroke-gray-400
+}
 </style>
