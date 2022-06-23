@@ -1,8 +1,5 @@
 <template>
   <DemoSection heading="Notifications">
-    <DemoSubSection heading="Notification Overflow Menu">
-      <NotificationMenu :notification="notification" />
-    </DemoSubSection>
     <DemoSubSection heading="Notification Detail">
       <NotificationDetails :notification="notification" send-to="alert-channel" />
       <p-divider />
@@ -23,7 +20,6 @@
   import DemoSection from '../components/DemoSection.vue'
   import DemoSubSection from '../components/DemoSubSection.vue'
   import NotificationDetails from '@/components/NotificationDetails.vue'
-  import NotificationMenu from '@/components/NotificationMenu.vue'
   import NotificationsTable from '@/components/NotificationsTable.vue'
   import { mocker } from '@/services'
 
