@@ -20,7 +20,6 @@
 </template>
 
 <script lang="ts" setup>
-  import { ref } from 'vue'
   import DemoSection from '../components/DemoSection.vue'
   import DemoSubSection from '../components/DemoSubSection.vue'
   import NotificationDetails from '@/components/NotificationDetails.vue'
