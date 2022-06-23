@@ -1,5 +1,5 @@
 <template>
-  <page-heading class="page-heading-work-queues" :crumbs="crumbs">
+  <page-heading class="page-heading-notifications" :crumbs="crumbs">
     <template #after-crumbs>
       <router-link :to="newNotificationRoute()">
         <p-button inset size="xs" icon="PlusIcon" />
@@ -14,7 +14,7 @@
   import { notificationCreateRouteKey } from '@/router/routes'
   import { inject } from '@/utilities'
 
-  const crumbs = [{ text: 'Queues' }]
+  const crumbs = [{ text: 'Notifications' }]
 
   const newNotificationRoute = inject(notificationCreateRouteKey)
 </script>
