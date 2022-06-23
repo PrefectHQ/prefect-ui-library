@@ -118,10 +118,11 @@ export class CronSchedule implements ICronSchedule {
       return cronKeywordMap[this.cron]
     }
 
-    randomCronExpression: if (containsCronRandomExpression(this.cron)) {
+    try {
       if (parts.length < 5) {
-        break randomCronExpression
+        throw Error('Cron statement is too short')
       }
+
 
       const includesSeconds = parts.length > 5
       const startIndex = includesSeconds ? 0 : -1
@@ -238,35 +239,68 @@ export class CronSchedule implements ICronSchedule {
       }
 
       if (dayOfWeek) {
-        descriptionParts.push(dayOfWeek)
+        dayOfWeek = dayOfWeek.replace(', and', '')
       }
 
       if (dayOfMonth) {
-        descriptionParts.push(dayOfMonth)
+        dayOfMonth = dayOfMonth.replace(', ', '')
       }
+
+      if (dayOfWeek && dayOfMonth) {
+        if (this.dayOr) {
+          descriptionParts.push(dayOfWeek)
+          descriptionParts.push('or')
+          descriptionParts.push(dayOfMonth)
+        } else {
+          descriptionParts.push(dayOfWeek)
+          descriptionParts.push('and')
+          descriptionParts.push(dayOfMonth)
+        }
+      } else {
+        if (dayOfWeek) {
+          descriptionParts.push(dayOfWeek)
+        }
+
+        if (dayOfMonth) {
+          descriptionParts.push(dayOfMonth)
+        }
+      }
+
 
       if (month) {
         descriptionParts.push(month)
       }
 
       let description
-      description = descriptionParts.map(part => part.trim()).join(' ')
+
+      description = descriptionParts.reduce((whole, part) => {
+        if (part.startsWith(', ')) {
+          whole = `${whole}${part}`
+        } else {
+          whole = `${whole} ${part}`
+        }
+
+        return whole.trim()
+      }, '')
+
       description = cronInstance.transformVerbosity(description, false)
       description = capitalize(description.trim())
 
       parsed = description
-    } else {
+    } catch {
       try {
         parsed = cronstrue.toString(this.cron)
       } catch {
         parsed = 'Invalid'
+
         return parsed
+      }
+    } finally {
+      if (verbose) {
+        parsed = `${parsed}${this.timezone ? ` (${this.timezone})` : ' (UTC)'}`
       }
     }
 
-    if (verbose) {
-      parsed = `${parsed}${this.timezone ? ` (${this.timezone})` : ' (UTC)'}`
-    }
 
     return parsed
   }

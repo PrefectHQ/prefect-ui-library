@@ -110,7 +110,7 @@
 
   const cron = ref('* * * * * *')
   const cronTimezone = ref(null)
-  const cronDayOr = ref(false)
+  const cronDayOr = ref(true)
 
   const cronSchedule = computed(() => {
     return new CronSchedule({ cron: cron.value, timezone: cronTimezone.value, dayOr: cronDayOr.value })
