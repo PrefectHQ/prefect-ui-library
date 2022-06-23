@@ -1,16 +1,18 @@
 <template>
   <p-label class="block-schema-property-reference-input" :label="blockTypeName">
-    <BlockTypeLogo v-if="blockType" :block-type="blockType" />
+    <div class="block-schema-property-reference-input__content">
+      <BlockTypeLogo v-if="blockType" :block-type="blockType" />
 
-    <template v-if="blockDocuments.length">
-      <BlockDocumentsSelect v-model:selected="model" :block-documents="blockDocuments" class="block-schema-property-reference-input__select" />
-    </template>
+      <template v-if="blockDocuments.length">
+        <BlockDocumentsSelect v-model:selected="model" :block-documents="blockDocuments" class="block-schema-property-reference-input__select" />
+      </template>
 
-    <router-link :to="blockCatalogCreateRoute(blockTypeName)">
-      <p-button inset>
-        Add <p-icon icon="PlusIcon" />
-      </p-button>b
-    </router-link>
+      <router-link :to="blockCatalogCreateRoute(blockTypeName)">
+        <p-button inset>
+          Add <p-icon icon="PlusIcon" />
+        </p-button>
+      </router-link>
+    </div>
   </p-label>
 </template>
 
@@ -51,7 +53,7 @@
 </script>
 
 <style>
-.block-schema-property-reference-input { @apply
+.block-schema-property-reference-input__content { @apply
   flex
   gap-2
 }
