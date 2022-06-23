@@ -9,7 +9,7 @@
         <BlockSchemaPropertyReferenceInput
           :selected="getReferenceValue(key)"
           :block-type-name="getReferenceTypeName(key)!"
-          @update:value="setReferenceValue(key, $event)"
+          @update:selected="setReferenceValue(key, $event)"
         />
       </template>
       <template v-else>
@@ -116,7 +116,7 @@
       ...dataModel.value,
       [blockSchemaPropertyKey]: {
         $ref: {
-          block_document_id: value,
+          blockDocumentId: value,
         },
       },
     }
