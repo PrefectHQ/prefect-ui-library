@@ -1,5 +1,9 @@
 <template>
   <p-content class="block-schema-form">
+    <p-label label="Block Name">
+      <p-text-input v-model="nameModel" />
+    </p-label>
+
     <template v-for="(property, key) in blockSchema.fields.properties" :key="property.title">
       <template v-if="isBlockSchemaReferenceProperty(property)">
         <BlockSchemaPropertyReferenceInput
@@ -19,11 +23,11 @@
     </template>
 
     <div class="block-schema-form__actions">
-      <p-button @click="save">
-        Save Block
-      </p-button>
       <p-button inset @click="cancel">
         Cancel
+      </p-button>
+      <p-button @click="save">
+        Save Block
       </p-button>
     </div>
   </p-content>
@@ -40,14 +44,25 @@
   const props = defineProps<{
     blockSchema: BlockSchema,
     data: BlockDocumentData,
+    name: string,
   }>()
 
   const emit = defineEmits<{
     (event: 'update:data', value: BlockDocumentData): void,
+    (event: 'update:name', value: string): void,
     (event: 'save' | 'cancel'): void,
   }>()
 
-  const model = computed({
+  const nameModel = computed({
+    get(): string {
+      return props.name
+    },
+    set(value: string): void {
+      emit('update:name', value)
+    },
+  })
+
+  const dataModel = computed({
     get(): BlockDocumentData {
       return props.data
     },
@@ -73,7 +88,7 @@
   }
 
   function setPropertyValue(blockSchemaPropertyKey: string, value: unknown): void {
-    model.value = { ...model.value, [blockSchemaPropertyKey]: value }
+    dataModel.value = { ...dataModel.value, [blockSchemaPropertyKey]: value }
   }
 
   function getReferenceValue(blockSchemaPropertyKey: string): string | null {
@@ -97,8 +112,8 @@
   }
 
   function setReferenceValue(blockSchemaPropertyKey: string, value: string): void {
-    model.value = {
-      ...model.value,
+    dataModel.value = {
+      ...dataModel.value,
       [blockSchemaPropertyKey]: {
         $ref: {
           block_document_id: value,
@@ -111,6 +126,7 @@
 <style>
 .block-schema-form__actions { @apply
   flex
+  justify-end
   gap-2
 }
 </style>

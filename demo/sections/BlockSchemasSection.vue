@@ -1,7 +1,7 @@
 <template>
   <DemoSection heading="Block Schemas">
     <DemoSubSection heading="Form">
-      <BlockSchemaForm v-model:data="data" :block-schema="blockSchema" />
+      <BlockSchemaForm v-model:data="data" v-model:name="name" :block-schema="blockSchema" />
       {{ data }}
     </DemoSubSection>
   </DemoSection>
@@ -20,4 +20,5 @@
 
   const blockSchema: BlockSchema = await axios.post('http://localhost:4200/api/block_schemas/filter').then(response => mapper.map('BlockSchemaResponse', response.data[9], 'BlockSchema'))
   const data = ref<BlockDocumentData>({})
+  const name = ref('')
 </script>
