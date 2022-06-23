@@ -10,7 +10,7 @@ export const randomBlockDocument: MockFunction<BlockDocument> = function(overrid
     created: this.create('date'),
     updated: this.create('date'),
     name: this.create('noun'),
-    data: {},
+    data: this.create('blockDocumentData'),
     blockSchemaId: blockSchema.id,
     blockSchema,
     blockTypeId: blockType.id,
