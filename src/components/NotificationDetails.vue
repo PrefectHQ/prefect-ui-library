@@ -57,7 +57,7 @@
   const blockDocumentDataKey = computed(() => Object.keys(blockDocumentData.value)[0])
   const blockDocumentDataValue = computed(() => blockDocumentData.value[blockDocumentDataKey.value] as string[])
 
-  const sendToMapper = (input: string[], type: string | SelectModelValue): { value: string[], icon: Icon } => {
+  const sendToMapper = (input: string[], type: SelectModelValue): { value: string[], icon: Icon } => {
     switch (type) {
       case 'email_addresses':
         return {
