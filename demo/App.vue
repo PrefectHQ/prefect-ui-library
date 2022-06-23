@@ -22,8 +22,8 @@
   import { computed, provide, ref, watchEffect } from 'vue'
   import { RouterView } from 'vue-router'
   import AppSidebar from './components/AppSidebar.vue'
-  import { flowRunsApi, logsApi, taskRunsApi, flowsApi, deploymentsApi, workQueueApi, notificationsApi } from './services'
-  import { deploymentRouteKey, flowRouteKey, flowRunsRouteKey, flowsRouteKey, deploymentsRouteKey, workQueuesRouteKey, settingsRouteKey, workQueueRouteKey, Route, flowRunRouteKey, workQueueCreateRouteKey, editQueueRouteKey, blocksRouteKey, blockCatalogRouteKey, blockRouteKey, blockEditRouteKey, editNotificationRouteKey } from '@/router'
+  import { flowRunsApi, logsApi, taskRunsApi, flowsApi, deploymentsApi, workQueueApi, notificationsApi, blockDocumentsApi } from './services'
+  import { deploymentRouteKey, flowRouteKey, flowRunsRouteKey, flowsRouteKey, deploymentsRouteKey, workQueuesRouteKey, settingsRouteKey, workQueueRouteKey, Route, flowRunRouteKey, workQueueCreateRouteKey, editQueueRouteKey, blocksRouteKey, blockCatalogRouteKey, blockRouteKey, blockEditRouteKey, editNotificationRouteKey, blockCatalogCreateRouteKey } from '@/router'
   import { flowRunsApiKey, logsApiKey, taskRunsApiKey, flowsApiKey, deploymentsApiKey, workQueuesApiKey, notificationsApiKey, blockDocumentsApiKey, mocker, blockTypesApiKey, blockSchemasApiKey } from '@/services'
 
   const emptyRoute = (): Route => ({ path: '/nothing' })
@@ -50,9 +50,10 @@
   provide(editNotificationRouteKey, emptyRoute)
   provide(blocksRouteKey, emptyRoute)
   provide(blockCatalogRouteKey, emptyRoute)
+  provide(blockCatalogCreateRouteKey, emptyRoute)
   provide(blockRouteKey, emptyRoute)
   provide(blockEditRouteKey, emptyRoute)
-  provide(blockDocumentsApiKey, mocker.create('blockDocumentsApi'))
+  provide(blockDocumentsApiKey, blockDocumentsApi)
   provide(blockTypesApiKey, mocker.create('blockTypesApi'))
   provide(blockSchemasApiKey, mocker.create('blockSchemasApi'))
 

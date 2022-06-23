@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-require-imports */
 const defaultTheme = require('tailwindcss/defaultTheme')
 
 const states = ['completed', 'failed', 'running', 'pending', 'scheduled', 'cancelled']
@@ -55,4 +56,5 @@ module.exports = {
       },
     },
   },
+  plugins: [require('@tailwindcss/line-clamp')],
 }
