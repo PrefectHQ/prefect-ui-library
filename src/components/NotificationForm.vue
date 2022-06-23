@@ -4,7 +4,7 @@
       Choose which flow run states and tags trigger this notification.
     </p>
     <p-label label="Run states">
-      <StateSelect v-model:selected="stateNames" empty-message="All Tags" />
+      <StateSelect v-model:selected="stateNames" empty-message="All States" />
     </p-label>
 
     <p-label label="Tags (Optional)">
