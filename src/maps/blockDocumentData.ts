@@ -1,21 +1,26 @@
-import { BlockDocumentResponseData } from '@/models/api/BlockDocumentResponse'
+import { BlockDocumentResponseData, BlockDocumentResponseReferences } from '@/models/api/BlockDocumentResponse'
 import { BlockDocumentData } from '@/models/BlockDocument'
 import { MapFunction } from '@/services/Mapper'
-import { isBlockDocumentResponseDataReference } from '@/utilities/blocks'
 
-export const mapBlockDocumentResponseDataToBlockDocumentData: MapFunction<BlockDocumentResponseData, BlockDocumentData> = function(source: BlockDocumentResponseData): BlockDocumentData {
+type BlockDocumentResponseDataWithReferences = {
+  data: BlockDocumentResponseData,
+  references: BlockDocumentResponseReferences,
+}
+
+export const mapBlockDocumentResponseDataToBlockDocumentData: MapFunction<BlockDocumentResponseDataWithReferences, BlockDocumentData> = function(source: BlockDocumentResponseDataWithReferences): BlockDocumentData {
   const data: BlockDocumentData = {}
 
-  Object.entries(source).forEach(([key, value]) => {
-    if (isBlockDocumentResponseDataReference(value)) {
+  Object.entries(source.data).forEach(([key, value]) => {
+    console.log({ key, value }, source.references)
+    if (key in source.references) {
       data[key] = {
         $ref: {
-          blockDocumentId: value.$ref.block_document_id,
+          blockDocumentId: source.references[key].block_document.id,
         },
       }
+    } else {
+      data[key] = value
     }
-
-    data[key] = value
   })
 
   return data

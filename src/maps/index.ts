@@ -1,6 +1,7 @@
 import { mapBlockSchemaReferencesResponseToBlockSchemaReferences } from './blockSchemaReferences'
 import { mapBlockDocumentResponseToBlockDocument } from '@/maps/blockDocument'
 import { mapBlockDocumentCreateToBlockDocumentCreateRequest, mapBlockDocumentDataToBlockDocumentCreateRequestData } from '@/maps/blockDocumentCreate'
+import { mapBlockDocumentResponseDataToBlockDocumentData } from '@/maps/blockDocumentData'
 import { mapBlockDocumentFilterToBlockDocumentFilterRequest } from '@/maps/blockDocumentFilter'
 import { mapBlockDocumentUpdateToBlockDocumentUpdateRequest } from '@/maps/blockDocumentUpdate'
 import { mapBlockSchemaResponseToBlockSchema } from '@/maps/blockSchema'
@@ -39,6 +40,7 @@ export const maps = {
   BlockDocumentData: { BlockDocumentCreateRequestData: mapBlockDocumentDataToBlockDocumentCreateRequestData },
   BlockDocumentFilter: { BlockDocumentFilterRequest: mapBlockDocumentFilterToBlockDocumentFilterRequest },
   BlockDocumentResponse: { BlockDocument: mapBlockDocumentResponseToBlockDocument },
+  BlockDocumentResponseDataWithReferences: { BlockDocumentData: mapBlockDocumentResponseDataToBlockDocumentData },
   BlockDocumentUpdate: { BlockDocumentUpdateRequest: mapBlockDocumentUpdateToBlockDocumentUpdateRequest },
   BlockSchemaFieldsResponse: { BlockSchemaFields: mapBlockSchemaFieldsResponseToBlockSchemaFields },
   BlockSchemaFilter: { BlockSchemaFilterRequest: mapBlockSchemaFilterToBlockSchemaFilterRequest },

@@ -10,5 +10,6 @@ export const mapBlockDocumentResponseToBlockDocument: MapFunction<BlockDocumentR
     updated: this.map('string', source.updated, 'Date'),
     blockSchema: this.map('BlockSchemaResponse', source.block_schema, 'BlockSchema'),
     blockType: this.map('BlockTypeResponse', source.block_type, 'BlockType'),
+    data: this.map('BlockDocumentResponseDataWithReferences', { data: source.data, references: source.block_document_references }, 'BlockDocumentData'),
   })
 }

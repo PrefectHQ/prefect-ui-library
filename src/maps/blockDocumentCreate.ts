@@ -16,9 +16,9 @@ export const mapBlockDocumentDataToBlockDocumentCreateRequestData: MapFunction<B
           block_document_id: value.$ref.blockDocumentId,
         },
       }
+    } else {
+      data[key] = value
     }
-
-    data[key] = value
   })
 
   return data
