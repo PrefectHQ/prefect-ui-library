@@ -1,7 +1,7 @@
 <template>
   <div class="notification-details">
     If a run of any flow with
-    <SeparatedList :item-array="notification.tags">
+    <SeparatedList :item-array="notification.tags!">
       <template #first-items="{ item }">
         <p-tag>{{ item }}</p-tag>
       </template>
@@ -12,7 +12,7 @@
 
     tag enters
 
-    <SeparatedList :item-array="notification.stateNames">
+    <SeparatedList :item-array="notification.stateNames!">
       <template #first-items="{ item }">
         <StateBadge :state="mapStateNameToStateType(item)" />
       </template>
@@ -49,11 +49,11 @@
   import { mapStateNameToStateType } from '@/utilities/state'
 
   const props = defineProps<{
-    notification: Notification,
+    notification: Partial<Notification>,
   }>()
 
   const blockDocumentsApi = inject(blockDocumentsApiKey)
-  const blockDocument = await blockDocumentsApi.getBlockDocument(props.notification.blockDocumentId)
+  const blockDocument = await blockDocumentsApi.getBlockDocument(props.notification.blockDocumentId!)
 
   const blockDocumentData = computed(() => blockDocument.data)
   const blockDocumentDataKey = computed(() => Object.keys(blockDocumentData.value)[0])
