@@ -74,7 +74,6 @@
     }
   }
 
-
   const sendTo = computed(() => {
     if (props.sendToInput) {
       return sendToMapper(props.sendToInput, props.sendToType!)
@@ -84,7 +83,7 @@
   })
 
   const classes = computed(() => ({
-    'notification-details__icon--gray': blockDocumentDataKey.value != 'slack' && props.sendToType != 'slack',
+    'notification-details__icon--gray': sendTo.value.icon !== 'Slack',
   }))
 </script>
 
