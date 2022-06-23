@@ -11,7 +11,6 @@ export const mapBlockDocumentResponseDataToBlockDocumentData: MapFunction<BlockD
   const data: BlockDocumentData = {}
 
   Object.entries(source.data).forEach(([key, value]) => {
-    console.log({ key, value }, source.references)
     if (key in source.references) {
       data[key] = {
         $ref: {

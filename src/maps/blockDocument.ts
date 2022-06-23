@@ -1,3 +1,4 @@
+import { SelectOption } from '@prefecthq/prefect-design'
 import { BlockDocumentResponse } from '@/models/api/BlockDocumentResponse'
 import { BlockDocument } from '@/models/BlockDocument'
 import { MapFunction } from '@/services/Mapper'
@@ -12,4 +13,12 @@ export const mapBlockDocumentResponseToBlockDocument: MapFunction<BlockDocumentR
     blockType: this.map('BlockTypeResponse', source.block_type, 'BlockType'),
     data: this.map('BlockDocumentResponseDataWithReferences', { data: source.data, references: source.block_document_references }, 'BlockDocumentData'),
   })
+}
+
+
+export const mapBlockDocumentToSelectOption: MapFunction<BlockDocument, SelectOption> = function({ name, id }: BlockDocument): SelectOption {
+  return {
+    label: name,
+    value: id,
+  }
 }

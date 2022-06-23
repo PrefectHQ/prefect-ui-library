@@ -1,5 +1,5 @@
 import { mapBlockSchemaReferencesResponseToBlockSchemaReferences } from './blockSchemaReferences'
-import { mapBlockDocumentResponseToBlockDocument } from '@/maps/blockDocument'
+import { mapBlockDocumentResponseToBlockDocument, mapBlockDocumentToSelectOption } from '@/maps/blockDocument'
 import { mapBlockDocumentCreateToBlockDocumentCreateRequest, mapBlockDocumentDataToBlockDocumentCreateRequestData } from '@/maps/blockDocumentCreate'
 import { mapBlockDocumentResponseDataToBlockDocumentData } from '@/maps/blockDocumentData'
 import { mapBlockDocumentFilterToBlockDocumentFilterRequest } from '@/maps/blockDocumentFilter'
@@ -36,6 +36,7 @@ import { mapWorkQueueToIWorkQueueResponse, mapIWorkQueueResponseToWorkQueue } fr
 import { mapWorkQueueFilterToIWorkQueueFilterResponse, mapIWorkQueueFilterResponseToWorkQueueFilter } from '@/maps/workQueueFilter'
 
 export const maps = {
+  BlockDocument: { SelectOption: mapBlockDocumentToSelectOption },
   BlockDocumentCreate: { BlockDocumentCreateRequest: mapBlockDocumentCreateToBlockDocumentCreateRequest },
   BlockDocumentData: { BlockDocumentCreateRequestData: mapBlockDocumentDataToBlockDocumentCreateRequestData },
   BlockDocumentFilter: { BlockDocumentFilterRequest: mapBlockDocumentFilterToBlockDocumentFilterRequest },

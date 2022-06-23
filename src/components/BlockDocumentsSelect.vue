@@ -5,9 +5,9 @@
 </template>
 
 <script lang="ts" setup>
-  import { SelectOption } from '@prefecthq/prefect-design'
   import { computed } from 'vue'
   import { BlockDocument } from '@/models/BlockDocument'
+  import { mapper } from '@/services'
 
   const props = defineProps<{
     selected: string | null | undefined,
@@ -18,7 +18,7 @@
     (event: 'update:selected', value: string | null): void,
   }>()
 
-  const options = computed<SelectOption[]>(() => props.blockDocuments.map(document => ({ label: document.name, value: document.id })))
+  const options = computed(() => mapper.map('BlockDocument', props.blockDocuments, 'SelectOption'))
 
   const model = computed({
     get() {
