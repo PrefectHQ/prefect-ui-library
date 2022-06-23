@@ -8,7 +8,7 @@
     </p-label>
 
     <p-label label="Tags (Optional)">
-      <p-tags-input v-model:tags="tags" empty-message="Select tags..." />
+      <p-tags-input v-model:tags="tags" empty-message="All Tags1q" />
     </p-label>
 
     <p-label label="Send notifications to">
@@ -24,15 +24,16 @@
     </p>
 
     <div class="notification-form__review-block">
-      <!-- Insert NotificationDetails component when it's created -->
-      <p>If a run of any flow with a ________ tag enters a _______ state, send a notification to __________</p>
+      <NotificationDetails :notification="notificationChanges" />
     </div>
   </p-form>
 </template>
 
 <script lang="ts" setup>
   import { PLabel, PTagsInput, PForm } from '@prefecthq/prefect-design'
+  import { computed } from '@vue/reactivity'
   import { useField, useForm } from 'vee-validate'
+  import NotificationDetails from './NotificationDetails.vue'
   import StateSelect from '@/components/StateSelect.vue'
   import { Notification } from '@/models'
 
@@ -44,6 +45,13 @@
 
   const { value: tags } = useField<string[]>('tags')
   const { value: stateNames } = useField<string[]>('stateNames')
+
+  const notificationChanges = computed(() => {
+    return {
+      stateNames: stateNames.value,
+      tags: tags.value,
+    }
+  })
 
   const emit = defineEmits<{
     (event: 'submit', value: Notification): void,
