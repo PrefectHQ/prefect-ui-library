@@ -5,6 +5,7 @@
     <BlockDocumentsSection />
     <BlockSchemaCapabilitiesSection />
     <BlockTypesSection />
+    <BlockSchemasSection />
   </p-layout-default>
 </template>
 
@@ -12,6 +13,7 @@
   import { PLayoutDefault } from '@prefecthq/prefect-design'
   import BlockDocumentsSection from '../sections/BlockDocumentsSection.vue'
   import BlockSchemaCapabilitiesSection from '../sections/BlockSchemaCapabilitiesSection.vue'
+  import BlockSchemasSection from '../sections/BlockSchemasSection.vue'
   import BlocksEmptyStateSection from '../sections/BlocksEmptyStateSection.vue'
   import BlocksPageHeadingsSection from '../sections/BlocksPageHeadingsSection.vue'
   import BlockTypesSection from '../sections/BlockTypesSection.vue'

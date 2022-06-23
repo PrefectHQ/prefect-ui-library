@@ -9,8 +9,8 @@ export const randomNotification: MockFunction<Notification, [Partial<Notificatio
     updated: this.create('date'),
     name: this.create('string'),
     isActive: this.create('boolean'),
-    stateNames: this.createMany('string', 3),
-    tags: this.createMany('string', 4),
+    stateNames: this.createMany('stateType', this.create('number', [1, 3])),
+    tags: this.createMany('string', this.create('number', [1, 3])),
     blockDocumentId: this.create('string'),
     ...overrides,
   })

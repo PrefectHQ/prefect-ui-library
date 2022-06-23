@@ -10,7 +10,7 @@ export const randomBlockDocument: MockFunction<BlockDocument, [Partial<BlockDocu
     created: this.create('date'),
     updated: this.create('date'),
     name: this.create('noun'),
-    data: {},
+    data: this.create('blockDocumentData'),
     blockSchemaId: blockSchema.id,
     blockSchema,
     blockTypeId: blockType.id,
