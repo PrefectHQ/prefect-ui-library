@@ -1,4 +1,4 @@
-export interface Schedule {
+export type Schedule = {
   timezone: string | null,
   toString: () => string,
 }
