@@ -3,4 +3,5 @@ export type BlockDocumentCreate = {
   data: Record<string, unknown>,
   blockSchemaId: string,
   blockTypeId: string,
+  is_anonymous?: boolean,
 }

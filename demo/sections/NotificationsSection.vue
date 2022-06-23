@@ -11,8 +11,7 @@
       <NotificationDetails :notification="customStateNotification" send-to="alert@prefect.io" />
     </DemoSubSection>
     <DemoSubSection heading="Notification Table">
-      <NotificationStatusSelect v-model:selected="searchTerm" />
-      <!--  -->
+      <NotificationsTable :notifications="notifications" />
     </DemoSubSection>
     <DemoSubSection heading="Notification Form">
       <!--  -->
@@ -26,13 +25,11 @@
   import DemoSubSection from '../components/DemoSubSection.vue'
   import NotificationDetails from '@/components/NotificationDetails.vue'
   import NotificationMenu from '@/components/NotificationMenu.vue'
-  import NotificationStatusSelect from '@/components/NotificationStatusSelect.vue'
-  import { NotificationStatus } from '@/models'
+  import NotificationsTable from '@/components/NotificationsTable.vue'
   import { mocker } from '@/services'
 
-  const searchTerm = ref<NotificationStatus>('all')
-
   const notification = mocker.create('notification')
+  const notifications = mocker.createMany('notification', 3)
   const emptyNotification = mocker.create('notification', [{ stateNames: [], tags: [] }])
   const customStateNotification = mocker.create('notification', [{ stateNames: ['failed', 'hazard', 'Retrying'] }])
 </script>
