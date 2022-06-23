@@ -1,12 +1,12 @@
 <template>
-  <p-label class="block-schema-property-input" :label="property.title" :message="property.description">
-    <component :is="input" v-model="model" v-bind="attrs" />
+  <p-label class="block-schema-property-input" :label="property.title" :message="property.description" :class="classes" :style="styles">
+    <component :is="input" v-model="model" v-bind="{ ...attrs, ...inputProps }" />
   </p-label>
 </template>
 
 <script lang="ts" setup>
-  import { PTextInput } from '@prefecthq/prefect-design'
-  import { computed, useAttrs } from 'vue'
+  import { PCombobox, PNumberInput, PSelect, PTextInput, PToggle, useAttrsStylesAndClasses } from '@prefecthq/prefect-design'
+  import { computed } from 'vue'
   import { BlockSchemaSimpleProperty } from '@/models/BlockSchema'
 
   const props = defineProps<{
@@ -18,7 +18,7 @@
     (event: 'update:value', value: unknown): void,
   }>()
 
-  const attrs = useAttrs()
+  const { classes, styles, attrs } = useAttrsStylesAndClasses()
 
   const model = computed({
     get(): unknown {
@@ -30,13 +30,36 @@
   })
 
   const input = computed(() => {
-    // todo: check for anyOf or oneOf
-    // https://swagger.io/docs/specification/data-models/oneof-anyof-allof-not/
+    if (props.property.enum) {
+      return PSelect
+    }
+
     switch (props.property.type) {
       case 'string':
         return PTextInput
+      case 'number':
+      case 'integer':
+        return PNumberInput
+      case 'boolean':
+        return PToggle
+      case 'array':
+        return PCombobox
       default:
         return PTextInput
     }
+  })
+
+  const inputProps = computed(() => {
+    const value: Record<string, unknown> = {}
+
+    if (props.property.enum) {
+      value.options = props.property.enum
+    }
+
+    if (props.property.type === 'array') {
+      value.multiple = true
+    }
+
+    return value
   })
 </script>

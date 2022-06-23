@@ -9,6 +9,7 @@
         <BlockSchemaPropertyReferenceInput
           :selected="getReferenceValue(key)"
           :block-type-name="getReferenceTypeName(key)!"
+          :required="isRequired(key)"
           @update:selected="setReferenceValue(key, $event!)"
         />
       </template>
