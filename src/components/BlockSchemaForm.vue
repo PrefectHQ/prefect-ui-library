@@ -1,37 +1,30 @@
 <template>
-  <p-content class="block-schema-form">
-    <p-label label="Block Name">
-      <p-text-input v-model="nameModel" />
-    </p-label>
+  <p-form v-on="{ cancel, submit }">
+    <p-content class="block-schema-form">
+      <p-label label="Block Name">
+        <p-text-input v-model="nameModel" />
+      </p-label>
 
-    <template v-for="(property, key) in blockSchema.fields.properties" :key="property.title">
-      <template v-if="isBlockSchemaReferenceProperty(property)">
-        <BlockSchemaPropertyReferenceInput
-          :selected="getReferenceValue(key)"
-          :block-type-name="getReferenceTypeName(key)!"
-          :required="isRequired(key)"
-          @update:selected="setReferenceValue(key, $event!)"
-        />
+      <template v-for="(property, key) in blockSchema.fields.properties" :key="property.title">
+        <template v-if="isBlockSchemaReferenceProperty(property)">
+          <BlockSchemaPropertyReferenceInput
+            :selected="getReferenceValue(key)"
+            :block-type-name="getReferenceTypeName(key)!"
+            :required="isRequired(key)"
+            @update:selected="setReferenceValue(key, $event!)"
+          />
+        </template>
+        <template v-else>
+          <BlockSchemaPropertyInput
+            :value="getPropertyValue(key)"
+            :property="property"
+            :required="isRequired(key)"
+            @update:value="setPropertyValue(key, $event)"
+          />
+        </template>
       </template>
-      <template v-else>
-        <BlockSchemaPropertyInput
-          :value="getPropertyValue(key)"
-          :property="property"
-          :required="isRequired(key)"
-          @update:value="setPropertyValue(key, $event)"
-        />
-      </template>
-    </template>
-
-    <div class="block-schema-form__actions">
-      <p-button inset @click="cancel">
-        Cancel
-      </p-button>
-      <p-button @click="save">
-        Save Block
-      </p-button>
-    </div>
-  </p-content>
+    </p-content>
+  </p-form>
 </template>
 
 <script lang="ts" setup>
@@ -51,7 +44,7 @@
   const emit = defineEmits<{
     (event: 'update:data', value: BlockDocumentData): void,
     (event: 'update:name', value: string): void,
-    (event: 'save' | 'cancel'): void,
+    (event: 'submit' | 'cancel'): void,
   }>()
 
   const nameModel = computed({
@@ -72,8 +65,8 @@
     },
   })
 
-  function save(): void {
-    emit('save')
+  function submit(): void {
+    emit('submit')
   }
 
   function cancel(): void {
