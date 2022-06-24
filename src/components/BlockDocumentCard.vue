@@ -14,7 +14,7 @@
         </p>
       </template>
 
-      <CodeSnippet :snippet="snippet" />
+      <CodeSnippet v-if="snippet" :snippet="snippet" />
 
       <BlockDocumentData :data="blockDocument.data" :block-schema="blockDocument.blockSchema" />
     </PContent>
@@ -35,7 +35,7 @@
   }>()
 
   const blockType = computed(() => props.blockDocument.blockType)
-  const snippet = 'import slack.load(\'fires-channel-block\')'
+  const snippet = computed(() => blockType.value.codeExample?.replace('BLOCK_NAME', props.blockDocument.name))
 </script>
 
 <style>
