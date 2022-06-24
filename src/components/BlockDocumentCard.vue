@@ -16,7 +16,7 @@
 
       <CodeSnippet v-if="snippet" :snippet="snippet" />
 
-      <BlockDocumentData :data="blockDocument.data" :block-schema="blockDocument.blockSchema" />
+      <BlockDocumentProperties :data="blockDocument.data" :block-schema="blockDocument.blockSchema" />
     </PContent>
     <BlockTypeCard :block-type="blockType" class="block-document-card__type" />
   </PCard>
@@ -25,7 +25,7 @@
 <script lang="ts" setup>
   import { PContent, PCard } from '@prefecthq/prefect-design'
   import { computed } from 'vue'
-  import BlockDocumentData from './BlockDocumentData.vue'
+  import BlockDocumentProperties from './BlockDocumentProperties.vue'
   import CodeSnippet from './CodeSnippet.vue'
   import BlockTypeCard from '@/components/BlockTypeCard.vue'
   import { BlockDocument } from '@/models/BlockDocument'
