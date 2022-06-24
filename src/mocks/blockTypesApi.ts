@@ -9,7 +9,7 @@ type BlockTypesApiFactoryParameters = {
   blockTypes?: BlockType[],
 }
 
-export const blockTypesApiFactory: MockFunction<BlockTypesApi> = function({ blockTypes, overrides }: BlockTypesApiFactoryParameters = {}) {
+export const blockTypesApiFactory: MockFunction<BlockTypesApi, [BlockTypesApiFactoryParameters?]> = function({ blockTypes, overrides } = {}) {
   const types = blockTypes ?? this.createMany('blockType', this.create('number', [2, 20]))
 
   return mockClass(BlockTypesApi, {

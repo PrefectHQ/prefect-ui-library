@@ -1,8 +1,8 @@
 <template>
   <p-icon-button-menu v-bind="$attrs">
     <copy-overflow-menu-item label="Copy ID" :item="blockDocument.id" />
-    <p-overflow-menu-item label="Edit" @click="blockEditRoute(blockDocument.id)" />
-    <p-overflow-menu-item label="Delete" @click="open" />
+    <p-overflow-menu-item label="Edit" @click="editBlock" />
+    <p-overflow-menu-item label="Delete" @click="openDeleteBlockModal" />
   </p-icon-button-menu>
   <ConfirmDeleteModal
     v-model:showModal="showModal"
@@ -12,17 +12,16 @@
 </template>
 
 <script lang="ts">
-  import { PIconButtonMenu, POverflowMenuItem } from '@prefecthq/prefect-design'
-  import { defineComponent } from 'vue'
-
-  export default defineComponent({
+  export default {
     name: 'BlockDocumentMenu',
     expose: [],
     inheritAttrs: false,
-  })
+  }
 </script>
 
 <script lang="ts" setup>
+  import { PIconButtonMenu, POverflowMenuItem } from '@prefecthq/prefect-design'
+  import { useRouter } from 'vue-router'
   import ConfirmDeleteModal from '@/components/ConfirmDeleteModal.vue'
   import CopyOverflowMenuItem from '@/components/CopyOverflowMenuItem.vue'
   import { useShowModal } from '@/compositions/useShowModal'
@@ -31,7 +30,7 @@
   import { blockDocumentsApiKey } from '@/services/BlockDocumentsApi'
   import { inject, deleteItem } from '@/utilities'
 
-  defineProps<{
+  const props = defineProps<{
     blockDocument: BlockDocument,
   }>()
 
@@ -39,11 +38,16 @@
     (event: 'delete'): void,
   }>()
 
+  const router = useRouter()
   const blockEditRoute = inject(blockEditRouteKey)
   const blockDocumentsApi = inject(blockDocumentsApiKey)
-  const { showModal, open } = useShowModal()
+  const { showModal, open: openDeleteBlockModal } = useShowModal()
 
-  const deleteBlock = async (id: string): Promise<void> => {
+  function editBlock(): void {
+    router.push(blockEditRoute(props.blockDocument.id))
+  }
+
+  async function deleteBlock(id: string): Promise<void> {
     await deleteItem(id, blockDocumentsApi.deleteBlockDocument, 'Block')
 
     emit('delete')
