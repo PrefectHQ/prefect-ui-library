@@ -86,22 +86,31 @@
   @apply
   grid
   gap-2
-  grid-cols-4;
+  grid-cols-1
 }
 
-.cron-schedule-form__column--span-full {
-  @apply
-  col-span-full
-}
+@screen md {
+  .cron-schedule-form__row {
+    @apply
+    grid
+    gap-2
+    grid-cols-4
+  }
 
-.cron-schedule-form__column--span-2 {
-  @apply
-  col-span-2
-}
+  .cron-schedule-form__column--span-full {
+    @apply
+    col-span-full
+  }
 
-.cron-schedule-form__column--span-3 {
-  @apply
-  col-span-3
+  .cron-schedule-form__column--span-2 {
+    @apply
+    col-span-2
+  }
+
+  .cron-schedule-form__column--span-3 {
+    @apply
+    col-span-3
+  }
 }
 
 .cron-schedule-form__more-info {
