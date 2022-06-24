@@ -1,7 +1,7 @@
 import { BlockType } from '@/models/BlockType'
 import { MockFunction } from '@/services/Mocker'
 
-export const randomBlockType: MockFunction<BlockType> = function(overrides: Partial<BlockType> = {}) {
+export const randomBlockType: MockFunction<BlockType, [Partial<BlockType>?]> = function(overrides = {}) {
   return new BlockType({
     id: this.create('string'),
     created: this.create('date'),

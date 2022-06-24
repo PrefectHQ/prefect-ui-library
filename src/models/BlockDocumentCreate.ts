@@ -1,6 +1,8 @@
+import { BlockDocumentData } from '@/models/BlockDocument'
+
 export type BlockDocumentCreate = {
   name: string,
-  data: Record<string, unknown>,
+  data: BlockDocumentData,
   blockSchemaId: string,
   blockTypeId: string,
   is_anonymous?: boolean,
