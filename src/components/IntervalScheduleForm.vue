@@ -11,7 +11,7 @@
     </div>
 
     <div class="interval-schedule-form__row">
-      <p-label label="Anchor date" class="interval-schedule-form__column--span-2">
+      <p-label label="Start date" class="interval-schedule-form__column--span-2">
         <p-date-input v-model="anchorDate" show-time />
       </p-label>
 
@@ -126,17 +126,25 @@
 .interval-schedule-form__row {
   @apply
   grid
-  gap-2
-  grid-cols-4;
+  gap-4
 }
 
-.interval-schedule-form__column--span-2 {
-  @apply
-  col-span-2
-}
+@screen md {
+  .interval-schedule-form__row {
+    @apply
+    grid
+    gap-2
+    grid-cols-4;
+  }
 
-.interval-schedule-form__column--span-3 {
-  @apply
-  col-span-3
+  .interval-schedule-form__column--span-2 {
+    @apply
+    col-span-2
+  }
+
+  .interval-schedule-form__column--span-3 {
+    @apply
+    col-span-3
+  }
 }
 </style>

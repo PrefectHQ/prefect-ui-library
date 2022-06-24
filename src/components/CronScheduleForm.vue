@@ -85,7 +85,7 @@
 .cron-schedule-form__row {
   @apply
   grid
-  gap-2
+  gap-4
   grid-cols-1
 }
 
