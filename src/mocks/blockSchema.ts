@@ -1,7 +1,7 @@
 import { BlockSchema } from '@/models/BlockSchema'
 import { MockFunction } from '@/services/Mocker'
 
-export const randomBlockSchema: MockFunction<BlockSchema> = function(overrides: Partial<BlockSchema> = {}) {
+export const randomBlockSchema: MockFunction<BlockSchema, [Partial<BlockSchema>?]> = function(overrides = {}) {
   const blockType = this.create('blockType', [overrides.blockType])
 
   return new BlockSchema({

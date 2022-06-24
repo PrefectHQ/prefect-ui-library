@@ -4,7 +4,7 @@ import { BlockDocumentsApi } from '@/services'
 import { MockFunction } from '@/services/Mocker'
 import { mockClass } from '@/utilities/mocks'
 
-export const blockDocumentsApiMockFactory: MockFunction<BlockDocumentsApi> = function(overrides: Partial<BlockDocumentsApi> = {}) {
+export const blockDocumentsApiMockFactory: MockFunction<BlockDocumentsApi, [Partial<BlockDocumentsApi>?]> = function(overrides = {}) {
   const blockDocuments = this.createMany('blockDocument', this.create('number', [2, 20]))
 
   return mockClass(BlockDocumentsApi, {

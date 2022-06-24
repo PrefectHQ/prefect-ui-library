@@ -8,7 +8,15 @@
 
     <div class="block-type-list__types">
       <template v-for="blockType in filteredBlockTypes" :key="blockType.id">
-        <BlockTypeCard :block-type="blockType" />
+        <BlockTypeCard :block-type="blockType">
+          <template #actions>
+            <p-link :to="blockCatalogCreateRoute(blockType.name)" class="block-type-card__action">
+              <p-button inset class="block-type-card__button">
+                Add <p-icon icon="PlusIcon" />
+              </p-button>
+            </p-link>
+          </template>
+        </BlockTypeCard>
       </template>
     </div>
 
@@ -34,10 +42,14 @@
   import SearchInput from '@/components/SearchInput.vue'
   import { BlockSchemaCapability } from '@/models'
   import { BlockType } from '@/models/BlockType'
+  import { blockCatalogCreateRouteKey } from '@/router/routes'
+  import { inject } from '@/utilities/inject'
 
   const props = defineProps<{
     blockTypes: BlockType[],
   }>()
+
+  const blockCatalogCreateRoute = inject(blockCatalogCreateRouteKey)
 
   const searchTerm = ref('')
   const selectedCapability = ref<BlockSchemaCapability | null>(null)
