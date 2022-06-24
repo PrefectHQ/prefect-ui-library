@@ -57,7 +57,7 @@
   const blockDocumentDataKey = computed(() => Object.keys(blockDocumentData.value)[0])
   const blockDocumentDataValue = computed(() => blockDocumentData.value[blockDocumentDataKey.value] as string[])
 
-  const sendToMapper = (input: string[], type: string): { value: string[], icon: Icon } => {
+  const sendToMapper = (input: string[] | string, type: string): { value: string[], icon: Icon } => {
     const arrayInput = Array.isArray(input) ? input : [input]
     switch (type) {
       case 'email_addresses':
