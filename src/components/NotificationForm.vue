@@ -20,6 +20,12 @@
       <p-text-input v-model="input" />
     </p-label>
 
+    <!--
+      <p-label label="Webhook Name">
+      <p-text-input v-model="input" />
+      </p-label>
+    -->
+
     <!-- <NotificationsBlockSelector :block-document-id="notification?.blockDocumentId" /> -->
 
     <p class="notification-form__message">

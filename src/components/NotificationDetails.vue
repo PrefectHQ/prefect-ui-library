@@ -53,7 +53,7 @@
 
   const blockDocumentsApi = inject(blockDocumentsApiKey)
   const blockDocument = props.notification.blockDocumentId ? await blockDocumentsApi.getBlockDocument(props.notification.blockDocumentId) : null
-
+  const blockDocumentType = computed(()=> blockDocument?.blockType.name ?? '')
   const blockDocumentData = computed(() => blockDocument?.data)
   const blockDocumentDataKey = computed(() => blockDocumentData.value ? Object.keys(blockDocumentData.value)[0] : null)
   const blockDocumentDataValue = computed(() => blockDocumentData.value && blockDocumentDataKey.value ? blockDocumentData.value[blockDocumentDataKey.value] as string[] : null)
@@ -62,22 +62,16 @@
   const sendToMapper = (input: string[] | string, type: string | SelectModelValue): { value: string[], icon: Icon } => {
     const arrayInput = Array.isArray(input) ? input : [input]
     switch (type) {
-      case 'email_addresses':
+      case 'Email':
         return {
           value: arrayInput,
           icon: 'MailIcon' as Icon,
         }
-      case 'slack':
+      case 'Slack Webhook':
         return {
-          value: arrayInput,
+          value: ['slack'],
           icon: 'Slack' as Icon,
         }
-      // case '':
-      //   return {
-      //     value: ['_______'],
-      //     icon: 'bellIcon' as Icon,
-      //   }
-
       default:
         return {
           value: arrayInput,
@@ -87,10 +81,11 @@
   }
 
   const sendTo = computed(() => {
+    console.log(blockDocument)
     if (props.sendToInput) {
       return sendToMapper(props.sendToInput, props.sendToType!)
     } else if (blockDocumentDataValue.value) {
-      return sendToMapper(blockDocumentDataValue.value, blockDocumentDataKey.value)
+      return sendToMapper(blockDocumentDataValue.value, blockDocumentType.value)
     }
     return sendToMapper('', '')
   })
