@@ -30,7 +30,7 @@ export const blockDocumentsApiMockFactory: MockFunction<BlockDocumentsApi, [Part
     },
 
     updateBlockDocument: (blockDocumentId: string, request: BlockDocumentUpdate) => {
-      return new Promise<BlockDocument>((resolve, reject) => {
+      return new Promise<void>((resolve, reject) => {
         const blockDocument = blockDocuments.find(blockDocument => blockDocument.id == blockDocumentId)
 
         if (blockDocument === undefined) {
@@ -39,7 +39,7 @@ export const blockDocumentsApiMockFactory: MockFunction<BlockDocumentsApi, [Part
 
         Object.assign(blockDocument, request)
 
-        resolve(blockDocument)
+        resolve()
       })
     },
 
