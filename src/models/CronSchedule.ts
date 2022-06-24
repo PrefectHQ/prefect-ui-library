@@ -26,10 +26,8 @@ export class CronSchedule implements ICronSchedule {
   }
 
   public toString(
-    options?: { verbose?: boolean },
+    { verbose = false }: { verbose?: boolean } = {},
   ): string {
-    const { verbose = false } = options ?? {}
-
     let parsed = ''
     const cronInstance = new PublicCron(this.cron, {})
     const parts = this.cron.trim().split(' ')

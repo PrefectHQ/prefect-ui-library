@@ -54,8 +54,7 @@ export class IntervalSchedule implements IIntervalSchedule {
     return intervals
   }
 
-  public toString(options?: { neat?: boolean, verbose?: boolean }): string {
-    const { neat = true, verbose = false } = options ?? {}
+  public toString({ verbose = false, neat = true }: { neat?: boolean, verbose?: boolean } = {}): string {
     const { seconds, minutes, hours, days } = this.getIntervals()
     const strings: string[] = []
 
