@@ -11,7 +11,7 @@
         </p-label>
 
         <p-label label="Anchor Date">
-          <p-date-input v-model="intervalAnchorDate" />
+          <p-date-input v-model="intervalAnchorDate" show-time />
         </p-label>
 
         <p-label label="Timezone">
@@ -93,11 +93,10 @@
   import { timezones } from '..//utilities/intl'
   import DemoSection from '../components/DemoSection.vue'
   import DemoSubSection from '../components/DemoSubSection.vue'
-  import { CronSchedule, IntervalSchedule, RRuleSchedule } from '@/models'
+  import { CronSchedule, IntervalSchedule, RRuleSchedule  } from '@/models'
 
   // TODO: Doesn't work on Safari
   const timeZoneOptions = timezones
-
 
   const interval = ref(3600)
   const intervalTimezone = ref(null)
