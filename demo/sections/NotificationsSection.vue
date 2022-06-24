@@ -5,11 +5,11 @@
     </DemoSubSection>
     <br>
     <DemoSubSection heading="Notification Detail">
-      <NotificationDetails :notification="notification" send-to="alert-channel" />
+      <NotificationDetails :notification="notification" />
       <p-divider />
-      <NotificationDetails :notification="emptyNotification" send-to="alert@prefect.io" />
+      <NotificationDetails :notification="emptyNotification" />
       <p-divider />
-      <NotificationDetails :notification="customStateNotification" send-to="alert@prefect.io" />
+      <NotificationDetails :notification="customStateNotification" />
     </DemoSubSection>
     <br>
     <DemoSubSection heading="Notification Table">
