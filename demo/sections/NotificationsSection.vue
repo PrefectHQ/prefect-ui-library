@@ -1,15 +1,11 @@
 <template>
   <DemoSection heading="Notifications">
-    <DemoSubSection heading="Notification Overflow Menu">
-      <NotificationMenu :notification="notification" />
-    </DemoSubSection>
-    <br>
     <DemoSubSection heading="Notification Detail">
-      <NotificationDetails :notification="notification" send-to="alert-channel" />
+      <NotificationDetails :notification="notification" />
       <p-divider />
-      <NotificationDetails :notification="emptyNotification" send-to="alert@prefect.io" />
+      <NotificationDetails :notification="emptyNotification" />
       <p-divider />
-      <NotificationDetails :notification="customStateNotification" send-to="alert@prefect.io" />
+      <NotificationDetails :notification="customStateNotification" />
     </DemoSubSection>
     <br>
     <DemoSubSection heading="Notification Table">
@@ -23,22 +19,24 @@
 </template>
 
 <script lang="ts" setup>
-  import { ref } from 'vue'
+  import { provide } from 'vue'
   import DemoSection from '../components/DemoSection.vue'
   import DemoSubSection from '../components/DemoSubSection.vue'
   import NotificationDetails from '@/components/NotificationDetails.vue'
   import NotificationForm from '@/components/NotificationForm.vue'
-  import NotificationMenu from '@/components/NotificationMenu.vue'
   import NotificationsTable from '@/components/NotificationsTable.vue'
-  import { Notification } from '@/models'
-  import { mocker } from '@/services'
+  import { blockDocumentsApiKey, mocker } from '@/services'
+  const blockDocuments = mocker.createMany('blockDocument', 5)
+  const [first, second, third, forth ] = blockDocuments
+  provide(blockDocumentsApiKey, mocker.create('blockDocumentsApi', [
+    {
+      blockDocuments,
+    },
+  ]))
+  const notification = mocker.create('notification', [{ blockDocumentId: first.id }])
+  const notifications = mocker.createMany('notification', 3, [{ blockDocumentId: forth.id }])
+  const emptyNotification = mocker.create('notification', [{ stateNames: [], tags: [], blockDocumentId: second.id }])
+  const customStateNotification = mocker.create('notification', [{ stateNames: ['failed', 'hazard', 'Retrying'], blockDocumentId: third.id }])
 
-  const notification = mocker.create('notification')
-  const notifications = mocker.createMany('notification', 3)
-  const emptyNotification = mocker.create('notification', [{ stateNames: [], tags: [] }])
-  const customStateNotification = mocker.create('notification', [{ stateNames: ['failed', 'hazard', 'Retrying'] }])
-
-  const submit = (notification: Notification): void => {
-    console.log('Form submitted!', notification)
-  }
+  const submit = (): void => console.log('submitted')
 </script>
