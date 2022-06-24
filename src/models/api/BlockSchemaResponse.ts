@@ -1,6 +1,12 @@
 import { BlockTypeResponse } from './BlockTypeResponse'
 import { BlockSchemaFieldsType, BlockSchemaProperty, BlockSchemaCapability } from '@/models/BlockSchema'
 
+export type BlockSchemaReferenceResponse = {
+  block_schema_checksum: string,
+  block_type_name: string,
+}
+
+export type BlockSchemaReferencesResponse = Record<string, BlockSchemaReferenceResponse | undefined>
 
 export type BlockSchemaFieldsResponse = {
   title: string,
@@ -9,7 +15,7 @@ export type BlockSchemaFieldsResponse = {
   properties: Record<string, BlockSchemaProperty>,
   required: string[],
   block_type_name: string,
-  block_schema_references: Record<string, unknown>,
+  block_schema_references: BlockSchemaReferencesResponse,
 }
 
 export type BlockSchemaResponse = {

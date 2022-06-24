@@ -1,5 +1,7 @@
-import { mapBlockDocumentResponseToBlockDocument } from '@/maps/blockDocument'
-import { mapBlockDocumentCreateToBlockDocumentCreateRequest } from '@/maps/blockDocumentCreate'
+import { mapBlockSchemaReferencesResponseToBlockSchemaReferences } from './blockSchemaReferences'
+import { mapBlockDocumentResponseToBlockDocument, mapBlockDocumentToSelectOption } from '@/maps/blockDocument'
+import { mapBlockDocumentCreateToBlockDocumentCreateRequest, mapBlockDocumentDataToBlockDocumentCreateRequestData } from '@/maps/blockDocumentCreate'
+import { mapBlockDocumentResponseDataToBlockDocumentData } from '@/maps/blockDocumentData'
 import { mapBlockDocumentFilterToBlockDocumentFilterRequest } from '@/maps/blockDocumentFilter'
 import { mapBlockDocumentUpdateToBlockDocumentUpdateRequest } from '@/maps/blockDocumentUpdate'
 import { mapBlockSchemaResponseToBlockSchema } from '@/maps/blockSchema'
@@ -34,12 +36,16 @@ import { mapWorkQueueToIWorkQueueResponse, mapIWorkQueueResponseToWorkQueue } fr
 import { mapWorkQueueFilterToIWorkQueueFilterResponse, mapIWorkQueueFilterResponseToWorkQueueFilter } from '@/maps/workQueueFilter'
 
 export const maps = {
+  BlockDocument: { SelectOption: mapBlockDocumentToSelectOption },
   BlockDocumentCreate: { BlockDocumentCreateRequest: mapBlockDocumentCreateToBlockDocumentCreateRequest },
+  BlockDocumentData: { BlockDocumentCreateRequestData: mapBlockDocumentDataToBlockDocumentCreateRequestData },
   BlockDocumentFilter: { BlockDocumentFilterRequest: mapBlockDocumentFilterToBlockDocumentFilterRequest },
   BlockDocumentResponse: { BlockDocument: mapBlockDocumentResponseToBlockDocument },
+  BlockDocumentResponseDataWithReferences: { BlockDocumentData: mapBlockDocumentResponseDataToBlockDocumentData },
   BlockDocumentUpdate: { BlockDocumentUpdateRequest: mapBlockDocumentUpdateToBlockDocumentUpdateRequest },
   BlockSchemaFieldsResponse: { BlockSchemaFields: mapBlockSchemaFieldsResponseToBlockSchemaFields },
   BlockSchemaFilter: { BlockSchemaFilterRequest: mapBlockSchemaFilterToBlockSchemaFilterRequest },
+  BlockSchemaReferencesResponse: { BlockSchemaReferences: mapBlockSchemaReferencesResponseToBlockSchemaReferences },
   BlockSchemaResponse: { BlockSchema: mapBlockSchemaResponseToBlockSchema },
   BlockTypeFilter: { BlockTypeFilterRequest: mapBlockTypeFilterToBlockTypeRequest },
   BlockTypeResponse: { BlockType: mapBlockTypeResponseToBlockType },

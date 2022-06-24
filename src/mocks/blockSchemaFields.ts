@@ -1,7 +1,7 @@
 import { BlockSchemaFields } from '@/models/BlockSchema'
 import { MockFunction } from '@/services/Mocker'
 
-export const randomBlockSchemaFields: MockFunction<BlockSchemaFields> = function(blockSchemaFields: Partial<BlockSchemaFields> = {}) {
+export const randomBlockSchemaFields: MockFunction<BlockSchemaFields, [Partial<BlockSchemaFields>?]> = function(blockSchemaFields = {}) {
   return {
     title: blockSchemaFields.title ?? this.create('string'),
     description: blockSchemaFields.description ?? this.create('sentence'),

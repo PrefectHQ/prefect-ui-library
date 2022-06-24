@@ -8,6 +8,6 @@ import { choice } from '@/utilities/arrays'
 
 const mocks = [randomString, randomNumber, randomBoolean, randomDate]
 
-export const randomAny: MockFunction<any> = function() {
+export const randomAny: MockFunction<any, []> = function() {
   return choice(Object.values(mocks)).bind(this)()
 }

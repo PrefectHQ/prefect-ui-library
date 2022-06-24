@@ -7,15 +7,15 @@ import { uniform } from '@/utilities/math'
 
 const characters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'] as const
 
-export const randomChar: MockFunction<typeof characters[number]> = function() {
+export const randomChar: MockFunction<typeof characters[number], []> = function() {
   return characters[Math.floor(Math.random() * characters.length)]
 }
 
-export const randomNoun: MockFunction<typeof nouns[number]> = function() {
+export const randomNoun: MockFunction<typeof nouns[number], []> = function() {
   return choice(nouns)
 }
 
-export const randomString: MockFunction<string> = function(chars?: number) {
+export const randomString: MockFunction<string, [number?]> = function(chars) {
   if (!chars) {
     chars = this.create('number', [5, 10])
   }
@@ -23,14 +23,14 @@ export const randomString: MockFunction<string> = function(chars?: number) {
   return new Array(chars).fill(null).map(() => this.create('char')).join('')
 }
 
-export const randomSentence: MockFunction<string> = function() {
+export const randomSentence: MockFunction<string, []> = function() {
   return sentence()
 }
 
-export const randomParagraph: MockFunction<string> = function(sentences?: number) {
+export const randomParagraph: MockFunction<string, [number?]> = function(sentences) {
   return paragraph(sentences ? sentences : uniform(2, 5))
 }
 
-export const randomRunName: MockFunction<string> = function() {
+export const randomRunName: MockFunction<string, []> = function() {
   return generateStarName()
 }

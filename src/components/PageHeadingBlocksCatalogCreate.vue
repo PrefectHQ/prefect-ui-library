@@ -4,6 +4,7 @@
 
 <script lang="ts" setup>
   import { BreadCrumbs } from '@prefecthq/prefect-design'
+  import { computed } from 'vue'
   import PageHeading from '@/components/PageHeading.vue'
   import { BlockType } from '@/models/BlockType'
   import { blocksRouteKey, blockCatalogRouteKey } from '@/router/routes'
@@ -16,9 +17,9 @@
   const blocksRoute = inject(blocksRouteKey)
   const blockCatalogRoute = inject(blockCatalogRouteKey)
 
-  const crumbs: BreadCrumbs = [
+  const crumbs = computed<BreadCrumbs>(() => [
     { text: 'Blocks', to: blocksRoute() },
     { text: 'Choose a Block', to: blockCatalogRoute() },
     { text: props.blockType.name },
-  ]
+  ])
 </script>
