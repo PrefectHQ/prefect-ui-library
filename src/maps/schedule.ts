@@ -22,7 +22,7 @@ export const mapIScheduleResponseToSchedule: MapFunction<IScheduleResponse, Sche
     return new IntervalSchedule({
       timezone: source.timezone,
       interval: source.interval,
-      anchorDate: source.anchor_date ? new Date(source.anchor_date) : null,
+      anchorDate: this.map('string', source.anchor_date, 'Date'),
     })
   }
 
@@ -36,6 +36,6 @@ export const mapScheduleToIScheduleResponse: MapFunction<Schedule, IScheduleResp
     'cron': (source as CronSchedule).cron,
     'day_or': (source as CronSchedule).dayOr,
     'interval': (source as IntervalSchedule).interval,
-    'anchor_date': (source as IntervalSchedule).anchorDate?.toISOString(),
+    'anchor_date': this.map('Date', (source as IntervalSchedule).anchorDate, 'string'),
   }
 }
