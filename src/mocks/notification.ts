@@ -1,7 +1,6 @@
 import { Notification } from '@/models/Notification'
 import { MockFunction } from '@/services/Mocker'
 
-
 export const randomNotification: MockFunction<Notification, [Partial<Notification>?]> = function(overrides = {}) {
   return new Notification({
     id: this.create('string'),
