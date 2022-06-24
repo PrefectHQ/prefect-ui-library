@@ -5,6 +5,7 @@ export { default as BlockSchemaCapabilities } from './BlockSchemaCapabilities.vu
 export { default as BlockSchemaCapabilitySelect } from './BlockSchemaCapabilitySelect.vue'
 export { default as BlockSchemaForm } from './BlockSchemaForm.vue'
 export { default as BlockSchemaFormCard } from './BlockSchemaFormCard.vue'
+export { default as BlockSchemaFormFields } from './BlockSchemaFormFields.vue'
 export { default as BlocksPageEmptyState } from './BlocksPageEmptyState.vue'
 export { default as BlockTypeCard } from './BlockTypeCard.vue'
 export { default as BlockTypeList } from './BlockTypeList.vue'
