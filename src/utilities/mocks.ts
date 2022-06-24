@@ -1,4 +1,4 @@
-import { hasProperty } from '@/mocks/objects'
+import { hasProperty } from '@/utilities/object'
 
 export function mockClass<T extends object>(source: new () => T, mocked: Partial<Record<keyof T, T[keyof T]>>): T {
   return new Proxy(new source(), {
