@@ -16,6 +16,6 @@ if (crypto && !('randomUUID' in crypto)) {
     )
 }
 
-export const randomId: MockFunction<string> = function() {
+export const randomId: MockFunction<string, []> = function() {
   return crypto.randomUUID()
 }

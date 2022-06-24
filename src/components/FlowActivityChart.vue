@@ -9,12 +9,10 @@
 
 <script lang="ts" setup>
   import { useSubscription } from '@prefecthq/vue-compositions'
-  import { addMonths } from 'date-fns'
   import { computed, ref } from 'vue'
   import ActivityChart from './ActivityChart.vue'
   import { Flow } from '@/models'
   import { flowRunsApiKey } from '@/services/FlowRunsApi'
-  import { FlowRunsHistoryFilter } from '@/types/UnionFilters'
   import { inject } from '@/utilities/inject'
   import { ceil } from '@/utilities/math'
 

@@ -64,6 +64,7 @@ const featureFlags = [
   'billing',
   'collaboration',
   'notifications',
+  'organizations',
 ] as const
 export type FeatureFlag = typeof featureFlags[number]
 type FeatureFlagPermissions = Record<FeatureFlag, boolean>

@@ -1,7 +1,6 @@
-/* eslint-disable max-classes-per-file */
-import { default as Cron } from 'cronstrue'
-import { Options as CronstrueOptions } from 'cronstrue/dist/options'
 import cronstrue from 'cronstrue/i18n'
+import { CronStringLengthError } from './CronStringLengthError'
+import { PublicCron } from './PublicCron'
 import { Schedule } from '@/models'
 import { CronKeyword, isCronKeyword, containsCronRandomExpression, cronKeywordMap } from '@/types/cron'
 import { capitalize } from '@/utilities'
@@ -15,101 +14,20 @@ export interface ICronScheduleRaw {
 
 export type ICronSchedule = ICronScheduleRaw & Schedule
 
-// This class modifies the underlying Cron class to expose string utilities as public methods
-class PublicCron extends Cron {
-  public getFullDescription(): string {
-    try {
-      return super.getFullDescription()
-    } catch {
-      return ''
-    }
-  }
-
-  public getSecondsDescription(): string {
-    try {
-      return super.getSecondsDescription()
-    } catch {
-      return ''
-    }
-  }
-
-  public getMinutesDescription(): string {
-    try {
-      return super.getMinutesDescription()
-    } catch {
-      return ''
-    }
-  }
-
-  public getHoursDescription(): string {
-    try {
-      return super.getHoursDescription()
-    } catch {
-      return ''
-    }
-  }
-
-  public getTimeOfDayDescription(): string {
-    try {
-      return super.getTimeOfDayDescription()
-    } catch {
-      return ''
-    }
-  }
-
-  public getDayOfMonthDescription(): string | null {
-    try {
-      return super.getDayOfMonthDescription()
-    } catch {
-      return ''
-    }
-  }
-
-  public getMonthDescription(): string {
-    try {
-      return super.getMonthDescription()
-    } catch {
-      return ''
-    }
-  }
-
-  public getDayOfWeekDescription(): string {
-    try {
-      return super.getDayOfWeekDescription()
-    } catch {
-      return ''
-    }
-  }
-
-  public getYearDescription(): string {
-    try {
-      return super.getYearDescription()
-    } catch {
-      return ''
-    }
-  }
-
-  public transformVerbosity(description: string, useVerboseFormat: boolean): string {
-    return super.transformVerbosity(description, useVerboseFormat)
-  }
-
-  public constructor(expression: string, options: CronstrueOptions) {
-    super(expression, options)
-    this.getFullDescription()
-  }
-}
-
-
 export class CronSchedule implements ICronSchedule {
   public timezone: string | null
   public cron: string | CronKeyword
   public dayOr: boolean | null
 
-  public toString(
-    options?: { verbose?: boolean },
-  ): string {
-    const { verbose = false } = options ?? {}
+  public constructor(schedule: ICronScheduleRaw) {
+    this.timezone = schedule.timezone
+    this.cron = schedule.cron
+    this.dayOr = schedule.dayOr
+  }
 
+  public toString(
+    { verbose = false }: { verbose?: boolean } = {},
+  ): string {
     let parsed = ''
     const cronInstance = new PublicCron(this.cron, {})
     const parts = this.cron.trim().split(' ')
@@ -118,10 +36,11 @@ export class CronSchedule implements ICronSchedule {
       return cronKeywordMap[this.cron]
     }
 
-    randomCronExpression: if (containsCronRandomExpression(this.cron)) {
+    try {
       if (parts.length < 5) {
-        break randomCronExpression
+        throw new CronStringLengthError(parts.length)
       }
+
 
       const includesSeconds = parts.length > 5
       const startIndex = includesSeconds ? 0 : -1
@@ -238,42 +157,69 @@ export class CronSchedule implements ICronSchedule {
       }
 
       if (dayOfWeek) {
-        descriptionParts.push(dayOfWeek)
+        dayOfWeek = dayOfWeek.replace(', and', '')
       }
 
       if (dayOfMonth) {
-        descriptionParts.push(dayOfMonth)
+        dayOfMonth = dayOfMonth.replace(', ', '')
       }
+
+      if (dayOfWeek && dayOfMonth) {
+        if (this.dayOr) {
+          descriptionParts.push(dayOfWeek)
+          descriptionParts.push('or')
+          descriptionParts.push(dayOfMonth)
+        } else {
+          descriptionParts.push(dayOfWeek)
+          descriptionParts.push('and')
+          descriptionParts.push(dayOfMonth)
+        }
+      } else {
+        if (dayOfWeek) {
+          descriptionParts.push(dayOfWeek)
+        }
+
+        if (dayOfMonth) {
+          descriptionParts.push(dayOfMonth)
+        }
+      }
+
 
       if (month) {
         descriptionParts.push(month)
       }
 
       let description
-      description = descriptionParts.map(part => part.trim()).join(' ')
+
+      description = descriptionParts.reduce((whole, part) => {
+        if (part.startsWith(', ')) {
+          whole = `${whole}${part}`
+        } else {
+          whole = `${whole} ${part}`
+        }
+
+        return whole.trim()
+      }, '')
+
       description = cronInstance.transformVerbosity(description, false)
       description = capitalize(description.trim())
 
       parsed = description
-    } else {
+    } catch {
       try {
         parsed = cronstrue.toString(this.cron)
       } catch {
         parsed = 'Invalid'
+
         return parsed
+      }
+    } finally {
+      if (verbose) {
+        parsed = `${parsed}${this.timezone ? ` (${this.timezone})` : ' (UTC)'}`
       }
     }
 
-    if (verbose) {
-      parsed = `${parsed}${this.timezone ? ` (${this.timezone})` : ' (UTC)'}`
-    }
 
     return parsed
-  }
-
-  public constructor(schedule: ICronScheduleRaw) {
-    this.timezone = schedule.timezone
-    this.cron = schedule.cron
-    this.dayOr = schedule.dayOr
   }
 }

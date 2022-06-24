@@ -1,7 +1,7 @@
 import { BlockDocument } from '@/models/BlockDocument'
 import { MockFunction } from '@/services/Mocker'
 
-export const randomBlockDocument: MockFunction<BlockDocument> = function(overrides: Partial<BlockDocument> = {}) {
+export const randomBlockDocument: MockFunction<BlockDocument, [Partial<BlockDocument>?]> = function(overrides = {}) {
   const blockType = this.create('blockType', [overrides.blockType])
   const blockSchema = this.create('blockSchema', [overrides.blockSchema])
 
@@ -10,7 +10,7 @@ export const randomBlockDocument: MockFunction<BlockDocument> = function(overrid
     created: this.create('date'),
     updated: this.create('date'),
     name: this.create('noun'),
-    data: {},
+    data: this.create('blockDocumentData'),
     blockSchemaId: blockSchema.id,
     blockSchema,
     blockTypeId: blockType.id,

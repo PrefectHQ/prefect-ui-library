@@ -24,6 +24,12 @@ export class IntervalSchedule implements IIntervalSchedule {
   public interval: number
   public anchorDate: Date | null
 
+  public constructor(schedule: IIntervalScheduleRaw) {
+    this.timezone = schedule.timezone
+    this.interval = schedule.interval
+    this.anchorDate = schedule.anchorDate
+  }
+
   public getIntervals(): Intervals {
     let remainder = this.interval
 
@@ -48,8 +54,7 @@ export class IntervalSchedule implements IIntervalSchedule {
     return intervals
   }
 
-  public toString(options?: { neat?: boolean, verbose?: boolean }): string {
-    const { neat = true, verbose = false } = options ?? {}
+  public toString({ verbose = false, neat = true }: { neat?: boolean, verbose?: boolean } = {}): string {
     const { seconds, minutes, hours, days } = this.getIntervals()
     const strings: string[] = []
 
@@ -104,11 +109,5 @@ export class IntervalSchedule implements IIntervalSchedule {
     }
 
     return str
-  }
-
-  public constructor(schedule: IIntervalScheduleRaw) {
-    this.timezone = schedule.timezone
-    this.interval = schedule.interval
-    this.anchorDate = schedule.anchorDate
   }
 }

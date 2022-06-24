@@ -1,3 +1,4 @@
+export * from './blockDocumentsApi'
 export * from './taskRunsApi'
 export * from './logsApi'
 export * from './flowRunsApi'

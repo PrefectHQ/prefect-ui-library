@@ -1,4 +1,3 @@
-
 export interface INotificationResponse {
   id: string,
   created: string,

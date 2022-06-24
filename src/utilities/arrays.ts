@@ -66,6 +66,18 @@ export function isSame(arrayA: any[], arrayB: any[]): boolean {
   }))
 }
 
+// we really do want any here
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function lastItemInArray<T extends any[]>(array: T): T[number] {
+  return array[array.length - 1]
+}
+
+// we really do want any here
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function allButLastArrayItems<T extends any[]>(array: T): T[number][] {
+  return array.slice(0, array.length - 1)
+}
+
 // shamelessly copied from https://stackoverflow.com/a/2450976/2687861
 export function shuffle<T>(array: T[]): T[] {
   let currentIndex = array.length
