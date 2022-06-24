@@ -1,4 +1,5 @@
 import cronstrue from 'cronstrue/i18n'
+import { CronStringLengthError } from './CronStringLengthError'
 import { PublicCron } from './PublicCron'
 import { Schedule } from '@/models'
 import { CronKeyword, isCronKeyword, containsCronRandomExpression, cronKeywordMap } from '@/types/cron'
@@ -39,7 +40,7 @@ export class CronSchedule implements ICronSchedule {
 
     try {
       if (parts.length < 5) {
-        throw Error('Cron statement is too short')
+        throw new CronStringLengthError(parts.length)
       }
 
 
