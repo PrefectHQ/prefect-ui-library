@@ -40,4 +40,4 @@ export class Mocker<T extends Record<string, Mock>> {
 
 export const mocker = new Mocker(mocks)
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export type MockFunction<T> = (this: typeof mocker, ...args: any[]) => T
+export type MockFunction<T, Args extends any[]> = (this: typeof mocker, ...args: Args) => T

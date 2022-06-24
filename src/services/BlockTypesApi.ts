@@ -1,7 +1,9 @@
 import { InjectionKey } from 'vue'
 import { Api, ApiRoute } from './Api'
 import { mapper } from './Mapper'
+import { BlockDocumentResponse } from '@/models/api/BlockDocumentResponse'
 import { BlockTypeResponse } from '@/models/api/BlockTypeResponse'
+import { BlockDocument } from '@/models/BlockDocument'
 import { BlockType } from '@/models/BlockType'
 import { BlockTypeFilter } from '@/models/BlockTypeFilter'
 
@@ -22,6 +24,11 @@ export class BlockTypesApi extends Api {
   public getBlockTypes(filter: BlockTypeFilter = {}): Promise<BlockType[]> {
     return this.post<BlockTypeResponse[]>('/filter', mapper.map('BlockTypeFilter', filter, 'BlockTypeFilterRequest'))
       .then(({ data }) => mapper.map('BlockTypeResponse', data, 'BlockType'))
+  }
+
+  public getBlockDocumentsByBlockTypeName(blockTypeName: string): Promise<BlockDocument[]> {
+    return this.get<BlockDocumentResponse[]>(`/name/${blockTypeName}/block_documents`)
+      .then(({ data }) => mapper.map('BlockDocumentResponse', data, 'BlockDocument'))
   }
 
 }
