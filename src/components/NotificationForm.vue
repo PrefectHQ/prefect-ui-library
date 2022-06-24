@@ -15,19 +15,10 @@
       <p-button-group v-model="selectedSendToType" :options="buttonGroup" />
     </p-label>
 
-    <template v-if="selectedSendToType == 'email_addresses'">
-      <p-label label="Addresses">
-        <p-combobox v-model="selectedEmails" allow-unknown-value :options="[]" />
-      </p-label>
-    </template>
-    <template v-if="selectedSendToType == 'slack'">
-      <p-label label="Credentials">
-        Select Block
-      </p-label>
-      <p-label label="Channel(s)">
-      <!--  -->
-      </p-label>
-    </template>
+
+    <p-label :label="selectedSendToLabel">
+      <p-text-input v-model="input" />
+    </p-label>
 
 
     <p class="notification-form__message">
@@ -35,37 +26,38 @@
     </p>
 
     <div class="notification-form__review-block">
-      <NotificationDetails :notification="notificationChanges" :send-to-input="selectedEmails" :send-to-type="selectedSendToType" />
+      <NotificationDetails :notification="notificationChanges" :send-to-input="input" :send-to-type="selectedSendToType" />
     </div>
   </p-form>
 </template>
 
 <script lang="ts" setup>
-  import { PLabel, PTagsInput, PForm, ButtonGroupOption, PCombobox, PButtonGroup } from '@prefecthq/prefect-design'
-  import { useField, useForm } from 'vee-validate'
-  import { computed, ref } from 'vue'
+  import { unwatchFile } from 'fs'
+  import { PLabel, PTagsInput, PTextInput, PForm, ButtonGroupOption, PCombobox, PButtonGroup } from '@prefecthq/prefect-design'
+  import { useForm } from 'vee-validate'
+  import { computed, ref, watch } from 'vue'
   import NotificationDetails from './NotificationDetails.vue'
   import StateSelect from '@/components/StateSelect.vue'
   import { Notification } from '@/models'
-  import { blockDocumentsApiKey } from '@/services'
-  import { inject } from '@/utilities'
+  // import { blockDocumentsApiKey } from '@/services'
+  // import { inject } from '@/utilities'
 
 
   const props = defineProps<{
     notification?: Notification,
   }>()
 
-  const blockDocumentsApi = inject(blockDocumentsApiKey)
-  const blockDocument = await blockDocumentsApi.getBlockDocument(props.notification!.blockDocumentId)
-  const blockDocumentData = computed(() => blockDocument.data)
-  const blockDocumentDataKey = computed(() => Object.keys(blockDocumentData.value)[0])
-  const blockDocumentDataValue = computed(() => blockDocumentData.value[blockDocumentDataKey.value] as string[])
+  // const blockDocumentsApi = inject(blockDocumentsApiKey)
+  // const blockDocument = await blockDocumentsApi.getBlockDocument(props.notification!.blockDocumentId)
+  // const blockDocumentData = computed(() => blockDocument.data)
+  // const blockDocumentDataKey = computed(() => Object.keys(blockDocumentData.value)[0])
+  // const blockDocumentDataValue = computed(() => blockDocumentData.value[blockDocumentDataKey.value] as string[])
 
 
   const { handleSubmit, isSubmitting } = useForm<Notification>({ initialValues: props.notification })
 
-  const { value: tags } = useField<string[]>('tags')
-  const { value: stateNames } = useField<string[]>('stateNames')
+  const stateNames = ref(props.notification?.stateNames ? [...props.notification.stateNames] : [])
+  const tags = ref(props.notification?.tags ? [...props.notification.tags] : [])
 
   const notificationChanges = computed(() => {
     return {
@@ -78,15 +70,25 @@
     {
       label: 'Email',
       value: 'email_addresses',
+      inputLabel: 'Email Address',
     },
     {
       label: 'Slack',
       value: 'slack',
+      inputLabel: 'Webhook',
     },
   ]
   const selectedSendToType = ref(buttonGroup[0].value)
+  const selectedSendToLabel =ref(buttonGroup[0].inputLabel)
 
-  const selectedEmails = ref(selectedSendToType.value == blockDocumentDataKey.value && blockDocumentData.value[blockDocumentDataKey.value] ? blockDocumentData.value[blockDocumentDataKey.value] as string[]: [])
+  watch(() => selectedSendToType.value, (current) => {
+    selectedSendToLabel.value = buttonGroup.find((button: ButtonGroupOption) => button.value === current).inputLabel
+  })
+
+
+  const input = ref('')
+
+  // const input = ref(selectedSendToType.value == blockDocumentDataKey.value && blockDocumentData.value[blockDocumentDataKey.value] ? blockDocumentData.value[blockDocumentDataKey.value] as string[]: [])
 
 
   const emit = defineEmits<{
