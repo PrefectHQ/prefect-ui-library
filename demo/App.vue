@@ -54,7 +54,7 @@
   provide(blockCatalogCreateRouteKey, emptyRoute)
   provide(blockRouteKey, emptyRoute)
   provide(blockEditRouteKey, emptyRoute)
-  provide(blockDocumentsApiKey, blockDocumentsApi)
+  provide(blockDocumentsApiKey, mocker.create('blockDocumentsApi'))
   provide(blockTypesApiKey, mocker.create('blockTypesApi'))
   provide(blockSchemasApiKey, mocker.create('blockSchemasApi'))
 

@@ -26,9 +26,8 @@ export class BlockDocumentsApi extends Api {
       .then(({ data }) => mapper.map('BlockDocumentResponse', data, 'BlockDocument'))
   }
 
-  public updateBlockDocument(blockDocumentId: string, blockDocument: BlockDocumentUpdate): Promise<BlockDocument> {
-    return this.patch<BlockDocumentResponse>(`/${blockDocumentId}`, mapper.map('BlockDocumentUpdate', blockDocument, 'BlockDocumentUpdateRequest'))
-      .then(({ data }) => mapper.map('BlockDocumentResponse', data, 'BlockDocument'))
+  public updateBlockDocument(blockDocumentId: string, blockDocument: BlockDocumentUpdate): Promise<void> {
+    return this.patch(`/${blockDocumentId}`, mapper.map('BlockDocumentUpdate', blockDocument, 'BlockDocumentUpdateRequest'))
   }
 
   public deleteBlockDocument(blockDocumentId: string): Promise<void> {
