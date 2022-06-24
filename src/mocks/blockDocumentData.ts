@@ -1,6 +1,6 @@
 import { MockFunction } from '@/services/Mocker'
 
-export const randomBlockDocumentData: MockFunction<Record<string, unknown>> = function() {
+export const randomBlockDocumentData: MockFunction<Record<string, unknown>, []> = function() {
   const dataObject: Record<string, unknown> = {}
   const data = ['email_addresses', 'slack']
   const dataKey = data[Math.floor(Math.random()*data.length)]
