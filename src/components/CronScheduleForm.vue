@@ -1,20 +1,32 @@
 <template>
   <p-form @submit="submit">
     <div class="cron-schedule-form__row">
-      <p-label label="Value" class="cron-schedule-form__column--span-full">
+      <p-label label="Value" class="cron-schedule-form__column--span-3">
         <p-text-input v-model="cron" />
 
         <template #message>
           {{ internalValue }}
         </template>
       </p-label>
+
+      <p-label class="cron-schedule-form__column--span-1">
+        <template #label>
+          <span
+            title="When the Day Or value is off, this schedule will connect day of the month and day of the week entries using OR logic; when on it will connect them using AND logic."
+          >
+            Day Or
+            <sup>
+              <p-icon icon="QuestionMarkCircleIcon" solid class="cron-schedule-form__more-info" />
+            </sup>
+          </span>
+        </template>
+        <span>
+          <p-toggle v-model="dayOr" class="inline-block" />
+        </span>
+      </p-label>
     </div>
 
     <div class="cron-schedule-form__row">
-      <p-label label="Day OR Day of Week" class="cron-schedule-form__column--span-2">
-        <p-toggle v-model="dayOr" />
-      </p-label>
-
       <p-label label="Timezone" class="cron-schedule-form__column--span-2">
         <TimezoneSelect v-model="timezone" />
       </p-label>
@@ -49,7 +61,7 @@
 
   const timezone = ref(props.schedule?.timezone ?? 'UTC')
   const cron = ref(props.schedule?.cron ?? defaultCron)
-  const dayOr = ref(props.schedule?.dayOr ?? false)
+  const dayOr = ref(props.schedule?.dayOr ?? true)
 
 
   const internalValue = computed(() => {
@@ -90,5 +102,12 @@
 .cron-schedule-form__column--span-3 {
   @apply
   col-span-3
+}
+
+.cron-schedule-form__more-info {
+  @apply
+  inline-block
+  w-4
+  h-4
 }
 </style>
