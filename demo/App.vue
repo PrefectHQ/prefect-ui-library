@@ -22,7 +22,7 @@
   import { computed, provide, ref, watchEffect } from 'vue'
   import { RouterView } from 'vue-router'
   import AppSidebar from './components/AppSidebar.vue'
-  import { flowRunsApi, logsApi, taskRunsApi, flowsApi, deploymentsApi, workQueueApi, notificationsApi, blockDocumentsApi } from './services'
+  import { flowRunsApi, logsApi, taskRunsApi, flowsApi, deploymentsApi, workQueueApi, notificationsApi } from './services'
   import { notificationCreateRouteKey, deploymentRouteKey, flowRouteKey, flowRunsRouteKey, flowsRouteKey, deploymentsRouteKey, workQueuesRouteKey, settingsRouteKey, workQueueRouteKey, Route, flowRunRouteKey, workQueueCreateRouteKey, editQueueRouteKey, blocksRouteKey, blockCatalogRouteKey, blockRouteKey, blockEditRouteKey, editNotificationRouteKey, blockCatalogCreateRouteKey } from '@/router'
   import { flowRunsApiKey, logsApiKey, taskRunsApiKey, flowsApiKey, deploymentsApiKey, workQueuesApiKey, notificationsApiKey, blockDocumentsApiKey, mocker, blockTypesApiKey, blockSchemasApiKey } from '@/services'
 
@@ -54,7 +54,7 @@
   provide(blockCatalogCreateRouteKey, emptyRoute)
   provide(blockRouteKey, emptyRoute)
   provide(blockEditRouteKey, emptyRoute)
-  provide(blockDocumentsApiKey, blockDocumentsApi)
+  provide(blockDocumentsApiKey, mocker.create('blockDocumentsApi'))
   provide(blockTypesApiKey, mocker.create('blockTypesApi'))
   provide(blockSchemasApiKey, mocker.create('blockSchemasApi'))
 

@@ -4,15 +4,20 @@ import { BlockDocumentsApi } from '@/services'
 import { MockFunction } from '@/services/Mocker'
 import { mockClass } from '@/utilities/mocks'
 
-export const blockDocumentsApiMockFactory: MockFunction<BlockDocumentsApi, [Partial<BlockDocumentsApi>?]> = function(overrides = {}) {
-  const blockDocuments = this.createMany('blockDocument', this.create('number', [2, 20]))
+type BlockDocumentApiFactoryParameters = {
+  overrides?: Partial<BlockDocumentsApi>,
+  blockDocuments?: BlockDocument[],
+}
+
+export const blockDocumentsApiMockFactory: MockFunction<BlockDocumentsApi, [Partial<BlockDocumentApiFactoryParameters>?]> = function({ blockDocuments, overrides } = {}) {
+  const documents = blockDocuments ?? this.createMany('blockDocument', this.create('number', [2, 20]))
 
   return mockClass(BlockDocumentsApi, {
-    getBlockDocuments: () => Promise.resolve(blockDocuments),
+    getBlockDocuments: () => Promise.resolve(documents),
 
     getBlockDocument: (blockDocumentId: string) => {
       return new Promise<BlockDocument>((resolve, reject) => {
-        const blockDocument = blockDocuments.find(blockDocument => blockDocument.id == blockDocumentId)
+        const blockDocument = documents.find(blockDocument => blockDocument.id == blockDocumentId)
 
         if (blockDocument === undefined) {
           return reject(new AxiosError('Block document not found', '404'))
@@ -24,14 +29,14 @@ export const blockDocumentsApiMockFactory: MockFunction<BlockDocumentsApi, [Part
 
     createBlockDocument: (request: BlockDocumentCreate) => {
       const blockDocument = this.create('blockDocument', [request])
-      blockDocuments.push(blockDocument)
+      documents.push(blockDocument)
 
       return Promise.resolve(blockDocument)
     },
 
     updateBlockDocument: (blockDocumentId: string, request: BlockDocumentUpdate) => {
-      return new Promise<BlockDocument>((resolve, reject) => {
-        const blockDocument = blockDocuments.find(blockDocument => blockDocument.id == blockDocumentId)
+      return new Promise<void>((resolve, reject) => {
+        const blockDocument = documents.find(blockDocument => blockDocument.id == blockDocumentId)
 
         if (blockDocument === undefined) {
           return reject(new AxiosError('Block document not found', '404'))
@@ -39,19 +44,19 @@ export const blockDocumentsApiMockFactory: MockFunction<BlockDocumentsApi, [Part
 
         Object.assign(blockDocument, request)
 
-        resolve(blockDocument)
+        resolve()
       })
     },
 
     deleteBlockDocument: (blockDocumentId: string) => {
       return new Promise<void>((resolve, reject) => {
-        const index = blockDocuments.findIndex(blockDocument => blockDocument.id === blockDocumentId)
+        const index = documents.findIndex(blockDocument => blockDocument.id === blockDocumentId)
 
         if (index < 0) {
           return reject(new AxiosError('Block document not found', '404'))
         }
 
-        blockDocuments.splice(index, 1)
+        documents.splice(index, 1)
 
         resolve()
       })

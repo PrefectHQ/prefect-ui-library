@@ -20,6 +20,7 @@
       <p-text-input v-model="input" />
     </p-label>
 
+    <NotificationsBlockSelector :block-document-id="notification?.blockDocumentId" />
 
     <p class="notification-form__message">
       Review your notification.
@@ -27,6 +28,7 @@
 
     <div class="notification-form__review-block">
       <NotificationDetails :notification="notificationChanges" :send-to-input="input" :send-to-type="selectedSendToType" />
+      <NotificationDetails :notification="notificationDetails" />
     </div>
   </p-form>
 </template>
@@ -37,11 +39,11 @@
   import { useForm } from 'vee-validate'
   import { computed, ref, watch } from 'vue'
   import NotificationDetails from './NotificationDetails.vue'
+  import NotificationsBlockSelector from './NotificationsBlockSelector.vue'
   import StateSelect from '@/components/StateSelect.vue'
   import { Notification } from '@/models'
   // import { blockDocumentsApiKey } from '@/services'
   // import { inject } from '@/utilities'
-
 
   const props = defineProps<{
     notification?: Notification,
@@ -59,7 +61,7 @@
   const stateNames = ref(props.notification?.stateNames ? [...props.notification.stateNames] : [])
   const tags = ref(props.notification?.tags ? [...props.notification.tags] : [])
 
-  const notificationChanges = computed(() => {
+  const notificationDetails = computed(() => {
     return {
       stateNames: stateNames.value,
       tags: tags.value,
