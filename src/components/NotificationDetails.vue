@@ -71,7 +71,10 @@
           icon: 'Slack' as Icon,
         }
       default:
-        return { value: arrayInput, icon: 'BellIcon' as Icon }
+        return {
+          value: arrayInput,
+          icon: 'BellIcon' as Icon,
+        }
     }
   }
 
