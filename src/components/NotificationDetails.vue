@@ -51,40 +51,45 @@
   }>()
 
   const blockDocumentsApi = inject(blockDocumentsApiKey)
-  const blockDocument = await blockDocumentsApi.getBlockDocument(props.notification.blockDocumentId!)
+  const blockDocument = props.notification.blockDocumentId ? await blockDocumentsApi.getBlockDocument(props.notification.blockDocumentId) : null
+  const blockDocumentType = computed(()=> blockDocument?.blockType.name ?? '')
+  const blockDocumentData = computed(() => blockDocument?.data)
+  const blockDocumentDataKey = computed(() => blockDocumentData.value ? Object.keys(blockDocumentData.value)[0] : null)
+  const blockDocumentDataValue = computed(() => blockDocumentData.value && blockDocumentDataKey.value ? blockDocumentData.value[blockDocumentDataKey.value] as string[] : null)
 
-  const blockDocumentData = computed(() => blockDocument.data)
-  const blockDocumentDataKey = computed(() => Object.keys(blockDocumentData.value)[0])
-  const blockDocumentDataValue = computed(() => blockDocumentData.value[blockDocumentDataKey.value] as string[])
 
-  const sendToMapper = (input: string[], type: string): { value: string[], icon: Icon } => {
+  const sendToMapper = (input: string[] | string, type: string): { value: string[], icon: Icon } => {
+    const arrayInput = Array.isArray(input) ? input : [input]
     switch (type) {
-      case 'email_addresses':
+      case 'Email':
         return {
-          value: input,
+          value: arrayInput,
           icon: 'MailIcon' as Icon,
         }
-      case 'slack':
+      case 'Slack Webhook':
         return {
-          value: input,
+          value: ['slack'],
           icon: 'Slack' as Icon,
         }
       default:
-        return { value: input, icon: 'BellIcon' as Icon }
+        return {
+          value: arrayInput,
+          icon: 'bellIcon' as Icon,
+        }
     }
   }
-
 
   const sendTo = computed(() => {
     if (props.sendToInput) {
       return sendToMapper(props.sendToInput, props.sendToType!)
+    } else if (blockDocumentDataValue.value) {
+      return sendToMapper(blockDocumentDataValue.value, blockDocumentType.value)
     }
-
-    return sendToMapper(blockDocumentDataValue.value, blockDocumentDataKey.value)
+    return sendToMapper('', '')
   })
 
   const classes = computed(() => ({
-    'notification-details__icon--gray': blockDocumentDataKey.value != 'slack' && props.sendToType != 'slack',
+    'notification-details__icon--gray': sendTo.value.icon !== 'Slack',
   }))
 </script>
 
