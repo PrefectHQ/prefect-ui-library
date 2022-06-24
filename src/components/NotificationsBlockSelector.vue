@@ -36,15 +36,6 @@
 
   const selectedButton = ref<SelectModelValue>(buttonGroup[0].value)
 
-  //
-  //
-  //
-  //
-  //
-  //
-  //
-  //
-  //
   const blockSchemasApi = inject(blockSchemasApiKey)
   const blockTypesApi = inject(blockTypesApiKey)
 

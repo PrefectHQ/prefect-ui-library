@@ -20,21 +20,20 @@
       <p-text-input v-model="input" />
     </p-label>
 
-    <NotificationsBlockSelector :block-document-id="notification?.blockDocumentId" />
+    <!-- <NotificationsBlockSelector :block-document-id="notification?.blockDocumentId" /> -->
 
     <p class="notification-form__message">
       Review your notification.
     </p>
 
     <div class="notification-form__review-block">
-      <NotificationDetails :notification="notificationChanges" :send-to-input="input" :send-to-type="selectedSendToType" />
-      <NotificationDetails :notification="notificationDetails" />
+      <NotificationDetails :notification="notificationDetails" :send-to-input="input" :send-to-type="selectedSendToType" />
+      <!-- <NotificationDetails :notification="notificationDetails" /> -->
     </div>
   </p-form>
 </template>
 
 <script lang="ts" setup>
-  import { unwatchFile } from 'fs'
   import { PLabel, PTagsInput, PTextInput, PForm, ButtonGroupOption, PCombobox, PButtonGroup } from '@prefecthq/prefect-design'
   import { useForm } from 'vee-validate'
   import { computed, ref, watch } from 'vue'
@@ -68,7 +67,7 @@
     }
   })
 
-  const buttonGroup: ButtonGroupOption[] = [
+  const buttonGroup: any[] = [
     {
       label: 'Email',
       value: 'email_addresses',
