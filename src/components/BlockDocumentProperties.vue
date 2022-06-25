@@ -1,5 +1,5 @@
 <template>
-  <PContent class="block-document-data">
+  <PContent class="block-document-properties">
     <template v-for="(property, key) in blockSchema.fields.properties" :key="property.title">
       <template v-if="isBlockSchemaReferenceProperty(property)">
         <BlockDocumentKeyValue :block-document-id="getReferenceValue(key)!" />
