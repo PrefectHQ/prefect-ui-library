@@ -47,14 +47,17 @@
   import NotificationsBlockSelector from './NotificationsBlockSelector.vue'
   import StateSelect from '@/components/StateSelect.vue'
   import { Notification } from '@/models'
-  // import { blockDocumentsApiKey } from '@/services'
-  // import { inject } from '@/utilities'
+  import { blockDocumentsApiKey, blockSchemasApiKey, blockTypesApiKey, notificationsApiKey } from '@/services'
+  import { inject } from '@/utilities'
 
   const props = defineProps<{
     notification?: Notification,
   }>()
 
-  // const blockDocumentsApi = inject(blockDocumentsApiKey)
+  const blockDocumentsApi = inject(blockDocumentsApiKey)
+  const blockTypesApi = inject(blockTypesApiKey)
+  const blockSchemasApi = inject(blockSchemasApiKey)
+  const notificationsApi = inject(notificationsApiKey)
   // const blockDocument = await blockDocumentsApi.getBlockDocument(props.notification!.blockDocumentId)
   // const blockDocumentData = computed(() => blockDocument.data)
   // const blockDocumentDataKey = computed(() => Object.keys(blockDocumentData.value)[0])
@@ -80,9 +83,9 @@
       inputLabel: 'Email Address',
     },
     {
-      label: 'Slack',
-      value: 'slack',
-      inputLabel: 'Webhook',
+      label: 'Slack Webhook',
+      value: 'Slack Webhook',
+      inputLabel: 'Webhook URL',
     },
   ]
   const selectedSendToType = ref(buttonGroup[0].value)
@@ -99,15 +102,50 @@
 
 
   const emit = defineEmits<{
-    (event: 'submit', value: Notification): void,
+    (event: 'submit', value: any): void,
     (event: 'cancel'): void,
   }>()
 
-  const submit = handleSubmit(notificationData => {
-    emit('submit', notificationData)
+  const submit = handleSubmit(() => {
+    const notificationData = {
+      type: selectedSendToType.value,
+      data: { [selectedSendToLabel.value]: input.value },
+    }
+    console.log('notificationData', notificationData)
+    // emit('submit', notificationData)
+    createNotification(notificationData)
   })
   function cancel(): void {
     emit('cancel')
+  }
+
+  const createNotification = async (ev: any): Promise<void>=> {
+    try {
+      console.log('e', ev)
+      const blockType = await blockTypesApi.getBlockTypeByName(ev.type)
+      const filter =  {
+        blockTypeId: {
+          any_: [blockType.id],
+        },
+        sort: 'CREATED_TIME_DESC',
+        limit: 10,
+      }
+      const blockSchema = await blockSchemasApi.getBlockSchemas(filter)
+      const blockDoc: any = {
+        is_anonymous: true,
+        data: ev.data,
+        blockSchemaId: blockSchema[0].id,
+        blockTypeId: blockType.id,
+
+      }
+      const block = await blockDocumentsApi.createBlockDocument(blockDoc)
+      console.log(block)
+      const notification = { name:`2${block.name}`, is_active: true, state_names: stateNames.value, tags: tags.value, block_document_id: block.id }
+      const notificationRes = await notificationsApi.createNotification(notification)
+      console.log(notificationRes)
+    } catch (e) {
+      console.warn(e)
+    }
   }
 </script>
 

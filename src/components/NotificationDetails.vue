@@ -81,7 +81,6 @@
   }
 
   const sendTo = computed(() => {
-    console.log(blockDocument)
     if (props.sendToInput) {
       return sendToMapper(props.sendToInput, props.sendToType!)
     } else if (blockDocumentDataValue.value) {
