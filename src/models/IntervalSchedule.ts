@@ -1,7 +1,7 @@
 import { formatDate, formatTimeNumeric, toPluralString } from '@prefecthq/prefect-design'
 import { minutesInHour, secondsInMinute } from 'date-fns'
 import { IIntervalScheduleResponse } from './IScheduleResponse'
-import { Schedule } from '@/models'
+import { ISchedule } from '@/models'
 import { floor } from '@/utilities/math'
 
 
@@ -12,18 +12,27 @@ export type Intervals = {
   days: number,
 }
 
-export interface IIntervalScheduleRaw {
+export interface IIntervalSchedule extends ISchedule {
   interval: number,
   timezone: string | null,
   anchorDate: Date | null,
+  getIntervals?: () => Intervals,
 }
-
-export type IIntervalSchedule = { getIntervals?: () => Intervals } & IIntervalScheduleRaw & Schedule
 
 export class IntervalSchedule implements IIntervalSchedule {
   public timezone: string | null
   public interval: number
   public anchorDate: Date | null
+
+  public constructor(schedule: Pick<IIntervalSchedule, 'interval' | 'timezone' | 'anchorDate'>) {
+    this.timezone = schedule.timezone
+    this.interval = schedule.interval
+    this.anchorDate = schedule.anchorDate
+  }
+
+  public get raw(): number {
+    return this.interval
+  }
 
   public getIntervals(): Intervals {
     let remainder = this.interval
@@ -49,14 +58,13 @@ export class IntervalSchedule implements IIntervalSchedule {
     return intervals
   }
 
-  public toString(options?: { neat?: boolean, verbose?: boolean }): string {
-    const { neat = true, verbose = false } = options ?? {}
+  public toString({ verbose = false, neat = true }: { neat?: boolean, verbose?: boolean } = {}): string {
     const { seconds, minutes, hours, days } = this.getIntervals()
     const strings: string[] = []
 
     if (seconds) {
       if (neat && seconds === 1 && !minutes && !hours && !days) {
-        strings.push('Every second')
+        strings.push('second')
       } else {
         strings.push(`${seconds} ${toPluralString('second', seconds)}`)
       }
@@ -64,7 +72,7 @@ export class IntervalSchedule implements IIntervalSchedule {
 
     if (minutes) {
       if (neat && minutes === 1 && !seconds && !hours && !days) {
-        strings.push('Every minute')
+        strings.push('minute')
       } else {
         strings.push(`${minutes} ${toPluralString('minute', minutes)}`)
       }
@@ -88,20 +96,16 @@ export class IntervalSchedule implements IIntervalSchedule {
 
     let str = strings.reverse().join(', ')
 
-    if (!verbose) {
-      return str
-    }
-
-    if (str == '') {
-      return 'None'
-    }
-
     if (!str.includes('Every') && !str.includes('Daily') && !str.includes('Hourly')) {
       str = `Every ${str}`
     }
 
-    if (this.anchorDate) {
+    if (this.anchorDate && verbose) {
       str += ` from ${formatDate(this.anchorDate)} at ${formatTimeNumeric(this.anchorDate)} (${this.timezone ?? 'UTC'})`
+    }
+
+    if (str == '') {
+      str = 'None'
     }
 
     return str
@@ -113,11 +117,5 @@ export class IntervalSchedule implements IIntervalSchedule {
       'anchor_date': this.anchorDate?.toISOString() ?? null,
       'timezone': this.timezone,
     }
-  }
-
-  public constructor(schedule: IIntervalScheduleRaw) {
-    this.timezone = schedule.timezone
-    this.interval = schedule.interval
-    this.anchorDate = schedule.anchorDate
   }
 }

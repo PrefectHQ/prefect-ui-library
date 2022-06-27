@@ -1,7 +1,3 @@
-import { IScheduleResponse } from '@/models'
+import { RRuleSchedule, CronSchedule, IntervalSchedule } from '@/models'
 
-export interface Schedule {
-  timezone: string | null,
-  toString: () => string,
-  toResponse: () => IScheduleResponse,
-}
+export type Schedule = RRuleSchedule | CronSchedule | IntervalSchedule

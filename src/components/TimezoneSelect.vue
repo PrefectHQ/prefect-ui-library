@@ -1,5 +1,5 @@
 <template>
-  <p-select v-model="internalValue" :options="options" />
+  <p-combobox v-model="internalValue" :options="options" />
 </template>
 
 <script lang="ts" setup>

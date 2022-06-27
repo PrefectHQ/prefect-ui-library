@@ -1,115 +1,35 @@
-/* eslint-disable max-classes-per-file */
-import { default as Cron } from 'cronstrue'
-import { Options as CronstrueOptions } from 'cronstrue/dist/options'
 import cronstrue from 'cronstrue/i18n'
-import { Schedule, ICronScheduleResponse } from '@/models'
+import { CronStringLengthError } from './CronStringLengthError'
+import { PublicCron } from './PublicCron'
+import { ICronScheduleResponse, ISchedule } from '@/models'
 import { CronKeyword, isCronKeyword, containsCronRandomExpression, cronKeywordMap } from '@/types/cron'
 import { capitalize } from '@/utilities'
 
 
-export interface ICronScheduleRaw {
+export interface ICronSchedule extends ISchedule {
   timezone: string | null,
   cron: string,
   dayOr: boolean | null,
 }
-
-export type ICronSchedule = ICronScheduleRaw & Schedule
-
-// This class modifies the underlying Cron class to expose string utilities as public methods
-class PublicCron extends Cron {
-  public getFullDescription(): string {
-    try {
-      return super.getFullDescription()
-    } catch {
-      return ''
-    }
-  }
-
-  public getSecondsDescription(): string {
-    try {
-      return super.getSecondsDescription()
-    } catch {
-      return ''
-    }
-  }
-
-  public getMinutesDescription(): string {
-    try {
-      return super.getMinutesDescription()
-    } catch {
-      return ''
-    }
-  }
-
-  public getHoursDescription(): string {
-    try {
-      return super.getHoursDescription()
-    } catch {
-      return ''
-    }
-  }
-
-  public getTimeOfDayDescription(): string {
-    try {
-      return super.getTimeOfDayDescription()
-    } catch {
-      return ''
-    }
-  }
-
-  public getDayOfMonthDescription(): string | null {
-    try {
-      return super.getDayOfMonthDescription()
-    } catch {
-      return ''
-    }
-  }
-
-  public getMonthDescription(): string {
-    try {
-      return super.getMonthDescription()
-    } catch {
-      return ''
-    }
-  }
-
-  public getDayOfWeekDescription(): string {
-    try {
-      return super.getDayOfWeekDescription()
-    } catch {
-      return ''
-    }
-  }
-
-  public getYearDescription(): string {
-    try {
-      return super.getYearDescription()
-    } catch {
-      return ''
-    }
-  }
-
-  public transformVerbosity(description: string, useVerboseFormat: boolean): string {
-    return super.transformVerbosity(description, useVerboseFormat)
-  }
-
-  public constructor(expression: string, options: CronstrueOptions) {
-    super(expression, options)
-    this.getFullDescription()
-  }
-}
-
 
 export class CronSchedule implements ICronSchedule {
   public timezone: string | null
   public cron: string | CronKeyword
   public dayOr: boolean | null
 
-  public toString(
-    options?: { verbose?: boolean },
-  ): string {
-    const { verbose = false } = options ?? {}
+  public constructor(schedule: Pick<ICronSchedule, 'cron' | 'timezone' | 'dayOr'>) {
+    this.timezone = schedule.timezone
+    this.cron = schedule.cron
+    this.dayOr = schedule.dayOr
+  }
 
+  public get raw(): string | CronKeyword {
+    return this.cron
+  }
+
+  public toString(
+    { verbose = false }: { verbose?: boolean } = {},
+  ): string {
     let parsed = ''
     const cronInstance = new PublicCron(this.cron, {})
     const parts = this.cron.trim().split(' ')
@@ -120,7 +40,7 @@ export class CronSchedule implements ICronSchedule {
 
     try {
       if (parts.length < 5) {
-        throw Error('Cron statement is too short')
+        throw new CronStringLengthError(parts.length)
       }
 
 
@@ -311,11 +231,5 @@ export class CronSchedule implements ICronSchedule {
       'timezone': this.timezone,
       'day_or': this.dayOr,
     }
-  }
-
-  public constructor(schedule: ICronScheduleRaw) {
-    this.timezone = schedule.timezone
-    this.cron = schedule.cron
-    this.dayOr = schedule.dayOr
   }
 }

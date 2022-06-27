@@ -1,5 +1,6 @@
 import { randomAny } from './any'
 import { randomBlockDocument } from './blockDocument'
+import { randomBlockDocumentData } from './blockDocumentData'
 import { blockDocumentsApiMockFactory } from './blockDocumentsApi'
 import { randomBlockSchema } from './blockSchema'
 import { randomBlockSchemaCapabilities } from './blockSchemaCapabilities'
@@ -11,6 +12,7 @@ import { blockTypesApiFactory } from './blockTypesApi'
 import { randomBoolean } from './boolean'
 import { randomDate } from './date'
 import { randomDeployment } from './deployment'
+import { randomEmail } from './email'
 import { randomFlow } from './flow'
 import { randomFlowRun } from './flowRun'
 import { randomFlowRunGraph, randomGraphNode } from './flowRunGraph'
@@ -24,6 +26,7 @@ import { randomLogLevel, randomLog } from './log'
 import { randomNotification } from './notification'
 import { randomNumber } from './number'
 import { randomParameters } from './parameters'
+import { randomSchedule } from './schedule'
 import { randomState } from './state'
 import { randomStateType } from './stateType'
 import { randomChar, randomString, randomSentence, randomParagraph, randomRunName, randomNoun } from './string'
@@ -34,6 +37,7 @@ import { randomWorkQueue, randomWorkQueueFilter } from './workQueue'
 export const mocks = {
   any: randomAny,
   blockDocument: randomBlockDocument,
+  blockDocumentData: randomBlockDocumentData,
   blockDocumentsApi: blockDocumentsApiMockFactory,
   blockSchema: randomBlockSchema,
   blockSchemaCapabilities: randomBlockSchemaCapabilities,
@@ -46,6 +50,7 @@ export const mocks = {
   char: randomChar,
   date: randomDate,
   deployment: randomDeployment,
+  email: randomEmail,
   flow: randomFlow,
   flowRun: randomFlowRun,
   flowRunGraph: randomFlowRunGraph,
@@ -64,6 +69,7 @@ export const mocks = {
   paragraph: randomParagraph,
   parameters: randomParameters,
   runName: randomRunName,
+  schedule: randomSchedule,
   sentence: randomSentence,
   state: randomState,
   stateType: randomStateType,

@@ -11,7 +11,7 @@
         </p-label>
 
         <p-label label="Anchor Date">
-          <p-date-input v-model="intervalAnchorDate" />
+          <p-date-input v-model="intervalAnchorDate" show-time />
         </p-label>
 
         <p-label label="Timezone">
@@ -21,8 +21,8 @@
 
 
       <section class="mt-4 flex flex-col gap-4">
-        <p-key-value label="Raw" :value="intervalSchedule.interval" />
-        <p-key-value label="String" :value="intervalSchedule.toString()" />
+        <p-key-value label="Raw" :value="intervalSchedule.raw" />
+        <p-key-value label="String" :value="intervalSchedule" />
         <p-key-value label="Verbose" :value="intervalSchedule.toString({ verbose: true })" />
       </section>
     </DemoSubSection>
@@ -52,8 +52,8 @@
 
 
       <section class="mt-4 flex flex-col gap-4">
-        <p-key-value label="Raw" :value="cronSchedule.cron" />
-        <p-key-value label="String" :value="cronSchedule.toString()" />
+        <p-key-value label="Raw" :value="cronSchedule.raw" />
+        <p-key-value label="String" :value="cronSchedule" />
         <p-key-value label="Verbose" :value="cronSchedule.toString({ verbose: true })" />
       </section>
     </DemoSubSection>
@@ -93,11 +93,10 @@
   import { timezones } from '..//utilities/intl'
   import DemoSection from '../components/DemoSection.vue'
   import DemoSubSection from '../components/DemoSubSection.vue'
-  import { CronSchedule, IntervalSchedule, RRuleSchedule } from '@/models'
+  import { CronSchedule, IntervalSchedule, RRuleSchedule  } from '@/models'
 
   // TODO: Doesn't work on Safari
   const timeZoneOptions = timezones
-
 
   const interval = ref(3600)
   const intervalTimezone = ref(null)
@@ -116,7 +115,7 @@
     return new CronSchedule({ cron: cron.value, timezone: cronTimezone.value, dayOr: cronDayOr.value })
   })
 
-  const rrule = ref('DTSTART:20120201T023000Z\nRRULE:FREQ=MONTHLY;COUNT=5')
+  const rrule = ref('DTSTART:20120201T023000Z RRULE:FREQ=MONTHLY;COUNT=2')
   const rruleTimezone = ref(null)
 
   const rruleSchedule = computed(() => {

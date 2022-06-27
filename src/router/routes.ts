@@ -11,6 +11,7 @@ export const flowRouteKey: InjectionKey<(flowId: string) => Route> = Symbol('flo
 export const flowRunRouteKey: InjectionKey<(flowRunId: string) => Route> = Symbol('flowRunRouteKey')
 export const flowRunsRouteKey: InjectionKey<() => Route> = Symbol('flowRunsRouteKey')
 export const flowsRouteKey: InjectionKey<() => Route> = Symbol('flowsRouteKey')
+export const notificationCreateRouteKey: InjectionKey<() => Route> = Symbol('notificationCreateRouteKey')
 export const workQueueCreateRouteKey: InjectionKey<() => Route> = Symbol('workQueueCreateRouteKey')
 export const settingsRouteKey: InjectionKey<() => Route> = Symbol('settingsRouteKey')
 export const taskRunRouteKey: InjectionKey<(taskRunId: string) => Route> = Symbol('taskRunRouteKey')

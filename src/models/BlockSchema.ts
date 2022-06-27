@@ -2,17 +2,31 @@ import { BlockType } from './BlockType'
 
 export type BlockSchemaFieldsType = 'object'
 
-export const blockSchemaPropertyTypes = ['string', 'hash'] as const
+export const blockSchemaPropertyTypes = ['string', 'number', 'integer', 'boolean', 'array', 'object'] as const
 export type BlockSchemaPropertyType = typeof blockSchemaPropertyTypes[number]
 
 export const blockSchemaCapabilities = ['writable', 'readable', 'storage'] as const
 export type BlockSchemaCapability = typeof blockSchemaCapabilities[number]
 
-export type BlockSchemaProperty = {
+export type BlockSchemaSimpleProperty = {
   title: string,
   description: string,
   type: BlockSchemaPropertyType,
+  enum?: string[] | number[],
 }
+
+export type BlockSchemaReferenceProperty = {
+  $ref: 'string',
+}
+
+export type BlockSchemaProperty = BlockSchemaSimpleProperty | BlockSchemaReferenceProperty
+
+export type BlockSchemaReference = {
+  blockSchemaChecksum: string,
+  blockTypeName: string,
+}
+
+export type BlockSchemaReferences = Record<string, BlockSchemaReference | undefined>
 
 export type BlockSchemaFields = {
   title: string,
@@ -21,7 +35,7 @@ export type BlockSchemaFields = {
   properties: Record<string, BlockSchemaProperty>,
   required: string[],
   blockTypeName: string,
-  blockSchemaReferences: Record<string, unknown>,
+  blockSchemaReferences: BlockSchemaReferences,
 }
 
 export interface IBlockSchema {
