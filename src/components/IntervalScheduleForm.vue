@@ -2,7 +2,12 @@
   <p-form @submit="submit">
     <p-content>
       <div class="interval-schedule-form__row">
-        <p-label label="Value" class="interval-schedule-form__column--span-3">
+        <p-label
+          label="Value"
+          class="interval-schedule-form__column--span-3"
+          :message="intervalErrors?.[0]"
+          :state="intervalState"
+        >
           <p-number-input v-model="interval" min="1" step="1" />
         </p-label>
 
@@ -26,7 +31,7 @@
       <p-button inset @click="cancel">
         Cancel
       </p-button>
-      <p-button type="submit">
+      <p-button :disabled="disabled" type="submit">
         Save
       </p-button>
     </template>
@@ -35,9 +40,11 @@
 
 <script lang="ts" setup>
   import { minutesInHour, secondsInMinute } from 'date-fns'
+  import { useField } from 'vee-validate'
   import { computed, ref, watch } from 'vue'
   import TimezoneSelect from './TimezoneSelect.vue'
   import { IntervalSchedule } from '@/models'
+  import { isRequired, withMessage } from '@/services/validate'
 
   const hoursInDay = 24
 
@@ -93,9 +100,13 @@
 
   const defaultInterval = 3600
 
+  const rules = {
+    interval: [withMessage(isRequired, 'An interval is required')],
+  }
+
   const anchorDate = ref(props.schedule?.anchorDate ?? new Date())
   const timezone = ref(props.schedule?.timezone ?? 'UTC')
-  const interval = ref(secondsToClosestIntervalValue(props.schedule?.interval ?? defaultInterval))
+  const { value: interval, meta: intervalState, errors: intervalErrors } = useField<number>('interval', rules.interval, { initialValue: secondsToClosestIntervalValue(props.schedule?.interval ?? defaultInterval) })
   const intervalOption = ref<IntervalOption>(secondsToClosestIntervalOption(props.schedule?.interval ?? defaultInterval))
 
   const intervalOptions: IntervalOption[] = ['Seconds', 'Minutes', 'Hours', 'Days']
@@ -112,15 +123,30 @@
     })
   })
 
+  const disabled = computed(() => {
+    return intervalErrors.value.length > 0
+  })
+
+
   const cancel = (): void => {
     emit('cancel')
   }
 
   const submit = (): void => {
+    if (disabled.value) {
+      return
+    }
+
     emit('submit', internalValue.value)
   }
 
-  watch(() => internalValue.value, () => emit('update:schedule', internalValue.value))
+  watch(() => internalValue.value, () => {
+    if (disabled.value) {
+      return
+    }
+
+    emit('update:schedule', internalValue.value)
+  })
 </script>
 
 <style>
