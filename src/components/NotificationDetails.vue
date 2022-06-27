@@ -59,7 +59,7 @@
   const blockDocumentDataValue = computed(() => blockDocumentData.value && blockDocumentDataKey.value ? blockDocumentData.value[blockDocumentDataKey.value] as string[] : null)
 
 
-  const sendToMapper = (input: string[] | string, type: string | SelectModelValue): { value: string[], icon: Icon } => {
+  const sendToMapper = (input: string[] | string, type: string): { value: string[], icon: Icon } => {
     const arrayInput = Array.isArray(input) ? input : [input]
     switch (type) {
       case 'Email':
