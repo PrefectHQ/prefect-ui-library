@@ -30,9 +30,13 @@
   import { blockDocumentsApiKey, blockSchemasApiKey, mocker } from '@/services'
 
   const emailBlockType = mocker.create('blockType', [{ name: 'Email Addresses' }])
+  const emailBlockSchemaFields = mocker.create('blockSchemaFields', [{ blockTypeName: emailBlockType.name }])
+  const emailBlockSchema = mocker.create('blockSchema', [{ blockType: emailBlockType, blockTypeId: emailBlockType.id, fields: emailBlockSchemaFields }])
+
   const slackBlockType = mocker.create('blockType', [{ name: 'Slack Webhook' }])
-  const emailBlockSchema = mocker.create('blockSchema', [{ blockType: emailBlockType }])
-  const slackBlockSchema = mocker.create('blockSchema', [{ blockType: slackBlockType } ])
+  const slackBlockSchemaFields = mocker.create('blockSchemaFields', [{ blockTypeName: slackBlockType.name }])
+  const slackBlockSchema = mocker.create('blockSchema', [{ blockType: slackBlockType, blockTypeId: slackBlockType.id, fields: slackBlockSchemaFields } ])
+
   const blockSchemas = [emailBlockSchema, slackBlockSchema]
   provide(blockSchemasApiKey, mocker.create('blockSchemasApi', [{ blockSchemas }]))
 
@@ -56,13 +60,10 @@
 
 
   const blockDocuments = [emailBlockDocument, slackBlockDocument]
+  provide(blockDocumentsApiKey, mocker.create('blockDocumentsApi', [{ blockDocuments }]))
 
-  provide(blockDocumentsApiKey, mocker.create('blockDocumentsApi', [
-    {
-      blockDocuments,
-    },
-  ]))
-
+  console.log(emailBlockDocument)
+  console.log(emailBlockSchema)
 
   const notification = mocker.create('notification', [{ blockDocumentId: emailBlockDocument.id }])
 
