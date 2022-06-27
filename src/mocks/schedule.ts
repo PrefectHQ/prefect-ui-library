@@ -16,7 +16,7 @@ const rruleSchedules = [
   'DTSTART:20120201T023000Z RRULE:FREQ=DAILY;COUNT=30',
 ]
 
-export const randomSchedule: MockFunction<Schedule, [{ type?: 'interval' | 'cron' | 'rrule' }, Partial<Schedule>?]> = function({ type }) {
+export const randomSchedule: MockFunction<Schedule, [{ type?: 'interval' | 'cron' | 'rrule' }, Partial<Schedule>?]> = function({ type } = {}) {
   let schedule: Schedule
 
   const interval = intervalSchedules[uniform(0, intervalSchedules.length - 1)]
