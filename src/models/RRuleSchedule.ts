@@ -1,21 +1,19 @@
 import { RRule } from 'rrule'
-import { Schedule } from '@/models'
+import { ISchedule } from '@/models'
 import { capitalize } from '@/utilities'
 
 
-export interface IRRuleScheduleRaw {
+export interface IRRuleSchedule extends ISchedule {
   timezone: string | null,
   rrule: string,
 }
-
-export type IRRuleSchedule = IRRuleScheduleRaw & Schedule
 
 
 export class RRuleSchedule implements IRRuleSchedule {
   public timezone: string | null
   public rrule: string
 
-  public constructor(schedule: IRRuleScheduleRaw) {
+  public constructor(schedule: IRRuleSchedule) {
     this.timezone = schedule.timezone
     this.rrule = schedule.rrule
   }

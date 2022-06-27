@@ -1,6 +1,6 @@
 import { formatDate, formatTimeNumeric, toPluralString } from '@prefecthq/prefect-design'
 import { minutesInHour, secondsInMinute } from 'date-fns'
-import { Schedule } from '@/models'
+import { ISchedule } from '@/models'
 import { floor } from '@/utilities/math'
 
 
@@ -11,20 +11,19 @@ export type Intervals = {
   days: number,
 }
 
-export interface IIntervalScheduleRaw {
+export interface IIntervalSchedule extends ISchedule {
   interval: number,
   timezone: string | null,
   anchorDate: Date | null,
+  getIntervals?: () => Intervals,
 }
-
-export type IIntervalSchedule = { getIntervals?: () => Intervals } & IIntervalScheduleRaw & Schedule
 
 export class IntervalSchedule implements IIntervalSchedule {
   public timezone: string | null
   public interval: number
   public anchorDate: Date | null
 
-  public constructor(schedule: IIntervalScheduleRaw) {
+  public constructor(schedule: IIntervalSchedule) {
     this.timezone = schedule.timezone
     this.interval = schedule.interval
     this.anchorDate = schedule.anchorDate
