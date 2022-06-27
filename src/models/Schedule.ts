@@ -1,4 +1,3 @@
-export type Schedule = {
-  timezone: string | null,
-  toString: () => string,
-}
+import { RRuleSchedule, CronSchedule, IntervalSchedule } from '@/models'
+
+export type Schedule = RRuleSchedule | CronSchedule | IntervalSchedule

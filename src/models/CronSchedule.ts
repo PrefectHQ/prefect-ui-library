@@ -1,28 +1,30 @@
 import cronstrue from 'cronstrue/i18n'
 import { CronStringLengthError } from './CronStringLengthError'
 import { PublicCron } from './PublicCron'
-import { Schedule } from '@/models'
+import { ISchedule } from '@/models'
 import { CronKeyword, isCronKeyword, containsCronRandomExpression, cronKeywordMap } from '@/types/cron'
 import { capitalize } from '@/utilities'
 
 
-export interface ICronScheduleRaw {
+export interface ICronSchedule extends ISchedule {
   timezone: string | null,
   cron: string,
   dayOr: boolean | null,
 }
-
-export type ICronSchedule = ICronScheduleRaw & Schedule
 
 export class CronSchedule implements ICronSchedule {
   public timezone: string | null
   public cron: string | CronKeyword
   public dayOr: boolean | null
 
-  public constructor(schedule: ICronScheduleRaw) {
+  public constructor(schedule: Pick<ICronSchedule, 'cron' | 'timezone' | 'dayOr'>) {
     this.timezone = schedule.timezone
     this.cron = schedule.cron
     this.dayOr = schedule.dayOr
+  }
+
+  public get raw(): string | CronKeyword {
+    return this.cron
   }
 
   public toString(
