@@ -44,23 +44,24 @@
 
 <script lang="ts" setup>
   import { useField } from 'vee-validate'
-  import { computed, ref, watch } from 'vue'
+  import { computed, ref, watch, withDefaults } from 'vue'
   import DayOrDescriptionModal from './DayOrDescriptionModal.vue'
   import TimezoneSelect from './TimezoneSelect.vue'
   import { CronSchedule } from '@/models'
   import { isRequired, withMessage } from '@/services/validate'
   import { containsCronRandomExpression } from '@/types/cron'
 
-  const props = defineProps<{
-    schedule: CronSchedule | null,
-  }>()
+  const props = withDefaults(defineProps<{
+    schedule?: CronSchedule,
+  }>(), {
+    schedule: () => new CronSchedule({ cron: '* * * * *', dayOr: true, timezone: 'UTC' }),
+  })
 
   const emit = defineEmits<{
     (event: 'cancel'): void,
     (event: 'update:schedule' | 'submit', value: CronSchedule): void,
   }>()
 
-  const defaultCron = '* * * * *'
 
   const isSupportedCron = (): boolean => {
     return !containsCronRandomExpression(cron.value)
@@ -79,11 +80,9 @@
     ],
   }
 
-  const timezone = ref(props.schedule?.timezone ?? 'UTC')
-
-  const { value: cron, meta: cronState, errors: cronErrors } = useField<string>('cron', rules.cron, { initialValue: props.schedule?.cron ?? defaultCron })
-  const dayOr = ref(props.schedule?.dayOr ?? true)
-
+  const { value: cron, meta: cronState, errors: cronErrors } = useField<string>('cron', rules.cron, { initialValue: props.schedule.cron })
+  const timezone = ref(props.schedule.timezone)
+  const dayOr = ref(props.schedule.dayOr)
 
   const internalValue = computed(() => {
     return new CronSchedule({
