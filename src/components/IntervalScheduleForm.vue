@@ -41,7 +41,7 @@
 <script lang="ts" setup>
   import { minutesInHour, secondsInMinute } from 'date-fns'
   import { useField } from 'vee-validate'
-  import { computed, ref, watch } from 'vue'
+  import { computed, ref, watch, withDefaults } from 'vue'
   import TimezoneSelect from './TimezoneSelect.vue'
   import { IntervalSchedule } from '@/models'
   import { isRequired, withMessage } from '@/services/validate'
@@ -89,25 +89,26 @@
     return 'Seconds'
   }
 
-  const props = defineProps<{
-    schedule?: IntervalSchedule | null,
-  }>()
+  const props = withDefaults(defineProps<{
+    schedule?: IntervalSchedule,
+  }>(), {
+    schedule: () => new IntervalSchedule({ interval: 3600, anchorDate: new Date(), timezone: 'UTC' }),
+  })
 
   const emit = defineEmits<{
     (event: 'cancel'): void,
     (event: 'update:schedule' | 'submit', value: IntervalSchedule): void,
   }>()
 
-  const defaultInterval = 3600
 
   const rules = {
     interval: [withMessage(isRequired, 'An interval is required')],
   }
 
-  const anchorDate = ref(props.schedule?.anchorDate ?? new Date())
-  const timezone = ref(props.schedule?.timezone ?? 'UTC')
-  const { value: interval, meta: intervalState, errors: intervalErrors } = useField<number>('interval', rules.interval, { initialValue: secondsToClosestIntervalValue(props.schedule?.interval ?? defaultInterval) })
-  const intervalOption = ref<IntervalOption>(secondsToClosestIntervalOption(props.schedule?.interval ?? defaultInterval))
+  const anchorDate = ref(props.schedule.anchorDate)
+  const timezone = ref(props.schedule.timezone)
+  const { value: interval, meta: intervalState, errors: intervalErrors } = useField<number>('interval', rules.interval, { initialValue: secondsToClosestIntervalValue(props.schedule.interval) })
+  const intervalOption = ref<IntervalOption>(secondsToClosestIntervalOption(props.schedule.interval))
 
   const intervalOptions: IntervalOption[] = ['Seconds', 'Minutes', 'Hours', 'Days']
 
