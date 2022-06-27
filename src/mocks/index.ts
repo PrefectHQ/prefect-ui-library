@@ -26,6 +26,7 @@ import { randomLogLevel, randomLog } from './log'
 import { randomNotification } from './notification'
 import { randomNumber } from './number'
 import { randomParameters } from './parameters'
+import { randomSchedule } from './schedule'
 import { randomState } from './state'
 import { randomStateType } from './stateType'
 import { randomChar, randomString, randomSentence, randomParagraph, randomRunName, randomNoun } from './string'
@@ -68,6 +69,7 @@ export const mocks = {
   paragraph: randomParagraph,
   parameters: randomParameters,
   runName: randomRunName,
+  schedule: randomSchedule,
   sentence: randomSentence,
   state: randomState,
   stateType: randomStateType,
