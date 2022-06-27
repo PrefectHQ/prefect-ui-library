@@ -19,9 +19,8 @@
               </sup>
             </span>
           </template>
-          <span>
-            <p-toggle v-model="dayOr" class="inline-block" />
-          </span>
+
+          <p-toggle v-model="dayOr" class="inline-block" />
         </p-label>
       </div>
 
