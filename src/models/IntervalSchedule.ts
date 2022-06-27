@@ -23,10 +23,14 @@ export class IntervalSchedule implements IIntervalSchedule {
   public interval: number
   public anchorDate: Date | null
 
-  public constructor(schedule: IIntervalSchedule) {
+  public constructor(schedule: Pick<IIntervalSchedule, 'interval' | 'timezone' | 'anchorDate'>) {
     this.timezone = schedule.timezone
     this.interval = schedule.interval
     this.anchorDate = schedule.anchorDate
+  }
+
+  public get raw(): number {
+    return this.interval
   }
 
   public getIntervals(): Intervals {

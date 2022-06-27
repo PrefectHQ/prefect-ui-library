@@ -1,3 +1,5 @@
-import { IRRuleSchedule, ICronSchedule, IIntervalSchedule } from '@/models'
-
-export type ISchedule = IRRuleSchedule | ICronSchedule | IIntervalSchedule
+export type ISchedule = {
+  raw: string | number | null | undefined,
+  timezone: string | null,
+  toString: () => string,
+}

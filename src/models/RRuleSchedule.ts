@@ -13,9 +13,13 @@ export class RRuleSchedule implements IRRuleSchedule {
   public timezone: string | null
   public rrule: string
 
-  public constructor(schedule: IRRuleSchedule) {
+  public constructor(schedule: Pick<IRRuleSchedule, 'rrule' | 'timezone'>) {
     this.timezone = schedule.timezone
     this.rrule = schedule.rrule
+  }
+
+  public get raw(): string {
+    return this.rrule
   }
 
   public getRRule(): RRule {

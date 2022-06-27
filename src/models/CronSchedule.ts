@@ -17,10 +17,14 @@ export class CronSchedule implements ICronSchedule {
   public cron: string | CronKeyword
   public dayOr: boolean | null
 
-  public constructor(schedule: ICronSchedule) {
+  public constructor(schedule: Pick<ICronSchedule, 'cron' | 'timezone' | 'dayOr'>) {
     this.timezone = schedule.timezone
     this.cron = schedule.cron
     this.dayOr = schedule.dayOr
+  }
+
+  public get raw(): string | CronKeyword {
+    return this.cron
   }
 
   public toString(

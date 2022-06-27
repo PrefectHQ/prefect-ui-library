@@ -14,7 +14,7 @@
       </template>
 
       <template #schedule="{ row }">
-        {{ row.schedule }}
+        <span :title="row.schedule?.toString({ verbose: true })">{{ row.schedule }}</span>
       </template>
 
       <template #tags="{ row }">
@@ -103,7 +103,7 @@
   })
 
   function filterDeployment({ name, tags, schedule }: Deployment): boolean {
-    return `${name} ${schedule?.toString() ?? ''} ${tags?.join(' ')}`.toLowerCase().includes(searchTerm.value.toLowerCase())
+    return `${name} ${schedule ?? ''} ${tags?.join(' ')}`.toLowerCase().includes(searchTerm.value.toLowerCase())
   }
 
   function clear(): void {
