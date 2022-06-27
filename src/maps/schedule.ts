@@ -1,5 +1,5 @@
+import { CronSchedule, IntervalSchedule, RRuleSchedule, Schedule } from '@/models'
 import { IScheduleResponse, isCronScheduleResponse, isIntervalScheduleResponse, isRRuleScheduleResponse } from '@/models/IScheduleResponse'
-import { CronSchedule, IntervalSchedule, RRuleSchedule, Schedule } from '@/models/Schedule'
 import { MapFunction } from '@/services/Mapper'
 
 export const mapIScheduleResponseToSchedule: MapFunction<IScheduleResponse, Schedule> = function(source: IScheduleResponse): Schedule {
@@ -22,7 +22,7 @@ export const mapIScheduleResponseToSchedule: MapFunction<IScheduleResponse, Sche
     return new IntervalSchedule({
       timezone: source.timezone,
       interval: source.interval,
-      anchorDate: source.anchor_date,
+      anchorDate: this.map('string', source.anchor_date, 'Date'),
     })
   }
 
@@ -36,6 +36,6 @@ export const mapScheduleToIScheduleResponse: MapFunction<Schedule, IScheduleResp
     'cron': (source as CronSchedule).cron,
     'day_or': (source as CronSchedule).dayOr,
     'interval': (source as IntervalSchedule).interval,
-    'anchor_date': (source as IntervalSchedule).anchorDate,
+    'anchor_date': this.map('Date', (source as IntervalSchedule).anchorDate, 'string'),
   }
 }

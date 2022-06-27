@@ -22,7 +22,7 @@
   import PageHeading from '@/components/PageHeading.vue'
   import { useShowModal } from '@/compositions/useShowModal'
   import { Flow } from '@/models'
-  import { flowsApiKey } from '@/services/FlowsApi'
+  import { flowsApiKey } from '@/services'
   import { deleteItem, inject } from '@/utilities'
 
   const props = defineProps<{
