@@ -3,24 +3,24 @@
   <p-label label="Send notifications to">
     <p-button-group v-model="selectedButton" :options="buttonGroup" />
   </p-label>
-  <!-- <BlockSchemaFormFields v-model:data="dataModel" :block-schema="blockSchema" /> -->
+
+  <NotificationBlockSelectorFields :block-schema="blockSchema" />
+
+  <p-button @click="test">
+    Block Schema
+  </p-button>
 </template>
 
   <script lang="ts" setup>
   import { ButtonGroupOption, PButtonGroup, SelectModelValue } from '@prefecthq/prefect-design'
-  import { useSubscription } from '@prefecthq/vue-compositions'
   import { computed, ref } from 'vue'
-  import BlockSchemaFormFields from '@/components/BlockSchemaFormFields.vue'
-  import { BlockDocumentData, BlockSchema, BlockSchemaFilter } from '@/models'
-  import { blockSchemasApiKey, blockTypesApiKey } from '@/services'
+  import NotificationBlockSelectorFields from './NotificationBlockSelectorFields.vue'
+  import { BlockSchema, BlockSchemaFilter } from '@/models'
+  import { blockDocumentsApiKey, blockSchemasApiKey, blockTypesApiKey } from '@/services'
   import { inject } from '@/utilities/inject'
 
   const props = defineProps<{
     blockDocumentId?: string,
-  }>()
-
-  const emit = defineEmits<{
-    (event: 'update:data', value: BlockDocumentData): void,
   }>()
 
   const emailBlockTypeName = 'Email Addresses'
@@ -39,38 +39,55 @@
 
   const selectedButton = ref<SelectModelValue>(buttonGroup[0].value)
 
+  const blockDocumentsApi = inject(blockDocumentsApiKey)
   const blockSchemasApi = inject(blockSchemasApiKey)
   const blockTypesApi = inject(blockTypesApiKey)
 
-  const blockSchema = (): BlockSchema => {
+  const test = () => {
+    console.log(blockSchema())
+  }
+
+  const blockSchema = async (): Promise<BlockSchema> => {
     if (props.blockDocumentId) {
-      const blockSchemaSubscription = useSubscription(blockSchemasApi.getBlockSchema, [props.blockDocumentId])
-      const blockSchema = computed(() => blockSchemaSubscription.response)
-      console.log(1, blockSchema.value)
-      return blockSchema.value!
+      return  (await blockDocumentsApi.getBlockDocument(props.blockDocumentId!)).blockSchema
     }
 
-    const blockTypeSubscription = useSubscription(blockTypesApi.getBlockTypeByName, [selectedButton.value as string])
-    const blockTypeId = computed(() => blockTypeSubscription.response?.id)
-    const blockSchemaSubscriptionArgs = computed(() => ({
+    const blockTypeId = await (await blockTypesApi.getBlockTypeByName(selectedButton.value as string)).id
+    const blockSchemaArgs = computed(() => ({
       blockSchemas: {
         blockTypeId: {
-          any_: [blockTypeId.value],
+          any_: [blockTypeId],
         },
       },
     }))
-    const blockSchemaSubscription = useSubscription(blockSchemasApi.getBlockSchemas, [blockSchemaSubscriptionArgs as BlockSchemaFilter])
-    const blockSchema = computed(() => blockSchemaSubscription.response?.[0])
-    return blockSchema.value!
+    return (await blockSchemasApi.getBlockSchemas(blockSchemaArgs.value as BlockSchemaFilter))[0]
+
   }
 
+  // const blockSchema = (): BlockSchema => {
+  //   if (props.blockDocumentId) {
+  //     const blockDocumentsSubscription = useSubscription(blockDocumentsApi.getBlockDocument, [props.blockDocumentId])
+  //     const blockSchema = computed(() => blockDocumentsSubscription.response?.blockSchema)
 
-  const dataModel = computed({
-    get(): BlockDocumentData {
-      return {}
-    },
-    set(value: BlockDocumentData): void {
-      emit('update:data', value)
-    },
-  })
-  </script>
+  //     console.log(2, blockSchema)
+
+  //     return blockSchema.value!
+  //   }
+
+  //   const blockTypeSubscription = useSubscription(blockTypesApi.getBlockTypeByName, [selectedButton.value as string])
+  //   const blockTypeId = computed(() => blockTypeSubscription.response?.id)
+  //   const blockSchemaSubscriptionArgs = computed(() => ({
+  //     blockSchemas: {
+  //       blockTypeId: {
+  //         any_: [blockTypeId.value],
+  //       },
+  //     },
+  //   }))
+  //   const blockSchemaSubscription = useSubscription(blockSchemasApi.getBlockSchemas, [blockSchemaSubscriptionArgs as BlockSchemaFilter])
+  //   const blockSchema = computed(() => blockSchemaSubscription.response?.[0])
+
+  //   console.log(2, blockSchema.value)
+
+  //   return blockSchema.value!
+  // }
+</script>
