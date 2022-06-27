@@ -4,9 +4,9 @@
     <p-button-group v-model="selectedButton" :options="buttonGroup" />
   </p-label>
 
-  <template v-if="blockSchema">
-    <BlockSchemaFormFields v-model:data="dataModel" :block-schema="blockSchema" />
-  </template>
+
+  <!-- <BlockSchemaFormFields v-model:data="dataModel" :block-schema="blockSchema" /> -->
+  <NotificationBlockSelectorFields :block-schema="blockSchema" />
 
 
   <p-button @click="test">
@@ -51,7 +51,7 @@
   const blockTypesApi = inject(blockTypesApiKey)
 
   const test = () => {
-    console.log(blockSchema.value)
+    console.log(blockSchema)
   }
 
   // const blockSchema = async (): Promise<BlockSchema> => {
@@ -59,7 +59,7 @@
   //     return  (await blockDocumentsApi.getBlockDocument(props.blockDocumentId!)).blockSchema
   //   }
 
-  //   const blockTypeId = await (await blockTypesApi.getBlockTypeByName(selectedButton.value as string)).id
+  //   const blockTypeId = (await blockTypesApi.getBlockTypeByName(selectedButton.value as string)).id
   //   const blockSchemaArgs = computed(() => ({
   //     blockSchemas: {
   //       blockTypeId: {
@@ -71,14 +71,15 @@
 
   // }
 
-  const blockSchema = computed((): BlockSchema => {
+  const blockSchema = computed(() => {
     if (props.blockDocumentId) {
       const blockDocumentsSubscription = useSubscription(blockDocumentsApi.getBlockDocument, [props.blockDocumentId])
-      const blockSchema = computed(() => blockDocumentsSubscription.response?.blockSchema)
+      const blockDocument = computed(() => blockDocumentsSubscription.response)
+      const blockSchema = computed(() => blockDocument.value?.blockSchema)
 
-      console.log(2, blockSchema)
+      console.log(1, blockSchema)
 
-      return blockSchema.value!
+      return blockSchema
     }
 
     const blockTypeSubscription = useSubscription(blockTypesApi.getBlockTypeByName, [selectedButton.value as string])
@@ -95,7 +96,7 @@
 
     console.log(2, blockSchema.value)
 
-    return blockSchema.value!
+    return blockSchema
   })
 
   const emit = defineEmits<{
