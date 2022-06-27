@@ -13,7 +13,9 @@
     </DemoSubSection>
     <br>
     <DemoSubSection heading="Notification Form">
-      <NotificationForm v-model:notification="notification" @submit="submit" />
+      <!-- <NotificationForm /> -->
+      <p-divider />
+      <NotificationForm v-model:notification="notification" />
     </DemoSubSection>
   </DemoSection>
 </template>
@@ -25,10 +27,35 @@
   import NotificationDetails from '@/components/NotificationDetails.vue'
   import NotificationForm from '@/components/NotificationForm.vue'
   import NotificationsTable from '@/components/NotificationsTable.vue'
-  import { blockDocumentsApiKey, mocker } from '@/services'
+  import { blockDocumentsApiKey, blockSchemasApiKey, mocker } from '@/services'
 
-  const blockDocuments = mocker.createMany('blockDocument', 5)
-  const [first, second, third, forth ] = blockDocuments
+  const emailBlockType = mocker.create('blockType', [{ name: 'Email Addresses' }])
+  const slackBlockType = mocker.create('blockType', [{ name: 'Slack Webhook' }])
+  const emailBlockSchema = mocker.create('blockSchema', [{ blockType: emailBlockType }])
+  const slackBlockSchema = mocker.create('blockSchema', [{ blockType: slackBlockType } ])
+  const blockSchemas = [emailBlockSchema, slackBlockSchema]
+  provide(blockSchemasApiKey, mocker.create('blockSchemasApi', [{ blockSchemas }]))
+
+  const emailBlockDocument = mocker.create('blockDocument', [
+    {
+      blockSchemaId: emailBlockSchema.id,
+      blockSchema: emailBlockSchema,
+      blockTypeId: emailBlockType.id,
+      blockType: emailBlockType,
+    },
+  ])
+
+  const slackBlockDocument = mocker.create('blockDocument', [
+    {
+      blockSchemaId: slackBlockSchema.id,
+      blockSchema: slackBlockSchema,
+      blockTypeId: slackBlockType.id,
+      blockType: slackBlockType,
+    },
+  ])
+
+
+  const blockDocuments = [emailBlockDocument, slackBlockDocument]
 
   provide(blockDocumentsApiKey, mocker.create('blockDocumentsApi', [
     {
@@ -36,9 +63,10 @@
     },
   ]))
 
-  const notification = mocker.create('notification', [{ blockDocumentId: first.id }])
 
-  const notifications = mocker.createMany('notification', 3, [{ blockDocumentId: forth.id }])
-  const emptyNotification = mocker.create('notification', [{ stateNames: [], tags: [], blockDocumentId: second.id }])
-  const customStateNotification = mocker.create('notification', [{ stateNames: ['failed', 'hazard', 'Retrying'], blockDocumentId: third.id }])
+  const notification = mocker.create('notification', [{ blockDocumentId: emailBlockDocument.id }])
+
+  const notifications = mocker.createMany('notification', 3, [{ blockDocumentId: slackBlockDocument.id }])
+  const emptyNotification = mocker.create('notification', [{ stateNames: [], tags: [], blockDocumentId: emailBlockDocument.id }])
+  const customStateNotification = mocker.create('notification', [{ stateNames: ['failed', 'hazard', 'Retrying'], blockDocumentId: slackBlockDocument.id }])
 </script>

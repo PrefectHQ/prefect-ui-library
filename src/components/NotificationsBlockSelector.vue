@@ -3,7 +3,7 @@
   <p-label label="Send notifications to">
     <p-button-group v-model="selectedButton" :options="buttonGroup" />
   </p-label>
-  <BlockSchemaFormFields v-model:data="dataModel" :block-schema="blockSchema" />
+  <!-- <BlockSchemaFormFields v-model:data="dataModel" :block-schema="blockSchema" /> -->
 </template>
 
   <script lang="ts" setup>
