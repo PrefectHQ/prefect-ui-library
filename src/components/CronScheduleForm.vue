@@ -1,38 +1,40 @@
 <template>
   <p-form @submit="submit">
-    <div class="cron-schedule-form__row">
-      <p-label label="Value" class="cron-schedule-form__column--span-3">
-        <p-text-input v-model="cron" />
+    <p-content>
+      <div class="cron-schedule-form__row">
+        <p-label label="Value" class="cron-schedule-form__column--span-3">
+          <p-text-input v-model="cron" />
 
-        <template #message>
-          {{ internalValue }}
-        </template>
-      </p-label>
+          <template #message>
+            {{ internalValue }}
+          </template>
+        </p-label>
 
-      <p-label class="cron-schedule-form__column--span-1">
-        <template #label>
-          <span
-            title="When the Day Or value is off, this schedule will connect day of the month and day of the week entries using OR logic; when on it will connect them using AND logic."
-          >
-            Day Or
-            <sup>
-              <p-icon icon="QuestionMarkCircleIcon" solid class="cron-schedule-form__more-info" />
-            </sup>
+        <p-label class="cron-schedule-form__column--span-1">
+          <template #label>
+            <span
+              title="When the Day Or value is off, this schedule will connect day of the month and day of the week entries using OR logic; when on it will connect them using AND logic."
+            >
+              Day Or
+              <sup>
+                <p-icon icon="QuestionMarkCircleIcon" solid class="cron-schedule-form__more-info" />
+              </sup>
+            </span>
+          </template>
+          <span>
+            <p-toggle v-model="dayOr" class="inline-block" />
           </span>
-        </template>
-        <span>
-          <p-toggle v-model="dayOr" class="inline-block" />
-        </span>
-      </p-label>
-    </div>
+        </p-label>
+      </div>
 
-    <div class="cron-schedule-form__row">
-      <p-label label="Timezone" class="cron-schedule-form__column--span-2">
-        <TimezoneSelect v-model="timezone" />
-      </p-label>
-    </div>
+      <div class="cron-schedule-form__row">
+        <p-label label="Timezone" class="cron-schedule-form__column--span-2">
+          <TimezoneSelect v-model="timezone" />
+        </p-label>
+      </div>
+    </p-content>
 
-    <template #footer>
+    <template v-if="!hideFooter" #footer>
       <p-button inset @click="cancel">
         Cancel
       </p-button>
@@ -44,17 +46,18 @@
 </template>
 
 <script lang="ts" setup>
-  import { computed, ref } from 'vue'
+  import { computed, ref, watch } from 'vue'
   import TimezoneSelect from './TimezoneSelect.vue'
   import { CronSchedule } from '@/models'
 
   const props = defineProps<{
     schedule: CronSchedule | null,
+    hideFooter?: boolean,
   }>()
 
   const emit = defineEmits<{
     (event: 'cancel'): void,
-    (event: 'submit', value: CronSchedule): void,
+    (event: 'update:schedule' | 'submit', value: CronSchedule): void,
   }>()
 
   const defaultCron = '* * * * *'
@@ -79,6 +82,8 @@
   const submit = (): void => {
     emit('submit', internalValue.value)
   }
+
+  watch(() => internalValue.value, () => emit('update:schedule', internalValue.value))
 </script>
 
 <style>

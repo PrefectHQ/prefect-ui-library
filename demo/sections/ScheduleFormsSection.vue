@@ -1,13 +1,21 @@
 <template>
   <DemoSection heading="Schedule Forms">
     <DemoSubSection heading="Interval">
-      <IntervalScheduleForm :schedule="intervalSchedule" />
+      <p class="mb-4">
+        Current schedule (save to update): <span class="font-semibold">{{ intervalSchedule }}</span>
+      </p>
+
+      <IntervalScheduleForm hide-footer :schedule="intervalSchedule" @submit="updateIntervalSchedule" />
     </DemoSubSection>
 
     <p-divider class="my-8" />
 
     <DemoSubSection heading="Cron">
-      <CronScheduleForm :schedule="cronSchedule" />
+      <p class="mb-4">
+        Current schedule (save to update): <span class="font-semibold">{{ cronSchedule }}</span>
+      </p>
+
+      <CronScheduleForm :schedule="cronSchedule" @submit="updateCronSchedule" />
     </DemoSubSection>
   </DemoSection>
 </template>
@@ -20,6 +28,15 @@
   import IntervalScheduleForm from '@/components/IntervalScheduleForm.vue'
   import { IntervalSchedule, CronSchedule } from '@/models'
 
+
   const intervalSchedule = ref(new IntervalSchedule({ interval: 3600, timezone: null, anchorDate: null }))
   const cronSchedule = ref(new CronSchedule({ cron: '* * * * *', timezone: null, dayOr: false }))
+
+  const updateIntervalSchedule = (value: IntervalSchedule): void => {
+    intervalSchedule.value = value
+  }
+
+  const updateCronSchedule = (value: CronSchedule): void => {
+    cronSchedule.value = value
+  }
 </script>
