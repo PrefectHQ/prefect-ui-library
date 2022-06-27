@@ -58,10 +58,6 @@
   const blockTypesApi = inject(blockTypesApiKey)
   const blockSchemasApi = inject(blockSchemasApiKey)
   const notificationsApi = inject(notificationsApiKey)
-  // const blockDocument = await blockDocumentsApi.getBlockDocument(props.notification!.blockDocumentId)
-  // const blockDocumentData = computed(() => blockDocument.data)
-  // const blockDocumentDataKey = computed(() => Object.keys(blockDocumentData.value)[0])
-  // const blockDocumentDataValue = computed(() => blockDocumentData.value[blockDocumentDataKey.value] as string[])
 
 
   const { handleSubmit, isSubmitting } = useForm<Notification>({ initialValues: props.notification })
@@ -73,6 +69,7 @@
     return {
       stateNames: stateNames.value,
       tags: tags.value,
+      blockDocumentId: props.notification?.blockDocumentId,
     }
   })
 
@@ -88,17 +85,26 @@
       inputLabel: 'Webhook URL',
     },
   ]
-  const selectedSendToType = ref(buttonGroup[0].value)
-  const selectedSendToLabel =ref(buttonGroup[0].inputLabel)
+
+
+  const blockDocument = props.notification?.blockDocumentId ? await blockDocumentsApi.getBlockDocument(props.notification.blockDocumentId) : null
+  const blockDocumentType = computed(()=> blockDocument?.blockType.name ?? '')
+
+  // const blockDocumentData = computed(() => blockDocument?.data)
+  // const blockDocumentDataKey = computed(() => blockDocumentData.value ? Object.keys(blockDocumentData.value)[0] : null)
+  // const blockDocumentDataValue = computed(() => blockDocumentData.value && blockDocumentDataKey.value ? blockDocumentData.value[blockDocumentDataKey.value] as string[] : null)
+
+
+  const selectedSendToType = ref(blockDocumentType.value || buttonGroup[0].value)
+  const key = blockDocument?.data ? Object.keys(blockDocument.data)[0] : null
+  const selectedSendToLabel =ref(key ? key : buttonGroup[0].inputLabel)
 
   watch(() => selectedSendToType.value, (current) => {
     selectedSendToLabel.value = buttonGroup.find((button: ButtonGroupOption) => button.value === current).inputLabel
   })
 
-
-  const input = ref('')
-
-  // const input = ref(selectedSendToType.value == blockDocumentDataKey.value && blockDocumentData.value[blockDocumentDataKey.value] ? blockDocumentData.value[blockDocumentDataKey.value] as string[]: [])
+  const blockDocumentInputValue: string | string[] | undefined = key ? blockDocument?.data[key] as string | string[] : undefined
+  const input = ref(blockDocumentInputValue ?? '')
 
 
   const emit = defineEmits<{
