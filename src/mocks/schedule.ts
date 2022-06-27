@@ -19,7 +19,7 @@ const rruleSchedules = [
 
 type ScheduleType = 'interval' | 'cron' | 'rrule'
 
-export const randomSchedule: MockFunction<Schedule, [{ type?: ScheduleType }, Partial<Schedule>?]> = function({ type } = {}) {
+export const randomSchedule: MockFunction<Schedule, [{ type?: ScheduleType }?, Partial<Schedule>?]> = function({ type } = {}) {
   let schedule: Schedule
 
   const interval = intervalSchedules[uniform(0, intervalSchedules.length - 1)]
