@@ -63,7 +63,7 @@ export class IntervalSchedule implements IIntervalSchedule {
 
     if (seconds) {
       if (neat && seconds === 1 && !minutes && !hours && !days) {
-        strings.push('Every second')
+        strings.push('second')
       } else {
         strings.push(`${seconds} ${toPluralString('second', seconds)}`)
       }
@@ -71,7 +71,7 @@ export class IntervalSchedule implements IIntervalSchedule {
 
     if (minutes) {
       if (neat && minutes === 1 && !seconds && !hours && !days) {
-        strings.push('Every minute')
+        strings.push('minute')
       } else {
         strings.push(`${minutes} ${toPluralString('minute', minutes)}`)
       }
@@ -95,20 +95,16 @@ export class IntervalSchedule implements IIntervalSchedule {
 
     let str = strings.reverse().join(', ')
 
-    if (!verbose) {
-      return str
-    }
-
-    if (str == '') {
-      return 'None'
-    }
-
     if (!str.includes('Every') && !str.includes('Daily') && !str.includes('Hourly')) {
       str = `Every ${str}`
     }
 
-    if (this.anchorDate) {
+    if (this.anchorDate && verbose) {
       str += ` from ${formatDate(this.anchorDate)} at ${formatTimeNumeric(this.anchorDate)} (${this.timezone ?? 'UTC'})`
+    }
+
+    if (str == '') {
+      str = 'None'
     }
 
     return str

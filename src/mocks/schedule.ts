@@ -12,8 +12,8 @@ const cronSchedules = [
 ]
 
 const rruleSchedules = [
-  'DTSTART:20120201T023000ZRRULE:FREQ=MONTHLY;COUNT=5',
-  'DTSTART:20120201T023000ZRRULE:FREQ=DAILY;COUNT=30',
+  'DTSTART:20120201T023000Z RRULE:FREQ=MONTHLY;COUNT=5',
+  'DTSTART:20120201T023000Z RRULE:FREQ=DAILY;COUNT=30',
 ]
 
 export const randomSchedule: MockFunction<Schedule, [Partial<Schedule>?]> = function() {

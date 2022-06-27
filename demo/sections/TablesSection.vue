@@ -23,6 +23,6 @@
   import { mocker } from '@/services'
 
   const flowsData = mocker.createMany('flow', 3)
-  const deploymentsData = mocker.createMany('deployment', 3)
+  const deploymentsData = mocker.createMany('deployment', 10)
   const queuesData = mocker.createMany('workQueue', 3)
 </script>

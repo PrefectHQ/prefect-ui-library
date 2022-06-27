@@ -1,6 +1,6 @@
 import { RRule } from 'rrule'
 import { ISchedule } from '@/models'
-import { capitalize } from '@/utilities'
+import { capitalize, toPluralString } from '@/utilities'
 
 
 export interface IRRuleSchedule extends ISchedule {
@@ -8,6 +8,9 @@ export interface IRRuleSchedule extends ISchedule {
   rrule: string,
 }
 
+
+const expressionString = /Every ([\w]+) for ([\d]+) (time[s]?)/m
+const expression = new RegExp(expressionString)
 
 export class RRuleSchedule implements IRRuleSchedule {
   public timezone: string | null
@@ -28,13 +31,21 @@ export class RRuleSchedule implements IRRuleSchedule {
     }
 
     try {
-      return RRule.fromString(this.rrule)
+      return RRule.fromString(this.rrule.split(' ').join('\n'))
     } catch {
       return new RRule()
     }
   }
 
   public toString(): string {
-    return capitalize(this.getRRule().toText())
+    let str = capitalize(this.getRRule().toText())
+
+    const match = expression.exec(str)
+
+    if (match) {
+      str = str.replace(match[3], toPluralString(match[1], parseInt(match[2])))
+    }
+
+    return str
   }
 }

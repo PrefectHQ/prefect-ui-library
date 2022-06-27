@@ -115,7 +115,7 @@
     return new CronSchedule({ cron: cron.value, timezone: cronTimezone.value, dayOr: cronDayOr.value })
   })
 
-  const rrule = ref('DTSTART:20120201T023000Z\nRRULE:FREQ=MONTHLY;COUNT=5')
+  const rrule = ref('DTSTART:20120201T023000Z RRULE:FREQ=MONTHLY;COUNT=2')
   const rruleTimezone = ref(null)
 
   const rruleSchedule = computed(() => {
