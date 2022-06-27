@@ -2,11 +2,11 @@
   <p-form @submit="submit">
     <p-content>
       <div class="cron-schedule-form__row">
-        <p-label label="Value" class="cron-schedule-form__column--span-3">
+        <p-label label="Value" class="cron-schedule-form__column--span-3" :state="cronState">
           <p-text-input v-model="cron" />
 
           <template #message>
-            {{ internalValue }}
+            {{ cronErrors?.[0] ?? internalValue }}
           </template>
         </p-label>
 
@@ -38,7 +38,7 @@
       <p-button inset @click="cancel">
         Cancel
       </p-button>
-      <p-button type="submit">
+      <p-button :disabled="disabled" type="submit">
         Save
       </p-button>
     </template>
@@ -46,9 +46,12 @@
 </template>
 
 <script lang="ts" setup>
+  import { useField } from 'vee-validate'
   import { computed, ref, watch } from 'vue'
   import TimezoneSelect from './TimezoneSelect.vue'
   import { CronSchedule } from '@/models'
+  import { isRequired, withMessage } from '@/services/validate'
+  import { containsCronRandomExpression } from '@/types/cron'
 
   const props = defineProps<{
     schedule: CronSchedule | null,
@@ -61,8 +64,26 @@
 
   const defaultCron = '* * * * *'
 
+  const isSupportedCron = (): boolean => {
+    return !containsCronRandomExpression(cron.value)
+  }
+
+  const isValidCron = (): boolean => {
+    const val = internalValue.value.toString()
+    return val !== '' && val.toLowerCase() !== 'invalid'
+  }
+
+  const rules = {
+    cron: [
+      withMessage(isRequired, 'An expression is required'),
+      withMessage(isValidCron, 'Invalid expression'),
+      withMessage(isSupportedCron, 'Unsupported expression'),
+    ],
+  }
+
   const timezone = ref(props.schedule?.timezone ?? 'UTC')
-  const cron = ref(props.schedule?.cron ?? defaultCron)
+
+  const { value: cron, meta: cronState, errors: cronErrors } = useField<string>('cron', rules.cron, { initialValue: props.schedule?.cron ?? defaultCron })
   const dayOr = ref(props.schedule?.dayOr ?? true)
 
 
@@ -74,15 +95,29 @@
     })
   })
 
+  const disabled = computed(() => {
+    return cronErrors.value.length > 0
+  })
+
   const cancel = (): void => {
     emit('cancel')
   }
 
   const submit = (): void => {
+    if (disabled.value) {
+      return
+    }
+
     emit('submit', internalValue.value)
   }
 
-  watch(() => internalValue.value, () => emit('update:schedule', internalValue.value))
+  watch(() => internalValue.value, () => {
+    if (disabled.value) {
+      return
+    }
+
+    emit('update:schedule', internalValue.value)
+  })
 </script>
 
 <style>
