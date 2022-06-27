@@ -22,7 +22,7 @@
       </div>
     </p-content>
 
-    <template v-if="!hideFooter" #footer>
+    <template #footer>
       <p-button inset @click="cancel">
         Cancel
       </p-button>
@@ -84,7 +84,6 @@
 
   const props = defineProps<{
     schedule?: IntervalSchedule | null,
-    hideFooter?: boolean,
   }>()
 
   const emit = defineEmits<{
