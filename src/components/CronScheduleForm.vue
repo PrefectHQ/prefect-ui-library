@@ -44,7 +44,7 @@
 
 <script lang="ts" setup>
   import { useField } from 'vee-validate'
-  import { computed, ref, watch, withDefaults } from 'vue'
+  import { computed, ref, withDefaults } from 'vue'
   import DayOrDescriptionModal from './DayOrDescriptionModal.vue'
   import TimezoneSelect from './TimezoneSelect.vue'
   import { CronSchedule } from '@/models'
@@ -59,7 +59,7 @@
 
   const emit = defineEmits<{
     (event: 'cancel'): void,
-    (event: 'update:schedule' | 'submit', value: CronSchedule): void,
+    (event: 'submit', value: CronSchedule): void,
   }>()
 
 
@@ -107,14 +107,6 @@
 
     emit('submit', internalValue.value)
   }
-
-  watch(() => internalValue.value, () => {
-    if (disabled.value) {
-      return
-    }
-
-    emit('update:schedule', internalValue.value)
-  })
 </script>
 
 <style>
