@@ -4,7 +4,7 @@
     When the "Day Or" value is off, this schedule will connect day of the month and day of the week entries
     using OR logic; when on it will connect them using AND logic.
 
-    <template #footer>
+    <template #cancel>
       <p-button inset @click="show = false">
         Close
       </p-button>
