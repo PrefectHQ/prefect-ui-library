@@ -12,12 +12,10 @@
 
         <p-label class="cron-schedule-form__column--span-1">
           <template #label>
-            <span
-              title="When the Day Or value is off, this schedule will connect day of the month and day of the week entries using OR logic; when on it will connect them using AND logic."
-            >
+            <span>
               Day Or
               <sup>
-                <p-icon icon="QuestionMarkCircleIcon" solid class="cron-schedule-form__more-info" />
+                <DayOrDescriptionModal class="cron-schedule-form__more-info" />
               </sup>
             </span>
           </template>
@@ -48,6 +46,7 @@
 <script lang="ts" setup>
   import { useField } from 'vee-validate'
   import { computed, ref, watch } from 'vue'
+  import DayOrDescriptionModal from './DayOrDescriptionModal.vue'
   import TimezoneSelect from './TimezoneSelect.vue'
   import { CronSchedule } from '@/models'
   import { isRequired, withMessage } from '@/services/validate'
