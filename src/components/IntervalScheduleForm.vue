@@ -39,55 +39,12 @@
 </template>
 
 <script lang="ts" setup>
-  import { minutesInHour, secondsInMinute } from 'date-fns'
   import { useField } from 'vee-validate'
   import { computed, ref, watch, withDefaults } from 'vue'
   import TimezoneSelect from './TimezoneSelect.vue'
   import { IntervalSchedule } from '@/models'
   import { isRequired, withMessage } from '@/services/validate'
-
-  const hoursInDay = 24
-
-  type IntervalOption = 'Seconds' | 'Minutes' | 'Hours' | 'Days'
-
-  const intervalOptionsToSecondsMap: Record<IntervalOption, number> = {
-    'Seconds': 1,
-    'Minutes': secondsInMinute,
-    'Hours': secondsInMinute * minutesInHour,
-    'Days': secondsInMinute * minutesInHour * hoursInDay,
-  }
-
-  const secondsToClosestIntervalValue = (interval: number): number => {
-    const days = interval / intervalOptionsToSecondsMap.Days
-    const hours = interval / intervalOptionsToSecondsMap.Hours
-    const minutes = interval / intervalOptionsToSecondsMap.Minutes
-    const seconds = interval / intervalOptionsToSecondsMap.Seconds
-
-    if (days > 1) {
-      return days
-    } else if (hours > 1) {
-      return hours
-    } else if (minutes > 1) {
-      return minutes
-    }
-
-    return seconds
-  }
-
-  const secondsToClosestIntervalOption = (interval: number): IntervalOption => {
-    const days = interval / intervalOptionsToSecondsMap.Days
-    const hours = interval / intervalOptionsToSecondsMap.Hours
-    const minutes = interval / intervalOptionsToSecondsMap.Minutes
-
-    if (days > 1) {
-      return 'Days'
-    } else if (hours > 1) {
-      return 'Hours'
-    } else if (minutes > 1) {
-      return 'Minutes'
-    }
-    return 'Seconds'
-  }
+  import { IntervalOption, secondsToClosestIntervalOption, secondsToClosestIntervalValue, intervalOptionsToSecondsMap } from '@/utilities/timeIntervals'
 
   const props = withDefaults(defineProps<{
     schedule?: IntervalSchedule,
@@ -99,7 +56,6 @@
     (event: 'cancel'): void,
     (event: 'update:schedule' | 'submit', value: IntervalSchedule): void,
   }>()
-
 
   const rules = {
     interval: [withMessage(isRequired, 'An interval is required')],
