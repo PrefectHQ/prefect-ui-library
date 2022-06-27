@@ -27,10 +27,11 @@
   import CronScheduleForm from '@/components/CronScheduleForm.vue'
   import IntervalScheduleForm from '@/components/IntervalScheduleForm.vue'
   import { IntervalSchedule, CronSchedule } from '@/models'
+  import { mocker } from '@/services'
 
-
-  const intervalSchedule = ref(new IntervalSchedule({ interval: 3600, timezone: null, anchorDate: null }))
-  const cronSchedule = ref(new CronSchedule({ cron: '* * * * *', timezone: null, dayOr: false }))
+  // Bit hacky typing here but don't want to rewrite the mocker to support conditional return values
+  const intervalSchedule = ref(mocker.create('schedule', [{ type: 'interval' }]) as IntervalSchedule)
+  const cronSchedule = ref(mocker.create('schedule', [{ type: 'cron' }]) as CronSchedule)
 
   const updateIntervalSchedule = (value: IntervalSchedule): void => {
     intervalSchedule.value = value

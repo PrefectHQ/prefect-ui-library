@@ -16,20 +16,36 @@ const rruleSchedules = [
   'DTSTART:20120201T023000Z RRULE:FREQ=DAILY;COUNT=30',
 ]
 
-export const randomSchedule: MockFunction<Schedule, [Partial<Schedule>?]> = function() {
-  const coinFlip = uniform(0, 100)
+export const randomSchedule: MockFunction<Schedule, [{ type?: 'interval' | 'cron' | 'rrule' }, Partial<Schedule>?]> = function({ type }) {
+  let schedule: Schedule
 
-  if (coinFlip > 55) {
-    const interval = intervalSchedules[uniform(0, intervalSchedules.length - 1)]
-    return new IntervalSchedule({ interval, timezone: null, anchorDate: this.create('date') })
-  }
-
-  if (coinFlip > 10) {
-    const cron = cronSchedules[uniform(0, cronSchedules.length - 1)]
-    return new CronSchedule({ cron, timezone: null, dayOr: false })
-  }
-
+  const interval = intervalSchedules[uniform(0, intervalSchedules.length - 1)]
+  const cron = cronSchedules[uniform(0, cronSchedules.length - 1)]
   const rrule = rruleSchedules[uniform(0, rruleSchedules.length - 1)]
 
-  return new RRuleSchedule({ rrule, timezone: null })
+  if (type) {
+    switch (type) {
+      case 'interval':
+        schedule = new IntervalSchedule({ interval, timezone: null, anchorDate: this.create('date') })
+        break
+      case 'cron':
+        schedule = new CronSchedule({ cron, timezone: null, dayOr: false })
+        break
+      case 'rrule':
+        schedule = new RRuleSchedule({ rrule, timezone: null })
+        break
+    }
+  } else {
+    const coinFlip = uniform(0, 100)
+
+    if (coinFlip > 55) {
+      schedule = new IntervalSchedule({ interval, timezone: null, anchorDate: this.create('date') })
+    } else if (coinFlip > 10) {
+      schedule = new CronSchedule({ cron, timezone: null, dayOr: false })
+    } else {
+      schedule = new RRuleSchedule({ rrule, timezone: null })
+    }
+  }
+
+  return schedule
 }
