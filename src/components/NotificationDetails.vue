@@ -62,7 +62,7 @@
   const sendToMapper = (input: string[] | string, type: string): { value: string[], icon: Icon } => {
     const arrayInput = Array.isArray(input) ? input : [input]
     switch (type) {
-      case 'Email':
+      case 'Email Addresses':
         return {
           value: arrayInput,
           icon: 'MailIcon' as Icon,
