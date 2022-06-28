@@ -116,6 +116,7 @@
       }
       const blockSchema = await blockSchemasApi.getBlockSchemas(filter)
       const blockDocument: BlockDocumentCreate = {
+        name: `${selectedSendToLabel.value} notification`,
         is_anonymous: true,
         data: { [selectedSendToLabel.value]: input.value },
         blockSchemaId: blockSchema[0].id,
