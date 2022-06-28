@@ -22,7 +22,7 @@ export class BlockDocumentsApi extends Api {
   }
 
   public createBlockDocument(blockDocument: BlockDocumentCreate): Promise<BlockDocument> {
-    return this.post<BlockDocumentResponse>('', mapper.map('BlockDocumentCreate', blockDocument, 'BlockDocumentCreateRequest'))
+    return this.post<BlockDocumentResponse>('/', mapper.map('BlockDocumentCreate', blockDocument, 'BlockDocumentCreateRequest'))
       .then(({ data }) => mapper.map('BlockDocumentResponse', data, 'BlockDocument'))
   }
 

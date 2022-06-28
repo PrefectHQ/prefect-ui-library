@@ -5,4 +5,5 @@ export type BlockDocumentCreate = {
   data: BlockDocumentData,
   blockSchemaId: string,
   blockTypeId: string,
+  is_anonymous?: boolean,
 }

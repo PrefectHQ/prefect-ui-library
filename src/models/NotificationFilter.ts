@@ -1,5 +1,5 @@
 export type NotificationFilter = {
   offset?: number,
   limit?: number,
-  is_active: boolean,
+  is_active?: boolean,
 }
