@@ -62,9 +62,6 @@
   const blockDocuments = [emailBlockDocument, slackBlockDocument]
   provide(blockDocumentsApiKey, mocker.create('blockDocumentsApi', [{ blockDocuments }]))
 
-  console.log(emailBlockDocument)
-  console.log(emailBlockSchema)
-
   const notification = mocker.create('notification', [{ blockDocumentId: emailBlockDocument.id }])
 
   const notifications = mocker.createMany('notification', 3, [{ blockDocumentId: slackBlockDocument.id }])
