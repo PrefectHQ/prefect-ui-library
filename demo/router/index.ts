@@ -28,6 +28,11 @@ const routeRecords: RouteRecordRaw[] = [
     component: () => import('../pages/Blocks.vue'),
   },
   {
+    path: '/schedules',
+    name: 'schedules',
+    component: () => import('../pages/Schedules.vue'),
+  },
+  {
     path: '/validation',
     name: 'validation',
     component: () => import('../pages/FormValidation.vue'),
@@ -41,4 +46,10 @@ const routeRecords: RouteRecordRaw[] = [
 export const router = createRouter({
   history: createWebHistory(),
   routes: routeRecords,
+  scrollBehavior(to, from, savedPosition) {
+    if (savedPosition) {
+      return savedPosition
+    }
+    return { top: 0 }
+  },
 })

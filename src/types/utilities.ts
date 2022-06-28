@@ -3,3 +3,26 @@ export type KeysMatching<T, V> = {
 }[keyof T]
 
 export type Require<T, K extends keyof T> = Omit<T, K> & Required<Pick<T, K>>
+
+export type AnyCase<T extends string> =
+  string extends T
+    ? string
+    : T extends `${infer F1}${infer F2}${infer R}`
+      ? (`${Uppercase<F1> | Lowercase<F1>}${Uppercase<F2> | Lowercase<F2>}${AnyCase<R>}`)
+      : T extends `${infer F}${infer R}`
+        ? `${Uppercase<F> | Lowercase<F>}${AnyCase<R>}`
+        : ''
+
+
+// This is a bit of a hacky type because
+// TS < 4.8 doesn't support ranges well
+// but it saves a bunch of boilerplate :)
+export type NumberRange<
+  N extends number,
+  M extends number,
+  Result extends unknown[] = [N]
+> =
+  (Result['length'] extends M
+    ? [...Result, M]
+    : NumberRange<N, M, [...Result, Result['length']]>
+  )
