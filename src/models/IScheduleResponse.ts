@@ -8,7 +8,7 @@ export type IRRuleScheduleResponse = {
 export type ICronScheduleResponse = {
   cron: string,
   timezone: string | null,
-  day_or: boolean | null,
+  day_or: boolean,
 }
 
 export type IIntervalScheduleResponse = {
