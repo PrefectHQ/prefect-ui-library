@@ -5,7 +5,7 @@
   </p-label>
 
   {{ blockSchema }}
-  <!-- <BlockSchemaFormFields v-model:data="dataModel" :block-schema="blockSchema" /> -->
+  <BlockSchemaFormFields v-if="blockSchema" v-model:data="dataModel" :block-schema="blockSchema" />
 </template>
 
   <script lang="ts" setup>
@@ -58,12 +58,18 @@
       },
     },
   }))
+
+  // Block SCHEMA subscription
   const blockSchemaSubscription = useSubscription(blockSchemasApi.getBlockSchemas, [blockSchemaSubscriptionArgs as BlockSchemaFilter])
   const blockSchemaByType = computed(() => blockSchemaSubscription.response?.[0])
 
 
   const blockSchema = computed(() => props.blockDocumentId ? blockSchemaByDoc.value! : blockSchemaByType.value!)
 
+
+  // const blockDocument = props.blockDocumentId ? await blockDocumentsApi.getBlockDocument(props.blockDocumentId) : null
+
+  // const blockSchema = blockDocument?
 
   // const blockSchema = async () => {
   //   if (props.blockDocumentId) {
