@@ -9,13 +9,13 @@ import { capitalize } from '@/utilities'
 export interface ICronSchedule extends ISchedule {
   timezone: string | null,
   cron: string,
-  dayOr: boolean | null,
+  dayOr: boolean,
 }
 
 export class CronSchedule implements ICronSchedule {
   public timezone: string | null
   public cron: string | CronKeyword
-  public dayOr: boolean | null
+  public dayOr: boolean
 
   public constructor(schedule: Pick<ICronSchedule, 'cron' | 'timezone' | 'dayOr'>) {
     this.timezone = schedule.timezone
