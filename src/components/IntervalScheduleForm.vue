@@ -84,7 +84,6 @@
     return intervalErrors.value.length > 0
   })
 
-
   const cancel = (): void => {
     emit('cancel')
   }
@@ -97,7 +96,7 @@
     emit('submit', internalValue.value)
   }
 
-  watch(() => internalValue, () => emit('update:schedule', internalValue.value))
+  watch(() => internalValue.value, () => emit('update:schedule', internalValue.value))
 
   watch(() => props.schedule, (val) => {
     anchorDate.value = val.anchorDate ?? anchorDate.value

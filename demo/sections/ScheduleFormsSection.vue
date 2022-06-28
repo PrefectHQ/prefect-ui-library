@@ -5,7 +5,7 @@
         Current schedule (save to update): <span class="font-semibold">{{ intervalSchedule }}</span>
       </p>
 
-      <IntervalScheduleForm v-model:schedule="intervalSchedule" @submit="updateIntervalSchedule" />
+      <IntervalScheduleForm :schedule="intervalSchedule" @submit="updateIntervalSchedule" />
     </DemoSubSection>
 
     <p-divider class="my-8" />

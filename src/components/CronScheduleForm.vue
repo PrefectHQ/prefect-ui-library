@@ -44,7 +44,7 @@
 
 <script lang="ts" setup>
   import { useField } from 'vee-validate'
-  import { computed, ref, withDefaults } from 'vue'
+  import { computed, ref, withDefaults, watch } from 'vue'
   import DayOrDescriptionModal from './DayOrDescriptionModal.vue'
   import TimezoneSelect from './TimezoneSelect.vue'
   import { CronSchedule } from '@/models'
@@ -59,9 +59,8 @@
 
   const emit = defineEmits<{
     (event: 'cancel'): void,
-    (event: 'submit', value: CronSchedule): void,
+    (event: 'update:schedule' | 'submit', value: CronSchedule): void,
   }>()
-
 
   const isSupportedCron = (): boolean => {
     return !containsCronRandomExpression(cron.value)
@@ -107,6 +106,14 @@
 
     emit('submit', internalValue.value)
   }
+
+  watch(() => internalValue.value, () => emit('update:schedule', internalValue.value))
+
+  watch(() => props.schedule, (val) => {
+    timezone.value = val.timezone ?? timezone.value
+    cron.value = val.cron
+    dayOr.value = val.dayOr
+  }, { deep: true })
 </script>
 
 <style>
