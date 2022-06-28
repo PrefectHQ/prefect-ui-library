@@ -40,7 +40,7 @@
 
 <script lang="ts" setup>
   import { useField } from 'vee-validate'
-  import { computed, ref, withDefaults } from 'vue'
+  import { computed, ref, withDefaults, watch } from 'vue'
   import TimezoneSelect from './TimezoneSelect.vue'
   import { IntervalSchedule } from '@/models'
   import { isRequired, withMessage } from '@/services/validate'
@@ -54,7 +54,7 @@
 
   const emit = defineEmits<{
     (event: 'cancel'): void,
-    (event: 'submit', value: IntervalSchedule): void,
+    (event: 'update:schedule' | 'submit', value: IntervalSchedule): void,
   }>()
 
   const rules = {
@@ -96,6 +96,15 @@
 
     emit('submit', internalValue.value)
   }
+
+  watch(() => internalValue, () => emit('update:schedule', internalValue.value))
+
+  watch(() => props.schedule, (val) => {
+    anchorDate.value = val.anchorDate ?? anchorDate.value
+    timezone.value = val.timezone ?? timezone.value
+    interval.value = secondsToClosestIntervalValue(val.interval)
+    intervalOption.value = secondsToClosestIntervalOption(val.interval)
+  }, { deep: true })
 </script>
 
 <style>

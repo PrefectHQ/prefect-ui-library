@@ -11,33 +11,51 @@ export const intervalOptionsToSecondsMap: Record<IntervalOption, number> = {
   'Days': secondsInMinute * minutesInHour * hoursInDay,
 }
 
-export const secondsToClosestIntervalValue = (interval: number): number => {
+
+type IntervalAndRemainder = Record<'value' | 'remainder', number>
+type IntervalsAndRemainders = Record<Lowercase<IntervalOption>, IntervalAndRemainder>
+
+const calculateIntervalsAndRemainders = (interval: number): IntervalsAndRemainders => {
+  const _days = interval % intervalOptionsToSecondsMap.Days
+  const _hours = interval % intervalOptionsToSecondsMap.Hours
+  const _minutes = interval % intervalOptionsToSecondsMap.Minutes
+  const _seconds = interval % intervalOptionsToSecondsMap.Seconds
+
   const days = interval / intervalOptionsToSecondsMap.Days
   const hours = interval / intervalOptionsToSecondsMap.Hours
   const minutes = interval / intervalOptionsToSecondsMap.Minutes
   const seconds = interval / intervalOptionsToSecondsMap.Seconds
 
-  if (days > 1) {
-    return days
-  } else if (hours > 1) {
-    return hours
-  } else if (minutes > 1) {
-    return minutes
+  return {
+    days: { value: days, remainder: _days },
+    hours: { value: hours, remainder: _hours },
+    minutes: { value: minutes, remainder: _minutes },
+    seconds: { value: seconds, remainder: _seconds },
+  }
+}
+
+export const secondsToClosestIntervalValue = (interval: number): number => {
+  const { days, hours, minutes, seconds } = calculateIntervalsAndRemainders(interval)
+
+  if (days.value > 1 && !days.remainder) {
+    return days.value
+  } else if (hours.value > 1 && !hours.remainder) {
+    return hours.value
+  } else if (minutes.value > 1 && !minutes.remainder) {
+    return minutes.value
   }
 
-  return seconds
+  return seconds.value
 }
 
 export const secondsToClosestIntervalOption = (interval: number): IntervalOption => {
-  const days = interval / intervalOptionsToSecondsMap.Days
-  const hours = interval / intervalOptionsToSecondsMap.Hours
-  const minutes = interval / intervalOptionsToSecondsMap.Minutes
+  const { days, hours, minutes } = calculateIntervalsAndRemainders(interval)
 
-  if (days > 1) {
+  if (days.value > 1 && !days.remainder) {
     return 'Days'
-  } else if (hours > 1) {
+  } else if (hours.value > 1 && !hours.remainder) {
     return 'Hours'
-  } else if (minutes > 1) {
+  } else if (minutes.value > 1 && !minutes.remainder) {
     return 'Minutes'
   }
   return 'Seconds'
