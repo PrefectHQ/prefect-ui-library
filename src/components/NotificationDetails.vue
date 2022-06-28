@@ -1,7 +1,7 @@
 <template>
   <div class="notification-details">
     If a run of any flow with
-    <SeparatedList :item-array="notification.tags!">
+    <SeparatedList :item-array="notification.tags || []">
       <template #first-items="{ item }">
         <p-tag>{{ item }}</p-tag>
       </template>
@@ -12,7 +12,7 @@
 
     tag enters
 
-    <SeparatedList :item-array="notification.stateNames!">
+    <SeparatedList :item-array="notification.stateNames || []">
       <template #first-items="{ item }">
         <StateBadge :state="mapStateNameToStateType(item)" />
       </template>
@@ -25,10 +25,8 @@
 
     <span class="notification-details__send-to">
       <template v-for="item in sendTo.value" :key="item">
-        <span class="notification-details__send-to-pair">
-          <p-icon :icon="sendTo.icon" class="notification-details__icon" :class="classes" />
-          {{ item }}
-        </span>
+        <p-icon :icon="sendTo.icon" class="notification-details__icon" :class="classes" />
+        {{ item }}
       </template>
     </span>
   </div>
@@ -39,56 +37,40 @@
   import { computed } from 'vue'
   import SeparatedList from './SeparatedList.vue'
   import StateBadge from '@/components/StateBadge.vue'
-  import { Notification } from '@/models'
-  import { blockDocumentsApiKey } from '@/services'
-  import { inject } from '@/utilities'
+  import { BlockDocumentData, BlockType, Notification } from '@/models'
   import { mapStateNameToStateType } from '@/utilities/state'
 
   const props = defineProps<{
     notification: Partial<Notification>,
-    sendToInput?: string[],
-    sendToType?: string,
+    blockType: BlockType,
+    blockDocumentData: BlockDocumentData,
   }>()
+  console.log(props)
 
-  const blockDocumentsApi = inject(blockDocumentsApiKey)
-  const blockDocument = await blockDocumentsApi.getBlockDocument(props.notification.blockDocumentId!)
-
-  const blockDocumentData = computed(() => blockDocument.data)
-  const blockDocumentDataKey = computed(() => Object.keys(blockDocumentData.value)[0])
-  const blockDocumentDataValue = computed(() => blockDocumentData.value[blockDocumentDataKey.value] as string[])
-
-  const sendToMapper = (input: string[] | string, type: string): { value: string[], icon: Icon } => {
-    const arrayInput = Array.isArray(input) ? input : [input]
+  const sendToMapper = (input: BlockDocumentData, type: string): { value: string[] | unknown, icon: Icon } => {
     switch (type) {
-      case 'email_addresses':
+      case 'Email Addresses':
         return {
-          value: arrayInput,
+          value: input[type],
           icon: 'MailIcon' as Icon,
         }
-      case 'slack':
+      case 'Slack Webhook':
         return {
-          value: arrayInput,
+          value: ['Slack'],
           icon: 'Slack' as Icon,
         }
       default:
         return {
-          value: arrayInput,
+          value: input[type],
           icon: 'BellIcon' as Icon,
         }
     }
   }
 
-
-  const sendTo = computed(() => {
-    if (props.sendToInput) {
-      return sendToMapper(props.sendToInput, props.sendToType!)
-    }
-
-    return sendToMapper(blockDocumentDataValue.value, blockDocumentDataKey.value)
-  })
+  const sendTo = computed(() => sendToMapper(props.blockDocumentData, props.blockType.name))
 
   const classes = computed(() => ({
-    'notification-details__icon--gray': blockDocumentDataKey.value != 'slack' && props.sendToType != 'slack',
+    'notification-details__icon--gray': sendTo.value.icon !== 'Slack',
   }))
 </script>
 
@@ -105,14 +87,15 @@
   flex-wrap
   align-bottom
   font-bold
+    items-center
 }
 
-.notification-details__send-to-pair {
+/* .notification-details__send-to-pair {
   @apply
   inline-flex
   items-center
   gap-[1px]
-}
+} */
 
 .notification-details__icon--gray {
   @apply
