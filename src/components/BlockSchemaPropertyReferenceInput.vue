@@ -22,6 +22,7 @@
   import BlockDocumentsSelect from './BlockDocumentsSelect.vue'
   import BlockTypeLogo from './BlockTypeLogo.vue'
   import { useReactiveField } from '@/compositions'
+  import { useOptionalRules } from '@/compositions/useOptionalRules'
   import { blockCatalogCreateRouteKey } from '@/router/routes'
   import { blockTypesApiKey, isRequired, withMessage } from '@/services'
   import { inject } from '@/utilities'
@@ -45,14 +46,8 @@
     },
   })
 
-  const rules = computed(() => {
-    if (props.required) {
-      return [withMessage(isRequired, `${props.blockTypeName} is required`)]
-    }
-
-    return []
-  })
-
+  const required = computed(() => props.required ?? false)
+  const rules = useOptionalRules(withMessage(isRequired, `${props.blockTypeName} is required`), required)
   const { meta: state, errors } = useReactiveField(model, props.blockTypeName, rules)
 
   const blockCatalogCreateRoute = inject(blockCatalogCreateRouteKey)

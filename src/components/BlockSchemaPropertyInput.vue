@@ -15,6 +15,7 @@
 <script lang="ts" setup>
   import { PLabel, PCombobox, PNumberInput, PSelect, PTextInput, PToggle, useAttrsStylesAndClasses } from '@prefecthq/prefect-design'
   import { computed } from 'vue'
+  import { useOptionalRules } from '@/compositions/useOptionalRules'
   import { useReactiveField } from '@/compositions/useReactiveField'
   import { BlockSchemaSimpleProperty } from '@/models/BlockSchema'
   import { isRequired, withMessage } from '@/services/validate'
@@ -40,14 +41,8 @@
     },
   })
 
-  const rules = computed(() => {
-    if (props.required) {
-      return [withMessage(isRequired, `${props.property.title} is required`)]
-    }
-
-    return []
-  })
-
+  const required = computed(() => props.required ?? false)
+  const rules = useOptionalRules(withMessage(isRequired, `${props.property.title} is required`), required)
   const { meta: state, errors } = useReactiveField(model, props.property.title, rules)
 
   const input = computed(() => {
