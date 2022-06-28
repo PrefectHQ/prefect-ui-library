@@ -12,18 +12,15 @@
 
         <p-label class="cron-schedule-form__column--span-1">
           <template #label>
-            <span
-              title="When the Day Or value is off, this schedule will connect day of the month and day of the week entries using OR logic; when on it will connect them using AND logic."
-            >
+            <span>
               Day Or
               <sup>
-                <p-icon icon="QuestionMarkCircleIcon" solid class="cron-schedule-form__more-info" />
+                <DayOrDescriptionModal class="cron-schedule-form__more-info" />
               </sup>
             </span>
           </template>
-          <span>
-            <p-toggle v-model="dayOr" class="inline-block" />
-          </span>
+
+          <p-toggle v-model="dayOr" class="inline-block" />
         </p-label>
       </div>
 
@@ -47,22 +44,23 @@
 
 <script lang="ts" setup>
   import { useField } from 'vee-validate'
-  import { computed, ref, watch } from 'vue'
+  import { computed, ref, withDefaults, watch } from 'vue'
+  import DayOrDescriptionModal from './DayOrDescriptionModal.vue'
   import TimezoneSelect from './TimezoneSelect.vue'
   import { CronSchedule } from '@/models'
   import { isRequired, withMessage } from '@/services/validate'
   import { containsCronRandomExpression } from '@/types/cron'
 
-  const props = defineProps<{
-    schedule: CronSchedule | null,
-  }>()
+  const props = withDefaults(defineProps<{
+    schedule?: CronSchedule,
+  }>(), {
+    schedule: () => new CronSchedule({ cron: '* * * * *', dayOr: true, timezone: 'UTC' }),
+  })
 
   const emit = defineEmits<{
     (event: 'cancel'): void,
     (event: 'update:schedule' | 'submit', value: CronSchedule): void,
   }>()
-
-  const defaultCron = '* * * * *'
 
   const isSupportedCron = (): boolean => {
     return !containsCronRandomExpression(cron.value)
@@ -81,11 +79,9 @@
     ],
   }
 
-  const timezone = ref(props.schedule?.timezone ?? 'UTC')
-
-  const { value: cron, meta: cronState, errors: cronErrors } = useField<string>('cron', rules.cron, { initialValue: props.schedule?.cron ?? defaultCron })
-  const dayOr = ref(props.schedule?.dayOr ?? true)
-
+  const { value: cron, meta: cronState, errors: cronErrors } = useField<string>('cron', rules.cron, { initialValue: props.schedule.cron })
+  const timezone = ref(props.schedule.timezone)
+  const dayOr = ref(props.schedule.dayOr)
 
   const internalValue = computed(() => {
     return new CronSchedule({
@@ -111,13 +107,13 @@
     emit('submit', internalValue.value)
   }
 
-  watch(() => internalValue.value, () => {
-    if (disabled.value) {
-      return
-    }
+  watch(() => internalValue.value, () => emit('update:schedule', internalValue.value))
 
-    emit('update:schedule', internalValue.value)
-  })
+  watch(() => props.schedule, (val) => {
+    timezone.value = val.timezone ?? timezone.value
+    cron.value = val.cron
+    dayOr.value = val.dayOr
+  }, { deep: true })
 </script>
 
 <style>

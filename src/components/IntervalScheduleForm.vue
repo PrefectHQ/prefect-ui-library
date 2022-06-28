@@ -39,75 +39,32 @@
 </template>
 
 <script lang="ts" setup>
-  import { minutesInHour, secondsInMinute } from 'date-fns'
   import { useField } from 'vee-validate'
-  import { computed, ref, watch } from 'vue'
+  import { computed, ref, withDefaults, watch } from 'vue'
   import TimezoneSelect from './TimezoneSelect.vue'
   import { IntervalSchedule } from '@/models'
   import { isRequired, withMessage } from '@/services/validate'
+  import { IntervalOption, secondsToClosestIntervalOption, secondsToClosestIntervalValue, intervalOptionsToSecondsMap } from '@/utilities/timeIntervals'
 
-  const hoursInDay = 24
-
-  type IntervalOption = 'Seconds' | 'Minutes' | 'Hours' | 'Days'
-
-  const intervalOptionsToSecondsMap: Record<IntervalOption, number> = {
-    'Seconds': 1,
-    'Minutes': secondsInMinute,
-    'Hours': secondsInMinute * minutesInHour,
-    'Days': secondsInMinute * minutesInHour * hoursInDay,
-  }
-
-  const secondsToClosestIntervalValue = (interval: number): number => {
-    const days = interval / intervalOptionsToSecondsMap.Days
-    const hours = interval / intervalOptionsToSecondsMap.Hours
-    const minutes = interval / intervalOptionsToSecondsMap.Minutes
-    const seconds = interval / intervalOptionsToSecondsMap.Seconds
-
-    if (days > 1) {
-      return days
-    } else if (hours > 1) {
-      return hours
-    } else if (minutes > 1) {
-      return minutes
-    }
-
-    return seconds
-  }
-
-  const secondsToClosestIntervalOption = (interval: number): IntervalOption => {
-    const days = interval / intervalOptionsToSecondsMap.Days
-    const hours = interval / intervalOptionsToSecondsMap.Hours
-    const minutes = interval / intervalOptionsToSecondsMap.Minutes
-
-    if (days > 1) {
-      return 'Days'
-    } else if (hours > 1) {
-      return 'Hours'
-    } else if (minutes > 1) {
-      return 'Minutes'
-    }
-    return 'Seconds'
-  }
-
-  const props = defineProps<{
-    schedule?: IntervalSchedule | null,
-  }>()
+  const props = withDefaults(defineProps<{
+    schedule?: IntervalSchedule,
+  }>(), {
+    schedule: () => new IntervalSchedule({ interval: 3600, anchorDate: new Date(), timezone: 'UTC' }),
+  })
 
   const emit = defineEmits<{
     (event: 'cancel'): void,
     (event: 'update:schedule' | 'submit', value: IntervalSchedule): void,
   }>()
 
-  const defaultInterval = 3600
-
   const rules = {
     interval: [withMessage(isRequired, 'An interval is required')],
   }
 
-  const anchorDate = ref(props.schedule?.anchorDate ?? new Date())
-  const timezone = ref(props.schedule?.timezone ?? 'UTC')
-  const { value: interval, meta: intervalState, errors: intervalErrors } = useField<number>('interval', rules.interval, { initialValue: secondsToClosestIntervalValue(props.schedule?.interval ?? defaultInterval) })
-  const intervalOption = ref<IntervalOption>(secondsToClosestIntervalOption(props.schedule?.interval ?? defaultInterval))
+  const anchorDate = ref(props.schedule.anchorDate)
+  const timezone = ref(props.schedule.timezone)
+  const { value: interval, meta: intervalState, errors: intervalErrors } = useField<number>('interval', rules.interval, { initialValue: secondsToClosestIntervalValue(props.schedule.interval) })
+  const intervalOption = ref<IntervalOption>(secondsToClosestIntervalOption(props.schedule.interval))
 
   const intervalOptions: IntervalOption[] = ['Seconds', 'Minutes', 'Hours', 'Days']
 
@@ -127,7 +84,6 @@
     return intervalErrors.value.length > 0
   })
 
-
   const cancel = (): void => {
     emit('cancel')
   }
@@ -140,13 +96,14 @@
     emit('submit', internalValue.value)
   }
 
-  watch(() => internalValue.value, () => {
-    if (disabled.value) {
-      return
-    }
+  watch(() => internalValue.value, () => emit('update:schedule', internalValue.value))
 
-    emit('update:schedule', internalValue.value)
-  })
+  watch(() => props.schedule, (val) => {
+    anchorDate.value = val.anchorDate ?? anchorDate.value
+    timezone.value = val.timezone ?? timezone.value
+    interval.value = secondsToClosestIntervalValue(val.interval)
+    intervalOption.value = secondsToClosestIntervalOption(val.interval)
+  }, { deep: true })
 </script>
 
 <style>

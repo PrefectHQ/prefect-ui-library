@@ -434,4 +434,4 @@ if (!('supportedValuesOf' in Intl)) {
   ]
 }
 
-export const timezones = Intl.supportedValuesOf('timeZone')
+export const timezones = ['UTC', ...Intl.supportedValuesOf('timeZone')]
