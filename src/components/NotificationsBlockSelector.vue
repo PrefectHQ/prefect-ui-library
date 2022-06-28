@@ -25,7 +25,7 @@
     blockDocumentId?: string,
   }>()
 
-  const emailBlockTypeName = 'Email Addresses'
+  const emailBlockTypeName = 'Email Cloud'
   const slackBlockTypeName = 'Slack Webhook'
   const buttonGroup: ButtonGroupOption[] = [
     {
