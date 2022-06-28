@@ -1,7 +1,7 @@
 import { BlockDocumentData } from '@/models/BlockDocument'
 
 export type BlockDocumentCreate = {
-  name: string,
+  name?: string,
   data: BlockDocumentData,
   blockSchemaId: string,
   blockTypeId: string,

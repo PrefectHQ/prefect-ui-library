@@ -13,7 +13,7 @@
     </DemoSubSection>
     <br>
     <DemoSubSection heading="Notification Form">
-      <!-- <NotificationForm /> -->
+      <NotificationForm />
       <p-divider />
       <NotificationForm v-model:notification="notification" />
     </DemoSubSection>

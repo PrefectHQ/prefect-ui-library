@@ -1,7 +1,7 @@
 <template>
   <div class="notification-details">
     If a run of any flow with
-    <SeparatedList :item-array="notification.tags!">
+    <SeparatedList :item-array="notification.tags || []">
       <template #first-items="{ item }">
         <p-tag>{{ item }}</p-tag>
       </template>
@@ -12,7 +12,7 @@
 
     tag enters
 
-    <SeparatedList :item-array="notification.stateNames!">
+    <SeparatedList :item-array="notification.stateNames || []">
       <template #first-items="{ item }">
         <StateBadge :state="mapStateNameToStateType(item)" />
       </template>
@@ -35,7 +35,7 @@
 </template>
 
 <script lang="ts" setup>
-  import { Icon, PIcon, PTag, SelectModelValue } from '@prefecthq/prefect-design'
+  import { Icon, PIcon, PTag } from '@prefecthq/prefect-design'
   import { computed } from 'vue'
   import SeparatedList from './SeparatedList.vue'
   import StateBadge from '@/components/StateBadge.vue'
@@ -46,34 +46,36 @@
 
   const props = defineProps<{
     notification: Partial<Notification>,
-    sendToInput?: string[],
-    sendToType?: SelectModelValue,
+    sendToInput?: string[] | string,
+    sendToType?: string,
   }>()
 
-  const blockDocumentsApi = inject(blockDocumentsApiKey)
-  const blockDocument = await blockDocumentsApi.getBlockDocument(props.notification.blockDocumentId!)
 
-  const blockDocumentData = computed(() => blockDocument.data)
-  const blockDocumentDataKey = computed(() => Object.keys(blockDocumentData.value)[0])
-  const blockDocumentDataValue = computed(() => blockDocumentData.value[blockDocumentDataKey.value] as string[])
+  const blockDocumentsApi = inject(blockDocumentsApiKey)
+  const blockDocument = props.notification.blockDocumentId ? await blockDocumentsApi.getBlockDocument(props.notification.blockDocumentId) : null
+  const blockDocumentType = computed(()=> blockDocument?.blockType.name ?? '')
+  const blockDocumentData = computed(() => blockDocument?.data)
+  const blockDocumentDataKey = computed(() => blockDocumentData.value ? Object.keys(blockDocumentData.value)[0] : null)
+  const blockDocumentDataValue = computed(() => blockDocumentData.value && blockDocumentDataKey.value ? blockDocumentData.value[blockDocumentDataKey.value] as string[] : null)
+
 
   const sendToMapper = (input: string[] | string, type: string): { value: string[], icon: Icon } => {
     const arrayInput = Array.isArray(input) ? input : [input]
     switch (type) {
-      case 'email_addresses':
+      case 'Email':
         return {
           value: arrayInput,
           icon: 'MailIcon' as Icon,
         }
-      case 'slack':
+      case 'Slack Webhook':
         return {
-          value: arrayInput,
+          value: ['Slack'],
           icon: 'Slack' as Icon,
         }
       default:
         return {
           value: arrayInput,
-          icon: 'BellIcon' as Icon,
+          icon: 'bellIcon' as Icon,
         }
     }
   }
@@ -81,9 +83,10 @@
   const sendTo = computed(() => {
     if (props.sendToInput) {
       return sendToMapper(props.sendToInput, props.sendToType!)
+    } else if (blockDocumentDataValue.value) {
+      return sendToMapper(blockDocumentDataValue.value, blockDocumentType.value)
     }
-
-    return sendToMapper(blockDocumentDataValue.value, blockDocumentDataKey.value)
+    return sendToMapper('', '')
   })
 
   const classes = computed(() => ({
