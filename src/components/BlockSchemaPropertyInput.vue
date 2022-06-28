@@ -1,17 +1,29 @@
 <template>
-  <p-label class="block-schema-property-input" :label="property.title" :message="property.description" :class="classes" :style="styles">
-    <component :is="input" v-model="model" v-bind="{ ...attrs, ...inputProps }" />
-  </p-label>
+  <PLabel
+    class="block-schema-property-input"
+    :label="property.title"
+    :description="property.description"
+    :message="errors.join('. ')"
+    :state="state"
+    :class="classes"
+    :style="styles"
+  >
+    <component :is="input" v-model="model" v-bind="{ ...attrs, ...inputProps, state }" />
+  </PLabel>
 </template>
 
 <script lang="ts" setup>
-  import { PCombobox, PNumberInput, PSelect, PTextInput, PToggle, useAttrsStylesAndClasses } from '@prefecthq/prefect-design'
+  import { PLabel, PCombobox, PNumberInput, PSelect, PTextInput, PToggle, useAttrsStylesAndClasses, PTextarea } from '@prefecthq/prefect-design'
   import { computed } from 'vue'
+  import { useOptionalRules } from '@/compositions/useOptionalRules'
+  import { useReactiveField } from '@/compositions/useReactiveField'
   import { BlockSchemaSimpleProperty } from '@/models/BlockSchema'
+  import { isRequired, withMessage } from '@/services/validate'
 
   const props = defineProps<{
     property: BlockSchemaSimpleProperty,
     value: unknown,
+    required?: boolean,
   }>()
 
   const emit = defineEmits<{
@@ -29,6 +41,10 @@
     },
   })
 
+  const required = computed(() => props.required ?? false)
+  const rules = useOptionalRules(withMessage(isRequired, `${props.property.title} is required`), required)
+  const { meta: state, errors } = useReactiveField(model, props.property.title, rules)
+
   const input = computed(() => {
     if (props.property.enum) {
       return PSelect
@@ -44,6 +60,8 @@
         return PToggle
       case 'array':
         return PCombobox
+      case 'object':
+        return PTextarea
       default:
         return PTextInput
     }
