@@ -1,5 +1,5 @@
 <template>
-  <p-form v-on="{ cancel, submit }">
+  <p-form @submit="submit">
     <p-content class="block-schema-form">
       <p-label label="Block Name" :message="errors.name" :state="nameState" error="test">
         <p-text-input v-model="nameModel" :state="nameState" />
@@ -7,6 +7,15 @@
 
       <BlockSchemaFormFields v-model:data="dataModel" :block-schema="blockSchema" />
     </p-content>
+
+    <template #footer="{ disabled, loading }">
+      <p-button inset @click="cancel">
+        Reset
+      </p-button>
+      <p-button type="submit" :disabled="disabled" :loading="loading">
+        Submit
+      </p-button>
+    </template>
   </p-form>
 </template>
 
