@@ -1,30 +1,47 @@
 <template>
   <p-form class="deployment-form" :loading="isSubmitting" @submit="submit" @cancel="cancel">
-    <p-label label="Name " :message="errors.name" :state="nameState">
-      <p-text-input v-model="name" :state="nameState" />
-    </p-label>
+    <p-content>
+      <p-label label="Name " :message="errors.name" :state="nameState">
+        <p-text-input v-model="name" :state="nameState" />
+      </p-label>
 
-    <p-label label="Schedule">
-      <template v-if="schedule">
-        <p-toggle v-model="isScheduleActive" />
-        {{ schedule }}
+      <p-key-value label="Schedule">
+        <template #value>
+          <template v-if="schedule">
+            <p-toggle v-model="isScheduleActive" class="deployment-form__schedule-toggle" />
+            {{ schedule }}
+          </template>
+
+          <template v-else>
+            <p-button class="inline-block" inset size="sm">
+              Add schedule
+            </p-button>
+          </template>
+        </template>
+      </p-key-value>
+
+      <p-label label="Schedule">
+        <template v-if="schedule">
+          <p-toggle v-model="isScheduleActive" class="deployment-form__schedule-toggle" />
+          {{ schedule }}
+        </template>
+
+        <template v-else>
+          <p-button class="inline-block" inset size="sm">
+            Add schedule
+          </p-button>
+        </template>
+      </p-label>
+
+      <p-label label="Tags">
+        <p-tags-input v-model:tags="tags" empty-message="Add tags" />
+      </p-label>
+
+      <template v-if="deployment?.parameters">
+        <p-label label="Parameters" />
+        <DeploymentParametersTable :parameters="deployment.parameters" />
       </template>
-
-      <template v-else>
-        <p-button inset size="sm">
-          Add schedule
-        </p-button>
-      </template>
-    </p-label>
-
-    <p-label label="Tags">
-      <p-tags-input v-model:tags="tags" empty-message="Add tags" />
-    </p-label>
-
-    <template v-if="deployment?.parameters">
-      <p-label label="Parameters" />
-      <DeploymentParametersTable :parameters="deployment.parameters" />
-    </template>
+    </p-content>
   </p-form>
 </template>
 
@@ -86,5 +103,9 @@
 
 .deployment-form__section-header {
   @apply text-base text-gray-500
+}
+
+.deployment-form__schedule-toggle {
+  @apply inline
 }
 </style>
