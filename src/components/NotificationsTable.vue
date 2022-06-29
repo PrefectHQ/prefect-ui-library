@@ -12,7 +12,7 @@
             <NotificationDetails
               :notification="row"
               :block-type="blockDocument.blockType"
-              :block-document-data="blockDocument.data"
+              :data="blockDocument.data"
             />
           </BlockDocument>
         </div>
