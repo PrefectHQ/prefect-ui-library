@@ -19,12 +19,13 @@
 
 <script lang="ts" setup>
   import { media } from '@prefecthq/prefect-design'
-  import { computed, provide, ref, watchEffect } from 'vue'
+  import { computed, provide, ref, watchEffect, reactive } from 'vue'
   import { RouterView } from 'vue-router'
   import AppSidebar from './components/AppSidebar.vue'
   import { flowRunsApi, logsApi, taskRunsApi, flowsApi, deploymentsApi, workQueueApi, notificationsApi } from './services'
   import { notificationCreateRouteKey, deploymentRouteKey, flowRouteKey, flowRunsRouteKey, flowsRouteKey, deploymentsRouteKey, workQueuesRouteKey, settingsRouteKey, workQueueRouteKey, Route, flowRunRouteKey, workQueueCreateRouteKey, editQueueRouteKey, blocksRouteKey, blockCatalogRouteKey, blockRouteKey, blockEditRouteKey, editNotificationRouteKey, blockCatalogCreateRouteKey } from '@/router'
   import { flowRunsApiKey, logsApiKey, taskRunsApiKey, flowsApiKey, deploymentsApiKey, workQueuesApiKey, notificationsApiKey, blockDocumentsApiKey, mocker, blockTypesApiKey, blockSchemasApiKey } from '@/services'
+  import { canKey, getAppPermissions } from '@/types'
 
   const emptyRoute = (): Route => ({ path: '/nothing' })
 
@@ -57,6 +58,14 @@
   provide(blockDocumentsApiKey, mocker.create('blockDocumentsApi'))
   provide(blockTypesApiKey, mocker.create('blockTypesApi'))
   provide(blockSchemasApiKey, mocker.create('blockSchemasApi'))
+
+  const can = getAppPermissions(
+    () => true,
+    () => true,
+    () => true,
+  )
+
+  provide(canKey, can)
 
   const mobileMenuOpen = ref(false)
   const showMenu = computed(() => media.lg || mobileMenuOpen.value)
