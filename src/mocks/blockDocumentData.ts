@@ -2,7 +2,7 @@ import { MockFunction } from '@/services/Mocker'
 import { choice } from '@/utilities'
 
 const blockDataType = ['email_addresses', 'url'] as const
-type BlockDataType = typeof blockDataType[number]
+export type BlockDataType = typeof blockDataType[number]
 
 export const randomBlockDocumentData: MockFunction<Record<string, unknown>, [BlockDataType?]> = function(type) {
   const dataObject: Record<string, unknown> = {}
