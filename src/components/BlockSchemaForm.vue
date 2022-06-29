@@ -8,11 +8,11 @@
       <BlockSchemaFormFields v-model:data="dataModel" :block-schema="blockSchema" />
     </p-content>
 
-    <template #footer="{ disabled, loading }">
+    <template #footer>
       <p-button inset @click="cancel">
         Reset
       </p-button>
-      <p-button type="submit" :disabled="disabled" :loading="loading">
+      <p-button type="submit">
         Submit
       </p-button>
     </template>
