@@ -43,7 +43,7 @@
   const props = defineProps<{
     notification: Partial<Notification>,
     blockType: BlockType,
-    blockDocumentData: BlockDocumentData,
+    data: BlockDocumentData,
   }>()
 
   const toArray = (value: string | string[] | unknown): string[] => Array.isArray(value) ? value : [value]
@@ -68,7 +68,7 @@
     }
   }
 
-  const sendTo = computed(() => sendToMapper(props.blockDocumentData, props.blockType.name))
+  const sendTo = computed(() => sendToMapper(props.data, props.blockType.name))
 
   const classes = computed(() => ({
     'notification-details__icon--gray': sendTo.value.icon !== 'Slack',

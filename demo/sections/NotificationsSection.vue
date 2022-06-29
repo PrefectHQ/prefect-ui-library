@@ -13,11 +13,11 @@
     </DemoSubSection>
     <br>
     <DemoSubSection heading="Notification Form - Create">
-      <NotificationForm v-model:notification="createNotification" v-model:block-type="createBlockType" v-model:data="createData" @submit="createSubmit" />
+      <NotificationForm v-model:notification="createNotification" @submit="submit" />
     </DemoSubSection>
 
     <DemoSubSection heading="Notification Form - Edit">
-      <NotificationForm v-model:notification="notification" v-model:block-type="notificationBlockType" v-model:data="notificationBlockData" />
+      <NotificationForm v-model:notification="notification" @submit="submit" />
     </DemoSubSection>
   </DemoSection>
 </template>
@@ -30,7 +30,6 @@
   import NotificationForm from '@/components/NotificationForm.vue'
   import NotificationsTable from '@/components/NotificationsTable.vue'
   import { BlockDocumentData } from '@/models/BlockDocument'
-  import { BlockSchema } from '@/models/BlockSchema'
   import { BlockType } from '@/models/BlockType'
   import { Notification } from '@/models/Notification'
   import { blockDocumentsApiKey, blockSchemasApiKey, blockTypesApiKey, mocker } from '@/services'
@@ -74,7 +73,7 @@
   const createBlockType = ref<BlockType>()
   const createData = ref<BlockDocumentData>({})
 
-  function createSubmit(notification: { blockType: BlockType, blockSchema: BlockSchema, data: BlockDocumentData }): void {
+  function submit(notification: Partial<Notification>): void {
     console.log({ notification })
   }
 
