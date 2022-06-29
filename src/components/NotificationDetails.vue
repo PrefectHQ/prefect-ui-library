@@ -45,7 +45,6 @@
     blockType: BlockType,
     blockDocumentData: BlockDocumentData,
   }>()
-  console.log(props)
 
   const sendToMapper = (input: BlockDocumentData, type: string): { value: string[] | unknown, icon: Icon } => {
     switch (type) {

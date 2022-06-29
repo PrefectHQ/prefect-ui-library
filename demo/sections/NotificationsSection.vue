@@ -1,11 +1,11 @@
 <template>
   <DemoSection heading="Notifications">
     <DemoSubSection heading="Notification Detail">
-      <NotificationDetails :notification="notification" :block-type="emailBlockDocument.blockType" :block-document-data="emailBlockDocument.data" />
+      <NotificationDetails :notification="notification" :block-type="slackBlockDocument.blockType" :block-document-data="slackBlockDocument.data" />
       <p-divider />
-      <NotificationDetails :notification="emptyNotification" :block-type="emailBlockDocument.blockType" :block-document-data="emailBlockDocument.data" />
+      <NotificationDetails :notification="emptyNotification" :block-type="slackBlockDocument.blockType" :block-document-data="slackBlockDocument.data" />
       <p-divider />
-      <NotificationDetails :notification="customStateNotification" :block-type="emailBlockDocument.blockType" :block-document-data="emailBlockDocument.data" />
+      <NotificationDetails :notification="customStateNotification" :block-type="slackBlockDocument.blockType" :block-document-data="slackBlockDocument.data" />
     </DemoSubSection>
     <br>
     <DemoSubSection heading="Notification Table">
@@ -63,10 +63,11 @@
       data: slackBlockDocumentData,
     },
   ])
-  const blockDocuments = [emailBlockDocument, slackBlockDocument]
+
+  const blockDocuments = [slackBlockDocument]
   provide(blockDocumentsApiKey, mocker.create('blockDocumentsApi', [{ blockDocuments }]))
-  const notification = mocker.create('notification', [{ blockDocumentId: emailBlockDocument.id }])
+  const notification = mocker.create('notification', [{ blockDocumentId: slackBlockDocument.id }])
   const notifications = mocker.createMany('notification', 3, [{ blockDocumentId: slackBlockDocument.id }])
-  const emptyNotification = mocker.create('notification', [{ stateNames: [], tags: [], blockDocumentId: emailBlockDocument.id }])
+  const emptyNotification = mocker.create('notification', [{ stateNames: [], tags: [], blockDocumentId: slackBlockDocument.id }])
   const customStateNotification = mocker.create('notification', [{ stateNames: ['failed', 'hazard', 'Retrying'], blockDocumentId: slackBlockDocument.id }])
   </script>
