@@ -5,33 +5,28 @@
         <p-text-input v-model="name" :state="nameState" />
       </p-label>
 
-      <p-key-value label="Schedule">
-        <template #value>
-          <template v-if="schedule">
-            <p-toggle v-model="isScheduleActive" class="deployment-form__schedule-toggle" />
-            {{ schedule }}
-          </template>
+      <section class="deployment-form__schedule-section">
+        <p-label label="Schedule" />
 
-          <template v-else>
-            <p-button class="inline-block" inset size="sm">
-              Add schedule
-            </p-button>
-          </template>
-        </template>
-      </p-key-value>
-
-      <p-label label="Schedule">
         <template v-if="schedule">
-          <p-toggle v-model="isScheduleActive" class="deployment-form__schedule-toggle" />
-          {{ schedule }}
+          <p-tag dismissible class="deployment-form__schedule-tag" @dismiss="removeSchedule">
+            <p-icon icon="ClockIcon" />{{ schedule }}
+          </p-tag>
+
+          <p-toggle v-model="isScheduleActive" class="deployment-form__schedule-toggle">
+            <template #append>
+              Active
+            </template>
+          </p-toggle>
         </template>
 
         <template v-else>
-          <p-button class="inline-block" inset size="sm">
+          <p-button size="sm" class="deployment-form__schedule-button">
+            <p-icon icon="ClockIcon" />
             Add schedule
           </p-button>
         </template>
-      </p-label>
+      </section>
 
       <p-label label="Tags">
         <p-tags-input v-model:tags="tags" empty-message="Add tags" />
@@ -47,40 +42,36 @@
 
 <script lang="ts" setup>
   import { useField, useForm } from 'vee-validate'
-  import { reactive } from 'vue'
+  import { computed } from 'vue'
   import DeploymentParametersTable from './DeploymentParametersTable.vue'
-  import FlowCombobox from './FlowCombobox.vue'
   import { Deployment, IDeploymentRequest, DeploymentFormValues, Schedule } from '@/models'
   import { isRequired, withMessage } from '@/services/validate'
-  import { FlowRunnerType } from '@/types/FlowRunnerType'
 
   const props = defineProps<{
     deployment: Deployment,
   }>()
 
-  const internalValue = reactive(new DeploymentFormValues(props.deployment))
+  const internalValue = computed(() => {
+    return new DeploymentFormValues({
+      name: name.value,
+      schedule: schedule.value,
+      isScheduleActive: isScheduleActive.value,
+      parameters: parameters.value ?? {},
+      tags: tags.value,
+    })
+  })
 
-  const { handleSubmit, isSubmitting, errors } = useForm({ initialValues: internalValue })
+  const { handleSubmit, isSubmitting, errors } = useForm({ initialValues: props.deployment })
 
   const rules = {
     name: [withMessage(isRequired, 'Name is required')],
   }
 
   const { value: name, meta: nameState } = useField<string>('name', rules.name)
-  const { value: flowId } = useField<string>('flowId')
-
-  // // How do we handle this??
-  // const { value: flowData } = useField<FlowData>('flowData')
-
-  const { value: schedule } = useField<Schedule>('schedule')
+  const { value: schedule } = useField<Schedule | null>('schedule')
   const { value: isScheduleActive } = useField<boolean>('isScheduleActive')
-
   const { value: parameters } = useField<Record<string, unknown> | null>('parameters')
-
   const { value: tags } = useField<string[] | null>('tags')
-
-  // // How do we handle this??
-  // const { value: flowRunner } = useField<FlowRunnerType>('flowRunner')
 
   const emit = defineEmits<{
     (event: 'submit', value: IDeploymentRequest): void,
@@ -94,6 +85,11 @@
   const cancel = (): void => {
     emit('cancel')
   }
+
+  const removeSchedule = (): void => {
+    schedule.value = null
+    isScheduleActive.value = false
+  }
 </script>
 
 <style>
@@ -105,7 +101,27 @@
   @apply text-base text-gray-500
 }
 
-.deployment-form__schedule-toggle {
-  @apply inline
+.deployment-form__schedule-section {
+  @apply
+  flex
+  flex-col
+  gap-2
+}
+
+.deployment-form__schedule-tag, .deployment-form__schedule-button {
+  @apply
+  max-w-fit
+}
+
+.deployment-form__schedule-tag {
+  @apply
+  bg-slate-500
+  text-white
+}
+
+.deployment-form__schedule-tag .p-tag__dismiss {
+  @apply
+  text-slate-100
+  hover:text-slate-900
 }
 </style>
