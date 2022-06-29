@@ -32,12 +32,19 @@
     </p-content>
 
     <template #footer>
-      <p-button inset @click="cancel">
-        Cancel
-      </p-button>
-      <p-button :disabled="disabled" type="submit">
-        Save
-      </p-button>
+      <template v-if="hideActions">
+        <span />
+        <!-- Empty comment to make sure the slot is respected -->
+      </template>
+
+      <template v-else>
+        <p-button inset @click="cancel">
+          Cancel
+        </p-button>
+        <p-button :disabled="disabled" type="submit">
+          Save
+        </p-button>
+      </template>
     </template>
   </p-form>
 </template>
@@ -52,6 +59,7 @@
   import { containsCronRandomExpression } from '@/types/cron'
 
   const props = withDefaults(defineProps<{
+    hideActions?: boolean,
     schedule?: CronSchedule,
   }>(), {
     schedule: () => new CronSchedule({ cron: '* * * * *', dayOr: true, timezone: 'UTC' }),

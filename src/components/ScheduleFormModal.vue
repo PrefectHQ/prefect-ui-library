@@ -1,4 +1,5 @@
 <template>
+  <slot :open="open" :close="close" />
   <p-modal v-model:showModal="showModal" :title="schedule ? 'Edit schedule' : 'Add schedule'">
     <template v-if="currentScheduleForm == 'rrule'">
       <p>
@@ -7,15 +8,21 @@
     </template>
 
     <template v-else-if="currentScheduleForm == 'cron'">
-      <CronScheduleForm :schedule="schedule" />
+      <CronScheduleForm :schedule="schedule" hide-actions @submit="submit" />
     </template>
 
     <template v-else-if="currentScheduleForm == 'interval'">
-      <IntervalScheduleForm :schedule="schedule" />
+      <IntervalScheduleForm :schedule="schedule" hide-actions @submit="submit" />
     </template>
 
     <template v-else>
       <p-button-group v-model="currentScheduleForm" :options="scheduleFormOptions" />
+    </template>
+
+    <template #actions>
+      <p-button type="submit" @click="submit">
+        Save
+      </p-button>
     </template>
   </p-modal>
 </template>
@@ -35,11 +42,15 @@
   }>()
 
   const emit = defineEmits<{
-    (event: 'submit', value: Schedule | null): void,
-    (event: 'cancel'): void,
+    (event: 'submit', value: Schedule): void,
   }>()
 
-  const currentScheduleForm = ref<ScheduleType>(getScheduleType(props.schedule) ?? 'interval')
+  const submit = (schedule: Schedule): void => {
+    emit('submit', schedule)
+    close()
+  }
+
+  const currentScheduleForm = ref<ScheduleType>(getScheduleType(props.schedule) ?? 'cron')
 
   const scheduleFormOptions: ButtonGroupOption[] = [{ label: 'Cron', value: 'cron' }, { label: 'Interval', value: 'interval' }]
 </script>

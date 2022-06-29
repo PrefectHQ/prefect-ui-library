@@ -2,10 +2,14 @@
   <DemoSection heading="Schedule Modal">
     <p-key-value label="Schedule" :value="schedule" />
 
-    <p-button @click="showScheduleFormModal = true">
-      Show schedule modal
-    </p-button>
-    <ScheduleFormModal v-model:showModal="showScheduleFormModal" @submit="updateSchedule" />
+
+    <ScheduleFormModal @submit="updateSchedule">
+      <template #default="{ open }">
+        <p-button @click="open">
+          Show schedule modal
+        </p-button>
+      </template>
+    </ScheduleFormModal>
   </DemoSection>
 </template>
 
@@ -16,7 +20,6 @@
   import { Schedule  } from '@/models'
 
   const schedule = ref<Schedule | null>(null)
-  const showScheduleFormModal = ref(false)
   const updateSchedule = (formSchedule: Schedule | null): void => {
     schedule.value = formSchedule
   }
