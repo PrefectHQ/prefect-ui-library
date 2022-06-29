@@ -78,8 +78,8 @@
     (event: 'cancel'): void,
   }>()
 
-  const submit = handleSubmit(deploymentData => {
-    emit('submit', deploymentData.getDeploymentRequest())
+  const submit = handleSubmit(() => {
+    emit('submit', internalValue.value.getDeploymentRequest())
   })
 
   const cancel = (): void => {

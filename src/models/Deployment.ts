@@ -1,4 +1,3 @@
-import { IDeploymentRequest } from './IDeploymentRequest'
 import { FlowData } from '@/models/FlowData'
 import { FlowRunner } from '@/models/FlowRunner'
 import { Schedule } from '@/models/Schedule'
@@ -42,20 +41,5 @@ export class Deployment implements IDeployment {
     this.parameters = deployment.parameters
     this.tags = deployment.tags
     this.flowRunner = deployment.flowRunner
-  }
-
-
-  public getDeploymentRequest(): IDeploymentRequest {
-    const { name, flowId, flowData, schedule, isScheduleActive, parameters, tags, flowRunner } = this
-    return {
-      name,
-      'flow_id': flowId,
-      'flow_data': flowData,
-      'flow_runner': flowRunner,
-      'schedule': schedule?.toResponse(),
-      'is_schedule_active': isScheduleActive,
-      parameters,
-      tags,
-    }
   }
 }
