@@ -89,13 +89,6 @@
     items-center
 }
 
-/* .notification-details__send-to-pair {
-  @apply
-  inline-flex
-  items-center
-  gap-[1px]
-} */
-
 .notification-details__icon--gray {
   @apply
 stroke-gray-400

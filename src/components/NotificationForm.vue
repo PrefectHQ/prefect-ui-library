@@ -39,7 +39,7 @@
           <NotificationDetails
             :notification="notificationDetails"
             :block-type="blockSchema.blockType"
-            :block-document-data="newBlockDocumentData"
+            :block-document-data="blockDocumentData"
           />
         </BlockSchema>
       </template>
@@ -56,7 +56,7 @@
   import BlockSchemaFormFields from './BlockSchemaFormFields.vue'
   import NotificationDetails from './NotificationDetails.vue'
   import StateSelect from '@/components/StateSelect.vue'
-  import {  BlockDocumentData, Notification } from '@/models'
+  import { BlockDocumentData, Notification } from '@/models'
 
   const props = defineProps<{
     notification?: Notification,
@@ -84,24 +84,20 @@
 
   const selectedSendToType = ref(buttonGroup[0].value)
 
-  const newBlockDocumentData = computed(() => {
-    return {
-      [selectedSendToType.value]: [] as BlockDocumentData[],
-    }
-  })
-
   const emit = defineEmits<{
     (event: 'update:data', value: BlockDocumentData): void,
     (event: 'submit', value: Notification): void,
     (event: 'cancel'): void,
   }>()
 
+  const blockDocumentData = ref<BlockDocumentData>({ [selectedSendToType.value]: [] as BlockDocumentData[] })
+
   const dataModel = computed({
     get(): BlockDocumentData {
-      return {}
+      return blockDocumentData.value
     },
     set(value: BlockDocumentData): void {
-      emit('update:data', value)
+      blockDocumentData.value = value
     },
   })
 
