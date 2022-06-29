@@ -1,5 +1,5 @@
 <template>
-  <p-form class="queue-form" :loading="isSubmitting" @submit="submit" @cancel="cancel">
+  <p-form class="queue-form" :loading="isSubmitting" @submit="submit">
     <p-label label="Name " :message="errors.name" :state="nameState">
       <p-text-input v-model="name" :state="nameState" />
     </p-label>
@@ -42,6 +42,15 @@
     <p-label label="Flow Runners">
       <FlowRunnerCheckboxes v-model:selected="flowRunnerTypes" />
     </p-label>
+
+    <template #footer="{ disabled, loading }">
+      <p-button inset @click="cancel">
+        Cancel
+      </p-button>
+      <p-button type="submit" :disabled="disabled" :loading="loading">
+        Submit
+      </p-button>
+    </template>
   </p-form>
 </template>
 

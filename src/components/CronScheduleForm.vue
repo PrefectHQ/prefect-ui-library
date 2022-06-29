@@ -31,8 +31,8 @@
       </div>
     </p-content>
 
-    <template v-if="!hideActions" #footer="{ loading, disabled }">
-      <slot name="footer" :disabled="disabled" :loading="loading">
+    <template v-if="!hideActions" #footer="{ disabled: formDisabled, loading }">
+      <slot name="footer" :disabled="formDisabled" :loading="loading">
         <p-button inset @click="cancel">
           Cancel
         </p-button>
