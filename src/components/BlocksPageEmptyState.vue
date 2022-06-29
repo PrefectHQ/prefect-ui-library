@@ -13,7 +13,7 @@
     </template>
 
     <template #actions>
-      <router-link :to="blockCatalogRoute()">
+      <router-link v-if="can.create.block" :to="blockCatalogRoute()">
         <p-button>
           Create a Block
           <p-icon icon="PlusIcon" class="empty-work-queue--link-icon" />
@@ -26,7 +26,9 @@
 <script lang="ts" setup>
   import { PEmptyState, PButton, PIcon } from '@prefecthq/prefect-design'
   import { blockCatalogRouteKey } from '@/router'
+  import { canKey } from '@/types'
   import { inject } from '@/utilities'
 
   const blockCatalogRoute = inject(blockCatalogRouteKey)
+  const can = inject(canKey)
 </script>
