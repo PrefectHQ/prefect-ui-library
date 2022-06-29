@@ -32,13 +32,13 @@
   const emailBlockType = mocker.create('blockType', [{ name: 'Email Addresses' }])
   const emailBlockSchemaFields = mocker.create('blockSchemaFields', [{ blockTypeName: emailBlockType.name }])
   const emailBlockSchema = mocker.create('blockSchema', [{ blockType: emailBlockType, blockTypeId: emailBlockType.id, fields: emailBlockSchemaFields }])
-  const emailBlockDocumentData = mocker.create('blockDocumentData', ['Email Addresses'])
+  const emailBlockDocumentData = mocker.create('blockDocumentData', ['email_addresses'])
 
 
   const slackBlockType = mocker.create('blockType', [{ name: 'Slack Webhook' }])
   const slackBlockSchemaFields = mocker.create('blockSchemaFields', [{ blockTypeName: slackBlockType.name }])
   const slackBlockSchema = mocker.create('blockSchema', [{ blockType: slackBlockType, blockTypeId: slackBlockType.id, fields: slackBlockSchemaFields } ])
-  const slackBlockDocumentData = mocker.create('blockDocumentData', ['Slack Webhook'])
+  const slackBlockDocumentData = mocker.create('blockDocumentData', ['url'])
 
 
   const blockSchemas = [emailBlockSchema, slackBlockSchema]

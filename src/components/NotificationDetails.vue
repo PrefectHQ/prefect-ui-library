@@ -46,21 +46,23 @@
     blockDocumentData: BlockDocumentData,
   }>()
 
+  const toArray = (value: string | string[] | unknown): string[] => Array.isArray(value) ? value : [value]
+
   const sendToMapper = (input: BlockDocumentData, type: string): { value: string[] | unknown, icon: Icon } => {
     switch (type) {
       case 'Email Addresses':
         return {
-          value: input[type],
+          value: toArray(input.email_addresses),
           icon: 'MailIcon' as Icon,
         }
       case 'Slack Webhook':
         return {
-          value: ['Slack'],
+          value: toArray('Slack'),
           icon: 'Slack' as Icon,
         }
       default:
         return {
-          value: input[type],
+          value: toArray(Object.values(input)[0]),
           icon: 'BellIcon' as Icon,
         }
     }
@@ -86,11 +88,11 @@
   flex-wrap
   align-bottom
   font-bold
-    items-center
+  items-center
 }
 
 .notification-details__icon--gray {
   @apply
-stroke-gray-400
+  stroke-gray-400
 }
 </style>
