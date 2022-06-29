@@ -48,11 +48,6 @@
 
   const sendToMapper = (input: BlockDocumentData, type: string): { value: string[] | unknown, icon: Icon } => {
     switch (type) {
-      case 'Email Addresses':
-        return {
-          value: input[type],
-          icon: 'MailIcon' as Icon,
-        }
       case 'Slack Webhook':
         return {
           value: ['Slack'],
@@ -60,7 +55,7 @@
         }
       default:
         return {
-          value: input[type],
+          value: Array.isArray(input[type]) ? input[type] : [input[type]],
           icon: 'BellIcon' as Icon,
         }
     }
