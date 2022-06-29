@@ -39,7 +39,7 @@
   import BlockSchemaFormFields from './BlockSchemaFormFields.vue'
   import NotificationDetails from './NotificationDetails.vue'
   import StateSelect from '@/components/StateSelect.vue'
-  import { BlockDocumentData, Notification, BlockType, BlockTypeFilter } from '@/models'
+  import { BlockDocumentData, Notification, BlockType, BlockTypeFilter, BlockSchema } from '@/models'
   import { blockSchemasApiKey, blockTypesApiKey } from '@/services'
   import { inject } from '@/utilities/inject'
 
@@ -53,7 +53,8 @@
     (event: 'update:notification', value: Partial<Notification>): void,
     (event: 'update:data', value: BlockDocumentData): void,
     (event: 'update:blockType', value: BlockType | undefined): void,
-    (event: 'submit' | 'cancel'): void,
+    (event: 'cancel'): void,
+    (event: 'submit', value: { blockSchema: BlockSchema, blockType: BlockType, data: BlockDocumentData }): void,
   }>()
 
   const dataModel = computed({
@@ -141,7 +142,11 @@
   const blockSchema = computed(() => blockSchemaSubscription.response?.[0])
 
   function submit(): void {
-    emit('submit')
+    emit('submit', {
+      blockType: props.blockType!,
+      blockSchema: blockSchema.value!,
+      data: props.data,
+    })
   }
 
   function cancel(): void {
