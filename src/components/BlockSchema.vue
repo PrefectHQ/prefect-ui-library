@@ -20,14 +20,15 @@
   const blockSchemasApi = inject(blockSchemasApiKey)
 
   const blockTypeSubscription = useSubscription(blockTypesApi.getBlockTypeByName, [props.blockTypeName])
-  const blockTypeId = computed(() => blockTypeSubscription.response).value?.id
+  const blockTypeId = computed(() => blockTypeSubscription.response?.id)
   const blockSchemaSubscriptionArgs = computed(() => ({
     blockSchemas: {
       blockTypeId: {
-        any_: [blockTypeId],
+        any_: [blockTypeId.value],
       },
     },
   }))
-  const blockSchemaSubscription = useSubscription(blockSchemasApi.getBlockSchemas, [blockSchemaSubscriptionArgs.value])
+  const blockSchemaSubscription = useSubscription(blockSchemasApi.getBlockSchemas, [blockSchemaSubscriptionArgs])
   const blockSchema = computed(() => blockSchemaSubscription.response?.[0])
+  console.log(blockSchema)
 </script>
