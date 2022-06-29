@@ -1,11 +1,11 @@
 <template>
   <DemoSection heading="Notifications">
     <DemoSubSection heading="Notification Detail">
-      <NotificationDetails :notification="notification" :block-type="emailBlockDocument.blockType" :block-document-data="emailBlockDocument.data" />
+      <NotificationDetails :notification="notification" :block-type="emailBlockDocument.blockType" :data="emailBlockDocument.data" />
       <p-divider />
-      <NotificationDetails :notification="emptyNotification" :block-type="emailBlockDocument.blockType" :block-document-data="emailBlockDocument.data" />
+      <NotificationDetails :notification="emptyNotification" :block-type="emailBlockDocument.blockType" :data="emailBlockDocument.data" />
       <p-divider />
-      <NotificationDetails :notification="customStateNotification" :block-type="emailBlockDocument.blockType" :block-document-data="emailBlockDocument.data" />
+      <NotificationDetails :notification="customStateNotification" :block-type="emailBlockDocument.blockType" :data="emailBlockDocument.data" />
     </DemoSubSection>
     <DemoSubSection heading="Notification Table">
       <NotificationsTable :notifications="notifications" />
