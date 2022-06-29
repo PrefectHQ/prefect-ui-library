@@ -31,7 +31,7 @@
       <p-button inset @click="cancel">
         Cancel
       </p-button>
-      <p-button :disabled="disabled" type="submit">
+      <p-button type="submit" :disabled="disabled">
         Save
       </p-button>
     </template>
