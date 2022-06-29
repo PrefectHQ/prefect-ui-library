@@ -12,10 +12,6 @@
         </p-link>
       </template>
 
-      <template #tags="{ row }">
-        <p-tag-wrapper :tags="row.tags" justify="left" />
-      </template>
-
       <template #activity="{ row }">
         <FlowActivityChart :flow="row" class="flows-table__activity-chart" />
       </template>
@@ -79,10 +75,6 @@
       width: '200px',
     },
     {
-      property: 'tags',
-      label: 'Tags',
-    },
-    {
       label: 'Action',
       width: '42px',
     },
@@ -96,8 +88,8 @@
     return props.flows.filter(filterFlows)
   })
 
-  function filterFlows({ name, tags }: Flow): boolean {
-    return `${name} ${tags.join(' ')}`.toLowerCase().includes(searchTerm.value.toLowerCase())
+  function filterFlows({ name }: Flow): boolean {
+    return name.toLowerCase().includes(searchTerm.value.toLowerCase())
   }
 
   function clear(): void {
