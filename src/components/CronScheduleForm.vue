@@ -31,20 +31,15 @@
       </div>
     </p-content>
 
-    <template #footer>
-      <template v-if="hideActions">
-        <span />
-        <!-- Empty comment to make sure the slot is respected -->
-      </template>
-
-      <template v-else>
+    <template v-if="!hideActions" #footer="{ loading, disabled }">
+      <slot name="footer" :disabled="disabled" :loading="loading">
         <p-button inset @click="cancel">
           Cancel
         </p-button>
         <p-button :disabled="disabled" type="submit">
           Save
         </p-button>
-      </template>
+      </slot>
     </template>
   </p-form>
 </template>
@@ -68,6 +63,7 @@
   const emit = defineEmits<{
     (event: 'cancel'): void,
     (event: 'update:schedule' | 'submit', value: CronSchedule): void,
+    (event: 'update:disabled', value: boolean): void,
   }>()
 
   const isSupportedCron = (): boolean => {
@@ -116,6 +112,7 @@
   }
 
   watch(() => internalValue.value, () => emit('update:schedule', internalValue.value))
+  watch(() => disabled.value, () => emit('update:disabled', disabled.value))
 
   watch(() => props.schedule, (val) => {
     timezone.value = val.timezone ?? timezone.value
