@@ -12,15 +12,15 @@
     </template>
 
     <template v-else-if="scheduleForm == 'cron'">
-      <CronScheduleForm :schedule="cronSchedule" hide-actions @submit="submit" />
+      <CronScheduleForm v-model:schedule="cronSchedule" v-model:disabled="disabled" hide-actions @submit="submit" />
     </template>
 
     <template v-else-if="scheduleForm == 'interval'">
-      <IntervalScheduleForm :schedule="intervalSchedule" hide-actions @submit="submit" />
+      <IntervalScheduleForm v-model:schedule="intervalSchedule" v-model:disabled="disabled" hide-actions @submit="submit" />
     </template>
 
     <template #actions>
-      <p-button type="submit" @click="submit">
+      <p-button type="submit" :disabled="disabled" @click="submitCurrentForm">
         Save
       </p-button>
     </template>
@@ -29,11 +29,11 @@
 
 <script lang="ts" setup>
   import { ButtonGroupOption } from '@prefecthq/prefect-design'
-  import { computed, ref } from 'vue'
+  import { ref } from 'vue'
   import CronScheduleForm from './CronScheduleForm.vue'
   import IntervalScheduleForm from './IntervalScheduleForm.vue'
   import { useShowModal } from '@/compositions'
-  import { Schedule, getScheduleType, ScheduleType, isCronSchedule, isIntervalSchedule } from '@/models'
+  import { Schedule, getScheduleType, ScheduleType, isCronSchedule, isIntervalSchedule, CronSchedule, IntervalSchedule } from '@/models'
 
   const { showModal, open, close } = useShowModal()
 
@@ -50,22 +50,24 @@
     close()
   }
 
-  const cronSchedule = computed(() => {
-    if (isCronSchedule(props.schedule)) {
-      return props.schedule
+  const disabled = ref<boolean>()
+
+  const submitCurrentForm = (): void => {
+    if (disabled.value) {
+      return
     }
 
-    return undefined
-  })
-
-  const intervalSchedule = computed(() => {
-    if (isIntervalSchedule(props.schedule)) {
-      return props.schedule
+    if (scheduleForm.value == 'cron' && cronSchedule.value) {
+      submit(cronSchedule.value)
     }
 
-    return undefined
-  })
+    if (scheduleForm.value == 'interval' && intervalSchedule.value) {
+      submit(intervalSchedule.value)
+    }
+  }
 
+  const cronSchedule = ref<CronSchedule | undefined>(isCronSchedule(props.schedule) ? props.schedule : undefined)
+  const intervalSchedule = ref<IntervalSchedule | undefined>(isIntervalSchedule(props.schedule) ? props.schedule : undefined)
   const scheduleForm = ref<ScheduleType>(getScheduleType(props.schedule) ?? 'interval')
   const scheduleFormOptions: ButtonGroupOption[] = [{ label: 'Interval', value: 'interval' }, { label: 'Cron', value: 'cron' }]
 </script>
