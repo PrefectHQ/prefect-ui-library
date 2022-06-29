@@ -7,7 +7,6 @@ export const randomFlow: MockFunction<Flow, [Partial<Flow>?]> = function(overrid
     created: this.create('date'),
     updated: this.create('date'),
     name: this.create('string'),
-    tags: this.createMany('string', 3),
     ...overrides,
   })
 }
