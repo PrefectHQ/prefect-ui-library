@@ -77,7 +77,7 @@
 
   const buttonGroup = [
     {
-      label: 'Slack Webhook',
+      label: 'Slack',
       value: 'Slack Webhook',
       inputLabel: 'Webhook URL',
     },
