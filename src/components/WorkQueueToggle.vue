@@ -1,5 +1,5 @@
 <template>
-  <p-toggle v-model="internalValue" :loading="loading" />
+  <p-toggle v-if="can.update.work_queue" v-model="internalValue" :loading="loading" />
 </template>
 
 <script lang="ts" setup>
@@ -7,6 +7,7 @@
   import { computed, ref } from 'vue'
   import { WorkQueue } from '@/models'
   import { workQueuesApiKey } from '@/services/WorkQueuesApi'
+  import { canKey } from '@/types'
   import { inject } from '@/utilities'
 
   const props = defineProps<{
@@ -14,6 +15,7 @@
   }>()
 
   const workQueuesApi = inject(workQueuesApiKey)
+  const can = inject(canKey)
 
   const emit = defineEmits<{
     (event: 'update'): void,
