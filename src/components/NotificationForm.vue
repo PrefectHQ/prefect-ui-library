@@ -49,7 +49,7 @@
 
 <script lang="ts" setup>
   import { PLabel, PTagsInput, PForm, PButtonGroup } from '@prefecthq/prefect-design'
-  import { useForm } from 'vee-validate'
+  import { useForm, useField } from 'vee-validate'
   import { computed, ref } from 'vue'
   import BlockDocument from './BlockDocument.vue'
   import BlockSchema from './BlockSchema.vue'
@@ -62,10 +62,18 @@
     notification?: Notification,
   }>()
 
-  const { handleSubmit, isSubmitting } = useForm<Notification>()
+  const initialStateNames = ref(props.notification?.stateNames ? [...props.notification.stateNames] : [])
+  const initialTags = ref(props.notification?.tags ? [...props.notification.tags] : [])
 
-  const stateNames = ref(props.notification?.stateNames ? [...props.notification.stateNames] : [])
-  const tags = ref(props.notification?.tags ? [...props.notification.tags] : [])
+  const { handleSubmit, isSubmitting } = useForm<Partial<Notification>>({
+    initialValues: {
+      stateNames: initialStateNames.value,
+      tags: initialTags.value,
+    },
+  })
+
+  const { value: tags } = useField<string[]>('tags')
+  const { value: stateNames } = useField<string[]>('stateNames')
 
   const buttonGroup = [
     {
@@ -86,7 +94,7 @@
 
   const emit = defineEmits<{
     (event: 'update:data', value: BlockDocumentData): void,
-    (event: 'submit', value: Notification): void,
+    (event: 'submit', value: any): void,
     (event: 'cancel'): void,
   }>()
 
@@ -102,6 +110,7 @@
   })
 
   const submit = handleSubmit(notificationData => {
+    console.log(notificationData)
     emit('submit', notificationData)
   })
 
