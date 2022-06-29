@@ -16,7 +16,7 @@
     </template>
 
     <template #actions>
-      <router-link :to="workQueueCreateRoute()">
+      <router-link v-if="can.create.work_queue" :to="workQueueCreateRoute()">
         <p-button>
           Create Work Queue
           <p-icon icon="PlusIcon" class="empty-work-queue--link-icon" />
@@ -30,9 +30,11 @@
   import { PEmptyState, PButton, PIcon } from '@prefecthq/prefect-design'
   import { RouterLink } from 'vue-router'
   import { workQueueCreateRouteKey } from '@/router'
+  import { canKey } from '@/types'
 
   import { inject } from '@/utilities'
   const workQueueCreateRoute = inject(workQueueCreateRouteKey)
+  const can = inject(canKey)
 </script>
 
 <style>

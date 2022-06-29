@@ -1,5 +1,5 @@
 <template>
-  <p-form class="form-validation" :loading="isSubmitting" @submit="submit" @cancel="handleReset">
+  <p-form class="form-validation" @submit="submit">
     <template #heading>
       Form Validation Example
     </template>
@@ -32,6 +32,15 @@
       <!-- eslint-disable-next-line vue/no-v-html -->
       <pre v-html="JSON.stringify({ name, dateOfBirth, emailAddress, username, tags, agreeToTerms }, null, 2)" />
     </code>
+
+    <template #footer>
+      <p-button inset @click="handleReset">
+        Reset
+      </p-button>
+      <p-button type="submit" :loading="isSubmitting">
+        Submit
+      </p-button>
+    </template>
   </p-form>
 </template>
 

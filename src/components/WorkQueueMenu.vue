@@ -1,10 +1,10 @@
 <template>
   <p-icon-button-menu size="xs">
     <copy-overflow-menu-item label="Copy ID" :item="queue.id" />
-    <router-link :to="editQueueRoute(queue.id)">
+    <router-link v-if="can.update.work_queue" :to="editQueueRoute(queue.id)">
       <p-overflow-menu-item label="Edit" />
     </router-link>
-    <p-overflow-menu-item label="Delete" @click="open" />
+    <p-overflow-menu-item v-if="can.delete.work_queue" label="Delete" @click="open" />
   </p-icon-button-menu>
   <ConfirmDeleteModal
     v-model:showModal="showModal"
@@ -32,6 +32,7 @@
   import { WorkQueue } from '@/models'
   import { editQueueRouteKey } from '@/router'
   import { workQueuesApiKey } from '@/services/WorkQueuesApi'
+  import { canKey } from '@/types/permissions'
   import { inject, deleteItem } from '@/utilities'
 
   defineProps<{
@@ -46,6 +47,7 @@
 
   const workQueuesApi = inject(workQueuesApiKey)
   const editQueueRoute = inject(editQueueRouteKey)
+  const can = inject(canKey)
 
   const deleteWorkQueue = async (id: string): Promise<void> => {
     close()

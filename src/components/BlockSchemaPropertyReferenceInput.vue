@@ -1,10 +1,10 @@
 <template>
-  <p-label class="block-schema-property-reference-input" :label="blockTypeName">
+  <p-label class="block-schema-property-reference-input" :label="blockTypeName" :message="errors.join('. ')" :state="state">
     <div class="block-schema-property-reference-input__content">
       <BlockTypeLogo v-if="blockType" :block-type="blockType" />
 
       <template v-if="blockDocuments.length">
-        <BlockDocumentsSelect v-model:selected="model" :block-documents="blockDocuments" class="block-schema-property-reference-input__select" />
+        <BlockDocumentsSelect v-model:selected="model" v-bind="{ blockDocuments, state }" class="block-schema-property-reference-input__select" />
       </template>
 
       <router-link :to="blockCatalogCreateRoute(blockTypeName)">
@@ -21,13 +21,16 @@
   import { computed } from 'vue'
   import BlockDocumentsSelect from './BlockDocumentsSelect.vue'
   import BlockTypeLogo from './BlockTypeLogo.vue'
+  import { useReactiveField } from '@/compositions'
+  import { useOptionalRules } from '@/compositions/useOptionalRules'
   import { blockCatalogCreateRouteKey } from '@/router/routes'
-  import { blockTypesApiKey } from '@/services'
+  import { blockTypesApiKey, isRequired, withMessage } from '@/services'
   import { inject } from '@/utilities'
 
   const props = defineProps<{
     selected: string | null | undefined,
     blockTypeName: string,
+    required?: boolean,
   }>()
 
   const emit = defineEmits<{
@@ -42,6 +45,10 @@
       emit('update:selected', value)
     },
   })
+
+  const required = computed(() => props.required ?? false)
+  const rules = useOptionalRules(withMessage(isRequired, `${props.blockTypeName} is required`), required)
+  const { meta: state, errors } = useReactiveField(model, props.blockTypeName, rules)
 
   const blockCatalogCreateRoute = inject(blockCatalogCreateRouteKey)
   const blockTypesApi = inject(blockTypesApiKey)

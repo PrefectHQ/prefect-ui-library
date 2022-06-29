@@ -1,5 +1,6 @@
 import { IntervalSchedule, CronSchedule, RRuleSchedule, Schedule } from '@/models'
 import { MockFunction } from '@/services/Mocker'
+import { choice } from '@/utilities/arrays'
 import { uniform } from '@/utilities/math'
 
 const intervalSchedules = [1, 30, 60, 900, 1800, 3600, 86400]
@@ -16,20 +17,28 @@ const rruleSchedules = [
   'DTSTART:20120201T023000Z RRULE:FREQ=DAILY;COUNT=30',
 ]
 
-export const randomSchedule: MockFunction<Schedule, [Partial<Schedule>?]> = function() {
-  const coinFlip = uniform(0, 100)
+type ScheduleType = 'interval' | 'cron' | 'rrule'
 
-  if (coinFlip > 55) {
-    const interval = intervalSchedules[uniform(0, intervalSchedules.length - 1)]
-    return new IntervalSchedule({ interval, timezone: null, anchorDate: this.create('date') })
-  }
+export const randomSchedule: MockFunction<Schedule, [{ type?: ScheduleType }?, Partial<Schedule>?]> = function({ type } = {}) {
+  let schedule: Schedule
 
-  if (coinFlip > 10) {
-    const cron = cronSchedules[uniform(0, cronSchedules.length - 1)]
-    return new CronSchedule({ cron, timezone: null, dayOr: false })
-  }
-
+  const interval = intervalSchedules[uniform(0, intervalSchedules.length - 1)]
+  const cron = cronSchedules[uniform(0, cronSchedules.length - 1)]
   const rrule = rruleSchedules[uniform(0, rruleSchedules.length - 1)]
 
-  return new RRuleSchedule({ rrule, timezone: null })
+  const randomScheduleType = choice<ScheduleType>(['interval', 'cron', 'rrule'])
+
+  switch (type ?? randomScheduleType) {
+    case 'interval':
+      schedule = new IntervalSchedule({ interval, timezone: null, anchorDate: this.create('date') })
+      break
+    case 'cron':
+      schedule = new CronSchedule({ cron, timezone: null, dayOr: false })
+      break
+    case 'rrule':
+      schedule = new RRuleSchedule({ rrule, timezone: null })
+      break
+  }
+
+  return schedule
 }
