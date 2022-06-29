@@ -46,16 +46,24 @@
     blockDocumentData: BlockDocumentData,
   }>()
 
+  const toArray = (value: string | string[] | unknown): string[] => Array.isArray(value) ? value : [value]
+
   const sendToMapper = (input: BlockDocumentData, type: string): { value: string[] | unknown, icon: Icon } => {
     switch (type) {
+      case 'Email Addresses':
+        return {
+          value: toArray(input.email_addresses),
+          icon: 'MailIcon' as Icon,
+        }
       case 'Slack Webhook':
         return {
-          value: ['Slack'],
+          value: toArray(input.url),
+          // value: toArray('Slack'),
           icon: 'Slack' as Icon,
         }
       default:
         return {
-          value: Array.isArray(input[type]) ? input[type] : [input[type]],
+          value: toArray(Object.values(input)[0]),
           icon: 'BellIcon' as Icon,
         }
     }
