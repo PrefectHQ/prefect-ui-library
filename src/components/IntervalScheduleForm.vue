@@ -27,11 +27,11 @@
       </div>
     </p-content>
 
-    <template #footer="{ disabled, loading }">
+    <template #footer>
       <p-button inset @click="cancel">
         Cancel
       </p-button>
-      <p-button type="submit" :disabled="disabled" :loading="loading">
+      <p-button type="submit" :disabled="disabled">
         Save
       </p-button>
     </template>

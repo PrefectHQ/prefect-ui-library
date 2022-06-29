@@ -1,5 +1,5 @@
 <template>
-  <p-form class="form-validation" :loading="isSubmitting" @submit="submit">
+  <p-form class="form-validation" @submit="submit">
     <template #heading>
       Form Validation Example
     </template>
@@ -33,11 +33,11 @@
       <pre v-html="JSON.stringify({ name, dateOfBirth, emailAddress, username, tags, agreeToTerms }, null, 2)" />
     </code>
 
-    <template #footer="{ disabled, loading }">
+    <template #footer>
       <p-button inset @click="handleReset">
         Reset
       </p-button>
-      <p-button type="submit" :disabled="disabled" :loading="loading">
+      <p-button type="submit" :loading="isSubmitting">
         Submit
       </p-button>
     </template>
