@@ -110,7 +110,6 @@
   })
 
   const submit = handleSubmit(notificationData => {
-    console.log(notificationData)
     emit('submit', notificationData)
   })
 
