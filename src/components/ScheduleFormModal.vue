@@ -1,22 +1,22 @@
 <template>
   <slot :open="open" :close="close" />
   <p-modal v-model:showModal="showModal" :title="schedule ? 'Edit schedule' : 'Add schedule'">
-    <template v-if="currentScheduleForm == 'rrule'">
+    <p-label label="Schedule type">
+      <p-button-group v-model="scheduleForm" :options="scheduleFormOptions" size="sm" />
+    </p-label>
+
+    <template v-if="scheduleForm == 'rrule'">
       <p>
         Sorry, modifying RRule schedules via the UI is currently unsupported.
       </p>
     </template>
 
-    <template v-else-if="currentScheduleForm == 'cron'">
-      <CronScheduleForm :schedule="schedule" hide-actions @submit="submit" />
+    <template v-else-if="scheduleForm == 'cron'">
+      <CronScheduleForm :schedule="cronSchedule" hide-actions @submit="submit" />
     </template>
 
-    <template v-else-if="currentScheduleForm == 'interval'">
-      <IntervalScheduleForm :schedule="schedule" hide-actions @submit="submit" />
-    </template>
-
-    <template v-else>
-      <p-button-group v-model="currentScheduleForm" :options="scheduleFormOptions" />
+    <template v-else-if="scheduleForm == 'interval'">
+      <IntervalScheduleForm :schedule="intervalSchedule" hide-actions @submit="submit" />
     </template>
 
     <template #actions>
@@ -33,7 +33,7 @@
   import CronScheduleForm from './CronScheduleForm.vue'
   import IntervalScheduleForm from './IntervalScheduleForm.vue'
   import { useShowModal } from '@/compositions'
-  import { Schedule, getScheduleType, ScheduleType } from '@/models'
+  import { Schedule, getScheduleType, ScheduleType, isCronSchedule, isIntervalSchedule } from '@/models'
 
   const { showModal, open, close } = useShowModal()
 
@@ -50,7 +50,22 @@
     close()
   }
 
-  const currentScheduleForm = ref<ScheduleType>(getScheduleType(props.schedule) ?? 'cron')
+  const cronSchedule = computed(() => {
+    if (isCronSchedule(props.schedule)) {
+      return props.schedule
+    }
 
-  const scheduleFormOptions: ButtonGroupOption[] = [{ label: 'Cron', value: 'cron' }, { label: 'Interval', value: 'interval' }]
+    return undefined
+  })
+
+  const intervalSchedule = computed(() => {
+    if (isIntervalSchedule(props.schedule)) {
+      return props.schedule
+    }
+
+    return undefined
+  })
+
+  const scheduleForm = ref<ScheduleType>(getScheduleType(props.schedule) ?? 'interval')
+  const scheduleFormOptions: ButtonGroupOption[] = [{ label: 'Interval', value: 'interval' }, { label: 'Cron', value: 'cron' }]
 </script>
