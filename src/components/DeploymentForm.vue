@@ -1,43 +1,77 @@
 <template>
   <p-form class="deployment-form" :loading="isSubmitting" @submit="submit" @cancel="cancel">
     <p-content>
-      <p-label label="Name " :message="errors.name" :state="nameState">
-        <p-text-input v-model="name" :state="nameState" />
-      </p-label>
+      <p-content>
+        <h3 class="deployment-form__section-header">
+          General
+        </h3>
 
-      <section class="deployment-form__schedule-section">
-        <p-label label="Schedule" />
+        <p-label label="Name " :message="errors.name" :state="nameState">
+          <p-text-input v-model="name" :state="nameState" />
+        </p-label>
 
-        <template v-if="schedule">
-          <p-tag dismissible class="deployment-form__schedule-tag" @dismiss="removeSchedule">
-            <p-icon icon="ClockIcon" />{{ schedule }}
-          </p-tag>
+        <p-label label="Tags">
+          <p-tags-input v-model:tags="tags" empty-message="Add tags" />
+        </p-label>
+      </p-content>
 
-          <p-toggle v-model="isScheduleActive" class="deployment-form__schedule-toggle">
-            <template #append>
-              Active
-            </template>
-          </p-toggle>
+      <p-divider />
+
+      <p-content>
+        <h3 class="deployment-form__section-header">
+          Scheduling
+        </h3>
+
+        <span>
+          <p-label label="Schedule" />
+
+          <span class="deployment-form__schedule-row">
+            <span v-if="schedule" class="deployment-form__schedule">
+              {{ schedule?.toString({ verbose: true }) }}
+            </span>
+
+            <ScheduleFormModal :schedule="schedule" @submit="updateSchedule">
+              <template #default="{ open }">
+
+
+                <p-button size="xs" class="deployment-form__schedule-button" inset @click="open">
+                  <p-icon icon="PencilIcon" class="deployment-form__schedule-button-icon" />
+                  {{ schedule ? 'Edit' : 'Add' }}
+                </p-button>
+
+
+              </template>
+            </ScheduleFormModal>
+
+            <p-button v-if="schedule" size="xs" class="deployment-form__schedule-button" inset @click="removeSchedule">
+              <p-icon icon="TrashIcon" class="deployment-form__schedule-button-icon" />
+              Remove
+            </p-button>
+
+          </span>
+        </span>
+
+
+        <p-label label="Scheduler">
+          <p-toggle v-model="isScheduleActive" :disabled="!schedule" class="deployment-form__schedule-toggle" />
+        </p-label>
+      </p-content>
+
+      <p-divider />
+
+      <p-content>
+        <h3 class="deployment-form__section-header">
+          Parameters
+        </h3>
+
+        <template v-if="deployment?.parameters">
+          <DeploymentParametersTable :parameters="deployment.parameters" />
         </template>
 
-        <ScheduleFormModal :schedule="schedule" @submit="updateSchedule">
-          <template #default="{ open }">
-            <p-button size="sm" class="deployment-form__schedule-button" @click="open">
-              <p-icon icon="ClockIcon" />
-              {{ schedule ? 'Edit' : 'Add' }} schedule
-            </p-button>
-          </template>
-        </ScheduleFormModal>
-      </section>
-
-      <p-label label="Tags">
-        <p-tags-input v-model:tags="tags" empty-message="Add tags" />
-      </p-label>
-
-      <template v-if="deployment?.parameters">
-        <p-label label="Parameters" />
-        <DeploymentParametersTable :parameters="deployment.parameters" />
-      </template>
+        <template v-else>
+          <em>This deployment's flow has no parameters</em>
+        </template>
+      </p-content>
     </p-content>
   </p-form>
 </template>
@@ -109,14 +143,7 @@
 }
 
 .deployment-form__section-header {
-  @apply text-base text-gray-500
-}
-
-.deployment-form__schedule-section {
-  @apply
-  flex
-  flex-col
-  gap-2
+  @apply text-lg font-semibold
 }
 
 .deployment-form__schedule-tag, .deployment-form__schedule-button {
@@ -124,10 +151,29 @@
   max-w-fit
 }
 
+.deployment-form__schedule-button-icon {
+  @apply
+  w-3
+  h-3
+}
+
+.deployment-form__schedule-row {
+  @apply
+  flex
+  gap-2
+  items-center
+}
+
+.deployment-form__schedule {
+  @apply
+  text-lg
+}
+
 .deployment-form__schedule-tag {
   @apply
   bg-slate-500
   text-white
+  cursor-pointer
 }
 
 .deployment-form__schedule-tag .p-tag__dismiss {

@@ -7,7 +7,7 @@
 
     <template v-if="scheduleForm == 'rrule'">
       <p>
-        Sorry, modifying RRule schedules via the UI is currently unsupported; please selct a different schedule type.
+        Sorry, modifying RRule schedules via the UI is currently unsupported; select a different schedule type above or modify your schedule in code.
       </p>
     </template>
 
@@ -53,7 +53,7 @@
   const cronDisabled = ref<boolean>()
   const intervalDisabled = ref<boolean>()
   const disabled = computed(() => {
-    return scheduleForm.value == 'cron' && cronDisabled.value || scheduleForm.value == 'interval' && intervalDisabled.value
+    return scheduleForm.value == 'rrule' || scheduleForm.value == 'cron' && cronDisabled.value || scheduleForm.value == 'interval' && intervalDisabled.value
   })
 
   const submitCurrentForm = (): void => {
@@ -74,7 +74,7 @@
   const cronSchedule = ref<CronSchedule | undefined>(isCronSchedule(props.schedule) ? props.schedule : undefined)
   const intervalSchedule = ref<IntervalSchedule | undefined>(isIntervalSchedule(props.schedule) ? props.schedule : undefined)
   const scheduleForm = ref<ScheduleType>(getScheduleType(props.schedule) ?? 'interval')
-  const scheduleFormOptions: ButtonGroupOption[] = [{ label: 'Interval', value: 'interval' }, { label: 'Cron', value: 'cron' }]
+  const scheduleFormOptions: ButtonGroupOption[] = [{ label: 'Interval', value: 'interval' }, { label: 'Cron', value: 'cron' }, { label: 'RRule', value: 'rrule' }]
 
   const updateSchedules = (): void  => {
     cronSchedule.value = isCronSchedule(props.schedule) ? props.schedule : undefined
