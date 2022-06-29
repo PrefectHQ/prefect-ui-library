@@ -64,6 +64,10 @@
           Parameters
         </h3>
 
+        <sup>
+          <em>Modifying deployment default parameters coming soon!</em>
+        </sup>
+
         <template v-if="deployment?.parameters">
           <DeploymentParametersTable :parameters="deployment.parameters" />
         </template>
