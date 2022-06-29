@@ -1,14 +1,21 @@
 import { MockFunction } from '@/services/Mocker'
+import { choice } from '@/utilities'
 
-export const randomBlockDocumentData: MockFunction<Record<string, unknown>, []> = function() {
+const blockDataType = ['email_addresses', 'url'] as const
+export type BlockDataType = typeof blockDataType[number]
+
+export const randomBlockDocumentData: MockFunction<Record<string, unknown>, [BlockDataType?]> = function(type) {
   const dataObject: Record<string, unknown> = {}
-  const data = ['email_addresses', 'slack', 'unknown']
-  const dataKey = data[Math.floor(Math.random()*data.length)]
-  const dataValue = dataKey === 'email_addresses' ?
-    this.createMany('email', this.create('number', [1, 3])) :
-    this.createMany('noun', this.create('number', [1, 3]))
+  const dataType = type ?? choice(blockDataType as unknown as BlockDataType[])
 
-  dataObject[dataKey] = dataValue
+  switch (dataType) {
+    case 'email_addresses':
+      dataObject[dataType] = this.createMany('email', this.create('number', [1, 3]))
+      break
+    case 'url':
+      dataObject[dataType] = `https://hooks.slack.com/${ this.create('noun')}`
+      break
+  }
 
   return dataObject
 }
