@@ -13,7 +13,7 @@
     </DemoSubSection>
     <br>
     <DemoSubSection heading="Notification Form - Create">
-      <NotificationForm v-model:notification="formNotification" v-model:block-type="formBlockType" v-model:data="formData" />
+      <NotificationForm v-model:notification="createNotification" v-model:block-type="createBlockType" v-model:data="createData" @submit="createSubmit" />
     </DemoSubSection>
 
     <DemoSubSection heading="Notification Form - Edit">
@@ -34,9 +34,16 @@
   import { Notification } from '@/models/Notification'
   import { blockDocumentsApiKey, blockSchemasApiKey, blockTypesApiKey, mocker } from '@/services'
 
-  const formNotification = ref<Partial<Notification>>({})
-  const formBlockType = ref<BlockType>()
-  const formData = ref<BlockDocumentData>({})
+  const createNotification = ref<Partial<Notification>>({})
+  const createBlockType = ref<BlockType>()
+  const createData = ref<BlockDocumentData>({})
+
+  function createSubmit(): void {
+    // blockDocumentsApi.createBlock({
+
+    // })
+    // notificationsApi.createNotification()
+  }
 
   const emailBlockType = mocker.create('blockType', [{ name: 'Email Addresses' }])
   const emailBlockSchemaFields = mocker.create('blockSchemaFields', [{ blockTypeName: emailBlockType.name }])
