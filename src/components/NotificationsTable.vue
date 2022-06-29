@@ -56,11 +56,9 @@
   import ResultsCount from '@/components/ResultsCount.vue'
   import { Notification, NotificationStatus } from '@/models'
 
-
   const props = defineProps<{
     notifications: Notification[],
   }>()
-
 
   const emits = defineEmits<{
     (event: 'update'): void,
