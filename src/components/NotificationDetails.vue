@@ -57,7 +57,8 @@
         }
       case 'Slack Webhook':
         return {
-          value: toArray('Slack'),
+          value: toArray(input.url),
+          // value: toArray('Slack'),
           icon: 'Slack' as Icon,
         }
       default:

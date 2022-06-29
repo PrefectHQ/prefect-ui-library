@@ -1,47 +1,32 @@
 <template>
-  <p-form class="notification-form" :loading="isSubmitting" @submit="submit" @cancel="cancel">
+  <p-form class="notification-form" @submit="submit" @cancel="cancel">
     <p class="notification-form__message">
       Choose which flow run states and tags trigger this notification.
     </p>
+
     <div class="notification-form__horizontal-fields">
       <p-label label="Run states">
-        <StateSelect v-model:selected="stateNames" empty-message="All States" />
+        <StateSelect v-model:selected="selectedStates" empty-message="All States" />
       </p-label>
 
       <p-label label="Tags (Optional)">
-        <p-tags-input v-model:tags="tags" empty-message="All Tags" />
+        <p-tags-input v-model:tags="selectedTags" empty-message="All Tags" />
       </p-label>
     </div>
 
-    <p-button-group v-model="selectedSendToType" :options="buttonGroup" />
+    <p-button-group v-model="selectedBlockTypeId" :options="buttonGroup" />
 
-    <BlockSchema v-slot="{ blockSchema }" :block-type-name="selectedSendToType">
+    <template v-if="blockSchema">
       <BlockSchemaFormFields v-model:data="dataModel" :block-schema="blockSchema" />
-    </BlockSchema>
-
+    </template>
 
     <p class="notification-form__message">
       Review your notification.
     </p>
 
     <div class="notification-form__review-block">
-      <template v-if="notification">
-        <BlockDocument v-slot="{ blockDocument }" :block-document-id="notification.blockDocumentId">
-          <NotificationDetails
-            :notification="notificationDetails"
-            :block-type="blockDocument.blockType"
-            :block-document-data="blockDocument.data"
-          />
-        </BlockDocument>
-      </template>
-      <template v-if="!notification">
-        <BlockSchema v-slot="{ blockSchema }" :block-type-name="selectedSendToType">
-          <NotificationDetails
-            :notification="notificationDetails"
-            :block-type="blockSchema.blockType"
-            :block-document-data="blockDocumentData"
-          />
-        </BlockSchema>
+      <template v-if="notification && blockType">
+        <NotificationDetails :notification="notification" :block-type="blockType" :block-document-data="data" />
       </template>
     </div>
   </p-form>
@@ -49,69 +34,115 @@
 
 <script lang="ts" setup>
   import { PLabel, PTagsInput, PForm, PButtonGroup } from '@prefecthq/prefect-design'
-  import { useForm, useField } from 'vee-validate'
-  import { computed, ref } from 'vue'
-  import BlockDocument from './BlockDocument.vue'
-  import BlockSchema from './BlockSchema.vue'
+  import { useSubscription, useSubscriptionWithDependencies } from '@prefecthq/vue-compositions'
+  import { computed, watch } from 'vue'
   import BlockSchemaFormFields from './BlockSchemaFormFields.vue'
   import NotificationDetails from './NotificationDetails.vue'
   import StateSelect from '@/components/StateSelect.vue'
-  import { BlockDocumentData, Notification } from '@/models'
+  import { BlockDocumentData, Notification, BlockType, BlockTypeFilter } from '@/models'
+  import { blockSchemasApiKey, blockTypesApiKey } from '@/services'
+  import { inject } from '@/utilities/inject'
 
   const props = defineProps<{
-    notification?: Notification,
+    notification: Partial<Notification>,
+    blockType?: BlockType,
+    data: BlockDocumentData,
   }>()
-
-  const initialStateNames = ref(props.notification?.stateNames ? [...props.notification.stateNames] : [])
-  const initialTags = ref(props.notification?.tags ? [...props.notification.tags] : [])
-
-  const { handleSubmit, isSubmitting } = useForm<Partial<Notification>>({
-    initialValues: {
-      stateNames: initialStateNames.value,
-      tags: initialTags.value,
-    },
-  })
-
-  const { value: tags } = useField<string[]>('tags')
-  const { value: stateNames } = useField<string[]>('stateNames')
-
-  const buttonGroup = [
-    {
-      label: 'Slack',
-      value: 'Slack Webhook',
-      inputLabel: 'Webhook URL',
-    },
-  ]
-
-  const notificationDetails = computed(() => {
-    return {
-      stateNames: stateNames.value,
-      tags: tags.value,
-    }
-  })
-
-  const selectedSendToType = ref(buttonGroup[0].value)
 
   const emit = defineEmits<{
+    (event: 'update:notification', value: Partial<Notification>): void,
     (event: 'update:data', value: BlockDocumentData): void,
-    (event: 'submit', value: any): void,
-    (event: 'cancel'): void,
+    (event: 'update:blockType', value: BlockType | undefined): void,
+    (event: 'submit' | 'cancel'): void,
   }>()
-
-  const blockDocumentData = ref<BlockDocumentData>({ [selectedSendToType.value]: [] as BlockDocumentData[] })
 
   const dataModel = computed({
     get(): BlockDocumentData {
-      return blockDocumentData.value
+      return props.data
     },
-    set(value: BlockDocumentData): void {
-      blockDocumentData.value = value
+    set(value: BlockDocumentData) {
+      emit('update:data', value)
     },
   })
 
-  const submit = handleSubmit(notificationData => {
-    emit('submit', notificationData)
+  const selectedStates = computed({
+    get(): string[] {
+      return props.notification.stateNames ?? []
+    },
+    set(stateNames: string[]) {
+      emit('update:notification', { ...props.notification, stateNames })
+    },
   })
+
+  const selectedTags = computed({
+    get(): string[] {
+      return props.notification.tags ?? []
+    },
+    set(tags: string[]) {
+      emit('update:notification', { ...props.notification, tags })
+    },
+  })
+
+  const blockTypesApi = inject(blockTypesApiKey)
+  const blockTypesSubscriptionFilter: BlockTypeFilter = {
+    blockSchemas: {
+      blockCapabilities: {
+        all_: ['notify'],
+      },
+    },
+  }
+  const blockTypesSubscription = useSubscription(blockTypesApi.getBlockTypes, [blockTypesSubscriptionFilter])
+  const blockTypes = computed(() => blockTypesSubscription.response ?? [])
+
+  const buttonGroup = computed(() => blockTypes.value.map(type => ({
+    label: type.name,
+    value: type.id,
+  })))
+
+  const selectedBlockTypeId = computed({
+    get(): string | undefined {
+      return props.blockType?.id
+    },
+    set(id: string | undefined) {
+      const blockType = blockTypes.value.find(type => type.id === id)
+
+      emit('update:blockType', blockType)
+    },
+  })
+
+  watch(blockTypes, blockTypes => {
+    if (props.blockType || selectedBlockTypeId.value) {
+      return
+    }
+
+    if (blockTypes.length) {
+      selectedBlockTypeId.value = blockTypes[0].id
+    }
+  }, { immediate: true })
+
+  const blockSchemaSubscriptionArgs = computed<Parameters<typeof blockSchemasApi.getBlockSchemas> | null>(() => {
+    if (!selectedBlockTypeId.value) {
+      return null
+    }
+
+    return [
+      {
+        blockSchemas: {
+          blockTypeId: {
+            any_: [selectedBlockTypeId.value as string],
+          },
+        },
+      },
+    ]
+  })
+
+  const blockSchemasApi = inject(blockSchemasApiKey)
+  const blockSchemaSubscription = useSubscriptionWithDependencies(blockSchemasApi.getBlockSchemas, blockSchemaSubscriptionArgs)
+  const blockSchema = computed(() => blockSchemaSubscription.response?.[0])
+
+  function submit(): void {
+    emit('submit')
+  }
 
   function cancel(): void {
     emit('cancel')
