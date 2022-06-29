@@ -3,11 +3,11 @@
     <template #actions>
       <DeploymentToggle :deployment="deployment" @update="emit('update')" />
 
-      <RunButton :deployment="deployment" />
+      <RunButton v-if="can.create.flow_run" :deployment="deployment" />
 
       <p-icon-button-menu>
         <copy-overflow-menu-item label="Copy ID" :item="deployment.id" />
-        <p-overflow-menu-item label="Delete" @click="open" />
+        <p-overflow-menu-item v-if="can.delete.deployment" label="Delete" @click="open" />
       </p-icon-button-menu>
       <ConfirmDeleteModal
         v-model:showModal="showModal"
@@ -32,6 +32,7 @@
   import { flowRouteKey } from '@/router'
   import { flowsApiKey } from '@/services'
   import { deploymentsApiKey } from '@/services/DeploymentsApi'
+  import { canKey } from '@/types/permissions'
   import { deleteItem, inject } from '@/utilities'
 
   const flowRoute = inject(flowRouteKey)
@@ -58,6 +59,8 @@
     await deleteItem(id, deploymentsApi.deleteDeployment, 'Deployment')
     emit('delete')
   }
+
+  const can = inject(canKey)
 </script>
 
 <style>
