@@ -19,7 +19,7 @@
 
 <script lang="ts" setup>
   import { media } from '@prefecthq/prefect-design'
-  import { computed, provide, ref, watchEffect, reactive } from 'vue'
+  import { computed, provide, ref, watchEffect } from 'vue'
   import { RouterView } from 'vue-router'
   import AppSidebar from './components/AppSidebar.vue'
   import { flowRunsApi, logsApi, taskRunsApi, flowsApi, deploymentsApi, workQueueApi, notificationsApi } from './services'
