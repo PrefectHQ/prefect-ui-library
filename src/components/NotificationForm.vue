@@ -13,122 +13,104 @@
       </p-label>
     </div>
 
-    <p-label label="Send notifications to">
-      <p-button-group v-model="selectedSendToType" :options="buttonGroup" />
-    </p-label>
+    <p-button-group v-model="selectedSendToType" :options="buttonGroup" />
 
+    <BlockSchema v-slot="{ blockSchema }" :block-type-name="selectedSendToType">
+      <BlockSchemaFormFields v-model:data="dataModel" :block-schema="blockSchema" />
+    </BlockSchema>
 
-    <p-label :label="selectedSendToLabel">
-      <p-text-input v-model="input" />
-    </p-label>
 
     <p class="notification-form__message">
       Review your notification.
     </p>
 
     <div class="notification-form__review-block">
-      <NotificationDetails :notification="notificationDetails" :send-to-input="input" :send-to-type="selectedSendToType" />
+      <template v-if="notification">
+        <BlockDocument v-slot="{ blockDocument }" :block-document-id="notification.blockDocumentId">
+          <NotificationDetails
+            :notification="notificationDetails"
+            :block-type="blockDocument.blockType"
+            :block-document-data="blockDocument.data"
+          />
+        </BlockDocument>
+      </template>
+      <template v-if="!notification">
+        <BlockSchema v-slot="{ blockSchema }" :block-type-name="selectedSendToType">
+          <NotificationDetails
+            :notification="notificationDetails"
+            :block-type="blockSchema.blockType"
+            :block-document-data="newBlockDocumentData"
+          />
+        </BlockSchema>
+      </template>
     </div>
   </p-form>
 </template>
 
 <script lang="ts" setup>
-  import { PLabel, PTagsInput, PTextInput, PForm, ButtonGroupOption, PButtonGroup } from '@prefecthq/prefect-design'
+  import { PLabel, PTagsInput, PForm, PButtonGroup } from '@prefecthq/prefect-design'
   import { useForm } from 'vee-validate'
-  import { computed, ref, watch } from 'vue'
-  import { useRouter } from 'vue-router'
+  import { computed, ref } from 'vue'
+  import BlockDocument from './BlockDocument.vue'
+  import BlockSchema from './BlockSchema.vue'
+  import BlockSchemaFormFields from './BlockSchemaFormFields.vue'
   import NotificationDetails from './NotificationDetails.vue'
   import StateSelect from '@/components/StateSelect.vue'
-  import { BlockDocumentCreate, Notification } from '@/models'
-  import { notificationsRouteKey } from '@/router/routes'
-  import { blockDocumentsApiKey, blockSchemasApiKey, blockTypesApiKey, notificationsApiKey } from '@/services'
-  import { inject } from '@/utilities'
+  import {  BlockDocumentData, Notification } from '@/models'
 
   const props = defineProps<{
     notification?: Notification,
   }>()
 
-  const router = useRouter()
-  const notificationsRoute = inject(notificationsRouteKey)
-  const blockDocumentsApi = inject(blockDocumentsApiKey)
-  const blockTypesApi = inject(blockTypesApiKey)
-  const blockSchemasApi = inject(blockSchemasApiKey)
-  const notificationsApi = inject(notificationsApiKey)
+  const { handleSubmit, isSubmitting } = useForm<Notification>()
 
-  const { handleSubmit, handleReset, isSubmitting } = useForm<Notification>({ initialValues: props.notification })
   const stateNames = ref(props.notification?.stateNames ? [...props.notification.stateNames] : [])
   const tags = ref(props.notification?.tags ? [...props.notification.tags] : [])
-
-  const notificationDetails = computed(() => {
-    return {
-      stateNames: stateNames.value,
-      tags: tags.value,
-      blockDocumentId: props.notification?.blockDocumentId,
-    }
-  })
 
   const buttonGroup = [
     {
       label: 'Slack Webhook',
       value: 'Slack Webhook',
       inputLabel: 'Webhook URL',
-      disabled: true,
     },
   ]
 
-  const blockDocument = props.notification?.blockDocumentId ? await blockDocumentsApi.getBlockDocument(props.notification.blockDocumentId) : null
-  const blockDocumentType = computed(()=> blockDocument?.blockType.name ?? '')
-  const selectedSendToType = ref(blockDocumentType.value || buttonGroup[0].value)
-  const blockDocumentDataKey = blockDocument?.data ? Object.keys(blockDocument.data)[0] : null
-  const selectedSendToLabel = ref(blockDocumentDataKey ? blockDocumentDataKey : buttonGroup[0].inputLabel)
-
-  watch(() => selectedSendToType.value, (current) => {
-    selectedSendToLabel.value = buttonGroup.find((button: ButtonGroupOption) => button.value === current)!.inputLabel
+  const notificationDetails = computed(() => {
+    return {
+      stateNames: stateNames.value,
+      tags: tags.value,
+    }
   })
 
-  const blockDocumentInputValue: string | string[] | undefined = blockDocumentDataKey ? blockDocument?.data[blockDocumentDataKey] as string | string[] : undefined
-  const blockDocumentInputValueAsString = Array.isArray(blockDocumentInputValue) ? blockDocumentInputValue.join() : blockDocumentInputValue
-  const input = ref(blockDocumentInputValueAsString ?? '')
+  const selectedSendToType = ref(buttonGroup[0].value)
+
+  const newBlockDocumentData = computed(() => {
+    return {
+      [selectedSendToType.value]: [] as BlockDocumentData[],
+    }
+  })
 
   const emit = defineEmits<{
+    (event: 'update:data', value: BlockDocumentData): void,
+    (event: 'submit', value: Notification): void,
     (event: 'cancel'): void,
   }>()
 
-  const submit = handleSubmit(() => {
-    createNotification()
+  const dataModel = computed({
+    get(): BlockDocumentData {
+      return {}
+    },
+    set(value: BlockDocumentData): void {
+      emit('update:data', value)
+    },
+  })
+
+  const submit = handleSubmit(notificationData => {
+    emit('submit', notificationData)
   })
 
   function cancel(): void {
-    handleReset()
     emit('cancel')
-    router.push(notificationsRoute())
-  }
-
-  const createNotification = async (): Promise<void>=> {
-    try {
-      const blockType = await blockTypesApi.getBlockTypeByName(selectedSendToType.value)
-      const filter =  {
-        blockTypeId: {
-          any_: [blockType.id],
-        },
-        sort: 'CREATED_TIME_DESC',
-        limit: 1,
-      }
-      const blockSchema = await blockSchemasApi.getBlockSchemas(filter)
-      const blockDocument: BlockDocumentCreate = {
-        name: `${selectedSendToLabel.value} notification`,
-        is_anonymous: true,
-        data: { [selectedSendToLabel.value]: input.value },
-        blockSchemaId: blockSchema[0].id,
-        blockTypeId: blockType.id,
-      }
-      const block = await blockDocumentsApi.createBlockDocument(blockDocument)
-      const notification = { name:`${block.name}`, is_active: true, state_names: stateNames.value, tags: tags.value, block_document_id: block.id }
-      await notificationsApi.createNotification(notification)
-      router.push(notificationsRoute())
-    } catch (error) {
-      console.warn(error)
-    }
   }
 </script>
 
