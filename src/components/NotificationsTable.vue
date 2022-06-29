@@ -48,7 +48,7 @@
 <script lang="ts" setup>
   import { PTable, PEmptyResults } from '@prefecthq/prefect-design'
   import { ref, computed } from 'vue'
-  import BlockDocument from './BlockDocument.vue'
+  import BlockDocument from '@/components/BlockDocument.vue'
   import NotificationDetails from '@/components/NotificationDetails.vue'
   import NotificationMenu from '@/components/NotificationMenu.vue'
   import NotificationStatusSelect from '@/components/NotificationStatusSelect.vue'
