@@ -1,8 +1,8 @@
 <template>
   <p-icon-button-menu v-bind="$attrs">
     <copy-overflow-menu-item label="Copy ID" :item="blockDocument.id" />
-    <p-overflow-menu-item label="Edit" @click="editBlock" />
-    <p-overflow-menu-item label="Delete" @click="openDeleteBlockModal" />
+    <p-overflow-menu-item v-if="can.update.block" label="Edit" @click="editBlock" />
+    <p-overflow-menu-item v-if="can.delete.block" label="Delete" @click="openDeleteBlockModal" />
   </p-icon-button-menu>
   <ConfirmDeleteModal
     v-model:showModal="showModal"
@@ -28,6 +28,7 @@
   import { BlockDocument } from '@/models'
   import { blockEditRouteKey } from '@/router/routes'
   import { blockDocumentsApiKey } from '@/services/BlockDocumentsApi'
+  import { canKey } from '@/types/permissions'
   import { inject, deleteItem } from '@/utilities'
 
   const props = defineProps<{
@@ -52,4 +53,6 @@
 
     emit('delete')
   }
+
+  const can = inject(canKey)
 </script>
