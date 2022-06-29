@@ -1,4 +1,3 @@
-
 import { IScheduleResponse } from '@/models'
 
 export type ISchedule = {

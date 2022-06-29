@@ -33,12 +33,10 @@
             <ScheduleFormModal :schedule="schedule" @submit="updateSchedule">
               <template #default="{ open }">
 
-
                 <p-button size="xs" class="deployment-form__schedule-button" inset @click="open">
                   <p-icon icon="PencilIcon" class="deployment-form__schedule-button-icon" />
                   {{ schedule ? 'Edit' : 'Add' }}
                 </p-button>
-
 
               </template>
             </ScheduleFormModal>
@@ -50,7 +48,6 @@
 
           </span>
         </span>
-
 
         <p-label label="Scheduler">
           <p-toggle v-model="isScheduleActive" :disabled="!schedule" class="deployment-form__schedule-toggle" />
@@ -152,11 +149,18 @@
 
 <style>
 .deployment-form {
-  @apply border-[1px] border-gray-300 px-6 py-6 rounded-lg
+  @apply
+  border-[1px]
+  border-gray-300
+  px-6
+  py-6
+  rounded-lg
 }
 
 .deployment-form__section-header {
-  @apply text-lg font-semibold
+  @apply
+  text-lg
+  font-semibold
 }
 
 .deployment-form__schedule-tag, .deployment-form__schedule-button {

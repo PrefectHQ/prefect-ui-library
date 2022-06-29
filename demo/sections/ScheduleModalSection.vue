@@ -2,7 +2,6 @@
   <DemoSection heading="Schedule Modal">
     <p-key-value label="Schedule" :value="schedule" />
 
-
     <ScheduleFormModal @submit="updateSchedule">
       <template #default="{ open }">
         <p-button @click="open">

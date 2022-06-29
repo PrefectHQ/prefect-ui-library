@@ -57,7 +57,6 @@
   })
 
   const submitCurrentForm = (): void => {
-    console.log(disabled.value, 'hello')
     if (disabled.value) {
       return
     }
