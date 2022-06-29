@@ -88,11 +88,11 @@
   flex-wrap
   align-bottom
   font-bold
-    items-center
+  items-center
 }
 
 .notification-details__icon--gray {
   @apply
-stroke-gray-400
+  stroke-gray-400
 }
 </style>
