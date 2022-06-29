@@ -1,7 +1,7 @@
 <template>
   <p-icon-button-menu size="xs" v-bind="$attrs">
     <copy-overflow-menu-item label="Copy ID" :item="flow.id" />
-    <p-overflow-menu-item label="Delete" @click="open" />
+    <p-overflow-menu-item v-if="can.delete.flow" label="Delete" @click="open" />
   </p-icon-button-menu>
   <ConfirmDeleteModal
     v-model:showModal="showModal"
@@ -27,6 +27,7 @@
   import { useShowModal } from '@/compositions/useShowModal'
   import { Flow } from '@/models'
   import { flowsApiKey } from '@/services/FlowsApi'
+  import { canKey } from '@/types/permissions'
   import { inject, deleteItem } from '@/utilities'
 
   defineProps<{
@@ -46,4 +47,6 @@
     await deleteItem(id, flowsApi.deleteFlow, 'Flow')
     emits('delete', id)
   }
+
+  const can = inject(canKey)
 </script>
