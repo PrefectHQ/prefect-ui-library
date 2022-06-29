@@ -46,7 +46,7 @@
 
 <script lang="ts" setup>
   import { useField } from 'vee-validate'
-  import { computed, ref, withDefaults, watch } from 'vue'
+  import { computed, ref, withDefaults, watch, onMounted } from 'vue'
   import DayOrDescriptionModal from './DayOrDescriptionModal.vue'
   import TimezoneSelect from './TimezoneSelect.vue'
   import { CronSchedule } from '@/models'
@@ -119,6 +119,11 @@
     cron.value = val.cron
     dayOr.value = val.dayOr
   }, { deep: true })
+
+  onMounted(() => {
+    emit('update:disabled', disabled.value)
+    emit('update:schedule', internalValue.value)
+  })
 </script>
 
 <style>

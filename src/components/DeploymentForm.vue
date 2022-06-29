@@ -20,12 +20,14 @@
           </p-toggle>
         </template>
 
-        <template v-else>
-          <p-button size="sm" class="deployment-form__schedule-button">
-            <p-icon icon="ClockIcon" />
-            Add schedule
-          </p-button>
-        </template>
+        <ScheduleFormModal :schedule="schedule" @submit="updateSchedule">
+          <template #default="{ open }">
+            <p-button size="sm" class="deployment-form__schedule-button" @click="open">
+              <p-icon icon="ClockIcon" />
+              {{ schedule ? 'Edit' : 'Add' }} schedule
+            </p-button>
+          </template>
+        </ScheduleFormModal>
       </section>
 
       <p-label label="Tags">
@@ -44,6 +46,7 @@
   import { useField, useForm } from 'vee-validate'
   import { computed } from 'vue'
   import DeploymentParametersTable from './DeploymentParametersTable.vue'
+  import ScheduleFormModal from '@/components/ScheduleFormModal.vue'
   import { Deployment, IDeploymentRequest, DeploymentFormValues, Schedule } from '@/models'
   import { isRequired, withMessage } from '@/services/validate'
 
@@ -89,6 +92,14 @@
   const removeSchedule = (): void => {
     schedule.value = null
     isScheduleActive.value = false
+  }
+
+  const updateSchedule = (formSchedule: Schedule): void => {
+    // If this is a new schedule we turn it on automatically
+    if (!schedule.value) {
+      isScheduleActive.value = true
+    }
+    schedule.value = formSchedule
   }
 </script>
 
