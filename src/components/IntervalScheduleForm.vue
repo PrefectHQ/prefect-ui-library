@@ -27,13 +27,15 @@
       </div>
     </p-content>
 
-    <template #footer="{ disabled, loading }">
-      <p-button inset @click="cancel">
-        Cancel
-      </p-button>
-      <p-button type="submit" :disabled="disabled" :loading="loading">
-        Save
-      </p-button>
+    <template v-if="!hideActions" #footer="{ disabled: formDisabled, loading }">
+      <slot name="footer" :disabled="formDisabled" :loading="loading">
+        <p-button inset @click="cancel">
+          Cancel
+        </p-button>
+        <p-button :disabled="disabled" type="submit">
+          Save
+        </p-button>
+      </slot>
     </template>
   </p-form>
 </template>
@@ -47,6 +49,7 @@
   import { IntervalOption, secondsToClosestIntervalOption, secondsToClosestIntervalValue, intervalOptionsToSecondsMap } from '@/utilities/timeIntervals'
 
   const props = withDefaults(defineProps<{
+    hideActions?: boolean,
     schedule?: IntervalSchedule,
   }>(), {
     schedule: () => new IntervalSchedule({ interval: 3600, anchorDate: new Date(), timezone: 'UTC' }),
