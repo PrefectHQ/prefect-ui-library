@@ -107,30 +107,4 @@
   w-full
   h-full
 }
-
-.json-editor__key {
-  @apply
-  text-rose-400
-}
-
-.json-editor__string-value {
-  @apply
-  text-emerald-400
-}
-
-.json-editor__number-value, .json-editor__bigint-value {
-  @apply
-  text-blue-400
-}
-
-.json-editor__boolean-value {
-  @apply
-  text-red-500
-}
-
-.json-editor__null-value, .json-editor__object-value {
-  @apply
-  text-slate-400
-  italic
-}
 </style>
