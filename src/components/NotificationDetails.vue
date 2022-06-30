@@ -46,7 +46,12 @@
     data: BlockDocumentData,
   }>()
 
-  const toArray = (value: string | string[] | unknown): string[] => Array.isArray(value) ? value : [value]
+  const toArray = (value: string | string[] | unknown): string[] => {
+    if (Array.isArray(value)) {
+      return value.length ? value : ['__________']
+    }
+    return value ? [value as string] : ['__________']
+  }
 
   const sendToMapper = (input: BlockDocumentData, type: string): { value: string[] | unknown, icon: Icon } => {
     switch (type) {
