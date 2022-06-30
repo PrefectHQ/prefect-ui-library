@@ -23,3 +23,4 @@ export const blockRouteKey: InjectionKey<(blockDocumentId: string) => Route> = S
 export const blockEditRouteKey: InjectionKey<(blockDocumentId: string) => Route> = Symbol('blockEdit')
 export const blockCatalogRouteKey: InjectionKey<() => Route> = Symbol('blockCreate')
 export const blockCatalogCreateRouteKey: InjectionKey<(blockTypeName: string) => Route> = Symbol('blockCreate')
+export const notificationsRouteKey: InjectionKey<() => Route> = Symbol('notifications')

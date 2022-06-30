@@ -6,7 +6,16 @@ export const randomBlockSchemaFields: MockFunction<BlockSchemaFields, [Partial<B
     title: blockSchemaFields.title ?? this.create('string'),
     description: blockSchemaFields.description ?? this.create('sentence'),
     type: blockSchemaFields.type ?? 'object',
-    properties: blockSchemaFields.properties ?? {},
+    properties: blockSchemaFields.properties ?? {
+      'url': {
+        'title': 'Webhook URL',
+        'minLength': 1,
+        'maxLength': 2083,
+        'format': 'uri',
+        'type': 'string',
+        'description': '',
+      },
+    },
     required: blockSchemaFields.required ?? [],
     blockTypeName: blockSchemaFields.blockTypeName ?? this.create('string'),
     blockSchemaReferences: blockSchemaFields.blockSchemaReferences ?? {},
