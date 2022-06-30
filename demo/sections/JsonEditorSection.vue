@@ -41,11 +41,9 @@
     'parameters',
     'schedule',
     'workQueue',
-  ]
+  ] as const
 
   const randomize = (): void => {
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-expect-error
     jsonRef.value = JSON.stringify(mocker.create(choice(choices)))
   }
 </script>

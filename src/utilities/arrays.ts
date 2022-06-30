@@ -12,7 +12,7 @@ export function toRecord<T extends any[], K extends keyof T[number]>(source: T, 
 }
 
 // Random element selector equivalent to python's choice method
-export const choice = <T = unknown>(list: T[]): T => list[floor(random() * list.length)]
+export const choice = <T>(list: T[] | Readonly<T[]>): T => list[floor(random() * list.length)]
 
 export const range = (min: number, max: number): number[] => Array.from({ length: max - min }, (x, i) => min + i)
 
