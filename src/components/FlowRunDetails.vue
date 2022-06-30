@@ -10,9 +10,7 @@
 
     <p-key-value label="Created" :value="formatDateTimeNumeric(flowRun.created)" :alternate="alternate" />
 
-    <template v-if="flowRun.flowVersion">
-      <p-key-value label="Flow Version" :value="flowRun.flowVersion" :alternate="alternate" />
-    </template>
+    <p-key-value label="Flow Version" :value="flowRun.flowVersion" :alternate="alternate" />
 
     <template v-if="flowRun.idempotencyKey">
       <p-key-value label="Idempotency Key" :value="flowRun.idempotencyKey" :alternate="alternate" />
