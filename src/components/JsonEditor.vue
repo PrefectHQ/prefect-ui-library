@@ -1,7 +1,7 @@
 <template>
   <div class="json-editor">
-    <p-label label="Raw" :message="valueError" :state="rawValueState">
-      <p-textarea ref="textarea" v-model="model" class="json-editor__input" />
+    <p-label label="Raw" :message="message" :state="state">
+      <p-textarea v-model="model" class="json-editor__input" />
     </p-label>
 
     <p-label label="JSON">
@@ -13,10 +13,9 @@
 </template>
 
 <script lang="ts" setup>
-  import { useField } from 'vee-validate'
-  import { computed, ref } from 'vue'
+  import { computed } from 'vue'
   import JsonView from './JsonView.vue'
-  import { withMessage } from '@/services/validate'
+  import { useReactiveField } from '@/compositions'
 
   const props = defineProps<{
     modelValue: string,
@@ -26,39 +25,28 @@
     (event: 'update:modelValue', value: string): void,
   }>()
 
-
-  const getJsonError = (val: unknown): string | undefined => {
-    try {
-      JSON.parse(val as string)
-    } catch (error) {
-      return (error as Error).message
-    }
-  }
-
-  function isValidJson(val: unknown): boolean {
-    return !getJsonError(val)
-  }
-
-  const rules = {
-    json: [withMessage(isValidJson, 'Error')],
-  }
-
-  const textarea = ref()
-  const { value: rawModel, meta: rawValueState } = useField<string>('rawModel', rules.json)
-
-  const valueError = computed(() => {
-    return rawModel.value ? getJsonError(rawModel.value) : ''
-  })
-
   const model = computed({
     get() {
       return props.modelValue
     },
     set(val: string) {
       emit('update:modelValue', val)
-      rawModel.value = val
     },
   })
+
+  const { meta: state, errors: valueErrors } = useReactiveField<string>(model, 'rawModal', isValidJson)
+
+  const message = computed(() => valueErrors.value[0] ?? '')
+
+  function isValidJson(val: string): boolean | string {
+    try {
+      JSON.parse(val)
+    } catch (error) {
+      return (error as Error).message
+    }
+
+    return true
+  }
 </script>
 
 <style>
