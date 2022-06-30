@@ -2,7 +2,7 @@
   <header class="page-heading">
     <div class="page-heading__leading">
       <div class="page-heading__crumbs">
-        <p-bread-crumbs :crumbs="crumbs" />
+        <p-bread-crumbs :class="classes" :crumbs="crumbs" />
         <slot name="after-crumbs" />
       </div>
       <slot />
@@ -15,11 +15,27 @@
 </template>
 
 <script lang="ts" setup>
-  import { PBreadCrumbs, BreadCrumbs } from '@prefecthq/prefect-design'
+  import { PBreadCrumbs, BreadCrumbs, Size } from '@prefecthq/prefect-design'
+  import { PropType, computed } from 'vue'
 
-  defineProps<{
-    crumbs: BreadCrumbs,
-  }>()
+  const props = defineProps({
+    crumbs: {
+      type: Array as PropType<BreadCrumbs>,
+      required: true,
+    },
+    size: {
+      type: String as PropType<Size>,
+      default: 'xl',
+    },
+  })
+
+  const classes = computed(() => ({
+    'page-heading__crumbs--xs': props.size === 'xs',
+    'page-heading__crumbs--sm': props.size === 'sm',
+    'page-heading__crumbs--md': props.size === 'md',
+    'page-heading__crumbs--lg': props.size === 'lg',
+    'page-heading__crumbs--xl': props.size === 'xl',
+  }))
 </script>
 
 <style>
@@ -60,5 +76,25 @@
     gap-2
     grid-flow-col
   }
+}
+
+.page-heading__crumbs--xs { @apply
+  text-xs
+}
+
+.page-heading__crumbs--sm { @apply
+  text-sm
+}
+
+.page-heading__crumbs--md { @apply
+  text-base
+}
+
+.page-heading__crumbs--lg { @apply
+  text-lg
+}
+
+.page-heading__crumbs--xl { @apply
+  text-xl
 }
 </style>

@@ -13,7 +13,7 @@ export const blockSchemasApiFactory: MockFunction<BlockSchemasApi, [Partial<Bloc
   const schemas = blockSchemas ?? this.createMany('blockSchema', this.create('number', [2, 20]))
 
   return mockClass(BlockSchemasApi, {
-    getBlockSchemas: () => Promise.resolve(schemas),
+    getBlockSchemas: () => Promise.resolve(JSON.parse(JSON.stringify(schemas))),
 
     getBlockSchema: (blockSchemaId: string) => {
       return new Promise<BlockSchema>((resolve, reject) => {
