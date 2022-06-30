@@ -4,8 +4,8 @@
 </template>
 
 <script lang="ts" setup>
-  import { debounce } from 'lodash'
-  import { ref, watch } from 'vue'
+  import { useDebouncedRef } from '@prefecthq/vue-compositions'
+  import { computed, unref } from 'vue'
 
   type JsonObject = Record<string, unknown>
   type JsonArray = Record<string, unknown>[]
@@ -27,28 +27,31 @@
     value: unknown,
   }>()
 
-  const highlightedValue = ref('')
+  const valueRef = computed(() => props.value)
+  const valueDebounced = useDebouncedRef(valueRef, 10)
 
-  watch(() => props.value, debounce((curr) => {
+  const highlightedValue = computed(() => {
+    const value = unref(valueDebounced)
+
     try {
-      if (curr) {
-        const highlighted = getJsonHtml(JSON.parse(curr))
-        highlightedValue.value = highlighted
-      } else {
-        highlightedValue.value = curr
-      }
-    } catch {
-      highlightedValue.value = curr
-    }
-  }, 10), { immediate: true })
+      if (value && typeof value === 'string') {
+        const highlighted = getJsonHtml(JSON.parse(value))
 
+        return highlighted
+      }
+
+      return value
+
+    } catch {
+      return value
+    }
+  })
 
   const getKeyHtml = (key: string): string => {
     return `<span class="json-view__key">"${key}"</span>`
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const getValueHtml = (val: any): string => {
+  const getValueHtml = (val: unknown): string => {
     const type = typeof val
     if (type == 'string') {
       val = `"${val}"`
