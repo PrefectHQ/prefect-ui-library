@@ -30,11 +30,11 @@
   import { StateBadge, PageHeading, DurationIconText, FlowIconText, CopyOverflowMenuItem, ConfirmDeleteModal } from '@/components'
   import { useShowModal } from '@/compositions/useShowModal'
   import { FlowRun } from '@/models'
-  import { flowsRouteKey } from '@/router'
+  import { flowRouteKey } from '@/router'
   import { flowRunsApiKey, flowsApiKey } from '@/services'
   import { deleteItem, inject } from '@/utilities'
 
-  const flowsRoute = inject(flowsRouteKey)
+  const flowRoute = inject(flowRouteKey)
   const flowsApi = inject(flowsApiKey)
   const flowRunsApi = inject(flowRunsApiKey)
 
@@ -44,13 +44,13 @@
 
   const { showModal, open } = useShowModal()
 
-  const flowRunId = computed(() => props.flowRun.flowId)
-  const flowSubscription = useSubscription(flowsApi.getFlow, [flowRunId])
+  const flowId = computed(() => props.flowRun.flowId)
+  const flowSubscription = useSubscription(flowsApi.getFlow, [flowId])
   const flowName = computed(() => flowSubscription.response?.name ?? '')
 
   // It doesn't seem like we should need to coalesce here but
   // the flow run model dictates the flow run name can be null
-  const crumbs = computed(() => [{ text: flowName.value, to: flowsRoute() }, { text: props.flowRun.name ?? '' }])
+  const crumbs = computed(() => [{ text: flowName.value, to: flowRoute(flowId.value) }, { text: props.flowRun.name ?? '' }])
 
   const emit = defineEmits(['delete'])
 

@@ -4,11 +4,6 @@
 
     <p-key-value label="Created" :value="formatDateTimeNumeric(flow.created)" :alternate="alternate" />
 
-    <p-key-value label="Tags" :alternate="alternate">
-      <template v-if="flow.tags.length" #value>
-        <p-tags :tags="flow.tags" class="flow-details__tags" />
-      </template>
-    </p-key-value>
   </div>
 </template>
 
@@ -28,9 +23,5 @@
   flex-col
   gap-3
   items-start
-}
-
-.flow-details__tags { @apply
-  mt-1
 }
 </style>
