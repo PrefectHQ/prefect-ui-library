@@ -12,7 +12,7 @@
 
       <p-divider />
 
-      Raw:
+      Value:
       <p-code multiline>
         {{ jsonRef }}
       </p-code>
