@@ -1,9 +1,14 @@
 import { BlockDocumentData } from '@/models/BlockDocument'
 
-export type BlockDocumentCreate = {
+export type BlockDocumentCreateNamed = {
   name: string,
   data: BlockDocumentData,
   blockSchemaId: string,
   blockTypeId: string,
-  is_anonymous?: boolean,
 }
+
+export type BlockDocumentCreateAnonymous = Omit<BlockDocumentCreateNamed, 'name'> & {
+  isAnonymous: boolean,
+}
+
+export type BlockDocumentCreate = BlockDocumentCreateNamed | BlockDocumentCreateAnonymous

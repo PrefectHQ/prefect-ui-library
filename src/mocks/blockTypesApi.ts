@@ -13,7 +13,7 @@ export const blockTypesApiFactory: MockFunction<BlockTypesApi, [BlockTypesApiFac
   const types = blockTypes ?? this.createMany('blockType', this.create('number', [2, 20]))
 
   return mockClass(BlockTypesApi, {
-    getBlockTypes: () => Promise.resolve(types),
+    getBlockTypes: () => Promise.resolve(JSON.parse(JSON.stringify(types))),
 
     getBlockType: (blockTypeId: string) => {
       return new Promise<BlockType>((resolve, reject) => {
