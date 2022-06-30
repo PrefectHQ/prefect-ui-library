@@ -29,12 +29,21 @@
         <NotificationDetails :notification="notification" :block-type="blockType" :data="data" />
       </template>
     </div>
+    <template #footer="{ disabled, loading }">
+      <p-button inset @click="cancel">
+        Reset
+      </p-button>
+      <p-button type="submit" :disabled="disabled" :loading="loading">
+        Submit
+      </p-button>
+    </template>
   </p-form>
 </template>
 
 <script lang="ts" setup>
   import { PLabel, PTagsInput, PForm, PButtonGroup, showToast } from '@prefecthq/prefect-design'
   import { useSubscription, useSubscriptionWithDependencies } from '@prefecthq/vue-compositions'
+  import { useForm } from 'vee-validate'
   import { computed, watchEffect, ref } from 'vue'
   import BlockSchemaFormFields from './BlockSchemaFormFields.vue'
   import NotificationDetails from './NotificationDetails.vue'
@@ -51,6 +60,9 @@
     (event: 'update:notification' | 'submit', value: Partial<Notification>): void,
     (event: 'cancel'): void,
   }>()
+
+  const { handleSubmit, errors } = useForm()
+
 
   const blockDocumentsApi = inject(blockDocumentsApiKey)
   const blockTypesApi = inject(blockTypesApiKey)
@@ -139,7 +151,8 @@
   const blockSchemaSubscription = useSubscriptionWithDependencies(blockSchemasApi.getBlockSchemas, blockSchemaSubscriptionArgs)
   const blockSchema = computed(() => blockSchemaSubscription.response?.[0])
 
-  async function submit(): Promise<void> {
+
+  const submit = handleSubmit(async () => {
     if (blockSchema.value === undefined || selectedBlockTypeId.value === undefined) {
       showToast('Failed to submit notification')
       return
@@ -159,7 +172,7 @@
     } catch (err) {
       showToast('Failed to submit notification')
     }
-  }
+  })
 
   function cancel(): void {
     emit('cancel')
