@@ -29,6 +29,14 @@
         <NotificationDetails :notification="notification" :block-type="blockType" :data="data" />
       </template>
     </div>
+     <template #footer="{ disabled, loading }">
+      <p-button inset @click="cancel">
+        Reset
+      </p-button>
+      <p-button type="submit" :disabled="disabled" :loading="loading">
+        Submit
+      </p-button>
+    </template>
   </p-form>
 </template>
 
