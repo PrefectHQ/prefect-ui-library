@@ -8,7 +8,7 @@ import { mapBlockSchemaResponseToBlockSchema } from '@/maps/blockSchema'
 import { mapBlockSchemaFieldsResponseToBlockSchemaFields } from '@/maps/blockSchemaFields'
 import { mapBlockSchemaFilterToBlockSchemaFilterRequest } from '@/maps/blockSchemaFilter'
 import { mapBlockTypeResponseToBlockType } from '@/maps/blockType'
-import { mapBlockTypeFilterToBlockTypeRequest } from '@/maps/blockTypeFilter'
+import { mapBlockTypeFilterToBlockTypeFilterRequest } from '@/maps/blockTypeFilter'
 import { mapCreateFlowRunToCreateFlowRunRequest } from '@/maps/createFlowRun'
 import { mapStringToDate, mapDateToString } from '@/maps/date'
 import { mapDeploymentToIDeploymentResponse, mapIDeploymentResponseToDeployment } from '@/maps/deployment'
@@ -47,7 +47,7 @@ export const maps = {
   BlockSchemaFilter: { BlockSchemaFilterRequest: mapBlockSchemaFilterToBlockSchemaFilterRequest },
   BlockSchemaReferencesResponse: { BlockSchemaReferences: mapBlockSchemaReferencesResponseToBlockSchemaReferences },
   BlockSchemaResponse: { BlockSchema: mapBlockSchemaResponseToBlockSchema },
-  BlockTypeFilter: { BlockTypeFilterRequest: mapBlockTypeFilterToBlockTypeRequest },
+  BlockTypeFilter: { BlockTypeFilterRequest: mapBlockTypeFilterToBlockTypeFilterRequest },
   BlockTypeResponse: { BlockType: mapBlockTypeResponseToBlockType },
   CreateFlowRun: { CreateFlowRunRequest: mapCreateFlowRunToCreateFlowRunRequest },
   Date: { string: mapDateToString },
