@@ -61,9 +61,7 @@
     (event: 'cancel'): void,
   }>()
 
-  const { handleSubmit, errors } = useForm()
-
-
+  const { handleSubmit } = useForm()
   const blockDocumentsApi = inject(blockDocumentsApiKey)
   const blockTypesApi = inject(blockTypesApiKey)
   const blockSchemasApi = inject(blockSchemasApiKey)
