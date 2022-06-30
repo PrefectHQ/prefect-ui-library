@@ -44,7 +44,7 @@
 
 
   const getKeyHtml = (key: string): string => {
-    return `<span class="json-editor__key">"${key}"</span>`
+    return `<span class="json-view__key">"${key}"</span>`
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -53,15 +53,15 @@
     if (type == 'string') {
       val = `"${val}"`
     }
-    return `<span class="json-editor__${type}-value">${val}</span>`
+    return `<span class="json-view__${type}-value">${val}</span>`
   }
 
   const getNeutralHtml = (val: string): string => {
-    return `<span class="json-editor__neutral">${val}</span>`
+    return `<span class="json-view__neutral">${val}</span>`
   }
 
   const getBlockHtml = (val: string): string => {
-    return `<div class="json-editor__block">${val}</div>`
+    return `<div class="json-view__block">${val}</div>`
   }
 
   const getSpaceHtml = (level: number): string => {
