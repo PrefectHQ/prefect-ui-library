@@ -29,7 +29,7 @@
         <NotificationDetails :notification="notification" :block-type="blockType" :data="data" />
       </template>
     </div>
-     <template #footer="{ disabled, loading }">
+    <template #footer="{ disabled, loading }">
       <p-button inset @click="cancel">
         Reset
       </p-button>
@@ -43,6 +43,7 @@
 <script lang="ts" setup>
   import { PLabel, PTagsInput, PForm, PButtonGroup, showToast } from '@prefecthq/prefect-design'
   import { useSubscription, useSubscriptionWithDependencies } from '@prefecthq/vue-compositions'
+  import { useForm } from 'vee-validate'
   import { computed, watchEffect, ref } from 'vue'
   import BlockSchemaFormFields from './BlockSchemaFormFields.vue'
   import NotificationDetails from './NotificationDetails.vue'
@@ -60,6 +61,7 @@
     (event: 'cancel'): void,
   }>()
 
+  const { handleSubmit } = useForm()
   const blockDocumentsApi = inject(blockDocumentsApiKey)
   const blockTypesApi = inject(blockTypesApiKey)
   const blockSchemasApi = inject(blockSchemasApiKey)
@@ -134,6 +136,10 @@
       return null
     }
 
+    if (blockDocument.value && selectedBlockTypeId.value === blockDocument.value.blockTypeId) {
+      return null
+    }
+
     return [
       {
         blockSchemas: {
@@ -145,9 +151,16 @@
     ]
   })
   const blockSchemaSubscription = useSubscriptionWithDependencies(blockSchemasApi.getBlockSchemas, blockSchemaSubscriptionArgs)
-  const blockSchema = computed(() => blockSchemaSubscription.response?.[0])
+  const blockSchema = computed(() => {
+    if (blockDocument.value && selectedBlockTypeId.value === blockDocument.value.blockTypeId) {
+      return blockDocument.value.blockSchema
+    }
 
-  async function submit(): Promise<void> {
+    return blockSchemaSubscription.response?.[0]
+  })
+
+
+  const submit = handleSubmit(async () => {
     if (blockSchema.value === undefined || selectedBlockTypeId.value === undefined) {
       showToast('Failed to submit notification')
       return
@@ -167,7 +180,7 @@
     } catch (err) {
       showToast('Failed to submit notification')
     }
-  }
+  })
 
   function cancel(): void {
     emit('cancel')

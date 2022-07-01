@@ -28,6 +28,11 @@ const routeRecords: RouteRecordRaw[] = [
     component: () => import('../pages/Blocks.vue'),
   },
   {
+    path: '/parameters',
+    name: 'parameters',
+    component: () => import('../pages/Parameters.vue'),
+  },
+  {
     path: '/schedules',
     name: 'schedules',
     component: () => import('../pages/Schedules.vue'),
