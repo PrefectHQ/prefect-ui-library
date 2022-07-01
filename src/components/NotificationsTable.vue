@@ -8,7 +8,13 @@
     <p-table :data="filtered" :columns="columns" class="notifications-table">
       <template #notification="{ row }">
         <div class="notifications-table__details">
-          <NotificationDetails :notification="row" />
+          <BlockDocument v-slot="{ blockDocument }" :block-document-id="row.blockDocumentId">
+            <NotificationDetails
+              :notification="row"
+              :block-type="blockDocument.blockType"
+              :data="blockDocument.data"
+            />
+          </BlockDocument>
         </div>
       </template>
 
@@ -42,13 +48,13 @@
 <script lang="ts" setup>
   import { PTable, PEmptyResults } from '@prefecthq/prefect-design'
   import { ref, computed } from 'vue'
+  import BlockDocument from '@/components/BlockDocument.vue'
   import NotificationDetails from '@/components/NotificationDetails.vue'
   import NotificationMenu from '@/components/NotificationMenu.vue'
   import NotificationStatusSelect from '@/components/NotificationStatusSelect.vue'
   import NotificationToggle from '@/components/NotificationToggle.vue'
   import ResultsCount from '@/components/ResultsCount.vue'
   import { Notification, NotificationStatus } from '@/models'
-
 
   const props = defineProps<{
     notifications: Notification[],
