@@ -12,7 +12,7 @@
       <p-button inset @click="cancel">
         Reset
       </p-button>
-      <p-button v-if="can.create.block" type="submit">
+      <p-button type="submit">
         Submit
       </p-button>
     </template>
