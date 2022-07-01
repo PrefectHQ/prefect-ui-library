@@ -8,7 +8,7 @@
   </p-icon-button-menu>
   <ConfirmDeleteModal
     v-model:showModal="showModal"
-    :name="notification.name"
+    name="notification"
     @delete="deleteNotification(notification.id)"
   />
 </template>

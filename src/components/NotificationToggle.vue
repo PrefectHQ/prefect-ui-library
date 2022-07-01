@@ -37,7 +37,7 @@
       const notification = { is_active: value }
       await notificationsApi.updateNotification(props.notification.id, notification)
       const activeOrPaused = value ? 'Active' : 'Paused'
-      showToast(`${props.notification.name} ${activeOrPaused}`, 'success', undefined, 3000)
+      showToast(`Notification ${activeOrPaused}`, 'success', undefined, 3000)
       emit('update')
     } catch (error) {
       showToast(`${error}`, 'error', undefined, 3000)
