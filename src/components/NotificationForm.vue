@@ -61,9 +61,7 @@
     (event: 'cancel'): void,
   }>()
 
-  const { handleSubmit, errors } = useForm()
-
-
+  const { handleSubmit } = useForm()
   const blockDocumentsApi = inject(blockDocumentsApiKey)
   const blockTypesApi = inject(blockTypesApiKey)
   const blockSchemasApi = inject(blockSchemasApiKey)
@@ -138,6 +136,10 @@
       return null
     }
 
+    if (blockDocument.value && selectedBlockTypeId.value === blockDocument.value.blockTypeId) {
+      return null
+    }
+
     return [
       {
         blockSchemas: {
@@ -149,7 +151,13 @@
     ]
   })
   const blockSchemaSubscription = useSubscriptionWithDependencies(blockSchemasApi.getBlockSchemas, blockSchemaSubscriptionArgs)
-  const blockSchema = computed(() => blockSchemaSubscription.response?.[0])
+  const blockSchema = computed(() => {
+    if (blockDocument.value && selectedBlockTypeId.value === blockDocument.value.blockTypeId) {
+      return blockDocument.value.blockSchema
+    }
+
+    return blockSchemaSubscription.response?.[0]
+  })
 
 
   const submit = handleSubmit(async () => {

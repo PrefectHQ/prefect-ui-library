@@ -17,6 +17,7 @@
     <p-context-nav-item title="Radar" icon="ChartPieIcon" to="/radar" />
     <p-context-nav-item title="Validation" icon="ExclamationCircleIcon" to="/validation" />
     <p-context-nav-item title="Blocks" icon="CubeIcon" to="/blocks" />
+    <p-context-nav-item title="Parameters" icon="CodeIcon" to="/parameters" />
     <p-context-nav-item title="Schedules" icon="ClockIcon" to="/schedules" />
   </p-context-sidebar>
 </template>
