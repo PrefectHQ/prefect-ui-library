@@ -20,7 +20,7 @@ export class NotificationsApi extends Api {
       .then(({ data }) => mapper.map('INotificationResponse', data, 'Notification'))
   }
 
-  public getNotifications(filter: NotificationFilter): Promise<Notification[]> {
+  public getNotifications(filter: NotificationFilter = {}): Promise<Notification[]> {
     return this.post<INotificationResponse[]>('/filter', filter)
       .then(({ data }) => mapper.map('INotificationResponse', data, 'Notification'))
   }
