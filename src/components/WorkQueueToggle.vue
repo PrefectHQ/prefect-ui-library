@@ -46,7 +46,7 @@
 
       emit('update')
     } catch (error) {
-      showToast(`${error}`, 'error', undefined, 3000)
+      showToast(`${error}`, 'error')
     } finally {
       loading.value = false
     }

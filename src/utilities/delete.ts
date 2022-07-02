@@ -5,9 +5,9 @@ export type itemType = 'Flow' | 'Deployment' | 'Flow run' | 'Work queue' | 'Bloc
 export async function deleteItem(id: string, endpoint: (arg: string) => void, type: itemType): Promise<void> {
   try {
     await endpoint(id)
-    showToast(`${type} deleted successfully!`, 'success', undefined, 3000)
+    showToast(`${type} deleted successfully!`, 'success')
   } catch (error) {
-    showToast(`Failed to delete ${type.toLowerCase()}`, 'error', undefined, 3000)
+    showToast(`Failed to delete ${type.toLowerCase()}`, 'error')
     console.error(error)
   }
 }

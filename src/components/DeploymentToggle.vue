@@ -36,15 +36,15 @@
     try {
       if (value) {
         await deploymentsApi.resumeDeployment(props.deployment.id)
-        showToast(`${props.deployment.name} active`, 'success', undefined, 3000)
+        showToast(`${props.deployment.name} active`, 'success')
       } else {
         await deploymentsApi.pauseDeployment(props.deployment.id)
-        showToast(`${props.deployment.name} paused`, 'error', undefined, 3000)
+        showToast(`${props.deployment.name} paused`, 'error')
       }
 
       emit('update')
     } catch (error) {
-      showToast(`${error}`, 'error', undefined, 3000)
+      showToast(`${error}`, 'error')
     } finally {
       loading.value = false
     }
