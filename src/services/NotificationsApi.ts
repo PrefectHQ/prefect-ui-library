@@ -1,10 +1,11 @@
 import { InjectionKey } from 'vue'
-import { INotificationRequest, INotificationUpdateRequest } from '@/models/INotificationRequest'
+import { mapper } from './Mapper'
 import { INotificationResponse } from '@/models/INotificationResponse'
 import { Notification } from '@/models/Notification'
+import { NotificationCreate } from '@/models/NotificationCreate'
 import { NotificationFilter } from '@/models/NotificationFilter'
+import { NotificationUpdate } from '@/models/NotificationUpdate'
 import { Api, ApiRoute } from '@/services/Api'
-import { mapper } from '@/services/Mapper'
 
 export class NotificationsApi extends Api {
 
@@ -15,8 +16,8 @@ export class NotificationsApi extends Api {
       .then(({ data }) => mapper.map('INotificationResponse', data, 'Notification'))
   }
 
-  public createNotification(notification: INotificationRequest): Promise<Notification> {
-    return this.post<INotificationResponse>('/', notification)
+  public createNotification(notification: NotificationCreate): Promise<Notification> {
+    return this.post<INotificationResponse>('/', mapper.map('NotificationCreate', notification, 'NotificationCreateRequest'))
       .then(({ data }) => mapper.map('INotificationResponse', data, 'Notification'))
   }
 
@@ -25,9 +26,8 @@ export class NotificationsApi extends Api {
       .then(({ data }) => mapper.map('INotificationResponse', data, 'Notification'))
   }
 
-  public updateNotification(id: string, notification: INotificationUpdateRequest): Promise<Notification> {
-    return this.patch<INotificationResponse>(`/${id}`, notification)
-      .then(({ data }) => mapper.map('INotificationResponse', data, 'Notification'))
+  public updateNotification(id: string, notification: NotificationUpdate): Promise<void> {
+    return this.patch(`/${id}`, mapper.map('NotificationUpdate', notification, 'NotificationUpdateRequest'))
   }
 
   public deleteNotification(id: string): Promise<void> {

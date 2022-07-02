@@ -1,7 +1,4 @@
-export interface INotificationResponse {
-  id: string,
-  created: string,
-  updated: string,
+export type NotificationCreateRequest = {
   name: string,
   is_active: boolean,
   state_names: string[],
