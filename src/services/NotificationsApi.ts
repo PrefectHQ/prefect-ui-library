@@ -1,6 +1,6 @@
 import { InjectionKey } from 'vue'
 import { mapper } from './Mapper'
-import { INotificationResponse } from '@/models/INotificationResponse'
+import { NotificationResponse } from '@/models/api/NotificationResponse'
 import { Notification } from '@/models/Notification'
 import { NotificationCreate } from '@/models/NotificationCreate'
 import { NotificationFilter } from '@/models/NotificationFilter'
@@ -12,18 +12,18 @@ export class NotificationsApi extends Api {
   protected route: ApiRoute = '/flow_run_notification_policies'
 
   public getNotification(id: string): Promise<Notification> {
-    return this.get<INotificationResponse>(`/${id}`)
-      .then(({ data }) => mapper.map('INotificationResponse', data, 'Notification'))
+    return this.get<NotificationResponse>(`/${id}`)
+      .then(({ data }) => mapper.map('NotificationResponse', data, 'Notification'))
   }
 
   public createNotification(notification: NotificationCreate): Promise<Notification> {
-    return this.post<INotificationResponse>('/', mapper.map('NotificationCreate', notification, 'NotificationCreateRequest'))
-      .then(({ data }) => mapper.map('INotificationResponse', data, 'Notification'))
+    return this.post<NotificationResponse>('/', mapper.map('NotificationCreate', notification, 'NotificationCreateRequest'))
+      .then(({ data }) => mapper.map('NotificationResponse', data, 'Notification'))
   }
 
   public getNotifications(filter: NotificationFilter = {}): Promise<Notification[]> {
-    return this.post<INotificationResponse[]>('/filter', filter)
-      .then(({ data }) => mapper.map('INotificationResponse', data, 'Notification'))
+    return this.post<NotificationResponse[]>('/filter', filter)
+      .then(({ data }) => mapper.map('NotificationResponse', data, 'Notification'))
   }
 
   public updateNotification(id: string, notification: NotificationUpdate): Promise<void> {
