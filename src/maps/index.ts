@@ -1,5 +1,6 @@
 import { mapBlockSchemaReferencesResponseToBlockSchemaReferences } from './blockSchemaReferences'
 import { mapNotificationCreateToNotificationCreateRequest } from './notificationCreate'
+import { mapNotificationUpdateToNotificationUpdateRequest } from './notificationUpdate'
 import { mapBlockDocumentResponseToBlockDocument, mapBlockDocumentToSelectOption } from '@/maps/blockDocument'
 import { mapBlockDocumentCreateToBlockDocumentCreateRequest, mapBlockDocumentDataToBlockDocumentCreateRequestData } from '@/maps/blockDocumentCreate'
 import { mapBlockDocumentResponseDataToBlockDocumentData } from '@/maps/blockDocumentData'
@@ -70,6 +71,7 @@ export const maps = {
   ILogResponse: { Log: mapILogResponseToLog },
   NotificationResponse: { Notification: mapNotificationResponseToNotification },
   NotificationCreate: { NotificationCreateRequest: mapNotificationCreateToNotificationCreateRequest },
+  NotificationUpdate: { NotificationUpdateRequest: mapNotificationUpdateToNotificationUpdateRequest },
   IScheduleResponse: { Schedule: mapIScheduleResponseToSchedule },
   IState: { IStateResponse: mapIStateToIStateResponse },
   IStateDetails: { IStateDetailsResponse: mapIStateDetailsToIStateDetailsResponse },
