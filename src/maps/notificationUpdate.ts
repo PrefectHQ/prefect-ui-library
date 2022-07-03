@@ -6,7 +6,6 @@ import { titleCase } from '@/utilities'
 const convertArrayToTitleCase = (array: string[]): string[] => array.map((stateName: string) => titleCase(stateName))
 
 export const mapNotificationUpdateToNotificationUpdateRequest: MapFunction<NotificationUpdate, NotificationUpdateRequest> = function(source: NotificationUpdate): NotificationUpdateRequest {
-  console.log('mapper', source)
   return {
     /* eslint-disable camelcase */
     state_names: convertArrayToTitleCase(source.stateNames ?? []),
