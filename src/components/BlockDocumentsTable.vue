@@ -24,7 +24,7 @@
         </div>
       </template>
 
-      <template #capability="{ row }">
+      <template #capabilities="{ row }">
         <BlockSchemaCapabilities :capabilities="row.blockSchema.capabilities" wrapper />
       </template>
 
@@ -85,7 +85,7 @@
       property: 'name',
     },
     {
-      label: 'Capability',
+      label: 'Capabilities',
       width: '300px',
       visible: media.md,
     },
