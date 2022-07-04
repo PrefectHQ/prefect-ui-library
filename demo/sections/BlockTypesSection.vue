@@ -7,7 +7,7 @@
       <BlockTypeCard :block-type="blockType" />
     </DemoSubSection>
     <DemoSubSection heading="List">
-      <BlockTypeList :block-types="blockTypes" />
+      <BlockTypeList v-model:capability="selectedBlockType" :block-types="blockTypes" />
     </DemoSubSection>
   </DemoSection>
 </template>
