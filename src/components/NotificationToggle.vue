@@ -1,5 +1,5 @@
 <template>
-  <p-toggle v-model="internalValue" :loading="loading" />
+  <p-toggle v-if="can.update.notification" v-model="internalValue" :loading="loading" />
 </template>
 
 <script lang="ts" setup>
@@ -7,6 +7,7 @@
   import { computed, ref } from 'vue'
   import { Notification } from '@/models'
   import { notificationsApiKey } from '@/services/NotificationsApi'
+  import { canKey } from '@/types'
   import { inject } from '@/utilities'
 
   const props = defineProps<{
@@ -17,6 +18,7 @@
     (event: 'update'): void,
   }>()
 
+  const can = inject(canKey)
   const notificationsApi = inject(notificationsApiKey)
 
   const internalValue = computed({
@@ -34,7 +36,7 @@
     loading.value = true
 
     try {
-      const notification = { is_active: value }
+      const notification = { isActive: value }
       await notificationsApi.updateNotification(props.notification.id, notification)
       const activeOrPaused = value ? 'Active' : 'Paused'
       showToast(`Notification ${activeOrPaused}`, 'success')

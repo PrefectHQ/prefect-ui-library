@@ -1,10 +1,10 @@
 <template>
   <p-icon-button-menu size="xs">
     <p-overflow-menu-item v-if="false" label="Send Test" />
-    <router-link :to="editNotificationRoute(notification.id)">
+    <router-link v-if="can.update.notification" :to="editNotificationRoute(notification.id)">
       <p-overflow-menu-item label="Edit" />
     </router-link>
-    <p-overflow-menu-item label="Delete" @click="open" />
+    <p-overflow-menu-item v-if="can.delete.notification" label="Delete" @click="open" />
   </p-icon-button-menu>
   <ConfirmDeleteModal
     v-model:showModal="showModal"
@@ -30,6 +30,7 @@
   import { Notification } from '@/models'
   import { editNotificationRouteKey } from '@/router'
   import { notificationsApiKey } from '@/services/NotificationsApi'
+  import { canKey } from '@/types/permissions'
   import { inject, deleteItem } from '@/utilities'
 
   defineProps<{
@@ -50,4 +51,6 @@
     await deleteItem(id, NotificationApi.deleteNotification, 'Notification')
     emits('delete', id)
   }
+
+  const can = inject(canKey)
 </script>

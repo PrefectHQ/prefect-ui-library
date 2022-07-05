@@ -6,7 +6,6 @@ export const randomNotification: MockFunction<Notification, [Partial<Notificatio
     id: this.create('string'),
     created: this.create('date'),
     updated: this.create('date'),
-    name: this.create('string'),
     isActive: this.create('boolean'),
     stateNames: this.createMany('stateType', this.create('number', [0, 3])),
     tags: this.createMany('string', this.create('number', [0, 3])),

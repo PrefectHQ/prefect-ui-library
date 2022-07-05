@@ -27,6 +27,8 @@
   import { BlockDocumentData } from '@/models/BlockDocument'
   import { BlockSchema } from '@/models/BlockSchema'
   import { isRequired, withMessage } from '@/services'
+  import { canKey } from '@/types'
+  import { inject } from '@/utilities'
 
   const props = defineProps<{
     blockSchema: BlockSchema,
@@ -66,4 +68,6 @@
   function cancel(): void {
     emit('cancel')
   }
+
+  const can = inject(canKey)
 </script>

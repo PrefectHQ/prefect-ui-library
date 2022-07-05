@@ -1,5 +1,5 @@
 <template>
-  <p-toggle v-model="internalValue" :loading="loading" />
+  <p-toggle v-if="can.update.deployment" v-model="internalValue" :loading="loading" />
 </template>
 
 <script lang="ts" setup>
@@ -7,6 +7,7 @@
   import { computed, ref } from 'vue'
   import { Deployment } from '@/models'
   import { deploymentsApiKey } from '@/services/DeploymentsApi'
+  import { canKey } from '@/types'
   import { inject } from '@/utilities'
 
   const props = defineProps<{
@@ -18,6 +19,7 @@
   }>()
 
   const deploymentsApi = inject(deploymentsApiKey)
+  const can = inject(canKey)
 
   const internalValue = computed({
     get() {

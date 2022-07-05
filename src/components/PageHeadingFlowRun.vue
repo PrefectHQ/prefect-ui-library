@@ -4,7 +4,7 @@
       <p-icon-button-menu>
         <template #default>
           <copy-overflow-menu-item label="Copy ID" :item="flowRun.id" />
-          <p-overflow-menu-item label="Delete" @click="open" />
+          <p-overflow-menu-item v-if="can.delete.flow_run" label="Delete" @click="open" />
         </template>
       </p-icon-button-menu>
       <ConfirmDeleteModal
@@ -32,11 +32,13 @@
   import { FlowRun } from '@/models'
   import { flowRouteKey } from '@/router'
   import { flowRunsApiKey, flowsApiKey } from '@/services'
+  import { canKey } from '@/types'
   import { deleteItem, inject } from '@/utilities'
 
   const flowRoute = inject(flowRouteKey)
   const flowsApi = inject(flowsApiKey)
   const flowRunsApi = inject(flowRunsApiKey)
+  const can = inject(canKey)
 
   const props = defineProps<{
     flowRun: FlowRun,
