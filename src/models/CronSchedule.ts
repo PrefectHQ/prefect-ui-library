@@ -1,7 +1,7 @@
 import cronstrue from 'cronstrue/i18n'
 import { CronStringLengthError } from './CronStringLengthError'
 import { PublicCron } from './PublicCron'
-import { ISchedule } from '@/models'
+import { ICronScheduleResponse, ISchedule } from '@/models'
 import { CronKeyword, isCronKeyword, containsCronRandomExpression, cronKeywordMap } from '@/types/cron'
 import { capitalize } from '@/utilities'
 
@@ -223,5 +223,13 @@ export class CronSchedule implements ICronSchedule {
 
 
     return parsed
+  }
+
+  public toResponse(): ICronScheduleResponse {
+    return {
+      'cron': this.cron,
+      'timezone': this.timezone,
+      'day_or': this.dayOr,
+    }
   }
 }

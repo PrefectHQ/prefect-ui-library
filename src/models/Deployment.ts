@@ -10,7 +10,7 @@ export interface IDeployment {
   flowId: string,
   flowData: FlowData,
   schedule: Schedule | null,
-  isScheduleActive: boolean | null,
+  isScheduleActive: boolean,
   parameters: Record<string, unknown>,
   tags: string[] | null,
   flowRunner: FlowRunner | null,
@@ -24,7 +24,7 @@ export class Deployment implements IDeployment {
   public readonly flowId: string
   public flowData: FlowData
   public schedule: Schedule | null
-  public isScheduleActive: boolean | null
+  public isScheduleActive: boolean
   public parameters: Record<string, unknown>
   public tags: string[] | null
   public flowRunner: FlowRunner | null

@@ -17,11 +17,11 @@
 
   const internalValue = computed({
     get() {
-      return props.modelValue
+      return props.modelValue ?? 'UTC'
     },
     set(val) {
       emit('update:modelValue', val)
     },
   })
-  const options: SelectOption[] = timezones.map((timezone) => ({ label: timezone, value: timezone === 'UTC' ? null : timezone }))
+  const options: SelectOption[] = timezones.map((timezone) => ({ label: timezone, value: timezone }))
 </script>

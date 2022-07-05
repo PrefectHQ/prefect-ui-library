@@ -1,5 +1,6 @@
 import { formatDate, formatTimeNumeric, toPluralString } from '@prefecthq/prefect-design'
 import { minutesInHour, secondsInMinute } from 'date-fns'
+import { IIntervalScheduleResponse } from './IScheduleResponse'
 import { ISchedule } from '@/models'
 import { floor } from '@/utilities/math'
 
@@ -108,5 +109,13 @@ export class IntervalSchedule implements IIntervalSchedule {
     }
 
     return str
+  }
+
+  public toResponse(): IIntervalScheduleResponse {
+    return {
+      'interval': this.interval,
+      'anchor_date': this.anchorDate?.toISOString() ?? null,
+      'timezone': this.timezone,
+    }
   }
 }

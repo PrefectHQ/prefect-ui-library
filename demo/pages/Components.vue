@@ -14,6 +14,7 @@
     <SortSections />
     <ComboboxesSection />
     <WorkQueueFormSection />
+    <DeploymentFormSection />
     <RunButtonSection />
     <NotificationsSection />
   </p-layout-default>
@@ -23,6 +24,7 @@
   import { PLayoutDefault } from '@prefecthq/prefect-design'
   import ColorModesSection from '../sections/ColorModesSection.vue'
   import ComboboxesSection from '../sections/ComboboxesSection.vue'
+  import DeploymentFormSection from '../sections/DeploymentFormSection.vue'
   import EmptyStateSection from '../sections/EmptyStateSection.vue'
   import ListsSection from '../sections/ListsSection.vue'
   import LogSection from '../sections/LogsSection.vue'

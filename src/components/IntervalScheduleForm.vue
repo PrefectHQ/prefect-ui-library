@@ -27,26 +27,29 @@
       </div>
     </p-content>
 
-    <template #footer>
-      <p-button inset @click="cancel">
-        Cancel
-      </p-button>
-      <p-button type="submit" :disabled="disabled">
-        Save
-      </p-button>
+    <template v-if="!hideActions" #footer>
+      <slot name="footer" :disabled="disabled">
+        <p-button inset @click="cancel">
+          Cancel
+        </p-button>
+        <p-button :disabled="disabled" type="submit">
+          Save
+        </p-button>
+      </slot>
     </template>
   </p-form>
 </template>
 
 <script lang="ts" setup>
   import { useField } from 'vee-validate'
-  import { computed, ref, withDefaults, watch } from 'vue'
+  import { computed, ref, withDefaults, watch, onMounted } from 'vue'
   import TimezoneSelect from './TimezoneSelect.vue'
   import { IntervalSchedule } from '@/models'
   import { isRequired, withMessage } from '@/services/validate'
   import { IntervalOption, secondsToClosestIntervalOption, secondsToClosestIntervalValue, intervalOptionsToSecondsMap } from '@/utilities/timeIntervals'
 
   const props = withDefaults(defineProps<{
+    hideActions?: boolean,
     schedule?: IntervalSchedule,
   }>(), {
     schedule: () => new IntervalSchedule({ interval: 3600, anchorDate: new Date(), timezone: 'UTC' }),
@@ -55,6 +58,7 @@
   const emit = defineEmits<{
     (event: 'cancel'): void,
     (event: 'update:schedule' | 'submit', value: IntervalSchedule): void,
+    (event: 'update:disabled', value: boolean): void,
   }>()
 
   const rules = {
@@ -97,13 +101,18 @@
   }
 
   watch(() => internalValue.value, () => emit('update:schedule', internalValue.value))
-
+  watch(() => disabled.value, () => emit('update:disabled', disabled.value))
   watch(() => props.schedule, (val) => {
     anchorDate.value = val.anchorDate ?? anchorDate.value
     timezone.value = val.timezone ?? timezone.value
     interval.value = secondsToClosestIntervalValue(val.interval)
     intervalOption.value = secondsToClosestIntervalOption(val.interval)
   }, { deep: true })
+
+  onMounted(() => {
+    emit('update:disabled', disabled.value)
+    emit('update:schedule', internalValue.value)
+  })
 </script>
 
 <style>

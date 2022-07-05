@@ -31,20 +31,22 @@
       </div>
     </p-content>
 
-    <template #footer>
-      <p-button inset @click="cancel">
-        Cancel
-      </p-button>
-      <p-button type="submit" :disabled="disabled">
-        Save
-      </p-button>
+    <template v-if="!hideActions" #footer>
+      <slot name="footer" :disabled="disabled">
+        <p-button inset @click="cancel">
+          Cancel
+        </p-button>
+        <p-button :disabled="disabled" type="submit">
+          Save
+        </p-button>
+      </slot>
     </template>
   </p-form>
 </template>
 
 <script lang="ts" setup>
   import { useField } from 'vee-validate'
-  import { computed, ref, withDefaults, watch } from 'vue'
+  import { computed, ref, withDefaults, watch, onMounted } from 'vue'
   import DayOrDescriptionModal from './DayOrDescriptionModal.vue'
   import TimezoneSelect from './TimezoneSelect.vue'
   import { CronSchedule } from '@/models'
@@ -52,6 +54,7 @@
   import { containsCronRandomExpression } from '@/types/cron'
 
   const props = withDefaults(defineProps<{
+    hideActions?: boolean,
     schedule?: CronSchedule,
   }>(), {
     schedule: () => new CronSchedule({ cron: '* * * * *', dayOr: true, timezone: 'UTC' }),
@@ -60,6 +63,7 @@
   const emit = defineEmits<{
     (event: 'cancel'): void,
     (event: 'update:schedule' | 'submit', value: CronSchedule): void,
+    (event: 'update:disabled', value: boolean): void,
   }>()
 
   const isSupportedCron = (): boolean => {
@@ -108,12 +112,18 @@
   }
 
   watch(() => internalValue.value, () => emit('update:schedule', internalValue.value))
+  watch(() => disabled.value, () => emit('update:disabled', disabled.value))
 
   watch(() => props.schedule, (val) => {
     timezone.value = val.timezone ?? timezone.value
     cron.value = val.cron
     dayOr.value = val.dayOr
   }, { deep: true })
+
+  onMounted(() => {
+    emit('update:disabled', disabled.value)
+    emit('update:schedule', internalValue.value)
+  })
 </script>
 
 <style>
