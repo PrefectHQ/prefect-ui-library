@@ -13,7 +13,7 @@
     </template>
 
     <template #actions>
-      <router-link :to="notificationCreateRoute()">
+      <router-link v-if="can.create.notification" :to="notificationCreateRoute()">
         <p-button>
           Create Notification
           <p-icon icon="PlusIcon" class="workspace-notifications-empty-state__link-icon" />
@@ -27,9 +27,11 @@
   import { PEmptyState, PButton, PIcon } from '@prefecthq/prefect-design'
   import { RouterLink } from 'vue-router'
   import { notificationCreateRouteKey } from '@/router'
+  import { canKey } from '@/types'
   import { inject } from '@/utilities'
 
   const notificationCreateRoute = inject(notificationCreateRouteKey)
+  const can = inject(canKey)
 </script>
 
 

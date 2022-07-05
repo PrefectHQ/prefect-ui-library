@@ -1,5 +1,5 @@
 <template>
-  <p-button class="run-button" inset :loading="loading" @click="run(deployment)">
+  <p-button v-if="can.create.flow_run" class="run-button" inset :loading="loading" @click="run(deployment)">
     Run
     <p-icon class="run-button__run-icon" icon="PlayIcon" solid />
   </p-button>
@@ -10,12 +10,14 @@
   import { ref } from 'vue'
   import { Deployment } from '@/models'
   import { deploymentsApiKey } from '@/services/DeploymentsApi'
+  import { canKey } from '@/types'
   import { inject } from '@/utilities'
 
   defineProps<{
     deployment: Deployment,
   }>()
 
+  const can = inject(canKey)
   const deploymentsApi = inject(deploymentsApiKey)
   const loading = ref(false)
 
