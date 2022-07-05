@@ -1,5 +1,5 @@
 <template>
-  <JsonEditor v-model="model" class="block-schema-property-input-json" />
+  <JsonEditor v-model="internalValue" class="block-schema-property-input-json" />
 </template>
 
 <script lang="ts" setup>
@@ -14,7 +14,7 @@
     (event: 'update:modelValue', value: unknown): void,
   }>()
 
-  const model = computed<string>({
+  const internalValue = computed<string>({
     get() {
       if (typeof props.modelValue === 'string') {
         return props.modelValue
