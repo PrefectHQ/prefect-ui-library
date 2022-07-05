@@ -13,7 +13,7 @@
     </template>
 
     <template #actions>
-      <router-link v-if="can.create.notification" :to="notificationCreateRoute()">
+      <router-link v-if="can.create.notification_policy" :to="notificationCreateRoute()">
         <p-button>
           Create Notification
           <p-icon icon="PlusIcon" class="workspace-notifications-empty-state__link-icon" />
