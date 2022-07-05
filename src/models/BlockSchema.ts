@@ -11,7 +11,7 @@ export type BlockSchemaCapability = typeof blockSchemaCapabilities[number]
 export type BlockSchemaSimpleProperty = {
   title: string,
   description: string,
-  type: BlockSchemaPropertyType,
+  type?: BlockSchemaPropertyType,
   enum?: string[] | number[],
 }
 

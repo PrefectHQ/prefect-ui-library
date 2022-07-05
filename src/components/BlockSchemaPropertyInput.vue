@@ -8,13 +8,15 @@
     :class="classes"
     :style="styles"
   >
+    {{ property }}
     <component :is="input" v-model="model" v-bind="{ ...attrs, ...inputProps, state }" />
   </PLabel>
 </template>
 
 <script lang="ts" setup>
-  import { PLabel, PCombobox, PNumberInput, PSelect, PTextInput, PToggle, useAttrsStylesAndClasses, PTextarea } from '@prefecthq/prefect-design'
+  import { PLabel, PCombobox, PNumberInput, PSelect, PTextInput, PToggle, useAttrsStylesAndClasses } from '@prefecthq/prefect-design'
   import { computed } from 'vue'
+  import JsonEditor from './JsonEditor.vue'
   import { useOptionalRules } from '@/compositions/useOptionalRules'
   import { useReactiveField } from '@/compositions/useReactiveField'
   import { BlockSchemaSimpleProperty } from '@/models/BlockSchema'
@@ -61,9 +63,9 @@
       case 'array':
         return PCombobox
       case 'object':
-        return PTextarea
+        return JsonEditor
       default:
-        return PTextInput
+        return JsonEditor
     }
   })
 
