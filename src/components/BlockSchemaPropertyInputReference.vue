@@ -1,10 +1,10 @@
 <template>
-  <p-label class="block-schema-property-reference-input" :label="blockTypeName" :message="errors.join('. ')" :state="state">
-    <div class="block-schema-property-reference-input__content">
+  <p-label class="block-schema-property-input-reference" :label="blockTypeName" :message="errors.join('. ')" :state="state">
+    <div class="block-schema-property-input-reference__content">
       <BlockTypeLogo v-if="blockType" :block-type="blockType" />
 
       <template v-if="blockDocuments.length">
-        <BlockDocumentsSelect v-model:selected="model" v-bind="{ blockDocuments, state }" class="block-schema-property-reference-input__select" />
+        <BlockDocumentsSelect v-model:selected="model" v-bind="{ blockDocuments, state }" class="block-schema-property-input-reference__select" />
       </template>
 
       <router-link :to="blockCatalogCreateRoute(blockTypeName)">
@@ -60,12 +60,12 @@
 </script>
 
 <style>
-.block-schema-property-reference-input__content { @apply
+.block-schema-property-input-reference__content { @apply
   flex
   gap-2
 }
 
-.block-schema-property-reference-input__select { @apply
+.block-schema-property-input-reference__select { @apply
   grow
 }
 </style>

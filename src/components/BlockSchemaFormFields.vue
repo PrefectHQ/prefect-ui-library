@@ -2,7 +2,7 @@
   <p-content class="block-schema-form-fields">
     <template v-for="(property, key) in blockSchema.fields.properties" :key="property.title">
       <template v-if="isBlockSchemaReferenceProperty(property)">
-        <BlockSchemaPropertyReferenceInput
+        <BlockSchemaPropertyInputReference
           :selected="getReferenceValue(key)"
           :block-type-name="getReferenceTypeName(key)!"
           :required="isRequired(key)"
@@ -24,7 +24,7 @@
 <script lang="ts" setup>
   import { computed } from 'vue'
   import BlockSchemaPropertyInput from './BlockSchemaPropertyInput.vue'
-  import BlockSchemaPropertyReferenceInput from '@/components/BlockSchemaPropertyReferenceInput.vue'
+  import BlockSchemaPropertyInputReference from '@/components/BlockSchemaPropertyInputReference.vue'
   import { BlockSchema, BlockDocumentData } from '@/models'
   import { isBlockDocumentDataReference, isBlockSchemaReferenceProperty } from '@/utilities/blocks'
 

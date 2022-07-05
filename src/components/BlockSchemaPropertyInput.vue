@@ -16,7 +16,7 @@
 <script lang="ts" setup>
   import { PLabel, PCombobox, PNumberInput, PSelect, PTextInput, PToggle, useAttrsStylesAndClasses } from '@prefecthq/prefect-design'
   import { computed } from 'vue'
-  import JsonEditor from './JsonEditor.vue'
+  import BlockSchemaPropertyInputJson from './BlockSchemaPropertyInputJson.vue'
   import { useOptionalRules } from '@/compositions/useOptionalRules'
   import { useReactiveField } from '@/compositions/useReactiveField'
   import { BlockSchemaSimpleProperty } from '@/models/BlockSchema'
@@ -63,9 +63,9 @@
       case 'array':
         return PCombobox
       case 'object':
-        return JsonEditor
+        return BlockSchemaPropertyInputJson
       default:
-        return JsonEditor
+        return BlockSchemaPropertyInputJson
     }
   })
 
