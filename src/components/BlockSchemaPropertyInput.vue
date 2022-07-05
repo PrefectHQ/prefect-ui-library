@@ -8,7 +8,6 @@
     :class="classes"
     :style="styles"
   >
-    {{ property }}
     <component :is="input" v-model="model" v-bind="{ ...attrs, ...inputProps, state }" />
   </PLabel>
 </template>

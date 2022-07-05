@@ -20,7 +20,7 @@
         return props.modelValue
       }
 
-      return JSON.stringify(props.modelValue)
+      return JSON.stringify(props.modelValue, undefined, 2)
     },
     set(value: string) {
       emit('update:modelValue', parse(value))
