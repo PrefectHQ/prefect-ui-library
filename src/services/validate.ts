@@ -11,7 +11,7 @@ export function withMessage(validate: (value: ValidationValue) => boolean | Prom
 }
 
 export function isRequired(value: ValidationValue): boolean {
-  if (!value) {
+  if (value === undefined || value === null || value === '') {
     return false
   }
 
