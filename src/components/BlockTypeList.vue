@@ -47,15 +47,28 @@
 
   const props = defineProps<{
     blockTypes: BlockType[],
+    capability: BlockSchemaCapability | null,
+  }>()
+
+  const emit = defineEmits<{
+    (event: 'update:capability', value: BlockSchemaCapability | null): void,
   }>()
 
   const blockCatalogCreateRoute = inject(blockCatalogCreateRouteKey)
 
   const searchTerm = ref('')
-  const selectedCapability = ref<BlockSchemaCapability | null>(null)
+  const selectedCapability = computed({
+    get() {
+      return props.capability
+    },
+    set(value: BlockSchemaCapability | null) {
+      emit('update:capability', value)
+    },
+  })
 
   const filteredBlockTypes = computed(() => props.blockTypes.filter(filterBlockType))
-  const empty = computed(() => props.blockTypes.length && filteredBlockTypes.value.length === 0)
+  const filtered = computed(() => searchTerm.value.length || props.capability !== null)
+  const empty = computed(() => filtered.value && filteredBlockTypes.value.length === 0)
 
   function filterBlockType({ name  }: BlockType): boolean {
     return `${name}`.toLowerCase().includes(searchTerm.value.toLowerCase())

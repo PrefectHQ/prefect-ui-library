@@ -13,8 +13,9 @@
 </template>
 
 <script lang="ts" setup>
-  import { PLabel, PCombobox, PNumberInput, PSelect, PTextInput, PToggle, useAttrsStylesAndClasses, PTextarea } from '@prefecthq/prefect-design'
+  import { PLabel, PCombobox, PNumberInput, PSelect, PTextInput, PToggle, useAttrsStylesAndClasses } from '@prefecthq/prefect-design'
   import { computed } from 'vue'
+  import BlockSchemaPropertyInputJson from './BlockSchemaPropertyInputJson.vue'
   import { useOptionalRules } from '@/compositions/useOptionalRules'
   import { useReactiveField } from '@/compositions/useReactiveField'
   import { BlockSchemaSimpleProperty } from '@/models/BlockSchema'
@@ -61,9 +62,9 @@
       case 'array':
         return PCombobox
       case 'object':
-        return PTextarea
+        return BlockSchemaPropertyInputJson
       default:
-        return PTextInput
+        return BlockSchemaPropertyInputJson
     }
   })
 

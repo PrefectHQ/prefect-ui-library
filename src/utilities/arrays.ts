@@ -93,3 +93,7 @@ export function shuffle<T>(array: T[]): T[] {
 
   return array
 }
+
+export function isEmptyArray(value: unknown): value is unknown[] {
+  return Array.isArray(value) && value.length === 0
+}
