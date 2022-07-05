@@ -1,5 +1,5 @@
 <template>
-  <p-toggle v-if="can.update.notification" v-model="internalValue" :loading="loading" />
+  <p-toggle v-if="can.update.notification_policy" v-model="internalValue" :loading="loading" />
 </template>
 
 <script lang="ts" setup>

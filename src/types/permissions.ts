@@ -18,7 +18,7 @@ const workspacePermissionKeys = [
   'saved_search',
   'task_run',
   'work_queue',
-  'notification',
+  'notification_policy',
 ] as const
 export type WorkspacePermissionKey = typeof workspacePermissionKeys[number]
 type WorkspacePermissions = Record<WorkspacePermissionKey, boolean>
