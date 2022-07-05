@@ -34,7 +34,7 @@
     loading.value = true
 
     try {
-      const notification = { is_active: value }
+      const notification = { isActive: value }
       await notificationsApi.updateNotification(props.notification.id, notification)
       const activeOrPaused = value ? 'Active' : 'Paused'
       showToast(`Notification ${activeOrPaused}`, 'success')
