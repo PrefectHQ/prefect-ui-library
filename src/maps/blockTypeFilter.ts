@@ -26,6 +26,18 @@ export const mapBlockTypeFilterToBlockTypeFilterRequest: MapFunction<BlockTypeFi
     }
   }
 
+  if (source.blockTypes) {
+    filter.block_types = {}
+
+    if (source.blockTypes.name) {
+      filter.block_types.name = {}
+
+      if (source.blockTypes.name.like_) {
+        filter.block_types.name.like_ = source.blockTypes.name.like_
+      }
+    }
+  }
+
 
   return filter
 }

@@ -4,6 +4,11 @@ export type BlockTypeFilterRequest = {
       all_?: string[],
     },
   },
+  block_types?: {
+    name?: {
+      like_?: string | string[],
+    },
+  },
   limit?: number,
   offset?: number,
 }

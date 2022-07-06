@@ -106,11 +106,12 @@
   })
 
   const blockTypesSubscriptionFilter: BlockTypeFilter = {
-    blockSchemas: {
-      blockCapabilities: {
-        all_: ['notify'],
+    blockTypes: {
+      name: {
+        like_: 'slack',
       },
     },
+
   }
   const blockTypesSubscription = useSubscription(blockTypesApi.getBlockTypes, [blockTypesSubscriptionFilter])
   const blockTypes = computed(() => blockTypesSubscription.response ?? [])
