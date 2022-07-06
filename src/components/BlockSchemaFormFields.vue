@@ -49,7 +49,9 @@
   })
 
   function isRequired(blockSchemaPropertyKey: string): boolean {
-    return props.blockSchema.fields.required.includes(blockSchemaPropertyKey)
+    const required = props.blockSchema.fields.required ?? []
+
+    return required.includes(blockSchemaPropertyKey)
   }
 
   function getPropertyValue(blockSchemaPropertyKey: string): unknown {
