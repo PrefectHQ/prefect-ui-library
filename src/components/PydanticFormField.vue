@@ -1,5 +1,5 @@
 <template>
-  <p-label :label="definition.title">
+  <p-label :label="definition.title" :message="errors?.[0]" :state="meta">
     <component
       :is="inputComponent.component"
       v-if="inputComponent"
@@ -13,13 +13,14 @@
 </template>
 
 <script lang="ts" setup>
-  import { computed, watch, ref } from 'vue'
-  import type { TypeDefinition } from '@/types/Pydantic'
-  import { getComponentFromTypeDefinition } from '@/utilities'
+  import { useField } from 'vee-validate'
+  import { computed, watch } from 'vue'
+  import type { PydanticTypeDefinition } from '@/types/Pydantic'
+  import { getComponentFromPydanticTypeDefinition } from '@/utilities'
 
   const props = defineProps<{
     modelValue?: unknown,
-    definition: TypeDefinition,
+    definition: PydanticTypeDefinition,
   }>()
 
   const emit = defineEmits<{
@@ -27,10 +28,10 @@
   }>()
 
   const inputComponent = computed(() => {
-    return getComponentFromTypeDefinition(props.definition)
+    return getComponentFromPydanticTypeDefinition(props.definition)
   })
 
-  const internalValue = ref(props.modelValue ?? props.definition.default ?? inputComponent.value?.defaultValue)
+  const { value: internalValue, errors, meta } = useField(props.definition.title ?? 'field', inputComponent.value?.validators, { initialValue: props.modelValue ?? props.definition.default ?? inputComponent.value?.defaultValue })
 
   const value = computed({
     get() {

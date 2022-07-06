@@ -6,7 +6,7 @@ import {
   PydanticType,
   PydanticEnum,
   PydanticStringFormat,
-  TypeDefinition,
+  PydanticTypeDefinition,
   hasMinLength,
   hasMaxLength,
   hasMin,
@@ -18,25 +18,28 @@ import {
   hasMultipleOf,
   isPydanticEnum,
   isPydanticType,
-  isPydanticStringFormat
+  isPydanticStringFormat,
+  PydanticTypeRef,
+  RefStringRegExp,
+  isPydanticTypeRef
 } from '@/types/Pydantic'
 
 const InputComponents = [PToggle, PTextInput, PTextarea, JsonEditor, PDateInput, PNumberInput, PCombobox] as const
 
-export type TypeDefinitionComponentAttrs = Record<string, unknown>
-export type TypeDefinitionComponent = {
-  attrs: TypeDefinitionComponentAttrs,
+export type PydanticTypeDefinitionComponentAttrs = Record<string, unknown>
+export type PydanticTypeDefinitionComponent = {
+  attrs: PydanticTypeDefinitionComponentAttrs,
   component?: typeof InputComponents[number],
   defaultValue: unknown,
   validators: ValidateMethod[],
 }
 
-interface BaseJsonInput extends TypeDefinitionComponent {
+interface BaseJsonInput extends PydanticTypeDefinitionComponent {
   component: typeof JsonEditor,
   defaultValue: string,
 }
 
-interface BaseTextInput extends TypeDefinitionComponent {
+interface BaseTextInput extends PydanticTypeDefinitionComponent {
   attrs: {
     type: 'text',
   },
@@ -44,12 +47,12 @@ interface BaseTextInput extends TypeDefinitionComponent {
   defaultValue: string,
 }
 
-interface BaseToggleInput extends TypeDefinitionComponent {
+interface BaseToggleInput extends PydanticTypeDefinitionComponent {
   component: typeof PToggle,
   defaultValue: boolean,
 }
 
-interface BaseNumberInput extends TypeDefinitionComponent {
+interface BaseNumberInput extends PydanticTypeDefinitionComponent {
   attrs: {
     min?: number | string,
     max?: number | string,
@@ -59,7 +62,7 @@ interface BaseNumberInput extends TypeDefinitionComponent {
   defaultValue: number,
 }
 
-interface BaseEnumInput extends TypeDefinitionComponent {
+interface BaseEnumInput extends PydanticTypeDefinitionComponent {
   attrs: {
     allowUnknownValue: boolean,
     multiple: boolean,
@@ -69,7 +72,7 @@ interface BaseEnumInput extends TypeDefinitionComponent {
   defaultValue: unknown[],
 }
 
-interface BaseDateInput extends TypeDefinitionComponent {
+interface BaseDateInput extends PydanticTypeDefinitionComponent {
   attrs: {
     showTime: boolean,
   },
@@ -127,7 +130,7 @@ const baseDateInput: BaseDateInput = {
   validators: [],
 }
 
-const StringFormatComponentMap: Record<PydanticStringFormat, TypeDefinitionComponent> = {
+const StringFormatComponentMap: Record<PydanticStringFormat, PydanticTypeDefinitionComponent> = {
   'date': baseDateInput,
   'date-time': {
     ...baseDateInput,
@@ -144,7 +147,7 @@ const StringFormatComponentMap: Record<PydanticStringFormat, TypeDefinitionCompo
   'time-delta': baseNumberInput,
 }
 
-const getValidators = (definition: TypeDefinition): ValidateMethod[] => {
+const getValidators = (definition: PydanticTypeDefinition): ValidateMethod[] => {
   const validators: ValidateMethod[] = []
 
   if (hasMinLength(definition)) {
@@ -174,8 +177,8 @@ const getValidators = (definition: TypeDefinition): ValidateMethod[] => {
   return validators
 }
 
-const getAttrs = (definition: TypeDefinition): TypeDefinitionComponentAttrs => {
-  const attrs: TypeDefinitionComponentAttrs = {}
+const getAttrs = (definition: PydanticTypeDefinition): PydanticTypeDefinitionComponentAttrs => {
+  const attrs: PydanticTypeDefinitionComponentAttrs = {}
 
   if (hasMinLength(definition) || hasMin(definition)) {
     attrs.min = definition.minLength ?? definition.minimum
@@ -192,7 +195,7 @@ const getAttrs = (definition: TypeDefinition): TypeDefinitionComponentAttrs => {
   return attrs
 }
 
-const getBaseComponent = (definition: TypeDefinition): null | TypeDefinitionComponent => {
+const getBaseComponent = (definition: PydanticTypeDefinition): null | PydanticTypeDefinitionComponent => {
   const { type, format, enum: defEnum } = definition
 
   if (isPydanticEnum(definition)) {
@@ -247,8 +250,21 @@ const getBaseComponent = (definition: TypeDefinition): null | TypeDefinitionComp
   return baseTextInput
 }
 
+export const getTypeDefinitionFromTypeRef = (ref: PydanticTypeRef<string>, definition: PydanticTypeDefinition): PydanticTypeDefinition | undefined => {
+  if (!isPydanticTypeRef(ref)) {
+    return
+  }
 
-export const getComponentFromTypeDefinition = (definition: TypeDefinition): null | TypeDefinitionComponent => {
+  const extractedType = ref.match(RefStringRegExp)?.[1]
+
+  if (!extractedType) {
+    return
+  }
+
+  return definition.definitions?.[extractedType]
+}
+
+export const getComponentFromPydanticTypeDefinition = (definition: PydanticTypeDefinition): null | PydanticTypeDefinitionComponent => {
   const component = getBaseComponent(definition)
 
   if (!component) {
