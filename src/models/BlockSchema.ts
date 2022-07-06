@@ -33,7 +33,7 @@ export type BlockSchemaFields = {
   description: string,
   type: BlockSchemaFieldsType,
   properties: Record<string, BlockSchemaProperty>,
-  required: string[],
+  required?: string[],
   blockTypeName: string,
   blockSchemaReferences: BlockSchemaReferences,
 }
