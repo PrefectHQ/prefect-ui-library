@@ -8,17 +8,15 @@
 </template>
 
 <script lang="ts" setup>
-  import axios from 'axios'
   import { ref } from 'vue'
   import DemoSection from '../components/DemoSection.vue'
   import DemoSubSection from '../components/DemoSubSection.vue'
   import BlockSchemaForm from '@/components/BlockSchemaForm.vue'
   import { BlockDocumentData } from '@/models'
-  import { BlockSchema } from '@/models/BlockSchema'
-  import { mapper } from '@/services/Mapper'
+  import { mocker } from '@/services'
 
 
-  const blockSchema: BlockSchema = await axios.post('http://localhost:4200/api/block_schemas/filter').then(response => mapper.map('BlockSchemaResponse', response.data[9], 'BlockSchema'))
+  const blockSchema = mocker.create('blockSchema')
   const data = ref<BlockDocumentData>({})
   const name = ref('')
 </script>

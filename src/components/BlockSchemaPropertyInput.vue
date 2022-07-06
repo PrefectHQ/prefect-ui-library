@@ -53,6 +53,7 @@
 
     switch (props.property.type) {
       case 'string':
+      case 'password':
         return PTextInput
       case 'number':
       case 'integer':
@@ -62,7 +63,6 @@
       case 'array':
         return PCombobox
       case 'object':
-        return BlockSchemaPropertyInputJson
       default:
         return BlockSchemaPropertyInputJson
     }
@@ -77,6 +77,10 @@
 
     if (props.property.type === 'array') {
       value.multiple = true
+    }
+
+    if (props.property.type === 'password') {
+      value.type = 'password'
     }
 
     return value
