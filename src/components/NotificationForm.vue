@@ -10,7 +10,7 @@
       </p-label>
 
       <p-label label="Tags (Optional)">
-        <p-tags-input v-model:tags="selectedTags" empty-message="All Tags" />
+        <p-tags-input v-model="selectedTags" empty-message="All Tags" />
       </p-label>
     </div>
 
