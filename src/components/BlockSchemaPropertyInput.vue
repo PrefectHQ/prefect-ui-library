@@ -3,7 +3,7 @@
     class="block-schema-property-input"
     :label="property.title"
     :description="property.description"
-    :message="errors.join('. ')"
+    :message="errorMessage"
     :state="state"
     :class="classes"
     :style="styles"
@@ -13,7 +13,7 @@
 </template>
 
 <script lang="ts" setup>
-  import { PLabel, PCombobox, PNumberInput, PSelect, PTextInput, PToggle, useAttrsStylesAndClasses } from '@prefecthq/prefect-design'
+  import { PLabel, PTagsArea, PNumberInput, PSelect, PTextInput, PToggle, useAttrsStylesAndClasses } from '@prefecthq/prefect-design'
   import { computed } from 'vue'
   import BlockSchemaPropertyInputJson from './BlockSchemaPropertyInputJson.vue'
   import { useOptionalRules } from '@/compositions/useOptionalRules'
@@ -44,7 +44,7 @@
 
   const required = computed(() => props.required ?? false)
   const rules = useOptionalRules(withMessage(isRequired, `${props.property.title} is required`), required)
-  const { meta: state, errors } = useReactiveField(model, props.property.title, rules)
+  const { meta: state, errorMessage } = useReactiveField(model, props.property.title, rules)
 
   const input = computed(() => {
     if (props.property.enum) {
@@ -61,7 +61,7 @@
       case 'boolean':
         return PToggle
       case 'array':
-        return PCombobox
+        return PTagsArea
       case 'object':
       default:
         return BlockSchemaPropertyInputJson
@@ -70,6 +70,10 @@
 
   const inputProps = computed(() => {
     const value: Record<string, unknown> = {}
+
+    if (props.property.type === 'array') {
+      value.options = []
+    }
 
     if (props.property.enum) {
       value.options = props.property.enum
