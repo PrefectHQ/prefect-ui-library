@@ -3,7 +3,6 @@
     <p-key-value label="Flow ID" :value="flow.id" :alternate="alternate" />
 
     <p-key-value label="Created" :value="formatDateTimeNumeric(flow.created)" :alternate="alternate" />
-
   </div>
 </template>
 
