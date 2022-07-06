@@ -14,7 +14,8 @@
 
 <script lang="ts" setup>
   import { computed, watch, ref } from 'vue'
-  import { getComponentFromTypeDefinition, TypeDefinition } from '@/utilities/pydanticMapper'
+  import type { TypeDefinition } from '@/types/Pydantic'
+  import { getComponentFromTypeDefinition } from '@/utilities'
 
   const props = defineProps<{
     modelValue?: unknown,
