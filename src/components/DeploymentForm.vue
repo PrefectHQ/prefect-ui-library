@@ -11,7 +11,7 @@
         </p-label>
 
         <p-label label="Tags">
-          <p-tags-input v-model:tags="tags" empty-message="Add tags" />
+          <p-tags-input v-model="tags" empty-message="Add tags" />
         </p-label>
       </p-content>
 

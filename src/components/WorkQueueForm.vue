@@ -32,7 +32,7 @@
     </p>
 
     <p-label label="Tags">
-      <p-tags-input v-model:tags="tags" empty-message="Add tag to filter..." />
+      <p-tags-input v-model="tags" empty-message="Add tag to filter..." />
     </p-label>
 
     <p-label label="Deployments">
