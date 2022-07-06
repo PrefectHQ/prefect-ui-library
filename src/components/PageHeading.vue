@@ -39,14 +39,11 @@
 </script>
 
 <style>
-.page-heading,
-.page-heading__leading { @apply
-  grid
+.page-heading { @apply
+  flex
   gap-2
-}
-
-.page-heading {
-  align-items: start;
+  items-start
+  flex-wrap
 }
 
 .page-heading__crumbs { @apply
@@ -57,25 +54,14 @@
 }
 
 .page-heading__trailing { @apply
+  flex-grow
+  flex
   items-center
-  justify-start
-  grid
-  grid-flow-col
   gap-2
-}
-
-@screen md {
-  .page-heading { @apply
-    min-h-[42px]
-    flex
-    justify-between
-  }
-
-  .page-heading__trailing { @apply
-    grid
-    gap-2
-    grid-flow-col
-  }
+  justify-start
+  w-full
+  md:w-fit
+  md:justify-end
 }
 
 .page-heading__crumbs--xs { @apply
