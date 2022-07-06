@@ -4,7 +4,7 @@ import { isDate } from 'date-fns'
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type ValidationValue = any
-type ValidateMethod = (value: ValidationValue) => boolean
+export type ValidateMethod = (value: ValidationValue) => boolean
 
 export function withMessage(validate: (value: ValidationValue) => boolean | Promise<boolean>, message: string) {
   return async (value: ValidationValue) => await validate(value) ? true : message
