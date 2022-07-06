@@ -1,8 +1,11 @@
 <template>
-  <p-form />
+  <p-form>
+    <PydanticFormField :definition="definition" />
+  </p-form>
 </template>
 
 <script lang="ts" setup>
+  import PydanticFormField from './PydanticFormField.vue'
   import type { TypeDefinition } from '@/types/Pydantic'
 
   const props = defineProps<{

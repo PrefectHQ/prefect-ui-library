@@ -1,9 +1,12 @@
 <template>
-  <PydanticForm v-model="parameterValues" :definition="parameterDefinition" />
+  <DemoSection heading="Parameters Form">
+    <PydanticForm v-model="parameterValues" :definition="parameterDefinition" />
+  </DemoSection>
 </template>
 
 <script lang="ts" setup>
   import { computed, reactive } from 'vue'
+  import DemoSection from '../components/DemoSection.vue'
   import PydanticForm from '@/components/PydanticForm.vue'
   import type { TypeDefinition } from '@/types/Pydantic'
 

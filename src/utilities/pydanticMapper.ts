@@ -31,16 +31,9 @@ export type TypeDefinitionComponent = {
   validators: ValidateMethod[],
 }
 
-
 interface BaseJsonInput extends TypeDefinitionComponent {
   component: typeof JsonEditor,
   defaultValue: string,
-}
-const baseJsonInput: BaseJsonInput = {
-  attrs: {},
-  component: JsonEditor,
-  defaultValue: '',
-  validators: [],
 }
 
 interface BaseTextInput extends TypeDefinitionComponent {
@@ -50,24 +43,10 @@ interface BaseTextInput extends TypeDefinitionComponent {
   component: typeof PTextInput,
   defaultValue: string,
 }
-const baseTextInput: BaseTextInput = {
-  attrs: {
-    type: 'text',
-  },
-  defaultValue: '',
-  component: PTextInput,
-  validators: [],
-}
 
 interface BaseToggleInput extends TypeDefinitionComponent {
   component: typeof PToggle,
   defaultValue: boolean,
-}
-const baseToggleInput: BaseToggleInput = {
-  attrs: {},
-  component: PToggle,
-  defaultValue: false,
-  validators: [],
 }
 
 interface BaseNumberInput extends TypeDefinitionComponent {
@@ -79,12 +58,6 @@ interface BaseNumberInput extends TypeDefinitionComponent {
   component: typeof PNumberInput,
   defaultValue: number,
 }
-const baseNumberInput: BaseNumberInput = {
-  attrs: {},
-  component: PNumberInput,
-  defaultValue: 0,
-  validators: [],
-}
 
 interface BaseEnumInput extends TypeDefinitionComponent {
   attrs: {
@@ -95,6 +68,45 @@ interface BaseEnumInput extends TypeDefinitionComponent {
   component: typeof PCombobox,
   defaultValue: unknown[],
 }
+
+interface BaseDateInput extends TypeDefinitionComponent {
+  attrs: {
+    showTime: boolean,
+  },
+  component: typeof PDateInput,
+  defaultValue: Date,
+}
+
+const baseJsonInput: BaseJsonInput = {
+  attrs: {},
+  component: JsonEditor,
+  defaultValue: '',
+  validators: [],
+}
+
+const baseTextInput: BaseTextInput = {
+  attrs: {
+    type: 'text',
+  },
+  defaultValue: '',
+  component: PTextInput,
+  validators: [],
+}
+
+const baseToggleInput: BaseToggleInput = {
+  attrs: {},
+  component: PToggle,
+  defaultValue: false,
+  validators: [],
+}
+
+const baseNumberInput: BaseNumberInput = {
+  attrs: {},
+  component: PNumberInput,
+  defaultValue: 0,
+  validators: [],
+}
+
 const baseEnumInput: BaseEnumInput = {
   attrs: {
     allowUnknownValue: false,
@@ -106,13 +118,6 @@ const baseEnumInput: BaseEnumInput = {
   validators: [],
 }
 
-interface BaseDateInput extends TypeDefinitionComponent {
-  attrs: {
-    showTime: boolean,
-  },
-  component: typeof PDateInput,
-  defaultValue: Date,
-}
 const baseDateInput: BaseDateInput = {
   attrs: {
     showTime: false,

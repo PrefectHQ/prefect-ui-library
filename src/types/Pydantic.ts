@@ -26,32 +26,6 @@
   path
 */
 
-/*
-Unique items (e.g. Set)
-
-Types:
-  null (default)
-  boolean
-  integer
-  number
-  array[Types]
-  object[Types]
-  string:
-    None (default)
-    binary
-    date
-    time
-    regex
-    date-time
-    time-delta
-    email
-    json-string
-
-  anyOf
-  allOf
-*/
-
-
 export const PydanticStringFormats = ['date', 'regex', 'date-time', 'time-delta', 'email', 'json-string'] as const
 export const PydanticTypes = ['null', 'string', 'boolean', 'integer', 'number', 'array', 'object'] as const
 export type PydanticType = typeof PydanticTypes[number]
@@ -139,7 +113,6 @@ export interface TypeDefinitionEnum extends TypeDefinition {
 export interface TypeDefinitionProperties extends TypeDefinition {
   properties: Record<string, TypeDefinition>,
 }
-
 
 export function isPydanticType<T extends PydanticType>(desired: T, type?: PydanticType): type is Extract<PydanticType, T> {
   return type == desired
