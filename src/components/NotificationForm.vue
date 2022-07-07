@@ -44,7 +44,7 @@
   import { PLabel, PTagsInput, PForm, PButtonGroup, showToast } from '@prefecthq/prefect-design'
   import { useSubscription, useSubscriptionWithDependencies } from '@prefecthq/vue-compositions'
   import { useForm } from 'vee-validate'
-  import { computed, watchEffect, ref } from 'vue'
+  import { computed, watchEffect, ref, watch } from 'vue'
   import BlockSchemaFormFields from './BlockSchemaFormFields.vue'
   import NotificationDetails from './NotificationDetails.vue'
   import StateSelect from '@/components/StateSelect.vue'
@@ -159,6 +159,11 @@
     return blockSchemaSubscription.response?.[0]
   })
 
+  watch(selectedBlockTypeId, (current)=> {
+    if (blockDocument.value && current !== blockDocument.value.blockTypeId) {
+      data.value = {}
+    }
+  })
 
   const submit = handleSubmit(async () => {
     if (blockSchema.value === undefined || selectedBlockTypeId.value === undefined) {
