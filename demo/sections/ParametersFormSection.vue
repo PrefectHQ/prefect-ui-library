@@ -1,6 +1,6 @@
 <template>
   <DemoSection heading="Parameters Form">
-    <PydanticForm v-model="parameterValues" :definition="parameterDefinition" />
+    <PydanticForm v-model="parameterValues" :schema="parameterDefinition" />
   </DemoSection>
 </template>
 

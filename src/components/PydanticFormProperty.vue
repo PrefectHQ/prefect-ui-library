@@ -1,5 +1,5 @@
 <template>
-  <component :is="formComponent" v-model="internalValue" :definition="propertyDefinition" :property="property" />
+  <component :is="formComponent" v-model="internalValue" :schema="propertyDefinition" :property="property" />
 </template>
 
 <script lang="ts" setup>
@@ -7,12 +7,12 @@
   import PydanticFormField from './PydanticFormField.vue'
   import PydanticFormIntersectionProperty from './PydanticFormIntersectionProperty.vue'
   import PydanticFormUnionProperty from './PydanticFormUnionProperty.vue'
-  import { hasAnyOf, hasAllOf, PydanticPropertyRecord, PydanticTypeDefinition } from '@/types/Pydantic'
+  import { hasAnyOf, hasAllOf, PydanticTypeProperty, PydanticTypeDefinition } from '@/types/Pydantic'
 
   const props = defineProps<{
     modelValue?: unknown,
-    property: PydanticPropertyRecord,
-    definition: PydanticTypeDefinition,
+    property: PydanticTypeProperty,
+    schema: PydanticTypeDefinition,
   }>()
 
   const emit = defineEmits<{
@@ -45,7 +45,7 @@
 
   const propertyDefinition = computed(() => {
     if (isUnionProperty.value || isIntersectionProperty.value) {
-      return props.definition
+      return props.schema
     }
 
     return props.property

@@ -46,7 +46,7 @@ export interface PydanticTypeDefinition {
   default?: unknown,
   enum?: PydanticEnum<unknown>,
   definitions?: Record<string, PydanticTypeDefinition>,
-  properties?: Record<string, PydanticPropertyRecord>,
+  properties?: Record<string, PydanticTypeProperty>,
   required?: string[],
   items?: PydanticTypeDefinition | PydanticTypeDefinition[] | PydanticPropertyRecord,
   exclusiveMaximum?: number,
@@ -129,7 +129,7 @@ export interface PydanticTypeDefinitionEnum extends PydanticTypeDefinition {
 }
 
 export interface PydanticTypeDefinitionProperties extends PydanticTypeDefinition {
-  properties: Record<string, PydanticPropertyRecord>,
+  properties: Record<string, PydanticTypeProperty>,
 }
 
 export interface PydanticTypeDefinitionRef extends PydanticTypeProperty {

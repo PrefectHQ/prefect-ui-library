@@ -6,8 +6,8 @@
 
     <p-button-group v-model="propertyDefinitionRef" :options="buttonGroupOptions" size="sm" />
 
-    <template v-for="(subProperty, key) in properties" :key="key">
-      <PydanticFormProperty :property="subProperty" :definition="definition" />
+    <template v-for="(subProperty, key) in displayedProperties" :key="key">
+      <PydanticFormProperty :property="subProperty" :schema="schema" />
     </template>
   </section>
 </template>
@@ -15,7 +15,6 @@
 <script lang="ts" setup>
   import { ButtonGroupOption } from '@prefecthq/prefect-design'
   import { computed, ref } from 'vue'
-  import PydanticFormField from './PydanticFormField.vue'
   import PydanticFormProperty from './PydanticFormProperty.vue'
   import { isPydanticTypeRef, PydanticPropertyRecordAnyOf, PydanticTypeDefinition, hasTypeRef } from '@/types/Pydantic'
   import { getTypeDefinitionFromTypeRef } from '@/utilities/pydanticMapper'
@@ -23,7 +22,7 @@
   const props = defineProps<{
     modelValue?: unknown,
     property: PydanticPropertyRecordAnyOf,
-    definition: PydanticTypeDefinition,
+    schema: PydanticTypeDefinition,
   }>()
 
   const emit = defineEmits<{
@@ -39,16 +38,19 @@
     },
   })
 
-  const propertyDefinitionRef = ref()
 
   const title = computed(() => {
     return props.property.alias ?? props.property.title ?? props.property.$ref
   })
 
+  const displayedProperties = computed(() => {
+    return properties.value.filter((prop) => prop.title == propertyDefinitionRef.value)
+  })
+
   const properties = computed(() => {
     return props.property.anyOf.map((prop) => {
       if (hasTypeRef(prop) && isPydanticTypeRef(prop.$ref)) {
-        const propDef = getTypeDefinitionFromTypeRef(prop.$ref, props.definition)
+        const propDef = getTypeDefinitionFromTypeRef(prop.$ref, props.schema)
 
         if (propDef) {
           return propDef
@@ -67,11 +69,13 @@
       }
 
       option.label = prop.alias ?? prop.title ?? ''
-      option.value = prop.alias ?? prop.title ?? ''
+      option.value = prop.title ?? ''
 
       return option
     })
   })
+
+  const propertyDefinitionRef = ref(buttonGroupOptions.value[0]?.value)
 </script>
 
 <style>

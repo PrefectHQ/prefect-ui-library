@@ -1,10 +1,13 @@
 <template>
   <section>
-    <h3 class="pydantic-form-union-property__section-header">
+    HEllo I'm an intersection property
+    <!--
+      <h3 class="pydantic-form-union-property__section-header">
       {{ title }}
-    </h3>
+      </h3>
 
-    <PydanticFormField v-model="internalValue" :definition="internalDefinition" />
+      <PydanticFormField v-model="internalValue" :definition="internalDefinition" />
+    -->
   </section>
 </template>
 
@@ -18,7 +21,7 @@
   const props = defineProps<{
     modelValue?: unknown,
     property: PydanticPropertyRecordAllOf,
-    definition: PydanticTypeDefinition,
+    schema: PydanticTypeDefinition,
   }>()
 
   const emit = defineEmits<{

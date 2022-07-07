@@ -1,9 +1,9 @@
 <template>
   <p-form>
-    <JsonView class="tmp" :value="JSON.stringify(definition)" />
+    <JsonView class="tmp" :value="JSON.stringify(schema)" />
 
     <template v-for="(property, key) in properties" :key="key">
-      <PydanticFormProperty :property="property" :definition="definition" />
+      <PydanticFormProperty :property="property" :schema="schema" />
     </template>
   </p-form>
 </template>
@@ -18,13 +18,13 @@
 
   const props = defineProps<{
     modelValue?: Record<string, unknown>,
-    definition: PydanticTypeDefinition,
+    schema: PydanticTypeDefinition,
   }>()
 
   const { handleSubmit, handleReset, isSubmitting, meta, errors, submitCount } = useForm()
 
   const properties = computed(() => {
-    return props.definition.properties ?? {}
+    return props.schema.properties ?? {}
   })
 </script>
 
