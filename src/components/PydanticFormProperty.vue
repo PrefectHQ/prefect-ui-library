@@ -6,6 +6,10 @@
   </template>
 
   <template v-else>
+    <h3 v-if="!isUnionProperty && propertyDefinition && level == 0" class="pydantic-form-union-property__section-header">
+      <span>{{ propertyDefinition.title }}</span>
+    </h3>
+
     <component
       :is="formComponent"
       v-model="internalValue"
@@ -21,7 +25,7 @@
   import PydanticFormField from './PydanticFormField.vue'
   import PydanticFormIntersectionProperty from './PydanticFormIntersectionProperty.vue'
   import PydanticFormUnionProperty from './PydanticFormUnionProperty.vue'
-  import { hasAnyOf, hasAllOf, hasTypeRef, hasProperties, PydanticTypeProperty, PydanticTypeDefinition, isPydanticType, isPydanticTypeRef } from '@/types/Pydantic'
+  import { hasAnyOf, hasAllOf, hasTypeRef, hasProperties, PydanticTypeProperty, PydanticTypeDefinition } from '@/types/Pydantic'
   import { getTypeDefinitionFromTypeRef } from '@/utilities/pydanticMapper'
 
   const props = withDefaults(defineProps<{
