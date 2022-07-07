@@ -1,9 +1,8 @@
 import { createActions } from '@prefecthq/vue-compositions'
 import { MockedApi } from './MockedApi'
 import { Notification } from '@/models/Notification'
-import { NotificationCreate } from '@/models/NotificationCreate'
 import { NotificationFilter } from '@/models/NotificationFilter'
-import { NotificationUpdate } from '@/models/NotificationUpdate'
+import { NotificationFormValues } from '@/models/NotificationFormValues'
 import { mocker } from '@/services'
 
 export class NotificationsApi extends MockedApi {
@@ -11,7 +10,7 @@ export class NotificationsApi extends MockedApi {
     return this.promise(mocker.create('notification', [{ id: id }]))
   }
 
-  public createNotification(notification: NotificationCreate): Promise<Notification> {
+  public createNotification(notification: NotificationFormValues): Promise<Notification> {
     return this.promise(mocker.create('notification', [notification]))
   }
 
@@ -19,7 +18,7 @@ export class NotificationsApi extends MockedApi {
     return this.promise(mocker.createMany('notification', mocker.create('number', [1, 10])))
   }
 
-  public updateNotification(id: string, notification: NotificationUpdate): Promise<void> {
+  public updateNotification(id: string, notification: NotificationFormValues): Promise<void> {
     return this.void()
   }
 
