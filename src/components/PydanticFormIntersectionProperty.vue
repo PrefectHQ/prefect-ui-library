@@ -55,10 +55,6 @@
       return props
     }, [])
   })
-
-  const title = computed(() => {
-    return props.property.alias ?? props.property.title ?? props.property.$ref
-  })
 </script>
 
 <style>

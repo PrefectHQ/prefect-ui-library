@@ -81,71 +81,97 @@ interface BaseDateInput extends PydanticTypeDefinitionComponent {
   defaultValue: Date,
 }
 
-const baseJsonInput: BaseJsonInput = {
-  attrs: {},
-  component: JsonEditor,
-  defaultValue: '',
-  validators: [],
+const getBaseJsonInput = (): BaseJsonInput => {
+  return {
+    attrs: {},
+    component: JsonEditor,
+    defaultValue: '',
+    validators: [],
+  }
 }
 
-const baseTextInput: BaseTextInput = {
-  attrs: {
-    type: 'text',
-  },
-  defaultValue: '',
-  component: PTextInput,
-  validators: [],
-}
-
-const baseToggleInput: BaseToggleInput = {
-  attrs: {},
-  component: PToggle,
-  defaultValue: false,
-  validators: [],
-}
-
-const baseNumberInput: BaseNumberInput = {
-  attrs: {},
-  component: PNumberInput,
-  defaultValue: 0,
-  validators: [],
-}
-
-const baseEnumInput: BaseEnumInput = {
-  attrs: {
-    allowUnknownValue: false,
-    multiple: false,
-    options: [] as PydanticEnum<unknown>,
-  },
-  component: PCombobox,
-  defaultValue: [],
-  validators: [],
-}
-
-const baseDateInput: BaseDateInput = {
-  attrs: {
-    showTime: false,
-  },
-  component: PDateInput,
-  defaultValue: new Date(),
-  validators: [],
-}
-
-const StringFormatComponentMap: Record<PydanticStringFormat, PydanticTypeDefinitionComponent> = {
-  'date': baseDateInput,
-  'date-time': {
-    ...baseDateInput,
+const getBaseTextInput = (): BaseTextInput => {
+  return {
     attrs: {
-      showTime: true,
+      type: 'text',
     },
-  },
-  'regex': baseTextInput,
-  'email': {
-    ...baseTextInput,
-    validators: [isEmail],
-  },
-  'json-string': baseJsonInput,
-  'time-delta': baseNumberInput,
+    defaultValue: '',
+    component: PTextInput,
+    validators: [],
+  }
+}
+
+const getBaseToggleInput = (): BaseToggleInput => {
+  return {
+    attrs: {},
+    component: PToggle,
+    defaultValue: false,
+    validators: [],
+  }
+}
+
+const getBaseNumberInput = (): BaseNumberInput => {
+  return {
+    attrs: {},
+    component: PNumberInput,
+    defaultValue: 0,
+    validators: [],
+  }
+}
+
+const getBaseEnumInput = (): BaseEnumInput => {
+  return {
+    attrs: {
+      allowUnknownValue: false,
+      multiple: false,
+      options: [] as PydanticEnum<unknown>,
+    },
+    component: PCombobox,
+    defaultValue: [],
+    validators: [],
+  }
+}
+
+const getBaseDateInput = (): BaseDateInput => {
+  return {
+    attrs: {
+      showTime: false,
+    },
+    component: PDateInput,
+    defaultValue: new Date(),
+    validators: [],
+  }
+}
+
+const getStringFormattedComponent = (format: PydanticStringFormat): PydanticTypeDefinitionComponent => {
+  let component
+
+  switch (format) {
+    case 'date':
+      component = getBaseDateInput()
+      break
+    case 'date-time':
+      component = getBaseDateInput()
+      component.attrs = {
+        showTime: true,
+      }
+      break
+    case 'regex':
+      component = getBaseTextInput()
+      break
+    case 'email':
+      component = getBaseTextInput()
+      component.validators = [isEmail]
+      break
+    case 'json-string':
+      component = getBaseJsonInput()
+      break
+    case 'time-delta':
+      component = getBaseNumberInput()
+      break
+  }
+
+  return component
 }
 
 const getValidators = (definition: PydanticTypeDefinition): ValidateMethod[] => {
@@ -196,11 +222,11 @@ const getAttrs = (definition: PydanticTypeDefinition): PydanticTypeDefinitionCom
   return attrs
 }
 
-const getBaseComponent = (definition: PydanticTypeDefinition | PydanticTypeProperty): null | PydanticTypeDefinitionComponent => {
+const getBaseComponent = (definition: PydanticTypeDefinition): null | PydanticTypeDefinitionComponent => {
   const { type, format, enum: defEnum } = definition
 
   if (isPydanticEnum(definition)) {
-    const component = baseEnumInput
+    const component = getBaseEnumInput()
     component.attrs.options = defEnum as PydanticEnum<PydanticType>
 
     if (isPydanticType('array', type)) {
@@ -213,26 +239,26 @@ const getBaseComponent = (definition: PydanticTypeDefinition | PydanticTypePrope
   if (isPydanticType('string', type)) {
     let component
     if (isPydanticStringFormat(format)) {
-      component = StringFormatComponentMap[format]
+      component = getStringFormattedComponent(format)
     } else {
-      component = baseTextInput
+      component = getBaseTextInput()
     }
 
     return component
   }
 
   if (isPydanticType('boolean', type)) {
-    const component = baseToggleInput
+    const component = getBaseToggleInput()
     return component
   }
 
   if (isPydanticType('number', type) || isPydanticType('integer', type)) {
-    const component = baseNumberInput
+    const component = getBaseNumberInput()
     return component
   }
 
   if (isPydanticType('array', type)) {
-    const component = baseEnumInput
+    const component = getBaseEnumInput()
     component.attrs.allowUnknownValue = true
     component.attrs.multiple = true
 
@@ -240,7 +266,7 @@ const getBaseComponent = (definition: PydanticTypeDefinition | PydanticTypePrope
   }
 
   if (isPydanticType('object', type)) {
-    const component = baseJsonInput
+    const component = getBaseJsonInput()
     return component
   }
 
@@ -248,7 +274,7 @@ const getBaseComponent = (definition: PydanticTypeDefinition | PydanticTypePrope
     return null
   }
 
-  return baseTextInput
+  return getBaseTextInput()
 }
 
 export const getTypeDefinitionFromTypeRef = (ref: PydanticTypeRef<string>, definition: PydanticTypeDefinition): PydanticTypeDefinition | undefined => {

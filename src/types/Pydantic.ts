@@ -148,7 +148,6 @@ export function isPydanticStringFormat(format?: PydanticStringFormat): format is
   return !!format && PydanticStringFormats.includes(format)
 }
 
-
 export function isPydanticEnum(definition: PydanticTypeDefinition): definition is PydanticTypeDefinitionEnum {
   return 'enum' in definition
 }
