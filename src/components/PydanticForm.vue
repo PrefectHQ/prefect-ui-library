@@ -4,7 +4,7 @@
 
     <p-content>
       <template v-for="(property, key) in properties" :key="key">
-        <PydanticFormProperty :property="property" :schema="schema" />
+        <PydanticFormProperty :property="property" :schema="normalizedSchema" />
       </template>
     </p-content>
   </p-form>
@@ -16,6 +16,7 @@
   import JsonView from './JsonView.vue'
   import PydanticFormProperty from './PydanticFormProperty.vue'
   import { PydanticTypeDefinition } from '@/types/Pydantic'
+  import { normalizePydanticTypeDefinitionProperties } from '@/utilities'
 
 
   const props = defineProps<{
@@ -26,7 +27,11 @@
   const { handleSubmit, handleReset, isSubmitting, meta, errors, submitCount } = useForm()
 
   const properties = computed(() => {
-    return props.schema.properties ?? {}
+    return normalizedSchema.value.properties ?? {}
+  })
+
+  const normalizedSchema = computed(() => {
+    return normalizePydanticTypeDefinitionProperties(props.schema)
   })
 </script>
 

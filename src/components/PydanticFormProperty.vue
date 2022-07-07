@@ -7,14 +7,14 @@
 
   <template v-else>
     <h3 v-if="!isUnionProperty && propertyDefinition && level == 0" class="pydantic-form-union-property__section-header">
-      <span>{{ propertyDefinition.title }}</span>
+      <span>{{ propertyDefinition.id }}</span>
     </h3>
 
     <component
       :is="formComponent"
       v-model="internalValue"
       :schema="schema"
-      :property="propertyDefinition"
+      :property="property"
       :level="level + 1"
     />
   </template>
@@ -72,9 +72,10 @@
   })
 
   const propertyDefinition = computed(() => {
-    if (hasTypeRef(props.property)) {
-      return getTypeDefinitionFromTypeRef(props.property.$ref, props.schema)
-    }
+    // if (hasTypeRef(props.property)) {
+    //   console.log(props.property, props.schema)
+    //   return getTypeDefinitionFromTypeRef(props.property.$ref, props.schema)
+    // }
 
     return props.property
   })

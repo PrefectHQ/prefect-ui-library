@@ -1,31 +1,34 @@
 
-import { PTextInput, PToggle, PTextarea, PDateInput, PNumberInput, PCombobox } from '@prefecthq/prefect-design'
+import { PTextInput, PToggle, PTextarea, PDateInput, PNumberInput, PCombobox, PSelect } from '@prefecthq/prefect-design'
 import JsonEditor from '@/components/JsonEditor.vue'
 import { ValidateMethod, isEmail, greaterThanOrEqual, greaterThan, lessThan, lessThanOrEqual } from '@/services'
 import {
-  PydanticType,
-  PydanticEnum,
-  PydanticStringFormat,
-  PydanticTypeDefinition,
-  PydanticTypeProperty,
-  hasMinLength,
-  hasMaxLength,
-  hasMin,
+  hasDefinitions,
+  hasExclusiveMax,
   hasExclusiveMin,
   hasMax,
-  hasExclusiveMax,
-  hasMinItems,
   hasMaxItems,
+  hasMaxLength,
+  hasMin,
+  hasMinItems,
+  hasMinLength,
   hasMultipleOf,
+  hasProperties,
+  hasTypeRef,
   isPydanticEnum,
-  isPydanticType,
   isPydanticStringFormat,
+  isPydanticType,
+  isPydanticTypeRef,
+  PydanticEnum,
+  PydanticStringFormat,
+  PydanticType,
+  PydanticTypeDefinition,
+  PydanticTypeProperty,
   PydanticTypeRef,
-  RefStringRegExp,
-  isPydanticTypeRef
+  RefStringRegExp
 } from '@/types/Pydantic'
 
-const InputComponents = [PToggle, PTextInput, PTextarea, JsonEditor, PDateInput, PNumberInput, PCombobox] as const
+const InputComponents = [PToggle, PTextInput, PTextarea, JsonEditor, PDateInput, PNumberInput, PCombobox, PSelect] as const
 
 export type PydanticTypeDefinitionComponentAttrs = Record<string, unknown>
 export type PydanticTypeDefinitionComponent = {
@@ -64,6 +67,15 @@ interface BaseNumberInput extends PydanticTypeDefinitionComponent {
 }
 
 interface BaseEnumInput extends PydanticTypeDefinitionComponent {
+  attrs: {
+    multiple: boolean,
+    options: PydanticEnum<unknown>,
+  },
+  component: typeof PSelect,
+  defaultValue: unknown[],
+}
+
+interface BaseListInput extends PydanticTypeDefinitionComponent {
   attrs: {
     allowUnknownValue: boolean,
     multiple: boolean,
@@ -122,8 +134,20 @@ const getBaseNumberInput = (): BaseNumberInput => {
 const getBaseEnumInput = (): BaseEnumInput => {
   return {
     attrs: {
-      allowUnknownValue: false,
       multiple: false,
+      options: [] as PydanticEnum<unknown>,
+    },
+    component: PSelect,
+    defaultValue: [],
+    validators: [],
+  }
+}
+
+const getBaseListInput = (): BaseListInput => {
+  return {
+    attrs: {
+      allowUnknownValue: true,
+      multiple: true,
       options: [] as PydanticEnum<unknown>,
     },
     component: PCombobox,
@@ -258,7 +282,7 @@ const getBaseComponent = (definition: PydanticTypeDefinition): null | PydanticTy
   }
 
   if (isPydanticType('array', type)) {
-    const component = getBaseEnumInput()
+    const component = getBaseListInput()
     component.attrs.allowUnknownValue = true
     component.attrs.multiple = true
 
@@ -302,4 +326,32 @@ export const getComponentFromPydanticTypeDefinition = (definition: PydanticTypeD
   component.attrs = { ...component.attrs, ...getAttrs(definition) }
 
   return component
+}
+
+export const getComponentFromPydanticProperty = (property: PydanticTypeProperty, schema: PydanticTypeDefinition): PydanticTypeDefinitionComponent | null => {
+  let definition
+
+  if (hasTypeRef(property)) {
+    const definition_ = getTypeDefinitionFromTypeRef(property.$ref, schema)
+    definition = { ...definition_, ...property }
+  } else {
+    definition = property
+  }
+
+  return getComponentFromPydanticTypeDefinition(definition)
+}
+
+export const normalizePydanticTypeDefinitionProperties = (schema: PydanticTypeDefinition): PydanticTypeDefinition => {
+  if (hasProperties(schema)) {
+    Object.keys(schema.properties).forEach(key => schema.properties[key].id = key)
+  }
+
+  if (hasDefinitions(schema)) {
+    Object.keys(schema.definitions).forEach(key => {
+      schema.definitions[key] = normalizePydanticTypeDefinitionProperties(schema.definitions[key])
+      schema.definitions[key].id = key
+    })
+  }
+
+  return schema
 }

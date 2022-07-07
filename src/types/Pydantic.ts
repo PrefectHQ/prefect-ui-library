@@ -38,6 +38,8 @@ export type PydanticTypeRef<T extends string> = `${typeof BaseDefinitionRefStrin
 export type PydanticPropertyRecord = Record<'anyOf' | 'allOf' | string, PydanticTypeRef<string>[] | PydanticTypeDefinition[] | never>
 
 export interface PydanticTypeDefinition {
+  // This isn't part of the pydantic schema but was introduced for convenience when passing schema without upper context
+  id?: string,
   title?: string,
   type?: PydanticType,
   format?: PydanticStringFormat,
@@ -132,6 +134,10 @@ export interface PydanticTypeDefinitionProperties extends PydanticTypeDefinition
   properties: Record<string, PydanticTypeProperty>,
 }
 
+export interface PydanticTypeDefinitionDefinitions extends PydanticTypeDefinition {
+  definitions: Record<string, PydanticTypeDefinition>,
+}
+
 export interface PydanticTypeDefinitionRef extends PydanticTypeProperty {
   $ref: PydanticTypeRef<string>,
 }
@@ -154,6 +160,10 @@ export function isPydanticEnum(definition: PydanticTypeDefinition): definition i
 
 export function hasProperties(definition: PydanticTypeDefinition): definition is PydanticTypeDefinitionProperties {
   return 'properties' in definition
+}
+
+export function hasDefinitions(definition: PydanticTypeDefinition): definition is PydanticTypeDefinitionDefinitions {
+  return 'definitions' in definition
 }
 
 export function hasAllOf(definition: PydanticTypeDefinition): definition is PydanticPropertyRecordAllOf {

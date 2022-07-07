@@ -1,5 +1,5 @@
 <template>
-  <p-label :label="property.title" :message="errors?.[0]" :state="meta">
+  <p-label :label="property.title ?? property.id" :message="errors?.[0]" :state="meta">
     <component
       :is="inputComponent.component"
       v-if="inputComponent"
@@ -15,12 +15,13 @@
 <script lang="ts" setup>
   import { useField } from 'vee-validate'
   import { computed, watch } from 'vue'
-  import type { PydanticTypeDefinition } from '@/types/Pydantic'
-  import { getComponentFromPydanticTypeDefinition } from '@/utilities'
+  import type { PydanticTypeDefinition, PydanticTypeProperty } from '@/types/Pydantic'
+  import { getComponentFromPydanticProperty } from '@/utilities'
 
   const props = defineProps<{
     modelValue?: unknown,
-    property: PydanticTypeDefinition,
+    property: PydanticTypeProperty,
+    schema: PydanticTypeDefinition,
   }>()
 
   const emit = defineEmits<{
@@ -28,7 +29,7 @@
   }>()
 
   const inputComponent = computed(() => {
-    return getComponentFromPydanticTypeDefinition(props.property)
+    return getComponentFromPydanticProperty(props.property, props.schema)
   })
 
   const { value: internalValue, errors, meta } = useField(props.property.title ?? 'field', inputComponent.value?.validators, { initialValue: props.modelValue ?? props.property.default ?? inputComponent.value?.defaultValue })
