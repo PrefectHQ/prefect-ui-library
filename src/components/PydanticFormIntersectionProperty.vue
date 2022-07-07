@@ -1,5 +1,5 @@
 <template>
-  <section>
+  <p-content>
     <h3 class="pydantic-form-intersection-property__section-header">
       {{ title }}
     </h3>
@@ -7,7 +7,7 @@
     <template v-for="(subProperty, key) in properties" :key="key">
       <PydanticFormProperty :property="subProperty" :schema="schema" :level="level" />
     </template>
-  </section>
+  </p-content>
 </template>
 
 <script lang="ts" setup>

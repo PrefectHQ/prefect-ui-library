@@ -1,23 +1,21 @@
 <template>
-  <section>
-    <p-content>
-      <h3 class="pydantic-form-union-property__section-header">
-        <span>{{ title }}</span>
-        <p-button-group v-model="propertyDefinitionRef" :options="buttonGroupOptions" size="sm" />
-      </h3>
+  <p-content>
+    <h3 class="pydantic-form-union-property__section-header">
+      <span>{{ title }}</span>
+      <p-button-group v-model="propertyDefinitionRef" :options="buttonGroupOptions" size="sm" />
+    </h3>
 
-      <template v-for="(subProperty, key) in displayedProperties" :key="key">
-        <PydanticFormProperty :property="subProperty" :schema="schema" :level="level" />
-      </template>
-    </p-content>
-  </section>
+    <template v-for="(subProperty, key) in displayedProperties" :key="key">
+      <PydanticFormProperty :property="subProperty" :schema="schema" :level="level" />
+    </template>
+  </p-content>
 </template>
 
 <script lang="ts" setup>
   import { ButtonGroupOption } from '@prefecthq/prefect-design'
   import { computed, ref } from 'vue'
   import PydanticFormProperty from './PydanticFormProperty.vue'
-  import { isPydanticTypeRef, PydanticPropertyRecordAnyOf, PydanticTypeDefinition, hasTypeRef } from '@/types/Pydantic'
+  import { PydanticPropertyRecordAnyOf, PydanticTypeDefinition, hasTypeRef } from '@/types/Pydantic'
   import { getTypeDefinitionFromTypeRef } from '@/utilities/pydanticMapper'
 
   const props = defineProps<{

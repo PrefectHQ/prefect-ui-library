@@ -1,7 +1,7 @@
 <template>
   <template v-if="hasSubProperties && level < 2">
     <template v-for="(subProperty, key) in properties" :key="key">
-      <PydanticFormProperty :property="subProperty" :schema="schema" />
+      <PydanticFormProperty :property="subProperty" :schema="schema" :level="level + 1" />
     </template>
   </template>
 

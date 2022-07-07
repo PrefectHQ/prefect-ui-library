@@ -2,9 +2,11 @@
   <p-form>
     <JsonView class="tmp" :value="JSON.stringify(schema)" />
 
-    <template v-for="(property, key) in properties" :key="key">
-      <PydanticFormProperty :property="property" :schema="schema" />
-    </template>
+    <p-content>
+      <template v-for="(property, key) in properties" :key="key">
+        <PydanticFormProperty :property="property" :schema="schema" />
+      </template>
+    </p-content>
   </p-form>
 </template>
 
