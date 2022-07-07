@@ -31,7 +31,7 @@
     </div>
     <template #footer="{ disabled, loading }">
       <p-button inset @click="cancel">
-        Reset
+        Cancel
       </p-button>
       <p-button type="submit" :disabled="disabled" :loading="loading">
         Submit
