@@ -5,7 +5,7 @@
     </h3>
 
     <template v-for="(subProperty, key) in properties" :key="key">
-      <PydanticFormProperty :property="subProperty" :schema="schema" />
+      <PydanticFormProperty :property="subProperty" :schema="schema" :level="level" />
     </template>
   </section>
 </template>
@@ -20,6 +20,7 @@
     modelValue?: unknown,
     property: PydanticPropertyRecordAllOf,
     schema: PydanticTypeDefinition,
+    level: number,
   }>()
 
   const emit = defineEmits<{

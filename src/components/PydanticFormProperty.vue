@@ -1,19 +1,30 @@
 <template>
-  <component :is="formComponent" v-model="internalValue" :schema="propertyDefinition" :property="property" />
+  <component
+    :is="formComponent"
+    v-model="internalValue"
+    :schema="propertyDefinition"
+    :property="property"
+    :level="level + 1"
+  />
 </template>
 
 <script lang="ts" setup>
-  import { computed } from 'vue'
+  import { computed, withDefaults } from 'vue'
+  import PydanticForm from './PydanticForm.vue'
   import PydanticFormField from './PydanticFormField.vue'
   import PydanticFormIntersectionProperty from './PydanticFormIntersectionProperty.vue'
   import PydanticFormUnionProperty from './PydanticFormUnionProperty.vue'
-  import { hasAnyOf, hasAllOf, PydanticTypeProperty, PydanticTypeDefinition } from '@/types/Pydantic'
+  import { hasAnyOf, hasAllOf, PydanticTypeProperty, PydanticTypeDefinition, isPydanticType } from '@/types/Pydantic'
 
-  const props = defineProps<{
+  const props = withDefaults(defineProps<{
     modelValue?: unknown,
+    level?: number,
     property: PydanticTypeProperty,
     schema: PydanticTypeDefinition,
-  }>()
+  }>(), {
+    level: 0,
+    modelValue: undefined,
+  })
 
   const emit = defineEmits<{
     (event: 'update:modelValue', value: unknown): void,
@@ -30,6 +41,7 @@
 
   const isUnionProperty = computed(() => hasAnyOf(props.property))
   const isIntersectionProperty = computed(() => hasAllOf(props.property))
+  const isObjectProperty = computed(() => isPydanticType('object', props.property.type))
 
   const formComponent = computed(() => {
     if (isUnionProperty.value) {
@@ -38,6 +50,10 @@
 
     if (isIntersectionProperty.value) {
       return PydanticFormIntersectionProperty
+    }
+
+    if (isObjectProperty.value && props.level < 2) {
+      return PydanticForm
     }
 
     return PydanticFormField

@@ -7,7 +7,7 @@
     <p-button-group v-model="propertyDefinitionRef" :options="buttonGroupOptions" size="sm" />
 
     <template v-for="(subProperty, key) in displayedProperties" :key="key">
-      <PydanticFormProperty :property="subProperty" :schema="schema" />
+      <PydanticFormProperty :property="subProperty" :schema="schema" :level="level" />
     </template>
   </section>
 </template>
@@ -23,6 +23,7 @@
     modelValue?: unknown,
     property: PydanticPropertyRecordAnyOf,
     schema: PydanticTypeDefinition,
+    level: number,
   }>()
 
   const emit = defineEmits<{
