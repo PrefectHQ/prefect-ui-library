@@ -1,20 +1,18 @@
 <template>
   <section>
-    HEllo I'm an intersection property
-    <!--
-      <h3 class="pydantic-form-union-property__section-header">
+    <h3 class="pydantic-form-intersection-property__section-header">
       {{ title }}
-      </h3>
+    </h3>
 
-      <PydanticFormField v-model="internalValue" :definition="internalDefinition" />
-    -->
+    <template v-for="(subProperty, key) in properties" :key="key">
+      <PydanticFormProperty :property="subProperty" :schema="schema" />
+    </template>
   </section>
 </template>
 
 <script lang="ts" setup>
-  import { ButtonGroupOption } from '@prefecthq/prefect-design'
-  import { computed, ref } from 'vue'
-  import PydanticFormField from './PydanticFormField.vue'
+  import { computed } from 'vue'
+  import PydanticFormProperty from './PydanticFormProperty.vue'
   import { isPydanticTypeRef, PydanticPropertyRecordAllOf, PydanticTypeDefinition, hasTypeRef } from '@/types/Pydantic'
   import { getTypeDefinitionFromTypeRef } from '@/utilities/pydanticMapper'
 
@@ -37,8 +35,31 @@
     },
   })
 
-  const internalDefinition = {}
+  const properties = computed(() => {
+    return props.property.allOf.map((prop) => {
+      if (hasTypeRef(prop) && isPydanticTypeRef(prop.$ref)) {
+        const propDef = getTypeDefinitionFromTypeRef(prop.$ref, props.schema)
 
+        if (propDef) {
+          return propDef
+        }
+      }
+
+      return prop
+    }).reduce((props: PydanticTypeDefinition[], prop) => {
+      let existingPropIndex = props.findIndex(prop_ => prop_.title == prop.title)
+
+      if (existingPropIndex > -1) {
+        let existingProp = props[existingPropIndex]
+
+        existingProp = { ...existingProp, ...prop }
+        props.splice(existingPropIndex, 1, existingProp)
+      } else {
+        props.push(prop)
+      }
+      return props
+    }, [])
+  })
 
   const title = computed(() => {
     return props.property.alias ?? props.property.title ?? props.property.$ref
@@ -46,7 +67,7 @@
 </script>
 
 <style>
-.pydantic-form-union-property__section-header {
+.pydantic-form-intersection-property__section-header {
   @apply text-lg font-semibold
 }
 </style>
