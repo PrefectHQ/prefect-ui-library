@@ -7,6 +7,7 @@ import {
   PydanticEnum,
   PydanticStringFormat,
   PydanticTypeDefinition,
+  PydanticTypeProperty,
   hasMinLength,
   hasMaxLength,
   hasMin,
@@ -195,7 +196,7 @@ const getAttrs = (definition: PydanticTypeDefinition): PydanticTypeDefinitionCom
   return attrs
 }
 
-const getBaseComponent = (definition: PydanticTypeDefinition): null | PydanticTypeDefinitionComponent => {
+const getBaseComponent = (definition: PydanticTypeDefinition | PydanticTypeProperty): null | PydanticTypeDefinitionComponent => {
   const { type, format, enum: defEnum } = definition
 
   if (isPydanticEnum(definition)) {

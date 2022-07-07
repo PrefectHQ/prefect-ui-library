@@ -1,5 +1,5 @@
 <template>
-  <p-label :label="schema.title" :message="errors?.[0]" :state="meta">
+  <p-label :label="property.title" :message="errors?.[0]" :state="meta">
     <component
       :is="inputComponent.component"
       v-if="inputComponent"
@@ -20,7 +20,7 @@
 
   const props = defineProps<{
     modelValue?: unknown,
-    schema: PydanticTypeDefinition,
+    property: PydanticTypeDefinition,
   }>()
 
   const emit = defineEmits<{
@@ -28,10 +28,10 @@
   }>()
 
   const inputComponent = computed(() => {
-    return getComponentFromPydanticTypeDefinition(props.schema)
+    return getComponentFromPydanticTypeDefinition(props.property)
   })
 
-  const { value: internalValue, errors, meta } = useField(props.schema.title ?? 'field', inputComponent.value?.validators, { initialValue: props.modelValue ?? props.schema.default ?? inputComponent.value?.defaultValue })
+  const { value: internalValue, errors, meta } = useField(props.property.title ?? 'field', inputComponent.value?.validators, { initialValue: props.modelValue ?? props.property.default ?? inputComponent.value?.defaultValue })
 
   const value = computed({
     get() {

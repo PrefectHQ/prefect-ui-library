@@ -1,20 +1,28 @@
 <template>
-  <component
-    :is="formComponent"
-    v-model="internalValue"
-    :schema="propertyDefinition"
-    :property="property"
-    :level="level + 1"
-  />
+  <template v-if="hasSubProperties && level < 2">
+    <template v-for="(subProperty, key) in properties" :key="key">
+      <PydanticFormProperty :property="subProperty" :schema="schema" />
+    </template>
+  </template>
+
+  <template v-else>
+    <component
+      :is="formComponent"
+      v-model="internalValue"
+      :schema="schema"
+      :property="propertyDefinition"
+      :level="level + 1"
+    />
+  </template>
 </template>
 
 <script lang="ts" setup>
   import { computed, withDefaults } from 'vue'
-  import PydanticForm from './PydanticForm.vue'
   import PydanticFormField from './PydanticFormField.vue'
   import PydanticFormIntersectionProperty from './PydanticFormIntersectionProperty.vue'
   import PydanticFormUnionProperty from './PydanticFormUnionProperty.vue'
-  import { hasAnyOf, hasAllOf, PydanticTypeProperty, PydanticTypeDefinition, isPydanticType } from '@/types/Pydantic'
+  import { hasAnyOf, hasAllOf, hasTypeRef, hasProperties, PydanticTypeProperty, PydanticTypeDefinition, isPydanticType, isPydanticTypeRef } from '@/types/Pydantic'
+  import { getTypeDefinitionFromTypeRef } from '@/utilities/pydanticMapper'
 
   const props = withDefaults(defineProps<{
     modelValue?: unknown,
@@ -41,7 +49,7 @@
 
   const isUnionProperty = computed(() => hasAnyOf(props.property))
   const isIntersectionProperty = computed(() => hasAllOf(props.property))
-  const isObjectProperty = computed(() => isPydanticType('object', props.property.type))
+  const hasSubProperties = computed(() => hasProperties(props.property))
 
   const formComponent = computed(() => {
     if (isUnionProperty.value) {
@@ -52,16 +60,16 @@
       return PydanticFormIntersectionProperty
     }
 
-    if (isObjectProperty.value && props.level < 2) {
-      return PydanticForm
-    }
-
     return PydanticFormField
   })
 
+  const properties = computed(() => {
+    return props.property.properties ?? []
+  })
+
   const propertyDefinition = computed(() => {
-    if (isUnionProperty.value || isIntersectionProperty.value) {
-      return props.schema
+    if (hasTypeRef(props.property)) {
+      return getTypeDefinitionFromTypeRef(props.property.$ref, props.schema)
     }
 
     return props.property

@@ -1,14 +1,15 @@
 <template>
   <section>
-    <h3 class="pydantic-form-union-property__section-header">
-      {{ title }}
-    </h3>
+    <p-content>
+      <h3 class="pydantic-form-union-property__section-header">
+        <span>{{ title }}</span>
+        <p-button-group v-model="propertyDefinitionRef" :options="buttonGroupOptions" size="sm" />
+      </h3>
 
-    <p-button-group v-model="propertyDefinitionRef" :options="buttonGroupOptions" size="sm" />
-
-    <template v-for="(subProperty, key) in displayedProperties" :key="key">
-      <PydanticFormProperty :property="subProperty" :schema="schema" :level="level" />
-    </template>
+      <template v-for="(subProperty, key) in displayedProperties" :key="key">
+        <PydanticFormProperty :property="subProperty" :schema="schema" :level="level" />
+      </template>
+    </p-content>
   </section>
 </template>
 
@@ -39,7 +40,6 @@
     },
   })
 
-
   const title = computed(() => {
     return props.property.alias ?? props.property.title ?? props.property.$ref
   })
@@ -50,7 +50,7 @@
 
   const properties = computed(() => {
     return props.property.anyOf.map((prop) => {
-      if (hasTypeRef(prop) && isPydanticTypeRef(prop.$ref)) {
+      if (hasTypeRef(prop)) {
         const propDef = getTypeDefinitionFromTypeRef(prop.$ref, props.schema)
 
         if (propDef) {
@@ -84,5 +84,7 @@
   @apply
   text-lg
   font-semibold
+  flex
+  gap-2
 }
 </style>

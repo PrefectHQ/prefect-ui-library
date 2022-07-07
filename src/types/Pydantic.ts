@@ -148,16 +148,21 @@ export function isPydanticStringFormat(format?: PydanticStringFormat): format is
   return !!format && PydanticStringFormats.includes(format)
 }
 
+
 export function isPydanticEnum(definition: PydanticTypeDefinition): definition is PydanticTypeDefinitionEnum {
   return 'enum' in definition
 }
 
-export function hasAllOf(property: PydanticTypeDefinition): property is PydanticPropertyRecordAllOf {
-  return 'allOf' in property
+export function hasProperties(definition: PydanticTypeDefinition): definition is PydanticTypeDefinitionProperties {
+  return 'properties' in definition
 }
 
-export function hasAnyOf(property: PydanticTypeDefinition): property is PydanticPropertyRecordAnyOf {
-  return 'anyOf' in property
+export function hasAllOf(definition: PydanticTypeDefinition): definition is PydanticPropertyRecordAllOf {
+  return 'allOf' in definition
+}
+
+export function hasAnyOf(definition: PydanticTypeDefinition): definition is PydanticPropertyRecordAnyOf {
+  return 'anyOf' in definition
 }
 
 export function hasTypeRef(definition: PydanticTypeDefinition): definition is PydanticTypeDefinitionRef {
