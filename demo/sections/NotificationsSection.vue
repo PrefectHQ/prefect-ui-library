@@ -13,11 +13,11 @@
     </DemoSubSection>
     <br>
     <DemoSubSection heading="Notification Form - Create">
-      <NotificationForm v-model:notification="createNotification" @submit="submit" />
+      <NotificationForm :initial-values="createNotification" @submit="submit" />
     </DemoSubSection>
 
     <DemoSubSection heading="Notification Form - Edit">
-      <NotificationForm v-model:notification="notification" @submit="submit" />
+      <NotificationForm :initial-values="notification" @submit="submit" />
     </DemoSubSection>
   </DemoSection>
 </template>
@@ -29,9 +29,7 @@
   import NotificationDetails from '@/components/NotificationDetails.vue'
   import NotificationForm from '@/components/NotificationForm.vue'
   import NotificationsTable from '@/components/NotificationsTable.vue'
-  import { BlockDocumentData } from '@/models/BlockDocument'
-  import { BlockType } from '@/models/BlockType'
-  import { Notification } from '@/models/Notification'
+  import { NotificationFormValues } from '@/models'
   import { blockDocumentsApiKey, blockSchemasApiKey, blockTypesApiKey, mocker } from '@/services'
 
   const emailBlockType = mocker.create('blockType', [{ name: 'Email Addresses' }])
@@ -69,9 +67,9 @@
 
   const blockDocumentsApi = mocker.create('blockDocumentsApi', [{ blockDocuments }])
 
-  const createNotification = ref<Partial<Notification>>({})
+  const createNotification = ref<NotificationFormValues>()
 
-  function submit(notification: Partial<Notification>): void {
+  function submit(notification: NotificationFormValues): void {
     console.log({ notification })
   }
 
