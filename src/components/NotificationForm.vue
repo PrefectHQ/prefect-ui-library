@@ -25,15 +25,15 @@
     </p>
 
     <div class="notification-form__review-block">
-      <template v-if="notification && blockType">
-        <NotificationDetails :notification="notification" :block-type="blockType" :data="data" />
+      <template v-if="values && blockType">
+        <NotificationDetails :notification="values" :block-type="blockType" :data="data" />
       </template>
     </div>
-    <template #footer="{ disabled, loading }">
+    <template #footer>
       <p-button inset @click="cancel">
         Cancel
       </p-button>
-      <p-button type="submit" :disabled="disabled" :loading="loading">
+      <p-button type="submit" :loading="isSubmitting">
         Submit
       </p-button>
     </template>
@@ -43,55 +43,41 @@
 <script lang="ts" setup>
   import { PLabel, PTagsInput, PForm, PButtonGroup, showToast } from '@prefecthq/prefect-design'
   import { useSubscription, useSubscriptionWithDependencies } from '@prefecthq/vue-compositions'
-  import { useForm } from 'vee-validate'
+  import { useForm, useField } from 'vee-validate'
   import { computed, watchEffect, ref } from 'vue'
   import BlockSchemaFormFields from './BlockSchemaFormFields.vue'
   import NotificationDetails from './NotificationDetails.vue'
   import StateSelect from '@/components/StateSelect.vue'
-  import { Notification, BlockTypeFilter, BlockDocumentData } from '@/models'
+  import { BlockTypeFilter, BlockDocumentData, NotificationFormValues } from '@/models'
   import { blockDocumentsApiKey, blockSchemasApiKey, blockTypesApiKey } from '@/services'
   import { inject } from '@/utilities/inject'
 
   const props = defineProps<{
-    notification: Partial<Notification>,
+    initialValues?: NotificationFormValues,
   }>()
 
   const emit = defineEmits<{
-    (event: 'update:notification' | 'submit', value: Partial<Notification>): void,
+    (event: 'submit', value: NotificationFormValues): void,
     (event: 'cancel'): void,
   }>()
 
-  const { handleSubmit } = useForm()
+  const { handleSubmit, isSubmitting, values } = useForm<NotificationFormValues>({ initialValues: props.initialValues })
+  const { value: selectedStates } = useField<string[]>('stateNames', [], { initialValue: [] })
+  const { value: selectedTags } = useField<string[]>('tags', [], { initialValue: [] })
+  const { value: selectedBlockTypeId } = useField<string | undefined>('blockDocumentId')
+
   const blockDocumentsApi = inject(blockDocumentsApiKey)
   const blockTypesApi = inject(blockTypesApiKey)
   const blockSchemasApi = inject(blockSchemasApiKey)
-  const selectedBlockTypeId = ref<string>()
+
   const data = ref<BlockDocumentData>({})
 
-  const selectedStates = computed({
-    get(): string[] {
-      return props.notification.stateNames ?? []
-    },
-    set(stateNames: string[]) {
-      emit('update:notification', { ...props.notification, stateNames })
-    },
-  })
-
-  const selectedTags = computed({
-    get(): string[] {
-      return props.notification.tags ?? []
-    },
-    set(tags: string[]) {
-      emit('update:notification', { ...props.notification, tags })
-    },
-  })
-
   const blockDocumentSubscriptionArgs = computed<Parameters<typeof blockDocumentsApi.getBlockDocument> | null>(() => {
-    if (!props.notification.blockDocumentId) {
+    if (!selectedBlockTypeId.value) {
       return null
     }
 
-    return [props.notification.blockDocumentId]
+    return [selectedBlockTypeId.value]
   })
   const blockDocumentSubscription = useSubscriptionWithDependencies(blockDocumentsApi.getBlockDocument, blockDocumentSubscriptionArgs)
   const blockDocument = computed(() => blockDocumentSubscription.response)
@@ -160,8 +146,8 @@
   })
 
 
-  const submit = handleSubmit(async () => {
-    if (blockSchema.value === undefined || selectedBlockTypeId.value === undefined) {
+  const submit = handleSubmit(async values => {
+    if (blockSchema.value === undefined || !values.blockDocumentId) {
       showToast('Failed to submit notification')
       return
     }
@@ -170,13 +156,11 @@
       const { id: blockDocumentId } = await blockDocumentsApi.createBlockDocument({
         isAnonymous: true,
         blockSchemaId: blockSchema.value.id,
-        blockTypeId: selectedBlockTypeId.value,
+        blockTypeId: values.blockDocumentId,
         data: data.value,
       })
-      const notification = { ...props.notification, blockDocumentId }
 
-      emit('update:notification', notification)
-      emit('submit', notification)
+      emit('submit', { ...values, blockDocumentId })
     } catch (err) {
       showToast('Failed to submit notification')
     }
