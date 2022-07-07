@@ -90,13 +90,13 @@
   const data = computed({
     get() {
       if (selectedBlockTypeId.value === undefined) {
-        return null
+        return undefined
       }
 
       return blockDataMap[selectedBlockTypeId.value] ?? {}
     },
-    set(value: BlockDocumentData | null) {
-      if (selectedBlockTypeId.value === undefined || value === null) {
+    set(value: BlockDocumentData | undefined) {
+      if (selectedBlockTypeId.value === undefined) {
         return
       }
 
@@ -178,7 +178,7 @@
   })
 
   const submit = handleSubmit(async () => {
-    if (blockSchema.value === undefined || selectedBlockTypeId.value === undefined || data.value === null) {
+    if (blockSchema.value === undefined || selectedBlockTypeId.value === undefined || data.value === undefined) {
       showToast('Failed to submit notification')
       return
     }
