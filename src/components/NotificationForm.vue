@@ -64,20 +64,21 @@
   const { handleSubmit, isSubmitting, values } = useForm<NotificationFormValues>({ initialValues: props.initialValues })
   const { value: selectedStates } = useField<string[]>('stateNames', [], { initialValue: [] })
   const { value: selectedTags } = useField<string[]>('tags', [], { initialValue: [] })
-  const { value: selectedBlockTypeId } = useField<string | undefined>('blockDocumentId')
+  const { value: blockDocumentId } = useField<string | undefined>('blockDocumentId')
 
   const blockDocumentsApi = inject(blockDocumentsApiKey)
   const blockTypesApi = inject(blockTypesApiKey)
   const blockSchemasApi = inject(blockSchemasApiKey)
 
   const data = ref<BlockDocumentData>({})
+  const selectedBlockTypeId = ref('')
 
   const blockDocumentSubscriptionArgs = computed<Parameters<typeof blockDocumentsApi.getBlockDocument> | null>(() => {
-    if (!selectedBlockTypeId.value) {
+    if (!blockDocumentId.value) {
       return null
     }
 
-    return [selectedBlockTypeId.value]
+    return [blockDocumentId.value]
   })
   const blockDocumentSubscription = useSubscriptionWithDependencies(blockDocumentsApi.getBlockDocument, blockDocumentSubscriptionArgs)
   const blockDocument = computed(() => blockDocumentSubscription.response)
@@ -147,7 +148,7 @@
 
 
   const submit = handleSubmit(async values => {
-    if (blockSchema.value === undefined || !values.blockDocumentId) {
+    if (blockSchema.value === undefined || !selectedBlockTypeId.value) {
       showToast('Failed to submit notification')
       return
     }
@@ -156,7 +157,7 @@
       const { id: blockDocumentId } = await blockDocumentsApi.createBlockDocument({
         isAnonymous: true,
         blockSchemaId: blockSchema.value.id,
-        blockTypeId: values.blockDocumentId,
+        blockTypeId: selectedBlockTypeId.value,
         data: data.value,
       })
 
