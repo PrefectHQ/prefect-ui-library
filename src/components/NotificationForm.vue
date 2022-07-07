@@ -58,7 +58,7 @@
 
   const emit = defineEmits<{
     (event: 'update:notification', value: Partial<Notification>): void,
-    (evennt: 'submit', value: NotificationCreate): void,
+    (event: 'submit', value: NotificationCreate): void,
     (event: 'cancel'): void,
   }>()
 
