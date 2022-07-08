@@ -4,7 +4,7 @@
       <template v-if="blockType.codeExample || blockType.documentationUrl">
         <p class="block-document-card__help">
           <template v-if="blockType.codeExample">
-            Paste this ID into your flows to use this block.
+            Paste this snippet into your flows to use this block.
           </template>
           <template v-if="blockType.documentationUrl">
             Need help? <p-link :to="blockType.documentationUrl">
