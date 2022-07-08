@@ -14,7 +14,7 @@
         </p>
       </template>
 
-      <CodeSnippet v-if="snippet" :snippet="snippet" />
+      <BlockTypeSnippet v-if="snippet" v-bind="{ snippet, name }" />
 
       <BlockDocumentProperties :data="blockDocument.data" :block-schema="blockDocument.blockSchema" />
     </PContent>
@@ -26,7 +26,7 @@
   import { PContent, PCard } from '@prefecthq/prefect-design'
   import { computed } from 'vue'
   import BlockDocumentProperties from './BlockDocumentProperties.vue'
-  import CodeSnippet from './CodeSnippet.vue'
+  import BlockTypeSnippet from './BlockTypeSnippet.vue'
   import BlockTypeCard from '@/components/BlockTypeCard.vue'
   import { BlockDocument } from '@/models/BlockDocument'
 
@@ -35,7 +35,8 @@
   }>()
 
   const blockType = computed(() => props.blockDocument.blockType)
-  const snippet = computed(() => blockType.value.codeExample?.replace('BLOCK_NAME', props.blockDocument.name))
+  const snippet = computed(() => blockType.value.codeExample)
+  const name = computed(() => props.blockDocument.name)
 </script>
 
 <style>
