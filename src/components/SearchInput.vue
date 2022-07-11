@@ -40,12 +40,13 @@
 </script>
 
 <style>
-.search__label { @apply
-  sr-only
+.search { @apply
+  w-full
+  md:max-w-xs
 }
 
-.search__input { @apply
-  w-auto
+.search__label { @apply
+  sr-only
 }
 
 .search__icon { @apply

@@ -25,8 +25,8 @@
 
     <span class="notification-details__send-to">
       <template v-for="item in sendTo.value" :key="item">
-        <p-icon :icon="sendTo.icon" class="notification-details__icon" :class="classes" />
-        {{ item }}
+        <p-icon v-if="item" :icon="sendTo.icon" class="notification-details__icon" :class="classes" />
+        <span class="notification-details__item">{{ item }}</span>
       </template>
     </span>
   </div>
@@ -87,8 +87,16 @@
   gap-1
   flex-wrap
   align-bottom
-  font-bold
   items-center
+  font-bold
+}
+
+.notification-details__item {
+  @apply
+  empty:border-b-2
+  empty:w-32
+  empty:border-black
+  empty:mb-2.5
 }
 
 .notification-details__icon--gray {

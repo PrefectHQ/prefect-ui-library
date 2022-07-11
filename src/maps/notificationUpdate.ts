@@ -8,7 +8,7 @@ const convertArrayToTitleCase = (array: string[]): string[] => array.map((stateN
 export const mapNotificationUpdateToNotificationUpdateRequest: MapFunction<NotificationUpdate, NotificationUpdateRequest> = function(source: NotificationUpdate): NotificationUpdateRequest {
   return {
     /* eslint-disable camelcase */
-    state_names: convertArrayToTitleCase(source.stateNames ?? []),
+    state_names: source.stateNames ? convertArrayToTitleCase(source.stateNames) : undefined,
     tags: source.tags,
     is_active: source.isActive,
     block_document_id: source.blockDocumentId,

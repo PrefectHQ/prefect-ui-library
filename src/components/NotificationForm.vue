@@ -10,7 +10,7 @@
       </p-label>
 
       <p-label label="Tags (Optional)">
-        <p-tags-input v-model:tags="selectedTags" empty-message="All Tags" />
+        <p-tags-input v-model="selectedTags" empty-message="All Tags" />
       </p-label>
     </div>
 
@@ -31,7 +31,7 @@
     </div>
     <template #footer="{ disabled, loading }">
       <p-button inset @click="cancel">
-        Reset
+        Cancel
       </p-button>
       <p-button type="submit" :disabled="disabled" :loading="loading">
         Submit

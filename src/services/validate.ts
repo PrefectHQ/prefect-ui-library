@@ -1,6 +1,7 @@
 /* eslint-disable no-redeclare */
 import { isDateAfter, isDateAfterOrEqual, isDateBefore, isDateBeforeOrEqual } from '@prefecthq/prefect-design'
 import { isDate } from 'date-fns'
+import { isEmptyArray } from '@/utilities/arrays'
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type ValidationValue = any
@@ -11,7 +12,7 @@ export function withMessage(validate: (value: ValidationValue) => boolean | Prom
 }
 
 export function isRequired(value: ValidationValue): boolean {
-  if (!value) {
+  if (value === undefined || value === null || value === '' || isEmptyArray(value)) {
     return false
   }
 

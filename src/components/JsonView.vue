@@ -9,7 +9,7 @@
 
   type JsonObject = Record<string, unknown>
   type JsonArray = Record<string, unknown>[]
-  type Json = JsonObject | JsonArray
+  type Json = JsonObject | JsonArray | string | number | boolean
 
   function isJson(val: unknown): val is Json {
     return typeof val == 'object' && val !== null
@@ -21,6 +21,12 @@
 
   function isJsonArray(val: unknown): val is JsonArray {
     return isJson(val) && Array.isArray(val)
+  }
+
+  function isJsonPrimitive(val: unknown): val is string | boolean | number {
+    const type = typeof val
+
+    return ['string', 'boolean', 'number'].includes(type)
   }
 
   const props = defineProps<{
@@ -144,6 +150,10 @@
 
     if (isJsonArray(json)) {
       return getArrayHtml(json, level)
+    }
+
+    if (isJsonPrimitive(json)) {
+      return getValueHtml(json)
     }
 
     if (isJsonObject(json)) {
