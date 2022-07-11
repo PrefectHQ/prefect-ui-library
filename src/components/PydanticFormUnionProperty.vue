@@ -1,29 +1,32 @@
 <template>
   <p-content>
     <h3 class="pydantic-form-union-property__section-header">
-      <span>{{ title }}</span>
-      <p-button-group v-model="propertyDefinitionRef" :options="buttonGroupOptions" size="sm" />
+      <span>{{ property.title }}</span>
+      <p-button-group v-model="definition" :options="buttonGroupOptions" size="sm" />
     </h3>
 
-    <template v-for="(subProperty, key) in displayedProperties" :key="key">
-      <PydanticFormProperty :property="subProperty" :schema="schema" :level="level" />
+    <template v-if="displayedDefinition?.properties">
+      <template v-for="(subProperty, key) in displayedDefinition.properties" :key="key">
+        <PydanticFormProperty :property="subProperty" :level="level" />
+      </template>
     </template>
   </p-content>
 </template>
 
 <script lang="ts" setup>
   import { ButtonGroupOption } from '@prefecthq/prefect-design'
-  import { computed, ref } from 'vue'
+  import { computed, ref, withDefaults } from 'vue'
   import PydanticFormProperty from './PydanticFormProperty.vue'
-  import { PydanticPropertyRecordAnyOf, PydanticTypeDefinition, hasTypeRef } from '@/types/Pydantic'
-  import { getTypeDefinitionFromTypeRef } from '@/utilities/pydanticMapper'
+  import type { PydanticPropertyRecordAnyOf } from '@/types/Pydantic'
 
-  const props = defineProps<{
-    modelValue?: unknown,
+  const props = withDefaults(defineProps<{
+    modelValue?: Record<string, unknown>,
+    level?: number,
     property: PydanticPropertyRecordAnyOf,
-    schema: PydanticTypeDefinition,
-    level: number,
-  }>()
+  }>(), {
+    level: 0,
+    modelValue: () => ({}),
+  })
 
   const emit = defineEmits<{
     (event: 'update:modelValue', value: unknown): void,
@@ -38,43 +41,26 @@
     },
   })
 
-  const title = computed(() => {
-    return props.property.alias ?? props.property.title ?? props.property.$ref
+  const displayedDefinition = computed(() => {
+    return definitions.value[definition.value]
   })
 
-  const displayedProperties = computed(() => {
-    return properties.value.filter((prop) => prop.title == propertyDefinitionRef.value)
-  })
-
-  const properties = computed(() => {
-    return props.property.anyOf.map((prop) => {
-      if (hasTypeRef(prop)) {
-        const propDef = getTypeDefinitionFromTypeRef(prop.$ref, props.schema)
-
-        if (propDef) {
-          return propDef
-        }
-      }
-
-      return prop
-    })
+  const definitions = computed(() => {
+    return props.property.anyOf
   })
 
   const buttonGroupOptions = computed<ButtonGroupOption[]>(() => {
-    return properties.value.map((prop) => {
+    return definitions.value.map((prop, index) => {
       const option: ButtonGroupOption = {
-        label: '',
-        value: '',
+        label: prop.title ?? prop.alias ?? prop.$ref ?? '',
+        value: index,
       }
-
-      option.label = prop.alias ?? prop.title ?? ''
-      option.value = prop.title ?? ''
 
       return option
     })
   })
 
-  const propertyDefinitionRef = ref(buttonGroupOptions.value[0]?.value)
+  const definition = ref(0)
 </script>
 
 <style>

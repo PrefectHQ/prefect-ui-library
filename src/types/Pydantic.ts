@@ -35,11 +35,11 @@ export type PydanticType = typeof PydanticTypes[number]
 export type PydanticStringFormat = typeof PydanticStringFormats[number]
 export type PydanticEnum<T> = T[]
 export type PydanticTypeRef<T extends string> = `${typeof BaseDefinitionRefString}${T}`
+export type PydanticDefinitionsMap = Record<string, PydanticTypeDefinition>
+export type PydanticPropertiesMap = Record<string, PydanticTypeProperty>
 export type PydanticPropertyRecord = Record<'anyOf' | 'allOf' | string, PydanticTypeRef<string>[] | PydanticTypeDefinition[] | never>
 
 export interface PydanticTypeDefinition {
-  // This isn't part of the pydantic schema but was introduced for convenience when passing schema without upper context
-  id?: string,
   title?: string,
   type?: PydanticType,
   format?: PydanticStringFormat,
@@ -47,10 +47,10 @@ export interface PydanticTypeDefinition {
   description?: string,
   default?: unknown,
   enum?: PydanticEnum<unknown>,
-  definitions?: Record<string, PydanticTypeDefinition>,
-  properties?: Record<string, PydanticTypeProperty>,
+  definitions?: PydanticDefinitionsMap,
+  properties?: PydanticPropertiesMap,
   required?: string[],
-  items?: PydanticTypeDefinition | PydanticTypeDefinition[] | PydanticPropertyRecord,
+  items?: PydanticTypeDefinition | PydanticTypeDefinition[],
   exclusiveMaximum?: number,
   exclusiveMinimum?: number,
   maximum?: number,
@@ -68,6 +68,11 @@ export interface PydanticTypeProperty extends PydanticTypeDefinition {
   $ref?: PydanticTypeRef<string>,
   anyOf?: PydanticTypeProperty[],
   allOf?: PydanticTypeProperty[],
+}
+
+export interface PydanticResolvedTypeDefinition extends PydanticTypeDefinition {
+  type: PydanticType,
+  definitions?: Record<string, PydanticResolvedTypeDefinition>,
 }
 
 export interface PydanticTypeDefinitionMinLength extends PydanticTypeDefinition {
@@ -134,6 +139,10 @@ export interface PydanticTypeDefinitionProperties extends PydanticTypeDefinition
   properties: Record<string, PydanticTypeProperty>,
 }
 
+export interface PydanticTypeDefinitionItems extends PydanticTypeDefinition {
+  items: PydanticTypeDefinition | PydanticTypeDefinition[] | PydanticPropertiesMap,
+}
+
 export interface PydanticTypeDefinitionDefinitions extends PydanticTypeDefinition {
   definitions: Record<string, PydanticTypeDefinition>,
 }
@@ -160,6 +169,10 @@ export function isPydanticEnum(definition: PydanticTypeDefinition): definition i
 
 export function hasProperties(definition: PydanticTypeDefinition): definition is PydanticTypeDefinitionProperties {
   return 'properties' in definition
+}
+
+export function hasItems(definition: PydanticTypeDefinition): definition is PydanticTypeDefinitionItems {
+  return 'items' in definition
 }
 
 export function hasDefinitions(definition: PydanticTypeDefinition): definition is PydanticTypeDefinitionDefinitions {

@@ -4,34 +4,59 @@
 
     <p-content>
       <template v-for="(property, key) in properties" :key="key">
-        <PydanticFormProperty :property="property" :schema="normalizedSchema" />
+        <PydanticFormProperty v-model="internalValue" :property="property" />
       </template>
     </p-content>
+
+    <template #footer>
+      <p-button type="submit" :disabled="isSubmitting">
+        Save
+      </p-button>
+    </template>
   </p-form>
 </template>
 
 <script lang="ts" setup>
   import { useForm } from 'vee-validate'
-  import { computed } from 'vue'
+  import { computed, onMounted } from 'vue'
   import JsonView from './JsonView.vue'
   import PydanticFormProperty from './PydanticFormProperty.vue'
   import { PydanticTypeDefinition } from '@/types/Pydantic'
-  import { normalizePydanticTypeDefinitionProperties } from '@/utilities'
-
+  import { PydanticSchema } from '@/utilities'
 
   const props = defineProps<{
     modelValue?: Record<string, unknown>,
-    schema: PydanticTypeDefinition,
+    pydanticSchema: PydanticTypeDefinition,
+  }>()
+
+  const emit = defineEmits<{
+    (event: 'update:modelValue', value?: Record<string, unknown>): void,
   }>()
 
   const { handleSubmit, handleReset, isSubmitting, meta, errors, submitCount } = useForm()
 
   const properties = computed(() => {
-    return normalizedSchema.value.properties ?? {}
+    return schema.value.properties
   })
 
-  const normalizedSchema = computed(() => {
-    return normalizePydanticTypeDefinitionProperties(props.schema)
+  const schema = computed(() => {
+    return new PydanticSchema(props.pydanticSchema)
+  })
+
+  const internalValue = computed({
+    get() {
+      return props.modelValue
+    },
+    set(val) {
+      console.log('setting val', val)
+      emit('update:modelValue', val)
+    },
+  })
+
+  handleSubmit((values) => console.log(values))
+
+  onMounted(() => {
+    console.log(schema.value)
   })
 </script>
 

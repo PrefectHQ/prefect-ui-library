@@ -1,11 +1,11 @@
 <template>
   <DemoSection heading="Parameters Form">
-    <PydanticForm v-model="parameterValues" :schema="parameterDefinition" />
+    <PydanticForm v-model="parameterValues" :pydantic-schema="parameterDefinition" />
   </DemoSection>
 </template>
 
 <script lang="ts" setup>
-  import { computed, reactive } from 'vue'
+  import { computed, reactive, watch } from 'vue'
   import DemoSection from '../components/DemoSection.vue'
   import PydanticForm from '@/components/PydanticForm.vue'
   import type { PydanticTypeDefinition } from '@/types/Pydantic'
@@ -19,4 +19,8 @@
   })
 
   const parameterValues = reactive<Record<string, unknown>>({})
+
+  watch(() => parameterValues.value, (val) => {
+    console.log(val)
+  }, { deep: true })
 </script>

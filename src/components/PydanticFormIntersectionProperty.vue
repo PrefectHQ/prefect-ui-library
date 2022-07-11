@@ -1,21 +1,23 @@
 <template>
   <template v-for="(subProperty, key) in properties" :key="key">
-    <PydanticFormProperty :property="subProperty" :schema="schema" :level="level" />
+    <PydanticFormProperty :property="subProperty" :level="level" />
   </template>
 </template>
 
 <script lang="ts" setup>
-  import { computed } from 'vue'
+  import { computed, withDefaults } from 'vue'
   import PydanticFormProperty from './PydanticFormProperty.vue'
-  import { isPydanticTypeRef, PydanticPropertyRecordAllOf, PydanticTypeDefinition, hasTypeRef } from '@/types/Pydantic'
-  import { getTypeDefinitionFromTypeRef } from '@/utilities/pydanticMapper'
+  import type { PydanticPropertyRecordAllOf } from '@/types/Pydantic'
 
-  const props = defineProps<{
-    modelValue?: unknown,
+  const props = withDefaults(defineProps<{
+    modelValue?: Record<string, unknown>,
+    level?: number,
     property: PydanticPropertyRecordAllOf,
-    schema: PydanticTypeDefinition,
-    level: number,
-  }>()
+  }>(), {
+    level: 0,
+    modelValue: () => ({}),
+  })
+
 
   const emit = defineEmits<{
     (event: 'update:modelValue', value: unknown): void,
@@ -30,30 +32,12 @@
     },
   })
 
+  const definitions = computed(() => {
+    return props.property.allOf
+  })
+
   const properties = computed(() => {
-    return props.property.allOf.map((prop) => {
-      if (hasTypeRef(prop) && isPydanticTypeRef(prop.$ref)) {
-        const propDef = getTypeDefinitionFromTypeRef(prop.$ref, props.schema)
-
-        if (propDef) {
-          return propDef
-        }
-      }
-
-      return prop
-    }).reduce((props: PydanticTypeDefinition[], prop) => {
-      let existingPropIndex = props.findIndex(prop_ => prop_.title == prop.title)
-
-      if (existingPropIndex > -1) {
-        let existingProp = props[existingPropIndex]
-
-        existingProp = { ...existingProp, ...prop }
-        props.splice(existingPropIndex, 1, existingProp)
-      } else {
-        props.push(prop)
-      }
-      return props
-    }, [])
+    return definitions.value
   })
 </script>
 

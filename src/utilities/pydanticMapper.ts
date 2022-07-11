@@ -1,9 +1,9 @@
-
 import { PTextInput, PToggle, PTextarea, PDateInput, PNumberInput, PCombobox, PSelect } from '@prefecthq/prefect-design'
 import JsonEditor from '@/components/JsonEditor.vue'
 import { ValidateMethod, isEmail, greaterThanOrEqual, greaterThan, lessThan, lessThanOrEqual } from '@/services'
 import {
-  hasDefinitions,
+  hasAllOf,
+  hasAnyOf,
   hasExclusiveMax,
   hasExclusiveMin,
   hasMax,
@@ -13,17 +13,18 @@ import {
   hasMinItems,
   hasMinLength,
   hasMultipleOf,
+  hasItems,
   hasProperties,
   hasTypeRef,
   isPydanticEnum,
   isPydanticStringFormat,
   isPydanticType,
-  isPydanticTypeRef,
   PydanticEnum,
   PydanticStringFormat,
   PydanticType,
   PydanticTypeDefinition,
   PydanticTypeProperty,
+  PydanticPropertiesMap,
   PydanticTypeRef,
   RefStringRegExp
 } from '@/types/Pydantic'
@@ -252,7 +253,7 @@ const getAttrs = (definition: PydanticTypeDefinition): PydanticTypeDefinitionCom
 }
 
 const getBaseComponent = (definition: PydanticTypeDefinition): null | PydanticTypeDefinitionComponent => {
-  const { type, format, enum: defEnum } = definition
+  const { type, format, enum: defEnum, items } = definition
 
   if (isPydanticEnum(definition)) {
     const component = getBaseEnumInput()
@@ -288,8 +289,18 @@ const getBaseComponent = (definition: PydanticTypeDefinition): null | PydanticTy
 
   if (isPydanticType('array', type)) {
     const component = getBaseListInput()
-    component.attrs.allowUnknownValue = true
     component.attrs.multiple = true
+
+    // TODO: This probably isn't robust to all predefined item types.
+    if (items) {
+      if (Array.isArray(items)) {
+        component.attrs.options = items
+      } else if (isPydanticEnum(items)) {
+        component.attrs.options = items.enum as PydanticEnum<PydanticType>
+      }
+    } else {
+      component.attrs.allowUnknownValue = true
+    }
 
     return component
   }
@@ -307,17 +318,15 @@ const getBaseComponent = (definition: PydanticTypeDefinition): null | PydanticTy
 }
 
 export const getTypeDefinitionFromTypeRef = (ref: PydanticTypeRef<string>, definition: PydanticTypeDefinition): PydanticTypeDefinition | undefined => {
-  if (!isPydanticTypeRef(ref)) {
-    return
-  }
-
   const extractedType = ref.match(RefStringRegExp)?.[1]
 
   if (!extractedType) {
     return
   }
 
-  return definition.definitions?.[extractedType]
+  const resolvedDefinition = definition.definitions?.[extractedType]
+
+  return resolvedDefinition
 }
 
 export const getComponentFromPydanticTypeDefinition = (definition: PydanticTypeDefinition): null | PydanticTypeDefinitionComponent => {
@@ -333,30 +342,100 @@ export const getComponentFromPydanticTypeDefinition = (definition: PydanticTypeD
   return component
 }
 
-export const getComponentFromPydanticProperty = (property: PydanticTypeProperty, schema: PydanticTypeDefinition): PydanticTypeDefinitionComponent | null => {
-  let definition
-
-  if (hasTypeRef(property)) {
-    const definition_ = getTypeDefinitionFromTypeRef(property.$ref, schema)
-    definition = { ...definition_, ...property }
-  } else {
-    definition = property
+export const getDefaultForProperty = (definition: PydanticTypeDefinition): unknown => {
+  if (definition.default) {
+    return definition.default
   }
 
-  return getComponentFromPydanticTypeDefinition(definition)
+  let defaultValue
+
+  switch (definition.type) {
+    case 'array':
+      defaultValue = []
+      break
+    case 'string':
+      defaultValue = ''
+      break
+    case 'boolean':
+      defaultValue = false
+      break
+    case 'integer':
+    case 'number':
+      defaultValue = definition.minimum ?? 0
+      break
+    case 'null':
+      defaultValue = null
+      break
+    case 'object':
+      defaultValue = {}
+      break
+    default:
+      break
+  }
+
+  return defaultValue
 }
 
-export const normalizePydanticTypeDefinitionProperties = (schema: PydanticTypeDefinition): PydanticTypeDefinition => {
-  if (hasProperties(schema)) {
-    Object.keys(schema.properties).forEach(key => schema.properties[key].id = key)
+export const getResolvedTypeDefinitionFromProperty = (property: PydanticTypeProperty, schema: PydanticTypeDefinition): PydanticTypeProperty => {
+  let definition: PydanticTypeProperty = {}
+
+  if (hasTypeRef(property)) {
+    const _definition = getTypeDefinitionFromTypeRef(property.$ref, schema)
+    definition = { ..._definition }
   }
 
-  if (hasDefinitions(schema)) {
-    Object.keys(schema.definitions).forEach(key => {
-      schema.definitions[key] = normalizePydanticTypeDefinitionProperties(schema.definitions[key])
-      schema.definitions[key].id = key
+  if (hasAllOf(property)) {
+    definition.allOf = property.allOf.map((_property) => getResolvedTypeDefinitionFromProperty(_property, schema))
+  }
+
+  if (hasAnyOf(property)) {
+    definition.anyOf = property.anyOf.map((_property) => getResolvedTypeDefinitionFromProperty(_property, schema))
+  }
+
+  if (hasItems(property)) {
+    if (Array.isArray(property.items)) {
+      definition.items = property.items.map((_property) => getResolvedTypeDefinitionFromProperty(_property, schema))
+    } else {
+      definition.items = getResolvedTypeDefinitionFromProperty(property.items, schema)
+    }
+  }
+
+  if (hasProperties(definition)) {
+    Object.entries(definition.properties).forEach(([key, property]) => {
+      definition.properties![key] = getResolvedTypeDefinitionFromProperty(property, schema)
     })
   }
 
-  return schema
+  definition = { ...property, ...definition }
+
+  return definition
+}
+
+export class PydanticSchema {
+  private readonly rawSchema: PydanticTypeDefinition
+  private readonly _properties: PydanticPropertiesMap
+
+  public constructor(schema: PydanticTypeDefinition) {
+    this.rawSchema = schema
+    this._properties = this.definePropertyDefinitions(schema.properties)
+  }
+
+  public get properties(): Record<string, PydanticTypeProperty> {
+    return this._properties
+  }
+
+  public get definitions(): Record<string, PydanticTypeDefinition> {
+    return this.rawSchema.definitions ?? {}
+  }
+
+  private definePropertyDefinitions(properties: PydanticPropertiesMap = {}): PydanticPropertiesMap {
+    const definedProperties = { ...properties }
+
+    Object.entries(properties).forEach(([key, property]) => {
+      const definition = getResolvedTypeDefinitionFromProperty(property, this.rawSchema)
+      definedProperties[key] = definition
+    })
+
+    return definedProperties
+  }
 }

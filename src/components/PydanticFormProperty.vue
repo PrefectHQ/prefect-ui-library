@@ -1,22 +1,19 @@
 <template>
   <template v-if="hasSubProperties && level < 2">
-    <template v-for="(subProperty, key) in properties" :key="key">
-      <PydanticFormProperty :property="subProperty" :schema="schema" :level="level + 1" />
+    <template v-for="subProperty in property.properties" :key="subProperty.id">
+      <PydanticFormProperty :property="subProperty" :level="level + 1" />
     </template>
   </template>
 
   <template v-else>
-    <h3 v-if="!isUnionProperty && propertyDefinition && level == 0" class="pydantic-form-union-property__section-header">
-      <span>{{ propertyDefinition.id }}</span>
+    <h3
+      v-if="!isUnionProperty && level == 0"
+      class="pydantic-form-property__section-header"
+    >
+      <span>{{ property.title }}</span>
     </h3>
 
-    <component
-      :is="formComponent"
-      v-model="internalValue"
-      :schema="schema"
-      :property="property"
-      :level="level + 1"
-    />
+    <component :is="formComponent" v-model="internalValue" :property="property" :level="level + 1" />
   </template>
 </template>
 
@@ -25,17 +22,15 @@
   import PydanticFormField from './PydanticFormField.vue'
   import PydanticFormIntersectionProperty from './PydanticFormIntersectionProperty.vue'
   import PydanticFormUnionProperty from './PydanticFormUnionProperty.vue'
-  import { hasAnyOf, hasAllOf, hasTypeRef, hasProperties, PydanticTypeProperty, PydanticTypeDefinition } from '@/types/Pydantic'
-  import { getTypeDefinitionFromTypeRef } from '@/utilities/pydanticMapper'
+  import { hasAnyOf, hasAllOf, PydanticTypeProperty } from '@/types/Pydantic'
 
   const props = withDefaults(defineProps<{
-    modelValue?: unknown,
+    modelValue?: Record<string, unknown>,
     level?: number,
     property: PydanticTypeProperty,
-    schema: PydanticTypeDefinition,
   }>(), {
     level: 0,
-    modelValue: undefined,
+    modelValue: () => ({}),
   })
 
   const emit = defineEmits<{
@@ -53,7 +48,7 @@
 
   const isUnionProperty = computed(() => hasAnyOf(props.property))
   const isIntersectionProperty = computed(() => hasAllOf(props.property))
-  const hasSubProperties = computed(() => hasProperties(props.property))
+  const hasSubProperties = computed(() => !!props.property.properties)
 
   const formComponent = computed(() => {
     if (isUnionProperty.value) {
@@ -66,17 +61,11 @@
 
     return PydanticFormField
   })
-
-  const properties = computed(() => {
-    return props.property.properties ?? []
-  })
-
-  const propertyDefinition = computed(() => {
-    // if (hasTypeRef(props.property)) {
-    //   console.log(props.property, props.schema)
-    //   return getTypeDefinitionFromTypeRef(props.property.$ref, props.schema)
-    // }
-
-    return props.property
-  })
 </script>
+
+<style>
+.pydantic-form-property__section-header {
+  @apply
+  text-rose-400
+}
+</style>
