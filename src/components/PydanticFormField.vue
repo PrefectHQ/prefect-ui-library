@@ -5,7 +5,12 @@
       v-if="inputComponent"
       v-model="internalValue"
       v-bind="{ ...inputComponent.attrs }"
-    />
+    >
+      <template v-for="(content, key) in inputComponent?.slots" #[key]>
+        {{ content }}
+      </template>
+    </component>
+
     <template v-else>
       <span class="pydantic-form-field__none">This parameter has a type 'None' and cannot be modified.</span>
     </template>

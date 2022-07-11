@@ -1,6 +1,6 @@
 <template>
   <slot :open="open" :close="close" />
-  <p-modal v-model:showModal="showModal" title="Edit parameters">
+  <p-modal v-model:showModal="showModal" class="parameters-form-modal" title="Edit parameters">
     <p-label label="Mode">
       <p-button-group v-model="parametersForm" :options="parameterFormOptions" size="sm" />
     </p-label>

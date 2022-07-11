@@ -36,6 +36,7 @@ export type PydanticTypeDefinitionComponent = {
   component?: typeof InputComponents[number],
   defaultValue: unknown,
   validators: ValidateMethod[],
+  slots?: Record<string, unknown>,
 }
 
 interface BaseJsonInput extends PydanticTypeDefinitionComponent {
@@ -118,6 +119,10 @@ const getBaseToggleInput = (): BaseToggleInput => {
     attrs: {},
     component: PToggle,
     defaultValue: false,
+    slots: {
+      append: 'True',
+      prepend: 'False',
+    },
     validators: [],
   }
 }
