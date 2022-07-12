@@ -47,9 +47,7 @@
     return schema.value.properties
   })
 
-  const schema = computed(() => {
-    return new PydanticSchema(props.pydanticSchema)
-  })
+  const schema = computed(() => new PydanticSchema(props.pydanticSchema))
 
   const submit = handleSubmit(values => console.log(values))
 </script>

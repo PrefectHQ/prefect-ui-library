@@ -19,9 +19,10 @@
 
 <script lang="ts" setup>
   import { computed, withDefaults } from 'vue'
+  import PydanticFormAllOfProperty from './PydanticFormAllOfProperty.vue'
   import PydanticFormField from './PydanticFormField.vue'
   import PydanticFormUnionProperty from './PydanticFormUnionProperty.vue'
-  import { hasAnyOf, PydanticTypeProperty } from '@/types/Pydantic'
+  import { hasAllOf, hasAnyOf, PydanticTypeProperty } from '@/types/Pydantic'
 
   const props = withDefaults(defineProps<{
     level?: number,
@@ -33,6 +34,7 @@
   })
 
   const isUnionProperty = computed(() => hasAnyOf(props.property))
+  const isIntersectionProperty = computed(() => hasAllOf(props.property))
   const hasSubProperties = computed(() => !!props.property.properties)
 
   const formComponent = computed(() => {
@@ -40,12 +42,9 @@
       return PydanticFormUnionProperty
     }
 
-    // TODO: Should we support intersection properties? The Pydantic docs (https://pydantic-docs.helpmanual.io/usage/schema/) have examples for Union types
-    // but not for intersectin, which makes it difficult to understand the shape and intent.
-    // For now this will fall back to a raw JSON input
-    // if (isIntersectionProperty.value) {
-    //   return PydanticFormIntersectionProperty
-    // }
+    if (isIntersectionProperty.value) {
+      return PydanticFormAllOfProperty
+    }
 
     return PydanticFormField
   })
