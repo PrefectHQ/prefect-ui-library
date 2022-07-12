@@ -68,6 +68,9 @@
 <style>
 .pydantic-form-property__section-header {
   @apply
-  text-rose-400
+  text-lg
+  font-semibold
+  flex
+  gap-2
 }
 </style>

@@ -1,7 +1,5 @@
 <template>
   <p-form>
-    <JsonView class="tmp" :value="JSON.stringify(schema)" />
-
     <p-content>
       <template v-for="(property, key) in properties" :key="key">
         <PydanticFormProperty v-model="internalValue" :prop-key="key" :property="property" />
@@ -19,7 +17,6 @@
 <script lang="ts" setup>
   import { useForm } from 'vee-validate'
   import { computed, onMounted } from 'vue'
-  import JsonView from './JsonView.vue'
   import PydanticFormProperty from './PydanticFormProperty.vue'
   import { PydanticTypeDefinition } from '@/types/Pydantic'
   import { PydanticSchema } from '@/utilities'
