@@ -2,7 +2,7 @@
   <div>
     <sup>{{ property }}</sup>
 
-    <p-label :label="property.title" :message="errors?.[0]" :state="meta">
+    <p-label :label="property.title ?? propKey" :message="errors?.[0]" :state="meta">
       <component
         :is="fieldComponent.component"
         v-if="fieldComponent"
@@ -28,6 +28,7 @@
   import { getComponentFromPydanticTypeDefinition } from '@/utilities'
 
   const props = defineProps<{
+    propKey: string,
     property: PydanticTypeDefinition,
   }>()
 

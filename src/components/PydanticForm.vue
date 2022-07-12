@@ -4,7 +4,7 @@
 
     <p-content>
       <template v-for="(property, key) in properties" :key="key">
-        <PydanticFormProperty v-model="internalValue" :property="property" />
+        <PydanticFormProperty v-model="internalValue" :prop-key="key" :property="property" />
       </template>
     </p-content>
 
@@ -48,7 +48,6 @@
       return props.modelValue
     },
     set(val) {
-      console.log('setting val', val)
       emit('update:modelValue', val)
     },
   })

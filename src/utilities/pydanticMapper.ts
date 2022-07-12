@@ -314,7 +314,7 @@ const getBaseComponent = (definition: PydanticTypeDefinition): null | PydanticTy
     return null
   }
 
-  return getBaseTextInput()
+  return getBaseJsonInput()
 }
 
 export const getTypeDefinitionFromTypeRef = (ref: PydanticTypeRef<string>, definition: PydanticTypeDefinition): PydanticTypeDefinition | undefined => {

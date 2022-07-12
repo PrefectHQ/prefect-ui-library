@@ -1,13 +1,13 @@
 <template>
   <p-content>
     <h3 class="pydantic-form-union-property__section-header">
-      <span>{{ property.title }}</span>
+      <span>{{ property.title ?? propKey }}</span>
       <p-button-group v-model="definition" :options="buttonGroupOptions" size="sm" />
     </h3>
 
     <template v-if="displayedDefinition?.properties">
       <template v-for="(subProperty, key) in displayedDefinition.properties" :key="key">
-        <PydanticFormProperty :property="subProperty" :level="level" />
+        <PydanticFormProperty :prop-key="key" :property="subProperty" :level="level" />
       </template>
     </template>
   </p-content>
@@ -22,6 +22,7 @@
   const props = withDefaults(defineProps<{
     modelValue?: Record<string, unknown>,
     level?: number,
+    propKey: string,
     property: PydanticPropertyRecordAnyOf,
   }>(), {
     level: 0,

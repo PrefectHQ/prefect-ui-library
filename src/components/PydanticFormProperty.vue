@@ -1,7 +1,7 @@
 <template>
   <template v-if="hasSubProperties && level < 2">
-    <template v-for="subProperty in property.properties" :key="subProperty.id">
-      <PydanticFormProperty :property="subProperty" :level="level + 1" />
+    <template v-for="(subProperty, key) in property.properties" :key="key">
+      <PydanticFormProperty :prop-key="key" :property="subProperty" :level="level + 1" />
     </template>
   </template>
 
@@ -13,20 +13,20 @@
       <span>{{ property.title }}</span>
     </h3>
 
-    <component :is="formComponent" v-model="internalValue" :property="property" :level="level + 1" />
+    <component :is="formComponent" v-model="internalValue" :prop-key="propKey" :property="property" :level="level + 1" />
   </template>
 </template>
 
 <script lang="ts" setup>
   import { computed, withDefaults } from 'vue'
   import PydanticFormField from './PydanticFormField.vue'
-  import PydanticFormIntersectionProperty from './PydanticFormIntersectionProperty.vue'
   import PydanticFormUnionProperty from './PydanticFormUnionProperty.vue'
-  import { hasAnyOf, hasAllOf, PydanticTypeProperty } from '@/types/Pydantic'
+  import { hasAnyOf, PydanticTypeProperty } from '@/types/Pydantic'
 
   const props = withDefaults(defineProps<{
     modelValue?: Record<string, unknown>,
     level?: number,
+    propKey: string,
     property: PydanticTypeProperty,
   }>(), {
     level: 0,
@@ -47,7 +47,6 @@
   })
 
   const isUnionProperty = computed(() => hasAnyOf(props.property))
-  const isIntersectionProperty = computed(() => hasAllOf(props.property))
   const hasSubProperties = computed(() => !!props.property.properties)
 
   const formComponent = computed(() => {
@@ -55,9 +54,12 @@
       return PydanticFormUnionProperty
     }
 
-    if (isIntersectionProperty.value) {
-      return PydanticFormIntersectionProperty
-    }
+    // TODO: Should we support intersection properties? The Pydantic docs (https://pydantic-docs.helpmanual.io/usage/schema/) have examples for Union types
+    // but not for intersectin, which makes it difficult to understand the shape and intent.
+    // For now this will fall back to a raw JSON input
+    // if (isIntersectionProperty.value) {
+    //   return PydanticFormIntersectionProperty
+    // }
 
     return PydanticFormField
   })
