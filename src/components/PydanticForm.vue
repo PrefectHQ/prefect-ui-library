@@ -26,7 +26,7 @@
     pydanticSchema: PydanticTypeDefinition,
   }>()
 
-  // TODO: If we want to use a modelValue we'll need to add a new
+  // TODO: If we want to use a modelValue we might need to add a new
   // composition to wrap useForm
   // const emit = defineEmits<{
   //   (event: 'update:modelValue', value?: Record<string, unknown>): void,
@@ -51,10 +51,3 @@
 
   const submit = handleSubmit(values => console.log(values))
 </script>
-
-<style>
-.tmp {
-  max-height: 300px;
-  overflow: auto;
-}
-</style>
