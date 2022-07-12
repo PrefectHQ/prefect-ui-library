@@ -72,10 +72,6 @@ export class PydanticSchema {
     return this._properties
   }
 
-  public get definitions(): Record<string, PydanticTypeDefinition> {
-    return this.rawSchema.definitions ?? {}
-  }
-
   private definePropertyDefinitions(properties: PydanticPropertiesMap = {}): PydanticPropertiesMap {
     const definedProperties = { ...properties }
 
