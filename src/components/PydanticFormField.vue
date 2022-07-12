@@ -1,5 +1,9 @@
 <template>
   <p-label :label="property.title ?? fieldLabel" :message="errors?.[0]" :state="meta">
+    <template v-if="property.description" #description>
+      {{ property.description }}
+    </template>
+
     <component
       :is="fieldComponent.component"
       v-if="fieldComponent"
@@ -12,7 +16,7 @@
     </component>
 
     <template v-else>
-      <span class="pydantic-form-field__none">This parameter has a type 'None' and cannot be modified.</span>
+      <span class="pydantic-form-field__none">This field has a type 'None' and cannot be modified.</span>
     </template>
   </p-label>
 </template>
