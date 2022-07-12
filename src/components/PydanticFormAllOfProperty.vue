@@ -5,7 +5,7 @@
 <script lang="ts" setup>
   import { computed, withDefaults } from 'vue'
   import PydanticFormProperty from './PydanticFormProperty.vue'
-  import type { PydanticPropertyRecordAllOf } from '@/types/Pydantic'
+  import type { PydanticPropertyRecordAllOf, PydanticTypeProperty } from '@/types/Pydantic'
 
   const props = withDefaults(defineProps<{
     level?: number,
@@ -17,6 +17,10 @@
   })
 
   const property = computed(() => {
-    return props.property.allOf[0]
+    const _property = { ...props.property } as PydanticTypeProperty
+    // This is to make sure we're passing the sum of all properties of the type
+    // while unwrapping the allOf property and bypassing another level of recursion from PydanticFormProperty
+    delete _property.allOf
+    return { ...props.property.allOf[0], ..._property }
   })
 </script>

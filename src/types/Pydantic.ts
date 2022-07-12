@@ -147,6 +147,10 @@ export interface PydanticTypeDefinitionDefinitions extends PydanticTypeDefinitio
   definitions: Record<string, PydanticTypeDefinition>,
 }
 
+export interface PydanticTypeDefinitionDefault extends PydanticTypeDefinition {
+  default: unknown,
+}
+
 export interface PydanticTypeDefinitionRef extends PydanticTypeProperty {
   $ref: PydanticTypeRef<string>,
 }
@@ -181,6 +185,10 @@ export function hasDefinitions(definition: PydanticTypeDefinition): definition i
 
 export function hasAllOf(definition: PydanticTypeDefinition): definition is PydanticPropertyRecordAllOf {
   return 'allOf' in definition
+}
+
+export function hasDefault(definition: PydanticTypeDefinition): definition is PydanticTypeDefinitionDefault {
+  return 'default' in definition
 }
 
 export function hasAnyOf(definition: PydanticTypeDefinition): definition is PydanticPropertyRecordAnyOf {

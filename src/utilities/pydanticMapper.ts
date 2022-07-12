@@ -2,6 +2,7 @@ import { PTextInput, PToggle, PTextarea, PDateInput, PNumberInput, PCombobox, PS
 import JsonEditor from '@/components/JsonEditor.vue'
 import { ValidateMethod, isEmail, greaterThanOrEqual, greaterThan, lessThan, lessThanOrEqual } from '@/services'
 import {
+  hasDefault,
   hasExclusiveMax,
   hasExclusiveMin,
   hasMax,
@@ -65,7 +66,7 @@ interface BaseEnumInput extends PydanticTypeDefinitionComponent {
     options: PydanticEnum<unknown>,
   },
   component: typeof PSelect,
-  defaultValue: unknown[],
+  defaultValue: unknown,
 }
 
 interface BaseListInput extends PydanticTypeDefinitionComponent {
@@ -135,7 +136,7 @@ const getBaseEnumInput = (): BaseEnumInput => {
       options: [] as PydanticEnum<unknown>,
     },
     component: PSelect,
-    defaultValue: [],
+    defaultValue: null,
     validators: [],
   }
 }
@@ -317,6 +318,10 @@ export const getComponentFromPydanticTypeDefinition = (definition: PydanticTypeD
 
   component.validators = getValidators(definition)
   component.attrs = { ...component.attrs, ...getAttrs(definition) }
+
+  if (hasDefault(definition)) {
+    component.defaultValue = definition.default
+  }
 
   return component
 }
