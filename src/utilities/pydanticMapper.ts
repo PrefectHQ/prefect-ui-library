@@ -1,6 +1,6 @@
 import { PTextInput, PToggle, PTextarea, PDateInput, PNumberInput, PCombobox, PSelect } from '@prefecthq/prefect-design'
 import JsonEditor from '@/components/JsonEditor.vue'
-import { ValidateMethod, isEmail, greaterThanOrEqual, greaterThan, lessThan, lessThanOrEqual } from '@/services'
+import { ValidateMethod, isEmail, greaterThanOrEqual, greaterThan, lessThan, lessThanOrEqual, isRequired, withMessage } from '@/services'
 import {
   hasDefault,
   hasExclusiveMax,
@@ -12,6 +12,7 @@ import {
   hasMinItems,
   hasMinLength,
   hasMultipleOf,
+  hasRequired,
   isPydanticEnum,
   isPydanticStringFormat,
   isPydanticType,
@@ -23,12 +24,13 @@ import {
 
 const InputComponents = [PToggle, PTextInput, PTextarea, JsonEditor, PDateInput, PNumberInput, PCombobox, PSelect] as const
 
+type Validator = ValidateMethod | ((value: any) => Promise<string | boolean>)
 export type PydanticTypeDefinitionComponentAttrs = Record<string, unknown>
 export type PydanticTypeDefinitionComponent = {
   attrs: PydanticTypeDefinitionComponentAttrs,
   component?: typeof InputComponents[number],
   defaultValue: unknown,
-  validators: ValidateMethod[],
+  validators: Validator[],
   slots?: Record<string, unknown>,
 }
 
@@ -196,8 +198,8 @@ const getStringFormattedComponent = (format: PydanticStringFormat): PydanticType
   return component
 }
 
-const getValidators = (definition: PydanticTypeDefinition): ValidateMethod[] => {
-  const validators: ValidateMethod[] = []
+const getValidators = (definition: PydanticTypeDefinition): Validator[] => {
+  const validators: Validator[] = []
 
   if (hasMinLength(definition)) {
     validators.push(greaterThanOrEqual(definition.minLength))
@@ -221,6 +223,10 @@ const getValidators = (definition: PydanticTypeDefinition): ValidateMethod[] => 
 
   if (hasMaxItems(definition)) {
     validators.push(lessThanOrEqual(definition.maxItems))
+  }
+
+  if (hasRequired(definition)) {
+    validators.push(withMessage(isRequired, 'Required'))
   }
 
   return validators

@@ -3,6 +3,7 @@ import {
   hasAnyOf,
   hasItems,
   hasProperties,
+  hasRequired,
   hasTypeRef,
   PydanticTypeDefinition,
   PydanticTypeProperty,
@@ -77,6 +78,18 @@ export class PydanticSchema {
 
     Object.entries(properties).forEach(([key, property]) => {
       const definition = getResolvedTypeDefinitionFromProperty(property, this.rawSchema)
+
+      // This is a littly hacky but adding requirements to
+      // each property definition allows us to audit/validate
+      // a property without having the entire schema
+      if (hasRequired(this.rawSchema) && this.rawSchema.required.includes(key)) {
+        if (hasRequired(definition)) {
+          definition.required = [...definition.required, key]
+        } else {
+          definition.required = [key]
+        }
+      }
+
       definedProperties[key] = definition
     })
 

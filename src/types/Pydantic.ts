@@ -234,3 +234,7 @@ export function hasExclusiveMax(definition: PydanticTypeDefinition): definition 
 export function hasMultipleOf(definition: PydanticTypeDefinition): definition is PydanticTypeDefinitionMultipleOf {
   return 'multipleOf' in definition
 }
+
+export function hasRequired(definition: PydanticTypeDefinition): definition is PydanticTypeDefinitionRequired {
+  return 'required' in definition
+}
