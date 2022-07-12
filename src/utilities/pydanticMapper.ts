@@ -2,8 +2,6 @@ import { PTextInput, PToggle, PTextarea, PDateInput, PNumberInput, PCombobox, PS
 import JsonEditor from '@/components/JsonEditor.vue'
 import { ValidateMethod, isEmail, greaterThanOrEqual, greaterThan, lessThan, lessThanOrEqual } from '@/services'
 import {
-  hasAllOf,
-  hasAnyOf,
   hasExclusiveMax,
   hasExclusiveMin,
   hasMax,
@@ -13,20 +11,13 @@ import {
   hasMinItems,
   hasMinLength,
   hasMultipleOf,
-  hasItems,
-  hasProperties,
-  hasTypeRef,
   isPydanticEnum,
   isPydanticStringFormat,
   isPydanticType,
   PydanticEnum,
   PydanticStringFormat,
   PydanticType,
-  PydanticTypeDefinition,
-  PydanticTypeProperty,
-  PydanticPropertiesMap,
-  PydanticTypeRef,
-  RefStringRegExp
+  PydanticTypeDefinition
 } from '@/types/Pydantic'
 
 const InputComponents = [PToggle, PTextInput, PTextarea, JsonEditor, PDateInput, PNumberInput, PCombobox, PSelect] as const

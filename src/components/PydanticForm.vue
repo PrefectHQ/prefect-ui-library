@@ -18,7 +18,8 @@
   import { useForm } from 'vee-validate'
   import { computed } from 'vue'
   import PydanticFormProperty from './PydanticFormProperty.vue'
-  import { PydanticSchema, PydanticTypeDefinition } from '@/types/Pydantic'
+  import { PydanticSchema  } from '@/models'
+  import { PydanticTypeDefinition } from '@/types/Pydantic'
 
   const props = defineProps<{
     // modelValue?: Record<string, unknown>,
