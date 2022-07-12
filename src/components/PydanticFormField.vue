@@ -1,24 +1,20 @@
 <template>
-  <div>
-    <sup>{{ property }}</sup>
-
-    <p-label :label="property.title ?? propKey" :message="errors?.[0]" :state="meta">
-      <component
-        :is="fieldComponent.component"
-        v-if="fieldComponent"
-        v-model="internalValue"
-        v-bind="{ ...fieldComponent.attrs }"
-      >
-        <template v-for="(content, key) in fieldComponent?.slots" #[key]>
-          {{ content }}
-        </template>
-      </component>
-
-      <template v-else>
-        <span class="pydantic-form-field__none">This parameter has a type 'None' and cannot be modified.</span>
+  <p-label :label="property.title ?? propKey" :message="errors?.[0]" :state="meta">
+    <component
+      :is="fieldComponent.component"
+      v-if="fieldComponent"
+      v-model="internalValue"
+      v-bind="{ ...fieldComponent.attrs }"
+    >
+      <template v-for="(content, key) in fieldComponent?.slots" #[key]>
+        {{ content }}
       </template>
-    </p-label>
-  </div>
+    </component>
+
+    <template v-else>
+      <span class="pydantic-form-field__none">This parameter has a type 'None' and cannot be modified.</span>
+    </template>
+  </p-label>
 </template>
 
 <script lang="ts" setup>

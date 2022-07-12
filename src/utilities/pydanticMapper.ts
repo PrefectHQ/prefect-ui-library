@@ -342,40 +342,6 @@ export const getComponentFromPydanticTypeDefinition = (definition: PydanticTypeD
   return component
 }
 
-export const getDefaultForProperty = (definition: PydanticTypeDefinition): unknown => {
-  if (definition.default) {
-    return definition.default
-  }
-
-  let defaultValue
-
-  switch (definition.type) {
-    case 'array':
-      defaultValue = []
-      break
-    case 'string':
-      defaultValue = ''
-      break
-    case 'boolean':
-      defaultValue = false
-      break
-    case 'integer':
-    case 'number':
-      defaultValue = definition.minimum ?? 0
-      break
-    case 'null':
-      defaultValue = null
-      break
-    case 'object':
-      defaultValue = {}
-      break
-    default:
-      break
-  }
-
-  return defaultValue
-}
-
 export const getResolvedTypeDefinitionFromProperty = (property: PydanticTypeProperty, schema: PydanticTypeDefinition): PydanticTypeProperty => {
   let definition: PydanticTypeProperty = {}
 
