@@ -1,13 +1,13 @@
 <template>
   <p-content>
     <h3 class="pydantic-form-union-property__section-header">
-      <span>{{ property.title ?? propKey }}</span>
+      <span>{{ property.title ?? fieldLabel }}</span>
       <p-button-group v-model="definition" :options="buttonGroupOptions" size="sm" />
     </h3>
 
     <template v-if="displayedDefinition?.properties">
       <template v-for="(subProperty, key) in displayedDefinition.properties" :key="key">
-        <PydanticFormProperty :prop-key="key" :property="subProperty" :level="level" />
+        <PydanticFormProperty :prop-key="`${propKey}.${key}`" :property="subProperty" :level="level" />
       </template>
     </template>
   </p-content>
@@ -20,7 +20,6 @@
   import type { PydanticPropertyRecordAnyOf } from '@/types/Pydantic'
 
   const props = withDefaults(defineProps<{
-    modelValue?: Record<string, unknown>,
     level?: number,
     propKey: string,
     property: PydanticPropertyRecordAnyOf,
@@ -29,25 +28,16 @@
     modelValue: () => ({}),
   })
 
-  const emit = defineEmits<{
-    (event: 'update:modelValue', value: unknown): void,
-  }>()
-
-  const internalValue = computed({
-    get() {
-      return props.modelValue
-    },
-    set(val) {
-      emit('update:modelValue', val)
-    },
-  })
-
   const displayedDefinition = computed(() => {
     return definitions.value[definition.value]
   })
 
   const definitions = computed(() => {
     return props.property.anyOf
+  })
+
+  const fieldLabel = computed(() => {
+    return props.propKey.split('.').pop()
   })
 
   const buttonGroupOptions = computed<ButtonGroupOption[]>(() => {

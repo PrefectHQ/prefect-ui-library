@@ -1,7 +1,7 @@
 <template>
   <template v-if="hasSubProperties && level < 2">
     <template v-for="(subProperty, key) in property.properties" :key="key">
-      <PydanticFormProperty :prop-key="key" :property="subProperty" :level="level + 1" />
+      <PydanticFormProperty :prop-key="`${propKey}.${key}`" :property="subProperty" :level="level + 1" />
     </template>
   </template>
 
@@ -13,7 +13,7 @@
       <span>{{ property.title }}</span>
     </h3>
 
-    <component :is="formComponent" v-model="internalValue" :prop-key="propKey" :property="property" :level="level + 1" />
+    <component :is="formComponent" :prop-key="propKey" :property="property" :level="level + 1" />
   </template>
 </template>
 
@@ -24,26 +24,12 @@
   import { hasAnyOf, PydanticTypeProperty } from '@/types/Pydantic'
 
   const props = withDefaults(defineProps<{
-    modelValue?: Record<string, unknown>,
     level?: number,
     propKey: string,
     property: PydanticTypeProperty,
   }>(), {
     level: 0,
     modelValue: () => ({}),
-  })
-
-  const emit = defineEmits<{
-    (event: 'update:modelValue', value: unknown): void,
-  }>()
-
-  const internalValue = computed({
-    get() {
-      return props.modelValue
-    },
-    set(val) {
-      emit('update:modelValue', val)
-    },
   })
 
   const isUnionProperty = computed(() => hasAnyOf(props.property))

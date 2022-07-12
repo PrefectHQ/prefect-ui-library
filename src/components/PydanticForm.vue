@@ -7,7 +7,7 @@
     </p-content>
 
     <template #footer>
-      <p-button type="submit" :disabled="isSubmitting">
+      <p-button type="submit" :disabled="isSubmitting" @click="handleMySubmit">
         Save
       </p-button>
     </template>
@@ -50,6 +50,10 @@
   })
 
   handleSubmit((values) => console.log(values))
+
+  const handleMySubmit = () => {
+    console.log(meta)
+  }
 
   onMounted(() => {
     console.log(schema.value)

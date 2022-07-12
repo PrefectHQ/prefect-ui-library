@@ -1,5 +1,5 @@
 <template>
-  <p-label :label="property.title ?? propKey" :message="errors?.[0]" :state="meta">
+  <p-label :label="property.title ?? fieldLabel" :message="errors?.[0]" :state="meta">
     <component
       :is="fieldComponent.component"
       v-if="fieldComponent"
@@ -30,7 +30,11 @@
 
   const fieldComponent = computed(() => getComponentFromPydanticTypeDefinition(props.property))
 
-  const { value: internalValue, errors, meta } = useField(props.property.title ?? 'id', fieldComponent.value?.validators, { initialValue: fieldComponent.value?.defaultValue })
+  const fieldLabel = computed(() => {
+    return props.propKey.split('.').pop()
+  })
+
+  const { value: internalValue, errors, meta } = useField(props.propKey, fieldComponent.value?.validators, { initialValue: fieldComponent.value?.defaultValue })
 </script>
 
 <style>
