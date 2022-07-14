@@ -13,6 +13,7 @@
     </template>
 
     <template #actions>
+      <DocumentationButton topic="notifications" />
       <router-link v-if="can.create.notification_policy" :to="notificationCreateRoute()">
         <p-button>
           Create Notification
@@ -26,6 +27,7 @@
 <script lang="ts" setup>
   import { PEmptyState, PButton, PIcon } from '@prefecthq/prefect-design'
   import { RouterLink } from 'vue-router'
+  import DocumentationButton from './DocumentationButton.vue'
   import { notificationCreateRouteKey } from '@/router'
   import { canKey } from '@/types'
   import { inject } from '@/utilities'
