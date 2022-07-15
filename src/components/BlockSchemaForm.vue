@@ -10,10 +10,10 @@
 
     <template #footer>
       <p-button inset @click="cancel">
-        Reset
+        Cancel
       </p-button>
       <p-button type="submit">
-        Submit
+        Create
       </p-button>
     </template>
   </p-form>
