@@ -5,6 +5,7 @@
 <script lang="ts" setup>
   import { PToggle, showToast } from '@prefecthq/prefect-design'
   import { computed, ref } from 'vue'
+  import { localization } from '@/localization'
   import { Deployment } from '@/models'
   import { deploymentsApiKey } from '@/services/DeploymentsApi'
   import { canKey } from '@/types'
@@ -38,15 +39,21 @@
     try {
       if (value) {
         await deploymentsApi.resumeDeployment(props.deployment.id)
-        showToast(`${props.deployment.name} active`, 'success')
+
+        showToast(localization.success.activateDeployment, 'success')
       } else {
         await deploymentsApi.pauseDeployment(props.deployment.id)
-        showToast(`${props.deployment.name} paused`, 'success')
+
+        showToast(localization.success.pauseDeployment, 'success')
       }
 
       emit('update')
     } catch (error) {
-      showToast(`${error}`, 'error')
+      const message = value ? localization.error.activateDeployment : localization.error.pauseDeployment
+
+      showToast(message)
+
+      console.error(error)
     } finally {
       loading.value = false
     }
