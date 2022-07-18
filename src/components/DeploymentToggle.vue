@@ -41,7 +41,7 @@
         showToast(`${props.deployment.name} active`, 'success')
       } else {
         await deploymentsApi.pauseDeployment(props.deployment.id)
-        showToast(`${props.deployment.name} paused`, 'error')
+        showToast(`${props.deployment.name} paused`, 'success')
       }
 
       emit('update')
