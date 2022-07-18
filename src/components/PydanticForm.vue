@@ -1,5 +1,5 @@
 <template>
-  <p-form @submit="submit">
+  <p-form @submit="handleSubmit">
     <p-content>
       <template v-for="(property, key) in properties" :key="key">
         <PydanticFormProperty :prop-key="key" :property="property" />
@@ -42,7 +42,4 @@
   const { handleSubmit } = useReactiveForm(internalValue)
 
   const properties = computed(() => resolvePydanticTypeDefinitionFromSchema(props.pydanticSchema))
-
-
-  const submit = handleSubmit(values => console.log(values))
 </script>

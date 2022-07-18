@@ -14,7 +14,7 @@
 
     <p-divider class="my-4" />
 
-    <PydanticForm v-if="showForm" v-model="value" :pydantic-schema="parsedDefinition" />
+    <PydanticForm v-if="showForm" v-model="value" :pydantic-schema="parsedDefinition" @submit="handleSubmit" />
   </DemoSection>
 </template>
 
@@ -43,5 +43,9 @@
     showForm.value = false
     await nextTick()
     showForm.value = true
+  }
+
+  const handleSubmit = (vals: any): void => {
+    console.log('form submitted', vals)
   }
 </script>
