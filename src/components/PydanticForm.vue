@@ -26,8 +26,6 @@
     pydanticSchema: PydanticTypeDefinition,
   }>()
 
-  // TODO: If we want to use a modelValue we might need to add a new
-  // composition to wrap useForm
   const emit = defineEmits<{
     (event: 'update:modelValue', value?: Record<string, unknown>): void,
   }>()
@@ -37,7 +35,6 @@
       return props.modelValue
     },
     set(val) {
-      console.log('internalValue PydanticForm running')
       emit('update:modelValue', val)
     },
   })
