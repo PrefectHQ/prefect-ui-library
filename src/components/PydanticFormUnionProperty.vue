@@ -5,10 +5,8 @@
       <p-button-group v-model="definition" :options="buttonGroupOptions" size="sm" />
     </h3>
 
-    <template v-if="displayedDefinition?.properties">
-      <template v-for="(subProperty, key) in displayedDefinition.properties" :key="key">
-        <PydanticFormProperty :prop-key="`${propKey}.${key}`" :property="subProperty" :level="level" />
-      </template>
+    <template v-for="(subProperty, key) in displayedDefinition.properties" :key="key">
+      <PydanticFormProperty :prop-key="`${propKey}.${key}`" :property="subProperty" :level="level" />
     </template>
   </p-content>
 </template>
@@ -27,9 +25,7 @@
     level: 0,
   })
 
-  const displayedDefinition = computed(() => {
-    return definitions.value[definition.value]
-  })
+  const displayedDefinition = computed(() => definitions.value[definition.value] ?? {})
 
   const definitions = computed(() => {
     return props.property.anyOf
