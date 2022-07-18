@@ -42,7 +42,7 @@
       const vnode = h(RunButtonToastMessage, { flowRun: flowRun.value, flowRunRoute: runRoute, routerProp:router })
       showToast(vnode, 'success')
     } catch (errorMessage) {
-      console.log(errorMessage)
+      console.warn(errorMessage)
       showToast('Failed to schedule flow run', 'error')
     } finally {
       loading.value = false
