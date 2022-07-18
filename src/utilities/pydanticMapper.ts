@@ -24,13 +24,12 @@ import {
 
 const InputComponents = [PToggle, PTextInput, PTextarea, JsonEditor, PDateInput, PNumberInput, PCombobox, PSelect] as const
 
-type Validator = ValidateMethod
 export type PydanticTypeDefinitionComponentAttrs = Record<string, unknown>
 export type PydanticTypeDefinitionComponent = {
   attrs: PydanticTypeDefinitionComponentAttrs,
   component?: typeof InputComponents[number],
   defaultValue: unknown,
-  validators: Validator[],
+  validators: ValidateMethod[],
   slots?: Record<string, unknown>,
 }
 
@@ -198,8 +197,8 @@ const getStringFormattedComponent = (format: PydanticStringFormat): PydanticType
   return component
 }
 
-const getValidators = (definition: PydanticTypeDefinition): Validator[] => {
-  const validators: Validator[] = []
+const getValidateMethods = (definition: PydanticTypeDefinition): ValidateMethod[] => {
+  const validators: ValidateMethod[] = []
 
   if (hasMinLength(definition)) {
     validators.push(greaterThanOrEqual(definition.minLength))
@@ -324,7 +323,7 @@ export const getComponentFromPydanticTypeDefinition = (definition: PydanticTypeD
     return null
   }
 
-  component.validators = getValidators(definition)
+  component.validators = getValidateMethods(definition)
   component.attrs = { ...component.attrs, ...getAttrs(definition) }
 
   if (hasDefault(definition)) {
