@@ -1,5 +1,5 @@
 <template>
-  <p-form @submit="handleSubmit">
+  <p-form @submit="submit">
     <p-content>
       <template v-for="(property, key) in properties" :key="key">
         <PydanticFormProperty :prop-key="key" :property="property" />
@@ -21,13 +21,14 @@
   import { PydanticTypeDefinition } from '@/types/Pydantic'
   import { resolvePydanticTypeDefinitionFromSchema } from '@/utilities'
 
+  type PydanticFormValue = Record<string, unknown>
   const props = defineProps<{
-    modelValue?: Record<string, unknown>,
+    modelValue?: PydanticFormValue,
     pydanticSchema: PydanticTypeDefinition,
   }>()
 
   const emit = defineEmits<{
-    (event: 'update:modelValue', value?: Record<string, unknown>): void,
+    (event: 'update:modelValue' | 'submit', value?: PydanticFormValue): void,
   }>()
 
   const internalValue = computed({
@@ -39,7 +40,8 @@
     },
   })
 
-  const { handleSubmit } = useReactiveForm(internalValue)
+  const { handleSubmit, values } = useReactiveForm(internalValue)
+  const submit = handleSubmit(() => emit('submit', values))
 
   const properties = computed(() => resolvePydanticTypeDefinitionFromSchema(props.pydanticSchema))
 </script>
