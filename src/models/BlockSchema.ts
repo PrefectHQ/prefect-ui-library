@@ -49,6 +49,10 @@ export interface IBlockSchema {
   capabilities: BlockSchemaCapability[],
 }
 
+export const isBlockSchemaSimpleProperty = (property: BlockSchemaProperty): property is BlockSchemaSimpleProperty => {
+  return 'title' in property
+}
+
 export class BlockSchema implements IBlockSchema {
   public readonly id: string
   public readonly created: Date
@@ -68,5 +72,27 @@ export class BlockSchema implements IBlockSchema {
     this.blockTypeId = blockSchema.blockTypeId
     this.blockType = blockSchema.blockType
     this.capabilities = blockSchema.capabilities
+
+    // TODO: REMOVE THIS SHIM
+    if (this.fields.title.toLowerCase() == 's3storageblock') {
+      this.fields.title = 'AWS'
+      Object.keys(this.fields.properties).forEach((key) => {
+        const property = this.fields.properties[key]
+        if (isBlockSchemaSimpleProperty(property)) {
+          const { title } = property
+          const match = title.match(/aws/gi)
+
+          if (match?.length) {
+            const startIndex = title.indexOf(match[0])
+            const endIndex = startIndex + 3
+
+            if (isBlockSchemaSimpleProperty(this.fields.properties[key])) {
+              property.title = `${title.slice(0, startIndex)}AWS${title.slice(endIndex)}`
+              this.fields.properties[key] = { ...property }
+            }
+          }
+        }
+      })
+    }
   }
 }
