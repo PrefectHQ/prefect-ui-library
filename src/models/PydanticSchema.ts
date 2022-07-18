@@ -29,8 +29,7 @@ export const getResolvedTypeDefinitionFromProperty = (property: PydanticTypeProp
   let definition: PydanticTypeProperty = {}
 
   if (hasTypeRef(property)) {
-    const _definition = getTypeDefinitionFromTypeRef(property.$ref, schema)
-    definition = { ..._definition }
+    definition = getTypeDefinitionFromTypeRef(property.$ref, schema) ?? {}
   }
 
   if (hasAllOf(property)) {

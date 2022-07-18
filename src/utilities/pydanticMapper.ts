@@ -24,7 +24,7 @@ import {
 
 const InputComponents = [PToggle, PTextInput, PTextarea, JsonEditor, PDateInput, PNumberInput, PCombobox, PSelect] as const
 
-type Validator = ValidateMethod | ((value: any) => Promise<string | boolean>)
+type Validator = ValidateMethod
 export type PydanticTypeDefinitionComponentAttrs = Record<string, unknown>
 export type PydanticTypeDefinitionComponent = {
   attrs: PydanticTypeDefinitionComponentAttrs,
