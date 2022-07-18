@@ -3,14 +3,15 @@
     Run
     <p-icon class="run-button__run-icon" icon="PlayIcon" solid />
   </p-button>
-  <RunButtonToastMessage v-if="flowyRun" v-show="false" ref="fr" :name="name" />
 </template>
 
 <script lang="ts" setup>
   import  { PButton, showToast } from '@prefecthq/prefect-design'
   import { ref, h } from 'vue'
+  import { RouteLocationRaw, useRouter } from 'vue-router'
   import RunButtonToastMessage from './RunButtonToastMessage.vue'
   import { Deployment } from '@/models'
+  import { flowRunRouteKey } from '@/router/routes'
   import { deploymentsApiKey } from '@/services/DeploymentsApi'
   // import { useStore } from '@/stores/toast'
   import { canKey } from '@/types'
@@ -23,9 +24,11 @@
   const can = inject(canKey)
   const deploymentsApi = inject(deploymentsApiKey)
   const loading = ref(false)
-  const fr = ref(null)
-  const name = ref()
-  const flowyRun = ref()
+  const flowRun = ref()
+
+
+  const router = useRouter()
+  const flowRunRoute = inject(flowRunRouteKey)
 
   // const store = useStore()
 
@@ -33,17 +36,16 @@
   const run = async (deployment: Deployment): Promise<void> => {
     loading.value = true
     try {
-      flowyRun.value = await deploymentsApi.createDeploymentFlowRun(deployment.id, {
+      flowRun.value = await deploymentsApi.createDeploymentFlowRun(deployment.id, {
         state: {
           type: 'scheduled',
           message: 'Run through UI',
         },
       },
       )
-      name.value=flowyRun.value.name
-      console.log('flowRun', flowyRun, fr)
-      const p = h(RunButtonToastMessage, { name: name.value })
-      showToast(p)
+      const runRoute: RouteLocationRaw = flowRunRoute(flowRun.value.id)
+      const vnode = h(RunButtonToastMessage, { flowRun: flowRun.value, flowRunRoute: runRoute })
+      showToast(vnode, 'success')
     } catch (errorMessage) {
       console.log(errorMessage)
       showToast('Failed to schedule flow run', 'error')

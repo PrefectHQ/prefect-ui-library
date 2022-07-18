@@ -1,31 +1,38 @@
 <template>
   <div class="toast-message">
-    Flow Run {{ runName }} Scheduled
-    <p-button @click="handleClick">
-      Go To Run
-    </p-button>
+    <span class="toast-message__name">{{ runName }}</span> Scheduled
+    <router-link>
+      <p-button size="xs" @click="handleClick">
+        <span>Go To Run</span>
+      </p-button>
+    </router-link>
   </div>
 </template>
 
 <script lang="ts" setup>
   import { PButton } from '@prefecthq/prefect-design'
   import { computed } from '@vue/reactivity'
-  // import { FlowRun } from '@/models/FlowRun'
+  import { NavigationFailure, RouteLocationRaw, useRouter } from 'vue-router'
+  import { FlowRun } from '@/models/FlowRun'
+  import {  titleCase } from '@/utilities'
 
-  import { useStore } from '@/stores/toast'
 
-
-  // const store = useStore()
+  const router = useRouter()
 
   const props = defineProps<{
-    name: string,
+    flowRun: FlowRun,
+    flowRunRoute: RouteLocationRaw,
   }>()
 
 
   const runName = computed(() => {
-    console.log('name', props.name)
-    // return store.runName
-    return props.name
+    return titleCase(props.flowRun.name!)
   })
-  const handleClick = (): void=> console.log('clicked')
+  const handleClick = (): Promise<void | NavigationFailure | undefined> => router.push(props.flowRunRoute)
 </script>
+
+<style>
+.toast-message__name { @apply
+  font-semibold
+}
+</style>
