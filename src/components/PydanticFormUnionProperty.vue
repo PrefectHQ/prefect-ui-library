@@ -25,7 +25,6 @@
     property: PydanticPropertyRecordAnyOf,
   }>(), {
     level: 0,
-    modelValue: () => ({}),
   })
 
   const displayedDefinition = computed(() => {
