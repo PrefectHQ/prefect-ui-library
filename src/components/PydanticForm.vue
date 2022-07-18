@@ -18,8 +18,8 @@
   import { computed } from 'vue'
   import PydanticFormProperty from './PydanticFormProperty.vue'
   import { useReactiveForm } from '@/compositions'
-  import { PydanticSchema  } from '@/models'
   import { PydanticTypeDefinition } from '@/types/Pydantic'
+  import { resolvePydanticTypeDefinitionFromSchema } from '@/utilities'
 
   const props = defineProps<{
     modelValue?: Record<string, unknown>,
@@ -41,11 +41,8 @@
 
   const { handleSubmit } = useReactiveForm(internalValue)
 
-  const properties = computed(() => {
-    return schema.value.properties
-  })
+  const properties = computed(() => resolvePydanticTypeDefinitionFromSchema(props.pydanticSchema))
 
-  const schema = computed(() => new PydanticSchema(props.pydanticSchema))
 
   const submit = handleSubmit(values => console.log(values))
 </script>
