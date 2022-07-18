@@ -35,7 +35,7 @@
         Cancel
       </p-button>
       <p-button type="submit" :disabled="disabled" :loading="loading">
-        Submit
+        Create
       </p-button>
     </template>
   </p-form>
