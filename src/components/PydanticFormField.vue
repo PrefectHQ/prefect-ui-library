@@ -34,9 +34,7 @@
 
   const fieldComponent = computed(() => getComponentFromPydanticTypeDefinition(props.property))
 
-  const fieldLabel = computed(() => {
-    return props.propKey.split('.').pop()
-  })
+  const fieldLabel = computed(() => props.propKey.split('.').pop())
 
   const { value: internalValue, errorMessage, meta } = useField(props.propKey, fieldComponent.value?.validators, { initialValue: fieldComponent.value?.defaultValue })
 </script>
