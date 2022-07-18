@@ -35,10 +35,3 @@
 
   const { value: internalValue, errorMessage, meta } = useField(props.propKey, fieldComponent.value?.validators, { initialValue: fieldComponent.value?.defaultValue })
 </script>
-
-<style>
-.pydantic-form-field__none {
-  @apply
-  text-slate-500
-}
-</style>
