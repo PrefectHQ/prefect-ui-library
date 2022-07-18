@@ -13,7 +13,6 @@
     property: PydanticPropertyRecordAllOf,
   }>(), {
     level: 0,
-    modelValue: () => ({}),
   })
 
   const property = computed(() => {
