@@ -39,7 +39,7 @@
       },
       )
       const runRoute: RouteLocationRaw = flowRunRoute(flowRun.value.id)
-      const vnode = h(RunButtonToastMessage, { flowRun: flowRun.value, flowRunRoute: runRoute, router:router })
+      const vnode = h(RunButtonToastMessage, { flowRun: flowRun.value, flowRunRoute: runRoute, routerProp:router })
       showToast(vnode, 'success')
     } catch (errorMessage) {
       console.log(errorMessage)
