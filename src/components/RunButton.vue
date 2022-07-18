@@ -39,8 +39,8 @@
       },
       )
       const runRoute: RouteLocationRaw = flowRunRoute(flowRun.value.id)
-      const vnode = h(RunButtonToastMessage, { flowRun: flowRun.value, flowRunRoute: runRoute, routerProp:router })
-      showToast(vnode, 'success')
+      const toastMessage = h(RunButtonToastMessage, { flowRun: flowRun.value, flowRunRoute: runRoute, routerProp:router })
+      showToast(toastMessage, 'success')
     } catch (errorMessage) {
       console.warn(errorMessage)
       showToast('Failed to schedule flow run', 'error')
