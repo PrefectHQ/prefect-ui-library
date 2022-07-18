@@ -7,7 +7,7 @@ import { isEmptyArray } from '@/utilities/arrays'
 type ValidationValue = any
 export type ValidateMethod = (value: ValidationValue) => boolean | Promise<string | boolean>
 
-export function withMessage(validate: (value: ValidationValue) => boolean | Promise<boolean>, message: string) {
+export function withMessage(validate: ValidateMethod, message: string) {
   return async (value: ValidationValue) => await validate(value) ? true : message
 }
 
