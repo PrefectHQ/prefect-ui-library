@@ -23,6 +23,7 @@
         "kubernetes",
         "pinia",
         "prefecthq",
+        "pydantic",
         "rrule",
         "semibold",
         "subflow",
