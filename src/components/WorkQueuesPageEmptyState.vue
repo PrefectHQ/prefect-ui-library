@@ -16,6 +16,7 @@
     </template>
 
     <template #actions>
+      <DocumentationButton topic="workQueues" />
       <router-link v-if="can.create.work_queue" :to="workQueueCreateRoute()">
         <p-button>
           Create Work Queue
@@ -29,6 +30,7 @@
 <script lang="ts" setup>
   import { PEmptyState, PButton, PIcon } from '@prefecthq/prefect-design'
   import { RouterLink } from 'vue-router'
+  import DocumentationButton from './DocumentationButton.vue'
   import { workQueueCreateRouteKey } from '@/router'
   import { canKey } from '@/types'
 

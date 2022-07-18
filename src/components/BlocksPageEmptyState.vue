@@ -13,6 +13,7 @@
     </template>
 
     <template #actions>
+      <DocumentationButton topic="blocks" />
       <router-link v-if="can.create.block" :to="blockCatalogRoute()">
         <p-button>
           Create a Block
@@ -25,6 +26,7 @@
 
 <script lang="ts" setup>
   import { PEmptyState, PButton, PIcon } from '@prefecthq/prefect-design'
+  import DocumentationButton from './DocumentationButton.vue'
   import { blockCatalogRouteKey } from '@/router'
   import { canKey } from '@/types'
   import { inject } from '@/utilities'

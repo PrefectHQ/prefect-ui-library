@@ -10,6 +10,7 @@
   import { ref, h } from 'vue'
   import { RouteLocationRaw, useRouter } from 'vue-router'
   import RunButtonToastMessage from './RunButtonToastMessage.vue'
+  import { localization } from '@/localization'
   import { Deployment } from '@/models'
   import { flowRunRouteKey } from '@/router/routes'
   import { deploymentsApiKey } from '@/services/DeploymentsApi'
@@ -30,6 +31,7 @@
 
   const run = async (deployment: Deployment): Promise<void> => {
     loading.value = true
+
     try {
       flowRun.value = await deploymentsApi.createDeploymentFlowRun(deployment.id, {
         state: {
@@ -41,9 +43,9 @@
       const runRoute: RouteLocationRaw = flowRunRoute(flowRun.value.id)
       const toastMessage = h(RunButtonToastMessage, { flowRun: flowRun.value, flowRunRoute: runRoute, routerProp:router })
       showToast(toastMessage, 'success')
-    } catch (errorMessage) {
-      console.warn(errorMessage)
-      showToast('Failed to schedule flow run', 'error')
+    } catch (error) {
+      showToast(localization.error.scheduleFlowRun, 'error')
+      console.warn(error)
     } finally {
       loading.value = false
     }

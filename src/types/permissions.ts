@@ -19,6 +19,8 @@ const workspacePermissionKeys = [
   'task_run',
   'work_queue',
   'notification_policy',
+  'workspace_bot_access',
+  'workspace_user_access',
 ] as const
 export type WorkspacePermissionKey = typeof workspacePermissionKeys[number]
 type WorkspacePermissions = Record<WorkspacePermissionKey, boolean>
@@ -43,9 +45,7 @@ const accountPermissionKeys = [
   'team',
   'team',
   'workspace',
-  'workspace_bot_access',
   'workspace_role',
-  'workspace_user_access',
 ] as const
 export type AccountPermissionKey = typeof accountPermissionKeys[number]
 type AccountPermissions = Record<AccountPermissionKey, boolean>

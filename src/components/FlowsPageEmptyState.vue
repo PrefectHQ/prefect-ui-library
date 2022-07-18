@@ -13,18 +13,14 @@
     </template>
 
     <template #actions>
-      <a href="https://orion-docs.prefect.io/concepts/flows/" target="_blank">
-        <p-button inset class="empty-flow--link">
-          View Docs
-          <p-icon icon="ExternalLinkIcon" class="empty-flow--link-icon" />
-        </p-button>
-      </a>
+      <DocumentationButton topic="flows" />
     </template>
   </p-empty-state>
 </template>
 
 <script lang="ts" setup>
-  import { PEmptyState, PButton, PIcon } from '@prefecthq/prefect-design'
+  import { PEmptyState, PIcon } from '@prefecthq/prefect-design'
+  import DocumentationButton from './DocumentationButton.vue'
 </script>
 
 <style>

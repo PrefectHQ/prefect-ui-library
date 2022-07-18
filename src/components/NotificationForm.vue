@@ -16,7 +16,7 @@
 
     <p-button-group v-model="selectedBlockTypeId" :options="buttonGroup" />
 
-    <template v-if="blockSchema">
+    <template v-if="blockSchema && data">
       <BlockSchemaFormFields v-model:data="data" :block-schema="blockSchema" />
     </template>
 
@@ -25,16 +25,17 @@
     </p>
 
     <div class="notification-form__review-block">
-      <template v-if="notification && blockType">
+      <template v-if="notification && blockType && data">
         <NotificationDetails :notification="notification" :block-type="blockType" :data="data" />
       </template>
     </div>
+
     <template #footer="{ disabled, loading }">
       <p-button inset @click="cancel">
         Cancel
       </p-button>
       <p-button type="submit" :disabled="disabled" :loading="loading">
-        Submit
+        Create
       </p-button>
     </template>
   </p-form>
@@ -44,10 +45,11 @@
   import { PLabel, PTagsInput, PForm, PButtonGroup, showToast } from '@prefecthq/prefect-design'
   import { useSubscription, useSubscriptionWithDependencies } from '@prefecthq/vue-compositions'
   import { useForm } from 'vee-validate'
-  import { computed, watchEffect, ref } from 'vue'
+  import { computed, watchEffect, ref, watch, reactive } from 'vue'
   import BlockSchemaFormFields from './BlockSchemaFormFields.vue'
   import NotificationDetails from './NotificationDetails.vue'
   import StateSelect from '@/components/StateSelect.vue'
+  import { localization } from '@/localization'
   import { Notification, BlockTypeFilter, BlockDocumentData } from '@/models'
   import { blockDocumentsApiKey, blockSchemasApiKey, blockTypesApiKey } from '@/services'
   import { inject } from '@/utilities/inject'
@@ -66,7 +68,7 @@
   const blockTypesApi = inject(blockTypesApiKey)
   const blockSchemasApi = inject(blockSchemasApiKey)
   const selectedBlockTypeId = ref<string>()
-  const data = ref<BlockDocumentData>({})
+  const blockDataMap = reactive<Record<string, BlockDocumentData | undefined>>({})
 
   const selectedStates = computed({
     get(): string[] {
@@ -86,6 +88,23 @@
     },
   })
 
+  const data = computed({
+    get() {
+      if (selectedBlockTypeId.value === undefined) {
+        return undefined
+      }
+
+      return blockDataMap[selectedBlockTypeId.value] ?? {}
+    },
+    set(value: BlockDocumentData | undefined) {
+      if (selectedBlockTypeId.value === undefined) {
+        return
+      }
+
+      blockDataMap[selectedBlockTypeId.value] = value
+    },
+  })
+
   const blockDocumentSubscriptionArgs = computed<Parameters<typeof blockDocumentsApi.getBlockDocument> | null>(() => {
     if (!props.notification.blockDocumentId) {
       return null
@@ -96,14 +115,14 @@
   const blockDocumentSubscription = useSubscriptionWithDependencies(blockDocumentsApi.getBlockDocument, blockDocumentSubscriptionArgs)
   const blockDocument = computed(() => blockDocumentSubscription.response)
 
-  watchEffect(() => {
-    if (!blockDocument.value) {
+  watch(blockDocument, document => {
+    if (!document) {
       return
     }
 
-    selectedBlockTypeId.value = blockDocument.value.blockTypeId
-    data.value = blockDocument.value.data
-  })
+    selectedBlockTypeId.value = document.blockTypeId
+    data.value = document.data
+  }, { immediate: true })
 
   const blockTypesSubscriptionFilter: BlockTypeFilter = {
     blockSchemas: {
@@ -122,7 +141,7 @@
   })))
 
   watchEffect(() => {
-    if (selectedBlockTypeId.value) {
+    if (selectedBlockTypeId.value || props.notification.blockDocumentId) {
       return
     }
 
@@ -159,10 +178,9 @@
     return blockSchemaSubscription.response?.[0]
   })
 
-
   const submit = handleSubmit(async () => {
-    if (blockSchema.value === undefined || selectedBlockTypeId.value === undefined) {
-      showToast('Failed to submit notification')
+    if (blockSchema.value === undefined || selectedBlockTypeId.value === undefined || data.value === undefined) {
+      showToast(localization.error.submitNotification)
       return
     }
 
@@ -178,7 +196,7 @@
       emit('update:notification', notification)
       emit('submit', notification)
     } catch (err) {
-      showToast('Failed to submit notification')
+      showToast(localization.error.submitNotification)
     }
   })
 

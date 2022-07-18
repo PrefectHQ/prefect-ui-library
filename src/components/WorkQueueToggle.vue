@@ -5,6 +5,7 @@
 <script lang="ts" setup>
   import { PToggle, showToast } from '@prefecthq/prefect-design'
   import { computed, ref } from 'vue'
+  import { localization } from '@/localization'
   import { WorkQueue } from '@/models'
   import { workQueuesApiKey } from '@/services/WorkQueuesApi'
   import { canKey } from '@/types'
@@ -38,15 +39,21 @@
     try {
       if (value) {
         await workQueuesApi.resumeWorkQueue(props.workQueue.id)
-        showToast(`${props.workQueue.name} active`, 'success')
+
+        showToast(localization.success.activateWorkQueue, 'success')
       } else {
         await workQueuesApi.pauseWorkQueue(props.workQueue.id)
-        showToast(`${props.workQueue.name} paused`, 'success')
+
+        showToast(localization.success.pauseWorkQueue, 'success')
       }
 
       emit('update')
     } catch (error) {
-      showToast(`${error}`, 'error')
+      const message = value ? localization.error.activateWorkQueue : localization.error.pauseWorkQueue
+
+      showToast(message, 'error')
+
+      console.error(error)
     } finally {
       loading.value = false
     }
