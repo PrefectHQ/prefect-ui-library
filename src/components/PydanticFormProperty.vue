@@ -30,7 +30,6 @@
     property: PydanticTypeProperty,
   }>(), {
     level: 0,
-    modelValue: () => ({}),
   })
 
   const isUnionProperty = computed(() => hasAnyOf(props.property))
