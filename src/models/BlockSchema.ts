@@ -80,7 +80,7 @@ export class BlockSchema implements IBlockSchema {
         const property = this.fields.properties[key]
         if (isBlockSchemaSimpleProperty(property)) {
           const { title } = property
-          const match = title.match(/aws/gi)
+          const match = title.match(/\baws\b/gi)
 
           if (match?.length) {
             const startIndex = title.indexOf(match[0])
