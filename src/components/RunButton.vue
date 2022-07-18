@@ -13,7 +13,6 @@
   import { Deployment } from '@/models'
   import { flowRunRouteKey } from '@/router/routes'
   import { deploymentsApiKey } from '@/services/DeploymentsApi'
-  // import { useStore } from '@/stores/toast'
   import { canKey } from '@/types'
   import { inject } from '@/utilities'
 
@@ -26,12 +25,8 @@
   const loading = ref(false)
   const flowRun = ref()
 
-
   const router = useRouter()
   const flowRunRoute = inject(flowRunRouteKey)
-
-  // const store = useStore()
-
 
   const run = async (deployment: Deployment): Promise<void> => {
     loading.value = true
@@ -44,7 +39,7 @@
       },
       )
       const runRoute: RouteLocationRaw = flowRunRoute(flowRun.value.id)
-      const vnode = h(RunButtonToastMessage, { flowRun: flowRun.value, flowRunRoute: runRoute })
+      const vnode = h(RunButtonToastMessage, { flowRun: flowRun.value, flowRunRoute: runRoute, router:router })
       showToast(vnode, 'success')
     } catch (errorMessage) {
       console.log(errorMessage)
