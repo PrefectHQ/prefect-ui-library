@@ -1,5 +1,5 @@
 <template>
-  <p-label :label="property.title ?? fieldLabel" :message="errorMessage" :state="meta">
+  <p-label :label="property.title ?? fieldLabel" :message="errorMessage ?? message" :state="meta">
     <template v-if="property.description" #description>
       {{ property.description }}
     </template>
@@ -14,10 +14,6 @@
         {{ content }}
       </template>
     </component>
-
-    <template v-else>
-      <span class="pydantic-form-field__none">This field has a type 'None' and cannot be modified.</span>
-    </template>
   </p-label>
 </template>
 
@@ -35,6 +31,7 @@
   const fieldComponent = computed(() => getComponentFromPydanticTypeDefinition(props.property))
 
   const fieldLabel = computed(() => props.propKey.split('.').pop())
+  const message = computed(() => fieldComponent.value ? undefined : "This field has a type 'None' and cannot be modified.")
 
   const { value: internalValue, errorMessage, meta } = useField(props.propKey, fieldComponent.value?.validators, { initialValue: fieldComponent.value?.defaultValue })
 </script>
