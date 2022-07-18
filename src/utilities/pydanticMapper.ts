@@ -258,6 +258,7 @@ const getBaseComponent = (definition: PydanticTypeDefinition): null | PydanticTy
     component.attrs.options = defEnum as PydanticEnum<PydanticType>
 
     if (isPydanticType('array', type)) {
+      // Make sure this passes the default value as an array
       component.attrs.multiple = true
     }
 
@@ -292,6 +293,7 @@ const getBaseComponent = (definition: PydanticTypeDefinition): null | PydanticTy
     // TODO: This probably isn't robust to all predefined item types.
     if (items) {
       if (Array.isArray(items)) {
+        // Check that the default value is an array
         component.attrs.options = items
       } else if (isPydanticEnum(items)) {
         component.attrs.options = items.enum as PydanticEnum<PydanticType>

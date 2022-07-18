@@ -1,5 +1,5 @@
 <template>
-  <p-label :label="property.title ?? fieldLabel" :message="errors?.[0]" :state="meta">
+  <p-label :label="property.title ?? fieldLabel" :message="errorMessage" :state="meta">
     <template v-if="property.description" #description>
       {{ property.description }}
     </template>
@@ -38,7 +38,7 @@
     return props.propKey.split('.').pop()
   })
 
-  const { value: internalValue, errors, meta } = useField(props.propKey, fieldComponent.value?.validators, { initialValue: fieldComponent.value?.defaultValue })
+  const { value: internalValue, errorMessage, meta } = useField(props.propKey, fieldComponent.value?.validators, { initialValue: fieldComponent.value?.defaultValue })
 </script>
 
 <style>
