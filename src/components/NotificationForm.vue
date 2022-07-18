@@ -49,6 +49,7 @@
   import BlockSchemaFormFields from './BlockSchemaFormFields.vue'
   import NotificationDetails from './NotificationDetails.vue'
   import StateSelect from '@/components/StateSelect.vue'
+  import { localization } from '@/localization'
   import { Notification, BlockTypeFilter, BlockDocumentData } from '@/models'
   import { blockDocumentsApiKey, blockSchemasApiKey, blockTypesApiKey } from '@/services'
   import { inject } from '@/utilities/inject'
@@ -179,7 +180,7 @@
 
   const submit = handleSubmit(async () => {
     if (blockSchema.value === undefined || selectedBlockTypeId.value === undefined || data.value === undefined) {
-      showToast('Failed to submit notification')
+      showToast(localization.error.submitNotification)
       return
     }
 
@@ -195,7 +196,7 @@
       emit('update:notification', notification)
       emit('submit', notification)
     } catch (err) {
-      showToast('Failed to submit notification')
+      showToast(localization.error.submitNotification)
     }
   })
 

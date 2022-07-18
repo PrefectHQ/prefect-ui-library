@@ -1,13 +1,16 @@
 import { showToast } from '@prefecthq/prefect-design'
+import { localization } from '@/localization'
 
 export type itemType = 'Flow' | 'Deployment' | 'Flow run' | 'Work queue' | 'Block' | 'Notification'
 
 export async function deleteItem(id: string, endpoint: (arg: string) => void, type: itemType): Promise<void> {
   try {
     await endpoint(id)
-    showToast(`${type} deleted successfully!`, 'success')
+
+    showToast(localization.success.delete(type), 'success')
   } catch (error) {
-    showToast(`Failed to delete ${type.toLowerCase()}`, 'error')
+    showToast(localization.error.delete(type.toLowerCase()), 'error')
+
     console.error(error)
   }
 }
