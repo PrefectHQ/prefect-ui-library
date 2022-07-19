@@ -81,7 +81,7 @@ export class BlockSchema implements IBlockSchema {
         const property = this.fields.properties[key]
 
         if (isBlockSchemaSimpleProperty(property)) {
-          property.title = property.title.replace(expression, 'AWeSome')
+          property.title = property.title.replace(expression, 'AWS')
         }
       })
     }
