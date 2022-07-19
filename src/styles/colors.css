@@ -73,6 +73,17 @@ body {
   --state-cancelled-700: #292929;
   --state-cancelled-800: #1E1E1E;
   --state-cancelled-900: #141414;
+
+  --state-crashed-50: #FFF7ED;
+  --state-crashed-100: #FFEDD5;
+  --state-crashed-200: #FED7AA;
+  --state-crashed-300: #FDBA74;
+  --state-crashed-400: #FB923C;
+  --state-crashed-500: #F97316;
+  --state-crashed-600: #EA580C;
+  --state-crashed-700: #C2410C;
+  --state-crashed-800: #9A3412;
+  --state-crashed-900: #7C2D12;
 }
 
 .color-mode-achromatopsia {

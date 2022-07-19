@@ -92,4 +92,8 @@
 .scatter-plot-item--failed {
   background-color: var(--state-failed-500);
 }
+
+.scatter-plot-item--crashed {
+  background-color: var(--state-crashed-500);
+}
 </style>

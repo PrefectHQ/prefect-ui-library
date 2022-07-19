@@ -5,6 +5,7 @@ export const stateType = [
   'pending',
   'failed',
   'cancelled',
+  'crashed',
 ] as const
 
 export type StateType = typeof stateType[number]
