@@ -75,22 +75,15 @@ export class BlockSchema implements IBlockSchema {
 
     // TODO: REMOVE THIS SHIM
     if (this.fields.title.toLowerCase() == 's3storageblock') {
-      this.fields.title = 'AWS'
+      const expression = /\baws\b/gi
+
       Object.keys(this.fields.properties).forEach((key) => {
         const property = this.fields.properties[key]
+
         if (isBlockSchemaSimpleProperty(property)) {
           const { title } = property
-          const match = title.match(/\baws\b/gi)
-
-          if (match?.length) {
-            const startIndex = title.indexOf(match[0])
-            const endIndex = startIndex + 3
-
-            if (isBlockSchemaSimpleProperty(this.fields.properties[key])) {
-              property.title = `${title.slice(0, startIndex)}AWS${title.slice(endIndex)}`
-              this.fields.properties[key] = { ...property }
-            }
-          }
+          property.title = title.replace(expression, 'AWS')
+          this.fields.properties[key] = { ...property }
         }
       })
     }
