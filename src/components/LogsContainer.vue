@@ -1,13 +1,16 @@
 <template>
   <p-code multiline class="logs">
-    <template v-for="(log, index) in logs" :key="log.id">
-      <template v-if="showDivider(index)">
-        <div class="logs__divider">
-          <span class="logs__divider-time">{{ formatDate(log.timestamp) }}</span>
-        </div>
+    <VirtualScroller :items="logs">
+      <template #default="{ item: log, index }">
+        <template v-if="showDivider(index)">
+          <div class="logs__divider">
+            <span class="logs__divider-time">{{ formatDate(log.timestamp) }}</span>
+          </div>
+        </template>
+
+        <log-row :log="log" show-task-run-link />
       </template>
-      <log-row :log="log" show-task-run-link />
-    </template>
+    </VirtualScroller>
     <template v-if="empty">
       <slot name="empty">
         <div class="logs__empty">
@@ -21,16 +24,14 @@
 <script lang="ts" setup>
   import { PCode, formatDate } from '@prefecthq/prefect-design'
   import { isSameDay } from 'date-fns'
-  import { computed, PropType } from 'vue'
+  import { computed } from 'vue'
   import LogRow from '@/components/LogRow.vue'
+  import VirtualScroller from '@/components/VirtualScroller.vue'
   import { Log } from '@/models/Log'
 
-  const props = defineProps({
-    logs: {
-      type: Array as PropType<Log[]>,
-      required: true,
-    },
-  })
+  const props = defineProps<{
+    logs: Log[],
+  }>()
 
   const empty = computed<boolean>(() => props.logs.length == 0)
 

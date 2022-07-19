@@ -1,9 +1,10 @@
 <template>
   <div class="virtual-scroller">
-    <template v-for="(chunk, index) in chunks" :key="index">
+    <template v-for="(chunk, chunkIndex) in chunks" :key="chunkIndex">
       <VirtualScrollerChunk :height="itemEstimateHeight * chunk.length" v-bind="{ observerOptions }">
-        <template v-for="(item) in chunk" :key="item[itemKey]">
-          <slot :item="item as any" />
+        <template v-for="(item, itemChunkIndex) in chunk" :key="item[itemKey]">
+          <!-- eslint-disable-next-line vue/no-extra-parens (breaks syntax highlighting) -->
+          <slot :item="(item as any)" :index="getItemIndex(chunkIndex, itemChunkIndex)" />
         </template>
       </VirtualScrollerChunk>
     </template>
@@ -57,6 +58,10 @@
         emit('bottom')
       }
     })
+  }
+
+  function getItemIndex(chunkIndex: number, itemChunkIndex: number): number {
+    return props.chunkSize * chunkIndex + itemChunkIndex
   }
 
   watch(() => props.items, (current, previous) => {
