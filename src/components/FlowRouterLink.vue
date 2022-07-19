@@ -28,8 +28,6 @@
   const router = useRouter()
   const flowRouteResolved = computed(() => router.resolve(flowRoute(props.flowId)))
   const matched = computed(() => route.matched.some(({ path }) => flowRouteResolved.value.path == path))
-  // as is this subscription will run even if matched is false.
-  // "optional" subscriptions are an issue currently.
 
   const flowSubscriptionArgs = computed<Parameters<typeof flowsApi.getFlow> | null>(() => !matched.value ? [props.flowId] : null)
 
