@@ -178,6 +178,8 @@
     return blockSchemaSubscription.response?.[0]
   })
 
+  const blockDocumentId = ref<string>()
+
   const submit = handleSubmit(async () => {
     if (blockSchema.value === undefined || selectedBlockTypeId.value === undefined || data.value === undefined) {
       showToast(localization.error.submitNotification)
@@ -185,13 +187,25 @@
     }
 
     try {
-      const { id: blockDocumentId } = await blockDocumentsApi.createBlockDocument({
-        isAnonymous: true,
-        blockSchemaId: blockSchema.value.id,
-        blockTypeId: selectedBlockTypeId.value,
-        data: data.value,
-      })
-      const notification = { ...props.notification, blockDocumentId }
+      if (
+        blockDocument.value?.id &&
+        blockDocument.value.blockSchemaId === blockSchema.value.id &&
+        blockDocument.value.blockTypeId === selectedBlockTypeId.value
+      ) {
+        blockDocumentId.value = blockDocument.value.id
+        await blockDocumentsApi.updateBlockDocument(blockDocumentId.value, {
+          data: data.value,
+        })
+      } else {
+        const newBlockDocument = await blockDocumentsApi.createBlockDocument({
+          isAnonymous: true,
+          blockSchemaId: blockSchema.value.id,
+          blockTypeId: selectedBlockTypeId.value,
+          data: data.value,
+        })
+        blockDocumentId.value = newBlockDocument.id
+      }
+      const notification = { ...props.notification, blockDocumentId: blockDocumentId.value }
 
       emit('update:notification', notification)
       emit('submit', notification)
