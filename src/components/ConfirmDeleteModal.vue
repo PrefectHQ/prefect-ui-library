@@ -6,13 +6,13 @@
     <template #title>
       <div class="delete-modal__title">
         <slot name="title">
-          {{ `${action} ${name}` }}
+          {{ `${action} ${label}` }}
         </slot>
       </div>
     </template>
     <span class="delete-modal__message">
       <slot name="message">
-        Are you sure you want to {{ action.toLowerCase() }} {{ name.toLowerCase() }}?
+        Are you sure you want to {{ action.toLowerCase() }} {{ name }}?
       </slot>
     </span>
     <template #actions>
@@ -29,6 +29,7 @@
 
   const props = withDefaults(defineProps<{
     showModal: boolean,
+    label?: string,
     name?: string,
     action?: 'Delete' | 'Remove',
   }>(), {

@@ -8,6 +8,7 @@
   </p-icon-button-menu>
   <ConfirmDeleteModal
     v-model:showModal="showModal"
+    label="Work Queue"
     :name="queue.name"
     @delete="deleteWorkQueue(queue.id)"
   />

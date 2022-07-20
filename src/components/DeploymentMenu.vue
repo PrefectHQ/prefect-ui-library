@@ -6,6 +6,7 @@
   </p-icon-button-menu>
   <ConfirmDeleteModal
     v-model:showModal="showModal"
+    label="Deployment"
     :name="deployment.name"
     @delete="deleteDeployment(deployment.id)"
   />

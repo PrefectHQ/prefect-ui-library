@@ -9,6 +9,7 @@
       </p-icon-button-menu>
       <ConfirmDeleteModal
         v-model:showModal="showModal"
+        label="Flow Run"
         :name="flowRun.name!"
         @delete="deleteFlowRun(flowRun.id)"
       />
