@@ -187,8 +187,11 @@
     }
 
     try {
-      if (blockDocument.value?.id && blockDocument.value.data === data.value) {
+      if (blockDocument.value?.id) {
         blockDocumentId.value = blockDocument.value.id
+        await blockDocumentsApi.updateBlockDocument(blockDocumentId.value, {
+          data: data.value,
+        })
       } else {
         const newBlockDocument = await blockDocumentsApi.createBlockDocument({
           isAnonymous: true,
