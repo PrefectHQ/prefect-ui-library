@@ -35,7 +35,7 @@
         Cancel
       </p-button>
       <p-button type="submit" :disabled="disabled" :loading="loading">
-        Create
+        {{ submitLabel(label) }}
       </p-button>
     </template>
   </p-form>
@@ -52,10 +52,12 @@
   import { localization } from '@/localization'
   import { Notification, BlockTypeFilter, BlockDocumentData } from '@/models'
   import { blockDocumentsApiKey, blockSchemasApiKey, blockTypesApiKey } from '@/services'
+  import { submitLabel } from '@/utilities/buttons'
   import { inject } from '@/utilities/inject'
 
   const props = defineProps<{
     notification: Partial<Notification>,
+    label?: string,
   }>()
 
   const emit = defineEmits<{
