@@ -48,7 +48,7 @@
         Cancel
       </p-button>
       <p-button type="submit" :loading="isSubmitting">
-        Create
+        {{ submitLabel(label) }}
       </p-button>
     </template>
   </p-form>
@@ -63,9 +63,11 @@
   import { IWorkQueueRequest, WorkQueue, WorkQueueFormValues } from '@/models'
   import { isRequired, withMessage } from '@/services/validate'
   import { FlowRunnerType } from '@/types/FlowRunnerType'
+  import { submitLabel } from '@/utilities/buttons'
 
   const props = defineProps<{
     workQueue?: WorkQueue,
+    label?: string,
   }>()
 
   const internalValue = reactive(new WorkQueueFormValues(props.workQueue))
