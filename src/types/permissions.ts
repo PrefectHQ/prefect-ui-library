@@ -29,7 +29,7 @@ export function isWorkspacePermissionKey(key: string): key is WorkspacePermissio
   return workspacePermissionKeys.includes(key as WorkspacePermissionKey)
 }
 
-function getWorkspacePermissions(check: (key: WorkspacePermissionKey) => boolean): WorkspacePermissions {
+function getWorkspacePermissions(check: (key: WorkspacePermissionKey) => boolean | undefined): WorkspacePermissions {
   return workspacePermissionKeys.reduce<WorkspacePermissions>((reduced, key) => ({
     ...reduced,
     [key]: check(key),
@@ -54,7 +54,7 @@ export function isAccountPermissionKey(key: string): key is AccountPermissionKey
   return accountPermissionKeys.includes(key as AccountPermissionKey)
 }
 
-function getAccountPermissions(check: (key: AccountPermissionKey) => boolean): AccountPermissions {
+function getAccountPermissions(check: (key: AccountPermissionKey) => boolean | undefined): AccountPermissions {
   return accountPermissionKeys.reduce<AccountPermissions>((reduced, key) => ({
     ...reduced,
     [key]: check(key),
@@ -68,13 +68,13 @@ const featureFlags = [
   'organizations',
 ] as const
 export type FeatureFlag = typeof featureFlags[number]
-type FeatureFlagPermissions = Record<FeatureFlag, boolean>
+type FeatureFlagPermissions = Record<FeatureFlag, boolean | undefined>
 
 export function isFeatureFlag(key: string): key is FeatureFlag {
   return featureFlags.includes(key as FeatureFlag)
 }
 
-function getFeatureFlagPermissions(check: (key: FeatureFlag) => boolean): FeatureFlagPermissions {
+function getFeatureFlagPermissions(check: (key: FeatureFlag) => boolean | undefined): FeatureFlagPermissions {
   return featureFlags.reduce<FeatureFlagPermissions>((reduced, key) => ({
     ...reduced,
     [key]: check(key),
@@ -84,20 +84,19 @@ function getFeatureFlagPermissions(check: (key: FeatureFlag) => boolean): Featur
 export type AccountPermissionString = `${PermissionAction}:${AccountPermissionKey}`
 export type WorkspacePermissionString = `${PermissionAction}:${WorkspacePermissionKey}`
 
-export type AppPermissions = Record<PermissionAction, Record<AccountPermissionKey, boolean> & Record<WorkspacePermissionKey, boolean>>
+export type AppPermissions = Record<PermissionAction, Record<AccountPermissionKey, boolean | undefined> & Record<WorkspacePermissionKey, boolean | undefined>>
 export type AppFeatureFlags = Record<'access', FeatureFlagPermissions>
 
 export function getAppPermissions(
-  checkAccountPermission: (action: PermissionAction, key: AccountPermissionKey) => boolean,
-  checkWorkspacePermission: (action: PermissionAction, key: WorkspacePermissionKey) => boolean,
-  checkFeatureFlag: (key: FeatureFlag) => boolean,
+  checkPermission: (action: PermissionAction, key: AccountPermissionKey | WorkspacePermissionKey) => boolean | undefined,
+  checkFeatureFlag: (key: FeatureFlag) => boolean | undefined,
 ): Can {
   return {
     ...permissionActions.reduce<Can>((result, action) => ({
       ...result,
       [action]: {
-        ...getAccountPermissions((key) => checkAccountPermission(action, key)),
-        ...getWorkspacePermissions((key) => checkWorkspacePermission(action, key)),
+        ...getAccountPermissions((key) => checkPermission(action, key)),
+        ...getWorkspacePermissions((key) => checkPermission(action, key)),
       },
     }), {} as Can),
     access: {
