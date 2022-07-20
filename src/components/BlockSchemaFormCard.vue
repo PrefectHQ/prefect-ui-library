@@ -6,6 +6,7 @@
         v-model:name="nameModel"
         :block-schema="blockSchema"
         class="block-schema-form-card__form"
+        :label="label"
         v-on="{ submit, cancel }"
       />
     </template>
@@ -24,6 +25,7 @@
     blockSchema: BlockSchema,
     data: BlockDocumentData,
     name: string,
+    label?: string,
   }>()
 
   const emit = defineEmits<{
