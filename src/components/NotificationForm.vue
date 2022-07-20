@@ -187,7 +187,11 @@
     }
 
     try {
-      if (blockDocument.value?.id) {
+      if (
+        blockDocument.value?.id &&
+        blockDocument.value.blockSchemaId === blockSchema.value.id &&
+        blockDocument.value.blockTypeId === selectedBlockTypeId.value
+      ) {
         blockDocumentId.value = blockDocument.value.id
         await blockDocumentsApi.updateBlockDocument(blockDocumentId.value, {
           data: data.value,
