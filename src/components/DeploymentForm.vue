@@ -80,7 +80,7 @@
         Cancel
       </p-button>
       <p-button type="submit" @click="submit">
-        {{ submitLabel(label) }}
+        Save
       </p-button>
     </template>
   </p-form>
@@ -93,11 +93,9 @@
   import ScheduleFormModal from '@/components/ScheduleFormModal.vue'
   import { Deployment, IDeploymentRequest, DeploymentFormValues, Schedule } from '@/models'
   import { isRequired, withMessage } from '@/services/validate'
-  import { submitLabel } from '@/utilities/buttons'
 
   const props = defineProps<{
     deployment: Deployment,
-    label?: string,
   }>()
 
   const internalValue = computed(() => {
