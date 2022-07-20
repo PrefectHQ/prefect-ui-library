@@ -34,6 +34,7 @@
     action?: 'Delete' | 'Remove',
   }>(), {
     name: '',
+    label: undefined,
     action: 'Delete',
   })
 
