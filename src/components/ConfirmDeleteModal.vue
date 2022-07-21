@@ -16,9 +16,11 @@
       </slot>
     </span>
     <template #actions>
-      <p-button class="delete-modal__delete-button" @click="handleDeleteClick">
-        {{ action }}
-      </p-button>
+      <slot name="actions">
+        <p-button class="delete-modal__delete-button" @click="handleDeleteClick">
+          {{ action }}
+        </p-button>
+      </slot>
     </template>
   </p-modal>
 </template>
