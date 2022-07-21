@@ -3,7 +3,7 @@
     <div class="flow-run-logs__search">
       <LogLevelSelect v-model:selected="logLevel" />
     </div>
-    <LogsContainer :logs="logs">
+    <LogsContainer :logs="logs" @bottom="logsSubscription.loadMore">
       <template #empty>
         <p-empty-results>
           <template #message>
