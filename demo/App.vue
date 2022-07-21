@@ -62,7 +62,6 @@
 
   const can = getAppPermissions(
     () => true,
-    () => true,
   )
 
   provide(canKey, can)
