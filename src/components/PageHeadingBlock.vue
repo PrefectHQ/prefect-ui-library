@@ -1,7 +1,7 @@
 <template>
   <page-heading class="page-heading-blocks" :crumbs="crumbs">
     <template #actions>
-      <BlockDocumentMenu :block-document="blockDocument" />
+      <BlockDocumentMenu :block-document="blockDocument" @delete="$emit('delete')" />
     </template>
   </page-heading>
 </template>
@@ -19,6 +19,10 @@
   }>()
 
   const blocksRoute = inject(blocksRouteKey)
+
+  defineEmits<{
+    (event: 'delete'): void,
+  }>()
 
   const crumbs: BreadCrumbs = [
     { text: 'Blocks', to: blocksRoute() },
