@@ -1,4 +1,5 @@
 import { InjectionKey } from 'vue'
+import { FlowRun, IFlowRunResponse } from '@/models'
 import { IWorkQueueRequest } from '@/models/IWorkQueueRequest'
 import { IWorkQueueResponse } from '@/models/IWorkQueueResponse'
 import { WorkQueue } from '@/models/WorkQueue'
@@ -41,6 +42,10 @@ export class WorkQueuesApi extends Api {
     return this.delete(`/${id}`)
   }
 
+  public getRuns(id: string): Promise<FlowRun[]> {
+    return this.post<IFlowRunResponse[]>(`/${id}/get_runs`)
+      .then(({ data }) => mapper.map('IFlowRunResponse', data, 'FlowRun'))
+  }
 }
 
 export const workQueuesApiKey: InjectionKey<WorkQueuesApi> = Symbol('workQueuesApiKey')
