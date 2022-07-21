@@ -9,7 +9,7 @@
     </template>
 
     <template #description>
-      Prefect's flow runs let you see what was supposed to happen, what actually happen, and if there was a difference. Why.
+      Flow runs represent the execution of flow and task functions in a script. Here you can see what was supposed to happen, what actually happened, and if there was a difference.
     </template>
 
     <template #actions>
