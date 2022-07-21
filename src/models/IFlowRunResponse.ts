@@ -12,7 +12,7 @@ export type IFlowRunResponse = {
   state_id: string | null,
   deployment_id: string | null,
   flow_version: string | null,
-  parameters: unknown,
+  parameters: Record<string, unknown>,
   idempotency_key: string | null,
   context: unknown,
   empirical_policy: unknown,

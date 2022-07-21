@@ -9,7 +9,7 @@ export interface IFlowRun {
   idempotencyKey: string | null,
   expectedStartTime: Date | null,
   nextScheduledStartTime: string | null,
-  parameters: unknown,
+  parameters: Record<string, unknown>,
   autoScheduled: boolean | null,
   flowRunner: IFlowRunner | null,
   context: unknown,
@@ -39,7 +39,7 @@ export class FlowRun implements IFlowRun {
   public idempotencyKey: string | null
   public expectedStartTime: Date | null
   public nextScheduledStartTime: string | null
-  public parameters: unknown
+  public parameters: Record<string, unknown>
   public autoScheduled: boolean | null
   public flowRunner: IFlowRunner | null
   public context: unknown

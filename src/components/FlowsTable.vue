@@ -21,7 +21,9 @@
       </template>
 
       <template #action="{ row }">
-        <FlowMenu :flow="row" @delete="id => emits('delete', id)" />
+        <div class="flows-table__action">
+          <FlowMenu :flow="row" @delete="id => emits('delete', id)" />
+        </div>
       </template>
 
       <template #empty-state>
@@ -108,5 +110,10 @@
 .flows-table__activity-chart {
   @apply
   h-12
+}
+
+.flows-table__action {
+  @apply
+  text-right
 }
 </style>
