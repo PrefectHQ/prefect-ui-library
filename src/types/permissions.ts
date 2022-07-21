@@ -34,7 +34,9 @@ const accountPermissions = [
   'update:workspace_invitation',
   'update:workspace_role',
 ] as const
+
 export type AccountPermissionString = typeof accountPermissions[number]
+
 export function isAccountPermissionString(permissionString: PermissionString): permissionString is AccountPermissionString {
   return accountPermissions.includes(permissionString as AccountPermissionString)
 }
@@ -87,7 +89,9 @@ const workspacePermissions = [
   'update:workspace_user_access',
   'update:workspace',
 ] as const
+
 export type WorkspacePermissionString = typeof workspacePermissions[number]
+
 export function isWorkspacePermissionString(permissionString: PermissionString): permissionString is WorkspacePermissionString {
   return workspacePermissions.includes(permissionString as WorkspacePermissionString)
 }
@@ -98,24 +102,29 @@ const featureFlags = [
   'access:notifications',
   'access:organizations',
 ] as const
+
 export type FeatureFlagString = typeof featureFlags[number]
+
 export function isFeatureFlagString(permissionString: PermissionString): permissionString is FeatureFlagString {
   return featureFlags.includes(permissionString as FeatureFlagString)
 }
 
-type UnionActions<T extends PermissionString> = T extends `${infer Action}:${string}` ? Action : never
-type KeyByAction<A extends Action, T extends PermissionString> = T extends `${A}:${infer Entity}` ? Entity : never
-
 export type PermissionString = AccountPermissionString | WorkspacePermissionString | FeatureFlagString
-export type Action = UnionActions<PermissionString>
 export type PermissionValue = boolean | undefined
+export type PermissionAction = PermissionString extends `${infer Action}:${string}` ? Action : never
 
-export type AccountKey = KeyByAction<Action, AccountPermissionString>
-export type WorkspaceKey = KeyByAction<Action, WorkspacePermissionString>
-export type FeatureFlag = KeyByAction<Action, FeatureFlagString>
+type ActionKeys<
+  T extends PermissionString,
+  A extends PermissionAction = PermissionAction
+> = T extends `${A}:${infer Entity}` ? Entity : never
 
-export type Can = { [A in Action]: Record<KeyByAction<A, PermissionString>, PermissionValue> }
-type PartialCan = Partial<{ [K in keyof Can]: Partial<Can[K]> }>
+export type AccountKey = ActionKeys<AccountPermissionString>
+export type WorkspaceKey = ActionKeys<WorkspacePermissionString>
+export type FeatureFlag = ActionKeys<FeatureFlagString>
+
+export type Can = { [A in PermissionAction]: Record<ActionKeys<PermissionString, A>, PermissionValue> }
+
+type PartialCan = { [K in keyof Can]?: Partial<Can[K]> }
 
 export function getAppPermissions(
   checkPermission: (permission: PermissionString) => PermissionValue,
@@ -123,13 +132,10 @@ export function getAppPermissions(
   const permissions = [...accountPermissions, ...workspacePermissions, ...featureFlags]
 
   return permissions.reduce<PartialCan>((result, permission) => {
-    const [action, key] = permission.split(':') as [Action, AccountKey | WorkspaceKey | FeatureFlag]
+    const [action, key] = permission.split(':') as [PermissionAction, AccountKey | WorkspaceKey | FeatureFlag]
+    const resultAction = result[action] ??= {}
 
-    if (!result[action]) {
-      result[action] = {}
-    }
-
-    Object.assign(result[action]!, { [key]: checkPermission(permission) })
+    Object.assign(resultAction, { [key]: checkPermission(permission) })
 
     return result
   }, {}) as Can
