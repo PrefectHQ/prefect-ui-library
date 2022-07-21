@@ -13,7 +13,7 @@
     </template>
 
     <template #actions>
-      <DocumentationButton topic="gettingStarted" primary>
+      <DocumentationButton topic="gettingStarted">
         Get Started
       </DocumentationButton>
     </template>
