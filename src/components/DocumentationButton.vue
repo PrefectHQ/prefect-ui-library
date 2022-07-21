@@ -1,6 +1,6 @@
 <template>
   <a :href="href" class="documentation-button" target="_blank">
-    <p-button v-bind="{ primary, inset }">
+    <p-button inset>
       <slot>
         View Docs
       </slot>
@@ -17,12 +17,9 @@
 
   const props = defineProps<{
     topic: Topic,
-    primary?: boolean,
-    inset?: boolean,
   }>()
 
   const href = computed(() => localization.docs[props.topic])
-  const inset = computed(() => !props.primary)
 </script>
 
 <style>
