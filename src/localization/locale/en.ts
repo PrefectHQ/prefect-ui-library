@@ -1,5 +1,6 @@
 export const en = {
   docs: {
+    gettingStarted: 'https://orion-docs.prefect.io/getting-started/overview/',
     flows: 'https://orion-docs.prefect.io/concepts/flows/',
     flowRuns: 'https://orion-docs.prefect.io/ui/dashboard/',
     blocks: 'https://orion-docs.prefect.io/ui/blocks/',

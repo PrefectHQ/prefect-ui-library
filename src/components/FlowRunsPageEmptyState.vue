@@ -1,22 +1,21 @@
 <template>
-  <p-empty-state>
+  <p-empty-state class="flow-runs-page-empty-state">
     <template #icon>
-      <p-icon icon="Flow" />
-      <p-icon icon="DotsHorizontalIcon" />
-      <p-icon icon="LocationMarkerIcon" />
+      <p-icon icon="FlowRun" />
     </template>
 
     <template #heading>
-      Create a deployment to get started
+      Run a flow to get started
     </template>
 
     <template #description>
-      Deployments are configurations for managing flows, whether you run them
-      via the CLI, UI, or the API.
+      Prefect's flow runs let you see what was supposed to happen, what actually happen, and if there was a difference. Why.
     </template>
 
     <template #actions>
-      <DocumentationButton topic="deployments" />
+      <DocumentationButton topic="gettingStarted" primary>
+        Get Started
+      </DocumentationButton>
     </template>
   </p-empty-state>
 </template>
