@@ -15,7 +15,7 @@
     </DemoSubSection>
 
     <DemoSubSection heading="Logs">
-      <logs-container :logs="flowRunLogs" class="h-[400px] overflow-auto" />
+      <LogsContainer :logs="flowRunLogs" class="h-[400px] overflow-auto" />
     </DemoSubSection>
   </DemoSection>
 </template>
