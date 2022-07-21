@@ -2,7 +2,7 @@ export const en = {
   docs: {
     gettingStarted: 'https://orion-docs.prefect.io/getting-started/overview/',
     flows: 'https://orion-docs.prefect.io/concepts/flows/',
-    flowRuns: 'https://orion-docs.prefect.io/ui/dashboard/',
+    flowRuns: 'https://orion-docs.prefect.io/ui/flow-runs/',
     blocks: 'https://orion-docs.prefect.io/ui/blocks/',
     workQueues: 'https://orion-docs.prefect.io/ui/work-queues/',
     notifications: 'https://orion-docs.prefect.io/ui/notifications/',
