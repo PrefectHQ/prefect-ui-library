@@ -66,7 +66,7 @@
         </sup>
 
         <template v-if="deployment?.parameters">
-          <DeploymentParametersTable :parameters="deployment.parameters" />
+          <ParametersTable :parameters="deployment.parameters" />
         </template>
 
         <template v-else>
@@ -89,7 +89,7 @@
 <script lang="ts" setup>
   import { useField, useForm } from 'vee-validate'
   import { computed } from 'vue'
-  import DeploymentParametersTable from './DeploymentParametersTable.vue'
+  import ParametersTable from './ParametersTable.vue'
   import ScheduleFormModal from '@/components/ScheduleFormModal.vue'
   import { Deployment, IDeploymentRequest, DeploymentFormValues, Schedule } from '@/models'
   import { isRequired, withMessage } from '@/services/validate'

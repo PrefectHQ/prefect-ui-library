@@ -9,7 +9,7 @@
 </template>
 
 <script lang="ts" setup>
-  import { useSubscription } from '@prefecthq/vue-compositions'
+  import { useSubscriptionWithDependencies } from '@prefecthq/vue-compositions'
   import { computed } from 'vue'
   import { RouterLink, useRoute, useRouter } from 'vue-router'
   import { flowRouteKey } from '@/router/routes'
@@ -28,9 +28,10 @@
   const router = useRouter()
   const flowRouteResolved = computed(() => router.resolve(flowRoute(props.flowId)))
   const matched = computed(() => route.matched.some(({ path }) => flowRouteResolved.value.path == path))
-  // as is this subscription will run even if matched is false.
-  // "optional" subscriptions are an issue currently.
-  const subscription = useSubscription(flowsApi.getFlow, [props.flowId])
+
+  const flowSubscriptionArgs = computed<Parameters<typeof flowsApi.getFlow> | null>(() => !matched.value ? [props.flowId] : null)
+
+  const subscription = useSubscriptionWithDependencies(flowsApi.getFlow, flowSubscriptionArgs)
   const flowName = computed(() => subscription.response?.name ?? '')
 </script>
 

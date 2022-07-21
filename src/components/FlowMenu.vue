@@ -6,6 +6,7 @@
   <ConfirmDeleteModal
     v-model:showModal="showModal"
     :name="flow.name"
+    label="Flow"
     @delete="deleteFlow(flow.id)"
   />
 </template>

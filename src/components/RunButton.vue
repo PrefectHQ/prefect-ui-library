@@ -8,6 +8,7 @@
 <script lang="ts" setup>
   import  { PButton, showToast } from '@prefecthq/prefect-design'
   import { ref } from 'vue'
+  import { localization } from '@/localization'
   import { Deployment } from '@/models'
   import { deploymentsApiKey } from '@/services/DeploymentsApi'
   import { canKey } from '@/types'
@@ -23,17 +24,20 @@
 
   const run = async (deployment: Deployment): Promise<void> => {
     loading.value = true
+
     try {
       await deploymentsApi.createDeploymentFlowRun(deployment.id, {
         state: {
           type: 'scheduled',
           message: 'Run through UI',
         },
-      },
-      )
-      showToast('Flow run scheduled', 'success')
-    } catch (errorMessage) {
-      showToast('Failed to schedule flow run', 'error')
+      })
+
+      showToast(localization.success.scheduleFlowRun, 'success')
+    } catch (error) {
+      showToast(localization.error.scheduleFlowRun, 'error')
+
+      console.error(error)
     } finally {
       loading.value = false
     }

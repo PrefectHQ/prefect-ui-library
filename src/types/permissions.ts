@@ -1,111 +1,144 @@
 import { InjectionKey } from 'vue'
 
-const permissionActions = [
-  'create',
-  'read',
-  'update',
-  'delete',
+const accountPermissions = [
+  'administrate:workspace',
+  'create:account_role',
+  'create:bot',
+  'create:invitation',
+  'create:team',
+  'create:workspace_invitation',
+  'create:workspace_role',
+  'create:workspace',
+  'delete:account_membership',
+  'delete:account_role',
+  'delete:bot',
+  'delete:team',
+  'delete:workspace_role',
+  'read:account_membership',
+  'read:account_role',
+  'read:account',
+  'read:billing',
+  'read:bot',
+  'read:invitation',
+  'read:team',
+  'read:workspace_invitation',
+  'read:workspace_role',
+  'read:workspace',
+  'update:account_membership',
+  'update:account_role',
+  'update:account',
+  'update:billing',
+  'update:bot',
+  'update:invitation',
+  'update:team',
+  'update:workspace_invitation',
+  'update:workspace_role',
 ] as const
-export type PermissionAction = typeof permissionActions[number]
 
-const workspacePermissionKeys = [
-  'block',
-  'concurrency_limit',
-  'deployment',
-  'flow',
-  'flow_run',
-  'log',
-  'saved_search',
-  'task_run',
-  'work_queue',
-  'notification_policy',
-] as const
-export type WorkspacePermissionKey = typeof workspacePermissionKeys[number]
-type WorkspacePermissions = Record<WorkspacePermissionKey, boolean>
+export type AccountPermissionString = typeof accountPermissions[number]
 
-export function isWorkspacePermissionKey(key: string): key is WorkspacePermissionKey {
-  return workspacePermissionKeys.includes(key as WorkspacePermissionKey)
+export function isAccountPermissionString(permissionString: PermissionString): permissionString is AccountPermissionString {
+  return accountPermissions.includes(permissionString as AccountPermissionString)
 }
 
-function getWorkspacePermissions(check: (key: WorkspacePermissionKey) => boolean): WorkspacePermissions {
-  return workspacePermissionKeys.reduce<WorkspacePermissions>((reduced, key) => ({
-    ...reduced,
-    [key]: check(key),
-  }), {} as WorkspacePermissions)
-}
-
-const accountPermissionKeys = [
-  'account',
-  'account_membership',
-  'account_role',
-  'bot',
-  'invitation',
-  'team',
-  'team',
-  'workspace',
-  'workspace_bot_access',
-  'workspace_role',
-  'workspace_user_access',
+const workspacePermissions = [
+  'create:block',
+  'create:concurrency_limit',
+  'create:deployment',
+  'create:flow_run',
+  'create:flow',
+  'create:log',
+  'create:notification_policy',
+  'create:saved_search',
+  'create:task_run',
+  'create:work_queue',
+  'create:workspace_bot_access',
+  'create:workspace_user_access',
+  'delete:block',
+  'delete:concurrency_limit',
+  'delete:deployment',
+  'delete:flow_run',
+  'delete:flow',
+  'delete:notification_policy',
+  'delete:saved_search',
+  'delete:task_run',
+  'delete:work_queue',
+  'delete:workspace_bot_access',
+  'delete:workspace_user_access',
+  'delete:workspace',
+  'read:block',
+  'read:concurrency_limit',
+  'read:deployment',
+  'read:flow_run',
+  'read:flow',
+  'read:log',
+  'read:notification_policy',
+  'read:saved_search',
+  'read:task_run',
+  'read:work_queue',
+  'read:workspace_bot_access',
+  'read:workspace_user_access',
+  'update:block',
+  'update:deployment',
+  'update:flow_run',
+  'update:flow',
+  'update:notification_policy',
+  'update:task_run',
+  'update:work_queue',
+  'update:workspace_bot_access',
+  'update:workspace_user_access',
+  'update:workspace',
 ] as const
-export type AccountPermissionKey = typeof accountPermissionKeys[number]
-type AccountPermissions = Record<AccountPermissionKey, boolean>
 
-export function isAccountPermissionKey(key: string): key is AccountPermissionKey {
-  return accountPermissionKeys.includes(key as AccountPermissionKey)
-}
+export type WorkspacePermissionString = typeof workspacePermissions[number]
 
-function getAccountPermissions(check: (key: AccountPermissionKey) => boolean): AccountPermissions {
-  return accountPermissionKeys.reduce<AccountPermissions>((reduced, key) => ({
-    ...reduced,
-    [key]: check(key),
-  }), {} as AccountPermissions)
+export function isWorkspacePermissionString(permissionString: PermissionString): permissionString is WorkspacePermissionString {
+  return workspacePermissions.includes(permissionString as WorkspacePermissionString)
 }
 
 const featureFlags = [
-  'billing',
-  'collaboration',
-  'notifications',
-  'organizations',
+  'access:billing',
+  'access:collaboration',
+  'access:notifications',
+  'access:organizations',
 ] as const
-export type FeatureFlag = typeof featureFlags[number]
-type FeatureFlagPermissions = Record<FeatureFlag, boolean>
 
-export function isFeatureFlag(key: string): key is FeatureFlag {
-  return featureFlags.includes(key as FeatureFlag)
+export type FeatureFlagString = typeof featureFlags[number]
+
+export function isFeatureFlagString(permissionString: PermissionString): permissionString is FeatureFlagString {
+  return featureFlags.includes(permissionString as FeatureFlagString)
 }
 
-function getFeatureFlagPermissions(check: (key: FeatureFlag) => boolean): FeatureFlagPermissions {
-  return featureFlags.reduce<FeatureFlagPermissions>((reduced, key) => ({
-    ...reduced,
-    [key]: check(key),
-  }), {} as FeatureFlagPermissions)
-}
+export type PermissionString = AccountPermissionString | WorkspacePermissionString | FeatureFlagString
+export type PermissionValue = boolean | undefined
+export type PermissionAction = PermissionString extends `${infer Action}:${string}` ? Action : never
 
-export type AccountPermissionString = `${PermissionAction}:${AccountPermissionKey}`
-export type WorkspacePermissionString = `${PermissionAction}:${WorkspacePermissionKey}`
+type ActionKeys<
+  T extends PermissionString,
+  A extends PermissionAction = PermissionAction
+> = T extends `${A}:${infer Entity}` ? Entity : never
 
-export type AppPermissions = Record<PermissionAction, Record<AccountPermissionKey, boolean> & Record<WorkspacePermissionKey, boolean>>
-export type AppFeatureFlags = Record<'access', FeatureFlagPermissions>
+export type AccountKey = ActionKeys<AccountPermissionString>
+export type WorkspaceKey = ActionKeys<WorkspacePermissionString>
+export type FeatureFlag = ActionKeys<FeatureFlagString>
+
+export type Can = { [A in PermissionAction]: Record<ActionKeys<PermissionString, A>, PermissionValue> }
+
+type PartialCan = { [K in keyof Can]?: Partial<Can[K]> }
 
 export function getAppPermissions(
-  checkAccountPermission: (action: PermissionAction, key: AccountPermissionKey) => boolean,
-  checkWorkspacePermission: (action: PermissionAction, key: WorkspacePermissionKey) => boolean,
-  checkFeatureFlag: (key: FeatureFlag) => boolean,
+  checkPermission: (permission: PermissionString) => PermissionValue,
 ): Can {
-  return {
-    ...permissionActions.reduce<Can>((result, action) => ({
-      ...result,
-      [action]: {
-        ...getAccountPermissions((key) => checkAccountPermission(action, key)),
-        ...getWorkspacePermissions((key) => checkWorkspacePermission(action, key)),
-      },
-    }), {} as Can),
-    access: {
-      ...getFeatureFlagPermissions((key) => checkFeatureFlag(key)),
-    },
-  }
-}
+  const permissions = [...accountPermissions, ...workspacePermissions, ...featureFlags]
 
-export type Can = AppPermissions & AppFeatureFlags
+  return permissions.reduce<PartialCan>((result, permission) => {
+    const [action, key] = permission.split(':') as [PermissionAction, AccountKey | WorkspaceKey | FeatureFlag]
+    const resultAction = result[action] ??= {}
+
+    resultAction[key] = checkPermission(permission)
+
+    return result
+  }, {}) as Can
+}
 
 export const canKey: InjectionKey<Can> = Symbol()

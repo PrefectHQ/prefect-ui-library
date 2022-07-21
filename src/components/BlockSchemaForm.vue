@@ -10,10 +10,10 @@
 
     <template #footer>
       <p-button inset @click="cancel">
-        Reset
+        Cancel
       </p-button>
       <p-button type="submit">
-        Submit
+        {{ submitLabel(label) }}
       </p-button>
     </template>
   </p-form>
@@ -27,11 +27,13 @@
   import { BlockDocumentData } from '@/models/BlockDocument'
   import { BlockSchema } from '@/models/BlockSchema'
   import { isRequired, withMessage } from '@/services'
+  import { submitLabel } from '@/utilities/buttons'
 
   const props = defineProps<{
     blockSchema: BlockSchema,
     data: BlockDocumentData,
     name: string,
+    label?: string,
   }>()
 
   const emit = defineEmits<{

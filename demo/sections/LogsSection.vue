@@ -3,19 +3,19 @@
     <DemoSubSection heading="Levels">
       <div class="flex gap-1 flex-wrap">
         <template v-for="level in logLevel" :key="level">
-          <log-level-label :level="level" />
+          <LogLevelLabel :level="level" />
         </template>
       </div>
     </DemoSubSection>
 
     <DemoSubSection heading="Log Rows">
       <template v-for="log in flowRunLogs" :key="log.id">
-        <log-row :log="log" show-task-run-link />
+        <LogRow :log="log" show-task-run-link />
       </template>
     </DemoSubSection>
 
     <DemoSubSection heading="Logs">
-      <logs-container :logs="flowRunLogs" class="h-[400px] overflow-auto" />
+      <LogsContainer :logs="flowRunLogs" class="h-[400px] overflow-auto" />
     </DemoSubSection>
   </DemoSection>
 </template>

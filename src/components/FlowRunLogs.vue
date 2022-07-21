@@ -3,7 +3,7 @@
     <div class="flow-run-logs__search">
       <LogLevelSelect v-model:selected="logLevel" />
     </div>
-    <LogsContainer :logs="logs">
+    <LogsContainer :logs="logs" @bottom="logsSubscription.loadMore">
       <template #empty>
         <p-empty-results>
           <template #message>
@@ -33,10 +33,10 @@
 </template>
 
 <script lang="ts" setup>
-  import { useSubscription } from '@prefecthq/vue-compositions'
   import { ref, computed } from 'vue'
   import LogLevelSelect from './LogLevelSelect.vue'
   import LogsContainer from '@/components/LogsContainer.vue'
+  import { usePaginatedSubscription } from '@/compositions/usePaginatedSubscription'
   import { FlowRun } from '@/models/FlowRun'
   import { Log, LogLevel } from '@/models/Log'
   import { logsApiKey } from '@/services/LogsApi'
@@ -63,7 +63,7 @@
   }))
 
   const logsApi = inject(logsApiKey)
-  const logsSubscription = useSubscription(logsApi.getLogs, [logsFilter], { interval:  5000 })
+  const logsSubscription = usePaginatedSubscription(logsApi.getLogs, [logsFilter], { interval:  5000 })
   const logs = computed<Log[]>(() => logsSubscription.response ?? [])
 
   function clear(): void {
