@@ -135,7 +135,7 @@ export function getAppPermissions(
     const [action, key] = permission.split(':') as [PermissionAction, AccountKey | WorkspaceKey | FeatureFlag]
     const resultAction = result[action] ??= {}
 
-    Object.assign(resultAction, { [key]: checkPermission(permission) })
+    resultAction[key] = checkPermission(permission)
 
     return result
   }, {}) as Can
