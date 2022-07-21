@@ -1,15 +1,15 @@
 import { useSubscription, ActionArguments, ActionResponse, SubscribeArguments, UseSubscription, unrefArgs, watchableArgs } from '@prefecthq/vue-compositions'
 import { computed, getCurrentInstance, onUnmounted, reactive, ref, watch } from 'vue'
-import { UnionFilters } from '@/types/UnionFilters'
 
+export type Paginated = { limit?: number, offset?: number }
 // any is correct here
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export type UnionFiltersAction = (filters: UnionFilters) => Promise<any[]>
-export type UnionFiltersActionResponse<T extends UnionFiltersAction> = {
+export type PaginatedAction = (filters: Paginated) => Promise<any[]>
+export type UsePaginatedSubscription<T extends PaginatedAction> = {
   loadMore: () => void,
 } & Omit<UseSubscription<T>, 'promise'>
 
-export function useUnionFiltersSubscription<T extends UnionFiltersAction>(...[action, args, options = {}]: SubscribeArguments<T>): UnionFiltersActionResponse<T> {
+export function usePaginatedSubscription<T extends PaginatedAction>(...[action, args, options = {}]: SubscribeArguments<T>): UsePaginatedSubscription<T> {
   const subscriptions = reactive<UseSubscription<T>[]>([])
   const argsWithDefault = args ?? ([] as unknown as ActionArguments<T>)
   const pages = ref(0)
@@ -21,16 +21,7 @@ export function useUnionFiltersSubscription<T extends UnionFiltersAction>(...[ac
   const errored = computed(() => subscriptions.some(subscription => subscription.errored))
   const error = computed(() => subscriptions.length ? subscriptions[0].error : undefined)
   const executed = computed(() => subscriptions.some(subscription => subscription.executed))
-
-  const response = computed<ActionResponse<T>>(() => {
-    const acc = [] as ActionResponse<T>
-
-    return subscriptions.reduce((acc, subscription) => {
-      const response = subscription.response ?? []
-
-      return [...acc, ...response] as ActionResponse<T>
-    }, acc)
-  })
+  const response = computed(() => subscriptions.flatMap(subscription => subscription.response ?? []) as ActionResponse<T>)
 
   const unsubscribe = (): void => {
     subscriptions.forEach(subscription => subscription.unsubscribe())
@@ -64,7 +55,11 @@ export function useUnionFiltersSubscription<T extends UnionFiltersAction>(...[ac
   }
 
   if (watchable !== null) {
-    unwatch = watch(watchable, () => {
+    unwatch = watch(watchable, (newValue, oldValue) => {
+      if (JSON.stringify(newValue) === JSON.stringify(oldValue)) {
+        return
+      }
+
       if (!isSubscribed()) {
         unwatch!()
         return

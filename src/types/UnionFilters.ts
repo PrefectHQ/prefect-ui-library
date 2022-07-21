@@ -67,7 +67,6 @@ export interface TaskRunFilter extends Filter {
   subflow_runs?: exists_,
 }
 
-
 export type PaginatedFilter = {
   limit?: number,
   offset?: number,

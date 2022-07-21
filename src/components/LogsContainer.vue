@@ -1,6 +1,6 @@
 <template>
   <p-code multiline class="logs">
-    <VirtualScroller :items="logs">
+    <VirtualScroller :items="logs" @bottom="emit('bottom')">
       <template #default="{ item: log, index }">
         <template v-if="showDivider(index)">
           <div class="logs__divider">
@@ -31,6 +31,10 @@
 
   const props = defineProps<{
     logs: Log[],
+  }>()
+
+  const emit = defineEmits<{
+    (event: 'bottom'): void,
   }>()
 
   const empty = computed<boolean>(() => props.logs.length == 0)
