@@ -1,6 +1,6 @@
 {
     "name": "@prefecthq/orion-design",
-    "version": "1.0.44",
+    "version": "1.0.51",
     "private": false,
     "keywords": [
         "prefect 2.0",
@@ -38,13 +38,13 @@
         "lodash.debounce": "4.0.8",
         "postcss": "8.4.14",
         "tailwindcss": "3.1.6",
-        "tsc-alias": "1.6.11",
+        "tsc-alias": "1.7.0",
         "typescript": "^4.7.4",
         "vite": "2.9.13",
         "vue-tsc": "0.38.8"
     },
     "peerDependencies": {
-        "@prefecthq/prefect-design": "^1.0.28",
+        "@prefecthq/prefect-design": "^1.0.30",
         "pinia": "^2.0.14",
         "vee-validate": "^4.5.11",
         "vue": "^3.2.34",

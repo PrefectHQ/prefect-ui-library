@@ -15,7 +15,7 @@ export type BlockSchemaFieldsResponse = {
   properties: Record<string, BlockSchemaProperty>,
   required: string[],
   block_type_name: string,
-  block_schema_references: BlockSchemaReferencesResponse,
+  block_schema_references?: BlockSchemaReferencesResponse,
 }
 
 export type BlockSchemaResponse = {

@@ -1,7 +1,7 @@
 <template>
   <div class="work-queues-table">
     <div class="work-queues-table__search">
-      <ResultsCount :count="filtered.length" label="Queue" />
+      <ResultsCount :count="filtered.length" label="Work queue" />
       <SearchInput v-model="searchTerm" placeholder="Search work queues" label="Search work queues" />
     </div>
 

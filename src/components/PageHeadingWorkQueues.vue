@@ -15,7 +15,7 @@
   import { canKey } from '@/types/permissions'
   import { inject } from '@/utilities'
 
-  const crumbs = [{ text: 'Queues' }]
+  const crumbs = [{ text: 'Work Queues' }]
 
   const newQueueRoute = inject(workQueueCreateRouteKey)
   const can = inject(canKey)

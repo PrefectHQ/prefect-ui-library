@@ -1,7 +1,7 @@
 <template>
   <PLabel
     class="block-schema-property-input"
-    :label="property.title"
+    :label="propertyTitle"
     :description="property.description"
     :message="errorMessage"
     :state="state"
@@ -45,6 +45,8 @@
   const required = computed(() => props.required ?? false)
   const rules = useOptionalRules(withMessage(isRequired, `${props.property.title} is required`), required)
   const { meta: state, errorMessage } = useReactiveField(model, props.property.title, rules)
+
+  const propertyTitle =computed(()=> props.required ? props.property.title : `${props.property.title} (Optional)`)
 
   const input = computed(() => {
     if (props.property.enum) {

@@ -6,11 +6,11 @@
 
     <div class="notification-form__horizontal-fields">
       <p-label label="Run states">
-        <StateSelect v-model:selected="selectedStates" empty-message="All States" />
+        <StateSelect v-model:selected="selectedStates" empty-message="All states" />
       </p-label>
 
       <p-label label="Tags (Optional)">
-        <p-tags-input v-model="selectedTags" empty-message="All Tags" />
+        <p-tags-input v-model="selectedTags" empty-message="All tags" />
       </p-label>
     </div>
 
@@ -35,7 +35,7 @@
         Cancel
       </p-button>
       <p-button type="submit" :disabled="disabled" :loading="loading">
-        Create
+        {{ submitLabel(label) }}
       </p-button>
     </template>
   </p-form>
@@ -52,10 +52,12 @@
   import { localization } from '@/localization'
   import { Notification, BlockTypeFilter, BlockDocumentData } from '@/models'
   import { blockDocumentsApiKey, blockSchemasApiKey, blockTypesApiKey } from '@/services'
+  import { submitLabel } from '@/utilities/buttons'
   import { inject } from '@/utilities/inject'
 
   const props = defineProps<{
     notification: Partial<Notification>,
+    label?: string,
   }>()
 
   const emit = defineEmits<{
@@ -178,6 +180,8 @@
     return blockSchemaSubscription.response?.[0]
   })
 
+  const blockDocumentId = ref<string>()
+
   const submit = handleSubmit(async () => {
     if (blockSchema.value === undefined || selectedBlockTypeId.value === undefined || data.value === undefined) {
       showToast(localization.error.submitNotification)
@@ -185,13 +189,25 @@
     }
 
     try {
-      const { id: blockDocumentId } = await blockDocumentsApi.createBlockDocument({
-        isAnonymous: true,
-        blockSchemaId: blockSchema.value.id,
-        blockTypeId: selectedBlockTypeId.value,
-        data: data.value,
-      })
-      const notification = { ...props.notification, blockDocumentId }
+      if (
+        blockDocument.value?.id &&
+        blockDocument.value.blockSchemaId === blockSchema.value.id &&
+        blockDocument.value.blockTypeId === selectedBlockTypeId.value
+      ) {
+        blockDocumentId.value = blockDocument.value.id
+        await blockDocumentsApi.updateBlockDocument(blockDocumentId.value, {
+          data: data.value,
+        })
+      } else {
+        const newBlockDocument = await blockDocumentsApi.createBlockDocument({
+          isAnonymous: true,
+          blockSchemaId: blockSchema.value.id,
+          blockTypeId: selectedBlockTypeId.value,
+          data: data.value,
+        })
+        blockDocumentId.value = newBlockDocument.id
+      }
+      const notification = { ...props.notification, blockDocumentId: blockDocumentId.value }
 
       emit('update:notification', notification)
       emit('submit', notification)
