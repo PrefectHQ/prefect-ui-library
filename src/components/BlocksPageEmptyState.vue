@@ -5,7 +5,7 @@
     </template>
 
     <template #heading>
-      Create a block to get started
+      Add a block to get started
     </template>
 
     <template #description>
@@ -16,7 +16,7 @@
       <DocumentationButton topic="blocks" />
       <router-link v-if="can.create.block" :to="blockCatalogRoute()">
         <p-button>
-          Create a Block
+          Add a Block
           <p-icon icon="PlusIcon" class="empty-work-queue--link-icon" />
         </p-button>
       </router-link>
