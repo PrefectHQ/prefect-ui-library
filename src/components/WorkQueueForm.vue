@@ -37,7 +37,7 @@
       </p-label>
 
       <p-label label="Deployments">
-        <DeploymentCombobox v-model:selected="deployments" empty-message="Select Deployments to filter..." />
+        <DeploymentCombobox v-model:selected="deployments" empty-message="Select deployment to filter..." />
       </p-label>
 
       <p-label label="Flow Runners">
