@@ -4,7 +4,8 @@
 
     <p-empty-results v-if="empty">
       <template v-if="isPaused" #message>
-        This work queue is paused and so has no runs to submit!
+        <p-icon class="work-queue-flow-runs-list__icon" icon="PauseIcon" />
+        This work queue is paused and will not submit runs
       </template>
       <template v-else #message>
         No upcoming runs
@@ -15,7 +16,7 @@
 
 <script lang="ts" setup>
   import { useSubscription } from '@prefecthq/vue-compositions'
-  import { computed } from 'vue'
+  import { computed, watch } from 'vue'
   import FlowRunList from './FlowRunList.vue'
   import { FlowRun, WorkQueue } from '@/models'
   import { workQueuesApiKey } from '@/services'
@@ -31,4 +32,16 @@
 
   const empty = computed(() => workQueueFlowRunsSubscription.executed && flowRuns.value.length === 0)
   const isPaused = computed(() => props.workQueue.isPaused)
+
+  watch(() => props.workQueue, (val, oldVal) => {
+    if (val.isPaused !== oldVal.isPaused) {
+      workQueueFlowRunsSubscription.refresh()
+    }
+  })
 </script>
+
+<style>
+.work-queue-flow-runs-list__icon {
+  @apply h-14 w-14 mx-auto mb-4
+}
+</style>
