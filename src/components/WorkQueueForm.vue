@@ -1,47 +1,49 @@
 <template>
   <p-form class="queue-form" @submit="submit">
-    <p-label label="Name " :message="errors.name" :state="nameState">
-      <p-text-input v-model="name" :state="nameState" />
-    </p-label>
+    <p-content>
+      <p-label label="Name " :message="errors.name" :state="nameState">
+        <p-text-input v-model="name" :state="nameState" />
+      </p-label>
 
-    <p-label label="Description">
-      <p-text-input v-model="description" />
-    </p-label>
+      <p-label label="Description (Optional)">
+        <p-text-input v-model="description" />
+      </p-label>
 
-    <p-label label="Status">
-      <p-toggle v-model="isActive">
-        <template #append>
-          <div>
-            <template v-if="isActive">
-              Active
-            </template>
-            <template v-else>
-              Paused
-            </template>
-          </div>
-        </template>
-      </p-toggle>
-    </p-label>
+      <p-label label="Status (Optional)">
+        <p-toggle v-model="isActive">
+          <template #append>
+            <div>
+              <template v-if="isActive">
+                Active
+              </template>
+              <template v-else>
+                Paused
+              </template>
+            </div>
+          </template>
+        </p-toggle>
+      </p-label>
 
-    <p-label label="Flow Run Concurrency">
-      <p-number-input v-model="concurrencyLimit" placeholder="Unlimited" />
-    </p-label>
+      <p-label label="Flow Run Concurrency (Optional)">
+        <p-number-input v-model="concurrencyLimit" placeholder="Unlimited" />
+      </p-label>
 
-    <p class="queue-form__section-header">
-      Filters
-    </p>
+      <p class="queue-form__section-header">
+        Filters
+      </p>
 
-    <p-label label="Tags">
-      <p-tags-input v-model="tags" empty-message="Add tag to filter..." />
-    </p-label>
+      <p-label label="Tags (Optional)">
+        <p-tags-input v-model="tags" empty-message="Add tag to filter..." />
+      </p-label>
 
-    <p-label label="Deployments">
-      <DeploymentCombobox v-model:selected="deployments" empty-message="Select Deployments to filter..." />
-    </p-label>
+      <p-label label="Deployments (Optional)">
+        <DeploymentCombobox v-model:selected="deployments" empty-message="Select deployment to filter..." />
+      </p-label>
 
-    <p-label label="Flow Runners">
-      <FlowRunnerCheckboxes v-model:selected="flowRunnerTypes" />
-    </p-label>
+      <p-label label="Flow Runners (Optional)">
+        <FlowRunnerCheckboxes v-model:selected="flowRunnerTypes" />
+      </p-label>
+    </p-content>
 
     <template #footer>
       <p-button inset @click="cancel">
@@ -114,11 +116,11 @@
 
 <style>
 .queue-form {
-  @apply
+@apply
   border-[1px]
   border-gray-300
   px-6
-  pb-6
+  py-6
   rounded-lg
 }
 
