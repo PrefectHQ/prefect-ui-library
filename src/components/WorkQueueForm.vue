@@ -25,7 +25,7 @@
       </p-label>
 
       <p-label label="Flow Run Concurrency (Optional)">
-        <p-number-input v-model="concurrencyLimit" placeholder="Unlimited" />
+        <p-number-input v-model="concurrencyLimit" placeholder="Unlimited" :min="0" />
       </p-label>
 
       <p class="queue-form__section-header">
