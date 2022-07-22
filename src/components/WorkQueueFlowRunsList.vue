@@ -33,10 +33,8 @@
   const empty = computed(() => workQueueFlowRunsSubscription.executed && flowRuns.value.length === 0)
   const isPaused = computed(() => props.workQueue.isPaused)
 
-  watch(() => props.workQueue, (val, oldVal) => {
-    if (val.isPaused !== oldVal.isPaused) {
-      workQueueFlowRunsSubscription.refresh()
-    }
+  watch(() => props.workQueue, () => {
+    workQueueFlowRunsSubscription.refresh()
   })
 </script>
 
