@@ -4,9 +4,8 @@
       <BlockSchemaForm
         v-model:data="dataModel"
         v-model:name="nameModel"
-        :block-schema="blockSchema"
+        v-bind="{ blockSchema, edit }"
         class="block-schema-form-card__form"
-        :label="label"
         v-on="{ submit, cancel }"
       />
     </template>
@@ -25,7 +24,7 @@
     blockSchema: BlockSchema,
     data: BlockDocumentData,
     name: string,
-    label?: string,
+    edit?: boolean,
   }>()
 
   const emit = defineEmits<{
