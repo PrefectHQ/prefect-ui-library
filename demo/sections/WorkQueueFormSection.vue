@@ -1,5 +1,5 @@
 <template>
-  <DemoSection heading="Queue Form">
+  <DemoSection heading="Work Queue Form">
     <WorkQueueForm v-model:work-queue="queueData" @submit="submit" />
   </DemoSection>
 </template>
