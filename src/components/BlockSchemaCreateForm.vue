@@ -1,8 +1,8 @@
 <template>
-  <p-form @submit="submit">
-    <p-content class="block-schema-form">
-      <p-label label="Block Name" :message="errors.name" :state="nameState" :description="nameDescription">
-        <p-text-input v-model="nameModel" :state="nameState" :disabled="edit" />
+  <p-form class="block-schema-create-form" @submit="submit">
+    <p-content>
+      <p-label label="Block Name" :message="errors.name" :state="nameState">
+        <p-text-input v-model="nameModel" :state="nameState" />
       </p-label>
 
       <BlockSchemaFormFields v-model:data="dataModel" :block-schema="blockSchema" />
@@ -13,7 +13,7 @@
         Cancel
       </p-button>
       <p-button type="submit">
-        {{ edit ? 'Save' : 'Add' }}
+        Add
       </p-button>
     </template>
   </p-form>
@@ -32,7 +32,6 @@
     blockSchema: BlockSchema,
     data: BlockDocumentData,
     name: string,
-    edit?: boolean,
   }>()
 
   const emit = defineEmits<{
@@ -43,8 +42,6 @@
 
   const { handleSubmit, errors } = useForm()
   const submit = handleSubmit(() => emit('submit'))
-
-  const nameDescription = computed(() => props.edit ? 'Block names are not editable' : undefined)
 
   const nameModel = computed({
     get(): string {
