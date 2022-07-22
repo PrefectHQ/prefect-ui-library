@@ -1,9 +1,9 @@
 <template>
   <p-empty-state>
     <template #icon>
-      <p-icon icon="Flow" class="empty-deployment--icon" />
-      <p-icon icon="DotsHorizontalIcon" class="empty-deployment--icon" />
-      <p-icon icon="LocationMarkerIcon" class="empty-deployment--icon" />
+      <p-icon icon="Flow" />
+      <p-icon icon="DotsHorizontalIcon" />
+      <p-icon icon="LocationMarkerIcon" />
     </template>
 
     <template #heading>
@@ -25,21 +25,3 @@
   import { PEmptyState, PIcon } from '@prefecthq/prefect-design'
   import DocumentationButton from './DocumentationButton.vue'
 </script>
-
-<style>
-.empty-deployment--icon { @apply
-  w-12
-  h-12
-}
-
-.empty-deployment--link { @apply
-  text-state-running-600
-  font-medium
-}
-
-.empty-deployment--link-icon { @apply
-  ml-2
-  w-4
-  h-4
-}
-</style>
