@@ -7,9 +7,12 @@
 
 <script lang="ts" setup>
   import  { PButton, showToast } from '@prefecthq/prefect-design'
-  import { ref } from 'vue'
+  import { ref, h } from 'vue'
+  import { RouteLocationRaw, useRouter } from 'vue-router'
+  import RunButtonToastMessage from './RunButtonToastMessage.vue'
   import { localization } from '@/localization'
   import { Deployment } from '@/models'
+  import { flowRunRouteKey } from '@/router/routes'
   import { deploymentsApiKey } from '@/services/DeploymentsApi'
   import { canKey } from '@/types'
   import { inject } from '@/utilities'
@@ -21,23 +24,28 @@
   const can = inject(canKey)
   const deploymentsApi = inject(deploymentsApiKey)
   const loading = ref(false)
+  const flowRun = ref()
+
+  const router = useRouter()
+  const flowRunRoute = inject(flowRunRouteKey)
 
   const run = async (deployment: Deployment): Promise<void> => {
     loading.value = true
 
     try {
-      await deploymentsApi.createDeploymentFlowRun(deployment.id, {
+      flowRun.value = await deploymentsApi.createDeploymentFlowRun(deployment.id, {
         state: {
           type: 'scheduled',
           message: 'Run through UI',
         },
-      })
-
-      showToast(localization.success.scheduleFlowRun, 'success')
+      },
+      )
+      const runRoute: RouteLocationRaw = flowRunRoute(flowRun.value.id)
+      const toastMessage = h(RunButtonToastMessage, { flowRun: flowRun.value, flowRunRoute: runRoute, routerProp:router })
+      showToast(toastMessage, 'success')
     } catch (error) {
       showToast(localization.error.scheduleFlowRun, 'error')
-
-      console.error(error)
+      console.warn(error)
     } finally {
       loading.value = false
     }
