@@ -2,11 +2,26 @@
   <div class="work-queue-details">
     <p-key-value label="Description" :value="workQueue.description" />
 
+    <p-divider />
+
     <p-key-value label="Work Queue ID" :value="workQueue.id" />
 
     <p-key-value label="Flow Run Concurrency" :value="workQueue.concurrencyLimit" />
 
     <p-key-value label="Created" :value="formatDateTimeNumeric(workQueue.created)" />
+
+    <p-key-value :label="deploymentLabel">
+      <template v-if="workQueue.filter.deploymentIds.length" #value>
+        <div class="work-queue-details__deployments">
+          <template v-for="deploymentId in deploymentIds" :key="deploymentId">
+            <DeploymentIconText :deployment-id="deploymentId" />
+          </template>
+        </div>
+      </template>
+      <template #empty>
+        Any
+      </template>
+    </p-key-value>
 
     <p-key-value label="Tags">
       <template v-if="workQueue.filter.tags.length" #value>
@@ -24,12 +39,23 @@
 
 <script lang="ts" setup>
   import { formatDateTimeNumeric } from '@prefecthq/prefect-design'
+  import { computed } from 'vue'
+  import DeploymentIconText from './DeploymentIconText.vue'
   import FlowRunnerCheckboxes from '@/components/FlowRunnerCheckboxes.vue'
   import { WorkQueue } from '@/models/WorkQueue'
 
-  defineProps<{
+  const props = defineProps<{
     workQueue: WorkQueue,
   }>()
+
+  const deploymentIds = computed(() => {
+    return props.workQueue.filter.deploymentIds
+  })
+
+  const deploymentLabel = computed(() => {
+    const num = deploymentIds.value.length
+    return num > 0 ? `${num} Deployments` : 'Deployments'
+  })
 </script>
 
 <style>
@@ -42,5 +68,11 @@
 
 .work-queue-details__tags { @apply
   mt-1
+}
+
+.work-queue-details__deployments { @apply
+  flex
+  flex-col
+  gap-2
 }
 </style>
