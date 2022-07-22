@@ -29,6 +29,11 @@
   text-state-cancelled-600
 }
 
+.state--crashed { @apply
+  bg-state-crashed-50
+  text-state-crashed-600
+}
+
 .state--unknown { @apply
   bg-slate-300
   text-slate-700

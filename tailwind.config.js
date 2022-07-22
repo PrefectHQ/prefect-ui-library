@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-require-imports */
 const defaultTheme = require('tailwindcss/defaultTheme')
 
-const states = ['completed', 'failed', 'running', 'pending', 'scheduled', 'cancelled']
+const states = ['completed', 'failed', 'running', 'pending', 'scheduled', 'cancelled', 'crashed']
 
 const stateColors = states.reduce((colors, state) => {
   colors[`state-${state}`] = {
@@ -41,7 +41,7 @@ module.exports = {
   ],
   safelist: [
     {
-      pattern: /(bg|text)-state-(completed|failed|running|pending|scheduled|cancelled)/,
+      pattern: /(bg|text)-state-(completed|failed|running|pending|scheduled|cancelled|crashed)/,
     },
   ],
   theme: {

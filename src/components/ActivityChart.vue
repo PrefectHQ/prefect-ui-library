@@ -45,6 +45,7 @@
     ['pending', -1],
     ['failed', 1],
     ['cancelled', 1],
+    ['crashed', 1],
   ])
 
   const positiveSentimentKeys = [...StateDirections.entries()].filter(([, direction]) => direction < 0).map(([key]) => key)

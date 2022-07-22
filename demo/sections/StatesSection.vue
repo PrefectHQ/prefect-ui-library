@@ -56,6 +56,7 @@
     mocker.create('state', [{ type: 'pending', name: 'Pending ' }]),
     mocker.create('state', [{ type: 'failed', name: 'Failed ' }]),
     mocker.create('state', [{ type: 'cancelled', name: 'Cancelled ' }]),
+    mocker.create('state', [{ type: 'crashed', name: 'Crashed ' }]),
     mocker.create('state', [{ type: 'completed', name: 'Custom Name ' }]),
     null,
   ]

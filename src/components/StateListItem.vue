@@ -71,6 +71,10 @@
   bg-state-cancelled-500
 }
 
+.state-list-item--crashed .list-item-input__checkbox { @apply
+  bg-state-crashed-500
+}
+
 .state-list-item__content { @apply
   grid
   gap-x-4

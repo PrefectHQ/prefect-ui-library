@@ -70,4 +70,8 @@
 .color-mode-select-option__state--failed {
   background-color: var(--state-failed-500);
 }
+
+.color-mode-select-option__state--crashed {
+  background-color: var(--state-crashed-500);
+}
 </style>
