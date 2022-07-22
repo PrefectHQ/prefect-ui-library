@@ -1,5 +1,5 @@
 <template>
-  <PCard class="block-document-card">
+  <BlockTypeCardLayout :block-type="blockDocument.blockType" class="block-document-card">
     <PContent class="block-document-card__content">
       <template v-if="blockType.codeExample || blockType.documentationUrl">
         <p class="block-document-card__help">
@@ -18,16 +18,15 @@
 
       <BlockDocumentProperties :data="blockDocument.data" :block-schema="blockDocument.blockSchema" />
     </PContent>
-    <BlockTypeCard :block-type="blockType" class="block-document-card__type" />
-  </PCard>
+  </BlockTypeCardLayout>
 </template>
 
 <script lang="ts" setup>
-  import { PContent, PCard } from '@prefecthq/prefect-design'
+  import { PContent } from '@prefecthq/prefect-design'
   import { computed } from 'vue'
   import BlockDocumentProperties from './BlockDocumentProperties.vue'
+  import BlockTypeCardLayout from './BlockTypeCardLayout.vue'
   import BlockTypeSnippet from './BlockTypeSnippet.vue'
-  import BlockTypeCard from '@/components/BlockTypeCard.vue'
   import { BlockDocument } from '@/models/BlockDocument'
 
   const props = defineProps<{
