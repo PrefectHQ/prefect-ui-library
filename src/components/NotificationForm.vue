@@ -6,11 +6,11 @@
 
     <div class="notification-form__horizontal-fields">
       <p-label label="Run states">
-        <StateSelect v-model:selected="selectedStates" empty-message="All States" />
+        <StateSelect v-model:selected="selectedStates" empty-message="All states" />
       </p-label>
 
       <p-label label="Tags (Optional)">
-        <p-tags-input v-model="selectedTags" empty-message="All Tags" />
+        <p-tags-input v-model="selectedTags" empty-message="All tags" />
       </p-label>
     </div>
 
