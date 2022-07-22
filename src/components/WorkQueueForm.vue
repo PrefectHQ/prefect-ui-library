@@ -5,11 +5,11 @@
         <p-text-input v-model="name" :state="nameState" />
       </p-label>
 
-      <p-label label="Description">
+      <p-label label="Description (Optional)">
         <p-text-input v-model="description" />
       </p-label>
 
-      <p-label label="Status">
+      <p-label label="Status (Optional)">
         <p-toggle v-model="isActive">
           <template #append>
             <div>
@@ -24,7 +24,7 @@
         </p-toggle>
       </p-label>
 
-      <p-label label="Flow Run Concurrency">
+      <p-label label="Flow Run Concurrency (Optional)">
         <p-number-input v-model="concurrencyLimit" placeholder="Unlimited" />
       </p-label>
 
@@ -32,15 +32,15 @@
         Filters
       </p>
 
-      <p-label label="Tags">
+      <p-label label="Tags (Optional)">
         <p-tags-input v-model="tags" empty-message="Add tag to filter..." />
       </p-label>
 
-      <p-label label="Deployments">
+      <p-label label="Deployments (Optional)">
         <DeploymentCombobox v-model:selected="deployments" empty-message="Select deployment to filter..." />
       </p-label>
 
-      <p-label label="Flow Runners">
+      <p-label label="Flow Runners (Optional)">
         <FlowRunnerCheckboxes v-model:selected="flowRunnerTypes" />
       </p-label>
     </p-content>
