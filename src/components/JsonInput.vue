@@ -69,6 +69,8 @@
 
 <style>
 .json-input {
+  resize: inherit;
+
   @apply
   relative
   block
@@ -84,6 +86,7 @@
   border: none !important;
   outline: none !important;
   box-shadow: none !important;
+  resize: inherit;
 
   @apply
   block

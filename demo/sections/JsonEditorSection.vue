@@ -51,5 +51,6 @@
 <style>
 .json-editor-section__input {
   min-height: 200px;
+  resize: none;
 }
 </style>
