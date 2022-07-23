@@ -26,7 +26,7 @@
           <div class="code-banner__window-button" />
         </div>
         <p-button size="xs" inset class="code-banner__copy-button" @click="copyToClipboard(command)">
-          copy
+          Copy
         </p-button>
       </div>
       <span class="code-banner__terminal-code">
