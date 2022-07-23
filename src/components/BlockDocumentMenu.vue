@@ -1,6 +1,6 @@
 <template>
   <p-icon-button-menu v-bind="$attrs">
-    <copy-overflow-menu-item label="Copy ID" :item="blockDocument.id" />
+    <copy-overflow-menu-item label="Copy Name" :item="blockDocument.name" />
     <p-overflow-menu-item v-if="can.update.block" label="Edit" @click="editBlock" />
     <p-overflow-menu-item v-if="can.delete.block" label="Delete" @click="openDeleteBlockModal" />
   </p-icon-button-menu>
