@@ -8,7 +8,7 @@
         </p-button>
       </div>
 
-      <JsonInput v-model="jsonRef" />
+      <JsonInput v-model="jsonRef" class="json-editor-section__input" />
 
       <p-divider />
 
@@ -47,3 +47,9 @@
     jsonRef.value = JSON.stringify(mocker.create(choice(choices)), undefined, 2)
   }
 </script>
+
+<style>
+.json-editor-section__input {
+  min-height: 200px;
+}
+</style>

@@ -15,6 +15,10 @@
       <div ref="viewArea" class="json-input__view-area">
         <JsonView :value="model" class="json-input__json-view" v-bind="attrs" />
       </div>
+
+      <p-button v-if="showPrettify" class="json-input__prettify-button" size="sm" @click="prettify">
+        Prettify
+      </p-button>
     </template>
   </p-base-input>
 </template>
@@ -25,6 +29,7 @@
 
   const props = defineProps<{
     modelValue: string,
+    showPrettify?: boolean,
   }>()
 
   const emit = defineEmits<{
@@ -51,6 +56,14 @@
 
     viewArea.value.scrollTop = inputArea.value.scrollTop
     viewArea.value.scrollLeft = inputArea.value.scrollLeft
+  }
+
+  const prettify = (): void => {
+    try {
+      model.value = JSON.stringify(JSON.parse(model.value), undefined, 2)
+    } catch {
+      // do nothing
+    }
   }
 </script>
 
@@ -79,7 +92,7 @@
   bg-slate-700
   text-transparent
   caret-slate-50
-  p-4
+  p-3
   m-0
   whitespace-nowrap
 }
@@ -92,7 +105,7 @@
   overflow-hidden
   top-0
   left-0
-  p-4
+  p-3
   pointer-events-none
 }
 
@@ -100,5 +113,12 @@
   @apply
   !bg-transparent
   !p-0
+}
+
+.json-input__prettify-button {
+  @apply
+  absolute
+  right-2
+  top-2
 }
 </style>

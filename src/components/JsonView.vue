@@ -35,7 +35,7 @@
   whitespace-pre
   break-normal
   text-left
-  p-4
+  p-3
   text-slate-50
   bg-slate-700
 }
