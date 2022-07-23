@@ -34,6 +34,7 @@
   font-mono
   whitespace-pre
   break-normal
+  rounded
   text-left
   p-4
   text-slate-50
