@@ -6,14 +6,14 @@
     <template #control="{ attrs }">
       <textarea
         ref="inputArea"
-        v-model="model"
+        v-model="internalValue"
         spellcheck="false"
         class="json-input__input-area"
         v-bind="attrs"
         @scroll="handleScroll"
       />
       <div ref="viewArea" class="json-input__view-area">
-        <JsonView :value="model" class="json-input__json-view" v-bind="attrs" />
+        <JsonView :value="internalValue" class="json-input__json-view" v-bind="attrs" />
       </div>
 
       <p-button v-if="showPrettify" class="json-input__prettify-button" size="xs" @click="prettify">
@@ -39,25 +39,14 @@
   const inputArea = ref<HTMLTextAreaElement>()
   const viewArea = ref<HTMLDivElement>()
 
-  const model = computed({
+  const internalValue = computed({
     get() {
-      return internalValue.value
+      return props.modelValue
     },
     set(val: string) {
-      let strippedVal = ''
-
-      try {
-        strippedVal = JSON.stringify(JSON.parse(val))
-      } catch {
-        strippedVal = val
-      }
-
-      internalValue.value = val
-      emit('update:modelValue', strippedVal)
+      emit('update:modelValue', val)
     },
   })
-
-  const internalValue = ref(props.modelValue)
 
   // This produces a scroll-linking effect
   const handleScroll = (): void => {
@@ -71,7 +60,7 @@
 
   const prettify = (): void => {
     try {
-      model.value = JSON.stringify(JSON.parse(model.value), undefined, 2)
+      internalValue.value = JSON.stringify(JSON.parse(internalValue.value), undefined, 2)
     } catch {
       // do nothing
     }
