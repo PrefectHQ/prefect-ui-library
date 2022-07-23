@@ -6,16 +6,16 @@
 <script lang="ts" setup>
   import { highlight, languages } from 'prismjs'
   import { computed } from 'vue'
-  const JsonGrammar = await import('prismjs/components/prism-json')
+  import { definition } from '@/utilities/languageDefinitions/json'
 
-  languages.extend('json', JsonGrammar.default)
+  languages.json = definition
 
   const props = defineProps<{
-    value: string,
+    value?: string,
   }>()
 
   const innerHtml = computed(() => {
-    return highlight(props.value, languages.json, 'json')
+    return highlight(props.value ?? '', languages.json, 'json')
   })
 </script>
 
