@@ -5,10 +5,10 @@
 
 <script lang="ts" setup>
   import { highlight, languages } from 'prismjs'
-  import JsonGrammar from 'prismjs/components/prism-json'
   import { computed } from 'vue'
+  const JsonGrammar = await import('prismjs/components/prism-json')
 
-  languages.extend('json', JsonGrammar)
+  languages.extend('json', JsonGrammar.default)
 
   const props = defineProps<{
     value: string,
@@ -35,7 +35,7 @@
   whitespace-pre
   break-normal
   text-left
-  p-3
+  p-4
   text-slate-50
   bg-slate-700
 }

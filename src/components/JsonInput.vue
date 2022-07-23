@@ -20,6 +20,12 @@
         Prettify
       </p-button>
     </template>
+
+    <!--
+      <template #append="scope">
+      <slot name="append" v-bind="scope" />
+      </template>
+    -->
   </p-base-input>
 </template>
 
@@ -70,10 +76,12 @@
 <style>
 .json-input {
   resize: inherit;
+  z-index: 1;
 
   @apply
   relative
   block
+  min-h-[100px]
   font-mono
   text-sm
   overflow-hidden
@@ -87,16 +95,18 @@
   outline: none !important;
   box-shadow: none !important;
   resize: inherit;
+  z-index: -1;
 
   @apply
   block
+  absolute
   w-full
   h-full
   min-h-[inherit]
   bg-slate-700
   text-transparent
   caret-slate-50
-  p-3
+  p-4
   m-0
   whitespace-nowrap
 }
@@ -109,8 +119,9 @@
   overflow-hidden
   top-0
   left-0
-  p-3
+  p-4
   pointer-events-none
+  z-0
 }
 
 .json-input__json-view {

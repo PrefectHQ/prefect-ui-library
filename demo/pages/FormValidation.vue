@@ -8,6 +8,10 @@
       <p-text-input v-model="name" :state="nameState" />
     </p-label>
 
+    <p-label label="Favorite JSON" :message="errors.json" :state="jsonState">
+      <JsonInput v-model="json" class="form-validation__json-input" :state="jsonState" />
+    </p-label>
+
     <p-label label="Email" :message="errors.emailAddress" :state="emailAddressState">
       <p-text-input v-model="emailAddress" :state="emailAddressState" />
     </p-label>
@@ -48,7 +52,8 @@
   import { addYears, format } from 'date-fns'
   import { useForm, useField } from 'vee-validate'
   import { computed } from 'vue'
-  import { isEmail, isRequired, withMessage, lessThan } from '@/services/validate'
+  import JsonInput from '@/components/JsonInput.vue'
+  import { isEmail, isRequired, withMessage, lessThan, isValidJsonString } from '@/services/validate'
 
   const { handleSubmit, handleReset, isSubmitting, meta, errors, submitCount } = useForm()
 
@@ -69,6 +74,7 @@
   const minDate = addYears(new Date(), -18)
   const rules = {
     name: [withMessage(isRequired, 'Name is Required')],
+    json: [withMessage(isValidJsonString, 'Invalid JSON')],
     dateOfBirth: [
       withMessage(isRequired, 'Birthday is Required'),
       withMessage(lessThan(minDate), `Must be at least 18 years old (${format(minDate, 'MM/dd/yyyy')})`),
@@ -85,12 +91,13 @@
     agreeToTerms: [withMessage(isRequired, 'Compliance is required')],
   }
 
-  const { value:name, meta:nameState } = useField<string>('name', rules.name)
-  const { value:dateOfBirth, meta:dateOfBirthState } = useField<Date>('dateOfBirth', rules.dateOfBirth)
-  const { value:emailAddress, meta:emailAddressState } = useField<string>('emailAddress', rules.emailAddress)
-  const { value:username, meta:usernameState } = useField<string>('username', rules.username)
-  const { value:tags, meta:tagsState } = useField<string[]>('tags', rules.tags, { initialValue: [] })
-  const { value:agreeToTerms, meta:agreeToTermsState } = useField<boolean>('agreeToTerms', rules.agreeToTerms)
+  const { value: name, meta: nameState } = useField<string>('name', rules.name)
+  const { value: json, meta: jsonState } = useField<string>('json', rules.json)
+  const { value: dateOfBirth, meta: dateOfBirthState } = useField<Date>('dateOfBirth', rules.dateOfBirth)
+  const { value: emailAddress, meta: emailAddressState } = useField<string>('emailAddress', rules.emailAddress)
+  const { value: username, meta: usernameState } = useField<string>('username', rules.username)
+  const { value: tags, meta: tagsState } = useField<string[]>('tags', rules.tags, { initialValue: [] })
+  const { value: agreeToTerms, meta: agreeToTermsState } = useField<boolean>('agreeToTerms', rules.agreeToTerms)
 
   const classes = computed(() => ({
     'form-validation__json--failed': !meta.value.valid && submitCount.value > 0,
@@ -101,6 +108,11 @@
 <style>
 .form-validation { @apply
   p-4
+}
+
+.form-validation__json-input {
+  @apply
+  resize-y
 }
 
 .form-validation__json { @apply
