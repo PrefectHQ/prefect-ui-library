@@ -1,7 +1,7 @@
 <template>
   <p-combobox v-model="internalValue" :options="options" :empty-message="emptyMessage">
     <template #options-empty>
-      <span class="flow-combobox__options-empty">No deployments</span>
+      <span class="flow-combobox__options-empty">No flows</span>
     </template>
   </p-combobox>
 </template>
