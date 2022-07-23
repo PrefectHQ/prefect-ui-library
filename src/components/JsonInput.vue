@@ -4,18 +4,15 @@
       <slot :name="name" v-bind="scope" />
     </template>
     <template #control="{ attrs }">
-      <textarea ref="inputArea" v-model="model" class="json-input__input-area" v-bind="attrs" />
-      <!-- eslint-disable-next-line vue/no-v-html -->
-      <pre><code ref="viewArea" multiline class="json-input__view-area" v-html="viewAreaInnerHtml" /></pre>
+      <textarea v-model="model" class="json-input__input-area" v-bind="attrs" />
+      <JsonView :value="model" class="json-input__view-area" />
     </template>
   </p-base-input>
 </template>
 
 <script lang="ts" setup>
-  import  { highlight, languages }  from 'prismjs'
-  import JsonGrammar from 'prismjs/components/prism-json'
-  import { computed, ref } from 'vue'
-  languages.extend('json', JsonGrammar)
+  import { computed } from 'vue'
+  import JsonView from './JsonView.vue'
 
   const props = defineProps<{
     modelValue: string,
@@ -24,13 +21,6 @@
   const emit = defineEmits<{
     (event: 'update:modelValue', value: string): void,
   }>()
-
-  const inputArea = ref()
-  const viewArea = ref()
-
-  const viewAreaInnerHtml = computed(() => {
-    return highlight(model.value, languages.json, 'json')
-  })
 
   const model = computed({
     get() {
