@@ -44,6 +44,6 @@
   ] as const
 
   const randomize = (): void => {
-    jsonRef.value = JSON.stringify(mocker.create(choice(choices)))
+    jsonRef.value = JSON.stringify(mocker.create(choice(choices)), undefined, 2)
   }
 </script>

@@ -50,6 +50,7 @@
     }
 
     viewArea.value.scrollTop = inputArea.value.scrollTop
+    viewArea.value.scrollLeft = inputArea.value.scrollLeft
   }
 </script>
 
@@ -80,7 +81,7 @@
   caret-slate-50
   p-4
   m-0
-  whitespace-normal
+  whitespace-nowrap
   min-h-[150px]
 }
 
@@ -92,12 +93,13 @@
   overflow-hidden
   top-0
   left-0
+  p-4
   pointer-events-none
 }
 
 .json-input__json-view {
   @apply
   !bg-transparent
-  whitespace-normal
+  !p-0
 }
 </style>
