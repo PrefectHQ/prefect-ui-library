@@ -82,7 +82,6 @@
   p-4
   m-0
   whitespace-nowrap
-  min-h-[150px]
 }
 
 .json-input__view-area {
