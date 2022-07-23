@@ -34,7 +34,7 @@
 
     <code class="form-validation__json" :class="classes">
       <!-- eslint-disable-next-line vue/no-v-html -->
-      <pre v-html="JSON.stringify({ name, dateOfBirth, emailAddress, username, tags, agreeToTerms }, null, 2)" />
+      <pre v-html="JSON.stringify({ name, json, dateOfBirth, emailAddress, username, tags, agreeToTerms }, null, 2)" />
     </code>
 
     <template #footer>
@@ -92,7 +92,7 @@
   }
 
   const { value: name, meta: nameState } = useField<string>('name', rules.name)
-  const { value: json, meta: jsonState } = useField<string>('json', rules.json)
+  const { value: json, meta: jsonState } = useField<string>('json', rules.json, { initialValue: '' })
   const { value: dateOfBirth, meta: dateOfBirthState } = useField<Date>('dateOfBirth', rules.dateOfBirth)
   const { value: emailAddress, meta: emailAddressState } = useField<string>('emailAddress', rules.emailAddress)
   const { value: username, meta: usernameState } = useField<string>('username', rules.username)

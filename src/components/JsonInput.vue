@@ -41,12 +41,23 @@
 
   const model = computed({
     get() {
-      return props.modelValue
+      return internalValue.value
     },
     set(val: string) {
-      emit('update:modelValue', val)
+      let strippedVal = ''
+
+      try {
+        strippedVal = JSON.stringify(JSON.parse(val))
+      } catch {
+        strippedVal = val
+      }
+
+      internalValue.value = val
+      emit('update:modelValue', strippedVal)
     },
   })
+
+  const internalValue = ref(props.modelValue)
 
   // This produces a scroll-linking effect
   const handleScroll = (): void => {
