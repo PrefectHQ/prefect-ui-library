@@ -22,7 +22,6 @@ export const randomWorkQueueFilter: MockFunction<WorkQueueFilter, [Partial<WorkQ
   return new WorkQueueFilter({
     tags: this.createMany('string', 3),
     deploymentIds: this.createMany('string', 3),
-    flowRunnerTypes: this.createMany('flowRunnerType', 3),
     ...overrides,
   })
 }

@@ -1,4 +1,4 @@
-import { Deployment, IDeploymentRequest, FlowData, Schedule, FlowRunner } from '@/models'
+import { Deployment, IDeploymentRequest, FlowData, Schedule } from '@/models'
 
 export class DeploymentFormValues {
   public id: string | null
@@ -9,7 +9,6 @@ export class DeploymentFormValues {
   public isScheduleActive: boolean
   public parameters: Record<string, unknown> | null
   public tags: string[] | null
-  public flowRunner: FlowRunner | null
 
   public constructor(deployment?: Partial<Deployment>) {
     this.id = deployment?.id ?? null
@@ -20,7 +19,6 @@ export class DeploymentFormValues {
     this.isScheduleActive = deployment?.isScheduleActive ?? true
     this.parameters = deployment?.parameters ?? null
     this.tags = deployment?.tags ?? null
-    this.flowRunner = deployment?.flowRunner ?? null
   }
 
   public getDeploymentRequest(): IDeploymentRequest {
@@ -32,7 +30,6 @@ export class DeploymentFormValues {
       'is_schedule_active': this.isScheduleActive,
       'parameters': this.parameters,
       'tags': this.tags,
-      'flow_runner': this.flowRunner,
     }
   }
 }

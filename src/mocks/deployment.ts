@@ -17,7 +17,6 @@ export const randomDeployment: MockFunction<Deployment, [Partial<Deployment>?]> 
     isScheduleActive: this.create('boolean'),
     parameters: this.create('parameters'),
     tags: this.createMany('string', 3),
-    flowRunner: null,
     ...overrides,
   }
 }

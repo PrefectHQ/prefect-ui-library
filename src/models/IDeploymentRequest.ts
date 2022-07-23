@@ -1,4 +1,4 @@
-import { IScheduleResponse, IFlowRunnerResponse, IFlowDataResponse } from '@/models'
+import { IScheduleResponse, IFlowDataResponse } from '@/models'
 
 export type IDeploymentRequest = Partial<{
   name: string | null,
@@ -8,5 +8,4 @@ export type IDeploymentRequest = Partial<{
   is_schedule_active: boolean,
   parameters: Record<string, unknown> | null,
   tags: string[] | null,
-  flow_runner: IFlowRunnerResponse | null,
 }>

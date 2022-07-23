@@ -6,7 +6,6 @@ export const mapIWorkQueueFilterResponseToWorkQueueFilter: MapFunction<IWorkQueu
   return new WorkQueueFilter({
     tags: source.tags ?? [],
     deploymentIds: source.deployment_ids ?? [],
-    flowRunnerTypes: source.flow_runner_types ?? [],
   })
 }
 
@@ -14,6 +13,5 @@ export const mapWorkQueueFilterToIWorkQueueFilterResponse: MapFunction<WorkQueue
   return {
     'tags': source.tags,
     'deployment_ids': source.deploymentIds,
-    'flow_runner_types': source.flowRunnerTypes,
   }
 }

@@ -1,5 +1,4 @@
 import { FlowData } from '@/models/FlowData'
-import { FlowRunner } from '@/models/FlowRunner'
 import { Schedule } from '@/models/Schedule'
 
 export interface IDeployment {
@@ -13,7 +12,6 @@ export interface IDeployment {
   isScheduleActive: boolean,
   parameters: Record<string, unknown>,
   tags: string[] | null,
-  flowRunner: FlowRunner | null,
 }
 
 export class Deployment implements IDeployment {
@@ -27,7 +25,6 @@ export class Deployment implements IDeployment {
   public isScheduleActive: boolean
   public parameters: Record<string, unknown>
   public tags: string[] | null
-  public flowRunner: FlowRunner | null
 
   public constructor(deployment: IDeployment) {
     this.id = deployment.id
@@ -40,6 +37,5 @@ export class Deployment implements IDeployment {
     this.isScheduleActive = deployment.isScheduleActive
     this.parameters = deployment.parameters
     this.tags = deployment.tags
-    this.flowRunner = deployment.flowRunner
   }
 }

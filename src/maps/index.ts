@@ -21,7 +21,6 @@ import { mapFlowDataToIFlowDataResponse, mapIFlowDataResponseToFlowData } from '
 import { mapFlowRunToIFlowRunResponse, mapIFlowRunResponseToFlowRun } from '@/maps/flowRun'
 import { mapGraphNodeToIFlowRunGraphResponse, mapIFlowRunGraphResponseToGraphNode } from '@/maps/flowRunGraph'
 import { mapRunHistoryToIFlowRunHistoryResponse, mapIFlowRunHistoryResponseToRunHistory } from '@/maps/flowRunHistory'
-import { mapFlowRunnerToIFlowRunnerResponse, mapIFlowRunnerResponseToFlowRunner } from '@/maps/flowRunner'
 import { mapLogToILogResponse, mapILogResponseToLog } from '@/maps/logs'
 import { mapNotificationResponseToNotification } from '@/maps/notification'
 import { mapNumberToString, mapStringToNumber } from '@/maps/number'
@@ -58,7 +57,6 @@ export const maps = {
   Flow: { IFlowResponse: mapFlowToIFlowResponse },
   FlowData: { IFlowDataResponse: mapFlowDataToIFlowDataResponse },
   FlowRun: { IFlowRunResponse: mapFlowRunToIFlowRunResponse },
-  FlowRunner: { IFlowRunnerResponse: mapFlowRunnerToIFlowRunnerResponse },
   GraphNode: { IFlowRunGraphResponse: mapGraphNodeToIFlowRunGraphResponse },
   IDeploymentResponse: { Deployment: mapIDeploymentResponseToDeployment },
   IEmpiricalPolicyResponse: { EmpiricalPolicy: mapIEmpiricalPolicyResponseToEmpiricalPolicy },
@@ -66,7 +64,6 @@ export const maps = {
   IFlowResponse: { Flow: mapIFlowResponseToFlow },
   IFlowRunGraphResponse: { GraphNode: mapIFlowRunGraphResponseToGraphNode },
   IFlowRunHistoryResponse: { RunHistory: mapIFlowRunHistoryResponseToRunHistory },
-  IFlowRunnerResponse: { FlowRunner: mapIFlowRunnerResponseToFlowRunner },
   IFlowRunResponse: { FlowRun: mapIFlowRunResponseToFlowRun },
   ILogResponse: { Log: mapILogResponseToLog },
   NotificationResponse: { Notification: mapNotificationResponseToNotification },
