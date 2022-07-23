@@ -1,5 +1,4 @@
 import { IFlowDataResponse } from '@/models/IFlowDataResponse'
-import { IFlowRunnerResponse } from '@/models/IFlowRunnerResponse'
 import { IScheduleResponse } from '@/models/IScheduleResponse'
 import { DateString } from '@/types/dates'
 
@@ -14,5 +13,4 @@ export type IDeploymentResponse = {
   is_schedule_active: boolean,
   parameters: Record<string, unknown>,
   tags: string[] | null,
-  flow_runner: IFlowRunnerResponse | null,
 }

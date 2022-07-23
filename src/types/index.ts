@@ -1,4 +1,3 @@
-export * from './FlowRunnerType'
 export * from './LogsRequestFilter'
 export * from './RouteGuard'
 export * from './UnionFilters'

@@ -39,10 +39,6 @@
       <p-label label="Deployments (Optional)">
         <DeploymentCombobox v-model:selected="deployments" empty-message="Select deployment to filter..." />
       </p-label>
-
-      <p-label label="Flow Runners (Optional)">
-        <FlowRunnerCheckboxes v-model:selected="flowRunnerTypes" />
-      </p-label>
     </p-content>
 
     <template #footer>
@@ -60,11 +56,9 @@
   import { PLabel, PTextInput, PNumberInput, PTagsInput, PToggle, PForm } from '@prefecthq/prefect-design'
   import { useField, useForm } from 'vee-validate'
   import { computed, reactive, ref, watchEffect } from 'vue'
-  import FlowRunnerCheckboxes from './FlowRunnerCheckboxes.vue'
   import DeploymentCombobox from '@/components/DeploymentCombobox.vue'
   import { IWorkQueueRequest, WorkQueue, WorkQueueFormValues } from '@/models'
   import { isRequired, withMessage } from '@/services/validate'
-  import { FlowRunnerType } from '@/types/FlowRunnerType'
   import { submitLabel } from '@/utilities/buttons'
 
   const props = defineProps<{
@@ -95,7 +89,6 @@
   const { value: concurrencyLimit } = useField<number|null>('concurrencyLimit')
   const { value: tags } = useField<string[]>('filter.tags')
   const { value: deployments } = useField<string[]>('filter.deploymentIds')
-  const { value: flowRunnerTypes } = useField<FlowRunnerType[]>('filter.flowRunnerTypes')
 
   const emit = defineEmits<{
     (event: 'submit', value: IWorkQueueRequest): void,

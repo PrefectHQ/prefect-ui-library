@@ -28,12 +28,6 @@
         <p-tags :tags="workQueue.filter.tags" class="mt-2" />
       </template>
     </p-key-value>
-
-    <p-key-value label="Flow Runners">
-      <template #value>
-        <FlowRunnerCheckboxes :selected="workQueue.filter.flowRunnerTypes" disabled />
-      </template>
-    </p-key-value>
   </div>
 </template>
 
@@ -41,7 +35,6 @@
   import { formatDateTimeNumeric } from '@prefecthq/prefect-design'
   import { computed } from 'vue'
   import DeploymentIconText from './DeploymentIconText.vue'
-  import FlowRunnerCheckboxes from '@/components/FlowRunnerCheckboxes.vue'
   import { WorkQueue } from '@/models/WorkQueue'
 
   const props = defineProps<{

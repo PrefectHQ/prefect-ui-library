@@ -17,8 +17,6 @@ import { randomFlow } from './flow'
 import { randomFlowRun } from './flowRun'
 import { randomFlowRunGraph, randomGraphNode } from './flowRunGraph'
 import { randomFlowRunHistory } from './flowRunHistory'
-import { randomFlowRunner } from './flowRunner'
-import { randomFlowRunnerType } from './flowRunnerType'
 import { randomFlowRunStateHistory } from './flowRunStateHistory'
 import { randomId } from './id'
 import { randomImage } from './image'
@@ -55,8 +53,6 @@ export const mocks = {
   flowRun: randomFlowRun,
   flowRunGraph: randomFlowRunGraph,
   flowRunHistory: randomFlowRunHistory,
-  flowRunner: randomFlowRunner,
-  flowRunnerType: randomFlowRunnerType,
   flowRunStateHistory: randomFlowRunStateHistory,
   graphNode: randomGraphNode,
   id: randomId,

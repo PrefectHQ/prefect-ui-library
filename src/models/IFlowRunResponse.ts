@@ -1,4 +1,3 @@
-import { IFlowRunnerResponse } from '@/models/IFlowRunnerResponse'
 import { IStateResponse } from '@/models/IStateResponse'
 import { ServerStateType } from '@/models/StateType'
 import { DateString } from '@/types/dates'
@@ -29,6 +28,5 @@ export type IFlowRunResponse = {
   estimated_run_time: number | null,
   estimated_start_time_delta: number | null,
   auto_scheduled: boolean | null,
-  flow_runner: IFlowRunnerResponse | null,
   state: IStateResponse | null,
 }
