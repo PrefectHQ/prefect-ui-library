@@ -16,16 +16,10 @@
         <JsonView :value="model" class="json-input__json-view" v-bind="attrs" />
       </div>
 
-      <p-button v-if="showPrettify" class="json-input__prettify-button" size="sm" @click="prettify">
+      <p-button v-if="showPrettify" class="json-input__prettify-button" size="xs" @click="prettify">
         Prettify
       </p-button>
     </template>
-
-    <!--
-      <template #append="scope">
-      <slot name="append" v-bind="scope" />
-      </template>
-    -->
   </p-base-input>
 </template>
 

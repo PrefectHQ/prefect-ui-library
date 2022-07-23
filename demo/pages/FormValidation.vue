@@ -9,7 +9,7 @@
     </p-label>
 
     <p-label label="Favorite JSON" :message="errors.json" :state="jsonState">
-      <JsonInput v-model="json" class="form-validation__json-input" :state="jsonState" />
+      <JsonInput v-model="json" class="form-validation__json-input" show-prettify :state="jsonState" />
     </p-label>
 
     <p-label label="Email" :message="errors.emailAddress" :state="emailAddressState">
