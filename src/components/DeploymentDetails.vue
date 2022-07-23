@@ -10,6 +10,8 @@
 
     <p-key-value label="Created" :value="formatDateTimeNumeric(deployment.created)" :alternate="alternate" />
 
+    <p-key-value label="Updated" :value="formatDateTimeNumeric(deployment.updated)" :alternate="alternate" />
+
     <p-key-value label="Tags" :alternate="alternate">
       <template #value>
         <template v-if="deployment.tags?.length">
