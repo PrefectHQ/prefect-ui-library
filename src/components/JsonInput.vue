@@ -4,14 +4,23 @@
       <slot :name="name" v-bind="scope" />
     </template>
     <template #control="{ attrs }">
-      <textarea v-model="model" spellcheck="false" class="json-input__input-area" v-bind="attrs" />
-      <JsonView :value="model" class="json-input__view-area" v-bind="attrs" />
+      <textarea
+        ref="inputArea"
+        v-model="model"
+        spellcheck="false"
+        class="json-input__input-area"
+        v-bind="attrs"
+        @scroll="handleScroll"
+      />
+      <div ref="viewArea" class="json-input__view-area">
+        <JsonView :value="model" class="json-input__json-view" v-bind="attrs" />
+      </div>
     </template>
   </p-base-input>
 </template>
 
 <script lang="ts" setup>
-  import { computed } from 'vue'
+  import { computed, ref } from 'vue'
   import JsonView from './JsonView.vue'
 
   const props = defineProps<{
@@ -22,6 +31,9 @@
     (event: 'update:modelValue', value: string): void,
   }>()
 
+  const inputArea = ref<HTMLTextAreaElement>()
+  const viewArea = ref<HTMLDivElement>()
+
   const model = computed({
     get() {
       return props.modelValue
@@ -30,6 +42,15 @@
       emit('update:modelValue', val)
     },
   })
+
+  // This produces a scroll-linking effect
+  const handleScroll = (): void => {
+    if (!inputArea.value || !viewArea.value) {
+      return
+    }
+
+    viewArea.value.scrollTop = inputArea.value.scrollTop
+  }
 </script>
 
 <style>
@@ -65,13 +86,18 @@
 
 .json-input__view-area {
   @apply
-  !bg-transparent
   absolute
   w-full
   h-full
+  overflow-hidden
   top-0
   left-0
   pointer-events-none
+}
+
+.json-input__json-view {
+  @apply
+  !bg-transparent
   whitespace-normal
 }
 </style>
