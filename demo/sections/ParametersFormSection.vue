@@ -1,7 +1,7 @@
 <template>
   <DemoSection heading="Parameters Form">
     <p-label label="Schema">
-      <JsonInput v-model="rawDefinition" />
+      <JsonInput v-model="rawDefinition" class="demo-parameters-form-section__json-input" />
     </p-label>
 
     <p-button size="sm" class="mt-2" @click="reloadForm">
@@ -25,7 +25,7 @@
   import PydanticForm from '@/components/PydanticForm.vue'
   import type { PydanticTypeDefinition } from '@/types/Pydantic'
 
-  const rawDefinition = ref('{ "title": "Parameters", "type": "object", "properties": { "description": { "title": "description", "type": "string" }, "valid": { "title": "valid", "type": "boolean" }, "created": { "title": "created", "type": "string", "format": "date-time" }, "tags": { "title": "tags", "type": "array", "items": { } }, "cost": { "title": "cost", "type": "number" }, "users": { "title": "users", "default": 0, "type": "integer" }, "category": { "title": "category", "default": "Math", "allOf": [{ "$ref": "#/definitions/Categories" }] } }, "required": ["description", "valid", "created", "tags", "cost"], "definitions": { "Categories": { "title": "Categories", "description": "An enumeration.", "enum": ["Math", "Literature", "Fine Art", "Biology", "Chemistry", "Foreign Language", "Computer Science"], "type": "string" } } }')
+  const rawDefinition = ref(JSON.stringify(JSON.parse('{ "title": "Parameters", "type": "object", "properties": { "description": { "title": "description", "type": "string" }, "valid": { "title": "valid", "type": "boolean" }, "created": { "title": "created", "type": "string", "format": "date-time" }, "tags": { "title": "tags", "type": "array", "items": { } }, "cost": { "title": "cost", "type": "number" }, "users": { "title": "users", "default": 0, "type": "integer" }, "category": { "title": "category", "default": "Math", "allOf": [{ "$ref": "#/definitions/Categories" }] } }, "required": ["description", "valid", "created", "tags", "cost"], "definitions": { "Categories": { "title": "Categories", "description": "An enumeration.", "enum": ["Math", "Literature", "Fine Art", "Biology", "Chemistry", "Foreign Language", "Computer Science"], "type": "string" } } }'), undefined, 2))
   const parsedDefinition = computed<PydanticTypeDefinition>(() => {
     try {
       const parsed = JSON.parse(rawDefinition.value)
@@ -53,3 +53,10 @@
     console.log('form submitted', vals)
   }
 </script>
+
+<style>
+.demo-parameters-form-section__json-input {
+  @apply
+  min-h-[300px]
+}
+</style>

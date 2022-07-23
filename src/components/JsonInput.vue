@@ -89,6 +89,7 @@
   block
   w-full
   h-full
+  min-h-[inherit]
   bg-slate-700
   text-transparent
   caret-slate-50
