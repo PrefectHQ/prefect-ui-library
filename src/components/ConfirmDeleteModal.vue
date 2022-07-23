@@ -6,7 +6,7 @@
     <template #title>
       <div class="delete-modal__title">
         <slot name="title">
-          {{ `${action} ${label}` }}
+          {{ `${action} ${label ?? name}` }}
         </slot>
       </div>
     </template>
