@@ -26,13 +26,10 @@ export class DeploymentFormValues {
   public getDeploymentRequest(): IDeploymentRequest {
     return {
       'name': this.name,
-      'flow_id': this.flowId,
-      'flow_data': this.flowData,
       'schedule': this.schedule?.toResponse(),
       'is_schedule_active': this.isScheduleActive,
       'parameters': this.parameters,
       'tags': this.tags,
-      'flow_runner': this.flowRunner,
     }
   }
 }

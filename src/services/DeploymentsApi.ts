@@ -1,4 +1,5 @@
 import { InjectionKey } from 'vue'
+import { IDeploymentRequest } from '@/models'
 import { CreateFlowRun } from '@/models/CreateFlowRun'
 import { Deployment } from '@/models/Deployment'
 import { Flow } from '@/models/Flow'
@@ -31,6 +32,10 @@ export class DeploymentsApi extends Api {
 
     return this.post<IFlowResponse>(`/${deploymentId}/create_flow_run`, request)
       .then(({ data }) => mapper.map('IFlowResponse', data, 'Flow'))
+  }
+
+  public updateDeployment(deploymentId: string, request: IDeploymentRequest): Promise<void> {
+    return this.patch(`/${deploymentId}`, request)
   }
 
   public pauseDeployment(id: string): Promise<void> {
