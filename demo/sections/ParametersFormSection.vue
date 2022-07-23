@@ -56,6 +56,8 @@
 
 <style>
 .demo-parameters-form-section__json-input {
+  resize: vertical;
+
   @apply
   min-h-[300px]
 }
