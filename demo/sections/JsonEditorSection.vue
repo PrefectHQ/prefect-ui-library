@@ -8,7 +8,7 @@
         </p-button>
       </div>
 
-      <JsonEditor v-model="jsonRef" />
+      <JsonInput v-model="jsonRef" />
 
       <p-divider />
 
@@ -23,7 +23,7 @@
 <script lang="ts" setup>
   import { ref } from 'vue'
   import DemoSection from '../components/DemoSection.vue'
-  import JsonEditor from '@/components/JsonEditor.vue'
+  import JsonInput from '@/components/JsonInput.vue'
   import { mocker } from '@/services'
   import { choice } from '@/utilities'
 

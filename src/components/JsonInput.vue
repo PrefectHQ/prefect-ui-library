@@ -4,8 +4,8 @@
       <slot :name="name" v-bind="scope" />
     </template>
     <template #control="{ attrs }">
-      <textarea v-model="model" class="json-input__input-area" v-bind="attrs" />
-      <JsonView :value="model" class="json-input__view-area" />
+      <textarea v-model="model" spellcheck="false" class="json-input__input-area" v-bind="attrs" />
+      <JsonView :value="model" class="json-input__view-area" v-bind="attrs" />
     </template>
   </p-base-input>
 </template>
@@ -39,6 +39,7 @@
   block
   font-mono
   text-sm
+  overflow-hidden
 }
 
 .json-input__input-area {
@@ -53,10 +54,10 @@
   block
   w-full
   h-full
-  bg-transparent
+  bg-slate-700
   text-transparent
-  caret-black
-  p-0
+  caret-slate-50
+  p-4
   m-0
   whitespace-normal
   min-h-[150px]
@@ -64,14 +65,13 @@
 
 .json-input__view-area {
   @apply
+  !bg-transparent
   absolute
   w-full
   h-full
   top-0
   left-0
   pointer-events-none
-  p-0
-  m-0
   whitespace-normal
 }
 </style>
