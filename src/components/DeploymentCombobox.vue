@@ -1,5 +1,9 @@
 <template>
-  <p-combobox v-model="internalValue" :options="options" :empty-message="emptyMessage" />
+  <p-combobox v-model="internalValue" :options="options" :empty-message="emptyMessage">
+    <template #options-empty>
+      <span class="deployment-combobox__options-empty">No deployments</span>
+    </template>
+  </p-combobox>
 </template>
 
 <script lang="ts" setup>
@@ -43,3 +47,15 @@
     label: deployment.name,
   })))
 </script>
+
+<style>
+.deployment-combobox__options-empty {
+  @apply
+  flex
+  justify-between
+  items-center
+  text-gray-700
+  text-sm italic
+  p-2
+}
+</style>
