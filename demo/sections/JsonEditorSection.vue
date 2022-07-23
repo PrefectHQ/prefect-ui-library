@@ -13,7 +13,7 @@
       <p-divider />
 
       Value:
-      <p-code multiline>
+      <p-code multiline class="json-editor-section__value">
         {{ jsonRef }}
       </p-code>
     </p-content>
@@ -52,5 +52,9 @@
 .json-editor-section__input {
   min-height: 200px;
   resize: none;
+}
+
+.json-editor-section__value {
+  min-height: 40px;
 }
 </style>
