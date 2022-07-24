@@ -41,10 +41,3 @@
     }
   }
 </script>
-
-<style>
-.block-schema-property-input-json {
-  @apply
-  min-h-[150px]
-}
-</style>
