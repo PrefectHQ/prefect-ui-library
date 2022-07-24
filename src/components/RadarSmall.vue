@@ -10,7 +10,7 @@
 
   <PEmptyResults v-else>
     <template #message>
-      No Radar Graph
+      No task runs
     </template>
   </PEmptyResults>
 </template>
