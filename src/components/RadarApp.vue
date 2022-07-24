@@ -48,6 +48,7 @@
   import { RadarView, Item } from '@prefecthq/radar'
   import { useSubscription } from '@prefecthq/vue-compositions'
   import { computed } from 'vue'
+  import RadarNodeFlowRun from '@/components/RadarNodeFlowRun.vue'
   import RadarNodePlaceholder from '@/components/RadarNodePlaceholder.vue'
   import RadarNodeSubFlowRun from '@/components/RadarNodeSubFlowRun.vue'
   import RadarNodeTaskRun from '@/components/RadarNodeTaskRun.vue'
@@ -57,8 +58,9 @@
 
   const radarNodeComponents = {
     default: RadarNodeTaskRun,
-    taskRun: RadarNodeTaskRun,
+    flowRun: RadarNodeFlowRun,
     subFlowRun: RadarNodeSubFlowRun,
+    taskRun: RadarNodeTaskRun,
   }
 
   const computedStyle = getComputedStyle(document.body)

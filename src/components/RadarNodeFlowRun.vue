@@ -1,12 +1,12 @@
 <template>
-  <ORadarNode class="radar-node-sub-flow-run">
+  <ORadarNode class="radar-node-flow-run">
     <template #aside>
-      <div class="radar-node-sub-flow-run__aside" :class="classes.asideClass" :title="stateName">
+      <div class="radar-node-flow-run__aside" :class="classes.asideClass" :title="stateName">
         <StateIcon :state-type="stateType" />
       </div>
     </template>
 
-    <div class="radar-node-sub-flow-run__content">
+    <div class="radar-node-flow-run__content">
       <FlowRouterLink v-if="flowRun?.flowId" :flow-id="flowRun.flowId" after=" / " />
 
       <p-link :to="flowRunRoute(flowRunId)">
@@ -19,7 +19,7 @@
     </template>
 
     <template #collapsed-badge="{ collapsed }">
-      <div class="radar-node-sub-flow-run__collapsed-badge">
+      <div class="radar-node-flow-run__collapsed-badge">
         {{ collapsed?.size.toLocaleString() }}
       </div>
     </template>
@@ -82,13 +82,13 @@
 </script>
 
 <style>
-.radar-node-sub-flow-run {
+.radar-node-flow-run {
   @apply
   w-[20rem]
   min-h-[120px]
 }
 
-.radar-node-sub-flow-run__content {
+.radar-node-flow-run__content {
   @apply
   overflow-hidden
   overflow-ellipsis
@@ -96,7 +96,7 @@
   max-w-[75%]
 }
 
-.radar-node-sub-flow-run__aside {
+.radar-node-flow-run__aside {
   @apply
   flex
   items-center
@@ -106,7 +106,7 @@
   rounded-bl
 }
 
-.radar-node-sub-flow-run__collapsed-badge {
+.radar-node-flow-run__collapsed-badge {
   @apply
   text-xs
   text-white
