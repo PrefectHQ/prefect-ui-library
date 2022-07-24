@@ -1,5 +1,5 @@
 import { PTextInput, PToggle, PTextarea, PDateInput, PNumberInput, PCombobox, PSelect } from '@prefecthq/prefect-design'
-import JsonEditor from '@/components/JsonEditor.vue'
+import JsonInput from '@/components/JsonInput.vue'
 import { ValidateMethod, isEmail, greaterThanOrEqual, greaterThan, lessThan, lessThanOrEqual, isRequired, withMessage } from '@/services'
 import {
   hasAllOf,
@@ -31,7 +31,7 @@ import {
   RefStringRegExp
 } from '@/types/Pydantic'
 
-const InputComponents = [PToggle, PTextInput, PTextarea, JsonEditor, PDateInput, PNumberInput, PCombobox, PSelect] as const
+const InputComponents = [PToggle, PTextInput, PTextarea, JsonInput, PDateInput, PNumberInput, PCombobox, PSelect] as const
 
 export type PydanticTypeDefinitionComponentAttrs = Record<string, unknown>
 export type PydanticTypeDefinitionComponent = {
@@ -43,7 +43,7 @@ export type PydanticTypeDefinitionComponent = {
 }
 
 interface BaseJsonInput extends PydanticTypeDefinitionComponent {
-  component: typeof JsonEditor,
+  component: typeof JsonInput,
   defaultValue: string,
 }
 
@@ -100,7 +100,7 @@ interface BaseDateInput extends PydanticTypeDefinitionComponent {
 const getBaseJsonInput = (): BaseJsonInput => {
   return {
     attrs: {},
-    component: JsonEditor,
+    component: JsonInput,
     defaultValue: '',
     validators: [],
   }

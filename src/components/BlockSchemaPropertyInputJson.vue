@@ -1,10 +1,10 @@
 <template>
-  <JsonEditor v-model="internalValue" class="block-schema-property-input-json" />
+  <JsonInput v-model="internalValue" class="block-schema-property-input-json" />
 </template>
 
 <script lang="ts" setup>
   import { computed } from 'vue'
-  import JsonEditor from '@/components/JsonEditor.vue'
+  import JsonInput from '@/components/JsonInput.vue'
 
   const props = defineProps<{
     modelValue: unknown,
