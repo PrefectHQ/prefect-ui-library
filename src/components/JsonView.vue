@@ -41,112 +41,90 @@
   bg-slate-700
 }
 
-/* Code blocks */
-pre[class*="language-"] {
-  @apply
-  p-4
-  my-2
-  mx-0
-  overflow-auto
-}
-
-:not(pre) > code[class*="language-"],
-pre[class*="language-"] {
-  @apply
-  bg-slate-700
-}
-
-/* Inline */
-:not(pre) > code[class*="language-"] {
-  @apply
-  p-1
-  whitespace-normal
-}
-
-.token.comment,
-.token.block-comment,
-.token.prolog,
-.token.doctype,
-.token.cdata {
+.json-view .token.comment,
+.json-view .token.block-comment,
+.json-view .token.prolog,
+.json-view .token.doctype,
+.json-view .token.cdata {
   @apply
   text-slate-400
 }
 
-.token.punctuation {
+.json-view .token.punctuation {
   @apply
   text-slate-50
 }
 
-.token.tag,
-.token.attr-name,
-.token.namespace,
-.token.deleted {
+.json-view .token.tag,
+.json-view .token.attr-name,
+.json-view .token.namespace,
+.json-view .token.deleted {
   @apply
   text-rose-400
 }
 
-.token.function-name {
+.json-view .token.function-name {
   @apply
   text-blue-400
 }
 
-.token.boolean,
-.token.number,
-.token.function {
+.json-view .token.boolean,
+.json-view .token.number,
+.json-view .token.function {
   @apply
   text-orange-400
 }
 
-.token.property,
-.token.class-name,
-.token.constant,
-.token.symbol {
+.json-view .token.property,
+.json-view .token.class-name,
+.json-view .token.constant,
+.json-view .token.symbol {
   @apply
   text-yellow-400
 }
 
-.token.selector,
-.token.important,
-.token.atrule,
-.token.keyword,
-.token.builtin {
+.json-view .token.selector,
+.json-view .token.important,
+.json-view .token.atrule,
+.json-view .token.keyword,
+.json-view .token.builtin {
   @apply
   text-rose-300
 }
 
-.token.string,
-.token.char,
-.token.attr-value,
-.token.regex,
-.token.variable {
+.json-view .token.string,
+.json-view .token.char,
+.json-view .token.attr-value,
+.json-view .token.regex,
+.json-view .token.variable {
   @apply
   text-emerald-400
 }
 
-.token.operator,
-.token.entity,
-.token.url {
+.json-view .token.operator,
+.json-view .token.entity,
+.json-view .token.url {
   @apply
   text-blue-400
 }
 
-.token.important,
-.token.bold {
+.json-view .token.important,
+.json-view .token.bold {
   @apply
   font-medium
 }
 
-.token.italic {
+.json-view .token.italic {
   /* Can't use the apply style here due to circular imports */
   font-style: italic;
 }
 
-.token.entity {
+.json-view .token.entity {
   @apply
   cursor-help
 }
 
-.token.inserted {
+.json-view .token.inserted {
   @apply
   text-emerald-600
 }
