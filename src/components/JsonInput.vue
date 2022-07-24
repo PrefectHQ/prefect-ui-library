@@ -16,8 +16,8 @@
         <JsonView :value="internalValue" class="json-input__json-view" v-bind="attrs" />
       </div>
 
-      <p-button v-if="showPrettify" class="json-input__prettify-button" size="xs" @click="prettify">
-        Prettify
+      <p-button v-if="showFormatButton" class="json-input__prettify-button" size="xs" @click="format">
+        Format
       </p-button>
     </template>
   </p-base-input>
@@ -29,7 +29,7 @@
 
   const props = defineProps<{
     modelValue: string,
-    showPrettify?: boolean,
+    showFormatButton?: boolean,
   }>()
 
   const emit = defineEmits<{
@@ -58,7 +58,7 @@
     viewArea.value.scrollLeft = inputArea.value.scrollLeft
   }
 
-  const prettify = (): void => {
+  const format = (): void => {
     try {
       internalValue.value = JSON.stringify(JSON.parse(internalValue.value), undefined, 2)
     } catch {
