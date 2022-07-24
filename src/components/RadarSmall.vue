@@ -10,7 +10,7 @@
 
   <PEmptyResults v-else>
     <template #message>
-      No task runs
+      No tasks found
     </template>
   </PEmptyResults>
 </template>
