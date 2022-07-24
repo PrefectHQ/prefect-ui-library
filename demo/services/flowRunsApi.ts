@@ -41,7 +41,6 @@ export class FlowRunsApi extends MockedApi {
   }
 
   public getFlowRunsGraph(id: string): Promise<GraphNode[]> {
-    // mocker.create('number', [3, 40])
     return this.promise(mocker.create('flowRunGraph', [{ size: mocker.create('number', [3, 40]), shape: 'fanOut', fanMultiplier: 2 }]))
   }
 
