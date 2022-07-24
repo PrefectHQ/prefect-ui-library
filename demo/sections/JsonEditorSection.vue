@@ -8,12 +8,12 @@
         </p-button>
       </div>
 
-      <JsonEditor v-model="jsonRef" />
+      <JsonInput v-model="jsonRef" class="json-editor-section__input" />
 
       <p-divider />
 
       Value:
-      <p-code multiline>
+      <p-code multiline class="json-editor-section__value">
         {{ jsonRef }}
       </p-code>
     </p-content>
@@ -23,7 +23,7 @@
 <script lang="ts" setup>
   import { ref } from 'vue'
   import DemoSection from '../components/DemoSection.vue'
-  import JsonEditor from '@/components/JsonEditor.vue'
+  import JsonInput from '@/components/JsonInput.vue'
   import { mocker } from '@/services'
   import { choice } from '@/utilities'
 
@@ -44,6 +44,17 @@
   ] as const
 
   const randomize = (): void => {
-    jsonRef.value = JSON.stringify(mocker.create(choice(choices)))
+    jsonRef.value = JSON.stringify(mocker.create(choice(choices)), undefined, 2)
   }
 </script>
+
+<style>
+.json-editor-section__input {
+  min-height: 200px;
+  resize: none;
+}
+
+.json-editor-section__value {
+  min-height: 40px;
+}
+</style>
