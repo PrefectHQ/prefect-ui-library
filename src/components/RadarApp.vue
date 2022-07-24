@@ -74,10 +74,33 @@
   })
 
   const flowRunsApi = inject(flowRunsApiKey)
-  const subscription = useSubscription(flowRunsApi.getFlowRunsGraph, [flowRunId])
+  const graphSubscription = useSubscription(flowRunsApi.getFlowRunsGraph, [flowRunId])
+  const flowRunSubscription = useSubscription(flowRunsApi.getFlowRun, [flowRunId])
+
+  const flowRunGraphNode = computed(() => {
+    if (!flowRunSubscription.response) {
+      return null
+    }
+
+    return new GraphNode({ upstreamDependencies: [], ...flowRunSubscription.response })
+  })
 
   const graph = computed(() => {
-    return subscription.response ?? []
+    const items = (graphSubscription.response ?? []).map(node => {
+      if (node.upstreamDependencies.length == 0) {
+        node.upstreamDependencies.push({ inputType: 'constant', id: flowRunId.value })
+      }
+
+      return node
+    })
+
+    const root = flowRunGraphNode.value
+
+    if (root) {
+      return [flowRunGraphNode.value, ...items]
+    }
+
+    return items
   })
 
   const getStateColor = (item: Item): string => {
@@ -93,8 +116,14 @@
     return !!item.state?.stateDetails?.childFlowRunId
   }
 
+  const isFlowRun = (item: GraphNode): boolean => {
+    return item.id == flowRunId.value
+  }
+
   const radarNodeComponent = (item: GraphNode): typeof RadarNodeTaskRun | typeof RadarNodeSubFlowRun => {
-    if (isTaskRun(item)) {
+    if (isFlowRun(item)) {
+      return radarNodeComponents.flowRun
+    } else if (isTaskRun(item)) {
       return radarNodeComponents.taskRun
     } else if (isSubFlowRun(item)) {
       return radarNodeComponents.subFlowRun

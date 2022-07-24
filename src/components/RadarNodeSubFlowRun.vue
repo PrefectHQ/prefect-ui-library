@@ -93,7 +93,7 @@
   overflow-hidden
   overflow-ellipsis
   whitespace-nowrap
-  max-w-[75%]
+  max-w-[90%]
 }
 
 .radar-node-sub-flow-run__aside {
