@@ -1,14 +1,22 @@
 <template>
   <MiniRadarView
+    v-if="graph.length"
     class="radar-small"
     :radar="radar"
     hide-viewport
     disable-interactions
     :color-accessor="getStateColor"
   />
+
+  <PEmptyResults v-else>
+    <template #message>
+      No Radar Graph
+    </template>
+  </PEmptyResults>
 </template>
 
 <script lang="ts" setup>
+  import { PEmptyResults } from '@prefecthq/prefect-design'
   import { MiniRadarView, Radar, Item } from '@prefecthq/radar'
   import { useSubscription } from '@prefecthq/vue-compositions'
   import { reactive, computed } from 'vue'
