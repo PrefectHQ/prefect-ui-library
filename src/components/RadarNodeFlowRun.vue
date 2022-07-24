@@ -89,8 +89,8 @@
 <style>
 .radar-node-flow-run {
   @apply
-  w-[20rem]
-  min-h-[120px]
+  w-[24rem]
+  min-h-[160px]
 }
 
 .radar-node-flow-run__content {
