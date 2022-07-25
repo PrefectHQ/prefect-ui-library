@@ -1,25 +1,37 @@
 <template>
-  <ORadarNode class="radar-node-sub-flow-run">
+  <ORadarNode class="radar-node-flow-run">
     <template #aside>
-      <div class="radar-node-sub-flow-run__aside" :class="classes.asideClass" :title="stateName">
-        <StateIcon :state-type="stateType" />
+      <div class="radar-node-flow-run__aside" :title="stateName">
+        <p-icon icon="FlowRun" />
       </div>
     </template>
 
-    <div class="radar-node-sub-flow-run__content">
-      <FlowRouterLink v-if="flowRun?.flowId" :flow-id="flowRun.flowId" after=" / " />
+    <div class="radar-node-flow-run__content">
+      <header class="radar-node-flow-run__header">
+        <FlowRouterLink v-if="flowRun" :flow-id="flowRun.flowId" after=" / " />
 
-      <p-link :to="flowRunRoute(flowRunId)">
         {{ flowRunName }}
-      </p-link>
+      </header>
+
+      <template v-if="flowRun">
+        <StateBadge :state="flowRun.state" class="max-w-min" />
+      </template>
     </div>
 
     <template #footer-leading>
-      <DurationIconText :duration="duration" />
+      <div class="radar-node-flow-run__footer-leading">
+        <template v-if="duration">
+          <DurationIconText :duration="duration" />
+        </template>
+
+        <template v-if="flowRun">
+          <FlowRunStartTime :flow-run="flowRun" />
+        </template>
+      </div>
     </template>
 
     <template #collapsed-badge="{ collapsed }">
-      <div class="radar-node-sub-flow-run__collapsed-badge">
+      <div class="radar-node-flow-run__collapsed-badge">
         {{ collapsed?.size.toLocaleString() }}
       </div>
     </template>
@@ -32,25 +44,22 @@
   import DurationIconText from './DurationIconText.vue'
   import FlowRouterLink from './FlowRouterLink.vue'
   import ORadarNode from './RadarNode.vue'
-  import StateIcon from './StateIcon.vue'
-  import { FlowRun, GraphNode, StateType } from '@/models'
-  import { flowRunRouteKey } from '@/router'
+  import StateBadge from './StateBadge.vue'
+  import FlowRunStartTime from '@/components/FlowRunStartTime.vue'
+  import { FlowRun, GraphNode } from '@/models'
   import { flowRunsApiKey } from '@/services'
   import { inject } from '@/utilities/inject'
-
-  const flowRunRoute = inject(flowRunRouteKey)
 
   const props = defineProps<{
     graphNode: GraphNode,
   }>()
 
   const flowRunId = computed(() => {
-    return props.graphNode.state!.stateDetails!.childFlowRunId!
+    return props.graphNode.id
   })
 
   const flowRunsApi = inject(flowRunsApiKey)
   const subscription = useSubscription(flowRunsApi.getFlowRun, [flowRunId])
-
 
   const flowRun = computed<FlowRun | undefined>(() => {
     return subscription.response
@@ -62,33 +71,30 @@
     return flowRun.value?.state ?? props.graphNode.state
   })
 
-  const stateType = computed<StateType | undefined>(() => {
-    return state.value?.type
-  })
-
   const stateName = computed<string | undefined>(() => {
     return state.value?.name
   })
 
   const duration = computed(() => {
-    return flowRun.value?.duration ?? 0
-  })
-
-  const classes = computed(() => {
-    return {
-      asideClass: [`state--${stateType.value}`, {}],
-    }
+    return flowRun.value?.duration
   })
 </script>
 
 <style>
-.radar-node-sub-flow-run {
+.radar-node-flow-run {
   @apply
-  w-[20rem]
-  min-h-[120px]
+  w-[24rem]
+  min-h-[160px]
 }
 
-.radar-node-sub-flow-run__content {
+.radar-node-flow-run__content {
+  @apply
+  flex
+  flex-col
+  gap-2
+}
+
+.radar-node-flow-run__header {
   @apply
   overflow-hidden
   overflow-ellipsis
@@ -96,17 +102,29 @@
   max-w-[90%]
 }
 
-.radar-node-sub-flow-run__aside {
+.radar-node-flow-run__footer-leading {
+  @apply
+  flex
+  gap-2
+}
+
+.radar-node-flow-run__footer-leading > * {
+  @apply
+  w-max
+}
+
+.radar-node-flow-run__aside {
   @apply
   flex
   items-center
   h-full
   px-2
+  text-slate-700
   rounded-tl
   rounded-bl
 }
 
-.radar-node-sub-flow-run__collapsed-badge {
+.radar-node-flow-run__collapsed-badge {
   @apply
   text-xs
   text-white

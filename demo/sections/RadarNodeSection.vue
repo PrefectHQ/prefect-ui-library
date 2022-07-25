@@ -33,6 +33,10 @@
       <RadarNodeTaskRun :graph-node="taskRun" :collapsed="collapsedMap" :downstream-nodes="20" :toggle="toggleCollapsed" />
     </SubSection>
 
+    <SubSection heading="Flow run">
+      <RadarNodeFlowRun :graph-node="flowRun" :collapsed="collapsedMap" :downstream-nodes="0" :toggle="toggleCollapsed" />
+    </SubSection>
+
     <SubSection heading="Sub flow run">
       <RadarNodeSubFlowRun :graph-node="flowRun" :collapsed="collapsedMap" :downstream-nodes="20" :toggle="toggleCollapsed" />
     </SubSection>
@@ -46,6 +50,7 @@
   import Section from '../components/DemoSection.vue'
   import SubSection from '../components/DemoSubSection.vue'
   import ORadarNode from '@/components/RadarNode.vue'
+  import RadarNodeFlowRun from '@/components/RadarNodeFlowRun.vue'
   import RadarNodeSubFlowRun from '@/components/RadarNodeSubFlowRun.vue'
   import RadarNodeTaskRun from '@/components/RadarNodeTaskRun.vue'
   import { mocker } from '@/services/Mocker'
