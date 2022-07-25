@@ -1,7 +1,7 @@
 <template>
   <DemoSection heading="Python Editor">
     <p-content>
-      <PythonView :value="pythonRef" class="python-editor-section__view" />
+      <PythonInput v-model="pythonRef" class="python-editor-section__input" />
     </p-content>
   </DemoSection>
 </template>
@@ -9,7 +9,7 @@
 <script lang="ts" setup>
   import { ref } from 'vue'
   import DemoSection from '../components/DemoSection.vue'
-  import PythonView from '@/components/PythonView.vue'
+  import PythonInput from '@/components/PythonInput.vue'
 
   const pythonRef = ref(`import awswrangler as wr
 from datetime import datetime
@@ -81,13 +81,12 @@ def real_time_flow():
 
 if __name__ == "__main__":
     while True:
-        real_time_flow()
-`)
+        real_time_flow()`)
 </script>
 
 <style>
-.python-editor-section__view {
-  min-height: 200px;
+.python-editor-section__input {
+  min-height: 800px;
   resize: vertical;
 }
 </style>
