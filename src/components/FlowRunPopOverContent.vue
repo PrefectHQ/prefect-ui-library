@@ -51,7 +51,6 @@
   const flowsRunApi = inject(flowRunsApiKey)
   const flowRunSubscription = useSubscription(flowsRunApi.getFlowRun, [props.flowRunId])
   const flowRun = computed(() => flowRunSubscription.response)
-  console.log('here')
 </script>
 
 <style>
