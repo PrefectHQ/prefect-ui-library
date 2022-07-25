@@ -1,12 +1,7 @@
 <template>
   <PKeyValue :label="property.title" :value="value" class="block-document-property">
-    <template #value>
-      <template v-if="isJsonProperty(value)">
-        <JsonView :value="JSON.stringify(value)" />
-      </template>
-      <template v-else>
-        <span>{{ value }}</span>
-      </template>
+    <template v-if="isJsonProperty(value)" #value>
+      <JsonView :value="JSON.stringify(value)" />
     </template>
   </PKeyValue>
 </template>
