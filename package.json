@@ -12,7 +12,8 @@
         "dev": "vue-tsc -w & tsc-alias -w & vite build -w",
         "lint": "eslint src",
         "lint:fix": "eslint src --fix",
-        "serve": "vite --mode=demo --host"
+        "serve": "vite --mode=demo --host",
+        "generate-client": "openapi --input http://localhost:4200/openapi.json --output ./src/client --client axios"
     },
     "main": "./dist/orion-design.umd.js",
     "module": "./dist/orion-design.es.js",
@@ -37,6 +38,7 @@
         "autoprefixer": "10.4.5",
         "eslint": "8.20.0",
         "lodash.debounce": "4.0.8",
+        "openapi-typescript-codegen": "^0.23.0",
         "postcss": "8.4.14",
         "tailwindcss": "3.1.6",
         "tsc-alias": "1.7.0",
