@@ -25,7 +25,7 @@
 
         <FlowRunStartTime :flow-run="flowRun" />
 
-        <p-tags class="flow-run-popover-content__tags" :tags="flowRun.tags ?? []" />
+        <p-tags class="flow-run-popover-content__tags" :tags="tags" />
       </aside>
     </article>
   </template>
@@ -51,6 +51,7 @@
   const flowsRunApi = inject(flowRunsApiKey)
   const flowRunSubscription = useSubscription(flowsRunApi.getFlowRun, [props.flowRunId])
   const flowRun = computed(() => flowRunSubscription.response)
+  const tags = computed(() => flowRun.value?.tags ?? [])
 </script>
 
 <style>
