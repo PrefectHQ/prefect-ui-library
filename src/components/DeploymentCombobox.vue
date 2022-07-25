@@ -1,5 +1,9 @@
 <template>
-  <p-combobox v-model="internalValue" :options="options" :empty-message="emptyMessage" />
+  <p-combobox v-model="internalValue" :options="options" :empty-message="emptyMessage">
+    <template #options-empty>
+      No deployments
+    </template>
+  </p-combobox>
 </template>
 
 <script lang="ts" setup>
