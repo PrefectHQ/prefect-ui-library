@@ -56,6 +56,5 @@
     ]
   })
 
-  // skip altogether if scheduled
   const tasksCount = useSubscriptionWithDependencies(taskRunsApi.getTaskRunsCount, tasksCountFilter)
 </script>
