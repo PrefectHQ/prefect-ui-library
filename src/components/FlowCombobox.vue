@@ -1,7 +1,7 @@
 <template>
   <p-combobox v-model="internalValue" :options="options" :empty-message="emptyMessage">
     <template #options-empty>
-      <span class="flow-combobox__options-empty">No flows</span>
+      No flows
     </template>
   </p-combobox>
 </template>
@@ -47,15 +47,3 @@
     label: flow.name,
   })))
 </script>
-
-<style>
-.flow-combobox__options-empty {
-  @apply
-  flex
-  justify-between
-  items-center
-  text-gray-700
-  text-sm italic
-  p-2
-}
-</style>
