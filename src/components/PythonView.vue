@@ -8,7 +8,6 @@
   import { computed } from 'vue'
   import { definition } from '@/utilities/languageDefinitions/python'
 
-  languages.python['string-interpolation'].inside.interpolation.inside.rest = definition
   languages.python = definition
 
   const props = defineProps<{
