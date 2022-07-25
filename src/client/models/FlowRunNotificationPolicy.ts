@@ -6,7 +6,7 @@
  * An ORM representation of a flow run notification.
  */
 export type FlowRunNotificationPolicy = {
-    id?: string;
+    id: string;
     created?: string;
     updated?: string;
     /**

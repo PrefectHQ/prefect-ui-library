@@ -2,7 +2,7 @@ export const notificationStatus = ['all', 'active', 'paused'] as const
 export type NotificationStatus = typeof notificationStatus[number]
 
 export interface INotification {
-  id?: string,
+  id: string,
   created?: Date,
   updated?: Date,
   isActive?: boolean,
@@ -12,7 +12,7 @@ export interface INotification {
 }
 
 export class Notification implements INotification {
-  public readonly id?: string
+  public readonly id: string
   public created?: Date
   public updated?: Date
   public isActive?: boolean
