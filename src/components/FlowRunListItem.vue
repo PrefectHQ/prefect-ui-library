@@ -72,6 +72,7 @@
 
 <style>
 .flow-run-list-item__link { @apply
+  font-bold
   text-prefect-500
 }
 </style>
