@@ -75,8 +75,8 @@
     return state.value?.name
   })
 
-  const duration = computed<number>(() => {
-    return flowRun.value?.estimatedRunTime ?? 0
+  const duration = computed(() => {
+    return flowRun.value?.duration
   })
 
   const classes = computed(() => {
