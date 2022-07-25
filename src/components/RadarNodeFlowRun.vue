@@ -8,7 +8,7 @@
 
     <div class="radar-node-flow-run__content">
       <header class="radar-node-flow-run__header">
-        <FlowRouterLink v-if="flowRun?.flowId" :flow-id="flowRun.flowId" after=" / " />
+        <FlowRouterLink v-if="flowRun" :flow-id="flowRun.flowId" after=" / " />
 
         {{ flowRunName }}
       </header>
