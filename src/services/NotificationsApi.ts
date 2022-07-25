@@ -13,17 +13,17 @@ export class NotificationsApi extends Api {
 
   public getNotification(id: string): Promise<Notification> {
     return this.get<NotificationResponse>(`/${id}`)
-      .then(({ data }) => mapper.map('NotificationResponse', data, 'Notification'))
+      .then(({ data }) => mapper.map('FlowRunNotificationPolicy', data, 'Notification'))
   }
 
   public createNotification(notification: NotificationCreate): Promise<Notification> {
     return this.post<NotificationResponse>('/', mapper.map('NotificationCreate', notification, 'NotificationCreateRequest'))
-      .then(({ data }) => mapper.map('NotificationResponse', data, 'Notification'))
+      .then(({ data }) => mapper.map('FlowRunNotificationPolicy', data, 'Notification'))
   }
 
   public getNotifications(filter: NotificationFilter = {}): Promise<Notification[]> {
     return this.post<NotificationResponse[]>('/filter', filter)
-      .then(({ data }) => mapper.map('NotificationResponse', data, 'Notification'))
+      .then(({ data }) => mapper.map('FlowRunNotificationPolicy', data, 'Notification'))
   }
 
   public updateNotification(id: string, notification: NotificationUpdate): Promise<void> {

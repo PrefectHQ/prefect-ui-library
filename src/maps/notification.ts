@@ -1,9 +1,9 @@
-import { NotificationResponse } from '@/models/api/NotificationResponse'
+import { FlowRunNotificationPolicy } from '@/client/models/FlowRunNotificationPolicy'
 import { Notification } from '@/models/Notification'
 import { MapFunction } from '@/services/Mapper'
 
 const convertToLowerCase = (array: string[]): string[] => array.map((stateName: string) => stateName.toLowerCase())
-export const mapNotificationResponseToNotification: MapFunction<NotificationResponse, Notification> = function(source: NotificationResponse): Notification {
+export const mapFlowRunNotificationPolicyToNotification: MapFunction<FlowRunNotificationPolicy, Notification> = function(source: FlowRunNotificationPolicy): Notification {
   return new Notification({
     id: source.id,
     created: this.map('string', source.created, 'Date'),

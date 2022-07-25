@@ -22,7 +22,7 @@ import { mapFlowRunToIFlowRunResponse, mapIFlowRunResponseToFlowRun } from '@/ma
 import { mapGraphNodeToIFlowRunGraphResponse, mapIFlowRunGraphResponseToGraphNode } from '@/maps/flowRunGraph'
 import { mapRunHistoryToIFlowRunHistoryResponse, mapIFlowRunHistoryResponseToRunHistory } from '@/maps/flowRunHistory'
 import { mapLogToILogResponse, mapILogResponseToLog } from '@/maps/logs'
-import { mapNotificationResponseToNotification } from '@/maps/notification'
+import { mapFlowRunNotificationPolicyToNotification } from '@/maps/notification'
 import { mapNumberToString, mapStringToNumber } from '@/maps/number'
 import { mapUiFlowRunHistoryToScatterPlotItem } from '@/maps/scatterPlotItem'
 import { mapScheduleToIScheduleResponse, mapIScheduleResponseToSchedule } from '@/maps/schedule'
@@ -66,7 +66,7 @@ export const maps = {
   IFlowRunHistoryResponse: { RunHistory: mapIFlowRunHistoryResponseToRunHistory },
   IFlowRunResponse: { FlowRun: mapIFlowRunResponseToFlowRun },
   ILogResponse: { Log: mapILogResponseToLog },
-  NotificationResponse: { Notification: mapNotificationResponseToNotification },
+  FlowRunNotificationPolicy: { Notification: mapFlowRunNotificationPolicyToNotification },
   NotificationCreate: { NotificationCreateRequest: mapNotificationCreateToNotificationCreateRequest },
   NotificationUpdate: { NotificationUpdateRequest: mapNotificationUpdateToNotificationUpdateRequest },
   IScheduleResponse: { Schedule: mapIScheduleResponseToSchedule },
