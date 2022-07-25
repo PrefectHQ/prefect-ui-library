@@ -1,193 +1,131 @@
 <template>
   <!-- eslint-disable-next-line vue/no-v-html -->
-  <p-code multiline class="json-view" v-html="highlightedValue" />
+  <pre class="json-view"><code multiline v-html="innerHtml" /></pre>
 </template>
 
 <script lang="ts" setup>
-  import { useDebouncedRef } from '@prefecthq/vue-compositions'
-  import { computed, unref } from 'vue'
+  import { highlight, languages } from 'prismjs'
+  import { computed } from 'vue'
+  import { definition } from '@/utilities/languageDefinitions/json'
 
-  type JsonObject = Record<string, unknown>
-  type JsonArray = Record<string, unknown>[]
-  type Json = JsonObject | JsonArray | string | number | boolean
-
-  function isJson(val: unknown): val is Json {
-    return typeof val == 'object' && val !== null
-  }
-
-  function isJsonObject(val: unknown): val is Json {
-    return isJson(val) && !Array.isArray(val)
-  }
-
-  function isJsonArray(val: unknown): val is JsonArray {
-    return isJson(val) && Array.isArray(val)
-  }
-
-  function isJsonPrimitive(val: unknown): val is string | boolean | number {
-    const type = typeof val
-
-    return ['string', 'boolean', 'number'].includes(type)
-  }
+  languages.json = definition
 
   const props = defineProps<{
-    value: unknown,
+    value?: string,
   }>()
 
-  const valueRef = computed(() => props.value)
-  const valueDebounced = useDebouncedRef(valueRef, 10)
-
-  const highlightedValue = computed(() => {
-    const value = unref(valueDebounced)
-
-    try {
-      if (value && typeof value === 'string') {
-        const highlighted = getJsonHtml(JSON.parse(value))
-
-        return highlighted
-      }
-
-      return value
-
-    } catch {
-      return value
-    }
+  const innerHtml = computed(() => {
+    return highlight(props.value ?? '', languages.json, 'json')
   })
-
-  const getKeyHtml = (key: string): string => {
-    return `<span class="json-view__key">"${key}"</span>`
-  }
-
-  const getValueHtml = (val: unknown): string => {
-    const type = typeof val
-    if (type == 'string') {
-      val = `"${val}"`
-    }
-    return `<span class="json-view__${type}-value">${val}</span>`
-  }
-
-  const getNeutralHtml = (val: string): string => {
-    return `<span class="json-view__neutral">${val}</span>`
-  }
-
-  const getBlockHtml = (val: string): string => {
-    return `<div class="json-view__block">${val}</div>`
-  }
-
-  const getSpaceHtml = (level: number): string => {
-    return '&nbsp'.repeat(level * 2)
-  }
-
-  const getArrayHtml = (val: JsonArray, level: number): string => {
-    const lastIndex = val.length - 1
-    let content = ''
-
-    content += getNeutralHtml('[')
-
-    content += val.reduce((str, value, index) => {
-      let content = ''
-
-      content += getSpaceHtml(level)
-
-      if (isJson(value)) {
-        content += getJsonHtml(value, level)
-      } else {
-        content += getValueHtml(value)
-      }
-
-      if (index !== lastIndex) {
-        content += getNeutralHtml(',')
-      }
-
-      str += getBlockHtml(content)
-
-      return str
-    }, '')
-
-    content += getSpaceHtml(level - 1)
-    content += getNeutralHtml(']')
-
-    return content
-  }
-
-  const getObjectHtml = (val: JsonObject, level: number): string => {
-    const entries = Object.entries(val)
-    const lastIndex = entries.length - 1
-
-    let content = ''
-    content += getNeutralHtml('{')
-
-    content += entries.reduce((str, [key, value], index) => {
-      let content = ''
-
-      content += getSpaceHtml(level)
-      content += getKeyHtml(key)
-      content += getNeutralHtml(': ')
-
-      if (isJson(value)) {
-        content += getJsonHtml(value, level)
-      } else {
-        content += getValueHtml(value)
-      }
-
-      if (index !== lastIndex) {
-        content += getNeutralHtml(',')
-      }
-
-      str += getBlockHtml(content)
-
-      return str
-    }, '')
-
-    content += getSpaceHtml(level - 1)
-    content += getNeutralHtml('}')
-
-    return content
-  }
-
-
-  const getJsonHtml = (json: Json, level: number = 0): string => {
-    level += 1
-
-    if (isJsonArray(json)) {
-      return getArrayHtml(json, level)
-    }
-
-    if (isJsonPrimitive(json)) {
-      return getValueHtml(json)
-    }
-
-    if (isJsonObject(json)) {
-      return getObjectHtml(json, level)
-    }
-
-    return ''
-  }
 </script>
 
 <style>
-.json-view__key {
+.json-view {
+  -moz-tab-size: 4;
+  -o-tab-size: 4;
+  tab-size: 4;
+
+  -webkit-hyphens: none;
+  -moz-hyphens: none;
+  -ms-hyphens: none;
+  hyphens: none;
+
+  @apply
+  font-mono
+  whitespace-pre
+  break-normal
+  rounded
+  text-left
+  p-4
+  text-slate-50
+  bg-slate-700
+}
+
+.json-view .token.comment,
+.json-view .token.block-comment,
+.json-view .token.prolog,
+.json-view .token.doctype,
+.json-view .token.cdata {
+  @apply
+  text-slate-400
+}
+
+.json-view .token.punctuation {
+  @apply
+  text-slate-50
+}
+
+.json-view .token.tag,
+.json-view .token.attr-name,
+.json-view .token.namespace,
+.json-view .token.deleted {
   @apply
   text-rose-400
 }
 
-.json-view__string-value {
-  @apply
-  text-emerald-400
-}
-
-.json-view__number-value, .json-view__bigint-value {
+.json-view .token.function-name {
   @apply
   text-blue-400
 }
 
-.json-view__boolean-value {
+.json-view .token.boolean,
+.json-view .token.number,
+.json-view .token.function {
   @apply
-  text-red-500
+  text-orange-400
 }
 
-.json-view__null-value, .json-view__object-value {
+.json-view .token.property,
+.json-view .token.class-name,
+.json-view .token.constant,
+.json-view .token.symbol {
   @apply
-  text-slate-400
-  italic
+  text-yellow-400
+}
+
+.json-view .token.selector,
+.json-view .token.important,
+.json-view .token.atrule,
+.json-view .token.keyword,
+.json-view .token.builtin {
+  @apply
+  text-rose-300
+}
+
+.json-view .token.string,
+.json-view .token.char,
+.json-view .token.attr-value,
+.json-view .token.regex,
+.json-view .token.variable {
+  @apply
+  text-emerald-400
+}
+
+.json-view .token.operator,
+.json-view .token.entity,
+.json-view .token.url {
+  @apply
+  text-blue-400
+}
+
+.json-view .token.important,
+.json-view .token.bold {
+  @apply
+  font-medium
+}
+
+.json-view .token.italic {
+  /* Can't use the apply style here due to circular imports */
+  font-style: italic;
+}
+
+.json-view .token.entity {
+  @apply
+  cursor-help
+}
+
+.json-view .token.inserted {
+  @apply
+  text-emerald-600
 }
 </style>

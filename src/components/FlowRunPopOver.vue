@@ -29,6 +29,8 @@
           </template>
 
           <FlowRunStartTime :flow-run="flowRun" />
+
+          <p-tags class="flow-run-popover__tags" :tags="flowRun.tags ?? []" />
         </aside>
       </article>
     </template>
@@ -144,5 +146,15 @@
 .flow-run-popover__content-aside { @apply
   grid
   gap-2
+}
+
+.flow-run-popover__tags {
+  @apply
+  mt-2
+}
+
+.flow-run-popover__tags .p-tag {
+  @apply
+  !text-xs
 }
 </style>

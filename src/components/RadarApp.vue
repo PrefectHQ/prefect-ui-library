@@ -4,6 +4,7 @@
     class="radar-app"
     :items="graph"
     :edge-color-accessor="getStateColor"
+    :minimum-rings="5"
     id-accessor="id"
     upstream-accessor="upstreamDependencies"
   >
