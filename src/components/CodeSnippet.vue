@@ -44,7 +44,7 @@
   max-w-full
   relative
   min-w-0
-  overflow-scroll
+  overflow-auto
 }
 
 .code-snippet:hover .code-snippet__button { @apply
