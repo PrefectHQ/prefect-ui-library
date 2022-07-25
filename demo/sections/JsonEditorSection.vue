@@ -9,13 +9,6 @@
       </div>
 
       <JsonInput v-model="jsonRef" class="json-editor-section__input" />
-
-      <p-divider />
-
-      Value:
-      <p-code multiline class="json-editor-section__value">
-        {{ jsonRef }}
-      </p-code>
     </p-content>
   </DemoSection>
 </template>
@@ -46,6 +39,8 @@
   const randomize = (): void => {
     jsonRef.value = JSON.stringify(mocker.create(choice(choices)), undefined, 2)
   }
+
+  randomize()
 </script>
 
 <style>
