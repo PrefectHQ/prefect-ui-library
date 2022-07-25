@@ -1,7 +1,7 @@
 <template>
   <ORadarNode class="radar-node-flow-run">
     <template #aside>
-      <div class="radar-node-flow-run__aside" :class="classes.asideClass" :title="stateName">
+      <div class="radar-node-flow-run__aside" :title="stateName">
         <p-icon icon="FlowRun" />
       </div>
     </template>
@@ -78,12 +78,6 @@
   const duration = computed(() => {
     return flowRun.value?.duration
   })
-
-  const classes = computed(() => {
-    return {
-      asideClass: ['text-slate-700', {}],
-    }
-  })
 </script>
 
 <style>
@@ -125,6 +119,7 @@
   items-center
   h-full
   px-2
+  text-slate-700
   rounded-tl
   rounded-bl
 }
