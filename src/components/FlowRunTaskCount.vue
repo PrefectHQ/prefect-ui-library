@@ -40,7 +40,7 @@
 
   const taskRunsApi = inject(taskRunsApiKey)
 
-  const tasksCountFilter = computed<ReturnType<typeof taskRunsApi.getTaskRunsCount> | null>(() => {
+  const tasksCountFilter = computed<Parameters<typeof taskRunsApi.getTaskRunsCount> | null>(() => {
     if (!visible.value || isScheduled.value) {
       return null
     }
