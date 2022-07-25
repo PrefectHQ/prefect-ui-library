@@ -31,7 +31,7 @@
   const _radar = reactive(new Radar().id('id').dependencies('upstreamDependencies'))
 
   const radar = computed<Radar>(() => {
-    return _radar.items(graph.value)
+    return _radar.minimumRings(5).items(graph.value)
   })
 
   const getStateColor = (item: Item): string => {

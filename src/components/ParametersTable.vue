@@ -1,8 +1,8 @@
 <template>
   <div class="deployment-parameters-table">
     <div class="deployment-parameters-table__search">
-      <ResultsCount :count="filtered.length" />
-      <SearchInput v-model="searchTerm" placeholder="Search" label="Search parameters" />
+      <ResultsCount :count="filtered.length" label="parameters" />
+      <SearchInput v-model="searchTerm" placeholder="Search parameters" label="Search parameters" />
     </div>
 
     <p-table :data="filtered" :columns="columns">
