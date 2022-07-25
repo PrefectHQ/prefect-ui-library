@@ -17,7 +17,6 @@ import { mapDeploymentToIDeploymentResponse, mapIDeploymentResponseToDeployment 
 import { mapRunHistoryToDivergingBarChartItem } from '@/maps/divergingBarChartItem'
 import { mapEmpiricalPolicyToIEmpiricalPolicyResponse, mapIEmpiricalPolicyResponseToEmpiricalPolicy } from '@/maps/empiricalPolicy'
 import { mapFlowToIFlowResponse, mapIFlowResponseToFlow } from '@/maps/flow'
-import { mapFlowDataToIFlowDataResponse, mapIFlowDataResponseToFlowData } from '@/maps/flowData'
 import { mapFlowRunToIFlowRunResponse, mapIFlowRunResponseToFlowRun } from '@/maps/flowRun'
 import { mapGraphNodeToIFlowRunGraphResponse, mapIFlowRunGraphResponseToGraphNode } from '@/maps/flowRunGraph'
 import { mapRunHistoryToIFlowRunHistoryResponse, mapIFlowRunHistoryResponseToRunHistory } from '@/maps/flowRunHistory'
@@ -55,12 +54,10 @@ export const maps = {
   Deployment: { IDeploymentResponse: mapDeploymentToIDeploymentResponse },
   EmpiricalPolicy: { IEmpiricalPolicyResponse: mapEmpiricalPolicyToIEmpiricalPolicyResponse },
   Flow: { IFlowResponse: mapFlowToIFlowResponse },
-  FlowData: { IFlowDataResponse: mapFlowDataToIFlowDataResponse },
   FlowRun: { IFlowRunResponse: mapFlowRunToIFlowRunResponse },
   GraphNode: { IFlowRunGraphResponse: mapGraphNodeToIFlowRunGraphResponse },
   IDeploymentResponse: { Deployment: mapIDeploymentResponseToDeployment },
   IEmpiricalPolicyResponse: { EmpiricalPolicy: mapIEmpiricalPolicyResponseToEmpiricalPolicy },
-  IFlowDataResponse: { FlowData: mapIFlowDataResponseToFlowData },
   IFlowResponse: { Flow: mapIFlowResponseToFlow },
   IFlowRunGraphResponse: { GraphNode: mapIFlowRunGraphResponseToGraphNode },
   IFlowRunHistoryResponse: { RunHistory: mapIFlowRunHistoryResponseToRunHistory },
