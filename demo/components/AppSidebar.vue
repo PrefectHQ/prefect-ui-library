@@ -19,6 +19,7 @@
     <p-context-nav-item title="Blocks" icon="CubeIcon" to="/blocks" />
     <p-context-nav-item title="Parameters" icon="CodeIcon" to="/parameters" />
     <p-context-nav-item title="Schedules" icon="ClockIcon" to="/schedules" />
+    <p-context-nav-item title="Advanced Inputs" icon="TerminalIcon" to="/advanced-inputs" />
   </p-context-sidebar>
 </template>
 
