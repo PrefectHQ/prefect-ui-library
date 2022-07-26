@@ -30,9 +30,9 @@
           <p-label label="Schedule" />
 
           <span class="deployment-form__schedule-row">
-            <span v-if="schedule" class="deployment-form__schedule">
+            <div v-if="schedule" class="deployment-form__schedule">
               {{ schedule?.toString({ verbose: true }) }}
-            </span>
+            </div>
 
             <ScheduleFormModal :schedule="schedule" @submit="updateSchedule">
               <template #default="{ open }">
@@ -184,7 +184,7 @@
   @apply
   flex
   gap-2
-  items-center
+  flex-col
 }
 
 .deployment-form__schedule {

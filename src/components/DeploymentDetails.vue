@@ -14,24 +14,32 @@
 
     <p-key-value label="Schedule" :alternate="alternate">
       <template #value>
-        <div class="deployment-details_schedule-row">
-          <span v-if="schedule" class="deployment-details__schedule">
-            {{ schedule.toString({ verbose: true }) }}
-          </span>
+        <div class="deployment-details__schedule-row">
+          <div v-if="_deployment.schedule" class="deployment-details__schedule">
+            {{ _deployment.schedule.toString({ verbose: true }) }}
+          </div>
 
-          <ScheduleFormModal :schedule="schedule" @submit="updateSchedule">
-            <template #default="{ open }">
-              <p-button size="xs" class="deployment-details__schedule-button" inset @click="open">
-                <p-icon icon="PencilIcon" class="deployment-details__schedule-button-icon" />
-                {{ schedule ? 'Edit' : 'Add' }}
-              </p-button>
-            </template>
-          </ScheduleFormModal>
+          <div class="deployment-details__schedule-buttons">
+            <ScheduleFormModal :schedule="_deployment.schedule" @submit="updateSchedule">
+              <template #default="{ open }">
+                <p-button size="xs" class="deployment-details__schedule-button" inset @click="open">
+                  <p-icon icon="PencilIcon" class="deployment-details__schedule-button-icon" />
+                  {{ _deployment.schedule ? 'Edit' : 'Add' }}
+                </p-button>
+              </template>
+            </ScheduleFormModal>
 
-          <p-button v-if="schedule" size="xs" class="deployment-details__schedule-button" inset @click="removeSchedule">
-            <p-icon icon="TrashIcon" class="deployment-details__schedule-button-icon" />
-            Remove
-          </p-button>
+            <p-button
+              v-if="_deployment.schedule"
+              size="xs"
+              class="deployment-details__schedule-button"
+              inset
+              @click="removeSchedule"
+            >
+              <p-icon icon="TrashIcon" class="deployment-details__schedule-button-icon" />
+              Remove
+            </p-button>
+          </div>
         </div>
       </template>
     </p-key-value>
@@ -67,10 +75,11 @@
 
 <script lang="ts" setup>
   import { formatDateTimeNumeric } from '@prefecthq/prefect-design'
-  import { computed } from 'vue'
+  import { ref, computed } from 'vue'
   import FlowIconText from '@/components/FlowIconText.vue'
   import ScheduleFormModal from '@/components/ScheduleFormModal.vue'
   import StorageIconText from '@/components/StorageIconText.vue'
+  import { Schedule } from '@/models'
   import { Deployment } from '@/models/Deployment'
 
   const props = defineProps<{
@@ -78,12 +87,14 @@
     alternate?: boolean,
   }>()
 
-  const schedule = computed(() => props.deployment.schedule)
+  const _deployment = ref(props.deployment)
 
-  const updateSchedule = (): void => {
+  const updateSchedule = (schedule: Schedule | null): void => {
     // do nothing
+    _deployment.value.schedule = schedule
   }
   const removeSchedule = (): void => {
+    _deployment.value.schedule = null
     // do nothing
   }
 </script>
@@ -104,7 +115,12 @@
 .deployment-details__schedule-row { @apply
   flex
   gap-2
-  items-center
+  flex-col
+}
+
+.deployment-details__schedule-buttons { @apply
+  flex
+  gap-2
 }
 
 .deployment-details__schedule-button-icon { @apply
