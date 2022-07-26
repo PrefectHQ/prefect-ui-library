@@ -43,6 +43,11 @@ const routeRecords: RouteRecordRaw[] = [
     component: () => import('../pages/FormValidation.vue'),
   },
   {
+    path: '/advanced-inputs',
+    name: 'advanced-inputs',
+    component: () => import('../pages/AdvancedInputs.vue'),
+  },
+  {
     path: '/:catchAll(.*)',
     redirect: '/',
   },

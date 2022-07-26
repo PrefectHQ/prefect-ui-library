@@ -1,8 +1,6 @@
 <template>
   <div class="code-snippet">
-    <PCode class="code-snippet__code" multiline>
-      {{ snippet }}
-    </PCode>
+    <component :is="view" class="code-snippet__code" :value="snippet" />
     <PButton size="sm" class="code-snippet__button" @click="copy">
       Copy <p-icon icon="DuplicateIcon" />
     </PButton>
@@ -10,12 +8,28 @@
 </template>
 
 <script lang="ts" setup>
-  import { PButton, PCode } from '@prefecthq/prefect-design'
+  import { PButton } from '@prefecthq/prefect-design'
+  import { computed } from 'vue'
+  import CodeView from './CodeView.vue'
+  import JsonView from './JsonView.vue'
+  import PythonView from './PythonView.vue'
   import { copyToClipboard } from '@/utilities/copy'
 
   const props = defineProps<{
     snippet: string,
+    language?: 'JSON' | 'python',
   }>()
+
+  const view = computed(() => {
+    switch (props.language) {
+      case 'JSON':
+        return JsonView
+      case 'python':
+        return PythonView
+      default:
+        return CodeView
+    }
+  })
 
   function copy(): void {
     copyToClipboard(props.snippet)
@@ -27,10 +41,10 @@
   bg-slate-700
   rounded
   gap-2
-  p-2
   max-w-full
   relative
   min-w-0
+  overflow-auto
 }
 
 .code-snippet:hover .code-snippet__button { @apply

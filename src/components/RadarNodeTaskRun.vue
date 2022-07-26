@@ -59,7 +59,7 @@
   })
 
   const duration = computed<number>(() => {
-    return taskRun.value?.estimatedRunTime ?? 0
+    return taskRun.value?.duration ?? 0
   })
 
   const classes = computed(() => {
@@ -81,7 +81,7 @@
   overflow-hidden
   overflow-ellipsis
   whitespace-nowrap
-  max-w-[75%]
+  max-w-[90%]
 }
 
 .radar-node-task-run__aside {

@@ -1,5 +1,5 @@
 <template>
-  <CodeSnippet :snippet="snippet" class="block-type-snippet" />
+  <CodeSnippet :snippet="snippet" language="python" class="block-type-snippet" />
 </template>
 
 <script lang="ts" setup>
