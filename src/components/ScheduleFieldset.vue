@@ -7,7 +7,7 @@
     <div class="schedule-fieldset__buttons">
       <ScheduleFormModal :schedule="internalValue" @submit="updateSchedule">
         <template #default="{ open }">
-          <p-button size="xs" class="schedule-fieldset__button" inset @click="open">
+          <p-button size="xs" class="schedule-fieldset__button" :disabled="loading" inset @click="open">
             <p-icon icon="PencilIcon" class="schedule-fieldset__button-icon" />
             {{ internalValue ? 'Edit' : 'Add' }}
           </p-button>
@@ -19,6 +19,7 @@
         size="xs"
         class="schedule-fieldset__button"
         inset
+        :disabled="loading"
         @click="removeSchedule"
       >
         <p-icon icon="TrashIcon" class="schedule-fieldset__button-icon" />
@@ -35,6 +36,7 @@
 
   const props = defineProps<{
     modelValue: Schedule | null,
+    loading?: boolean,
   }>()
 
   const emit = defineEmits<{

@@ -116,19 +116,6 @@
   const cancel = (): void => {
     emit('cancel')
   }
-
-  const removeSchedule = (): void => {
-    schedule.value = null
-    isScheduleActive.value = false
-  }
-
-  const updateSchedule = (formSchedule: Schedule): void => {
-    // If this is a new schedule we turn it on automatically
-    if (!schedule.value) {
-      isScheduleActive.value = true
-    }
-    schedule.value = formSchedule
-  }
 </script>
 
 <style>
