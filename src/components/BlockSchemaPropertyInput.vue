@@ -19,7 +19,7 @@
   import { useOptionalRules } from '@/compositions/useOptionalRules'
   import { useReactiveField } from '@/compositions/useReactiveField'
   import { BlockSchemaSimpleProperty } from '@/models/BlockSchema'
-  import { isRequired, withMessage } from '@/services/validate'
+  import { isRequired, isValidJsonString, withMessage } from '@/services/validate'
 
   const props = defineProps<{
     property: BlockSchemaSimpleProperty,
@@ -42,9 +42,6 @@
     },
   })
 
-  const required = computed(() => props.required ?? false)
-  const rules = useOptionalRules(withMessage(isRequired, `${props.property.title} is required`), required)
-  const { meta: state, errorMessage } = useReactiveField(model, props.property.title, rules)
 
   const propertyTitle =computed(()=> props.required ? props.property.title : `${props.property.title} (Optional)`)
 
@@ -69,6 +66,12 @@
         return BlockSchemaPropertyInputJson
     }
   })
+
+  const required = computed(() => props.required ?? false)
+  const defaultRules = useOptionalRules(withMessage(isRequired, `${props.property.title} is required`), required)
+  const jsonRules = [withMessage(isRequired, `${props.property.title} is required`), withMessage(isValidJsonString, 'Invalid JSON')]
+  const rules = computed(() => input.value == BlockSchemaPropertyInputJson ? jsonRules : defaultRules)
+  const { meta: state, errorMessage } = useReactiveField(model, props.property.title, rules.value)
 
   const inputProps = computed(() => {
     const value: Record<string, unknown> = {}
