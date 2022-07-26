@@ -22,7 +22,7 @@
 
       <template #action="{ row }">
         <div class="flows-table__action">
-          <FlowMenu :flow="row" @delete="id => emits('delete', id)" />
+          <FlowMenu size="xs" :flow="row" @delete="id => emits('delete', id)" />
         </div>
       </template>
 
