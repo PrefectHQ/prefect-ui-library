@@ -29,19 +29,17 @@
   import NotificationDetails from '@/components/NotificationDetails.vue'
   import NotificationForm from '@/components/NotificationForm.vue'
   import NotificationsTable from '@/components/NotificationsTable.vue'
-  import { BlockDocumentData } from '@/models/BlockDocument'
-  import { BlockType } from '@/models/BlockType'
   import { Notification } from '@/models/Notification'
   import { blockDocumentsApiKey, blockSchemasApiKey, blockTypesApiKey, mocker } from '@/services'
 
   const emailBlockType = mocker.create('blockType', [{ name: 'Email Addresses' }])
-  const emailBlockSchemaFields = mocker.create('blockSchemaFields', [{ blockTypeName: emailBlockType.name }])
+  const emailBlockSchemaFields = mocker.create('blockSchemaFields', [{ blockTypeSlug: emailBlockType.slug }])
   const emailBlockSchema = mocker.create('blockSchema', [{ blockType: emailBlockType, blockTypeId: emailBlockType.id, fields: emailBlockSchemaFields }])
   const emailBlockDocumentData = mocker.create('blockDocumentData')
 
 
   const slackBlockType = mocker.create('blockType', [{ name: 'Slack Webhook' }])
-  const slackBlockSchemaFields = mocker.create('blockSchemaFields', [{ blockTypeName: slackBlockType.name }])
+  const slackBlockSchemaFields = mocker.create('blockSchemaFields', [{ blockTypeSlug: slackBlockType.slug }])
   const slackBlockSchema = mocker.create('blockSchema', [{ blockType: slackBlockType, blockTypeId: slackBlockType.id, fields: slackBlockSchemaFields } ])
   const slackBlockDocumentData = mocker.create('blockDocumentData', ['url'])
 

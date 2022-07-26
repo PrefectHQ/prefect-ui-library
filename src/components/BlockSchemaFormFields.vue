@@ -4,7 +4,7 @@
       <template v-if="isBlockSchemaReferenceProperty(property)">
         <BlockSchemaPropertyInputReference
           :selected="getReferenceValue(key)"
-          :block-type-name="getReferenceTypeName(key)!"
+          :block-type-slug="getReferenceTypeSlug(key)!"
           :required="isRequired(key)"
           @update:selected="setReferenceValue(key, $event!)"
         />
@@ -72,14 +72,14 @@
     return value.$ref.blockDocumentId
   }
 
-  function getReferenceTypeName(blockSchemaPropertyKey: string): string | null {
+  function getReferenceTypeSlug(blockSchemaPropertyKey: string): string | null {
     const reference = props.blockSchema.fields.blockSchemaReferences[blockSchemaPropertyKey]
 
     if (reference === undefined) {
       return null
     }
 
-    return reference.blockTypeName
+    return reference.blockTypeSlug
   }
 
   function setReferenceValue(blockSchemaPropertyKey: string, value: string): void {

@@ -3,6 +3,7 @@ export type BlockTypeResponse = {
   created: string,
   updated: string,
   name: string,
+  slug: string,
   logo_url: string | null,
   documentation_url: string | null,
   description: string | null,

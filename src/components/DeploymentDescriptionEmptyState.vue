@@ -5,7 +5,7 @@
     </template>
 
     <template #heading>
-      You haven't added a description of this deployment yet
+      You haven't added a description to this deployment yet
     </template>
 
     <template #description>

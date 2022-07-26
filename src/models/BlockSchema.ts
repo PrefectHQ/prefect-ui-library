@@ -23,7 +23,7 @@ export type BlockSchemaProperty = BlockSchemaSimpleProperty | BlockSchemaReferen
 
 export type BlockSchemaReference = {
   blockSchemaChecksum: string,
-  blockTypeName: string,
+  blockTypeSlug: string,
 }
 
 export type BlockSchemaReferences = Record<string, BlockSchemaReference | undefined>
@@ -34,7 +34,7 @@ export type BlockSchemaFields = {
   type: BlockSchemaFieldsType,
   properties: Record<string, BlockSchemaProperty>,
   required?: string[],
-  blockTypeName: string,
+  blockTypeSlug: string,
   blockSchemaReferences: BlockSchemaReferences,
 }
 

@@ -1,7 +1,6 @@
 <template>
   <p-icon-button-menu size="xs" v-bind="$attrs">
     <copy-overflow-menu-item label="Copy ID" :item="deployment.id" />
-    <p-overflow-menu-item v-if="can.create.flow_run" label="Run" class="deployments-table__hide-on-desktop" />
     <p-overflow-menu-item v-if="can.delete.deployment" label="Delete" @click="open" />
   </p-icon-button-menu>
   <ConfirmDeleteModal
