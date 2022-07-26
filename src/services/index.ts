@@ -1,5 +1,6 @@
 export * from './AdminApi'
 export * from './Api'
+export * from './BlockCapabilitiesApi'
 export * from './BlockDocumentsApi'
 export * from './BlockSchemasApi'
 export * from './BlockTypesApi'

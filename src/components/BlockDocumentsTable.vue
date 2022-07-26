@@ -61,7 +61,6 @@
   import BlockTypeSelect from './BlockTypeSelect.vue'
   import ResultsCount from './ResultsCount.vue'
   import SearchInput from './SearchInput.vue'
-  import { BlockSchemaCapability } from '@/models'
   import { BlockDocument } from '@/models/BlockDocument'
   import { blockRouteKey } from '@/router'
   import { inject } from '@/utilities'
@@ -76,7 +75,7 @@
 
   const blockDocumentRoute = inject(blockRouteKey)
   const searchTerm = ref('')
-  const selectedCapability = ref<BlockSchemaCapability | null>(null)
+  const selectedCapability = ref<string | null>(null)
   const selectedType = ref<string | null>(null)
 
   const columns = computed<TableColumn[]>(() => [

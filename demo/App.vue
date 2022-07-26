@@ -38,6 +38,7 @@
   provide(notificationsApiKey, notificationsApi)
   provide(flowRouteKey, emptyRoute)
   provide(flowRunRouteKey, emptyRoute)
+  provide(editDeploymentRouteKey, emptyRoute)
   provide(flowRunsRouteKey, emptyRoute)
   provide(deploymentRouteKey, emptyRoute)
   provide(editDeploymentRouteKey, emptyRoute)

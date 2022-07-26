@@ -5,9 +5,6 @@ export type BlockSchemaFieldsType = 'object'
 export const blockSchemaPropertyTypes = ['string', 'number', 'integer', 'boolean', 'array', 'object', 'password'] as const
 export type BlockSchemaPropertyType = typeof blockSchemaPropertyTypes[number]
 
-export const blockSchemaCapabilities = ['writeable', 'readable', 'storage', 'notify'] as const
-export type BlockSchemaCapability = typeof blockSchemaCapabilities[number]
-
 export type BlockSchemaSimpleProperty = {
   title: string,
   description: string,
@@ -46,7 +43,7 @@ export interface IBlockSchema {
   fields: BlockSchemaFields,
   blockTypeId: string,
   blockType: BlockType,
-  capabilities: BlockSchemaCapability[],
+  capabilities: string[],
 }
 
 export const isBlockSchemaSimpleProperty = (property: BlockSchemaProperty): property is BlockSchemaSimpleProperty => {
@@ -61,7 +58,7 @@ export class BlockSchema implements IBlockSchema {
   public fields: BlockSchemaFields
   public blockTypeId: string
   public blockType: BlockType
-  public capabilities: BlockSchemaCapability[]
+  public capabilities: string[]
 
   public constructor(blockSchema: IBlockSchema) {
     this.id = blockSchema.id

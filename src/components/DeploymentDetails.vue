@@ -12,7 +12,15 @@
       </template>
     </p-key-value>
 
-    <p-key-value label="Schedule" :value="schedule" :alternate="alternate" />
+    <p-key-value label="Schedule" :alternate="alternate">
+      <template #value>
+        <div class="deployment-details__schedule" :class="classes.schedule">
+          <p-loading-icon v-if="updateScheduleLoading" class="deployment-details__schedule-loading-icon" />
+          <ScheduleFieldset v-model="internalSchedule" :loading="updateScheduleLoading" />
+        </div>
+      </template>
+    </p-key-value>
+
 
     <p-key-value label="Created" :value="formatDateTimeNumeric(deployment.created)" :alternate="alternate" />
 
@@ -43,18 +51,67 @@
 </template>
 
 <script lang="ts" setup>
-  import { formatDateTimeNumeric } from '@prefecthq/prefect-design'
-  import { computed } from 'vue'
+  import { formatDateTimeNumeric, showToast, PLoadingIcon } from '@prefecthq/prefect-design'
+  import { ref, computed } from 'vue'
+  import ScheduleFieldset from './ScheduleFieldset.vue'
   import FlowIconText from '@/components/FlowIconText.vue'
   import StorageIconText from '@/components/StorageIconText.vue'
+  import { localization } from '@/localization'
+  import { DeploymentFormValues, Schedule } from '@/models'
   import { Deployment } from '@/models/Deployment'
+  import { deploymentsApiKey } from '@/services'
+  import { inject } from '@/utilities/inject'
 
   const props = defineProps<{
     deployment: Deployment,
     alternate?: boolean,
   }>()
 
-  const schedule = computed(() => props.deployment.schedule ?? '')
+  const deploymentsApi = inject(deploymentsApiKey)
+  const updateScheduleLoading = ref(false)
+
+  const internalSchedule = computed({
+    get() {
+      return props.deployment.schedule
+    },
+    set(val: Schedule | null) {
+      updateSchedule(val)
+    },
+  })
+
+  const classes = computed(() => {
+    return {
+      schedule: { 'deployment-details__schedule--loading': updateScheduleLoading.value },
+    }
+  })
+
+  const updateSchedule =  async (schedule: Schedule | null): Promise<void> => {
+    const currentSchedule = props.deployment.schedule
+
+    let successMessage, errorMessage
+
+    if (currentSchedule && !schedule) {
+      successMessage = localization.success.removeSchedule
+      errorMessage = localization.error.removeSchedule
+    } else if (currentSchedule && schedule) {
+      successMessage = localization.success.updateSchedule
+      errorMessage = localization.error.updateSchedule
+    } else {
+      successMessage = localization.success.createSchedule
+      errorMessage = localization.error.createSchedule
+    }
+
+    updateScheduleLoading.value = true
+
+    try {
+      await deploymentsApi.updateDeployment(props.deployment.id, new DeploymentFormValues({ ...props.deployment, schedule: schedule }).getDeploymentRequest())
+      showToast(successMessage, 'success')
+    } catch {
+      showToast(errorMessage, 'error')
+    } finally {
+      updateScheduleLoading.value = false
+    }
+  }
 </script>
 
 <style>
@@ -63,6 +120,25 @@
   flex-col
   gap-3
   items-start
+}
+
+.deployment-details__schedule { @apply
+  relative
+}
+
+.deployment-details__schedule-loading-icon { @apply
+  absolute
+  text-prefect-500
+  left-1/2
+  top-1/2
+  -translate-y-1/2
+  -translate-x-1/2
+  z-10
+}
+
+.deployment-details__schedule--loading { @apply
+  !cursor-wait
+  opacity-80
 }
 
 .deployment-details__tags { @apply
