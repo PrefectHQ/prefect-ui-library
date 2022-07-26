@@ -336,7 +336,9 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background:#0a2053;
+  background: url(/images/not-found-bg-top.svg) top left no-repeat,
+    url(/images/not-found-bg-bottom.svg) bottom right no-repeat,
+    #0a2053;
 }
 
 @media screen and (max-width: 1024px) {
