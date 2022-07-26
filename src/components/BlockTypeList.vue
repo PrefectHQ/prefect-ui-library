@@ -40,18 +40,17 @@
   import BlockSchemaCapabilitySelect from '@/components/BlockSchemaCapabilitySelect.vue'
   import BlockTypeCard from '@/components/BlockTypeCard.vue'
   import SearchInput from '@/components/SearchInput.vue'
-  import { BlockSchemaCapability } from '@/models'
   import { BlockType } from '@/models/BlockType'
   import { blockCatalogCreateRouteKey } from '@/router/routes'
   import { inject } from '@/utilities/inject'
 
   const props = defineProps<{
     blockTypes: BlockType[],
-    capability: BlockSchemaCapability | null,
+    capability: string | null,
   }>()
 
   const emit = defineEmits<{
-    (event: 'update:capability', value: BlockSchemaCapability | null): void,
+    (event: 'update:capability', value: string | null): void,
   }>()
 
   const blockCatalogCreateRoute = inject(blockCatalogCreateRouteKey)
@@ -61,7 +60,7 @@
     get() {
       return props.capability
     },
-    set(value: BlockSchemaCapability | null) {
+    set(value: string | null) {
       emit('update:capability', value)
     },
   })

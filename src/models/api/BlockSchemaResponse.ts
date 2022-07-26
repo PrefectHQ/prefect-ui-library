@@ -1,5 +1,5 @@
 import { BlockTypeResponse } from './BlockTypeResponse'
-import { BlockSchemaFieldsType, BlockSchemaProperty, BlockSchemaCapability } from '@/models/BlockSchema'
+import { BlockSchemaFieldsType, BlockSchemaProperty } from '@/models/BlockSchema'
 
 export type BlockSchemaReferenceResponse = {
   block_schema_checksum: string,
@@ -26,5 +26,5 @@ export type BlockSchemaResponse = {
   fields: BlockSchemaFieldsResponse,
   block_type_id: string,
   block_type: BlockTypeResponse,
-  capabilities: BlockSchemaCapability[],
+  capabilities: string[],
 }
