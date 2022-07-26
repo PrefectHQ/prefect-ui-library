@@ -28,29 +28,7 @@
 
         <span>
           <p-label label="Schedule" />
-
-          <span class="deployment-form__schedule-row">
-            <div v-if="schedule" class="deployment-form__schedule">
-              {{ schedule?.toString({ verbose: true }) }}
-            </div>
-
-            <ScheduleFormModal :schedule="schedule" @submit="updateSchedule">
-              <template #default="{ open }">
-
-                <p-button size="xs" class="deployment-form__schedule-button" inset @click="open">
-                  <p-icon icon="PencilIcon" class="deployment-form__schedule-button-icon" />
-                  {{ schedule ? 'Edit' : 'Add' }}
-                </p-button>
-
-              </template>
-            </ScheduleFormModal>
-
-            <p-button v-if="schedule" size="xs" class="deployment-form__schedule-button" inset @click="removeSchedule">
-              <p-icon icon="TrashIcon" class="deployment-form__schedule-button-icon" />
-              Remove
-            </p-button>
-
-          </span>
+          <ScheduleFieldset v-model="schedule" />
         </span>
 
         <p-label label="Scheduler">
@@ -94,7 +72,7 @@
   import { useField, useForm } from 'vee-validate'
   import { computed } from 'vue'
   import ParametersTable from './ParametersTable.vue'
-  import ScheduleFormModal from '@/components/ScheduleFormModal.vue'
+  import ScheduleFieldset from '@/components/ScheduleFieldset.vue'
   import { Deployment, IDeploymentRequest, DeploymentFormValues, Schedule } from '@/models'
   import { isRequired, withMessage } from '@/services/validate'
 
@@ -184,7 +162,7 @@
   @apply
   flex
   gap-2
-  flex-col
+  items-center
 }
 
 .deployment-form__schedule {

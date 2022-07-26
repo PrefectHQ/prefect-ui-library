@@ -1,21 +1,21 @@
 <template>
   <div class="schedule-fieldset">
-    <div v-if="schedule" class="schedule-fieldset__schedule">
-      {{ schedule.toString({ verbose: true }) }}
+    <div v-if="internalValue" class="schedule-fieldset__schedule">
+      {{ internalValue.toString({ verbose: true }) }}
     </div>
 
-    <div class="schedule-fieldset__schedule-buttons">
-      <ScheduleFormModal :schedule="schedule" @submit="updateSchedule">
+    <div class="schedule-fieldset__buttons">
+      <ScheduleFormModal :schedule="internalValue" @submit="updateSchedule">
         <template #default="{ open }">
           <p-button size="xs" class="schedule-fieldset__button" inset @click="open">
             <p-icon icon="PencilIcon" class="schedule-fieldset__button-icon" />
-            {{ schedule ? 'Edit' : 'Add' }}
+            {{ internalValue ? 'Edit' : 'Add' }}
           </p-button>
         </template>
       </ScheduleFormModal>
 
       <p-button
-        v-if="schedule"
+        v-if="internalValue"
         size="xs"
         class="schedule-fieldset__button"
         inset
@@ -30,11 +30,11 @@
 
 <script lang="ts" setup>
   import { computed } from 'vue'
+  import ScheduleFormModal from '@/components/ScheduleFormModal.vue'
   import { Schedule } from '@/models'
 
   const props = defineProps<{
-    modelValue?: Schedule,
-    schedule?: Schedule | null,
+    modelValue: Schedule | null,
   }>()
 
   const emit = defineEmits<{
@@ -43,7 +43,7 @@
 
   const internalValue = computed({
     get() {
-      return props.modelValue ?? null
+      return props.modelValue
     },
     set(value: Schedule | null) {
       emit('update:modelValue', value)
@@ -61,27 +61,34 @@
 
 <style>
 .schedule-fieldset__tag,
-.schedule-fieldset__button {
-  @apply max-w-fit
+.schedule-fieldset__button { @apply
+  max-w-fit
 }
 
-.schedule-fieldset__schedule {
-  @apply flex gap-2 flex-col
+.schedule-fieldset__schedule { @apply
+  flex
+  gap-2
+  flex-col
 }
 
-.schedule-fieldset__buttons {
-  @apply flex gap-2
+.schedule-fieldset__buttons { @apply
+  flex
+  gap-2
 }
 
-.schedule-fieldset__button-icon {
-  @apply w-3 h-3
+.schedule-fieldset__button-icon { @apply
+  w-3
+  h-3
 }
 
-.schedule-fieldset__tag {
-  @apply bg-slate-500 text-white cursor-pointer
+.schedule-fieldset__tag { @apply
+  bg-slate-500
+  text-white
+  cursor-pointer
 }
 
-.schedule-fieldset__tag .p-tag__dismiss {
-  @apply text-slate-100 hover: text-slate-900
+.schedule-fieldset__tag .p-tag__dismiss { @apply
+  text-slate-100
+  hover:text-slate-900
 }
 </style>
