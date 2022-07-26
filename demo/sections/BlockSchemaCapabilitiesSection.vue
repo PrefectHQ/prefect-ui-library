@@ -1,7 +1,7 @@
 <template>
   <DemoSection heading="Capabilities">
     <DemoSubSection heading="Tags">
-      <BlockSchemaCapabilities :capabilities="blockSchemaCapabilities.slice()" />
+      <BlockSchemaCapabilities :capabilities="capabilities" />
     </DemoSubSection>
     <DemoSubSection heading="Select">
       <BlockSchemaCapabilitySelect v-model:selected="capability" />
@@ -15,7 +15,8 @@
   import DemoSubSection from '../components/DemoSubSection.vue'
   import BlockSchemaCapabilities from '@/components/BlockSchemaCapabilities.vue'
   import BlockSchemaCapabilitySelect from '@/components/BlockSchemaCapabilitySelect.vue'
-  import { blockSchemaCapabilities } from '@/models/BlockSchema'
+  import { mocker } from '@/services'
 
   const capability = ref(null)
+  const capabilities = mocker.create('blockSchemaCapabilities')
 </script>

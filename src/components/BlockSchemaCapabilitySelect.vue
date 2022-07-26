@@ -7,34 +7,36 @@
 </template>
 
 <script lang="ts" setup>
+  import { useSubscription } from '@prefecthq/vue-compositions'
   import { computed } from 'vue'
-  import { blockSchemaCapabilities, BlockSchemaCapability } from '@/models'
-  import { capitalize } from '@/utilities'
+  import { blockCapabilitiesApiKey } from '@/services/BlockCapabilitiesApi'
+  import { inject } from '@/utilities'
 
   const props = defineProps<{
-    selected: BlockSchemaCapability | null,
+    selected: string | null,
   }>()
 
   const emit = defineEmits<{
-    (event: 'update:selected', value: BlockSchemaCapability | null): void,
+    (event: 'update:selected', value: string | null): void,
   }>()
 
   const model = computed({
     get() {
       return props.selected
     },
-    set(value: BlockSchemaCapability | null) {
+    set(value: string | null) {
       emit('update:selected', value)
     },
   })
 
-  const options = computed(() => {
-    const allOption = { label: 'All', value: null }
-    const capabilityOptions = blockSchemaCapabilities.map(capability => ({
-      label: capitalize(capability),
-      value: capability,
-    }))
+  const blockCapabilitiesApi = inject(blockCapabilitiesApiKey)
+  const blockCapabilitiesSubscription = useSubscription(blockCapabilitiesApi.getBlockCapabilities)
+  const blockCapabilities = computed(() => blockCapabilitiesSubscription.response ?? [])
+  const blockCapabilitiesSorted = computed(() => blockCapabilities.value.slice().sort((alpha, beta) => alpha.localeCompare(beta)))
 
-    return [allOption, ...capabilityOptions]
+  const options = computed(() => {
+    const allOption = { label: 'all', value: null }
+
+    return [allOption, ...blockCapabilitiesSorted.value]
   })
 </script>
