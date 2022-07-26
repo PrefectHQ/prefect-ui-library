@@ -6,11 +6,29 @@
       </template>
     </p-key-value>
 
-    <p-key-value label="Deployment ID" :value="deployment.id" :alternate="alternate" />
+    <p-key-value v-if="deployment.storageDocumentId" label="Storage" :alternate="alternate">
+      <template #value>
+        <StorageIconText :storage-document-id="deployment.storageDocumentId" />
+      </template>
+    </p-key-value>
 
     <p-key-value label="Created" :value="formatDateTimeNumeric(deployment.created)" :alternate="alternate" />
 
-    <p-key-value label="Updated" :value="formatDateTimeNumeric(deployment.updated)" :alternate="alternate" />
+    <p-key-value label="Last Updated" :value="formatDateTimeNumeric(deployment.updated)" :alternate="alternate" />
+
+    <p-divider />
+
+    <p-key-value label="Deployment ID" :value="deployment.id" :alternate="alternate" />
+
+    <p-key-value label="Flow ID" :value="deployment.flowId" :alternate="alternate" />
+
+    <p-key-value label="Storage Document ID" :value="deployment.storageDocumentId" :alternate="alternate" />
+
+    <p-key-value
+      label="Infrastructure Document ID"
+      :value="deployment.infrastructureDocumentId"
+      :alternate="alternate"
+    />
 
     <p-key-value label="Tags" :alternate="alternate">
       <template #value>
@@ -25,6 +43,7 @@
 <script lang="ts" setup>
   import { formatDateTimeNumeric } from '@prefecthq/prefect-design'
   import FlowIconText from '@/components/FlowIconText.vue'
+  import StorageIconText from '@/components/StorageIconText.vue'
   import { Deployment } from '@/models/Deployment'
 
   defineProps<{
