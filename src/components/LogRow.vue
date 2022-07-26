@@ -24,12 +24,12 @@
   import { useSubscriptionWithDependencies } from '@prefecthq/vue-compositions'
   import { computed } from 'vue'
   import LogLevelLabel from './LogLevelLabel.vue'
-  import { ILog } from '@/models'
+  import { Log } from '@/models'
   import { taskRunsApiKey } from '@/services/TaskRunsApi'
   import { inject } from '@/utilities/inject'
 
   const props = defineProps<{
-    log: ILog,
+    log: Log,
   }>()
 
   const taskRunsApi = inject(taskRunsApiKey)
