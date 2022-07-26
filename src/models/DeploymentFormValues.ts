@@ -1,10 +1,9 @@
-import { Deployment, IDeploymentRequest, FlowData, Schedule } from '@/models'
+import { Deployment, IDeploymentRequest, Schedule } from '@/models'
 
 export class DeploymentFormValues {
   public id: string | null
   public name: string | null
   public flowId: string | null
-  public flowData: FlowData | null
   public schedule: Schedule | null
   public isScheduleActive: boolean
   public parameters: Record<string, unknown> | null
@@ -14,7 +13,6 @@ export class DeploymentFormValues {
     this.id = deployment?.id ?? null
     this.name = deployment?.name ?? null
     this.flowId = deployment?.flowId ?? null
-    this.flowData = deployment?.flowData ?? null
     this.schedule = deployment?.schedule ?? null
     this.isScheduleActive = deployment?.isScheduleActive ?? true
     this.parameters = deployment?.parameters ?? null
@@ -25,7 +23,6 @@ export class DeploymentFormValues {
     return {
       'name': this.name,
       'flow_id': this.flowId,
-      'flow_data': this.flowData,
       'schedule': this.schedule?.toResponse(),
       'is_schedule_active': this.isScheduleActive,
       'parameters': this.parameters,
