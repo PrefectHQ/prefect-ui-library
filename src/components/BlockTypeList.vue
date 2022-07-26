@@ -10,7 +10,7 @@
       <template v-for="blockType in filteredBlockTypes" :key="blockType.id">
         <BlockTypeCard :block-type="blockType">
           <template #actions>
-            <p-link :to="blockCatalogCreateRoute(blockType.name)" class="block-type-card__action">
+            <p-link :to="blockCatalogCreateRoute(blockType.slug)" class="block-type-card__action">
               <p-button inset class="block-type-card__button">
                 Add <p-icon icon="PlusIcon" />
               </p-button>

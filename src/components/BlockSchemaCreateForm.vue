@@ -26,7 +26,7 @@
   import { useReactiveField } from '@/compositions'
   import { BlockDocumentData } from '@/models/BlockDocument'
   import { BlockSchema } from '@/models/BlockSchema'
-  import { isRequired, withMessage } from '@/services'
+  import { isRequired, isValidHandle, withMessage } from '@/services'
 
   const props = defineProps<{
     blockSchema: BlockSchema,
@@ -52,7 +52,10 @@
     },
   })
 
-  const { meta: nameState } = useReactiveField(nameModel, 'name', [withMessage(isRequired, 'Name is required')])
+  const { meta: nameState } = useReactiveField(nameModel, 'name', [
+    withMessage(isRequired, 'Name is required'),
+    withMessage(isValidHandle, 'Name must only contain lowercase letters, numbers, and dashes'),
+  ])
 
   const dataModel = computed({
     get(): BlockDocumentData {

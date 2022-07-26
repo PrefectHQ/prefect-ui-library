@@ -3,7 +3,7 @@ import { BlockSchemaFieldsType, BlockSchemaProperty, BlockSchemaCapability } fro
 
 export type BlockSchemaReferenceResponse = {
   block_schema_checksum: string,
-  block_type_name: string,
+  block_type_slug: string,
 }
 
 export type BlockSchemaReferencesResponse = Record<string, BlockSchemaReferenceResponse | undefined>
@@ -14,7 +14,7 @@ export type BlockSchemaFieldsResponse = {
   type: BlockSchemaFieldsType,
   properties: Record<string, BlockSchemaProperty>,
   required: string[],
-  block_type_name: string,
+  block_type_slug: string,
   block_schema_references?: BlockSchemaReferencesResponse,
 }
 
