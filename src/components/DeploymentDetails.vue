@@ -14,33 +14,7 @@
 
     <p-key-value label="Schedule" :alternate="alternate">
       <template #value>
-        <div class="deployment-details__schedule-row">
-          <div v-if="_deployment.schedule" class="deployment-details__schedule">
-            {{ _deployment.schedule.toString({ verbose: true }) }}
-          </div>
-
-          <div class="deployment-details__schedule-buttons">
-            <ScheduleFormModal :schedule="_deployment.schedule" @submit="updateSchedule">
-              <template #default="{ open }">
-                <p-button size="xs" class="deployment-details__schedule-button" inset @click="open">
-                  <p-icon icon="PencilIcon" class="deployment-details__schedule-button-icon" />
-                  {{ _deployment.schedule ? 'Edit' : 'Add' }}
-                </p-button>
-              </template>
-            </ScheduleFormModal>
-
-            <p-button
-              v-if="_deployment.schedule"
-              size="xs"
-              class="deployment-details__schedule-button"
-              inset
-              @click="removeSchedule"
-            >
-              <p-icon icon="TrashIcon" class="deployment-details__schedule-button-icon" />
-              Remove
-            </p-button>
-          </div>
-        </div>
+        <ScheduleFieldset v-model="internalSchedule" />
       </template>
     </p-key-value>
 
@@ -76,8 +50,8 @@
 <script lang="ts" setup>
   import { formatDateTimeNumeric } from '@prefecthq/prefect-design'
   import { ref, computed } from 'vue'
+  import ScheduleFieldset from './ScheduleFieldset.vue'
   import FlowIconText from '@/components/FlowIconText.vue'
-  import ScheduleFormModal from '@/components/ScheduleFormModal.vue'
   import StorageIconText from '@/components/StorageIconText.vue'
   import { Schedule } from '@/models'
   import { Deployment } from '@/models/Deployment'
@@ -89,13 +63,18 @@
 
   const _deployment = ref(props.deployment)
 
+  const internalSchedule = computed({
+    get() {
+      return _deployment.value.schedule
+    },
+    set(val: Schedule | null) {
+      updateSchedule(val)
+    },
+  })
+
   const updateSchedule = (schedule: Schedule | null): void => {
     // do nothing
     _deployment.value.schedule = schedule
-  }
-  const removeSchedule = (): void => {
-    _deployment.value.schedule = null
-    // do nothing
   }
 </script>
 
@@ -105,38 +84,6 @@
   flex-col
   gap-3
   items-start
-}
-
-.deployment-details__schedule-tag,
-.deployment-details__schedule-button { @apply
-  max-w-fit
-}
-
-.deployment-details__schedule-row { @apply
-  flex
-  gap-2
-  flex-col
-}
-
-.deployment-details__schedule-buttons { @apply
-  flex
-  gap-2
-}
-
-.deployment-details__schedule-button-icon { @apply
-  w-3
-  h-3
-}
-
-.deployment-details__schedule-tag { @apply
-  bg-slate-500
-  text-white
-  cursor-pointer
-}
-
-.deployment-details__schedule-tag .p-tag__dismiss { @apply
-  text-slate-100
-  hover:text-slate-900
 }
 
 .deployment-details__tags { @apply
