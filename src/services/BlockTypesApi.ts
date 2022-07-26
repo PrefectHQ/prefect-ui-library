@@ -16,8 +16,8 @@ export class BlockTypesApi extends Api {
       .then(({ data }) => mapper.map('BlockTypeResponse', data, 'BlockType'))
   }
 
-  public getBlockTypeByName(blockTypeName: string): Promise<BlockType> {
-    return this.get<BlockTypeResponse>(`/name/${blockTypeName}`)
+  public getBlockTypeBySlug(blockTypeSlug: string): Promise<BlockType> {
+    return this.get<BlockTypeResponse>(`/slug/${blockTypeSlug}`)
       .then(({ data }) => mapper.map('BlockTypeResponse', data, 'BlockType'))
   }
 
@@ -26,8 +26,8 @@ export class BlockTypesApi extends Api {
       .then(({ data }) => mapper.map('BlockTypeResponse', data, 'BlockType'))
   }
 
-  public getBlockDocumentsByBlockTypeName(blockTypeName: string): Promise<BlockDocument[]> {
-    return this.get<BlockDocumentResponse[]>(`/name/${blockTypeName}/block_documents`)
+  public getBlockDocumentsByBlockTypeSlug(blockTypeSlug: string): Promise<BlockDocument[]> {
+    return this.get<BlockDocumentResponse[]>(`/slug/${blockTypeSlug}/block_documents`)
       .then(({ data }) => mapper.map('BlockDocumentResponse', data, 'BlockDocument'))
   }
 

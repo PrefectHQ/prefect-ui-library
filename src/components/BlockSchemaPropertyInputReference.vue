@@ -6,8 +6,7 @@
       <template v-if="blockDocuments.length">
         <BlockDocumentsSelect v-model:selected="model" v-bind="{ blockDocuments, state }" class="block-schema-property-input-reference__select" />
       </template>
-
-      <router-link :to="blockCatalogCreateRoute(blockTypeName)">
+      <router-link :to="blockCatalogCreateRoute(blockTypeSlug)">
         <p-button inset>
           Add <p-icon icon="PlusIcon" />
         </p-button>
@@ -22,14 +21,13 @@
   import BlockDocumentsSelect from './BlockDocumentsSelect.vue'
   import BlockTypeLogo from './BlockTypeLogo.vue'
   import { useReactiveField } from '@/compositions'
-  import { useOptionalRules } from '@/compositions/useOptionalRules'
   import { blockCatalogCreateRouteKey } from '@/router/routes'
   import { blockTypesApiKey, isRequired, withMessage } from '@/services'
   import { inject } from '@/utilities'
 
   const props = defineProps<{
     selected: string | null | undefined,
-    blockTypeName: string,
+    blockTypeSlug: string,
     required?: boolean,
   }>()
 
@@ -46,17 +44,28 @@
     },
   })
 
-  const required = computed(() => props.required ?? false)
-  const rules = useOptionalRules(withMessage(isRequired, `${props.blockTypeName} is required`), required)
-  const { meta: state, errors } = useReactiveField(model, props.blockTypeName, rules)
-
   const blockCatalogCreateRoute = inject(blockCatalogCreateRouteKey)
   const blockTypesApi = inject(blockTypesApiKey)
 
-  const blockTypeSubscription = useSubscription(blockTypesApi.getBlockTypeByName, [props.blockTypeName])
+  const blockTypeSlug = computed(() => props.blockTypeSlug)
+  const blockTypeName = computed(() => blockType.value?.name ?? '')
+  const blockTypeSubscription = useSubscription(blockTypesApi.getBlockTypeBySlug, [blockTypeSlug])
   const blockType = computed(() => blockTypeSubscription.response)
-  const blockDocumentsSubscription = useSubscription(blockTypesApi.getBlockDocumentsByBlockTypeName, [props.blockTypeName])
+  const blockDocumentsSubscription = useSubscription(blockTypesApi.getBlockDocumentsByBlockTypeSlug, [blockTypeSlug])
   const blockDocuments = computed(() => blockDocumentsSubscription.response ?? [])
+
+  const rules = computed(() => {
+    if (!props.required) {
+      return undefined
+    }
+
+    const message = `${blockTypeName.value} is required`
+    const rule = withMessage(isRequired, message)
+
+    return rule
+  })
+
+  const { meta: state, errors } = useReactiveField(model, blockTypeName, rules)
 </script>
 
 <style>
