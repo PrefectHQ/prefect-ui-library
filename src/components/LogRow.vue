@@ -12,8 +12,7 @@
       <div>
         {{ formatTimeNumeric(log.timestamp) }}
       </div>
-      <!-- TODO: This should link to a task run page -->
-      <div v-if="showTaskRunLink && log.taskRunId && taskRunName">
+      <div v-if="taskRunName">
         {{ taskRunName }}
       </div>
     </div>
@@ -22,7 +21,7 @@
 
 <script lang="ts" setup>
   import { formatTimeNumeric } from '@prefecthq/prefect-design'
-  import { useSubscription } from '@prefecthq/vue-compositions'
+  import { useSubscriptionWithDependencies } from '@prefecthq/vue-compositions'
   import { computed } from 'vue'
   import LogLevelLabel from './LogLevelLabel.vue'
   import { ILog } from '@/models'
@@ -31,11 +30,17 @@
 
   const props = defineProps<{
     log: ILog,
-    showTaskRunLink?: boolean,
   }>()
 
   const taskRunsApi = inject(taskRunsApiKey)
-  const subscription = useSubscription(taskRunsApi.getTaskRun, [props.log.taskRunId])
+  const args = computed<Parameters<typeof taskRunsApi.getTaskRun> | null>(() => {
+    if (props.log.taskRunId === null) {
+      return null
+    }
+
+    return [props.log.taskRunId]
+  })
+  const subscription = useSubscriptionWithDependencies(taskRunsApi.getTaskRun, args)
   const taskRunName = computed(() => subscription.response?.name)
 </script>
 
