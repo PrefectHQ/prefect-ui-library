@@ -10,29 +10,24 @@
       <StateBadge :state="flowRun.state" />
       <DurationIconText :duration="flowRun.duration" />
       <FlowRunStartTime :flow-run="flowRun" />
-      <template v-if="tasksCount.response">
-        <p-icon-text icon="Task">
-          {{ tasksCount.response }} task {{ toPluralString('run', tasksCount.response) }}
-        </p-icon-text>
-      </template>
+      <FlowRunTaskCount :flow-run="flowRun" />
     </template>
   </StateListItem>
 </template>
 
 <script lang="ts" setup>
   import { CheckboxModel } from '@prefecthq/prefect-design'
-  import { useSubscription } from '@prefecthq/vue-compositions'
   import { computed } from 'vue'
   import { RouterLink } from 'vue-router'
   import DurationIconText from './DurationIconText.vue'
   import FlowRouterLink from './FlowRouterLink.vue'
+  import FlowRunTaskCount from './FlowRunTaskCount.vue'
   import FlowRunStartTime from '@/components/FlowRunStartTime.vue'
   import StateBadge from '@/components/StateBadge.vue'
   import StateListItem from '@/components/StateListItem.vue'
   import { FlowRun } from '@/models/FlowRun'
   import { flowRunRouteKey } from '@/router'
-  import { taskRunsApiKey } from '@/services/TaskRunsApi'
-  import { inject, toPluralString } from '@/utilities'
+  import { inject } from '@/utilities'
 
   const props = defineProps<{
     selected: CheckboxModel | null,
@@ -53,21 +48,10 @@
     },
   })
   const flowRunRoute = inject(flowRunRouteKey)
-  const taskRunsApi = inject(taskRunsApiKey)
 
   const stateType = computed(() => props.flowRun.state?.type)
   const tags = computed(() => props.flowRun.tags)
   const value = computed(() => props.flowRun.id)
-
-  const tasksCountFilter = computed(() => ({
-    flow_runs: {
-      id: {
-        any_: [props.flowRun.id],
-      },
-    },
-  }))
-
-  const tasksCount = useSubscription(taskRunsApi.getTaskRunsCount, [tasksCountFilter])
 </script>
 
 <style>

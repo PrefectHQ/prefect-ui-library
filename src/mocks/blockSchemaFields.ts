@@ -17,7 +17,7 @@ export const randomBlockSchemaFields: MockFunction<BlockSchemaFields, [Partial<B
       },
     },
     required: blockSchemaFields.required ?? [],
-    blockTypeName: blockSchemaFields.blockTypeName ?? this.create('string'),
+    blockTypeSlug: blockSchemaFields.blockTypeSlug ?? this.create('noun'),
     blockSchemaReferences: blockSchemaFields.blockSchemaReferences ?? {},
   }
 }

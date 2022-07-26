@@ -5,9 +5,7 @@
 </template>
 
 <script lang="ts" setup>
-  import { Deployment } from '@/models'
-
   defineProps<{
-    description: Deployment['description'],
+    description: string,
   }>()
 </script>

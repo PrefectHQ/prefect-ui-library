@@ -41,6 +41,7 @@
   provide(editDeploymentRouteKey, emptyRoute)
   provide(flowRunsRouteKey, emptyRoute)
   provide(deploymentRouteKey, emptyRoute)
+  provide(editDeploymentRouteKey, emptyRoute)
   provide(flowRunsRouteKey, emptyRoute)
   provide(flowsRouteKey, emptyRoute)
   provide(deploymentsRouteKey, emptyRoute)
