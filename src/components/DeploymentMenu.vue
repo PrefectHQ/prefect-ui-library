@@ -7,14 +7,14 @@
     </router-link>
 
     <p-overflow-menu-item v-if="can.delete.deployment" label="Delete" @click="open" />
-
-    <ConfirmDeleteModal
-      v-model:showModal="showModal"
-      label="Deployment"
-      :name="deployment.name"
-      @delete="deleteDeployment(deployment.id)"
-    />
   </p-icon-button-menu>
+
+  <ConfirmDeleteModal
+    v-model:showModal="showModal"
+    label="Deployment"
+    :name="deployment.name"
+    @delete="deleteDeployment(deployment.id)"
+  />
 </template>
 
 <script lang="ts">
