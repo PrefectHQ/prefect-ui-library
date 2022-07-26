@@ -8,7 +8,7 @@
           </div>
         </template>
 
-        <LogRow :log="log" />
+        <LogRow :log="log" show-task-run-link />
       </template>
     </VirtualScroller>
     <template v-if="empty">

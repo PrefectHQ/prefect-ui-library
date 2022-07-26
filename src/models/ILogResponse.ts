@@ -9,5 +9,5 @@ export type ILogResponse = {
   message: string,
   timestamp: string,
   flow_run_id: string,
-  task_run_id: string | null,
+  task_run_id: string,
 }

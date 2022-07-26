@@ -10,7 +10,7 @@
 
     <DemoSubSection heading="Log Rows">
       <template v-for="log in flowRunLogs" :key="log.id">
-        <LogRow :log="log" />
+        <LogRow :log="log" show-task-run-link />
       </template>
     </DemoSubSection>
 
