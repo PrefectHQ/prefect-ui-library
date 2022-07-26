@@ -52,7 +52,7 @@
 
 <script lang="ts" setup>
   import { formatDateTimeNumeric, showToast, PLoadingIcon } from '@prefecthq/prefect-design'
-  import { ref, computed, inject } from 'vue'
+  import { ref, computed } from 'vue'
   import ScheduleFieldset from './ScheduleFieldset.vue'
   import FlowIconText from '@/components/FlowIconText.vue'
   import StorageIconText from '@/components/StorageIconText.vue'
@@ -60,6 +60,7 @@
   import { DeploymentFormValues, Schedule } from '@/models'
   import { Deployment } from '@/models/Deployment'
   import { deploymentsApiKey } from '@/services'
+  import { inject } from '@/utilities/inject'
 
   const props = defineProps<{
     deployment: Deployment,
@@ -104,7 +105,7 @@
     updateScheduleLoading.value = true
 
     try {
-      await deploymentsApi?.updateDeployment(props.deployment.id, new DeploymentFormValues({ ...props.deployment, schedule: schedule }).getDeploymentRequest())
+      await deploymentsApi.updateDeployment(props.deployment.id, new DeploymentFormValues({ ...props.deployment, schedule: schedule }).getDeploymentRequest())
       showToast(successMessage, 'success')
     } catch {
       showToast(errorMessage, 'error')
