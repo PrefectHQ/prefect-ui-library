@@ -100,7 +100,7 @@
   const flowRunsSubscription = usePaginatedSubscription(flowRunsApi.getFlowRuns, [subFlowRunsFilter])
 
   const flowRuns = computed<FlowRun[]>(() => flowRunsSubscription.response ?? [])
-  const empty = computed(() => flowRunsSubscription.executed && flowRuns.value.length === 0)
+  const empty = computed(() => !flowRunsSubscription.loading && flowRuns.value.length === 0)
 
   function loadMoreSubFlowRuns(): void {
     const unwatch = watch(subFlowRunIds, (newValue, oldValue) => {
