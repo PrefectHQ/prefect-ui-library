@@ -1,5 +1,9 @@
 <template>
-  <PSelect v-model="model" :options="options" class="log-level-select" />
+  <p-select v-model="model" :options="options" class="log-level-select">
+    <template #default="{ selectedOption }">
+      Level: {{ selectedOption.label.toLowerCase() }}
+    </template>
+  </p-select>
 </template>
 
 <script lang="ts" setup>
@@ -24,11 +28,11 @@
   })
 
   const options: { label: string, value: LogLevel }[] = [
+    { label: 'All', value: 0 },
     { label: 'Critical only', value: 50 },
     { label: 'Error and above', value: 40 },
     { label: 'Warning and above', value: 30 },
     { label: 'Info and above', value: 20 },
     { label: 'Debug and above', value: 10 },
-    { label: 'All log levels', value: 0 },
   ]
 </script>
