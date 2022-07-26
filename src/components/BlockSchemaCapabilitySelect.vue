@@ -35,7 +35,7 @@
   const blockCapabilitiesSorted = computed(() => blockCapabilities.value.slice().sort((alpha, beta) => alpha.localeCompare(beta)))
 
   const options = computed(() => {
-    const allOption = { label: 'All', value: null }
+    const allOption = { label: 'all', value: null }
 
     return [allOption, ...blockCapabilitiesSorted.value]
   })
