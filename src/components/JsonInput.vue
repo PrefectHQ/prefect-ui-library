@@ -4,21 +4,23 @@
       <slot :name="name" v-bind="scope" />
     </template>
     <template #control="{ attrs }">
-      <textarea
-        ref="inputArea"
-        v-model="internalValue"
-        spellcheck="false"
-        class="json-input__input-area"
-        v-bind="attrs"
-        @scroll="handleScroll"
-      />
-      <div ref="viewArea" class="json-input__view-area">
-        <JsonView :value="internalValue" class="json-input__json-view" v-bind="attrs" />
-      </div>
+      <div class="json-input__control">
+        <textarea
+          ref="inputArea"
+          v-model="internalValue"
+          spellcheck="false"
+          class="json-input__input-area"
+          v-bind="attrs"
+          @scroll="handleScroll"
+        />
+        <div ref="viewArea" class="json-input__view-area">
+          <JsonView :value="internalValue" class="json-input__json-view" v-bind="attrs" />
+        </div>
 
-      <p-button v-if="showFormatButton" class="json-input__prettify-button" size="xs" @click="format">
-        Format
-      </p-button>
+        <p-button v-if="showFormatButton" class="json-input__prettify-button" size="xs" @click="format">
+          Format
+        </p-button>
+      </div>
     </template>
   </p-base-input>
 </template>
@@ -68,17 +70,23 @@
 </script>
 
 <style>
-.json-input {
+.json-input { @apply
+  overflow-hidden
+  bg-slate-700
+}
+
+.json-input__control {
   resize: inherit;
   z-index: 1;
 
   @apply
   relative
   block
+  w-full
+  h-full
   min-h-[100px]
   font-mono
   text-sm
-  overflow-hidden
 }
 
 .json-input__input-area {
