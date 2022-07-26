@@ -67,13 +67,12 @@
     alternate?: boolean,
   }>()
 
-  const _deployment = ref(props.deployment)
   const deploymentsApi = inject(deploymentsApiKey)
   const updateScheduleLoading = ref(false)
 
   const internalSchedule = computed({
     get() {
-      return _deployment.value.schedule
+      return props.deployment.schedule
     },
     set(val: Schedule | null) {
       updateSchedule(val)
