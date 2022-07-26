@@ -5,14 +5,14 @@
       <p-overflow-menu-item label="Edit" />
     </router-link>
     <p-overflow-menu-item v-if="can.delete.notification_policy" label="Delete" @click="open" />
-
-    <ConfirmDeleteModal
-      v-model:showModal="showModal"
-      label="Notification"
-      name="this notification"
-      @delete="deleteNotification(notification.id)"
-    />
   </p-icon-button-menu>
+
+  <ConfirmDeleteModal
+    v-model:showModal="showModal"
+    label="Notification"
+    name="this notification"
+    @delete="deleteNotification(notification.id)"
+  />
 </template>
 
 <script lang="ts">

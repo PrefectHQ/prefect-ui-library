@@ -3,14 +3,14 @@
     <copy-overflow-menu-item label="Copy Name" :item="blockDocument.name" />
     <p-overflow-menu-item v-if="can.update.block" label="Edit" @click="editBlock" />
     <p-overflow-menu-item v-if="can.delete.block" label="Delete" @click="openDeleteBlockModal" />
-
-    <ConfirmDeleteModal
-      v-model:showModal="showModal"
-      label="Block"
-      :name="blockDocument.name"
-      @delete="deleteBlock(blockDocument.id)"
-    />
   </p-icon-button-menu>
+
+  <ConfirmDeleteModal
+    v-model:showModal="showModal"
+    label="Block"
+    :name="blockDocument.name"
+    @delete="deleteBlock(blockDocument.id)"
+  />
 </template>
 
 <script lang="ts">
