@@ -6,11 +6,15 @@
           General
         </h3>
 
-        <p-label label="Name " :message="errors.name" :state="nameState">
+        <p-label label="Name" :message="errors.name" :state="nameState">
           <p-text-input v-model="name" :state="nameState" />
         </p-label>
 
-        <p-label label="Tags">
+        <p-label label="Description (Optional)" :state="descriptionState">
+          <p-textarea v-model="description" rows="7" :state="descriptionState" />
+        </p-label>
+
+        <p-label label="Tags (Optional)">
           <p-tags-input v-model="tags" empty-message="Add tags" />
         </p-label>
       </p-content>
@@ -101,6 +105,7 @@
   const internalValue = computed(() => {
     return new DeploymentFormValues({
       name: name.value,
+      description: description.value,
       schedule: schedule.value,
       isScheduleActive: isScheduleActive.value,
       parameters: parameters.value ?? {},
@@ -115,6 +120,7 @@
   }
 
   const { value: name, meta: nameState } = useField<string>('name', rules.name)
+  const { value: description, meta: descriptionState } = useField<string>('description')
   const { value: schedule } = useField<Schedule | null>('schedule')
   const { value: isScheduleActive } = useField<boolean>('isScheduleActive')
   const { value: parameters } = useField<Record<string, unknown> | null>('parameters')

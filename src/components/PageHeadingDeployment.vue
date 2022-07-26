@@ -7,6 +7,11 @@
 
       <p-icon-button-menu>
         <copy-overflow-menu-item label="Copy ID" :item="deployment.id" />
+
+        <router-link v-if="can.update.deployment" :to="editDeploymentRoute(deployment.id)">
+          <p-overflow-menu-item label="Edit" />
+        </router-link>
+
         <p-overflow-menu-item v-if="can.delete.deployment" label="Delete" @click="open" />
       </p-icon-button-menu>
       <ConfirmDeleteModal
@@ -30,7 +35,7 @@
   import PageHeading from '@/components/PageHeading.vue'
   import { useShowModal } from '@/compositions/useShowModal'
   import { Deployment } from '@/models'
-  import { flowRouteKey } from '@/router'
+  import { flowRouteKey, editDeploymentRouteKey } from '@/router'
   import { flowsApiKey } from '@/services'
   import { deploymentsApiKey } from '@/services/DeploymentsApi'
   import { canKey } from '@/types/permissions'
@@ -46,6 +51,7 @@
   const { showModal, open } = useShowModal()
 
   const deploymentsApi = inject(deploymentsApiKey)
+  const editDeploymentRoute = inject(editDeploymentRouteKey)
 
   const flowSubscription = useSubscription(flowsApi.getFlow, [props.deployment.flowId])
   const flowName = computed(() => flowSubscription.response?.name ?? '')
