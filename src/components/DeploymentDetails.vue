@@ -12,6 +12,8 @@
       </template>
     </p-key-value>
 
+    <p-key-value label="Schedule" :value="schedule" :alternate="alternate" />
+
     <p-key-value label="Created" :value="formatDateTimeNumeric(deployment.created)" :alternate="alternate" />
 
     <p-key-value label="Last Updated" :value="formatDateTimeNumeric(deployment.updated)" :alternate="alternate" />
@@ -42,14 +44,17 @@
 
 <script lang="ts" setup>
   import { formatDateTimeNumeric } from '@prefecthq/prefect-design'
+  import { computed } from 'vue'
   import FlowIconText from '@/components/FlowIconText.vue'
   import StorageIconText from '@/components/StorageIconText.vue'
   import { Deployment } from '@/models/Deployment'
 
-  defineProps<{
+  const props = defineProps<{
     deployment: Deployment,
     alternate?: boolean,
   }>()
+
+  const schedule = computed(() => props.deployment.schedule ?? '')
 </script>
 
 <style>
