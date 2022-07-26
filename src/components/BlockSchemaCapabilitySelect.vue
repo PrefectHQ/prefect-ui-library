@@ -32,10 +32,11 @@
   const blockCapabilitiesApi = inject(blockCapabilitiesApiKey)
   const blockCapabilitiesSubscription = useSubscription(blockCapabilitiesApi.getBlockCapabilities)
   const blockCapabilities = computed(() => blockCapabilitiesSubscription.response ?? [])
+  const blockCapabilitiesSorted = computed(() => blockCapabilities.value.slice().sort((alpha, beta) => alpha.localeCompare(beta)))
 
   const options = computed(() => {
     const allOption = { label: 'All', value: null }
 
-    return [allOption, ...blockCapabilities.value]
+    return [allOption, ...blockCapabilitiesSorted.value]
   })
 </script>

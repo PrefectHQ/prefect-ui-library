@@ -1,5 +1,5 @@
 <template>
-  <component :is="element" class="block-schema-capabilities" :tags="capabilities" />
+  <component :is="element" class="block-schema-capabilities" :tags="capabilitiesSorted" />
 </template>
 
 <script lang="ts" setup>
@@ -12,4 +12,5 @@
   }>()
 
   const element = computed(() => props.wrapper ? PTagWrapper : PTags)
+  const capabilitiesSorted = computed(() => props.capabilities.slice().sort((alpha, beta) => alpha.localeCompare(beta)))
 </script>
