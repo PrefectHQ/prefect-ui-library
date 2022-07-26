@@ -24,6 +24,9 @@ export const en = {
     createBlock: 'Failed to create block',
     createNotification: 'Failed to create notification',
     updateNotification: 'Failed to update notification',
+    createSchedule: 'Failed to create schedule',
+    updateSchedule: 'Failed to update schedule',
+    removeSchedule: 'Failed to remove schedule',
   },
   success: {
     activateDeployment: 'Deployment active',
@@ -40,5 +43,8 @@ export const en = {
     createBlock: 'Block created successfully',
     createNotification: 'Notification created successfully',
     updateNotification: 'Updated notification successfully',
+    createSchedule: 'Schedule added',
+    updateSchedule: 'Schedule updated',
+    removeSchedule: 'Schedule removed',
   },
 }

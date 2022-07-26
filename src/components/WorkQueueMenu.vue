@@ -1,11 +1,12 @@
 <template>
-  <p-icon-button-menu size="xs">
+  <p-icon-button-menu v-bind="$attrs">
     <copy-overflow-menu-item label="Copy ID" :item="queue.id" />
     <router-link v-if="can.update.work_queue" :to="editQueueRoute(queue.id)">
       <p-overflow-menu-item label="Edit" />
     </router-link>
     <p-overflow-menu-item v-if="can.delete.work_queue" label="Delete" @click="open" />
   </p-icon-button-menu>
+
   <ConfirmDeleteModal
     v-model:showModal="showModal"
     label="Work Queue"

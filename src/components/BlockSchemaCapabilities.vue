@@ -1,18 +1,16 @@
 <template>
-  <component :is="element" class="block-schema-capabilities" :tags="tags" />
+  <component :is="element" class="block-schema-capabilities" :tags="capabilitiesSorted" />
 </template>
 
 <script lang="ts" setup>
   import { PTags, PTagWrapper } from '@prefecthq/prefect-design'
   import { computed } from 'vue'
-  import { BlockSchemaCapability } from '@/models/BlockSchema'
-  import { capitalize } from '@/utilities'
 
   const props = defineProps<{
-    capabilities: BlockSchemaCapability[],
+    capabilities: string[],
     wrapper?: boolean,
   }>()
 
   const element = computed(() => props.wrapper ? PTagWrapper : PTags)
-  const tags = computed(() => props.capabilities.map(capability => capitalize(capability)))
+  const capabilitiesSorted = computed(() => props.capabilities.slice().sort((alpha, beta) => alpha.localeCompare(beta)))
 </script>

@@ -4,6 +4,7 @@ import { RouteLocationRaw } from 'vue-router'
 export type Route = Exclude<RouteLocationRaw, string>
 
 export const deploymentRouteKey: InjectionKey<(deploymentId: string) => Route> = Symbol('deploymentRouteKey')
+export const editDeploymentRouteKey: InjectionKey<(deploymentId: string) => Route> = Symbol('editDeploymentRouteKey')
 export const editNotificationRouteKey: InjectionKey<(notificationId: string) => Route> = Symbol('editNotificationRouteKey')
 export const deploymentsRouteKey: InjectionKey<() => Route> = Symbol('deploymentsRouteKey')
 export const editQueueRouteKey: InjectionKey<(workQueueId: string) => Route> = Symbol('editQueueRouteKey')
