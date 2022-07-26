@@ -6,8 +6,8 @@
           General
         </h3>
 
-        <p-label label="Name " :message="errors.name" :state="nameState">
-          <p-text-input v-model="name" :state="nameState" />
+        <p-label label="Name">
+          <p-text-input v-model="name" disabled />
         </p-label>
 
         <p-label label="Tags">
@@ -92,7 +92,6 @@
   import ParametersTable from './ParametersTable.vue'
   import ScheduleFormModal from '@/components/ScheduleFormModal.vue'
   import { Deployment, IDeploymentRequest, DeploymentFormValues, Schedule } from '@/models'
-  import { isRequired, withMessage } from '@/services/validate'
 
   const props = defineProps<{
     deployment: Deployment,
@@ -100,7 +99,6 @@
 
   const internalValue = computed(() => {
     return new DeploymentFormValues({
-      name: name.value,
       schedule: schedule.value,
       isScheduleActive: isScheduleActive.value,
       parameters: parameters.value ?? {},
@@ -108,13 +106,9 @@
     })
   })
 
-  const { handleSubmit, isSubmitting, errors } = useForm({ initialValues: props.deployment })
+  const { handleSubmit, isSubmitting } = useForm({ initialValues: props.deployment })
 
-  const rules = {
-    name: [withMessage(isRequired, 'Name is required')],
-  }
-
-  const { value: name, meta: nameState } = useField<string>('name', rules.name)
+  const { value: name } = useField<string>('name')
   const { value: schedule } = useField<Schedule | null>('schedule')
   const { value: isScheduleActive } = useField<boolean>('isScheduleActive')
   const { value: parameters } = useField<Record<string, unknown> | null>('parameters')
