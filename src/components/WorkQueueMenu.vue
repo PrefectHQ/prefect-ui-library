@@ -1,5 +1,5 @@
 <template>
-  <p-icon-button-menu>
+  <p-icon-button-menu v-bind="$attrs">
     <copy-overflow-menu-item label="Copy ID" :item="queue.id" />
     <router-link v-if="can.update.work_queue" :to="editQueueRoute(queue.id)">
       <p-overflow-menu-item label="Edit" />
