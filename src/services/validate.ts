@@ -146,3 +146,12 @@ export function isValidJsonObject(value: unknown): boolean {
 
   return true
 }
+
+export function isValidHandle(value: string): boolean {
+  if (!isRequired(value)) {
+    return false
+  }
+
+  // "Handle must only contain lowercase letters, numbers, and dashes"
+  return !/[^a-z0-9-]+/g.test(value)
+}
