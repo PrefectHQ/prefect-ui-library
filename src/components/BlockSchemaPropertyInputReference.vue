@@ -72,6 +72,7 @@
 <style>
 .block-schema-property-input-reference__content { @apply
   flex
+  items-center
   gap-2
 }
 
