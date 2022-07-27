@@ -43,12 +43,8 @@
           Parameters
         </h3>
 
-        <sup>
-          <em>Modifying deployment default parameters coming soon!</em>
-        </sup>
-
         <template v-if="deployment?.parameters">
-          <ParametersTable :parameters="deployment.parameters" />
+          <PydanticForm v-model="parameters" hide-footer :pydantic-schema="deployment.parameterOpenApiSchema" />
         </template>
 
         <template v-else>
@@ -71,7 +67,7 @@
 <script lang="ts" setup>
   import { useField, useForm } from 'vee-validate'
   import { computed } from 'vue'
-  import ParametersTable from './ParametersTable.vue'
+  import PydanticForm from './PydanticForm.vue'
   import ScheduleFieldset from '@/components/ScheduleFieldset.vue'
   import { Deployment, IDeploymentRequest, DeploymentFormValues, Schedule } from '@/models'
 
@@ -84,7 +80,7 @@
       description: description.value,
       schedule: schedule.value,
       isScheduleActive: isScheduleActive.value,
-      parameters: parameters.value ?? {},
+      parameters: parameters.value,
       tags: tags.value,
     })
   })
@@ -95,7 +91,7 @@
   const { value: name } = useField<string>('name')
   const { value: schedule } = useField<Schedule | null>('schedule')
   const { value: isScheduleActive } = useField<boolean>('isScheduleActive')
-  const { value: parameters } = useField<Record<string, unknown> | null>('parameters')
+  const { value: parameters } = useField<Record<string, unknown>>('parameters')
   const { value: tags } = useField<string[] | null>('tags')
 
   const emit = defineEmits<{
