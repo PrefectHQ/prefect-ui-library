@@ -32,14 +32,14 @@
   }>()
 
   const emit = defineEmits<{
-    (event: 'update:selected', value: string | null): void,
+    (event: 'update:selected', value: string | null | undefined): void,
   }>()
 
   const model = computed({
     get() {
       return props.selected ?? null
     },
-    set(value: string | null) {
+    set(value: string | null | undefined) {
       emit('update:selected', value)
     },
   })
