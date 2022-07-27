@@ -1,5 +1,5 @@
 <template>
-  <p-label :label="label" :message="errorMessage ?? message" :state="meta">
+  <p-label :label="label" :message="errorMessage" :description="message" :state="meta">
     <template v-if="property.description" #description>
       {{ property.description }}
     </template>
