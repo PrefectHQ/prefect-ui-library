@@ -28,7 +28,7 @@
       <template #action="{ row }">
         <div class="deployments-table__actions">
           <DeploymentToggle :deployment="row" @update="emits('update')" />
-          <DeploymentMenu :deployment="row" @delete="id => emits('delete', id)" />
+          <DeploymentMenu size="xs" :deployment="row" @delete="id => emits('delete', id)" />
         </div>
       </template>
 

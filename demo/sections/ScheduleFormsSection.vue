@@ -35,9 +35,11 @@
 
   const updateIntervalSchedule = (value: IntervalSchedule): void => {
     intervalSchedule.value = value
+    console.log(value.toResponse())
   }
 
   const updateCronSchedule = (value: CronSchedule): void => {
     cronSchedule.value = value
+    console.log(value.toResponse())
   }
 </script>
