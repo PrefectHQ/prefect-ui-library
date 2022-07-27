@@ -6,11 +6,15 @@
           General
         </h3>
 
-        <p-label label="Name " :message="errors.name" :state="nameState">
-          <p-text-input v-model="name" :state="nameState" />
+        <p-label label="Name">
+          <p-text-input v-model="name" disabled />
         </p-label>
 
-        <p-label label="Tags">
+        <p-label label="Description (Optional)" :state="descriptionState">
+          <p-textarea v-model="description" rows="7" :state="descriptionState" />
+        </p-label>
+
+        <p-label label="Tags (Optional)">
           <p-tags-input v-model="tags" empty-message="Add tags" />
         </p-label>
       </p-content>
@@ -24,29 +28,7 @@
 
         <span>
           <p-label label="Schedule" />
-
-          <span class="deployment-form__schedule-row">
-            <span v-if="schedule" class="deployment-form__schedule">
-              {{ schedule?.toString({ verbose: true }) }}
-            </span>
-
-            <ScheduleFormModal :schedule="schedule" @submit="updateSchedule">
-              <template #default="{ open }">
-
-                <p-button size="xs" class="deployment-form__schedule-button" inset @click="open">
-                  <p-icon icon="PencilIcon" class="deployment-form__schedule-button-icon" />
-                  {{ schedule ? 'Edit' : 'Add' }}
-                </p-button>
-
-              </template>
-            </ScheduleFormModal>
-
-            <p-button v-if="schedule" size="xs" class="deployment-form__schedule-button" inset @click="removeSchedule">
-              <p-icon icon="TrashIcon" class="deployment-form__schedule-button-icon" />
-              Remove
-            </p-button>
-
-          </span>
+          <ScheduleFieldset v-model="schedule" />
         </span>
 
         <p-label label="Scheduler">
@@ -61,12 +43,8 @@
           Parameters
         </h3>
 
-        <sup>
-          <em>Modifying deployment default parameters coming soon!</em>
-        </sup>
-
         <template v-if="deployment?.parameters">
-          <ParametersTable :parameters="deployment.parameters" />
+          <PydanticForm v-model="parameters" hide-footer :pydantic-schema="deployment.parameterOpenApiSchema" />
         </template>
 
         <template v-else>
@@ -89,10 +67,9 @@
 <script lang="ts" setup>
   import { useField, useForm } from 'vee-validate'
   import { computed } from 'vue'
-  import ParametersTable from './ParametersTable.vue'
-  import ScheduleFormModal from '@/components/ScheduleFormModal.vue'
+  import PydanticForm from './PydanticForm.vue'
+  import ScheduleFieldset from '@/components/ScheduleFieldset.vue'
   import { Deployment, IDeploymentRequest, DeploymentFormValues, Schedule } from '@/models'
-  import { isRequired, withMessage } from '@/services/validate'
 
   const props = defineProps<{
     deployment: Deployment,
@@ -100,24 +77,31 @@
 
   const internalValue = computed(() => {
     return new DeploymentFormValues({
-      name: name.value,
+      description: description.value,
       schedule: schedule.value,
       isScheduleActive: isScheduleActive.value,
-      parameters: parameters.value ?? {},
+      parameters: parameters.value,
       tags: tags.value,
     })
   })
 
-  const { handleSubmit, isSubmitting, errors } = useForm({ initialValues: props.deployment })
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+  const initialValues = { ...props.deployment.parameters ?? {} }
 
-  const rules = {
-    name: [withMessage(isRequired, 'Name is required')],
-  }
+  Object.keys(initialValues).forEach((key: keyof typeof initialValues) => {
+    const parameter = initialValues[key]
+    if (typeof parameter == 'string' && Date.parse(parameter)) {
+      initialValues[key] = new Date(parameter)
+    }
+  })
 
-  const { value: name, meta: nameState } = useField<string>('name', rules.name)
+  const { handleSubmit, isSubmitting } = useForm({ initialValues: props.deployment })
+
+  const { value: description, meta: descriptionState } = useField<string>('description')
+  const { value: name } = useField<string>('name')
   const { value: schedule } = useField<Schedule | null>('schedule')
   const { value: isScheduleActive } = useField<boolean>('isScheduleActive')
-  const { value: parameters } = useField<Record<string, unknown> | null>('parameters')
+  const { value: parameters } = useField<Record<string, unknown>>('parameters', undefined, { initialValue: initialValues })
   const { value: tags } = useField<string[] | null>('tags')
 
   const emit = defineEmits<{
@@ -131,19 +115,6 @@
 
   const cancel = (): void => {
     emit('cancel')
-  }
-
-  const removeSchedule = (): void => {
-    schedule.value = null
-    isScheduleActive.value = false
-  }
-
-  const updateSchedule = (formSchedule: Schedule): void => {
-    // If this is a new schedule we turn it on automatically
-    if (!schedule.value) {
-      isScheduleActive.value = true
-    }
-    schedule.value = formSchedule
   }
 </script>
 

@@ -1,5 +1,5 @@
 <template>
-  <p-icon-button-menu size="xs" v-bind="$attrs">
+  <p-icon-button-menu v-bind="$attrs">
     <copy-overflow-menu-item label="Copy ID" :item="flow.id" />
     <p-overflow-menu-item v-if="can.delete.flow" label="Delete" @click="open" />
   </p-icon-button-menu>

@@ -25,7 +25,7 @@
       <template #action="{ row }">
         <div class="notifications-table__actions">
           <NotificationToggle :notification="row" @update="emits('update')" />
-          <NotificationMenu :notification="row" @delete="id => emits('delete', id)" />
+          <NotificationMenu size="xs" :notification="row" @delete="id => emits('delete', id)" />
         </div>
       </template>
 
