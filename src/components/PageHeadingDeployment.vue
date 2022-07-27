@@ -1,10 +1,8 @@
 <template>
   <page-heading class="page-heading-deployment" :crumbs="crumbs">
     <template #actions>
-      <template v-if="!deployment.deprecated">
-        <DeploymentToggle :deployment="deployment" @update="emit('update')" />
-        <RunButton v-if="can.create.flow_run" :deployment="deployment" />
-      </template>
+      <DeploymentToggle :deployment="deployment" @update="emit('update')" />
+      <RunButton v-if="can.create.flow_run" :deployment="deployment" />
 
       <DeploymentMenu :deployment="deployment" @delete="handleDelete" />
     </template>

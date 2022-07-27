@@ -1,5 +1,5 @@
 <template>
-  <p-toggle v-if="can.update.deployment" v-model="internalValue" :loading="loading" />
+  <p-toggle v-if="can.update.deployment" v-model="internalValue" :loading="loading" :disabled="deployment.deprecated" />
 </template>
 
 <script lang="ts" setup>
