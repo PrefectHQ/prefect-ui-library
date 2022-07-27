@@ -67,6 +67,10 @@
     alternate?: boolean,
   }>()
 
+  const emit = defineEmits<{
+    (event: 'update'): void,
+  }>()
+
   const deploymentsApi = inject(deploymentsApiKey)
   const updateScheduleLoading = ref(false)
 
@@ -105,6 +109,7 @@
 
     try {
       await deploymentsApi.updateDeployment(props.deployment.id, new DeploymentFormValues({ ...props.deployment, schedule: schedule }).getDeploymentRequest())
+      emit('update')
       showToast(successMessage, 'success')
     } catch {
       showToast(errorMessage, 'error')

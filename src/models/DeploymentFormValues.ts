@@ -18,7 +18,7 @@ export class DeploymentFormValues {
   public getDeploymentRequest(): IDeploymentRequest {
     return {
       'description': this.description,
-      'schedule': this.schedule?.toResponse(),
+      'schedule': this.schedule?.toResponse() ?? null,
       'is_schedule_active': this.isScheduleActive,
       'parameters': this.parameters,
       'tags': this.tags,
