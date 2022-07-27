@@ -50,4 +50,8 @@ export class Deployment implements IDeployment {
     this.storageDocumentId = deployment.storageDocumentId
     this.infrastructureDocumentId = deployment.infrastructureDocumentId
   }
+
+  public get deprecated(): boolean {
+    return this.manifestPath === '' || this.manifestPath === null
+  }
 }
