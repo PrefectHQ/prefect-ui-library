@@ -74,11 +74,14 @@
 
   @apply
   relative
-  block
+  flex
+  items-start
+  justify-end
   min-h-[100px]
   font-mono
   text-sm
   overflow-hidden
+  pt-1.5
 }
 
 .json-input__input-area {
@@ -103,6 +106,7 @@
   p-4
   m-0
   whitespace-nowrap
+  top-0
 }
 
 .json-input__view-area {

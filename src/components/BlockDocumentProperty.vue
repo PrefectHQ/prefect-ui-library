@@ -1,7 +1,7 @@
 <template>
   <PKeyValue :label="property.title" :value="value" class="block-document-property">
     <template v-if="isJsonProperty(value)" #value>
-      <JsonView :value="JSON.stringify(value)" />
+      <JsonView :value="stringify(value)" />
     </template>
   </PKeyValue>
 </template>
@@ -18,5 +18,13 @@
 
   function isJsonProperty(value: unknown): value is string {
     return props.property.type === undefined || props.property.type === 'object'
+  }
+
+  function stringify(value: unknown): string {
+    if (typeof value === 'string') {
+      return value
+    }
+
+    return JSON.stringify(value, undefined, 2)
   }
 </script>
