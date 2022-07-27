@@ -1,5 +1,12 @@
 <template>
-  <p-button v-if="can.create.flow_run" class="run-button" inset :loading="loading" @click="run(deployment)">
+  <p-button
+    v-if="can.create.flow_run"
+    class="run-button"
+    inset
+    :loading="loading"
+    :disabled="deployment.deprecated"
+    @click="run(deployment)"
+  >
     Run
     <p-icon class="run-button__run-icon" icon="PlayIcon" solid />
   </p-button>

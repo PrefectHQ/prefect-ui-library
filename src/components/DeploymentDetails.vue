@@ -12,8 +12,8 @@
       </template>
     </p-key-value>
 
-    <p-key-value label="Schedule" :alternate="alternate">
-      <template #value>
+    <p-key-value label="Schedule" :alternate="alternate" :value="deployment.schedule?.toString({ verbose: true })">
+      <template v-if="!deployment.deprecated" #value>
         <div class="deployment-details__schedule" :class="classes.schedule">
           <p-loading-icon v-if="updateScheduleLoading" class="deployment-details__schedule-loading-icon" />
           <ScheduleFieldset v-model="internalSchedule" :loading="updateScheduleLoading" />

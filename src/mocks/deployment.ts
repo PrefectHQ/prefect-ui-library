@@ -18,6 +18,7 @@ export const randomDeployment: MockFunction<Deployment, [Partial<Deployment>?]> 
     manifestPath: this.create('id'),
     storageDocumentId: this.create('id'),
     infrastructureDocumentId: this.create('id'),
+    deprecated: false,
     ...overrides,
   }
 }

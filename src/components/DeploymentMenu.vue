@@ -2,7 +2,7 @@
   <p-icon-button-menu v-bind="$attrs">
     <copy-overflow-menu-item label="Copy ID" :item="deployment.id" />
 
-    <router-link v-if="can.update.deployment" :to="editDeploymentRoute(deployment.id)">
+    <router-link v-if="!deployment.deprecated && can.update.deployment" :to="editDeploymentRoute(deployment.id)">
       <p-overflow-menu-item label="Edit" />
     </router-link>
 

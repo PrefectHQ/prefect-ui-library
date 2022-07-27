@@ -2,7 +2,6 @@
   <page-heading class="page-heading-deployment" :crumbs="crumbs">
     <template #actions>
       <DeploymentToggle :deployment="deployment" @update="emit('update')" />
-
       <RunButton v-if="can.create.flow_run" :deployment="deployment" />
 
       <DeploymentMenu :deployment="deployment" @delete="handleDelete" />
@@ -31,7 +30,6 @@
   const props = defineProps<{
     deployment: Deployment,
   }>()
-
 
   const flowSubscription = useSubscription(flowsApi.getFlow, [props.deployment.flowId])
   const flowName = computed(() => flowSubscription.response?.name ?? '')
