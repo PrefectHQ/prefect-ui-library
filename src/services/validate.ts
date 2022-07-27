@@ -151,6 +151,24 @@ export function isValidJsonObject(value: unknown): boolean {
   return true
 }
 
+export function isOptionalValidJsonObject(value: unknown): boolean {
+  if (typeof value === 'undefined' || value === '') {
+    return true
+  }
+
+  try {
+    if (typeof value === 'string' && typeof JSON.parse(value) === 'string') {
+      return true
+    }
+
+    JSON.stringify(value)
+  } catch {
+    return false
+  }
+
+  return true
+}
+
 export function isValidHandle(value: string): boolean {
   if (!isRequired(value)) {
     return false
