@@ -85,13 +85,23 @@
     })
   })
 
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+  const initialValues = { ...props.deployment.parameters ?? {} }
+
+  Object.keys(initialValues).forEach((key: keyof typeof initialValues) => {
+    const parameter = initialValues[key]
+    if (typeof parameter == 'string' && Date.parse(parameter)) {
+      initialValues[key] = new Date(parameter)
+    }
+  })
+
   const { handleSubmit, isSubmitting } = useForm({ initialValues: props.deployment })
 
   const { value: description, meta: descriptionState } = useField<string>('description')
   const { value: name } = useField<string>('name')
   const { value: schedule } = useField<Schedule | null>('schedule')
   const { value: isScheduleActive } = useField<boolean>('isScheduleActive')
-  const { value: parameters } = useField<Record<string, unknown>>('parameters', undefined, { initialValue: props.deployment.parameters })
+  const { value: parameters } = useField<Record<string, unknown>>('parameters', undefined, { initialValue: initialValues })
   const { value: tags } = useField<string[] | null>('tags')
 
   const emit = defineEmits<{
