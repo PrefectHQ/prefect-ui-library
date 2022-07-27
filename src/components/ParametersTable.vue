@@ -57,7 +57,7 @@
     return `${key} ${value} ${type}`.toLowerCase().includes(searchTerm.value.toLowerCase())
   }
 
-  function formatParameterValue(value: unknown): string {
+  function formatParameterValue(value: unknown): string | unknown {
     if (typeof value === 'object' && value !== null) {
       if (isDate(value)) {
         return formatDateTimeNumeric(value)
@@ -66,8 +66,7 @@
       return JSON.stringify(value)
     }
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    return (value as any).toString()
+    return (value as any)?.toString?.() ?? value
   }
 
   function formatParameterType(value: unknown): string {
