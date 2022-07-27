@@ -1,12 +1,12 @@
 export const en = {
   docs: {
-    gettingStarted: 'https://orion-docs.prefect.io/getting-started/overview/',
-    flows: 'https://orion-docs.prefect.io/concepts/flows/',
-    flowRuns: 'https://orion-docs.prefect.io/ui/flow-runs/',
-    blocks: 'https://orion-docs.prefect.io/ui/blocks/',
-    workQueues: 'https://orion-docs.prefect.io/ui/work-queues/',
-    notifications: 'https://orion-docs.prefect.io/ui/notifications/',
-    deployments: 'https://orion-docs.prefect.io/ui/deployments/',
+    gettingStarted: 'https://docs.prefect.io/getting-started/overview/',
+    flows: 'https://docs.prefect.io/concepts/flows/',
+    flowRuns: 'https://docs.prefect.io/ui/flow-runs/',
+    blocks: 'https://docs.prefect.io/ui/blocks/',
+    workQueues: 'https://docs.prefect.io/ui/work-queues/',
+    notifications: 'https://docs.prefect.io/ui/notifications/',
+    deployments: 'https://docs.prefect.io/ui/deployments/',
   },
   error: {
     activateDeployment: 'Failed to activate deployment',
