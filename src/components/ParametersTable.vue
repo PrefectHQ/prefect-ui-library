@@ -20,30 +20,38 @@
 </template>
 
 <script lang="ts" setup>
-  import { formatDateTimeNumeric, TableColumn, PEmptyResults } from '@prefecthq/prefect-design'
+  import { TableColumn, PEmptyResults } from '@prefecthq/prefect-design'
   import { computed, ref } from 'vue'
   import ResultsCount from '@/components/ResultsCount.vue'
   import SearchInput from '@/components/SearchInput.vue'
-  import { isDate } from '@/utilities/dates'
-  import { capitalize } from '@/utilities/strings'
+  import { Deployment } from '@/models'
+  import { resolvePydanticTypeDefinitionFromSchema } from '@/utilities'
 
   const props = defineProps<{
-    parameters: Record<string, unknown>,
+    deployment: Deployment,
   }>()
 
   const columns: TableColumn[] = [
     { label: 'Key', property: 'key', width: '200px' },
-    { label: 'Value', property: 'value' },
+    { label: 'Override', property: 'value' },
+    { label: 'Default', property: 'defaultValue' },
     { label: 'Type', property: 'type', width: '80px' },
   ]
 
   const searchTerm = ref('')
 
-  const data = computed(() => Object.entries(props.parameters).map(([key, value]) => ({
-    key,
-    value: formatParameterValue(value),
-    type: formatParameterType(value),
-  })))
+  const properties = computed(() => resolvePydanticTypeDefinitionFromSchema(props.deployment.parameterOpenApiSchema))
+
+  const data = computed(() => {
+    return Object.entries(properties.value).map(([key, value]) => {
+      return {
+        key,
+        value: props.deployment.parameters[key],
+        defaultValue: value.default,
+        type: value.type,
+      }
+    })
+  })
 
   const filtered = computed(() => {
     if (searchTerm.value.length === 0) {
@@ -53,34 +61,8 @@
     return data.value.filter(filterParameter)
   })
 
-  function filterParameter({ key, value, type }: { key: string, value: unknown, type: string }): boolean {
-    return `${key} ${value} ${type}`.toLowerCase().includes(searchTerm.value.toLowerCase())
-  }
-
-  function formatParameterValue(value: unknown): string | unknown {
-    if (typeof value === 'object' && value !== null) {
-      if (isDate(value)) {
-        return formatDateTimeNumeric(value)
-      }
-
-      return JSON.stringify(value)
-    }
-
-    return (value as any)?.toString?.() ?? value
-  }
-
-  function formatParameterType(value: unknown): string {
-    const type = typeof value
-
-    if (type === 'object') {
-      if (isDate(value)) {
-        return 'Date'
-      }
-
-      return 'JSON'
-    }
-
-    return capitalize(type)
+  function filterParameter({ key, value, defaultValue, type }: { key: string, value: unknown, defaultValue: unknown, type?: string }): boolean {
+    return `${key} ${value} ${defaultValue} ${type}`.toLowerCase().includes(searchTerm.value.toLowerCase())
   }
 
   function clear(): void {
