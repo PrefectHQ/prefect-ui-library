@@ -6,23 +6,6 @@
       <RunButton v-if="can.create.flow_run" :deployment="deployment" />
 
       <DeploymentMenu :deployment="deployment" @delete="handleDelete" />
-      <!--
-        <p-icon-button-menu>
-        <copy-overflow-menu-item label="Copy ID" :item="deployment.id" />
-
-        <router-link v-if="can.update.deployment" :to="editDeploymentRoute(deployment.id)">
-        <p-overflow-menu-item label="Edit" />
-        </router-link>
-
-        <p-overflow-menu-item v-if="can.delete.deployment" label="Delete" @click="open" />
-        </p-icon-button-menu>
-        <ConfirmDeleteModal
-        v-model:showModal="showModal"
-        label="Deployment"
-        :name="deployment.name"
-        @delete="deleteDeployment(deployment.id)"
-        />
-      -->
     </template>
   </page-heading>
 </template>
