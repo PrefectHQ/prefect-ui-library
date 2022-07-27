@@ -28,6 +28,7 @@
     if (props.required) {
       return documents
     }
+
     const none = { label: 'None', value: null }
 
     return [none, ...documents]
