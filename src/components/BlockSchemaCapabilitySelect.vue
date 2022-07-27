@@ -1,9 +1,9 @@
 <template>
-  <PSelect v-model="model" :options="options" class="block-schema-capability-select">
+  <p-select v-model="model" :options="options" class="block-schema-capability-select">
     <template #default="{ selectedOption }">
       Capability: {{ selectedOption.label }}
     </template>
-  </PSelect>
+  </p-select>
 </template>
 
 <script lang="ts" setup>
