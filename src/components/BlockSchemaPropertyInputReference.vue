@@ -6,7 +6,7 @@
       <template v-if="blockDocuments.length">
         <BlockDocumentsSelect v-model:selected="model" v-bind="{ blockDocuments, state }" class="block-schema-property-input-reference__select" />
       </template>
-      <router-link :to="blockCatalogCreateRoute(blockTypeSlug)">
+      <router-link v-if="blockTypeSlug" :to="blockCatalogCreateRoute(blockTypeSlug)">
         <p-button inset>
           Add <p-icon icon="PlusIcon" />
         </p-button>
