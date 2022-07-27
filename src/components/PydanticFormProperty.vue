@@ -45,7 +45,7 @@
 
   const classes = computed(() => {
     return {
-      component: [`pydantic-form-property__component-level-${props.level}`],
+      component: [`pydantic-form-property__component--level-${props.level}`],
     }
   })
 
@@ -73,7 +73,7 @@
   pl-2
 }
 
-.pydantic-form-property__component-level-0 { @apply
+.pydantic-form-property__component-level--0 { @apply
   pl-0
 }
 </style>
