@@ -1,5 +1,5 @@
 <template>
-  <router-link :to="blockRoute(storageDocumentId)" class="storage-icon-text">
+  <router-link :to="blockRoute(blockDocumentId)" class="block-icon-text">
     <p-icon-text icon="CubeIcon">
       <span>{{ blockName }}</span>
     </p-icon-text>
@@ -15,12 +15,12 @@
   import { inject } from '@/utilities/inject'
 
   const props = defineProps<{
-    storageDocumentId: string,
+    blockDocumentId: string,
   }>()
 
   const blockRoute = inject(blockRouteKey)
 
   const blockDocumentsApi = inject(blockDocumentsApiKey)
-  const blockSubscription = useSubscription(blockDocumentsApi.getBlockDocument, [props.storageDocumentId])
+  const blockSubscription = useSubscription(blockDocumentsApi.getBlockDocument, [props.blockDocumentId])
   const blockName = computed(() => blockSubscription.response?.name)
 </script>

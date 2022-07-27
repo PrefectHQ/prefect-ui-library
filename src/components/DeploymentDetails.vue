@@ -8,7 +8,7 @@
 
     <p-key-value v-if="deployment.storageDocumentId" label="Storage" :alternate="alternate">
       <template #value>
-        <StorageIconText :storage-document-id="deployment.storageDocumentId" />
+        <BlockIconText :block-document-id="deployment.storageDocumentId" />
       </template>
     </p-key-value>
 
@@ -54,8 +54,8 @@
   import { formatDateTimeNumeric, showToast, PLoadingIcon } from '@prefecthq/prefect-design'
   import { ref, computed } from 'vue'
   import ScheduleFieldset from './ScheduleFieldset.vue'
+  import BlockIconText from '@/components/BlockIconText.vue'
   import FlowIconText from '@/components/FlowIconText.vue'
-  import StorageIconText from '@/components/StorageIconText.vue'
   import { localization } from '@/localization'
   import { DeploymentFormValues, Schedule } from '@/models'
   import { Deployment } from '@/models/Deployment'
