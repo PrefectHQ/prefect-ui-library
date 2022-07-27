@@ -34,7 +34,7 @@
   const blockTypes = computed(() => blockTypesSubscription.response ?? [])
 
   const options = computed(() => {
-    const allOption = { label: 'All', value: null }
+    const allOption = { label: 'all', value: null }
     const capabilityOptions = blockTypes.value.map(({ name }) => ({
       label: name,
       value: name,

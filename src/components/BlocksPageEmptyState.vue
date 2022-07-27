@@ -16,7 +16,7 @@
       <DocumentationButton topic="blocks" />
       <router-link v-if="can.create.block" :to="blockCatalogRoute()">
         <p-button>
-          Add a Block
+          Add Block
           <p-icon icon="PlusIcon" class="empty-work-queue--link-icon" />
         </p-button>
       </router-link>
