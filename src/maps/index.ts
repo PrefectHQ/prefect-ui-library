@@ -2,7 +2,7 @@ import { mapBlockSchemaReferencesResponseToBlockSchemaReferences } from './block
 import { mapNotificationCreateToNotificationCreateRequest } from './notificationCreate'
 import { mapNotificationUpdateToNotificationUpdateRequest } from './notificationUpdate'
 import { mapBlockDocumentResponseToBlockDocument, mapBlockDocumentToSelectOption } from '@/maps/blockDocument'
-import { mapBlockDocumentCreateToBlockDocumentCreateRequest, mapBlockDocumentDataToBlockDocumentCreateRequestData } from '@/maps/blockDocumentCreate'
+import { mapBlockDocumentCreateToBlockDocumentCreateRequest, mapBlockDocumentDataToBlockDocumentRequestData } from '@/maps/blockDocumentCreate'
 import { mapBlockDocumentResponseDataToBlockDocumentData } from '@/maps/blockDocumentData'
 import { mapBlockDocumentFilterToBlockDocumentFilterRequest } from '@/maps/blockDocumentFilter'
 import { mapBlockDocumentUpdateToBlockDocumentUpdateRequest } from '@/maps/blockDocumentUpdate'
@@ -38,7 +38,7 @@ import { mapWorkQueueFilterToIWorkQueueFilterResponse, mapIWorkQueueFilterRespon
 export const maps = {
   BlockDocument: { SelectOption: mapBlockDocumentToSelectOption },
   BlockDocumentCreate: { BlockDocumentCreateRequest: mapBlockDocumentCreateToBlockDocumentCreateRequest },
-  BlockDocumentData: { BlockDocumentCreateRequestData: mapBlockDocumentDataToBlockDocumentCreateRequestData },
+  BlockDocumentData: { BlockDocumentRequestData: mapBlockDocumentDataToBlockDocumentRequestData },
   BlockDocumentFilter: { BlockDocumentFilterRequest: mapBlockDocumentFilterToBlockDocumentFilterRequest },
   BlockDocumentResponse: { BlockDocument: mapBlockDocumentResponseToBlockDocument },
   BlockDocumentResponseDataWithReferences: { BlockDocumentData: mapBlockDocumentResponseDataToBlockDocumentData },

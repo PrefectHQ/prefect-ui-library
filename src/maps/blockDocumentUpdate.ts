@@ -4,5 +4,8 @@ import { MapFunction } from '@/services/Mapper'
 import { mapCamelToSnakeCase } from '@/utilities'
 
 export const mapBlockDocumentUpdateToBlockDocumentUpdateRequest: MapFunction<BlockDocumentUpdate, BlockDocumentUpdateRequest> = function(source: BlockDocumentUpdate): BlockDocumentUpdateRequest {
-  return mapCamelToSnakeCase(source)
+  return {
+    ...mapCamelToSnakeCase(source),
+    data: this.map('BlockDocumentData', source.data, 'BlockDocumentRequestData'),
+  }
 }

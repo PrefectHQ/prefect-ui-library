@@ -82,9 +82,18 @@
     return reference.blockTypeSlug
   }
 
-  function setReferenceValue(blockSchemaPropertyKey: string, value: string): void {
+  function setReferenceValue(blockSchemaPropertyKey: string, value: string | null | undefined): void {
+    // purposefully want to exclude property from the rest so it can be optionally added depending on the value
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { [blockSchemaPropertyKey]: property, ...rest } = model.value
+
+    if (value === null || value === undefined) {
+      model.value = rest
+      return
+    }
+
     model.value = {
-      ...model.value,
+      ...rest,
       [blockSchemaPropertyKey]: {
         $ref: {
           blockDocumentId: value,
