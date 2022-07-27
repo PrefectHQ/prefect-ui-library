@@ -37,14 +37,14 @@ export type PydanticTypeDefinitionComponentAttrs = Record<string, unknown>
 export type PydanticTypeDefinitionComponent = {
   attrs: PydanticTypeDefinitionComponentAttrs,
   component?: typeof InputComponents[number],
-  defaultValue: unknown,
+  defaultValue?: unknown,
   validators: ValidateMethod[],
   slots?: Record<string, unknown>,
 }
 
 interface BaseJsonInput extends PydanticTypeDefinitionComponent {
   component: typeof JsonInput,
-  defaultValue: string,
+  defaultValue?: string,
 }
 
 interface BaseTextInput extends PydanticTypeDefinitionComponent {
@@ -52,12 +52,12 @@ interface BaseTextInput extends PydanticTypeDefinitionComponent {
     type: 'text',
   },
   component: typeof PTextInput,
-  defaultValue: string,
+  defaultValue?: string,
 }
 
 interface BaseToggleInput extends PydanticTypeDefinitionComponent {
   component: typeof PToggle,
-  defaultValue: boolean,
+  defaultValue?: boolean,
 }
 
 interface BaseNumberInput extends PydanticTypeDefinitionComponent {
@@ -67,7 +67,7 @@ interface BaseNumberInput extends PydanticTypeDefinitionComponent {
     step?: number | string,
   },
   component: typeof PNumberInput,
-  defaultValue: number,
+  defaultValue?: number,
 }
 
 interface BaseEnumInput extends PydanticTypeDefinitionComponent {
@@ -76,7 +76,7 @@ interface BaseEnumInput extends PydanticTypeDefinitionComponent {
     options: PydanticEnum<unknown>,
   },
   component: typeof PSelect,
-  defaultValue: unknown,
+  defaultValue?: unknown,
 }
 
 interface BaseListInput extends PydanticTypeDefinitionComponent {
@@ -86,7 +86,7 @@ interface BaseListInput extends PydanticTypeDefinitionComponent {
     options: PydanticEnum<unknown>,
   },
   component: typeof PCombobox,
-  defaultValue: unknown[],
+  defaultValue?: unknown[],
 }
 
 interface BaseDateInput extends PydanticTypeDefinitionComponent {
@@ -94,14 +94,13 @@ interface BaseDateInput extends PydanticTypeDefinitionComponent {
     showTime: boolean,
   },
   component: typeof PDateInput,
-  defaultValue: Date,
+  defaultValue?: Date,
 }
 
 const getBaseJsonInput = (): BaseJsonInput => {
   return {
     attrs: {},
     component: JsonInput,
-    defaultValue: '',
     validators: [],
   }
 }
@@ -111,7 +110,6 @@ const getBaseTextInput = (): BaseTextInput => {
     attrs: {
       type: 'text',
     },
-    defaultValue: '',
     component: PTextInput,
     validators: [],
   }
@@ -121,7 +119,6 @@ const getBaseToggleInput = (): BaseToggleInput => {
   return {
     attrs: {},
     component: PToggle,
-    defaultValue: false,
     slots: {
       append: 'True',
       prepend: 'False',
@@ -134,7 +131,6 @@ const getBaseNumberInput = (): BaseNumberInput => {
   return {
     attrs: {},
     component: PNumberInput,
-    defaultValue: 0,
     validators: [],
   }
 }
@@ -146,7 +142,6 @@ const getBaseEnumInput = (): BaseEnumInput => {
       options: [] as PydanticEnum<unknown>,
     },
     component: PSelect,
-    defaultValue: null,
     validators: [],
   }
 }
@@ -159,7 +154,6 @@ const getBaseListInput = (): BaseListInput => {
       options: [] as PydanticEnum<unknown>,
     },
     component: PCombobox,
-    defaultValue: [],
     validators: [],
   }
 }
@@ -170,7 +164,6 @@ const getBaseDateInput = (): BaseDateInput => {
       showTime: false,
     },
     component: PDateInput,
-    defaultValue: new Date(),
     validators: [],
   }
 }

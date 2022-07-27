@@ -8,6 +8,7 @@
       :is="fieldComponent.component"
       v-if="fieldComponent"
       v-model="internalValue"
+      :placeholder="fieldComponent.defaultValue"
       v-bind="{ ...fieldComponent.attrs }"
     >
       <template v-for="(content, key) in fieldComponent?.slots" #[key]>
