@@ -6,7 +6,7 @@
       </template>
     </p-content>
 
-    <template #footer>
+    <template v-if="!hideFooter" #footer>
       <p-button type="submit">
         Save
       </p-button>
@@ -25,6 +25,7 @@
   const props = defineProps<{
     modelValue?: PydanticFormValue,
     pydanticSchema: PydanticTypeDefinition,
+    hideFooter?: boolean,
   }>()
 
   const emit = defineEmits<{
@@ -39,8 +40,7 @@
       emit('update:modelValue', val)
     },
   })
-
-  const { handleSubmit, values } = useReactiveForm(internalValue)
+  const { handleSubmit, values } = useReactiveForm(internalValue, { initialValues:  { ...props.modelValue }  })
   const submit = handleSubmit(() => emit('submit', values))
 
   const properties = computed(() => resolvePydanticTypeDefinitionFromSchema(props.pydanticSchema))

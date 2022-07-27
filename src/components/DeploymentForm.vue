@@ -43,12 +43,8 @@
           Parameters
         </h3>
 
-        <sup>
-          <em>Modifying deployment default parameters coming soon!</em>
-        </sup>
-
         <template v-if="deployment?.parameters">
-          <ParametersTable :parameters="deployment.parameters" />
+          <PydanticForm v-model="parameters" hide-footer :pydantic-schema="deployment.parameterOpenApiSchema" />
         </template>
 
         <template v-else>
@@ -71,7 +67,7 @@
 <script lang="ts" setup>
   import { useField, useForm } from 'vee-validate'
   import { computed } from 'vue'
-  import ParametersTable from './ParametersTable.vue'
+  import PydanticForm from './PydanticForm.vue'
   import ScheduleFieldset from '@/components/ScheduleFieldset.vue'
   import { Deployment, IDeploymentRequest, DeploymentFormValues, Schedule } from '@/models'
 
@@ -84,9 +80,19 @@
       description: description.value,
       schedule: schedule.value,
       isScheduleActive: isScheduleActive.value,
-      parameters: parameters.value ?? {},
+      parameters: parameters.value,
       tags: tags.value,
     })
+  })
+
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+  const initialValues = { ...props.deployment.parameters ?? {} }
+
+  Object.keys(initialValues).forEach((key: keyof typeof initialValues) => {
+    const parameter = initialValues[key]
+    if (typeof parameter == 'string' && Date.parse(parameter)) {
+      initialValues[key] = new Date(parameter)
+    }
   })
 
   const { handleSubmit, isSubmitting } = useForm({ initialValues: props.deployment })
@@ -95,7 +101,7 @@
   const { value: name } = useField<string>('name')
   const { value: schedule } = useField<Schedule | null>('schedule')
   const { value: isScheduleActive } = useField<boolean>('isScheduleActive')
-  const { value: parameters } = useField<Record<string, unknown> | null>('parameters')
+  const { value: parameters } = useField<Record<string, unknown>>('parameters', undefined, { initialValue: initialValues })
   const { value: tags } = useField<string[] | null>('tags')
 
   const emit = defineEmits<{

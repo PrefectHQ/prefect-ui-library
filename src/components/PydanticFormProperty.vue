@@ -7,13 +7,20 @@
 
   <template v-else>
     <h3
-      v-if="!isUnionProperty && level == 0"
+      v-if="level > 0"
       class="pydantic-form-property__section-header"
     >
       <span>{{ property.title }}</span>
     </h3>
 
-    <component :is="formComponent" :prop-key="propKey" :property="property" :level="level + 1" />
+    <component
+      :is="formComponent"
+      class="pydantic-form-property__component"
+      :class="classes.component"
+      :prop-key="propKey"
+      :property="property"
+      :level="level"
+    />
   </template>
 </template>
 
@@ -36,6 +43,12 @@
   const isIntersectionProperty = computed(() => hasAllOf(props.property))
   const hasSubProperties = computed(() => !!props.property.properties)
 
+  const classes = computed(() => {
+    return {
+      component: [`pydantic-form-property__component--level-${props.level}`],
+    }
+  })
+
   const formComponent = computed(() => {
     if (isUnionProperty.value) {
       return PydanticFormUnionProperty
@@ -52,9 +65,15 @@
 <style>
 .pydantic-form-property__section-header {
   @apply
-  text-lg
-  font-semibold
-  flex
-  gap-2
+  font-medium
+  -mb-4
+}
+
+.pydantic-form-property__component { @apply
+  pl-2
+}
+
+.pydantic-form-property__component--level-0 { @apply
+  pl-0
 }
 </style>
