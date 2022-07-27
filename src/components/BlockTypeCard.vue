@@ -2,7 +2,9 @@
   <p-card class="block-type-card">
     <BlockTypeLogo :block-type="blockType" class="block-type-card__logo" />
     <p class="block-type-card__name">
-      {{ blockType.name }}
+      <p-link :to="blockCatalogViewRoute(blockType.slug)">
+        {{ blockType.name }}
+      </p-link>
     </p>
 
     <template v-if="blockType.description">
@@ -29,6 +31,7 @@
   import BlockSchemaCapabilities from './BlockSchemaCapabilities.vue'
   import BlockTypeLogo from '@/components/BlockTypeLogo.vue'
   import { BlockType } from '@/models/BlockType'
+  import { blockCatalogViewRouteKey } from '@/router'
   import { blockSchemasApiKey } from '@/services'
   import { inject } from '@/utilities/inject'
 
@@ -37,6 +40,7 @@
   }>()
 
   const slots = useSlots()
+  const blockCatalogViewRoute = inject(blockCatalogViewRouteKey)
   const blockSchemasApi = inject(blockSchemasApiKey)
 
   const blockSchemaSubscriptionArgs = computed(() => ({
