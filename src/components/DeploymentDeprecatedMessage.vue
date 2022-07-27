@@ -1,5 +1,5 @@
 <template>
-  <p-empty-state>
+  <p-empty-state class="deprecated-message">
     <template #icon>
       <p-icon icon="ExclamationCircleIcon" />
     </template>
@@ -16,7 +16,8 @@
       <DocumentationButton topic="deployments" />
       <a :href="href" target="_blank">
         <p-button>
-          Find out more
+          Find Out More
+          <p-icon icon="ExternalLinkIcon" class="deprecated-message__icon" />
         </p-button>
       </a>
     </template>
@@ -28,3 +29,12 @@
   import DocumentationButton from './DocumentationButton.vue'
   const href= 'https://discourse.prefect.io/t/deployments-are-now-simplified-and-follow-a-declarative-syntax/1255'
 </script>
+
+<style>
+.deprecated-message__icon {
+  @apply
+  ml-2
+  w-5
+  h-5
+}
+</style>
