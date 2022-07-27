@@ -74,7 +74,9 @@
 
   @apply
   relative
-  block
+  flex
+  items-center
+  justify-end
   min-h-[100px]
   font-mono
   text-sm

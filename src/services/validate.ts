@@ -128,13 +128,21 @@ export function greaterThanOrEqual(min: ValidationValue): ValidateMethod {
 }
 
 export function isValidJsonString(value: unknown): boolean {
+  value = typeof value !== 'string'
+    ? JSON.stringify(value)
+    : value
+
   try {
-    JSON.parse(value as string)
+    value = JSON.parse(value as string)
   } catch {
     return false
   }
 
-  return true
+  if (typeof value === 'object' && value !== null) {
+    return true
+  }
+
+  return false
 }
 
 export function isValidJsonObject(value: unknown): boolean {
