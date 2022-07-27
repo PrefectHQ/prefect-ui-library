@@ -19,9 +19,6 @@
 
 <style>
 .block-type-logo { @apply
-  border-gray-300
-  rounded
-  border-[1px]
   bg-cover
   bg-center
   w-8
