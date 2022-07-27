@@ -67,10 +67,19 @@
     }
   })
 
-  const required = computed(() => props.required ?? false)
-  const defaultRules = useOptionalRules(withMessage(isRequired, `${props.property.title} is required`), required)
-  const jsonRules = [withMessage(isRequired, `${props.property.title} is required`), withMessage(isValidJsonString, 'Invalid JSON')]
-  const rules = computed(() => input.value == BlockSchemaPropertyInputJson ? jsonRules : defaultRules)
+  const rules = computed(() => {
+    const rules = []
+
+    if (props.required) {
+      rules.push(withMessage(isRequired, `${props.property.title} is required`))
+    }
+
+    if (input.value == BlockSchemaPropertyInputJson) {
+      rules.push(withMessage(isValidJsonString, 'Invalid JSON'))
+    }
+
+    return rules
+  })
   const { meta: state, errorMessage } = useReactiveField(model, props.property.title, rules.value)
 
   const inputProps = computed(() => {
