@@ -39,5 +39,5 @@
   })
   const message = computed(() => fieldComponent.value ? undefined : "This field has a type 'None' and cannot be modified.")
 
-  const { value: internalValue, errorMessage, meta } = useField(props.propKey, fieldComponent.value?.validators, { initialValue: fieldComponent.value?.defaultValue })
+  const { value: internalValue, errorMessage, meta } = useField(props.propKey, fieldComponent.value?.validators)
 </script>

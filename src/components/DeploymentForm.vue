@@ -91,7 +91,7 @@
   const { value: name } = useField<string>('name')
   const { value: schedule } = useField<Schedule | null>('schedule')
   const { value: isScheduleActive } = useField<boolean>('isScheduleActive')
-  const { value: parameters } = useField<Record<string, unknown>>('parameters')
+  const { value: parameters } = useField<Record<string, unknown>>('parameters', undefined, { initialValue: props.deployment.parameters })
   const { value: tags } = useField<string[] | null>('tags')
 
   const emit = defineEmits<{

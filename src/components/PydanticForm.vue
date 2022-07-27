@@ -40,8 +40,7 @@
       emit('update:modelValue', val)
     },
   })
-
-  const { handleSubmit, values } = useReactiveForm(internalValue)
+  const { handleSubmit, values } = useReactiveForm(internalValue, { initialValues:  { ...props.modelValue }  })
   const submit = handleSubmit(() => emit('submit', values))
 
   const properties = computed(() => resolvePydanticTypeDefinitionFromSchema(props.pydanticSchema))
