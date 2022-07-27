@@ -78,17 +78,12 @@
   line-clamp-5
 }
 
-.block-type-card__capabilities { @apply
+.block-type-card-preview__capabilities { @apply
   mb-2
 }
 
-.block-type-card__action { @apply
+.block-type-card-preview__action { @apply
   block
   mt-auto
-}
-
-.block-type-card__button { @apply
-  block
-  w-full
 }
 </style>

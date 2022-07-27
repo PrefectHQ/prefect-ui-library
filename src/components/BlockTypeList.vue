@@ -10,8 +10,8 @@
       <template v-for="blockType in filteredBlockTypes" :key="blockType.id">
         <BlockTypeCardPreview :block-type="blockType">
           <template #actions>
-            <p-link :to="blockCatalogCreateRoute(blockType.slug)" class="block-type-card__action">
-              <p-button inset class="block-type-card__button">
+            <p-link :to="blockCatalogCreateRoute(blockType.slug)">
+              <p-button inset class="block-type-list__add">
                 Add <p-icon icon="PlusIcon" />
               </p-button>
             </p-link>
@@ -123,5 +123,9 @@
   lg:grid-cols-3
   xl:grid-cols-4
   gap-2
+}
+
+.block-type-list__add { @apply
+  w-full
 }
 </style>
