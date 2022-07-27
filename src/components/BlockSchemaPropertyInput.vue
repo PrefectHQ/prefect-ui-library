@@ -18,7 +18,7 @@
   import BlockSchemaPropertyInputJson from './BlockSchemaPropertyInputJson.vue'
   import { useReactiveField } from '@/compositions/useReactiveField'
   import { BlockSchemaSimpleProperty } from '@/models/BlockSchema'
-  import { isRequired, isValidJsonObject, withMessage } from '@/services/validate'
+  import { isRequired, isOptionalValidJsonObject, withMessage } from '@/services/validate'
 
   const props = defineProps<{
     property: BlockSchemaSimpleProperty,
@@ -74,7 +74,7 @@
     }
 
     if (input.value == BlockSchemaPropertyInputJson) {
-      rules.push(withMessage(isValidJsonObject, 'Invalid JSON'))
+      rules.push(withMessage(isOptionalValidJsonObject, 'Invalid JSON'))
     }
 
     return rules
