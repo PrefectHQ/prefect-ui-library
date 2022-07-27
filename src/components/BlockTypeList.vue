@@ -8,7 +8,7 @@
 
     <div class="block-type-list__types">
       <template v-for="blockType in filteredBlockTypes" :key="blockType.id">
-        <BlockTypeCard :block-type="blockType">
+        <BlockTypeCardPreview :block-type="blockType">
           <template #actions>
             <p-link :to="blockCatalogCreateRoute(blockType.slug)" class="block-type-card__action">
               <p-button inset class="block-type-card__button">
@@ -16,7 +16,7 @@
               </p-button>
             </p-link>
           </template>
-        </BlockTypeCard>
+        </BlockTypeCardPreview>
       </template>
     </div>
 
@@ -38,7 +38,7 @@
   import { computed, ref } from 'vue'
   import ResultsCount from './ResultsCount.vue'
   import BlockSchemaCapabilitySelect from '@/components/BlockSchemaCapabilitySelect.vue'
-  import BlockTypeCard from '@/components/BlockTypeCard.vue'
+  import BlockTypeCardPreview from '@/components/BlockTypeCardPreview.vue'
   import SearchInput from '@/components/SearchInput.vue'
   import { BlockType } from '@/models/BlockType'
   import { blockCatalogCreateRouteKey } from '@/router/routes'
