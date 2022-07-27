@@ -1,7 +1,7 @@
 <template>
   <div class="block-type-list">
     <div class="block-type-list__filters">
-      <ResultsCount label="Blocks" :count="filteredBlockTypes.length" class="block-type-list__results" />
+      <ResultsCount label="Block" :count="filteredBlockTypes.length" class="block-type-list__results" />
       <SearchInput v-model="searchTerm" class="block-type-list__search" placeholder="Search blocks" />
       <BlockSchemaCapabilitySelect v-model:selected="selectedCapability" class="block-type-list__capability" />
     </div>
