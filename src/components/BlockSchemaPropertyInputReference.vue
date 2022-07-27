@@ -1,5 +1,5 @@
 <template>
-  <p-label class="block-schema-property-input-reference" :label="blockTypeName" :message="errors.join('. ')" :state="state">
+  <p-label class="block-schema-property-input-reference" :label="propertyTitle" :message="errors.join('. ')" :state="state">
     <div class="block-schema-property-input-reference__content">
       <BlockTypeLogo v-if="blockType" :block-type="blockType" />
 
@@ -49,6 +49,7 @@
 
   const blockTypeSlug = computed(() => props.blockTypeSlug)
   const blockTypeName = computed(() => blockType.value?.name ?? '')
+  const propertyTitle = computed(()=> props.required ? blockTypeName.value : `${blockTypeName.value} (Optional)`)
   const blockTypeSubscription = useSubscription(blockTypesApi.getBlockTypeBySlug, [blockTypeSlug])
   const blockType = computed(() => blockTypeSubscription.response)
   const blockDocumentsSubscription = useSubscription(blockTypesApi.getBlockDocumentsByBlockTypeSlug, [blockTypeSlug])
