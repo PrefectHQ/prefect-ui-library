@@ -76,6 +76,20 @@
   }>()
 
   const internalValue = computed(() => {
+    Object.keys(parameters.value).forEach((key) => {
+      const parameter = parameters.value[key]
+      if (!initialTypes[key] || initialTypes[key] == typeof parameter) {
+        return
+      }
+
+      if (typeof parameter == 'string' && initialTypes[key] !== 'string') {
+        try {
+          parameters.value[key] = JSON.parse(parameter)
+        } finally {
+          // do nothing
+        }
+      }
+    })
     return new DeploymentFormValues({
       description: description.value,
       schedule: schedule.value,
@@ -87,12 +101,15 @@
 
   // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   const initialValues = { ...props.deployment.parameters ?? {} }
+  const initialTypes: Record<keyof typeof initialValues, string> = { }
 
   Object.keys(initialValues).forEach((key: keyof typeof initialValues) => {
     const parameter = initialValues[key]
     if (typeof parameter == 'string' && Date.parse(parameter)) {
       initialValues[key] = new Date(parameter)
     }
+
+    initialTypes[key] = typeof parameter
   })
 
   const { handleSubmit, isSubmitting } = useForm({ initialValues: props.deployment })
