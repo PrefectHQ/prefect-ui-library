@@ -16,10 +16,9 @@
   import { PLabel, PTagsArea, PNumberInput, PSelect, PTextInput, PToggle, useAttrsStylesAndClasses } from '@prefecthq/prefect-design'
   import { computed } from 'vue'
   import BlockSchemaPropertyInputJson from './BlockSchemaPropertyInputJson.vue'
-  import { useOptionalRules } from '@/compositions/useOptionalRules'
   import { useReactiveField } from '@/compositions/useReactiveField'
   import { BlockSchemaSimpleProperty } from '@/models/BlockSchema'
-  import { isRequired, isValidJsonString, withMessage } from '@/services/validate'
+  import { isRequired, isValidJsonObject, withMessage } from '@/services/validate'
 
   const props = defineProps<{
     property: BlockSchemaSimpleProperty,
@@ -43,7 +42,7 @@
   })
 
 
-  const propertyTitle =computed(()=> props.required ? props.property.title : `${props.property.title} (Optional)`)
+  const propertyTitle = computed(()=> props.required ? props.property.title : `${props.property.title} (Optional)`)
 
   const input = computed(() => {
     if (props.property.enum) {
@@ -75,11 +74,12 @@
     }
 
     if (input.value == BlockSchemaPropertyInputJson) {
-      rules.push(withMessage(isValidJsonString, 'Invalid JSON'))
+      rules.push(withMessage(isValidJsonObject, 'Invalid JSON'))
     }
 
     return rules
   })
+
   const { meta: state, errorMessage } = useReactiveField(model, props.property.title, rules.value)
 
   const inputProps = computed(() => {
