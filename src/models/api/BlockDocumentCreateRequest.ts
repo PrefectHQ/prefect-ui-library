@@ -4,11 +4,11 @@ export type BlockDocumentCreateRequestReferenceData = {
   },
 }
 
-export type BlockDocumentCreateRequestData = Record<string, unknown | BlockDocumentCreateRequestReferenceData>
+export type BlockDocumentRequestData = Record<string, unknown | BlockDocumentCreateRequestReferenceData>
 
 export type BlockDocumentCreateNamedRequest = {
   name: string,
-  data: BlockDocumentCreateRequestData,
+  data: BlockDocumentRequestData,
   block_schema_id: string,
   block_type_id: string,
 }

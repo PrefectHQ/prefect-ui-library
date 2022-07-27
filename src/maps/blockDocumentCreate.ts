@@ -1,12 +1,12 @@
-import { BlockDocumentCreateRequest, BlockDocumentCreateRequestData } from '@/models/api/BlockDocumentCreateRequest'
+import { BlockDocumentCreateRequest, BlockDocumentRequestData } from '@/models/api/BlockDocumentCreateRequest'
 import { BlockDocumentData } from '@/models/BlockDocument'
 import { BlockDocumentCreate } from '@/models/BlockDocumentCreate'
 import { MapFunction } from '@/services/Mapper'
 import { mapCamelToSnakeCase } from '@/utilities'
 import { isBlockDocumentDataReference } from '@/utilities/blocks'
 
-export const mapBlockDocumentDataToBlockDocumentCreateRequestData: MapFunction<BlockDocumentData, BlockDocumentCreateRequestData> = function(source: BlockDocumentData): BlockDocumentCreateRequestData {
-  const data: BlockDocumentCreateRequestData = {}
+export const mapBlockDocumentDataToBlockDocumentRequestData: MapFunction<BlockDocumentData, BlockDocumentRequestData> = function(source: BlockDocumentData): BlockDocumentRequestData {
+  const data: BlockDocumentRequestData = {}
 
   Object.entries(source).forEach(([key, value]) => {
     if (isBlockDocumentDataReference(value)) {
@@ -27,6 +27,6 @@ export const mapBlockDocumentDataToBlockDocumentCreateRequestData: MapFunction<B
 export const mapBlockDocumentCreateToBlockDocumentCreateRequest: MapFunction<BlockDocumentCreate, BlockDocumentCreateRequest> = function(source: BlockDocumentCreate): BlockDocumentCreateRequest {
   return {
     ...mapCamelToSnakeCase(source),
-    data: this.map('BlockDocumentData', source.data, 'BlockDocumentCreateRequestData'),
+    data: this.map('BlockDocumentData', source.data, 'BlockDocumentRequestData'),
   }
 }
