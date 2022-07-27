@@ -5,7 +5,7 @@
 
       <p-key-value label="Name" :value="blockType.name" />
 
-      <template v-if="blockSchema">
+      <template v-if="blockSchema && hasCapabilities">
         <p-key-value label="Capabilities">
           <template #value>
             <BlockSchemaCapabilities :capabilities="blockSchema.capabilities" class="block-type-card__capabilities" />
@@ -74,6 +74,7 @@
   const blockSchemasApi = inject(blockSchemasApiKey)
   const blockSchemaSubscription = useSubscription(blockSchemasApi.getBlockSchemas, [blockSchemaFilter])
   const blockSchema = computed(() => blockSchemaSubscription.response?.[0])
+  const hasCapabilities = computed(() => blockSchema.value?.capabilities.length)
 </script>
 
 <style>
