@@ -261,6 +261,7 @@ const getBaseComponent = (definition: PydanticTypeDefinition): null | PydanticTy
     if (isPydanticType('array', type)) {
       // Make sure this passes the default value as an array
       component.attrs.multiple = true
+      component.defaultValue = []
     }
 
     return component
@@ -290,6 +291,7 @@ const getBaseComponent = (definition: PydanticTypeDefinition): null | PydanticTy
   if (isPydanticType('array', type)) {
     const component = getBaseListInput()
     component.attrs.multiple = true
+    component.defaultValue = []
 
     // TODO: This probably isn't robust to all predefined item types.
     if (items) {
