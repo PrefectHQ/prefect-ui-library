@@ -402,6 +402,5 @@ export const resolvePydanticTypeDefinitionFromSchema = (schema: PydanticTypeDefi
 
     definedProperties[key] = definition
   })
-
   return definedProperties
 }
