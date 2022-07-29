@@ -1,8 +1,5 @@
 <template>
   <div class="flow-runs-scatter-plot-plot">
-    <div class="flow-runs-scatter-plot-plot__duration">
-      Duration
-    </div>
     <ScatterPlot :items="items" :start-date="startDate" :end-date="endDate" :dot-diameter="16">
       <template #default="{ item }">
         <FlowRunPopOver :flow-run-id="item.id" />
@@ -29,9 +26,6 @@
 
 <style>
 .flow-runs-scatter-plot-plot { @apply
-  border-gray-300
-  border
-  rounded
   p-1
 }
 
@@ -40,19 +34,6 @@
   --dot-opacity-medium: 0.5;
   --dot-opacity-low: 0.1;
   position: relative;
-}
-
-.flow-runs-scatter-plot-plot__duration { @apply
-  text-sm
-  text-gray-500
-}
-
-.flow-runs-scatter-plot-plot__duration {
-  position: absolute;
-  transform: rotate(-90deg) translate(0, -50%);
-  transform-origin: 50% 50%;
-  top: 50%;
-  left: 0;
 }
 
 .scatter-plot-item { @apply
