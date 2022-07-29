@@ -120,7 +120,8 @@
   const { value: isScheduleActive } = useField<boolean>('isScheduleActive')
   const { value: parameters } = useField<Record<string, unknown>>('parameters', undefined, { initialValue: initialValues })
   const { value: tags } = useField<string[] | null>('tags')
-
+  console.log('init value', initialValues)
+  console.log('params', parameters)
   const emit = defineEmits<{
     (event: 'submit', value: IDeploymentRequest): void,
     (event: 'cancel'): void,

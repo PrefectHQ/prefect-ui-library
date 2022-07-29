@@ -34,6 +34,7 @@
 
   const internalValue = computed({
     get() {
+      console.log('internal value on pydantic', props.modelValue)
       return props.modelValue
     },
     set(val) {

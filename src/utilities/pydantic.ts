@@ -388,6 +388,7 @@ export const resolvePydanticTypeDefinitionFromSchema = (schema: PydanticTypeDefi
 
   Object.entries(definedProperties).forEach(([key, property]) => {
     const definition = getResolvedTypeDefinitionFromProperty(property, schema)
+    console.log({ definition })
 
     // This is a littly hacky but adding requirements to
     // each property definition allows us to audit/validate
@@ -402,6 +403,6 @@ export const resolvePydanticTypeDefinitionFromSchema = (schema: PydanticTypeDefi
 
     definedProperties[key] = definition
   })
-
+  console.log('definedProperties', definedProperties)
   return definedProperties
 }
