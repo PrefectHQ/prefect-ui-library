@@ -26,6 +26,7 @@
     modelValue?: PydanticFormValue,
     pydanticSchema: PydanticTypeDefinition,
     hideFooter?: boolean,
+    validateOnMount?: boolean,
   }>()
 
   const emit = defineEmits<{
@@ -40,7 +41,7 @@
       emit('update:modelValue', val)
     },
   })
-  const { handleSubmit, values } = useReactiveForm(internalValue, { initialValues:  { ...props.modelValue }  })
+  const { handleSubmit, values } = useReactiveForm(internalValue, { initialValues:  { ...props.modelValue }, validateOnMount: props.validateOnMount  })
   const submit = handleSubmit(() => emit('submit', values))
 
   const properties = computed(() => resolvePydanticTypeDefinitionFromSchema(props.pydanticSchema))

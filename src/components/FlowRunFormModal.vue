@@ -59,14 +59,23 @@
     <p-divider v-if="deployment.parameters" />
 
     <p-content v-if="deployment.parameters">
-      <h3 class="flow-run-form-modal__section-header">
+      <h3 class="flow-run-form-modal__section-header" :class="classes.parameters">
+        <p-icon
+          v-if="errors.parameters"
+          class="flow-run-form-modal__section-header__icon"
+          icon="ExclamationCircleIcon"
+        />
         Parameters
       </h3>
+
+      <div v-if="errors.parameters" class="flow-run-form-modal__section-messages">
+        {{ errors.parameters }}
+      </div>
 
       <p-button-group v-model="useParameters" :options="useParametersOptions" size="sm" />
 
       <template v-if="useParameters == 'custom'">
-        <PydanticForm v-model="parameters" hide-footer :pydantic-schema="deployment.parameterOpenApiSchema" />
+        <PydanticForm v-model="formParameters" hide-footer :validate-on-mount="submitCount > 0" :pydantic-schema="deployment.parameterOpenApiSchema" />
       </template>
     </p-content>
 
@@ -90,7 +99,7 @@
   import { localization } from '@/localization'
   import { CreateFlowRun, Deployment } from '@/models'
 
-  import { mocker } from '@/services'
+  import { mocker, withMessage } from '@/services'
   import { deploymentsApiKey } from '@/services/DeploymentsApi'
   import { canKey } from '@/types'
   import { inject } from '@/utilities'
@@ -109,8 +118,49 @@
   const flowRun = ref()
   const loading = ref(false)
 
+  const computedParameters = computed(() => {
+    return useParameters.value == 'custom' ? formParameters.value : props.deployment.parameters
+  })
+
+  const utcStartTime = computed(() => {
+    return zonedTimeToUtc(start.value, timezone.value)
+  })
+
+  const hasAllRequiredParameters = (formValue: unknown): boolean => {
+    const requiredProperties = props.deployment.parameterOpenApiSchema.required
+
+    if (!requiredProperties?.length) {
+      return true
+    }
+
+    if (typeof formValue !== 'object' || formValue == null) {
+      return false
+    }
+
+    let valid = true
+
+    requiredParametersLoop: for (let i = 0, len = requiredProperties.length; i < len; ++i) {
+      if (requiredProperties[i] in formValue) {
+        continue
+      } else {
+        valid = false
+        break requiredParametersLoop
+      }
+    }
+
+    return valid
+  }
+
   const disabled = computed(() => {
     return !can.create.flow_run
+  })
+
+  const classes = computed(() => {
+    return {
+      parameters:  {
+        'flow-run-form-modal--invalid': !!errors.value.parameters,
+      },
+    }
   })
 
   // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
@@ -136,14 +186,17 @@
       },
       tags: props.deployment.tags ?? [],
       name: generateRandomName(),
-      parameters: initialParameterValues,
+      parameters: { ...initialParameterValues },
       timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
       nowOrLater: 'now',
       useParameters: 'default',
     }
   }
 
-  const { resetForm } = useForm({
+  const { resetForm, validate, errors, submitCount } = useForm({
+    validationSchema: {
+      parameters: withMessage(() => hasAllRequiredParameters(computedParameters.value), 'This flow has required parameters that aren\'t supplied by the deployment. Choose \'Custom\' to supply them now.'),
+    },
     initialValues: getInitialFormValues(),
   })
 
@@ -151,7 +204,7 @@
   const { value: tags } = useField<string[]>('tags')
   const { value: name } = useField<string>('name')
   const { value: stateMessage } = useField<string>('state.message')
-  const { value: parameters } = useField<Record<string, unknown>>('parameters')
+  const { value: formParameters } = useField<Record<string, unknown>>('parameters', undefined, { keepValueOnUnmount: true })
   const { value: timezone } = useField<string>('timezone')
 
   const nowOrLaterOptions: ButtonGroupOption[] = [{ label: 'Now', value: 'now' }, { label: 'Later', value: 'later' }]
@@ -159,14 +212,6 @@
 
   const useParametersOptions: ButtonGroupOption[] = [{ label: 'Default', value: 'default' }, { label: 'Custom', value: 'custom' }]
   const { value: useParameters } = useField<typeof useParametersOptions[number]['value']>('useParameters')
-
-  const computedParameters = computed(() => {
-    return useParameters.value == 'custom' ? parameters.value : props.deployment.parameters
-  })
-
-  const utcStartTime = computed(() => {
-    return zonedTimeToUtc(start.value, timezone.value)
-  })
 
   const createFlowRunBody = computed<CreateFlowRun>(() => {
     return {
@@ -184,6 +229,14 @@
   const submit = async (): Promise<void> => {
     loading.value = true
 
+    const { valid } = await validate()
+
+    // Do nothing with validity right now
+    if (!valid) {
+      return
+    }
+
+    console.log(valid)
     try {
       flowRun.value = await deploymentsApi.createDeploymentFlowRun(props.deployment.id, createFlowRunBody.value)
       const toastMessage = h(CreateFlowRunToast, { flowRun: flowRun.value, immediate: nowOrLater.value == 'now', startTime: utcStartTime.value })
@@ -199,7 +252,7 @@
 
   watch(showModal, (val, oldVal) => {
     if (val && !oldVal) {
-      resetForm({ values: getInitialFormValues() })
+      resetForm({ values: getInitialFormValues(), errors: {}, touched: {} })
     }
   })
 </script>
@@ -230,6 +283,18 @@
   grid
   gap-2
   grid-cols-4;
+}
+
+.flow-run-form-modal--invalid { @apply
+  text-red-500
+}
+
+.flow-run-form-modal__section-messages { @apply
+  text-sm
+}
+
+.flow-run-form-modal__section-header__icon { @apply
+  inline-block
 }
 </style>
 
