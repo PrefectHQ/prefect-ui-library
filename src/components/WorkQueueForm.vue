@@ -58,7 +58,7 @@
   import DeploymentCombobox from '@/components/DeploymentCombobox.vue'
   import { IWorkQueueRequest, WorkQueue, WorkQueueFormValues } from '@/models'
   import { isRequired, withMessage } from '@/services/validate'
-  import { FormAction } from '@/types'
+  import { FormAction } from '@/types/buttons'
 
   const props = defineProps<{
     workQueue?: WorkQueue,
