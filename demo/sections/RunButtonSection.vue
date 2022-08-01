@@ -11,6 +11,4 @@
   import { mocker } from '@/services'
 
   const deployment = ref(mocker.create('deployment'))
-
-  console.log(deployment)
 </script>

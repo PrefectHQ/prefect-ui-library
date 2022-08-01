@@ -14,9 +14,6 @@
 
   const deployment = ref<Deployment>(mocker.create('deployment'))
 
-  console.log(deployment)
-
-
   const handleSubmit = (): void => {
     showToast('Deployment updated', 'success')
   }
