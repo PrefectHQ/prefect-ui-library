@@ -1,26 +1,23 @@
 <template>
-  <p-button
-    v-if="can.create.flow_run"
-    class="run-button"
-    inset
-    :loading="loading"
-    :disabled="deployment.deprecated"
-    @click="run(deployment)"
-  >
-    Run
-    <p-icon class="run-button__run-icon" icon="PlayIcon" solid />
-  </p-button>
+  <RunForm :deployment="deployment" class="run-button">
+    <template #default="{ open }">
+      <p-button
+        v-if="can.create.flow_run"
+        class="run-button__modal-activator"
+        inset
+        :disabled="deployment.deprecated"
+        @click="open"
+      >
+        Run
+        <p-icon class="run-button__run-icon" icon="PlayIcon" solid />
+      </p-button>
+    </template>
+  </RunForm>
 </template>
 
 <script lang="ts" setup>
-  import  { PButton, showToast } from '@prefecthq/prefect-design'
-  import { ref, h } from 'vue'
-  import { RouteLocationRaw, useRouter } from 'vue-router'
-  import RunButtonToastMessage from './RunButtonToastMessage.vue'
-  import { localization } from '@/localization'
+  import RunForm from './RunForm.vue'
   import { Deployment } from '@/models'
-  import { flowRunRouteKey } from '@/router/routes'
-  import { deploymentsApiKey } from '@/services/DeploymentsApi'
   import { canKey } from '@/types'
   import { inject } from '@/utilities'
 
@@ -29,34 +26,6 @@
   }>()
 
   const can = inject(canKey)
-  const deploymentsApi = inject(deploymentsApiKey)
-  const loading = ref(false)
-  const flowRun = ref()
-
-  const router = useRouter()
-  const flowRunRoute = inject(flowRunRouteKey)
-
-  const run = async (deployment: Deployment): Promise<void> => {
-    loading.value = true
-
-    try {
-      flowRun.value = await deploymentsApi.createDeploymentFlowRun(deployment.id, {
-        state: {
-          type: 'scheduled',
-          message: 'Run through UI',
-        },
-      },
-      )
-      const runRoute: RouteLocationRaw = flowRunRoute(flowRun.value.id)
-      const toastMessage = h(RunButtonToastMessage, { flowRun: flowRun.value, flowRunRoute: runRoute, routerProp:router })
-      showToast(toastMessage, 'success')
-    } catch (error) {
-      showToast(localization.error.scheduleFlowRun, 'error')
-      console.warn(error)
-    } finally {
-      loading.value = false
-    }
-  }
 </script>
 
 <style>
