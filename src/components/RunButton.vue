@@ -1,5 +1,5 @@
 <template>
-  <RunForm :deployment="deployment" class="run-button">
+  <FlowRunForm :deployment="deployment" class="run-button">
     <template #default="{ open }">
       <p-button
         v-if="can.create.flow_run"
@@ -13,7 +13,7 @@
         <p-icon class="run-button__run-icon" icon="PlayIcon" solid />
       </p-button>
     </template>
-  </RunForm>
+  </FlowRunForm>
 </template>
 
 <script lang="ts">
@@ -23,7 +23,7 @@
 </script>
 
 <script lang="ts" setup>
-  import RunForm from './RunForm.vue'
+  import FlowRunForm from './FlowRunForm.vue'
   import { Deployment } from '@/models'
   import { canKey } from '@/types'
   import { inject } from '@/utilities'
