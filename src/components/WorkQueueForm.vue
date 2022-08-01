@@ -45,9 +45,7 @@
       <p-button inset @click="cancel">
         Cancel
       </p-button>
-      <p-button type="submit" :loading="isSubmitting">
-        {{ submitLabel(label) }}
-      </p-button>
+      <SubmitButton :action="action" :loading="isSubmitting" />
     </template>
   </p-form>
 </template>
@@ -56,14 +54,15 @@
   import { PLabel, PTextInput, PNumberInput, PTagsInput, PToggle, PForm } from '@prefecthq/prefect-design'
   import { useField, useForm } from 'vee-validate'
   import { computed, reactive, ref, watchEffect } from 'vue'
+  import SubmitButton from './SubmitButton.vue'
   import DeploymentCombobox from '@/components/DeploymentCombobox.vue'
   import { IWorkQueueRequest, WorkQueue, WorkQueueFormValues } from '@/models'
   import { isRequired, withMessage } from '@/services/validate'
-  import { submitLabel } from '@/utilities/buttons'
+  import { FormAction } from '@/types/buttons'
 
   const props = defineProps<{
     workQueue?: WorkQueue,
-    label?: string,
+    action?: FormAction,
   }>()
 
   const internalValue = reactive(new WorkQueueFormValues(props.workQueue))

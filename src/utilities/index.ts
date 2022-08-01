@@ -1,5 +1,4 @@
 export * from './arrays'
-export * from './buttons'
 export * from './colorMode'
 export * from './copy'
 export * from './dates'
