@@ -6,6 +6,7 @@
         class="run-button__modal-activator"
         inset
         :disabled="deployment.deprecated"
+        v-bind="$attrs"
         @click="open"
       >
         Run
@@ -14,6 +15,12 @@
     </template>
   </RunForm>
 </template>
+
+<script lang="ts">
+  export default {
+    inheritAttrs: false,
+  }
+</script>
 
 <script lang="ts" setup>
   import RunForm from './RunForm.vue'
