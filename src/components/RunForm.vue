@@ -1,16 +1,35 @@
 <template>
   <slot :open="open" :close="close" />
-  <p-modal v-model:showModal="showModal" title="Run">
+  <p-modal v-model:showModal="showModal" title="Run" class="run-form">
     <p-content>
       <h3 class="run-form__section-header">
-        When?
+        Name
+      </h3>
+
+      <p-text-input v-model="name">
+        <template #prepend>
+          <p-button
+            class="run-form__random-name-button"
+            color="primary"
+            icon="RefreshIcon"
+            @click="name = generateRandomName()"
+          />
+        </template>
+      </p-text-input>
+    </p-content>
+
+    <p-divider v-if="deployment.parameters" />
+
+    <p-content>
+      <h3 class="run-form__section-header">
+        Start
       </h3>
 
       <p-button-group v-model="nowOrLater" :options="nowOrLaterOptions" size="sm" />
 
       <template v-if="nowOrLater == 'later'">
         <p-label label="Date">
-          <p-date-input v-model="date" show-time />
+          <p-date-input v-model="start" show-time />
         </p-label>
       </template>
     </p-content>
@@ -22,12 +41,16 @@
         Parameters
       </h3>
 
-      <PydanticForm v-model="parameters" hide-footer :pydantic-schema="deployment.parameterOpenApiSchema" />
+      <p-button-group v-model="useParameters" :options="useParametersOptions" size="sm" />
+
+      <template v-if="useParameters == 'custom'">
+        <PydanticForm v-model="parameters" hide-footer :pydantic-schema="deployment.parameterOpenApiSchema" />
+      </template>
     </p-content>
 
     <template #actions>
       <p-button type="submit" :disabled="disabled" @click="submit">
-        Run {{ parametersHaveBeenModified ? '' : 'with default parameters' }}
+        Run {{ useParameters == 'custom' ? '(custom)' : '' }}
       </p-button>
     </template>
   </p-modal>
@@ -44,6 +67,7 @@
   import { localization } from '@/localization'
   import { Deployment } from '@/models'
   import { flowRunRouteKey } from '@/router/routes'
+  import { mocker } from '@/services'
   import { deploymentsApiKey } from '@/services/DeploymentsApi'
   import { canKey } from '@/types'
   import { inject } from '@/utilities'
@@ -51,6 +75,10 @@
   const props = defineProps<{
     deployment: Deployment,
   }>()
+
+  const generateRandomName = (): string => {
+    return mocker.create('runName')
+  }
 
   // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   const initialValues = { ...props.deployment.parameters ?? {} }
@@ -69,11 +97,14 @@
   const can = inject(canKey)
   const deploymentsApi = inject(deploymentsApiKey)
   const loading = ref(false)
-  const date = ref(new Date())
+  const start = ref(new Date())
+  const name = ref(generateRandomName())
   const { value: parameters } = useField<Record<string, unknown>>('parameters', undefined, { initialValue: initialValues })
   const nowOrLater = ref('now')
-  const nowOrLaterOptions: ButtonGroupOption[] = [{ label: 'Now', value: 'now' }, { label: 'Later...', value: 'later' }]
+  const nowOrLaterOptions: ButtonGroupOption[] = [{ label: 'Now', value: 'now' }, { label: 'Later', value: 'later' }]
 
+  const useParameters = ref('default')
+  const useParametersOptions: ButtonGroupOption[] = [{ label: 'Default', value: 'default' }, { label: 'Custom', value: 'custom' }]
 
   const flowRun = ref()
 
@@ -83,10 +114,6 @@
 
   const router = useRouter()
   const flowRunRoute = inject(flowRunRouteKey)
-
-  const parametersHaveBeenModified = computed(() => {
-    return JSON.stringify(props.deployment.parameters) !== JSON.stringify(parameters.value)
-  })
 
   const submit = async (deployment: Deployment): Promise<void> => {
     loading.value = true
@@ -114,6 +141,16 @@
 </script>
 
 <style>
+.run-form {
+  min-width: 850px;
+}
+
+.run-form__random-name-button { @apply
+  rounded-none
+  rounded-tl
+  rounded-bl
+}
+
 .run-form__section-header {
   @apply
   text-lg
