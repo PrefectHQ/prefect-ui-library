@@ -27,7 +27,7 @@ export const randomOpenApiProperty: MockFunction<PydanticTypeDefinition, [Pydant
     boolean: false,
     integer: 1,
     number: 1.6,
-    object: {},
+    object: '{}',
   }
 
   return {
