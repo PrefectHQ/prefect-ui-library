@@ -15,7 +15,7 @@ export const randomOpenApiProperty: MockFunction<PydanticTypeDefinition, [Pydant
     date: this.create('date'),
     'date-time': this.create('date'),
     email: this.create('email'),
-    'json-string': '',
+    'json-string': '{}',
     regex: '/w+/gi',
     'time-delta': 600,
   }
@@ -34,7 +34,7 @@ export const randomOpenApiProperty: MockFunction<PydanticTypeDefinition, [Pydant
     title: this.create('noun'),
     type: propertyType,
     description: uniform(0, 10) > 7 ? this.create('sentence') : undefined,
-    default: defaultTypeMap[propertyType],
+    default: uniform(0, 10) > 4 ? defaultTypeMap[propertyType] : undefined,
     ...propertyFormat ? { format: propertyFormat } : {},
   }
 }
