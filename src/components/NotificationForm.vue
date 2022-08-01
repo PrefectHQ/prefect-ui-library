@@ -34,9 +34,7 @@
       <p-button inset @click="cancel">
         Cancel
       </p-button>
-      <p-button type="submit" :disabled="disabled" :loading="loading">
-        {{ submitLabel(label) }}
-      </p-button>
+      <SubmitButton :action="action" :disabled="disabled" :loading="loading" />
     </template>
   </p-form>
 </template>
@@ -48,16 +46,17 @@
   import { computed, watchEffect, ref, watch, reactive } from 'vue'
   import BlockSchemaFormFields from './BlockSchemaFormFields.vue'
   import NotificationDetails from './NotificationDetails.vue'
+  import SubmitButton from './SubmitButton.vue'
   import StateSelect from '@/components/StateSelect.vue'
   import { localization } from '@/localization'
   import { Notification, BlockTypeFilter, BlockDocumentData } from '@/models'
   import { blockDocumentsApiKey, blockSchemasApiKey, blockTypesApiKey } from '@/services'
-  import { submitLabel } from '@/utilities/buttons'
+  import { FormAction } from '@/types/buttons'
   import { inject } from '@/utilities/inject'
 
   const props = defineProps<{
     notification: Partial<Notification>,
-    label?: string,
+    action?: FormAction,
   }>()
 
   const emit = defineEmits<{
