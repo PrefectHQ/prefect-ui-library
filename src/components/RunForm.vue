@@ -1,6 +1,12 @@
 <template>
   <slot :open="open" :close="close" />
-  <p-modal v-model:showModal="showModal" title="Run" class="run-form">
+  <p-modal v-model:showModal="showModal" class="run-form">
+    <template #title>
+      <div>
+        New run of <span class="run-form__title">{{ deployment.name }}</span>
+      </div>
+    </template>
+
     <p-content>
       <h3 class="run-form__section-header">
         General
@@ -17,6 +23,14 @@
             />
           </template>
         </p-text-input>
+      </p-label>
+
+      <p-label label="Message (optional)">
+        <p-textarea v-model="stateMessage" placeholder="Created from the Prefect UI" />
+      </p-label>
+
+      <p-label label="Tags">
+        <p-tags-input v-model="tags" />
       </p-label>
     </p-content>
 
@@ -108,7 +122,9 @@
   const deploymentsApi = inject(deploymentsApiKey)
   const loading = ref(false)
   const start = ref(new Date())
+  const tags = ref(props.deployment.tags ?? [])
   const name = ref(generateRandomName())
+  const stateMessage = ref('')
   const { value: parameters } = useField<Record<string, unknown>>('parameters', undefined, { initialValue: initialValues })
   const timezone = ref(Intl.DateTimeFormat().resolvedOptions().timeZone)
 
@@ -139,10 +155,10 @@
       flowRun.value = await deploymentsApi.createDeploymentFlowRun(deployment.id, {
         name: name.value,
         parameters: computedParameters.value,
-        tags: [],
+        tags: tags.value,
         state: {
           type: 'scheduled',
-          message: 'Run through UI',
+          message: stateMessage.value,
           scheduledTime: utcDate,
         },
       },
@@ -168,6 +184,12 @@
   rounded-none
   rounded-tl
   rounded-bl
+}
+
+.run-form__title { @apply
+  font-semibold
+  m-0
+  p-0
 }
 
 .run-form__section-header { @apply
