@@ -13,7 +13,7 @@ export const randomDeployment: MockFunction<Deployment, [Partial<Deployment>?]> 
     schedule: random() > 0.25 ? this.create('schedule') : null,
     isScheduleActive: this.create('boolean'),
     parameters: this.create('parameters'),
-    parameterOpenApiSchema: {},
+    parameterOpenApiSchema: this.create('openApiSchema'),
     tags: this.createMany('string', 3),
     manifestPath: this.create('id'),
     storageDocumentId: this.create('id'),
