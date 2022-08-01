@@ -14,12 +14,12 @@
 
       <p-label label="Name">
         <p-text-input v-model="name">
-          <template #prepend>
+          <template #append>
             <p-button
               class="run-form__random-name-button"
               color="primary"
               icon="RefreshIcon"
-              @click="name = generateRandomName()"
+              @click.self="name = generateRandomName()"
             />
           </template>
         </p-text-input>
@@ -196,8 +196,8 @@
 
 .run-form__random-name-button { @apply
   rounded-none
-  rounded-tl
-  rounded-bl
+  rounded-tr
+  rounded-br
 }
 
 .run-form__title { @apply
