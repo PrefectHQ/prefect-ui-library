@@ -19,7 +19,7 @@
               class="flow-run-form-modal__random-name-button"
               color="primary"
               icon="RefreshIcon"
-              @click.self="name = generateRandomName()"
+              @click="name = generateRandomName()"
             />
           </template>
         </p-text-input>
@@ -81,8 +81,8 @@
 <script lang="ts" setup>
   import  { PButton, showToast, ButtonGroupOption } from '@prefecthq/prefect-design'
   import { zonedTimeToUtc } from 'date-fns-tz'
-  import { useField } from 'vee-validate'
-  import { ref, h, computed } from 'vue'
+  import { useForm, useField } from 'vee-validate'
+  import { ref, h, computed, watch } from 'vue'
   import { RouteLocationRaw, useRouter } from 'vue-router'
   import CreateFlowRunToast from './CreateFlowRunToast.vue'
   import PydanticForm from './PydanticForm.vue'
@@ -96,56 +96,76 @@
   import { canKey } from '@/types'
   import { inject } from '@/utilities'
 
+  const generateRandomName = (): string => {
+    return mocker.create('runName')
+  }
 
   const props = defineProps<{
     deployment: Deployment,
   }>()
 
-  const generateRandomName = (): string => {
-    return mocker.create('runName')
-  }
-
-  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-  const initialValues = { ...props.deployment.parameters ?? {} }
-  const initialTypes: Record<keyof typeof initialValues, string> = { }
-
-  Object.keys(initialValues).forEach((key: keyof typeof initialValues) => {
-    const parameter = initialValues[key]
-    if (typeof parameter == 'string' && Date.parse(parameter)) {
-      initialValues[key] = new Date(parameter)
-    }
-
-    initialTypes[key] = typeof parameter
-  })
-
-  const { showModal, open, close: closeModal } = useShowModal()
+  const router = useRouter()
+  const flowRunRoute = inject(flowRunRouteKey)
   const can = inject(canKey)
   const deploymentsApi = inject(deploymentsApiKey)
-  const loading = ref(false)
-  const start = ref(new Date())
-  const tags = ref(props.deployment.tags ?? [])
-  const name = ref(generateRandomName())
-  const stateMessage = ref('')
-  const { value: parameters, resetField: resetParameters } = useField<Record<string, unknown>>('parameters', undefined, { initialValue: initialValues })
-  const timezone = ref(Intl.DateTimeFormat().resolvedOptions().timeZone)
-
-  const nowOrLater = ref('now')
-  const nowOrLaterOptions: ButtonGroupOption[] = [{ label: 'Now', value: 'now' }, { label: 'Later', value: 'later' }]
-
-  const useParameters = ref('default')
-  const useParametersOptions: ButtonGroupOption[] = [{ label: 'Default', value: 'default' }, { label: 'Custom', value: 'custom' }]
-  const computedParameters = computed(() => {
-    return useParameters.value == 'custom' ? parameters.value : props.deployment.parameters
-  })
 
   const flowRun = ref()
+  const loading = ref(false)
 
   const disabled = computed(() => {
     return !can.create.flow_run
   })
 
-  const router = useRouter()
-  const flowRunRoute = inject(flowRunRouteKey)
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+  const initialParameterValues = { ...props.deployment.parameters ?? {} }
+  const initialParameterTypes: Record<keyof typeof initialParameterValues, string> = { }
+
+  Object.keys(initialParameterValues).forEach((key: keyof typeof initialParameterTypes) => {
+    const parameter = initialParameterValues[key]
+    if (typeof parameter == 'string' && Date.parse(parameter)) {
+      initialParameterValues[key] = new Date(parameter)
+    }
+
+    initialParameterTypes[key] = typeof parameter
+  })
+
+  const { showModal, open, close } = useShowModal()
+
+  const getInitialFormValues = (): Record<string, unknown> => {
+    return {
+      state: {
+        message: '',
+        scheduledStart: new Date(),
+      },
+      tags: props.deployment.tags ?? [],
+      name: generateRandomName(),
+      parameters: initialParameterValues,
+      timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+      nowOrLater: 'now',
+      useParameters: 'default',
+    }
+  }
+
+  const { resetForm } = useForm({
+    initialValues: getInitialFormValues(),
+  })
+
+  const { value: start } = useField<Date>('state.scheduledStart')
+  const { value: tags } = useField<string[]>('tags')
+  const { value: name } = useField<string>('name')
+  const { value: stateMessage } = useField<string>('state.message')
+  const { value: parameters } = useField<Record<string, unknown>>('parameters')
+  const { value: timezone } = useField<string>('timezone')
+
+  const nowOrLaterOptions: ButtonGroupOption[] = [{ label: 'Now', value: 'now' }, { label: 'Later', value: 'later' }]
+  const { value: nowOrLater } = useField<typeof nowOrLaterOptions[number]['value']>('nowOrLater')
+
+  const useParametersOptions: ButtonGroupOption[] = [{ label: 'Default', value: 'default' }, { label: 'Custom', value: 'custom' }]
+  const { value: useParameters } = useField<typeof useParametersOptions[number]['value']>('useParameters')
+
+  const computedParameters = computed(() => {
+    return useParameters.value == 'custom' ? parameters.value : props.deployment.parameters
+  })
 
   const utcStartTime = computed(() => {
     return zonedTimeToUtc(start.value, timezone.value)
@@ -164,13 +184,6 @@
     }
   })
 
-  const close = (): void => {
-    nowOrLater.value = 'now'
-    useParameters.value = 'default'
-    resetParameters()
-    closeModal()
-  }
-
   const submit = async (deployment: Deployment): Promise<void> => {
     loading.value = true
 
@@ -187,6 +200,12 @@
       loading.value = false
     }
   }
+
+  watch(showModal, (val, oldVal) => {
+    if (val && !oldVal) {
+      resetForm({ values: getInitialFormValues() })
+    }
+  })
 </script>
 
 <style>
