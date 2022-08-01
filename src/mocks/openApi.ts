@@ -9,7 +9,7 @@ export const randomOpenApiProperty: MockFunction<PydanticTypeDefinition, [Pydant
   // propertyTypeFirstDraw lets us reduce the number of `null` type definitions by half
   const propertyTypeFirstDraw = choice(PydanticTypes)
   const propertyType = propertyTypeFirstDraw == 'null' ? choice(PydanticTypes) : propertyTypeFirstDraw
-  const propertyFormat = propertyType == 'string' ? choice(PydanticStringFormats) : undefined
+  const propertyFormat = propertyType == 'string' && uniform(0, 10) > 8 ? choice(PydanticStringFormats) : undefined
 
   const defaultTypeStringFormatMap: Record<Partial<typeof PydanticStringFormats[number]>, unknown> = {
     date: this.create('date'),
@@ -34,8 +34,9 @@ export const randomOpenApiProperty: MockFunction<PydanticTypeDefinition, [Pydant
     title: this.create('noun'),
     type: propertyType,
     description: uniform(0, 10) > 7 ? this.create('sentence') : undefined,
-    default: uniform(0, 10) > 4 ? defaultTypeMap[propertyType] : undefined,
+    default: propertyType == 'object' || uniform(0, 10) > 4 ? defaultTypeMap[propertyType] : undefined,
     ...propertyFormat ? { format: propertyFormat } : {},
+    ...overrides,
   }
 }
 
@@ -47,8 +48,9 @@ export const randomOpenApiSchema: MockFunction<PydanticTypeDefinition, [Pydantic
   }, {})
 
   return {
-    title: 'Parameters',
+    title: 'Open API Schema',
     type: 'object',
     properties: properties,
+    ...overrides,
   }
 }
