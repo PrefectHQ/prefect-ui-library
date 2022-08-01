@@ -1,15 +1,13 @@
 <template>
   <div class="create-flow-run-toast">
     <div class="create-flow-run-toast__message">
-      <span class="create-flow-run-toast__message--emphasized">{{ runName }}</span> scheduled <template
+      <span class="create-flow-run-toast__message--emphasized">{{ flowRun.name }}</span> scheduled <template
         v-if="immediate"
       >
         to start
         <span class="create-flow-run-toast__message--emphasized">now</span>
       </template><template v-else>
-        for <span
-          class="create-flow-run-toast__message--emphasized"
-        >{{ startTime?.toLocaleString() }}</span>
+        for <span class="create-flow-run-toast__message--emphasized">{{ startTime?.toLocaleString() }}</span>
       </template>
     </div>
 
@@ -21,25 +19,24 @@
 
 <script lang="ts" setup>
   import { PButton } from '@prefecthq/prefect-design'
-  import { computed, ref } from '@vue/reactivity'
-  import { NavigationFailure, RouteLocationRaw, Router } from 'vue-router'
+  import { useRouter } from 'vue-router'
   import { FlowRun } from '@/models/FlowRun'
-  import {  titleCase } from '@/utilities'
+  import { flowRunRouteKey } from '@/router/routes'
+  import { inject } from '@/utilities'
+
 
   const props = defineProps<{
     flowRun: FlowRun,
-    flowRunRoute: RouteLocationRaw,
-    routerProp: Router,
     immediate?: boolean,
     startTime?: Date,
   }>()
 
-  const runName = computed(() => {
-    return titleCase(props.flowRun.name!)
-  })
+  const router = useRouter()
+  const flowRunRoute = inject(flowRunRouteKey)
 
-  const router = ref(props.routerProp)
-  const handleClick = (): Promise<void | NavigationFailure | undefined> => router.value.push(props.flowRunRoute)
+  const handleClick = (): void => {
+    router.push(flowRunRoute(props.flowRun.id))
+  }
 </script>
 
 <style>

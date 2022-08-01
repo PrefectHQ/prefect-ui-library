@@ -90,7 +90,7 @@
   import { useShowModal } from '@/compositions'
   import { localization } from '@/localization'
   import { CreateFlowRun, Deployment } from '@/models'
-  import { flowRunRouteKey } from '@/router/routes'
+
   import { mocker } from '@/services'
   import { deploymentsApiKey } from '@/services/DeploymentsApi'
   import { canKey } from '@/types'
@@ -105,7 +105,7 @@
   }>()
 
   const router = useRouter()
-  const flowRunRoute = inject(flowRunRouteKey)
+
   const can = inject(canKey)
   const deploymentsApi = inject(deploymentsApiKey)
 
@@ -189,8 +189,7 @@
 
     try {
       flowRun.value = await deploymentsApi.createDeploymentFlowRun(deployment.id, createFlowRunBody.value)
-      const runRoute: RouteLocationRaw = flowRunRoute(flowRun.value.id)
-      const toastMessage = h(CreateFlowRunToast, { flowRun: flowRun.value, flowRunRoute: runRoute, immediate: nowOrLater.value == 'now', startTime: utcStartTime.value, routerProp:router })
+      const toastMessage = h(CreateFlowRunToast, { flowRun: flowRun.value, immediate: nowOrLater.value == 'now', startTime: utcStartTime.value })
       close()
       showToast(toastMessage, 'success')
     } catch (error) {
