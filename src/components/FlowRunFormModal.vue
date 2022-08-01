@@ -1,14 +1,14 @@
 <template>
   <slot :open="open" :close="close" />
-  <p-modal v-model:showModal="showModal" class="run-form">
+  <p-modal v-model:showModal="showModal" class="flow-run-form-modal">
     <template #title>
       <div>
-        New run of <span class="run-form__title">{{ deployment.name }}</span>
+        New run of <span class="flow-run-form-modal__title">{{ deployment.name }}</span>
       </div>
     </template>
 
     <p-content>
-      <h3 class="run-form__section-header">
+      <h3 class="flow-run-form-modal__section-header">
         General
       </h3>
 
@@ -16,7 +16,7 @@
         <p-text-input v-model="name">
           <template #append>
             <p-button
-              class="run-form__random-name-button"
+              class="flow-run-form-modal__random-name-button"
               color="primary"
               icon="RefreshIcon"
               @click.self="name = generateRandomName()"
@@ -37,14 +37,14 @@
     <p-divider v-if="deployment.parameters" />
 
     <p-content>
-      <h3 class="run-form__section-header">
+      <h3 class="flow-run-form-modal__section-header">
         Start
       </h3>
 
       <p-button-group v-model="nowOrLater" :options="nowOrLaterOptions" size="sm" />
 
       <template v-if="nowOrLater == 'later'">
-        <div class="run-form__row">
+        <div class="flow-run-form-modal__row">
           <p-label label="Date" class="interval-schedule-form__column--span-2">
             <p-date-input v-model="start" show-time />
           </p-label>
@@ -59,7 +59,7 @@
     <p-divider v-if="deployment.parameters" />
 
     <p-content v-if="deployment.parameters">
-      <h3 class="run-form__section-header">
+      <h3 class="flow-run-form-modal__section-header">
         Parameters
       </h3>
 
@@ -190,28 +190,28 @@
 </script>
 
 <style>
-.run-form {
+.flow-run-form-modal {
   min-width: 850px;
 }
 
-.run-form__random-name-button { @apply
+.flow-run-form-modal__random-name-button { @apply
   rounded-none
   rounded-tr
   rounded-br
 }
 
-.run-form__title { @apply
+.flow-run-form-modal__title { @apply
   font-semibold
   m-0
   p-0
 }
 
-.run-form__section-header { @apply
+.flow-run-form-modal__section-header { @apply
   text-lg
   font-semibold
 }
 
-.run-form__row { @apply
+.flow-run-form-modal__row { @apply
   grid
   gap-2
   grid-cols-4;
