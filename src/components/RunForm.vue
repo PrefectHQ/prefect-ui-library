@@ -3,19 +3,21 @@
   <p-modal v-model:showModal="showModal" title="Run" class="run-form">
     <p-content>
       <h3 class="run-form__section-header">
-        Name
+        General
       </h3>
 
-      <p-text-input v-model="name">
-        <template #prepend>
-          <p-button
-            class="run-form__random-name-button"
-            color="primary"
-            icon="RefreshIcon"
-            @click="name = generateRandomName()"
-          />
-        </template>
-      </p-text-input>
+      <p-label label="Name">
+        <p-text-input v-model="name">
+          <template #prepend>
+            <p-button
+              class="run-form__random-name-button"
+              color="primary"
+              icon="RefreshIcon"
+              @click="name = generateRandomName()"
+            />
+          </template>
+        </p-text-input>
+      </p-label>
     </p-content>
 
     <p-divider v-if="deployment.parameters" />
@@ -28,9 +30,15 @@
       <p-button-group v-model="nowOrLater" :options="nowOrLaterOptions" size="sm" />
 
       <template v-if="nowOrLater == 'later'">
-        <p-label label="Date">
-          <p-date-input v-model="start" show-time />
-        </p-label>
+        <div class="run-form__row">
+          <p-label label="Date" class="interval-schedule-form__column--span-2">
+            <p-date-input v-model="start" show-time />
+          </p-label>
+
+          <p-label label="Timezone" class="interval-schedule-form__column--span-2">
+            <TimezoneSelect v-model="timezone" />
+          </p-label>
+        </div>
       </template>
     </p-content>
 
@@ -58,11 +66,13 @@
 
 <script lang="ts" setup>
   import  { PButton, showToast, ButtonGroupOption } from '@prefecthq/prefect-design'
+  import { zonedTimeToUtc } from 'date-fns-tz'
   import { useField } from 'vee-validate'
   import { ref, h, computed } from 'vue'
   import { RouteLocationRaw, useRouter } from 'vue-router'
   import PydanticForm from './PydanticForm.vue'
   import RunButtonToastMessage from './RunButtonToastMessage.vue'
+  import TimezoneSelect from './TimezoneSelect.vue'
   import { useShowModal } from '@/compositions'
   import { localization } from '@/localization'
   import { Deployment } from '@/models'
@@ -100,6 +110,8 @@
   const start = ref(new Date())
   const name = ref(generateRandomName())
   const { value: parameters } = useField<Record<string, unknown>>('parameters', undefined, { initialValue: initialValues })
+  const timezone = ref(Intl.DateTimeFormat().resolvedOptions().timeZone)
+
   const nowOrLater = ref('now')
   const nowOrLaterOptions: ButtonGroupOption[] = [{ label: 'Now', value: 'now' }, { label: 'Later', value: 'later' }]
 
@@ -122,6 +134,8 @@
     loading.value = true
 
     try {
+      const utcDate = zonedTimeToUtc(start.value, timezone.value)
+
       flowRun.value = await deploymentsApi.createDeploymentFlowRun(deployment.id, {
         name: name.value,
         parameters: computedParameters.value,
@@ -129,7 +143,7 @@
         state: {
           type: 'scheduled',
           message: 'Run through UI',
-          scheduledTime: start.value,
+          scheduledTime: utcDate,
         },
       },
       )
@@ -156,10 +170,15 @@
   rounded-bl
 }
 
-.run-form__section-header {
-  @apply
+.run-form__section-header { @apply
   text-lg
   font-semibold
+}
+
+.run-form__row { @apply
+  grid
+  gap-2
+  grid-cols-4;
 }
 </style>
 
