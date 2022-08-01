@@ -105,6 +105,9 @@
 
   const useParameters = ref('default')
   const useParametersOptions: ButtonGroupOption[] = [{ label: 'Default', value: 'default' }, { label: 'Custom', value: 'custom' }]
+  const computedParameters = computed(() => {
+    return useParameters.value == 'custom' ? parameters.value : props.deployment.parameters
+  })
 
   const flowRun = ref()
 
@@ -120,11 +123,13 @@
 
     try {
       flowRun.value = await deploymentsApi.createDeploymentFlowRun(deployment.id, {
-        parameters: {},
+        name: name.value,
+        parameters: computedParameters.value,
         tags: [],
         state: {
           type: 'scheduled',
           message: 'Run through UI',
+          scheduledTime: start.value,
         },
       },
       )
