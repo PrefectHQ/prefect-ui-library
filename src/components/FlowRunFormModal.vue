@@ -236,7 +236,6 @@
       return
     }
 
-    console.log(valid)
     try {
       flowRun.value = await deploymentsApi.createDeploymentFlowRun(props.deployment.id, createFlowRunBody.value)
       const toastMessage = h(CreateFlowRunToast, { flowRun: flowRun.value, immediate: nowOrLater.value == 'now', startTime: utcStartTime.value })
