@@ -84,17 +84,18 @@
   import { useField } from 'vee-validate'
   import { ref, h, computed } from 'vue'
   import { RouteLocationRaw, useRouter } from 'vue-router'
+  import CreateFlowRunToast from './CreateFlowRunToast.vue'
   import PydanticForm from './PydanticForm.vue'
-  import RunButtonToastMessage from './RunButtonToastMessage.vue'
   import TimezoneSelect from './TimezoneSelect.vue'
   import { useShowModal } from '@/compositions'
   import { localization } from '@/localization'
-  import { Deployment } from '@/models'
+  import { CreateFlowRun, Deployment } from '@/models'
   import { flowRunRouteKey } from '@/router/routes'
   import { mocker } from '@/services'
   import { deploymentsApiKey } from '@/services/DeploymentsApi'
   import { canKey } from '@/types'
   import { inject } from '@/utilities'
+
 
   const props = defineProps<{
     deployment: Deployment,
@@ -117,7 +118,7 @@
     initialTypes[key] = typeof parameter
   })
 
-  const { showModal, open, close } = useShowModal()
+  const { showModal, open, close: closeModal } = useShowModal()
   const can = inject(canKey)
   const deploymentsApi = inject(deploymentsApiKey)
   const loading = ref(false)
@@ -125,7 +126,7 @@
   const tags = ref(props.deployment.tags ?? [])
   const name = ref(generateRandomName())
   const stateMessage = ref('')
-  const { value: parameters } = useField<Record<string, unknown>>('parameters', undefined, { initialValue: initialValues })
+  const { value: parameters, resetField: resetParameters } = useField<Record<string, unknown>>('parameters', undefined, { initialValue: initialValues })
   const timezone = ref(Intl.DateTimeFormat().resolvedOptions().timeZone)
 
   const nowOrLater = ref('now')
@@ -140,31 +141,44 @@
   const flowRun = ref()
 
   const disabled = computed(() => {
-    return can.create.flow_run
+    return !can.create.flow_run
   })
 
   const router = useRouter()
   const flowRunRoute = inject(flowRunRouteKey)
 
+  const utcStartTime = computed(() => {
+    return zonedTimeToUtc(start.value, timezone.value)
+  })
+
+  const createFlowRunBody = computed<CreateFlowRun>(() => {
+    return {
+      name: name.value,
+      parameters: computedParameters.value,
+      tags: tags.value,
+      state: {
+        type: 'scheduled',
+        message: stateMessage.value,
+        scheduledTime: utcStartTime.value,
+      },
+    }
+  })
+
+  const close = (): void => {
+    nowOrLater.value = 'now'
+    useParameters.value = 'default'
+    resetParameters()
+    closeModal()
+  }
+
   const submit = async (deployment: Deployment): Promise<void> => {
     loading.value = true
 
     try {
-      const utcDate = zonedTimeToUtc(start.value, timezone.value)
-
-      flowRun.value = await deploymentsApi.createDeploymentFlowRun(deployment.id, {
-        name: name.value,
-        parameters: computedParameters.value,
-        tags: tags.value,
-        state: {
-          type: 'scheduled',
-          message: stateMessage.value,
-          scheduledTime: utcDate,
-        },
-      },
-      )
+      flowRun.value = await deploymentsApi.createDeploymentFlowRun(deployment.id, createFlowRunBody.value)
       const runRoute: RouteLocationRaw = flowRunRoute(flowRun.value.id)
-      const toastMessage = h(RunButtonToastMessage, { flowRun: flowRun.value, flowRunRoute: runRoute, routerProp:router })
+      const toastMessage = h(CreateFlowRunToast, { flowRun: flowRun.value, flowRunRoute: runRoute, immediate: nowOrLater.value == 'now', startTime: utcStartTime.value, routerProp:router })
+      close()
       showToast(toastMessage, 'success')
     } catch (error) {
       showToast(localization.error.scheduleFlowRun, 'error')
