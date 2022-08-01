@@ -1,5 +1,5 @@
 <template>
-  <p-button type="submit" :disabled="disabled" :loading="loading">
+  <p-button type="submit">
     {{ action }}
   </p-button>
 </template>
@@ -10,8 +10,6 @@
 
   withDefaults(defineProps<{
     action?: FormAction,
-    disabled?: boolean,
-    loading?: boolean,
   }>(), {
     action: 'Save',
   })
