@@ -25,6 +25,14 @@
         <p-tags :tags="flowRun.tags" />
       </p-key-value>
     </template>
+
+    <p-key-value label="Tags" :alternate="alternate">
+      <template #value>
+        <template v-if="flowRun.tags?.length">
+          <p-tags :tags="flowRun.tags" />
+        </template>
+      </template>
+    </p-key-value>
   </div>
 </template>
 
