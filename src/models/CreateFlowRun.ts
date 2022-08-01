@@ -9,7 +9,9 @@ export type CreateFlowRun = {
   state: {
     type: StateType,
     message: string,
-    scheduledTime?: Date,
+    stateDetails?: {
+      scheduledTime?: Date,
+    },
   },
 }
 
@@ -20,6 +22,8 @@ export type CreateFlowRunRequest = {
   state: {
     type: ServerStateType,
     message?: string,
-    scheduled_time?: string,
+    state_details?: {
+      scheduled_time?: string,
+    },
   },
 }

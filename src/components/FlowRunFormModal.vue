@@ -83,7 +83,6 @@
   import { zonedTimeToUtc } from 'date-fns-tz'
   import { useForm, useField } from 'vee-validate'
   import { ref, h, computed, watch } from 'vue'
-  import { RouteLocationRaw, useRouter } from 'vue-router'
   import CreateFlowRunToast from './CreateFlowRunToast.vue'
   import PydanticForm from './PydanticForm.vue'
   import TimezoneSelect from './TimezoneSelect.vue'
@@ -103,8 +102,6 @@
   const props = defineProps<{
     deployment: Deployment,
   }>()
-
-  const router = useRouter()
 
   const can = inject(canKey)
   const deploymentsApi = inject(deploymentsApiKey)
@@ -184,11 +181,12 @@
     }
   })
 
-  const submit = async (deployment: Deployment): Promise<void> => {
+  const submit = async (): Promise<void> => {
     loading.value = true
 
     try {
-      flowRun.value = await deploymentsApi.createDeploymentFlowRun(deployment.id, createFlowRunBody.value)
+      flowRun.value = await deploymentsApi.createDeploymentFlowRun(props.deployment.id, createFlowRunBody.value)
+      console.log(flowRun.value)
       const toastMessage = h(CreateFlowRunToast, { flowRun: flowRun.value, immediate: nowOrLater.value == 'now', startTime: utcStartTime.value })
       close()
       showToast(toastMessage, 'success')

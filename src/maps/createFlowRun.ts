@@ -9,7 +9,10 @@ export const mapCreateFlowRunToCreateFlowRunRequest: MapFunction<CreateFlowRun, 
     state: {
       type: this.map('StateType', source.state.type, 'ServerStateType'),
       message: source.state.message,
-      'scheduled_time': source.state.scheduledTime?.toISOString(),
+      'state_details': {
+        ...source.state.stateDetails,
+        'scheduled_time': source.state.stateDetails?.scheduledTime?.toISOString(),
+      },
     },
   }
 }

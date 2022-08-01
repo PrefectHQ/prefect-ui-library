@@ -24,17 +24,15 @@
   import { flowRunRouteKey } from '@/router/routes'
   import { inject } from '@/utilities'
 
-
   const props = defineProps<{
     flowRun: FlowRun,
     immediate?: boolean,
     startTime?: Date,
   }>()
 
-  const router = useRouter()
-  const flowRunRoute = inject(flowRunRouteKey)
-
   const handleClick = (): void => {
+    const flowRunRoute = inject(flowRunRouteKey)
+    const router = useRouter()
     router.push(flowRunRoute(props.flowRun.id))
   }
 </script>
