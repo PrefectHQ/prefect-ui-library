@@ -157,7 +157,7 @@
       parameters: computedParameters.value,
       tags: tags.value,
       state: {
-        type: 'SCHEDULED',
+        type: 'scheduled',
         message: stateMessage.value,
         scheduledTime: utcStartTime.value,
       },
