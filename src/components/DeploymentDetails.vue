@@ -41,10 +41,8 @@
     />
 
     <p-key-value label="Tags" :alternate="alternate">
-      <template #value>
-        <template v-if="deployment.tags?.length">
-          <p-tags :tags="deployment.tags" class="deployment-details__tags" />
-        </template>
+      <template v-if="deployment.tags?.length" #value>
+        <p-tags :tags="deployment.tags!" class="deployment-details__tags" />
       </template>
     </p-key-value>
   </div>
