@@ -43,7 +43,7 @@
           Parameters
         </h3>
 
-        <template v-if="deployment?.parameters">
+        <template v-if="hasParameters">
           <PydanticForm v-model="parameters" hide-footer :pydantic-schema="deployment.parameterOpenApiSchema" />
         </template>
 
@@ -97,6 +97,10 @@
       parameters: parameters.value,
       tags: tags.value,
     })
+  })
+
+  const hasParameters = computed(() => {
+    return Object.keys(props.deployment.parameterOpenApiSchema.properties ?? {}).length > 0
   })
 
   // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
