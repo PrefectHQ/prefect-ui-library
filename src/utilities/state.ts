@@ -9,6 +9,7 @@ export function mapStateNameToStateType(stateName: string): { name: string, type
     case 'pending': return { name: 'Pending', type: 'pending' }
     case 'cancelled': return { name: 'Cancelled ', type: 'cancelled' }
     case 'crashed': return { name: 'Crashed ', type: 'crashed' }
+    case 'late': return { name: 'Late ', type: 'scheduled' }
     default: return { name: stateName, type: null }
   }
 }
