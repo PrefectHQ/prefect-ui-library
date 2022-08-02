@@ -4,7 +4,7 @@
       <template v-if="blockType.codeExample || blockType.documentationUrl">
         <p class="block-document-card__help">
           <template v-if="blockType.codeExample">
-            Paste this snippet into your flows to use this block.
+            Paste this snippet <span class="block-document-card__emphasized-section">into your flows</span> to use this block.
           </template>
           <template v-if="blockType.documentationUrl">
             Need help? <p-link :to="blockType.documentationUrl">
@@ -67,6 +67,10 @@
 .block-document-card__help { @apply
   text-gray-500
   text-sm
+}
+
+.block-document-card__emphasized-section {
+  @apply font-semibold
 }
 
 .block-document-card__type { @apply
