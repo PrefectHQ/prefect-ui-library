@@ -1,8 +1,8 @@
-import { IWorkQueueResponse } from '@/models/IWorkQueueResponse'
+import { WorkQueueResponse } from '@/models/WorkQueueResponse'
 import { WorkQueue } from '@/models/WorkQueue'
 import { MapFunction } from '@/services/Mapper'
 
-export const mapIWorkQueueResponseToWorkQueue: MapFunction<IWorkQueueResponse, WorkQueue> = function(source: IWorkQueueResponse): WorkQueue {
+export const mapWorkQueueResponseToWorkQueue: MapFunction<WorkQueueResponse, WorkQueue> = function(source: WorkQueueResponse): WorkQueue {
   return new WorkQueue({
     id: source.id,
     created: this.map('string', source.created, 'Date'),
@@ -15,7 +15,7 @@ export const mapIWorkQueueResponseToWorkQueue: MapFunction<IWorkQueueResponse, W
   })
 }
 
-export const mapWorkQueueToIWorkQueueResponse: MapFunction<WorkQueue, IWorkQueueResponse> = function(source: WorkQueue): IWorkQueueResponse {
+export const mapWorkQueueToWorkQueueResponse: MapFunction<WorkQueue, WorkQueueResponse> = function(source: WorkQueue): WorkQueueResponse {
   return {
     'id': source.id,
     'created': this.map('Date', source.created, 'string'),

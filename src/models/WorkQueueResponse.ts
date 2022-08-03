@@ -1,7 +1,7 @@
 import { WorkQueueFilterResponse } from '@/models/WorkQueueFilterResponse'
 import { DateString } from '@/types/dates'
 
-export type IWorkQueueResponse = {
+export type WorkQueueResponse = {
   id: string,
   created: DateString,
   updated: DateString,

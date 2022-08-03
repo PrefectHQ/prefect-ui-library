@@ -1,7 +1,7 @@
 import { InjectionKey } from 'vue'
 import { FlowRun, FlowRunResponse } from '@/models'
 import { WorkQueueRequest } from '@/models/WorkQueueRequest'
-import { IWorkQueueResponse } from '@/models/IWorkQueueResponse'
+import { WorkQueueResponse } from '@/models/WorkQueueResponse'
 import { WorkQueue } from '@/models/WorkQueue'
 import { Api, ApiRoute } from '@/services/Api'
 import { mapper } from '@/services/Mapper'
@@ -12,18 +12,18 @@ export class WorkQueuesApi extends Api {
   protected route: ApiRoute = '/work_queues'
 
   public getWorkQueue(id: string): Promise<WorkQueue> {
-    return this.get<IWorkQueueResponse>(`/${id}`)
-      .then(({ data }) => mapper.map('IWorkQueueResponse', data, 'WorkQueue'))
+    return this.get<WorkQueueResponse>(`/${id}`)
+      .then(({ data }) => mapper.map('WorkQueueResponse', data, 'WorkQueue'))
   }
 
   public getWorkQueues(filter: PaginatedFilter): Promise<WorkQueue[]> {
-    return this.post<IWorkQueueResponse[]>('/filter', filter)
-      .then(({ data }) => mapper.map('IWorkQueueResponse', data, 'WorkQueue'))
+    return this.post<WorkQueueResponse[]>('/filter', filter)
+      .then(({ data }) => mapper.map('WorkQueueResponse', data, 'WorkQueue'))
   }
 
   public createWorkQueue(request: WorkQueueRequest): Promise<WorkQueue> {
-    return this.post<IWorkQueueResponse>('/', request)
-      .then(({ data }) => mapper.map('IWorkQueueResponse', data, 'WorkQueue'))
+    return this.post<WorkQueueResponse>('/', request)
+      .then(({ data }) => mapper.map('WorkQueueResponse', data, 'WorkQueue'))
   }
 
   public pauseWorkQueue(id: string): Promise<void> {

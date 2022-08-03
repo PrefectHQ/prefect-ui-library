@@ -31,7 +31,7 @@ import { mapServerStateTypeToStateType, mapStateTypeToServerStateType } from '@/
 import { mapTaskInputToTaskInputResponse, mapTaskInputResponseToTaskInput } from '@/maps/taskInput'
 import { mapTaskRunToTaskRunResponse, mapTaskRunResponseToTaskRun } from '@/maps/taskRun'
 import { mapUiFlowRunHistoryResponseToUiFlowRunHistory } from '@/maps/uiFlowRunHistory'
-import { mapWorkQueueToIWorkQueueResponse, mapIWorkQueueResponseToWorkQueue } from '@/maps/workQueue'
+import { mapWorkQueueToWorkQueueResponse, mapWorkQueueResponseToWorkQueue } from '@/maps/workQueue'
 import { mapWorkQueueFilterToWorkQueueFilterResponse, mapWorkQueueFilterResponseToWorkQueueFilter } from '@/maps/workQueueFilter'
 
 export const maps = {
@@ -73,7 +73,7 @@ export const maps = {
   TaskInputResponse: { TaskInput: mapTaskInputResponseToTaskInput },
   TaskRunResponse: { TaskRun: mapTaskRunResponseToTaskRun },
   WorkQueueFilterResponse: { WorkQueueFilter: mapWorkQueueFilterResponseToWorkQueueFilter },
-  IWorkQueueResponse: { WorkQueue: mapIWorkQueueResponseToWorkQueue },
+  WorkQueueResponse: { WorkQueue: mapWorkQueueResponseToWorkQueue },
   Log: { LogResponse: mapLogToLogResponse },
   number: { string: mapNumberToString },
   RunHistory: { FlowRunHistoryResponse: mapRunHistoryToFlowRunHistoryResponse, DivergingBarChartItem: mapRunHistoryToDivergingBarChartItem },
@@ -86,6 +86,6 @@ export const maps = {
   TaskRun: { TaskRunResponse: mapTaskRunToTaskRunResponse },
   UiFlowRunHistory: { ScatterPlotItem: mapUiFlowRunHistoryToScatterPlotItem },
   UiFlowRunHistoryResponse: { UiFlowRunHistory: mapUiFlowRunHistoryResponseToUiFlowRunHistory },
-  WorkQueue: { IWorkQueueResponse: mapWorkQueueToIWorkQueueResponse },
+  WorkQueue: { WorkQueueResponse: mapWorkQueueToWorkQueueResponse },
   WorkQueueFilter: { WorkQueueFilterResponse: mapWorkQueueFilterToWorkQueueFilterResponse },
 }
