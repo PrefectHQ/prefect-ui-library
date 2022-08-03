@@ -46,6 +46,12 @@
   flex-wrap
 }
 
+.page-heading__leading { @apply
+flex
+flex-col
+  gap-1
+}
+
 .page-heading__crumbs { @apply
   flex
   items-center
