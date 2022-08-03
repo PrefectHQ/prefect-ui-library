@@ -1,10 +1,10 @@
 import { EmpiricalPolicyResponse } from '@/models/EmpiricalPolicyResponse'
-import { TaskInputResponse } from '@/models/TaskInputResponse'
 import { StateResponse } from '@/models/StateResponse'
 import { ServerStateType } from '@/models/StateType'
+import { TaskInputResponse } from '@/models/TaskInputResponse'
 import { DateString } from '@/types/dates'
 
-export type ITaskRunResponse = {
+export type TaskRunResponse = {
   id: string,
   created: string,
   updated: string,

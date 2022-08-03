@@ -29,7 +29,7 @@ import { mapStateDetailsResponseToStateDetails, mapStateDetailsToStateDetailsRes
 import { mapStateHistoryToStateHistoryResponse, mapStateHistoryResponseToStateHistory } from '@/maps/stateHistory'
 import { mapServerStateTypeToStateType, mapStateTypeToServerStateType } from '@/maps/stateType'
 import { mapTaskInputToTaskInputResponse, mapTaskInputResponseToTaskInput } from '@/maps/taskInput'
-import { mapTaskRunToITaskRunResponse, mapITaskRunResponseToTaskRun } from '@/maps/taskRun'
+import { mapTaskRunToTaskRunResponse, mapTaskRunResponseToTaskRun } from '@/maps/taskRun'
 import { mapUiFlowRunHistoryResponseToUiFlowRunHistory } from '@/maps/uiFlowRunHistory'
 import { mapWorkQueueToIWorkQueueResponse, mapIWorkQueueResponseToWorkQueue } from '@/maps/workQueue'
 import { mapWorkQueueFilterToIWorkQueueFilterResponse, mapIWorkQueueFilterResponseToWorkQueueFilter } from '@/maps/workQueueFilter'
@@ -71,7 +71,7 @@ export const maps = {
   StateHistoryResponse: { StateHistory: mapStateHistoryResponseToStateHistory },
   StateResponse: { State: mapStateResponseToState },
   TaskInputResponse: { TaskInput: mapTaskInputResponseToTaskInput },
-  ITaskRunResponse: { TaskRun: mapITaskRunResponseToTaskRun },
+  TaskRunResponse: { TaskRun: mapTaskRunResponseToTaskRun },
   IWorkQueueFilterResponse: { WorkQueueFilter: mapIWorkQueueFilterResponseToWorkQueueFilter },
   IWorkQueueResponse: { WorkQueue: mapIWorkQueueResponseToWorkQueue },
   Log: { LogResponse: mapLogToLogResponse },
@@ -83,7 +83,7 @@ export const maps = {
   StateType: { ServerStateType: mapStateTypeToServerStateType },
   string: { Date: mapStringToDate, number: mapStringToNumber },
   TaskInput: { TaskInputResponse: mapTaskInputToTaskInputResponse },
-  TaskRun: { ITaskRunResponse: mapTaskRunToITaskRunResponse },
+  TaskRun: { TaskRunResponse: mapTaskRunToTaskRunResponse },
   UiFlowRunHistory: { ScatterPlotItem: mapUiFlowRunHistoryToScatterPlotItem },
   UiFlowRunHistoryResponse: { UiFlowRunHistory: mapUiFlowRunHistoryResponseToUiFlowRunHistory },
   WorkQueue: { IWorkQueueResponse: mapWorkQueueToIWorkQueueResponse },
