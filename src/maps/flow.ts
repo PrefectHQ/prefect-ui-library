@@ -1,8 +1,8 @@
 import { Flow } from '@/models/Flow'
-import { IFlowResponse } from '@/models/IFlowResponse'
+import { FlowResponse } from '@/models/FlowResponse'
 import { MapFunction } from '@/services/Mapper'
 
-export const mapIFlowResponseToFlow: MapFunction<IFlowResponse, Flow> = function(source: IFlowResponse): Flow {
+export const mapFlowResponseToFlow: MapFunction<FlowResponse, Flow> = function(source: FlowResponse): Flow {
   return new Flow({
     id: source.id,
     name: source.name,
@@ -11,7 +11,7 @@ export const mapIFlowResponseToFlow: MapFunction<IFlowResponse, Flow> = function
   })
 }
 
-export const mapFlowToIFlowResponse: MapFunction<Flow, IFlowResponse> = function(source: Flow): IFlowResponse {
+export const mapFlowToFlowResponse: MapFunction<Flow, FlowResponse> = function(source: Flow): FlowResponse {
   return {
     id: source.id,
     name: source.name,
