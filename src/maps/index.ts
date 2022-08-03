@@ -18,7 +18,7 @@ import { mapEmpiricalPolicyToIEmpiricalPolicyResponse, mapIEmpiricalPolicyRespon
 import { mapFlowToIFlowResponse, mapIFlowResponseToFlow } from '@/maps/flow'
 import { mapFlowRunToIFlowRunResponse, mapIFlowRunResponseToFlowRun } from '@/maps/flowRun'
 import { mapGraphNodeToIFlowRunGraphResponse, mapIFlowRunGraphResponseToGraphNode } from '@/maps/flowRunGraph'
-import { mapRunHistoryToIFlowRunHistoryResponse, mapIFlowRunHistoryResponseToRunHistory } from '@/maps/flowRunHistory'
+import { mapRunHistoryToFlowRunHistoryResponse, mapFlowRunHistoryResponseToRunHistory } from '@/maps/flowRunHistory'
 import { mapLogToILogResponse, mapILogResponseToLog } from '@/maps/logs'
 import { mapNotificationResponseToNotification } from '@/maps/notification'
 import { mapNumberToString, mapStringToNumber } from '@/maps/number'
@@ -58,7 +58,7 @@ export const maps = {
   IEmpiricalPolicyResponse: { EmpiricalPolicy: mapIEmpiricalPolicyResponseToEmpiricalPolicy },
   IFlowResponse: { Flow: mapIFlowResponseToFlow },
   IFlowRunGraphResponse: { GraphNode: mapIFlowRunGraphResponseToGraphNode },
-  IFlowRunHistoryResponse: { RunHistory: mapIFlowRunHistoryResponseToRunHistory },
+  FlowRunHistoryResponse: { RunHistory: mapFlowRunHistoryResponseToRunHistory },
   IFlowRunResponse: { FlowRun: mapIFlowRunResponseToFlowRun },
   ILogResponse: { Log: mapILogResponseToLog },
   NotificationResponse: { Notification: mapNotificationResponseToNotification },
@@ -76,7 +76,7 @@ export const maps = {
   IWorkQueueResponse: { WorkQueue: mapIWorkQueueResponseToWorkQueue },
   Log: { ILogResponse: mapLogToILogResponse },
   number: { string: mapNumberToString },
-  RunHistory: { IFlowRunHistoryResponse: mapRunHistoryToIFlowRunHistoryResponse, DivergingBarChartItem: mapRunHistoryToDivergingBarChartItem },
+  RunHistory: { FlowRunHistoryResponse: mapRunHistoryToFlowRunHistoryResponse, DivergingBarChartItem: mapRunHistoryToDivergingBarChartItem },
   Schedule: { IScheduleResponse: mapScheduleToIScheduleResponse },
   ServerStateType: { StateType: mapServerStateTypeToStateType },
   StateHistory: { StateHistoryResponse: mapStateHistoryToStateHistoryResponse },

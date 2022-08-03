@@ -2,7 +2,7 @@ import { InjectionKey } from 'vue'
 import { FlowRun } from '@/models/FlowRun'
 import { GraphNode } from '@/models/GraphNode'
 import { IFlowRunGraphResponse } from '@/models/IFlowRunGraphResponse'
-import { IFlowRunHistoryResponse } from '@/models/IFlowRunHistoryResponse'
+import { FlowRunHistoryResponse } from '@/models/FlowRunHistoryResponse'
 import { IFlowRunResponse } from '@/models/IFlowRunResponse'
 import { RunHistory } from '@/models/RunHistory'
 import { Api, ApiRoute } from '@/services/Api'
@@ -28,8 +28,8 @@ export class FlowRunsApi extends Api {
   }
 
   public getFlowRunsHistory(filter: FlowRunsHistoryFilter): Promise<RunHistory[]> {
-    return this.post<IFlowRunHistoryResponse[]>('/history', filter)
-      .then(({ data }) => mapper.map('IFlowRunHistoryResponse', data, 'RunHistory'))
+    return this.post<FlowRunHistoryResponse[]>('/history', filter)
+      .then(({ data }) => mapper.map('FlowRunHistoryResponse', data, 'RunHistory'))
   }
 
   public getFlowRunsGraph(id: string): Promise<GraphNode[]> {

@@ -1,8 +1,8 @@
-import { IFlowRunHistoryResponse } from '@/models/IFlowRunHistoryResponse'
+import { FlowRunHistoryResponse } from '@/models/FlowRunHistoryResponse'
 import { RunHistory } from '@/models/RunHistory'
 import { MapFunction } from '@/services/Mapper'
 
-export const mapIFlowRunHistoryResponseToRunHistory: MapFunction<IFlowRunHistoryResponse, RunHistory> = function(source: IFlowRunHistoryResponse): RunHistory {
+export const mapFlowRunHistoryResponseToRunHistory: MapFunction<FlowRunHistoryResponse, RunHistory> = function(source: FlowRunHistoryResponse): RunHistory {
   return new RunHistory({
     intervalStart: this.map('string', source.interval_start, 'Date'),
     intervalEnd: this.map('string', source.interval_end, 'Date'),
@@ -10,7 +10,7 @@ export const mapIFlowRunHistoryResponseToRunHistory: MapFunction<IFlowRunHistory
   })
 }
 
-export const mapRunHistoryToIFlowRunHistoryResponse: MapFunction<RunHistory, IFlowRunHistoryResponse> = function(source: RunHistory): IFlowRunHistoryResponse {
+export const mapRunHistoryToFlowRunHistoryResponse: MapFunction<RunHistory, FlowRunHistoryResponse> = function(source: RunHistory): FlowRunHistoryResponse {
   return {
     'interval_start': this.map('Date', source.intervalStart, 'string'),
     'interval_end': this.map('Date', source.intervalEnd, 'string'),
