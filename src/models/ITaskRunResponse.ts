@@ -1,5 +1,5 @@
 import { EmpiricalPolicyResponse } from '@/models/EmpiricalPolicyResponse'
-import { ITaskInputResponse } from '@/models/ITaskInputResponse'
+import { TaskInputResponse } from '@/models/TaskInputResponse'
 import { StateResponse } from '@/models/StateResponse'
 import { ServerStateType } from '@/models/StateType'
 import { DateString } from '@/types/dates'
@@ -18,7 +18,7 @@ export type ITaskRunResponse = {
   empirical_policy: EmpiricalPolicyResponse | null,
   tags: string[] | null,
   state_id: string | null,
-  task_inputs: Record<string, ITaskInputResponse[]> | null,
+  task_inputs: Record<string, TaskInputResponse[]> | null,
   state_type: ServerStateType | null,
   run_count: number | null,
   expected_start_time: DateString | null,

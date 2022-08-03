@@ -28,7 +28,7 @@ import { mapStateResponseToState, mapStateToStateResponse } from '@/maps/state'
 import { mapStateDetailsResponseToStateDetails, mapStateDetailsToStateDetailsResponse } from '@/maps/stateDetails'
 import { mapStateHistoryToStateHistoryResponse, mapStateHistoryResponseToStateHistory } from '@/maps/stateHistory'
 import { mapServerStateTypeToStateType, mapStateTypeToServerStateType } from '@/maps/stateType'
-import { mapTaskInputToITaskInputResponse, mapITaskInputResponseToTaskInput } from '@/maps/taskInput'
+import { mapTaskInputToTaskInputResponse, mapTaskInputResponseToTaskInput } from '@/maps/taskInput'
 import { mapTaskRunToITaskRunResponse, mapITaskRunResponseToTaskRun } from '@/maps/taskRun'
 import { mapUiFlowRunHistoryResponseToUiFlowRunHistory } from '@/maps/uiFlowRunHistory'
 import { mapWorkQueueToIWorkQueueResponse, mapIWorkQueueResponseToWorkQueue } from '@/maps/workQueue'
@@ -70,7 +70,7 @@ export const maps = {
   StateDetailsResponse: { StateDetails: mapStateDetailsResponseToStateDetails },
   StateHistoryResponse: { StateHistory: mapStateHistoryResponseToStateHistory },
   StateResponse: { State: mapStateResponseToState },
-  ITaskInputResponse: { TaskInput: mapITaskInputResponseToTaskInput },
+  TaskInputResponse: { TaskInput: mapTaskInputResponseToTaskInput },
   ITaskRunResponse: { TaskRun: mapITaskRunResponseToTaskRun },
   IWorkQueueFilterResponse: { WorkQueueFilter: mapIWorkQueueFilterResponseToWorkQueueFilter },
   IWorkQueueResponse: { WorkQueue: mapIWorkQueueResponseToWorkQueue },
@@ -82,7 +82,7 @@ export const maps = {
   StateHistory: { StateHistoryResponse: mapStateHistoryToStateHistoryResponse },
   StateType: { ServerStateType: mapStateTypeToServerStateType },
   string: { Date: mapStringToDate, number: mapStringToNumber },
-  TaskInput: { ITaskInputResponse: mapTaskInputToITaskInputResponse },
+  TaskInput: { TaskInputResponse: mapTaskInputToTaskInputResponse },
   TaskRun: { ITaskRunResponse: mapTaskRunToITaskRunResponse },
   UiFlowRunHistory: { ScatterPlotItem: mapUiFlowRunHistoryToScatterPlotItem },
   UiFlowRunHistoryResponse: { UiFlowRunHistory: mapUiFlowRunHistoryResponseToUiFlowRunHistory },
