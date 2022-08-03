@@ -20,11 +20,11 @@
 
     <p-key-value label="Run Count" :value="flowRun.runCount ?? 0" :alternate="alternate" />
 
-    <template v-if="flowRun.tags">
-      <p-key-value label="Tags" :alternate="alternate">
-        <p-tags :tags="flowRun.tags" />
-      </p-key-value>
-    </template>
+    <p-key-value label="Tags" :alternate="alternate">
+      <template v-if="flowRun.tags?.length" #value>
+        <p-tags :tags="flowRun.tags!" />
+      </template>
+    </p-key-value>
   </div>
 </template>
 
