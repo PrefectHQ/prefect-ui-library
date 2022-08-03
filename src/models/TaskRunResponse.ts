@@ -1,10 +1,10 @@
-import { IEmpiricalPolicyResponse } from '@/models/IEmpiricalPolicyResponse'
-import { IStateResponse } from '@/models/IStateResponse'
-import { ITaskInputResponse } from '@/models/ITaskInputResponse'
+import { EmpiricalPolicyResponse } from '@/models/EmpiricalPolicyResponse'
+import { StateResponse } from '@/models/StateResponse'
 import { ServerStateType } from '@/models/StateType'
+import { TaskInputResponse } from '@/models/TaskInputResponse'
 import { DateString } from '@/types/dates'
 
-export type ITaskRunResponse = {
+export type TaskRunResponse = {
   id: string,
   created: string,
   updated: string,
@@ -15,10 +15,10 @@ export type ITaskRunResponse = {
   cache_key: string | null,
   cache_expiration: DateString | null,
   task_version: string | null,
-  empirical_policy: IEmpiricalPolicyResponse | null,
+  empirical_policy: EmpiricalPolicyResponse | null,
   tags: string[] | null,
   state_id: string | null,
-  task_inputs: Record<string, ITaskInputResponse[]> | null,
+  task_inputs: Record<string, TaskInputResponse[]> | null,
   state_type: ServerStateType | null,
   run_count: number | null,
   expected_start_time: DateString | null,
@@ -28,5 +28,5 @@ export type ITaskRunResponse = {
   total_run_time: number | null,
   estimated_run_time: number | null,
   estimated_start_time_delta: number | null,
-  state: IStateResponse | null,
+  state: StateResponse | null,
 }

@@ -11,29 +11,28 @@ import { mapBlockSchemaFieldsResponseToBlockSchemaFields } from '@/maps/blockSch
 import { mapBlockSchemaFilterToBlockSchemaFilterRequest } from '@/maps/blockSchemaFilter'
 import { mapBlockTypeResponseToBlockType } from '@/maps/blockType'
 import { mapBlockTypeFilterToBlockTypeFilterRequest } from '@/maps/blockTypeFilter'
-import { mapCreateFlowRunToCreateFlowRunRequest } from '@/maps/createFlowRun'
 import { mapStringToDate, mapDateToString } from '@/maps/date'
-import { mapDeploymentToIDeploymentResponse, mapIDeploymentResponseToDeployment } from '@/maps/deployment'
+import { mapDeploymentToDeploymentResponse, mapDeploymentResponseToDeployment } from '@/maps/deployment'
 import { mapRunHistoryToDivergingBarChartItem } from '@/maps/divergingBarChartItem'
-import { mapEmpiricalPolicyToIEmpiricalPolicyResponse, mapIEmpiricalPolicyResponseToEmpiricalPolicy } from '@/maps/empiricalPolicy'
-import { mapFlowToIFlowResponse, mapIFlowResponseToFlow } from '@/maps/flow'
-import { mapFlowRunToIFlowRunResponse, mapIFlowRunResponseToFlowRun } from '@/maps/flowRun'
-import { mapGraphNodeToIFlowRunGraphResponse, mapIFlowRunGraphResponseToGraphNode } from '@/maps/flowRunGraph'
-import { mapRunHistoryToIFlowRunHistoryResponse, mapIFlowRunHistoryResponseToRunHistory } from '@/maps/flowRunHistory'
-import { mapLogToILogResponse, mapILogResponseToLog } from '@/maps/logs'
+import { mapEmpiricalPolicyToEmpiricalPolicyResponse, mapEmpiricalPolicyResponseToEmpiricalPolicy } from '@/maps/empiricalPolicy'
+import { mapFlowToFlowResponse, mapFlowResponseToFlow } from '@/maps/flow'
+import { mapFlowRunToFlowRunResponse, mapFlowRunResponseToFlowRun } from '@/maps/flowRun'
+import { mapGraphNodeToFlowRunGraphResponse, mapFlowRunGraphResponseToGraphNode } from '@/maps/flowRunGraph'
+import { mapRunHistoryToFlowRunHistoryResponse, mapFlowRunHistoryResponseToRunHistory } from '@/maps/flowRunHistory'
+import { mapLogToLogResponse, mapLogResponseToLog } from '@/maps/logs'
 import { mapNotificationResponseToNotification } from '@/maps/notification'
 import { mapNumberToString, mapStringToNumber } from '@/maps/number'
 import { mapUiFlowRunHistoryToScatterPlotItem } from '@/maps/scatterPlotItem'
-import { mapScheduleToIScheduleResponse, mapIScheduleResponseToSchedule } from '@/maps/schedule'
-import { mapIStateResponseToIState, mapIStateToIStateResponse } from '@/maps/state'
-import { mapIStateDetailsResponseToIStateDetails, mapIStateDetailsToIStateDetailsResponse } from '@/maps/stateDetails'
-import { mapStateHistoryToIStateHistoryResponse, mapIStateHistoryResponseToStateHistory } from '@/maps/stateHistory'
+import { mapScheduleToScheduleResponse, mapScheduleResponseToSchedule } from '@/maps/schedule'
+import { mapStateResponseToState, mapStateToStateResponse } from '@/maps/state'
+import { mapStateDetailsResponseToStateDetails, mapStateDetailsToStateDetailsResponse } from '@/maps/stateDetails'
+import { mapStateHistoryToStateHistoryResponse, mapStateHistoryResponseToStateHistory } from '@/maps/stateHistory'
 import { mapServerStateTypeToStateType, mapStateTypeToServerStateType } from '@/maps/stateType'
-import { mapTaskInputToITaskInputResponse, mapITaskInputResponseToTaskInput } from '@/maps/taskInput'
-import { mapTaskRunToITaskRunResponse, mapITaskRunResponseToTaskRun } from '@/maps/taskRun'
+import { mapTaskInputToTaskInputResponse, mapTaskInputResponseToTaskInput } from '@/maps/taskInput'
+import { mapTaskRunToTaskRunResponse, mapTaskRunResponseToTaskRun } from '@/maps/taskRun'
 import { mapUiFlowRunHistoryResponseToUiFlowRunHistory } from '@/maps/uiFlowRunHistory'
-import { mapWorkQueueToIWorkQueueResponse, mapIWorkQueueResponseToWorkQueue } from '@/maps/workQueue'
-import { mapWorkQueueFilterToIWorkQueueFilterResponse, mapIWorkQueueFilterResponseToWorkQueueFilter } from '@/maps/workQueueFilter'
+import { mapWorkQueueToWorkQueueResponse, mapWorkQueueResponseToWorkQueue } from '@/maps/workQueue'
+import { mapWorkQueueFilterToWorkQueueFilterResponse, mapWorkQueueFilterResponseToWorkQueueFilter } from '@/maps/workQueueFilter'
 
 export const maps = {
   BlockDocument: { SelectOption: mapBlockDocumentToSelectOption },
@@ -49,45 +48,44 @@ export const maps = {
   BlockSchemaResponse: { BlockSchema: mapBlockSchemaResponseToBlockSchema },
   BlockTypeFilter: { BlockTypeFilterRequest: mapBlockTypeFilterToBlockTypeFilterRequest },
   BlockTypeResponse: { BlockType: mapBlockTypeResponseToBlockType },
-  CreateFlowRun: { CreateFlowRunRequest: mapCreateFlowRunToCreateFlowRunRequest },
   Date: { string: mapDateToString },
-  Deployment: { IDeploymentResponse: mapDeploymentToIDeploymentResponse },
-  EmpiricalPolicy: { IEmpiricalPolicyResponse: mapEmpiricalPolicyToIEmpiricalPolicyResponse },
-  Flow: { IFlowResponse: mapFlowToIFlowResponse },
-  FlowRun: { IFlowRunResponse: mapFlowRunToIFlowRunResponse },
-  GraphNode: { IFlowRunGraphResponse: mapGraphNodeToIFlowRunGraphResponse },
-  IDeploymentResponse: { Deployment: mapIDeploymentResponseToDeployment },
-  IEmpiricalPolicyResponse: { EmpiricalPolicy: mapIEmpiricalPolicyResponseToEmpiricalPolicy },
-  IFlowResponse: { Flow: mapIFlowResponseToFlow },
-  IFlowRunGraphResponse: { GraphNode: mapIFlowRunGraphResponseToGraphNode },
-  IFlowRunHistoryResponse: { RunHistory: mapIFlowRunHistoryResponseToRunHistory },
-  IFlowRunResponse: { FlowRun: mapIFlowRunResponseToFlowRun },
-  ILogResponse: { Log: mapILogResponseToLog },
+  Deployment: { DeploymentResponse: mapDeploymentToDeploymentResponse },
+  EmpiricalPolicy: { EmpiricalPolicyResponse: mapEmpiricalPolicyToEmpiricalPolicyResponse },
+  Flow: { FlowResponse: mapFlowToFlowResponse },
+  FlowRun: { FlowRunResponse: mapFlowRunToFlowRunResponse },
+  GraphNode: { FlowRunGraphResponse: mapGraphNodeToFlowRunGraphResponse },
+  DeploymentResponse: { Deployment: mapDeploymentResponseToDeployment },
+  EmpiricalPolicyResponse: { EmpiricalPolicy: mapEmpiricalPolicyResponseToEmpiricalPolicy },
+  FlowResponse: { Flow: mapFlowResponseToFlow },
+  FlowRunGraphResponse: { GraphNode: mapFlowRunGraphResponseToGraphNode },
+  FlowRunHistoryResponse: { RunHistory: mapFlowRunHistoryResponseToRunHistory },
+  FlowRunResponse: { FlowRun: mapFlowRunResponseToFlowRun },
+  LogResponse: { Log: mapLogResponseToLog },
   NotificationResponse: { Notification: mapNotificationResponseToNotification },
   NotificationCreate: { NotificationCreateRequest: mapNotificationCreateToNotificationCreateRequest },
   NotificationUpdate: { NotificationUpdateRequest: mapNotificationUpdateToNotificationUpdateRequest },
-  IScheduleResponse: { Schedule: mapIScheduleResponseToSchedule },
-  IState: { IStateResponse: mapIStateToIStateResponse },
-  IStateDetails: { IStateDetailsResponse: mapIStateDetailsToIStateDetailsResponse },
-  IStateDetailsResponse: { IStateDetails: mapIStateDetailsResponseToIStateDetails },
-  IStateHistoryResponse: { StateHistory: mapIStateHistoryResponseToStateHistory },
-  IStateResponse: { IState: mapIStateResponseToIState },
-  ITaskInputResponse: { TaskInput: mapITaskInputResponseToTaskInput },
-  ITaskRunResponse: { TaskRun: mapITaskRunResponseToTaskRun },
-  IWorkQueueFilterResponse: { WorkQueueFilter: mapIWorkQueueFilterResponseToWorkQueueFilter },
-  IWorkQueueResponse: { WorkQueue: mapIWorkQueueResponseToWorkQueue },
-  Log: { ILogResponse: mapLogToILogResponse },
+  ScheduleResponse: { Schedule: mapScheduleResponseToSchedule },
+  State: { StateResponse: mapStateToStateResponse },
+  StateDetails: { StateDetailsResponse: mapStateDetailsToStateDetailsResponse },
+  StateDetailsResponse: { StateDetails: mapStateDetailsResponseToStateDetails },
+  StateHistoryResponse: { StateHistory: mapStateHistoryResponseToStateHistory },
+  StateResponse: { State: mapStateResponseToState },
+  TaskInputResponse: { TaskInput: mapTaskInputResponseToTaskInput },
+  TaskRunResponse: { TaskRun: mapTaskRunResponseToTaskRun },
+  WorkQueueFilterResponse: { WorkQueueFilter: mapWorkQueueFilterResponseToWorkQueueFilter },
+  WorkQueueResponse: { WorkQueue: mapWorkQueueResponseToWorkQueue },
+  Log: { LogResponse: mapLogToLogResponse },
   number: { string: mapNumberToString },
-  RunHistory: { IFlowRunHistoryResponse: mapRunHistoryToIFlowRunHistoryResponse, DivergingBarChartItem: mapRunHistoryToDivergingBarChartItem },
-  Schedule: { IScheduleResponse: mapScheduleToIScheduleResponse },
+  RunHistory: { FlowRunHistoryResponse: mapRunHistoryToFlowRunHistoryResponse, DivergingBarChartItem: mapRunHistoryToDivergingBarChartItem },
+  Schedule: { ScheduleResponse: mapScheduleToScheduleResponse },
   ServerStateType: { StateType: mapServerStateTypeToStateType },
-  StateHistory: { IStateHistoryResponse: mapStateHistoryToIStateHistoryResponse },
+  StateHistory: { StateHistoryResponse: mapStateHistoryToStateHistoryResponse },
   StateType: { ServerStateType: mapStateTypeToServerStateType },
   string: { Date: mapStringToDate, number: mapStringToNumber },
-  TaskInput: { ITaskInputResponse: mapTaskInputToITaskInputResponse },
-  TaskRun: { ITaskRunResponse: mapTaskRunToITaskRunResponse },
+  TaskInput: { TaskInputResponse: mapTaskInputToTaskInputResponse },
+  TaskRun: { TaskRunResponse: mapTaskRunToTaskRunResponse },
   UiFlowRunHistory: { ScatterPlotItem: mapUiFlowRunHistoryToScatterPlotItem },
   UiFlowRunHistoryResponse: { UiFlowRunHistory: mapUiFlowRunHistoryResponseToUiFlowRunHistory },
-  WorkQueue: { IWorkQueueResponse: mapWorkQueueToIWorkQueueResponse },
-  WorkQueueFilter: { IWorkQueueFilterResponse: mapWorkQueueFilterToIWorkQueueFilterResponse },
+  WorkQueue: { WorkQueueResponse: mapWorkQueueToWorkQueueResponse },
+  WorkQueueFilter: { WorkQueueFilterResponse: mapWorkQueueFilterToWorkQueueFilterResponse },
 }

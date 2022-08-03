@@ -1,12 +1,12 @@
-import { IScheduleResponse } from '@/models'
+import { ScheduleResponse, Parameters } from '@/models'
 
-export type IDeploymentRequest = Partial<{
+export type DeploymentRequest = Partial<{
   name: string | null,
   description: string | null,
   flow_id: string | null,
-  schedule: IScheduleResponse | null,
+  schedule: ScheduleResponse | null,
   is_schedule_active: boolean,
-  parameters: Record<string, unknown> | null,
+  parameters: Parameters | null,
   tags: string[] | null,
   storage_document_id: string | null,
   infrastructure_document_id: string | null,

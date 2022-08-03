@@ -1,5 +1,5 @@
 import { RRule } from 'rrule'
-import { IRRuleScheduleResponse } from './IScheduleResponse'
+import { RRuleScheduleResponse } from './ScheduleResponse'
 import { ISchedule } from '@/models'
 import { capitalize, toPluralString } from '@/utilities'
 
@@ -50,7 +50,7 @@ export class RRuleSchedule implements IRRuleSchedule {
     return str
   }
 
-  public toResponse(): IRRuleScheduleResponse {
+  public toResponse(): RRuleScheduleResponse {
     return {
       'rrule': this.rrule,
       'timezone': this.timezone,

@@ -1,9 +1,9 @@
 import { InjectionKey } from 'vue'
 import { FlowRun } from '@/models/FlowRun'
+import { FlowRunGraphResponse } from '@/models/FlowRunGraphResponse'
+import { FlowRunHistoryResponse } from '@/models/FlowRunHistoryResponse'
+import { FlowRunResponse } from '@/models/FlowRunResponse'
 import { GraphNode } from '@/models/GraphNode'
-import { IFlowRunGraphResponse } from '@/models/IFlowRunGraphResponse'
-import { IFlowRunHistoryResponse } from '@/models/IFlowRunHistoryResponse'
-import { IFlowRunResponse } from '@/models/IFlowRunResponse'
 import { RunHistory } from '@/models/RunHistory'
 import { Api, ApiRoute } from '@/services/Api'
 import { mapper } from '@/services/Mapper'
@@ -14,13 +14,13 @@ export class FlowRunsApi extends Api {
   protected route: ApiRoute = '/flow_runs'
 
   public getFlowRun(id: string): Promise<FlowRun> {
-    return this.get<IFlowRunResponse>(`/${id}`)
-      .then(({ data }) => mapper.map('IFlowRunResponse', data, 'FlowRun'))
+    return this.get<FlowRunResponse>(`/${id}`)
+      .then(({ data }) => mapper.map('FlowRunResponse', data, 'FlowRun'))
   }
 
   public getFlowRuns(filter: UnionFilters): Promise<FlowRun[]> {
-    return this.post<IFlowRunResponse[]>('/filter', filter)
-      .then(({ data }) => mapper.map('IFlowRunResponse', data, 'FlowRun'))
+    return this.post<FlowRunResponse[]>('/filter', filter)
+      .then(({ data }) => mapper.map('FlowRunResponse', data, 'FlowRun'))
   }
 
   public getFlowRunsCount(filter: UnionFilters): Promise<number> {
@@ -28,13 +28,13 @@ export class FlowRunsApi extends Api {
   }
 
   public getFlowRunsHistory(filter: FlowRunsHistoryFilter): Promise<RunHistory[]> {
-    return this.post<IFlowRunHistoryResponse[]>('/history', filter)
-      .then(({ data }) => mapper.map('IFlowRunHistoryResponse', data, 'RunHistory'))
+    return this.post<FlowRunHistoryResponse[]>('/history', filter)
+      .then(({ data }) => mapper.map('FlowRunHistoryResponse', data, 'RunHistory'))
   }
 
   public getFlowRunsGraph(id: string): Promise<GraphNode[]> {
-    return this.get<IFlowRunGraphResponse[]>(`/${id}/graph`)
-      .then(({ data }) => mapper.map('IFlowRunGraphResponse', data, 'GraphNode'))
+    return this.get<FlowRunGraphResponse[]>(`/${id}/graph`)
+      .then(({ data }) => mapper.map('FlowRunGraphResponse', data, 'GraphNode'))
   }
 
   public deleteFlowRun(flowRunId: string): Promise<void> {

@@ -1,8 +1,8 @@
+import { FlowRunGraphResponse } from '@/models/FlowRunGraphResponse'
 import { GraphNode } from '@/models/GraphNode'
-import { IFlowRunGraphResponse } from '@/models/IFlowRunGraphResponse'
 import { MapFunction } from '@/services/Mapper'
 
-export const mapIFlowRunGraphResponseToGraphNode: MapFunction<IFlowRunGraphResponse, GraphNode> = function(source: IFlowRunGraphResponse): GraphNode {
+export const mapFlowRunGraphResponseToGraphNode: MapFunction<FlowRunGraphResponse, GraphNode> = function(source: FlowRunGraphResponse): GraphNode {
   return new GraphNode({
     id: source.id,
     expectedStartTime: this.map('string', source.expected_start_time, 'Date'),
@@ -16,11 +16,11 @@ export const mapIFlowRunGraphResponseToGraphNode: MapFunction<IFlowRunGraphRespo
         inputType: x.input_type,
       }
     }),
-    state: this.map('IStateResponse', source.state, 'IState'),
+    state: this.map('StateResponse', source.state, 'State'),
   })
 }
 
-export const mapGraphNodeToIFlowRunGraphResponse: MapFunction<GraphNode, IFlowRunGraphResponse> = function(source: GraphNode): IFlowRunGraphResponse {
+export const mapGraphNodeToFlowRunGraphResponse: MapFunction<GraphNode, FlowRunGraphResponse> = function(source: GraphNode): FlowRunGraphResponse {
   return {
     'id': source.id,
     'expected_start_time': this.map('Date', source.expectedStartTime, 'string'),
@@ -34,6 +34,6 @@ export const mapGraphNodeToIFlowRunGraphResponse: MapFunction<GraphNode, IFlowRu
         'input_type': x.inputType,
       }
     }),
-    'state': this.map('IState', source.state!, 'IStateResponse'),
+    'state': this.map('State', source.state!, 'StateResponse'),
   }
 }

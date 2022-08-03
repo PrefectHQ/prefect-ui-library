@@ -1,4 +1,4 @@
-export interface IStateDetails {
+export type StateDetails = {
   flowRunId: string | null,
   taskRunId: string | null,
   childFlowRunId: string | null,

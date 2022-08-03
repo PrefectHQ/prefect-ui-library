@@ -1,12 +1,12 @@
-import { IWorkQueueFilterResponse } from '@/models/IWorkQueueFilterResponse'
+import { WorkQueueFilterResponse } from '@/models/WorkQueueFilterResponse'
 import { DateString } from '@/types/dates'
 
-export type IWorkQueueResponse = {
+export type WorkQueueResponse = {
   id: string,
   created: DateString,
   updated: DateString,
   name: string,
-  filter: IWorkQueueFilterResponse,
+  filter: WorkQueueFilterResponse,
   description: string | null,
   is_paused: boolean | null,
   concurrency_limit: number | null,

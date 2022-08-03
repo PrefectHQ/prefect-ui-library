@@ -1,9 +1,9 @@
-import { IState } from '@/models/State'
+import { State } from '@/models/State'
 import { MockFunction } from '@/services/Mocker'
 import { capitalize } from '@/utilities'
 import { random } from '@/utilities/math'
 
-export const randomState: MockFunction<IState, [Partial<IState>?]> = function(overrides = {}) {
+export const randomState: MockFunction<State, [Partial<State>?]> = function(overrides = {}) {
   const type = this.create('stateType')
   const name = capitalize(overrides.type ?? type)
 

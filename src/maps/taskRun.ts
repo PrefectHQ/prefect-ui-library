@@ -1,8 +1,8 @@
-import { ITaskRunResponse } from '@/models/ITaskRunResponse'
 import { TaskRun } from '@/models/TaskRun'
+import { TaskRunResponse } from '@/models/TaskRunResponse'
 import { MapFunction } from '@/services/Mapper'
 
-export const mapITaskRunResponseToTaskRun: MapFunction<ITaskRunResponse, TaskRun> = function(source: ITaskRunResponse): TaskRun {
+export const mapTaskRunResponseToTaskRun: MapFunction<TaskRunResponse, TaskRun> = function(source: TaskRunResponse): TaskRun {
   return new TaskRun({
     id: source.id,
     flowRunId: source.flow_run_id,
@@ -10,7 +10,7 @@ export const mapITaskRunResponseToTaskRun: MapFunction<ITaskRunResponse, TaskRun
     cacheKey: source.cache_key,
     created: this.map('string', source.created, 'Date'),
     dynamicKey: source.dynamic_key,
-    empiricalPolicy: this.map('IEmpiricalPolicyResponse', source.empirical_policy, 'EmpiricalPolicy'),
+    empiricalPolicy: this.map('EmpiricalPolicyResponse', source.empirical_policy, 'EmpiricalPolicy'),
     estimatedRunTime: source.estimated_run_time,
     estimatedStartTimeDelta: source.estimated_start_time_delta,
     totalRunTime: source.total_run_time,
@@ -18,7 +18,7 @@ export const mapITaskRunResponseToTaskRun: MapFunction<ITaskRunResponse, TaskRun
     nextScheduledStartTime: source.next_scheduled_start_time,
     runCount: source.run_count,
     name: source.name,
-    taskInputs: this.mapEntries('ITaskInputResponse', source.task_inputs, 'TaskInput'),
+    taskInputs: this.mapEntries('TaskInputResponse', source.task_inputs, 'TaskInput'),
     taskKey: source.task_key,
     taskVersion: source.task_version,
     updated: this.map('string', source.updated, 'Date'),
@@ -26,12 +26,12 @@ export const mapITaskRunResponseToTaskRun: MapFunction<ITaskRunResponse, TaskRun
     endTime: this.map('string', source.end_time, 'Date'),
     stateId: source.state_id,
     stateType: this.map('ServerStateType', source.state_type, 'StateType'),
-    state: this.map('IStateResponse', source.state, 'IState'),
+    state: this.map('StateResponse', source.state, 'State'),
     tags: source.tags,
   })
 }
 
-export const mapTaskRunToITaskRunResponse: MapFunction<TaskRun, ITaskRunResponse> = function(source: TaskRun): ITaskRunResponse {
+export const mapTaskRunToTaskRunResponse: MapFunction<TaskRun, TaskRunResponse> = function(source: TaskRun): TaskRunResponse {
   return {
     'id': source.id,
     'flow_run_id': source.flowRunId,
@@ -39,7 +39,7 @@ export const mapTaskRunToITaskRunResponse: MapFunction<TaskRun, ITaskRunResponse
     'cache_key': source.cacheKey,
     'created': this.map('Date', source.created, 'string'),
     'dynamic_key': source.dynamicKey,
-    'empirical_policy': this.map('EmpiricalPolicy', source.empiricalPolicy, 'IEmpiricalPolicyResponse'),
+    'empirical_policy': this.map('EmpiricalPolicy', source.empiricalPolicy, 'EmpiricalPolicyResponse'),
     'estimated_run_time': source.estimatedRunTime,
     'estimated_start_time_delta': source.estimatedStartTimeDelta,
     'total_run_time': source.totalRunTime,
@@ -47,7 +47,7 @@ export const mapTaskRunToITaskRunResponse: MapFunction<TaskRun, ITaskRunResponse
     'next_scheduled_start_time': source.nextScheduledStartTime,
     'run_count': source.runCount,
     'name': source.name,
-    'task_inputs': this.mapEntries('TaskInput', source.taskInputs, 'ITaskInputResponse'),
+    'task_inputs': this.mapEntries('TaskInput', source.taskInputs, 'TaskInputResponse'),
     'task_key': source.taskKey,
     'task_version': source.taskVersion,
     'updated': this.map('Date', source.updated, 'string'),
@@ -55,7 +55,7 @@ export const mapTaskRunToITaskRunResponse: MapFunction<TaskRun, ITaskRunResponse
     'end_time': this.map('Date', source.endTime, 'string'),
     'state_id': source.stateId,
     'state_type': this.map('StateType', source.stateType, 'ServerStateType'),
-    'state': this.map('IState', source.state, 'IStateResponse'),
+    'state': this.map('State', source.state, 'StateResponse'),
     'tags': source.tags,
   }
 }

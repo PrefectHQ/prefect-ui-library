@@ -1,4 +1,5 @@
-import { IState } from '@/models/State'
+import { Parameters } from '@/models/Parameters'
+import { State } from '@/models/State'
 import { StateType } from '@/models/StateType'
 export interface IFlowRun {
   id: string,
@@ -8,7 +9,7 @@ export interface IFlowRun {
   idempotencyKey: string | null,
   expectedStartTime: Date | null,
   nextScheduledStartTime: string | null,
-  parameters: Record<string, unknown>,
+  parameters: Parameters,
   autoScheduled: boolean | null,
   context: unknown,
   empiricalConfig: unknown,
@@ -22,7 +23,7 @@ export interface IFlowRun {
   parentTaskRunId: string | null,
   stateId: string | null,
   stateType: StateType | null,
-  state: IState | null,
+  state: State | null,
   tags: string[] | null,
   runCount: number | null,
   created: Date,
@@ -37,7 +38,7 @@ export class FlowRun implements IFlowRun {
   public idempotencyKey: string | null
   public expectedStartTime: Date | null
   public nextScheduledStartTime: string | null
-  public parameters: Record<string, unknown>
+  public parameters: Parameters
   public autoScheduled: boolean | null
   public context: unknown
   public empiricalConfig: unknown
@@ -51,7 +52,7 @@ export class FlowRun implements IFlowRun {
   public parentTaskRunId: string | null
   public stateId: string | null
   public stateType: StateType | null
-  public state: IState | null
+  public state: State | null
   public tags: string[] | null
   public runCount: number | null
   public created: Date

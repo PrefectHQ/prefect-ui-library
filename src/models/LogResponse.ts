@@ -1,6 +1,6 @@
 import { LogLevel } from './Log'
 
-export type ILogResponse = {
+export type LogResponse = {
   id: string,
   created: string,
   updated: string,

@@ -1,11 +1,11 @@
 import { StateType } from './StateType'
-import { IStateDetails } from '@/models/StateDetails'
+import { StateDetails } from '@/models/StateDetails'
 
-export type IState = {
+export type State = {
   id: string,
   type: StateType,
   message: string,
-  stateDetails: IStateDetails | null,
+  stateDetails: StateDetails | null,
   data: Record<string, unknown>,
   timestamp: string,
   name: string,

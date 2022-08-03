@@ -1,11 +1,11 @@
 import { StateType } from './StateType'
-import { IStateDetailsResponse } from '@/models/IStateDetailsResponse'
+import { StateDetailsResponse } from '@/models/StateDetailsResponse'
 
-export type IStateResponse = {
+export type StateResponse = {
   id: string,
   type: Uppercase<StateType>,
   message: string,
-  state_details: IStateDetailsResponse | null,
+  state_details: StateDetailsResponse | null,
   data: Record<string, unknown>,
   timestamp: string,
   name: string,

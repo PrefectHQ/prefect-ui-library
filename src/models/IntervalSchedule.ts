@@ -1,7 +1,7 @@
 import { formatDate, formatTimeNumeric, toPluralString } from '@prefecthq/prefect-design'
 import { minutesInHour, secondsInMinute } from 'date-fns'
 import { zonedTimeToUtc } from 'date-fns-tz'
-import { IIntervalScheduleResponse } from './IScheduleResponse'
+import { IntervalScheduleResponse } from './ScheduleResponse'
 import { ISchedule } from '@/models'
 import { floor } from '@/utilities/math'
 
@@ -112,7 +112,7 @@ export class IntervalSchedule implements IIntervalSchedule {
     return str
   }
 
-  public toResponse(): IIntervalScheduleResponse {
+  public toResponse(): IntervalScheduleResponse {
     const date = this.anchorDate ?? new Date()
     const timezone = this.timezone ?? 'UTC'
     const utcDate = zonedTimeToUtc(date, timezone).toISOString()

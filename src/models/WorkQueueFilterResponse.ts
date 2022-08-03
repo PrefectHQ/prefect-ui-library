@@ -1,4 +1,4 @@
-export type IWorkQueueFilterResponse = {
+export type WorkQueueFilterResponse = {
   tags: string[] | null,
   deployment_ids: string[] | null,
 }

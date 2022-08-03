@@ -26,7 +26,7 @@ export const mapBlueTypeToRedType: MapFunction<BlueType, RedType> = function(sou
 }
 ```
 - the name of this const doesn't _actually_ matter, but `'map${SOURCE_TYPE}To${DEST_TYPE}'` is the standard
-- this function will be bound to the singleton `mapper`, so when within the function, `this` will be an instance of the same mapper. This is extremely useful for nesting mappers. Think of models such as `FlowRun`, which has a property `state`. Because we have a mapper for state, you can simply use `this.map('IStateResponse', source.state, 'IState')` for that property. Or a simpler example would be going to/from Date/string within _most_ map functions. Please avoid infinite nesting 🙃 
+- this function will be bound to the singleton `mapper`, so when within the function, `this` will be an instance of the same mapper. This is extremely useful for nesting mappers. Think of models such as `FlowRun`, which has a property `state`. Because we have a mapper for state, you can simply use `this.map('StateResponse', source.state, 'State')` for that property. Or a simpler example would be going to/from Date/string within _most_ map functions. Please avoid infinite nesting 🙃 
 - because of the point above, it's important to define your function as I've done above and not as an arrow function as you would lose the context.
 - the name of this file doesn't _actually_ matter, but camel case of the destination type is the standard, which in this case is `src/maps/redType.ts`.
 

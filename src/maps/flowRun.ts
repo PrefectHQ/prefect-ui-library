@@ -1,8 +1,8 @@
 import { FlowRun } from '@/models/FlowRun'
-import { IFlowRunResponse } from '@/models/IFlowRunResponse'
+import { FlowRunResponse } from '@/models/FlowRunResponse'
 import { MapFunction } from '@/services/Mapper'
 
-export const mapIFlowRunResponseToFlowRun: MapFunction<IFlowRunResponse, FlowRun> = function(source: IFlowRunResponse): FlowRun {
+export const mapFlowRunResponseToFlowRun: MapFunction<FlowRunResponse, FlowRun> = function(source: FlowRunResponse): FlowRun {
   return new FlowRun({
     id: source.id,
     deploymentId: source.deployment_id,
@@ -25,7 +25,7 @@ export const mapIFlowRunResponseToFlowRun: MapFunction<IFlowRunResponse, FlowRun
     parentTaskRunId: source.parent_task_run_id,
     stateId: source.state_id,
     stateType: this.map('ServerStateType', source.state_type, 'StateType'),
-    state: this.map('IStateResponse', source.state, 'IState'),
+    state: this.map('StateResponse', source.state, 'State'),
     tags: source.tags,
     runCount: source.run_count,
     created: this.map('string', source.created, 'Date'),
@@ -33,7 +33,7 @@ export const mapIFlowRunResponseToFlowRun: MapFunction<IFlowRunResponse, FlowRun
   })
 }
 
-export const mapFlowRunToIFlowRunResponse: MapFunction<FlowRun, IFlowRunResponse> = function(source: FlowRun): IFlowRunResponse {
+export const mapFlowRunToFlowRunResponse: MapFunction<FlowRun, FlowRunResponse> = function(source: FlowRun): FlowRunResponse {
   return {
     'id': source.id,
     'deployment_id': source.deploymentId,
@@ -56,7 +56,7 @@ export const mapFlowRunToIFlowRunResponse: MapFunction<FlowRun, IFlowRunResponse
     'parent_task_run_id': source.parentTaskRunId,
     'state_id': source.stateId,
     'state_type': this.map('StateType', source.stateType, 'ServerStateType'),
-    'state': this.map('IState', source.state, 'IStateResponse'),
+    'state': this.map('State', source.state, 'StateResponse'),
     'tags': source.tags,
     'run_count': source.runCount,
     'created': this.map('Date', source.created, 'string'),

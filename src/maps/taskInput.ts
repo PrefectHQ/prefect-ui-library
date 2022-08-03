@@ -1,8 +1,8 @@
-import { isConstantTaskInputResponse, isParameterTaskInputResponse, isTaskRunTaskInputResponse, ITaskInputResponse } from '@/models/ITaskInputResponse'
 import { ConstantTaskInput, ParameterTaskInput, TaskInput, TaskRunTaskInput } from '@/models/TaskInput'
+import { isConstantTaskInputResponse, isParameterTaskInputResponse, isTaskRunTaskInputResponse, TaskInputResponse } from '@/models/TaskInputResponse'
 import { MapFunction } from '@/services/Mapper'
 
-export const mapITaskInputResponseToTaskInput: MapFunction<ITaskInputResponse, TaskInput> = function(source: ITaskInputResponse): TaskInput {
+export const mapTaskInputResponseToTaskInput: MapFunction<TaskInputResponse, TaskInput> = function(source: TaskInputResponse): TaskInput {
   if (isConstantTaskInputResponse(source)) {
     return new ConstantTaskInput({
       inputType: source.input_type,
@@ -24,10 +24,10 @@ export const mapITaskInputResponseToTaskInput: MapFunction<ITaskInputResponse, T
     })
   }
 
-  throw 'Invalid ITaskInputResponse'
+  throw 'Invalid TaskInputResponse'
 }
 
-export const mapTaskInputToITaskInputResponse: MapFunction<TaskInput, ITaskInputResponse> = function(source: TaskInput): ITaskInputResponse {
+export const mapTaskInputToTaskInputResponse: MapFunction<TaskInput, TaskInputResponse> = function(source: TaskInput): TaskInputResponse {
   return {
     'input_type': source.inputType,
     'type': (source as ConstantTaskInput).type,

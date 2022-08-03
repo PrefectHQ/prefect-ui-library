@@ -1,4 +1,4 @@
-export type IFlowResponse = {
+export type FlowResponse = {
   created: string,
   id: string,
   name: string,

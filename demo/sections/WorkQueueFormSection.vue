@@ -10,7 +10,7 @@
   import DemoSection from '../components/DemoSection.vue'
   import { DeploymentsApi } from '../services'
   import WorkQueueForm from '@/components/WorkQueueForm.vue'
-  import { IWorkQueueRequest } from '@/models'
+  import { WorkQueueRequest } from '@/models'
   import { Deployment } from '@/models/Deployment'
   import { deploymentsApiKey, mocker } from '@/services'
   import { UnionFilters } from '@/types/UnionFilters'
@@ -41,7 +41,7 @@
   provide(deploymentsApiKey, queueFormDeploymentsApi)
 
 
-  const submit = (workQueue: IWorkQueueRequest): void => {
+  const submit = (workQueue: WorkQueueRequest): void => {
     console.log('Form submitted!', workQueue)
   }
 </script>
