@@ -56,7 +56,7 @@ flex-col
   flex
   items-center
   justify-start
-  gap-1
+  gap-2
 }
 
 .page-heading__trailing { @apply
