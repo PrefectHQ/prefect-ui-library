@@ -7,7 +7,7 @@
   import { computed } from 'vue'
   import PageHeading from '@/components/PageHeading.vue'
   import { BlockType } from '@/models/BlockType'
-  import { blocksRouteKey, blockCatalogRouteKey, blockCatalogViewRouteKey } from '@/router/routes'
+  import { blocksRouteKey, blockCatalogRouteKey } from '@/router/routes'
   import { inject } from '@/utilities'
 
   const props = defineProps<{
@@ -15,13 +15,11 @@
   }>()
 
   const blocksRoute = inject(blocksRouteKey)
-  const blockCatalogViewRoute = inject(blockCatalogViewRouteKey)
   const blockCatalogRoute = inject(blockCatalogRouteKey)
 
   const crumbs = computed<BreadCrumbs>(() => [
     { text: 'Blocks', to: blocksRoute() },
     { text: 'Choose a Block', to: blockCatalogRoute() },
-    { text: props.blockType.name, to: blockCatalogViewRoute(props.blockType.slug) },
-    { text: 'Create' },
+    { text: props.blockType.name },
   ])
 </script>

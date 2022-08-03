@@ -4,12 +4,12 @@
       <slot />
     </div>
 
-    <BlockTypeCard :block-type="blockType" class="block-type-card-layout__type" />
+    <BlockTypeCardPreview :block-type="blockType" class="block-type-card-layout__type" />
   </p-card>
 </template>
 
 <script lang="ts" setup>
-  import BlockTypeCard from './BlockTypeCard.vue'
+  import BlockTypeCardPreview from './BlockTypeCardPreview.vue'
   import { BlockType } from '@/models'
 
   defineProps<{

@@ -13,13 +13,8 @@
 
   const snippet = computed(() => {
     const [, genericSnippet = ''] = props.snippet.match(/```python([\S\s]*?)```/) ?? []
+    const customSnippet = genericSnippet.replace('BLOCK_NAME', props.name ?? 'block-name')
 
-    if (props.name) {
-      const customSnippet = genericSnippet.replace('BLOCK_NAME', props.name)
-
-      return customSnippet.trim()
-    }
-
-    return genericSnippet.trim()
+    return customSnippet.trim()
   })
 </script>
