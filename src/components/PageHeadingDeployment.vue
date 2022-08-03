@@ -6,6 +6,9 @@
 
       <DeploymentMenu :deployment="deployment" @delete="handleDelete" />
     </template>
+    <slot>
+      <FlowIconText :flow-id="deployment.flowId" />
+    </slot>
   </page-heading>
 </template>
 
@@ -15,6 +18,7 @@
   import RunButton from './RunButton.vue'
   import DeploymentMenu from '@/components/DeploymentMenu.vue'
   import DeploymentToggle from '@/components/DeploymentToggle.vue'
+  import FlowIconText from '@/components/FlowIconText.vue'
   import PageHeading from '@/components/PageHeading.vue'
   import { Deployment } from '@/models'
   import { deploymentsRouteKey } from '@/router'
