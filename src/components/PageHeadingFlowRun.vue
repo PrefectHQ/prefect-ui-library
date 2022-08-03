@@ -26,18 +26,15 @@
 
 <script lang="ts" setup>
   import { PIconButtonMenu } from '@prefecthq/prefect-design'
-  import { useSubscription } from '@prefecthq/vue-compositions'
   import { computed } from 'vue'
   import { StateBadge, PageHeading, DurationIconText, FlowIconText, CopyOverflowMenuItem, ConfirmDeleteModal } from '@/components'
   import { useShowModal } from '@/compositions/useShowModal'
   import { FlowRun } from '@/models'
-  import { flowRouteKey } from '@/router'
-  import { flowRunsApiKey, flowsApiKey } from '@/services'
+  import { flowRunsRouteKey } from '@/router'
+  import { flowRunsApiKey } from '@/services'
   import { canKey } from '@/types'
   import { deleteItem, inject } from '@/utilities'
 
-  const flowRoute = inject(flowRouteKey)
-  const flowsApi = inject(flowsApiKey)
   const flowRunsApi = inject(flowRunsApiKey)
   const can = inject(canKey)
 
@@ -47,13 +44,13 @@
 
   const { showModal, open } = useShowModal()
 
-  const flowId = computed(() => props.flowRun.flowId)
-  const flowSubscription = useSubscription(flowsApi.getFlow, [flowId])
-  const flowName = computed(() => flowSubscription.response?.name ?? '')
-
+  const flowRunsRoute = inject(flowRunsRouteKey)
   // It doesn't seem like we should need to coalesce here but
   // the flow run model dictates the flow run name can be null
-  const crumbs = computed(() => [{ text: flowName.value, to: flowRoute(flowId.value) }, { text: props.flowRun.name ?? '' }])
+  const crumbs = computed(() => [
+    { text: 'Flow Runs', to: flowRunsRoute() },
+    { text: props.flowRun.name ?? '' },
+  ])
 
   const emit = defineEmits(['delete'])
 
