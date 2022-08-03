@@ -1,10 +1,10 @@
-import { Deployment, IDeploymentRequest, Schedule } from '@/models'
+import { Deployment, IDeploymentRequest, Schedule, Parameters } from '@/models'
 
 export class DeploymentFormValues {
   public description: string | null
   public schedule: Schedule | null
   public isScheduleActive: boolean
-  public parameters: Record<string, unknown> | null
+  public parameters: Parameters | null
   public tags: string[] | null
 
   public constructor(deployment?: Partial<Deployment>) {
