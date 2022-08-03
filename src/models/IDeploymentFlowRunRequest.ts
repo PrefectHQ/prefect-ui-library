@@ -10,5 +10,5 @@ export type IDeploymentFlowRunRequest = Partial<{
   tags: string[] | null,
   parent_task_run_id: string | null,
   infrastructure_document_id: string | null,
-  state: IStateRequest,
+  state: Partial<IStateRequest>,
 }>
