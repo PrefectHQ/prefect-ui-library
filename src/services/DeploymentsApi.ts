@@ -1,8 +1,8 @@
 import { InjectionKey } from 'vue'
-import { IDeploymentFlowRunRequest, IDeploymentRequest } from '@/models'
+import { DeploymentFlowRunRequest, DeploymentRequest } from '@/models'
 import { Deployment } from '@/models/Deployment'
+import { DeploymentResponse } from '@/models/DeploymentResponse'
 import { FlowRun } from '@/models/FlowRun'
-import { IDeploymentResponse } from '@/models/IDeploymentResponse'
 import { IFlowRunResponse } from '@/models/IFlowRunResponse'
 import { Api, ApiRoute } from '@/services/Api'
 import { mapper } from '@/services/Mapper'
@@ -13,25 +13,25 @@ export class DeploymentsApi extends Api {
   protected override route: ApiRoute = '/deployments'
 
   public getDeployment(deploymentId: string): Promise<Deployment> {
-    return this.get<IDeploymentResponse>(`/${deploymentId}`)
-      .then(({ data }) => mapper.map('IDeploymentResponse', data, 'Deployment'))
+    return this.get<DeploymentResponse>(`/${deploymentId}`)
+      .then(({ data }) => mapper.map('DeploymentResponse', data, 'Deployment'))
   }
 
   public getDeployments(filter: UnionFilters): Promise<Deployment[]> {
-    return this.post<IDeploymentResponse[]>('/filter', filter)
-      .then(({ data }) => mapper.map('IDeploymentResponse', data, 'Deployment'))
+    return this.post<DeploymentResponse[]>('/filter', filter)
+      .then(({ data }) => mapper.map('DeploymentResponse', data, 'Deployment'))
   }
 
   public getDeploymentsCount(filter: UnionFilters): Promise<number> {
     return this.post<number>('/count', filter).then(({ data }) => data)
   }
 
-  public createDeploymentFlowRun(deploymentId: string, body: IDeploymentFlowRunRequest): Promise<FlowRun> {
+  public createDeploymentFlowRun(deploymentId: string, body: DeploymentFlowRunRequest): Promise<FlowRun> {
     return this.post<IFlowRunResponse>(`/${deploymentId}/create_flow_run`, body)
       .then(({ data }) => mapper.map('IFlowRunResponse', data, 'FlowRun'))
   }
 
-  public updateDeployment(deploymentId: string, request: IDeploymentRequest): Promise<void> {
+  public updateDeployment(deploymentId: string, request: DeploymentRequest): Promise<void> {
     return this.patch(`/${deploymentId}`, request)
   }
 

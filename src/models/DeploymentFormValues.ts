@@ -1,4 +1,4 @@
-import { Deployment, IDeploymentRequest, Schedule, Parameters } from '@/models'
+import { Deployment, DeploymentRequest, Schedule, Parameters } from '@/models'
 
 export class DeploymentFormValues {
   public description: string | null
@@ -15,7 +15,7 @@ export class DeploymentFormValues {
     this.tags = deployment?.tags ?? null
   }
 
-  public getDeploymentRequest(): IDeploymentRequest {
+  public getDeploymentRequest(): DeploymentRequest {
     return {
       'description': this.description,
       'schedule': this.schedule?.toResponse() ?? null,

@@ -1,8 +1,8 @@
 import { Deployment } from '@/models/Deployment'
-import { IDeploymentResponse } from '@/models/IDeploymentResponse'
+import { DeploymentResponse } from '@/models/DeploymentResponse'
 import { MapFunction } from '@/services/Mapper'
 
-export const mapIDeploymentResponseToDeployment: MapFunction<IDeploymentResponse, Deployment> = function(source: IDeploymentResponse): Deployment {
+export const mapDeploymentResponseToDeployment: MapFunction<DeploymentResponse, Deployment> = function(source: DeploymentResponse): Deployment {
   return new Deployment({
     id: source.id,
     created: this.map('string', source.created, 'Date'),
@@ -21,7 +21,7 @@ export const mapIDeploymentResponseToDeployment: MapFunction<IDeploymentResponse
   })
 }
 
-export const mapDeploymentToIDeploymentResponse: MapFunction<Deployment, IDeploymentResponse> = function(source: Deployment): IDeploymentResponse {
+export const mapDeploymentToDeploymentResponse: MapFunction<Deployment, DeploymentResponse> = function(source: Deployment): DeploymentResponse {
   return {
     'id': source.id,
     'created': this.map('Date', source.created, 'string'),

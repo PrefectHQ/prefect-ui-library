@@ -3,7 +3,7 @@ import { Parameters } from '@/models/Parameters'
 import { DateString } from '@/types/dates'
 import { PydanticTypeDefinition } from '@/types/Pydantic'
 
-export type IDeploymentResponse = {
+export type DeploymentResponse = {
   id: string,
   created: DateString,
   updated: DateString,

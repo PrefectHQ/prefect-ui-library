@@ -69,7 +69,7 @@
   import { computed } from 'vue'
   import PydanticForm from './PydanticForm.vue'
   import ScheduleFieldset from '@/components/ScheduleFieldset.vue'
-  import { Deployment, IDeploymentRequest, DeploymentFormValues, Schedule, Parameters } from '@/models'
+  import { Deployment, DeploymentRequest, DeploymentFormValues, Schedule, Parameters } from '@/models'
 
   const props = defineProps<{
     deployment: Deployment,
@@ -125,7 +125,7 @@
   const { value: parameters } = useField<Parameters>('parameters', undefined, { initialValue: initialValues })
   const { value: tags } = useField<string[] | null>('tags')
   const emit = defineEmits<{
-    (event: 'submit', value: IDeploymentRequest): void,
+    (event: 'submit', value: DeploymentRequest): void,
     (event: 'cancel'): void,
   }>()
 

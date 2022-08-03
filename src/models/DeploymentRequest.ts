@@ -1,6 +1,6 @@
 import { IScheduleResponse, Parameters } from '@/models'
 
-export type IDeploymentRequest = Partial<{
+export type DeploymentRequest = Partial<{
   name: string | null,
   description: string | null,
   flow_id: string | null,

@@ -12,7 +12,7 @@ import { mapBlockSchemaFilterToBlockSchemaFilterRequest } from '@/maps/blockSche
 import { mapBlockTypeResponseToBlockType } from '@/maps/blockType'
 import { mapBlockTypeFilterToBlockTypeFilterRequest } from '@/maps/blockTypeFilter'
 import { mapStringToDate, mapDateToString } from '@/maps/date'
-import { mapDeploymentToIDeploymentResponse, mapIDeploymentResponseToDeployment } from '@/maps/deployment'
+import { mapDeploymentToDeploymentResponse, mapDeploymentResponseToDeployment } from '@/maps/deployment'
 import { mapRunHistoryToDivergingBarChartItem } from '@/maps/divergingBarChartItem'
 import { mapEmpiricalPolicyToIEmpiricalPolicyResponse, mapIEmpiricalPolicyResponseToEmpiricalPolicy } from '@/maps/empiricalPolicy'
 import { mapFlowToIFlowResponse, mapIFlowResponseToFlow } from '@/maps/flow'
@@ -49,12 +49,12 @@ export const maps = {
   BlockTypeFilter: { BlockTypeFilterRequest: mapBlockTypeFilterToBlockTypeFilterRequest },
   BlockTypeResponse: { BlockType: mapBlockTypeResponseToBlockType },
   Date: { string: mapDateToString },
-  Deployment: { IDeploymentResponse: mapDeploymentToIDeploymentResponse },
+  Deployment: { DeploymentResponse: mapDeploymentToDeploymentResponse },
   EmpiricalPolicy: { IEmpiricalPolicyResponse: mapEmpiricalPolicyToIEmpiricalPolicyResponse },
   Flow: { IFlowResponse: mapFlowToIFlowResponse },
   FlowRun: { IFlowRunResponse: mapFlowRunToIFlowRunResponse },
   GraphNode: { IFlowRunGraphResponse: mapGraphNodeToIFlowRunGraphResponse },
-  IDeploymentResponse: { Deployment: mapIDeploymentResponseToDeployment },
+  DeploymentResponse: { Deployment: mapDeploymentResponseToDeployment },
   IEmpiricalPolicyResponse: { EmpiricalPolicy: mapIEmpiricalPolicyResponseToEmpiricalPolicy },
   IFlowResponse: { Flow: mapIFlowResponseToFlow },
   IFlowRunGraphResponse: { GraphNode: mapIFlowRunGraphResponseToGraphNode },
