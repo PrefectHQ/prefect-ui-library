@@ -13,12 +13,19 @@
   import PageHeading from '@/components/PageHeading.vue'
   import WorkQueueToggle from '@/components/WorkQueueToggle.vue'
   import { WorkQueue } from '@/models'
+  import { workQueuesRouteKey } from '@/router'
+  import { inject } from '@/utilities'
 
   const props = defineProps<{
     queue: WorkQueue,
   }>()
 
-  const crumbs = computed(() => [{ text: props.queue.name }])
+  const workQueueRoute = inject(workQueuesRouteKey)
+
+  const crumbs = computed(() => [
+    { text: 'Work Queues', to: workQueueRoute() },
+    { text: props.queue.name },
+  ])
 
   const emit = defineEmits<{
     (event: 'update' | 'delete'): void,
