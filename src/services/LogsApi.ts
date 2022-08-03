@@ -1,7 +1,7 @@
 import { InjectionKey } from 'vue'
 import { ApiRoute } from '.'
-import { LogResponse } from '@/models/LogResponse'
 import { Log } from '@/models/Log'
+import { LogResponse } from '@/models/LogResponse'
 import { Api } from '@/services/Api'
 import { mapper } from '@/services/Mapper'
 import { LogsRequestFilter } from '@/types/LogsRequestFilter'

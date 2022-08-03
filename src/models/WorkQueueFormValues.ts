@@ -1,5 +1,5 @@
-import { WorkQueueRequest } from '@/models/WorkQueueRequest'
 import { WorkQueue } from '@/models/WorkQueue'
+import { WorkQueueRequest } from '@/models/WorkQueueRequest'
 
 export class WorkQueueFormValues {
   public id: string | null

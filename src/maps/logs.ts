@@ -1,5 +1,5 @@
-import { LogResponse } from '@/models/LogResponse'
 import { Log } from '@/models/Log'
+import { LogResponse } from '@/models/LogResponse'
 import { MapFunction } from '@/services/Mapper'
 
 export const mapLogResponseToLog: MapFunction<LogResponse, Log> = function(source: LogResponse): Log {

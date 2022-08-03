@@ -1,5 +1,5 @@
-import { GraphNode } from '@/models/GraphNode'
 import { FlowRunGraphResponse } from '@/models/FlowRunGraphResponse'
+import { GraphNode } from '@/models/GraphNode'
 import { MapFunction } from '@/services/Mapper'
 
 export const mapFlowRunGraphResponseToGraphNode: MapFunction<FlowRunGraphResponse, GraphNode> = function(source: FlowRunGraphResponse): GraphNode {

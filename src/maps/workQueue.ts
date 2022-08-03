@@ -1,5 +1,5 @@
-import { WorkQueueResponse } from '@/models/WorkQueueResponse'
 import { WorkQueue } from '@/models/WorkQueue'
+import { WorkQueueResponse } from '@/models/WorkQueueResponse'
 import { MapFunction } from '@/services/Mapper'
 
 export const mapWorkQueueResponseToWorkQueue: MapFunction<WorkQueueResponse, WorkQueue> = function(source: WorkQueueResponse): WorkQueue {
