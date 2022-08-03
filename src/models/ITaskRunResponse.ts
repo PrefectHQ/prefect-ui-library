@@ -1,6 +1,6 @@
 import { IEmpiricalPolicyResponse } from '@/models/IEmpiricalPolicyResponse'
-import { IStateResponse } from '@/models/IStateResponse'
 import { ITaskInputResponse } from '@/models/ITaskInputResponse'
+import { StateResponse } from '@/models/StateResponse'
 import { ServerStateType } from '@/models/StateType'
 import { DateString } from '@/types/dates'
 
@@ -28,5 +28,5 @@ export type ITaskRunResponse = {
   total_run_time: number | null,
   estimated_run_time: number | null,
   estimated_start_time_delta: number | null,
-  state: IStateResponse | null,
+  state: StateResponse | null,
 }

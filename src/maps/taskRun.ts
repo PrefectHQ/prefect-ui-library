@@ -26,7 +26,7 @@ export const mapITaskRunResponseToTaskRun: MapFunction<ITaskRunResponse, TaskRun
     endTime: this.map('string', source.end_time, 'Date'),
     stateId: source.state_id,
     stateType: this.map('ServerStateType', source.state_type, 'StateType'),
-    state: this.map('IStateResponse', source.state, 'IState'),
+    state: this.map('StateResponse', source.state, 'State'),
     tags: source.tags,
   })
 }
@@ -55,7 +55,7 @@ export const mapTaskRunToITaskRunResponse: MapFunction<TaskRun, ITaskRunResponse
     'end_time': this.map('Date', source.endTime, 'string'),
     'state_id': source.stateId,
     'state_type': this.map('StateType', source.stateType, 'ServerStateType'),
-    'state': this.map('IState', source.state, 'IStateResponse'),
+    'state': this.map('State', source.state, 'StateResponse'),
     'tags': source.tags,
   }
 }

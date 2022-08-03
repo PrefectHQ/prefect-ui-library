@@ -1,9 +1,9 @@
-import { IStateHistoryResponse } from '@/models/IStateHistoryResponse'
 import { StateHistory } from '@/models/StateHistory'
+import { StateHistoryResponse } from '@/models/StateHistoryResponse'
 import { MapFunction } from '@/services/Mapper'
 
 
-export const mapIStateHistoryResponseToStateHistory: MapFunction<IStateHistoryResponse, StateHistory> = function(source: IStateHistoryResponse): StateHistory {
+export const mapStateHistoryResponseToStateHistory: MapFunction<StateHistoryResponse, StateHistory> = function(source: StateHistoryResponse): StateHistory {
   return new StateHistory({
     stateType: this.map('ServerStateType', source.state_type, 'StateType'),
     stateName: source.state_name,
@@ -13,7 +13,7 @@ export const mapIStateHistoryResponseToStateHistory: MapFunction<IStateHistoryRe
   })
 }
 
-export const mapStateHistoryToIStateHistoryResponse: MapFunction<StateHistory, IStateHistoryResponse> = function(source: StateHistory): IStateHistoryResponse {
+export const mapStateHistoryToStateHistoryResponse: MapFunction<StateHistory, StateHistoryResponse> = function(source: StateHistory): StateHistoryResponse {
   return {
     'state_type': this.map('StateType', source.stateType, 'ServerStateType'),
     'state_name': source.stateName,

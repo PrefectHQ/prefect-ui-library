@@ -1,6 +1,6 @@
 import { DateString } from '@/types/dates'
 
-export type IStateDetailsRequest = {
+export type StateDetailsResponse = {
   flow_run_id: string | null,
   task_run_id: string | null,
   child_flow_run_id: string | null,

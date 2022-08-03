@@ -1,5 +1,5 @@
 import { Parameters } from '@/models/Parameters'
-import { IState } from '@/models/State'
+import { State } from '@/models/State'
 import { StateType } from '@/models/StateType'
 export interface IFlowRun {
   id: string,
@@ -23,7 +23,7 @@ export interface IFlowRun {
   parentTaskRunId: string | null,
   stateId: string | null,
   stateType: StateType | null,
-  state: IState | null,
+  state: State | null,
   tags: string[] | null,
   runCount: number | null,
   created: Date,
@@ -52,7 +52,7 @@ export class FlowRun implements IFlowRun {
   public parentTaskRunId: string | null
   public stateId: string | null
   public stateType: StateType | null
-  public state: IState | null
+  public state: State | null
   public tags: string[] | null
   public runCount: number | null
   public created: Date

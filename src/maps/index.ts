@@ -24,9 +24,9 @@ import { mapNotificationResponseToNotification } from '@/maps/notification'
 import { mapNumberToString, mapStringToNumber } from '@/maps/number'
 import { mapUiFlowRunHistoryToScatterPlotItem } from '@/maps/scatterPlotItem'
 import { mapScheduleToIScheduleResponse, mapIScheduleResponseToSchedule } from '@/maps/schedule'
-import { mapIStateResponseToIState, mapIStateToIStateResponse } from '@/maps/state'
-import { mapIStateDetailsResponseToIStateDetails, mapIStateDetailsToIStateDetailsResponse } from '@/maps/stateDetails'
-import { mapStateHistoryToIStateHistoryResponse, mapIStateHistoryResponseToStateHistory } from '@/maps/stateHistory'
+import { mapStateResponseToState, mapStateToStateResponse } from '@/maps/state'
+import { mapStateDetailsResponseToStateDetails, mapStateDetailsToStateDetailsResponse } from '@/maps/stateDetails'
+import { mapStateHistoryToStateHistoryResponse, mapStateHistoryResponseToStateHistory } from '@/maps/stateHistory'
 import { mapServerStateTypeToStateType, mapStateTypeToServerStateType } from '@/maps/stateType'
 import { mapTaskInputToITaskInputResponse, mapITaskInputResponseToTaskInput } from '@/maps/taskInput'
 import { mapTaskRunToITaskRunResponse, mapITaskRunResponseToTaskRun } from '@/maps/taskRun'
@@ -65,11 +65,11 @@ export const maps = {
   NotificationCreate: { NotificationCreateRequest: mapNotificationCreateToNotificationCreateRequest },
   NotificationUpdate: { NotificationUpdateRequest: mapNotificationUpdateToNotificationUpdateRequest },
   IScheduleResponse: { Schedule: mapIScheduleResponseToSchedule },
-  IState: { IStateResponse: mapIStateToIStateResponse },
-  IStateDetails: { IStateDetailsResponse: mapIStateDetailsToIStateDetailsResponse },
-  IStateDetailsResponse: { IStateDetails: mapIStateDetailsResponseToIStateDetails },
-  IStateHistoryResponse: { StateHistory: mapIStateHistoryResponseToStateHistory },
-  IStateResponse: { IState: mapIStateResponseToIState },
+  State: { StateResponse: mapStateToStateResponse },
+  StateDetails: { StateDetailsResponse: mapStateDetailsToStateDetailsResponse },
+  StateDetailsResponse: { StateDetails: mapStateDetailsResponseToStateDetails },
+  StateHistoryResponse: { StateHistory: mapStateHistoryResponseToStateHistory },
+  StateResponse: { State: mapStateResponseToState },
   ITaskInputResponse: { TaskInput: mapITaskInputResponseToTaskInput },
   ITaskRunResponse: { TaskRun: mapITaskRunResponseToTaskRun },
   IWorkQueueFilterResponse: { WorkQueueFilter: mapIWorkQueueFilterResponseToWorkQueueFilter },
@@ -79,7 +79,7 @@ export const maps = {
   RunHistory: { IFlowRunHistoryResponse: mapRunHistoryToIFlowRunHistoryResponse, DivergingBarChartItem: mapRunHistoryToDivergingBarChartItem },
   Schedule: { IScheduleResponse: mapScheduleToIScheduleResponse },
   ServerStateType: { StateType: mapServerStateTypeToStateType },
-  StateHistory: { IStateHistoryResponse: mapStateHistoryToIStateHistoryResponse },
+  StateHistory: { StateHistoryResponse: mapStateHistoryToStateHistoryResponse },
   StateType: { ServerStateType: mapStateTypeToServerStateType },
   string: { Date: mapStringToDate, number: mapStringToNumber },
   TaskInput: { ITaskInputResponse: mapTaskInputToITaskInputResponse },

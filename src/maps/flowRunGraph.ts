@@ -16,7 +16,7 @@ export const mapIFlowRunGraphResponseToGraphNode: MapFunction<IFlowRunGraphRespo
         inputType: x.input_type,
       }
     }),
-    state: this.map('IStateResponse', source.state, 'IState'),
+    state: this.map('StateResponse', source.state, 'State'),
   })
 }
 
@@ -34,6 +34,6 @@ export const mapGraphNodeToIFlowRunGraphResponse: MapFunction<GraphNode, IFlowRu
         'input_type': x.inputType,
       }
     }),
-    'state': this.map('IState', source.state!, 'IStateResponse'),
+    'state': this.map('State', source.state!, 'StateResponse'),
   }
 }

@@ -1,5 +1,5 @@
 import { TaskRunInputType } from '@/models/GraphNode'
-import { IStateResponse } from '@/models/IStateResponse'
+import { StateResponse } from '@/models/StateResponse'
 import { DateString } from '@/types/dates'
 
 export type IFlowRunGraphResponse = {
@@ -8,7 +8,7 @@ export type IFlowRunGraphResponse = {
     id: string,
     input_type: TaskRunInputType,
   }[],
-  state: IStateResponse,
+  state: StateResponse,
   expected_start_time: DateString | null,
   start_time: DateString | null,
   end_time: DateString | null,

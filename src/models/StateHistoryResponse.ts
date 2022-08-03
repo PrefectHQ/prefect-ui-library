@@ -1,6 +1,6 @@
 import { ServerStateType } from '@/models/StateType'
 
-export type IStateHistoryResponse = {
+export type StateHistoryResponse = {
   state_type: ServerStateType,
   state_name: string,
   count_runs: number,

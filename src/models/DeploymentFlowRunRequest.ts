@@ -1,5 +1,5 @@
-import { IStateRequest } from '@/models/IStateRequest'
 import { Parameters } from '@/models/Parameters'
+import { StateRequest } from '@/models/StateRequest'
 
 export type DeploymentFlowRunRequest = Partial<{
   name: string | null,
@@ -10,5 +10,5 @@ export type DeploymentFlowRunRequest = Partial<{
   tags: string[] | null,
   parent_task_run_id: string | null,
   infrastructure_document_id: string | null,
-  state: Partial<IStateRequest>,
+  state: Partial<StateRequest>,
 }>

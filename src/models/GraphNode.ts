@@ -1,4 +1,4 @@
-import { IState } from '@/models/State'
+import { State } from '@/models/State'
 
 export type TaskRunInputType = 'constant' | 'parameter' | 'task_run'
 
@@ -8,7 +8,7 @@ export interface IGraphNode {
     inputType: TaskRunInputType,
     id: string,
   }[],
-  state: IState | null,
+  state: State | null,
   expectedStartTime: Date | null,
   estimatedRunTime: number | null,
   totalRunTime: number | null,
@@ -19,7 +19,7 @@ export interface IGraphNode {
 export class GraphNode implements IGraphNode {
   public readonly id: string
   public upstreamDependencies: { inputType: TaskRunInputType, id: string }[]
-  public state: IState | null
+  public state: State | null
   public expectedStartTime: Date | null
   public estimatedRunTime: number | null
   public totalRunTime: number | null

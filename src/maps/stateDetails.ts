@@ -1,8 +1,8 @@
-import { IStateDetailsResponse } from '@/models/IStateDetailsResponse'
-import { IStateDetails } from '@/models/StateDetails'
+import { StateDetails } from '@/models/StateDetails'
+import { StateDetailsResponse } from '@/models/StateDetailsResponse'
 import { MapFunction } from '@/services/Mapper'
 
-export const mapIStateDetailsResponseToIStateDetails: MapFunction<IStateDetailsResponse, IStateDetails> = function(source: IStateDetailsResponse): IStateDetails {
+export const mapStateDetailsResponseToStateDetails: MapFunction<StateDetailsResponse, StateDetails> = function(source: StateDetailsResponse): StateDetails {
   return {
     flowRunId: source.flow_run_id,
     taskRunId: source.task_run_id,
@@ -13,7 +13,7 @@ export const mapIStateDetailsResponseToIStateDetails: MapFunction<IStateDetailsR
   }
 }
 
-export const mapIStateDetailsToIStateDetailsResponse: MapFunction<IStateDetails, IStateDetailsResponse> = function(source: IStateDetails): IStateDetailsResponse {
+export const mapStateDetailsToStateDetailsResponse: MapFunction<StateDetails, StateDetailsResponse> = function(source: StateDetails): StateDetailsResponse {
   return {
     'flow_run_id': source.flowRunId,
     'task_run_id': source.taskRunId,

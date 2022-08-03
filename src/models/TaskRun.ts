@@ -1,5 +1,5 @@
 import { IEmpiricalPolicy } from '@/models/EmpiricalPolicy'
-import { IState } from '@/models/State'
+import { State } from '@/models/State'
 import { StateType } from '@/models/StateType'
 import { TaskInput } from '@/models/TaskInput'
 
@@ -26,7 +26,7 @@ export interface ITaskRun {
   endTime: Date | null,
   stateId: string | null,
   stateType: StateType | null,
-  state: IState | null,
+  state: State | null,
   tags: string[] | null,
 }
 
@@ -53,7 +53,7 @@ export class TaskRun implements ITaskRun {
   public endTime: Date | null
   public stateId: string | null
   public stateType: StateType | null
-  public state: IState | null
+  public state: State | null
   public tags: string[] | null
 
   public constructor(taskRun: ITaskRun) {

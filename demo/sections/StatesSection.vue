@@ -44,12 +44,12 @@
   import StateBadge from '@/components/StateBadge.vue'
   import StateIcon from '@/components/StateIcon.vue'
   import StateSelect from '@/components/StateSelect.vue'
-  import { IState } from '@/models'
+  import { State } from '@/models'
   import { StateType, stateType } from '@/models/StateType'
   import { mocker } from '@/services'
   import { mapStateNameToStateType } from '@/utilities'
 
-  const states: (IState | null)[] = [
+  const states: (State | null)[] = [
     mocker.create('state', [{ type: 'completed', name: 'Completed ' }]),
     mocker.create('state', [{ type: 'running', name: 'Running ' }]),
     mocker.create('state', [{ type: 'scheduled', name: 'Scheduled ' }]),
