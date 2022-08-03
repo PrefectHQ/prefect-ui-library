@@ -11,7 +11,6 @@ import { mapBlockSchemaFieldsResponseToBlockSchemaFields } from '@/maps/blockSch
 import { mapBlockSchemaFilterToBlockSchemaFilterRequest } from '@/maps/blockSchemaFilter'
 import { mapBlockTypeResponseToBlockType } from '@/maps/blockType'
 import { mapBlockTypeFilterToBlockTypeFilterRequest } from '@/maps/blockTypeFilter'
-import { mapCreateFlowRunToCreateFlowRunRequest } from '@/maps/createFlowRun'
 import { mapStringToDate, mapDateToString } from '@/maps/date'
 import { mapDeploymentToIDeploymentResponse, mapIDeploymentResponseToDeployment } from '@/maps/deployment'
 import { mapRunHistoryToDivergingBarChartItem } from '@/maps/divergingBarChartItem'
@@ -49,7 +48,6 @@ export const maps = {
   BlockSchemaResponse: { BlockSchema: mapBlockSchemaResponseToBlockSchema },
   BlockTypeFilter: { BlockTypeFilterRequest: mapBlockTypeFilterToBlockTypeFilterRequest },
   BlockTypeResponse: { BlockType: mapBlockTypeResponseToBlockType },
-  CreateFlowRun: { CreateFlowRunRequest: mapCreateFlowRunToCreateFlowRunRequest },
   Date: { string: mapDateToString },
   Deployment: { IDeploymentResponse: mapDeploymentToIDeploymentResponse },
   EmpiricalPolicy: { IEmpiricalPolicyResponse: mapEmpiricalPolicyToIEmpiricalPolicyResponse },

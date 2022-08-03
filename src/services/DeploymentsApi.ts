@@ -1,10 +1,9 @@
 import { InjectionKey } from 'vue'
-import { IDeploymentRequest } from '@/models'
-import { CreateFlowRun } from '@/models/CreateFlowRun'
+import { IDeploymentFlowRunRequest, IDeploymentRequest } from '@/models'
 import { Deployment } from '@/models/Deployment'
-import { Flow } from '@/models/Flow'
+import { FlowRun } from '@/models/FlowRun'
 import { IDeploymentResponse } from '@/models/IDeploymentResponse'
-import { IFlowResponse } from '@/models/IFlowResponse'
+import { IFlowRunResponse } from '@/models/IFlowRunResponse'
 import { Api, ApiRoute } from '@/services/Api'
 import { mapper } from '@/services/Mapper'
 import { UnionFilters } from '@/types/UnionFilters'
@@ -27,11 +26,9 @@ export class DeploymentsApi extends Api {
     return this.post<number>('/count', filter).then(({ data }) => data)
   }
 
-  public createDeploymentFlowRun(deploymentId: string, body: CreateFlowRun): Promise<Flow> {
-    const request = mapper.map('CreateFlowRun', body, 'CreateFlowRunRequest')
-
-    return this.post<IFlowResponse>(`/${deploymentId}/create_flow_run`, request)
-      .then(({ data }) => mapper.map('IFlowResponse', data, 'Flow'))
+  public createDeploymentFlowRun(deploymentId: string, body: IDeploymentFlowRunRequest): Promise<FlowRun> {
+    return this.post<IFlowRunResponse>(`/${deploymentId}/create_flow_run`, body)
+      .then(({ data }) => mapper.map('IFlowRunResponse', data, 'FlowRun'))
   }
 
   public updateDeployment(deploymentId: string, request: IDeploymentRequest): Promise<void> {
