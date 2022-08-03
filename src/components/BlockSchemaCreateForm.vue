@@ -12,9 +12,7 @@
       <p-button inset @click="cancel">
         Cancel
       </p-button>
-      <p-button type="submit">
-        Add
-      </p-button>
+      <SubmitButton action="Create" />
     </template>
   </p-form>
 </template>
@@ -23,6 +21,7 @@
   import { useForm } from 'vee-validate'
   import { computed } from 'vue'
   import BlockSchemaFormFields from './BlockSchemaFormFields.vue'
+  import SubmitButton from './SubmitButton.vue'
   import { useReactiveField } from '@/compositions'
   import { BlockDocumentData } from '@/models/BlockDocument'
   import { BlockSchema } from '@/models/BlockSchema'
