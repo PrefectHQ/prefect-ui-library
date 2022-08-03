@@ -56,7 +56,7 @@
   import { computed, reactive, ref, watchEffect } from 'vue'
   import SubmitButton from './SubmitButton.vue'
   import DeploymentCombobox from '@/components/DeploymentCombobox.vue'
-  import { IWorkQueueRequest, WorkQueue, WorkQueueFormValues } from '@/models'
+  import { WorkQueueRequest, WorkQueue, WorkQueueFormValues } from '@/models'
   import { isRequired, withMessage } from '@/services/validate'
   import { FormAction } from '@/types/buttons'
 
@@ -90,7 +90,7 @@
   const { value: deployments } = useField<string[]>('filter.deploymentIds')
 
   const emit = defineEmits<{
-    (event: 'submit', value: IWorkQueueRequest): void,
+    (event: 'submit', value: WorkQueueRequest): void,
     (event: 'cancel'): void,
   }>()
 

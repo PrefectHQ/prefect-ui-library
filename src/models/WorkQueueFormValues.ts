@@ -1,4 +1,4 @@
-import { IWorkQueueRequest } from '@/models/IWorkQueueRequest'
+import { WorkQueueRequest } from '@/models/WorkQueueRequest'
 import { WorkQueue } from '@/models/WorkQueue'
 
 export class WorkQueueFormValues {
@@ -24,7 +24,7 @@ export class WorkQueueFormValues {
     }
   }
 
-  public getWorkQueueRequest(): IWorkQueueRequest {
+  public getWorkQueueRequest(): WorkQueueRequest {
     return {
       'name': this.name,
       'description': this.description,

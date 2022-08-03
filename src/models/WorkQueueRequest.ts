@@ -1,6 +1,6 @@
 import { WorkQueueFilterResponse } from '@/models/WorkQueueFilterResponse'
 
-export type IWorkQueueRequest = Partial<{
+export type WorkQueueRequest = Partial<{
   name: string | null,
   filter: WorkQueueFilterResponse | null,
   description: string | null,

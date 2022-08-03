@@ -1,6 +1,6 @@
 import { InjectionKey } from 'vue'
 import { FlowRun, FlowRunResponse } from '@/models'
-import { IWorkQueueRequest } from '@/models/IWorkQueueRequest'
+import { WorkQueueRequest } from '@/models/WorkQueueRequest'
 import { IWorkQueueResponse } from '@/models/IWorkQueueResponse'
 import { WorkQueue } from '@/models/WorkQueue'
 import { Api, ApiRoute } from '@/services/Api'
@@ -21,7 +21,7 @@ export class WorkQueuesApi extends Api {
       .then(({ data }) => mapper.map('IWorkQueueResponse', data, 'WorkQueue'))
   }
 
-  public createWorkQueue(request: IWorkQueueRequest): Promise<WorkQueue> {
+  public createWorkQueue(request: WorkQueueRequest): Promise<WorkQueue> {
     return this.post<IWorkQueueResponse>('/', request)
       .then(({ data }) => mapper.map('IWorkQueueResponse', data, 'WorkQueue'))
   }
@@ -34,7 +34,7 @@ export class WorkQueuesApi extends Api {
     return this.patch(`/${id}`, { 'is_paused': false })
   }
 
-  public updateWorkQueue(id: string, request: IWorkQueueRequest): Promise<void> {
+  public updateWorkQueue(id: string, request: WorkQueueRequest): Promise<void> {
     return this.patch(`/${id}`, request)
   }
 
