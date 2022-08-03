@@ -1,7 +1,7 @@
 import { InjectionKey } from 'vue'
 import { FlowRun } from '@/models/FlowRun'
 import { GraphNode } from '@/models/GraphNode'
-import { IFlowRunGraphResponse } from '@/models/IFlowRunGraphResponse'
+import { FlowRunGraphResponse } from '@/models/FlowRunGraphResponse'
 import { FlowRunHistoryResponse } from '@/models/FlowRunHistoryResponse'
 import { IFlowRunResponse } from '@/models/IFlowRunResponse'
 import { RunHistory } from '@/models/RunHistory'
@@ -33,8 +33,8 @@ export class FlowRunsApi extends Api {
   }
 
   public getFlowRunsGraph(id: string): Promise<GraphNode[]> {
-    return this.get<IFlowRunGraphResponse[]>(`/${id}/graph`)
-      .then(({ data }) => mapper.map('IFlowRunGraphResponse', data, 'GraphNode'))
+    return this.get<FlowRunGraphResponse[]>(`/${id}/graph`)
+      .then(({ data }) => mapper.map('FlowRunGraphResponse', data, 'GraphNode'))
   }
 
   public deleteFlowRun(flowRunId: string): Promise<void> {

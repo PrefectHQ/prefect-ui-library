@@ -2,7 +2,7 @@ import { TaskRunInputType } from '@/models/GraphNode'
 import { StateResponse } from '@/models/StateResponse'
 import { DateString } from '@/types/dates'
 
-export type IFlowRunGraphResponse = {
+export type FlowRunGraphResponse = {
   id: string,
   upstream_dependencies: {
     id: string,
