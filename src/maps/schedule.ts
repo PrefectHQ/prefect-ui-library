@@ -1,8 +1,8 @@
 import { CronSchedule, IntervalSchedule, RRuleSchedule, Schedule } from '@/models'
-import { IScheduleResponse, isCronScheduleResponse, isIntervalScheduleResponse, isRRuleScheduleResponse } from '@/models/IScheduleResponse'
+import { ScheduleResponse, isCronScheduleResponse, isIntervalScheduleResponse, isRRuleScheduleResponse } from '@/models/ScheduleResponse'
 import { MapFunction } from '@/services/Mapper'
 
-export const mapIScheduleResponseToSchedule: MapFunction<IScheduleResponse, Schedule> = function(source: IScheduleResponse): Schedule {
+export const mapScheduleResponseToSchedule: MapFunction<ScheduleResponse, Schedule> = function(source: ScheduleResponse): Schedule {
   if (isRRuleScheduleResponse(source)) {
     return new RRuleSchedule({
       timezone: source.timezone,
@@ -26,10 +26,10 @@ export const mapIScheduleResponseToSchedule: MapFunction<IScheduleResponse, Sche
     })
   }
 
-  throw 'Invalid IScheduleResponse'
+  throw 'Invalid ScheduleResponse'
 }
 
-export const mapScheduleToIScheduleResponse: MapFunction<Schedule, IScheduleResponse> = function(source: Schedule): IScheduleResponse {
+export const mapScheduleToScheduleResponse: MapFunction<Schedule, ScheduleResponse> = function(source: Schedule): ScheduleResponse {
   return {
     'timezone': source.timezone,
     'rrule': (source as RRuleSchedule).rrule,

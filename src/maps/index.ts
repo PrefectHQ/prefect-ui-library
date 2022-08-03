@@ -23,7 +23,7 @@ import { mapLogToLogResponse, mapLogResponseToLog } from '@/maps/logs'
 import { mapNotificationResponseToNotification } from '@/maps/notification'
 import { mapNumberToString, mapStringToNumber } from '@/maps/number'
 import { mapUiFlowRunHistoryToScatterPlotItem } from '@/maps/scatterPlotItem'
-import { mapScheduleToIScheduleResponse, mapIScheduleResponseToSchedule } from '@/maps/schedule'
+import { mapScheduleToScheduleResponse, mapScheduleResponseToSchedule } from '@/maps/schedule'
 import { mapStateResponseToState, mapStateToStateResponse } from '@/maps/state'
 import { mapStateDetailsResponseToStateDetails, mapStateDetailsToStateDetailsResponse } from '@/maps/stateDetails'
 import { mapStateHistoryToStateHistoryResponse, mapStateHistoryResponseToStateHistory } from '@/maps/stateHistory'
@@ -64,7 +64,7 @@ export const maps = {
   NotificationResponse: { Notification: mapNotificationResponseToNotification },
   NotificationCreate: { NotificationCreateRequest: mapNotificationCreateToNotificationCreateRequest },
   NotificationUpdate: { NotificationUpdateRequest: mapNotificationUpdateToNotificationUpdateRequest },
-  IScheduleResponse: { Schedule: mapIScheduleResponseToSchedule },
+  ScheduleResponse: { Schedule: mapScheduleResponseToSchedule },
   State: { StateResponse: mapStateToStateResponse },
   StateDetails: { StateDetailsResponse: mapStateDetailsToStateDetailsResponse },
   StateDetailsResponse: { StateDetails: mapStateDetailsResponseToStateDetails },
@@ -77,7 +77,7 @@ export const maps = {
   Log: { LogResponse: mapLogToLogResponse },
   number: { string: mapNumberToString },
   RunHistory: { FlowRunHistoryResponse: mapRunHistoryToFlowRunHistoryResponse, DivergingBarChartItem: mapRunHistoryToDivergingBarChartItem },
-  Schedule: { IScheduleResponse: mapScheduleToIScheduleResponse },
+  Schedule: { ScheduleResponse: mapScheduleToScheduleResponse },
   ServerStateType: { StateType: mapServerStateTypeToStateType },
   StateHistory: { StateHistoryResponse: mapStateHistoryToStateHistoryResponse },
   StateType: { ServerStateType: mapStateTypeToServerStateType },
