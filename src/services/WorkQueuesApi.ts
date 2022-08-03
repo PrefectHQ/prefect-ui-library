@@ -1,5 +1,5 @@
 import { InjectionKey } from 'vue'
-import { FlowRun, IFlowRunResponse } from '@/models'
+import { FlowRun, FlowRunResponse } from '@/models'
 import { IWorkQueueRequest } from '@/models/IWorkQueueRequest'
 import { IWorkQueueResponse } from '@/models/IWorkQueueResponse'
 import { WorkQueue } from '@/models/WorkQueue'
@@ -43,8 +43,8 @@ export class WorkQueuesApi extends Api {
   }
 
   public getRuns(id: string): Promise<FlowRun[]> {
-    return this.post<IFlowRunResponse[]>(`/${id}/get_runs`)
-      .then(({ data }) => mapper.map('IFlowRunResponse', data, 'FlowRun'))
+    return this.post<FlowRunResponse[]>(`/${id}/get_runs`)
+      .then(({ data }) => mapper.map('FlowRunResponse', data, 'FlowRun'))
   }
 }
 

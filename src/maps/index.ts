@@ -16,7 +16,7 @@ import { mapDeploymentToDeploymentResponse, mapDeploymentResponseToDeployment } 
 import { mapRunHistoryToDivergingBarChartItem } from '@/maps/divergingBarChartItem'
 import { mapEmpiricalPolicyToEmpiricalPolicyResponse, mapEmpiricalPolicyResponseToEmpiricalPolicy } from '@/maps/empiricalPolicy'
 import { mapFlowToFlowResponse, mapFlowResponseToFlow } from '@/maps/flow'
-import { mapFlowRunToIFlowRunResponse, mapIFlowRunResponseToFlowRun } from '@/maps/flowRun'
+import { mapFlowRunToFlowRunResponse, mapFlowRunResponseToFlowRun } from '@/maps/flowRun'
 import { mapGraphNodeToFlowRunGraphResponse, mapFlowRunGraphResponseToGraphNode } from '@/maps/flowRunGraph'
 import { mapRunHistoryToFlowRunHistoryResponse, mapFlowRunHistoryResponseToRunHistory } from '@/maps/flowRunHistory'
 import { mapLogToLogResponse, mapLogResponseToLog } from '@/maps/logs'
@@ -52,14 +52,14 @@ export const maps = {
   Deployment: { DeploymentResponse: mapDeploymentToDeploymentResponse },
   EmpiricalPolicy: { EmpiricalPolicyResponse: mapEmpiricalPolicyToEmpiricalPolicyResponse },
   Flow: { FlowResponse: mapFlowToFlowResponse },
-  FlowRun: { IFlowRunResponse: mapFlowRunToIFlowRunResponse },
+  FlowRun: { FlowRunResponse: mapFlowRunToFlowRunResponse },
   GraphNode: { FlowRunGraphResponse: mapGraphNodeToFlowRunGraphResponse },
   DeploymentResponse: { Deployment: mapDeploymentResponseToDeployment },
   EmpiricalPolicyResponse: { EmpiricalPolicy: mapEmpiricalPolicyResponseToEmpiricalPolicy },
   FlowResponse: { Flow: mapFlowResponseToFlow },
   FlowRunGraphResponse: { GraphNode: mapFlowRunGraphResponseToGraphNode },
   FlowRunHistoryResponse: { RunHistory: mapFlowRunHistoryResponseToRunHistory },
-  IFlowRunResponse: { FlowRun: mapIFlowRunResponseToFlowRun },
+  FlowRunResponse: { FlowRun: mapFlowRunResponseToFlowRun },
   LogResponse: { Log: mapLogResponseToLog },
   NotificationResponse: { Notification: mapNotificationResponseToNotification },
   NotificationCreate: { NotificationCreateRequest: mapNotificationCreateToNotificationCreateRequest },

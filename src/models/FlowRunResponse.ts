@@ -3,7 +3,7 @@ import { StateResponse } from '@/models/StateResponse'
 import { ServerStateType } from '@/models/StateType'
 import { DateString } from '@/types/dates'
 
-export type IFlowRunResponse = {
+export type FlowRunResponse = {
   id: string,
   created: DateString,
   updated: DateString,

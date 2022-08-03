@@ -1,8 +1,8 @@
 import { FlowRun } from '@/models/FlowRun'
-import { IFlowRunResponse } from '@/models/IFlowRunResponse'
+import { FlowRunResponse } from '@/models/FlowRunResponse'
 import { MapFunction } from '@/services/Mapper'
 
-export const mapIFlowRunResponseToFlowRun: MapFunction<IFlowRunResponse, FlowRun> = function(source: IFlowRunResponse): FlowRun {
+export const mapFlowRunResponseToFlowRun: MapFunction<FlowRunResponse, FlowRun> = function(source: FlowRunResponse): FlowRun {
   return new FlowRun({
     id: source.id,
     deploymentId: source.deployment_id,
@@ -33,7 +33,7 @@ export const mapIFlowRunResponseToFlowRun: MapFunction<IFlowRunResponse, FlowRun
   })
 }
 
-export const mapFlowRunToIFlowRunResponse: MapFunction<FlowRun, IFlowRunResponse> = function(source: FlowRun): IFlowRunResponse {
+export const mapFlowRunToFlowRunResponse: MapFunction<FlowRun, FlowRunResponse> = function(source: FlowRun): FlowRunResponse {
   return {
     'id': source.id,
     'deployment_id': source.deploymentId,

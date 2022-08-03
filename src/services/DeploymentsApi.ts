@@ -3,7 +3,7 @@ import { DeploymentFlowRunRequest, DeploymentRequest } from '@/models'
 import { Deployment } from '@/models/Deployment'
 import { DeploymentResponse } from '@/models/DeploymentResponse'
 import { FlowRun } from '@/models/FlowRun'
-import { IFlowRunResponse } from '@/models/IFlowRunResponse'
+import { FlowRunResponse } from '@/models/FlowRunResponse'
 import { Api, ApiRoute } from '@/services/Api'
 import { mapper } from '@/services/Mapper'
 import { UnionFilters } from '@/types/UnionFilters'
@@ -27,8 +27,8 @@ export class DeploymentsApi extends Api {
   }
 
   public createDeploymentFlowRun(deploymentId: string, body: DeploymentFlowRunRequest): Promise<FlowRun> {
-    return this.post<IFlowRunResponse>(`/${deploymentId}/create_flow_run`, body)
-      .then(({ data }) => mapper.map('IFlowRunResponse', data, 'FlowRun'))
+    return this.post<FlowRunResponse>(`/${deploymentId}/create_flow_run`, body)
+      .then(({ data }) => mapper.map('FlowRunResponse', data, 'FlowRun'))
   }
 
   public updateDeployment(deploymentId: string, request: DeploymentRequest): Promise<void> {
