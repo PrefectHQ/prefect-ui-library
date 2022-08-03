@@ -1,3 +1,4 @@
+import { DeploymentUpdate, DeploymentUpdateRequest } from '@/models'
 import { Deployment } from '@/models/Deployment'
 import { DeploymentResponse } from '@/models/DeploymentResponse'
 import { MapFunction } from '@/services/Mapper'
@@ -37,5 +38,15 @@ export const mapDeploymentToDeploymentResponse: MapFunction<Deployment, Deployme
     'storage_document_id': source.storageDocumentId,
     'infrastructure_document_id': source.infrastructureDocumentId,
     'parameter_openapi_schema': source.parameterOpenApiSchema,
+  }
+}
+
+export const mapDeploymentUpdateToDeploymentUpdateRequest: MapFunction<DeploymentUpdate, DeploymentUpdateRequest> = function(source: DeploymentUpdate): DeploymentUpdateRequest {
+  return {
+    'description': source.description,
+    'schedule': source.schedule ? this.map('Schedule', source.schedule, 'ScheduleResponse') : source.schedule,
+    'is_schedule_active': source.isScheduleActive,
+    'parameters': source.parameters,
+    'tags': source.tags,
   }
 }

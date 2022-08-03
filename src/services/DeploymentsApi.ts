@@ -1,5 +1,5 @@
 import { InjectionKey } from 'vue'
-import { DeploymentFlowRunRequest, DeploymentRequest } from '@/models'
+import { DeploymentFlowRunRequest, DeploymentUpdate } from '@/models'
 import { Deployment } from '@/models/Deployment'
 import { DeploymentResponse } from '@/models/DeploymentResponse'
 import { FlowRun } from '@/models/FlowRun'
@@ -31,8 +31,9 @@ export class DeploymentsApi extends Api {
       .then(({ data }) => mapper.map('FlowRunResponse', data, 'FlowRun'))
   }
 
-  public updateDeployment(deploymentId: string, request: DeploymentRequest): Promise<void> {
-    return this.patch(`/${deploymentId}`, request)
+  public updateDeployment(deploymentId: string, request: DeploymentUpdate): Promise<void> {
+    const body = mapper.map('DeploymentUpdate', request, 'DeploymentUpdateRequest')
+    return this.patch(`/${deploymentId}`, body)
   }
 
   public pauseDeployment(id: string): Promise<void> {
