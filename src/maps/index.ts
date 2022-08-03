@@ -32,7 +32,7 @@ import { mapTaskInputToTaskInputResponse, mapTaskInputResponseToTaskInput } from
 import { mapTaskRunToTaskRunResponse, mapTaskRunResponseToTaskRun } from '@/maps/taskRun'
 import { mapUiFlowRunHistoryResponseToUiFlowRunHistory } from '@/maps/uiFlowRunHistory'
 import { mapWorkQueueToIWorkQueueResponse, mapIWorkQueueResponseToWorkQueue } from '@/maps/workQueue'
-import { mapWorkQueueFilterToIWorkQueueFilterResponse, mapIWorkQueueFilterResponseToWorkQueueFilter } from '@/maps/workQueueFilter'
+import { mapWorkQueueFilterToWorkQueueFilterResponse, mapWorkQueueFilterResponseToWorkQueueFilter } from '@/maps/workQueueFilter'
 
 export const maps = {
   BlockDocument: { SelectOption: mapBlockDocumentToSelectOption },
@@ -72,7 +72,7 @@ export const maps = {
   StateResponse: { State: mapStateResponseToState },
   TaskInputResponse: { TaskInput: mapTaskInputResponseToTaskInput },
   TaskRunResponse: { TaskRun: mapTaskRunResponseToTaskRun },
-  IWorkQueueFilterResponse: { WorkQueueFilter: mapIWorkQueueFilterResponseToWorkQueueFilter },
+  WorkQueueFilterResponse: { WorkQueueFilter: mapWorkQueueFilterResponseToWorkQueueFilter },
   IWorkQueueResponse: { WorkQueue: mapIWorkQueueResponseToWorkQueue },
   Log: { LogResponse: mapLogToLogResponse },
   number: { string: mapNumberToString },
@@ -87,5 +87,5 @@ export const maps = {
   UiFlowRunHistory: { ScatterPlotItem: mapUiFlowRunHistoryToScatterPlotItem },
   UiFlowRunHistoryResponse: { UiFlowRunHistory: mapUiFlowRunHistoryResponseToUiFlowRunHistory },
   WorkQueue: { IWorkQueueResponse: mapWorkQueueToIWorkQueueResponse },
-  WorkQueueFilter: { IWorkQueueFilterResponse: mapWorkQueueFilterToIWorkQueueFilterResponse },
+  WorkQueueFilter: { WorkQueueFilterResponse: mapWorkQueueFilterToWorkQueueFilterResponse },
 }
