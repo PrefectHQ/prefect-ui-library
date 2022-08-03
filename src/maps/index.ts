@@ -19,7 +19,7 @@ import { mapFlowToIFlowResponse, mapIFlowResponseToFlow } from '@/maps/flow'
 import { mapFlowRunToIFlowRunResponse, mapIFlowRunResponseToFlowRun } from '@/maps/flowRun'
 import { mapGraphNodeToIFlowRunGraphResponse, mapIFlowRunGraphResponseToGraphNode } from '@/maps/flowRunGraph'
 import { mapRunHistoryToFlowRunHistoryResponse, mapFlowRunHistoryResponseToRunHistory } from '@/maps/flowRunHistory'
-import { mapLogToILogResponse, mapILogResponseToLog } from '@/maps/logs'
+import { mapLogToLogResponse, mapLogResponseToLog } from '@/maps/logs'
 import { mapNotificationResponseToNotification } from '@/maps/notification'
 import { mapNumberToString, mapStringToNumber } from '@/maps/number'
 import { mapUiFlowRunHistoryToScatterPlotItem } from '@/maps/scatterPlotItem'
@@ -60,7 +60,7 @@ export const maps = {
   IFlowRunGraphResponse: { GraphNode: mapIFlowRunGraphResponseToGraphNode },
   FlowRunHistoryResponse: { RunHistory: mapFlowRunHistoryResponseToRunHistory },
   IFlowRunResponse: { FlowRun: mapIFlowRunResponseToFlowRun },
-  ILogResponse: { Log: mapILogResponseToLog },
+  LogResponse: { Log: mapLogResponseToLog },
   NotificationResponse: { Notification: mapNotificationResponseToNotification },
   NotificationCreate: { NotificationCreateRequest: mapNotificationCreateToNotificationCreateRequest },
   NotificationUpdate: { NotificationUpdateRequest: mapNotificationUpdateToNotificationUpdateRequest },
@@ -74,7 +74,7 @@ export const maps = {
   ITaskRunResponse: { TaskRun: mapITaskRunResponseToTaskRun },
   IWorkQueueFilterResponse: { WorkQueueFilter: mapIWorkQueueFilterResponseToWorkQueueFilter },
   IWorkQueueResponse: { WorkQueue: mapIWorkQueueResponseToWorkQueue },
-  Log: { ILogResponse: mapLogToILogResponse },
+  Log: { LogResponse: mapLogToLogResponse },
   number: { string: mapNumberToString },
   RunHistory: { FlowRunHistoryResponse: mapRunHistoryToFlowRunHistoryResponse, DivergingBarChartItem: mapRunHistoryToDivergingBarChartItem },
   Schedule: { IScheduleResponse: mapScheduleToIScheduleResponse },

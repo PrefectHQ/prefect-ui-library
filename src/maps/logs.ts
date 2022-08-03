@@ -1,8 +1,8 @@
-import { ILogResponse } from '@/models/ILogResponse'
+import { LogResponse } from '@/models/LogResponse'
 import { Log } from '@/models/Log'
 import { MapFunction } from '@/services/Mapper'
 
-export const mapILogResponseToLog: MapFunction<ILogResponse, Log> = function(source: ILogResponse): Log {
+export const mapLogResponseToLog: MapFunction<LogResponse, Log> = function(source: LogResponse): Log {
   return new Log({
     id: source.id,
     created: this.map('string', source.created, 'Date'),
@@ -16,7 +16,7 @@ export const mapILogResponseToLog: MapFunction<ILogResponse, Log> = function(sou
   })
 }
 
-export const mapLogToILogResponse: MapFunction<Log, ILogResponse> = function(source: Log): ILogResponse {
+export const mapLogToLogResponse: MapFunction<Log, LogResponse> = function(source: Log): LogResponse {
   return {
     'id': source.id,
     'created': this.map('Date', source.created, 'string'),
