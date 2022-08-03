@@ -1,4 +1,5 @@
 import { IScheduleResponse } from '@/models/IScheduleResponse'
+import { Parameters } from '@/models/Parameters'
 import { DateString } from '@/types/dates'
 import { PydanticTypeDefinition } from '@/types/Pydantic'
 
@@ -11,7 +12,7 @@ export type IDeploymentResponse = {
   flow_id: string,
   schedule: IScheduleResponse | null,
   is_schedule_active: boolean,
-  parameters: Record<string, unknown>,
+  parameters: Parameters,
   tags: string[] | null,
   manifest_path: string | null,
   parameter_openapi_schema: PydanticTypeDefinition,

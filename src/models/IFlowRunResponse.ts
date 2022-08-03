@@ -1,4 +1,5 @@
 import { IStateResponse } from '@/models/IStateResponse'
+import { Parameters } from '@/models/Parameters'
 import { ServerStateType } from '@/models/StateType'
 import { DateString } from '@/types/dates'
 
@@ -11,7 +12,7 @@ export type IFlowRunResponse = {
   state_id: string | null,
   deployment_id: string | null,
   flow_version: string | null,
-  parameters: Record<string, unknown>,
+  parameters: Parameters,
   idempotency_key: string | null,
   context: unknown,
   empirical_policy: unknown,

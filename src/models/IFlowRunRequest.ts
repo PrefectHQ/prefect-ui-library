@@ -1,8 +1,9 @@
 import { IStateRequest } from '@/models/IStateRequest'
+import { Parameters } from '@/models/Parameters'
 
 export type IDeploymentFlowRunRequest = Partial<{
   name: string | null,
-  parameters: Record<string, unknown>,
+  parameters: Parameters,
   idempotency_key: string | null,
   context: unknown,
   empirical_policy: unknown,
