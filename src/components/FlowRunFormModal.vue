@@ -82,7 +82,8 @@
   import  { PButton, showToast, ButtonGroupOption } from '@prefecthq/prefect-design'
   import { zonedTimeToUtc } from 'date-fns-tz'
   import { useForm, useField } from 'vee-validate'
-  import { ref, h, computed, watch } from 'vue'
+  import { ref, h, computed, watch, provide } from 'vue'
+  import { routerKey, useRouter } from 'vue-router'
   import CreateFlowRunToast from './CreateFlowRunToast.vue'
   import PydanticForm from './PydanticForm.vue'
   import TimezoneSelect from './TimezoneSelect.vue'
@@ -90,6 +91,7 @@
   import { localization } from '@/localization'
   import { CreateFlowRun, Deployment } from '@/models'
 
+  import { flowRunRouteKey } from '@/router'
   import { mocker } from '@/services'
   import { deploymentsApiKey } from '@/services/DeploymentsApi'
   import { canKey } from '@/types'
@@ -181,12 +183,15 @@
     }
   })
 
+  const router = useRouter()
+  const flowRunRoute = inject(flowRunRouteKey)
+
   const submit = async (): Promise<void> => {
     loading.value = true
 
     try {
       flowRun.value = await deploymentsApi.createDeploymentFlowRun(props.deployment.id, createFlowRunBody.value)
-      const toastMessage = h(CreateFlowRunToast, { flowRun: flowRun.value, immediate: nowOrLater.value == 'now', startTime: utcStartTime.value })
+      const toastMessage = h(CreateFlowRunToast, { flowRun: flowRun.value, immediate: nowOrLater.value == 'now', startTime: utcStartTime.value, router, flowRunRoute })
       close()
       showToast(toastMessage, 'success')
     } catch (error) {

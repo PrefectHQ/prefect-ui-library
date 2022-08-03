@@ -19,21 +19,22 @@
 
 <script lang="ts" setup>
   import { PButton } from '@prefecthq/prefect-design'
-  import { useRouter } from 'vue-router'
+  import { ref } from 'vue'
+  import { Router } from 'vue-router'
   import { FlowRun } from '@/models/FlowRun'
-  import { flowRunRouteKey } from '@/router/routes'
-  import { inject } from '@/utilities'
+  import { Route } from '@/router'
 
   const props = defineProps<{
     flowRun: FlowRun,
     immediate?: boolean,
     startTime?: Date,
+    flowRunRoute: (id: string) => Route,
+    router: Router,
   }>()
 
+  const router = ref(props.router)
   const handleClick = (): void => {
-    const flowRunRoute = inject(flowRunRouteKey)
-    const router = useRouter()
-    router.push(flowRunRoute(props.flowRun.id))
+    router.value.push(props.flowRunRoute(props.flowRun.id))
   }
 </script>
 
