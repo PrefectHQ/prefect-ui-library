@@ -47,8 +47,8 @@
 }
 
 .page-heading__leading { @apply
-flex
-flex-col
+  flex
+  flex-col
   gap-1
 }
 
