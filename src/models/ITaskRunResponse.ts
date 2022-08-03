@@ -1,4 +1,4 @@
-import { IEmpiricalPolicyResponse } from '@/models/IEmpiricalPolicyResponse'
+import { EmpiricalPolicyResponse } from '@/models/EmpiricalPolicyResponse'
 import { ITaskInputResponse } from '@/models/ITaskInputResponse'
 import { StateResponse } from '@/models/StateResponse'
 import { ServerStateType } from '@/models/StateType'
@@ -15,7 +15,7 @@ export type ITaskRunResponse = {
   cache_key: string | null,
   cache_expiration: DateString | null,
   task_version: string | null,
-  empirical_policy: IEmpiricalPolicyResponse | null,
+  empirical_policy: EmpiricalPolicyResponse | null,
   tags: string[] | null,
   state_id: string | null,
   task_inputs: Record<string, ITaskInputResponse[]> | null,
