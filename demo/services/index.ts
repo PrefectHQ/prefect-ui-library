@@ -1,4 +1,5 @@
 export * from './blockDocumentsApi'
+export * from './blockCapabilitiesApi'
 export * from './taskRunsApi'
 export * from './logsApi'
 export * from './flowRunsApi'

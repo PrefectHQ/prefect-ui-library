@@ -1,30 +1,32 @@
 <template>
   <p-layout-default>
+    <BlockSchemaCapabilitiesSection />
+    <BlockTypesSection />
     <ColorModesSection />
-    <PageHeadingsSection />
-    <MarketingBannerSection />
-    <StatesSection />
-    <LogSection />
+    <ComboboxesSection />
     <EmptyStateSection />
     <ListsSection />
-    <TablesSection />
-    <ToggleSection />
+    <LogSection />
+    <MarketingBannerSection />
     <MetaWellSection />
+    <NotificationsSection />
+    <PageHeadingsSection />
+    <RunButtonSection />
+    <ScheduleDisplaySection />
+    <ScheduleModalSection />
     <SearchesSection />
     <SortSections />
-    <ComboboxesSection />
-    <WorkQueueFormSection />
-    <DeploymentFormSection />
-    <RunButtonSection />
-    <NotificationsSection />
+    <StatesSection />
+    <ToggleSection />
   </p-layout-default>
 </template>
 
 <script lang="ts" setup>
   import { PLayoutDefault } from '@prefecthq/prefect-design'
+  import BlockSchemaCapabilitiesSection from '../sections/BlockSchemaCapabilitiesSection.vue'
+  import BlockTypesSection from '../sections/BlockTypesSection.vue'
   import ColorModesSection from '../sections/ColorModesSection.vue'
   import ComboboxesSection from '../sections/ComboboxesSection.vue'
-  import DeploymentFormSection from '../sections/DeploymentFormSection.vue'
   import EmptyStateSection from '../sections/EmptyStateSection.vue'
   import ListsSection from '../sections/ListsSection.vue'
   import LogSection from '../sections/LogsSection.vue'
@@ -33,10 +35,10 @@
   import NotificationsSection from '../sections/NotificationsSection.vue'
   import PageHeadingsSection from '../sections/PageHeadingsSection.vue'
   import RunButtonSection from '../sections/RunButtonSection.vue'
+  import ScheduleDisplaySection from '../sections/ScheduleDisplaySection.vue'
+  import ScheduleModalSection from '../sections/ScheduleModalSection.vue'
   import SearchesSection from '../sections/SearchesSection.vue'
   import SortSections from '../sections/SortSections.vue'
   import StatesSection from '../sections/StatesSection.vue'
-  import TablesSection from '../sections/TablesSection.vue'
   import ToggleSection from '../sections/ToggleSection.vue'
-  import WorkQueueFormSection from '../sections/WorkQueueFormSection.vue'
 </script>
