@@ -23,11 +23,6 @@ const routeRecords: RouteRecordRaw[] = [
     component: () => import('../pages/Radar.vue'),
   },
   {
-    path: '/blocks',
-    name: 'blocks',
-    component: () => import('../pages/Blocks.vue'),
-  },
-  {
     path: '/forms',
     name: 'forms',
     component: () => import('../pages/Forms.vue'),

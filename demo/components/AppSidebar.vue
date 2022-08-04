@@ -17,7 +17,6 @@
     <p-context-nav-item title="Radar" icon="ChartPieIcon" to="/radar" />
     <p-context-nav-item title="Forms" icon="ClipboardListIcon" to="/forms" />
     <p-context-nav-item title="Tables" icon="TableIcon" to="/tables" />
-    <p-context-nav-item title="Blocks" icon="CubeIcon" to="/blocks" />
     <p-context-nav-item title="Advanced Inputs" icon="TerminalIcon" to="/advanced-inputs" />
   </p-context-sidebar>
 </template>
