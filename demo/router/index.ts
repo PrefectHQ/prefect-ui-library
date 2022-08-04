@@ -33,6 +33,11 @@ const routeRecords: RouteRecordRaw[] = [
     component: () => import('../pages/Forms.vue'),
   },
   {
+    path: '/tables',
+    name: 'tables',
+    component: () => import('../pages/Tables.vue'),
+  },
+  {
     path: '/advanced-inputs',
     name: 'advanced-inputs',
     component: () => import('../pages/AdvancedInputs.vue'),

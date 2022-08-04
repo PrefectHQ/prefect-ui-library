@@ -7,7 +7,6 @@
     <LogSection />
     <EmptyStateSection />
     <ListsSection />
-    <TablesSection />
     <ToggleSection />
     <MetaWellSection />
     <SearchesSection />
@@ -37,6 +36,5 @@
   import SearchesSection from '../sections/SearchesSection.vue'
   import SortSections from '../sections/SortSections.vue'
   import StatesSection from '../sections/StatesSection.vue'
-  import TablesSection from '../sections/TablesSection.vue'
   import ToggleSection from '../sections/ToggleSection.vue'
 </script>
