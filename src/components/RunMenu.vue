@@ -1,28 +1,43 @@
 <template>
-  <p-pop-over ref="popOver" class="run-menu" auto-close>
+  <p-pop-over ref="popOver" class="run-menu" auto-close :placement="placement">
     <template #target="{ toggle }">
       <p-button
-        ref="button"
-        class="run-menu__button"
+        ref="runButton"
+        class="run-menu__run-button"
         inset
         :loading="loading"
         :disabled="deployment.deprecated"
         @click="toggle"
       >
         Run
-        <p-icon class="run-button__run-icon" icon="PlayIcon" solid />
+        <p-icon class="run-menu__run-icon" icon="PlayIcon" solid />
       </p-button>
     </template>
     <p-overflow-menu class="run-menu__overflow-menu" @keydown.esc="esc" @click="close">
       <p-overflow-menu-item class="run-menu__overflow-menu-item">
-        With defaults
+        <h6 class="run-menu__overflow-menu-item__heading">
+          Default
+        </h6>
+        <div class="run-menu__overflow-menu-item__content">
+          Create a run with default configuration
+        </div>
       </p-overflow-menu-item>
       <p-overflow-menu-item class="run-menu__overflow-menu-item">
-        Schedule a run
+        <h6 class="run-menu__overflow-menu-item__heading">
+          Schedule
+        </h6>
+        <div class="run-menu__overflow-menu-item__content">
+          Schedule a run with default configuration
+        </div>
       </p-overflow-menu-item>
       <router-link :to="flowRunCreateRoute(deployment.id)">
         <p-overflow-menu-item class="run-menu__overflow-menu-item">
-          Custom (Advanced)
+          <h6 class="run-menu__overflow-menu-item__heading">
+            Custom (Advanced)
+          </h6>
+          <div class="run-menu__overflow-menu-item__content">
+            Create a run with customized start, parameters, tags, and configuration
+          </div>
         </p-overflow-menu-item>
       </router-link>
     </p-overflow-menu>
@@ -30,8 +45,8 @@
 </template>
 
 <script lang="ts" setup>
-  import { PPopOver, PButton, showToast } from '@prefecthq/prefect-design'
-  import { ref, h } from 'vue'
+  import { PPopOver, PButton, showToast, PositionMethod, positions } from '@prefecthq/prefect-design'
+  import { ref, h, computed } from 'vue'
   import { useRouter } from 'vue-router'
   import ToastFlowRunCreate from './ToastFlowRunCreate.vue'
   import { localization } from '@/localization'
@@ -45,7 +60,7 @@
   }>()
 
   const popOver = ref<typeof PPopOver>()
-  const button = ref<typeof PButton>()
+  const runButton = ref<typeof PButton>()
 
   const deploymentsApi = inject(deploymentsApiKey)
   const loading = ref(false)
@@ -54,6 +69,10 @@
   const router = useRouter()
   const flowRunRoute = inject(flowRunRouteKey)
   const flowRunCreateRoute = inject(flowRunCreateRouteKey)
+
+  const placement = computed <PositionMethod[]>(() => {
+    return [positions.bottomRight, positions.topRight, positions.bottomLeft, positions.topLeft]
+  })
 
   function close(): void {
     if (popOver.value) {
@@ -65,8 +84,8 @@
     if (popOver.value) {
       popOver.value.close()
     }
-    if (button.value) {
-      button.value.el.focus()
+    if (runButton.value) {
+      runButton.value.el.focus()
     }
   }
 
@@ -93,9 +112,32 @@
 </script>
 
 <style>
-.run-button__run-icon { @apply
+.run-menu { @apply
+  inline-block
+}
+
+.run-menu__overflow-menu { @apply
+  max-w-xs
+}
+
+.run-menu__run-icon { @apply
   w-5
   h-5
+}
+
+.run-menu__overflow-menu-item { @apply
+  flex
+  flex-col
+  items-start
+  text-left
+}
+
+.run-menu__overflow-menu-item__heading { @apply
+ text-base
+}
+
+.run-menu__overflow-menu-item__content { @apply
+ text-slate-500
 }
 </style>
 
