@@ -55,7 +55,7 @@
   import BlockIconText from '@/components/BlockIconText.vue'
   import FlowIconText from '@/components/FlowIconText.vue'
   import { localization } from '@/localization'
-  import { DeploymentFormValues, Schedule } from '@/models'
+  import { Schedule } from '@/models'
   import { Deployment } from '@/models/Deployment'
   import { deploymentsApiKey } from '@/services'
   import { inject } from '@/utilities/inject'
@@ -106,7 +106,7 @@
     updateScheduleLoading.value = true
 
     try {
-      await deploymentsApi.updateDeployment(props.deployment.id, new DeploymentFormValues({ ...props.deployment, schedule: schedule }).getDeploymentRequest())
+      await deploymentsApi.updateDeployment(props.deployment.id, { schedule })
       emit('update')
       showToast(successMessage, 'success')
     } catch {

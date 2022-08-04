@@ -1,6 +1,6 @@
 import { ScheduleResponse, Parameters } from '@/models'
 
-export type DeploymentRequest = Partial<{
+export type DeploymentUpdateRequest = Partial<{
   name: string | null,
   description: string | null,
   flow_id: string | null,
