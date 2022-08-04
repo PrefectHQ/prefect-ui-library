@@ -1,57 +1,60 @@
 <template>
-  <p-form class="form-validation" @submit="submit">
-    <template #heading>
-      Form Validation Example
-    </template>
+  <DemoSection heading="Form Validation">
+    <p-form class="form-validation" @submit="submit">
+      <template #heading>
+        Example
+      </template>
 
-    <p-label label="Name" :message="errors.name" :state="nameState">
-      <p-text-input v-model="name" :state="nameState" />
-    </p-label>
+      <p-label label="Name" :message="errors.name" :state="nameState">
+        <p-text-input v-model="name" :state="nameState" />
+      </p-label>
 
-    <p-label label="Favorite JSON" :message="errors.json" :state="jsonState">
-      <JsonInput v-model="json" class="form-validation__json-input" show-prettify :state="jsonState" />
-    </p-label>
+      <p-label label="Favorite JSON" :message="errors.json" :state="jsonState">
+        <JsonInput v-model="json" class="form-validation__json-input" show-prettify :state="jsonState" />
+      </p-label>
 
-    <p-label label="Email" :message="errors.emailAddress" :state="emailAddressState">
-      <p-text-input v-model="emailAddress" :state="emailAddressState" />
-    </p-label>
+      <p-label label="Email" :message="errors.emailAddress" :state="emailAddressState">
+        <p-text-input v-model="emailAddress" :state="emailAddressState" />
+      </p-label>
 
-    <p-label label="Birthday" :message="errors.dateOfBirth" :state="dateOfBirthState">
-      <p-date-input v-model="dateOfBirth" :state="dateOfBirthState" />
-    </p-label>
+      <p-label label="Birthday" :message="errors.dateOfBirth" :state="dateOfBirthState">
+        <p-date-input v-model="dateOfBirth" :state="dateOfBirthState" />
+      </p-label>
 
-    <p-label label="Username (async)" :message="errors.username" :state="usernameState">
-      <p-text-input v-model="username" :state="usernameState" />
-    </p-label>
+      <p-label label="Username (async)" :message="errors.username" :state="usernameState">
+        <p-text-input v-model="username" :state="usernameState" />
+      </p-label>
 
-    <p-label label="Favorite Tags" :message="errors.tags" :state="tagsState">
-      <p-tags-input v-model="tags" :state="tagsState" />
-    </p-label>
+      <p-label label="Favorite Tags" :message="errors.tags" :state="tagsState">
+        <p-tags-input v-model="tags" :state="tagsState" />
+      </p-label>
 
-    <p-label label="I agree to the terms and conditions." :message="errors.agreeToTerms" :state="agreeToTermsState">
-      <p-checkbox v-model="agreeToTerms" />
-    </p-label>
+      <p-label label="I agree to the terms and conditions." :message="errors.agreeToTerms" :state="agreeToTermsState">
+        <p-checkbox v-model="agreeToTerms" />
+      </p-label>
 
-    <code class="form-validation__json" :class="classes">
-      <!-- eslint-disable-next-line vue/no-v-html -->
-      <pre v-html="JSON.stringify({ name, json, dateOfBirth, emailAddress, username, tags, agreeToTerms }, null, 2)" />
-    </code>
+      <code class="form-validation__json" :class="classes">
+        <!-- eslint-disable-next-line vue/no-v-html -->
+        <pre v-html="JSON.stringify({ name, json, dateOfBirth, emailAddress, username, tags, agreeToTerms }, null, 2)" />
+      </code>
 
-    <template #footer>
-      <p-button inset @click="handleReset">
-        Reset
-      </p-button>
-      <p-button type="submit" :loading="isSubmitting">
-        Submit
-      </p-button>
-    </template>
-  </p-form>
+      <template #footer>
+        <p-button inset @click="handleReset">
+          Reset
+        </p-button>
+        <p-button type="submit" :loading="isSubmitting">
+          Submit
+        </p-button>
+      </template>
+    </p-form>
+  </DemoSection>
 </template>
 
 <script lang="ts" setup>
   import { addYears, format } from 'date-fns'
   import { useForm, useField } from 'vee-validate'
   import { computed } from 'vue'
+  import DemoSection from '../components/DemoSection.vue'
   import JsonInput from '@/components/JsonInput.vue'
   import { isEmail, isRequired, withMessage, lessThan, isValidJsonString } from '@/services/validate'
 
