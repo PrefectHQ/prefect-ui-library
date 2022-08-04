@@ -1,26 +1,30 @@
 <template>
   <p-layout-default>
+    <BlockSchemaCapabilitiesSection />
+    <BlockTypesSection />
     <ColorModesSection />
-    <PageHeadingsSection />
-    <MarketingBannerSection />
-    <StatesSection />
-    <LogSection />
+    <ComboboxesSection />
     <EmptyStateSection />
     <ListsSection />
-    <ToggleSection />
+    <LogSection />
+    <MarketingBannerSection />
     <MetaWellSection />
+    <NotificationsSection />
+    <PageHeadingsSection />
+    <RunButtonSection />
+    <ScheduleDisplaySection />
+    <ScheduleModalSection />
     <SearchesSection />
     <SortSections />
-    <ComboboxesSection />
-    <ScheduleModalSection />
-    <ScheduleDisplaySection />
-    <RunButtonSection />
-    <NotificationsSection />
+    <StatesSection />
+    <ToggleSection />
   </p-layout-default>
 </template>
 
 <script lang="ts" setup>
   import { PLayoutDefault } from '@prefecthq/prefect-design'
+  import BlockSchemaCapabilitiesSection from '../sections/BlockSchemaCapabilitiesSection.vue'
+  import BlockTypesSection from '../sections/BlockTypesSection.vue'
   import ColorModesSection from '../sections/ColorModesSection.vue'
   import ComboboxesSection from '../sections/ComboboxesSection.vue'
   import EmptyStateSection from '../sections/EmptyStateSection.vue'

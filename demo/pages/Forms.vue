@@ -7,6 +7,8 @@
     </template>
 
     <ValidationSection />
+
+    <BlockSchemasSection />
     <DeploymentFormSection />
     <NotificationsFormsSection />
     <ParametersFormSection />
@@ -17,6 +19,7 @@
 
 <script lang="ts" setup>
   import { PLayoutDefault } from '@prefecthq/prefect-design'
+  import BlockSchemasSection from '../sections/BlockSchemasSection.vue'
   import DeploymentFormSection from '../sections/DeploymentFormSection.vue'
   import NotificationsFormsSection from '../sections/NotificationsFormsSection.vue'
   import ParametersFormSection from '../sections/ParametersFormSection.vue'
