@@ -23,7 +23,7 @@
   import { RouterView } from 'vue-router'
   import AppSidebar from './components/AppSidebar.vue'
   import { flowRunsApi, logsApi, taskRunsApi, flowsApi, deploymentsApi, workQueueApi, notificationsApi, blockCapabilitiesApi } from './services'
-  import { notificationCreateRouteKey, deploymentRouteKey, flowRouteKey, flowRunsRouteKey, flowsRouteKey, deploymentsRouteKey, workQueuesRouteKey, settingsRouteKey, workQueueRouteKey, Route, flowRunRouteKey, workQueueCreateRouteKey, editQueueRouteKey, blocksRouteKey, blockCatalogRouteKey, blockRouteKey, blockEditRouteKey, editNotificationRouteKey, blockCatalogCreateRouteKey, notificationsRouteKey, editDeploymentRouteKey, blockCatalogViewRouteKey } from '@/router'
+  import { flowRunCreateRouteKey, notificationCreateRouteKey, deploymentRouteKey, flowRouteKey, flowRunsRouteKey, flowsRouteKey, deploymentsRouteKey, workQueuesRouteKey, settingsRouteKey, workQueueRouteKey, Route, flowRunRouteKey, workQueueCreateRouteKey, editQueueRouteKey, blocksRouteKey, blockCatalogRouteKey, blockRouteKey, blockEditRouteKey, editNotificationRouteKey, blockCatalogCreateRouteKey, notificationsRouteKey, editDeploymentRouteKey, blockCatalogViewRouteKey } from '@/router'
   import { flowRunsApiKey, logsApiKey, taskRunsApiKey, flowsApiKey, deploymentsApiKey, workQueuesApiKey, notificationsApiKey, blockDocumentsApiKey, mocker, blockTypesApiKey, blockSchemasApiKey, blockCapabilitiesApiKey } from '@/services'
   import { canKey, getAppPermissions } from '@/types'
 
@@ -53,6 +53,7 @@
   provide(notificationCreateRouteKey, emptyRoute)
   provide(editNotificationRouteKey, emptyRoute)
   provide(blocksRouteKey, emptyRoute)
+  provide(flowRunCreateRouteKey, emptyRoute)
   provide(notificationsRouteKey, emptyRoute)
   provide(blockCatalogRouteKey, emptyRoute)
   provide(blockCatalogViewRouteKey, emptyRoute)
