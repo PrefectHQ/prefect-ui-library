@@ -15,8 +15,8 @@
 <script lang="ts" setup>
   import  { PButton, showToast } from '@prefecthq/prefect-design'
   import { ref, h } from 'vue'
-  import { RouteLocationRaw, useRouter } from 'vue-router'
-  import RunButtonToastMessage from './RunButtonToastMessage.vue'
+  import { useRouter } from 'vue-router'
+  import ToastFlowRunCreate from './ToastFlowRunCreate.vue'
   import { localization } from '@/localization'
   import { Deployment } from '@/models'
   import { flowRunRouteKey } from '@/router/routes'
@@ -47,8 +47,7 @@
         },
       },
       )
-      const runRoute: RouteLocationRaw = flowRunRoute(flowRun.value.id)
-      const toastMessage = h(RunButtonToastMessage, { flowRun: flowRun.value, flowRunRoute: runRoute, routerProp:router })
+      const toastMessage = h(ToastFlowRunCreate, { flowRun: flowRun.value, flowRunRoute, router })
       showToast(toastMessage, 'success')
     } catch (error) {
       showToast(localization.error.scheduleFlowRun, 'error')
