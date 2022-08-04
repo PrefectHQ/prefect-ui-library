@@ -13,6 +13,8 @@
     <SearchesSection />
     <SortSections />
     <ComboboxesSection />
+    <ScheduleModalSection />
+    <ScheduleDisplaySection />
     <RunButtonSection />
     <NotificationsSection />
   </p-layout-default>
@@ -30,6 +32,8 @@
   import NotificationsSection from '../sections/NotificationsSection.vue'
   import PageHeadingsSection from '../sections/PageHeadingsSection.vue'
   import RunButtonSection from '../sections/RunButtonSection.vue'
+  import ScheduleDisplaySection from '../sections/ScheduleDisplaySection.vue'
+  import ScheduleModalSection from '../sections/ScheduleModalSection.vue'
   import SearchesSection from '../sections/SearchesSection.vue'
   import SortSections from '../sections/SortSections.vue'
   import StatesSection from '../sections/StatesSection.vue'
