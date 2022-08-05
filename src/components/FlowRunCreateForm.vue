@@ -1,5 +1,5 @@
 <template>
-  <p-form>
+  <p-form @submit="submit">
     <p-content class="flow-run-create-form__section">
       <h3 class="flow-run-create-form__section-header">
         General
@@ -60,21 +60,29 @@
         </template>
       </template>
     </p-content>
+
+    <template #footer>
+      <p-button inset @click="cancel">
+        Cancel
+      </p-button>
+      <p-button type="submit">
+        Run
+      </p-button>
+    </template>
   </p-form>
 </template>
 
 <script lang="ts" setup>
   import  { PButton, ButtonGroupOption } from '@prefecthq/prefect-design'
-  import { useField } from 'vee-validate'
-  import { ref } from 'vue'
+  import { zonedTimeToUtc } from 'date-fns-tz'
+  import { useField, useForm } from 'vee-validate'
+  import { computed, ref } from 'vue'
   import PydanticForm from './PydanticForm.vue'
   import TimezoneSelect from './TimezoneSelect.vue'
-  // import { useParameters } from '@/compositions'
   import { Deployment, FlowRun } from '@/models'
   import { mocker } from '@/services'
 
   const props = defineProps<{
-    modelValue?: Partial<FlowRun>,
     deployment: Deployment,
   }>()
 
@@ -82,11 +90,22 @@
     return mocker.create('runName')
   }
 
+  const emit = defineEmits<{
+    (event: 'submit', value?: Partial<FlowRun>): void,
+    (event: 'cancel'): void,
+  }>()
+
+
+  const { values } = useForm()
   const { value: start } = useField<Date>('state.scheduledStart')
   const { value: tags } = useField<string[]>('tags')
-  const { value: name } = useField<string>('name')
+  const { value: name } = useField<string>('name', undefined, { initialValue: generateRandomName() })
   const { value: stateMessage } = useField<string>('state.message')
-  const { value: parameters } = useField<Record<string, unknown>>('parameters')
+  const { value: parameters } = useField<Record<string, unknown>>('parameters', undefined, { initialValue: props.deployment.parameters })
+
+  const adjustedStart = computed(() => {
+    return zonedTimeToUtc(start.value, timezone.value)
+  })
 
   const whenOptions: ButtonGroupOption[] = [{ label: 'Now', value: 'now' }, { label: 'Later', value: 'later' }]
   const when = ref('now')
@@ -95,6 +114,9 @@
   const overrideParameters = ref('default')
 
   const timezone = ref('UTC')
+
+  const cancel = (): void => emit('cancel')
+  const submit = (): void => emit('submit', { ...values })
 </script>
 
 <style>
