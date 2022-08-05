@@ -79,7 +79,7 @@
   import { computed, ref } from 'vue'
   import PydanticForm from './PydanticForm.vue'
   import TimezoneSelect from './TimezoneSelect.vue'
-  import { Deployment, FlowRun } from '@/models'
+  import { Deployment, DeploymentFlowRunCreate } from '@/models'
   import { mocker } from '@/services'
 
   const props = defineProps<{
@@ -91,13 +91,13 @@
   }
 
   const emit = defineEmits<{
-    (event: 'submit', value?: Partial<FlowRun>): void,
+    (event: 'submit', value: DeploymentFlowRunCreate): void,
     (event: 'cancel'): void,
   }>()
 
 
   const { values } = useForm()
-  const { value: start } = useField<Date>('state.scheduledStart')
+  const { value: start } = useField<Date>('state.stateDetails.scheduledStart')
   const { value: tags } = useField<string[]>('tags')
   const { value: name } = useField<string>('name', undefined, { initialValue: generateRandomName() })
   const { value: stateMessage } = useField<string>('state.message')
@@ -108,15 +108,31 @@
   })
 
   const whenOptions: ButtonGroupOption[] = [{ label: 'Now', value: 'now' }, { label: 'Later', value: 'later' }]
-  const when = ref('now')
+  const when = ref<'now' | 'later'>('now')
 
   const overrideParametersOptions: ButtonGroupOption[] = [{ label: 'Default', value: 'default' }, { label: 'Custom', value: 'custom' }]
-  const overrideParameters = ref('default')
+  const overrideParameters = ref<'default' | 'custom'>('default')
 
   const timezone = ref('UTC')
 
   const cancel = (): void => emit('cancel')
-  const submit = (): void => emit('submit', { ...values })
+  const submit = (): void => {
+    const resolvedValues: DeploymentFlowRunCreate = { ...values }
+
+    if (when.value == 'now' && resolvedValues.state?.stateDetails?.scheduledTime) {
+      resolvedValues.state.stateDetails.scheduledTime = null
+    }
+
+    if (when.value == 'later' && resolvedValues.state?.stateDetails?.scheduledTime) {
+      resolvedValues.state.stateDetails.scheduledTime = adjustedStart.value
+    }
+
+    if (overrideParameters.value == 'default') {
+      delete resolvedValues.parameters
+    }
+
+    emit('submit', resolvedValues)
+  }
 </script>
 
 <style>
