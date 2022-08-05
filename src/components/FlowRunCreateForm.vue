@@ -79,7 +79,7 @@
   import { computed, ref } from 'vue'
   import PydanticForm from './PydanticForm.vue'
   import TimezoneSelect from './TimezoneSelect.vue'
-  import { Deployment, DeploymentFlowRunCreate } from '@/models'
+  import { Deployment, DeploymentFlowRunCreate, StateType } from '@/models'
   import { mocker } from '@/services'
 
   const props = defineProps<{
@@ -98,6 +98,10 @@
 
   const { values } = useForm()
   const { value: start } = useField<Date>('state.stateDetails.scheduledStart')
+
+  // This line ensures clients aren't required to add a state to the request object and is not modifiable by users
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const { value: state } = useField<StateType>('state.type', undefined, { initialValue: 'scheduled' })
   const { value: tags } = useField<string[]>('tags')
   const { value: name } = useField<string>('name', undefined, { initialValue: generateRandomName() })
   const { value: stateMessage } = useField<string>('state.message')
