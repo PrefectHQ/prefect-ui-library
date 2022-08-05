@@ -1,9 +1,7 @@
 <template>
   <page-heading class="page-heading-deployment-edit" :crumbs="crumbs">
     <slot>
-      <div class="page-heading-deployment-edit__header-meta">
-        <FlowIconText :flow-id="deployment.flowId" />
-      </div>
+      <FlowIconText :flow-id="deployment.flowId" />
     </slot>
   </page-heading>
 </template>
@@ -30,13 +28,3 @@
     { text: 'Edit' },
   ])
 </script>
-
-
-<style>
-.page-heading-deployment-edit__header-meta { @apply
-  flex
-  gap-2
-  items-center
-  xl:hidden
-}
-</style>
