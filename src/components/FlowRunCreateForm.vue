@@ -1,7 +1,7 @@
 <template>
   <p-form>
-    <p-content class="flow-run-form__section">
-      <h3 class="flow-run-form__section-header">
+    <p-content class="flow-run-create-form__section">
+      <h3 class="flow-run-create-form__section-header">
         General
       </h3>
 
@@ -26,48 +26,47 @@
         <p-tags-input v-model="tags" />
       </p-label>
 
-      <!--
-        <p-divider v-if="deployment.parameters" />
+      <p-divider v-if="deployment.parameters" />
 
-        <h3 class="flow-run-form__section-header">
+      <h3 class="flow-run-create-form__section-header">
         Start
-        </h3>
+      </h3>
 
-        <p-button-group v-model="nowOrLater" :options="nowOrLaterOptions" size="sm" />
+      <p-button-group v-model="when" :options="whenOptions" size="sm" />
 
-        <template v-if="nowOrLater == 'later'">
-        <div class="flow-run-form__row">
-        <p-label label="Date" class="interval-schedule-form__column--span-2">
-        <p-date-input v-model="start" show-time />
-        </p-label>
-
-        <p-label label="Timezone" class="interval-schedule-form__column--span-2">
-        <TimezoneSelect v-model="timezone" />
-        </p-label>
+      <template v-if="when == 'later'">
+        <div class="flow-run-create-form__row">
+          <p-label label="Date">
+            <p-date-input v-model="start" show-time />
+          </p-label>
+          <p-label label="Timezone">
+            <TimezoneSelect v-model="timezone" />
+          </p-label>
         </div>
-        </template>
+      </template>
 
-        <p-divider v-if="deployment.parameters" />
+
+      <template v-if="deployment.parameters">
+        <p-divider />
 
         <h3 class="flow-run-form__section-header">
-        Parameters
+          Parameters
         </h3>
 
-        <p-button-group v-model="overrideParameters" :options="useParametersOptions" size="sm" />
+        <p-button-group v-model="overrideParameters" :options="overrideParametersOptions" size="sm" />
 
         <template v-if="overrideParameters == 'custom'">
-        <PydanticForm v-model="parameters" hide-footer :pydantic-schema="deployment.parameterOpenApiSchema" />
+          <PydanticForm v-model="parameters" hide-footer :pydantic-schema="deployment.parameterOpenApiSchema" />
         </template>
-      -->
+      </template>
     </p-content>
   </p-form>
 </template>
 
 <script lang="ts" setup>
   import  { PButton, ButtonGroupOption } from '@prefecthq/prefect-design'
-  import { zonedTimeToUtc } from 'date-fns-tz'
-  import { useField, useForm } from 'vee-validate'
-  import { ref, computed } from 'vue'
+  import { useField } from 'vee-validate'
+  import { ref } from 'vue'
   import PydanticForm from './PydanticForm.vue'
   import TimezoneSelect from './TimezoneSelect.vue'
   // import { useParameters } from '@/compositions'
@@ -87,4 +86,35 @@
   const { value: tags } = useField<string[]>('tags')
   const { value: name } = useField<string>('name')
   const { value: stateMessage } = useField<string>('state.message')
+  const { value: parameters } = useField<Record<string, unknown>>('parameters')
+
+  const whenOptions: ButtonGroupOption[] = [{ label: 'Now', value: 'now' }, { label: 'Later', value: 'later' }]
+  const when = ref('now')
+
+  const overrideParametersOptions: ButtonGroupOption[] = [{ label: 'Default', value: 'default' }, { label: 'Custom', value: 'custom' }]
+  const overrideParameters = ref('default')
+
+  const timezone = ref('UTC')
 </script>
+
+<style>
+.flow-run-create-form__random-name-button { @apply
+  rounded-none
+  rounded-tr
+  rounded-br
+}
+.flow-run-create-form__title { @apply
+  font-semibold
+  m-0
+  p-0
+}
+.flow-run-create-form__section-header { @apply
+  text-lg
+  font-semibold
+}
+.flow-run-create-form__row { @apply
+  grid
+  gap-2
+  grid-cols-4;
+}
+</style>
