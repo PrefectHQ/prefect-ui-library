@@ -45,7 +45,7 @@
 </template>
 
 <script lang="ts" setup>
-  import { PPopOver, PButton, showToast, PositionMethod } from '@prefecthq/prefect-design'
+  import { PPopOver, PButton, showToast, PositionMethod, positions } from '@prefecthq/prefect-design'
   import { ref, h, computed } from 'vue'
   import { useRouter } from 'vue-router'
   import ToastFlowRunCreate from './ToastFlowRunCreate.vue'
@@ -53,7 +53,7 @@
   import { Deployment } from '@/models'
   import { flowRunRouteKey, flowRunCreateRouteKey } from '@/router'
   import { deploymentsApiKey } from '@/services/DeploymentsApi'
-  import { inject, positions } from '@/utilities'
+  import { inject } from '@/utilities'
 
   defineProps<{
     deployment: Deployment,
@@ -71,12 +71,7 @@
   const flowRunCreateRoute = inject(flowRunCreateRouteKey)
 
   const placement = computed <PositionMethod[]>(() => {
-    // Not entirely sure where it's coming from
-    // but offsets from the bottom require a couple of pixels extra
-    // to operate properly
-    const bottomOffset = -6
-    const topOffset = 4
-    return [positions.bottomRight(0, topOffset), positions.bottomLeft(0, topOffset), positions.topRight(0, bottomOffset), positions.topLeft(0, bottomOffset)]
+    return [positions.bottomRight, positions.bottomLeft, positions.topRight, positions.topLeft]
   })
 
   function close(): void {
@@ -123,7 +118,7 @@
 
 .run-menu__overflow-menu { @apply
   max-w-xs
-  mt-1
+  my-2
 }
 
 .run-menu__run-icon { @apply

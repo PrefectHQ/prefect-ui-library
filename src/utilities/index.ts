@@ -1,4 +1,3 @@
-export * as positions from './positions'
 export * from './arrays'
 export * from './colorMode'
 export * from './copy'
