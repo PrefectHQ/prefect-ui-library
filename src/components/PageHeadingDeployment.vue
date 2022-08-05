@@ -7,7 +7,9 @@
       <DeploymentMenu :deployment="deployment" @delete="handleDelete" />
     </template>
     <slot>
-      <FlowIconText :flow-id="deployment.flowId" />
+      <div class="page-heading-deployment__header-meta">
+        <FlowIconText :flow-id="deployment.flowId" />
+      </div>
     </slot>
   </page-heading>
 </template>
@@ -52,5 +54,12 @@
 .page-heading-deployment__run-icon { @apply
   w-5
   h-5
+}
+
+.page-heading-deployment__header-meta { @apply
+  flex
+  gap-2
+  items-center
+  xl:hidden
 }
 </style>

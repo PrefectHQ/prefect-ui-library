@@ -1,5 +1,5 @@
 <template>
-  <p-pop-over ref="popOver" class="run-menu" auto-close :placement="placement">
+  <p-pop-over ref="popOver" class="run-menu" auto-close :placement="placement" @keydown.esc="esc">
     <template #target="{ toggle }">
       <p-button
         ref="runButton"
@@ -13,8 +13,8 @@
         <p-icon class="run-menu__run-icon" icon="PlayIcon" solid />
       </p-button>
     </template>
-    <p-overflow-menu class="run-menu__overflow-menu" @keydown.esc="esc" @click="close">
-      <p-overflow-menu-item class="run-menu__overflow-menu-item">
+    <p-overflow-menu class="run-menu__overflow-menu" @click="close">
+      <p-overflow-menu-item class="run-menu__overflow-menu-item" @click="run">
         <h6 class="run-menu__overflow-menu-item__heading">
           Now with defaults
         </h6>
@@ -24,16 +24,6 @@
           </div>
         -->
       </p-overflow-menu-item>
-      <!--
-        <p-overflow-menu-item class="run-menu__overflow-menu-item">
-        <h6 class="run-menu__overflow-menu-item__heading">
-        Later
-        </h6>
-        <div class="run-menu__overflow-menu-item__content">
-        Schedule a run with defaults
-        </div>
-        </p-overflow-menu-item>
-      -->
       <router-link :to="flowRunCreateRoute(deployment.id)">
         <p-overflow-menu-item class="run-menu__overflow-menu-item">
           <h6 class="run-menu__overflow-menu-item__heading">
@@ -70,7 +60,6 @@
 
   const deploymentsApi = inject(deploymentsApiKey)
   const loading = ref(false)
-  const flowRun = ref()
 
   const router = useRouter()
   const flowRunRoute = inject(flowRunRouteKey)
@@ -87,9 +76,8 @@
   }
 
   function esc(): void {
-    if (popOver.value) {
-      popOver.value.close()
-    }
+    close()
+
     if (runButton.value) {
       runButton.value.el.focus()
     }
@@ -99,14 +87,14 @@
     loading.value = true
 
     try {
-      flowRun.value = await deploymentsApi.createDeploymentFlowRun(deployment.id, {
+      const flowRun = await deploymentsApi.createDeploymentFlowRun(deployment.id, {
         state: {
           type: 'scheduled',
-          message: 'Run through UI',
+          message: 'Run from the UI with defaults',
         },
-      },
-      )
-      const toastMessage = h(ToastFlowRunCreate, { flowRun: flowRun.value, flowRunRoute, router })
+      })
+      console.log(flowRun)
+      const toastMessage = h(ToastFlowRunCreate, { flowRun, flowRunRoute, router })
       showToast(toastMessage, 'success')
     } catch (error) {
       showToast(localization.error.scheduleFlowRun, 'error')
