@@ -41,8 +41,8 @@
 </template>
 
 <script lang="ts" setup>
-  import { PPopOver, PButton, showToast, PositionMethod, positions } from '@prefecthq/prefect-design'
-  import { ref, h, computed } from 'vue'
+  import { PPopOver, PButton, showToast, positions } from '@prefecthq/prefect-design'
+  import { ref, h } from 'vue'
   import { useRouter } from 'vue-router'
   import ToastFlowRunCreate from './ToastFlowRunCreate.vue'
   import { localization } from '@/localization'
