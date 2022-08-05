@@ -1,5 +1,5 @@
 <template>
-  <p-form @submit="submit">
+  <p-form class="flow-run-create-form" @submit="submit">
     <p-content class="flow-run-create-form__section">
       <h3 class="flow-run-create-form__section-header">
         General
@@ -120,6 +120,15 @@
 </script>
 
 <style>
+.flow-run-create-form {
+  @apply
+  border-[1px]
+  border-gray-300
+  px-6
+  py-6
+  rounded-lg
+}
+
 .flow-run-create-form__random-name-button { @apply
   rounded-none
   rounded-tr
