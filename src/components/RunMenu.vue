@@ -16,27 +16,27 @@
     <p-overflow-menu class="run-menu__overflow-menu" @keydown.esc="esc" @click="close">
       <p-overflow-menu-item class="run-menu__overflow-menu-item">
         <h6 class="run-menu__overflow-menu-item__heading">
-          Default
+          Now
         </h6>
         <div class="run-menu__overflow-menu-item__content">
-          Create a run with default configuration
+          Create a run with defaults
         </div>
       </p-overflow-menu-item>
       <p-overflow-menu-item class="run-menu__overflow-menu-item">
         <h6 class="run-menu__overflow-menu-item__heading">
-          Schedule
+          Later
         </h6>
         <div class="run-menu__overflow-menu-item__content">
-          Schedule a run with default configuration
+          Schedule a run with defaults
         </div>
       </p-overflow-menu-item>
       <router-link :to="flowRunCreateRoute(deployment.id)">
         <p-overflow-menu-item class="run-menu__overflow-menu-item">
           <h6 class="run-menu__overflow-menu-item__heading">
-            Custom (Advanced)
+            Custom
           </h6>
           <div class="run-menu__overflow-menu-item__content">
-            Create a run with customized start, parameters, tags, and configuration
+            Create a run with customized start, parameters, tags, and more
           </div>
         </p-overflow-menu-item>
       </router-link>
