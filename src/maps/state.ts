@@ -1,3 +1,4 @@
+import { StateCreate, StateRequest } from '@/models'
 import { State } from '@/models/State'
 import { StateResponse } from '@/models/StateResponse'
 import { MapFunction } from '@/services/Mapper'
@@ -20,6 +21,17 @@ export const mapStateToStateResponse: MapFunction<State, StateResponse> = functi
     'type': this.map('StateType', source.type, 'ServerStateType'),
     'message': source.message,
     'state_details': this.map('StateDetails', source.stateDetails, 'StateDetailsResponse'),
+    'data': source.data,
+    'timestamp': source.timestamp,
+    'name': source.name,
+  }
+}
+
+export const mapStateCreateToStateRequest: MapFunction<StateCreate, StateRequest> = function(source: StateCreate): StateRequest {
+  return {
+    'type': this.map('StateType', source.type, 'ServerStateType'),
+    'message': source.message,
+    'state_details': source.stateDetails ? this.map('StateDetailsCreate', source.stateDetails, 'StateDetailsRequest') : null,
     'data': source.data,
     'timestamp': source.timestamp,
     'name': source.name,

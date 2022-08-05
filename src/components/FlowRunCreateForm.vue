@@ -134,18 +134,21 @@
   rounded-tr
   rounded-br
 }
+
 .flow-run-create-form__title { @apply
   font-semibold
   m-0
   p-0
 }
+
 .flow-run-create-form__section-header { @apply
   text-lg
   font-semibold
 }
+
 .flow-run-create-form__row { @apply
   grid
   gap-2
-  grid-cols-4;
+  grid-cols-2
 }
 </style>

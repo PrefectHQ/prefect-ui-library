@@ -1,4 +1,6 @@
+import { StateDetailsCreate } from '@/models'
 import { StateDetails } from '@/models/StateDetails'
+import { StateDetailsRequest } from '@/models/StateDetailsRequest'
 import { StateDetailsResponse } from '@/models/StateDetailsResponse'
 import { MapFunction } from '@/services/Mapper'
 
@@ -23,3 +25,15 @@ export const mapStateDetailsToStateDetailsResponse: MapFunction<StateDetails, St
     'cache_expiration': this.map('Date', source.cacheExpiration, 'string'),
   }
 }
+
+export const mapStateDetailsCreateToStateDetailsRequest: MapFunction<StateDetailsCreate, StateDetailsRequest> = function(source: StateDetailsCreate): StateDetailsRequest {
+  return {
+    'flow_run_id': source.flowRunId,
+    'task_run_id': source.taskRunId,
+    'child_flow_run_id': source.childFlowRunId,
+    'cache_key': source.cacheKey,
+    'scheduled_time': source.scheduledTime ? this.map('Date', source.scheduledTime, 'string') : null,
+    'cache_expiration': source.cacheExpiration ? this.map('Date', source.cacheExpiration, 'string') : null,
+  }
+}
+

@@ -1,4 +1,4 @@
-import { DeploymentUpdate, DeploymentUpdateRequest } from '@/models'
+import { DeploymentFlowRunCreate, DeploymentFlowRunRequest, DeploymentUpdate, DeploymentUpdateRequest } from '@/models'
 import { Deployment } from '@/models/Deployment'
 import { DeploymentResponse } from '@/models/DeploymentResponse'
 import { MapFunction } from '@/services/Mapper'
@@ -50,3 +50,18 @@ export const mapDeploymentUpdateToDeploymentUpdateRequest: MapFunction<Deploymen
     'tags': source.tags,
   }
 }
+
+export const mapDeploymentFlowRunCreateToDeploymentFlowRunRequest: MapFunction<DeploymentFlowRunCreate, DeploymentFlowRunRequest> = function(source: DeploymentFlowRunCreate): DeploymentFlowRunRequest {
+  return {
+    'name': source.name,
+    'parameters': source.parameters,
+    'idempotency_key': source.idempotencyKey,
+    'context': source.context,
+    'empirical_policy': source.empiricalPolicy,
+    'tags': source.tags,
+    'parent_task_run_id': source.parentTaskRunId,
+    'infrastructure_document_id': source.infrastructureDocumentId,
+    'state': this.map('StateCreate', source.state, 'StateRequest'),
+  }
+}
+
