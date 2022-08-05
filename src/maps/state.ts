@@ -31,7 +31,7 @@ export const mapStateCreateToStateRequest: MapFunction<StateCreate, StateRequest
   return {
     'type': this.map('StateType', source.type, 'ServerStateType'),
     'message': source.message,
-    'state_details': source.stateDetails ? this.map('StateDetailsCreate', source.stateDetails, 'StateDetailsRequest') : null,
+    'state_details': source.stateDetails ? this.map('StateDetailsCreate', source.stateDetails, 'StateDetailsRequest') : {},
     'data': source.data,
     'timestamp': source.timestamp,
     'name': source.name,
