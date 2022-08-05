@@ -20,7 +20,7 @@
 <script lang="ts" setup>
   import { PButton } from '@prefecthq/prefect-design'
   import { ref } from 'vue'
-  import { Router } from 'vue-router'
+  import { Router  } from 'vue-router'
   import { FlowRun } from '@/models/FlowRun'
   import { Route } from '@/router'
 
@@ -29,7 +29,7 @@
     immediate?: boolean,
     startTime?: Date,
     // TODO: This pattern is bad, we should investigate dependency injection in the toast subapp
-    flowRunRoute: (id: string) => Route,
+    flowRunRoute: (flowRunId: string) => Route,
     router: Router,
   }>()
 

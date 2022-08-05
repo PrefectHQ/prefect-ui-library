@@ -51,7 +51,7 @@
   import { deploymentsApiKey } from '@/services/DeploymentsApi'
   import { inject } from '@/utilities'
 
-  defineProps<{
+  const props = defineProps<{
     deployment: Deployment,
   }>()
 
@@ -83,11 +83,11 @@
     }
   }
 
-  const run = async (deployment: Deployment): Promise<void> => {
+  const run = async (): Promise<void> => {
     loading.value = true
 
     try {
-      const flowRun = await deploymentsApi.createDeploymentFlowRun(deployment.id, {
+      const flowRun = await deploymentsApi.createDeploymentFlowRun(props.deployment.id, {
         state: {
           type: 'scheduled',
           message: 'Run from the UI with defaults',
