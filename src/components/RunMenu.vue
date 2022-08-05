@@ -15,25 +15,11 @@
     </template>
     <p-overflow-menu class="run-menu__overflow-menu" @click="close">
       <p-overflow-menu-item class="run-menu__overflow-menu-item" @click="run">
-        <h6 class="run-menu__overflow-menu-item__heading">
-          Now with defaults
-        </h6>
-        <!--
-          <div class="run-menu__overflow-menu-item__content">
-          Create a run
-          </div>
-        -->
+        Now with defaults
       </p-overflow-menu-item>
       <router-link :to="flowRunCreateRoute(deployment.id)">
         <p-overflow-menu-item class="run-menu__overflow-menu-item">
-          <h6 class="run-menu__overflow-menu-item__heading">
-            Custom
-          </h6>
-          <!--
-            <div class="run-menu__overflow-menu-item__content">
-            Create a run with customized start, parameters, tags, and more
-            </div>
-          -->
+          Custom
         </p-overflow-menu-item>
       </router-link>
     </p-overflow-menu>
@@ -115,21 +101,6 @@
 .run-menu__run-icon { @apply
   w-5
   h-5
-}
-
-.run-menu__overflow-menu-item { @apply
-  flex
-  flex-col
-  items-start
-  text-left
-}
-
-.run-menu__overflow-menu-item__heading { @apply
- text-base
-}
-
-.run-menu__overflow-menu-item__content { @apply
- text-slate-500
 }
 </style>
 
