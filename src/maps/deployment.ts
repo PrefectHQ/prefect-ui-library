@@ -2,6 +2,7 @@ import { DeploymentFlowRunCreate, DeploymentFlowRunRequest, DeploymentUpdate, De
 import { Deployment } from '@/models/Deployment'
 import { DeploymentResponse } from '@/models/DeploymentResponse'
 import { MapFunction } from '@/services/Mapper'
+import { mapCamelToSnakeCase } from '@/utilities'
 
 export const mapDeploymentResponseToDeployment: MapFunction<DeploymentResponse, Deployment> = function(source: DeploymentResponse): Deployment {
   return new Deployment({
@@ -43,24 +44,14 @@ export const mapDeploymentToDeploymentResponse: MapFunction<Deployment, Deployme
 
 export const mapDeploymentUpdateToDeploymentUpdateRequest: MapFunction<DeploymentUpdate, DeploymentUpdateRequest> = function(source: DeploymentUpdate): DeploymentUpdateRequest {
   return {
-    'description': source.description,
+    ...mapCamelToSnakeCase(source),
     'schedule': source.schedule ? this.map('Schedule', source.schedule, 'ScheduleResponse') : source.schedule,
-    'is_schedule_active': source.isScheduleActive,
-    'parameters': source.parameters,
-    'tags': source.tags,
   }
 }
 
 export const mapDeploymentFlowRunCreateToDeploymentFlowRunRequest: MapFunction<DeploymentFlowRunCreate, DeploymentFlowRunRequest> = function(source: DeploymentFlowRunCreate): DeploymentFlowRunRequest {
   return {
-    'name': source.name,
-    'parameters': source.parameters,
-    'idempotency_key': source.idempotencyKey,
-    'context': source.context,
-    'empirical_policy': source.empiricalPolicy,
-    'tags': source.tags,
-    'parent_task_run_id': source.parentTaskRunId,
-    'infrastructure_document_id': source.infrastructureDocumentId,
+    ...mapCamelToSnakeCase(source),
     'state': this.map('StateCreate', source.state, 'StateRequest'),
   }
 }

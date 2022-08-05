@@ -3,6 +3,7 @@ import { StateDetails } from '@/models/StateDetails'
 import { StateDetailsRequest } from '@/models/StateDetailsRequest'
 import { StateDetailsResponse } from '@/models/StateDetailsResponse'
 import { MapFunction } from '@/services/Mapper'
+import { mapCamelToSnakeCase } from '@/utilities'
 
 export const mapStateDetailsResponseToStateDetails: MapFunction<StateDetailsResponse, StateDetails> = function(source: StateDetailsResponse): StateDetails {
   return {
@@ -28,10 +29,7 @@ export const mapStateDetailsToStateDetailsResponse: MapFunction<StateDetails, St
 
 export const mapStateDetailsCreateToStateDetailsRequest: MapFunction<StateDetailsCreate, StateDetailsRequest> = function(source: StateDetailsCreate): StateDetailsRequest {
   return {
-    'flow_run_id': source.flowRunId,
-    'task_run_id': source.taskRunId,
-    'child_flow_run_id': source.childFlowRunId,
-    'cache_key': source.cacheKey,
+    ...mapCamelToSnakeCase(source),
     'scheduled_time': source.scheduledTime ? this.map('Date', source.scheduledTime, 'string') : null,
     'cache_expiration': source.cacheExpiration ? this.map('Date', source.cacheExpiration, 'string') : null,
   }
