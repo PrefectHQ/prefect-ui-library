@@ -36,7 +36,7 @@
 
       <template v-if="when == 'later'">
         <div class="flow-run-create-form__row">
-          <p-label label="Date" :message="errors['state.stateDetails.scheduledStart']" :state="startState">
+          <p-label label="Date" :message="errors['state.stateDetails.scheduledTime']" :state="startState">
             <p-date-input v-model="start" show-time />
           </p-label>
           <p-label label="Timezone">
@@ -109,7 +109,7 @@
 
 
   const { handleSubmit, errors } = useForm()
-  const { value: start, meta: startState } = useField<Date>('state.stateDetails.scheduledStart', rules.start)
+  const { value: start, meta: startState } = useField<Date>('state.stateDetails.scheduledTime', rules.start)
 
   // This line ensures clients aren't required to add a state to the request object and is not modifiable by users
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
