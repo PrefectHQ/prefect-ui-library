@@ -93,8 +93,7 @@
           message: 'Run from the UI with defaults',
         },
       })
-      console.log(flowRun)
-      const toastMessage = h(ToastFlowRunCreate, { flowRun, flowRunRoute, router })
+      const toastMessage = h(ToastFlowRunCreate, { flowRun, flowRunRoute, router, immediate: true })
       showToast(toastMessage, 'success')
     } catch (error) {
       showToast(localization.error.scheduleFlowRun, 'error')
