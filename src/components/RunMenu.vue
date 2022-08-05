@@ -65,9 +65,7 @@
   const flowRunRoute = inject(flowRunRouteKey)
   const flowRunCreateRoute = inject(flowRunCreateRouteKey)
 
-  const placement = computed <PositionMethod[]>(() => {
-    return [positions.bottomRight, positions.bottomLeft, positions.topRight, positions.topLeft]
-  })
+  const placement = [positions.bottomRight, positions.bottomLeft, positions.topRight, positions.topLeft]
 
   function close(): void {
     if (popOver.value) {
