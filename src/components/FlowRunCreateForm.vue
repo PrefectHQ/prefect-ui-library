@@ -55,7 +55,7 @@
       <template v-if="deployment.parameters">
         <p-divider />
 
-        <h3 class="flow-run-form__section-header">
+        <h3 class="flow-run-create-form__section-header">
           Parameters
         </h3>
 
