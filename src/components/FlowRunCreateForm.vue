@@ -23,7 +23,13 @@
       </p-label>
 
       <p-label label="Tags (optional)">
-        <p-tags-input v-model="tags" />
+        <p-tags-input v-model="tags" :options="deploymentTags">
+          <template #default="{ selectedOption }">
+            <p-tag :dismissible="!selectedOption.disabled">
+              {{ selectedOption.label }}
+            </p-tag>
+          </template>
+        </p-tags-input>
       </p-label>
 
       <p-divider v-if="deployment.parameters" />
@@ -114,7 +120,7 @@
   // This line ensures clients aren't required to add a state to the request object and is not modifiable by users
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { value: state } = useField<StateType>('state.type', undefined, { initialValue: 'scheduled' })
-  const { value: tags } = useField<string[]>('tags')
+  const { value: tags } = useField<string[]>('tags', undefined, { initialValue: props.deployment.tags ?? [] })
   const { value: name } = useField<string>('name', undefined, { initialValue: generateRandomName() })
   const { value: stateMessage } = useField<string>('state.message')
   const { value: parameters } = useField<Record<string, unknown>>('parameters', undefined, { initialValue: props.deployment.parameters })
@@ -130,6 +136,7 @@
   const overrideParameters = ref<'default' | 'custom'>('default')
 
   const timezone = ref('UTC')
+  const deploymentTags = computed(() => props.deployment.tags?.map((tag) => ({ label: tag, value: tag, disabled: true })))
 
   const cancel = (): void => emit('cancel')
   const submit = handleSubmit((values): void => {
