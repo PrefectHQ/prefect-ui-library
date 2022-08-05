@@ -5,7 +5,7 @@
         General
       </h3>
 
-      <p-label label="Name">
+      <p-label label="Name (optional)">
         <p-text-input v-model="name">
           <template #append>
             <p-button
@@ -22,7 +22,7 @@
         <p-textarea v-model="stateMessage" placeholder="Created from the Prefect UI" />
       </p-label>
 
-      <p-label label="Tags">
+      <p-label label="Tags (optional)">
         <p-tags-input v-model="tags" />
       </p-label>
 
@@ -36,7 +36,7 @@
 
       <template v-if="when == 'later'">
         <div class="flow-run-create-form__row">
-          <p-label label="Date">
+          <p-label label="Date" :message="errors['state.stateDetails.scheduledStart']" :state="startState">
             <p-date-input v-model="start" show-time />
           </p-label>
           <p-label label="Timezone">
@@ -80,7 +80,7 @@
   import PydanticForm from './PydanticForm.vue'
   import TimezoneSelect from './TimezoneSelect.vue'
   import { Deployment, DeploymentFlowRunCreate, StateType } from '@/models'
-  import { mocker } from '@/services'
+  import { isRequired, mocker, withMessage } from '@/services'
 
   const props = defineProps<{
     deployment: Deployment,
@@ -95,9 +95,21 @@
     (event: 'cancel'): void,
   }>()
 
+  const requiredIfLater = (value: unknown): boolean => {
+    if (when.value == 'now') {
+      return true
+    }
 
-  const { values } = useForm()
-  const { value: start } = useField<Date>('state.stateDetails.scheduledStart')
+    return isRequired(value)
+  }
+
+  const rules = {
+    start: [withMessage(requiredIfLater, 'Start date is required')],
+  }
+
+
+  const { handleSubmit, errors } = useForm()
+  const { value: start, meta: startState } = useField<Date>('state.stateDetails.scheduledStart', rules.start)
 
   // This line ensures clients aren't required to add a state to the request object and is not modifiable by users
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -120,7 +132,7 @@
   const timezone = ref('UTC')
 
   const cancel = (): void => emit('cancel')
-  const submit = (): void => {
+  const submit = handleSubmit((values): void => {
     const resolvedValues: DeploymentFlowRunCreate = { ...values }
 
     if (when.value == 'now' && resolvedValues.state?.stateDetails?.scheduledTime) {
@@ -136,7 +148,7 @@
     }
 
     emit('submit', resolvedValues)
-  }
+  })
 </script>
 
 <style>

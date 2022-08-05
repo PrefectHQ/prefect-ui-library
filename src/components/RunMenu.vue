@@ -90,7 +90,7 @@
       const flowRun = await deploymentsApi.createDeploymentFlowRun(props.deployment.id, {
         state: {
           type: 'scheduled',
-          message: 'Run from the UI with defaults',
+          message: 'Run from the Prefect UI with defaults',
         },
       })
       const toastMessage = h(ToastFlowRunCreate, { flowRun, flowRunRoute, router, immediate: true })
