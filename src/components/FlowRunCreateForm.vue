@@ -9,7 +9,7 @@
         <p-text-input v-model="name">
           <template #append>
             <p-button
-              class="flow-run-form__random-name-button"
+              class="flow-run-create-form__random-name-button"
               color="primary"
               icon="RefreshIcon"
               @click="name = generateRandomName()"
