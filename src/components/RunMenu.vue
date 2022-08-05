@@ -101,7 +101,7 @@
     try {
       flowRun.value = await deploymentsApi.createDeploymentFlowRun(deployment.id, {
         state: {
-          type: 'SCHEDULED',
+          type: 'scheduled',
           message: 'Run through UI',
         },
       },
