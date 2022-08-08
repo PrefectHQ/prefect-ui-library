@@ -15,7 +15,7 @@ export const randomDeployment: MockFunction<Deployment, [Partial<Deployment>?]> 
     isScheduleActive: this.create('boolean'),
     parameters: this.create('parameters', [{}, openApiSchema]),
     parameterOpenApiSchema: openApiSchema,
-    tags: this.createMany('string', 3),
+    tags: this.createMany('noun', this.create('number', [0, 5])),
     manifestPath: this.create('id'),
     storageDocumentId: this.create('id'),
     infrastructureDocumentId: this.create('id'),
