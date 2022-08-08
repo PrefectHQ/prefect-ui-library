@@ -3,6 +3,7 @@ import { MockFunction } from '@/services/Mocker'
 import { random } from '@/utilities/math'
 
 export const randomDeployment: MockFunction<Deployment, [Partial<Deployment>?]> = function(overrides = {}) {
+  const openApiSchema = this.create('openApiSchema')
   return {
     id: this.create('id'),
     created: this.create('date'),
@@ -12,8 +13,8 @@ export const randomDeployment: MockFunction<Deployment, [Partial<Deployment>?]> 
     flowId: this.create('id'),
     schedule: random() > 0.25 ? this.create('schedule') : null,
     isScheduleActive: this.create('boolean'),
-    parameters: this.create('parameters'),
-    parameterOpenApiSchema: {},
+    parameters: this.create('parameters', [{}, openApiSchema]),
+    parameterOpenApiSchema: openApiSchema,
     tags: this.createMany('string', 3),
     manifestPath: this.create('id'),
     storageDocumentId: this.create('id'),
