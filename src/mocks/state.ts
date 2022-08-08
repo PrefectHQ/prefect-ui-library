@@ -8,12 +8,12 @@ export const randomState: MockFunction<State, [Partial<State>?]> = function(over
   const name = capitalize(overrides.type ?? type)
 
   return {
-    id: this.create('string'),
+    id: this.create('id'),
     type: type,
-    message: this.create('string'),
+    message: this.create('sentence'),
     stateDetails: {
-      flowRunId: this.create('string'),
-      taskRunId: this.create('string'),
+      flowRunId: this.create('id'),
+      taskRunId: this.create('id'),
       childFlowRunId: random() > 0.9 ? this.create('id') : null,
       scheduledTime: this.create('date'),
       cacheKey: this.create('string'),
