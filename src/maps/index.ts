@@ -12,7 +12,7 @@ import { mapBlockSchemaFilterToBlockSchemaFilterRequest } from '@/maps/blockSche
 import { mapBlockTypeResponseToBlockType } from '@/maps/blockType'
 import { mapBlockTypeFilterToBlockTypeFilterRequest } from '@/maps/blockTypeFilter'
 import { mapStringToDate, mapDateToString } from '@/maps/date'
-import { mapDeploymentToDeploymentResponse, mapDeploymentResponseToDeployment, mapDeploymentUpdateToDeploymentUpdateRequest } from '@/maps/deployment'
+import { mapDeploymentToDeploymentResponse, mapDeploymentResponseToDeployment, mapDeploymentUpdateToDeploymentUpdateRequest, mapDeploymentFlowRunCreateToDeploymentFlowRunRequest } from '@/maps/deployment'
 import { mapRunHistoryToDivergingBarChartItem } from '@/maps/divergingBarChartItem'
 import { mapEmpiricalPolicyToEmpiricalPolicyResponse, mapEmpiricalPolicyResponseToEmpiricalPolicy } from '@/maps/empiricalPolicy'
 import { mapFlowToFlowResponse, mapFlowResponseToFlow } from '@/maps/flow'
@@ -24,8 +24,8 @@ import { mapNotificationResponseToNotification } from '@/maps/notification'
 import { mapNumberToString, mapStringToNumber } from '@/maps/number'
 import { mapUiFlowRunHistoryToScatterPlotItem } from '@/maps/scatterPlotItem'
 import { mapScheduleToScheduleResponse, mapScheduleResponseToSchedule } from '@/maps/schedule'
-import { mapStateResponseToState, mapStateToStateResponse } from '@/maps/state'
-import { mapStateDetailsResponseToStateDetails, mapStateDetailsToStateDetailsResponse } from '@/maps/stateDetails'
+import { mapStateResponseToState, mapStateToStateResponse, mapStateCreateToStateRequest } from '@/maps/state'
+import { mapStateDetailsCreateToStateDetailsRequest, mapStateDetailsResponseToStateDetails, mapStateDetailsToStateDetailsResponse } from '@/maps/stateDetails'
 import { mapStateHistoryToStateHistoryResponse, mapStateHistoryResponseToStateHistory } from '@/maps/stateHistory'
 import { mapServerStateTypeToStateType, mapStateTypeToServerStateType } from '@/maps/stateType'
 import { mapTaskInputToTaskInputResponse, mapTaskInputResponseToTaskInput } from '@/maps/taskInput'
@@ -55,6 +55,7 @@ export const maps = {
   FlowRun: { FlowRunResponse: mapFlowRunToFlowRunResponse },
   GraphNode: { FlowRunGraphResponse: mapGraphNodeToFlowRunGraphResponse },
   DeploymentResponse: { Deployment: mapDeploymentResponseToDeployment },
+  DeploymentFlowRunCreate: { DeploymentFlowRunRequest: mapDeploymentFlowRunCreateToDeploymentFlowRunRequest },
   DeploymentUpdate: { DeploymentUpdateRequest: mapDeploymentUpdateToDeploymentUpdateRequest },
   EmpiricalPolicyResponse: { EmpiricalPolicy: mapEmpiricalPolicyResponseToEmpiricalPolicy },
   FlowResponse: { Flow: mapFlowResponseToFlow },
@@ -66,8 +67,10 @@ export const maps = {
   NotificationCreate: { NotificationCreateRequest: mapNotificationCreateToNotificationCreateRequest },
   NotificationUpdate: { NotificationUpdateRequest: mapNotificationUpdateToNotificationUpdateRequest },
   ScheduleResponse: { Schedule: mapScheduleResponseToSchedule },
+  StateCreate: { StateRequest: mapStateCreateToStateRequest },
   State: { StateResponse: mapStateToStateResponse },
   StateDetails: { StateDetailsResponse: mapStateDetailsToStateDetailsResponse },
+  StateDetailsCreate: { StateDetailsRequest: mapStateDetailsCreateToStateDetailsRequest },
   StateDetailsResponse: { StateDetails: mapStateDetailsResponseToStateDetails },
   StateHistoryResponse: { StateHistory: mapStateHistoryResponseToStateHistory },
   StateResponse: { State: mapStateResponseToState },

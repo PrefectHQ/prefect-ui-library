@@ -10,6 +10,7 @@
 
     <BlockSchemasSection />
     <DeploymentFormSection />
+    <FlowRunFormSection />
     <NotificationsFormsSection />
     <ParametersFormSection />
     <ScheduleFormsSection />
@@ -21,6 +22,7 @@
   import { PLayoutDefault } from '@prefecthq/prefect-design'
   import BlockSchemasSection from '../sections/BlockSchemasSection.vue'
   import DeploymentFormSection from '../sections/DeploymentFormSection.vue'
+  import FlowRunFormSection from '../sections/FlowRunFormSection.vue'
   import NotificationsFormsSection from '../sections/NotificationsFormsSection.vue'
   import ParametersFormSection from '../sections/ParametersFormSection.vue'
   import ScheduleFormsSection from '../sections/ScheduleFormsSection.vue'

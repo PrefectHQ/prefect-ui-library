@@ -11,7 +11,7 @@
     <MetaWellSection />
     <NotificationsSection />
     <PageHeadingsSection />
-    <RunButtonSection />
+    <RunMenuSection />
     <ScheduleDisplaySection />
     <ScheduleModalSection />
     <SearchesSection />
@@ -34,7 +34,7 @@
   import MetaWellSection from '../sections/MetaWellSection.vue'
   import NotificationsSection from '../sections/NotificationsSection.vue'
   import PageHeadingsSection from '../sections/PageHeadingsSection.vue'
-  import RunButtonSection from '../sections/RunButtonSection.vue'
+  import RunMenuSection from '../sections/RunMenuSection.vue'
   import ScheduleDisplaySection from '../sections/ScheduleDisplaySection.vue'
   import ScheduleModalSection from '../sections/ScheduleModalSection.vue'
   import SearchesSection from '../sections/SearchesSection.vue'
