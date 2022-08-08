@@ -8,15 +8,15 @@ export const randomLogLevel: MockFunction<LogLevel, []> = function() {
 
 export const randomLog: MockFunction<Log, [Partial<Log>?]> = function(overrides = {}) {
   return new Log({
-    id: this.create('string'),
+    id: this.create('id'),
     created: this.create('date'),
     updated: this.create('date'),
-    name: this.create('string'),
+    name: this.create('noun'),
     level: this.create('logLevel'),
     message: random() > 0.75 ? this.create('paragraph') : this.create('sentence'),
     timestamp: this.create('date'),
-    flowRunId: this.create('string'),
-    taskRunId: this.create('string'),
+    flowRunId: this.create('id'),
+    taskRunId: this.create('id'),
     ...overrides,
   })
 }
