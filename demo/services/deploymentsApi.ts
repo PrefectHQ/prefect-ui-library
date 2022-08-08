@@ -23,7 +23,6 @@ export class DeploymentsApi extends MockedApi {
 
       return req
     }, {}) as Partial<FlowRun>
-    console.log(request)
     return this.promise(mocker.create('flowRun', [{ deploymentId: deploymentId, ...filteredRequest }]))
   }
 
