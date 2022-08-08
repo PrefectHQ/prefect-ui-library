@@ -2,7 +2,7 @@
   <page-heading class="page-heading-deployment" :crumbs="crumbs">
     <template #actions>
       <DeploymentToggle :deployment="deployment" @update="emit('update')" />
-      <RunButton v-if="can.create.flow_run" :deployment="deployment" />
+      <RunMenu v-if="can.create.flow_run" :deployment="deployment" />
 
       <DeploymentMenu :deployment="deployment" @delete="handleDelete" />
     </template>
@@ -18,11 +18,11 @@
 <script lang="ts" setup>
   import { computed } from 'vue'
   import { useRouter } from 'vue-router'
-  import RunButton from './RunButton.vue'
   import DeploymentMenu from '@/components/DeploymentMenu.vue'
   import DeploymentToggle from '@/components/DeploymentToggle.vue'
   import FlowIconText from '@/components/FlowIconText.vue'
   import PageHeading from '@/components/PageHeading.vue'
+  import RunMenu from '@/components/RunMenu.vue'
   import { Deployment } from '@/models'
   import { deploymentsRouteKey } from '@/router'
   import { canKey } from '@/types/permissions'

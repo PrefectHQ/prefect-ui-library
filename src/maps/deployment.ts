@@ -1,7 +1,8 @@
-import { DeploymentUpdate, DeploymentUpdateRequest } from '@/models'
+import { DeploymentFlowRunCreate, DeploymentFlowRunRequest, DeploymentUpdate, DeploymentUpdateRequest } from '@/models'
 import { Deployment } from '@/models/Deployment'
 import { DeploymentResponse } from '@/models/DeploymentResponse'
 import { MapFunction } from '@/services/Mapper'
+import { mapCamelToSnakeCase } from '@/utilities'
 
 export const mapDeploymentResponseToDeployment: MapFunction<DeploymentResponse, Deployment> = function(source: DeploymentResponse): Deployment {
   return new Deployment({
@@ -43,10 +44,15 @@ export const mapDeploymentToDeploymentResponse: MapFunction<Deployment, Deployme
 
 export const mapDeploymentUpdateToDeploymentUpdateRequest: MapFunction<DeploymentUpdate, DeploymentUpdateRequest> = function(source: DeploymentUpdate): DeploymentUpdateRequest {
   return {
-    'description': source.description,
+    ...mapCamelToSnakeCase(source),
     'schedule': source.schedule ? this.map('Schedule', source.schedule, 'ScheduleResponse') : source.schedule,
-    'is_schedule_active': source.isScheduleActive,
-    'parameters': source.parameters,
-    'tags': source.tags,
   }
 }
+
+export const mapDeploymentFlowRunCreateToDeploymentFlowRunRequest: MapFunction<DeploymentFlowRunCreate, DeploymentFlowRunRequest> = function(source: DeploymentFlowRunCreate): DeploymentFlowRunRequest {
+  return {
+    ...mapCamelToSnakeCase(source),
+    'state': this.map('StateCreate', source.state, 'StateRequest'),
+  }
+}
+
