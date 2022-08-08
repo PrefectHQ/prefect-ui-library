@@ -12,6 +12,12 @@
       </template>
     </p-key-value>
 
+    <p-key-value v-if="deployment.infrastructureDocumentId" label="Infrastructure" :alternate="alternate">
+      <template #value>
+        <BlockIconText :block-document-id="deployment.infrastructureDocumentId" />
+      </template>
+    </p-key-value>
+
     <p-key-value label="Schedule" :alternate="alternate" :value="deployment.schedule?.toString({ verbose: true })">
       <template v-if="!deployment.deprecated" #value>
         <div class="deployment-details__schedule" :class="classes.schedule">
