@@ -4,17 +4,18 @@
       {{ property.description }}
     </template>
 
-    <component
-      :is="fieldComponent.component"
-      v-if="fieldComponent"
-      v-model="internalValue"
-      :placeholder="fieldComponent.defaultValue"
-      v-bind="{ ...fieldComponent.attrs }"
-    >
-      <template v-for="(content, key) in fieldComponent?.slots" #[key]>
-        {{ content }}
-      </template>
-    </component>
+    <template v-if="field">
+      <component
+        :is="field.component"
+        v-model="internalValue"
+        :placeholder="field.defaultValue"
+        v-bind="{ ...field.attrs }"
+      >
+        <template v-for="(content, key) in field?.slots" #[key]>
+          {{ content }}
+        </template>
+      </component>
+    </template>
   </p-label>
 </template>
 
@@ -32,15 +33,10 @@
     level?: number,
   }>()
 
-
-  const fieldComponent = computed(() => getComponentFromPydanticTypeDefinition(props.property))
-
+  const field = computed(() => getComponentFromPydanticTypeDefinition(props.property))
   const fieldLabel = computed(() => props.propKey.split('.').pop())
-  const label = computed(() => {
-    return props.property.title ?? fieldLabel.value ?? ''
-  })
+  const label = computed(() => props.property.title ?? fieldLabel.value ?? '')
+  const message = computed(() => field.value ? undefined : "This field has a type 'None' and cannot be modified.")
 
-  const message = computed(() => fieldComponent.value ? undefined : "This field has a type 'None' and cannot be modified.")
-
-  const { value: internalValue, errorMessage, meta } = useField(props.propKey, fieldComponent.value?.validators)
+  const { value: internalValue, errorMessage, meta } = useField(props.propKey, field.value?.validators)
 </script>

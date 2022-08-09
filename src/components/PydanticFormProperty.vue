@@ -6,12 +6,11 @@
   </template>
 
   <template v-else>
-    <h3
-      v-if="level > 0"
-      class="pydantic-form-property__section-header"
-    >
-      <span>{{ property.title }}</span>
-    </h3>
+    <template v-if="level > 0">
+      <h3 class="pydantic-form-property__section-header">
+        <span>{{ property.title }}</span>
+      </h3>
+    </template>
 
     <component
       :is="formComponent"
@@ -63,8 +62,7 @@
 </script>
 
 <style>
-.pydantic-form-property__section-header {
-  @apply
+.pydantic-form-property__section-header { @apply
   font-medium
   -mb-4
 }
