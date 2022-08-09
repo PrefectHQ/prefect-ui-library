@@ -30,7 +30,7 @@ export const randomParameters: MockFunction<Record<string, unknown>, [Record<str
 
     switch (type) {
       case 'array':
-        val = Array.from({ length: uniform(0, 6) }).map(() => this.create('string'))
+        val = this.createMany('string', uniform(0, 6))
         break
       case 'string':
         if (coinflip(0.1)) {
