@@ -15,6 +15,8 @@ export interface IDeployment {
   parameterOpenApiSchema: PydanticTypeDefinition,
   tags: string[] | null,
   manifestPath: string | null,
+  path: string | null,
+  entrypoint: string | null,
   storageDocumentId: string | null,
   infrastructureDocumentId: string | null,
 }
