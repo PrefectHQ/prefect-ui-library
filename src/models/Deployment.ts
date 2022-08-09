@@ -59,6 +59,6 @@ export class Deployment implements IDeployment {
   }
 
   public get deprecated(): boolean {
-    return (this.manifestPath === '' || this.manifestPath === null) && (this.entrypoint != '' || this.entrypoint != null)
+    return (this.manifestPath === '' || this.manifestPath === null) && (this.entrypoint === '' || this.entrypoint === null)
   }
 }
