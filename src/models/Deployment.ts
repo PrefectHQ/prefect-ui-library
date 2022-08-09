@@ -50,6 +50,8 @@ export class Deployment implements IDeployment {
     this.parameterOpenApiSchema = deployment.parameterOpenApiSchema
     this.tags = deployment.tags
     this.manifestPath = deployment.manifestPath
+    this.path = deployment.path
+    this.entrypoint = deployment.entrypoint
     this.storageDocumentId = deployment.storageDocumentId
     this.infrastructureDocumentId = deployment.infrastructureDocumentId
   }
