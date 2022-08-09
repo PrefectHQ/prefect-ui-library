@@ -1,16 +1,16 @@
 <template>
   <div class="work-queue-details">
-    <p-key-value label="Description" :value="workQueue.description" />
+    <p-key-value label="Description" :value="workQueue.description" :alternate="alternate" />
 
     <p-divider />
 
-    <p-key-value label="Work Queue ID" :value="workQueue.id" />
+    <p-key-value label="Work Queue ID" :value="workQueue.id" :alternate="alternate" />
 
-    <p-key-value label="Flow Run Concurrency" :value="workQueue.concurrencyLimit" />
+    <p-key-value label="Flow Run Concurrency" :value="workQueue.concurrencyLimit" :alternate="alternate" />
 
-    <p-key-value label="Created" :value="formatDateTimeNumeric(workQueue.created)" />
+    <p-key-value label="Created" :value="formatDateTimeNumeric(workQueue.created)" :alternate="alternate" />
 
-    <p-key-value :label="deploymentLabel">
+    <p-key-value :label="deploymentLabel" :alternate="alternate">
       <template v-if="workQueue.filter.deploymentIds.length" #value>
         <div class="work-queue-details__deployments">
           <template v-for="deploymentId in deploymentIds" :key="deploymentId">
@@ -23,7 +23,7 @@
       </template>
     </p-key-value>
 
-    <p-key-value label="Tags">
+    <p-key-value label="Tags" :alternate="alternate">
       <template v-if="workQueue.filter.tags.length" #value>
         <p-tags :tags="workQueue.filter.tags" class="mt-2" />
       </template>
@@ -39,6 +39,7 @@
 
   const props = defineProps<{
     workQueue: WorkQueue,
+    alternate?: boolean,
   }>()
 
   const deploymentIds = computed(() => {

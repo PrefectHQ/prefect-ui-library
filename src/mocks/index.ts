@@ -10,7 +10,7 @@ import { blockSchemasApiFactory } from './blockSchemasApi'
 import { randomBlockType } from './blockType'
 import { blockTypesApiFactory } from './blockTypesApi'
 import { randomBoolean } from './boolean'
-import { randomDate } from './date'
+import { randomDate, randomDateString } from './date'
 import { randomDeployment } from './deployment'
 import { randomEmail } from './email'
 import { randomFlow } from './flow'
@@ -23,6 +23,7 @@ import { randomImage } from './image'
 import { randomLogLevel, randomLog } from './log'
 import { randomNotification } from './notification'
 import { randomNumber } from './number'
+import { randomOpenApiSchema, randomOpenApiProperty } from './openApi'
 import { randomParameters } from './parameters'
 import { randomSchedule } from './schedule'
 import { randomState } from './state'
@@ -47,6 +48,7 @@ export const mocks = {
   boolean: randomBoolean,
   char: randomChar,
   date: randomDate,
+  dateString: randomDateString,
   deployment: randomDeployment,
   email: randomEmail,
   flow: randomFlow,
@@ -62,6 +64,8 @@ export const mocks = {
   notification: randomNotification,
   noun: randomNoun,
   number: randomNumber,
+  openApiProperty: randomOpenApiProperty,
+  openApiSchema: randomOpenApiSchema,
   paragraph: randomParagraph,
   parameters: randomParameters,
   runName: randomRunName,

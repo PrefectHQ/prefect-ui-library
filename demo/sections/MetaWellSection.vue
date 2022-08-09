@@ -12,6 +12,10 @@
       <DemoSubSection heading="Deployment Meta Well">
         <DeploymentDetails :deployment="deploymentData" class="w-[250px] border-2 border-blue-200 border-dashed" alternate />
       </DemoSubSection>
+
+      <DemoSubSection heading="Work Queue Meta Well">
+        <WorkQueueDetails :work-queue="workQueueData" class="w-[250px] border-2 border-blue-200 border-dashed" alternate />
+      </DemoSubSection>
     </div>
   </DemoSection>
 </template>
@@ -22,6 +26,7 @@
   import DeploymentDetails from '@/components/DeploymentDetails.vue'
   import FlowDetails from '@/components/FlowDetails.vue'
   import FlowRunDetails from '@/components/FlowRunDetails.vue'
+  import WorkQueueDetails from '@/components/WorkQueueDetails.vue'
   import { mocker } from '@/services'
 
   const flowData = mocker.create('flow')
@@ -29,4 +34,6 @@
   const deploymentData = mocker.create('deployment')
 
   const flowRunData = mocker.create('flowRun')
+
+  const workQueueData = mocker.create('workQueue')
 </script>

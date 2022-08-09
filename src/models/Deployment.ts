@@ -15,6 +15,8 @@ export interface IDeployment {
   parameterOpenApiSchema: PydanticTypeDefinition,
   tags: string[] | null,
   manifestPath: string | null,
+  path: string | null,
+  entrypoint: string | null,
   storageDocumentId: string | null,
   infrastructureDocumentId: string | null,
 }
@@ -32,6 +34,8 @@ export class Deployment implements IDeployment {
   public parameterOpenApiSchema: PydanticTypeDefinition
   public tags: string[] | null
   public manifestPath: string | null
+  public path: string | null
+  public entrypoint: string | null
   public storageDocumentId: string | null
   public infrastructureDocumentId: string | null
 
@@ -48,11 +52,13 @@ export class Deployment implements IDeployment {
     this.parameterOpenApiSchema = deployment.parameterOpenApiSchema
     this.tags = deployment.tags
     this.manifestPath = deployment.manifestPath
+    this.path = deployment.path
+    this.entrypoint = deployment.entrypoint
     this.storageDocumentId = deployment.storageDocumentId
     this.infrastructureDocumentId = deployment.infrastructureDocumentId
   }
 
   public get deprecated(): boolean {
-    return this.manifestPath === '' || this.manifestPath === null
+    return (this.manifestPath === '' || this.manifestPath === null) && (this.entrypoint === '' || this.entrypoint === null)
   }
 }
