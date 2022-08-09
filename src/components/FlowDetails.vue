@@ -1,5 +1,9 @@
 <template>
   <div class="flow-details">
+    <p-key-value label="Description" :value="flow.description" :alternate="alternate" />
+
+    <p-divider />
+
     <p-key-value label="Flow ID" :value="flow.id" :alternate="alternate" />
 
     <p-key-value label="Created" :value="formatDateTimeNumeric(flow.created)" :alternate="alternate" />
