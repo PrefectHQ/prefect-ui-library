@@ -6,6 +6,7 @@ export const mapFlowResponseToFlow: MapFunction<FlowResponse, Flow> = function(s
   return new Flow({
     id: source.id,
     name: source.name,
+    description: source.description,
     created: this.map('string', source.created, 'Date'),
     updated: this.map('string', source.updated, 'Date'),
   })
@@ -15,6 +16,7 @@ export const mapFlowToFlowResponse: MapFunction<Flow, FlowResponse> = function(s
   return {
     id: source.id,
     name: source.name,
+    description: source.description,
     created: this.map('Date', source.created, 'string'),
     updated: this.map('Date', source.updated, 'string'),
   }

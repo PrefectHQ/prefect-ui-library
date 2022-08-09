@@ -5,6 +5,7 @@ export const randomFlow: MockFunction<Flow, [Partial<Flow>?]> = function(overrid
   return new Flow({
     id: this.create('string'),
     created: this.create('date'),
+    description: this.create('paragraph'),
     updated: this.create('date'),
     name: this.create('string'),
     ...overrides,
