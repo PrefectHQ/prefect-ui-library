@@ -1,12 +1,8 @@
 <template>
   <p-form @submit="submit">
-    <p-content>
-      <template v-for="(property, key) in properties" :key="key">
-        <PydanticFormProperty :prop-key="key" :property="property" />
-      </template>
-    </p-content>
+    <SchemaFormFields :schema="pydanticSchema" />
 
-    <template v-if="!hideFooter" #footer>
+    <template #footer>
       <p-button type="submit">
         Save
       </p-button>
@@ -16,16 +12,14 @@
 
 <script lang="ts" setup>
   import { computed } from 'vue'
-  import PydanticFormProperty from './PydanticFormProperty.vue'
+  import SchemaFormFields from '@/components/SchemaFormFields.vue'
   import { useReactiveForm } from '@/compositions'
   import { PydanticTypeDefinition } from '@/types/Pydantic'
-  import { resolvePydanticTypeDefinitionFromSchema } from '@/utilities'
 
   type PydanticFormValue = Record<string, unknown>
   const props = defineProps<{
     modelValue?: PydanticFormValue,
     pydanticSchema: PydanticTypeDefinition,
-    hideFooter?: boolean,
   }>()
 
   const emit = defineEmits<{
@@ -42,6 +36,4 @@
   })
   const { handleSubmit, values } = useReactiveForm(internalValue, { initialValues:  { ...props.modelValue }  })
   const submit = handleSubmit(() => emit('submit', values))
-
-  const properties = computed(() => resolvePydanticTypeDefinitionFromSchema(props.pydanticSchema))
 </script>
