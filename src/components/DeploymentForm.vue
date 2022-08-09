@@ -44,7 +44,7 @@
         </h3>
 
         <template v-if="hasParameters">
-          <SchemaFormFields key="parameters" :schema="deployment.parameterOpenApiSchema" />
+          <SchemaFormFields property="parameters" :schema="deployment.parameterOpenApiSchema" />
         </template>
 
         <template v-else>

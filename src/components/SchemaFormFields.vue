@@ -1,7 +1,7 @@
 <template>
   <p-content class="schema-form-fields">
-    <template v-for="(property, propertyKey) in properties" :key="propertyKey">
-      <PydanticFormProperty :prop-key="getPropertyKey(propertyKey)" :property="property" />
+    <template v-for="(prop, propertyKey) in properties" :key="propertyKey">
+      <PydanticFormProperty :prop-key="getPropertyKey(propertyKey)" :property="prop" />
     </template>
   </p-content>
 </template>
@@ -14,14 +14,14 @@
 
   const props = defineProps<{
     schema: PydanticTypeDefinition,
-    key?: string,
+    property?: string,
   }>()
 
   const properties = computed(() => resolvePydanticTypeDefinitionFromSchema(props.schema))
 
   function getPropertyKey(propertyKey: string): string {
-    if(props.key) {
-      return `${props.key}.${propertyKey}`
+    if (props.property) {
+      return `${props.property}.${propertyKey}`
     }
 
     return propertyKey
