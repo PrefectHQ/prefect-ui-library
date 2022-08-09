@@ -17,6 +17,8 @@ export const randomDeployment: MockFunction<Deployment, [Partial<Deployment>?]> 
     parameterOpenApiSchema: openApiSchema,
     tags: this.createMany('noun', this.create('number', [0, 5])),
     manifestPath: this.create('id'),
+    path: this.create('id'),
+    entrypoint: this.create('id'),
     storageDocumentId: this.create('id'),
     infrastructureDocumentId: this.create('id'),
     deprecated: false,
