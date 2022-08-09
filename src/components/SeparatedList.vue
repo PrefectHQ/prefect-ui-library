@@ -37,6 +37,7 @@
   inline-flex
   gap-1
   items-center
+  flex-wrap
 }
 
 .separated-list__tags {
@@ -45,6 +46,7 @@
   gap-1
   leading-4
   align-middle
+  flex-wrap
 }
 
 .separated-list__bold {
