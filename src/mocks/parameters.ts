@@ -44,7 +44,7 @@ export const randomParameters: MockFunction<Record<string, unknown>, [Record<str
         val = this.create('number')
         break
       case 'boolean':
-        val = coinflip(0.6)
+        val = this.create('boolean')
         break
       case 'object':
         val = '{}'
