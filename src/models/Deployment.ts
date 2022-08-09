@@ -33,6 +33,7 @@ export class Deployment implements IDeployment {
   public tags: string[] | null
   public manifestPath: string | null
   public path: string | null
+  public entrypoint: string | null
   public storageDocumentId: string | null
   public infrastructureDocumentId: string | null
 
@@ -54,6 +55,6 @@ export class Deployment implements IDeployment {
   }
 
   public get deprecated(): boolean {
-    return (this.manifestPath === '' || this.manifestPath === null) && (this.path != '' || this.path != null)
+    return (this.manifestPath === '' || this.manifestPath === null) && (this.entrypoint != '' || this.entrypoint != null)
   }
 }
