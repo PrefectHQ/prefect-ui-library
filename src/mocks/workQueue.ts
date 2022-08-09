@@ -6,12 +6,12 @@ export const randomWorkQueue: MockFunction<WorkQueue, [Partial<WorkQueue>?]> = f
   const { filter, ...rest } = overrides
 
   return new WorkQueue({
-    id: this.create('string'),
+    id: this.create('id'),
     created: this.create('date'),
     updated: this.create('date'),
-    name: this.create('string'),
+    name: this.create('noun'),
     filter: this.create('workQueueFilter', [filter]),
-    description: this.create('string'),
+    description: this.create('paragraph'),
     isPaused: this.create('boolean'),
     concurrencyLimit: this.create('number'),
     ...rest,
@@ -20,8 +20,8 @@ export const randomWorkQueue: MockFunction<WorkQueue, [Partial<WorkQueue>?]> = f
 
 export const randomWorkQueueFilter: MockFunction<WorkQueueFilter, [Partial<WorkQueueFilter>?]> = function(overrides = {}) {
   return new WorkQueueFilter({
-    tags: this.createMany('string', 3),
-    deploymentIds: this.createMany('string', 3),
+    tags: this.createMany('noun', this.create('number', [0, 4])),
+    deploymentIds: this.createMany('id', 3),
     ...overrides,
   })
 }

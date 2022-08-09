@@ -2,9 +2,10 @@ import { TaskRun } from '@/models/TaskRun'
 import { MockFunction } from '@/services/Mocker'
 
 export const randomTaskRun: MockFunction<TaskRun, [Partial<TaskRun>?]> = function(overrides = {}) {
+  const state = this.create('state')
   return new TaskRun({
-    id: this.create('string'),
-    flowRunId: this.create('string'),
+    id: this.create('id'),
+    flowRunId: this.create('id'),
     cacheExpiration: this.create('string'),
     cacheKey: this.create('string'),
     created: this.create('date'),
@@ -23,9 +24,9 @@ export const randomTaskRun: MockFunction<TaskRun, [Partial<TaskRun>?]> = functio
     updated: this.create('date'),
     startTime: this.create('date'),
     endTime: this.create('date'),
-    stateId: this.create('string'),
-    stateType: this.create('stateType'),
-    state: this.create('state'),
+    stateId: state.id,
+    stateType: state.type,
+    state: state,
     tags: this.createMany('noun', this.create('number', [0, 10])),
     ...overrides,
   })
