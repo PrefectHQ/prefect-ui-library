@@ -32,6 +32,7 @@ export class Deployment implements IDeployment {
   public parameterOpenApiSchema: PydanticTypeDefinition
   public tags: string[] | null
   public manifestPath: string | null
+  public path: string | null
   public storageDocumentId: string | null
   public infrastructureDocumentId: string | null
 
@@ -53,6 +54,6 @@ export class Deployment implements IDeployment {
   }
 
   public get deprecated(): boolean {
-    return this.manifestPath === '' || this.manifestPath === null
+    return (this.manifestPath === '' || this.manifestPath === null) && (this.path != '' || this.path != null)
   }
 }
