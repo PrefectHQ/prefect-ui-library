@@ -19,7 +19,7 @@
         </p-label>
 
         <p-label label="Work Queue (Optional)" :message="workQueueMessage">
-          <WorkQueueCombobox v-model="workQueueName" />
+          <WorkQueueCombobox v-model:selected="workQueueName" />
         </p-label>
       </p-content>
 
