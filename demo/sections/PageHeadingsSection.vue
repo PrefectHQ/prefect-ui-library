@@ -33,8 +33,9 @@
         <PageHeadingFlowRun :flow-run="flowRun" />
         <PageHeadingNotificationCreate />
         <PageHeadingNotificationEdit />
-        <PageHeadingWorkQueue :queue="queue" />
-        <PageHeadingWorkQueueEdit :queue="queue" />
+        <PageHeadingWorkQueue :work-queue="queue" />
+        <PageHeadingWorkQueueCreate />
+        <PageHeadingWorkQueueEdit :work-queue="queue" />
       </p-content>
     </DemoSubSection>
   </DemoSection>
@@ -63,6 +64,7 @@
   import PageHeadingNotificationEdit from '@/components/PageHeadingNotificationEdit.vue'
   import PageHeadingNotifications from '@/components/PageHeadingNotifications.vue'
   import PageHeadingWorkQueue from '@/components/PageHeadingWorkQueue.vue'
+  import PageHeadingWorkQueueCreate from '@/components/PageHeadingWorkQueueCreate.vue'
   import PageHeadingWorkQueueEdit from '@/components/PageHeadingWorkQueueEdit.vue'
   import PageHeadingWorkQueues from '@/components/PageHeadingWorkQueues.vue'
   import PageHeadingWorkspaceSettings from '@/components/PageHeadingWorkspaceSettings.vue'

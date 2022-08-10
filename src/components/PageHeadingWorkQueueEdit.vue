@@ -10,7 +10,7 @@
   import { inject } from '@/utilities'
 
   const props = defineProps<{
-    queue: WorkQueue,
+    workQueue: WorkQueue,
   }>()
 
   const workQueuesRoute = inject(workQueuesRouteKey)
@@ -18,7 +18,7 @@
 
   const crumbs = computed(() => [
     { text: 'Work Queues', to: workQueuesRoute() },
-    { text: props.queue.name, to: workQueueRoute(props.queue.id) },
+    { text: props.workQueue.name, to: workQueueRoute(props.workQueue.id) },
     { text: 'Edit' },
   ])
 </script>

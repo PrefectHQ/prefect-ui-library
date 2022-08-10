@@ -4,6 +4,12 @@
       <WorkQueueToggle :work-queue="workQueue" @update="emit('update')" />
       <WorkQueueMenu :work-queue="workQueue" @delete="$emit('delete')" />
     </template>
+
+    <template v-if="workQueue.deprecated" #default>
+      <div class="page-heading-work-queue__deprecation-notice">
+        This work queue is deprecated; you won't be able to modify it but it will still continue to work.
+      </div>
+    </template>
   </page-heading>
 </template>
 
@@ -31,3 +37,9 @@
     (event: 'update' | 'delete'): void,
   }>()
 </script>
+
+<style>
+.page-heading-work-queue__deprecation-notice { @apply
+  text-sm
+}
+</style>
