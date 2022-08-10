@@ -14,12 +14,13 @@
           <p-textarea v-model="description" rows="7" :state="descriptionState" />
         </p-label>
 
-        <p-label label="Tags (Optional)">
-          <p-tags-input v-model="tags" empty-message="Add tags" />
-        </p-label>
-
+        {{ workQueueMessage }}
         <p-label label="Work Queue (Optional)" :message="workQueueMessage">
           <WorkQueueCombobox v-model:selected="workQueueName" />
+        </p-label>
+
+        <p-label label="Tags (Optional)">
+          <p-tags-input v-model="tags" empty-message="Add tags" />
         </p-label>
       </p-content>
 
