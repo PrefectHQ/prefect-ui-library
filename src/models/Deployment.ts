@@ -19,6 +19,7 @@ export interface IDeployment {
   entrypoint: string | null,
   storageDocumentId: string | null,
   infrastructureDocumentId: string | null,
+  workQueueName: string | null,
 }
 
 export class Deployment implements IDeployment {
@@ -38,6 +39,7 @@ export class Deployment implements IDeployment {
   public entrypoint: string | null
   public storageDocumentId: string | null
   public infrastructureDocumentId: string | null
+  public workQueueName: string | null
 
   public constructor(deployment: IDeployment) {
     this.id = deployment.id
@@ -56,6 +58,7 @@ export class Deployment implements IDeployment {
     this.entrypoint = deployment.entrypoint
     this.storageDocumentId = deployment.storageDocumentId
     this.infrastructureDocumentId = deployment.infrastructureDocumentId
+    this.workQueueName = deployment.workQueueName
   }
 
   public get deprecated(): boolean {
