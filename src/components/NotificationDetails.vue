@@ -1,6 +1,6 @@
 <template>
   <div class="notification-details">
-    If a run of any flow with
+    If a run of any flow with <span v-if="notification.tags?.length">a</span>
     <SeparatedList :item-array="notification.tags || []">
       <template #first-items="{ item }">
         <span class="notification-details__tag">

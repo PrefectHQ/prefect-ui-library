@@ -1,7 +1,6 @@
 <template>
   <span class="separated-list">
     <template v-if="itemArray.length">
-      a
       <div class="separated-list__tags">
         <template v-for="item in allButLastArrayItems(itemArray)" :key="item">
           <slot name="first-items" :item="item" />
