@@ -33,7 +33,7 @@
       <p-button inset @click="cancel">
         Cancel
       </p-button>
-      <SubmitButton :action="action" :loading="isSubmitting" />
+      <SubmitButton action="Create" :loading="isSubmitting" />
     </template>
   </p-form>
 </template>
@@ -41,25 +41,19 @@
 <script lang="ts" setup>
   import { PLabel, PTextInput, PNumberInput, PToggle, PForm } from '@prefecthq/prefect-design'
   import { useField, useForm } from 'vee-validate'
-  import { computed, reactive, ref, watchEffect } from 'vue'
+  import { computed, ref, watchEffect } from 'vue'
   import SubmitButton from './SubmitButton.vue'
-  import { WorkQueueCreateRequest, WorkQueue, WorkQueueFormValues } from '@/models'
+  import { WorkQueueCreateRequest } from '@/models'
   import { isRequired, withMessage } from '@/services/validate'
   import { FormAction } from '@/types/buttons'
 
-  const props = defineProps<{
-    workQueue?: WorkQueue,
-    action?: FormAction,
-  }>()
-
-  const internalValue = reactive(new WorkQueueFormValues(props.workQueue))
-  const { handleSubmit, isSubmitting, errors } = useForm({ initialValues: internalValue })
+  const { values, handleSubmit, isSubmitting, errors } = useForm()
 
   const rules = {
     name: [withMessage(isRequired, 'Name is required')],
   }
 
-  const paused = ref(props.workQueue?.isPaused)
+  const paused = ref(false)
   const isActive = computed({
     get() {
       return !paused.value
@@ -79,8 +73,8 @@
     (event: 'cancel'): void,
   }>()
 
-  const submit = handleSubmit(workQueueData => {
-    emit('submit', workQueueData.getWorkQueueRequest())
+  const submit = handleSubmit(() => {
+    emit('submit', values)
   })
   function cancel(): void {
     emit('cancel')

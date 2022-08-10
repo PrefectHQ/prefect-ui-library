@@ -41,16 +41,15 @@
 <script lang="ts" setup>
   import { PLabel, PTextInput, PNumberInput, PToggle, PForm } from '@prefecthq/prefect-design'
   import { useField, useForm } from 'vee-validate'
-  import { computed, reactive, ref, watchEffect } from 'vue'
+  import { computed, ref, watchEffect } from 'vue'
   import SubmitButton from './SubmitButton.vue'
-  import { WorkQueueUpdateRequest, WorkQueue, WorkQueueFormValues } from '@/models'
+  import { WorkQueueUpdateRequest, WorkQueue } from '@/models'
 
   const props = defineProps<{
     workQueue: WorkQueue,
   }>()
 
-  const internalValue = reactive(new WorkQueueFormValues(props.workQueue))
-  const { handleSubmit, isSubmitting } = useForm({ initialValues: internalValue })
+  const { values, handleSubmit, isSubmitting } = useForm({ initialValues: props.workQueue })
 
   const paused = ref(props.workQueue.isPaused)
   const isActive = computed({
@@ -72,8 +71,8 @@
     (event: 'cancel'): void,
   }>()
 
-  const submit = handleSubmit(workQueueData => {
-    emit('submit', workQueueData.getWorkQueueRequest())
+  const submit = handleSubmit(() => {
+    emit('submit', values)
   })
   function cancel(): void {
     emit('cancel')
