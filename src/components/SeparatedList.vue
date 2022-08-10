@@ -1,7 +1,6 @@
 <template>
   <span class="separated-list">
     <template v-if="itemArray.length">
-      a
       <div class="separated-list__tags">
         <template v-for="item in allButLastArrayItems(itemArray)" :key="item">
           <slot name="first-items" :item="item" />
@@ -37,6 +36,7 @@
   inline-flex
   gap-1
   items-center
+  flex-wrap
 }
 
 .separated-list__tags {
@@ -45,6 +45,7 @@
   gap-1
   leading-4
   align-middle
+  flex-wrap
 }
 
 .separated-list__bold {
