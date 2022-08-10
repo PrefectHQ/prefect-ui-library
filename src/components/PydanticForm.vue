@@ -14,12 +14,12 @@
   import { computed } from 'vue'
   import SchemaFormFields from '@/components/SchemaFormFields.vue'
   import { useReactiveForm } from '@/compositions'
-  import { PydanticTypeDefinition } from '@/types/Pydantic'
+  import { Schema } from '@/types/schemas'
 
   type PydanticFormValue = Record<string, unknown>
   const props = defineProps<{
     modelValue?: PydanticFormValue,
-    pydanticSchema: PydanticTypeDefinition,
+    pydanticSchema: Schema,
   }>()
 
   const emit = defineEmits<{

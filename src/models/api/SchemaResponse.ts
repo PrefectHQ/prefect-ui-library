@@ -1,6 +1,6 @@
 import { SchemaReference, SchemaType, SchemaStringFormat, SchemaEnum } from '@/types/schemas'
 
-export type SchemaDefinitionsResponse = Record<string, SchemaResponse | undefined>
+export type SchemaDefinitionsResponse = Record<string, SchemaResponse>
 
 export interface SchemaPropertyResponse extends SchemaResponse {
   $ref?: SchemaReference<string>,
@@ -8,7 +8,7 @@ export interface SchemaPropertyResponse extends SchemaResponse {
   allOf?: SchemaPropertyResponse[],
 }
 
-export type SchemaPropertiesResponse = Record<string, SchemaPropertyResponse | undefined>
+export type SchemaPropertiesResponse = Record<string, SchemaPropertyResponse>
 
 export interface SchemaResponse {
   title?: string,

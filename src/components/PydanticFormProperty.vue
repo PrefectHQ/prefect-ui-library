@@ -28,12 +28,13 @@
   import PydanticFormAllOfProperty from './PydanticFormAllOfProperty.vue'
   import PydanticFormField from './PydanticFormField.vue'
   import PydanticFormUnionProperty from './PydanticFormUnionProperty.vue'
-  import { hasAllOf, hasAnyOf, PydanticTypeProperty } from '@/types/Pydantic'
+  import { hasAllOf, hasAnyOf } from '@/types/Pydantic'
+  import { SchemaProperty } from '@/types/schemas'
 
   const props = withDefaults(defineProps<{
     level?: number,
     propKey: string,
-    property: PydanticTypeProperty,
+    property: SchemaProperty,
   }>(), {
     level: 0,
   })

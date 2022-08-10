@@ -1,6 +1,6 @@
 <template>
   <p-content class="schema-form-fields">
-    <template v-for="(prop, propertyKey) in properties" :key="propertyKey">
+    <template v-for="(prop, propertyKey) in schema.properties" :key="propertyKey">
       <PydanticFormProperty :prop-key="getPropertyKey(propertyKey)" :property="prop" />
     </template>
   </p-content>
@@ -9,15 +9,13 @@
 <script lang="ts" setup>
   import { computed } from 'vue'
   import PydanticFormProperty from './PydanticFormProperty.vue'
-  import { PydanticTypeDefinition } from '@/types/Pydantic'
+  import { Schema } from '@/types/schemas'
   import { resolvePydanticTypeDefinitionFromSchema } from '@/utilities/pydantic'
 
   const props = defineProps<{
-    schema: PydanticTypeDefinition,
+    schema: Schema,
     property?: string,
   }>()
-
-  const properties = computed(() => resolvePydanticTypeDefinitionFromSchema(props.schema))
 
   function getPropertyKey(propertyKey: string): string {
     if (props.property) {

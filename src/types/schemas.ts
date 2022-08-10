@@ -12,14 +12,17 @@ export type SchemaType = typeof SchemaTypes[number]
 export type SchemaStringFormat = typeof SchemaStringFormats[number]
 export type SchemaEnum<T> = T[]
 export type SchemaReference<T extends string> = `${typeof BaseDefinitionRefString}${T}`
-export type SchemaDefinitions = Record<string, Schema | undefined>
+export type SchemaDefinitions = Record<string, Schema>
 
 export type SchemaProperty = Schema & {
   anyOf?: SchemaProperty[],
   allOf?: SchemaProperty[],
 }
 
-export type SchemaProperties = Record<string, SchemaProperty | undefined>
+export type SchemaPropertyAnyOf = Require<SchemaProperty, 'anyOf'>
+export type SchemaPropertyAllOf = Require<SchemaProperty, 'allOf'>
+
+export type SchemaProperties = Record<string, SchemaProperty>
 
 export type Schema = Omit<SchemaResponse, 'definitions' | 'properties' | 'items'> & {
   definitions?: SchemaDefinitions,
