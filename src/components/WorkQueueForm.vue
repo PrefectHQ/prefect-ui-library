@@ -1,5 +1,5 @@
 <template>
-  <p-form class="queue-form" @submit="submit">
+  <p-form class="work-queue-form" @submit="submit">
     <p-content>
       <p-label label="Name " :message="errors.name" :state="nameState">
         <p-text-input v-model="name" :state="nameState" />
@@ -28,7 +28,7 @@
         <p-number-input v-model="concurrencyLimit" placeholder="Unlimited" :min="0" />
       </p-label>
 
-      <p class="queue-form__section-header">
+      <p class="work-queue-form__section-header">
         Filters
       </p>
 
@@ -107,7 +107,7 @@
 </script>
 
 <style>
-.queue-form {
+.work-queue-form {
 @apply
   border-[1px]
   border-gray-300
@@ -116,7 +116,7 @@
   rounded-lg
 }
 
-.queue-form__section-header {
+.work-queue-form__section-header {
   @apply
   text-base
   text-gray-500
