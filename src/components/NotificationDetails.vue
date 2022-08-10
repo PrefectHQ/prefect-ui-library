@@ -1,12 +1,16 @@
 <template>
   <div class="notification-details">
-    If a run of any flow with
+    If a run of any flow with <span v-if="notification.tags?.length">a</span>
     <SeparatedList :item-array="notification.tags || []">
       <template #first-items="{ item }">
-        <p-tag>{{ item }}</p-tag>
+        <span class="notification-details__tag">
+          <p-tag>{{ item }}</p-tag>
+        </span>
       </template>
       <template #last-item="{ item }">
-        <p-tag>{{ item }}</p-tag>
+        <span class="notification-details__tag">
+          <p-tag>{{ item }}</p-tag>
+        </span>
       </template>
     </SeparatedList>
 
@@ -78,7 +82,14 @@
 <style>
 .notification-details {
   @apply
-    leading-8
+    inline-flex
+    flex-wrap
+    gap-1
+    items-center
+}
+
+.notification-details__tag {
+  inline-size: max-content;
 }
 
 .notification-details__send-to {
