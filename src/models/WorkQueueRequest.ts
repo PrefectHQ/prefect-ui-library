@@ -5,7 +5,7 @@ export type WorkQueueCreateRequest = Partial<{
   concurrency_limit: number | null,
 }>
 
-export type WorkQueueUpdateRequest = Partial<{
+export type WorkQueueEditRequest = Partial<{
   description: string | null,
   is_paused: boolean | null,
   concurrency_limit: number | null,

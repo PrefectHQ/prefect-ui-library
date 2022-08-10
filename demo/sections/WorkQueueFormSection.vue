@@ -18,7 +18,7 @@
   import { DeploymentsApi } from '../services'
   import WorkQueueCreateForm from '@/components/WorkQueueCreateForm.vue'
   import WorkQueueEditForm from '@/components/WorkQueueEditForm.vue'
-  import { WorkQueueUpdateRequest, WorkQueueCreateRequest } from '@/models'
+  import { WorkQueueEditRequest, WorkQueueCreateRequest } from '@/models'
   import { Deployment } from '@/models/Deployment'
   import { deploymentsApiKey, mocker } from '@/services'
   import { UnionFilters } from '@/types/UnionFilters'
@@ -49,7 +49,7 @@
   provide(deploymentsApiKey, queueFormDeploymentsApi)
 
 
-  const submit = (workQueue: WorkQueueUpdateRequest | WorkQueueCreateRequest): void => {
+  const submit = (workQueue: WorkQueueEditRequest | WorkQueueCreateRequest): void => {
     console.log('Form submitted!', workQueue)
   }
 </script>

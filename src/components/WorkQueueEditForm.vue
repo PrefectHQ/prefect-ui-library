@@ -43,7 +43,7 @@
   import { useField, useForm } from 'vee-validate'
   import { computed, ref, watchEffect } from 'vue'
   import SubmitButton from './SubmitButton.vue'
-  import { WorkQueueUpdateRequest, WorkQueue } from '@/models'
+  import { WorkQueueEditRequest, WorkQueue } from '@/models'
 
   const props = defineProps<{
     workQueue: WorkQueue,
@@ -67,7 +67,7 @@
   const { value: concurrencyLimit } = useField<number|null>('concurrencyLimit')
 
   const emit = defineEmits<{
-    (event: 'submit', value: WorkQueueUpdateRequest): void,
+    (event: 'submit', value: WorkQueueEditRequest): void,
     (event: 'cancel'): void,
   }>()
 
