@@ -22,18 +22,16 @@ export const mapDeploymentResponseToDeployment: MapFunction<DeploymentResponse, 
     storageDocumentId: source.storage_document_id,
     infrastructureDocumentId: source.infrastructure_document_id,
     parameterOpenApiSchema: source.parameter_openapi_schema,
+    workQueueName: source.work_queue_name,
   })
 }
 
 export const mapDeploymentToDeploymentResponse: MapFunction<Deployment, DeploymentResponse> = function(source: Deployment): DeploymentResponse {
   return {
     'id': source.id,
-    'created': this.map('Date', source.created, 'string'),
-    'updated': this.map('Date', source.updated, 'string'),
     'name': source.name,
     'description': source.description,
     'flow_id': source.flowId,
-    'schedule': this.map('Schedule', source.schedule, 'ScheduleResponse'),
     'is_schedule_active': source.isScheduleActive,
     'parameters': source.parameters,
     'tags': source.tags,
@@ -43,6 +41,10 @@ export const mapDeploymentToDeploymentResponse: MapFunction<Deployment, Deployme
     'storage_document_id': source.storageDocumentId,
     'infrastructure_document_id': source.infrastructureDocumentId,
     'parameter_openapi_schema': source.parameterOpenApiSchema,
+    'created': this.map('Date', source.created, 'string'),
+    'updated': this.map('Date', source.updated, 'string'),
+    'schedule': this.map('Schedule', source.schedule, 'ScheduleResponse'),
+    'work_queue_name': source.workQueueName,
   }
 }
 

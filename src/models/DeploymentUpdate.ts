@@ -7,4 +7,5 @@ export type DeploymentUpdate = Partial<{
   isScheduleActive: boolean,
   parameters: Parameters | null,
   tags: string[] | null,
+  workQueueName: string | null,
 }>
