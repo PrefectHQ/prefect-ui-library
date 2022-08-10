@@ -7,6 +7,7 @@
 
     <template v-if="workQueue.deprecated" #default>
       <div class="page-heading-work-queue__deprecation-notice">
+        <p-icon icon="ExclamationCircleIcon" class="page-heading-work-queue__deprecation-icon" />
         This work queue is deprecated; you won't be able to modify it but it will still continue to work.
       </div>
     </template>
@@ -41,5 +42,9 @@
 <style>
 .page-heading-work-queue__deprecation-notice { @apply
   text-sm
+}
+
+.page-heading-work-queue__deprecation-icon { @apply
+  inline
 }
 </style>
