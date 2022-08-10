@@ -1,8 +1,8 @@
 <template>
-  <p-form class="work-queue-form" @submit="submit">
+  <p-form class="work-queue-edit-form" @submit="submit">
     <p-content>
-      <p-label label="Name " :message="errors.name" :state="nameState">
-        <p-text-input v-model="name" :state="nameState" />
+      <p-label label="Name">
+        <p-text-input v-model="name" disabled />
       </p-label>
 
       <p-label label="Description (Optional)">
@@ -28,7 +28,7 @@
         <p-number-input v-model="concurrencyLimit" placeholder="Unlimited" :min="0" />
       </p-label>
 
-      <p class="work-queue-form__section-header">
+      <p class="work-queue-edit-form__section-header">
         Filters
       </p>
 
@@ -45,7 +45,7 @@
       <p-button inset @click="cancel">
         Cancel
       </p-button>
-      <SubmitButton :action="action" :loading="isSubmitting" />
+      <SubmitButton action="Save" :loading="isSubmitting" />
     </template>
   </p-form>
 </template>
@@ -56,23 +56,16 @@
   import { computed, reactive, ref, watchEffect } from 'vue'
   import SubmitButton from './SubmitButton.vue'
   import DeploymentCombobox from '@/components/DeploymentCombobox.vue'
-  import { WorkQueueRequest, WorkQueue, WorkQueueFormValues } from '@/models'
-  import { isRequired, withMessage } from '@/services/validate'
-  import { FormAction } from '@/types/buttons'
+  import { WorkQueueUpdateRequest, WorkQueue, WorkQueueFormValues } from '@/models'
 
   const props = defineProps<{
-    workQueue?: WorkQueue,
-    action?: FormAction,
+    workQueue: WorkQueue,
   }>()
 
   const internalValue = reactive(new WorkQueueFormValues(props.workQueue))
-  const { handleSubmit, isSubmitting, errors } = useForm({ initialValues: internalValue })
+  const { handleSubmit, isSubmitting } = useForm({ initialValues: internalValue })
 
-  const rules = {
-    name: [withMessage(isRequired, 'Name is required')],
-  }
-
-  const paused = ref(props.workQueue?.isPaused)
+  const paused = ref(props.workQueue.isPaused)
   const isActive = computed({
     get() {
       return !paused.value
@@ -82,7 +75,7 @@
     },
   })
 
-  const { value: name, meta: nameState } = useField<string>('name', rules.name)
+  const name = ref(props.workQueue.name)
   const { value: description } = useField<string|null>('description')
   const { value: isPaused } = useField<boolean | undefined>('isPaused')
   const { value: concurrencyLimit } = useField<number|null>('concurrencyLimit')
@@ -90,7 +83,7 @@
   const { value: deployments } = useField<string[]>('filter.deploymentIds')
 
   const emit = defineEmits<{
-    (event: 'submit', value: WorkQueueRequest): void,
+    (event: 'submit', value: WorkQueueUpdateRequest): void,
     (event: 'cancel'): void,
   }>()
 
@@ -107,7 +100,7 @@
 </script>
 
 <style>
-.work-queue-form {
+.work-queue-edit-form {
 @apply
   border-[1px]
   border-gray-300
@@ -116,7 +109,7 @@
   rounded-lg
 }
 
-.work-queue-form__section-header {
+.work-queue-edit-form__section-header {
   @apply
   text-base
   text-gray-500

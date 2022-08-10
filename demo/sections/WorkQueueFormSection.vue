@@ -1,6 +1,12 @@
 <template>
-  <DemoSection heading="Work Queue Form">
-    <WorkQueueForm v-model:work-queue="queueData" @submit="submit" />
+  <DemoSection heading="Work Queue Forms">
+    <DemoSubSection heading="Create">
+      <WorkQueueCreateForm v-model:work-queue="queueData" @submit="submit" />
+    </DemoSubSection>
+
+    <DemoSubSection heading="Edit">
+      <WorkQueueEditForm v-model:work-queue="queueData" @submit="submit" />
+    </DemoSubSection>
   </DemoSection>
 </template>
 
@@ -8,9 +14,11 @@
   import { createActions } from '@prefecthq/vue-compositions'
   import { provide, ref } from 'vue'
   import DemoSection from '../components/DemoSection.vue'
+  import DemoSubSection from '../components/DemoSubSection.vue'
   import { DeploymentsApi } from '../services'
-  import WorkQueueForm from '@/components/WorkQueueForm.vue'
-  import { WorkQueueRequest } from '@/models'
+  import WorkQueueCreateForm from '@/components/WorkQueueCreateForm.vue'
+  import WorkQueueEditForm from '@/components/WorkQueueEditForm.vue'
+  import { WorkQueueUpdateRequest, WorkQueueCreateRequest } from '@/models'
   import { Deployment } from '@/models/Deployment'
   import { deploymentsApiKey, mocker } from '@/services'
   import { UnionFilters } from '@/types/UnionFilters'
@@ -41,7 +49,7 @@
   provide(deploymentsApiKey, queueFormDeploymentsApi)
 
 
-  const submit = (workQueue: WorkQueueRequest): void => {
+  const submit = (workQueue: WorkQueueUpdateRequest | WorkQueueCreateRequest): void => {
     console.log('Form submitted!', workQueue)
   }
 </script>
