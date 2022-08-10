@@ -14,6 +14,11 @@ export class WorkQueuesApi extends Api {
       .then(({ data }) => mapper.map('WorkQueueResponse', data, 'WorkQueue'))
   }
 
+  public getWorkQueueByName(name: string): Promise<WorkQueue> {
+    return this.get<WorkQueueResponse>(`/name/${name}`)
+      .then(({ data }) => mapper.map('WorkQueueResponse', data, 'WorkQueue'))
+  }
+
   public getWorkQueues(filter: PaginatedFilter): Promise<WorkQueue[]> {
     return this.post<WorkQueueResponse[]>('/filter', filter)
       .then(({ data }) => mapper.map('WorkQueueResponse', data, 'WorkQueue'))
