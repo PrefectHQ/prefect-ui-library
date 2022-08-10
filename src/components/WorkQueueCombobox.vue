@@ -43,7 +43,8 @@
   const workQueuesSubscription = useSubscription(workQueuesApi.getWorkQueues, [{}])
   const workQueues = computed(() => workQueuesSubscription.response ?? [])
   const options = computed<SelectOption[]>(() => workQueues.value.map(workQueue => ({
-    value: workQueue.id,
+    // Any consumers of the work queue should subscribe to it by name and not id
+    value: workQueue.name,
     label: workQueue.name,
   })))
 </script>
