@@ -1,7 +1,7 @@
 <template>
   <p-icon-button-menu v-bind="$attrs">
-    <copy-overflow-menu-item label="Copy ID" :item="queue.id" />
-    <router-link v-if="can.update.work_queue" :to="editQueueRoute(queue.id)">
+    <copy-overflow-menu-item label="Copy ID" :item="workQueue.id" />
+    <router-link v-if="can.update.work_queue && !workQueue.deprecated" :to="editQueueRoute(workQueue.id)">
       <p-overflow-menu-item label="Edit" />
     </router-link>
     <p-overflow-menu-item v-if="can.delete.work_queue" label="Delete" @click="open" />
@@ -10,8 +10,8 @@
   <ConfirmDeleteModal
     v-model:showModal="showModal"
     label="Work Queue"
-    :name="queue.name"
-    @delete="deleteWorkQueue(queue.id)"
+    :name="workQueue.name"
+    @delete="deleteWorkQueue(workQueue.id)"
   />
 </template>
 
@@ -38,7 +38,7 @@
   import { inject, deleteItem } from '@/utilities'
 
   defineProps<{
-    queue: WorkQueue,
+    workQueue: WorkQueue,
   }>()
 
   const emits = defineEmits<{
