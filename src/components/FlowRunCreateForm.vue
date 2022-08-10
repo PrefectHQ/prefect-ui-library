@@ -52,7 +52,7 @@
       </template>
 
 
-      <template v-if="deployment.parameters">
+      <template v-if="hasParameters">
         <p-divider />
 
         <h3 class="flow-run-create-form__section-header">
@@ -100,6 +100,10 @@
     (event: 'submit', value: DeploymentFlowRunCreate): void,
     (event: 'cancel'): void,
   }>()
+
+  const hasParameters = computed(() => {
+    return Object.keys(props.deployment.parameterOpenApiSchema.properties ?? {}).length > 0
+  })
 
   const requiredIfLater = (value: unknown): boolean => {
     if (when.value == 'now') {
