@@ -27,18 +27,6 @@
       <p-label label="Flow Run Concurrency (Optional)">
         <p-number-input v-model="concurrencyLimit" placeholder="Unlimited" :min="0" />
       </p-label>
-
-      <p class="work-queue-edit-form__section-header">
-        Filters
-      </p>
-
-      <p-label label="Tags (Optional)">
-        <p-tags-input v-model="tags" empty-message="Add tag to filter..." />
-      </p-label>
-
-      <p-label label="Deployments (Optional)">
-        <DeploymentCombobox v-model:selected="deployments" empty-message="Select deployment to filter..." />
-      </p-label>
     </p-content>
 
     <template #footer>
@@ -51,11 +39,10 @@
 </template>
 
 <script lang="ts" setup>
-  import { PLabel, PTextInput, PNumberInput, PTagsInput, PToggle, PForm } from '@prefecthq/prefect-design'
+  import { PLabel, PTextInput, PNumberInput, PToggle, PForm } from '@prefecthq/prefect-design'
   import { useField, useForm } from 'vee-validate'
   import { computed, reactive, ref, watchEffect } from 'vue'
   import SubmitButton from './SubmitButton.vue'
-  import DeploymentCombobox from '@/components/DeploymentCombobox.vue'
   import { WorkQueueUpdateRequest, WorkQueue, WorkQueueFormValues } from '@/models'
 
   const props = defineProps<{
@@ -79,8 +66,6 @@
   const { value: description } = useField<string|null>('description')
   const { value: isPaused } = useField<boolean | undefined>('isPaused')
   const { value: concurrencyLimit } = useField<number|null>('concurrencyLimit')
-  const { value: tags } = useField<string[]>('filter.tags')
-  const { value: deployments } = useField<string[]>('filter.deploymentIds')
 
   const emit = defineEmits<{
     (event: 'submit', value: WorkQueueUpdateRequest): void,

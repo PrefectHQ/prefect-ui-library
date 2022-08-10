@@ -5,21 +5,28 @@ export interface IWorkQueue {
   created: Date,
   updated: Date,
   name: string,
-  filter: IWorkQueueFilter,
+  filter?: IWorkQueueFilter,
   description: string | null,
   isPaused: boolean,
   concurrencyLimit: number | null,
 }
+
+// deployments have new editable field called work_queue_name
+// flow runs do as well
 
 export class WorkQueue implements IWorkQueue {
   public readonly id: string
   public created: Date
   public updated: Date
   public name: string
-  public filter: IWorkQueueFilter
+  public filter?: IWorkQueueFilter
   public description: string | null
   public isPaused: boolean
   public concurrencyLimit: number | null
+
+  public get deprecated(): boolean {
+    return !!this.filter
+  }
 
   public constructor(workQueue: IWorkQueue) {
     this.id = workQueue.id
