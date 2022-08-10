@@ -21,29 +21,8 @@ export const mapDeploymentResponseToDeployment: MapFunction<DeploymentResponse, 
     entrypoint: source.entrypoint,
     storageDocumentId: source.storage_document_id,
     infrastructureDocumentId: source.infrastructure_document_id,
-    parameterOpenApiSchema: source.parameter_openapi_schema,
+    parameterOpenApiSchema: this.map('SchemaResponse', source.parameter_openapi_schema, 'Schema'),
   })
-}
-
-export const mapDeploymentToDeploymentResponse: MapFunction<Deployment, DeploymentResponse> = function(source: Deployment): DeploymentResponse {
-  return {
-    'id': source.id,
-    'created': this.map('Date', source.created, 'string'),
-    'updated': this.map('Date', source.updated, 'string'),
-    'name': source.name,
-    'description': source.description,
-    'flow_id': source.flowId,
-    'schedule': this.map('Schedule', source.schedule, 'ScheduleResponse'),
-    'is_schedule_active': source.isScheduleActive,
-    'parameters': source.parameters,
-    'tags': source.tags,
-    'manifest_path': source.manifestPath,
-    'path': source.path,
-    'entrypoint': source.entrypoint,
-    'storage_document_id': source.storageDocumentId,
-    'infrastructure_document_id': source.infrastructureDocumentId,
-    'parameter_openapi_schema': source.parameterOpenApiSchema,
-  }
 }
 
 export const mapDeploymentUpdateToDeploymentUpdateRequest: MapFunction<DeploymentUpdate, DeploymentUpdateRequest> = function(source: DeploymentUpdate): DeploymentUpdateRequest {
