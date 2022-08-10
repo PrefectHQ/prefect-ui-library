@@ -6,7 +6,7 @@
       </p-label>
 
       <p-label label="Description (Optional)">
-        <p-text-input v-model="description" />
+        <p-textarea v-model="description" rows="7" />
       </p-label>
 
       <p-label label="Status (Optional)">
