@@ -72,6 +72,7 @@
   import { useField, useForm } from 'vee-validate'
   import { computed } from 'vue'
   import PydanticForm from './PydanticForm.vue'
+  import WorkQueueCombobox from './WorkQueueCombobox.vue'
   import ScheduleFieldset from '@/components/ScheduleFieldset.vue'
   import { Deployment, Schedule, Parameters } from '@/models'
 
@@ -132,7 +133,7 @@
   const { value: name } = useField<string>('name')
   const { value: schedule } = useField<Schedule | null>('schedule')
   const { value: isScheduleActive } = useField<boolean>('isScheduleActive')
-  const { value: workQueueName } = useField<string>('workQueueName')
+  const { value: workQueueName } = useField<string | null>('workQueueName')
   const { value: parameters } = useField<Parameters>('parameters', undefined, { initialValue: initialValues })
   const { value: tags } = useField<string[] | null>('tags')
 

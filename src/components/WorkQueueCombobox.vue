@@ -14,28 +14,20 @@
   import { inject } from '@/utilities/inject'
 
   const props = defineProps<{
-    selected: string | string[] | null | undefined,
+    modelValue: string | null,
     emptyMessage?: string,
   }>()
 
   const emits = defineEmits<{
-    (event: 'update:selected', value: string | string[] | null): void,
+    (event: 'update:modelValue', value: string | null): void,
   }>()
-
-  const multiple = computed(() => Array.isArray(props.selected))
 
   const internalValue = computed({
     get() {
-      return props.selected ?? null
+      return props.modelValue ?? null
     },
-    set(value: string | string[] | null) {
-      if (!value) {
-        emits('update:selected', null)
-      } else if (multiple.value) {
-        emits('update:selected', Array.isArray(value) ? value : [value])
-      } else {
-        emits('update:selected', value)
-      }
+    set(value: string | null) {
+      emits('update:modelValue', value)
     },
   })
 
