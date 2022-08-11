@@ -69,7 +69,8 @@
   import { computed } from 'vue'
   import ScheduleFieldset from '@/components/ScheduleFieldset.vue'
   import SchemaFormFields from '@/components/SchemaFormFields.vue'
-  import { Deployment, Schedule, Parameters } from '@/models'
+  import { Deployment, Schedule } from '@/models'
+  import { SchemaValues } from '@/types/schemas'
 
   const props = defineProps<{
     deployment: Deployment,
@@ -124,7 +125,7 @@
   const { value: name } = useField<string>('name')
   const { value: schedule } = useField<Schedule | null>('schedule')
   const { value: isScheduleActive } = useField<boolean>('isScheduleActive')
-  const { value: parameters } = useField<Parameters>('parameters')
+  const { value: parameters } = useField<SchemaValues>('parameters')
   const { value: tags } = useField<string[] | null>('tags')
 
   const emit = defineEmits<{

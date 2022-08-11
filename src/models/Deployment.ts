@@ -1,6 +1,5 @@
-import { Parameters } from '@/models/Parameters'
 import { Schedule } from '@/models/Schedule'
-import { Schema } from '@/types/schemas'
+import { Schema, SchemaValues } from '@/types/schemas'
 
 export interface IDeployment {
   id: string,
@@ -11,7 +10,7 @@ export interface IDeployment {
   flowId: string,
   schedule: Schedule | null,
   isScheduleActive: boolean,
-  parameters: Parameters,
+  parameters: SchemaValues,
   parameterOpenApiSchema: Schema,
   tags: string[] | null,
   manifestPath: string | null,
@@ -30,7 +29,7 @@ export class Deployment implements IDeployment {
   public readonly flowId: string
   public schedule: Schedule | null
   public isScheduleActive: boolean
-  public parameters: Parameters
+  public parameters: SchemaValues
   public parameterOpenApiSchema: Schema
   public tags: string[] | null
   public manifestPath: string | null

@@ -1,9 +1,9 @@
-import { Parameters } from '@/models/Parameters'
 import { StateCreate } from '@/models/StateCreate'
+import { SchemaValues } from '@/types/schemas'
 
 export type DeploymentFlowRunCreate = Partial<{
   name: string | null,
-  parameters: Parameters,
+  parameters: SchemaValues,
   idempotencyKey: string | null,
   context: unknown,
   empiricalPolicy: unknown,
