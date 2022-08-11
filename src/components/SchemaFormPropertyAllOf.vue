@@ -1,6 +1,6 @@
 <template>
   <div class="schema-form-property-all-of">
-    <h3>
+    <h3 class="schema-form-property-all-of__heading">
       {{ property.title }}
     </h3>
     <template v-for="(prop, key) in property.allOf" :key="key">
@@ -22,3 +22,9 @@
     level: 0,
   })
 </script>
+
+<style>
+.schema-form-property-all-of__heading { @apply
+  font-medium
+}
+</style>
