@@ -4,21 +4,16 @@
       <WorkQueueToggle :work-queue="workQueue" @update="emit('update')" />
       <WorkQueueMenu :work-queue="workQueue" @delete="$emit('delete')" />
     </template>
-
-    <template v-if="workQueue.deprecated" #default>
-      <div class="page-heading-work-queue__deprecation-notice">
-        <p-icon icon="ExclamationCircleIcon" class="page-heading-work-queue__deprecation-icon" />
-        This work queue uses a deprecated tag-based approach to  matching flow runs. It will continue to work but you can't modify it.
-      </div>
-    </template>
   </page-heading>
 </template>
 
 <script lang="ts" setup>
+  import { showToast } from '@prefecthq/prefect-design'
   import { computed } from 'vue'
   import WorkQueueMenu from './WorkQueueMenu.vue'
   import PageHeading from '@/components/PageHeading.vue'
   import WorkQueueToggle from '@/components/WorkQueueToggle.vue'
+  import { localization } from '@/localization'
   import { WorkQueue } from '@/models'
   import { workQueuesRouteKey } from '@/router'
   import { inject } from '@/utilities'
@@ -37,6 +32,10 @@
   const emit = defineEmits<{
     (event: 'update' | 'delete'): void,
   }>()
+
+  if (props.workQueue.deprecated) {
+    showToast(localization.info.deprecatedWorkQueue, 'default', { dismissible: false, timeout: false })
+  }
 </script>
 
 <style>
