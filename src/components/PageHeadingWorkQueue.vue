@@ -8,7 +8,7 @@
     <template v-if="workQueue.deprecated" #default>
       <div class="page-heading-work-queue__deprecation-notice">
         <p-icon icon="ExclamationCircleIcon" class="page-heading-work-queue__deprecation-icon" />
-        This work queue is deprecated; you won't be able to modify it but it will still continue to work.
+        This work queue uses a deprecated tag-based approach to  matching flow runs. It will continue to work but you can't modify it.
       </div>
     </template>
   </page-heading>
