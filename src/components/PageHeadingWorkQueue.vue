@@ -9,7 +9,7 @@
 
 <script lang="ts" setup>
   import { showToast } from '@prefecthq/prefect-design'
-  import { computed } from 'vue'
+  import { computed, onUnmounted } from 'vue'
   import WorkQueueMenu from './WorkQueueMenu.vue'
   import PageHeading from '@/components/PageHeading.vue'
   import WorkQueueToggle from '@/components/WorkQueueToggle.vue'
@@ -34,7 +34,11 @@
   }>()
 
   if (props.workQueue.deprecated) {
-    showToast(localization.info.deprecatedWorkQueue, 'default', { dismissible: false, timeout: false })
+    const toast = showToast(localization.info.deprecatedWorkQueue, 'default', { dismissible: false, timeout: false })
+
+    onUnmounted(() => {
+      toast.dismiss()
+    })
   }
 </script>
 
