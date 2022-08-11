@@ -14,6 +14,11 @@
           <p-textarea v-model="description" rows="7" :state="descriptionState" />
         </p-label>
 
+        {{ workQueueMessage }}
+        <p-label label="Work Queue (Optional)" :message="workQueueMessage">
+          <WorkQueueCombobox v-model:selected="workQueueName" />
+        </p-label>
+
         <p-label label="Tags (Optional)">
           <p-tags-input v-model="tags" empty-message="Add tags" />
         </p-label>
@@ -68,6 +73,7 @@
   import { useField, useForm } from 'vee-validate'
   import { computed } from 'vue'
   import PydanticForm from './PydanticForm.vue'
+  import WorkQueueCombobox from './WorkQueueCombobox.vue'
   import ScheduleFieldset from '@/components/ScheduleFieldset.vue'
   import { Deployment, Schedule, Parameters } from '@/models'
 
@@ -97,11 +103,16 @@
       isScheduleActive: isScheduleActive.value,
       parameters: parameters.value,
       tags: tags.value,
+      workQueueName: workQueueName.value,
     }
   })
 
   const hasParameters = computed(() => {
     return Object.keys(props.deployment.parameterOpenApiSchema.properties ?? {}).length > 0
+  })
+
+  const workQueueMessage = computed(() => {
+    return workQueueName.value ? '' : 'Warning: runs from this deployment will be scheduled but never picked up. Select a work queue to ensure runs are released to your agents.'
   })
 
   // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
@@ -123,6 +134,7 @@
   const { value: name } = useField<string>('name')
   const { value: schedule } = useField<Schedule | null>('schedule')
   const { value: isScheduleActive } = useField<boolean>('isScheduleActive')
+  const { value: workQueueName } = useField<string | null>('workQueueName')
   const { value: parameters } = useField<Parameters>('parameters', undefined, { initialValue: initialValues })
   const { value: tags } = useField<string[] | null>('tags')
 

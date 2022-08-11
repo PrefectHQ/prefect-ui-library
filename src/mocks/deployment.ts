@@ -22,6 +22,7 @@ export const randomDeployment: MockFunction<Deployment, [Partial<Deployment>?]> 
     storageDocumentId: this.create('id'),
     infrastructureDocumentId: this.create('id'),
     deprecated: false,
+    workQueueName: random() > 0.05 ? this.create('noun') : null,
     ...overrides,
   }
 }
