@@ -24,6 +24,7 @@
   import schemaData from '../data/parametersSchema.json'
   import JsonInput from '@/components/JsonInput.vue'
   import SchemaForm from '@/components/SchemaForm.vue'
+  import { mapper } from '@/services'
   import { Schema, SchemaValues } from '@/types/schemas'
 
   const value = ref({})
@@ -32,7 +33,10 @@
 
   const schema = computed<Schema>(() => {
     try {
-      return JSON.parse(rawSchema.value)
+      const parsed = JSON.parse(rawSchema.value)
+      const mapped = mapper.map('SchemaResponse', parsed, 'Schema')
+
+      return mapped
     } catch {
       return {}
     }
