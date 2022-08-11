@@ -289,7 +289,7 @@ const getBaseComponent = (schema: Schema): null | PydanticTypeDefinitionComponen
     return null
   }
 
-  return getBaseTextInput()
+  return getBaseJsonInput()
 }
 
 export const getComponentFromPydanticTypeDefinition = (schema: Schema): null | PydanticTypeDefinitionComponent => {
