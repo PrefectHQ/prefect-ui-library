@@ -29,3 +29,15 @@ export type Schema = Omit<SchemaResponse, 'definitions' | 'properties' | 'items'
   properties?: SchemaProperties,
   items?: SchemaProperty,
 }
+
+export function isSchemaType<T extends SchemaType>(desired: T, type?: SchemaType): type is Extract<SchemaType, T> {
+  return type == desired
+}
+
+export function isPydanticTypeRef(property: unknown): property is SchemaReference<string> {
+  return typeof property == 'string' && property.startsWith(BaseDefinitionRefString) && property.length > BaseDefinitionRefString.length
+}
+
+export function isSchemaStringFormat(format?: SchemaStringFormat): format is SchemaStringFormat {
+  return !!format && SchemaStringFormats.includes(format)
+}
