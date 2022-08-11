@@ -24,11 +24,11 @@
 
   const multiple = computed(() => Array.isArray(props.selected))
 
-  const internalValue = computed({
+  const internalValue = computed<typeof props.selected>({
     get() {
       return props.selected ?? null
     },
-    set(value: string | string[] | null) {
+    set(value: string | string[] | null | undefined) {
       if (!value) {
         emits('update:selected', null)
       } else if (multiple.value) {

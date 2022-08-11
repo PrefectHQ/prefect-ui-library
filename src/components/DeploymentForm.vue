@@ -14,8 +14,7 @@
           <p-textarea v-model="description" rows="7" :state="descriptionState" />
         </p-label>
 
-        {{ workQueueMessage }}
-        <p-label label="Work Queue (Optional)" :message="workQueueMessage">
+        <p-label label="Work Queue (Optional)">
           <WorkQueueCombobox v-model:selected="workQueueName" />
         </p-label>
 
@@ -109,10 +108,6 @@
 
   const hasParameters = computed(() => {
     return Object.keys(props.deployment.parameterOpenApiSchema.properties ?? {}).length > 0
-  })
-
-  const workQueueMessage = computed(() => {
-    return workQueueName.value ? '' : 'Warning: runs from this deployment will be scheduled but never picked up. Select a work queue to ensure runs are released to your agents.'
   })
 
   // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
