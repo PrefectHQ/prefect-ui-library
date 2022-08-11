@@ -1,6 +1,7 @@
 import { mapBlockSchemaReferencesResponseToBlockSchemaReferences } from './blockSchemaReferences'
 import { mapNotificationCreateToNotificationCreateRequest } from './notificationCreate'
 import { mapNotificationUpdateToNotificationUpdateRequest } from './notificationUpdate'
+import { mapSchemaResponseToSchema } from './schema'
 import { mapBlockDocumentResponseToBlockDocument, mapBlockDocumentToSelectOption } from '@/maps/blockDocument'
 import { mapBlockDocumentCreateToBlockDocumentCreateRequest, mapBlockDocumentDataToBlockDocumentRequestData } from '@/maps/blockDocumentCreate'
 import { mapBlockDocumentResponseDataToBlockDocumentData } from '@/maps/blockDocumentData'
@@ -12,7 +13,7 @@ import { mapBlockSchemaFilterToBlockSchemaFilterRequest } from '@/maps/blockSche
 import { mapBlockTypeResponseToBlockType } from '@/maps/blockType'
 import { mapBlockTypeFilterToBlockTypeFilterRequest } from '@/maps/blockTypeFilter'
 import { mapStringToDate, mapDateToString } from '@/maps/date'
-import { mapDeploymentToDeploymentResponse, mapDeploymentResponseToDeployment, mapDeploymentUpdateToDeploymentUpdateRequest, mapDeploymentFlowRunCreateToDeploymentFlowRunRequest } from '@/maps/deployment'
+import { mapDeploymentResponseToDeployment, mapDeploymentUpdateToDeploymentUpdateRequest, mapDeploymentFlowRunCreateToDeploymentFlowRunRequest } from '@/maps/deployment'
 import { mapRunHistoryToDivergingBarChartItem } from '@/maps/divergingBarChartItem'
 import { mapEmpiricalPolicyToEmpiricalPolicyResponse, mapEmpiricalPolicyResponseToEmpiricalPolicy } from '@/maps/empiricalPolicy'
 import { mapFlowToFlowResponse, mapFlowResponseToFlow } from '@/maps/flow'
@@ -49,7 +50,6 @@ export const maps = {
   BlockTypeFilter: { BlockTypeFilterRequest: mapBlockTypeFilterToBlockTypeFilterRequest },
   BlockTypeResponse: { BlockType: mapBlockTypeResponseToBlockType },
   Date: { string: mapDateToString },
-  Deployment: { DeploymentResponse: mapDeploymentToDeploymentResponse },
   EmpiricalPolicy: { EmpiricalPolicyResponse: mapEmpiricalPolicyToEmpiricalPolicyResponse },
   Flow: { FlowResponse: mapFlowToFlowResponse },
   FlowRun: { FlowRunResponse: mapFlowRunToFlowRunResponse },
@@ -94,4 +94,5 @@ export const maps = {
   WorkQueueCreate: { WorkQueueCreateRequest: mapWorkQueueCreateToWorkQueueCreateRequest },
   WorkQueueEdit: { WorkQueueEditRequest: mapWorkQueueEditToWorkQueueEditRequest },
   WorkQueueFilter: { WorkQueueFilterResponse: mapWorkQueueFilterToWorkQueueFilterResponse },
+  SchemaResponse: { Schema: mapSchemaResponseToSchema },
 }

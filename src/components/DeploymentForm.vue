@@ -49,7 +49,7 @@
         </h3>
 
         <template v-if="hasParameters">
-          <PydanticForm v-model="parameters" hide-footer :pydantic-schema="deployment.parameterOpenApiSchema" />
+          <SchemaFormFields property="parameters" :schema="deployment.parameterOpenApiSchema" />
         </template>
 
         <template v-else>
@@ -72,9 +72,9 @@
 <script lang="ts" setup>
   import { useField, useForm } from 'vee-validate'
   import { computed } from 'vue'
-  import PydanticForm from './PydanticForm.vue'
   import WorkQueueCombobox from './WorkQueueCombobox.vue'
   import ScheduleFieldset from '@/components/ScheduleFieldset.vue'
+  import SchemaFormFields from '@/components/SchemaFormFields.vue'
   import { Deployment, Schedule, Parameters } from '@/models'
 
   const props = defineProps<{
@@ -116,26 +116,27 @@
   })
 
   // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-  const initialValues = { ...props.deployment.parameters ?? {} }
-  const initialTypes: Record<keyof typeof initialValues, string> = { }
+  const initialParameterValues = { ...props.deployment.parameters ?? {} }
+  const initialTypes: Record<keyof typeof initialParameterValues, string> = { }
 
-  Object.keys(initialValues).forEach((key: keyof typeof initialValues) => {
-    const parameter = initialValues[key]
+  Object.keys(initialParameterValues).forEach((key: keyof typeof initialParameterValues) => {
+    const parameter = initialParameterValues[key]
+    // this doesn't seem safe
     if (typeof parameter == 'string' && Date.parse(parameter)) {
-      initialValues[key] = new Date(parameter)
+      initialParameterValues[key] = new Date(parameter)
     }
 
     initialTypes[key] = typeof parameter
   })
 
-  const { handleSubmit, isSubmitting } = useForm({ initialValues: props.deployment })
+  const { handleSubmit, isSubmitting } = useForm({ initialValues: { ...props.deployment, parameters: initialParameterValues } })
 
   const { value: description, meta: descriptionState } = useField<string>('description')
   const { value: name } = useField<string>('name')
   const { value: schedule } = useField<Schedule | null>('schedule')
   const { value: isScheduleActive } = useField<boolean>('isScheduleActive')
   const { value: workQueueName } = useField<string | null>('workQueueName')
-  const { value: parameters } = useField<Parameters>('parameters', undefined, { initialValue: initialValues })
+  const { value: parameters } = useField<Parameters>('parameters')
   const { value: tags } = useField<string[] | null>('tags')
 
   const emit = defineEmits<{

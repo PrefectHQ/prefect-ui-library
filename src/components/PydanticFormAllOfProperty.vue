@@ -5,12 +5,12 @@
 <script lang="ts" setup>
   import { computed, withDefaults } from 'vue'
   import PydanticFormProperty from './PydanticFormProperty.vue'
-  import type { PydanticPropertyRecordAllOf } from '@/types/Pydantic'
+  import { SchemaPropertyAllOf } from '@/types/schemas'
 
   const props = withDefaults(defineProps<{
     level?: number,
     propKey: string,
-    property: PydanticPropertyRecordAllOf,
+    property: SchemaPropertyAllOf,
   }>(), {
     level: 0,
   })

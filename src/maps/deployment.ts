@@ -21,7 +21,7 @@ export const mapDeploymentResponseToDeployment: MapFunction<DeploymentResponse, 
     entrypoint: source.entrypoint,
     storageDocumentId: source.storage_document_id,
     infrastructureDocumentId: source.infrastructure_document_id,
-    parameterOpenApiSchema: source.parameter_openapi_schema,
+    parameterOpenApiSchema: this.map('SchemaResponse', source.parameter_openapi_schema, 'Schema'),
     workQueueName: source.work_queue_name,
   })
 }

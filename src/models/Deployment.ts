@@ -1,6 +1,6 @@
 import { Parameters } from '@/models/Parameters'
 import { Schedule } from '@/models/Schedule'
-import { PydanticTypeDefinition } from '@/types/Pydantic'
+import { Schema } from '@/types/schemas'
 
 export interface IDeployment {
   id: string,
@@ -12,7 +12,7 @@ export interface IDeployment {
   schedule: Schedule | null,
   isScheduleActive: boolean,
   parameters: Parameters,
-  parameterOpenApiSchema: PydanticTypeDefinition,
+  parameterOpenApiSchema: Schema,
   tags: string[] | null,
   manifestPath: string | null,
   path: string | null,
@@ -32,7 +32,7 @@ export class Deployment implements IDeployment {
   public schedule: Schedule | null
   public isScheduleActive: boolean
   public parameters: Parameters
-  public parameterOpenApiSchema: PydanticTypeDefinition
+  public parameterOpenApiSchema: Schema
   public tags: string[] | null
   public manifestPath: string | null
   public path: string | null
