@@ -30,13 +30,7 @@
       "type": "integer"
     },
     "category": {
-      "title": "category",
-      "default": "Math",
-      "allOf": [
-        {
-          "$ref": "#/definitions/Categories"
-        }
-      ]
+      "$ref": "#/definitions/Categories"
     }
   },
   "required": [
