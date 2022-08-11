@@ -15,12 +15,12 @@
   import { ButtonGroupOption } from '@prefecthq/prefect-design'
   import { computed, ref, withDefaults } from 'vue'
   import PydanticFormProperty from './PydanticFormProperty.vue'
-  import type { PydanticPropertyRecordAnyOf } from '@/types/Pydantic'
+  import { SchemaPropertyAnyOf } from '@/types/schemas'
 
   const props = withDefaults(defineProps<{
     level?: number,
     propKey: string,
-    property: PydanticPropertyRecordAnyOf,
+    property: SchemaPropertyAnyOf,
   }>(), {
     level: 0,
   })
@@ -38,7 +38,7 @@
   const buttonGroupOptions = computed<ButtonGroupOption[]>(() => {
     return definitions.value.map((prop, index) => {
       const option: ButtonGroupOption = {
-        label: prop.title ?? prop.alias ?? prop.$ref ?? '',
+        label: prop.title ?? prop.alias ?? '',
         value: index,
       }
 
