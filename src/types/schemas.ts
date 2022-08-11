@@ -30,6 +30,10 @@ export type Schema = Omit<SchemaResponse, 'definitions' | 'properties' | 'items'
   items?: SchemaProperty,
 }
 
+export function isSchemaValues(input: unknown): input is SchemaValues {
+  return typeof input === 'object' && input !== null
+}
+
 export function isSchemaType<T extends SchemaType>(desired: T, type?: SchemaType): type is Extract<SchemaType, T> {
   return type == desired
 }
@@ -40,4 +44,8 @@ export function isPydanticTypeRef(property: unknown): property is SchemaReferenc
 
 export function isSchemaStringFormat(format?: SchemaStringFormat): format is SchemaStringFormat {
   return !!format && SchemaStringFormats.includes(format)
+}
+
+export function schemaHas<T extends Schema | SchemaProperty, P extends keyof T>(schema: T, property: P): schema is T & Require<T, P> {
+  return property in schema
 }

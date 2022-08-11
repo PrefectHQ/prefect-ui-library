@@ -5,6 +5,8 @@ import { MapFunction } from '@/services/Mapper'
 import { mapCamelToSnakeCase } from '@/utilities'
 
 export const mapDeploymentResponseToDeployment: MapFunction<DeploymentResponse, Deployment> = function(source: DeploymentResponse): Deployment {
+  const schema = this.map('SchemaResponse', source.parameter_openapi_schema, 'Schema')
+
   return new Deployment({
     id: source.id,
     created: this.map('string', source.created, 'Date'),
@@ -14,14 +16,14 @@ export const mapDeploymentResponseToDeployment: MapFunction<DeploymentResponse, 
     flowId: source.flow_id,
     schedule: this.map('ScheduleResponse', source.schedule, 'Schedule'),
     isScheduleActive: source.is_schedule_active,
-    parameters: source.parameters,
+    parameters: this.map('SchemaValuesResponse', { values: source.parameters, schema }, 'SchemaValues'),
     tags: source.tags,
     manifestPath: source.manifest_path,
     path: source.path,
     entrypoint: source.entrypoint,
     storageDocumentId: source.storage_document_id,
     infrastructureDocumentId: source.infrastructure_document_id,
-    parameterOpenApiSchema: this.map('SchemaResponse', source.parameter_openapi_schema, 'Schema'),
+    parameterOpenApiSchema: schema,
   })
 }
 

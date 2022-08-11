@@ -27,7 +27,7 @@ function resolveProperties(properties: SchemaPropertiesResponse | undefined, sch
   }
 
   return Object.keys(properties).reduce<SchemaProperties>((result, key) => {
-    result[key] = resolveProperty(properties[key]!, schema, key)
+    result[key] = resolveProperty(properties[key], schema, key)
 
     return result
   }, {})

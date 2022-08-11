@@ -111,10 +111,6 @@
 
   Object.keys(initialParameterValues).forEach((key: keyof typeof initialParameterValues) => {
     const parameter = initialParameterValues[key]
-    // this doesn't seem safe
-    if (typeof parameter == 'string' && Date.parse(parameter)) {
-      initialParameterValues[key] = new Date(parameter)
-    }
 
     initialTypes[key] = typeof parameter
   })
