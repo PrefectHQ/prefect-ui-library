@@ -1,13 +1,7 @@
 import { PTextInput, PToggle, PTextarea, PDateInput, PNumberInput, PCombobox, PSelect } from '@prefecthq/prefect-design'
 import JsonInput from '@/components/JsonInput.vue'
 import { ValidateMethod, isEmail, greaterThanOrEqual, greaterThan, lessThan, lessThanOrEqual, isRequired, withMessage } from '@/services'
-import {
-  isPydanticStringFormat,
-  isPydanticType,
-  PydanticEnum,
-  PydanticType
-} from '@/types/Pydantic'
-import { Schema, SchemaStringFormat } from '@/types/schemas'
+import { isSchemaStringFormat, isSchemaType, Schema, SchemaEnum, SchemaStringFormat, SchemaType } from '@/types/schemas'
 
 const InputComponents = [PToggle, PTextInput, PTextarea, JsonInput, PDateInput, PNumberInput, PCombobox, PSelect] as const
 
@@ -51,7 +45,7 @@ interface BaseNumberInput extends PydanticTypeDefinitionComponent {
 interface BaseEnumInput extends PydanticTypeDefinitionComponent {
   attrs: {
     multiple: boolean,
-    options: PydanticEnum<unknown>,
+    options: SchemaEnum<unknown>,
   },
   component: typeof PSelect,
   defaultValue?: unknown,
@@ -61,7 +55,7 @@ interface BaseListInput extends PydanticTypeDefinitionComponent {
   attrs: {
     allowUnknownValue: boolean,
     multiple: boolean,
-    options: PydanticEnum<unknown>,
+    options: SchemaEnum<unknown>,
   },
   component: typeof PCombobox,
   defaultValue?: unknown[],
@@ -117,7 +111,7 @@ const getBaseEnumInput = (): BaseEnumInput => {
   return {
     attrs: {
       multiple: false,
-      options: [] as PydanticEnum<unknown>,
+      options: [],
     },
     component: PSelect,
     validators: [],
@@ -129,7 +123,7 @@ const getBaseListInput = (): BaseListInput => {
     attrs: {
       allowUnknownValue: true,
       multiple: true,
-      options: [] as PydanticEnum<unknown>,
+      options: [],
     },
     component: PCombobox,
     validators: [],
@@ -234,9 +228,9 @@ const getBaseComponent = (schema: Schema): null | PydanticTypeDefinitionComponen
 
   if (schema.enum !== undefined) {
     const component = getBaseEnumInput()
-    component.attrs.options = defEnum as PydanticEnum<PydanticType>
+    component.attrs.options = defEnum as SchemaEnum<SchemaType>
 
-    if (isPydanticType('array', type)) {
+    if (isSchemaType('array', type)) {
       // Make sure this passes the default value as an array
       component.attrs.multiple = true
       component.defaultValue = []
@@ -245,9 +239,9 @@ const getBaseComponent = (schema: Schema): null | PydanticTypeDefinitionComponen
     return component
   }
 
-  if (isPydanticType('string', type)) {
+  if (isSchemaType('string', type)) {
     let component
-    if (isPydanticStringFormat(format)) {
+    if (isSchemaStringFormat(format)) {
       component = getStringFormattedComponent(format)
     } else {
       component = getBaseTextInput()
@@ -256,17 +250,17 @@ const getBaseComponent = (schema: Schema): null | PydanticTypeDefinitionComponen
     return component
   }
 
-  if (isPydanticType('boolean', type)) {
+  if (isSchemaType('boolean', type)) {
     const component = getBaseToggleInput()
     return component
   }
 
-  if (isPydanticType('number', type) || isPydanticType('integer', type)) {
+  if (isSchemaType('number', type) || isSchemaType('integer', type)) {
     const component = getBaseNumberInput()
     return component
   }
 
-  if (isPydanticType('array', type)) {
+  if (isSchemaType('array', type)) {
     const component = getBaseListInput()
     component.attrs.multiple = true
     component.defaultValue = []
@@ -277,7 +271,7 @@ const getBaseComponent = (schema: Schema): null | PydanticTypeDefinitionComponen
         // Check that the default value is an array
         component.attrs.options = items
       } else if (items.enum !== undefined) {
-        component.attrs.options = items.enum as PydanticEnum<PydanticType>
+        component.attrs.options = items.enum as SchemaEnum<SchemaType>
       }
     } else {
       component.attrs.allowUnknownValue = true
@@ -286,12 +280,12 @@ const getBaseComponent = (schema: Schema): null | PydanticTypeDefinitionComponen
     return component
   }
 
-  if (isPydanticType('object', type)) {
+  if (isSchemaType('object', type)) {
     const component = getBaseJsonInput()
     return component
   }
 
-  if (isPydanticType('null', type)) {
+  if (isSchemaType('null', type)) {
     return null
   }
 
