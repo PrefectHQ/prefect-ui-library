@@ -1,4 +1,5 @@
 import { MapFunction } from '@/services/Mapper'
+import { isValidJsonString } from '@/services/validate'
 import { isSchemaValues, Schema, schemaHas, SchemaProperty, SchemaValue, SchemaValues } from '@/types/schemas'
 
 type MapSchemaValuesSource = {
@@ -36,6 +37,8 @@ function parseSchemaValue(value: SchemaValue, property: SchemaProperty): SchemaV
       return parseArrayProperty(value, property)
     case 'string':
       return parseStringProperty(value, property)
+    case undefined:
+      return parseUnknownProperty(value)
     default:
       return value
   }
@@ -85,4 +88,12 @@ function parseDateValue(value: SchemaValue): Date | SchemaValue {
   } catch {
     return value
   }
+}
+
+function parseUnknownProperty(value: SchemaValue): SchemaValue {
+  if (!isValidJsonString(value)) {
+    return JSON.stringify(value)
+  }
+
+  return value
 }
