@@ -28,9 +28,7 @@ function parseSchemaValues(values: SchemaValues, schema: Schema): SchemaValues {
 }
 
 function parseSchemaValue(value: SchemaValue, property: SchemaProperty): SchemaValue {
-  const { type } = property
-
-  switch (type) {
+  switch (property.type) {
     case 'object':
       return parseObjectProperty(value, property)
     case 'array':

@@ -25,7 +25,8 @@ import { mapNumberToString, mapStringToNumber } from '@/maps/number'
 import { mapUiFlowRunHistoryToScatterPlotItem } from '@/maps/scatterPlotItem'
 import { mapScheduleToScheduleResponse, mapScheduleResponseToSchedule } from '@/maps/schedule'
 import { mapSchemaResponseToSchema } from '@/maps/schema'
-import { mapSchemaValuesResponseToSchemaValues } from '@/maps/schemaValues'
+import { mapSchemaValuesRequestToSchemaValues } from '@/maps/schemaValuesRequest'
+import { mapSchemaValuesResponseToSchemaValues } from '@/maps/schemaValuesResponse'
 import { mapStateResponseToState, mapStateToStateResponse, mapStateCreateToStateRequest } from '@/maps/state'
 import { mapStateDetailsCreateToStateDetailsRequest, mapStateDetailsResponseToStateDetails, mapStateDetailsToStateDetailsResponse } from '@/maps/stateDetails'
 import { mapStateHistoryToStateHistoryResponse, mapStateHistoryResponseToStateHistory } from '@/maps/stateHistory'
@@ -95,4 +96,5 @@ export const maps = {
   WorkQueueFilter: { WorkQueueFilterResponse: mapWorkQueueFilterToWorkQueueFilterResponse },
   SchemaResponse: { Schema: mapSchemaResponseToSchema },
   SchemaValuesResponse: { SchemaValues: mapSchemaValuesResponseToSchemaValues },
+  SchemaValuesRequest: { SchemaValues: mapSchemaValuesRequestToSchemaValues },
 }
