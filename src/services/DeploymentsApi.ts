@@ -26,15 +26,17 @@ export class DeploymentsApi extends Api {
     return this.post<number>('/count', filter).then(({ data }) => data)
   }
 
-  public createDeploymentFlowRun(deploymentId: string, request: DeploymentFlowRunCreate): Promise<FlowRun> {
-    const body = mapper.map('DeploymentFlowRunCreate', request, 'DeploymentFlowRunRequest')
-    return this.post<FlowRunResponse>(`/${deploymentId}/create_flow_run`, body)
+  public createDeploymentFlowRun(deployment: Deployment, request: DeploymentFlowRunCreate): Promise<FlowRun> {
+    const body = mapper.map('DeploymentFlowRunCreate', { request, schema: deployment.parameterOpenApiSchema }, 'DeploymentFlowRunRequest')
+
+    return this.post<FlowRunResponse>(`/${deployment.id}/create_flow_run`, body)
       .then(({ data }) => mapper.map('FlowRunResponse', data, 'FlowRun'))
   }
 
-  public updateDeployment(deploymentId: string, request: DeploymentUpdate): Promise<void> {
-    const body = mapper.map('DeploymentUpdate', request, 'DeploymentUpdateRequest')
-    return this.patch(`/${deploymentId}`, body)
+  public updateDeployment(deployment: Deployment, request: DeploymentUpdate): Promise<void> {
+    const body = mapper.map('DeploymentUpdate', { request, schema: deployment.parameterOpenApiSchema }, 'DeploymentUpdateRequest')
+
+    return this.patch(`/${deployment.id}`, body)
   }
 
   public pauseDeployment(id: string): Promise<void> {
