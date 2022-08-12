@@ -12,31 +12,35 @@ export class DeploymentsApi extends Api {
 
   protected override route: ApiRoute = '/deployments'
 
-  public getDeployment(deploymentId: string): Promise<Deployment> {
-    return this.get<DeploymentResponse>(`/${deploymentId}`)
-      .then(({ data }) => mapper.map('DeploymentResponse', data, 'Deployment'))
+  public async getDeployment(deploymentId: string): Promise<Deployment> {
+    const { data } = await this.get<DeploymentResponse>(`/${deploymentId}`)
+
+    return mapper.map('DeploymentResponse', data, 'Deployment')
   }
 
-  public getDeployments(filter: UnionFilters): Promise<Deployment[]> {
-    return this.post<DeploymentResponse[]>('/filter', filter)
-      .then(({ data }) => mapper.map('DeploymentResponse', data, 'Deployment'))
+  public async getDeployments(filter: UnionFilters): Promise<Deployment[]> {
+    const { data } = await this.post<DeploymentResponse[]>('/filter', filter)
+
+    return mapper.map('DeploymentResponse', data, 'Deployment')
   }
 
-  public getDeploymentsCount(filter: UnionFilters): Promise<number> {
-    return this.post<number>('/count', filter).then(({ data }) => data)
+  public async getDeploymentsCount(filter: UnionFilters): Promise<number> {
+    const { data } = await this.post<number>('/count', filter)
+
+    return data
   }
 
-  public createDeploymentFlowRun(deployment: Deployment, request: DeploymentFlowRunCreate): Promise<FlowRun> {
-    const body = mapper.map('DeploymentFlowRunCreate', { request, schema: deployment.parameterOpenApiSchema }, 'DeploymentFlowRunRequest')
+  public async createDeploymentFlowRun(deploymentId: string, request: DeploymentFlowRunCreate): Promise<FlowRun> {
+    const body = mapper.map('DeploymentFlowRunCreate', request, 'DeploymentFlowRunRequest')
+    const { data } = await this.post<FlowRunResponse>(`/${deploymentId}/create_flow_run`, body)
 
-    return this.post<FlowRunResponse>(`/${deployment.id}/create_flow_run`, body)
-      .then(({ data }) => mapper.map('FlowRunResponse', data, 'FlowRun'))
+    return mapper.map('FlowRunResponse', data, 'FlowRun')
   }
 
-  public updateDeployment(deployment: Deployment, request: DeploymentUpdate): Promise<void> {
-    const body = mapper.map('DeploymentUpdate', { request, schema: deployment.parameterOpenApiSchema }, 'DeploymentUpdateRequest')
+  public updateDeployment(deploymentId: string, request: DeploymentUpdate): Promise<void> {
+    const body = mapper.map('DeploymentUpdate', request, 'DeploymentUpdateRequest')
 
-    return this.patch(`/${deployment.id}`, body)
+    return this.patch(`/${deploymentId}`, body)
   }
 
   public pauseDeployment(id: string): Promise<void> {

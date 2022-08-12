@@ -125,6 +125,7 @@
       tags: props.deployment.tags ?? [],
       name: generateRandomName(),
       parameters: props.deployment.parameters,
+      schema: props.deployment.parameterOpenApiSchema,
     },
   })
 

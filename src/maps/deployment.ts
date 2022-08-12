@@ -28,16 +28,11 @@ export const mapDeploymentResponseToDeployment: MapFunction<DeploymentResponse, 
   })
 }
 
-type DeploymentUpdateSource = {
-  request: DeploymentUpdate,
-  schema: Schema,
-}
-
-export const mapDeploymentUpdateToDeploymentUpdateRequest: MapFunction<DeploymentUpdateSource, DeploymentUpdateRequest> = function({ request, schema }: DeploymentUpdateSource): DeploymentUpdateRequest {
-  const { parameters, schedule, ...rest } = request
+export const mapDeploymentUpdateToDeploymentUpdateRequest: MapFunction<DeploymentUpdate, DeploymentUpdateRequest> = function(source: DeploymentUpdate): DeploymentUpdateRequest {
+  const { parameters, schema, schedule, ...rest } = source
   const mapped = mapCamelToSnakeCase<DeploymentUpdateRequest>(rest)
 
-  if (parameters) {
+  if (parameters && schema) {
     mapped.parameters = this.map('SchemaValuesRequest', { values: parameters, schema }, 'SchemaValues')
   }
 
@@ -48,13 +43,8 @@ export const mapDeploymentUpdateToDeploymentUpdateRequest: MapFunction<Deploymen
   return mapped
 }
 
-type FlowRunCreateSource = {
-  request: DeploymentFlowRunCreate,
-  schema: Schema,
-}
-
-export const mapDeploymentFlowRunCreateToDeploymentFlowRunRequest: MapFunction<FlowRunCreateSource, DeploymentFlowRunRequest> = function({ request, schema }: FlowRunCreateSource): DeploymentFlowRunRequest {
-  const { parameters, state, ...rest } = request
+export const mapDeploymentFlowRunCreateToDeploymentFlowRunRequest: MapFunction<DeploymentFlowRunCreate, DeploymentFlowRunRequest> = function(source: DeploymentFlowRunCreate): DeploymentFlowRunRequest {
+  const { parameters, state, schema, ...rest } = source
   const mapped = mapCamelToSnakeCase<DeploymentFlowRunRequest>(rest)
 
   if (parameters) {

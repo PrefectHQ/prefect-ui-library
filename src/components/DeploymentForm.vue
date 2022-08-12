@@ -79,7 +79,12 @@
     return Object.keys(props.deployment.parameterOpenApiSchema.properties ?? {}).length > 0
   })
 
-  const { handleSubmit, isSubmitting } = useForm<DeploymentUpdate>({ initialValues: props.deployment })
+  const { handleSubmit, isSubmitting } = useForm<DeploymentUpdate>({
+    initialValues: {
+      ...props.deployment,
+      schema: props.deployment.parameterOpenApiSchema,
+    },
+  })
 
   const { value: description, meta: descriptionState } = useField<string>('description')
   const { value: name } = useField<string>('name')

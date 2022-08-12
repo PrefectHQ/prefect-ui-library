@@ -1,10 +1,21 @@
 import { Schedule } from '@/models/Schedule'
-import { SchemaValues } from '@/types/schemas'
+import { Schema, SchemaValues } from '@/types/schemas'
 
-export type DeploymentUpdate = {
+type Base = {
   description?: string | null,
   schedule?: Schedule | null,
   isScheduleActive?: boolean,
-  parameters?: SchemaValues | null,
   tags?: string[] | null,
 }
+
+type WithoutParameters = Base & {
+  schema?: never,
+  parameters?: never,
+}
+
+type WithParameters = Base & {
+  schema: Schema,
+  parameters: SchemaValues,
+}
+
+export type DeploymentUpdate = WithoutParameters | WithParameters

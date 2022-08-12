@@ -71,7 +71,7 @@
     loading.value = true
 
     try {
-      const flowRun = await deploymentsApi.createDeploymentFlowRun(props.deployment, {
+      const flowRun = await deploymentsApi.createDeploymentFlowRun(props.deployment.id, {
         state: {
           type: 'scheduled',
           message: 'Run from the Prefect UI with defaults',
