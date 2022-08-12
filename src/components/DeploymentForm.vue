@@ -70,7 +70,6 @@
   import ScheduleFieldset from '@/components/ScheduleFieldset.vue'
   import SchemaFormFields from '@/components/SchemaFormFields.vue'
   import { Deployment, DeploymentUpdate, Schedule } from '@/models'
-  import { SchemaValues } from '@/types/schemas'
 
   const props = defineProps<{
     deployment: Deployment,
@@ -80,13 +79,12 @@
     return Object.keys(props.deployment.parameterOpenApiSchema.properties ?? {}).length > 0
   })
 
-  const { handleSubmit, isSubmitting } = useForm({ initialValues: props.deployment })
+  const { handleSubmit, isSubmitting } = useForm<DeploymentUpdate>({ initialValues: props.deployment })
 
   const { value: description, meta: descriptionState } = useField<string>('description')
   const { value: name } = useField<string>('name')
   const { value: schedule } = useField<Schedule | null>('schedule')
   const { value: isScheduleActive } = useField<boolean>('isScheduleActive')
-  const { value: parameters } = useField<SchemaValues>('parameters')
   const { value: tags } = useField<string[] | null>('tags')
 
   const emit = defineEmits<{
@@ -94,16 +92,8 @@
     (event: 'cancel'): void,
   }>()
 
-  const submit = handleSubmit(() => {
-    const request = {
-      description: description.value,
-      schedule: schedule.value,
-      isScheduleActive: isScheduleActive.value,
-      parameters: parameters.value,
-      tags: tags.value,
-    }
-
-    emit('submit', request)
+  const submit = handleSubmit((values) => {
+    emit('submit', values)
   })
 
   const cancel = (): void => {
