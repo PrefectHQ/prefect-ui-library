@@ -22,28 +22,18 @@ export const mapSchemaValuesResponseToSchemaValues: MapFunction<MapSchemaValuesS
   }
 
   const parseSchemaValue = (value: SchemaValue, property: SchemaProperty): SchemaValue => {
-    switch (property.type) {
-      case 'object':
-        return parseObjectProperty(value, property)
-      case 'array':
-        return parseArrayProperty(value, property)
-      case 'string':
-        return parseStringProperty(value, property)
-      case undefined:
-        return parseUnknownProperty(value)
-      default:
-        return value
-    }
-  }
-
-  const getSchemaProperty = (schema: Schema, key: string): SchemaProperty | undefined => {
-    return schema.properties?.[key]
-  }
-
-  const parseObjectProperty = (value: SchemaValue, property: SchemaProperty): SchemaValue => {
     try {
-      if (isSchemaValues(value)) {
-        return parseSchemaValues(value, property)
+      switch (property.type) {
+        case 'object':
+          return parseObjectProperty(value, property)
+        case 'array':
+          return parseArrayProperty(value, property)
+        case 'string':
+          return parseStringProperty(value, property)
+        case undefined:
+          return parseUnknownProperty(value)
+        default:
+          return value
       }
     } catch (error) {
       console.error(error)
@@ -52,13 +42,21 @@ export const mapSchemaValuesResponseToSchemaValues: MapFunction<MapSchemaValuesS
     return value
   }
 
+  const getSchemaProperty = (schema: Schema, key: string): SchemaProperty | undefined => {
+    return schema.properties?.[key]
+  }
+
+  const parseObjectProperty = (value: SchemaValue, property: SchemaProperty): SchemaValue => {
+    if (isSchemaValues(value)) {
+      return parseSchemaValues(value, property)
+    }
+
+    return value
+  }
+
   const parseArrayProperty = (values: SchemaValue, property: SchemaProperty): SchemaValue => {
-    try {
-      if (Array.isArray(values) && schemaHas(property, 'items')) {
-        return values.map(value => parseSchemaValue(value, property.items))
-      }
-    } catch (error) {
-      console.error(error)
+    if (Array.isArray(values) && schemaHas(property, 'items')) {
+      return values.map(value => parseSchemaValue(value, property.items))
     }
 
     return values
