@@ -14,16 +14,18 @@ export class DeploymentsApi extends MockedApi {
     return this.promise(mocker.createMany('deployment', mocker.create('number', [1, 100])))
   }
 
-  public createDeploymentFlowRun(deploymentId: string, body: DeploymentFlowRunCreate): Promise<FlowRun> {
-    const request = mapper.map('DeploymentFlowRunCreate', body, 'DeploymentFlowRunRequest')
-    const filteredRequest = Object.entries(request).reduce((req: Record<string, unknown>, [currKey, currVal]) => {
+  public createDeploymentFlowRun(deployment: Deployment, request: DeploymentFlowRunCreate): Promise<FlowRun> {
+    const body = mapper.map('DeploymentFlowRunCreate', { request, schema: deployment.parameterOpenApiSchema }, 'DeploymentFlowRunRequest')
+
+    const filteredRequest = Object.entries(body).reduce((req: Record<string, unknown>, [currKey, currVal]) => {
       if (typeof currVal !== 'undefined') {
         req[currKey] = currVal
       }
 
       return req
     }, {}) as Partial<FlowRun>
-    return this.promise(mocker.create('flowRun', [{ deploymentId: deploymentId, ...filteredRequest }]))
+
+    return this.promise(mocker.create('flowRun', [{ deploymentId: deployment.id, ...filteredRequest }]))
   }
 
   public pauseDeployment(id: string): Promise<void> {
