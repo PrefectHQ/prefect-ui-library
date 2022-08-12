@@ -25,7 +25,6 @@
   import ResultsCount from '@/components/ResultsCount.vue'
   import SearchInput from '@/components/SearchInput.vue'
   import { Deployment } from '@/models'
-  import { resolvePydanticTypeDefinitionFromSchema } from '@/utilities'
 
   const props = defineProps<{
     deployment: Deployment,
@@ -40,7 +39,7 @@
 
   const searchTerm = ref('')
 
-  const properties = computed(() => resolvePydanticTypeDefinitionFromSchema(props.deployment.parameterOpenApiSchema))
+  const properties = computed(() => props.deployment.parameterOpenApiSchema.properties ?? {})
 
   const data = computed(() => {
     return Object.entries(properties.value).map(([key, value]) => {

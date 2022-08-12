@@ -1,10 +1,11 @@
 import { MockFunction } from '@/services'
-import { PydanticStringFormats, PydanticTypeDefinition, PydanticTypes } from '@/types/Pydantic'
+import { PydanticStringFormats, PydanticTypes } from '@/types/Pydantic'
+import { Schema, SchemaProperty } from '@/types/schemas'
 import { kebabCase } from '@/utilities'
 import { choice } from '@/utilities/arrays'
 import { uniform } from '@/utilities/math'
 
-export const randomOpenApiProperty: MockFunction<PydanticTypeDefinition, [PydanticTypeDefinition?]> = function(overrides = {}) {
+export const randomOpenApiProperty: MockFunction<SchemaProperty, [SchemaProperty?]> = function(overrides = {}) {
   // propertyTypeFirstDraw lets us reduce the number of `null` type definitions by half
   const propertyTypeFirstDraw = choice(PydanticTypes)
   const propertyType = propertyTypeFirstDraw == 'null' ? choice(PydanticTypes) : propertyTypeFirstDraw
@@ -39,9 +40,9 @@ export const randomOpenApiProperty: MockFunction<PydanticTypeDefinition, [Pydant
   }
 }
 
-export const randomOpenApiSchema: MockFunction<PydanticTypeDefinition, [PydanticTypeDefinition?]> = function(overrides = {}) {
+export const randomOpenApiSchema: MockFunction<Schema, [Schema?]> = function(overrides = {}) {
   const numberOfProperties = uniform(0, 30)
-  const properties = Array.from({ length: numberOfProperties }, () => this.create('openApiProperty')).reduce<PydanticTypeDefinition['properties']>((properties = {}, property) => {
+  const properties = Array.from({ length: numberOfProperties }, () => this.create('openApiProperty')).reduce<Schema['properties']>((properties = {}, property) => {
     properties[kebabCase(property.title!)] = property
     return properties
   }, {})

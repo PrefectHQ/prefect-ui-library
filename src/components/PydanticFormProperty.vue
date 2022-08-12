@@ -6,12 +6,11 @@
   </template>
 
   <template v-else>
-    <h3
-      v-if="level > 0"
-      class="pydantic-form-property__section-header"
-    >
-      <span>{{ property.title }}</span>
-    </h3>
+    <template v-if="level > 0">
+      <h3 class="pydantic-form-property__section-header">
+        <span>{{ property.title }}</span>
+      </h3>
+    </template>
 
     <component
       :is="formComponent"
@@ -29,12 +28,13 @@
   import PydanticFormAllOfProperty from './PydanticFormAllOfProperty.vue'
   import PydanticFormField from './PydanticFormField.vue'
   import PydanticFormUnionProperty from './PydanticFormUnionProperty.vue'
-  import { hasAllOf, hasAnyOf, PydanticTypeProperty } from '@/types/Pydantic'
+  import { hasAllOf, hasAnyOf } from '@/types/Pydantic'
+  import { SchemaProperty } from '@/types/schemas'
 
   const props = withDefaults(defineProps<{
     level?: number,
     propKey: string,
-    property: PydanticTypeProperty,
+    property: SchemaProperty,
   }>(), {
     level: 0,
   })
@@ -63,8 +63,7 @@
 </script>
 
 <style>
-.pydantic-form-property__section-header {
-  @apply
+.pydantic-form-property__section-header { @apply
   font-medium
   -mb-4
 }

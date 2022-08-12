@@ -31,18 +31,18 @@
         "@prefecthq/eslint-config": "1.0.16",
         "@tailwindcss/line-clamp": "0.4.0",
         "@types/lodash.debounce": "4.0.7",
-        "@types/node": "^18.6.3",
+        "@types/node": "^18.6.5",
         "@types/prismjs": "^1.26.0",
         "@vitejs/plugin-vue": "2.3.3",
         "autoprefixer": "10.4.8",
         "eslint": "8.21.0",
         "lodash.debounce": "4.0.8",
-        "postcss": "8.4.14",
-        "tailwindcss": "3.1.7",
+        "postcss": "8.4.16",
+        "tailwindcss": "3.1.8",
         "tsc-alias": "1.7.0",
         "typescript": "^4.7.4",
         "vite": "2.9.13",
-        "vue-tsc": "0.39.4"
+        "vue-tsc": "0.39.5"
     },
     "peerDependencies": {
         "@prefecthq/prefect-design": "^1.0.36",

@@ -1,8 +1,9 @@
 import { mocker, MockFunction } from '@/services/Mocker'
-import { PydanticStringFormats, PydanticTypeDefinition } from '@/types/Pydantic'
+import { PydanticStringFormats } from '@/types/Pydantic'
+import { Schema } from '@/types/schemas'
 import { coinflip, uniform } from '@/utilities/math'
 
-export const randomParameters: MockFunction<Record<string, unknown>, [Record<string, unknown>?, PydanticTypeDefinition?]> = function(overrides = {}, schema: PydanticTypeDefinition = mocker.create('openApiSchema')) {
+export const randomParameters: MockFunction<Record<string, unknown>, [Record<string, unknown>?, Schema?]> = function(overrides = {}, schema: Schema = mocker.create('openApiSchema')) {
   const parameters: Record<string, unknown> = {}
 
   if (!schema.properties) {
@@ -20,7 +21,7 @@ export const randomParameters: MockFunction<Record<string, unknown>, [Record<str
 
 
   Object.keys(schema.properties).forEach((key) => {
-    const { type, format, default: defaultValue } = schema.properties![key]
+    const { type, format, default: defaultValue } = schema.properties![key]!
 
     if (uniform(0, 10) > 8 && type !== 'object') {
       return
