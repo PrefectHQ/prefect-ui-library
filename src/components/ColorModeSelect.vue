@@ -1,10 +1,12 @@
 <template>
   <p-select v-model="internalValue" :options="options" class="color-scheme-select">
     <template #option="{ option }">
-      <ColorModeSelectOption :mode="option.value" />
+      <!-- eslint-disable-next-line vue/no-extra-parens -->
+      <ColorModeSelectOption :mode="(option.value as ColorMode)" />
     </template>
     <template #default="{ selectedOption }">
-      <ColorModeSelectOption :mode="selectedOption.value" />
+      <!-- eslint-disable-next-line vue/no-extra-parens -->
+      <ColorModeSelectOption :mode="(selectedOption.value as ColorMode)" />
     </template>
   </p-select>
 </template>
@@ -13,7 +15,7 @@
   import { PSelect } from '@prefecthq/prefect-design'
   import { computed } from 'vue'
   import ColorModeSelectOption from './ColorModeSelectOption.vue'
-  import { colorModes } from '@/types/ColorMode'
+  import { colorModes, ColorMode } from '@/types/ColorMode'
 
   const props = defineProps<{
     selected: string | null | undefined,
