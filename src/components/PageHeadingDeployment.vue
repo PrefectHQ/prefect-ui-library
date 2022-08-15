@@ -16,14 +16,14 @@
 </template>
 
 <script lang="ts" setup>
-  import { showToast } from '@prefecthq/prefect-design'
-  import { computed, onUnmounted } from 'vue'
+  import { computed } from 'vue'
   import { useRouter } from 'vue-router'
   import DeploymentMenu from '@/components/DeploymentMenu.vue'
   import DeploymentToggle from '@/components/DeploymentToggle.vue'
   import FlowIconText from '@/components/FlowIconText.vue'
   import PageHeading from '@/components/PageHeading.vue'
   import RunMenu from '@/components/RunMenu.vue'
+  import { useShowToast } from '@/compositions'
   import { localization } from '@/localization'
   import { Deployment } from '@/models'
   import { deploymentsRouteKey } from '@/router'
@@ -53,11 +53,7 @@
   const can = inject(canKey)
 
   if (!props.deployment.workQueueName) {
-    const toast = showToast(localization.info.deploymentMissingWorkQueue, 'default', { timeout: false })
-
-    onUnmounted(() => {
-      toast.dismiss()
-    })
+    useShowToast(localization.info.deploymentMissingWorkQueue, 'default', { timeout: false })
   }
 </script>
 

@@ -8,11 +8,11 @@
 </template>
 
 <script lang="ts" setup>
-  import { showToast } from '@prefecthq/prefect-design'
-  import { computed, onUnmounted } from 'vue'
+  import { computed } from 'vue'
   import WorkQueueMenu from './WorkQueueMenu.vue'
   import PageHeading from '@/components/PageHeading.vue'
   import WorkQueueToggle from '@/components/WorkQueueToggle.vue'
+  import { useShowToast } from '@/compositions'
   import { localization } from '@/localization'
   import { WorkQueue } from '@/models'
   import { workQueuesRouteKey } from '@/router'
@@ -34,11 +34,7 @@
   }>()
 
   if (props.workQueue.deprecated) {
-    const toast = showToast(localization.info.deprecatedWorkQueue, 'default', { dismissible: false, timeout: false })
-
-    onUnmounted(() => {
-      toast.dismiss()
-    })
+    useShowToast(localization.info.deprecatedWorkQueue, 'default', { dismissible: false, timeout: false })
   }
 </script>
 
