@@ -116,6 +116,7 @@
       emit('update')
       showToast(successMessage, 'success')
     } catch (error) {
+      console.error(error)
       showToast(errorMessage, 'error')
     } finally {
       updateScheduleLoading.value = false
