@@ -23,7 +23,7 @@
       <template #action="{ row }">
         <div class="work-queues-table__actions">
           <WorkQueueToggle :work-queue="row" @update="emits('update')" />
-          <WorkQueueMenu size="xs" :queue="row" @delete="id => emits('delete', id)" />
+          <WorkQueueMenu size="xs" :work-queue="row" @delete="id => emits('delete', id)" />
         </div>
       </template>
 

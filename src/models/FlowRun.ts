@@ -28,12 +28,14 @@ export interface IFlowRun {
   runCount: number | null,
   created: Date,
   updated: Date,
+  workQueueName: string | null,
 }
 
 export class FlowRun implements IFlowRun {
   public readonly id: string
   public readonly flowId: string
   public readonly deploymentId: string | null
+  public readonly workQueueName: string | null
   public flowVersion: string | null
   public idempotencyKey: string | null
   public expectedStartTime: Date | null
@@ -58,33 +60,34 @@ export class FlowRun implements IFlowRun {
   public created: Date
   public updated: Date
 
-  public constructor(flow: IFlowRun) {
-    this.id = flow.id
-    this.deploymentId = flow.deploymentId
-    this.flowId = flow.flowId
-    this.flowVersion = flow.flowVersion
-    this.idempotencyKey = flow.idempotencyKey
-    this.expectedStartTime = flow.expectedStartTime
-    this.nextScheduledStartTime = flow.nextScheduledStartTime
-    this.parameters = flow.parameters
-    this.autoScheduled = flow.autoScheduled
-    this.context = flow.context
-    this.empiricalConfig = flow.empiricalConfig
-    this.empiricalPolicy = flow.empiricalPolicy
-    this.estimatedRunTime = flow.estimatedRunTime
-    this.estimatedStartTimeDelta = flow.estimatedStartTimeDelta
-    this.totalRunTime = flow.totalRunTime
-    this.startTime = flow.startTime
-    this.endTime = flow.endTime
-    this.name = flow.name
-    this.parentTaskRunId = flow.parentTaskRunId
-    this.stateId = flow.stateId
-    this.stateType = flow.stateType
-    this.state = flow.state
-    this.tags = flow.tags
-    this.runCount = flow.runCount
-    this.created = flow.created
-    this.updated = flow.updated
+  public constructor(flowRun: IFlowRun) {
+    this.id = flowRun.id
+    this.deploymentId = flowRun.deploymentId
+    this.flowId = flowRun.flowId
+    this.flowVersion = flowRun.flowVersion
+    this.idempotencyKey = flowRun.idempotencyKey
+    this.expectedStartTime = flowRun.expectedStartTime
+    this.nextScheduledStartTime = flowRun.nextScheduledStartTime
+    this.parameters = flowRun.parameters
+    this.autoScheduled = flowRun.autoScheduled
+    this.context = flowRun.context
+    this.empiricalConfig = flowRun.empiricalConfig
+    this.empiricalPolicy = flowRun.empiricalPolicy
+    this.estimatedRunTime = flowRun.estimatedRunTime
+    this.estimatedStartTimeDelta = flowRun.estimatedStartTimeDelta
+    this.totalRunTime = flowRun.totalRunTime
+    this.startTime = flowRun.startTime
+    this.endTime = flowRun.endTime
+    this.name = flowRun.name
+    this.parentTaskRunId = flowRun.parentTaskRunId
+    this.stateId = flowRun.stateId
+    this.stateType = flowRun.stateType
+    this.state = flowRun.state
+    this.tags = flowRun.tags
+    this.runCount = flowRun.runCount
+    this.created = flowRun.created
+    this.updated = flowRun.updated
+    this.workQueueName = flowRun.workQueueName
   }
 
   public get duration(): number | null {
