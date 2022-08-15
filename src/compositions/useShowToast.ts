@@ -1,8 +1,8 @@
-import { showToast, Toast, ToastOptions } from '@prefecthq/prefect-design'
-import { onUnmounted } from 'vue'
+import { showToast, Toast, ToastOptions, ToastType } from '@prefecthq/prefect-design'
+import { onUnmounted, Component } from 'vue'
 
-export function useShowToast(options: ToastOptions): Toast {
-  const toast = showToast(options)
+export function useShowToast(message: string | Component, type?: ToastType, options?: ToastOptions): Toast {
+  const toast = showToast(message, type, options)
 
   onUnmounted(() => {
     toast.dismiss()
