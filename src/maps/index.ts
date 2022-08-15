@@ -24,7 +24,7 @@ import { mapLogToLogResponse, mapLogResponseToLog } from '@/maps/logs'
 import { mapNotificationResponseToNotification } from '@/maps/notification'
 import { mapNumberToString, mapStringToNumber } from '@/maps/number'
 import { mapUiFlowRunHistoryToScatterPlotItem } from '@/maps/scatterPlotItem'
-import { mapScheduleToScheduleResponse, mapScheduleResponseToSchedule } from '@/maps/schedule'
+import { mapScheduleToScheduleResponse, mapScheduleResponseToSchedule, mapScheduleToScheduleRequest } from '@/maps/schedule'
 import { mapStateResponseToState, mapStateToStateResponse, mapStateCreateToStateRequest } from '@/maps/state'
 import { mapStateDetailsCreateToStateDetailsRequest, mapStateDetailsResponseToStateDetails, mapStateDetailsToStateDetailsResponse } from '@/maps/stateDetails'
 import { mapStateHistoryToStateHistoryResponse, mapStateHistoryResponseToStateHistory } from '@/maps/stateHistory'
@@ -81,7 +81,7 @@ export const maps = {
   Log: { LogResponse: mapLogToLogResponse },
   number: { string: mapNumberToString },
   RunHistory: { FlowRunHistoryResponse: mapRunHistoryToFlowRunHistoryResponse, DivergingBarChartItem: mapRunHistoryToDivergingBarChartItem },
-  Schedule: { ScheduleResponse: mapScheduleToScheduleResponse },
+  Schedule: { ScheduleResponse: mapScheduleToScheduleResponse, ScheduleRequest: mapScheduleToScheduleRequest },
   ServerStateType: { StateType: mapServerStateTypeToStateType },
   StateHistory: { StateHistoryResponse: mapStateHistoryToStateHistoryResponse },
   StateType: { ServerStateType: mapStateTypeToServerStateType },

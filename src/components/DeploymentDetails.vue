@@ -115,7 +115,7 @@
       await deploymentsApi.updateDeployment(props.deployment.id, { schedule })
       emit('update')
       showToast(successMessage, 'success')
-    } catch {
+    } catch (error) {
       showToast(errorMessage, 'error')
     } finally {
       updateScheduleLoading.value = false

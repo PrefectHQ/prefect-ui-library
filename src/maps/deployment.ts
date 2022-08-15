@@ -28,7 +28,7 @@ export const mapDeploymentResponseToDeployment: MapFunction<DeploymentResponse, 
 export const mapDeploymentUpdateToDeploymentUpdateRequest: MapFunction<DeploymentUpdate, DeploymentUpdateRequest> = function(source: DeploymentUpdate): DeploymentUpdateRequest {
   return {
     ...mapCamelToSnakeCase(source),
-    'schedule': source.schedule ? this.map('Schedule', source.schedule, 'ScheduleResponse') : source.schedule,
+    'schedule': source.schedule ? this.map('Schedule', source.schedule, 'ScheduleRequest') : source.schedule,
   }
 }
 
