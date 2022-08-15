@@ -52,7 +52,8 @@
 
   const can = inject(canKey)
 
-  if (!props.deployment.workQueueName) {
+  // If the deployment isn't deprecated and doesn't have a work queue, show the missing work queue message
+  if (!props.deployment.workQueueName && !props.deployment.deprecated) {
     useShowToast(localization.info.deploymentMissingWorkQueue, 'default', { timeout: false })
   }
 </script>
