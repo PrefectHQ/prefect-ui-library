@@ -23,8 +23,6 @@
   import FlowIconText from '@/components/FlowIconText.vue'
   import PageHeading from '@/components/PageHeading.vue'
   import RunMenu from '@/components/RunMenu.vue'
-  import { useShowToast } from '@/compositions'
-  import { localization } from '@/localization'
   import { Deployment } from '@/models'
   import { deploymentsRouteKey } from '@/router'
   import { canKey } from '@/types/permissions'
@@ -51,11 +49,6 @@
   }
 
   const can = inject(canKey)
-
-  // If the deployment isn't deprecated and doesn't have a work queue, show the missing work queue message
-  if (!props.deployment.workQueueName && !props.deployment.deprecated) {
-    useShowToast(localization.info.deploymentMissingWorkQueue, 'default', { timeout: false })
-  }
 </script>
 
 <style>

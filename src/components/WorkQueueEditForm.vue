@@ -41,7 +41,7 @@
 <script lang="ts" setup>
   import { PLabel, PTextInput, PNumberInput, PToggle, PForm } from '@prefecthq/prefect-design'
   import { useField, useForm } from 'vee-validate'
-  import { computed, ref, watchEffect } from 'vue'
+  import { computed, ref } from 'vue'
   import SubmitButton from './SubmitButton.vue'
   import { WorkQueueEditRequest, WorkQueue } from '@/models'
 
@@ -51,13 +51,12 @@
 
   const { values, handleSubmit, isSubmitting } = useForm({ initialValues: props.workQueue })
 
-  const paused = ref(props.workQueue.isPaused)
   const isActive = computed({
     get() {
-      return !paused.value
+      return !isPaused.value
     },
     set() {
-      paused.value = !paused.value
+      isPaused.value = !isPaused.value
     },
   })
 
@@ -74,13 +73,10 @@
   const submit = handleSubmit(() => {
     emit('submit', values)
   })
+
   function cancel(): void {
     emit('cancel')
   }
-
-  watchEffect(() => {
-    isPaused.value = paused.value
-  })
 </script>
 
 <style>

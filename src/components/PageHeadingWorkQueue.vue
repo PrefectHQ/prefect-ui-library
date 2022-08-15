@@ -12,8 +12,6 @@
   import WorkQueueMenu from './WorkQueueMenu.vue'
   import PageHeading from '@/components/PageHeading.vue'
   import WorkQueueToggle from '@/components/WorkQueueToggle.vue'
-  import { useShowToast } from '@/compositions'
-  import { localization } from '@/localization'
   import { WorkQueue } from '@/models'
   import { workQueuesRouteKey } from '@/router'
   import { inject } from '@/utilities'
@@ -32,10 +30,6 @@
   const emit = defineEmits<{
     (event: 'update' | 'delete'): void,
   }>()
-
-  if (props.workQueue.deprecated) {
-    useShowToast(localization.info.deprecatedWorkQueue, 'default', { dismissible: false, timeout: false })
-  }
 </script>
 
 <style>
