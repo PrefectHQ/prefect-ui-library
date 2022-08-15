@@ -105,7 +105,7 @@
   caret-slate-50
   p-4
   m-0
-  whitespace-nowrap
+  whitespace-pre-wrap
   top-0
 }
 
