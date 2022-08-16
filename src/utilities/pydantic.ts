@@ -1,16 +1,105 @@
 import { PTextInput, PToggle, PTextarea, PDateInput, PNumberInput, PCombobox, PSelect } from '@prefecthq/prefect-design'
 import JsonInput from '@/components/JsonInput.vue'
-import { ValidateMethod, isEmail, greaterThanOrEqual, greaterThan, lessThan, lessThanOrEqual, isRequired, withMessage } from '@/services'
-import { isSchemaStringFormat, isSchemaType, Schema, SchemaEnum, SchemaStringFormat, SchemaType } from '@/types/schemas'
+import { isEmail, greaterThanOrEqual, greaterThan, lessThan, lessThanOrEqual, isRequired, withMessage, ValidationRule } from '@/services'
+import { isSchemaStringFormat, isSchemaType, Schema, SchemaEnum, SchemaProperty, SchemaStringFormat, SchemaType } from '@/types/schemas'
 
-const InputComponents = [PToggle, PTextInput, PTextarea, JsonInput, PDateInput, PNumberInput, PCombobox, PSelect] as const
+const components = [PToggle, PTextInput, PTextarea, JsonInput, PDateInput, PNumberInput, PCombobox, PSelect] as const
+type Component = typeof components[number]
+
+type SchemaPropertyInputAttrs = Record<string, unknown>
+
+export type SchemaPropertyInput<T extends Component> = {
+  component: T,
+  props: Omit<InstanceType<T>['$props'], 'modelValue'>,
+  attrs?: SchemaPropertyInputAttrs,
+  validators?: ValidationRule | ValidationRule[],
+  required?: boolean,
+}
+
+function factory<T extends Component>(component: T, options: Omit<SchemaPropertyInput<T>, 'component'>): SchemaPropertyInput<T> {
+  return {
+    component,
+    ...options,
+  }
+}
+
+const test = factory(PToggle, {
+  props: {
+    disabled: true,
+  },
+})
+
+
+const getValidateMethods = (property: SchemaProperty): ValidationRule[] => {
+  const { title = 'Property' } = property
+  const validators: ValidationRule[] = []
+
+  const greaterThanOrEqualValue = property.minLength ?? property.minimum ?? property.minItems
+
+  if (greaterThanOrEqualValue !== undefined) {
+    validators.push(withMessage(greaterThanOrEqual(greaterThanOrEqualValue), `${title} must be greater than or equal to ${property.minLength}`))
+  }
+
+  const lessThanOrEqualValue = property.maxLength ?? property.maximum ?? property.maxItems
+
+  if (lessThanOrEqualValue !== undefined) {
+    validators.push(withMessage(lessThanOrEqual(lessThanOrEqualValue), `${title} must be less than or equal to ${property.maxLength}`))
+  }
+
+  if (property.exclusiveMinimum !== undefined) {
+    validators.push(withMessage(greaterThan(property.exclusiveMinimum), `${title} must be greater than ${property.exclusiveMinimum}`))
+  }
+
+  if (property.exclusiveMaximum !== undefined) {
+    validators.push(withMessage(lessThan(property.exclusiveMaximum), `${title} must be less than ${property.exclusiveMaximum}`))
+  }
+
+  // Is this even correct? Just because the required property exists doesn't mean this property is required.
+  // It means one of its properties is. Which I guess means this is too? Hmmm...
+  if (property.required !== undefined) {
+    validators.push(withMessage(isRequired, `${title} is required`))
+  }
+
+  if (property.type === 'string') {
+    if (property.format === 'email') {
+      validators.push(withMessage(isEmail, `${title} must be a valid email address`))
+    }
+  }
+
+  return validators
+}
+
+// should this be type specific? Some of these are props too. Hmmmm....
+const getAttrs = (schema: Schema): SchemaPropertyInputAttrs => {
+  const attrs: SchemaPropertyInputAttrs = {}
+
+  if (schema.minLength !== undefined || schema.minimum !== undefined) {
+    attrs.min = schema.minLength ?? schema.minimum
+  }
+
+  if (schema.maxLength !== undefined || schema.maximum !== undefined) {
+    attrs.max = schema.maxLength ?? schema.maximum
+  }
+
+  if (schema.multipleOf) {
+    attrs.step = schema.multipleOf
+  }
+
+  return attrs
+}
+
+//
+//
+//
+//
+//
 
 export type PydanticTypeDefinitionComponentAttrs = Record<string, unknown>
 export type PydanticTypeDefinitionComponent = {
   attrs: PydanticTypeDefinitionComponentAttrs,
-  component?: typeof InputComponents[number],
+  component?: Component,
   defaultValue?: unknown,
-  validators: ValidateMethod[],
+  validators: ValidationRule[],
   slots?: Record<string, unknown>,
 }
 
@@ -158,7 +247,7 @@ const getStringFormattedComponent = (format: SchemaStringFormat): PydanticTypeDe
       break
     case 'email':
       component = getBaseTextInput()
-      component.validators = [isEmail]
+      // component.validators = [isEmail]
       break
     case 'json-string':
       component = getBaseJsonInput()
@@ -169,58 +258,6 @@ const getStringFormattedComponent = (format: SchemaStringFormat): PydanticTypeDe
   }
 
   return component
-}
-
-const getValidateMethods = (schema: Schema): ValidateMethod[] => {
-  const validators: ValidateMethod[] = []
-
-  if (schema.minLength !== undefined) {
-    validators.push(greaterThanOrEqual(schema.minLength))
-  }
-
-  if (schema.maxLength !== undefined) {
-    validators.push(lessThanOrEqual(schema.maxLength))
-  }
-
-  if (schema.minimum !== undefined || schema.exclusiveMinimum !== undefined) {
-    validators.push(greaterThan(schema.minimum ?? schema.exclusiveMinimum))
-  }
-
-  if (schema.maximum !== undefined || schema.exclusiveMaximum !== undefined) {
-    validators.push(lessThan(schema.maximum ?? schema.exclusiveMaximum))
-  }
-
-  if (schema.minItems !== undefined) {
-    validators.push(greaterThanOrEqual(schema.minItems))
-  }
-
-  if (schema.maxItems !== undefined) {
-    validators.push(lessThanOrEqual(schema.maxItems))
-  }
-
-  if (schema.required !== undefined) {
-    validators.push(withMessage(isRequired, 'Required'))
-  }
-
-  return validators
-}
-
-const getAttrs = (schema: Schema): PydanticTypeDefinitionComponentAttrs => {
-  const attrs: PydanticTypeDefinitionComponentAttrs = {}
-
-  if (schema.minLength !== undefined || schema.minimum !== undefined) {
-    attrs.min = schema.minLength ?? schema.minimum
-  }
-
-  if (schema.maxLength !== undefined || schema.maximum !== undefined) {
-    attrs.max = schema.maxLength ?? schema.maximum
-  }
-
-  if (schema.multipleOf) {
-    attrs.step = schema.multipleOf
-  }
-
-  return attrs
 }
 
 const getBaseComponent = (schema: Schema): null | PydanticTypeDefinitionComponent => {
@@ -251,15 +288,18 @@ const getBaseComponent = (schema: Schema): null | PydanticTypeDefinitionComponen
   }
 
   if (isSchemaType('boolean', type)) {
-    const component = getBaseToggleInput()
-    return component
+    return getBaseToggleInput()
   }
 
   if (isSchemaType('number', type) || isSchemaType('integer', type)) {
-    const component = getBaseNumberInput()
-    return component
+    return getBaseNumberInput()
   }
 
+  // array type needs to be smarter and check what property.items is
+  // property.items.type ===
+  // 'string' -> combobox
+  // 'object' -> JSON?
+  // 'number' -> combobox but with a validator? If so we'll need a parser in the request mapper for SchemaValues
   if (isSchemaType('array', type)) {
     const component = getBaseListInput()
     component.attrs.multiple = true
@@ -292,18 +332,18 @@ const getBaseComponent = (schema: Schema): null | PydanticTypeDefinitionComponen
   return getBaseJsonInput()
 }
 
-export const getComponentFromPydanticTypeDefinition = (schema: Schema): null | PydanticTypeDefinitionComponent => {
-  const component = getBaseComponent(schema)
+export const getComponentFromPydanticTypeDefinition = (property: SchemaProperty): null | PydanticTypeDefinitionComponent => {
+  const component = getBaseComponent(property)
 
   if (!component) {
     return null
   }
 
-  component.validators = getValidateMethods(schema)
-  component.attrs = { ...component.attrs, ...getAttrs(schema) }
+  component.validators = getValidateMethods(property)
+  component.attrs = { ...component.attrs, ...getAttrs(property) }
 
-  if (schema.default !== undefined) {
-    component.defaultValue = schema.default
+  if (property.default !== undefined) {
+    component.defaultValue = property.default
   }
 
   return component
