@@ -2,6 +2,7 @@ import { isValid } from 'date-fns'
 import { MapFunction } from '@/services/Mapper'
 import { isValidJsonString } from '@/services/validate'
 import { isSchemaValues, Schema, schemaHas, SchemaProperty, SchemaValue, SchemaValues } from '@/types/schemas'
+import { parseUnknownJson } from '@/utilities'
 
 type MapSchemaValuesSource = {
   values: SchemaValues,
@@ -9,6 +10,7 @@ type MapSchemaValuesSource = {
 }
 
 export const mapSchemaValuesResponseToSchemaValues: MapFunction<MapSchemaValuesSource, SchemaValues> = function({ values, schema }: MapSchemaValuesSource): SchemaValues {
+
   const parseSchemaValues = (values: SchemaValues, schema: Schema): SchemaValues => {
     return Object.keys(values).reduce<SchemaValues>((result, key) => {
       const property = getSchemaProperty(schema, key)
@@ -32,6 +34,13 @@ export const mapSchemaValuesResponseToSchemaValues: MapFunction<MapSchemaValuesS
           return parseStringProperty(value, property)
         case undefined:
           return parseUnknownProperty(value)
+        case 'integer':
+          return parseInteger(value)
+        case 'number':
+          return parseNumber(value)
+        case 'boolean':
+          return parseBoolean(value)
+        case 'null':
         default:
           return value
       }
@@ -47,11 +56,13 @@ export const mapSchemaValuesResponseToSchemaValues: MapFunction<MapSchemaValuesS
   }
 
   const parseObjectProperty = (value: SchemaValue, property: SchemaProperty): SchemaValue => {
-    if (isSchemaValues(value)) {
-      return parseSchemaValues(value, property)
+    const parsed = parseUnknownJson(value)
+
+    if (isSchemaValues(parsed)) {
+      return parseSchemaValues(parsed, property)
     }
 
-    return value
+    return parsed
   }
 
   const parseArrayProperty = (values: SchemaValue, property: SchemaProperty): SchemaValue => {
@@ -88,6 +99,28 @@ export const mapSchemaValuesResponseToSchemaValues: MapFunction<MapSchemaValuesS
     }
 
     return value
+  }
+
+  function parseInteger(value: SchemaValue): number {
+    return parseInt(value as string)
+  }
+
+  function parseNumber(value: SchemaValue): number {
+    return parseFloat(value as string)
+  }
+
+  function parseBoolean(value: SchemaValue): boolean {
+    if (typeof value === 'string') {
+      if (value.toLowerCase() === 'true') {
+        return true
+      }
+
+      if (value.toLowerCase() === 'false') {
+        return false
+      }
+    }
+
+    return !!value
   }
 
   console.group()
