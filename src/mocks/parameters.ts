@@ -1,16 +1,15 @@
 import { mocker, MockFunction } from '@/services/Mocker'
-import { PydanticStringFormats } from '@/types/Pydantic'
-import { Schema } from '@/types/schemas'
+import { SchemaStringFormats, Schema } from '@/types/schemas'
 import { coinflip, uniform } from '@/utilities/math'
 
-export const randomParameters: MockFunction<Record<string, unknown>, [Record<string, unknown>?, Schema?]> = function(overrides = {}, schema: Schema = mocker.create('openApiSchema')) {
+export const randomParameters: MockFunction<Record<string, unknown>, [Record<string, unknown>?, Schema?]> = function(overrides = {}, schema: Schema = mocker.create('schema')) {
   const parameters: Record<string, unknown> = {}
 
   if (!schema.properties) {
     return {}
   }
 
-  const defaultTypeStringFormatMap: Record<Partial<typeof PydanticStringFormats[number]>, unknown> = {
+  const defaultTypeStringFormatMap: Record<Partial<typeof SchemaStringFormats[number]>, unknown> = {
     date: this.create('date'),
     'date-time': this.create('date'),
     email: this.create('email'),

@@ -22,12 +22,12 @@
 <script lang="ts" setup>
   import { useField } from 'vee-validate'
   import { computed } from 'vue'
-  import { PydanticTypeDefinition } from '@/types/Pydantic'
+  import { SchemaProperty } from '@/types/schemas'
   import { getComponentFromPydanticTypeDefinition } from '@/utilities'
 
   const props = defineProps<{
     propKey: string,
-    property: PydanticTypeDefinition,
+    property: SchemaProperty,
     // Technically this is always passed as part of the form recursion
     // eslint-disable-next-line vue/no-unused-properties
     level?: number,

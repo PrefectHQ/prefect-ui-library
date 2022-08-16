@@ -1,35 +1,7 @@
 import { PTextInput, PToggle, PTextarea, PDateInput, PNumberInput, PCombobox, PSelect } from '@prefecthq/prefect-design'
 import JsonInput from '@/components/JsonInput.vue'
 import { ValidateMethod, isEmail, greaterThanOrEqual, greaterThan, lessThan, lessThanOrEqual, isRequired, withMessage } from '@/services'
-import {
-  hasAllOf,
-  hasAnyOf,
-  hasDefault,
-  hasExclusiveMax,
-  hasExclusiveMin,
-  hasItems,
-  hasMax,
-  hasMaxItems,
-  hasMaxLength,
-  hasMin,
-  hasMinItems,
-  hasMinLength,
-  hasMultipleOf,
-  hasProperties,
-  hasRequired,
-  hasTypeRef,
-  isPydanticEnum,
-  isPydanticStringFormat,
-  isPydanticType,
-  PydanticEnum,
-  PydanticPropertiesMap,
-  PydanticStringFormat,
-  PydanticType,
-  PydanticTypeDefinition,
-  PydanticTypeProperty,
-  PydanticTypeRef,
-  RefStringRegExp
-} from '@/types/Pydantic'
+import { isSchemaStringFormat, isSchemaType, Schema, SchemaEnum, SchemaStringFormat, SchemaType } from '@/types/schemas'
 
 const InputComponents = [PToggle, PTextInput, PTextarea, JsonInput, PDateInput, PNumberInput, PCombobox, PSelect] as const
 
@@ -73,7 +45,7 @@ interface BaseNumberInput extends PydanticTypeDefinitionComponent {
 interface BaseEnumInput extends PydanticTypeDefinitionComponent {
   attrs: {
     multiple: boolean,
-    options: PydanticEnum<unknown>,
+    options: SchemaEnum<unknown>,
   },
   component: typeof PSelect,
   defaultValue?: unknown,
@@ -83,7 +55,7 @@ interface BaseListInput extends PydanticTypeDefinitionComponent {
   attrs: {
     allowUnknownValue: boolean,
     multiple: boolean,
-    options: PydanticEnum<unknown>,
+    options: SchemaEnum<unknown>,
   },
   component: typeof PCombobox,
   defaultValue?: unknown[],
@@ -139,7 +111,7 @@ const getBaseEnumInput = (): BaseEnumInput => {
   return {
     attrs: {
       multiple: false,
-      options: [] as PydanticEnum<unknown>,
+      options: [],
     },
     component: PSelect,
     validators: [],
@@ -151,7 +123,7 @@ const getBaseListInput = (): BaseListInput => {
     attrs: {
       allowUnknownValue: true,
       multiple: true,
-      options: [] as PydanticEnum<unknown>,
+      options: [],
     },
     component: PCombobox,
     validators: [],
@@ -168,7 +140,7 @@ const getBaseDateInput = (): BaseDateInput => {
   }
 }
 
-const getStringFormattedComponent = (format: PydanticStringFormat): PydanticTypeDefinitionComponent => {
+const getStringFormattedComponent = (format: SchemaStringFormat): PydanticTypeDefinitionComponent => {
   let component
 
   switch (format) {
@@ -199,66 +171,66 @@ const getStringFormattedComponent = (format: PydanticStringFormat): PydanticType
   return component
 }
 
-const getValidateMethods = (definition: PydanticTypeDefinition): ValidateMethod[] => {
+const getValidateMethods = (schema: Schema): ValidateMethod[] => {
   const validators: ValidateMethod[] = []
 
-  if (hasMinLength(definition)) {
-    validators.push(greaterThanOrEqual(definition.minLength))
+  if (schema.minLength !== undefined) {
+    validators.push(greaterThanOrEqual(schema.minLength))
   }
 
-  if (hasMaxLength(definition)) {
-    validators.push(lessThanOrEqual(definition.maxLength))
+  if (schema.maxLength !== undefined) {
+    validators.push(lessThanOrEqual(schema.maxLength))
   }
 
-  if (hasMin(definition) || hasExclusiveMin(definition)) {
-    validators.push(greaterThan(definition.minimum ?? definition.exclusiveMinimum))
+  if (schema.minimum !== undefined || schema.exclusiveMinimum !== undefined) {
+    validators.push(greaterThan(schema.minimum ?? schema.exclusiveMinimum))
   }
 
-  if (hasMax(definition) || hasExclusiveMax(definition)) {
-    validators.push(lessThan(definition.maximum ?? definition.exclusiveMaximum))
+  if (schema.maximum !== undefined || schema.exclusiveMaximum !== undefined) {
+    validators.push(lessThan(schema.maximum ?? schema.exclusiveMaximum))
   }
 
-  if (hasMinItems(definition)) {
-    validators.push(greaterThanOrEqual(definition.minItems))
+  if (schema.minItems !== undefined) {
+    validators.push(greaterThanOrEqual(schema.minItems))
   }
 
-  if (hasMaxItems(definition)) {
-    validators.push(lessThanOrEqual(definition.maxItems))
+  if (schema.maxItems !== undefined) {
+    validators.push(lessThanOrEqual(schema.maxItems))
   }
 
-  if (hasRequired(definition)) {
+  if (schema.required !== undefined) {
     validators.push(withMessage(isRequired, 'Required'))
   }
 
   return validators
 }
 
-const getAttrs = (definition: PydanticTypeDefinition): PydanticTypeDefinitionComponentAttrs => {
+const getAttrs = (schema: Schema): PydanticTypeDefinitionComponentAttrs => {
   const attrs: PydanticTypeDefinitionComponentAttrs = {}
 
-  if (hasMinLength(definition) || hasMin(definition)) {
-    attrs.min = definition.minLength ?? definition.minimum
+  if (schema.minLength !== undefined || schema.minimum !== undefined) {
+    attrs.min = schema.minLength ?? schema.minimum
   }
 
-  if (hasMaxLength(definition) || hasMax(definition)) {
-    attrs.max = definition.maxLength ?? definition.maximum
+  if (schema.maxLength !== undefined || schema.maximum !== undefined) {
+    attrs.max = schema.maxLength ?? schema.maximum
   }
 
-  if (hasMultipleOf(definition)) {
-    attrs.step = definition.multipleOf
+  if (schema.multipleOf) {
+    attrs.step = schema.multipleOf
   }
 
   return attrs
 }
 
-const getBaseComponent = (definition: PydanticTypeDefinition): null | PydanticTypeDefinitionComponent => {
-  const { type, format, enum: defEnum, items } = definition
+const getBaseComponent = (schema: Schema): null | PydanticTypeDefinitionComponent => {
+  const { type, format, enum: defEnum, items } = schema
 
-  if (isPydanticEnum(definition)) {
+  if (schema.enum !== undefined) {
     const component = getBaseEnumInput()
-    component.attrs.options = defEnum as PydanticEnum<PydanticType>
+    component.attrs.options = defEnum as SchemaEnum<SchemaType>
 
-    if (isPydanticType('array', type)) {
+    if (isSchemaType('array', type)) {
       // Make sure this passes the default value as an array
       component.attrs.multiple = true
       component.defaultValue = []
@@ -267,9 +239,9 @@ const getBaseComponent = (definition: PydanticTypeDefinition): null | PydanticTy
     return component
   }
 
-  if (isPydanticType('string', type)) {
+  if (isSchemaType('string', type)) {
     let component
-    if (isPydanticStringFormat(format)) {
+    if (isSchemaStringFormat(format)) {
       component = getStringFormattedComponent(format)
     } else {
       component = getBaseTextInput()
@@ -278,17 +250,17 @@ const getBaseComponent = (definition: PydanticTypeDefinition): null | PydanticTy
     return component
   }
 
-  if (isPydanticType('boolean', type)) {
+  if (isSchemaType('boolean', type)) {
     const component = getBaseToggleInput()
     return component
   }
 
-  if (isPydanticType('number', type) || isPydanticType('integer', type)) {
+  if (isSchemaType('number', type) || isSchemaType('integer', type)) {
     const component = getBaseNumberInput()
     return component
   }
 
-  if (isPydanticType('array', type)) {
+  if (isSchemaType('array', type)) {
     const component = getBaseListInput()
     component.attrs.multiple = true
     component.defaultValue = []
@@ -298,8 +270,8 @@ const getBaseComponent = (definition: PydanticTypeDefinition): null | PydanticTy
       if (Array.isArray(items)) {
         // Check that the default value is an array
         component.attrs.options = items
-      } else if (isPydanticEnum(items)) {
-        component.attrs.options = items.enum as PydanticEnum<PydanticType>
+      } else if (items.enum !== undefined) {
+        component.attrs.options = items.enum as SchemaEnum<SchemaType>
       }
     } else {
       component.attrs.allowUnknownValue = true
@@ -308,100 +280,31 @@ const getBaseComponent = (definition: PydanticTypeDefinition): null | PydanticTy
     return component
   }
 
-  if (isPydanticType('object', type)) {
+  if (isSchemaType('object', type)) {
     const component = getBaseJsonInput()
     return component
   }
 
-  if (isPydanticType('null', type)) {
+  if (isSchemaType('null', type)) {
     return null
   }
 
   return getBaseTextInput()
 }
 
-export const getComponentFromPydanticTypeDefinition = (definition: PydanticTypeDefinition): null | PydanticTypeDefinitionComponent => {
-  const component = getBaseComponent(definition)
+export const getComponentFromPydanticTypeDefinition = (schema: Schema): null | PydanticTypeDefinitionComponent => {
+  const component = getBaseComponent(schema)
 
   if (!component) {
     return null
   }
 
-  component.validators = getValidateMethods(definition)
-  component.attrs = { ...component.attrs, ...getAttrs(definition) }
+  component.validators = getValidateMethods(schema)
+  component.attrs = { ...component.attrs, ...getAttrs(schema) }
 
-  if (hasDefault(definition)) {
-    component.defaultValue = definition.default
+  if (schema.default !== undefined) {
+    component.defaultValue = schema.default
   }
 
   return component
-}
-
-export const getTypeDefinitionFromTypeRef = (ref: PydanticTypeRef<string>, definition: PydanticTypeDefinition): PydanticTypeDefinition | undefined => {
-  const extractedType = ref.match(RefStringRegExp)?.[1]
-
-  if (!extractedType) {
-    return
-  }
-
-  const resolvedDefinition = definition.definitions?.[extractedType]
-
-  return resolvedDefinition
-}
-
-export const getResolvedTypeDefinitionFromProperty = (property: PydanticTypeProperty, schema: PydanticTypeDefinition): PydanticTypeProperty => {
-  let definition: PydanticTypeProperty = {}
-
-  if (hasTypeRef(property)) {
-    definition = getTypeDefinitionFromTypeRef(property.$ref, schema) ?? {}
-  }
-
-  if (hasAllOf(property)) {
-    definition.allOf = property.allOf.map((_property) => getResolvedTypeDefinitionFromProperty(_property, schema))
-  }
-
-  if (hasAnyOf(property)) {
-    definition.anyOf = property.anyOf.map((_property) => getResolvedTypeDefinitionFromProperty(_property, schema))
-  }
-
-  if (hasItems(property)) {
-    if (Array.isArray(property.items)) {
-      definition.items = property.items.map((_property) => getResolvedTypeDefinitionFromProperty(_property, schema))
-    } else {
-      definition.items = getResolvedTypeDefinitionFromProperty(property.items, schema)
-    }
-  }
-
-  if (hasProperties(definition)) {
-    Object.entries(definition.properties).forEach(([key, property]) => {
-      definition.properties![key] = getResolvedTypeDefinitionFromProperty(property, schema)
-    })
-  }
-
-  definition = { ...property, ...definition }
-
-  return definition
-}
-
-export const resolvePydanticTypeDefinitionFromSchema = (schema: PydanticTypeDefinition): PydanticPropertiesMap => {
-  const definedProperties = { ...schema.properties }
-
-  Object.entries(definedProperties).forEach(([key, property]) => {
-    const definition = getResolvedTypeDefinitionFromProperty(property, schema)
-
-    // This is a little hacky but adding requirements to
-    // each property definition allows us to audit/validate
-    // a property without having the entire schema
-    if (hasRequired(schema) && schema.required.includes(key)) {
-      if (hasRequired(definition)) {
-        definition.required = [...definition.required, key]
-      } else {
-        definition.required = [key]
-      }
-    }
-
-    definedProperties[key] = definition
-  })
-
-  return definedProperties
 }

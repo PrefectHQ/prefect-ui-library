@@ -1,17 +1,16 @@
 import { MockFunction } from '@/services'
-import { PydanticStringFormats, PydanticTypes } from '@/types/Pydantic'
-import { Schema, SchemaProperty } from '@/types/schemas'
+import { SchemaStringFormats, SchemaTypes, Schema, SchemaProperty } from '@/types/schemas'
 import { kebabCase } from '@/utilities'
 import { choice } from '@/utilities/arrays'
 import { uniform } from '@/utilities/math'
 
-export const randomOpenApiProperty: MockFunction<SchemaProperty, [SchemaProperty?]> = function(overrides = {}) {
+export const randomSchemaProperty: MockFunction<SchemaProperty, [SchemaProperty?]> = function(overrides = {}) {
   // propertyTypeFirstDraw lets us reduce the number of `null` type definitions by half
-  const propertyTypeFirstDraw = choice(PydanticTypes)
-  const propertyType = propertyTypeFirstDraw == 'null' ? choice(PydanticTypes) : propertyTypeFirstDraw
-  const propertyFormat = propertyType == 'string' && uniform(0, 10) > 8 ? choice(PydanticStringFormats) : undefined
+  const propertyTypeFirstDraw = choice(SchemaTypes)
+  const propertyType = propertyTypeFirstDraw == 'null' ? choice(SchemaTypes) : propertyTypeFirstDraw
+  const propertyFormat = propertyType == 'string' && uniform(0, 10) > 8 ? choice(SchemaStringFormats) : undefined
 
-  const defaultTypeStringFormatMap: Record<Partial<typeof PydanticStringFormats[number]>, unknown> = {
+  const defaultTypeStringFormatMap: Record<Partial<typeof SchemaStringFormats[number]>, unknown> = {
     date: this.create('date'),
     'date-time': this.create('date'),
     email: this.create('email'),
@@ -20,7 +19,7 @@ export const randomOpenApiProperty: MockFunction<SchemaProperty, [SchemaProperty
     'time-delta': 600,
   }
 
-  const defaultTypeMap: Record<typeof PydanticTypes[number], unknown> = {
+  const defaultTypeMap: Record<typeof SchemaTypes[number], unknown> = {
     null: null,
     array: [],
     string: propertyFormat ? defaultTypeStringFormatMap[propertyFormat] : undefined,
@@ -40,9 +39,9 @@ export const randomOpenApiProperty: MockFunction<SchemaProperty, [SchemaProperty
   }
 }
 
-export const randomOpenApiSchema: MockFunction<Schema, [Schema?]> = function(overrides = {}) {
+export const randomSchema: MockFunction<Schema, [Schema?]> = function(overrides = {}) {
   const numberOfProperties = uniform(0, 30)
-  const properties = Array.from({ length: numberOfProperties }, () => this.create('openApiProperty')).reduce<Schema['properties']>((properties = {}, property) => {
+  const properties = Array.from({ length: numberOfProperties }, () => this.create('schemaProperty')).reduce<Schema['properties']>((properties = {}, property) => {
     properties[kebabCase(property.title!)] = property
     return properties
   }, {})
