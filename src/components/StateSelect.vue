@@ -2,13 +2,13 @@
   <div class="state-select">
     <p-select v-model="internalValue" :options="options" :empty-message="emptyMessage">
       <template #option="{ option }">
-        <StateBadge :state="{ name: option.label, type: option.value }" />
+        <StateBadge :state="{ name: option.label, type: option.value as StateType }" />
       </template>
       <template #default="{ selectedOption, unselectOption }">
         <StateBadge
           class="state-select__option"
           :class="{ 'state-select__option--multiple': multiple }"
-          :state="{ name: selectedOption.label, type: selectedOption.value }"
+          :state="{ name: selectedOption.label, type: selectedOption.value as StateType }"
           :flat="!multiple"
           :dismissible="multiple"
           @dismiss="unselectOption"
@@ -22,7 +22,7 @@
   import { PSelect, SelectOption } from '@prefecthq/prefect-design'
   import { computed } from 'vue'
   import StateBadge from '@/components/StateBadge.vue'
-  import { stateType } from '@/models/StateType'
+  import { stateType, StateType } from '@/models/StateType'
   import { capitalize } from '@/utilities'
 
   const props = defineProps<{

@@ -23,9 +23,9 @@ import { randomImage } from './image'
 import { randomLogLevel, randomLog } from './log'
 import { randomNotification } from './notification'
 import { randomNumber } from './number'
-import { randomOpenApiSchema, randomOpenApiProperty } from './openApi'
 import { randomParameters } from './parameters'
 import { randomSchedule } from './schedule'
+import { randomSchema, randomSchemaProperty } from './schemas'
 import { randomState } from './state'
 import { randomStateType } from './stateType'
 import { randomChar, randomString, randomSentence, randomParagraph, randomRunName, randomNoun } from './string'
@@ -64,12 +64,12 @@ export const mocks = {
   notification: randomNotification,
   noun: randomNoun,
   number: randomNumber,
-  openApiProperty: randomOpenApiProperty,
-  openApiSchema: randomOpenApiSchema,
   paragraph: randomParagraph,
   parameters: randomParameters,
   runName: randomRunName,
   schedule: randomSchedule,
+  schema: randomSchema,
+  schemaProperty: randomSchemaProperty,
   sentence: randomSentence,
   state: randomState,
   stateType: randomStateType,

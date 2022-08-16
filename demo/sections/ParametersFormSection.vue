@@ -21,15 +21,14 @@
 <script lang="ts" setup>
   import { computed, nextTick, watch, ref } from 'vue'
   import DemoSection from '../components/DemoSection.vue'
-  import schemaData from '../data/parametersSchema.json'
   import JsonInput from '@/components/JsonInput.vue'
   import SchemaForm from '@/components/SchemaForm.vue'
-  import { mapper } from '@/services'
+  import { mocker, mapper } from '@/services'
   import { Schema, SchemaValues } from '@/types/schemas'
 
   const value = ref({})
   const showForm = ref(true)
-  const rawSchema = ref(JSON.stringify(schemaData, undefined, 2))
+  const rawSchema = ref(JSON.stringify(mocker.create('schema'), undefined, 2))
 
   const schema = computed<Schema>(() => {
     try {

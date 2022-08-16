@@ -2,7 +2,7 @@ import { mocker, MockFunction } from '@/services/Mocker'
 import { SchemaStringFormats, Schema } from '@/types/schemas'
 import { coinflip, uniform } from '@/utilities/math'
 
-export const randomParameters: MockFunction<Record<string, unknown>, [Record<string, unknown>?, Schema?]> = function(overrides = {}, schema: Schema = mocker.create('openApiSchema')) {
+export const randomParameters: MockFunction<Record<string, unknown>, [Record<string, unknown>?, Schema?]> = function(overrides = {}, schema: Schema = mocker.create('schema')) {
   const parameters: Record<string, unknown> = {}
 
   if (!schema.properties) {
