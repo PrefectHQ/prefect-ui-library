@@ -4,7 +4,7 @@ import { kebabCase } from '@/utilities'
 import { choice } from '@/utilities/arrays'
 import { uniform } from '@/utilities/math'
 
-export const randomOpenApiProperty: MockFunction<SchemaProperty, [SchemaProperty?]> = function(overrides = {}) {
+export const randomSchemaProperty: MockFunction<SchemaProperty, [SchemaProperty?]> = function(overrides = {}) {
   // propertyTypeFirstDraw lets us reduce the number of `null` type definitions by half
   const propertyTypeFirstDraw = choice(SchemaTypes)
   const propertyType = propertyTypeFirstDraw == 'null' ? choice(SchemaTypes) : propertyTypeFirstDraw
@@ -39,9 +39,9 @@ export const randomOpenApiProperty: MockFunction<SchemaProperty, [SchemaProperty
   }
 }
 
-export const randomOpenApiSchema: MockFunction<Schema, [Schema?]> = function(overrides = {}) {
+export const randomSchema: MockFunction<Schema, [Schema?]> = function(overrides = {}) {
   const numberOfProperties = uniform(0, 30)
-  const properties = Array.from({ length: numberOfProperties }, () => this.create('openApiProperty')).reduce<Schema['properties']>((properties = {}, property) => {
+  const properties = Array.from({ length: numberOfProperties }, () => this.create('schemaProperty')).reduce<Schema['properties']>((properties = {}, property) => {
     properties[kebabCase(property.title!)] = property
     return properties
   }, {})
