@@ -2,7 +2,6 @@ import { DeploymentFlowRunCreate, DeploymentFlowRunRequest, DeploymentUpdate, De
 import { Deployment } from '@/models/Deployment'
 import { DeploymentResponse } from '@/models/DeploymentResponse'
 import { MapFunction } from '@/services/Mapper'
-import { Schema } from '@/types/schemas'
 import { mapCamelToSnakeCase } from '@/utilities'
 
 export const mapDeploymentResponseToDeployment: MapFunction<DeploymentResponse, Deployment> = function(source: DeploymentResponse): Deployment {
@@ -32,6 +31,8 @@ export const mapDeploymentUpdateToDeploymentUpdateRequest: MapFunction<Deploymen
   const { parameters, schema, schedule, ...rest } = source
   const mapped = mapCamelToSnakeCase<DeploymentUpdateRequest>(rest)
 
+  // type check is necessary in case data doesn't match the type exactly
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   if (parameters && schema) {
     mapped.parameters = this.map('SchemaValuesRequest', { values: parameters, schema }, 'SchemaValues')
   }
