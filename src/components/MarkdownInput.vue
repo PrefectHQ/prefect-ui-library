@@ -13,7 +13,7 @@
         @scroll="handleScroll"
       />
       <div ref="viewArea" class="markdown-input__view-area">
-        <MarkdownView :value="internalValue" class="markdown-input__markdown-view" v-bind="attrs" />
+        <MarkdownPreview :value="internalValue" class="markdown-input__markdown-view" v-bind="attrs" />
       </div>
     </template>
   </p-base-input>
@@ -21,7 +21,7 @@
 
 <script lang="ts" setup>
   import { computed, ref } from 'vue'
-  import MarkdownView from './MarkdownView.vue'
+  import MarkdownPreview from './MarkdownPreview.vue'
 
   const props = defineProps<{
     modelValue: string,

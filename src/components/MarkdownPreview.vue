@@ -40,8 +40,6 @@
   rounded
   text-left
   p-4
-  text-slate-50
-  bg-slate-700
 }
 
 .markdown-view .token.comment,
