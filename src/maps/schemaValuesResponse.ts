@@ -116,7 +116,7 @@ export const mapSchemaValuesResponseToSchemaValues: MapFunction<MapSchemaValuesS
     return null
   }
 
-  function parseUnknownProperty(value: SchemaValue): SchemaValue {
+  const parseUnknownProperty = (value: SchemaValue): SchemaValue => {
     try {
       if (!isValidJsonString(value)) {
         return JSON.stringify(value)
@@ -130,7 +130,7 @@ export const mapSchemaValuesResponseToSchemaValues: MapFunction<MapSchemaValuesS
     return null
   }
 
-  function parseInteger(value: SchemaValue): number | null {
+  const parseInteger = (value: SchemaValue): number | null => {
     try {
       const result = parseInt(value as string)
 
@@ -146,7 +146,7 @@ export const mapSchemaValuesResponseToSchemaValues: MapFunction<MapSchemaValuesS
     return null
   }
 
-  function parseNumber(value: SchemaValue): number | null {
+  const parseNumber = (value: SchemaValue): number | null => {
     try {
       const result = parseFloat(value as string)
 
@@ -162,7 +162,7 @@ export const mapSchemaValuesResponseToSchemaValues: MapFunction<MapSchemaValuesS
     return null
   }
 
-  function parseBoolean(value: SchemaValue): boolean {
+  const parseBoolean = (value: SchemaValue): boolean => {
     try {
       if (typeof value === 'string') {
         if (value.toLowerCase() === 'true') {
@@ -186,7 +186,7 @@ export const mapSchemaValuesResponseToSchemaValues: MapFunction<MapSchemaValuesS
     return false
   }
 
-  function handleError(error: unknown): void {
+  const handleError = (error: unknown): void => {
     if (error instanceof InvalidSchemaValueError) {
       return
     }
