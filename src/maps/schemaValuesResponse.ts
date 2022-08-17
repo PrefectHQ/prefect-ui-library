@@ -48,6 +48,7 @@ export const mapSchemaValuesResponseToSchemaValues: MapFunction<MapSchemaValuesS
       console.error(error)
     }
 
+    // todo: need to return a valid default rather than just the value
     return value
   }
 
@@ -55,25 +56,32 @@ export const mapSchemaValuesResponseToSchemaValues: MapFunction<MapSchemaValuesS
     return schema.properties?.[key]
   }
 
-  const parseObjectProperty = (value: SchemaValue, property: SchemaProperty): SchemaValue => {
+  const parseObjectProperty = (value: SchemaValue, property: SchemaProperty): Record<string, unknown> | null => {
     const parsed = parseUnknownJson(value)
 
-    if (isSchemaValues(parsed)) {
-      return parseSchemaValues(parsed, property)
+    if (!isSchemaValues(parsed)) {
+      // todo: invalid meta
+      return null
     }
 
-    return parsed
+    return parseSchemaValues(parsed, property)
   }
 
-  const parseArrayProperty = (values: SchemaValue, property: SchemaProperty): SchemaValue => {
-    if (Array.isArray(values) && schemaHas(property, 'items')) {
-      return values.map(value => parseSchemaValue(value, property.items))
+  const parseArrayProperty = (values: SchemaValue, property: SchemaProperty): unknown[] => {
+    if (!Array.isArray(values) || !schemaHas(property, 'items')) {
+      // todo: invalid meta
+      return []
     }
 
-    return values
+    return values.map(value => parseSchemaValue(value, property.items))
   }
 
-  const parseStringProperty = (value: SchemaValue, { format }: SchemaProperty): SchemaValue => {
+  const parseStringProperty = (value: SchemaValue, { format }: SchemaProperty): string | Date | null => {
+    if (typeof value !== 'string') {
+      // todo: invalid meta
+      return null
+    }
+
     switch (format) {
       case 'date':
       case 'date-time':
@@ -83,14 +91,15 @@ export const mapSchemaValuesResponseToSchemaValues: MapFunction<MapSchemaValuesS
     }
   }
 
-  const parseDateValue = (value: SchemaValue): Date | SchemaValue => {
+  const parseDateValue = (value: SchemaValue): Date | null => {
     const date = this.map('string', value as string, 'Date')
 
-    if (isValid(date)) {
-      return date
+    if (!isValid(date)) {
+      // todo: invalid meta
+      return null
     }
 
-    return value
+    return date
   }
 
   function parseUnknownProperty(value: SchemaValue): SchemaValue {
@@ -101,12 +110,25 @@ export const mapSchemaValuesResponseToSchemaValues: MapFunction<MapSchemaValuesS
     return value
   }
 
-  function parseInteger(value: SchemaValue): number {
-    return parseInt(value as string)
+  function parseInteger(value: SchemaValue): number | null {
+    const result = parseInt(value as string)
+
+    if (isNaN(result)) {
+      return null
+    }
+
+    return result
   }
 
-  function parseNumber(value: SchemaValue): number {
-    return parseFloat(value as string)
+  function parseNumber(value: SchemaValue): number | null {
+    const result = parseFloat(value as string)
+
+    if (isNaN(result)) {
+      // todo: invalid meta
+      return null
+    }
+
+    return result
   }
 
   function parseBoolean(value: SchemaValue): boolean {
@@ -120,12 +142,15 @@ export const mapSchemaValuesResponseToSchemaValues: MapFunction<MapSchemaValuesS
       }
     }
 
-    return !!value
+    if (typeof value !== 'boolean') {
+      // todo: invalid meta
+      return false
+    }
+
+    return value
   }
 
-  console.group()
   const response = parseSchemaValues(values, schema)
-  console.groupEnd()
 
   return response
 }
