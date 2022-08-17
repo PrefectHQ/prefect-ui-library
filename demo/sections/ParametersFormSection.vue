@@ -36,7 +36,8 @@
       const mapped = mapper.map('SchemaResponse', parsed, 'Schema')
 
       return mapped
-    } catch {
+    } catch (error) {
+      console.error(error)
       return {}
     }
   })
