@@ -36,7 +36,6 @@
   const inputArea = ref<HTMLTextAreaElement>()
   const viewArea = ref<HTMLDivElement>()
 
-
   const internalValue = computed({
     get() {
       return props.modelValue
