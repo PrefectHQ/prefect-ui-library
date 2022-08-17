@@ -1,5 +1,5 @@
 <template>
-  <page-heading class="page-heading-flow-run" :crumbs="crumbs">
+  <page-heading class="page-heading-flow-run-radar" :crumbs="crumbs">
     <template #actions>
       <p-icon-button-menu>
         <template #default>
@@ -14,20 +14,13 @@
         @delete="deleteFlowRun(flowRun.id)"
       />
     </template>
-    <slot>
-      <div class="page-heading-flow-run__header-meta">
-        <StateBadge :state="flowRun.state" />
-        <DurationIconText :duration="flowRun.duration" />
-        <FlowIconText :flow-id="flowRun.flowId" />
-      </div>
-    </slot>
   </page-heading>
 </template>
 
 <script lang="ts" setup>
   import { PIconButtonMenu } from '@prefecthq/prefect-design'
   import { computed } from 'vue'
-  import { StateBadge, PageHeading, DurationIconText, FlowIconText, CopyOverflowMenuItem, ConfirmDeleteModal } from '@/components'
+  import { PageHeading, CopyOverflowMenuItem, ConfirmDeleteModal } from '@/components'
   import { useShowModal } from '@/compositions/useShowModal'
   import { FlowRun } from '@/models'
   import { flowRunRouteKey, flowRunsRouteKey } from '@/router'
@@ -62,11 +55,7 @@
 </script>
 
 <style>
-.page-heading-flow-run__header-meta {
-  @apply
-  flex
-  gap-2
-  items-center
-  xl:hidden
+.page-heading-flow-run-radar { @apply
+  backdrop-blur-sm
 }
 </style>
