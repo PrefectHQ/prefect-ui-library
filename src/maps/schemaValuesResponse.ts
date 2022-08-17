@@ -1,4 +1,5 @@
 import { isValid } from 'date-fns'
+import { InvalidSchemaValueError } from '@/models'
 import { MapFunction } from '@/services/Mapper'
 import { isValidJsonString } from '@/services/validate'
 import { isSchemaValues, Schema, schemaHas, SchemaProperty, SchemaValue, SchemaValues } from '@/types/schemas'
@@ -24,32 +25,25 @@ export const mapSchemaValuesResponseToSchemaValues: MapFunction<MapSchemaValuesS
   }
 
   const parseSchemaValue = (value: SchemaValue, property: SchemaProperty): SchemaValue => {
-    try {
-      switch (property.type) {
-        case 'object':
-          return parseObjectProperty(value, property)
-        case 'array':
-          return parseArrayProperty(value, property)
-        case 'string':
-          return parseStringProperty(value, property)
-        case undefined:
-          return parseUnknownProperty(value)
-        case 'integer':
-          return parseInteger(value)
-        case 'number':
-          return parseNumber(value)
-        case 'boolean':
-          return parseBoolean(value)
-        case 'null':
-        default:
-          return value
-      }
-    } catch (error) {
-      console.error(error)
+    switch (property.type) {
+      case 'object':
+        return parseObjectProperty(value, property)
+      case 'array':
+        return parseArrayProperty(value, property)
+      case 'string':
+        return parseStringProperty(value, property)
+      case undefined:
+        return parseUnknownProperty(value)
+      case 'integer':
+        return parseInteger(value)
+      case 'number':
+        return parseNumber(value)
+      case 'boolean':
+        return parseBoolean(value)
+      case 'null':
+      default:
+        return value
     }
-
-    // todo: need to return a valid default rather than just the value
-    return value
   }
 
   const getSchemaProperty = (schema: Schema, key: string): SchemaProperty | undefined => {
@@ -57,97 +51,147 @@ export const mapSchemaValuesResponseToSchemaValues: MapFunction<MapSchemaValuesS
   }
 
   const parseObjectProperty = (value: SchemaValue, property: SchemaProperty): Record<string, unknown> | null => {
-    const parsed = parseUnknownJson(value)
+    try {
+      const parsed = parseUnknownJson(value)
 
-    if (!isSchemaValues(parsed)) {
-      // todo: invalid meta
-      return null
+      if (!isSchemaValues(parsed)) {
+        throw new InvalidSchemaValueError()
+      }
+
+      return parseSchemaValues(parsed, property)
+    } catch (error) {
+      handleError(error)
     }
 
-    return parseSchemaValues(parsed, property)
+    return null
   }
 
   const parseArrayProperty = (values: SchemaValue, property: SchemaProperty): unknown[] => {
-    if (!Array.isArray(values) || !schemaHas(property, 'items')) {
-      // todo: invalid meta
-      return []
+    try {
+      if (!Array.isArray(values) || !schemaHas(property, 'items')) {
+        throw new InvalidSchemaValueError()
+      }
+
+      return values.map(value => parseSchemaValue(value, property.items))
+    } catch (error) {
+      handleError(error)
     }
 
-    return values.map(value => parseSchemaValue(value, property.items))
+    return []
   }
 
   const parseStringProperty = (value: SchemaValue, { format }: SchemaProperty): string | Date | null => {
-    if (typeof value !== 'string') {
-      // todo: invalid meta
-      return null
+    try {
+      if (typeof value !== 'string') {
+        throw new InvalidSchemaValueError()
+      }
+
+      switch (format) {
+        case 'date':
+        case 'date-time':
+          return parseDateValue(value)
+        default:
+          return value
+      }
+    } catch (error) {
+      handleError(error)
     }
 
-    switch (format) {
-      case 'date':
-      case 'date-time':
-        return parseDateValue(value)
-      default:
-        return value
-    }
+    return null
   }
 
   const parseDateValue = (value: SchemaValue): Date | null => {
-    const date = this.map('string', value as string, 'Date')
+    try {
+      const date = this.map('string', value as string, 'Date')
 
-    if (!isValid(date)) {
-      // todo: invalid meta
-      return null
+      if (!isValid(date)) {
+        throw new InvalidSchemaValueError()
+      }
+
+      return date
+    } catch (error) {
+      handleError(error)
     }
 
-    return date
+    return null
   }
 
   function parseUnknownProperty(value: SchemaValue): SchemaValue {
-    if (!isValidJsonString(value)) {
-      return JSON.stringify(value)
+    try {
+      if (!isValidJsonString(value)) {
+        return JSON.stringify(value)
+      }
+
+      return value
+    } catch (error) {
+      handleError(error)
     }
 
-    return value
+    return null
   }
 
   function parseInteger(value: SchemaValue): number | null {
-    const result = parseInt(value as string)
+    try {
+      const result = parseInt(value as string)
 
-    if (isNaN(result)) {
-      return null
+      if (isNaN(result)) {
+        throw new InvalidSchemaValueError()
+      }
+
+      return result
+    } catch (error) {
+      handleError(error)
     }
 
-    return result
+    return null
   }
 
   function parseNumber(value: SchemaValue): number | null {
-    const result = parseFloat(value as string)
+    try {
+      const result = parseFloat(value as string)
 
-    if (isNaN(result)) {
-      // todo: invalid meta
-      return null
+      if (isNaN(result)) {
+        throw new InvalidSchemaValueError()
+      }
+
+      return result
+    } catch (error) {
+      handleError(error)
     }
 
-    return result
+    return null
   }
 
   function parseBoolean(value: SchemaValue): boolean {
-    if (typeof value === 'string') {
-      if (value.toLowerCase() === 'true') {
-        return true
+    try {
+      if (typeof value === 'string') {
+        if (value.toLowerCase() === 'true') {
+          return true
+        }
+
+        if (value.toLowerCase() === 'false') {
+          return false
+        }
       }
 
-      if (value.toLowerCase() === 'false') {
-        return false
+      if (typeof value !== 'boolean') {
+        throw new InvalidSchemaValueError()
       }
+
+      return value
+    } catch (error) {
+      handleError(error)
     }
 
-    if (typeof value !== 'boolean') {
-      // todo: invalid meta
-      return false
+    return false
+  }
+
+  function handleError(error: unknown): void {
+    if (error instanceof InvalidSchemaValueError) {
+      return
     }
 
-    return value
+    console.error(error)
   }
 
   const response = parseSchemaValues(values, schema)
