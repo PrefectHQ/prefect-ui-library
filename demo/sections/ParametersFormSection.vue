@@ -23,7 +23,7 @@
   import DemoSection from '../components/DemoSection.vue'
   import JsonInput from '@/components/JsonInput.vue'
   import SchemaForm from '@/components/SchemaForm.vue'
-  import { mocker } from '@/services'
+  import { mocker, mapper } from '@/services'
   import { Schema, SchemaValues } from '@/types/schemas'
 
   const value = ref({})
@@ -32,8 +32,12 @@
 
   const schema = computed<Schema>(() => {
     try {
-      return JSON.parse(rawSchema.value)
-    } catch {
+      const parsed = JSON.parse(rawSchema.value)
+      const mapped = mapper.map('SchemaResponse', parsed, 'Schema')
+
+      return mapped
+    } catch (error) {
+      console.error(error)
       return {}
     }
   })

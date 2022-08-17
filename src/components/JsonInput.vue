@@ -28,7 +28,7 @@
   import JsonView from './JsonView.vue'
 
   const props = defineProps<{
-    modelValue: string,
+    modelValue: string | undefined,
     showFormatButton?: boolean,
   }>()
 
@@ -41,7 +41,7 @@
 
   const internalValue = computed({
     get() {
-      return props.modelValue
+      return props.modelValue ?? ''
     },
     set(val: string) {
       emit('update:modelValue', val)

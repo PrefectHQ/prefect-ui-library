@@ -1,10 +1,21 @@
-import { Parameters } from '@/models/Parameters'
 import { Schedule } from '@/models/Schedule'
+import { Schema, SchemaValues } from '@/types/schemas'
 
-export type DeploymentUpdate = Partial<{
-  description: string | null,
-  schedule: Schedule | null,
-  isScheduleActive: boolean,
-  parameters: Parameters | null,
-  tags: string[] | null,
-}>
+type Base = {
+  description?: string | null,
+  schedule?: Schedule | null,
+  isScheduleActive?: boolean,
+  tags?: string[] | null,
+}
+
+type WithoutParameters = Base & {
+  schema?: never,
+  parameters?: never,
+}
+
+type WithParameters = Base & {
+  schema: Schema,
+  parameters: SchemaValues,
+}
+
+export type DeploymentUpdate = WithoutParameters | WithParameters

@@ -1,7 +1,7 @@
-import { Parameters } from '@/models/Parameters'
 import { StateResponse } from '@/models/StateResponse'
 import { ServerStateType } from '@/models/StateType'
 import { DateString } from '@/types/dates'
+import { SchemaValues } from '@/types/schemas'
 
 export type FlowRunResponse = {
   id: string,
@@ -12,7 +12,7 @@ export type FlowRunResponse = {
   state_id: string | null,
   deployment_id: string | null,
   flow_version: string | null,
-  parameters: Parameters,
+  parameters: SchemaValues,
   idempotency_key: string | null,
   context: unknown,
   empirical_policy: unknown,

@@ -69,71 +69,36 @@
   import { computed } from 'vue'
   import ScheduleFieldset from '@/components/ScheduleFieldset.vue'
   import SchemaFormFields from '@/components/SchemaFormFields.vue'
-  import { Deployment, Schedule, Parameters } from '@/models'
+  import { Deployment, DeploymentUpdate, Schedule } from '@/models'
 
   const props = defineProps<{
     deployment: Deployment,
   }>()
 
-  const internalValue = computed(() => {
-    Object.keys(parameters.value).forEach((key) => {
-      const parameter = parameters.value[key]
-      if (!initialTypes[key] || initialTypes[key] == typeof parameter) {
-        return
-      }
-
-      if (typeof parameter == 'string' && initialTypes[key] !== 'string') {
-        try {
-          parameters.value[key] = JSON.parse(parameter)
-        } finally {
-          // do nothing
-        }
-      }
-    })
-
-    return {
-      description: description.value,
-      schedule: schedule.value,
-      isScheduleActive: isScheduleActive.value,
-      parameters: parameters.value,
-      tags: tags.value,
-    }
-  })
-
   const hasParameters = computed(() => {
     return Object.keys(props.deployment.parameterOpenApiSchema.properties ?? {}).length > 0
   })
 
-  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-  const initialParameterValues = { ...props.deployment.parameters ?? {} }
-  const initialTypes: Record<keyof typeof initialParameterValues, string> = { }
-
-  Object.keys(initialParameterValues).forEach((key: keyof typeof initialParameterValues) => {
-    const parameter = initialParameterValues[key]
-    // this doesn't seem safe
-    if (typeof parameter == 'string' && Date.parse(parameter)) {
-      initialParameterValues[key] = new Date(parameter)
-    }
-
-    initialTypes[key] = typeof parameter
+  const { handleSubmit, isSubmitting } = useForm<DeploymentUpdate>({
+    initialValues: {
+      ...props.deployment,
+      schema: props.deployment.parameterOpenApiSchema,
+    },
   })
-
-  const { handleSubmit, isSubmitting } = useForm({ initialValues: { ...props.deployment, parameters: initialParameterValues } })
 
   const { value: description, meta: descriptionState } = useField<string>('description')
   const { value: name } = useField<string>('name')
   const { value: schedule } = useField<Schedule | null>('schedule')
   const { value: isScheduleActive } = useField<boolean>('isScheduleActive')
-  const { value: parameters } = useField<Parameters>('parameters')
   const { value: tags } = useField<string[] | null>('tags')
 
   const emit = defineEmits<{
-    (event: 'submit', value: Partial<Deployment>): void,
+    (event: 'submit', value: DeploymentUpdate): void,
     (event: 'cancel'): void,
   }>()
 
-  const submit = handleSubmit(() => {
-    emit('submit', internalValue.value)
+  const submit = handleSubmit((values) => {
+    emit('submit', values)
   })
 
   const cancel = (): void => {

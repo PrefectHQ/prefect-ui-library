@@ -1,6 +1,6 @@
-import { Parameters } from '@/models/Parameters'
 import { State } from '@/models/State'
 import { StateType } from '@/models/StateType'
+import { SchemaValues } from '@/types/schemas'
 export interface IFlowRun {
   id: string,
   flowId: string,
@@ -9,7 +9,7 @@ export interface IFlowRun {
   idempotencyKey: string | null,
   expectedStartTime: Date | null,
   nextScheduledStartTime: string | null,
-  parameters: Parameters,
+  parameters: SchemaValues,
   autoScheduled: boolean | null,
   context: unknown,
   empiricalConfig: unknown,
@@ -38,7 +38,7 @@ export class FlowRun implements IFlowRun {
   public idempotencyKey: string | null
   public expectedStartTime: Date | null
   public nextScheduledStartTime: string | null
-  public parameters: Parameters
+  public parameters: SchemaValues
   public autoScheduled: boolean | null
   public context: unknown
   public empiricalConfig: unknown
