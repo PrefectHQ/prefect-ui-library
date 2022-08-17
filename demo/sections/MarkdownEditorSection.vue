@@ -12,7 +12,6 @@
   import MarkdownInput from '@/components/MarkdownInput.vue'
 
   const markdownRef = ref(`<p align="center"><img src="https://images.ctfassets.net/gm98wzqotmnx/6rIpC9ZCAewsRGLwOw5BRe/bb17e1ef62f60d1ec32c1ae69487704c/prefect-2-logo-dark.png" width=1000></p>
-
   <p align="center">
       <a href="https://pypi.python.org/pypi/prefect/" alt="PyPI version">
           <img src="https://badge.fury.io/py/prefect.svg" /></a>

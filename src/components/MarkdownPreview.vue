@@ -1,6 +1,8 @@
 <template>
   <!-- eslint-disable-next-line vue/no-v-html -->
-  <section class="markdown-view" v-html="innerHtml" />
+  <section class="markdown-view">
+    {{ innerHtml }}
+  </section>
 </template>
 
 <script lang="ts" setup>
