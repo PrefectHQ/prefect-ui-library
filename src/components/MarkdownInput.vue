@@ -14,6 +14,8 @@
       />
       <div ref="viewArea" class="markdown-input__view-area">
         <MarkdownPreview :value="internalValue" class="markdown-input__markdown-view" v-bind="attrs" />
+        <!-- This is an important space to scroll link the preview and input elements -->
+        &nbsp;
       </div>
     </template>
   </p-base-input>
@@ -52,7 +54,6 @@
 
     viewArea.value.scrollTop = inputArea.value.scrollTop
     viewArea.value.scrollLeft = inputArea.value.scrollLeft
-
   }
 </script>
 
@@ -87,8 +88,9 @@
   h-full
   min-h-[inherit]
   text-transparent
-  p-4
   m-0
+  p-4
+  caret-slate-900
   whitespace-nowrap
 }
 
@@ -105,14 +107,11 @@
   overflow-hidden
   top-0
   left-0
-  p-4
   pointer-events-none
   z-0
 }
 
-.markdown-input__markdown-view {
-  @apply
-  !bg-transparent
-  !p-0
+.markdown-input__view-area  { @apply
+  p-4
 }
 </style>
