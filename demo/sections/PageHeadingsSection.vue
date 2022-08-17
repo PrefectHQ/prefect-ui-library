@@ -31,6 +31,7 @@
         <PageHeadingDeploymentEdit :deployment="deployment" />
         <PageHeadingFlow :flow="flow" />
         <PageHeadingFlowRun :flow-run="flowRun" />
+        <PageHeadingFlowRunRadar :flow-run="flowRun" />
         <PageHeadingNotificationCreate />
         <PageHeadingNotificationEdit />
         <PageHeadingWorkQueue :work-queue="queue" />
@@ -58,6 +59,7 @@
   import PageHeadingDeployments from '@/components/PageHeadingDeployments.vue'
   import PageHeadingFlow from '@/components/PageHeadingFlow.vue'
   import PageHeadingFlowRun from '@/components/PageHeadingFlowRun.vue'
+  import PageHeadingFlowRunRadar from '@/components/PageHeadingFlowRunRadar.vue'
   import PageHeadingFlowRuns from '@/components/PageHeadingFlowRuns.vue'
   import PageHeadingFlows from '@/components/PageHeadingFlows.vue'
   import PageHeadingNotificationCreate from '@/components/PageHeadingNotificationCreate.vue'
