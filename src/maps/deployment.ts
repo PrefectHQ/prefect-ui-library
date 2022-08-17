@@ -2,7 +2,6 @@ import { DeploymentFlowRunCreate, DeploymentFlowRunRequest, DeploymentUpdate, De
 import { Deployment } from '@/models/Deployment'
 import { DeploymentResponse } from '@/models/DeploymentResponse'
 import { MapFunction } from '@/services/Mapper'
-import { Schema } from '@/types/schemas'
 import { mapCamelToSnakeCase } from '@/utilities'
 
 export const mapDeploymentResponseToDeployment: MapFunction<DeploymentResponse, Deployment> = function(source: DeploymentResponse): Deployment {
