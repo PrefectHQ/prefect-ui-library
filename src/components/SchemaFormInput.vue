@@ -1,7 +1,11 @@
 <template>
-  <p-label :label="label" :message="errorMessage" :description="message" :state="meta">
+  <p-label class="schema-form-input" :label="label" :message="errorMessage" :state="meta">
     <template v-if="property.description" #description>
-      {{ property.description }}
+      <p>{{ property.description }}</p>
+
+      <template v-if="isNullType">
+        <p>This field has a type 'None' and cannot be modified.</p>
+      </template>
     </template>
 
     <template v-if="field">
@@ -34,9 +38,8 @@
   }>()
 
   const field = computed(() => getComponentFromPydanticTypeDefinition(props.property))
-  const fieldLabel = computed(() => props.propKey.split('.').pop())
-  const label = computed(() => props.property.title ?? fieldLabel.value ?? '')
-  const message = computed(() => field.value ? undefined : "This field has a type 'None' and cannot be modified.")
+  const label = computed(() => props.property.title ?? '')
+  const isNullType = computed(() => props.property.type === 'null')
 
-  const { value: internalValue, errorMessage, meta } = useField(props.propKey, field.value?.validators)
+  const { value: propValue, errorMessage, meta } = useField(props.propKey, field.value?.validators)
 </script>
