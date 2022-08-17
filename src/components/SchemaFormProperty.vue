@@ -1,15 +1,13 @@
 <template>
   <div class="schema-form-property">
     <template v-if="hasSubProperties">
-      <h3 class="schema-form-property__section-header">
-        <span>{{ property.title }}</span>
-      </h3>
-    </template>
-
-    <template v-if="hasSubProperties && level < 2">
-      <template v-for="(subProperty, key) in property.properties" :key="key">
-        <SchemaFormProperty :prop-key="`${propKey}.${key}`" :property="subProperty" :level="level + 1" />
-      </template>
+      <p-label :label="property.title" :description="property.description">
+        <p-content>
+          <template v-for="(subProperty, key) in property.properties" :key="key">
+            <SchemaFormProperty :prop-key="`${propKey}.${key}`" :property="subProperty" :level="level + 1" />
+          </template>
+        </p-content>
+      </p-label>
     </template>
 
     <template v-else>
@@ -60,10 +58,6 @@
 </script>
 
 <style>
-.schema-form-property__section-header { @apply
-  font-medium
-}
-
 .schema-form-property__component { @apply
   pl-2
 }

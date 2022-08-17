@@ -1,12 +1,9 @@
 <template>
-  <div class="schema-form-property-all-of">
-    <h3 class="schema-form-property-all-of__heading">
-      {{ property.title }}
-    </h3>
+  <p-label :label="property.title" :description="property.description" class="schema-form-property-all-of">
     <template v-for="(prop, key) in property.allOf" :key="key">
       <SchemaFormProperty :prop-key="propKey" :property="prop" :level="level" />
     </template>
-  </div>
+  </p-label>
 </template>
 
 <script lang="ts" setup>
@@ -22,9 +19,3 @@
     level: 0,
   })
 </script>
-
-<style>
-.schema-form-property-all-of__heading { @apply
-  font-medium
-}
-</style>
