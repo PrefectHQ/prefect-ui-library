@@ -31,6 +31,8 @@ export const mapDeploymentUpdateToDeploymentUpdateRequest: MapFunction<Deploymen
   const { parameters, schema, schedule, ...rest } = source
   const mapped = mapCamelToSnakeCase<DeploymentUpdateRequest>(rest)
 
+  // type check is necessary in case data doesn't match the type exactly
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   if (parameters && schema) {
     mapped.parameters = this.map('SchemaValuesRequest', { values: parameters, schema }, 'SchemaValues')
   }
