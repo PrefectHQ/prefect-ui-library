@@ -24,10 +24,13 @@ type before_ = { before_?: string }
 /** A date-time string to include results starting at or after this time */
 type after_ = { after_?: string }
 
+type operator_ = 'and_' | 'or_'
+
 export interface Filter {
   id?: any_,
   name?: any_,
   tags?: all_ & is_null_,
+  operator?: operator_,
 }
 
 export interface DeploymentFilter extends Filter {
@@ -39,6 +42,7 @@ export type FlowFilter = Filter
 export type StateFilter = {
   type?: any_,
   name?: any_,
+  operator?: operator_,
 }
 
 export type TimeFrameFilter = before_ & after_
