@@ -1,5 +1,6 @@
 import { Require } from './utilities'
 import { SchemaResponse } from '@/models/api/SchemaResponse'
+import { SchemaPropertyMeta } from '@/utilities'
 
 export type SchemaValue = unknown
 export type SchemaValues = Record<string, SchemaValue | undefined>
@@ -17,6 +18,7 @@ export type SchemaDefinitions = Record<string, Schema>
 export type SchemaProperty = Schema & {
   anyOf?: SchemaProperty[],
   allOf?: SchemaProperty[],
+  meta?: SchemaPropertyMeta,
 }
 
 export type SchemaPropertyAnyOf = Require<SchemaProperty, 'anyOf'>
@@ -32,18 +34,6 @@ export type Schema = Omit<SchemaResponse, 'definitions' | 'properties' | 'items'
 
 export function isSchemaValues(input: unknown): input is SchemaValues {
   return typeof input === 'object' && input !== null
-}
-
-export function isSchemaType<T extends SchemaType>(desired: T, type?: SchemaType): type is Extract<SchemaType, T> {
-  return type == desired
-}
-
-export function isPydanticTypeRef(property: unknown): property is SchemaReference<string> {
-  return typeof property == 'string' && property.startsWith(BaseDefinitionRefString) && property.length > BaseDefinitionRefString.length
-}
-
-export function isSchemaStringFormat(format?: SchemaStringFormat): format is SchemaStringFormat {
-  return !!format && SchemaStringFormats.includes(format)
 }
 
 export function schemaHas<T extends Schema | SchemaProperty, P extends keyof T>(schema: T, property: P): schema is T & Require<T, P> {

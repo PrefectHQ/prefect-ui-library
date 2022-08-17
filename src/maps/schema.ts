@@ -1,6 +1,7 @@
 import { SchemaPropertiesResponse, SchemaPropertyResponse, SchemaResponse } from '@/models/api/SchemaResponse'
 import { MapFunction } from '@/services/Mapper'
 import { Schema, SchemaProperties, SchemaProperty } from '@/types/schemas'
+import { getSchemaPropertyMeta } from '@/utilities/schemas'
 
 export const mapSchemaResponseToSchema: MapFunction<SchemaResponse, Schema> = function(source: SchemaResponse): Schema {
 
@@ -32,8 +33,13 @@ export const mapSchemaResponseToSchema: MapFunction<SchemaResponse, Schema> = fu
   }
 
   const resolveProperty = (property: SchemaPropertyResponse, schema: SchemaResponse, key: string = ''): SchemaProperty => {
-    const { $ref, properties, items, allOf, anyOf, required, ...rest } = property
+    const { $ref, properties, items, allOf, anyOf, ...rest } = property
     const response: SchemaProperty = { ...rest }
+    const meta = getSchemaPropertyMeta(property, schema, key)
+
+    if (meta) {
+      response.meta = meta
+    }
 
     if ($ref) {
       Object.assign(response, resolveDefinition($ref, schema))
@@ -54,17 +60,6 @@ export const mapSchemaResponseToSchema: MapFunction<SchemaResponse, Schema> = fu
     if (anyOf) {
       response.anyOf = anyOf.map(_property => resolveProperty(_property, schema))
     }
-
-    // this logic is incorrect and will be replaced by property meta in a future pr
-    // start
-    const isRequired = schema.required?.includes(key)
-
-    if (required) {
-      response.required = isRequired ? [...required, key] : required
-    } else if (isRequired) {
-      response.required = [key]
-    }
-    // end
 
     return response
   }
