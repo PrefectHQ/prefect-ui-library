@@ -11,7 +11,7 @@
     <template v-if="field">
       <component
         :is="field.component"
-        v-model="internalValue"
+        v-model="propValue"
         :placeholder="field.defaultValue"
         v-bind="{ ...field.attrs }"
       >
