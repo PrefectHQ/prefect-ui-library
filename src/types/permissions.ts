@@ -101,7 +101,7 @@ const featureFlags = [
   'access:collaboration',
   'access:notifications',
   'access:organizations',
-  'access:runRetention',
+  'access:retention',
 ] as const
 
 export type FeatureFlagString = typeof featureFlags[number]
