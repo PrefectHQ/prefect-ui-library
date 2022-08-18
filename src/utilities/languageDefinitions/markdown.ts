@@ -84,6 +84,8 @@ const url = {
   // [example](http://example.com "Optional title")
   // [example][id]
   // [example] [id]
+  // TODO: This doesn't support empty strings as links, like you might use for images
+  // the first <inner> replacement is likely the culprit
   pattern: createInline(/!?\[(?:(?!\])<inner>)+\](?:\([^\s)]+(?:[\t ]+"(?:\\.|[^"\\])*")?\)|[ \t]?\[(?:(?!\])<inner>)+\])/.source),
   lookbehind: true,
   greedy: true,

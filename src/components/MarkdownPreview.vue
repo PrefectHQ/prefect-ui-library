@@ -8,11 +8,14 @@
   import { computed } from 'vue'
   import { definition as markdownDefinition, wrapHook as markdownWrapHook, afterTokenizeHook } from '@/utilities/languageDefinitions/markdown'
   import { definition as markupDefinition, wrapHook as markupWrapHook } from '@/utilities/languageDefinitions/markup'
+  import { definition as yamlDefinition } from '@/utilities/languageDefinitions/yaml'
 
+  languages.yml = languages.yaml
+  languages.markup = markupDefinition
+  languages.yaml = yamlDefinition
   languages.html = markupDefinition
   languages.svg = markupDefinition
 
-  languages.markup = markupDefinition
   languages.markdown = languages.extend('markup', {})
   languages.insertBefore('markdown', 'prolog', markdownDefinition)
   languages.md = languages.markdown
@@ -116,7 +119,6 @@
 }
 
 .markdown-preview .token.tag,
-.markdown-preview .token.attr-name,
 .markdown-preview .token.namespace,
 .markdown-preview .token.deleted {
   @apply
@@ -162,8 +164,7 @@
 }
 
 .markdown-preview .token.operator,
-.markdown-preview .token.entity,
-.markdown-preview .token.url {
+.markdown-preview .token.entity {
   @apply
   text-blue-500
 }
