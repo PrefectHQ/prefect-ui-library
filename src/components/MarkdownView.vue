@@ -13,6 +13,19 @@
   }>()
 
   const innerHtml = computed(() => {
+    marked.use({
+      renderer: {
+        paragraph(text: string): string {
+          return `<section class="markdown-view__section">${text}</section>`
+        },
+        link(href: string, title: string, text: string): string {
+          return `<a href="${href}" class="p-link" target="_blank">${text}</a>`
+        },
+        code(text: string): string {
+          return `<pre class="p-code-container p-code-container--block"><code>${text}</code></pre>`
+        },
+      },
+    })
     return marked.parse(sanitizeHtml(props.value ?? '', {
       allowedTags: [
         'address', 'article', 'aside', 'footer', 'header', 'h1', 'h2', 'h3', 'h4',
@@ -33,8 +46,54 @@
 </script>
 
 <style>
-/* .markdown-view { @apply
+.markdown-view { @apply
+  text-base
+}
 
+.markdown-view__section,
+.markdown-view section,
+.markdown-view p { @apply
+  my-4
+}
 
-} */
+.markdown-view hr { @apply
+  my-10
+}
+
+.markdown-view a { @apply
+  inline-block
+}
+
+.markdown-view h1,
+.markdown-view h2,
+.markdown-view h3,
+.markdown-view h4,
+.markdown-view h5,
+.markdown-view h6 { @apply
+  font-semibold
+}
+
+.markdown-view h1 { @apply
+  text-3xl
+}
+
+.markdown-view h2 { @apply
+  text-2xl
+}
+
+.markdown-view h3 { @apply
+  text-xl
+}
+
+.markdown-view h4 { @apply
+  text-lg
+}
+
+.markdown-view h5 { @apply
+  text-base
+}
+
+.markdown-view h6 { @apply
+  text-sm
+}
 </style>
