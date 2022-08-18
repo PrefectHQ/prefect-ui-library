@@ -1,7 +1,14 @@
 <template>
   <DemoSection heading="Markdown Editor">
     <p-content>
-      <MarkdownInput v-model="markdownRef" class="markdown-editor-section__input" />
+      <p-tabs :tabs="['Edit', 'Preview']">
+        <template #edit>
+          <MarkdownInput v-model="markdownRef" class="markdown-editor-section__input" />
+        </template>
+        <template #preview>
+          <MarkdownView v-model="markdownRef" class="markdown-editor-section__view" />
+        </template>
+      </p-tabs>
     </p-content>
   </DemoSection>
 </template>
@@ -10,6 +17,7 @@
   import { onMounted, ref } from 'vue'
   import DemoSection from '../components/DemoSection.vue'
   import MarkdownInput from '@/components/MarkdownInput.vue'
+  import MarkdownView from '@/components/MarkdownView.vue'
 
   const markdownRef = ref('')
 
