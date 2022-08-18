@@ -10,7 +10,6 @@
         spellcheck="false"
         class="python-input__input-area"
         v-bind="attrs"
-        @scroll="handleScroll"
       />
       <div ref="viewArea" class="python-input__view-area">
         <PythonView :value="internalValue" class="python-input__python-view" v-bind="attrs" />
@@ -22,6 +21,7 @@
 <script lang="ts" setup>
   import { computed, ref } from 'vue'
   import PythonView from './PythonView.vue'
+  import { useScrollLinking } from '@/compositions'
 
   const props = defineProps<{
     modelValue: string,
@@ -33,6 +33,7 @@
 
   const inputArea = ref<HTMLTextAreaElement>()
   const viewArea = ref<HTMLDivElement>()
+  useScrollLinking(inputArea, viewArea)
 
 
   const internalValue = computed({
@@ -43,17 +44,6 @@
       emit('update:modelValue', val)
     },
   })
-
-  // This produces a scroll-linking effect
-  const handleScroll = (): void => {
-    if (!inputArea.value || !viewArea.value) {
-      return
-    }
-
-    viewArea.value.scrollTop = inputArea.value.scrollTop
-    viewArea.value.scrollLeft = inputArea.value.scrollLeft
-
-  }
 </script>
 
 <style>
