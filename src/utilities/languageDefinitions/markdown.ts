@@ -1,4 +1,4 @@
-import type { Environment, Grammar, TokenStream } from 'prismjs'
+import type { Environment, TokenStream } from 'prismjs'
 import { languages, plugins, highlight } from 'prismjs'
 import { definition as markupDefinition } from './markup'
 import { definition as yamlDefinition } from './yaml'
@@ -26,13 +26,106 @@ function createInline(pattern: string): RegExp {
   return RegExp(`${/((?:^|[^\\])(?:\\{2})*)/.source}(?:${pattern})`)
 }
 
-const definition: Grammar = {
+const bold = {
+  // **strong**
+  // __strong__
+
+  // allow one nested instance of italic text using the same delimiter
+  pattern: createInline(/\b__(?:(?!_)<inner>|_(?:(?!_)<inner>)+_)+__\b|\*\*(?:(?!\*)<inner>|\*(?:(?!\*)<inner>)+\*)+\*\*/.source),
+  lookbehind: true,
+  greedy: true,
+  inside: {
+    content: {
+      pattern: /(^..)[\s\S]+(?=..$)/,
+      lookbehind: true,
+      // see below
+      inside: {},
+    },
+    punctuation: /\*\*|__/,
+  },
+}
+
+const italic = {
+  // *em*
+  // _em_
+
+  // allow one nested instance of bold text using the same delimiter
+  pattern: createInline(/\b_(?:(?!_)<inner>|__(?:(?!_)<inner>)+__)+_\b|\*(?:(?!\*)<inner>|\*\*(?:(?!\*)<inner>)+\*\*)+\*/.source),
+  lookbehind: true,
+  greedy: true,
+  inside: {
+    content: {
+      pattern: /(^.)[\s\S]+(?=.$)/,
+      lookbehind: true,
+      // see below
+      inside: {},
+    },
+    punctuation: /[*_]/,
+  },
+}
+
+const strike = {
+  // ~~strike through~~
+  // ~strike~
+  pattern: createInline(/(~~?)(?:(?!~)<inner>)+\2/.source),
+  lookbehind: true,
+  greedy: true,
+  inside: {
+    content: {
+      pattern: /(^~~?)[\s\S]+(?=\1$)/,
+      lookbehind: true,
+      inside: {},
+    },
+    punctuation: /~~?/,
+  },
+}
+
+const url = {
+  // [example](http://example.com "Optional title")
+  // [example][id]
+  // [example] [id]
+  pattern: createInline(/!?\[(?:(?!\])<inner>)+\](?:\([^\s)]+(?:[\t ]+"(?:\\.|[^"\\])*")?\)|[ \t]?\[(?:(?!\])<inner>)+\])/.source),
+  lookbehind: true,
+  greedy: true,
+  inside: {
+    'operator': /^!/,
+    content: {
+      pattern: /(^\[)[^\]]+(?=\])/,
+      lookbehind: true,
+      inside: {},
+    },
+    'variable': {
+      pattern: /(^\][ \t]?\[)[^\]]+(?=\]$)/,
+      lookbehind: true,
+    },
+    'url': {
+      pattern: /(^\]\()[^\s)]+/,
+      lookbehind: true,
+    },
+    'string': {
+      pattern: /(^[ \t]+)"(?:\\.|[^"\\])*"(?=\)$)/,
+      lookbehind: true,
+    },
+  },
+}
+
+const codeSnippet = {
+  // `code`
+  // ``code``
+  pattern: /(^|[^\\`])(?:``[^`\r\n]+(?:`[^`\r\n]+)*``(?!`)|`[^`\r\n]+`(?!`))/,
+  lookbehind: true,
+  greedy: true,
+  alias: ['code', 'keyword'],
+}
+
+type MarkdownDefinition = Record<string, any>
+const definition: MarkdownDefinition = {
   'front-matter-block': {
     pattern: /(^(?:\s*[\r\n])?)---(?!.)[\s\S]*?[\r\n]---(?!.)/,
     lookbehind: true,
     greedy: true,
     inside: {
-      'punctuation': /^---|---$/,
+      punctuation: /^---|---$/,
       'front-matter': {
         pattern: /\S+(?:\s+\S+)*/,
         alias: ['yaml', 'language-yaml'],
@@ -58,14 +151,14 @@ const definition: Grammar = {
             // Replaced with definition below
             inside: {},
           },
-          'punctuation': /\|/,
+          punctuation: /\|/,
         },
       },
       'table-line': {
         pattern: RegExp(`^(${tableRow})${tableLine}$`),
         lookbehind: true,
         inside: {
-          'punctuation': /\||:?-{3,}:?/,
+          punctuation: /\||:?-{3,}:?/,
         },
       },
       'table-header-row': {
@@ -77,7 +170,7 @@ const definition: Grammar = {
             // Replaced with definition below
             inside: {},
           },
-          'punctuation': /\|/,
+          punctuation: /\|/,
         },
       },
     },
@@ -104,7 +197,7 @@ const definition: Grammar = {
           pattern: /^(```).+/,
           lookbehind: true,
         },
-        'punctuation': /```/,
+        punctuation: /```/,
       },
     },
   ],
@@ -162,109 +255,27 @@ const definition: Grammar = {
         lookbehind: true,
       },
       'string': /(?:"(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*'|\((?:\\.|[^)\\])*\))$/,
-      'punctuation': /^[[\]!:]|[<>]/,
+      punctuation: /^[[\]!:]|[<>]/,
     },
     alias: 'url',
   },
-  'bold': {
-    // **strong**
-    // __strong__
-
-    // allow one nested instance of italic text using the same delimiter
-    pattern: createInline(/\b__(?:(?!_)<inner>|_(?:(?!_)<inner>)+_)+__\b|\*\*(?:(?!\*)<inner>|\*(?:(?!\*)<inner>)+\*)+\*\*/.source),
-    lookbehind: true,
-    greedy: true,
-    inside: {
-      'content': {
-        pattern: /(^..)[\s\S]+(?=..$)/,
-        lookbehind: true,
-        inside: {}, // see below
-      },
-      'punctuation': /\*\*|__/,
-    },
-  },
-  'italic': {
-    // *em*
-    // _em_
-
-    // allow one nested instance of bold text using the same delimiter
-    pattern: createInline(/\b_(?:(?!_)<inner>|__(?:(?!_)<inner>)+__)+_\b|\*(?:(?!\*)<inner>|\*\*(?:(?!\*)<inner>)+\*\*)+\*/.source),
-    lookbehind: true,
-    greedy: true,
-    inside: {
-      'content': {
-        pattern: /(^.)[\s\S]+(?=.$)/,
-        lookbehind: true,
-        inside: {}, // see below
-      },
-      'punctuation': /[*_]/,
-    },
-  },
-  'strike': {
-    // ~~strike through~~
-    // ~strike~
-    pattern: createInline(/(~~?)(?:(?!~)<inner>)+\2/.source),
-    lookbehind: true,
-    greedy: true,
-    inside: {
-      'content': {
-        pattern: /(^~~?)[\s\S]+(?=\1$)/,
-        lookbehind: true,
-        inside: {},
-      },
-      'punctuation': /~~?/,
-    },
-  },
-  'code-snippet': {
-    // `code`
-    // ``code``
-    pattern: /(^|[^\\`])(?:``[^`\r\n]+(?:`[^`\r\n]+)*``(?!`)|`[^`\r\n]+`(?!`))/,
-    lookbehind: true,
-    greedy: true,
-    alias: ['code', 'keyword'],
-  },
-  'url': {
-    // [example](http://example.com "Optional title")
-    // [example][id]
-    // [example] [id]
-    pattern: createInline(/!?\[(?:(?!\])<inner>)+\](?:\([^\s)]+(?:[\t ]+"(?:\\.|[^"\\])*")?\)|[ \t]?\[(?:(?!\])<inner>)+\])/.source),
-    lookbehind: true,
-    greedy: true,
-    inside: {
-      'operator': /^!/,
-      'content': {
-        pattern: /(^\[)[^\]]+(?=\])/,
-        lookbehind: true,
-        inside: {},
-      },
-      'variable': {
-        pattern: /(^\][ \t]?\[)[^\]]+(?=\]$)/,
-        lookbehind: true,
-      },
-      'url': {
-        pattern: /(^\]\()[^\s)]+/,
-        lookbehind: true,
-      },
-      'string': {
-        pattern: /(^[ \t]+)"(?:\\.|[^"\\])*"(?=\)$)/,
-        lookbehind: true,
-      },
-    },
-  },
+  'code-snippet': codeSnippet,
+  'bold': bold,
+  'italic': italic,
+  'strike': strike,
+  'url': url,
 }
 
-type GrammarTokens = keyof Grammar
-const tokens = ['url', 'bold', 'italic', 'strike'] as GrammarTokens[]
+const tokens = ['url', 'bold', 'italic', 'strike']
 const insideTokens = ['url', 'bold', 'italic', 'strike', 'code-snippet']
 
-tokens.forEach((token: string): void => {
-  insideTokens.forEach((inside: string): void => {
-    if (token !== inside) {
+tokens.forEach((token): void => {
+  insideTokens.forEach((inside): void => {
+    if (token !== inside && token in definition) {
       definition[token].inside.content.inside[inside] = definition[inside]
     }
   })
 })
-
 
 const tagPattern = RegExp(markupDefinition.tag.pattern.source, 'gi')
 const KNOWN_ENTITY_NAMES = {
@@ -315,6 +326,7 @@ function textContent(html: string): string {
 }
 
 const wrapHook = (env: Environment): void => {
+
   if (env.type !== 'code-block') {
     return
   }
@@ -336,7 +348,6 @@ const wrapHook = (env: Environment): void => {
   }
 
   const grammar = languages[codeLang]
-
   if (!grammar) {
     if (codeLang && codeLang !== 'none' && plugins.autoloader) {
       if (!env.attributes) {
@@ -371,6 +382,10 @@ const afterTokenizeHook = (env: Environment): void => {
     for (let i = 0, len = tokens.length; i < len; i++) {
       const token = tokens[i]
 
+      if (typeof token == 'string') {
+        continue
+      }
+
       if (token.type !== 'code') {
         walkTokens(token.content)
         continue
@@ -390,18 +405,28 @@ const afterTokenizeHook = (env: Environment): void => {
        * ];
        */
 
+      if (!Array.isArray(token.content)) {
+        continue
+      }
+
       const [, codeLang, , codeBlock] = token.content
 
-      if (codeLang && codeBlock &&
-        codeLang.type === 'code-language' && codeBlock.type === 'code-block' &&
-        typeof codeLang.content === 'string') {
+      if (typeof codeLang == 'string' || typeof codeBlock == 'string') {
+        continue
+      }
+
+      if (
+        codeLang.type === 'code-language' &&
+        codeBlock.type === 'code-block' &&
+        typeof codeLang.content === 'string'
+      ) {
 
         // this might be a language that Prism does not support
 
         // do some replacements to support C++, C#, and F#
         let lang = codeLang.content.replace(/\b#/g, 'sharp').replace(/\b\+\+/g, 'pp')
         // only use the first word
-        lang = (/[a-z][\w-]*/i.exec(lang) || [''])[0].toLowerCase()
+        lang = (/[a-z][\w-]*/i.exec(lang) ?? [''])[0].toLowerCase()
         const alias = `language-${lang}`
 
         // add alias
@@ -421,7 +446,6 @@ const afterTokenizeHook = (env: Environment): void => {
 
 
 definition['front-matter-block'].inside['front-matter'].inside = yamlDefinition
-
 definition.table.inside['table-data-rows'].inside['table-data'].inside = definition
 definition.table.inside['table-header-row'].inside['table-header'].inside = definition
 

@@ -4,11 +4,22 @@
 </template>
 
 <script lang="ts" setup>
-  import { highlight, languages } from 'prismjs'
+  import { highlight, languages, hooks } from 'prismjs'
   import { computed } from 'vue'
-  import { definition } from '@/utilities/languageDefinitions/markdown'
+  import { definition as markdownDefinition, wrapHook as markdownWrapHook, afterTokenizeHook } from '@/utilities/languageDefinitions/markdown'
+  import { definition as markupDefinition, wrapHook as markupWrapHook } from '@/utilities/languageDefinitions/markup'
 
-  languages.md = definition
+  languages.html = markupDefinition
+  languages.svg = markupDefinition
+
+  languages.markup = markupDefinition
+  languages.markdown = languages.extend('markup', {})
+  languages.insertBefore('markdown', 'prolog', markdownDefinition)
+  languages.md = languages.markdown
+
+  hooks.add('after-tokenize', afterTokenizeHook)
+  hooks.add('wrap', markdownWrapHook)
+  hooks.add('wrap', markupWrapHook)
 
   const props = defineProps<{
     value?: string,
@@ -65,8 +76,6 @@
 }
 
 .markdown-preview .code {
-  font-style: italic;
-
   @apply
   text-blue-600
 }
@@ -90,5 +99,82 @@
 
 .markdown-preview .table > .header { @apply
   font-bold
+}
+
+.markdown-preview .token.comment,
+.markdown-preview .token.block-comment,
+.markdown-preview .token.prolog,
+.markdown-preview .token.doctype,
+.markdown-preview .token.cdata {
+  @apply
+  text-slate-700
+}
+
+.markdown-preview .token.punctuation {
+  @apply
+  text-slate-700
+}
+
+.markdown-preview .token.tag,
+.markdown-preview .token.attr-name,
+.markdown-preview .token.namespace,
+.markdown-preview .token.deleted {
+  @apply
+  text-rose-500
+}
+
+.markdown-preview .token.function-name {
+  @apply
+  text-blue-500
+}
+
+.markdown-preview .token.attr-name,
+.markdown-preview .token.boolean,
+.markdown-preview .token.number,
+.markdown-preview .token.function {
+  @apply
+  text-orange-500
+}
+
+.markdown-preview .token.property,
+.markdown-preview .token.class-name,
+.markdown-preview .token.constant,
+.markdown-preview .token.symbol {
+  @apply
+  text-yellow-500
+}
+
+.markdown-preview .token.selector,
+.markdown-preview .token.atrule,
+.markdown-preview .token.keyword,
+.markdown-preview .token.builtin {
+  @apply
+  text-rose-500
+}
+
+.markdown-preview .token.string,
+.markdown-preview .token.char,
+.markdown-preview .token.attr-value,
+.markdown-preview .token.regex,
+.markdown-preview .token.variable {
+  @apply
+  text-emerald-600
+}
+
+.markdown-preview .token.operator,
+.markdown-preview .token.entity,
+.markdown-preview .token.url {
+  @apply
+  text-blue-500
+}
+
+.markdown-preview .token.entity {
+  @apply
+  cursor-help
+}
+
+.markdown-preview .token.inserted {
+  @apply
+  text-emerald-600
 }
 </style>
