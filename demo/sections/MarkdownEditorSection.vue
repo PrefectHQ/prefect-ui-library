@@ -6,7 +6,7 @@
           <MarkdownInput v-model="markdownRef" class="markdown-editor-section__input" />
         </template>
         <template #preview>
-          <MarkdownView v-model="markdownRef" class="markdown-editor-section__view" />
+          <MarkdownView :value="markdownRef" class="markdown-editor-section__view" />
         </template>
       </p-tabs>
     </p-content>
@@ -30,5 +30,9 @@
 .markdown-editor-section__input {
   min-height: 800px;
   resize: vertical;
+}
+
+.markdown-editor-section__view {
+  min-height: 800px;
 }
 </style>
