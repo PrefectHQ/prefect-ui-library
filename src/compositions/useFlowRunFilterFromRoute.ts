@@ -8,6 +8,8 @@ import { FlowRunSortValues } from '@/types/SortOptionTypes'
 import { UnionFilters } from '@/types/UnionFilters'
 
 type UseFlowRunFilterFromRoute = {
+  name: Ref<string>,
+  sort: Ref<FlowRunSortValues>,
   startDate: Ref<Date>,
   endDate: Ref<Date>,
   states: Ref<StateType[]>,
@@ -65,6 +67,8 @@ export function useFlowRunFilterFromRoute(): UseFlowRunFilterFromRoute {
   })
 
   return {
+    name,
+    sort,
     startDate,
     endDate,
     states,
