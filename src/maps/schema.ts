@@ -1,7 +1,7 @@
 import { SchemaPropertiesResponse, SchemaPropertyResponse, SchemaResponse } from '@/models/api/SchemaResponse'
 import { MapFunction } from '@/services/Mapper'
 import { Schema, SchemaProperties, SchemaProperty } from '@/types/schemas'
-import { getSchemaPropertyMeta } from '@/utilities/schemas'
+import { getSchemaPropertyMeta, INITIAL_PROPERTY_LEVEL } from '@/utilities/schemas'
 
 export const mapSchemaResponseToSchema: MapFunction<SchemaResponse, Schema> = function(source: SchemaResponse): Schema {
 
@@ -20,33 +20,29 @@ export const mapSchemaResponseToSchema: MapFunction<SchemaResponse, Schema> = fu
     return response
   }
 
-  const resolveProperties = (properties: SchemaPropertiesResponse | undefined, schema: SchemaResponse): SchemaProperties | undefined => {
+  const resolveProperties = (properties: SchemaPropertiesResponse | undefined, schema: SchemaResponse, level: number = INITIAL_PROPERTY_LEVEL): SchemaProperties | undefined => {
     if (properties === undefined) {
       return undefined
     }
 
     return Object.keys(properties).reduce<SchemaProperties>((result, key) => {
-      result[key] = resolveProperty(properties[key], schema, key)
+      result[key] = resolveProperty(properties[key], schema, key, level + 1)
 
       return result
     }, {})
   }
 
-  const resolveProperty = (property: SchemaPropertyResponse, schema: SchemaResponse, key: string = ''): SchemaProperty => {
+  // eslint-disable-next-line max-params
+  const resolveProperty = (property: SchemaPropertyResponse, schema: SchemaResponse, key: string = '', level: number = INITIAL_PROPERTY_LEVEL): SchemaProperty => {
     const { $ref, properties, items, allOf, anyOf, ...rest } = property
     const response: SchemaProperty = { ...rest }
-    const meta = getSchemaPropertyMeta(property, schema, key)
-
-    if (meta) {
-      response.meta = meta
-    }
 
     if ($ref) {
       Object.assign(response, resolveDefinition($ref, schema))
     }
 
     if (properties) {
-      response.properties = resolveProperties(properties, schema)
+      response.properties = resolveProperties(properties, property, level)
     }
 
     if (items) {
@@ -59,6 +55,12 @@ export const mapSchemaResponseToSchema: MapFunction<SchemaResponse, Schema> = fu
 
     if (anyOf) {
       response.anyOf = anyOf.map(_property => resolveProperty(_property, schema))
+    }
+
+    const meta = getSchemaPropertyMeta({ property, schema, key, level })
+
+    if (meta) {
+      response.meta = meta
     }
 
     return response

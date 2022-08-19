@@ -1,30 +1,17 @@
 <template>
   <div class="schema-form-property">
-    <template v-if="hasSubProperties">
-      <p-label :label="property.title" :description="property.description">
-        <SchemaFormFields :schema="property" :property="propKey" />
-      </p-label>
-    </template>
-
-    <template v-else>
-      <component
-        :is="formComponent"
-        class="schema-form-property__component"
-        :prop-key="propKey"
-        :property="property"
-      />
-    </template>
+    <component :is="is" v-bind="{ property, propKey }" />
   </div>
 </template>
 
 <script lang="ts" setup>
   import { computed, defineAsyncComponent } from 'vue'
   import SchemaFormInput from './SchemaFormInput.vue'
-  import { SchemaProperty } from '@/types/schemas'
+  import { SchemaProperty, schemaHas } from '@/types/schemas'
 
   /* eslint-disable @typescript-eslint/no-explicit-any */
   // importing as async and defining as `any` breaks types but fixes recursive type issue
-  const SchemaFormFields: any = defineAsyncComponent(() => import('./SchemaFormFields.vue'))
+  const SchemaFormProperties: any = defineAsyncComponent(() => import('./SchemaFormProperties.vue'))
   const SchemaFormPropertyAnyOf: any = defineAsyncComponent(() => import('./SchemaFormPropertyAnyOf.vue'))
   const SchemaFormPropertyAllOf: any = defineAsyncComponent(() => import('./SchemaFormPropertyAllOf.vue'))
   /* eslint-enable @typescript-eslint/no-explicit-any */
@@ -34,18 +21,24 @@
     property: SchemaProperty,
   }>()
 
-  const hasSubProperties = computed(() => !!props.property.properties)
-
-  const formComponent = computed(() => {
-    if (props.property.anyOf) {
-      return SchemaFormPropertyAnyOf
+  const is = computed(() => {
+    if (schemaHas(props.property, 'meta')) {
+      return SchemaFormInput
     }
 
-    if (props.property.allOf) {
+    if (schemaHas(props.property, 'properties')) {
+      return SchemaFormProperties
+    }
+
+    if (schemaHas(props.property, 'allOf')) {
       return SchemaFormPropertyAllOf
     }
 
-    return SchemaFormInput
+    if (schemaHas(props.property, 'anyOf')) {
+      return SchemaFormPropertyAnyOf
+    }
+
+    return null
   })
 </script>
 

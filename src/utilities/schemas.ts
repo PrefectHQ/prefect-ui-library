@@ -4,6 +4,9 @@ import JsonInput from '@/components/JsonInput.vue'
 import { isEmail, greaterThanOrEqual, greaterThan, lessThan, lessThanOrEqual, isRequired, withMessage, ValidationRule } from '@/services'
 import { Schema, schemaHas, SchemaProperty } from '@/types/schemas'
 
+export const INITIAL_PROPERTY_LEVEL = 1
+export const MAX_PROPERTY_LEVEL = 3
+
 const components = [PToggle, PTextInput, PTextarea, JsonInput, PDateInput, PNumberInput, PCombobox, PSelect] as const
 type Component = typeof components[number]
 
@@ -29,8 +32,19 @@ function factory<T extends Component>(component: T, props: SchemaPropertyMetaCom
   }
 }
 
-export function getSchemaPropertyMeta(property: SchemaProperty, schema: SchemaProperty, key: string): SchemaPropertyMeta | void {
+type GetSchemaPropertyMetaArgs = {
+  property: SchemaProperty,
+  schema: Schema,
+  key: string,
+  level: number,
+}
+
+export function getSchemaPropertyMeta({ property, schema, key, level }: GetSchemaPropertyMetaArgs): SchemaPropertyMeta | void {
   if (property.type === 'object') {
+    if (level > MAX_PROPERTY_LEVEL) {
+      return factory(JsonInput, {})
+    }
+
     return
   }
 
