@@ -29,6 +29,7 @@
   import SchemaForm from '@/components/SchemaForm.vue'
   import { mocker, mapper } from '@/services'
   import { Schema, SchemaValues } from '@/types/schemas'
+  import { stringify } from '@/utilities/json'
 
   const value = ref({})
   const showForm = ref(true)
@@ -56,8 +57,11 @@
     showForm.value = true
   }
 
-  const generateSchema = (): void => {
-    rawSchema.value = JSON.stringify(mocker.create('schema'), undefined, 2)
+  const generateSchema = async (): Promise<void> => {
+    showForm.value = false
+    rawSchema.value = stringify(mocker.create('schema'))
+    await nextTick()
+    showForm.value = true
   }
 
   const handleSubmit = (value: SchemaValues): void => {
