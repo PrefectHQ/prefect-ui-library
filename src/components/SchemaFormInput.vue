@@ -9,17 +9,7 @@
     </template>
 
     <template v-if="meta">
-      <component
-        :is="meta.component"
-        v-model="propValue"
-        v-bind="{ ...meta.props, ...meta.attrs }"
-      >
-        <!--
-          <template v-for="(content, key) in field?.slots" #[key]>
-          {{ content }}
-          </template>
-        -->
-      </component>
+      <component :is="meta.component" v-model="propValue" v-bind="{ ...meta.props, ...meta.attrs }" />
     </template>
   </p-label>
 </template>
