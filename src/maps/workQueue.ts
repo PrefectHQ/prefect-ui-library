@@ -35,12 +35,7 @@ export const mapWorkQueueCreateToWorkQueueCreateRequest: MapFunction<WorkQueueCr
 }
 
 export const mapWorkQueueEditToWorkQueueEditRequest: MapFunction<WorkQueueEdit, WorkQueueEditRequest> = function(source: WorkQueueEdit): WorkQueueEditRequest {
-  const updatedWorkQueue = {
-    description: source.description,
-    isPaused: source.isPaused,
-    concurrencyLimit: source.concurrencyLimit,
-  }
   return {
-    ...mapCamelToSnakeCase(updatedWorkQueue),
+    ...mapCamelToSnakeCase(source),
   }
 }
