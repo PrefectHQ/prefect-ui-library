@@ -121,6 +121,16 @@ function getSchemaPropertyValidators(property: SchemaProperty, schema: Schema, k
     validators.push(withMessage(isValidJsonString, `${title} must be JSON`))
   }
 
+  if (property.type === 'string') {
+    if (property.format === 'email') {
+      validators.push(withMessage(isEmail, `${title} must be a valid email address`))
+    }
+
+    if (property.format === 'json-string') {
+      validators.push(withMessage(isValidJsonString, `${title} must be JSON`))
+    }
+  }
+
   const greaterThanOrEqualValue = property.minLength ?? property.minimum ?? property.minItems
 
   if (greaterThanOrEqualValue !== undefined) {
@@ -139,12 +149,6 @@ function getSchemaPropertyValidators(property: SchemaProperty, schema: Schema, k
 
   if (property.exclusiveMaximum !== undefined) {
     validators.push(withMessage(lessThan(property.exclusiveMaximum), `${title} must be less than ${property.exclusiveMaximum}`))
-  }
-
-  if (property.type === 'string') {
-    if (property.format === 'email') {
-      validators.push(withMessage(isEmail, `${title} must be a valid email address`))
-    }
   }
 
   if (getSchemaPropertyIsRequired(schema, key)) {
