@@ -50,7 +50,7 @@ export const randomSchema: MockFunction<Schema, [Schema?]> = function(overrides 
 }
 
 export const randomSchemaProperties: MockFunction<SchemaProperties, [SchemaProperties?]> = function(overrides = {}) {
-  const properties = this.createMany('schemaProperty', this.create('number', [0, 5])).reduce<Schema['properties']>((properties = {}, property) => {
+  const properties = this.createMany('schemaProperty', this.create('number', [1, 5])).reduce<Schema['properties']>((properties = {}, property) => {
     properties[kebabCase(property.title!)] = property
 
     return properties
