@@ -3,7 +3,8 @@ import { InvalidSchemaValueError } from '@/models'
 import { MapFunction } from '@/services/Mapper'
 import { isValidJsonString } from '@/services/validate'
 import { isSchemaValues, Schema, schemaHas, SchemaProperty, SchemaValue, SchemaValues } from '@/types/schemas'
-import { parseUnknownJson } from '@/utilities'
+import { INITIAL_PROPERTY_LEVEL, MAX_PROPERTY_LEVEL } from '@/utilities'
+import { parseUnknownJson, stringifyUnknownJson } from '@/utilities/json'
 
 type MapSchemaValuesSource = {
   values: SchemaValues,
@@ -12,22 +13,26 @@ type MapSchemaValuesSource = {
 
 export const mapSchemaValuesResponseToSchemaValues: MapFunction<MapSchemaValuesSource, SchemaValues> = function({ values, schema }: MapSchemaValuesSource): SchemaValues {
 
-  const parseSchemaValues = (values: SchemaValues, schema: Schema): SchemaValues => {
+  const parseSchemaValues = (values: SchemaValues, schema: Schema, level: number = INITIAL_PROPERTY_LEVEL): SchemaValues => {
     return Object.keys(values).reduce<SchemaValues>((result, key) => {
       const property = getSchemaProperty(schema, key)
 
       if (property) {
-        result[key] = parseSchemaValue(values[key], property)
+        result[key] = parseSchemaValue(values[key], property, level + 1)
       }
 
       return result
     }, {})
   }
 
-  const parseSchemaValue = (value: SchemaValue, property: SchemaProperty): SchemaValue => {
+  const parseSchemaValue = (value: SchemaValue, property: SchemaProperty, level: number = INITIAL_PROPERTY_LEVEL): SchemaValue => {
+    if (property.type === 'object' && level > MAX_PROPERTY_LEVEL) {
+      return parseMaxLevelProperty(value)
+    }
+
     switch (property.type) {
       case 'object':
-        return parseObjectProperty(value, property)
+        return parseObjectProperty(value, property, level)
       case 'array':
         return parseArrayProperty(value, property)
       case 'string':
@@ -50,7 +55,11 @@ export const mapSchemaValuesResponseToSchemaValues: MapFunction<MapSchemaValuesS
     return schema.properties?.[key]
   }
 
-  const parseObjectProperty = (value: SchemaValue, property: SchemaProperty): Record<string, unknown> | null => {
+  const parseMaxLevelProperty = (value: SchemaValue): string => {
+    return stringifyUnknownJson(value)
+  }
+
+  const parseObjectProperty = (value: SchemaValue, property: SchemaProperty, level: number): Record<string, unknown> | null => {
     try {
       const parsed = parseUnknownJson(value)
 
@@ -58,7 +67,7 @@ export const mapSchemaValuesResponseToSchemaValues: MapFunction<MapSchemaValuesS
         throw new InvalidSchemaValueError()
       }
 
-      return parseSchemaValues(parsed, property)
+      return parseSchemaValues(parsed, property, level)
     } catch (error) {
       handleError(error)
     }

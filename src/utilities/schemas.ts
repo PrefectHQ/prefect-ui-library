@@ -1,11 +1,11 @@
 import { PTextInput, PToggle, PTextarea, PDateInput, PNumberInput, PCombobox, PSelect } from '@prefecthq/prefect-design'
 import { isNumberArray, isStringArray } from './arrays'
 import JsonInput from '@/components/JsonInput.vue'
-import { isEmail, greaterThanOrEqual, greaterThan, lessThan, lessThanOrEqual, isRequired, withMessage, ValidationRule } from '@/services'
+import { isEmail, greaterThanOrEqual, greaterThan, lessThan, lessThanOrEqual, isRequired, withMessage, ValidationRule, isValidJsonString } from '@/services'
 import { Schema, schemaHas, SchemaProperty } from '@/types/schemas'
 
 export const INITIAL_PROPERTY_LEVEL = 1
-export const MAX_PROPERTY_LEVEL = 3
+export const MAX_PROPERTY_LEVEL = 2
 
 const components = [PToggle, PTextInput, PTextarea, JsonInput, PDateInput, PNumberInput, PCombobox, PSelect] as const
 type Component = typeof components[number]
@@ -40,12 +40,8 @@ type GetSchemaPropertyMetaArgs = {
 }
 
 export function getSchemaPropertyMeta({ property, schema, key, level }: GetSchemaPropertyMetaArgs): SchemaPropertyMeta | void {
-  if (property.type === 'object') {
-    if (level > MAX_PROPERTY_LEVEL) {
-      return factory(JsonInput, {})
-    }
-
-    return
+  if (property.type == 'object' && level > MAX_PROPERTY_LEVEL) {
+    return getSchemaPropertyMaxLevelMeta(property, schema, key)
   }
 
   const component = getSchemaPropertyMetaComponent(property)
@@ -57,6 +53,20 @@ export function getSchemaPropertyMeta({ property, schema, key, level }: GetSchem
   const options = getSchemaPropertyMetaOptions(property, schema, key)
 
   return { ...component, ...options }
+}
+
+function getSchemaPropertyMaxLevelMeta(property: SchemaProperty, schema: Schema, key: string): SchemaPropertyMeta | void {
+  const component = factory(JsonInput, {})
+  const { attrs, ...options } = getSchemaPropertyMetaOptions({ type: undefined }, schema, key)
+
+  return {
+    ...component,
+    ...options,
+    attrs: {
+      ...attrs,
+      placeholder: attrs?.placeholder ?? '{}',
+    },
+  }
 }
 
 function getSchemaPropertyMetaOptions(property: SchemaProperty, schema: Schema, key: string): SchemaPropertyMetaOptions {
@@ -115,8 +125,12 @@ function getSchemaPropertyArrayMeta(property: SchemaProperty): SchemaPropertyMet
 }
 
 function getSchemaPropertyValidators(property: SchemaProperty, schema: Schema, key: string): ValidationRule[] {
-  const { title = 'Property' } = property
+  const { title = 'Property', type } = property
   const validators: ValidationRule[] = []
+
+  if (type === undefined) {
+    validators.push(withMessage(isValidJsonString, `${title} must be JSON`))
+  }
 
   const greaterThanOrEqualValue = property.minLength ?? property.minimum ?? property.minItems
 

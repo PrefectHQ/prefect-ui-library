@@ -1,6 +1,7 @@
 import { MapFunction } from '@/services/Mapper'
 import { Schema, SchemaProperty, SchemaValue, SchemaValues } from '@/types/schemas'
 import { isDate } from '@/utilities'
+import { parseUnknownJson } from '@/utilities/json'
 
 type MapSchemaValuesSource = {
   values: SchemaValues,
@@ -23,6 +24,8 @@ export const mapSchemaValuesRequestToSchemaValues: MapFunction<MapSchemaValuesSo
 
   const formatSchemaValue = (value: SchemaValue, property: SchemaProperty): SchemaValue => {
     switch (property.type) {
+      case 'object':
+        return formatObjectProperty(value, property)
       case 'string':
         return formatStringProperty(value, property)
       case undefined:
@@ -34,6 +37,14 @@ export const mapSchemaValuesRequestToSchemaValues: MapFunction<MapSchemaValuesSo
 
   const getSchemaProperty = (schema: Schema, key: string): SchemaProperty | undefined => {
     return schema.properties?.[key]
+  }
+
+  const formatObjectProperty = (value: SchemaValue, property: SchemaProperty): SchemaValue => {
+    if (typeof value === 'string') {
+      return parseUnknownJson(value)
+    }
+
+    return formatSchemaValue(value, property)
   }
 
   const formatStringProperty = (value: SchemaValue, { format }: SchemaProperty): SchemaValue => {
@@ -66,10 +77,6 @@ export const mapSchemaValuesRequestToSchemaValues: MapFunction<MapSchemaValuesSo
     return value
   }
 
-  console.group()
-  const response = formatSchemaValues(values, schema)
-  console.groupEnd()
-
-  return response
+  return formatSchemaValues(values, schema)
 }
 
