@@ -2,11 +2,7 @@
   <div class="schema-form-property">
     <template v-if="hasSubProperties">
       <p-label :label="property.title" :description="property.description">
-        <p-content>
-          <template v-for="(subProperty, key) in property.properties" :key="key">
-            <SchemaFormProperty :prop-key="`${propKey}.${key}`" :property="subProperty" :level="level + 1" />
-          </template>
-        </p-content>
+        <SchemaFormFields :schema="property" :property="propKey" />
       </p-label>
     </template>
 
@@ -14,35 +10,31 @@
       <component
         :is="formComponent"
         class="schema-form-property__component"
-        :class="classes.component"
         :prop-key="propKey"
         :property="property"
-        :level="level"
       />
     </template>
   </div>
 </template>
 
 <script lang="ts" setup>
-  import { computed, withDefaults } from 'vue'
+  import { computed, defineAsyncComponent } from 'vue'
   import SchemaFormInput from './SchemaFormInput.vue'
-  import SchemaFormPropertyAllOf from './SchemaFormPropertyAllOf.vue'
-  import SchemaFormPropertyAnyOf from './SchemaFormPropertyAnyOf.vue'
   import { SchemaProperty } from '@/types/schemas'
 
-  const props = withDefaults(defineProps<{
-    level?: number,
+  /* eslint-disable @typescript-eslint/no-explicit-any */
+  // importing as async and defining as `any` breaks types but fixes recursive type issue
+  const SchemaFormFields: any = defineAsyncComponent(() => import('./SchemaFormFields.vue'))
+  const SchemaFormPropertyAnyOf: any = defineAsyncComponent(() => import('./SchemaFormPropertyAnyOf.vue'))
+  const SchemaFormPropertyAllOf: any = defineAsyncComponent(() => import('./SchemaFormPropertyAllOf.vue'))
+  /* eslint-enable @typescript-eslint/no-explicit-any */
+
+  const props = defineProps<{
     propKey: string,
     property: SchemaProperty,
-  }>(), {
-    level: 0,
-  })
+  }>()
 
   const hasSubProperties = computed(() => !!props.property.properties)
-
-  const classes = computed(() => ({
-    component: `schema-form-property__component--level-${props.level}`,
-  }))
 
   const formComponent = computed(() => {
     if (props.property.anyOf) {
@@ -60,9 +52,5 @@
 <style>
 .schema-form-property__component { @apply
   pl-2
-}
-
-.schema-form-property__component--level-0 { @apply
-  pl-0
 }
 </style>

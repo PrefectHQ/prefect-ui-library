@@ -32,9 +32,6 @@
   const props = defineProps<{
     propKey: string,
     property: SchemaProperty,
-    // Technically this is always passed as part of the form recursion
-    // eslint-disable-next-line vue/no-unused-properties
-    level?: number,
   }>()
 
   const meta = computed(() => props.property.meta)
