@@ -23,7 +23,7 @@
 </template>
 
 <script lang="ts" setup>
-  import { computed, nextTick, watch, ref } from 'vue'
+  import { computed, nextTick, watch, ref, toRaw } from 'vue'
   import DemoSection from '../components/DemoSection.vue'
   import JsonInput from '@/components/JsonInput.vue'
   import SchemaForm from '@/components/SchemaForm.vue'
@@ -48,7 +48,7 @@
   })
 
   watch(value, () => {
-    console.log({ value })
+    console.log({ value: toRaw(value.value) })
   }, { deep: true })
 
   const reloadForm = async (): Promise<void> => {
