@@ -5,16 +5,12 @@
 </template>
 
 <script lang="ts" setup>
-  import { computed, defineAsyncComponent } from 'vue'
+  import { computed } from 'vue'
   import SchemaFormInput from './SchemaFormInput.vue'
+  import SchemaFormProperties from './SchemaFormProperties.vue'
+  import SchemaFormPropertyAllOf from './SchemaFormPropertyAllOf.vue'
+  import SchemaFormPropertyAnyOf from './SchemaFormPropertyAnyOf.vue'
   import { SchemaProperty, schemaHas } from '@/types/schemas'
-
-  /* eslint-disable @typescript-eslint/no-explicit-any */
-  // importing as async and defining as `any` breaks types but fixes recursive type issue
-  const SchemaFormProperties: any = defineAsyncComponent(() => import('./SchemaFormProperties.vue'))
-  const SchemaFormPropertyAnyOf: any = defineAsyncComponent(() => import('./SchemaFormPropertyAnyOf.vue'))
-  const SchemaFormPropertyAllOf: any = defineAsyncComponent(() => import('./SchemaFormPropertyAllOf.vue'))
-  /* eslint-enable @typescript-eslint/no-explicit-any */
 
   const props = defineProps<{
     propKey: string,
