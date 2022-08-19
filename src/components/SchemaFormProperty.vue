@@ -34,7 +34,7 @@
       return SchemaFormPropertyAnyOf
     }
 
-    return null
+    return SchemaFormInput
   })
 </script>
 

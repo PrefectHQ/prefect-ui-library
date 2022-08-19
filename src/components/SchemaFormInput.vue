@@ -1,11 +1,15 @@
 <template>
   <p-label class="schema-form-input" :label="label" :message="errorMessage" :state="state">
-    <template v-if="property.description" #description>
-      <p>{{ property.description }}</p>
+    <template #description>
+      <div class="schema-form-input__description">
+        <template v-if="property.description">
+          <p>{{ property.description }}</p>
+        </template>
 
-      <template v-if="isNullType">
-        <p>This field has a type 'None' and cannot be modified.</p>
-      </template>
+        <template v-if="isNullType">
+          <p-icon-text icon="QuestionMarkCircleIcon" solid text="This field has a type 'None' and cannot be modified" />
+        </template>
+      </div>
     </template>
 
     <template v-if="meta">
@@ -39,3 +43,10 @@
 
   const { value: propValue, errorMessage, meta: state } = useField(props.propKey, meta.value?.validators)
 </script>
+
+<style>
+.schema-form-input__description { @apply
+  grid
+  gap-1
+}
+</style>
