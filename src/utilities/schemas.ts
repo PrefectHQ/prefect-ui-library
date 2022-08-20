@@ -1,5 +1,6 @@
 import { PTextInput, PToggle, PDateInput, PNumberInput, PCombobox, PSelect } from '@prefecthq/prefect-design'
 import { isNumberArray, isStringArray } from './arrays'
+import BlockDocumentInput from '@/components/BlockDocumentInput.vue'
 import JsonInput from '@/components/JsonInput.vue'
 import { isEmail, greaterThanOrEqual, greaterThan, lessThan, lessThanOrEqual, isRequired, withMessage, ValidationRule, isValidJsonString } from '@/services'
 import { Schema, schemaHas, SchemaProperty } from '@/types/schemas'
@@ -31,7 +32,7 @@ type GetSchemaPropertyMetaArgs = {
 
 export function getSchemaPropertyMeta({ property, schema, key, level }: GetSchemaPropertyMetaArgs): SchemaPropertyMeta | void {
   if (property.type == 'object' && level > MAX_PROPERTY_LEVEL) {
-    return getSchemaPropertyMaxLevelMeta(property, schema, key)
+    return getSchemaPropertyMaxLevelMeta(schema, key)
   }
 
   const component = getSchemaPropertyMetaComponent(property)
@@ -67,6 +68,12 @@ function getSchemaPropertyMetaOptions(property: SchemaProperty, schema: Schema, 
 }
 
 function getSchemaPropertyMetaComponent(property: SchemaProperty): SchemaPropertyMetaComponent | null {
+  if (property.blockReference) {
+    return factory(BlockDocumentInput, {
+      blockTypeSlug: property.blockReference.blockTypeSlug,
+    })
+  }
+
   switch (property.type) {
     case 'array':
       return getSchemaPropertyArrayMetaComponent(property)

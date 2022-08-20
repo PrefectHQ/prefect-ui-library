@@ -1,4 +1,4 @@
-import { BlockSchemaReferences } from '@/models'
+import { BlockSchemaReference, BlockSchemaReferences } from '@/models'
 import { SchemaPropertiesResponse, SchemaPropertyResponse, SchemaResponse } from '@/models/api/SchemaResponse'
 import { MapFunction, mapper } from '@/services/Mapper'
 import { Schema, SchemaDefinitions, SchemaProperties, SchemaProperty } from '@/types/schemas'
@@ -80,7 +80,9 @@ class SchemaResolver {
       response.anyOf = anyOf.map(_property => this.resolveProperty(_property, schema))
     }
 
-    const meta = getSchemaPropertyMeta({ property, schema, key, level })
+    response.blockReference = this.resolveBlockReference(key)
+
+    const meta = getSchemaPropertyMeta({ property: response, schema, key, level })
 
     if (meta) {
       response.meta = meta
@@ -94,5 +96,9 @@ class SchemaResolver {
     const definition = this.definitions?.[match] ?? {}
 
     return this.resolveSchema(definition)
+  }
+
+  private resolveBlockReference(key: string): BlockSchemaReference | undefined {
+    return this.references?.[key]
   }
 }

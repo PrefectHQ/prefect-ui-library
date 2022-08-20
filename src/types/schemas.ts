@@ -1,5 +1,5 @@
 import { Require } from './utilities'
-import { BlockSchemaReferences } from '@/models'
+import { BlockSchemaReference, BlockSchemaReferences } from '@/models'
 import { SchemaResponse } from '@/models/api/SchemaResponse'
 import { SchemaPropertyMeta } from '@/utilities'
 
@@ -16,10 +16,11 @@ export type SchemaEnum<T> = T[]
 export type SchemaReference<T extends string> = `${typeof BaseDefinitionRefString}${T}`
 export type SchemaDefinitions = Record<string, Schema>
 
-export type SchemaProperty = Schema & {
+export type SchemaProperty = Omit<Schema, 'definitions' | 'blockSchemaReferences'> & {
   anyOf?: SchemaProperty[],
   allOf?: SchemaProperty[],
   meta?: SchemaPropertyMeta,
+  blockReference?: BlockSchemaReference,
 }
 
 export type SchemaPropertyAnyOf = Require<SchemaProperty, 'anyOf'>
