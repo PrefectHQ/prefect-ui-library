@@ -1,4 +1,5 @@
 import { Require } from './utilities'
+import { BlockSchemaReferences } from '@/models'
 import { SchemaResponse } from '@/models/api/SchemaResponse'
 import { SchemaPropertyMeta } from '@/utilities'
 
@@ -26,10 +27,30 @@ export type SchemaPropertyAllOf = Require<SchemaProperty, 'allOf'>
 
 export type SchemaProperties = Record<string, SchemaProperty>
 
-export type Schema = Omit<SchemaResponse, 'definitions' | 'properties' | 'items'> & {
+export type Schema = {
+  alias?: string,
+  blockSchemaReferences?: BlockSchemaReferences,
+  default?: unknown,
   definitions?: SchemaDefinitions,
-  properties?: SchemaProperties,
+  description?: string,
+  enum?: SchemaEnum<unknown>,
+  exclusiveMaximum?: number,
+  exclusiveMinimum?: number,
+  format?: SchemaStringFormat,
   items?: SchemaProperty,
+  maximum?: number,
+  maxItems?: number,
+  maxLength?: number,
+  minimum?: number,
+  minItems?: number,
+  minLength?: number,
+  multipleOf?: number,
+  pattern?: string,
+  properties?: SchemaProperties,
+  required?: string[],
+  title?: string,
+  type?: SchemaType,
+  uniqueItems?: boolean,
 }
 
 export function isSchemaValues(input: unknown): input is SchemaValues {
