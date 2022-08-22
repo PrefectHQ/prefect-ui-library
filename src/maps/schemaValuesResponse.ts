@@ -14,7 +14,9 @@ type MapSchemaValuesSource = {
 export const mapSchemaValuesResponseToSchemaValues: MapFunction<MapSchemaValuesSource, SchemaValues> = function({ values, schema }: MapSchemaValuesSource): SchemaValues {
 
   const parseSchemaValues = (values: SchemaValues, schema: Schema, level: number = INITIAL_PROPERTY_LEVEL): SchemaValues => {
-    return Object.keys(values).reduce<SchemaValues>((result, key) => {
+    const properties = schema.properties ?? {}
+
+    return Object.keys(properties).reduce<SchemaValues>((result, key) => {
       const property = getSchemaProperty(schema, key)
 
       if (property) {
@@ -56,7 +58,9 @@ export const mapSchemaValuesResponseToSchemaValues: MapFunction<MapSchemaValuesS
   }
 
   const parseMaxLevelProperty = (value: SchemaValue): string => {
-    return stringifyUnknownJson(value)
+    // typescript is just wrong. JSON.stringify can return null or undefined
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+    return stringifyUnknownJson(value) ?? ''
   }
 
   const parseObjectProperty = (value: SchemaValue, property: SchemaProperty, level: number): Record<string, unknown> | null => {
@@ -72,7 +76,7 @@ export const mapSchemaValuesResponseToSchemaValues: MapFunction<MapSchemaValuesS
       handleError(error)
     }
 
-    return null
+    return parseSchemaValues({}, property, level)
   }
 
   const parseArrayProperty = (values: SchemaValue, property: SchemaProperty): unknown[] => {
