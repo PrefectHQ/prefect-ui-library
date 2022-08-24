@@ -8,24 +8,36 @@
   import sanitizeHtml from 'sanitize-html'
   import { computed } from 'vue'
 
+  marked.setOptions({
+    gfm: true,
+    highlight: function(code, lang, callback) {
+      console.log(code, lang, callback)
+      return code
+    },
+  })
+
+  marked.use({
+    renderer: {
+      paragraph(text: string): string {
+        return `<section class="markdown-view__section">${text}</section>`
+      },
+      link(href: string, title: string, text: string): string {
+        return `<a href="${href}" class="p-link" target="_blank">${text}</a>`
+      },
+      // If we use this block it seems that the highlight method never runs
+      // code(text: string): string {
+      //   return `<pre class="p-code-container p-code-container--block"><code>${text}</code></pre>`
+      // },
+    },
+  })
+
+
   const props = defineProps<{
     value?: string,
   }>()
 
   const innerHtml = computed(() => {
-    marked.use({
-      renderer: {
-        paragraph(text: string): string {
-          return `<section class="markdown-view__section">${text}</section>`
-        },
-        link(href: string, title: string, text: string): string {
-          return `<a href="${href}" class="p-link" target="_blank">${text}</a>`
-        },
-        code(text: string): string {
-          return `<pre class="p-code-container p-code-container--block"><code>${text}</code></pre>`
-        },
-      },
-    })
+
     return marked.parse(sanitizeHtml(props.value ?? '', {
       allowedTags: [
         'address', 'article', 'aside', 'footer', 'header', 'h1', 'h2', 'h3', 'h4',
