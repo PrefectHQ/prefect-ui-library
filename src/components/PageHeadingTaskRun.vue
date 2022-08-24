@@ -18,7 +18,6 @@
       <div class="page-heading-task-run__header-meta">
         <StateBadge :state="taskRun.state" />
         <DurationIconText :duration="taskRun.duration" />
-        <FlowRunIconText :flow-run-id="taskRun.flowRunId" />
       </div>
     </slot>
   </page-heading>
