@@ -54,7 +54,7 @@
   const options = computed<SelectOption[]>(() => {
     const stateMap = stateType.map((state) => ({ label: capitalize(state), value: state }))
 
-    return [...stateMap, { label: 'Late', value: 'late' }]
+    return [...stateMap, { label: 'Late', value: 'Late' }]
   })
 </script>
 

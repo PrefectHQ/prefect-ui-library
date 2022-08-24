@@ -2,7 +2,7 @@
   <p-form class="work-queue-edit-form" @submit="submit">
     <p-content>
       <p-label label="Name">
-        <p-text-input v-model="name" disabled />
+        <p-text-input :model-value="workQueue.name" disabled />
       </p-label>
 
       <p-label label="Description (Optional)">
@@ -41,15 +41,21 @@
 <script lang="ts" setup>
   import { PLabel, PTextInput, PNumberInput, PToggle, PForm } from '@prefecthq/prefect-design'
   import { useField, useForm } from 'vee-validate'
-  import { computed, ref } from 'vue'
+  import { computed } from 'vue'
   import SubmitButton from './SubmitButton.vue'
-  import { WorkQueueEditRequest, WorkQueue } from '@/models'
+  import { WorkQueueEdit, WorkQueue } from '@/models'
 
   const props = defineProps<{
     workQueue: WorkQueue,
   }>()
 
-  const { values, handleSubmit, isSubmitting } = useForm({ initialValues: props.workQueue })
+  const { handleSubmit, isSubmitting } = useForm<WorkQueueEdit>({
+    initialValues: {
+      description: props.workQueue.description,
+      isPaused: props.workQueue.isPaused,
+      concurrencyLimit: props.workQueue.concurrencyLimit,
+    },
+  })
 
   const isActive = computed({
     get() {
@@ -60,17 +66,17 @@
     },
   })
 
-  const name = ref(props.workQueue.name)
+
   const { value: description } = useField<string|null>('description')
   const { value: isPaused } = useField<boolean | undefined>('isPaused')
   const { value: concurrencyLimit } = useField<number|null>('concurrencyLimit')
 
   const emit = defineEmits<{
-    (event: 'submit', value: WorkQueueEditRequest): void,
+    (event: 'submit', value: WorkQueueEdit): void,
     (event: 'cancel'): void,
   }>()
 
-  const submit = handleSubmit(() => {
+  const submit = handleSubmit((values) => {
     emit('submit', values)
   })
 

@@ -46,7 +46,7 @@
   import { WorkQueueCreate } from '@/models'
   import { isRequired, withMessage } from '@/services/validate'
 
-  const { values, handleSubmit, isSubmitting, errors } = useForm<WorkQueueCreate>()
+  const { handleSubmit, isSubmitting, errors } = useForm<WorkQueueCreate>()
 
   const rules = {
     name: [withMessage(isRequired, 'Name is required')],
@@ -71,7 +71,7 @@
     (event: 'cancel'): void,
   }>()
 
-  const submit = handleSubmit(() => {
+  const submit = handleSubmit((values) => {
     emit('submit', values)
   })
 
