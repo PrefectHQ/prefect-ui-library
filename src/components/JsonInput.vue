@@ -5,13 +5,13 @@
     </template>
     <template #control="{ attrs }">
       <textarea
-        ref="inputArea"
+        ref="source"
         v-model="internalValue"
         spellcheck="false"
         class="json-input__input-area"
         v-bind="attrs"
       />
-      <div ref="viewArea" class="json-input__view-area">
+      <div ref="target" class="json-input__view-area">
         <JsonView :value="internalValue" class="json-input__json-view" v-bind="attrs" />
       </div>
 
@@ -23,7 +23,7 @@
 </template>
 
 <script lang="ts" setup>
-  import { computed, ref } from 'vue'
+  import { computed } from 'vue'
   import JsonView from './JsonView.vue'
   import { useScrollLinking } from '@/compositions'
 
@@ -36,9 +36,7 @@
     (event: 'update:modelValue', value: string): void,
   }>()
 
-  const inputArea = ref<HTMLTextAreaElement>()
-  const viewArea = ref<HTMLDivElement>()
-  useScrollLinking(inputArea, viewArea)
+  const { source, target } = useScrollLinking()
 
   const internalValue = computed({
     get() {
