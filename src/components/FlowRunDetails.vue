@@ -39,12 +39,10 @@
   import  WorkQueueIconText  from '@/components/WorkQueueIconText.vue'
   import { FlowRun } from '@/models/FlowRun'
 
-  const props = defineProps<{
+  defineProps<{
     flowRun: FlowRun,
     alternate?: boolean,
   }>()
-
-  console.log('flowRun', props.flowRun)
 </script>
 
 <style>
