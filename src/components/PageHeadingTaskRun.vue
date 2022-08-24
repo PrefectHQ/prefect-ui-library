@@ -46,7 +46,7 @@
 
 
   const crumbs = computed(() => [
-    { text: 'Task Runs', to: flowRunRoute(props.taskRun.flowRunId) },
+    { text: 'Flow Runs', to: flowRunRoute(props.taskRun.flowRunId) },
     { text: props.taskRun.name ?? '' },
   ])
 
