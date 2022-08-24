@@ -23,6 +23,9 @@ export class TaskRunsApi extends Api {
     return this.post<number>('/count', filter).then(({ data }) => data)
   }
 
+  public deleteTaskRun(taskRunId: string): Promise<void> {
+    return this.delete(`/${taskRunId}`)
+  }
 }
 
 export const taskRunsApiKey: InjectionKey<TaskRunsApi> = Symbol('taskRunsApiKey')
