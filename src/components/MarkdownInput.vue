@@ -5,14 +5,13 @@
     </template>
     <template #control="{ attrs }">
       <textarea
-        ref="inputArea"
+        ref="source"
         v-model="internalValue"
         spellcheck="false"
         class="markdown-input__input-area"
         v-bind="attrs"
-        @scroll="handleScroll"
       />
-      <div ref="viewArea" class="markdown-input__view-area">
+      <div ref="target" class="markdown-input__view-area">
         <MarkdownPreview :value="internalValue" class="markdown-input__markdown-view" v-bind="attrs" />
         <!-- This is an important space to scroll link the preview and input elements -->
         &nbsp;
@@ -22,8 +21,9 @@
 </template>
 
 <script lang="ts" setup>
-  import { computed, ref } from 'vue'
+  import { computed } from 'vue'
   import MarkdownPreview from './MarkdownPreview.vue'
+  import { useScrollLinking } from '@/compositions'
 
   const props = defineProps<{
     modelValue: string,
@@ -33,8 +33,7 @@
     (event: 'update:modelValue', value: string): void,
   }>()
 
-  const inputArea = ref<HTMLTextAreaElement>()
-  const viewArea = ref<HTMLDivElement>()
+  const { source, target } = useScrollLinking()
 
   const internalValue = computed({
     get() {
@@ -44,16 +43,6 @@
       emit('update:modelValue', val)
     },
   })
-
-  // This produces a scroll-linking effect
-  const handleScroll = (): void => {
-    if (!inputArea.value || !viewArea.value) {
-      return
-    }
-
-    viewArea.value.scrollTop = inputArea.value.scrollTop
-    viewArea.value.scrollLeft = inputArea.value.scrollLeft
-  }
 </script>
 
 <style>
