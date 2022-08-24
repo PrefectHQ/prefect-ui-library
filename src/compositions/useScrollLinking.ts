@@ -1,9 +1,14 @@
-import { onMounted, onUnmounted, Ref } from 'vue'
+import { onMounted, onUnmounted, ref, Ref } from 'vue'
 
 type DisconnectScrollLink = () => void
+type ScrollLinkReturnValue = {
+  disconnect: DisconnectScrollLink,
+  source: Ref<HTMLElement | undefined>,
+  target: Ref<HTMLElement | undefined>,
+}
 
 /**
- * The useScrollLinking composition takes 2 element references (source, target)
+ * The useScrollLinking composition takes 2 optional element references (source, target)
  * and attaches a scroll event listener to the source. When the scroll event of the
  * source element is fired, the scroll position of the target is updated to match, producing
  * a scroll linking effect.
@@ -13,40 +18,46 @@ type DisconnectScrollLink = () => void
  *
  * @param source Ref<HTMLElement>
  * @param target Ref<HTMLElement>
- * @returns { disconnect: () => void }
+ * @returns ScrollLinkReturnValue
  */
 export function useScrollLinking(
-  source: Ref<HTMLElement | undefined>,
-  target: Ref<HTMLElement | undefined>,
-): { disconnect: DisconnectScrollLink } {
+  source?: Ref<HTMLElement>,
+  target?: Ref<HTMLElement>,
+): ScrollLinkReturnValue {
+  const sourceRef = ref(source)
+  const targetRef = ref(target)
 
   const handleScroll = (): void => {
-    if (!source.value || !target.value) {
+    if (!sourceRef.value || !targetRef.value) {
       return
     }
 
-    target.value.scrollTop = source.value.scrollTop
-    target.value.scrollLeft = source.value.scrollLeft
+    targetRef.value.scrollTop = sourceRef.value.scrollTop
+    targetRef.value.scrollLeft = sourceRef.value.scrollLeft
   }
 
   const connect = (): void => {
-    if (!source.value) {
+    if (!sourceRef.value) {
       return
     }
 
-    source.value.addEventListener('scroll', handleScroll)
+    sourceRef.value.addEventListener('scroll', handleScroll)
   }
 
   const disconnect = (): void => {
-    if (!source.value) {
+    if (!sourceRef.value) {
       return
     }
 
-    source.value.removeEventListener('scroll', handleScroll)
+    sourceRef.value.removeEventListener('scroll', handleScroll)
   }
 
   onMounted(connect)
   onUnmounted(disconnect)
 
-  return { disconnect }
+  return {
+    disconnect,
+    source: sourceRef,
+    target: targetRef,
+  }
 }
