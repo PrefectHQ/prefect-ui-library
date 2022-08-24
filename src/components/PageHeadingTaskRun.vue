@@ -9,7 +9,7 @@
       </p-icon-button-menu>
       <ConfirmDeleteModal
         v-model:showModal="showModal"
-        label="Flow Run"
+        label="Task Run"
         :name="taskRun.name!"
         @delete="deleteTaskRun(taskRun.id)"
       />
