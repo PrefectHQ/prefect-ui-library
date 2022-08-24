@@ -20,7 +20,7 @@ export class Mapper<T extends Maps> {
   public map<S extends keyof T, D extends keyof T[S]>(source: S, value: MapperSourceType<T, S> | undefined, destination: D): MapperDestinationType<T, S, D> | undefined
   public map<S extends keyof T, D extends keyof T[S]>(source: S, value: MapperSourceType<T, S>[], destination: D): MapperDestinationType<T, S, D>[]
   public map<S extends keyof T, D extends keyof T[S]>(source: S, value: MapperSourceType<T, S> | MapperSourceType<T, S>[] | null | undefined, destination: D): MapperDestinationType<T, S, D> | MapperDestinationType<T, S, D>[] | null | undefined {
-    if (value === null) {
+    if (value === null || value === undefined) {
       return value
     }
 

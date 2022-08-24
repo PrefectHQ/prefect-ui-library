@@ -1,7 +1,9 @@
 <template>
   <StateListItem v-model:selected="model" v-bind="{ value, disabled, tags, stateType }" class="task-run-list-item">
     <template #name>
-      <span>{{ taskRun.name }}</span>
+      <router-link class="task-run-list-item__link" :to="taskRunRoute(taskRun.id)">
+        <span>{{ taskRun.name }}</span>
+      </router-link>
     </template>
     <template #meta>
       <StateBadge :state="taskRun.state" />
@@ -26,6 +28,8 @@
   import StateBadge from '@/components/StateBadge.vue'
   import StateListItem from '@/components/StateListItem.vue'
   import { TaskRun } from '@/models/TaskRun'
+  import { taskRunRouteKey } from '@/router'
+  import { inject } from '@/utilities'
 
   const props = defineProps<{
     selected: CheckboxModel | null,
@@ -45,8 +49,16 @@
       emit('update:selected', value)
     },
   })
+  const taskRunRoute = inject(taskRunRouteKey)
 
   const stateType = computed(() => props.taskRun.state?.type)
   const tags = computed(() => props.taskRun.tags)
   const value = computed(() => props.taskRun.id)
 </script>
+
+<style>
+.task-run-list-item__link { @apply
+  font-semibold
+  text-prefect-500
+}
+</style>
