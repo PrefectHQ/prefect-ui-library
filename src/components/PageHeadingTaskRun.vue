@@ -26,11 +26,12 @@
 <script lang="ts" setup>
   import { useSubscription } from '@prefecthq/vue-compositions'
   import { computed } from 'vue'
-  import { StateBadge, PageHeading, DurationIconText, FlowRunIconText, CopyOverflowMenuItem, ConfirmDeleteModal } from '@/components'
+  import { StateBadge, PageHeading, DurationIconText, CopyOverflowMenuItem, ConfirmDeleteModal } from '@/components'
   import { useShowModal } from '@/compositions/useShowModal'
   import { TaskRun } from '@/models'
   import { flowRunRouteKey } from '@/router'
-  import { flowRunsApiKey, taskRunsApiKey } from '@/services'
+  import * as flowRunsApi from '@/services/FlowRunsApi'
+  import { taskRunsApiKey } from '@/services/TaskRunsApi'
   import { canKey } from '@/types'
   import { deleteItem, inject } from '@/utilities'
 
@@ -40,11 +41,11 @@
   const { showModal, open } = useShowModal()
 
   const taskRunsApi = inject(taskRunsApiKey)
-  const flowRunsApi = inject(flowRunsApiKey)
+  const getFlowRun = inject(flowRunsApi.getFlowRunKey, flowRunsApi.getFlowRun)
   const flowRunRoute = inject(flowRunRouteKey)
   const can = inject(canKey)
 
-  const flowRunSubscription = useSubscription(flowRunsApi.getFlowRun, [props.taskRun.flowRunId])
+  const flowRunSubscription = useSubscription(getFlowRun, [props.taskRun.flowRunId])
   const flowRunName = computed(() => flowRunSubscription.response?.name)
 
   const crumbs = computed(() => [
