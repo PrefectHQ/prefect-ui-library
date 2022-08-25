@@ -10,6 +10,12 @@
 
     <p-key-value label="Task Version" :value="taskRun.taskVersion" :alternate="alternate" />
 
+    <p-key-value label="Dynamic Key" :value="taskRun.dynamicKey" :alternate="alternate" />
+
+    <p-key-value label="Cache Key" :value="taskRun.cacheKey" :alternate="alternate" />
+
+    <p-key-value label="Cache Expiration" :value="taskRun.cacheExpiration" :alternate="alternate" />
+
     <p-key-value label="Run Count" :value="taskRun.runCount ?? 0" :alternate="alternate" />
 
     <p-key-value label="Tags" :alternate="alternate">
