@@ -7,10 +7,8 @@
 </template>
 
 <script lang="ts" setup>
-  import { computed } from 'vue'
   import PydanticFormProperty from './PydanticFormProperty.vue'
   import { Schema } from '@/types/schemas'
-  import { resolvePydanticTypeDefinitionFromSchema } from '@/utilities/pydantic'
 
   const props = defineProps<{
     schema: Schema,
