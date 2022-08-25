@@ -31,6 +31,8 @@
         <PageHeadingDeploymentEdit :deployment="deployment" />
         <PageHeadingFlow :flow="flow" />
         <PageHeadingFlowRun :flow-run="flowRun" />
+        <PageHeadingFlowRunRadar :flow-run="flowRun" />
+        <PageHeadingTaskRun :task-run="taskRun" />
         <PageHeadingNotificationCreate />
         <PageHeadingNotificationEdit />
         <PageHeadingWorkQueue :work-queue="queue" />
@@ -58,11 +60,13 @@
   import PageHeadingDeployments from '@/components/PageHeadingDeployments.vue'
   import PageHeadingFlow from '@/components/PageHeadingFlow.vue'
   import PageHeadingFlowRun from '@/components/PageHeadingFlowRun.vue'
+  import PageHeadingFlowRunRadar from '@/components/PageHeadingFlowRunRadar.vue'
   import PageHeadingFlowRuns from '@/components/PageHeadingFlowRuns.vue'
   import PageHeadingFlows from '@/components/PageHeadingFlows.vue'
   import PageHeadingNotificationCreate from '@/components/PageHeadingNotificationCreate.vue'
   import PageHeadingNotificationEdit from '@/components/PageHeadingNotificationEdit.vue'
   import PageHeadingNotifications from '@/components/PageHeadingNotifications.vue'
+  import PageHeadingTaskRun from '@/components/PageHeadingTaskRun.vue'
   import PageHeadingWorkQueue from '@/components/PageHeadingWorkQueue.vue'
   import PageHeadingWorkQueueCreate from '@/components/PageHeadingWorkQueueCreate.vue'
   import PageHeadingWorkQueueEdit from '@/components/PageHeadingWorkQueueEdit.vue'
@@ -78,6 +82,7 @@
   const deployment = mocker.create('deployment', [{ name: 'Production' }])
   const queue = mocker.create('workQueue', [{ name: 'ECS - Prod' }])
   const flowRun = mocker.create('flowRun')
+  const taskRun = mocker.create('taskRun')
 
   const pageHeadingCrumbs = mocker.createMany('noun', 3).map((noun, i) => ({ text: capitalize(noun), to: i !== 0 ? '/nothing' : undefined }))
 </script>

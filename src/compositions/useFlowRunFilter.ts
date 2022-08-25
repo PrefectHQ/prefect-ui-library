@@ -41,7 +41,7 @@ export function useFlowRunFilter(filters: UseFlowRunFilterArgs): Ref<UnionFilter
     }
 
     if (filters.states?.value.length) {
-      const stateFilter: StateFilter = {}
+      const stateFilter: StateFilter = { operator: 'or_' }
 
       filters.states.value.forEach(state => {
         if (isStateType(state)) {
