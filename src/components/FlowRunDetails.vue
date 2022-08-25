@@ -36,6 +36,7 @@
 
 <script lang="ts" setup>
   import { PKeyValue, PTags, formatDateTimeNumeric } from '@prefecthq/prefect-design'
+  import  WorkQueueIconText  from '@/components/WorkQueueIconText.vue'
   import { FlowRun } from '@/models/FlowRun'
 
   defineProps<{
