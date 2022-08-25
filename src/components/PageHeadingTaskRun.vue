@@ -26,7 +26,7 @@
 <script lang="ts" setup>
   import { useSubscription } from '@prefecthq/vue-compositions'
   import { computed } from 'vue'
-  import { StateBadge, PageHeading, DurationIconText, FlowRunIconText, CopyOverflowMenuItem, ConfirmDeleteModal } from '@/components'
+  import { StateBadge, PageHeading, DurationIconText, CopyOverflowMenuItem, ConfirmDeleteModal } from '@/components'
   import { useShowModal } from '@/compositions/useShowModal'
   import { TaskRun } from '@/models'
   import { flowRunRouteKey } from '@/router'
