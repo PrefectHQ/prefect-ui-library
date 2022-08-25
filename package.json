@@ -53,7 +53,7 @@
     },
     "dependencies": {
         "@prefecthq/radar": "0.0.17",
-        "@prefecthq/vue-charts": "0.0.18",
+        "@prefecthq/vue-charts": "0.0.19",
         "@prefecthq/vue-compositions": "0.1.41",
         "axios": "0.27.2",
         "cronstrue": "^2.11.0",
