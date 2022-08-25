@@ -12,11 +12,11 @@
   import { computed, ref } from 'vue'
   import ActivityChart from './ActivityChart.vue'
   import { Flow } from '@/models'
-  import { flowRunsApiKey } from '@/services/FlowRunsApi'
+  import * as flowRunsApi from '@/services/FlowRunsApi'
   import { inject } from '@/utilities/inject'
   import { ceil } from '@/utilities/math'
 
-  const flowRunsApi = inject(flowRunsApiKey)
+  const getFlowRunsHistory = inject(flowRunsApi.getFlowRunsHistoryKey, flowRunsApi.getFlowRunsHistory)
 
   const props = defineProps<{
     flow: Flow,
@@ -43,6 +43,6 @@
     },
   }))
 
-  const historySubscription = useSubscription(flowRunsApi.getFlowRunsHistory, [historyFilter])
+  const historySubscription = useSubscription(getFlowRunsHistory, [historyFilter])
   const history = computed(() => historySubscription.response ?? [])
 </script>

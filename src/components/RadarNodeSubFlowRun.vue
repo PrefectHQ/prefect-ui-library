@@ -35,7 +35,7 @@
   import StateIcon from './StateIcon.vue'
   import { FlowRun, GraphNode, StateType } from '@/models'
   import { flowRunRouteKey } from '@/router'
-  import { flowRunsApiKey } from '@/services'
+  import * as flowRunsApi from '@/services/FlowRunsApi'
   import { inject } from '@/utilities/inject'
 
   const flowRunRoute = inject(flowRunRouteKey)
@@ -48,8 +48,8 @@
     return props.graphNode.state!.stateDetails!.childFlowRunId!
   })
 
-  const flowRunsApi = inject(flowRunsApiKey)
-  const subscription = useSubscription(flowRunsApi.getFlowRun, [flowRunId])
+  const getFlowRun = inject(flowRunsApi.getFlowRunKey, flowRunsApi.getFlowRun)
+  const subscription = useSubscription(getFlowRun, [flowRunId])
 
 
   const flowRun = computed<FlowRun | undefined>(() => {

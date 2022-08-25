@@ -54,7 +54,7 @@
   import RadarNodeSubFlowRun from '@/components/RadarNodeSubFlowRun.vue'
   import RadarNodeTaskRun from '@/components/RadarNodeTaskRun.vue'
   import { GraphNode } from '@/models'
-  import { flowRunsApiKey } from '@/services'
+  import * as flowRunsApi from '@/services/FlowRunsApi'
   import { inject } from '@/utilities/inject'
 
   const radarNodeComponents = {
@@ -74,9 +74,10 @@
     return props.flowRunId
   })
 
-  const flowRunsApi = inject(flowRunsApiKey)
-  const graphSubscription = useSubscription(flowRunsApi.getFlowRunsGraph, [flowRunId])
-  const flowRunSubscription = useSubscription(flowRunsApi.getFlowRun, [flowRunId])
+  const getFlowRunsGraph = inject(flowRunsApi.getFlowRunsGraphKey, flowRunsApi.getFlowRunsGraph)
+  const getFlowRun = inject(flowRunsApi.getFlowRunKey, flowRunsApi.getFlowRun)
+  const graphSubscription = useSubscription(getFlowRunsGraph, [flowRunId])
+  const flowRunSubscription = useSubscription(getFlowRun, [flowRunId])
 
   const flowRunGraphNode = computed(() => {
     if (!flowRunSubscription.response) {

@@ -11,7 +11,7 @@
         v-model:showModal="showModal"
         label="Flow Run"
         :name="flowRun.name!"
-        @delete="deleteFlowRun(flowRun.id)"
+        @delete="remove(flowRun.id)"
       />
     </template>
   </page-heading>
@@ -24,11 +24,11 @@
   import { useShowModal } from '@/compositions/useShowModal'
   import { FlowRun } from '@/models'
   import { flowRunRouteKey, flowRunsRouteKey } from '@/router'
-  import { flowRunsApiKey } from '@/services'
+  import * as flowRunsApi from '@/services/FlowRunsApi'
   import { canKey } from '@/types'
   import { deleteItem, inject } from '@/utilities'
 
-  const flowRunsApi = inject(flowRunsApiKey)
+  const deleteFlowRun = inject(flowRunsApi.deleteFlowRunKey, flowRunsApi.deleteFlowRun)
   const can = inject(canKey)
 
   const props = defineProps<{
@@ -48,8 +48,8 @@
 
   const emit = defineEmits(['delete'])
 
-  const deleteFlowRun = async (id: string): Promise<void> => {
-    await deleteItem(id, flowRunsApi.deleteFlowRun, 'Flow run')
+  const remove = async (id: string): Promise<void> => {
+    await deleteItem(id, deleteFlowRun, 'Flow run')
     emit('delete', id)
   }
 </script>

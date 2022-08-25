@@ -13,7 +13,7 @@
   import { useSubscription } from '@prefecthq/vue-compositions'
   import { reactive, computed } from 'vue'
   import { GraphNode } from '@/models'
-  import { flowRunsApiKey } from '@/services'
+  import * as flowRunsApi from '@/services/FlowRunsApi'
   import { inject } from '@/utilities/inject'
 
   const computedStyle = getComputedStyle(document.body)
@@ -22,9 +22,10 @@
     flowRunId: string,
   }>()
 
-  const flowRunsApi = inject(flowRunsApiKey)
-  const graphSubscription = useSubscription(flowRunsApi.getFlowRunsGraph, [props.flowRunId])
-  const flowRunSubscription = useSubscription(flowRunsApi.getFlowRun, [props.flowRunId])
+  const getFlowRunsGraph = inject(flowRunsApi.getFlowRunsGraphKey, flowRunsApi.getFlowRunsGraph)
+  const getFlowRun = inject(flowRunsApi.getFlowRunKey, flowRunsApi.getFlowRun)
+  const graphSubscription = useSubscription(getFlowRunsGraph, [props.flowRunId])
+  const flowRunSubscription = useSubscription(getFlowRun, [props.flowRunId])
 
   const flowRunGraphNode = computed(() => {
     if (!flowRunSubscription.response) {

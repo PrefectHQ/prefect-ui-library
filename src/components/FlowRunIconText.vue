@@ -11,7 +11,7 @@
   import { computed } from 'vue'
   import { RouterLink } from 'vue-router'
   import { flowRunRouteKey } from '@/router/routes'
-  import { flowRunsApiKey } from '@/services/FlowRunsApi'
+  import * as flowRunsApi from '@/services/FlowRunsApi'
   import { inject } from '@/utilities/inject'
 
   const props = defineProps<{
@@ -20,7 +20,7 @@
 
   const flowRoute = inject(flowRunRouteKey)
 
-  const flowRunsApi = inject(flowRunsApiKey)
-  const flowRunSubscription =  useSubscription(flowRunsApi.getFlowRun, [props.flowRunId])
+  const getFlowRun = inject(flowRunsApi.getFlowRunKey, flowRunsApi.getFlowRun)
+  const flowRunSubscription =  useSubscription(getFlowRun, [props.flowRunId])
   const flowRunName = computed(() => flowRunSubscription.response?.name)
 </script>

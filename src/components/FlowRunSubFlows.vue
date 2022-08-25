@@ -33,7 +33,7 @@
   import { FlowRun } from '@/models/FlowRun'
   import { StateType } from '@/models/StateType'
   import { TaskRun } from '@/models/TaskRun'
-  import { flowRunsApiKey } from '@/services/FlowRunsApi'
+  import * as flowRunsApi from '@/services/FlowRunsApi'
   import { mapper } from '@/services/Mapper'
   import { taskRunsApiKey } from '@/services/TaskRunsApi'
   import { FlowRunSortValues } from '@/types/SortOptionTypes'
@@ -96,8 +96,8 @@
     return subFlowFilter
   })
 
-  const flowRunsApi = inject(flowRunsApiKey)
-  const flowRunsSubscription = usePaginatedSubscription(flowRunsApi.getFlowRuns, [subFlowRunsFilter])
+  const getFlowRuns = inject(flowRunsApi.getFlowRunsKey, flowRunsApi.getFlowRuns)
+  const flowRunsSubscription = usePaginatedSubscription(getFlowRuns, [subFlowRunsFilter])
 
   const flowRuns = computed<FlowRun[]>(() => flowRunsSubscription.response ?? [])
   const empty = computed(() => !flowRunsSubscription.loading && flowRuns.value.length === 0)

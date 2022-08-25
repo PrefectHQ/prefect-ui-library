@@ -47,7 +47,7 @@
   import StateBadge from './StateBadge.vue'
   import FlowRunStartTime from '@/components/FlowRunStartTime.vue'
   import { FlowRun, GraphNode } from '@/models'
-  import { flowRunsApiKey } from '@/services'
+  import * as flowRunsApi from '@/services/FlowRunsApi'
   import { inject } from '@/utilities/inject'
 
   const props = defineProps<{
@@ -58,8 +58,8 @@
     return props.graphNode.id
   })
 
-  const flowRunsApi = inject(flowRunsApiKey)
-  const subscription = useSubscription(flowRunsApi.getFlowRun, [flowRunId])
+  const getFlowRun = inject(flowRunsApi.getFlowRunKey, flowRunsApi.getFlowRun)
+  const subscription = useSubscription(getFlowRun, [flowRunId])
 
   const flowRun = computed<FlowRun | undefined>(() => {
     return subscription.response
