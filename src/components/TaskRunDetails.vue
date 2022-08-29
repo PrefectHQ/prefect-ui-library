@@ -18,9 +18,11 @@
 
     <p-key-value label="Run Count" :value="taskRun.runCount ?? 0" :alternate="alternate" />
 
-    <p-key-value label="Estimated Run Time" :value="taskRun.estimatedRunTime" :alternate="alternate" />
+    <p-key-value label="Estimated Run Time" :value="secondsToApproximateString(taskRun.estimatedRunTime ?? 0)" :alternate="alternate" />
 
-    <p-key-value label="Retries" :value="taskRun.empiricalPolicy?.maxRetries" :alternate="alternate" />
+    <p-key-value label="Retries" :value="taskRun.empiricalPolicy?.retries" :alternate="alternate" />
+
+    <p-key-value v-if="taskRun.empiricalPolicy!.retries" label="Retry Delay" :value="secondsToApproximateString(taskRun.empiricalPolicy?.retryDelay ?? 0)" :alternate="alternate" />
 
     <p-key-value label="Tags" :alternate="alternate">
       <template v-if="taskRun.tags?.length" #value>
@@ -33,6 +35,7 @@
 <script lang="ts" setup>
   import { PKeyValue, PTags, formatDateTimeNumeric } from '@prefecthq/prefect-design'
   import { TaskRun } from '@/models/TaskRun'
+  import { secondsToApproximateString } from '@/utilities/seconds'
 
   defineProps<{
     taskRun: TaskRun,
