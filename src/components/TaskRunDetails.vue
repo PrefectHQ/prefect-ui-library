@@ -18,6 +18,10 @@
 
     <p-key-value label="Run Count" :value="taskRun.runCount ?? 0" :alternate="alternate" />
 
+    <p-key-value label="Estimated Run Time" :value="taskRun.estimatedRunTime" :alternate="alternate" />
+
+    <p-key-value label="Retries" :value="taskRun.empiricalPolicy?.maxRetries" :alternate="alternate" />
+
     <p-key-value label="Tags" :alternate="alternate">
       <template v-if="taskRun.tags?.length" #value>
         <p-tags :tags="taskRun.tags!" />
