@@ -1,14 +1,14 @@
 export interface IEmpiricalPolicy {
-  maxRetries: number | null,
-  retryDelaySeconds: number | null,
+  retries: number | null,
+  retryDelay: number | null,
 }
 
 export class EmpiricalPolicy implements IEmpiricalPolicy {
-  public maxRetries: number | null
-  public retryDelaySeconds: number | null
+  public retries: number | null
+  public retryDelay: number | null
 
   public constructor(empiricalPolicy: IEmpiricalPolicy) {
-    this.maxRetries = empiricalPolicy.maxRetries
-    this.retryDelaySeconds = empiricalPolicy.retryDelaySeconds
+    this.retries = empiricalPolicy.retries
+    this.retryDelay = empiricalPolicy.retryDelay
   }
 }
