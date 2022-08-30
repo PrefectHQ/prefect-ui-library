@@ -9,7 +9,7 @@ export const randomWorkQueue: MockFunction<WorkQueue, [Partial<WorkQueue>?]> = f
     id: this.create('id'),
     created: this.create('date'),
     updated: this.create('date'),
-    name: this.create('noun'),
+    name: this.create('string'),
     filter: this.create('workQueueFilter', [filter]),
     description: this.create('paragraph'),
     isPaused: this.create('boolean'),
