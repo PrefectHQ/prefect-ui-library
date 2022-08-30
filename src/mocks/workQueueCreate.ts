@@ -9,5 +9,6 @@ export const randomWorkQueueCreate: MockFunction<WorkQueueCreate, [Partial<WorkQ
     description,
     isPaused,
     concurrencyLimit,
+    ...overrides,
   }
 }
