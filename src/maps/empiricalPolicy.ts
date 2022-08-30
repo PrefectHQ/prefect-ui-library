@@ -6,6 +6,8 @@ export const mapEmpiricalPolicyResponseToEmpiricalPolicy: MapFunction<EmpiricalP
   return new EmpiricalPolicy({
     retries: source.retries,
     retryDelay: source.retry_delay,
+    maxRetries: source.max_retries,
+    retryDelaySeconds: source.retry_delay_seconds,
   })
 }
 
@@ -13,5 +15,7 @@ export const mapEmpiricalPolicyToEmpiricalPolicyResponse: MapFunction<EmpiricalP
   return {
     'retries': source.retries,
     'retry_delay': source.retryDelay,
+    'max_retries': source.maxRetries,
+    'retry_delay_seconds': source.retryDelaySeconds,
   }
 }
