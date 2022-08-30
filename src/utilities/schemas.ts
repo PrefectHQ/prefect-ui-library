@@ -3,6 +3,7 @@ import { isNumberArray, isStringArray } from './arrays'
 import JsonInput from '@/components/JsonInput.vue'
 import { isEmail, greaterThanOrEqual, greaterThan, lessThan, lessThanOrEqual, isRequired, withMessage, ValidationRule, isValidJsonString } from '@/services'
 import { Schema, schemaHas, SchemaProperty } from '@/types/schemas'
+import { withProps } from '@/utilities/components'
 
 export const INITIAL_PROPERTY_LEVEL = 1
 export const MAX_PROPERTY_LEVEL = 2
@@ -23,13 +24,6 @@ type SchemaPropertyMetaOptions = {
   attrs?: SchemaPropertyInputAttrs,
   validators?: ValidationRule | ValidationRule[],
   required?: boolean,
-}
-
-function factory<T extends Component>(component: T, props: SchemaPropertyMetaComponent<T>['props']): SchemaPropertyMetaComponent<T> {
-  return {
-    component,
-    props,
-  }
 }
 
 type GetSchemaPropertyMetaArgs = {
@@ -56,16 +50,15 @@ export function getSchemaPropertyMeta({ property, schema, key, level }: GetSchem
 }
 
 function getSchemaPropertyMaxLevelMeta(property: SchemaProperty, schema: Schema, key: string): SchemaPropertyMeta | void {
-  const component = factory(JsonInput, {})
-  const { attrs, ...options } = getSchemaPropertyMetaOptions({ type: undefined }, schema, key)
+  const component = withProps(JsonInput, {})
+  const options = getSchemaPropertyMetaOptions({ type: undefined }, schema, key)
+
+  options.attrs ??= {}
+  options.attrs.placeholder ??= {}
 
   return {
     ...component,
     ...options,
-    attrs: {
-      ...attrs,
-      placeholder: attrs?.placeholder ?? '{}',
-    },
   }
 }
 
@@ -85,11 +78,11 @@ function getSchemaPropertyMetaComponent(property: SchemaProperty): SchemaPropert
       return getSchemaPropertyStringMeta(property)
     case 'integer':
     case 'number':
-      return factory(PNumberInput, {})
+      return withProps(PNumberInput, {})
     case 'boolean':
-      return factory(PToggle, {})
+      return withProps(PToggle, {})
     case undefined:
-      return factory(JsonInput, {})
+      return withProps(JsonInput, {})
     default:
       return null
   }
@@ -98,30 +91,30 @@ function getSchemaPropertyMetaComponent(property: SchemaProperty): SchemaPropert
 function getSchemaPropertyStringMeta(property: SchemaProperty): SchemaPropertyMeta {
   switch (property.format) {
     case 'date':
-      return factory(PDateInput, {})
+      return withProps(PDateInput, {})
     case 'date-time':
-      return factory(PDateInput, { showTime: true })
+      return withProps(PDateInput, { showTime: true })
     case 'json-string':
-      return factory(JsonInput, {})
+      return withProps(JsonInput, {})
     case 'time-delta':
-      return factory(PNumberInput, {})
+      return withProps(PNumberInput, {})
     default:
-      return factory(PTextInput, {})
+      return withProps(PTextInput, {})
   }
 }
 
 function getSchemaPropertyArrayMeta(property: SchemaProperty): SchemaPropertyMeta {
   if (isStringArray(property.enum) || isNumberArray(property.enum)) {
-    return factory(PSelect, {
+    return withProps(PSelect, {
       options: property.enum,
     })
   }
 
   if (schemaHas(property, 'items') && property.items.type !== 'string') {
-    return factory(JsonInput, {})
+    return withProps(JsonInput, {})
   }
 
-  return factory(PCombobox, { options: [], allowUnknownValue: true })
+  return withProps(PCombobox, { options: [], allowUnknownValue: true })
 }
 
 function getSchemaPropertyValidators(property: SchemaProperty, schema: Schema, key: string): ValidationRule[] {
