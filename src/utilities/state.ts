@@ -1,6 +1,6 @@
 import { StateType } from '@/models'
 
-export function mapStateNameToStateType(stateName: string): { name: string, type: StateType | null } {
+export function mapStateNameToStateType(stateName: string = 'Unknown'): { name: string, type: StateType | null } {
   switch (stateName.toLowerCase()) {
     case 'completed': return { name: 'Completed', type: 'completed' }
     case 'failed': return { name: 'Failed ', type: 'failed' }

@@ -1,6 +1,6 @@
 <template>
   <p-tag class="state-badge" :class="classes" :dismissible="dismissible">
-    <StateIcon v-if="!stateWithNoType" :state-type="state?.type" :shade="iconShade" class="state-badge__icon" />
+    <StateIcon v-if="!stateWithNoType" :state-type="type" :shade="iconShade" class="state-badge__icon" />
     <span>{{ name }}</span>
   </p-tag>
 </template>
@@ -10,6 +10,7 @@
   import StateIcon from './StateIcon.vue'
   import { StateType } from '@/models/StateType'
   import { TailwindColor } from '@/types/tailwind'
+  import { mapStateNameToStateType } from '@/utilities/state'
 
   const props = defineProps<{
     state: { name: string, type: StateType | null } | null,
@@ -18,7 +19,7 @@
   }>()
 
   const stateWithNoType = computed(() => props.state && !props.state.type)
-  const type = computed(() => props.state?.type ?? 'unknown')
+  const type = computed(() => mapStateNameToStateType(props.state?.name).type)
   const name = computed(() => props.state?.name ?? 'Unknown')
 
   const classes = computed(() => [
