@@ -12,7 +12,7 @@ type CloudConfig = {
 }
 
 function isCloudConfig(config: WorkspaceApiConfig): config is CloudConfig {
-  return 'accountId' in config && 'workspaceId' in config && 'authToken' in config
+  return 'accountId' in config && 'workspaceId' in config && 'token' in config
 }
 
 export type WorkspaceApiConfig = PrefectConfig | CloudConfig
