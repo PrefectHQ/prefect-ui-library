@@ -4,6 +4,8 @@ import { MapFunction } from '@/services/Mapper'
 
 export const mapEmpiricalPolicyResponseToEmpiricalPolicy: MapFunction<EmpiricalPolicyResponse, EmpiricalPolicy> = function(source: EmpiricalPolicyResponse): EmpiricalPolicy {
   return new EmpiricalPolicy({
+    retries: source.retries,
+    retryDelay: source.retry_delay,
     maxRetries: source.max_retries,
     retryDelaySeconds: source.retry_delay_seconds,
   })
@@ -11,6 +13,8 @@ export const mapEmpiricalPolicyResponseToEmpiricalPolicy: MapFunction<EmpiricalP
 
 export const mapEmpiricalPolicyToEmpiricalPolicyResponse: MapFunction<EmpiricalPolicy, EmpiricalPolicyResponse> = function(source: EmpiricalPolicy): EmpiricalPolicyResponse {
   return {
+    'retries': source.retries,
+    'retry_delay': source.retryDelay,
     'max_retries': source.maxRetries,
     'retry_delay_seconds': source.retryDelaySeconds,
   }
