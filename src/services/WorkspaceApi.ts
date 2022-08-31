@@ -1,21 +1,21 @@
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosRequestHeaders, AxiosResponse } from 'axios'
 
-type PrefectConfig = {
+export type PrefectConfig = {
   baseUrl: string,
 }
 
-type CloudConfig = {
+export type PrefectCloudConfig = {
   baseUrl: string,
   accountId: string,
   workspaceId: string,
   token: string,
 }
 
-function isCloudConfig(config: WorkspaceApiConfig): config is CloudConfig {
+function isCloudConfig(config: WorkspaceApiConfig): config is PrefectCloudConfig {
   return 'accountId' in config && 'workspaceId' in config && 'token' in config
 }
 
-export type WorkspaceApiConfig = PrefectConfig | CloudConfig
+export type WorkspaceApiConfig = PrefectConfig | PrefectCloudConfig
 
 export class WorkspaceApi {
 
