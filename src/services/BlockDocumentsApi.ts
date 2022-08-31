@@ -7,6 +7,9 @@ import { BlockDocumentCreate } from '@/models/BlockDocumentCreate'
 import { BlockDocumentFilter } from '@/models/BlockDocumentFilter'
 import { BlockDocumentUpdate } from '@/models/BlockDocumentUpdate'
 
+/**
+ * @deprecated
+ */
 export class BlockDocumentsApi extends Api {
 
   protected override route: ApiRoute = '/block_documents'
@@ -36,4 +39,7 @@ export class BlockDocumentsApi extends Api {
 
 }
 
+/**
+ * @deprecated
+ */
 export const blockDocumentsApiKey: InjectionKey<BlockDocumentsApi> = Symbol('blockDocumentsApiKey')

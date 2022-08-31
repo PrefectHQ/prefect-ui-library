@@ -5,6 +5,9 @@ import { BlockSchemaResponse } from '@/models/api/BlockSchemaResponse'
 import { BlockSchema } from '@/models/BlockSchema'
 import { BlockSchemaFilter } from '@/models/BlockSchemaFilter'
 
+/**
+ * @deprecated
+ */
 export class BlockSchemasApi extends Api {
 
   protected override route: ApiRoute = '/block_schemas'
@@ -21,4 +24,7 @@ export class BlockSchemasApi extends Api {
 
 }
 
+/**
+ * @deprecated
+ */
 export const blockSchemasApiKey: InjectionKey<BlockSchemasApi> = Symbol('blockSchemasApiKey')

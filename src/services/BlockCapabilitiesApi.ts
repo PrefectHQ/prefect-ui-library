@@ -1,6 +1,9 @@
 import { InjectionKey } from 'vue'
 import { Api, ApiRoute } from './Api'
 
+/**
+ * @deprecated
+ */
 export class BlockCapabilitiesApi extends Api {
 
   protected override route: ApiRoute = '/block_capabilities'
@@ -11,4 +14,7 @@ export class BlockCapabilitiesApi extends Api {
 
 }
 
+/**
+ * @deprecated
+ */
 export const blockCapabilitiesApiKey: InjectionKey<BlockCapabilitiesApi> = Symbol('blockCapabilitiesApiKey')

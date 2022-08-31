@@ -7,6 +7,9 @@ import { NotificationFilter } from '@/models/NotificationFilter'
 import { NotificationUpdate } from '@/models/NotificationUpdate'
 import { Api, ApiRoute } from '@/services/Api'
 
+/**
+ * @deprecated
+ */
 export class NotificationsApi extends Api {
 
   protected route: ApiRoute = '/flow_run_notification_policies'
@@ -35,4 +38,7 @@ export class NotificationsApi extends Api {
   }
 }
 
+/**
+ * @deprecated
+ */
 export const notificationsApiKey: InjectionKey<NotificationsApi> = Symbol('notificationsApiKey')

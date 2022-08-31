@@ -8,6 +8,9 @@ import { Api, ApiRoute } from '@/services/Api'
 import { mapper } from '@/services/Mapper'
 import { UnionFilters } from '@/types/UnionFilters'
 
+/**
+ * @deprecated
+ */
 export class DeploymentsApi extends Api {
 
   protected override route: ApiRoute = '/deployments'
@@ -50,4 +53,7 @@ export class DeploymentsApi extends Api {
   }
 }
 
+/**
+ * @deprecated
+ */
 export const deploymentsApiKey: InjectionKey<DeploymentsApi> = Symbol('deploymentsApiKey')

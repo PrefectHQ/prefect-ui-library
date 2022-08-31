@@ -4,9 +4,19 @@ import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios'
 import { ApiRouteParams } from '@/models/ApiRouteParams'
 import { Require } from '@/types/utilities'
 
+/**
+ * @deprecated
+ */
 export type ApiRoute = string | ((params?: ApiRouteParams) => string)
+
+/**
+ * @deprecated
+ */
 export type ApiServer = string | Promise<string>
 
+/**
+ * @deprecated
+ */
 export abstract class Api {
   protected server: ApiServer = ''
   protected route: ApiRoute = ''

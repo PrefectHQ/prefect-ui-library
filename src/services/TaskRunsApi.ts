@@ -5,6 +5,9 @@ import { Api, ApiRoute } from '@/services/Api'
 import { mapper } from '@/services/Mapper'
 import { UnionFilters } from '@/types/UnionFilters'
 
+/**
+ * @deprecated
+ */
 export class TaskRunsApi extends Api {
 
   protected route: ApiRoute = '/task_runs'
@@ -28,4 +31,7 @@ export class TaskRunsApi extends Api {
   }
 }
 
+/**
+ * @deprecated
+ */
 export const taskRunsApiKey: InjectionKey<TaskRunsApi> = Symbol('taskRunsApiKey')
