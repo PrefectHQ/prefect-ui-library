@@ -21,7 +21,7 @@ export class WorkspaceApi {
 
   private readonly workspaceConfig: WorkspaceApiConfig
 
-  protected prefix: string = ''
+  protected routePrefix: string = ''
 
   public constructor(workspaceConfig: WorkspaceApiConfig) {
     this.workspaceConfig = workspaceConfig
@@ -37,15 +37,13 @@ export class WorkspaceApi {
   private get baseUrl(): string {
     const { baseUrl } = this.workspaceConfig
 
-    const base = `${baseUrl}${this.prefix}`
-
     if (isCloudConfig(this.workspaceConfig)) {
       const { accountId, workspaceId } = this.workspaceConfig
 
-      return `${base}/accounts/${accountId}/workspaces/${workspaceId}`
+      return `${baseUrl}/accounts/${accountId}/workspaces/${workspaceId}${this.routePrefix}`
     }
 
-    return base
+    return `${baseUrl}${this.routePrefix}`
   }
 
   private get headers(): AxiosRequestHeaders {

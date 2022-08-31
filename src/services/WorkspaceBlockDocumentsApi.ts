@@ -8,7 +8,7 @@ import { BlockDocumentUpdate } from '@/models/BlockDocumentUpdate'
 
 export class WorkspaceBlockDocumentsApi extends WorkspaceApi {
 
-  protected override prefix = '/block_documents'
+  protected override routePrefix = '/block_documents'
 
   public async getBlockDocument(blockDocumentId: string): Promise<BlockDocument> {
     const { data } = await this.get<BlockDocumentResponse>(`/${blockDocumentId}`)

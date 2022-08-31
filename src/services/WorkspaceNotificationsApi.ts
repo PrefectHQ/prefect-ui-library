@@ -8,7 +8,7 @@ import { NotificationUpdate } from '@/models/NotificationUpdate'
 
 export class WorkspaceNotificationsApi extends WorkspaceApi {
 
-  protected prefix = '/flow_run_notification_policies'
+  protected routePrefix = '/flow_run_notification_policies'
 
   public async getNotification(id: string): Promise<Notification> {
     const { data } = await this.get<NotificationResponse>(`/${id}`)

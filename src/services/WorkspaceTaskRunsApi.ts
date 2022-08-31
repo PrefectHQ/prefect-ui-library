@@ -6,7 +6,7 @@ import { UnionFilters } from '@/types/UnionFilters'
 
 export class WorkspaceTaskRunsApi extends WorkspaceApi {
 
-  protected prefix = '/task_runs'
+  protected routePrefix = '/task_runs'
 
   public async getTaskRun(id: string): Promise<TaskRun> {
     const { data } = await this.get<TaskRunResponse>(`/${id}`)

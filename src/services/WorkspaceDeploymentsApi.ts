@@ -9,7 +9,7 @@ import { UnionFilters } from '@/types/UnionFilters'
 
 export class WorkspaceDeploymentsApi extends WorkspaceApi {
 
-  protected override prefix = '/deployments'
+  protected override routePrefix = '/deployments'
 
   public async getDeployment(deploymentId: string): Promise<Deployment> {
     const { data } = await this.get<DeploymentResponse>(`/${deploymentId}`)

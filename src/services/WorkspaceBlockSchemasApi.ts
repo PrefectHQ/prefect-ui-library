@@ -6,7 +6,7 @@ import { BlockSchemaFilter } from '@/models/BlockSchemaFilter'
 
 export class WorkspaceBlockSchemasApi extends WorkspaceApi {
 
-  protected override prefix = '/block_schemas'
+  protected override routePrefix = '/block_schemas'
 
   public async getBlockSchema(blockSchemaId: string): Promise<BlockSchema> {
     const { data } = await this.get<BlockSchemaResponse>(`/${blockSchemaId}`)

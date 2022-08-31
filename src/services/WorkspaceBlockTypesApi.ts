@@ -8,7 +8,7 @@ import { BlockTypeFilter } from '@/models/BlockTypeFilter'
 
 export class WorkspaceBlockTypesApi extends WorkspaceApi {
 
-  protected override prefix = '/block_types'
+  protected override routePrefix = '/block_types'
 
   public async getBlockType(blockTypeId: string): Promise<BlockType> {
     const { data } = await this.get<BlockTypeResponse>(`/${blockTypeId}`)

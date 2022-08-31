@@ -5,7 +5,7 @@ import { UnionFilters } from '@/types'
 
 export class WorkspaceFlowsApi extends WorkspaceApi {
 
-  protected override prefix = '/flows'
+  protected override routePrefix = '/flows'
 
   public async getFlow(flowId: string): Promise<Flow> {
     const { data } = await this.get<FlowResponse>(`/${flowId}`)

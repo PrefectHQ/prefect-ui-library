@@ -6,7 +6,7 @@ import { LogsRequestFilter } from '@/types/LogsRequestFilter'
 
 export class WorkspaceLogsApi extends WorkspaceApi {
 
-  protected prefix = '/logs'
+  protected routePrefix = '/logs'
 
   public async getLogs(filter: LogsRequestFilter = {}): Promise<Log[]> {
     const { data } = await this.post<LogResponse[]>('/filter', filter)

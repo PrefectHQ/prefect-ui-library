@@ -10,7 +10,7 @@ import { FlowRunsHistoryFilter, UnionFilters } from '@/types/UnionFilters'
 
 export class WorkspaceFlowRunsApi extends WorkspaceApi {
 
-  protected prefix = '/flow_runs'
+  protected routePrefix = '/flow_runs'
 
   public async getFlowRun(id: string): Promise<FlowRun> {
     const { data } = await this.get<FlowRunResponse>(`/${id}`)
