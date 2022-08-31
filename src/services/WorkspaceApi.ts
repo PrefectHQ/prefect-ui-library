@@ -60,41 +60,41 @@ export class WorkspaceApi {
     return headers
   }
 
-  protected get instance(): AxiosInstance {
+  protected instance(): AxiosInstance {
     return axios.create(this.config)
   }
 
   protected get<T, R = AxiosResponse<T>>(url: string, config?: AxiosRequestConfig): Promise<R> {
-    return this.instance.get(url, config)
+    return this.instance().get(url, config)
   }
 
   protected delete<T, R = AxiosResponse<T>>(url: string, config?: AxiosRequestConfig): Promise<R> {
-    return this.instance.delete(url, config)
+    return this.instance().delete(url, config)
   }
 
   protected head<T, R = AxiosResponse<T>>(url: string, config?: AxiosRequestConfig): Promise<R> {
-    return this.instance.head(url, config)
+    return this.instance().head(url, config)
   }
 
   protected options<T, R = AxiosResponse<T>>(url: string, config?: AxiosRequestConfig): Promise<R> {
-    return this.instance.options(url, config)
+    return this.instance().options(url, config)
   }
 
   // axios uses any for the data argument
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   protected post<T, R = AxiosResponse<T>>(url: string, data?: any, config?: AxiosRequestConfig): Promise<R> {
-    return this.instance.post(url, data, config)
+    return this.instance().post(url, data, config)
   }
 
   // axios uses any for the data argument
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   protected put<T, R = AxiosResponse<T>>(url: string, data?: any, config?: AxiosRequestConfig): Promise<R> {
-    return this.instance.put(url, data, config)
+    return this.instance().put(url, data, config)
   }
 
   // axios uses any for the data argument
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   protected patch<T, R = AxiosResponse<T>>(url: string, data?: any, config?: AxiosRequestConfig): Promise<R> {
-    return this.instance.patch(url, data, config)
+    return this.instance().patch(url, data, config)
   }
 }
