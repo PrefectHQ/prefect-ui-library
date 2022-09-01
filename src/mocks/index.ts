@@ -25,7 +25,7 @@ import { randomNotification } from './notification'
 import { randomNumber } from './number'
 import { randomParameters } from './parameters'
 import { randomSchedule } from './schedule'
-import { randomSchema, randomSchemaProperty } from './schemas'
+import { randomSchema, randomSchemaProperties, randomSchemaProperty } from './schemas'
 import { randomState } from './state'
 import { randomStateType } from './stateType'
 import { randomChar, randomString, randomSentence, randomParagraph, randomRunName, randomNoun } from './string'
@@ -70,6 +70,7 @@ export const mocks = {
   schedule: randomSchedule,
   schema: randomSchema,
   schemaProperty: randomSchemaProperty,
+  schemaProperties: randomSchemaProperties,
   sentence: randomSentence,
   state: randomState,
   stateType: randomStateType,

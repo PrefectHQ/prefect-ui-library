@@ -57,15 +57,3 @@ export function capitalize<T extends string>(value: T): Capitalize<T> {
 
   return `${firstLetterCapitalized}${rest}` as Capitalize<T>
 }
-
-export function parseUnknownJson(value: unknown): unknown {
-  if (typeof value === 'string') {
-    try {
-      return JSON.parse(value)
-    } catch {
-      // silence is golden
-    }
-  }
-
-  return value
-}

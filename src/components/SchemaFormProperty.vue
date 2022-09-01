@@ -1,74 +1,45 @@
 <template>
   <div class="schema-form-property">
-    <template v-if="hasSubProperties">
-      <h3 class="schema-form-property__section-header">
-        <span>{{ property.title }}</span>
-      </h3>
-    </template>
-
-    <template v-if="hasSubProperties && level < 2">
-      <template v-for="(subProperty, key) in property.properties" :key="key">
-        <SchemaFormProperty :prop-key="`${propKey}.${key}`" :property="subProperty" :level="level + 1" />
-      </template>
-    </template>
-
-    <template v-else>
-      <component
-        :is="formComponent"
-        class="schema-form-property__component"
-        :class="classes.component"
-        :prop-key="propKey"
-        :property="property"
-        :level="level"
-      />
-    </template>
+    <component :is="is" v-bind="{ property, propKey }" />
   </div>
 </template>
 
 <script lang="ts" setup>
-  import { computed, withDefaults } from 'vue'
+  import { computed } from 'vue'
   import SchemaFormInput from './SchemaFormInput.vue'
+  import SchemaFormProperties from './SchemaFormProperties.vue'
   import SchemaFormPropertyAllOf from './SchemaFormPropertyAllOf.vue'
   import SchemaFormPropertyAnyOf from './SchemaFormPropertyAnyOf.vue'
-  import { SchemaProperty } from '@/types/schemas'
+  import { SchemaProperty, schemaHas } from '@/types/schemas'
 
-  const props = withDefaults(defineProps<{
-    level?: number,
+  const props = defineProps<{
     propKey: string,
     property: SchemaProperty,
-  }>(), {
-    level: 0,
-  })
+  }>()
 
-  const hasSubProperties = computed(() => !!props.property.properties)
-
-  const classes = computed(() => ({
-    component: `schema-form-property__component--level-${props.level}`,
-  }))
-
-  const formComponent = computed(() => {
-    if (props.property.anyOf) {
-      return SchemaFormPropertyAnyOf
+  const is = computed(() => {
+    if (schemaHas(props.property, 'meta')) {
+      return SchemaFormInput
     }
 
-    if (props.property.allOf) {
+    if (schemaHas(props.property, 'properties')) {
+      return SchemaFormProperties
+    }
+
+    if (schemaHas(props.property, 'allOf')) {
       return SchemaFormPropertyAllOf
     }
 
-    return SchemaFormInput
+    if (schemaHas(props.property, 'anyOf')) {
+      return SchemaFormPropertyAnyOf
+    }
+
+    return null
   })
 </script>
 
 <style>
-.schema-form-property__section-header { @apply
-  font-medium
-}
-
 .schema-form-property__component { @apply
   pl-2
-}
-
-.schema-form-property__component--level-0 { @apply
-  pl-0
 }
 </style>

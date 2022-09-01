@@ -8,6 +8,10 @@
       Reload form
     </p-button>
 
+    <p-button size="sm" class="mt-2 ml-2" @click="generateSchema">
+      Generate schema
+    </p-button>
+
     <div class="text-xs my-2">
       (Reload the form to update default values)
     </div>
@@ -52,9 +56,15 @@
     showForm.value = true
   }
 
+  const generateSchema = (): void => {
+    rawSchema.value = JSON.stringify(mocker.create('schema'), undefined, 2)
+  }
+
   const handleSubmit = (value: SchemaValues): void => {
     console.log('form submitted', value)
   }
+
+  generateSchema()
 </script>
 
 <style>

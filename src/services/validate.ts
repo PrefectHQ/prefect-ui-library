@@ -5,7 +5,8 @@ import { isEmptyArray } from '@/utilities/arrays'
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type ValidationValue = any
-export type ValidateMethod = (value: ValidationValue) => boolean | Promise<string | boolean>
+export type ValidateMethod = (value: ValidationValue) => boolean | Promise<boolean>
+export type ValidationRule = (value: ValidationValue) => true | string | Promise<true | string>
 
 export function withMessage(validate: ValidateMethod, message: string) {
   return async (value: ValidationValue) => await validate(value) ? true : message

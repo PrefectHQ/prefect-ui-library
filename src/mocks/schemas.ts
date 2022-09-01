@@ -1,5 +1,5 @@
 import { MockFunction } from '@/services'
-import { SchemaStringFormats, SchemaTypes, Schema, SchemaProperty } from '@/types/schemas'
+import { SchemaStringFormats, SchemaTypes, Schema, SchemaProperty, SchemaProperties } from '@/types/schemas'
 import { kebabCase } from '@/utilities'
 import { choice } from '@/utilities/arrays'
 import { uniform } from '@/utilities/math'
@@ -34,22 +34,30 @@ export const randomSchemaProperty: MockFunction<SchemaProperty, [SchemaProperty?
     type: propertyType,
     description: uniform(0, 10) > 7 ? this.create('sentence') : undefined,
     default: propertyType == 'object' || uniform(0, 10) > 4 ? defaultTypeMap[propertyType] : undefined,
+    properties: propertyType === 'object' ? this.create('schemaProperties') : undefined,
     ...propertyFormat ? { format: propertyFormat } : {},
     ...overrides,
   }
 }
 
 export const randomSchema: MockFunction<Schema, [Schema?]> = function(overrides = {}) {
-  const numberOfProperties = uniform(0, 30)
-  const properties = Array.from({ length: numberOfProperties }, () => this.create('schemaProperty')).reduce<Schema['properties']>((properties = {}, property) => {
+  return {
+    title: 'Open API Schema',
+    type: 'object',
+    properties: this.create('schemaProperties'),
+    ...overrides,
+  }
+}
+
+export const randomSchemaProperties: MockFunction<SchemaProperties, [SchemaProperties?]> = function(overrides = {}) {
+  const properties = this.createMany('schemaProperty', this.create('number', [0, 5])).reduce<Schema['properties']>((properties = {}, property) => {
     properties[kebabCase(property.title!)] = property
+
     return properties
   }, {})
 
   return {
-    title: 'Open API Schema',
-    type: 'object',
-    properties: properties,
+    ...properties,
     ...overrides,
   }
 }

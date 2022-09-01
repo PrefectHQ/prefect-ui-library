@@ -26,6 +26,7 @@
 <script lang="ts" setup>
   import { computed, ref } from 'vue'
   import JsonView from './JsonView.vue'
+  import { stringify } from '@/utilities/json'
 
   const props = defineProps<{
     modelValue: string | undefined,
@@ -60,7 +61,7 @@
 
   const format = (): void => {
     try {
-      internalValue.value = JSON.stringify(JSON.parse(internalValue.value), undefined, 2)
+      internalValue.value = stringify(JSON.parse(internalValue.value))
     } catch {
       // do nothing
     }
