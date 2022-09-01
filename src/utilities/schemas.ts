@@ -51,7 +51,7 @@ function getSchemaPropertyMaxLevelMeta(schema: Schema, key: string): SchemaPrope
   const options = getSchemaPropertyMetaOptions({ type: undefined }, schema, key)
 
   options.attrs ??= {}
-  options.attrs.placeholder ??= {}
+  options.attrs.placeholder ??= '{}'
 
   return {
     ...component,
