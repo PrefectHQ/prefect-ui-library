@@ -46,7 +46,7 @@ export function getSchemaPropertyMeta({ property, schema, key, level }: GetSchem
   return { ...component, ...options }
 }
 
-function getSchemaPropertyMaxLevelMeta(property: SchemaProperty, schema: Schema, key: string): SchemaPropertyMeta | void {
+function getSchemaPropertyMaxLevelMeta(schema: Schema, key: string): SchemaPropertyMeta | void {
   const component = withProps(JsonInput)
   const options = getSchemaPropertyMetaOptions({ type: undefined }, schema, key)
 
@@ -69,7 +69,7 @@ function getSchemaPropertyMetaOptions(property: SchemaProperty, schema: Schema, 
 
 function getSchemaPropertyMetaComponent(property: SchemaProperty): SchemaPropertyMetaComponent | null {
   if (property.blockReference) {
-    return factory(BlockDocumentInput, {
+    return withProps(BlockDocumentInput, {
       blockTypeSlug: property.blockReference.blockTypeSlug,
     })
   }
