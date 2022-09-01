@@ -2,12 +2,14 @@ import { PTextInput, PToggle, PDateInput, PNumberInput, PCombobox, PSelect } fro
 import { isNumberArray, isStringArray } from './arrays'
 import BlockDocumentInput from '@/components/BlockDocumentInput.vue'
 import JsonInput from '@/components/JsonInput.vue'
+import { NoSchemaPropertyDefaultValueError } from '@/models/NoSchemaPropertyDefaultValueError'
 import { isEmail, greaterThanOrEqual, greaterThan, lessThan, lessThanOrEqual, isRequired, withMessage, ValidationRule, isValidJsonString } from '@/services'
 import { Schema, schemaHas, SchemaProperty } from '@/types/schemas'
 import { withPropsWithoutExcludedFactory } from '@/utilities/components'
 
 export const INITIAL_PROPERTY_LEVEL = 1
 export const MAX_PROPERTY_LEVEL = 2
+export const MAX_PROPERTY_DEFAULT_VALUE = ''
 
 const withProps = withPropsWithoutExcludedFactory('modelValue')
 
@@ -28,6 +30,26 @@ type GetSchemaPropertyMetaArgs = {
   schema: Schema,
   key: string,
   level: number,
+}
+
+// using any here means we can make an assumption that this is going to give us the correct typescript type for a schema property type
+// Don't usually do this, but writing the types and overloads for this would be large and probably not worth it
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function getSchemaPropertyDefaultValue({ type }: SchemaProperty): any {
+  switch (type) {
+    case 'object':
+      return {}
+    case 'null':
+      throw new NoSchemaPropertyDefaultValueError()
+    case 'array':
+      return []
+    case undefined:
+    case 'boolean':
+    case 'integer':
+    case 'number':
+    case 'string':
+      return null
+  }
 }
 
 export function getSchemaPropertyMeta({ property, schema, key, level }: GetSchemaPropertyMetaArgs): SchemaPropertyMeta | void {
