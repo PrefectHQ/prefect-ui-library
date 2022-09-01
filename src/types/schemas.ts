@@ -1,6 +1,5 @@
 import { Require } from './utilities'
 import { BlockSchemaReference, BlockSchemaReferences } from '@/models'
-import { SchemaResponse } from '@/models/api/SchemaResponse'
 import { SchemaPropertyMeta } from '@/utilities'
 
 export type SchemaValue = unknown
