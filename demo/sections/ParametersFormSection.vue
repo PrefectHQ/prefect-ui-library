@@ -3,6 +3,9 @@
     <p-label label="Schema">
       <JsonInput v-model="rawSchema" class="demo-parameters-form-section__json-input" />
     </p-label>
+    <p-label label="Value">
+      <JsonView :value="rawValue" />
+    </p-label>
 
     <p-button size="sm" class="mt-2" @click="reloadForm">
       Reload form
@@ -26,6 +29,7 @@
   import { computed, nextTick, watch, ref, toRaw } from 'vue'
   import DemoSection from '../components/DemoSection.vue'
   import JsonInput from '@/components/JsonInput.vue'
+  import JsonView from '@/components/JsonView.vue'
   import SchemaForm from '@/components/SchemaForm.vue'
   import { mocker, mapper } from '@/services'
   import { Schema, SchemaValues } from '@/types/schemas'
@@ -33,7 +37,7 @@
 
   const value = ref({})
   const showForm = ref(true)
-  const rawSchema = ref(JSON.stringify(mocker.create('schema'), undefined, 2))
+  const rawSchema = ref(stringify(mocker.create('schema')))
 
   const schema = computed<Schema>(() => {
     try {
@@ -43,9 +47,12 @@
       return mapped
     } catch (error) {
       console.error(error)
+
       return {}
     }
   })
+
+  const rawValue = computed(() => stringify(value.value))
 
   watch(value, () => {
     console.log({ value: toRaw(value.value) })
@@ -59,7 +66,12 @@
 
   const generateSchema = async (): Promise<void> => {
     showForm.value = false
-    rawSchema.value = stringify(mocker.create('schema'))
+    const schemaMock = mocker.create('schema')
+    const schema = mapper.map('SchemaResponse', schemaMock, 'Schema')
+
+    value.value = mapper.map('SchemaValuesResponse', { values: {}, schema }, 'SchemaValues')
+    rawSchema.value = stringify(schemaMock)
+
     await nextTick()
     showForm.value = true
   }
