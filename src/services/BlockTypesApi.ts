@@ -7,6 +7,9 @@ import { BlockDocument } from '@/models/BlockDocument'
 import { BlockType } from '@/models/BlockType'
 import { BlockTypeFilter } from '@/models/BlockTypeFilter'
 
+/**
+ * @deprecated
+ */
 export class BlockTypesApi extends Api {
 
   protected override route: ApiRoute = '/block_types'
@@ -33,4 +36,7 @@ export class BlockTypesApi extends Api {
 
 }
 
+/**
+ * @deprecated
+ */
 export const blockTypesApiKey: InjectionKey<BlockTypesApi> = Symbol('blockTypesApiKey')

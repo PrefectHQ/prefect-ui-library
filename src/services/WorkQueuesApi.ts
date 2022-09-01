@@ -5,6 +5,9 @@ import { Api, ApiRoute } from '@/services/Api'
 import { mapper } from '@/services/Mapper'
 import { PaginatedFilter } from '@/types/UnionFilters'
 
+/**
+ * @deprecated
+ */
 export class WorkQueuesApi extends Api {
 
   protected route: ApiRoute = '/work_queues'
@@ -53,4 +56,7 @@ export class WorkQueuesApi extends Api {
   }
 }
 
+/**
+ * @deprecated
+ */
 export const workQueuesApiKey: InjectionKey<WorkQueuesApi> = Symbol('workQueuesApiKey')
