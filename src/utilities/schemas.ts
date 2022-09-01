@@ -141,13 +141,13 @@ function getSchemaPropertyValidators(property: SchemaProperty, schema: Schema, k
   const greaterThanOrEqualValue = property.minLength ?? property.minimum ?? property.minItems
 
   if (greaterThanOrEqualValue !== undefined) {
-    validators.push(withMessage(greaterThanOrEqual(greaterThanOrEqualValue), `${title} must be greater than or equal to ${property.minLength}`))
+    validators.push(withMessage(greaterThanOrEqual(greaterThanOrEqualValue), `${title} must be greater than or equal to ${greaterThanOrEqualValue}`))
   }
 
   const lessThanOrEqualValue = property.maxLength ?? property.maximum ?? property.maxItems
 
   if (lessThanOrEqualValue !== undefined) {
-    validators.push(withMessage(lessThanOrEqual(lessThanOrEqualValue), `${title} must be less than or equal to ${property.maxLength}`))
+    validators.push(withMessage(lessThanOrEqual(lessThanOrEqualValue), `${title} must be less than or equal to ${lessThanOrEqualValue}`))
   }
 
   if (property.exclusiveMinimum !== undefined) {
