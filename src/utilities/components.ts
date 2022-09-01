@@ -1,5 +1,5 @@
-export type Component = { $props: any }
-export type ComponentDefinition = { new(...args: any[]): Component }
+export type Component = { $props: unknown }
+export type ComponentDefinition = { new(...args: unknown[]): Component }
 
 type WithPropsArgs<T extends ComponentDefinition, E extends string = '', P = InstanceType<T>['$props']> = Omit<Partial<P>, E> extends Omit<P, E>
   ? [ component: T, props?: Omit<P, E> ]
