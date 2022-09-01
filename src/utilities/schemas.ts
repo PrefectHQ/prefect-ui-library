@@ -1,30 +1,26 @@
-import { PTextInput, PToggle, PTextarea, PDateInput, PNumberInput, PCombobox, PSelect } from '@prefecthq/prefect-design'
+import { PTextInput, PToggle, PDateInput, PNumberInput, PCombobox, PSelect } from '@prefecthq/prefect-design'
 import { isNumberArray, isStringArray } from './arrays'
 import JsonInput from '@/components/JsonInput.vue'
 import { isEmail, greaterThanOrEqual, greaterThan, lessThan, lessThanOrEqual, isRequired, withMessage, ValidationRule, isValidJsonString } from '@/services'
 import { Schema, schemaHas, SchemaProperty } from '@/types/schemas'
-import { withProps } from '@/utilities/components'
+import { withPropsWithoutExcludedFactory } from '@/utilities/components'
 
 export const INITIAL_PROPERTY_LEVEL = 1
 export const MAX_PROPERTY_LEVEL = 2
 
-const components = [PToggle, PTextInput, PTextarea, JsonInput, PDateInput, PNumberInput, PCombobox, PSelect] as const
-type Component = typeof components[number]
-
-type SchemaPropertyInputAttrs = Record<string, unknown>
+const withProps = withPropsWithoutExcludedFactory('modelValue')
 
 export type SchemaPropertyMeta = SchemaPropertyMetaComponent & SchemaPropertyMetaOptions
 
-type SchemaPropertyMetaComponent<T extends Component = Component> = {
-  component: T,
-  props: Omit<InstanceType<T>['$props'], 'modelValue'>,
-}
+type SchemaPropertyMetaComponent = ReturnType<typeof withProps>
 
 type SchemaPropertyMetaOptions = {
   attrs?: SchemaPropertyInputAttrs,
   validators?: ValidationRule | ValidationRule[],
   required?: boolean,
 }
+
+type SchemaPropertyInputAttrs = Record<string, unknown>
 
 type GetSchemaPropertyMetaArgs = {
   property: SchemaProperty,
@@ -50,7 +46,7 @@ export function getSchemaPropertyMeta({ property, schema, key, level }: GetSchem
 }
 
 function getSchemaPropertyMaxLevelMeta(property: SchemaProperty, schema: Schema, key: string): SchemaPropertyMeta | void {
-  const component = withProps(JsonInput, {})
+  const component = withProps(JsonInput)
   const options = getSchemaPropertyMetaOptions({ type: undefined }, schema, key)
 
   options.attrs ??= {}
@@ -73,37 +69,37 @@ function getSchemaPropertyMetaOptions(property: SchemaProperty, schema: Schema, 
 function getSchemaPropertyMetaComponent(property: SchemaProperty): SchemaPropertyMetaComponent | null {
   switch (property.type) {
     case 'array':
-      return getSchemaPropertyArrayMeta(property)
+      return getSchemaPropertyArrayMetaComponent(property)
     case 'string':
-      return getSchemaPropertyStringMeta(property)
+      return getSchemaPropertyStringMetaComponent(property)
     case 'integer':
     case 'number':
-      return withProps(PNumberInput, {})
+      return withProps(PNumberInput)
     case 'boolean':
-      return withProps(PToggle, {})
+      return withProps(PToggle)
     case undefined:
-      return withProps(JsonInput, {})
+      return withProps(JsonInput)
     default:
       return null
   }
 }
 
-function getSchemaPropertyStringMeta(property: SchemaProperty): SchemaPropertyMeta {
+function getSchemaPropertyStringMetaComponent(property: SchemaProperty): SchemaPropertyMeta {
   switch (property.format) {
     case 'date':
-      return withProps(PDateInput, {})
+      return withProps(PDateInput)
     case 'date-time':
       return withProps(PDateInput, { showTime: true })
     case 'json-string':
-      return withProps(JsonInput, {})
+      return withProps(JsonInput)
     case 'time-delta':
-      return withProps(PNumberInput, {})
+      return withProps(PNumberInput)
     default:
-      return withProps(PTextInput, {})
+      return withProps(PTextInput)
   }
 }
 
-function getSchemaPropertyArrayMeta(property: SchemaProperty): SchemaPropertyMeta {
+function getSchemaPropertyArrayMetaComponent(property: SchemaProperty): SchemaPropertyMeta {
   if (isStringArray(property.enum) || isNumberArray(property.enum)) {
     return withProps(PSelect, {
       options: property.enum,
@@ -111,7 +107,7 @@ function getSchemaPropertyArrayMeta(property: SchemaProperty): SchemaPropertyMet
   }
 
   if (schemaHas(property, 'items') && property.items.type !== 'string') {
-    return withProps(JsonInput, {})
+    return withProps(JsonInput)
   }
 
   return withProps(PCombobox, { options: [], allowUnknownValue: true })
