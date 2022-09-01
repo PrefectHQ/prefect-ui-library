@@ -35,20 +35,31 @@ type GetSchemaPropertyMetaArgs = {
 // using any here means we can make an assumption that this is going to give us the correct typescript type for a schema property type
 // Don't usually do this, but writing the types and overloads for this would be large and probably not worth it
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function getSchemaPropertyDefaultValue({ type }: SchemaProperty): any {
-  switch (type) {
+export function getSchemaPropertyDefaultValue(property: SchemaProperty): any {
+  switch (property.type) {
     case 'object':
       return {}
     case 'null':
       throw new NoSchemaPropertyDefaultValueError()
     case 'array':
       return []
+    case 'string':
+      return getSchemaPropertyStringDefaultValue(property)
     case undefined:
     case 'boolean':
     case 'integer':
     case 'number':
-    case 'string':
       return null
+  }
+}
+
+export function getSchemaPropertyStringDefaultValue({ format }: SchemaProperty): null | string {
+  switch (format) {
+    case 'date':
+    case 'date-time':
+      return null
+    default:
+      return ''
   }
 }
 
