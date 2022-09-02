@@ -1,23 +1,30 @@
 <template>
   <DemoSection heading="Parameters Form">
-    <p-label label="Schema">
-      <JsonInput v-model="rawSchema" class="demo-parameters-form-section__json-input" />
-    </p-label>
-    <p-label label="Value">
-      <JsonView :value="rawValue" />
-    </p-label>
+    <p-content>
+      <p-label label="Schema">
+        <JsonInput v-model="rawSchema" class="demo-parameters-form-section__json-input" />
+      </p-label>
+      <p-label label="Value">
+        <JsonView :value="rawValue" />
+      </p-label>
+      <p-label label="Request">
+        <JsonView :value="requestRawValue" />
+      </p-label>
 
-    <p-button size="sm" class="mt-2" @click="reloadForm">
-      Reload form
-    </p-button>
+      <div class="flex gap-2">
+        <p-button size="sm" @click="reloadForm">
+          Reload form
+        </p-button>
 
-    <p-button size="sm" class="mt-2 ml-2" @click="generateSchema">
-      Generate schema
-    </p-button>
+        <p-button size="sm" @click="generateSchema">
+          Generate schema
+        </p-button>
+      </div>
 
-    <div class="text-xs my-2">
-      (Reload the form to update default values)
-    </div>
+      <div class="text-xs">
+        (Reload the form to update default values)
+      </div>
+    </p-content>
 
     <p-divider class="my-4" />
 
@@ -53,6 +60,7 @@
   })
 
   const rawValue = computed(() => stringify(value.value))
+  const requestRawValue = computed(() => stringify(mapper.map('SchemaValuesRequest', { values: value.value, schema: schema.value }, 'SchemaValues')))
 
   watch(value, () => {
     console.log({ value: toRaw(value.value) })
