@@ -28,15 +28,10 @@
   import JsonView from './JsonView.vue'
   import { stringify } from '@/utilities/json'
 
-  const props = defineProps({
-    modelValue: {
-      type: String,
-      default: undefined,
-    },
-    showFormatButton: {
-      type: Boolean,
-    },
-  })
+  const props = defineProps<{
+    modelValue: string | undefined,
+    showFormatButton?: boolean,
+  }>()
 
   const emit = defineEmits<{
     (event: 'update:modelValue', value: string): void,

@@ -49,9 +49,7 @@ export const mapSchemaValuesRequestToSchemaValues: MapFunction<MapSchemaValuesSo
   }
 
   const formatMaxLevelProperty = (value: SchemaValue): unknown => {
-    const parsed = parseUnknownJson(value) ?? MAX_PROPERTY_DEFAULT_VALUE
-    console.log('here', { value, parsed })
-    return parsed
+    return parseUnknownJson(value) ?? MAX_PROPERTY_DEFAULT_VALUE
   }
 
   const formatObjectProperty = (value: SchemaValue, property: SchemaProperty, level: number): SchemaValue => {
