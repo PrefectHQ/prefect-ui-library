@@ -67,7 +67,7 @@ export function getSchemaPropertyStringDefaultValueForComponent({ format }: Sche
   }
 }
 
-export function isSchemaPropertyDefaultValue(property: SchemaProperty, value: unknown, level: number): boolean {
+export function isSchemaPropertyDefaultValueForComponent(property: SchemaProperty, value: unknown, level: number): boolean {
   try {
     const defaultValue = getSchemaPropertyDefaultValueForComponent(property, level)
 

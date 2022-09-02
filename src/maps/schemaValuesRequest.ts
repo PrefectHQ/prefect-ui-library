@@ -1,6 +1,6 @@
 import { MapFunction } from '@/services/Mapper'
 import { Schema, SchemaProperty, SchemaValue, SchemaValues } from '@/types/schemas'
-import { INITIAL_PROPERTY_LEVEL, isDate, isSchemaPropertyDefaultValue, MAX_PROPERTY_DEFAULT_VALUE, MAX_PROPERTY_LEVEL } from '@/utilities'
+import { INITIAL_PROPERTY_LEVEL, isDate, isSchemaPropertyDefaultValueForComponent, MAX_PROPERTY_DEFAULT_VALUE, MAX_PROPERTY_LEVEL } from '@/utilities'
 import { parseUnknownJson } from '@/utilities/json'
 
 type MapSchemaValuesSource = {
@@ -18,7 +18,7 @@ export const mapSchemaValuesRequestToSchemaValues: MapFunction<MapSchemaValuesSo
       if (property) {
         const value = formatSchemaValue(values[key], property, propertyLevel)
 
-        if (!isSchemaPropertyDefaultValue(property, value, propertyLevel)) {
+        if (!isSchemaPropertyDefaultValueForComponent(property, value, propertyLevel)) {
           result[key] = value
         }
       }
