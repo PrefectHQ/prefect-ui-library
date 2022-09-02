@@ -35,7 +35,11 @@ type GetSchemaPropertyMetaArgs = {
 // using any here means we can make an assumption that this is going to give us the correct typescript type for a schema property type
 // Don't usually do this, but writing the types and overloads for this would be large and probably not worth it
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function getSchemaPropertyDefaultValue(property: SchemaProperty): any {
+export function getSchemaPropertyDefaultValueForComponent(property: SchemaProperty, level: number): any {
+  if (property.type === 'object' && level > MAX_PROPERTY_LEVEL) {
+    return MAX_PROPERTY_DEFAULT_VALUE
+  }
+
   switch (property.type) {
     case 'object':
       return {}
@@ -44,7 +48,7 @@ export function getSchemaPropertyDefaultValue(property: SchemaProperty): any {
     case 'array':
       return []
     case 'string':
-      return getSchemaPropertyStringDefaultValue(property)
+      return getSchemaPropertyStringDefaultValueForComponent(property)
     case undefined:
     case 'boolean':
     case 'integer':
@@ -53,13 +57,27 @@ export function getSchemaPropertyDefaultValue(property: SchemaProperty): any {
   }
 }
 
-export function getSchemaPropertyStringDefaultValue({ format }: SchemaProperty): null | string {
+export function getSchemaPropertyStringDefaultValueForComponent({ format }: SchemaProperty): null | string {
   switch (format) {
     case 'date':
     case 'date-time':
       return null
     default:
       return ''
+  }
+}
+
+export function isSchemaPropertyDefaultValue(property: SchemaProperty, value: unknown, level: number): boolean {
+  try {
+    const defaultValue = getSchemaPropertyDefaultValueForComponent(property, level)
+
+    return JSON.stringify(value) === JSON.stringify(defaultValue)
+  } catch (error) {
+    if (!(error instanceof NoSchemaPropertyDefaultValueError)) {
+      console.error(error)
+    }
+
+    return false
   }
 }
 

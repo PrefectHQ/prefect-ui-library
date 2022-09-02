@@ -1,6 +1,6 @@
 import { MapFunction } from '@/services/Mapper'
 import { Schema, SchemaProperty, SchemaValue, SchemaValues } from '@/types/schemas'
-import { isDate } from '@/utilities'
+import { INITIAL_PROPERTY_LEVEL, isDate, isSchemaPropertyDefaultValue, MAX_PROPERTY_DEFAULT_VALUE, MAX_PROPERTY_LEVEL } from '@/utilities'
 import { parseUnknownJson } from '@/utilities/json'
 
 type MapSchemaValuesSource = {
@@ -10,22 +10,31 @@ type MapSchemaValuesSource = {
 
 export const mapSchemaValuesRequestToSchemaValues: MapFunction<MapSchemaValuesSource, SchemaValues> = function({ values, schema }: MapSchemaValuesSource): SchemaValues {
 
-  const formatSchemaValues = (values: SchemaValues, schema: Schema): SchemaValues => {
+  const formatSchemaValues = (values: SchemaValues, schema: Schema, level: number = INITIAL_PROPERTY_LEVEL): SchemaValues => {
     return Object.keys(values).reduce<SchemaValues>((result, key) => {
       const property = getSchemaProperty(schema, key)
+      const propertyLevel = level + 1
 
       if (property) {
-        result[key] = formatSchemaValue(values[key], property)
+        const value = formatSchemaValue(values[key], property, propertyLevel)
+
+        if (!isSchemaPropertyDefaultValue(property, value, propertyLevel)) {
+          result[key] = value
+        }
       }
 
       return result
     }, {})
   }
 
-  const formatSchemaValue = (value: SchemaValue, property: SchemaProperty): SchemaValue => {
+  const formatSchemaValue = (value: SchemaValue, property: SchemaProperty, level: number = INITIAL_PROPERTY_LEVEL): SchemaValue => {
+    if (property.type === 'object' && level > MAX_PROPERTY_LEVEL) {
+      return formatMaxLevelProperty(value)
+    }
+
     switch (property.type) {
       case 'object':
-        return formatObjectProperty(value, property)
+        return formatObjectProperty(value, property, level)
       case 'string':
         return formatStringProperty(value, property)
       case undefined:
@@ -39,12 +48,18 @@ export const mapSchemaValuesRequestToSchemaValues: MapFunction<MapSchemaValuesSo
     return schema.properties?.[key]
   }
 
-  const formatObjectProperty = (value: SchemaValue, property: SchemaProperty): SchemaValue => {
+  const formatMaxLevelProperty = (value: SchemaValue): unknown => {
+    const parsed = parseUnknownJson(value) ?? MAX_PROPERTY_DEFAULT_VALUE
+    console.log('here', { value, parsed })
+    return parsed
+  }
+
+  const formatObjectProperty = (value: SchemaValue, property: SchemaProperty, level: number): SchemaValue => {
     if (typeof value === 'string') {
       return parseUnknownJson(value)
     }
 
-    return formatSchemaValue(value, property)
+    return formatSchemaValues(value as SchemaValues, property, level)
   }
 
   const formatStringProperty = (value: SchemaValue, { format }: SchemaProperty): SchemaValue => {
