@@ -1,8 +1,8 @@
-import { BlockDocumentData } from '@/models/BlockDocument'
+import { SchemaValues } from '@/types/schemas'
 
 export type BlockDocumentCreateNamed = {
   name: string,
-  data: BlockDocumentData,
+  data: SchemaValues,
   blockSchemaId: string,
   blockTypeId: string,
 }

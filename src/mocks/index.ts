@@ -5,7 +5,6 @@ import { blockDocumentsApiMockFactory } from './blockDocumentsApi'
 import { randomBlockSchema } from './blockSchema'
 import { randomBlockSchemaCapabilities } from './blockSchemaCapabilities'
 import { randomBlockSchemaCapability } from './blockSchemaCapability'
-import { randomBlockSchemaFields } from './blockSchemaFields'
 import { blockSchemasApiFactory } from './blockSchemasApi'
 import { randomBlockType } from './blockType'
 import { blockTypesApiFactory } from './blockTypesApi'
@@ -41,7 +40,6 @@ export const mocks = {
   blockSchema: randomBlockSchema,
   blockSchemaCapabilities: randomBlockSchemaCapabilities,
   blockSchemaCapability: randomBlockSchemaCapability,
-  blockSchemaFields: randomBlockSchemaFields,
   blockSchemasApi: blockSchemasApiFactory,
   blockType: randomBlockType,
   blockTypesApi: blockTypesApiFactory,
