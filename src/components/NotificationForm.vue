@@ -54,7 +54,7 @@
   import { Notification, BlockTypeFilter } from '@/models'
   import { blockDocumentsApiKey, blockSchemasApiKey, blockTypesApiKey, mapper } from '@/services'
   import { FormAction } from '@/types/buttons'
-  import { SchemaValues } from '@/types/schemas'
+  import { Schema, SchemaValues } from '@/types/schemas'
   import { inject } from '@/utilities/inject'
   import { stringify } from '@/utilities/json'
 
@@ -72,7 +72,13 @@
     stateNames: string[],
     tags: string[],
     blockData: SchemaValues,
-  }>()
+  }>({
+    initialValues: {
+      stateNames: [],
+      tags: [],
+      blockData: {},
+    },
+  })
 
   const { value: stateNames } = useField<string[]>('stateNames')
   const { value: tags } = useField<string[]>('stateNames')
