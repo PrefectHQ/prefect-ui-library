@@ -52,6 +52,7 @@ export interface FlowRunFilter extends Filter {
   deployment_id?: any_ & is_null_,
   state?: StateFilter,
   flow_version?: any_,
+  work_queue_name?: any_,
   /**
    * Flow run actual starts
    */
@@ -89,6 +90,7 @@ export type DeploymentsFilter = { deployments?: DeploymentFilter }
 export type FlowsFilter = { flows?: FlowFilter }
 export type TaskRunsFilter = { task_runs?: TaskRunFilter }
 export type FlowRunsFilter = { flow_runs?: FlowRunFilter }
+
 
 export type UnionFilters =
   & FlowsFilter

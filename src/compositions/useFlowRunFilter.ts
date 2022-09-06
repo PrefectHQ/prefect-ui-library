@@ -13,6 +13,7 @@ export type UseFlowRunFilterArgs = {
   endDate?: Ref<Date>,
   sort?: Ref<FlowRunSortValues>,
   name?: Ref<string>,
+  workQueues?: string[],
 }
 
 export function useFlowRunFilter(filters: UseFlowRunFilterArgs): Ref<UnionFilters> {
@@ -83,6 +84,14 @@ export function useFlowRunFilter(filters: UseFlowRunFilterArgs): Ref<UnionFilter
 
       response.flow_runs.name.any_ = [filters.name.value]
     }
+
+    if (filters.workQueues) {
+      response.flow_runs ??= {}
+      response.flow_runs.work_queue_name??= {}
+
+      response.flow_runs.work_queue_name.any_ = filters.workQueues
+    }
+
 
     return response
   })
