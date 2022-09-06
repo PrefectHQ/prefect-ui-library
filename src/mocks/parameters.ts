@@ -1,5 +1,6 @@
+import { mapper } from '@/services/Mapper'
 import { mocker, MockFunction } from '@/services/Mocker'
-import { SchemaStringFormats, Schema } from '@/types/schemas'
+import { SchemaStringFormats, Schema, SchemaValues } from '@/types/schemas'
 import { coinflip, uniform } from '@/utilities/math'
 
 export const randomParameters: MockFunction<Record<string, unknown>, [Record<string, unknown>?, Schema?]> = function(overrides = {}, schema: Schema = mocker.create('schema')) {
@@ -61,6 +62,7 @@ export const randomParameters: MockFunction<Record<string, unknown>, [Record<str
 
   })
 
+  const values: SchemaValues = { ...parameters, ...overrides }
 
-  return { ...parameters, ...overrides }
+  return mapper.map('SchemaValuesResponse', { values, schema }, 'SchemaValues')
 }

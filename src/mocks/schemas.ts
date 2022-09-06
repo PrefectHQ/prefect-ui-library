@@ -1,4 +1,5 @@
-import { MockFunction } from '@/services'
+import { SchemaResponse } from '@/models'
+import { mapper, MockFunction } from '@/services'
 import { SchemaStringFormats, SchemaTypes, Schema, SchemaProperty, SchemaProperties } from '@/types/schemas'
 import { kebabCase } from '@/utilities'
 import { choice } from '@/utilities/arrays'
@@ -41,12 +42,14 @@ export const randomSchemaProperty: MockFunction<SchemaProperty, [SchemaProperty?
 }
 
 export const randomSchema: MockFunction<Schema, [Schema?]> = function(overrides = {}) {
-  return {
+  const schema: SchemaResponse = {
     title: 'Open API Schema',
     type: 'object',
     properties: this.create('schemaProperties'),
     ...overrides,
   }
+
+  return mapper.map('SchemaResponse', schema, 'Schema')
 }
 
 export const randomSchemaProperties: MockFunction<SchemaProperties, [SchemaProperties?]> = function(overrides = {}) {
