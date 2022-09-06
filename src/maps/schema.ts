@@ -1,63 +1,88 @@
+import { BlockSchemaReference, BlockSchemaReferences } from '@/models'
 import { SchemaPropertiesResponse, SchemaPropertyResponse, SchemaResponse } from '@/models/api/SchemaResponse'
-import { MapFunction } from '@/services/Mapper'
-import { Schema, SchemaProperties, SchemaProperty } from '@/types/schemas'
+import { MapFunction, mapper } from '@/services/Mapper'
+import { Schema, SchemaDefinitions, SchemaProperties, SchemaProperty } from '@/types/schemas'
 import { getSchemaPropertyMeta, INITIAL_PROPERTY_LEVEL } from '@/utilities/schemas'
 
 export const mapSchemaResponseToSchema: MapFunction<SchemaResponse, Schema> = function(source: SchemaResponse): Schema {
+  const resolver = new SchemaResolver(source, this)
 
-  const resolveSchema = (schema: SchemaResponse): Schema => {
+  return resolver.resolved
+}
+
+class SchemaResolver {
+  private readonly definitions: SchemaDefinitions | undefined
+  private readonly references: BlockSchemaReferences | undefined
+  private readonly mapper: typeof mapper
+  private readonly _resolved: Schema
+
+  public constructor(schema: SchemaResponse, map: typeof mapper) {
+    this.mapper = map
+    this.definitions = schema.definitions
+    this.references = this.mapper.map('BlockSchemaReferencesResponse', schema.block_schema_references, 'BlockSchemaReferences')
+
+    this._resolved = this.resolveSchema(schema)
+  }
+
+  public get resolved(): Schema {
+    return this._resolved
+  }
+
+  private resolveSchema(schema: Schema): Schema {
     const { properties, items, ...rest } = schema
-    const response: Schema = { ...rest }
+    const response: Schema = rest
 
     if (properties) {
-      response.properties = resolveProperties(properties, schema)
+      response.properties = this.resolveProperties(properties, schema)
     }
 
     if (items) {
-      response.items = resolveProperty(items, schema)
+      response.items = this.resolveProperty(items, schema)
     }
 
     return response
   }
 
-  const resolveProperties = (properties: SchemaPropertiesResponse | undefined, schema: SchemaResponse, level: number = INITIAL_PROPERTY_LEVEL): SchemaProperties | undefined => {
+  private resolveProperties(properties: SchemaPropertiesResponse | undefined, schema: Schema, level: number = INITIAL_PROPERTY_LEVEL): SchemaProperties | undefined {
     if (properties === undefined) {
       return undefined
     }
 
     return Object.keys(properties).reduce<SchemaProperties>((result, key) => {
-      result[key] = resolveProperty(properties[key], schema, key, level + 1)
+      result[key] = this.resolveProperty(properties[key], schema, key, level + 1)
 
       return result
     }, {})
   }
 
   // eslint-disable-next-line max-params
-  const resolveProperty = (property: SchemaPropertyResponse, schema: SchemaResponse, key: string = '', level: number = INITIAL_PROPERTY_LEVEL): SchemaProperty => {
+  private resolveProperty(property: SchemaPropertyResponse, schema: Schema, key: string = '', level: number = INITIAL_PROPERTY_LEVEL): SchemaProperty {
     const { $ref, properties, items, allOf, anyOf, ...rest } = property
     const response: SchemaProperty = { ...rest }
 
     if ($ref) {
-      Object.assign(response, resolveDefinition($ref, schema))
+      Object.assign(response, this.resolveDefinition($ref))
     }
 
     if (properties) {
-      response.properties = resolveProperties(properties, property, level)
+      response.properties = this.resolveProperties(properties, property, level)
     }
 
     if (items) {
-      response.items = resolveProperty(items, schema)
+      response.items = this.resolveProperty(items, schema)
     }
 
     if (allOf) {
-      response.allOf = allOf.map(_property => resolveProperty(_property, schema))
+      response.allOf = allOf.map(_property => this.resolveProperty(_property, schema))
     }
 
     if (anyOf) {
-      response.anyOf = anyOf.map(_property => resolveProperty(_property, schema))
+      response.anyOf = anyOf.map(_property => this.resolveProperty(_property, schema))
     }
 
-    const meta = getSchemaPropertyMeta({ property, schema, key, level })
+    response.blockReference = this.resolveBlockReference(key)
+
+    const meta = getSchemaPropertyMeta({ property: response, schema, key, level })
 
     if (meta) {
       response.meta = meta
@@ -66,12 +91,14 @@ export const mapSchemaResponseToSchema: MapFunction<SchemaResponse, Schema> = fu
     return response
   }
 
-  const resolveDefinition = (ref: string, schema: SchemaResponse): SchemaProperty => {
+  private resolveDefinition(ref: string): SchemaProperty {
     const [, match = ''] = ref.match(/^(?:#\/definitions\/)(.*)/) ?? []
-    const definition = schema.definitions?.[match] ?? {}
+    const definition = this.definitions?.[match] ?? {}
 
-    return resolveSchema(definition)
+    return this.resolveSchema(definition)
   }
 
-  return resolveSchema(source)
+  private resolveBlockReference(key: string): BlockSchemaReference | undefined {
+    return this.references?.[key]
+  }
 }

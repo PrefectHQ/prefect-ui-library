@@ -1,12 +1,15 @@
 import { PTextInput, PToggle, PDateInput, PNumberInput, PCombobox, PSelect } from '@prefecthq/prefect-design'
 import { isNumberArray, isStringArray } from './arrays'
+import BlockDocumentInput from '@/components/BlockDocumentInput.vue'
 import JsonInput from '@/components/JsonInput.vue'
+import { NoSchemaPropertyDefaultValueError } from '@/models/NoSchemaPropertyDefaultValueError'
 import { isEmail, greaterThanOrEqual, greaterThan, lessThan, lessThanOrEqual, isRequired, withMessage, ValidationRule, isValidJsonString } from '@/services'
 import { Schema, schemaHas, SchemaProperty } from '@/types/schemas'
 import { withPropsWithoutExcludedFactory } from '@/utilities/components'
 
 export const INITIAL_PROPERTY_LEVEL = 1
 export const MAX_PROPERTY_LEVEL = 2
+export const MAX_PROPERTY_DEFAULT_VALUE = ''
 
 const withProps = withPropsWithoutExcludedFactory('modelValue')
 
@@ -29,9 +32,58 @@ type GetSchemaPropertyMetaArgs = {
   level: number,
 }
 
+// using any here means we can make an assumption that this is going to give us the correct typescript type for a schema property type
+// Don't usually do this, but writing the types and overloads for this would be large and probably not worth it
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function getSchemaPropertyDefaultValueForComponent(property: SchemaProperty, level: number): any {
+  if (property.type === 'object' && level > MAX_PROPERTY_LEVEL) {
+    return MAX_PROPERTY_DEFAULT_VALUE
+  }
+
+  switch (property.type) {
+    case 'object':
+      return {}
+    case 'null':
+      throw new NoSchemaPropertyDefaultValueError()
+    case 'array':
+      return []
+    case 'string':
+      return getSchemaPropertyStringDefaultValueForComponent(property)
+    case undefined:
+    case 'boolean':
+    case 'integer':
+    case 'number':
+      return null
+  }
+}
+
+export function getSchemaPropertyStringDefaultValueForComponent({ format }: SchemaProperty): null | string {
+  switch (format) {
+    case 'date':
+    case 'date-time':
+      return null
+    default:
+      return ''
+  }
+}
+
+export function isSchemaPropertyDefaultValueForComponent(property: SchemaProperty, value: unknown, level: number): boolean {
+  try {
+    const defaultValue = getSchemaPropertyDefaultValueForComponent(property, level)
+
+    return JSON.stringify(value) === JSON.stringify(defaultValue)
+  } catch (error) {
+    if (!(error instanceof NoSchemaPropertyDefaultValueError)) {
+      console.error(error)
+    }
+
+    return false
+  }
+}
+
 export function getSchemaPropertyMeta({ property, schema, key, level }: GetSchemaPropertyMetaArgs): SchemaPropertyMeta | void {
   if (property.type == 'object' && level > MAX_PROPERTY_LEVEL) {
-    return getSchemaPropertyMaxLevelMeta(property, schema, key)
+    return getSchemaPropertyMaxLevelMeta(schema, key)
   }
 
   const component = getSchemaPropertyMetaComponent(property)
@@ -45,12 +97,12 @@ export function getSchemaPropertyMeta({ property, schema, key, level }: GetSchem
   return { ...component, ...options }
 }
 
-function getSchemaPropertyMaxLevelMeta(property: SchemaProperty, schema: Schema, key: string): SchemaPropertyMeta | void {
+function getSchemaPropertyMaxLevelMeta(schema: Schema, key: string): SchemaPropertyMeta | void {
   const component = withProps(JsonInput)
   const options = getSchemaPropertyMetaOptions({ type: undefined }, schema, key)
 
   options.attrs ??= {}
-  options.attrs.placeholder ??= {}
+  options.attrs.placeholder ??= '{}'
 
   return {
     ...component,
@@ -67,6 +119,12 @@ function getSchemaPropertyMetaOptions(property: SchemaProperty, schema: Schema, 
 }
 
 function getSchemaPropertyMetaComponent(property: SchemaProperty): SchemaPropertyMetaComponent | null {
+  if (property.blockReference) {
+    return withProps(BlockDocumentInput, {
+      blockTypeSlug: property.blockReference.blockTypeSlug,
+    })
+  }
+
   switch (property.type) {
     case 'array':
       return getSchemaPropertyArrayMetaComponent(property)
@@ -121,16 +179,26 @@ function getSchemaPropertyValidators(property: SchemaProperty, schema: Schema, k
     validators.push(withMessage(isValidJsonString, `${title} must be JSON`))
   }
 
+  if (property.type === 'string') {
+    if (property.format === 'email') {
+      validators.push(withMessage(isEmail, `${title} must be a valid email address`))
+    }
+
+    if (property.format === 'json-string') {
+      validators.push(withMessage(isValidJsonString, `${title} must be JSON`))
+    }
+  }
+
   const greaterThanOrEqualValue = property.minLength ?? property.minimum ?? property.minItems
 
   if (greaterThanOrEqualValue !== undefined) {
-    validators.push(withMessage(greaterThanOrEqual(greaterThanOrEqualValue), `${title} must be greater than or equal to ${property.minLength}`))
+    validators.push(withMessage(greaterThanOrEqual(greaterThanOrEqualValue), `${title} must be greater than or equal to ${greaterThanOrEqualValue}`))
   }
 
   const lessThanOrEqualValue = property.maxLength ?? property.maximum ?? property.maxItems
 
   if (lessThanOrEqualValue !== undefined) {
-    validators.push(withMessage(lessThanOrEqual(lessThanOrEqualValue), `${title} must be less than or equal to ${property.maxLength}`))
+    validators.push(withMessage(lessThanOrEqual(lessThanOrEqualValue), `${title} must be less than or equal to ${lessThanOrEqualValue}`))
   }
 
   if (property.exclusiveMinimum !== undefined) {
@@ -139,12 +207,6 @@ function getSchemaPropertyValidators(property: SchemaProperty, schema: Schema, k
 
   if (property.exclusiveMaximum !== undefined) {
     validators.push(withMessage(lessThan(property.exclusiveMaximum), `${title} must be less than ${property.exclusiveMaximum}`))
-  }
-
-  if (property.type === 'string') {
-    if (property.format === 'email') {
-      validators.push(withMessage(isEmail, `${title} must be a valid email address`))
-    }
   }
 
   if (getSchemaPropertyIsRequired(schema, key)) {

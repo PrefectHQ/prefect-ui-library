@@ -1,5 +1,5 @@
 import { Require } from './utilities'
-import { SchemaResponse } from '@/models/api/SchemaResponse'
+import { BlockSchemaReference, BlockSchemaReferences } from '@/models'
 import { SchemaPropertyMeta } from '@/utilities'
 
 export type SchemaValue = unknown
@@ -15,10 +15,11 @@ export type SchemaEnum<T> = T[]
 export type SchemaReference<T extends string> = `${typeof BaseDefinitionRefString}${T}`
 export type SchemaDefinitions = Record<string, Schema>
 
-export type SchemaProperty = Schema & {
+export type SchemaProperty = Omit<Schema, 'definitions' | 'blockSchemaReferences'> & {
   anyOf?: SchemaProperty[],
   allOf?: SchemaProperty[],
   meta?: SchemaPropertyMeta,
+  blockReference?: BlockSchemaReference,
 }
 
 export type SchemaPropertyAnyOf = Require<SchemaProperty, 'anyOf'>
@@ -26,10 +27,30 @@ export type SchemaPropertyAllOf = Require<SchemaProperty, 'allOf'>
 
 export type SchemaProperties = Record<string, SchemaProperty>
 
-export type Schema = Omit<SchemaResponse, 'definitions' | 'properties' | 'items'> & {
+export type Schema = {
+  alias?: string,
+  blockSchemaReferences?: BlockSchemaReferences,
+  default?: unknown,
   definitions?: SchemaDefinitions,
-  properties?: SchemaProperties,
+  description?: string,
+  enum?: SchemaEnum<unknown>,
+  exclusiveMaximum?: number,
+  exclusiveMinimum?: number,
+  format?: SchemaStringFormat,
   items?: SchemaProperty,
+  maximum?: number,
+  maxItems?: number,
+  maxLength?: number,
+  minimum?: number,
+  minItems?: number,
+  minLength?: number,
+  multipleOf?: number,
+  pattern?: string,
+  properties?: SchemaProperties,
+  required?: string[],
+  title?: string,
+  type?: SchemaType,
+  uniqueItems?: boolean,
 }
 
 export function isSchemaValues(input: unknown): input is SchemaValues {

@@ -1,3 +1,4 @@
+import { BlockSchemaReferencesResponse } from './BlockSchemaResponse'
 import { SchemaReference, SchemaType, SchemaStringFormat, SchemaEnum } from '@/types/schemas'
 
 export type SchemaDefinitionsResponse = Record<string, SchemaResponse>
@@ -11,26 +12,27 @@ export interface SchemaPropertyResponse extends SchemaResponse {
 export type SchemaPropertiesResponse = Record<string, SchemaPropertyResponse>
 
 export interface SchemaResponse {
-  title?: string,
-  type?: SchemaType,
-  format?: SchemaStringFormat,
   alias?: string,
-  description?: string,
+  block_schema_references?: BlockSchemaReferencesResponse,
   default?: unknown,
-  enum?: SchemaEnum<unknown>,
   definitions?: SchemaDefinitionsResponse,
-  properties?: SchemaPropertiesResponse,
-  required?: string[],
-  items?: SchemaPropertyResponse,
+  description?: string,
+  enum?: SchemaEnum<unknown>,
   exclusiveMaximum?: number,
   exclusiveMinimum?: number,
+  format?: SchemaStringFormat,
+  items?: SchemaPropertyResponse,
   maximum?: number,
-  minimum?: number,
-  maxLength?: number,
-  minLength?: number,
   maxItems?: number,
+  maxLength?: number,
+  minimum?: number,
   minItems?: number,
+  minLength?: number,
   multipleOf?: number,
-  uniqueItems?: boolean,
   pattern?: string,
+  properties?: SchemaPropertiesResponse,
+  required?: string[],
+  title?: string,
+  type?: SchemaType,
+  uniqueItems?: boolean,
 }
