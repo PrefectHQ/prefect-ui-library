@@ -13,29 +13,20 @@
     </template>
 
     <template v-if="meta">
-      {{ meta }}
-      <br>
-      {{ stringify(propValue) }}
       <component :is="meta.component" v-model="propValue" v-bind="{ ...meta.props, ...meta.attrs }" />
     </template>
   </p-label>
 </template>
 
 <script lang="ts" setup>
-  import { PToggle } from '@prefecthq/prefect-design'
   import { useField } from 'vee-validate'
   import { computed } from 'vue'
   import { SchemaProperty } from '@/types/schemas'
-  import { stringify } from '@/utilities/json'
 
   const props = defineProps<{
     propKey: string,
     property: SchemaProperty,
   }>()
-
-  console.log(PToggle)
-
-  console.log(props.property)
 
   const meta = computed(() => props.property.meta)
   const label = computed(() => {
