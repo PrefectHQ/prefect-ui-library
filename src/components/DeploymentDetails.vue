@@ -119,7 +119,10 @@
     updateScheduleLoading.value = true
 
     try {
-      await deploymentsApi.updateDeployment(props.deployment.id, { schedule })
+      await deploymentsApi.updateDeployment(props.deployment.id, {
+        schedule,
+        workQueueName: props.deployment.workQueueName,
+      })
 
       emit('update')
       showToast(successMessage, 'success')
