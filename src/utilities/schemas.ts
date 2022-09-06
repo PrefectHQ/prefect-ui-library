@@ -1,4 +1,5 @@
 import { PTextInput, PToggle, PDateInput, PNumberInput, PCombobox, PSelect } from '@prefecthq/prefect-design'
+import { markRaw } from 'vue'
 import { isNumberArray, isStringArray } from './arrays'
 import BlockDocumentInput from '@/components/BlockDocumentInput.vue'
 import JsonInput from '@/components/JsonInput.vue'
@@ -94,7 +95,7 @@ export function getSchemaPropertyMeta({ property, schema, key, level }: GetSchem
 
   const options = getSchemaPropertyMetaOptions(property, schema, key)
 
-  return { ...component, ...options }
+  return markRaw({ ...component, ...options })
 }
 
 function getSchemaPropertyMaxLevelMeta(schema: Schema, key: string): SchemaPropertyMeta | void {
