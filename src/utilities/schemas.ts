@@ -47,16 +47,14 @@ export function getSchemaPropertyDefaultValueForComponent(property: SchemaProper
     case 'null':
       throw new NoSchemaPropertyDefaultValueError()
     case 'array':
-      return ['test']
+      return []
     case 'string':
       return getSchemaPropertyStringDefaultValueForComponent(property)
     case undefined:
-      return null
     case 'boolean':
-      return true
     case 'integer':
     case 'number':
-      return 1
+      return null
   }
 }
 
@@ -64,9 +62,9 @@ export function getSchemaPropertyStringDefaultValueForComponent({ format }: Sche
   switch (format) {
     case 'date':
     case 'date-time':
-      return new Date().toISOString()
+      return null
     default:
-      return 'test'
+      return ''
   }
 }
 
