@@ -38,8 +38,7 @@
     initialValues: {
       name: '',
       data: {},
-      blockSchemaId: props.blockSchema.id,
-      blockTypeId: props.blockSchema.blockTypeId,
+      blockSchema: props.blockSchema,
     },
   })
 

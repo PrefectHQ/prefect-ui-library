@@ -39,6 +39,7 @@
   const { handleSubmit } = useForm<BlockDocumentUpdate>({
     initialValues: {
       data: props.data,
+      blockSchema: props.blockSchema,
     },
   })
 

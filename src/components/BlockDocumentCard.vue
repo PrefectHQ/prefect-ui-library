@@ -15,8 +15,7 @@
       </template>
 
       <BlockTypeSnippet v-if="snippet" v-bind="{ snippet, name }" />
-
-      <BlockDocumentProperties :data="blockDocument.data" :block-schema="blockDocument.blockSchema" />
+      <SchemaProperties :values="blockDocument.data" :schema="blockDocument.blockSchema.fields" />
     </PContent>
   </BlockTypeCardLayout>
 </template>
@@ -24,9 +23,9 @@
 <script lang="ts" setup>
   import { PContent } from '@prefecthq/prefect-design'
   import { computed } from 'vue'
-  import BlockDocumentProperties from './BlockDocumentProperties.vue'
   import BlockTypeCardLayout from './BlockTypeCardLayout.vue'
   import BlockTypeSnippet from './BlockTypeSnippet.vue'
+  import SchemaProperties from './SchemaProperties.vue'
   import { BlockDocument } from '@/models/BlockDocument'
 
   const props = defineProps<{
