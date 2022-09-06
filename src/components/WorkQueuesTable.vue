@@ -8,7 +8,7 @@
     <p-table :data="filtered" :columns="columns">
       <template #name="{ row }">
         <p-link :to="workQueueRoute(row.id)">
-          <span>{{ row.name }}</span>
+          <span>{{ row.name }} <WorkQueueLateIndicator :work-queue-id="row.id" /></span>
         </p-link>
       </template>
 
@@ -48,6 +48,7 @@
   import { computed, ref } from 'vue'
   import ResultsCount from './ResultsCount.vue'
   import SearchInput from './SearchInput.vue'
+  import WorkQueueLateIndicator from '@/components/WorkQueueLateIndicator.vue'
   import WorkQueueMenu from '@/components/WorkQueueMenu.vue'
   import WorkQueueToggle from '@/components/WorkQueueToggle.vue'
   import { WorkQueue } from '@/models'
