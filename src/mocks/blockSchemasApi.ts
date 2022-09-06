@@ -15,7 +15,7 @@ export const blockSchemasApiFactory: MockFunction<BlockSchemasApi, [Partial<Bloc
 
   return mockClass(BlockSchemasApi, {
     getBlockSchemas: (filter: BlockSchemaFilter = {}) => {
-      let filtered: BlockSchema[] = JSON.parse(JSON.stringify(schemas))
+      let filtered: BlockSchema[] = schemas
 
       const any = filter.blockSchemas?.blockTypeId?.any_
 
