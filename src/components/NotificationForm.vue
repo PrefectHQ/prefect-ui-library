@@ -17,7 +17,6 @@
     <p-button-group v-model="selectedBlockTypeId" :options="buttonGroup" />
 
     <template v-if="blockSchema && data">
-      {{ stringify(data) }}
       <SchemaFormFields :schema="blockSchema.fields" property="blockData" />
     </template>
 
@@ -54,7 +53,7 @@
   import { Notification, BlockTypeFilter } from '@/models'
   import { blockDocumentsApiKey, blockSchemasApiKey, blockTypesApiKey, mapper } from '@/services'
   import { FormAction } from '@/types/buttons'
-  import { Schema, SchemaValues } from '@/types/schemas'
+  import { SchemaValues } from '@/types/schemas'
   import { inject } from '@/utilities/inject'
   import { stringify } from '@/utilities/json'
 
