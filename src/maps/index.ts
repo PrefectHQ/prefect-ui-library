@@ -1,10 +1,8 @@
 import { mapBlockDocumentResponseToBlockDocument, mapBlockDocumentToSelectOption } from '@/maps/blockDocument'
-import { mapBlockDocumentCreateToBlockDocumentCreateRequest, mapBlockDocumentDataToBlockDocumentRequestData } from '@/maps/blockDocumentCreate'
-import { mapBlockDocumentResponseDataToBlockDocumentData } from '@/maps/blockDocumentData'
+import { mapBlockDocumentCreateToBlockDocumentCreateRequest } from '@/maps/blockDocumentCreate'
 import { mapBlockDocumentFilterToBlockDocumentFilterRequest } from '@/maps/blockDocumentFilter'
 import { mapBlockDocumentUpdateToBlockDocumentUpdateRequest } from '@/maps/blockDocumentUpdate'
 import { mapBlockSchemaResponseToBlockSchema } from '@/maps/blockSchema'
-import { mapBlockSchemaFieldsResponseToBlockSchemaFields } from '@/maps/blockSchemaFields'
 import { mapBlockSchemaFilterToBlockSchemaFilterRequest } from '@/maps/blockSchemaFilter'
 import { mapBlockSchemaReferencesResponseToBlockSchemaReferences } from '@/maps/blockSchemaReferences'
 import { mapBlockTypeResponseToBlockType } from '@/maps/blockType'
@@ -25,7 +23,7 @@ import { mapNumberToString, mapStringToNumber } from '@/maps/number'
 import { mapUiFlowRunHistoryToScatterPlotItem } from '@/maps/scatterPlotItem'
 import { mapScheduleToScheduleResponse, mapScheduleResponseToSchedule } from '@/maps/schedule'
 import { mapSchemaResponseToSchema } from '@/maps/schema'
-import { mapSchemaValuesRequestToSchemaValues } from '@/maps/schemaValuesRequest'
+import { mapSchemaValuesToSchemaValuesRequest } from '@/maps/schemaValuesRequest'
 import { mapSchemaValuesResponseToSchemaValues } from '@/maps/schemaValuesResponse'
 import { mapStateResponseToState, mapStateToStateResponse, mapStateCreateToStateRequest } from '@/maps/state'
 import { mapStateDetailsCreateToStateDetailsRequest, mapStateDetailsResponseToStateDetails, mapStateDetailsToStateDetailsResponse } from '@/maps/stateDetails'
@@ -40,12 +38,9 @@ import { mapWorkQueueFilterToWorkQueueFilterResponse, mapWorkQueueFilterResponse
 export const maps = {
   BlockDocument: { SelectOption: mapBlockDocumentToSelectOption },
   BlockDocumentCreate: { BlockDocumentCreateRequest: mapBlockDocumentCreateToBlockDocumentCreateRequest },
-  BlockDocumentData: { BlockDocumentRequestData: mapBlockDocumentDataToBlockDocumentRequestData },
   BlockDocumentFilter: { BlockDocumentFilterRequest: mapBlockDocumentFilterToBlockDocumentFilterRequest },
   BlockDocumentResponse: { BlockDocument: mapBlockDocumentResponseToBlockDocument },
-  BlockDocumentResponseDataWithReferences: { BlockDocumentData: mapBlockDocumentResponseDataToBlockDocumentData },
   BlockDocumentUpdate: { BlockDocumentUpdateRequest: mapBlockDocumentUpdateToBlockDocumentUpdateRequest },
-  BlockSchemaFieldsResponse: { BlockSchemaFields: mapBlockSchemaFieldsResponseToBlockSchemaFields },
   BlockSchemaFilter: { BlockSchemaFilterRequest: mapBlockSchemaFilterToBlockSchemaFilterRequest },
   BlockSchemaReferencesResponse: { BlockSchemaReferences: mapBlockSchemaReferencesResponseToBlockSchemaReferences },
   BlockSchemaResponse: { BlockSchema: mapBlockSchemaResponseToBlockSchema },
@@ -96,5 +91,5 @@ export const maps = {
   WorkQueueFilter: { WorkQueueFilterResponse: mapWorkQueueFilterToWorkQueueFilterResponse },
   SchemaResponse: { Schema: mapSchemaResponseToSchema },
   SchemaValuesResponse: { SchemaValues: mapSchemaValuesResponseToSchemaValues },
-  SchemaValuesRequest: { SchemaValues: mapSchemaValuesRequestToSchemaValues },
+  SchemaValues: { SchemaValuesRequest: mapSchemaValuesToSchemaValuesRequest },
 }

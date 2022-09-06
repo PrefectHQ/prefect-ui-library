@@ -1,11 +1,11 @@
 <template>
   <p-form class="block-schema-create-form" @submit="submit">
     <p-content>
-      <p-label label="Block Name" :message="errors.name" :state="nameState">
-        <p-text-input v-model="nameModel" :state="nameState" />
+      <p-label label="Block Name" :message="nameError" :state="nameState">
+        <p-text-input v-model="name" :state="nameState" />
       </p-label>
 
-      <BlockSchemaFormFields v-model:data="dataModel" :block-schema="blockSchema" />
+      <SchemaFormFields :schema="blockSchema.fields" property="data" />
     </p-content>
 
     <template #footer>
@@ -18,54 +18,35 @@
 </template>
 
 <script lang="ts" setup>
-  import { useForm } from 'vee-validate'
-  import { computed } from 'vue'
-  import BlockSchemaFormFields from './BlockSchemaFormFields.vue'
+  import { useField, useForm } from 'vee-validate'
+  import SchemaFormFields from './SchemaFormFields.vue'
   import SubmitButton from './SubmitButton.vue'
-  import { useReactiveField } from '@/compositions'
-  import { BlockDocumentData } from '@/models/BlockDocument'
+  import { BlockDocumentCreateNamed } from '@/models/BlockDocumentCreate'
   import { BlockSchema } from '@/models/BlockSchema'
   import { isRequired, isValidHandle, withMessage } from '@/services'
 
   const props = defineProps<{
     blockSchema: BlockSchema,
-    data: BlockDocumentData,
-    name: string,
   }>()
 
   const emit = defineEmits<{
-    (event: 'update:data', value: BlockDocumentData): void,
-    (event: 'update:name', value: string): void,
-    (event: 'submit' | 'cancel'): void,
+    (event: 'submit', value: BlockDocumentCreateNamed): void,
+    (event: 'cancel'): void,
   }>()
 
-  const { handleSubmit, errors } = useForm()
-  const submit = handleSubmit(() => emit('submit'))
-
-  const nameModel = computed({
-    get(): string {
-      return props.name
-    },
-    set(value: string): void {
-      emit('update:name', value)
+  const { handleSubmit } = useForm<BlockDocumentCreateNamed>({
+    initialValues: {
+      name: '',
+      data: {},
+      blockSchema: props.blockSchema,
     },
   })
 
-  const { meta: nameState } = useReactiveField(nameModel, 'name', [
+  const { value: name, meta: nameState, errorMessage: nameError } = useField<string>('name', [
     withMessage(isRequired, 'Name is required'),
     withMessage(isValidHandle, 'Name must only contain lowercase letters, numbers, and dashes'),
   ])
 
-  const dataModel = computed({
-    get(): BlockDocumentData {
-      return props.data
-    },
-    set(value: BlockDocumentData): void {
-      emit('update:data', value)
-    },
-  })
-
-  function cancel(): void {
-    emit('cancel')
-  }
+  const submit = handleSubmit(value => emit('submit', value))
+  const cancel = (): void => emit('cancel')
 </script>

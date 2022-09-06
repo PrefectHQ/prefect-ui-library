@@ -34,7 +34,7 @@ export const mapDeploymentUpdateToDeploymentUpdateRequest: MapFunction<Deploymen
   // type check is necessary in case data doesn't match the type exactly
   // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   if (parameters && schema) {
-    mapped.parameters = this.map('SchemaValuesRequest', { values: parameters, schema }, 'SchemaValues')
+    mapped.parameters = this.map('SchemaValues', { values: parameters, schema }, 'SchemaValuesRequest')
   }
 
   if (schedule) {
@@ -49,7 +49,7 @@ export const mapDeploymentFlowRunCreateToDeploymentFlowRunRequest: MapFunction<D
   const mapped = mapCamelToSnakeCase<DeploymentFlowRunRequest>(rest)
 
   if (parameters) {
-    mapped.parameters = this.map('SchemaValuesRequest', { values: parameters, schema }, 'SchemaValues')
+    mapped.parameters = this.map('SchemaValues', { values: parameters, schema }, 'SchemaValuesRequest')
   }
 
   if (state) {

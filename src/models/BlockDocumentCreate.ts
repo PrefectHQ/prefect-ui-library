@@ -1,10 +1,10 @@
-import { BlockDocumentData } from '@/models/BlockDocument'
+import { BlockSchema } from './BlockSchema'
+import { SchemaValues } from '@/types/schemas'
 
 export type BlockDocumentCreateNamed = {
   name: string,
-  data: BlockDocumentData,
-  blockSchemaId: string,
-  blockTypeId: string,
+  data: SchemaValues,
+  blockSchema: BlockSchema,
 }
 
 export type BlockDocumentCreateAnonymous = Omit<BlockDocumentCreateNamed, 'name'> & {
@@ -12,3 +12,7 @@ export type BlockDocumentCreateAnonymous = Omit<BlockDocumentCreateNamed, 'name'
 }
 
 export type BlockDocumentCreate = BlockDocumentCreateNamed | BlockDocumentCreateAnonymous
+
+export function isBlockDocumentCreateNamed(blockDocumentCreate: BlockDocumentCreate): blockDocumentCreate is BlockDocumentCreateNamed {
+  return 'name' in blockDocumentCreate
+}

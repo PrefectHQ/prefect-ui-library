@@ -8,7 +8,7 @@ type MapSchemaValuesSource = {
   schema: Schema,
 }
 
-export const mapSchemaValuesRequestToSchemaValues: MapFunction<MapSchemaValuesSource, SchemaValues> = function({ values, schema }: MapSchemaValuesSource): SchemaValues {
+export const mapSchemaValuesToSchemaValuesRequest: MapFunction<MapSchemaValuesSource, SchemaValues> = function({ values, schema }: MapSchemaValuesSource): SchemaValues {
 
   const formatSchemaValues = (values: SchemaValues, schema: Schema, level: number = INITIAL_PROPERTY_LEVEL): SchemaValues => {
     return Object.keys(values).reduce<SchemaValues>((result, key) => {

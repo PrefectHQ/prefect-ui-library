@@ -60,7 +60,7 @@
   })
 
   const rawValue = computed(() => stringify(value.value))
-  const requestRawValue = computed(() => stringify(mapper.map('SchemaValuesRequest', { values: value.value, schema: schema.value }, 'SchemaValues')))
+  const requestRawValue = computed(() => stringify(mapper.map('SchemaValues', { values: value.value, schema: schema.value }, 'SchemaValuesRequest')))
 
   watch(value, () => {
     console.log({ value: toRaw(value.value) })
