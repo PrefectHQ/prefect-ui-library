@@ -1,7 +1,6 @@
-import { BlockSchemaReference, BlockSchemaReferences } from '@/models'
 import { SchemaPropertiesResponse, SchemaPropertyResponse, SchemaResponse } from '@/models/api/SchemaResponse'
 import { MapFunction, mapper } from '@/services/Mapper'
-import { Schema, SchemaDefinitions, SchemaProperties, SchemaProperty } from '@/types/schemas'
+import { BlockSchemaReference, BlockSchemaReferences, Schema, SchemaDefinitions, SchemaProperties, SchemaProperty } from '@/types/schemas'
 import { getSchemaPropertyMeta, INITIAL_PROPERTY_LEVEL } from '@/utilities/schemas'
 
 export const mapSchemaResponseToSchema: MapFunction<SchemaResponse, Schema> = function(source: SchemaResponse): Schema {
