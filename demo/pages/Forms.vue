@@ -6,15 +6,15 @@
       </h1>
     </template>
 
-    <!-- <ValidationSection /> -->
+    <ValidationSection />
 
     <BlockSchemasSection />
-    <!-- <DeploymentFormSection /> -->
-    <!-- <FlowRunFormSection /> -->
+    <DeploymentFormSection />
+    <FlowRunFormSection />
     <NotificationsFormsSection />
-    <!-- <ParametersFormSection /> -->
-    <!-- <ScheduleFormsSection /> -->
-    <!-- <WorkQueueFormSection /> -->
+    <ParametersFormSection />
+    <ScheduleFormsSection />
+    <WorkQueueFormSection />
   </p-layout-default>
 </template>
 
