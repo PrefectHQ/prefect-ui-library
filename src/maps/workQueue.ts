@@ -1,6 +1,6 @@
-import { WorkQueue } from '@/models/WorkQueue'
-import { WorkQueueResponse } from '@/models/WorkQueueResponse'
+import { WorkQueueCreateRequest, WorkQueueEditRequest, WorkQueueCreate, WorkQueueEdit, WorkQueue, WorkQueueResponse } from '@/models'
 import { MapFunction } from '@/services/Mapper'
+import { mapCamelToSnakeCase } from '@/utilities'
 
 export const mapWorkQueueResponseToWorkQueue: MapFunction<WorkQueueResponse, WorkQueue> = function(source: WorkQueueResponse): WorkQueue {
   return new WorkQueue({
@@ -25,5 +25,17 @@ export const mapWorkQueueToWorkQueueResponse: MapFunction<WorkQueue, WorkQueueRe
     'description': source.description,
     'is_paused': source.isPaused,
     'concurrency_limit': source.concurrencyLimit,
+  }
+}
+
+export const mapWorkQueueCreateToWorkQueueCreateRequest: MapFunction<WorkQueueCreate, WorkQueueCreateRequest> = function(source: WorkQueueCreate): WorkQueueCreateRequest {
+  return {
+    ...mapCamelToSnakeCase(source),
+  }
+}
+
+export const mapWorkQueueEditToWorkQueueEditRequest: MapFunction<WorkQueueEdit, WorkQueueEditRequest> = function(source: WorkQueueEdit): WorkQueueEditRequest {
+  return {
+    ...mapCamelToSnakeCase(source),
   }
 }

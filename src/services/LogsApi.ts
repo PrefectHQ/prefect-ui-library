@@ -6,6 +6,9 @@ import { Api } from '@/services/Api'
 import { mapper } from '@/services/Mapper'
 import { LogsRequestFilter } from '@/types/LogsRequestFilter'
 
+/**
+ * @deprecated
+ */
 export class LogsApi extends Api {
 
   protected route: ApiRoute = '/logs'
@@ -17,4 +20,7 @@ export class LogsApi extends Api {
 
 }
 
+/**
+ * @deprecated
+ */
 export const logsApiKey: InjectionKey<LogsApi> = Symbol('logsApiKey')

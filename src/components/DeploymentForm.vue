@@ -14,6 +14,10 @@
           <p-textarea v-model="description" rows="7" :state="descriptionState" />
         </p-label>
 
+        <p-label label="Work Queue (Optional)">
+          <WorkQueueCombobox v-model:selected="workQueueName" />
+        </p-label>
+
         <p-label label="Tags (Optional)">
           <p-tags-input v-model="tags" empty-message="Add tags" />
         </p-label>
@@ -67,6 +71,7 @@
 <script lang="ts" setup>
   import { useField, useForm } from 'vee-validate'
   import { computed } from 'vue'
+  import WorkQueueCombobox from './WorkQueueCombobox.vue'
   import ScheduleFieldset from '@/components/ScheduleFieldset.vue'
   import SchemaFormFields from '@/components/SchemaFormFields.vue'
   import { Deployment, DeploymentUpdate, Schedule } from '@/models'
@@ -90,6 +95,7 @@
   const { value: name } = useField<string>('name')
   const { value: schedule } = useField<Schedule | null>('schedule')
   const { value: isScheduleActive } = useField<boolean>('isScheduleActive')
+  const { value: workQueueName } = useField<string | null>('workQueueName')
   const { value: tags } = useField<string[] | null>('tags')
 
   const emit = defineEmits<{

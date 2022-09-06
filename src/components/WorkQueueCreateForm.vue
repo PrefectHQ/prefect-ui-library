@@ -1,12 +1,12 @@
 <template>
-  <p-form class="queue-form" @submit="submit">
+  <p-form class="work-queue-create-form" @submit="submit">
     <p-content>
       <p-label label="Name " :message="errors.name" :state="nameState">
         <p-text-input v-model="name" :state="nameState" />
       </p-label>
 
       <p-label label="Description (Optional)">
-        <p-text-input v-model="description" />
+        <p-textarea v-model="description" rows="7" />
       </p-label>
 
       <p-label label="Status (Optional)">
@@ -27,58 +27,37 @@
       <p-label label="Flow Run Concurrency (Optional)">
         <p-number-input v-model="concurrencyLimit" placeholder="Unlimited" :min="0" />
       </p-label>
-
-      <p class="queue-form__section-header">
-        Filters
-      </p>
-
-      <p-label label="Tags (Optional)">
-        <p-tags-input v-model="tags" empty-message="Add tag to filter..." />
-      </p-label>
-
-      <p-label label="Deployments (Optional)">
-        <DeploymentCombobox v-model:selected="deployments" empty-message="Select deployment to filter..." />
-      </p-label>
     </p-content>
 
     <template #footer>
       <p-button inset @click="cancel">
         Cancel
       </p-button>
-      <SubmitButton :action="action" :loading="isSubmitting" />
+      <SubmitButton action="Create" :loading="isSubmitting" />
     </template>
   </p-form>
 </template>
 
 <script lang="ts" setup>
-  import { PLabel, PTextInput, PNumberInput, PTagsInput, PToggle, PForm } from '@prefecthq/prefect-design'
+  import { PLabel, PTextInput, PNumberInput, PToggle, PForm } from '@prefecthq/prefect-design'
   import { useField, useForm } from 'vee-validate'
-  import { computed, reactive, ref, watchEffect } from 'vue'
+  import { computed } from 'vue'
   import SubmitButton from './SubmitButton.vue'
-  import DeploymentCombobox from '@/components/DeploymentCombobox.vue'
-  import { WorkQueueRequest, WorkQueue, WorkQueueFormValues } from '@/models'
+  import { WorkQueueCreate } from '@/models'
   import { isRequired, withMessage } from '@/services/validate'
-  import { FormAction } from '@/types/buttons'
 
-  const props = defineProps<{
-    workQueue?: WorkQueue,
-    action?: FormAction,
-  }>()
-
-  const internalValue = reactive(new WorkQueueFormValues(props.workQueue))
-  const { handleSubmit, isSubmitting, errors } = useForm({ initialValues: internalValue })
+  const { handleSubmit, isSubmitting, errors } = useForm<WorkQueueCreate>()
 
   const rules = {
     name: [withMessage(isRequired, 'Name is required')],
   }
 
-  const paused = ref(props.workQueue?.isPaused)
   const isActive = computed({
     get() {
-      return !paused.value
+      return !isPaused.value
     },
     set() {
-      paused.value = !paused.value
+      isPaused.value = !isPaused.value
     },
   })
 
@@ -86,28 +65,23 @@
   const { value: description } = useField<string|null>('description')
   const { value: isPaused } = useField<boolean | undefined>('isPaused')
   const { value: concurrencyLimit } = useField<number|null>('concurrencyLimit')
-  const { value: tags } = useField<string[]>('filter.tags')
-  const { value: deployments } = useField<string[]>('filter.deploymentIds')
 
   const emit = defineEmits<{
-    (event: 'submit', value: WorkQueueRequest): void,
+    (event: 'submit', value: WorkQueueCreate): void,
     (event: 'cancel'): void,
   }>()
 
-  const submit = handleSubmit(workQueueData => {
-    emit('submit', workQueueData.getWorkQueueRequest())
+  const submit = handleSubmit((values) => {
+    emit('submit', values)
   })
+
   function cancel(): void {
     emit('cancel')
   }
-
-  watchEffect(() => {
-    isPaused.value = paused.value
-  })
 </script>
 
 <style>
-.queue-form {
+.work-queue-create-form {
 @apply
   border-[1px]
   border-gray-300
@@ -116,7 +90,7 @@
   rounded-lg
 }
 
-.queue-form__section-header {
+.work-queue-create-form__section-header {
   @apply
   text-base
   text-gray-500

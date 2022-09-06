@@ -30,7 +30,9 @@ import { randomStateType } from './stateType'
 import { randomChar, randomString, randomSentence, randomParagraph, randomRunName, randomNoun } from './string'
 import { randomTaskRun } from './taskRun'
 import { randomUiFlowRunHistory } from './UiFlowRunHistory'
+import { randomUrl } from './url'
 import { randomWorkQueue, randomWorkQueueFilter } from './workQueue'
+import { randomWorkQueueCreate } from './workQueueCreate'
 
 export const mocks = {
   any: randomAny,
@@ -75,6 +77,8 @@ export const mocks = {
   string: randomString,
   taskRun: randomTaskRun,
   uiFlowRunHistory: randomUiFlowRunHistory,
+  url: randomUrl,
   workQueue: randomWorkQueue,
+  workQueueCreate: randomWorkQueueCreate,
   workQueueFilter: randomWorkQueueFilter,
 }

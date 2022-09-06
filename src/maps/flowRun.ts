@@ -30,6 +30,7 @@ export const mapFlowRunResponseToFlowRun: MapFunction<FlowRunResponse, FlowRun> 
     runCount: source.run_count,
     created: this.map('string', source.created, 'Date'),
     updated: this.map('string', source.updated, 'Date'),
+    workQueueName: source.work_queue_name,
   })
 }
 
@@ -61,5 +62,6 @@ export const mapFlowRunToFlowRunResponse: MapFunction<FlowRun, FlowRunResponse> 
     'run_count': source.runCount,
     'created': this.map('Date', source.created, 'string'),
     'updated': this.map('Date', source.updated, 'string'),
+    'work_queue_name': source.workQueueName,
   }
 }

@@ -95,6 +95,7 @@
   empty:w-32
   empty:border-black
   empty:mb-2.5
+  empty:h-6
 }
 
 .notification-details__icon--gray { @apply

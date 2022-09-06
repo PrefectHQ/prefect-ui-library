@@ -9,6 +9,9 @@ import { Api, ApiRoute } from '@/services/Api'
 import { mapper } from '@/services/Mapper'
 import { FlowRunsHistoryFilter, UnionFilters } from '@/types/UnionFilters'
 
+/**
+ * @deprecated
+ */
 export class FlowRunsApi extends Api {
 
   protected route: ApiRoute = '/flow_runs'
@@ -42,4 +45,7 @@ export class FlowRunsApi extends Api {
   }
 }
 
+/**
+ * @deprecated
+ */
 export const flowRunsApiKey: InjectionKey<FlowRunsApi> = Symbol('flowRunsApiKey')

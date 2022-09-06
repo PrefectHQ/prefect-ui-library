@@ -47,4 +47,8 @@ export const en = {
     updateSchedule: 'Schedule updated',
     removeSchedule: 'Schedule removed',
   },
+  info: {
+    deprecatedWorkQueue: 'This work queue uses a deprecated tag-based approach to matching flow runs; it will continue to work but you can\'t modify it',
+    deploymentMissingWorkQueue: 'This deployment doesn\'t have an associated work queue; runs will be scheduled but won\'t be picked up by your agents',
+  },
 }

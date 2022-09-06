@@ -21,7 +21,7 @@ import { mapNotificationCreateToNotificationCreateRequest } from '@/maps/notific
 import { mapNotificationUpdateToNotificationUpdateRequest } from '@/maps/notificationUpdate'
 import { mapNumberToString, mapStringToNumber } from '@/maps/number'
 import { mapUiFlowRunHistoryToScatterPlotItem } from '@/maps/scatterPlotItem'
-import { mapScheduleToScheduleResponse, mapScheduleResponseToSchedule } from '@/maps/schedule'
+import { mapScheduleToScheduleResponse, mapScheduleResponseToSchedule, mapScheduleToScheduleRequest } from '@/maps/schedule'
 import { mapSchemaResponseToSchema } from '@/maps/schema'
 import { mapSchemaValuesToSchemaValuesRequest } from '@/maps/schemaValuesRequest'
 import { mapSchemaValuesResponseToSchemaValues } from '@/maps/schemaValuesResponse'
@@ -32,7 +32,7 @@ import { mapServerStateTypeToStateType, mapStateTypeToServerStateType } from '@/
 import { mapTaskInputToTaskInputResponse, mapTaskInputResponseToTaskInput } from '@/maps/taskInput'
 import { mapTaskRunToTaskRunResponse, mapTaskRunResponseToTaskRun } from '@/maps/taskRun'
 import { mapUiFlowRunHistoryResponseToUiFlowRunHistory } from '@/maps/uiFlowRunHistory'
-import { mapWorkQueueToWorkQueueResponse, mapWorkQueueResponseToWorkQueue } from '@/maps/workQueue'
+import { mapWorkQueueToWorkQueueResponse, mapWorkQueueResponseToWorkQueue, mapWorkQueueCreateToWorkQueueCreateRequest, mapWorkQueueEditToWorkQueueEditRequest } from '@/maps/workQueue'
 import { mapWorkQueueFilterToWorkQueueFilterResponse, mapWorkQueueFilterResponseToWorkQueueFilter } from '@/maps/workQueueFilter'
 
 export const maps = {
@@ -78,7 +78,7 @@ export const maps = {
   Log: { LogResponse: mapLogToLogResponse },
   number: { string: mapNumberToString },
   RunHistory: { FlowRunHistoryResponse: mapRunHistoryToFlowRunHistoryResponse, DivergingBarChartItem: mapRunHistoryToDivergingBarChartItem },
-  Schedule: { ScheduleResponse: mapScheduleToScheduleResponse },
+  Schedule: { ScheduleResponse: mapScheduleToScheduleResponse, ScheduleRequest: mapScheduleToScheduleRequest },
   ServerStateType: { StateType: mapServerStateTypeToStateType },
   StateHistory: { StateHistoryResponse: mapStateHistoryToStateHistoryResponse },
   StateType: { ServerStateType: mapStateTypeToServerStateType },
@@ -88,6 +88,8 @@ export const maps = {
   UiFlowRunHistory: { ScatterPlotItem: mapUiFlowRunHistoryToScatterPlotItem },
   UiFlowRunHistoryResponse: { UiFlowRunHistory: mapUiFlowRunHistoryResponseToUiFlowRunHistory },
   WorkQueue: { WorkQueueResponse: mapWorkQueueToWorkQueueResponse },
+  WorkQueueCreate: { WorkQueueCreateRequest: mapWorkQueueCreateToWorkQueueCreateRequest },
+  WorkQueueEdit: { WorkQueueEditRequest: mapWorkQueueEditToWorkQueueEditRequest },
   WorkQueueFilter: { WorkQueueFilterResponse: mapWorkQueueFilterToWorkQueueFilterResponse },
   SchemaResponse: { Schema: mapSchemaResponseToSchema },
   SchemaValuesResponse: { SchemaValues: mapSchemaValuesResponseToSchemaValues },

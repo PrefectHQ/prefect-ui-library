@@ -6,6 +6,12 @@
       </template>
     </p-key-value>
 
+    <p-key-value label="Work Queue" :alternate="alternate">
+      <template v-if="deployment.workQueueName" #value>
+        <WorkQueueIconText :work-queue-name="deployment.workQueueName!" />
+      </template>
+    </p-key-value>
+
     <p-key-value v-if="deployment.storageDocumentId" label="Storage" :alternate="alternate">
       <template #value>
         <BlockIconText :block-document-id="deployment.storageDocumentId" />
@@ -58,6 +64,7 @@
   import { formatDateTimeNumeric, showToast, PLoadingIcon } from '@prefecthq/prefect-design'
   import { ref, computed } from 'vue'
   import ScheduleFieldset from './ScheduleFieldset.vue'
+  import WorkQueueIconText from './WorkQueueIconText.vue'
   import BlockIconText from '@/components/BlockIconText.vue'
   import FlowIconText from '@/components/FlowIconText.vue'
   import { localization } from '@/localization'
@@ -116,7 +123,8 @@
 
       emit('update')
       showToast(successMessage, 'success')
-    } catch {
+    } catch (error) {
+      console.error(error)
       showToast(errorMessage, 'error')
     } finally {
       updateScheduleLoading.value = false

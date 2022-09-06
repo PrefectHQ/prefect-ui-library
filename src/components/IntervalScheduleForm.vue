@@ -41,11 +41,13 @@
 </template>
 
 <script lang="ts" setup>
+  import { SelectOption } from '@prefecthq/prefect-design'
   import { useField } from 'vee-validate'
   import { computed, ref, withDefaults, watch, onMounted } from 'vue'
   import TimezoneSelect from './TimezoneSelect.vue'
   import { IntervalSchedule } from '@/models'
   import { isRequired, withMessage } from '@/services/validate'
+  import { toPluralString } from '@/utilities'
   import { IntervalOption, secondsToClosestIntervalOption, secondsToClosestIntervalValue, intervalOptionsToSecondsMap } from '@/utilities/timeIntervals'
 
   const props = withDefaults(defineProps<{
@@ -70,7 +72,16 @@
   const { value: interval, meta: intervalState, errors: intervalErrors } = useField<number>('interval', rules.interval, { initialValue: secondsToClosestIntervalValue(props.schedule.interval) })
   const intervalOption = ref<IntervalOption>(secondsToClosestIntervalOption(props.schedule.interval))
 
-  const intervalOptions: IntervalOption[] = ['Seconds', 'Minutes', 'Hours', 'Days']
+  const intervalOptions = computed <SelectOption[]>(() => {
+    const singularOptions = ['Second', 'Minute', 'Hour', 'Day']
+
+    return singularOptions.map(option => {
+      return {
+        label: toPluralString(option, interval.value),
+        value: toPluralString(option),
+      }
+    })
+  })
 
   const intervalSeconds = computed(() => {
     return interval.value * intervalOptionsToSecondsMap[intervalOption.value]
@@ -102,11 +113,14 @@
 
   watch(() => internalValue.value, () => emit('update:schedule', internalValue.value))
   watch(() => disabled.value, () => emit('update:disabled', disabled.value))
-  watch(() => props.schedule, (val) => {
-    anchorDate.value = val.anchorDate ?? anchorDate.value
-    timezone.value = val.timezone ?? timezone.value
-    interval.value = secondsToClosestIntervalValue(val.interval)
-    intervalOption.value = secondsToClosestIntervalOption(val.interval)
+  watch(() => props.schedule, (val: IntervalSchedule | null, oldVal: IntervalSchedule | null) => {
+    anchorDate.value = val?.anchorDate ?? anchorDate.value
+    timezone.value = val?.timezone ?? timezone.value
+
+    if (val && !oldVal) {
+      interval.value = secondsToClosestIntervalValue(val.interval)
+      intervalOption.value = secondsToClosestIntervalOption(val.interval)
+    }
   }, { deep: true })
 
   onMounted(() => {

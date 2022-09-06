@@ -1,8 +1,8 @@
 <template>
   <page-heading class="page-heading-work-queue" :crumbs="crumbs">
     <template #actions>
-      <WorkQueueToggle :work-queue="queue" @update="emit('update')" />
-      <WorkQueueMenu :queue="queue" @delete="$emit('delete')" />
+      <WorkQueueToggle :work-queue="workQueue" @update="emit('update')" />
+      <WorkQueueMenu :work-queue="workQueue" @delete="$emit('delete')" />
     </template>
   </page-heading>
 </template>
@@ -17,17 +17,27 @@
   import { inject } from '@/utilities'
 
   const props = defineProps<{
-    queue: WorkQueue,
+    workQueue: WorkQueue,
   }>()
 
   const workQueueRoute = inject(workQueuesRouteKey)
 
   const crumbs = computed(() => [
     { text: 'Work Queues', to: workQueueRoute() },
-    { text: props.queue.name },
+    { text: props.workQueue.name },
   ])
 
   const emit = defineEmits<{
     (event: 'update' | 'delete'): void,
   }>()
 </script>
+
+<style>
+.page-heading-work-queue__deprecation-notice { @apply
+  text-sm
+}
+
+.page-heading-work-queue__deprecation-icon { @apply
+  inline
+}
+</style>

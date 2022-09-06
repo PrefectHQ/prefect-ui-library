@@ -30,4 +30,5 @@ export type FlowRunResponse = {
   estimated_start_time_delta: number | null,
   auto_scheduled: boolean | null,
   state: StateResponse | null,
+  work_queue_name: string | null,
 }

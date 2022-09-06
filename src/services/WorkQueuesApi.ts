@@ -1,12 +1,13 @@
 import { InjectionKey } from 'vue'
-import { FlowRun, FlowRunResponse } from '@/models'
+import { FlowRun, FlowRunResponse, WorkQueueCreate, WorkQueueEdit, WorkQueueResponse } from '@/models'
 import { WorkQueue } from '@/models/WorkQueue'
-import { WorkQueueRequest } from '@/models/WorkQueueRequest'
-import { WorkQueueResponse } from '@/models/WorkQueueResponse'
 import { Api, ApiRoute } from '@/services/Api'
 import { mapper } from '@/services/Mapper'
 import { PaginatedFilter } from '@/types/UnionFilters'
 
+/**
+ * @deprecated
+ */
 export class WorkQueuesApi extends Api {
 
   protected route: ApiRoute = '/work_queues'
@@ -16,13 +17,19 @@ export class WorkQueuesApi extends Api {
       .then(({ data }) => mapper.map('WorkQueueResponse', data, 'WorkQueue'))
   }
 
+  public getWorkQueueByName(name: string): Promise<WorkQueue> {
+    return this.get<WorkQueueResponse>(`/name/${name}`)
+      .then(({ data }) => mapper.map('WorkQueueResponse', data, 'WorkQueue'))
+  }
+
   public getWorkQueues(filter: PaginatedFilter): Promise<WorkQueue[]> {
     return this.post<WorkQueueResponse[]>('/filter', filter)
       .then(({ data }) => mapper.map('WorkQueueResponse', data, 'WorkQueue'))
   }
 
-  public createWorkQueue(request: WorkQueueRequest): Promise<WorkQueue> {
-    return this.post<WorkQueueResponse>('/', request)
+  public createWorkQueue(request: WorkQueueCreate): Promise<WorkQueue> {
+    const body = mapper.map('WorkQueueCreate', request, 'WorkQueueCreateRequest')
+    return this.post<WorkQueueResponse>('/', body)
       .then(({ data }) => mapper.map('WorkQueueResponse', data, 'WorkQueue'))
   }
 
@@ -34,8 +41,9 @@ export class WorkQueuesApi extends Api {
     return this.patch(`/${id}`, { 'is_paused': false })
   }
 
-  public updateWorkQueue(id: string, request: WorkQueueRequest): Promise<void> {
-    return this.patch(`/${id}`, request)
+  public updateWorkQueue(id: string, request: WorkQueueEdit): Promise<void> {
+    const body = mapper.map('WorkQueueEdit', request, 'WorkQueueEditRequest')
+    return this.patch(`/${id}`, body)
   }
 
   public deleteWorkQueue(id: string): Promise<void> {
@@ -48,4 +56,7 @@ export class WorkQueuesApi extends Api {
   }
 }
 
+/**
+ * @deprecated
+ */
 export const workQueuesApiKey: InjectionKey<WorkQueuesApi> = Symbol('workQueuesApiKey')

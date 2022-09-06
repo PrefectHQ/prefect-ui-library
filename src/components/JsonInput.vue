@@ -5,14 +5,13 @@
     </template>
     <template #control="{ attrs }">
       <textarea
-        ref="inputArea"
+        ref="source"
         v-model="internalValue"
         spellcheck="false"
         class="json-input__input-area"
         v-bind="attrs"
-        @scroll="handleScroll"
       />
-      <div ref="viewArea" class="json-input__view-area">
+      <div ref="target" class="json-input__view-area">
         <JsonView :value="internalValue" class="json-input__json-view" v-bind="attrs" />
       </div>
 
@@ -24,8 +23,9 @@
 </template>
 
 <script lang="ts" setup>
-  import { computed, ref } from 'vue'
+  import { computed } from 'vue'
   import JsonView from './JsonView.vue'
+  import { useScrollLinking } from '@/compositions'
   import { stringify } from '@/utilities/json'
 
   const props = defineProps<{
@@ -37,8 +37,7 @@
     (event: 'update:modelValue', value: string): void,
   }>()
 
-  const inputArea = ref<HTMLTextAreaElement>()
-  const viewArea = ref<HTMLDivElement>()
+  const { source, target } = useScrollLinking()
 
   const internalValue = computed({
     get() {
@@ -48,16 +47,6 @@
       emit('update:modelValue', val)
     },
   })
-
-  // This produces a scroll-linking effect
-  const handleScroll = (): void => {
-    if (!inputArea.value || !viewArea.value) {
-      return
-    }
-
-    viewArea.value.scrollTop = inputArea.value.scrollTop
-    viewArea.value.scrollLeft = inputArea.value.scrollLeft
-  }
 
   const format = (): void => {
     try {
@@ -106,7 +95,7 @@
   caret-slate-50
   p-4
   m-0
-  whitespace-nowrap
+  whitespace-pre-wrap
   top-0
 }
 

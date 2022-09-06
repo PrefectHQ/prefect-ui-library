@@ -5,6 +5,9 @@ import { Api, ApiRoute } from '@/services/Api'
 import { mapper } from '@/services/Mapper'
 import { UnionFilters } from '@/types/UnionFilters'
 
+/**
+ * @deprecated
+ */
 export class FlowsApi extends Api {
 
   protected route: ApiRoute = '/flows'
@@ -28,4 +31,7 @@ export class FlowsApi extends Api {
   }
 }
 
+/**
+ * @deprecated
+ */
 export const flowsApiKey: InjectionKey<FlowsApi> = Symbol('flowsApiKey')

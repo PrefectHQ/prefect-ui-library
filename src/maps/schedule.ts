@@ -1,5 +1,4 @@
-import { CronSchedule, IntervalSchedule, RRuleSchedule, Schedule } from '@/models'
-import { ScheduleResponse, isCronScheduleResponse, isIntervalScheduleResponse, isRRuleScheduleResponse } from '@/models/ScheduleResponse'
+import { CronSchedule, IntervalSchedule, RRuleSchedule, Schedule, ScheduleRequest, ScheduleResponse, isCronScheduleResponse, isIntervalScheduleResponse, isRRuleScheduleResponse, isIntervalSchedule, isRRuleSchedule, isCronSchedule, IntervalScheduleRequest, RRuleScheduleRequest, CronScheduleRequest } from '@/models'
 import { MapFunction } from '@/services/Mapper'
 
 export const mapScheduleResponseToSchedule: MapFunction<ScheduleResponse, Schedule> = function(source: ScheduleResponse): Schedule {
@@ -27,6 +26,33 @@ export const mapScheduleResponseToSchedule: MapFunction<ScheduleResponse, Schedu
   }
 
   throw 'Invalid ScheduleResponse'
+}
+
+export const mapScheduleToScheduleRequest: MapFunction<Schedule, ScheduleResponse> = function(source: Schedule): ScheduleRequest {
+  if (isRRuleSchedule(source)) {
+    return {
+      'timezone': source.timezone,
+      'rrule': source.rrule,
+    } as RRuleScheduleRequest
+  }
+
+  if (isCronSchedule(source)) {
+    return {
+      'timezone': source.timezone,
+      'cron': source.cron,
+      'day_or': source.dayOr,
+    } as CronScheduleRequest
+  }
+
+  if (isIntervalSchedule(source)) {
+    return {
+      'timezone': source.timezone,
+      'interval': source.interval,
+      'anchor_date': source.anchorDate ? this.map('Date', source.anchorDate, 'string') : null,
+    } as IntervalScheduleRequest
+  }
+
+  throw 'Invalid ScheduleRequest'
 }
 
 export const mapScheduleToScheduleResponse: MapFunction<Schedule, ScheduleResponse> = function(source: Schedule): ScheduleResponse {
