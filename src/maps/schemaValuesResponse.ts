@@ -1,6 +1,6 @@
 import { isValid } from 'date-fns'
-import { InvalidSchemaValueError } from '@/models'
-import { MapFunction } from '@/services/Mapper'
+import { BlockDocumentReferences, InvalidSchemaValueError } from '@/models'
+import { MapFunction, mapper } from '@/services/Mapper'
 import { isValidJsonString } from '@/services/validate'
 import { isSchemaValues, Schema, schemaHas, SchemaProperty, SchemaValue, SchemaValues } from '@/types/schemas'
 import { getSchemaPropertyDefaultValueForComponent, INITIAL_PROPERTY_LEVEL, MAX_PROPERTY_DEFAULT_VALUE, MAX_PROPERTY_LEVEL } from '@/utilities'
@@ -9,67 +9,90 @@ import { parseUnknownJson, stringifyUnknownJson } from '@/utilities/json'
 type MapSchemaValuesSource = {
   values: SchemaValues,
   schema: Schema,
+  blockDocumentReferences?: BlockDocumentReferences,
 }
 
-export const mapSchemaValuesResponseToSchemaValues: MapFunction<MapSchemaValuesSource, SchemaValues> = function({ values, schema }: MapSchemaValuesSource): SchemaValues {
+export const mapSchemaValuesResponseToSchemaValues: MapFunction<MapSchemaValuesSource, SchemaValues> = function(source: MapSchemaValuesSource): SchemaValues {
+  const parser = new SchemaValuesParser(source, this)
 
-  const parseSchemaValues = (values: SchemaValues, schema: Schema, level: number = INITIAL_PROPERTY_LEVEL): SchemaValues => {
+  return parser.parsed
+}
+
+class SchemaValuesParser {
+  private readonly blockDocumentReferences: BlockDocumentReferences | undefined
+  private readonly mapper: typeof mapper
+  private readonly _parsed: SchemaValues
+
+  public constructor(source: MapSchemaValuesSource, map: typeof mapper) {
+    if (source.blockDocumentReferences) {
+      this.blockDocumentReferences = source.blockDocumentReferences
+    }
+
+    this.mapper = map
+    this._parsed = this.parseSchemaValues(source.values, source.schema)
+  }
+
+  public get parsed(): Schema {
+    return this._parsed
+  }
+
+  private parseSchemaValues(values: SchemaValues, schema: Schema, level: number = INITIAL_PROPERTY_LEVEL): SchemaValues {
     const properties = schema.properties ?? {}
 
     return Object.keys(properties).reduce<SchemaValues>((result, key) => {
-      const property = getSchemaProperty(schema, key)
+      const property = this.getSchemaProperty(schema, key)
 
       if (property) {
-        result[key] = parseSchemaValue(values[key], property, level + 1)
+        result[key] = this.parseSchemaValue(values[key], property, level + 1)
       }
 
       return result
     }, {})
   }
 
-  const parseSchemaValue = (value: SchemaValue, property: SchemaProperty, level: number = INITIAL_PROPERTY_LEVEL): SchemaValue => {
+  private parseSchemaValue(value: SchemaValue, property: SchemaProperty, level: number = INITIAL_PROPERTY_LEVEL): SchemaValue {
     if (property.type === 'object' && level > MAX_PROPERTY_LEVEL) {
-      return parseMaxLevelProperty(value)
+      return this.parseMaxLevelProperty(value)
     }
 
     try {
       switch (property.type) {
         case 'object':
-          return parseObjectProperty(value, property, level)
+          return this.parseObjectProperty(value, property, level)
         case 'array':
-          return parseArrayProperty(value, property)
+          return this.parseArrayProperty(value, property)
         case 'string':
-          return parseStringProperty(value, property)
+          return this.parseStringProperty(value, property)
         case undefined:
-          return parseUnknownProperty(value)
+          return this.parseUnknownProperty(value)
         case 'integer':
-          return parseInteger(value)
+          return this.parseInteger(value)
         case 'number':
-          return parseNumber(value)
+          return this.parseNumber(value)
         case 'boolean':
-          return parseBoolean(value)
+          return this.parseBoolean(value)
         case 'null':
         default:
           return value
       }
     } catch (error) {
-      handleError(error)
+      this.handleError(error)
     }
 
     return getSchemaPropertyDefaultValueForComponent(property, level)
   }
 
-  const getSchemaProperty = (schema: Schema, key: string): SchemaProperty | undefined => {
+  private getSchemaProperty(schema: Schema, key: string): SchemaProperty | undefined {
     return schema.properties?.[key]
   }
 
-  const parseMaxLevelProperty = (value: SchemaValue): string => {
+  private parseMaxLevelProperty(value: SchemaValue): string {
     // typescript is just wrong. JSON.stringify can return null or undefined
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     return stringifyUnknownJson(value) ?? MAX_PROPERTY_DEFAULT_VALUE
   }
 
-  const parseObjectProperty = (value: SchemaValue, property: SchemaProperty, level: number): Record<string, unknown> | null => {
+  private parseObjectProperty(value: SchemaValue, property: SchemaProperty, level: number): Record<string, unknown> | null {
     const defaultValue = getSchemaPropertyDefaultValueForComponent(property, level)
 
     if (!schemaHas(property, 'properties')) {
@@ -83,23 +106,23 @@ export const mapSchemaValuesResponseToSchemaValues: MapFunction<MapSchemaValuesS
         throw new InvalidSchemaValueError()
       }
 
-      return parseSchemaValues(parsed, property, level)
+      return this.parseSchemaValues(parsed, property, level)
     } catch (error) {
-      handleError(error)
+      this.handleError(error)
     }
 
-    return parseSchemaValues(defaultValue, property, level)
+    return this.parseSchemaValues(defaultValue, property, level)
   }
 
-  const parseArrayProperty = (values: SchemaValue, property: SchemaProperty): unknown[] => {
+  private parseArrayProperty(values: SchemaValue, property: SchemaProperty): unknown[] {
     if (!Array.isArray(values) || !schemaHas(property, 'items')) {
       throw new InvalidSchemaValueError()
     }
 
-    return values.map(value => parseSchemaValue(value, property.items))
+    return values.map(value => this.parseSchemaValue(value, property.items))
   }
 
-  const parseStringProperty = (value: SchemaValue, property: SchemaProperty): string | Date | null => {
+  private parseStringProperty(value: SchemaValue, property: SchemaProperty): string | Date | null {
     if (typeof value !== 'string') {
       throw new InvalidSchemaValueError()
     }
@@ -107,14 +130,14 @@ export const mapSchemaValuesResponseToSchemaValues: MapFunction<MapSchemaValuesS
     switch (property.format) {
       case 'date':
       case 'date-time':
-        return parseDateValue(property, value)
+        return this.parseDateValue(property, value)
       default:
         return value
     }
   }
 
-  const parseDateValue = (property: SchemaProperty, value: SchemaValue): Date => {
-    const date = this.map('string', value as string, 'Date')
+  private parseDateValue(property: SchemaProperty, value: SchemaValue): Date {
+    const date = this.mapper.map('string', value as string, 'Date')
 
     if (!isValid(date)) {
       throw new InvalidSchemaValueError()
@@ -123,7 +146,7 @@ export const mapSchemaValuesResponseToSchemaValues: MapFunction<MapSchemaValuesS
     return date
   }
 
-  const parseUnknownProperty = (value: SchemaValue): SchemaValue => {
+  private parseUnknownProperty(value: SchemaValue): SchemaValue {
     if (!isValidJsonString(value)) {
       return JSON.stringify(value)
     }
@@ -131,7 +154,7 @@ export const mapSchemaValuesResponseToSchemaValues: MapFunction<MapSchemaValuesS
     return value
   }
 
-  const parseInteger = (value: SchemaValue): number | null => {
+  private parseInteger(value: SchemaValue): number | null {
     const result = parseInt(value as string)
 
     if (isNaN(result)) {
@@ -141,7 +164,7 @@ export const mapSchemaValuesResponseToSchemaValues: MapFunction<MapSchemaValuesS
     return result
   }
 
-  const parseNumber = (value: SchemaValue): number | null => {
+  private parseNumber(value: SchemaValue): number | null {
     const result = parseFloat(value as string)
 
     if (isNaN(result)) {
@@ -151,7 +174,7 @@ export const mapSchemaValuesResponseToSchemaValues: MapFunction<MapSchemaValuesS
     return result
   }
 
-  const parseBoolean = (value: SchemaValue): boolean | null => {
+  private parseBoolean(value: SchemaValue): boolean | null {
     if (typeof value === 'string') {
       if (value.toLowerCase() === 'true') {
         return true
@@ -169,14 +192,11 @@ export const mapSchemaValuesResponseToSchemaValues: MapFunction<MapSchemaValuesS
     return value
   }
 
-  const handleError = (error: unknown): void => {
+  private handleError(error: unknown): void {
     if (error instanceof InvalidSchemaValueError) {
       return
     }
 
     console.error(error)
   }
-
-  return parseSchemaValues(values, schema)
 }
-

@@ -2,6 +2,15 @@ import { BlockSchema } from './BlockSchema'
 import { BlockType } from './BlockType'
 import { SchemaValues } from '@/types/schemas'
 
+export type BlockDocumentReference = {
+  blockType: BlockType,
+  id: string,
+  isAnonymous: boolean,
+  name: string,
+}
+
+export type BlockDocumentReferences = Record<string, BlockDocumentReference>
+
 export interface IBlockDocument {
   id: string,
   created: Date,
