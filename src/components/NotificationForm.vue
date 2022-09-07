@@ -98,9 +98,7 @@
       const data = blockDataMap[selectedBlockTypeId.value]
 
       if (!data) {
-        const mapped = mapper.map('SchemaValuesResponse', { values: {}, schema: blockSchema.value.fields }, 'SchemaValues')
-        console.log(stringify(mapped), blockSchema.value)
-        return mapped
+        return mapper.map('SchemaValuesResponse', { values: {}, schema: blockSchema.value.fields }, 'SchemaValues')
       }
 
       return data
