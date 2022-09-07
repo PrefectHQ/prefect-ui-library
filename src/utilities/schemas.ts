@@ -127,6 +127,8 @@ function getSchemaPropertyMetaComponent(property: SchemaProperty): SchemaPropert
   }
 
   switch (property.type) {
+    case 'object':
+      return getSchemaPropertyObjectComponent(property)
     case 'array':
       return getSchemaPropertyArrayMetaComponent(property)
     case 'string':
@@ -141,6 +143,14 @@ function getSchemaPropertyMetaComponent(property: SchemaProperty): SchemaPropert
     default:
       return null
   }
+}
+
+function getSchemaPropertyObjectComponent(property: SchemaProperty): SchemaPropertyMeta | null {
+  if (schemaHas(property, 'properties')) {
+    return null
+  }
+
+  return withProps(JsonInput)
 }
 
 function getSchemaPropertyStringMetaComponent(property: SchemaProperty): SchemaPropertyMeta {
