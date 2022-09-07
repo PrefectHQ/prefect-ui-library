@@ -43,7 +43,7 @@ export function getSchemaPropertyDefaultValueForComponent(property: SchemaProper
 
   switch (property.type) {
     case 'object':
-      return {}
+      return getSchemaPropertyObjectDefaultValueForComponent(property)
     case 'null':
       throw new NoSchemaPropertyDefaultValueError()
     case 'array':
@@ -56,6 +56,14 @@ export function getSchemaPropertyDefaultValueForComponent(property: SchemaProper
     case 'number':
       return null
   }
+}
+
+export function getSchemaPropertyObjectDefaultValueForComponent(property: SchemaProperty): string | Record<never, never> {
+  if (schemaHas(property, 'properties')) {
+    return {}
+  }
+
+  return ''
 }
 
 export function getSchemaPropertyStringDefaultValueForComponent({ format }: SchemaProperty): null | string {
@@ -124,6 +132,10 @@ function getSchemaPropertyMetaComponent(property: SchemaProperty): SchemaPropert
     return withProps(BlockDocumentInput, {
       blockTypeSlug: property.blockReference.blockTypeSlug,
     })
+  }
+
+  if (!schemaHas(property, 'type')) {
+    return null
   }
 
   switch (property.type) {

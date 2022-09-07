@@ -70,6 +70,12 @@ export const mapSchemaValuesResponseToSchemaValues: MapFunction<MapSchemaValuesS
   }
 
   const parseObjectProperty = (value: SchemaValue, property: SchemaProperty, level: number): Record<string, unknown> | null => {
+    const defaultValue = getSchemaPropertyDefaultValueForComponent(property, level)
+
+    if (!schemaHas(property, 'properties')) {
+      return defaultValue
+    }
+
     try {
       const parsed = parseUnknownJson(value)
 
@@ -81,8 +87,6 @@ export const mapSchemaValuesResponseToSchemaValues: MapFunction<MapSchemaValuesS
     } catch (error) {
       handleError(error)
     }
-
-    const defaultValue = getSchemaPropertyDefaultValueForComponent(property, level)
 
     return parseSchemaValues(defaultValue, property, level)
   }

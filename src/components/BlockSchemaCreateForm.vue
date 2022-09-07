@@ -23,7 +23,7 @@
   import SubmitButton from './SubmitButton.vue'
   import { BlockDocumentCreateNamed } from '@/models/BlockDocumentCreate'
   import { BlockSchema } from '@/models/BlockSchema'
-  import { isRequired, isValidHandle, withMessage } from '@/services'
+  import { isRequired, isValidHandle, mapper, withMessage } from '@/services'
 
   const props = defineProps<{
     blockSchema: BlockSchema,
@@ -34,10 +34,12 @@
     (event: 'cancel'): void,
   }>()
 
+  const defaultData = mapper.map('SchemaValuesResponse', { values: {}, schema: props.blockSchema.fields }, 'SchemaValues')
+
   const { handleSubmit } = useForm<BlockDocumentCreateNamed>({
     initialValues: {
       name: '',
-      data: {},
+      data: defaultData,
       blockSchema: props.blockSchema,
     },
   })
