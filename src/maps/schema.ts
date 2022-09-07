@@ -79,7 +79,11 @@ class SchemaResolver {
       response.anyOf = anyOf.map(_property => this.resolveProperty(_property, schema))
     }
 
-    response.blockReference = this.resolveBlockReference(key)
+    const blockReference = this.resolveBlockReference(key)
+
+    if (blockReference) {
+      response.blockReference = blockReference
+    }
 
     const meta = getSchemaPropertyMeta({ property: response, schema, key, level })
 
