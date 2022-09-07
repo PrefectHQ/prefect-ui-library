@@ -11,7 +11,7 @@ export const mapBlockDocumentResponseToBlockDocument: MapFunction<BlockDocumentR
     updated: this.map('string', source.updated, 'Date'),
     blockSchema: this.map('BlockSchemaResponse', source.block_schema, 'BlockSchema'),
     blockType: this.map('BlockTypeResponse', source.block_type, 'BlockType'),
-    data: this.map('SchemaValuesResponse', { values: source.data, schema: source.block_schema.fields }, 'SchemaValues'),
+    data: this.map('SchemaValuesResponse', { values: source.data, schema: source.block_schema.fields, blockDocumentReferences: source.block_document_references }, 'SchemaValues'),
   })
 }
 

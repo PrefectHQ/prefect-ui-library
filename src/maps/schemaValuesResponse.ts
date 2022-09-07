@@ -1,5 +1,5 @@
 import { isValid } from 'date-fns'
-import { BlockDocumentReferences, InvalidSchemaValueError } from '@/models'
+import { BlockDocumentReference, BlockDocumentResponseDocumentReference, BlockDocumentResponseReferences, InvalidSchemaValueError } from '@/models'
 import { MapFunction, mapper } from '@/services/Mapper'
 import { isValidJsonString } from '@/services/validate'
 import { isSchemaValues, Schema, schemaHas, SchemaProperty, SchemaValue, SchemaValues } from '@/types/schemas'
@@ -9,7 +9,7 @@ import { parseUnknownJson, stringifyUnknownJson } from '@/utilities/json'
 type MapSchemaValuesSource = {
   values: SchemaValues,
   schema: Schema,
-  blockDocumentReferences?: BlockDocumentReferences,
+  blockDocumentReferences?: BlockDocumentResponseReferences,
 }
 
 export const mapSchemaValuesResponseToSchemaValues: MapFunction<MapSchemaValuesSource, SchemaValues> = function(source: MapSchemaValuesSource): SchemaValues {
@@ -19,7 +19,7 @@ export const mapSchemaValuesResponseToSchemaValues: MapFunction<MapSchemaValuesS
 }
 
 class SchemaValuesParser {
-  private readonly blockDocumentReferences: BlockDocumentReferences | undefined
+  private readonly blockDocumentReferences: BlockDocumentResponseReferences | undefined
   private readonly mapper: typeof mapper
   private readonly _parsed: SchemaValues
 
@@ -36,10 +36,18 @@ class SchemaValuesParser {
     return this._parsed
   }
 
-  private parseSchemaValues(values: SchemaValues, schema: Schema, level: number = INITIAL_PROPERTY_LEVEL): SchemaValues {
+  private parseSchemaValues(values: SchemaValues, schema: SchemaProperty, level: number = INITIAL_PROPERTY_LEVEL): SchemaValues {
     const properties = schema.properties ?? {}
 
     return Object.keys(properties).reduce<SchemaValues>((result, key) => {
+      const blockDocumentReference = this.getSchemaBlockDocumentReference(key)
+
+      if (blockDocumentReference) {
+        result[key] = blockDocumentReference.block_document.id
+
+        return result
+      }
+
       const property = this.getSchemaProperty(schema, key)
 
       if (property) {
@@ -84,6 +92,10 @@ class SchemaValuesParser {
 
   private getSchemaProperty(schema: Schema, key: string): SchemaProperty | undefined {
     return schema.properties?.[key]
+  }
+
+  private getSchemaBlockDocumentReference(key: string): BlockDocumentResponseDocumentReference | undefined {
+    return this.blockDocumentReferences?.[key]
   }
 
   private parseMaxLevelProperty(value: SchemaValue): string {
