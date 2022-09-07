@@ -7,6 +7,7 @@ export interface IDeployment {
   created: Date,
   updated: Date,
   name: string,
+  version: string,
   description: string | null,
   flowId: string,
   schedule: Schedule | null,
@@ -27,6 +28,7 @@ export class Deployment implements IDeployment {
   public created: Date
   public updated: Date
   public name: string
+  public version: string
   public description: string | null
   public readonly flowId: string
   public schedule: Schedule | null
@@ -46,6 +48,7 @@ export class Deployment implements IDeployment {
     this.created = deployment.created
     this.updated = deployment.updated
     this.name = deployment.name
+    this.version = deployment.version
     this.description = deployment.description
     this.flowId = deployment.flowId
     this.schedule = deployment.schedule
