@@ -7,6 +7,7 @@ export type SchemaPropertyResponse = SchemaResponse & {
   $ref?: SchemaReference<string>,
   anyOf?: SchemaPropertyResponse[],
   allOf?: SchemaPropertyResponse[],
+  example?: string,
 }
 
 export type SchemaPropertiesResponse = Record<string, SchemaPropertyResponse>

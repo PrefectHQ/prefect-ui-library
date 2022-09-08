@@ -4,7 +4,7 @@ import { SchemaPropertyMeta } from '@/utilities'
 export type SchemaValue = unknown
 export type SchemaValues = Record<string, SchemaValue | undefined>
 
-export const SchemaStringFormats = ['date', 'regex', 'date-time', 'time-delta', 'email', 'json-string'] as const
+export const SchemaStringFormats = ['date', 'regex', 'date-time', 'time-delta', 'email', 'json-string', 'password'] as const
 export const SchemaTypes = ['null', 'string', 'boolean', 'integer', 'number', 'array', 'object'] as const
 export const BaseDefinitionRefString = '#/definitions/' as const
 
@@ -24,6 +24,7 @@ export type SchemaProperty = Omit<Schema, 'definitions' | 'blockSchemaReferences
   anyOf?: SchemaProperty[],
   allOf?: SchemaProperty[],
   meta?: SchemaPropertyMeta,
+  example?: string,
   /** @deprecated use blockTypeSlug field instead */
   blockReference?: BlockSchemaReference,
   blockTypeSlug?: string,

@@ -17,6 +17,7 @@ export const randomParameters: MockFunction<Record<string, unknown>, [Record<str
     'json-string': '{}',
     regex: '/w+/gi',
     'time-delta': 600,
+    password: this.create('string'),
   }
 
 

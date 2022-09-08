@@ -252,8 +252,10 @@ function getSchemaPropertyIsRequired(schema: SchemaProperty, key: string): boole
 function getSchemaPropertyAttrs(property: SchemaProperty): SchemaPropertyInputAttrs {
   const attrs: SchemaPropertyInputAttrs = {}
 
-  if (property.default !== undefined) {
-    attrs.placeholder = property.default
+  const placeholder = property.default ?? property.example
+
+  if (placeholder) {
+    attrs.placeholder = placeholder
   }
 
   if (property.minLength !== undefined || property.minimum !== undefined) {

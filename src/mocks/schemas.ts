@@ -18,6 +18,7 @@ export const randomSchemaProperty: MockFunction<SchemaProperty, [SchemaProperty?
     'json-string': '{}',
     regex: '/w+/gi',
     'time-delta': 600,
+    password: this.create('string'),
   }
 
   const defaultTypeMap: Record<typeof SchemaTypes[number], unknown> = {
