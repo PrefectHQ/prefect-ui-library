@@ -28,14 +28,17 @@
 <script lang="ts" setup>
   import { PIconButtonMenu } from '@prefecthq/prefect-design'
   import { computed } from 'vue'
+  import { useRoute } from 'vue-router'
   import { StateBadge, PageHeading, DurationIconText, FlowIconText, CopyOverflowMenuItem, ConfirmDeleteModal, FlowRunStartTime } from '@/components'
   import { useShowModal } from '@/compositions/useShowModal'
   import { FlowRun } from '@/models'
-  import { flowRunsRouteKey } from '@/router'
+  import { flowRunsRouteKey, flowRunRouteKey } from '@/router'
   import { flowRunsApiKey } from '@/services'
   import { canKey } from '@/types'
   import { deleteItem, inject } from '@/utilities'
 
+
+  const flowRunRoute = inject(flowRunRouteKey)
   const flowRunsApi = inject(flowRunsApiKey)
   const can = inject(canKey)
 
@@ -45,12 +48,16 @@
 
   const { showModal, open } = useShowModal()
 
+  const route = useRoute()
+  const isRadar = computed(()=> route.name === 'radar')
+
   const flowRunsRoute = inject(flowRunsRouteKey)
   // It doesn't seem like we should need to coalesce here but
   // the flow run model dictates the flow run name can be null
   const crumbs = computed(() => [
     { text: 'Flow Runs', to: flowRunsRoute() },
-    { text: props.flowRun.name ?? '' },
+    { text: props.flowRun.name ?? '', to: isRadar.value ? flowRunRoute(props.flowRun.id) : ''  },
+    { text: isRadar.value ? 'Radar view' : '' },
   ])
 
   const emit = defineEmits(['delete'])
