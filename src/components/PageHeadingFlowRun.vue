@@ -54,11 +54,18 @@
   const flowRunsRoute = inject(flowRunsRouteKey)
   // It doesn't seem like we should need to coalesce here but
   // the flow run model dictates the flow run name can be null
-  const crumbs = computed(() => [
-    { text: 'Flow Runs', to: flowRunsRoute() },
-    { text: props.flowRun.name ?? '', to: isRadar.value ? flowRunRoute(props.flowRun.id) : ''  },
-    { text: isRadar.value ? 'Radar view' : '' },
-  ])
+  const crumbs = computed(() => !isRadar.value ?
+    [
+      { text: 'Flow Runs', to: flowRunsRoute() },
+      { text: props.flowRun.name ?? '' },
+    ] :
+    [
+      { text: 'Flow Runs', to: flowRunsRoute() },
+      { text: props.flowRun.name ?? '', to: flowRunRoute(props.flowRun.id)  },
+      { text: 'Radar view'  },
+    ],
+  )
+
 
   const emit = defineEmits(['delete'])
 
