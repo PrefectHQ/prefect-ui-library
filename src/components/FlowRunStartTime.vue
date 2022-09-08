@@ -2,9 +2,11 @@
   <p-icon-text class="flow-run-list-item-date" icon="CalendarIcon">
     <template v-if="flowRun.startTime">
       {{ formatDateTimeNumeric(flowRun.startTime) }}
+      <FlowRunDelta :flow-run="flowRun" />
     </template>
     <template v-else-if="flowRun.expectedStartTime">
       Scheduled for <span class="flow-run-list-item-date__expected">{{ formatDateTimeNumeric(flowRun.expectedStartTime) }}</span>
+      <FlowRunDelta :flow-run="flowRun" />
     </template>
     <template v-else>
       No start time
@@ -14,6 +16,7 @@
 
 <script lang="ts" setup>
   import { formatDateTimeNumeric } from '@prefecthq/prefect-design'
+  import FlowRunDelta from '@/components/FlowRunDelta.vue'
   import { FlowRun } from '@/models/FlowRun'
 
   defineProps<{
