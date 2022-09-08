@@ -1,4 +1,5 @@
-import { MapFunction } from '@/services/Mapper'
+import { BlockDocumentReferenceValue } from '@/models/api/BlockDocumentCreateRequest'
+import { MapFunction, mapper } from '@/services/Mapper'
 import { Schema, SchemaProperty, SchemaValue, SchemaValues } from '@/types/schemas'
 import { INITIAL_PROPERTY_LEVEL, isDate, isSchemaPropertyDefaultValueForComponent, MAX_PROPERTY_DEFAULT_VALUE, MAX_PROPERTY_LEVEL } from '@/utilities'
 import { parseUnknownJson } from '@/utilities/json'
@@ -8,15 +9,32 @@ type MapSchemaValuesSource = {
   schema: Schema,
 }
 
-export const mapSchemaValuesToSchemaValuesRequest: MapFunction<MapSchemaValuesSource, SchemaValues> = function({ values, schema }: MapSchemaValuesSource): SchemaValues {
+export const mapSchemaValuesToSchemaValuesRequest: MapFunction<MapSchemaValuesSource, SchemaValues> = function(source: MapSchemaValuesSource): SchemaValues {
+  const formatter = new SchemaValuesFormatter(source, this)
 
-  const formatSchemaValues = (values: SchemaValues, schema: Schema, level: number = INITIAL_PROPERTY_LEVEL): SchemaValues => {
+  return formatter.formatted
+}
+
+class SchemaValuesFormatter {
+  private readonly mapper: typeof mapper
+  private readonly _formatted: SchemaValues
+
+  public constructor(source: MapSchemaValuesSource, map: typeof mapper) {
+    this.mapper = map
+    this._formatted = this.formatSchemaValues(source.values, source.schema)
+  }
+
+  public get formatted(): Schema {
+    return this._formatted
+  }
+
+  private formatSchemaValues(values: SchemaValues, schema: Schema, level: number = INITIAL_PROPERTY_LEVEL): SchemaValues {
     return Object.keys(values).reduce<SchemaValues>((result, key) => {
-      const property = getSchemaProperty(schema, key)
+      const property = this.getSchemaProperty(schema, key)
       const propertyLevel = level + 1
 
       if (property) {
-        const value = formatSchemaValue(values[key], property, propertyLevel)
+        const value = this.formatSchemaValue(values[key], property, propertyLevel)
 
         if (!isSchemaPropertyDefaultValueForComponent(property, value, propertyLevel)) {
           result[key] = value
@@ -27,58 +45,75 @@ export const mapSchemaValuesToSchemaValuesRequest: MapFunction<MapSchemaValuesSo
     }, {})
   }
 
-  const formatSchemaValue = (value: SchemaValue, property: SchemaProperty, level: number = INITIAL_PROPERTY_LEVEL): SchemaValue => {
+  private formatSchemaValue(value: SchemaValue, property: SchemaProperty, level: number = INITIAL_PROPERTY_LEVEL): SchemaValue {
     if (property.type === 'object' && level > MAX_PROPERTY_LEVEL) {
-      return formatMaxLevelProperty(value)
+      return this.formatMaxLevelProperty(value)
+    }
+
+    if (property.blockReference) {
+      return this.formatBlockReferenceProperty(value)
     }
 
     switch (property.type) {
       case 'object':
-        return formatObjectProperty(value, property, level)
+        return this.formatObjectProperty(value, property, level)
       case 'string':
-        return formatStringProperty(value, property)
+        return this.formatStringProperty(value, property)
       case undefined:
-        return formatUnknownProperty(value)
+        return this.formatUnknownProperty(value)
       default:
         return value
     }
   }
 
-  const getSchemaProperty = (schema: Schema, key: string): SchemaProperty | undefined => {
+  private getSchemaProperty(schema: Schema, key: string): SchemaProperty | undefined {
     return schema.properties?.[key]
   }
 
-  const formatMaxLevelProperty = (value: SchemaValue): unknown => {
+  private formatMaxLevelProperty(value: SchemaValue): unknown {
     return parseUnknownJson(value) ?? MAX_PROPERTY_DEFAULT_VALUE
   }
 
-  const formatObjectProperty = (value: SchemaValue, property: SchemaProperty, level: number): SchemaValue => {
+  private formatBlockReferenceProperty(value: SchemaValue): BlockDocumentReferenceValue | unknown {
+    if (!value) {
+      return value
+    }
+
+    return {
+      $ref: {
+        // eslint-disable-next-line camelcase
+        block_document_id: value as string,
+      },
+    }
+  }
+
+  private formatObjectProperty(value: SchemaValue, property: SchemaProperty, level: number): SchemaValue {
     if (typeof value === 'string') {
       return parseUnknownJson(value)
     }
 
-    return formatSchemaValues(value as SchemaValues, property, level)
+    return this.formatSchemaValues(value as SchemaValues, property, level)
   }
 
-  const formatStringProperty = (value: SchemaValue, { format }: SchemaProperty): SchemaValue => {
+  private formatStringProperty(value: SchemaValue, { format }: SchemaProperty): SchemaValue {
     switch (format) {
       case 'date':
       case 'date-time':
-        return formatDateValue(value)
+        return this.formatDateValue(value)
       default:
         return value
     }
   }
 
-  const formatDateValue = (value: SchemaValue): SchemaValue => {
+  private formatDateValue(value: SchemaValue): SchemaValue {
     if (isDate(value)) {
-      return this.map('Date', value as Date, 'string')
+      return this.mapper.map('Date', value as Date, 'string')
     }
 
     return value
   }
 
-  const formatUnknownProperty = (value: SchemaValue): SchemaValue => {
+  private formatUnknownProperty(value: SchemaValue): SchemaValue {
     try {
       if (typeof value === 'string') {
         return JSON.parse(value)
@@ -89,7 +124,4 @@ export const mapSchemaValuesToSchemaValuesRequest: MapFunction<MapSchemaValuesSo
 
     return value
   }
-
-  return formatSchemaValues(values, schema)
 }
-

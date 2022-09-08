@@ -1,5 +1,5 @@
 import { isValid } from 'date-fns'
-import { BlockDocumentReference, BlockDocumentResponseDocumentReference, BlockDocumentResponseReferences, InvalidSchemaValueError } from '@/models'
+import { BlockDocumentReferenceResponse, BlockDocumentReferencesResponse, InvalidSchemaValueError } from '@/models'
 import { MapFunction, mapper } from '@/services/Mapper'
 import { isValidJsonString } from '@/services/validate'
 import { isSchemaValues, Schema, schemaHas, SchemaProperty, SchemaValue, SchemaValues } from '@/types/schemas'
@@ -9,7 +9,7 @@ import { parseUnknownJson, stringifyUnknownJson } from '@/utilities/json'
 type MapSchemaValuesSource = {
   values: SchemaValues,
   schema: Schema,
-  blockDocumentReferences?: BlockDocumentResponseReferences,
+  blockDocumentReferences?: BlockDocumentReferencesResponse,
 }
 
 export const mapSchemaValuesResponseToSchemaValues: MapFunction<MapSchemaValuesSource, SchemaValues> = function(source: MapSchemaValuesSource): SchemaValues {
@@ -19,7 +19,7 @@ export const mapSchemaValuesResponseToSchemaValues: MapFunction<MapSchemaValuesS
 }
 
 class SchemaValuesParser {
-  private readonly blockDocumentReferences: BlockDocumentResponseReferences | undefined
+  private readonly blockDocumentReferences: BlockDocumentReferencesResponse | undefined
   private readonly mapper: typeof mapper
   private readonly _parsed: SchemaValues
 
@@ -94,7 +94,7 @@ class SchemaValuesParser {
     return schema.properties?.[key]
   }
 
-  private getSchemaBlockDocumentReference(key: string): BlockDocumentResponseDocumentReference | undefined {
+  private getSchemaBlockDocumentReference(key: string): BlockDocumentReferenceResponse | undefined {
     return this.blockDocumentReferences?.[key]
   }
 

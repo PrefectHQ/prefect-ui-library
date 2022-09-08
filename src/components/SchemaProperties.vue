@@ -1,7 +1,7 @@
 <template>
   <PContent class="schema-properties">
     <template v-for="(property, key) in schema.properties" :key="key">
-      <SchemaProperty :property="property" :value="getPropertyValue(key)" />
+      <SchemaProperty v-if="property" :property="property" :value="getPropertyValue(key)" />
     </template>
   </PContent>
 </template>

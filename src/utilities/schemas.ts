@@ -166,6 +166,12 @@ function getSchemaPropertyObjectComponent(property: SchemaProperty): SchemaPrope
 }
 
 function getSchemaPropertyStringMetaComponent(property: SchemaProperty): SchemaPropertyMeta {
+  if (schemaHas(property, 'enum')) {
+    return withProps(PSelect, {
+      options: property.enum as string[],
+    })
+  }
+
   switch (property.format) {
     case 'date':
       return withProps(PDateInput)

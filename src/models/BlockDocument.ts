@@ -9,7 +9,7 @@ export type BlockDocumentReference = {
   name: string,
 }
 
-export type BlockDocumentReferences = Record<string, BlockDocumentReference>
+export type BlockDocumentReferences = Record<string, BlockDocumentReference | undefined>
 
 export interface IBlockDocument {
   id: string,

@@ -1,3 +1,5 @@
+import { mapBlockDocumentResponseReferencesToBlockDocumentReferences } from './blockDocumentReferences'
+import { mapSchemaDefinitionsResponseToSchemaDefinitions } from './schemaDefinitions'
 import { mapBlockDocumentResponseToBlockDocument, mapBlockDocumentToSelectOption } from '@/maps/blockDocument'
 import { mapBlockDocumentCreateToBlockDocumentCreateRequest } from '@/maps/blockDocumentCreate'
 import { mapBlockDocumentFilterToBlockDocumentFilterRequest } from '@/maps/blockDocumentFilter'
@@ -94,4 +96,6 @@ export const maps = {
   SchemaResponse: { Schema: mapSchemaResponseToSchema },
   SchemaValuesResponse: { SchemaValues: mapSchemaValuesResponseToSchemaValues },
   SchemaValues: { SchemaValuesRequest: mapSchemaValuesToSchemaValuesRequest },
+  BlockDocumentReferencesResponse: { BlockDocumentReferences: mapBlockDocumentResponseReferencesToBlockDocumentReferences },
+  SchemaDefinitionsResponse: { SchemaDefinitions: mapSchemaDefinitionsResponseToSchemaDefinitions },
 }

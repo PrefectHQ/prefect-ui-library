@@ -12,7 +12,7 @@ export type SchemaType = typeof SchemaTypes[number]
 export type SchemaStringFormat = typeof SchemaStringFormats[number]
 export type SchemaEnum<T> = T[]
 export type SchemaReference<T extends string> = `${typeof BaseDefinitionRefString}${T}`
-export type SchemaDefinitions = Record<string, Schema>
+export type SchemaDefinitions = Record<string, Schema | undefined>
 
 export type BlockSchemaReference = {
   blockSchemaChecksum: string,
@@ -24,7 +24,9 @@ export type SchemaProperty = Omit<Schema, 'definitions' | 'blockSchemaReferences
   anyOf?: SchemaProperty[],
   allOf?: SchemaProperty[],
   meta?: SchemaPropertyMeta,
+  /** @deprecated use blockTypeSlug field instead */
   blockReference?: BlockSchemaReference,
+  blockTypeSlug?: string,
 }
 
 export type SchemaPropertyAnyOf = Require<SchemaProperty, 'anyOf'>
@@ -60,7 +62,7 @@ export type Schema = {
 }
 
 export function isSchemaValues(input: unknown): input is SchemaValues {
-  return typeof input === 'object' && input !== null
+  return typeof input === 'object' && input !== null && !Array.isArray(input)
 }
 
 export function schemaHas<T extends Schema | SchemaProperty, P extends keyof T>(schema: T, property: P): schema is T & Require<T, P> {

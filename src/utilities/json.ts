@@ -18,7 +18,7 @@ export function parseUnknownJson(value: unknown): unknown {
   return value
 }
 
-export function stringifyUnknownJson(value: unknown): string {
+export function stringifyUnknownJson(value: unknown): string | null | undefined {
   const parsed = parseUnknownJson(value)
 
   return stringify(parsed)

@@ -1,9 +1,9 @@
 import { BlockSchemaReferencesResponse } from './BlockSchemaResponse'
 import { SchemaReference, SchemaType, SchemaStringFormat, SchemaEnum } from '@/types/schemas'
 
-export type SchemaDefinitionsResponse = Record<string, SchemaResponse>
+export type SchemaDefinitionsResponse = Record<string, SchemaResponse | undefined>
 
-export interface SchemaPropertyResponse extends SchemaResponse {
+export type SchemaPropertyResponse = SchemaResponse & {
   $ref?: SchemaReference<string>,
   anyOf?: SchemaPropertyResponse[],
   allOf?: SchemaPropertyResponse[],
@@ -11,7 +11,7 @@ export interface SchemaPropertyResponse extends SchemaResponse {
 
 export type SchemaPropertiesResponse = Record<string, SchemaPropertyResponse>
 
-export interface SchemaResponse {
+export type SchemaResponse = {
   alias?: string,
   block_schema_references?: BlockSchemaReferencesResponse,
   default?: unknown,

@@ -1,6 +1,7 @@
 import { SchemaPropertiesResponse, SchemaPropertyResponse, SchemaResponse } from '@/models/api/SchemaResponse'
 import { MapFunction, mapper } from '@/services/Mapper'
 import { BlockSchemaReference, BlockSchemaReferences, Schema, SchemaDefinitions, SchemaProperties, SchemaProperty } from '@/types/schemas'
+import { mapSnakeToCamelCase } from '@/utilities'
 import { getSchemaPropertyMeta, INITIAL_PROPERTY_LEVEL } from '@/utilities/schemas'
 
 export const mapSchemaResponseToSchema: MapFunction<SchemaResponse, Schema> = function(source: SchemaResponse): Schema {
@@ -17,7 +18,7 @@ class SchemaResolver {
 
   public constructor(schema: SchemaResponse, map: typeof mapper) {
     this.mapper = map
-    this.definitions = schema.definitions
+    this.definitions = this.mapper.map('SchemaDefinitionsResponse', schema.definitions, 'SchemaDefinitions')
     this.references = this.mapper.map('BlockSchemaReferencesResponse', schema.block_schema_references, 'BlockSchemaReferences')
 
     this._resolved = this.resolveSchema(schema)
@@ -27,9 +28,15 @@ class SchemaResolver {
     return this._resolved
   }
 
-  private resolveSchema(schema: Schema): Schema {
-    const { properties, items, ...rest } = schema
-    const response: Schema = rest
+  private resolveSchema(schema: SchemaResponse): Schema {
+    // eslint-disable-next-line camelcase
+    const { properties, items, block_schema_references, ...rest } = schema
+    // spread is necessary to avoid typescript index signature error
+    // https://github.com/microsoft/TypeScript/issues/42021
+    const response: Schema = {
+      ...mapSnakeToCamelCase({ ...rest }),
+      blockSchemaReferences: this.mapper.map('BlockSchemaReferencesResponse', block_schema_references, 'BlockSchemaReferences'),
+    }
 
     if (properties) {
       response.properties = this.resolveProperties(properties, schema)

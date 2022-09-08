@@ -1,3 +1,5 @@
+import camelCaseLodash from 'lodash.camelcase'
+
 export const vowels: string[] = ['a', 'e', 'i', 'o', 'u', 'y']
 
 export const pluralize = (word: string): string => {
@@ -40,7 +42,7 @@ export function kebabCase(string: string): string {
 }
 
 export function camelCase(str: string): string {
-  return str.toLowerCase().replace(/[^a-zA-Z0-9]+(.)/g, (match, chr) => chr.toUpperCase())
+  return camelCaseLodash(str)
 }
 
 export function titleCase(str: string): string {

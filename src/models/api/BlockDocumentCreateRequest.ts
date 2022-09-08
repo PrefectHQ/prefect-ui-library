@@ -1,10 +1,16 @@
-export type BlockDocumentCreateRequestReferenceData = {
+import { SchemaValue } from '@/types/schemas'
+
+export type BlockDocumentReferenceValue = {
   $ref: {
     block_document_id: string,
   },
 }
 
-export type BlockDocumentRequestData = Record<string, unknown | BlockDocumentCreateRequestReferenceData>
+export function isBlockDocumentReferenceValue(value: SchemaValue): value is BlockDocumentReferenceValue {
+  return typeof value === 'object' && value !== null && '$ref' in value
+}
+
+export type BlockDocumentRequestData = Record<string, unknown | BlockDocumentReferenceValue>
 
 export type BlockDocumentCreateNamedRequest = {
   name: string,
