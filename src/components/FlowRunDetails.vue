@@ -24,14 +24,6 @@
       <p-key-value label="Idempotency Key" :value="flowRun.idempotencyKey" :alternate="alternate" />
     </template>
 
-    <template v-if="flowRun.idempotencyKey || flowRun.stateType === 'scheduled'">
-      <p-key-value v-if="flowRun.startTime" label="Start Time" :value="formatDateTimeNumeric(flowRun.startTime)" :alternate="alternate" />
-
-      <p-key-value v-if="flowRun.expectedStartTime" label="Expected Start Time" :value="formatDateTimeNumeric(flowRun.expectedStartTime)" :alternate="alternate" />
-
-      <p-key-value label="Estimated Start Time Delta" :value="secondsToApproximateString(flowRun.estimatedStartTimeDelta ?? 0)" :alternate="alternate" />
-    </template>
-
     <p-key-value label="Run Count" :value="flowRun.runCount ?? 0" :alternate="alternate" />
 
     <p-key-value label="Tags" :alternate="alternate">
@@ -46,7 +38,6 @@
   import { PKeyValue, PTags, formatDateTimeNumeric } from '@prefecthq/prefect-design'
   import  WorkQueueIconText  from '@/components/WorkQueueIconText.vue'
   import { FlowRun } from '@/models/FlowRun'
-  import { secondsToApproximateString } from '@/utilities/seconds'
 
   defineProps<{
     flowRun: FlowRun,
