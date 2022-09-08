@@ -1,6 +1,7 @@
 import { Parameters } from '@/models/Parameters'
 import { State } from '@/models/State'
 import { StateType } from '@/models/StateType'
+import { secondsToApproximateString } from '@/utilities'
 export interface IFlowRun {
   id: string,
   flowId: string,
@@ -96,5 +97,13 @@ export class FlowRun implements IFlowRun {
 
   public isScheduled(): this is FlowRun & { expectedStartTime: Date } {
     return this.stateType === 'scheduled'
+  }
+
+  public get delta(): string | null {
+    if (!this.estimatedStartTimeDelta || this.estimatedStartTimeDelta <= 1) {
+      return null
+    }
+
+    return `(${secondsToApproximateString(this.estimatedStartTimeDelta)} late)`
   }
 }
