@@ -112,8 +112,7 @@
   }
 
   const sortedBlocks = computed(() => {
-    const blocks = filtered
-    return blocks.value.sort((blockA, blockB) => blockA.blockType.name.localeCompare(blockB.blockType.name))
+    return [...filtered.value].sort((blockA, blockB) => blockA.blockType.name.localeCompare(blockB.blockType.name))
   })
 
   function clear(): void {
