@@ -6,7 +6,7 @@
       <BlockSchemaCapabilitySelect v-model:selected="selectedCapability" class="block-documents-table__capability" />
       <BlockTypeSelect v-model:selected="selectedType" class="block-documents-table__type" />
     </div>
-    <p-table :data="filtered" :columns="columns">
+    <p-table :data="sortedBlocks" :columns="columns">
       <template #name="{ row }: { row: BlockDocument }">
         <div class="block-documents-table__name-column">
           <BlockTypeLogo :block-type="row.blockType" class="block-documents-table__name-img" />
@@ -110,6 +110,11 @@
 
     return `${name} ${blockType.name} ${blockSchemaCapabilities.join(' ')}`.toLowerCase().includes(searchTerm.value.toLowerCase())
   }
+
+  const sortedBlocks = computed(() => {
+    const blocks = filtered
+    return blocks.value.sort((blockA, blockB) => blockA.blockType.name.localeCompare(blockB.blockType.name))
+  })
 
   function clear(): void {
     searchTerm.value = ''
