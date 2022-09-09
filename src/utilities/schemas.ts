@@ -1,4 +1,4 @@
-import { PTextInput, PToggle, PDateInput, PNumberInput, PCombobox, PSelect } from '@prefecthq/prefect-design'
+import { PTextInput, PToggle, PDateInput, PNumberInput, PCombobox, PSelect, SelectOption } from '@prefecthq/prefect-design'
 import { markRaw } from 'vue'
 import { isNumberArray, isStringArray } from './arrays'
 import BlockDocumentInput from '@/components/BlockDocumentInput.vue'
@@ -95,7 +95,7 @@ export function getSchemaPropertyMeta({ property, schema, key, level }: GetSchem
     return getSchemaPropertyMaxLevelMeta(schema, key)
   }
 
-  const component = getSchemaPropertyMetaComponent(property)
+  const component = getSchemaPropertyMetaComponent(property, schema, key)
 
   if (component === null) {
     return
@@ -127,7 +127,7 @@ function getSchemaPropertyMetaOptions(property: SchemaProperty, schema: Schema, 
   }
 }
 
-function getSchemaPropertyMetaComponent(property: SchemaProperty): SchemaPropertyMetaComponent | null {
+function getSchemaPropertyMetaComponent(property: SchemaProperty, schema: Schema, key: string): SchemaPropertyMetaComponent | null {
   if (property.blockReference) {
     return withProps(BlockDocumentInput, {
       blockTypeSlug: property.blockReference.blockTypeSlug,
@@ -142,9 +142,9 @@ function getSchemaPropertyMetaComponent(property: SchemaProperty): SchemaPropert
     case 'object':
       return getSchemaPropertyObjectComponent(property)
     case 'array':
-      return getSchemaPropertyArrayMetaComponent(property)
+      return getSchemaPropertyArrayMetaComponent(property, schema, key)
     case 'string':
-      return getSchemaPropertyStringMetaComponent(property)
+      return getSchemaPropertyStringMetaComponent(property, schema, key)
     case 'integer':
     case 'number':
       return withProps(PNumberInput)
@@ -165,10 +165,10 @@ function getSchemaPropertyObjectComponent(property: SchemaProperty): SchemaPrope
   return withProps(JsonInput)
 }
 
-function getSchemaPropertyStringMetaComponent(property: SchemaProperty): SchemaPropertyMeta {
+function getSchemaPropertyStringMetaComponent(property: SchemaProperty, schema: Schema, key: string): SchemaPropertyMeta {
   if (schemaHas(property, 'enum')) {
     return withProps(PSelect, {
-      options: property.enum as string[],
+      options: getSchemaPropertySelectOptions(property, schema, key),
     })
   }
 
@@ -186,10 +186,10 @@ function getSchemaPropertyStringMetaComponent(property: SchemaProperty): SchemaP
   }
 }
 
-function getSchemaPropertyArrayMetaComponent(property: SchemaProperty): SchemaPropertyMeta {
+function getSchemaPropertyArrayMetaComponent(property: SchemaProperty, schema: Schema, key: string): SchemaPropertyMeta {
   if (isStringArray(property.enum) || isNumberArray(property.enum)) {
     return withProps(PSelect, {
-      options: property.enum,
+      options: getSchemaPropertySelectOptions(property, schema, key),
     })
   }
 
@@ -271,4 +271,20 @@ function getSchemaPropertyAttrs(property: SchemaProperty): SchemaPropertyInputAt
   }
 
   return attrs
+}
+
+function getSchemaPropertySelectOptions(property: SchemaProperty, schema: Schema, key: string): SelectOption[] {
+  const options: SelectOption[] = []
+
+  if (!getSchemaPropertyIsRequired(schema, key)) {
+    options.push({ label: 'None', value: null })
+  }
+
+  if (property.enum && isStringArray(property.enum)) {
+    const mapped = property.enum.map<SelectOption>(value => ({ label: value, value }))
+
+    options.push(...mapped)
+  }
+
+  return options
 }
