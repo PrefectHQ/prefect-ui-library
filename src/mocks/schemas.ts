@@ -29,6 +29,7 @@ export const randomSchemaProperty: MockFunction<SchemaProperty, [SchemaProperty?
     integer: 1,
     number: 1.6,
     object: '{}',
+    block: null,
   }
 
   return {

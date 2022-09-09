@@ -1,6 +1,5 @@
 import { SchemaPropertyService, SchemaPropertyServiceSource } from './SchemaPropertyService'
 import { SchemaService } from './SchemaService'
-import { BlockDocumentReferenceValue, isBlockDocumentReferenceValue } from '@/models/api/BlockDocumentCreateRequest'
 import { SchemaValue, isSchemaValues } from '@/types/schemas'
 import { parseUnknownJson, stringifyUnknownJson } from '@/utilities/json'
 
@@ -18,10 +17,6 @@ export class SchemaValueObject extends SchemaPropertyService {
   }
 
   protected request(value: SchemaValue): unknown {
-    if (this.has('blockTypeSlug')) {
-      return this.blockRequestValue(value)
-    }
-
     if (this.isMaxLevel) {
       return this.maxLevelRequestValue(value)
     }
@@ -30,10 +25,6 @@ export class SchemaValueObject extends SchemaPropertyService {
   }
 
   protected response(value: SchemaValue): unknown {
-    if (this.has('blockTypeSlug')) {
-      return this.blockResponseValue(value as BlockDocumentReferenceValue)
-    }
-
     if (this.isMaxLevel) {
       return this.maxLevelResponseValue(value)
     }
@@ -75,29 +66,6 @@ export class SchemaValueObject extends SchemaPropertyService {
     // }
 
     return {}
-  }
-
-  private blockRequestValue(value: SchemaValue): BlockDocumentReferenceValue | unknown {
-    if (!value || typeof value !== 'string') {
-      return value
-    }
-
-    const request: BlockDocumentReferenceValue = {
-      $ref: {
-        // eslint-disable-next-line camelcase
-        block_document_id: value,
-      },
-    }
-
-    return request
-  }
-
-  private blockResponseValue(value: SchemaValue): unknown {
-    if (isBlockDocumentReferenceValue(value)) {
-      return value.$ref.block_document_id
-    }
-
-    return value
   }
 
   private maxLevelRequestValue(value: SchemaValue): unknown {

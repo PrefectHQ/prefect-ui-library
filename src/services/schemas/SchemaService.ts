@@ -1,5 +1,6 @@
 import { SchemaPropertyService, SchemaPropertyServiceConstructor } from './SchemaPropertyService'
 import { SchemaValueArray } from './SchemaValueArray'
+import { SchemaValueBlock } from './SchemaValueBlock'
 import { SchemaValueBoolean } from './SchemaValueBoolean'
 import { SchemaValueNone } from './SchemaValueNull'
 import { SchemaValueNumber } from './SchemaValueNumber'
@@ -103,6 +104,8 @@ export class SchemaService {
         return SchemaValueArray
       case 'object':
         return SchemaValueObject
+      case 'block':
+        return SchemaValueBlock
       case undefined:
         return SchemaValueUnknown
     }

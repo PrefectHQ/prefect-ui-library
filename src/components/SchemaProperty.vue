@@ -16,7 +16,7 @@
   import { computed } from 'vue'
   import BlockDocumentKeyValue from './BlockDocumentKeyValue.vue'
   import { JsonView, JsonInput } from '.'
-  import { schemaHas, SchemaProperty, SchemaValue } from '@/types/schemas'
+  import { SchemaProperty, SchemaValue } from '@/types/schemas'
   import { stringifyUnknownJson } from '@/utilities/json'
 
   const props = defineProps<{
@@ -30,7 +30,5 @@
 
   const jsonValue = computed(() => stringifyUnknownJson(props.value))
 
-  const isBlockDocumentProperty = computed(() => {
-    return schemaHas(props.property, 'blockReference')
-  })
+  const isBlockDocumentProperty = computed(() => props.property.type === 'block')
 </script>

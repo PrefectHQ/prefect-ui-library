@@ -5,7 +5,9 @@ export type SchemaValue = unknown
 export type SchemaValues = Record<string, SchemaValue | undefined>
 
 export const SchemaStringFormats = ['date', 'regex', 'date-time', 'time-delta', 'email', 'json-string', 'password'] as const
-export const SchemaTypes = ['null', 'string', 'boolean', 'integer', 'number', 'array', 'object'] as const
+const apiSchemaTypes = ['null', 'string', 'boolean', 'integer', 'number', 'array', 'object'] as const
+const uiOnlySchemaTypes = ['block'] as const
+export const SchemaTypes = [...apiSchemaTypes, ...uiOnlySchemaTypes] as const
 export const BaseDefinitionRefString = '#/definitions/' as const
 
 export type SchemaType = typeof SchemaTypes[number]

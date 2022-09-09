@@ -86,12 +86,6 @@ class SchemaResolver {
       response.anyOf = anyOf.map(_property => this.resolveProperty(_property, schema))
     }
 
-    const blockReference = this.resolveBlockReference(key)
-
-    if (blockReference) {
-      response.blockReference = blockReference
-    }
-
     const meta = getSchemaPropertyMeta({ property: response, schema, key, level })
 
     if (meta) {
@@ -105,10 +99,10 @@ class SchemaResolver {
     const [, match = ''] = ref.match(/^(?:#\/definitions\/)(.*)/) ?? []
     const definition = this.definitions?.[match] ?? {}
 
-    return this.resolveSchema(definition)
-  }
+    if (definition.blockTypeSlug) {
+      definition.type = 'block'
+    }
 
-  private resolveBlockReference(key: string): BlockSchemaReference | undefined {
-    return this.references?.[key]
+    return this.resolveSchema(definition)
   }
 }

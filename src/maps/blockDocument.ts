@@ -11,7 +11,6 @@ export const mapBlockDocumentResponseToBlockDocument: MapFunction<BlockDocumentR
   const blockSchema = this.map('BlockSchemaResponse', source.block_schema, 'BlockSchema')
   const data = schemaService.mapResponseValues(values, blockSchema.fields)
 
-
   return new BlockDocument({
     ...mapSnakeToCamelCase(source),
     created: this.map('string', source.created, 'Date'),
