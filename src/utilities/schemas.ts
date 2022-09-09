@@ -21,7 +21,6 @@ type SchemaPropertyMetaComponent = ReturnType<typeof withProps>
 type SchemaPropertyMetaOptions = {
   attrs?: SchemaPropertyInputAttrs,
   validators?: ValidationRule | ValidationRule[],
-  required?: boolean,
 }
 
 type SchemaPropertyInputAttrs = Record<string, unknown>
@@ -123,7 +122,6 @@ function getSchemaPropertyMaxLevelMeta(schema: Schema, key: string): SchemaPrope
 function getSchemaPropertyMetaOptions(property: SchemaProperty, schema: Schema, key: string): SchemaPropertyMetaOptions {
   return {
     validators: getSchemaPropertyValidators(property, schema, key),
-    required: getSchemaPropertyIsRequired(schema, key),
     attrs: getSchemaPropertyAttrs(property),
   }
 }

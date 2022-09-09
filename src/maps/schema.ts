@@ -1,6 +1,6 @@
 import { SchemaPropertiesResponse, SchemaPropertyResponse, SchemaResponse } from '@/models/api/SchemaResponse'
 import { MapFunction, mapper } from '@/services/Mapper'
-import { BlockSchemaReference, BlockSchemaReferences, Schema, SchemaDefinitions, SchemaProperties, SchemaProperty } from '@/types/schemas'
+import { BlockSchemaReferences, Schema, SchemaDefinitions, SchemaProperties, SchemaProperty } from '@/types/schemas'
 import { mapSnakeToCamelCase } from '@/utilities'
 import { getSchemaPropertyMeta, INITIAL_PROPERTY_LEVEL } from '@/utilities/schemas'
 
@@ -70,6 +70,10 @@ class SchemaResolver {
       Object.assign(response, this.resolveDefinition($ref))
     }
 
+    if (this.getSchemaPropertyIsRequired(schema, key)) {
+      response.isRequired = true
+    }
+
     if (properties) {
       response.properties = this.resolveProperties(properties, property, level)
     }
@@ -104,5 +108,9 @@ class SchemaResolver {
     }
 
     return this.resolveSchema(definition)
+  }
+
+  private getSchemaPropertyIsRequired(schema: Schema, key: string): boolean {
+    return schema.required?.includes(key) ?? false
   }
 }

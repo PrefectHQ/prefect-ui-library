@@ -27,6 +27,7 @@ export type SchemaProperty = Omit<Schema, 'definitions' | 'blockSchemaReferences
   allOf?: SchemaProperty[],
   meta?: SchemaPropertyMeta,
   example?: string,
+  isRequired?: boolean,
   /** @deprecated use blockTypeSlug field instead */
   blockReference?: BlockSchemaReference,
   blockTypeSlug?: string,
