@@ -26,8 +26,6 @@ export class SchemaValueBlock extends SchemaPropertyService {
     return value
   }
 
-  protected get default(): unknown {
-    throw new Error('Method not implemented.')
-  }
+  protected readonly default = null
 
 }

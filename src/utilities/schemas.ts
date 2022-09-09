@@ -54,6 +54,7 @@ export function getSchemaPropertyDefaultValueForComponent(property: SchemaProper
     case 'boolean':
     case 'integer':
     case 'number':
+    case 'block':
       return null
   }
 }
@@ -128,12 +129,6 @@ function getSchemaPropertyMetaOptions(property: SchemaProperty, schema: Schema, 
 }
 
 function getSchemaPropertyMetaComponent(property: SchemaProperty, schema: Schema, key: string): SchemaPropertyMetaComponent | null {
-  if (property.blockReference) {
-    return withProps(BlockDocumentInput, {
-      blockTypeSlug: property.blockReference.blockTypeSlug,
-    })
-  }
-
   if (!schemaHas(property, 'type')) {
     return null
   }
@@ -150,11 +145,23 @@ function getSchemaPropertyMetaComponent(property: SchemaProperty, schema: Schema
       return withProps(PNumberInput)
     case 'boolean':
       return withProps(PToggle)
+    case 'block':
+      return getSchemaPropertyBlockMetaComponent(property)
     case undefined:
       return withProps(JsonInput)
     default:
       return null
   }
+}
+
+function getSchemaPropertyBlockMetaComponent(property: SchemaProperty): SchemaPropertyMeta | null {
+  if (!schemaHas(property, 'blockTypeSlug')) {
+    return null
+  }
+
+  return withProps(BlockDocumentInput, {
+    blockTypeSlug: property.blockTypeSlug,
+  })
 }
 
 function getSchemaPropertyObjectComponent(property: SchemaProperty): SchemaPropertyMeta | null {
@@ -268,6 +275,11 @@ function getSchemaPropertyAttrs(property: SchemaProperty): SchemaPropertyInputAt
 
   if (property.multipleOf) {
     attrs.step = property.multipleOf
+  }
+
+  // todo: confirm we should do this. this might break secrets
+  if (property.format === 'password') {
+    attrs.type = 'password'
   }
 
   return attrs
