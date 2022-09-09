@@ -3,14 +3,14 @@ import { BlockDocumentResponse } from '@/models/api/BlockDocumentResponse'
 import { BlockDocument } from '@/models/BlockDocument'
 import { MapFunction } from '@/services/Mapper'
 import { resolveSchemaBlockDocumentReferences } from '@/services/schemas/SchemaBlockReferenceResolver'
-import { SchemaValuesMapper } from '@/services/schemas/SchemaValues'
+import { schemaService } from '@/services/schemas/SchemaValues'
 import { mapSnakeToCamelCase } from '@/utilities/mapping'
 
 export const mapBlockDocumentResponseToBlockDocument: MapFunction<BlockDocumentResponse, BlockDocument> = function(source: BlockDocumentResponse): BlockDocument {
   const values = resolveSchemaBlockDocumentReferences(source.data, source.block_document_references)
   const blockSchema = this.map('BlockSchemaResponse', source.block_schema, 'BlockSchema')
-  const mapper = new SchemaValuesMapper({ schema: blockSchema.fields, mapper: this })
-  const data = mapper.mapResponse(values)
+  const data = schemaService.mapResponseValues(values, blockSchema.fields)
+
 
   return new BlockDocument({
     ...mapSnakeToCamelCase(source),

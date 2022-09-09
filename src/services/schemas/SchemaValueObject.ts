@@ -39,10 +39,10 @@ export class SchemaValueObject extends SchemaValueMapper {
     const parsed = parseUnknownJson(value)
 
     if (!isSchemaValues(parsed)) {
-      return this.mapRequest({}, property)
+      return this.mapRequestValues({}, property)
     }
 
-    return this.mapRequest(parsed, property)
+    return this.mapRequestValues(parsed, property)
   }
 
   public default(property: SchemaProperty): unknown {

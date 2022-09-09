@@ -7,12 +7,9 @@ import { SchemaValueObject } from './SchemaValueObject'
 import { SchemaValueString } from './SchemaValueString'
 import { SchemaValueUnknown } from './SchemaValueUnknown'
 import { InvalidSchemaValueError } from '@/models'
-import { mapper } from '@/services/Mapper'
 import { Schema, schemaHas, SchemaProperties, SchemaProperty, SchemaValue, SchemaValues } from '@/types/schemas'
 
 export type SchemaValuesServiceSource = {
-  schema: Schema,
-  mapper: typeof mapper,
   maxPropertyLevel?: number,
   initialPropertyLevel?: number,
 }
@@ -25,32 +22,26 @@ const DEFAULT_INITIAL_PROPERTY_LEVEL = 1
 const DEFAULT_MAX_PROPERTY_LEVEL = 2
 
 export class SchemaValuesMapper {
-  private readonly schema: Schema
-  private readonly mapper: typeof mapper
   private readonly initialPropertyLevel: number
   private readonly maxPropertyLevel: number
 
   public constructor({
-    schema,
-    mapper,
     maxPropertyLevel = DEFAULT_MAX_PROPERTY_LEVEL,
     initialPropertyLevel = DEFAULT_INITIAL_PROPERTY_LEVEL,
-  }: SchemaValuesServiceSource) {
+  }: SchemaValuesServiceSource = {}) {
     this.initialPropertyLevel = initialPropertyLevel
     this.maxPropertyLevel = maxPropertyLevel
-    this.schema = schema
-    this.mapper = mapper
   }
 
-  public getDefaultValues(): SchemaValues {
-    return this.mapResponse({})
+  public getDefaultValues(schema: Schema): SchemaValues {
+    return this.mapResponseValues({}, schema)
   }
 
-  public mapResponse(values: SchemaValues, schema: Schema = this.schema): SchemaValues {
+  public mapResponseValues(values: SchemaValues, schema: Schema): SchemaValues {
     return this.mapValues(values, schema, 'response')
   }
 
-  public mapRequest(values: SchemaValues, schema: Schema = this.schema): SchemaValues {
+  public mapRequestValues(values: SchemaValues, schema: Schema): SchemaValues {
     return this.mapValues(values, schema, 'request')
   }
 
@@ -64,7 +55,11 @@ export class SchemaValuesMapper {
 
 
       if (property) {
-        result[key] = this.mapValue(value, property, type, level + 1)
+        const requestValue = this.mapValue(value, property, type, level + 1)
+
+        if (requestValue != this.getDefaultValueForProperty(property, level)) {
+          result[key] = requestValue
+        }
       }
 
       return result
@@ -91,11 +86,15 @@ export class SchemaValuesMapper {
     return mapper.default(property)
   }
 
+  private getDefaultValueForProperty(property: SchemaProperty, level: number): SchemaValue {
+    const mapper = this.getMapperForProperty(property, level)
+
+    return mapper.default(property)
+  }
+
   private getMapperForProperty(property: SchemaProperty, level: number): SchemaValueMapper {
     const constructor = this.getMapperConstructorForProperty(property)
     const instance = new constructor({
-      schema: property,
-      mapper: this.mapper,
       initialPropertyLevel: level,
       maxPropertyLevel: this.maxPropertyLevel,
     })
@@ -130,3 +129,5 @@ export class SchemaValuesMapper {
   }
 
 }
+
+export const schemaService = new SchemaValuesMapper()

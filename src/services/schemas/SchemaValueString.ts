@@ -1,4 +1,5 @@
 import { isValid } from 'date-fns'
+import { mapper } from '../Mapper'
 import { SchemaValueMapper, SchemaValueRequest, SchemaValueResponse } from './SchemaValue'
 import { SchemaProperty, SchemaValue } from '@/types/schemas'
 import { isDate } from '@/utilities/dates'
@@ -28,8 +29,13 @@ export class SchemaValueString extends SchemaValueMapper {
     }
   }
 
-  public override default({ format }: SchemaProperty): SchemaValue {
-    switch (format) {
+  public override default(property: SchemaProperty): SchemaValue {
+    // default value for a PSelect
+    if (property.enum) {
+      return null
+    }
+
+    switch (property.format) {
       case 'date':
       case 'date-time':
         return null
@@ -40,14 +46,14 @@ export class SchemaValueString extends SchemaValueMapper {
 
   private formatDateValue(value: SchemaValue): SchemaValue {
     if (isDate(value)) {
-      return this.map('Date', value, 'string')
+      return mapper.map('Date', value, 'string')
     }
 
     return value
   }
 
   private parseDateValue(property: SchemaProperty, value: SchemaValue): Date {
-    const date = this.map('string', value as string, 'Date')
+    const date = mapper.map('string', value as string, 'Date')
 
     if (!isValid(date)) {
       this.invalid()
