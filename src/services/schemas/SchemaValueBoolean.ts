@@ -1,11 +1,12 @@
-import { SchemaValueMapper, SchemaValueRequest, SchemaValueResponse } from './SchemaValue'
+import { SchemaPropertyService } from './SchemaPropertyService'
+import { SchemaValue } from '@/types/schemas'
 
-export class SchemaValueBoolean extends SchemaValueMapper {
-  public override request({ value }: SchemaValueRequest): unknown {
+export class SchemaValueBoolean extends SchemaPropertyService {
+  protected override request(value: SchemaValue): unknown {
     return value
   }
 
-  public override response({ value }: SchemaValueResponse): unknown {
+  protected override response(value: SchemaValue): unknown {
     if (typeof value === 'string') {
       if (value.toLowerCase() === 'true') {
         return true
@@ -23,8 +24,6 @@ export class SchemaValueBoolean extends SchemaValueMapper {
     return value
   }
 
-  public override default(): unknown {
-    return null
-  }
+  protected readonly default = null
 
 }

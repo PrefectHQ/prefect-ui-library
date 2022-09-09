@@ -1,16 +1,16 @@
-import { SchemaValueMapper } from './SchemaValue'
-import { SchemaProperty } from '@/types/schemas'
+import { SchemaPropertyService } from './SchemaPropertyService'
+import { SchemaValue } from '@/types/schemas'
 
-export class SchemaValueBlockReference extends SchemaValueMapper {
-  public request(request: { property: SchemaProperty, value: unknown, level: number }): unknown {
+export class SchemaValueBlockReference extends SchemaPropertyService {
+  protected request(value: SchemaValue): unknown {
     throw new Error('Method not implemented.')
   }
 
-  public response(response: { property: SchemaProperty, value: unknown, level: number }): unknown {
+  protected response(value: SchemaValue): unknown {
     throw new Error('Method not implemented.')
   }
 
-  public default(property: SchemaProperty): unknown {
+  protected get default(): unknown {
     throw new Error('Method not implemented.')
   }
 

@@ -1,11 +1,24 @@
-import { SchemaValueMapper, SchemaValueRequest, SchemaValueResponse } from './SchemaValue'
+import { SchemaPropertyService, SchemaPropertyServiceSource } from './SchemaPropertyService'
+import { SchemaService } from './SchemaService'
 import { BlockDocumentReferenceValue, isBlockDocumentReferenceValue } from '@/models/api/BlockDocumentCreateRequest'
-import { isSchemaValues, schemaHas, SchemaValue, SchemaProperty } from '@/types/schemas'
+import { SchemaValue, isSchemaValues } from '@/types/schemas'
 import { parseUnknownJson, stringifyUnknownJson } from '@/utilities/json'
 
-export class SchemaValueObject extends SchemaValueMapper {
-  public request({ property, value }: SchemaValueRequest): unknown {
-    if (schemaHas(property, 'blockTypeSlug')) {
+export class SchemaValueObject extends SchemaPropertyService {
+
+  private readonly schemaService: SchemaService
+
+  public constructor(source: SchemaPropertyServiceSource) {
+    super(source)
+
+    this.schemaService = new SchemaService({
+      initialPropertyLevel: source.level,
+      maxPropertyLevel: source.maxPropertyLevel,
+    })
+  }
+
+  protected request(value: SchemaValue): unknown {
+    if (this.has('blockTypeSlug')) {
       return this.blockRequestValue(value)
     }
 
@@ -16,8 +29,8 @@ export class SchemaValueObject extends SchemaValueMapper {
     throw new Error('Method not implemented.')
   }
 
-  public response({ property, value }: SchemaValueResponse): unknown {
-    if (schemaHas(property, 'blockTypeSlug')) {
+  protected response(value: SchemaValue): unknown {
+    if (this.has('blockTypeSlug')) {
       return this.blockResponseValue(value as BlockDocumentReferenceValue)
     }
 
@@ -26,8 +39,8 @@ export class SchemaValueObject extends SchemaValueMapper {
     }
 
     // if there are no nested properties a JsonInput is used
-    if (!schemaHas(property, 'properties')) {
-      // if(schemaHas(property, 'additionalProperties')) {
+    if (!this.has('properties')) {
+      // if(this.has('additionalProperties')) {
       //   return stringifyUnknownJson(value)
       // }
 
@@ -39,25 +52,25 @@ export class SchemaValueObject extends SchemaValueMapper {
     const parsed = parseUnknownJson(value)
 
     if (!isSchemaValues(parsed)) {
-      return this.mapRequestValues({}, property)
+      return this.schemaService.mapRequestValues({}, this.property)
     }
 
-    return this.mapRequestValues(parsed, property)
+    return this.schemaService.mapRequestValues(parsed, this.property)
   }
 
-  public default(property: SchemaProperty): unknown {
+  protected get default(): unknown {
     // JsonInput is used when max level is reached
     if (this.isMaxLevel) {
       return ''
     }
 
     // some object properties don't have specific properties and a JsonInput is used
-    if (!schemaHas(property, 'properties')) {
+    if (!this.has('properties')) {
       return ''
     }
 
     // todo: additionalProperties support
-    // if (!schemaHas(property, 'properties') && schemaHas(property, 'additionalProperties')) {
+    // if (!this.has('properties') && this.has('additionalProperties')) {
     //   return ''
     // }
 

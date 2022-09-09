@@ -1,34 +1,34 @@
-import { SchemaValueMapper, SchemaValueRequest, SchemaValueResponse } from './SchemaValue'
-import { SchemaProperty, SchemaType } from '@/types/schemas'
+import { SchemaPropertyService } from './SchemaPropertyService'
+import { SchemaType, SchemaValue } from '@/types/schemas'
 import { stringifyUnknownJson } from '@/utilities/json'
 
-export class SchemaValueArray extends SchemaValueMapper {
-  public request({ value }: SchemaValueRequest): unknown {
+export class SchemaValueArray extends SchemaPropertyService {
+  protected request(value: SchemaValue): unknown {
     return value
   }
 
-  public response({ property, value: values }: SchemaValueResponse): unknown {
-    if (!Array.isArray(values)) {
+  protected response(value: SchemaValue): unknown {
+    if (!Array.isArray(value)) {
       return this.invalid()
     }
 
-    if (this.usesJsonInput(property)) {
-      return stringifyUnknownJson(values)
+    if (this.usesJsonInput) {
+      return stringifyUnknownJson(value)
     }
 
-    return values
+    return value
   }
 
-  public default(property: SchemaProperty): unknown {
-    if (this.usesJsonInput(property)) {
+  protected get default(): unknown {
+    if (this.usesJsonInput) {
       return ''
     }
 
     return []
   }
 
-  private usesJsonInput(property: SchemaProperty): boolean {
-    const itemsType = property.items?.type
+  private get usesJsonInput(): boolean {
+    const itemsType = this.property.items?.type
     const typesThatUseJson: (SchemaType | undefined)[] = ['array', 'object']
 
     return typesThatUseJson.includes(itemsType)

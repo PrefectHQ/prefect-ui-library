@@ -1,8 +1,9 @@
-import { SchemaValueMapper, SchemaValueRequest, SchemaValueResponse } from './SchemaValue'
+import { SchemaPropertyService } from './SchemaPropertyService'
 import { isValidJsonString } from '@/services/validate'
+import { SchemaValue } from '@/types/schemas'
 
-export class SchemaValueUnknown extends SchemaValueMapper {
-  public request({ value }: SchemaValueRequest): unknown {
+export class SchemaValueUnknown extends SchemaPropertyService {
+  protected request(value: SchemaValue): unknown {
     try {
       if (typeof value === 'string') {
         return JSON.parse(value)
@@ -14,7 +15,7 @@ export class SchemaValueUnknown extends SchemaValueMapper {
     return value
   }
 
-  public response({ value }: SchemaValueResponse): unknown {
+  protected response(value: SchemaValue): unknown {
     if (!isValidJsonString(value)) {
       return JSON.stringify(value)
     }
@@ -22,8 +23,6 @@ export class SchemaValueUnknown extends SchemaValueMapper {
     return value
   }
 
-  public default(): unknown {
-    return null
-  }
+  protected readonly default = null
 
 }

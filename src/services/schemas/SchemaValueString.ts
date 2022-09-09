@@ -1,12 +1,13 @@
 import { isValid } from 'date-fns'
 import { mapper } from '../Mapper'
-import { SchemaValueMapper, SchemaValueRequest, SchemaValueResponse } from './SchemaValue'
-import { SchemaProperty, SchemaValue } from '@/types/schemas'
+import { SchemaPropertyService } from './SchemaPropertyService'
+import { InvalidSchemaValueError } from '@/models'
+import { SchemaValue } from '@/types/schemas'
 import { isDate } from '@/utilities/dates'
 
-export class SchemaValueString extends SchemaValueMapper {
-  public override request({ property, value }: SchemaValueRequest): unknown {
-    switch (property.format) {
+export class SchemaValueString extends SchemaPropertyService {
+  protected override request(value: SchemaValue): unknown {
+    switch (this.property.format) {
       case 'date':
       case 'date-time':
         return this.formatDateValue(value)
@@ -15,27 +16,27 @@ export class SchemaValueString extends SchemaValueMapper {
     }
   }
 
-  public override response({ property, value }: SchemaValueResponse): unknown {
+  protected override response(value: SchemaValue): unknown {
     if (typeof value !== 'string') {
-      this.invalid()
+      throw new InvalidSchemaValueError()
     }
 
-    switch (property.format) {
+    switch (this.property.format) {
       case 'date':
       case 'date-time':
-        return this.parseDateValue(property, value)
+        return this.parseDateValue(value)
       default:
         return value
     }
   }
 
-  public override default(property: SchemaProperty): SchemaValue {
+  protected override get default(): SchemaValue {
     // default value for a PSelect
-    if (property.enum) {
+    if (this.property.enum) {
       return null
     }
 
-    switch (property.format) {
+    switch (this.property.format) {
       case 'date':
       case 'date-time':
         return null
@@ -52,7 +53,7 @@ export class SchemaValueString extends SchemaValueMapper {
     return value
   }
 
-  private parseDateValue(property: SchemaProperty, value: SchemaValue): Date {
+  private parseDateValue(value: SchemaValue): Date {
     const date = mapper.map('string', value as string, 'Date')
 
     if (!isValid(date)) {

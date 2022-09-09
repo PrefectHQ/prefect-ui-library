@@ -3,7 +3,7 @@ import { BlockDocumentResponse } from '@/models/api/BlockDocumentResponse'
 import { BlockDocument } from '@/models/BlockDocument'
 import { MapFunction } from '@/services/Mapper'
 import { resolveSchemaBlockDocumentReferences } from '@/services/schemas/SchemaBlockReferenceResolver'
-import { schemaService } from '@/services/schemas/SchemaValues'
+import { schemaService } from '@/services/schemas/SchemaService'
 import { mapSnakeToCamelCase } from '@/utilities/mapping'
 
 export const mapBlockDocumentResponseToBlockDocument: MapFunction<BlockDocumentResponse, BlockDocument> = function(source: BlockDocumentResponse): BlockDocument {

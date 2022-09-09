@@ -1,15 +1,16 @@
-import { SchemaValueMapper, SchemaValueRequest, SchemaValueResponse } from './SchemaValue'
+import { SchemaPropertyService } from './SchemaPropertyService'
+import { SchemaValue } from '@/types/schemas'
 
-export class SchemaValueNone extends SchemaValueMapper {
-  public request({ value }: SchemaValueRequest): unknown {
+export class SchemaValueNone extends SchemaPropertyService {
+  protected request(value: SchemaValue): unknown {
     return value
   }
 
-  public response({ value }: SchemaValueResponse): unknown {
+  protected response(value: SchemaValueNone): unknown {
     return value
   }
 
-  public default(): unknown {
+  protected get default(): unknown {
     throw new Error('Method not implemented.')
   }
 }

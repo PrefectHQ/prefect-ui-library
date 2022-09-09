@@ -1,4 +1,4 @@
-import { SchemaValueMapper } from './SchemaValue'
+import { SchemaPropertyService, SchemaPropertyServiceConstructor } from './SchemaPropertyService'
 import { SchemaValueArray } from './SchemaValueArray'
 import { SchemaValueBoolean } from './SchemaValueBoolean'
 import { SchemaValueNone } from './SchemaValueNull'
@@ -6,7 +6,6 @@ import { SchemaValueNumber } from './SchemaValueNumber'
 import { SchemaValueObject } from './SchemaValueObject'
 import { SchemaValueString } from './SchemaValueString'
 import { SchemaValueUnknown } from './SchemaValueUnknown'
-import { InvalidSchemaValueError } from '@/models'
 import { Schema, schemaHas, SchemaProperties, SchemaProperty, SchemaValue, SchemaValues } from '@/types/schemas'
 
 export type SchemaValuesServiceSource = {
@@ -14,14 +13,12 @@ export type SchemaValuesServiceSource = {
   initialPropertyLevel?: number,
 }
 
-export type SchemaValueMapperConstructor = new (source: Required<SchemaValuesServiceSource>) => SchemaValueMapper
-
-type MapType = 'response' | 'request'
+type MapType = 'mapResponseValue' | 'mapRequestValue'
 
 const DEFAULT_INITIAL_PROPERTY_LEVEL = 1
 const DEFAULT_MAX_PROPERTY_LEVEL = 2
 
-export class SchemaValuesMapper {
+export class SchemaService {
   private readonly initialPropertyLevel: number
   private readonly maxPropertyLevel: number
 
@@ -38,11 +35,11 @@ export class SchemaValuesMapper {
   }
 
   public mapResponseValues(values: SchemaValues, schema: Schema): SchemaValues {
-    return this.mapValues(values, schema, 'response')
+    return this.mapValues(values, schema, 'mapResponseValue')
   }
 
   public mapRequestValues(values: SchemaValues, schema: Schema): SchemaValues {
-    return this.mapValues(values, schema, 'request')
+    return this.mapValues(values, schema, 'mapRequestValue')
   }
 
   // eslint-disable-next-line max-params
@@ -53,12 +50,13 @@ export class SchemaValuesMapper {
       const property = properties[key] as SchemaProperty | undefined
       const value = values[key]
 
-
       if (property) {
-        const requestValue = this.mapValue(value, property, type, level + 1)
+        const mappedValue = this.mapValue(value, property, type, level + 1)
 
-        if (requestValue != this.getDefaultValueForProperty(property, level)) {
-          result[key] = requestValue
+        if (type == 'mapRequestValue' && mappedValue !== undefined) {
+          result[key] = mappedValue
+        } else {
+          result[key] = mappedValue
         }
       }
 
@@ -71,38 +69,21 @@ export class SchemaValuesMapper {
   private mapValue(value: SchemaValue, property: SchemaProperty, type: MapType, level: number): SchemaValue {
     const mapper = this.getMapperForProperty(property, level)
 
-    try {
-      return mapper[type]({
-        property,
-        value,
-        level,
-      })
-    } catch (error) {
-      if (!(error instanceof InvalidSchemaValueError)) {
-        console.error(error)
-      }
-    }
-
-    return mapper.default(property)
+    return mapper[type](value)
   }
 
-  private getDefaultValueForProperty(property: SchemaProperty, level: number): SchemaValue {
-    const mapper = this.getMapperForProperty(property, level)
-
-    return mapper.default(property)
-  }
-
-  private getMapperForProperty(property: SchemaProperty, level: number): SchemaValueMapper {
+  private getMapperForProperty(property: SchemaProperty, level: number): SchemaPropertyService {
     const constructor = this.getMapperConstructorForProperty(property)
     const instance = new constructor({
-      initialPropertyLevel: level,
       maxPropertyLevel: this.maxPropertyLevel,
+      property,
+      level,
     })
 
     return instance
   }
 
-  private getMapperConstructorForProperty(property: SchemaProperty): SchemaValueMapperConstructor {
+  private getMapperConstructorForProperty(property: SchemaProperty): SchemaPropertyServiceConstructor {
     if (!schemaHas(property, 'type')) {
       // todo: handle properties with no type cause that's a thing apparently
       // check format? Maybe the "Unknown" mapper below works for this already?
@@ -130,4 +111,4 @@ export class SchemaValuesMapper {
 
 }
 
-export const schemaService = new SchemaValuesMapper()
+export const schemaService = new SchemaService()

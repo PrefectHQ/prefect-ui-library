@@ -1,11 +1,12 @@
-import { SchemaValueMapper, SchemaValueRequest, SchemaValueResponse } from './SchemaValue'
+import { SchemaPropertyService } from './SchemaPropertyService'
+import { SchemaValue } from '@/types/schemas'
 
-export class SchemaValueNumber extends SchemaValueMapper {
-  public request({ value }: SchemaValueRequest): unknown {
+export class SchemaValueNumber extends SchemaPropertyService {
+  protected request(value: SchemaValue): unknown {
     return value
   }
 
-  public response({ value }: SchemaValueResponse): unknown {
+  protected response(value: SchemaValue): unknown {
     const result = parseInt(value as string)
 
     if (isNaN(result)) {
@@ -15,8 +16,6 @@ export class SchemaValueNumber extends SchemaValueMapper {
     return result
   }
 
-  public default(): unknown {
-    return null
-  }
+  protected readonly default = null
 
 }

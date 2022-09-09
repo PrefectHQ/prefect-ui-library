@@ -24,7 +24,7 @@
   import { BlockDocumentCreateNamed } from '@/models/BlockDocumentCreate'
   import { BlockSchema } from '@/models/BlockSchema'
   import { isRequired, isValidHandle, withMessage } from '@/services'
-  import { schemaService } from '@/services/schemas/SchemaValues'
+  import { schemaService } from '@/services/schemas/SchemaService'
 
   const props = defineProps<{
     blockSchema: BlockSchema,
