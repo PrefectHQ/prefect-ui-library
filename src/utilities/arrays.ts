@@ -99,9 +99,9 @@ export function isEmptyArray(value: unknown): value is unknown[] {
 }
 
 export function isStringArray(value: unknown): value is string[] {
-  return !!isEmptyArray(value) && value.every(item => typeof item === 'string')
+  return Array.isArray(value) && value.length > 0 && value.every(item => typeof item === 'string')
 }
 
 export function isNumberArray(value: unknown): value is number[] {
-  return !!isEmptyArray(value) && value.every(item => typeof item === 'number')
+  return Array.isArray(value) && value.length > 0 && value.every(item => typeof item === 'number')
 }
