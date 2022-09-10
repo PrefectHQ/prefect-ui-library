@@ -2,7 +2,7 @@ import { SchemaPropertyService } from './SchemaPropertyService'
 import { SchemaType, SchemaValue } from '@/types/schemas'
 import { stringifyUnknownJson } from '@/utilities/json'
 
-export class SchemaValueArray extends SchemaPropertyService {
+export class SchemaPropertyArray extends SchemaPropertyService {
   protected request(value: SchemaValue): unknown {
     return value
   }

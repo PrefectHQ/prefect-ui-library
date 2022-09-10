@@ -1,9 +1,8 @@
 import { SchemaPropertyService } from './SchemaPropertyService'
 import { BlockDocumentReferenceValue, isBlockDocumentReferenceValue } from '@/models/api/BlockDocumentCreateRequest'
-import { InvalidSchemaValueError } from '@/models/InvalidSchemaValueError'
 import { SchemaValue } from '@/types/schemas'
 
-export class SchemaValueBlock extends SchemaPropertyService {
+export class SchemaPropertyBlock extends SchemaPropertyService {
   protected request(value: SchemaValue): unknown {
     if (!value || typeof value !== 'string') {
       return value

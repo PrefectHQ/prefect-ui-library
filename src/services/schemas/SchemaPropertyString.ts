@@ -5,7 +5,7 @@ import { InvalidSchemaValueError } from '@/models'
 import { SchemaValue } from '@/types/schemas'
 import { isDate } from '@/utilities/dates'
 
-export class SchemaValueString extends SchemaPropertyService {
+export class SchemaPropertyString extends SchemaPropertyService {
   protected override request(value: SchemaValue): unknown {
     switch (this.property.format) {
       case 'date':

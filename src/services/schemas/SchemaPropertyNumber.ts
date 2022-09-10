@@ -1,7 +1,7 @@
 import { SchemaPropertyService } from './SchemaPropertyService'
 import { SchemaValue } from '@/types/schemas'
 
-export class SchemaValueNumber extends SchemaPropertyService {
+export class SchemaPropertyNumber extends SchemaPropertyService {
   protected request(value: SchemaValue): unknown {
     return value
   }

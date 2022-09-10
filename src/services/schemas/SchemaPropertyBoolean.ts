@@ -1,7 +1,7 @@
 import { SchemaPropertyService } from './SchemaPropertyService'
 import { SchemaValue } from '@/types/schemas'
 
-export class SchemaValueBoolean extends SchemaPropertyService {
+export class SchemaPropertyBoolean extends SchemaPropertyService {
   protected override request(value: SchemaValue): unknown {
     return value
   }

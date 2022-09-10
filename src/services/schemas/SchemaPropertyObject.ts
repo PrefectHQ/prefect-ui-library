@@ -4,7 +4,7 @@ import { SchemaValue, isSchemaValues, SchemaValues } from '@/types/schemas'
 import { mapEntries } from '@/utilities'
 import { parseUnknownJson, stringifyUnknownJson } from '@/utilities/json'
 
-export class SchemaValueObject extends SchemaPropertyService {
+export class SchemaPropertyObject extends SchemaPropertyService {
 
   private readonly schemaService: SchemaService
 

@@ -2,7 +2,7 @@ import { SchemaPropertyService } from './SchemaPropertyService'
 import { isValidJsonString } from '@/services/validate'
 import { SchemaValue } from '@/types/schemas'
 
-export class SchemaValueUnknown extends SchemaPropertyService {
+export class SchemaPropertyUnknown extends SchemaPropertyService {
   protected request(value: SchemaValue): unknown {
     try {
       if (typeof value === 'string') {

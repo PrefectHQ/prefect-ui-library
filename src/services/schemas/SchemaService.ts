@@ -1,12 +1,12 @@
+import { SchemaPropertyArray } from './SchemaPropertyArray'
+import { SchemaPropertyBlock } from './SchemaPropertyBlock'
+import { SchemaPropertyBoolean } from './SchemaPropertyBoolean'
+import { SchemaPropertyNone } from './SchemaPropertyNull'
+import { SchemaPropertyNumber } from './SchemaPropertyNumber'
+import { SchemaPropertyObject } from './SchemaPropertyObject'
 import { SchemaPropertyService, SchemaPropertyServiceConstructor } from './SchemaPropertyService'
-import { SchemaValueArray } from './SchemaValueArray'
-import { SchemaValueBlock } from './SchemaValueBlock'
-import { SchemaValueBoolean } from './SchemaValueBoolean'
-import { SchemaValueNone } from './SchemaValueNull'
-import { SchemaValueNumber } from './SchemaValueNumber'
-import { SchemaValueObject } from './SchemaValueObject'
-import { SchemaValueString } from './SchemaValueString'
-import { SchemaValueUnknown } from './SchemaValueUnknown'
+import { SchemaPropertyString } from './SchemaPropertyString'
+import { SchemaPropertyUnknown } from './SchemaPropertyUnknown'
 import { Schema, schemaHas, SchemaProperty, SchemaValue, SchemaValues } from '@/types/schemas'
 
 export type SchemaValuesServiceSource = {
@@ -75,28 +75,28 @@ export class SchemaService {
       // console.log('property has no type:', property)
       if (schemaHas(property, 'enum')) {
         // console.log('has enum')
-        return SchemaValueArray
+        return SchemaPropertyArray
       }
     }
 
     switch (property.type) {
       case 'string':
-        return SchemaValueString
+        return SchemaPropertyString
       case 'integer':
       case 'number':
-        return SchemaValueNumber
+        return SchemaPropertyNumber
       case 'boolean':
-        return SchemaValueBoolean
+        return SchemaPropertyBoolean
       case 'null':
-        return SchemaValueNone
+        return SchemaPropertyNone
       case 'array':
-        return SchemaValueArray
+        return SchemaPropertyArray
       case 'object':
-        return SchemaValueObject
+        return SchemaPropertyObject
       case 'block':
-        return SchemaValueBlock
+        return SchemaPropertyBlock
       case undefined:
-        return SchemaValueUnknown
+        return SchemaPropertyUnknown
     }
   }
 
