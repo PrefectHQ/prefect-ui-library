@@ -10,7 +10,7 @@ export class SchemaValueNone extends SchemaPropertyService {
     return value
   }
 
-  protected get default(): unknown {
+  public get default(): unknown {
     throw new Error('Method not implemented.')
   }
 }

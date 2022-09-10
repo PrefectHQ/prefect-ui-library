@@ -1,5 +1,6 @@
 import { SchemaPropertyService } from './SchemaPropertyService'
 import { BlockDocumentReferenceValue, isBlockDocumentReferenceValue } from '@/models/api/BlockDocumentCreateRequest'
+import { InvalidSchemaValueError } from '@/models/InvalidSchemaValueError'
 import { SchemaValue } from '@/types/schemas'
 
 export class SchemaValueBlock extends SchemaPropertyService {
@@ -23,9 +24,9 @@ export class SchemaValueBlock extends SchemaPropertyService {
       return value.$ref.block_document_id
     }
 
-    return value
+    this.invalid()
   }
 
-  protected readonly default = null
+  public readonly default = null
 
 }

@@ -23,6 +23,6 @@ export class SchemaValueUnknown extends SchemaPropertyService {
     return value
   }
 
-  protected readonly default = null
+  public readonly default = null
 
 }

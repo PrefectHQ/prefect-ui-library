@@ -9,7 +9,7 @@ import { mapSnakeToCamelCase } from '@/utilities/mapping'
 export const mapBlockDocumentResponseToBlockDocument: MapFunction<BlockDocumentResponse, BlockDocument> = function(source: BlockDocumentResponse): BlockDocument {
   const values = resolveSchemaBlockDocumentReferences(source.data, source.block_document_references)
   const blockSchema = this.map('BlockSchemaResponse', source.block_schema, 'BlockSchema')
-  const data = schemaService.mapResponseValues(values, blockSchema.fields)
+  const data = schemaService.mapSchemaResponseValues(values, blockSchema.fields)
 
   return new BlockDocument({
     ...mapSnakeToCamelCase(source),

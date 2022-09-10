@@ -38,7 +38,7 @@
   const { handleSubmit } = useForm<BlockDocumentCreateNamed>({
     initialValues: {
       name: '',
-      data: schemaService.getDefaultValues(props.blockSchema.fields),
+      data: schemaService.getSchemaDefaultValues(props.blockSchema.fields),
       blockSchema: props.blockSchema,
     },
   })

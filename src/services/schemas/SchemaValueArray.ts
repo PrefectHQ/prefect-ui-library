@@ -19,7 +19,7 @@ export class SchemaValueArray extends SchemaPropertyService {
     return value
   }
 
-  protected get default(): unknown {
+  public get default(): unknown {
     if (this.usesJsonInput) {
       return ''
     }

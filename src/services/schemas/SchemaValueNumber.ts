@@ -16,6 +16,6 @@ export class SchemaValueNumber extends SchemaPropertyService {
     return result
   }
 
-  protected readonly default = null
+  public readonly default = null
 
 }

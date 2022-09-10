@@ -1,6 +1,7 @@
 import { SchemaPropertyService, SchemaPropertyServiceSource } from './SchemaPropertyService'
 import { SchemaService } from './SchemaService'
-import { SchemaValue, isSchemaValues } from '@/types/schemas'
+import { SchemaValue, isSchemaValues, SchemaValues } from '@/types/schemas'
+import { mapEntries } from '@/utilities'
 import { parseUnknownJson, stringifyUnknownJson } from '@/utilities/json'
 
 export class SchemaValueObject extends SchemaPropertyService {
@@ -21,7 +22,19 @@ export class SchemaValueObject extends SchemaPropertyService {
       return this.maxLevelRequestValue(value)
     }
 
-    throw new Error('Method not implemented.')
+    if (!this.has('properties')) {
+      return parseUnknownJson(value)
+    }
+
+    if (!isSchemaValues(value)) {
+      return undefined
+    }
+
+    return mapEntries(this.property.properties, (key, property) => {
+      const propertyValue = value[key]
+
+      return this.schemaService.mapPropertyRequestValue(property, propertyValue)
+    })
   }
 
   protected response(value: SchemaValue): unknown {
@@ -31,25 +44,22 @@ export class SchemaValueObject extends SchemaPropertyService {
 
     // if there are no nested properties a JsonInput is used
     if (!this.has('properties')) {
-      // if(this.has('additionalProperties')) {
-      //   return stringifyUnknownJson(value)
-      // }
-
       return stringifyUnknownJson(value)
     }
 
     // just in case what we got from the api was a json string
     // apparently this isn't uncommon
-    const parsed = parseUnknownJson(value)
+    const parsed = (parseUnknownJson(value) ?? {}) as SchemaValues
 
-    if (!isSchemaValues(parsed)) {
-      return this.schemaService.mapRequestValues({}, this.property)
-    }
+    // TODO: I'm not 100% sure this works with nested properties. Need to test
+    return mapEntries(this.property.properties, (key, property) => {
+      const propertyValue = parsed[key]
 
-    return this.schemaService.mapRequestValues(parsed, this.property)
+      return this.schemaService.mapPropertyResponseValue(property, propertyValue)
+    })
   }
 
-  protected get default(): unknown {
+  public get default(): unknown {
     // JsonInput is used when max level is reached
     if (this.isMaxLevel) {
       return ''
@@ -59,11 +69,6 @@ export class SchemaValueObject extends SchemaPropertyService {
     if (!this.has('properties')) {
       return ''
     }
-
-    // todo: additionalProperties support
-    // if (!this.has('properties') && this.has('additionalProperties')) {
-    //   return ''
-    // }
 
     return {}
   }

@@ -30,7 +30,7 @@ export abstract class SchemaPropertyService {
       return this.response(value)
     } catch (error) {
       if (!(error instanceof InvalidSchemaValueError)) {
-        console.log(error)
+        console.error(error)
       }
     }
 
@@ -47,12 +47,8 @@ export abstract class SchemaPropertyService {
     return mappedValue
   }
 
-  public get defaultValue(): SchemaValue {
-    return this.default
-  }
-
   protected invalid(): void {
-    new InvalidSchemaValueError()
+    throw new InvalidSchemaValueError()
   }
 
   protected has<T extends keyof SchemaProperty>(key: T): this is { property: SchemaProperty & Require<SchemaProperty, T> } {

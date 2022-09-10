@@ -30,7 +30,7 @@ export class SchemaValueString extends SchemaPropertyService {
     }
   }
 
-  protected override get default(): SchemaValue {
+  public override get default(): SchemaValue {
     // default value for a PSelect
     if (this.property.enum) {
       return null
