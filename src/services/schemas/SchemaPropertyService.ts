@@ -1,6 +1,7 @@
 import { InvalidSchemaValueError } from '@/models/InvalidSchemaValueError'
 import { schemaHas, SchemaProperty, SchemaValue } from '@/types/schemas'
 import { Require } from '@/types/utilities'
+import { withPropsWithoutExcludedFactory } from '@/utilities/components'
 
 export type SchemaPropertyServiceSource = {
   property: SchemaProperty,
@@ -10,14 +11,36 @@ export type SchemaPropertyServiceSource = {
 
 export type SchemaPropertyServiceConstructor = new (source: SchemaPropertyServiceSource) => SchemaPropertyService
 
+const withProps = withPropsWithoutExcludedFactory('modelValue')
+
+export type PropertyComponentWithProps = ReturnType<typeof withProps>
+
 export abstract class SchemaPropertyService {
+  /**
+   * Converts a schema value from the ui into the correct value for the api
+   */
   protected abstract request(value: SchemaValue): SchemaValue
+
+  /**
+   * Converts a schema value from the api into the correct value for the ui
+   */
   protected abstract response(value: SchemaValue): SchemaValue
-  protected abstract get default(): SchemaValue
+
+  /**
+   * Returns the vue component and any props necessary to render the property in the schema form
+   */
+  public abstract get component(): PropertyComponentWithProps
+
+  /**
+   * Returns the value needed for the @property {PropertyComponentWithProps} property to be
+   * rendered when no value exists or the value is invalid
+   */
+  public abstract get default(): SchemaValue
 
   protected readonly isMaxLevel: boolean
   protected property: SchemaProperty
   protected level: number
+  protected withProps = withProps
 
   public constructor({ property, level, maxPropertyLevel }: SchemaPropertyServiceSource) {
     this.isMaxLevel = level > maxPropertyLevel
