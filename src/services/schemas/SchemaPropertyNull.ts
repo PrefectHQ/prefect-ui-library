@@ -13,4 +13,6 @@ export class SchemaPropertyNone extends SchemaPropertyService {
   public get default(): unknown {
     throw new Error('Method not implemented.')
   }
+
+  public readonly component = null
 }

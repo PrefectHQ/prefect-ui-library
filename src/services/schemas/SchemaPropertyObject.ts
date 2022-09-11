@@ -1,5 +1,6 @@
-import { SchemaPropertyService, SchemaPropertyServiceSource } from './SchemaPropertyService'
+import { PropertyComponentWithProps, SchemaPropertyService, SchemaPropertyServiceSource } from './SchemaPropertyService'
 import { SchemaService } from './SchemaService'
+import { JsonInput } from '@/components'
 import { SchemaValue, isSchemaValues, SchemaValues } from '@/types/schemas'
 import { mapEntries } from '@/utilities'
 import { parseUnknownJson, stringifyUnknownJson } from '@/utilities/json'
@@ -71,6 +72,14 @@ export class SchemaPropertyObject extends SchemaPropertyService {
     }
 
     return {}
+  }
+
+  public override get component(): PropertyComponentWithProps {
+    if (this.has('properties')) {
+      return null
+    }
+
+    return this.withProps(JsonInput)
   }
 
   private maxLevelRequestValue(value: SchemaValue): unknown {

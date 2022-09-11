@@ -1,8 +1,11 @@
+import { PDateInput, PNumberInput, PSelect, PTextInput } from '@prefecthq/prefect-design'
 import { isValid } from 'date-fns'
 import { mapper } from '../Mapper'
-import { SchemaPropertyService } from './SchemaPropertyService'
+import { PropertyComponentWithProps, SchemaPropertyService } from './SchemaPropertyService'
+import { JsonInput } from '@/components'
 import { InvalidSchemaValueError } from '@/models'
 import { SchemaValue } from '@/types/schemas'
+import { ComponentDefinition } from '@/utilities'
 import { isDate } from '@/utilities/dates'
 
 export class SchemaPropertyString extends SchemaPropertyService {
@@ -42,6 +45,27 @@ export class SchemaPropertyString extends SchemaPropertyService {
         return null
       default:
         return ''
+    }
+  }
+
+  public override get component(): PropertyComponentWithProps {
+    if (this.has('enum')) {
+      return this.withProps(PSelect, {
+        options: this.getSelectOptions(),
+      })
+    }
+
+    switch (this.property.format) {
+      case 'date':
+        return this.withProps(PDateInput)
+      case 'date-time':
+        return this.withProps(PDateInput, { showTime: true })
+      case 'json-string':
+        return this.withProps(JsonInput)
+      case 'time-delta':
+        return this.withProps(PNumberInput)
+      default:
+        return this.withProps(PTextInput)
     }
   }
 

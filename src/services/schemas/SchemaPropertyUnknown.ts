@@ -24,5 +24,6 @@ export class SchemaPropertyUnknown extends SchemaPropertyService {
   }
 
   public readonly default = null
+  public readonly component = null
 
 }

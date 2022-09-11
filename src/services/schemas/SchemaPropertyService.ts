@@ -1,6 +1,8 @@
+import { PCombobox, PToggle, SelectOption } from '@prefecthq/prefect-design'
 import { InvalidSchemaValueError } from '@/models/InvalidSchemaValueError'
 import { schemaHas, SchemaProperty, SchemaValue } from '@/types/schemas'
 import { Require } from '@/types/utilities'
+import { isNumberArray, isStringArray } from '@/utilities/arrays'
 import { withPropsWithoutExcludedFactory } from '@/utilities/components'
 
 export type SchemaPropertyServiceSource = {
@@ -13,7 +15,7 @@ export type SchemaPropertyServiceConstructor = new (source: SchemaPropertyServic
 
 const withProps = withPropsWithoutExcludedFactory('modelValue')
 
-export type PropertyComponentWithProps = ReturnType<typeof withProps>
+export type PropertyComponentWithProps = ReturnType<typeof withProps> | null
 
 export abstract class SchemaPropertyService {
   /**
@@ -76,6 +78,26 @@ export abstract class SchemaPropertyService {
 
   protected has<T extends keyof SchemaProperty>(key: T): this is { property: SchemaProperty & Require<SchemaProperty, T> } {
     return schemaHas(this.property, key)
+  }
+
+  protected getSelectOptions(): SelectOption[] {
+    const options: SelectOption[] = []
+
+    if (!this.property.enum) {
+      return options
+    }
+
+    if (!this.property.isRequired) {
+      options.push({ label: 'None', value: null })
+    }
+
+    if (isStringArray(this.property.enum) || isNumberArray(this.property.enum)) {
+      const mapped = this.property.enum.map<SelectOption>(value => ({ label: `${value}`, value }))
+
+      options.push(...mapped)
+    }
+
+    return options
   }
 
 }

@@ -1,4 +1,5 @@
-import { SchemaPropertyService } from './SchemaPropertyService'
+import { PNumberInput } from '@prefecthq/prefect-design'
+import { PropertyComponentWithProps, SchemaPropertyService } from './SchemaPropertyService'
 import { SchemaValue } from '@/types/schemas'
 
 export class SchemaPropertyNumber extends SchemaPropertyService {
@@ -17,5 +18,9 @@ export class SchemaPropertyNumber extends SchemaPropertyService {
   }
 
   public readonly default = null
+
+  public override get component(): PropertyComponentWithProps {
+    return this.withProps(PNumberInput)
+  }
 
 }

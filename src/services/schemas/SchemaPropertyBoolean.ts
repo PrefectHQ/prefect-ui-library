@@ -1,4 +1,5 @@
-import { SchemaPropertyService } from './SchemaPropertyService'
+import { PToggle } from '@prefecthq/prefect-design'
+import { PropertyComponentWithProps, SchemaPropertyService } from './SchemaPropertyService'
 import { SchemaValue } from '@/types/schemas'
 
 export class SchemaPropertyBoolean extends SchemaPropertyService {
@@ -25,5 +26,9 @@ export class SchemaPropertyBoolean extends SchemaPropertyService {
   }
 
   public readonly default = null
+
+  public override get component(): PropertyComponentWithProps {
+    return this.withProps(PToggle)
+  }
 
 }

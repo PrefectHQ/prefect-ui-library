@@ -1,5 +1,8 @@
-import { SchemaPropertyService } from './SchemaPropertyService'
+import { PCombobox, PSelect } from '@prefecthq/prefect-design'
+import { PropertyComponentWithProps, SchemaPropertyService } from './SchemaPropertyService'
+import { JsonInput } from '@/components'
 import { SchemaType, SchemaValue } from '@/types/schemas'
+import { isStringArray, isNumberArray } from '@/utilities'
 import { stringifyUnknownJson } from '@/utilities/json'
 
 export class SchemaPropertyArray extends SchemaPropertyService {
@@ -25,6 +28,22 @@ export class SchemaPropertyArray extends SchemaPropertyService {
     }
 
     return []
+  }
+
+  public get component(): PropertyComponentWithProps {
+    if (isStringArray(this.property.enum) || isNumberArray(this.property.enum)) {
+      return this.withProps(PSelect, {
+        options: this.getSelectOptions(),
+      })
+    }
+
+    const itemType = this.property.items?.type
+
+    if (itemType === 'number' || itemType === 'string') {
+      return this.withProps(PCombobox, { options: [], allowUnknownValue: true })
+    }
+
+    return this.withProps(JsonInput)
   }
 
   private get usesJsonInput(): boolean {
