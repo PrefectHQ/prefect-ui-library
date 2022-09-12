@@ -7,12 +7,13 @@ export function useFavicon(stateType: StateType | null | Ref<StateType | null | 
 
   const stateTypeRef = ref(stateType)
 
-  if (stateType) {
-    watchEffect(() => {
+
+  watchEffect(() => {
+    if (stateType) {
       favicon16?.setAttribute('href', `/ico/${stateTypeRef.value}.svg`)
       favicon32?.setAttribute('href', `/ico/${stateTypeRef.value}.svg`)
-    })
-  }
+    }
+  })
 
   onUnmounted(() => {
     favicon16?.setAttribute('href', '/ico/favicon-16x16.png')
