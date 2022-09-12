@@ -12,6 +12,10 @@
         </p-link>
       </template>
 
+      <template #created="{ row }">
+        {{ formatDateTimeNumeric(row.created) }}
+      </template>
+
       <template #activity="{ row }">
         <FlowActivityChart :flow="row" class="flows-table__activity-chart" />
       </template>
@@ -43,7 +47,7 @@
 </template>
 
 <script lang="ts" setup>
-  import { PTable, PEmptyResults, PLink } from '@prefecthq/prefect-design'
+  import { PTable, PEmptyResults, PLink, formatDateTimeNumeric } from '@prefecthq/prefect-design'
   import { computed, ref } from 'vue'
   import ResultsCount from './ResultsCount.vue'
   import SearchInput from './SearchInput.vue'
@@ -69,7 +73,12 @@
     {
       property: 'name',
       label: 'Name',
-      width: '150px',
+      width: '125px',
+    },
+    {
+      property: 'created',
+      label: 'Created',
+      width: '125px',
     },
     {
       property: 'activity',
