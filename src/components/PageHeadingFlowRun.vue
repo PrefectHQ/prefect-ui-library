@@ -19,6 +19,7 @@
         <StateBadge :state="flowRun.state" />
         <DurationIconText :duration="flowRun.duration" />
         <FlowIconText :flow-id="flowRun.flowId" />
+        <FlowRunStartTime :flow-run="flowRun" />
       </div>
     </slot>
   </page-heading>
@@ -27,7 +28,7 @@
 <script lang="ts" setup>
   import { PIconButtonMenu } from '@prefecthq/prefect-design'
   import { computed } from 'vue'
-  import { StateBadge, PageHeading, DurationIconText, FlowIconText, CopyOverflowMenuItem, ConfirmDeleteModal } from '@/components'
+  import { StateBadge, PageHeading, DurationIconText, FlowIconText, CopyOverflowMenuItem, ConfirmDeleteModal, FlowRunStartTime } from '@/components'
   import { useShowModal } from '@/compositions/useShowModal'
   import { FlowRun } from '@/models'
   import { flowRunsRouteKey } from '@/router'
