@@ -2,10 +2,10 @@
   <template v-if="isBlockDocumentProperty && typeof value === 'string'">
     <BlockDocumentKeyValue :block-document-id="value" />
   </template>
-  <!-- support displaying nested objects -->
+  <!-- todo: support displaying nested objects -->
   <template v-else>
     <PKeyValue :label="property.title" :value="value" class="schema-property">
-      <template v-if="value && isJsonProperty" #value>
+      <template v-if="isJsonProperty" #value>
         <JsonView :value="jsonValue" />
       </template>
     </PKeyValue>
@@ -29,6 +29,5 @@
   })
 
   const jsonValue = computed(() => stringifyUnknownJson(props.value))
-
   const isBlockDocumentProperty = computed(() => props.property.type === 'block')
 </script>
