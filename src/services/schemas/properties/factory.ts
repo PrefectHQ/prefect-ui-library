@@ -7,6 +7,7 @@ import { SchemaPropertyObject } from './SchemaPropertyObject'
 import { SchemaPropertyService, SchemaPropertyServiceConstructor } from './SchemaPropertyService'
 import { SchemaPropertyString } from './SchemaPropertyString'
 import { SchemaPropertyUnknown } from './SchemaPropertyUnknown'
+import { SchemaPropertyMissingTypeError } from '@/models/SchemaPropertyMissingTypeError'
 import { SchemaProperty, schemaHas } from '@/types/schemas'
 
 export function schemaPropertyServiceFactory(property: SchemaProperty, level: number): SchemaPropertyService {
@@ -21,13 +22,11 @@ export function schemaPropertyServiceFactory(property: SchemaProperty, level: nu
 
 function getSchemaPropertyServiceConstructor(property: SchemaProperty): SchemaPropertyServiceConstructor {
   if (!schemaHas(property, 'type')) {
-    // todo: handle properties with no type cause that's a thing apparently
-    // check format? Maybe the "Unknown" mapper below works for this already?
-    // console.log('property has no type:', property)
     if (schemaHas(property, 'enum')) {
-      // console.log('has enum')
       return SchemaPropertyArray
     }
+
+    throw new SchemaPropertyMissingTypeError()
   }
 
   switch (property.type) {

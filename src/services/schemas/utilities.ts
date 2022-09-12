@@ -74,7 +74,6 @@ export function getSchemaPropertyAttrs(property: SchemaProperty): SchemaProperty
     attrs.step = property.multipleOf
   }
 
-  // todo: confirm we should do this. this might break secrets
   if (property.format === 'password') {
     attrs.type = 'password'
   }
