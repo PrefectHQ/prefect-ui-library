@@ -51,11 +51,11 @@
   import { useReactiveField } from '@/compositions'
   import { localization } from '@/localization'
   import { Notification, BlockTypeFilter } from '@/models'
-  import { blockDocumentsApiKey, blockSchemasApiKey, blockTypesApiKey, mapper } from '@/services'
+  import { blockDocumentsApiKey, blockSchemasApiKey, blockTypesApiKey } from '@/services'
+  import { getSchemaDefaultValues } from '@/services/schemas/utilities'
   import { FormAction } from '@/types/buttons'
   import { SchemaValues } from '@/types/schemas'
   import { inject } from '@/utilities/inject'
-  import { stringify } from '@/utilities/json'
 
   const props = defineProps<{
     notification?: Notification,
@@ -98,7 +98,7 @@
       const data = blockDataMap[selectedBlockTypeId.value]
 
       if (!data) {
-        return mapper.map('SchemaValuesResponse', { values: {}, schema: blockSchema.value.fields }, 'SchemaValues')
+        return getSchemaDefaultValues(blockSchema.value.fields)
       }
 
       return data
