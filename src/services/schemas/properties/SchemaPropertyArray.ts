@@ -7,6 +7,31 @@ import { isStringArray, isNumberArray } from '@/utilities'
 import { stringifyUnknownJson } from '@/utilities/json'
 
 export class SchemaPropertyArray extends SchemaPropertyService {
+
+  protected get component(): SchemaPropertyComponentWithProps {
+    if (isStringArray(this.property.enum) || isNumberArray(this.property.enum)) {
+      return this.withProps(PSelect, {
+        options: this.getSelectOptions(),
+      })
+    }
+
+    const itemType = this.property.items?.type
+
+    if (itemType === 'number' || itemType === 'string') {
+      return this.withProps(PCombobox, { options: [], allowUnknownValue: true })
+    }
+
+    return this.withProps(JsonInput)
+  }
+
+  protected get default(): unknown {
+    if (this.usesJsonInput) {
+      return ''
+    }
+
+    return []
+  }
+
   protected request(value: SchemaValue): unknown {
     return value
   }
@@ -21,30 +46,6 @@ export class SchemaPropertyArray extends SchemaPropertyService {
     }
 
     return value
-  }
-
-  public get default(): unknown {
-    if (this.usesJsonInput) {
-      return ''
-    }
-
-    return []
-  }
-
-  public get component(): SchemaPropertyComponentWithProps {
-    if (isStringArray(this.property.enum) || isNumberArray(this.property.enum)) {
-      return this.withProps(PSelect, {
-        options: this.getSelectOptions(),
-      })
-    }
-
-    const itemType = this.property.items?.type
-
-    if (itemType === 'number' || itemType === 'string') {
-      return this.withProps(PCombobox, { options: [], allowUnknownValue: true })
-    }
-
-    return this.withProps(JsonInput)
   }
 
   private get usesJsonInput(): boolean {

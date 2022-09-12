@@ -1,8 +1,18 @@
 import { SchemaPropertyService } from './SchemaPropertyService'
-import { isValidJsonString } from '@/services/validate'
+import { isValidJsonString, ValidationRule, withMessage } from '@/services/validate'
 import { SchemaValue } from '@/types/schemas'
 
 export class SchemaPropertyUnknown extends SchemaPropertyService {
+
+
+  // todo: I think sometime this should have a component. But it messes up allOf and anyOf
+  public readonly component = null
+  public readonly default = null
+
+  protected get validators(): ValidationRule[] {
+    return [withMessage(isValidJsonString, `${this.property.title} must be valid JSON`)]
+  }
+
   protected request(value: SchemaValue): unknown {
     try {
       if (typeof value === 'string') {
@@ -22,8 +32,5 @@ export class SchemaPropertyUnknown extends SchemaPropertyService {
 
     return value
   }
-
-  public readonly default = null
-  public readonly component = null
 
 }

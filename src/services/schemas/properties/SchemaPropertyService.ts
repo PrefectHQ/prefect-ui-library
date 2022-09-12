@@ -1,8 +1,9 @@
 import { SelectOption } from '@prefecthq/prefect-design'
 import { MAX_SCHEMA_PROPERTY_LEVEL } from '../constants'
-import { schemaPropertyComponentWithProps, SchemaPropertyComponentWithProps } from '../utilities'
+import { getSchemaPropertyAttrs, getSchemaPropertyDefaultValidators, schemaPropertyComponentWithProps, SchemaPropertyComponentWithProps } from '../utilities'
 import { InvalidSchemaValueError } from '@/models/InvalidSchemaValueError'
-import { schemaHas, SchemaProperty, SchemaValue } from '@/types/schemas'
+import { ValidationRule } from '@/services/validate'
+import { schemaHas, SchemaProperty, SchemaPropertyInputAttrs, SchemaPropertyMeta, SchemaValue } from '@/types/schemas'
 import { Require } from '@/types/utilities'
 import { isNumberArray, isStringArray } from '@/utilities/arrays'
 
@@ -27,13 +28,27 @@ export abstract class SchemaPropertyService {
   /**
    * Returns the vue component and any props necessary to render the property in the schema form
    */
-  public abstract get component(): SchemaPropertyComponentWithProps
+  protected abstract get component(): SchemaPropertyComponentWithProps
 
   /**
    * Returns the value needed for the @property {PropertyComponentWithProps} property to be
    * rendered when no value exists or the value is invalid
    */
-  public abstract get default(): SchemaValue
+  protected abstract get default(): SchemaValue
+
+  /**
+   * Can be extended to add property specific validation rules. Implemented here because this is not required
+   */
+  protected get validators(): ValidationRule[] {
+    return []
+  }
+
+  /**
+   * Can be extended to add property specific attrs rules. Implemented here because this is not required
+   */
+  protected get attrs(): SchemaPropertyInputAttrs {
+    return {}
+  }
 
   protected property: SchemaProperty
   protected level: number
@@ -68,6 +83,42 @@ export abstract class SchemaPropertyService {
     }
 
     return mappedValue
+  }
+
+  public getDefaultValue(): SchemaValue {
+    return this.default
+  }
+
+  public getComponent(): SchemaPropertyComponentWithProps {
+    return this.component
+  }
+
+  public getValidators(required: boolean): ValidationRule[] {
+    const defaults = getSchemaPropertyDefaultValidators(this.property, required)
+
+    return [...this.validators, ...defaults]
+  }
+
+  public getAttrs(): SchemaPropertyInputAttrs {
+    const defaults = getSchemaPropertyAttrs(this.property)
+
+    return { ...this.attrs, ...defaults }
+  }
+
+  public getMeta(required: boolean): SchemaPropertyMeta | null {
+    if (this.component == null) {
+      return null
+    }
+
+    const { component, props } = this.component
+
+    return {
+      component,
+      props,
+      required,
+      attrs: this.getAttrs(),
+      validators: this.getValidators(required),
+    }
   }
 
   protected invalid(): void {

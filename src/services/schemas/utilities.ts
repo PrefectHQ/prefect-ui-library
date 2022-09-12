@@ -1,4 +1,4 @@
-import { greaterThan, greaterThanOrEqual, isEmail, isRequired, isValidJsonString, lessThan, lessThanOrEqual, ValidationRule, withMessage } from '../validate'
+import { greaterThan, greaterThanOrEqual, isRequired, lessThan, lessThanOrEqual, ValidationRule, withMessage } from '../validate'
 import { schemaPropertyServiceFactory } from './properties'
 import { SchemaProperty, SchemaPropertyInputAttrs, Schema, SchemaValues, SchemaValue } from '@/types/schemas'
 import { withPropsWithoutExcludedFactory } from '@/utilities/components'
@@ -86,23 +86,9 @@ export function getSchemaPropertyAttrs(property: SchemaProperty): SchemaProperty
  * Gets any validation rules necessary for creating/updating a property in the ui.
  * Validators are added to the property's meta in the meta resolver.
  */
-export function getSchemaPropertyValidators(property: SchemaProperty, required: boolean): ValidationRule[] {
-  const { title = 'Property', type } = property
+export function getSchemaPropertyDefaultValidators(property: SchemaProperty, required: boolean): ValidationRule[] {
+  const { title = 'Property' } = property
   const validators: ValidationRule[] = []
-
-  if (type === undefined) {
-    validators.push(withMessage(isValidJsonString, `${title} must be JSON`))
-  }
-
-  if (property.type === 'string') {
-    if (property.format === 'email') {
-      validators.push(withMessage(isEmail, `${title} must be a valid email address`))
-    }
-
-    if (property.format === 'json-string') {
-      validators.push(withMessage(isValidJsonString, `${title} must be JSON`))
-    }
-  }
 
   const greaterThanOrEqualValue = property.minLength ?? property.minimum ?? property.minItems
 

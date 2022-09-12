@@ -4,6 +4,13 @@ import { SchemaPropertyService } from './SchemaPropertyService'
 import { SchemaValue } from '@/types/schemas'
 
 export class SchemaPropertyNumber extends SchemaPropertyService {
+
+  protected readonly default = null
+
+  protected override get component(): SchemaPropertyComponentWithProps {
+    return this.withProps(PNumberInput)
+  }
+
   protected request(value: SchemaValue): unknown {
     return value
   }
@@ -16,12 +23,6 @@ export class SchemaPropertyNumber extends SchemaPropertyService {
     }
 
     return result
-  }
-
-  public readonly default = null
-
-  public override get component(): SchemaPropertyComponentWithProps {
-    return this.withProps(PNumberInput)
   }
 
 }

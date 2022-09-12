@@ -1,6 +1,5 @@
 import { markRaw } from 'vue'
 import { schemaPropertyServiceFactory } from '../properties'
-import { getSchemaPropertyAttrs, getSchemaPropertyValidators } from '../utilities'
 import { SchemaResolver } from './schemas'
 import { Schema, SchemaProperties, SchemaProperty } from '@/types/schemas'
 import { mapEntries } from '@/utilities'
@@ -40,19 +39,11 @@ function resolveSchemaPropertyMeta(property: SchemaProperty, required: boolean, 
   }
 
   const service = schemaPropertyServiceFactory(property, level)
-  const { component } = service
+  const meta = service.getMeta(required)
 
-  if (component) {
-    const attrs = getSchemaPropertyAttrs(property)
-    const validators = getSchemaPropertyValidators(property, required)
-
+  if (meta) {
     // marking this as raw is important because we don't want to add reactivity to a component instance
-    resolved.meta = markRaw({
-      ...component,
-      attrs,
-      validators,
-      required,
-    })
+    resolved.meta = markRaw(meta)
   }
 
   return resolved

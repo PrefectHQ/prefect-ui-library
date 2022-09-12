@@ -4,6 +4,13 @@ import { SchemaPropertyService } from './SchemaPropertyService'
 import { SchemaValue } from '@/types/schemas'
 
 export class SchemaPropertyBoolean extends SchemaPropertyService {
+
+  protected readonly default = null
+
+  protected override get component(): SchemaPropertyComponentWithProps {
+    return this.withProps(PToggle)
+  }
+
   protected override request(value: SchemaValue): unknown {
     return value
   }
@@ -24,12 +31,6 @@ export class SchemaPropertyBoolean extends SchemaPropertyService {
     }
 
     return value
-  }
-
-  public readonly default = null
-
-  public override get component(): SchemaPropertyComponentWithProps {
-    return this.withProps(PToggle)
   }
 
 }

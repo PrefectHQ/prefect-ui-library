@@ -5,6 +5,15 @@ import { BlockDocumentReferenceValue, isBlockDocumentReferenceValue } from '@/mo
 import { SchemaValue } from '@/types/schemas'
 
 export class SchemaPropertyBlock extends SchemaPropertyService {
+
+  protected readonly default = null
+
+  protected override get component(): SchemaPropertyComponentWithProps {
+    return this.withProps(BlockDocumentInput, {
+      blockTypeSlug: this.property.blockTypeSlug!,
+    })
+  }
+
   protected request(value: SchemaValue): unknown {
     if (!value || typeof value !== 'string') {
       return value
@@ -26,14 +35,6 @@ export class SchemaPropertyBlock extends SchemaPropertyService {
     }
 
     this.invalid()
-  }
-
-  public readonly default = null
-
-  public override get component(): SchemaPropertyComponentWithProps {
-    return this.withProps(BlockDocumentInput, {
-      blockTypeSlug: this.property.blockTypeSlug!,
-    })
   }
 
 }

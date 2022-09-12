@@ -8,6 +8,28 @@ import { parseUnknownJson, stringifyUnknownJson } from '@/utilities/json'
 
 export class SchemaPropertyObject extends SchemaPropertyService {
 
+  protected override get component(): SchemaPropertyComponentWithProps {
+    if (this.has('properties')) {
+      return null
+    }
+
+    return this.withProps(JsonInput)
+  }
+
+  protected get default(): unknown {
+    // JsonInput is used when max level is reached
+    if (this.isMaxLevel) {
+      return ''
+    }
+
+    // some object properties don't have specific properties and a JsonInput is used
+    if (!this.has('properties')) {
+      return ''
+    }
+
+    return {}
+  }
+
   protected request(value: SchemaValue): unknown {
     if (this.isMaxLevel) {
       return this.maxLevelRequestValue(value)
@@ -50,28 +72,6 @@ export class SchemaPropertyObject extends SchemaPropertyService {
 
       return service.mapResponseValue(propertyValue)
     })
-  }
-
-  public get default(): unknown {
-    // JsonInput is used when max level is reached
-    if (this.isMaxLevel) {
-      return ''
-    }
-
-    // some object properties don't have specific properties and a JsonInput is used
-    if (!this.has('properties')) {
-      return ''
-    }
-
-    return {}
-  }
-
-  public override get component(): SchemaPropertyComponentWithProps {
-    if (this.has('properties')) {
-      return null
-    }
-
-    return this.withProps(JsonInput)
   }
 
   private maxLevelRequestValue(value: SchemaValue): unknown {

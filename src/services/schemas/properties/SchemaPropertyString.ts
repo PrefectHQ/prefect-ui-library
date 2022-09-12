@@ -5,10 +5,25 @@ import { SchemaPropertyService } from './SchemaPropertyService'
 import { JsonInput } from '@/components'
 import { InvalidSchemaValueError } from '@/models'
 import { mapper } from '@/services/Mapper'
+import { isEmail, isValidJsonString, ValidationRule, withMessage } from '@/services/validate'
 import { SchemaValue } from '@/types/schemas'
 import { isDate } from '@/utilities/dates'
 
 export class SchemaPropertyString extends SchemaPropertyService {
+  protected get validators(): ValidationRule[] {
+    const { format } = this.property
+
+    if (format === 'email') {
+      return [withMessage(isEmail, `${this.property.title} must be a valid email address`)]
+    }
+
+    if (format === 'json-string') {
+      return [withMessage(isValidJsonString, `${this.property.title} must be valid JSON`)]
+    }
+
+    return []
+  }
+
   protected override request(value: SchemaValue): unknown {
     switch (this.property.format) {
       case 'date':
@@ -33,7 +48,7 @@ export class SchemaPropertyString extends SchemaPropertyService {
     }
   }
 
-  public override get default(): SchemaValue {
+  protected override get default(): SchemaValue {
     // default value for a PSelect
     if (this.property.enum) {
       return null
@@ -48,7 +63,7 @@ export class SchemaPropertyString extends SchemaPropertyService {
     }
   }
 
-  public override get component(): SchemaPropertyComponentWithProps {
+  protected override get component(): SchemaPropertyComponentWithProps {
     if (this.has('enum')) {
       return this.withProps(PSelect, {
         options: this.getSelectOptions(),
