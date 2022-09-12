@@ -42,6 +42,8 @@
 
     <p-key-value label="Deployment ID" :value="deployment.id" :alternate="alternate" />
 
+    <p-key-value label="Deployment Version" :value="deployment.version" :alternate="alternate" />
+
     <p-key-value label="Flow ID" :value="deployment.flowId" :alternate="alternate" />
 
     <p-key-value label="Storage Document ID" :value="deployment.storageDocumentId" :alternate="alternate" />

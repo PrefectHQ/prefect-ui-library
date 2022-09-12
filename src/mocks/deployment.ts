@@ -10,6 +10,7 @@ export const randomDeployment: MockFunction<Deployment, [Partial<Deployment>?]> 
     created: this.create('date'),
     updated: this.create('date'),
     name: this.create('noun'),
+    version: this.create('string'),
     description: this.create('paragraph'),
     flowId: this.create('id'),
     schedule: random() > 0.25 ? this.create('schedule') : null,

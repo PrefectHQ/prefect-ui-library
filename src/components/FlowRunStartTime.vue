@@ -2,9 +2,11 @@
   <p-icon-text class="flow-run-list-item-date" icon="CalendarIcon">
     <template v-if="flowRun.startTime">
       {{ formatDateTimeNumeric(flowRun.startTime) }}
+      {{ flowRun.delta }}
     </template>
     <template v-else-if="flowRun.expectedStartTime">
       Scheduled for <span class="flow-run-list-item-date__expected">{{ formatDateTimeNumeric(flowRun.expectedStartTime) }}</span>
+      {{ flowRun.delta }}
     </template>
     <template v-else>
       No start time
