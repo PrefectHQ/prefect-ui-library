@@ -1,5 +1,4 @@
 import isDate from 'date-fns/isDate'
-import { SchemaProperties } from '@/types/schemas'
 
 export function flip<K extends string, V extends string>(obj: Record<K, V>): Record<V, K> {
   const result = {} as Record<V, K>

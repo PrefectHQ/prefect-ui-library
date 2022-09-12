@@ -1,49 +1,58 @@
-import { Require } from './utilities'
-import { SchemaPropertyMeta } from '@/utilities'
+import { SchemaPropertyComponentWithProps } from '@/services/schemas/utilities'
+import { ValidationRule } from '@/services/validate'
+import { Require } from '@/types/utilities'
 
 export type SchemaValue = unknown
 export type SchemaValues = Record<string, SchemaValue | undefined>
 
 export const SchemaStringFormats = ['date', 'regex', 'date-time', 'time-delta', 'email', 'json-string', 'password'] as const
-const apiSchemaTypes = ['null', 'string', 'boolean', 'integer', 'number', 'array', 'object'] as const
-const uiOnlySchemaTypes = ['block'] as const
-export const SchemaTypes = [...apiSchemaTypes, ...uiOnlySchemaTypes] as const
+export const SchemaTypes = [
+  // prefect ui custom types
+  'block',
+  // open api types
+  'null', 'string', 'boolean', 'integer', 'number', 'array', 'object',
+] as const
 export const BaseDefinitionRefString = '#/definitions/' as const
 
 export type SchemaType = typeof SchemaTypes[number]
 export type SchemaStringFormat = typeof SchemaStringFormats[number]
 export type SchemaEnum<T> = T[]
-export type SchemaReference<T extends string> = `${typeof BaseDefinitionRefString}${T}`
+export type SchemaReference = `${typeof BaseDefinitionRefString}${string}`
 export type SchemaDefinitions = Record<string, Schema | undefined>
 
 export type BlockSchemaReference = {
   blockSchemaChecksum: string,
   blockTypeSlug: string,
 }
-export type BlockSchemaReferences = Record<string, BlockSchemaReference | undefined>
 
-export type SchemaProperty = Omit<Schema, 'definitions' | 'blockSchemaReferences'> & {
-  anyOf?: SchemaProperty[],
-  allOf?: SchemaProperty[],
-  meta?: SchemaPropertyMeta,
-  example?: string,
-  isRequired?: boolean,
-  /** @deprecated use blockTypeSlug field instead */
-  blockReference?: BlockSchemaReference,
-  blockTypeSlug?: string,
-}
+export type BlockSchemaReferences = Record<string, BlockSchemaReference | undefined>
 
 export type SchemaPropertyAnyOf = Require<SchemaProperty, 'anyOf'>
 export type SchemaPropertyAllOf = Require<SchemaProperty, 'allOf'>
+export type SchemaProperties = Record<string, SchemaProperty | undefined>
 
-export type SchemaProperties = Record<string, SchemaProperty>
+export type SchemaPropertyInputAttrs = Record<string, unknown>
 
-export type Schema = {
-  alias?: string,
+export type SchemaPropertyMetaOptions = {
+  attrs?: SchemaPropertyInputAttrs,
+  validators?: ValidationRule | ValidationRule[],
+  required?: boolean,
+}
+
+export type SchemaPropertyMeta = SchemaPropertyComponentWithProps & SchemaPropertyMetaOptions
+
+export type SchemaProperty = {
+  // prefect specific properties
   blockTypeSlug?: string,
-  blockSchemaReferences?: BlockSchemaReferences,
+  meta?: SchemaPropertyMeta,
+
+  // open api properties
+  $ref?: SchemaReference,
+  anyOf?: SchemaProperty[],
+  allOf?: SchemaProperty[],
+  example?: string,
+  alias?: string,
   default?: unknown,
-  definitions?: SchemaDefinitions,
   description?: string,
   enum?: SchemaEnum<unknown>,
   exclusiveMaximum?: number,
@@ -63,6 +72,15 @@ export type Schema = {
   title?: string,
   type?: SchemaType,
   uniqueItems?: boolean,
+}
+
+export type Schema = SchemaProperty & {
+  // prefect specific properties
+  blockSchemaReferences?: BlockSchemaReferences,
+  secretFields?: string[],
+
+  // open api properties
+  definitions?: SchemaDefinitions,
 }
 
 export function isSchemaValues(input: unknown): input is SchemaValues {

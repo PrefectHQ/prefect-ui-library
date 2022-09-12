@@ -1,0 +1,1 @@
+export const MAX_SCHEMA_PROPERTY_LEVEL = 2

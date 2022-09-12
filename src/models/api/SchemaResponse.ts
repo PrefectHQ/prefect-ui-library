@@ -1,22 +1,26 @@
-import { BlockSchemaReferencesResponse } from './BlockSchemaResponse'
 import { SchemaReference, SchemaType, SchemaStringFormat, SchemaEnum } from '@/types/schemas'
 
+export type BlockSchemaReferenceResponse = {
+  block_schema_checksum: string,
+  block_type_slug: string,
+}
+
+export type BlockSchemaReferencesResponse = Record<string, BlockSchemaReferenceResponse | undefined>
+
+export type SchemaPropertiesResponse = Record<string, SchemaPropertyResponse | undefined>
 export type SchemaDefinitionsResponse = Record<string, SchemaResponse | undefined>
 
-export type SchemaPropertyResponse = SchemaResponse & {
-  $ref?: SchemaReference<string>,
+export type SchemaPropertyResponse = {
+  // prefect specific properties
+  block_type_slug?: string,
+
+  // open api properties
+  $ref?: SchemaReference,
   anyOf?: SchemaPropertyResponse[],
   allOf?: SchemaPropertyResponse[],
   example?: string,
-}
-
-export type SchemaPropertiesResponse = Record<string, SchemaPropertyResponse>
-
-export type SchemaResponse = {
   alias?: string,
-  block_schema_references?: BlockSchemaReferencesResponse,
   default?: unknown,
-  definitions?: SchemaDefinitionsResponse,
   description?: string,
   enum?: SchemaEnum<unknown>,
   exclusiveMaximum?: number,
@@ -36,4 +40,13 @@ export type SchemaResponse = {
   title?: string,
   type?: SchemaType,
   uniqueItems?: boolean,
+}
+
+export type SchemaResponse = SchemaPropertyResponse & {
+  // prefect specific properties
+  block_schema_references?: BlockSchemaReferenceResponse,
+  secret_fields?: string[],
+
+  // open api properties
+  definitions?: SchemaDefinitionsResponse,
 }

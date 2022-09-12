@@ -1,4 +1,5 @@
-import { PropertyComponentWithProps, SchemaPropertyService } from './SchemaPropertyService'
+import { SchemaPropertyComponentWithProps } from '../utilities'
+import { SchemaPropertyService } from './SchemaPropertyService'
 import BlockDocumentInput from '@/components/BlockDocumentInput.vue'
 import { BlockDocumentReferenceValue, isBlockDocumentReferenceValue } from '@/models/api/BlockDocumentCreateRequest'
 import { SchemaValue } from '@/types/schemas'
@@ -29,7 +30,7 @@ export class SchemaPropertyBlock extends SchemaPropertyService {
 
   public readonly default = null
 
-  public override get component(): PropertyComponentWithProps {
+  public override get component(): SchemaPropertyComponentWithProps {
     return this.withProps(BlockDocumentInput, {
       blockTypeSlug: this.property.blockTypeSlug!,
     })

@@ -1,22 +1,12 @@
-import { PropertyComponentWithProps, SchemaPropertyService, SchemaPropertyServiceSource } from './SchemaPropertyService'
-import { SchemaService } from './SchemaService'
+import { SchemaPropertyComponentWithProps } from '../utilities'
+import { SchemaPropertyService } from './SchemaPropertyService'
 import { JsonInput } from '@/components'
+import { schemaPropertyServiceFactory } from '@/services/schemas/properties'
 import { SchemaValue, isSchemaValues, SchemaValues } from '@/types/schemas'
 import { mapEntries } from '@/utilities'
 import { parseUnknownJson, stringifyUnknownJson } from '@/utilities/json'
 
 export class SchemaPropertyObject extends SchemaPropertyService {
-
-  private readonly schemaService: SchemaService
-
-  public constructor(source: SchemaPropertyServiceSource) {
-    super(source)
-
-    this.schemaService = new SchemaService({
-      initialPropertyLevel: source.level,
-      maxPropertyLevel: source.maxPropertyLevel,
-    })
-  }
 
   protected request(value: SchemaValue): unknown {
     if (this.isMaxLevel) {
@@ -33,8 +23,9 @@ export class SchemaPropertyObject extends SchemaPropertyService {
 
     return mapEntries(this.property.properties, (key, property) => {
       const propertyValue = value[key]
+      const service = schemaPropertyServiceFactory(property!, this.level + 1)
 
-      return this.schemaService.mapPropertyRequestValue(property, propertyValue)
+      return service.mapRequestValue(propertyValue)
     })
   }
 
@@ -55,8 +46,9 @@ export class SchemaPropertyObject extends SchemaPropertyService {
     // TODO: I'm not 100% sure this works with nested properties. Need to test
     return mapEntries(this.property.properties, (key, property) => {
       const propertyValue = parsed[key]
+      const service = schemaPropertyServiceFactory(property!, this.level + 1)
 
-      return this.schemaService.mapPropertyResponseValue(property, propertyValue)
+      return service.mapResponseValue(propertyValue)
     })
   }
 
@@ -74,7 +66,7 @@ export class SchemaPropertyObject extends SchemaPropertyService {
     return {}
   }
 
-  public override get component(): PropertyComponentWithProps {
+  public override get component(): SchemaPropertyComponentWithProps {
     if (this.has('properties')) {
       return null
     }

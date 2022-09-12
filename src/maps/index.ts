@@ -1,5 +1,4 @@
 import { mapBlockDocumentResponseReferencesToBlockDocumentReferences } from './blockDocumentReferences'
-import { mapSchemaDefinitionsResponseToSchemaDefinitions } from './schemaDefinitions'
 import { mapBlockDocumentResponseToBlockDocument, mapBlockDocumentToSelectOption } from '@/maps/blockDocument'
 import { mapBlockDocumentCreateToBlockDocumentCreateRequest } from '@/maps/blockDocumentCreate'
 import { mapBlockDocumentFilterToBlockDocumentFilterRequest } from '@/maps/blockDocumentFilter'
@@ -24,7 +23,7 @@ import { mapNotificationUpdateToNotificationUpdateRequest } from '@/maps/notific
 import { mapNumberToString, mapStringToNumber } from '@/maps/number'
 import { mapUiFlowRunHistoryToScatterPlotItem } from '@/maps/scatterPlotItem'
 import { mapScheduleToScheduleResponse, mapScheduleResponseToSchedule, mapScheduleToScheduleRequest } from '@/maps/schedule'
-import { mapSchemaResponseToSchema } from '@/maps/schema'
+import { mapSchemaDefinitionsResponseToSchemaDefinitions, mapSchemaPropertiesResponseToSchemaProperties, mapSchemaPropertyResponseToSchemaProperty, mapSchemaResponseToSchema } from '@/maps/schema'
 import { mapSchemaValuesToSchemaValuesRequest } from '@/maps/schemaValuesRequest'
 import { mapSchemaValuesResponseToSchemaValues } from '@/maps/schemaValuesResponse'
 import { mapStateResponseToState, mapStateToStateResponse, mapStateCreateToStateRequest } from '@/maps/state'
@@ -94,6 +93,8 @@ export const maps = {
   WorkQueueEdit: { WorkQueueEditRequest: mapWorkQueueEditToWorkQueueEditRequest },
   WorkQueueFilter: { WorkQueueFilterResponse: mapWorkQueueFilterToWorkQueueFilterResponse },
   SchemaResponse: { Schema: mapSchemaResponseToSchema },
+  SchemaPropertiesResponse: { SchemaProperties: mapSchemaPropertiesResponseToSchemaProperties },
+  SchemaPropertyResponse: { SchemaProperty: mapSchemaPropertyResponseToSchemaProperty },
   SchemaValuesResponse: { SchemaValues: mapSchemaValuesResponseToSchemaValues },
   SchemaValues: { SchemaValuesRequest: mapSchemaValuesToSchemaValuesRequest },
   BlockDocumentReferencesResponse: { BlockDocumentReferences: mapBlockDocumentResponseReferencesToBlockDocumentReferences },

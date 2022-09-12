@@ -2,7 +2,7 @@ import { BlockDocumentReferencesResponse, BlockDocumentReferenceValue } from '@/
 import { isSchemaValues, SchemaValues } from '@/types/schemas'
 import { mapEntries } from '@/utilities'
 
-export function resolveSchemaBlockDocumentReferences(values: SchemaValues, references: BlockDocumentReferencesResponse | undefined): SchemaValues {
+export function resolveSchemaValuesBlockDocumentReferences(values: SchemaValues, references: BlockDocumentReferencesResponse | undefined): SchemaValues {
   if (references === undefined || Object.keys(references).length === 0) {
     return values
   }
@@ -22,7 +22,7 @@ export function resolveSchemaBlockDocumentReferences(values: SchemaValues, refer
     }
 
     if (isSchemaValues(value)) {
-      return resolveSchemaBlockDocumentReferences(value, references)
+      return resolveSchemaValuesBlockDocumentReferences(value, references)
     }
 
     return value

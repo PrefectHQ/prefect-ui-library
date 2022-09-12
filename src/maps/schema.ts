@@ -1,116 +1,33 @@
-import { SchemaPropertiesResponse, SchemaPropertyResponse, SchemaResponse } from '@/models/api/SchemaResponse'
-import { MapFunction, mapper } from '@/services/Mapper'
-import { BlockSchemaReferences, Schema, SchemaDefinitions, SchemaProperties, SchemaProperty } from '@/types/schemas'
-import { mapSnakeToCamelCase } from '@/utilities'
-import { getSchemaPropertyMeta, INITIAL_PROPERTY_LEVEL } from '@/utilities/schemas'
+import { SchemaDefinitionsResponse, SchemaPropertiesResponse, SchemaPropertyResponse, SchemaResponse } from '@/models/api/SchemaResponse'
+import { MapFunction } from '@/services/Mapper'
+import { Schema, SchemaDefinitions, SchemaProperties, SchemaProperty } from '@/types/schemas'
+import { mapEntries, mapSnakeToCamelCase } from '@/utilities'
 
 export const mapSchemaResponseToSchema: MapFunction<SchemaResponse, Schema> = function(source: SchemaResponse): Schema {
-  const resolver = new SchemaResolver(source, this)
+  // eslint-disable-next-line camelcase, @typescript-eslint/no-unused-vars
+  const { definitions, block_schema_references, properties, ...rest } = source
 
-  return resolver.resolved
+  return {
+    ...mapSnakeToCamelCase({ ...rest }),
+    properties: this.map('SchemaPropertiesResponse', properties, 'SchemaProperties'),
+    definitions: this.map('SchemaDefinitionsResponse', definitions, 'SchemaDefinitions'),
+    // blockSchemaReferences: this.map('BlockSchemaReferencesResponse', block_schema_references, 'BlockSchemaReferences'),
+  }
 }
 
-class SchemaResolver {
-  private readonly definitions: SchemaDefinitions | undefined
-  private readonly references: BlockSchemaReferences | undefined
-  private readonly mapper: typeof mapper
-  private readonly _resolved: Schema
+export const mapSchemaDefinitionsResponseToSchemaDefinitions: MapFunction<SchemaDefinitionsResponse, SchemaDefinitions> = function(source: SchemaDefinitionsResponse): SchemaDefinitions {
+  return mapEntries(source, (key, value) => this.map('SchemaResponse', value, 'Schema'))
+}
 
-  public constructor(schema: SchemaResponse, map: typeof mapper) {
-    this.mapper = map
-    this.definitions = this.mapper.map('SchemaDefinitionsResponse', schema.definitions, 'SchemaDefinitions')
-    this.references = this.mapper.map('BlockSchemaReferencesResponse', schema.block_schema_references, 'BlockSchemaReferences')
+export const mapSchemaPropertiesResponseToSchemaProperties: MapFunction<SchemaPropertiesResponse, SchemaProperties> = function(source: SchemaPropertiesResponse): SchemaProperties {
+  return mapEntries(source, (key, value) => this.map('SchemaPropertyResponse', value, 'SchemaProperty'))
+}
 
-    this._resolved = this.resolveSchema(schema)
-  }
+export const mapSchemaPropertyResponseToSchemaProperty: MapFunction<SchemaPropertyResponse, SchemaProperty> = function(source: SchemaPropertyResponse): SchemaProperty {
+  const { properties, ...rest } = source
 
-  public get resolved(): Schema {
-    return this._resolved
-  }
-
-  private resolveSchema(schema: SchemaResponse): Schema {
-    // eslint-disable-next-line camelcase
-    const { properties, items, block_schema_references, ...rest } = schema
-    // spread is necessary to avoid typescript index signature error
-    // https://github.com/microsoft/TypeScript/issues/42021
-    const response: Schema = {
-      ...mapSnakeToCamelCase({ ...rest }),
-      blockSchemaReferences: this.mapper.map('BlockSchemaReferencesResponse', block_schema_references, 'BlockSchemaReferences'),
-    }
-
-    if (properties) {
-      response.properties = this.resolveProperties(properties, schema)
-    }
-
-    if (items) {
-      response.items = this.resolveProperty(items, schema)
-    }
-
-    return response
-  }
-
-  private resolveProperties(properties: SchemaPropertiesResponse | undefined, schema: Schema, level: number = INITIAL_PROPERTY_LEVEL): SchemaProperties | undefined {
-    if (properties === undefined) {
-      return undefined
-    }
-
-    return Object.keys(properties).reduce<SchemaProperties>((result, key) => {
-      result[key] = this.resolveProperty(properties[key], schema, key, level + 1)
-
-      return result
-    }, {})
-  }
-
-  // eslint-disable-next-line max-params
-  private resolveProperty(property: SchemaPropertyResponse, schema: Schema, key: string = '', level: number = INITIAL_PROPERTY_LEVEL): SchemaProperty {
-    const { $ref, properties, items, allOf, anyOf, ...rest } = property
-    const response: SchemaProperty = { ...rest }
-
-    if ($ref) {
-      Object.assign(response, this.resolveDefinition($ref))
-    }
-
-    if (this.getSchemaPropertyIsRequired(schema, key)) {
-      response.isRequired = true
-    }
-
-    if (properties) {
-      response.properties = this.resolveProperties(properties, property, level)
-    }
-
-    if (items) {
-      response.items = this.resolveProperty(items, schema)
-    }
-
-    if (allOf) {
-      response.allOf = allOf.map(_property => this.resolveProperty(_property, schema))
-    }
-
-    if (anyOf) {
-      response.anyOf = anyOf.map(_property => this.resolveProperty(_property, schema))
-    }
-
-    const meta = getSchemaPropertyMeta({ property: response, schema, key, level })
-
-    if (meta) {
-      response.meta = meta
-    }
-
-    return response
-  }
-
-  private resolveDefinition(ref: string): SchemaProperty {
-    const [, match = ''] = ref.match(/^(?:#\/definitions\/)(.*)/) ?? []
-    const definition = this.definitions?.[match] ?? {}
-
-    if (definition.blockTypeSlug) {
-      definition.type = 'block'
-    }
-
-    return this.resolveSchema(definition)
-  }
-
-  private getSchemaPropertyIsRequired(schema: Schema, key: string): boolean {
-    return schema.required?.includes(key) ?? false
+  return {
+    ...mapSnakeToCamelCase({ ...rest }),
+    properties: this.map('SchemaPropertiesResponse', properties, 'SchemaProperties'),
   }
 }

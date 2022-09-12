@@ -1,5 +1,6 @@
 import { PCombobox, PSelect } from '@prefecthq/prefect-design'
-import { PropertyComponentWithProps, SchemaPropertyService } from './SchemaPropertyService'
+import { SchemaPropertyComponentWithProps } from '../utilities'
+import { SchemaPropertyService } from './SchemaPropertyService'
 import { JsonInput } from '@/components'
 import { SchemaType, SchemaValue } from '@/types/schemas'
 import { isStringArray, isNumberArray } from '@/utilities'
@@ -30,7 +31,7 @@ export class SchemaPropertyArray extends SchemaPropertyService {
     return []
   }
 
-  public get component(): PropertyComponentWithProps {
+  public get component(): SchemaPropertyComponentWithProps {
     if (isStringArray(this.property.enum) || isNumberArray(this.property.enum)) {
       return this.withProps(PSelect, {
         options: this.getSelectOptions(),

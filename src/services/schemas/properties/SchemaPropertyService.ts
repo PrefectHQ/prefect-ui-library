@@ -1,21 +1,17 @@
-import { PCombobox, PToggle, SelectOption } from '@prefecthq/prefect-design'
+import { SelectOption } from '@prefecthq/prefect-design'
+import { MAX_SCHEMA_PROPERTY_LEVEL } from '../constants'
+import { schemaPropertyComponentWithProps, SchemaPropertyComponentWithProps } from '../utilities'
 import { InvalidSchemaValueError } from '@/models/InvalidSchemaValueError'
 import { schemaHas, SchemaProperty, SchemaValue } from '@/types/schemas'
 import { Require } from '@/types/utilities'
 import { isNumberArray, isStringArray } from '@/utilities/arrays'
-import { withPropsWithoutExcludedFactory } from '@/utilities/components'
 
 export type SchemaPropertyServiceSource = {
   property: SchemaProperty,
   level: number,
-  maxPropertyLevel: number,
 }
 
 export type SchemaPropertyServiceConstructor = new (source: SchemaPropertyServiceSource) => SchemaPropertyService
-
-const withProps = withPropsWithoutExcludedFactory('modelValue')
-
-export type PropertyComponentWithProps = ReturnType<typeof withProps> | null
 
 export abstract class SchemaPropertyService {
   /**
@@ -31,7 +27,7 @@ export abstract class SchemaPropertyService {
   /**
    * Returns the vue component and any props necessary to render the property in the schema form
    */
-  public abstract get component(): PropertyComponentWithProps
+  public abstract get component(): SchemaPropertyComponentWithProps
 
   /**
    * Returns the value needed for the @property {PropertyComponentWithProps} property to be
@@ -39,15 +35,17 @@ export abstract class SchemaPropertyService {
    */
   public abstract get default(): SchemaValue
 
-  protected readonly isMaxLevel: boolean
   protected property: SchemaProperty
   protected level: number
-  protected withProps = withProps
+  protected withProps = schemaPropertyComponentWithProps
 
-  public constructor({ property, level, maxPropertyLevel }: SchemaPropertyServiceSource) {
-    this.isMaxLevel = level > maxPropertyLevel
+  public constructor({ property, level }: SchemaPropertyServiceSource) {
     this.property = property
     this.level = level
+  }
+
+  public get isMaxLevel(): boolean {
+    return this.level > MAX_SCHEMA_PROPERTY_LEVEL
   }
 
   public mapResponseValue(value: SchemaValue): SchemaValue {
@@ -87,7 +85,7 @@ export abstract class SchemaPropertyService {
       return options
     }
 
-    if (!this.property.isRequired) {
+    if (!this.property.meta?.required) {
       options.push({ label: 'None', value: null })
     }
 
