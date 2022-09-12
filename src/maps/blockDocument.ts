@@ -2,14 +2,11 @@ import { SelectOption } from '@prefecthq/prefect-design'
 import { BlockDocumentResponse } from '@/models/api/BlockDocumentResponse'
 import { BlockDocument } from '@/models/BlockDocument'
 import { MapFunction } from '@/services/Mapper'
-import { resolveSchemaBlockDocumentReferences } from '@/services/schemas/SchemaBlockReferenceResolver'
-import { schemaService } from '@/services/schemas/SchemaService'
 import { mapSnakeToCamelCase } from '@/utilities/mapping'
 
 export const mapBlockDocumentResponseToBlockDocument: MapFunction<BlockDocumentResponse, BlockDocument> = function(source: BlockDocumentResponse): BlockDocument {
-  const values = resolveSchemaBlockDocumentReferences(source.data, source.block_document_references)
   const blockSchema = this.map('BlockSchemaResponse', source.block_schema, 'BlockSchema')
-  const data = schemaService.mapSchemaResponseValues(values, blockSchema.fields)
+  const data = this.map('SchemaValuesResponse', { values: source.data, schema: blockSchema.fields }, 'SchemaValues')
 
   return new BlockDocument({
     ...mapSnakeToCamelCase(source),
