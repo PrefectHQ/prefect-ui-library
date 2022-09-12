@@ -1,7 +1,7 @@
 <template>
   <p-content class="schema-form-fields">
     <template v-for="(prop, propertyKey) in schema.properties" :key="getPropertyKey(propertyKey)">
-      <SchemaFormProperty :prop-key="getPropertyKey(propertyKey)" :property="prop" />
+      <SchemaFormProperty :prop-key="getPropertyKey(propertyKey)" :property="prop!" />
     </template>
   </p-content>
 </template>

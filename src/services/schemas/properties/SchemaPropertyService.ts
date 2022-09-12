@@ -39,13 +39,13 @@ export abstract class SchemaPropertyService {
   protected level: number
   protected withProps = schemaPropertyComponentWithProps
 
+  protected get isMaxLevel(): boolean {
+    return this.level > MAX_SCHEMA_PROPERTY_LEVEL
+  }
+
   public constructor({ property, level }: SchemaPropertyServiceSource) {
     this.property = property
     this.level = level
-  }
-
-  public get isMaxLevel(): boolean {
-    return this.level > MAX_SCHEMA_PROPERTY_LEVEL
   }
 
   public mapResponseValue(value: SchemaValue): SchemaValue {

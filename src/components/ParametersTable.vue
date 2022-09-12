@@ -46,8 +46,8 @@
       return {
         key,
         value: props.deployment.parameters[key],
-        defaultValue: value.default,
-        type: value.type,
+        defaultValue: value!.default,
+        type: value!.type,
       }
     })
   })

@@ -41,6 +41,8 @@ export function kebabCase(string: string): string {
     .toLowerCase()
 }
 
+// todo: this removes symbols like $.
+// camelCase('$ref') => 'ref'
 export function camelCase(str: string): string {
   return camelCaseLodash(str)
 }

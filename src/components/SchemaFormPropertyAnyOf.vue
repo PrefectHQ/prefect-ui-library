@@ -7,7 +7,7 @@
     <p-button-group v-model="selected" :options="options" size="sm" />
 
     <template v-for="(subProperty, key) in displayedDefinition.properties" :key="key">
-      <SchemaFormProperty :prop-key="`${propKey}.${key}`" :property="subProperty" />
+      <SchemaFormProperty :prop-key="`${propKey}.${key}`" :property="subProperty!" />
     </template>
   </p-content>
 </template>

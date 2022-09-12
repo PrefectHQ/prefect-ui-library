@@ -130,3 +130,12 @@ export function getSchemaPropertyValidators(property: SchemaProperty, required: 
 
   return validators
 }
+
+export type ResolverCallback<T> = (schema: T) => T
+
+/*
+ * A utility for passing a value through an array of resolver methods.
+ */
+export function resolve<T>(value: T, resolvers: ResolverCallback<T>[]): T {
+  return resolvers.reduce((resolved, resolver) => resolver(resolved), value)
+}

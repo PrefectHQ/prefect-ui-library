@@ -24,7 +24,7 @@
   import { BlockDocumentCreateNamed } from '@/models/BlockDocumentCreate'
   import { BlockSchema } from '@/models/BlockSchema'
   import { isRequired, isValidHandle, withMessage } from '@/services'
-  import { schemaService } from '@/services/schemas/SchemaService'
+  import { getSchemaDefaultValues } from '@/services/schemas/utilities'
 
   const props = defineProps<{
     blockSchema: BlockSchema,
@@ -38,7 +38,7 @@
   const { handleSubmit } = useForm<BlockDocumentCreateNamed>({
     initialValues: {
       name: '',
-      data: schemaService.getSchemaDefaultValues(props.blockSchema.fields),
+      data: getSchemaDefaultValues(props.blockSchema.fields),
       blockSchema: props.blockSchema,
     },
   })

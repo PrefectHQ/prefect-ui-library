@@ -32,7 +32,7 @@
   const label = computed(() => {
     const title = props.property.title ?? ''
 
-    if (!props.property.isRequired) {
+    if (!props.property.meta?.required) {
       return `${title} (Optional)`
     }
 

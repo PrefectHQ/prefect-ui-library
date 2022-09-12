@@ -1,7 +1,8 @@
+import { SchemaResolver } from './schemas'
 import { Schema, SchemaDefinitions, SchemaProperties, SchemaProperty } from '@/types/schemas'
 import { mapEntries } from '@/utilities'
 
-export function resolveSchemaDefinitions(schema: Schema): Schema {
+export const schemaDefinitionsResolver: SchemaResolver = (schema: Schema): Schema => {
   const { definitions, properties, ...rest } = schema
   const resolved: Schema = rest
 
@@ -65,5 +66,5 @@ function resolveDefinition(ref: string, definitions: SchemaDefinitions): SchemaP
     schema.type = 'block'
   }
 
-  return resolveSchemaDefinitions(schema)
+  return schemaDefinitionsResolver(schema)
 }

@@ -2,7 +2,7 @@
   <p-label :label="label" :description="property.description" class="schema-form-properties">
     <p-content class="schema-form-properties__fields">
       <template v-for="(prop, key) in property.properties" :key="key">
-        <SchemaFormProperty :property="prop" :prop-key="`${propKey}.${key}`" />
+        <SchemaFormProperty :property="prop!" :prop-key="`${propKey}.${key}`" />
       </template>
     </p-content>
   </p-label>
