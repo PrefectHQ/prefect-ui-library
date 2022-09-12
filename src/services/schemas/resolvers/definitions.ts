@@ -29,10 +29,14 @@ export function resolveSchemaPropertyDefinition(property: SchemaProperty | undef
   }
 
   const { $ref, properties, allOf, anyOf, items, ...rest } = property
-  const resolved: SchemaProperty = rest
+  let resolved: SchemaProperty = rest
 
+  // if this is a ref resolve and flatten
   if ($ref) {
-    Object.assign(resolved, resolveDefinition($ref, definitions))
+    resolved = {
+      ...resolved,
+      ...resolveDefinition($ref, definitions),
+    }
   }
 
   if (properties) {
@@ -40,7 +44,19 @@ export function resolveSchemaPropertyDefinition(property: SchemaProperty | undef
   }
 
   if (allOf) {
-    resolved.allOf = allOf.map(value => resolveSchemaPropertyDefinition(value, definitions)!)
+    const resolvedAllOf = allOf.map(value => resolveSchemaPropertyDefinition(value, definitions)!)
+
+    // if there is only one schema we flatten it and treat this property as a simple property
+    if (resolvedAllOf.length === 1) {
+      const [first] = resolvedAllOf
+
+      resolved = {
+        ...first,
+        ...resolved,
+      }
+    } else {
+      resolved.allOf = resolvedAllOf
+    }
   }
 
   if (anyOf) {

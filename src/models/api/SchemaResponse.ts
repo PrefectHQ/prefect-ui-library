@@ -16,8 +16,8 @@ export type SchemaPropertyResponse = {
 
   // open api properties
   $ref?: SchemaReference,
-  anyOf?: SchemaPropertyResponse[],
-  allOf?: SchemaPropertyResponse[],
+  anyOf?: SchemaResponse[],
+  allOf?: SchemaResponse[],
   example?: string,
   alias?: string,
   default?: unknown,

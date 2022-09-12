@@ -48,8 +48,8 @@ export type SchemaProperty = {
 
   // open api properties
   $ref?: SchemaReference,
-  anyOf?: SchemaProperty[],
-  allOf?: SchemaProperty[],
+  anyOf?: Schema[],
+  allOf?: Schema[],
   example?: string,
   alias?: string,
   default?: unknown,
