@@ -64,7 +64,6 @@
 .code-banner__terminal { @apply
   max-w-2xl
   rounded-b-none
-  overflow-hidden
   w-11/12
 }
 </style>
