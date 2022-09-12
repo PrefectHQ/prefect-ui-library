@@ -1,3 +1,4 @@
+export * from './useFavicon'
 export * from './useFlowRunFilter'
 export * from './useFlowRunFilterFromRoute'
 export * from './useIntersectionObserver'
