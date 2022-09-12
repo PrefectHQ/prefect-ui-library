@@ -4,14 +4,7 @@ import { Schema, SchemaProperties, SchemaProperty } from '@/types/schemas'
 import { mapEntries } from '@/utilities'
 
 export function resolveSchemaMeta(schema: Schema): Schema {
-  const { properties, ...rest } = schema
-  const resolved: Schema = rest
-
-  if (properties) {
-    resolved.properties = resolveSchemaPropertiesMeta(schema, 0)
-  }
-
-  return resolved
+  return resolveSchemaPropertyMeta(schema, false, 0)
 }
 
 type PropertiesSource = Pick<SchemaProperty, 'properties' | 'required'>
@@ -25,8 +18,20 @@ function resolveSchemaPropertiesMeta({ required = [], properties = {} }: Propert
 }
 
 function resolveSchemaPropertyMeta(property: SchemaProperty, required: boolean, level: number): SchemaProperty {
-  const { properties, ...rest } = property
+  const { properties, allOf, anyOf, items, ...rest } = property
   const resolved: SchemaProperty = rest
+
+  if (allOf) {
+    resolved.allOf = allOf.map(value => resolveSchemaPropertyMeta(value, false, level))
+  }
+
+  if (anyOf) {
+    resolved.anyOf = anyOf.map(value => resolveSchemaPropertyMeta(value, false, level))
+  }
+
+  if (items) {
+    resolved.items = resolveSchemaPropertyMeta(items, false, level)
+  }
 
   if (properties) {
     resolved.properties = resolveSchemaPropertiesMeta(properties, level + 1)
