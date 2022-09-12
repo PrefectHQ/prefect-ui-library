@@ -8,6 +8,7 @@ export type DeploymentResponse = {
   created: DateString,
   updated: DateString,
   name: string,
+  version: string,
   description: string | null,
   flow_id: string,
   schedule: ScheduleResponse | null,
