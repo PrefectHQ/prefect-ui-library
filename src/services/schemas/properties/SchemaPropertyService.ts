@@ -6,6 +6,7 @@ import { InvalidSchemaValueError } from '@/models/InvalidSchemaValueError'
 import { ValidationRule } from '@/services/validate'
 import { schemaHas, SchemaProperty, SchemaPropertyInputAttrs, SchemaPropertyMeta, SchemaValue } from '@/types/schemas'
 import { Require } from '@/types/utilities'
+import { sameValue } from '@/utilities'
 import { isNumberArray, isStringArray } from '@/utilities/arrays'
 import { ComponentDefinition } from '@/utilities/components'
 
@@ -80,7 +81,7 @@ export abstract class SchemaPropertyService {
   public mapRequestValue(value: SchemaValue): SchemaValue | undefined {
     const mappedValue = this.request(value)
 
-    if (mappedValue === this.default) {
+    if (this.isDefaultValue(mappedValue)) {
       return undefined
     }
 
@@ -159,6 +160,10 @@ export abstract class SchemaPropertyService {
     }
 
     return options
+  }
+
+  protected isDefaultValue(value: SchemaValue): boolean {
+    return sameValue(value, this.default)
   }
 
 }
