@@ -50,7 +50,15 @@ export function useFlowRunFilterFromRoute(): UseFlowRunFilterFromRoute {
 
   const nameDebounced = useDebouncedRef(name, 1200)
 
-  const states = useRouteQueryParam('state', []) as Ref<StateType[]>
+  const states = useRouteQueryParam('state', [
+    'scheduled',
+    'pending',
+    'running',
+    'completed',
+    'failed',
+    'crashed',
+    'cancelled',
+  ]) as Ref<StateType[]>
   const deployments = useRouteQueryParam('deployment', [])
   const flows = useRouteQueryParam('flow', [])
   const tags = useRouteQueryParam('tag', [])
