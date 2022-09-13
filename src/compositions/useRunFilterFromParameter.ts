@@ -13,10 +13,12 @@ type UseFlowRunFilterFromParam = {
 }
 
 export function useFlowRunFilterFromParameter(
-  filterInputs: { states?: Ref<string[]>,
-    deployments?: Ref<string[]>,
-    workQueues?: Ref<string[]>,
-    flows?: Ref<string[]>, }): UseFlowRunFilterFromParam {
+  filterInputs: {
+    states?: string[],
+    deployments?: string[],
+    workQueues?: string[],
+    flows?: string[],
+  }): UseFlowRunFilterFromParam {
   const sort = ref<'NAME_DESC' | 'NAME_ASC' | 'EXPECTED_START_TIME_DESC' | 'EXPECTED_START_TIME_ASC' | 'NEXT_SCHEDULED_START_TIME_ASC'>('EXPECTED_START_TIME_DESC')
 
   const startDate = ref<Date>(subDays(startOfToday(), 7))
