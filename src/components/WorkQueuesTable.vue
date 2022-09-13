@@ -16,20 +16,13 @@
         <span> {{ row.concurrencyLimit ?? 'Unlimited' }} </span>
       </template>
 
-      <template #late-runs-heading>
-        <span />
-      </template>
-
-      <template #late-runs="{ row }">
-        <WorkQueueLateIndicator :work-queue-name="row.name" />
-      </template>
-
       <template #action-heading>
         <span />
       </template>
 
       <template #action="{ row }">
         <div class="work-queues-table__actions">
+          <WorkQueueLateIndicator :work-queue-name="row.name" />
           <WorkQueueToggle :work-queue="row" @update="emits('update')" />
           <WorkQueueMenu size="xs" :work-queue="row" @delete="(id:string) => emits('delete', id)" />
         </div>
@@ -87,10 +80,6 @@
       label: 'Concurrency',
     },
     {
-      property: 'lateRuns',
-      label: 'Late Runs',
-    },
-    {
       label: 'Action',
       width: '42px',
     },
@@ -122,6 +111,8 @@
 }
 
 .work-queues-table__actions { @apply
+  justify-end
+  items-center
   flex
   gap-2
 }
