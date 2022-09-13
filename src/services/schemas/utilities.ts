@@ -97,7 +97,7 @@ export function getSchemaPropertyPlaceholder(property: SchemaProperty): string |
   return stringify(placeholder)
 }
 
-export function getSchemaPropertyDefaultComponentProps({ component, props }: NonNullable<SchemaPropertyComponentWithProps>): NonNullable<SchemaPropertyComponentWithProps> {
+export function getSchemaPropertyComponentWithDefaultProps({ component, props }: NonNullable<SchemaPropertyComponentWithProps>): NonNullable<SchemaPropertyComponentWithProps> {
   switch (component) {
     case JsonInput:
       return schemaPropertyComponentWithProps(JsonInput, {
