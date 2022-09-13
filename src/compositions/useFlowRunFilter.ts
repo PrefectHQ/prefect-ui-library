@@ -3,6 +3,7 @@ import { computed, Ref } from 'vue'
 import { isStateType } from '@/models'
 import { mapper } from '@/services'
 import { FlowRunSortValues, StateFilter, UnionFilters } from '@/types'
+import { capitalize } from '@/utilities'
 
 export type UseFlowRunFilterArgs = {
   flows?: Ref<string[]>,
@@ -50,9 +51,10 @@ export function useFlowRunFilter(filters: UseFlowRunFilterArgs): Ref<UnionFilter
           stateFilter.type.any_ ??= []
           stateFilter.type.any_.push(mapper.map('StateType', state, 'ServerStateType'))
         } else {
+          const capitalizedState = capitalize(state)
           stateFilter.name ??= {}
           stateFilter.name.any_ ??= []
-          stateFilter.name.any_.push(state)
+          stateFilter.name.any_.push(capitalizedState)
         }
       })
 

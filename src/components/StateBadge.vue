@@ -18,8 +18,8 @@
     dismissible?: boolean,
   }>()
 
-  const stateWithNoType = computed(() => props.state && !props.state.type)
   const type = computed(() => mapStateNameToStateType(props.state?.name).type)
+  const stateWithNoType = computed(() => props.state && !type.value)
   const name = computed(() => props.state?.name ?? 'Unknown')
 
   const classes = computed(() => [
