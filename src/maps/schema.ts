@@ -12,6 +12,7 @@ export const mapSchemaResponseToSchema: MapFunction<SchemaResponse, Schema> = fu
     ...mapSnakeToCamelCase({ ...rest }),
     properties: this.map('SchemaPropertiesResponse', properties, 'SchemaProperties'),
     definitions: this.map('SchemaDefinitionsResponse', definitions, 'SchemaDefinitions'),
+    // todo: this map isn't working (ts error). Not using this anywhere so commenting it out for now
     // blockSchemaReferences: this.map('BlockSchemaReferencesResponse', block_schema_references, 'BlockSchemaReferences'),
   }
 
