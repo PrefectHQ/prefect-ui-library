@@ -42,8 +42,7 @@
 </script>
 
 <style>
-.work-queue-late-indicator {
-   @apply
+.work-queue-late-indicator { @apply
   text-xs
   bg-state-scheduled-100
   text-state-scheduled-700
