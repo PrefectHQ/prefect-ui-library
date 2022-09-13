@@ -8,12 +8,20 @@
     <p-table :data="filtered" :columns="columns">
       <template #name="{ row }">
         <p-link :to="workQueueRoute(row.id)">
-          <span>{{ row.name }} <WorkQueueLateIndicator :work-queue-name="row.name" /></span>
+          <span>{{ row.name }}</span>
         </p-link>
       </template>
 
       <template #concurrency="{ row }">
         <span> {{ row.concurrencyLimit ?? 'Unlimited' }} </span>
+      </template>
+
+      <template #late-runs-heading>
+        <span />
+      </template>
+
+      <template #late-runs="{ row }">
+        <WorkQueueLateIndicator :work-queue-name="row.name" />
       </template>
 
       <template #action-heading>
@@ -77,6 +85,10 @@
     {
       property: 'concurrencyLimit',
       label: 'Concurrency',
+    },
+    {
+      property: 'lateRuns',
+      label: 'Late Runs',
     },
     {
       label: 'Action',
