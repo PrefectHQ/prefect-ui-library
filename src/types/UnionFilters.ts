@@ -52,6 +52,7 @@ export interface FlowRunFilter extends Filter {
   deployment_id?: any_ & is_null_,
   state?: StateFilter,
   flow_version?: any_,
+  work_queue_name?: any_,
   /**
    * Flow run actual starts
    */
