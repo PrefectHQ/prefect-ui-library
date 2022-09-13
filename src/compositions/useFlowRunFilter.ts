@@ -8,46 +8,56 @@ import { FlowRunSortValues, StateFilter, UnionFilters } from '@/types'
 import { capitalize } from '@/utilities'
 
 export type UseFlowRunFilterArgs = {
-  flows?: Ref<string[]>,
-  deployments?: Ref<string[]>,
-  tags?: Ref<string[]>,
-  states?: Ref<string[]>,
-  startDate?: Ref<Date>,
-  endDate?: Ref<Date>,
-  sort?: Ref<FlowRunSortValues>,
-  name?: Ref<string>,
-  workQueues?: Ref<string[]>,
+  flows?: Ref<string[]> | string[],
+  deployments?: Ref<string[]> | string[],
+  tags?: Ref<string[]> | string[],
+  states?: Ref<string[]> | string[],
+  startDate?: Ref<Date> | Date,
+  endDate?: Ref<Date> | Date,
+  sort?: Ref<FlowRunSortValues> | FlowRunSortValues,
+  name?: Ref<string> | string,
+  workQueues?: Ref<string[]> | string[],
 }
 
 export function useFlowRunFilter(filters: UseFlowRunFilterArgs): Ref<UnionFilters> {
+
+  const flows = ref(filters.flows)
+  const deployments = ref(filters.deployments)
+  const tags = ref(filters.tags)
+  const states = ref(filters.states)
+  const startDate = ref(filters.startDate)
+  const endDate = ref(filters.endDate)
+  const sort = ref(filters.sort)
+  const name = ref(filters.name)
+  const workQueues = ref(filters.workQueues)
+
   return computed<UnionFilters>(() => {
     const response: UnionFilters = {}
-
-    if (filters.flows?.value.length) {
+    if (flows.value?.length) {
       response.flows ??= {}
       response.flows.id ??= {}
 
-      response.flows.id.any_ = filters.flows.value
+      response.flows.id.any_ = flows.value
     }
 
-    if (filters.deployments?.value.length) {
+    if (deployments.value?.length) {
       response.deployments ??= {}
       response.deployments.id ??= {}
 
-      response.deployments.id.any_ = filters.deployments.value
+      response.deployments.id.any_ = deployments.value
     }
 
-    if (filters.tags?.value.length) {
+    if (tags.value?.length) {
       response.flow_runs ??= {}
       response.flow_runs.tags ??= {}
 
-      response.flow_runs.tags.all_ = filters.tags.value
+      response.flow_runs.tags.all_ = tags.value
     }
 
-    if (filters.states?.value.length) {
+    if (states.value?.length) {
       const stateFilter: StateFilter = { operator: 'or_' }
 
-      filters.states.value.forEach(state => {
+      states.value.forEach(state => {
         if (isStateType(state)) {
           stateFilter.type ??= {}
           stateFilter.type.any_ ??= []
@@ -64,36 +74,36 @@ export function useFlowRunFilter(filters: UseFlowRunFilterArgs): Ref<UnionFilter
       response.flow_runs.state = stateFilter
     }
 
-    if (filters.startDate?.value) {
+    if (startDate.value) {
       response.flow_runs ??= {}
       response.flow_runs.expected_start_time ??= {}
 
-      response.flow_runs.expected_start_time.after_ = mapper.map('Date', filters.startDate.value, 'string')
+      response.flow_runs.expected_start_time.after_ = mapper.map('Date', startDate.value, 'string')
     }
 
-    if (filters.endDate?.value) {
+    if (endDate.value) {
       response.flow_runs ??= {}
       response.flow_runs.expected_start_time ??= {}
 
-      response.flow_runs.expected_start_time.before_ = mapper.map('Date', filters.endDate.value, 'string')
+      response.flow_runs.expected_start_time.before_ = mapper.map('Date', endDate.value, 'string')
     }
 
-    if (filters.sort?.value) {
-      response.sort = filters.sort.value
+    if (sort.value) {
+      response.sort = sort.value
     }
 
-    if (filters.name?.value) {
+    if (name.value) {
       response.flow_runs ??= {}
       response.flow_runs.name ??= {}
 
-      response.flow_runs.name.any_ = [filters.name.value]
+      response.flow_runs.name.any_ = [name.value]
     }
 
-    if (filters.workQueues?.value.length) {
+    if (workQueues.value?.length) {
       response.flow_runs ??= {}
       response.flow_runs.work_queue_name??= {}
 
-      response.flow_runs.work_queue_name.any_ = filters.workQueues.value
+      response.flow_runs.work_queue_name.any_ = workQueues.value
     }
 
     return response
