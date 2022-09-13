@@ -2,9 +2,9 @@ import { PCombobox, PSelect } from '@prefecthq/prefect-design'
 import { SchemaPropertyComponentWithProps } from '../utilities'
 import { SchemaPropertyService } from './SchemaPropertyService'
 import { JsonInput } from '@/components'
-import { SchemaType, SchemaValue } from '@/types/schemas'
+import { SchemaValue } from '@/types/schemas'
 import { isStringArray, isNumberArray } from '@/utilities'
-import { stringifyUnknownJson } from '@/utilities/json'
+import { parseUnknownJson, stringifyUnknownJson } from '@/utilities/json'
 
 export class SchemaPropertyArray extends SchemaPropertyService {
 
@@ -25,7 +25,7 @@ export class SchemaPropertyArray extends SchemaPropertyService {
   }
 
   protected get default(): unknown {
-    if (this.usesJsonInput) {
+    if (this.componentIs(JsonInput)) {
       return ''
     }
 
@@ -33,6 +33,10 @@ export class SchemaPropertyArray extends SchemaPropertyService {
   }
 
   protected request(value: SchemaValue): unknown {
+    if (this.componentIs(JsonInput)) {
+      return parseUnknownJson(value)
+    }
+
     return value
   }
 
@@ -41,17 +45,10 @@ export class SchemaPropertyArray extends SchemaPropertyService {
       return this.invalid()
     }
 
-    if (this.usesJsonInput) {
+    if (this.componentIs(JsonInput)) {
       return stringifyUnknownJson(value)
     }
 
     return value
-  }
-
-  private get usesJsonInput(): boolean {
-    const itemsType = this.property.items?.type
-    const typesThatUseJson: (SchemaType | undefined)[] = ['array', 'object']
-
-    return typesThatUseJson.includes(itemsType)
   }
 }

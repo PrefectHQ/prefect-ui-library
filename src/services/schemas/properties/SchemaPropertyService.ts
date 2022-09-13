@@ -6,6 +6,7 @@ import { ValidationRule } from '@/services/validate'
 import { schemaHas, SchemaProperty, SchemaPropertyInputAttrs, SchemaPropertyMeta, SchemaValue } from '@/types/schemas'
 import { Require } from '@/types/utilities'
 import { isNumberArray, isStringArray } from '@/utilities/arrays'
+import { ComponentDefinition } from '@/utilities/components'
 
 export type SchemaPropertyServiceSource = {
   property: SchemaProperty,
@@ -119,6 +120,10 @@ export abstract class SchemaPropertyService {
       attrs: this.getAttrs(),
       validators: this.getValidators(required),
     }
+  }
+
+  protected componentIs(component: ComponentDefinition): boolean {
+    return this.component?.component === component
   }
 
   protected invalid(): void {

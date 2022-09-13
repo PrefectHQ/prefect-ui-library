@@ -57,3 +57,7 @@ export function mapEntries<K extends string, V, R>(object: Record<K, V>, callbac
     return result
   }, result)
 }
+
+export function isEmptyObject(value: Record<string, unknown>): boolean {
+  return Object.keys(value).length === 0
+}

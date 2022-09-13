@@ -2,6 +2,7 @@ import { greaterThan, greaterThanOrEqual, isRequired, lessThan, lessThanOrEqual,
 import { schemaPropertyServiceFactory } from './properties'
 import { SchemaProperty, SchemaPropertyInputAttrs, Schema, SchemaValues, SchemaValue } from '@/types/schemas'
 import { withPropsWithoutExcludedFactory } from '@/utilities/components'
+import { stringify } from '@/utilities/json'
 
 export type SchemaPropertyComponentWithProps = ReturnType<typeof schemaPropertyComponentWithProps> | null
 
@@ -56,7 +57,7 @@ export function getSchemaPropertyRequestValue(property: SchemaProperty, value: S
 export function getSchemaPropertyAttrs(property: SchemaProperty): SchemaPropertyInputAttrs {
   const attrs: SchemaPropertyInputAttrs = {}
 
-  const placeholder = property.default ?? property.example
+  const placeholder = getSchemaPropertyPlaceholder(property)
 
   if (placeholder) {
     attrs.placeholder = placeholder
@@ -79,6 +80,20 @@ export function getSchemaPropertyAttrs(property: SchemaProperty): SchemaProperty
   }
 
   return attrs
+}
+
+export function getSchemaPropertyPlaceholder(property: SchemaProperty): string | undefined {
+  const placeholder = property.default ?? property.example
+
+  if (!placeholder) {
+    return undefined
+  }
+
+  if (typeof placeholder === 'string') {
+    return placeholder
+  }
+
+  return stringify(placeholder)
 }
 
 /*
