@@ -1,5 +1,6 @@
 import { greaterThan, greaterThanOrEqual, isRequired, lessThan, lessThanOrEqual, ValidationRule, withMessage } from '../validate'
 import { schemaPropertyServiceFactory } from './properties'
+import { JsonInput } from '@/components'
 import { SchemaProperty, SchemaPropertyInputAttrs, Schema, SchemaValues, SchemaValue } from '@/types/schemas'
 import { withPropsWithoutExcludedFactory } from '@/utilities/components'
 import { stringify } from '@/utilities/json'
@@ -94,6 +95,18 @@ export function getSchemaPropertyPlaceholder(property: SchemaProperty): string |
   }
 
   return stringify(placeholder)
+}
+
+export function getSchemaPropertyDefaultComponentProps({ component, props }: NonNullable<SchemaPropertyComponentWithProps>): NonNullable<SchemaPropertyComponentWithProps> {
+  switch (component) {
+    case JsonInput:
+      return schemaPropertyComponentWithProps(JsonInput, {
+        showFormatButton: true,
+        ...props,
+      })
+  }
+
+  return { component, props }
 }
 
 /*

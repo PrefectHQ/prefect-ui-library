@@ -1,6 +1,7 @@
 import { SelectOption } from '@prefecthq/prefect-design'
 import { MAX_SCHEMA_PROPERTY_LEVEL } from '../constants'
-import { getSchemaPropertyAttrs, getSchemaPropertyDefaultValidators, schemaPropertyComponentWithProps, SchemaPropertyComponentWithProps } from '../utilities'
+import { getSchemaPropertyAttrs, getSchemaPropertyDefaultComponentProps, getSchemaPropertyDefaultValidators, schemaPropertyComponentWithProps, SchemaPropertyComponentWithProps } from '../utilities'
+import JsonInputVue from '@/components/JsonInput.vue'
 import { InvalidSchemaValueError } from '@/models/InvalidSchemaValueError'
 import { ValidationRule } from '@/services/validate'
 import { schemaHas, SchemaProperty, SchemaPropertyInputAttrs, SchemaPropertyMeta, SchemaValue } from '@/types/schemas'
@@ -91,7 +92,11 @@ export abstract class SchemaPropertyService {
   }
 
   public getComponent(): SchemaPropertyComponentWithProps {
-    return this.component
+    if (this.component === null) {
+      return this.component
+    }
+
+    return getSchemaPropertyDefaultComponentProps(this.component)
   }
 
   public getValidators(required: boolean): ValidationRule[] {
