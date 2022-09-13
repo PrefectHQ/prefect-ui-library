@@ -1,5 +1,7 @@
+import { addDays, endOfToday, startOfToday, subDays } from 'date-fns'
+
 /* eslint-disable camelcase */
-import { computed, Ref } from 'vue'
+import { computed, ref, Ref } from 'vue'
 import { isStateType } from '@/models'
 import { mapper } from '@/services'
 import { FlowRunSortValues, StateFilter, UnionFilters } from '@/types'
@@ -96,4 +98,16 @@ export function useFlowRunFilter(filters: UseFlowRunFilterArgs): Ref<UnionFilter
 
     return response
   })
+}
+
+export type UseRecentFlowRunFilterArgs = Omit<UseFlowRunFilterArgs, 'startDate' | 'endDate'>
+
+export function useRecentFlowRunFilter(filters: UseRecentFlowRunFilterArgs): Ref<UnionFilters> {
+  const refs = { ...filters }
+  const startDate = ref<Date>(subDays(startOfToday(), 7))
+  const endDate = ref<Date>(addDays(endOfToday(), 1))
+
+  refs.sort ??= ref<FlowRunSortValues>('EXPECTED_START_TIME_DESC')
+
+  return useFlowRunFilter({ startDate, endDate, ...refs })
 }

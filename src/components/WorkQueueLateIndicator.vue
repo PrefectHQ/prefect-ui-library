@@ -7,7 +7,7 @@
 <script lang="ts" setup>
   import { useSubscription } from '@prefecthq/vue-compositions'
   import { computed, ref } from 'vue'
-  import { useFlowRunFilterFromParameter } from '@/compositions'
+  import { useRecentFlowRunFilter } from '@/compositions'
   import { flowRunsApiKey } from '@/services'
   import { inject } from '@/utilities/inject'
 
@@ -17,7 +17,7 @@
 
   const flowRunsApi = inject(flowRunsApiKey)
 
-  const flowRunFilter = computed(() => useFlowRunFilterFromParameter({ states: ['Late'], workQueues: [props.workQueueName] }).filter.value)
+  const flowRunFilter = computed(() => useRecentFlowRunFilter({ states: ref(['Late']), workQueues: ref([props.workQueueName]) }).value)
 
   const flowRunsSubscription = useSubscription(flowRunsApi.getFlowRuns, [flowRunFilter], { interval: 30000 })
   const flowRuns = computed(()=> flowRunsSubscription.response ?? [])
