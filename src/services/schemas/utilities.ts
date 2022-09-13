@@ -16,7 +16,7 @@ export const schemaPropertyComponentWithProps = withPropsWithoutExcludedFactory(
  * Gets a UI friendly version of an empty value for a specific schema. Used for create forms that have no existing value.
  */
 export function getSchemaDefaultValues(schema: Schema): SchemaValues {
-  return getSchemaPropertyRequestValue(schema, {}) as SchemaValues
+  return getSchemaResponseValue(schema, {}) as SchemaValues
 }
 
 /*
