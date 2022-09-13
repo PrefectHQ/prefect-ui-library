@@ -1,10 +1,15 @@
 <template>
-  <span v-if="flowRuns.length" class="work-queue-late-indicator"> {{ flowRuns.length }} late runs</span>
+  <!-- <StateBadge v-if="flowRuns.length" :state="{ name: `${flowRuns.length} late runs`, type: 'scheduled' }" /> -->
+  <p-tag v-if="flowRuns.length" class="work-queue-late-indicator">
+    {{ tagText }}
+  </p-tag>
+  <!-- <span v-if="flowRuns.length" class="work-queue-late-indicator"> {{ flowRuns.length }} late runs</span> -->
 </template>
 
 <script lang="ts" setup>
   import { useSubscription } from '@prefecthq/vue-compositions'
   import { computed } from 'vue'
+  import { StateBadge } from '@/components'
   import { flowRunsApiKey } from '@/services'
   import { UnionFilters } from '@/types'
   import { inject } from '@/utilities/inject'
@@ -30,11 +35,20 @@
 
   const flowRunsSubscription = useSubscription(flowRunsApi.getFlowRuns, [flowRunFilter], { interval: 30000 })
   const flowRuns = computed(()=> flowRunsSubscription.response ?? [])
+
+  const tagText = computed(() => {
+    if (flowRuns.value.length === 1) {
+      return `${flowRuns.value.length} Late run`
+    }
+    return `${flowRuns.value.length} Late runs`
+  })
 </script>
 
 <style>
-  .work-queue-late-indicator {
-    @apply
-    text-amber-600
+.work-queue-late-indicator {
+   @apply
+  text-xs
+  bg-state-scheduled-100
+  text-state-scheduled-700
   }
 </style>
