@@ -1,7 +1,7 @@
 import { formatDateTimeNumeric, parseDateTimeNumeric } from '@prefecthq/prefect-design'
 import { useDebouncedRef, useRouteQueryParam } from '@prefecthq/vue-compositions'
 import { addDays, endOfToday, startOfToday, subDays } from 'date-fns'
-import { computed, Ref, ref } from 'vue'
+import { computed, Ref } from 'vue'
 import { useFlowRunFilter } from '@/compositions/useFlowRunFilter'
 import { StateType } from '@/models/StateType'
 import { FlowRunSortValues } from '@/types/SortOptionTypes'
@@ -57,7 +57,6 @@ export function useFlowRunFilterFromRoute(): UseFlowRunFilterFromRoute {
 
   const filter = useFlowRunFilter({ states, deployments, flows, tags, startDate, endDate, sort, name: nameDebounced })
 
-
   const hasFilters = computed(() => {
     return !!states.value.length ||
       !!deployments.value.length ||
@@ -78,39 +77,5 @@ export function useFlowRunFilterFromRoute(): UseFlowRunFilterFromRoute {
     tags,
     filter,
     hasFilters,
-  }
-}
-
-type UseFlowRunFilterFromParam = {
-
-  states?: Ref<string[]>,
-  deployments?: Ref<string[]>,
-  workQueues?: string[],
-  flows?: Ref<string[]>,
-  filter: Ref<UnionFilters>,
-}
-
-// eslint-disable-next-line max-params
-export function useFlowRunFilterFromParam(
-  filterInputs: { states?: Ref<string[]>,
-    deployments?: Ref<string[]>,
-    workQueues?: string[],
-    flows?: Ref<string[]>, }): UseFlowRunFilterFromParam {
-  const sort = ref<'NAME_DESC' | 'NAME_ASC' | 'EXPECTED_START_TIME_DESC' | 'EXPECTED_START_TIME_ASC' | 'NEXT_SCHEDULED_START_TIME_ASC'>('EXPECTED_START_TIME_DESC')
-
-  const startDate = ref<Date>(subDays(startOfToday(), 7))
-  const endDate = ref<Date>(addDays(endOfToday(), 1))
-  const deployments = filterInputs.deployments ? ref(filterInputs.deployments) : undefined
-  const flows = filterInputs.flows ? ref(filterInputs.flows) : undefined
-  const { states, workQueues } = filterInputs
-  const filter = useFlowRunFilter({ states, deployments, workQueues, flows, startDate, endDate, sort })
-
-  return {
-
-    states,
-    deployments,
-    flows,
-    workQueues,
-    filter,
   }
 }

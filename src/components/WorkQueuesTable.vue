@@ -8,7 +8,7 @@
     <p-table :data="filtered" :columns="columns">
       <template #name="{ row }">
         <p-link :to="workQueueRoute(row.id)">
-          <span>{{ row.name }} <WorkQueueLateIndicator :work-queue-id="row.id" /></span>
+          <span>{{ row.name }} <WorkQueueLateIndicator :work-queue-name="row.name" /></span>
         </p-link>
       </template>
 
@@ -23,7 +23,7 @@
       <template #action="{ row }">
         <div class="work-queues-table__actions">
           <WorkQueueToggle :work-queue="row" @update="emits('update')" />
-          <WorkQueueMenu size="xs" :work-queue="row" @delete="id => emits('delete', id)" />
+          <WorkQueueMenu size="xs" :work-queue="row" @delete="(id:string) => emits('delete', id)" />
         </div>
       </template>
 
