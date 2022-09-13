@@ -4,11 +4,11 @@
   </template>
   <!-- todo: support displaying nested objects -->
   <template v-else>
-    <PKeyValue :label="property.title" :value="value" class="schema-property">
-      <template v-if="isJsonProperty" #value>
+    <p-key-value :label="property.title" :value="value" class="schema-property">
+      <template v-if="isDefined && isJsonProperty" #value>
         <JsonView :value="jsonValue" />
       </template>
-    </PKeyValue>
+    </p-key-value>
   </template>
 </template>
 
@@ -30,4 +30,17 @@
 
   const jsonValue = computed(() => stringifyUnknownJson(props.value))
   const isBlockDocumentProperty = computed(() => props.property.type === 'block')
+
+  // todo: copied from PKeyValue. Hoping to update PKeyValue to eliminate the need for this
+  const isDefined = computed((): boolean => {
+    if (typeof props.value === 'object' && props.value !== null) {
+      if (Array.isArray(props.value)) {
+        return props.value.length > 0
+      }
+
+      return Object.keys(props.value).length > 0
+    }
+
+    return typeof props.value !== 'undefined' && props.value !== null && props.value !== ''
+  })
 </script>
