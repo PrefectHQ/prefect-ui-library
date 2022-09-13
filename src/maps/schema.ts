@@ -1,7 +1,7 @@
 import { SchemaDefinitionsResponse, SchemaPropertiesResponse, SchemaPropertyResponse, SchemaResponse } from '@/models/api/SchemaResponse'
 import { MapFunction } from '@/services/Mapper'
 import { resolveSchema } from '@/services/schemas/resolvers/schemas'
-import { Schema, SchemaDefinitions, SchemaProperties, SchemaProperty } from '@/types/schemas'
+import { Schema, SchemaDefinitions, schemaHas, SchemaProperties, SchemaProperty } from '@/types/schemas'
 import { mapEntries, mapSnakeToCamelCase } from '@/utilities'
 
 export const mapSchemaResponseToSchema: MapFunction<SchemaResponse, Schema> = function(source: SchemaResponse): Schema {
@@ -33,9 +33,11 @@ export const mapSchemaPropertiesResponseToSchemaProperties: MapFunction<SchemaPr
 export const mapSchemaPropertyResponseToSchemaProperty: MapFunction<SchemaPropertyResponse, SchemaProperty> = function(source: SchemaPropertyResponse): SchemaProperty {
   const { properties, $ref, ...rest } = source
 
-  const mapped: SchemaProperty = {
-    ...mapSnakeToCamelCase({ ...rest }),
-    properties: this.map('SchemaPropertiesResponse', properties, 'SchemaProperties'),
+  const mapped: SchemaProperty = mapSnakeToCamelCase({ ...rest })
+
+  // its important that if mapped.properties doesn't exist at all that we don't add it as undefined
+  if (schemaHas(source, 'properties')) {
+    mapped.properties = this.map('SchemaPropertiesResponse', properties, 'SchemaProperties')
   }
 
   if ($ref) {

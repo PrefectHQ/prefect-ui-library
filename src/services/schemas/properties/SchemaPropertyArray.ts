@@ -41,12 +41,12 @@ export class SchemaPropertyArray extends SchemaPropertyService {
   }
 
   protected response(value: SchemaValue): unknown {
-    if (!Array.isArray(value)) {
-      return this.invalid()
-    }
-
     if (this.componentIs(JsonInput)) {
       return stringifyUnknownJson(value)
+    }
+
+    if (!Array.isArray(value)) {
+      return this.invalid()
     }
 
     return value

@@ -4,10 +4,7 @@ import { SchemaValue } from '@/types/schemas'
 export class SchemaPropertyNone extends SchemaPropertyService {
 
   public readonly component = null
-
-  public get default(): unknown {
-    throw new Error('Method not implemented.')
-  }
+  public readonly default = undefined
 
   protected request(value: SchemaValue): unknown {
     return value
