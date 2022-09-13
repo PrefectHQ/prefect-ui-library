@@ -43,16 +43,9 @@
   const blockCatalogViewRoute = inject(blockCatalogViewRouteKey)
   const blockSchemasApi = inject(blockSchemasApiKey)
 
-  const blockSchemaSubscriptionArgs = computed(() => ({
-    blockSchemas: {
-      blockTypeId: {
-        any_: [props.blockType.id],
-      },
-    },
-  }))
-
-  const blockSchemaSubscription = useSubscription(blockSchemasApi.getBlockSchemas, [blockSchemaSubscriptionArgs])
-  const blockSchema = computed(() => blockSchemaSubscription.response?.[0])
+  const blockTypeId = computed(() => props.blockType.id)
+  const blockSchemaSubscription = useSubscription(blockSchemasApi.getBlockSchemaForBlockType, [blockTypeId])
+  const blockSchema = computed(() => blockSchemaSubscription.response)
 </script>
 
 <style>
