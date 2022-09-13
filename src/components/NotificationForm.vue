@@ -80,7 +80,7 @@
   })
 
   const { value: stateNames } = useField<string[]>('stateNames')
-  const { value: tags } = useField<string[]>('stateNames')
+  const { value: tags } = useField<string[]>('tags')
 
   const blockDocumentsApi = inject(blockDocumentsApiKey)
   const blockTypesApi = inject(blockTypesApiKey)
