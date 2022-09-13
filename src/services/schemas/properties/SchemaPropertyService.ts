@@ -112,11 +112,13 @@ export abstract class SchemaPropertyService {
   }
 
   public getMeta(required: boolean): SchemaPropertyMeta | null {
-    if (this.component == null) {
+    const serviceComponent = this.getComponent()
+
+    if (serviceComponent == null) {
       return null
     }
 
-    const { component, props } = this.component
+    const { component, props } = serviceComponent
 
     return {
       component,
