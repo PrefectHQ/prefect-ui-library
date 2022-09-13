@@ -1,8 +1,8 @@
 <template>
-  <DemoSection heading="Parameters Form">
+  <DemoSection heading="Schema Form">
     <p-content>
       <p-label label="Schema">
-        <JsonInput v-model="rawSchema" class="demo-parameters-form-section__json-input" />
+        <JsonInput v-model="rawSchema" class="demo-schema-form-section__json-input" />
       </p-label>
       <p-label label="Value">
         <JsonView :value="rawValue" />
@@ -92,7 +92,7 @@
 </script>
 
 <style>
-.demo-parameters-form-section__json-input {
+.demo-schema-form-section__json-input {
   resize: vertical;
 
   @apply
