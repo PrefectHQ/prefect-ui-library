@@ -29,7 +29,7 @@ export function getSchemaResponseValue(schema: Schema, values: SchemaValues): Sc
  * Gets a api friendly version a schema's ui friendly values. Used for mapping.
  */
 export function getSchemaRequestValue(schema: Schema, values: SchemaValues): SchemaValues {
-  return getSchemaPropertyRequestValue(schema, values) as SchemaValues
+  return (getSchemaPropertyRequestValue(schema, values) ?? {}) as SchemaValues
 }
 
 /*

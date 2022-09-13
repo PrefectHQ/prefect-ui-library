@@ -3,12 +3,16 @@ import { SchemaPropertyService } from './SchemaPropertyService'
 import { JsonInput } from '@/components'
 import { schemaPropertyServiceFactory } from '@/services/schemas/properties'
 import { SchemaValue, isSchemaValues, SchemaValues } from '@/types/schemas'
-import { mapEntries } from '@/utilities'
+import { isEmptyObject, mapEntries } from '@/utilities'
 import { parseUnknownJson, stringifyUnknownJson } from '@/utilities/json'
 
 export class SchemaPropertyObject extends SchemaPropertyService {
 
   protected override get component(): SchemaPropertyComponentWithProps {
+    if (this.isMaxLevel) {
+      return this.withProps(JsonInput)
+    }
+
     if (this.has('properties')) {
       return null
     }
@@ -43,12 +47,18 @@ export class SchemaPropertyObject extends SchemaPropertyService {
       return undefined
     }
 
-    return mapEntries(this.property.properties, (key, property) => {
+    const mapped = mapEntries(this.property.properties, (key, property) => {
       const propertyValue = value[key]
       const service = schemaPropertyServiceFactory(property!, this.level + 1)
 
       return service.mapRequestValue(propertyValue)
     })
+
+    if (isEmptyObject(mapped)) {
+      return undefined
+    }
+
+    return mapped
   }
 
   protected response(value: SchemaValue): unknown {
