@@ -6,7 +6,7 @@
 
 <script lang="ts" setup>
   import { useSubscription } from '@prefecthq/vue-compositions'
-  import { computed, ref } from 'vue'
+  import { computed } from 'vue'
   import { useRecentFlowRunFilter } from '@/compositions'
   import { flowRunsApiKey } from '@/services'
   import { inject } from '@/utilities/inject'
