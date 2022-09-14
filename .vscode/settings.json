@@ -21,6 +21,7 @@
         "Combobox",
         "idempotency",
         "kubernetes",
+        "openapi",
         "pinia",
         "prefecthq",
         "pydantic",

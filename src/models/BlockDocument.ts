@@ -1,21 +1,22 @@
 import { BlockSchema } from './BlockSchema'
 import { BlockType } from './BlockType'
+import { SchemaValues } from '@/types/schemas'
 
-
-export type BlockDocumentReferenceData = {
-  $ref: {
-    blockDocumentId: string,
-  },
+export type BlockDocumentReference = {
+  blockType: BlockType,
+  id: string,
+  isAnonymous: boolean,
+  name: string,
 }
 
-export type BlockDocumentData = Record<string, unknown | BlockDocumentReferenceData>
+export type BlockDocumentReferences = Record<string, BlockDocumentReference | undefined>
 
 export interface IBlockDocument {
   id: string,
   created: Date,
   updated: Date,
   name: string,
-  data: BlockDocumentData,
+  data: SchemaValues,
   blockSchemaId: string,
   blockSchema: BlockSchema,
   blockTypeId: string,
@@ -28,7 +29,7 @@ export class BlockDocument implements IBlockDocument {
   public readonly created: Date
   public readonly updated: Date
   public name: string
-  public data: BlockDocumentData
+  public data: SchemaValues
   public blockSchemaId: string
   public blockSchema: BlockSchema
   public blockTypeId: string

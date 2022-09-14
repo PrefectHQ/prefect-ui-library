@@ -12,7 +12,7 @@
     <DeploymentFormSection />
     <FlowRunFormSection />
     <NotificationsFormsSection />
-    <ParametersFormSection />
+    <SchemaFormSection />
     <ScheduleFormsSection />
     <WorkQueueFormSection />
   </p-layout-default>
@@ -24,8 +24,8 @@
   import DeploymentFormSection from '../sections/DeploymentFormSection.vue'
   import FlowRunFormSection from '../sections/FlowRunFormSection.vue'
   import NotificationsFormsSection from '../sections/NotificationsFormsSection.vue'
-  import ParametersFormSection from '../sections/ParametersFormSection.vue'
   import ScheduleFormsSection from '../sections/ScheduleFormsSection.vue'
+  import SchemaFormSection from '../sections/SchemaFormSection.vue'
   import ValidationSection from '../sections/ValidationSection.vue'
   import WorkQueueFormSection from '../sections/WorkQueueFormSection.vue'
 </script>

@@ -1,4 +1,5 @@
-import { ScheduleResponse, Parameters } from '@/models'
+import { ScheduleResponse } from '@/models'
+import { SchemaValues } from '@/types/schemas'
 
 export type DeploymentUpdateRequest = Partial<{
   name: string | null,
@@ -6,7 +7,7 @@ export type DeploymentUpdateRequest = Partial<{
   flow_id: string | null,
   schedule: ScheduleResponse | null,
   is_schedule_active: boolean,
-  parameters: Parameters | null,
+  parameters: SchemaValues | null,
   tags: string[] | null,
   storage_document_id: string | null,
   infrastructure_document_id: string | null,

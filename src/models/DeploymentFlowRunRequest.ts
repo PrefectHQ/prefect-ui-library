@@ -1,9 +1,9 @@
-import { Parameters } from '@/models/Parameters'
 import { StateRequest } from '@/models/StateRequest'
+import { SchemaValues } from '@/types/schemas'
 
 export type DeploymentFlowRunRequest = Partial<{
   name: string | null,
-  parameters: Parameters,
+  parameters: SchemaValues,
   idempotency_key: string | null,
   context: unknown,
   empirical_policy: unknown,

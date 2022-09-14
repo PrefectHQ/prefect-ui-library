@@ -9,7 +9,7 @@ export const randomBlockSchema: MockFunction<BlockSchema, [Partial<BlockSchema>?
     created: this.create('date'),
     updated: this.create('date'),
     checksum: this.create('string'),
-    fields: this.create('blockSchemaFields'),
+    fields: this.create('schema'),
     blockTypeId: blockType.id,
     blockType,
     capabilities: this.create('blockSchemaCapabilities'),

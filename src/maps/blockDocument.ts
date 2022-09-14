@@ -5,16 +5,19 @@ import { MapFunction } from '@/services/Mapper'
 import { mapSnakeToCamelCase } from '@/utilities/mapping'
 
 export const mapBlockDocumentResponseToBlockDocument: MapFunction<BlockDocumentResponse, BlockDocument> = function(source: BlockDocumentResponse): BlockDocument {
+  const blockSchema = this.map('BlockSchemaResponse', source.block_schema, 'BlockSchema')
+  const data = this.map('SchemaValuesResponse', { values: source.data, schema: blockSchema.fields }, 'SchemaValues')
+
   return new BlockDocument({
     ...mapSnakeToCamelCase(source),
     created: this.map('string', source.created, 'Date'),
     updated: this.map('string', source.updated, 'Date'),
-    blockSchema: this.map('BlockSchemaResponse', source.block_schema, 'BlockSchema'),
+    blockDocumentReferences: this.map('BlockDocumentReferencesResponse', source.block_document_references, 'BlockDocumentReferences'),
     blockType: this.map('BlockTypeResponse', source.block_type, 'BlockType'),
-    data: this.map('BlockDocumentResponseDataWithReferences', { data: source.data, references: source.block_document_references }, 'BlockDocumentData'),
+    blockSchema,
+    data,
   })
 }
-
 
 export const mapBlockDocumentToSelectOption: MapFunction<BlockDocument, SelectOption> = function({ name, id }: BlockDocument): SelectOption {
   return {

@@ -44,3 +44,20 @@ export function clone<T>(source: T): T {
 export function hasProperty<T extends Record<string | symbol, unknown>>(needle: T, property: unknown): property is keyof T {
   return (typeof property === 'string' || typeof property === 'symbol') && property in needle
 }
+
+export type MapEntriesCallback<K, V, R> = (key: K, value: V) => R
+
+export function mapEntries<K extends string, V, R>(object: Record<K, V>, callback: MapEntriesCallback<K, V, R>): Record<K, R> {
+  const entries = Object.entries(object) as [K, V][]
+  const result = {} as Record<K, R>
+
+  return entries.reduce((result, [key, value]) => {
+    result[key] = callback(key, value)
+
+    return result
+  }, result)
+}
+
+export function isEmptyObject(value: Record<string, unknown>): boolean {
+  return Object.keys(value).length === 0
+}

@@ -8,7 +8,7 @@ export const mapBlockSchemaResponseToBlockSchema: MapFunction<BlockSchemaRespons
     ...mapSnakeToCamelCase(source),
     created: this.map('string', source.created, 'Date'),
     updated: this.map('string', source.updated, 'Date'),
-    fields: this.map('BlockSchemaFieldsResponse', source.fields, 'BlockSchemaFields'),
+    fields: this.map('SchemaResponse', source.fields, 'Schema'),
     blockType: this.map('BlockTypeResponse', source.block_type, 'BlockType'),
   })
 }

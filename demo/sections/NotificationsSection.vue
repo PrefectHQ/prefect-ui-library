@@ -23,13 +23,13 @@
   import { blockDocumentsApiKey, blockSchemasApiKey, blockTypesApiKey, mocker } from '@/services'
 
   const emailBlockType = mocker.create('blockType', [{ name: 'Email Addresses' }])
-  const emailBlockSchemaFields = mocker.create('blockSchemaFields', [{ blockTypeSlug: emailBlockType.slug }])
+  const emailBlockSchemaFields = mocker.create('schema', [{ blockTypeSlug: emailBlockType.slug }])
   const emailBlockSchema = mocker.create('blockSchema', [{ blockType: emailBlockType, blockTypeId: emailBlockType.id, fields: emailBlockSchemaFields }])
   const emailBlockDocumentData = mocker.create('blockDocumentData')
 
 
   const slackBlockType = mocker.create('blockType', [{ name: 'Slack Webhook' }])
-  const slackBlockSchemaFields = mocker.create('blockSchemaFields', [{ blockTypeSlug: slackBlockType.slug }])
+  const slackBlockSchemaFields = mocker.create('schema', [{ blockTypeSlug: slackBlockType.slug }])
   const slackBlockSchema = mocker.create('blockSchema', [{ blockType: slackBlockType, blockTypeId: slackBlockType.id, fields: slackBlockSchemaFields } ])
   const slackBlockDocumentData = mocker.create('blockDocumentData', ['url'])
 

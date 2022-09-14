@@ -1,3 +1,7 @@
+import { BlockSchema } from './BlockSchema'
+import { SchemaValues } from '@/types/schemas'
+
 export type BlockDocumentUpdate = {
-  data?: Record<string, unknown>,
+  blockSchema: BlockSchema,
+  data: SchemaValues,
 }
