@@ -16,9 +16,9 @@
   }>()
 
   const flowRunsApi = inject(flowRunsApiKey)
-  const workQueueName = computed(() => props.workQueueName)
+  const workQueueName = computed(() => props.workQueueName ? [props.workQueueName] : [])
 
-  const flowRunFilter = useRecentFlowRunFilter({ states: ['Late'], workQueues: [workQueueName.value] })
+  const flowRunFilter = useRecentFlowRunFilter({ states: ['Late'], workQueues: workQueueName })
 
   const flowRunsSubscription = useSubscription(flowRunsApi.getFlowRuns, [flowRunFilter])
   const flowRuns = computed(()=> flowRunsSubscription.response ?? [])
