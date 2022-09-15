@@ -22,8 +22,9 @@
 
       <template #action="{ row }">
         <div class="work-queues-table__actions">
+          <WorkQueueLateIndicator :work-queue-name="row.name" />
           <WorkQueueToggle :work-queue="row" @update="emits('update')" />
-          <WorkQueueMenu size="xs" :work-queue="row" @delete="id => emits('delete', id)" />
+          <WorkQueueMenu size="xs" :work-queue="row" @delete="(id:string) => emits('delete', id)" />
         </div>
       </template>
 
@@ -48,6 +49,7 @@
   import { computed, ref } from 'vue'
   import ResultsCount from './ResultsCount.vue'
   import SearchInput from './SearchInput.vue'
+  import WorkQueueLateIndicator from '@/components/WorkQueueLateIndicator.vue'
   import WorkQueueMenu from '@/components/WorkQueueMenu.vue'
   import WorkQueueToggle from '@/components/WorkQueueToggle.vue'
   import { WorkQueue } from '@/models'
@@ -109,6 +111,8 @@
 }
 
 .work-queues-table__actions { @apply
+  justify-end
+  items-center
   flex
   gap-2
 }
