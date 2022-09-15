@@ -12,22 +12,23 @@ class DataStoreDataNotFound extends Error {
   }
 }
 
-type DataStoreData = Record<string, unknown> & { id: string }
+// eslint-disable-next-line @typescript-eslint/ban-types
+type NoInfer<T> = T & {}
 type DataStoreFindCallback<T> = (value: T) => boolean
 
-class DataStore<T extends DataStoreData> {
+class DataStore<T extends { id: K }, K extends string | number | symbol = T['id']> {
   private _data: string = '{}'
 
-  private get data(): Record<string, T> {
+  private get data(): Record<K, T> {
     return JSON.parse(this._data)
   }
 
-  private set data(value: Record<string, T>) {
+  private set data(value: Record<K, T>) {
     this._data = JSON.stringify(value)
   }
 
   public constructor(seeds: T[] = []) {
-    const data = {} as Record<string, T>
+    const data = {} as Record<K, T>
 
     this.data = seeds.reduce((data, seed) => {
       data[seed.id] = seed
@@ -40,7 +41,7 @@ class DataStore<T extends DataStoreData> {
     return Object.values(this.data)
   }
 
-  public get(id: string): T {
+  public get(id: T['id']): T {
     const record = this.data[id]
 
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
@@ -54,13 +55,13 @@ class DataStore<T extends DataStoreData> {
   public find(condition: DataStoreFindCallback<T>): T | undefined {
     const data = this.all()
 
-    return data.find(record => condition(record))
+    return data.find(condition)
   }
 
   public findAll(condition: DataStoreFindCallback<T>): T[] {
     const data = this.all()
 
-    return data.filter(record => condition(record))
+    return data.filter(condition)
   }
 
   public count(condition?: DataStoreFindCallback<T>): number {
@@ -71,9 +72,10 @@ class DataStore<T extends DataStoreData> {
     return this.all().length
   }
 
-  public delete(id: string): void {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { [id]: removed, ...data } = this.data
+  public delete(id: T['id']): void {
+    const { data } = this
+
+    delete data[id]
 
     this.data = data
   }
@@ -87,13 +89,11 @@ class DataStore<T extends DataStoreData> {
     return this.get(record.id)
   }
 
-  public patch(id: string, update: Partial<T>): T {
+  public patch<ID extends T['id']>(id: ID, update: Partial<T & { id: NoInfer<ID> }>): void {
     const original = this.get(id)
     const updated = { ...original, ...update }
 
     this.create(updated)
-
-    return this.get(id)
   }
 }
 
