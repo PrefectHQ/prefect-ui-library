@@ -84,8 +84,7 @@
     return Object.keys(props.deployment.parameterOpenApiSchema.properties ?? {}).length > 0
   })
 
-  // eslint-disable-next-line vue/no-setup-props-destructure
-  const { name }= props.deployment
+  const { name }= { ...props.deployment }
 
   const { handleSubmit, isSubmitting } = useForm<DeploymentUpdate>({
     initialValues: {
