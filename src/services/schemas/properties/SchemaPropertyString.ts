@@ -1,5 +1,5 @@
 import { PDateInput, PNumberInput, PSelect, PTextInput } from '@prefecthq/prefect-design'
-import { isValid } from 'date-fns'
+import { format, isValid, parse } from 'date-fns'
 import { SchemaPropertyComponentWithProps } from '../utilities'
 import { SchemaPropertyService } from './SchemaPropertyService'
 import { JsonInput } from '@/components'
@@ -27,8 +27,9 @@ export class SchemaPropertyString extends SchemaPropertyService {
   protected override request(value: SchemaValue): unknown {
     switch (this.property.format) {
       case 'date':
+        return this.requestDateValue(value)
       case 'date-time':
-        return this.formatDateValue(value)
+        return this.requestDateTimeValue(value)
       default:
         return value
     }
@@ -41,8 +42,9 @@ export class SchemaPropertyString extends SchemaPropertyService {
 
     switch (this.property.format) {
       case 'date':
+        return this.responseDateValue(value)
       case 'date-time':
-        return this.parseDateValue(value)
+        return this.responseDateTimeValue(value)
       default:
         return value
     }
@@ -57,6 +59,7 @@ export class SchemaPropertyString extends SchemaPropertyService {
     switch (this.property.format) {
       case 'date':
       case 'date-time':
+      case 'time-delta':
         return null
       default:
         return ''
@@ -84,7 +87,25 @@ export class SchemaPropertyString extends SchemaPropertyService {
     }
   }
 
-  private formatDateValue(value: SchemaValue): SchemaValue {
+  private requestDateValue(value: SchemaValue): SchemaValue {
+    if (isDate(value)) {
+      return format(value, 'yyyy-MM-dd')
+    }
+
+    return value
+  }
+
+  private responseDateValue(value: SchemaValue): SchemaValue {
+    const date = parse(value as string, 'yyyy-MM-dd', new Date())
+
+    if (!isValid(date)) {
+      return this.invalid()
+    }
+
+    return date
+  }
+
+  private requestDateTimeValue(value: SchemaValue): SchemaValue {
     if (isDate(value)) {
       return mapper.map('Date', value, 'string')
     }
@@ -92,7 +113,7 @@ export class SchemaPropertyString extends SchemaPropertyService {
     return value
   }
 
-  private parseDateValue(value: SchemaValue): Date {
+  private responseDateTimeValue(value: SchemaValue): Date {
     const date = mapper.map('string', value as string, 'Date')
 
     if (!isValid(date)) {
