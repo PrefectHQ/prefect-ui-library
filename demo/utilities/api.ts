@@ -12,6 +12,7 @@ class DataStoreDataNotFound extends Error {
   }
 }
 
+// https://stackoverflow.com/questions/73732549/narrow-number-argument-of-function-to-be-literal-type?noredirect=1#comment130199140_73732549
 // eslint-disable-next-line @typescript-eslint/ban-types
 type NoInfer<T> = T & {}
 type DataStoreFindCallback<T> = (value: T) => boolean
@@ -37,10 +38,6 @@ class DataStore<T extends { id: K }, K extends string | number | symbol = T['id'
     }, data)
   }
 
-  public all(): T[] {
-    return Object.values(this.data)
-  }
-
   public get(id: T['id']): T {
     const record = this.data[id]
 
@@ -52,14 +49,19 @@ class DataStore<T extends { id: K }, K extends string | number | symbol = T['id'
     return record
   }
 
+  public getAll(): T[] {
+    return Object.values(this.data)
+  }
+
+
   public find(condition: DataStoreFindCallback<T>): T | undefined {
-    const data = this.all()
+    const data = this.getAll()
 
     return data.find(condition)
   }
 
   public findAll(condition: DataStoreFindCallback<T>): T[] {
-    const data = this.all()
+    const data = this.getAll()
 
     return data.filter(condition)
   }
@@ -69,7 +71,7 @@ class DataStore<T extends { id: K }, K extends string | number | symbol = T['id'
       return this.findAll(condition).length
     }
 
-    return this.all().length
+    return this.getAll().length
   }
 
   public delete(id: T['id']): void {
@@ -113,7 +115,7 @@ class MockWorkspaceFlowsApi extends WorkspaceFlowsApi {
   }
 
   public override async getFlows(filter: UnionFilters = {}): Promise<Flow[]> {
-    const data = this.data.all()
+    const data = this.data.getAll()
 
     if (Object.keys(filter).length) {
       console.warn('MockWorkspaceFlowsApi has not implemented the filter argument of the getFlows method')
