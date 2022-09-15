@@ -29,4 +29,6 @@ export function createApi(workspaceConfig: WorkspaceApiConfig) {
   }
 }
 
-export const workspaceApiKey: InjectionKey<ReturnType<typeof createApi>> = Symbol('WorkspaceApi')
+export type CreateApi = ReturnType<typeof createApi>
+
+export const workspaceApiKey: InjectionKey<CreateApi> = Symbol('WorkspaceApi')
