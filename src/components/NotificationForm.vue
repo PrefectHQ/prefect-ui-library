@@ -25,7 +25,7 @@
     </p>
 
     <div class="notification-form__review-block">
-      <template v-if="notification && blockType && data">
+      <template v-if="blockType && data">
         <NotificationDetails :notification="{ stateNames, tags }" :block-type="blockType" :data="data" />
       </template>
     </div>

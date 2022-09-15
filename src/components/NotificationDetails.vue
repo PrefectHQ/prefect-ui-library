@@ -39,7 +39,7 @@
   import { mapStateNameToStateType } from '@/utilities/state'
 
   const props = defineProps<{
-    notification: Partial<Notification>,
+    notification: Pick<Notification, 'tags' | 'stateNames'>,
     blockType: BlockType,
     data: SchemaValues,
   }>()
