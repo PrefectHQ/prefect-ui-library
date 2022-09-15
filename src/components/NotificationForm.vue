@@ -26,7 +26,7 @@
 
     <div class="notification-form__review-block">
       <template v-if="notification && blockType && data">
-        <NotificationDetails :notification="notification" :block-type="blockType" :data="data" />
+        <NotificationDetails :notification="{ stateNames, tags }" :block-type="blockType" :data="data" />
       </template>
     </div>
 
@@ -73,8 +73,8 @@
     blockData: SchemaValues,
   }>({
     initialValues: {
-      stateNames: [],
-      tags: [],
+      stateNames: props.notification?.stateNames ?? [],
+      tags: props.notification?.tags ?? [],
       blockData: {},
     },
   })
@@ -189,7 +189,7 @@
 
   const blockDocumentId = ref<string>()
 
-  const submit = handleSubmit(async () => {
+  const submit = handleSubmit(async (values) => {
     if (blockSchema.value === undefined || selectedBlockTypeId.value === undefined || data.value === undefined) {
       showToast(localization.error.submitNotification)
       return
@@ -214,7 +214,7 @@
         })
         blockDocumentId.value = newBlockDocument.id
       }
-      const notification = { ...props.notification, blockDocumentId: blockDocumentId.value }
+      const notification = { ...values, blockDocumentId: blockDocumentId.value }
 
       emit('update:notification', notification)
       emit('submit', notification)
