@@ -7,7 +7,7 @@
         </h3>
 
         <p-label label="Name">
-          <p-text-input v-model="name" disabled />
+          <p-text-input :model-value="name" disabled />
         </p-label>
 
         <p-label label="Description (Optional)" :state="descriptionState">
@@ -84,7 +84,7 @@
     return Object.keys(props.deployment.parameterOpenApiSchema.properties ?? {}).length > 0
   })
 
-  const { name }= { ...props.deployment }
+  const name = computed(() => props.deployment.name)
 
   const { handleSubmit, isSubmitting } = useForm<DeploymentUpdate>({
     initialValues: {
