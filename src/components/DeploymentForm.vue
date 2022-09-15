@@ -7,7 +7,7 @@
         </h3>
 
         <p-label label="Name">
-          <p-text-input v-model="name" disabled />
+          <p-text-input :model-value="name" disabled />
         </p-label>
 
         <p-label label="Description (Optional)" :state="descriptionState">
@@ -84,15 +84,21 @@
     return Object.keys(props.deployment.parameterOpenApiSchema.properties ?? {}).length > 0
   })
 
+  const name = computed(() => props.deployment.name)
+
   const { handleSubmit, isSubmitting } = useForm<DeploymentUpdate>({
     initialValues: {
-      ...props.deployment,
+      description: props.deployment.description,
+      parameters: props.deployment.parameters,
+      schedule: props.deployment.schedule,
+      isScheduleActive: props.deployment.isScheduleActive,
+      workQueueName: props.deployment.workQueueName,
+      tags: props.deployment.tags,
       schema: props.deployment.parameterOpenApiSchema,
     },
   })
 
   const { value: description, meta: descriptionState } = useField<string>('description')
-  const { value: name } = useField<string>('name')
   const { value: schedule } = useField<Schedule | null>('schedule')
   const { value: isScheduleActive } = useField<boolean>('isScheduleActive')
   const { value: workQueueName } = useField<string | null>('workQueueName')
