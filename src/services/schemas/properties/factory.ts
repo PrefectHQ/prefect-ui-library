@@ -8,7 +8,7 @@ import { SchemaPropertyNumber } from './SchemaPropertyNumber'
 import { SchemaPropertyObject } from './SchemaPropertyObject'
 import { SchemaPropertyService, SchemaPropertyServiceConstructor } from './SchemaPropertyService'
 import { SchemaPropertyString } from './SchemaPropertyString'
-import { SchemaProperty, schemaHas } from '@/types/schemas'
+import { SchemaProperty } from '@/types/schemas'
 
 export function schemaPropertyServiceFactory(property: SchemaProperty, level: number): SchemaPropertyService {
   const constructor = getSchemaPropertyServiceConstructor(property)
@@ -21,12 +21,6 @@ export function schemaPropertyServiceFactory(property: SchemaProperty, level: nu
 }
 
 function getSchemaPropertyServiceConstructor(property: SchemaProperty): SchemaPropertyServiceConstructor {
-  if (!schemaHas(property, 'type')) {
-    if (schemaHas(property, 'enum')) {
-      return SchemaPropertyArray
-    }
-  }
-
   switch (property.type) {
     case 'string':
       return SchemaPropertyString
