@@ -2,6 +2,7 @@ import { SchemaPropertyAny } from './SchemaPropertyAny'
 import { SchemaPropertyArray } from './SchemaPropertyArray'
 import { SchemaPropertyBlock } from './SchemaPropertyBlock'
 import { SchemaPropertyBoolean } from './SchemaPropertyBoolean'
+import { SchemaPropertyInteger } from './SchemaPropertyInteger'
 import { SchemaPropertyNone } from './SchemaPropertyNull'
 import { SchemaPropertyNumber } from './SchemaPropertyNumber'
 import { SchemaPropertyObject } from './SchemaPropertyObject'
@@ -30,6 +31,7 @@ function getSchemaPropertyServiceConstructor(property: SchemaProperty): SchemaPr
     case 'string':
       return SchemaPropertyString
     case 'integer':
+      return SchemaPropertyInteger
     case 'number':
       return SchemaPropertyNumber
     case 'boolean':

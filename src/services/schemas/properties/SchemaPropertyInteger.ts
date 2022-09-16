@@ -3,7 +3,7 @@ import { SchemaPropertyComponentWithProps } from '../utilities'
 import { SchemaPropertyService } from './SchemaPropertyService'
 import { SchemaValue } from '@/types/schemas'
 
-export class SchemaPropertyNumber extends SchemaPropertyService {
+export class SchemaPropertyInteger extends SchemaPropertyService {
 
   protected readonly default = null
 
@@ -16,7 +16,7 @@ export class SchemaPropertyNumber extends SchemaPropertyService {
   }
 
   protected response(value: SchemaValue): unknown {
-    const result = parseFloat(value as string)
+    const result = parseInt(value as string)
 
     if (isNaN(result)) {
       return this.invalid()
