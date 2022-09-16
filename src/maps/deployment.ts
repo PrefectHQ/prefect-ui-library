@@ -63,7 +63,7 @@ export const mapDeploymentUpdateToDeploymentUpdateRequest: MapFunction<Deploymen
     mapped.parameters = this.map('SchemaValues', { values: parameters, schema }, 'SchemaValuesRequest')
   }
 
-  mapped.schedule = schedule ? this.map('Schedule', schedule, 'ScheduleRequest') : null
+  mapped.schedule = this.map('Schedule', schedule, 'ScheduleRequest')
 
   return mapped
 }
