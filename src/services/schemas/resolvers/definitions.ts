@@ -1,3 +1,4 @@
+import { resolve } from 'path'
 import { SchemaResolver } from './schemas'
 import { Schema, SchemaDefinitions, SchemaProperties, SchemaProperty } from '@/types/schemas'
 import { mapEntries } from '@/utilities'
@@ -54,6 +55,10 @@ export function resolveSchemaPropertyDefinition(property: SchemaProperty | undef
         ...first,
         ...resolved,
       }
+
+      // if the property doesn't have a title or description try using the title and description from first reference
+      resolved.title ??= first.title
+      resolved.description ??= first.description
     } else {
       resolved.allOf = resolvedAllOf
     }
@@ -65,6 +70,10 @@ export function resolveSchemaPropertyDefinition(property: SchemaProperty | undef
 
   if (items) {
     resolved.items = resolveSchemaPropertyDefinition(items, definitions)
+
+    // if the property doesn't have a title or description try using the title and description from the items
+    resolved.title ??= resolved.items?.title
+    resolved.description ??= resolved.items?.description
   }
 
   return resolved
