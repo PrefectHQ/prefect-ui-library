@@ -6,14 +6,25 @@
 
     <p-button-group v-model="selected" :options="options" size="sm" />
 
-    <SchemaFormProperties :property="displayedDefinition" :prop-key="propKey" />
+    <p-label class="schema-form-property-any-of__fields" :description="description">
+      <template v-if="isObject">
+        <p-content>
+          <template v-for="(subProperty, key) in displayedDefinition.properties" :key="key">
+            <SchemaFormProperty :prop-key="`${propKey}.${key}`" :property="subProperty!" />
+          </template>
+        </p-content>
+      </template>
+      <template v-else>
+        <SchemaFormProperty :property="displayedDefinition" :prop-key="propKey" />
+      </template>
+    </p-label>
   </p-content>
 </template>
 
 <script lang="ts" setup>
   import { ButtonGroupOption } from '@prefecthq/prefect-design'
   import { computed, ref } from 'vue'
-  import SchemaFormProperties from './SchemaFormProperties.vue'
+  import SchemaFormProperty from './SchemaFormProperty.vue'
   import { SchemaPropertyAnyOf } from '@/types/schemas'
 
   const props = defineProps<{
@@ -25,6 +36,8 @@
   const definitions = computed(() => props.property.anyOf)
   const displayedDefinition = computed(() => definitions.value[selected.value] ?? {})
   const title = computed(() => props.property.title ?? props.propKey.split('.').pop())
+  const isObject = computed(() => displayedDefinition.value.type == 'object')
+  const description = computed(() => props.property.description ?? displayedDefinition.value.description)
 
   const options = computed<ButtonGroupOption[]>(() => definitions.value.map((prop, index) => ({
     label: prop.title ?? prop.alias ?? prop.format ?? prop.type ?? '',
@@ -36,5 +49,12 @@
 .schema-form-property-any-of__section-header { @apply
   text-lg
   font-semibold
+}
+
+.schema-form-property-any-of__fields { @apply
+  border-gray-300
+  border-[1px]
+  p-4
+  rounded
 }
 </style>
