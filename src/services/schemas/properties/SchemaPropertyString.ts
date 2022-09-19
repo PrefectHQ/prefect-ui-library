@@ -107,14 +107,14 @@ export class SchemaPropertyString extends SchemaPropertyService {
 
   private requestDateTimeValue(value: SchemaValue): SchemaValue {
     if (isDate(value)) {
-      return format(value, 'yyyy-MM-dd\'T\'HH:mm:ss.000')
+      return format(value, 'yyyy-MM-dd\'T\'HH:mm:ss.000\'Z\'')
     }
 
     return value
   }
 
   private responseDateTimeValue(value: SchemaValue): Date {
-    const date = parse(value as string, 'yyyy-MM-dd\'T\'HH:mm:ss.SSS', new Date())
+    const date = parse(value as string, 'yyyy-MM-dd\'T\'HH:mm:ss.SSS\'Z\'', new Date())
 
     if (!isValid(date)) {
       this.invalid()
