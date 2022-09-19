@@ -24,7 +24,7 @@
 <script lang="ts" setup>
   import { ButtonGroupOption } from '@prefecthq/prefect-design'
   import { useField } from 'vee-validate'
-  import { computed, ref, watchEffect } from 'vue'
+  import { computed, ref, watch } from 'vue'
   import SchemaFormProperty from './SchemaFormProperty.vue'
   import { getSchemaPropertyDefaultValue } from '@/services/schemas'
   import { SchemaPropertyAnyOf } from '@/types/schemas'
@@ -46,12 +46,16 @@
     value: index,
   })))
 
-  const { setValue } = useField(props.propKey)
+  const selectedDefinitionValueMap = definitions.value.map(definition => getSchemaPropertyDefaultValue(definition))
 
-  watchEffect(() => {
-    const defaultValue = getSchemaPropertyDefaultValue(displayedDefinition.value)
+  const { value, setValue } = useField(props.propKey)
 
-    setValue(defaultValue)
+  watch(selected, selected => {
+    setValue(selectedDefinitionValueMap[selected])
+  })
+
+  watch(value, value => {
+    selectedDefinitionValueMap[selected.value] = value
   })
 </script>
 
