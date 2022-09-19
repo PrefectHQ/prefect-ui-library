@@ -1,7 +1,6 @@
 import { SelectOption } from '@prefecthq/prefect-design'
 import { MAX_SCHEMA_PROPERTY_LEVEL } from '../constants'
 import { getSchemaPropertyAttrs, getSchemaPropertyComponentWithDefaultProps, getSchemaPropertyDefaultValidators, schemaPropertyComponentWithProps, SchemaPropertyComponentWithProps } from '../utilities'
-import JsonInputVue from '@/components/JsonInput.vue'
 import { InvalidSchemaValueError } from '@/models/InvalidSchemaValueError'
 import { ValidationRule } from '@/services/validate'
 import { schemaHas, SchemaProperty, SchemaPropertyInputAttrs, SchemaPropertyMeta, SchemaValue } from '@/types/schemas'

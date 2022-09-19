@@ -74,7 +74,6 @@ export class SchemaPropertyObject extends SchemaPropertyService {
     // apparently this isn't uncommon
     const parsed = (parseUnknownJson(value) ?? {}) as SchemaValues
 
-    // TODO: I'm not 100% sure this works with nested properties. Need to test
     return mapEntries(this.property.properties, (key, property) => {
       const propertyValue = parsed[key]
       const service = schemaPropertyServiceFactory(property!, this.level + 1)
