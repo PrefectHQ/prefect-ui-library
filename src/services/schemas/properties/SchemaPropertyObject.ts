@@ -21,7 +21,6 @@ export class SchemaPropertyObject extends SchemaPropertyService {
   }
 
   protected get default(): unknown {
-    // JsonInput is used when max level is reached
     if (this.isMaxLevel) {
       return ''
     }
