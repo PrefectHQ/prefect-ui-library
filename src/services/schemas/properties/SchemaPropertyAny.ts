@@ -9,6 +9,7 @@ export class SchemaPropertyAny extends SchemaPropertyService {
   public readonly default = ''
 
   protected get component(): SchemaPropertyComponentWithProps {
+    // if either of these exist let the AnyOf and AllOf components take over
     if (this.has('anyOf') || this.has('allOf')) {
       return null
     }
