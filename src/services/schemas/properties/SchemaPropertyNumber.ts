@@ -1,7 +1,7 @@
 import { PNumberInput } from '@prefecthq/prefect-design'
 import { SchemaPropertyComponentWithProps } from '../utilities'
 import { SchemaPropertyService } from './SchemaPropertyService'
-import { SchemaValue } from '@/types/schemas'
+import { SchemaPropertyInputAttrs, SchemaValue } from '@/types/schemas'
 
 export class SchemaPropertyNumber extends SchemaPropertyService {
 
@@ -9,6 +9,12 @@ export class SchemaPropertyNumber extends SchemaPropertyService {
 
   protected override get component(): SchemaPropertyComponentWithProps {
     return this.withProps(PNumberInput)
+  }
+
+  protected get attrs(): SchemaPropertyInputAttrs {
+    return {
+      step: 'any',
+    }
   }
 
   protected request(value: SchemaValue): unknown {
