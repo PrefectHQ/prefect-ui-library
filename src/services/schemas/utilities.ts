@@ -1,7 +1,7 @@
 import { greaterThan, greaterThanOrEqual, isRequired, lessThan, lessThanOrEqual, ValidationRule, withMessage } from '../validate'
 import { schemaPropertyServiceFactory } from './properties'
 import { JsonInput } from '@/components'
-import { SchemaProperty, SchemaPropertyInputAttrs, Schema, SchemaValues, SchemaValue } from '@/types/schemas'
+import { SchemaProperty, SchemaPropertyInputAttrs, Schema, SchemaValues, SchemaValue, schemaHas } from '@/types/schemas'
 import { withPropsWithoutExcludedFactory } from '@/utilities/components'
 import { stringify } from '@/utilities/json'
 
@@ -17,6 +17,18 @@ export const schemaPropertyComponentWithProps = withPropsWithoutExcludedFactory(
  */
 export function getSchemaDefaultValues(schema: Schema): SchemaValues {
   return getSchemaResponseValue(schema, {}) as SchemaValues
+}
+
+
+/*
+ * Gets a UI friendly version of an empty value for a specific schema. Used for create forms that have no existing value.
+ */
+export function getSchemaPropertyDefaultValue(property: SchemaProperty): SchemaValue {
+  if (schemaHas(property, 'properties')) {
+    return getSchemaPropertyResponseValue(property, {}) as SchemaValues
+  }
+
+  return getSchemaPropertyResponseValue(property, null)
 }
 
 /*

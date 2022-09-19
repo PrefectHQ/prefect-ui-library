@@ -5,8 +5,13 @@ import { SchemaValue } from '@/types/schemas'
 import { parseUnknownJson, stringifyUnknownJson } from '@/utilities/json'
 
 export class SchemaPropertyAny extends SchemaPropertyService {
+  protected get default(): unknown {
+    if (this.componentIs(JsonInput)) {
+      return ''
+    }
 
-  public readonly default = ''
+    return null
+  }
 
   protected get component(): SchemaPropertyComponentWithProps {
     // if either of these exist let the AnyOf and AllOf components take over
