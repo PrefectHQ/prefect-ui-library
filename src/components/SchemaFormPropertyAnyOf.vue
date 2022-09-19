@@ -6,16 +6,14 @@
 
     <p-button-group v-model="selected" :options="options" size="sm" />
 
-    <template v-for="(subProperty, key) in displayedDefinition.properties" :key="key">
-      <SchemaFormProperty :prop-key="`${propKey}.${key}`" :property="subProperty!" />
-    </template>
+    <SchemaFormProperties :property="displayedDefinition" :prop-key="propKey" />
   </p-content>
 </template>
 
 <script lang="ts" setup>
   import { ButtonGroupOption } from '@prefecthq/prefect-design'
   import { computed, ref } from 'vue'
-  import SchemaFormProperty from './SchemaFormProperty.vue'
+  import SchemaFormProperties from './SchemaFormProperties.vue'
   import { SchemaPropertyAnyOf } from '@/types/schemas'
 
   const props = defineProps<{
@@ -29,7 +27,7 @@
   const title = computed(() => props.property.title ?? props.propKey.split('.').pop())
 
   const options = computed<ButtonGroupOption[]>(() => definitions.value.map((prop, index) => ({
-    label: prop.title ?? prop.alias ?? '',
+    label: prop.title ?? prop.alias ?? prop.type ?? '',
     value: index,
   })))
 </script>
