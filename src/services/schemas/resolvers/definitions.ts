@@ -82,5 +82,9 @@ function resolveDefinition(ref: string, definitions: SchemaDefinitions): SchemaP
     schema.type = 'block'
   }
 
-  return schemaDefinitionsResolver(schema)
+  if (schema.properties) {
+    schema.properties = resolveSchemaPropertiesDefinitions(schema.properties, definitions)
+  }
+
+  return schema
 }
