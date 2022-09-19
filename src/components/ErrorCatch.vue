@@ -19,5 +19,6 @@
 
   onErrorCaptured((err) => {
     error.value = err
+    return false
   })
 </script>
