@@ -13,8 +13,7 @@ export function schemaValuesBlockReferencesResolver(values: SchemaValues, refere
     if (reference) {
       const resolved: BlockDocumentReferenceValue = {
         $ref: {
-          // eslint-disable-next-line camelcase
-          block_document_id: reference.block_document.id,
+          'block_document_id': reference.block_document.id,
         },
       }
 
