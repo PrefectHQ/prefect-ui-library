@@ -145,7 +145,10 @@ export abstract class SchemaPropertyService {
   protected getSelectOptions(): SelectOption[] {
     const options: SelectOption[] = []
 
-    if (!this.property.enum) {
+    const propertyEnum = this.property.enum
+    const itemsEnum = this.property.items?.enum
+
+    if (!propertyEnum && !itemsEnum) {
       return options
     }
 
@@ -153,8 +156,14 @@ export abstract class SchemaPropertyService {
       options.push({ label: 'None', value: null })
     }
 
-    if (isStringArray(this.property.enum) || isNumberArray(this.property.enum)) {
-      const mapped = this.property.enum.map<SelectOption>(value => ({ label: `${value}`, value }))
+    if (isStringArray(propertyEnum) || isNumberArray(propertyEnum)) {
+      const mapped = propertyEnum.map<SelectOption>(value => ({ label: `${value}`, value }))
+
+      options.push(...mapped)
+    }
+
+    if (isStringArray(itemsEnum) || isNumberArray(itemsEnum)) {
+      const mapped = itemsEnum.map<SelectOption>(value => ({ label: `${value}`, value }))
 
       options.push(...mapped)
     }
