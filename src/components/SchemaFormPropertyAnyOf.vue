@@ -27,7 +27,7 @@
   const title = computed(() => props.property.title ?? props.propKey.split('.').pop())
 
   const options = computed<ButtonGroupOption[]>(() => definitions.value.map((prop, index) => ({
-    label: prop.title ?? prop.alias ?? prop.type ?? '',
+    label: prop.title ?? prop.alias ?? prop.format ?? prop.type ?? '',
     value: index,
   })))
 </script>
