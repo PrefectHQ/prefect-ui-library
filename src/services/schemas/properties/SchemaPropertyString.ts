@@ -107,14 +107,14 @@ export class SchemaPropertyString extends SchemaPropertyService {
 
   private requestDateTimeValue(value: SchemaValue): SchemaValue {
     if (isDate(value)) {
-      return mapper.map('Date', value, 'string')
+      return format(value, 'yyyy-MM-ddTHH:mm:ss.000')
     }
 
     return value
   }
 
   private responseDateTimeValue(value: SchemaValue): Date {
-    const date = mapper.map('string', value as string, 'Date')
+    const date = parse(value as string, 'yyyy-MM-ddTHH:mm:ss.SSS', new Date())
 
     if (!isValid(date)) {
       this.invalid()
