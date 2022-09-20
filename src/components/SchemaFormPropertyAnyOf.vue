@@ -26,7 +26,7 @@
   import { useField } from 'vee-validate'
   import { computed, ref, watch } from 'vue'
   import SchemaFormProperty from './SchemaFormProperty.vue'
-  import { getSchemaPropertyDefaultValue } from '@/services/schemas'
+  import { getSchemaPropertyDefaultValue, getSchemaValueAnyOfDefinitionIndex } from '@/services/schemas'
   import { SchemaPropertyAnyOf } from '@/types/schemas'
 
   const props = defineProps<{
@@ -34,7 +34,8 @@
     property: SchemaPropertyAnyOf,
   }>()
 
-  const selected = ref(0)
+  const { value, setValue } = useField(props.propKey)
+  const selected = ref(getSchemaValueAnyOfDefinitionIndex(props.property, value.value) ?? 0)
   const definitions = computed(() => props.property.anyOf)
   const displayedDefinition = computed(() => definitions.value[selected.value] ?? {})
   const title = computed(() => props.property.title ?? props.propKey.split('.').pop())
@@ -48,15 +49,13 @@
 
   const selectedDefinitionValueMap = definitions.value.map(definition => getSchemaPropertyDefaultValue(definition))
 
-  const { value, setValue } = useField(props.propKey)
-
   watch(selected, selected => {
     setValue(selectedDefinitionValueMap[selected])
   })
 
   watch(value, value => {
     selectedDefinitionValueMap[selected.value] = value
-  })
+  }, { immediate: true })
 </script>
 
 <style>
