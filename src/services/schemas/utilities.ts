@@ -23,12 +23,14 @@ export function getSchemaDefaultValues(schema: Schema): SchemaValues {
 /*
  * Gets a UI friendly version of an empty value for a specific schema. Used for create forms that have no existing value.
  */
-export function getSchemaPropertyDefaultValue(property: SchemaProperty): SchemaValue {
+export function getSchemaPropertyDefaultValue(property: SchemaProperty, level: number = 0): SchemaValue {
   if (schemaHas(property, 'properties')) {
     return getSchemaPropertyResponseValue(property, {}) as SchemaValues
   }
 
-  return getSchemaPropertyResponseValue(property, null)
+  const service = schemaPropertyServiceFactory(property, level)
+
+  return service.getDefaultValue()
 }
 
 /*
