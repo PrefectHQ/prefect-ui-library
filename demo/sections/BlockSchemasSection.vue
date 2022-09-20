@@ -17,7 +17,7 @@
 
 
   const blockSchema = mocker.create('blockSchema')
-  const data = ref()
+  const data = ref<BlockDocumentCreateNamed>()
 
   function submit(value: BlockDocumentCreateNamed): void {
     data.value = value
