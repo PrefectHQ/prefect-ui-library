@@ -37,7 +37,7 @@
 }
 
 .scatter-plot-item { @apply
-  border-2
+  border-[1px]
   border-white
 }
 
@@ -52,29 +52,36 @@
 
 .scatter-plot-item--running {
   background-color: var(--state-running-500);
+  border-color: var(--state-running-600);
 }
 
 .scatter-plot-item--scheduled {
   background-color: var(--state-scheduled-500);
+  border-color: var(--state-scheduled-600);
 }
 
 .scatter-plot-item--pending {
   background-color: var(--state-pending-500);
+  border-color: var(--state-pending-600);
 }
 
 .scatter-plot-item--cancelled {
   background-color: var(--state-cancelled-500);
+  border-color: var(--state-cancelled-600);
 }
 
 .scatter-plot-item--completed {
   background-color: var(--state-completed-500);
+  border-color: var(--state-completed-600);
 }
 
 .scatter-plot-item--failed {
   background-color: var(--state-failed-500);
+  border-color: var(--state-failed-600);
 }
 
 .scatter-plot-item--crashed {
   background-color: var(--state-crashed-500);
+  border-color: var(--state-crashed-600);
 }
 </style>
