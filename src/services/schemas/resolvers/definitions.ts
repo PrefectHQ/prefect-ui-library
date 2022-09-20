@@ -1,7 +1,7 @@
 import { resolve } from 'path'
 import { SchemaResolver } from './schemas'
 import { Schema, SchemaDefinitions, SchemaProperties, SchemaProperty } from '@/types/schemas'
-import { mapEntries } from '@/utilities'
+import { isNumberArray, isStringArray, mapEntries } from '@/utilities'
 
 export const schemaDefinitionsResolver: SchemaResolver = (schema: Schema): Schema => {
   const { definitions, properties, ...rest } = schema
@@ -67,6 +67,16 @@ export function resolveSchemaPropertyDefinition(property: SchemaProperty | undef
     // if the property doesn't have a title or description try using the title and description from the items
     resolved.title ??= resolved.items?.title
     resolved.description ??= resolved.items?.description
+  }
+
+  if (!resolved.type) {
+    if (isStringArray(resolved.enum)) {
+      resolved.type = 'string'
+    }
+
+    if (isNumberArray(resolved.enum)) {
+      resolved.type = 'integer'
+    }
   }
 
   return resolved
