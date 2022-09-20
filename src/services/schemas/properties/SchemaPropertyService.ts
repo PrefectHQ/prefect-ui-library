@@ -151,7 +151,7 @@ export abstract class SchemaPropertyService {
       return options
     }
 
-    if (!this.property.meta?.required) {
+    if (!this.property.meta?.required && !this.property.default) {
       options.push({ label: 'None', value: null })
     }
 
