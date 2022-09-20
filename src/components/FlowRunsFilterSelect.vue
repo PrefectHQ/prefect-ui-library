@@ -23,8 +23,8 @@
   })
 
   const options: { label: string, value: string }[] = [
-    { label: 'One Week (default)', value: 'week' },
-    { label: 'One Day', value: 'day' },
-    { label: 'No Scheduled Runs', value: 'noScheduled' },
+    { label: 'One week (default)', value: 'week' },
+    { label: 'One day', value: 'day' },
+    { label: 'No scheduled runs', value: 'noScheduled' },
   ]
 </script>
