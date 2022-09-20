@@ -51,14 +51,7 @@ export function resolveSchemaPropertyDefinition(property: SchemaProperty | undef
     if (resolvedAllOf.length === 1) {
       const [first] = resolvedAllOf
 
-      resolved = {
-        ...first,
-        ...resolved,
-      }
-
-      // if the property doesn't have a title or description try using the title and description from first reference
-      resolved.title ??= first.title
-      resolved.description ??= first.description
+      resolved = flattenPropertyWithDefinition(resolved, first)
     } else {
       resolved.allOf = resolvedAllOf
     }
@@ -96,4 +89,17 @@ function resolveDefinition(ref: string, definitions: SchemaDefinitions): SchemaP
   }
 
   return schema
+}
+
+function flattenPropertyWithDefinition(property: SchemaProperty, definition: Schema): SchemaProperty {
+  const flattened = {
+    ...definition,
+    ...property,
+  }
+
+  // if the property doesn't have a title or description try using the title and description from first reference
+  flattened.title = property.title ?? definition.title
+  flattened.description = property.description ?? definition.description
+
+  return flattened
 }
