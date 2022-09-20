@@ -1,4 +1,3 @@
-import { resolve } from 'path'
 import { SchemaResolver } from './schemas'
 import { Schema, SchemaDefinitions, SchemaProperties, SchemaProperty } from '@/types/schemas'
 import { isNumberArray, isStringArray, mapEntries } from '@/utilities'
