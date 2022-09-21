@@ -5,7 +5,6 @@ import { blockDocumentsApiMockFactory } from './blockDocumentsApi'
 import { randomBlockSchema } from './blockSchema'
 import { randomBlockSchemaCapabilities } from './blockSchemaCapabilities'
 import { randomBlockSchemaCapability } from './blockSchemaCapability'
-import { randomBlockSchemaFields } from './blockSchemaFields'
 import { blockSchemasApiFactory } from './blockSchemasApi'
 import { randomBlockType } from './blockType'
 import { blockTypesApiFactory } from './blockTypesApi'
@@ -23,9 +22,9 @@ import { randomImage } from './image'
 import { randomLogLevel, randomLog } from './log'
 import { randomNotification } from './notification'
 import { randomNumber } from './number'
-import { randomOpenApiSchema, randomOpenApiProperty } from './openApi'
 import { randomParameters } from './parameters'
 import { randomSchedule } from './schedule'
+import { randomSchema, randomSchemaProperties, randomSchemaProperty } from './schemas'
 import { randomState } from './state'
 import { randomStateType } from './stateType'
 import { randomChar, randomString, randomSentence, randomParagraph, randomRunName, randomNoun } from './string'
@@ -43,7 +42,6 @@ export const mocks = {
   blockSchema: randomBlockSchema,
   blockSchemaCapabilities: randomBlockSchemaCapabilities,
   blockSchemaCapability: randomBlockSchemaCapability,
-  blockSchemaFields: randomBlockSchemaFields,
   blockSchemasApi: blockSchemasApiFactory,
   blockType: randomBlockType,
   blockTypesApi: blockTypesApiFactory,
@@ -66,12 +64,13 @@ export const mocks = {
   notification: randomNotification,
   noun: randomNoun,
   number: randomNumber,
-  openApiProperty: randomOpenApiProperty,
-  openApiSchema: randomOpenApiSchema,
   paragraph: randomParagraph,
   parameters: randomParameters,
   runName: randomRunName,
   schedule: randomSchedule,
+  schema: randomSchema,
+  schemaProperty: randomSchemaProperty,
+  schemaProperties: randomSchemaProperties,
   sentence: randomSentence,
   state: randomState,
   stateType: randomStateType,

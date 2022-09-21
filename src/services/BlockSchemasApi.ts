@@ -22,6 +22,21 @@ export class BlockSchemasApi extends Api {
       .then(({ data }) => mapper.map('BlockSchemaResponse', data, 'BlockSchema'))
   }
 
+  public async getBlockSchemaForBlockType(blockTypeId: string): Promise<BlockSchema> {
+    const filter = {
+      blockSchemas: {
+        blockTypeId: {
+          any_: [blockTypeId],
+        },
+      },
+    }
+
+    const { data } = await this.post<BlockSchemaResponse[]>('/filter', mapper.map('BlockSchemaFilter', filter, 'BlockSchemaFilterRequest'))
+    const [first] = data
+
+    return mapper.map('BlockSchemaResponse', first, 'BlockSchema')
+  }
+
 }
 
 /**

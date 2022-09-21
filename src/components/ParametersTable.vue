@@ -25,6 +25,7 @@
   import ResultsCount from '@/components/ResultsCount.vue'
   import SearchInput from '@/components/SearchInput.vue'
   import { Deployment } from '@/models'
+  import { schemaPropertyServiceFactory } from '@/services/schemas'
 
   const props = defineProps<{
     deployment: Deployment,
@@ -43,11 +44,14 @@
 
   const data = computed(() => {
     return Object.entries(properties.value).map(([key, value]) => {
+      const service = schemaPropertyServiceFactory(value!, 0)
+      const mapped = service.mapRequestValue(props.deployment.parameters[key])
+
       return {
         key,
-        value: props.deployment.parameters[key],
-        defaultValue: value.default,
-        type: value.type,
+        value: mapped,
+        defaultValue: value!.default,
+        type: value!.type,
       }
     })
   })

@@ -26,9 +26,10 @@
   import { computed } from 'vue'
   import JsonView from './JsonView.vue'
   import { useScrollLinking } from '@/compositions'
+  import { stringify } from '@/utilities/json'
 
   const props = defineProps<{
-    modelValue: string,
+    modelValue: string | undefined,
     showFormatButton?: boolean,
   }>()
 
@@ -40,7 +41,7 @@
 
   const internalValue = computed({
     get() {
-      return props.modelValue
+      return props.modelValue ?? ''
     },
     set(val: string) {
       emit('update:modelValue', val)
@@ -49,7 +50,7 @@
 
   const format = (): void => {
     try {
-      internalValue.value = JSON.stringify(JSON.parse(internalValue.value), undefined, 2)
+      internalValue.value = stringify(JSON.parse(internalValue.value))
     } catch {
       // do nothing
     }

@@ -1,6 +1,6 @@
 <template>
   <p-form @submit="submit">
-    <SchemaFormFields :schema="pydanticSchema" />
+    <SchemaFormFields :schema="schema" />
 
     <template #footer>
       <p-button type="submit">
@@ -14,26 +14,26 @@
   import { computed } from 'vue'
   import SchemaFormFields from '@/components/SchemaFormFields.vue'
   import { useReactiveForm } from '@/compositions'
-  import { Schema } from '@/types/schemas'
+  import { Schema, SchemaValues } from '@/types/schemas'
 
-  type PydanticFormValue = Record<string, unknown>
   const props = defineProps<{
-    modelValue?: PydanticFormValue,
-    pydanticSchema: Schema,
+    modelValue?: SchemaValues,
+    schema: Schema,
   }>()
 
   const emit = defineEmits<{
-    (event: 'update:modelValue' | 'submit', value?: PydanticFormValue): void,
+    (event: 'update:modelValue' | 'submit', value: SchemaValues): void,
   }>()
 
   const internalValue = computed({
     get() {
-      return props.modelValue
+      return props.modelValue ?? {}
     },
     set(val) {
       emit('update:modelValue', val)
     },
   })
-  const { handleSubmit, values } = useReactiveForm(internalValue, { initialValues:  { ...props.modelValue }  })
-  const submit = handleSubmit(() => emit('submit', values))
+
+  const { handleSubmit } = useReactiveForm(internalValue, { initialValues:  { ...props.modelValue }  })
+  const submit = handleSubmit(values => emit('submit', values))
 </script>

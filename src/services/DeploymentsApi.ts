@@ -15,28 +15,34 @@ export class DeploymentsApi extends Api {
 
   protected override route: ApiRoute = '/deployments'
 
-  public getDeployment(deploymentId: string): Promise<Deployment> {
-    return this.get<DeploymentResponse>(`/${deploymentId}`)
-      .then(({ data }) => mapper.map('DeploymentResponse', data, 'Deployment'))
+  public async getDeployment(deploymentId: string): Promise<Deployment> {
+    const { data } = await this.get<DeploymentResponse>(`/${deploymentId}`)
+
+    return mapper.map('DeploymentResponse', data, 'Deployment')
   }
 
-  public getDeployments(filter: UnionFilters): Promise<Deployment[]> {
-    return this.post<DeploymentResponse[]>('/filter', filter)
-      .then(({ data }) => mapper.map('DeploymentResponse', data, 'Deployment'))
+  public async getDeployments(filter: UnionFilters): Promise<Deployment[]> {
+    const { data } = await this.post<DeploymentResponse[]>('/filter', filter)
+
+    return mapper.map('DeploymentResponse', data, 'Deployment')
   }
 
-  public getDeploymentsCount(filter: UnionFilters): Promise<number> {
-    return this.post<number>('/count', filter).then(({ data }) => data)
+  public async getDeploymentsCount(filter: UnionFilters): Promise<number> {
+    const { data } = await this.post<number>('/count', filter)
+
+    return data
   }
 
-  public createDeploymentFlowRun(deploymentId: string, request: DeploymentFlowRunCreate): Promise<FlowRun> {
+  public async createDeploymentFlowRun(deploymentId: string, request: DeploymentFlowRunCreate): Promise<FlowRun> {
     const body = mapper.map('DeploymentFlowRunCreate', request, 'DeploymentFlowRunRequest')
-    return this.post<FlowRunResponse>(`/${deploymentId}/create_flow_run`, body)
-      .then(({ data }) => mapper.map('FlowRunResponse', data, 'FlowRun'))
+    const { data } = await this.post<FlowRunResponse>(`/${deploymentId}/create_flow_run`, body)
+
+    return mapper.map('FlowRunResponse', data, 'FlowRun')
   }
 
   public updateDeployment(deploymentId: string, request: DeploymentUpdate): Promise<void> {
     const body = mapper.map('DeploymentUpdate', request, 'DeploymentUpdateRequest')
+
     return this.patch(`/${deploymentId}`, body)
   }
 

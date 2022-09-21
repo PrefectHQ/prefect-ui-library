@@ -6,18 +6,18 @@
 
     <div class="notification-form__horizontal-fields">
       <p-label label="Run states">
-        <StateSelect v-model:selected="selectedStates" empty-message="All states" />
+        <StateSelect v-model:selected="stateNames" empty-message="All states" />
       </p-label>
 
       <p-label label="Tags (Optional)">
-        <p-tags-input v-model="selectedTags" empty-message="All tags" />
+        <p-tags-input v-model="tags" empty-message="All tags" />
       </p-label>
     </div>
 
     <p-button-group v-model="selectedBlockTypeId" :options="buttonGroup" />
 
     <template v-if="blockSchema && data">
-      <BlockSchemaFormFields v-model:data="data" :block-schema="blockSchema" />
+      <SchemaFormFields :schema="blockSchema.fields" property="blockData" />
     </template>
 
     <p class="notification-form__message">
@@ -25,8 +25,8 @@
     </p>
 
     <div class="notification-form__review-block">
-      <template v-if="notification && blockType && data">
-        <NotificationDetails :notification="notification" :block-type="blockType" :data="data" />
+      <template v-if="blockType && data">
+        <NotificationDetails :notification="{ stateNames, tags }" :block-type="blockType" :data="data" />
       </template>
     </div>
 
@@ -42,20 +42,23 @@
 <script lang="ts" setup>
   import { PLabel, PTagsInput, PForm, PButtonGroup, showToast } from '@prefecthq/prefect-design'
   import { useSubscription, useSubscriptionWithDependencies } from '@prefecthq/vue-compositions'
-  import { useForm } from 'vee-validate'
+  import { useField, useForm } from 'vee-validate'
   import { computed, watchEffect, ref, watch, reactive } from 'vue'
-  import BlockSchemaFormFields from './BlockSchemaFormFields.vue'
   import NotificationDetails from './NotificationDetails.vue'
+  import SchemaFormFields from './SchemaFormFields.vue'
   import SubmitButton from './SubmitButton.vue'
   import StateSelect from '@/components/StateSelect.vue'
+  import { useReactiveField } from '@/compositions'
   import { localization } from '@/localization'
-  import { Notification, BlockTypeFilter, BlockDocumentData } from '@/models'
+  import { Notification, BlockTypeFilter } from '@/models'
   import { blockDocumentsApiKey, blockSchemasApiKey, blockTypesApiKey } from '@/services'
+  import { getSchemaDefaultValues } from '@/services/schemas/utilities'
   import { FormAction } from '@/types/buttons'
+  import { SchemaValues } from '@/types/schemas'
   import { inject } from '@/utilities/inject'
 
   const props = defineProps<{
-    notification: Partial<Notification>,
+    notification?: Notification,
     action?: FormAction,
   }>()
 
@@ -64,40 +67,43 @@
     (event: 'cancel'): void,
   }>()
 
-  const { handleSubmit } = useForm()
+  const { handleSubmit } = useForm<{
+    stateNames: string[],
+    tags: string[],
+    blockData: SchemaValues,
+  }>({
+    initialValues: {
+      stateNames: props.notification?.stateNames ?? [],
+      tags: props.notification?.tags ?? [],
+      blockData: {},
+    },
+  })
+
+  const { value: stateNames } = useField<string[]>('stateNames')
+  const { value: tags } = useField<string[]>('tags')
+
   const blockDocumentsApi = inject(blockDocumentsApiKey)
   const blockTypesApi = inject(blockTypesApiKey)
   const blockSchemasApi = inject(blockSchemasApiKey)
+
   const selectedBlockTypeId = ref<string>()
-  const blockDataMap = reactive<Record<string, BlockDocumentData | undefined>>({})
-
-  const selectedStates = computed({
-    get(): string[] {
-      return props.notification.stateNames ?? []
-    },
-    set(stateNames: string[]) {
-      emit('update:notification', { ...props.notification, stateNames })
-    },
-  })
-
-  const selectedTags = computed({
-    get(): string[] {
-      return props.notification.tags ?? []
-    },
-    set(tags: string[]) {
-      emit('update:notification', { ...props.notification, tags })
-    },
-  })
+  const blockDataMap = reactive<Record<string, SchemaValues | undefined>>({})
 
   const data = computed({
     get() {
-      if (selectedBlockTypeId.value === undefined) {
+      if (selectedBlockTypeId.value === undefined || blockSchema.value === undefined) {
         return undefined
       }
 
-      return blockDataMap[selectedBlockTypeId.value] ?? {}
+      const data = blockDataMap[selectedBlockTypeId.value]
+
+      if (!data) {
+        return getSchemaDefaultValues(blockSchema.value.fields)
+      }
+
+      return data
     },
-    set(value: BlockDocumentData | undefined) {
+    set(value: SchemaValues | undefined) {
       if (selectedBlockTypeId.value === undefined) {
         return
       }
@@ -106,8 +112,10 @@
     },
   })
 
+  useReactiveField(data, 'blockData')
+
   const blockDocumentSubscriptionArgs = computed<Parameters<typeof blockDocumentsApi.getBlockDocument> | null>(() => {
-    if (!props.notification.blockDocumentId) {
+    if (!props.notification?.blockDocumentId) {
       return null
     }
 
@@ -142,7 +150,7 @@
   })))
 
   watchEffect(() => {
-    if (selectedBlockTypeId.value || props.notification.blockDocumentId) {
+    if (selectedBlockTypeId.value || props.notification?.blockDocumentId) {
       return
     }
 
@@ -181,7 +189,7 @@
 
   const blockDocumentId = ref<string>()
 
-  const submit = handleSubmit(async () => {
+  const submit = handleSubmit(async (values) => {
     if (blockSchema.value === undefined || selectedBlockTypeId.value === undefined || data.value === undefined) {
       showToast(localization.error.submitNotification)
       return
@@ -195,18 +203,18 @@
       ) {
         blockDocumentId.value = blockDocument.value.id
         await blockDocumentsApi.updateBlockDocument(blockDocumentId.value, {
+          blockSchema: blockSchema.value,
           data: data.value,
         })
       } else {
         const newBlockDocument = await blockDocumentsApi.createBlockDocument({
           isAnonymous: true,
-          blockSchemaId: blockSchema.value.id,
-          blockTypeId: selectedBlockTypeId.value,
+          blockSchema: blockSchema.value,
           data: data.value,
         })
         blockDocumentId.value = newBlockDocument.id
       }
-      const notification = { ...props.notification, blockDocumentId: blockDocumentId.value }
+      const notification = { ...values, blockDocumentId: blockDocumentId.value }
 
       emit('update:notification', notification)
       emit('submit', notification)
