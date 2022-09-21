@@ -1,14 +1,28 @@
-import { PNumberInput } from '@prefecthq/prefect-design'
+import { PNumberInput, PSelect } from '@prefecthq/prefect-design'
 import { SchemaPropertyComponentWithProps } from '../utilities'
 import { SchemaPropertyService } from './SchemaPropertyService'
-import { SchemaValue } from '@/types/schemas'
+import { SchemaPropertyInputAttrs, SchemaValue } from '@/types/schemas'
 
 export class SchemaPropertyNumber extends SchemaPropertyService {
 
-  protected readonly default = null
+  protected get default(): unknown {
+    return this.property.default ?? null
+  }
 
   protected override get component(): SchemaPropertyComponentWithProps {
+    if (this.has('enum')) {
+      return this.withProps(PSelect, {
+        options: this.getSelectOptions(),
+      })
+    }
+
     return this.withProps(PNumberInput)
+  }
+
+  protected get attrs(): SchemaPropertyInputAttrs {
+    return {
+      step: 'any',
+    }
   }
 
   protected request(value: SchemaValue): unknown {

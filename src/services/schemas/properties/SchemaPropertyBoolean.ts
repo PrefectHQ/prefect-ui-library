@@ -5,7 +5,9 @@ import { SchemaValue } from '@/types/schemas'
 
 export class SchemaPropertyBoolean extends SchemaPropertyService {
 
-  protected readonly default = null
+  protected get default(): unknown {
+    return this.property.default ?? null
+  }
 
   protected override get component(): SchemaPropertyComponentWithProps {
     return this.withProps(PToggle)

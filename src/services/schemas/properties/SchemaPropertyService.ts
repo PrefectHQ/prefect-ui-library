@@ -1,7 +1,6 @@
 import { SelectOption } from '@prefecthq/prefect-design'
 import { MAX_SCHEMA_PROPERTY_LEVEL } from '../constants'
 import { getSchemaPropertyAttrs, getSchemaPropertyComponentWithDefaultProps, getSchemaPropertyDefaultValidators, schemaPropertyComponentWithProps, SchemaPropertyComponentWithProps } from '../utilities'
-import JsonInputVue from '@/components/JsonInput.vue'
 import { InvalidSchemaValueError } from '@/models/InvalidSchemaValueError'
 import { ValidationRule } from '@/services/validate'
 import { schemaHas, SchemaProperty, SchemaPropertyInputAttrs, SchemaPropertyMeta, SchemaValue } from '@/types/schemas'
@@ -145,16 +144,25 @@ export abstract class SchemaPropertyService {
   protected getSelectOptions(): SelectOption[] {
     const options: SelectOption[] = []
 
-    if (!this.property.enum) {
+    const propertyEnum = this.property.enum
+    const itemsEnum = this.property.items?.enum
+
+    if (!propertyEnum && !itemsEnum) {
       return options
     }
 
-    if (!this.property.meta?.required) {
+    if (!this.property.meta?.required && !this.property.default) {
       options.push({ label: 'None', value: null })
     }
 
-    if (isStringArray(this.property.enum) || isNumberArray(this.property.enum)) {
-      const mapped = this.property.enum.map<SelectOption>(value => ({ label: `${value}`, value }))
+    if (isStringArray(propertyEnum) || isNumberArray(propertyEnum)) {
+      const mapped = propertyEnum.map<SelectOption>(value => ({ label: `${value}`, value }))
+
+      options.push(...mapped)
+    }
+
+    if (isStringArray(itemsEnum) || isNumberArray(itemsEnum)) {
+      const mapped = itemsEnum.map<SelectOption>(value => ({ label: `${value}`, value }))
 
       options.push(...mapped)
     }

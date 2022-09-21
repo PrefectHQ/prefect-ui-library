@@ -1,6 +1,6 @@
 import { SchemaResolver } from './schemas'
 import { Schema, SchemaDefinitions, SchemaProperties, SchemaProperty } from '@/types/schemas'
-import { mapEntries } from '@/utilities'
+import { isNumberArray, isStringArray, mapEntries } from '@/utilities'
 
 export const schemaDefinitionsResolver: SchemaResolver = (schema: Schema): Schema => {
   const { definitions, properties, ...rest } = schema
@@ -50,10 +50,7 @@ export function resolveSchemaPropertyDefinition(property: SchemaProperty | undef
     if (resolvedAllOf.length === 1) {
       const [first] = resolvedAllOf
 
-      resolved = {
-        ...first,
-        ...resolved,
-      }
+      resolved = flattenPropertyWithDefinition(resolved, first)
     } else {
       resolved.allOf = resolvedAllOf
     }
@@ -65,6 +62,20 @@ export function resolveSchemaPropertyDefinition(property: SchemaProperty | undef
 
   if (items) {
     resolved.items = resolveSchemaPropertyDefinition(items, definitions)
+
+    // if the property doesn't have a title or description try using the title and description from the items
+    resolved.title ??= resolved.items?.title
+    resolved.description ??= resolved.items?.description
+  }
+
+  if (!resolved.type) {
+    if (isStringArray(resolved.enum)) {
+      resolved.type = 'string'
+    }
+
+    if (isNumberArray(resolved.enum)) {
+      resolved.type = 'integer'
+    }
   }
 
   return resolved
@@ -82,5 +93,22 @@ function resolveDefinition(ref: string, definitions: SchemaDefinitions): SchemaP
     schema.type = 'block'
   }
 
-  return schemaDefinitionsResolver(schema)
+  if (schema.properties) {
+    schema.properties = resolveSchemaPropertiesDefinitions(schema.properties, definitions)
+  }
+
+  return schema
+}
+
+function flattenPropertyWithDefinition(property: SchemaProperty, definition: Schema): SchemaProperty {
+  const flattened = {
+    ...definition,
+    ...property,
+  }
+
+  // if the property doesn't have a title or description try using the title and description from first reference
+  flattened.title = property.title ?? definition.title
+  flattened.description = property.description ?? definition.description
+
+  return flattened
 }

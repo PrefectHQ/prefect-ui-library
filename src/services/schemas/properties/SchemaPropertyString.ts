@@ -4,7 +4,6 @@ import { SchemaPropertyComponentWithProps } from '../utilities'
 import { SchemaPropertyService } from './SchemaPropertyService'
 import { JsonInput } from '@/components'
 import { InvalidSchemaValueError } from '@/models'
-import { mapper } from '@/services/Mapper'
 import { isEmail, isValidJsonString, ValidationRule, withMessage } from '@/services/validate'
 import { SchemaValue } from '@/types/schemas'
 import { isDate } from '@/utilities/dates'
@@ -53,7 +52,7 @@ export class SchemaPropertyString extends SchemaPropertyService {
   protected override get default(): SchemaValue {
     // default value for a PSelect
     if (this.property.enum) {
-      return null
+      return this.property.default ?? null
     }
 
     switch (this.property.format) {
@@ -107,14 +106,14 @@ export class SchemaPropertyString extends SchemaPropertyService {
 
   private requestDateTimeValue(value: SchemaValue): SchemaValue {
     if (isDate(value)) {
-      return mapper.map('Date', value, 'string')
+      return format(value, 'yyyy-MM-dd\'T\'HH:mm:ss.000\'Z\'')
     }
 
     return value
   }
 
   private responseDateTimeValue(value: SchemaValue): Date {
-    const date = mapper.map('string', value as string, 'Date')
+    const date = parse(value as string, 'yyyy-MM-dd\'T\'HH:mm:ss.SSS\'Z\'', new Date())
 
     if (!isValid(date)) {
       this.invalid()

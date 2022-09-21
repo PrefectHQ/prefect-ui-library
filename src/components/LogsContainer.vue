@@ -56,7 +56,6 @@
   grid
   gap-1
   text-sm
-  overscroll-contain;
 }
 
 .logs__divider { @apply

@@ -1,6 +1,6 @@
 import { BlockDocumentReferencesResponse } from '@/models'
 import { MapFunction } from '@/services/Mapper'
-import { schemaValuesReferencesResolver } from '@/services/schemas/resolvers/references'
+import { schemaValuesBlockReferencesResolver } from '@/services/schemas/resolvers/blockReferences'
 import { getSchemaResponseValue } from '@/services/schemas/utilities'
 import { Schema, SchemaValues } from '@/types/schemas'
 
@@ -14,7 +14,7 @@ export const mapSchemaValuesResponseToSchemaValues: MapFunction<MapSchemaValuesS
   let resolved: SchemaValues = source.values
 
   if (source.references) {
-    resolved = schemaValuesReferencesResolver(resolved, source.references)
+    resolved = schemaValuesBlockReferencesResolver(resolved, source.references)
   }
 
   resolved = getSchemaResponseValue(source.schema, resolved)

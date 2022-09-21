@@ -21,8 +21,7 @@ export class SchemaPropertyBlock extends SchemaPropertyService {
 
     const request: BlockDocumentReferenceValue = {
       $ref: {
-        // eslint-disable-next-line camelcase
-        block_document_id: value,
+        'block_document_id': value,
       },
     }
 
