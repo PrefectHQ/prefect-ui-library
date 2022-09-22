@@ -10,7 +10,7 @@
         </h5>
       </header>
 
-      <StateBadge :state="flowRun.state" class="max-w-min" />
+      <StateBadge :state="{ name: flowRun.stateName, type: flowRun.stateType } " class="max-w-min" />
 
       <p-divider />
 

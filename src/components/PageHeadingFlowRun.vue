@@ -16,7 +16,7 @@
     </template>
     <slot>
       <div class="page-heading-flow-run__header-meta">
-        <StateBadge :state="flowRun.state" />
+        <StateBadge :state="{ name: flowRun.stateName, type: flowRun.stateType }" />
         <DurationIconText :duration="flowRun.duration" />
         <FlowIconText :flow-id="flowRun.flowId" />
         <FlowRunStartTime :flow-run="flowRun" />
@@ -49,7 +49,7 @@
   // It doesn't seem like we should need to coalesce here but
   // the flow run model dictates the flow run name can be null
   const crumbs = computed(() => [
-    { text: 'Flow Runs', to: flowRunsRoute() },
+    { text: 'Flow Run 888', to: flowRunsRoute() },
     { text: props.flowRun.name ?? '' },
   ])
 

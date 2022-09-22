@@ -20,6 +20,7 @@ export type FlowRunResponse = {
   tags: string[] | null,
   parent_task_run_id: string | null,
   state_type: ServerStateType | null,
+  state_name: string,
   run_count: number | null,
   expected_start_time: DateString | null,
   next_scheduled_start_time: DateString | null,

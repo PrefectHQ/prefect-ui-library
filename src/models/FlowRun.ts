@@ -25,6 +25,7 @@ export interface IFlowRun {
   parentTaskRunId: string | null,
   stateId: string | null,
   stateType: StateType | null,
+  stateName: string,
   state: State | null,
   tags: string[] | null,
   runCount: number | null,
@@ -56,6 +57,7 @@ export class FlowRun implements IFlowRun {
   public parentTaskRunId: string | null
   public stateId: string | null
   public stateType: StateType | null
+  public stateName: string
   public state: State | null
   public tags: string[] | null
   public runCount: number | null
@@ -84,6 +86,7 @@ export class FlowRun implements IFlowRun {
     this.parentTaskRunId = flowRun.parentTaskRunId
     this.stateId = flowRun.stateId
     this.stateType = flowRun.stateType
+    this.stateName = flowRun.stateName
     this.state = flowRun.state
     this.tags = flowRun.tags
     this.runCount = flowRun.runCount

@@ -7,7 +7,7 @@
       </router-link>
     </template>
     <template #meta>
-      <StateBadge :state="flowRun.state" />
+      <StateBadge :state="{ name: flowRun.stateName, type: flowRun.stateType }" />
       <DurationIconText :duration="flowRun.duration" />
       <FlowRunStartTime :flow-run="flowRun" />
       <FlowRunTaskCount :flow-run="flowRun" />
@@ -49,7 +49,9 @@
   })
   const flowRunRoute = inject(flowRunRouteKey)
 
-  const stateType = computed(() => props.flowRun.state?.type)
+  const stateType = computed(() => {
+    return props.flowRun.stateType
+  })
   const tags = computed(() => props.flowRun.tags)
   const value = computed(() => props.flowRun.id)
 </script>
