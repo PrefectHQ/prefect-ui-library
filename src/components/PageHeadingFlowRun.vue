@@ -49,7 +49,7 @@
   // It doesn't seem like we should need to coalesce here but
   // the flow run model dictates the flow run name can be null
   const crumbs = computed(() => [
-    { text: 'Flow Run 888', to: flowRunsRoute() },
+    { text: 'Flow Run', to: flowRunsRoute() },
     { text: props.flowRun.name ?? '' },
   ])
 
