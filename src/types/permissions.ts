@@ -81,7 +81,9 @@ const workspacePermissions = [
   'read:task_run',
   'read:work_queue',
   'read:workspace_bot_access',
+  'read:workspace_settings',
   'read:workspace_user_access',
+  'run:deployment',
   'update:block',
   'update:deployment',
   'update:flow_run',
@@ -90,6 +92,7 @@ const workspacePermissions = [
   'update:task_run',
   'update:work_queue',
   'update:workspace_bot_access',
+  'update:workspace_settings',
   'update:workspace_user_access',
   'update:workspace',
 ] as const
