@@ -24,6 +24,7 @@ export default defineConfig(({ mode }) => {
   return {
     ...baseConfig,
     build: {
+      sourcemap: true,
       emptyOutDir: false,
       lib: {
         entry: resolve(__dirname, 'src/index.ts'),
