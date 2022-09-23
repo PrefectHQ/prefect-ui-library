@@ -104,6 +104,7 @@ const featureFlags = [
   'access:retention',
   'access:workos',
   'access:selfServeOrgs',
+  'access:customRoles',
 ] as const
 
 export type FeatureFlagString = typeof featureFlags[number]
