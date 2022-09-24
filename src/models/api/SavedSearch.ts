@@ -8,11 +8,11 @@ export type SavedSearch = {
 }
 
 export type SavedSearchFilter = {
-  object: string,
-  property: string,
-  type: string,
-  operation: string,
-  value: any,
+  object?: string,
+  property?: string,
+  type?: string,
+  operation?: string,
+  value?: any,
 }
 
 export type SavedSearchCreate = {

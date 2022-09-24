@@ -4,22 +4,55 @@
 
 <script setup lang="ts">
   import { formatDateTimeNumeric, parseDateTimeNumeric } from '@prefecthq/prefect-design'
+  import {  useRouteQueryParam } from '@prefecthq/vue-compositions'
   import { startOfToday, subDays } from 'date-fns'
   import { watch, ref, inject } from 'vue'
   import { useRouter } from 'vue-router'
   import { useFlowRunFilterFromRoute } from '@/compositions'
   import { stateType } from '@/models'
-  import { flowRunsRouteKey, Route } from '@/router'
+  import { SavedSearchFilter } from '@/models/api/SavedSearch'
+  import { flowRunsRouteKey } from '@/router'
+  // import { savedSearchesApiKey, savedSearchesApi } from '@/services/savedSearchesApi'
+  import { createApi } from '@/utilities'
 
   const router = useRouter()
   const flowRunsRoute =  inject(flowRunsRouteKey)
-  const { startDate, states } = useFlowRunFilterFromRoute()
+  const api = createApi({ baseUrl: 'http://localhost:4200/api' })
 
-  const options: { label: string, value: string }[] = [
-    { label: 'One week (default)', value: 'week' },
-    { label: 'One day', value: 'day' },
-    { label: 'No scheduled (week)', value: 'noScheduled' },
-  ]
+
+  const savedSearches = await api.savedSearches.getSavedSearches({})
+  console.log(savedSearches)
+
+  // const pendingOnly = api.savedSearches.createSavedSearch({
+  //   name:'failed&completedOnly',
+  //   filters:[
+  //     {
+  //       object: 'flowRun',
+  //       property: 'state',
+  //       type: '',
+  //       operation: '',
+  //       value: 'failed',
+  //     }, {
+  //       object: 'flowRun',
+  //       property: 'state',
+  //       type: '',
+  //       operation: '',
+  //       value: 'failed',
+  //     },
+  //   ],
+  // })
+
+  // const flows = useRouteQueryParam('flow', [])
+  // const tags = useRouteQueryParam('tag', [])
+  // const statesy = useRouteQueryParam('state', [])
+  const { startDate, endDate, states, deployments, flows, tags, name } = useFlowRunFilterFromRoute()
+  console.log('flows', flows.value, 'tags', tags.value, 'states', states.value)
+
+  const savedSearchOptions = savedSearches.map(search => {
+    return { label: search.name, value: search.filters }
+  })
+  console.log(savedSearchOptions)
+  const options: { label: string, value: string | SavedSearchFilter | undefined }[] = [{ label: 'One week (default)', value: 'week' }, ...savedSearchOptions]
 
   const selectedFilter = ref('week')
 
