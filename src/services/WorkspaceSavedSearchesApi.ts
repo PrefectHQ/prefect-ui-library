@@ -1,14 +1,16 @@
 import { WorkspaceApi } from './WorkspaceApi'
-import { SavedSearch, SavedSearchCreate, SavedSearchFilter } from '@/models/api/SavedSearch'
+import { SavedSearchResponse, SavedSearchCreate } from '@/models/api/SavedSearchResponse'
+import { SavedSearch } from '@/models/SavedSearch'
+import { mapper } from '@/services/Mapper'
 
 export class WorkspaceSavedSearchesApi extends WorkspaceApi {
 
   protected routePrefix = '/saved_searches'
 
-  public async getSavedSearches(filter: SavedSearchFilter = {}): Promise<SavedSearch[]> {
-    const { data } = await this.post<SavedSearch[]>('/filter', filter)
+  public async getSavedSearches(filter = {}): Promise<SavedSearch[]> {
+    const { data } = await this.post<SavedSearchResponse[]>('/filter', filter)
 
-    return data
+    return mapper.map('SavedSearchResponse', data, 'SavedSearch')
   }
 
   public getSavedSearch(id: string): Promise<SavedSearch> {
@@ -17,13 +19,15 @@ export class WorkspaceSavedSearchesApi extends WorkspaceApi {
   }
 
   public createSavedSearch(search: SavedSearchCreate): Promise<SavedSearch> {
-    console.log('in saved')
     return this.put<SavedSearch>('/', search)
       .then(({ data }) => {
-        console.log('data', data)
         return data
       })
   }
 
+  public deleteSavedSearch(id: string): Promise<void> {
+    return this.delete(`/${id}`)
+  }
 
 }
+

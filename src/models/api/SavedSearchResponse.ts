@@ -1,6 +1,6 @@
 
-export type SavedSearch = {
-  id?: string,
+export type SavedSearchResponse = {
+  id: string,
   created?: string,
   updated?: string,
   name: string,
