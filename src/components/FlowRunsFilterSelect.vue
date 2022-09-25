@@ -56,7 +56,7 @@
   const savedSearchOptions = savedSearches.map(search => {
     return { label: search.name, value: search.name }
   })
-  console.log('options', savedSearchOptions)
+
   const options: { label: string, value: string }[] = [{ label: 'One week (default)', value: 'week' }, ...savedSearchOptions]
 
   const selectedFilter = ref('week')
