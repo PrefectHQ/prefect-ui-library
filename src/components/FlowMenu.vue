@@ -25,10 +25,10 @@
 <script lang="ts" setup>
   import ConfirmDeleteModal from '@/components/ConfirmDeleteModal.vue'
   import CopyOverflowMenuItem from '@/components/CopyOverflowMenuItem.vue'
+  import { useCan } from '@/compositions/useCan'
   import { useShowModal } from '@/compositions/useShowModal'
   import { Flow } from '@/models'
   import { flowsApiKey } from '@/services/FlowsApi'
-  import { canKey } from '@/types/permissions'
   import { inject, deleteItem } from '@/utilities'
 
   defineProps<{
@@ -39,6 +39,8 @@
     (event: 'delete', value: string): void,
   }>()
 
+  const can = useCan()
+
   const { showModal, open, close } = useShowModal()
 
   const flowsApi = inject(flowsApiKey)
@@ -48,6 +50,4 @@
     await deleteItem(id, flowsApi.deleteFlow, 'Flow')
     emits('delete', id)
   }
-
-  const can = inject(canKey)
 </script>
