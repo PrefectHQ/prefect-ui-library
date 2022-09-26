@@ -22,6 +22,7 @@ import { mapNotificationCreateToNotificationCreateRequest } from '@/maps/notific
 import { mapNotificationUpdateToNotificationUpdateRequest } from '@/maps/notificationUpdate'
 import { mapNumberToString, mapStringToNumber } from '@/maps/number'
 import { mapSavedSearchResponseToSavedSearch } from '@/maps/savedSearch'
+import { mapSavedSearchToSavedSearchCreate } from '@/maps/savedSearchCreate'
 import { mapUiFlowRunHistoryToScatterPlotItem } from '@/maps/scatterPlotItem'
 import { mapScheduleToScheduleResponse, mapScheduleResponseToSchedule, mapScheduleToScheduleRequest } from '@/maps/schedule'
 import { mapSchemaDefinitionsResponseToSchemaDefinitions, mapSchemaPropertiesResponseToSchemaProperties, mapSchemaPropertyResponseToSchemaProperty, mapSchemaResponseToSchema } from '@/maps/schema'
@@ -81,6 +82,7 @@ export const maps = {
   number: { string: mapNumberToString },
   RunHistory: { FlowRunHistoryResponse: mapRunHistoryToFlowRunHistoryResponse, DivergingBarChartItem: mapRunHistoryToDivergingBarChartItem },
   SavedSearchResponse: { SavedSearch: mapSavedSearchResponseToSavedSearch },
+  SavedSearch: { SavedSearchCreate: mapSavedSearchToSavedSearchCreate },
   Schedule: { ScheduleResponse: mapScheduleToScheduleResponse, ScheduleRequest: mapScheduleToScheduleRequest },
   ServerStateType: { StateType: mapServerStateTypeToStateType },
   StateHistory: { StateHistoryResponse: mapStateHistoryToStateHistoryResponse },

@@ -10,6 +10,7 @@
 
 
   import { createApi } from '@/utilities'
+  import { deploymentsApi } from 'demo/services'
 
   const router = useRouter()
   const flowRunsRoute =  inject(flowRunsRouteKey)
@@ -19,23 +20,11 @@
 
   // create
   await api.savedSearches.createSavedSearch({
-    name:'completed&',
-    filters:[
-      {
-        object: 'flowRun',
-        property: 'states',
-        type: '',
-        operation: '',
-        value: ['completed', 'failed'],
-      },
-      {
-        property: 'flows',
-        object: 'flowRun',
-        type: '',
-        operation: '',
-        value: ['fc8acbb2-d3b1-4115-91cf-164d97d546a1'],
-      },
-    ],
+    name:'completed&failed&bb',
+    filters:{
+      states: ['failed', 'completed'],
+      tags: ['bb'],
+    },
   })
 
   // delete
@@ -43,7 +32,7 @@
   //   api.savedSearches.deleteSavedSearch(savedSearches[0].id)
   // }
 
-  const { flows, states }  = useFlowRunFilterFromRoute()
+  const { flows, states, tags, deployments }  = useFlowRunFilterFromRoute()
 
   const savedSearchOptions = savedSearches.map(search => {
     return { label: search.name, value: search.name }
@@ -56,8 +45,10 @@
   watch(selectedSavedSearch, (value: string)=> {
     const selectedFilter = savedSearches.find(filter => filter.name === value)?.filters
     if (selectedFilter) {
-      flows.value = selectedFilter.flows
-      states.value = selectedFilter.states
+      flows.value = selectedFilter.flows ?? []
+      states.value = selectedFilter.states?? []
+      tags.value = selectedFilter.tags ?? []
+      deployments.value = selectedFilter.deployments ?? []
       return
     }
     router.push(flowRunsRoute!())

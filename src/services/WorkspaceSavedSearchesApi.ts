@@ -18,8 +18,8 @@ export class WorkspaceSavedSearchesApi extends WorkspaceApi {
       .then(({ data }) => data)
   }
 
-  public createSavedSearch(search: SavedSearchCreate): Promise<SavedSearch> {
-    return this.put<SavedSearch>('/', search)
+  public createSavedSearch(search: SavedSearch): Promise<SavedSearch> {
+    return this.put<SavedSearch>('/', mapper.map('SavedSearch', search, 'SavedSearchCreate'))
       .then(({ data }) => {
         return data
       })

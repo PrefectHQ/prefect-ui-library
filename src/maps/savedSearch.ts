@@ -25,6 +25,8 @@ function mapSavedSearchFilters(filters: SavedSearchFilter[] | undefined): SavedS
   if (filters) {
     filter.flows = filters.find(filter => filter.property === 'flows')?.value ?? []
     filter.states = filters.find(filter => filter.property === 'states')?.value ?? []
+    filter.tags = filters.find(filter => filter.property === 'tags')?.value ?? []
+    filter.deployments = filters.find(filter => filter.property === 'deployments')?.value ?? []
   }
   return filter
 }

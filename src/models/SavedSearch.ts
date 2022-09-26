@@ -1,13 +1,13 @@
 import { StateType } from './StateType'
 
 export interface ISavedSearch {
-  id: string,
+  id?: string,
   name: string,
   filters: SavedSearchMappedFilter,
 }
 
 export class SavedSearch implements ISavedSearch {
-  public readonly id: string
+  public readonly id?: string | undefined
   public name: string
   public filters: SavedSearchMappedFilter
 
@@ -20,12 +20,10 @@ export class SavedSearch implements ISavedSearch {
 
 
 export type SavedSearchMappedFilter = {
-  states: StateType[],
-  flows: string[],
-  tags: string[],
-  deployments: string[],
-  startDate: string | Date,
-  endDate: string | Date,
-
-
+  states?: StateType[],
+  flows?: string[],
+  tags?: string[],
+  deployments?: string[],
+  startDate?: string | Date,
+  endDate?: string | Date,
 }
