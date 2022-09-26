@@ -3,34 +3,21 @@
 </template>
 
 <script setup lang="ts">
-  import { formatDateTimeNumeric, parseDateTimeNumeric } from '@prefecthq/prefect-design'
-  import {  useRouteQueryParam } from '@prefecthq/vue-compositions'
-  import { previousDay, startOfToday, subDays, addDays, endOfToday } from 'date-fns'
-  import { preview } from 'vite'
-  import { watch, ref, inject, computed } from 'vue'
+  import { watch, ref, inject } from 'vue'
   import { useRouter } from 'vue-router'
   import { useFlowRunFilterFromRoute } from '@/compositions'
-  import { stateType } from '@/models'
-  import { SavedSearchMappedFilter } from '@/models/SavedSearch'
   import { flowRunsRouteKey } from '@/router'
 
-  // import { savedSearchesApiKey, savedSearchesApi } from '@/services/savedSearchesApi'
+
   import { createApi } from '@/utilities'
 
   const router = useRouter()
   const flowRunsRoute =  inject(flowRunsRouteKey)
   const api = createApi({ baseUrl: 'http://localhost:4200/api' })
 
-
   const savedSearches = await api.savedSearches.getSavedSearches({})
-  // console.log('savedSearches', savedSearches)
 
-
-  //  function filterMapper(filters: SavedSearchFilter) {
-  //   filters.value.reduce((previous:SavedSearchFilter, current: SavedSearchFilter) => prev1.value, initalValue)
-  //  })
-
-
+  // create
   await api.savedSearches.createSavedSearch({
     name:'completed&',
     filters:[
@@ -41,13 +28,13 @@
         operation: '',
         value: ['completed', 'failed'],
       },
-      // {
-      //   property: 'flows',
-      //   object: 'flowRun',
-      //   type: '',
-      //   operation: '',
-      //   value: ['fc8acbb2-d3b1-4115-91cf-164d97d546a1'],
-      // },
+      {
+        property: 'flows',
+        object: 'flowRun',
+        type: '',
+        operation: '',
+        value: ['fc8acbb2-d3b1-4115-91cf-164d97d546a1'],
+      },
     ],
   })
 
@@ -56,9 +43,7 @@
   //   api.savedSearches.deleteSavedSearch(savedSearches[0].id)
   // }
 
-  const { flows }  = useFlowRunFilterFromRoute()
-  const { states }  = useFlowRunFilterFromRoute()
-
+  const { flows, states }  = useFlowRunFilterFromRoute()
 
   const savedSearchOptions = savedSearches.map(search => {
     return { label: search.name, value: search.name }
@@ -67,14 +52,6 @@
   const options: { label: string, value: string }[] = [{ label: 'Default', value: 'default' }, ...savedSearchOptions]
 
   const selectedSavedSearch = ref('default')
-  // const selectedFilter = computed(()=>savedSearches.find(filter => filter.name === selectedSavedSearch.value)?.filters ?? {
-  //   states: [],
-  //   tags: [],
-  //   flows: [],
-  //   deployments: [],
-  //   startDate: parseDateTimeNumeric(formatDateTimeNumeric(subDays(startOfToday(), 7))),
-  //   endDate: parseDateTimeNumeric(formatDateTimeNumeric(addDays(endOfToday(), 1))),
-  // })
 
   watch(selectedSavedSearch, (value: string)=> {
     const selectedFilter = savedSearches.find(filter => filter.name === value)?.filters
