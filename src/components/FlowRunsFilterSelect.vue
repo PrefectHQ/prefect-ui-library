@@ -5,15 +5,15 @@
 <script setup lang="ts">
   import { formatDateTimeNumeric, parseDateTimeNumeric } from '@prefecthq/prefect-design'
   import {  useRouteQueryParam } from '@prefecthq/vue-compositions'
-  import { previousDay, startOfToday, subDays } from 'date-fns'
+  import { previousDay, startOfToday, subDays, addDays, endOfToday } from 'date-fns'
   import { preview } from 'vite'
   import { watch, ref, inject, computed } from 'vue'
   import { useRouter } from 'vue-router'
   import { useFlowRunFilterFromRoute } from '@/compositions'
   import { stateType } from '@/models'
   import { SavedSearchMappedFilter } from '@/models/SavedSearch'
-  import { StateType } from '@/models/StateType'
   import { flowRunsRouteKey } from '@/router'
+
   // import { savedSearchesApiKey, savedSearchesApi } from '@/services/savedSearchesApi'
   import { createApi } from '@/utilities'
 
@@ -56,10 +56,6 @@
   //   api.savedSearches.deleteSavedSearch(savedSearches[0].id)
   // }
 
-  // const flows = useRouteQueryParam('flow', [])
-  // const tags = useRouteQueryParam('tag', [])
-  // const statesy = useRouteQueryParam('state', [])
-  // console.log('flows etc', flows, tags, statesy)
   const { flows }  = useFlowRunFilterFromRoute()
   const { states }  = useFlowRunFilterFromRoute()
 
@@ -71,18 +67,24 @@
   const options: { label: string, value: string }[] = [{ label: 'Default', value: 'default' }, ...savedSearchOptions]
 
   const selectedSavedSearch = ref('default')
-  const selectedFilter = computed(()=>savedSearches.find(filter => filter.name === selectedSavedSearch.value)?.filters ?? { states: [], flows: [] })
+  // const selectedFilter = computed(()=>savedSearches.find(filter => filter.name === selectedSavedSearch.value)?.filters ?? {
+  //   states: [],
+  //   tags: [],
+  //   flows: [],
+  //   deployments: [],
+  //   startDate: parseDateTimeNumeric(formatDateTimeNumeric(subDays(startOfToday(), 7))),
+  //   endDate: parseDateTimeNumeric(formatDateTimeNumeric(addDays(endOfToday(), 1))),
+  // })
 
-  watch(()=> selectedFilter.value.states, (val: StateType[])=> {
-          states.value = val
-        },
-        { deep: true },
-  )
-  watch(()=> selectedFilter.value.flows, (val: string[])=> {
-          console.log('in flow watch', flows)
-          flows.value = val
-        },
-        { deep: true })
+  watch(selectedSavedSearch, (value: string)=> {
+    const selectedFilter = savedSearches.find(filter => filter.name === value)?.filters
+    if (selectedFilter) {
+      flows.value = selectedFilter.flows
+      states.value = selectedFilter.states
+      return
+    }
+    router.push(flowRunsRoute!())
+  })
 </script>
 
 <style>
