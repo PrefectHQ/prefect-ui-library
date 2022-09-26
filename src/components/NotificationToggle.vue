@@ -5,10 +5,10 @@
 <script lang="ts" setup>
   import { PToggle, showToast } from '@prefecthq/prefect-design'
   import { computed, ref } from 'vue'
+  import { useCan } from '@/compositions/useCan'
   import { localization } from '@/localization'
   import { Notification } from '@/models'
   import { notificationsApiKey } from '@/services/NotificationsApi'
-  import { canKey } from '@/types'
   import { inject } from '@/utilities'
 
   const props = defineProps<{
@@ -19,7 +19,7 @@
     (event: 'update'): void,
   }>()
 
-  const can = inject(canKey)
+  const can = useCan()
   const notificationsApi = inject(notificationsApiKey)
 
   const internalValue = computed({
