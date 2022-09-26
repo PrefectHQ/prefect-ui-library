@@ -6,5 +6,5 @@ export type ConditionalTab = {
 }
 
 export function useTabs(tabs: ConditionalTab[]): ComputedRef<string[]> {
-  return computed(() => tabs.filter(tab => tab.hidden !== false).map(tab => tab.label))
+  return computed(() => tabs.filter(tab => tab.hidden !== true).map(tab => tab.label))
 }
