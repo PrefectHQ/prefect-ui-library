@@ -1,3 +1,4 @@
+import { StateType } from './StateType'
 
 export interface ISavedSearch {
   id: string,
@@ -19,7 +20,7 @@ export class SavedSearch implements ISavedSearch {
 
 
 export type SavedSearchMappedFilter = {
-  states: string[],
+  states: StateType[],
   flows: string[],
   tags: string[],
   deployments: string[],

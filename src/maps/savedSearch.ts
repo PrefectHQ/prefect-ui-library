@@ -23,8 +23,8 @@ function mapSavedSearchFilters(filters: SavedSearchFilter[] | undefined): SavedS
     endDate: parseDateTimeNumeric(formatDateTimeNumeric(addDays(endOfToday(), 1))),
   }
   if (filters) {
-    const statesFilter = filters.find(filter => filter.property === 'states')
-    filter.states = statesFilter?.value
+    filter.flows = filters.find(filter => filter.property === 'flows')?.value ?? []
+    filter.states = filters.find(filter => filter.property === 'states')?.value ?? []
   }
   return filter
 }

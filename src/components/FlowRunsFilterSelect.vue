@@ -1,5 +1,5 @@
 <template>
-  <p-select v-model="selectedFilter" :options="options" class="flow-runs-filter-select" />
+  <p-select v-model="selectedSavedSearch" :options="options" class="flow-runs-filter-select" />
 </template>
 
 <script setup lang="ts">
@@ -7,11 +7,12 @@
   import {  useRouteQueryParam } from '@prefecthq/vue-compositions'
   import { previousDay, startOfToday, subDays } from 'date-fns'
   import { preview } from 'vite'
-  import { watch, ref, inject } from 'vue'
+  import { watch, ref, inject, computed } from 'vue'
   import { useRouter } from 'vue-router'
   import { useFlowRunFilterFromRoute } from '@/compositions'
   import { stateType } from '@/models'
   import { SavedSearchMappedFilter } from '@/models/SavedSearch'
+  import { StateType } from '@/models/StateType'
   import { flowRunsRouteKey } from '@/router'
   // import { savedSearchesApiKey, savedSearchesApi } from '@/services/savedSearchesApi'
   import { createApi } from '@/utilities'
@@ -22,6 +23,7 @@
 
 
   const savedSearches = await api.savedSearches.getSavedSearches({})
+  // console.log('savedSearches', savedSearches)
 
 
   //  function filterMapper(filters: SavedSearchFilter) {
@@ -30,64 +32,57 @@
 
 
   await api.savedSearches.createSavedSearch({
-    name:'failed',
+    name:'completed&',
     filters:[
       {
         object: 'flowRun',
         property: 'states',
         type: '',
         operation: '',
-        value: ['failed'],
+        value: ['completed', 'failed'],
       },
+      // {
+      //   property: 'flows',
+      //   object: 'flowRun',
+      //   type: '',
+      //   operation: '',
+      //   value: ['fc8acbb2-d3b1-4115-91cf-164d97d546a1'],
+      // },
     ],
   })
 
-  if (savedSearches[0]?.id) {
-    api.savedSearches.deleteSavedSearch(savedSearches[0].id)
-  }
+  // delete
+  // if (savedSearches[0]?.id) {
+  //   api.savedSearches.deleteSavedSearch(savedSearches[0].id)
+  // }
 
   // const flows = useRouteQueryParam('flow', [])
   // const tags = useRouteQueryParam('tag', [])
   // const statesy = useRouteQueryParam('state', [])
   // console.log('flows etc', flows, tags, statesy)
-  const { startDate, endDate, states, deployments, hasFilters, flows, tags, name } = useFlowRunFilterFromRoute()
+  const { flows }  = useFlowRunFilterFromRoute()
+  const { states }  = useFlowRunFilterFromRoute()
 
 
   const savedSearchOptions = savedSearches.map(search => {
     return { label: search.name, value: search.name }
   })
 
-  const options: { label: string, value: string }[] = [{ label: 'One week (default)', value: 'week' }, ...savedSearchOptions]
+  const options: { label: string, value: string }[] = [{ label: 'Default', value: 'default' }, ...savedSearchOptions]
 
-  const selectedFilter = ref('week')
+  const selectedSavedSearch = ref('default')
+  const selectedFilter = computed(()=>savedSearches.find(filter => filter.name === selectedSavedSearch.value)?.filters ?? { states: [], flows: [] })
 
-  watch(selectedFilter, async ()=> {
-    await router.push(flowRunsRoute!())
-    // states.value = []
-    // if (selectedFilter.value === 'week') {
-    //   states.value = [...stateType.filter(state => state !== 'scheduled')]
-    //   console.log('sates', states.value)
-    //   startDate.value = parseDateTimeNumeric(formatDateTimeNumeric(subDays(startOfToday(), 7)))
-    //   return
-    // }
-    // if (selectedFilter.value === 'day') {
-    //   startDate.value = parseDateTimeNumeric(formatDateTimeNumeric(subDays(startOfToday(), 1)))
-    //   states.value = []
-    //   return
-    // } if (selectedFilter.value === 'week') {
-    //   states.value = []
-    //   startDate.value = parseDateTimeNumeric(formatDateTimeNumeric(subDays(startOfToday(), 7)))
-    // }
-    // const search  = savedSearches.find(search => search.name === selectedFilter.value)
-    // console.log('search', search)
-    // const filters = search?.filters
-    // const statesFilter = filters?.find(filter => filter.property === 'states')
-    // console.log('statesFilter', statesFilter?.value, 'states', states.value)
-    // states.value = statesFilter?.value
-    // console.log('sates2', states.value)
-    // const flowsFilter = filters?.find(filter => filter.property === 'flow')
-    // flows.value = flowsFilter?.value
-  })
+  watch(()=> selectedFilter.value.states, (val: StateType[])=> {
+          states.value = val
+        },
+        { deep: true },
+  )
+  watch(()=> selectedFilter.value.flows, (val: string[])=> {
+          console.log('in flow watch', flows)
+          flows.value = val
+        },
+        { deep: true })
 </script>
 
 <style>
