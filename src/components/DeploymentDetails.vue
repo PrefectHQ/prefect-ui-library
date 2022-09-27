@@ -44,7 +44,9 @@
 
     <p-key-value label="Deployment Version" :value="deployment.version" :alternate="alternate" />
 
-    <p-key-value label="Flow ID" :value="deployment.flowId" :alternate="alternate" />
+    <template v-if="can.read.flow">
+      <p-key-value label="Flow ID" :value="deployment.flowId" :alternate="alternate" />
+    </template>
 
     <p-key-value label="Storage Document ID" :value="deployment.storageDocumentId" :alternate="alternate" />
 
@@ -69,6 +71,7 @@
   import WorkQueueIconText from './WorkQueueIconText.vue'
   import BlockIconText from '@/components/BlockIconText.vue'
   import FlowIconText from '@/components/FlowIconText.vue'
+  import { useCan } from '@/compositions/useCan'
   import { localization } from '@/localization'
   import { Schedule } from '@/models'
   import { Deployment } from '@/models/Deployment'
@@ -84,6 +87,7 @@
     (event: 'update'): void,
   }>()
 
+  const can = useCan()
   const deploymentsApi = inject(deploymentsApiKey)
   const updateScheduleLoading = ref(false)
 

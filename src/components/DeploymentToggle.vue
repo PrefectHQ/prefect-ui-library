@@ -5,10 +5,10 @@
 <script lang="ts" setup>
   import { PToggle, showToast } from '@prefecthq/prefect-design'
   import { computed, ref } from 'vue'
+  import { useCan } from '@/compositions/useCan'
   import { localization } from '@/localization'
   import { Deployment } from '@/models'
   import { deploymentsApiKey } from '@/services/DeploymentsApi'
-  import { canKey } from '@/types'
   import { inject } from '@/utilities'
 
   const props = defineProps<{
@@ -20,7 +20,7 @@
   }>()
 
   const deploymentsApi = inject(deploymentsApiKey)
-  const can = inject(canKey)
+  const can = useCan()
 
   const internalValue = computed({
     get() {

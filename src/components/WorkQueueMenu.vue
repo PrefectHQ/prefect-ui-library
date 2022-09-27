@@ -18,6 +18,7 @@
 <script lang="ts">
   import { PIconButtonMenu, POverflowMenuItem } from '@prefecthq/prefect-design'
   import { defineComponent } from 'vue'
+  import { useCan } from '@/compositions/useCan'
 
   export default defineComponent({
     name: 'WorkQueueMenu',
@@ -34,7 +35,6 @@
   import { WorkQueue } from '@/models'
   import { editQueueRouteKey } from '@/router'
   import { workQueuesApiKey } from '@/services/WorkQueuesApi'
-  import { canKey } from '@/types/permissions'
   import { inject, deleteItem } from '@/utilities'
 
   defineProps<{
@@ -49,7 +49,7 @@
 
   const workQueuesApi = inject(workQueuesApiKey)
   const editQueueRoute = inject(editQueueRouteKey)
-  const can = inject(canKey)
+  const can = useCan()
 
   const deleteWorkQueue = async (id: string): Promise<void> => {
     close()

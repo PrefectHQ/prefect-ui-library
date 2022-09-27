@@ -11,12 +11,12 @@
 <script lang="ts" setup>
   import { RouterLink } from 'vue-router'
   import PageHeading from '@/components/PageHeading.vue'
+  import { useCan } from '@/compositions/useCan'
   import { blockCatalogRouteKey } from '@/router/routes'
-  import { canKey } from '@/types/permissions'
   import { inject } from '@/utilities'
 
   const crumbs = [{ text: 'Blocks' }]
 
+  const can = useCan()
   const blockCatalogRoute = inject(blockCatalogRouteKey)
-  const can = inject(canKey)
 </script>

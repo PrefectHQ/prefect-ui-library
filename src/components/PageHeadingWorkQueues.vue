@@ -11,12 +11,12 @@
 <script lang="ts" setup>
   import { RouterLink } from 'vue-router'
   import PageHeading from '@/components/PageHeading.vue'
+  import { useCan } from '@/compositions/useCan'
   import { workQueueCreateRouteKey } from '@/router/routes'
-  import { canKey } from '@/types/permissions'
   import { inject } from '@/utilities'
 
   const crumbs = [{ text: 'Work Queues' }]
 
+  const can = useCan()
   const newQueueRoute = inject(workQueueCreateRouteKey)
-  const can = inject(canKey)
 </script>

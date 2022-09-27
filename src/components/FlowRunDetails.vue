@@ -4,13 +4,15 @@
 
     <p-key-value label="Flow ID" :value="flowRun.flowId" :alternate="alternate" />
 
-    <p-key-value v-if="flowRun.workQueueName" label="Work Queue" :alternate="alternate">
-      <template #value>
-        <WorkQueueIconText :work-queue-name="flowRun.workQueueName" />
-      </template>
-    </p-key-value>
+    <template v-if="can.read.work_queue">
+      <p-key-value v-if="flowRun.workQueueName" label="Work Queue" :alternate="alternate">
+        <template #value>
+          <WorkQueueIconText :work-queue-name="flowRun.workQueueName" />
+        </template>
+      </p-key-value>
+    </template>
 
-    <template v-if="flowRun.deploymentId">
+    <template v-if="can.read.deployment && flowRun.deploymentId">
       <p-key-value label="Deployment ID" :value="flowRun.deploymentId" :alternate="alternate" />
     </template>
 
@@ -37,12 +39,15 @@
 <script lang="ts" setup>
   import { PKeyValue, PTags, formatDateTimeNumeric } from '@prefecthq/prefect-design'
   import  WorkQueueIconText  from '@/components/WorkQueueIconText.vue'
+  import { useCan } from '@/compositions/useCan'
   import { FlowRun } from '@/models/FlowRun'
 
   defineProps<{
     flowRun: FlowRun,
     alternate?: boolean,
   }>()
+
+  const can = useCan()
 </script>
 
 <style>
