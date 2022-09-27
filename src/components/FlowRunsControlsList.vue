@@ -50,7 +50,7 @@
     return runFilter
   })
 
-  const flowRunsSubscription = useSubscription(flowRunsApi.getFlowRuns, [flowRunsFilter])
+  const flowRunsSubscription = useSubscription(flowRunsApi.getFlowRuns, [flowRunsFilter], { interval: 30000 })
   const flowRuns = computed(() => flowRunsSubscription.response ?? [])
 </script>
 
