@@ -5,6 +5,8 @@
 
       <p-key-value label="Name" :value="blockType.name" />
 
+      <p-key-value label="Slug" :value="blockType.slug" />
+
       <template v-if="blockSchema && hasCapabilities">
         <p-key-value label="Capabilities">
           <template #value>

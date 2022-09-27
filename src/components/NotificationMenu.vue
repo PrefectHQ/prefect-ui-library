@@ -28,11 +28,11 @@
 
 <script lang="ts" setup>
   import ConfirmDeleteModal from '@/components/ConfirmDeleteModal.vue'
+  import { useCan } from '@/compositions/useCan'
   import { useShowModal } from '@/compositions/useShowModal'
   import { Notification } from '@/models'
   import { editNotificationRouteKey } from '@/router'
   import { notificationsApiKey } from '@/services/NotificationsApi'
-  import { canKey } from '@/types/permissions'
   import { inject, deleteItem } from '@/utilities'
 
   defineProps<{
@@ -42,6 +42,8 @@
   const emits = defineEmits<{
     (event: 'delete', value: string): void,
   }>()
+
+  const can = useCan()
 
   const { showModal, open, close } = useShowModal()
 
@@ -53,6 +55,4 @@
     await deleteItem(id, NotificationApi.deleteNotification, 'Notification')
     emits('delete', id)
   }
-
-  const can = inject(canKey)
 </script>

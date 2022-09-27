@@ -11,12 +11,12 @@
 <script lang="ts" setup>
   import { RouterLink } from 'vue-router'
   import PageHeading from '@/components/PageHeading.vue'
+  import { useCan } from '@/compositions/useCan'
   import { notificationCreateRouteKey } from '@/router/routes'
-  import { canKey } from '@/types'
   import { inject } from '@/utilities'
 
   const crumbs = [{ text: 'Notifications' }]
 
+  const can = useCan()
   const newNotificationRoute = inject(notificationCreateRouteKey)
-  const can = inject(canKey)
 </script>

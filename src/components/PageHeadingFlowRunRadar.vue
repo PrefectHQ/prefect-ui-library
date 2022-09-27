@@ -21,20 +21,18 @@
   import { PIconButtonMenu } from '@prefecthq/prefect-design'
   import { computed } from 'vue'
   import { PageHeading, CopyOverflowMenuItem, ConfirmDeleteModal } from '@/components'
+  import { useCan } from '@/compositions/useCan'
   import { useShowModal } from '@/compositions/useShowModal'
   import { FlowRun } from '@/models'
   import { flowRunRouteKey, flowRunsRouteKey } from '@/router'
   import { flowRunsApiKey } from '@/services'
-  import { canKey } from '@/types'
   import { deleteItem, inject } from '@/utilities'
-
-  const flowRunsApi = inject(flowRunsApiKey)
-  const can = inject(canKey)
-
   const props = defineProps<{
     flowRun: FlowRun,
   }>()
 
+  const can = useCan()
+  const flowRunsApi = inject(flowRunsApiKey)
   const { showModal, open } = useShowModal()
 
   const flowRunsRoute = inject(flowRunsRouteKey)
