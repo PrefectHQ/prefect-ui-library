@@ -47,18 +47,19 @@
       sort: sort.value,
     }
 
+    const flowRunsFilter = {
+      ...props.flowRunFilter.flow_runs,
+    }
+
     if (state.value.length) {
-      runFilter.flow_runs!.state = {
+      flowRunsFilter.state = {
         type: {
           any_: state.value.map(state => mapper.map('StateType', state, 'ServerStateType')),
         },
       }
     }
-    // else {
-    //   runFilter.flow_runs!.state = {}
-    // }
 
-    return runFilter
+    return { ...runFilter, flow_runs: { ...flowRunsFilter } }
   })
 
   const flowRunCountSubscription = useSubscription(flowRunsApi.getFlowRunsCount, [flowRunsFilter], { interval: 30000 })
