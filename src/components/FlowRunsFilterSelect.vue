@@ -1,38 +1,48 @@
 <template>
   <p-select v-model="selectedSavedSearch" :options="options" class="flow-runs-filter-select" />
+  <SaveSearchModal @save="saveFilter">
+    <template #default="{ open }">
+      <p-button @click="open">
+        Save Filter
+      </p-button>
+    </template>
+  </SaveSearchModal>
 </template>
 
 <script setup lang="ts">
   import { watch, ref, inject } from 'vue'
   import { useRouter } from 'vue-router'
+  import  SaveSearchModal from '@/components/SaveSearchModal.vue'
   import { useFlowRunFilterFromRoute } from '@/compositions'
   import { flowRunsRouteKey } from '@/router'
-
-
   import { createApi } from '@/utilities'
-  import { deploymentsApi } from 'demo/services'
+
 
   const router = useRouter()
   const flowRunsRoute =  inject(flowRunsRouteKey)
   const api = createApi({ baseUrl: 'http://localhost:4200/api' })
 
   const savedSearches = await api.savedSearches.getSavedSearches({})
+  const { flows, states, tags, deployments }  = useFlowRunFilterFromRoute()
 
-  // create
-  await api.savedSearches.createSavedSearch({
-    name:'completed&failed&bb',
-    filters:{
-      states: ['failed', 'completed'],
-      tags: ['bb'],
-    },
-  })
+  const saveFilter = async (namey: string): Promise<void>=> {
+    console.log('named', namey)
+    await api.savedSearches.createSavedSearch({
+      name:`${states.value}, ${tags.value}, ${flows.value}`,
+      filters:{
+        states: states.value,
+        tags: tags.value,
+        flows: flows.value,
+      },
+    })
+  }
+
 
   // delete
   // if (savedSearches[0]?.id) {
   //   api.savedSearches.deleteSavedSearch(savedSearches[0].id)
   // }
 
-  const { flows, states, tags, deployments }  = useFlowRunFilterFromRoute()
 
   const savedSearchOptions = savedSearches.map(search => {
     return { label: search.name, value: search.name }
