@@ -2,7 +2,7 @@
   <div class="flow-runs-controls_list">
     <div class="flow-runs-controls_list__controls">
       <ResultsCount :count="flowRuns.length" class="mr-auto" label="Flow run" />
-      <StateSelect v-model:selected="states" empty-message="All run states" class="flow-runs-controls_list__state-select" />
+      <StateSelect v-model:selected="state" empty-message="All run states" class="flow-runs-controls_list__state-select" />
       <FlowRunsSort v-model="sort" class="flow-runs-controls_list__flow-runs-sort" />
     </div>
     <FlowRunList v-if="flowRuns.length" :flow-runs="flowRuns" disabled :selected="[]" />
@@ -15,12 +15,12 @@
 </template>
 
 <script lang="ts" setup>
-  import { useSubscriptionWithDependencies } from '@prefecthq/vue-compositions'
-  import { computed } from 'vue'
+  import { useSubscription } from '@prefecthq/vue-compositions'
+  import { computed, ref } from 'vue'
   import { ResultsCount, StateSelect, FlowRunsSort, FlowRunList } from '@/components'
-  import { useFlowRunFilterFromRoute } from '@/compositions'
-  import { flowRunsApiKey } from '@/services'
-  import { UnionFilters } from '@/types'
+  import { StateType } from '@/models'
+  import { flowRunsApiKey, mapper } from '@/services'
+  import { FlowRunSortValues, UnionFilters } from '@/types'
   import { inject } from '@/utilities'
 
   const flowRunsApi = inject(flowRunsApiKey)
@@ -29,11 +29,28 @@
     flowRunFilter: UnionFilters,
   }>()
 
-  const { states, sort } = useFlowRunFilterFromRoute()
+  const state = ref<StateType[]>([])
+  const sort = ref<FlowRunSortValues>('EXPECTED_START_TIME_DESC')
 
-  const flowRunsFilterArgs = computed<[filter: UnionFilters] | null>(() => props.flowRunFilter.sort || props.flowRunFilter.flow_runs ? [props.flowRunFilter] : null)
 
-  const flowRunsSubscription = useSubscriptionWithDependencies(flowRunsApi.getFlowRuns, flowRunsFilterArgs)
+  const flowRunsFilter = computed<UnionFilters>(() => {
+    const runFilter: UnionFilters = {
+      ...props.flowRunFilter,
+      sort: sort.value,
+    }
+
+    if (state.value.length) {
+      runFilter.flow_runs!.state = {
+        type: {
+          any_: state.value.map(state => mapper.map('StateType', state, 'ServerStateType')),
+        },
+      }
+    }
+
+    return runFilter
+  })
+
+  const flowRunsSubscription = useSubscription(flowRunsApi.getFlowRuns, [flowRunsFilter])
   const flowRuns = computed(() => flowRunsSubscription.response ?? [])
 </script>
 
