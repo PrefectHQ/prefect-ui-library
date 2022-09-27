@@ -1,6 +1,5 @@
 <template>
-  <slot :open="open" :close="close" :toggle="toggle" />
-  <p-modal v-model:showModal="showModal" title="Save Filter">
+  <p-modal v-model:showModal="internalValue" title="Save Filter">
     <p-form @submit="submit">
       <p-content>
         <p-label label="Filter Name" :state="filterNameState" :message="errors.filterName">
@@ -8,7 +7,6 @@
         </p-label>
       </p-content>
     </p-form>
-
 
     <template #actions>
       <p-button :loading="isSubmitting" @click="submit">
@@ -19,13 +17,15 @@
 </template>
 
 <script lang="ts" setup>
-  import { isRequired, useShowModal, withMessage } from '@prefecthq/orion-design'
   import { useField, useForm } from 'vee-validate'
-  import { watch } from 'vue'
+  import { computed } from 'vue'
+  import { withMessage, isRequired } from '@/services'
 
-  const { showModal, open, close, toggle } = useShowModal()
+  const props = defineProps<{
+    showModal: boolean,
+  }>()
 
-  const { handleSubmit, handleReset, isSubmitting, errors } = useForm<{
+  const { handleSubmit, isSubmitting, errors } = useForm<{
     filterName: string,
   }>()
   const rules = {
@@ -34,17 +34,22 @@
   const { value: filterName, meta: filterNameState } = useField<string>('filterName', rules.filterName, { initialValue: '' })
 
   const emit = defineEmits<{
+    (event: 'update:showModal', value: boolean): void,
     (event: 'save', filterName: string): void,
   }>()
 
-  const submit = handleSubmit(({ filterName }) => {
-    emit('save', filterName)
+  const internalValue = computed({
+    get() {
+      return props.showModal
+    },
+    set(value: boolean) {
+      emit('update:showModal', value)
+    },
   })
 
-  watch(showModal, value => {
-    if (!value) {
-      handleReset()
-    }
+
+  const submit = handleSubmit(({ filterName }) => {
+    emit('save', filterName)
   })
 </script>
 
