@@ -1,6 +1,6 @@
 <template>
   <p-select v-model="selectedSavedSearch" :options="options" class="flow-runs-filter-select" />
-  <p-button @click="open">
+  <p-button :disabled="!newFilters" @click="open">
     Save Filter
   </p-button>
   <SaveSearchModal v-model:show-modal="showModal" @save="saveFilter" />
@@ -77,6 +77,12 @@
     } if (selectedSavedSearch.value !== 'URL')     {
       router.push(flowRunsRoute!())
     }
+  })
+
+  // Needs fixing!
+  const newFilters = computed(()=> {
+    const selectedFilter = savedSearches.value.find(filter => filter.name === selectedSavedSearch.value)?.filters
+    return states.value !== selectedFilter?.states && flows.value !== selectedFilter?.flows
   })
 </script>
 
