@@ -20,10 +20,10 @@ export class SavedSearch implements ISavedSearch {
 
 
 export type SavedSearchMappedFilter = {
-  states?: StateType[],
-  flows?: string[],
-  tags?: string[],
-  deployments?: string[],
-  startDate?: string | Date,
-  endDate?: string | Date,
+  state?: StateType[],
+  flow?: string[],
+  tag?: string[],
+  deployment?: string[],
+  // startDate?: string | Date,
+  // endDate?: string | Date,
 }

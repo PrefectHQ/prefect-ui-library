@@ -85,10 +85,7 @@
   watch(selectedSavedSearch, ()=> {
     const selectedFilter = selectedSavedSearchValue.value?.filters
     if (selectedFilter) {
-      flows.value = selectedFilter.flows ?? []
-      states.value = selectedFilter.states?? []
-      tags.value = selectedFilter.tags ?? []
-      deployments.value = selectedFilter.deployments ?? []
+      router.push({ query: selectedFilter })
       return
     } if (selectedSavedSearch.value !== 'URL')     {
       router.push(flowRunsRoute!())
@@ -98,7 +95,7 @@
   // Needs fixing!
   const newFilters = computed(()=> {
     const selectedFilter = selectedSavedSearchValue.value?.filters
-    return states.value !== selectedFilter?.states && flows.value !== selectedFilter?.flows
+    return states.value !== selectedFilter?.state && flows.value !== selectedFilter?.flow
   })
 </script>
 

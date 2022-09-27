@@ -15,18 +15,18 @@ export const mapSavedSearchResponseToSavedSearch: MapFunction<SavedSearchRespons
 
 function mapSavedSearchFilters(filters: SavedSearchFilter[] | undefined): SavedSearchMappedFilter {
   const filter = {
-    states: [],
-    tags: [],
-    flows: [],
-    deployments: [],
-    startDate: parseDateTimeNumeric(formatDateTimeNumeric(subDays(startOfToday(), 7))),
-    endDate: parseDateTimeNumeric(formatDateTimeNumeric(addDays(endOfToday(), 1))),
+    state: [],
+    tag: [],
+    flow: [],
+    deployment: [],
+    // startDate: parseDateTimeNumeric(formatDateTimeNumeric(subDays(startOfToday(), 7))),
+    // endDate: parseDateTimeNumeric(formatDateTimeNumeric(addDays(endOfToday(), 1))),
   }
   if (filters) {
-    filter.flows = filters.find(filter => filter.property === 'flows')?.value ?? []
-    filter.states = filters.find(filter => filter.property === 'states')?.value ?? []
-    filter.tags = filters.find(filter => filter.property === 'tags')?.value ?? []
-    filter.deployments = filters.find(filter => filter.property === 'deployments')?.value ?? []
+    filter.flow = filters.find(filter => filter.property === 'flows')?.value ?? []
+    filter.state = filters.find(filter => filter.property === 'states')?.value ?? []
+    filter.tag = filters.find(filter => filter.property === 'tags')?.value ?? []
+    filter.deployment = filters.find(filter => filter.property === 'deployments')?.value ?? []
   }
   return filter
 }
