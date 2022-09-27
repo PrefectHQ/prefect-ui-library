@@ -28,6 +28,7 @@ export const en = {
     updateSchedule: 'Failed to update schedule',
     removeSchedule: 'Failed to remove schedule',
     createSavedSearch: 'Failed to create saved search',
+    deleteSavedSearch: 'Failed to delete saved search',
   },
   success: {
     activateDeployment: 'Deployment active',
@@ -48,6 +49,7 @@ export const en = {
     updateSchedule: 'Schedule updated',
     removeSchedule: 'Schedule removed',
     createSavedSearch: 'Search saved',
+    deleteSavedSearch: 'Saved search deleted',
   },
   info: {
     deprecatedWorkQueue: 'This work queue uses a deprecated tag-based approach to matching flow runs; it will continue to work but you can\'t modify it',

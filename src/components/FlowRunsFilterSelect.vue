@@ -3,6 +3,9 @@
   <p-button :disabled="!newFilters" @click="open">
     Save Filter
   </p-button>
+  <p-button inset :disabled="!savedSearchId" @click="deleteFilter">
+    Delete Filter
+  </p-button>
   <SaveSearchModal v-model:show-modal="showModal" @save="saveFilter" />
 </template>
 
@@ -52,10 +55,19 @@
   }
 
 
-  // delete
-  // if (savedSearches.value[0]?.id) {
-  //   api.savedSearches.deleteSavedSearch(savedSearches.value[0].id)
-  // }
+  const deleteFilter = async (): Promise<void>=> {
+    try {
+      if (savedSearchId.value) {
+        await api.savedSearches.deleteSavedSearch(savedSearchId.value)
+        savedSearches.value = await api.savedSearches.getSavedSearches({})
+        selectedSavedSearch.value = 'default'
+        showToast(localization.success.deleteSavedSearch, 'success')
+      }
+    } catch (error) {
+      console.warn(error)
+      showToast(localization.error.deleteSavedSearch, 'error')
+    }
+  }
 
 
   const savedSearchOptions = computed(()=> savedSearches.value.map(search => {
@@ -66,8 +78,11 @@
 
   const selectedSavedSearch = ref('default')
 
-  watch(selectedSavedSearch, (value: string)=> {
-    const selectedFilter = savedSearches.value.find(filter => filter.name === value)?.filters
+  const selectedSavedSearchValue = computed(()=>savedSearches.value.find(filter => filter.name === selectedSavedSearch.value))
+  const savedSearchId = computed(()=> selectedSavedSearchValue.value?.id ?? '')
+
+  watch(selectedSavedSearch, ()=> {
+    const selectedFilter = selectedSavedSearchValue.value?.filters
     if (selectedFilter) {
       flows.value = selectedFilter.flows ?? []
       states.value = selectedFilter.states?? []
@@ -81,7 +96,7 @@
 
   // Needs fixing!
   const newFilters = computed(()=> {
-    const selectedFilter = savedSearches.value.find(filter => filter.name === selectedSavedSearch.value)?.filters
+    const selectedFilter = selectedSavedSearchValue.value?.filters
     return states.value !== selectedFilter?.states && flows.value !== selectedFilter?.flows
   })
 </script>
