@@ -42,6 +42,7 @@
           states: states.value,
           tags: tags.value,
           flows: flows.value,
+          deployments: deployments.value,
         },
       })
       savedSearches.value = await api.savedSearches.getSavedSearches({})
