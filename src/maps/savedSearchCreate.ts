@@ -20,11 +20,3 @@ function mapSavedSearchFiltersToSavedSearchCreate(filters: SavedSearchMappedFilt
   })
   return newFilters
 }
-
-// export type SavedSearchFilter = {
-//   object?: string,
-//   property?: string,
-//   type?: string,
-//   operation?: string,
-//   value?: any,
-// }

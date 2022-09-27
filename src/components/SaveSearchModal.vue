@@ -9,9 +9,11 @@
     </p-form>
 
     <template #actions>
-      <p-button :loading="isSubmitting" @click="submit">
-        Save
-      </p-button>
+      <slot name="actions">
+        <p-button :loading="isSubmitting" @click="submit">
+          Save
+        </p-button>
+      </slot>
     </template>
   </p-modal>
 </template>
@@ -25,7 +27,7 @@
     showModal: boolean,
   }>()
 
-  const { handleSubmit, isSubmitting, errors } = useForm<{
+  const { handleSubmit, handleReset, isSubmitting, errors } = useForm<{
     filterName: string,
   }>()
   const rules = {
@@ -50,6 +52,7 @@
 
   const submit = handleSubmit(({ filterName }) => {
     emit('save', filterName)
+    handleReset()
   })
 </script>
 

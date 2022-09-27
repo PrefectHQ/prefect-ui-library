@@ -3,7 +3,7 @@
   <p-button @click="open">
     Save Filter
   </p-button>
-  <SaveSearchModal :show-modal="showModal" @save="saveFilter" />
+  <SaveSearchModal v-model:show-modal="showModal" @save="saveFilter" />
 </template>
 
 <script setup lang="ts">
@@ -53,16 +53,16 @@
 
 
   // delete
-  if (savedSearches.value[0]?.id) {
-    api.savedSearches.deleteSavedSearch(savedSearches.value[0].id)
-  }
+  // if (savedSearches.value[0]?.id) {
+  //   api.savedSearches.deleteSavedSearch(savedSearches.value[0].id)
+  // }
 
 
   const savedSearchOptions = computed(()=> savedSearches.value.map(search => {
     return { label: search.name, value: search.name }
   }))
 
-  const options: Ref<{ label: string, value: string }[]> = computed(()=> [{ label: 'Default', value: 'default' }, { label: 'URL', value: 'URL' }, ...savedSearchOptions.value])
+  const options: Ref<{ label: string, value: string }[]> = computed(()=> [{ label: 'Default (one week)', value: 'default' }, { label: 'From url', value: 'URL' }, ...savedSearchOptions.value])
 
   const selectedSavedSearch = ref('default')
 
