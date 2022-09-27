@@ -8,7 +8,7 @@
 
 <script setup lang="ts">
   import { showToast } from '@prefecthq/prefect-design'
-  import { watch, ref, inject, computed, Ref } from 'vue'
+  import { watch, ref, inject, computed, Ref, onMounted } from 'vue'
   import { useRouter } from 'vue-router'
   import  SaveSearchModal from '@/components/SaveSearchModal.vue'
   import { useFlowRunFilterFromRoute, useShowModal } from '@/compositions'
@@ -22,9 +22,14 @@
   const api = createApi({ baseUrl: 'http://localhost:4200/api' })
   const { showModal, open, close } = useShowModal()
 
-
   const savedSearches = ref(await api.savedSearches.getSavedSearches({}))
-  const { flows, states, tags, deployments }  = useFlowRunFilterFromRoute()
+  const { flows, states, tags, deployments, hasFilters }  = useFlowRunFilterFromRoute()
+
+  onMounted(() => {
+    if (hasFilters.value) {
+      selectedSavedSearch.value = 'URL'
+    }
+  })
 
   const saveFilter = async (filterName: string): Promise<void>=> {
     try {
@@ -57,7 +62,7 @@
     return { label: search.name, value: search.name }
   }))
 
-  const options: Ref<{ label: string, value: string }[]> = computed(()=> [{ label: 'Default', value: 'default' }, ...savedSearchOptions.value])
+  const options: Ref<{ label: string, value: string }[]> = computed(()=> [{ label: 'Default', value: 'default' }, { label: 'URL', value: 'URL' }, ...savedSearchOptions.value])
 
   const selectedSavedSearch = ref('default')
 
@@ -69,8 +74,9 @@
       tags.value = selectedFilter.tags ?? []
       deployments.value = selectedFilter.deployments ?? []
       return
+    } if (selectedSavedSearch.value !== 'URL')     {
+      router.push(flowRunsRoute!())
     }
-    router.push(flowRunsRoute!())
   })
 </script>
 
