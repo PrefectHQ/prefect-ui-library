@@ -41,7 +41,7 @@
   const sort = ref<FlowRunSortValues>('EXPECTED_START_TIME_DESC')
   const hasFilters = computed(() => state.value.length)
 
-  const flowRunsFilter = computed<UnionFilters>(() => {
+  const filter = computed<UnionFilters>(() => {
     const runFilter: UnionFilters = {
       ...props.flowRunFilter,
       sort: sort.value,
@@ -62,10 +62,10 @@
     return { ...runFilter, flow_runs: { ...flowRunsFilter } }
   })
 
-  const flowRunCountSubscription = useSubscription(flowRunsApi.getFlowRunsCount, [flowRunsFilter], { interval: 30000 })
+  const flowRunCountSubscription = useSubscription(flowRunsApi.getFlowRunsCount, [filter], { interval: 30000 })
   const flowRunCount = computed(() => flowRunCountSubscription.response)
 
-  const flowRunsSubscription = usePaginatedSubscription(flowRunsApi.getFlowRuns, [flowRunsFilter], { interval: 30000 })
+  const flowRunsSubscription = usePaginatedSubscription(flowRunsApi.getFlowRuns, [filter], { interval: 30000 })
   const flowRuns = computed(() => flowRunsSubscription.response ?? [])
 
   const empty = computed(() => flowRunsSubscription.executed && flowRuns.value.length === 0)
