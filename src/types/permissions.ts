@@ -9,12 +9,14 @@ const accountPermissions = [
   'create:team',
   'create:workspace_invitation',
   'create:workspace_role',
+  'create:workspace_role',
   'create:workspace',
   'delete:account',
   'delete:account_membership',
   'delete:account_role',
   'delete:bot',
   'delete:team',
+  'delete:workspace_role',
   'delete:workspace_role',
   'read:account_membership',
   'read:account_role',
@@ -26,6 +28,7 @@ const accountPermissions = [
   'read:team',
   'read:workspace_invitation',
   'read:workspace_role',
+  'read:workspace_role',
   'read:workspace',
   'update:account_membership',
   'update:account_role',
@@ -35,6 +38,7 @@ const accountPermissions = [
   'update:invitation',
   'update:team',
   'update:workspace_invitation',
+  'update:workspace_role',
   'update:workspace_role',
 ] as const
 
@@ -80,7 +84,9 @@ const workspacePermissions = [
   'read:task_run',
   'read:work_queue',
   'read:workspace_bot_access',
+  'read:workspace_settings',
   'read:workspace_user_access',
+  'run:deployment',
   'update:block',
   'update:deployment',
   'update:flow_run',
@@ -89,6 +95,7 @@ const workspacePermissions = [
   'update:task_run',
   'update:work_queue',
   'update:workspace_bot_access',
+  'update:workspace_settings',
   'update:workspace_user_access',
   'update:workspace',
 ] as const
@@ -107,6 +114,7 @@ const featureFlags = [
   'access:retention',
   'access:workos',
   'access:selfServeOrgs',
+  'access:customRoles',
 ] as const
 
 export type FeatureFlagString = typeof featureFlags[number]

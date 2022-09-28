@@ -70,7 +70,9 @@ export function getSchemaPropertyRequestValue(property: SchemaProperty, value: S
  * Attrs are added to the property's meta in the meta resolver.
  */
 export function getSchemaPropertyAttrs(property: SchemaProperty): SchemaPropertyInputAttrs {
-  const attrs: SchemaPropertyInputAttrs = {}
+  const attrs: SchemaPropertyInputAttrs = {
+    autocomplete: 'off',
+  }
 
   const placeholder = getSchemaPropertyPlaceholder(property)
 

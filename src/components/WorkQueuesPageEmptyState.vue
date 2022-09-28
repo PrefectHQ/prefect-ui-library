@@ -31,12 +31,12 @@
   import { PEmptyState, PButton, PIcon } from '@prefecthq/prefect-design'
   import { RouterLink } from 'vue-router'
   import DocumentationButton from './DocumentationButton.vue'
+  import { useCan } from '@/compositions/useCan'
   import { workQueueCreateRouteKey } from '@/router'
-  import { canKey } from '@/types'
-
   import { inject } from '@/utilities'
+
   const workQueueCreateRoute = inject(workQueueCreateRouteKey)
-  const can = inject(canKey)
+  const can = useCan()
 </script>
 
 <style>

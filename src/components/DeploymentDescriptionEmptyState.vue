@@ -27,15 +27,15 @@
 <script lang="ts" setup>
   import { PEmptyState, PIcon } from '@prefecthq/prefect-design'
   import DocumentationButton from './DocumentationButton.vue'
+  import { useCan } from '@/compositions/useCan'
   import { Deployment } from '@/models'
   import { editDeploymentRouteKey } from '@/router'
-  import { canKey } from '@/types'
   import { inject } from '@/utilities'
 
   defineProps<{
     deployment: Deployment,
   }>()
 
+  const can = useCan()
   const editDeploymentRoute = inject(editDeploymentRouteKey)
-  const can = inject(canKey)
 </script>

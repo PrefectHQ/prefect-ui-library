@@ -27,10 +27,10 @@
 <script lang="ts" setup>
   import { PEmptyState, PButton, PIcon } from '@prefecthq/prefect-design'
   import DocumentationButton from './DocumentationButton.vue'
+  import { useCan } from '@/compositions/useCan'
   import { blockCatalogRouteKey } from '@/router'
-  import { canKey } from '@/types'
   import { inject } from '@/utilities'
 
   const blockCatalogRoute = inject(blockCatalogRouteKey)
-  const can = inject(canKey)
+  const can = useCan()
 </script>

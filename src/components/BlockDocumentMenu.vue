@@ -26,11 +26,11 @@
   import { useRouter } from 'vue-router'
   import ConfirmDeleteModal from '@/components/ConfirmDeleteModal.vue'
   import CopyOverflowMenuItem from '@/components/CopyOverflowMenuItem.vue'
+  import { useCan } from '@/compositions/useCan'
   import { useShowModal } from '@/compositions/useShowModal'
   import { BlockDocument } from '@/models'
   import { blockEditRouteKey } from '@/router/routes'
   import { blockDocumentsApiKey } from '@/services/BlockDocumentsApi'
-  import { canKey } from '@/types/permissions'
   import { inject, deleteItem } from '@/utilities'
 
   const props = defineProps<{
@@ -41,6 +41,7 @@
     (event: 'delete'): void,
   }>()
 
+  const can = useCan()
   const router = useRouter()
   const blockEditRoute = inject(blockEditRouteKey)
   const blockDocumentsApi = inject(blockDocumentsApiKey)
@@ -55,6 +56,4 @@
 
     emit('delete')
   }
-
-  const can = inject(canKey)
 </script>

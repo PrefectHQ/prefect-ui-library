@@ -1,5 +1,5 @@
 <template>
-  <p-tag v-if="flowRuns.length" class="work-queue-late-indicator">
+  <p-tag v-if="flowRuns" class="work-queue-late-indicator">
     {{ tagText }}
   </p-tag>
 </template>
@@ -20,14 +20,14 @@
 
   const flowRunFilter = useRecentFlowRunFilter({ states: ['Late'], workQueues: workQueueName })
 
-  const flowRunsSubscription = useSubscription(flowRunsApi.getFlowRuns, [flowRunFilter])
+  const flowRunsSubscription = useSubscription(flowRunsApi.getFlowRunsCount, [flowRunFilter])
   const flowRuns = computed(()=> flowRunsSubscription.response ?? [])
 
   const tagText = computed(() => {
-    if (flowRuns.value.length === 1) {
-      return `${flowRuns.value.length} Late run`
+    if (flowRuns.value === 1) {
+      return `${flowRuns.value} Late run`
     }
-    return `${flowRuns.value.length} Late runs`
+    return `${flowRuns.value} Late runs`
   })
 </script>
 
