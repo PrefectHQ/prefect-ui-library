@@ -65,7 +65,6 @@
   const flowRunCountSubscription = useSubscription(flowRunsApi.getFlowRunsCount, [flowRunsFilter], { interval: 30000 })
   const flowRunCount = computed(() => flowRunCountSubscription.response)
 
-
   const flowRunsSubscription = usePaginatedSubscription(flowRunsApi.getFlowRuns, [flowRunsFilter], { interval: 30000 })
   const flowRuns = computed(() => flowRunsSubscription.response ?? [])
 
