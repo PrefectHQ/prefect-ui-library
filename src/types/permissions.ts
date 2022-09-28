@@ -3,6 +3,7 @@ import { InjectionKey } from 'vue'
 const accountPermissions = [
   'administrate:workspace',
   'create:account_role',
+  'create:audit_event',
   'create:bot',
   'create:invitation',
   'create:team',
@@ -10,6 +11,7 @@ const accountPermissions = [
   'create:workspace_role',
   'create:workspace_role',
   'create:workspace',
+  'delete:account',
   'delete:account_membership',
   'delete:account_role',
   'delete:bot',
@@ -19,6 +21,7 @@ const accountPermissions = [
   'read:account_membership',
   'read:account_role',
   'read:account',
+  'read:audit_event',
   'read:billing',
   'read:bot',
   'read:invitation',
