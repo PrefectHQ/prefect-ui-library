@@ -1,10 +1,11 @@
 <template>
-  <p-modal v-model:showModal="internalValue" title="Save Filter">
+  <p-modal v-model:showModal="internalValue" class="save-search-modal" title="Save Filter">
     <p-form @submit="submit">
       <p-content>
         <p-label label="Filter Name" :state="filterNameState" :message="errors.filterName">
           <p-text-input v-model="filterName" />
         </p-label>
+        <span class="save-search-modal__date-filter-warning"> All saved filters currently use the default time period of 7 days.</span>
       </p-content>
     </p-form>
 
@@ -55,4 +56,10 @@
     handleReset()
   })
 </script>
+
+<style>
+  .save-search-modal {
+    @apply text-sm
+  }
+</style>
 

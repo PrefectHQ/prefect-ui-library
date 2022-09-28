@@ -1,7 +1,7 @@
 <template>
   <p-select v-model="selectedSavedSearch" :options="options" class="flow-runs-filter-select" />
   <p-icon-button-menu>
-    <p-overflow-menu-item :disabled="!newFilters" @click="open">
+    <p-overflow-menu-item @click="open">
       Save Filter
     </p-overflow-menu-item>
     <p-overflow-menu-item inset :disabled="!savedSearchId" @click="deleteFilter">
@@ -92,12 +92,6 @@
     } if (selectedSavedSearch.value !== 'URL')     {
       router.push(flowRunsRoute!())
     }
-  })
-
-  // Needs fixing!
-  const newFilters = computed(()=> {
-    const selectedFilter = selectedSavedSearchValue.value?.filters
-    return states.value !== selectedFilter?.state && flows.value !== selectedFilter?.flow
   })
 </script>
 
