@@ -19,8 +19,8 @@ function mapSavedSearchFilters(filters: SavedSearchFilter[] | undefined): SavedS
     tag: [],
     flow: [],
     deployment: [],
-    // startDate: parseDateTimeNumeric(formatDateTimeNumeric(subDays(startOfToday(), 7))),
-    // endDate: parseDateTimeNumeric(formatDateTimeNumeric(addDays(endOfToday(), 1))),
+    'start-date': parseDateTimeNumeric(formatDateTimeNumeric(subDays(startOfToday(), 7))),
+    'end-date': parseDateTimeNumeric(formatDateTimeNumeric(addDays(endOfToday(), 1))),
   }
   if (filters) {
     filter.flow = filters.find(filter => filter.property === 'flow')?.value ?? []

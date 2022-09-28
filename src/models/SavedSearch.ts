@@ -24,6 +24,6 @@ export type SavedSearchMappedFilter = {
   flow?: string[],
   tag?: string[],
   deployment?: string[],
-  // startDate?: string | Date,
-  // endDate?: string | Date,
+  'start-date'?: string | Date,
+  'end-date'?: string | Date,
 }
