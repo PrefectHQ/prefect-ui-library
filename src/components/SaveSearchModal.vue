@@ -31,9 +31,11 @@
   const { handleSubmit, handleReset, isSubmitting, errors } = useForm<{
     filterName: string,
   }>()
+
   const rules = {
     filterName: [withMessage(isRequired, 'Name is is required')],
   }
+
   const { value: filterName, meta: filterNameState } = useField<string>('filterName', rules.filterName, { initialValue: '' })
 
   const emit = defineEmits<{
@@ -49,7 +51,6 @@
       emit('update:showModal', value)
     },
   })
-
 
   const submit = handleSubmit(({ filterName }) => {
     emit('save', filterName)

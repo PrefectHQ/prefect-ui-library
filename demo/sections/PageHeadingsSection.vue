@@ -13,7 +13,7 @@
         <PageHeadingBlocks />
         <PageHeadingBlocksCatalog />
         <PageHeadingDeployments />
-        <PageHeadingFlowRuns :selected="filterSelect" />
+        <PageHeadingFlowRuns />
         <PageHeadingFlows />
         <PageHeadingNotifications />
         <PageHeadingWorkQueues />
@@ -44,7 +44,6 @@
 </template>
 
 <script lang="ts" setup>
-  import { ref } from 'vue'
   import DemoSection from '../components/DemoSection.vue'
   import DemoSubSection from '../components/DemoSubSection.vue'
   import PageHeading from '@/components/PageHeading.vue'
@@ -84,7 +83,6 @@
   const queue = mocker.create('workQueue', [{ name: 'ECS - Prod' }])
   const flowRun = mocker.create('flowRun')
   const taskRun = mocker.create('taskRun')
-  const filterSelect = ref('week')
 
   const pageHeadingCrumbs = mocker.createMany('noun', 3).map((noun, i) => ({ text: capitalize(noun), to: i !== 0 ? '/nothing' : undefined }))
 </script>

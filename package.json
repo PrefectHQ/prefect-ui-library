@@ -54,7 +54,6 @@
         "vue-router": "^4.0.12"
     },
     "dependencies": {
-        "@prefecthq/orion-design": "file:",
         "@prefecthq/radar": "0.0.17",
         "@prefecthq/vue-charts": "0.0.19",
         "@prefecthq/vue-compositions": "0.1.49",
