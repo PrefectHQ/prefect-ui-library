@@ -1,11 +1,13 @@
 <template>
   <p-select v-model="selectedSavedSearch" :options="options" class="flow-runs-filter-select" />
-  <p-button :disabled="!newFilters" @click="open">
-    Save Filter
-  </p-button>
-  <p-button inset :disabled="!savedSearchId" @click="deleteFilter">
-    Delete Filter
-  </p-button>
+  <p-icon-button-menu>
+    <p-overflow-menu-item :disabled="!newFilters" @click="open">
+      Save Filter
+    </p-overflow-menu-item>
+    <p-overflow-menu-item inset :disabled="!savedSearchId" @click="deleteFilter">
+      Delete Filter
+    </p-overflow-menu-item>
+  </p-icon-button-menu>
   <SaveSearchModal v-model:show-modal="showModal" @save="saveFilter" />
 </template>
 
@@ -39,10 +41,10 @@
       await api.savedSearches.createSavedSearch({
         name: filterName,
         filters:{
-          states: states.value,
-          tags: tags.value,
-          flows: flows.value,
-          deployments: deployments.value,
+          state: states.value,
+          tag: tags.value,
+          flow: flows.value,
+          deployment: deployments.value,
         },
       })
       savedSearches.value = await api.savedSearches.getSavedSearches({})

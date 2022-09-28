@@ -23,10 +23,10 @@ function mapSavedSearchFilters(filters: SavedSearchFilter[] | undefined): SavedS
     // endDate: parseDateTimeNumeric(formatDateTimeNumeric(addDays(endOfToday(), 1))),
   }
   if (filters) {
-    filter.flow = filters.find(filter => filter.property === 'flows')?.value ?? []
-    filter.state = filters.find(filter => filter.property === 'states')?.value ?? []
-    filter.tag = filters.find(filter => filter.property === 'tags')?.value ?? []
-    filter.deployment = filters.find(filter => filter.property === 'deployments')?.value ?? []
+    filter.flow = filters.find(filter => filter.property === 'flow')?.value ?? []
+    filter.state = filters.find(filter => filter.property === 'state')?.value ?? []
+    filter.tag = filters.find(filter => filter.property === 'tag')?.value ?? []
+    filter.deployment = filters.find(filter => filter.property === 'deployment')?.value ?? []
   }
   return filter
 }
