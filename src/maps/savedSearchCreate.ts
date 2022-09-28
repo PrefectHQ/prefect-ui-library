@@ -12,7 +12,7 @@ export const mapSavedSearchToSavedSearchCreate: MapFunction<SavedSearch, SavedSe
 function mapSavedSearchFiltersToSavedSearchCreate(filters: SavedSearchMappedFilter | undefined): SavedSearchFilter[] {
   const values = Object.entries(filters!)
   const newFilters = values.map(filterList => {
-    return { property: filterList[0], value: filterList[1], object: '', type: '', operation: '' }
+    return { property: filterList[0], value: filterList[1], object: 'flowRun', type: '', operation: '' }
   })
   return newFilters
 }

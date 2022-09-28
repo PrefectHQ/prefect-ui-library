@@ -4,17 +4,24 @@
     <p-overflow-menu-item @click="open">
       Save Filter
     </p-overflow-menu-item>
-    <p-overflow-menu-item inset :disabled="!savedSearchId" @click="deleteFilter">
+    <p-overflow-menu-item v-if="savedSearchId" inset @click="openDeleteModal">
       Delete Filter
     </p-overflow-menu-item>
   </p-icon-button-menu>
   <SaveSearchModal v-model:show-modal="showModal" @save="saveFilter" />
+  <ConfirmDeleteModal
+    v-model:showModal="showDeleteModal"
+    label="Saved Filter"
+    :name="selectedSavedSearch"
+    @delete="deleteFilter"
+  />
 </template>
 
 <script setup lang="ts">
   import { showToast } from '@prefecthq/prefect-design'
   import { watch, ref, computed, Ref, onMounted } from 'vue'
   import { useRouter } from 'vue-router'
+  import ConfirmDeleteModal from '@/components/ConfirmDeleteModal.vue'
   import SaveSearchModal from '@/components/SaveSearchModal.vue'
   import { useFlowRunFilterFromRoute, useShowModal } from '@/compositions'
   import { localization } from '@/localization'
@@ -26,6 +33,7 @@
   const flowRunsRoute = inject(flowRunsRouteKey)
   const api = inject(workspaceApiKey)
   const { showModal, open, close } = useShowModal()
+  const { showModal: showDeleteModal, open: openDeleteModal } = useShowModal()
   const savedSearches = ref(await api.savedSearches.getSavedSearches({}))
   const { flows, states, tags, deployments, hasFilters } = useFlowRunFilterFromRoute()
 
