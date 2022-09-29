@@ -63,4 +63,11 @@ export function useFilters(): UseFilters {
   }
 }
 
+/**
+ * @deprecated
+ */
+export function useFiltersStore(): UseFilters {
+  return useFilters()
+}
+
 export const filterStoreKey: InjectionKey<UseFilters> = Symbol('filterStoreKey')
