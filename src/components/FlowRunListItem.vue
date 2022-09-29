@@ -1,5 +1,5 @@
 <template>
-  <StateListItem v-model:selected="model" v-bind="{ value, disabled: deleted, tags, stateType }" class="flow-run-list-item" :class="deleted ? 'deleted' : '' ">
+  <StateListItem v-model:selected="model" v-bind="{ value, tags, stateType }" :disabled="disabled || deleted" class="flow-run-list-item" :class="deleted ? 'flow-run-list-item__deleted' : '' ">
     <template #name>
       <FlowRouterLink :flow-id="flowRun.flowId" after=" / " />
       <template v-if="deleted">
@@ -20,8 +20,7 @@
 
 <script lang="ts" setup>
   import { CheckboxModel } from '@prefecthq/prefect-design'
-  import { useSubscription } from '@prefecthq/vue-compositions'
-  import { computed, watchEffect } from 'vue'
+  import { computed } from 'vue'
   import { RouterLink } from 'vue-router'
   import DurationIconText from './DurationIconText.vue'
   import FlowRouterLink from './FlowRouterLink.vue'
@@ -31,7 +30,6 @@
   import StateListItem from '@/components/StateListItem.vue'
   import { FlowRun } from '@/models/FlowRun'
   import { flowRunRouteKey } from '@/router'
-  import { flowRunsApiKey } from '@/services/FlowRunsApi'
   import { inject } from '@/utilities'
 
   const props = defineProps<{
@@ -58,16 +56,6 @@
   const stateType = computed(() => props.flowRun.state?.type)
   const tags = computed(() => props.flowRun.tags)
   const value = computed(() => props.flowRun.id)
-
-
-  /// /
-  // const flowRunsApi = inject(flowRunsApiKey)
-  // const flowRunSubscription =  useSubscription(flowRunsApi.getFlowRun, [props.flowRun.id])
-  // const exist = computed(() => flowRunSubscription.response ? 'i exist' : 'i don\'t exist')
-
-  watchEffect(() => {
-    console.log(props.deleted)
-  })
 </script>
 
 <style>
@@ -80,7 +68,7 @@
    text-prefect-500
 }
 
-.deleted {
-filter: grayscale(100%);
+.flow-run-list-item__deleted {
+  filter: grayscale(100%);
 }
 </style>
