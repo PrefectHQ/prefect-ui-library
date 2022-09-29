@@ -7,7 +7,7 @@
 </template>
 
 <script lang="ts" setup>
-  import { computed, ref, watchEffect } from 'vue'
+  import { computed } from 'vue'
   import FlowRunListItem from '@/components/FlowRunListItem.vue'
   import VirtualScroller from '@/components/VirtualScroller.vue'
   import { FlowRun } from '@/models/FlowRun'
@@ -37,10 +37,6 @@
     set(value: string[]) {
       emit('update:selected', value)
     },
-  })
-
-  watchEffect(() => {
-    // console.log(props.deleted)
   })
 </script>
 
