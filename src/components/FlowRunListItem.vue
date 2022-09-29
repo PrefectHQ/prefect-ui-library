@@ -1,8 +1,8 @@
 <template>
-  <StateListItem v-model:selected="model" v-bind="{ value, tags, stateType }" :disabled="disabled || deleted" class="flow-run-list-item" :class="deleted ? 'flow-run-list-item__deleted' : '' ">
+  <StateListItem v-model:selected="model" v-bind="{ value, tags, stateType }" :disabled="disabled || confirmedDelete" class="flow-run-list-item" :class="confirmedDelete ? 'flow-run-list-item__deleted' : '' ">
     <template #name>
       <FlowRouterLink :flow-id="flowRun.flowId" after=" / " />
-      <template v-if="deleted">
+      <template v-if="confirmedDelete">
         <span class="flow-run-list-item__link--disabled">{{ flowRun.name }}</span>
       </template>
       <router-link v-else class="flow-run-list-item__link" :to="flowRunRoute(flowRun.id)">
@@ -20,7 +20,7 @@
 
 <script lang="ts" setup>
   import { CheckboxModel } from '@prefecthq/prefect-design'
-  import { computed } from 'vue'
+  import { computed, ref, watchEffect } from 'vue'
   import { RouterLink } from 'vue-router'
   import DurationIconText from './DurationIconText.vue'
   import FlowRouterLink from './FlowRouterLink.vue'
@@ -43,6 +43,8 @@
     (event: 'update:selected', value: CheckboxModel): void,
   }>()
 
+  const confirmedDelete = ref(false)
+
   const model = computed({
     get() {
       return props.selected ?? undefined
@@ -50,6 +52,12 @@
     set(value: CheckboxModel) {
       emit('update:selected', value)
     },
+  })
+
+  watchEffect(() => {
+    if (props.deleted) {
+      confirmedDelete.value = true
+    }
   })
   const flowRunRoute = inject(flowRunRouteKey)
 
