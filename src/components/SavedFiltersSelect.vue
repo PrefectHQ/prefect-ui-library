@@ -1,6 +1,6 @@
 <template class="saved-filters-select">
   <p-select v-model="selectedSavedSearch" :options="options" class="flow-runs-filter-select" />
-  <p-icon-button-menu>
+  <p-icon-button-menu :disabled="selectedSavedSearch != 'Custom' && !savedSearchId">
     <p-overflow-menu-item v-if="selectedSavedSearch == 'Custom'" @click="openSaveModal">
       Save Filter
     </p-overflow-menu-item>
@@ -18,9 +18,9 @@
 </template>
 
 <script setup lang="ts">
-  import { SelectOption, showToast, formatDateTimeNumeric, parseDateTimeNumeric } from '@prefecthq/prefect-design'
+  import { SelectOption, showToast, formatDateTimeNumeric } from '@prefecthq/prefect-design'
   import { addDays, endOfToday, startOfToday, subDays } from 'date-fns'
-  // import  equal  from 'fast-deep-equal'
+  import  equal  from 'fast-deep-equal'
   import { watch, ref, computed, onMounted } from 'vue'
   import { useRouter } from 'vue-router'
   import ConfirmDeleteModal from '@/components/ConfirmDeleteModal.vue'
@@ -35,7 +35,7 @@
   const { showModal: showSaveModal, open: openSaveModal, close: closeSaveModal } = useShowModal()
   const { showModal: showDeleteModal, open: openDeleteModal } = useShowModal()
   const savedSearches = ref(await api.savedSearches.getSavedSearches({}))
-  const { flows, states, tags, deployments, hasFilters, startDate, endDate } = useFlowRunFilterFromRoute()
+  const { flows, states, tags, deployments, hasFilters } = useFlowRunFilterFromRoute()
 
   onMounted(() => {
     if (hasFilters.value) {
@@ -121,6 +121,18 @@
       router.push({ query: selectedFilter })
     }
   })
+
+
+  watch(states, ()=> {
+    const selectedFilter = selectedSavedSearchValue.value?.filters
+    if (!equal(states.value, selectedFilter?.state)) {
+      selectedSavedSearch.value = 'Custom'
+    }
+    // if (!equal(flows.value, selectedFilter?.flow)) {
+    //   selectedSavedSearch.value = 'Custom'
+    // }
+  },
+  )
 </script>
 
 <style>
