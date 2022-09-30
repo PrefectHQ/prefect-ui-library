@@ -4,7 +4,7 @@ import { isDate } from 'date-fns'
 import { isEmptyArray } from '@/utilities/arrays'
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-type ValidationValue = any
+export type ValidationValue = any
 export type ValidateMethod = (value: ValidationValue) => boolean | Promise<boolean>
 export type ValidationRule = (value: ValidationValue) => true | string | Promise<true | string>
 

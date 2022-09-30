@@ -56,14 +56,14 @@
   import { computed } from 'vue'
   import DemoSection from '../components/DemoSection.vue'
   import JsonInput from '@/components/JsonInput.vue'
-  import { isEmail, isRequired, withMessage, lessThan, isValidJsonString } from '@/services/validate'
+  import { isEmail, isRequired, withMessage, lessThan, isValidJsonString, ValidationValue } from '@/services/validate'
 
   const { handleSubmit, handleReset, isSubmitting, meta, errors, submitCount } = useForm()
 
   const submit = handleSubmit(values => console.log(values))
 
-  async function validateEmail(value: string): Promise<boolean> {
-    return await mockServerUsernameCheck(value)
+  async function validateEmail(value: ValidationValue): Promise<boolean> {
+    return typeof value === 'string' && await mockServerUsernameCheck(value)
   }
 
   function mockServerUsernameCheck(value: string): Promise<boolean> {

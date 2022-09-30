@@ -1,4 +1,4 @@
-import { isDate as dateFnsIsDate } from 'date-fns'
+import { isDate as dateFnsIsDate, isValid } from 'date-fns'
 
 export function isDate(value: unknown): value is Date {
   return dateFnsIsDate(value)

@@ -61,3 +61,7 @@ export function capitalize<T extends string>(value: T): Capitalize<T> {
 
   return `${firstLetterCapitalized}${rest}` as Capitalize<T>
 }
+
+export function isEmptyString(value: unknown): value is string {
+  return typeof value === 'string' && value.trim().length === 0
+}
