@@ -19,12 +19,16 @@
 
 <script lang="ts" setup>
   import { useField, useForm } from 'vee-validate'
+  import { watchEffect } from 'vue'
   import SchemaFormFields from './SchemaFormFields.vue'
   import SubmitButton from './SubmitButton.vue'
+  import { useReactiveForm } from '@/compositions'
+  import { useSessionStorage } from '@/compositions/useSessionStorage'
   import { BlockDocumentCreateNamed } from '@/models/BlockDocumentCreate'
   import { BlockSchema } from '@/models/BlockSchema'
   import { isRequired, isValidHandle, withMessage } from '@/services'
   import { getSchemaDefaultValues } from '@/services/schemas/utilities'
+  import { session } from '@/services/storage'
 
   const props = defineProps<{
     blockSchema: BlockSchema,
@@ -35,19 +39,29 @@
     (event: 'cancel'): void,
   }>()
 
-  const { handleSubmit } = useForm<BlockDocumentCreateNamed>({
-    initialValues: {
-      name: '',
-      data: getSchemaDefaultValues(props.blockSchema.fields),
-      blockSchema: props.blockSchema,
-    },
+  // eslint-disable-next-line vue/no-setup-props-destructure
+  const storageKey = `block-schema-form-${props.blockSchema.id}`
+
+  const { value: initialValues, remove: removeFromStorage } = useSessionStorage(storageKey, {
+    name: '',
+    data: getSchemaDefaultValues(props.blockSchema.fields),
+    blockSchema: props.blockSchema,
   })
+
+  const { handleSubmit } = useReactiveForm<BlockDocumentCreateNamed>(initialValues)
 
   const { value: name, meta: nameState, errorMessage: nameError } = useField<string>('name', [
     withMessage(isRequired, 'Name is required'),
     withMessage(isValidHandle, 'Name must only contain lowercase letters, numbers, and dashes'),
   ])
 
-  const submit = handleSubmit(value => emit('submit', value))
-  const cancel = (): void => emit('cancel')
+  const submit = handleSubmit(value => {
+    removeFromStorage()
+    emit('submit', value)
+  })
+
+  const cancel = (): void => {
+    removeFromStorage()
+    emit('cancel')
+  }
 </script>
