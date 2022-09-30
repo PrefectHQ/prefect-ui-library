@@ -35,9 +35,9 @@
 
   const props = defineProps<{
     flowRunFilter: UnionFilters,
+    states?: StateType[],
   }>()
-
-  const state = ref<StateType[]>([])
+  const state = ref<StateType[]>(props.states ?? [])
   const sort = ref<FlowRunSortValues>('EXPECTED_START_TIME_DESC')
   const hasFilters = computed(() => state.value.length)
 
