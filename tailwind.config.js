@@ -47,7 +47,7 @@ module.exports = {
   theme: {
     fontFamily: {
       sans: ["InterVariable", ...defaultTheme.fontFamily.sans],
-      mono: ['Inconsolata', ...defaultTheme.fontFamily.mono],
+      mono: ['InconsolataVariable', ...defaultTheme.fontFamily.mono],
     },
     extend: {
       colors: {

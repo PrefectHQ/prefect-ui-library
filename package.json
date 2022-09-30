@@ -54,6 +54,7 @@
         "vue-router": "^4.0.12"
     },
     "dependencies": {
+        "@fontsource/inconsolata": "^4.5.7",
         "@fontsource/inter": "4.5.12",
         "@prefecthq/radar": "0.0.17",
         "@prefecthq/vue-charts": "0.0.19",
