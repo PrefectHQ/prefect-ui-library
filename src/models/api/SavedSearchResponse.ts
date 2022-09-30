@@ -4,18 +4,18 @@ export type SavedSearchResponse = {
   created?: string,
   updated?: string,
   name: string,
-  filters?: SavedSearchFilter[],
+  filters?: SavedSearchFilterResponse[],
 }
 
-export type SavedSearchFilter = {
+export type SavedSearchFilterResponse = {
   object?: string,
   property?: string,
   type?: string,
   operation?: string,
-  value?: any,
+  value?: unknown,
 }
 
 export type SavedSearchCreate = {
   name?: string,
-  filters?: SavedSearchFilter[],
+  filters?: SavedSearchFilterResponse[],
 }

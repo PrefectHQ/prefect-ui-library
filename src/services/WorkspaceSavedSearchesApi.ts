@@ -1,5 +1,5 @@
 import { WorkspaceApi } from './WorkspaceApi'
-import { SavedSearchResponse, SavedSearchCreate } from '@/models/api/SavedSearchResponse'
+import { SavedSearchResponse } from '@/models/api/SavedSearchResponse'
 import { SavedSearch } from '@/models/SavedSearch'
 import { mapper } from '@/services/Mapper'
 
@@ -13,16 +13,14 @@ export class WorkspaceSavedSearchesApi extends WorkspaceApi {
     return mapper.map('SavedSearchResponse', data, 'SavedSearch')
   }
 
-  public getSavedSearch(id: string): Promise<SavedSearch> {
-    return this.get<SavedSearch>(`/${id}`)
-      .then(({ data }) => data)
+  public async getSavedSearch(id: string): Promise<SavedSearch> {
+    const { data } = await this.get<SavedSearchResponse>(`/${id}`)
+    return mapper.map('SavedSearchResponse', data, 'SavedSearch')
   }
 
-  public createSavedSearch(search: SavedSearch): Promise<SavedSearch> {
-    return this.put<SavedSearch>('/', mapper.map('SavedSearch', search, 'SavedSearchCreate'))
-      .then(({ data }) => {
-        return data
-      })
+  public async createSavedSearch(search: SavedSearch): Promise<SavedSearch> {
+    const { data } = await this.put<SavedSearchResponse>('/', mapper.map('SavedSearch', search, 'SavedSearchCreate'))
+    return mapper.map('SavedSearchResponse', data, 'SavedSearch')
   }
 
   public deleteSavedSearch(id: string): Promise<void> {

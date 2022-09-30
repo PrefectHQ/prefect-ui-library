@@ -1,15 +1,15 @@
 import { StateType } from './StateType'
 
 export interface ISavedSearch {
-  id?: string,
+  id: string,
   name: string,
-  filters: SavedSearchMappedFilter,
+  filters: SavedSearchFilter,
 }
 
 export class SavedSearch implements ISavedSearch {
-  public readonly id?: string | undefined
+  public readonly id: string
   public name: string
-  public filters: SavedSearchMappedFilter
+  public filters: SavedSearchFilter
 
   public constructor(savedSearch: ISavedSearch) {
     this.id = savedSearch.id
@@ -19,7 +19,7 @@ export class SavedSearch implements ISavedSearch {
 }
 
 
-export type SavedSearchMappedFilter = {
+export type SavedSearchFilter = {
   state?: StateType[],
   flow?: string[],
   tag?: string[],
