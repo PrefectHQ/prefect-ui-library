@@ -21,10 +21,10 @@
   import { SelectOption, showToast, formatDateTimeNumeric } from '@prefecthq/prefect-design'
   import { addDays, endOfToday, startOfToday, subDays } from 'date-fns'
   import  equal  from 'fast-deep-equal'
-  import { watch, ref, computed, onMounted } from 'vue'
+  import { watchEffect, ref, computed, onMounted } from 'vue'
   import { useRouter } from 'vue-router'
   import ConfirmDeleteModal from '@/components/ConfirmDeleteModal.vue'
-  import SaveSearchModal from '@/components/SaveSearchModal.vue'
+  import SaveSearchModal from '@/components/SaveFilterModal.vue'
   import { useFlowRunFilterFromRoute, useShowModal } from '@/compositions'
   import { localization } from '@/localization'
   import { workspaceApiKey } from '@/utilities'
@@ -79,6 +79,7 @@
   }
 
   const modifiedSavedSearches = computed(()=> [
+    { name: 'Custom', id: null },
     {
       name: 'One week(default)',
       filters: {
@@ -103,7 +104,6 @@
         endDate: formatDateTimeNumeric(addDays(endOfToday(), 1)),
       },
     },
-    { name: 'Custom', id: null },
     ...savedSearches.value,
   ])
 
@@ -115,22 +115,25 @@
   const selectedSavedSearchValue = computed(() => modifiedSavedSearches.value.find(filter => filter.name === selectedSavedSearch.value))
   const savedSearchId = computed(() => selectedSavedSearchValue.value?.id)
 
-  watch(selectedSavedSearch, () => {
+  watchEffect(async ()=> {
     const selectedFilter = selectedSavedSearchValue.value?.filters
     if (selectedFilter) {
-      router.push({ query: selectedFilter })
+      await router.push({ query: selectedFilter })
+      if (!equal(states.value, selectedFilter.state)) {
+        selectedSavedSearch.value = 'Custom'
+      }
+      if (!equal(flows.value, selectedFilter.flow)) {
+        selectedSavedSearch.value = 'Custom'
+        return
+      }
+      if (!equal(tags.value, selectedFilter.tag)) {
+        selectedSavedSearch.value = 'Custom'
+        return
+      }
+      if (!equal(deployments.value, selectedFilter.deployment)) {
+        selectedSavedSearch.value = 'Custom'
+      }
     }
-  })
-
-
-  watch(states, ()=> {
-    const selectedFilter = selectedSavedSearchValue.value?.filters
-    if (!equal(states.value, selectedFilter?.state)) {
-      selectedSavedSearch.value = 'Custom'
-    }
-    // if (!equal(flows.value, selectedFilter?.flow)) {
-    //   selectedSavedSearch.value = 'Custom'
-    // }
   },
   )
 </script>
