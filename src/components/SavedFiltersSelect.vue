@@ -121,40 +121,6 @@
       router.push({ query: selectedFilter })
     }
   })
-
-  watch(flows, (oldVal, newVal)=> {
-    if (selectedSavedSearch.value === 'Custom') {
-      return
-    }
-    const selectedFilter = selectedSavedSearchValue.value?.filters
-    console.log(oldVal, newVal, 'selected', selectedFilter?.flow, 'flows', flows.value)
-    if (selectedFilter) {
-      // if (!equal(flows.value, selectedFilter.flow)) {
-      //   selectedSavedSearch.value = 'Custom'
-      // }
-    }
-  }, { deep: true })
-      // if (states.value != selectedFilter.state) {
-      //   selectedSavedSearch.value = 'Custom'
-      //   return
-      // }
-      // if (deployments.value != selectedFilter.deployment) {
-      //   selectedSavedSearch.value = 'Custom'
-      //   return
-      // }
-      // if (tags.value != selectedFilter.tag) {
-      //   selectedSavedSearch.value = 'Custom'
-      //   return
-      // }
-      // if (selectedFilter.startDate && startDate.value != parseDateTimeNumeric(selectedFilter.startDate)) {
-      //   selectedSavedSearch.value = 'Custom'
-      //   return
-      // }
-      // if (selectedFilter.endDate && endDate.value != parseDateTimeNumeric(selectedFilter.endDate)) {
-      //   selectedSavedSearch.value = 'Custom'
-      // }
-  //   }
-  // })
 </script>
 
 <style>
