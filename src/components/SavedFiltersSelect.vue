@@ -1,0 +1,164 @@
+<template class="saved-filters-select">
+  <p-select v-model="selectedSavedSearch" :options="options" class="flow-runs-filter-select" />
+  <p-icon-button-menu>
+    <p-overflow-menu-item v-if="selectedSavedSearch == 'Custom'" @click="openSaveModal">
+      Save Filter
+    </p-overflow-menu-item>
+    <p-overflow-menu-item v-if="savedSearchId" inset @click="openDeleteModal">
+      Delete Filter
+    </p-overflow-menu-item>
+  </p-icon-button-menu>
+  <SaveSearchModal v-model:show-modal="showSaveModal" @save="saveFilter" />
+  <ConfirmDeleteModal
+    v-model:showModal="showDeleteModal"
+    label="Saved Filter"
+    :name="selectedSavedSearch"
+    @delete="deleteFilter"
+  />
+</template>
+
+<script setup lang="ts">
+  import { SelectOption, showToast, formatDateTimeNumeric, parseDateTimeNumeric } from '@prefecthq/prefect-design'
+  import { addDays, endOfToday, startOfToday, subDays } from 'date-fns'
+  // import  equal  from 'fast-deep-equal'
+  import { watch, ref, computed, onMounted } from 'vue'
+  import { useRouter } from 'vue-router'
+  import ConfirmDeleteModal from '@/components/ConfirmDeleteModal.vue'
+  import SaveSearchModal from '@/components/SaveSearchModal.vue'
+  import { useFlowRunFilterFromRoute, useShowModal } from '@/compositions'
+  import { localization } from '@/localization'
+  import { workspaceApiKey } from '@/utilities'
+  import { inject } from '@/utilities/inject'
+
+  const router = useRouter()
+  const api = inject(workspaceApiKey)
+  const { showModal: showSaveModal, open: openSaveModal, close: closeSaveModal } = useShowModal()
+  const { showModal: showDeleteModal, open: openDeleteModal } = useShowModal()
+  const savedSearches = ref(await api.savedSearches.getSavedSearches({}))
+  const { flows, states, tags, deployments, hasFilters, startDate, endDate } = useFlowRunFilterFromRoute()
+
+  onMounted(() => {
+    if (hasFilters.value) {
+      selectedSavedSearch.value = 'Custom'
+    }
+  })
+
+  const saveFilter = async (filterName: string): Promise<void> => {
+    try {
+      await api.savedSearches.createSavedSearch({
+        name: filterName,
+        filters: {
+          state: states.value,
+          tag: tags.value,
+          flow: flows.value,
+          deployment: deployments.value,
+        },
+      })
+      savedSearches.value = await api.savedSearches.getSavedSearches({})
+      showToast(localization.success.createSavedSearch, 'success')
+      selectedSavedSearch.value = filterName
+      closeSaveModal()
+    } catch (error) {
+      console.warn(error)
+      showToast(localization.error.createSavedSearch, 'error')
+    }
+  }
+
+  const deleteFilter = async (): Promise<void> => {
+    try {
+      if (savedSearchId.value) {
+        await api.savedSearches.deleteSavedSearch(savedSearchId.value)
+        savedSearches.value = await api.savedSearches.getSavedSearches({})
+        selectedSavedSearch.value = 'One week(default)'
+        showToast(localization.success.deleteSavedSearch, 'success')
+      }
+    } catch (error) {
+      console.warn(error)
+      showToast(localization.error.deleteSavedSearch, 'error')
+    }
+  }
+
+  const modifiedSavedSearches = computed(()=> [
+    {
+      name: 'One week(default)',
+      filters: {
+        startDate: formatDateTimeNumeric(subDays(startOfToday(), 7)),
+        endDate: formatDateTimeNumeric(addDays(endOfToday(), 1)),
+        state: [],
+        flow: [],
+        tag: [],
+        deployment: [],
+        id: null,
+      },
+    },
+    {
+      name: 'No scheduled',
+      filters: {
+        id: null,
+        state: ['completed', 'failed', 'running', 'pending', 'crashed', 'cancelled'],
+        flow: [],
+        tag: [],
+        deployment: [],
+        startDate: formatDateTimeNumeric(subDays(startOfToday(), 7)),
+        endDate: formatDateTimeNumeric(addDays(endOfToday(), 1)),
+      },
+    },
+    { name: 'Custom', id: null },
+    ...savedSearches.value,
+  ])
+
+  const options = computed<SelectOption[]>(() => modifiedSavedSearches.value.map(search => {
+    return { label: search.name, value: search.name }
+  }))
+
+  const selectedSavedSearch = ref('One week(default)')
+  const selectedSavedSearchValue = computed(() => modifiedSavedSearches.value.find(filter => filter.name === selectedSavedSearch.value))
+  const savedSearchId = computed(() => selectedSavedSearchValue.value?.id)
+
+  watch(selectedSavedSearch, () => {
+    const selectedFilter = selectedSavedSearchValue.value?.filters
+    if (selectedFilter) {
+      router.push({ query: selectedFilter })
+    }
+  })
+
+  watch(flows, (oldVal, newVal)=> {
+    if (selectedSavedSearch.value === 'Custom') {
+      return
+    }
+    const selectedFilter = selectedSavedSearchValue.value?.filters
+    console.log(oldVal, newVal, 'selected', selectedFilter?.flow, 'flows', flows.value)
+    if (selectedFilter) {
+      // if (!equal(flows.value, selectedFilter.flow)) {
+      //   selectedSavedSearch.value = 'Custom'
+      // }
+    }
+  }, { deep: true })
+      // if (states.value != selectedFilter.state) {
+      //   selectedSavedSearch.value = 'Custom'
+      //   return
+      // }
+      // if (deployments.value != selectedFilter.deployment) {
+      //   selectedSavedSearch.value = 'Custom'
+      //   return
+      // }
+      // if (tags.value != selectedFilter.tag) {
+      //   selectedSavedSearch.value = 'Custom'
+      //   return
+      // }
+      // if (selectedFilter.startDate && startDate.value != parseDateTimeNumeric(selectedFilter.startDate)) {
+      //   selectedSavedSearch.value = 'Custom'
+      //   return
+      // }
+      // if (selectedFilter.endDate && endDate.value != parseDateTimeNumeric(selectedFilter.endDate)) {
+      //   selectedSavedSearch.value = 'Custom'
+      // }
+  //   }
+  // })
+</script>
+
+<style>
+.flow-runs-filter-select {
+  @apply w-48
+}
+</style>

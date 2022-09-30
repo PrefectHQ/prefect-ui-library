@@ -10,9 +10,11 @@ export const mapSavedSearchToSavedSearchCreate: MapFunction<SavedSearch, SavedSe
 }
 
 function mapSavedSearchFiltersToSavedSearchCreate(filters: SavedSearchFilter | undefined): SavedSearchFilterResponse[] {
-  const values = Object.entries(filters!)
-  const newFilters: SavedSearchFilterResponse[] = values.map(filterList => {
-    return { property: filterList[0], value: filterList[1], object: 'flowRun', type: '', operation: '' }
-  })
-  return newFilters
+  if (filters) {
+    const values = Object.entries(filters)
+    return values.map(([property, value]) => {
+      return { property, value, object: 'flowRun', type: '', operation: '' }
+    })
+  }
+  return []
 }
