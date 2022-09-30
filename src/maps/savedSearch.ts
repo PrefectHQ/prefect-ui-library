@@ -13,7 +13,7 @@ export const mapSavedSearchResponseToSavedSearch: MapFunction<SavedSearchRespons
 }
 
 function mapSavedSearchFilters(filters: SavedSearchFilterResponse[] | undefined): SavedSearchFilter {
-  const filter = {
+  const filter: SavedSearchFilter = {
     state: [],
     tag: [],
     flow: [],

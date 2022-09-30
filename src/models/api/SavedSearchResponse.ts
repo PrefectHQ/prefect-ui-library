@@ -1,3 +1,4 @@
+import { StateType } from '../StateType'
 
 export type SavedSearchResponse = {
   id: string,
@@ -12,7 +13,8 @@ export type SavedSearchFilterResponse = {
   property?: string,
   type?: string,
   operation?: string,
-  value?: unknown,
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  value?: any,
 }
 
 export type SavedSearchCreate = {
