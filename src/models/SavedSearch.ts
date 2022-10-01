@@ -1,3 +1,4 @@
+import { FilterResponseValue } from './api/SavedSearchResponse'
 import { StateType } from './StateType'
 
 export interface ISavedSearch {
@@ -24,10 +25,10 @@ export class SavedSearch implements ISavedSearch {
 }
 
 export type SavedSearchFilter = {
-  state?: StateType[],
-  flow?: string[],
-  tag?: string[],
-  deployment?: string[],
-  startDate?: string,
-  endDate?: string,
+  state?: FilterResponseValue,
+  flow?: FilterResponseValue,
+  tag?: FilterResponseValue,
+  deployment?: FilterResponseValue,
+  startDate?: FilterResponseValue,
+  endDate?: FilterResponseValue,
 }

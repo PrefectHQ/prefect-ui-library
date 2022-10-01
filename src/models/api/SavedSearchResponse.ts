@@ -8,12 +8,13 @@ export type SavedSearchResponse = {
   filters?: SavedSearchFilterResponse[],
 }
 
+export type FilterResponseValue = string | string[] | StateType[]
 export interface SavedSearchFilterResponse {
   object?: string,
   property?: string,
   type?: string,
   operation?: string,
-  value?: string[] | StateType[] | string,
+  value?: FilterResponseValue,
 }
 
 
