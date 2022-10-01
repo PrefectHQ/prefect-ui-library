@@ -1,5 +1,5 @@
 import { WorkspaceApi } from './WorkspaceApi'
-import { SavedSearchCreateRequest, SavedSearchResponse } from '@/models/api/SavedSearchResponse'
+import { SavedSearchResponse } from '@/models/api/SavedSearchResponse'
 import { SavedSearch, SavedSearchCreate } from '@/models/SavedSearch'
 import { mapper } from '@/services/Mapper'
 
