@@ -8,13 +8,14 @@ export type SavedSearchResponse = {
   filters?: SavedSearchFilterResponse[],
 }
 
-export type SavedSearchFilterResponse = {
+export interface SavedSearchFilterResponse {
   object?: string,
   property?: string,
   type?: string,
   operation?: string,
-  value?: string | string[] | StateType[],
+  value?: string[] | StateType[] | string,
 }
+
 
 export type SavedSearchCreateRequest = {
   name?: string,
