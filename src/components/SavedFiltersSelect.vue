@@ -40,7 +40,9 @@
   onMounted(() => {
     if (hasFilters.value) {
       selectedSavedSearch.value = 'Custom'
+      return
     }
+    selectedSavedSearch.value = 'One week(default)'
   })
 
   const saveFilter = async (filterName: string): Promise<void> => {
@@ -111,7 +113,7 @@
     return { label: search.name, value: search.name }
   }))
 
-  const selectedSavedSearch = ref('One week(default)')
+  const selectedSavedSearch = ref()
   const selectedSavedSearchValue = computed(() => modifiedSavedSearches.value.find(filter => filter.name === selectedSavedSearch.value))
   const savedSearchId = computed(() => selectedSavedSearchValue.value?.id)
 
