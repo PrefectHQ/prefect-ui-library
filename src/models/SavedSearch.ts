@@ -1,13 +1,18 @@
 import { StateType } from './StateType'
 
 export interface ISavedSearch {
-  id?: string,
+  id: string,
+  name: string,
+  filters: SavedSearchFilter,
+}
+
+export interface SavedSearchCreate {
   name: string,
   filters: SavedSearchFilter,
 }
 
 export class SavedSearch implements ISavedSearch {
-  public readonly id?: string
+  public readonly id: string
   public name: string
   public filters: SavedSearchFilter
 
@@ -17,7 +22,6 @@ export class SavedSearch implements ISavedSearch {
     this.filters = savedSearch.filters
   }
 }
-
 
 export type SavedSearchFilter = {
   state?: StateType[],

@@ -1,4 +1,3 @@
-import { StateType } from '../StateType'
 
 export type SavedSearchResponse = {
   id: string,
@@ -17,7 +16,7 @@ export type SavedSearchFilterResponse = {
   value?: any,
 }
 
-export type SavedSearchCreate = {
+export type SavedSearchCreateRequest = {
   name?: string,
   filters?: SavedSearchFilterResponse[],
 }
