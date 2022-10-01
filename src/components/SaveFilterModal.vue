@@ -59,7 +59,7 @@
 </script>
 
 <style>
-  .save-filter-modal__data-filter-warning {
+  .save-filter-modal__date-filter-warning {
     @apply text-sm
   }
 </style>

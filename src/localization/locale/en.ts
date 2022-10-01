@@ -27,8 +27,8 @@ export const en = {
     createSchedule: 'Failed to create schedule',
     updateSchedule: 'Failed to update schedule',
     removeSchedule: 'Failed to remove schedule',
-    createSavedSearch: 'Failed to create saved search',
-    deleteSavedSearch: 'Failed to delete saved search',
+    createSavedSearch: 'Failed to create saved filter',
+    deleteSavedSearch: 'Failed to delete saved filter',
   },
   success: {
     activateDeployment: 'Deployment active',
@@ -48,8 +48,8 @@ export const en = {
     createSchedule: 'Schedule added',
     updateSchedule: 'Schedule updated',
     removeSchedule: 'Schedule removed',
-    createSavedSearch: 'Search saved',
-    deleteSavedSearch: 'Saved search deleted',
+    createSavedSearch: 'Filter saved',
+    deleteSavedSearch: 'Saved filter deleted',
   },
   info: {
     deprecatedWorkQueue: 'This work queue uses a deprecated tag-based approach to matching flow runs; it will continue to work but you can\'t modify it',

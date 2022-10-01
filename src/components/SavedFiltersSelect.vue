@@ -8,7 +8,7 @@
       Delete Filter
     </p-overflow-menu-item>
   </p-icon-button-menu>
-  <SaveSearchModal v-model:show-modal="showSaveModal" @save="saveFilter" />
+  <SaveFilterModal v-model:show-modal="showSaveModal" @save="saveFilter" />
   <ConfirmDeleteModal
     v-model:showModal="showDeleteModal"
     label="Saved Filter"
@@ -24,7 +24,7 @@
   import { watchEffect, ref, computed, onMounted } from 'vue'
   import { useRouter } from 'vue-router'
   import ConfirmDeleteModal from '@/components/ConfirmDeleteModal.vue'
-  import SaveSearchModal from '@/components/SaveFilterModal.vue'
+  import SaveFilterModal from '@/components/SaveFilterModal.vue'
   import { useFlowRunFilterFromRoute, useShowModal } from '@/compositions'
   import { localization } from '@/localization'
   import { workspaceApiKey } from '@/utilities'
