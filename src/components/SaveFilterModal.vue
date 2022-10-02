@@ -60,7 +60,7 @@
 
 <style>
   .save-filter-modal__date-filter-warning {
-    @apply text-sm
+    @apply text-sm font-semibold
   }
 </style>
 

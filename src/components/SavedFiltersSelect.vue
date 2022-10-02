@@ -1,5 +1,5 @@
-<template class="saved-filters-select">
-  <p-select v-model="selectedSavedSearch" :options="options" class="flow-runs-filter-select" />
+<template class="saved-filters">
+  <p-select v-model="selectedSavedSearch" :options="options" class="saved-filters__select" />
   <p-icon-button-menu :disabled="selectedSavedSearch != 'Custom' && !savedSearchId">
     <p-overflow-menu-item v-if="selectedSavedSearch == 'Custom'" @click="openSaveModal">
       Save Filter
@@ -110,7 +110,7 @@
   ])
 
   const options = computed<SelectOption[]>(() => modifiedSavedSearches.value.map(search => {
-    return { label: search.name, value: search.name }
+    return { label: search.name, value: search.name,  disabled: search.name === 'Custom' }
   }))
 
   const selectedSavedSearch = ref()
@@ -141,7 +141,7 @@
 </script>
 
 <style>
-.flow-runs-filter-select {
+.saved-filters__select {
   @apply w-48
 }
 </style>
