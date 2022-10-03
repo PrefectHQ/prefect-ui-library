@@ -23,7 +23,7 @@ export function withMessage(validationFactory: ValidationMethodFactory, message:
   }
 }
 
-export function validate(property: string, ...rules: (ValidationMethodFactory | WithMessageArgs)[]): ValidationMethod[] {
+export function rules(property: string, ...rules: (ValidationMethodFactory | WithMessageArgs)[]): ValidationMethod[] {
   return rules.map(rule => {
     if (isWithMessageArgs(rule)) {
       const [method, message] = rule
@@ -188,6 +188,10 @@ export const isAfterOrEqual = (max: Date, { time: showTime = false } = {}): Vali
 }
 
 export const isJson: ValidationMethodFactory = (property: string) => (value: unknown) => {
+  if (isNullish(value) || isEmptyString(value)) {
+    return true
+  }
+
   try {
     JSON.parse(value as string)
   } catch {
