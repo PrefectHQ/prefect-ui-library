@@ -34,7 +34,7 @@ export function fieldRules(property: string, ...rules: (ValidationMethodFactory 
   })
 }
 
-export const isRequired: ValidationMethodFactory = (property: string) => (value: unknown) => {
+export const isRequired: ValidationMethodFactory = property => value => {
   if (isNullish(value) || isEmptyArray(value) || isEmptyString(value) || isInvalidDate(value)) {
     return `${property} is required`
   }
@@ -54,7 +54,7 @@ export const isRequiredIf = (condition: () => boolean): ValidationMethodFactory 
 
 const EMAIL_REGEX = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
 
-export const isEmail: ValidationMethodFactory = (property: string) => (value: unknown) => {
+export const isEmail: ValidationMethodFactory = property => (value: unknown) => {
   if (isNullish(value) || isEmptyString(value)) {
     return true
   }
@@ -66,7 +66,7 @@ export const isEmail: ValidationMethodFactory = (property: string) => (value: un
   return `${property} is not a valid email address`
 }
 
-export const isLessThan = (max: number): ValidationMethodFactory => (property: string) => (value: unknown) => {
+export const isLessThan = (max: number): ValidationMethodFactory => property => (value: unknown) => {
   if (isNullish(value) || isEmptyString(value) || isEmptyArray(value)) {
     return true
   }
@@ -82,7 +82,7 @@ export const isLessThan = (max: number): ValidationMethodFactory => (property: s
   return `${property} must be less than ${max}`
 }
 
-export const isLessThanOrEqual = (max: number): ValidationMethodFactory => (property: string) => (value: unknown) => {
+export const isLessThanOrEqual = (max: number): ValidationMethodFactory => property => (value: unknown) => {
   if (isNullish(value) || isEmptyString(value) || isEmptyArray(value)) {
     return true
   }
@@ -98,7 +98,7 @@ export const isLessThanOrEqual = (max: number): ValidationMethodFactory => (prop
   return `${property} must be less than or equal to ${max}`
 }
 
-export const isGreaterThan = (max: number): ValidationMethodFactory => (property: string) => (value: unknown) => {
+export const isGreaterThan = (max: number): ValidationMethodFactory => property => (value: unknown) => {
   if (isNullish(value) || isEmptyString(value) || isEmptyArray(value)) {
     return true
   }
@@ -114,7 +114,7 @@ export const isGreaterThan = (max: number): ValidationMethodFactory => (property
   return `${property} must be less than ${max}`
 }
 
-export const isGreaterThanOrEqual = (max: number): ValidationMethodFactory => (property: string) => (value: unknown) => {
+export const isGreaterThanOrEqual = (max: number): ValidationMethodFactory => property => (value: unknown) => {
   if (isNullish(value) || isEmptyString(value) || isEmptyArray(value)) {
     return true
   }
@@ -130,25 +130,23 @@ export const isGreaterThanOrEqual = (max: number): ValidationMethodFactory => (p
   return `${property} must be less than or equal to ${max}`
 }
 
-export const isBefore = (max: Date, { time: showTime = false } = {}): ValidationMethodFactory => (property: string): ValidationMethod => {
-  return (value: unknown) => {
-    if (isNullish(value)) {
-      return true
-    }
-
-    if (isDate(value) && isDateBefore(value, max)) {
-      return true
-    }
-
-    if (showTime) {
-      return `${property} must be less than ${formatDateTimeNumeric(max)}`
-    }
-
-    return `${property} must be less than ${formatDate(max)}`
+export const isBefore = (max: Date, { time: showTime = false } = {}): ValidationMethodFactory => property => value => {
+  if (isNullish(value)) {
+    return true
   }
+
+  if (isDate(value) && isDateBefore(value, max)) {
+    return true
+  }
+
+  if (showTime) {
+    return `${property} must be less than ${formatDateTimeNumeric(max)}`
+  }
+
+  return `${property} must be less than ${formatDate(max)}`
 }
 
-export const isBeforeOrEqual = (max: Date, { time: showTime = false } = {}): ValidationMethodFactory => (property: string) => (value: unknown) => {
+export const isBeforeOrEqual = (max: Date, { time: showTime = false } = {}): ValidationMethodFactory => property => value => {
   if (isNullish(value)) {
     return true
   }
@@ -164,7 +162,7 @@ export const isBeforeOrEqual = (max: Date, { time: showTime = false } = {}): Val
   return `${property} must be less than or equal to ${formatDate(max)}`
 }
 
-export const isAfter = (max: Date, { time: showTime = false } = {}): ValidationMethodFactory => (property: string) => (value: unknown) => {
+export const isAfter = (max: Date, { time: showTime = false } = {}): ValidationMethodFactory => property => value => {
   if (isNullish(value)) {
     return true
   }
@@ -180,7 +178,7 @@ export const isAfter = (max: Date, { time: showTime = false } = {}): ValidationM
   return `${property} must be less than ${formatDate(max)}`
 }
 
-export const isAfterOrEqual = (max: Date, { time: showTime = false } = {}): ValidationMethodFactory => (property: string) => (value: unknown) => {
+export const isAfterOrEqual = (max: Date, { time: showTime = false } = {}): ValidationMethodFactory => property => value => {
   if (isNullish(value)) {
     return true
   }
@@ -196,7 +194,7 @@ export const isAfterOrEqual = (max: Date, { time: showTime = false } = {}): Vali
   return `${property} must be less than or equal to ${formatDate(max)}`
 }
 
-export const isJson: ValidationMethodFactory = (property: string) => (value: unknown) => {
+export const isJson: ValidationMethodFactory = property => value => {
   if (isNullish(value) || isEmptyString(value)) {
     return true
   }
@@ -212,7 +210,7 @@ export const isJson: ValidationMethodFactory = (property: string) => (value: unk
 
 const HANDLE_REGEX = /^[a-z0-9-]+$/
 
-export const isHandle: ValidationMethodFactory = (property: string) => value => {
+export const isHandle: ValidationMethodFactory = property => value => {
   if (isNullish(value) || isEmptyString(value)) {
     return true
   }
