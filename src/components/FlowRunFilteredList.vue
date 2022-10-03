@@ -2,7 +2,7 @@
   <div class="flow-runs-controls_list">
     <div class="flow-runs-controls_list__controls">
       <ResultsCount :count="flowRunCount" class="mr-auto" label="Flow run" />
-      <StateSelect v-model:selected="state" empty-message="All run states" class="flow-runs-controls_list__state-select" />
+      <StateSelect :selected="state" empty-message="All run states" class="flow-runs-controls_list__state-select" @update:selected="updateState" />
       <FlowRunsSort v-model="sort" class="flow-runs-controls_list__flow-runs-sort" />
     </div>
 
@@ -23,7 +23,7 @@
 
 <script lang="ts" setup>
   import { useSubscription } from '@prefecthq/vue-compositions'
-  import { computed, ref } from 'vue'
+  import { computed, onMounted, ref } from 'vue'
   import { ResultsCount, StateSelect, FlowRunsSort, FlowRunList } from '@/components'
   import { usePaginatedSubscription } from '@/compositions/usePaginatedSubscription'
   import { StateType } from '@/models'
@@ -35,9 +35,20 @@
 
   const props = defineProps<{
     flowRunFilter: UnionFilters,
+    states?: StateType[],
   }>()
 
-  const state = ref<StateType[]>([])
+  const emit = defineEmits<{
+    (event: 'update:states', value: StateType[]): void,
+  }>()
+
+  const state = ref<StateType[]>(props.states ?? [])
+
+  const updateState = (newValue: string | string[] | null): void => {
+    state.value = newValue as StateType[]
+    emit('update:states', state.value)
+  }
+
   const sort = ref<FlowRunSortValues>('EXPECTED_START_TIME_DESC')
   const hasFilters = computed(() => state.value.length)
 
@@ -73,6 +84,12 @@
   function clear(): void {
     state.value = []
   }
+
+  onMounted(() => {
+    if (props.states) {
+      state.value = props.states
+    }
+  })
 </script>
 
 <style>
