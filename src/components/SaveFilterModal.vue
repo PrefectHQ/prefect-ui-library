@@ -59,8 +59,9 @@
 </script>
 
 <style>
-  .save-filter-modal__date-filter-warning {
-    @apply text-sm font-semibold
+  .save-filter-modal__date-filter-warning { @apply
+    text-sm
+    font-semibold
   }
 </style>
 
