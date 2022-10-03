@@ -83,7 +83,7 @@
   const modifiedSavedSearches = computed(()=> [
     { name: 'Custom', id: null },
     {
-      name: 'One week(default)',
+      name: 'One week (default)',
       filters: {
         startDate: formatDateTimeNumeric(subDays(startOfToday(), 7)),
         endDate: formatDateTimeNumeric(addDays(endOfToday(), 1)),
