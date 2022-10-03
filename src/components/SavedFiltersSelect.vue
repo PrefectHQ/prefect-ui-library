@@ -21,7 +21,6 @@
   import { SelectOption, showToast, formatDateTimeNumeric } from '@prefecthq/prefect-design'
   import { useSubscription } from '@prefecthq/vue-compositions'
   import { addDays, endOfToday, startOfToday, subDays } from 'date-fns'
-  import  equal  from 'fast-deep-equal'
   import { watchEffect, ref, computed, onMounted } from 'vue'
   import { useRouter } from 'vue-router'
   import ConfirmDeleteModal from '@/components/ConfirmDeleteModal.vue'
@@ -29,6 +28,7 @@
   import { useFlowRunFilterFromRoute, useShowModal } from '@/compositions'
   import { localization } from '@/localization'
   import { workspaceApiKey } from '@/utilities'
+  import { isSame } from '@/utilities/arrays'
   import { inject } from '@/utilities/inject'
 
   const router = useRouter()
@@ -125,24 +125,14 @@
     const selectedFilter = selectedSavedSearchValue.value?.filters
     if (selectedFilter) {
       await router.push({ query: selectedFilter })
-      if (!equal(states.value, selectedFilter.state)) {
-        selectedSavedSearch.value = 'Custom'
-        return
-      }
-      if (!equal(flows.value, selectedFilter.flow)) {
-        selectedSavedSearch.value = 'Custom'
-        return
-      }
-      if (!equal(tags.value, selectedFilter.tag)) {
-        selectedSavedSearch.value = 'Custom'
-        return
-      }
-      if (!equal(deployments.value, selectedFilter.deployment)) {
+      if (!isSame(states.value, selectedFilter.state as string[])
+        || !isSame(flows.value, selectedFilter.flow as string[])
+        || !isSame(tags.value, selectedFilter.tag as string[])
+        || !isSame(deployments.value, selectedFilter.deployment as string[])) {
         selectedSavedSearch.value = 'Custom'
       }
     }
-  },
-  )
+  })
 </script>
 
 <style>
