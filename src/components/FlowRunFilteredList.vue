@@ -37,7 +37,20 @@
     flowRunFilter: UnionFilters,
     states?: StateType[],
   }>()
-  const state = ref<StateType[]>(props.states ?? [])
+
+  const emit = defineEmits<{
+    (event: 'update:states', value: StateType[]): void,
+  }>()
+
+  const state = computed({
+    get() {
+      return props.states ?? []
+    },
+    set(value: StateType[]) {
+      emit('update:states', value)
+    },
+  })
+
   const sort = ref<FlowRunSortValues>('EXPECTED_START_TIME_DESC')
   const hasFilters = computed(() => state.value.length)
 
