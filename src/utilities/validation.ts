@@ -1,7 +1,6 @@
 import { formatDate, formatDateTimeNumeric, isDateAfter, isDateAfterOrEqual, isDateBefore, isDateBeforeOrEqual } from '@prefecthq/prefect-design'
-import { isValid as isValidDate } from 'date-fns'
 import { isEmptyArray } from './arrays'
-import { isDate } from './dates'
+import { isDate, isInvalidDate } from './dates'
 import { isEmptyString } from './strings'
 import { isNullish } from './variables'
 
@@ -36,7 +35,7 @@ export function fieldRules(property: string, ...rules: (ValidationMethodFactory 
 }
 
 export const isRequired: ValidationMethodFactory = (property: string) => (value: unknown) => {
-  if (isNullish(value) || isEmptyArray(value) || isEmptyString(value) || !isValidDate(value)) {
+  if (isNullish(value) || isEmptyArray(value) || isEmptyString(value) || isInvalidDate(value)) {
     return `${property} is required`
   }
 
