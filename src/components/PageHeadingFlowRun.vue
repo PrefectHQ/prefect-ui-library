@@ -29,19 +29,19 @@
   import { PIconButtonMenu } from '@prefecthq/prefect-design'
   import { computed } from 'vue'
   import { StateBadge, PageHeading, DurationIconText, FlowIconText, CopyOverflowMenuItem, ConfirmDeleteModal, FlowRunStartTime } from '@/components'
+  import { useCan } from '@/compositions/useCan'
   import { useShowModal } from '@/compositions/useShowModal'
   import { FlowRun } from '@/models'
   import { flowRunsRouteKey } from '@/router'
   import { flowRunsApiKey } from '@/services'
-  import { canKey } from '@/types'
   import { deleteItem, inject } from '@/utilities'
-
-  const flowRunsApi = inject(flowRunsApiKey)
-  const can = inject(canKey)
 
   const props = defineProps<{
     flowRun: FlowRun,
   }>()
+
+  const flowRunsApi = inject(flowRunsApiKey)
+  const can = useCan()
 
   const { showModal, open } = useShowModal()
 

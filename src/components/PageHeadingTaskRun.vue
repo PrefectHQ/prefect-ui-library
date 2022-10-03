@@ -27,11 +27,11 @@
   import { useSubscription } from '@prefecthq/vue-compositions'
   import { computed } from 'vue'
   import { StateBadge, PageHeading, DurationIconText, CopyOverflowMenuItem, ConfirmDeleteModal } from '@/components'
+  import { useCan } from '@/compositions/useCan'
   import { useShowModal } from '@/compositions/useShowModal'
   import { TaskRun } from '@/models'
   import { flowRunRouteKey } from '@/router'
   import { flowRunsApiKey, taskRunsApiKey } from '@/services'
-  import { canKey } from '@/types'
   import { deleteItem, inject } from '@/utilities'
 
   const props = defineProps<{
@@ -39,10 +39,10 @@
   }>()
   const { showModal, open } = useShowModal()
 
+  const can = useCan()
   const taskRunsApi = inject(taskRunsApiKey)
   const flowRunsApi = inject(flowRunsApiKey)
   const flowRunRoute = inject(flowRunRouteKey)
-  const can = inject(canKey)
 
   const flowRunSubscription = useSubscription(flowRunsApi.getFlowRun, [props.taskRun.flowRunId])
   const flowRunName = computed(() => flowRunSubscription.response?.name)

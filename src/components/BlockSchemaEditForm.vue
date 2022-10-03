@@ -5,7 +5,7 @@
         <p-text-input :model-value="name" disabled />
       </p-label>
 
-      <BlockSchemaFormFields v-model:data="dataModel" :block-schema="blockSchema" />
+      <SchemaFormFields :schema="blockSchema.fields" property="data" />
     </p-content>
 
     <template #footer>
@@ -19,36 +19,30 @@
 
 <script lang="ts" setup>
   import { useForm } from 'vee-validate'
-  import { computed } from 'vue'
-  import BlockSchemaFormFields from './BlockSchemaFormFields.vue'
+  import SchemaFormFields from './SchemaFormFields.vue'
   import SubmitButton from './SubmitButton.vue'
-  import { BlockDocumentData } from '@/models/BlockDocument'
+  import { BlockDocumentUpdate } from '@/models'
   import { BlockSchema } from '@/models/BlockSchema'
+  import { SchemaValues } from '@/types/schemas'
 
   const props = defineProps<{
     blockSchema: BlockSchema,
-    data: BlockDocumentData,
+    data: SchemaValues,
     name: string,
   }>()
 
   const emit = defineEmits<{
-    (event: 'update:data', value: BlockDocumentData): void,
-    (event: 'submit' | 'cancel'): void,
+    (event: 'submit', value: BlockDocumentUpdate): void,
+    (event: 'cancel'): void,
   }>()
 
-  const { handleSubmit } = useForm()
-  const submit = handleSubmit(() => emit('submit'))
-
-  const dataModel = computed({
-    get(): BlockDocumentData {
-      return props.data
-    },
-    set(value: BlockDocumentData): void {
-      emit('update:data', value)
+  const { handleSubmit } = useForm<BlockDocumentUpdate>({
+    initialValues: {
+      data: props.data,
+      blockSchema: props.blockSchema,
     },
   })
 
-  function cancel(): void {
-    emit('cancel')
-  }
+  const submit = handleSubmit(update => emit('submit', update))
+  const cancel = (): void => emit('cancel')
 </script>

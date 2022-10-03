@@ -5,10 +5,10 @@
 <script lang="ts" setup>
   import { PToggle, showToast } from '@prefecthq/prefect-design'
   import { computed, ref } from 'vue'
+  import { useCan } from '@/compositions/useCan'
   import { localization } from '@/localization'
   import { WorkQueue } from '@/models'
   import { workQueuesApiKey } from '@/services/WorkQueuesApi'
-  import { canKey } from '@/types'
   import { inject } from '@/utilities'
 
   const props = defineProps<{
@@ -16,7 +16,7 @@
   }>()
 
   const workQueuesApi = inject(workQueuesApiKey)
-  const can = inject(canKey)
+  const can = useCan()
 
   const emit = defineEmits<{
     (event: 'update'): void,

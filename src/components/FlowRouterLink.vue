@@ -12,6 +12,7 @@
   import { useSubscriptionWithDependencies } from '@prefecthq/vue-compositions'
   import { computed } from 'vue'
   import { RouterLink, useRoute, useRouter } from 'vue-router'
+  import { useCan } from '@/compositions/useCan'
   import { flowRouteKey } from '@/router/routes'
   import { flowsApiKey } from '@/services'
   import { inject } from '@/utilities/inject'
@@ -22,6 +23,7 @@
     after?: string,
   }>()
 
+  const can = useCan()
   const flowRoute = inject(flowRouteKey)
   const flowsApi = inject(flowsApiKey)
   const route = useRoute()
@@ -29,7 +31,13 @@
   const flowRouteResolved = computed(() => router.resolve(flowRoute(props.flowId)))
   const matched = computed(() => route.matched.some(({ path }) => flowRouteResolved.value.path == path))
 
-  const flowSubscriptionArgs = computed<Parameters<typeof flowsApi.getFlow> | null>(() => !matched.value ? [props.flowId] : null)
+  const flowSubscriptionArgs = computed<[string] | null>(() => {
+    if (!can.read.flow || matched.value) {
+      return null
+    }
+
+    return [props.flowId]
+  })
 
   const subscription = useSubscriptionWithDependencies(flowsApi.getFlow, flowSubscriptionArgs)
   const flowName = computed(() => subscription.response?.name ?? '')

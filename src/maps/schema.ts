@@ -1,79 +1,49 @@
-import { SchemaPropertiesResponse, SchemaPropertyResponse, SchemaResponse } from '@/models/api/SchemaResponse'
+import { SchemaDefinitionsResponse, SchemaPropertiesResponse, SchemaPropertyResponse, SchemaResponse } from '@/models/api/SchemaResponse'
 import { MapFunction } from '@/services/Mapper'
-import { Schema, SchemaProperties, SchemaProperty } from '@/types/schemas'
+import { resolveSchema } from '@/services/schemas/resolvers/schemas'
+import { Schema, SchemaDefinitions, schemaHas, SchemaProperties, SchemaProperty } from '@/types/schemas'
+import { mapEntries, mapSnakeToCamelCase } from '@/utilities'
 
 export const mapSchemaResponseToSchema: MapFunction<SchemaResponse, Schema> = function(source: SchemaResponse): Schema {
-  return resolveSchema(source)
-}
+  // eslint-disable-next-line camelcase, @typescript-eslint/no-unused-vars
+  const { definitions, block_schema_references, properties, $ref, ...rest } = source
 
-function resolveSchema(schema: SchemaResponse): Schema {
-  const { properties, items, ...rest } = schema
-  const response: Schema = { ...rest }
-
-  if (properties) {
-    response.properties = resolveProperties(properties, schema)
+  const mapped: Schema = {
+    ...mapSnakeToCamelCase({ ...rest }),
+    properties: this.map('SchemaPropertiesResponse', properties, 'SchemaProperties'),
+    definitions: this.map('SchemaDefinitionsResponse', definitions, 'SchemaDefinitions'),
+    // todo: this map isn't working (ts error). Not using this anywhere so commenting it out for now
+    // blockSchemaReferences: this.map('BlockSchemaReferencesResponse', block_schema_references, 'BlockSchemaReferences'),
   }
-
-  if (items) {
-    response.items = resolveProperty(items, schema)
-  }
-
-  return response
-}
-
-function resolveProperties(properties: SchemaPropertiesResponse | undefined, schema: SchemaResponse): SchemaProperties | undefined {
-  if (properties === undefined) {
-    return undefined
-  }
-
-  return Object.keys(properties).reduce<SchemaProperties>((result, key) => {
-    result[key] = resolveProperty(properties[key]!, schema, key)
-
-    return result
-  }, {})
-}
-
-function resolveProperty(property: SchemaPropertyResponse, schema: SchemaResponse, key: string = ''): SchemaProperty {
-  const { $ref, properties, items, allOf, anyOf, required, ...rest } = property
-  const response: SchemaProperty = { ...rest }
 
   if ($ref) {
-    Object.assign(response, resolveDefinition($ref, schema))
+    mapped.$ref = $ref
   }
 
-  if (properties) {
-    response.properties = resolveProperties(properties, schema)
-  }
-
-  if (items) {
-    response.items = resolveProperty(items, schema)
-  }
-
-  if (allOf) {
-    response.allOf = allOf.map(_property => resolveProperty(_property, schema))
-  }
-
-  if (anyOf) {
-    response.anyOf = anyOf.map(_property => resolveProperty(_property, schema))
-  }
-
-  // this logic is incorrect and will be replaced by property meta in a future pr
-  // start
-  const isRequired = schema.required?.includes(key)
-
-  if (required) {
-    response.required = isRequired ? [...required, key] : required
-  } else if (isRequired) {
-    response.required = [key]
-  }
-  // end
-
-  return response
+  return resolveSchema(mapped)
 }
 
-function resolveDefinition(ref: string, schema: SchemaResponse): SchemaProperty {
-  const [, match = ''] = ref.match(/^(?:#\/definitions\/)(.*)/) ?? []
-  const definition = schema.definitions?.[match] ?? {}
+export const mapSchemaDefinitionsResponseToSchemaDefinitions: MapFunction<SchemaDefinitionsResponse, SchemaDefinitions> = function(source: SchemaDefinitionsResponse): SchemaDefinitions {
+  return mapEntries(source, (key, value) => this.map('SchemaResponse', value, 'Schema'))
+}
 
-  return resolveSchema(definition)
+export const mapSchemaPropertiesResponseToSchemaProperties: MapFunction<SchemaPropertiesResponse, SchemaProperties> = function(source: SchemaPropertiesResponse): SchemaProperties {
+  return mapEntries(source, (key, value) => this.map('SchemaPropertyResponse', value, 'SchemaProperty'))
+}
+
+export const mapSchemaPropertyResponseToSchemaProperty: MapFunction<SchemaPropertyResponse, SchemaProperty> = function(source: SchemaPropertyResponse): SchemaProperty {
+  const { properties, $ref, ...rest } = source
+
+  const mapped: SchemaProperty = mapSnakeToCamelCase({ ...rest })
+
+  // its important that if mapped.properties doesn't exist at all that we don't add it as undefined
+  if (schemaHas(source, 'properties')) {
+    mapped.properties = this.map('SchemaPropertiesResponse', properties, 'SchemaProperties')
+  }
+
+  if ($ref) {
+    mapped.$ref = $ref
+  }
+
+  return mapped
 }

@@ -3,15 +3,16 @@ import { BlockTypeResponse } from './BlockTypeResponse'
 
 export type BlockDocumentResponseData = Record<string, unknown>
 
-// this is an incomplete model. All we need is the id and this model is
-// likely to go away because of api changes so not filling it out completely
-export type BlockDocumentResponseDocumentReference = {
+export type BlockDocumentReferenceResponse = {
   block_document: {
+    block_type: BlockTypeResponse,
     id: string,
+    is_anonymous: boolean,
+    name: string,
   },
 }
 
-export type BlockDocumentResponseReferences = Record<string, BlockDocumentResponseDocumentReference>
+export type BlockDocumentReferencesResponse = Record<string, BlockDocumentReferenceResponse | undefined>
 
 export type BlockDocumentResponse = {
   id: string,
@@ -23,5 +24,5 @@ export type BlockDocumentResponse = {
   block_schema: BlockSchemaResponse,
   block_type_id: string,
   block_type: BlockTypeResponse,
-  block_document_references: BlockDocumentResponseReferences,
+  block_document_references: BlockDocumentReferencesResponse,
 }

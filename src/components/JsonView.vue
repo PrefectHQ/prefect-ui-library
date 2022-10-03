@@ -11,7 +11,7 @@
   languages.json = definition
 
   const props = defineProps<{
-    value?: string,
+    value?: string | null | undefined,
   }>()
 
   const innerHtml = computed(() => {
