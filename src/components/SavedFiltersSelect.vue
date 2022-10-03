@@ -39,7 +39,7 @@
   const savedSearches = computed(()=> savedSearchesSubscription.response ?? [])
   const { flows, states, tags, deployments, hasFilters } = useFlowRunFilterFromRoute()
 
-  const defaultFilterValue = 'One week(default)'
+  const defaultFilterValue = 'One week (default)'
 
   onMounted(() => {
     if (hasFilters.value) {
@@ -87,7 +87,7 @@
   const modifiedSavedSearches = computed(()=> [
     { name: 'Custom', id: null },
     {
-      name: 'One week (default)',
+      name: defaultFilterValue,
       filters: {
         startDate: formatDateTimeNumeric(subDays(startOfToday(), 7)),
         endDate: formatDateTimeNumeric(addDays(endOfToday(), 1)),
@@ -127,6 +127,7 @@
       await router.push({ query: selectedFilter })
       if (!equal(states.value, selectedFilter.state)) {
         selectedSavedSearch.value = 'Custom'
+        return
       }
       if (!equal(flows.value, selectedFilter.flow)) {
         selectedSavedSearch.value = 'Custom'

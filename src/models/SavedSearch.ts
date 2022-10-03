@@ -1,5 +1,4 @@
 import { FilterResponseValue } from './api/SavedSearchResponse'
-import { StateType } from './StateType'
 
 export interface ISavedSearch {
   id: string,
