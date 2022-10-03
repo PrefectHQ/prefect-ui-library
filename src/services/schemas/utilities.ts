@@ -3,7 +3,7 @@ import { JsonInput } from '@/components'
 import { SchemaProperty, SchemaPropertyInputAttrs, Schema, SchemaValues, SchemaValue, schemaHas, SchemaPropertyAnyOf } from '@/types/schemas'
 import { withPropsWithoutExcludedFactory } from '@/utilities/components'
 import { stringify } from '@/utilities/json'
-import { isGreaterThan, isGreaterThanOrEqual, isLessThan, isLessThanOrEqual, isRequired, rules, ValidationMethod, ValidationMethodFactory } from '@/utilities/validation'
+import { isGreaterThan, isGreaterThanOrEqual, isLessThan, isLessThanOrEqual, isRequired, fieldRules, ValidationMethod, ValidationMethodFactory } from '@/utilities/validation'
 
 export type SchemaPropertyComponentWithProps = ReturnType<typeof schemaPropertyComponentWithProps> | null
 
@@ -157,7 +157,7 @@ export function getSchemaPropertyDefaultValidators(property: SchemaProperty, req
     validators.push(isRequired)
   }
 
-  return rules(title, ...validators)
+  return fieldRules(title, ...validators)
 }
 
 export type ResolverCallback<T> = (schema: T) => T

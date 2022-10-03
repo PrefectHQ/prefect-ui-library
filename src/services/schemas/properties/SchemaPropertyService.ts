@@ -7,7 +7,7 @@ import { Require } from '@/types/utilities'
 import { sameValue } from '@/utilities'
 import { isNumberArray, isStringArray } from '@/utilities/arrays'
 import { ComponentDefinition } from '@/utilities/components'
-import { rules, ValidationMethod, ValidationMethodFactory } from '@/utilities/validation'
+import { fieldRules, ValidationMethod, ValidationMethodFactory } from '@/utilities/validation'
 
 export type SchemaPropertyServiceSource = {
   property: SchemaProperty,
@@ -102,7 +102,7 @@ export abstract class SchemaPropertyService {
   public getValidators(required: boolean): ValidationMethod[] {
     const { title = 'Property' } = this.property
     const defaults = getSchemaPropertyDefaultValidators(this.property, required)
-    const validators = rules(title, ...this.validators)
+    const validators = fieldRules(title, ...this.validators)
 
     return [...validators, ...defaults]
   }

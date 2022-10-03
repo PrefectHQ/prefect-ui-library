@@ -23,7 +23,7 @@ export function withMessage(validationFactory: ValidationMethodFactory, message:
   }
 }
 
-export function rules(property: string, ...rules: (ValidationMethodFactory | WithMessageArgs)[]): ValidationMethod[] {
+export function fieldRules(property: string, ...rules: (ValidationMethodFactory | WithMessageArgs)[]): ValidationMethod[] {
   return rules.map(rule => {
     if (isWithMessageArgs(rule)) {
       const [method, message] = rule
