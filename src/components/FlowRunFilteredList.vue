@@ -44,8 +44,8 @@
 
   const state = ref<StateType[]>(props.states ?? [])
 
-  const updateState = (newValue: StateType[]): void => {
-    state.value = newValue
+  const updateState = (newValue: string | string[] | null): void => {
+    state.value = newValue as StateType[]
     emit('update:states', state.value)
   }
 
