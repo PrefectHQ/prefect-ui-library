@@ -61,7 +61,7 @@
       selectedSavedSearch.value = filterName
       closeSaveModal()
     } catch (error) {
-      console.warn(error)
+      console.error(error)
       showToast(localization.error.createSavedSearch, 'error')
     }
   }
