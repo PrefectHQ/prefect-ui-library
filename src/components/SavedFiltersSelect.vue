@@ -19,6 +19,7 @@
 
 <script setup lang="ts">
   import { SelectOption, showToast, formatDateTimeNumeric } from '@prefecthq/prefect-design'
+  import { useSubscription } from '@prefecthq/vue-compositions'
   import { addDays, endOfToday, startOfToday, subDays } from 'date-fns'
   import  equal  from 'fast-deep-equal'
   import { watchEffect, ref, computed, onMounted } from 'vue'
@@ -34,15 +35,18 @@
   const api = inject(workspaceApiKey)
   const { showModal: showSaveModal, open: openSaveModal, close: closeSaveModal } = useShowModal()
   const { showModal: showDeleteModal, open: openDeleteModal } = useShowModal()
-  const savedSearches = ref(await api.savedSearches.getSavedSearches({}))
+  const savedSearchesSubscription = useSubscription(api.savedSearches.getSavedSearches)
+  const savedSearches = computed(()=> savedSearchesSubscription.response ?? [])
   const { flows, states, tags, deployments, hasFilters } = useFlowRunFilterFromRoute()
+
+  const defaultFilterValue = 'One week(default)'
 
   onMounted(() => {
     if (hasFilters.value) {
       selectedSavedSearch.value = 'Custom'
       return
     }
-    selectedSavedSearch.value = 'One week(default)'
+    selectedSavedSearch.value = defaultFilterValue
   })
 
   const saveFilter = async (filterName: string): Promise<void> => {
@@ -56,7 +60,7 @@
           deployment: deployments.value,
         },
       })
-      savedSearches.value = await api.savedSearches.getSavedSearches({})
+      savedSearchesSubscription.refresh()
       showToast(localization.success.createSavedSearch, 'success')
       selectedSavedSearch.value = filterName
       closeSaveModal()
@@ -70,8 +74,8 @@
     try {
       if (savedSearchId.value) {
         await api.savedSearches.deleteSavedSearch(savedSearchId.value)
-        savedSearches.value = await api.savedSearches.getSavedSearches({})
-        selectedSavedSearch.value = 'One week(default)'
+        savedSearchesSubscription.refresh()
+        selectedSavedSearch.value = defaultFilterValue
         showToast(localization.success.deleteSavedSearch, 'success')
       }
     } catch (error) {
