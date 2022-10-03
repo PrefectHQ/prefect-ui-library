@@ -65,7 +65,7 @@
       selectedSavedSearch.value = filterName
       closeSaveModal()
     } catch (error) {
-      console.warn(error)
+      console.error(error)
       showToast(localization.error.createSavedSearch, 'error')
     }
   }
@@ -79,7 +79,7 @@
         showToast(localization.success.deleteSavedSearch, 'success')
       }
     } catch (error) {
-      console.warn(error)
+      console.error(error)
       showToast(localization.error.deleteSavedSearch, 'error')
     }
   }
@@ -87,7 +87,7 @@
   const modifiedSavedSearches = computed(()=> [
     { name: 'Custom', id: null },
     {
-      name: 'One week(default)',
+      name: 'One week (default)',
       filters: {
         startDate: formatDateTimeNumeric(subDays(startOfToday(), 7)),
         endDate: formatDateTimeNumeric(addDays(endOfToday(), 1)),
