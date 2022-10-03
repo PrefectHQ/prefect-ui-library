@@ -43,6 +43,16 @@ export const isRequired: ValidationMethodFactory = (property: string) => (value:
   return true
 }
 
+export const isRequiredIf = (condition: () => boolean): ValidationMethodFactory => property => value => {
+  const required = condition()
+
+  if (!required) {
+    return true
+  }
+
+  return isRequired(property)(value)
+}
+
 const EMAIL_REGEX = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
 
 export const isEmail: ValidationMethodFactory = (property: string) => (value: unknown) => {
