@@ -2,7 +2,7 @@
   <div class="flow-runs-controls_list">
     <div class="flow-runs-controls_list__controls">
       <ResultsCount :count="flowRunCount" class="mr-auto" label="Flow run" />
-      <StateSelect :selected="state" empty-message="All run states" class="flow-runs-controls_list__state-select" @update:selected="updateState(state)" />
+      <StateSelect :selected="state" empty-message="All run states" class="flow-runs-controls_list__state-select" @update:selected="updateState" />
       <FlowRunsSort v-model="sort" class="flow-runs-controls_list__flow-runs-sort" />
     </div>
 
@@ -44,9 +44,9 @@
 
   const state = ref<StateType[]>(props.states ?? [])
 
-  const updateState = (states: StateType[]): void => {
-    state.value = states
-    emit('update:states', states)
+  const updateState = (newValue: StateType[]): void => {
+    state.value = newValue
+    emit('update:states', state.value)
   }
 
   const sort = ref<FlowRunSortValues>('EXPECTED_START_TIME_DESC')
