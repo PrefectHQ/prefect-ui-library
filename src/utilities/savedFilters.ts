@@ -5,7 +5,8 @@ import { SavedSearchFilter } from '@/models/SavedSearch'
 import { isSame } from '@/utilities/arrays'
 
 
-export const isCustomFilter = (savedFilter: SavedSearchFilter, states: Ref<string[]>, flows: Ref<string[]>, deployments: Ref<string[]>, tags: Ref<string[]>): boolean => {
+// eslint-disable-next-line max-params
+export function isCustomFilter(savedFilter: SavedSearchFilter, states: Ref<string[]>, flows: Ref<string[]>, deployments: Ref<string[]>, tags: Ref<string[]>): boolean {
   if (!savedFilter.state) {
     return true
   }
