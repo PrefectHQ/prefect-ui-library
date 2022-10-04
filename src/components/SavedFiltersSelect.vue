@@ -1,5 +1,5 @@
 <template class="saved-filters">
-  <p-select v-if="can.read.saved_search" v-model="selectedSavedSearch" :options="options" class="saved-filters__select" />
+  <p-select v-model="selectedSavedSearch" :options="options" class="saved-filters__select" />
   <p-icon-button-menu :disabled="selectedSavedSearch != 'Custom' && !savedSearchId">
     <p-overflow-menu-item v-if="selectedSavedSearch == 'Custom' && can.create.saved_search" @click="openSaveModal">
       Save View
@@ -32,6 +32,7 @@
   import { oneWeekFilter, noScheduleFilter, isCustomFilter } from '@/utilities/savedFilters'
 
   const can = useCan()
+  console.log(can.read)
   const { flows, states, tags, deployments, hasFilters } = useFlowRunFilterFromRoute()
   const router = useRouter()
   const api = inject(workspaceApiKey)
