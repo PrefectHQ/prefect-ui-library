@@ -76,9 +76,9 @@
 
   const isValidCron: ValidationMethod = () => {
     const val = internalValue.value.toString()
-    const invalid = val !== '' && val.toLowerCase() !== 'invalid'
+    const valid = val !== '' && val.toLowerCase() !== 'invalid'
 
-    if (invalid) {
+    if (!valid) {
       return 'Invalid expression'
     }
 
@@ -87,7 +87,7 @@
 
   const rules = {
     cron: [
-      isRequired('expression'),
+      isRequired('Expression'),
       isValidCron,
       isSupportedCron,
     ],

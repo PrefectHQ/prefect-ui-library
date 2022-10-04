@@ -48,7 +48,7 @@
   import { IntervalSchedule } from '@/models'
   import { toPluralString } from '@/utilities'
   import { IntervalOption, secondsToClosestIntervalOption, secondsToClosestIntervalValue, intervalOptionsToSecondsMap } from '@/utilities/timeIntervals'
-  import { isRequired } from '@/utilities/validation'
+  import { fieldRules, isGreaterThanOrEqual, isRequired } from '@/utilities/validation'
 
   const props = withDefaults(defineProps<{
     hideActions?: boolean,
@@ -64,7 +64,7 @@
   }>()
 
   const rules = {
-    interval: isRequired('Interval'),
+    interval: fieldRules('Interval', isRequired, isGreaterThanOrEqual(1)),
   }
 
   const anchorDate = ref(props.schedule.anchorDate)

@@ -107,7 +107,7 @@
   })
 
   const rules = {
-    start: fieldRules('Start date', isRequiredIf(() => when.value === 'now')),
+    start: fieldRules('Start date', isRequiredIf(() => when.value === 'later')),
   }
 
   const { handleSubmit } = useForm<DeploymentFlowRunCreate>({
