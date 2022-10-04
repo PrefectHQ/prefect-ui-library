@@ -2,10 +2,10 @@
   <p-select v-if="can.read.saved_search" v-model="selectedSavedSearch" :options="options" class="saved-filters__select" />
   <p-icon-button-menu :disabled="selectedSavedSearch != 'Custom' && !savedSearchId">
     <p-overflow-menu-item v-if="selectedSavedSearch == 'Custom' && can.create.saved_search" @click="openSaveModal">
-      Save Filter
+      Save View
     </p-overflow-menu-item>
     <p-overflow-menu-item v-if="savedSearchId && can.delete.saved_search" inset @click="openDeleteModal">
-      Delete Filter
+      Delete View
     </p-overflow-menu-item>
   </p-icon-button-menu>
   <SaveFilterModal v-model:show-modal="showSaveModal" @save="saveFilter" />
@@ -39,7 +39,7 @@
   const { showModal: showDeleteModal, open: openDeleteModal } = useShowModal()
   const savedSearchesSubscription = useSubscription(api.savedSearches.getSavedSearches)
   const savedSearches = computed(()=> savedSearchesSubscription.response ?? [])
-  const defaultFilterValue = 'One week (default)'
+  const defaultFilterValue = 'Default view'
 
   onMounted(() => {
     if (hasFilters.value) {
