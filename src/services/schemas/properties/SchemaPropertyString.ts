@@ -4,20 +4,20 @@ import { SchemaPropertyComponentWithProps } from '../utilities'
 import { SchemaPropertyService } from './SchemaPropertyService'
 import { JsonInput } from '@/components'
 import { InvalidSchemaValueError } from '@/models'
-import { isEmail, isValidJsonString, ValidationRule, withMessage } from '@/services/validate'
 import { SchemaValue } from '@/types/schemas'
 import { isDate } from '@/utilities/dates'
+import { isEmail, isJson, ValidationMethodFactory } from '@/utilities/validation'
 
 export class SchemaPropertyString extends SchemaPropertyService {
-  protected get validators(): ValidationRule[] {
+  protected get validators(): ValidationMethodFactory[] {
     const { format } = this.property
 
     if (format === 'email') {
-      return [withMessage(isEmail, `${this.property.title} must be a valid email address`)]
+      return [isEmail]
     }
 
     if (format === 'json-string') {
-      return [withMessage(isValidJsonString, `${this.property.title} must be valid JSON`)]
+      return [isJson]
     }
 
     return []
