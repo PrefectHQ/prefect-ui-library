@@ -98,6 +98,10 @@ export const isLessThan = (max: number): ValidationMethodFactory => property => 
     return true
   }
 
+  if (typeof value === 'number' && value < max) {
+    return true
+  }
+
   return `${property} must be less than ${max}`
 }
 
@@ -114,39 +118,51 @@ export const isLessThanOrEqual = (max: number): ValidationMethodFactory => prope
     return true
   }
 
-  return `${property} must be less than or equal to ${max}`
-}
-
-export const isGreaterThan = (max: number): ValidationMethodFactory => property => (value: unknown) => {
-  if (isNullish(value) || isEmptyString(value) || isEmptyArray(value)) {
-    return true
-  }
-
-  if (Array.isArray(value) && value.length > max) {
-    return true
-  }
-
-  if (typeof value === 'string' && value.length > max) {
-    return true
-  }
-
-  return `${property} must be less than ${max}`
-}
-
-export const isGreaterThanOrEqual = (max: number): ValidationMethodFactory => property => (value: unknown) => {
-  if (isNullish(value) || isEmptyString(value) || isEmptyArray(value)) {
-    return true
-  }
-
-  if (Array.isArray(value) && value.length >= max) {
-    return true
-  }
-
-  if (typeof value === 'string' && value.length >= max) {
+  if (typeof value === 'number' && value <= max) {
     return true
   }
 
   return `${property} must be less than or equal to ${max}`
+}
+
+export const isGreaterThan = (min: number): ValidationMethodFactory => property => (value: unknown) => {
+  if (isNullish(value) || isEmptyString(value) || isEmptyArray(value)) {
+    return true
+  }
+
+  if (Array.isArray(value) && value.length > min) {
+    return true
+  }
+
+  if (typeof value === 'string' && value.length > min) {
+    return true
+  }
+
+  if (typeof value === 'number' && value > min) {
+    return true
+  }
+
+  return `${property} must be greater than ${min}`
+}
+
+export const isGreaterThanOrEqual = (min: number): ValidationMethodFactory => property => (value: unknown) => {
+  if (isNullish(value) || isEmptyString(value) || isEmptyArray(value)) {
+    return true
+  }
+
+  if (Array.isArray(value) && value.length >= min) {
+    return true
+  }
+
+  if (typeof value === 'string' && value.length >= min) {
+    return true
+  }
+
+  if (typeof value === 'number' && value >= min) {
+    return true
+  }
+
+  return `${property} must be greater than or equal to ${min}`
 }
 
 export const isBefore = (max: Date, { time: showTime = false } = {}): ValidationMethodFactory => property => value => {
