@@ -1,10 +1,10 @@
 <template class="saved-filters">
-  <p-select v-model="selectedSavedSearch" :options="options" class="saved-filters__select" />
+  <p-select v-if="can.read.saved_search" v-model="selectedSavedSearch" :options="options" class="saved-filters__select" />
   <p-icon-button-menu :disabled="selectedSavedSearch != 'Custom' && !savedSearchId">
-    <p-overflow-menu-item v-if="selectedSavedSearch == 'Custom'" @click="openSaveModal">
+    <p-overflow-menu-item v-if="selectedSavedSearch == 'Custom' && can.create.saved_search" @click="openSaveModal">
       Save Filter
     </p-overflow-menu-item>
-    <p-overflow-menu-item v-if="savedSearchId" inset @click="openDeleteModal">
+    <p-overflow-menu-item v-if="savedSearchId && can.delete.saved_search" inset @click="openDeleteModal">
       Delete Filter
     </p-overflow-menu-item>
   </p-icon-button-menu>
@@ -25,11 +25,13 @@
   import ConfirmDeleteModal from '@/components/ConfirmDeleteModal.vue'
   import SaveFilterModal from '@/components/SaveFilterModal.vue'
   import { useFlowRunFilterFromRoute, useShowModal } from '@/compositions'
+  import { useCan } from '@/compositions/useCan'
   import { localization } from '@/localization'
   import { workspaceApiKey } from '@/utilities'
   import { inject } from '@/utilities/inject'
   import { oneWeekFilter, noScheduleFilter, isCustomFilter } from '@/utilities/savedFilters'
 
+  const can = useCan()
   const { flows, states, tags, deployments, hasFilters } = useFlowRunFilterFromRoute()
   const router = useRouter()
   const api = inject(workspaceApiKey)
