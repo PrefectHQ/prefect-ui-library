@@ -34,6 +34,16 @@ export function fieldRules(property: string, ...rules: (ValidationMethodFactory 
   })
 }
 
+export const all = (factory: ValidationMethodFactory): ValidationMethodFactory => property => values => {
+  const method = factory(property)
+
+  if (Array.isArray(values) && values.every(value => method(value) === true)) {
+    return true
+  }
+
+  return `Not every ${property} is valid`
+}
+
 export const isRequired: ValidationMethodFactory = property => value => {
   if (isNullish(value) || isEmptyArray(value) || isEmptyString(value) || isInvalidDate(value)) {
     return `${property} is required`
@@ -42,8 +52,18 @@ export const isRequired: ValidationMethodFactory = property => value => {
   return true
 }
 
-export const isRequiredIf = (condition: () => boolean): ValidationMethodFactory => property => value => {
-  const required = condition()
+export const isValidIf = (condition: (value: unknown) => boolean): ValidationMethodFactory => property => value => {
+  const valid = condition(value)
+
+  if (valid) {
+    return true
+  }
+
+  return `${property} is invalid`
+}
+
+export const isRequiredIf = (condition: (value: unknown) => boolean): ValidationMethodFactory => property => value => {
+  const required = condition(value)
 
   if (!required) {
     return true
@@ -65,6 +85,8 @@ export const isEmail: ValidationMethodFactory = property => (value: unknown) => 
 
   return `${property} is not a valid email address`
 }
+
+export const areEmails = all(isEmail)
 
 export const isLessThan = (max: number): ValidationMethodFactory => property => (value: unknown) => {
   if (isNullish(value) || isEmptyString(value) || isEmptyArray(value)) {
