@@ -52,7 +52,6 @@
 
   const emit = defineEmits<{
     (event: 'update:states', value: StateType[]): void,
-    (event: 'delete'): void,
   }>()
 
   const selectedFlowRuns = ref<string[]>([])
