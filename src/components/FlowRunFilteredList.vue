@@ -4,6 +4,7 @@
       <ResultsCount :count="flowRunCount" class="mr-auto" label="Flow run" />
       <StateSelect :selected="state" empty-message="All run states" class="flow-run-filtered-list__state-select" @update:selected="updateState" />
       <FlowRunsSort v-model="sort" class="flow-run-filtered-list__flow-runs-sort" />
+
       <Transition name="slide-fade">
         <p-button v-if="selectedFlowRuns.length > 0" danger icon="TrashIcon" @click="open" />
       </Transition>
@@ -29,18 +30,16 @@
 </template>
 
 <script lang="ts" setup>
-  import { showToast } from '@prefecthq/prefect-design'
   import { useSubscription } from '@prefecthq/vue-compositions'
   import { computed, onMounted, ref } from 'vue'
   import { ResultsCount, StateSelect, FlowRunsSort, FlowRunList } from '@/components'
   import ConfirmDeleteModal from '@/components/ConfirmDeleteModal.vue'
   import { useShowModal } from '@/compositions'
   import { usePaginatedSubscription } from '@/compositions/usePaginatedSubscription'
-  import { localization } from '@/localization'
   import { StateType } from '@/models'
   import { flowRunsApiKey, mapper } from '@/services'
   import { FlowRunSortValues, UnionFilters } from '@/types'
-  import { inject } from '@/utilities'
+  import { deleteFlowRunsWithSubscriptionRefresh, inject } from '@/utilities'
 
   const flowRunsApi = inject(flowRunsApiKey)
 
@@ -98,27 +97,11 @@
   }
 
   const { showModal, open, close } = useShowModal()
-  const deleteFlowRuns = async (flowRuns: string[]): Promise<void> => {
-    const toastMessage = computed(() => {
-      if (flowRuns.length === 1) {
-        return 'Flow run deleted'
-      }
-      return `${flowRuns.length} flow runs deleted`
-    })
-    try {
-      close()
-      const deleteFlowRuns = flowRuns.map(flowRunsApi.deleteFlowRun)
-      await Promise.all(deleteFlowRuns)
-
-      showToast(toastMessage, 'success')
-
-      await Promise.all([flowRunCountSubscription.refresh(), flowRunsSubscription.refresh()])
-
-      selectedFlowRuns.value = []
-      clear()
-    } catch (error) {
-      showToast(localization.error.delete('Flow Run'), 'error')
-    }
+  const deleteFlowRuns = (flowRuns: string[]): void => {
+    close()
+    deleteFlowRunsWithSubscriptionRefresh(flowRuns, flowRunsApi, [flowRunsSubscription, flowRunCountSubscription])
+    selectedFlowRuns.value = []
+    clear()
   }
 
   onMounted(() => {
