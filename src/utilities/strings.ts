@@ -61,3 +61,13 @@ export function capitalize<T extends string>(value: T): Capitalize<T> {
 
   return `${firstLetterCapitalized}${rest}` as Capitalize<T>
 }
+
+export function isEmptyString(value: unknown): value is string {
+  return typeof value === 'string' && value.trim().length === 0
+}
+
+const EMAIL_REGEX = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+
+export function isValidEmailAddress(value: unknown): boolean {
+  return typeof value === 'string' && EMAIL_REGEX.test(value)
+}

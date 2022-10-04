@@ -1,6 +1,6 @@
 import { SchemaPropertyComponentWithProps } from '@/services/schemas/utilities'
-import { ValidationRule } from '@/services/validate'
 import { Require } from '@/types/utilities'
+import { ValidationMethod } from '@/utilities/validation'
 
 export type SchemaValue = unknown
 export type SchemaValues = Record<string, SchemaValue | undefined>
@@ -35,7 +35,7 @@ export type SchemaPropertyInputAttrs = Record<string, unknown>
 
 export type SchemaPropertyMetaOptions = {
   attrs?: SchemaPropertyInputAttrs,
-  validators?: ValidationRule | ValidationRule[],
+  validators?: ValidationMethod | ValidationMethod[],
   required?: boolean,
 }
 
