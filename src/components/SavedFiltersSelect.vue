@@ -32,7 +32,6 @@
   import { oneWeekFilter, noScheduleFilter, isCustomFilter } from '@/utilities/savedFilters'
 
   const can = useCan()
-  console.log(can.read)
   const { flows, states, tags, deployments, hasFilters } = useFlowRunFilterFromRoute()
   const router = useRouter()
   const api = inject(workspaceApiKey)
