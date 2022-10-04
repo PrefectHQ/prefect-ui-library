@@ -22,7 +22,7 @@
 <script lang="ts" setup>
   import { useField, useForm } from 'vee-validate'
   import { computed } from 'vue'
-  import { withMessage, isRequired } from '@/services'
+  import { isRequired } from '@/utilities/validation'
 
   const props = defineProps<{
     showModal: boolean,
@@ -33,7 +33,7 @@
   }>()
 
   const rules = {
-    filterName: [withMessage(isRequired, 'Name is is required')],
+    filterName: isRequired('Name'),
   }
 
   const { value: filterName, meta: filterNameState } = useField<string>('filterName', rules.filterName, { initialValue: '' })
