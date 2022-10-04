@@ -1,4 +1,4 @@
-import { FilterResponseValue } from './api/SavedSearchResponse'
+import { FilterResponseValue } from '@/models/api/SavedSearchResponse'
 
 export interface ISavedSearch {
   id: string,
@@ -24,10 +24,10 @@ export class SavedSearch implements ISavedSearch {
 }
 
 export type SavedSearchFilter = {
-  state: FilterResponseValue,
-  flow: FilterResponseValue,
-  tag: FilterResponseValue,
-  deployment: FilterResponseValue,
+  state?: FilterResponseValue,
+  flow?: FilterResponseValue,
+  tag?: FilterResponseValue,
+  deployment?: FilterResponseValue,
   startDate?: FilterResponseValue,
   endDate?: FilterResponseValue,
 }

@@ -18,9 +18,8 @@
 </template>
 
 <script setup lang="ts">
-  import { SelectOption, showToast, formatDateTimeNumeric } from '@prefecthq/prefect-design'
+  import { SelectOption, showToast } from '@prefecthq/prefect-design'
   import { useSubscription } from '@prefecthq/vue-compositions'
-  import { addDays, endOfToday, startOfToday, subDays } from 'date-fns'
   import { watchEffect, ref, computed, onMounted } from 'vue'
   import { useRouter } from 'vue-router'
   import ConfirmDeleteModal from '@/components/ConfirmDeleteModal.vue'
@@ -28,17 +27,16 @@
   import { useFlowRunFilterFromRoute, useShowModal } from '@/compositions'
   import { localization } from '@/localization'
   import { workspaceApiKey } from '@/utilities'
-  import { isSame } from '@/utilities/arrays'
   import { inject } from '@/utilities/inject'
+  import { oneWeekFilter, noScheduleFilter, isCustomFilter } from '@/utilities/savedFilters'
 
+  const { flows, states, tags, deployments, hasFilters } = useFlowRunFilterFromRoute()
   const router = useRouter()
   const api = inject(workspaceApiKey)
   const { showModal: showSaveModal, open: openSaveModal, close: closeSaveModal } = useShowModal()
   const { showModal: showDeleteModal, open: openDeleteModal } = useShowModal()
   const savedSearchesSubscription = useSubscription(api.savedSearches.getSavedSearches)
   const savedSearches = computed(()=> savedSearchesSubscription.response ?? [])
-  const { flows, states, tags, deployments, hasFilters } = useFlowRunFilterFromRoute()
-
   const defaultFilterValue = 'One week (default)'
 
   onMounted(() => {
@@ -88,27 +86,11 @@
     { name: 'Custom', id: null },
     {
       name: defaultFilterValue,
-      filters: {
-        startDate: formatDateTimeNumeric(subDays(startOfToday(), 7)),
-        endDate: formatDateTimeNumeric(addDays(endOfToday(), 1)),
-        state: [],
-        flow: [],
-        tag: [],
-        deployment: [],
-        id: null,
-      },
+      filters: oneWeekFilter,
     },
     {
       name: 'No scheduled',
-      filters: {
-        id: null,
-        state: ['completed', 'failed', 'running', 'pending', 'crashed', 'cancelled'],
-        flow: [],
-        tag: [],
-        deployment: [],
-        startDate: formatDateTimeNumeric(subDays(startOfToday(), 7)),
-        endDate: formatDateTimeNumeric(addDays(endOfToday(), 1)),
-      },
+      filters: noScheduleFilter,
     },
     ...savedSearches.value,
   ])
@@ -125,10 +107,7 @@
     const selectedFilter = selectedSavedSearchValue.value?.filters
     if (selectedFilter) {
       await router.push({ query: selectedFilter })
-      if (!isSame(states.value, selectedFilter.state as string[])
-        || !isSame(flows.value, selectedFilter.flow as string[])
-        || !isSame(tags.value, selectedFilter.tag as string[])
-        || !isSame(deployments.value, selectedFilter.deployment as string[])) {
+      if (isCustomFilter(selectedFilter, states, flows, deployments, tags)) {
         selectedSavedSearch.value = 'Custom'
       }
     }
