@@ -1,7 +1,7 @@
 import { formatDate, formatDateTimeNumeric, isDateAfter, isDateAfterOrEqual, isDateBefore, isDateBeforeOrEqual } from '@prefecthq/prefect-design'
 import { isEmptyArray } from './arrays'
 import { isDate, isInvalidDate } from './dates'
-import { isEmptyString } from './strings'
+import { isEmptyString, isValidEmailAddress } from './strings'
 import { isNullish } from './variables'
 
 export type ValidationMethod = (value: unknown) => true | string | Promise<true | string>
@@ -71,15 +71,12 @@ export const isRequiredIf = (condition: (value: unknown) => boolean): Validation
 
   return isRequired(property)(value)
 }
-
-const EMAIL_REGEX = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-
 export const isEmail: ValidationMethodFactory = property => (value: unknown) => {
   if (isNullish(value) || isEmptyString(value)) {
     return true
   }
 
-  if (typeof value === 'string' && EMAIL_REGEX.test(value)) {
+  if (isValidEmailAddress(value)) {
     return true
   }
 
