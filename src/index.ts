@@ -9,7 +9,6 @@ export * from './models'
 export * from './maps'
 export * from './router'
 export * from './services'
-// export * from './stores'
 export * from './types'
 export * from './utilities'
 
