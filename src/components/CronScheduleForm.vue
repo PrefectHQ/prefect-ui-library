@@ -50,8 +50,8 @@
   import DayOrDescriptionModal from './DayOrDescriptionModal.vue'
   import TimezoneSelect from './TimezoneSelect.vue'
   import { CronSchedule } from '@/models'
-  import { isRequired, withMessage } from '@/services/validate'
   import { containsCronRandomExpression } from '@/types/cron'
+  import { isRequired, ValidationMethod } from '@/utilities/validation'
 
   const props = withDefaults(defineProps<{
     hideActions?: boolean,
@@ -66,20 +66,30 @@
     (event: 'update:disabled', value: boolean): void,
   }>()
 
-  const isSupportedCron = (): boolean => {
-    return !containsCronRandomExpression(cron.value)
+  const isSupportedCron: ValidationMethod = () => {
+    if (containsCronRandomExpression(cron.value)) {
+      return 'Unsupported expression'
+    }
+
+    return true
   }
 
-  const isValidCron = (): boolean => {
+  const isValidCron: ValidationMethod = () => {
     const val = internalValue.value.toString()
-    return val !== '' && val.toLowerCase() !== 'invalid'
+    const valid = val !== '' && val.toLowerCase() !== 'invalid'
+
+    if (!valid) {
+      return 'Invalid expression'
+    }
+
+    return true
   }
 
   const rules = {
     cron: [
-      withMessage(isRequired, 'An expression is required'),
-      withMessage(isValidCron, 'Invalid expression'),
-      withMessage(isSupportedCron, 'Unsupported expression'),
+      isRequired('Expression'),
+      isValidCron,
+      isSupportedCron,
     ],
   }
 
