@@ -32,11 +32,7 @@
     filterName: string,
   }>()
 
-  const rules = {
-    filterName: isRequired('Name'),
-  }
-
-  const { value: filterName, meta: filterNameState, errorMessage: filterErrorMessage } = useField<string>('filterName', rules.filterName)
+  const { value: filterName, meta: filterNameState, errorMessage: filterErrorMessage } = useField<string>('filterName', isRequired('Name'))
 
   const emit = defineEmits<{
     (event: 'update:showModal', value: boolean): void,
