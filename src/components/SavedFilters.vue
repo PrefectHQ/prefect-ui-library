@@ -1,5 +1,5 @@
 <template>
-  <p-select v-model="selectedSavedSearch" :options="options" class="saved-filters-select__dropdown" />
+  <p-select v-model="selectedSavedSearch" :options="options" class="saved-filters__select" />
   <p-icon-button-menu>
     <copy-overflow-menu-item label="Share View" :item="fullRoute" />
     <p-overflow-menu-item v-if="selectedSearchIsCustom && can.create.saved_search" @click="openSaveModal">
@@ -119,7 +119,7 @@
 </script>
 
 <style>
-.saved-filters-select__dropdown {
+.saved-filters__select {
   @apply w-48
 }
 </style>
