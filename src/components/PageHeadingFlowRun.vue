@@ -5,6 +5,7 @@
         <template #default>
           <copy-overflow-menu-item label="Copy ID" :item="flowRun.id" />
           <p-overflow-menu-item v-if="can.delete.flow_run" label="Delete" @click="open" />
+          <p-overflow-menu-item v-if="can.update.flow_run" label="Mark state" @click="markState" />
         </template>
       </p-icon-button-menu>
       <ConfirmDeleteModal
@@ -58,6 +59,10 @@
   const deleteFlowRun = async (id: string): Promise<void> => {
     await deleteItem(id, flowRunsApi.deleteFlowRun, 'Flow run')
     emit('delete', id)
+  }
+
+  const markState = async (id: string): Promise<void>=> {
+    await flowRunsApi.setFlowRunState(id, { state: { type: 'COMPLETED' } })
   }
 </script>
 
