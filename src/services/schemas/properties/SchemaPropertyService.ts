@@ -2,12 +2,12 @@ import { SelectOption } from '@prefecthq/prefect-design'
 import { MAX_SCHEMA_PROPERTY_LEVEL } from '../constants'
 import { getSchemaPropertyAttrs, getSchemaPropertyComponentWithDefaultProps, getSchemaPropertyDefaultValidators, schemaPropertyComponentWithProps, SchemaPropertyComponentWithProps } from '../utilities'
 import { InvalidSchemaValueError } from '@/models/InvalidSchemaValueError'
-import { ValidationRule } from '@/services/validate'
 import { schemaHas, SchemaProperty, SchemaPropertyInputAttrs, SchemaPropertyMeta, SchemaValue } from '@/types/schemas'
 import { Require } from '@/types/utilities'
 import { sameValue } from '@/utilities'
 import { isNumberArray, isStringArray } from '@/utilities/arrays'
 import { ComponentDefinition } from '@/utilities/components'
+import { fieldRules, ValidationMethod, ValidationMethodFactory } from '@/utilities/validation'
 
 export type SchemaPropertyServiceSource = {
   property: SchemaProperty,
@@ -41,7 +41,7 @@ export abstract class SchemaPropertyService {
   /**
    * Can be extended to add property specific validation rules. Implemented here because this is not required
    */
-  protected get validators(): ValidationRule[] {
+  protected get validators(): ValidationMethodFactory[] {
     return []
   }
 
@@ -99,10 +99,12 @@ export abstract class SchemaPropertyService {
     return getSchemaPropertyComponentWithDefaultProps(this.component)
   }
 
-  public getValidators(required: boolean): ValidationRule[] {
+  public getValidators(required: boolean): ValidationMethod[] {
+    const { title = 'Property' } = this.property
     const defaults = getSchemaPropertyDefaultValidators(this.property, required)
+    const validators = fieldRules(title, ...this.validators)
 
-    return [...this.validators, ...defaults]
+    return [...validators, ...defaults]
   }
 
   public getAttrs(): SchemaPropertyInputAttrs {

@@ -46,9 +46,9 @@
   import { computed, ref, withDefaults, watch, onMounted } from 'vue'
   import TimezoneSelect from './TimezoneSelect.vue'
   import { IntervalSchedule } from '@/models'
-  import { isRequired, withMessage } from '@/services/validate'
   import { toPluralString } from '@/utilities'
   import { IntervalOption, secondsToClosestIntervalOption, secondsToClosestIntervalValue, intervalOptionsToSecondsMap } from '@/utilities/timeIntervals'
+  import { fieldRules, isGreaterThanOrEqual, isRequired } from '@/utilities/validation'
 
   const props = withDefaults(defineProps<{
     hideActions?: boolean,
@@ -64,7 +64,7 @@
   }>()
 
   const rules = {
-    interval: [withMessage(isRequired, 'An interval is required')],
+    interval: fieldRules('Interval', isRequired, isGreaterThanOrEqual(1)),
   }
 
   const anchorDate = ref(props.schedule.anchorDate)
