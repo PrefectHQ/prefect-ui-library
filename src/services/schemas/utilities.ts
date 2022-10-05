@@ -1,9 +1,9 @@
-import { greaterThan, greaterThanOrEqual, isRequired, lessThan, lessThanOrEqual, ValidationRule, withMessage } from '../validate'
 import { schemaPropertyServiceFactory } from './properties'
 import { JsonInput } from '@/components'
 import { SchemaProperty, SchemaPropertyInputAttrs, Schema, SchemaValues, SchemaValue, schemaHas, SchemaPropertyAnyOf } from '@/types/schemas'
 import { withPropsWithoutExcludedFactory } from '@/utilities/components'
 import { stringify } from '@/utilities/json'
+import { isGreaterThan, isGreaterThanOrEqual, isLessThan, isLessThanOrEqual, isRequired, fieldRules, ValidationMethod, ValidationMethodFactory } from '@/utilities/validation'
 
 export type SchemaPropertyComponentWithProps = ReturnType<typeof schemaPropertyComponentWithProps> | null
 
@@ -129,35 +129,35 @@ export function getSchemaPropertyComponentWithDefaultProps({ component, props }:
  * Gets any validation rules necessary for creating/updating a property in the ui.
  * Validators are added to the property's meta in the meta resolver.
  */
-export function getSchemaPropertyDefaultValidators(property: SchemaProperty, required: boolean): ValidationRule[] {
+export function getSchemaPropertyDefaultValidators(property: SchemaProperty, required: boolean): ValidationMethod[] {
   const { title = 'Property' } = property
-  const validators: ValidationRule[] = []
+  const validators: ValidationMethodFactory[] = []
 
   const greaterThanOrEqualValue = property.minLength ?? property.minimum ?? property.minItems
 
   if (greaterThanOrEqualValue !== undefined) {
-    validators.push(withMessage(greaterThanOrEqual(greaterThanOrEqualValue), `${title} must be greater than or equal to ${greaterThanOrEqualValue}`))
+    validators.push(isGreaterThanOrEqual(greaterThanOrEqualValue))
   }
 
   const lessThanOrEqualValue = property.maxLength ?? property.maximum ?? property.maxItems
 
   if (lessThanOrEqualValue !== undefined) {
-    validators.push(withMessage(lessThanOrEqual(lessThanOrEqualValue), `${title} must be less than or equal to ${lessThanOrEqualValue}`))
+    validators.push(isLessThanOrEqual(lessThanOrEqualValue))
   }
 
   if (property.exclusiveMinimum !== undefined) {
-    validators.push(withMessage(greaterThan(property.exclusiveMinimum), `${title} must be greater than ${property.exclusiveMinimum}`))
+    validators.push(isGreaterThan(property.exclusiveMinimum))
   }
 
   if (property.exclusiveMaximum !== undefined) {
-    validators.push(withMessage(lessThan(property.exclusiveMaximum), `${title} must be less than ${property.exclusiveMaximum}`))
+    validators.push(isLessThan(property.exclusiveMaximum))
   }
 
   if (required) {
-    validators.push(withMessage(isRequired, `${title} is required`))
+    validators.push(isRequired)
   }
 
-  return validators
+  return fieldRules(title, ...validators)
 }
 
 export type ResolverCallback<T> = (schema: T) => T

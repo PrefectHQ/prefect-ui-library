@@ -1,5 +1,5 @@
 <template>
-  <span v-if="!matched" class="flow-router-link">
+  <span v-if="showLink" class="flow-router-link">
     <span v-if="before">{{ before }}</span>
     <router-link class="flow-router-link__anchor" :to="flowRoute(flowId)">
       {{ flowName }}
@@ -30,9 +30,10 @@
   const router = useRouter()
   const flowRouteResolved = computed(() => router.resolve(flowRoute(props.flowId)))
   const matched = computed(() => route.matched.some(({ path }) => flowRouteResolved.value.path == path))
+  const showLink = computed(() => can.read.flow && !matched.value)
 
   const flowSubscriptionArgs = computed<[string] | null>(() => {
-    if (!can.read.flow || matched.value) {
+    if (!showLink.value) {
       return null
     }
 

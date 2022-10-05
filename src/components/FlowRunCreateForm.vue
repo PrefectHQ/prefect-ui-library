@@ -86,7 +86,8 @@
   import SchemaFormFields from './SchemaFormFields.vue'
   import TimezoneSelect from './TimezoneSelect.vue'
   import { Deployment, DeploymentFlowRunCreate } from '@/models'
-  import { isRequired, mocker, withMessage } from '@/services'
+  import { mocker } from '@/services'
+  import { fieldRules, isRequiredIf } from '@/utilities/validation'
 
   const props = defineProps<{
     deployment: Deployment,
@@ -105,16 +106,8 @@
     return Object.keys(props.deployment.parameterOpenApiSchema.properties ?? {}).length > 0
   })
 
-  const requiredIfLater = (value: unknown): boolean => {
-    if (when.value == 'now') {
-      return true
-    }
-
-    return isRequired(value)
-  }
-
   const rules = {
-    start: withMessage(requiredIfLater, 'Start date is required'),
+    start: fieldRules('Start date', isRequiredIf(() => when.value === 'later')),
   }
 
   const { handleSubmit } = useForm<DeploymentFlowRunCreate>({
