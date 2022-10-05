@@ -10,7 +10,7 @@
         </Transition>
       </template>
     </div>
-    <FlowRunList v-model:selected="selectedFlowRuns" :flow-runs="flowRuns" :disabled="props.disabled || !can.delete.flow_run" @bottom="flowRunsSubscription.loadMore" />
+    <FlowRunList v-model:selected="selectedFlowRuns" :flow-runs="flowRuns" :disabled="disabled || !can.delete.flow_run" @bottom="flowRunsSubscription.loadMore" />
     <PEmptyResults v-if="empty">
       <template #message>
         No runs from the last 7 days
