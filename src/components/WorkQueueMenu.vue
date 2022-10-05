@@ -16,21 +16,19 @@
 </template>
 
 <script lang="ts">
-  import { PIconButtonMenu, POverflowMenuItem } from '@prefecthq/prefect-design'
-  import { defineComponent } from 'vue'
-  import { useCan } from '@/compositions/useCan'
-
-  export default defineComponent({
+  export default {
     name: 'WorkQueueMenu',
     expose: [],
     inheritAttrs: false,
-  })
+  }
 </script>
 
 <script lang="ts" setup>
+  import { PIconButtonMenu, POverflowMenuItem } from '@prefecthq/prefect-design'
   import { RouterLink } from 'vue-router'
   import ConfirmDeleteModal from '@/components/ConfirmDeleteModal.vue'
   import CopyOverflowMenuItem from '@/components/CopyOverflowMenuItem.vue'
+  import { useCan } from '@/compositions/useCan'
   import { useShowModal } from '@/compositions/useShowModal'
   import { WorkQueue } from '@/models'
   import { editQueueRouteKey } from '@/router'
