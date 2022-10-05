@@ -1,5 +1,5 @@
 import { showToast } from '@prefecthq/prefect-design'
-import { UseSubscription } from '@prefecthq/vue-compositions'
+import { CreateActions, UseSubscription } from '@prefecthq/vue-compositions'
 import { computed } from 'vue'
 import { FlowRunsApi } from './../services/FlowRunsApi'
 import { UsePaginatedSubscription } from '@/compositions'
@@ -21,7 +21,10 @@ export async function deleteItem(id: string, endpoint: (arg: string) => void, ty
   }
 }
 
-export async function deleteFlowRunsWithSubscriptionRefresh(flowRuns: string[], flowRunsApi: FlowRunsApi, subscriptions: (UseSubscription<(filter: UnionFilters) => Promise<number>> | UsePaginatedSubscription<(filter: UnionFilters) => Promise<FlowRun[]>>)[]): Promise<void> {
+export async function deleteFlowRunsWithSubscriptionRefresh(
+  flowRuns: string[],
+  flowRunsApi: FlowRunsApi | CreateActions<FlowRunsApi>,
+  subscriptions: (UseSubscription<(filter: UnionFilters) => Promise<number | FlowRun[]>> | UsePaginatedSubscription<(filter: UnionFilters) => Promise<FlowRun[]>>)[]): Promise<void> {
   const toastMessage = computed(() => {
     if (flowRuns.length === 1) {
       return 'Flow run deleted'
