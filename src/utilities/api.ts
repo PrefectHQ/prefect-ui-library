@@ -1,6 +1,6 @@
 import { createActions } from '@prefecthq/vue-compositions'
 import { InjectionKey } from 'vue'
-import { WorkspaceApiConfig } from '@/services'
+import { WorkspaceApiConfig } from '@/services/WorkspaceApi'
 import { WorkspaceBlockCapabilitiesApi } from '@/services/WorkspaceBlockCapabilitiesApi'
 import { WorkspaceBlockDocumentsApi } from '@/services/WorkspaceBlockDocumentsApi'
 import { WorkspaceBlockSchemasApi } from '@/services/WorkspaceBlockSchemasApi'
@@ -11,6 +11,7 @@ import { WorkspaceFlowsApi } from '@/services/WorkspaceFlowsApi'
 import { WorkspaceLogsApi } from '@/services/WorkspaceLogsApi'
 import { WorkspaceNotificationsApi } from '@/services/WorkspaceNotificationsApi'
 import { WorkspaceTaskRunsApi } from '@/services/WorkspaceTaskRunsApi'
+import { WorkspaceWorkQueuesApi } from '@/services/WorkspaceWorkQueuesApi'
 
 // We want the return type to be inferred
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
@@ -23,9 +24,10 @@ export function createApi(workspaceConfig: WorkspaceApiConfig) {
     deployments: createActions(new WorkspaceDeploymentsApi(workspaceConfig)),
     flowRuns: createActions(new WorkspaceFlowRunsApi(workspaceConfig)),
     flows: createActions(new WorkspaceFlowsApi(workspaceConfig)),
-    Logs: createActions(new WorkspaceLogsApi(workspaceConfig)),
-    Notifications: createActions(new WorkspaceNotificationsApi(workspaceConfig)),
-    TaskRuns: createActions(new WorkspaceTaskRunsApi(workspaceConfig)),
+    logs: createActions(new WorkspaceLogsApi(workspaceConfig)),
+    notifications: createActions(new WorkspaceNotificationsApi(workspaceConfig)),
+    taskRuns: createActions(new WorkspaceTaskRunsApi(workspaceConfig)),
+    workQueues: createActions(new WorkspaceWorkQueuesApi(workspaceConfig)),
   }
 }
 
