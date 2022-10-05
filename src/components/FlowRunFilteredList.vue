@@ -4,12 +4,13 @@
       <ResultsCount :count="flowRunCount" class="mr-auto" label="Flow run" />
       <StateSelect :selected="state" empty-message="All run states" class="flow-run-filtered-list__state-select" @update:selected="updateState" />
       <FlowRunsSort v-model="sort" class="flow-run-filtered-list__flow-runs-sort" />
-
-      <Transition name="slide-fade">
-        <p-button v-if="selectedFlowRuns.length > 0" danger icon="TrashIcon" @click="open" />
-      </Transition>
+      <template v-if="can.delete.flow_run">
+        <Transition name="slide-fade">
+          <p-button v-if="selectedFlowRuns.length > 0" danger icon="TrashIcon" @click="open" />
+        </Transition>
+      </template>
     </div>
-    <FlowRunList v-model:selected="selectedFlowRuns" :flow-runs="flowRuns" :disabled="disabled" @bottom="flowRunsSubscription.loadMore" />
+    <FlowRunList v-model:selected="selectedFlowRuns" :flow-runs="flowRuns" :disabled="props.disabled || !can.delete.flow_run" @bottom="flowRunsSubscription.loadMore" />
     <PEmptyResults v-if="empty">
       <template #message>
         No runs from the last 7 days
@@ -35,6 +36,7 @@
   import { ResultsCount, StateSelect, FlowRunsSort, FlowRunList } from '@/components'
   import ConfirmDeleteModal from '@/components/ConfirmDeleteModal.vue'
   import { useShowModal } from '@/compositions'
+  import { useCan } from '@/compositions/useCan'
   import { usePaginatedSubscription } from '@/compositions/usePaginatedSubscription'
   import { StateType } from '@/models'
   import { flowRunsApiKey, mapper } from '@/services'
@@ -53,6 +55,7 @@
     (event: 'update:states', value: StateType[]): void,
   }>()
 
+  const can = useCan()
   const selectedFlowRuns = ref<string[]>([])
   const state = ref<StateType[]>(props.states ?? [])
   const updateState = (newValue: string | string[] | null): void => {
