@@ -1,7 +1,9 @@
 import { useForm } from 'vee-validate'
 import { Ref, watch } from 'vue'
 
-export function useReactiveForm<T>(sourceRef: Ref<T>, ...[opts = {}]: Parameters<typeof useForm<T>>): ReturnType<typeof useForm<T>> {
+// using any here to mirror vee-validate's useForm
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function useReactiveForm<T extends Record<string, any>>(sourceRef: Ref<T>, ...[opts = {}]: Parameters<typeof useForm<T>>): ReturnType<typeof useForm<T>> {
   const form = useForm<T>({
     ...opts,
   })
