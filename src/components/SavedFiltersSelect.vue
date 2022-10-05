@@ -1,7 +1,7 @@
 <template>
   <p-select v-model="selectedSavedSearch" :options="options" class="saved-filters-select__dropdown" />
   <p-icon-button-menu>
-    <copy-overflow-menu-item label="Copy URL" :item="fullRoute" />
+    <copy-overflow-menu-item label="Share View" :item="fullRoute" />
     <p-overflow-menu-item v-if="selectedSearchIsCustom && can.create.saved_search" @click="openSaveModal">
       Save View
     </p-overflow-menu-item>
