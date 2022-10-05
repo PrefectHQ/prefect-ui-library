@@ -1,8 +1,8 @@
 <template>
-  <p-modal v-model:showModal="internalValue" class="save-filter-modal" title="Save Filter">
+  <p-modal v-model:showModal="internalShowModal" class="save-filter-modal" title="Save Filter">
     <p-form @submit="submit">
       <p-content>
-        <p-label label="Filter Name" :state="filterNameState" :message="errors.filterName">
+        <p-label label="Filter Name" :state="filterNameState" :message="filterErrorMessage">
           <p-text-input v-model="filterName" />
         </p-label>
         <span class="save-filter-modal__date-filter-warning"> All saved filters currently use the default time period of 7 days.</span>
@@ -28,7 +28,7 @@
     showModal: boolean,
   }>()
 
-  const { handleSubmit, handleReset, isSubmitting, errors } = useForm<{
+  const { handleSubmit, handleReset, isSubmitting } = useForm<{
     filterName: string,
   }>()
 
@@ -36,14 +36,14 @@
     filterName: isRequired('Name'),
   }
 
-  const { value: filterName, meta: filterNameState } = useField<string>('filterName', rules.filterName, { initialValue: '' })
+  const { value: filterName, meta: filterNameState, errorMessage: filterErrorMessage } = useField<string>('filterName', rules.filterName)
 
   const emit = defineEmits<{
     (event: 'update:showModal', value: boolean): void,
     (event: 'save', filterName: string): void,
   }>()
 
-  const internalValue = computed({
+  const internalShowModal = computed({
     get() {
       return props.showModal
     },

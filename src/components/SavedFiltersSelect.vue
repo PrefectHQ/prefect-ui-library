@@ -1,7 +1,8 @@
-<template class="saved-filters">
-  <p-select v-model="selectedSavedSearch" :options="options" class="saved-filters__select" />
-  <p-icon-button-menu :disabled="selectedSavedSearch != 'Custom' && !savedSearchId">
-    <p-overflow-menu-item v-if="selectedSavedSearch == 'Custom' && can.create.saved_search" @click="openSaveModal">
+<template>
+  <p-select v-model="selectedSavedSearch" :options="options" class="saved-filters-select__dropdown" />
+  <p-icon-button-menu>
+    <copy-overflow-menu-item label="Copy URL" :item="fullRoute" />
+    <p-overflow-menu-item v-if="selectedSearchIsCustom && can.create.saved_search" @click="openSaveModal">
       Save View
     </p-overflow-menu-item>
     <p-overflow-menu-item v-if="savedSearchId && can.delete.saved_search" inset @click="openDeleteModal">
@@ -21,8 +22,9 @@
   import { SelectOption, showToast } from '@prefecthq/prefect-design'
   import { useSubscription } from '@prefecthq/vue-compositions'
   import { watchEffect, ref, computed, onMounted } from 'vue'
-  import { useRouter } from 'vue-router'
+  import { useRouter, useRoute } from 'vue-router'
   import ConfirmDeleteModal from '@/components/ConfirmDeleteModal.vue'
+  import CopyOverflowMenuItem from '@/components/CopyOverflowMenuItem.vue'
   import SaveFilterModal from '@/components/SaveFilterModal.vue'
   import { useFlowRunFilterFromRoute, useShowModal } from '@/compositions'
   import { useCan } from '@/compositions/useCan'
@@ -32,6 +34,8 @@
   import { oneWeekFilter, noScheduleFilter, isCustomFilter } from '@/utilities/savedFilters'
 
   const can = useCan()
+  const route = useRoute()
+  const fullRoute = window.location.origin+route.path
   const { flows, states, tags, deployments, hasFilters } = useFlowRunFilterFromRoute()
   const router = useRouter()
   const api = inject(workspaceApiKey)
@@ -97,6 +101,8 @@
     ...savedSearches.value,
   ])
 
+  const selectedSearchIsCustom = computed(() => selectedSavedSearch.value == 'Custom')
+
   const options = computed<SelectOption[]>(() => modifiedSavedSearches.value.map(search => {
     return { label: search.name, value: search.name,  disabled: search.name === 'Custom' }
   }))
@@ -117,7 +123,7 @@
 </script>
 
 <style>
-.saved-filters__select {
+.saved-filters-select__dropdown {
   @apply w-48
 }
 </style>
