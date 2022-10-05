@@ -39,7 +39,7 @@ export class RRuleSchedule implements IRRuleSchedule {
   }
 
   public toString(): string {
-    let str = capitalize(this.getRRule().toText())
+    let str: string = capitalize(this.getRRule().toText())
 
     const match = expression.exec(str)
 
