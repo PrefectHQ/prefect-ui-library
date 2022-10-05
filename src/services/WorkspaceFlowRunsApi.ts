@@ -1,10 +1,12 @@
 import { WorkspaceApi } from './WorkspaceApi'
+import { StateResponse } from '@/models'
 import { FlowRun } from '@/models/FlowRun'
 import { FlowRunGraphResponse } from '@/models/FlowRunGraphResponse'
 import { FlowRunHistoryResponse } from '@/models/FlowRunHistoryResponse'
 import { FlowRunResponse } from '@/models/FlowRunResponse'
 import { GraphNode } from '@/models/GraphNode'
 import { RunHistory } from '@/models/RunHistory'
+import { State } from '@/models/State'
 import { mapper } from '@/services/Mapper'
 import { FlowRunsHistoryFilter, UnionFilters } from '@/types/UnionFilters'
 
@@ -40,6 +42,12 @@ export class WorkspaceFlowRunsApi extends WorkspaceApi {
     const { data } = await this.get<FlowRunGraphResponse[]>(`/${id}/graph`)
 
     return mapper.map('FlowRunGraphResponse', data, 'GraphNode')
+  }
+
+  public setFlowRunState(id: string, body: any): Promise<State> {
+    console.log('called', id)
+    return this.post<StateResponse>(`/${id}/set_state`, body)
+      .then(({ data }) => mapper.map('StateResponse', data, 'State'))
   }
 
   public deleteFlowRun(flowRunId: string): Promise<void> {

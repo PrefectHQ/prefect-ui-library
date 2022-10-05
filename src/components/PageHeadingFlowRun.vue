@@ -4,8 +4,8 @@
       <p-icon-button-menu>
         <template #default>
           <copy-overflow-menu-item label="Copy ID" :item="flowRun.id" />
-          <p-overflow-menu-item v-if="can.delete.flow_run" label="Delete" @click="open" />
-          <p-overflow-menu-item v-if="can.update.flow_run" label="Mark state" @click="markState" />
+          <p-overflow-menu-item label="Delete" @click="open" />
+          <p-overflow-menu-item label="Mark state" @click="markState" />
         </template>
       </p-icon-button-menu>
       <ConfirmDeleteModal
@@ -35,7 +35,8 @@
   import { FlowRun } from '@/models'
   import { flowRunsRouteKey } from '@/router'
   import { flowRunsApiKey } from '@/services'
-  import { deleteItem, inject } from '@/utilities'
+  import { deleteItem, inject, workspaceApiKey } from '@/utilities'
+  const api = inject(workspaceApiKey)
 
   const props = defineProps<{
     flowRun: FlowRun,
@@ -62,7 +63,7 @@
   }
 
   const markState = async (id: string): Promise<void>=> {
-    await flowRunsApi.setFlowRunState(id, { state: { type: 'COMPLETED' } })
+    await api.flowRuns.setFlowRunState(props.flowRun.id, { state: { type: 'COMPLETED', message: 'Set by Jenny' } })
   }
 </script>
 
