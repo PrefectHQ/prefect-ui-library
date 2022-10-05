@@ -42,11 +42,7 @@
   const defaultFilterValue = 'Default view'
 
   onMounted(() => {
-    if (hasFilters.value) {
-      selectedSavedSearch.value = 'Custom'
-      return
-    }
-    selectedSavedSearch.value = defaultFilterValue
+    selectedSavedSearch.value = hasFilters.value ? 'Custom' : defaultFilterValue
   })
 
   const saveFilter = async (filterName: string): Promise<void> => {
