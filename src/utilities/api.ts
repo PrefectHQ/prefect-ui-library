@@ -10,6 +10,7 @@ import { WorkspaceFlowRunsApi } from '@/services/WorkspaceFlowRunsApi'
 import { WorkspaceFlowsApi } from '@/services/WorkspaceFlowsApi'
 import { WorkspaceLogsApi } from '@/services/WorkspaceLogsApi'
 import { WorkspaceNotificationsApi } from '@/services/WorkspaceNotificationsApi'
+import { WorkspaceSavedSearchesApi } from '@/services/WorkspaceSavedSearchesApi'
 import { WorkspaceTaskRunsApi } from '@/services/WorkspaceTaskRunsApi'
 import { WorkspaceWorkQueuesApi } from '@/services/WorkspaceWorkQueuesApi'
 
@@ -28,6 +29,7 @@ export function createApi(workspaceConfig: WorkspaceApiConfig) {
     notifications: createActions(new WorkspaceNotificationsApi(workspaceConfig)),
     taskRuns: createActions(new WorkspaceTaskRunsApi(workspaceConfig)),
     workQueues: createActions(new WorkspaceWorkQueuesApi(workspaceConfig)),
+    savedSearches: createActions(new WorkspaceSavedSearchesApi(workspaceConfig)),
   }
 }
 
