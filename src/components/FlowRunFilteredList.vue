@@ -4,11 +4,7 @@
       <ResultsCount :count="flowRunCount" class="mr-auto" label="Flow run" />
       <StateSelect :selected="state" empty-message="All run states" class="flow-run-filtered-list__state-select" @update:selected="updateState" />
       <FlowRunsSort v-model="sort" class="flow-run-filtered-list__flow-runs-sort" />
-      <template v-if="can.delete.flow_run">
-        <Transition name="slide-fade">
-          <p-button v-if="selectedFlowRuns.length > 0" danger icon="TrashIcon" @click="open" />
-        </Transition>
-      </template>
+      <DeleteFlowRunsButton v-if="can.delete.flow_run" :selected="selectedFlowRuns" @delete="deleteFlowRuns" />
     </div>
     <FlowRunList v-model:selected="selectedFlowRuns" :flow-runs="flowRuns" :disabled="disabled || !can.delete.flow_run" @bottom="flowRunsSubscription.loadMore" />
     <PEmptyResults v-if="empty">
@@ -22,26 +18,19 @@
       </template>
     </PEmptyResults>
   </div>
-  <ConfirmDeleteModal
-    v-model:showModal="showModal"
-    name="selected flow runs"
-    label="Flow Runs"
-    @delete="deleteFlowRuns(selectedFlowRuns)"
-  />
 </template>
 
 <script lang="ts" setup>
   import { useSubscription } from '@prefecthq/vue-compositions'
   import { computed, onMounted, ref } from 'vue'
   import { ResultsCount, StateSelect, FlowRunsSort, FlowRunList } from '@/components'
-  import ConfirmDeleteModal from '@/components/ConfirmDeleteModal.vue'
-  import { useShowModal } from '@/compositions'
+  import DeleteFlowRunsButton from '@/components/DeleteFlowRunsButton.vue'
   import { useCan } from '@/compositions/useCan'
   import { usePaginatedSubscription } from '@/compositions/usePaginatedSubscription'
   import { StateType } from '@/models'
   import { flowRunsApiKey, mapper } from '@/services'
   import { FlowRunSortValues, UnionFilters } from '@/types'
-  import { deleteFlowRunsWithSubscriptionRefresh, inject } from '@/utilities'
+  import { inject } from '@/utilities'
 
   const flowRunsApi = inject(flowRunsApiKey)
 
@@ -58,6 +47,7 @@
   const can = useCan()
   const selectedFlowRuns = ref<string[]>([])
   const state = ref<StateType[]>(props.states ?? [])
+
   const updateState = (newValue: string | string[] | null): void => {
     state.value = newValue as StateType[]
     emit('update:states', state.value)
@@ -99,12 +89,9 @@
     state.value = []
   }
 
-  const { showModal, open, close } = useShowModal()
-  const deleteFlowRuns = (flowRuns: string[]): void => {
-    close()
-    deleteFlowRunsWithSubscriptionRefresh(flowRuns, flowRunsApi, [flowRunsSubscription, flowRunCountSubscription])
+  const deleteFlowRuns = async (): Promise<void> => {
     selectedFlowRuns.value = []
-    clear()
+    await Promise.all([flowRunsSubscription.refresh(), flowRunCountSubscription.refresh()])
   }
 
   onMounted(() => {
@@ -136,17 +123,5 @@
 .flow-run-filtered-list__flow-runs-sort { @apply
   w-full
   sm:w-fit
-}
-
-.slide-fade-enter-active {
-  transition: all 0.4s ease 0.1s;
-}
-.slide-fade-leave-active {
-  transition: all 0.1s ease;
-}
-.slide-fade-enter-from,
-.slide-fade-leave-to {
-  transform: translateX(25px);
-  opacity: 0;
 }
 </style>
