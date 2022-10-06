@@ -9,7 +9,7 @@
       Delete View
     </p-overflow-menu-item>
   </p-icon-button-menu>
-  <SaveFilterModal v-model:show-modal="showSaveModal" :filter-names="filterNames" @save="saveFilter" />
+  <SaveFilterModal v-model:show-modal="showSaveModal" @save="saveFilter" />
   <ConfirmDeleteModal
     v-model:showModal="showDeleteModal"
     label="Saved Filter"
@@ -31,7 +31,7 @@
   import { localization } from '@/localization'
   import { workspaceApiKey } from '@/utilities'
   import { inject } from '@/utilities/inject'
-  import { oneWeekFilter, noScheduleFilter, isCustomFilter } from '@/utilities/savedFilters'
+  import { isCustomFilter, defaultFilterValue } from '@/utilities/savedFilters'
 
   const can = useCan()
   const route = useRoute()
@@ -43,7 +43,7 @@
   const { showModal: showDeleteModal, open: openDeleteModal } = useShowModal()
   const savedSearchesSubscription = useSubscription(api.savedSearches.getSavedSearches)
   const savedSearches = computed(()=> savedSearchesSubscription.response ?? [])
-  const defaultFilterValue = 'Default view'
+
 
   onMounted(() => {
     selectedSavedSearch.value = hasFilters.value ? 'Custom' : defaultFilterValue
@@ -84,29 +84,16 @@
     }
   }
 
-  const modifiedSavedSearches = computed(()=> [
-    { name: 'Custom', id: null },
-    {
-      name: defaultFilterValue,
-      filters: oneWeekFilter,
-    },
-    {
-      name: 'No scheduled',
-      filters: noScheduleFilter,
-    },
-    ...savedSearches.value,
-  ])
-
   const selectedSearchIsCustom = computed(() => selectedSavedSearch.value == 'Custom')
 
-  const options = computed<SelectOption[]>(() => modifiedSavedSearches.value.map(search => {
+  const options = computed<SelectOption[]>(() => savedSearches.value.map(search => {
     return { label: search.name, value: search.name,  disabled: search.name === 'Custom' }
   }))
 
   const filterNames = computed(()=>options.value.map(option => option.label))
 
   const selectedSavedSearch = ref()
-  const selectedSavedSearchValue = computed(() => modifiedSavedSearches.value.find(filter => filter.name === selectedSavedSearch.value))
+  const selectedSavedSearchValue = computed(() => savedSearches.value.find(filter => filter.name === selectedSavedSearch.value))
   const savedSearchId = computed(() => selectedSavedSearchValue.value?.id)
 
   watchEffect(async ()=> {

@@ -28,6 +28,6 @@ export type SavedSearchFilter = {
   flow?: FilterResponseValue,
   tag?: FilterResponseValue,
   deployment?: FilterResponseValue,
-  startDate?: FilterResponseValue,
-  endDate?: FilterResponseValue,
+  'start-date'?: FilterResponseValue,
+  'end-date'?: FilterResponseValue,
 }

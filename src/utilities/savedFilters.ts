@@ -4,6 +4,8 @@ import { Ref } from 'vue'
 import { SavedSearchFilter } from '@/models/SavedSearch'
 import { isSame } from '@/utilities/arrays'
 
+export const defaultFilterValue = 'Default view'
+
 
 // eslint-disable-next-line max-params
 export function isCustomFilter(savedFilter: SavedSearchFilter, states: Ref<string[]>, flows: Ref<string[]>, deployments: Ref<string[]>, tags: Ref<string[]>): boolean {
@@ -65,3 +67,23 @@ export const noScheduleFilter = {
   startDate: formatDateTimeNumeric(subDays(startOfToday(), 7)),
   endDate: formatDateTimeNumeric(addDays(endOfToday(), 1)),
 }
+
+export type AdditionalFilter = {
+  name: string,
+  filters?: SavedSearchFilter,
+  id: null,
+}
+
+export const additionalFilters: AdditionalFilter[] = [
+  { name: 'Custom', id: null },
+  {
+    name: defaultFilterValue,
+    filters: oneWeekFilter,
+    id: null,
+  },
+  {
+    name: 'No scheduled',
+    filters: noScheduleFilter,
+    id: null,
+  },
+]

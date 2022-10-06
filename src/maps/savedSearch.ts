@@ -18,8 +18,8 @@ function mapSavedSearchFilters(filters: SavedSearchFilterResponse[] | undefined)
     tag: [],
     flow: [],
     deployment: [],
-    startDate: formatDateTimeNumeric(subDays(startOfToday(), 7)),
-    endDate: formatDateTimeNumeric(addDays(endOfToday(), 1)),
+    'start-date': formatDateTimeNumeric(subDays(startOfToday(), 7)),
+    'end-date': formatDateTimeNumeric(addDays(endOfToday(), 1)),
   }
   if (filters) {
     filter.flow = filters.find(filter => filter.property === 'flow')?.value ?? []

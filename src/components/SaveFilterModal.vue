@@ -20,21 +20,28 @@
 </template>
 
 <script lang="ts" setup>
+  import { useSubscription } from '@prefecthq/vue-compositions'
   import { useField, useForm } from 'vee-validate'
   import { computed } from 'vue'
+  import { workspaceApiKey } from '@/utilities'
+  import { inject } from '@/utilities/inject'
   import { isRequired, withMessage, isValidIf } from '@/utilities/validation'
+
+  const api = inject(workspaceApiKey)
+  const savedSearchesSubscription = useSubscription(api.savedSearches.getSavedSearches)
+  const savedSearches = computed(()=> savedSearchesSubscription.response ?? [])
 
   const props = defineProps<{
     showModal: boolean,
-    filterNames: string[],
   }>()
 
   const { handleSubmit, handleReset, isSubmitting } = useForm<{
     filterName: string,
   }>()
 
-  const nameDoesNotExist = isValidIf(value => !value || !props.filterNames.includes(value as string))
+  const filterNames = savedSearches.value.map(search => search.name)
 
+  const nameDoesNotExist = isValidIf(value => !value || !filterNames.includes(value as string))
   const { value: filterName, meta: filterNameState, errorMessage: filterErrorMessage } = useField<string>('filterName', [withMessage(nameDoesNotExist, 'Name must be unique'), isRequired('Name')])
 
   const emit = defineEmits<{
