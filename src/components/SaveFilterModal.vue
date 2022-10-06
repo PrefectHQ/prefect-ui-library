@@ -1,8 +1,8 @@
 <template>
-  <p-modal v-model:showModal="internalShowModal" class="save-filter-modal" title="Save Filter">
+  <p-modal v-model:showModal="internalShowModal" class="save-filter-modal" title="Save View">
     <p-form @submit="submit">
       <p-content>
-        <p-label label="Filter Name" :state="filterNameState" :message="filterErrorMessage">
+        <p-label label="View Name" :state="filterNameState" :message="filterErrorMessage">
           <p-text-input v-model="filterName" />
         </p-label>
         <span class="save-filter-modal__date-filter-warning"> All saved filters currently use the default time period of 7 days.</span>
@@ -22,17 +22,20 @@
 <script lang="ts" setup>
   import { useField, useForm } from 'vee-validate'
   import { computed } from 'vue'
-  import { isRequired } from '@/utilities/validation'
+  import { isRequired, withMessage, isValidIf } from '@/utilities/validation'
 
   const props = defineProps<{
     showModal: boolean,
+    filterNames: string[],
   }>()
 
   const { handleSubmit, handleReset, isSubmitting } = useForm<{
     filterName: string,
   }>()
 
-  const { value: filterName, meta: filterNameState, errorMessage: filterErrorMessage } = useField<string>('filterName', isRequired('Name'))
+  const nameExists = isValidIf(value => !value || !props.filterNames.includes(value as string))
+
+  const { value: filterName, meta: filterNameState, errorMessage: filterErrorMessage } = useField<string>('filterName', [withMessage(nameExists, 'Name must be unique'), isRequired('Name')])
 
   const emit = defineEmits<{
     (event: 'update:showModal', value: boolean): void,
