@@ -19,7 +19,7 @@
 
 <script lang="ts" setup>
   import { useField, useForm } from 'vee-validate'
-  import { watchEffect } from 'vue'
+  import { watch, watchEffect } from 'vue'
   import SchemaFormFields from './SchemaFormFields.vue'
   import SubmitButton from './SubmitButton.vue'
   import { useReactiveForm } from '@/compositions'
@@ -27,8 +27,8 @@
   import { BlockDocumentCreateNamed } from '@/models/BlockDocumentCreate'
   import { BlockSchema } from '@/models/BlockSchema'
   import { getSchemaDefaultValues } from '@/services/schemas/utilities'
-  import { fieldRules, isHandle, isRequired } from '@/utilities/validation'
   import { session } from '@/services/storage'
+  import { fieldRules, isHandle, isRequired } from '@/utilities/validation'
 
   const props = defineProps<{
     blockSchema: BlockSchema,
@@ -42,15 +42,19 @@
   // eslint-disable-next-line vue/no-setup-props-destructure
   const storageKey = `block-schema-form-${props.blockSchema.id}`
 
-  const { value: initialValues, remove: removeFromStorage } = useSessionStorage(storageKey, {
+  const { value: initialValues, remove: removeFromStorage, set: setStorageValue } = useSessionStorage(storageKey, {
     name: '',
     data: getSchemaDefaultValues(props.blockSchema.fields),
     blockSchema: props.blockSchema,
   })
 
-  const { handleSubmit } = useReactiveForm<BlockDocumentCreateNamed>(initialValues)
-  
+  const { values, handleSubmit } = useForm<BlockDocumentCreateNamed>({
+    initialValues: initialValues.value,
+  })
+
   const { value: name, meta: nameState, errorMessage: nameError } = useField<string>('name', fieldRules('Name', isRequired, isHandle))
+
+  watchEffect(() => setStorageValue(values))
 
   const submit = handleSubmit(value => {
     removeFromStorage()
