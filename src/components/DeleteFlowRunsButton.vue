@@ -56,10 +56,10 @@
 
 <style>
   .delete-flow-runs-button-slide-enter-active {
-  transition: all 0.3s ease;
+  transition: all 0.4s ease;
 }
 .delete-flow-runs-button-slide-leave-active {
-  transition: all 0.3s ease;
+  transition: all 0.4s ease;
 }
 .delete-flow-runs-button-slide-enter-from,
 .delete-flow-runs-button-slide-leave-to {
