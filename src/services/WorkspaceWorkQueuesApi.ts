@@ -6,7 +6,7 @@ import { PaginatedFilter } from '@/types/UnionFilters'
 
 export class WorkspaceWorkQueuesApi extends WorkspaceApi {
 
-  protected routePrefix = '/task_runs'
+  protected routePrefix = '/work_queues'
 
   public async getWorkQueue(id: string): Promise<WorkQueue> {
     const { data } = await this.get<WorkQueueResponse>(`/${id}`)
