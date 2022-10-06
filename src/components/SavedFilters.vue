@@ -9,7 +9,7 @@
       Delete View
     </p-overflow-menu-item>
   </p-icon-button-menu>
-  <SaveFilterModal v-model:show-modal="showSaveModal" @save="saveFilter" />
+  <SaveFilterModal v-model:show-modal="showSaveModal" :filter-names="filterNames" @save="saveFilter" />
   <ConfirmDeleteModal
     v-model:showModal="showDeleteModal"
     label="Saved Filter"
@@ -102,6 +102,8 @@
   const options = computed<SelectOption[]>(() => modifiedSavedSearches.value.map(search => {
     return { label: search.name, value: search.name,  disabled: search.name === 'Custom' }
   }))
+
+  const filterNames = computed(()=>options.value.map(option => option.label))
 
   const selectedSavedSearch = ref()
   const selectedSavedSearchValue = computed(() => modifiedSavedSearches.value.find(filter => filter.name === selectedSavedSearch.value))
