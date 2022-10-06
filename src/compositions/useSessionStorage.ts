@@ -4,6 +4,7 @@ import { session } from '@/services/storage'
 
 type UseSessionStorage<T> = {
   value: Ref<T>,
+  initialValue: T,
   remove: () => void,
   set: (value: NonNullable<T>) => void,
 }
@@ -31,6 +32,7 @@ export function useSessionStorage<T>(key: string, defaultValue: T | null = null)
 
   return {
     value: data,
+    initialValue,
     remove,
     set,
   }
