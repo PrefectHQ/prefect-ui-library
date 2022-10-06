@@ -12,7 +12,7 @@
     </template>
     <app-sidebar v-if="showMenu" class="app__sidebar" @click="close" />
     <suspense>
-      <router-view />
+      <AppRouterView />
     </suspense>
   </div>
 </template>
@@ -20,7 +20,7 @@
 <script lang="ts" setup>
   import { media } from '@prefecthq/prefect-design'
   import { computed, provide, ref, watchEffect } from 'vue'
-  import { RouterView } from 'vue-router'
+  import AppRouterView from './components/AppRouterView.vue'
   import AppSidebar from './components/AppSidebar.vue'
   import { flowRunsApi, logsApi, taskRunsApi, flowsApi, deploymentsApi, workQueueApi, notificationsApi, blockCapabilitiesApi } from './services'
   import { flowRunCreateRouteKey, notificationCreateRouteKey, deploymentRouteKey, flowRouteKey, flowRunsRouteKey, flowsRouteKey, deploymentsRouteKey, workQueuesRouteKey, settingsRouteKey, workQueueRouteKey, Route, flowRunRouteKey, workQueueCreateRouteKey, editQueueRouteKey, blocksRouteKey, blockCatalogRouteKey, blockRouteKey, blockEditRouteKey, editNotificationRouteKey, blockCatalogCreateRouteKey, notificationsRouteKey, editDeploymentRouteKey, blockCatalogViewRouteKey } from '@/router'
