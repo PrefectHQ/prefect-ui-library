@@ -33,9 +33,9 @@
     filterName: string,
   }>()
 
-  const nameExists = isValidIf(value => !value || !props.filterNames.includes(value as string))
+  const nameDoesNotExist = isValidIf(value => !value || !props.filterNames.includes(value as string))
 
-  const { value: filterName, meta: filterNameState, errorMessage: filterErrorMessage } = useField<string>('filterName', [withMessage(nameExists, 'Name must be unique'), isRequired('Name')])
+  const { value: filterName, meta: filterNameState, errorMessage: filterErrorMessage } = useField<string>('filterName', [withMessage(nameDoesNotExist, 'Name must be unique'), isRequired('Name')])
 
   const emit = defineEmits<{
     (event: 'update:showModal', value: boolean): void,
