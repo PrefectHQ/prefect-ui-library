@@ -26,8 +26,8 @@
   import { useSessionStorage } from '@/compositions/useSessionStorage'
   import { BlockDocumentCreateNamed } from '@/models/BlockDocumentCreate'
   import { BlockSchema } from '@/models/BlockSchema'
-  import { isRequired, isValidHandle, withMessage } from '@/services'
   import { getSchemaDefaultValues } from '@/services/schemas/utilities'
+  import { fieldRules, isHandle, isRequired } from '@/utilities/validation'
   import { session } from '@/services/storage'
 
   const props = defineProps<{
@@ -49,11 +49,8 @@
   })
 
   const { handleSubmit } = useReactiveForm<BlockDocumentCreateNamed>(initialValues)
-
-  const { value: name, meta: nameState, errorMessage: nameError } = useField<string>('name', [
-    withMessage(isRequired, 'Name is required'),
-    withMessage(isValidHandle, 'Name must only contain lowercase letters, numbers, and dashes'),
-  ])
+  
+  const { value: name, meta: nameState, errorMessage: nameError } = useField<string>('name', fieldRules('Name', isRequired, isHandle))
 
   const submit = handleSubmit(value => {
     removeFromStorage()

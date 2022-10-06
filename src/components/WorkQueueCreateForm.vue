@@ -44,12 +44,12 @@
   import { computed } from 'vue'
   import SubmitButton from './SubmitButton.vue'
   import { WorkQueueCreate } from '@/models'
-  import { isRequired, withMessage } from '@/services/validate'
+  import { isRequired } from '@/utilities/validation'
 
   const { handleSubmit, isSubmitting, errors } = useForm<WorkQueueCreate>()
 
   const rules = {
-    name: [withMessage(isRequired, 'Name is required')],
+    name: isRequired('Name'),
   }
 
   const isActive = computed({
