@@ -76,7 +76,7 @@
 
   const markState = async (): Promise<void>=> {
     const convertedStateType = setStateType.value.toUpperCase()
-    await api.flowRuns.setFlowRunState(props.flowRun.id, { state: { type: convertedStateType, message: setStateMessage.value } })
+    await api.flowRuns.setFlowRunState(props.flowRun.id, { state: { type: convertedStateType, message: setStateMessage.value }, force: true })
   }
 </script>
 
