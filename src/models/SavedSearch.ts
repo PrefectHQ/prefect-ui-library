@@ -1,7 +1,7 @@
 import { FilterResponseValue } from '@/models/api/SavedSearchResponse'
 
 export interface ISavedSearch {
-  id: string,
+  id: string | null,
   name: string,
   filters: SavedSearchFilter,
 }
@@ -12,7 +12,7 @@ export interface SavedSearchCreate {
 }
 
 export class SavedSearch implements ISavedSearch {
-  public readonly id: string
+  public readonly id: string | null
   public name: string
   public filters: SavedSearchFilter
 
