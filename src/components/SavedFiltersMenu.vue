@@ -1,5 +1,5 @@
 <template>
-  <p-icon-button-menu>
+  <p-icon-button-menu v-bind="attrs">
     <CopyOverflowMenuItem label="Share View" :item="fullRoute" />
     <p-overflow-menu-item v-if="canSave" @click="openSaveModal">
       Save View
@@ -25,7 +25,7 @@
 </script>
 
 <script lang="ts" setup>
-  import { computed } from 'vue'
+  import { computed, useAttrs } from 'vue'
   import { useRoute } from 'vue-router'
   import CopyOverflowMenuItem from '@/components/CopyOverflowMenuItem.vue'
   import SavedFiltersDeleteModal from '@/components/SavedFiltersDeleteModal.vue'
@@ -42,6 +42,8 @@
   const emit = defineEmits<{
     (event: 'update:selectedSearchOption', value: SavedSearch | null): void,
   }>()
+
+  const attrs = useAttrs()
 
   const internalSavedSearch = computed({
     get() {
