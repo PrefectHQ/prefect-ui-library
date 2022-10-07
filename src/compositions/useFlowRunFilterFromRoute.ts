@@ -1,15 +1,15 @@
 import { formatDateTimeNumeric, parseDateTimeNumeric } from '@prefecthq/prefect-design'
 import { useDebouncedRef, useRouteQueryParam } from '@prefecthq/vue-compositions'
 import { addDays, endOfToday, startOfToday, subDays } from 'date-fns'
-import { computed, reactive, Ref } from 'vue'
-import { RouteLocationNormalized, useRoute, useRouter } from 'vue-router'
-import { useFlowRunFilter, UseFlowRunFilterArgs } from '@/compositions/useFlowRunFilter'
+import { computed, Ref } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
+import { useFlowRunFilter } from '@/compositions/useFlowRunFilter'
 import { StateType } from '@/models/StateType'
+import { FlowRunFilters, FlowRunFiltersInRoute } from '@/types/filter'
 import { FlowRunSortValues } from '@/types/SortOptionTypes'
 import { UnionFilters } from '@/types/UnionFilters'
-import { asArray, isSame } from '@/utilities/arrays'
 
-type UseFlowRunFilterFromRoute = {
+export type UseFlowRunFilterFromRoute = {
   name: Ref<string>,
   sort: Ref<FlowRunSortValues>,
   startDate: Ref<Date>,
@@ -20,18 +20,7 @@ type UseFlowRunFilterFromRoute = {
   tags: Ref<string[]>,
   filter: Ref<UnionFilters>,
   hasFilters: Ref<boolean>,
-  setFilters: (filters: UseFlowRunFilterArgs) => Promise<void>,
-}
-
-type FlowRunFiltersInRoute = {
-  'name': string,
-  'sort': string,
-  'start-date': string,
-  'end-date': string,
-  'state': string[],
-  'deployment': string[],
-  'flow': string[],
-  'tag': string[],
+  setFilters: (filters: FlowRunFilters) => Promise<void>,
 }
 
 export function useFlowRunFilterFromRoute(): UseFlowRunFilterFromRoute {
@@ -83,48 +72,47 @@ export function useFlowRunFilterFromRoute(): UseFlowRunFilterFromRoute {
       endDateParam.value !== defaultEndDate
   })
 
-  async function setFilters(filters: UseFlowRunFilterArgs): Promise<void> {
-    const values = reactive(filters)
-    const query = {} as Partial<FlowRunFiltersInRoute>
+  async function setFilters(filters: FlowRunFilters): Promise<void> {
+    const query: FlowRunFiltersInRoute = {}
 
-    if (values.name && values.name !== getRouteQueryParam(route, 'name')) {
-      query.name = values.name
+    if (filters.name) {
+      query.name = filters.name
     }
 
-    if (values.sort && values.sort !== getRouteQueryParam(route, 'sort')) {
-      query.sort = values.sort
+    if (filters.sort) {
+      query.sort = filters.sort
     }
 
-    if (values.startDate) {
-      const formatted = formatDateTimeNumeric(values.startDate)
+    if (filters.startDate) {
+      const formatted = formatDateTimeNumeric(filters.startDate)
 
-      if (formatted !== getRouteQueryParam(route, 'start-date') && formatted !== defaultStartDate) {
+      if (formatted !== defaultStartDate) {
         query['start-date'] = formatted
       }
     }
 
-    if (values.endDate) {
-      const formatted = formatDateTimeNumeric(values.endDate)
+    if (filters.endDate) {
+      const formatted = formatDateTimeNumeric(filters.endDate)
 
-      if (formatted !== getRouteQueryParam(route, 'end-date') && formatted !== defaultEndDate) {
+      if (formatted !== defaultEndDate) {
         query['end-date'] = formatted
       }
     }
 
-    if (values.states && !isSame(values.states, asArray(getRouteQueryParam(route, 'states')))) {
-      query.state = values.states
+    if (filters.state) {
+      query.state = filters.state
     }
 
-    if (values.deployments && !isSame(values.deployments, asArray(getRouteQueryParam(route, 'deployments')))) {
-      query.deployment = values.deployments
+    if (filters.deployment) {
+      query.deployment = filters.deployment
     }
 
-    if (values.flows && !isSame(values.flows, asArray(getRouteQueryParam(route, 'flows')))) {
-      query.flow = values.flows
+    if (filters.flow) {
+      query.flow = filters.flow
     }
 
-    if (values.tags && !isSame(values.tags, asArray(getRouteQueryParam(route, 'tags')))) {
-      query.tag = values.tags
+    if (filters.tag) {
+      query.tag = filters.tag
     }
 
     await router.push({ query })
@@ -143,8 +131,4 @@ export function useFlowRunFilterFromRoute(): UseFlowRunFilterFromRoute {
     hasFilters,
     setFilters,
   }
-}
-
-function getRouteQueryParam({ query }: RouteLocationNormalized, param: string): string | null | string[] {
-  return query[param] as string | null | string[]
 }

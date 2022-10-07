@@ -1,15 +1,20 @@
 <template>
   <p-icon-button-menu>
     <CopyOverflowMenuItem label="Share View" :item="fullRoute" />
-    <p-overflow-menu-item v-if="internalSavedSearch?.name === customSavedSearch.name && can.create.saved_search" @click="openSaveModal">
+    <p-overflow-menu-item v-if="canSave" @click="openSaveModal">
       Save View
     </p-overflow-menu-item>
-    <p-overflow-menu-item v-if="internalSavedSearch?.id && can.delete.saved_search" inset @click="openDeleteModal">
+    <p-overflow-menu-item v-if="canDelete" inset @click="openDeleteModal">
       Delete View
     </p-overflow-menu-item>
   </p-icon-button-menu>
   <SaveFilterModal v-model:showModal="showSaveModal" @save="handleSave" />
-  <SavedFiltersDeleteModal v-if="internalSavedSearch?.id" v-model:showModal="showDeleteModal" :selected-search-option="internalSavedSearch" @delete="handleDelete" />
+  <SavedFiltersDeleteModal
+    v-if="internalSavedSearch && canDelete"
+    v-model:showModal="showDeleteModal"
+    :selected-search-option="internalSavedSearch"
+    @delete="handleDelete"
+  />
 </template>
 
 <script lang="ts">
@@ -47,6 +52,9 @@
       emit('update:selectedSearchOption', value)
     },
   })
+
+  const canSave = computed(() => internalSavedSearch.value?.name === customSavedSearch.name && can.create.saved_search)
+  const canDelete = computed(() => internalSavedSearch.value?.id && can.delete.saved_search)
 
   const can = useCan()
   const route = useRoute()

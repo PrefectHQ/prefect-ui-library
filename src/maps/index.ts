@@ -14,7 +14,7 @@ import { mapRunHistoryToDivergingBarChartItem } from '@/maps/divergingBarChartIt
 import { mapEmpiricalPolicyToEmpiricalPolicyResponse, mapEmpiricalPolicyResponseToEmpiricalPolicy } from '@/maps/empiricalPolicy'
 import { mapFlowToFlowResponse, mapFlowResponseToFlow } from '@/maps/flow'
 import { mapFlowRunToFlowRunResponse, mapFlowRunResponseToFlowRun } from '@/maps/flowRun'
-import { mapSavedSearchFilterToUseFlowRunFilterArgs } from '@/maps/flowRunFilter'
+import { mapSavedSearchFilterToFlowRunFilters } from '@/maps/flowRunFilter'
 import { mapGraphNodeToFlowRunGraphResponse, mapFlowRunGraphResponseToGraphNode } from '@/maps/flowRunGraph'
 import { mapRunHistoryToFlowRunHistoryResponse, mapFlowRunHistoryResponseToRunHistory } from '@/maps/flowRunHistory'
 import { mapLogToLogResponse, mapLogResponseToLog } from '@/maps/logs'
@@ -72,7 +72,7 @@ export const maps = {
   number: { string: mapNumberToString },
   RunHistory: { FlowRunHistoryResponse: mapRunHistoryToFlowRunHistoryResponse, DivergingBarChartItem: mapRunHistoryToDivergingBarChartItem },
   SavedSearchCreate: { SavedSearchCreateRequest: mapSavedSearchCreateToSavedSearchCreateRequest },
-  SavedSearchFilter: { UseFlowRunFilterArgs: mapSavedSearchFilterToUseFlowRunFilterArgs },
+  SavedSearchFilter: { FlowRunFilters: mapSavedSearchFilterToFlowRunFilters },
   SavedSearchResponse: { SavedSearch: mapSavedSearchResponseToSavedSearch },
   Schedule: { ScheduleResponse: mapScheduleToScheduleResponse, ScheduleRequest: mapScheduleToScheduleRequest },
   ScheduleResponse: { Schedule: mapScheduleResponseToSchedule },

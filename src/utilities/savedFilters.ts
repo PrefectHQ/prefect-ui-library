@@ -60,11 +60,8 @@ export const excludeScheduledSavedSearch = {
   filters: noScheduleFilter,
 }
 
-export function combineSearchOptions(savedSearches: SavedSearch[]): SearchOption[] {
-  return [
-    customSavedSearch,
-    defaultSavedSearch,
-    excludeScheduledSavedSearch,
-    ...savedSearches,
-  ]
-}
+export const systemSavedSearches = [
+  customSavedSearch,
+  defaultSavedSearch,
+  excludeScheduledSavedSearch,
+]

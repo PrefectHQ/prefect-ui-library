@@ -29,7 +29,7 @@
   import { SearchOption } from '@/models/SavedSearch'
   import { workspaceApiKey } from '@/utilities/api'
   import { inject } from '@/utilities/inject'
-  import { combineSearchOptions, customSavedSearch } from '@/utilities/savedFilters'
+  import { systemSavedSearches, customSavedSearch } from '@/utilities/savedFilters'
   import { isRequired, withMessage, isValidIf } from '@/utilities/validation'
 
   const props = defineProps<{
@@ -59,9 +59,9 @@
 
   const savedSearchesSubscription = useSubscription(api.savedSearches.getSavedSearches)
   const savedSearches = computed(()=> savedSearchesSubscription.response ?? [])
-  const allSearchOptions = computed(() => combineSearchOptions(savedSearches.value))
+  const allSearchOptions = computed(() => [...systemSavedSearches, ...savedSearches.value])
 
-  const nameDoesNotExist = isValidIf(value => value !== customSavedSearch.name && !allSearchOptions.value.some(({ name }) => name === value as string))
+  const nameDoesNotExist = isValidIf(value => !allSearchOptions.value.some(({ name }) => name === value))
 
   const rules = [isRequired('Name'), withMessage(nameDoesNotExist, 'Name must be unique')]
   const { value: filterName, meta: filterNameState, errorMessage: filterErrorMessage } = useField<string>('filterName', rules)

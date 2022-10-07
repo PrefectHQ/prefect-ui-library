@@ -23,7 +23,7 @@
   import { mapper } from '@/services'
   import { workspaceApiKey } from '@/utilities'
   import { inject } from '@/utilities/inject'
-  import { combineSearchOptions, customSavedSearch, defaultSavedSearch, isSameFilter } from '@/utilities/savedFilters'
+  import { systemSavedSearches, customSavedSearch, defaultSavedSearch, isSameFilter } from '@/utilities/savedFilters'
 
   const { states, flows, deployments, tags, setFilters } = useFlowRunFilterFromRoute()
   type FlowRunsFilter = [states: StateType[], flows: string[], deployments: string[], tags: string[]]
@@ -38,7 +38,7 @@
     selectedSearchOption.value = findSelectedOption(searchOptions.value, flowRunsFilter.value)
   })
 
-  const searchOptions = computed<SearchOption[]>(() => combineSearchOptions(savedSearches.value))
+  const searchOptions = computed<SearchOption[]>(() => [...systemSavedSearches, ...savedSearches.value])
   const options = computed<SelectOption[]>(() => searchOptions.value.map(({ name }) => ({
     label: name,
     value: name,
@@ -60,7 +60,7 @@
   function setSelectedFilter(value: SearchOption | null): void {
     const selectedFilter = value?.filters ?? defaultSavedSearch.filters
 
-    const filtersRequest = mapper.map('SavedSearchFilter', selectedFilter, 'UseFlowRunFilterArgs')
+    const filtersRequest = mapper.map('SavedSearchFilter', selectedFilter, 'FlowRunFilters')
     setFilters(filtersRequest)
   }
 
@@ -77,7 +77,7 @@
   })
 
   watch(savedSearches, options => {
-    selectedSearchOption.value = findSelectedOption(combineSearchOptions(options), flowRunsFilter.value)
+    selectedSearchOption.value = findSelectedOption([...systemSavedSearches, ...options], flowRunsFilter.value)
   })
 </script>
 
