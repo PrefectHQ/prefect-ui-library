@@ -29,7 +29,7 @@
   import { SearchOption } from '@/models/SavedSearch'
   import { workspaceApiKey } from '@/utilities/api'
   import { inject } from '@/utilities/inject'
-  import { customSavedSearch, defaultSavedSearch, excludeScheduledSavedSearch } from '@/utilities/savedFilters'
+  import { combineSearchOptions, customSavedSearch } from '@/utilities/savedFilters'
   import { isRequired, withMessage, isValidIf } from '@/utilities/validation'
 
   const props = defineProps<{
@@ -59,7 +59,7 @@
 
   const savedSearchesSubscription = useSubscription(api.savedSearches.getSavedSearches)
   const savedSearches = computed(()=> savedSearchesSubscription.response ?? [])
-  const allSearchOptions = computed(() => [...savedSearches.value, customSavedSearch, defaultSavedSearch, excludeScheduledSavedSearch])
+  const allSearchOptions = computed(() => combineSearchOptions(savedSearches.value))
 
   const nameDoesNotExist = isValidIf(value => value !== customSavedSearch.name && !allSearchOptions.value.some(({ name }) => name === value as string))
 

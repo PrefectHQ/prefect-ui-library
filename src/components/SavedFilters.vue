@@ -23,9 +23,11 @@
   import { mapper } from '@/services'
   import { workspaceApiKey } from '@/utilities'
   import { inject } from '@/utilities/inject'
-  import { customSavedSearch, defaultSavedSearch, excludeScheduledSavedSearch, isSameFilter } from '@/utilities/savedFilters'
+  import { combineSearchOptions, customSavedSearch, defaultSavedSearch, isSameFilter } from '@/utilities/savedFilters'
 
   const { states, flows, deployments, tags, setFilters } = useFlowRunFilterFromRoute()
+  type FlowRunsFilter = [states: StateType[], flows: string[], deployments: string[], tags: string[]]
+  const flowRunsFilter = computed<FlowRunsFilter>(() => [states.value, flows.value, deployments.value, tags.value])
   const api = inject(workspaceApiKey)
 
   const savedSearchesSubscription = useSubscription(api.savedSearches.getSavedSearches)
@@ -33,15 +35,10 @@
 
   onMounted(async () => {
     await savedSearchesSubscription.promise()
-    selectedSearchOption.value = findSelectedOption([states.value, flows.value, deployments.value, tags.value])
+    selectedSearchOption.value = findSelectedOption(searchOptions.value, flowRunsFilter.value)
   })
 
-  const searchOptions = computed<SearchOption[]>(() => [
-    customSavedSearch,
-    defaultSavedSearch,
-    excludeScheduledSavedSearch,
-    ...savedSearches.value,
-  ])
+  const searchOptions = computed<SearchOption[]>(() => combineSearchOptions(savedSearches.value))
   const options = computed<SelectOption[]>(() => searchOptions.value.map(({ name }) => ({
     label: name,
     value: name,
@@ -67,16 +64,20 @@
     setFilters(filtersRequest)
   }
 
-  function findSelectedOption([ states, flows, deployments, tags ]: [ states: StateType[], flows: string[], deployments: string[], tags: string[] ]): SearchOption {
-    const found = searchOptions.value.find(({ filters }) => {
-      return filters && isSameFilter(filters, states, flows, deployments, tags)
+  function findSelectedOption(options: SearchOption[], filter: FlowRunsFilter): SearchOption {
+    const found = options.find(({ filters }) => {
+      return filters && isSameFilter(filters, ...filter)
     })
 
     return found ?? customSavedSearch
   }
 
   watch([states, flows, deployments, tags], (filter) => {
-    selectedSearchOption.value = findSelectedOption(filter)
+    selectedSearchOption.value = findSelectedOption(searchOptions.value, filter)
+  })
+
+  watch(savedSearches, options => {
+    selectedSearchOption.value = findSelectedOption(combineSearchOptions(options), flowRunsFilter.value)
   })
 </script>
 

@@ -1,6 +1,6 @@
 import { formatDateTimeNumeric } from '@prefecthq/prefect-design'
 import { addDays, endOfToday, startOfToday, subDays } from 'date-fns'
-import { SavedSearchFilter } from '@/models/SavedSearch'
+import { SavedSearch, SavedSearchFilter, SearchOption } from '@/models/SavedSearch'
 import { asArray, isSame } from '@/utilities/arrays'
 
 // eslint-disable-next-line max-params
@@ -58,4 +58,13 @@ export const excludeScheduledSavedSearch = {
   id: null,
   name: 'No scheduled',
   filters: noScheduleFilter,
+}
+
+export function combineSearchOptions(savedSearches: SavedSearch[]): SearchOption[] {
+  return [
+    customSavedSearch,
+    defaultSavedSearch,
+    excludeScheduledSavedSearch,
+    ...savedSearches,
+  ]
 }
