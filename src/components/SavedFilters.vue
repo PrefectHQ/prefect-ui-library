@@ -27,11 +27,19 @@
   const savedSearchesSubscription = useSubscription(api.savedSearches.getSavedSearches)
   const savedSearches = computed(() => savedSearchesSubscription.response ?? [])
 
-  const options = computed<SelectOption[]>(() => savedSearches.value.map(({ name }) => ({
-    label: name,
-    value: name,
-    disabled: name === customSavedSearch.name,
-  })))
+  const options = computed<SelectOption[]>(() => {
+    const allOptions = savedSearches.value.map(({ name }) => ({
+      label: name,
+      value: name,
+      disabled: name === customSavedSearch.name,
+    }))
+
+    if (selectModelValue.value !== customSavedSearch.name) {
+      return allOptions.filter(({ label }) => label !== customSavedSearch.name)
+    }
+
+    return allOptions
+  })
 
   const selectedSavedSearch = computed({
     get() {
