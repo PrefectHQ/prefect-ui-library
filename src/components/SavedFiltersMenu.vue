@@ -1,7 +1,7 @@
 <template>
   <p-icon-button-menu>
     <CopyOverflowMenuItem label="Share View" :item="fullRoute" />
-    <p-overflow-menu-item v-if="internalSavedSearch?.name === 'Custom' && can.create.saved_search" @click="openSaveModal">
+    <p-overflow-menu-item v-if="internalSavedSearch?.name === customSavedSearch.name && can.create.saved_search" @click="openSaveModal">
       Save View
     </p-overflow-menu-item>
     <p-overflow-menu-item v-if="internalSavedSearch?.id && can.delete.saved_search" inset @click="openDeleteModal">
@@ -29,6 +29,7 @@
   import { useShowModal } from '@/compositions'
   import { useCan } from '@/compositions/useCan'
   import { SavedSearch, SearchOption } from '@/models/SavedSearch'
+  import { customSavedSearch } from '@/utilities/savedFilters'
 
   const props = defineProps<{
     selectedSearchOption: SearchOption | null,

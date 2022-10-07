@@ -23,7 +23,7 @@
   import { mapper } from '@/services'
   import { workspaceApiKey } from '@/utilities'
   import { inject } from '@/utilities/inject'
-  import { oneWeekFilter, noScheduleFilter, isSameFilter } from '@/utilities/savedFilters'
+  import { customSavedSearch, defaultSavedSearch, excludeScheduledSavedSearch, isSameFilter } from '@/utilities/savedFilters'
 
   const { states, flows, deployments, tags, setFilters } = useFlowRunFilterFromRoute()
   const api = inject(workspaceApiKey)
@@ -36,22 +36,6 @@
     selectedSearchOption.value = findSelectedOption([states.value, flows.value, deployments.value, tags.value])
   })
 
-  const customSavedSearch = {
-    id: null,
-    name: 'Custom',
-    filters: null,
-  }
-  const defaultSavedSearch = {
-    id: null,
-    name: 'Default view',
-    filters: oneWeekFilter,
-  }
-  const excludeScheduledSavedSearch = {
-    id: null,
-    name: 'No scheduled',
-    filters: noScheduleFilter,
-  }
-
   const searchOptions = computed<SearchOption[]>(() => [
     customSavedSearch,
     defaultSavedSearch,
@@ -61,7 +45,7 @@
   const options = computed<SelectOption[]>(() => searchOptions.value.map(({ name }) => ({
     label: name,
     value: name,
-    disabled: name === 'Custom',
+    disabled: name === customSavedSearch.name,
   })))
 
   const selectedSearchOption = ref()

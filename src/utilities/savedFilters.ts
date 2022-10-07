@@ -41,3 +41,21 @@ export const noScheduleFilter: SavedSearchFilter = {
   startDate: formatDateTimeNumeric(subDays(startOfToday(), 7)),
   endDate: formatDateTimeNumeric(addDays(endOfToday(), 1)),
 }
+
+export const customSavedSearch = {
+  id: null,
+  name: 'Custom',
+  filters: null,
+}
+
+export const defaultSavedSearch = {
+  id: null,
+  name: 'Default view',
+  filters: oneWeekFilter,
+}
+
+export const excludeScheduledSavedSearch = {
+  id: null,
+  name: 'No scheduled',
+  filters: noScheduleFilter,
+}
