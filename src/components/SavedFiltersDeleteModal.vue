@@ -2,7 +2,7 @@
   <ConfirmDeleteModal
     v-model:showModal="internalShowModal"
     label="Saved Filter"
-    :name="selectedSearchOption.name"
+    :name="savedSearch.name"
     @delete="deleteFilter"
   />
 </template>
@@ -13,13 +13,13 @@
   import { computed } from 'vue'
   import ConfirmDeleteModal from '@/components/ConfirmDeleteModal.vue'
   import { localization } from '@/localization'
-  import { SearchOption } from '@/models/SavedSearch'
+  import { SavedSearch } from '@/models/SavedSearch'
   import { workspaceApiKey } from '@/utilities/api'
   import { inject } from '@/utilities/inject'
 
   const props = defineProps<{
     showModal: boolean,
-    selectedSearchOption: SearchOption,
+    savedSearch: SavedSearch,
   }>()
 
   const emit = defineEmits<{
@@ -41,8 +41,8 @@
 
   async function deleteFilter(): Promise<void> {
     try {
-      if (props.selectedSearchOption.id) {
-        await api.savedSearches.deleteSavedSearch(props.selectedSearchOption.id)
+      if (props.savedSearch.id) {
+        await api.savedSearches.deleteSavedSearch(props.savedSearch.id)
         savedSearchesSubscription.refresh()
         showToast(localization.success.deleteSavedSearch, 'success')
         internalShowModal.value = false

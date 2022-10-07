@@ -2,7 +2,7 @@ import { formatDateTimeNumeric, parseDateTimeNumeric } from '@prefecthq/prefect-
 import { useDebouncedRef, useRouteQueryParam } from '@prefecthq/vue-compositions'
 import { addDays, endOfToday, startOfToday, subDays } from 'date-fns'
 import { computed, Ref } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
+import { useRouter } from 'vue-router'
 import { useFlowRunFilter } from '@/compositions/useFlowRunFilter'
 import { StateType } from '@/models/StateType'
 import { FlowRunFilters, FlowRunFiltersInRoute } from '@/types/filter'
@@ -24,7 +24,6 @@ export type UseFlowRunFilterFromRoute = {
 }
 
 export function useFlowRunFilterFromRoute(): UseFlowRunFilterFromRoute {
-  const route = useRoute()
   const router = useRouter()
 
   const name = useRouteQueryParam('name', '')

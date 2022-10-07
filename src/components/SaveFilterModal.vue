@@ -26,10 +26,9 @@
   import { computed } from 'vue'
   import { useFlowRunFilterFromRoute } from '@/compositions/useFlowRunFilterFromRoute'
   import { localization } from '@/localization'
-  import { SearchOption } from '@/models/SavedSearch'
+  import { SavedSearch } from '@/models/SavedSearch'
   import { workspaceApiKey } from '@/utilities/api'
   import { inject } from '@/utilities/inject'
-  import { systemSavedSearches, customSavedSearch } from '@/utilities/savedFilters'
   import { isRequired, withMessage, isValidIf } from '@/utilities/validation'
 
   const props = defineProps<{
@@ -38,7 +37,7 @@
 
   const emit = defineEmits<{
     (event: 'update:showModal', value: boolean): void,
-    (event: 'saved', value: SearchOption): void,
+    (event: 'saved', value: SavedSearch): void,
   }>()
 
   const internalShowModal = computed({
@@ -58,10 +57,9 @@
   const { flows, states, tags, deployments } = useFlowRunFilterFromRoute()
 
   const savedSearchesSubscription = useSubscription(api.savedSearches.getSavedSearches)
-  const savedSearches = computed(()=> savedSearchesSubscription.response ?? [])
-  const allSearchOptions = computed(() => [...systemSavedSearches, ...savedSearches.value])
+  const savedSearches = computed(() => savedSearchesSubscription.response ?? [])
 
-  const nameDoesNotExist = isValidIf(value => !allSearchOptions.value.some(({ name }) => name === value))
+  const nameDoesNotExist = isValidIf(value => !savedSearches.value.some(({ name }) => name === value))
 
   const rules = [isRequired('Name'), withMessage(nameDoesNotExist, 'Name must be unique')]
   const { value: filterName, meta: filterNameState, errorMessage: filterErrorMessage } = useField<string>('filterName', rules)

@@ -8,13 +8,12 @@
       Delete View
     </p-overflow-menu-item>
   </p-icon-button-menu>
+
   <SaveFilterModal v-model:showModal="showSaveModal" @save="handleSave" />
-  <SavedFiltersDeleteModal
-    v-if="internalSavedSearch && canDelete"
-    v-model:showModal="showDeleteModal"
-    :selected-search-option="internalSavedSearch"
-    @delete="handleDelete"
-  />
+
+  <template v-if="internalSavedSearch && canDelete">
+    <SavedFiltersDeleteModal v-model:showModal="showDeleteModal" :saved-search="internalSavedSearch" @delete="handleDelete" />
+  </template>
 </template>
 
 <script lang="ts">
@@ -33,22 +32,22 @@
   import SaveFilterModal from '@/components/SaveFilterModal.vue'
   import { useShowModal } from '@/compositions'
   import { useCan } from '@/compositions/useCan'
-  import { SavedSearch, SearchOption } from '@/models/SavedSearch'
+  import { SavedSearch } from '@/models/SavedSearch'
   import { customSavedSearch } from '@/utilities/savedFilters'
 
   const props = defineProps<{
-    selectedSearchOption: SearchOption | null,
+    savedSearch: SavedSearch | null,
   }>()
 
   const emit = defineEmits<{
-    (event: 'update:selectedSearchOption', value: SearchOption | null): void,
+    (event: 'update:selectedSearchOption', value: SavedSearch | null): void,
   }>()
 
   const internalSavedSearch = computed({
     get() {
-      return props.selectedSearchOption
+      return props.savedSearch
     },
-    set(value: SearchOption | null) {
+    set(value: SavedSearch | null) {
       emit('update:selectedSearchOption', value)
     },
   })
