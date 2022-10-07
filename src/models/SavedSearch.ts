@@ -31,3 +31,9 @@ export type SavedSearchFilter = {
   startDate?: FilterResponseValue,
   endDate?: FilterResponseValue,
 }
+
+export type SearchOption = {
+  id: string | null,
+  name: string,
+  filters: SavedSearchFilter | null,
+}

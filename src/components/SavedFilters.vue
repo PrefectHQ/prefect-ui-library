@@ -1,127 +1,108 @@
 <template>
-  <p-select v-model="selectedSavedSearch" :options="options" class="saved-filters__select" />
-  <p-icon-button-menu>
-    <copy-overflow-menu-item label="Share View" :item="fullRoute" />
-    <p-overflow-menu-item v-if="selectedSearchIsCustom && can.create.saved_search" @click="openSaveModal">
-      Save View
-    </p-overflow-menu-item>
-    <p-overflow-menu-item v-if="savedSearchId && can.delete.saved_search" inset @click="openDeleteModal">
-      Delete View
-    </p-overflow-menu-item>
-  </p-icon-button-menu>
-  <SaveFilterModal v-model:show-modal="showSaveModal" :filter-names="filterNames" @save="saveFilter" />
-  <ConfirmDeleteModal
-    v-model:showModal="showDeleteModal"
-    label="Saved Filter"
-    :name="selectedSavedSearch"
-    @delete="deleteFilter"
-  />
+  <div class="saved-filters">
+    <p-select
+      v-model="selectModelValue"
+      :options="options"
+      class="saved-filters__select"
+    />
+    <SavedFiltersMenu
+      :selected-search-option="selectedSearchOption"
+      @update:selected-search-option="setSelectedFilter"
+    />
+  </div>
 </template>
 
 <script setup lang="ts">
-  import { SelectOption, showToast } from '@prefecthq/prefect-design'
+  import { SelectOption } from '@prefecthq/prefect-design'
   import { useSubscription } from '@prefecthq/vue-compositions'
-  import { watchEffect, ref, computed, onMounted } from 'vue'
-  import { useRouter, useRoute } from 'vue-router'
-  import ConfirmDeleteModal from '@/components/ConfirmDeleteModal.vue'
-  import CopyOverflowMenuItem from '@/components/CopyOverflowMenuItem.vue'
-  import SaveFilterModal from '@/components/SaveFilterModal.vue'
-  import { useFlowRunFilterFromRoute, useShowModal } from '@/compositions'
-  import { useCan } from '@/compositions/useCan'
-  import { localization } from '@/localization'
+  import { computed, onMounted, ref, watch } from 'vue'
+  import SavedFiltersMenu from '@/components/SavedFiltersMenu.vue'
+  import { useFlowRunFilterFromRoute } from '@/compositions'
+  import { SearchOption } from '@/models/SavedSearch'
+  import { StateType } from '@/models/StateType'
+  import { mapper } from '@/services'
   import { workspaceApiKey } from '@/utilities'
   import { inject } from '@/utilities/inject'
-  import { oneWeekFilter, noScheduleFilter, isCustomFilter } from '@/utilities/savedFilters'
+  import { oneWeekFilter, noScheduleFilter, isSameFilter } from '@/utilities/savedFilters'
 
-  const can = useCan()
-  const route = useRoute()
-  const fullRoute = window.location.origin+route.path
-  const { flows, states, tags, deployments, hasFilters } = useFlowRunFilterFromRoute()
-  const router = useRouter()
+  const { states, flows, deployments, tags, setFilters } = useFlowRunFilterFromRoute()
   const api = inject(workspaceApiKey)
-  const { showModal: showSaveModal, open: openSaveModal, close: closeSaveModal } = useShowModal()
-  const { showModal: showDeleteModal, open: openDeleteModal } = useShowModal()
+
   const savedSearchesSubscription = useSubscription(api.savedSearches.getSavedSearches)
   const savedSearches = computed(()=> savedSearchesSubscription.response ?? [])
-  const defaultFilterValue = 'Default view'
 
-  onMounted(() => {
-    selectedSavedSearch.value = hasFilters.value ? 'Custom' : defaultFilterValue
+  onMounted(async () => {
+    await savedSearchesSubscription.promise()
+    selectedSearchOption.value = findSelectedOption([states.value, flows.value, deployments.value, tags.value])
   })
 
-  const saveFilter = async (filterName: string): Promise<void> => {
-    try {
-      await api.savedSearches.createSavedSearch({
-        name: filterName,
-        filters: {
-          state: states.value,
-          tag: tags.value,
-          flow: flows.value,
-          deployment: deployments.value,
-        },
-      })
-      savedSearchesSubscription.refresh()
-      showToast(localization.success.createSavedSearch, 'success')
-      selectedSavedSearch.value = filterName
-      closeSaveModal()
-    } catch (error) {
-      console.error(error)
-      showToast(localization.error.createSavedSearch, 'error')
-    }
+  const customSavedSearch = {
+    id: null,
+    name: 'Custom',
+    filters: null,
+  }
+  const defaultSavedSearch = {
+    id: null,
+    name: 'Default view',
+    filters: oneWeekFilter,
+  }
+  const excludeScheduledSavedSearch = {
+    id: null,
+    name: 'No scheduled',
+    filters: noScheduleFilter,
   }
 
-  const deleteFilter = async (): Promise<void> => {
-    try {
-      if (savedSearchId.value) {
-        await api.savedSearches.deleteSavedSearch(savedSearchId.value)
-        savedSearchesSubscription.refresh()
-        selectedSavedSearch.value = defaultFilterValue
-        showToast(localization.success.deleteSavedSearch, 'success')
-      }
-    } catch (error) {
-      console.error(error)
-      showToast(localization.error.deleteSavedSearch, 'error')
-    }
-  }
-
-  const modifiedSavedSearches = computed(()=> [
-    { name: 'Custom', id: null },
-    {
-      name: defaultFilterValue,
-      filters: oneWeekFilter,
-    },
-    {
-      name: 'No scheduled',
-      filters: noScheduleFilter,
-    },
+  const searchOptions = computed<SearchOption[]>(() => [
+    customSavedSearch,
+    defaultSavedSearch,
+    excludeScheduledSavedSearch,
     ...savedSearches.value,
   ])
+  const options = computed<SelectOption[]>(() => searchOptions.value.map(({ name }) => ({
+    label: name,
+    value: name,
+    disabled: name === 'Custom',
+  })))
 
-  const selectedSearchIsCustom = computed(() => selectedSavedSearch.value == 'Custom')
+  const selectedSearchOption = ref()
+  const selectModelValue = computed({
+    get() {
+      return selectedSearchOption.value?.name
+    },
+    set(value: string | null) {
+      const selected = searchOptions.value.find(({ name }) => value === name) ?? null
 
-  const options = computed<SelectOption[]>(() => modifiedSavedSearches.value.map(search => {
-    return { label: search.name, value: search.name,  disabled: search.name === 'Custom' }
-  }))
+      setSelectedFilter(selected)
+    },
+  })
 
-  const filterNames = computed(()=>options.value.map(option => option.label))
+  function setSelectedFilter(value: SearchOption | null): void {
+    const selectedFilter = value?.filters ?? defaultSavedSearch.filters
 
-  const selectedSavedSearch = ref()
-  const selectedSavedSearchValue = computed(() => modifiedSavedSearches.value.find(filter => filter.name === selectedSavedSearch.value))
-  const savedSearchId = computed(() => selectedSavedSearchValue.value?.id)
+    const filtersRequest = mapper.map('SavedSearchFilter', selectedFilter, 'UseFlowRunFilterArgs')
+    setFilters(filtersRequest)
+  }
 
-  watchEffect(async ()=> {
-    const selectedFilter = selectedSavedSearchValue.value?.filters
-    if (selectedFilter) {
-      await router.push({ query: selectedFilter })
-      if (isCustomFilter(selectedFilter, states, flows, deployments, tags)) {
-        selectedSavedSearch.value = 'Custom'
-      }
-    }
+  function findSelectedOption([ states, flows, deployments, tags ]: [ states: StateType[], flows: string[], deployments: string[], tags: string[] ]): SearchOption {
+    const found = searchOptions.value.find(({ filters }) => {
+      return filters && isSameFilter(filters, states, flows, deployments, tags)
+    })
+
+    return found ?? customSavedSearch
+  }
+
+  watch([states, flows, deployments, tags], (filter) => {
+    selectedSearchOption.value = findSelectedOption(filter)
   })
 </script>
 
 <style>
-.saved-filters__select {
-  @apply w-48
+.saved-filters { @apply
+  flex
+  gap-2
+}
+
+.saved-filters__select { @apply
+  w-48
 }
 </style>

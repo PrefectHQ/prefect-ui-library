@@ -1,63 +1,39 @@
 import { formatDateTimeNumeric } from '@prefecthq/prefect-design'
 import { addDays, endOfToday, startOfToday, subDays } from 'date-fns'
-import { Ref } from 'vue'
 import { SavedSearchFilter } from '@/models/SavedSearch'
-import { isSame } from '@/utilities/arrays'
-
+import { asArray, isSame } from '@/utilities/arrays'
 
 // eslint-disable-next-line max-params
-export function isCustomFilter(savedFilter: SavedSearchFilter, states: Ref<string[]>, flows: Ref<string[]>, deployments: Ref<string[]>, tags: Ref<string[]>): boolean {
-  if (!savedFilter.state) {
-    return true
+export function isSameFilter(savedFilter: SavedSearchFilter, states?: string[], flows?: string[], deployments?: string[], tags?: string[]): boolean {
+  if (!isSame(asArray(states), asArray(savedFilter.state))) {
+    return false
   }
-  if (!Array.isArray(savedFilter.state)) {
-    return true
+
+  if (!isSame(asArray(flows), asArray(savedFilter.flow))) {
+    return false
   }
-  if (!isSame(states.value, savedFilter.state)) {
-    return true
+
+  if (!isSame(asArray(tags), asArray(savedFilter.tag))) {
+    return false
   }
-  if (!savedFilter.flow) {
-    return true
+
+  if (!isSame(asArray(deployments), asArray(savedFilter.deployment))) {
+    return false
   }
-  if (!Array.isArray(savedFilter.flow)) {
-    return true
-  }
-  if (!isSame(flows.value, savedFilter.flow)) {
-    return true
-  }
-  if (!savedFilter.tag) {
-    return true
-  }
-  if (!Array.isArray(savedFilter.tag)) {
-    return true
-  }
-  if (!isSame(tags.value, savedFilter.tag)) {
-    return true
-  }
-  if (!savedFilter.deployment) {
-    return true
-  }
-  if (!Array.isArray(savedFilter.deployment)) {
-    return true
-  }
-  if (!isSame(deployments.value, savedFilter.deployment)) {
-    return true
-  }
-  return false
+
+  return true
 }
 
-export const oneWeekFilter = {
+export const oneWeekFilter: SavedSearchFilter = {
   startDate: formatDateTimeNumeric(subDays(startOfToday(), 7)),
   endDate: formatDateTimeNumeric(addDays(endOfToday(), 1)),
   state: [],
   flow: [],
   tag: [],
   deployment: [],
-  id: null,
 }
 
-export const noScheduleFilter = {
-  id: null,
+export const noScheduleFilter: SavedSearchFilter = {
   state: ['completed', 'failed', 'running', 'pending', 'crashed', 'cancelled'],
   flow: [],
   tag: [],
