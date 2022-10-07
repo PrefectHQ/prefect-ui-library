@@ -2,3 +2,106 @@
   from = "/*"
   to = "/index.html"
   status = 200
+
+[[headers]]
+  # Define which paths this specific [[headers]] block will cover.
+  for = "/*"
+
+  [headers.values]
+    # X-Content-Type-Options controls whether browsers attempt to detect
+    # the content type, rather than relyihng on the Content-Type header.
+    # https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Content-Type-Options
+    X-Content-Type-Options = "nosniff"
+
+    # Strict-Transport-Security to require HTTPS connections in supported
+    # browsers. These settings are required to be eligible for inclusion
+    # in the HSTS Preload list; see: https://hstspreload.org/
+    Strict-Transport-Security = """\
+      max-age=63072000; \
+      includeSubDomains; \
+      preload \
+      """
+
+    # Content-Security-Policy to prevent XSS attacks.
+    #
+    # default-src
+    #   'self' - all resources from current origin are permitted by default
+    # connect-src
+    #   'self' - all connections to current origin are permitted
+    # font-src
+    #   'self' - all fonts from current origin are permitted
+    # frame-ancestors
+    #   'self' - allow embedding in current origin
+    # frame-src
+    #   'self' - allow embedding of current origin
+    # img-src
+    #   'self' - all images from current origin are permitted
+    #   data: - images embedded inline are permitted
+    #   https://picsum.photos and https://i.picsum.photos - placeholder images
+    # media-src
+    #   'none' - no audio or video files are permitted
+    # object-src
+    #   'none' - no legacy objects are allowed; see
+    #            https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy/object-src
+    # script-src
+    #   'self' - all resources from current origin are permitted
+    # style-src
+    #   'self' - all styles from current origin are permitted
+    #   'unsafe-inline' - Tailwind styles are injected inline
+    Content-Security-Policy = """\
+      default-src 'self'; \
+      connect-src 'self'; \
+      font-src 'self'; \
+      frame-ancestors 'self'; \
+      frame-src 'self'; \
+      img-src 'self' data: https://picsum.photos https://i.picsum.photos; \
+      media-src 'none'; \
+      object-src 'none'; \
+      script-src 'self'; \
+      style-src 'self' 'unsafe-inline' \
+      """
+
+    # Referrer-Policy controls the Referer header in requests.
+    #
+    # same-origin allows analytics tools to understand user journeys.
+    Referrer-Policy = "same-origin"
+
+    # X-Permitted-Cross-Domain-Policies controls whether this site can be
+    # embedded into Flash applications or PDF documents.
+    X-Permitted-Cross-Domain-Policies = "none"
+
+    # Permissions-Policy controls the features that the site can request.
+    #
+    # https://developer.chrome.com/en/docs/privacy-sandbox/permissions-policy/
+    # https://github.com/w3c/webappsec-permissions-policy/blob/main/features.md
+    Permissions-Policy = """\
+      accelerometer=(), \
+      ambient-light-sensor=(), \
+      autoplay=(), \
+      battery=(), \
+      camera=(), \
+      cross-origin-isolated=(), \
+      display-capture=(), \
+      document-domain=(), \
+      encrypted-media=(), \
+      execution-while-not-rendered=(), \
+      execution-while-out-of-viewport=(), \
+      fullscreen=(), \
+      geolocation=(), \
+      gyroscope=(), \
+      hid=(), \
+      idle-detection=(), \
+      magnetometer=(), \
+      microphone=(), \
+      midi=(), \
+      navigation-override=(), \
+      payment=(), \
+      picture-in-picture=(), \
+      publickey-credentials-get=(), \
+      screen-wake-lock=(), \
+      serial=(), \
+      sync-xhr=(), \
+      usb=(), \
+      web-share=(), \
+      xr-spatial-tracking=() \
+      """
