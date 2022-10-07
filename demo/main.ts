@@ -8,9 +8,11 @@ import '@/styles/style.css'
 
 import App from './App.vue'
 import { router } from './router'
+import { directive } from '@/index'
 
 const app = createApp(App)
 app.use(PrefectDesign)
+app.use(directive)
 app.use(router)
 
 app.config.performance = true

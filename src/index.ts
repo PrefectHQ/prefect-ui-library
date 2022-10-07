@@ -16,6 +16,8 @@ import '@/styles/style.css'
 
 import { ToastPlugin } from '@prefecthq/prefect-design'
 import { App, Plugin } from 'vue'
+import { premojiDirective } from '@/compositions/usePremoji'
+
 
 const plugin: Plugin = {
   install(app: App) {
@@ -23,4 +25,8 @@ const plugin: Plugin = {
   },
 }
 
-export { plugin }
+const directive: Plugin = {
+  install: (app: App) => app.directive('premoji', premojiDirective),
+}
+
+export { plugin, directive }

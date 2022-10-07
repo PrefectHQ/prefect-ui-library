@@ -18,6 +18,7 @@
     <SortSections />
     <StatesSection />
     <ToggleSection />
+    <PremojisSection />
   </p-layout-default>
 </template>
 
@@ -34,6 +35,7 @@
   import MetaWellSection from '../sections/MetaWellSection.vue'
   import NotificationsSection from '../sections/NotificationsSection.vue'
   import PageHeadingsSection from '../sections/PageHeadingsSection.vue'
+  import PremojisSection from '../sections/PremojisSection.vue'
   import RunMenuSection from '../sections/RunMenuSection.vue'
   import ScheduleDisplaySection from '../sections/ScheduleDisplaySection.vue'
   import ScheduleModalSection from '../sections/ScheduleModalSection.vue'
