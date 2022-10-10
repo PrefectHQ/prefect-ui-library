@@ -1,5 +1,6 @@
 <template>
   <p-layout-default>
+    <FlowRunsFilterSection />
     <BlockSchemaCapabilitiesSection />
     <BlockTypesSection />
     <ColorModesSection />
@@ -28,6 +29,7 @@
   import ColorModesSection from '../sections/ColorModesSection.vue'
   import ComboboxesSection from '../sections/ComboboxesSection.vue'
   import EmptyStateSection from '../sections/EmptyStateSection.vue'
+  import FlowRunsFilterSection from '../sections/FlowRunsFilterSection.vue'
   import ListsSection from '../sections/ListsSection.vue'
   import LogSection from '../sections/LogsSection.vue'
   import MarketingBannerSection from '../sections/MarketingBannerSection.vue'
