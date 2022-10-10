@@ -1,6 +1,6 @@
 <template>
-  <div class="flow-runs-filter">
-    <div class="flow-runs-filter__row">
+  <div class="flow-runs-filter-group">
+    <div class="flow-runs-filter-group__row">
       <p-label :label="media.hover ? 'Date Range' : ''">
         <p-date-range-input v-model:startDate="internalStartDate" v-model:endDate="internalEndDate" clearable />
       </p-label>
@@ -8,7 +8,7 @@
         <StateSelect v-model:selected="states" empty-message="All run states" />
       </p-label>
     </div>
-    <div class="flow-runs-filter__row">
+    <div class="flow-runs-filter-group__row">
       <p-label label="Flows">
         <FlowCombobox v-model:selected="flows" empty-message="All flows" />
       </p-label>
@@ -19,7 +19,7 @@
         <p-tags-input v-model="tags" empty-message="All tags" />
       </p-label>
     </div>
-    <p-label class="flow-runs-filter__search" label="Search">
+    <p-label class="flow-runs-filter-group__search" label="Search">
       <SearchInput v-model="name" placeholder="Search by flow run name" label="Search by flow run name" />
     </p-label>
   </div>
@@ -47,20 +47,20 @@
 </script>
 
 <style>
-.flow-runs-filter { @apply
+.flow-runs-filter-group { @apply
   flex
   flex-col
   gap-2
 }
 
-.flow-runs-filter__row { @apply
+.flow-runs-filter-group__row { @apply
   flex
   flex-wrap
   md:flex-nowrap
   gap-2
 }
 
-.flow-runs-filter__search { @apply
+.flow-runs-filter-group__search { @apply
   md:hidden
 }
 </style>
