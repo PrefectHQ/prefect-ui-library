@@ -18,11 +18,11 @@
 </template>
 
 <script lang="ts" setup>
+  import { useSessionStorage } from '@prefecthq/vue-compositions'
   import { useField, useForm } from 'vee-validate'
   import { computed, watchEffect } from 'vue'
   import SchemaFormFields from './SchemaFormFields.vue'
   import SubmitButton from './SubmitButton.vue'
-  import { useSessionStorage } from '@/compositions/useSessionStorage'
   import { BlockDocumentCreateNamed } from '@/models/BlockDocumentCreate'
   import { BlockSchema } from '@/models/BlockSchema'
   import { getSchemaDefaultValues } from '@/services/schemas/utilities'
