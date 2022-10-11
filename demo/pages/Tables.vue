@@ -15,7 +15,7 @@
     </DemoSection>
 
     <DemoSection heading="Flows">
-      <FlowsTable :flows="flowsData" />
+      <!-- <FlowsTable :flows="flowsData" /> -->
     </DemoSection>
 
     <DemoSection heading="Notifications">

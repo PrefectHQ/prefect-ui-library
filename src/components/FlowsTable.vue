@@ -1,11 +1,13 @@
 <template>
-  <div class="flows-table">
-    <div class="flows-table__search">
-      <ResultsCount label="Flow" :count="filtered.length" />
+  <p-content class="flows-table">
+    <div class="flows-table__controls">
+      <!-- todo: get the count from the api -->
+      <ResultsCount class="mr-auto" label="Flow" :count="flows.length" />
       <SearchInput v-model="searchTerm" placeholder="Search flows" label="Search flows" />
+      <p-select v-model="sort" :options="flowSortOption" />
     </div>
 
-    <p-table :data="filtered" :columns="columns">
+    <p-table :data="flows" :columns="columns">
       <template #name="{ row }">
         <p-link :to="flowRoute(row.id)">
           <span>{{ row.name }}</span>
@@ -43,24 +45,26 @@
         </PEmptyResults>
       </template>
     </p-table>
-  </div>
+  </p-content>
 </template>
 
 <script lang="ts" setup>
   import { PTable, PEmptyResults, PLink, formatDateTimeNumeric } from '@prefecthq/prefect-design'
+  import { useSubscription } from '@prefecthq/vue-compositions'
   import { computed, ref } from 'vue'
   import ResultsCount from './ResultsCount.vue'
   import SearchInput from './SearchInput.vue'
   import FlowActivityChart from '@/components/FlowActivityChart.vue'
   import FlowMenu from '@/components/FlowMenu.vue'
-  import { Flow } from '@/models'
+  import { useFilter, UseFilterArgs } from '@/compositions'
   import { flowRouteKey } from '@/router'
+  import { flowsApiKey } from '@/services'
   import { inject } from '@/utilities'
 
   const flowRoute = inject(flowRouteKey)
 
   const props = defineProps<{
-    flows: Flow[],
+    filter?: Omit<UseFilterArgs, 'flowName'>,
   }>()
 
   const emits = defineEmits<{
@@ -68,6 +72,7 @@
   }>()
 
   const searchTerm = ref('')
+  const sort = ref('CREATED_DESC')
 
   const columns = [
     {
@@ -91,17 +96,28 @@
     },
   ]
 
-  const filtered = computed(() => {
-    if (searchTerm.value.length === 0) {
-      return props.flows
+  const flowSortOption = [
+    { label: 'Created', value: 'CREATED_DESC' },
+    { label: 'A to Z', value: 'NAME_ASC' },
+    { label: 'Z to A', value: 'NAME_DESC' },
+  ]
+
+  const flowsApi = inject(flowsApiKey)
+  const internalFilters = computed<UseFilterArgs>(() => {
+    const unionFilters: UseFilterArgs = { ...props.filter }
+
+    if (searchTerm.value.length) {
+      unionFilters.flowName = searchTerm
     }
 
-    return props.flows.filter(filterFlows)
+    unionFilters.sort = sort as any
+
+    return unionFilters
   })
 
-  function filterFlows({ name }: Flow): boolean {
-    return name.toLowerCase().includes(searchTerm.value.toLowerCase())
-  }
+  const unionFilter = computed(() => useFilter(internalFilters.value).value)
+  const flowsSubscription = useSubscription(flowsApi.getFlows, [unionFilter])
+  const flows = computed(() => flowsSubscription.response ?? [])
 
   function clear(): void {
     searchTerm.value = ''
@@ -109,6 +125,14 @@
 </script>
 
 <style>
+.flows-table__controls { @apply
+  flex
+  gap-2
+  items-center
+  flex-col
+  sm:flex-row
+}
+
 .flows-table__search { @apply
   flex
   justify-between

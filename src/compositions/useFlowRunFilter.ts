@@ -1,7 +1,7 @@
 import { addDays, endOfToday, startOfToday, subDays } from 'date-fns'
 
 /* eslint-disable camelcase */
-import { computed, ref, Ref } from 'vue'
+import { computed, ComputedRef, ref, Ref } from 'vue'
 import { isStateType } from '@/models'
 import { mapper } from '@/services'
 import { FlowRunSortValues, StateFilter, UnionFilters } from '@/types'
@@ -9,6 +9,7 @@ import { capitalize } from '@/utilities'
 
 export type UseFlowRunFilterArgs = {
   flows?: Ref<string[]> | string[],
+  flowName?: Ref<string> | string,
   deployments?: Ref<string[]> | string[],
   tags?: Ref<string[]> | string[],
   states?: Ref<string[]> | string[],
@@ -19,9 +20,10 @@ export type UseFlowRunFilterArgs = {
   workQueues?: Ref<string[]> | string[],
 }
 
-export function useFlowRunFilter(filters: UseFlowRunFilterArgs): Ref<UnionFilters> {
+export function useFlowRunFilter(filters: UseFlowRunFilterArgs): ComputedRef<UnionFilters> {
 
   const flows = ref(filters.flows)
+  const flowName = ref(filters.flowName)
   const deployments = ref(filters.deployments)
   const tags = ref(filters.tags)
   const states = ref(filters.states)
@@ -33,11 +35,18 @@ export function useFlowRunFilter(filters: UseFlowRunFilterArgs): Ref<UnionFilter
 
   return computed<UnionFilters>(() => {
     const response: UnionFilters = {}
+
     if (flows.value?.length) {
       response.flows ??= {}
       response.flows.id ??= {}
 
       response.flows.id.any_ = flows.value
+    }
+
+    if (flowName.value?.length) {
+      response.flows ??= {}
+      response.flows.name ??= {}
+      response.flows.name.like_ = flowName.value
     }
 
     if (deployments.value?.length) {
@@ -108,6 +117,12 @@ export function useFlowRunFilter(filters: UseFlowRunFilterArgs): Ref<UnionFilter
 
     return response
   })
+}
+
+export type UseFilterArgs = UseFlowRunFilterArgs
+export function useFilter(filters: UseFilterArgs): ComputedRef<UnionFilters> {
+
+  return useFlowRunFilter(filters)
 }
 
 export type UseRecentFlowRunFilterArgs = Omit<UseFlowRunFilterArgs, 'startDate' | 'endDate'>
