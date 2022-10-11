@@ -1,6 +1,9 @@
 <template>
   <page-heading class="page-heading-flow-run" :crumbs="crumbs">
     <template #actions>
+      <p-button @click="restartFromFailed">
+        Restart
+      </p-button>
       <p-icon-button-menu>
         <template #default>
           <copy-overflow-menu-item label="Copy ID" :item="flowRun.id" />
@@ -77,6 +80,26 @@
   const markState = async (): Promise<void>=> {
     const convertedStateType = setStateType.value.toUpperCase()
     await api.flowRuns.setFlowRunState(props.flowRun.id, { state: { type: convertedStateType, message: setStateMessage.value }, force: true })
+  }
+
+  const taskRunFilter = {
+    flow_runs: {
+      id: {
+        any_: [props.flowRun.id],
+      },
+    },
+    task_runs:{
+      state: {
+        type: {
+          any_: ['FAILED'],
+        },
+      },
+    },
+  }
+  const failedTaskRuns = await api.taskRuns.getTaskRuns(taskRunFilter)
+  const restartFromFailed = async (): Promise<void>=> {
+    failedTaskRuns.map(async (run) => await api.taskRuns.setTaskRunState(run.id, { state: { type: 'PENDING' }, force: true }))
+    await api.flowRuns.setFlowRunState(props.flowRun.id, { state: { type: 'SCHEDULED', message: 'Restarted from the UI' }, force: true })
   }
 </script>
 

@@ -45,7 +45,6 @@ export class WorkspaceFlowRunsApi extends WorkspaceApi {
   }
 
   public setFlowRunState(id: string, body: any): Promise<State> {
-    console.log('called', id)
     return this.post<StateResponse>(`/${id}/set_state`, body)
       .then(({ data }) => mapper.map('StateResponse', data, 'State'))
   }
