@@ -6,9 +6,9 @@
       </div>
     </template>
 
-    <div class="radar-node-task-run__content">
+    <p-link v-if="taskRun" :to="taskRunRoute(taskRun.id)" class="radar-node-task-run__content">
       {{ taskRunName }}
-    </div>
+    </p-link>
 
     <template #footer-leading>
       <DurationIconText :duration="duration" />
@@ -29,6 +29,7 @@
   import ORadarNode from './RadarNode.vue'
   import StateIcon from './StateIcon.vue'
   import { TaskRun, GraphNode, StateType } from '@/models'
+  import { taskRunRouteKey } from '@/router/routes'
   import { taskRunsApiKey } from '@/services/TaskRunsApi'
   import { inject } from '@/utilities/inject'
 
@@ -43,6 +44,8 @@
   const taskRun = computed<TaskRun | undefined>(() => {
     return subscription.response
   })
+
+  const taskRunRoute = inject(taskRunRouteKey)
 
   const taskRunName = computed(() => taskRun.value?.name)
 
