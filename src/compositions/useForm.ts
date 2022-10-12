@@ -1,3 +1,4 @@
+import { scrollToValidationError } from '@prefecthq/prefect-design'
 import { FormContext, FormOptions, useForm as useVeeForm } from 'vee-validate'
 
 // using any because that's what vee-validate's useForm uses
@@ -6,12 +7,12 @@ export function useForm<T extends Record<string, any>>(options?: FormOptions<T>)
   const { handleSubmit, ...rest } = useVeeForm(options)
 
   const submit: typeof handleSubmit = (onSuccess, onError) => {
-    return handleSubmit(onSuccess, async (context) => {
+    return handleSubmit(onSuccess, (context) => {
       if (onError) {
         onError(context)
       }
 
-
+      scrollToValidationError()
     })
   }
 

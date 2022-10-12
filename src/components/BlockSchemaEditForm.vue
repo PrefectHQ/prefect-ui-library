@@ -18,9 +18,9 @@
 </template>
 
 <script lang="ts" setup>
-  import { useForm } from 'vee-validate'
   import SchemaFormFields from './SchemaFormFields.vue'
   import SubmitButton from './SubmitButton.vue'
+  import { useForm } from '@/compositions/useForm'
   import { BlockDocumentUpdate } from '@/models'
   import { BlockSchema } from '@/models/BlockSchema'
   import { SchemaValues } from '@/types/schemas'
