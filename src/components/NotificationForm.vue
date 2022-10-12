@@ -48,10 +48,10 @@
   import SchemaFormFields from './SchemaFormFields.vue'
   import SubmitButton from './SubmitButton.vue'
   import StateSelect from '@/components/StateSelect.vue'
-  import { useReactiveField } from '@/compositions'
+  import { useBlockSchemaForBlockType, useReactiveField } from '@/compositions'
   import { localization } from '@/localization'
   import { Notification, BlockTypeFilter } from '@/models'
-  import { blockDocumentsApiKey, blockSchemasApiKey, blockTypesApiKey } from '@/services'
+  import { blockDocumentsApiKey, blockTypesApiKey } from '@/services'
   import { getSchemaDefaultValues } from '@/services/schemas/utilities'
   import { FormAction } from '@/types/buttons'
   import { SchemaValues } from '@/types/schemas'
@@ -84,7 +84,6 @@
 
   const blockDocumentsApi = inject(blockDocumentsApiKey)
   const blockTypesApi = inject(blockTypesApiKey)
-  const blockSchemasApi = inject(blockSchemasApiKey)
 
   const selectedBlockTypeId = ref<string>()
   const blockDataMap = reactive<Record<string, SchemaValues | undefined>>({})
@@ -159,7 +158,7 @@
     }
   })
 
-  const blockSchemaSubscriptionArgs = computed<Parameters<typeof blockSchemasApi.getBlockSchemas> | null>(() => {
+  const blockTypeId = computed<string | null>(() => {
     if (!selectedBlockTypeId.value) {
       return null
     }
@@ -168,23 +167,15 @@
       return null
     }
 
-    return [
-      {
-        blockSchemas: {
-          blockTypeId: {
-            any_: [selectedBlockTypeId.value as string],
-          },
-        },
-      },
-    ]
+    return selectedBlockTypeId.value
   })
-  const blockSchemaSubscription = useSubscriptionWithDependencies(blockSchemasApi.getBlockSchemas, blockSchemaSubscriptionArgs)
+  const blockSchemaForSelectedBlockType = useBlockSchemaForBlockType(blockTypeId)
   const blockSchema = computed(() => {
     if (blockDocument.value && selectedBlockTypeId.value === blockDocument.value.blockTypeId) {
       return blockDocument.value.blockSchema
     }
 
-    return blockSchemaSubscription.response?.[0]
+    return blockSchemaForSelectedBlockType.value
   })
 
   const blockDocumentId = ref<string>()
