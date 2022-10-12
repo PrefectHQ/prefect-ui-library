@@ -51,7 +51,7 @@
   import { useBlockSchemaForBlockType, useReactiveField } from '@/compositions'
   import { localization } from '@/localization'
   import { Notification, BlockTypeFilter } from '@/models'
-  import { blockDocumentsApiKey, blockSchemasApiKey, blockTypesApiKey } from '@/services'
+  import { blockDocumentsApiKey, blockTypesApiKey } from '@/services'
   import { getSchemaDefaultValues } from '@/services/schemas/utilities'
   import { FormAction } from '@/types/buttons'
   import { SchemaValues } from '@/types/schemas'
@@ -84,7 +84,6 @@
 
   const blockDocumentsApi = inject(blockDocumentsApiKey)
   const blockTypesApi = inject(blockTypesApiKey)
-  const blockSchemasApi = inject(blockSchemasApiKey)
 
   const selectedBlockTypeId = ref<string>()
   const blockDataMap = reactive<Record<string, SchemaValues | undefined>>({})
