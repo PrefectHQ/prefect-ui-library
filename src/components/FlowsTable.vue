@@ -1,8 +1,7 @@
 <template>
   <p-content class="flows-table">
     <div class="flows-table__controls">
-      <!-- todo: get the count from the api -->
-      <ResultsCount class="mr-auto" label="Flow" :count="flows.length" />
+      <ResultsCount class="mr-auto" label="Flow" :count="flowsCount" />
       <SearchInput v-model="searchTerm" placeholder="Search flows" label="Search flows" />
       <p-select v-model="sort" :options="flowSortOption" />
     </div>
@@ -120,6 +119,9 @@
   const unionFilter = computed(() => useFilter(internalFilters.value).value)
   const flowsSubscription = useSubscription(flowsApi.getFlows, [unionFilter])
   const flows = computed(() => flowsSubscription.response ?? [])
+
+  const flowsCountSubscription = useSubscription(flowsApi.getFlowsCount, [unionFilter])
+  const flowsCount = computed(() => flowsCountSubscription.response)
 
   function clear(): void {
     searchTerm.value = ''
