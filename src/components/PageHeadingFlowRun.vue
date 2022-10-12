@@ -1,8 +1,8 @@
 <template>
   <page-heading class="page-heading-flow-run" :crumbs="crumbs">
     <template #actions>
-      <p-button @click="restartFromFailed">
-        Restart
+      <p-button :loading="restartingRun" @click="restartFromFailed">
+        Retry
       </p-button>
       <p-icon-button-menu>
         <template #default>
@@ -38,11 +38,12 @@
 </template>
 
 <script lang="ts" setup>
-  import { PIconButtonMenu } from '@prefecthq/prefect-design'
+  import { PIconButtonMenu, showToast } from '@prefecthq/prefect-design'
   import { computed, ref } from 'vue'
   import { StateBadge, PageHeading, DurationIconText, FlowIconText, CopyOverflowMenuItem, ConfirmDeleteModal, FlowRunStartTime, StateSelect } from '@/components'
   import { useCan } from '@/compositions/useCan'
   import { useShowModal } from '@/compositions/useShowModal'
+  import { localization } from '@/localization'
   import { FlowRun, StateType } from '@/models'
   import { flowRunsRouteKey } from '@/router'
   import { flowRunsApiKey } from '@/services'
@@ -96,10 +97,21 @@
       },
     },
   }
+  const restartingRun = ref(false)
   const failedTaskRuns = await api.taskRuns.getTaskRuns(taskRunFilter)
   const restartFromFailed = async (): Promise<void>=> {
-    failedTaskRuns.map(async (run) => await api.taskRuns.setTaskRunState(run.id, { state: { type: 'PENDING' }, force: true }))
-    await api.flowRuns.setFlowRunState(props.flowRun.id, { state: { type: 'SCHEDULED', message: 'Restarted from the UI' }, force: true })
+    restartingRun.value = true
+    try {
+      failedTaskRuns.map(async (run) => await api.taskRuns.setTaskRunState(run.id, { state: { type: 'PENDING' }, force: true }))
+      await api.flowRuns.setFlowRunState(props.flowRun.id, { state: { type: 'SCHEDULED', message: 'Restarted from the UI' }, force: true })
+      showToast(localization.success.restartRun, 'success')
+    } catch (error) {
+      console.error(error)
+      showToast(localization.error.restartRun, 'error')
+    } finally {
+      restartingRun.value =false
+    }
+
   }
 </script>
 
