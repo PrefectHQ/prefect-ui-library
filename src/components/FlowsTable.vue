@@ -50,7 +50,7 @@
 
 <script lang="ts" setup>
   import { PTable, PEmptyResults, PLink, formatDateTimeNumeric } from '@prefecthq/prefect-design'
-  import { useSubscription } from '@prefecthq/vue-compositions'
+  import { useDebouncedRef, useSubscription } from '@prefecthq/vue-compositions'
   import { computed, ref } from 'vue'
   import ResultsCount from './ResultsCount.vue'
   import SearchInput from './SearchInput.vue'
@@ -59,6 +59,7 @@
   import { useFilter, UseFilterArgs } from '@/compositions'
   import { flowRouteKey } from '@/router'
   import { flowsApiKey } from '@/services'
+  import { FlowRunSortValues } from '@/types/SortOptionTypes'
   import { inject } from '@/utilities'
 
   const flowRoute = inject(flowRouteKey)
@@ -72,7 +73,8 @@
   }>()
 
   const searchTerm = ref('')
-  const sort = ref('CREATED_DESC')
+  const searchTermDebounced = useDebouncedRef(searchTerm, 500)
+  const sort = ref<FlowRunSortValues>('CREATED_DESC')
 
   const columns = [
     {
@@ -106,11 +108,11 @@
   const internalFilters = computed<UseFilterArgs>(() => {
     const unionFilters: UseFilterArgs = { ...props.filter }
 
-    if (searchTerm.value.length) {
-      unionFilters.flowName = searchTerm
+    if (searchTermDebounced.value.length) {
+      unionFilters.flowName = searchTermDebounced
     }
 
-    unionFilters.sort = sort as any
+    unionFilters.sort = sort
 
     return unionFilters
   })
