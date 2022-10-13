@@ -40,9 +40,10 @@
 
 <script lang="ts" setup>
   import { PLabel, PTextInput, PNumberInput, PToggle, PForm } from '@prefecthq/prefect-design'
-  import { useField, useForm } from 'vee-validate'
+  import { useField } from 'vee-validate'
   import { computed } from 'vue'
   import SubmitButton from './SubmitButton.vue'
+  import { useForm } from '@/compositions/useForm'
   import { WorkQueueCreate } from '@/models'
   import { isRequired } from '@/utilities/validation'
 
