@@ -55,22 +55,22 @@
   import SearchInput from './SearchInput.vue'
   import FlowActivityChart from '@/components/FlowActivityChart.vue'
   import FlowMenu from '@/components/FlowMenu.vue'
-  import { useFilter, UseFilterArgs } from '@/compositions'
+  import { useFilter, UseFilterArgs, useWorkspaceApi } from '@/compositions'
   import { flowRouteKey } from '@/router'
-  import { flowsApiKey } from '@/services'
   import { FlowRunSortValues } from '@/types/SortOptionTypes'
   import { inject } from '@/utilities'
 
   const flowRoute = inject(flowRouteKey)
 
   const props = defineProps<{
-    filter?: Omit<UseFilterArgs, 'flowName'>,
+    filter?: Omit<UseFilterArgs, 'flowName' | 'sort'>,
   }>()
 
   const emits = defineEmits<{
     (event: 'delete', value: string): void,
   }>()
 
+  const api = useWorkspaceApi()
   const searchTerm = ref('')
   const searchTermDebounced = useDebouncedRef(searchTerm, 500)
   const sort = ref<FlowRunSortValues>('CREATED_DESC')
@@ -103,7 +103,6 @@
     { label: 'Z to A', value: 'NAME_DESC' },
   ]
 
-  const flowsApi = inject(flowsApiKey)
   const internalFilters = computed<UseFilterArgs>(() => {
     const unionFilters: UseFilterArgs = { ...props.filter }
 
@@ -116,11 +115,11 @@
     return unionFilters
   })
 
-  const unionFilter = computed(() => useFilter(internalFilters.value).value)
-  const flowsSubscription = useSubscription(flowsApi.getFlows, [unionFilter])
+  const unionFilter = useFilter(internalFilters)
+  const flowsSubscription = useSubscription(api.flows.getFlows, [unionFilter])
   const flows = computed(() => flowsSubscription.response ?? [])
 
-  const flowsCountSubscription = useSubscription(flowsApi.getFlowsCount, [unionFilter])
+  const flowsCountSubscription = useSubscription(api.flows.getFlowsCount, [unionFilter])
   const flowsCount = computed(() => flowsCountSubscription.response)
 
   function clear(): void {

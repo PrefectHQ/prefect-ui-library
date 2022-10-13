@@ -1,4 +1,4 @@
-import { FlowRunSortValues, TaskRunSortValues } from './SortOptionTypes'
+import { FlowRunSortValues, FlowSortValues, TaskRunSortValues } from './SortOptionTypes'
 
 /** A list where results will be returned only if they match all the values in the list */
 type all_ = { all_?: string[] }
@@ -97,7 +97,7 @@ export type UnionFilters =
   & DeploymentsFilter
   & FlowRunsFilter
   & TaskRunsFilter
-  & (Sortable<FlowFilter & DeploymentFilter> | RunSort<FlowRunSortValues | TaskRunSortValues>)
+  & (Sortable<FlowFilter & DeploymentFilter> | RunSort<FlowSortValues | FlowRunSortValues | TaskRunSortValues>)
 
 interface Historical {
   history_start: string,
