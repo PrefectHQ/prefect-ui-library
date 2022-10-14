@@ -1,7 +1,7 @@
 <template>
   <p-content class="flows-table">
     <div class="flows-table__controls">
-      <ResultsCount class="mr-auto" label="Flow" :count="flowsCount" />
+      <ResultsCount class="flows-table__count" label="Flow" :count="flowsCount" />
       <SearchInput v-model="searchTerm" placeholder="Search flows" label="Search flows" />
       <p-select v-model="sort" :options="flowSortOption" />
     </div>
@@ -128,6 +128,10 @@
 </script>
 
 <style>
+.flows-table__count { @apply
+  mr-auto
+}
+
 .flows-table__controls { @apply
   flex
   gap-2
@@ -143,13 +147,11 @@
   mb-4
 }
 
-.flows-table__activity-chart {
-  @apply
+.flows-table__activity-chart { @apply
   h-12
 }
 
-.flows-table__action {
-  @apply
+.flows-table__action { @apply
   text-right
 }
 </style>
