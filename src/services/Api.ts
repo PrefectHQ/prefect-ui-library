@@ -48,6 +48,7 @@ export abstract class Api {
 
     return this._config = {
       baseURL: await this.server,
+      headers: { 'X-PREFECT-UI': true },
     }
   }
 
