@@ -34,14 +34,14 @@
   import StateSelect from '@/components/StateSelect.vue'
   import { useFlowRunFilterFromRoute } from '@/compositions/useFlowRunFilterFromRoute'
 
-  const { states, deployments, flows, tags, name, startDate, endDate, setFilters } = useFlowRunFilterFromRoute()
+  const { states, deployments, flows, tags, name, startDate, endDate, updateFilters } = useFlowRunFilterFromRoute()
 
   const internalStartDate = ref<Date | null>(startDate.value)
   const internalEndDate = ref<Date | null>(endDate.value)
 
   watch([internalStartDate, internalEndDate], ([startDate, endDate]) => {
     if (startDate && endDate) {
-      setFilters({ startDate, endDate })
+      updateFilters({ startDate, endDate })
     }
   })
 </script>

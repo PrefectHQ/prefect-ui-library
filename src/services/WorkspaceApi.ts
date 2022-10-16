@@ -47,7 +47,9 @@ export class WorkspaceApi {
   }
 
   private get headers(): AxiosRequestHeaders {
-    const headers: AxiosRequestHeaders = {}
+    const headers: AxiosRequestHeaders = {
+      'X-PREFECT-UI': true,
+    }
 
     if (isCloudConfig(this.workspaceConfig)) {
       const { token } = this.workspaceConfig
