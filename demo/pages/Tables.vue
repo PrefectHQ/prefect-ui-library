@@ -11,7 +11,7 @@
     </DemoSection>
 
     <DemoSection heading="Deployments">
-      <DeploymentsTable :deployments="deploymentsData" />
+      <DeploymentsTable />
     </DemoSection>
 
     <DemoSection heading="Flows">

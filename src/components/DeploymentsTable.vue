@@ -1,11 +1,13 @@
 <template>
-  <div class="deployments-table">
-    <div class="deployments-table__search">
-      <ResultsCount label="Deployment" :count="filtered.length" />
-      <SearchInput v-model="searchTerm" placeholder="Search deployments" label="Search deployments" />
+  <p-content class="deployments-table">
+    <div class="deployments-table__controls">
+      <ResultsCount class="deployments-table__count" label="Deployment" :count="deploymentsCount" />
+      <SearchInput v-model="deploymentName" placeholder="Search deployments" label="Search deployments" />
+      <FlowCombobox v-model:selected="flows" empty-message="All flows" class="deployments-table__flows" />
+      <p-select v-model="sort" :options="deploymentSortOption" />
     </div>
 
-    <p-table :data="filtered" :columns="columns" class="deployments-table">
+    <p-table :data="deployments" :columns="columns" class="deployments-table">
       <template #name="{ row }">
         <FlowRouterLink :flow-id="row.flowId" after=" / " />
         <p-link :to="deploymentRoute(row.id)">
@@ -37,7 +39,7 @@
           <template #message>
             No deployments
           </template>
-          <template v-if="searchTerm.length" #actions>
+          <template v-if="deploymentName.length" #actions>
             <p-button size="sm" secondary @click="clear">
               Clear Filters
             </p-button>
@@ -45,25 +47,29 @@
         </PEmptyResults>
       </template>
     </p-table>
-  </div>
+  </p-content>
 </template>
 
 <script lang="ts" setup>
   import { PTable, PTagWrapper, PEmptyResults, PLink } from '@prefecthq/prefect-design'
-  import { ref, computed } from 'vue'
+  import { useDebouncedRef, useRouteQueryParam, useSubscription } from '@prefecthq/vue-compositions'
+  import { computed } from 'vue'
+  import FlowCombobox from './FlowCombobox.vue'
   import FlowRouterLink from './FlowRouterLink.vue'
   import DeploymentMenu from '@/components/DeploymentMenu.vue'
   import DeploymentToggle from '@/components/DeploymentToggle.vue'
   import ResultsCount from '@/components/ResultsCount.vue'
   import SearchInput from '@/components/SearchInput.vue'
-  import { Deployment } from '@/models'
+  import { useWorkspaceApi } from '@/compositions'
+  import { useDeploymentFilter, UseDeploymentFilterArgs } from '@/compositions/useDeploymentFilter'
   import { deploymentRouteKey } from '@/router'
+  import { isDeploymentSortValue } from '@/types'
   import { inject } from '@/utilities'
 
   const deploymentRoute = inject(deploymentRouteKey)
 
   const props = defineProps<{
-    deployments: Deployment[],
+    filter?: UseDeploymentFilterArgs,
   }>()
 
   const emits = defineEmits<{
@@ -71,7 +77,11 @@
     (event: 'delete', value: string): void,
   }>()
 
-  const searchTerm = ref('')
+  const api = useWorkspaceApi()
+  const flows = useRouteQueryParam('flow', [])
+  const deploymentName = useRouteQueryParam('search', '')
+  const deploymentNameDebounced = useDebouncedRef(deploymentName, 500)
+  const sort = useRouteQueryParam('sort', 'CREATED_DESC')
 
   const columns = [
     {
@@ -94,24 +104,56 @@
     },
   ]
 
-  const filtered = computed(() => {
-    if (searchTerm.value.length === 0) {
-      return props.deployments
+  const deploymentSortOption = [
+    { label: 'Created', value: 'CREATED_DESC' },
+    { label: 'A to Z', value: 'NAME_ASC' },
+    { label: 'Z to A', value: 'NAME_DESC' },
+  ]
+
+  const internalFilters = computed<UseDeploymentFilterArgs>(() => {
+    const filter: UseDeploymentFilterArgs = { ...props.filter }
+
+    if (deploymentNameDebounced.value.length) {
+      filter.deploymentName = deploymentNameDebounced
     }
 
-    return props.deployments.filter(filterDeployment)
+    if (flows.value.length) {
+      filter.flows = flows
+    }
+
+    if (isDeploymentSortValue(sort)) {
+      filter.sort = sort
+    }
+
+    return filter
   })
 
-  function filterDeployment({ name, tags, schedule }: Deployment): boolean {
-    return `${name} ${schedule ?? ''} ${tags?.join(' ')}`.toLowerCase().includes(searchTerm.value.toLowerCase())
-  }
+  const unionFilter = useDeploymentFilter(internalFilters)
+  const deploymentsSubscription = useSubscription(api.deployments.getDeployments, [unionFilter])
+  const deployments = computed(() => deploymentsSubscription.response ?? [])
+
+  const deploymentsCountSubscription = useSubscription(api.deployments.getDeploymentsCount, [unionFilter])
+  const deploymentsCount = computed(() => deploymentsCountSubscription.response)
 
   function clear(): void {
-    searchTerm.value = ''
+    deploymentName.value = ''
   }
 </script>
 
 <style>
+.deployments-table__count { @apply
+  mr-auto
+}
+
+.deployments-table__controls { @apply
+  flex
+  gap-2
+  items-stretch
+  flex-col
+  sm:flex-row
+  sm:items-center
+}
+
 .deployments-table__search { @apply
   flex
   justify-between
@@ -119,9 +161,8 @@
   mb-4
 }
 
-.deployments-table__hide-on-desktop {
-  @apply
-  sm:hidden
+.deployments-table__flows {
+  min-width: 128px;
 }
 
 .deployments-table__actions { @apply

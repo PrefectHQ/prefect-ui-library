@@ -1,22 +1,11 @@
 import { addDays, endOfToday, startOfToday, subDays } from 'date-fns'
 import { ComputedRef, ref, Ref } from 'vue'
-import { useFilter } from './useFilter'
-import { FlowRunSortValues, UnionFilters } from '@/types'
+import { useFilter, UseFilterArgs } from './useFilter'
+import { FlowRunSortValues, MaybeRef, UnionFilters } from '@/types'
 
-export type UseFlowRunFilterArgs = {
-  flows?: Ref<string[]> | string[],
-  flowName?: Ref<string> | string,
-  deployments?: Ref<string[]> | string[],
-  tags?: Ref<string[]> | string[],
-  states?: Ref<string[]> | string[],
-  startDate?: Ref<Date> | Date,
-  endDate?: Ref<Date> | Date,
-  sort?: Ref<FlowRunSortValues> | FlowRunSortValues,
-  name?: Ref<string> | string,
-  workQueues?: Ref<string[]> | string[],
-}
+export type UseFlowRunFilterArgs = UseFilterArgs<FlowRunSortValues>
 
-export function useFlowRunFilter(filters: UseFlowRunFilterArgs): ComputedRef<UnionFilters> {
+export function useFlowRunFilter(filters: MaybeRef<UseFlowRunFilterArgs>): ComputedRef<UnionFilters> {
   return useFilter(filters)
 }
 

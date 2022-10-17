@@ -4,15 +4,18 @@ import { isStateType } from '@/models'
 import { mapper } from '@/services'
 import { MaybeRef, FlowSortValues, FlowRunSortValues, UnionFilters, StateFilter } from '@/types'
 
-export type UseFilterArgs = {
+export type FilterSortValues = FlowSortValues | FlowRunSortValues
+
+export type UseFilterArgs<T = FilterSortValues> = {
   flows?: MaybeRef<string[]>,
   flowName?: MaybeRef<string>,
   deployments?: MaybeRef<string[]>,
+  deploymentName?: MaybeRef<string>,
   tags?: MaybeRef<string[]>,
   states?: MaybeRef<string[]>,
   startDate?: MaybeRef<Date>,
   endDate?: MaybeRef<Date>,
-  sort?: MaybeRef<FlowSortValues | FlowRunSortValues>,
+  sort?: MaybeRef<T>,
   name?: MaybeRef<string>,
   workQueues?: MaybeRef<string[]>,
 }
@@ -23,6 +26,7 @@ export function useFilter(filters: MaybeRef<UseFilterArgs>): ComputedRef<UnionFi
     const flows = ref(filtersRef.value.flows)
     const flowName = ref(filtersRef.value.flowName)
     const deployments = ref(filtersRef.value.deployments)
+    const deploymentName = ref(filtersRef.value.deploymentName)
     const tags = ref(filtersRef.value.tags)
     const states = ref(filtersRef.value.states)
     const startDate = ref(filtersRef.value.startDate)
@@ -51,6 +55,13 @@ export function useFilter(filters: MaybeRef<UseFilterArgs>): ComputedRef<UnionFi
       response.deployments.id ??= {}
 
       response.deployments.id.any_ = deployments.value
+    }
+
+    if (deploymentName.value?.length) {
+      response.deployments ??= {}
+      response.deployments.name ??= {}
+
+      response.deployments.name.like_ = deploymentName.value
     }
 
     if (tags.value?.length) {
@@ -102,7 +113,7 @@ export function useFilter(filters: MaybeRef<UseFilterArgs>): ComputedRef<UnionFi
       response.flow_runs ??= {}
       response.flow_runs.name ??= {}
 
-      response.flow_runs.name.any_ = [name.value]
+      response.flow_runs.name.like_ = name.value
     }
 
     if (workQueues.value?.length) {
