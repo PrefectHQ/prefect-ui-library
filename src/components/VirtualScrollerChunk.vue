@@ -7,8 +7,8 @@
 </template>
 
 <script lang="ts" setup>
+  import { useIntersectionObserver } from '@prefecthq/vue-compositions'
   import { computed, onMounted, ref } from 'vue'
-  import { useIntersectionObserver } from '@/compositions/useIntersectionObserver'
 
   const props = defineProps<{
     height: number,
