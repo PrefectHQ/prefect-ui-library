@@ -13,9 +13,9 @@
 </template>
 
 <script lang="ts" setup>
+  import { useIntersectionObserver } from '@prefecthq/vue-compositions'
   import { computed, onMounted, ref, watch, withDefaults } from 'vue'
   import VirtualScrollerChunk from '@/components/VirtualScrollerChunk.vue'
-  import { useIntersectionObserver } from '@/compositions/useIntersectionObserver'
 
   const props = withDefaults(defineProps<{
     // any is the correct type here
