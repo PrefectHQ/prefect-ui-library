@@ -7,15 +7,18 @@ import { timezonesApi } from '@/services/TimezoneApi'
 const timezoneSubscription = useSubscription(timezonesApi.getTimezones, [])
 const timezones = computed(() => timezoneSubscription.response ?? {})
 
-export async function setUtcOffsetMinutes(timezone: string): Promise<void> {
-  if (utcOffsetMinutes.value === null) {
-    await timezoneSubscription.promise()
-    const timezoneOffsetSeconds = timezones.value[timezone]
-
-    if (timezoneOffsetSeconds === undefined) {
-      throw new InvalidTimezoneError()
-    }
-
-    utcOffsetMinutes.value = timezoneOffsetSeconds / 60
+export async function setUtcOffsetMinutes(timezone: string | null): Promise<void> {
+  if (timezone === null) {
+    utcOffsetMinutes.value = null
+    return
   }
+
+  await timezoneSubscription.promise()
+  const timezoneOffsetSeconds = timezones.value[timezone]
+
+  if (timezoneOffsetSeconds === undefined) {
+    throw new InvalidTimezoneError()
+  }
+
+  utcOffsetMinutes.value = timezoneOffsetSeconds / 60
 }
