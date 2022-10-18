@@ -3,9 +3,9 @@
 </template>
 
 <script lang="ts" setup>
-  import { SelectOption } from '@prefecthq/prefect-design'
+  import { useSubscription } from '@prefecthq/vue-compositions'
   import { computed } from 'vue'
-  import { timezones } from '@/utilities'
+  import { timezonesApi } from '@/services/TimezoneApi'
 
   const props = defineProps<{
     modelValue: string | null,
@@ -23,5 +23,8 @@
       emit('update:modelValue', val)
     },
   })
-  const options: SelectOption[] = timezones.map((timezone) => ({ label: timezone, value: timezone }))
+
+  const timezoneSubscription = useSubscription(timezonesApi.getTimezones, [])
+  const timezones = computed(() => timezoneSubscription.response ?? {})
+  const options = computed(() => Object.keys(timezones.value))
 </script>
