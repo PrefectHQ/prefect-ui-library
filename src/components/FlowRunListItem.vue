@@ -71,12 +71,13 @@
   function intersect(entries: IntersectionObserverEntry[]): void {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
-        visible.value = entry.isIntersecting
+        visible.value = true
+        disconnect()
       }
     })
   }
 
-  const { observe } = useIntersectionObserver(intersect)
+  const { observe, disconnect } = useIntersectionObserver(intersect)
 
   onMounted(() => {
     observe(el)
