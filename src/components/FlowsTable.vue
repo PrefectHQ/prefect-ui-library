@@ -1,11 +1,17 @@
 <template>
-  <div class="flows-table">
-    <div class="flows-table__search">
-      <ResultsCount label="Flow" :count="filtered.length" />
-      <SearchInput v-model="searchTerm" placeholder="Search flows" label="Search flows" />
+  <p-content class="flows-table">
+    <div class="flows-table__controls">
+      <ResultsCount class="flows-table__count" label="Flow" :count="flowsCount" />
+      <SearchInput v-model="name" placeholder="Search flows" label="Search flows" />
+
+      <template v-if="canFilterDeployments">
+        <DeploymentCombobox v-model:selected="deployments" empty-message="All deployments" class="flows-table__deployments" />
+      </template>
+
+      <p-select v-model="sort" :options="flowSortOptions" />
     </div>
 
-    <p-table :data="filtered" :columns="columns">
+    <p-table :data="flows" :columns="columns">
       <template #name="{ row }">
         <p-link :to="flowRoute(row.id)">
           <span>{{ row.name }}</span>
@@ -26,7 +32,7 @@
 
       <template #action="{ row }">
         <div class="flows-table__action">
-          <FlowMenu size="xs" :flow="row" @delete="id => emits('delete', id)" />
+          <FlowMenu size="xs" :flow="row" @delete="refresh" />
         </div>
       </template>
 
@@ -43,31 +49,39 @@
         </PEmptyResults>
       </template>
     </p-table>
-  </div>
+  </p-content>
 </template>
 
 <script lang="ts" setup>
   import { PTable, PEmptyResults, PLink, formatDateTimeNumeric } from '@prefecthq/prefect-design'
-  import { computed, ref } from 'vue'
+  import { useSubscription } from '@prefecthq/vue-compositions'
+  import { computed, unref } from 'vue'
+  import DeploymentCombobox from './DeploymentCombobox.vue'
   import ResultsCount from './ResultsCount.vue'
   import SearchInput from './SearchInput.vue'
   import FlowActivityChart from '@/components/FlowActivityChart.vue'
   import FlowMenu from '@/components/FlowMenu.vue'
-  import { Flow } from '@/models'
+  import { UseFlowFilterArgs, useFlowFilterFromRoute, useWorkspaceApi } from '@/compositions'
   import { flowRouteKey } from '@/router'
+  import { flowSortOptions } from '@/types/SortOptionTypes'
   import { inject } from '@/utilities'
 
   const flowRoute = inject(flowRouteKey)
 
   const props = defineProps<{
-    flows: Flow[],
+    filter?: UseFlowFilterArgs,
   }>()
 
-  const emits = defineEmits<{
-    (event: 'delete', value: string): void,
-  }>()
+  const api = useWorkspaceApi()
+  const filter = computed(() => props.filter ?? {})
+  const { deployments, name, sort, filter: unionFilter } = useFlowFilterFromRoute(filter)
 
-  const searchTerm = ref('')
+  const canFilterDeployments = computed(() => {
+    const filterHasDeployments = !!unref(filter.value.deployments)?.length
+    const filterHasDeploymentName = !!unref(filter.value.deploymentName)?.length
+
+    return !filterHasDeployments && !filterHasDeploymentName
+  })
 
   const columns = [
     {
@@ -91,24 +105,36 @@
     },
   ]
 
-  const filtered = computed(() => {
-    if (searchTerm.value.length === 0) {
-      return props.flows
-    }
+  const flowsSubscription = useSubscription(api.flows.getFlows, [unionFilter])
+  const flows = computed(() => flowsSubscription.response ?? [])
 
-    return props.flows.filter(filterFlows)
-  })
+  const flowsCountSubscription = useSubscription(api.flows.getFlowsCount, [unionFilter])
+  const flowsCount = computed(() => flowsCountSubscription.response)
 
-  function filterFlows({ name }: Flow): boolean {
-    return name.toLowerCase().includes(searchTerm.value.toLowerCase())
+  function refresh(): void {
+    flowsSubscription.refresh()
+    flowsCountSubscription.refresh()
   }
 
   function clear(): void {
-    searchTerm.value = ''
+    name.value = ''
   }
 </script>
 
 <style>
+.flows-table__count { @apply
+  mr-auto
+}
+
+.flows-table__controls { @apply
+  flex
+  gap-2
+  items-stretch
+  flex-col
+  sm:flex-row
+  sm:items-center
+}
+
 .flows-table__search { @apply
   flex
   justify-between
@@ -116,13 +142,15 @@
   mb-4
 }
 
-.flows-table__activity-chart {
-  @apply
+.flows-table__deployments {
+  min-width: 128px;
+}
+
+.flows-table__activity-chart { @apply
   h-12
 }
 
-.flows-table__action {
-  @apply
+.flows-table__action { @apply
   text-right
 }
 </style>
