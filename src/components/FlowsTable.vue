@@ -2,9 +2,13 @@
   <p-content class="flows-table">
     <div class="flows-table__controls">
       <ResultsCount class="flows-table__count" label="Flow" :count="flowsCount" />
-      <SearchInput v-model="flowName" placeholder="Search flows" label="Search flows" />
-      <DeploymentCombobox v-model:selected="deployments" empty-message="All deployments" class="flows-table__deployments" />
-      <p-select v-model="sort" :options="flowSortOption" />
+      <SearchInput v-model="name" placeholder="Search flows" label="Search flows" />
+
+      <template v-if="canFilterDeployments">
+        <DeploymentCombobox v-model:selected="deployments" empty-message="All deployments" class="flows-table__deployments" />
+      </template>
+
+      <p-select v-model="sort" :options="flowSortOptions" />
     </div>
 
     <p-table :data="flows" :columns="columns">
@@ -28,7 +32,7 @@
 
       <template #action="{ row }">
         <div class="flows-table__action">
-          <FlowMenu size="xs" :flow="row" @delete="id => emits('delete', id)" />
+          <FlowMenu size="xs" :flow="row" @delete="refresh" />
         </div>
       </template>
 
@@ -50,37 +54,34 @@
 
 <script lang="ts" setup>
   import { PTable, PEmptyResults, PLink, formatDateTimeNumeric } from '@prefecthq/prefect-design'
-  import { useDebouncedRef, useRouteQueryParam, useSubscription } from '@prefecthq/vue-compositions'
-  import { computed, onUnmounted } from 'vue'
-  import { onBeforeRouteLeave } from 'vue-router'
+  import { useSubscription } from '@prefecthq/vue-compositions'
+  import { computed, unref } from 'vue'
   import DeploymentCombobox from './DeploymentCombobox.vue'
   import ResultsCount from './ResultsCount.vue'
   import SearchInput from './SearchInput.vue'
   import FlowActivityChart from '@/components/FlowActivityChart.vue'
   import FlowMenu from '@/components/FlowMenu.vue'
-  import { useFilter, UseFlowFilterArgs, useWorkspaceApi } from '@/compositions'
+  import { UseFlowFilterArgs, useFlowFilterFromRoute, useWorkspaceApi } from '@/compositions'
   import { flowRouteKey } from '@/router'
-  import { isFlowSortValue } from '@/types'
+  import { flowSortOptions } from '@/types/SortOptionTypes'
   import { inject } from '@/utilities'
 
   const flowRoute = inject(flowRouteKey)
 
   const props = defineProps<{
-    filter?: Omit<UseFlowFilterArgs, 'flowName' | 'sort'>,
-  }>()
-
-  const emits = defineEmits<{
-    (event: 'delete', value: string): void,
+    filter?: UseFlowFilterArgs,
   }>()
 
   const api = useWorkspaceApi()
-  const flowName = useRouteQueryParam('search', '')
-  const flowNameDebounced = useDebouncedRef(flowName, 500)
-  const deployments = useRouteQueryParam('deployments', [])
-  const sort = useRouteQueryParam('sort', 'CREATED_DESC')
+  const filter = computed(() => props.filter ?? {})
+  const { deployments, name, sort, filter: unionFilter } = useFlowFilterFromRoute(filter)
 
-  onUnmounted(() => console.log('unmounted'))
-  onBeforeRouteLeave(() => console.log('before route leave'))
+  const canFilterDeployments = computed(() => {
+    const filterHasDeployments = !!unref(filter.value.deployments)?.length
+    const filterHasDeploymentName = !!unref(filter.value.deploymentName)?.length
+
+    return !filterHasDeployments && !filterHasDeploymentName
+  })
 
   const columns = [
     {
@@ -104,39 +105,19 @@
     },
   ]
 
-  const flowSortOption = [
-    { label: 'Created', value: 'CREATED_DESC' },
-    { label: 'A to Z', value: 'NAME_ASC' },
-    { label: 'Z to A', value: 'NAME_DESC' },
-  ]
-
-  const internalFilters = computed<UseFlowFilterArgs>(() => {
-    const filter: UseFlowFilterArgs = { ...props.filter }
-
-    if (flowNameDebounced.value.length) {
-      filter.flowName = flowNameDebounced
-    }
-
-    if (deployments.value.length) {
-      filter.deployments = deployments
-    }
-
-    if (isFlowSortValue(sort)) {
-      filter.sort = sort
-    }
-
-    return filter
-  })
-
-  const unionFilter = useFilter(internalFilters)
   const flowsSubscription = useSubscription(api.flows.getFlows, [unionFilter])
   const flows = computed(() => flowsSubscription.response ?? [])
 
   const flowsCountSubscription = useSubscription(api.flows.getFlowsCount, [unionFilter])
   const flowsCount = computed(() => flowsCountSubscription.response)
 
+  function refresh(): void {
+    flowsSubscription.refresh()
+    flowsCountSubscription.refresh()
+  }
+
   function clear(): void {
-    flowName.value = ''
+    name.value = ''
   }
 </script>
 

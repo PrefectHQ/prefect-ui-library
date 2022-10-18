@@ -13,6 +13,12 @@ export function isFlowSortValue(value: MaybeRef<unknown>): value is MaybeRef<Flo
   return flowSortValues.includes(valueRef.value as FlowSortValues)
 }
 
+export const flowSortOptions = [
+  { label: 'Created', value: 'CREATED_DESC' },
+  { label: 'A to Z', value: 'NAME_ASC' },
+  { label: 'Z to A', value: 'NAME_DESC' },
+]
+
 const deploymentSortValues = ['CREATED_DESC', 'UPDATED_DESC', 'NAME_DESC', 'NAME_ASC'] as const
 export type DeploymentSortValues = typeof deploymentSortValues[number]
 
@@ -23,6 +29,12 @@ export function isDeploymentSortValue(value: MaybeRef<unknown>): value is MaybeR
 
   return deploymentSortValues.includes(valueRef.value as DeploymentSortValues)
 }
+
+export const deploymentSortOptions = [
+  { label: 'Created', value: 'CREATED_DESC' },
+  { label: 'A to Z', value: 'NAME_ASC' },
+  { label: 'Z to A', value: 'NAME_DESC' },
+]
 
 const flowRunSortValues = ['CREATED_DESC', 'NAME_DESC', 'NAME_ASC', 'EXPECTED_START_TIME_DESC', 'EXPECTED_START_TIME_ASC', 'NEXT_SCHEDULED_START_TIME_ASC'] as const
 export type FlowRunSortValues = typeof flowRunSortValues[number]
