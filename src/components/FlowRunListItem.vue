@@ -28,7 +28,7 @@
 <script lang="ts" setup>
   import { CheckboxModel } from '@prefecthq/prefect-design'
   import { useIntersectionObserver } from '@prefecthq/vue-compositions'
-  import { computed, onMounted, ref, watchEffect } from 'vue'
+  import { computed, onMounted, ref } from 'vue'
   import { RouterLink } from 'vue-router'
   import DeploymentIconText from './DeploymentIconText.vue'
   import DurationIconText from './DurationIconText.vue'
