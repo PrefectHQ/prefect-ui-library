@@ -1,9 +1,9 @@
 <template>
   <StateListItem v-model:selected="model" v-bind="{ value, disabled, tags, stateType }" class="task-run-list-item">
     <template #name>
-      <router-link class="task-run-list-item__link" :to="taskRunRoute(taskRun.id)">
+      <p-link :to="taskRunRoute(taskRun.id)">
         <span>{{ taskRun.name }}</span>
-      </router-link>
+      </p-link>
     </template>
     <template #meta>
       <StateBadge :state="taskRun.state" />
@@ -55,10 +55,3 @@
   const tags = computed(() => props.taskRun.tags)
   const value = computed(() => props.taskRun.id)
 </script>
-
-<style>
-.task-run-list-item__link { @apply
-  font-semibold
-  text-prefect-500
-}
-</style>

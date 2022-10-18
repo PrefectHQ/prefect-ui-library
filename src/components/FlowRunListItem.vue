@@ -1,11 +1,11 @@
 <template>
-  <div ref="el">
-    <StateListItem v-model:selected="model" v-bind="{ value, disabled, tags, stateType }" class="flow-run-list-item">
+  <div ref="el" class="flow-run-list-item">
+    <StateListItem v-model:selected="model" v-bind="{ value, disabled, tags, stateType }">
       <template #name>
         <FlowRouterLink :flow-id="flowRun.flowId" after=" / " />
-        <router-link class="flow-run-list-item__link" :to="flowRunRoute(flowRun.id)">
+        <p-link :to="flowRunRoute(flowRun.id)">
           <span>{{ flowRun.name }}</span>
-        </router-link>
+        </p-link>
       </template>
       <template #meta>
         <StateBadge :state="flowRun.state" />
@@ -29,7 +29,6 @@
   import { CheckboxModel } from '@prefecthq/prefect-design'
   import { useIntersectionObserver } from '@prefecthq/vue-compositions'
   import { computed, onMounted, ref } from 'vue'
-  import { RouterLink } from 'vue-router'
   import DeploymentIconText from './DeploymentIconText.vue'
   import DurationIconText from './DurationIconText.vue'
   import FlowRouterLink from './FlowRouterLink.vue'
@@ -83,10 +82,3 @@
     observe(el)
   })
 </script>
-
-<style>
-.flow-run-list-item__link { @apply
-  font-semibold
-  text-prefect-500
-}
-</style>
