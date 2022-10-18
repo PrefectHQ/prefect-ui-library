@@ -82,8 +82,6 @@
   onMounted(() => {
     observe(el)
   })
-
-  watchEffect(()=> console.log('vis', visible.value))
 </script>
 
 <style>

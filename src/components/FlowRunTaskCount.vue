@@ -1,11 +1,11 @@
 <template>
-  <div ref="el" class="flow-run-task-count">
-    <template v-if="tasksCount.response">
+  <template v-if="tasksCount.response">
+    <div ref="el" class="flow-run-task-count">
       <p-icon-text icon="Task">
         {{ tasksCount.response }} task {{ toPluralString('run', tasksCount.response) }}
       </p-icon-text>
-    </template>
-  </div>
+    </div>
+  </template>
 </template>
 
 <script lang="ts" setup>
