@@ -12,7 +12,8 @@
         "dev": "vue-tsc -w & tsc-alias -w & vite build -w",
         "lint": "eslint src",
         "lint:fix": "eslint src --fix",
-        "serve": "vite --mode=demo --host"
+        "serve": "vite --mode=demo --host",
+        "changelog": "auto-changelog --package --commit-limit 0"
     },
     "main": "./dist/orion-design.umd.js",
     "module": "./dist/orion-design.es.js",
@@ -35,6 +36,7 @@
         "@types/node": "^18.11.2",
         "@types/prismjs": "^1.26.0",
         "@vitejs/plugin-vue": "2.3.3",
+        "auto-changelog": "^2.4.0",
         "autoprefixer": "10.4.12",
         "eslint": "8.25.0",
         "lodash.camelcase": "4.3.0",
