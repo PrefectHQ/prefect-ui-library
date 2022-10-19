@@ -7,8 +7,6 @@ export function getCacheKey(label: string): string {
 }
 
 export function clearOldCacheKeys(): void {
-  console.log('clearing caches')
-
   const sessionStorageKeys = Object.keys(sessionStorage)
 
   sessionStorageKeys.forEach(key => {

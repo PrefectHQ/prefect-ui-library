@@ -51,11 +51,8 @@
   })
 
   const { value: name, meta: nameState, errorMessage: nameError } = useField<string>('name', fieldRules('Name', isRequired, isHandle))
-  watch(values, values => console.log(values))
-  watchEffect(() => {
-    setStorageValue(values)
-    console.log(values)
-  })
+
+  watchEffect(() => setStorageValue(values))
 
   const submit = handleSubmit(value => {
     removeFromStorage()
