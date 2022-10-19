@@ -1,6 +1,6 @@
 <template>
   <template v-if="tasksCount.response">
-    <div ref="el" class="flow-run-task-count">
+    <div class="flow-run-task-count">
       <p-icon-text icon="Task">
         {{ tasksCount.response }} task {{ toPluralString('run', tasksCount.response) }}
       </p-icon-text>
@@ -10,7 +10,7 @@
 
 <script lang="ts" setup>
   import { useSubscriptionWithDependencies } from '@prefecthq/vue-compositions'
-  import { computed, ref } from 'vue'
+  import { computed } from 'vue'
   import { useWorkspaceApi } from '@/compositions'
   import { FlowRun } from '@/models/FlowRun'
   import { toPluralString } from '@/utilities'
@@ -18,8 +18,6 @@
   const props = defineProps<{
     flowRun: FlowRun,
   }>()
-
-  const el = ref<HTMLDivElement>()
 
   const isScheduled = computed(() => props.flowRun.stateType == 'scheduled')
 
