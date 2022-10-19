@@ -19,7 +19,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        language: [ 'typescript', 'vue' ]
+        language: [ 'typescript' ]
 
     steps:
     - name: Checkout repository
