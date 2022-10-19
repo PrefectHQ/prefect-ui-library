@@ -20,7 +20,7 @@
 <script lang="ts" setup>
   import { useSessionStorage } from '@prefecthq/vue-compositions'
   import { useField, useForm } from 'vee-validate'
-  import { computed, watch, watchEffect } from 'vue'
+  import { computed, watchEffect } from 'vue'
   import SchemaFormFields from './SchemaFormFields.vue'
   import SubmitButton from './SubmitButton.vue'
   import { BlockDocumentCreateNamed } from '@/models/BlockDocumentCreate'
