@@ -1,15 +1,14 @@
 <template>
-  <VirtualScroller :items="taskRuns" class="task-run-list">
+  <p-virtual-scroller :items="taskRuns" class="task-run-list">
     <template #default="{ item: taskRun }">
       <TaskRunListItem v-model:selected="model" v-bind="{ taskRun, disabled }" />
     </template>
-  </VirtualScroller>
+  </p-virtual-scroller>
 </template>
 
 <script lang="ts" setup>
   import { computed } from 'vue'
   import TaskRunListItem from '@/components/TaskRunListItem.vue'
-  import VirtualScroller from '@/components/VirtualScroller.vue'
   import { TaskRun } from '@/models/TaskRun'
 
   const props = defineProps<{
