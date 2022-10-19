@@ -7,13 +7,19 @@ export function useForm<T extends Record<string, any>>(options?: FormOptions<T>)
   const { handleSubmit, ...rest } = useVeeForm(options)
 
   const submit: typeof handleSubmit = (onSuccess, onError) => {
-    return handleSubmit(onSuccess, (context) => {
+    const onSuccessWrapped: typeof onSuccess = (values, context) => {
+      return onSuccess(values, context)
+    }
+
+    const onErrorWrapped: typeof onError = (context) => {
       if (onError) {
         onError(context)
       }
 
       scrollToValidationError()
-    })
+    }
+
+    return handleSubmit(onSuccessWrapped, onErrorWrapped)
   }
 
   return {
