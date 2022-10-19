@@ -3,9 +3,8 @@
 </template>
 
 <script lang="ts" setup>
-  import { useSubscription } from '@prefecthq/vue-compositions'
   import { computed } from 'vue'
-  import { timezonesApi } from '@/services/TimezoneApi'
+  import { intl } from '@/utilities/intl'
 
   const props = defineProps<{
     modelValue: string | null,
@@ -24,7 +23,5 @@
     },
   })
 
-  const timezoneSubscription = useSubscription(timezonesApi.getTimezones, [])
-  const timezones = computed(() => timezoneSubscription.response ?? {})
-  const options = computed(() => Object.keys(timezones.value))
+  const options = intl.timeZone()
 </script>

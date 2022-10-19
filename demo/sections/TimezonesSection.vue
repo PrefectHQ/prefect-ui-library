@@ -37,7 +37,6 @@
   import DemoSection from '../components/DemoSection.vue'
   import TimezoneSelect from '@/components/TimezoneSelect.vue'
   import { utcOffsetMinutes } from '@/compositions/useAdjustedDate'
-  import { setUtcOffsetMinutes } from '@/utilities'
   import { formatDate, formatDateTimeNumeric, formatTimeNumeric, formatDateTimeRelative } from '@/utilities/dates'
 
   const date = new Date()
@@ -52,6 +51,6 @@
       return utcOffsetMinutes.value = null
     }
 
-    setUtcOffsetMinutes(timezone)
+    // setUtcOffsetMinutes(timezone)
   })
 </script>
