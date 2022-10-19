@@ -2,7 +2,7 @@
   <page-heading class="page-heading-flow-run" :crumbs="crumbs">
     <template #actions>
       <p-button :loading="restartingRun" @click="restartFromFailed">
-        Retry
+        Retry <p-icon icon="RefreshIcon" />
       </p-button>
       <p-icon-button-menu>
         <template #default>
