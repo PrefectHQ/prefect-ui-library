@@ -2,12 +2,14 @@ import { formatDateTimeNumeric, parseDateTimeNumeric } from '@prefecthq/prefect-
 import { useDebouncedRef, useRouteQueryParam } from '@prefecthq/vue-compositions'
 import { addDays, endOfToday, startOfToday, subDays } from 'date-fns'
 import { computed, Ref } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
 import { useFlowRunFilter } from '@/compositions/useFlowRunFilter'
 import { StateType } from '@/models/StateType'
+import { FlowRunFilters, FlowRunFiltersInRoute } from '@/types/filter'
 import { FlowRunSortValues } from '@/types/SortOptionTypes'
 import { UnionFilters } from '@/types/UnionFilters'
 
-type UseFlowRunFilterFromRoute = {
+export type UseFlowRunFilterFromRoute = {
   name: Ref<string>,
   sort: Ref<FlowRunSortValues>,
   startDate: Ref<Date>,
@@ -18,9 +20,14 @@ type UseFlowRunFilterFromRoute = {
   tags: Ref<string[]>,
   filter: Ref<UnionFilters>,
   hasFilters: Ref<boolean>,
+  setFilters: (filters: FlowRunFilters) => Promise<void>,
+  updateFilters: (filters: FlowRunFilters) => Promise<void>,
 }
 
 export function useFlowRunFilterFromRoute(): UseFlowRunFilterFromRoute {
+  const router = useRouter()
+  const route = useRoute()
+
   const name = useRouteQueryParam('name', '')
   const sort = useRouteQueryParam('sort', 'EXPECTED_START_TIME_DESC') as Ref<FlowRunSortValues>
 
@@ -66,6 +73,64 @@ export function useFlowRunFilterFromRoute(): UseFlowRunFilterFromRoute {
       endDateParam.value !== defaultEndDate
   })
 
+  function getQuery(filters: FlowRunFilters): FlowRunFiltersInRoute {
+    const query: FlowRunFiltersInRoute = {}
+
+    if (filters.name) {
+      query.name = filters.name
+    }
+
+    if (filters.sort) {
+      query.sort = filters.sort
+    }
+
+    if (filters.startDate) {
+      const formatted = formatDateTimeNumeric(filters.startDate)
+
+      if (formatted !== defaultStartDate) {
+        query['start-date'] = formatted
+      }
+    }
+
+    if (filters.endDate) {
+      const formatted = formatDateTimeNumeric(filters.endDate)
+
+      if (formatted !== defaultEndDate) {
+        query['end-date'] = formatted
+      }
+    }
+
+    if (filters.state) {
+      query.state = filters.state
+    }
+
+    if (filters.deployment) {
+      query.deployment = filters.deployment
+    }
+
+    if (filters.flow) {
+      query.flow = filters.flow
+    }
+
+    if (filters.tag) {
+      query.tag = filters.tag
+    }
+
+    return query
+  }
+
+  async function setFilters(filters: FlowRunFilters): Promise<void> {
+    const query = getQuery(filters)
+
+    await router.push({ query })
+  }
+
+  async function updateFilters(filters: FlowRunFilters): Promise<void> {
+    const query = getQuery(filters)
+
+    await router.push({ query: { ...route.query, ...query } })
+  }
+
   return {
     name,
     sort,
@@ -77,5 +142,7 @@ export function useFlowRunFilterFromRoute(): UseFlowRunFilterFromRoute {
     tags,
     filter,
     hasFilters,
+    setFilters,
+    updateFilters,
   }
 }

@@ -17,8 +17,8 @@
   import { useSubscription } from '@prefecthq/vue-compositions'
   import { computed } from 'vue'
   import { RouterLink } from 'vue-router'
+  import { useWorkspaceApi } from '@/compositions'
   import { workQueueRouteKey } from '@/router/routes'
-  import { workQueuesApiKey } from '@/services'
   import { inject } from '@/utilities/inject'
 
   const props = defineProps<{
@@ -27,7 +27,8 @@
 
   const workQueueRoute = inject(workQueueRouteKey)
 
-  const workQueuesApi = inject(workQueuesApiKey)
-  const workQueuesSubscription =  useSubscription(workQueuesApi.getWorkQueueByName, [props.workQueueName])
+  const api = useWorkspaceApi()
+
+  const workQueuesSubscription =  useSubscription(api.workQueues.getWorkQueueByName, [props.workQueueName])
   const workQueue = computed(() => workQueuesSubscription.response)
 </script>

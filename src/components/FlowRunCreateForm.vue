@@ -81,10 +81,11 @@
 <script lang="ts" setup>
   import  { PButton, ButtonGroupOption } from '@prefecthq/prefect-design'
   import { zonedTimeToUtc } from 'date-fns-tz'
-  import { useField, useForm } from 'vee-validate'
+  import { useField } from 'vee-validate'
   import { computed, ref } from 'vue'
   import SchemaFormFields from './SchemaFormFields.vue'
   import TimezoneSelect from './TimezoneSelect.vue'
+  import { useForm } from '@/compositions/useForm'
   import { Deployment, DeploymentFlowRunCreate } from '@/models'
   import { mocker } from '@/services'
   import { fieldRules, isRequiredIf } from '@/utilities/validation'

@@ -21,27 +21,18 @@
 
 <script lang="ts" setup>
   import { formatTimeNumeric } from '@prefecthq/prefect-design'
-  import { useSubscriptionWithDependencies } from '@prefecthq/vue-compositions'
   import { computed } from 'vue'
   import LogLevelLabel from './LogLevelLabel.vue'
+  import { useTaskRun } from '@/compositions'
   import { Log } from '@/models'
-  import { taskRunsApiKey } from '@/services/TaskRunsApi'
-  import { inject } from '@/utilities/inject'
 
   const props = defineProps<{
     log: Log,
   }>()
 
-  const taskRunsApi = inject(taskRunsApiKey)
-  const args = computed<Parameters<typeof taskRunsApi.getTaskRun> | null>(() => {
-    if (props.log.taskRunId === null) {
-      return null
-    }
-
-    return [props.log.taskRunId]
-  })
-  const subscription = useSubscriptionWithDependencies(taskRunsApi.getTaskRun, args)
-  const taskRunName = computed(() => subscription.response?.name)
+  const taskRunId = computed(() => props.log.taskRunId)
+  const taskRun = useTaskRun(taskRunId)
+  const taskRunName = computed(() => taskRun.value?.name)
 </script>
 
 <style>

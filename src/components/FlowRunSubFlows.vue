@@ -10,7 +10,7 @@
 
     <PEmptyResults v-if="empty">
       <template #message>
-        No sub flow runs
+        No subflow runs
       </template>
       <template v-if="hasFilters" #actions>
         <p-button size="sm" secondary @click="clear">

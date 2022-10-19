@@ -1,47 +1,31 @@
 <template>
-  <div ref="el" class="flow-run-task-count">
-    <template v-if="tasksCount.response">
+  <template v-if="tasksCount.response">
+    <div class="flow-run-task-count">
       <p-icon-text icon="Task">
         {{ tasksCount.response }} task {{ toPluralString('run', tasksCount.response) }}
       </p-icon-text>
-    </template>
-  </div>
+    </div>
+  </template>
 </template>
 
 <script lang="ts" setup>
-  import { useIntersectionObserver, useSubscriptionWithDependencies } from '@prefecthq/vue-compositions'
-  import { computed, onMounted, ref } from 'vue'
+  import { useSubscriptionWithDependencies } from '@prefecthq/vue-compositions'
+  import { computed } from 'vue'
+  import { useWorkspaceApi } from '@/compositions'
   import { FlowRun } from '@/models/FlowRun'
-  import { taskRunsApiKey } from '@/services/TaskRunsApi'
-  import { inject, toPluralString } from '@/utilities'
+  import { toPluralString } from '@/utilities'
 
   const props = defineProps<{
     flowRun: FlowRun,
   }>()
 
-  const visible = ref(false)
-  const el = ref<HTMLDivElement>()
-
   const isScheduled = computed(() => props.flowRun.stateType == 'scheduled')
 
-  function intersect(entries: IntersectionObserverEntry[]): void {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        visible.value = entry.isIntersecting
-      }
-    })
-  }
+  const api = useWorkspaceApi()
 
-  const { observe } = useIntersectionObserver(intersect)
 
-  onMounted(() => {
-    observe(el)
-  })
-
-  const taskRunsApi = inject(taskRunsApiKey)
-
-  const tasksCountFilter = computed<Parameters<typeof taskRunsApi.getTaskRunsCount> | null>(() => {
-    if (!visible.value || isScheduled.value) {
+  const tasksCountFilter = computed<Parameters<typeof api.taskRuns.getTaskRunsCount> | null>(() => {
+    if (isScheduled.value) {
       return null
     }
 
@@ -56,5 +40,5 @@
     ]
   })
 
-  const tasksCount = useSubscriptionWithDependencies(taskRunsApi.getTaskRunsCount, tasksCountFilter)
+  const tasksCount = useSubscriptionWithDependencies(api.taskRuns.getTaskRunsCount, tasksCountFilter)
 </script>

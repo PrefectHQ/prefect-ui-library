@@ -40,11 +40,6 @@
 </script>
 
 <style>
-.search { @apply
-  w-full
-  md:max-w-xs
-}
-
 .search__label { @apply
   sr-only
 }

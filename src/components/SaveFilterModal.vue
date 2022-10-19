@@ -20,26 +20,25 @@
 </template>
 
 <script lang="ts" setup>
-  import { useField, useForm } from 'vee-validate'
+  import { showToast } from '@prefecthq/prefect-design'
+  import { useSubscription } from '@prefecthq/vue-compositions'
+  import { useField } from 'vee-validate'
   import { computed } from 'vue'
+  import { useFlowRunFilterFromRoute } from '@/compositions/useFlowRunFilterFromRoute'
+  import { useForm } from '@/compositions/useForm'
+  import { localization } from '@/localization'
+  import { SavedSearch } from '@/models/SavedSearch'
+  import { workspaceApiKey } from '@/utilities/api'
+  import { inject } from '@/utilities/inject'
   import { isRequired, withMessage, isValidIf } from '@/utilities/validation'
 
   const props = defineProps<{
     showModal: boolean,
-    filterNames: string[],
   }>()
-
-  const { handleSubmit, handleReset, isSubmitting } = useForm<{
-    filterName: string,
-  }>()
-
-  const nameDoesNotExist = isValidIf(value => !value || !props.filterNames.includes(value as string))
-
-  const { value: filterName, meta: filterNameState, errorMessage: filterErrorMessage } = useField<string>('filterName', [withMessage(nameDoesNotExist, 'Name must be unique'), isRequired('Name')])
 
   const emit = defineEmits<{
     (event: 'update:showModal', value: boolean): void,
-    (event: 'save', filterName: string): void,
+    (event: 'saved', value: SavedSearch): void,
   }>()
 
   const internalShowModal = computed({
@@ -51,16 +50,52 @@
     },
   })
 
+  const { handleSubmit, handleReset, isSubmitting } = useForm<{
+    filterName: string,
+  }>()
+
+  const api = inject(workspaceApiKey)
+  const { flows, states, tags, deployments } = useFlowRunFilterFromRoute()
+
+  const savedSearchesSubscription = useSubscription(api.savedSearches.getSavedSearches)
+  const savedSearches = computed(() => savedSearchesSubscription.response ?? [])
+
+  const nameDoesNotExist = isValidIf(value => !savedSearches.value.some(({ name }) => name === value))
+
+  const rules = [isRequired('Name'), withMessage(nameDoesNotExist, 'Name must be unique')]
+  const { value: filterName, meta: filterNameState, errorMessage: filterErrorMessage } = useField<string>('filterName', rules)
+
   const submit = handleSubmit(({ filterName }) => {
-    emit('save', filterName)
+    saveFilter(filterName)
     handleReset()
   })
+
+  const saveFilter = async (filterName: string): Promise<void> => {
+    try {
+      const savedSearch = await api.savedSearches.createSavedSearch({
+        name: filterName,
+        filters: {
+          state: states.value,
+          tag: tags.value,
+          flow: flows.value,
+          deployment: deployments.value,
+        },
+      })
+      savedSearchesSubscription.refresh()
+      showToast(localization.success.createSavedSearch, 'success')
+      internalShowModal.value = false
+      emit('saved', savedSearch)
+    } catch (error) {
+      console.error(error)
+      showToast(localization.error.createSavedSearch, 'error')
+    }
+  }
 </script>
 
 <style>
-  .save-filter-modal__date-filter-warning { @apply
-    text-sm
-    font-semibold
-  }
+.save-filter-modal__date-filter-warning { @apply
+  text-sm
+  font-semibold
+}
 </style>
 
