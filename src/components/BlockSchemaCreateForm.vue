@@ -19,14 +19,14 @@
 
 <script lang="ts" setup>
   import { useSessionStorage } from '@prefecthq/vue-compositions'
-  import { useField } from 'vee-validate'
-  import { computed, watchEffect } from 'vue'
+  import { useField, useForm } from 'vee-validate'
+  import { computed, watch, watchEffect } from 'vue'
   import SchemaFormFields from './SchemaFormFields.vue'
   import SubmitButton from './SubmitButton.vue'
-  import { useForm } from '@/compositions/useForm'
   import { BlockDocumentCreateNamed } from '@/models/BlockDocumentCreate'
   import { BlockSchema } from '@/models/BlockSchema'
   import { getSchemaDefaultValues } from '@/services/schemas/utilities'
+  import { getCacheKey } from '@/utilities/cache'
   import { fieldRules, isHandle, isRequired } from '@/utilities/validation'
 
   const props = defineProps<{
@@ -38,7 +38,7 @@
     (event: 'cancel'): void,
   }>()
 
-  const storageKey = computed(() => `block-schema-form-${props.blockSchema.id}`)
+  const storageKey = computed(() => getCacheKey(`block-schema-form-${props.blockSchema.id}`))
 
   const { initialValue: initialValues, remove: removeFromStorage, set: setStorageValue } = useSessionStorage(storageKey.value, {
     name: '',
@@ -51,8 +51,11 @@
   })
 
   const { value: name, meta: nameState, errorMessage: nameError } = useField<string>('name', fieldRules('Name', isRequired, isHandle))
-
-  watchEffect(() => setStorageValue(values))
+  watch(values, values => console.log(values))
+  watchEffect(() => {
+    setStorageValue(values)
+    console.log(values)
+  })
 
   const submit = handleSubmit(value => {
     removeFromStorage()
