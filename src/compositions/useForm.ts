@@ -16,6 +16,8 @@ export function useForm<T extends Record<string, any>>(options?: FormOptions<T>)
     })
   }
 
+  submit.withControlled = handleSubmit.withControlled
+
   return {
     ...rest,
     handleSubmit: submit,
