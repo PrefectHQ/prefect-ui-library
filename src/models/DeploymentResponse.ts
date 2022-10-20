@@ -1,12 +1,16 @@
+import { CreatedByResponse } from '@/models/api/CreatedByResponse'
 import { SchemaResponse } from '@/models/api/SchemaResponse'
 import { ScheduleResponse } from '@/models/ScheduleResponse'
 import { DateString } from '@/types/dates'
 import { SchemaValues } from '@/types/schemas'
 
+
 export type DeploymentResponse = {
   id: string,
   created: DateString,
+  created_by: CreatedByResponse | null,
   updated: DateString,
+  updated_by: CreatedByResponse | null,
   name: string,
   version: string,
   description: string | null,

@@ -9,6 +9,7 @@ import { blockSchemasApiFactory } from './blockSchemasApi'
 import { randomBlockType } from './blockType'
 import { blockTypesApiFactory } from './blockTypesApi'
 import { randomBoolean } from './boolean'
+import { randomCreatedBy } from './createdBy'
 import { randomDate, randomDateString } from './date'
 import { randomDeployment } from './deployment'
 import { randomEmail } from './email'
@@ -47,6 +48,7 @@ export const mocks = {
   blockTypesApi: blockTypesApiFactory,
   boolean: randomBoolean,
   char: randomChar,
+  createdBy: randomCreatedBy,
   date: randomDate,
   dateString: randomDateString,
   deployment: randomDeployment,

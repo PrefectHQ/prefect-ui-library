@@ -1,3 +1,4 @@
+import { CreatedByResponse } from '@/models/api/CreatedByResponse'
 import { StateResponse } from '@/models/StateResponse'
 import { ServerStateType } from '@/models/StateType'
 import { DateString } from '@/types/dates'
@@ -6,6 +7,7 @@ import { SchemaValues } from '@/types/schemas'
 export type FlowRunResponse = {
   id: string,
   created: DateString,
+  created_by: CreatedByResponse | null,
   updated: DateString,
   name: string | null,
   flow_id: string,

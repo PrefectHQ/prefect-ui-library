@@ -30,6 +30,7 @@ export const randomFlowRun: MockFunction<FlowRun, [Partial<FlowRun>?]> = functio
     tags: this.createMany('noun', this.create('number', [0, 10])),
     runCount: this.create('number'),
     created: this.create('date'),
+    createdBy: this.create('createdBy'),
     updated: this.create('date'),
     workQueueName: random() > 0.7 ? this.create('noun') : null,
     ...overrides,

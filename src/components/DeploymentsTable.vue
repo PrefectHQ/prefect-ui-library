@@ -27,6 +27,18 @@
         <p-tag-wrapper :tags="row.tags" justify="left" />
       </template>
 
+      <template #created-by="{ row }">
+        <span>
+          {{ row.createdBy.displayValue }}
+        </span>
+      </template>
+
+      <template #updated-by="{ row }">
+        <span>
+          {{ row.updatedBy.displayValue }}
+        </span>
+      </template>
+
       <template #action-heading>
         <span />
       </template>
@@ -101,6 +113,14 @@
     {
       property: 'tags',
       label: 'Tags',
+    },
+    {
+      property: 'createdBy',
+      label: 'Created By',
+    },
+    {
+      property: 'updatedBy',
+      label: 'Updated By',
     },
     {
       label: 'Action',

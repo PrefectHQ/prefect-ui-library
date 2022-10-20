@@ -29,6 +29,7 @@ export const mapFlowRunResponseToFlowRun: MapFunction<FlowRunResponse, FlowRun> 
     tags: source.tags,
     runCount: source.run_count,
     created: this.map('string', source.created, 'Date'),
+    createdBy: this.map('CreatedByResponse', source.created_by, 'CreatedBy'),
     updated: this.map('string', source.updated, 'Date'),
     workQueueName: source.work_queue_name,
   })
@@ -61,6 +62,7 @@ export const mapFlowRunToFlowRunResponse: MapFunction<FlowRun, FlowRunResponse> 
     'tags': source.tags,
     'run_count': source.runCount,
     'created': this.map('Date', source.created, 'string'),
+    'created_by': this.map('CreatedBy', source.createdBy, 'CreatedByResponse'),
     'updated': this.map('Date', source.updated, 'string'),
     'work_queue_name': source.workQueueName,
   }
