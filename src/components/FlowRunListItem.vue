@@ -2,23 +2,33 @@
   <div ref="el" class="flow-run-list-item">
     <StateListItem v-model:selected="model" v-bind="{ value, disabled, tags, stateType }">
       <template #name>
-        <FlowRouterLink :flow-id="flowRun.flowId" after=" / " />
-        <p-link :to="flowRunRoute(flowRun.id)">
+        <FlowRouterLink :flow-id="flowRun.flowId" class="flow-run-list-item__flow-link">
+          <template #after>
+            <p-icon icon="ChevronRightIcon" />
+          </template>
+        </FlowRouterLink>
+        <p-link :to="flowRunRoute(flowRun.id)" class="flow-run-list-item__flow-run-link">
           <span>{{ flowRun.name }}</span>
         </p-link>
       </template>
       <template #meta>
         <StateBadge :state="flowRun.state" />
-        <DurationIconText :duration="flowRun.duration" />
         <FlowRunStartTime :flow-run="flowRun" />
+        <DurationIconText :duration="flowRun.duration" />
         <template v-if="visible">
           <FlowRunTaskCount :flow-run="flowRun" />
-          <template v-if="flowRun.deploymentId">
-            <DeploymentIconText :deployment-id="flowRun.deploymentId" />
-          </template>
-          <template v-if="flowRun.workQueueName">
-            <WorkQueueIconText :work-queue-name="flowRun.workQueueName" />
-          </template>
+        </template>
+      </template>
+      <template v-if="flowRun.deploymentId || flowRun.workQueueName" #relationships>
+        <template v-if="flowRun.deploymentId">
+          <div class="flow-run-list-item__relation">
+            <span>Deployment</span> <DeploymentIconText :deployment-id="flowRun.deploymentId" />
+          </div>
+        </template>
+        <template v-if="flowRun.workQueueName">
+          <div class="flow-run-list-item__relation">
+            <span>Work Queue</span> <WorkQueueIconText :work-queue-name="flowRun.workQueueName" />
+          </div>
         </template>
       </template>
     </StateListItem>
@@ -83,3 +93,17 @@
     observe(el)
   })
 </script>
+
+<style>
+.flow-run-list-item__flow-link { @apply
+  font-semibold
+}
+
+.flow-run-list-item__flow-run-link { @apply
+  font-normal
+}
+
+.flow-run-list-item__relation { @apply
+  flex gap-1
+}
+</style>
