@@ -3,8 +3,9 @@
 </template>
 
 <script lang="ts" setup>
+  import { utcToZonedTime, zonedTimeToUtc } from 'date-fns-tz'
   import { computed } from 'vue'
-  import { useAdjustedDate, useUnadjustedDate } from '@/compositions/useAdjustedDate'
+  import { selectedTimezone } from '@/utilities/dates'
 
   const props = defineProps<{
     startDate: Date | null | undefined,
@@ -17,19 +18,35 @@
 
   const adjustedStartDate = computed({
     get() {
-      return props.startDate ? useAdjustedDate(props.startDate) : null
+      if (selectedTimezone.value && props.startDate) {
+        return utcToZonedTime(props.startDate, selectedTimezone.value)
+      }
+
+      return props.startDate ?? null
     },
     set(value: Date | null) {
-      emits('update:startDate', value ? useUnadjustedDate(value) : null)
+      if (selectedTimezone.value && value) {
+        return emits('update:startDate', zonedTimeToUtc(value, selectedTimezone.value))
+      }
+
+      emits('update:startDate', value ?? null)
     },
   })
 
   const adjustedEndDate = computed({
     get() {
-      return props.endDate ? useAdjustedDate(props.endDate) : null
+      if (selectedTimezone.value && props.endDate) {
+        return utcToZonedTime(props.endDate, selectedTimezone.value)
+      }
+
+      return props.endDate ?? null
     },
     set(value: Date | null) {
-      emits('update:endDate', value ? useUnadjustedDate(value) : null)
+      if (selectedTimezone.value && value) {
+        return emits('update:endDate', zonedTimeToUtc(value, selectedTimezone.value))
+      }
+
+      emits('update:endDate', value ?? null)
     },
   })
 </script>

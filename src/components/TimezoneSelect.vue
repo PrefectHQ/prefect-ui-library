@@ -1,8 +1,13 @@
 <template>
-  <p-combobox v-model="internalValue" :options="options" />
+  <p-combobox v-model="internalValue" :options="options">
+    <template v-for="(index, name) in $slots" #[name]="data">
+      <slot :name="name" v-bind="data" />
+    </template>
+  </p-combobox>
 </template>
 
 <script lang="ts" setup>
+  import { SelectOption } from '@prefecthq/prefect-design'
   import { computed } from 'vue'
   import { intl } from '@/utilities/intl'
 
@@ -23,5 +28,5 @@
     },
   })
 
-  const options = intl.timeZone()
+  const options: SelectOption[] = [{ label: 'UTC', value: '-00:00' }, ...intl.timeZone().map(timezone => ({ label: timezone, value: timezone }))]
 </script>
