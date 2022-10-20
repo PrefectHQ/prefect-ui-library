@@ -9,12 +9,11 @@
 </template>
 
 <script lang="ts" setup>
-  import { useSubscriptionWithDependencies } from '@prefecthq/vue-compositions'
   import { computed } from 'vue'
   import { RouterLink } from 'vue-router'
   import { useCan } from '@/compositions/useCan'
+  import { useDeployment } from '@/compositions/useDeployment'
   import { deploymentRouteKey } from '@/router/routes'
-  import { deploymentsApiKey } from '@/services/DeploymentsApi'
   import { inject } from '@/utilities/inject'
 
   const props = defineProps<{
@@ -23,15 +22,7 @@
 
   const can = useCan()
   const deploymentRoute = inject(deploymentRouteKey)
-
-  const deploymentsApi = inject(deploymentsApiKey)
-  const deploymentSubscriptionArgs = computed<[string] | null>(() => {
-    if (!can.read.deployment) {
-      return null
-    }
-
-    return [props.deploymentId]
-  })
-  const deploymentsSubscription = useSubscriptionWithDependencies(deploymentsApi.getDeployment, deploymentSubscriptionArgs)
-  const deploymentName = computed(() => deploymentsSubscription.response?.name)
+  const deploymentId = computed(() => props.deploymentId)
+  const deployment = useDeployment(deploymentId)
+  const deploymentName = computed(() => deployment.value?.name)
 </script>

@@ -37,7 +37,7 @@
       <RadarNodeFlowRun :graph-node="flowRun" :collapsed="collapsedMap" :downstream-nodes="0" :toggle="toggleCollapsed" />
     </SubSection>
 
-    <SubSection heading="Sub flow run">
+    <SubSection heading="Subflow run">
       <RadarNodeSubFlowRun :graph-node="flowRun" :collapsed="collapsedMap" :downstream-nodes="20" :toggle="toggleCollapsed" />
     </SubSection>
   </Section>

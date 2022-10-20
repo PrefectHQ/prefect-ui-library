@@ -2,7 +2,7 @@ import { formatDateTimeNumeric, parseDateTimeNumeric } from '@prefecthq/prefect-
 import { useDebouncedRef, useRouteQueryParam } from '@prefecthq/vue-compositions'
 import { addDays, endOfToday, startOfToday, subDays } from 'date-fns'
 import { computed, Ref } from 'vue'
-import { useRouter } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import { useFlowRunFilter } from '@/compositions/useFlowRunFilter'
 import { StateType } from '@/models/StateType'
 import { FlowRunFilters, FlowRunFiltersInRoute } from '@/types/filter'
@@ -21,10 +21,12 @@ export type UseFlowRunFilterFromRoute = {
   filter: Ref<UnionFilters>,
   hasFilters: Ref<boolean>,
   setFilters: (filters: FlowRunFilters) => Promise<void>,
+  updateFilters: (filters: FlowRunFilters) => Promise<void>,
 }
 
 export function useFlowRunFilterFromRoute(): UseFlowRunFilterFromRoute {
   const router = useRouter()
+  const route = useRoute()
 
   const name = useRouteQueryParam('name', '')
   const sort = useRouteQueryParam('sort', 'EXPECTED_START_TIME_DESC') as Ref<FlowRunSortValues>
@@ -71,7 +73,7 @@ export function useFlowRunFilterFromRoute(): UseFlowRunFilterFromRoute {
       endDateParam.value !== defaultEndDate
   })
 
-  async function setFilters(filters: FlowRunFilters): Promise<void> {
+  function getQuery(filters: FlowRunFilters): FlowRunFiltersInRoute {
     const query: FlowRunFiltersInRoute = {}
 
     if (filters.name) {
@@ -114,7 +116,19 @@ export function useFlowRunFilterFromRoute(): UseFlowRunFilterFromRoute {
       query.tag = filters.tag
     }
 
+    return query
+  }
+
+  async function setFilters(filters: FlowRunFilters): Promise<void> {
+    const query = getQuery(filters)
+
     await router.push({ query })
+  }
+
+  async function updateFilters(filters: FlowRunFilters): Promise<void> {
+    const query = getQuery(filters)
+
+    await router.push({ query: { ...route.query, ...query } })
   }
 
   return {
@@ -129,5 +143,6 @@ export function useFlowRunFilterFromRoute(): UseFlowRunFilterFromRoute {
     filter,
     hasFilters,
     setFilters,
+    updateFilters,
   }
 }

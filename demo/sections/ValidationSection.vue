@@ -52,10 +52,11 @@
 
 <script lang="ts" setup>
   import { addYears } from 'date-fns'
-  import { useForm, useField } from 'vee-validate'
+  import { useField } from 'vee-validate'
   import { computed } from 'vue'
   import DemoSection from '../components/DemoSection.vue'
   import JsonInput from '@/components/JsonInput.vue'
+  import { useForm } from '@/compositions/useForm'
   import { isEmptyString, isNullish } from '@/utilities'
   import { fieldRules, isBefore, isEmail, isJson, isRequired, ValidationMethodFactory } from '@/utilities/validation'
 

@@ -3,7 +3,9 @@
     <template #actions>
       <DeploymentToggle :deployment="deployment" @update="emit('update')" />
 
-      <RunMenu v-if="canRunDeployment" :deployment="deployment" />
+      <template v-if="can.run.deployment">
+        <RunMenu :deployment="deployment" />
+      </template>
 
       <DeploymentMenu :deployment="deployment" @delete="handleDelete" />
     </template>
@@ -45,14 +47,6 @@
   const emit = defineEmits<{
     (event: 'update' | 'delete'): void,
   }>()
-
-  const canRunDeployment = computed(() => {
-    if (can.access.customRoles) {
-      return can.run.deployment
-    }
-
-    return can.create.flow_run
-  })
 
   const handleDelete = (): void => {
     router.back()

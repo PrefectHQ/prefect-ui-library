@@ -9,12 +9,11 @@
 </template>
 
 <script lang="ts" setup>
-  import { useSubscriptionWithDependencies } from '@prefecthq/vue-compositions'
   import { computed } from 'vue'
   import { RouterLink, useRoute, useRouter } from 'vue-router'
+  import { useFlow } from '@/compositions'
   import { useCan } from '@/compositions/useCan'
   import { flowRouteKey } from '@/router/routes'
-  import { flowsApiKey } from '@/services'
   import { inject } from '@/utilities/inject'
 
   const props = defineProps<{
@@ -25,23 +24,22 @@
 
   const can = useCan()
   const flowRoute = inject(flowRouteKey)
-  const flowsApi = inject(flowsApiKey)
   const route = useRoute()
   const router = useRouter()
   const flowRouteResolved = computed(() => router.resolve(flowRoute(props.flowId)))
   const matched = computed(() => route.matched.some(({ path }) => flowRouteResolved.value.path == path))
   const showLink = computed(() => can.read.flow && !matched.value)
 
-  const flowSubscriptionArgs = computed<[string] | null>(() => {
+  const flowId = computed(() => {
     if (!showLink.value) {
       return null
     }
 
-    return [props.flowId]
+    return props.flowId
   })
 
-  const subscription = useSubscriptionWithDependencies(flowsApi.getFlow, flowSubscriptionArgs)
-  const flowName = computed(() => subscription.response?.name ?? '')
+  const flow = useFlow(flowId)
+  const flowName = computed(() => flow.value?.name ?? '')
 </script>
 
 <style>

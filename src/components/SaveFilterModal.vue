@@ -22,9 +22,10 @@
 <script lang="ts" setup>
   import { showToast } from '@prefecthq/prefect-design'
   import { useSubscription } from '@prefecthq/vue-compositions'
-  import { useField, useForm } from 'vee-validate'
+  import { useField } from 'vee-validate'
   import { computed } from 'vue'
   import { useFlowRunFilterFromRoute } from '@/compositions/useFlowRunFilterFromRoute'
+  import { useForm } from '@/compositions/useForm'
   import { localization } from '@/localization'
   import { SavedSearch } from '@/models/SavedSearch'
   import { workspaceApiKey } from '@/utilities/api'

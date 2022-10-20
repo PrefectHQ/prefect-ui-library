@@ -1,10 +1,11 @@
-import { FlowRunSortValues, TaskRunSortValues } from './SortOptionTypes'
+import { FlowRunSortValues, FlowSortValues, TaskRunSortValues } from './SortOptionTypes'
 
 /** A list where results will be returned only if they match all the values in the list */
 type all_ = { all_?: string[] }
 
 /** A list where results will be returned if any of the values are included in the list */
 type any_ = { any_?: string[] }
+type like_ = { like_?: string }
 
 /** A list where results will be returned if values don't match any in the list */
 type not_any_ = { not_any_?: string[] }
@@ -28,7 +29,7 @@ type operator_ = 'and_' | 'or_'
 
 export interface Filter {
   id?: any_,
-  name?: any_,
+  name?: any_ & like_,
   tags?: all_ & is_null_,
   operator?: operator_,
 }
@@ -96,7 +97,7 @@ export type UnionFilters =
   & DeploymentsFilter
   & FlowRunsFilter
   & TaskRunsFilter
-  & (Sortable<FlowFilter & DeploymentFilter> | RunSort<FlowRunSortValues | TaskRunSortValues>)
+  & (Sortable<FlowFilter & DeploymentFilter> | RunSort<FlowSortValues | FlowRunSortValues | TaskRunSortValues>)
 
 interface Historical {
   history_start: string,
