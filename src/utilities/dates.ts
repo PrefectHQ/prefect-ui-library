@@ -13,8 +13,8 @@ export const browserUtcOffset = -new Date().getTimezoneOffset()
 export const utcOffsetMilliseconds = computed(() => selectedTimezone.value === null ? minutesToMilliseconds(browserUtcOffset) : getTimezoneOffset(selectedTimezone.value))
 export const utcOffsetMinutes = computed(() => millisecondsToMinutes(utcOffsetMilliseconds.value))
 
-export function parseDate(input: string, reference: Date = new Date()): Date {
-  return parse(input, dateFormat, reference)
+export function parseDate(value: string, reference: Date = new Date()): Date {
+  return parse(value, dateFormat, reference)
 }
 
 export function isDate(value: unknown): value is Date {
@@ -29,37 +29,31 @@ export function sortDates(itemA: Date, itemB: Date): number {
   return itemA.getTime() - itemB.getTime()
 }
 
-export function formatDate(date: Date | string, format = dateFormat): string {
-  const value = new Date(date)
-
-  return selectedTimezone.value ? formatInTimeZone(value, selectedTimezone.value, format) : dateFnsFormat(value, format)
+export function formatDate(value: Date | string, format = dateFormat): string {
+  return selectedTimezone.value ? formatInTimeZone(value, selectedTimezone.value, format) : dateFnsFormat(new Date(value), format)
 }
 
-export function formatDateTimeNumeric(date: Date | string): string {
-  const value = new Date(date)
-
+export function formatDateTimeNumeric(value: Date | string): string {
   return formatDate(value, dateTimeNumericFormat)
 }
 
-export function parseDateTimeNumeric(input: string, reference: Date = new Date()): Date {
-  return parse(input, dateTimeNumericFormat, reference)
+export function parseDateTimeNumeric(value: string, reference: Date = new Date()): Date {
+  return parse(value, dateTimeNumericFormat, reference)
 }
 
-export function formatTimeNumeric(date: Date | string): string {
-  const value = new Date(date)
-
+export function formatTimeNumeric(value: Date | string): string {
   return formatDate(value, timeNumericFormat)
 }
 
-export function parseTimeNumeric(input: string, reference: Date = new Date()): Date {
-  return parse(input, timeNumericFormat, reference)
+export function parseTimeNumeric(value: string, reference: Date = new Date()): Date {
+  return parse(value, timeNumericFormat, reference)
 }
 
-export function formatDateTimeRelative(date: Date | string, comparedTo?: Date | string): string {
-  const value = new Date(date)
+export function formatDateTimeRelative(value: Date | string, comparedTo: Date | string = new Date()): string {
+  const valueDate = new Date(value)
   const compareDate = comparedTo ? new Date(comparedTo) : new Date()
-  const seconds = differenceInSeconds(compareDate, value)
-  const past = isBefore(value, compareDate)
+  const seconds = differenceInSeconds(compareDate, valueDate)
+  const past = isBefore(valueDate, compareDate)
   const formatted = secondsToApproximateString(Math.abs(seconds))
 
   if (past) {
