@@ -34,10 +34,10 @@
 </template>
 
 <script lang="ts" setup>
-  import { formatDateTimeNumeric } from '@prefecthq/prefect-design'
   import { computed } from 'vue'
   import DeploymentIconText from './DeploymentIconText.vue'
   import { WorkQueue } from '@/models/WorkQueue'
+  import { formatDateTimeNumeric } from '@/utilities/dates'
 
   const props = defineProps<{
     workQueue: WorkQueue,
