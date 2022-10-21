@@ -5,7 +5,7 @@ import { MapFunction } from '@/services/Mapper'
 import { mapCamelToSnakeCase } from '@/utilities'
 
 export const mapDeploymentResponseToDeployment: MapFunction<DeploymentResponse, Deployment> = function(source: DeploymentResponse): Deployment {
-  const schema = this.map('SchemaResponse', source.parameter_openapi_schema, 'Schema')
+  const schema = this.map('SchemaResponse', source.parameter_openapi_schema ?? {}, 'Schema')
   const values = this.map('SchemaValuesResponse', { values: source.parameters, schema }, 'SchemaValues')
 
   return new Deployment({
