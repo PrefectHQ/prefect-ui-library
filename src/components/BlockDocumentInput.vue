@@ -5,7 +5,7 @@
     <template v-if="blockDocuments.length">
       <BlockDocumentsSelect v-model:selected="model" v-bind="{ blockDocuments }" class="block-document-input__select" />
     </template>
-    <router-link v-if="blockTypeSlug" :to="blockCatalogCreateRoute(blockTypeSlug)">
+    <router-link v-if="blockTypeSlug" :to="withRedirect(blockCatalogCreateRoute(blockTypeSlug))">
       <p-button inset>
         Add <p-icon icon="PlusIcon" />
       </p-button>
@@ -21,6 +21,7 @@
   import { blockCatalogCreateRouteKey } from '@/router/routes'
   import { blockTypesApiKey } from '@/services'
   import { inject } from '@/utilities'
+  import { withRedirect } from '@/utilities/routes'
 
   const props = defineProps<{
     modelValue: string | null | undefined,
