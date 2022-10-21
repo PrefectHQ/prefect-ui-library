@@ -1,5 +1,6 @@
 import { CreatedBy } from '@/models/CreatedBy'
 import { Schedule } from '@/models/Schedule'
+import { UpdatedBy } from '@/models/UpdatedBy'
 import { Schema, SchemaValues } from '@/types/schemas'
 
 export interface IDeployment {
@@ -7,7 +8,7 @@ export interface IDeployment {
   created: Date,
   createdBy: CreatedBy | null,
   updated: Date,
-  updatedBy: CreatedBy | null,
+  updatedBy: UpdatedBy | null,
   name: string,
   version: string,
   description: string | null,
@@ -30,7 +31,7 @@ export class Deployment implements IDeployment {
   public created: Date
   public createdBy: CreatedBy | null
   public updated: Date
-  public updatedBy: CreatedBy | null
+  public updatedBy: UpdatedBy | null
   public name: string
   public version: string
   public description: string | null

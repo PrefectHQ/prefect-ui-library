@@ -37,6 +37,7 @@ import { mapServerStateTypeToStateType, mapStateTypeToServerStateType } from '@/
 import { mapTaskInputToTaskInputResponse, mapTaskInputResponseToTaskInput } from '@/maps/taskInput'
 import { mapTaskRunToTaskRunResponse, mapTaskRunResponseToTaskRun } from '@/maps/taskRun'
 import { mapUiFlowRunHistoryResponseToUiFlowRunHistory } from '@/maps/uiFlowRunHistory'
+import { mapUpdatedByToUpdatedByResponse, mapUpdatedByResponseToUpdatedBy } from '@/maps/updatedBy'
 import { mapWorkQueueToWorkQueueResponse, mapWorkQueueResponseToWorkQueue, mapWorkQueueCreateToWorkQueueCreateRequest, mapWorkQueueEditToWorkQueueEditRequest } from '@/maps/workQueue'
 import { mapWorkQueueFilterToWorkQueueFilterResponse, mapWorkQueueFilterResponseToWorkQueueFilter } from '@/maps/workQueueFilter'
 
@@ -102,6 +103,8 @@ export const maps = {
   TaskRunResponse: { TaskRun: mapTaskRunResponseToTaskRun },
   UiFlowRunHistory: { ScatterPlotItem: mapUiFlowRunHistoryToScatterPlotItem },
   UiFlowRunHistoryResponse: { UiFlowRunHistory: mapUiFlowRunHistoryResponseToUiFlowRunHistory },
+  UpdatedBy: { UpdatedByResponse: mapUpdatedByToUpdatedByResponse },
+  UpdatedByResponse: { UpdatedBy: mapUpdatedByResponseToUpdatedBy },
   WorkQueue: { WorkQueueResponse: mapWorkQueueToWorkQueueResponse },
   WorkQueueCreate: { WorkQueueCreateRequest: mapWorkQueueCreateToWorkQueueCreateRequest },
   WorkQueueEdit: { WorkQueueEditRequest: mapWorkQueueEditToWorkQueueEditRequest },

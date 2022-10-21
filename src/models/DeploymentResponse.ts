@@ -1,3 +1,4 @@
+import { UpdatedByResponse } from './api/UpdatedByResponse'
 import { CreatedByResponse } from '@/models/api/CreatedByResponse'
 import { SchemaResponse } from '@/models/api/SchemaResponse'
 import { ScheduleResponse } from '@/models/ScheduleResponse'
@@ -10,7 +11,7 @@ export type DeploymentResponse = {
   created: DateString,
   created_by: CreatedByResponse | null,
   updated: DateString,
-  updated_by: CreatedByResponse | null,
+  updated_by: UpdatedByResponse | null,
   name: string,
   version: string,
   description: string | null,
