@@ -22,11 +22,12 @@
 </template>
 
 <script lang="ts" setup>
-  import { PCode, formatDate } from '@prefecthq/prefect-design'
+  import { PCode } from '@prefecthq/prefect-design'
   import { isSameDay } from 'date-fns'
   import { computed } from 'vue'
   import LogRow from '@/components/LogRow.vue'
   import { Log } from '@/models/Log'
+  import { formatDate } from '@/utilities/dates'
 
   const props = defineProps<{
     logs: Log[],

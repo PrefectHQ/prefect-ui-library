@@ -1,9 +1,9 @@
-import { parseDateTimeNumeric } from '@prefecthq/prefect-design'
 import { SavedSearchFilter } from '@/models/SavedSearch'
 import { StateType } from '@/models/StateType'
 import { MapFunction } from '@/services/Mapper'
 import { FlowRunFilters } from '@/types/filter'
 import { asArray } from '@/utilities/arrays'
+import { parseDateTimeNumeric } from '@/utilities/dates'
 import { isString } from '@/utilities/strings'
 
 export const mapSavedSearchFilterToFlowRunFilters: MapFunction<SavedSearchFilter, FlowRunFilters> = function(source: SavedSearchFilter): FlowRunFilters {

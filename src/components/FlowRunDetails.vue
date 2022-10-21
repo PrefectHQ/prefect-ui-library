@@ -37,10 +37,11 @@
 </template>
 
 <script lang="ts" setup>
-  import { PKeyValue, PTags, formatDateTimeNumeric } from '@prefecthq/prefect-design'
+  import { PKeyValue, PTags } from '@prefecthq/prefect-design'
   import  WorkQueueIconText  from '@/components/WorkQueueIconText.vue'
   import { useCan } from '@/compositions/useCan'
   import { FlowRun } from '@/models/FlowRun'
+  import { formatDateTimeNumeric } from '@/utilities/dates'
 
   defineProps<{
     flowRun: FlowRun,
