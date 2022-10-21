@@ -19,6 +19,7 @@
     <SortSections />
     <StatesSection />
     <ToggleSection />
+    <TimezonesSection />
   </p-layout-default>
 </template>
 
@@ -42,5 +43,6 @@
   import SearchesSection from '../sections/SearchesSection.vue'
   import SortSections from '../sections/SortSections.vue'
   import StatesSection from '../sections/StatesSection.vue'
+  import TimezonesSection from '../sections/TimezonesSection.vue'
   import ToggleSection from '../sections/ToggleSection.vue'
 </script>
