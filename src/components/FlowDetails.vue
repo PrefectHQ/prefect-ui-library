@@ -13,8 +13,8 @@
 </template>
 
 <script lang="ts" setup>
-  import { formatDateTimeNumeric } from '@prefecthq/prefect-design'
   import { Flow } from '@/models/Flow'
+  import { formatDateTimeNumeric } from '@/utilities/dates'
 
   defineProps<{
     flow: Flow,

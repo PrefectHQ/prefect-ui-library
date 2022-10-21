@@ -73,7 +73,8 @@
 </template>
 
 <script lang="ts" setup>
-  import { formatDateTimeNumeric, showToast, PLoadingIcon } from '@prefecthq/prefect-design'
+  import { showToast, PLoadingIcon } from '@prefecthq/prefect-design'
+  import {formatDateTimeNumeric} from '@/utilities/dates'
   import { ref, computed } from 'vue'
   import ScheduleFieldset from './ScheduleFieldset.vue'
   import WorkQueueIconText from './WorkQueueIconText.vue'

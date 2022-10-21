@@ -23,7 +23,7 @@ export type DeploymentResponse = {
   manifest_path: string | null,
   path: string | null,
   entrypoint: string | null,
-  parameter_openapi_schema: SchemaResponse,
+  parameter_openapi_schema: SchemaResponse | null,
   storage_document_id: string | null,
   infrastructure_document_id: string | null,
   work_queue_name: string | null,

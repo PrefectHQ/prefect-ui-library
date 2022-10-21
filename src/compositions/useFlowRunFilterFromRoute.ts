@@ -1,4 +1,3 @@
-import { formatDateTimeNumeric, parseDateTimeNumeric } from '@prefecthq/prefect-design'
 import { useDebouncedRef, useRouteQueryParam } from '@prefecthq/vue-compositions'
 import { addDays, endOfToday, startOfToday, subDays } from 'date-fns'
 import { computed, Ref } from 'vue'
@@ -8,6 +7,7 @@ import { StateType } from '@/models/StateType'
 import { FlowRunFilters, FlowRunFiltersInRoute } from '@/types/filter'
 import { FlowRunSortValues } from '@/types/SortOptionTypes'
 import { UnionFilters } from '@/types/UnionFilters'
+import { formatDateTimeNumeric, parseDateTimeNumeric } from '@/utilities/dates'
 
 export type UseFlowRunFilterFromRoute = {
   name: Ref<string>,
