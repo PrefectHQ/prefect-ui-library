@@ -1,6 +1,6 @@
 <template>
   <p-button v-if="canRestart" :loading="restartingRun" inset @click="open">
-    Retry <p-icon icon="RefreshIcon" />
+    Restart <p-icon icon="RefreshIcon" />
   </p-button>
   <p-modal v-model:showModal="showModal" :title="restartModalTitle">
     <p-button @click="restartFromFailed">
