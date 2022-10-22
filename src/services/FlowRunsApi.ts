@@ -1,5 +1,5 @@
 import { InjectionKey } from 'vue'
-import { State, StateResponse } from '@/models'
+import { State, StateDetails, StateResponse } from '@/models'
 import { FlowRun } from '@/models/FlowRun'
 import { FlowRunGraphResponse } from '@/models/FlowRunGraphResponse'
 import { FlowRunHistoryResponse } from '@/models/FlowRunHistoryResponse'
@@ -41,7 +41,7 @@ export class FlowRunsApi extends Api {
       .then(({ data }) => mapper.map('FlowRunGraphResponse', data, 'GraphNode'))
   }
 
-  public setFlowRunState(id: string, body: any): Promise<State> {
+  public setFlowRunState(id: string, body: State): Promise<State> {
     return this.post<StateResponse>(`/${id}`, body)
       .then(({ data }) => mapper.map('StateResponse', data, 'State'))
   }

@@ -15,6 +15,14 @@
         @delete="deleteFlowRun(flowRun.id)"
       />
     </template>
+    <slot>
+      <div class="page-heading-flow-run__header-meta">
+        <StateBadge :state="flowRun.state" />
+        <DurationIconText :duration="flowRun.duration" />
+        <FlowIconText :flow-id="flowRun.flowId" />
+        <FlowRunStartTime :flow-run="flowRun" />
+      </div>
+    </slot>
   </page-heading>
 </template>
 
