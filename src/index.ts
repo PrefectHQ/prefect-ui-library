@@ -16,10 +16,13 @@ import '@/styles/style.css'
 
 import { ToastPlugin } from '@prefecthq/prefect-design'
 import { App, Plugin } from 'vue'
+import { clearOldCacheKeys } from '@/utilities/cache'
 
 const plugin: Plugin = {
   install(app: App) {
     app.use(ToastPlugin)
+
+    clearOldCacheKeys()
   },
 }
 

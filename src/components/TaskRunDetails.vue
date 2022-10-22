@@ -40,8 +40,9 @@
 </template>
 
 <script lang="ts" setup>
-  import { PKeyValue, PTags, formatDateTimeNumeric } from '@prefecthq/prefect-design'
+  import { PKeyValue, PTags } from '@prefecthq/prefect-design'
   import { TaskRun } from '@/models/TaskRun'
+  import { formatDateTimeNumeric } from '@/utilities/dates'
   import { secondsToApproximateString } from '@/utilities/seconds'
 
   defineProps<{

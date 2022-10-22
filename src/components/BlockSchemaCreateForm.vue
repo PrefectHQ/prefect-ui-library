@@ -18,13 +18,16 @@
 </template>
 
 <script lang="ts" setup>
+  import { useSessionStorage } from '@prefecthq/vue-compositions'
   import { useField } from 'vee-validate'
+  import { computed, watchEffect } from 'vue'
   import SchemaFormFields from './SchemaFormFields.vue'
   import SubmitButton from './SubmitButton.vue'
   import { useForm } from '@/compositions/useForm'
   import { BlockDocumentCreateNamed } from '@/models/BlockDocumentCreate'
   import { BlockSchema } from '@/models/BlockSchema'
   import { getSchemaDefaultValues } from '@/services/schemas/utilities'
+  import { getCacheKey } from '@/utilities/cache'
   import { fieldRules, isHandle, isRequired } from '@/utilities/validation'
 
   const props = defineProps<{
@@ -36,16 +39,29 @@
     (event: 'cancel'): void,
   }>()
 
-  const { handleSubmit } = useForm<BlockDocumentCreateNamed>({
-    initialValues: {
-      name: '',
-      data: getSchemaDefaultValues(props.blockSchema.fields),
-      blockSchema: props.blockSchema,
-    },
+  const storageKey = computed(() => getCacheKey(`block-schema-form-${props.blockSchema.id}`))
+
+  const { initialValue: initialValues, remove: removeFromStorage, set: setStorageValue } = useSessionStorage(storageKey.value, {
+    name: '',
+    data: getSchemaDefaultValues(props.blockSchema.fields),
+    blockSchema: props.blockSchema,
+  })
+
+  const { values, handleSubmit } = useForm<BlockDocumentCreateNamed>({
+    initialValues,
   })
 
   const { value: name, meta: nameState, errorMessage: nameError } = useField<string>('name', fieldRules('Name', isRequired, isHandle))
 
-  const submit = handleSubmit(value => emit('submit', value))
-  const cancel = (): void => emit('cancel')
+  watchEffect(() => setStorageValue(values))
+
+  const submit = handleSubmit(value => {
+    removeFromStorage()
+    emit('submit', value)
+  })
+
+  const cancel = (): void => {
+    removeFromStorage()
+    emit('cancel')
+  }
 </script>

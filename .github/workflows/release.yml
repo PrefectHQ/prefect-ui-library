@@ -14,7 +14,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps: 
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v2
 
       - name: Check Package Version
         uses: EndBug/version-check@v2.1.0
@@ -34,7 +34,9 @@ jobs:
     environment: 'prod'
 
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
 
       - name: Read .nvmrc
         run: echo "##[set-output name=NVMRC;]$(cat .nvmrc)"

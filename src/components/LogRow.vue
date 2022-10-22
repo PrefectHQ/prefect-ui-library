@@ -20,11 +20,11 @@
 </template>
 
 <script lang="ts" setup>
-  import { formatTimeNumeric } from '@prefecthq/prefect-design'
   import { computed } from 'vue'
   import LogLevelLabel from './LogLevelLabel.vue'
   import { useTaskRun } from '@/compositions'
   import { Log } from '@/models'
+  import { formatTimeNumeric } from '@/utilities/dates'
 
   const props = defineProps<{
     log: Log,
