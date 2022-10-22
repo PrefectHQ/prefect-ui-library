@@ -6,7 +6,6 @@ import { FlowRunHistoryResponse } from '@/models/FlowRunHistoryResponse'
 import { FlowRunResponse } from '@/models/FlowRunResponse'
 import { GraphNode } from '@/models/GraphNode'
 import { RunHistory } from '@/models/RunHistory'
-import { State } from '@/models/State'
 import { mapper } from '@/services/Mapper'
 import { FlowRunsHistoryFilter, UnionFilters } from '@/types/UnionFilters'
 
@@ -45,7 +44,7 @@ export class WorkspaceFlowRunsApi extends WorkspaceApi {
   }
 
   public setFlowRunState(id: string, body: StateUpdate): Promise<void> {
-    return this.post<State>(`/${id}/set_state`, body)
+    return this.post(`/${id}/set_state`, body)
   }
 
   public deleteFlowRun(flowRunId: string): Promise<void> {
