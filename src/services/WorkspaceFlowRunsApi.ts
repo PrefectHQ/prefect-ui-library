@@ -44,9 +44,8 @@ export class WorkspaceFlowRunsApi extends WorkspaceApi {
     return mapper.map('FlowRunGraphResponse', data, 'GraphNode')
   }
 
-  public setFlowRunState(id: string, body: StateUpdate): Promise<StateUpdate> {
-    return this.post<StateResponse>(`/${id}/set_state`, body)
-      .then(({ data }) => mapper.map('StateResponse', data, 'State'))
+  public setFlowRunState(id: string, body: StateUpdate): Promise<void> {
+    return this.post<State>(`/${id}/set_state`, body)
   }
 
   public deleteFlowRun(flowRunId: string): Promise<void> {
