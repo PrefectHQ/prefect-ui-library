@@ -1,5 +1,4 @@
 import { InjectionKey } from 'vue'
-import { State, StateResponse, StateUpdate } from '@/models'
 import { FlowRun } from '@/models/FlowRun'
 import { FlowRunGraphResponse } from '@/models/FlowRunGraphResponse'
 import { FlowRunHistoryResponse } from '@/models/FlowRunHistoryResponse'
@@ -39,11 +38,6 @@ export class FlowRunsApi extends Api {
   public getFlowRunsGraph(id: string): Promise<GraphNode[]> {
     return this.get<FlowRunGraphResponse[]>(`/${id}/graph`)
       .then(({ data }) => mapper.map('FlowRunGraphResponse', data, 'GraphNode'))
-  }
-
-  public setFlowRunState(id: string, body: StateUpdate): Promise<State> {
-    return this.post<StateResponse>(`/${id}`, body)
-      .then(({ data }) => mapper.map('StateResponse', data, 'State'))
   }
 
   public deleteFlowRun(flowRunId: string): Promise<void> {

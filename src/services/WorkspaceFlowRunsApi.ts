@@ -1,5 +1,5 @@
 import { WorkspaceApi } from './WorkspaceApi'
-import { StateUpdate, StateResponse } from '@/models'
+import { StateUpdate } from '@/models'
 import { FlowRun } from '@/models/FlowRun'
 import { FlowRunGraphResponse } from '@/models/FlowRunGraphResponse'
 import { FlowRunHistoryResponse } from '@/models/FlowRunHistoryResponse'
