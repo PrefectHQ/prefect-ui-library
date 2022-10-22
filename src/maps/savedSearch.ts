@@ -1,8 +1,8 @@
-import { formatDateTimeNumeric } from '@prefecthq/prefect-design'
 import { addDays, endOfToday, startOfToday, subDays } from 'date-fns'
 import { SavedSearchFilterResponse, SavedSearchResponse } from '@/models/api/SavedSearchResponse'
 import { SavedSearch, SavedSearchFilter } from '@/models/SavedSearch'
 import { MapFunction } from '@/services/Mapper'
+import { formatDateTimeNumeric } from '@/utilities/dates'
 
 export const mapSavedSearchResponseToSavedSearch: MapFunction<SavedSearchResponse, SavedSearch> = function(source: SavedSearchResponse): SavedSearch {
   return new SavedSearch({

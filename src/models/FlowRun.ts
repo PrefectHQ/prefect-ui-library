@@ -1,7 +1,7 @@
 import { State } from '@/models/State'
 import { StateType } from '@/models/StateType'
 import { SchemaValues } from '@/types/schemas'
-import { secondsToApproximateString } from '@/utilities'
+import { secondsToApproximateString } from '@/utilities/seconds'
 
 export interface IFlowRun {
   id: string,

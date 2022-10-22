@@ -23,7 +23,9 @@
 </template>
 
 <script lang="ts" setup>
-  import { CheckboxModel, secondsToApproximateString, formatDateTimeNumeric } from '@prefecthq/prefect-design'
+import {formatDateTimeNumeric} from '@/utilities/dates'
+  import { secondsToApproximateString } from '@/utilities/seconds'
+  import { CheckboxModel } from '@prefecthq/prefect-design'
   import { computed } from 'vue'
   import StateBadge from '@/components/StateBadge.vue'
   import StateListItem from '@/components/StateListItem.vue'

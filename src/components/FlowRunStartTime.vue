@@ -15,8 +15,8 @@
 </template>
 
 <script lang="ts" setup>
-  import { formatDateTimeNumeric } from '@prefecthq/prefect-design'
   import { FlowRun } from '@/models/FlowRun'
+  import { formatDateTimeNumeric } from '@/utilities/dates'
 
   defineProps<{
     flowRun: FlowRun,
