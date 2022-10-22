@@ -58,7 +58,7 @@
   const restartFromFailed = async (): Promise<void>=> {
     restartingRun.value = true
     try {
-      await api.flowRuns.setFlowRunState(props.flowRun.id, { state: { type: 'SCHEDULED', name: 'Restarting', message: 'Restarted from the UI' } })
+      await api.flowRuns.setFlowRunState(props.flowRun.id, { state: { type: 'SCHEDULED', message: 'Restarted from the UI' } })
       showToast(localization.success.restartRun, 'success')
     } catch (error) {
       console.error(error)

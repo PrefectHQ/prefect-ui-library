@@ -1,10 +1,10 @@
 import { WorkspaceApi } from './WorkspaceApi'
-import { StateResponse, State } from '@/models'
+import { StateResponse, State, StateUpdate } from '@/models'
 import { TaskRun } from '@/models/TaskRun'
 import { TaskRunResponse } from '@/models/TaskRunResponse'
 import { mapper } from '@/services/Mapper'
 import { UnionFilters } from '@/types/UnionFilters'
-import { StateDetails } from 'dist/types/src/client'
+
 
 export class WorkspaceTaskRunsApi extends WorkspaceApi {
 
@@ -28,7 +28,7 @@ export class WorkspaceTaskRunsApi extends WorkspaceApi {
     return data
   }
 
-  public setTaskRunState(id: string, body: State): Promise<State> {
+  public setTaskRunState(id: string, body: StateUpdate): Promise<State> {
     return this.post<StateResponse>(`/${id}/set_state`, body)
       .then(({ data }) => mapper.map('StateResponse', data, 'State'))
   }
