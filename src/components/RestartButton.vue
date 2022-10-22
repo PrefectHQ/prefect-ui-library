@@ -3,9 +3,11 @@
     Restart <p-icon icon="RefreshIcon" />
   </p-button>
   <p-modal v-model:showModal="showModal" :title="restartModalTitle">
-    <p-button @click="restartFromFailed">
-      Restart
-    </p-button>
+    <template #actions>
+      <p-button @click="restartFromFailed">
+        Restart
+      </p-button>
+    </template>
   </p-modal>
 </template>
 
@@ -18,7 +20,7 @@
   import { FlowRun, terminalStateType } from '@/models'
   import {  inject, workspaceApiKey } from '@/utilities'
 
-  const { showModal, open } = useShowModal()
+  const { showModal, open, close } = useShowModal()
   const props = defineProps<{
     flowRun: FlowRun,
   }>()
@@ -38,6 +40,7 @@
       showToast(localization.error.restartRun, 'error')
     } finally {
       restartingRun.value = false
+      close()
     }
 
   }
