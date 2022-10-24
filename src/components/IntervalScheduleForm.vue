@@ -18,7 +18,7 @@
 
       <div class="interval-schedule-form__row">
         <p-label label="Start date" class="interval-schedule-form__column--span-2">
-          <p-date-input v-model="anchorDate" show-time />
+          <DateInput v-model="anchorDate" show-time />
         </p-label>
 
         <p-label label="Timezone" class="interval-schedule-form__column--span-2">
@@ -45,6 +45,7 @@
   import { useField } from 'vee-validate'
   import { computed, ref, withDefaults, watch, onMounted } from 'vue'
   import TimezoneSelect from './TimezoneSelect.vue'
+  import DateInput from '@/components/DateInput.vue'
   import { IntervalSchedule } from '@/models'
   import { toPluralString } from '@/utilities'
   import { IntervalOption, secondsToClosestIntervalOption, secondsToClosestIntervalValue, intervalOptionsToSecondsMap } from '@/utilities/timeIntervals'

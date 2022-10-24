@@ -1,5 +1,5 @@
 <template>
-  <p-date-input v-model="adjustedSelectedDate" />
+  <p-date-input v-model="adjustedSelectedDate" :show-time="showTime" />
 </template>
 
 <script lang="ts" setup>
@@ -9,6 +9,7 @@
 
   const props = defineProps<{
     modelValue: Date | null | undefined,
+    showTime?: boolean,
   }>()
 
   const emits = defineEmits<{

@@ -9,6 +9,7 @@
 <script lang="ts" setup>
   import { SelectOption } from '@prefecthq/prefect-design'
   import { computed } from 'vue'
+  import { utcTimezone } from '@/utilities/dates'
 
   const props = defineProps<{
     modelValue: string | null,
@@ -28,5 +29,5 @@
   })
 
   const timezones = Intl.supportedValuesOf('timeZone').map(timezone => ({ label: timezone, value: timezone }))
-  const options: SelectOption[] = [{ label: 'UTC', value: '-00:00' }, ...timezones]
+  const options: SelectOption[] = [{ label: 'UTC', value: utcTimezone }, ...timezones]
 </script>
