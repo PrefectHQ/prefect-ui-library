@@ -115,6 +115,7 @@ const featureFlags = [
   'access:organizations',
   'access:retention',
   'access:workos',
+  'access:scim',
   'access:selfServeOrgs',
   'access:auditLogs',
 ] as const
