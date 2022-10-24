@@ -36,7 +36,15 @@
 
     <p-key-value label="Created" :value="formatDateTimeNumeric(deployment.created)" :alternate="alternate" />
 
+    <template v-if="deployment.createdBy">
+      <p-key-value label="Created By" :value="deployment.createdBy.displayValue" :alternate="alternate" />
+    </template>
+
     <p-key-value label="Last Updated" :value="formatDateTimeNumeric(deployment.updated)" :alternate="alternate" />
+
+    <template v-if="deployment.updatedBy">
+      <p-key-value label="Updated By" :value="deployment.updatedBy.displayValue" :alternate="alternate" />
+    </template>
 
     <p-divider />
 
