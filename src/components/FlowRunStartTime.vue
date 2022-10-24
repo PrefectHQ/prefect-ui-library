@@ -16,7 +16,7 @@
 
 <script lang="ts" setup>
   import { FlowRun } from '@/models/FlowRun'
-  import { formatDateTimeNumeric, selectedTimezone } from '@/utilities/dates'
+  import { formatDateTimeNumeric } from '@/utilities/dates'
 
   defineProps<{
     flowRun: FlowRun,
