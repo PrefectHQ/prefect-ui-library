@@ -22,6 +22,7 @@ import { randomId } from './id'
 import { randomImage } from './image'
 import { randomLogLevel, randomLog } from './log'
 import { randomNotification } from './notification'
+import { randomNotificationCreate } from './notificationCreate'
 import { randomNumber } from './number'
 import { randomParameters } from './parameters'
 import { randomSchedule } from './schedule'
@@ -64,6 +65,7 @@ export const mocks = {
   log: randomLog,
   logLevel: randomLogLevel,
   notification: randomNotification,
+  notificationCreate: randomNotificationCreate,
   noun: randomNoun,
   number: randomNumber,
   paragraph: randomParagraph,
@@ -71,8 +73,8 @@ export const mocks = {
   runName: randomRunName,
   schedule: randomSchedule,
   schema: randomSchema,
-  schemaProperty: randomSchemaProperty,
   schemaProperties: randomSchemaProperties,
+  schemaProperty: randomSchemaProperty,
   sentence: randomSentence,
   state: randomState,
   stateType: randomStateType,
