@@ -4,7 +4,6 @@ import { TaskRunResponse } from '@/models/TaskRunResponse'
 import { mapper } from '@/services/Mapper'
 import { UnionFilters } from '@/types/UnionFilters'
 
-
 export class WorkspaceTaskRunsApi extends WorkspaceApi {
 
   protected routePrefix = '/task_runs'
