@@ -29,15 +29,13 @@
 <script lang="ts" setup>
   import { PIconButtonMenu } from '@prefecthq/prefect-design'
   import { computed } from 'vue'
-  import RestartMenu from './RestartMenu.vue'
-  import { PageHeading, CopyOverflowMenuItem, ConfirmDeleteModal } from '@/components'
+  import { StateBadge, PageHeading, DurationIconText, FlowIconText, CopyOverflowMenuItem, ConfirmDeleteModal, FlowRunStartTime, RestartMenu } from '@/components'
   import { useCan } from '@/compositions/useCan'
   import { useShowModal } from '@/compositions/useShowModal'
   import { FlowRun } from '@/models'
   import { flowRunsRouteKey } from '@/router'
   import { flowRunsApiKey } from '@/services'
   import { deleteItem, inject } from '@/utilities'
-
 
   const props = defineProps<{
     flowRun: FlowRun,
