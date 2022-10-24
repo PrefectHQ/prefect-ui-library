@@ -29,41 +29,8 @@ export const mapFlowRunResponseToFlowRun: MapFunction<FlowRunResponse, FlowRun> 
     tags: source.tags,
     runCount: source.run_count,
     created: this.map('string', source.created, 'Date'),
-    createdBy: this.map('CreatedByResponse', source.created_by, 'CreatedBy'),
+    createdBy: this.map('CreatedOrUpdatedByResponse', source.created_by, 'CreatedOrUpdatedBy'),
     updated: this.map('string', source.updated, 'Date'),
     workQueueName: source.work_queue_name,
   })
-}
-
-export const mapFlowRunToFlowRunResponse: MapFunction<FlowRun, FlowRunResponse> = function(source: FlowRun): FlowRunResponse {
-  return {
-    'id': source.id,
-    'deployment_id': source.deploymentId,
-    'flow_id': source.flowId,
-    'flow_version': source.flowVersion,
-    'idempotency_key': source.idempotencyKey,
-    'expected_start_time': this.map('Date', source.expectedStartTime, 'string'),
-    'next_scheduled_start_time': source.nextScheduledStartTime,
-    'parameters': source.parameters,
-    'auto_scheduled': source.autoScheduled,
-    'context': source.context,
-    'empirical_config': source.empiricalConfig,
-    'empirical_policy': source.empiricalPolicy,
-    'estimated_run_time': source.estimatedRunTime,
-    'estimated_start_time_delta': source.estimatedStartTimeDelta,
-    'total_run_time': source.totalRunTime,
-    'start_time': this.map('Date', source.startTime, 'string'),
-    'end_time': this.map('Date', source.endTime, 'string'),
-    'name': source.name,
-    'parent_task_run_id': source.parentTaskRunId,
-    'state_id': source.stateId,
-    'state_type': this.map('StateType', source.stateType, 'ServerStateType'),
-    'state': this.map('State', source.state, 'StateResponse'),
-    'tags': source.tags,
-    'run_count': source.runCount,
-    'created': this.map('Date', source.created, 'string'),
-    'created_by': this.map('CreatedBy', source.createdBy, 'CreatedByResponse'),
-    'updated': this.map('Date', source.updated, 'string'),
-    'work_queue_name': source.workQueueName,
-  }
 }

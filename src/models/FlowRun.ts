@@ -1,4 +1,4 @@
-import { CreatedBy } from '@/models/CreatedBy'
+import { CreatedOrUpdatedBy } from '@/models/CreatedOrUpdatedBy'
 import { State } from '@/models/State'
 import { StateType } from '@/models/StateType'
 import { SchemaValues } from '@/types/schemas'
@@ -30,7 +30,7 @@ export interface IFlowRun {
   tags: string[] | null,
   runCount: number | null,
   created: Date,
-  createdBy: CreatedBy | null,
+  createdBy: CreatedOrUpdatedBy | null,
   updated: Date,
   workQueueName: string | null,
 }
@@ -62,7 +62,7 @@ export class FlowRun implements IFlowRun {
   public tags: string[] | null
   public runCount: number | null
   public created: Date
-  public createdBy: CreatedBy | null
+  public createdBy: CreatedOrUpdatedBy | null
   public updated: Date
 
   public constructor(flowRun: IFlowRun) {

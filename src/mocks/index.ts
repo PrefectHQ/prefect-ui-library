@@ -9,7 +9,7 @@ import { blockSchemasApiFactory } from './blockSchemasApi'
 import { randomBlockType } from './blockType'
 import { blockTypesApiFactory } from './blockTypesApi'
 import { randomBoolean } from './boolean'
-import { randomCreatedBy } from './createdBy'
+import { randomCreatedOrUpdatedBy } from './createdOrUpdatedBy'
 import { randomDate, randomDateString } from './date'
 import { randomDeployment } from './deployment'
 import { randomEmail } from './email'
@@ -31,7 +31,6 @@ import { randomStateType } from './stateType'
 import { randomChar, randomString, randomSentence, randomParagraph, randomRunName, randomNoun } from './string'
 import { randomTaskRun } from './taskRun'
 import { randomUiFlowRunHistory } from './UiFlowRunHistory'
-import { randomUpdatedBy } from './updatedBy'
 import { randomUrl } from './url'
 import { randomWorkQueue, randomWorkQueueFilter } from './workQueue'
 import { randomWorkQueueCreate } from './workQueueCreate'
@@ -49,7 +48,7 @@ export const mocks = {
   blockTypesApi: blockTypesApiFactory,
   boolean: randomBoolean,
   char: randomChar,
-  createdBy: randomCreatedBy,
+  createdOrUpdatedBy: randomCreatedOrUpdatedBy,
   date: randomDate,
   dateString: randomDateString,
   deployment: randomDeployment,
@@ -80,7 +79,6 @@ export const mocks = {
   string: randomString,
   taskRun: randomTaskRun,
   uiFlowRunHistory: randomUiFlowRunHistory,
-  updatedBy: randomUpdatedBy,
   url: randomUrl,
   workQueue: randomWorkQueue,
   workQueueCreate: randomWorkQueueCreate,
