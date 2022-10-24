@@ -1,6 +1,7 @@
 <template>
   <p-icon-text class="flow-run-list-item-date" icon="CalendarIcon">
     <template v-if="flowRun.startTime">
+      {{ selectedTimezone ?? 'nothing' }}
       {{ formatDateTimeNumeric(flowRun.startTime) }}
       {{ flowRun.delta }}
     </template>
@@ -16,7 +17,7 @@
 
 <script lang="ts" setup>
   import { FlowRun } from '@/models/FlowRun'
-  import { formatDateTimeNumeric } from '@/utilities/dates'
+  import { formatDateTimeNumeric, selectedTimezone } from '@/utilities/dates'
 
   defineProps<{
     flowRun: FlowRun,

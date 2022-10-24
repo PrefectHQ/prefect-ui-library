@@ -9,6 +9,11 @@ const dateFormat = 'MMM do, yyyy'
 
 export const selectedTimezone = ref<string | null>(null)
 
+export const utcTimezone = '-00:00'
+export function timezoneIsUtc(timezone: string): timezone is typeof utcTimezone {
+  return timezone === utcTimezone
+}
+
 export const browserUtcOffset = -new Date().getTimezoneOffset()
 export const utcOffsetMilliseconds = computed(() => selectedTimezone.value === null ? minutesToMilliseconds(browserUtcOffset) : getTimezoneOffset(selectedTimezone.value))
 export const utcOffsetMinutes = computed(() => millisecondsToMinutes(utcOffsetMilliseconds.value))
