@@ -1,5 +1,6 @@
 export * from './api'
 export * from './arrays'
+export * from './cache'
 export * from './colorMode'
 export * from './components'
 export * from './copy'
