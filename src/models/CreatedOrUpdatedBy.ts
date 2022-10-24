@@ -1,4 +1,4 @@
-export type CreatedOrUpdatedByType = 'USER'|'BOT'|'DEPLOYMENT'
+export type CreatedOrUpdatedByType = 'USER' | 'BOT' | 'DEPLOYMENT'
 
 export type CreatedOrUpdatedBy = {
   id: string,
