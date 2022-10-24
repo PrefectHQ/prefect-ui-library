@@ -74,7 +74,6 @@
 
 <script lang="ts" setup>
   import { showToast, PLoadingIcon } from '@prefecthq/prefect-design'
-  import {formatDateTimeNumeric} from '@/utilities/dates'
   import { ref, computed } from 'vue'
   import ScheduleFieldset from './ScheduleFieldset.vue'
   import WorkQueueIconText from './WorkQueueIconText.vue'
@@ -85,6 +84,7 @@
   import { Schedule } from '@/models'
   import { Deployment } from '@/models/Deployment'
   import { deploymentsApiKey } from '@/services'
+  import { formatDateTimeNumeric } from '@/utilities/dates'
   import { inject } from '@/utilities/inject'
 
   const props = defineProps<{
