@@ -9,11 +9,3 @@ export const mapCreatedOrUpdatedByResponseToCreatedOrUpdatedBy: MapFunction<Crea
     type: source.type,
   }
 }
-
-export const mapCreatedOrUpdatedByToCreatedOrUpdatedByResponse: MapFunction<CreatedOrUpdatedBy, CreatedOrUpdatedByResponse> = function(source: CreatedOrUpdatedBy): CreatedOrUpdatedByResponse {
-  return {
-    'id': source.id,
-    'display_value': source.displayValue,
-    'type': source.type,
-  }
-}
