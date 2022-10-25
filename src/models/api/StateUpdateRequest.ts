@@ -1,7 +1,7 @@
 import { StateType } from '../StateType'
 
 export interface StateUpdateRequestDetails {
-  type: Uppercase<StateType>,
+  type: ServerStateType,
   name?: string,
   message?: string,
 }
