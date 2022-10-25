@@ -1,7 +1,7 @@
 <template>
   <page-heading class="page-heading-flow-run" :crumbs="crumbs">
     <template #actions>
-      <RestartMenu :flow-run="flowRun" />
+      <RetryMenu :flow-run="flowRun" />
       <p-icon-button-menu>
         <template #default>
           <copy-overflow-menu-item label="Copy ID" :item="flowRun.id" />
@@ -29,7 +29,7 @@
 <script lang="ts" setup>
   import { PIconButtonMenu } from '@prefecthq/prefect-design'
   import { computed } from 'vue'
-  import { StateBadge, PageHeading, DurationIconText, FlowIconText, CopyOverflowMenuItem, ConfirmDeleteModal, FlowRunStartTime, RestartMenu } from '@/components'
+  import { StateBadge, PageHeading, DurationIconText, FlowIconText, CopyOverflowMenuItem, ConfirmDeleteModal, FlowRunStartTime, RetryMenu } from '@/components'
   import { useCan } from '@/compositions/useCan'
   import { useShowModal } from '@/compositions/useShowModal'
   import { FlowRun } from '@/models'
