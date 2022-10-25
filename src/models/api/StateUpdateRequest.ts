@@ -1,4 +1,4 @@
-import { StateType } from '../StateType'
+import { ServerStateType } from '../StateType'
 
 export interface StateUpdateRequestDetails {
   type: ServerStateType,
