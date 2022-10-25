@@ -24,4 +24,7 @@ export const terminalStateType = [
 
 export type TerminalStateType = typeof terminalStateType[number]
 export type ServerTerminalStateType = Uppercase<TerminalStateType>
-export const isTerminalState = (value: string): value is TerminalStateType => terminalStateType.includes(value)
+
+export function isTerminalState(value: string): value is TerminalStateType {
+  terminalStateType.includes(value as TerminalStateType)
+}
