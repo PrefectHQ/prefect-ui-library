@@ -34,7 +34,13 @@
   }>()
   const can = useCan()
   const api = inject(workspaceApiKey)
-  const canretry = computed(()=> props.flowRun.stateType ? !!props.flowRun.deploymentId && !!terminalStateType.includes(props.flowRun.stateType) && can.update.flow_run : false)
+  const canRetry = computed(()=> {
+    if (!can.update.flow_run || !props.flowRun.stateType || !props.flowRun.deploymentId) {
+      return false
+    }
+
+    return terminalStateType.includes(props.flowRun.stateType)
+  })
   const retryingRun = ref(false)
   const popOver = ref<typeof PPopOver>()
   const retryButton = ref<typeof PButton>()
