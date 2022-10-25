@@ -10,7 +10,7 @@
   </p-button>
 
   <p-modal v-model:showModal="showModal" :title="retryModalTitle">
-    This will retry your flow run and any failed tasks.
+    {{ retryModalMessage }}
     <template #actions>
       <p-button @click="retryFromFailed">
         Retry
@@ -30,6 +30,7 @@
 
   const { showModal, open, close } = useShowModal()
   const retryModalTitle = computed(()=> `Retry ${props.flowRun.name}?`)
+  const retryModalMessage = computed(()=> `This will retry flow run ${props.flowRun.name}. Any task runs in a failed, cancelled or crashed state will be run again.`)
   const props = defineProps<{
     flowRun: FlowRun,
   }>()
