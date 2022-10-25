@@ -21,3 +21,6 @@ export const terminalStateType = [
   'failed',
   'crashed',
 ]
+
+export type TerminalStateType = typeof terminalStateType[number]
+export type ServerTerminalStateType = Uppercase<TerminalStateType>

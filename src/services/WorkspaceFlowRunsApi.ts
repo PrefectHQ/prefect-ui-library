@@ -1,5 +1,5 @@
 import { WorkspaceApi } from './WorkspaceApi'
-import { StateUpdate } from '@/models'
+import { StateUpdateRequest } from '@/models'
 import { FlowRun } from '@/models/FlowRun'
 import { FlowRunGraphResponse } from '@/models/FlowRunGraphResponse'
 import { FlowRunHistoryResponse } from '@/models/FlowRunHistoryResponse'
@@ -43,7 +43,7 @@ export class WorkspaceFlowRunsApi extends WorkspaceApi {
     return mapper.map('FlowRunGraphResponse', data, 'GraphNode')
   }
 
-  public setFlowRunState(id: string, body: StateUpdate): Promise<void> {
+  public setFlowRunState(id: string, body: StateUpdateRequest): Promise<void> {
     return this.post(`/${id}/set_state`, body)
   }
 
