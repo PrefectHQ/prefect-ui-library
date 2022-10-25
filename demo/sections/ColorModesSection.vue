@@ -11,7 +11,7 @@
   import { ColorMode } from '@/types/ColorMode'
   import { applyColorModeClass } from '@/utilities/colorMode'
 
-  const mode = ref<ColorMode>('default')
+  const mode = ref<ColorMode | null>(null)
 
   watchEffect(() => applyColorModeClass(mode.value))
 </script>

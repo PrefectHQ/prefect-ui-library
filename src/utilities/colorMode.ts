@@ -1,9 +1,7 @@
 import { ColorMode, colorModes } from '@/types/ColorMode'
 
-export const defaultColorMode: ColorMode = 'default'
-
-export function getColorModeClass(mode: ColorMode): string {
-  return `color-mode-${mode}`
+export function getColorModeClass(mode: ColorMode | null): string {
+  return `color-mode-${mode ?? 'default'}`
 }
 
 export function isColorMode(value: unknown): value is ColorMode {
@@ -14,8 +12,10 @@ export function isColorMode(value: unknown): value is ColorMode {
   return colorModes.includes(value as ColorMode)
 }
 
-export function applyColorModeClass(mode: ColorMode): void {
+export function applyColorModeClass(value: ColorMode | null): void {
   colorModes.forEach(mode => document.body.classList.remove(getColorModeClass(mode)))
 
-  document.body.classList.add(getColorModeClass(mode))
+  const classes = getColorModeClass(value)
+
+  document.body.classList.add(classes)
 }
