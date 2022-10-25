@@ -1,34 +1,36 @@
 <template>
-  <p-pop-over ref="popOver" class="retry-menu" auto-close :placement="placement" @keydown.esc="esc">
-    <template #target="{ toggle }">
-      <p-button
-        v-if="canRetry"
-        ref="retryButton"
-        class="retry-menu__retry-button"
-        inset
-        :loading="retryingRun"
-        @click="toggle"
-      >
-        Retry
-        <p-icon icon="RefreshIcon" />
+  <p-button
+    v-if="canRetry"
+    class="retry-menu__retry-button"
+    inset
+    :loading="retryingRun"
+    @click="open"
+  >
+    Retry
+    <p-icon icon="RefreshIcon" />
+  </p-button>
+
+  <p-modal v-model:showModal="showModal" :title="retryModalTitle">
+    This will restart your flow run and retry any failed tasks.
+    <template #actions>
+      <p-button @click="retryFromFailed">
+        Restart
       </p-button>
     </template>
-    <p-overflow-menu class="retry-menu__overflow-menu" @click="close">
-      <p-overflow-menu-item class="retry-menu__overflow-menu-item" @click="retryFromFailed">
-        Confirm retry
-      </p-overflow-menu-item>
-    </p-overflow-menu>
-  </p-pop-over>
+  </p-modal>
 </template>
 
-<script lang="ts" setup>
-  import {  showToast, PPopOver, PButton, positions } from '@prefecthq/prefect-design'
+  <script lang="ts" setup>
+  import {  showToast, PButton } from '@prefecthq/prefect-design'
   import { computed, ref } from 'vue'
   import { useWorkspaceApi } from '@/compositions'
   import { useCan } from '@/compositions/useCan'
+  import { useShowModal } from '@/compositions/useShowModal'
   import { localization } from '@/localization'
   import { FlowRun, terminalStateType } from '@/models'
 
+  const { showModal, open, close } = useShowModal()
+  const retryModalTitle = computed(()=> `Restart ${props.flowRun.name}?`)
   const props = defineProps<{
     flowRun: FlowRun,
   }>()
@@ -41,23 +43,6 @@
     return terminalStateType.includes(props.flowRun.stateType)
   })
   const retryingRun = ref(false)
-  const popOver = ref<typeof PPopOver>()
-  const retryButton = ref<typeof PButton>()
-  const placement = [positions.bottomRight, positions.bottomLeft, positions.topRight, positions.topLeft]
-
-  function close(): void {
-    if (popOver.value) {
-      popOver.value.close()
-    }
-  }
-
-  function esc(): void {
-    close()
-
-    if (retryButton.value) {
-      retryButton.value.el.focus()
-    }
-  }
 
   const retryFromFailed = async (): Promise<void>=> {
     retryingRun.value = true
@@ -73,16 +58,15 @@
     }
 
   }
-</script>
+  </script>
 
+  <style>
+    .retry-menu { @apply
+    inline-block
+    }
 
-<style>
-.retry-menu { @apply
-  inline-block
-}
-
-.retry-menu__overflow-menu { @apply
-  max-w-xs
-  my-2
-}
-</style>
+    .retry-menu__overflow-menu { @apply
+    max-w-xs
+    my-2
+    }
+  </style>
