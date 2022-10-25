@@ -1,7 +1,6 @@
 <template>
   <p-button
     v-if="canRetry"
-    class="retry-menu__retry-button"
     inset
     :loading="retryingRun"
     @click="open"
@@ -59,14 +58,3 @@
 
   }
   </script>
-
-  <style>
-    .retry-menu { @apply
-    inline-block
-    }
-
-    .retry-menu__overflow-menu { @apply
-    max-w-xs
-    my-2
-    }
-  </style>
