@@ -2,7 +2,7 @@
   <p-pop-over ref="popOver" class="retry-menu" auto-close :placement="placement" @keydown.esc="esc">
     <template #target="{ toggle }">
       <p-button
-        v-if="canretry"
+        v-if="canRetry"
         ref="retryButton"
         class="retry-menu__retry-button"
         inset
@@ -24,10 +24,10 @@
 <script lang="ts" setup>
   import {  showToast, PPopOver, PButton, positions } from '@prefecthq/prefect-design'
   import { computed, ref } from 'vue'
+  import { useWorkspaceApi } from '@/compositions'
   import { useCan } from '@/compositions/useCan'
   import { localization } from '@/localization'
   import { FlowRun, terminalStateType } from '@/models'
-  import {  inject, workspaceApiKey } from '@/utilities'
 
   const props = defineProps<{
     flowRun: FlowRun,
@@ -38,7 +38,6 @@
     if (!can.update.flow_run || !props.flowRun.stateType || !props.flowRun.deploymentId) {
       return false
     }
-
     return terminalStateType.includes(props.flowRun.stateType)
   })
   const retryingRun = ref(false)
@@ -59,7 +58,6 @@
       retryButton.value.el.focus()
     }
   }
-
 
   const retryFromFailed = async (): Promise<void>=> {
     retryingRun.value = true
