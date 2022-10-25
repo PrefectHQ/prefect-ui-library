@@ -26,7 +26,7 @@
   import { useCan } from '@/compositions/useCan'
   import { useShowModal } from '@/compositions/useShowModal'
   import { localization } from '@/localization'
-  import { FlowRun, terminalStateType } from '@/models'
+  import { FlowRun, isTerminalState } from '@/models'
 
   const { showModal, open, close } = useShowModal()
   const retryModalTitle = computed(()=> `Retry ${props.flowRun.name}?`)
@@ -36,11 +36,13 @@
   }>()
   const can = useCan()
   const api = useWorkspaceApi()
+
+
   const canRetry = computed(()=> {
     if (!can.update.flow_run || !props.flowRun.stateType || !props.flowRun.deploymentId) {
       return false
     }
-    return terminalStateType.includes(props.flowRun.stateType)
+    return isTerminalState(props.flowRun.stateType)
   })
   const retryingRun = ref(false)
 
