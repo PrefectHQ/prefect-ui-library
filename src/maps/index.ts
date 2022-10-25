@@ -94,7 +94,7 @@ export const maps = {
   StateHistoryResponse: { StateHistory: mapStateHistoryResponseToStateHistory },
   StateResponse: { State: mapStateResponseToState },
   StateType: { ServerStateType: mapStateTypeToServerStateType },
-  StateUpdate: { StateUpdate: mapStateUpdateToStateUpdateRequest },
+  StateUpdate: { StateUpdateRequest: mapStateUpdateToStateUpdateRequest },
   string: { Date: mapStringToDate, number: mapStringToNumber },
   TaskInput: { TaskInputResponse: mapTaskInputToTaskInputResponse },
   TaskInputResponse: { TaskInput: mapTaskInputResponseToTaskInput },
