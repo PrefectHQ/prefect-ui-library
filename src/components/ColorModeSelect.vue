@@ -14,6 +14,7 @@
   import { computed } from 'vue'
   import ColorModeSelectOption from './ColorModeSelectOption.vue'
   import { colorModes } from '@/types/ColorMode'
+  import { isColorMode } from '@/utilities/colorMode'
 
   const props = defineProps<{
     selected: string | null | undefined,
@@ -27,7 +28,7 @@
 
   const internalValue = computed({
     get() {
-      return props.selected ?? null
+      return isColorMode(props.selected) ? props.selected : null
     },
     set(value: string | null) {
       if (!value) {
