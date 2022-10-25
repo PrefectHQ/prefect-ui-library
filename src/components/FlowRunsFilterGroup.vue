@@ -2,7 +2,7 @@
   <div class="flow-runs-filter-group">
     <div class="flow-runs-filter-group__row">
       <p-label :label="media.hover ? 'Date Range' : ''">
-        <p-date-range-input v-model:startDate="internalStartDate" v-model:endDate="internalEndDate" clearable />
+        <DateRangeInput v-model:startDate="internalStartDate" v-model:endDate="internalEndDate" clearable />
       </p-label>
       <p-label label="States">
         <StateSelect v-model:selected="states" empty-message="All run states" />
@@ -28,6 +28,7 @@
 <script lang="ts" setup>
   import { media } from '@prefecthq/prefect-design'
   import { ref, watch } from 'vue'
+  import DateRangeInput from '@/components/DateRangeInput.vue'
   import DeploymentCombobox from '@/components/DeploymentCombobox.vue'
   import FlowCombobox from '@/components/FlowCombobox.vue'
   import SearchInput from '@/components/SearchInput.vue'

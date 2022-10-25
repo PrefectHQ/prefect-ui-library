@@ -23,8 +23,6 @@
 </template>
 
 <script lang="ts" setup>
-import {formatDateTimeNumeric} from '@/utilities/dates'
-  import { secondsToApproximateString } from '@/utilities/seconds'
   import { CheckboxModel } from '@prefecthq/prefect-design'
   import { computed } from 'vue'
   import StateBadge from '@/components/StateBadge.vue'
@@ -32,6 +30,8 @@ import {formatDateTimeNumeric} from '@/utilities/dates'
   import { TaskRun } from '@/models/TaskRun'
   import { taskRunRouteKey } from '@/router'
   import { inject } from '@/utilities'
+  import { formatDateTimeNumeric } from '@/utilities/dates'
+  import { secondsToApproximateString } from '@/utilities/seconds'
 
   const props = defineProps<{
     selected: CheckboxModel | null,

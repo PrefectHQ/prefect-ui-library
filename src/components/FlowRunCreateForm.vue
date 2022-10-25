@@ -43,7 +43,7 @@
       <template v-if="when == 'later'">
         <div class="flow-run-create-form__row">
           <p-label label="Date" :message="startErrorMessage" :state="startState">
-            <p-date-input v-model="start" show-time />
+            <DateInput v-model="start" show-time />
           </p-label>
           <p-label label="Timezone">
             <TimezoneSelect v-model="timezone" />
@@ -85,6 +85,7 @@
   import { computed, ref } from 'vue'
   import SchemaFormFields from './SchemaFormFields.vue'
   import TimezoneSelect from './TimezoneSelect.vue'
+  import DateInput from '@/components/DateInput.vue'
   import { useForm } from '@/compositions/useForm'
   import { Deployment, DeploymentFlowRunCreate } from '@/models'
   import { mocker } from '@/services'

@@ -1,8 +1,9 @@
-import { PDateInput, PNumberInput, PSelect, PTextInput } from '@prefecthq/prefect-design'
+import { PNumberInput, PSelect, PTextInput } from '@prefecthq/prefect-design'
 import { format, isValid, parse } from 'date-fns'
 import { SchemaPropertyComponentWithProps } from '../utilities'
 import { SchemaPropertyService } from './SchemaPropertyService'
-import { JsonInput } from '@/components'
+import DateInput from '@/components/DateInput.vue'
+import JsonInput from '@/components/JsonInput.vue'
 import { InvalidSchemaValueError } from '@/models'
 import { SchemaValue } from '@/types/schemas'
 import { isDate } from '@/utilities/dates'
@@ -74,9 +75,9 @@ export class SchemaPropertyString extends SchemaPropertyService {
 
     switch (this.property.format) {
       case 'date':
-        return this.withProps(PDateInput)
+        return this.withProps(DateInput)
       case 'date-time':
-        return this.withProps(PDateInput, { showTime: true })
+        return this.withProps(DateInput, { showTime: true })
       case 'json-string':
         return this.withProps(JsonInput)
       case 'time-delta':

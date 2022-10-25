@@ -27,6 +27,18 @@
         <p-tag-wrapper :tags="row.tags" justify="left" />
       </template>
 
+      <template #created-by="{ row }">
+        <span>
+          {{ row.createdBy ? row.createdBy.displayValue : null }}
+        </span>
+      </template>
+
+      <template #updated-by="{ row }">
+        <span>
+          {{ row.updatedBy ? row.updatedBy.displayValue : null }}
+        </span>
+      </template>
+
       <template #action-heading>
         <span />
       </template>
@@ -55,7 +67,7 @@
 </template>
 
 <script lang="ts" setup>
-  import { PTable, PTagWrapper, PEmptyResults, PLink } from '@prefecthq/prefect-design'
+  import { PTable, PTagWrapper, PEmptyResults, PLink, TableColumn } from '@prefecthq/prefect-design'
   import { useSubscription } from '@prefecthq/vue-compositions'
   import { computed, unref } from 'vue'
   import FlowCombobox from './FlowCombobox.vue'
@@ -87,7 +99,7 @@
     return !filterHasFlows && !filterHasFlowName
   })
 
-  const columns = [
+  const columns = computed<TableColumn[]>(() => [
     {
       property: 'name',
       label: 'Name',
@@ -103,10 +115,20 @@
       label: 'Tags',
     },
     {
+      property: 'createdBy',
+      label: 'Created By',
+      visible: deployments.value.some(deployment => deployment.createdBy !== null),
+    },
+    {
+      property: 'updatedBy',
+      label: 'Updated By',
+      visible: deployments.value.some(deployment => deployment.updatedBy !== null),
+    },
+    {
       label: 'Action',
       width: '42px',
     },
-  ]
+  ])
   const deploymentsSubscription = useSubscription(api.deployments.getDeployments, [unionFilter])
   const deployments = computed(() => deploymentsSubscription.response ?? [])
 
