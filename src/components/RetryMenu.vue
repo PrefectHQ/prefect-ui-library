@@ -33,7 +33,7 @@
     flowRun: FlowRun,
   }>()
   const can = useCan()
-  const api = inject(workspaceApiKey)
+  const api = useWorkspaceApi()
   const canRetry = computed(()=> {
     if (!can.update.flow_run || !props.flowRun.stateType || !props.flowRun.deploymentId) {
       return false
