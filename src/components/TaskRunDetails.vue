@@ -2,7 +2,7 @@
   <div class="task-run-details">
     <p-key-value label="Task Run ID" :value="taskRun.id" :alternate="alternate" />
 
-    <p-key-value label="Flow Run ID" :value="taskRun.id" :alternate="alternate" />
+    <p-key-value label="Flow Run ID" :value="taskRun.flowRunId" :alternate="alternate" />
 
     <p-key-value label="Created" :value="formatDateTimeNumeric(taskRun.created)" :alternate="alternate" />
 

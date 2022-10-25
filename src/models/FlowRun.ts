@@ -1,3 +1,4 @@
+import { CreatedOrUpdatedBy } from '@/models/CreatedOrUpdatedBy'
 import { State } from '@/models/State'
 import { StateType } from '@/models/StateType'
 import { SchemaValues } from '@/types/schemas'
@@ -29,6 +30,7 @@ export interface IFlowRun {
   tags: string[] | null,
   runCount: number | null,
   created: Date,
+  createdBy: CreatedOrUpdatedBy | null,
   updated: Date,
   workQueueName: string | null,
 }
@@ -60,6 +62,7 @@ export class FlowRun implements IFlowRun {
   public tags: string[] | null
   public runCount: number | null
   public created: Date
+  public createdBy: CreatedOrUpdatedBy | null
   public updated: Date
 
   public constructor(flowRun: IFlowRun) {
@@ -88,6 +91,7 @@ export class FlowRun implements IFlowRun {
     this.tags = flowRun.tags
     this.runCount = flowRun.runCount
     this.created = flowRun.created
+    this.createdBy = flowRun.createdBy
     this.updated = flowRun.updated
     this.workQueueName = flowRun.workQueueName
   }

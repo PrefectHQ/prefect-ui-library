@@ -65,7 +65,7 @@
 
     if (searchTermDebounced.value) {
       taskRunsFilter.name = {
-        any_: [searchTermDebounced.value],
+        like_: searchTermDebounced.value,
       }
     }
 

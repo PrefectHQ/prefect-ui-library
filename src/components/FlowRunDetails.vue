@@ -18,6 +18,10 @@
 
     <p-key-value label="Created" :value="formatDateTimeNumeric(flowRun.created)" :alternate="alternate" />
 
+    <template v-if="flowRun.createdBy">
+      <p-key-value label="Created By" :value="flowRun.createdBy.displayValue" :alternate="alternate" />
+    </template>
+
     <p-key-value label="Updated" :value="formatDateTimeNumeric(flowRun.updated)" :alternate="alternate" />
 
     <p-key-value label="Flow Version" :value="flowRun.flowVersion" :alternate="alternate" />

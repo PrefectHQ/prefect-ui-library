@@ -8,7 +8,9 @@ export const randomDeployment: MockFunction<Deployment, [Partial<Deployment>?]> 
   return {
     id: this.create('id'),
     created: this.create('date'),
+    createdBy: this.create('createdOrUpdatedBy'),
     updated: this.create('date'),
+    updatedBy: this.create('createdOrUpdatedBy'),
     name: this.create('noun'),
     version: this.create('string'),
     description: this.create('paragraph'),
