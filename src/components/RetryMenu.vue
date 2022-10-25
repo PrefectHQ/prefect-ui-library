@@ -47,7 +47,7 @@
   const retryFromFailed = async (): Promise<void>=> {
     retryingRun.value = true
     try {
-      await api.flowRuns.setFlowRunState(props.flowRun.id, { state: { type: 'SCHEDULED', name: 'AwaitingRetry', message: 'retryed from the UI' } })
+      await api.flowRuns.retryFlowRun(props.flowRun.id)
       showToast(localization.success.retryRun, 'success')
     } catch (error) {
       console.error(error)

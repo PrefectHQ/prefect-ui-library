@@ -43,6 +43,10 @@ export class WorkspaceFlowRunsApi extends WorkspaceApi {
     return mapper.map('FlowRunGraphResponse', data, 'GraphNode')
   }
 
+  public retryFlowRun(id: string): Promise<void> {
+    return this.setFlowRunState(id, { state: { type: 'SCHEDULED', name: 'AwaitingRetry', message: 'Retry from the UI' } })
+  }
+
   public setFlowRunState(id: string, body: StateUpdateRequest): Promise<void> {
     return this.post(`/${id}/set_state`, body)
   }
