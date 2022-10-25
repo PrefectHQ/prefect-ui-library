@@ -1,10 +1,11 @@
 import { StateType } from '../StateType'
-export interface StateUpdateDetails {
+
+export interface StateUpdateRequestDetails {
   type: Uppercase<StateType>,
   name?: string,
   message?: string,
 }
 
 export type StateUpdateRequest = {
-  state: StateUpdateDetails,
+  state: StateUpdateRequestDetails,
 }

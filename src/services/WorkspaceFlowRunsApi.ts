@@ -44,11 +44,12 @@ export class WorkspaceFlowRunsApi extends WorkspaceApi {
   }
 
   public retryFlowRun(id: string): Promise<void> {
-    return this.setFlowRunState(id, { state: { type: 'SCHEDULED', name: 'AwaitingRetry', message: 'Retry from the UI' } })
+    return this.setFlowRunState(id, { state: { type: 'scheduled', name: 'AwaitingRetry', message: 'Retry from the UI' } })
   }
 
   public setFlowRunState(id: string, body: StateUpdateRequest): Promise<void> {
-    return this.post(`/${id}/set_state`, body)
+    const requestBody = mapper.map('StateUpdate', body, 'StateUpdateRequest')
+    return this.post(`/${id}/set_state`, requestBody)
   }
 
   public deleteFlowRun(flowRunId: string): Promise<void> {
