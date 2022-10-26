@@ -14,3 +14,17 @@ export type ServerStateType = Uppercase<StateType>
 export function isStateType(value: string): value is StateType {
   return stateType.includes(value as StateType)
 }
+
+export const terminalStateType = [
+  'completed',
+  'cancelled',
+  'failed',
+  'crashed',
+]
+
+export type TerminalStateType = typeof terminalStateType[number]
+export type ServerTerminalStateType = Uppercase<TerminalStateType>
+
+export function isTerminalStateType(value: string): value is TerminalStateType {
+  return terminalStateType.includes(value as TerminalStateType)
+}

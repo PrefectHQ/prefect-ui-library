@@ -36,7 +36,15 @@
 
     <p-key-value label="Created" :value="formatDateTimeNumeric(deployment.created)" :alternate="alternate" />
 
+    <template v-if="deployment.createdBy">
+      <p-key-value label="Created By" :value="deployment.createdBy.displayValue" :alternate="alternate" />
+    </template>
+
     <p-key-value label="Last Updated" :value="formatDateTimeNumeric(deployment.updated)" :alternate="alternate" />
+
+    <template v-if="deployment.updatedBy">
+      <p-key-value label="Updated By" :value="deployment.updatedBy.displayValue" :alternate="alternate" />
+    </template>
 
     <p-divider />
 
@@ -65,7 +73,7 @@
 </template>
 
 <script lang="ts" setup>
-  import { formatDateTimeNumeric, showToast, PLoadingIcon } from '@prefecthq/prefect-design'
+  import { showToast, PLoadingIcon } from '@prefecthq/prefect-design'
   import { ref, computed } from 'vue'
   import ScheduleFieldset from './ScheduleFieldset.vue'
   import WorkQueueIconText from './WorkQueueIconText.vue'
@@ -76,6 +84,7 @@
   import { Schedule } from '@/models'
   import { Deployment } from '@/models/Deployment'
   import { deploymentsApiKey } from '@/services'
+  import { formatDateTimeNumeric } from '@/utilities/dates'
   import { inject } from '@/utilities/inject'
 
   const props = defineProps<{

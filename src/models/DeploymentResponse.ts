@@ -1,12 +1,16 @@
+import { CreatedOrUpdatedByResponse } from '@/models/api/CreatedOrUpdatedByResponse'
 import { SchemaResponse } from '@/models/api/SchemaResponse'
 import { ScheduleResponse } from '@/models/ScheduleResponse'
 import { DateString } from '@/types/dates'
 import { SchemaValues } from '@/types/schemas'
 
+
 export type DeploymentResponse = {
   id: string,
   created: DateString,
+  created_by: CreatedOrUpdatedByResponse | null,
   updated: DateString,
+  updated_by: CreatedOrUpdatedByResponse | null,
   name: string,
   version: string,
   description: string | null,
@@ -18,7 +22,7 @@ export type DeploymentResponse = {
   manifest_path: string | null,
   path: string | null,
   entrypoint: string | null,
-  parameter_openapi_schema: SchemaResponse,
+  parameter_openapi_schema: SchemaResponse | null,
   storage_document_id: string | null,
   infrastructure_document_id: string | null,
   work_queue_name: string | null,

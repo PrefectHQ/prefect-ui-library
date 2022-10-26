@@ -1,7 +1,7 @@
-import { formatDateTimeNumeric } from '@prefecthq/prefect-design'
 import { addDays, endOfToday, startOfToday, subDays } from 'date-fns'
 import { SavedSearch, SavedSearchFilter } from '@/models/SavedSearch'
 import { asArray, isSame } from '@/utilities/arrays'
+import { formatDateTimeNumeric } from '@/utilities/dates'
 
 export function isSameFilter(filterA: SavedSearchFilter, filterB: SavedSearchFilter): boolean {
   if (!isSame(asArray(filterA.state), asArray(filterB.state))) {

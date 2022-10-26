@@ -8,12 +8,13 @@ import { mapBlockSchemaFilterToBlockSchemaFilterRequest } from '@/maps/blockSche
 import { mapBlockSchemaReferencesResponseToBlockSchemaReferences } from '@/maps/blockSchemaReferences'
 import { mapBlockTypeResponseToBlockType } from '@/maps/blockType'
 import { mapBlockTypeFilterToBlockTypeFilterRequest } from '@/maps/blockTypeFilter'
+import { mapCreatedOrUpdatedByResponseToCreatedOrUpdatedBy } from '@/maps/createdOrUpdatedBy'
 import { mapStringToDate, mapDateToString } from '@/maps/date'
 import { mapDeploymentResponseToDeployment, mapDeploymentUpdateToDeploymentUpdateRequest, mapDeploymentFlowRunCreateToDeploymentFlowRunRequest } from '@/maps/deployment'
 import { mapRunHistoryToDivergingBarChartItem } from '@/maps/divergingBarChartItem'
 import { mapEmpiricalPolicyToEmpiricalPolicyResponse, mapEmpiricalPolicyResponseToEmpiricalPolicy } from '@/maps/empiricalPolicy'
 import { mapFlowToFlowResponse, mapFlowResponseToFlow } from '@/maps/flow'
-import { mapFlowRunToFlowRunResponse, mapFlowRunResponseToFlowRun } from '@/maps/flowRun'
+import { mapFlowRunResponseToFlowRun } from '@/maps/flowRun'
 import { mapSavedSearchFilterToFlowRunFilters } from '@/maps/flowRunFilter'
 import { mapGraphNodeToFlowRunGraphResponse, mapFlowRunGraphResponseToGraphNode } from '@/maps/flowRunGraph'
 import { mapRunHistoryToFlowRunHistoryResponse, mapFlowRunHistoryResponseToRunHistory } from '@/maps/flowRunHistory'
@@ -33,6 +34,7 @@ import { mapStateResponseToState, mapStateToStateResponse, mapStateCreateToState
 import { mapStateDetailsCreateToStateDetailsRequest, mapStateDetailsResponseToStateDetails, mapStateDetailsToStateDetailsResponse } from '@/maps/stateDetails'
 import { mapStateHistoryToStateHistoryResponse, mapStateHistoryResponseToStateHistory } from '@/maps/stateHistory'
 import { mapServerStateTypeToStateType, mapStateTypeToServerStateType } from '@/maps/stateType'
+import { mapStateUpdateToStateUpdateRequest } from '@/maps/stateUpdate'
 import { mapTaskInputToTaskInputResponse, mapTaskInputResponseToTaskInput } from '@/maps/taskInput'
 import { mapTaskRunToTaskRunResponse, mapTaskRunResponseToTaskRun } from '@/maps/taskRun'
 import { mapUiFlowRunHistoryResponseToUiFlowRunHistory } from '@/maps/uiFlowRunHistory'
@@ -51,6 +53,7 @@ export const maps = {
   BlockSchemaResponse: { BlockSchema: mapBlockSchemaResponseToBlockSchema },
   BlockTypeFilter: { BlockTypeFilterRequest: mapBlockTypeFilterToBlockTypeFilterRequest },
   BlockTypeResponse: { BlockType: mapBlockTypeResponseToBlockType },
+  CreatedOrUpdatedByResponse: { CreatedOrUpdatedBy: mapCreatedOrUpdatedByResponseToCreatedOrUpdatedBy },
   Date: { string: mapDateToString },
   DeploymentFlowRunCreate: { DeploymentFlowRunRequest: mapDeploymentFlowRunCreateToDeploymentFlowRunRequest },
   DeploymentResponse: { Deployment: mapDeploymentResponseToDeployment },
@@ -59,7 +62,6 @@ export const maps = {
   EmpiricalPolicyResponse: { EmpiricalPolicy: mapEmpiricalPolicyResponseToEmpiricalPolicy },
   Flow: { FlowResponse: mapFlowToFlowResponse },
   FlowResponse: { Flow: mapFlowResponseToFlow },
-  FlowRun: { FlowRunResponse: mapFlowRunToFlowRunResponse },
   FlowRunGraphResponse: { GraphNode: mapFlowRunGraphResponseToGraphNode },
   FlowRunHistoryResponse: { RunHistory: mapFlowRunHistoryResponseToRunHistory },
   FlowRunResponse: { FlowRun: mapFlowRunResponseToFlowRun },
@@ -92,6 +94,7 @@ export const maps = {
   StateHistoryResponse: { StateHistory: mapStateHistoryResponseToStateHistory },
   StateResponse: { State: mapStateResponseToState },
   StateType: { ServerStateType: mapStateTypeToServerStateType },
+  StateUpdate: { StateUpdateRequest: mapStateUpdateToStateUpdateRequest },
   string: { Date: mapStringToDate, number: mapStringToNumber },
   TaskInput: { TaskInputResponse: mapTaskInputToTaskInputResponse },
   TaskInputResponse: { TaskInput: mapTaskInputResponseToTaskInput },

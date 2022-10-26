@@ -53,7 +53,7 @@
 </template>
 
 <script lang="ts" setup>
-  import { PTable, PEmptyResults, PLink, formatDateTimeNumeric } from '@prefecthq/prefect-design'
+  import { PTable, PEmptyResults, PLink } from '@prefecthq/prefect-design'
   import { useSubscription } from '@prefecthq/vue-compositions'
   import { computed, unref } from 'vue'
   import DeploymentCombobox from './DeploymentCombobox.vue'
@@ -65,6 +65,7 @@
   import { flowRouteKey } from '@/router'
   import { flowSortOptions } from '@/types/SortOptionTypes'
   import { inject } from '@/utilities'
+  import { formatDateTimeNumeric } from '@/utilities/dates'
 
   const flowRoute = inject(flowRouteKey)
 

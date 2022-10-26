@@ -1,6 +1,8 @@
 <template>
   <div class="color-mode-select-option" :class="modeClass">
-    {{ label }}
+    <div class="color-mode-select-option__label">
+      {{ mode ?? 'default' }}
+    </div>
     <div class="color-mode-select-option__states">
       <template v-for="state in stateType" :key="state">
         <span class="color-mode-select-option__state" :class="stateClass(state)" />
@@ -13,13 +15,12 @@
   import { computed } from 'vue'
   import { stateType, StateType } from '@/models/StateType'
   import { ColorMode } from '@/types/ColorMode'
-  import { capitalize, getColorModeClass } from '@/utilities'
+  import { getColorModeClass } from '@/utilities'
 
   const props = defineProps<{
-    mode: ColorMode,
+    mode: ColorMode | null,
   }>()
 
-  const label = computed(() => capitalize(props.mode))
   const modeClass = computed(() => getColorModeClass(props.mode))
 
   function stateClass(stateType: StateType): string {
@@ -33,6 +34,10 @@
   items-center
   justify-between
   gap-2
+}
+
+.color-mode-select-option__label { @apply
+  capitalize
 }
 
 .color-mode-select-option__states { @apply

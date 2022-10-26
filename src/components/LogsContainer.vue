@@ -1,6 +1,6 @@
 <template>
   <p-code multiline class="logs">
-    <VirtualScroller :items="logs" @bottom="emit('bottom')">
+    <p-virtual-scroller :items="logs" @bottom="emit('bottom')">
       <template #default="{ item: log, index }">
         <template v-if="showDivider(index)">
           <div class="logs__divider">
@@ -10,7 +10,7 @@
 
         <LogRow :log="log" />
       </template>
-    </VirtualScroller>
+    </p-virtual-scroller>
     <template v-if="empty">
       <slot name="empty">
         <div class="logs__empty">
@@ -22,12 +22,12 @@
 </template>
 
 <script lang="ts" setup>
-  import { PCode, formatDate } from '@prefecthq/prefect-design'
+  import { PCode } from '@prefecthq/prefect-design'
   import { isSameDay } from 'date-fns'
   import { computed } from 'vue'
   import LogRow from '@/components/LogRow.vue'
-  import VirtualScroller from '@/components/VirtualScroller.vue'
   import { Log } from '@/models/Log'
+  import { formatDate } from '@/utilities/dates'
 
   const props = defineProps<{
     logs: Log[],

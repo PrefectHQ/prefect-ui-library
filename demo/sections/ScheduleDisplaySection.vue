@@ -15,7 +15,7 @@
         </p-label>
 
         <p-label label="Timezone">
-          <p-combobox v-model="intervalTimezone" :options="timeZoneOptions" />
+          <TimezoneSelect v-model="intervalTimezone" />
         </p-label>
       </div>
 
@@ -42,7 +42,7 @@
         </p-label>
 
         <p-label label="Timezone">
-          <p-combobox v-model="cronTimezone" :options="timeZoneOptions" />
+          <TimezoneSelect v-model="cronTimezone" />
         </p-label>
       </div>
 
@@ -76,7 +76,7 @@
         </p-label>
 
         <p-label label="Timezone">
-          <p-combobox v-model="rruleTimezone" :options="timeZoneOptions" disabled />
+          <TimezoneSelect v-model="rruleTimezone" disabled />
         </p-label>
       </div>
 
@@ -90,13 +90,10 @@
 
 <script lang="ts" setup>
   import { ref, computed } from 'vue'
-  import { timezones } from '..//utilities/intl'
   import DemoSection from '../components/DemoSection.vue'
   import DemoSubSection from '../components/DemoSubSection.vue'
+  import TimezoneSelect from '@/components/TimezoneSelect.vue'
   import { CronSchedule, IntervalSchedule, RRuleSchedule  } from '@/models'
-
-  // TODO: Doesn't work on Safari
-  const timeZoneOptions = timezones
 
   const interval = ref(3600)
   const intervalTimezone = ref(null)
