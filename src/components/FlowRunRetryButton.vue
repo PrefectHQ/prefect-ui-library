@@ -35,9 +35,12 @@
   }>()
   const can = useCan()
   const api = useWorkspaceApi()
-
+  const isCloud = window.location.toString().includes('account')
 
   const canRetry = computed(()=> {
+    if (isCloud) {
+      return false
+    }
     if (!can.update.flow_run || !props.flowRun.stateType || !props.flowRun.deploymentId) {
       return false
     }
