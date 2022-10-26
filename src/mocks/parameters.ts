@@ -1,22 +1,23 @@
+import { mapper } from '@/services/Mapper'
 import { mocker, MockFunction } from '@/services/Mocker'
-import { PydanticStringFormats } from '@/types/Pydantic'
-import { Schema } from '@/types/schemas'
+import { SchemaStringFormats, Schema, SchemaValues } from '@/types/schemas'
 import { coinflip, uniform } from '@/utilities/math'
 
-export const randomParameters: MockFunction<Record<string, unknown>, [Record<string, unknown>?, Schema?]> = function(overrides = {}, schema: Schema = mocker.create('openApiSchema')) {
+export const randomParameters: MockFunction<Record<string, unknown>, [Record<string, unknown>?, Schema?]> = function(overrides = {}, schema: Schema = mocker.create('schema')) {
   const parameters: Record<string, unknown> = {}
 
   if (!schema.properties) {
     return {}
   }
 
-  const defaultTypeStringFormatMap: Record<Partial<typeof PydanticStringFormats[number]>, unknown> = {
+  const defaultTypeStringFormatMap: Record<Partial<typeof SchemaStringFormats[number]>, unknown> = {
     date: this.create('date'),
     'date-time': this.create('date'),
     email: this.create('email'),
     'json-string': '{}',
     regex: '/w+/gi',
     'time-delta': 600,
+    password: this.create('string'),
   }
 
 
@@ -62,6 +63,7 @@ export const randomParameters: MockFunction<Record<string, unknown>, [Record<str
 
   })
 
+  const values: SchemaValues = { ...parameters, ...overrides }
 
-  return { ...parameters, ...overrides }
+  return mapper.map('SchemaValuesResponse', { values, schema }, 'SchemaValues')
 }

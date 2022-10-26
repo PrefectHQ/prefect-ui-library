@@ -42,8 +42,8 @@
 
       <template v-if="when == 'later'">
         <div class="flow-run-create-form__row">
-          <p-label label="Date" :message="errors['state.stateDetails.scheduledTime']" :state="startState">
-            <p-date-input v-model="start" show-time />
+          <p-label label="Date" :message="startErrorMessage" :state="startState">
+            <DateInput v-model="start" show-time />
           </p-label>
           <p-label label="Timezone">
             <TimezoneSelect v-model="timezone" />
@@ -62,7 +62,7 @@
         <p-button-group v-model="overrideParameters" :options="overrideParametersOptions" size="sm" />
 
         <template v-if="overrideParameters == 'custom'">
-          <PydanticForm v-model="parameters" hide-footer :pydantic-schema="deployment.parameterOpenApiSchema" />
+          <SchemaFormFields property="parameters" :schema="deployment.parameterOpenApiSchema" />
         </template>
       </template>
     </p-content>
@@ -81,12 +81,15 @@
 <script lang="ts" setup>
   import  { PButton, ButtonGroupOption } from '@prefecthq/prefect-design'
   import { zonedTimeToUtc } from 'date-fns-tz'
-  import { useField, useForm } from 'vee-validate'
+  import { useField } from 'vee-validate'
   import { computed, ref } from 'vue'
-  import PydanticForm from './PydanticForm.vue'
+  import SchemaFormFields from './SchemaFormFields.vue'
   import TimezoneSelect from './TimezoneSelect.vue'
-  import { Deployment, DeploymentFlowRunCreate, StateType } from '@/models'
-  import { isRequired, mocker, withMessage } from '@/services'
+  import DateInput from '@/components/DateInput.vue'
+  import { useForm } from '@/compositions/useForm'
+  import { Deployment, DeploymentFlowRunCreate } from '@/models'
+  import { mocker } from '@/services'
+  import { fieldRules, isRequiredIf } from '@/utilities/validation'
 
   const props = defineProps<{
     deployment: Deployment,
@@ -105,34 +108,28 @@
     return Object.keys(props.deployment.parameterOpenApiSchema.properties ?? {}).length > 0
   })
 
-  const requiredIfLater = (value: unknown): boolean => {
-    if (when.value == 'now') {
-      return true
-    }
-
-    return isRequired(value)
-  }
-
   const rules = {
-    start: [withMessage(requiredIfLater, 'Start date is required')],
+    start: fieldRules('Start date', isRequiredIf(() => when.value === 'later')),
   }
 
-
-  const { handleSubmit, errors } = useForm()
-  const { value: start, meta: startState } = useField<Date>('state.stateDetails.scheduledTime', rules.start)
-
-  // This line ensures clients aren't required to add a state to the request object and is not modifiable by users
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const { value: state } = useField<StateType>('state.type', undefined, { initialValue: 'scheduled' })
-  const { value: tags } = useField<string[]>('tags', undefined, { initialValue: props.deployment.tags ?? [] })
-  const { value: name } = useField<string>('name', undefined, { initialValue: generateRandomName() })
-  const { value: stateMessage } = useField<string>('state.message')
-  const { value: parameters } = useField<Record<string, unknown>>('parameters', undefined, { initialValue: props.deployment.parameters })
-
-  const adjustedStart = computed(() => {
-    return zonedTimeToUtc(start.value, timezone.value)
+  const { handleSubmit } = useForm<DeploymentFlowRunCreate>({
+    initialValues: {
+      state: {
+        type: 'scheduled',
+      },
+      tags: props.deployment.tags ?? [],
+      name: generateRandomName(),
+      parameters: props.deployment.parameters,
+      schema: props.deployment.parameterOpenApiSchema,
+    },
   })
 
+  const { value: start, meta: startState, errorMessage: startErrorMessage } = useField<Date>('state.stateDetails.scheduledTime', rules.start)
+  const { value: tags } = useField<string[]>('tags')
+  const { value: name } = useField<string>('name')
+  const { value: stateMessage } = useField<string>('state.message')
+
+  const adjustedStart = computed(() => zonedTimeToUtc(start.value, timezone.value))
   const whenOptions: ButtonGroupOption[] = [{ label: 'Now', value: 'now' }, { label: 'Later', value: 'later' }]
   const when = ref<'now' | 'later'>('now')
 
@@ -163,8 +160,7 @@
 </script>
 
 <style>
-.flow-run-create-form {
-  @apply
+.flow-run-create-form { @apply
   border-[1px]
   border-gray-300
   px-6

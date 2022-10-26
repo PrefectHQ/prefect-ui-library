@@ -1,8 +1,9 @@
-import { formatDate, formatTimeNumeric, toPluralString } from '@prefecthq/prefect-design'
+import { toPluralString } from '@prefecthq/prefect-design'
 import { minutesInHour, secondsInMinute } from 'date-fns'
 import { zonedTimeToUtc } from 'date-fns-tz'
 import { IntervalScheduleResponse } from './ScheduleResponse'
 import { ISchedule } from '@/models'
+import { formatDate, formatTimeNumeric } from '@/utilities/dates'
 import { floor } from '@/utilities/math'
 
 

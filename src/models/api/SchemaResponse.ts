@@ -1,36 +1,52 @@
 import { SchemaReference, SchemaType, SchemaStringFormat, SchemaEnum } from '@/types/schemas'
 
-export type SchemaDefinitionsResponse = Record<string, SchemaResponse>
-
-export interface SchemaPropertyResponse extends SchemaResponse {
-  $ref?: SchemaReference<string>,
-  anyOf?: SchemaPropertyResponse[],
-  allOf?: SchemaPropertyResponse[],
+export type BlockSchemaReferenceResponse = {
+  block_schema_checksum: string,
+  block_type_slug: string,
 }
 
-export type SchemaPropertiesResponse = Record<string, SchemaPropertyResponse>
+export type BlockSchemaReferencesResponse = Record<string, BlockSchemaReferenceResponse | undefined>
 
-export interface SchemaResponse {
-  title?: string,
-  type?: SchemaType,
-  format?: SchemaStringFormat,
+export type SchemaPropertiesResponse = Record<string, SchemaPropertyResponse | undefined>
+export type SchemaDefinitionsResponse = Record<string, SchemaResponse | undefined>
+
+export type SchemaPropertyResponse = {
+  // prefect specific properties
+  block_type_slug?: string,
+
+  // open api properties
+  $ref?: SchemaReference,
+  anyOf?: SchemaResponse[],
+  allOf?: SchemaResponse[],
+  example?: string,
   alias?: string,
-  description?: string,
   default?: unknown,
+  description?: string,
   enum?: SchemaEnum<unknown>,
-  definitions?: SchemaDefinitionsResponse,
-  properties?: SchemaPropertiesResponse,
-  required?: string[],
-  items?: SchemaPropertyResponse,
   exclusiveMaximum?: number,
   exclusiveMinimum?: number,
+  format?: SchemaStringFormat,
+  items?: SchemaPropertyResponse,
   maximum?: number,
-  minimum?: number,
-  maxLength?: number,
-  minLength?: number,
   maxItems?: number,
+  maxLength?: number,
+  minimum?: number,
   minItems?: number,
+  minLength?: number,
   multipleOf?: number,
-  uniqueItems?: boolean,
   pattern?: string,
+  properties?: SchemaPropertiesResponse,
+  required?: string[],
+  title?: string,
+  type?: SchemaType,
+  uniqueItems?: boolean,
+}
+
+export type SchemaResponse = SchemaPropertyResponse & {
+  // prefect specific properties
+  block_schema_references?: BlockSchemaReferenceResponse,
+  secret_fields?: string[],
+
+  // open api properties
+  definitions?: SchemaDefinitionsResponse,
 }

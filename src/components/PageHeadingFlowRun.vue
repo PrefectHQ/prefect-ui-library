@@ -1,6 +1,7 @@
 <template>
   <page-heading class="page-heading-flow-run" :crumbs="crumbs">
     <template #actions>
+      <FlowRunRetryButton :flow-run="flowRun" />
       <p-icon-button-menu>
         <template #default>
           <copy-overflow-menu-item label="Copy ID" :item="flowRun.id" />
@@ -28,23 +29,21 @@
 <script lang="ts" setup>
   import { PIconButtonMenu } from '@prefecthq/prefect-design'
   import { computed } from 'vue'
-  import { StateBadge, PageHeading, DurationIconText, FlowIconText, CopyOverflowMenuItem, ConfirmDeleteModal, FlowRunStartTime } from '@/components'
+  import { StateBadge, PageHeading, DurationIconText, FlowIconText, CopyOverflowMenuItem, ConfirmDeleteModal, FlowRunStartTime, FlowRunRetryButton } from '@/components'
+  import { useCan } from '@/compositions/useCan'
   import { useShowModal } from '@/compositions/useShowModal'
   import { FlowRun } from '@/models'
   import { flowRunsRouteKey } from '@/router'
   import { flowRunsApiKey } from '@/services'
-  import { canKey } from '@/types'
   import { deleteItem, inject } from '@/utilities'
-
-  const flowRunsApi = inject(flowRunsApiKey)
-  const can = inject(canKey)
 
   const props = defineProps<{
     flowRun: FlowRun,
   }>()
 
+  const flowRunsApi = inject(flowRunsApiKey)
+  const can = useCan()
   const { showModal, open } = useShowModal()
-
   const flowRunsRoute = inject(flowRunsRouteKey)
   // It doesn't seem like we should need to coalesce here but
   // the flow run model dictates the flow run name can be null

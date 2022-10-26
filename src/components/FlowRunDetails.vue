@@ -4,17 +4,23 @@
 
     <p-key-value label="Flow ID" :value="flowRun.flowId" :alternate="alternate" />
 
-    <p-key-value v-if="flowRun.workQueueName" label="Work Queue" :alternate="alternate">
-      <template #value>
-        <WorkQueueIconText :work-queue-name="flowRun.workQueueName" />
-      </template>
-    </p-key-value>
+    <template v-if="can.read.work_queue">
+      <p-key-value v-if="flowRun.workQueueName" label="Work Queue" :alternate="alternate">
+        <template #value>
+          <WorkQueueIconText :work-queue-name="flowRun.workQueueName" />
+        </template>
+      </p-key-value>
+    </template>
 
-    <template v-if="flowRun.deploymentId">
+    <template v-if="can.read.deployment && flowRun.deploymentId">
       <p-key-value label="Deployment ID" :value="flowRun.deploymentId" :alternate="alternate" />
     </template>
 
     <p-key-value label="Created" :value="formatDateTimeNumeric(flowRun.created)" :alternate="alternate" />
+
+    <template v-if="flowRun.createdBy">
+      <p-key-value label="Created By" :value="flowRun.createdBy.displayValue" :alternate="alternate" />
+    </template>
 
     <p-key-value label="Updated" :value="formatDateTimeNumeric(flowRun.updated)" :alternate="alternate" />
 
@@ -35,14 +41,18 @@
 </template>
 
 <script lang="ts" setup>
-  import { PKeyValue, PTags, formatDateTimeNumeric } from '@prefecthq/prefect-design'
+  import { PKeyValue, PTags } from '@prefecthq/prefect-design'
   import  WorkQueueIconText  from '@/components/WorkQueueIconText.vue'
+  import { useCan } from '@/compositions/useCan'
   import { FlowRun } from '@/models/FlowRun'
+  import { formatDateTimeNumeric } from '@/utilities/dates'
 
   defineProps<{
     flowRun: FlowRun,
     alternate?: boolean,
   }>()
+
+  const can = useCan()
 </script>
 
 <style>

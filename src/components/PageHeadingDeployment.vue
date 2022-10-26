@@ -2,7 +2,10 @@
   <page-heading class="page-heading-deployment" :crumbs="crumbs">
     <template #actions>
       <DeploymentToggle :deployment="deployment" @update="emit('update')" />
-      <RunMenu v-if="can.create.flow_run" :deployment="deployment" />
+
+      <template v-if="can.run.deployment">
+        <RunMenu :deployment="deployment" />
+      </template>
 
       <DeploymentMenu :deployment="deployment" @delete="handleDelete" />
     </template>
@@ -23,17 +26,18 @@
   import FlowIconText from '@/components/FlowIconText.vue'
   import PageHeading from '@/components/PageHeading.vue'
   import RunMenu from '@/components/RunMenu.vue'
+  import { useCan } from '@/compositions/useCan'
   import { Deployment } from '@/models'
   import { deploymentsRouteKey } from '@/router'
-  import { canKey } from '@/types/permissions'
   import { inject } from '@/utilities'
-
-  const deploymentsRoute = inject(deploymentsRouteKey)
-  const router = useRouter()
 
   const props = defineProps<{
     deployment: Deployment,
   }>()
+
+  const can = useCan()
+  const router = useRouter()
+  const deploymentsRoute = inject(deploymentsRouteKey)
 
   const crumbs = computed(() => [
     { text: 'Deployments', to: deploymentsRoute() },
@@ -47,8 +51,6 @@
   const handleDelete = (): void => {
     router.back()
   }
-
-  const can = inject(canKey)
 </script>
 
 <style>

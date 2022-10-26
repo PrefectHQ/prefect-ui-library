@@ -11,11 +11,11 @@
     </DemoSection>
 
     <DemoSection heading="Deployments">
-      <DeploymentsTable :deployments="deploymentsData" />
+      <DeploymentsTable />
     </DemoSection>
 
     <DemoSection heading="Flows">
-      <FlowsTable :flows="flowsData" />
+      <FlowsTable />
     </DemoSection>
 
     <DemoSection heading="Notifications">
@@ -42,7 +42,6 @@
   import WorkQueuesTable from '@/components/WorkQueuesTable.vue'
   import { mocker } from '@/services'
 
-  const flowsData = mocker.createMany('flow', mocker.create('number', [ 3, 10]))
   const deploymentsData = mocker.createMany('deployment', mocker.create('number', [3, 10]))
   const workQueuesData = mocker.createMany('workQueue', mocker.create('number', [3, 10]))
   const blockDocumentsData = mocker.createMany('blockDocument', mocker.create('number', [3, 10]))

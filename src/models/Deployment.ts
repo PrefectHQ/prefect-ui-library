@@ -1,18 +1,20 @@
-import { Parameters } from '@/models/Parameters'
+import { CreatedOrUpdatedBy } from '@/models/CreatedOrUpdatedBy'
 import { Schedule } from '@/models/Schedule'
-import { Schema } from '@/types/schemas'
+import { Schema, SchemaValues } from '@/types/schemas'
 
 export interface IDeployment {
   id: string,
   created: Date,
+  createdBy: CreatedOrUpdatedBy | null,
   updated: Date,
+  updatedBy: CreatedOrUpdatedBy | null,
   name: string,
   version: string,
   description: string | null,
   flowId: string,
   schedule: Schedule | null,
   isScheduleActive: boolean,
-  parameters: Parameters,
+  parameters: SchemaValues,
   parameterOpenApiSchema: Schema,
   tags: string[] | null,
   manifestPath: string | null,
@@ -26,14 +28,16 @@ export interface IDeployment {
 export class Deployment implements IDeployment {
   public readonly id: string
   public created: Date
+  public createdBy: CreatedOrUpdatedBy | null
   public updated: Date
+  public updatedBy: CreatedOrUpdatedBy | null
   public name: string
   public version: string
   public description: string | null
   public readonly flowId: string
   public schedule: Schedule | null
   public isScheduleActive: boolean
-  public parameters: Parameters
+  public parameters: SchemaValues
   public parameterOpenApiSchema: Schema
   public tags: string[] | null
   public manifestPath: string | null
@@ -46,7 +50,9 @@ export class Deployment implements IDeployment {
   public constructor(deployment: IDeployment) {
     this.id = deployment.id
     this.created = deployment.created
+    this.createdBy = deployment.createdBy
     this.updated = deployment.updated
+    this.updatedBy = deployment.updatedBy
     this.name = deployment.name
     this.version = deployment.version
     this.description = deployment.description

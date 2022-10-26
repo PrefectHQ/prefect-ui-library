@@ -1,3 +1,5 @@
+import camelCaseLodash from 'lodash.camelcase'
+
 export const vowels: string[] = ['a', 'e', 'i', 'o', 'u', 'y']
 
 export const pluralize = (word: string): string => {
@@ -39,8 +41,10 @@ export function kebabCase(string: string): string {
     .toLowerCase()
 }
 
+// todo: this removes symbols like $.
+// camelCase('$ref') => 'ref'
 export function camelCase(str: string): string {
-  return str.toLowerCase().replace(/[^a-zA-Z0-9]+(.)/g, (match, chr) => chr.toUpperCase())
+  return camelCaseLodash(str)
 }
 
 export function titleCase(str: string): string {
@@ -56,4 +60,14 @@ export function capitalize<T extends string>(value: T): Capitalize<T> {
   const rest = value.slice(1)
 
   return `${firstLetterCapitalized}${rest}` as Capitalize<T>
+}
+
+export function isEmptyString(value: unknown): value is string {
+  return typeof value === 'string' && value.trim().length === 0
+}
+
+const EMAIL_REGEX = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+
+export function isValidEmailAddress(value: unknown): boolean {
+  return typeof value === 'string' && EMAIL_REGEX.test(value)
 }

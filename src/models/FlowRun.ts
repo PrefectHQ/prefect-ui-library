@@ -1,7 +1,9 @@
-import { Parameters } from '@/models/Parameters'
+import { CreatedOrUpdatedBy } from '@/models/CreatedOrUpdatedBy'
 import { State } from '@/models/State'
 import { StateType } from '@/models/StateType'
-import { secondsToApproximateString } from '@/utilities'
+import { SchemaValues } from '@/types/schemas'
+import { secondsToApproximateString } from '@/utilities/seconds'
+
 export interface IFlowRun {
   id: string,
   flowId: string,
@@ -10,7 +12,7 @@ export interface IFlowRun {
   idempotencyKey: string | null,
   expectedStartTime: Date | null,
   nextScheduledStartTime: string | null,
-  parameters: Parameters,
+  parameters: SchemaValues,
   autoScheduled: boolean | null,
   context: unknown,
   empiricalConfig: unknown,
@@ -28,6 +30,7 @@ export interface IFlowRun {
   tags: string[] | null,
   runCount: number | null,
   created: Date,
+  createdBy: CreatedOrUpdatedBy | null,
   updated: Date,
   workQueueName: string | null,
 }
@@ -41,7 +44,7 @@ export class FlowRun implements IFlowRun {
   public idempotencyKey: string | null
   public expectedStartTime: Date | null
   public nextScheduledStartTime: string | null
-  public parameters: Parameters
+  public parameters: SchemaValues
   public autoScheduled: boolean | null
   public context: unknown
   public empiricalConfig: unknown
@@ -59,6 +62,7 @@ export class FlowRun implements IFlowRun {
   public tags: string[] | null
   public runCount: number | null
   public created: Date
+  public createdBy: CreatedOrUpdatedBy | null
   public updated: Date
 
   public constructor(flowRun: IFlowRun) {
@@ -87,6 +91,7 @@ export class FlowRun implements IFlowRun {
     this.tags = flowRun.tags
     this.runCount = flowRun.runCount
     this.created = flowRun.created
+    this.createdBy = flowRun.createdBy
     this.updated = flowRun.updated
     this.workQueueName = flowRun.workQueueName
   }

@@ -1,11 +1,17 @@
 <template>
-  <div class="deployments-table">
-    <div class="deployments-table__search">
-      <ResultsCount label="Deployment" :count="filtered.length" />
-      <SearchInput v-model="searchTerm" placeholder="Search deployments" label="Search deployments" />
+  <p-content class="deployments-table">
+    <div class="deployments-table__controls">
+      <ResultsCount class="deployments-table__count" label="Deployment" :count="deploymentsCount" />
+      <SearchInput v-model="name" placeholder="Search deployments" label="Search deployments" />
+
+      <template v-if="canFilterFlows">
+        <FlowCombobox v-model:selected="flows" empty-message="All flows" class="deployments-table__flows" />
+      </template>
+
+      <p-select v-model="sort" :options="deploymentSortOptions" />
     </div>
 
-    <p-table :data="filtered" :columns="columns" class="deployments-table">
+    <p-table :data="deployments" :columns="columns" class="deployments-table">
       <template #name="{ row }">
         <FlowRouterLink :flow-id="row.flowId" after=" / " />
         <p-link :to="deploymentRoute(row.id)">
@@ -21,14 +27,26 @@
         <p-tag-wrapper :tags="row.tags" justify="left" />
       </template>
 
+      <template #created-by="{ row }">
+        <span>
+          {{ row.createdBy ? row.createdBy.displayValue : null }}
+        </span>
+      </template>
+
+      <template #updated-by="{ row }">
+        <span>
+          {{ row.updatedBy ? row.updatedBy.displayValue : null }}
+        </span>
+      </template>
+
       <template #action-heading>
         <span />
       </template>
 
       <template #action="{ row }">
         <div class="deployments-table__actions">
-          <DeploymentToggle :deployment="row" @update="emits('update')" />
-          <DeploymentMenu size="xs" :deployment="row" @delete="id => emits('delete', id)" />
+          <DeploymentToggle :deployment="row" @update="refresh" />
+          <DeploymentMenu size="xs" :deployment="row" @delete="refresh" />
         </div>
       </template>
 
@@ -37,7 +55,7 @@
           <template #message>
             No deployments
           </template>
-          <template v-if="searchTerm.length" #actions>
+          <template v-if="name.length" #actions>
             <p-button size="sm" secondary @click="clear">
               Clear Filters
             </p-button>
@@ -45,35 +63,43 @@
         </PEmptyResults>
       </template>
     </p-table>
-  </div>
+  </p-content>
 </template>
 
 <script lang="ts" setup>
-  import { PTable, PTagWrapper, PEmptyResults, PLink } from '@prefecthq/prefect-design'
-  import { ref, computed } from 'vue'
+  import { PTable, PTagWrapper, PEmptyResults, PLink, TableColumn } from '@prefecthq/prefect-design'
+  import { useSubscription } from '@prefecthq/vue-compositions'
+  import { computed, unref } from 'vue'
+  import FlowCombobox from './FlowCombobox.vue'
   import FlowRouterLink from './FlowRouterLink.vue'
   import DeploymentMenu from '@/components/DeploymentMenu.vue'
   import DeploymentToggle from '@/components/DeploymentToggle.vue'
   import ResultsCount from '@/components/ResultsCount.vue'
   import SearchInput from '@/components/SearchInput.vue'
-  import { Deployment } from '@/models'
+  import { useWorkspaceApi } from '@/compositions'
+  import { UseDeploymentFilterArgs, useDeploymentFilterFromRoute } from '@/compositions/useDeploymentFilter'
   import { deploymentRouteKey } from '@/router'
+  import { deploymentSortOptions } from '@/types/SortOptionTypes'
   import { inject } from '@/utilities'
 
   const deploymentRoute = inject(deploymentRouteKey)
 
   const props = defineProps<{
-    deployments: Deployment[],
+    filter?: UseDeploymentFilterArgs,
   }>()
 
-  const emits = defineEmits<{
-    (event: 'update'): void,
-    (event: 'delete', value: string): void,
-  }>()
+  const api = useWorkspaceApi()
+  const filter = computed(() => props.filter ?? {})
+  const { flows, name, sort, filter: unionFilter } = useDeploymentFilterFromRoute(filter)
 
-  const searchTerm = ref('')
+  const canFilterFlows = computed(() => {
+    const filterHasFlows = !!unref(filter.value.flows)?.length
+    const filterHasFlowName = !!unref(filter.value.flowName)?.length
 
-  const columns = [
+    return !filterHasFlows && !filterHasFlowName
+  })
+
+  const columns = computed<TableColumn[]>(() => [
     {
       property: 'name',
       label: 'Name',
@@ -89,29 +115,50 @@
       label: 'Tags',
     },
     {
+      property: 'createdBy',
+      label: 'Created By',
+      visible: deployments.value.some(deployment => deployment.createdBy !== null),
+    },
+    {
+      property: 'updatedBy',
+      label: 'Updated By',
+      visible: deployments.value.some(deployment => deployment.updatedBy !== null),
+    },
+    {
       label: 'Action',
       width: '42px',
     },
-  ]
+  ])
+  const deploymentsSubscription = useSubscription(api.deployments.getDeployments, [unionFilter])
+  const deployments = computed(() => deploymentsSubscription.response ?? [])
 
-  const filtered = computed(() => {
-    if (searchTerm.value.length === 0) {
-      return props.deployments
-    }
+  const deploymentsCountSubscription = useSubscription(api.deployments.getDeploymentsCount, [unionFilter])
+  const deploymentsCount = computed(() => deploymentsCountSubscription.response)
 
-    return props.deployments.filter(filterDeployment)
-  })
-
-  function filterDeployment({ name, tags, schedule }: Deployment): boolean {
-    return `${name} ${schedule ?? ''} ${tags?.join(' ')}`.toLowerCase().includes(searchTerm.value.toLowerCase())
+  function refresh(): void {
+    deploymentsSubscription.refresh()
+    deploymentsCountSubscription.refresh()
   }
 
   function clear(): void {
-    searchTerm.value = ''
+    name.value = ''
   }
 </script>
 
 <style>
+.deployments-table__count { @apply
+  mr-auto
+}
+
+.deployments-table__controls { @apply
+  flex
+  gap-2
+  items-stretch
+  flex-col
+  sm:flex-row
+  sm:items-center
+}
+
 .deployments-table__search { @apply
   flex
   justify-between
@@ -119,9 +166,8 @@
   mb-4
 }
 
-.deployments-table__hide-on-desktop {
-  @apply
-  sm:hidden
+.deployments-table__flows {
+  min-width: 128px;
 }
 
 .deployments-table__actions { @apply

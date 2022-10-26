@@ -4,34 +4,37 @@
       {{ internalValue.toString({ verbose: true }) }}
     </div>
 
-    <div class="schedule-fieldset__buttons">
-      <ScheduleFormModal :schedule="internalValue" @submit="updateSchedule">
-        <template #default="{ open }">
-          <p-button size="xs" class="schedule-fieldset__button" :disabled="loading" inset @click="open">
-            <p-icon icon="PencilIcon" class="schedule-fieldset__button-icon" />
-            {{ internalValue ? 'Edit' : 'Add' }}
-          </p-button>
-        </template>
-      </ScheduleFormModal>
+    <template v-if="can.update.deployment">
+      <div class="schedule-fieldset__buttons">
+        <ScheduleFormModal :schedule="internalValue" @submit="updateSchedule">
+          <template #default="{ open }">
+            <p-button size="xs" class="schedule-fieldset__button" :disabled="loading" inset @click="open">
+              <p-icon icon="PencilIcon" class="schedule-fieldset__button-icon" />
+              {{ internalValue ? 'Edit' : 'Add' }}
+            </p-button>
+          </template>
+        </ScheduleFormModal>
 
-      <p-button
-        v-if="internalValue"
-        size="xs"
-        class="schedule-fieldset__button"
-        inset
-        :disabled="loading"
-        @click="removeSchedule"
-      >
-        <p-icon icon="TrashIcon" class="schedule-fieldset__button-icon" />
-        Remove
-      </p-button>
-    </div>
+        <p-button
+          v-if="internalValue"
+          size="xs"
+          class="schedule-fieldset__button"
+          inset
+          :disabled="loading"
+          @click="removeSchedule"
+        >
+          <p-icon icon="TrashIcon" class="schedule-fieldset__button-icon" />
+          Remove
+        </p-button>
+      </div>
+    </template>
   </div>
 </template>
 
 <script lang="ts" setup>
   import { computed } from 'vue'
   import ScheduleFormModal from '@/components/ScheduleFormModal.vue'
+  import { useCan } from '@/compositions/useCan'
   import { Schedule } from '@/models'
 
   const props = defineProps<{
@@ -51,6 +54,8 @@
       emit('update:modelValue', value)
     },
   })
+
+  const can = useCan()
 
   const updateSchedule = (schedule: Schedule | null): void => {
     internalValue.value = schedule

@@ -2,7 +2,7 @@
   <div class="task-run-details">
     <p-key-value label="Task Run ID" :value="taskRun.id" :alternate="alternate" />
 
-    <p-key-value label="Flow Run ID" :value="taskRun.id" :alternate="alternate" />
+    <p-key-value label="Flow Run ID" :value="taskRun.flowRunId" :alternate="alternate" />
 
     <p-key-value label="Created" :value="formatDateTimeNumeric(taskRun.created)" :alternate="alternate" />
 
@@ -40,8 +40,9 @@
 </template>
 
 <script lang="ts" setup>
-  import { PKeyValue, PTags, formatDateTimeNumeric } from '@prefecthq/prefect-design'
+  import { PKeyValue, PTags } from '@prefecthq/prefect-design'
   import { TaskRun } from '@/models/TaskRun'
+  import { formatDateTimeNumeric } from '@/utilities/dates'
   import { secondsToApproximateString } from '@/utilities/seconds'
 
   defineProps<{

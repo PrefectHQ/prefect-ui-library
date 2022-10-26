@@ -97,3 +97,21 @@ export function shuffle<T>(array: T[]): T[] {
 export function isEmptyArray(value: unknown): value is unknown[] {
   return Array.isArray(value) && value.length === 0
 }
+
+export function isStringArray(value: unknown): value is string[] {
+  return Array.isArray(value) && value.length > 0 && value.every(item => typeof item === 'string')
+}
+
+export function isNumberArray(value: unknown): value is number[] {
+  return Array.isArray(value) && value.length > 0 && value.every(item => typeof item === 'number')
+}
+
+export function asSingle<T>(value: T | T[]): T {
+  if (Array.isArray(value)) {
+    const [first] = value
+
+    return first
+  }
+
+  return value
+}

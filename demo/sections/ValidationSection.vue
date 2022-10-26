@@ -51,19 +51,29 @@
 </template>
 
 <script lang="ts" setup>
-  import { addYears, format } from 'date-fns'
-  import { useForm, useField } from 'vee-validate'
+  import { addYears } from 'date-fns'
+  import { useField } from 'vee-validate'
   import { computed } from 'vue'
   import DemoSection from '../components/DemoSection.vue'
   import JsonInput from '@/components/JsonInput.vue'
-  import { isEmail, isRequired, withMessage, lessThan, isValidJsonString } from '@/services/validate'
+  import { useForm } from '@/compositions/useForm'
+  import { isEmptyString, isNullish } from '@/utilities'
+  import { fieldRules, isBefore, isEmail, isJson, isRequired, ValidationMethodFactory } from '@/utilities/validation'
 
   const { handleSubmit, handleReset, isSubmitting, meta, errors, submitCount } = useForm()
 
   const submit = handleSubmit(values => console.log(values))
 
-  async function validateEmail(value: string): Promise<boolean> {
-    return await mockServerUsernameCheck(value)
+  const validateEmail: ValidationMethodFactory = property => async value => {
+    if (isNullish(value) || isEmptyString(value)) {
+      return true
+    }
+
+    if (typeof value === 'string' && await mockServerUsernameCheck(value)) {
+      return true
+    }
+
+    return `${property} is not a valid email address`
   }
 
   function mockServerUsernameCheck(value: string): Promise<boolean> {
@@ -76,22 +86,13 @@
 
   const minDate = addYears(new Date(), -18)
   const rules = {
-    name: [withMessage(isRequired, 'Name is Required')],
-    json: [withMessage(isValidJsonString, 'Invalid JSON')],
-    dateOfBirth: [
-      withMessage(isRequired, 'Birthday is Required'),
-      withMessage(lessThan(minDate), `Must be at least 18 years old (${format(minDate, 'MM/dd/yyyy')})`),
-    ],
-    emailAddress: [
-      withMessage(isRequired, 'Email Address is required'),
-      withMessage(isEmail, 'Email Address is invalid'),
-    ],
-    username: [
-      withMessage(isRequired, 'Username is Required'),
-      withMessage(validateEmail, 'Username is already taken (try stackoverfloweth)'),
-    ],
-    tags: [withMessage(isRequired, 'At least 1 tag is required')],
-    agreeToTerms: [withMessage(isRequired, 'Compliance is required')],
+    name: fieldRules('Name', isRequired),
+    json: fieldRules('Favorite JSON', isRequired, isJson),
+    dateOfBirth: fieldRules('Birthday', isRequired, isBefore(minDate)),
+    emailAddress: fieldRules('Email Address', isRequired, isEmail),
+    username: fieldRules('Username', isRequired, validateEmail),
+    tags: fieldRules('Tags', [isRequired, 'At least 1 tag is required']),
+    agreeToTerms: fieldRules('Compliance', isRequired),
   }
 
   const { value: name, meta: nameState } = useField<string>('name', rules.name)

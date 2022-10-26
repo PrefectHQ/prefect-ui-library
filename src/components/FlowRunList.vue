@@ -1,15 +1,14 @@
 <template>
-  <VirtualScroller :items="flowRuns" class="flow-run-list">
+  <p-virtual-scroller :items="flowRuns" class="flow-run-list">
     <template #default="{ item: flowRun }">
       <FlowRunListItem v-model:selected="model" v-bind="{ flowRun, disabled }" />
     </template>
-  </VirtualScroller>
+  </p-virtual-scroller>
 </template>
 
 <script lang="ts" setup>
   import { computed } from 'vue'
   import FlowRunListItem from '@/components/FlowRunListItem.vue'
-  import VirtualScroller from '@/components/VirtualScroller.vue'
   import { FlowRun } from '@/models/FlowRun'
 
   const props = defineProps<{
