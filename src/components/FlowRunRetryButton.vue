@@ -36,9 +36,8 @@
   const can = useCan()
   const api = useWorkspaceApi()
 
-
   const canRetry = computed(()=> {
-    if (!can.update.flow_run || !props.flowRun.stateType || !props.flowRun.deploymentId) {
+    if (!can.update.flow_run || !props.flowRun.stateType || !props.flowRun.deploymentId || !can.access.retry) {
       return false
     }
     return isTerminalStateType(props.flowRun.stateType)
