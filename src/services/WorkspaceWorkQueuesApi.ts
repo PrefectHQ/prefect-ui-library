@@ -1,5 +1,5 @@
 import { WorkspaceApi } from './WorkspaceApi'
-import { FlowRun, FlowRunResponse, WorkQueueCreate, WorkQueueEdit, WorkQueueResponse } from '@/models'
+import { FlowRun, FlowRunResponse, WorkQueueCreate, WorkQueueEdit, WorkQueueResponse, WorkQueueStatus, WorkQueueStatusResponse } from '@/models'
 import { WorkQueue } from '@/models/WorkQueue'
 import { mapper } from '@/services/Mapper'
 import { PaginatedFilter } from '@/types/UnionFilters'
@@ -55,5 +55,11 @@ export class WorkspaceWorkQueuesApi extends WorkspaceApi {
     const { data } = await this.post<FlowRunResponse[]>(`/${id}/get_runs`)
 
     return mapper.map('FlowRunResponse', data, 'FlowRun')
+  }
+
+  public async getWorkQueueStatus(id: string): Promise<WorkQueueStatus> {
+    const { data } = await this.get<WorkQueueStatusResponse>(`/${id}/status`)
+
+    return mapper.map('WorkQueueStatusResponse', data, 'WorkQueueStatus')
   }
 }
