@@ -19,7 +19,6 @@ export const utcOffsetMilliseconds = computed(() => selectedTimezone.value === n
 export const utcOffsetMinutes = computed(() => DateFns.millisecondsToMinutes(utcOffsetMilliseconds.value))
 
 export function utcToZonedTime(date: Date, timezone = selectedTimezone.value): Date {
-  console.log({ date, timezone })
   return timezone ? dateFnsUtcToZonedTime(date, timezone) : date
 }
 
