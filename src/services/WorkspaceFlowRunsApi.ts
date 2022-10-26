@@ -1,4 +1,5 @@
 import { WorkspaceApi } from './WorkspaceApi'
+import { StateUpdate } from '@/models'
 import { FlowRun } from '@/models/FlowRun'
 import { FlowRunGraphResponse } from '@/models/FlowRunGraphResponse'
 import { FlowRunHistoryResponse } from '@/models/FlowRunHistoryResponse'
@@ -40,6 +41,21 @@ export class WorkspaceFlowRunsApi extends WorkspaceApi {
     const { data } = await this.get<FlowRunGraphResponse[]>(`/${id}/graph`)
 
     return mapper.map('FlowRunGraphResponse', data, 'GraphNode')
+  }
+
+  public retryFlowRun(id: string): Promise<void> {
+return this.setFlowRunState(id, { 
+  state: { 
+    type: 'scheduled', 
+    name: 'AwaitingRetry', 
+    message: 'Retry from the UI' 
+  } 
+})
+  }
+
+  public setFlowRunState(id: string, body: StateUpdate): Promise<void> {
+    const requestBody = mapper.map('StateUpdate', body, 'StateUpdateRequest')
+    return this.post(`/${id}/set_state`, requestBody)
   }
 
   public deleteFlowRun(flowRunId: string): Promise<void> {

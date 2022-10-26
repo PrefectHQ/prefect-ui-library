@@ -34,6 +34,7 @@ import { mapStateResponseToState, mapStateToStateResponse, mapStateCreateToState
 import { mapStateDetailsCreateToStateDetailsRequest, mapStateDetailsResponseToStateDetails, mapStateDetailsToStateDetailsResponse } from '@/maps/stateDetails'
 import { mapStateHistoryToStateHistoryResponse, mapStateHistoryResponseToStateHistory } from '@/maps/stateHistory'
 import { mapServerStateTypeToStateType, mapStateTypeToServerStateType } from '@/maps/stateType'
+import { mapStateUpdateToStateUpdateRequest } from '@/maps/stateUpdate'
 import { mapTaskInputToTaskInputResponse, mapTaskInputResponseToTaskInput } from '@/maps/taskInput'
 import { mapTaskRunToTaskRunResponse, mapTaskRunResponseToTaskRun } from '@/maps/taskRun'
 import { mapUiFlowRunHistoryResponseToUiFlowRunHistory } from '@/maps/uiFlowRunHistory'
@@ -95,6 +96,7 @@ export const maps = {
   StateHistoryResponse: { StateHistory: mapStateHistoryResponseToStateHistory },
   StateResponse: { State: mapStateResponseToState },
   StateType: { ServerStateType: mapStateTypeToServerStateType },
+  StateUpdate: { StateUpdateRequest: mapStateUpdateToStateUpdateRequest },
   string: { Date: mapStringToDate, number: mapStringToNumber },
   TaskInput: { TaskInputResponse: mapTaskInputToTaskInputResponse },
   TaskInputResponse: { TaskInput: mapTaskInputResponseToTaskInput },
