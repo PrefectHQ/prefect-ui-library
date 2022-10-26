@@ -44,13 +44,13 @@ export class WorkspaceFlowRunsApi extends WorkspaceApi {
   }
 
   public retryFlowRun(id: string): Promise<void> {
-return this.setFlowRunState(id, { 
-  state: { 
-    type: 'scheduled', 
-    name: 'AwaitingRetry', 
-    message: 'Retry from the UI' 
-  } 
-})
+    return this.setFlowRunState(id, {
+      state: {
+        type: 'scheduled',
+        name: 'AwaitingRetry',
+        message: 'Retry from the UI',
+      },
+    })
   }
 
   public setFlowRunState(id: string, body: StateUpdate): Promise<void> {
