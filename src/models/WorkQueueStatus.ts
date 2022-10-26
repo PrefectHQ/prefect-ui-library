@@ -14,9 +14,9 @@ export class WorkQueueStatus implements IWorkQueueStatus {
   public healthCheckPolicy: WorkQueueHealthPolicy
 
   public constructor(workQueueStatus: IWorkQueueStatus) {
-    this.healthy= workQueueStatus.healthy
-    this.lateRuns= workQueueStatus.lateRuns
-    this.lastPolled= workQueueStatus.lastPolled
-    this.healthCheckPolicy= workQueueStatus.healthCheckPolicy
+    this.healthy = workQueueStatus.healthy
+    this.lateRuns = workQueueStatus.lateRuns
+    this.lastPolled = workQueueStatus.lastPolled
+    this.healthCheckPolicy = workQueueStatus.healthCheckPolicy
   }
 }
