@@ -35,6 +35,8 @@ import { randomUiFlowRunHistory } from './UiFlowRunHistory'
 import { randomUrl } from './url'
 import { randomWorkQueue, randomWorkQueueFilter } from './workQueue'
 import { randomWorkQueueCreate } from './workQueueCreate'
+import { randomWorkQueueHealthPolicy } from './workQueueHealthPolicy'
+import { randomWorkQueueStatus } from './workQueueStatus'
 
 export const mocks = {
   any: randomAny,
@@ -85,4 +87,6 @@ export const mocks = {
   workQueue: randomWorkQueue,
   workQueueCreate: randomWorkQueueCreate,
   workQueueFilter: randomWorkQueueFilter,
+  workQueueHealthPolicy: randomWorkQueueHealthPolicy,
+  workQueueStatus: randomWorkQueueStatus,
 }
