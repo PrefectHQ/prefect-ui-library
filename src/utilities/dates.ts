@@ -1,5 +1,6 @@
-import { isDate as dateFnsIsDate, isValid, parse, differenceInSeconds, millisecondsToMinutes, minutesToMilliseconds, format as dateFnsFormat, isBefore } from 'date-fns'
-import { formatInTimeZone, getTimezoneOffset } from 'date-fns-tz'
+// import { isDate as dateFnsIsDate, startOfToday as dateFnsStartOfToday, isValid, parse, differenceInSeconds, millisecondsToMinutes, minutesToMilliseconds, format as dateFnsFormat, isBefore } from 'date-fns'
+import * as DateFns from 'date-fns'
+import { formatInTimeZone, getTimezoneOffset, utcToZonedTime as dateFnsUtcToZonedTime, zonedTimeToUtc as dateFnsZonedTimeToUtc } from 'date-fns-tz'
 import { ref, computed } from 'vue'
 import { secondsToApproximateString } from '@/utilities/seconds'
 
@@ -15,19 +16,50 @@ export function timezoneIsUtc(timezone: string): timezone is typeof utcTimezone 
 }
 
 export const browserUtcOffset = -new Date().getTimezoneOffset()
-export const utcOffsetMilliseconds = computed(() => selectedTimezone.value === null ? minutesToMilliseconds(browserUtcOffset) : getTimezoneOffset(selectedTimezone.value))
-export const utcOffsetMinutes = computed(() => millisecondsToMinutes(utcOffsetMilliseconds.value))
+export const utcOffsetMilliseconds = computed(() => selectedTimezone.value === null ? DateFns.minutesToMilliseconds(browserUtcOffset) : getTimezoneOffset(selectedTimezone.value))
+export const utcOffsetMinutes = computed(() => DateFns.millisecondsToMinutes(utcOffsetMilliseconds.value))
+
+export function utcToZonedTime(date: Date, timezone = selectedTimezone.value): Date {
+  console.log({ date, timezone })
+  return timezone ? dateFnsUtcToZonedTime(date, timezone) : date
+}
+
+export function zonedTimeToUtc(date: Date, timezone = selectedTimezone.value): Date {
+  return timezone ? dateFnsZonedTimeToUtc(date, timezone) : date
+}
+
+export const dateFnsTz = new Proxy({ ...DateFns }, {
+  get(target, prop, receiver) {
+    const method = Reflect.get(target, prop, receiver)
+
+    return (...args: unknown[]) => {
+      const unadjusted = args.map(arg => {
+        if (isDate(arg) && arg.isAdjusted) {
+          return utcToZonedTime(arg)
+        }
+
+        return arg
+      })
+      const value = method.apply(this, unadjusted)
+      const adjusted = zonedTimeToUtc(value)
+
+      adjusted.isAdjusted = true
+
+      return adjusted
+    }
+  },
+})
 
 export function parseDate(value: string, reference: Date = new Date()): Date {
-  return parse(value, dateFormat, reference)
+  return DateFns.parse(value, dateFormat, reference)
 }
 
 export function isDate(value: unknown): value is Date {
-  return dateFnsIsDate(value)
+  return DateFns.isDate(value)
 }
 
 export function isInvalidDate(value: unknown): boolean {
-  return isDate(value) && !isValid(value)
+  return isDate(value) && !DateFns.isValid(value)
 }
 
 export function sortDates(itemA: Date, itemB: Date): number {
@@ -35,7 +67,7 @@ export function sortDates(itemA: Date, itemB: Date): number {
 }
 
 export function formatDate(value: Date | string, format = dateFormat): string {
-  return selectedTimezone.value ? formatInTimeZone(value, selectedTimezone.value, format) : dateFnsFormat(new Date(value), format)
+  return selectedTimezone.value ? formatInTimeZone(value, selectedTimezone.value, format) : DateFns.format(new Date(value), format)
 }
 
 export function formatDateTimeNumeric(value: Date | string): string {
@@ -43,7 +75,7 @@ export function formatDateTimeNumeric(value: Date | string): string {
 }
 
 export function parseDateTimeNumeric(value: string, reference: Date = new Date()): Date {
-  return parse(value, dateTimeNumericFormat, reference)
+  return DateFns.parse(value, dateTimeNumericFormat, reference)
 }
 
 export function formatTimeNumeric(value: Date | string): string {
@@ -51,14 +83,14 @@ export function formatTimeNumeric(value: Date | string): string {
 }
 
 export function parseTimeNumeric(value: string, reference: Date = new Date()): Date {
-  return parse(value, timeNumericFormat, reference)
+  return DateFns.parse(value, timeNumericFormat, reference)
 }
 
 export function formatDateTimeRelative(value: Date | string, comparedTo: Date | string = new Date()): string {
   const valueDate = new Date(value)
   const compareDate = comparedTo ? new Date(comparedTo) : new Date()
-  const seconds = differenceInSeconds(compareDate, valueDate)
-  const past = isBefore(valueDate, compareDate)
+  const seconds = DateFns.differenceInSeconds(compareDate, valueDate)
+  const past = DateFns.isBefore(valueDate, compareDate)
   const formatted = secondsToApproximateString(Math.abs(seconds))
 
   if (past) {

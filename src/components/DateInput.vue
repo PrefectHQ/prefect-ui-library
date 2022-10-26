@@ -1,15 +1,21 @@
 <template>
-  <p-date-input v-model="adjustedSelectedDate" :show-time="showTime" />
+  <p-date-input
+    v-model="adjustedSelectedDate"
+    :show-time="showTime"
+    :min="adjustedMin"
+    :max="adjustedMax"
+  />
 </template>
 
 <script lang="ts" setup>
-  import { utcToZonedTime, zonedTimeToUtc } from 'date-fns-tz'
   import { computed } from 'vue'
-  import { selectedTimezone } from '@/utilities/dates'
+  import { utcToZonedTime, zonedTimeToUtc } from '@/utilities/dates'
 
   const props = defineProps<{
     modelValue: Date | null | undefined,
     showTime?: boolean,
+    min?: Date | null | undefined,
+    max?: Date | null | undefined,
   }>()
 
   const emits = defineEmits<{
@@ -18,18 +24,18 @@
 
   const adjustedSelectedDate = computed({
     get() {
-      if (selectedTimezone.value && props.modelValue) {
-        return utcToZonedTime(props.modelValue, selectedTimezone.value)
-      }
-
-      return props.modelValue ?? null
+      return props.modelValue ? utcToZonedTime(props.modelValue) : null
     },
     set(value: Date | null) {
-      if (selectedTimezone.value && value) {
-        return emits('update:modelValue', zonedTimeToUtc(value, selectedTimezone.value))
-      }
-
-      emits('update:modelValue', value ?? null)
+      emits('update:modelValue', value ? zonedTimeToUtc(value) : null)
     },
+  })
+
+  const adjustedMin = computed(() => {
+    return props.min ? utcToZonedTime(props.min) : null
+  })
+
+  const adjustedMax = computed(() => {
+    return props.max ? utcToZonedTime(props.max) : null
   })
 </script>
