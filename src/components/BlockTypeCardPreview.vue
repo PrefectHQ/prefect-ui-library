@@ -30,9 +30,9 @@
   import { computed, useSlots } from 'vue'
   import BlockSchemaCapabilities from './BlockSchemaCapabilities.vue'
   import BlockTypeLogo from '@/components/BlockTypeLogo.vue'
+  import { useWorkspaceApi } from '@/compositions/useWorkspaceApi'
   import { BlockType } from '@/models/BlockType'
   import { blockCatalogViewRouteKey } from '@/router'
-  import { blockSchemasApiKey } from '@/services'
   import { inject } from '@/utilities/inject'
 
   const props = defineProps<{
@@ -41,10 +41,10 @@
 
   const slots = useSlots()
   const blockCatalogViewRoute = inject(blockCatalogViewRouteKey)
-  const blockSchemasApi = inject(blockSchemasApiKey)
+  const api = useWorkspaceApi()
 
   const blockTypeId = computed(() => props.blockType.id)
-  const blockSchemaSubscription = useSubscription(blockSchemasApi.getBlockSchemaForBlockType, [blockTypeId])
+  const blockSchemaSubscription = useSubscription(api.blockSchemas.getBlockSchemaForBlockType, [blockTypeId])
   const blockSchema = computed(() => blockSchemaSubscription.response)
 </script>
 

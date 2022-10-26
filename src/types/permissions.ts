@@ -158,4 +158,4 @@ export function getAppPermissions(
   }, {}) as Can
 }
 
-export const canKey: InjectionKey<Can> = Symbol()
+export const canKey: InjectionKey<Can> = Symbol('canInjectionKey')

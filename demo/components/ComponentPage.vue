@@ -60,12 +60,12 @@
 </template>
 
 <script lang="ts" setup>
-  import { asArray, kebabCase } from '@/utilities'
   import { computed, useSlots } from 'vue'
   import { useRoute } from 'vue-router'
   import HashLink from '@/demo/components/HashLink.vue'
   import ResizableSection from '@/demo/components/ResizableSection.vue'
   import { getRouteRecordIndex, routeRecordsFlat } from '@/demo/router/routeRecordsFlat'
+  import { asArray, kebabCase } from '@/utilities'
 
   type DemoSection = {
     title: string,

@@ -8,12 +8,15 @@
     </template>
 
     <template #basic>
-      hello world
+      <FlowRunListItem :flow-run="flowRun" :selected="[]" />
     </template>
   </ComponentPage>
 </template>
 
 <script lang="ts" setup>
+  import FlowRunListItem from '@/components/FlowRunListItem.vue'
   import ComponentPage from '@/demo/components/ComponentPage.vue'
+  import { mocker } from '@/services'
 
+  const flowRun = mocker.create('flowRun')
 </script>

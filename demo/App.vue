@@ -17,14 +17,56 @@
 </template>
 
 <script lang="ts" setup>
-  import { media } from '@prefecthq/prefect-design'
-  import { computed, watchEffect } from 'vue'
+  import { media, PGlobalSidebar, PIcon } from '@prefecthq/prefect-design'
+  import { computed, provide, watchEffect } from 'vue'
+  import { RouterView } from 'vue-router'
+  import { useWorkspaceApiMock } from './utilities/api'
   import ContextSidebar from '@/demo/components/ContextSidebar.vue'
   import { mobileMenuOpen, toggle } from '@/demo/router/menu'
+  import { flowRouteKey, flowRunRouteKey, editDeploymentRouteKey, flowRunsRouteKey, deploymentRouteKey, taskRunRouteKey, flowsRouteKey, deploymentsRouteKey, workQueuesRouteKey, settingsRouteKey, workQueueRouteKey, workQueueCreateRouteKey, editQueueRouteKey, notificationCreateRouteKey, editNotificationRouteKey, blocksRouteKey, flowRunCreateRouteKey, notificationsRouteKey, blockCatalogRouteKey, blockCatalogViewRouteKey, blockCatalogCreateRouteKey, blockRouteKey, blockEditRouteKey, Route } from '@/router'
+  import { mocker } from '@/services'
+  import { getAppPermissions, canKey } from '@/types'
 
   const showMenu = computed(() => media.lg || mobileMenuOpen.value)
 
   watchEffect(() => document.body.classList.toggle('body-scrolling-disabled', showMenu.value && !media.lg))
+
+  useWorkspaceApiMock({
+    flows: mocker.createMany('flowResponse', 10),
+    blockDocuments: mocker.createMany('blockDocumentResponse', 10),
+  })
+
+  const can = getAppPermissions(
+    () => true,
+  )
+
+  provide(canKey, can)
+
+  const emptyRoute = (): Route => ({ path: '/nothing' })
+
+  provide(flowRouteKey, emptyRoute)
+  provide(flowRunRouteKey, emptyRoute)
+  provide(editDeploymentRouteKey, emptyRoute)
+  provide(flowRunsRouteKey, emptyRoute)
+  provide(deploymentRouteKey, emptyRoute)
+  provide(taskRunRouteKey, emptyRoute)
+  provide(flowsRouteKey, emptyRoute)
+  provide(deploymentsRouteKey, emptyRoute)
+  provide(workQueuesRouteKey, emptyRoute)
+  provide(settingsRouteKey, emptyRoute)
+  provide(workQueueRouteKey, emptyRoute)
+  provide(workQueueCreateRouteKey, emptyRoute)
+  provide(editQueueRouteKey, emptyRoute)
+  provide(notificationCreateRouteKey, emptyRoute)
+  provide(editNotificationRouteKey, emptyRoute)
+  provide(blocksRouteKey, emptyRoute)
+  provide(flowRunCreateRouteKey, emptyRoute)
+  provide(notificationsRouteKey, emptyRoute)
+  provide(blockCatalogRouteKey, emptyRoute)
+  provide(blockCatalogViewRouteKey, emptyRoute)
+  provide(blockCatalogCreateRouteKey, emptyRoute)
+  provide(blockRouteKey, emptyRoute)
+  provide(blockEditRouteKey, emptyRoute)
 </script>
 
 <style>

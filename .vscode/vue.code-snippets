@@ -5,54 +5,41 @@
         "body": [
             "<template>",
             "  <div class=\"${TM_FILENAME_BASE/(^[A-Z][a-z]*|[a-z])([A-Z])?/${1:/downcase}${2:+-}${2:/downcase}/g}\">",
-            "",
-            "  </div>",
-            "</template>",
-            "",
-            "<script lang=\"ts\" setup>",
-            "  defineProps<{",
-            "    ${1}",
-            "  }>()",
-            "</script>",
-            "",
-            "<style>",
-            "",
-            "</style>"
-        ],
+                "",
+                "  </div>",
+                "</template>",
+                "",
+                "<script lang=\"ts\" setup>",
+                "  defineProps<{",
+                "    ${1}",
+                "  }>()",
+                "</script>",
+                "",
+                "<style>",
+                "",
+                "</style>"
+            ],
         "description": "Typescript Setup Component"
-    },    
-    "vue-demo-section": {
+    },
+    "vue-demo": {
         "scope": "vue",
-        "prefix": "vue",
+        "prefix": "vue-demo",
         "body": [
             "<template>",
-            "  <DemoSection heading=\"${1}\">",
+            "  <ComponentPage title=\"${TM_FILENAME_BASE/(^[A-Z][a-z]*|[a-z])([A-Z])?/${1}${2:+ }${2}/g}\" :demos=\"[{ title: '${TM_FILENAME_BASE/(^[A-Z][a-z]*|[a-z])([A-Z])?/${1}${2:+ }${2}/g}' }]\">",
+            "    <template #description>",
+            "      This is where we add a short description of <p-code>p-${TM_FILENAME_BASE/(^[A-Z][a-z]*|[a-z])([A-Z])?/${1:/downcase}${2:+-}${2:/downcase}/g}</p-code>. Describe the components intent, not hyper specific documentation that belongs on vitepress page.",
+            "    </template>",
             "",
-            "  </DemoSection>",
+            "    <template #${TM_FILENAME_BASE/(^[A-Z][a-z]*|[a-z])([A-Z])?/${1:/downcase}${2:+-}${2:/downcase}/g}>",
+            "      $1",
+            "    </template>",
+            "  </ComponentPage>",
             "</template>",
             "",
             "<script lang=\"ts\" setup>",
-            "  import DemoSection from '../components/DemoSection.vue'",
+            "  import ComponentPage from '@/demo/components/ComponentPage.vue'",
             "</script>"
-        ],
-        "description": "vue-demo"
-    },
-    "vue-demo-section-sub-section": {
-        "scope": "vue",
-        "prefix": "vue",
-        "body": [
-          "<template>",
-          "  <DemoSection heading=\"${1}\">",
-          "    <DemoSubSection heading=\"${2}\">",
-          "",
-          "    </DemoSubSection>",
-          "  </DemoSection>",
-          "</template>",
-          "",
-          "<script lang=\"ts\" setup>",
-          "  import DemoSection from '../components/DemoSection.vue'",
-          "  import DemoSubSection from '../components/DemoSubSection.vue'",
-          "</script>"
         ],
         "description": "vue-demo"
     },
@@ -71,13 +58,11 @@
         "prefix": "script",
         "body": [
             "<script lang=\"ts\">",
-            "import { defineComponent } from 'vue';",
-            "",
-            "export default defineComponent({",
+            "export default {",
             "  name: '$1',",
             "  expose: [],",
             "  $2",
-            "});",
+            "};",
             "</script>"
         ],
         "description": "Create <script> block"
@@ -143,66 +128,5 @@
             "</template>"
         ],
         "description": "Create html tag with v-else"
-    },
-    "mapper": {
-        "prefix": "mapper",
-        "body": [
-            "import { MapFunction } from '@/services/Mapper'",
-            "",
-            "export const map${1}: MapFunction<${2}, ${3}> = function(source: ${2}): ${3} {",
-            "  return ${4}",
-            "}"
-        ],
-        "description": "Map function"
-    },
-    "mocker": {
-        "prefix": "mocker",
-        "body": [
-          "import { MockFunction } from '@/services/Mocker'",
-          "",
-          "export const random${1}: MockFunction<${2}> = function() {",
-          "  return ${3}",
-          "}"
-        ],
-        "description": "Mock function"
-    },
-    "Api Service": {
-        "prefix": "api",
-        "body": [
-          "import { Api, ApiRoute } from './Api'",
-          "import { mapper } from './Mapper'",
-          "",
-          "export class ${TM_FILENAME_BASE} extends Api {",
-          "",
-          "  protected override route: ApiRoute = '/${1}'",
-          "",
-          "}"
-        ],
-        "description": "Api Service"
-    },
-    "model": {
-        "prefix": "model",
-        "body": [
-          "export interface I${TM_FILENAME_BASE} {",
-          "  ${1}",
-          "}",
-          "",
-          "export class ${TM_FILENAME_BASE} implements I${TM_FILENAME_BASE} {",
-          "",
-          "  public constructor(${TM_FILENAME_BASE/(.*)/${1:/camelcase}/}: I${TM_FILENAME_BASE}) {",
-          "",
-          "  }",
-          "}"
-        ],
-        "description": "Typescript model"
-    },
-    "Typescript type": {
-        "prefix": "type",
-        "body": [
-          "export type ${TM_FILENAME_BASE} = {",
-          "  ${1}",
-          "}"
-        ],
-        "description": "Typescript type"
     }
 }

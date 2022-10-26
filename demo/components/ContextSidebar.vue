@@ -28,9 +28,11 @@
 </template>
 
 <script lang="ts" setup>
-  import { PContextAccordionItem, PContextNavItem } from '@prefecthq/prefect-design'
+  import { PContextNavItem } from '@prefecthq/prefect-design'
+  import { ContextAccordionChildItem } from '@prefecthq/prefect-design/dist/types/src/types/contextAccordionChildItem'
   import { ref } from 'vue'
   import { RouteLocationRaw, RouteRecordRaw, useRouter } from 'vue-router'
+  import PContextAccordionItem from './PContextAccordionItem.vue'
   import { routeRecords } from '@/demo/router'
   import { mobileMenuOpen } from '@/demo/router/menu'
   import { routeRecordsFlat } from '@/demo/router/routeRecordsFlat'
@@ -43,7 +45,7 @@
     return PContextNavItem
   }
 
-  function getContextProps(record: RouteRecordRaw): { title: string, children: any[] } | { title: string, to: RouteLocationRaw } {
+  function getContextProps(record: RouteRecordRaw): { title: string, children: ContextAccordionChildItem[] } | { title: string, to: RouteLocationRaw } {
     const title = record.name?.toString() ?? ''
 
     if (!record.children) {
