@@ -4,7 +4,7 @@
       <template #name>
         <FlowRouterLink :flow-id="flowRun.flowId" class="flow-run-list-item__flow-link">
           <template #after>
-            <p-icon icon="ChevronRightIcon" />
+            <p-icon icon="ChevronRightIcon" size="small" />
           </template>
         </FlowRouterLink>
         <p-link :to="flowRunRoute(flowRun.id)" class="flow-run-list-item__flow-run-link">
