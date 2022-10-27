@@ -1,3 +1,3 @@
 interface Date {
-  isAdjusted?: boolean,
+  timezone?: string,
 }

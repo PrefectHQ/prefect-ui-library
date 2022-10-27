@@ -22,7 +22,7 @@ export function utcToZonedTime(date: Date, timezone = selectedTimezone.value): D
   if (timezone) {
     const value = dateFnsUtcToZonedTime(date, timezone)
 
-    value.isAdjusted = false
+    value.timezone = timezone
 
     return value
   }
@@ -34,7 +34,7 @@ export function zonedTimeToUtc(date: Date, timezone = selectedTimezone.value): D
   if (timezone) {
     const value = dateFnsZonedTimeToUtc(date, timezone)
 
-    value.isAdjusted = true
+    value.timezone = timezone
 
     return value
   }
@@ -48,12 +48,13 @@ export const dateFnsTz = new Proxy({ ...DateFns }, {
 
     return (...args: unknown[]) => {
       const unadjusted = args.map(arg => {
-        if (isDate(arg) && arg.isAdjusted) {
-          return utcToZonedTime(arg)
+        if (isDate(arg) && arg.timezone) {
+          return utcToZonedTime(arg, arg.timezone)
         }
 
         return arg
       })
+
       const value = method.apply(this, unadjusted)
 
       return zonedTimeToUtc(value)
