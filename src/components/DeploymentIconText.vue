@@ -1,16 +1,15 @@
 <template>
   <template v-if="can.read.deployment">
-    <router-link :to="deploymentRoute(deploymentId)" class="deployment-icon-text">
+    <p-link :to="deploymentRoute(deploymentId)" class="deployment-icon-text">
       <p-icon-text icon="LocationMarkerIcon">
         <span>{{ deploymentName }}</span>
       </p-icon-text>
-    </router-link>
+    </p-link>
   </template>
 </template>
 
 <script lang="ts" setup>
   import { computed } from 'vue'
-  import { RouterLink } from 'vue-router'
   import { useCan } from '@/compositions/useCan'
   import { useDeployment } from '@/compositions/useDeployment'
   import { deploymentRouteKey } from '@/router/routes'

@@ -1,16 +1,24 @@
 <template>
   <span v-if="showLink" class="flow-router-link">
-    <span v-if="before">{{ before }}</span>
-    <router-link class="flow-router-link__anchor" :to="flowRoute(flowId)">
+    <slot name="before">
+      <span v-if="before">
+        {{ before }}
+      </span>
+    </slot>
+    <p-link class="flow-router-link__anchor" :to="flowRoute(flowId)">
       {{ flowName }}
-    </router-link>
-    <span v-if="after">{{ after }}</span>
+    </p-link>
+    <slot name="after">
+      <span v-if="after">
+        {{ after }}
+      </span>
+    </slot>
   </span>
 </template>
 
 <script lang="ts" setup>
   import { computed } from 'vue'
-  import { RouterLink, useRoute, useRouter } from 'vue-router'
+  import { useRoute, useRouter } from 'vue-router'
   import { useFlow } from '@/compositions'
   import { useCan } from '@/compositions/useCan'
   import { flowRouteKey } from '@/router/routes'
@@ -43,7 +51,8 @@
 </script>
 
 <style>
-.flow-router-link__anchor { @apply
-  text-prefect-500
-}
+  .flow-router-link { @apply
+    inline-flex
+    items-center
+  }
 </style>
