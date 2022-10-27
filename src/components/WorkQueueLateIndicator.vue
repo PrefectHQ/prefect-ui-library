@@ -1,22 +1,15 @@
 <template>
   <p-tag v-if="lateRunsCount" class="work-queue-late-indicator">
-    {{ tagText }}
+    {{ lateRunsCount }} {{ toPluralString('Late run', lateRunsCount) }}
   </p-tag>
 </template>
 
 <script lang="ts" setup>
-  import { computed } from 'vue'
+  import { toPluralString } from '@/utilities'
 
-  const props = defineProps<{
+  defineProps<{
     lateRunsCount: number,
   }>()
-
-  const tagText = computed(() => {
-    if (props.lateRunsCount === 1) {
-      return `${props.lateRunsCount} Late run`
-    }
-    return `${props.lateRunsCount} Late runs`
-  })
 </script>
 
 <style>

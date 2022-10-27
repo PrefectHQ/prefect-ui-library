@@ -1,5 +1,9 @@
 <template>
   <div class="work-queue-details">
+    <template v-if="workQueueStatus">
+      <p-key-value label="Status" :value="workQueue.isPaused ? 'Paused' : workQueueStatus.healthy ? 'Healthy' : 'Unhealthy'" :alternate="alternate" />
+    </template>
+
     <p-key-value label="Description" :value="workQueue.description" :alternate="alternate" />
 
     <p-divider />
@@ -12,8 +16,6 @@
 
     <template v-if="workQueueStatus">
       <p-key-value label="Last Polled" :value="workQueueStatus.lastPolled ? formatDateTimeNumeric(workQueueStatus.lastPolled) : null" :alternate="alternate" />
-
-      <p-key-value label="Status" :value="workQueueStatus.healthy ? 'Healthy' : 'Unhealthy'" :alternate="alternate" />
     </template>
 
     <template v-if="workQueue.filter">

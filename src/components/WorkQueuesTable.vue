@@ -1,11 +1,11 @@
 <template>
   <div class="work-queues-table">
     <div class="work-queues-table__search">
-      <ResultsCount :count="sortedFilteredWorkQueuesWithStatus.length" label="Work queue" />
+      <ResultsCount :count="filteredWorkQueuesWithStatus.length" label="Work queue" />
       <SearchInput v-model="searchTerm" placeholder="Search work queues" label="Search work queues" />
     </div>
 
-    <p-table :data="sortedFilteredWorkQueuesWithStatus" :columns="columns">
+    <p-table :data="filteredWorkQueuesWithStatus" :columns="columns">
       <template #name="{ row }">
         <p-link :to="workQueueRoute(row.workQueue.id)">
           <span>{{ row.workQueue.name }}</span>
@@ -17,7 +17,7 @@
       </template>
 
       <template #status="{ row }">
-        <span> {{ row.status.healthy ? 'Healthy' : 'Unhealthy' }} </span>
+        <span> {{ row.workQueue.isPaused ? 'Paused' : row.status.healthy ? 'Healthy' : 'Unhealthy' }} </span>
       </template>
 
       <template #last-polled="{ row }">
@@ -118,8 +118,6 @@
   function filterWorkQueue({ workQueue: { name, concurrencyLimit } }: WorkQueueWithStatus): boolean {
     return `${name} ${concurrencyLimit}`.toLowerCase().includes(searchTerm.value.toLowerCase())
   }
-
-  const sortedFilteredWorkQueuesWithStatus = computed(()=>[...filteredWorkQueuesWithStatus.value].sort((alpha, beta)=>Number(alpha.status.healthy) - Number(beta.status.healthy)))
 
   function clear(): void {
     searchTerm.value = ''
