@@ -19,11 +19,27 @@ export const utcOffsetMilliseconds = computed(() => selectedTimezone.value === n
 export const utcOffsetMinutes = computed(() => DateFns.millisecondsToMinutes(utcOffsetMilliseconds.value))
 
 export function utcToZonedTime(date: Date, timezone = selectedTimezone.value): Date {
-  return timezone ? dateFnsUtcToZonedTime(date, timezone) : date
+  if (timezone) {
+    const value = dateFnsUtcToZonedTime(date, timezone)
+
+    value.isAdjusted = false
+
+    return value
+  }
+
+  return date
 }
 
 export function zonedTimeToUtc(date: Date, timezone = selectedTimezone.value): Date {
-  return timezone ? dateFnsZonedTimeToUtc(date, timezone) : date
+  if (timezone) {
+    const value = dateFnsZonedTimeToUtc(date, timezone)
+
+    value.isAdjusted = true
+
+    return value
+  }
+
+  return date
 }
 
 export const dateFnsTz = new Proxy({ ...DateFns }, {
@@ -39,11 +55,8 @@ export const dateFnsTz = new Proxy({ ...DateFns }, {
         return arg
       })
       const value = method.apply(this, unadjusted)
-      const adjusted = zonedTimeToUtc(value)
 
-      adjusted.isAdjusted = true
-
-      return adjusted
+      return zonedTimeToUtc(value)
     }
   },
 })
