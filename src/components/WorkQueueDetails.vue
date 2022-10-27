@@ -10,6 +10,12 @@
 
     <p-key-value label="Created" :value="formatDateTimeNumeric(workQueue.created)" :alternate="alternate" />
 
+    <template v-if="workQueueStatus">
+      <p-key-value label="Last Polled" :value="workQueueStatus.lastPolled ? formatDateTimeNumeric(workQueueStatus.lastPolled) : null" :alternate="alternate" />
+
+      <p-key-value label="Status" :value="workQueueStatus.healthy ? 'Healthy' : 'Unhealthy'" :alternate="alternate" />
+    </template>
+
     <template v-if="workQueue.filter">
       <p-key-value :label="deploymentLabel" :alternate="alternate">
         <template v-if="workQueue.filter.deploymentIds.length" #value>
@@ -34,8 +40,10 @@
 </template>
 
 <script lang="ts" setup>
+  import { useSubscription } from '@prefecthq/vue-compositions'
   import { computed } from 'vue'
   import DeploymentIconText from './DeploymentIconText.vue'
+  import { useWorkspaceApi } from '@/compositions'
   import { WorkQueue } from '@/models/WorkQueue'
   import { formatDateTimeNumeric } from '@/utilities/dates'
 
@@ -52,6 +60,11 @@
     const num = deploymentIds.value?.length ?? 0
     return num > 0 ? `${num} Deployments` : 'Deployments'
   })
+
+  const api = useWorkspaceApi()
+
+  const workQueueStatusSubscription = useSubscription(api.workQueues.getWorkQueueStatus, [props.workQueue.id])
+  const workQueueStatus = computed(() => workQueueStatusSubscription.response)
 </script>
 
 <style>

@@ -1,19 +1,27 @@
 <template>
   <div class="work-queues-table">
     <div class="work-queues-table__search">
-      <ResultsCount :count="filtered.length" label="Work queue" />
+      <ResultsCount :count="sortedFilteredWorkQueuesWithStatus.length" label="Work queue" />
       <SearchInput v-model="searchTerm" placeholder="Search work queues" label="Search work queues" />
     </div>
 
-    <p-table :data="filtered" :columns="columns">
+    <p-table :data="sortedFilteredWorkQueuesWithStatus" :columns="columns">
       <template #name="{ row }">
-        <p-link :to="workQueueRoute(row.id)">
-          <span>{{ row.name }}</span>
+        <p-link :to="workQueueRoute(row.workQueue.id)">
+          <span>{{ row.workQueue.name }}</span>
         </p-link>
       </template>
 
       <template #concurrency="{ row }">
-        <span> {{ row.concurrencyLimit ?? 'Unlimited' }} </span>
+        <span> {{ row.workQueue.concurrencyLimit ?? 'Unlimited' }} </span>
+      </template>
+
+      <template #status="{ row }">
+        <span> {{ row.status.healthy ? 'Healthy' : 'Unhealthy' }} </span>
+      </template>
+
+      <template #last-polled="{ row }">
+        <span> {{ row.status.lastPolled ? formatDateTimeNumeric(row.status.lastPolled) : null }} </span>
       </template>
 
       <template #action-heading>
@@ -22,9 +30,9 @@
 
       <template #action="{ row }">
         <div class="work-queues-table__actions">
-          <WorkQueueLateIndicator :work-queue-name="row.name" />
-          <WorkQueueToggle :work-queue="row" @update="emits('update')" />
-          <WorkQueueMenu size="xs" :work-queue="row" @delete="(id:string) => emits('delete', id)" />
+          <WorkQueueLateIndicator :late-runs-count="row.status.lateRunsCount" />
+          <WorkQueueToggle :work-queue="row.workQueue" @update="emits('update')" />
+          <WorkQueueMenu size="xs" :work-queue="row.workQueue" @delete="(id:string) => emits('delete', id)" />
         </div>
       </template>
 
@@ -52,9 +60,10 @@
   import WorkQueueLateIndicator from '@/components/WorkQueueLateIndicator.vue'
   import WorkQueueMenu from '@/components/WorkQueueMenu.vue'
   import WorkQueueToggle from '@/components/WorkQueueToggle.vue'
-  import { WorkQueue } from '@/models'
+  import { useWorkspaceApi } from '@/compositions'
+  import { WorkQueue, WorkQueueStatus } from '@/models'
   import { workQueueRouteKey } from '@/router'
-  import { inject } from '@/utilities'
+  import { formatDateTimeNumeric, inject } from '@/utilities'
 
   const workQueueRoute = inject(workQueueRouteKey)
 
@@ -73,29 +82,44 @@
     {
       property: 'name',
       label: 'Name',
-      width: '150px',
     },
     {
-      property: 'concurrencyLimit',
       label: 'Concurrency',
+    },
+    {
+      label: 'Status',
+    },
+    {
+      label: 'Last Polled',
     },
     {
       label: 'Action',
       width: '42px',
     },
   ]
+  const api = useWorkspaceApi()
 
-  const filtered = computed(() => {
+  type WorkQueueWithStatus = { workQueue: WorkQueue, status: WorkQueueStatus }
+
+  const workQueuesWithStatus = await Promise.all(props.workQueues.map(getWorkQueueWithStatus))
+
+  function getWorkQueueWithStatus(workQueue: WorkQueue): Promise<WorkQueueWithStatus> {
+    return api.workQueues.getWorkQueueStatus(workQueue.id).then((status)=>({ workQueue, status }))
+  }
+
+  const filteredWorkQueuesWithStatus = computed(() => {
     if (searchTerm.value.length === 0) {
-      return props.workQueues
+      return workQueuesWithStatus
     }
 
-    return props.workQueues.filter(filterWorkQueue)
+    return workQueuesWithStatus.filter(filterWorkQueue)
   })
 
-  function filterWorkQueue({ name, concurrencyLimit }: WorkQueue): boolean {
+  function filterWorkQueue({ workQueue: { name, concurrencyLimit } }: WorkQueueWithStatus): boolean {
     return `${name} ${concurrencyLimit}`.toLowerCase().includes(searchTerm.value.toLowerCase())
   }
+
+  const sortedFilteredWorkQueuesWithStatus = computed(()=>[...filteredWorkQueuesWithStatus.value].sort((alpha, beta)=>Number(alpha.status.healthy) - Number(beta.status.healthy)))
 
   function clear(): void {
     searchTerm.value = ''

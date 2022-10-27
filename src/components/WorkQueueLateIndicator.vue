@@ -1,33 +1,21 @@
 <template>
-  <p-tag v-if="flowRuns" class="work-queue-late-indicator">
+  <p-tag v-if="lateRunsCount" class="work-queue-late-indicator">
     {{ tagText }}
   </p-tag>
 </template>
 
 <script lang="ts" setup>
-  import { useSubscription } from '@prefecthq/vue-compositions'
   import { computed } from 'vue'
-  import { useRecentFlowRunFilter } from '@/compositions'
-  import { flowRunsApiKey } from '@/services'
-  import { inject } from '@/utilities/inject'
 
   const props = defineProps<{
-    workQueueName: string,
+    lateRunsCount: number,
   }>()
 
-  const flowRunsApi = inject(flowRunsApiKey)
-  const workQueueName = computed(() => props.workQueueName ? [props.workQueueName] : [])
-
-  const flowRunFilter = useRecentFlowRunFilter({ states: ['Late'], workQueues: workQueueName })
-
-  const flowRunsSubscription = useSubscription(flowRunsApi.getFlowRunsCount, [flowRunFilter])
-  const flowRuns = computed(()=> flowRunsSubscription.response ?? [])
-
   const tagText = computed(() => {
-    if (flowRuns.value === 1) {
-      return `${flowRuns.value} Late run`
+    if (props.lateRunsCount === 1) {
+      return `${props.lateRunsCount} Late run`
     }
-    return `${flowRuns.value} Late runs`
+    return `${props.lateRunsCount} Late runs`
   })
 </script>
 
