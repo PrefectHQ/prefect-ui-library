@@ -39,7 +39,7 @@
       </div>
 
       <div>
-        <p-code>formatRelativeDateTime (compared to now)</p-code>
+        <p-code>formatDateTimeRelative (compared to now)</p-code>
         <p>{{ formatDateTimeRelative(date, now) }}</p>
       </div>
     </div>
@@ -47,12 +47,11 @@
 </template>
 
 <script lang="ts" setup>
-  import { startOfMinute } from 'date-fns'
   import { watch, ref } from 'vue'
   import DemoSection from '../components/DemoSection.vue'
   import DateInput from '@/components/DateInput.vue'
   import TimezoneSelect from '@/components/TimezoneSelect.vue'
-  import { utcOffsetMinutes, selectedTimezone, formatDate, formatDateTimeNumeric, formatTimeNumeric, formatDateTimeRelative } from '@/utilities/dates'
+  import { dateFnsTz, utcOffsetMinutes, selectedTimezone, formatDate, formatDateTimeNumeric, formatTimeNumeric, formatDateTimeRelative } from '@/utilities/dates'
 
   const date = ref(new Date())
   const now = ref(getCurrentTime())
@@ -62,7 +61,7 @@
   })
 
   function getCurrentTime(): string {
-    return formatDate(startOfMinute(new Date()), 'yyyy-MM-dd HH:mm:ssXXX')
+    return formatDate(dateFnsTz.startOfMinute(new Date()), 'yyyy-MM-dd HH:mm:ssXXX')
   }
 </script>
 

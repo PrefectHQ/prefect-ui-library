@@ -23,11 +23,10 @@
 
 <script lang="ts" setup>
   import { PCode } from '@prefecthq/prefect-design'
-  import { isSameDay } from 'date-fns'
   import { computed } from 'vue'
   import LogRow from '@/components/LogRow.vue'
   import { Log } from '@/models/Log'
-  import { formatDate } from '@/utilities/dates'
+  import { dateFnsTz, formatDate } from '@/utilities/dates'
 
   const props = defineProps<{
     logs: Log[],
@@ -47,7 +46,7 @@
     const previous = props.logs[index - 1]
     const current = props.logs[index]
 
-    return !isSameDay(previous.timestamp, current.timestamp)
+    return !dateFnsTz.isSameDay(previous.timestamp, current.timestamp)
   }
 </script>
 

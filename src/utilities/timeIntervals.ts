@@ -1,4 +1,4 @@
-import { minutesInHour, secondsInMinute } from 'date-fns'
+import { dateFnsTz } from '@/utilities/dates'
 
 export const hoursInDay = 24
 
@@ -6,9 +6,9 @@ export type IntervalOption = 'Seconds' | 'Minutes' | 'Hours' | 'Days'
 
 export const intervalOptionsToSecondsMap: Record<IntervalOption, number> = {
   'Seconds': 1,
-  'Minutes': secondsInMinute,
-  'Hours': secondsInMinute * minutesInHour,
-  'Days': secondsInMinute * minutesInHour * hoursInDay,
+  'Minutes': dateFnsTz.secondsInMinute,
+  'Hours': dateFnsTz.secondsInMinute * dateFnsTz.minutesInHour,
+  'Days': dateFnsTz.secondsInMinute * dateFnsTz.minutesInHour * hoursInDay,
 }
 
 

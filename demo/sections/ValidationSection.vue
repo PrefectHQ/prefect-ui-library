@@ -51,14 +51,15 @@
 </template>
 
 <script lang="ts" setup>
-  import { addYears } from 'date-fns'
   import { useField } from 'vee-validate'
   import { computed } from 'vue'
   import DemoSection from '../components/DemoSection.vue'
   import JsonInput from '@/components/JsonInput.vue'
   import { useForm } from '@/compositions/useForm'
-  import { isEmptyString, isNullish } from '@/utilities'
+  import { dateFnsTz } from '@/utilities/dates'
+  import { isEmptyString } from '@/utilities/strings'
   import { fieldRules, isBefore, isEmail, isJson, isRequired, ValidationMethodFactory } from '@/utilities/validation'
+  import { isNullish } from '@/utilities/variables'
 
   const { handleSubmit, handleReset, isSubmitting, meta, errors, submitCount } = useForm()
 
@@ -84,7 +85,7 @@
     })
   }
 
-  const minDate = addYears(new Date(), -18)
+  const minDate = dateFnsTz.addYears(new Date(), -18)
   const rules = {
     name: fieldRules('Name', isRequired),
     json: fieldRules('Favorite JSON', isRequired, isJson),
