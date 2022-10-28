@@ -20,7 +20,7 @@
   import TaskRunList from '@/components/TaskRunList.vue'
   import { mocker } from '@/services'
 
-  const flowRuns = mocker.createMany('flowRun', 4)
+  const flowRuns = mocker.createMany('flowRun', 8)
   const taskRuns = mocker.createMany('taskRun', 4)
   const selectedFlowRuns = ref<string[]>([])
   const selectedTaskRuns = ref<string[]>([])

@@ -6,7 +6,7 @@ export const randomWorkQueueStatus: MockFunction<WorkQueueStatus, [Partial<WorkQ
 
   return new WorkQueueStatus({
     healthy: this.create('boolean'),
-    lateRuns: this.create('number', [0, 3]),
+    lateRunsCount: this.create('number', [0, 3]),
     lastPolled: random() > 0.8 ? this.create('date') : null,
     healthCheckPolicy: this.create('workQueueHealthPolicy'),
     ...overrides,

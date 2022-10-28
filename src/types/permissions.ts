@@ -118,6 +118,7 @@ const featureFlags = [
   'access:scim',
   'access:selfServeOrgs',
   'access:auditLogs',
+  'access:retry',
 ] as const
 
 export type FeatureFlagString = typeof featureFlags[number]
