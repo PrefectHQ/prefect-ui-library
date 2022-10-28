@@ -1,5 +1,5 @@
 import '@prefecthq/prefect-design/dist/style.css'
-import '../src/styles/style.css'
+import '@/styles/style.css'
 
 import { plugin as PrefectDesign } from '@prefecthq/prefect-design'
 import { createApp } from 'vue'
