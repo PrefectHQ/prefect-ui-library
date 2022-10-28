@@ -35,10 +35,17 @@
     },
   ])
 
+  const taskRuns = mocker.createMany('taskRun', mocker.create('number', [0, 10]), [
+    {
+      flowRunId: flowRun.id,
+    },
+  ])
+
   useWorkspaceApiMock({
     flows: flow,
     flowRuns: flowRun,
     deployments: deployment,
     workQueues: workQueue,
+    taskRuns,
   })
 </script>
