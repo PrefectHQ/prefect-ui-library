@@ -13,6 +13,7 @@
     workQueue: WorkQueue,
   }>()
 
-  const workQueueStatus = useWorkQueueStatus(props.workQueue.id)
+  const workQueueId = computed(()=>props.workQueue.id)
+  const workQueueStatus = useWorkQueueStatus(workQueueId)
   const healthy = computed(()=> workQueueStatus.value?.healthy)
 </script>
