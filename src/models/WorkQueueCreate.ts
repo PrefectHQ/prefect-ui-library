@@ -1,6 +1,6 @@
 export type WorkQueueCreate = {
   name: string,
-  description?: string,
+  description?: string | null,
   isPaused?: boolean,
-  concurrencyLimit?: number,
+  concurrencyLimit?: number | null,
 }
