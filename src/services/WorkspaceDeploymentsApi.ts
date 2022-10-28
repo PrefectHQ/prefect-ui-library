@@ -7,7 +7,18 @@ import { FlowRunResponse } from '@/models/FlowRunResponse'
 import { mapper } from '@/services/Mapper'
 import { UnionFilters } from '@/types/UnionFilters'
 
-export class WorkspaceDeploymentsApi extends WorkspaceApi {
+export interface IWorkspaceDeploymentsApi {
+  getDeployment: (deploymentId: string) => Promise<Deployment>,
+  getDeployments: (filter: UnionFilters) => Promise<Deployment[]>,
+  getDeploymentsCount: (filter: UnionFilters) => Promise<number>,
+  createDeploymentFlowRun: (deploymentId: string, request: DeploymentFlowRunCreate) => Promise<FlowRun>,
+  updateDeployment: (deploymentId: string, request: DeploymentUpdate) => Promise<void>,
+  pauseDeployment: (deploymentId: string) => Promise<void>,
+  resumeDeployment: (deploymentId: string) => Promise<void>,
+  deleteDeployment: (deploymentId: string) => Promise<void>,
+}
+
+export class WorkspaceDeploymentsApi extends WorkspaceApi implements IWorkspaceDeploymentsApi {
 
   protected override routePrefix = '/deployments'
 

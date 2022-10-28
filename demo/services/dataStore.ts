@@ -1,4 +1,7 @@
 /* eslint-disable max-classes-per-file */
+import { asArray } from '@/utilities'
+import { mapEntries } from '@/utilities/object'
+
 export class DataStoreDataNotFound extends Error {
   public constructor() {
     super('Mocked data not found')
@@ -9,26 +12,38 @@ export class DataStoreDataNotFound extends Error {
 // eslint-disable-next-line @typescript-eslint/ban-types
 type NoInfer<T> = T & {}
 type DataStoreFindCallback<T> = (value: T) => boolean
+type DataStoreHydrateMethod<T> = (value: T) => T
+type DataStoreOptions<T extends { id: K }, K extends string | number | symbol = T['id']> = {
+  seeds?: T | T[],
+  hydrate?: DataStoreHydrateMethod<T>,
+}
 
 export class DataStore<T extends { id: K }, K extends string | number | symbol = T['id']> {
   private _data: string = '{}'
+  private readonly hydrate: DataStoreHydrateMethod<T> = (value) => value
 
   private get data(): Record<K, T> {
-    return JSON.parse(this._data)
+    const data: Record<K, T> = JSON.parse(this._data)
+
+    return mapEntries(data, (key, value) => this.hydrate(value))
   }
 
   private set data(value: Record<K, T>) {
     this._data = JSON.stringify(value)
   }
 
-  public constructor(seeds: T[] = []) {
+  public constructor({ seeds = [], hydrate }: DataStoreOptions<T>) {
     const data = {} as Record<K, T>
 
-    this.data = seeds.reduce((data, seed) => {
+    this.data = asArray(seeds).reduce((data, seed) => {
       data[seed.id] = seed
 
       return data
     }, data)
+
+    if (hydrate) {
+      this.hydrate = hydrate
+    }
   }
 
   public get(id: T['id']): T {
