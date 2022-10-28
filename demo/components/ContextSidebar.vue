@@ -29,9 +29,9 @@
 
 <script lang="ts" setup>
   import { PContextNavItem } from '@prefecthq/prefect-design'
-  import { ContextAccordionChildItem } from '@prefecthq/prefect-design/dist/types/src/types/contextAccordionChildItem'
   import { ref } from 'vue'
   import { RouteLocationRaw, RouteRecordRaw, useRouter } from 'vue-router'
+  import { ContextAccordionChildItem } from './contextAccordionChildItem'
   import PContextAccordionItem from './PContextAccordionItem.vue'
   import { routeRecords } from '@/demo/router'
   import { mobileMenuOpen } from '@/demo/router/menu'
