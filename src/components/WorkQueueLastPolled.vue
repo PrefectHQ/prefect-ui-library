@@ -1,14 +1,14 @@
 <template>
-  <p-tag v-if="lateRunsCount" class="work-queue-late-indicator">
-    {{ lateRunsCount }} {{ toPluralString('Late run', lateRunsCount) }}
-  </p-tag>
+  <span v-if="lastPolled" class="work-queue-last-polled">
+    {{ formatDateTimeNumeric(lastPolled) }}
+  </span>
 </template>
 
 <script lang="ts" setup>
   import { useSubscription } from '@prefecthq/vue-compositions'
   import { computed } from 'vue'
   import { useWorkspaceApi } from '@/compositions'
-  import { toPluralString } from '@/utilities'
+  import { formatDateTimeNumeric } from '@/utilities'
 
   const props = defineProps<{
     workQueueId: string,
@@ -17,13 +17,5 @@
   const api = useWorkspaceApi()
   const workQueueStatusSubscription = useSubscription(api.workQueues.getWorkQueueStatus, [props.workQueueId])
   const workQueueStatus = computed(() => workQueueStatusSubscription.response)
-  const lateRunsCount = computed(()=> workQueueStatus.value?.lateRunsCount)
+  const lastPolled = computed(()=> workQueueStatus.value?.lastPolled)
 </script>
-
-<style>
-.work-queue-late-indicator { @apply
-  text-xs
-  bg-state-scheduled-100
-  text-state-scheduled-700
-  }
-</style>

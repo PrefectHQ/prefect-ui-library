@@ -1,27 +1,27 @@
 <template>
   <div class="work-queues-table">
     <div class="work-queues-table__search">
-      <ResultsCount :count="filteredWorkQueuesWithStatus.length" label="Work queue" />
+      <ResultsCount :count="filteredWorkQueues.length" label="Work queue" />
       <SearchInput v-model="searchTerm" placeholder="Search work queues" label="Search work queues" />
     </div>
 
-    <p-table :data="filteredWorkQueuesWithStatus" :columns="columns">
+    <p-table :data="filteredWorkQueues" :columns="columns">
       <template #name="{ row }">
-        <p-link :to="workQueueRoute(row.workQueue.id)">
-          <span>{{ row.workQueue.name }}</span>
+        <p-link :to="workQueueRoute(row.id)">
+          <span>{{ row.name }}</span>
         </p-link>
       </template>
 
       <template #concurrency="{ row }">
-        <span> {{ row.workQueue.concurrencyLimit ?? 'Unlimited' }} </span>
+        <span> {{ row.concurrencyLimit ?? 'Unlimited' }} </span>
       </template>
 
       <template #status="{ row }">
-        <span> {{ row.workQueue.isPaused ? 'Paused' : row.status.healthy ? 'Healthy' : 'Unhealthy' }} </span>
+        <WorkQueueHealth :work-queue="row" />
       </template>
 
       <template #last-polled="{ row }">
-        <span> {{ row.status.lastPolled ? formatDateTimeNumeric(row.status.lastPolled) : null }} </span>
+        <WorkQueueLastPolled :work-queue-id="row.id" />
       </template>
 
       <template #action-heading>
@@ -30,9 +30,9 @@
 
       <template #action="{ row }">
         <div class="work-queues-table__actions">
-          <WorkQueueLateIndicator :late-runs-count="row.status.lateRunsCount" />
-          <WorkQueueToggle :work-queue="row.workQueue" @update="emits('update')" />
-          <WorkQueueMenu size="xs" :work-queue="row.workQueue" @delete="(id:string) => emits('delete', id)" />
+          <WorkQueueLateIndicator :work-queue-id="row.id" />
+          <WorkQueueToggle :work-queue="row" @update="emits('update')" />
+          <WorkQueueMenu size="xs" :work-queue="row" @delete="(id:string) => emits('delete', id)" />
         </div>
       </template>
 
@@ -55,15 +55,10 @@
 <script lang="ts" setup>
   import { PTable, PEmptyResults, PLink } from '@prefecthq/prefect-design'
   import { computed, ref } from 'vue'
-  import ResultsCount from './ResultsCount.vue'
-  import SearchInput from './SearchInput.vue'
-  import WorkQueueLateIndicator from '@/components/WorkQueueLateIndicator.vue'
-  import WorkQueueMenu from '@/components/WorkQueueMenu.vue'
-  import WorkQueueToggle from '@/components/WorkQueueToggle.vue'
-  import { useWorkspaceApi } from '@/compositions'
-  import { WorkQueue, WorkQueueStatus } from '@/models'
+  import { WorkQueueToggle, WorkQueueMenu, WorkQueueLateIndicator, WorkQueueHealth, SearchInput, ResultsCount, WorkQueueLastPolled } from '@/components'
+  import { WorkQueue } from '@/models'
   import { workQueueRouteKey } from '@/router'
-  import { formatDateTimeNumeric, inject } from '@/utilities'
+  import { inject } from '@/utilities'
 
   const workQueueRoute = inject(workQueueRouteKey)
 
@@ -97,25 +92,16 @@
       width: '42px',
     },
   ]
-  const api = useWorkspaceApi()
 
-  type WorkQueueWithStatus = { workQueue: WorkQueue, status: WorkQueueStatus }
-
-  const workQueuesWithStatus = await Promise.all(props.workQueues.map(getWorkQueueWithStatus))
-
-  function getWorkQueueWithStatus(workQueue: WorkQueue): Promise<WorkQueueWithStatus> {
-    return api.workQueues.getWorkQueueStatus(workQueue.id).then((status)=>({ workQueue, status }))
-  }
-
-  const filteredWorkQueuesWithStatus = computed(() => {
+  const filteredWorkQueues = computed(() => {
     if (searchTerm.value.length === 0) {
-      return workQueuesWithStatus
+      return props.workQueues
     }
 
-    return workQueuesWithStatus.filter(filterWorkQueue)
+    return props.workQueues.filter(filterWorkQueue)
   })
 
-  function filterWorkQueue({ workQueue: { name, concurrencyLimit } }: WorkQueueWithStatus): boolean {
+  function filterWorkQueue({ name, concurrencyLimit }: WorkQueue): boolean {
     return `${name} ${concurrencyLimit}`.toLowerCase().includes(searchTerm.value.toLowerCase())
   }
 
