@@ -1,7 +1,8 @@
 <template>
   <template v-if="workQueueStatus">
     <p-tag class="work-queue-status-badge" :class="classes">
-      <span class="work-queue-status-badge__circle" :class="circleClasses" /> {{ label }}
+      <span class="work-queue-status-badge__circle" :class="circleClasses" />
+      {{ label }}
     </p-tag>
   </template>
 </template>
