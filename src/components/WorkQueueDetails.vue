@@ -1,7 +1,11 @@
 <template>
   <div class="work-queue-details">
     <template v-if="workQueueStatus">
-      <p-key-value label="Status" :value="workQueue.isPaused ? 'Paused' : workQueueStatus.healthy ? 'Healthy' : 'Unhealthy'" :alternate="alternate" />
+      <p-key-value label="Status" :alternate="alternate">
+        <template #value>
+          <WorkQueueStatusBadge :work-queue="workQueue" />
+        </template>
+      </p-key-value>
     </template>
 
     <p-key-value label="Description" :value="workQueue.description" :alternate="alternate" />
@@ -42,10 +46,10 @@
 </template>
 
 <script lang="ts" setup>
-  import { useSubscription } from '@prefecthq/vue-compositions'
   import { computed } from 'vue'
   import DeploymentIconText from './DeploymentIconText.vue'
-  import { useWorkspaceApi } from '@/compositions'
+  import { WorkQueueStatusBadge } from '@/components'
+  import { useWorkQueueStatus } from '@/compositions'
   import { WorkQueue } from '@/models/WorkQueue'
   import { formatDateTimeNumeric } from '@/utilities/dates'
 
@@ -63,10 +67,7 @@
     return num > 0 ? `${num} Deployments` : 'Deployments'
   })
 
-  const api = useWorkspaceApi()
-
-  const workQueueStatusSubscription = useSubscription(api.workQueues.getWorkQueueStatus, [props.workQueue.id])
-  const workQueueStatus = computed(() => workQueueStatusSubscription.response)
+  const workQueueStatus = useWorkQueueStatus(props.workQueue.id)
 </script>
 
 <style>
