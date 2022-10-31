@@ -38,7 +38,7 @@
 
   const props = defineProps<{
     flowRunFilter: UnionFilters,
-    states?: StateType[],
+    states?: StateTypeOrLate[],
     disabled?: boolean,
   }>()
 
