@@ -1,38 +1,33 @@
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
-import { DataStores } from '../utilities/api'
+import { data } from '@/demo/utilities/data'
 
 export class MockApi {
-  protected data: DataStores
-
-  public constructor(data: DataStores) {
-    this.data = data
-  }
 
   protected get flows() {
-    return this.data.flows
+    return data.flows
   }
 
   protected get flowRuns() {
-    return this.data.flowRuns
+    return data.flowRuns
   }
 
   protected get taskRuns() {
-    return this.data.taskRuns
+    return data.taskRuns
   }
 
   protected get blockDocuments() {
-    return this.data.blockDocuments
+    return data.blockDocuments
   }
 
   protected get blockSchemas() {
-    return this.data.blockSchemas
+    return data.blockSchemas
   }
 
   protected get deployments() {
-    return this.data.deployments
+    return data.deployments
   }
 
   protected get workQueues() {
-    return this.data.workQueues
+    return data.workQueues
   }
 }

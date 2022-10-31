@@ -90,6 +90,10 @@ export class DataStore<T extends { id: K }, K extends string | number | symbol =
     this.data = data
   }
 
+  public deleteAll(ids: T['id'][]): void {
+    ids.map(id => this.delete(id))
+  }
+
   public create(record: T): T {
     this.data = {
       ...this.data,
@@ -99,10 +103,18 @@ export class DataStore<T extends { id: K }, K extends string | number | symbol =
     return this.get(record.id)
   }
 
+  public createAll(records: T[]): T[] {
+    return records.map(record => this.create(record))
+  }
+
   public patch<ID extends T['id']>(id: ID, update: Partial<T & { id: NoInfer<ID> }>): void {
     const original = this.get(id)
     const updated = { ...original, ...update }
 
     this.create(updated)
+  }
+
+  public drop(): void {
+    this.data = {} as Record<K, T>
   }
 }

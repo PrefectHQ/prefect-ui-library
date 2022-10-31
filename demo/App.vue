@@ -24,17 +24,13 @@
   import ContextSidebar from '@/demo/components/ContextSidebar.vue'
   import { mobileMenuOpen, toggle } from '@/demo/router/menu'
   import { flowRouteKey, flowRunRouteKey, editDeploymentRouteKey, flowRunsRouteKey, deploymentRouteKey, taskRunRouteKey, flowsRouteKey, deploymentsRouteKey, workQueuesRouteKey, settingsRouteKey, workQueueRouteKey, workQueueCreateRouteKey, editQueueRouteKey, notificationCreateRouteKey, editNotificationRouteKey, blocksRouteKey, flowRunCreateRouteKey, notificationsRouteKey, blockCatalogRouteKey, blockCatalogViewRouteKey, blockCatalogCreateRouteKey, blockRouteKey, blockEditRouteKey, Route } from '@/router'
-  import { mocker } from '@/services'
   import { getAppPermissions, canKey } from '@/types'
 
   const showMenu = computed(() => media.lg || mobileMenuOpen.value)
 
   watchEffect(() => document.body.classList.toggle('body-scrolling-disabled', showMenu.value && !media.lg))
 
-  useWorkspaceApiMock({
-    flows: mocker.createMany('flowResponse', 10),
-    blockDocuments: mocker.createMany('blockDocumentResponse', 10),
-  })
+  useWorkspaceApiMock()
 
   const can = getAppPermissions(
     () => true,

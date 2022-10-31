@@ -8,7 +8,7 @@
     </template>
 
     <template #basic>
-      <BlockDocumentKeyValue :block-document-id="document.id" />
+      <BlockDocumentKeyValue :block-document-id="blockDocument.id" />
     </template>
   </ComponentPage>
 </template>
@@ -16,12 +16,7 @@
 <script lang="ts" setup>
   import BlockDocumentKeyValue from '@/components/BlockDocumentKeyValue.vue'
   import ComponentPage from '@/demo/components/ComponentPage.vue'
-  import { useWorkspaceApiMock } from '@/demo/utilities/api'
-  import { mocker } from '@/services'
+  import { useBlockDocumentMock } from '@/demo/compositions/useBlockDocument'
 
-  const document = mocker.create('blockDocumentResponse')
-
-  useWorkspaceApiMock({
-    blockDocuments: [document],
-  })
+  const blockDocument = useBlockDocumentMock()
 </script>
