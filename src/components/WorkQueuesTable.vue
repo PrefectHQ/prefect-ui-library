@@ -17,7 +17,7 @@
       </template>
 
       <template #status="{ row }">
-        <WorkQueueHealth :work-queue="row" />
+        <WorkQueueStatusBadge :work-queue="row" />
       </template>
 
       <template #last-polled="{ row }">
@@ -55,7 +55,7 @@
 <script lang="ts" setup>
   import { PTable, PEmptyResults, PLink } from '@prefecthq/prefect-design'
   import { computed, ref } from 'vue'
-  import { WorkQueueToggle, WorkQueueMenu, WorkQueueLateIndicator, WorkQueueHealth, SearchInput, ResultsCount, WorkQueueLastPolled } from '@/components'
+  import { WorkQueueToggle, WorkQueueMenu, WorkQueueLateIndicator, SearchInput, ResultsCount, WorkQueueLastPolled, WorkQueueStatusBadge } from '@/components'
   import { WorkQueue } from '@/models'
   import { workQueueRouteKey } from '@/router'
   import { inject } from '@/utilities'
