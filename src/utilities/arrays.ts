@@ -115,3 +115,7 @@ export function asSingle<T>(value: T | T[]): T {
 
   return value
 }
+
+export function repeat<T>(count: number, method: () => T): T[] {
+  return new Array(count).fill(null).map(method)
+}
