@@ -66,15 +66,11 @@
 <script lang="ts" setup>
   import { computed, useSlots } from 'vue'
   import { useRoute } from 'vue-router'
+  import { DemoSection } from '../types/demoSection'
   import HashLink from '@/demo/components/HashLink.vue'
   import ResizableSection from '@/demo/components/ResizableSection.vue'
   import { getRouteRecordIndex, routeRecordsFlat } from '@/demo/router/routeRecordsFlat'
   import { asArray, kebabCase } from '@/utilities'
-
-  type DemoSection = {
-    title: string,
-    description?: string,
-  }
 
   const props = defineProps<{
     title: string,
