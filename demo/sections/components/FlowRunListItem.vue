@@ -1,14 +1,13 @@
 <template>
-  <ComponentPage
-    title="FlowRunListItem"
-    :demos="[{ title: 'Basic' }]"
-  >
-    <template #description>
-      This is where we add a short description of <p-code>FlowRunListItem</p-code>. Describe the components intent, not hyper specific documentation that belongs on vitepress page.
+  <ComponentPage title="FlowRunListItem" :demos="demos">
+    <FlowRunListItem :flow-run="flowRun" :selected="[]" class="color-mode-default" />
+
+    <template #disabled>
+      <FlowRunListItem :flow-run="flowRun" :selected="[]" class="color-mode-default" disabled />
     </template>
 
-    <template #basic>
-      <FlowRunListItem :flow-run="flowRun" :selected="[]" class="color-mode-default" />
+    <template #no-relations>
+      <FlowRunListItem :flow-run="flowRunWithNoRelations" :selected="[]" class="color-mode-default" disabled />
     </template>
   </ComponentPage>
 </template>
@@ -17,6 +16,16 @@
   import FlowRunListItem from '@/components/FlowRunListItem.vue'
   import ComponentPage from '@/demo/components/ComponentPage.vue'
   import { useFlowRunMock } from '@/demo/compositions/useFlowRunsMock'
+  import { DemoSection } from '@/demo/types/demoSection'
+
+  const demos: DemoSection[] = [
+    { title: 'Disabled', description: 'With selection disabled' },
+    { title: 'No Relations', description: 'With no deployment or work queue' },
+  ]
 
   const flowRun = useFlowRunMock()
+  const flowRunWithNoRelations = useFlowRunMock({
+    deploymentId: null,
+    workQueueName: null,
+  })
 </script>

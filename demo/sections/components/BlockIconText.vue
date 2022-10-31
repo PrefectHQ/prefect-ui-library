@@ -1,15 +1,6 @@
 <template>
-  <ComponentPage
-    title="BlockIconText"
-    :demos="[{ title: 'Basic' }]"
-  >
-    <template #description>
-      This is where we add a short description of <p-code>BlockIconText</p-code>. Describe the components intent, not hyper specific documentation that belongs on vitepress page.
-    </template>
-
-    <template #basic>
-      <BlockIconText :block-document-id="blockDocument.id" />
-    </template>
+  <ComponentPage title="BlockIconText">
+    <BlockIconText :block-document-id="blockDocument.id" />
   </ComponentPage>
 </template>
 
