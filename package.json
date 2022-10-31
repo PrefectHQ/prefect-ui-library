@@ -59,7 +59,7 @@
         "@fontsource/inter": "4.5.14",
         "@prefecthq/radar": "0.0.17",
         "@prefecthq/vue-charts": "0.0.19",
-        "@prefecthq/vue-compositions": "0.2.1",
+        "@prefecthq/vue-compositions": "0.2.4",
         "axios": "0.27.2",
         "cronstrue": "^2.14.0",
         "date-fns": "2.29.3",
