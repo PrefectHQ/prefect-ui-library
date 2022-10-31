@@ -1,4 +1,5 @@
 import { floor, random } from './math'
+import { mocker } from '@/services'
 
 // we really do want any here
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -118,4 +119,20 @@ export function asSingle<T>(value: T | T[]): T {
 
 export function repeat<T>(count: number, method: () => T): T[] {
   return new Array(count).fill(null).map(method)
+}
+
+export function some<T>(source: T[], min?: number, max?: number): T[] {
+  const minArg = min ?? 1
+  const maxArg = max ?? source.length
+  const count = mocker.create('number', [minArg, maxArg])
+  const copy = [...source]
+
+  const value = repeat(count, () => {
+    const index = mocker.create('number', [0, copy.length - 1])
+    const value = copy.splice(index, 1)
+
+    return value[0]
+  })
+
+  return value
 }

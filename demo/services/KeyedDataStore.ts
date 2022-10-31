@@ -11,16 +11,16 @@ export class DataStoreDataNotFound extends Error {
 // https://stackoverflow.com/questions/73732549/narrow-number-argument-of-function-to-be-literal-type?noredirect=1#comment130199140_73732549
 // eslint-disable-next-line @typescript-eslint/ban-types
 type NoInfer<T> = T & {}
-type DataStoreFindCallback<T> = (value: T) => boolean
-type DataStoreHydrateMethod<T> = (value: T) => T
-type DataStoreOptions<T extends { id: K }, K extends string | number | symbol = T['id']> = {
+type KeyedDataStoreFindCallback<T> = (value: T) => boolean
+type KeyedDataStoreHydrateMethod<T> = (value: T) => T
+type KeyedDataStoreOptions<T extends { id: K }, K extends string | number | symbol = T['id']> = {
   seeds?: T | T[],
-  hydrate?: DataStoreHydrateMethod<T>,
+  hydrate?: KeyedDataStoreHydrateMethod<T>,
 }
 
-export class DataStore<T extends { id: K }, K extends string | number | symbol = T['id']> {
+export class KeyedDataStore<T extends { id: K }, K extends string | number | symbol = T['id']> {
   private _data: string = '{}'
-  private readonly hydrate: DataStoreHydrateMethod<T> = (value) => value
+  private readonly hydrate: KeyedDataStoreHydrateMethod<T> = (value) => value
 
   private get data(): Record<K, T> {
     const data: Record<K, T> = JSON.parse(this._data)
@@ -32,7 +32,7 @@ export class DataStore<T extends { id: K }, K extends string | number | symbol =
     this._data = JSON.stringify(value)
   }
 
-  public constructor({ seeds = [], hydrate }: DataStoreOptions<T>) {
+  public constructor({ seeds = [], hydrate }: KeyedDataStoreOptions<T>) {
     const data = {} as Record<K, T>
 
     this.data = asArray(seeds).reduce((data, seed) => {
@@ -62,19 +62,19 @@ export class DataStore<T extends { id: K }, K extends string | number | symbol =
   }
 
 
-  public find(condition: DataStoreFindCallback<T>): T | undefined {
+  public find(condition: KeyedDataStoreFindCallback<T>): T | undefined {
     const data = this.getAll()
 
     return data.find(condition)
   }
 
-  public findAll(condition: DataStoreFindCallback<T>): T[] {
+  public findAll(condition: KeyedDataStoreFindCallback<T>): T[] {
     const data = this.getAll()
 
     return data.filter(condition)
   }
 
-  public count(condition?: DataStoreFindCallback<T>): number {
+  public count(condition?: KeyedDataStoreFindCallback<T>): number {
     if (condition) {
       return this.findAll(condition).length
     }

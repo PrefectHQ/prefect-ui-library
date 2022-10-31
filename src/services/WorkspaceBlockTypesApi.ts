@@ -6,7 +6,14 @@ import { BlockDocument } from '@/models/BlockDocument'
 import { BlockType } from '@/models/BlockType'
 import { BlockTypeFilter } from '@/models/BlockTypeFilter'
 
-export class WorkspaceBlockTypesApi extends WorkspaceApi {
+export interface IWorkspaceBlockTypesApi {
+  getBlockType: (blockTypeId: string) => Promise<BlockType>,
+  getBlockTypeBySlug: (blockTypeSlug: string) => Promise<BlockType>,
+  getBlockTypes: (filter: BlockTypeFilter) => Promise<BlockType[]>,
+  getBlockDocumentsByBlockTypeSlug: (blockTypeSlug: string) => Promise<BlockDocument[]>,
+}
+
+export class WorkspaceBlockTypesApi extends WorkspaceApi implements IWorkspaceBlockTypesApi {
 
   protected override routePrefix = '/block_types'
 

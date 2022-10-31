@@ -23,6 +23,14 @@ export class MockApi {
     return data.blockSchemas
   }
 
+  protected get blockTypes() {
+    return data.blockTypes
+  }
+
+  protected get blockSchemaCapabilities() {
+    return data.blockSchemaCapabilities
+  }
+
   protected get deployments() {
     return data.deployments
   }

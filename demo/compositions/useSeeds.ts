@@ -1,14 +1,17 @@
 import { onBeforeRouteLeave } from 'vue-router'
 import { data } from '../utilities/data'
-import { Flow, FlowRun, Deployment, WorkQueue, TaskRun, BlockDocument } from '@/models'
+import { Flow, FlowRun, Deployment, WorkQueue, TaskRun, BlockDocument, BlockType, BlockSchema } from '@/models'
 
 type Seeds = {
-  flows?: Flow[],
-  flowRuns?: FlowRun[],
-  deployments?: Deployment[],
-  workQueues?: WorkQueue[],
-  taskRuns?: TaskRun[],
   blockDocuments?: BlockDocument[],
+  blockSchemaCapabilities?: string[],
+  blockSchemas?: BlockSchema[],
+  blockTypes?: BlockType[],
+  deployments?: Deployment[],
+  flowRuns?: FlowRun[],
+  flows?: Flow[],
+  taskRuns?: TaskRun[],
+  workQueues?: WorkQueue[],
 }
 
 export function useSeeds(seed: Seeds): void {
@@ -58,5 +61,27 @@ export function useSeeds(seed: Seeds): void {
     const ids = blockDocuments.map(blockDocument => blockDocument.id)
 
     onBeforeRouteLeave(() => data.blockDocuments.deleteAll(ids))
+  }
+
+  if (seed.blockTypes) {
+    const blockTypes = data.blockTypes.createAll(seed.blockTypes)
+
+    const ids = blockTypes.map(blockType => blockType.id)
+
+    onBeforeRouteLeave(() => data.blockTypes.deleteAll(ids))
+  }
+
+  if (seed.blockSchemas) {
+    const blockSchemas = data.blockSchemas.createAll(seed.blockSchemas)
+
+    const ids = blockSchemas.map(blockSchema => blockSchema.id)
+
+    onBeforeRouteLeave(() => data.blockSchemas.deleteAll(ids))
+  }
+
+  if (seed.blockSchemaCapabilities) {
+    const blockSchemaCapabilities = data.blockSchemaCapabilities.createAll(seed.blockSchemaCapabilities)
+
+    onBeforeRouteLeave(() => data.blockSchemaCapabilities.deleteAll(blockSchemaCapabilities))
   }
 }

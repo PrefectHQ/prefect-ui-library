@@ -9,8 +9,7 @@
 <script lang="ts" setup>
   import { useSubscription } from '@prefecthq/vue-compositions'
   import { computed } from 'vue'
-  import { blockTypesApiKey } from '@/services'
-  import { inject } from '@/utilities'
+  import { useWorkspaceApi } from '@/compositions'
 
   const props = defineProps<{
     selected: string | null,
@@ -29,8 +28,8 @@
     },
   })
 
-  const blockTypesApi = inject(blockTypesApiKey)
-  const blockTypesSubscription = useSubscription(blockTypesApi.getBlockTypes)
+  const api = useWorkspaceApi()
+  const blockTypesSubscription = useSubscription(api.blockTypes.getBlockTypes)
   const blockTypes = computed(() => blockTypesSubscription.response ?? [])
 
   const options = computed(() => {
