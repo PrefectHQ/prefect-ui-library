@@ -58,8 +58,8 @@
 
     return {
       title,
-      children: record.children.map(({ name, path }) => ({
-        title: path,
+      children: record.children.map(({ name }) => ({
+        title: String(name),
         to: { name },
       })),
     }

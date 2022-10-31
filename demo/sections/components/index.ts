@@ -1,9 +1,9 @@
 import { Section } from '@/demo/router/routeRecords'
 
 export const components: Section = {
-  flowRunList: () => import ('./FlowRunList.vue'),
-  flowRunListItem: () => import ('./FlowRunListItem.vue'),
-  blockDocumentKeyValue: () => import('./BlockDocumentKeyValue.vue'),
-  blockIconText: () => import('./BlockIconText.vue'),
-  blockDocumentCard: () => import('./BlockDocumentCard.vue'),
+  FlowRunList: () => import ('./FlowRunList.vue'),
+  FlowRunListItem: () => import ('./FlowRunListItem.vue'),
+  BlockDocumentKeyValue: () => import('./BlockDocumentKeyValue.vue'),
+  BlockIconText: () => import('./BlockIconText.vue'),
+  BlockDocumentCard: () => import('./BlockDocumentCard.vue'),
 }

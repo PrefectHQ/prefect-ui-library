@@ -4,6 +4,8 @@
       This is where we add a short description of <p-code>p-block-document-card</p-code>. Describe the components intent, not hyper specific documentation that belongs on vitepress page.
     </template>
 
+    <BlockDocumentCard :block-document="blockDocument" />
+
     <template #block-document-card>
       <BlockDocumentCard :block-document="blockDocument" />
     </template>

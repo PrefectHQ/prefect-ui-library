@@ -20,9 +20,13 @@
       <div class="component-page__demos">
         <template v-for="demo in validDemosArray" :key="demo.title">
           <div class="component-page__demo">
-            <HashLink v-if="demo.slotKey && validDemosArray.length > 1" :hash="demo.slotKey">
-              {{ demo.title }}
-            </HashLink>
+            <template v-if="demo.title !== 'default'">
+              <div class="component-page__hash-link">
+                <HashLink :hash="demo.slotKey">
+                  {{ demo.title }}
+                </HashLink>
+              </div>
+            </template>
 
             <template v-if="demo.description">
               <div class="component-page__demo-description">
@@ -75,14 +79,24 @@
   const props = defineProps<{
     title: string,
     description?: string,
-    demos: DemoSection | DemoSection[],
+    demos?: DemoSection | DemoSection[],
   }>()
 
   const slots = useSlots()
   const route = useRoute()
 
   const validDemosArray = computed(() => {
-    return asArray(props.demos)
+    const demos = []
+
+    if (slots.default) {
+      demos.push({ title: 'default', slotKey: 'default' })
+    }
+
+    if (props.demos) {
+      demos.push(...asArray(props.demos))
+    }
+
+    return asArray(demos)
       .map(demo => ({
         ...demo,
         slotKey: kebabCase(demo.title),
@@ -98,6 +112,9 @@
 <style>
 .component-page { @apply
   max-w-full
+  flex
+  flex-col
+  gap-2
 }
 
 .component-page__heading { @apply
@@ -115,6 +132,12 @@
   text-lg
 }
 
+.component-page__demo { @apply
+  flex
+  flex-col
+  gap-2
+}
+
 .component-page__demo .hash-link { @apply
   text-base
 }
@@ -122,19 +145,14 @@
 .component-page__demos { @apply
   max-w-full
   py-4
-}
-
-.component-page__description,
-.component-page__demos,
-.component-page__demo { @apply
-  mt-4
-  mb-8
+  flex
+  flex-col
+  gap-6
 }
 
 .component-page__description,
 .component-page__demo-description { @apply
   text-gray-500
-  my-2
   text-sm
 }
 

@@ -1,6 +1,5 @@
 import { RouteLocationNormalizedLoaded, RouteLocationRaw, RouteRecordName, RouteRecordRaw } from 'vue-router'
 import { routeRecords } from '.'
-import { kebabCase } from '@/utilities'
 
 export type RouteRecordsFlat = Record<string, RouteLocationRaw>
 
@@ -18,6 +17,7 @@ function flattenRouteRecords(records: RouteRecordRaw[]): RouteRecordsFlat {
 function flattenRouteRecord(record: RouteRecordRaw): RouteRecordsFlat | undefined {
   if (!record.children) {
     const route = { name: record.name }
+
     if (record.path.startsWith('/')) {
       return undefined
     }
@@ -29,7 +29,7 @@ function flattenRouteRecord(record: RouteRecordRaw): RouteRecordsFlat | undefine
 }
 
 function getRouteRecordKey(route: { name?: RouteRecordName | null }): string {
-  return `${kebabCase(route.name?.toString() ?? '')}`
+  return `${route.name?.toString() ?? ''}`
 }
 
 export function getRouteRecordIndex(route: RouteLocationNormalizedLoaded): number {
