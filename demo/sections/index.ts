@@ -1,6 +1,8 @@
 import { Section } from '@/demo/router/routeRecords'
-import { components } from '@/demo/sections/components'
+import { blocks } from '@/demo/sections/blocks'
+import { flowRuns } from '@/demo/sections/flowRuns'
 
 export const sections: Section = {
-  components,
+  blocks,
+  flowRuns,
 }

@@ -10,11 +10,6 @@ export const routeRecords: RouteRecordRaw[] = [
     path: '/',
     component: () => import('../sections/WelcomePage.vue'),
   },
-  {
-    name: 'nothing',
-    path: '/nothing',
-    redirect: '/',
-  },
   ...convertSectionToRouteRecords(sections),
 ]
 

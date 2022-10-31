@@ -38,7 +38,7 @@
 
   provide(canKey, can)
 
-  const emptyRoute = (): Route => ({ path: '/nothing' })
+  const emptyRoute = (): Route => ({ path: '/' })
 
   provide(flowRouteKey, emptyRoute)
   provide(flowRunRouteKey, emptyRoute)
