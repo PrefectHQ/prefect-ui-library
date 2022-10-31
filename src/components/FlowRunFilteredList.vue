@@ -34,6 +34,8 @@
 
   const flowRunsApi = inject(flowRunsApiKey)
 
+  type StateTypeOrLate = StateType | 'late'
+
   const props = defineProps<{
     flowRunFilter: UnionFilters,
     states?: StateType[],
@@ -41,15 +43,17 @@
   }>()
 
   const emit = defineEmits<{
-    (event: 'update:states', value: StateType[]): void,
+    (event: 'update:states', value: StateTypeOrLate[]): void,
   }>()
 
   const can = useCan()
   const selectedFlowRuns = ref<string[]>([])
-  const state = ref<StateType[]>(props.states ?? [])
+  const state = ref<StateTypeOrLate[]>(props.states ?? [])
+  const stateWithoutLate = computed(()=> state.value.filter(state => state !== 'late') as StateType[])
+  const stateIncludesLate = computed(()=>state.value.includes('late'))
 
   const updateState = (newValue: string | string[] | null): void => {
-    state.value = newValue as StateType[]
+    state.value = newValue as StateTypeOrLate[]
     emit('update:states', state.value)
   }
 
@@ -69,8 +73,18 @@
     if (state.value.length) {
       flowRunsFilter.state = {
         type: {
-          any_: state.value.map(state => mapper.map('StateType', state, 'ServerStateType')),
+          any_: stateWithoutLate.value.map(state => mapper.map('StateType', state, 'ServerStateType')),
         },
+      }
+
+      if (stateIncludesLate.value) {
+        flowRunsFilter.state = {
+          ...flowRunsFilter.state,
+          operator: 'or_',
+          name: {
+            any_: ['Late'],
+          },
+        }
       }
     }
 
