@@ -6,7 +6,15 @@ import { BlockDocumentCreate } from '@/models/BlockDocumentCreate'
 import { BlockDocumentFilter } from '@/models/BlockDocumentFilter'
 import { BlockDocumentUpdate } from '@/models/BlockDocumentUpdate'
 
-export class WorkspaceBlockDocumentsApi extends WorkspaceApi {
+export interface IWorkspaceBlockDocumentsApi {
+  getBlockDocument: (blockDocumentId: string) => Promise<BlockDocument>,
+  getBlockDocuments: (filter: BlockDocumentFilter) => Promise<BlockDocument[]>,
+  createBlockDocument: (blockDocument: BlockDocumentCreate) => Promise<BlockDocument>,
+  updateBlockDocument: (blockDocumentId: string, blockDocument: BlockDocumentUpdate) => Promise<void>,
+  deleteBlockDocument: (blockDocumentId: string) => Promise<void>,
+}
+
+export class WorkspaceBlockDocumentsApi extends WorkspaceApi implements IWorkspaceBlockDocumentsApi {
 
   protected override routePrefix = '/block_documents'
 

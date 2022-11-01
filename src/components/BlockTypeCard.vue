@@ -54,9 +54,9 @@
   import BlockSchemaCapabilities from './BlockSchemaCapabilities.vue'
   import BlockTypeLogo from './BlockTypeLogo.vue'
   import BlockTypeSnippet from './BlockTypeSnippet.vue'
+  import { useWorkspaceApi } from '@/compositions'
   import { BlockType } from '@/models/BlockType'
   import { blockCatalogCreateRouteKey } from '@/router/routes'
-  import { blockSchemasApiKey } from '@/services'
   import { inject } from '@/utilities'
 
   const props = defineProps<{
@@ -66,8 +66,8 @@
   const blocksCatalogCreateRoute = inject(blockCatalogCreateRouteKey)
 
   const blockTypeId = computed(() => props.blockType.id)
-  const blockSchemasApi = inject(blockSchemasApiKey)
-  const blockSchemaSubscription = useSubscription(blockSchemasApi.getBlockSchemaForBlockType, [blockTypeId])
+  const api = useWorkspaceApi()
+  const blockSchemaSubscription = useSubscription(api.blockSchemas.getBlockSchemaForBlockType, [blockTypeId])
   const blockSchema = computed(() => blockSchemaSubscription.response)
   const hasCapabilities = computed(() => blockSchema.value?.capabilities.length)
 </script>
