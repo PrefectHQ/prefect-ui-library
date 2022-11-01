@@ -12,6 +12,14 @@
       </p-key-value>
     </template>
 
+    <template v-if="flowRun.parentTaskRunId">
+      <p-key-value label="Parent Task Run" :alternate="alternate">
+        <template #value>
+          <FlowRunIconText :flow-run-id="parentFlowRun.id" />
+        </template>
+      </p-key-value>
+    </template>
+
     <template v-if="can.read.deployment && flowRun.deploymentId">
       <p-key-value label="Deployment ID" :value="flowRun.deploymentId" :alternate="alternate" />
     </template>
@@ -42,17 +50,32 @@
 
 <script lang="ts" setup>
   import { PKeyValue, PTags } from '@prefecthq/prefect-design'
+  import { FlowRunIconText } from '.'
   import  WorkQueueIconText  from '@/components/WorkQueueIconText.vue'
+  import { useWorkspaceApi } from '@/compositions'
   import { useCan } from '@/compositions/useCan'
   import { FlowRun } from '@/models/FlowRun'
   import { formatDateTimeNumeric } from '@/utilities/dates'
 
-  defineProps<{
+  const api = useWorkspaceApi()
+
+  const props = defineProps<{
     flowRun: FlowRun,
     alternate?: boolean,
   }>()
 
   const can = useCan()
+  const flowRunFilter = {
+    task_runs:{
+      operator: 'and_',
+      id: {
+        any_: [props.flowRun.parentTaskRunId],
+      },
+    },
+  }
+
+  const parentFlowRunList = props.flowRun.parentTaskRunId ? await api.flowRuns.getFlowRuns(flowRunFilter) : []
+  const [parentFlowRun] = parentFlowRunList
 </script>
 
 <style>
