@@ -23,10 +23,10 @@
   const selected = ref(null)
   const blockType = useBlockTypeMock()
 
-  useBlockDocumentsMock(5, {
+  useBlockDocumentsMock(5, () => ({
     blockType,
     blockTypeId: blockType.id,
-  })
+  }))
 
   const selectedEmpty = ref(null)
   const blockTypeEmpty = useBlockTypeMock()
