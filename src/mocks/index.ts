@@ -1,15 +1,12 @@
 import { randomAny } from './any'
 import { randomBlockDocument } from './blockDocument'
 import { randomBlockDocumentData } from './blockDocumentData'
-import { randomBlockDocumentResponse } from './blockDocumentResponse'
 import { blockDocumentsApiMockFactory } from './blockDocumentsApi'
 import { randomBlockSchema } from './blockSchema'
 import { randomBlockSchemaCapabilities } from './blockSchemaCapabilities'
 import { randomBlockSchemaCapability } from './blockSchemaCapability'
-import { randomBlockSchemaResponse } from './blockSchemaResponse'
 import { blockSchemasApiFactory } from './blockSchemasApi'
 import { randomBlockType } from './blockType'
-import { randomBlockTypeResponse } from './blockTypeResponse'
 import { blockTypesApiFactory } from './blockTypesApi'
 import { randomBlockTypeSnippet } from './blockTypeSnippet'
 import { randomBoolean } from './boolean'
@@ -95,8 +92,5 @@ export const mocks = {
   workQueueHealthPolicy: randomWorkQueueHealthPolicy,
   workQueueStatus: randomWorkQueueStatus,
   flowResponse: randomFlowResponse,
-  blockTypeResponse: randomBlockTypeResponse,
-  blockSchemaResponse: randomBlockSchemaResponse,
-  blockDocumentResponse: randomBlockDocumentResponse,
   blockTypeSnippet: randomBlockTypeSnippet,
 }
