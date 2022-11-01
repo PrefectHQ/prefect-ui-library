@@ -9,7 +9,7 @@
 
 <script lang="ts" setup>
   import { computed } from 'vue'
-  import { utcToZonedTime, zonedTimeToUtc } from '@/utilities/dates'
+  import { assignTimezone, unassignTimezone } from '@/utilities/dates'
 
   const props = defineProps<{
     modelValue: Date | null | undefined,
@@ -24,18 +24,20 @@
 
   const adjustedSelectedDate = computed({
     get() {
-      return props.modelValue ? utcToZonedTime(props.modelValue) : null
+      return props.modelValue ? assignTimezone(props.modelValue) : null
     },
     set(value: Date | null) {
-      emits('update:modelValue', value ? zonedTimeToUtc(value) : null)
+      emits('update:modelValue', value ? unassignTimezone(value) : null)
     },
   })
 
   const adjustedMin = computed(() => {
-    return props.min ? utcToZonedTime(props.min) : null
+    console.log('from date-input min')
+    return props.min ? assignTimezone(props.min) : null
   })
 
   const adjustedMax = computed(() => {
-    return props.max ? utcToZonedTime(props.max) : null
+    console.log('from date-input max')
+    return props.max ? assignTimezone(props.max) : null
   })
 </script>

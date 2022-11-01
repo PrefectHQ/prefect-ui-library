@@ -2,9 +2,9 @@ import { toPluralString } from '@prefecthq/prefect-design'
 import { zonedTimeToUtc } from 'date-fns-tz'
 import { IntervalScheduleResponse } from './ScheduleResponse'
 import { ISchedule } from '@/models'
-import { dateFnsTz, formatDate, formatTimeNumeric } from '@/utilities/dates'
+import { formatDate, formatTimeNumeric } from '@/utilities/dates'
 import { floor } from '@/utilities/math'
-
+import { secondsInMinute, minutesInHour } from '@/utilities/timezone'
 
 export type Intervals = {
   seconds: number,
@@ -45,11 +45,11 @@ export class IntervalSchedule implements IIntervalSchedule {
       days: 0,
     }
 
-    intervals.seconds = remainder % dateFnsTz.secondsInMinute
-    remainder = floor(remainder / dateFnsTz.secondsInMinute)
+    intervals.seconds = remainder % secondsInMinute
+    remainder = floor(remainder / secondsInMinute)
 
-    intervals.minutes = remainder % dateFnsTz.minutesInHour
-    remainder = floor(remainder / dateFnsTz.minutesInHour)
+    intervals.minutes = remainder % minutesInHour
+    remainder = floor(remainder / minutesInHour)
 
     intervals.hours = remainder % 24
     remainder = floor(remainder / 24)

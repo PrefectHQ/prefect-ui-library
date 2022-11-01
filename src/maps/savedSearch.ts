@@ -1,7 +1,8 @@
 import { SavedSearchFilterResponse, SavedSearchResponse } from '@/models/api/SavedSearchResponse'
 import { SavedSearch, SavedSearchFilter } from '@/models/SavedSearch'
 import { MapFunction } from '@/services/Mapper'
-import { dateFnsTz, formatDateTimeNumeric } from '@/utilities/dates'
+import { formatDateTimeNumeric } from '@/utilities/dates'
+import { subDays, startOfToday, addDays, endOfToday } from '@/utilities/timezone'
 
 export const mapSavedSearchResponseToSavedSearch: MapFunction<SavedSearchResponse, SavedSearch> = function(source: SavedSearchResponse): SavedSearch {
   return new SavedSearch({
@@ -17,8 +18,8 @@ function mapSavedSearchFilters(filters: SavedSearchFilterResponse[] | undefined)
     tag: [],
     flow: [],
     deployment: [],
-    startDate: formatDateTimeNumeric(dateFnsTz.subDays(dateFnsTz.startOfToday(), 7)),
-    endDate: formatDateTimeNumeric(dateFnsTz.addDays(dateFnsTz.endOfToday(), 1)),
+    startDate: formatDateTimeNumeric(subDays(startOfToday(), 7)),
+    endDate: formatDateTimeNumeric(addDays(endOfToday(), 1)),
   }
   if (filters) {
     filter.flow = filters.find(filter => filter.property === 'flow')?.value ?? []
