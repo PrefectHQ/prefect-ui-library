@@ -7,7 +7,7 @@
         Orion Design
       </p>
       <p class="welcome-page__description">
-        Orion Design is UI Component library build on Vue 3 and Typescript. These components are specifically for use in both Prefect 2.0 and Prefect Cloud 2.0 and are not meant for general consumption.
+        Orion Design is UI Component library built on Vue 3 and Typescript. These components are specifically for use in both Prefect 2.0 and Prefect Cloud 2.0 and are not meant for general consumption.
       </p>
     </div>
     <p-terminal class="welcome-page__terminal" command="npm i @prefecthq/orion-design" />
