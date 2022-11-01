@@ -11,6 +11,7 @@ import { blockSchemasApiFactory } from './blockSchemasApi'
 import { randomBlockType } from './blockType'
 import { randomBlockTypeResponse } from './blockTypeResponse'
 import { blockTypesApiFactory } from './blockTypesApi'
+import { randomBlockTypeSnippet } from './blockTypeSnippet'
 import { randomBoolean } from './boolean'
 import { randomCreatedOrUpdatedBy } from './createdOrUpdatedBy'
 import { randomDate, randomDateString } from './date'
@@ -97,4 +98,5 @@ export const mocks = {
   blockTypeResponse: randomBlockTypeResponse,
   blockSchemaResponse: randomBlockSchemaResponse,
   blockDocumentResponse: randomBlockDocumentResponse,
+  blockTypeSnippet: randomBlockTypeSnippet,
 }
