@@ -4,8 +4,14 @@
 
     <p-key-value label="Flow ID" :value="flowRun.flowId" :alternate="alternate" />
 
-    <template v-if="can.read.work_queue">
-      <p-key-value v-if="flowRun.workQueueName" label="Work Queue" :alternate="alternate">
+    <template v-if="can.read.work_queue && flowRun.workQueueName">
+      <p-key-value :alternate="alternate">
+        <template #label>
+          <div class="flow-run-details__work-queue-value">
+            <span>Work Queue</span>
+            <WorkQueueStatusIcon :work-queue-name="flowRun.workQueueName" />
+          </div>
+        </template>
         <template #value>
           <WorkQueueIconText :work-queue-name="flowRun.workQueueName" />
         </template>
@@ -42,7 +48,8 @@
 
 <script lang="ts" setup>
   import { PKeyValue, PTags } from '@prefecthq/prefect-design'
-  import  WorkQueueIconText  from '@/components/WorkQueueIconText.vue'
+  import WorkQueueStatusIcon from './WorkQueueStatusIcon.vue'
+  import WorkQueueIconText from '@/components/WorkQueueIconText.vue'
   import { useCan } from '@/compositions/useCan'
   import { FlowRun } from '@/models/FlowRun'
   import { formatDateTimeNumeric } from '@/utilities/dates'
@@ -56,16 +63,20 @@
 </script>
 
 <style>
-  .flow-run-details {
-    @apply
+  .flow-run-details { @apply
     flex
     flex-col
     gap-2
     items-start
   }
 
-  .flow-run-details__tags {
-    @apply
+  .flow-run-details__work-queue-value { @apply
+    flex
+    items-center
+    gap-1
+  }
+
+  .flow-run-details__tags { @apply
     mb-1
     mr-1
   }

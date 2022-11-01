@@ -4,19 +4,21 @@
 
 <script lang="ts" setup>
   import { PToggle, showToast } from '@prefecthq/prefect-design'
+  import { useSubscription } from '@prefecthq/vue-compositions'
   import { computed, ref } from 'vue'
+  import { useWorkspaceApi } from '@/compositions'
   import { useCan } from '@/compositions/useCan'
   import { localization } from '@/localization'
   import { WorkQueue } from '@/models'
-  import { workQueuesApiKey } from '@/services/WorkQueuesApi'
-  import { inject } from '@/utilities'
 
   const props = defineProps<{
     workQueue: WorkQueue,
   }>()
 
-  const workQueuesApi = inject(workQueuesApiKey)
   const can = useCan()
+
+  const api = useWorkspaceApi()
+  const workQueueSubscription = useSubscription(api.workQueues.getWorkQueueByName, [props.workQueue.name])
 
   const emit = defineEmits<{
     (event: 'update'): void,
@@ -38,15 +40,16 @@
 
     try {
       if (value) {
-        await workQueuesApi.resumeWorkQueue(props.workQueue.id)
+        await api.workQueues.resumeWorkQueue(props.workQueue.id)
 
         showToast(localization.success.activateWorkQueue, 'success')
       } else {
-        await workQueuesApi.pauseWorkQueue(props.workQueue.id)
+        await api.workQueues.pauseWorkQueue(props.workQueue.id)
 
         showToast(localization.success.pauseWorkQueue, 'success')
       }
 
+      workQueueSubscription.refresh()
       emit('update')
     } catch (error) {
       const message = value ? localization.error.activateWorkQueue : localization.error.pauseWorkQueue
