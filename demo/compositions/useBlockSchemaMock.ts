@@ -1,10 +1,17 @@
+import { useBlockSchemaCapabilitiesMock } from './useBlockSchemaCapabilitiesMock'
 import { useSeeds } from './useSeeds'
 import { BlockSchema } from '@/models'
 import { mocker } from '@/services'
-import { repeat } from '@/utilities'
+import { repeat, some } from '@/utilities'
 
 export function useBlockSchemaMock(override?: Partial<BlockSchema>): BlockSchema {
-  const blockSchema = mocker.create('blockSchema', [override])
+  const capabilities = useBlockSchemaCapabilitiesMock(3)
+  const blockSchema = mocker.create('blockSchema', [
+    {
+      capabilities,
+      ...override,
+    },
+  ])
 
   useSeeds({
     blockSchemas: [blockSchema],
@@ -14,5 +21,23 @@ export function useBlockSchemaMock(override?: Partial<BlockSchema>): BlockSchema
 }
 
 export function useBlockSchemasMock(count: number, override?: () => Partial<BlockSchema>): BlockSchema[] {
-  return repeat(count, () => useBlockSchemaMock(override?.()))
+  const blockSchemaCapabilities = useBlockSchemaCapabilitiesMock(5)
+
+  const blockSchemas = repeat(count, () => {
+    const capabilities = some(blockSchemaCapabilities)
+
+    return mocker.create('blockSchema', [
+      {
+        capabilities,
+        ...override?.(),
+      },
+    ])
+  })
+
+  useSeeds({
+    blockSchemaCapabilities,
+    blockSchemas,
+  })
+
+  return blockSchemas
 }

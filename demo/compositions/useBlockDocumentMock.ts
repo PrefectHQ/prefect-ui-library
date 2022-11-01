@@ -1,21 +1,29 @@
 import { useBlockSchemaCapabilitiesMock } from './useBlockSchemaCapabilitiesMock'
-import { useBlockSchemasMock } from './useBlockSchemaMock'
-import { useBlockTypesMock } from './useBlockTypeMock'
+import { useBlockSchemaMock, useBlockSchemasMock } from './useBlockSchemaMock'
+import { useBlockTypeMock, useBlockTypesMock } from './useBlockTypeMock'
 import { useSeeds } from './useSeeds'
 import { BlockDocument } from '@/models'
 import { mocker } from '@/services'
 import { choice, repeat, some } from '@/utilities'
 
 export function useBlockDocumentMock(override?: Partial<BlockDocument>): BlockDocument {
-  const blockDocument = mocker.create('blockDocument', [override])
-  const { blockType, blockSchema } = blockDocument
-  const { capabilities } = blockSchema
+  const blockType = useBlockTypeMock()
+  const blockSchema = useBlockSchemaMock({
+    blockType,
+    blockTypeId: blockType.id,
+  })
+  const blockDocument = mocker.create('blockDocument', [
+    {
+      blockType,
+      blockTypeId: blockType.id,
+      blockSchema,
+      blockSchemaId: blockSchema.id,
+      ...override,
+    },
+  ])
 
   useSeeds({
     blockDocuments: [blockDocument],
-    blockTypes: [blockType],
-    blockSchemas: [blockSchema],
-    blockSchemaCapabilities: capabilities,
   })
 
   return blockDocument

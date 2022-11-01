@@ -1,6 +1,5 @@
 import { useSeeds } from './useSeeds'
 import { mocker } from '@/services'
-import { repeat } from '@/utilities/arrays'
 
 export function useBlockSchemaCapabilityMock(): string {
   const capability = mocker.create('blockSchemaCapability')
@@ -13,5 +12,11 @@ export function useBlockSchemaCapabilityMock(): string {
 }
 
 export function useBlockSchemaCapabilitiesMock(count: number): string[] {
-  return repeat(count, () => useBlockSchemaCapabilityMock())
+  const blockSchemaCapabilities = mocker.createMany('blockSchemaCapability', count)
+
+  useSeeds({
+    blockSchemaCapabilities,
+  })
+
+  return blockSchemaCapabilities
 }
