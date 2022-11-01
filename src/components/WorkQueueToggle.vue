@@ -18,7 +18,8 @@
   const can = useCan()
 
   const api = useWorkspaceApi()
-  const workQueueSubscription = useSubscription(api.workQueues.getWorkQueueByName, [props.workQueue.name])
+  const workQueueName = computed(()=> props.workQueue.name)
+  const workQueueSubscription = useSubscription(api.workQueues.getWorkQueueByName, [workQueueName])
 
   const emit = defineEmits<{
     (event: 'update'): void,

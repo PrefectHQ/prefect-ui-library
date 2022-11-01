@@ -17,7 +17,7 @@
   const api = useWorkspaceApi()
 
   const workQueueName = computed(()=>props.workQueueName)
-  const workQueuesSubscription =  useSubscription(api.workQueues.getWorkQueueByName, [workQueueName.value])
+  const workQueuesSubscription =  useSubscription(api.workQueues.getWorkQueueByName, [workQueueName])
   const workQueue = computed(() => workQueuesSubscription.response)
 
   const workQueueId = computed(()=>workQueue.value?.id)
