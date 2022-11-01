@@ -105,7 +105,7 @@ export class FlowRun implements IFlowRun {
   }
 
   public get delta(): string | null {
-    if (!this.estimatedStartTimeDelta || this.estimatedStartTimeDelta <= 1) {
+    if (!this.estimatedStartTimeDelta || this.estimatedStartTimeDelta <= 60) {
       return null
     }
 
