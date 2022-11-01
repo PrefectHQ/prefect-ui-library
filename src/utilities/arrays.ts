@@ -136,3 +136,7 @@ export function some<T>(source: T[], min?: number, max?: number): T[] {
 
   return value
 }
+
+export function intersects(first: unknown[], ...rest: unknown[][]): boolean {
+  return first.some(firstValue => rest.every(restArray => restArray.includes(firstValue)))
+}
