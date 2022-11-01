@@ -1,4 +1,5 @@
 import { asArray } from '@prefecthq/prefect-design'
+import { unique } from '@/utilities'
 
 type SimpleDataStoreFindCallback<T> = (value: T) => boolean
 type SimpleDataStoreHydrateMethod<T> = (value: T) => T
@@ -30,13 +31,13 @@ export class SimpleDataStore<T> {
   }
 
   public create(value: T): T {
-    this.data = [...this.data, value]
+    this.data = unique([...this.data, value])
 
     return value
   }
 
   public createAll(values: T[]): T[] {
-    this.data = [...this.data, ...values]
+    this.data = unique([...this.data, ...values])
 
     return values
   }
