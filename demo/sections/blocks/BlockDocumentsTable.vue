@@ -1,7 +1,6 @@
 <template>
   <ComponentPage title="BlockDocumentsTable">
-    <!-- eslint-disable-next-line vue/no-static-inline-styles -->
-    <div style="min-height: 600px">
+    <div class="h-96">
       <BlockDocumentsTable :block-documents="blockDocuments" />
     </div>
   </ComponentPage>

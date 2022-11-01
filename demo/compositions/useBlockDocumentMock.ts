@@ -36,16 +36,24 @@ export function useBlockDocumentsMock(count: number, override?: () => Partial<Bl
     }
   })
 
-  return repeat(count, () => {
+  const blockDocuments = repeat(count, () => {
     const blockSchema = choice(blockSchemas)
     const { blockType } = blockSchema
 
-    return useBlockDocumentMock({
-      blockType,
-      blockTypeId: blockType.id,
-      blockSchema,
-      blockSchemaId: blockSchema.id,
-      ...override?.(),
-    })
+    return mocker.create('blockDocument', [
+      {
+        blockType,
+        blockTypeId: blockType.id,
+        blockSchema,
+        blockSchemaId: blockSchema.id,
+        ...override?.(),
+      },
+    ])
   })
+
+  useSeeds({
+    blockDocuments,
+  })
+
+  return blockDocuments
 }
