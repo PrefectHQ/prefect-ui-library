@@ -41,8 +41,6 @@
       <div>
         <p-code>formatDateTimeRelative (compared to now)</p-code>
         <p>{{ formatDateTimeRelative(date, currentTime) }}</p>
-        <div>{{ formatDateTimeNumeric(date) }}</div>
-        <div>{{ formatDateTimeNumeric(currentTime) }}</div>
       </div>
     </div>
   </ComponentPage>

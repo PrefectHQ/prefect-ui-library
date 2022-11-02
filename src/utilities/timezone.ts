@@ -1,5 +1,5 @@
 import * as dateFns from 'date-fns'
-import { getTimezoneOffset, utcToZonedTime, zonedTimeToUtc } from 'date-fns-tz'
+import { formatInTimeZone, getTimezoneOffset, utcToZonedTime, zonedTimeToUtc } from 'date-fns-tz'
 import { ref, computed } from 'vue'
 import { isDate } from '@/utilities/dates'
 
@@ -42,6 +42,30 @@ export function unassignTimezone(date: Date, timezone = selectedTimezone.value):
   return date
 }
 
+export function toDate(value: Date | string | null | undefined): Date {
+  if (!value) {
+    return new Date()
+  }
+
+  if (typeof value === 'string') {
+    return new Date(value)
+  }
+
+  if (value.timezone) {
+    return unassignTimezone(value)
+  }
+
+  return value
+}
+
+export function formatDateInTimezone(date: Date, format: string, timezone = selectedTimezone.value): string {
+  if (date.timezone || !timezone) {
+    return dateFns.format(date, format)
+  }
+
+  return formatInTimeZone(date, timezone, format)
+}
+
 function isRelativeDateFunction(args: unknown[]): boolean {
   return args.length === 0
 }
@@ -73,6 +97,10 @@ export const dateFunctions = new Proxy({ ...dateFns }, {
       })
 
       const value = method.apply(this, anyDateArgsUnapplied)
+
+      if (!isDate(value)) {
+        return value
+      }
 
       if (isRelativeDateFunction(args)) {
         return unassignTimezone(value)
