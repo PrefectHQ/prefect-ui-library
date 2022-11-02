@@ -5,15 +5,12 @@
     <p-key-value label="Flow ID" :value="flowRun.flowId" :alternate="alternate" />
 
     <template v-if="can.read.work_queue && flowRun.workQueueName">
-      <p-key-value :alternate="alternate">
-        <template #label>
-          <div class="flow-run-details__work-queue-label">
-            <span>Work Queue</span>
+      <p-key-value label="Work Queue" :alternate="alternate">
+        <template #value>
+          <div class="flow-run-details__work-queue-value">
+            <WorkQueueIconText :work-queue-name="flowRun.workQueueName" />
             <WorkQueueStatusIcon :work-queue-name="flowRun.workQueueName" />
           </div>
-        </template>
-        <template #value>
-          <WorkQueueIconText :work-queue-name="flowRun.workQueueName" />
         </template>
       </p-key-value>
     </template>
@@ -70,7 +67,7 @@
     items-start
   }
 
-  .flow-run-details__work-queue-label { @apply
+  .flow-run-details__work-queue-value { @apply
     flex
     items-center
     gap-1
