@@ -4,10 +4,13 @@
 
     <p-key-value label="Flow ID" :value="flowRun.flowId" :alternate="alternate" />
 
-    <template v-if="can.read.work_queue">
-      <p-key-value v-if="flowRun.workQueueName" label="Work Queue" :alternate="alternate">
+    <template v-if="can.read.work_queue && flowRun.workQueueName">
+      <p-key-value label="Work Queue" :alternate="alternate">
         <template #value>
-          <WorkQueueIconText :work-queue-name="flowRun.workQueueName" />
+          <div class="flow-run-details__work-queue-value">
+            <WorkQueueIconText :work-queue-name="flowRun.workQueueName" />
+            <WorkQueueStatusIcon :work-queue-name="flowRun.workQueueName" />
+          </div>
         </template>
       </p-key-value>
     </template>
@@ -51,6 +54,7 @@
 <script lang="ts" setup>
   import { PKeyValue, PTags } from '@prefecthq/prefect-design'
   import { ref } from 'vue'
+  import WorkQueueStatusIcon from './WorkQueueStatusIcon.vue'
   import { FlowRunIconText } from '.'
   import  WorkQueueIconText  from '@/components/WorkQueueIconText.vue'
   import { useWorkspaceApi } from '@/compositions'
@@ -83,16 +87,20 @@
 </script>
 
 <style>
-  .flow-run-details {
-    @apply
+  .flow-run-details { @apply
     flex
     flex-col
     gap-2
     items-start
   }
 
-  .flow-run-details__tags {
-    @apply
+  .flow-run-details__work-queue-value { @apply
+    flex
+    items-center
+    gap-1
+  }
+
+  .flow-run-details__tags { @apply
     mb-1
     mr-1
   }
