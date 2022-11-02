@@ -13,9 +13,9 @@
     </template>
 
     <template v-if="flowRun.parentTaskRunId">
-      <p-key-value label="Parent Task Run" :alternate="alternate">
+      <p-key-value label="Parent Flow Run" :alternate="alternate">
         <template #value>
-          <FlowRunIconText :flow-run-id="parentFlowRun.id" />
+          <FlowRunIconText :flow-run-id="parentFlowRunId" />
         </template>
       </p-key-value>
     </template>
@@ -50,11 +50,13 @@
 
 <script lang="ts" setup>
   import { PKeyValue, PTags } from '@prefecthq/prefect-design'
+  import { ref } from 'vue'
   import { FlowRunIconText } from '.'
   import  WorkQueueIconText  from '@/components/WorkQueueIconText.vue'
   import { useWorkspaceApi } from '@/compositions'
   import { useCan } from '@/compositions/useCan'
   import { FlowRun } from '@/models/FlowRun'
+  import { FlowRunFilter } from '@/types'
   import { formatDateTimeNumeric } from '@/utilities/dates'
 
   const api = useWorkspaceApi()
@@ -65,17 +67,19 @@
   }>()
 
   const can = useCan()
-  const flowRunFilter = {
-    task_runs:{
-      operator: 'and_',
-      id: {
-        any_: [props.flowRun.parentTaskRunId],
-      },
-    },
-  }
+  const parentFlowRunId = ref('')
 
-  const parentFlowRunList = props.flowRun.parentTaskRunId ? await api.flowRuns.getFlowRuns(flowRunFilter) : []
-  const [parentFlowRun] = parentFlowRunList
+  if (props.flowRun.parentTaskRunId) {
+    const flowRunFilter: FlowRunFilter = {
+      task_runs:{
+        id: {
+          any_: [props.flowRun.parentTaskRunId],
+        },
+      },
+    }
+    const parentFlowRunList: FlowRun[] = await api.flowRuns.getFlowRuns(flowRunFilter)
+    parentFlowRunId.value  = parentFlowRunList[0].id
+  }
 </script>
 
 <style>
