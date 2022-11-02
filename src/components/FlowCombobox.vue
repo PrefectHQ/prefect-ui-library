@@ -1,6 +1,6 @@
 <template>
   <p-combobox v-model="internalValue" :options="options" :empty-message="emptyMessage">
-    <template #options-empty>
+    <template #combobox-options-empty>
       No flows
     </template>
   </p-combobox>
