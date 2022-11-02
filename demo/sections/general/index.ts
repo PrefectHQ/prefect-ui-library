@@ -8,4 +8,5 @@ export const general: Section = {
   ColorModeSelectOption: () => import ('./ColorModeSelectOption.vue'),
   ConfirmDeleteModal: () => import ('./ConfirmDeleteModal.vue'),
   CopyOverflowMenuItem: () => import ('./CopyOverflowMenuItem.vue'),
+  TimezoneSupport: () => import ('./TimezoneSupport.vue'),
 }

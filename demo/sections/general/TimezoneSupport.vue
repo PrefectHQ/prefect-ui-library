@@ -1,5 +1,5 @@
 <template>
-  <DemoSection heading="Timezone">
+  <ComponentPage title="CopyOverflowMenuItem">
     <div class="timezones-section">
       <p-label label="Date">
         <DateInput v-model="date" show-time />
@@ -40,30 +40,28 @@
 
       <div>
         <p-code>formatDateTimeRelative (compared to now)</p-code>
-        <p>{{ formatDateTimeRelative(date, now) }}</p>
+        <p>{{ formatDateTimeRelative(date, currentTime) }}</p>
+        <div>{{ formatDateTimeNumeric(date) }}</div>
+        <div>{{ formatDateTimeNumeric(currentTime) }}</div>
       </div>
     </div>
-  </DemoSection>
+  </ComponentPage>
 </template>
 
 <script lang="ts" setup>
   import { watch, ref } from 'vue'
-  import DemoSection from '../components/DemoSection.vue'
   import DateInput from '@/components/DateInput.vue'
   import TimezoneSelect from '@/components/TimezoneSelect.vue'
+  import ComponentPage from '@/demo/components/ComponentPage.vue'
   import { formatDate, formatDateTimeNumeric, formatTimeNumeric, formatDateTimeRelative } from '@/utilities/dates'
-  import { dateFunctions, selectedTimezone, utcOffsetMinutes } from '@/utilities/timezone'
+  import { now, selectedTimezone, utcOffsetMinutes } from '@/utilities/timezone'
 
   const date = ref(new Date())
-  const now = ref(getCurrentTime())
+  const currentTime = ref(now())
 
   watch([date, selectedTimezone], () => {
-    now.value = getCurrentTime()
+    currentTime.value = now()
   })
-
-  function getCurrentTime(): string {
-    return formatDate(dateFunctions.startOfMinute(new Date()), 'yyyy-MM-dd HH:mm:ssXXX')
-  }
 </script>
 
 <style>
