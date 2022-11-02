@@ -7,7 +7,7 @@
     <template v-if="can.read.work_queue && flowRun.workQueueName">
       <p-key-value :alternate="alternate">
         <template #label>
-          <div class="flow-run-details__work-queue-value">
+          <div class="flow-run-details__work-queue-label">
             <span>Work Queue</span>
             <WorkQueueStatusIcon :work-queue-name="flowRun.workQueueName" />
           </div>
@@ -70,7 +70,7 @@
     items-start
   }
 
-  .flow-run-details__work-queue-value { @apply
+  .flow-run-details__work-queue-label { @apply
     flex
     items-center
     gap-1
