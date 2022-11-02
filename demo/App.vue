@@ -1,42 +1,45 @@
 <template>
-  <div class="app">
+  <div class="max-w-full min-h-full app">
     <template v-if="!media.lg">
       <PGlobalSidebar class="app__mobile-menu">
         <template #upper-links>
           <p-icon icon="PrefectGradient" class="app__prefect-icon" />
+          <span class="text-slate-200">Prefect</span>
         </template>
         <template #bottom-links>
           <PIcon icon="MenuIcon" class="app__menu-icon" @click="toggle" />
         </template>
       </PGlobalSidebar>
     </template>
-    <app-sidebar v-if="showMenu" class="app__sidebar" @click="close" />
-    <suspense>
-      <AppRouterView />
-    </suspense>
+    <ContextSidebar v-if="showMenu" class="app__sidebar" />
+    <router-view class="w-full mx-auto py-10 px-6 lg:px-8" />
   </div>
 </template>
 
 <script lang="ts" setup>
-  import { media } from '@prefecthq/prefect-design'
-  import { computed, provide, ref, watchEffect } from 'vue'
-  import AppRouterView from './components/AppRouterView.vue'
-  import AppSidebar from './components/AppSidebar.vue'
-  import { flowRunsApi, logsApi, taskRunsApi, flowsApi, deploymentsApi, workQueueApi, notificationsApi, blockCapabilitiesApi } from './services'
-  import { flowRunCreateRouteKey, notificationCreateRouteKey, deploymentRouteKey, flowRouteKey, flowRunsRouteKey, taskRunRouteKey, flowsRouteKey, deploymentsRouteKey, workQueuesRouteKey, settingsRouteKey, workQueueRouteKey, Route, flowRunRouteKey, workQueueCreateRouteKey, editQueueRouteKey, blocksRouteKey, blockCatalogRouteKey, blockRouteKey, blockEditRouteKey, editNotificationRouteKey, blockCatalogCreateRouteKey, notificationsRouteKey, editDeploymentRouteKey, blockCatalogViewRouteKey } from '@/router'
-  import { flowRunsApiKey, logsApiKey, taskRunsApiKey, flowsApiKey, deploymentsApiKey, workQueuesApiKey, notificationsApiKey, blockDocumentsApiKey, mocker, blockTypesApiKey, blockSchemasApiKey, blockCapabilitiesApiKey } from '@/services'
-  import { canKey, getAppPermissions } from '@/types'
+  import { media, PGlobalSidebar, PIcon } from '@prefecthq/prefect-design'
+  import { computed, provide, watchEffect } from 'vue'
+  import { RouterView } from 'vue-router'
+  import { useWorkspaceApiMock } from './utilities/api'
+  import ContextSidebar from '@/demo/components/ContextSidebar.vue'
+  import { mobileMenuOpen, toggle } from '@/demo/router/menu'
+  import { flowRouteKey, flowRunRouteKey, editDeploymentRouteKey, flowRunsRouteKey, deploymentRouteKey, taskRunRouteKey, flowsRouteKey, deploymentsRouteKey, workQueuesRouteKey, settingsRouteKey, workQueueRouteKey, workQueueCreateRouteKey, editQueueRouteKey, notificationCreateRouteKey, editNotificationRouteKey, blocksRouteKey, flowRunCreateRouteKey, notificationsRouteKey, blockCatalogRouteKey, blockCatalogViewRouteKey, blockCatalogCreateRouteKey, blockRouteKey, blockEditRouteKey, Route } from '@/router'
+  import { getAppPermissions, canKey } from '@/types'
 
-  const emptyRoute = (): Route => ({ path: '/nothing' })
+  const showMenu = computed(() => media.lg || mobileMenuOpen.value)
 
-  provide(flowRunsApiKey, flowRunsApi)
-  provide(logsApiKey, logsApi)
-  provide(taskRunsApiKey, taskRunsApi)
-  provide(flowsApiKey, flowsApi)
-  provide(deploymentsApiKey, deploymentsApi)
-  provide(workQueuesApiKey, workQueueApi)
-  provide(blockCapabilitiesApiKey, blockCapabilitiesApi)
-  provide(notificationsApiKey, notificationsApi)
+  watchEffect(() => document.body.classList.toggle('body-scrolling-disabled', showMenu.value && !media.lg))
+
+  useWorkspaceApiMock()
+
+  const can = getAppPermissions(
+    () => true,
+  )
+
+  provide(canKey, can)
+
+  const emptyRoute = (): Route => ({ path: '/' })
+
   provide(flowRouteKey, emptyRoute)
   provide(flowRunRouteKey, emptyRoute)
   provide(editDeploymentRouteKey, emptyRoute)
@@ -60,28 +63,6 @@
   provide(blockCatalogCreateRouteKey, emptyRoute)
   provide(blockRouteKey, emptyRoute)
   provide(blockEditRouteKey, emptyRoute)
-  provide(blockDocumentsApiKey, mocker.create('blockDocumentsApi'))
-  provide(blockTypesApiKey, mocker.create('blockTypesApi'))
-  provide(blockSchemasApiKey, mocker.create('blockSchemasApi'))
-
-  const can = getAppPermissions(
-    () => true,
-  )
-
-  provide(canKey, can)
-
-  const mobileMenuOpen = ref(false)
-  const showMenu = computed(() => media.lg || mobileMenuOpen.value)
-
-  function toggle(): void {
-    mobileMenuOpen.value = !mobileMenuOpen.value
-  }
-
-  function close(): void {
-    mobileMenuOpen.value = false
-  }
-
-  watchEffect(() => document.body.classList.toggle('body-scrolling-disabled', showMenu.value && !media.lg))
 </script>
 
 <style>
@@ -99,7 +80,7 @@
 }
 
 .app__menu-icon { @apply
-  text-white
+  text-slate-200
   w-6
   h-6
   cursor-pointer

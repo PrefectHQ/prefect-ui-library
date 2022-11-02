@@ -47,7 +47,7 @@ export function hasProperty<T extends Record<string | symbol, unknown>>(needle: 
 
 export type MapEntriesCallback<K, V, R> = (key: K, value: V) => R
 
-export function mapEntries<K extends string, V, R>(object: Record<K, V>, callback: MapEntriesCallback<K, V, R>): Record<K, R> {
+export function mapEntries<K extends string | number | symbol, V, R>(object: Record<K, V>, callback: MapEntriesCallback<K, V, R>): Record<K, R> {
   const entries = Object.entries(object) as [K, V][]
   const result = {} as Record<K, R>
 
