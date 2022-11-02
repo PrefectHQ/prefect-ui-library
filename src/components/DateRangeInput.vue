@@ -4,7 +4,7 @@
 
 <script lang="ts" setup>
   import { computed } from 'vue'
-  import { assignTimezone, unassignTimezone } from '@/utilities/dates'
+  import { assignTimezone, unassignTimezone } from '@/utilities/timezone'
 
   const props = defineProps<{
     startDate: Date | null | undefined,

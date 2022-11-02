@@ -5,7 +5,8 @@ import DateInput from '@/components/DateInput.vue'
 import JsonInput from '@/components/JsonInput.vue'
 import { InvalidSchemaValueError } from '@/models'
 import { SchemaValue } from '@/types/schemas'
-import { format, isDate, parse, isValid } from '@/utilities/dates'
+import { isDate } from '@/utilities/dates'
+import { dateFunctions } from '@/utilities/timezone'
 import { isEmail, isJson, ValidationMethodFactory } from '@/utilities/validation'
 
 export class SchemaPropertyString extends SchemaPropertyService {
@@ -88,16 +89,16 @@ export class SchemaPropertyString extends SchemaPropertyService {
 
   private requestDateValue(value: SchemaValue): SchemaValue {
     if (isDate(value)) {
-      return format(value, 'yyyy-MM-dd')
+      return dateFunctions.format(value, 'yyyy-MM-dd')
     }
 
     return value
   }
 
   private responseDateValue(value: SchemaValue): SchemaValue {
-    const date = parse(value as string, 'yyyy-MM-dd', new Date())
+    const date = dateFunctions.parse(value as string, 'yyyy-MM-dd', new Date())
 
-    if (!isValid(date)) {
+    if (!dateFunctions.isValid(date)) {
       return this.invalid()
     }
 
@@ -106,16 +107,16 @@ export class SchemaPropertyString extends SchemaPropertyService {
 
   private requestDateTimeValue(value: SchemaValue): SchemaValue {
     if (isDate(value)) {
-      return format(value, 'yyyy-MM-dd\'T\'HH:mm:ss.000\'Z\'')
+      return dateFunctions.format(value, 'yyyy-MM-dd\'T\'HH:mm:ss.000\'Z\'')
     }
 
     return value
   }
 
   private responseDateTimeValue(value: SchemaValue): Date {
-    const date = parse(value as string, 'yyyy-MM-dd\'T\'HH:mm:ss.SSS\'Z\'', new Date())
+    const date = dateFunctions.parse(value as string, 'yyyy-MM-dd\'T\'HH:mm:ss.SSS\'Z\'', new Date())
 
-    if (!isValid(date)) {
+    if (!dateFunctions.isValid(date)) {
       this.invalid()
     }
 

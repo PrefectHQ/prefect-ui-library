@@ -57,8 +57,8 @@
   import JsonInput from '@/components/JsonInput.vue'
   import { useForm } from '@/compositions/useForm'
   import { isEmptyString } from '@/utilities/strings'
-  import { addYears } from '@/utilities/timezone'
-  import { fieldRules, isBeforeMax, isEmail, isJson, isRequired, ValidationMethodFactory } from '@/utilities/validation'
+  import { dateFunctions } from '@/utilities/timezone'
+  import { fieldRules, isBefore, isEmail, isJson, isRequired, ValidationMethodFactory } from '@/utilities/validation'
   import { isNullish } from '@/utilities/variables'
 
   const { handleSubmit, handleReset, isSubmitting, meta, errors, submitCount } = useForm()
@@ -85,11 +85,11 @@
     })
   }
 
-  const minDate = addYears(new Date(), -18)
+  const minDate = dateFunctions.addYears(new Date(), -18)
   const rules = {
     name: fieldRules('Name', isRequired),
     json: fieldRules('Favorite JSON', isRequired, isJson),
-    dateOfBirth: fieldRules('Birthday', isRequired, isBeforeMax(minDate)),
+    dateOfBirth: fieldRules('Birthday', isRequired, isBefore(minDate)),
     emailAddress: fieldRules('Email Address', isRequired, isEmail),
     username: fieldRules('Username', isRequired, validateEmail),
     tags: fieldRules('Tags', [isRequired, 'At least 1 tag is required']),

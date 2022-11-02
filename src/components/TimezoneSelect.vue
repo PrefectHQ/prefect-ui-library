@@ -9,7 +9,7 @@
 <script lang="ts" setup>
   import { SelectOption } from '@prefecthq/prefect-design'
   import { computed } from 'vue'
-  import { utcTimezone } from '@/utilities/dates'
+  import { utcTimezone } from '@/utilities/timezone'
 
   const props = defineProps<{
     modelValue: string | null,

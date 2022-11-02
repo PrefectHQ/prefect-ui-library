@@ -7,7 +7,7 @@ import { FlowRunFilters, FlowRunFiltersInRoute } from '@/types/filter'
 import { FlowRunSortValues } from '@/types/SortOptionTypes'
 import { UnionFilters } from '@/types/UnionFilters'
 import { formatDateTimeNumeric, parseDateTimeNumeric } from '@/utilities/dates'
-import { subDays, startOfToday, addDays, endOfToday } from '@/utilities/timezone'
+import { dateFunctions } from '@/utilities/timezone'
 
 export type UseFlowRunFilterFromRoute = {
   name: Ref<string>,
@@ -31,7 +31,7 @@ export function useFlowRunFilterFromRoute(): UseFlowRunFilterFromRoute {
   const name = useRouteQueryParam('name', '')
   const sort = useRouteQueryParam('sort', 'EXPECTED_START_TIME_DESC') as Ref<FlowRunSortValues>
 
-  const defaultStartDate = formatDateTimeNumeric(subDays(startOfToday(), 7))
+  const defaultStartDate = formatDateTimeNumeric(dateFunctions.subDays(dateFunctions.startOfToday(), 7))
   const startDateParam = useRouteQueryParam('start-date', defaultStartDate)
 
   const startDate = computed({
@@ -43,7 +43,7 @@ export function useFlowRunFilterFromRoute(): UseFlowRunFilterFromRoute {
     },
   })
 
-  const defaultEndDate = formatDateTimeNumeric(addDays(endOfToday(), 1))
+  const defaultEndDate = formatDateTimeNumeric(dateFunctions.addDays(dateFunctions.endOfToday(), 1))
   const endDateParam = useRouteQueryParam('end-date', defaultEndDate)
 
   const endDate = computed({

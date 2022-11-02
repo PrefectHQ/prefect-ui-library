@@ -1,7 +1,7 @@
 import { parse, isValid, format as dateFnsFormat, isDate as dateFnsIsDate } from 'date-fns'
 import { formatInTimeZone } from 'date-fns-tz'
 import { secondsToApproximateString } from '@/utilities/seconds'
-import { isBefore, differenceInSeconds, selectedTimezone } from '@/utilities/timezone'
+import { dateFunctions, selectedTimezone } from '@/utilities/timezone'
 
 const dateTimeNumericFormat = 'yyyy/MM/dd hh:mm:ss a'
 const timeNumericFormat = 'hh:mm:ss a'
@@ -46,8 +46,8 @@ export function parseTimeNumeric(value: string, reference: Date = new Date()): D
 export function formatDateTimeRelative(value: Date | string, comparedTo: Date | string = new Date()): string {
   const valueDate = new Date(value)
   const compareDate = comparedTo ? new Date(comparedTo) : new Date()
-  const seconds = differenceInSeconds(compareDate, valueDate)
-  const past = isBefore(valueDate, compareDate)
+  const seconds = dateFunctions.differenceInSeconds(compareDate, valueDate)
+  const past = dateFunctions.isBefore(valueDate, compareDate)
   const formatted = secondsToApproximateString(Math.abs(seconds))
 
   if (past) {
@@ -56,5 +56,3 @@ export function formatDateTimeRelative(value: Date | string, comparedTo: Date | 
 
   return `in ${formatted}`
 }
-
-export * from '@/utilities/timezone'

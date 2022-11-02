@@ -27,7 +27,7 @@
   import LogRow from '@/components/LogRow.vue'
   import { Log } from '@/models/Log'
   import { formatDate } from '@/utilities/dates'
-  import { isSameDay } from '@/utilities/timezone'
+  import { dateFunctions } from '@/utilities/timezone'
 
   const props = defineProps<{
     logs: Log[],
@@ -47,7 +47,7 @@
     const previous = props.logs[index - 1]
     const current = props.logs[index]
 
-    return !isSameDay(previous.timestamp, current.timestamp)
+    return !dateFunctions.isSameDay(previous.timestamp, current.timestamp)
   }
 </script>
 

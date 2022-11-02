@@ -165,7 +165,7 @@ export const isGreaterThanOrEqual = (min: number): ValidationMethodFactory => pr
   return `${property} must be greater than or equal to ${min}`
 }
 
-export const isBeforeMax = (max: Date, { time: showTime = false } = {}): ValidationMethodFactory => property => value => {
+export const isBefore = (max: Date, { time: showTime = false } = {}): ValidationMethodFactory => property => value => {
   if (isNullish(value)) {
     return true
   }
@@ -181,7 +181,7 @@ export const isBeforeMax = (max: Date, { time: showTime = false } = {}): Validat
   return `${property} must be less than ${formatDate(max)}`
 }
 
-export const isBeforeMaxOrEqual = (max: Date, { time: showTime = false } = {}): ValidationMethodFactory => property => value => {
+export const isBeforeOrEqual = (max: Date, { time: showTime = false } = {}): ValidationMethodFactory => property => value => {
   if (isNullish(value)) {
     return true
   }
@@ -197,7 +197,7 @@ export const isBeforeMaxOrEqual = (max: Date, { time: showTime = false } = {}): 
   return `${property} must be less than or equal to ${formatDate(max)}`
 }
 
-export const isAfterMin = (min: Date, { time: showTime = false } = {}): ValidationMethodFactory => property => value => {
+export const isAfter = (min: Date, { time: showTime = false } = {}): ValidationMethodFactory => property => value => {
   if (isNullish(value)) {
     return true
   }
@@ -213,7 +213,7 @@ export const isAfterMin = (min: Date, { time: showTime = false } = {}): Validati
   return `${property} must be less than ${formatDate(min)}`
 }
 
-export const isAfterMinOrEqual = (min: Date, { time: showTime = false } = {}): ValidationMethodFactory => property => value => {
+export const isAfterOrEqual = (min: Date, { time: showTime = false } = {}): ValidationMethodFactory => property => value => {
   if (isNullish(value)) {
     return true
   }

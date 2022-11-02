@@ -51,7 +51,8 @@
   import DemoSection from '../components/DemoSection.vue'
   import DateInput from '@/components/DateInput.vue'
   import TimezoneSelect from '@/components/TimezoneSelect.vue'
-  import { startOfMinute, utcOffsetMinutes, selectedTimezone, formatDate, formatDateTimeNumeric, formatTimeNumeric, formatDateTimeRelative } from '@/utilities/dates'
+  import { formatDate, formatDateTimeNumeric, formatTimeNumeric, formatDateTimeRelative } from '@/utilities/dates'
+  import { dateFunctions, selectedTimezone, utcOffsetMinutes } from '@/utilities/timezone'
 
   const date = ref(new Date())
   const now = ref(getCurrentTime())
@@ -61,7 +62,7 @@
   })
 
   function getCurrentTime(): string {
-    return formatDate(startOfMinute(new Date()), 'yyyy-MM-dd HH:mm:ssXXX')
+    return formatDate(dateFunctions.startOfMinute(new Date()), 'yyyy-MM-dd HH:mm:ssXXX')
   }
 </script>
 
