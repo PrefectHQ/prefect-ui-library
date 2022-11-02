@@ -1,10 +1,23 @@
 import { WorkspaceApi } from './WorkspaceApi'
-import { FlowRun, FlowRunResponse, WorkQueueCreate, WorkQueueEdit, WorkQueueResponse } from '@/models'
+import { FlowRun, FlowRunResponse, WorkQueueCreate, WorkQueueEdit, WorkQueueResponse, WorkQueueStatus, WorkQueueStatusResponse } from '@/models'
 import { WorkQueue } from '@/models/WorkQueue'
 import { mapper } from '@/services/Mapper'
 import { PaginatedFilter } from '@/types/UnionFilters'
 
-export class WorkspaceWorkQueuesApi extends WorkspaceApi {
+export interface IWorkspaceWorkQueuesApi {
+  getWorkQueue: (workQueueId: string) => Promise<WorkQueue>,
+  getWorkQueueByName: (workQueueName: string) => Promise<WorkQueue>,
+  getWorkQueues: (filter: PaginatedFilter) => Promise<WorkQueue[]>,
+  createWorkQueue: (request: WorkQueueCreate) => Promise<WorkQueue>,
+  pauseWorkQueue: (workQueueId: string) => Promise<void>,
+  resumeWorkQueue: (workQueueId: string) => Promise<void>,
+  updateWorkQueue: (workQueueId: string, request: WorkQueueEdit) => Promise<void>,
+  deleteWorkQueue: (workQueueId: string) => Promise<void>,
+  getRuns: (workQueueId: string) => Promise<FlowRun[]>,
+  getWorkQueueStatus: (workQueueId: string) => Promise<WorkQueueStatus>,
+}
+
+export class WorkspaceWorkQueuesApi extends WorkspaceApi implements IWorkspaceWorkQueuesApi {
 
   protected routePrefix = '/work_queues'
 
@@ -55,5 +68,11 @@ export class WorkspaceWorkQueuesApi extends WorkspaceApi {
     const { data } = await this.post<FlowRunResponse[]>(`/${id}/get_runs`)
 
     return mapper.map('FlowRunResponse', data, 'FlowRun')
+  }
+
+  public async getWorkQueueStatus(id: string): Promise<WorkQueueStatus> {
+    const { data } = await this.get<WorkQueueStatusResponse>(`/${id}/status`)
+
+    return mapper.map('WorkQueueStatusResponse', data, 'WorkQueueStatus')
   }
 }

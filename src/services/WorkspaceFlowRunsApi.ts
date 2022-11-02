@@ -9,7 +9,18 @@ import { RunHistory } from '@/models/RunHistory'
 import { mapper } from '@/services/Mapper'
 import { FlowRunsHistoryFilter, UnionFilters } from '@/types/UnionFilters'
 
-export class WorkspaceFlowRunsApi extends WorkspaceApi {
+export interface IWorkspaceFlowRunsApi {
+  getFlowRun: (flowRunId: string) => Promise<FlowRun>,
+  getFlowRuns: (filter: UnionFilters) => Promise<FlowRun[]>,
+  getFlowRunsCount: (filter: UnionFilters) => Promise<number>,
+  getFlowRunsHistory: (filter: FlowRunsHistoryFilter) => Promise<RunHistory[]>,
+  getFlowRunsGraph: (flowRunId: string) => Promise<GraphNode[]>,
+  retryFlowRun: (flowRunId: string) => Promise<void>,
+  setFlowRunState: (flowRunId: string, body: StateUpdate) => Promise<void>,
+  deleteFlowRun: (flowRunId: string) => Promise<void>,
+}
+
+export class WorkspaceFlowRunsApi extends WorkspaceApi implements IWorkspaceFlowRunsApi {
 
   protected routePrefix = '/flow_runs'
 
@@ -44,13 +55,13 @@ export class WorkspaceFlowRunsApi extends WorkspaceApi {
   }
 
   public retryFlowRun(id: string): Promise<void> {
-return this.setFlowRunState(id, { 
-  state: { 
-    type: 'scheduled', 
-    name: 'AwaitingRetry', 
-    message: 'Retry from the UI' 
-  } 
-})
+    return this.setFlowRunState(id, {
+      state: {
+        type: 'scheduled',
+        name: 'AwaitingRetry',
+        message: 'Retry from the UI',
+      },
+    })
   }
 
   public setFlowRunState(id: string, body: StateUpdate): Promise<void> {

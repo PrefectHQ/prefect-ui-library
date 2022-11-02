@@ -48,14 +48,12 @@
   import SchemaFormFields from './SchemaFormFields.vue'
   import SubmitButton from './SubmitButton.vue'
   import StateSelect from '@/components/StateSelect.vue'
-  import { useBlockSchemaForBlockType, useForm, useReactiveField } from '@/compositions'
+  import { useBlockSchemaForBlockType, useForm, useReactiveField, useWorkspaceApi } from '@/compositions'
   import { localization } from '@/localization'
   import { Notification, BlockTypeFilter } from '@/models'
-  import { blockDocumentsApiKey, blockTypesApiKey } from '@/services'
   import { getSchemaDefaultValues } from '@/services/schemas/utilities'
   import { FormAction } from '@/types/buttons'
   import { SchemaValues } from '@/types/schemas'
-  import { inject } from '@/utilities/inject'
 
   const props = defineProps<{
     notification?: Notification,
@@ -82,9 +80,7 @@
   const { value: stateNames } = useField<string[]>('stateNames')
   const { value: tags } = useField<string[]>('tags')
 
-  const blockDocumentsApi = inject(blockDocumentsApiKey)
-  const blockTypesApi = inject(blockTypesApiKey)
-
+  const api = useWorkspaceApi()
   const selectedBlockTypeId = ref<string>()
   const blockDataMap = reactive<Record<string, SchemaValues | undefined>>({})
 
@@ -113,14 +109,14 @@
 
   useReactiveField(data, 'blockData')
 
-  const blockDocumentSubscriptionArgs = computed<Parameters<typeof blockDocumentsApi.getBlockDocument> | null>(() => {
+  const blockDocumentSubscriptionArgs = computed<Parameters<typeof api.blockDocuments.getBlockDocument> | null>(() => {
     if (!props.notification?.blockDocumentId) {
       return null
     }
 
     return [props.notification.blockDocumentId]
   })
-  const blockDocumentSubscription = useSubscriptionWithDependencies(blockDocumentsApi.getBlockDocument, blockDocumentSubscriptionArgs)
+  const blockDocumentSubscription = useSubscriptionWithDependencies(api.blockDocuments.getBlockDocument, blockDocumentSubscriptionArgs)
   const blockDocument = computed(() => blockDocumentSubscription.response)
 
   watch(blockDocument, document => {
@@ -139,7 +135,7 @@
       },
     },
   }
-  const blockTypesSubscription = useSubscription(blockTypesApi.getBlockTypes, [blockTypesSubscriptionFilter])
+  const blockTypesSubscription = useSubscription(api.blockTypes.getBlockTypes, [blockTypesSubscriptionFilter])
   const blockTypes = computed(() => blockTypesSubscription.response ?? [])
   const blockType = computed(() => blockTypes.value.find(type => type.id === selectedBlockTypeId.value))
 
@@ -193,12 +189,12 @@
         blockDocument.value.blockTypeId === selectedBlockTypeId.value
       ) {
         blockDocumentId.value = blockDocument.value.id
-        await blockDocumentsApi.updateBlockDocument(blockDocumentId.value, {
+        await api.blockDocuments.updateBlockDocument(blockDocumentId.value, {
           blockSchema: blockSchema.value,
           data: data.value,
         })
       } else {
-        const newBlockDocument = await blockDocumentsApi.createBlockDocument({
+        const newBlockDocument = await api.blockDocuments.createBlockDocument({
           isAnonymous: true,
           blockSchema: blockSchema.value,
           data: data.value,

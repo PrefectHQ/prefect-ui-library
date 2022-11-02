@@ -18,8 +18,8 @@
   import { computed } from 'vue'
   import BlockDocumentsSelect from './BlockDocumentsSelect.vue'
   import BlockTypeLogo from './BlockTypeLogo.vue'
+  import { useWorkspaceApi } from '@/compositions'
   import { blockCatalogCreateRouteKey } from '@/router/routes'
-  import { blockTypesApiKey } from '@/services'
   import { inject } from '@/utilities'
   import { withRedirect } from '@/utilities/routes'
 
@@ -42,12 +42,11 @@
   })
 
   const blockCatalogCreateRoute = inject(blockCatalogCreateRouteKey)
-  const blockTypesApi = inject(blockTypesApiKey)
-
+  const api = useWorkspaceApi()
   const blockTypeSlug = computed(() => props.blockTypeSlug)
-  const blockTypeSubscription = useSubscription(blockTypesApi.getBlockTypeBySlug, [blockTypeSlug])
+  const blockTypeSubscription = useSubscription(api.blockTypes.getBlockTypeBySlug, [blockTypeSlug])
   const blockType = computed(() => blockTypeSubscription.response)
-  const blockDocumentsSubscription = useSubscription(blockTypesApi.getBlockDocumentsByBlockTypeSlug, [blockTypeSlug])
+  const blockDocumentsSubscription = useSubscription(api.blockTypes.getBlockDocumentsByBlockTypeSlug, [blockTypeSlug])
   const blockDocuments = computed(() => blockDocumentsSubscription.response ?? [])
 </script>
 

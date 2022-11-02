@@ -4,7 +4,14 @@ import { TaskRunResponse } from '@/models/TaskRunResponse'
 import { mapper } from '@/services/Mapper'
 import { UnionFilters } from '@/types/UnionFilters'
 
-export class WorkspaceTaskRunsApi extends WorkspaceApi {
+export interface IWorkspaceTaskRunsApi {
+  getTaskRun: (taskRunId: string) => Promise<TaskRun>,
+  getTaskRuns: (filter: UnionFilters) => Promise<TaskRun[]>,
+  getTaskRunsCount: (filter: UnionFilters) => Promise<number>,
+  deleteTaskRun: (taskRunId: string) => Promise<void>,
+}
+
+export class WorkspaceTaskRunsApi extends WorkspaceApi implements IWorkspaceTaskRunsApi {
 
   protected routePrefix = '/task_runs'
 

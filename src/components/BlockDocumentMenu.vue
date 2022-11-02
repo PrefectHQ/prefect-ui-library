@@ -26,11 +26,11 @@
   import { useRouter } from 'vue-router'
   import ConfirmDeleteModal from '@/components/ConfirmDeleteModal.vue'
   import CopyOverflowMenuItem from '@/components/CopyOverflowMenuItem.vue'
+  import { useWorkspaceApi } from '@/compositions'
   import { useCan } from '@/compositions/useCan'
   import { useShowModal } from '@/compositions/useShowModal'
   import { BlockDocument } from '@/models'
   import { blockEditRouteKey } from '@/router/routes'
-  import { blockDocumentsApiKey } from '@/services/BlockDocumentsApi'
   import { inject, deleteItem } from '@/utilities'
 
   const props = defineProps<{
@@ -44,7 +44,7 @@
   const can = useCan()
   const router = useRouter()
   const blockEditRoute = inject(blockEditRouteKey)
-  const blockDocumentsApi = inject(blockDocumentsApiKey)
+  const api = useWorkspaceApi()
   const { showModal, open: openDeleteBlockModal } = useShowModal()
 
   function editBlock(): void {
@@ -52,7 +52,7 @@
   }
 
   async function deleteBlock(id: string): Promise<void> {
-    await deleteItem(id, blockDocumentsApi.deleteBlockDocument, 'Block')
+    await deleteItem(id, api.blockDocuments.deleteBlockDocument, 'Block')
 
     emit('delete')
   }

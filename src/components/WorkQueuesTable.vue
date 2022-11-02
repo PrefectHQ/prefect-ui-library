@@ -1,11 +1,11 @@
 <template>
   <div class="work-queues-table">
     <div class="work-queues-table__search">
-      <ResultsCount :count="filtered.length" label="Work queue" />
+      <ResultsCount :count="filteredWorkQueues.length" label="Work queue" />
       <SearchInput v-model="searchTerm" placeholder="Search work queues" label="Search work queues" />
     </div>
 
-    <p-table :data="filtered" :columns="columns">
+    <p-table :data="filteredWorkQueues" :columns="columns">
       <template #name="{ row }">
         <p-link :to="workQueueRoute(row.id)">
           <span>{{ row.name }}</span>
@@ -16,13 +16,21 @@
         <span> {{ row.concurrencyLimit ?? 'Unlimited' }} </span>
       </template>
 
+      <template #status="{ row }">
+        <WorkQueueStatusBadge :work-queue="row" />
+      </template>
+
+      <template #last-polled="{ row }">
+        <WorkQueueLastPolled :work-queue-id="row.id" />
+      </template>
+
       <template #action-heading>
         <span />
       </template>
 
       <template #action="{ row }">
         <div class="work-queues-table__actions">
-          <WorkQueueLateIndicator :work-queue-name="row.name" />
+          <WorkQueueLateIndicator :work-queue-id="row.id" />
           <WorkQueueToggle :work-queue="row" @update="emits('update')" />
           <WorkQueueMenu size="xs" :work-queue="row" @delete="(id:string) => emits('delete', id)" />
         </div>
@@ -47,11 +55,7 @@
 <script lang="ts" setup>
   import { PTable, PEmptyResults, PLink } from '@prefecthq/prefect-design'
   import { computed, ref } from 'vue'
-  import ResultsCount from './ResultsCount.vue'
-  import SearchInput from './SearchInput.vue'
-  import WorkQueueLateIndicator from '@/components/WorkQueueLateIndicator.vue'
-  import WorkQueueMenu from '@/components/WorkQueueMenu.vue'
-  import WorkQueueToggle from '@/components/WorkQueueToggle.vue'
+  import { WorkQueueToggle, WorkQueueMenu, WorkQueueLateIndicator, SearchInput, ResultsCount, WorkQueueLastPolled, WorkQueueStatusBadge } from '@/components'
   import { WorkQueue } from '@/models'
   import { workQueueRouteKey } from '@/router'
   import { inject } from '@/utilities'
@@ -73,11 +77,15 @@
     {
       property: 'name',
       label: 'Name',
-      width: '150px',
     },
     {
-      property: 'concurrencyLimit',
       label: 'Concurrency',
+    },
+    {
+      label: 'Status',
+    },
+    {
+      label: 'Last Polled',
     },
     {
       label: 'Action',
@@ -85,7 +93,7 @@
     },
   ]
 
-  const filtered = computed(() => {
+  const filteredWorkQueues = computed(() => {
     if (searchTerm.value.length === 0) {
       return props.workQueues
     }

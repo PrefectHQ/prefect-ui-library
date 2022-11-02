@@ -3,7 +3,14 @@ import { WorkspaceApi } from './WorkspaceApi'
 import { Flow, FlowResponse } from '@/models'
 import { UnionFilters } from '@/types'
 
-export class WorkspaceFlowsApi extends WorkspaceApi {
+export interface IWorkspaceFlowsApi {
+  getFlow: (flowId: string) => Promise<Flow>,
+  getFlows: (filter: UnionFilters) => Promise<Flow[]>,
+  getFlowsCount: (filter: UnionFilters) => Promise<number>,
+  deleteFlow: (flowId: string) => Promise<void>,
+}
+
+export class WorkspaceFlowsApi extends WorkspaceApi implements IWorkspaceFlowsApi {
 
   protected override routePrefix = '/flows'
 

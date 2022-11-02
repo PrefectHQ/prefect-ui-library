@@ -1,5 +1,13 @@
 <template>
   <div class="work-queue-details">
+    <template v-if="workQueueStatus">
+      <p-key-value label="Status" :alternate="alternate">
+        <template #value>
+          <WorkQueueStatusBadge :work-queue="workQueue" />
+        </template>
+      </p-key-value>
+    </template>
+
     <p-key-value label="Description" :value="workQueue.description" :alternate="alternate" />
 
     <p-divider />
@@ -9,6 +17,10 @@
     <p-key-value label="Flow Run Concurrency" :value="workQueue.concurrencyLimit" :alternate="alternate" />
 
     <p-key-value label="Created" :value="formatDateTimeNumeric(workQueue.created)" :alternate="alternate" />
+
+    <template v-if="workQueueStatus">
+      <p-key-value label="Last Polled" :value="workQueueStatus.lastPolled ? formatDateTimeNumeric(workQueueStatus.lastPolled) : null" :alternate="alternate" />
+    </template>
 
     <template v-if="workQueue.filter">
       <p-key-value :label="deploymentLabel" :alternate="alternate">
@@ -36,6 +48,8 @@
 <script lang="ts" setup>
   import { computed } from 'vue'
   import DeploymentIconText from './DeploymentIconText.vue'
+  import { WorkQueueStatusBadge } from '@/components'
+  import { useWorkQueueStatus } from '@/compositions'
   import { WorkQueue } from '@/models/WorkQueue'
   import { formatDateTimeNumeric } from '@/utilities/dates'
 
@@ -52,6 +66,8 @@
     const num = deploymentIds.value?.length ?? 0
     return num > 0 ? `${num} Deployments` : 'Deployments'
   })
+
+  const workQueueStatus = useWorkQueueStatus(props.workQueue.id)
 </script>
 
 <style>

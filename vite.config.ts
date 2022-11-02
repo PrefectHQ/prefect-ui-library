@@ -1,6 +1,7 @@
 import { resolve } from 'path'
 import vue from '@vitejs/plugin-vue'
 import { defineConfig } from 'vite'
+import svgLoader from 'vite-svg-loader'
 
 // https://vitejs.dev/config/
 // eslint-disable-next-line import/no-default-export
@@ -9,16 +10,23 @@ export default defineConfig(({ mode }) => {
     resolve: {
       alias: [
         {
+          find: '@/demo',
+          replacement: resolve(__dirname, './demo'),
+        },
+        {
           find: '@',
           replacement: resolve(__dirname, 'src'),
         },
       ],
     },
-    plugins: [vue()],
+    plugins: [vue(), svgLoader()],
   }
 
   if (mode == 'demo') {
-    return { ...baseConfig }
+    return {
+      root: './demo',
+      ...baseConfig,
+    }
   }
 
   return {

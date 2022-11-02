@@ -118,6 +118,7 @@ const featureFlags = [
   'access:scim',
   'access:selfServeOrgs',
   'access:auditLogs',
+  'access:retry',
 ] as const
 
 export type FeatureFlagString = typeof featureFlags[number]
@@ -158,4 +159,4 @@ export function getAppPermissions(
   }, {}) as Can
 }
 
-export const canKey: InjectionKey<Can> = Symbol()
+export const canKey: InjectionKey<Can> = Symbol('canInjectionKey')

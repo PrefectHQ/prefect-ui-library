@@ -1,17 +1,26 @@
 <template>
   <p-list-item-input v-model:selected="model" :value="value" class="state-list-item" :class="classes" disabled>
     <div class="state-list-item__content">
-      <div class="state-list-item__name">
-        <slot name="name" />
+      <div class="state-list-item__top-section">
+        <div class="state-list-item__name">
+          <slot name="name" />
+        </div>
+        <template v-if="$slots.tags || tags.length">
+          <div class="state-list-item__tags">
+            <slot name="tags">
+              <p-tag-wrapper class="task-run-list-item-input__tags" v-bind="{ tags, justify }" />
+            </slot>
+          </div>
+        </template>
       </div>
       <div class="state-list-item__meta">
         <slot name="meta" />
       </div>
-      <div class="state-list-item__tags">
-        <slot name="tags">
-          <p-tag-wrapper class="task-run-list-item-input__tags" v-bind="{ tags, justify }" />
-        </slot>
-      </div>
+      <template v-if="$slots.relationships">
+        <div class="state-list-item__relationships">
+          <slot name="relationships" />
+        </div>
+      </template>
     </div>
   </p-list-item-input>
 </template>
@@ -76,33 +85,29 @@
 }
 
 .state-list-item__content { @apply
-  grid
-  gap-x-4
-  gap-y-2
+  flex
+  flex-col
+  gap-2
+  items-start
 }
 
-.state-list-item__content {
-  grid-template-areas: 'name'
-                       'meta'
-                       'tags';
-}
-
-@screen sm {
-  .state-list-item__content {
-    grid-template-columns: min-content 1fr;
-    grid-template-areas: 'name tags'
-                         'meta meta';
-  }
+.state-list-item__top-section { @apply
+  flex
+  flex-col
+  w-full
+  gap-2
+  md:flex-row
+  md:gap-4
 }
 
 .state-list-item__name { @apply
- text-base
- text-slate-700
- shrink-0
- whitespace-nowrap
- grow-0
- text-ellipsis
- overflow-hidden
+  text-base
+  text-slate-700
+  shrink-0
+  whitespace-nowrap
+  grow-0
+  text-ellipsis
+  overflow-hidden
 }
 
 .state-list-item__meta { @apply
@@ -112,32 +117,28 @@
   gap-2
   whitespace-nowrap
   mr-1
-}
-
-@media screen and (min-width: 768px) {
-  .state-list-item__meta { @apply
-    items-center
-    flex-wrap
-    flex-row
-  }
+  md:flex-row
+  md:flex-wrap
+  md:items-center
 }
 
 .state-list-item__tags { @apply
-  place-self-end
   min-w-0
-  w-full
   grow
 }
 
-.state-list-item__name {
-  grid-area: name;
-}
-
-.state-list-item__meta {
-  grid-area: meta;
-}
-
-.state-list-item__tags {
-  grid-area: tags;
+.state-list-item__relationships { @apply
+  flex
+  flex-col
+  items-start
+  text-xs
+  font-medium
+  gap-2
+  whitespace-nowrap
+  mr-1
+  md:items-center
+  md:flex-wrap
+  md:flex-row
+  md:gap-4
 }
 </style>
