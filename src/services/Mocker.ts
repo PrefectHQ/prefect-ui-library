@@ -1,4 +1,5 @@
 import { mocks } from '@/mocks'
+import { repeat } from '@/utilities'
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type Mock = (...args: any[]) => any
@@ -32,9 +33,7 @@ export class Mocker<T extends Record<string, Mock>> {
   public createMany<K extends keyof T>(...[key, count, args]: CreateManyArguments<T, K>): MockReturns<T[K]>[] {
     const mock = this.mockerFunctions[key].bind(this, ...args ?? [])
 
-    return new Array(count)
-      .fill(null)
-      .map(() => mock())
+    return repeat(count, mock)
   }
 }
 

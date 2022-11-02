@@ -62,6 +62,10 @@ export function capitalize<T extends string>(value: T): Capitalize<T> {
   return `${firstLetterCapitalized}${rest}` as Capitalize<T>
 }
 
+export function uppercase<T extends string>(value: T): Uppercase<T> {
+  return value.toUpperCase() as Uppercase<T>
+}
+
 export function isEmptyString(value: unknown): value is string {
   return typeof value === 'string' && value.trim().length === 0
 }

@@ -4,7 +4,13 @@ import { BlockSchemaResponse } from '@/models/api/BlockSchemaResponse'
 import { BlockSchema } from '@/models/BlockSchema'
 import { BlockSchemaFilter } from '@/models/BlockSchemaFilter'
 
-export class WorkspaceBlockSchemasApi extends WorkspaceApi {
+export interface IWorkspaceBlockSchemasApi {
+  getBlockSchema: (blockSchemaId: string) => Promise<BlockSchema>,
+  getBlockSchemas: (filter: BlockSchemaFilter) => Promise<BlockSchema[]>,
+  getBlockSchemaForBlockType: (blockTypeId: string) => Promise<BlockSchema>,
+}
+
+export class WorkspaceBlockSchemasApi extends WorkspaceApi implements IWorkspaceBlockSchemasApi {
 
   protected override routePrefix = '/block_schemas'
 

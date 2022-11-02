@@ -13,7 +13,7 @@ export const randomBlockType: MockFunction<BlockType, [Partial<BlockType>?]> = f
     logoUrl: this.create('image'),
     documentationUrl: 'orion-docs.prefect.io',
     description: this.create('sentence'),
-    codeExample: this.create('sentence'),
+    codeExample: this.create('blockTypeSnippet'),
     ...overrides,
   })
 }

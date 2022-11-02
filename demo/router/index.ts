@@ -1,46 +1,16 @@
 
 import { RouteRecordRaw, createRouter, createWebHistory } from 'vue-router'
+import { sections } from '../sections'
+import { close } from './menu'
+import { convertSectionToRouteRecords } from './routeRecords'
 
-
-const routeRecords: RouteRecordRaw[] = [
+export const routeRecords: RouteRecordRaw[] = [
   {
+    name: 'home',
     path: '/',
-    redirect: '/components',
+    component: () => import('../sections/WelcomePage.vue'),
   },
-  {
-    path: '/components',
-    name: 'components',
-    component: () => import('../pages/Components.vue'),
-  },
-  {
-    path: '/charts',
-    name: 'charts',
-    component: () => import('../pages/Charts.vue'),
-  },
-  {
-    path: '/radar',
-    name: 'radar',
-    component: () => import('../pages/Radar.vue'),
-  },
-  {
-    path: '/forms',
-    name: 'forms',
-    component: () => import('../pages/Forms.vue'),
-  },
-  {
-    path: '/tables',
-    name: 'tables',
-    component: () => import('../pages/Tables.vue'),
-  },
-  {
-    path: '/advanced-inputs',
-    name: 'advanced-inputs',
-    component: () => import('../pages/AdvancedInputs.vue'),
-  },
-  {
-    path: '/:catchAll(.*)',
-    redirect: '/',
-  },
+  ...convertSectionToRouteRecords(sections),
 ]
 
 export const router = createRouter({
@@ -50,6 +20,17 @@ export const router = createRouter({
     if (savedPosition) {
       return savedPosition
     }
+
+    if (to.hash) {
+      return {
+        el: to.hash,
+        behavior: 'smooth',
+        top: +10,
+      }
+    }
+
     return { top: 0 }
   },
 })
+
+router.beforeEach(() => close())
