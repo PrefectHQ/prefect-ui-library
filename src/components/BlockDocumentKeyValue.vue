@@ -14,8 +14,8 @@
   import { PKeyValue } from '@prefecthq/prefect-design'
   import { useSubscription } from '@prefecthq/vue-compositions'
   import { computed } from 'vue'
+  import { useWorkspaceApi } from '@/compositions/useWorkspaceApi'
   import { blockRouteKey } from '@/router'
-  import { blockDocumentsApiKey } from '@/services'
   import { inject } from '@/utilities'
 
   const props = defineProps<{
@@ -23,7 +23,7 @@
   }>()
 
   const blockRoute = inject(blockRouteKey)
-  const blockDocumentsApi = inject(blockDocumentsApiKey)
-  const blockDocumentSubscription = useSubscription(blockDocumentsApi.getBlockDocument, [props.blockDocumentId])
+  const api = useWorkspaceApi()
+  const blockDocumentSubscription = useSubscription(api.blockDocuments.getBlockDocument, [props.blockDocumentId])
   const blockDocument = computed(() => blockDocumentSubscription.response)
 </script>

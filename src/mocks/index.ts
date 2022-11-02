@@ -8,12 +8,14 @@ import { randomBlockSchemaCapability } from './blockSchemaCapability'
 import { blockSchemasApiFactory } from './blockSchemasApi'
 import { randomBlockType } from './blockType'
 import { blockTypesApiFactory } from './blockTypesApi'
+import { randomBlockTypeSnippet } from './blockTypeSnippet'
 import { randomBoolean } from './boolean'
 import { randomCreatedOrUpdatedBy } from './createdOrUpdatedBy'
 import { randomDate, randomDateString } from './date'
 import { randomDeployment } from './deployment'
 import { randomEmail } from './email'
 import { randomFlow } from './flow'
+import { randomFlowResponse } from './flowResponse'
 import { randomFlowRun } from './flowRun'
 import { randomFlowRunGraph, randomGraphNode } from './flowRunGraph'
 import { randomFlowRunHistory } from './flowRunHistory'
@@ -89,4 +91,6 @@ export const mocks = {
   workQueueFilter: randomWorkQueueFilter,
   workQueueHealthPolicy: randomWorkQueueHealthPolicy,
   workQueueStatus: randomWorkQueueStatus,
+  flowResponse: randomFlowResponse,
+  blockTypeSnippet: randomBlockTypeSnippet,
 }

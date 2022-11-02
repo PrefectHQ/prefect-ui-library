@@ -9,8 +9,7 @@
 <script lang="ts" setup>
   import { useSubscription } from '@prefecthq/vue-compositions'
   import { computed } from 'vue'
-  import { blockCapabilitiesApiKey } from '@/services/BlockCapabilitiesApi'
-  import { inject } from '@/utilities'
+  import { useWorkspaceApi } from '@/compositions'
 
   const props = defineProps<{
     selected: string | null,
@@ -29,8 +28,8 @@
     },
   })
 
-  const blockCapabilitiesApi = inject(blockCapabilitiesApiKey)
-  const blockCapabilitiesSubscription = useSubscription(blockCapabilitiesApi.getBlockCapabilities)
+  const api = useWorkspaceApi()
+  const blockCapabilitiesSubscription = useSubscription(api.blockCapabilities.getBlockCapabilities)
   const blockCapabilities = computed(() => blockCapabilitiesSubscription.response ?? [])
   const blockCapabilitiesSorted = computed(() => blockCapabilities.value.slice().sort((alpha, beta) => alpha.localeCompare(beta)))
 

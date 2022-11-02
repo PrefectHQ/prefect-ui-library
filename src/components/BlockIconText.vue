@@ -10,8 +10,8 @@
   import { useSubscription } from '@prefecthq/vue-compositions'
   import { computed } from 'vue'
   import { RouterLink } from 'vue-router'
+  import { useWorkspaceApi } from '@/compositions'
   import { blockRouteKey } from '@/router/routes'
-  import { blockDocumentsApiKey } from '@/services/BlockDocumentsApi'
   import { inject } from '@/utilities/inject'
 
   const props = defineProps<{
@@ -20,7 +20,7 @@
 
   const blockRoute = inject(blockRouteKey)
 
-  const blockDocumentsApi = inject(blockDocumentsApiKey)
-  const blockSubscription = useSubscription(blockDocumentsApi.getBlockDocument, [props.blockDocumentId])
+  const api = useWorkspaceApi()
+  const blockSubscription = useSubscription(api.blockDocuments.getBlockDocument, [props.blockDocumentId])
   const blockName = computed(() => blockSubscription.response?.name)
 </script>

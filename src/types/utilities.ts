@@ -26,3 +26,5 @@ export type NumberRange<
     ? [...Result, M]
     : NumberRange<N, M, [...Result, Result['length']]>
   )
+
+export type MaybeArray<T> = T | T[]
