@@ -82,10 +82,10 @@
     {
       label: 'Name',
       property: 'name',
+      width: '300px',
     },
     {
       label: 'Capabilities',
-      width: '300px',
       visible: media.md,
     },
     {
