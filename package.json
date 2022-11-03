@@ -13,7 +13,10 @@
         "lint": "eslint src",
         "lint:fix": "eslint src --fix",
         "serve": "vite --mode=demo --host",
-        "changelog": "auto-changelog --package --commit-limit 0"
+        "changelog": "auto-changelog --package --commit-limit 0",
+        "release:patch": "npm version patch && auto-changelog --package --commit-limit 0 && git add -A && git commit -m 'Update CHANGELOG.md'",
+        "release:minor": "npm version minor && auto-changelog --package --commit-limit 0 && git add -A && git commit -m 'Update CHANGELOG.md'",
+        "release:major": "npm version major && auto-changelog --package --commit-limit 0 && git add -A && git commit -m 'Update CHANGELOG.md'"
     },
     "main": "./dist/orion-design.umd.js",
     "module": "./dist/orion-design.es.js",
