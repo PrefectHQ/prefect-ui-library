@@ -1,8 +1,10 @@
 <template>
-  <template v-if="tasksCount.response">
+  <template v-if="tasksCount">
     <div class="flow-run-task-count">
       <p-icon-text icon="Task">
-        {{ tasksCount.response }} task {{ toPluralString('run', tasksCount.response) }}
+        <slot v-bind="{ tasksCount }">
+          {{ tasksCount }}
+        </slot>
       </p-icon-text>
     </div>
   </template>
@@ -13,7 +15,6 @@
   import { computed } from 'vue'
   import { useWorkspaceApi } from '@/compositions'
   import { FlowRun } from '@/models/FlowRun'
-  import { toPluralString } from '@/utilities'
 
   const props = defineProps<{
     flowRun: FlowRun,
@@ -40,5 +41,6 @@
     ]
   })
 
-  const tasksCount = useSubscriptionWithDependencies(api.taskRuns.getTaskRunsCount, tasksCountFilter)
+  const tasksCountSubscription = useSubscriptionWithDependencies(api.taskRuns.getTaskRunsCount, tasksCountFilter)
+  const tasksCount = computed(()=>tasksCountSubscription.response)
 </script>

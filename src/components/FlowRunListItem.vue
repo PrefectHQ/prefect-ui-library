@@ -16,7 +16,11 @@
         <FlowRunStartTime :flow-run="flowRun" />
         <DurationIconText :duration="flowRun.duration" />
         <template v-if="visible">
-          <FlowRunTaskCount :flow-run="flowRun" />
+          <FlowRunTaskCount :flow-run="flowRun">
+            <template #default="{ tasksCount }">
+              {{ tasksCount }} task {{ toPluralString('run', tasksCount) }}
+            </template>
+          </FlowRunTaskCount>
         </template>
       </template>
       <template v-if="flowRun.deploymentId || flowRun.workQueueName" #relationships>
@@ -49,7 +53,7 @@
   import StateListItem from '@/components/StateListItem.vue'
   import { FlowRun } from '@/models/FlowRun'
   import { flowRunRouteKey } from '@/router'
-  import { inject } from '@/utilities'
+  import { inject, toPluralString } from '@/utilities'
 
   const props = defineProps<{
     selected: CheckboxModel | null,

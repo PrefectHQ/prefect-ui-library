@@ -5,7 +5,7 @@
       {{ flowRun.delta }}
     </template>
     <template v-else-if="flowRun.expectedStartTime">
-      Scheduled for <span class="flow-run-list-item-date__expected">{{ formatDateTimeNumeric(flowRun.expectedStartTime) }}</span>
+      Scheduled for {{ formatDateTimeNumeric(flowRun.expectedStartTime) }}
       {{ flowRun.delta }}
     </template>
     <template v-else>
@@ -22,9 +22,3 @@
     flowRun: FlowRun,
   }>()
 </script>
-
-<style>
-.flow-run-list-item-date__expected { @apply
-  font-bold
-}
-</style>
