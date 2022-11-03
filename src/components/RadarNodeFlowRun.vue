@@ -46,20 +46,20 @@
   import ORadarNode from './RadarNode.vue'
   import StateBadge from './StateBadge.vue'
   import FlowRunStartTime from '@/components/FlowRunStartTime.vue'
+  import { useWorkspaceApi } from '@/compositions'
   import { FlowRun, GraphNode } from '@/models'
-  import { flowRunsApiKey } from '@/services'
-  import { inject } from '@/utilities/inject'
 
   const props = defineProps<{
     graphNode: GraphNode,
   }>()
 
+  const api = useWorkspaceApi()
+
   const flowRunId = computed(() => {
     return props.graphNode.id
   })
 
-  const flowRunsApi = inject(flowRunsApiKey)
-  const subscription = useSubscription(flowRunsApi.getFlowRun, [flowRunId])
+  const subscription = useSubscription(api.flowRuns.getFlowRun, [flowRunId])
 
   const flowRun = computed<FlowRun | undefined>(() => {
     return subscription.response
@@ -81,40 +81,34 @@
 </script>
 
 <style>
-.radar-node-flow-run {
-  @apply
+.radar-node-flow-run { @apply
   w-[24rem]
   min-h-[160px]
 }
 
-.radar-node-flow-run__content {
-  @apply
+.radar-node-flow-run__content { @apply
   flex
   flex-col
   gap-2
 }
 
-.radar-node-flow-run__header {
-  @apply
+.radar-node-flow-run__header { @apply
   overflow-hidden
   overflow-ellipsis
   whitespace-nowrap
   max-w-[90%]
 }
 
-.radar-node-flow-run__footer-leading {
-  @apply
+.radar-node-flow-run__footer-leading { @apply
   flex
   gap-2
 }
 
-.radar-node-flow-run__footer-leading > * {
-  @apply
+.radar-node-flow-run__footer-leading > * { @apply
   w-max
 }
 
-.radar-node-flow-run__aside {
-  @apply
+.radar-node-flow-run__aside { @apply
   flex
   items-center
   h-full
@@ -124,8 +118,7 @@
   rounded-bl
 }
 
-.radar-node-flow-run__collapsed-badge {
-  @apply
+.radar-node-flow-run__collapsed-badge { @apply
   text-xs
   text-white
   bg-slate-600

@@ -29,21 +29,20 @@
   import FlowRunsSort from './FlowRunsSort.vue'
   import SearchInput from './SearchInput.vue'
   import StateSelect from './StateSelect.vue'
+  import { useWorkspaceApi } from '@/compositions'
   import { usePaginatedSubscription } from '@/compositions/usePaginatedSubscription'
   import { FlowRun } from '@/models/FlowRun'
   import { StateType } from '@/models/StateType'
   import { TaskRun } from '@/models/TaskRun'
-  import { flowRunsApiKey } from '@/services/FlowRunsApi'
   import { mapper } from '@/services/Mapper'
-  import { taskRunsApiKey } from '@/services/TaskRunsApi'
   import { FlowRunSortValues } from '@/types/SortOptionTypes'
   import { UnionFilters } from '@/types/UnionFilters'
-  import { inject } from '@/utilities/inject'
 
   const props = defineProps<{
     flowRunId: string,
   }>()
 
+  const api = useWorkspaceApi()
   const state = ref<StateType[]>([])
   const searchTerm = ref('')
   const searchTermDebounced = useDebouncedRef(searchTerm, 1200)
@@ -79,8 +78,7 @@
     return runFilter
   })
 
-  const taskRunsApi = inject(taskRunsApiKey)
-  const subFlowRunTaskRunSubscription = usePaginatedSubscription(taskRunsApi.getTaskRuns, [subFlowRunTaskRunFilter])
+  const subFlowRunTaskRunSubscription = usePaginatedSubscription(api.taskRuns.getTaskRuns, [subFlowRunTaskRunFilter])
   const subFlowRunTaskRuns = computed(()=> subFlowRunTaskRunSubscription.response ?? [])
   const subFlowRunIds = computed(() => subFlowRunTaskRuns.value.map((run: TaskRun) => run.state!.stateDetails!.childFlowRunId!))
 
@@ -96,8 +94,7 @@
     return subFlowFilter
   })
 
-  const flowRunsApi = inject(flowRunsApiKey)
-  const flowRunsSubscription = usePaginatedSubscription(flowRunsApi.getFlowRuns, [subFlowRunsFilter])
+  const flowRunsSubscription = usePaginatedSubscription(api.flowRuns.getFlowRuns, [subFlowRunsFilter])
 
   const flowRuns = computed<FlowRun[]>(() => flowRunsSubscription.response ?? [])
   const empty = computed(() => !flowRunsSubscription.loading && flowRuns.value.length === 0)

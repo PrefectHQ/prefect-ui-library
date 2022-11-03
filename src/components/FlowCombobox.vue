@@ -10,8 +10,7 @@
   import { PCombobox, SelectOption } from '@prefecthq/prefect-design'
   import { useSubscription } from '@prefecthq/vue-compositions'
   import { computed } from 'vue'
-  import { flowsApiKey } from '@/services/FlowsApi'
-  import { inject } from '@/utilities/inject'
+  import { useWorkspaceApi } from '@/compositions'
 
   const props = defineProps<{
     selected: string | string[] | null | undefined,
@@ -39,8 +38,8 @@
     },
   })
 
-  const flowsApi = inject(flowsApiKey)
-  const flowsSubscription = useSubscription(flowsApi.getFlows, [{}])
+  const api = useWorkspaceApi()
+  const flowsSubscription = useSubscription(api.flows.getFlows, [{}])
   const flows = computed(() => flowsSubscription.response ?? [])
   const options = computed<SelectOption[]>(() => flows.value.map(flow => ({
     value: flow.id,

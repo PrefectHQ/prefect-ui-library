@@ -27,11 +27,11 @@
   import { useSubscription } from '@prefecthq/vue-compositions'
   import { computed } from 'vue'
   import { StateBadge, PageHeading, DurationIconText, CopyOverflowMenuItem, ConfirmDeleteModal } from '@/components'
+  import { useWorkspaceApi } from '@/compositions'
   import { useCan } from '@/compositions/useCan'
   import { useShowModal } from '@/compositions/useShowModal'
   import { TaskRun } from '@/models'
   import { flowRunRouteKey } from '@/router'
-  import { flowRunsApiKey, taskRunsApiKey } from '@/services'
   import { deleteItem, inject } from '@/utilities'
 
   const props = defineProps<{
@@ -40,11 +40,10 @@
   const { showModal, open } = useShowModal()
 
   const can = useCan()
-  const taskRunsApi = inject(taskRunsApiKey)
-  const flowRunsApi = inject(flowRunsApiKey)
+  const api = useWorkspaceApi()
   const flowRunRoute = inject(flowRunRouteKey)
 
-  const flowRunSubscription = useSubscription(flowRunsApi.getFlowRun, [props.taskRun.flowRunId])
+  const flowRunSubscription = useSubscription(api.flowRuns.getFlowRun, [props.taskRun.flowRunId])
   const flowRunName = computed(() => flowRunSubscription.response?.name)
 
   const crumbs = computed(() => [
@@ -55,7 +54,7 @@
   const emit = defineEmits(['delete'])
 
   const deleteTaskRun = async (id: string): Promise<void> => {
-    await deleteItem(id, taskRunsApi.deleteTaskRun, 'Task run')
+    await deleteItem(id, api.taskRuns.deleteTaskRun, 'Task run')
     emit('delete', id)
   }
 </script>

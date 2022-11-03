@@ -10,8 +10,7 @@
   import { PCombobox, SelectOption } from '@prefecthq/prefect-design'
   import { useSubscription } from '@prefecthq/vue-compositions'
   import { computed } from 'vue'
-  import { workQueuesApiKey } from '@/services/WorkQueuesApi'
-  import { inject } from '@/utilities/inject'
+  import { useWorkspaceApi } from '@/compositions'
 
   const props = defineProps<{
     selected: string | string[] | null | undefined,
@@ -39,8 +38,8 @@
     },
   })
 
-  const workQueuesApi = inject(workQueuesApiKey)
-  const workQueuesSubscription = useSubscription(workQueuesApi.getWorkQueues, [{}])
+  const api = useWorkspaceApi()
+  const workQueuesSubscription = useSubscription(api.workQueues.getWorkQueues, [{}])
   const workQueues = computed(() => workQueuesSubscription.response ?? [])
   const options = computed<SelectOption[]>(() => workQueues.value.map(workQueue => ({
     // Any consumers of the work queue should subscribe to it by name and not id

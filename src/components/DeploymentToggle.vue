@@ -5,11 +5,10 @@
 <script lang="ts" setup>
   import { PToggle, showToast } from '@prefecthq/prefect-design'
   import { computed, ref } from 'vue'
+  import { useWorkspaceApi } from '@/compositions'
   import { useCan } from '@/compositions/useCan'
   import { localization } from '@/localization'
   import { Deployment } from '@/models'
-  import { deploymentsApiKey } from '@/services/DeploymentsApi'
-  import { inject } from '@/utilities'
 
   const props = defineProps<{
     deployment: Deployment,
@@ -19,7 +18,7 @@
     (event: 'update'): void,
   }>()
 
-  const deploymentsApi = inject(deploymentsApiKey)
+  const api = useWorkspaceApi()
   const can = useCan()
 
   const internalValue = computed({
@@ -38,11 +37,11 @@
 
     try {
       if (value) {
-        await deploymentsApi.resumeDeployment(props.deployment.id)
+        await api.deployments.resumeDeployment(props.deployment.id)
 
         showToast(localization.success.activateDeployment, 'success')
       } else {
-        await deploymentsApi.pauseDeployment(props.deployment.id)
+        await api.deployments.pauseDeployment(props.deployment.id)
 
         showToast(localization.success.pauseDeployment, 'success')
       }
