@@ -53,9 +53,8 @@
   import RadarNodePlaceholder from '@/components/RadarNodePlaceholder.vue'
   import RadarNodeSubFlowRun from '@/components/RadarNodeSubFlowRun.vue'
   import RadarNodeTaskRun from '@/components/RadarNodeTaskRun.vue'
+  import { useWorkspaceApi } from '@/compositions'
   import { GraphNode } from '@/models'
-  import { flowRunsApiKey } from '@/services'
-  import { inject } from '@/utilities/inject'
 
   const radarNodeComponents = {
     default: RadarNodeTaskRun,
@@ -70,13 +69,14 @@
     flowRunId: string,
   }>()
 
+  const api = useWorkspaceApi()
+
   const flowRunId = computed(() => {
     return props.flowRunId
   })
 
-  const flowRunsApi = inject(flowRunsApiKey)
-  const graphSubscription = useSubscription(flowRunsApi.getFlowRunsGraph, [flowRunId])
-  const flowRunSubscription = useSubscription(flowRunsApi.getFlowRun, [flowRunId])
+  const graphSubscription = useSubscription(api.flowRuns.getFlowRunsGraph, [flowRunId])
+  const flowRunSubscription = useSubscription(api.flowRuns.getFlowRun, [flowRunId])
 
   const flowRunGraphNode = computed(() => {
     if (!flowRunSubscription.response) {

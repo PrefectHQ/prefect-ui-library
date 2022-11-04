@@ -14,14 +14,12 @@
   import { useSubscription } from '@prefecthq/vue-compositions'
   import { computed } from 'vue'
   import SavedFiltersMenu from '@/components/SavedFiltersMenu.vue'
-  import { useFlowRunFilterFromRoute } from '@/compositions'
+  import { useFlowRunFilterFromRoute, useWorkspaceApi } from '@/compositions'
   import { SavedSearch, SavedSearchFilter } from '@/models/SavedSearch'
   import { mapper } from '@/services'
-  import { workspaceApiKey } from '@/utilities'
-  import { inject } from '@/utilities/inject'
   import { customSavedSearch, isSameFilter } from '@/utilities/savedFilters'
 
-  const api = inject(workspaceApiKey)
+  const api = useWorkspaceApi()
 
   const { states, flows, deployments, tags, setFilters } = useFlowRunFilterFromRoute()
   const savedSearchesSubscription = useSubscription(api.savedSearches.getSavedSearches)

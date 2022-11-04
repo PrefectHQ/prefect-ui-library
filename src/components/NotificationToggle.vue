@@ -5,11 +5,10 @@
 <script lang="ts" setup>
   import { PToggle, showToast } from '@prefecthq/prefect-design'
   import { computed, ref } from 'vue'
+  import { useWorkspaceApi } from '@/compositions'
   import { useCan } from '@/compositions/useCan'
   import { localization } from '@/localization'
   import { Notification } from '@/models'
-  import { notificationsApiKey } from '@/services/NotificationsApi'
-  import { inject } from '@/utilities'
 
   const props = defineProps<{
     notification: Notification,
@@ -20,7 +19,7 @@
   }>()
 
   const can = useCan()
-  const notificationsApi = inject(notificationsApiKey)
+  const api = useWorkspaceApi()
 
   const internalValue = computed({
     get() {
@@ -38,7 +37,7 @@
 
     try {
       const notification = { isActive: value }
-      await notificationsApi.updateNotification(props.notification.id, notification)
+      await api.notifications.updateNotification(props.notification.id, notification)
       const message = value ? localization.success.activateNotification : localization.success.pauseNotification
 
       showToast(message, 'success')

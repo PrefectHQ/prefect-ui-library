@@ -25,11 +25,11 @@
 <script lang="ts" setup>
   import ConfirmDeleteModal from '@/components/ConfirmDeleteModal.vue'
   import CopyOverflowMenuItem from '@/components/CopyOverflowMenuItem.vue'
+  import { useWorkspaceApi } from '@/compositions'
   import { useCan } from '@/compositions/useCan'
   import { useShowModal } from '@/compositions/useShowModal'
   import { Flow } from '@/models'
-  import { flowsApiKey } from '@/services/FlowsApi'
-  import { inject, deleteItem } from '@/utilities'
+  import { deleteItem } from '@/utilities'
 
   defineProps<{
     flow: Flow,
@@ -43,11 +43,11 @@
 
   const { showModal, open, close } = useShowModal()
 
-  const flowsApi = inject(flowsApiKey)
+  const api = useWorkspaceApi()
 
   const deleteFlow = async (id: string): Promise<void> => {
     close()
-    await deleteItem(id, flowsApi.deleteFlow, 'Flow')
+    await deleteItem(id, api.flows.deleteFlow, 'Flow')
     emits('delete', id)
   }
 </script>

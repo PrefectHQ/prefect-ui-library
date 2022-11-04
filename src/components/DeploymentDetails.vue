@@ -78,13 +78,12 @@
   import WorkQueueIconText from './WorkQueueIconText.vue'
   import BlockIconText from '@/components/BlockIconText.vue'
   import FlowIconText from '@/components/FlowIconText.vue'
+  import { useWorkspaceApi } from '@/compositions'
   import { useCan } from '@/compositions/useCan'
   import { localization } from '@/localization'
   import { Schedule } from '@/models'
   import { Deployment } from '@/models/Deployment'
-  import { deploymentsApiKey } from '@/services'
   import { formatDateTimeNumeric } from '@/utilities/dates'
-  import { inject } from '@/utilities/inject'
 
   const props = defineProps<{
     deployment: Deployment,
@@ -96,7 +95,7 @@
   }>()
 
   const can = useCan()
-  const deploymentsApi = inject(deploymentsApiKey)
+  const api = useWorkspaceApi()
   const updateScheduleLoading = ref(false)
 
   const internalSchedule = computed({
@@ -133,7 +132,7 @@
     updateScheduleLoading.value = true
 
     try {
-      await deploymentsApi.updateDeployment(props.deployment.id, { schedule })
+      await api.deployments.updateDeployment(props.deployment.id, { schedule })
 
       emit('update')
       showToast(successMessage, 'success')

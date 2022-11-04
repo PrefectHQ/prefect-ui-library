@@ -31,11 +31,11 @@
 <script lang="ts" setup>
   import ConfirmDeleteModal from '@/components/ConfirmDeleteModal.vue'
   import CopyOverflowMenuItem from '@/components/CopyOverflowMenuItem.vue'
+  import { useWorkspaceApi } from '@/compositions'
   import { useCan } from '@/compositions/useCan'
   import { useShowModal } from '@/compositions/useShowModal'
   import { Deployment } from '@/models'
   import { editDeploymentRouteKey } from '@/router'
-  import { deploymentsApiKey } from '@/services/DeploymentsApi'
   import { inject, deleteItem } from '@/utilities'
 
   defineProps<{
@@ -50,12 +50,12 @@
 
   const { showModal, open, close } = useShowModal()
 
-  const deploymentsApi = inject(deploymentsApiKey)
+  const api = useWorkspaceApi()
   const editDeploymentRoute = inject(editDeploymentRouteKey)
 
   const deleteDeployment = async (id: string): Promise<void> => {
     close()
-    await deleteItem(id, deploymentsApi.deleteDeployment, 'Deployment')
+    await deleteItem(id, api.deployments.deleteDeployment, 'Deployment')
     emits('delete', id)
   }
 </script>
