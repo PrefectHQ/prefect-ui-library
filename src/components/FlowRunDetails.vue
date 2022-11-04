@@ -22,12 +22,7 @@
 
     <p-key-value label="Task Runs" :alternate="alternate">
       <template #value>
-        <FlowRunTaskCount :flow-run="flowRun">
-          <template #default="{ tasksCount }">
-            <span v-if="tasksCount"> {{ tasksCount }}</span>
-            <span v-else>gggg</span>
-          </template>
-        </FlowRunTaskCount>
+        <FlowRunTaskCount :flow-run="flowRun" />
       </template>
     </p-key-value>
 
