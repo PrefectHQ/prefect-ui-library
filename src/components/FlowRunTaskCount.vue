@@ -45,8 +45,5 @@
   })
 
   const tasksCountSubscription = useSubscriptionWithDependencies(api.taskRuns.getTaskRunsCount, tasksCountFilter)
-  const tasksCount = computed(() => {
-    console.log(tasksCountSubscription)
-    return tasksCountSubscription.response ?? 0
-  })
+  const tasksCount = computed(() => tasksCountSubscription.response)
 </script>
