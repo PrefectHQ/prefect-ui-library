@@ -1,8 +1,36 @@
 <template>
   <div class="flow-run-details">
-    <p-key-value label="Flow Run ID" :value="flowRun.id" :alternate="alternate" />
+    <StateBadge :state="flowRun.state" />
 
-    <p-key-value label="Flow ID" :value="flowRun.flowId" :alternate="alternate" />
+    <p-key-value label="Flow" :alternate="alternate">
+      <template #value>
+        <FlowIconText :flow-id="flowRun.flowId" />
+      </template>
+    </p-key-value>
+
+    <p-key-value label="Start Time" :alternate="alternate">
+      <template #value>
+        <FlowRunStartTime :flow-run="flowRun" />
+      </template>
+    </p-key-value>
+
+    <p-key-value label="Duration" :alternate="alternate">
+      <template #value>
+        <DurationIconText :duration="flowRun.duration" />
+      </template>
+    </p-key-value>
+
+    <p-key-value label="Task Runs" :alternate="alternate">
+      <template #value>
+        <FlowRunTaskCount :flow-run="flowRun" />
+      </template>
+    </p-key-value>
+
+    <p-key-value label="Deployment" :alternate="alternate">
+      <template #value>
+        <DeploymentIconText v-if="flowRun.deploymentId" :deployment-id="flowRun.deploymentId" />
+      </template>
+    </p-key-value>
 
     <template v-if="can.read.work_queue && flowRun.workQueueName">
       <p-key-value label="Work Queue" :alternate="alternate">
@@ -15,9 +43,13 @@
       </p-key-value>
     </template>
 
-    <template v-if="can.read.deployment && flowRun.deploymentId">
-      <p-key-value label="Deployment ID" :value="flowRun.deploymentId" :alternate="alternate" />
-    </template>
+    <p-divider />
+
+    <router-link :to="radarRoute(flowRun.id)" class="flow-run__small-radar-link">
+      <RadarSmall :flow-run-id="flowRun.id" class="flow-run__small-radar" />
+    </router-link>
+
+    <p-divider />
 
     <p-key-value label="Created" :value="formatDateTimeNumeric(flowRun.created)" :alternate="alternate" />
 
@@ -25,15 +57,23 @@
       <p-key-value label="Created By" :value="flowRun.createdBy.displayValue" :alternate="alternate" />
     </template>
 
-    <p-key-value label="Updated" :value="formatDateTimeNumeric(flowRun.updated)" :alternate="alternate" />
+    <p-key-value label="Last Updated" :value="formatDateTimeNumeric(flowRun.updated)" :alternate="alternate" />
+
+    <p-key-value label="Flow Run ID" :value="flowRun.id" :alternate="alternate" />
+
+    <p-key-value label="Flow ID" :value="flowRun.flowId" :alternate="alternate" />
 
     <p-key-value label="Flow Version" :value="flowRun.flowVersion" :alternate="alternate" />
+
+    <p-key-value label="Run Count" :value="flowRun.runCount ?? 0" :alternate="alternate" />
+
+    <template v-if="can.read.deployment && flowRun.deploymentId">
+      <p-key-value label="Deployment ID" :value="flowRun.deploymentId" :alternate="alternate" />
+    </template>
 
     <template v-if="flowRun.idempotencyKey">
       <p-key-value label="Idempotency Key" :value="flowRun.idempotencyKey" :alternate="alternate" />
     </template>
-
-    <p-key-value label="Run Count" :value="flowRun.runCount ?? 0" :alternate="alternate" />
 
     <p-key-value label="Tags" :alternate="alternate">
       <template v-if="flowRun.tags?.length" #value>
@@ -45,10 +85,19 @@
 
 <script lang="ts" setup>
   import { PKeyValue, PTags } from '@prefecthq/prefect-design'
+  import DeploymentIconText from './DeploymentIconText.vue'
+  import DurationIconText from './DurationIconText.vue'
+  import FlowIconText from './FlowIconText.vue'
+  import FlowRunStartTime from './FlowRunStartTime.vue'
+  import FlowRunTaskCount from './FlowRunTaskCount.vue'
+  import RadarSmall from './RadarSmall.vue'
+  import StateBadge from './StateBadge.vue'
   import WorkQueueStatusIcon from './WorkQueueStatusIcon.vue'
   import WorkQueueIconText from '@/components/WorkQueueIconText.vue'
   import { useCan } from '@/compositions/useCan'
   import { FlowRun } from '@/models/FlowRun'
+  import { radarRouteKey } from '@/router'
+  import { inject } from '@/utilities'
   import { formatDateTimeNumeric } from '@/utilities/dates'
 
   defineProps<{
@@ -57,13 +106,15 @@
   }>()
 
   const can = useCan()
+
+  const radarRoute = inject(radarRouteKey)
 </script>
 
 <style>
   .flow-run-details { @apply
     flex
     flex-col
-    gap-2
+    gap-3
     items-start
   }
 
@@ -77,4 +128,14 @@
     mb-1
     mr-1
   }
+
+  .flow-run-details__small-radar { @apply
+  h-[250px]
+  w-[250px]
+}
+
+.flow-run-details__small-radar-link { @apply
+  cursor-pointer
+  inline-block
+}
 </style>
