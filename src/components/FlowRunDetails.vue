@@ -52,10 +52,9 @@
 </template>
 
 <script lang="ts" setup>
-  import { watch } from 'fs'
   import { PKeyValue, PTags } from '@prefecthq/prefect-design'
   import { useSubscriptionWithDependencies } from '@prefecthq/vue-compositions'
-  import { ref, computed, Ref } from 'vue'
+  import { computed } from 'vue'
   import WorkQueueStatusIcon from './WorkQueueStatusIcon.vue'
   import { FlowRunIconText } from '.'
   import  WorkQueueIconText  from '@/components/WorkQueueIconText.vue'
@@ -72,9 +71,6 @@
   }>()
 
   const can = useCan()
-  const parentFlowRunId = ref('')
-
-
   const flowRunFilter = computed<Parameters<typeof api.flowRuns.getFlowRuns> | null>(() => {
     if (props.flowRun.parentTaskRunId) {
       return [
@@ -91,7 +87,7 @@
   })
 
   const parentFlowRunList = useSubscriptionWithDependencies(api.flowRuns.getFlowRuns, flowRunFilter)
-  console.log('run list', parentFlowRunList)
+  const parentFlowRunId = computed(()=> parentFlowRunList.response ? parentFlowRunList.response[0].id : null)
 </script>
 
 <style>
