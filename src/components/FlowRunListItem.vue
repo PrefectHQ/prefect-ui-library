@@ -23,7 +23,7 @@
           </FlowRunTaskCount>
         </template>
       </template>
-      <template v-if="flowRun.deploymentId || flowRun.workQueueName" #relationships>
+      <template v-if="visible && (flowRun.deploymentId || flowRun.workQueueName)" #relationships>
         <template v-if="flowRun.deploymentId">
           <div class="flow-run-list-item__relation">
             <span>Deployment</span> <DeploymentIconText :deployment-id="flowRun.deploymentId" />

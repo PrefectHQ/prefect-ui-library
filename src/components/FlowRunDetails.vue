@@ -32,10 +32,13 @@
       </template>
     </p-key-value>
 
-    <template v-if="can.read.work_queue">
-      <p-key-value v-if="flowRun.workQueueName" label="Work Queue" :alternate="alternate">
+    <template v-if="can.read.work_queue && flowRun.workQueueName">
+      <p-key-value label="Work Queue" :alternate="alternate">
         <template #value>
-          <WorkQueueIconText :work-queue-name="flowRun.workQueueName" />
+          <div class="flow-run-details__work-queue-value">
+            <WorkQueueIconText :work-queue-name="flowRun.workQueueName" />
+            <WorkQueueStatusIcon :work-queue-name="flowRun.workQueueName" />
+          </div>
         </template>
       </p-key-value>
     </template>
@@ -89,7 +92,8 @@
   import FlowRunTaskCount from './FlowRunTaskCount.vue'
   import RadarSmall from './RadarSmall.vue'
   import StateBadge from './StateBadge.vue'
-  import  WorkQueueIconText  from '@/components/WorkQueueIconText.vue'
+  import WorkQueueStatusIcon from './WorkQueueStatusIcon.vue'
+  import WorkQueueIconText from '@/components/WorkQueueIconText.vue'
   import { useCan } from '@/compositions/useCan'
   import { FlowRun } from '@/models/FlowRun'
   import { radarRouteKey } from '@/router'
@@ -107,16 +111,20 @@
 </script>
 
 <style>
-  .flow-run-details {
-    @apply
+  .flow-run-details { @apply
     flex
     flex-col
     gap-3
     items-start
   }
 
-  .flow-run-details__tags {
-    @apply
+  .flow-run-details__work-queue-value { @apply
+    flex
+    items-center
+    gap-1
+  }
+
+  .flow-run-details__tags { @apply
     mb-1
     mr-1
   }
