@@ -15,7 +15,7 @@
       </p-key-value>
     </template>
 
-    <template v-if="flowRun.parentTaskRunId">
+    <template v-if="parentFlowRunId">
       <p-key-value label="Parent Flow Run" :alternate="alternate">
         <template #value>
           <FlowRunIconText :flow-run-id="parentFlowRunId" />
@@ -52,15 +52,16 @@
 </template>
 
 <script lang="ts" setup>
+  import { watch } from 'fs'
   import { PKeyValue, PTags } from '@prefecthq/prefect-design'
-  import { ref } from 'vue'
+  import { useSubscriptionWithDependencies } from '@prefecthq/vue-compositions'
+  import { ref, computed, Ref } from 'vue'
   import WorkQueueStatusIcon from './WorkQueueStatusIcon.vue'
   import { FlowRunIconText } from '.'
   import  WorkQueueIconText  from '@/components/WorkQueueIconText.vue'
   import { useWorkspaceApi } from '@/compositions'
   import { useCan } from '@/compositions/useCan'
   import { FlowRun } from '@/models/FlowRun'
-  import { FlowRunFilter } from '@/types'
   import { formatDateTimeNumeric } from '@/utilities/dates'
 
   const api = useWorkspaceApi()
@@ -73,17 +74,24 @@
   const can = useCan()
   const parentFlowRunId = ref('')
 
-  if (props.flowRun.parentTaskRunId) {
-    const flowRunFilter: FlowRunFilter = {
-      task_runs:{
-        id: {
-          any_: [props.flowRun.parentTaskRunId],
+
+  const flowRunFilter = computed<Parameters<typeof api.flowRuns.getFlowRuns> | null>(() => {
+    if (props.flowRun.parentTaskRunId) {
+      return [
+        {
+          task_runs: {
+            id: {
+              any_: [props.flowRun.parentTaskRunId],
+            },
+          },
         },
-      },
+      ]
     }
-    const parentFlowRunList: FlowRun[] = await api.flowRuns.getFlowRuns(flowRunFilter)
-    parentFlowRunId.value  = parentFlowRunList[0].id
-  }
+    return null
+  })
+
+  const parentFlowRunList = useSubscriptionWithDependencies(api.flowRuns.getFlowRuns, flowRunFilter)
+  console.log('run list', parentFlowRunList)
 </script>
 
 <style>
