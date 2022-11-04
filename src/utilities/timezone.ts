@@ -80,9 +80,6 @@ export function secondsFromEpoch(date?: Date | string): number {
   return value.getTime()
 }
 
-export const { secondsInMinute, minutesInHour } = dateFns
-export const hoursInDay = 24
-
 export const dateFunctions = new Proxy({ ...dateFns }, {
   get(target, prop, receiver) {
     const method = Reflect.get(target, prop, receiver)

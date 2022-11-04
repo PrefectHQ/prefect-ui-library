@@ -6,6 +6,9 @@ const dateTimeNumericFormat = 'yyyy/MM/dd hh:mm:ss a'
 const timeNumericFormat = 'hh:mm:ss a'
 const dateFormat = 'MMM do, yyyy'
 
+export { secondsInMinute, minutesInHour } from 'date-fns'
+export const hoursInDay = 24
+
 export function parseDate(value: string, reference: Date = new Date()): Date {
   return parse(value, dateFormat, reference)
 }

@@ -1,4 +1,4 @@
-import { secondsInMinute, minutesInHour, hoursInDay } from '@/utilities/timezone'
+import { secondsInMinute, minutesInHour, hoursInDay } from '@/utilities/dates'
 
 export type IntervalOption = 'Seconds' | 'Minutes' | 'Hours' | 'Days'
 

@@ -32,12 +32,10 @@
   })
 
   const adjustedMin = computed(() => {
-    console.log('from date-input min')
     return props.min ? assignTimezone(props.min) : null
   })
 
   const adjustedMax = computed(() => {
-    console.log('from date-input max')
     return props.max ? assignTimezone(props.max) : null
   })
 </script>
