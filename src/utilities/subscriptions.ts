@@ -1,14 +1,12 @@
 import { UseSubscription } from '@prefecthq/vue-compositions'
 import { InjectionKey } from 'vue'
-import { DeploymentsApi } from '@/services/DeploymentsApi'
-import { FlowsApi } from '@/services/FlowsApi'
-import { WorkQueuesApi } from '@/services/WorkQueuesApi'
+import { WorkspaceWorkQueuesApi, WorkspaceFlowsApi, WorkspaceDeploymentsApi } from '@/services'
 
 
-export type WorkQueueSubscription = UseSubscription<WorkQueuesApi['getWorkQueue']>
-export type WorkQueuesListSubscription = UseSubscription<WorkQueuesApi['getWorkQueues']>
-export type FlowsListSubscription = UseSubscription<FlowsApi['getFlows']>
-export type DeploymentsListSubscription = UseSubscription<DeploymentsApi['getDeployments']>
+export type WorkQueueSubscription = UseSubscription<WorkspaceWorkQueuesApi['getWorkQueue']>
+export type WorkQueuesListSubscription = UseSubscription<WorkspaceWorkQueuesApi['getWorkQueues']>
+export type FlowsListSubscription = UseSubscription<WorkspaceFlowsApi['getFlows']>
+export type DeploymentsListSubscription = UseSubscription<WorkspaceDeploymentsApi['getDeployments']>
 
 
 export const workQueueSubscriptionKey: InjectionKey<WorkQueueSubscription> = Symbol('workQueueSubscriptionKey')

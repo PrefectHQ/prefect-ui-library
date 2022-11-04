@@ -24,12 +24,11 @@
   import { useSubscription } from '@prefecthq/vue-compositions'
   import { useField } from 'vee-validate'
   import { computed } from 'vue'
+  import { useWorkspaceApi } from '@/compositions'
   import { useFlowRunFilterFromRoute } from '@/compositions/useFlowRunFilterFromRoute'
   import { useForm } from '@/compositions/useForm'
   import { localization } from '@/localization'
   import { SavedSearch } from '@/models/SavedSearch'
-  import { workspaceApiKey } from '@/utilities/api'
-  import { inject } from '@/utilities/inject'
   import { isRequired, withMessage, isValidIf } from '@/utilities/validation'
 
   const props = defineProps<{
@@ -54,7 +53,7 @@
     filterName: string,
   }>()
 
-  const api = inject(workspaceApiKey)
+  const api = useWorkspaceApi()
   const { flows, states, tags, deployments } = useFlowRunFilterFromRoute()
 
   const savedSearchesSubscription = useSubscription(api.savedSearches.getSavedSearches)

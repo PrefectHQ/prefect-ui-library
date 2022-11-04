@@ -12,9 +12,8 @@
   import { MiniRadarView, Radar, Item } from '@prefecthq/radar'
   import { useSubscription } from '@prefecthq/vue-compositions'
   import { reactive, computed } from 'vue'
+  import { useWorkspaceApi } from '@/compositions'
   import { GraphNode } from '@/models'
-  import { flowRunsApiKey } from '@/services'
-  import { inject } from '@/utilities/inject'
 
   const computedStyle = getComputedStyle(document.body)
 
@@ -22,9 +21,9 @@
     flowRunId: string,
   }>()
 
-  const flowRunsApi = inject(flowRunsApiKey)
-  const graphSubscription = useSubscription(flowRunsApi.getFlowRunsGraph, [props.flowRunId])
-  const flowRunSubscription = useSubscription(flowRunsApi.getFlowRun, [props.flowRunId])
+  const api = useWorkspaceApi()
+  const graphSubscription = useSubscription(api.flowRuns.getFlowRunsGraph, [props.flowRunId])
+  const flowRunSubscription = useSubscription(api.flowRuns.getFlowRun, [props.flowRunId])
 
   const flowRunGraphNode = computed(() => {
     if (!flowRunSubscription.response) {
@@ -65,8 +64,7 @@
 </script>
 
 <style>
-.radar-small {
-  @apply
+.radar-small { @apply
   w-full
   h-full
 }

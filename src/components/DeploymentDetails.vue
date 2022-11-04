@@ -33,7 +33,6 @@
       </template>
     </p-key-value>
 
-
     <p-key-value label="Created" :value="formatDateTimeNumeric(deployment.created)" :alternate="alternate" />
 
     <template v-if="deployment.createdBy">
@@ -48,13 +47,13 @@
 
     <p-divider />
 
-    <p-key-value label="Deployment ID" :value="deployment.id" :alternate="alternate" />
-
-    <p-key-value label="Deployment Version" :value="deployment.version" :alternate="alternate" />
-
     <template v-if="can.read.flow">
       <p-key-value label="Flow ID" :value="deployment.flowId" :alternate="alternate" />
     </template>
+
+    <p-key-value label="Deployment ID" :value="deployment.id" :alternate="alternate" />
+
+    <p-key-value label="Deployment Version" :value="deployment.version" :alternate="alternate" />
 
     <p-key-value label="Storage Document ID" :value="deployment.storageDocumentId" :alternate="alternate" />
 
@@ -79,13 +78,12 @@
   import WorkQueueIconText from './WorkQueueIconText.vue'
   import BlockIconText from '@/components/BlockIconText.vue'
   import FlowIconText from '@/components/FlowIconText.vue'
+  import { useWorkspaceApi } from '@/compositions'
   import { useCan } from '@/compositions/useCan'
   import { localization } from '@/localization'
   import { Schedule } from '@/models'
   import { Deployment } from '@/models/Deployment'
-  import { deploymentsApiKey } from '@/services'
   import { formatDateTimeNumeric } from '@/utilities/dates'
-  import { inject } from '@/utilities/inject'
 
   const props = defineProps<{
     deployment: Deployment,
@@ -97,7 +95,7 @@
   }>()
 
   const can = useCan()
-  const deploymentsApi = inject(deploymentsApiKey)
+  const api = useWorkspaceApi()
   const updateScheduleLoading = ref(false)
 
   const internalSchedule = computed({
@@ -134,7 +132,7 @@
     updateScheduleLoading.value = true
 
     try {
-      await deploymentsApi.updateDeployment(props.deployment.id, { schedule })
+      await api.deployments.updateDeployment(props.deployment.id, { schedule })
 
       emit('update')
       showToast(successMessage, 'success')

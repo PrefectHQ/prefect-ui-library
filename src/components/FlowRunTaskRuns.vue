@@ -28,14 +28,13 @@
   import StateSelect from './StateSelect.vue'
   import TaskRunList from './TaskRunList.vue'
   import TaskRunsSort from './TaskRunsSort.vue'
+  import { useWorkspaceApi } from '@/compositions'
   import { usePaginatedSubscription } from '@/compositions/usePaginatedSubscription'
   import { StateType } from '@/models/StateType'
   import { TaskRun } from '@/models/TaskRun'
   import { mapper } from '@/services/Mapper'
-  import { taskRunsApiKey } from '@/services/TaskRunsApi'
   import { TaskRunSortValues } from '@/types/SortOptionTypes'
   import { TaskRunFilter, UnionFilters } from '@/types/UnionFilters'
-  import { inject } from '@/utilities/inject'
 
   const props = defineProps<{
     flowRunId: string,
@@ -79,8 +78,8 @@
     return  { ...runFilter, task_runs: { ...taskRunsFilter } }
   })
 
-  const taskRunsApi = inject(taskRunsApiKey)
-  const taskRunsSubscription = usePaginatedSubscription(taskRunsApi.getTaskRuns, [filter], { interval: 30000 })
+  const api = useWorkspaceApi()
+  const taskRunsSubscription = usePaginatedSubscription(api.taskRuns.getTaskRuns, [filter], { interval: 30000 })
   const taskRuns = computed<TaskRun[]>(() => taskRunsSubscription.response ?? [])
   const empty = computed(() => taskRunsSubscription.executed && taskRuns.value.length === 0)
 

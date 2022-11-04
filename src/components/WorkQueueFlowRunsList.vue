@@ -18,16 +18,15 @@
   import { useSubscription } from '@prefecthq/vue-compositions'
   import { computed, watch } from 'vue'
   import FlowRunList from './FlowRunList.vue'
+  import { useWorkspaceApi } from '@/compositions'
   import { FlowRun, WorkQueue } from '@/models'
-  import { workQueuesApiKey } from '@/services'
-  import { inject } from '@/utilities/inject'
 
   const props = defineProps<{
     workQueue: WorkQueue,
   }>()
 
-  const workQueuesApi = inject(workQueuesApiKey)
-  const workQueueFlowRunsSubscription = useSubscription(workQueuesApi.getRuns, [props.workQueue.id])
+  const api = useWorkspaceApi()
+  const workQueueFlowRunsSubscription = useSubscription(api.workQueues.getRuns, [props.workQueue.id])
   const flowRuns = computed<FlowRun[]>(() => workQueueFlowRunsSubscription.response ?? [])
 
   const empty = computed(() => workQueueFlowRunsSubscription.executed && flowRuns.value.length === 0)

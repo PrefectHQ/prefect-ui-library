@@ -1,16 +1,15 @@
 <template>
   <template v-if="can.read.flow">
-    <router-link :to="flowRoute(flowId)" class="flow-icon-text">
+    <p-link :to="flowRoute(flowId)" class="flow-icon-text">
       <p-icon-text icon="Flow">
         <span>{{ flowName }}</span>
       </p-icon-text>
-    </router-link>
+    </p-link>
   </template>
 </template>
 
 <script lang="ts" setup>
   import { computed } from 'vue'
-  import { RouterLink } from 'vue-router'
   import { useFlow } from '@/compositions'
   import { useCan } from '@/compositions/useCan'
   import { flowRouteKey } from '@/router/routes'
