@@ -8,9 +8,6 @@
       </p-icon-text>
     </div>
   </template>
-  <template v-else>
-    None
-  </template>
 </template>
 
 <script lang="ts" setup>
