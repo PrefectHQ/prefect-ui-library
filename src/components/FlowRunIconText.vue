@@ -1,15 +1,14 @@
 <template>
-  <router-link :to="flowRoute(flowRunId)" class="flow-fun-icon-text">
+  <p-link :to="flowRoute(flowRunId)" class="flow-run-icon-text">
     <p-icon-text icon="FlowRun">
       <span>{{ flowRunName }}</span>
     </p-icon-text>
-  </router-link>
+  </p-link>
 </template>
 
 <script lang="ts" setup>
   import { useSubscription } from '@prefecthq/vue-compositions'
   import { computed } from 'vue'
-  import { RouterLink } from 'vue-router'
   import { useWorkspaceApi } from '@/compositions'
   import { flowRunRouteKey } from '@/router/routes'
   import { inject } from '@/utilities/inject'
