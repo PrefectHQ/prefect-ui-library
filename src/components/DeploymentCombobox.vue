@@ -8,10 +8,9 @@
 
 <script lang="ts" setup>
   import { PCombobox, SelectOption } from '@prefecthq/prefect-design'
-  import { useSubscription } from '@prefecthq/vue-compositions'
-  import { computed } from 'vue'
-  import { useWorkspaceApi } from '@/compositions'
-  import { inject } from '@/utilities/inject'
+  import { useSubscription, useIntersectionObserver } from '@prefecthq/vue-compositions'
+  import { computed, ref, onMounted } from 'vue'
+  import { useWorkspaceApi, useFlow } from '@/compositions'
 
   const props = defineProps<{
     selected: string | string[] | null | undefined,
@@ -42,8 +41,29 @@
   const api = useWorkspaceApi()
   const deploymentsSubscription = useSubscription(api.deployments.getDeployments, [{}])
   const deployments = computed(() => deploymentsSubscription.response ?? [])
-  const options = computed<SelectOption[]>(() => deployments.value.map(deployment => ({
+
+  const options = computed<SelectOption[]>(() => deployments.value.map((deployment: any) => ({
     value: deployment.id,
-    label: deployment.name,
+    label: `${useFlow(deployment.flowId).value?.name} > ${deployment.name}`,
   })))
+
+  // const visible = ref(false)
+  // const el = document.querySelectorAll('[role="listbox"]')
+
+
+  // function intersect(entries: IntersectionObserverEntry[]): void {
+  //   entries.forEach(entry => {
+  //     if (entry.isIntersecting) {
+  //       visible.value = true
+  //       disconnect()
+  //     }
+  //   })
+  // }
+
+  // const { observe, disconnect } = useIntersectionObserver(intersect)
+
+  onMounted(() => {
+    // observe(el)
+    // console.log(el.value?.children)
+  })
 </script>
