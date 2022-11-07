@@ -8,7 +8,7 @@
         <template v-if="$slots.tags || tags.length">
           <div class="state-list-item__tags">
             <slot name="tags">
-              <p-tag-wrapper class="task-run-list-item-input__tags" v-bind="{ tags, justify }" />
+              <p-tag-wrapper v-bind="{ tags, justify }" />
             </slot>
           </div>
         </template>
