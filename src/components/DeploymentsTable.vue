@@ -28,15 +28,7 @@
       </template>
 
       <template #applied-by="{ row }">
-        <template v-if="row.updatedBy">
-          {{ row.updatedBy.displayValue }}
-        </template>
-        <template v-else-if="row.createdBy">
-          {{ row.createdBy.displayValue }}
-        </template>
-        <template v-else>
-          {{ null }}
-        </template>
+        {{ row.appliedBy }}
       </template>
 
       <template #action-heading>
@@ -118,7 +110,7 @@
     {
       property: 'appliedBy',
       label: 'Applied By',
-      visible: deployments.value.some(deployment => deployment.createdBy || deployment.updatedBy),
+      visible: deployments.value.some(deployment => deployment.updatedBy),
     },
     {
       label: 'Action',
