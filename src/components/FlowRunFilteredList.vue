@@ -25,12 +25,12 @@
   import { computed, onMounted, ref } from 'vue'
   import { ResultsCount, StateSelect, FlowRunsSort, FlowRunList } from '@/components'
   import DeleteFlowRunsButton from '@/components/DeleteFlowRunsButton.vue'
+  import { useWorkspaceApi } from '@/compositions'
   import { useCan } from '@/compositions/useCan'
   import { usePaginatedSubscription } from '@/compositions/usePaginatedSubscription'
   import { StateType } from '@/models'
   import { mapper } from '@/services'
   import { FlowRunSortValues, UnionFilters } from '@/types'
-  import { useWorkspaceApi } from '@/compositions'
 
   type StateTypeOrLate = StateType | 'late'
 
