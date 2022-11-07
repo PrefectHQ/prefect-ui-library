@@ -118,7 +118,7 @@
     {
       property: 'appliedBy',
       label: 'Applied By',
-      visible: deployments.value.some(deployment => deployment.createdBy !== null || deployment.updatedBy !== null),
+      visible: deployments.value.some(deployment => deployment.createdBy || deployment.updatedBy),
     },
     {
       label: 'Action',
