@@ -98,7 +98,7 @@
 <script lang="ts" setup>
   import { PKeyValue, PTags } from '@prefecthq/prefect-design'
   import { useSubscriptionWithDependencies } from '@prefecthq/vue-compositions'
-  import { computed, ComputedRef } from 'vue'
+  import { computed } from 'vue'
   import DeploymentIconText from './DeploymentIconText.vue'
   import DurationIconText from './DurationIconText.vue'
   import FlowIconText from './FlowIconText.vue'
