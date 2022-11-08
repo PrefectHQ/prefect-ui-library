@@ -98,7 +98,7 @@
 <script lang="ts" setup>
   import { PKeyValue, PTags } from '@prefecthq/prefect-design'
   import { useSubscriptionWithDependencies } from '@prefecthq/vue-compositions'
-  import { computed } from 'vue'
+  import { computed, ComputedRef } from 'vue'
   import DeploymentIconText from './DeploymentIconText.vue'
   import DurationIconText from './DurationIconText.vue'
   import FlowIconText from './FlowIconText.vue'
@@ -107,7 +107,7 @@
   import RadarSmall from './RadarSmall.vue'
   import StateBadge from './StateBadge.vue'
   import WorkQueueStatusIcon from './WorkQueueStatusIcon.vue'
-  import { FlowRunIconText } from '.'
+  import  FlowRunIconText  from '@/components/FlowRunIconText.vue'
   import  WorkQueueIconText  from '@/components/WorkQueueIconText.vue'
   import { useWorkspaceApi } from '@/compositions'
   import { useCan } from '@/compositions/useCan'
@@ -142,9 +142,11 @@
   const parentFlowRunListSubscription = useSubscriptionWithDependencies(api.flowRuns.getFlowRuns, flowRunFilter)
   const parentFlowRunList = computed(() => parentFlowRunListSubscription.response ?? [])
   const parentFlowRunId = computed(() => {
+    if (!parentFlowRunList.value.length) {
+      return
+    }
     const [value] = parentFlowRunList.value
-
-    return value?.id
+    return value.id
   })
 
   const radarRoute = inject(radarRouteKey)
