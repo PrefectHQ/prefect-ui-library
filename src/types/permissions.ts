@@ -51,6 +51,7 @@ export function isAccountPermissionString(permissionString: PermissionString): p
 }
 
 const workspacePermissions = [
+  'create:automation',
   'create:block',
   'create:concurrency_limit',
   'create:deployment',
@@ -63,6 +64,7 @@ const workspacePermissions = [
   'create:work_queue',
   'create:workspace_bot_access',
   'create:workspace_user_access',
+  'delete:automation',
   'delete:block',
   'delete:concurrency_limit',
   'delete:deployment',
@@ -75,6 +77,7 @@ const workspacePermissions = [
   'delete:workspace_bot_access',
   'delete:workspace_user_access',
   'delete:workspace',
+  'read:automation',
   'read:block',
   'read:concurrency_limit',
   'read:deployment',
@@ -89,6 +92,7 @@ const workspacePermissions = [
   'read:workspace_settings',
   'read:workspace_user_access',
   'run:deployment',
+  'update:automation',
   'update:block',
   'update:deployment',
   'update:flow_run',
