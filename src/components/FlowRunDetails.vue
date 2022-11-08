@@ -139,8 +139,13 @@
     return null
   })
 
-  const parentFlowRunList = useSubscriptionWithDependencies(api.flowRuns.getFlowRuns, flowRunFilter)
-  const parentFlowRunId = computed(()=> parentFlowRunList.response ? parentFlowRunList.response[0].id : null)
+  const parentFlowRunListSubscription = useSubscriptionWithDependencies(api.flowRuns.getFlowRuns, flowRunFilter)
+  const parentFlowRunList = computed(() => parentFlowRunListSubscription.response ?? [])
+  const parentFlowRunId = computed(() => {
+    const [value] = parentFlowRunList.value
+
+    return value?.id
+  })
 
   const radarRoute = inject(radarRouteKey)
 </script>
