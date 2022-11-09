@@ -11,7 +11,6 @@
   import { useSubscription } from '@prefecthq/vue-compositions'
   import { computed } from 'vue'
   import { useWorkspaceApi } from '@/compositions'
-  import { inject } from '@/utilities/inject'
 
   const props = defineProps<{
     selected: string | string[] | null | undefined,
