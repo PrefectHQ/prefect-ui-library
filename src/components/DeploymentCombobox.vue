@@ -46,11 +46,6 @@
   const deploymentsSubscription = useSubscription(api.deployments.getDeployments, [{}])
   const deployments = computed(() => deploymentsSubscription.response ?? [])
 
-  // const options = computed<SelectOption[]>(() => deployments.value.map((deployment: any) => ({
-  //   value: deployment.id,
-  //   label: `${useFlow(deployment.flowId).value?.name} > ${deployment.name}`,
-  // })))
-
   const options = computed<SelectOption[]>(() => deployments.value.map((deployment: any) => ({
     value: deployment.id,
     label: deployment.name,

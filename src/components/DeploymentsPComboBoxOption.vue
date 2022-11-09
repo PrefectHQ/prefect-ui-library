@@ -1,22 +1,23 @@
 <template>
   <div>
-    <span v-if="flowName != null || flowName != ''" class="font-bold">
-      {{ flowName }} >
+    <span class="font-bold">
+      {{ flow.name }} >
     </span>
     {{ deploymentName }}
   </div>
 </template>
 
 <script lang="ts" setup>
+  import { useSubscription } from '@prefecthq/vue-compositions'
   import { computed } from 'vue'
-  import { useFlow } from '@/compositions'
+  import { useWorkspaceApi } from '@/compositions'
 
   const props = defineProps<{
     flowId: string,
-    deploymentName: string,
+    deploymentName?: string,
   }>()
 
-  const flowName = computed(() => {
-    return useFlow(props.flowId).value?.name
-  })
+  const api = useWorkspaceApi()
+  const flowSubscription = useSubscription(api.flows.getFlow, [props.flowId])
+  const flow = computed(() => flowSubscription.response ?? [])
 </script>
