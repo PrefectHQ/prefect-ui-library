@@ -18,6 +18,6 @@
     alternate?: boolean,
   }>()
 
-  const flowRunId = computed(()=>props.flowRun.id)
+  const flowRunId = computed(() => props.flowRun.id)
   const tasksCount = useTaskRunsCount(flowRunId)
 </script>

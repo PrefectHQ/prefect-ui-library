@@ -95,7 +95,6 @@
   import DurationIconText from './DurationIconText.vue'
   import FlowIconText from './FlowIconText.vue'
   import FlowRunStartTime from './FlowRunStartTime.vue'
-  import FlowRunTaskCount from './FlowRunTaskCount.vue'
   import FlowRunTaskCountKeyValue from './FlowRunTaskCountKeyValue.vue'
   import RadarSmall from './RadarSmall.vue'
   import StateBadge from './StateBadge.vue'
