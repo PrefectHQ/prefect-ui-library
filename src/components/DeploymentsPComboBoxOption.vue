@@ -1,7 +1,7 @@
 <template>
   <div>
     <span class="font-bold">
-      {{ flow.name }} >
+      {{ flow?.name }} >
     </span>
     {{ deploymentName }}
   </div>
