@@ -11,8 +11,8 @@
 
 <script lang="ts" setup>
   import { PCombobox, SelectOption } from '@prefecthq/prefect-design'
-  import { useSubscription, useIntersectionObserver } from '@prefecthq/vue-compositions'
-  import { computed, ref, onMounted } from 'vue'
+  import { useSubscription } from '@prefecthq/vue-compositions'
+  import { computed } from 'vue'
   import { DeploymentsPComboBoxOption } from '@/components'
   import { useWorkspaceApi } from '@/compositions'
 

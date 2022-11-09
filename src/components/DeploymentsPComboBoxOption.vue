@@ -1,7 +1,7 @@
 <template>
   <div>
-    <span v-if="flow.name != null" class="font-bold">
-      {{ flow?.name }} >
+    <span v-if="flowResponse != ''" class="font-bold">
+      {{ flowResponse.name }} >
     </span>
     {{ deploymentName }}
   </div>
@@ -19,5 +19,5 @@
 
   const api = useWorkspaceApi()
   const flowSubscription = useSubscription(api.flows.getFlow, [props.flowId])
-  const flow = computed(() => flowSubscription.response ?? [])
+  const flowResponse = computed(() => flowSubscription.response ?? '')
 </script>
