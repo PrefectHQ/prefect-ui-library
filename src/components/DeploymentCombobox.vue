@@ -3,6 +3,9 @@
     <template #combobox-options-empty>
       No deployments
     </template>
+    <template #option="{ option }">
+      <deployments-p-combo-box-option :flow-id="option.flowId" :deployment-name="option.label" />
+    </template>
   </p-combobox>
 </template>
 
@@ -10,7 +13,8 @@
   import { PCombobox, SelectOption } from '@prefecthq/prefect-design'
   import { useSubscription, useIntersectionObserver } from '@prefecthq/vue-compositions'
   import { computed, ref, onMounted } from 'vue'
-  import { useWorkspaceApi, useFlow } from '@/compositions'
+  import { DeploymentsPComboBoxOption } from '@/components'
+  import { useWorkspaceApi } from '@/compositions'
 
   const props = defineProps<{
     selected: string | string[] | null | undefined,
@@ -42,14 +46,19 @@
   const deploymentsSubscription = useSubscription(api.deployments.getDeployments, [{}])
   const deployments = computed(() => deploymentsSubscription.response ?? [])
 
+  // const options = computed<SelectOption[]>(() => deployments.value.map((deployment: any) => ({
+  //   value: deployment.id,
+  //   label: `${useFlow(deployment.flowId).value?.name} > ${deployment.name}`,
+  // })))
+
   const options = computed<SelectOption[]>(() => deployments.value.map((deployment: any) => ({
     value: deployment.id,
-    label: `${useFlow(deployment.flowId).value?.name} > ${deployment.name}`,
+    label: deployment.name,
+    flowId: deployment.flowId,
   })))
 
   // const visible = ref(false)
-  // const el = document.querySelectorAll('[role="listbox"]')
-
+  // const deploymentOptionEl = ref<HTMLDivElement>()
 
   // function intersect(entries: IntersectionObserverEntry[]): void {
   //   entries.forEach(entry => {
@@ -62,8 +71,7 @@
 
   // const { observe, disconnect } = useIntersectionObserver(intersect)
 
-  onMounted(() => {
-    // observe(el)
-    // console.log(el.value?.children)
-  })
+  // onMounted(() => {
+  //   observe(deploymentOptionEl)
+  // })
 </script>
