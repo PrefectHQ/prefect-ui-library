@@ -15,10 +15,7 @@
   import { useFlowRunMock } from '@/demo/compositions/useFlowRunsMock'
   import { DemoSection } from '@/demo/types/demoSection'
 
-  const demos: DemoSection[] = [
-    { title: 'Disabled', description: 'With selection disabled' },
-    { title: 'No Relations', description: 'With no deployment or work queue' },
-  ]
+  const demos: DemoSection[] = [{ title: 'No Relations', description: 'With no deployment or work queue' }]
 
   const flowRun = useFlowRunMock()
   const flowRunWithNoRelations = useFlowRunMock({
