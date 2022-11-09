@@ -13,20 +13,20 @@ To run locally for devlopment you can use `npm run serve` and go to http://local
 
 ## Developing with Prefect Orion-UI
 
-If you plan to develop against the Prefect Orion-UI you can run the orion-design package locally.
+If you plan to develop against the Prefect Orion-UI you can install the orion-design package locally.
 
-### Via CLI (Preferred)
-
-You can install orion-design locally like so where `../../orion-design` is the relative path from your current project’s directory to the orion-design project directory:
+We recommend using the cli and running
 
 `npm i @prefecthq/orion-design@../../orion-design --save`
 
-You can also use an absolute path. 
+in the Prefect Orion-UI project where `../../orion-design` is the relative path from your Prefect orion-UI project’s directory to the orion-design project directory. You can also use an absolute path. 
+
+If you have done this succesfully, you should see your Prefect Orion-UI package.json and package-lock.json updated to show your local orion-design. 
 
 <aside>
 💡 Keep in mind this will update both the package.json and package-lock.json files. Be sure to not commit the changes to these two files.
 
-💡 Linking a package this way is the safest as it avoids having to do an `npm i` (see [Install VS Clean Install](https://www.notion.so/Prefect-NPM-Packages-25ea36a4ed7341deaa4c3ac523767648))
+💡 Linking a package this way is the safest as it avoids having to do an `npm i`.
 
 </aside>
 
