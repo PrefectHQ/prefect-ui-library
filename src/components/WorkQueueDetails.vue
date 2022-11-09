@@ -23,16 +23,13 @@
     </template>
 
     <template v-if="workQueue.filter">
-      <p-key-value :label="deploymentLabel" :alternate="alternate">
+      <p-key-value :label="deploymentLabel" empty-text="Any" :alternate="alternate">
         <template v-if="workQueue.filter.deploymentIds.length" #value>
           <div class="work-queue-details__deployments">
             <template v-for="deploymentId in deploymentIds" :key="deploymentId">
               <DeploymentIconText :deployment-id="deploymentId" />
             </template>
           </div>
-        </template>
-        <template #empty>
-          Any
         </template>
       </p-key-value>
 
