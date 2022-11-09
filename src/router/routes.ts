@@ -1,5 +1,5 @@
 import { InjectionKey } from 'vue'
-import { RouteLocationRaw } from 'vue-router'
+import { RouteComponent, RouteLocationRaw, RouteRecordRaw } from 'vue-router'
 
 export type Route = Exclude<RouteLocationRaw, string>
 
@@ -27,3 +27,46 @@ export const taskRunRouteKey: InjectionKey<(taskRunId: string) => Route> = Symbo
 export const workQueueCreateRouteKey: InjectionKey<() => Route> = Symbol('workQueueCreateRouteKey')
 export const workQueueRouteKey: InjectionKey<(workQueueId: string) => Route> = Symbol('workQueueRouteKey')
 export const workQueuesRouteKey: InjectionKey<() => Route> = Symbol('workQueuesRouteKey')
+
+
+type CreateWorkspaceRoutesConfig = {
+  accountId: string,
+  workspaceId: string,
+}
+
+// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+export function createWorkspaceRoutes(config?: CreateWorkspaceRoutesConfig) {
+  return {
+    flows: () => ({ name: 'workspace.flows', params: config }),
+    flow: (flowId: string) => ({ name: 'workspace.flow', params: { flowId, ...config } }),
+  }
+}
+
+export type CreateWorkspaceRoutes = ReturnType<typeof createWorkspaceRoutes>
+export const workspaceRoutesKey: InjectionKey<CreateWorkspaceRoutes> = Symbol('WorkspaceRoutes')
+
+type WorkspaceComponent = () => Promise<RouteComponent>
+type WorkspaceRoute = keyof CreateWorkspaceRoutes
+
+export type WorkspaceRouteComponents = Record<WorkspaceRoute, WorkspaceComponent>
+
+export function createWorkspaceRouteRecords(components: WorkspaceRouteComponents): RouteRecordRaw {
+  return {
+    path: 'workspace.flows',
+    meta: {
+      can: 'read:flow',
+    },
+    children: [
+      {
+        name: 'workspace.flows',
+        path: '',
+        component: components.flows,
+      },
+      {
+        name: 'workspace.flow',
+        path: 'flow/:flowId',
+        component: components.flow,
+      },
+    ],
+  }
+}
