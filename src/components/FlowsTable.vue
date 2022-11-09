@@ -18,6 +18,10 @@
         </p-link>
       </template>
 
+      <template #deployments="{ row }">
+        <DeploymentsCount :flow-id="row.id" />
+      </template>
+
       <template #created="{ row }">
         {{ formatDateTimeNumeric(row.created) }}
       </template>
@@ -57,6 +61,7 @@
   import { useSubscription } from '@prefecthq/vue-compositions'
   import { computed, unref } from 'vue'
   import DeploymentCombobox from './DeploymentCombobox.vue'
+  import DeploymentsCount from './DeploymentsCount.vue'
   import ResultsCount from './ResultsCount.vue'
   import SearchInput from './SearchInput.vue'
   import FlowActivityChart from '@/components/FlowActivityChart.vue'
@@ -88,6 +93,11 @@
     {
       property: 'name',
       label: 'Name',
+      width: '125px',
+    },
+    {
+      property: 'deployments',
+      label: 'Deployments',
       width: '125px',
     },
     {
