@@ -1,5 +1,5 @@
 # orion-design
-Vue and Typescript library for [Prefect 2.0](https://github.com/PrefectHQ/prefect) and [Prefect Cloud 2.0)[https://www.prefect.io/cloud/]. The components and utilities in this project are not meant to be used independently. 
+Orion Design is the Vue and Typescript component library for [Prefect 2.0](https://github.com/PrefectHQ/prefect) and [Prefect Cloud 2.0)[https://www.prefect.io/cloud/]. The components and utilities in this project are not meant to be used independently. 
 
 ## Install
 ```
