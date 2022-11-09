@@ -79,6 +79,8 @@
 
     <p-key-value label="Run Count" :value="flowRun.runCount ?? 0" :alternate="alternate" />
 
+    <p-key-value label="State Message" :value="flowRun.state.message" :alternate="alternate" />
+
     <template v-if="can.read.deployment && flowRun.deploymentId">
       <p-key-value label="Deployment ID" :value="flowRun.deploymentId" :alternate="alternate" />
     </template>
