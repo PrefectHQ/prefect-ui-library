@@ -1,6 +1,6 @@
 <template>
   <div>
-    <span class="font-bold">
+    <span v-if="flow.name != null" class="font-bold">
       {{ flow?.name }} >
     </span>
     {{ deploymentName }}
