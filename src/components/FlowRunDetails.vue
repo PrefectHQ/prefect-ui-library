@@ -26,9 +26,9 @@
       </template>
     </p-key-value>
 
-    <p-key-value label="Deployment" :alternate="alternate">
+    <p-key-value v-if="can.read.deployment && flowRun.deploymentId" label="Deployment" :alternate="alternate">
       <template #value>
-        <DeploymentIconText v-if="flowRun.deploymentId" :deployment-id="flowRun.deploymentId" />
+        <DeploymentIconText :deployment-id="flowRun.deploymentId" />
       </template>
     </p-key-value>
 
@@ -43,6 +43,14 @@
       </p-key-value>
     </template>
 
+    <template v-if="parentFlowRunId">
+      <p-key-value label="Parent Flow Run" :alternate="alternate">
+        <template #value>
+          <FlowRunIconText :flow-run-id="parentFlowRunId" />
+        </template>
+      </p-key-value>
+    </template>
+
     <p-divider />
 
     <router-link :to="radarRoute(flowRun.id)" class="flow-run__small-radar-link">
@@ -50,6 +58,10 @@
     </router-link>
 
     <p-divider />
+
+    <template v-if="can.read.deployment && flowRun.deploymentId">
+      <p-key-value label="Deployment ID" :value="flowRun.deploymentId" :alternate="alternate" />
+    </template>
 
     <p-key-value label="Created" :value="formatDateTimeNumeric(flowRun.created)" :alternate="alternate" />
 
@@ -85,6 +97,8 @@
 
 <script lang="ts" setup>
   import { PKeyValue, PTags } from '@prefecthq/prefect-design'
+  import { useSubscriptionWithDependencies } from '@prefecthq/vue-compositions'
+  import { computed } from 'vue'
   import DeploymentIconText from './DeploymentIconText.vue'
   import DurationIconText from './DurationIconText.vue'
   import FlowIconText from './FlowIconText.vue'
@@ -93,19 +107,47 @@
   import RadarSmall from './RadarSmall.vue'
   import StateBadge from './StateBadge.vue'
   import WorkQueueStatusIcon from './WorkQueueStatusIcon.vue'
-  import WorkQueueIconText from '@/components/WorkQueueIconText.vue'
+  import  FlowRunIconText  from '@/components/FlowRunIconText.vue'
+  import  WorkQueueIconText  from '@/components/WorkQueueIconText.vue'
+  import { useWorkspaceApi } from '@/compositions'
   import { useCan } from '@/compositions/useCan'
   import { FlowRun } from '@/models/FlowRun'
   import { radarRouteKey } from '@/router'
   import { inject } from '@/utilities'
   import { formatDateTimeNumeric } from '@/utilities/dates'
 
-  defineProps<{
+  const api = useWorkspaceApi()
+
+  const props = defineProps<{
     flowRun: FlowRun,
     alternate?: boolean,
   }>()
 
   const can = useCan()
+  const flowRunFilter = computed<Parameters<typeof api.flowRuns.getFlowRuns> | null>(() => {
+    if (props.flowRun.parentTaskRunId) {
+      return [
+        {
+          task_runs: {
+            id: {
+              any_: [props.flowRun.parentTaskRunId],
+            },
+          },
+        },
+      ]
+    }
+    return null
+  })
+
+  const parentFlowRunListSubscription = useSubscriptionWithDependencies(api.flowRuns.getFlowRuns, flowRunFilter)
+  const parentFlowRunList = computed(() => parentFlowRunListSubscription.response ?? [])
+  const parentFlowRunId = computed(() => {
+    if (!parentFlowRunList.value.length) {
+      return
+    }
+    const [value] = parentFlowRunList.value
+    return value.id
+  })
 
   const radarRoute = inject(radarRouteKey)
 </script>

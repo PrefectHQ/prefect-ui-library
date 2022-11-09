@@ -27,16 +27,8 @@
         <p-tag-wrapper :tags="row.tags" justify="left" />
       </template>
 
-      <template #created-by="{ row }">
-        <span>
-          {{ row.createdBy ? row.createdBy.displayValue : null }}
-        </span>
-      </template>
-
-      <template #updated-by="{ row }">
-        <span>
-          {{ row.updatedBy ? row.updatedBy.displayValue : null }}
-        </span>
+      <template #applied-by="{ row }">
+        {{ row.appliedBy }}
       </template>
 
       <template #action-heading>
@@ -113,16 +105,12 @@
     {
       property: 'tags',
       label: 'Tags',
+      width: '300px',
     },
     {
-      property: 'createdBy',
-      label: 'Created By',
-      visible: deployments.value.some(deployment => deployment.createdBy !== null),
-    },
-    {
-      property: 'updatedBy',
-      label: 'Updated By',
-      visible: deployments.value.some(deployment => deployment.updatedBy !== null),
+      property: 'appliedBy',
+      label: 'Applied By',
+      visible: deployments.value.some(deployment => deployment.appliedBy),
     },
     {
       label: 'Action',
