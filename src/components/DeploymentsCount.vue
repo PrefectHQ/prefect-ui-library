@@ -16,8 +16,14 @@
   }>()
 
   const api = useWorkspaceApi()
+  const visible = ref(false)
+  const el = ref<HTMLDivElement>()
 
-  const deploymentsCountFilter = computed<Parameters<typeof api.taskRuns.getTaskRunsCount> | null>(() => {
+  const deploymentsCountFilter = computed<Parameters<typeof api.deployments.getDeploymentsCount> | null>(() => {
+    if (!visible.value) {
+      return null
+    }
+
     return [
       {
         flows: {
@@ -31,9 +37,6 @@
 
   const deploymentsCountSubscription = useSubscriptionWithDependencies(api.deployments.getDeploymentsCount, deploymentsCountFilter)
   const deploymentsCount = computed(() => deploymentsCountSubscription.response ?? null)
-
-  const visible = ref(false)
-  const el = ref<HTMLDivElement>()
 
   function intersect(entries: IntersectionObserverEntry[]): void {
     entries.forEach(entry => {
