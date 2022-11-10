@@ -32,6 +32,18 @@
       </template>
     </p-key-value>
 
+
+    <p-key-value label="State Message" :alternate="alternate">
+      <template #value>
+        <span v-if="flowRun.state.message">
+          {{ flowRun.state.message }}
+        </span>
+        <span v-else class="p-key-value__empty p-key-value__empty--alt">
+          None
+        </span>
+      </template>
+    </p-key-value>
+
     <template v-if="can.read.work_queue && flowRun.workQueueName">
       <p-key-value label="Work Queue" :alternate="alternate">
         <template #value>
@@ -78,8 +90,6 @@
     <p-key-value label="Flow Version" :value="flowRun.flowVersion" :alternate="alternate" />
 
     <p-key-value label="Run Count" :value="flowRun.runCount ?? 0" :alternate="alternate" />
-
-    <p-key-value label="State Message" :value="flowRun.state.message" :alternate="alternate" />
 
     <template v-if="can.read.deployment && flowRun.deploymentId">
       <p-key-value label="Deployment ID" :value="flowRun.deploymentId" :alternate="alternate" />
