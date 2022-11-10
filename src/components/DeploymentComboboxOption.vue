@@ -18,7 +18,8 @@
   }>()
 
   const api = useWorkspaceApi()
-  const flowSubscription = useSubscription(api.flows.getFlow, [props.flowId])
+  const flowId = computed(() => props.flowId)
+  const flowSubscription = useSubscription(api.flows.getFlow, [flowId])
   const flowResponse = computed(() => flowSubscription.response ?? '')
 </script>
 
