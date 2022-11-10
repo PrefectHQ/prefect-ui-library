@@ -1,5 +1,6 @@
 import { InjectionKey } from 'vue'
 import { RouteComponent, RouteLocationRaw, RouteRecordRaw } from 'vue-router'
+import { inject } from '@/utilities'
 
 export type Route = Exclude<RouteLocationRaw, string>
 
@@ -44,6 +45,11 @@ export function createWorkspaceRoutes(config?: CreateWorkspaceRoutesConfig) {
 
 export type CreateWorkspaceRoutes = ReturnType<typeof createWorkspaceRoutes>
 export const workspaceRoutesKey: InjectionKey<CreateWorkspaceRoutes> = Symbol('WorkspaceRoutes')
+
+// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+export function useWorkspaceRoutes() {
+  return inject(workspaceRoutesKey)
+}
 
 type WorkspaceComponent = () => Promise<RouteComponent>
 type WorkspaceRoute = keyof CreateWorkspaceRoutes
