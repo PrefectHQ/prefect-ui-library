@@ -33,16 +33,7 @@
     </p-key-value>
 
 
-    <p-key-value label="State Message" :alternate="alternate">
-      <template #value>
-        <span v-if="flowRun.state.message">
-          {{ flowRun.state.message }}
-        </span>
-        <span v-else class="p-key-value__empty p-key-value__empty--alt">
-          None
-        </span>
-      </template>
-    </p-key-value>
+    <p-key-value label="State Message" :alternate="alternate" :value="flowRun.state.message" />
 
     <template v-if="can.read.work_queue && flowRun.workQueueName">
       <p-key-value label="Work Queue" :alternate="alternate">
