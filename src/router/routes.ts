@@ -52,7 +52,7 @@ export type WorkspaceRouteComponents = Record<WorkspaceRoute, WorkspaceComponent
 
 export function createWorkspaceRouteRecords(components: WorkspaceRouteComponents): RouteRecordRaw {
   return {
-    path: 'workspace.flows',
+    path: 'flows',
     meta: {
       can: 'read:flow',
     },
