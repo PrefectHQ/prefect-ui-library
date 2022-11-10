@@ -4,7 +4,7 @@
       No deployments
     </template>
     <template #option="{ option }">
-      <deployments-p-combo-box-option :flow-id="option.flowId" :deployment-name="option.label" />
+      <deployment-combobox-option :flow-id="option.flowId" :deployment-name="option.label" />
     </template>
   </p-combobox>
 </template>
@@ -13,7 +13,7 @@
   import { PCombobox, SelectOption } from '@prefecthq/prefect-design'
   import { useSubscription } from '@prefecthq/vue-compositions'
   import { computed } from 'vue'
-  import { DeploymentsPComboBoxOption } from '@/components'
+  import { DeploymentComboboxOption } from '@/components'
   import { useWorkspaceApi } from '@/compositions'
   import { Deployment } from '@/models/Deployment'
 

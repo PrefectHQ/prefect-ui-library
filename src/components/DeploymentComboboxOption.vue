@@ -1,6 +1,6 @@
 <template>
-  <div class="deployment-combobox--option">
-    <span v-if="flowResponse" class="deployment-combobox--option--flow-name">
+  <div class="deployment-combobox-option">
+    <span v-if="flowResponse" class="deployment-combobox-option--flow-name">
       {{ flowResponse.name }} >
     </span>
     {{ deploymentName }}
@@ -23,7 +23,7 @@
 </script>
 
 <style>
-.deployment-combobox--option--flow-name { @apply
+.deployment-combobox-option--flow-name { @apply
   font-bold
 }
 </style>
