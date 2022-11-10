@@ -23,7 +23,7 @@
   import { useWorkspaceApiMock } from './utilities/api'
   import ContextSidebar from '@/demo/components/ContextSidebar.vue'
   import { mobileMenuOpen, toggle } from '@/demo/router/menu'
-  import { flowRouteKey, flowRunRouteKey, editDeploymentRouteKey, flowRunsRouteKey, deploymentRouteKey, taskRunRouteKey, flowsRouteKey, deploymentsRouteKey, workQueuesRouteKey, settingsRouteKey, workQueueRouteKey, workQueueCreateRouteKey, editQueueRouteKey, notificationCreateRouteKey, editNotificationRouteKey, blocksRouteKey, flowRunCreateRouteKey, notificationsRouteKey, blockCatalogRouteKey, blockCatalogViewRouteKey, blockCatalogCreateRouteKey, blockRouteKey, blockEditRouteKey, Route } from '@/router'
+  import { flowRouteKey, flowRunRouteKey, editDeploymentRouteKey, flowRunsRouteKey, deploymentRouteKey, taskRunRouteKey, flowsRouteKey, deploymentsRouteKey, workQueuesRouteKey, settingsRouteKey, workQueueRouteKey, workQueueCreateRouteKey, editQueueRouteKey, notificationCreateRouteKey, editNotificationRouteKey, blocksRouteKey, flowRunCreateRouteKey, notificationsRouteKey, blockCatalogRouteKey, blockCatalogViewRouteKey, blockCatalogCreateRouteKey, blockRouteKey, blockEditRouteKey, radarRouteKey, Route } from '@/router'
   import { getAppPermissions, canKey } from '@/types'
 
   const showMenu = computed(() => media.lg || mobileMenuOpen.value)
@@ -40,29 +40,30 @@
 
   const emptyRoute = (): Route => ({ path: '/' })
 
-  provide(flowRouteKey, emptyRoute)
-  provide(flowRunRouteKey, emptyRoute)
-  provide(editDeploymentRouteKey, emptyRoute)
-  provide(flowRunsRouteKey, emptyRoute)
-  provide(deploymentRouteKey, emptyRoute)
-  provide(taskRunRouteKey, emptyRoute)
-  provide(flowsRouteKey, emptyRoute)
-  provide(deploymentsRouteKey, emptyRoute)
-  provide(workQueuesRouteKey, emptyRoute)
-  provide(settingsRouteKey, emptyRoute)
-  provide(workQueueRouteKey, emptyRoute)
-  provide(workQueueCreateRouteKey, emptyRoute)
-  provide(editQueueRouteKey, emptyRoute)
-  provide(notificationCreateRouteKey, emptyRoute)
-  provide(editNotificationRouteKey, emptyRoute)
-  provide(blocksRouteKey, emptyRoute)
-  provide(flowRunCreateRouteKey, emptyRoute)
-  provide(notificationsRouteKey, emptyRoute)
+  provide(blockCatalogCreateRouteKey, emptyRoute)
   provide(blockCatalogRouteKey, emptyRoute)
   provide(blockCatalogViewRouteKey, emptyRoute)
-  provide(blockCatalogCreateRouteKey, emptyRoute)
-  provide(blockRouteKey, emptyRoute)
   provide(blockEditRouteKey, emptyRoute)
+  provide(blockRouteKey, emptyRoute)
+  provide(blocksRouteKey, emptyRoute)
+  provide(deploymentRouteKey, emptyRoute)
+  provide(deploymentsRouteKey, emptyRoute)
+  provide(editDeploymentRouteKey, emptyRoute)
+  provide(editNotificationRouteKey, emptyRoute)
+  provide(editQueueRouteKey, emptyRoute)
+  provide(flowRouteKey, emptyRoute)
+  provide(flowRunCreateRouteKey, emptyRoute)
+  provide(flowRunRouteKey, emptyRoute)
+  provide(flowRunsRouteKey, emptyRoute)
+  provide(flowsRouteKey, emptyRoute)
+  provide(notificationCreateRouteKey, emptyRoute)
+  provide(notificationsRouteKey, emptyRoute)
+  provide(radarRouteKey, emptyRoute)
+  provide(settingsRouteKey, emptyRoute)
+  provide(taskRunRouteKey, emptyRoute)
+  provide(workQueueCreateRouteKey, emptyRoute)
+  provide(workQueueRouteKey, emptyRoute)
+  provide(workQueuesRouteKey, emptyRoute)
 </script>
 
 <style>
