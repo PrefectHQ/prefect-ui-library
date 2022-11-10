@@ -27,27 +27,40 @@ type after_ = { after_?: string }
 
 type operator_ = 'and_' | 'or_'
 
+/**
+ * @deprecated
+ */
 export interface Filter {
   id?: any_,
   name?: any_ & like_,
   tags?: all_ & is_null_,
   operator?: operator_,
 }
-
+/**
+ * @deprecated
+ */
 export interface DeploymentFilter extends Filter {
   is_schedule_active?: eq_,
 }
-
+/**
+ * @deprecated
+ */
 export type FlowFilter = Filter
-
+/**
+ * @deprecated
+ */
 export type StateFilter = {
   type?: any_,
   name?: any_,
   operator?: operator_,
 }
-
+/**
+ * @deprecated
+ */
 export type TimeFrameFilter = before_ & after_
-
+/**
+ * @deprecated
+ */
 export interface FlowRunFilter extends Filter {
   id?: any_ & not_any_,
   deployment_id?: any_ & is_null_,
@@ -66,44 +79,69 @@ export interface FlowRunFilter extends Filter {
   parent_task_run_id?: any_ & is_null_,
   task_runs?: TaskRunFilter,
 }
-
+/**
+ * @deprecated
+ */
 export interface TaskRunFilter extends Filter {
   id?: any_ & not_any_,
   state?: StateFilter,
   start_time?: TimeFrameFilter,
   subflow_runs?: exists_,
 }
-
+/**
+ * @deprecated
+ */
 export type PaginatedFilter = {
   limit?: number,
   offset?: number,
 }
-
+/**
+ * @deprecated
+ */
 type StringKeys<T extends Filter> = Extract<keyof T, string>
 type Sortable<T extends Filter> = PaginatedFilter & {
   sort?: `${Uppercase<StringKeys<T>>}_${'ASC' | 'DESC'}`,
 }
-
+/**
+ * @deprecated
+ */
 type RunSort<T extends string> = PaginatedFilter & {
   sort?: T,
 }
-
+/**
+ * @deprecated
+ */
 export type DeploymentsFilter = { deployments?: DeploymentFilter }
+/**
+ * @deprecated
+ */
 export type FlowsFilter = { flows?: FlowFilter }
+/**
+ * @deprecated
+ */
 export type TaskRunsFilter = { task_runs?: TaskRunFilter }
+/**
+ * @deprecated
+ */
 export type FlowRunsFilter = { flow_runs?: FlowRunFilter }
-
+/**
+ * @deprecated
+ */
 export type UnionFilters =
   & FlowsFilter
   & DeploymentsFilter
   & FlowRunsFilter
   & TaskRunsFilter
   & (Sortable<FlowFilter & DeploymentFilter> | RunSort<FlowSortValues | FlowRunSortValues | TaskRunSortValues>)
-
+/**
+ * @deprecated
+ */
 interface Historical {
   history_start: string,
   history_end: string,
   history_interval_seconds: number,
 }
-
+/**
+ * @deprecated
+ */
 export type FlowRunsHistoryFilter = UnionFilters & Historical
