@@ -1,5 +1,5 @@
 <template>
-  <div ref="el">
+  <div ref="element">
     <template v-if="visible && deploymentsCount">
       {{ deploymentsCount }}
     </template>
@@ -7,8 +7,8 @@
 </template>
 
 <script lang="ts" setup>
-  import { useIntersectionObserver, useSubscriptionWithDependencies } from '@prefecthq/vue-compositions'
-  import { computed, onMounted, ref } from 'vue'
+  import { useVisibilityObserver, useSubscriptionWithDependencies } from '@prefecthq/vue-compositions'
+  import { computed, ref } from 'vue'
   import { useWorkspaceApi } from '@/compositions'
 
   const props = defineProps<{
@@ -16,8 +16,8 @@
   }>()
 
   const api = useWorkspaceApi()
-  const visible = ref(false)
-  const el = ref<HTMLDivElement>()
+  const element = ref<HTMLDivElement>()
+  const { visible } = useVisibilityObserver(element, { disconnectWhenVisible: true })
 
   const deploymentsCountFilter = computed<Parameters<typeof api.deployments.getDeploymentsCount> | null>(() => {
     if (!visible.value) {
@@ -37,19 +37,4 @@
 
   const deploymentsCountSubscription = useSubscriptionWithDependencies(api.deployments.getDeploymentsCount, deploymentsCountFilter)
   const deploymentsCount = computed(() => deploymentsCountSubscription.response ?? null)
-
-  function intersect(entries: IntersectionObserverEntry[]): void {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        visible.value = true
-        disconnect()
-      }
-    })
-  }
-
-  const { observe, disconnect } = useIntersectionObserver(intersect)
-
-  onMounted(() => {
-    observe(el)
-  })
 </script>
