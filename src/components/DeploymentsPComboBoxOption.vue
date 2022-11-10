@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <span v-if="flowResponse != ''" class="font-bold">
+  <div class="deployment-combobox--option">
+    <span v-if="flowResponse" class="deployment-combobox--option--flow-name">
       {{ flowResponse.name }} >
     </span>
     {{ deploymentName }}
@@ -21,3 +21,9 @@
   const flowSubscription = useSubscription(api.flows.getFlow, [props.flowId])
   const flowResponse = computed(() => flowSubscription.response ?? '')
 </script>
+
+<style>
+.deployment-combobox--option--flow-name { @apply
+  font-bold
+}
+</style>

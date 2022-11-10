@@ -15,6 +15,7 @@
   import { computed } from 'vue'
   import { DeploymentsPComboBoxOption } from '@/components'
   import { useWorkspaceApi } from '@/compositions'
+  import { Deployment } from '@/models/Deployment'
 
   const props = defineProps<{
     selected: string | string[] | null | undefined,
@@ -46,27 +47,9 @@
   const deploymentsSubscription = useSubscription(api.deployments.getDeployments, [{}])
   const deployments = computed(() => deploymentsSubscription.response ?? [])
 
-  const options = computed<SelectOption[]>(() => deployments.value.map((deployment: any) => ({
+  const options = computed<SelectOption[]>(() => deployments.value.map((deployment: Deployment) => ({
     value: deployment.id,
     label: deployment.name,
     flowId: deployment.flowId,
   })))
-
-  // const visible = ref(false)
-  // const deploymentOptionEl = ref<HTMLDivElement>()
-
-  // function intersect(entries: IntersectionObserverEntry[]): void {
-  //   entries.forEach(entry => {
-  //     if (entry.isIntersecting) {
-  //       visible.value = true
-  //       disconnect()
-  //     }
-  //   })
-  // }
-
-  // const { observe, disconnect } = useIntersectionObserver(intersect)
-
-  // onMounted(() => {
-  //   observe(deploymentOptionEl)
-  // })
 </script>
