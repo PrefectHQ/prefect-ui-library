@@ -2,7 +2,6 @@
   <div class="flow-run-logs">
     <div class="flow-run-logs__search">
       <LogLevelSelect v-model:selected="logLevel" />
-
       <LogsSort v-model:selected="logsSort" />
     </div>
     <LogsContainer :logs="logs" @bottom="logsSubscription.loadMore">
