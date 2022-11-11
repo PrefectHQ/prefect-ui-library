@@ -11,36 +11,14 @@
 </template>
 
 <script lang="ts" setup>
-  import { useSubscriptionWithDependencies } from '@prefecthq/vue-compositions'
   import { computed } from 'vue'
-  import { useWorkspaceApi } from '@/compositions'
+  import { useTaskRunsCount } from '@/compositions'
   import { FlowRun } from '@/models/FlowRun'
 
   const props = defineProps<{
     flowRun: FlowRun,
   }>()
 
-  const isScheduled = computed(() => props.flowRun.stateType == 'scheduled')
-
-  const api = useWorkspaceApi()
-
-
-  const tasksCountFilter = computed<Parameters<typeof api.taskRuns.getTaskRunsCount> | null>(() => {
-    if (isScheduled.value) {
-      return null
-    }
-
-    return [
-      {
-        flow_runs: {
-          id: {
-            any_: [props.flowRun.id],
-          },
-        },
-      },
-    ]
-  })
-
-  const tasksCountSubscription = useSubscriptionWithDependencies(api.taskRuns.getTaskRunsCount, tasksCountFilter)
-  const tasksCount = computed(() => tasksCountSubscription.response)
+  const flowRunId = computed(()=>props.flowRun.id)
+  const tasksCount = useTaskRunsCount(flowRunId)
 </script>
