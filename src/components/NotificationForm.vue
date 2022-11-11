@@ -51,6 +51,7 @@
   import { useBlockSchemaForBlockType, useForm, useReactiveField, useWorkspaceApi } from '@/compositions'
   import { localization } from '@/localization'
   import { Notification, BlockTypeFilter } from '@/models'
+  import { BlockTypesFilter } from '@/models/Filters'
   import { getSchemaDefaultValues } from '@/services/schemas/utilities'
   import { FormAction } from '@/types/buttons'
   import { SchemaValues } from '@/types/schemas'
@@ -128,11 +129,9 @@
     data.value = document.data
   }, { immediate: true })
 
-  const blockTypesSubscriptionFilter: BlockTypeFilter = {
+  const blockTypesSubscriptionFilter: BlockTypesFilter = {
     blockSchemas: {
-      blockCapabilities: {
-        all_: ['notify'],
-      },
+      blockCapability: 'notify',
     },
   }
   const blockTypesSubscription = useSubscription(api.blockTypes.getBlockTypes, [blockTypesSubscriptionFilter])

@@ -1,7 +1,8 @@
 import { MockApi } from './MockApi'
-import { BlockType, BlockTypeFilter, BlockDocument } from '@/models'
+import { BlockType, BlockDocument } from '@/models'
+import { BlockTypesFilter } from '@/models/Filters'
 import { IWorkspaceBlockTypesApi } from '@/services'
-import { intersects } from '@/utilities/arrays'
+import { asArray, intersects } from '@/utilities/arrays'
 
 export class MockWorkspaceBlockTypesApi extends MockApi implements IWorkspaceBlockTypesApi {
 
@@ -13,14 +14,14 @@ export class MockWorkspaceBlockTypesApi extends MockApi implements IWorkspaceBlo
     return await this.blockTypes.find(blockType => blockType.slug === blockTypeSlug)!
   }
 
-  public async getBlockTypes(filter: BlockTypeFilter = {}): Promise<BlockType[]> {
+  public async getBlockTypes(filter: BlockTypesFilter = {}): Promise<BlockType[]> {
     if (Object.keys(filter).length) {
       console.warn('MockWorkspaceBlockTypesApi has not implemented all of filter argument of the getBlockTypes method')
 
-      const filterCapabilities = filter.blockSchemas?.blockCapabilities?.all_
+      const filterCapabilities = filter.blockSchemas?.blockCapability
 
       if (filterCapabilities) {
-        const blockSchemas = this.blockSchemas.findAll(blockSchema => intersects(blockSchema.capabilities, filterCapabilities))
+        const blockSchemas = this.blockSchemas.findAll(blockSchema => intersects(blockSchema.capabilities, asArray(filterCapabilities)))
         const blockTypes = blockSchemas.map(blockSchema => blockSchema.blockType)
 
         return await blockTypes
