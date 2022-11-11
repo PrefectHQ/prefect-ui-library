@@ -4,12 +4,12 @@ import { BlockDocumentResponse } from '@/models/api/BlockDocumentResponse'
 import { BlockTypeResponse } from '@/models/api/BlockTypeResponse'
 import { BlockDocument } from '@/models/BlockDocument'
 import { BlockType } from '@/models/BlockType'
-import { BlockTypeFilter } from '@/models/BlockTypeFilter'
+import { BlockTypesFilter } from '@/models/Filters'
 
 export interface IWorkspaceBlockTypesApi {
   getBlockType: (blockTypeId: string) => Promise<BlockType>,
   getBlockTypeBySlug: (blockTypeSlug: string) => Promise<BlockType>,
-  getBlockTypes: (filter: BlockTypeFilter) => Promise<BlockType[]>,
+  getBlockTypes: (filter: BlockTypesFilter) => Promise<BlockType[]>,
   getBlockDocumentsByBlockTypeSlug: (blockTypeSlug: string) => Promise<BlockDocument[]>,
 }
 
@@ -29,8 +29,8 @@ export class WorkspaceBlockTypesApi extends WorkspaceApi implements IWorkspaceBl
     return mapper.map('BlockTypeResponse', data, 'BlockType')
   }
 
-  public async getBlockTypes(filter: BlockTypeFilter = {}): Promise<BlockType[]> {
-    const { data } = await this.post<BlockTypeResponse[]>('/filter', mapper.map('BlockTypeFilter', filter, 'BlockTypeFilterRequest'))
+  public async getBlockTypes(filter: BlockTypesFilter = {}): Promise<BlockType[]> {
+    const { data } = await this.post<BlockTypeResponse[]>('/filter', mapper.map('BlockTypesFilter', filter, 'BlockTypesFilterRequest'))
 
     return mapper.map('BlockTypeResponse', data, 'BlockType')
   }

@@ -1,3 +1,6 @@
+/**
+ * @deprecated
+ */
 export type BlockTypeFilter = {
   blockSchemas?: {
     blockCapabilities?: {

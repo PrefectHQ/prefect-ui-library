@@ -1,138 +1,114 @@
 import { DeploymentSortValues, FlowRunSortValues, FlowSortValues, LogSortValues, TaskRunSortValues } from '@/types/SortOptionTypes'
 
 /** A list where results will be returned only if they match all the values in the list */
-type All = { all_?: string[] }
+export type All = { all_?: string[] }
 
 /** A list where results will be returned if any of the values are included in the list */
-type Any = { any_?: string[] }
-type Like = { like_?: string }
-type StartsWith = { startswith_?: string[] }
+export type Any = { any_?: string[] }
+export type Like = { like_?: string }
+export type StartsWith = { startswith_?: string[] }
 
 /** A list where results will be returned if values don't match any in the list */
-type NotAny = { not_any_?: string[] }
+export type NotAny = { not_any_?: string[] }
 
 /** Matches on boolean equality */
-type Equals = { eq_?: boolean }
+export type Equals = { eq_?: boolean }
 
 /** Matches on boolean equality */
-type Exists = { exists_?: boolean }
+export type Exists = { exists_?: boolean }
 
 /** If true, returns results whose key is null */
-type IsNull = { is_null_?: boolean }
+export type IsNull = { is_null_?: boolean }
 
 /** A date-time string to include results starting at or before this time */
-type Before = { before_?: string }
-type After = { after_?: string }
+export type Before = { before_?: string }
+export type After = { after_?: string }
 
-type GreaterThan = { ge_?: number }
-type LessThan = { le_?: number }
+export type GreaterThan = { ge_?: number }
+export type LessThan = { le_?: number }
 
-type Operation = 'and_' | 'or_'
-type Operator = { operator: Operation }
+export type OperationRequest = 'and_' | 'or_'
+export type OperatorRequest = { operator?: OperationRequest }
 
-type TagFilter = Operator & All & IsNull
-type StateFilter = Operator & { type?: Any } & { name?: Any }
+export type TagFilterRequest = OperatorRequest & All & IsNull
 
-type FlowFilter = {
-  operator?: Operation,
+export type StateFilterRequest = OperatorRequest & { type?: Any } & { name?: Any }
+
+export type FlowFilterRequest = {
+  operator?: OperationRequest,
   id?: Any,
   name?: Any & Like,
-  tags?: TagFilter,
+  tags?: TagFilterRequest,
 }
 
-type FlowRunFilter = {
-  operator?: Operation,
+export type FlowRunFilterRequest = {
+  operator?: OperationRequest,
   id?: Any & NotAny,
   name?: Any & Like,
-  tags?: TagFilter,
-  deployment_id?: Operator & Any & IsNull,
-  work_queue_name?: Operator & Any & IsNull,
-  state?: StateFilter,
+  tags?: TagFilterRequest,
+  deployment_id?: OperatorRequest & Any & IsNull,
+  work_queue_name?: OperatorRequest & Any & IsNull,
+  state?: StateFilterRequest,
   flow_version?: Any,
   start_time?: Before & After & IsNull,
   expected_start_time?: Before & After,
   next_scheduled_start_time?: Before & After,
-  parent_task_run_id?: Operator & Any & IsNull,
+  parent_task_run_id?: OperatorRequest & Any & IsNull,
 }
 
-type TaskRunFilter = {
-  operator?: Operation,
+export type TaskRunFilterRequest = {
+  operator?: OperationRequest,
   id?: Any,
   name?: Any & Like,
-  tags?: TagFilter,
-  state?: StateFilter,
+  tags?: TagFilterRequest,
+  state?: StateFilterRequest,
   start_time?: Before & After & IsNull,
   subflow_runs?: Exists,
 }
 
-type DeploymentFilter = {
-  operator?: Operation,
+export type DeploymentFilterRequest = {
+  operator?: OperationRequest,
   id?: Any,
   name?: Any & Like,
   is_schedule_active?: Equals,
   work_queue_name?: Any,
 }
 
-type BlockTypeFilter = {
+export type UnionFilterRequest<T> = {
+  flows?: FlowFilterRequest,
+  flow_runs?: FlowRunFilterRequest,
+  task_runs?: TaskRunFilterRequest,
+  deployments?: DeploymentFilterRequest,
+  sort?: T,
+  offset?: number,
+  limit?: number,
+}
+
+export type BlockTypeFilterRequest = {
   name?: Like,
   slug?: Any,
 }
 
-type BlockSchemaFilter = {
-  operator?: Operation,
+export type BlockSchemaFilterRequest = {
+  operator?: OperationRequest,
   block_type_id?: Any,
   block_capabilities?: All,
   id?: Any,
   version?: Any,
 }
 
-type BlockDocumentFilter = {
-  operator?: Operation,
+export type BlockDocumentFilterRequest = {
+  operator?: OperationRequest,
   id?: Any,
   is_anonymous?: Equals,
   block_type_id?: Any,
   name?: Any,
 }
 
-export type FlowsFilterRequest = {
-  flows?: FlowFilter,
-  flow_runs?: FlowRunFilter,
-  task_runs?: TaskRunFilter,
-  deployments?: DeploymentFilter,
-  sort?: FlowSortValues,
-  offset?: number,
-  limit?: number,
-}
-
-export type FlowRunsFilterRequest = {
-  flows?: FlowFilter,
-  flow_runs?: FlowRunFilter,
-  task_runs?: TaskRunFilter,
-  deployments?: DeploymentFilter,
-  sort?: FlowRunSortValues,
-  offset?: number,
-  limit?: number,
-}
-
-export type TaskRunsFilterRequest = {
-  flows?: FlowFilter,
-  flow_runs?: FlowRunFilter,
-  task_runs?: TaskRunFilter,
-  deployments?: DeploymentFilter,
-  sort?: TaskRunSortValues,
-  offset?: number,
-  limit?: number,
-}
-
-export type DeploymentsFilterRequest = {
-  flows?: FlowFilter,
-  flow_runs?: FlowRunFilter,
-  task_runs?: TaskRunFilter,
-  deployments?: DeploymentFilter,
-  sort?: DeploymentSortValues,
-  offset?: number,
-  limit?: number,
-}
+export type FlowsFilterRequest = UnionFilterRequest<FlowSortValues>
+export type FlowRunsFilterRequest = UnionFilterRequest<FlowRunSortValues>
+export type TaskRunsFilterRequest = UnionFilterRequest<TaskRunSortValues>
+export type DeploymentsFilterRequest = UnionFilterRequest<DeploymentSortValues>
 
 export type NotificationsFilterRequest = {
   flow_run_notification_policy_filter?: {
@@ -149,7 +125,7 @@ export type SavedSearchesFilterRequest = {
 
 export type LogsFilterRequest = {
   logs?: {
-    operator?: Operation,
+    operator?: OperationRequest,
     level?: GreaterThan & LessThan,
     timestamp?: Before & After,
     flow_run_id?: Any,
@@ -166,22 +142,22 @@ export type ConcurrencyLimitsFilterRequest = {
 }
 
 export type BlockTypesFilterRequest = {
-  block_types?: BlockTypeFilter,
-  block_schemas?: BlockSchemaFilter,
+  block_types?: BlockTypeFilterRequest,
+  block_schemas?: BlockSchemaFilterRequest,
   offset?: number,
   limit?: number,
 }
 
 export type BlockSchemasFilterRequest = {
-  block_schemas?: BlockSchemaFilter,
+  block_schemas?: BlockSchemaFilterRequest,
   offset?: number,
   limit?: number,
 }
 
 export type BlockDocumentsFilterRequest = {
-  block_documents?: BlockDocumentFilter,
-  block_types?: BlockTypeFilter,
-  block_schemas?: BlockSchemaFilter,
+  block_documents?: BlockDocumentFilterRequest,
+  block_types?: BlockTypeFilterRequest,
+  block_schemas?: BlockSchemaFilterRequest,
   include_secrets?: boolean,
   offset?: number,
   limit?: number,
@@ -189,7 +165,7 @@ export type BlockDocumentsFilterRequest = {
 
 export type WorkQueuesFilterRequest = {
   work_queues?: {
-    operator?: Operation,
+    operator?: OperationRequest,
     name?: Any & StartsWith,
   },
   offset?: number,
