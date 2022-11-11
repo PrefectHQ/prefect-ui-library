@@ -2,6 +2,8 @@
   <div class="flow-run-logs">
     <div class="flow-run-logs__search">
       <LogLevelSelect v-model:selected="logLevel" />
+
+      <LogsSort v-model:selected="logsSort" />
     </div>
     <LogsContainer :logs="logs" @bottom="logsSubscription.loadMore">
       <template #empty>
@@ -35,6 +37,7 @@
 <script lang="ts" setup>
   import { ref, computed } from 'vue'
   import LogLevelSelect from './LogLevelSelect.vue'
+  import LogsSort from './LogsSort.vue'
   import LogsContainer from '@/components/LogsContainer.vue'
   import { useWorkspaceApi } from '@/compositions'
   import { usePaginatedSubscription } from '@/compositions/usePaginatedSubscription'
@@ -76,5 +79,6 @@
   justify-end
   items-center
   mb-4
+  gap-2
 }
 </style>
