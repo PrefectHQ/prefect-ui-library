@@ -9,7 +9,7 @@ npm i @prefecthq/orion-design --save --save-exact
 ## Demo
 https://orion-design.netlify.app/
 
-To run locally for devlopment you can use `npm run serve` and go to http://localhost:3000/
+To run locally for devlopment you can use `npm run serve` and go to the url outputted to the console.
 
 ## Developing with Prefect Orion-UI
 
