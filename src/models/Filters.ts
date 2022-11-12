@@ -2,16 +2,20 @@ import { FlowSortValues, FlowRunSortValues, TaskRunSortValues, DeploymentSortVal
 
 export type Operation = 'and' | 'or'
 
+export function isOperation(value: string): value is Operation {
+  return ['and', 'or'].includes(value)
+}
+
 export type TagFilter = {
   operator?: Operation,
-  name: string | string[],
-  null: boolean,
+  name?: string | string[],
+  isNull?: boolean,
 }
 
 export type StateFilter = {
-  operator: Operation,
-  type: string | string[],
-  name: string | string[],
+  operator?: Operation,
+  type?: string | string[],
+  name?: string | string[],
 }
 
 export type FlowFilter = {
@@ -71,7 +75,8 @@ export type DeploymentFilter = {
   workQueueName?: string | string[],
 }
 
-export type UnionFilter<T> = {
+export type UnionFilterSort = FlowSortValues | FlowRunSortValues | TaskRunSortValues | DeploymentSortValues
+export type UnionFilter<T extends UnionFilterSort = UnionFilterSort> = {
   flows?: FlowFilter,
   flowRuns?: FlowRunFilter,
   taskRuns?: TaskRunFilter,
