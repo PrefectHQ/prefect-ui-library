@@ -1,12 +1,13 @@
 import { useRouteQueryParam } from '@prefecthq/vue-compositions'
 import { Ref, ref, reactive, computed } from 'vue'
 import { BlockDocumentFilter, BlockSchemaFilter, BlockTypeFilter, DeploymentFilter, DeploymentsFilter, FlowFilter, FlowRunFilter, FlowRunsFilter, FlowsFilter, isOperation, Operation, StateFilter, TagFilter, TaskRunFilter, TaskRunsFilter, UnionFilter, UnionFilterSort } from '@/models/Filters'
+import { deploymentSortValues, flowRunSortValues, flowSortValues, taskRunSortValues } from '@/types/SortOptionTypes'
 
 // todo: useRouteQueryParam returns an empty string. Is that fine? Or do these methods need to return undefined same as the non route versions
 
-type UseFilter<T extends Record<string, unknown>> = {
+type UseFilter<T extends Record<string, unknown>> = Required<{
   [Property in keyof T]: NonNullable<T[Property]> extends Record<string, unknown> ? UseFilter<NonNullable<T[Property]>> | undefined : Ref<T[Property]>
-} & { filter: T }
+}> & { filter: T }
 
 function withPrefix(prefix: string | undefined, value: string): string {
   if (prefix) {
@@ -29,8 +30,9 @@ function useWithPrefix(prefix?: string) {
     useNumber: (param: string, defaultValue?: number) => useNumberQueryParam(prefixed(param), defaultValue),
     useOperation: (param: string, defaultValue?: Operation) => useOperationQueryParam(prefixed(param), defaultValue),
     useDate: (param: string, defaultValue?: Date) => useDateQueryParam(prefixed(param), defaultValue),
-    useAny: (param: string, defaultValue: string | string[] = '') => useRouteQueryParam(prefixed(param), defaultValue),
+    useAny: (param: string, defaultValue: string | string[] = '') => useRouteQueryParam(prefixed(param), defaultValue as string),
     useLike: (param: string, defaultValue: string = '') => useRouteQueryParam(prefixed(param), defaultValue),
+    useSort: <T extends UnionFilterSort>(sorts: Readonly<T[]>, param: string, defaultValue?: T) => useSortQueryParam(sorts, prefixed(param), defaultValue),
     useStateFilter: (prefix: string) => useStateFilterFromRoute(prefixed(prefix)),
     useTagFilter: (prefix: string) => useTagFilterFromRoute(prefixed(prefix)),
     useFlowFilter: (prefix: string) => useFlowFilterFromRoute(prefixed(prefix)),
@@ -38,6 +40,23 @@ function useWithPrefix(prefix?: string) {
     useTaskRunFilter: (prefix: string) => useTaskRunFilterFromRoute(prefixed(prefix)),
     useDeploymentFilter: (prefix: string) => useDeploymentFilterFromRoute(prefixed(prefix)),
   }
+}
+
+function useSortQueryParam<T extends UnionFilterSort>(sorts: Readonly<T[]>, param: string, defaultValue?: T): Ref<T | undefined> {
+  const valueRef = useRouteQueryParam(param, defaultValue ?? '')
+
+  return computed({
+    get() {
+      if (sorts.includes(valueRef.value as T)) {
+        return valueRef.value as T
+      }
+
+      return defaultValue
+    },
+    set(value: T | undefined) {
+      valueRef.value = value as string
+    },
+  })
 }
 
 function useBooleanQueryParam(param: string, defaultValue: boolean = false): Ref<boolean> {
@@ -493,6 +512,7 @@ export function useDeploymentFilter(): UseFilter<DeploymentFilter> {
     name,
     nameLike,
     isScheduleActive,
+    workQueueName,
     filter,
   }
 }
@@ -689,14 +709,13 @@ export const useFlowRunsFilter = useUnionFilter<FlowRunsFilter>()
 export const useTaskRunsFilter = useUnionFilter<TaskRunsFilter>()
 export const useDeploymentsFilter = useUnionFilter<DeploymentsFilter>()
 
-export function useUnionFilterFromRoute<T extends UnionFilter>(prefix?: string): UseFilter<T> {
-  const { useFlowFilter, useFlowRunFilter, useTaskRunFilter, useDeploymentFilter, useNumber } = useWithPrefix(prefix)
+export function useUnionFilterFromRoute<T extends UnionFilter>(sorts: Readonly<NonNullable<T['sort']>[]>, prefix?: string): UseFilter<T> {
+  const { useFlowFilter, useFlowRunFilter, useTaskRunFilter, useDeploymentFilter, useNumber, useSort } = useWithPrefix(prefix)
   const flows = useFlowFilter('flows')
   const flowRuns = useFlowRunFilter('flowRuns')
   const taskRuns = useTaskRunFilter('taskRuns')
   const deployments = useDeploymentFilter('deployments')
-  // todo: type safe unions?
-  const sort = ref<T['sort']>()
+  const sort = useSort(sorts, 'sort')
   const offset = useNumber('offset')
   const limit = useNumber('limit')
   const filter = reactive({
@@ -721,7 +740,7 @@ export function useUnionFilterFromRoute<T extends UnionFilter>(prefix?: string):
   } as UseFilter<T>
 }
 
-export const useFlowsFilterFromRoute = useUnionFilterFromRoute<FlowsFilter>()
-export const useFlowRunsFilterFromRoute = useUnionFilterFromRoute<FlowRunsFilter>()
-export const useTaskRunsFilterFromRoute = useUnionFilterFromRoute<TaskRunsFilter>()
-export const useDeploymentsFilterFromRoute = useUnionFilterFromRoute<DeploymentsFilter>()
+export const useFlowsFilterFromRoute = (): UseFilter<FlowsFilter> => useUnionFilterFromRoute<FlowsFilter>(flowSortValues)
+export const useFlowRunsFilterFromRoute = (): UseFilter<FlowRunsFilter> => useUnionFilterFromRoute<FlowRunsFilter>(flowRunSortValues)
+export const useTaskRunsFilterFromRoute = (): UseFilter<TaskRunsFilter> => useUnionFilterFromRoute<TaskRunsFilter>(taskRunSortValues)
+export const useDeploymentsFilterFromRoute = (): UseFilter<DeploymentsFilter> => useUnionFilterFromRoute<DeploymentsFilter>(deploymentSortValues)
