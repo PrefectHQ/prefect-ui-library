@@ -31,20 +31,19 @@
   import { ref, h } from 'vue'
   import { useRouter } from 'vue-router'
   import ToastFlowRunCreate from './ToastFlowRunCreate.vue'
+  import { useWorkspaceApi } from '@/compositions'
   import { localization } from '@/localization'
   import { Deployment } from '@/models'
   import { flowRunRouteKey, flowRunCreateRouteKey } from '@/router'
-  import { deploymentsApiKey } from '@/services/DeploymentsApi'
   import { inject } from '@/utilities'
 
   const props = defineProps<{
     deployment: Deployment,
   }>()
 
+  const api = useWorkspaceApi()
   const popOver = ref<typeof PPopOver>()
   const runButton = ref<typeof PButton>()
-
-  const deploymentsApi = inject(deploymentsApiKey)
   const loading = ref(false)
 
   const router = useRouter()
@@ -71,7 +70,7 @@
     loading.value = true
 
     try {
-      const flowRun = await deploymentsApi.createDeploymentFlowRun(props.deployment.id, {
+      const flowRun = await api.deployments.createDeploymentFlowRun(props.deployment.id, {
         state: {
           type: 'scheduled',
           message: 'Run from the Prefect UI with defaults',

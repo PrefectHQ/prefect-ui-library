@@ -73,4 +73,16 @@ export class Deployment implements IDeployment {
   public get deprecated(): boolean {
     return (this.manifestPath === '' || this.manifestPath === null) && (this.entrypoint === '' || this.entrypoint === null)
   }
+
+  public get appliedBy(): string | null {
+    if (this.updatedBy) {
+      return this.updatedBy.displayValue
+    }
+
+    if (this.createdBy) {
+      return this.createdBy.displayValue
+    }
+
+    return null
+  }
 }

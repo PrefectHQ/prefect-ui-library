@@ -14,10 +14,8 @@
   import { showToast } from '@prefecthq/prefect-design'
   import { computed } from 'vue'
   import ConfirmDeleteModal from '@/components/ConfirmDeleteModal.vue'
-  import { useShowModal } from '@/compositions'
+  import { useShowModal, useWorkspaceApi } from '@/compositions'
   import { localization } from '@/localization'
-  import { flowRunsApiKey  } from '@/services'
-  import {  inject } from '@/utilities'
 
   defineProps<{
     selected: string[],
@@ -29,7 +27,7 @@
 
   const { showModal, open, close } = useShowModal()
 
-  const flowRunsApi = inject(flowRunsApiKey)
+  const api = useWorkspaceApi()
 
   const deleteFlowRuns = async (flowRuns: string[]): Promise<void> => {
     const toastMessage = computed(() => {
@@ -42,7 +40,7 @@
     close()
 
     try {
-      const deleteFlowRuns = flowRuns.map(flowRunsApi.deleteFlowRun)
+      const deleteFlowRuns = flowRuns.map(api.flowRuns.deleteFlowRun)
       await Promise.all(deleteFlowRuns)
 
       showToast(toastMessage, 'success')

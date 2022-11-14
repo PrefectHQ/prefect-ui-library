@@ -1,13 +1,10 @@
 import { randomAny } from './any'
 import { randomBlockDocument } from './blockDocument'
 import { randomBlockDocumentData } from './blockDocumentData'
-import { blockDocumentsApiMockFactory } from './blockDocumentsApi'
 import { randomBlockSchema } from './blockSchema'
 import { randomBlockSchemaCapabilities } from './blockSchemaCapabilities'
 import { randomBlockSchemaCapability } from './blockSchemaCapability'
-import { blockSchemasApiFactory } from './blockSchemasApi'
 import { randomBlockType } from './blockType'
-import { blockTypesApiFactory } from './blockTypesApi'
 import { randomBlockTypeSnippet } from './blockTypeSnippet'
 import { randomBoolean } from './boolean'
 import { randomCreatedOrUpdatedBy } from './createdOrUpdatedBy'
@@ -44,13 +41,10 @@ export const mocks = {
   any: randomAny,
   blockDocument: randomBlockDocument,
   blockDocumentData: randomBlockDocumentData,
-  blockDocumentsApi: blockDocumentsApiMockFactory,
   blockSchema: randomBlockSchema,
   blockSchemaCapabilities: randomBlockSchemaCapabilities,
   blockSchemaCapability: randomBlockSchemaCapability,
-  blockSchemasApi: blockSchemasApiFactory,
   blockType: randomBlockType,
-  blockTypesApi: blockTypesApiFactory,
   boolean: randomBoolean,
   char: randomChar,
   createdOrUpdatedBy: randomCreatedOrUpdatedBy,

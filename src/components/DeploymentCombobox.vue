@@ -10,8 +10,7 @@
   import { PCombobox, SelectOption } from '@prefecthq/prefect-design'
   import { useSubscription } from '@prefecthq/vue-compositions'
   import { computed } from 'vue'
-  import { deploymentsApiKey } from '@/services/DeploymentsApi'
-  import { inject } from '@/utilities/inject'
+  import { useWorkspaceApi } from '@/compositions'
 
   const props = defineProps<{
     selected: string | string[] | null | undefined,
@@ -39,8 +38,8 @@
     },
   })
 
-  const deploymentsApi = inject(deploymentsApiKey)
-  const deploymentsSubscription = useSubscription(deploymentsApi.getDeployments, [{}])
+  const api = useWorkspaceApi()
+  const deploymentsSubscription = useSubscription(api.deployments.getDeployments, [{}])
   const deployments = computed(() => deploymentsSubscription.response ?? [])
   const options = computed<SelectOption[]>(() => deployments.value.map(deployment => ({
     value: deployment.id,

@@ -28,11 +28,11 @@
   import { RouterLink } from 'vue-router'
   import ConfirmDeleteModal from '@/components/ConfirmDeleteModal.vue'
   import CopyOverflowMenuItem from '@/components/CopyOverflowMenuItem.vue'
+  import { useWorkspaceApi } from '@/compositions'
   import { useCan } from '@/compositions/useCan'
   import { useShowModal } from '@/compositions/useShowModal'
   import { WorkQueue } from '@/models'
   import { editQueueRouteKey } from '@/router'
-  import { workQueuesApiKey } from '@/services/WorkQueuesApi'
   import { inject, deleteItem } from '@/utilities'
 
   defineProps<{
@@ -43,15 +43,15 @@
     (event: 'delete', value: string): void,
   }>()
 
+  const api = useWorkspaceApi()
   const { showModal, open, close } = useShowModal()
 
-  const workQueuesApi = inject(workQueuesApiKey)
   const editQueueRoute = inject(editQueueRouteKey)
   const can = useCan()
 
   const deleteWorkQueue = async (id: string): Promise<void> => {
     close()
-    await deleteItem(id, workQueuesApi.deleteWorkQueue, 'Work queue')
+    await deleteItem(id, api.workQueues.deleteWorkQueue, 'Work queue')
     emits('delete', id)
   }
 </script>

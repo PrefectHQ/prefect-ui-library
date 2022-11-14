@@ -25,14 +25,12 @@
   import { computed, onMounted, ref } from 'vue'
   import { ResultsCount, StateSelect, FlowRunsSort, FlowRunList } from '@/components'
   import DeleteFlowRunsButton from '@/components/DeleteFlowRunsButton.vue'
+  import { useWorkspaceApi } from '@/compositions'
   import { useCan } from '@/compositions/useCan'
   import { usePaginatedSubscription } from '@/compositions/usePaginatedSubscription'
   import { StateType } from '@/models'
-  import { flowRunsApiKey, mapper } from '@/services'
+  import { mapper } from '@/services'
   import { FlowRunSortValues, UnionFilters } from '@/types'
-  import { inject } from '@/utilities'
-
-  const flowRunsApi = inject(flowRunsApiKey)
 
   type StateTypeOrLate = StateType | 'late'
 
@@ -47,6 +45,7 @@
   }>()
 
   const can = useCan()
+  const api = useWorkspaceApi()
   const selectedFlowRuns = ref<string[]>([])
   const state = ref<StateTypeOrLate[]>(props.states ?? [])
   const stateWithoutLate = computed(()=> state.value.filter(state => state !== 'late') as StateType[])
@@ -91,10 +90,10 @@
     return { ...runFilter, flow_runs: { ...flowRunsFilter } }
   })
 
-  const flowRunCountSubscription = useSubscription(flowRunsApi.getFlowRunsCount, [filter], { interval: 30000 })
+  const flowRunCountSubscription = useSubscription(api.flowRuns.getFlowRunsCount, [filter], { interval: 30000 })
   const flowRunCount = computed(() => flowRunCountSubscription.response)
 
-  const flowRunsSubscription = usePaginatedSubscription(flowRunsApi.getFlowRuns, [filter], { interval: 30000 })
+  const flowRunsSubscription = usePaginatedSubscription(api.flowRuns.getFlowRuns, [filter], { interval: 30000 })
   const flowRuns = computed(() => flowRunsSubscription.response ?? [])
 
   const empty = computed(() => flowRunsSubscription.executed && flowRuns.value.length === 0)

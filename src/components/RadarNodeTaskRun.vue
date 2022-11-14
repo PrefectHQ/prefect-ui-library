@@ -28,67 +28,50 @@
   import DurationIconText from './DurationIconText.vue'
   import ORadarNode from './RadarNode.vue'
   import StateIcon from './StateIcon.vue'
+  import { useWorkspaceApi } from '@/compositions'
   import { TaskRun, GraphNode, StateType } from '@/models'
   import { taskRunRouteKey } from '@/router/routes'
-  import { taskRunsApiKey } from '@/services/TaskRunsApi'
   import { inject } from '@/utilities/inject'
 
   const props = defineProps<{
     graphNode: GraphNode,
   }>()
 
-  const taskRunsApi = inject(taskRunsApiKey)
-  const subscription = useSubscription(taskRunsApi.getTaskRun, [props.graphNode.id])
-
-
-  const taskRun = computed<TaskRun | undefined>(() => {
-    return subscription.response
-  })
-
+  const api = useWorkspaceApi()
   const taskRunRoute = inject(taskRunRouteKey)
+
+  const subscription = useSubscription(api.taskRuns.getTaskRun, [props.graphNode.id])
+  const taskRun = computed<TaskRun | undefined>(() => subscription.response)
 
   const taskRunName = computed(() => taskRun.value?.name)
 
-  const state = computed(() => {
-    return taskRun.value?.state ?? props.graphNode.state
-  })
+  const state = computed(() => taskRun.value?.state ?? props.graphNode.state)
 
-  const stateType = computed<StateType | undefined>(() => {
-    return state.value?.type
-  })
+  const stateType = computed<StateType | undefined>(() => state.value?.type)
 
-  const stateName = computed<string | undefined>(() => {
-    return state.value?.name
-  })
+  const stateName = computed<string | undefined>(() => state.value?.name)
 
-  const duration = computed<number>(() => {
-    return taskRun.value?.duration ?? 0
-  })
+  const duration = computed<number>(() => taskRun.value?.duration ?? 0)
 
-  const classes = computed(() => {
-    return {
-      asideClass: [`state--${stateType.value}`, {}],
-    }
-  })
+  const classes = computed(() => ({
+    asideClass: [`state--${stateType.value}`, {}],
+  }))
 </script>
 
 <style>
-.radar-node-task-run {
-  @apply
+.radar-node-task-run { @apply
   w-[18rem]
   box-border
 }
 
-.radar-node-task-run__content {
-  @apply
+.radar-node-task-run__content { @apply
   overflow-hidden
   overflow-ellipsis
   whitespace-nowrap
   max-w-[90%]
 }
 
-.radar-node-task-run__aside {
-  @apply
+.radar-node-task-run__aside { @apply
   flex
   items-center
   h-full
@@ -97,8 +80,7 @@
   rounded-bl
 }
 
-.radar-node-task-run__collapsed-badge {
-  @apply
+.radar-node-task-run__collapsed-badge { @apply
   text-xs
   text-white
   bg-slate-600

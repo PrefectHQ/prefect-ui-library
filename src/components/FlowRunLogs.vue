@@ -2,6 +2,7 @@
   <div class="flow-run-logs">
     <div class="flow-run-logs__search">
       <LogLevelSelect v-model:selected="logLevel" />
+      <LogsSort v-model:selected="logsSort" />
     </div>
     <LogsContainer :logs="logs" @bottom="logsSubscription.loadMore">
       <template #empty>
@@ -35,13 +36,13 @@
 <script lang="ts" setup>
   import { ref, computed } from 'vue'
   import LogLevelSelect from './LogLevelSelect.vue'
+  import LogsSort from './LogsSort.vue'
   import LogsContainer from '@/components/LogsContainer.vue'
+  import { useWorkspaceApi } from '@/compositions'
   import { usePaginatedSubscription } from '@/compositions/usePaginatedSubscription'
   import { FlowRun } from '@/models/FlowRun'
   import { Log, LogLevel } from '@/models/Log'
-  import { logsApiKey } from '@/services/LogsApi'
   import { LogsRequestSort, LogsRequestFilter } from '@/types/LogsRequestFilter'
-  import { inject } from '@/utilities/inject'
 
   const props = defineProps<{
     flowRun: FlowRun,
@@ -62,8 +63,8 @@
     sort: logsSort.value,
   }))
 
-  const logsApi = inject(logsApiKey)
-  const logsSubscription = usePaginatedSubscription(logsApi.getLogs, [logsFilter], { interval:  5000 })
+  const api = useWorkspaceApi()
+  const logsSubscription = usePaginatedSubscription(api.logs.getLogs, [logsFilter], { interval:  5000 })
   const logs = computed<Log[]>(() => logsSubscription.response ?? [])
 
   function clear(): void {
@@ -77,5 +78,6 @@
   justify-end
   items-center
   mb-4
+  gap-2
 }
 </style>

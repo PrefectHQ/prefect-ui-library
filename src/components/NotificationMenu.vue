@@ -28,11 +28,11 @@
 
 <script lang="ts" setup>
   import ConfirmDeleteModal from '@/components/ConfirmDeleteModal.vue'
+  import { useWorkspaceApi } from '@/compositions'
   import { useCan } from '@/compositions/useCan'
   import { useShowModal } from '@/compositions/useShowModal'
   import { Notification } from '@/models'
   import { editNotificationRouteKey } from '@/router'
-  import { notificationsApiKey } from '@/services/NotificationsApi'
   import { inject, deleteItem } from '@/utilities'
 
   defineProps<{
@@ -44,15 +44,15 @@
   }>()
 
   const can = useCan()
+  const api = useWorkspaceApi()
 
   const { showModal, open, close } = useShowModal()
 
-  const NotificationApi = inject(notificationsApiKey)
   const editNotificationRoute = inject(editNotificationRouteKey)
 
   const deleteNotification = async (id: string): Promise<void> => {
     close()
-    await deleteItem(id, NotificationApi.deleteNotification, 'Notification')
+    await deleteItem(id, api.notifications.deleteNotification, 'Notification')
     emits('delete', id)
   }
 </script>

@@ -33,71 +33,50 @@
   import FlowRouterLink from './FlowRouterLink.vue'
   import ORadarNode from './RadarNode.vue'
   import StateIcon from './StateIcon.vue'
+  import { useWorkspaceApi } from '@/compositions'
   import { FlowRun, GraphNode, StateType } from '@/models'
   import { flowRunRouteKey } from '@/router'
-  import { flowRunsApiKey } from '@/services'
   import { inject } from '@/utilities/inject'
-
-  const flowRunRoute = inject(flowRunRouteKey)
 
   const props = defineProps<{
     graphNode: GraphNode,
   }>()
 
-  const flowRunId = computed(() => {
-    return props.graphNode.state!.stateDetails!.childFlowRunId!
-  })
+  const api = useWorkspaceApi()
+  const flowRunRoute = inject(flowRunRouteKey)
 
-  const flowRunsApi = inject(flowRunsApiKey)
-  const subscription = useSubscription(flowRunsApi.getFlowRun, [flowRunId])
-
-
-  const flowRun = computed<FlowRun | undefined>(() => {
-    return subscription.response
-  })
-
+  const flowRunId = computed(() => props.graphNode.state!.stateDetails!.childFlowRunId!)
+  const subscription = useSubscription(api.flowRuns.getFlowRun, [flowRunId])
+  const flowRun = computed<FlowRun | undefined>(() => subscription.response)
   const flowRunName = computed(() => flowRun.value?.name)
 
-  const state = computed(() => {
-    return flowRun.value?.state ?? props.graphNode.state
-  })
+  const state = computed(() => flowRun.value?.state ?? props.graphNode.state)
 
-  const stateType = computed<StateType | undefined>(() => {
-    return state.value?.type
-  })
+  const stateType = computed<StateType | undefined>(() => state.value?.type)
 
-  const stateName = computed<string | undefined>(() => {
-    return state.value?.name
-  })
+  const stateName = computed<string | undefined>(() => state.value?.name)
 
-  const duration = computed(() => {
-    return flowRun.value?.duration ?? 0
-  })
+  const duration = computed(() => flowRun.value?.duration ?? 0)
 
-  const classes = computed(() => {
-    return {
-      asideClass: [`state--${stateType.value}`, {}],
-    }
-  })
+  const classes = computed(() => ({
+    asideClass: [`state--${stateType.value}`, {}],
+  }))
 </script>
 
 <style>
-.radar-node-sub-flow-run {
-  @apply
+.radar-node-sub-flow-run { @apply
   w-[20rem]
   min-h-[120px]
 }
 
-.radar-node-sub-flow-run__content {
-  @apply
+.radar-node-sub-flow-run__content { @apply
   overflow-hidden
   overflow-ellipsis
   whitespace-nowrap
   max-w-[90%]
 }
 
-.radar-node-sub-flow-run__aside {
-  @apply
+.radar-node-sub-flow-run__aside { @apply
   flex
   items-center
   h-full
@@ -106,8 +85,7 @@
   rounded-bl
 }
 
-.radar-node-sub-flow-run__collapsed-badge {
-  @apply
+.radar-node-sub-flow-run__collapsed-badge { @apply
   text-xs
   text-white
   bg-slate-600

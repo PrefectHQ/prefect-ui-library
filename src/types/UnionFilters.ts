@@ -64,6 +64,7 @@ export interface FlowRunFilter extends Filter {
   expected_start_time?: TimeFrameFilter,
   next_scheduled_start_time?: TimeFrameFilter,
   parent_task_run_id?: any_ & is_null_,
+  task_runs?: TaskRunFilter,
 }
 
 export interface TaskRunFilter extends Filter {

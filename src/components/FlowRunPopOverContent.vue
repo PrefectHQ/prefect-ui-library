@@ -39,17 +39,17 @@
   import FlowRouterLink from './FlowRouterLink.vue'
   import StateBadge from './StateBadge.vue'
   import FlowRunStartTime from '@/components/FlowRunStartTime.vue'
+  import { useWorkspaceApi } from '@/compositions'
   import { flowRunRouteKey } from '@/router'
-  import { flowRunsApiKey } from '@/services/FlowRunsApi'
   import { inject } from '@/utilities/inject'
 
   const props = defineProps<{
     flowRunId: string,
   }>()
 
+  const api = useWorkspaceApi()
   const flowRunRoute = inject(flowRunRouteKey)
-  const flowsRunApi = inject(flowRunsApiKey)
-  const flowRunSubscription = useSubscription(flowsRunApi.getFlowRun, [props.flowRunId])
+  const flowRunSubscription = useSubscription(api.flowRuns.getFlowRun, [props.flowRunId])
   const flowRun = computed(() => flowRunSubscription.response)
   const tags = computed(() => flowRun.value?.tags ?? [])
 </script>

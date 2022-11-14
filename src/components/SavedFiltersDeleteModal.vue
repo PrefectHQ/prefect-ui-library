@@ -12,10 +12,9 @@
   import { useSubscription } from '@prefecthq/vue-compositions'
   import { computed } from 'vue'
   import ConfirmDeleteModal from '@/components/ConfirmDeleteModal.vue'
+  import { useWorkspaceApi } from '@/compositions'
   import { localization } from '@/localization'
   import { SavedSearch } from '@/models/SavedSearch'
-  import { workspaceApiKey } from '@/utilities/api'
-  import { inject } from '@/utilities/inject'
 
   const props = defineProps<{
     showModal: boolean,
@@ -36,7 +35,7 @@
     },
   })
 
-  const api = inject(workspaceApiKey)
+  const api = useWorkspaceApi()
   const savedSearchesSubscription = useSubscription(api.savedSearches.getSavedSearches)
 
   async function deleteFilter(): Promise<void> {

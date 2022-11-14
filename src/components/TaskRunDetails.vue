@@ -1,12 +1,28 @@
 <template>
   <div class="task-run-details">
-    <p-key-value label="Task Run ID" :value="taskRun.id" :alternate="alternate" />
+    <StateBadge :state="taskRun.state" />
 
-    <p-key-value label="Flow Run ID" :value="taskRun.flowRunId" :alternate="alternate" />
+    <p-key-value label="Flow Run" :alternate="alternate">
+      <template #value>
+        <FlowRunIconText :flow-run-id="taskRun.flowRunId" />
+      </template>
+    </p-key-value>
+
+    <p-key-value label="Duration" :alternate="alternate">
+      <template #value>
+        <DurationIconText :duration="taskRun.duration" />
+      </template>
+    </p-key-value>
+
+    <p-divider />
 
     <p-key-value label="Created" :value="formatDateTimeNumeric(taskRun.created)" :alternate="alternate" />
 
-    <p-key-value label="Updated" :value="formatDateTimeNumeric(taskRun.updated)" :alternate="alternate" />
+    <p-key-value label="Last Updated" :value="formatDateTimeNumeric(taskRun.updated)" :alternate="alternate" />
+
+    <p-key-value label="Task Run ID" :value="taskRun.id" :alternate="alternate" />
+
+    <p-key-value label="Flow Run ID" :value="taskRun.flowRunId" :alternate="alternate" />
 
     <p-key-value label="Task Version" :value="taskRun.taskVersion" :alternate="alternate" />
 
@@ -41,6 +57,9 @@
 
 <script lang="ts" setup>
   import { PKeyValue, PTags } from '@prefecthq/prefect-design'
+  import DurationIconText from './DurationIconText.vue'
+  import FlowRunIconText from './FlowRunIconText.vue'
+  import StateBadge from './StateBadge.vue'
   import { TaskRun } from '@/models/TaskRun'
   import { formatDateTimeNumeric } from '@/utilities/dates'
   import { secondsToApproximateString } from '@/utilities/seconds'
@@ -56,7 +75,7 @@
     @apply
     flex
     flex-col
-    gap-2
+    gap-3
     items-start
   }
 
