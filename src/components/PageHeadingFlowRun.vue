@@ -1,5 +1,8 @@
 <template>
   <page-heading class="page-heading-flow-run" :crumbs="crumbs">
+    <template #after-crumbs>
+      <StateBadge :state="flowRun.state" />
+    </template>
     <template #actions>
       <FlowRunRetryButton :flow-run="flowRun" />
       <p-icon-button-menu>
@@ -15,21 +18,13 @@
         @delete="deleteFlowRun(flowRun.id)"
       />
     </template>
-    <slot>
-      <div class="page-heading-flow-run__header-meta">
-        <StateBadge :state="flowRun.state" />
-        <DurationIconText :duration="flowRun.duration" />
-        <FlowIconText :flow-id="flowRun.flowId" />
-        <FlowRunStartTime :flow-run="flowRun" />
-      </div>
-    </slot>
   </page-heading>
 </template>
 
 <script lang="ts" setup>
   import { PIconButtonMenu } from '@prefecthq/prefect-design'
   import { computed } from 'vue'
-  import { StateBadge, PageHeading, DurationIconText, FlowIconText, CopyOverflowMenuItem, ConfirmDeleteModal, FlowRunStartTime, FlowRunRetryButton } from '@/components'
+  import { StateBadge, PageHeading, CopyOverflowMenuItem, ConfirmDeleteModal, FlowRunRetryButton } from '@/components'
   import { useWorkspaceApi } from '@/compositions'
   import { useCan } from '@/compositions/useCan'
   import { useShowModal } from '@/compositions/useShowModal'
@@ -59,13 +54,3 @@
     emit('delete', id)
   }
 </script>
-
-<style>
-.page-heading-flow-run__header-meta {
-  @apply
-  flex
-  gap-2
-  items-center
-  xl:hidden
-}
-</style>
