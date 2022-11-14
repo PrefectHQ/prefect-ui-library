@@ -1,6 +1,6 @@
 import { SchemaResolver } from './schemas'
 import { Schema, SchemaDefinitions, SchemaProperties, SchemaProperty } from '@/types/schemas'
-import { isNumberArray, isStringArray, mapEntries } from '@/utilities'
+import { isNumberArray, isStringArray, mapValues } from '@/utilities'
 
 export const schemaDefinitionsResolver: SchemaResolver = (schema: Schema): Schema => {
   const { definitions, properties, ...rest } = schema
@@ -20,7 +20,7 @@ export function resolveSchemaPropertiesDefinitions(properties: SchemaProperties 
     return undefined
   }
 
-  return mapEntries(properties, (key, property) => resolveSchemaPropertyDefinition(property, definitions))
+  return mapValues(properties, (key, property) => resolveSchemaPropertyDefinition(property, definitions))
 }
 
 export function resolveSchemaPropertyDefinition(property: SchemaProperty | undefined, definitions: SchemaDefinitions): SchemaProperty | undefined {

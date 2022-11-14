@@ -1,6 +1,6 @@
 /* eslint-disable max-classes-per-file */
 import { asArray } from '@/utilities'
-import { mapEntries } from '@/utilities/object'
+import { mapValues } from '@/utilities/object'
 
 export class DataStoreDataNotFound extends Error {
   public constructor() {
@@ -25,7 +25,7 @@ export class KeyedDataStore<T extends { id: K }, K extends string | number | sym
   private get data(): Record<K, T> {
     const data: Record<K, T> = JSON.parse(this._data)
 
-    return mapEntries(data, (key, value) => this.hydrate(value))
+    return mapValues(data, (key, value) => this.hydrate(value))
   }
 
   private set data(value: Record<K, T>) {

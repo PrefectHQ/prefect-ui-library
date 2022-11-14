@@ -1,13 +1,13 @@
 import { BlockDocumentReferencesResponse, BlockDocumentReferenceValue } from '@/models'
 import { isSchemaValues, SchemaValues } from '@/types/schemas'
-import { mapEntries } from '@/utilities'
+import { mapValues } from '@/utilities'
 
 export function schemaValuesBlockReferencesResolver(values: SchemaValues, references: BlockDocumentReferencesResponse | undefined): SchemaValues {
   if (references === undefined || Object.keys(references).length === 0) {
     return values
   }
 
-  return mapEntries(values, (key, value) => {
+  return mapValues(values, (key, value) => {
     const reference = references[key]
 
     if (reference) {

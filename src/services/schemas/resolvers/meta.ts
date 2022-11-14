@@ -2,7 +2,7 @@ import { markRaw } from 'vue'
 import { schemaPropertyServiceFactory } from '../properties'
 import { SchemaResolver } from './schemas'
 import { Schema, SchemaProperties, SchemaProperty } from '@/types/schemas'
-import { mapEntries } from '@/utilities'
+import { mapValues } from '@/utilities'
 
 export const schemaMetaResolver: SchemaResolver = (schema: Schema): Schema => {
   return resolveSchemaPropertyMeta(schema, false, 0)
@@ -11,7 +11,7 @@ export const schemaMetaResolver: SchemaResolver = (schema: Schema): Schema => {
 type PropertiesSource = Pick<SchemaProperty, 'properties' | 'required'>
 
 function resolveSchemaPropertiesMeta({ required = [], properties = {} }: PropertiesSource, level: number): SchemaProperties {
-  return mapEntries(properties, (key, property) => {
+  return mapValues(properties, (key, property) => {
     const propertyIsRequired = required.includes(key)
 
     return resolveSchemaPropertyMeta(property!, propertyIsRequired, level)

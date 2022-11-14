@@ -45,14 +45,46 @@ export function hasProperty<T extends Record<string | symbol, unknown>>(needle: 
   return (typeof property === 'string' || typeof property === 'symbol') && property in needle
 }
 
-export type MapEntriesCallback<K, V, R> = (key: K, value: V) => R
+export type ObjectKey = string | number | symbol
 
-export function mapEntries<K extends string | number | symbol, V, R>(object: Record<K, V>, callback: MapEntriesCallback<K, V, R>): Record<K, R> {
+export type MapKeysCallback<PreviousKey extends ObjectKey, Value, NewKey extends ObjectKey> = (key: PreviousKey, value: Value) => NewKey
+
+export function mapKeys<K extends ObjectKey, V, Key extends ObjectKey>(object: Record<K, V>, callback: MapKeysCallback<K, V, Key>): Record<Key, V> {
   const entries = Object.entries(object) as [K, V][]
-  const result = {} as Record<K, R>
+  const result = {} as Record<Key, V>
+
+  return entries.reduce((result, [key, value]) => {
+    const newKey = callback(key, value)
+
+    result[newKey] = object[key]
+
+    return result
+  }, result)
+}
+
+export type MapValuesCallback<Key extends ObjectKey, PreviousValue, NewValue> = (key: Key, value: PreviousValue) => NewValue
+
+export function mapValues<Key extends ObjectKey, PreviousValue, NewValue>(object: Record<Key, PreviousValue>, callback: MapValuesCallback<Key, PreviousValue, NewValue>): Record<Key, NewValue> {
+  const entries = Object.entries(object) as [Key, PreviousValue][]
+  const result = {} as Record<Key, NewValue>
 
   return entries.reduce((result, [key, value]) => {
     result[key] = callback(key, value)
+
+    return result
+  }, result)
+}
+
+export type MapEntriesCallback<PreviousKey extends ObjectKey, PreviousValue, NewKey extends ObjectKey, NewValue> = (key: PreviousKey, value: PreviousValue) => [NewKey, NewValue]
+
+export function mapEntries<PreviousKey extends ObjectKey, PreviousValue, NewKey extends ObjectKey, NewValue>(object: Partial<Record<PreviousKey, PreviousValue>>, callback: MapEntriesCallback<PreviousKey, PreviousValue, NewKey, NewValue>): Partial<Record<NewKey, NewValue>> {
+  const entries = Object.entries(object) as [PreviousKey, PreviousValue][]
+  const result = {} as Record<NewKey, NewValue>
+
+  return entries.reduce((result, [key, value]) => {
+    const [newKey, newValue] = callback(key, value)
+
+    result[newKey] = newValue
 
     return result
   }, result)

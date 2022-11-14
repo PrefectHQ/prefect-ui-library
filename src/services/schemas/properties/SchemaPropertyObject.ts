@@ -3,7 +3,7 @@ import { SchemaPropertyService } from './SchemaPropertyService'
 import { JsonInput } from '@/components'
 import { schemaPropertyServiceFactory } from '@/services/schemas/properties'
 import { SchemaValue, isSchemaValues, SchemaValues } from '@/types/schemas'
-import { isEmptyObject, mapEntries } from '@/utilities'
+import { isEmptyObject, mapValues } from '@/utilities'
 import { parseUnknownJson, stringifyUnknownJson } from '@/utilities/json'
 
 export class SchemaPropertyObject extends SchemaPropertyService {
@@ -46,7 +46,7 @@ export class SchemaPropertyObject extends SchemaPropertyService {
       return undefined
     }
 
-    const mapped = mapEntries(this.property.properties, (key, property) => {
+    const mapped = mapValues(this.property.properties, (key, property) => {
       const propertyValue = value[key]
       const service = schemaPropertyServiceFactory(property!, this.level + 1)
 
@@ -74,7 +74,7 @@ export class SchemaPropertyObject extends SchemaPropertyService {
     // apparently this isn't uncommon
     const parsed = (parseUnknownJson(value) ?? {}) as SchemaValues
 
-    return mapEntries(this.property.properties, (key, property) => {
+    return mapValues(this.property.properties, (key, property) => {
       const propertyValue = parsed[key]
       const service = schemaPropertyServiceFactory(property!, this.level + 1)
 
