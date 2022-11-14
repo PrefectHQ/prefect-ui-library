@@ -1,7 +1,5 @@
 <template>
   <div class="flow-run-details">
-    <StateBadge :state="flowRun.state" />
-
     <p-key-value label="Flow" :alternate="alternate">
       <template #value>
         <FlowIconText :flow-id="flowRun.flowId" />

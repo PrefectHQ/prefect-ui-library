@@ -1,7 +1,5 @@
 <template>
   <div class="task-run-details">
-    <StateBadge :state="taskRun.state" />
-
     <p-key-value label="Flow Run" :alternate="alternate">
       <template #value>
         <FlowRunIconText :flow-run-id="taskRun.flowRunId" />
