@@ -7,9 +7,7 @@
       <FlowRunRetryButton :flow-run="flowRun" />
       <p-icon-button-menu>
         <template #default>
-          <!-- 🚧 NEW CHANGE STATE MENU ITEM BUTTON 🚧 -->
           <p-overflow-menu-item v-if="showChangeStateMenuItemButton" label="Change state" @click="openChangeStateModal" />
-          <!-- 🚧 🚧 🚧 -->
           <copy-overflow-menu-item label="Copy ID" :item="flowRun.id" />
           <p-overflow-menu-item v-if="can.delete.flow_run" label="Delete" @click="openDeleteModal" />
         </template>
@@ -21,25 +19,25 @@
         :name="flowRun.name!"
         @delete="deleteFlowRun(flowRun.id)"
       />
-      <!-- 🚧 NEW CHANGE STATE MODAL 🚧 -->
+
       <ConfirmStateChangeModal
         v-model:showModal="showStateChangeModal"
         :run="flowRun"
         label="Flow Run"
         @change="changeFlowRunState"
       />
-      <!-- 🚧 🚧 🚧 -->
     </template>
   </page-heading>
 </template>
 
 <script lang="ts" setup>
-  import { PIconButtonMenu } from '@prefecthq/prefect-design'
+  import { PIconButtonMenu, showToast } from '@prefecthq/prefect-design'
   import { computed, ref } from 'vue'
   import { StateBadge, PageHeading, CopyOverflowMenuItem, ConfirmDeleteModal, FlowRunRetryButton, ConfirmStateChangeModal } from '@/components'
   import { useWorkspaceApi } from '@/compositions'
   import { useCan } from '@/compositions/useCan'
-  import { FlowRun, StateUpdate, StateUpdateDetails, terminalStateType } from '@/models'
+  import { localization } from '@/localization'
+  import { FlowRun, StateUpdateDetails, terminalStateType } from '@/models'
   import { flowRunsRouteKey } from '@/router'
   import { deleteItem, inject } from '@/utilities'
 
@@ -85,8 +83,10 @@
   const changeFlowRunState = async (values: StateUpdateDetails): Promise<void> => {
     try {
       await api.flowRuns.setFlowRunState(props.flowRun.id, { state: values })
+      showToast(localization.success.changeFlowRunState, 'success')
     } catch (error) {
       console.error(error)
+      showToast(localization.error.changeFlowRunState, 'error')
     }
   }
 </script>
