@@ -29,5 +29,9 @@
   })
 
   const timezones = Intl.supportedValuesOf('timeZone').map(timezone => ({ label: timezone, value: timezone }))
-  const options: SelectOption[] = [{ label: 'UTC', value: utcTimezone }, ...timezones]
+  const options: SelectOption[] = [
+    { label: 'Use browser default', value: null },
+    { label: 'UTC', value: utcTimezone },
+    ...timezones,
+  ]
 </script>
