@@ -1,5 +1,8 @@
 <template>
   <page-heading class="page-heading-task-run" :crumbs="crumbs">
+    <template #after-crumbs>
+      <StateBadge :state="taskRun.state" />
+    </template>
     <template #actions>
       <p-icon-button-menu>
         <template #default>
@@ -14,19 +17,13 @@
         @delete="deleteTaskRun(taskRun.id)"
       />
     </template>
-    <slot>
-      <div class="page-heading-task-run__header-meta">
-        <StateBadge :state="taskRun.state" />
-        <DurationIconText :duration="taskRun.duration" />
-      </div>
-    </slot>
   </page-heading>
 </template>
 
 <script lang="ts" setup>
   import { useSubscription } from '@prefecthq/vue-compositions'
   import { computed } from 'vue'
-  import { StateBadge, PageHeading, DurationIconText, CopyOverflowMenuItem, ConfirmDeleteModal } from '@/components'
+  import { StateBadge, PageHeading, CopyOverflowMenuItem, ConfirmDeleteModal } from '@/components'
   import { useWorkspaceApi } from '@/compositions'
   import { useCan } from '@/compositions/useCan'
   import { useShowModal } from '@/compositions/useShowModal'
@@ -58,13 +55,3 @@
     emit('delete', id)
   }
 </script>
-
-<style>
-.page-heading-task-run__header-meta {
-  @apply
-  flex
-  gap-2
-  items-center
-  xl:hidden
-}
-</style>
