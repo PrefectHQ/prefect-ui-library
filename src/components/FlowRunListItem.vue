@@ -15,7 +15,7 @@
         <StateBadge :state="flowRun.state" />
         <FlowRunStartTime :flow-run="flowRun" />
         <DurationIconText :duration="flowRun.duration" />
-        <template v-if="visible">
+        <template v-if="visible && flowRun.stateType !== 'scheduled'">
           <FlowRunTaskCount :flow-run="flowRun">
             <template #default="{ tasksCount }">
               {{ tasksCount }} task {{ toPluralString('run', tasksCount) }}
