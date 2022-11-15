@@ -57,7 +57,6 @@
   import { PKeyValue, PTags } from '@prefecthq/prefect-design'
   import DurationIconText from './DurationIconText.vue'
   import FlowRunIconText from './FlowRunIconText.vue'
-  import StateBadge from './StateBadge.vue'
   import { TaskRun } from '@/models/TaskRun'
   import { formatDateTimeNumeric } from '@/utilities/dates'
   import { secondsToApproximateString } from '@/utilities/seconds'
