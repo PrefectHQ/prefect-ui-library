@@ -51,7 +51,7 @@
     label: '',
   })
 
-  const emits = defineEmits<{
+  const emit = defineEmits<{
     (event: 'update:showModal', value: boolean): void,
     (event: 'change', value: StateUpdateDetails): void,
   }>()
@@ -61,7 +61,7 @@
       return props.showModal
     },
     set(value: boolean) {
-      emits('update:showModal', value)
+      emit('update:showModal', value)
     },
   })
 
@@ -74,7 +74,7 @@
   const { value: message } = useField<string>('message')
 
   const submit = handleSubmit(async values => {
-    emits('change', values)
+    emit('change', values)
     internalValue.value = false
   })
 
