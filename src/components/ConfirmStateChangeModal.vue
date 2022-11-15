@@ -13,8 +13,8 @@
         <p-label :label="`Current ${label} State`">
           <StateBadge :state="run.state" />
         </p-label>
-        <p-label :label="`Desired ${label} State`" :message="stateErrorMessage" :state="stateState">
-          <StateSelect v-model:selected="state" terminal-state />
+        <p-label :label="`Desired ${label} State`" :message="stateErrorMessage" :state="typeState">
+          <StateSelect v-model:selected="type" terminal-state />
         </p-label>
         <p-label label="Reason (Optional)">
           <p-text-input v-model="message" />
@@ -39,7 +39,7 @@
   import StateBadge from './StateBadge.vue'
   import StateSelect from '@/components/StateSelect.vue'
   import { useForm } from '@/compositions'
-  import { FlowRun, StateUpdateDetails, TaskRun } from '@/models'
+  import { FlowRun, StateUpdate, StateUpdateDetails, TaskRun } from '@/models'
   import { isRequired } from '@/utilities/validation'
 
 
@@ -66,11 +66,11 @@
   })
 
   const rules = {
-    state: [isRequired('State')],
+    type: [isRequired('State')],
   }
 
   const { handleSubmit, handleReset, isSubmitting } = useForm<StateUpdateDetails>()
-  const { value: state, meta: stateState, errorMessage: stateErrorMessage } = useField<string>('state', rules.state)
+  const { value: type, meta: typeState, errorMessage: stateErrorMessage } = useField<string>('type', rules.type)
   const { value: message } = useField<string>('message')
 
   const submit = handleSubmit(async values => {

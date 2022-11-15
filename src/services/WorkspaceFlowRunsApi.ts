@@ -66,9 +66,7 @@ export class WorkspaceFlowRunsApi extends WorkspaceApi implements IWorkspaceFlow
 
   public setFlowRunState(id: string, body: StateUpdate): Promise<void> {
     const requestBody = mapper.map('StateUpdate', body, 'StateUpdateRequest')
-    console.log(body)
-    const test = { type: 'FAILED', name: 'failed', message: 'testing here' }
-    return this.post(`/${id}/set_state`, [test, true])
+    return this.post(`/${id}/set_state`, { state: requestBody.state, force: true })
   }
 
   public deleteFlowRun(flowRunId: string): Promise<void> {

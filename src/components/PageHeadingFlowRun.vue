@@ -39,7 +39,7 @@
   import { StateBadge, PageHeading, CopyOverflowMenuItem, ConfirmDeleteModal, FlowRunRetryButton, ConfirmStateChangeModal } from '@/components'
   import { useWorkspaceApi } from '@/compositions'
   import { useCan } from '@/compositions/useCan'
-  import { FlowRun, StateUpdateDetails, terminalStateType } from '@/models'
+  import { FlowRun, StateUpdate, StateUpdateDetails, terminalStateType } from '@/models'
   import { flowRunsRouteKey } from '@/router'
   import { deleteItem, inject } from '@/utilities'
 
@@ -83,6 +83,10 @@
   }
 
   const changeFlowRunState = async (values: StateUpdateDetails): Promise<void> => {
-    await api.flowRuns.setFlowRunState(props.flowRun.id, { state: values })
+    try {
+      await api.flowRuns.setFlowRunState(props.flowRun.id, { state: values })
+    } catch (error) {
+      console.error(error)
+    }
   }
 </script>
