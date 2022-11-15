@@ -12,7 +12,6 @@
           <p-overflow-menu-item v-if="can.delete.flow_run" label="Delete" @click="openDeleteModal" />
         </template>
       </p-icon-button-menu>
-
       <ConfirmDeleteModal
         v-model:showModal="showDeleteModal"
         label="Flow Run"
