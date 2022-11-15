@@ -42,14 +42,13 @@
 .page-heading { @apply
   flex
   gap-2
-  items-start
-  flex-wrap
+  items-center
 }
 
 .page-heading__leading { @apply
   flex
   flex-col
-  gap-1
+  gap-2
 }
 
 .page-heading__crumbs { @apply
@@ -57,15 +56,17 @@
   items-center
   justify-start
   gap-2
+  flex-wrap
 }
 
 .page-heading__trailing { @apply
   flex-grow
   flex
   items-center
+  self-start
   gap-2
-  justify-start
-  w-full
+  justify-end
+  w-fit
   md:w-fit
   md:justify-end
 }
