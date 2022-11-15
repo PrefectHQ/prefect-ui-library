@@ -1,6 +1,6 @@
 import { MockApi } from './MockApi'
-import { TaskRun } from '@/models'
-import { IWorkspaceTaskRunsApi } from '@/services'
+import { StateUpdate, TaskRun } from '@/models'
+import { IWorkspaceTaskRunsApi, mocker } from '@/services'
 import { UnionFilters } from '@/types'
 
 export class MockWorkspaceTaskRunsApi extends MockApi implements IWorkspaceTaskRunsApi {
@@ -23,6 +23,14 @@ export class MockWorkspaceTaskRunsApi extends MockApi implements IWorkspaceTaskR
     }
 
     return await this.taskRuns.count()
+  }
+
+  public async setTaskRunState(taskRunId: string, body: StateUpdate): Promise<void> {
+    const taskRun = this.taskRuns.get(taskRunId)
+    taskRun.state = mocker.create('state', [body.state])
+    taskRun.stateType = taskRun.state.type
+
+    return await Promise.resolve()
   }
 
   public async deleteTaskRun(taskRunId: string): Promise<void> {
