@@ -114,7 +114,7 @@ export class SchemaPropertyString extends SchemaPropertyService {
   }
 
   private responseDateTimeValue(value: SchemaValue): Date {
-    const date = dateFunctions.parse(value as string, 'yyyy-MM-dd\'T\'HH:mm:ss.SSS\'Z\'', new Date())
+    const date = dateFunctions.parseISO(value as string)
 
     if (!dateFunctions.isValid(date)) {
       this.invalid()
