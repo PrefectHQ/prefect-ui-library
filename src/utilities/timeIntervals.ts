@@ -1,6 +1,4 @@
-import { minutesInHour, secondsInMinute } from 'date-fns'
-
-export const hoursInDay = 24
+import { secondsInMinute, minutesInHour, hoursInDay } from '@/utilities/dates'
 
 export type IntervalOption = 'Seconds' | 'Minutes' | 'Hours' | 'Days'
 

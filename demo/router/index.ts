@@ -11,6 +11,11 @@ export const routeRecords: RouteRecordRaw[] = [
     component: () => import('../sections/WelcomePage.vue'),
   },
   ...convertSectionToRouteRecords(sections),
+  {
+    name: 'timezone support',
+    path: '/timezone-support',
+    component: () => import('../sections/TimezoneSupport.vue'),
+  },
 ]
 
 export const router = createRouter({
