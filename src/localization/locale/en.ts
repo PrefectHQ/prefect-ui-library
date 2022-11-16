@@ -30,6 +30,8 @@ export const en = {
     createSavedSearch: 'Failed to create saved filter',
     deleteSavedSearch: 'Failed to delete saved filter',
     retryRun: 'Flow run retry failed',
+    changeFlowRunState: 'Failed to change flow run state',
+    changeTaskRunState: 'Failed to change task run state',
   },
   success: {
     activateDeployment: 'Deployment active',
@@ -52,6 +54,8 @@ export const en = {
     createSavedSearch: 'Filter saved',
     deleteSavedSearch: 'Saved filter deleted',
     retryRun: 'Retrying run',
+    changeFlowRunState: 'Flow run state changed',
+    changeTaskRunState: 'Task run state changed',
   },
   info: {
     deprecatedWorkQueue: 'This work queue uses a deprecated tag-based approach to matching flow runs; it will continue to work but you can\'t modify it',
