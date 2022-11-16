@@ -1,11 +1,9 @@
 import { toPluralString } from '@prefecthq/prefect-design'
-import { minutesInHour, secondsInMinute } from 'date-fns'
 import { zonedTimeToUtc } from 'date-fns-tz'
 import { IntervalScheduleResponse } from './ScheduleResponse'
 import { ISchedule } from '@/models'
-import { formatDate, formatTimeNumeric } from '@/utilities/dates'
+import { formatDate, formatTimeNumeric, secondsInMinute, minutesInHour } from '@/utilities/dates'
 import { floor } from '@/utilities/math'
-
 
 export type Intervals = {
   seconds: number,
