@@ -36,7 +36,7 @@
   import { useWorkspaceApi } from '@/compositions'
   import { useCan } from '@/compositions/useCan'
   import { localization } from '@/localization'
-  import { StateUpdateDetails, terminalStateType } from '@/models'
+  import { isTerminalStateType, StateUpdateDetails } from '@/models'
   import { flowRunRouteKey } from '@/router'
   import { deleteItem, inject } from '@/utilities'
 
@@ -61,7 +61,7 @@
   ])
 
   const showChangeStateMenuItemButton = computed(() => {
-    if (can.update.task_run && taskRun.value?.stateType && terminalStateType.includes(taskRun.value.stateType)) {
+    if (can.update.task_run && taskRun.value?.stateType && isTerminalStateType(taskRun.value.stateType)) {
       return true
     }
 
