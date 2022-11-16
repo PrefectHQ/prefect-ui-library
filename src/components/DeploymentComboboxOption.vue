@@ -1,6 +1,6 @@
 <template>
-  <div class="deployment-combobox-option">
-    <span v-if="flowResponse" class="deployment-combobox-option--flow-name">
+  <div ref="element" class="deployment-combobox-option">
+    <span v-if="visible && flowResponse" class="deployment-combobox-option--flow-name">
       {{ flowResponse.name }} >
     </span>
     {{ deploymentName }}
@@ -8,8 +8,8 @@
 </template>
 
 <script lang="ts" setup>
-  import { useSubscription } from '@prefecthq/vue-compositions'
-  import { computed } from 'vue'
+  import { useVisibilityObserver, useSubscription } from '@prefecthq/vue-compositions'
+  import { computed, ref } from 'vue'
   import { useWorkspaceApi } from '@/compositions'
 
   const props = defineProps<{
@@ -18,6 +18,9 @@
   }>()
 
   const api = useWorkspaceApi()
+  const element = ref<HTMLDivElement>()
+  const { visible } = useVisibilityObserver(element, { disconnectWhenVisible: true })
+
   const flowId = computed(() => props.flowId)
   const flowSubscription = useSubscription(api.flows.getFlow, [flowId])
   const flowResponse = computed(() => flowSubscription.response ?? '')
