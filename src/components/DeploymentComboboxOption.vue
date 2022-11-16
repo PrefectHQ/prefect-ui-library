@@ -27,15 +27,7 @@
     if (!visible.value) {
       return null
     }
-    return [
-      {
-        flows: {
-          id: {
-            any_: [flowId],
-          },
-        },
-      },
-    ]
+    return [flowId.value]
   })
 
   const flowSubscription = useSubscriptionWithDependencies(api.flows.getFlow, flowArgs)
