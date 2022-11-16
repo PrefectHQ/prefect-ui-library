@@ -7,11 +7,11 @@
       <FlowRunRetryButton :flow-run="flowRun" class="page-heading-flow-run__retry-button" />
       <p-icon-button-menu>
         <template #default>
-          <copy-overflow-menu-item label="Copy ID" :item="flowRun.id" />
-          <p-overflow-menu-item v-if="can.delete.flow_run" label="Delete" @click="openDeleteModal" />
           <template v-if="canRetry">
             <p-overflow-menu-item label="Retry" class="page-heading-flow-run__retry-menu-item" @click="openRetryModal" />
           </template>
+          <copy-overflow-menu-item label="Copy ID" :item="flowRun.id" />
+          <p-overflow-menu-item v-if="can.delete.flow_run" label="Delete" @click="openDeleteModal" />
         </template>
       </p-icon-button-menu>
       <ConfirmDeleteModal
