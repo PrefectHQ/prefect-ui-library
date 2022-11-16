@@ -28,7 +28,7 @@
 
     <p-key-value label="State Message" :alternate="alternate">
       <template #value>
-        <p-text-truncate :class="{ 'p-key-value__empty p-key-value__empty--alt': !flowRun.state?.message }" :text="flowRun.state?.message ?? 'None'" />
+        <p-text-truncate :class="classes.stateMessage" :text="flowRun.state?.message ?? 'None'" />
       </template>
     </p-key-value>
 
@@ -118,6 +118,11 @@
     alternate?: boolean,
   }>()
 
+  const classes = computed(() => ({
+    stateMessage: {
+      'p-key-value__empty p-key-value__empty--alt': !props.flowRun.state?.message,
+    },
+  }))
   const can = useCan()
   const flowRunFilter = computed<Parameters<typeof api.flowRuns.getFlowRuns> | null>(() => {
     if (props.flowRun.parentTaskRunId) {
