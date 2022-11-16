@@ -30,7 +30,7 @@
 
 <script lang="ts" setup>
   import { showToast } from '@prefecthq/prefect-design'
-  import { useSubscription } from '@prefecthq/vue-compositions'
+  import { useSubscription, useSubscriptionWithDependencies } from '@prefecthq/vue-compositions'
   import { computed, ref } from 'vue'
   import { StateBadge, PageHeading, CopyOverflowMenuItem, ConfirmDeleteModal, ConfirmStateChangeModal } from '@/components'
   import { useWorkspaceApi } from '@/compositions'
@@ -42,7 +42,6 @@
 
   const props = defineProps<{
     taskRunId: string,
-    flowRunId: string,
   }>()
 
   const can = useCan()
@@ -51,12 +50,13 @@
   const taskRunSubscription =  useSubscription(api.taskRuns.getTaskRun, [props.taskRunId])
   const taskRun = computed(() => taskRunSubscription.response)
 
-  const flowRunSubscription = useSubscription(api.flowRuns.getFlowRun, [props.flowRunId])
+  const flowRunId = computed(() => taskRun.value?.flowRunId)
+  const flowRunIdArgs = computed<[string] | null>(() => flowRunId.value ? [flowRunId.value] : null)
+  const flowRunSubscription = useSubscriptionWithDependencies(api.flowRuns.getFlowRun, flowRunIdArgs)
   const flowRunName = computed(() => flowRunSubscription.response?.name)
 
-
   const crumbs = computed(() => [
-    { text: flowRunName.value ?? '', to: flowRunRoute(props.flowRunId) },
+    { text: flowRunName.value ?? '', to: flowRunRoute(flowRunId.value!) },
     { text: taskRun.value?.name ?? '' },
   ])
 
