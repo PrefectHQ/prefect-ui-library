@@ -4,6 +4,7 @@ import { deployments } from '@/demo/sections/deployments'
 import { flowRuns } from '@/demo/sections/flowRuns'
 import { general } from '@/demo/sections/general'
 import { notifications } from '@/demo/sections/notifications'
+import { states } from '@/demo/sections/states'
 
 export const sections: Section = {
   general,
@@ -11,4 +12,5 @@ export const sections: Section = {
   deployments,
   flowRuns,
   notifications,
+  states,
 }
