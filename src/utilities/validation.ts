@@ -197,36 +197,36 @@ export const isBeforeOrEqual = (max: Date, { time: showTime = false } = {}): Val
   return `${property} must be less than or equal to ${formatDate(max)}`
 }
 
-export const isAfter = (max: Date, { time: showTime = false } = {}): ValidationMethodFactory => property => value => {
+export const isAfter = (min: Date, { time: showTime = false } = {}): ValidationMethodFactory => property => value => {
   if (isNullish(value)) {
     return true
   }
 
-  if (isDate(value) && isDateAfter(value, max)) {
+  if (isDate(value) && isDateAfter(value, min)) {
     return true
   }
 
   if (showTime) {
-    return `${property} must be less than ${formatDateTimeNumeric(max)}`
+    return `${property} must be less than ${formatDateTimeNumeric(min)}`
   }
 
-  return `${property} must be less than ${formatDate(max)}`
+  return `${property} must be less than ${formatDate(min)}`
 }
 
-export const isAfterOrEqual = (max: Date, { time: showTime = false } = {}): ValidationMethodFactory => property => value => {
+export const isAfterOrEqual = (min: Date, { time: showTime = false } = {}): ValidationMethodFactory => property => value => {
   if (isNullish(value)) {
     return true
   }
 
-  if (isDate(value) && isDateAfterOrEqual(value, max)) {
+  if (isDate(value) && isDateAfterOrEqual(value, min)) {
     return true
   }
 
   if (showTime) {
-    return `${property} must be less than ${formatDateTimeNumeric(max)}`
+    return `${property} must be less than ${formatDateTimeNumeric(min)}`
   }
 
-  return `${property} must be less than or equal to ${formatDate(max)}`
+  return `${property} must be less than or equal to ${formatDate(min)}`
 }
 
 export const isJson: ValidationMethodFactory = property => value => {
