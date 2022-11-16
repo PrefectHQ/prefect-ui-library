@@ -33,9 +33,3 @@
   const flowSubscription = useSubscriptionWithDependencies(api.flows.getFlow, flowArgs)
   const flowResponse = computed(() => flowSubscription.response ?? null)
 </script>
-
-<style>
-.deployment-combobox-option--flow-name { @apply
-  font-bold
-}
-</style>
