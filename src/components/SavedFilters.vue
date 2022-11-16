@@ -79,6 +79,6 @@
 }
 
 .saved-filters__select { @apply
-  w-48
+  max-w-full
 }
 </style>
