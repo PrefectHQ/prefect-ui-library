@@ -28,7 +28,7 @@
 
     <p-key-value label="State Message" :alternate="alternate">
       <template #value>
-        <p-text-truncate :class="{ 'p-key-value__empty p-key-value__empty--alt': !flowRun.state.message }" :text="flowRun.state.message ?? 'None'" />
+        <p-text-truncate :class="{ 'p-key-value__empty p-key-value__empty--alt': !flowRun.state?.message }" :text="flowRun.state?.message ?? 'None'" />
       </template>
     </p-key-value>
 
