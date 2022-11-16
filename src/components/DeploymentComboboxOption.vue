@@ -8,7 +8,7 @@
 </template>
 
 <script lang="ts" setup>
-  import { useVisibilityObserver, useSubscription } from '@prefecthq/vue-compositions'
+  import { useVisibilityObserver, useSubscriptionWithDependencies } from '@prefecthq/vue-compositions'
   import { computed, ref } from 'vue'
   import { useWorkspaceApi } from '@/compositions'
 
@@ -21,9 +21,25 @@
   const element = ref<HTMLDivElement>()
   const { visible } = useVisibilityObserver(element, { disconnectWhenVisible: true })
 
+
   const flowId = computed(() => props.flowId)
-  const flowSubscription = useSubscription(api.flows.getFlow, [flowId])
-  const flowResponse = computed(() => flowSubscription.response ?? '')
+  const flowArgs = computed<Parameters<typeof api.flows.getFlow> | null>(() => {
+    if (!visible.value) {
+      return null
+    }
+    return [
+      {
+        flows: {
+          id: {
+            any_: [flowId],
+          },
+        },
+      },
+    ]
+  })
+
+  const flowSubscription = useSubscriptionWithDependencies(api.flows.getFlow, flowArgs)
+  const flowResponse = computed(() => flowSubscription.response ?? null)
 </script>
 
 <style>
