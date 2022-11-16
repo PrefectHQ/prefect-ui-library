@@ -26,8 +26,11 @@
       </template>
     </p-key-value>
 
-
-    <p-key-value label="State Message" :alternate="alternate" :value="flowRun.state.message" />
+    <p-key-value label="State Message" :alternate="alternate">
+      <template #value>
+        <p-text-truncate :class="{ 'p-key-value__empty p-key-value__empty--alt': !flowRun.state.message }" :text="flowRun.state.message ?? 'None'" />
+      </template>
+    </p-key-value>
 
     <template v-if="can.read.work_queue && flowRun.workQueueName">
       <p-key-value label="Work Queue" :alternate="alternate">
@@ -89,7 +92,7 @@
 </template>
 
 <script lang="ts" setup>
-  import { PKeyValue, PTags } from '@prefecthq/prefect-design'
+  import { PKeyValue, PTags, PTextTruncate } from '@prefecthq/prefect-design'
   import { useSubscriptionWithDependencies } from '@prefecthq/vue-compositions'
   import { computed } from 'vue'
   import DeploymentIconText from './DeploymentIconText.vue'
@@ -171,5 +174,12 @@
 .flow-run-details__small-radar-link { @apply
   cursor-pointer
   inline-block
+}
+
+.p-text-truncate--action-text { @apply
+  underline
+  cursor-pointer
+  text-prefect-400
+  hover:text-prefect-500
 }
 </style>
