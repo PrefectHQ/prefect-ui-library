@@ -1,5 +1,7 @@
 <template>
   <p-icon-button-menu v-bind="$attrs">
+    <slot name="additional-items" />
+
     <copy-overflow-menu-item label="Copy ID" :item="deployment.id" />
 
     <router-link v-if="!deployment.deprecated && can.update.deployment" :to="editDeploymentRoute(deployment.id)">
