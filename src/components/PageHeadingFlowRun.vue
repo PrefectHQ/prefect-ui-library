@@ -1,22 +1,22 @@
 <template>
-  <page-heading v-if="flowRunDetails" class="page-heading-flow-run" :crumbs="crumbs">
+  <page-heading v-if="flowRun" class="page-heading-flow-run" :crumbs="crumbs">
     <template #after-crumbs>
-      <StateBadge :state="flowRunDetails.state" />
+      <StateBadge :state="flowRun.state" />
     </template>
     <template #actions>
-      <FlowRunRetryButton :flow-run="flowRunDetails" />
+      <FlowRunRetryButton :flow-run="flowRun" />
       <p-icon-button-menu>
         <template #default>
           <p-overflow-menu-item v-if="showChangeStateMenuItemButton" label="Change state" @click="openChangeStateModal" />
-          <copy-overflow-menu-item label="Copy ID" :item="flowRunDetails.id" />
+          <copy-overflow-menu-item label="Copy ID" :item="flowRun.id" />
           <p-overflow-menu-item v-if="can.delete.flow_run" label="Delete" @click="openDeleteModal" />
         </template>
       </p-icon-button-menu>
       <ConfirmDeleteModal
         v-model:showModal="showDeleteModal"
         label="Flow Run"
-        :name="flowRun.name!"
-        @delete="deleteFlowRun(flowRun.id)"
+        :name="flowRun?.name!"
+        @delete="deleteFlowRun(flowRunId)"
       />
 
       <ConfirmStateChangeModal
@@ -37,12 +37,12 @@
   import { useWorkspaceApi } from '@/compositions'
   import { useCan } from '@/compositions/useCan'
   import { localization } from '@/localization'
-  import { FlowRun, StateUpdateDetails, terminalStateType } from '@/models'
+  import { StateUpdateDetails, terminalStateType } from '@/models'
   import { flowRunsRouteKey } from '@/router'
   import { deleteItem, inject } from '@/utilities'
 
   const props = defineProps<{
-    flowRun: FlowRun,
+    flowRunId: string,
   }>()
 
   const can = useCan()
@@ -52,14 +52,14 @@
   // the flow run model dictates the flow run name can be null
   const crumbs = computed(() => [
     { text: 'Flow Runs', to: flowRunsRoute() },
-    { text: props.flowRun.name ?? '' },
+    { text: flowRun.value?.name ?? '' },
   ])
 
-  const flowRunSubscription =  useSubscription(api.flowRuns.getFlowRun, [props.flowRun.id])
-  const flowRunDetails = computed(() => flowRunSubscription.response)
+  const flowRunSubscription =  useSubscription(api.flowRuns.getFlowRun, [props.flowRunId])
+  const flowRun = computed(() => flowRunSubscription.response)
 
   const showChangeStateMenuItemButton = computed(() => {
-    if (can.update.flow_run && props.flowRun.stateType && terminalStateType.includes(props.flowRun.stateType)) {
+    if (can.update.flow_run && flowRun.value?.stateType && terminalStateType.includes(flowRun.value.stateType)) {
       return true
     }
 
@@ -85,7 +85,7 @@
 
   const changeFlowRunState = async (values: StateUpdateDetails): Promise<void> => {
     try {
-      await api.flowRuns.setFlowRunState(props.flowRun.id, { state: values })
+      await api.flowRuns.setFlowRunState(props.flowRunId, { state: values })
       flowRunSubscription.refresh()
       showToast(localization.success.changeFlowRunState, 'success')
     } catch (error) {
