@@ -7,34 +7,27 @@
   >
     Retry
     <p-icon icon="RefreshIcon" />
+    <FlowRunRetryModal
+      v-model:showModal="showModal"
+      v-model:retryingRun="retryingRun"
+      :flow-run="flowRun"
+    />
   </p-button>
-
-  <p-modal v-model:showModal="showModal" :title="retryModalTitle">
-    This will retry flow run {{ flowRun.name }}. Any task runs in a failed, cancelled or crashed state will be run again.
-    <template #actions>
-      <p-button @click="retryFromFailed">
-        Retry
-      </p-button>
-    </template>
-  </p-modal>
 </template>
 
   <script lang="ts" setup>
-  import {  showToast, PButton } from '@prefecthq/prefect-design'
   import { computed, ref } from 'vue'
-  import { useWorkspaceApi } from '@/compositions'
+  import FlowRunRetryModal from '@/components/FlowRunRetryModal.vue'
   import { useCan } from '@/compositions/useCan'
   import { useShowModal } from '@/compositions/useShowModal'
-  import { localization } from '@/localization'
   import { FlowRun, isTerminalStateType } from '@/models'
 
-  const { showModal, open, close } = useShowModal()
-  const retryModalTitle = computed(()=> `Retry ${props.flowRun.name}?`)
   const props = defineProps<{
     flowRun: FlowRun,
   }>()
+
   const can = useCan()
-  const api = useWorkspaceApi()
+  const { showModal, open } = useShowModal()
 
   const canRetry = computed(()=> {
     if (!can.update.flow_run || !props.flowRun.stateType || !props.flowRun.deploymentId || !can.access.retry) {
@@ -42,20 +35,6 @@
     }
     return isTerminalStateType(props.flowRun.stateType)
   })
+
   const retryingRun = ref(false)
-
-  const retryFromFailed = async (): Promise<void>=> {
-    retryingRun.value = true
-    try {
-      await api.flowRuns.retryFlowRun(props.flowRun.id)
-      showToast(localization.success.retryRun, 'success')
-    } catch (error) {
-      console.error(error)
-      showToast(localization.error.retryRun, 'error')
-    } finally {
-      retryingRun.value = false
-      close()
-    }
-
-  }
   </script>

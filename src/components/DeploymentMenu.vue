@@ -7,6 +7,8 @@
     </router-link>
 
     <p-overflow-menu-item v-if="can.delete.deployment" label="Delete" @click="open" />
+
+    <slot name="additional-items" />
   </p-icon-button-menu>
 
   <ConfirmDeleteModal
