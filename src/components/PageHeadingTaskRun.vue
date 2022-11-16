@@ -1,13 +1,13 @@
 <template>
-  <page-heading class="page-heading-task-run" :crumbs="crumbs">
+  <page-heading v-if="taskRunDetails" class="page-heading-task-run" :crumbs="crumbs">
     <template #after-crumbs>
-      <StateBadge :state="taskRun.state" />
+      <StateBadge :state="taskRunDetails.state" />
     </template>
     <template #actions>
       <p-icon-button-menu>
         <template #default>
           <p-overflow-menu-item v-if="showChangeStateMenuItemButton" label="Change state" @click="openChangeStateModal" />
-          <copy-overflow-menu-item label="Copy ID" :item="taskRun.id" />
+          <copy-overflow-menu-item label="Copy ID" :item="taskRunDetails.id" />
           <p-overflow-menu-item v-if="can.delete.task_run" label="Delete" @click="openDeleteModal" />
         </template>
       </p-icon-button-menu>
@@ -51,6 +51,9 @@
   const flowRunSubscription = useSubscription(api.flowRuns.getFlowRun, [props.taskRun.flowRunId])
   const flowRunName = computed(() => flowRunSubscription.response?.name)
 
+  const taskRunSubscription =  useSubscription(api.taskRuns.getTaskRun, [props.taskRun.id])
+  const taskRunDetails = computed(() => taskRunSubscription.response)
+
   const crumbs = computed(() => [
     { text: flowRunName.value ?? '', to: flowRunRoute(props.taskRun.flowRunId) },
     { text: props.taskRun.name ?? '' },
@@ -84,6 +87,7 @@
   const changeTaskRunState = async (values: StateUpdateDetails): Promise<void> => {
     try {
       await api.taskRuns.setTaskRunState(props.taskRun.id, { state: values })
+      taskRunSubscription.refresh()
       showToast(localization.success.changeTaskRunState, 'success')
     } catch (error) {
       console.error(error)

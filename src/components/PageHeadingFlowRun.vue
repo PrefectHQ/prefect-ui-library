@@ -1,14 +1,14 @@
 <template>
-  <page-heading class="page-heading-flow-run" :crumbs="crumbs">
+  <page-heading v-if="flowRunDetails" class="page-heading-flow-run" :crumbs="crumbs">
     <template #after-crumbs>
-      <StateBadge :state="flowRun.state" />
+      <StateBadge :state="flowRunDetails.state" />
     </template>
     <template #actions>
-      <FlowRunRetryButton :flow-run="flowRun" />
+      <FlowRunRetryButton :flow-run="flowRunDetails" />
       <p-icon-button-menu>
         <template #default>
           <p-overflow-menu-item v-if="showChangeStateMenuItemButton" label="Change state" @click="openChangeStateModal" />
-          <copy-overflow-menu-item label="Copy ID" :item="flowRun.id" />
+          <copy-overflow-menu-item label="Copy ID" :item="flowRunDetails.id" />
           <p-overflow-menu-item v-if="can.delete.flow_run" label="Delete" @click="openDeleteModal" />
         </template>
       </p-icon-button-menu>
@@ -31,6 +31,7 @@
 
 <script lang="ts" setup>
   import { PIconButtonMenu, showToast } from '@prefecthq/prefect-design'
+  import { useSubscription } from '@prefecthq/vue-compositions'
   import { computed, ref } from 'vue'
   import { StateBadge, PageHeading, CopyOverflowMenuItem, ConfirmDeleteModal, FlowRunRetryButton, ConfirmStateChangeModal } from '@/components'
   import { useWorkspaceApi } from '@/compositions'
@@ -53,6 +54,9 @@
     { text: 'Flow Runs', to: flowRunsRoute() },
     { text: props.flowRun.name ?? '' },
   ])
+
+  const flowRunSubscription =  useSubscription(api.flowRuns.getFlowRun, [props.flowRun.id])
+  const flowRunDetails = computed(() => flowRunSubscription.response)
 
   const showChangeStateMenuItemButton = computed(() => {
     if (can.update.flow_run && props.flowRun.stateType && terminalStateType.includes(props.flowRun.stateType)) {
@@ -82,6 +86,7 @@
   const changeFlowRunState = async (values: StateUpdateDetails): Promise<void> => {
     try {
       await api.flowRuns.setFlowRunState(props.flowRun.id, { state: values })
+      flowRunSubscription.refresh()
       showToast(localization.success.changeFlowRunState, 'success')
     } catch (error) {
       console.error(error)
