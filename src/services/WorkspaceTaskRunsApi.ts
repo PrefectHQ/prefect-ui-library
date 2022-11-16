@@ -1,5 +1,4 @@
 import { WorkspaceApi } from './WorkspaceApi'
-import { StateUpdate } from '@/models/StateUpdate'
 import { TaskRun } from '@/models/TaskRun'
 import { TaskRunResponse } from '@/models/TaskRunResponse'
 import { mapper } from '@/services/Mapper'
@@ -9,7 +8,6 @@ export interface IWorkspaceTaskRunsApi {
   getTaskRun: (taskRunId: string) => Promise<TaskRun>,
   getTaskRuns: (filter: UnionFilters) => Promise<TaskRun[]>,
   getTaskRunsCount: (filter: UnionFilters) => Promise<number>,
-  setTaskRunState: (taskRunId: string, body: StateUpdate) => Promise<void>,
   deleteTaskRun: (taskRunId: string) => Promise<void>,
 }
 
@@ -33,11 +31,6 @@ export class WorkspaceTaskRunsApi extends WorkspaceApi implements IWorkspaceTask
     const { data } = await this.post<number>('/count', filter)
 
     return data
-  }
-
-  public setTaskRunState(id: string, body: StateUpdate): Promise<void> {
-    const requestBody = mapper.map('StateUpdate', body, 'StateUpdateRequest')
-    return this.post(`/${id}/set_state`, { state: requestBody.state, force: true })
   }
 
   public deleteTaskRun(taskRunId: string): Promise<void> {
