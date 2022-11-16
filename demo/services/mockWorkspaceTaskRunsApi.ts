@@ -30,7 +30,7 @@ export class MockWorkspaceTaskRunsApi extends MockApi implements IWorkspaceTaskR
     taskRun.state = mocker.create('state', [body.state])
     taskRun.stateType = taskRun.state.type
 
-    return await Promise.resolve()
+    return await this.taskRuns.patch(taskRunId, taskRun)
   }
 
   public async deleteTaskRun(taskRunId: string): Promise<void> {
