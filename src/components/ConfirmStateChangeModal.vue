@@ -39,7 +39,7 @@
   import StateBadge from './StateBadge.vue'
   import StateSelect from '@/components/StateSelect.vue'
   import { useForm } from '@/compositions'
-  import { FlowRun, StateUpdate, StateUpdateDetails, TaskRun } from '@/models'
+  import { FlowRun, StateUpdateDetails, TaskRun } from '@/models'
   import { isRequired } from '@/utilities/validation'
 
 
@@ -73,7 +73,7 @@
   const { value: type, meta: typeState, errorMessage: stateErrorMessage } = useField<string>('type', rules.type)
   const { value: message } = useField<string>('message')
 
-  const submit = handleSubmit(async values => {
+  const submit = handleSubmit(values => {
     emit('change', values)
     internalValue.value = false
   })
