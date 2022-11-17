@@ -9,6 +9,8 @@
       </template>
 
       <p-select v-model="sort" :options="deploymentSortOptions" />
+
+      <p-tags-input v-model="tags" empty-message="All tags" class="deployments-table__tags" />
     </div>
 
     <p-table :data="deployments" :columns="columns" class="deployments-table">
@@ -47,8 +49,8 @@
           <template #message>
             No deployments
           </template>
-          <template v-if="name.length" #actions>
-            <p-button size="sm" secondary @click="clear">
+          <template v-if="hasFilters" #actions>
+            <p-button size="sm" secondary @click="clearFilters">
               Clear Filters
             </p-button>
           </template>
@@ -82,7 +84,7 @@
 
   const api = useWorkspaceApi()
   const filter = computed(() => props.filter ?? {})
-  const { flows, name, sort, filter: unionFilter } = useDeploymentFilterFromRoute(filter)
+  const { flows, name, sort, tags, hasFilters, clearFilters, filter: unionFilter } = useDeploymentFilterFromRoute(filter)
 
   const canFilterFlows = computed(() => {
     const filterHasFlows = !!unref(filter.value.flows)?.length
@@ -127,10 +129,6 @@
     deploymentsSubscription.refresh()
     deploymentsCountSubscription.refresh()
   }
-
-  function clear(): void {
-    name.value = ''
-  }
 </script>
 
 <style>
@@ -154,7 +152,8 @@
   mb-4
 }
 
-.deployments-table__flows {
+.deployments-table__flows,
+.deployments-table__tags {
   min-width: 128px;
 }
 

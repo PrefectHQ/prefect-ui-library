@@ -11,6 +11,7 @@ export type UseFilterArgs<T = FilterSortValues> = {
   flowName?: MaybeRef<string>,
   deployments?: MaybeRef<string[]>,
   deploymentName?: MaybeRef<string>,
+  deploymentTags?: MaybeRef<string[]>,
   tags?: MaybeRef<string[]>,
   states?: MaybeRef<string[]>,
   startDate?: MaybeRef<Date>,
@@ -27,6 +28,7 @@ export function useFilter(filters: MaybeRef<UseFilterArgs>): ComputedRef<UnionFi
     const flowName = ref(filtersRef.value.flowName)
     const deployments = ref(filtersRef.value.deployments)
     const deploymentName = ref(filtersRef.value.deploymentName)
+    const deploymentTags = ref(filtersRef.value.deploymentTags)
     const tags = ref(filtersRef.value.tags)
     const states = ref(filtersRef.value.states)
     const startDate = ref(filtersRef.value.startDate)
@@ -62,6 +64,13 @@ export function useFilter(filters: MaybeRef<UseFilterArgs>): ComputedRef<UnionFi
       response.deployments.name ??= {}
 
       response.deployments.name.like_ = deploymentName.value
+    }
+
+    if (deploymentTags.value?.length) {
+      response.deployments ??= {}
+      response.deployments.tags ??= {}
+
+      response.deployments.tags.all_ = deploymentTags.value
     }
 
     if (tags.value?.length) {
