@@ -1,5 +1,4 @@
 import { LocationQuery, LocationQueryRaw, Router } from 'vue-router'
-import { router } from './../../demo/router/index'
 import { Route } from '@/router'
 
 export function withQuery(route: Route, query: LocationQueryRaw): Route {
