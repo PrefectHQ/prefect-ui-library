@@ -72,7 +72,7 @@
     { text: flowRun.value?.name ?? '' },
   ])
 
-  const flowRunSubscription =  useSubscription(api.flowRuns.getFlowRun, [props.flowRunId])
+  const flowRunSubscription =  useSubscription(api.flowRuns.getFlowRun, [props.flowRunId], { interval: 30000 })
   const flowRun = computed(() => flowRunSubscription.response)
 
   const emit = defineEmits(['delete'])
