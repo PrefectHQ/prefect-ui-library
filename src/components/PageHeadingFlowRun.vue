@@ -72,8 +72,11 @@
     { text: flowRun.value?.name ?? '' },
   ])
 
-  const flowRunSubscription =  useSubscription(api.flowRuns.getFlowRun, [props.flowRunId])
-  const flowRun = computed(() => flowRunSubscription.response)
+  const flowRunSubscription =  useSubscription(api.flowRuns.getFlowRun, [props.flowRunId], { interval: 30000 })
+  const flowRun = computed(() => {
+    console.log('fr response', flowRunSubscription.response)
+    return flowRunSubscription.response
+  })
 
   const emit = defineEmits(['delete'])
 
