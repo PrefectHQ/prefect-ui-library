@@ -54,7 +54,7 @@
   const can = useCan()
 
   const canRetry = computed(()=> {
-    if (!can.update.flow_run || !flowRun.value.stateType || !flowRun.value.deploymentId || !can.access.retry) {
+    if (!can.update.flow_run || !flowRun.value?.stateType || !flowRun.value.deploymentId || !can.access.retry) {
       return false
     }
     return isTerminalStateType(flowRun.value.stateType)
@@ -69,7 +69,7 @@
   // the flow run model dictates the flow run name can be null
   const crumbs = computed(() => [
     { text: 'Flow Runs', to: flowRunsRoute() },
-    { text: flowRun.value.name ?? '' },
+    { text: flowRun.value?.name ?? '' },
   ])
 
   const flowRunSubscription =  useSubscription(api.flowRuns.getFlowRun, [props.flowRunId], { interval: 30000 })
@@ -85,7 +85,7 @@
   const retryingRun = ref(false)
 
   const showChangeStateMenuItemButton = computed(() => {
-    if (can.update.flow_run && flowRun.value.stateType && isTerminalStateType(flowRun.value.stateType)) {
+    if (can.update.flow_run && flowRun.value?.stateType && isTerminalStateType(flowRun.value.stateType)) {
       return true
     }
     return false
