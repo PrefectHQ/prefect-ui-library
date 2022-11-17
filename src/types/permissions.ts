@@ -124,6 +124,7 @@ const featureFlags = [
   'access:auditLogs',
   'access:retry',
   'access:automation',
+  'access:chameleon',
   'access:transfer',
 ] as const
 
