@@ -28,7 +28,7 @@
 
     <p-key-value label="State Message" :alternate="alternate">
       <template #value>
-        <p-text-truncate :class="classes.stateMessage" :text="flowRun.state?.message ?? 'None'" />
+        <p-text-truncate :class="classes.stateMessage" :text="stateMessage" />
       </template>
     </p-key-value>
 
@@ -141,6 +141,8 @@
 
   const parentFlowRunListSubscription = useSubscriptionWithDependencies(api.flowRuns.getFlowRuns, flowRunFilter)
   const parentFlowRunList = computed(() => parentFlowRunListSubscription.response ?? [])
+
+  const stateMessage = computed(() => props.flowRun.state?.message ?? 'None')
   const parentFlowRunId = computed(() => {
     if (!parentFlowRunList.value.length) {
       return
