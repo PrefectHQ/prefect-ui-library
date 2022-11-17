@@ -9,8 +9,8 @@
   import { secondsToApproximateString } from '@/utilities/seconds'
 
   const props = defineProps<{
-    duration: number | null,
+    duration: number,
   }>()
 
-  const label = computed(() => props.duration == null ? 'None' : secondsToApproximateString(props.duration))
+  const label = computed(() => props.duration == 0 ? 'None' : secondsToApproximateString(props.duration))
 </script>

@@ -17,9 +17,9 @@ export interface IFlowRun {
   context: unknown,
   empiricalConfig: unknown,
   empiricalPolicy: unknown,
-  estimatedRunTime: number | null,
+  estimatedRunTime: number,
   estimatedStartTimeDelta: number | null,
-  totalRunTime: number | null,
+  totalRunTime: number,
   startTime: Date | null,
   endTime: Date | null,
   name: string | null,
@@ -49,9 +49,9 @@ export class FlowRun implements IFlowRun {
   public context: unknown
   public empiricalConfig: unknown
   public empiricalPolicy: unknown
-  public estimatedRunTime: number | null
+  public estimatedRunTime: number
   public estimatedStartTimeDelta: number | null
-  public totalRunTime: number | null
+  public totalRunTime: number
   public startTime: Date | null
   public endTime: Date | null
   public name: string | null
@@ -96,8 +96,8 @@ export class FlowRun implements IFlowRun {
     this.workQueueName = flowRun.workQueueName
   }
 
-  public get duration(): number | null {
-    return this.totalRunTime ?? this.estimatedRunTime ?? null
+  public get duration(): number {
+    return this.totalRunTime || this.estimatedRunTime
   }
 
   public isScheduled(): this is FlowRun & { expectedStartTime: Date } {
