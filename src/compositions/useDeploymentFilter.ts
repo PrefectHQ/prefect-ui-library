@@ -3,6 +3,7 @@ import { computed, ComputedRef, ref, Ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useFilter, UseFilterArgs } from './useFilter'
 import { DeploymentSortValues, isDeploymentSortValue, MaybeRef, UnionFilters } from '@/types'
+import { clearSelectedFilters } from '@/utilities/routes'
 
 export type UseDeploymentFilterArgs = UseFilterArgs<DeploymentSortValues>
 
@@ -58,7 +59,9 @@ export function useDeploymentFilterFromRoute(filter?: MaybeRef<UseDeploymentFilt
   })
 
   async function clearFilters(): Promise<void> {
-    await router.push({ query: {} })
+    const query = clearSelectedFilters(router, ['deployment-flows', 'deployment-name', 'deployment-tags'])
+
+    await router.push({ query: query })
   }
 
   const unionFilter = useDeploymentFilter(deploymentFilter)
