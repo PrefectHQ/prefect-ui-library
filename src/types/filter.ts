@@ -10,6 +10,7 @@ export type FlowRunFilters = {
   deployment?: string[],
   flow?: string[],
   tag?: string[],
+  workQueue?: string[],
 }
 
 export type FlowRunFiltersInRoute = {
@@ -21,4 +22,5 @@ export type FlowRunFiltersInRoute = {
   'deployment'?: string[],
   'flow'?: string[],
   'tag'?: string[],
+  'work-queue'?: string[],
 }

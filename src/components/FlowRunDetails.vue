@@ -1,7 +1,5 @@
 <template>
   <div class="flow-run-details">
-    <StateBadge :state="flowRun.state" />
-
     <p-key-value label="Flow" :alternate="alternate">
       <template #value>
         <FlowIconText :flow-id="flowRun.flowId" />
@@ -20,7 +18,7 @@
       </template>
     </p-key-value>
 
-    <FlowRunTaskCountKeyValue :flow-run="flowRun" />
+    <FlowRunTaskCountKeyValue :flow-run="flowRun" :alternate="alternate" />
 
     <p-key-value v-if="can.read.deployment && flowRun.deploymentId" label="Deployment" :alternate="alternate">
       <template #value>
@@ -97,7 +95,6 @@
   import FlowRunStartTime from './FlowRunStartTime.vue'
   import FlowRunTaskCountKeyValue from './FlowRunTaskCountKeyValue.vue'
   import RadarSmall from './RadarSmall.vue'
-  import StateBadge from './StateBadge.vue'
   import WorkQueueStatusIcon from './WorkQueueStatusIcon.vue'
   import  FlowRunIconText  from '@/components/FlowRunIconText.vue'
   import  WorkQueueIconText  from '@/components/WorkQueueIconText.vue'

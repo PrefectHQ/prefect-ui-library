@@ -1,5 +1,4 @@
 import { useDebouncedRef, useRouteQueryParam } from '@prefecthq/vue-compositions'
-import { addDays, endOfToday, startOfToday, subDays } from 'date-fns'
 import { computed, Ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useFlowRunFilter } from '@/compositions/useFlowRunFilter'
@@ -8,6 +7,7 @@ import { FlowRunFilters, FlowRunFiltersInRoute } from '@/types/filter'
 import { FlowRunSortValues } from '@/types/SortOptionTypes'
 import { UnionFilters } from '@/types/UnionFilters'
 import { formatDateTimeNumeric, parseDateTimeNumeric } from '@/utilities/dates'
+import { dateFunctions } from '@/utilities/timezone'
 
 export type UseFlowRunFilterFromRoute = {
   name: Ref<string>,
@@ -18,6 +18,7 @@ export type UseFlowRunFilterFromRoute = {
   deployments: Ref<string[]>,
   flows: Ref<string[]>,
   tags: Ref<string[]>,
+  workQueues: Ref<string[]>,
   filter: Ref<UnionFilters>,
   hasFilters: Ref<boolean>,
   setFilters: (filters: FlowRunFilters) => Promise<void>,
@@ -31,7 +32,7 @@ export function useFlowRunFilterFromRoute(): UseFlowRunFilterFromRoute {
   const name = useRouteQueryParam('name', '')
   const sort = useRouteQueryParam('sort', 'EXPECTED_START_TIME_DESC') as Ref<FlowRunSortValues>
 
-  const defaultStartDate = formatDateTimeNumeric(subDays(startOfToday(), 7))
+  const defaultStartDate = formatDateTimeNumeric(dateFunctions.subDays(dateFunctions.startOfToday(), 7))
   const startDateParam = useRouteQueryParam('start-date', defaultStartDate)
 
   const startDate = computed({
@@ -43,7 +44,7 @@ export function useFlowRunFilterFromRoute(): UseFlowRunFilterFromRoute {
     },
   })
 
-  const defaultEndDate = formatDateTimeNumeric(addDays(endOfToday(), 1))
+  const defaultEndDate = formatDateTimeNumeric(dateFunctions.addDays(dateFunctions.endOfToday(), 1))
   const endDateParam = useRouteQueryParam('end-date', defaultEndDate)
 
   const endDate = computed({
@@ -61,14 +62,16 @@ export function useFlowRunFilterFromRoute(): UseFlowRunFilterFromRoute {
   const deployments = useRouteQueryParam('deployment', [])
   const flows = useRouteQueryParam('flow', [])
   const tags = useRouteQueryParam('tag', [])
+  const workQueues = useRouteQueryParam('work-queue', [])
 
-  const filter = useFlowRunFilter({ states, deployments, flows, tags, startDate, endDate, sort, name: nameDebounced })
+  const filter = useFlowRunFilter({ states, deployments, flows, tags, workQueues, startDate, endDate, sort, name: nameDebounced })
 
   const hasFilters = computed(() => {
     return !!states.value.length ||
       !!deployments.value.length ||
       !!flows.value.length ||
       !!tags.value.length ||
+      !!workQueues.value.length ||
       startDateParam.value !== defaultStartDate ||
       endDateParam.value !== defaultEndDate
   })
@@ -116,6 +119,10 @@ export function useFlowRunFilterFromRoute(): UseFlowRunFilterFromRoute {
       query.tag = filters.tag
     }
 
+    if (filters.workQueue) {
+      query['work-queue'] = filters.workQueue
+    }
+
     return query
   }
 
@@ -140,6 +147,7 @@ export function useFlowRunFilterFromRoute(): UseFlowRunFilterFromRoute {
     deployments,
     flows,
     tags,
+    workQueues,
     filter,
     hasFilters,
     setFilters,

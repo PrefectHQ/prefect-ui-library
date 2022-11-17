@@ -4,17 +4,21 @@
       <DeploymentToggle :deployment="deployment" @update="emit('update')" />
 
       <template v-if="can.run.deployment">
-        <RunMenu :deployment="deployment" />
+        <RunMenu :deployment="deployment" class="page-heading-deployment__run-menu" />
       </template>
 
-      <DeploymentMenu :deployment="deployment" @delete="handleDelete" />
+      <DeploymentMenu :deployment="deployment" @delete="handleDelete">
+        <template v-if="can.run.deployment" #additional-items>
+          <div class="page-heading-deployment__run-menu-item">
+            <router-link :to="flowRunCreateRoute(deployment.id)">
+              <p-overflow-menu-item>
+                Run
+              </p-overflow-menu-item>
+            </router-link>
+          </div>
+        </template>
+      </DeploymentMenu>
     </template>
-
-    <slot>
-      <div class="page-heading-deployment__header-meta">
-        <FlowIconText :flow-id="deployment.flowId" />
-      </div>
-    </slot>
   </page-heading>
 </template>
 
@@ -23,12 +27,11 @@
   import { useRouter } from 'vue-router'
   import DeploymentMenu from '@/components/DeploymentMenu.vue'
   import DeploymentToggle from '@/components/DeploymentToggle.vue'
-  import FlowIconText from '@/components/FlowIconText.vue'
   import PageHeading from '@/components/PageHeading.vue'
   import RunMenu from '@/components/RunMenu.vue'
   import { useCan } from '@/compositions/useCan'
   import { Deployment } from '@/models'
-  import { deploymentsRouteKey } from '@/router'
+  import { deploymentsRouteKey, flowRunCreateRouteKey } from '@/router'
   import { inject } from '@/utilities'
 
   const props = defineProps<{
@@ -38,6 +41,7 @@
   const can = useCan()
   const router = useRouter()
   const deploymentsRoute = inject(deploymentsRouteKey)
+  const flowRunCreateRoute = inject(flowRunCreateRouteKey)
 
   const crumbs = computed(() => [
     { text: 'Deployments', to: deploymentsRoute() },
@@ -54,12 +58,13 @@
 </script>
 
 <style>
-.page-heading-deployment__run-icon { @apply
-  w-5
-  h-5
+.page-heading-deployment__run-menu { @apply
+  hidden
+  sm:block
 }
 
-.page-heading-deployment__header-meta { @apply
-  xl:hidden
+.page-heading-deployment__run-menu-item { @apply
+  block
+  sm:hidden
 }
 </style>

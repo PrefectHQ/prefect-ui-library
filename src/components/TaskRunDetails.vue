@@ -1,7 +1,5 @@
 <template>
   <div class="task-run-details">
-    <StateBadge :state="taskRun.state" />
-
     <p-key-value label="Flow Run" :alternate="alternate">
       <template #value>
         <FlowRunIconText :flow-run-id="taskRun.flowRunId" />
@@ -59,7 +57,6 @@
   import { PKeyValue, PTags } from '@prefecthq/prefect-design'
   import DurationIconText from './DurationIconText.vue'
   import FlowRunIconText from './FlowRunIconText.vue'
-  import StateBadge from './StateBadge.vue'
   import { TaskRun } from '@/models/TaskRun'
   import { formatDateTimeNumeric } from '@/utilities/dates'
   import { secondsToApproximateString } from '@/utilities/seconds'
