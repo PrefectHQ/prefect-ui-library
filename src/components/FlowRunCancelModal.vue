@@ -11,7 +11,7 @@
     </div>
 
     <template #actions>
-      <p-button class="flow-run-cancel-modal__cancel-button" danger @click="cancel">
+      <p-button danger @click="cancel">
         Confirm
       </p-button>
     </template>
@@ -70,10 +70,6 @@
 </script>
 
 <style>
-.change-state-modal__title { @apply
-  capitalize
-}
-
 .flow-run-cancel-modal__message { @apply
   inline-flex
   flex-wrap

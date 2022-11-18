@@ -9,7 +9,6 @@
     <FlowRunCancelModal
       v-model:showModal="showModal"
       :flow-run-id="flowRun.id"
-      label="Flow Run"
       @change="showModal"
     />
   </p-button>
