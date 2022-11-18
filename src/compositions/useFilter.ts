@@ -102,9 +102,15 @@ export function useFilter(filters: MaybeRef<UseFilterArgs>): ComputedRef<UnionFi
 
     if (startDate.value) {
       response.flow_runs ??= {}
-      response.flow_runs.expected_start_time ??= {}
+      if (response.flow_runs.start_time) {
+        response.flow_runs.start_time ??= {}
 
-      response.flow_runs.expected_start_time.after_ = mapper.map('Date', startDate.value, 'string')
+        response.flow_runs.start_time.after_ = mapper.map('Date', startDate.value, 'string')
+      } else {
+        response.flow_runs.expected_start_time ??= {}
+
+        response.flow_runs.expected_start_time.after_ = mapper.map('Date', startDate.value, 'string')
+      }
     }
 
     if (endDate.value) {
