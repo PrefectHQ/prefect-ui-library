@@ -46,7 +46,7 @@
   const state = ref<StateType[]>([])
   const searchTerm = ref('')
   const searchTermDebounced = useDebouncedRef(searchTerm, 1200)
-  const sort = ref<FlowRunSortValues>('EXPECTED_START_TIME_DESC')
+  const sort = ref<FlowRunSortValues>('START_TIME_DESC')
   const hasFilters = computed(() => state.value.length || searchTerm.value.length)
 
   const subFlowRunTaskRunFilter = computed<UnionFilters>(() => {

@@ -16,7 +16,7 @@ export function useRecentFlowRunFilter(filters: UseRecentFlowRunFilterArgs): Ref
   const startDate = ref<Date>(dateFunctions.subDays(dateFunctions.startOfToday(), 7))
   const endDate = ref<Date>(dateFunctions.addDays(dateFunctions.endOfToday(), 1))
 
-  refs.sort ??= ref<FlowRunSortValues>('EXPECTED_START_TIME_DESC')
+  refs.sort ??= ref<FlowRunSortValues>('START_TIME_DESC')
 
   return useFlowRunFilter({ startDate, endDate, ...refs })
 }
