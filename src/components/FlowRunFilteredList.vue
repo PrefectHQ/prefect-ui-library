@@ -32,29 +32,29 @@
   import { mapper } from '@/services'
   import { FlowRunSortValues, UnionFilters } from '@/types'
 
-  type StateTypeOrLate = StateType | 'late' | 'cancelling'
+  type StateTypeOrStateName = StateType | 'late' | 'cancelling'
 
   const props = defineProps<{
     flowRunFilter: UnionFilters,
-    states?: StateTypeOrLate[],
+    states?: StateTypeOrStateName[],
     disabled?: boolean,
   }>()
 
   const emit = defineEmits<{
-    (event: 'update:states', value: StateTypeOrLate[]): void,
+    (event: 'update:states', value: StateTypeOrStateName[]): void,
   }>()
 
   const can = useCan()
   const api = useWorkspaceApi()
   const selectedFlowRuns = ref<string[]>([])
-  const state = ref<StateTypeOrLate[]>(props.states ?? [])
+  const state = ref<StateTypeOrStateName[]>(props.states ?? [])
   const stateWithoutLate = computed(()=> state.value.filter(state => state !== 'late') as StateType[])
   const stateIncludesLate = computed(()=>state.value.includes('late'))
   const stateWithoutCancelling = computed(()=> state.value.filter(state => state !== 'cancelling') as StateType[])
   const stateIncludesCancelling = computed(()=>state.value.includes('cancelling'))
 
   const updateState = (newValue: string | string[] | null): void => {
-    state.value = newValue as StateTypeOrLate[]
+    state.value = newValue as StateTypeOrStateName[]
     emit('update:states', state.value)
   }
 
