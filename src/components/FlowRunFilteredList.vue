@@ -32,7 +32,7 @@
   import { mapper } from '@/services'
   import { FlowRunSortValues, UnionFilters } from '@/types'
 
-  type StateTypeOrLate = StateType | 'late'
+  type StateTypeOrLate = StateType | 'late' | 'cancelling'
 
   const props = defineProps<{
     flowRunFilter: UnionFilters,
@@ -50,6 +50,8 @@
   const state = ref<StateTypeOrLate[]>(props.states ?? [])
   const stateWithoutLate = computed(()=> state.value.filter(state => state !== 'late') as StateType[])
   const stateIncludesLate = computed(()=>state.value.includes('late'))
+  const stateWithoutCancelling = computed(()=> state.value.filter(state => state !== 'cancelling') as StateType[])
+  const stateIncludesCancelling = computed(()=>state.value.includes('cancelling'))
 
   const updateState = (newValue: string | string[] | null): void => {
     state.value = newValue as StateTypeOrLate[]
@@ -82,6 +84,24 @@
           operator: 'or_',
           name: {
             any_: ['Late'],
+          },
+        }
+      }
+    }
+
+    if (state.value.length) {
+      flowRunsFilter.state = {
+        type: {
+          any_: stateWithoutCancelling.value.map(state => mapper.map('StateType', state, 'ServerStateType')),
+        },
+      }
+
+      if (stateIncludesCancelling.value) {
+        flowRunsFilter.state = {
+          ...flowRunsFilter.state,
+          operator: 'or_',
+          name: {
+            any_: ['Cancelling'],
           },
         }
       }
