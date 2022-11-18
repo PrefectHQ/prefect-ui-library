@@ -53,8 +53,8 @@
 
   const can = useCan()
 
-  const canRetry = computed(()=> {
-    if (!can.update.flow_run || !flowRun.value?.stateType || !flowRun.value.deploymentId || !can.access.retry) {
+  const canRetry = computed(() => {
+    if (!can.update.flow_run || !flowRun.value?.stateType || !flowRun.value.deploymentId) {
       return false
     }
     return isTerminalStateType(flowRun.value.stateType)
