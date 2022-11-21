@@ -28,3 +28,9 @@ export type ServerTerminalStateType = Uppercase<TerminalStateType>
 export function isTerminalStateType(value: string): value is TerminalStateType {
   return terminalStateType.includes(value as TerminalStateType)
 }
+
+export const stuckStateTypes = ['running', 'scheduled', 'pending']
+export type StuckStateType = typeof stuckStateTypes[number]
+export function isStuckStateType(value: string): value is StuckStateType {
+  return stuckStateTypes.includes(value as StuckStateType)
+}
