@@ -33,6 +33,7 @@ export const en = {
     changeFlowRunState: 'Failed to change flow run state',
     changeTaskRunState: 'Failed to change task run state',
     cancelFlowRun: 'Failed to cancel flow run',
+    resumeFlowRun: 'Failed to resume flow run',
   },
   success: {
     activateDeployment: 'Deployment active',
@@ -58,7 +59,7 @@ export const en = {
     changeFlowRunState: 'Flow run state changed',
     changeTaskRunState: 'Task run state changed',
     cancelFlowRun: 'Flow run cancelled',
-
+    resumeFlowRun: 'Flow run resumed',
   },
   info: {
     deprecatedWorkQueue: 'This work queue uses a deprecated tag-based approach to matching flow runs; it will continue to work but you can\'t modify it',
