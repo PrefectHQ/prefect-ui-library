@@ -177,11 +177,4 @@
   cursor-pointer
   inline-block
 }
-
-/* .p-text-truncate--action-text { @apply
-  underline
-  cursor-pointer
-  text-prefect-400
-  hover:text-prefect-500
-} */
 </style>
