@@ -27,8 +27,8 @@
     </p-key-value>
 
     <p-key-value label="State Message" :alternate="alternate">
-      <template #value>
-        <p-text-truncate :class="classes.stateMessage" :text="stateMessage" />
+      <template v-if="flowRun.state?.stateMessage" #value>
+        <p-text-truncate :text="flowRun.state?.stateMessage" />
       </template>
     </p-key-value>
 
@@ -118,11 +118,6 @@
     alternate?: boolean,
   }>()
 
-  const classes = computed(() => ({
-    stateMessage: {
-      'p-key-value__empty p-key-value__empty--alt': !props.flowRun.state?.message,
-    },
-  }))
   const can = useCan()
   const flowRunFilter = computed<Parameters<typeof api.flowRuns.getFlowRuns> | null>(() => {
     if (props.flowRun.parentTaskRunId) {
@@ -142,7 +137,6 @@
   const parentFlowRunListSubscription = useSubscriptionWithDependencies(api.flowRuns.getFlowRuns, flowRunFilter)
   const parentFlowRunList = computed(() => parentFlowRunListSubscription.response ?? [])
 
-  const stateMessage = computed(() => props.flowRun.state?.message ?? 'None')
   const parentFlowRunId = computed(() => {
     if (!parentFlowRunList.value.length) {
       return
@@ -183,10 +177,10 @@
   inline-block
 }
 
-.p-text-truncate--action-text { @apply
+/* .p-text-truncate--action-text { @apply
   underline
   cursor-pointer
   text-prefect-400
   hover:text-prefect-500
-}
+} */
 </style>
