@@ -61,7 +61,7 @@
 
     const stateMap = stateType.map((state) => ({ label: capitalize(state), value: state }))
 
-    return [...stateMap, { label: 'Late', value: 'late' }, { label: 'Cancelling', value: 'cancelling' }]
+    return [...stateMap, { label: 'Late', value: 'late' }, { label: 'Cancelling', value: 'cancelling' }, { label: 'Paused', value: 'paused' }, { label: 'Resuming', value: 'resuming' }]
   })
 </script>
 

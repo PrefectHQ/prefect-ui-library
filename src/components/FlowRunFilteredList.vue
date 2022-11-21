@@ -32,7 +32,7 @@
   import { mapper } from '@/services'
   import { FlowRunSortValues, UnionFilters } from '@/types'
 
-  type StateTypeOrStateName = StateType | 'late' | 'cancelling'
+  type StateTypeOrStateName = StateType | 'late' | 'cancelling' | 'paused' | 'resuming'
 
   const props = defineProps<{
     flowRunFilter: UnionFilters,
@@ -52,6 +52,10 @@
   const stateIncludesLate = computed(()=>state.value.includes('late'))
   const stateWithoutCancelling = computed(()=> state.value.filter(state => state !== 'cancelling') as StateType[])
   const stateIncludesCancelling = computed(()=>state.value.includes('cancelling'))
+  const stateWithoutPaused = computed(()=> state.value.filter(state => state !== 'paused') as StateType[])
+  const stateIncludesPaused = computed(()=>state.value.includes('paused'))
+  const stateWithoutResuming = computed(()=> state.value.filter(state => state !== 'resuming') as StateType[])
+  const stateIncludesResuming = computed(()=>state.value.includes('resuming'))
 
   const updateState = (newValue: string | string[] | null): void => {
     state.value = newValue as StateTypeOrStateName[]
@@ -102,6 +106,42 @@
           operator: 'or_',
           name: {
             any_: ['Cancelling'],
+          },
+        }
+      }
+    }
+
+    if (state.value.length) {
+      flowRunsFilter.state = {
+        type: {
+          any_: stateWithoutPaused.value.map(state => mapper.map('StateType', state, 'ServerStateType')),
+        },
+      }
+
+      if (stateIncludesPaused.value) {
+        flowRunsFilter.state = {
+          ...flowRunsFilter.state,
+          operator: 'or_',
+          name: {
+            any_: ['Paused'],
+          },
+        }
+      }
+    }
+
+    if (state.value.length) {
+      flowRunsFilter.state = {
+        type: {
+          any_: stateWithoutResuming.value.map(state => mapper.map('StateType', state, 'ServerStateType')),
+        },
+      }
+
+      if (stateIncludesResuming.value) {
+        flowRunsFilter.state = {
+          ...flowRunsFilter.state,
+          operator: 'or_',
+          name: {
+            any_: ['Resuming'],
           },
         }
       }
