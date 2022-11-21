@@ -27,8 +27,8 @@
     </p-key-value>
 
     <p-key-value label="State Message" :alternate="alternate">
-      <template v-if="flowRun.state?.stateMessage" #value>
-        <p-text-truncate :text="flowRun.state?.stateMessage" />
+      <template v-if="flowRun.state?.message" #value>
+        <p-text-truncate :text="flowRun.state?.message" />
       </template>
     </p-key-value>
 
@@ -136,6 +136,7 @@
 
   const parentFlowRunListSubscription = useSubscriptionWithDependencies(api.flowRuns.getFlowRuns, flowRunFilter)
   const parentFlowRunList = computed(() => parentFlowRunListSubscription.response ?? [])
+
 
   const parentFlowRunId = computed(() => {
     if (!parentFlowRunList.value.length) {
