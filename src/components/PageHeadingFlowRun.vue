@@ -5,6 +5,7 @@
     </template>
     <template #actions>
       <FlowRunRetryButton :flow-run="flowRun" class="page-heading-flow-run__retry-button" />
+      <FlowRunResumeButton :flow-run="flowRun" class="page-heading-flow-run__resume-button" />
       <FlowRunCancelButton :flow-run="flowRun" class="page-heading-flow-run__cancel-button" />
       <p-icon-button-menu>
         <template #default>
@@ -39,8 +40,7 @@
   import { PIconButtonMenu, showToast } from '@prefecthq/prefect-design'
   import { useSubscription } from '@prefecthq/vue-compositions'
   import { computed, ref } from 'vue'
-  import FlowRunCancelButton from './FlowRunCancelButton.vue'
-  import { StateBadge, PageHeading, CopyOverflowMenuItem, ConfirmDeleteModal, FlowRunRetryButton, FlowRunRetryModal, ConfirmStateChangeModal } from '@/components'
+  import { StateBadge, PageHeading, CopyOverflowMenuItem, ConfirmDeleteModal, FlowRunRetryButton, FlowRunRetryModal, ConfirmStateChangeModal, FlowRunCancelButton, FlowRunResumeButton } from '@/components'
   import { useWorkspaceApi } from '@/compositions'
   import { useCan } from '@/compositions/useCan'
   import { useShowModal } from '@/compositions/useShowModal'
