@@ -1,7 +1,9 @@
 import { useRouteQueryParam, useDebouncedRef } from '@prefecthq/vue-compositions'
 import { computed, ComputedRef, ref, Ref } from 'vue'
+import { useRouter } from 'vue-router'
 import { useFilter, UseFilterArgs } from './useFilter'
 import { DeploymentSortValues, isDeploymentSortValue, MaybeRef, UnionFilters } from '@/types'
+import { clearSelectedFilters } from '@/utilities/routes'
 
 export type UseDeploymentFilterArgs = UseFilterArgs<DeploymentSortValues>
 
@@ -12,13 +14,18 @@ export function useDeploymentFilter(filters: MaybeRef<UseDeploymentFilterArgs>):
 export type UseDeploymentFilterFromRoute = {
   flows: Ref<string[]>,
   name: Ref<string>,
+  tags: Ref<string[]>,
   sort: Ref<DeploymentSortValues>,
   filter: ComputedRef<UnionFilters>,
+  hasFilters: Ref<boolean>,
+  clearFilters: () => Promise<void>,
 }
 
 export function useDeploymentFilterFromRoute(filter?: MaybeRef<UseDeploymentFilterArgs>): UseDeploymentFilterFromRoute {
+  const router = useRouter()
   const flows = useRouteQueryParam('deployment-flows', [])
   const name = useRouteQueryParam('deployment-name', '')
+  const tags = useRouteQueryParam('deployment-tags', [])
   const nameDebounced = useDebouncedRef(name, 500)
   const sort = useRouteQueryParam('deployment-sort', 'CREATED_DESC') as Ref<DeploymentSortValues>
   const filterRef = ref(filter)
@@ -34,6 +41,10 @@ export function useDeploymentFilterFromRoute(filter?: MaybeRef<UseDeploymentFilt
       filter.flows = flows
     }
 
+    if (tags.value.length) {
+      filter.deploymentTags = tags
+    }
+
     if (isDeploymentSortValue(sort)) {
       filter.sort = sort
     }
@@ -41,12 +52,27 @@ export function useDeploymentFilterFromRoute(filter?: MaybeRef<UseDeploymentFilt
     return filter
   })
 
+  const hasFilters = computed(() => {
+    return !!name.value.length ||
+    !!flows.value.length ||
+    !!tags.value.length
+  })
+
+  async function clearFilters(): Promise<void> {
+    const query = clearSelectedFilters(router, ['deployment-flows', 'deployment-name', 'deployment-tags'])
+
+    await router.push({ query: query })
+  }
+
   const unionFilter = useDeploymentFilter(deploymentFilter)
 
   return {
     flows,
     name,
+    tags,
     sort,
     filter: unionFilter,
+    hasFilters,
+    clearFilters,
   }
 }

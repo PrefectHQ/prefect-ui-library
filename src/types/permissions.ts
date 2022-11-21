@@ -124,6 +124,8 @@ const featureFlags = [
   'access:auditLogs',
   'access:retry',
   'access:automation',
+  'access:chameleon',
+  'access:transfer',
 ] as const
 
 export type FeatureFlagString = typeof featureFlags[number]
