@@ -29,7 +29,7 @@ export function createWorkspaceRoutes(config?: CreateWorkspaceRoutesConfig) {
     blocks: () => ({ name: 'workspace.blocks', params: config }),
     blocksCatalog: () => ({ name: 'workspace.blocks.catalog', params: config }),
     blocksCatalogView: (blockTypeSlug: string) => ({ name: 'workspace.blocks.catalog-view', params: { blockTypeSlug, ...config } }),
-    blockCreate: (blockTypeId: string) => ({ name: 'workspace.blocks.block-create', params: { blockTypeId, ...config } }),
+    blockCreate: (blockTypeSlug: string) => ({ name: 'workspace.blocks.block-create', params: { blockTypeSlug, ...config } }),
     block: (blockDocumentId: string) => ({ name: 'workspace.blocks.block', params: { blockDocumentId, ...config } }),
     blockEdit: (blockDocumentId: string) => ({ name: 'workspace.blocks.block-edit', params: { blockDocumentId, ...config } }),
     notifications: () => ({ name: 'workspace.notifications', params: config }),
@@ -93,7 +93,7 @@ export function createWorkspaceRouteRecords(components: WorkspaceRouteComponents
           component: components.flows,
         },
         {
-          name: 'workspace.flow',
+          name: 'workspace.flows.flow',
           path: 'flow/:flowId',
           component: components.flow,
         },
@@ -145,7 +145,7 @@ export function createWorkspaceRouteRecords(components: WorkspaceRouteComponents
           component: components.workQueues,
         },
         {
-          name: 'workspace.work-queue-create',
+          name: 'workspace.work-queues.work-queue-create',
           path: 'create',
           component: components.workQueueCreate,
           meta: {
@@ -153,12 +153,12 @@ export function createWorkspaceRouteRecords(components: WorkspaceRouteComponents
           },
         },
         {
-          name: 'workspace.work-queue',
+          name: 'workspace.work-queues.work-queue',
           path: 'work-queue/:workQueueId',
           component: components.workQueue,
         },
         {
-          name: 'workspace.work-queue-edit',
+          name: 'workspace.work-queues.work-queue-edit',
           path: 'work-queue/:workQueueId/edit',
           component: components.workQueueEdit,
           meta: {
@@ -195,7 +195,7 @@ export function createWorkspaceRouteRecords(components: WorkspaceRouteComponents
           },
         },
         {
-          name: 'workspace.blocks.create',
+          name: 'workspace.blocks.block-create',
           path: 'catalog/:blockTypeSlug/create',
           component: components.blockCreate,
           meta: {

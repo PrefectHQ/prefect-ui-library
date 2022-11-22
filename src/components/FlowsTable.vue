@@ -9,7 +9,7 @@
 
     <p-table :data="flows" :columns="columns">
       <template #name="{ row }">
-        <p-link :to="routes.flowRun(row.id)">
+        <p-link :to="routes.flow(row.id)">
           <span>{{ row.name }}</span>
         </p-link>
       </template>
