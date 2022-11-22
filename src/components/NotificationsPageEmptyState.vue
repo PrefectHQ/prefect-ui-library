@@ -14,7 +14,7 @@
 
     <template #actions>
       <DocumentationButton topic="notifications" />
-      <router-link v-if="can.create.notification_policy" :to="notificationCreateRoute()">
+      <router-link v-if="can.create.notification_policy" :to="routes.notificationCreate()">
         <p-button>
           Create Notification
           <p-icon icon="PlusIcon" class="workspace-notifications-empty-state__link-icon" />
@@ -29,23 +29,20 @@
   import { RouterLink } from 'vue-router'
   import DocumentationButton from './DocumentationButton.vue'
   import { useCan } from '@/compositions/useCan'
-  import { notificationCreateRouteKey } from '@/router'
-  import { inject } from '@/utilities'
+  import { useWorkspaceRoutes } from '@/router'
 
   const can = useCan()
-  const notificationCreateRoute = inject(notificationCreateRouteKey)
+  const routes = useWorkspaceRoutes()
 </script>
 
 
 <style>
-.workspace-notifications-empty-state__icon {
-  @apply
+.workspace-notifications-empty-state__icon { @apply
   w-12
   h-12
 }
 
-.workspace-notifications-empty-state__link-icon {
-  @apply
+.workspace-notifications-empty-state__link-icon { @apply
   ml-2
   w-4
   h-4

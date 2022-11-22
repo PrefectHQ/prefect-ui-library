@@ -4,13 +4,12 @@
 
 <script lang="ts" setup>
   import PageHeading from './PageHeading.vue'
-  import { notificationsRouteKey } from '@/router'
-  import { inject } from '@/utilities'
+  import { useWorkspaceRoutes } from '@/router'
 
-  const notificationsRoute = inject(notificationsRouteKey)
+  const routes = useWorkspaceRoutes()
 
   const crumbs = [
-    { text: 'Notifications', to: notificationsRoute() },
+    { text: 'Notifications', to: routes.notifications() },
     { text: 'Edit' },
   ]
 </script>

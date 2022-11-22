@@ -6,19 +6,17 @@
   import { BreadCrumbs } from '@prefecthq/prefect-design'
   import PageHeading from '@/components/PageHeading.vue'
   import { BlockDocument } from '@/models/BlockDocument'
-  import { blocksRouteKey, blockRouteKey } from '@/router/routes'
-  import { inject } from '@/utilities'
+  import { useWorkspaceRoutes } from '@/router'
 
   const props = defineProps<{
     blockDocument: BlockDocument,
   }>()
 
-  const blocksRoute = inject(blocksRouteKey)
-  const blockRoute = inject(blockRouteKey)
+  const routes = useWorkspaceRoutes()
 
   const crumbs: BreadCrumbs = [
-    { text: 'Blocks', to: blocksRoute() },
-    { text: props.blockDocument.name, to: blockRoute(props.blockDocument.id) },
+    { text: 'Blocks', to: routes.blocks() },
+    { text: props.blockDocument.name, to: routes.block(props.blockDocument.id) },
     { text: 'Edit' },
   ]
 </script>

@@ -1,7 +1,7 @@
 <template>
   <page-heading class="page-heading-blocks" :crumbs="crumbs">
     <template #actions>
-      <BlockDocumentMenu :block-document="blockDocument" @delete="$emit('delete')" />
+      <BlockDocumentMenu :block-document="blockDocument" @delete="emit('delete')" />
     </template>
   </page-heading>
 </template>
@@ -11,21 +11,20 @@
   import BlockDocumentMenu from './BlockDocumentMenu.vue'
   import PageHeading from '@/components/PageHeading.vue'
   import { BlockDocument } from '@/models/BlockDocument'
-  import { blocksRouteKey } from '@/router/routes'
-  import { inject } from '@/utilities'
+  import { useWorkspaceRoutes } from '@/router'
 
   const props = defineProps<{
     blockDocument: BlockDocument,
   }>()
 
-  const blocksRoute = inject(blocksRouteKey)
-
-  defineEmits<{
+  const emit = defineEmits<{
     (event: 'delete'): void,
   }>()
 
+  const routes = useWorkspaceRoutes()
+
   const crumbs: BreadCrumbs = [
-    { text: 'Blocks', to: blocksRoute() },
+    { text: 'Blocks', to: routes.blocks() },
     { text: props.blockDocument.name },
   ]
 </script>

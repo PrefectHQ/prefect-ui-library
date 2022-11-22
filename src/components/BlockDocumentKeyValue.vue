@@ -2,7 +2,7 @@
   <template v-if="blockDocument">
     <PKeyValue class="block-document-key-value" :label="blockDocument.blockType.name">
       <template #value>
-        <p-link :to="blockRoute(blockDocument.id)">
+        <p-link :to="routes.block(blockDocument.id)">
           {{ blockDocument.name }}
         </p-link>
       </template>
@@ -15,15 +15,14 @@
   import { useSubscription } from '@prefecthq/vue-compositions'
   import { computed } from 'vue'
   import { useWorkspaceApi } from '@/compositions/useWorkspaceApi'
-  import { blockRouteKey } from '@/router'
-  import { inject } from '@/utilities'
+  import { useWorkspaceRoutes } from '@/router'
 
   const props = defineProps<{
     blockDocumentId: string,
   }>()
 
-  const blockRoute = inject(blockRouteKey)
   const api = useWorkspaceApi()
+  const routes = useWorkspaceRoutes()
   const blockDocumentSubscription = useSubscription(api.blockDocuments.getBlockDocument, [props.blockDocumentId])
   const blockDocument = computed(() => blockDocumentSubscription.response)
 </script>

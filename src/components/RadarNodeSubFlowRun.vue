@@ -9,7 +9,7 @@
     <div class="radar-node-sub-flow-run__content">
       <FlowRouterLink v-if="flowRun?.flowId" :flow-id="flowRun.flowId" after=" / " />
 
-      <p-link :to="flowRunRoute(flowRunId)">
+      <p-link :to="routes.flowRun(flowRunId)">
         {{ flowRunName }}
       </p-link>
     </div>
@@ -35,15 +35,14 @@
   import StateIcon from './StateIcon.vue'
   import { useWorkspaceApi } from '@/compositions'
   import { FlowRun, GraphNode, StateType } from '@/models'
-  import { flowRunRouteKey } from '@/router'
-  import { inject } from '@/utilities/inject'
+  import { useWorkspaceRoutes } from '@/router'
 
   const props = defineProps<{
     graphNode: GraphNode,
   }>()
 
   const api = useWorkspaceApi()
-  const flowRunRoute = inject(flowRunRouteKey)
+  const routes = useWorkspaceRoutes()
 
   const flowRunId = computed(() => props.graphNode.state!.stateDetails!.childFlowRunId!)
   const subscription = useSubscription(api.flowRuns.getFlowRun, [flowRunId])

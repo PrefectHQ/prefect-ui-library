@@ -30,8 +30,8 @@
   import { useCan } from '@/compositions/useCan'
   import { useShowModal } from '@/compositions/useShowModal'
   import { BlockDocument } from '@/models'
-  import { blockEditRouteKey } from '@/router/routes'
-  import { inject, deleteItem } from '@/utilities'
+  import { useWorkspaceRoutes } from '@/router'
+  import { deleteItem } from '@/utilities'
 
   const props = defineProps<{
     blockDocument: BlockDocument,
@@ -43,12 +43,12 @@
 
   const can = useCan()
   const router = useRouter()
-  const blockEditRoute = inject(blockEditRouteKey)
+  const routes = useWorkspaceRoutes()
   const api = useWorkspaceApi()
   const { showModal, open: openDeleteBlockModal } = useShowModal()
 
   function editBlock(): void {
-    router.push(blockEditRoute(props.blockDocument.id))
+    router.push(routes.blockEdit(props.blockDocument.id))
   }
 
   async function deleteBlock(id: string): Promise<void> {

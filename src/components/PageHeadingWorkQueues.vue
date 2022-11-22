@@ -1,7 +1,7 @@
 <template>
   <page-heading class="page-heading-work-queues" :crumbs="crumbs">
     <template #after-crumbs>
-      <router-link v-if="can.create.work_queue" :to="newQueueRoute()">
+      <router-link v-if="can.create.work_queue" :to="routes.workQueueCreate()">
         <p-button inset size="xs" icon="PlusIcon" />
       </router-link>
     </template>
@@ -12,11 +12,10 @@
   import { RouterLink } from 'vue-router'
   import PageHeading from '@/components/PageHeading.vue'
   import { useCan } from '@/compositions/useCan'
-  import { workQueueCreateRouteKey } from '@/router/routes'
-  import { inject } from '@/utilities'
+  import { useWorkspaceRoutes } from '@/router'
 
   const crumbs = [{ text: 'Work Queues' }]
 
   const can = useCan()
-  const newQueueRoute = inject(workQueueCreateRouteKey)
+  const routes = useWorkspaceRoutes()
 </script>

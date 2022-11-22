@@ -7,7 +7,7 @@
             <p-icon icon="ChevronRightIcon" size="small" />
           </template>
         </FlowRouterLink>
-        <p-link :to="flowRunRoute(flowRun.id)" class="flow-run-list-item__flow-run-link">
+        <p-link :to="routes.flowRun(flowRun.id)" class="flow-run-list-item__flow-run-link">
           <span>{{ flowRun.name }}</span>
         </p-link>
       </template>
@@ -52,8 +52,8 @@
   import StateBadge from '@/components/StateBadge.vue'
   import StateListItem from '@/components/StateListItem.vue'
   import { FlowRun } from '@/models/FlowRun'
-  import { flowRunRouteKey } from '@/router'
-  import { inject, toPluralString } from '@/utilities'
+  import { useWorkspaceRoutes } from '@/router'
+  import { toPluralString } from '@/utilities'
 
   const props = defineProps<{
     selected: CheckboxModel | null,
@@ -73,8 +73,8 @@
       emit('update:selected', value)
     },
   })
-  const flowRunRoute = inject(flowRunRouteKey)
 
+  const routes = useWorkspaceRoutes()
   const stateType = computed(() => props.flowRun.state?.type)
   const tags = computed(() => props.flowRun.tags)
   const value = computed(() => props.flowRun.id)

@@ -46,14 +46,15 @@
   import { useShowModal } from '@/compositions/useShowModal'
   import { localization } from '@/localization'
   import { isTerminalStateType, StateUpdateDetails } from '@/models'
-  import { flowRunsRouteKey } from '@/router'
-  import { deleteItem, inject } from '@/utilities'
+  import { useWorkspaceRoutes } from '@/router'
+  import { deleteItem } from '@/utilities'
 
   const props = defineProps<{
     flowRunId: string,
   }>()
 
   const can = useCan()
+  const routes = useWorkspaceRoutes()
 
   const canRetry = computed(() => {
     if (!can.update.flow_run || !flowRun.value?.stateType || !flowRun.value.deploymentId) {
@@ -66,11 +67,11 @@
   const { showModal: showDeleteModal, open: openDeleteModal } = useShowModal()
   const { showModal: showRetryModal, open: openRetryModal } = useShowModal()
   const { showModal: showStateChangeModal, open: openChangeStateModal } = useShowModal()
-  const flowRunsRoute = inject(flowRunsRouteKey)
+
   // It doesn't seem like we should need to coalesce here but
   // the flow run model dictates the flow run name can be null
   const crumbs = computed(() => [
-    { text: 'Flow Runs', to: flowRunsRoute() },
+    { text: 'Flow Runs', to: routes.flowRuns() },
     { text: flowRun.value?.name ?? '' },
   ])
 

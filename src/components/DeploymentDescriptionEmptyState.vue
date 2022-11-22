@@ -15,7 +15,7 @@
 
     <template #actions>
       <DocumentationButton topic="deployments" />
-      <router-link v-if="can.update.deployment" :to="editDeploymentRoute(deployment.id)">
+      <router-link v-if="can.update.deployment" :to="routes.deploymentEdit(deployment.id)">
         <p-button>
           Add description
         </p-button>
@@ -29,13 +29,12 @@
   import DocumentationButton from './DocumentationButton.vue'
   import { useCan } from '@/compositions/useCan'
   import { Deployment } from '@/models'
-  import { editDeploymentRouteKey } from '@/router'
-  import { inject } from '@/utilities'
+  import { useWorkspaceRoutes } from '@/router'
 
   defineProps<{
     deployment: Deployment,
   }>()
 
   const can = useCan()
-  const editDeploymentRoute = inject(editDeploymentRouteKey)
+  const routes = useWorkspaceRoutes()
 </script>

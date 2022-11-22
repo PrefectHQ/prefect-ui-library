@@ -38,7 +38,7 @@
           </a>
         </template>
 
-        <p-link :to="blocksCatalogCreateRoute(blockType.slug)" class="block-type-card__action">
+        <p-link :to="routes.blockCreate(blockType.slug)" class="block-type-card__action">
           <p-button class="block-type-card__button">
             Add Block<p-icon icon="PlusIcon" />
           </p-button>
@@ -56,14 +56,13 @@
   import BlockTypeSnippet from './BlockTypeSnippet.vue'
   import { useWorkspaceApi } from '@/compositions'
   import { BlockType } from '@/models/BlockType'
-  import { blockCatalogCreateRouteKey } from '@/router/routes'
-  import { inject } from '@/utilities'
+  import { useWorkspaceRoutes } from '@/router/routes'
 
   const props = defineProps<{
     blockType: BlockType,
   }>()
 
-  const blocksCatalogCreateRoute = inject(blockCatalogCreateRouteKey)
+  const routes = useWorkspaceRoutes()
 
   const blockTypeId = computed(() => props.blockType.id)
   const api = useWorkspaceApi()

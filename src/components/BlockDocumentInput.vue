@@ -5,7 +5,7 @@
     <template v-if="blockDocuments.length">
       <BlockDocumentsSelect v-model:selected="model" v-bind="{ blockDocuments }" class="block-document-input__select" />
     </template>
-    <router-link v-if="blockTypeSlug" :to="withRedirect(blockCatalogCreateRoute(blockTypeSlug))">
+    <router-link v-if="blockTypeSlug" :to="withRedirect(routes.blockCreate(blockTypeSlug))">
       <p-button inset>
         Add <p-icon icon="PlusIcon" />
       </p-button>
@@ -19,8 +19,7 @@
   import BlockDocumentsSelect from './BlockDocumentsSelect.vue'
   import BlockTypeLogo from './BlockTypeLogo.vue'
   import { useWorkspaceApi } from '@/compositions'
-  import { blockCatalogCreateRouteKey } from '@/router/routes'
-  import { inject } from '@/utilities'
+  import { useWorkspaceRoutes } from '@/router'
   import { withRedirect } from '@/utilities/routes'
 
   const props = defineProps<{
@@ -41,8 +40,8 @@
     },
   })
 
-  const blockCatalogCreateRoute = inject(blockCatalogCreateRouteKey)
   const api = useWorkspaceApi()
+  const routes = useWorkspaceRoutes()
   const blockTypeSlug = computed(() => props.blockTypeSlug)
   const blockTypeSubscription = useSubscription(api.blockTypes.getBlockTypeBySlug, [blockTypeSlug])
   const blockType = computed(() => blockTypeSubscription.response)

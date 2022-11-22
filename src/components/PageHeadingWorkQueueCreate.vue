@@ -4,10 +4,12 @@
 
 <script lang="ts" setup>
   import PageHeading from './PageHeading.vue'
-  import { workQueuesRouteKey } from '@/router'
-  import { inject } from '@/utilities'
+  import { useWorkspaceRoutes } from '@/router'
 
-  const workQueuesRoute = inject(workQueuesRouteKey)
+  const routes = useWorkspaceRoutes()
 
-  const crumbs = [{ text: 'Work Queues', to: workQueuesRoute() }, { text: 'Create' }]
+  const crumbs = [
+    { text: 'Work Queues', to: routes.workQueues() },
+    { text: 'Create' },
+  ]
 </script>

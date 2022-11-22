@@ -5,7 +5,7 @@
         {{ before }}
       </span>
     </slot>
-    <p-link class="flow-router-link__anchor" :to="flowRoute(flowId)">
+    <p-link class="flow-router-link__anchor" :to="routes.flow(flowId)">
       {{ flowName }}
     </p-link>
     <slot name="after">
@@ -21,8 +21,7 @@
   import { useRoute, useRouter } from 'vue-router'
   import { useFlow } from '@/compositions'
   import { useCan } from '@/compositions/useCan'
-  import { flowRouteKey } from '@/router/routes'
-  import { inject } from '@/utilities/inject'
+  import { useWorkspaceRoutes } from '@/router'
 
   const props = defineProps<{
     flowId: string,
@@ -31,10 +30,10 @@
   }>()
 
   const can = useCan()
-  const flowRoute = inject(flowRouteKey)
+  const routes = useWorkspaceRoutes()
   const route = useRoute()
   const router = useRouter()
-  const flowRouteResolved = computed(() => router.resolve(flowRoute(props.flowId)))
+  const flowRouteResolved = computed(() => router.resolve(routes.flow(props.flowId)))
   const matched = computed(() => route.matched.some(({ path }) => flowRouteResolved.value.path == path))
   const showLink = computed(() => can.read.flow && !matched.value)
 

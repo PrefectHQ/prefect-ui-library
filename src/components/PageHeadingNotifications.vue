@@ -1,7 +1,7 @@
 <template>
   <page-heading class="page-heading-notifications" :crumbs="crumbs">
     <template #after-crumbs>
-      <router-link v-if="can.create.notification_policy" :to="newNotificationRoute()">
+      <router-link v-if="can.create.notification_policy" :to="routes.notificationCreate()">
         <p-button inset size="xs" icon="PlusIcon" />
       </router-link>
     </template>
@@ -12,11 +12,10 @@
   import { RouterLink } from 'vue-router'
   import PageHeading from '@/components/PageHeading.vue'
   import { useCan } from '@/compositions/useCan'
-  import { notificationCreateRouteKey } from '@/router/routes'
-  import { inject } from '@/utilities'
+  import { useWorkspaceRoutes } from '@/router'
 
   const crumbs = [{ text: 'Notifications' }]
 
   const can = useCan()
-  const newNotificationRoute = inject(notificationCreateRouteKey)
+  const routes = useWorkspaceRoutes()
 </script>

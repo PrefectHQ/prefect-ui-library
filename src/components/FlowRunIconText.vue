@@ -1,5 +1,5 @@
 <template>
-  <p-link :to="flowRoute(flowRunId)" class="flow-run-icon-text">
+  <p-link :to="routes.flowRun(flowRunId)" class="flow-run-icon-text">
     <p-icon-text icon="FlowRun">
       <span>{{ flowRunName }}</span>
     </p-icon-text>
@@ -10,15 +10,14 @@
   import { useSubscription } from '@prefecthq/vue-compositions'
   import { computed } from 'vue'
   import { useWorkspaceApi } from '@/compositions'
-  import { flowRunRouteKey } from '@/router/routes'
-  import { inject } from '@/utilities/inject'
+  import { useWorkspaceRoutes } from '@/router'
 
   const props = defineProps<{
     flowRunId: string,
   }>()
 
   const api = useWorkspaceApi()
-  const flowRoute = inject(flowRunRouteKey)
+  const routes = useWorkspaceRoutes()
   const flowRunSubscription =  useSubscription(api.flowRuns.getFlowRun, [props.flowRunId])
   const flowRunName = computed(() => flowRunSubscription.response?.name)
 </script>

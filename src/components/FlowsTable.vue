@@ -13,7 +13,7 @@
 
     <p-table :data="flows" :columns="columns">
       <template #name="{ row }">
-        <p-link :to="flowRoute(row.id)">
+        <p-link :to="routes.flowRun(row.id)">
           <span>{{ row.name }}</span>
         </p-link>
       </template>
@@ -67,18 +67,16 @@
   import FlowActivityChart from '@/components/FlowActivityChart.vue'
   import FlowMenu from '@/components/FlowMenu.vue'
   import { UseFlowFilterArgs, useFlowFilterFromRoute, useWorkspaceApi } from '@/compositions'
-  import { flowRouteKey } from '@/router'
+  import { useWorkspaceRoutes } from '@/router'
   import { flowSortOptions } from '@/types/SortOptionTypes'
-  import { inject } from '@/utilities'
   import { formatDateTimeNumeric } from '@/utilities/dates'
-
-  const flowRoute = inject(flowRouteKey)
 
   const props = defineProps<{
     filter?: UseFlowFilterArgs,
   }>()
 
   const api = useWorkspaceApi()
+  const routes = useWorkspaceRoutes()
   const filter = computed(() => props.filter ?? {})
   const { deployments, name, sort, filter: unionFilter } = useFlowFilterFromRoute(filter)
 

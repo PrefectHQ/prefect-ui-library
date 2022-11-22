@@ -4,7 +4,7 @@
 
     <copy-overflow-menu-item label="Copy ID" :item="deployment.id" />
 
-    <router-link v-if="!deployment.deprecated && can.update.deployment" :to="editDeploymentRoute(deployment.id)">
+    <router-link v-if="!deployment.deprecated && can.update.deployment" :to="routes.deploymentEdit(deployment.id)">
       <p-overflow-menu-item label="Edit" />
     </router-link>
 
@@ -37,8 +37,8 @@
   import { useCan } from '@/compositions/useCan'
   import { useShowModal } from '@/compositions/useShowModal'
   import { Deployment } from '@/models'
-  import { editDeploymentRouteKey } from '@/router'
-  import { inject, deleteItem } from '@/utilities'
+  import { useWorkspaceRoutes } from '@/router'
+  import { deleteItem } from '@/utilities'
 
   defineProps<{
     deployment: Deployment,
@@ -53,7 +53,7 @@
   const { showModal, open, close } = useShowModal()
 
   const api = useWorkspaceApi()
-  const editDeploymentRoute = inject(editDeploymentRouteKey)
+  const routes = useWorkspaceRoutes()
 
   const deleteDeployment = async (id: string): Promise<void> => {
     close()

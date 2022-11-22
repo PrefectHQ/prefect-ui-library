@@ -6,19 +6,17 @@
   import { computed } from 'vue'
   import PageHeading from './PageHeading.vue'
   import { WorkQueue } from '@/models'
-  import { workQueueRouteKey, workQueuesRouteKey } from '@/router'
-  import { inject } from '@/utilities'
+  import { useWorkspaceRoutes } from '@/router'
 
   const props = defineProps<{
     workQueue: WorkQueue,
   }>()
 
-  const workQueuesRoute = inject(workQueuesRouteKey)
-  const workQueueRoute = inject(workQueueRouteKey)
+  const routes = useWorkspaceRoutes()
 
   const crumbs = computed(() => [
-    { text: 'Work Queues', to: workQueuesRoute() },
-    { text: props.workQueue.name, to: workQueueRoute(props.workQueue.id) },
+    { text: 'Work Queues', to: routes.workQueues() },
+    { text: props.workQueue.name, to: routes.workQueue(props.workQueue.id) },
     { text: 'Edit' },
   ])
 </script>
