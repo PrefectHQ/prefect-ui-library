@@ -10,6 +10,7 @@ export function mapStateNameToStateType(stateName: string = 'Unknown'): { name: 
     case 'cancelled': return { name: 'Cancelled', type: 'cancelled' }
     case 'crashed': return { name: 'Crashed', type: 'crashed' }
     case 'late': return { name: 'Late', type: 'scheduled' }
+    case 'cancelling': return { name: 'Cancelling', type: 'cancelled' }
     default: return { name: stateName, type: null }
   }
 }
