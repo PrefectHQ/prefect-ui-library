@@ -55,7 +55,7 @@
 <script lang="ts" setup>
   import { PTable, PEmptyResults, PLink } from '@prefecthq/prefect-design'
   import { useSubscription } from '@prefecthq/vue-compositions'
-  import { computed, unref } from 'vue'
+  import { computed } from 'vue'
   import DeploymentsCount from './DeploymentsCount.vue'
   import ResultsCount from './ResultsCount.vue'
   import SearchInput from './SearchInput.vue'
