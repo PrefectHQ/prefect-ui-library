@@ -23,7 +23,7 @@
   import { useWorkspaceApiMock } from './utilities/api'
   import ContextSidebar from '@/demo/components/ContextSidebar.vue'
   import { mobileMenuOpen, toggle } from '@/demo/router/menu'
-  import { flowRouteKey, flowRunRouteKey, editDeploymentRouteKey, flowRunsRouteKey, deploymentRouteKey, taskRunRouteKey, flowsRouteKey, deploymentsRouteKey, workQueuesRouteKey, settingsRouteKey, workQueueRouteKey, workQueueCreateRouteKey, editQueueRouteKey, notificationCreateRouteKey, editNotificationRouteKey, blocksRouteKey, flowRunCreateRouteKey, notificationsRouteKey, blockCatalogRouteKey, blockCatalogViewRouteKey, blockCatalogCreateRouteKey, blockRouteKey, blockEditRouteKey, radarRouteKey, Route } from '@/router'
+  import { createWorkspaceRoutes, workspaceRoutesKey } from '@/router'
   import { getAppPermissions, canKey } from '@/types'
 
   const showMenu = computed(() => media.lg || mobileMenuOpen.value)
@@ -38,32 +38,9 @@
 
   provide(canKey, can)
 
-  const emptyRoute = (): Route => ({ path: '/' })
+  const routes = createWorkspaceRoutes()
 
-  provide(blockCatalogCreateRouteKey, emptyRoute)
-  provide(blockCatalogRouteKey, emptyRoute)
-  provide(blockCatalogViewRouteKey, emptyRoute)
-  provide(blockEditRouteKey, emptyRoute)
-  provide(blockRouteKey, emptyRoute)
-  provide(blocksRouteKey, emptyRoute)
-  provide(deploymentRouteKey, emptyRoute)
-  provide(deploymentsRouteKey, emptyRoute)
-  provide(editDeploymentRouteKey, emptyRoute)
-  provide(editNotificationRouteKey, emptyRoute)
-  provide(editQueueRouteKey, emptyRoute)
-  provide(flowRouteKey, emptyRoute)
-  provide(flowRunCreateRouteKey, emptyRoute)
-  provide(flowRunRouteKey, emptyRoute)
-  provide(flowRunsRouteKey, emptyRoute)
-  provide(flowsRouteKey, emptyRoute)
-  provide(notificationCreateRouteKey, emptyRoute)
-  provide(notificationsRouteKey, emptyRoute)
-  provide(radarRouteKey, emptyRoute)
-  provide(settingsRouteKey, emptyRoute)
-  provide(taskRunRouteKey, emptyRoute)
-  provide(workQueueCreateRouteKey, emptyRoute)
-  provide(workQueueRouteKey, emptyRoute)
-  provide(workQueuesRouteKey, emptyRoute)
+  provide(workspaceRoutesKey, routes)
 </script>
 
 <style>
