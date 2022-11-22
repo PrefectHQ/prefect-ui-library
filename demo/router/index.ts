@@ -3,12 +3,42 @@ import { RouteRecordRaw, createRouter, createWebHistory } from 'vue-router'
 import { sections } from '../sections'
 import { close } from './menu'
 import { convertSectionToRouteRecords } from './routeRecords'
+import { createWorkspaceRouteRecords } from '@/router'
+
+const welcomePage = () => import('../sections/WelcomePage.vue')
+
+const workspaceRecords = createWorkspaceRouteRecords({
+  flowRuns: welcomePage,
+  flowRun: welcomePage,
+  flowRunRadar: welcomePage,
+  taskRun: welcomePage,
+  flows: welcomePage,
+  flow: welcomePage,
+  deployments: welcomePage,
+  deployment: welcomePage,
+  deploymentEdit: welcomePage,
+  deploymentFlowRunCreate: welcomePage,
+  workQueues: welcomePage,
+  workQueue: welcomePage,
+  workQueueCreate: welcomePage,
+  workQueueEdit: welcomePage,
+  blocks: welcomePage,
+  blocksCatalog: welcomePage,
+  blocksCatalogView: welcomePage,
+  blockCreate: welcomePage,
+  block: welcomePage,
+  blockEdit: welcomePage,
+  notifications: welcomePage,
+  notificationCreate: welcomePage,
+  notificationEdit: welcomePage,
+})
 
 export const routeRecords: RouteRecordRaw[] = [
   {
     name: 'home',
     path: '/',
-    component: () => import('../sections/WelcomePage.vue'),
+    component: welcomePage,
+    children: workspaceRecords,
   },
   ...convertSectionToRouteRecords(sections),
   {
