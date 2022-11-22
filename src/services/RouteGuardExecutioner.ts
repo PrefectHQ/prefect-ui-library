@@ -31,9 +31,9 @@ export class RouteGuardExecutioner {
   }
 
   private static getRouteGuards(route: RouteLocationNormalized): RouteGuard[] {
-    const routeGuards = (route.meta.guards ?? []) as RouteGuard[]
+    const guards = route.matched.flatMap(route => route.meta.guards ?? [])
 
-    return [...this.global, ...routeGuards]
+    return [...this.global, ...guards]
   }
 
   // test this
