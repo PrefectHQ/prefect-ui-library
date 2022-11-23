@@ -37,8 +37,8 @@ export class WorkspaceBlockDocumentsApi extends WorkspaceApi implements IWorkspa
   }
 
   public updateBlockDocument(blockDocumentId: string, blockDocument: BlockDocumentUpdate): Promise<void> {
-    // eslint-disable-next-line camelcase
-    return this.patch(`/${blockDocumentId}`, { data: mapper.map('BlockDocumentUpdate', blockDocument, 'BlockDocumentUpdateRequest'), merge_existing_data: false })
+
+    return this.patch(`/${blockDocumentId}`, mapper.map('BlockDocumentUpdate', blockDocument, 'BlockDocumentUpdateRequest'))
   }
 
   public deleteBlockDocument(blockDocumentId: string): Promise<void> {

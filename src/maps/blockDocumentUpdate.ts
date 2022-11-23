@@ -9,5 +9,7 @@ export const mapBlockDocumentUpdateToBlockDocumentUpdateRequest: MapFunction<Blo
 
   return {
     data,
+    // eslint-disable-next-line camelcase
+    merge_existing_data: false,
   }
 }
