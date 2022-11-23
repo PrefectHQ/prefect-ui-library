@@ -5,7 +5,6 @@
     </template>
     <template #actions>
       <FlowRunRetryButton :flow-run="flowRun" class="page-heading-flow-run__retry-button" />
-      <FlowRunCancelButton :flow-run="flowRun" class="page-heading-flow-run__cancel-button" />
       <p-icon-button-menu>
         <template #default>
           <p-overflow-menu-item v-if="canRetry" label="Retry" class="page-heading-flow-run__retry-menu-item" @click="openRetryModal" />
@@ -39,7 +38,6 @@
   import { PIconButtonMenu, showToast } from '@prefecthq/prefect-design'
   import { useSubscription } from '@prefecthq/vue-compositions'
   import { computed, ref } from 'vue'
-  import FlowRunCancelButton from './FlowRunCancelButton.vue'
   import { StateBadge, PageHeading, CopyOverflowMenuItem, ConfirmDeleteModal, FlowRunRetryButton, FlowRunRetryModal, ConfirmStateChangeModal } from '@/components'
   import { useWorkspaceApi } from '@/compositions'
   import { useCan } from '@/compositions/useCan'
@@ -55,8 +53,8 @@
 
   const can = useCan()
 
-  const canRetry = computed(()=> {
-    if (!can.update.flow_run || !flowRun.value?.stateType || !flowRun.value.deploymentId || !can.access.retry) {
+  const canRetry = computed(() => {
+    if (!can.update.flow_run || !flowRun.value?.stateType || !flowRun.value.deploymentId) {
       return false
     }
     return isTerminalStateType(flowRun.value.stateType)

@@ -4,10 +4,6 @@
       <ResultsCount class="flows-table__count" label="Flow" :count="flowsCount" />
       <SearchInput v-model="name" placeholder="Search flows" label="Search flows" />
 
-      <template v-if="canFilterDeployments">
-        <DeploymentCombobox v-model:selected="deployments" empty-message="All deployments" class="flows-table__deployments" />
-      </template>
-
       <p-select v-model="sort" :options="flowSortOptions" />
     </div>
 
@@ -59,8 +55,7 @@
 <script lang="ts" setup>
   import { PTable, PEmptyResults, PLink } from '@prefecthq/prefect-design'
   import { useSubscription } from '@prefecthq/vue-compositions'
-  import { computed, unref } from 'vue'
-  import DeploymentCombobox from './DeploymentCombobox.vue'
+  import { computed } from 'vue'
   import DeploymentsCount from './DeploymentsCount.vue'
   import ResultsCount from './ResultsCount.vue'
   import SearchInput from './SearchInput.vue'
@@ -80,14 +75,7 @@
 
   const api = useWorkspaceApi()
   const filter = computed(() => props.filter ?? {})
-  const { deployments, name, sort, filter: unionFilter } = useFlowFilterFromRoute(filter)
-
-  const canFilterDeployments = computed(() => {
-    const filterHasDeployments = !!unref(filter.value.deployments)?.length
-    const filterHasDeploymentName = !!unref(filter.value.deploymentName)?.length
-
-    return !filterHasDeployments && !filterHasDeploymentName
-  })
+  const { name, sort, filter: unionFilter } = useFlowFilterFromRoute(filter)
 
   const columns = [
     {
