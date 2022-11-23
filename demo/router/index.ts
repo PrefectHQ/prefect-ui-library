@@ -33,7 +33,7 @@ const workspaceRecords = createWorkspaceRouteRecords({
   notificationEdit: welcomePage,
 })
 
-export const routeRecords: RouteRecordRaw[] = [
+export const routeRecords = [
   {
     name: 'home',
     path: '/',
@@ -46,7 +46,7 @@ export const routeRecords: RouteRecordRaw[] = [
     path: '/timezone-support',
     component: () => import('../sections/TimezoneSupport.vue'),
   },
-]
+] as RouteRecordRaw[]
 
 export const router = createRouter({
   history: createWebHistory(),

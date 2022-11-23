@@ -11,35 +11,45 @@ type CreateWorkspaceRoutesConfig = {
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 export function createWorkspaceRoutes(config?: CreateWorkspaceRoutesConfig) {
+  const { accountId, workspaceId } = config ?? {}
+
   return {
-    flowRuns: () => ({ name: 'workspace.flow-runs', params: config }),
-    flowRun: (flowRunId: string) => ({ name: 'workspace.flow-runs.flow-run', params: { flowRunId, ...config } }),
-    flowRunRadar: (flowRunId: string) => ({ name: 'workspace.flow-runs.flow-run-radar', params: { flowRunId, ...config } }),
-    taskRun: (taskRunId: string) => ({ name: 'workspace.flow-runs.task-run', params: { flowRunId: taskRunId, ...config } }),
-    flows: () => ({ name: 'workspace.flows', params: config }),
-    flow: (flowId: string) => ({ name: 'workspace.flows.flow', params: { flowId, ...config } }),
-    deployments: () => ({ name: 'workspace.deployments', params: config }),
-    deployment: (deploymentId: string) => ({ name: 'workspace.deployments.deployment', params: { deploymentId, ...config } }),
-    deploymentEdit: (deploymentId: string) => ({ name: 'workspace.deployments.deployment-edit', params: { deploymentId, ...config } }),
-    deploymentFlowRunCreate: (deploymentId: string) => ({ name: 'workspace.deployments.deployment-flow-run-create', params: { deploymentId, ...config } }),
-    workQueues: () => ({ name: 'workspace.work-queues', params: config }),
-    workQueue: (workQueueId: string) => ({ name: 'workspace.work-queues.work-queue', params: { workQueueId, ...config } }),
-    workQueueCreate: () => ({ name: 'workspace.work-queues.work-queue-create', params: config }),
-    workQueueEdit: (workQueueId: string) => ({ name: 'workspace.work-queues.work-queue-edit', params: { workQueueId, ...config } }),
-    blocks: () => ({ name: 'workspace.blocks', params: config }),
-    blocksCatalog: () => ({ name: 'workspace.blocks.catalog', params: config }),
-    blocksCatalogView: (blockTypeSlug: string) => ({ name: 'workspace.blocks.catalog-view', params: { blockTypeSlug, ...config } }),
-    blockCreate: (blockTypeSlug: string) => ({ name: 'workspace.blocks.block-create', params: { blockTypeSlug, ...config } }),
-    block: (blockDocumentId: string) => ({ name: 'workspace.blocks.block', params: { blockDocumentId, ...config } }),
-    blockEdit: (blockDocumentId: string) => ({ name: 'workspace.blocks.block-edit', params: { blockDocumentId, ...config } }),
-    notifications: () => ({ name: 'workspace.notifications', params: config }),
-    notificationCreate: () => ({ name: 'workspace.notifications.create', params: config }),
-    notificationEdit: (notificationId: string) => ({ name: 'workspace.notifications.notification-edit', params: { notificationId, ...config } }),
+    flowRuns: () => ({ name: 'workspace.flow-runs', params: { accountId, workspaceId } }) as const,
+    flowRun: (flowRunId: string) => ({ name: 'workspace.flow-runs.flow-run', params: { flowRunId, accountId, workspaceId } }) as const,
+    flowRunRadar: (flowRunId: string) => ({ name: 'workspace.flow-runs.flow-run-radar', params: { flowRunId, accountId, workspaceId } }) as const,
+    taskRun: (taskRunId: string) => ({ name: 'workspace.flow-runs.task-run', params: { flowRunId: taskRunId, accountId, workspaceId } }) as const,
+    flows: () => ({ name: 'workspace.flows', params: { accountId, workspaceId } }) as const,
+    flow: (flowId: string) => ({ name: 'workspace.flows.flow', params: { flowId, accountId, workspaceId } }) as const,
+    deployments: () => ({ name: 'workspace.deployments', params: { accountId, workspaceId } }) as const,
+    deployment: (deploymentId: string) => ({ name: 'workspace.deployments.deployment', params: { deploymentId, accountId, workspaceId } }) as const,
+    deploymentEdit: (deploymentId: string) => ({ name: 'workspace.deployments.deployment-edit', params: { deploymentId, accountId, workspaceId } }) as const,
+    deploymentFlowRunCreate: (deploymentId: string) => ({ name: 'workspace.deployments.deployment-flow-run-create', params: { deploymentId, accountId, workspaceId } }) as const,
+    workQueues: () => ({ name: 'workspace.work-queues', params: { accountId, workspaceId } }) as const,
+    workQueue: (workQueueId: string) => ({ name: 'workspace.work-queues.work-queue', params: { workQueueId, accountId, workspaceId } }) as const,
+    workQueueCreate: () => ({ name: 'workspace.work-queues.work-queue-create', params: { accountId, workspaceId } }) as const,
+    workQueueEdit: (workQueueId: string) => ({ name: 'workspace.work-queues.work-queue-edit', params: { workQueueId, accountId, workspaceId } }) as const,
+    blocks: () => ({ name: 'workspace.blocks', params: { accountId, workspaceId } }) as const,
+    blocksCatalog: () => ({ name: 'workspace.blocks.catalog', params: { accountId, workspaceId } }) as const,
+    blocksCatalogView: (blockTypeSlug: string) => ({ name: 'workspace.blocks.catalog-view', params: { blockTypeSlug, accountId, workspaceId } }) as const,
+    blockCreate: (blockTypeSlug: string) => ({ name: 'workspace.blocks.block-create', params: { blockTypeSlug, accountId, workspaceId } }) as const,
+    block: (blockDocumentId: string) => ({ name: 'workspace.blocks.block', params: { blockDocumentId, accountId, workspaceId } }) as const,
+    blockEdit: (blockDocumentId: string) => ({ name: 'workspace.blocks.block-edit', params: { blockDocumentId, accountId, workspaceId } }) as const,
+    notifications: () => ({ name: 'workspace.notifications', params: { accountId, workspaceId } }) as const,
+    notificationCreate: () => ({ name: 'workspace.notifications.create', params: { accountId, workspaceId } }) as const,
+    notificationEdit: (notificationId: string) => ({ name: 'workspace.notifications.notification-edit', params: { notificationId, accountId, workspaceId } }) as const,
   }
 }
 
-export type CreateWorkspaceRoutes = ReturnType<typeof createWorkspaceRoutes>
-export const workspaceRoutesKey: InjectionKey<CreateWorkspaceRoutes> = Symbol('WorkspaceRoutes')
+type WorkspaceRoutes = ReturnType<typeof createWorkspaceRoutes>
+type WorkspaceRouteKey = keyof WorkspaceRoutes
+type WorkspaceRoute = ReturnType<WorkspaceRoutes[WorkspaceRouteKey]>
+type WorkspaceNamedRoute = WorkspaceRoute['name']
+
+type WorkspaceRouteRecordParent = { name?: WorkspaceNamedRoute, children: WorkspaceRouteRecord[] }
+type WorkspaceRouteRecordChild = { name: WorkspaceNamedRoute }
+type WorkspaceRouteRecord = Omit<RouteRecordRaw, 'name' | 'children'> & WorkspaceRouteRecordParent | WorkspaceRouteRecordChild
+
+export const workspaceRoutesKey: InjectionKey<WorkspaceRoutes> = Symbol('WorkspaceRoutes')
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 export function useWorkspaceRoutes() {
@@ -47,11 +57,10 @@ export function useWorkspaceRoutes() {
 }
 
 type WorkspaceComponent = () => Promise<RouteComponent>
-type WorkspaceRoute = keyof CreateWorkspaceRoutes
 
-export type WorkspaceRouteComponents = Record<WorkspaceRoute, WorkspaceComponent>
+export type WorkspaceRouteComponents = Record<WorkspaceRouteKey, WorkspaceComponent>
 
-export function createWorkspaceRouteRecords(components: WorkspaceRouteComponents): RouteRecordRaw[] {
+export function createWorkspaceRouteRecords(components: WorkspaceRouteComponents): WorkspaceRouteRecord[] {
   return [
     {
       path: 'flow-runs',
