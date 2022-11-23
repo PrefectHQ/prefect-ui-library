@@ -27,9 +27,8 @@
 <script lang="ts" setup>
   import { PEmptyState, PIcon } from '@prefecthq/prefect-design'
   import DocumentationButton from './DocumentationButton.vue'
-  import { useCan } from '@/compositions/useCan'
+  import { useCan, useWorkspaceRoutes } from '@/compositions'
   import { Deployment } from '@/models'
-  import { useWorkspaceRoutes } from '@/router'
 
   defineProps<{
     deployment: Deployment,

@@ -10,8 +10,8 @@
   import { computed } from 'vue'
   import FlowMenu from '@/components/FlowMenu.vue'
   import PageHeading from '@/components/PageHeading.vue'
+  import { useWorkspaceRoutes } from '@/compositions'
   import { Flow } from '@/models'
-  import { useWorkspaceRoutes } from '@/router'
 
   const props = defineProps<{
     flow: Flow,

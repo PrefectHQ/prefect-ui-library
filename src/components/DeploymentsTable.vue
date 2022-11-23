@@ -70,9 +70,8 @@
   import DeploymentToggle from '@/components/DeploymentToggle.vue'
   import ResultsCount from '@/components/ResultsCount.vue'
   import SearchInput from '@/components/SearchInput.vue'
-  import { useWorkspaceApi } from '@/compositions'
+  import { useWorkspaceApi, useWorkspaceRoutes } from '@/compositions'
   import { UseDeploymentFilterArgs, useDeploymentFilterFromRoute } from '@/compositions/useDeploymentFilter'
-  import { useWorkspaceRoutes } from '@/router'
   import { deploymentSortOptions } from '@/types/SortOptionTypes'
 
   const props = defineProps<{

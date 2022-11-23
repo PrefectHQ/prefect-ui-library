@@ -26,11 +26,10 @@
   import { useRouter } from 'vue-router'
   import ConfirmDeleteModal from '@/components/ConfirmDeleteModal.vue'
   import CopyOverflowMenuItem from '@/components/CopyOverflowMenuItem.vue'
-  import { useWorkspaceApi } from '@/compositions'
+  import { useWorkspaceApi, useWorkspaceRoutes } from '@/compositions'
   import { useCan } from '@/compositions/useCan'
   import { useShowModal } from '@/compositions/useShowModal'
   import { BlockDocument } from '@/models'
-  import { useWorkspaceRoutes } from '@/router'
   import { deleteItem } from '@/utilities'
 
   const props = defineProps<{

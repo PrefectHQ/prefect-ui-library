@@ -54,9 +54,8 @@
   import BlockSchemaCapabilities from './BlockSchemaCapabilities.vue'
   import BlockTypeLogo from './BlockTypeLogo.vue'
   import BlockTypeSnippet from './BlockTypeSnippet.vue'
-  import { useWorkspaceApi } from '@/compositions'
+  import { useWorkspaceApi, useWorkspaceRoutes } from '@/compositions'
   import { BlockType } from '@/models/BlockType'
-  import { useWorkspaceRoutes } from '@/router/routes'
 
   const props = defineProps<{
     blockType: BlockType,

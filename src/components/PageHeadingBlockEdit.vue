@@ -5,8 +5,8 @@
 <script lang="ts" setup>
   import { BreadCrumbs } from '@prefecthq/prefect-design'
   import PageHeading from '@/components/PageHeading.vue'
+  import { useWorkspaceRoutes } from '@/compositions'
   import { BlockDocument } from '@/models/BlockDocument'
-  import { useWorkspaceRoutes } from '@/router'
 
   const props = defineProps<{
     blockDocument: BlockDocument,

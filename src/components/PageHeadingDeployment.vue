@@ -29,9 +29,9 @@
   import DeploymentToggle from '@/components/DeploymentToggle.vue'
   import PageHeading from '@/components/PageHeading.vue'
   import RunMenu from '@/components/RunMenu.vue'
+  import { useWorkspaceRoutes } from '@/compositions'
   import { useCan } from '@/compositions/useCan'
   import { Deployment } from '@/models'
-  import { useWorkspaceRoutes } from '@/router'
 
   const props = defineProps<{
     deployment: Deployment,

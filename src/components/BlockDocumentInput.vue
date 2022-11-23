@@ -18,8 +18,7 @@
   import { computed } from 'vue'
   import BlockDocumentsSelect from './BlockDocumentsSelect.vue'
   import BlockTypeLogo from './BlockTypeLogo.vue'
-  import { useWorkspaceApi } from '@/compositions'
-  import { useWorkspaceRoutes } from '@/router'
+  import { useWorkspaceApi, useWorkspaceRoutes } from '@/compositions'
   import { withRedirect } from '@/utilities/routes'
 
   const props = defineProps<{

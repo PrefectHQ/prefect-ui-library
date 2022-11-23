@@ -27,8 +27,8 @@
 <script lang="ts" setup>
   import { PEmptyState, PButton, PIcon } from '@prefecthq/prefect-design'
   import DocumentationButton from './DocumentationButton.vue'
+  import { useWorkspaceRoutes } from '@/compositions'
   import { useCan } from '@/compositions/useCan'
-  import { useWorkspaceRoutes } from '@/router'
 
   const can = useCan()
   const routes = useWorkspaceRoutes()

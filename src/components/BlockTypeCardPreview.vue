@@ -30,9 +30,8 @@
   import { computed, useSlots } from 'vue'
   import BlockSchemaCapabilities from './BlockSchemaCapabilities.vue'
   import BlockTypeLogo from '@/components/BlockTypeLogo.vue'
-  import { useWorkspaceApi } from '@/compositions/useWorkspaceApi'
+  import { useWorkspaceApi, useWorkspaceRoutes } from '@/compositions'
   import { BlockType } from '@/models/BlockType'
-  import { useWorkspaceRoutes } from '@/router'
 
   const props = defineProps<{
     blockType: BlockType,

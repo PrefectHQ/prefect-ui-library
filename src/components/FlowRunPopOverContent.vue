@@ -39,8 +39,7 @@
   import FlowRouterLink from './FlowRouterLink.vue'
   import StateBadge from './StateBadge.vue'
   import FlowRunStartTime from '@/components/FlowRunStartTime.vue'
-  import { useWorkspaceApi } from '@/compositions'
-  import { useWorkspaceRoutes } from '@/router'
+  import { useWorkspaceApi, useWorkspaceRoutes } from '@/compositions'
 
   const props = defineProps<{
     flowRunId: string,

@@ -19,9 +19,7 @@
 <script lang="ts" setup>
   import { computed } from 'vue'
   import { useRoute, useRouter } from 'vue-router'
-  import { useFlow } from '@/compositions'
-  import { useCan } from '@/compositions/useCan'
-  import { useWorkspaceRoutes } from '@/router'
+  import { useFlow, useCan, useWorkspaceRoutes } from '@/compositions'
 
   const props = defineProps<{
     flowId: string,

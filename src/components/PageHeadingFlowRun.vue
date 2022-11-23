@@ -39,12 +39,11 @@
   import { useSubscription } from '@prefecthq/vue-compositions'
   import { computed, ref } from 'vue'
   import { StateBadge, PageHeading, CopyOverflowMenuItem, ConfirmDeleteModal, FlowRunRetryButton, FlowRunRetryModal, ConfirmStateChangeModal } from '@/components'
-  import { useWorkspaceApi } from '@/compositions'
+  import { useWorkspaceApi, useWorkspaceRoutes } from '@/compositions'
   import { useCan } from '@/compositions/useCan'
   import { useShowModal } from '@/compositions/useShowModal'
   import { localization } from '@/localization'
   import { isTerminalStateType, StateUpdateDetails } from '@/models'
-  import { useWorkspaceRoutes } from '@/router'
   import { deleteItem } from '@/utilities'
 
   const props = defineProps<{

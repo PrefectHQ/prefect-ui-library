@@ -5,8 +5,8 @@
 <script lang="ts" setup>
   import { computed } from 'vue'
   import PageHeading from '@/components/PageHeading.vue'
+  import { useWorkspaceRoutes } from '@/compositions'
   import { Deployment } from '@/models'
-  import { useWorkspaceRoutes } from '@/router'
 
   const props = defineProps<{
     deployment: Deployment,

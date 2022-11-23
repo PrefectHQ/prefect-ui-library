@@ -40,8 +40,8 @@
   import BlockSchemaCapabilitySelect from '@/components/BlockSchemaCapabilitySelect.vue'
   import BlockTypeCardPreview from '@/components/BlockTypeCardPreview.vue'
   import SearchInput from '@/components/SearchInput.vue'
+  import { useWorkspaceRoutes } from '@/compositions'
   import { BlockType } from '@/models/BlockType'
-  import { useWorkspaceRoutes } from '@/router'
 
   const props = defineProps<{
     blockTypes: BlockType[],

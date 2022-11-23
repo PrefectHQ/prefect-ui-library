@@ -51,8 +51,8 @@
   import FlowRunStartTime from '@/components/FlowRunStartTime.vue'
   import StateBadge from '@/components/StateBadge.vue'
   import StateListItem from '@/components/StateListItem.vue'
+  import { useWorkspaceRoutes } from '@/compositions'
   import { FlowRun } from '@/models/FlowRun'
-  import { useWorkspaceRoutes } from '@/router'
   import { toPluralString } from '@/utilities'
 
   const props = defineProps<{

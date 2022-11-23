@@ -11,8 +11,8 @@
 <script lang="ts" setup>
   import { RouterLink } from 'vue-router'
   import PageHeading from '@/components/PageHeading.vue'
+  import { useWorkspaceRoutes } from '@/compositions'
   import { useCan } from '@/compositions/useCan'
-  import { useWorkspaceRoutes } from '@/router'
 
   const crumbs = [{ text: 'Notifications' }]
 

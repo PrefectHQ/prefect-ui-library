@@ -33,6 +33,7 @@ export default defineConfig(({ mode }) => {
     ...baseConfig,
     build: {
       emptyOutDir: false,
+      sourcemap: true,
       lib: {
         entry: resolve(__dirname, 'src/index.ts'),
         name: 'orion-design',

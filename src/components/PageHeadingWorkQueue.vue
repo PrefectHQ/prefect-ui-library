@@ -12,8 +12,8 @@
   import WorkQueueMenu from './WorkQueueMenu.vue'
   import PageHeading from '@/components/PageHeading.vue'
   import WorkQueueToggle from '@/components/WorkQueueToggle.vue'
+  import { useWorkspaceRoutes } from '@/compositions'
   import { WorkQueue } from '@/models'
-  import { useWorkspaceRoutes } from '@/router'
 
   const props = defineProps<{
     workQueue: WorkQueue,

@@ -61,8 +61,8 @@
   import BlockTypeSelect from './BlockTypeSelect.vue'
   import ResultsCount from './ResultsCount.vue'
   import SearchInput from './SearchInput.vue'
+  import { useWorkspaceRoutes } from '@/compositions'
   import { BlockDocument } from '@/models/BlockDocument'
-  import { useWorkspaceRoutes } from '@/router'
 
   const props = defineProps<{
     blockDocuments: BlockDocument[],

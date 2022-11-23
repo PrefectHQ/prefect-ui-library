@@ -98,10 +98,9 @@
   import WorkQueueStatusIcon from './WorkQueueStatusIcon.vue'
   import  FlowRunIconText  from '@/components/FlowRunIconText.vue'
   import  WorkQueueIconText  from '@/components/WorkQueueIconText.vue'
-  import { useWorkspaceApi } from '@/compositions'
+  import { useWorkspaceApi, useWorkspaceRoutes } from '@/compositions'
   import { useCan } from '@/compositions/useCan'
   import { FlowRun } from '@/models/FlowRun'
-  import { useWorkspaceRoutes } from '@/router'
   import { formatDateTimeNumeric } from '@/utilities/dates'
 
   const api = useWorkspaceApi()

@@ -33,11 +33,10 @@
   import { useSubscription, useSubscriptionWithDependencies } from '@prefecthq/vue-compositions'
   import { computed, ref } from 'vue'
   import { StateBadge, PageHeading, CopyOverflowMenuItem, ConfirmDeleteModal, ConfirmStateChangeModal } from '@/components'
-  import { useWorkspaceApi } from '@/compositions'
+  import { useWorkspaceApi, useWorkspaceRoutes } from '@/compositions'
   import { useCan } from '@/compositions/useCan'
   import { localization } from '@/localization'
   import { isTerminalStateType, StateUpdateDetails } from '@/models'
-  import { useWorkspaceRoutes } from '@/router'
   import { deleteItem } from '@/utilities'
 
   const props = defineProps<{

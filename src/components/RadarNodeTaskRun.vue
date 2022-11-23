@@ -28,9 +28,8 @@
   import DurationIconText from './DurationIconText.vue'
   import ORadarNode from './RadarNode.vue'
   import StateIcon from './StateIcon.vue'
-  import { useWorkspaceApi } from '@/compositions'
+  import { useWorkspaceApi, useWorkspaceRoutes } from '@/compositions'
   import { TaskRun, GraphNode, StateType } from '@/models'
-  import { useWorkspaceRoutes } from '@/router'
 
   const props = defineProps<{
     graphNode: GraphNode,

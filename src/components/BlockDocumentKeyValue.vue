@@ -14,8 +14,7 @@
   import { PKeyValue } from '@prefecthq/prefect-design'
   import { useSubscription } from '@prefecthq/vue-compositions'
   import { computed } from 'vue'
-  import { useWorkspaceApi } from '@/compositions/useWorkspaceApi'
-  import { useWorkspaceRoutes } from '@/router'
+  import { useWorkspaceApi, useWorkspaceRoutes } from '@/compositions'
 
   const props = defineProps<{
     blockDocumentId: string,

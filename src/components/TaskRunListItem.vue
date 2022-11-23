@@ -27,8 +27,8 @@
   import { computed } from 'vue'
   import StateBadge from '@/components/StateBadge.vue'
   import StateListItem from '@/components/StateListItem.vue'
+  import { useWorkspaceRoutes } from '@/compositions'
   import { TaskRun } from '@/models/TaskRun'
-  import { useWorkspaceRoutes } from '@/router'
   import { formatDateTimeNumeric } from '@/utilities/dates'
   import { secondsToApproximateString } from '@/utilities/seconds'
 

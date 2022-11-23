@@ -49,16 +49,10 @@ type WorkspaceRouteRecord = Omit<RouteRecordRaw, 'name' | 'children'> & Workspac
 
 export const workspaceRoutesKey: InjectionKey<WorkspaceRoutes> = Symbol('WorkspaceRoutes')
 
-// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-export function useWorkspaceRoutes() {
-  return inject(workspaceRoutesKey)
-}
-
 type WorkspaceComponent = () => Promise<RouteComponent>
+type WorkspaceRouteComponents = Record<WorkspaceRouteKey, WorkspaceComponent>
 
-export type WorkspaceRouteComponents = Record<WorkspaceRouteKey, WorkspaceComponent>
-
-export function createWorkspaceRouteRecords(components: WorkspaceRouteComponents): WorkspaceRouteRecord[] {
+export function createWorkspaceRouteRecords(components: Partial<WorkspaceRouteComponents>): WorkspaceRouteRecord[] {
   return [
     {
       path: 'flow-runs',

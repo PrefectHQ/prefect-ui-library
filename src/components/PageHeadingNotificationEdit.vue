@@ -4,7 +4,7 @@
 
 <script lang="ts" setup>
   import PageHeading from './PageHeading.vue'
-  import { useWorkspaceRoutes } from '@/router'
+  import { useWorkspaceRoutes } from '@/compositions'
 
   const routes = useWorkspaceRoutes()
 

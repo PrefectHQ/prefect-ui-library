@@ -61,8 +61,7 @@
   import SearchInput from './SearchInput.vue'
   import FlowActivityChart from '@/components/FlowActivityChart.vue'
   import FlowMenu from '@/components/FlowMenu.vue'
-  import { UseFlowFilterArgs, useFlowFilterFromRoute, useWorkspaceApi } from '@/compositions'
-  import { useWorkspaceRoutes } from '@/router'
+  import { UseFlowFilterArgs, useFlowFilterFromRoute, useWorkspaceApi, useWorkspaceRoutes } from '@/compositions'
   import { flowSortOptions } from '@/types/SortOptionTypes'
   import { formatDateTimeNumeric } from '@/utilities/dates'
 

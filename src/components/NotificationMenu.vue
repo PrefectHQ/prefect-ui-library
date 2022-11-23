@@ -28,11 +28,10 @@
 
 <script lang="ts" setup>
   import ConfirmDeleteModal from '@/components/ConfirmDeleteModal.vue'
-  import { useWorkspaceApi } from '@/compositions'
+  import { useWorkspaceApi, useWorkspaceRoutes } from '@/compositions'
   import { useCan } from '@/compositions/useCan'
   import { useShowModal } from '@/compositions/useShowModal'
   import { Notification } from '@/models'
-  import { useWorkspaceRoutes } from '@/router'
   import { deleteItem } from '@/utilities'
 
   defineProps<{

@@ -5,8 +5,8 @@
 <script lang="ts" setup>
   import { computed } from 'vue'
   import PageHeading from './PageHeading.vue'
+  import { useWorkspaceRoutes } from '@/compositions'
   import { WorkQueue } from '@/models'
-  import { useWorkspaceRoutes } from '@/router'
 
   const props = defineProps<{
     workQueue: WorkQueue,

@@ -21,11 +21,10 @@
   import { PIconButtonMenu } from '@prefecthq/prefect-design'
   import { computed } from 'vue'
   import { PageHeading, CopyOverflowMenuItem, ConfirmDeleteModal } from '@/components'
-  import { useWorkspaceApi } from '@/compositions'
+  import { useWorkspaceApi, useWorkspaceRoutes } from '@/compositions'
   import { useCan } from '@/compositions/useCan'
   import { useShowModal } from '@/compositions/useShowModal'
   import { FlowRun } from '@/models'
-  import { useWorkspaceRoutes } from '@/router'
   import { deleteItem } from '@/utilities'
 
   const props = defineProps<{

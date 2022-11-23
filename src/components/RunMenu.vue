@@ -31,10 +31,9 @@
   import { ref, h } from 'vue'
   import { useRouter } from 'vue-router'
   import ToastFlowRunCreate from './ToastFlowRunCreate.vue'
-  import { useWorkspaceApi } from '@/compositions'
+  import { useWorkspaceApi, useWorkspaceRoutes } from '@/compositions'
   import { localization } from '@/localization'
   import { Deployment } from '@/models'
-  import { useWorkspaceRoutes } from '@/router'
 
   const props = defineProps<{
     deployment: Deployment,

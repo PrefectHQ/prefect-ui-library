@@ -56,8 +56,8 @@
   import { PTable, PEmptyResults, PLink } from '@prefecthq/prefect-design'
   import { computed, ref } from 'vue'
   import { WorkQueueToggle, WorkQueueMenu, WorkQueueLateIndicator, SearchInput, ResultsCount, WorkQueueLastPolled, WorkQueueStatusBadge } from '@/components'
+  import { useWorkspaceRoutes } from '@/compositions'
   import { WorkQueue } from '@/models'
-  import { useWorkspaceRoutes } from '@/router'
 
   const props = defineProps<{
     workQueues: WorkQueue[],

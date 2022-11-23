@@ -10,9 +10,8 @@
 
 <script lang="ts" setup>
   import { computed } from 'vue'
-  import { useCan } from '@/compositions/useCan'
+  import { useCan, useWorkspaceRoutes } from '@/compositions'
   import { useDeployment } from '@/compositions/useDeployment'
-  import { useWorkspaceRoutes } from '@/router'
 
   const props = defineProps<{
     deploymentId: string,

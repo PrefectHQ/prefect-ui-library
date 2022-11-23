@@ -5,7 +5,7 @@
 <script lang="ts" setup>
   import { BreadCrumbs } from '@prefecthq/prefect-design'
   import PageHeading from '@/components/PageHeading.vue'
-  import { useWorkspaceRoutes } from '@/router'
+  import { useWorkspaceRoutes } from '@/compositions'
 
   const routes = useWorkspaceRoutes()
 
