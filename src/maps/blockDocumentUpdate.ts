@@ -7,9 +7,6 @@ export const mapBlockDocumentUpdateToBlockDocumentUpdateRequest: MapFunction<Blo
   const schema = blockSchema.fields
   const data = this.map('SchemaValues', { values, schema }, 'SchemaValuesRequest')
 
-  return {
-    data,
-    // eslint-disable-next-line camelcase
-    merge_existing_data: false,
-  }
+  return data
+
 }
