@@ -7,6 +7,8 @@ export const mapBlockDocumentUpdateToBlockDocumentUpdateRequest: MapFunction<Blo
   const schema = blockSchema.fields
   const data = this.map('SchemaValues', { values, schema }, 'SchemaValuesRequest')
 
-  return { data, 'merge_existing_data': mergeExistingData }
-
+  return {
+    data,
+    'merge_existing_data': mergeExistingData
+  }
 }
