@@ -7,7 +7,7 @@ import { mapper } from '@/services/Mapper'
 
 export class WorkspaceConcurrencyLimitsApi extends WorkspaceApi {
 
-  protected routePrefix = '/concurrency_limit'
+  protected routePrefix = '/concurrency_limits'
 
   public async getConcurrencyLimits(filter = {}): Promise<ConcurrencyLimit[]> {
     const { data } = await this.post<ConcurrencyLimitResponse[]>('/filter', filter)
@@ -24,8 +24,8 @@ export class WorkspaceConcurrencyLimitsApi extends WorkspaceApi {
     return mapper.map('ConcurrencyLimitResponse', data, 'ConcurrencyLimit')
   }
 
-  public async createConcurrencyLimit(search: ConcurrencyLimitCreate): Promise<ConcurrencyLimit> {
-    const { data } = await this.put<ConcurrencyLimitResponse>('/', mapper.map('ConcurrencyLimitCreate', search, 'ConcurrencyLimitCreateRequest'))
+  public async createConcurrencyLimit(limit: ConcurrencyLimitCreate): Promise<ConcurrencyLimit> {
+    const { data } = await this.post<ConcurrencyLimitResponse>('/', mapper.map('ConcurrencyLimitCreate', limit, 'ConcurrencyLimitCreateRequest'))
     return mapper.map('ConcurrencyLimitResponse', data, 'ConcurrencyLimit')
   }
 
