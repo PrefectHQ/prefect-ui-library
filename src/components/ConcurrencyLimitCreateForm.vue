@@ -36,7 +36,7 @@
   }
 
 
-  const { value: tag } = useField<string>('name', rules.tag)
+  const { value: tag } = useField<string>('tag', rules.tag)
   const { value: concurrencyLimit } = useField<number|null>('concurrencyLimit')
 
   const emit = defineEmits<{
@@ -45,7 +45,12 @@
   }>()
 
   const submit = handleSubmit(async (values) => {
-    await api.concurrencyLimits.createConcurrencyLimit({ tag: values.tag, concurrencyLimit: values.concurrencyLimit })
+    try {
+      const { tag, concurrencyLimit } = values
+      await api.concurrencyLimits.createConcurrencyLimit({ tag, concurrencyLimit })
+    } catch (e) {
+      console.log(e)
+    }
   })
 
   function cancel(): void {
