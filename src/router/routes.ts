@@ -1,6 +1,5 @@
 import { InjectionKey } from 'vue'
 import { RouteComponent, RouteLocationRaw, RouteRecordRaw } from 'vue-router'
-import { inject } from '@/utilities'
 
 export type Route = Exclude<RouteLocationRaw, string>
 
