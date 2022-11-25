@@ -1,7 +1,7 @@
 <template>
   <ComponentPage title="Concurrency Limit">
     Concurrency
-    {{ concurrenyLimit }}
+    {{ concurrencyLimit }}
   </ComponentPage>
 </template>
 
@@ -9,5 +9,5 @@
   import ComponentPage from '@/demo/components/ComponentPage.vue'
   import { mocker } from '@/services'
 
-  const concurrenyLimit = mocker.create('concurrencyLimit')
+  const concurrencyLimit = mocker.create('concurrencyLimit')
 </script>
