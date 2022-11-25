@@ -1,5 +1,5 @@
 import { Section } from '@/demo/router/routeRecords'
 
 export const concurrencyLimits: Section = {
-  concurrencyLimitCreate: () => import ('./concurrencyLimitCreate.vue'),
+  concurrencyLimit: () => import ('./concurrencyLimit.vue'),
 }

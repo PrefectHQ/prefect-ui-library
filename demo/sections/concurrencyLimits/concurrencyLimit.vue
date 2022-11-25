@@ -1,5 +1,5 @@
 <template>
-  <ComponentPage title="ConcurrencyLimitCreate">
+  <ComponentPage title="Concurrency Limit">
     Concurrency
     {{ concurrenyLimit }}
   </ComponentPage>

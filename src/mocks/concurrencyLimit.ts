@@ -6,7 +6,7 @@ export const randomConcurrencyLimit: MockFunction<ConcurrencyLimit, [Partial<Con
     id: this.create('id'),
     created: this.create('date'),
     updated: this.create('date'),
-    tag: this.create('string'),
+    tag: this.create('noun'),
     concurrencyLimit: this.create('number'),
     activeSlots: this.createMany('string', this.create('number', [0, 10])),
     ...overrides,
