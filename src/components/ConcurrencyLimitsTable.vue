@@ -20,10 +20,6 @@
       property: 'concurrencyLimit',
       label: 'Limit',
     },
-    {
-      label: 'Actions',
-      width: '0px',
-    },
   ]
   const concurrencyLimitSubscription = useSubscription(api.concurrencyLimits.getConcurrencyLimits)
   const concurrencyLimits = computed(() => concurrencyLimitSubscription.response ?? [])
