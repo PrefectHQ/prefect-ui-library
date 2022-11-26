@@ -2,14 +2,24 @@ import { WorkspaceApi } from './WorkspaceApi'
 import { ConcurrencyLimitResponse } from '@/models/api/ConcurrencyLimitResponse'
 import { ConcurrencyLimit } from '@/models/ConcurrencyLimit'
 import { ConcurrencyLimitCreate } from '@/models/ConcurrencyLimitCreate'
+import { ConcurrencyLimitsFilter } from '@/models/ConcurrencyLimitsFilter'
 import { mapper } from '@/services/Mapper'
+
+export interface IWorkspaceConcurrencyLimitsApi {
+  getConcurrencyLimit: (concurrencyLimitId: string) => Promise<ConcurrencyLimit>,
+  getConcurrencyLimits: (filter: ConcurrencyLimitsFilter) => Promise<ConcurrencyLimit[]>,
+  createConcurrencyLimit: (ConcurrencyLimit: ConcurrencyLimitCreate) => Promise<ConcurrencyLimit>,
+  getConcurrencyLimitByTag: (tag: string) => Promise<ConcurrencyLimit>,
+  deleteConcurrencyLimit: (concurrencyLimitId: string) => Promise<void>,
+  deleteConcurrencyLimitByTag: (tag: string) => Promise<void>,
+}
 
 
 export class WorkspaceConcurrencyLimitsApi extends WorkspaceApi {
 
   protected routePrefix = '/concurrency_limits'
 
-  public async getConcurrencyLimits(filter = {}): Promise<ConcurrencyLimit[]> {
+  public async getConcurrencyLimits(filter: ConcurrencyLimitsFilter = {}): Promise<ConcurrencyLimit[]> {
     const { data } = await this.post<ConcurrencyLimitResponse[]>('/filter', filter)
     return mapper.map('ConcurrencyLimitResponse', data, 'ConcurrencyLimit')
   }
