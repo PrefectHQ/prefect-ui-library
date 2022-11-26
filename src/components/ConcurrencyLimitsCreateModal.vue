@@ -74,14 +74,3 @@
     }
   })
 </script>
-
-<style>
-.concurrency-limit-create-form {
-@apply
-border-[1px]
-border-gray-300
-px-6
-py-6
-rounded-lg
-}
-</style>
