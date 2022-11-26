@@ -1,5 +1,5 @@
 <template>
-  <p-modal v-model:showModal="internalShowModal" class="concurrency-limit-create-modal" title="Create Task Concurrency Limit">
+  <p-modal v-model:showModal="internalShowModal" class="concurrency-limit-create-modal" title="Add Concurrency Limit">
     <p-form class="concurrency-limit-create-form" @submit="submit">
       <p-content>
         <p-label label="Tag">
@@ -15,7 +15,7 @@
     <template #actions>
       <slot name="actions">
         <p-button :loading="isSubmitting" @click="submit">
-          Save
+          Add
         </p-button>
       </slot>
     </template>
