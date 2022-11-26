@@ -5,6 +5,15 @@ import { ConcurrencyLimitCreate } from '@/models/ConcurrencyLimitCreate'
 import { ConcurrencyLimitsFilter } from '@/models/ConcurrencyLimitsFilter'
 import { mapper } from '@/services/Mapper'
 
+export interface IWorkspaceConcurrencyLimitsApi {
+  getConcurrencyLimit: (concurrencyLimitId: string) => Promise<ConcurrencyLimit>,
+  getConcurrencyLimits: (filter: ConcurrencyLimitsFilter) => Promise<ConcurrencyLimit[]>,
+  createConcurrencyLimit: (ConcurrencyLimit: ConcurrencyLimitCreate) => Promise<ConcurrencyLimit>,
+  getConcurrencyLimitByTag: (tag: string) => Promise<ConcurrencyLimit>,
+  deleteConcurrencyLimit: (concurrencyLimitId: string) => Promise<void>,
+  deleteConcurrencyLimitByTag: (tag: string) => Promise<void>,
+}
+
 
 export class WorkspaceConcurrencyLimitsApi extends WorkspaceApi {
 
