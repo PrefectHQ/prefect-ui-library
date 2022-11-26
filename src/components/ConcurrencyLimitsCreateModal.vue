@@ -2,12 +2,12 @@
   <p-modal v-model:showModal="internalShowModal" class="concurrency-limit-create-modal" title="Add Concurrency Limit">
     <p-form class="concurrency-limit-create-form" @submit="submit">
       <p-content>
-        <p-label label="Tag">
-          <p-text-input v-model="tag" />
+        <p-label label="Tag" :message="tagErrorMessage" :state="tagState">
+          <p-text-input v-model="tag" :state="tagState" />
         </p-label>
 
-        <p-label label="Concurrency Limit">
-          <p-number-input v-model="concurrencyLimit" placeholder="Unlimited" :min="0" />
+        <p-label label="Concurrency Limit" :message="limitErrorMessage" :state="limitState">
+          <p-number-input v-model="concurrencyLimit" :min="0" :state="limitState" />
         </p-label>
       </p-content>
     </p-form>
@@ -31,7 +31,7 @@
   import { useForm } from '@/compositions/useForm'
   import { localization } from '@/localization'
   import { ConcurrencyLimitCreate } from '@/models/ConcurrencyLimitCreate'
-  import { isRequired } from '@/utilities/validation'
+  import { isRequired, isGreaterThan, fieldRules } from '@/utilities/validation'
 
   const props = defineProps<{
     showModal: boolean,
@@ -43,9 +43,10 @@
   const { handleSubmit, handleReset, isSubmitting } = useForm<ConcurrencyLimitCreate>()
   const rules = {
     tag: isRequired('Tag'),
+    concurrencyLimit: fieldRules('Limit', isRequired, isGreaterThan(0)),
   }
-  const { value: tag } = useField<string>('tag', rules.tag)
-  const { value: concurrencyLimit } = useField<number|null>('concurrencyLimit')
+  const { value: tag, meta: tagState, errorMessage: tagErrorMessage } = useField<string>('tag', rules.tag)
+  const { value: concurrencyLimit, meta: limitState, errorMessage: limitErrorMessage } = useField<number|null>('concurrencyLimit', rules.concurrencyLimit)
 
   const internalShowModal = computed({
     get() {
