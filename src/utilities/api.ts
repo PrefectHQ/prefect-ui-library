@@ -5,6 +5,7 @@ import { WorkspaceBlockCapabilitiesApi } from '@/services/WorkspaceBlockCapabili
 import { WorkspaceBlockDocumentsApi } from '@/services/WorkspaceBlockDocumentsApi'
 import { WorkspaceBlockSchemasApi } from '@/services/WorkspaceBlockSchemasApi'
 import { WorkspaceBlockTypesApi } from '@/services/WorkspaceBlockTypesApi'
+import { WorkspaceConcurrencyLimitsApi } from '@/services/WorkspaceConcurrencyLimitsApi'
 import { WorkspaceDeploymentsApi } from '@/services/WorkspaceDeploymentsApi'
 import { WorkspaceFlowRunsApi } from '@/services/WorkspaceFlowRunsApi'
 import { WorkspaceFlowsApi } from '@/services/WorkspaceFlowsApi'
@@ -22,6 +23,7 @@ export function createApi(workspaceConfig: WorkspaceApiConfig) {
     blockDocuments: createActions(new WorkspaceBlockDocumentsApi(workspaceConfig)),
     blockSchemas: createActions(new WorkspaceBlockSchemasApi(workspaceConfig)),
     blockTypes: createActions(new WorkspaceBlockTypesApi(workspaceConfig)),
+    concurrencyLimits: createActions(new WorkspaceConcurrencyLimitsApi(workspaceConfig)),
     deployments: createActions(new WorkspaceDeploymentsApi(workspaceConfig)),
     flowRuns: createActions(new WorkspaceFlowRunsApi(workspaceConfig)),
     flows: createActions(new WorkspaceFlowsApi(workspaceConfig)),

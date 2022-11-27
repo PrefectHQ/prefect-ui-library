@@ -37,7 +37,9 @@ export class WorkspaceBlockDocumentsApi extends WorkspaceApi implements IWorkspa
   }
 
   public updateBlockDocument(blockDocumentId: string, blockDocument: BlockDocumentUpdate): Promise<void> {
-    return this.patch(`/${blockDocumentId}`, mapper.map('BlockDocumentUpdate', blockDocument, 'BlockDocumentUpdateRequest'))
+    const request = mapper.map('BlockDocumentUpdate', { mergeExistingData: false, ...blockDocument }, 'BlockDocumentUpdateRequest')
+
+    return this.patch(`/${blockDocumentId}`, request)
   }
 
   public deleteBlockDocument(blockDocumentId: string): Promise<void> {
