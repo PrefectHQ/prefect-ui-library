@@ -1,5 +1,13 @@
 <template>
-  <p-table class="concurrency-limits-table__table" :columns="columns" :data="concurrencyLimits" />
+  <p-table class="concurrency-limits-table__table" :columns="columns" :data="concurrencyLimits">
+    <template #empty-state>
+      <PEmptyResults>
+        <template #message>
+          No task concurrency limits
+        </template>
+      </PEmptyResults>
+    </template>
+  </p-table>
 </template>
 
 <script lang="ts" setup>
