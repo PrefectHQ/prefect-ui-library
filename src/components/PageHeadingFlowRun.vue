@@ -4,6 +4,7 @@
       <StateBadge :state="flowRun.state" />
     </template>
     <template #actions>
+      <slot name="optional-button" />
       <FlowRunRetryButton :flow-run="flowRun" class="page-heading-flow-run__retry-button" />
       <p-icon-button-menu>
         <template #default>
