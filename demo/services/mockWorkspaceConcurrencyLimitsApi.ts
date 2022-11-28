@@ -20,7 +20,7 @@ export class MockWorkspaceConcurrencyLimitsApi extends MockApi implements IWorks
   }
 
   public async getConcurrencyLimitByTag(tag: string): Promise<ConcurrencyLimit> {
-    return await this.concurrencyLimits.get(tag)
+    return await this.concurrencyLimits.find(tag)
   }
 
   public async createConcurrencyLimit(limit: ConcurrencyLimitCreate): Promise<ConcurrencyLimit> {
@@ -33,7 +33,9 @@ export class MockWorkspaceConcurrencyLimitsApi extends MockApi implements IWorks
   }
 
   public async deleteConcurrencyLimitByTag(tag: string): Promise<void> {
-    return await this.concurrencyLimits.delete(tag)
+    const tagId = this.concurrencyLimits.find(tag).id
+    console.log('tag', tag)
+    return await this.getConcurrencyLimits.delete(tagId)
   }
 
 }
