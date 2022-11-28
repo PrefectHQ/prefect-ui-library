@@ -7,31 +7,11 @@ import { createWorkspaceRouteRecords } from '@/router'
 
 const welcomePage = () => import('../sections/WelcomePage.vue')
 
-const workspaceRecords = createWorkspaceRouteRecords({
-  flowRuns: welcomePage,
-  flowRun: welcomePage,
-  flowRunRadar: welcomePage,
-  taskRun: welcomePage,
-  flows: welcomePage,
-  flow: welcomePage,
-  deployments: welcomePage,
-  deployment: welcomePage,
-  deploymentEdit: welcomePage,
-  deploymentFlowRunCreate: welcomePage,
-  workQueues: welcomePage,
-  workQueue: welcomePage,
-  workQueueCreate: welcomePage,
-  workQueueEdit: welcomePage,
-  blocks: welcomePage,
-  blocksCatalog: welcomePage,
-  blocksCatalogView: welcomePage,
-  blockCreate: welcomePage,
-  block: welcomePage,
-  blockEdit: welcomePage,
-  notifications: welcomePage,
-  notificationCreate: welcomePage,
-  notificationEdit: welcomePage,
-})
+const workspaceRecords = createWorkspaceRouteRecords(new Proxy({}, {
+  get() {
+    return welcomePage
+  },
+}))
 
 export const routeRecords = [
   {
