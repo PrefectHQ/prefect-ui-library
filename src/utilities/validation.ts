@@ -52,8 +52,8 @@ export const isRequired: ValidationMethodFactory = property => value => {
   return true
 }
 
-export const isValidIf = (condition: (value: unknown) => boolean): ValidationMethodFactory => property => value => {
-  const valid = condition(value)
+export const isValidIf = (condition: (value: unknown) => boolean | Promise<boolean>): ValidationMethodFactory => property => async value => {
+  const valid = await condition(value)
 
   if (valid) {
     return true
@@ -62,8 +62,8 @@ export const isValidIf = (condition: (value: unknown) => boolean): ValidationMet
   return `${property} is invalid`
 }
 
-export const isRequiredIf = (condition: (value: unknown) => boolean): ValidationMethodFactory => property => value => {
-  const required = condition(value)
+export const isRequiredIf = (condition: (value: unknown) => boolean | Promise<boolean>): ValidationMethodFactory => property => async value => {
+  const required = await condition(value)
 
   if (!required) {
     return true
