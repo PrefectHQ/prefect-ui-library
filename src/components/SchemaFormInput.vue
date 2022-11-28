@@ -49,8 +49,10 @@
   grid
   gap-1
 }
-.schema-form-input__description p { @apply
-  overflow-hidden
-  text-ellipsis
+.schema-form-input__description p {
+  word-wrap: break-word;
+  word-break: break-word;
+  @apply
+  break-words
 }
 </style>
