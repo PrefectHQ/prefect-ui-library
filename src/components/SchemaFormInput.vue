@@ -49,4 +49,8 @@
   grid
   gap-1
 }
+.schema-form-input__description p { @apply
+  overflow-hidden
+  text-ellipsis
+}
 </style>
