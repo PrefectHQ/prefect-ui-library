@@ -24,8 +24,9 @@ export class MockWorkspaceConcurrencyLimitsApi extends MockApi implements IWorks
   }
 
   public async createConcurrencyLimit(limit: ConcurrencyLimitCreate): Promise<ConcurrencyLimit> {
-    const { concurrencyLimit, tag } = limit
-    return await mocker.create('concurrencyLimit', [{ concurrencyLimit, tag }])
+    const newLimit = mocker.create('concurrencyLimit', [limit])
+    this.getConcurrencyLimits.create(newLimit)
+    return await newLimit
   }
 
   public async deleteConcurrencyLimit(id: string): Promise<void> {
