@@ -1,4 +1,4 @@
-import { onBeforeRouteLeave } from 'vue-router'
+import { onUnmounted } from 'vue'
 import { data } from '../utilities/data'
 import { Flow, FlowRun, Deployment, WorkQueue, TaskRun, BlockDocument, BlockType, BlockSchema } from '@/models'
 
@@ -20,7 +20,7 @@ export function useSeeds(seed: Seeds): void {
 
     const ids = flows.map(flow => flow.id)
 
-    onBeforeRouteLeave(() => data.flows.deleteAll(ids))
+    onUnmounted(() => data.flows.deleteAll(ids))
   }
 
   if (seed.flowRuns) {
@@ -28,7 +28,7 @@ export function useSeeds(seed: Seeds): void {
 
     const ids = flowRuns.map(taskRun => taskRun.id)
 
-    onBeforeRouteLeave(() => data.flowRuns.deleteAll(ids))
+    onUnmounted(() => data.flowRuns.deleteAll(ids))
   }
 
   if (seed.taskRuns) {
@@ -36,7 +36,7 @@ export function useSeeds(seed: Seeds): void {
 
     const ids = taskRuns.map(taskRun => taskRun.id)
 
-    onBeforeRouteLeave(() => data.taskRuns.deleteAll(ids))
+    onUnmounted(() => data.taskRuns.deleteAll(ids))
   }
 
   if (seed.deployments) {
@@ -44,7 +44,7 @@ export function useSeeds(seed: Seeds): void {
 
     const ids = deployments.map(deployment => deployment.id)
 
-    onBeforeRouteLeave(() => data.deployments.deleteAll(ids))
+    onUnmounted(() => data.deployments.deleteAll(ids))
   }
 
   if (seed.workQueues) {
@@ -52,7 +52,7 @@ export function useSeeds(seed: Seeds): void {
 
     const ids = workQueues.map(workQueue => workQueue.id)
 
-    onBeforeRouteLeave(() => data.workQueues.deleteAll(ids))
+    onUnmounted(() => data.workQueues.deleteAll(ids))
   }
 
   if (seed.blockDocuments) {
@@ -60,7 +60,7 @@ export function useSeeds(seed: Seeds): void {
 
     const ids = blockDocuments.map(blockDocument => blockDocument.id)
 
-    onBeforeRouteLeave(() => data.blockDocuments.deleteAll(ids))
+    onUnmounted(() => data.blockDocuments.deleteAll(ids))
   }
 
   if (seed.blockTypes) {
@@ -68,7 +68,7 @@ export function useSeeds(seed: Seeds): void {
 
     const ids = blockTypes.map(blockType => blockType.id)
 
-    onBeforeRouteLeave(() => data.blockTypes.deleteAll(ids))
+    onUnmounted(() => data.blockTypes.deleteAll(ids))
   }
 
   if (seed.blockSchemas) {
@@ -76,12 +76,12 @@ export function useSeeds(seed: Seeds): void {
 
     const ids = blockSchemas.map(blockSchema => blockSchema.id)
 
-    onBeforeRouteLeave(() => data.blockSchemas.deleteAll(ids))
+    onUnmounted(() => data.blockSchemas.deleteAll(ids))
   }
 
   if (seed.blockSchemaCapabilities) {
     const blockSchemaCapabilities = data.blockSchemaCapabilities.createAll(seed.blockSchemaCapabilities)
 
-    onBeforeRouteLeave(() => data.blockSchemaCapabilities.deleteAll(blockSchemaCapabilities))
+    onUnmounted(() => data.blockSchemaCapabilities.deleteAll(blockSchemaCapabilities))
   }
 }
