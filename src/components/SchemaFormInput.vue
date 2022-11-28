@@ -49,9 +49,7 @@
   grid
   gap-1
 }
-.schema-form-input__description p {
-  word-break: break-word;
-  @apply
-  break-words
+.schema-form-input__description {
+  overflow-wrap: anywhere;
 }
 </style>
