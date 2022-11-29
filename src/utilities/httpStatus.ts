@@ -1,14 +1,20 @@
+import { AxiosError } from 'axios'
+
 export type HttpStatusName = keyof typeof httpStatusCode
 export type HttpStatus = typeof httpStatusCode[HttpStatusName]
 export type HttpStatusRange = keyof typeof httpStatusCodeRange
 
-export function httpStatus(status: number): {
+type HttpStatusResponse = {
   is: (status: HttpStatusName) => boolean,
   isInRange: (statusRange: HttpStatusRange) => boolean,
-} {
+}
+
+export function httpStatus(statusOrError: AxiosError | number): HttpStatusResponse {
+  const status = typeof statusOrError === 'number' ? statusOrError : statusOrError.response?.status
+
   return {
     is: (statusName: HttpStatusName) => httpStatusCode[statusName] === status,
-    isInRange: (statusRange: HttpStatusRange) => httpStatusCodeRange[statusRange].includes(status),
+    isInRange: (statusRange: HttpStatusRange) => status !== undefined && httpStatusCodeRange[statusRange].includes(status),
   }
 }
 
