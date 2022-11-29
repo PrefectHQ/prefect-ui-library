@@ -1,3 +1,4 @@
+import { DataStoreDataNotFound } from './KeyedDataStore'
 import { MockApi } from './MockApi'
 import { ConcurrencyLimit } from '@/models/ConcurrencyLimit'
 import { ConcurrencyLimitCreate } from '@/models/ConcurrencyLimitCreate'
@@ -20,12 +21,17 @@ export class MockWorkspaceConcurrencyLimitsApi extends MockApi implements IWorks
   }
 
   public async getConcurrencyLimitByTag(tag: string): Promise<ConcurrencyLimit> {
-    return await this.concurrencyLimits.find(tag)
+    const foundLimit = await this.concurrencyLimits.find(limit => limit.tag == tag)
+    if (!foundLimit) {
+      throw new DataStoreDataNotFound()
+    }
+    return foundLimit
   }
 
   public async createConcurrencyLimit(limit: ConcurrencyLimitCreate): Promise<ConcurrencyLimit> {
-    const { concurrencyLimit, tag } = limit
-    return await mocker.create('concurrencyLimit', [{ concurrencyLimit, tag }])
+    const newLimit = mocker.create('concurrencyLimit', [limit])
+    this.concurrencyLimits.create(newLimit)
+    return await newLimit
   }
 
   public async deleteConcurrencyLimit(id: string): Promise<void> {
@@ -33,9 +39,11 @@ export class MockWorkspaceConcurrencyLimitsApi extends MockApi implements IWorks
   }
 
   public async deleteConcurrencyLimitByTag(tag: string): Promise<void> {
-    const tagId = this.concurrencyLimits.find(tag).id
-    console.log('tag', tag)
-    return await this.getConcurrencyLimits.delete(tagId)
+    const foundTag = this.concurrencyLimits.find(limit => limit.tag == tag)
+    if (!foundTag) {
+      throw new DataStoreDataNotFound()
+    }
+    return await this.concurrencyLimits.delete(foundTag.id)
   }
 
 }
