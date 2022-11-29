@@ -65,6 +65,11 @@
   border-color: var(--state-pending-600);
 }
 
+.scatter-plot-item--paused {
+  background-color: var(--state-pending-500);
+  border-color: var(--state-pending-600);
+}
+
 .scatter-plot-item--cancelled {
   background-color: var(--state-cancelled-500);
   border-color: var(--state-cancelled-600);
