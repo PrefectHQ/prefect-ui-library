@@ -3,7 +3,7 @@
     <p-label label="Current Flow Run State">
       <StateBadge :state="flowRun.state" />
     </p-label>
-    <div class="flow-run-resume-modal__message">
+    <div>
       Do you want to resume {{ flowRun.name }}. This will put flow run into a <StateBadge :state="{ name: 'Running', type: 'running' }" class="flow-run-resume-modal__state-badge" /> state.
     </div>
 
@@ -59,10 +59,7 @@
 </script>
 
 <style>
-.flow-run-resume-modal__message { @apply
-  inline-flex
-  flex-wrap
-  gap-1
-  items-center
+.flow-run-resume-modal__state-badge { @apply
+    align-middle
 }
 </style>
