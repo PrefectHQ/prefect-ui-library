@@ -1,7 +1,10 @@
 import { computed, ref, Ref } from 'vue'
 import { SchemaProperties, SchemaValues } from '@/types/schemas'
 
-export function mergeParametersObjects(flowRunParameters: SchemaValues | Ref<SchemaValues>, deploymentParameters: SchemaProperties | Ref<SchemaProperties>): string {
+export function mergeParametersObjects(
+  flowRunParameters: SchemaValues | Ref<SchemaValues>,
+  deploymentParameters: SchemaProperties | Ref<SchemaProperties>,
+): string {
   const flowRunParamRef = ref(flowRunParameters)
   const deploymentParamRef = ref(deploymentParameters)
 
