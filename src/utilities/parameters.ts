@@ -1,22 +1,35 @@
-import { computed, ref, Ref } from 'vue'
-import { SchemaProperties, SchemaValues } from '@/types/schemas'
+import { Schema, SchemaValues } from '@/types/schemas'
+import { stringify } from '@/utilities/json'
 
-export function mergeParametersObjects(
-  flowRunParameters: SchemaValues | Ref<SchemaValues>,
-  deploymentParameters: SchemaProperties | Ref<SchemaProperties>,
+export function getSchemaValuesWithDefaults(
+  values: SchemaValues,
+  schema: Schema,
+): SchemaValues {
+  return {
+    ...getSchemaDefaults(schema),
+    ...values,
+  }
+}
+
+export function getSchemaValuesWithDefaultsJson(
+  values: SchemaValues,
+  schema: Schema,
 ): string {
-  const flowRunParamRef = ref(flowRunParameters)
-  const deploymentParamRef = ref(deploymentParameters)
+  const defaultValues = getSchemaValuesWithDefaults(values, schema)
 
-  const parametersVault = ref(flowRunParamRef.value)
+  return stringify(defaultValues)
+}
 
-  for (const [key, value] of Object.entries(deploymentParamRef.value)) {
-    if (!Object.keys(parametersVault.value).includes(key)) {
-      parametersVault.value[key] = value?.default
-    }
+export function getSchemaDefaults(schema: Schema): SchemaValues {
+  const values: SchemaValues = {}
+
+  if (schema.properties) {
+    Object.entries(schema.properties).forEach(([key, property]) => {
+      if ('default' in property!) {
+        values[key] = property.default
+      }
+    })
   }
 
-  const parameters = computed(() => Object.keys(parametersVault.value).length !== 0 ? JSON.stringify(parametersVault.value, undefined, 2) : '{}')
-
-  return parameters.value
+  return values
 }
