@@ -25,6 +25,7 @@
 <script lang="ts" setup>
   import { PLabel, PNumberInput, PForm, showToast } from '@prefecthq/prefect-design'
   import { useSubscription } from '@prefecthq/vue-compositions'
+  import { useField } from 'vee-validate'
   import { computed } from 'vue'
   import { useWorkspaceApi } from '@/compositions'
   import { useForm } from '@/compositions/useForm'
