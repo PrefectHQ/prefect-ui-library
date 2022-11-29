@@ -6,6 +6,7 @@ export const stateType = [
   'failed',
   'cancelled',
   'crashed',
+  'paused',
 ] as const
 
 export type StateType = typeof stateType[number]
@@ -35,6 +36,6 @@ export function isStuckStateType(value: string): value is StuckStateType {
   return stuckStateTypes.includes(value as StuckStateType)
 }
 
-export function isPausedStateName(value: string): boolean {
-  return value === 'Paused'
+export function isPausedStateType(value: string): boolean {
+  return value === 'paused'
 }

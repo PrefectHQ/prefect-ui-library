@@ -19,14 +19,14 @@
   import FlowRunResumeModal from '@/components/FlowRunResumeModal.vue'
   import { useCan } from '@/compositions/useCan'
   import { useShowModal } from '@/compositions/useShowModal'
-  import { FlowRun, isPausedStateName } from '@/models'
+  import { FlowRun, isPausedStateType } from '@/models'
   const props = defineProps<{
     flowRun: FlowRun,
   }>()
   const can = useCan()
   const { showModal, open } = useShowModal()
   const canResume = computed(()=> {
-    if (!can.update.flow_run || props.flowRun.state && !isPausedStateName(props.flowRun.state.name)) {
+    if (!can.update.flow_run || props.flowRun.stateType && !isPausedStateType(props.flowRun.stateType)) {
       return false
     }
 

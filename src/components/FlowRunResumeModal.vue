@@ -4,7 +4,7 @@
       <StateBadge :state="flowRun.state" />
     </p-label>
     <div class="flow-run-resume-modal__message">
-      Do you want to resume {{ flowRun.name }}. This will put flow run into a <StateBadge :state="{ name: 'Resuming', type: 'scheduled' }" class="flow-run-resume-modal__state-badge" /> state.
+      Do you want to resume {{ flowRun.name }}. This will put flow run into a <StateBadge :state="{ name: 'Running', type: 'running' }" class="flow-run-resume-modal__state-badge" /> state.
     </div>
 
     <template #actions>
@@ -45,8 +45,8 @@
   const resume  = async (): Promise<void>=> {
     try {
       const values: StateUpdateDetails = {
-        type: 'scheduled',
-        name: 'Resuming',
+        type: 'running',
+        name: 'Running',
       }
       await api.flowRuns.setFlowRunState(props.flowRunId, { state: values })
       flowRunSubscription.refresh()
@@ -65,8 +65,4 @@
   gap-1
   items-center
 }
-
-/* .flow-run-resume-modal__state-badge {
-  inline-size: max-content;
-} */
 </style>
