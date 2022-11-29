@@ -113,16 +113,6 @@ export function isWorkspacePermissionString(permissionString: PermissionString):
 }
 
 const featureFlags = [
-  'access:billing',
-  'access:collaboration',
-  'access:notifications',
-  'access:organizations',
-  'access:retention',
-  'access:workos',
-  'access:scim',
-  'access:selfServeOrgs',
-  'access:auditLogs',
-  'access:retry',
   'access:automation',
   'access:chameleon',
   'access:transfer',

@@ -30,9 +30,10 @@
   const { showModal, open } = useShowModal()
 
   const canRetry = computed(()=> {
-    if (!can.update.flow_run || !props.flowRun.stateType || !props.flowRun.deploymentId || !can.access.retry) {
+    if (!can.update.flow_run || !props.flowRun.stateType || !props.flowRun.deploymentId) {
       return false
     }
+
     return isTerminalStateType(props.flowRun.stateType)
   })
 

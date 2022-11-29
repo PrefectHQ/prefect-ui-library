@@ -4,9 +4,9 @@
       <StateBadge :state="flowRun.state" />
     </template>
     <template #actions>
-      <FlowRunRetryButton :flow-run="flowRun" class="page-heading-flow-run__retry-button" />
+      <slot name="actions" />
       <FlowRunResumeButton :flow-run="flowRun" class="page-heading-flow-run__resume-button" />
-      <FlowRunCancelButton :flow-run="flowRun" class="page-heading-flow-run__cancel-button" />
+      <FlowRunRetryButton :flow-run="flowRun" class="page-heading-flow-run__retry-button" />
       <p-icon-button-menu>
         <template #default>
           <p-overflow-menu-item v-if="canRetry" label="Retry" class="page-heading-flow-run__retry-menu-item" @click="openRetryModal" />
@@ -40,7 +40,7 @@
   import { PIconButtonMenu, showToast } from '@prefecthq/prefect-design'
   import { useSubscription } from '@prefecthq/vue-compositions'
   import { computed, ref } from 'vue'
-  import { StateBadge, PageHeading, CopyOverflowMenuItem, ConfirmDeleteModal, FlowRunRetryButton, FlowRunRetryModal, ConfirmStateChangeModal, FlowRunCancelButton, FlowRunResumeButton } from '@/components'
+  import { StateBadge, PageHeading, CopyOverflowMenuItem, ConfirmDeleteModal, FlowRunRetryButton, FlowRunRetryModal, ConfirmStateChangeModal, FlowRunResumeButton } from '@/components'
   import { useWorkspaceApi } from '@/compositions'
   import { useCan } from '@/compositions/useCan'
   import { useShowModal } from '@/compositions/useShowModal'
@@ -55,8 +55,8 @@
 
   const can = useCan()
 
-  const canRetry = computed(()=> {
-    if (!can.update.flow_run || !flowRun.value?.stateType || !flowRun.value.deploymentId || !can.access.retry) {
+  const canRetry = computed(() => {
+    if (!can.update.flow_run || !flowRun.value?.stateType || !flowRun.value.deploymentId) {
       return false
     }
     return isTerminalStateType(flowRun.value.stateType)

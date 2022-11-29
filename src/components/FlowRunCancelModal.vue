@@ -61,6 +61,8 @@
       }
       await api.flowRuns.setFlowRunState(props.flowRunId, { state: values })
       flowRunSubscription.refresh()
+      internalValue.value = false
+      emit('cancel')
       showToast(localization.success.cancelFlowRun, 'success')
     } catch (error) {
       console.error(error)
