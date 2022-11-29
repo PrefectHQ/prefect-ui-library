@@ -26,10 +26,10 @@
   const can = useCan()
   const { showModal, open } = useShowModal()
   const canResume = computed(()=> {
-    if (!can.update.flow_run || props.flowRun.stateType && !isPausedStateType(props.flowRun.stateType)) {
+    if (!can.update.flow_run || props.flowRun.stateType) {
       return false
     }
 
-    return true
+    return isPausedStateType(props.flowRun.stateType)
   })
   </script>
