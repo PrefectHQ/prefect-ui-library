@@ -8,7 +8,7 @@
     </div>
 
     <template #actions>
-      <p-button danger @click="resume">
+      <p-button @click="resume">
         Submit
       </p-button>
     </template>
