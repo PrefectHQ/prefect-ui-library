@@ -42,8 +42,8 @@
   }>()
 
   const api = useWorkspaceApi()
-  const popOver = ref<typeof PPopOver>()
-  const runButton = ref<typeof PButton>()
+  const popOver = ref()
+  const runButton = ref()
   const loading = ref(false)
 
   const router = useRouter()
