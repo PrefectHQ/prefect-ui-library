@@ -25,7 +25,6 @@
 <script lang="ts" setup>
   import { PLabel, PNumberInput, PForm, showToast } from '@prefecthq/prefect-design'
   import { useSubscription } from '@prefecthq/vue-compositions'
-  import { useField } from 'vee-validate'
   import { computed } from 'vue'
   import { useWorkspaceApi } from '@/compositions'
   import { useForm } from '@/compositions/useForm'
@@ -40,7 +39,7 @@
     (event: 'update:showModal', value: boolean): void,
   }>()
 
-  const { handleSubmit, handleReset, isSubmitting } = useForm<ConcurrencyLimitCreate>()
+  const { handleSubmit, resetForm, isSubmitting } = useForm<ConcurrencyLimitCreate>()
   const rules = {
     tag: isRequired('Tag'),
     concurrencyLimit: fieldRules('Limit', isRequired, isGreaterThan(0)),
@@ -69,7 +68,7 @@
       console.error(error)
       showToast(localization.error.createConcurrencyLimit, 'error')
     } finally {
-      handleReset()
+      resetForm()
       internalShowModal.value = false
     }
   })
