@@ -31,6 +31,10 @@ export class MockApi {
     return data.blockSchemaCapabilities
   }
 
+  protected get concurrencyLimits() {
+    return data.concurrencyLimits
+  }
+
   protected get deployments() {
     return data.deployments
   }
