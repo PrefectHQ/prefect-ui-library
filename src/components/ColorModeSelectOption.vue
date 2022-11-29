@@ -65,7 +65,7 @@
 }
 
 .color-mode-select-option__state--paused {
-  background-color: var(--state-pending-500);
+  background-color: var(--state-paused-500);
 }
 
 .color-mode-select-option__state--cancelled {
