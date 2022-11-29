@@ -11,7 +11,7 @@ export function mergeParametersObjects(
   const parametersVault = ref(flowRunParamRef.value)
 
   for (const [key, value] of Object.entries(deploymentParamRef.value)) {
-    if (!Object.keys(parametersVault.value).includes(key)) {
+    if (!parametersVault.value[key]) {
       parametersVault.value[key] = value?.default
     }
   }
