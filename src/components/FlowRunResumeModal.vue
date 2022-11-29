@@ -23,15 +23,18 @@
   import { useWorkspaceApi } from '@/compositions'
   import { localization } from '@/localization'
   import {  StateUpdateDetails } from '@/models'
+
   const props = defineProps<{
     showModal: boolean,
     flowRunId: string,
   }>()
+
   const emit = defineEmits<{
     (event: 'update:showModal', value: boolean): void,
-    (event: 'resume'): void,
   }>()
+
   const api = useWorkspaceApi()
+
   const internalValue = computed({
     get() {
       return props.showModal
@@ -40,8 +43,10 @@
       emit('update:showModal', value)
     },
   })
+
   const flowRunSubscription =  useSubscription(api.flowRuns.getFlowRun, [props.flowRunId], { interval: 30000 })
   const flowRun = computed(() => flowRunSubscription.response)
+
   const resume  = async (): Promise<void>=> {
     try {
       const values: StateUpdateDetails = {
