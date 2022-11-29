@@ -19,7 +19,7 @@
     flowRunId: string,
   }>()
 
-  const popover = ref<typeof PPopOver>()
+  const popover = ref()
   const trigger = ref<HTMLDivElement>()
   const content = ref<HTMLDivElement>()
 
