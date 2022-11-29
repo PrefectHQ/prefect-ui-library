@@ -9,6 +9,6 @@ export const mapBlockDocumentUpdateToBlockDocumentUpdateRequest: MapFunction<Blo
 
   return {
     data,
-    'merge_existing_data': mergeExistingData
+    'merge_existing_data': mergeExistingData,
   }
 }
