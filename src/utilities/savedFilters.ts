@@ -33,7 +33,7 @@ export const oneWeekFilter: SavedSearchFilter = {
 }
 
 export const noScheduleFilter: SavedSearchFilter = {
-  state: ['completed', 'failed', 'running', 'pending', 'crashed', 'cancelled'],
+  state: ['completed', 'failed', 'running', 'pending', 'crashed', 'cancelled', 'paused'],
   flow: [],
   tag: [],
   deployment: [],

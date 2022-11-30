@@ -19,6 +19,11 @@
   text-state-pending-800
 }
 
+.state--paused { @apply
+  bg-state-paused-300
+  text-state-paused-800
+}
+
 .state--failed { @apply
   bg-state-failed-50
   text-state-failed-700
