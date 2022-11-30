@@ -56,7 +56,7 @@
     emit('update:states', state.value)
   }
 
-  const sort = ref<FlowRunSortValues>('EXPECTED_START_TIME_DESC')
+  const sort = ref<FlowRunSortValues>('START_TIME_DESC')
   const hasFilters = computed(() => state.value.length)
 
   const filter = computed<UnionFilters>(() => {
