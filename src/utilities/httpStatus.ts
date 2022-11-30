@@ -1,11 +1,37 @@
+import { AxiosError, AxiosResponse } from 'axios'
+
 export type HttpStatusName = keyof typeof httpStatusCode
 export type HttpStatus = typeof httpStatusCode[HttpStatusName]
 export type HttpStatusRange = keyof typeof httpStatusCodeRange
 
-export function httpStatus(status: number): {
+type HttpStatusResponse = {
   is: (status: HttpStatusName) => boolean,
   isInRange: (statusRange: HttpStatusRange) => boolean,
-} {
+}
+
+function isAxiosResponse(value: unknown): value is AxiosResponse {
+  return typeof (value as AxiosResponse).status === 'number'
+}
+
+function getStatusCode(value: AxiosError | AxiosResponse | number): number {
+  if (typeof value === 'number') {
+    return value
+  }
+
+  if (isAxiosResponse(value)) {
+    return value.status
+  }
+
+  if (value.response) {
+    return getStatusCode(value.response)
+  }
+
+  throw 'Invalid argument provided to httpStatus'
+}
+
+export function httpStatus(value: AxiosError | AxiosResponse | number): HttpStatusResponse {
+  const status = getStatusCode(value)
+
   return {
     is: (statusName: HttpStatusName) => httpStatusCode[statusName] === status,
     isInRange: (statusRange: HttpStatusRange) => httpStatusCodeRange[statusRange].includes(status),

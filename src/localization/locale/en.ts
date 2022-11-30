@@ -59,7 +59,7 @@ export const en = {
     changeFlowRunState: 'Flow run state changed',
     changeTaskRunState: 'Task run state changed',
     cancelFlowRun: 'Flow run cancelled',
-    createConcurrencyLimit: 'Concurrency limit created',
+    createConcurrencyLimit: 'Concurrency limit added',
   },
   info: {
     deprecatedWorkQueue: 'This work queue uses a deprecated tag-based approach to matching flow runs; it will continue to work but you can\'t modify it',

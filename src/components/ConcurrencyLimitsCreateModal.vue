@@ -40,7 +40,7 @@
     (event: 'update:showModal', value: boolean): void,
   }>()
 
-  const { handleSubmit, handleReset, isSubmitting } = useForm<ConcurrencyLimitCreate>()
+  const { handleSubmit, resetForm, isSubmitting } = useForm<ConcurrencyLimitCreate>()
   const rules = {
     tag: isRequired('Tag'),
     concurrencyLimit: fieldRules('Limit', isRequired, isGreaterThan(0)),
@@ -69,7 +69,7 @@
       console.error(error)
       showToast(localization.error.createConcurrencyLimit, 'error')
     } finally {
-      handleReset()
+      resetForm()
       internalShowModal.value = false
     }
   })
