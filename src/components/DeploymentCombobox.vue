@@ -9,13 +9,17 @@
 <script lang="ts" setup>
   import { PCombobox, SelectOption } from '@prefecthq/prefect-design'
   import { useSubscription } from '@prefecthq/vue-compositions'
-  import { computed } from 'vue'
+  import { computed, withDefaults } from 'vue'
   import { useWorkspaceApi } from '@/compositions'
 
-  const props = defineProps<{
+  const props = withDefaults(defineProps<{
     selected: string | string[] | null | undefined,
     emptyMessage?: string,
-  }>()
+    additionalOptions?: SelectOption[],
+  }>(), {
+    emptyMessage: 'No deployments',
+    additionalOptions: () => [],
+  })
 
   const emits = defineEmits<{
     (event: 'update:selected', value: string | string[] | null): void,
@@ -41,8 +45,13 @@
   const api = useWorkspaceApi()
   const deploymentsSubscription = useSubscription(api.deployments.getDeployments, [{}])
   const deployments = computed(() => deploymentsSubscription.response ?? [])
-  const options = computed<SelectOption[]>(() => deployments.value.map(deployment => ({
-    value: deployment.id,
-    label: deployment.name,
-  })))
+  const options = computed<SelectOption[]>(() => {
+    return [
+      ...props.additionalOptions,
+      ...deployments.value.map(deployment => ({
+        value: deployment.id,
+        label: deployment.name,
+      })),
+    ]
+  })
 </script>
