@@ -3,6 +3,11 @@
     <template #combobox-options-empty>
       No deployments
     </template>
+    <template #option="{ option }: { option: DeploymentOption }">
+      <template v-if="option.flowId">
+        <deployment-combobox-option :flow-id="option.flowId" :deployment-name="option.label" />
+      </template>
+    </template>
   </p-combobox>
 </template>
 
@@ -10,7 +15,10 @@
   import { PCombobox, SelectOption } from '@prefecthq/prefect-design'
   import { useSubscription } from '@prefecthq/vue-compositions'
   import { computed, withDefaults } from 'vue'
+  import { DeploymentComboboxOption } from '@/components'
   import { useWorkspaceApi } from '@/compositions'
+
+  type DeploymentOption = SelectOption & { flowId?: string }
 
   const props = withDefaults(defineProps<{
     selected: string | string[] | null | undefined,
@@ -45,12 +53,14 @@
   const api = useWorkspaceApi()
   const deploymentsSubscription = useSubscription(api.deployments.getDeployments, [{}])
   const deployments = computed(() => deploymentsSubscription.response ?? [])
-  const options = computed<SelectOption[]>(() => {
+
+  const options = computed<DeploymentOption[]>(() => {
     return [
       ...props.additionalOptions,
       ...deployments.value.map(deployment => ({
         value: deployment.id,
         label: deployment.name,
+        flowId: deployment.flowId,
       })),
     ]
   })
