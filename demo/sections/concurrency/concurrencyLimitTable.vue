@@ -11,7 +11,6 @@
   import { mocker } from '@/services'
 
   const concurrencyLimit = mocker.createMany('concurrencyLimit', 5)
-  console.log(concurrencyLimit)
   useSeeds({
     concurrencyLimit,
   })
