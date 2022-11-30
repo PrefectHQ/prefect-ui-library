@@ -36,7 +36,7 @@ export const deploymentSortOptions = [
   { label: 'Z to A', value: 'NAME_DESC' },
 ]
 
-const flowRunSortValues = ['CREATED_DESC', 'NAME_DESC', 'NAME_ASC', 'EXPECTED_START_TIME_DESC', 'EXPECTED_START_TIME_ASC', 'NEXT_SCHEDULED_START_TIME_ASC'] as const
+const flowRunSortValues = ['CREATED_DESC', 'NAME_DESC', 'NAME_ASC', 'EXPECTED_START_TIME_DESC', 'EXPECTED_START_TIME_ASC', 'NEXT_SCHEDULED_START_TIME_ASC', 'START_TIME_DESC', 'START_TIME_ASC'] as const
 export type FlowRunSortValues = typeof flowRunSortValues[number]
 
 export function isFlowRunSortValue(value: unknown): value is FlowRunSortValues
