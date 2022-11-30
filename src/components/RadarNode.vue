@@ -80,7 +80,7 @@
   })
 
 
-  const showCollapsedBadge = computed(() => props.collapsed.size > 0)
+  const showCollapsedBadge = computed(() => props.collapsed?.size && props.collapsed.size > 0)
 </script>
 
 <style>

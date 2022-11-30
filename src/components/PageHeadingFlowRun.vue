@@ -4,6 +4,7 @@
       <StateBadge :state="flowRun.state" />
     </template>
     <template #actions>
+      <slot name="actions" />
       <FlowRunRetryButton :flow-run="flowRun" class="page-heading-flow-run__retry-button" />
       <p-icon-button-menu>
         <template #default>
@@ -53,8 +54,8 @@
 
   const can = useCan()
 
-  const canRetry = computed(()=> {
-    if (!can.update.flow_run || !flowRun.value?.stateType || !flowRun.value.deploymentId || !can.access.retry) {
+  const canRetry = computed(() => {
+    if (!can.update.flow_run || !flowRun.value?.stateType || !flowRun.value.deploymentId) {
       return false
     }
     return isTerminalStateType(flowRun.value.stateType)

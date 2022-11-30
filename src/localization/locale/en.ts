@@ -32,6 +32,8 @@ export const en = {
     retryRun: 'Flow run retry failed',
     changeFlowRunState: 'Failed to change flow run state',
     changeTaskRunState: 'Failed to change task run state',
+    cancelFlowRun: 'Failed to cancel flow run',
+    createConcurrencyLimit: 'Failed to create concurrency limit',
   },
   success: {
     activateDeployment: 'Deployment active',
@@ -56,6 +58,8 @@ export const en = {
     retryRun: 'Retrying run',
     changeFlowRunState: 'Flow run state changed',
     changeTaskRunState: 'Task run state changed',
+    cancelFlowRun: 'Flow run cancelled',
+    createConcurrencyLimit: 'Concurrency limit added',
   },
   info: {
     deprecatedWorkQueue: 'This work queue uses a deprecated tag-based approach to matching flow runs; it will continue to work but you can\'t modify it',

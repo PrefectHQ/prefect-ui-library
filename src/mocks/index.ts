@@ -7,6 +7,7 @@ import { randomBlockSchemaCapability } from './blockSchemaCapability'
 import { randomBlockType } from './blockType'
 import { randomBlockTypeSnippet } from './blockTypeSnippet'
 import { randomBoolean } from './boolean'
+import { randomConcurrencyLimit } from './concurrencyLimit'
 import { randomCreatedOrUpdatedBy } from './createdOrUpdatedBy'
 import { randomDate, randomDateString } from './date'
 import { randomDeployment } from './deployment'
@@ -48,6 +49,7 @@ export const mocks = {
   boolean: randomBoolean,
   char: randomChar,
   createdOrUpdatedBy: randomCreatedOrUpdatedBy,
+  concurrencyLimit: randomConcurrencyLimit,
   date: randomDate,
   dateString: randomDateString,
   deployment: randomDeployment,
