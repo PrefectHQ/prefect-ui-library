@@ -32,7 +32,7 @@
   })
 
   const flowSubscription = useSubscriptionWithDependencies(api.flows.getFlow, flowArgs)
-  const flowResponse = computed(() => flowSubscription.response ?? null)
+  const flowResponse = computed(() => flowSubscription.response)
 </script>
 
 <style>
