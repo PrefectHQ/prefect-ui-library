@@ -16,10 +16,3 @@
 
   const taskRunCount = computed(()=> props.activeSlots.length)
 </script>
-
-<style>
-.concurrency-table-active-slots__link {
-  @apply
-  pr-4
-}
-</style>
