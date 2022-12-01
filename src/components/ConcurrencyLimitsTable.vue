@@ -31,7 +31,7 @@
     },
     {
       property: 'activeSlot',
-      label: 'Active Slots',
+      label: 'Task Runs',
     },
   ]
 
