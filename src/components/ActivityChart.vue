@@ -43,6 +43,7 @@
     ['running', -1],
     ['scheduled', -1],
     ['pending', -1],
+    ['paused', -1],
     ['failed', 1],
     ['cancelled', 1],
     ['crashed', 1],

@@ -1,2 +1,2 @@
-export const prefectStateNames = ['Scheduled', 'Late', 'Pending', 'Running', 'Cancelled', 'Crashed', 'Failed', 'Completed', 'Cancelling'] as const
+export const prefectStateNames = ['Scheduled', 'Late', 'Pending', 'Running', 'Cancelled', 'Crashed', 'Failed', 'Completed', 'Cancelling', 'Paused'] as const
 export type PrefectStateNames = typeof prefectStateNames[number]

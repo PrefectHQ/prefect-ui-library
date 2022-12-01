@@ -30,7 +30,7 @@ export function useFlowRunFilterFromRoute(): UseFlowRunFilterFromRoute {
   const route = useRoute()
 
   const name = useRouteQueryParam('name', '')
-  const sort = useRouteQueryParam('sort', 'EXPECTED_START_TIME_DESC') as Ref<FlowRunSortValues>
+  const sort = useRouteQueryParam('sort', 'START_TIME_DESC') as Ref<FlowRunSortValues>
 
   const defaultStartDate = formatDateTimeNumeric(dateFunctions.subDays(dateFunctions.startOfToday(), 7))
   const startDateParam = useRouteQueryParam('start-date', defaultStartDate)

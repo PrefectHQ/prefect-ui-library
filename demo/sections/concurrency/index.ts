@@ -1,6 +1,6 @@
 import { Section } from '@/demo/router/routeRecords'
 
 export const concurrency: Section = {
-  ConcurrencyLimitModal: () => import ('./ConcurrencyLimitModal.vue'),
-  ConcurrencyLimitTable: () => import ('./ConcurrencyLimitTable.vue'),
+  AddConcurrencyLimitModal: () => import ('./ConcurrencyLimitModal.vue'),
+  ConcurrencyLimitsTable: () => import ('./ConcurrencyLimitsTable.vue'),
 }

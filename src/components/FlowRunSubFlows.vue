@@ -46,12 +46,25 @@
   const state = ref<StateType[]>([])
   const searchTerm = ref('')
   const searchTermDebounced = useDebouncedRef(searchTerm, 1200)
-  const sort = ref<FlowRunSortValues>('EXPECTED_START_TIME_DESC')
+  const sort = ref<FlowRunSortValues>('START_TIME_DESC')
   const hasFilters = computed(() => state.value.length || searchTerm.value.length)
+
+  // this is a hack because api/task_runs/filter doesn't support START_TIME_ASC or START_TIME_DESC
+  // https://github.com/PrefectHQ/prefect/issues/7730
+  const taskRunSort = computed<UnionFilters['sort']>(() => {
+    switch (sort.value) {
+      case 'START_TIME_ASC':
+        return 'EXPECTED_START_TIME_ASC'
+      case 'START_TIME_DESC':
+        return 'EXPECTED_START_TIME_DESC'
+      default:
+        return sort.value
+    }
+  })
 
   const subFlowRunTaskRunFilter = computed<UnionFilters>(() => {
     const runFilter: UnionFilters = {
-      sort: sort.value,
+      sort: taskRunSort.value,
       flow_runs: {
         id: {
           any_: [props.flowRunId],
