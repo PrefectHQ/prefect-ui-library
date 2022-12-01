@@ -1,25 +1,20 @@
 <template>
-  <template v-if="!hasActiveSlots">
+  <template v-if="!taskRunCount">
     None
   </template>
   <template v-else>
-    <p-link v-for="id in activeSlots" :key="id" class="concurrency-table-active-slots__link" :to="taskRunRoute(id)">
-      {{ id }}
-    </p-link>
+    {{ taskRunCount }}
   </template>
 </template>
 
 <script lang="ts" setup>
   import { computed } from 'vue'
-  import { taskRunRouteKey } from '@/router'
-  import { inject } from '@/utilities'
 
   const props = defineProps<{
     activeSlots: string[],
   }>()
 
-  const hasActiveSlots = computed(()=> props.activeSlots.length)
-  const taskRunRoute = inject(taskRunRouteKey)
+  const taskRunCount = computed(()=> props.activeSlots.length)
 </script>
 
 <style>
