@@ -1,5 +1,5 @@
 <template>
-  <p-icon-button-menu v-if="flowRun">
+  <p-icon-button-menu>
     <template #default>
       <p-overflow-menu-item v-if="canRetry && !media.sm" label="Retry" @click="openRetryModal" />
       <p-overflow-menu-item v-if="canResume && !media.sm" label="Resume" @click="openResumeModal" />
@@ -11,6 +11,7 @@
   </p-icon-button-menu>
 
   <FlowRunRetryModal
+    v-if="flowRun"
     v-model:showModal="showRetryModal"
     v-model:retryingRun="retryingRun"
     :flow-run="flowRun"
@@ -26,15 +27,17 @@
     @change="showCancelModal"
   />
   <ConfirmStateChangeModal
+    v-if="flowRun"
     v-model:showModal="showStateChangeModal"
     :run="flowRun"
     label="Flow Run"
     @change="changeFlowRunState"
   />
   <ConfirmDeleteModal
+    v-if="flowRun"
     v-model:showModal="showDeleteModal"
     label="Flow Run"
-    :name="flowRun!.name"
+    :name="flowRun.name"
     @delete="deleteFlowRun(flowRunId)"
   />
 </template>
