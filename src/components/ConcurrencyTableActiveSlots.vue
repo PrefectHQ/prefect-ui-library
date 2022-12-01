@@ -1,5 +1,5 @@
 <template>
-  <template v-if="hasAsctiveSlots">
+  <template v-if="!hasActiveSlots">
     None
   </template>
   <template v-else>
@@ -18,7 +18,7 @@
     activeSlots: string[],
   }>()
 
-  const hasAsctiveSlots = computed(()=> !props.activeSlots.length)
+  const hasActiveSlots = computed(()=> props.activeSlots.length)
   const taskRunRoute = inject(taskRunRouteKey)
 </script>
 
