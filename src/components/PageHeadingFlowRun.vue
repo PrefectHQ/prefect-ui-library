@@ -4,7 +4,6 @@
       <StateBadge :state="flowRun.state" />
     </template>
     <template #actions>
-      <slot name="actions" />
       <FlowRunCancelButton v-if="media.sm" :flow-run="flowRun" />
       <FlowRunResumeButton v-if="media.sm" :flow-run="flowRun" />
       <FlowRunRetryButton v-if="media.sm" :flow-run="flowRun" />
