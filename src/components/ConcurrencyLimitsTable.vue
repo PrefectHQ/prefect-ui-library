@@ -1,8 +1,5 @@
 <template>
   <p-table class="concurrency-limits-table__table" :columns="columns" :data="concurrencyLimits">
-    <template #slots="row">
-      <ConcurrencyTableSlots v-if="row.concurrencyLimit" :slots="row.concurrencyLimit" :active-slots="row.activeSlots" />
-    </template>
     <template #active-slots="{ row }">
       <ConcurrencyTableActiveSlots v-if="row.activeSlots" :active-slots="row.activeSlots" />
     </template>
