@@ -5,12 +5,12 @@
     </template>
     <template #actions>
       <slot name="actions" />
-      <FlowRunResumeButton :flow-run="flowRun" class="page-heading-flow-run__resume-button" />
-      <FlowRunRetryButton :flow-run="flowRun" class="page-heading-flow-run__retry-button" />
+      <FlowRunResumeButton v-if="media.sm" :flow-run="flowRun" />
+      <FlowRunRetryButton v-if="media.sm" :flow-run="flowRun" />
       <p-icon-button-menu>
         <template #default>
-          <p-overflow-menu-item v-if="canRetry" label="Retry" class="page-heading-flow-run__retry-menu-item" @click="openRetryModal" />
-          <p-overflow-menu-item v-if="canResume" label="Resume" class="page-heading-flow-run__resume-menu-item" @click="openFlowRunResumeModal" />
+          <p-overflow-menu-item v-if="canRetry && !media.sm" label="Retry" @click="openRetryModal" />
+          <p-overflow-menu-item v-if="canResume && !media.sm" label="Resume" @click="openFlowRunResumeModal" />
           <p-overflow-menu-item v-if="showChangeStateMenuItemButton" label="Change state" @click="openChangeStateModal" />
           <copy-overflow-menu-item label="Copy ID" :item="flowRun.id" />
           <p-overflow-menu-item v-if="can.delete.flow_run" label="Delete" @click="openDeleteModal" />
@@ -43,7 +43,7 @@
 </template>
 
 <script lang="ts" setup>
-  import { PIconButtonMenu, showToast } from '@prefecthq/prefect-design'
+  import { PIconButtonMenu, showToast, media } from '@prefecthq/prefect-design'
   import { useSubscription } from '@prefecthq/vue-compositions'
   import { computed, ref } from 'vue'
   import { StateBadge, PageHeading, CopyOverflowMenuItem, ConfirmDeleteModal, FlowRunRetryButton, FlowRunRetryModal, ConfirmStateChangeModal, FlowRunResumeButton, FlowRunResumeModal } from '@/components'
@@ -119,17 +119,3 @@
     }
   }
 </script>
-
-<style>
-.page-heading-flow-run__retry-button,
-.page-heading-flow-run__resume-button { @apply
-  hidden
-  sm:block
-}
-
-.page-heading-flow-run__retry-menu-item,
-.page-heading-flow-run__resume-menu-item { @apply
-  flex
-  sm:hidden
-}
-</style>
