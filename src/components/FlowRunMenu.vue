@@ -1,9 +1,9 @@
 <template>
   <p-icon-button-menu>
     <template #default>
-      <p-overflow-menu-item v-if="canRetry && !media.sm" label="Retry" @click="openRetryModal" />
-      <p-overflow-menu-item v-if="canResume && !media.sm" label="Resume" @click="openResumeModal" />
-      <p-overflow-menu-item v-if="canCancel && !media.sm" label="Cancel" @click="openCancelModal" />
+      <p-overflow-menu-item v-if="canRetry && canShowOnMobile" label="Retry" @click="openRetryModal" />
+      <p-overflow-menu-item v-if="canResume && canShowOnMobile" label="Resume" @click="openResumeModal" />
+      <p-overflow-menu-item v-if="canCancel && canShowOnMobile" label="Cancel" @click="openCancelModal" />
       <p-overflow-menu-item v-if="canChangeState" label="Change state" @click="openChangeStateModal" />
       <copy-overflow-menu-item label="Copy ID" :item="flowRunId" />
       <p-overflow-menu-item v-if="can.delete.flow_run" label="Delete" @click="openDeleteModal" />
@@ -55,6 +55,7 @@
 
   const props = defineProps<{
     flowRunId: string,
+    showOnMobile?: boolean,
   }>()
 
   const can = useCan()
@@ -65,6 +66,8 @@
   const { showModal: showCancelModal, open: openCancelModal } = useShowModal()
   const { showModal: showStateChangeModal, open: openChangeStateModal } = useShowModal()
   const { showModal: showDeleteModal, open: openDeleteModal } = useShowModal()
+
+  const canShowOnMobile = computed(() => props.showOnMobile ? !media.sm : null)
 
   const retryingRun = ref(false)
 

@@ -8,7 +8,7 @@
       <FlowRunCancelButton v-if="media.sm" :flow-run="flowRun" />
       <FlowRunResumeButton v-if="media.sm" :flow-run="flowRun" />
       <FlowRunRetryButton v-if="media.sm" :flow-run="flowRun" />
-      <PageHeadingFlowRunOverflowMenu :flow-run-id="flowRun.id" @delete="emit('delete')" />
+      <FlowRunMenu :flow-run-id="flowRun.id" show-on-mobile @delete="emit('delete')" />
     </template>
   </page-heading>
 </template>
@@ -17,7 +17,7 @@
   import { media } from '@prefecthq/prefect-design'
   import { useSubscription } from '@prefecthq/vue-compositions'
   import { computed } from 'vue'
-  import PageHeadingFlowRunOverflowMenu from './PageHeadingFlowRunOverflowMenu.vue'
+  import FlowRunMenu from './FlowRunMenu.vue'
   import { StateBadge, PageHeading,  FlowRunRetryButton, FlowRunResumeButton, FlowRunCancelButton } from '@/components'
   import { useWorkspaceApi } from '@/compositions'
   import { flowRunsRouteKey } from '@/router'
