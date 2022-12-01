@@ -5,83 +5,35 @@
     </template>
     <template #actions>
       <slot name="actions" />
+      <FlowRunCancelButton v-if="media.sm" :flow-run="flowRun" />
       <FlowRunResumeButton v-if="media.sm" :flow-run="flowRun" />
       <FlowRunRetryButton v-if="media.sm" :flow-run="flowRun" />
-      <p-icon-button-menu>
-        <template #default>
-          <p-overflow-menu-item v-if="canRetry && !media.sm" label="Retry" @click="openRetryModal" />
-          <p-overflow-menu-item v-if="canResume && !media.sm" label="Resume" @click="openFlowRunResumeModal" />
-          <p-overflow-menu-item v-if="showChangeStateMenuItemButton" label="Change state" @click="openChangeStateModal" />
-          <copy-overflow-menu-item label="Copy ID" :item="flowRun.id" />
-          <p-overflow-menu-item v-if="can.delete.flow_run" label="Delete" @click="openDeleteModal" />
-        </template>
-      </p-icon-button-menu>
-      <FlowRunRetryModal
-        v-model:showModal="showRetryModal"
-        v-model:retryingRun="retryingRun"
-        :flow-run="flowRun"
-      />
-      <ConfirmStateChangeModal
-        v-model:showModal="showStateChangeModal"
-        :run="flowRun"
-        label="Flow Run"
-        @change="changeFlowRunState"
-      />
-      <ConfirmDeleteModal
-        v-model:showModal="showDeleteModal"
-        label="Flow Run"
-        :name="flowRun.name!"
-        @delete="deleteFlowRun(flowRunId)"
-      />
-      <FlowRunResumeModal
-        v-model:showModal="showFlowRunResumeModal"
-        :flow-run-id="flowRun.id"
-        @change="openFlowRunResumeModal"
-      />
+      <PageHeadingFlowRunOverflowMenu :flow-run-id="flowRun.id" @delete="emit('delete')" />
     </template>
   </page-heading>
 </template>
 
 <script lang="ts" setup>
-  import { PIconButtonMenu, showToast, media } from '@prefecthq/prefect-design'
+  import { media } from '@prefecthq/prefect-design'
   import { useSubscription } from '@prefecthq/vue-compositions'
-  import { computed, ref } from 'vue'
-  import { StateBadge, PageHeading, CopyOverflowMenuItem, ConfirmDeleteModal, FlowRunRetryButton, FlowRunRetryModal, ConfirmStateChangeModal, FlowRunResumeButton, FlowRunResumeModal } from '@/components'
+  import { computed } from 'vue'
+  import PageHeadingFlowRunOverflowMenu from './PageHeadingFlowRunOverflowMenu.vue'
+  import { StateBadge, PageHeading,  FlowRunRetryButton, FlowRunResumeButton, FlowRunCancelButton } from '@/components'
   import { useWorkspaceApi } from '@/compositions'
-  import { useCan } from '@/compositions/useCan'
-  import { useShowModal } from '@/compositions/useShowModal'
-  import { localization } from '@/localization'
-  import { isPausedStateType, isTerminalStateType, StateUpdateDetails } from '@/models'
   import { flowRunsRouteKey } from '@/router'
-  import { deleteItem, inject } from '@/utilities'
+  import { inject } from '@/utilities'
 
   const props = defineProps<{
     flowRunId: string,
   }>()
 
-  const can = useCan()
-
-  const canRetry = computed(() => {
-    if (!can.update.flow_run || !flowRun.value?.stateType || !flowRun.value.deploymentId) {
-      return false
-    }
-    return isTerminalStateType(flowRun.value.stateType)
-  })
-
-  const canResume = computed(()=> {
-    if (!can.update.flow_run || !flowRun.value?.stateType) {
-      return false
-    }
-
-    return isPausedStateType(flowRun.value.stateType)
-  })
-
   const api = useWorkspaceApi()
-  const { showModal: showDeleteModal, open: openDeleteModal } = useShowModal()
-  const { showModal: showRetryModal, open: openRetryModal } = useShowModal()
-  const { showModal: showStateChangeModal, open: openChangeStateModal } = useShowModal()
-  const { showModal: showFlowRunResumeModal, open: openFlowRunResumeModal } = useShowModal()
   const flowRunsRoute = inject(flowRunsRouteKey)
+
+  const emit = defineEmits<{
+    (event: 'delete'): void,
+  }>()
+
   // It doesn't seem like we should need to coalesce here but
   // the flow run model dictates the flow run name can be null
   const crumbs = computed(() => [
@@ -91,31 +43,4 @@
 
   const flowRunSubscription =  useSubscription(api.flowRuns.getFlowRun, [props.flowRunId], { interval: 30000 })
   const flowRun = computed(() => flowRunSubscription.response)
-
-  const emit = defineEmits(['delete'])
-
-  const deleteFlowRun = async (id: string): Promise<void> => {
-    await deleteItem(id, api.flowRuns.deleteFlowRun, 'Flow run')
-    emit('delete', id)
-  }
-
-  const retryingRun = ref(false)
-
-  const showChangeStateMenuItemButton = computed(() => {
-    if (can.update.flow_run && flowRun.value?.stateType && isTerminalStateType(flowRun.value.stateType)) {
-      return true
-    }
-    return false
-  })
-
-  const changeFlowRunState = async (values: StateUpdateDetails): Promise<void> => {
-    try {
-      await api.flowRuns.setFlowRunState(props.flowRunId, { state: values })
-      flowRunSubscription.refresh()
-      showToast(localization.success.changeFlowRunState, 'success')
-    } catch (error) {
-      console.error(error)
-      showToast(localization.error.changeFlowRunState, 'error')
-    }
-  }
 </script>
