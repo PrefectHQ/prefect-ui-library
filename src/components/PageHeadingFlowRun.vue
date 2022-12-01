@@ -5,11 +5,12 @@
     </template>
     <template #actions>
       <slot name="actions" />
-      <FlowRunResumeButton :flow-run="flowRun" class="page-heading-flow-run__resume-button" />
-      <FlowRunRetryButton :flow-run="flowRun" class="page-heading-flow-run__retry-button" />
+      <FlowRunResumeButton v-if="media.sm" :flow-run="flowRun" />
+      <FlowRunRetryButton v-if="media.sm" :flow-run="flowRun" />
       <p-icon-button-menu>
         <template #default>
-          <p-overflow-menu-item v-if="canRetry" label="Retry" class="page-heading-flow-run__retry-menu-item" @click="openRetryModal" />
+          <p-overflow-menu-item v-if="canRetry && !media.sm" label="Retry" @click="openRetryModal" />
+          <p-overflow-menu-item v-if="canResume && !media.sm" label="Resume" @click="openFlowRunResumeModal" />
           <p-overflow-menu-item v-if="showChangeStateMenuItemButton" label="Change state" @click="openChangeStateModal" />
           <copy-overflow-menu-item label="Copy ID" :item="flowRun.id" />
           <p-overflow-menu-item v-if="can.delete.flow_run" label="Delete" @click="openDeleteModal" />
@@ -32,20 +33,25 @@
         :name="flowRun.name!"
         @delete="deleteFlowRun(flowRunId)"
       />
+      <FlowRunResumeModal
+        v-model:showModal="showFlowRunResumeModal"
+        :flow-run-id="flowRun.id"
+        @change="openFlowRunResumeModal"
+      />
     </template>
   </page-heading>
 </template>
 
 <script lang="ts" setup>
-  import { PIconButtonMenu, showToast } from '@prefecthq/prefect-design'
+  import { PIconButtonMenu, showToast, media } from '@prefecthq/prefect-design'
   import { useSubscription } from '@prefecthq/vue-compositions'
   import { computed, ref } from 'vue'
-  import { StateBadge, PageHeading, CopyOverflowMenuItem, ConfirmDeleteModal, FlowRunRetryButton, FlowRunRetryModal, ConfirmStateChangeModal, FlowRunResumeButton } from '@/components'
+  import { StateBadge, PageHeading, CopyOverflowMenuItem, ConfirmDeleteModal, FlowRunRetryButton, FlowRunRetryModal, ConfirmStateChangeModal, FlowRunResumeButton, FlowRunResumeModal } from '@/components'
   import { useWorkspaceApi } from '@/compositions'
   import { useCan } from '@/compositions/useCan'
   import { useShowModal } from '@/compositions/useShowModal'
   import { localization } from '@/localization'
-  import { isTerminalStateType, StateUpdateDetails } from '@/models'
+  import { isPausedStateType, isTerminalStateType, StateUpdateDetails } from '@/models'
   import { flowRunsRouteKey } from '@/router'
   import { deleteItem, inject } from '@/utilities'
 
@@ -62,10 +68,19 @@
     return isTerminalStateType(flowRun.value.stateType)
   })
 
+  const canResume = computed(()=> {
+    if (!can.update.flow_run || !flowRun.value?.stateType) {
+      return false
+    }
+
+    return isPausedStateType(flowRun.value.stateType)
+  })
+
   const api = useWorkspaceApi()
   const { showModal: showDeleteModal, open: openDeleteModal } = useShowModal()
   const { showModal: showRetryModal, open: openRetryModal } = useShowModal()
   const { showModal: showStateChangeModal, open: openChangeStateModal } = useShowModal()
+  const { showModal: showFlowRunResumeModal, open: openFlowRunResumeModal } = useShowModal()
   const flowRunsRoute = inject(flowRunsRouteKey)
   // It doesn't seem like we should need to coalesce here but
   // the flow run model dictates the flow run name can be null
@@ -104,15 +119,3 @@
     }
   }
 </script>
-
-<style>
-.page-heading-flow-run__retry-button { @apply
-  hidden
-  sm:block
-}
-
-.page-heading-flow-run__retry-menu-item { @apply
-  flex
-  sm:hidden
-}
-</style>
