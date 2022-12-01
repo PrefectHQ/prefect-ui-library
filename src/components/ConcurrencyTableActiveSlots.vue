@@ -25,6 +25,6 @@
 <style>
 .concurrency-table-active-slots__link {
   @apply
-  pr-8
+  pr-4
 }
 </style>
