@@ -1,5 +1,8 @@
 <template>
   <p-table class="concurrency-limits-table__table" :columns="columns" :data="concurrencyLimits">
+    <template #slots="row">
+      <ConcurrencyTableSlots v-if="row.concurrencyLimit" :slots="row.concurrencyLimit" :active-slots="row.activeSlots" />
+    </template>
     <template #active-slots="{ row }">
       <ConcurrencyTableActiveSlots v-if="row.activeSlots" :active-slots="row.activeSlots" />
     </template>
@@ -16,8 +19,8 @@
 <script lang="ts" setup>
   import { useSubscription } from '@prefecthq/vue-compositions'
   import { computed } from 'vue'
+  import ConcurrencyTableActiveSlots from '@/components/ConcurrencyTableActiveSlots.vue'
   import { useWorkspaceApi } from '@/compositions'
-  import ConcurrencyTableActiveSlots from '@/ConcurrencyTableActiveSlots.vue'
 
   const api = useWorkspaceApi()
   const columns = [
@@ -26,12 +29,8 @@
       label: 'Tag',
     },
     {
-      property: 'created',
-      label: 'Created',
-    },
-    {
       property: 'concurrencyLimit',
-      label: 'Limit',
+      label: 'Slots',
     },
     {
       property: 'activeSlot',
