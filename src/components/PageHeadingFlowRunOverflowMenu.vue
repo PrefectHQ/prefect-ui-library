@@ -37,7 +37,7 @@
     v-if="flowRun"
     v-model:showModal="showDeleteModal"
     label="Flow Run"
-    :name="flowRun.name"
+    :name="flowRun.name!"
     @delete="deleteFlowRun(flowRunId)"
   />
 </template>
