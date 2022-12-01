@@ -1,5 +1,5 @@
 <template>
-  <p-icon-button-menu>
+  <p-icon-button-menu v-if="flowRun">
     <template #default>
       <p-overflow-menu-item v-if="canRetry && !media.sm" label="Retry" @click="openRetryModal" />
       <p-overflow-menu-item v-if="canResume && !media.sm" label="Resume" @click="openResumeModal" />
