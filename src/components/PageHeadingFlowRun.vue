@@ -7,7 +7,7 @@
       <FlowRunCancelButton v-if="media.sm" :flow-run="flowRun" />
       <FlowRunResumeButton v-if="media.sm" :flow-run="flowRun" />
       <FlowRunRetryButton v-if="media.sm" :flow-run="flowRun" />
-      <FlowRunMenu :flow-run-id="flowRun.id" show-on-mobile @delete="emit('delete')" />
+      <FlowRunMenu :flow-run-id="flowRun.id" :show-all="!media.sm" @delete="emit('delete')" />
     </template>
   </page-heading>
 </template>

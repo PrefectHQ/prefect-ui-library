@@ -1,9 +1,9 @@
 <template>
   <p-icon-button-menu>
     <template #default>
-      <p-overflow-menu-item v-if="canRetry && canShowOnMobile" label="Retry" @click="openRetryModal" />
-      <p-overflow-menu-item v-if="canResume && canShowOnMobile" label="Resume" @click="openResumeModal" />
-      <p-overflow-menu-item v-if="canCancel && canShowOnMobile" label="Cancel" @click="openCancelModal" />
+      <p-overflow-menu-item v-if="canRetry && showAll" label="Retry" @click="openRetryModal" />
+      <p-overflow-menu-item v-if="canResume && showAll" label="Resume" @click="openResumeModal" />
+      <p-overflow-menu-item v-if="canCancel && showAll" label="Cancel" @click="openCancelModal" />
       <p-overflow-menu-item v-if="canChangeState" label="Change state" @click="openChangeStateModal" />
       <copy-overflow-menu-item label="Copy ID" :item="flowRunId" />
       <p-overflow-menu-item v-if="can.delete.flow_run" label="Delete" @click="openDeleteModal" />
@@ -43,7 +43,7 @@
 </template>
 
 <script lang="ts" setup>
-  import {  media, showToast } from '@prefecthq/prefect-design'
+  import { showToast } from '@prefecthq/prefect-design'
   import { useSubscription, useSubscriptionWithDependencies } from '@prefecthq/vue-compositions'
   import { computed, ref } from 'vue'
   import { FlowRunRetryModal, FlowRunResumeModal, FlowRunCancelModal, ConfirmStateChangeModal, ConfirmDeleteModal, CopyOverflowMenuItem } from '@/components'
@@ -55,7 +55,7 @@
 
   const props = defineProps<{
     flowRunId: string,
-    showOnMobile?: boolean,
+    showAll?: boolean,
   }>()
 
   const can = useCan()
@@ -66,8 +66,6 @@
   const { showModal: showCancelModal, open: openCancelModal } = useShowModal()
   const { showModal: showStateChangeModal, open: openChangeStateModal } = useShowModal()
   const { showModal: showDeleteModal, open: openDeleteModal } = useShowModal()
-
-  const canShowOnMobile = computed(() => props.showOnMobile ? !media.sm : null)
 
   const retryingRun = ref(false)
 
