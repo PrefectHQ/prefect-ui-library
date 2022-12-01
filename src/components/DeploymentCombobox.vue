@@ -3,10 +3,15 @@
     <template #combobox-options-empty>
       No deployments
     </template>
+    <template #default="scope">
+      <slot v-bind="scope" />
+    </template>
     <template #option="{ option }: { option: DeploymentOption }">
-      <template v-if="option.flowId">
-        <deployment-combobox-option :flow-id="option.flowId" :deployment-name="option.label" />
-      </template>
+      <slot name="option" :option="option">
+        <template v-if="option.flowId">
+          <deployment-combobox-option :flow-id="option.flowId" :deployment-name="option.label" />
+        </template>
+      </slot>
     </template>
   </p-combobox>
 </template>
@@ -14,20 +19,17 @@
 <script lang="ts" setup>
   import { PCombobox, SelectOption } from '@prefecthq/prefect-design'
   import { useSubscription } from '@prefecthq/vue-compositions'
-  import { computed, withDefaults } from 'vue'
+  import { computed } from 'vue'
   import { DeploymentComboboxOption } from '@/components'
   import { useWorkspaceApi } from '@/compositions'
 
   type DeploymentOption = SelectOption & { flowId?: string }
 
-  const props = withDefaults(defineProps<{
+  const props = defineProps<{
     selected: string | string[] | null | undefined,
     emptyMessage?: string,
-    additionalOptions?: SelectOption[],
-  }>(), {
-    emptyMessage: 'No deployments',
-    additionalOptions: () => [],
-  })
+    allowUnset?: boolean,
+  }>()
 
   const emits = defineEmits<{
     (event: 'update:selected', value: string | string[] | null): void,
@@ -55,13 +57,19 @@
   const deployments = computed(() => deploymentsSubscription.response ?? [])
 
   const options = computed<DeploymentOption[]>(() => {
-    return [
-      ...props.additionalOptions,
-      ...deployments.value.map(deployment => ({
-        value: deployment.id,
-        label: deployment.name,
-        flowId: deployment.flowId,
-      })),
-    ]
+    const options: DeploymentOption[] = deployments.value.map(deployment => ({
+      value: deployment.id,
+      label: deployment.name,
+      flowId: deployment.flowId,
+    }))
+
+    if (props.allowUnset) {
+      options.unshift({
+        label: 'None',
+        value: null,
+      })
+    }
+
+    return options
   })
 </script>
