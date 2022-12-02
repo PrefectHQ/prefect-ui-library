@@ -7,6 +7,7 @@ export const en = {
     workQueues: 'https://docs.prefect.io/ui/work-queues/',
     notifications: 'https://docs.prefect.io/ui/notifications/',
     deployments: 'https://docs.prefect.io/ui/deployments/',
+    concurrency: 'https://docs.prefect.io/concepts/tasks/?h=conc#task-run-concurrency-limits',
   },
   error: {
     activateDeployment: 'Failed to activate deployment',
