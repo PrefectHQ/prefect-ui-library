@@ -140,7 +140,6 @@
     flowsCountSubscription.refresh()
   }
 
-  const showClearButton = ref(true)
   function clear(): void {
     name.value = ''
   }
