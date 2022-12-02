@@ -1,5 +1,5 @@
 <template>
-  <ComponentPage title="BlocksPageEmptyState">
+  <ComponentPage title="ConcurrencyLimitsPageEmptyState">
     <ConcurrencyLimitsPageEmptyState />
   </ComponentPage>
 </template>
