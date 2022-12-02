@@ -15,7 +15,7 @@
 
     <p-table :data="flows" :columns="columns">
       <template #selection-heading>
-        <p-checkbox v-model="selectAll" :value="selectIds(selectAll, flows)" />
+        <p-checkbox v-model="allFlowsSelected" :value="selectAllFlows()" />
       </template>
 
       <template #selection="{ row }">
@@ -72,7 +72,6 @@
   import { computed, ref } from 'vue'
   import { DeleteFlowsButton, DeploymentsCount, ResultsCount, SearchInput, FlowActivityChart, FlowMenu, SelectedCount } from '@/components'
   import { useCan, UseFlowFilterArgs, useFlowFilterFromRoute, useWorkspaceApi } from '@/compositions'
-  import { Flow } from '@/models'
   import { flowRouteKey } from '@/router'
   import { flowSortOptions } from '@/types/SortOptionTypes'
   import { inject } from '@/utilities'
@@ -120,11 +119,11 @@
     },
   ]
 
-  const selectAll = ref(false)
+  const allFlowsSelected = ref(false)
   const selectedFlows = ref<string[]>([])
-  const selectIds = (selectAll: boolean, flows: Flow[]): string[] => {
-    if (selectAll) {
-      return selectedFlows.value = [...flows.map(flow => flow.id)]
+  const selectAllFlows = (): string[] => {
+    if (allFlowsSelected.value) {
+      return selectedFlows.value = [...flows.value.map(flow => flow.id)]
     }
     return selectedFlows.value = []
   }
@@ -150,7 +149,7 @@
 
   const deleteFlows = (): void => {
     selectedFlows.value = []
-    selectAll.value = false
+    allFlowsSelected.value = false
     refresh()
     emit('delete-all')
   }
