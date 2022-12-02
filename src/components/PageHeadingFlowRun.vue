@@ -18,16 +18,14 @@
   import { computed } from 'vue'
   import FlowRunMenu from './FlowRunMenu.vue'
   import { StateBadge, PageHeading,  FlowRunRetryButton, FlowRunResumeButton, FlowRunCancelButton } from '@/components'
-  import { useWorkspaceApi } from '@/compositions'
-  import { flowRunsRouteKey } from '@/router'
-  import { inject } from '@/utilities'
+  import { useWorkspaceApi, useWorkspaceRoutes } from '@/compositions'
 
   const props = defineProps<{
     flowRunId: string,
   }>()
 
   const api = useWorkspaceApi()
-  const flowRunsRoute = inject(flowRunsRouteKey)
+  const routes = useWorkspaceRoutes()
 
   const emit = defineEmits<{
     (event: 'delete'): void,
@@ -36,7 +34,7 @@
   // It doesn't seem like we should need to coalesce here but
   // the flow run model dictates the flow run name can be null
   const crumbs = computed(() => [
-    { text: 'Flow Runs', to: flowRunsRoute() },
+    { text: 'Flow Runs', to: routes.flowRuns() },
     { text: flowRun.value?.name ?? '' },
   ])
 

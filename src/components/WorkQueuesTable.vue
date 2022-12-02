@@ -7,7 +7,7 @@
 
     <p-table :data="filteredWorkQueues" :columns="columns">
       <template #name="{ row }">
-        <p-link :to="workQueueRoute(row.id)">
+        <p-link :to="routes.workQueue(row.id)">
           <span>{{ row.name }}</span>
         </p-link>
       </template>
@@ -56,11 +56,8 @@
   import { PTable, PEmptyResults, PLink } from '@prefecthq/prefect-design'
   import { computed, ref } from 'vue'
   import { WorkQueueToggle, WorkQueueMenu, WorkQueueLateIndicator, SearchInput, ResultsCount, WorkQueueLastPolled, WorkQueueStatusBadge } from '@/components'
+  import { useWorkspaceRoutes } from '@/compositions'
   import { WorkQueue } from '@/models'
-  import { workQueueRouteKey } from '@/router'
-  import { inject } from '@/utilities'
-
-  const workQueueRoute = inject(workQueueRouteKey)
 
   const props = defineProps<{
     workQueues: WorkQueue[],
@@ -71,6 +68,7 @@
     (event: 'delete', value: string): void,
   }>()
 
+  const routes = useWorkspaceRoutes()
   const searchTerm = ref('')
 
   const columns = [

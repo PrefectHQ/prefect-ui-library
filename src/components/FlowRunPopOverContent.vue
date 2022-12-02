@@ -4,7 +4,7 @@
       <header class="flow-run-popover-content__header">
         <h5>
           <FlowRouterLink :flow-id="flowRun.flowId" after=" / " />
-          <p-link :to="flowRunRoute(flowRun.id)">
+          <p-link :to="routes.flowRun(flowRun.id)">
             <span>{{ flowRun.name }}</span>
           </p-link>
         </h5>
@@ -39,16 +39,14 @@
   import FlowRouterLink from './FlowRouterLink.vue'
   import StateBadge from './StateBadge.vue'
   import FlowRunStartTime from '@/components/FlowRunStartTime.vue'
-  import { useWorkspaceApi } from '@/compositions'
-  import { flowRunRouteKey } from '@/router'
-  import { inject } from '@/utilities/inject'
+  import { useWorkspaceApi, useWorkspaceRoutes } from '@/compositions'
 
   const props = defineProps<{
     flowRunId: string,
   }>()
 
   const api = useWorkspaceApi()
-  const flowRunRoute = inject(flowRunRouteKey)
+  const routes = useWorkspaceRoutes()
   const flowRunSubscription = useSubscription(api.flowRuns.getFlowRun, [props.flowRunId])
   const flowRun = computed(() => flowRunSubscription.response)
   const tags = computed(() => flowRun.value?.tags ?? [])

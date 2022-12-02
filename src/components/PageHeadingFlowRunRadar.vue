@@ -21,26 +21,24 @@
   import { PIconButtonMenu } from '@prefecthq/prefect-design'
   import { computed } from 'vue'
   import { PageHeading, CopyOverflowMenuItem, ConfirmDeleteModal } from '@/components'
-  import { useWorkspaceApi } from '@/compositions'
+  import { useWorkspaceApi, useWorkspaceRoutes } from '@/compositions'
   import { useCan } from '@/compositions/useCan'
   import { useShowModal } from '@/compositions/useShowModal'
   import { FlowRun } from '@/models'
-  import { flowRunRouteKey, flowRunsRouteKey } from '@/router'
-  import { deleteItem, inject } from '@/utilities'
+  import { deleteItem } from '@/utilities'
+
   const props = defineProps<{
     flowRun: FlowRun,
   }>()
 
   const can = useCan()
   const api = useWorkspaceApi()
+  const routes = useWorkspaceRoutes()
   const { showModal, open } = useShowModal()
 
-  const flowRunsRoute = inject(flowRunsRouteKey)
-  const flowRunRoute = inject(flowRunRouteKey)
-
   const crumbs = computed(() => [
-    { text: 'Flow Runs', to: flowRunsRoute() },
-    { text: props.flowRun.name ?? '', to: flowRunRoute(props.flowRun.id) },
+    { text: 'Flow Runs', to: routes.flowRuns() },
+    { text: props.flowRun.name ?? '', to: routes.flowRun(props.flowRun.id) },
     { text: 'Radar' },
   ])
 

@@ -1,7 +1,7 @@
 <template>
   <p-icon-button-menu v-bind="$attrs">
     <copy-overflow-menu-item label="Copy ID" :item="workQueue.id" />
-    <router-link v-if="can.update.work_queue && !workQueue.deprecated" :to="editQueueRoute(workQueue.id)">
+    <router-link v-if="can.update.work_queue && !workQueue.deprecated" :to="routes.workQueueEdit(workQueue.id)">
       <p-overflow-menu-item label="Edit" />
     </router-link>
     <p-overflow-menu-item v-if="can.delete.work_queue" label="Delete" @click="open" />
@@ -28,12 +28,11 @@
   import { RouterLink } from 'vue-router'
   import ConfirmDeleteModal from '@/components/ConfirmDeleteModal.vue'
   import CopyOverflowMenuItem from '@/components/CopyOverflowMenuItem.vue'
-  import { useWorkspaceApi } from '@/compositions'
+  import { useWorkspaceApi, useWorkspaceRoutes } from '@/compositions'
   import { useCan } from '@/compositions/useCan'
   import { useShowModal } from '@/compositions/useShowModal'
   import { WorkQueue } from '@/models'
-  import { editQueueRouteKey } from '@/router'
-  import { inject, deleteItem } from '@/utilities'
+  import { deleteItem } from '@/utilities'
 
   defineProps<{
     workQueue: WorkQueue,
@@ -44,10 +43,9 @@
   }>()
 
   const api = useWorkspaceApi()
-  const { showModal, open, close } = useShowModal()
-
-  const editQueueRoute = inject(editQueueRouteKey)
   const can = useCan()
+  const routes = useWorkspaceRoutes()
+  const { showModal, open, close } = useShowModal()
 
   const deleteWorkQueue = async (id: string): Promise<void> => {
     close()

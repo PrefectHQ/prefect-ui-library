@@ -53,7 +53,7 @@
 
     <p-divider />
 
-    <router-link :to="radarRoute(flowRun.id)" class="flow-run__small-radar-link">
+    <router-link :to="routes.flowRunRadar(flowRun.id)" class="flow-run__small-radar-link">
       <RadarSmall :flow-run-id="flowRun.id" class="flow-run__small-radar" />
     </router-link>
 
@@ -104,11 +104,9 @@
   import WorkQueueStatusIcon from './WorkQueueStatusIcon.vue'
   import  FlowRunIconText  from '@/components/FlowRunIconText.vue'
   import  WorkQueueIconText  from '@/components/WorkQueueIconText.vue'
-  import { useWorkspaceApi } from '@/compositions'
+  import { useWorkspaceApi, useWorkspaceRoutes } from '@/compositions'
   import { useCan } from '@/compositions/useCan'
   import { FlowRun } from '@/models/FlowRun'
-  import { radarRouteKey } from '@/router'
-  import { inject } from '@/utilities'
   import { formatDateTimeNumeric } from '@/utilities/dates'
 
   const api = useWorkspaceApi()
@@ -119,6 +117,7 @@
   }>()
 
   const can = useCan()
+  const routes = useWorkspaceRoutes()
   const flowRunFilter = computed<Parameters<typeof api.flowRuns.getFlowRuns> | null>(() => {
     if (props.flowRun.parentTaskRunId) {
       return [
@@ -144,8 +143,6 @@
     const [value] = parentFlowRunList.value
     return value.id
   })
-
-  const radarRoute = inject(radarRouteKey)
 </script>
 
 <style>

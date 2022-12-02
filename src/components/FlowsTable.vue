@@ -23,7 +23,7 @@
       </template>
 
       <template #name="{ row }">
-        <p-link :to="flowRoute(row.id)">
+        <p-link :to="routes.flow(row.id)">
           <span>{{ row.name }}</span>
         </p-link>
       </template>
@@ -71,13 +71,9 @@
   import { useSubscription } from '@prefecthq/vue-compositions'
   import { computed, ref } from 'vue'
   import { DeleteFlowsButton, DeploymentsCount, ResultsCount, SearchInput, FlowActivityChart, FlowMenu, SelectedCount } from '@/components'
-  import { useCan, UseFlowFilterArgs, useFlowFilterFromRoute, useWorkspaceApi } from '@/compositions'
-  import { flowRouteKey } from '@/router'
+  import { useCan, UseFlowFilterArgs, useFlowFilterFromRoute, useWorkspaceApi, useWorkspaceRoutes } from '@/compositions'
   import { flowSortOptions } from '@/types/SortOptionTypes'
-  import { inject } from '@/utilities'
   import { formatDateTimeNumeric } from '@/utilities/dates'
-
-  const flowRoute = inject(flowRouteKey)
 
   const props = defineProps<{
     filter?: UseFlowFilterArgs,
@@ -85,6 +81,7 @@
 
   const api = useWorkspaceApi()
   const can = useCan()
+  const routes = useWorkspaceRoutes()
   const filter = computed(() => props.filter ?? {})
   const { name, sort, filter: unionFilter } = useFlowFilterFromRoute(filter)
 

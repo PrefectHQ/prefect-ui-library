@@ -3,12 +3,22 @@ import { RouteRecordRaw, createRouter, createWebHistory } from 'vue-router'
 import { sections } from '../sections'
 import { close } from './menu'
 import { convertSectionToRouteRecords } from './routeRecords'
+import { createWorkspaceRouteRecords } from '@/router'
 
-export const routeRecords: RouteRecordRaw[] = [
+const welcomePage = () => import('../sections/WelcomePage.vue')
+
+const workspaceRecords = createWorkspaceRouteRecords(new Proxy({}, {
+  get() {
+    return welcomePage
+  },
+}))
+
+export const routeRecords = [
   {
     name: 'home',
     path: '/',
-    component: () => import('../sections/WelcomePage.vue'),
+    component: welcomePage,
+    children: workspaceRecords,
   },
   ...convertSectionToRouteRecords(sections),
   {
@@ -16,7 +26,7 @@ export const routeRecords: RouteRecordRaw[] = [
     path: '/timezone-support',
     component: () => import('../sections/TimezoneSupport.vue'),
   },
-]
+] as RouteRecordRaw[]
 
 export const router = createRouter({
   history: createWebHistory(),

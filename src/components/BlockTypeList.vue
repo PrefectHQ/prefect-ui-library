@@ -10,7 +10,7 @@
       <template v-for="blockType in filteredBlockTypes" :key="blockType.id">
         <BlockTypeCardPreview :block-type="blockType">
           <template #actions>
-            <p-link :to="blockCatalogCreateRoute(blockType.slug)">
+            <p-link :to="routes.blockCreate(blockType.slug)">
               <p-button inset class="block-type-list__add">
                 Add <p-icon icon="PlusIcon" />
               </p-button>
@@ -40,9 +40,8 @@
   import BlockSchemaCapabilitySelect from '@/components/BlockSchemaCapabilitySelect.vue'
   import BlockTypeCardPreview from '@/components/BlockTypeCardPreview.vue'
   import SearchInput from '@/components/SearchInput.vue'
+  import { useWorkspaceRoutes } from '@/compositions'
   import { BlockType } from '@/models/BlockType'
-  import { blockCatalogCreateRouteKey } from '@/router/routes'
-  import { inject } from '@/utilities/inject'
 
   const props = defineProps<{
     blockTypes: BlockType[],
@@ -53,7 +52,7 @@
     (event: 'update:capability', value: string | null): void,
   }>()
 
-  const blockCatalogCreateRoute = inject(blockCatalogCreateRouteKey)
+  const routes = useWorkspaceRoutes()
 
   const searchTerm = ref('')
   const selectedCapability = computed({

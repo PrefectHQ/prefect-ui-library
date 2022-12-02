@@ -6,22 +6,19 @@
   import { BreadCrumbs } from '@prefecthq/prefect-design'
   import { computed } from 'vue'
   import PageHeading from '@/components/PageHeading.vue'
+  import { useWorkspaceRoutes } from '@/compositions'
   import { BlockType } from '@/models/BlockType'
-  import { blocksRouteKey, blockCatalogRouteKey, blockCatalogViewRouteKey } from '@/router/routes'
-  import { inject } from '@/utilities'
 
   const props = defineProps<{
     blockType: BlockType,
   }>()
 
-  const blocksRoute = inject(blocksRouteKey)
-  const blockCatalogViewRoute = inject(blockCatalogViewRouteKey)
-  const blockCatalogRoute = inject(blockCatalogRouteKey)
+  const routes = useWorkspaceRoutes()
 
   const crumbs = computed<BreadCrumbs>(() => [
-    { text: 'Blocks', to: blocksRoute() },
-    { text: 'Choose a Block', to: blockCatalogRoute() },
-    { text: props.blockType.name, to: blockCatalogViewRoute(props.blockType.slug) },
+    { text: 'Blocks', to: routes.blocks() },
+    { text: 'Choose a Block', to: routes.blocksCatalog() },
+    { text: props.blockType.name, to: routes.blocksCatalogView(props.blockType.slug) },
     { text: 'Create' },
   ])
 </script>

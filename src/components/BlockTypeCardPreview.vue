@@ -2,7 +2,7 @@
   <p-card class="block-type-card-preview">
     <BlockTypeLogo :block-type="blockType" class="block-type-card-preview__logo" />
     <p class="block-type-card-preview__name">
-      <p-link :to="blockCatalogViewRoute(blockType.slug)">
+      <p-link :to="routes.blocksCatalogView(blockType.slug)">
         {{ blockType.name }}
       </p-link>
     </p>
@@ -30,18 +30,16 @@
   import { computed, useSlots } from 'vue'
   import BlockSchemaCapabilities from './BlockSchemaCapabilities.vue'
   import BlockTypeLogo from '@/components/BlockTypeLogo.vue'
-  import { useWorkspaceApi } from '@/compositions/useWorkspaceApi'
+  import { useWorkspaceApi, useWorkspaceRoutes } from '@/compositions'
   import { BlockType } from '@/models/BlockType'
-  import { blockCatalogViewRouteKey } from '@/router'
-  import { inject } from '@/utilities/inject'
 
   const props = defineProps<{
     blockType: BlockType,
   }>()
 
   const slots = useSlots()
-  const blockCatalogViewRoute = inject(blockCatalogViewRouteKey)
   const api = useWorkspaceApi()
+  const routes = useWorkspaceRoutes()
 
   const blockTypeId = computed(() => props.blockType.id)
   const blockSchemaSubscription = useSubscription(api.blockSchemas.getBlockSchemaForBlockType, [blockTypeId])
