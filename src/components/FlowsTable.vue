@@ -56,7 +56,7 @@
             No flows
           </template>
           <template #actions>
-            <p-button v-if="showClearButton" size="sm" secondary @click="clear">
+            <p-button size="sm" secondary @click="clear">
               Clear Filters
             </p-button>
           </template>
