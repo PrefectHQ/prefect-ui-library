@@ -57,7 +57,7 @@
   })
 
   const canCancel = computed(()=> {
-    if (!can.update.flow_run || !props.flowRun.stateType || parentFlowRunId.value) {
+    if (!can.update.flow_run || !props.flowRun.stateType || parentFlowRunId.value || !props.flowRun.deploymentId) {
       return false
     }
     return isStuckStateType(props.flowRun.stateType)
