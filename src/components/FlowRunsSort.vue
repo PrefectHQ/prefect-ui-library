@@ -25,8 +25,8 @@
   })
 
   const flowRunSortOptions: FlowRunSortOptions = [
-    { label: 'Newest to oldest', value: 'EXPECTED_START_TIME_DESC' },
-    { label: 'Oldest to newest', value: 'EXPECTED_START_TIME_ASC' },
+    { label: 'Newest to oldest', value: 'START_TIME_DESC' },
+    { label: 'Oldest to newest', value: 'START_TIME_ASC' },
     { label: 'A to Z', value: 'NAME_ASC' },
     { label: 'Z to A', value: 'NAME_DESC' },
   ]

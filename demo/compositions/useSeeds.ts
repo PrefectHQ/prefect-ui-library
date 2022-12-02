@@ -1,12 +1,13 @@
 import { onUnmounted } from 'vue'
 import { data } from '../utilities/data'
-import { Flow, FlowRun, Deployment, WorkQueue, TaskRun, BlockDocument, BlockType, BlockSchema } from '@/models'
+import { Flow, FlowRun, Deployment, WorkQueue, TaskRun, BlockDocument, BlockType, BlockSchema, ConcurrencyLimit } from '@/models'
 
 type Seeds = {
   blockDocuments?: BlockDocument[],
   blockSchemaCapabilities?: string[],
   blockSchemas?: BlockSchema[],
   blockTypes?: BlockType[],
+  concurrencyLimit?: ConcurrencyLimit[],
   deployments?: Deployment[],
   flowRuns?: FlowRun[],
   flows?: Flow[],
@@ -83,5 +84,12 @@ export function useSeeds(seed: Seeds): void {
     const blockSchemaCapabilities = data.blockSchemaCapabilities.createAll(seed.blockSchemaCapabilities)
 
     onUnmounted(() => data.blockSchemaCapabilities.deleteAll(blockSchemaCapabilities))
+  }
+
+  if (seed.concurrencyLimit) {
+    const concurrencyLimits = data.concurrencyLimits.createAll(seed.concurrencyLimit)
+    const ids = concurrencyLimits.map(concurrencyLimit => concurrencyLimit.id)
+
+    onUnmounted(() => data.concurrencyLimits.deleteAll(ids))
   }
 }

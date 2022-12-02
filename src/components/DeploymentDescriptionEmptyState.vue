@@ -5,7 +5,7 @@
     </template>
 
     <template #heading>
-      You haven't added a description to this deployment yet
+      Add deployment description
     </template>
 
     <template #description>
@@ -17,7 +17,7 @@
       <DocumentationButton topic="deployments" />
       <router-link v-if="can.update.deployment" :to="routes.deploymentEdit(deployment.id)">
         <p-button>
-          Add description
+          Add Description
         </p-button>
       </router-link>
     </template>

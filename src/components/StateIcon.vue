@@ -17,6 +17,10 @@
   })
 
   const icon = computed(() => {
+    if (props.stateType === 'paused') {
+      return 'Pending'
+    }
+
     return capitalize(props.stateType ?? 'QuestionMarkCircleIcon')
   })
 

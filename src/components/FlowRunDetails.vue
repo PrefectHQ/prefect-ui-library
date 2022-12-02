@@ -26,6 +26,12 @@
       </template>
     </p-key-value>
 
+    <p-key-value label="State Message" :alternate="alternate">
+      <template v-if="flowRun.state?.message" #value>
+        <p-text-truncate :text="flowRun.state?.message" />
+      </template>
+    </p-key-value>
+
     <template v-if="can.read.work_queue && flowRun.workQueueName">
       <p-key-value label="Work Queue" :alternate="alternate">
         <template #value>
@@ -86,7 +92,7 @@
 </template>
 
 <script lang="ts" setup>
-  import { PKeyValue, PTags } from '@prefecthq/prefect-design'
+  import { PKeyValue, PTags, PTextTruncate } from '@prefecthq/prefect-design'
   import { useSubscriptionWithDependencies } from '@prefecthq/vue-compositions'
   import { computed } from 'vue'
   import DeploymentIconText from './DeploymentIconText.vue'
@@ -129,6 +135,7 @@
 
   const parentFlowRunListSubscription = useSubscriptionWithDependencies(api.flowRuns.getFlowRuns, flowRunFilter)
   const parentFlowRunList = computed(() => parentFlowRunListSubscription.response ?? [])
+
   const parentFlowRunId = computed(() => {
     if (!parentFlowRunList.value.length) {
       return

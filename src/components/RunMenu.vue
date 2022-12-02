@@ -43,8 +43,8 @@
   const router = useRouter()
   const routes = useWorkspaceRoutes()
 
-  const popOver = ref<typeof PPopOver>()
-  const runButton = ref<typeof PButton>()
+  const popOver = ref<InstanceType<typeof PPopOver>>()
+  const runButton = ref<InstanceType<typeof PButton>>()
   const loading = ref(false)
   const placement = [positions.bottomRight, positions.bottomLeft, positions.topRight, positions.topLeft]
 
@@ -57,7 +57,7 @@
   function esc(): void {
     close()
 
-    if (runButton.value) {
+    if (runButton.value?.el) {
       runButton.value.el.focus()
     }
   }

@@ -52,6 +52,17 @@ body {
   --state-pending-800: #554B58;
   --state-pending-900: #38313A;
 
+  --state-paused-50: #FFFFFF;
+  --state-paused-100: #F8F7F8;
+  --state-paused-200: #E4E1E5;
+  --state-paused-300: #D0CBD2;
+  --state-paused-400: #BDB5C0;
+  --state-paused-500: #A99FAD;
+  --state-paused-600: #8E8093;
+  --state-paused-700: #726576;
+  --state-paused-800: #554B58;
+  --state-paused-900: #38313A;
+
   --state-scheduled-50: #FCFFEC;
   --state-scheduled-100: #FBFEDA;
   --state-scheduled-200: #FEFEB7;
@@ -131,6 +142,17 @@ body {
   --state-pending-800: #554B58;
   --state-pending-900: #38313A;
 
+  --state-paused-50: #FFFFFF;
+  --state-paused-100: #F8F7F8;
+  --state-paused-200: #E4E1E5;
+  --state-paused-300: #D0CBD2;
+  --state-paused-400: #BDB5C0;
+  --state-paused-500: #A99FAD;
+  --state-paused-600: #8E8093;
+  --state-paused-700: #726576;
+  --state-paused-800: #554B58;
+  --state-paused-900: #38313A;
+
   --state-scheduled-50:  #FFFBF0;
   --state-scheduled-100: #FEF4D7;
   --state-scheduled-200: #FDE7A5;
@@ -198,6 +220,17 @@ body {
   --state-pending-700: #32457E;
   --state-pending-800: #212D52;
   --state-pending-900: #0F1526;
+
+  --state-paused-50: #FBFCFE;
+  --state-paused-100: #F6F7FB;
+  --state-paused-200: #EBEEF7;
+  --state-paused-300: #BFC9E6;
+  --state-paused-400: #94A4D4;
+  --state-paused-500: #687FC3;
+  --state-paused-600: #445DA9;
+  --state-paused-700: #32457E;
+  --state-paused-800: #212D52;
+  --state-paused-900: #0F1526;
 
   --state-scheduled-50: #FFFAEC;
   --state-scheduled-100: #FEF5DA;
@@ -267,6 +300,17 @@ body {
   --state-pending-800: #554B58;
   --state-pending-900: #38313A;
 
+  --state-paused-50: #FFFFFF;
+  --state-paused-100: #F8F7F8;
+  --state-paused-200: #E4E1E5;
+  --state-paused-300: #D0CBD2;
+  --state-paused-400: #BDB5C0;
+  --state-paused-500: #A99FAD;
+  --state-paused-600: #8E8093;
+  --state-paused-700: #726576;
+  --state-paused-800: #554B58;
+  --state-paused-900: #38313A;
+
   --state-scheduled-50: #FFFFFC;
   --state-scheduled-100: #FEFFE0;
   --state-scheduled-200: #FFFEA8;
@@ -334,6 +378,17 @@ body {
   --state-pending-700: #726576;
   --state-pending-800: #554B58;
   --state-pending-900: #38313A;
+
+  --state-paused-50: #FFFFFF;
+  --state-paused-100: #F8F7F8;
+  --state-paused-200: #E4E1E5;
+  --state-paused-300: #D0CBD2;
+  --state-paused-400: #BDB5C0;
+  --state-paused-500: #A99FAD;
+  --state-paused-600: #8E8093;
+  --state-paused-700: #726576;
+  --state-paused-800: #554B58;
+  --state-paused-900: #38313A;
 
   --state-scheduled-50:  #FFFFFC;
   --state-scheduled-100: #FDFFE0;
@@ -403,6 +458,17 @@ body {
   --state-pending-800: #554B58;
   --state-pending-900: #38313A;
 
+  --state-paused-50: #FFFFFF;
+  --state-paused-100: #F8F7F8;
+  --state-paused-200: #E4E1E5;
+  --state-paused-300: #D0CBD2;
+  --state-paused-400: #BDB5C0;
+  --state-paused-500: #A99FAD;
+  --state-paused-600: #8E8093;
+  --state-paused-700: #726576;
+  --state-paused-800: #554B58;
+  --state-paused-900: #38313A;
+
   --state-scheduled-50:  #FFFFFC;
   --state-scheduled-100: #FDFFE0;
   --state-scheduled-200: #FDFFA8;
@@ -471,6 +537,17 @@ body {
   --state-pending-800: #1A3241;
   --state-pending-900: #070E12;
 
+  --state-paused-50:  #FFFFFF;
+  --state-paused-100: #FBFBFD;
+  --state-paused-200: #F0F2F9;
+  --state-paused-300: #C1CBE6;
+  --state-paused-400: #91A9D3;
+  --state-paused-500: #628AC0;
+  --state-paused-600: #406FA0;
+  --state-paused-700: #2D5271;
+  --state-paused-800: #1A3241;
+  --state-paused-900: #070E12;
+
   --state-scheduled-50:  #FFF2EF;
   --state-scheduled-100: #FFEDE7;
   --state-scheduled-200: #FFE5D8;
@@ -538,6 +615,17 @@ body {
   --state-pending-700: #2D5271;
   --state-pending-800: #1A3241;
   --state-pending-900: #070E12;
+
+  --state-paused-50:  #FFFFFF;
+  --state-paused-100: #FBFBFD;
+  --state-paused-200: #F0F2F9;
+  --state-paused-300: #C1CBE6;
+  --state-paused-400: #91A9D3;
+  --state-paused-500: #628AC0;
+  --state-paused-600: #406FA0;
+  --state-paused-700: #2D5271;
+  --state-paused-800: #1A3241;
+  --state-paused-900: #070E12;
 
   --state-scheduled-50:  #FFFEF8;
   --state-scheduled-100: #FFF9E3;
