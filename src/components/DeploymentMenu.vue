@@ -4,7 +4,7 @@
 
     <copy-overflow-menu-item label="Copy ID" :item="deployment.id" />
 
-    <router-link v-if="!deployment.deprecated && can.update.deployment" :to="editDeploymentRoute(deployment.id)">
+    <router-link v-if="!deployment.deprecated && can.update.deployment" :to="routes.deploymentEdit(deployment.id)">
       <p-overflow-menu-item label="Edit" />
     </router-link>
 
@@ -33,12 +33,11 @@
 <script lang="ts" setup>
   import ConfirmDeleteModal from '@/components/ConfirmDeleteModal.vue'
   import CopyOverflowMenuItem from '@/components/CopyOverflowMenuItem.vue'
-  import { useWorkspaceApi } from '@/compositions'
+  import { useWorkspaceApi, useWorkspaceRoutes } from '@/compositions'
   import { useCan } from '@/compositions/useCan'
   import { useShowModal } from '@/compositions/useShowModal'
   import { Deployment } from '@/models'
-  import { editDeploymentRouteKey } from '@/router'
-  import { inject, deleteItem } from '@/utilities'
+  import { deleteItem } from '@/utilities'
 
   defineProps<{
     deployment: Deployment,
@@ -53,7 +52,7 @@
   const { showModal, open, close } = useShowModal()
 
   const api = useWorkspaceApi()
-  const editDeploymentRoute = inject(editDeploymentRouteKey)
+  const routes = useWorkspaceRoutes()
 
   const deleteDeployment = async (id: string): Promise<void> => {
     close()

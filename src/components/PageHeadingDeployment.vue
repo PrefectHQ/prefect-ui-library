@@ -10,7 +10,7 @@
       <DeploymentMenu :deployment="deployment" @delete="handleDelete">
         <template v-if="can.run.deployment" #additional-items>
           <div class="page-heading-deployment__run-menu-item">
-            <router-link :to="flowRunCreateRoute(deployment.id)">
+            <router-link :to="routes.deploymentFlowRunCreate(deployment.id)">
               <p-overflow-menu-item>
                 Run
               </p-overflow-menu-item>
@@ -29,10 +29,9 @@
   import DeploymentToggle from '@/components/DeploymentToggle.vue'
   import PageHeading from '@/components/PageHeading.vue'
   import RunMenu from '@/components/RunMenu.vue'
+  import { useWorkspaceRoutes } from '@/compositions'
   import { useCan } from '@/compositions/useCan'
   import { Deployment } from '@/models'
-  import { deploymentsRouteKey, flowRunCreateRouteKey } from '@/router'
-  import { inject } from '@/utilities'
 
   const props = defineProps<{
     deployment: Deployment,
@@ -40,11 +39,10 @@
 
   const can = useCan()
   const router = useRouter()
-  const deploymentsRoute = inject(deploymentsRouteKey)
-  const flowRunCreateRoute = inject(flowRunCreateRouteKey)
+  const routes = useWorkspaceRoutes()
 
   const crumbs = computed(() => [
-    { text: 'Deployments', to: deploymentsRoute() },
+    { text: 'Deployments', to: routes.deployments() },
     { text: props.deployment.name },
   ])
 

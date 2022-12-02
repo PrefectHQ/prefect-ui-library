@@ -17,7 +17,7 @@
 
     <template #actions>
       <DocumentationButton topic="workQueues" />
-      <router-link v-if="can.create.work_queue" :to="workQueueCreateRoute()">
+      <router-link v-if="can.create.work_queue" :to="routes.workQueueCreate()">
         <p-button>
           Create Work Queue
           <p-icon icon="PlusIcon" class="empty-work-queue--link-icon" />
@@ -31,12 +31,11 @@
   import { PEmptyState, PButton, PIcon } from '@prefecthq/prefect-design'
   import { RouterLink } from 'vue-router'
   import DocumentationButton from './DocumentationButton.vue'
+  import { useWorkspaceRoutes } from '@/compositions'
   import { useCan } from '@/compositions/useCan'
-  import { workQueueCreateRouteKey } from '@/router'
-  import { inject } from '@/utilities'
 
-  const workQueueCreateRoute = inject(workQueueCreateRouteKey)
   const can = useCan()
+  const routes = useWorkspaceRoutes()
 </script>
 
 <style>

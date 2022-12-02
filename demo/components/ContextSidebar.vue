@@ -38,7 +38,7 @@
   import { routeRecordsFlat } from '@/demo/router/routeRecordsFlat'
 
   function getComponentForRecord(record: RouteRecordRaw): typeof PContextAccordionItem | typeof PContextNavItem {
-    if (record.children) {
+    if (record.children && record.name !== 'home') {
       return PContextAccordionItem
     }
 
@@ -48,7 +48,7 @@
   function getContextProps(record: RouteRecordRaw): { title: string, children: ContextAccordionChildItem[] } | { title: string, to: RouteLocationRaw } {
     const title = record.name?.toString() ?? ''
 
-    if (!record.children) {
+    if (!record.children || record.name === 'home') {
       const to = { name: record.name }
       return {
         title,

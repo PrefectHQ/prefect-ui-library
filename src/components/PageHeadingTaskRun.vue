@@ -33,12 +33,11 @@
   import { useSubscription, useSubscriptionWithDependencies } from '@prefecthq/vue-compositions'
   import { computed, ref } from 'vue'
   import { StateBadge, PageHeading, CopyOverflowMenuItem, ConfirmDeleteModal, ConfirmStateChangeModal } from '@/components'
-  import { useWorkspaceApi } from '@/compositions'
+  import { useWorkspaceApi, useWorkspaceRoutes } from '@/compositions'
   import { useCan } from '@/compositions/useCan'
   import { localization } from '@/localization'
   import { isTerminalStateType, StateUpdateDetails } from '@/models'
-  import { flowRunRouteKey } from '@/router'
-  import { deleteItem, inject } from '@/utilities'
+  import { deleteItem } from '@/utilities'
 
   const props = defineProps<{
     taskRunId: string,
@@ -46,7 +45,7 @@
 
   const can = useCan()
   const api = useWorkspaceApi()
-  const flowRunRoute = inject(flowRunRouteKey)
+  const routes = useWorkspaceRoutes()
   const taskRunSubscription =  useSubscription(api.taskRuns.getTaskRun, [props.taskRunId])
   const taskRun = computed(() => taskRunSubscription.response)
 
@@ -56,7 +55,7 @@
   const flowRunName = computed(() => flowRunSubscription.response?.name)
 
   const crumbs = computed(() => [
-    { text: flowRunName.value ?? '', to: flowRunRoute(flowRunId.value!) },
+    { text: flowRunName.value ?? '', to: routes.flowRun(flowRunId.value!) },
     { text: taskRun.value?.name ?? '' },
   ])
 

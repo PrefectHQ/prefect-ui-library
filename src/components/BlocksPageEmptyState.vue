@@ -14,7 +14,7 @@
 
     <template #actions>
       <DocumentationButton topic="blocks" />
-      <router-link v-if="can.create.block" :to="blockCatalogRoute()">
+      <router-link v-if="can.create.block" :to="routes.blocksCatalog()">
         <p-button>
           Add Block
           <p-icon icon="PlusIcon" class="empty-work-queue--link-icon" />
@@ -27,10 +27,9 @@
 <script lang="ts" setup>
   import { PEmptyState, PButton, PIcon } from '@prefecthq/prefect-design'
   import DocumentationButton from './DocumentationButton.vue'
+  import { useWorkspaceRoutes } from '@/compositions'
   import { useCan } from '@/compositions/useCan'
-  import { blockCatalogRouteKey } from '@/router'
-  import { inject } from '@/utilities'
 
-  const blockCatalogRoute = inject(blockCatalogRouteKey)
   const can = useCan()
+  const routes = useWorkspaceRoutes()
 </script>

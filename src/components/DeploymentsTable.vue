@@ -16,7 +16,7 @@
     <p-table :data="deployments" :columns="columns" class="deployments-table">
       <template #name="{ row }">
         <FlowRouterLink :flow-id="row.flowId" after=" / " />
-        <p-link :to="deploymentRoute(row.id)">
+        <p-link :to="routes.deployment(row.id)">
           <span>{{ row.name }}</span>
         </p-link>
       </template>
@@ -70,19 +70,16 @@
   import DeploymentToggle from '@/components/DeploymentToggle.vue'
   import ResultsCount from '@/components/ResultsCount.vue'
   import SearchInput from '@/components/SearchInput.vue'
-  import { useWorkspaceApi } from '@/compositions'
+  import { useWorkspaceApi, useWorkspaceRoutes } from '@/compositions'
   import { UseDeploymentFilterArgs, useDeploymentFilterFromRoute } from '@/compositions/useDeploymentFilter'
-  import { deploymentRouteKey } from '@/router'
   import { deploymentSortOptions } from '@/types/SortOptionTypes'
-  import { inject } from '@/utilities'
-
-  const deploymentRoute = inject(deploymentRouteKey)
 
   const props = defineProps<{
     filter?: UseDeploymentFilterArgs,
   }>()
 
   const api = useWorkspaceApi()
+  const routes = useWorkspaceRoutes()
   const filter = computed(() => props.filter ?? {})
   const { flows, name, sort, tags, hasFilters, clearFilters, filter: unionFilter } = useDeploymentFilterFromRoute(filter)
 

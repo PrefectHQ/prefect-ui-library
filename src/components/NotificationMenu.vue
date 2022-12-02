@@ -1,7 +1,7 @@
 <template>
   <p-icon-button-menu>
     <p-overflow-menu-item v-if="false" label="Send Test" />
-    <router-link v-if="can.update.notification_policy" :to="editNotificationRoute(notification.id)">
+    <router-link v-if="can.update.notification_policy" :to="routes.notificationEdit(notification.id)">
       <p-overflow-menu-item label="Edit" />
     </router-link>
     <p-overflow-menu-item v-if="can.delete.notification_policy" label="Delete" @click="open" />
@@ -28,12 +28,11 @@
 
 <script lang="ts" setup>
   import ConfirmDeleteModal from '@/components/ConfirmDeleteModal.vue'
-  import { useWorkspaceApi } from '@/compositions'
+  import { useWorkspaceApi, useWorkspaceRoutes } from '@/compositions'
   import { useCan } from '@/compositions/useCan'
   import { useShowModal } from '@/compositions/useShowModal'
   import { Notification } from '@/models'
-  import { editNotificationRouteKey } from '@/router'
-  import { inject, deleteItem } from '@/utilities'
+  import { deleteItem } from '@/utilities'
 
   defineProps<{
     notification: Notification,
@@ -45,10 +44,9 @@
 
   const can = useCan()
   const api = useWorkspaceApi()
+  const routes = useWorkspaceRoutes()
 
   const { showModal, open, close } = useShowModal()
-
-  const editNotificationRoute = inject(editNotificationRouteKey)
 
   const deleteNotification = async (id: string): Promise<void> => {
     close()

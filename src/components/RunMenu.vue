@@ -17,7 +17,7 @@
       <p-overflow-menu-item class="run-menu__overflow-menu-item" @click="run">
         Now with defaults
       </p-overflow-menu-item>
-      <router-link :to="flowRunCreateRoute(deployment.id)">
+      <router-link :to="routes.deploymentFlowRunCreate(deployment.id)">
         <p-overflow-menu-item class="run-menu__overflow-menu-item">
           Custom
         </p-overflow-menu-item>
@@ -31,25 +31,21 @@
   import { ref, h } from 'vue'
   import { useRouter } from 'vue-router'
   import ToastFlowRunCreate from './ToastFlowRunCreate.vue'
-  import { useWorkspaceApi } from '@/compositions'
+  import { useWorkspaceApi, useWorkspaceRoutes } from '@/compositions'
   import { localization } from '@/localization'
   import { Deployment } from '@/models'
-  import { flowRunRouteKey, flowRunCreateRouteKey } from '@/router'
-  import { inject } from '@/utilities'
 
   const props = defineProps<{
     deployment: Deployment,
   }>()
 
   const api = useWorkspaceApi()
+  const router = useRouter()
+  const routes = useWorkspaceRoutes()
+
   const popOver = ref<InstanceType<typeof PPopOver>>()
   const runButton = ref<InstanceType<typeof PButton>>()
   const loading = ref(false)
-
-  const router = useRouter()
-  const flowRunRoute = inject(flowRunRouteKey)
-  const flowRunCreateRoute = inject(flowRunCreateRouteKey)
-
   const placement = [positions.bottomRight, positions.bottomLeft, positions.topRight, positions.topLeft]
 
   function close(): void {
@@ -76,7 +72,7 @@
           message: 'Run from the Prefect UI with defaults',
         },
       })
-      const toastMessage = h(ToastFlowRunCreate, { flowRun, flowRunRoute, router, immediate: true })
+      const toastMessage = h(ToastFlowRunCreate, { flowRun, flowRunRoute: routes.flowRun, router, immediate: true })
       showToast(toastMessage, 'success')
     } catch (error) {
       showToast(localization.error.scheduleFlowRun, 'error')
