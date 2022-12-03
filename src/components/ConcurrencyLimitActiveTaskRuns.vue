@@ -1,6 +1,6 @@
 <template>
   <template v-for="taskRunId in activeSlots" :key="taskRunId">
-    <TaskRunListItemWithApi v-if="taskRunId" :task-run-id="taskRunId" />
+    <TaskRunListItemWithApi v-if="taskRunId" :task-run-id="taskRunId" class="task-run-list-item" />
   </template>
 </template>
 
@@ -14,7 +14,8 @@
 
 
 <style>
-.task-run-list {
-  --virtual-scroller-item-gap: theme('spacing.2')
+.task-run-list-item {
+  @apply
+  mt-2
 }
 </style>
