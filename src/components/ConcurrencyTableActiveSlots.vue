@@ -9,11 +9,10 @@
 
   <script lang="ts" setup>
   import { computed } from 'vue'
-  import { ConcurrencyLimit } from '@/models'
 
   const props = defineProps<{
-    concurrencyLimit: ConcurrencyLimit,
+    activeSlots: string[],
   }>()
 
-  const taskRunCount = computed(()=> props.concurrencyLimit.activeSlots?.length)
+  const taskRunCount = computed(()=> props.activeSlots.length)
   </script>

@@ -6,7 +6,7 @@
       </p-link>
     </template>
     <template #active-task-runs="{ row }">
-      <ConcurrencyTableActiveSlots v-if="row.activeSlots" :concurrency-limit="row" />
+      <ConcurrencyTableActiveSlots v-if="row.activeSlots" :active-slots="row.activeSlots" />
     </template>
     <template #empty-state>
       <PEmptyResults>
