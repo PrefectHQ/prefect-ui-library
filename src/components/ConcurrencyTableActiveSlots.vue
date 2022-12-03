@@ -1,18 +1,25 @@
 <template>
   <template v-if="!taskRunCount">
-    None
+    <p-link :to="routes.concurrencyLimit(concurrencyLimit.id)">
+      None
+    </p-link>
   </template>
   <template v-else>
-    {{ taskRunCount }}
+    <p-link :to="routes.concurrencyLimit(concurrencyLimit.id)">
+      {{ taskRunCount }}
+    </p-link>
   </template>
 </template>
 
-<script lang="ts" setup>
+  <script lang="ts" setup>
   import { computed } from 'vue'
+  import { useWorkspaceRoutes } from '@/compositions'
+  import { ConcurrencyLimit } from '@/models'
 
   const props = defineProps<{
-    activeSlots: string[],
+    concurrencyLimit: ConcurrencyLimit,
   }>()
 
-  const taskRunCount = computed(()=> props.activeSlots.length)
-</script>
+  const taskRunCount = computed(()=> props.concurrencyLimit.activeSlots?.length)
+  const routes = useWorkspaceRoutes()
+  </script>
