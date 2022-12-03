@@ -4,11 +4,11 @@
 
     <p-divider />
 
-    <p-key-value label="Concurrency Limit ID" :value="concurrencyLimit.id" :alternate="alternate" />
-
     <p-key-value label="Concurrency Limit Count" :value="concurrencyLimit.concurrencyLimit" :alternate="alternate" />
 
-    <p-key-value label="Concurrency Limit Active Task Runs" :value="concurrencyLimit.activeSlots?.length" :alternate="alternate" />
+    <p-key-value label="Concurrency Limit Active Task Runs Count" :value="concurrencyLimit.activeSlots?.length" :alternate="alternate" />
+
+    <p-key-value label="Concurrency Limit ID" :value="concurrencyLimit.id" :alternate="alternate" />
 
     <p-key-value v-if="concurrencyLimit.created" label="Created" :value="formatDateTimeNumeric(concurrencyLimit.created)" :alternate="alternate" />
 
