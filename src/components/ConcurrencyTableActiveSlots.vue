@@ -7,7 +7,7 @@
   </template>
 </template>
 
-  <script lang="ts" setup>
+<script lang="ts" setup>
   import { computed } from 'vue'
 
   const props = defineProps<{
@@ -15,4 +15,4 @@
   }>()
 
   const taskRunCount = computed(()=> props.activeSlots.length)
-  </script>
+</script>
