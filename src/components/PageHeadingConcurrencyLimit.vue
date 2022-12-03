@@ -30,15 +30,3 @@
     router.back()
   }
 </script>
-
-<style>
-.page-heading-deployment__run-menu { @apply
-  hidden
-  sm:block
-}
-
-.page-heading-deployment__run-menu-item { @apply
-  block
-  sm:hidden
-}
-</style>
