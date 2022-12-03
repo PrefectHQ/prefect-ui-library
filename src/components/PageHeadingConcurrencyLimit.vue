@@ -9,7 +9,7 @@
 <script lang="ts" setup>
   import { computed } from 'vue'
   import { useRouter } from 'vue-router'
-  import ConcurrencyLimitMenu from '@/components/DeploymentMenu.vue'
+  import ConcurrencyLimitMenu from '@/components/ConcurrencyLimitMenu.vue'
   import PageHeading from '@/components/PageHeading.vue'
   import { useWorkspaceRoutes } from '@/compositions'
   import { ConcurrencyLimit } from '@/models'

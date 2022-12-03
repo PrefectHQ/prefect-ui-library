@@ -34,6 +34,8 @@ export function createWorkspaceRoutes(config?: CreateWorkspaceRoutesConfig) {
     notifications: () => ({ name: 'workspace.notifications', params: { ...config } }) as const,
     notificationCreate: () => ({ name: 'workspace.notifications.create', params: { ...config } }) as const,
     notificationEdit: (notificationId: string) => ({ name: 'workspace.notifications.notification-edit', params: { notificationId, ...config } }) as const,
+    concurrencyLimits: () => ({ name: 'workspaceRoutesKey.concurrencyLimits', params: { ...config } }) as const,
+    concurrencyLimit: (concurrencyLimitId: string) => ({ name: 'workspaceRoutesKey.concurrencyLimits.concurrencyLimit', params: { concurrencyLimitId, ...config } }) as const,
   }
 }
 
@@ -243,6 +245,24 @@ export function createWorkspaceRouteRecords(components: Partial<WorkspaceRouteCo
           meta: {
             can: 'update:notification_policy',
           },
+        },
+      ],
+    },
+    {
+      path: 'concurrency-limits',
+      meta: {
+        can: 'read:concurrency_limit',
+      },
+      children: [
+        {
+          name: 'workspace.concurrency-limits',
+          path: '',
+          component: components.concurrencyLimits,
+        },
+        {
+          name: 'workspace.concurrency-limits.concurrency-limit',
+          path: 'concurrency-limit/:concurrencyLimitId',
+          component: components.concurrencyLimit,
         },
       ],
     },
