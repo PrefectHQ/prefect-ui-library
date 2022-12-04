@@ -5,7 +5,7 @@
       <SearchInput v-model="name" placeholder="Search flows" label="Search flows" />
 
       <p-select v-model="sort" :options="flowSortOptions" />
-      <p-tags-input v-model="tags" empty-message="All tags" class="flows-table__tags" />
+      <p-tags-input v-model="taskRunTags" empty-message="All tags" class="flows-table__tags" />
     </div>
 
     <p-table :data="flows" :columns="columns">
@@ -73,7 +73,7 @@
   const api = useWorkspaceApi()
   const routes = useWorkspaceRoutes()
   const filter = computed(() => props.filter ?? {})
-  const { name, sort, tags, filter: unionFilter } = useFlowFilterFromRoute(filter)
+  const { name, sort, taskRunTags, filter: unionFilter } = useFlowFilterFromRoute(filter)
 
   const columns = [
     {
