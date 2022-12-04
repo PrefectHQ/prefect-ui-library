@@ -18,7 +18,12 @@
         </template>
       </div>
     </template>
-    <p-terminal :command="command" class="code-banner__terminal" />
+
+    <p-terminal
+      :command="command"
+      :pre-command="preCommand"
+      class="code-banner__terminal"
+    />
   </div>
 </template>
 
@@ -29,6 +34,7 @@
     title?: string,
     subtitle?: string,
     command: string,
+    preCommand?: string,
   }>()
 
   const slots = useSlots()
