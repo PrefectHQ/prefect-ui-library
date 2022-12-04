@@ -14,6 +14,7 @@ export type UseFlowFilterFromRoute = {
   name: Ref<string>,
   sort: Ref<FlowSortValues>,
   filter: ComputedRef<UnionFilters>,
+  tags: Ref<string[]>,
 }
 
 export function useFlowFilterFromRoute(filter?: MaybeRef<UseFlowFilterArgs>): UseFlowFilterFromRoute {
@@ -21,6 +22,7 @@ export function useFlowFilterFromRoute(filter?: MaybeRef<UseFlowFilterArgs>): Us
   const name = useRouteQueryParam('flow-name', '')
   const nameDebounced = useDebouncedRef(name, 500)
   const sort = useRouteQueryParam('flow-sort', 'CREATED_DESC') as Ref<FlowSortValues>
+  const tags = useRouteQueryParam('flow-tags', [])
   const filtersRef = ref(filter)
 
   const flowFilter = computed<UseFlowFilterArgs>(() => {
@@ -34,10 +36,14 @@ export function useFlowFilterFromRoute(filter?: MaybeRef<UseFlowFilterArgs>): Us
       filter.deployments = deployments
     }
 
+    if (tags.value.length) {
+      filter.deploymentTags = tags
+      filter.tags = tags
+    }
+
     if (isFlowSortValue(sort)) {
       filter.sort = sort
     }
-
     return filter
   })
 
@@ -47,6 +53,7 @@ export function useFlowFilterFromRoute(filter?: MaybeRef<UseFlowFilterArgs>): Us
     deployments,
     name,
     sort,
+    tags,
     filter: unionFilter,
   }
 }
