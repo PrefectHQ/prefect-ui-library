@@ -86,7 +86,7 @@ export function useFilter(filters: MaybeRef<UseFilterArgs>): ComputedRef<UnionFi
       response.task_runs ??= {}
       response.task_runs.tags = {}
 
-      response.task_runs.tags.all_ = tags.value
+      response.task_runs.tags.all_ = taskRunTags.value
     }
 
     if (states.value?.length) {
