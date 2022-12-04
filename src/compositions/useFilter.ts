@@ -13,6 +13,7 @@ export type UseFilterArgs<T = FilterSortValues> = {
   deploymentName?: MaybeRef<string>,
   deploymentTags?: MaybeRef<string[]>,
   tags?: MaybeRef<string[]>,
+  taskRunTags?: MaybeRef<string[]>,
   states?: MaybeRef<string[]>,
   startDate?: MaybeRef<Date>,
   endDate?: MaybeRef<Date>,
@@ -30,6 +31,7 @@ export function useFilter(filters: MaybeRef<UseFilterArgs>): ComputedRef<UnionFi
     const deploymentName = ref(filtersRef.value.deploymentName)
     const deploymentTags = ref(filtersRef.value.deploymentTags)
     const tags = ref(filtersRef.value.tags)
+    const taskRunTags = ref(filtersRef.value.taskRunTags)
     const states = ref(filtersRef.value.states)
     const startDate = ref(filtersRef.value.startDate)
     const endDate = ref(filtersRef.value.endDate)
@@ -78,6 +80,13 @@ export function useFilter(filters: MaybeRef<UseFilterArgs>): ComputedRef<UnionFi
       response.flow_runs.tags ??= {}
 
       response.flow_runs.tags.all_ = tags.value
+    }
+
+    if (taskRunTags.value?.length) {
+      response.task_runs ??= {}
+      response.task_runs.tags = {}
+
+      response.task_runs.tags.all_ = tags.value
     }
 
     if (states.value?.length) {

@@ -37,8 +37,8 @@ export function useFlowFilterFromRoute(filter?: MaybeRef<UseFlowFilterArgs>): Us
     }
 
     if (tags.value.length) {
-      filter.deploymentTags = tags
-      filter.tags = tags
+      // filter.deploymentTags = tags
+      filter.taskRunTags = tags
     }
 
     if (isFlowSortValue(sort)) {
