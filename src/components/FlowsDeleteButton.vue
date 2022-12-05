@@ -1,5 +1,5 @@
 <template>
-  <Transition name="delete-flows-button-transition">
+  <Transition name="flows-delete-button-transition">
     <p-button v-if="selected.length > 0" danger icon="TrashIcon" @click="open" />
   </Transition>
   <ConfirmDeleteModal
@@ -52,13 +52,13 @@
 </script>
 
 <style>
-.delete-flows-button-transition-enter-active,
-.delete-flows-button-transition-leave-active {
+.flows-delete-button-transition-enter-active,
+.flows-delete-button-transition-leave-active {
   transition: opacity 0.25s ease;
 }
 
-.delete-flows-button-transition-enter-from,
-.delete-flows-button-transition-leave-to {
+.flows-delete-button-transition-enter-from,
+.flows-delete-button-transition-leave-to {
   opacity: 0;
 }
 </style>
