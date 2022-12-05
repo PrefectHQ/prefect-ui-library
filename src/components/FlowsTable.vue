@@ -141,14 +141,14 @@
   }
 
   const emit = defineEmits<{
-    (event: 'delete-all'): void,
+    (event: 'delete'): void,
   }>()
 
   const deleteFlows = (): void => {
     selectedFlows.value = []
     allFlowsSelected.value = false
     refresh()
-    emit('delete-all')
+    emit('delete')
   }
 </script>
 
