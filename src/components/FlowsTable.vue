@@ -8,7 +8,6 @@
         <FlowsDeleteButton v-if="can.delete.flow" :selected="selectedFlows" @delete="deleteFlows" />
       </div>
 
-
       <SearchInput v-model="name" placeholder="Search flows" label="Search flows" />
       <p-select v-model="sort" :options="flowSortOptions" />
     </div>

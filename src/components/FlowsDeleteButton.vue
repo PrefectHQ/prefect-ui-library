@@ -42,11 +42,11 @@
     try {
       const deleteFlows = flows.map(api.flows.deleteFlow)
       await Promise.all(deleteFlows)
-
-      showToast(toastMessage, 'success')
-      emit('delete')
     } catch (error) {
       showToast(localization.error.delete('flows'), 'error')
+    } finally {
+      showToast(toastMessage, 'success')
+      emit('delete')
     }
   }
 </script>
