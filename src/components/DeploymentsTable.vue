@@ -35,7 +35,7 @@
       </template>
 
       <template #schedule="{ row }">
-        <span :title="row.schedule?.toString({ verbose: true })">{{ row.schedule }}</span>
+        <span :title="row.schedule?.toString({ verbose: true })">{{ handleSchedule(row.schedule) }}</span>
       </template>
 
       <template #tags="{ row }">
@@ -81,6 +81,7 @@
 
   import { useWorkspaceApi, useWorkspaceRoutes, useCan } from '@/compositions'
   import { UseDeploymentFilterArgs, useDeploymentFilterFromRoute } from '@/compositions/useDeploymentFilter'
+  import { isRRuleSchedule, Schedule } from '@/models'
   import { deploymentSortOptions } from '@/types/SortOptionTypes'
 
   const props = defineProps<{
@@ -152,6 +153,13 @@
 
   const deploymentsCountSubscription = useSubscription(api.deployments.getDeploymentsCount, [unionFilter])
   const deploymentsCount = computed(() => deploymentsCountSubscription.response)
+
+  const handleSchedule = (schedule: Schedule| null): string => {
+    if (isRRuleSchedule(schedule)) {
+      return 'RRule'
+    }
+    return schedule?.toString() ?? ''
+  }
 
   function refresh(): void {
     deploymentsSubscription.refresh()
