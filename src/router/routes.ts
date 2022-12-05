@@ -74,7 +74,7 @@ export function createWorkspaceRouteRecords(components: Partial<WorkspaceRouteCo
         {
           name: 'workspace.flow-runs.flow-run-radar',
           path: 'flow-run/:flowRunId/radar',
-          component: components.flowRun,
+          component: components.flowRunRadar,
         },
         {
           name: 'workspace.flow-runs.task-run',
