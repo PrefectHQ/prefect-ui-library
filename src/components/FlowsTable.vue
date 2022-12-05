@@ -8,14 +8,13 @@
         <FlowsDeleteButton v-if="can.delete.flow" :selected="selectedFlows" @delete="deleteFlows" />
       </div>
 
-
       <SearchInput v-model="name" placeholder="Search flows" label="Search flows" />
       <p-select v-model="sort" :options="flowSortOptions" />
     </div>
 
     <p-table :data="flows" :columns="columns">
       <template #selection-heading>
-        <p-checkbox v-model="allFlowsSelected" :value="selectAllFlows()" />
+        <p-checkbox v-model="model" @update:model-value="selectAllFlows" />
       </template>
 
       <template #selection="{ row }">
@@ -116,14 +115,22 @@
     },
   ]
 
-  const allFlowsSelected = ref(false)
   const selectedFlows = ref<string[]>([])
-  const selectAllFlows = (): string[] => {
-    if (allFlowsSelected.value) {
+  const selectAllFlows = (allFlowsSelected: boolean): string[] => {
+    if (allFlowsSelected) {
       return selectedFlows.value = [...flows.value.map(flow => flow.id)]
     }
     return selectedFlows.value = []
   }
+
+  const model = computed({
+    get() {
+      return selectedFlows.value.length === flows.value.length
+    },
+    set(value: boolean) {
+      selectAllFlows(value)
+    },
+  })
 
   const flowsSubscription = useSubscription(api.flows.getFlows, [unionFilter])
   const flows = computed(() => flowsSubscription.response ?? [])
@@ -146,7 +153,6 @@
 
   const deleteFlows = (): void => {
     selectedFlows.value = []
-    allFlowsSelected.value = false
     refresh()
     emit('delete')
   }
