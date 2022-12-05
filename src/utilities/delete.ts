@@ -1,7 +1,7 @@
 import { showToast } from '@prefecthq/prefect-design'
 import { localization } from '@/localization'
 
-export type itemType = 'Flow' | 'Deployment' | 'Flow run' | 'Work queue' | 'Block' | 'Notification' | 'Task run'
+export type itemType = 'Flow' | 'Deployment' | 'Flow run' | 'Work queue' | 'Block' | 'Notification' | 'Task run' | 'Concurrency Limit'
 
 export async function deleteItem(id: string, endpoint: (arg: string) => void, type: itemType): Promise<void> {
   try {
