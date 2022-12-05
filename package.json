@@ -37,7 +37,7 @@
         "@tailwindcss/line-clamp": "0.4.2",
         "@types/lodash.camelcase": "4.3.7",
         "@types/lodash.debounce": "4.0.7",
-        "@types/node": "^18.11.9",
+        "@types/node": "^18.11.11",
         "@types/prismjs": "^1.26.0",
         "@vitejs/plugin-vue": "3.2.0",
         "auto-changelog": "^2.4.0",
