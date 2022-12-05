@@ -1,10 +1,5 @@
 <template>
   <p-table class="concurrency-limits-table__table" :columns="columns" :data="concurrencyLimits">
-    <template #tag="{ row }">
-      <p-link :to="routes.concurrencyLimit(row.id)">
-        {{ row.tag }}
-      </p-link>
-    </template>
     <template #active-task-runs="{ row }">
       <ConcurrencyTableActiveSlots v-if="row.activeSlots" :active-slots="row.activeSlots" />
     </template>
