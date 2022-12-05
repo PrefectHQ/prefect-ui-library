@@ -5,7 +5,7 @@
         <ResultsCount v-if="selectedFlows.length == 0" label="Flow" :count="flowsCount" />
         <SelectedCount v-else :count="selectedFlows.length" />
 
-        <DeleteFlowsButton v-if="can.delete.flow" :selected="selectedFlows" @delete="deleteFlows" />
+        <FlowsDeleteButton v-if="can.delete.flow" :selected="selectedFlows" @delete="deleteFlows" />
       </div>
 
 
@@ -70,7 +70,7 @@
   import { PTable, PEmptyResults, PLink } from '@prefecthq/prefect-design'
   import { useSubscription } from '@prefecthq/vue-compositions'
   import { computed, ref } from 'vue'
-  import { DeleteFlowsButton, DeploymentsCount, ResultsCount, SearchInput, FlowActivityChart, FlowMenu, SelectedCount } from '@/components'
+  import { FlowsDeleteButton, DeploymentsCount, ResultsCount, SearchInput, FlowActivityChart, FlowMenu, SelectedCount } from '@/components'
   import { useCan, UseFlowFilterArgs, useFlowFilterFromRoute, useWorkspaceApi, useWorkspaceRoutes } from '@/compositions'
   import { flowSortOptions } from '@/types/SortOptionTypes'
   import { formatDateTimeNumeric } from '@/utilities/dates'
