@@ -46,7 +46,7 @@
       showToast(toastMessage, 'success')
       emit('delete')
     } catch (error) {
-      showToast(localization.error.delete('Flow Run'), 'error')
+      showToast(localization.error.delete('flows'), 'error')
     }
   }
 </script>
