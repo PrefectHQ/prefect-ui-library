@@ -6,7 +6,7 @@
 
 <script lang="ts" setup>
   import { withDefaults } from 'vue'
-  import { toPluralString } from '@/utilities'
+  import { toPluralString, isNumber } from '@/utilities'
 
   withDefaults(defineProps<{
     count: number | null | undefined,
@@ -14,10 +14,6 @@
   }>(), {
     label: 'result',
   })
-
-  function isNumber(value: unknown): value is number {
-    return typeof value === 'number'
-  }
 </script>
 
 <style>

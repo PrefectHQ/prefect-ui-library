@@ -1,13 +1,26 @@
 <template>
   <p-content class="flows-table">
     <div class="flows-table__controls">
-      <ResultsCount class="flows-table__count" label="Flow" :count="flowsCount" />
-      <SearchInput v-model="name" placeholder="Search flows" label="Search flows" />
+      <div class="flows-table__right">
+        <ResultsCount v-if="selectedFlows.length == 0" label="Flow" :count="flowsCount" />
+        <SelectedCount v-else :count="selectedFlows.length" />
 
+        <FlowsDeleteButton v-if="can.delete.flow" :selected="selectedFlows" @delete="deleteFlows" />
+      </div>
+
+      <SearchInput v-model="name" placeholder="Search flows" label="Search flows" />
       <p-select v-model="sort" :options="flowSortOptions" />
     </div>
 
     <p-table :data="flows" :columns="columns">
+      <template #selection-heading>
+        <p-checkbox v-model="model" @update:model-value="selectAllFlows" />
+      </template>
+
+      <template #selection="{ row }">
+        <p-checkbox v-model="selectedFlows" :value="row.id" />
+      </template>
+
       <template #name="{ row }">
         <p-link :to="routes.flow(row.id)">
           <span>{{ row.name }}</span>
@@ -55,13 +68,9 @@
 <script lang="ts" setup>
   import { PTable, PEmptyResults, PLink } from '@prefecthq/prefect-design'
   import { useSubscription } from '@prefecthq/vue-compositions'
-  import { computed } from 'vue'
-  import DeploymentsCount from './DeploymentsCount.vue'
-  import ResultsCount from './ResultsCount.vue'
-  import SearchInput from './SearchInput.vue'
-  import FlowActivityChart from '@/components/FlowActivityChart.vue'
-  import FlowMenu from '@/components/FlowMenu.vue'
-  import { UseFlowFilterArgs, useFlowFilterFromRoute, useWorkspaceApi, useWorkspaceRoutes } from '@/compositions'
+  import { computed, ref } from 'vue'
+  import { FlowsDeleteButton, DeploymentsCount, ResultsCount, SearchInput, FlowActivityChart, FlowMenu, SelectedCount } from '@/components'
+  import { useCan, UseFlowFilterArgs, useFlowFilterFromRoute, useWorkspaceApi, useWorkspaceRoutes } from '@/compositions'
   import { flowSortOptions } from '@/types/SortOptionTypes'
   import { formatDateTimeNumeric } from '@/utilities/dates'
 
@@ -70,11 +79,16 @@
   }>()
 
   const api = useWorkspaceApi()
+  const can = useCan()
   const routes = useWorkspaceRoutes()
   const filter = computed(() => props.filter ?? {})
   const { name, sort, filter: unionFilter } = useFlowFilterFromRoute(filter)
 
   const columns = [
+    {
+      label: 'selection',
+      width: '20px',
+    },
     {
       property: 'name',
       label: 'Name',
@@ -101,6 +115,23 @@
     },
   ]
 
+  const selectedFlows = ref<string[]>([])
+  const selectAllFlows = (allFlowsSelected: boolean): string[] => {
+    if (allFlowsSelected) {
+      return selectedFlows.value = [...flows.value.map(flow => flow.id)]
+    }
+    return selectedFlows.value = []
+  }
+
+  const model = computed({
+    get() {
+      return selectedFlows.value.length === flows.value.length
+    },
+    set(value: boolean) {
+      selectAllFlows(value)
+    },
+  })
+
   const flowsSubscription = useSubscription(api.flows.getFlows, [unionFilter])
   const flows = computed(() => flowsSubscription.response ?? [])
 
@@ -115,11 +146,24 @@
   function clear(): void {
     name.value = ''
   }
+
+  const emit = defineEmits<{
+    (event: 'delete'): void,
+  }>()
+
+  const deleteFlows = (): void => {
+    selectedFlows.value = []
+    refresh()
+    emit('delete')
+  }
 </script>
 
 <style>
-.flows-table__count { @apply
+.flows-table__right { @apply
   mr-auto
+  flex
+  gap-2
+  items-center
 }
 
 .flows-table__controls { @apply
@@ -129,6 +173,12 @@
   flex-col
   sm:flex-row
   sm:items-center
+  sticky
+  top-0
+  bg-white
+  bg-opacity-90
+  py-2
+  z-10
 }
 
 .flows-table__search { @apply
