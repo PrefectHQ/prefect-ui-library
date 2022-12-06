@@ -49,11 +49,7 @@
 
   const resume  = async (): Promise<void>=> {
     try {
-      const values: StateUpdateDetails = {
-        type: 'running',
-        name: 'Running',
-      }
-      await api.flowRuns.setFlowRunState(props.flowRunId, { state: values })
+      await api.flowRuns.resumeFlowRun(props.flowRunId)
       flowRunSubscription.refresh()
       internalValue.value = false
       showToast(localization.success.resumeFlowRun, 'success')

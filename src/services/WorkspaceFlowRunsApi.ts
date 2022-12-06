@@ -17,6 +17,7 @@ export interface IWorkspaceFlowRunsApi {
   getFlowRunsGraph: (flowRunId: string) => Promise<GraphNode[]>,
   retryFlowRun: (flowRunId: string) => Promise<void>,
   setFlowRunState: (flowRunId: string, body: StateUpdate) => Promise<void>,
+  resumeFlowRun: (flowRunId: string) => Promise<void>,
   deleteFlowRun: (flowRunId: string) => Promise<void>,
 }
 
@@ -67,6 +68,10 @@ export class WorkspaceFlowRunsApi extends WorkspaceApi implements IWorkspaceFlow
   public setFlowRunState(id: string, body: StateUpdate): Promise<void> {
     const requestBody = mapper.map('StateUpdate', body, 'StateUpdateRequest')
     return this.post(`/${id}/set_state`, { state: requestBody.state, force: true })
+  }
+
+  public resumeFlowRun(id: string): Promise<void> {
+    return this.post(`/${id}/resume`)
   }
 
   public deleteFlowRun(flowRunId: string): Promise<void> {
