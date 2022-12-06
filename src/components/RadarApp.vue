@@ -48,7 +48,7 @@
 <script lang="ts" setup>
   import { RadarView, Item } from '@prefecthq/radar'
   import { useSubscription } from '@prefecthq/vue-compositions'
-  import { computed } from 'vue'
+  import { computed, watchEffect } from 'vue'
   import RadarNodeFlowRun from '@/components/RadarNodeFlowRun.vue'
   import RadarNodePlaceholder from '@/components/RadarNodePlaceholder.vue'
   import RadarNodeSubFlowRun from '@/components/RadarNodeSubFlowRun.vue'
@@ -75,8 +75,8 @@
     return props.flowRunId
   })
 
-  const graphSubscription = useSubscription(api.flowRuns.getFlowRunsGraph, [flowRunId])
-  const flowRunSubscription = useSubscription(api.flowRuns.getFlowRun, [flowRunId])
+  const graphSubscription = useSubscription(api.flowRuns.getFlowRunsGraph, [flowRunId], { interval: 5000 })
+  const flowRunSubscription = useSubscription(api.flowRuns.getFlowRun, [flowRunId], { interval: 5000 })
 
   const flowRunGraphNode = computed(() => {
     if (!flowRunSubscription.response) {
@@ -102,6 +102,10 @@
     }
 
     return items
+  })
+
+  watchEffect(() => {
+    console.log('graph', graphSubscription.response)
   })
 
   const getStateColor = (item: Item): string => {
