@@ -105,6 +105,7 @@
     {
       label: 'selection',
       width: '20px',
+      visible: can.delete.deployment,
     },
     {
       property: 'name',

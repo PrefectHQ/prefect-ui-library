@@ -88,6 +88,7 @@
     {
       label: 'selection',
       width: '20px',
+      visible: can.delete.flow,
     },
     {
       property: 'name',
