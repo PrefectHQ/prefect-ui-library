@@ -104,10 +104,6 @@
     return items
   })
 
-  watchEffect(() => {
-    console.log('graph', graphSubscription.response)
-  })
-
   const getStateColor = (item: Item): string => {
     const color = computedStyle.getPropertyValue(`--state-${item.state?.type}-500`)
     return color
