@@ -48,7 +48,7 @@
 <script lang="ts" setup>
   import { RadarView, Item } from '@prefecthq/radar'
   import { useSubscription } from '@prefecthq/vue-compositions'
-  import { computed, watchEffect } from 'vue'
+  import { computed } from 'vue'
   import RadarNodeFlowRun from '@/components/RadarNodeFlowRun.vue'
   import RadarNodePlaceholder from '@/components/RadarNodePlaceholder.vue'
   import RadarNodeSubFlowRun from '@/components/RadarNodeSubFlowRun.vue'
