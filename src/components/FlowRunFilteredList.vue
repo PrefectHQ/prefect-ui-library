@@ -145,14 +145,6 @@
   gap-2
 }
 
-/* .flow-run-filtered-list__controls { @apply
-  flex
-  gap-2
-  items-center
-  flex-col
-  sm:flex-row
-} */
-
 .flow-run-filtered-list__controls { @apply
   flex
   gap-2
