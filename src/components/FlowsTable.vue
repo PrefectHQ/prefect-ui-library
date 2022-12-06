@@ -146,6 +146,7 @@
 
   function clear(): void {
     name.value = ''
+    tags.value = []
   }
 
   const emit = defineEmits<{
