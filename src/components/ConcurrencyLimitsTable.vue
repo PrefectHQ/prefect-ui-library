@@ -17,7 +17,7 @@
   import { useSubscription } from '@prefecthq/vue-compositions'
   import { computed } from 'vue'
   import ConcurrencyTableActiveSlots from '@/components/ConcurrencyTableActiveSlots.vue'
-  import { useWorkspaceApi } from '@/compositions'
+  import { useWorkspaceApi, useWorkspaceRoutes } from '@/compositions'
 
   const api = useWorkspaceApi()
   const columns = [
@@ -37,4 +37,5 @@
 
   const concurrencyLimitSubscription = useSubscription(api.concurrencyLimits.getConcurrencyLimits)
   const concurrencyLimits = computed(() => concurrencyLimitSubscription.response ?? [])
+  const routes = useWorkspaceRoutes()
 </script>
