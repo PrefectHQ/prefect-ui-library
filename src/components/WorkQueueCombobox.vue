@@ -3,6 +3,12 @@
     <template #combobox-options-empty>
       No work queues
     </template>
+    <template #default="scope">
+      <slot v-bind="scope" />
+    </template>
+    <template #option="{ option }">
+      <slot name="option" :option="option" />
+    </template>
   </p-combobox>
 </template>
 
