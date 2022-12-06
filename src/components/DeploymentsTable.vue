@@ -1,8 +1,8 @@
 <template>
   <p-content class="deployments-table">
     <div class="deployments-table__controls">
-      <div class="deployments-table__right">
-        <ResultsCount v-if="selectedDeployments.length == 0" class="deployments-table__count" label="Deployment" :count="deploymentsCount" />
+      <div class="deployments-table__controls--right">
+        <ResultsCount v-if="selectedDeployments.length == 0" label="Deployment" :count="deploymentsCount" />
         <SelectedCount v-else :count="selectedDeployments.length" />
 
         <DeploymentsDeleteButton v-if="can.delete.deployment" :selected="selectedDeployments" @delete="deleteDeployments" />
@@ -178,7 +178,7 @@
 </script>
 
 <style>
-.deployments-table__right { @apply
+.deployments-table__controls--right { @apply
   mr-auto
   flex
   gap-2
