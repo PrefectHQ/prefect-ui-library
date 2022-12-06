@@ -15,6 +15,7 @@
   const props = defineProps<{
     selected: string | string[] | null | undefined,
     emptyMessage?: string,
+    allowUnset?: boolean,
   }>()
 
   const emits = defineEmits<{
@@ -41,8 +42,19 @@
   const api = useWorkspaceApi()
   const flowsSubscription = useSubscription(api.flows.getFlows, [{}])
   const flows = computed(() => flowsSubscription.response ?? [])
-  const options = computed<SelectOption[]>(() => flows.value.map(flow => ({
-    value: flow.id,
-    label: flow.name,
-  })))
+  const options = computed<SelectOption[]>(() => {
+    const options: SelectOption[] = flows.value.map(flow => ({
+      value: flow.id,
+      label: flow.name,
+    }))
+
+    if (props.allowUnset) {
+      options.unshift({
+        value: null,
+        label: 'None',
+      })
+    }
+
+    return options
+  })
 </script>

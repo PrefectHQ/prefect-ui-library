@@ -15,6 +15,7 @@
   const props = defineProps<{
     selected: string | string[] | null | undefined,
     emptyMessage?: string,
+    allowUnset?: boolean,
   }>()
 
   const emits = defineEmits<{
@@ -41,9 +42,20 @@
   const api = useWorkspaceApi()
   const workQueuesSubscription = useSubscription(api.workQueues.getWorkQueues, [{}])
   const workQueues = computed(() => workQueuesSubscription.response ?? [])
-  const options = computed<SelectOption[]>(() => workQueues.value.map(workQueue => ({
-    // Any consumers of the work queue should subscribe to it by name and not id
-    value: workQueue.name,
-    label: workQueue.name,
-  })))
+  const options = computed<SelectOption[]>(() => {
+    const options: SelectOption[] = workQueues.value.map(workQueue => ({
+      // Any consumers of the work queue should subscribe to it by name and not id
+      value: workQueue.name,
+      label: workQueue.name,
+    }))
+
+    if (props.allowUnset) {
+      options.unshift({
+        value: null,
+        label: 'None',
+      })
+    }
+
+    return options
+  })
 </script>
