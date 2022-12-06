@@ -22,7 +22,7 @@ export function useFlowFilterFromRoute(filter?: MaybeRef<UseFlowFilterArgs>): Us
   const name = useRouteQueryParam('flow-name', '')
   const nameDebounced = useDebouncedRef(name, 500)
   const sort = useRouteQueryParam('flow-sort', 'CREATED_DESC') as Ref<FlowSortValues>
-  const tags = useRouteQueryParam('flow-tags', [])
+  const tags = useRouteQueryParam('flow-run-tags', [])
   const filtersRef = ref(filter)
 
   const flowFilter = computed<UseFlowFilterArgs>(() => {
@@ -37,7 +37,6 @@ export function useFlowFilterFromRoute(filter?: MaybeRef<UseFlowFilterArgs>): Us
     }
 
     if (tags.value.length) {
-      filter.deploymentTags = tags
       filter.tags = tags
     }
 

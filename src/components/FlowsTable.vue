@@ -10,7 +10,7 @@
 
       <SearchInput v-model="name" placeholder="Search flows" label="Search flows" />
       <p-select v-model="sort" :options="flowSortOptions" />
-      <p-tags-input v-model="tags" empty-message="All tags" class="flows-table__tags" />
+      <p-tags-input v-model="tags" empty-message="Flow run tags" class="flows-table__tags" />
     </div>
 
     <p-table :data="flows" :columns="columns">
