@@ -22,7 +22,6 @@
   import StateBadge from './StateBadge.vue'
   import { useWorkspaceApi } from '@/compositions'
   import { localization } from '@/localization'
-  import {  StateUpdateDetails } from '@/models'
 
   const props = defineProps<{
     showModal: boolean,
