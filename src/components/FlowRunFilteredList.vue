@@ -1,10 +1,15 @@
 <template>
   <div class="flow-run-filtered-list">
     <div class="flow-run-filtered-list__controls">
-      <ResultsCount :count="flowRunCount" class="mr-auto" label="Flow run" />
+      <div class="flow-run-filtered-list__controls--right">
+        <ResultsCount v-if="selectedFlowRuns.length == 0" :count="flowRunCount" label="Flow run" />
+        <SelectedCount v-else :count="selectedFlowRuns.length" />
+
+        <FlowRunsDeleteButton v-if="can.delete.flow_run" :selected="selectedFlowRuns" @delete="deleteFlowRuns" />
+      </div>
+
       <StateSelect :selected="state" empty-message="All run states" class="flow-run-filtered-list__state-select" @update:selected="updateState" />
       <FlowRunsSort v-model="sort" class="flow-run-filtered-list__flow-runs-sort" />
-      <DeleteFlowRunsButton v-if="can.delete.flow_run" :selected="selectedFlowRuns" @delete="deleteFlowRuns" />
     </div>
     <FlowRunList v-model:selected="selectedFlowRuns" :flow-runs="flowRuns" :disabled="disabled || !can.delete.flow_run" @bottom="flowRunsSubscription.loadMore" />
     <PEmptyResults v-if="empty">
@@ -23,8 +28,7 @@
 <script lang="ts" setup>
   import { useSubscription } from '@prefecthq/vue-compositions'
   import { computed, onMounted, ref } from 'vue'
-  import { ResultsCount, StateSelect, FlowRunsSort, FlowRunList } from '@/components'
-  import DeleteFlowRunsButton from '@/components/DeleteFlowRunsButton.vue'
+  import { ResultsCount, StateSelect, FlowRunsSort, FlowRunList, SelectedCount, FlowRunsDeleteButton } from '@/components'
   import { useWorkspaceApi } from '@/compositions'
   import { useCan } from '@/compositions/useCan'
   import { usePaginatedSubscription } from '@/compositions/usePaginatedSubscription'
@@ -147,6 +151,19 @@
   items-center
   flex-col
   sm:flex-row
+  sticky
+  top-0
+  bg-white
+  bg-opacity-90
+  py-2
+  z-10
+}
+
+.flow-run-filtered-list__controls--right { @apply
+  mr-auto
+  flex
+  gap-2
+  items-center
 }
 
 .flow-run-filtered-list__state-select { @apply

@@ -38,7 +38,7 @@
   const api = useWorkspaceApi()
   const routes = useWorkspaceRoutes()
 
-  const subscription = useSubscription(api.taskRuns.getTaskRun, [props.graphNode.id])
+  const subscription = useSubscription(api.taskRuns.getTaskRun, [props.graphNode.id], { interval: 5000 })
   const taskRun = computed<TaskRun | undefined>(() => subscription.response)
 
   const taskRunName = computed(() => taskRun.value?.name)

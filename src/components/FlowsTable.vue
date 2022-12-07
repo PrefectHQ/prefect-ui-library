@@ -1,7 +1,7 @@
 <template>
   <p-content class="flows-table">
     <div class="flows-table__controls">
-      <div class="flows-table__right">
+      <div class="flows-table__controls--right">
         <ResultsCount v-if="selectedFlows.length == 0" label="Flow" :count="flowsCount" />
         <SelectedCount v-else :count="selectedFlows.length" />
 
@@ -88,6 +88,7 @@
     {
       label: 'selection',
       width: '20px',
+      visible: can.delete.flow,
     },
     {
       property: 'name',
@@ -159,7 +160,7 @@
 </script>
 
 <style>
-.flows-table__right { @apply
+.flows-table__controls--right { @apply
   mr-auto
   flex
   gap-2

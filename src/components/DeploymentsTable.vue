@@ -1,7 +1,12 @@
 <template>
   <p-content class="deployments-table">
     <div class="deployments-table__controls">
-      <ResultsCount class="deployments-table__count" label="Deployment" :count="deploymentsCount" />
+      <div class="deployments-table__controls--right">
+        <ResultsCount v-if="selectedDeployments.length == 0" label="Deployment" :count="deploymentsCount" />
+        <SelectedCount v-else :count="selectedDeployments.length" />
+
+        <DeploymentsDeleteButton v-if="can.delete.deployment" :selected="selectedDeployments" @delete="deleteDeployments" />
+      </div>
       <SearchInput v-model="name" placeholder="Search deployments" label="Search deployments" />
 
       <template v-if="canFilterFlows">
@@ -14,6 +19,14 @@
     </div>
 
     <p-table :data="deployments" :columns="columns" class="deployments-table">
+      <template #selection-heading>
+        <p-checkbox v-model="model" @update:model-value="selectAllDeployments" />
+      </template>
+
+      <template #selection="{ row }">
+        <p-checkbox v-model="selectedDeployments" :value="row.id" />
+      </template>
+
       <template #name="{ row }">
         <FlowRouterLink :flow-id="row.flowId" after=" / " />
         <p-link :to="routes.deployment(row.id)">
@@ -63,14 +76,10 @@
 <script lang="ts" setup>
   import { PTable, PTagWrapper, PEmptyResults, PLink, TableColumn } from '@prefecthq/prefect-design'
   import { useSubscription } from '@prefecthq/vue-compositions'
-  import { computed, unref } from 'vue'
-  import FlowCombobox from './FlowCombobox.vue'
-  import FlowRouterLink from './FlowRouterLink.vue'
-  import DeploymentMenu from '@/components/DeploymentMenu.vue'
-  import DeploymentToggle from '@/components/DeploymentToggle.vue'
-  import ResultsCount from '@/components/ResultsCount.vue'
-  import SearchInput from '@/components/SearchInput.vue'
-  import { useWorkspaceApi, useWorkspaceRoutes } from '@/compositions'
+  import { computed, unref, ref } from 'vue'
+  import { SearchInput, ResultsCount, DeploymentToggle, DeploymentMenu, FlowRouterLink, FlowCombobox, DeploymentsDeleteButton, SelectedCount } from '@/components'
+
+  import { useWorkspaceApi, useWorkspaceRoutes, useCan } from '@/compositions'
   import { UseDeploymentFilterArgs, useDeploymentFilterFromRoute } from '@/compositions/useDeploymentFilter'
   import { isRRuleSchedule, Schedule } from '@/models'
   import { deploymentSortOptions } from '@/types/SortOptionTypes'
@@ -80,6 +89,7 @@
   }>()
 
   const api = useWorkspaceApi()
+  const can = useCan()
   const routes = useWorkspaceRoutes()
   const filter = computed(() => props.filter ?? {})
   const { flows, name, sort, tags, hasFilters, clearFilters, filter: unionFilter } = useDeploymentFilterFromRoute(filter)
@@ -92,6 +102,11 @@
   })
 
   const columns = computed<TableColumn[]>(() => [
+    {
+      label: 'selection',
+      width: '20px',
+      visible: can.delete.deployment,
+    },
     {
       property: 'name',
       label: 'Name',
@@ -117,6 +132,23 @@
       width: '42px',
     },
   ])
+
+  const selectedDeployments = ref<string[]>([])
+  const selectAllDeployments = (allDeploymentsSelected: boolean): string[] => {
+    if (allDeploymentsSelected) {
+      return selectedDeployments.value = [...deployments.value.map(deployment => deployment.id)]
+    }
+    return selectedDeployments.value = []
+  }
+  const model = computed({
+    get() {
+      return selectedDeployments.value.length === deployments.value.length
+    },
+    set(value: boolean) {
+      selectAllDeployments(value)
+    },
+  })
+
   const deploymentsSubscription = useSubscription(api.deployments.getDeployments, [unionFilter])
   const deployments = computed(() => deploymentsSubscription.response ?? [])
 
@@ -134,11 +166,23 @@
     deploymentsSubscription.refresh()
     deploymentsCountSubscription.refresh()
   }
+
+  const emit = defineEmits<{
+    (event: 'delete'): void,
+  }>()
+  const deleteDeployments = (): void => {
+    selectedDeployments.value = []
+    refresh()
+    emit('delete')
+  }
 </script>
 
 <style>
-.deployments-table__count { @apply
+.deployments-table__controls--right { @apply
   mr-auto
+  flex
+  gap-2
+  items-center
 }
 
 .deployments-table__controls { @apply
@@ -148,6 +192,12 @@
   flex-col
   sm:flex-row
   sm:items-center
+  sticky
+  top-0
+  bg-white
+  bg-opacity-90
+  py-2
+  z-10
 }
 
 .deployments-table__search { @apply
