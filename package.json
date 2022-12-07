@@ -1,6 +1,6 @@
 {
     "name": "@prefecthq/orion-design",
-    "version": "1.1.30",
+    "version": "1.1.31",
     "private": false,
     "keywords": [
         "prefect 2.0",
@@ -14,10 +14,7 @@
         "lint:fix": "eslint src --fix",
         "serve": "vite --mode=demo --host",
         "changelog": "auto-changelog --package --commit-limit 0",
-        "changelog:commit": "npm run changelog && git add -A && git commit -m 'Update CHANGELOG.md'",
-        "release:patch": "npm version patch && npm run changelog:commit",
-        "release:minor": "npm version minor && npm run changelog:commit",
-        "release:major": "npm version major && npm run changelog:commit'"
+        "version": "npm run changelog && git add CHANGELOG.md"
     },
     "main": "./dist/orion-design.umd.js",
     "module": "./dist/orion-design.mjs",
