@@ -18,7 +18,6 @@ const weightedNumber = (): number => {
 
 export {
   uniform,
-  range,
   coinflip,
   weightedNumber
 }
