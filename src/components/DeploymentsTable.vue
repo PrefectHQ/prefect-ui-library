@@ -53,7 +53,12 @@
       <template #action="{ row }">
         <div class="deployments-table__actions">
           <DeploymentToggle :deployment="row" @update="refresh" />
-          <DeploymentMenu size="xs" :deployment="row" @delete="refresh" />
+          <DeploymentMenu size="xs" :deployment="row" @delete="refresh">
+            <template v-if="can.run.deployment" #additional-items>
+              <DeploymentQuickRun :deployment="row" />
+              <DeploymentCustomRunLink :deployment-id="row.id" />
+            </template>
+          </DeploymentMenu>
         </div>
       </template>
 
@@ -77,8 +82,7 @@
   import { PTable, PTagWrapper, PEmptyResults, PLink, TableColumn } from '@prefecthq/prefect-design'
   import { useSubscription } from '@prefecthq/vue-compositions'
   import { computed, unref, ref } from 'vue'
-  import { SearchInput, ResultsCount, DeploymentToggle, DeploymentMenu, FlowRouterLink, FlowCombobox, DeploymentsDeleteButton, SelectedCount } from '@/components'
-
+  import { SearchInput, ResultsCount, DeploymentToggle, DeploymentMenu, FlowRouterLink, FlowCombobox, DeploymentsDeleteButton, SelectedCount, DeploymentQuickRun, DeploymentCustomRunLink } from '@/components'
   import { useWorkspaceApi, useWorkspaceRoutes, useCan } from '@/compositions'
   import { UseDeploymentFilterArgs, useDeploymentFilterFromRoute } from '@/compositions/useDeploymentFilter'
   import { isRRuleSchedule, Schedule } from '@/models'
@@ -215,5 +219,6 @@
 .deployments-table__actions { @apply
   flex
   gap-2
+  items-center
 }
 </style>
