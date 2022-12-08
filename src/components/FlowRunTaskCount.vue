@@ -1,6 +1,6 @@
 <template>
   <p-icon-text icon="Task" class="flow-run-task-count">
-    {{ label }}
+    {{ count }}
   </p-icon-text>
 </template>
 
@@ -8,8 +8,8 @@
   import { computed } from 'vue'
 
   const props = defineProps<{
-    tasksCount: number | null,
+    tasksCount: number | null | undefined,
   }>()
 
-  const label = computed(() => !props.tasksCount || props.tasksCount == 0 ? 'None' : props.tasksCount)
+  const count = computed(() => !props.tasksCount || props.tasksCount == 0 ? 'None' : props.tasksCount)
 </script>
