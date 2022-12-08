@@ -5,7 +5,6 @@
         ref="runButton"
         class="run-menu__run-button"
         inset
-        :loading="loading"
         :disabled="deployment.deprecated"
         @click="toggle"
       >
@@ -14,38 +13,24 @@
       </p-button>
     </template>
     <p-overflow-menu class="run-menu__overflow-menu" @click="close">
-      <p-overflow-menu-item class="run-menu__overflow-menu-item" @click="run">
-        Now with defaults
-      </p-overflow-menu-item>
-      <router-link :to="routes.deploymentFlowRunCreate(deployment.id)">
-        <p-overflow-menu-item class="run-menu__overflow-menu-item">
-          Custom
-        </p-overflow-menu-item>
-      </router-link>
+      <DeploymentQuickRunOverflowMenuItem :deployment-id="deployment.id" />
+      <DeploymentCustomRunOverflowMenuItem :deployment-id="deployment.id" />
     </p-overflow-menu>
   </p-pop-over>
 </template>
 
 <script lang="ts" setup>
-  import { PPopOver, PButton, showToast, positions } from '@prefecthq/prefect-design'
-  import { ref, h } from 'vue'
-  import { useRouter } from 'vue-router'
-  import ToastFlowRunCreate from './ToastFlowRunCreate.vue'
-  import { useWorkspaceApi, useWorkspaceRoutes } from '@/compositions'
-  import { localization } from '@/localization'
+  import { PPopOver, PButton, positions } from '@prefecthq/prefect-design'
+  import { ref } from 'vue'
+  import { DeploymentQuickRunOverflowMenuItem, DeploymentCustomRunOverflowMenuItem } from '@/components'
   import { Deployment } from '@/models'
 
-  const props = defineProps<{
+  defineProps<{
     deployment: Deployment,
   }>()
 
-  const api = useWorkspaceApi()
-  const router = useRouter()
-  const routes = useWorkspaceRoutes()
-
   const popOver = ref<InstanceType<typeof PPopOver>>()
   const runButton = ref<InstanceType<typeof PButton>>()
-  const loading = ref(false)
   const placement = [positions.bottomRight, positions.bottomLeft, positions.topRight, positions.topLeft]
 
   function close(): void {
@@ -59,26 +44,6 @@
 
     if (runButton.value?.el) {
       runButton.value.el.focus()
-    }
-  }
-
-  const run = async (): Promise<void> => {
-    loading.value = true
-
-    try {
-      const flowRun = await api.deployments.createDeploymentFlowRun(props.deployment.id, {
-        state: {
-          type: 'scheduled',
-          message: 'Run from the Prefect UI with defaults',
-        },
-      })
-      const toastMessage = h(ToastFlowRunCreate, { flowRun, flowRunRoute: routes.flowRun, router, immediate: true })
-      showToast(toastMessage, 'success')
-    } catch (error) {
-      showToast(localization.error.scheduleFlowRun, 'error')
-      console.warn(error)
-    } finally {
-      loading.value = false
     }
   }
 </script>

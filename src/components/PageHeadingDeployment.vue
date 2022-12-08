@@ -3,32 +3,18 @@
     <template #actions>
       <DeploymentToggle :deployment="deployment" @update="emit('update')" />
 
-      <template v-if="can.run.deployment">
-        <RunMenu :deployment="deployment" class="page-heading-deployment__run-menu" />
-      </template>
+      <RunMenu v-if="can.run.deployment && media.sm" :deployment="deployment" />
 
-      <DeploymentMenu :deployment="deployment" @delete="handleDelete">
-        <template v-if="can.run.deployment" #additional-items>
-          <div class="page-heading-deployment__run-menu-item">
-            <router-link :to="routes.deploymentFlowRunCreate(deployment.id)">
-              <p-overflow-menu-item>
-                Run
-              </p-overflow-menu-item>
-            </router-link>
-          </div>
-        </template>
-      </DeploymentMenu>
+      <DeploymentMenu :deployment="deployment" :show-all="!media.sm" @delete="handleDelete" />
     </template>
   </page-heading>
 </template>
 
 <script lang="ts" setup>
+  import { media } from '@prefecthq/prefect-design'
   import { computed } from 'vue'
   import { useRouter } from 'vue-router'
-  import DeploymentMenu from '@/components/DeploymentMenu.vue'
-  import DeploymentToggle from '@/components/DeploymentToggle.vue'
-  import PageHeading from '@/components/PageHeading.vue'
-  import RunMenu from '@/components/RunMenu.vue'
+  import { DeploymentMenu, DeploymentToggle, PageHeading, RunMenu } from '@/components'
   import { useWorkspaceRoutes } from '@/compositions'
   import { useCan } from '@/compositions/useCan'
   import { Deployment } from '@/models'
@@ -54,15 +40,3 @@
     router.back()
   }
 </script>
-
-<style>
-.page-heading-deployment__run-menu { @apply
-  hidden
-  sm:block
-}
-
-.page-heading-deployment__run-menu-item { @apply
-  block
-  sm:hidden
-}
-</style>
