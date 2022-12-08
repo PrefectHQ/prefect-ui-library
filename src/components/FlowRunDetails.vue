@@ -99,7 +99,7 @@
 <script lang="ts" setup>
   import { PKeyValue, PTags, PTextTruncate } from '@prefecthq/prefect-design'
   import { useSubscriptionWithDependencies } from '@prefecthq/vue-compositions'
-  import { computed, watchEffect } from 'vue'
+  import { computed } from 'vue'
   import  { WorkQueueIconText, FlowRunIconText, WorkQueueStatusIcon, RadarSmall, FlowRunTaskCount, FlowRunStartTime, FlowIconText, DurationIconText, DeploymentIconText }  from '@/components'
   import { useTaskRunsCount, useWorkspaceApi, useWorkspaceRoutes, useCan } from '@/compositions'
   import { FlowRun } from '@/models/FlowRun'
@@ -142,10 +142,6 @@
     }
     const [value] = parentFlowRunList.value
     return value.id
-  })
-
-  watchEffect(() => {
-    console.log(tasksCount.value)
   })
 </script>
 
