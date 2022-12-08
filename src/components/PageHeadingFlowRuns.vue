@@ -12,11 +12,9 @@
   import  SavedFilters from '@/components/SavedFilters.vue'
 
 
-  const props = withDefaults(defineProps<{
+  const props = defineProps<{
     hideActions?: boolean,
-  }>(), {
-    hideActions: false,
-  })
+  }>()
 
   const hideActions = computed(() => props.hideActions)
 
