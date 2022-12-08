@@ -7,8 +7,8 @@
 
       <DeploymentMenu :deployment="deployment" @delete="handleDelete">
         <template v-if="can.run.deployment && !media.sm" #additional-items>
-          <DeploymentQuickRun :deployment="deployment" />
-          <DeploymentCustomRunLink :deployment-id="deployment.id" />
+          <DeploymentQuickRunOverflowMenuItem :deployment="deployment" />
+          <DeploymentCustomRunOverflowMenuItem :deployment-id="deployment.id" />
         </template>
       </DeploymentMenu>
     </template>
@@ -19,7 +19,7 @@
   import { media } from '@prefecthq/prefect-design'
   import { computed } from 'vue'
   import { useRouter } from 'vue-router'
-  import { DeploymentCustomRunLink, DeploymentQuickRun, DeploymentMenu, DeploymentToggle, PageHeading, RunMenu } from '@/components'
+  import { DeploymentCustomRunOverflowMenuItem, DeploymentQuickRunOverflowMenuItem, DeploymentMenu, DeploymentToggle, PageHeading, RunMenu } from '@/components'
   import { useWorkspaceRoutes } from '@/compositions'
   import { useCan } from '@/compositions/useCan'
   import { Deployment } from '@/models'

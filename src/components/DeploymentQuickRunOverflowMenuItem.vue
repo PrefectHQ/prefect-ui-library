@@ -1,5 +1,5 @@
 <template>
-  <p-overflow-menu-item class="run-menu__overflow-menu-item" @click="run">
+  <p-overflow-menu-item @click="run">
     <slot>
       Quick run
     </slot>

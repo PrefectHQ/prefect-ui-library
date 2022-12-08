@@ -13,8 +13,8 @@
       </p-button>
     </template>
     <p-overflow-menu class="run-menu__overflow-menu" @click="close">
-      <DeploymentQuickRun :deployment="deployment" />
-      <DeploymentCustomRunLink :deployment-id="deployment.id" />
+      <DeploymentQuickRunOverflowMenuItem :deployment="deployment" />
+      <DeploymentCustomRunOverflowMenuItem :deployment-id="deployment.id" />
     </p-overflow-menu>
   </p-pop-over>
 </template>
@@ -22,7 +22,7 @@
 <script lang="ts" setup>
   import { PPopOver, PButton, positions } from '@prefecthq/prefect-design'
   import { ref } from 'vue'
-  import { DeploymentQuickRun, DeploymentCustomRunLink } from '@/components'
+  import { DeploymentQuickRunOverflowMenuItem, DeploymentCustomRunOverflowMenuItem } from '@/components'
   import { Deployment } from '@/models'
 
   defineProps<{

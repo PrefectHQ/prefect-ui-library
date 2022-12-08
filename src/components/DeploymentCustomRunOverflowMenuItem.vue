@@ -1,6 +1,6 @@
 <template>
   <router-link :to="routes.deploymentFlowRunCreate(deploymentId)">
-    <p-overflow-menu-item class="run-menu__overflow-menu-item">
+    <p-overflow-menu-item>
       <slot>
         Custom run
       </slot>
