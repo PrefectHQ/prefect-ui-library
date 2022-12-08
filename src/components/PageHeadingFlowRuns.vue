@@ -7,16 +7,13 @@
 </template>
 
 <script lang="ts" setup>
-  import { defineProps, withDefaults, computed } from 'vue'
   import PageHeading from '@/components/PageHeading.vue'
   import  SavedFilters from '@/components/SavedFilters.vue'
 
 
-  const props = defineProps<{
+  defineProps<{
     hideActions?: boolean,
   }>()
-
-  const hideActions = computed(() => props.hideActions)
 
   const crumbs = [{ text: 'Flow Runs' }]
 </script>
