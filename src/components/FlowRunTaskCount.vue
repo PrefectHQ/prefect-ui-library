@@ -10,7 +10,7 @@
   import { computed } from 'vue'
 
   const props = defineProps<{
-    tasksCount: number | null | undefined,
+    tasksCount: number | undefined,
   }>()
 
   const count = computed(() => props.tasksCount)
