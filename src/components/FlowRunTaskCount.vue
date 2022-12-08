@@ -8,8 +8,8 @@
   import { computed } from 'vue'
 
   const props = defineProps<{
-    tasksCount: number,
+    tasksCount: number | null,
   }>()
 
-  const label = computed(() => props.tasksCount == 0 ? 'None' : props.tasksCount)
+  const label = computed(() => !props.tasksCount || props.tasksCount == 0 ? 'None' : props.tasksCount)
 </script>
