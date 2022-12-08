@@ -1,6 +1,8 @@
 <template>
-  <p-icon-text icon="Task" class="flow-run-task-count">
-    {{ count }}
+  <p-icon-text v-if="tasksCount" icon="Task" class="flow-run-task-count">
+    <slot v-bind="{ count }">
+      {{ label }}
+    </slot>
   </p-icon-text>
 </template>
 
@@ -11,5 +13,7 @@
     tasksCount: number | null | undefined,
   }>()
 
-  const count = computed(() => !props.tasksCount || props.tasksCount == 0 ? 'None' : props.tasksCount)
+  const count = computed(() => props.tasksCount)
+
+  const label = computed(() => !count.value || count.value == 0 ? 'None' : count.value)
 </script>
