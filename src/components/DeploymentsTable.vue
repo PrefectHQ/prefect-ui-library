@@ -53,12 +53,7 @@
       <template #action="{ row }">
         <div class="deployments-table__actions">
           <DeploymentToggle :deployment="row" @update="refresh" />
-          <DeploymentMenu size="xs" :deployment="row" @delete="refresh">
-            <template v-if="can.run.deployment" #additional-items>
-              <DeploymentQuickRunOverflowMenuItem :deployment-id="row.id" />
-              <DeploymentCustomRunOverflowMenuItem :deployment-id="row.id" />
-            </template>
-          </DeploymentMenu>
+          <DeploymentMenu size="xs" :deployment="row" show-all @delete="refresh" />
         </div>
       </template>
 
@@ -82,7 +77,7 @@
   import { PTable, PTagWrapper, PEmptyResults, PLink, TableColumn } from '@prefecthq/prefect-design'
   import { useSubscription } from '@prefecthq/vue-compositions'
   import { computed, unref, ref } from 'vue'
-  import { SearchInput, ResultsCount, DeploymentToggle, DeploymentMenu, FlowRouterLink, FlowCombobox, DeploymentsDeleteButton, SelectedCount, DeploymentQuickRunOverflowMenuItem, DeploymentCustomRunOverflowMenuItem } from '@/components'
+  import { SearchInput, ResultsCount, DeploymentToggle, DeploymentMenu, FlowRouterLink, FlowCombobox, DeploymentsDeleteButton, SelectedCount } from '@/components'
   import { useWorkspaceApi, useWorkspaceRoutes, useCan } from '@/compositions'
   import { UseDeploymentFilterArgs, useDeploymentFilterFromRoute } from '@/compositions/useDeploymentFilter'
   import { isRRuleSchedule, Schedule } from '@/models'
