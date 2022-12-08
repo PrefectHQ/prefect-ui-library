@@ -23,7 +23,6 @@
         <FlowRunTaskCount :tasks-count="tasksCount" />
       </template>
     </p-key-value>
-    <!-- <FlowRunTaskCountKeyValue :flow-run="flowRun" :alternate="alternate" /> -->
 
     <p-key-value v-if="can.read.deployment && flowRun.deploymentId" label="Deployment" :alternate="alternate">
       <template #value>
