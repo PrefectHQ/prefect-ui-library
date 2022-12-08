@@ -7,7 +7,7 @@
 
       <DeploymentMenu :deployment="deployment" @delete="handleDelete">
         <template v-if="can.run.deployment && !media.sm" #additional-items>
-          <DeploymentQuickRunOverflowMenuItem :deployment="deployment" />
+          <DeploymentQuickRunOverflowMenuItem :deployment-id="deployment.id" />
           <DeploymentCustomRunOverflowMenuItem :deployment-id="deployment.id" />
         </template>
       </DeploymentMenu>

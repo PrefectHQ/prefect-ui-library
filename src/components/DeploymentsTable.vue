@@ -55,7 +55,7 @@
           <DeploymentToggle :deployment="row" @update="refresh" />
           <DeploymentMenu size="xs" :deployment="row" @delete="refresh">
             <template v-if="can.run.deployment" #additional-items>
-              <DeploymentQuickRunOverflowMenuItem :deployment="row" />
+              <DeploymentQuickRunOverflowMenuItem :deployment-id="row.id" />
               <DeploymentCustomRunOverflowMenuItem :deployment-id="row.id" />
             </template>
           </DeploymentMenu>

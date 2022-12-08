@@ -13,7 +13,7 @@
       </p-button>
     </template>
     <p-overflow-menu class="run-menu__overflow-menu" @click="close">
-      <DeploymentQuickRunOverflowMenuItem :deployment="deployment" />
+      <DeploymentQuickRunOverflowMenuItem :deployment-id="deployment.id" />
       <DeploymentCustomRunOverflowMenuItem :deployment-id="deployment.id" />
     </p-overflow-menu>
   </p-pop-over>

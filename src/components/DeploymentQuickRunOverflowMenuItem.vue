@@ -13,10 +13,9 @@
   import ToastFlowRunCreate from './ToastFlowRunCreate.vue'
   import { useWorkspaceApi, useWorkspaceRoutes } from '@/compositions'
   import { localization } from '@/localization'
-  import { Deployment } from '@/models'
 
   const props = defineProps<{
-    deployment: Deployment,
+    deploymentId: string,
   }>()
 
   const api = useWorkspaceApi()
@@ -25,7 +24,7 @@
 
   const run = async (): Promise<void> => {
     try {
-      const flowRun = await api.deployments.createDeploymentFlowRun(props.deployment.id, {
+      const flowRun = await api.deployments.createDeploymentFlowRun(props.deploymentId, {
         state: {
           type: 'scheduled',
           message: 'Run from the Prefect UI with defaults',
