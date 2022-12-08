@@ -35,7 +35,7 @@
       showToast(toastMessage, 'success')
     } catch (error) {
       showToast(localization.error.scheduleFlowRun, 'error')
-      console.warn(error)
+      console.error(error)
     }
   }
 </script>
