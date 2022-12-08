@@ -8,7 +8,7 @@
 
 <script lang="ts" setup>
   import PageHeading from '@/components/PageHeading.vue'
-  import  SavedFilters from '@/components/SavedFilters.vue'
+  import SavedFilters from '@/components/SavedFilters.vue'
 
 
   defineProps<{
