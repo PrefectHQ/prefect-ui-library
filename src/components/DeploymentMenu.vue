@@ -1,6 +1,8 @@
 <template>
   <p-icon-button-menu v-bind="$attrs">
-    <slot name="additional-items" />
+    <DeploymentQuickRunOverflowMenuItem v-if="can.run.deployment && showAll" :deployment-id="deployment.id" />
+
+    <DeploymentCustomRunOverflowMenuItem v-if="can.run.deployment && showAll" :deployment-id="deployment.id" />
 
     <copy-overflow-menu-item label="Copy ID" :item="deployment.id" />
 
@@ -31,16 +33,14 @@
 </script>
 
 <script lang="ts" setup>
-  import ConfirmDeleteModal from '@/components/ConfirmDeleteModal.vue'
-  import CopyOverflowMenuItem from '@/components/CopyOverflowMenuItem.vue'
-  import { useWorkspaceApi, useWorkspaceRoutes } from '@/compositions'
-  import { useCan } from '@/compositions/useCan'
-  import { useShowModal } from '@/compositions/useShowModal'
+  import { DeploymentQuickRunOverflowMenuItem, ConfirmDeleteModal, CopyOverflowMenuItem } from '@/components'
+  import { useWorkspaceApi, useWorkspaceRoutes, useCan, useShowModal } from '@/compositions'
   import { Deployment } from '@/models'
   import { deleteItem } from '@/utilities'
 
   defineProps<{
     deployment: Deployment,
+    showAll?: boolean,
   }>()
 
   const emits = defineEmits<{

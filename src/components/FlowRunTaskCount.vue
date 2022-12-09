@@ -1,24 +1,19 @@
 <template>
-  <template v-if="tasksCount">
-    <div class="flow-run-task-count">
-      <p-icon-text icon="Task">
-        <slot v-bind="{ tasksCount }">
-          {{ tasksCount }}
-        </slot>
-      </p-icon-text>
-    </div>
-  </template>
+  <p-icon-text v-if="tasksCount" icon="Task" class="flow-run-task-count">
+    <slot v-bind="{ count }">
+      {{ label }}
+    </slot>
+  </p-icon-text>
 </template>
 
 <script lang="ts" setup>
   import { computed } from 'vue'
-  import { useTaskRunsCount } from '@/compositions'
-  import { FlowRun } from '@/models/FlowRun'
 
   const props = defineProps<{
-    flowRun: FlowRun,
+    tasksCount: number | undefined,
   }>()
 
-  const flowRunId = computed(()=>props.flowRun.id)
-  const tasksCount = useTaskRunsCount(flowRunId)
+  const count = computed(() => props.tasksCount)
+
+  const label = computed(() => !count.value || count.value == 0 ? 'None' : count.value)
 </script>

@@ -18,7 +18,11 @@
       </template>
     </p-key-value>
 
-    <FlowRunTaskCountKeyValue :flow-run="flowRun" :alternate="alternate" />
+    <p-key-value label="Task Runs" :alternate="alternate">
+      <template v-if="tasksCount" #value>
+        <FlowRunTaskCount :tasks-count="tasksCount" />
+      </template>
+    </p-key-value>
 
     <p-key-value v-if="can.read.deployment && flowRun.deploymentId" label="Deployment" :alternate="alternate">
       <template #value>
@@ -95,17 +99,8 @@
   import { PKeyValue, PTags, PTextTruncate } from '@prefecthq/prefect-design'
   import { useSubscriptionWithDependencies } from '@prefecthq/vue-compositions'
   import { computed } from 'vue'
-  import DeploymentIconText from './DeploymentIconText.vue'
-  import DurationIconText from './DurationIconText.vue'
-  import FlowIconText from './FlowIconText.vue'
-  import FlowRunStartTime from './FlowRunStartTime.vue'
-  import FlowRunTaskCountKeyValue from './FlowRunTaskCountKeyValue.vue'
-  import RadarSmall from './RadarSmall.vue'
-  import WorkQueueStatusIcon from './WorkQueueStatusIcon.vue'
-  import  FlowRunIconText  from '@/components/FlowRunIconText.vue'
-  import  WorkQueueIconText  from '@/components/WorkQueueIconText.vue'
-  import { useWorkspaceApi, useWorkspaceRoutes } from '@/compositions'
-  import { useCan } from '@/compositions/useCan'
+  import  { WorkQueueIconText, FlowRunIconText, WorkQueueStatusIcon, RadarSmall, FlowRunTaskCount, FlowRunStartTime, FlowIconText, DurationIconText, DeploymentIconText }  from '@/components'
+  import { useTaskRunsCount, useWorkspaceApi, useWorkspaceRoutes, useCan } from '@/compositions'
   import { FlowRun } from '@/models/FlowRun'
   import { formatDateTimeNumeric } from '@/utilities/dates'
 
@@ -118,6 +113,10 @@
 
   const can = useCan()
   const routes = useWorkspaceRoutes()
+
+  const flowRunId = computed(() => props.flowRun.id)
+  const tasksCount = useTaskRunsCount(flowRunId)
+
   const flowRunFilter = computed<Parameters<typeof api.flowRuns.getFlowRuns> | null>(() => {
     if (props.flowRun.parentTaskRunId) {
       return [
