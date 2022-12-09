@@ -33,7 +33,7 @@
 </script>
 
 <script lang="ts" setup>
-  import { DeploymentQuickRunOverflowMenuItem, ConfirmDeleteModal, CopyOverflowMenuItem } from '@/components'
+  import { DeploymentQuickRunOverflowMenuItem, DeploymentCustomRunOverflowMenuItem, ConfirmDeleteModal, CopyOverflowMenuItem } from '@/components'
   import { useWorkspaceApi, useWorkspaceRoutes, useCan, useShowModal } from '@/compositions'
   import { Deployment } from '@/models'
   import { deleteItem } from '@/utilities'
