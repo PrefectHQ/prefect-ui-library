@@ -12,14 +12,11 @@
 </template>
 
 <script lang="ts">
-  import { PIconButtonMenu, POverflowMenuItem } from '@prefecthq/prefect-design'
-  import { defineComponent } from 'vue'
-
-  export default defineComponent({
+  export default {
     name: 'ConcurrencyLimitsMenu',
     expose: [],
     inheritAttrs: false,
-  })
+  }
 </script>
 
 <script lang="ts" setup>
