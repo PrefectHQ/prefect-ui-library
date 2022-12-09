@@ -111,6 +111,7 @@ export { default as PageHeadingBlocksCatalog } from './PageHeadingBlocksCatalog.
 export { default as PageHeadingBlocksCatalogCreate } from './PageHeadingBlocksCatalogCreate.vue'
 export { default as PageHeadingBlocksCatalogView } from './PageHeadingBlocksCatalogView.vue'
 export { default as PageHeadingConcurrencyLimit } from './PageHeadingConcurrencyLimit.vue'
+export { default as PageHeadingConcurrencyLimits } from './PageHeadingConcurrencyLimits.vue'
 export { default as PageHeadingDeployment } from './PageHeadingDeployment.vue'
 export { default as PageHeadingDeploymentEdit } from './PageHeadingDeploymentEdit.vue'
 export { default as PageHeadingDeployments } from './PageHeadingDeployments.vue'
