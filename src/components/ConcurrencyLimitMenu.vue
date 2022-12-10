@@ -13,18 +13,15 @@
 
 <script lang="ts">
   export default {
-    name: 'ConcurrencyLimitMenu',
+    name: 'ConcurrencyLimitsMenu',
     expose: [],
     inheritAttrs: false,
   }
 </script>
 
 <script lang="ts" setup>
-  import ConfirmDeleteModal from '@/components/ConfirmDeleteModal.vue'
-  import CopyOverflowMenuItem from '@/components/CopyOverflowMenuItem.vue'
-  import { useWorkspaceApi } from '@/compositions'
-  import { useCan } from '@/compositions/useCan'
-  import { useShowModal } from '@/compositions/useShowModal'
+  import { CopyOverflowMenuItem, ConfirmDeleteModal } from '@/components'
+  import { useShowModal, useCan, useWorkspaceApi } from '@/compositions'
   import { ConcurrencyLimit } from '@/models'
   import { deleteItem } from '@/utilities'
 
@@ -32,7 +29,7 @@
     concurrencyLimit: ConcurrencyLimit,
   }>()
 
-  const emits = defineEmits<{
+  const emit = defineEmits<{
     (event: 'delete', value: string): void,
   }>()
 
@@ -45,6 +42,6 @@
   const deleteConcurrencyLimit = async (id: string): Promise<void> => {
     close()
     await deleteItem(id, api.concurrencyLimits.deleteConcurrencyLimit, 'Concurrency Limit')
-    emits('delete', id)
+    emit('delete', id)
   }
 </script>
