@@ -27,6 +27,7 @@ export { default as ConcurrencyLimitActiveRuns } from './ConcurrencyLimitActiveR
 export { default as ConcurrencyLimitDetails } from './ConcurrencyLimitDetails.vue'
 export { default as ConcurrencyLimitsCreateModal } from './ConcurrencyLimitsCreateModal.vue'
 export { default as ConcurrencyLimitsTable } from './ConcurrencyLimitsTable.vue'
+export { default as ConcurrencyLimitsPageEmptyState } from './ConcurrencyLimitsPageEmptyState.vue'
 export { default as ConcurrencyLimitMenu } from './ConcurrencyLimitMenu.vue'
 export { default as ConcurrencyTableActiveSlots } from './ConcurrencyTableActiveSlots.vue'
 export { default as ConfirmDeleteModal } from './ConfirmDeleteModal.vue'
