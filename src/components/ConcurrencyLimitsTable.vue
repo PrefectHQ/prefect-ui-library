@@ -1,6 +1,6 @@
 <template>
-  <ConcurrencyLimitsPageEmptyState v-if="empty" />
-  <p-table v-else-if="concurrencyLimits" class="concurrency-limits-table__table" :columns="columns" :data="concurrencyLimits">
+  <ConcurrencyLimitsPageEmptyState v-if="empty && loaded" />
+  <p-table v-else class="concurrency-limits-table__table" :columns="columns" :data="concurrencyLimits">
     <template #active-task-runs="{ row }">
       <ConcurrencyTableActiveSlots v-if="row.activeSlots" :active-slots="row.activeSlots" />
     </template>
@@ -50,6 +50,7 @@
   ]
 
   const concurrencyLimitSubscription = useSubscription(api.concurrencyLimits.getConcurrencyLimits)
-  const concurrencyLimits = computed(() => concurrencyLimitSubscription.response)
-  const empty = computed(()=> concurrencyLimits.value && !concurrencyLimits.value.length)
+  const concurrencyLimits = computed(() => concurrencyLimitSubscription.response ?? [])
+  const empty = computed(()=> concurrencyLimitSubscription.executed && !concurrencyLimits.value.length)
+  const loaded = computed(() => concurrencyLimitSubscription.executed)
 </script>
