@@ -1,5 +1,6 @@
 <template>
-  <p-table class="concurrency-limits-table__table" :columns="columns" :data="concurrencyLimits">
+  <ConcurrencyLimitsPageEmptyState v-if="empty && loaded" />
+  <p-table v-else class="concurrency-limits-table__table" :columns="columns" :data="concurrencyLimits">
     <template #active-task-runs="{ row }">
       <ConcurrencyTableActiveSlots v-if="row.activeSlots" :active-slots="row.activeSlots" />
     </template>
@@ -25,7 +26,7 @@
 <script lang="ts" setup>
   import { useSubscription } from '@prefecthq/vue-compositions'
   import { computed } from 'vue'
-  import { ConcurrencyTableActiveSlots, ConcurrencyLimitMenu } from '@/components'
+  import { ConcurrencyTableActiveSlots, ConcurrencyLimitMenu, ConcurrencyLimitsPageEmptyState } from '@/components'
   import { useWorkspaceApi } from '@/compositions'
 
   const api = useWorkspaceApi()
@@ -50,4 +51,6 @@
 
   const concurrencyLimitSubscription = useSubscription(api.concurrencyLimits.getConcurrencyLimits)
   const concurrencyLimits = computed(() => concurrencyLimitSubscription.response ?? [])
+  const empty = computed(()=> concurrencyLimitSubscription.executed && !concurrencyLimits.value.length)
+  const loaded = computed(() => concurrencyLimitSubscription.executed)
 </script>
