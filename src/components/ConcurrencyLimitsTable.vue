@@ -26,8 +26,7 @@
 <script lang="ts" setup>
   import { useSubscription } from '@prefecthq/vue-compositions'
   import { computed } from 'vue'
-  import ConcurrencyLimitsPageEmptyState from './ConcurrencyLimitsPageEmptyState.vue'
-  import { ConcurrencyTableActiveSlots, ConcurrencyLimitMenu } from '@/components'
+  import { ConcurrencyTableActiveSlots, ConcurrencyLimitMenu, ConcurrencyLimitsPageEmptyState } from '@/components'
   import { useWorkspaceApi } from '@/compositions'
 
   const api = useWorkspaceApi()
