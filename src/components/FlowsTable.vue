@@ -67,7 +67,7 @@
 </template>
 
 <script lang="ts" setup>
-  import { PTable, PEmptyResults, PLink } from '@prefecthq/prefect-design'
+  import { PTable, PEmptyResults, PLink, CheckboxModel } from '@prefecthq/prefect-design'
   import { useSubscription } from '@prefecthq/vue-compositions'
   import { computed, ref } from 'vue'
   import { FlowsDeleteButton, DeploymentsCount, ResultsCount, SearchInput, FlowActivityChart, FlowMenu, SelectedCount } from '@/components'
@@ -118,7 +118,7 @@
   ]
 
   const selectedFlows = ref<string[]>([])
-  const selectAllFlows = (allFlowsSelected: boolean): string[] => {
+  const selectAllFlows = (allFlowsSelected: CheckboxModel): string[] => {
     if (allFlowsSelected) {
       return selectedFlows.value = [...flows.value.map(flow => flow.id)]
     }

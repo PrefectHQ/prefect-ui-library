@@ -66,7 +66,7 @@
 </template>
 
 <script lang="ts" setup>
-  import { PTable, PEmptyResults, PLink } from '@prefecthq/prefect-design'
+  import { PTable, PEmptyResults, PLink, CheckboxModel } from '@prefecthq/prefect-design'
   import { computed, ref } from 'vue'
   import { WorkQueueToggle, WorkQueueMenu, WorkQueueLateIndicator, SearchInput, ResultsCount, WorkQueueLastPolled, WorkQueueStatusBadge, SelectedCount, WorkQueuesDeleteButton } from '@/components'
   import { useCan, useWorkspaceRoutes } from '@/compositions'
@@ -110,7 +110,7 @@
   ]
 
   const selectedWorkQueues = ref<string[]>([])
-  const selectAllWorkQueues = (allWorkQueuesSelected: boolean): string[] => {
+  const selectAllWorkQueues = (allWorkQueuesSelected: CheckboxModel): string[] => {
     if (allWorkQueuesSelected) {
       return selectedWorkQueues.value = [...filteredWorkQueues.value.map(workQueue => workQueue.id)]
     }
