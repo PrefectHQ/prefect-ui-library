@@ -74,7 +74,7 @@
 </template>
 
 <script lang="ts" setup>
-  import { PTable, PTagWrapper, PEmptyResults, PLink, TableColumn } from '@prefecthq/prefect-design'
+  import { PTable, PTagWrapper, PEmptyResults, PLink, TableColumn, CheckboxModel } from '@prefecthq/prefect-design'
   import { useSubscription } from '@prefecthq/vue-compositions'
   import { computed, unref, ref } from 'vue'
   import { SearchInput, ResultsCount, DeploymentToggle, DeploymentMenu, FlowRouterLink, FlowCombobox, DeploymentsDeleteButton, SelectedCount } from '@/components'
@@ -133,7 +133,7 @@
   ])
 
   const selectedDeployments = ref<string[]>([])
-  const selectAllDeployments = (allDeploymentsSelected: boolean): string[] => {
+  const selectAllDeployments = (allDeploymentsSelected: CheckboxModel): string[] => {
     if (allDeploymentsSelected) {
       return selectedDeployments.value = [...deployments.value.map(deployment => deployment.id)]
     }
