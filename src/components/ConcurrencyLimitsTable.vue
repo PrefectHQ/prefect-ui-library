@@ -1,6 +1,6 @@
 <template>
   <ConcurrencyLimitsPageEmptyState v-if="empty && loaded" />
-  <p-table v-else-if="concurrencyLimits" class="concurrency-limits-table__table" :columns="columns" :data="concurrencyLimits">
+  <p-table v-else class="concurrency-limits-table__table" :columns="columns" :data="concurrencyLimits">
     <template #tag="{ row }">
       <p-link :to="routes.concurrencyLimit(row.id)">
         {{ row.tag }}
