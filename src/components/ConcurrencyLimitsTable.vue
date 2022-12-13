@@ -55,8 +55,8 @@
   ]
 
   const concurrencyLimitSubscription = useSubscription(api.concurrencyLimits.getConcurrencyLimits)
-  const concurrencyLimits = computed(() => concurrencyLimitSubscription.response)
-  const empty = computed(() => concurrencyLimits.value && !concurrencyLimits.value.length)
+  const concurrencyLimits = computed(() => concurrencyLimitSubscription.response ?? [])
+  const empty = computed(() => concurrencyLimitSubscription.executed && !concurrencyLimits.value.length)
   const loaded = computed(() => concurrencyLimitSubscription.executed)
 
   const routes = useWorkspaceRoutes()
