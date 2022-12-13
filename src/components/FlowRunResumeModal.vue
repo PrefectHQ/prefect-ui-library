@@ -4,7 +4,7 @@
       <StateBadge :state="flowRun.state" />
     </p-label>
     <div>
-      Do you want to resume {{ flowRun.name }}. This will put flow run into a <StateBadge :state="{ name: 'Running', type: 'running' }" class="flow-run-resume-modal__state-badge" /> state.
+      Do you want to resume {{ flowRun.name }}?
     </div>
 
     <template #actions>
