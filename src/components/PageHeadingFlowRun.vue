@@ -4,10 +4,12 @@
       <StateBadge :state="flowRun.state" />
     </template>
     <template #actions>
-      <FlowRunPauseButton v-if="media.sm" :flow-run="flowRun" />
-      <FlowRunResumeButton v-if="media.sm" :flow-run="flowRun" />
-      <FlowRunRetryButton v-if="media.sm" :flow-run="flowRun" />
-      <FlowRunCancelButton v-if="media.sm" :flow-run="flowRun" />
+      <template v-if="media.sm">
+        <FlowRunPauseButton :flow-run="flowRun" />
+        <FlowRunResumeButton :flow-run="flowRun" />
+        <FlowRunRetryButton :flow-run="flowRun" />
+        <FlowRunCancelButton :flow-run="flowRun" />
+      </template>
       <FlowRunMenu :flow-run-id="flowRun.id" :show-all="!media.sm" @delete="emit('delete')" />
     </template>
   </page-heading>
