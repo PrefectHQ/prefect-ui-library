@@ -4,9 +4,10 @@
       <StateBadge :state="flowRun.state" />
     </template>
     <template #actions>
-      <FlowRunCancelButton v-if="media.sm" :flow-run="flowRun" />
+      <FlowRunPauseButton v-if="media.sm" :flow-run="flowRun" />
       <FlowRunResumeButton v-if="media.sm" :flow-run="flowRun" />
       <FlowRunRetryButton v-if="media.sm" :flow-run="flowRun" />
+      <FlowRunCancelButton v-if="media.sm" :flow-run="flowRun" />
       <FlowRunMenu :flow-run-id="flowRun.id" :show-all="!media.sm" @delete="emit('delete')" />
     </template>
   </page-heading>
@@ -16,8 +17,7 @@
   import { media } from '@prefecthq/prefect-design'
   import { useSubscription } from '@prefecthq/vue-compositions'
   import { computed } from 'vue'
-  import FlowRunMenu from './FlowRunMenu.vue'
-  import { StateBadge, PageHeading,  FlowRunRetryButton, FlowRunResumeButton, FlowRunCancelButton } from '@/components'
+  import { StateBadge, PageHeading,  FlowRunRetryButton, FlowRunResumeButton, FlowRunCancelButton, FlowRunPauseButton, FlowRunMenu } from '@/components'
   import { useWorkspaceApi, useWorkspaceRoutes } from '@/compositions'
 
   const props = defineProps<{
