@@ -21,12 +21,13 @@
 
   const api = useWorkspaceApi()
 
-  const graphSubscription = useSubscription(api.flowRuns.getFlowRunsGraph, [props.flowRunId])
+  const graphSubscription = useSubscription(api.flowRuns.getFlowRunsGraph, [props.flowRunId]) // { interval:  5000 }
   const graphData = computed(() => {
     const data: ModifiedGraphData = [...graphSubscription.response ?? []]
 
     // fill in downstreamDependencies from upstreamDependencies
     // @TODO this should be done on the backend
+    // after, sort by startTime
     const formattedData = data.map(node => {
       const nodeClone = { ...node }
       if (
@@ -50,9 +51,18 @@
       })
 
       return nodeClone
+    }).sort((a, b) => {
+      if (a.startTime && b.startTime) {
+        return a.startTime.getTime() > b.startTime.getTime() ? 1 : -1
+      }
+      return 0
     })
 
     return formattedData
+  })
+
+  watchEffect(() => {
+    console.log('DATA', graphData.value)
   })
 
   type LayersEngine = {
@@ -337,14 +347,6 @@
     return layersEngine.layers
   })
 
-
-  watchEffect(() => {
-    console.log({
-      data: graphData.value,
-      layers: layers.value,
-    })
-  })
-
   /**
    * Utility Functions
    */
@@ -374,7 +376,7 @@
 <style>
 .flow-run-graph {
   width: 100%;
-  height: calc(100vh - 198px);
+  height: 50vh;
   min-height: 600px;
 }
 </style>
