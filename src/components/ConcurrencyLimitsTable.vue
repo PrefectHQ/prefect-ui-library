@@ -1,5 +1,5 @@
 <template>
-  <ConcurrencyLimitsPageEmptyState v-if="empty" />
+  <ConcurrencyLimitsPageEmptyState v-if="empty && loaded" />
   <p-table v-else-if="concurrencyLimits" class="concurrency-limits-table__table" :columns="columns" :data="concurrencyLimits">
     <template #tag="{ row }">
       <p-link :to="routes.concurrencyLimit(row.id)">
@@ -57,6 +57,7 @@
   const concurrencyLimitSubscription = useSubscription(api.concurrencyLimits.getConcurrencyLimits)
   const concurrencyLimits = computed(() => concurrencyLimitSubscription.response)
   const empty = computed(() => concurrencyLimits.value && !concurrencyLimits.value.length)
+  const loaded = computed(() => concurrencyLimitSubscription.executed)
 
   const routes = useWorkspaceRoutes()
 </script>
