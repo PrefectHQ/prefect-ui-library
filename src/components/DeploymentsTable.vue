@@ -53,7 +53,7 @@
       <template #action="{ row }">
         <div class="deployments-table__actions">
           <DeploymentToggle :deployment="row" @update="refresh" />
-          <DeploymentMenu size="xs" :deployment="row" @delete="refresh" />
+          <DeploymentMenu size="xs" :deployment="row" show-all @delete="refresh" />
         </div>
       </template>
 
@@ -74,11 +74,10 @@
 </template>
 
 <script lang="ts" setup>
-  import { PTable, PTagWrapper, PEmptyResults, PLink, TableColumn } from '@prefecthq/prefect-design'
+  import { PTable, PTagWrapper, PEmptyResults, PLink, TableColumn, CheckboxModel } from '@prefecthq/prefect-design'
   import { useSubscription } from '@prefecthq/vue-compositions'
   import { computed, unref, ref } from 'vue'
   import { SearchInput, ResultsCount, DeploymentToggle, DeploymentMenu, FlowRouterLink, FlowCombobox, DeploymentsDeleteButton, SelectedCount } from '@/components'
-
   import { useWorkspaceApi, useWorkspaceRoutes, useCan } from '@/compositions'
   import { UseDeploymentFilterArgs, useDeploymentFilterFromRoute } from '@/compositions/useDeploymentFilter'
   import { isRRuleSchedule, Schedule } from '@/models'
@@ -134,7 +133,7 @@
   ])
 
   const selectedDeployments = ref<string[]>([])
-  const selectAllDeployments = (allDeploymentsSelected: boolean): string[] => {
+  const selectAllDeployments = (allDeploymentsSelected: CheckboxModel): string[] => {
     if (allDeploymentsSelected) {
       return selectedDeployments.value = [...deployments.value.map(deployment => deployment.id)]
     }
@@ -215,5 +214,6 @@
 .deployments-table__actions { @apply
   flex
   gap-2
+  items-center
 }
 </style>

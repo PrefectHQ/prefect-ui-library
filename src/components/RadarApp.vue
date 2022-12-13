@@ -75,8 +75,8 @@
     return props.flowRunId
   })
 
-  const graphSubscription = useSubscription(api.flowRuns.getFlowRunsGraph, [flowRunId])
-  const flowRunSubscription = useSubscription(api.flowRuns.getFlowRun, [flowRunId])
+  const graphSubscription = useSubscription(api.flowRuns.getFlowRunsGraph, [flowRunId], { interval: 5000 })
+  const flowRunSubscription = useSubscription(api.flowRuns.getFlowRun, [flowRunId], { interval: 5000 })
 
   const flowRunGraphNode = computed(() => {
     if (!flowRunSubscription.response) {

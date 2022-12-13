@@ -28,7 +28,7 @@
   defineProps<{
     title?: string,
     subtitle?: string,
-    command: string,
+    command: string | string[],
   }>()
 
   const slots = useSlots()

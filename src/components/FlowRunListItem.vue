@@ -16,9 +16,9 @@
         <FlowRunStartTime :flow-run="flowRun" />
         <DurationIconText :duration="flowRun.duration" />
         <template v-if="visible && flowRun.stateType !== 'scheduled'">
-          <FlowRunTaskCount :flow-run="flowRun">
-            <template #default="{ tasksCount }">
-              {{ tasksCount }} task {{ toPluralString('run', tasksCount) }}
+          <FlowRunTaskCount :tasks-count="tasksCount">
+            <template #default="{ count }">
+              {{ count }} task {{ toPluralString('run', count) }}
             </template>
           </FlowRunTaskCount>
         </template>
@@ -51,7 +51,7 @@
   import FlowRunStartTime from '@/components/FlowRunStartTime.vue'
   import StateBadge from '@/components/StateBadge.vue'
   import StateListItem from '@/components/StateListItem.vue'
-  import { useWorkspaceRoutes } from '@/compositions'
+  import { useTaskRunsCount, useWorkspaceRoutes } from '@/compositions'
   import { FlowRun } from '@/models/FlowRun'
   import { toPluralString } from '@/utilities'
 
@@ -78,6 +78,9 @@
   const stateType = computed(() => props.flowRun.state?.type)
   const tags = computed(() => props.flowRun.tags)
   const value = computed(() => props.flowRun.id)
+
+  const flowRunId = computed(() => props.flowRun.id)
+  const tasksCount = useTaskRunsCount(flowRunId)
 
   const visible = ref(false)
   const el = ref<HTMLDivElement>()

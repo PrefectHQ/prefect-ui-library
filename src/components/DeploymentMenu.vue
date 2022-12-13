@@ -1,6 +1,8 @@
 <template>
   <p-icon-button-menu v-bind="$attrs">
-    <slot name="additional-items" />
+    <DeploymentQuickRunOverflowMenuItem v-if="can.run.deployment && showAll" :deployment-id="deployment.id" />
+
+    <DeploymentCustomRunOverflowMenuItem v-if="can.run.deployment && showAll" :deployment-id="deployment.id" />
 
     <copy-overflow-menu-item label="Copy ID" :item="deployment.id" />
 
@@ -20,27 +22,22 @@
 </template>
 
 <script lang="ts">
-  import { PIconButtonMenu, POverflowMenuItem } from '@prefecthq/prefect-design'
-  import { defineComponent } from 'vue'
-
-  export default defineComponent({
+  export default {
     name: 'DeploymentMenu',
     expose: [],
     inheritAttrs: false,
-  })
+  }
 </script>
 
 <script lang="ts" setup>
-  import ConfirmDeleteModal from '@/components/ConfirmDeleteModal.vue'
-  import CopyOverflowMenuItem from '@/components/CopyOverflowMenuItem.vue'
-  import { useWorkspaceApi, useWorkspaceRoutes } from '@/compositions'
-  import { useCan } from '@/compositions/useCan'
-  import { useShowModal } from '@/compositions/useShowModal'
+  import { DeploymentQuickRunOverflowMenuItem, DeploymentCustomRunOverflowMenuItem, ConfirmDeleteModal, CopyOverflowMenuItem } from '@/components'
+  import { useWorkspaceApi, useWorkspaceRoutes, useCan, useShowModal } from '@/compositions'
   import { Deployment } from '@/models'
   import { deleteItem } from '@/utilities'
 
   defineProps<{
     deployment: Deployment,
+    showAll?: boolean,
   }>()
 
   const emits = defineEmits<{

@@ -1,7 +1,7 @@
+/* eslint-disable camelcase */
 import { useSubscriptionWithDependencies } from '@prefecthq/vue-compositions'
 import { computed, ComputedRef, Ref, ref } from 'vue'
-import { useCan } from '@/compositions/useCan'
-import { useWorkspaceApi } from '@/compositions/useWorkspaceApi'
+import { useCan, useWorkspaceApi } from '@/compositions'
 
 export function useTaskRunsCount(flowRunId: string | Ref<string | null | undefined>): ComputedRef<number | undefined> {
   const api = useWorkspaceApi()
@@ -19,10 +19,14 @@ export function useTaskRunsCount(flowRunId: string | Ref<string | null | undefin
 
     return [
       {
-        // eslint-disable-next-line camelcase
         flow_runs: {
           id: {
             any_: [id.value],
+          },
+        },
+        task_runs: {
+          subflow_runs: {
+            exists_: false,
           },
         },
       },

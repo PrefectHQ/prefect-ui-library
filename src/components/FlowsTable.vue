@@ -10,6 +10,7 @@
 
       <SearchInput v-model="name" placeholder="Search flows" label="Search flows" />
       <p-select v-model="sort" :options="flowSortOptions" />
+      <p-tags-input v-model="tags" empty-message="Flow run tags" class="flows-table__tags" />
     </div>
 
     <p-table :data="flows" :columns="columns">
@@ -66,7 +67,7 @@
 </template>
 
 <script lang="ts" setup>
-  import { PTable, PEmptyResults, PLink } from '@prefecthq/prefect-design'
+  import { PTable, PEmptyResults, PLink, CheckboxModel } from '@prefecthq/prefect-design'
   import { useSubscription } from '@prefecthq/vue-compositions'
   import { computed, ref } from 'vue'
   import { FlowsDeleteButton, DeploymentsCount, ResultsCount, SearchInput, FlowActivityChart, FlowMenu, SelectedCount } from '@/components'
@@ -82,7 +83,7 @@
   const can = useCan()
   const routes = useWorkspaceRoutes()
   const filter = computed(() => props.filter ?? {})
-  const { name, sort, filter: unionFilter } = useFlowFilterFromRoute(filter)
+  const { name, sort, tags, filter: unionFilter } = useFlowFilterFromRoute(filter)
 
   const columns = [
     {
@@ -117,7 +118,7 @@
   ]
 
   const selectedFlows = ref<string[]>([])
-  const selectAllFlows = (allFlowsSelected: boolean): string[] => {
+  const selectAllFlows = (allFlowsSelected: CheckboxModel): string[] => {
     if (allFlowsSelected) {
       return selectedFlows.value = [...flows.value.map(flow => flow.id)]
     }
@@ -146,6 +147,7 @@
 
   function clear(): void {
     name.value = ''
+    tags.value = []
   }
 
   const emit = defineEmits<{
@@ -189,7 +191,8 @@
   mb-4
 }
 
-.flows-table__deployments {
+.flows-table__deployments,
+.flows-table__tags {
   min-width: 128px;
 }
 
