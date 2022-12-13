@@ -20,11 +20,14 @@
   import { useCan } from '@/compositions/useCan'
   import { useShowModal } from '@/compositions/useShowModal'
   import { FlowRun, isPausedStateType } from '@/models'
+
   const props = defineProps<{
     flowRun: FlowRun,
   }>()
+
   const can = useCan()
   const { showModal, open } = useShowModal()
+
   const canResume = computed(()=> {
     if (!can.update.flow_run || !props.flowRun.stateType) {
       return false
