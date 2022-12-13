@@ -44,7 +44,7 @@
     },
   })
 
-  const flowRunSubscription =  useSubscription(api.flowRuns.getFlowRun, [props.flowRunId], { interval: 30000 })
+  const flowRunSubscription =  useSubscription(api.flowRuns.getFlowRun, [props.flowRunId])
   const flowRun = computed(() => flowRunSubscription.response)
 
   const pause  = async (): Promise<void>=> {
