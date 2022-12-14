@@ -75,8 +75,6 @@
       .then(newTextStyles => {
         textStyles = newTextStyles
         initTimelineGuides()
-
-        // @TODO after rendering content update the viewport clamp bounds so the height of content is well covered.
         initContent()
       })
   })
@@ -255,15 +253,8 @@
     })
   }
 
-
-  // @TODO
-  // Draw from the left negative margin to the right positive margin
-  // save each guide, update their x position on zoom to the world x of viewport
-  // if timelineGuidesCurrentTimeGap changes, redraw
-
   let timelineGuides: Record<string, Container> = {}
   let previousTimelineGuidesTimeGap: number = 0
-
   function updateTimelineGuides(): void {
     setTimelineGuidesCurrentTimeGap()
 
@@ -487,28 +478,20 @@
 
   function renderNodes(): Container {
     const nodesContainer = new Container()
-    props.layers.forEach((layer, layerIndex) => {
-      Object.keys(layer).forEach(nodeId => {
-        const node = props.graphData.find(node => node.id === nodeId)
 
-        if (!node) {
-          console.error(`Node with id ${nodeId} not found`)
-          return
-        }
-
-        const { nodeContainer } = createNode({
-          node,
-          textStyles,
-        })
-
-        nodeContainer.position.set(
-          layerIndex * 800,
-          (layer[nodeId] - 1) * 200,
-        )
-
-        nodes[nodeId] = nodeContainer
-        nodesContainer.addChild(nodeContainer)
+    props.graphData.forEach((node, nodeIndex) => {
+      const { nodeContainer } = createNode({
+        node,
+        textStyles,
       })
+
+      nodeContainer.position.set(
+        node.startTime ? xScale(node.startTime) : 0,
+        nodeIndex * 120,
+      )
+
+      nodes[node.id] = nodeContainer
+      nodesContainer.addChild(nodeContainer)
     })
 
     viewport.addChild(nodesContainer)
@@ -535,20 +518,32 @@
     textStyles,
   }: CreateNodeProps): Record<string, Container> {
     const nodeContainer = new Container()
-    const label = new BitmapText(node.id, textStyles.nodeTextInverse)
-    const box = new Graphics()
     const stateFill = node.state?.name ? stateColors[node.state.name] : 0x9aa3b0
 
+    const width = node.endTime && node.startTime ? xScale(node.endTime) - xScale(node.startTime) : 50
+    let isLabelInBox = true
+
+    let label = new BitmapText('Task', textStyles.nodeTextInverse)
+    if (label.width >= width + 24 * 2) {
+      isLabelInBox = false
+      label.destroy()
+      label = new BitmapText('Task', textStyles.nodeTextDefault)
+    }
+
+    label.position.set(
+      isLabelInBox ? 24 : width + 4,
+      24,
+    )
+
+    const box = new Graphics()
     box.beginFill(stateFill)
     box.drawRoundedRect(
       0,
       0,
-      label.width + 24 * 2,
+      width,
       label.height + 24 * 2,
       12,
     )
-
-    label.position.set(24, 24)
 
     nodeContainer.addChild(box)
     nodeContainer.addChild(label)
