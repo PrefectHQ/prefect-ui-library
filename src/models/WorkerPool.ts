@@ -4,7 +4,7 @@ export interface IWorkerPool {
   updated: Date,
   name: string,
   description: string | null,
-  type: string,
+  type: string | null,
   isPaused: boolean,
   defaultQueueId: string,
   concurrencyLimit: number | null,
@@ -16,7 +16,7 @@ export class WorkerPool implements IWorkerPool {
   public updated: Date
   public name: string
   public description: string | null
-  public type: string
+  public type: string | null
   public isPaused: boolean
   public defaultQueueId: string
   public concurrencyLimit: number | null
