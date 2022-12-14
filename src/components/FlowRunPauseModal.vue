@@ -1,14 +1,14 @@
 <template>
-  <p-modal v-if="flowRun" v-model:showModal="internalValue" title="Resume Flow Run">
+  <p-modal v-if="flowRun" v-model:showModal="internalValue" title="Pause Flow Run">
     <p-label label="Current Flow Run State">
       <StateBadge :state="flowRun.state" />
     </p-label>
     <div>
-      Do you want to resume {{ flowRun.name }}?
+      Do you want to pause {{ flowRun.name }}? This will put flow run into a <StateBadge :state="{ name: 'Paused', type: 'paused' }" class="flow-run-pause-modal__state-badge" /> state.
     </div>
 
     <template #actions>
-      <p-button @click="resume">
+      <p-button @click="pause">
         Submit
       </p-button>
     </template>
@@ -19,9 +19,10 @@
   import { showToast } from '@prefecthq/prefect-design'
   import { useSubscription } from '@prefecthq/vue-compositions'
   import { computed } from 'vue'
-  import StateBadge from './StateBadge.vue'
+  import StateBadge from '@/components/StateBadge.vue'
   import { useWorkspaceApi } from '@/compositions'
   import { localization } from '@/localization'
+  import { StateUpdateDetails } from '@/models'
 
   const props = defineProps<{
     showModal: boolean,
@@ -43,24 +44,28 @@
     },
   })
 
-  const flowRunSubscription =  useSubscription(api.flowRuns.getFlowRun, [props.flowRunId], { interval: 30000 })
+  const flowRunSubscription =  useSubscription(api.flowRuns.getFlowRun, [props.flowRunId])
   const flowRun = computed(() => flowRunSubscription.response)
 
-  const resume  = async (): Promise<void>=> {
+  const pause  = async (): Promise<void>=> {
     try {
-      await api.flowRuns.resumeFlowRun(props.flowRunId)
+      const values: StateUpdateDetails = {
+        type: 'paused',
+        name: 'Paused',
+      }
+      await api.flowRuns.setFlowRunState(props.flowRunId, { state: values })
       flowRunSubscription.refresh()
       internalValue.value = false
-      showToast(localization.success.resumeFlowRun, 'success')
+      showToast(localization.success.pauseFlowRun, 'success')
     } catch (error) {
       console.error(error)
-      showToast(localization.error.resumeFlowRun, 'error')
+      showToast(localization.error.pauseFlowRun, 'error')
     }
   }
 </script>
 
 <style>
-.flow-run-resume-modal__state-badge { @apply
+.flow-run-pause-modal__state-badge { @apply
     align-middle
 }
 </style>

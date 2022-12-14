@@ -39,3 +39,7 @@ export function isStuckStateType(value: string): value is StuckStateType {
 export function isPausedStateType(value: string): boolean {
   return value === 'paused'
 }
+
+export function isRunningStateType(value: string): boolean {
+  return value === 'running'
+}
