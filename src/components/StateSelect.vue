@@ -9,7 +9,6 @@
           class="state-select__option"
           :class="{ 'state-select__option--multiple': multiple }"
           :state="{ name: selectedOption.label, type: selectedOption.value as StateType }"
-          :flat="!multiple"
           :dismissible="multiple"
           @dismiss="unselectOption"
         />
@@ -22,12 +21,13 @@
   import { PSelect, SelectOption } from '@prefecthq/prefect-design'
   import { computed } from 'vue'
   import StateBadge from '@/components/StateBadge.vue'
-  import { stateType, StateType } from '@/models/StateType'
+  import { stateType, StateType, terminalStateType } from '@/models/StateType'
   import { capitalize } from '@/utilities'
 
   const props = defineProps<{
     selected: string | string[] | null | undefined,
     emptyMessage?: string,
+    terminalState?: boolean,
   }>()
 
   const emits = defineEmits<{
@@ -52,19 +52,21 @@
   const multiple = computed(() => Array.isArray(internalValue.value))
 
   const options = computed<SelectOption[]>(() => {
+    if (props.terminalState) {
+      return terminalStateType.map((state) => ({
+        label: capitalize(state),
+        value: state,
+      }))
+    }
+
     const stateMap = stateType.map((state) => ({ label: capitalize(state), value: state }))
 
-    return [...stateMap, { label: 'Late', value: 'late' }]
+    return [...stateMap, { label: 'Late', value: 'late' }, { label: 'Cancelling', value: 'cancelling' }]
   })
 </script>
 
 <style>
-.state-select__option:not(.state-select__option--multiple) { @apply
-  text-base
-  font-normal
-}
-
-.state-select__option:not(.state-select__option--multiple) .state-badge__icon { @apply
+.state-badge__icon { @apply
   w-5
   h-5
 }

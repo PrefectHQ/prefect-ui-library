@@ -13,7 +13,7 @@
           <div class="block-documents-table__name-content">
             <span class="block-documents-table__crumbs">
               {{ row.blockType.name }} /
-              <p-link :to="blockDocumentRoute(row.id)">
+              <p-link :to="routes.block(row.id)">
                 {{ row.name }}
               </p-link>
             </span>
@@ -61,9 +61,8 @@
   import BlockTypeSelect from './BlockTypeSelect.vue'
   import ResultsCount from './ResultsCount.vue'
   import SearchInput from './SearchInput.vue'
+  import { useWorkspaceRoutes } from '@/compositions'
   import { BlockDocument } from '@/models/BlockDocument'
-  import { blockRouteKey } from '@/router'
-  import { inject } from '@/utilities'
 
   const props = defineProps<{
     blockDocuments: BlockDocument[],
@@ -73,7 +72,7 @@
     (event: 'delete'): void,
   }>()
 
-  const blockDocumentRoute = inject(blockRouteKey)
+  const routes = useWorkspaceRoutes()
   const searchTerm = ref('')
   const selectedCapability = ref<string | null>(null)
   const selectedType = ref<string | null>(null)

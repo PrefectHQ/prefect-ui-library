@@ -1,71 +1,44 @@
 <template>
-  <page-heading class="page-heading-flow-run" :crumbs="crumbs">
-    <template #actions>
-      <FlowRunRetryButton :flow-run="flowRun" />
-      <p-icon-button-menu>
-        <template #default>
-          <copy-overflow-menu-item label="Copy ID" :item="flowRun.id" />
-          <p-overflow-menu-item v-if="can.delete.flow_run" label="Delete" @click="open" />
-        </template>
-      </p-icon-button-menu>
-      <ConfirmDeleteModal
-        v-model:showModal="showModal"
-        label="Flow Run"
-        :name="flowRun.name!"
-        @delete="deleteFlowRun(flowRun.id)"
-      />
+  <page-heading v-if="flowRun" class="page-heading-flow-run" :crumbs="crumbs">
+    <template #after-crumbs>
+      <StateBadge :state="flowRun.state" />
     </template>
-    <slot>
-      <div class="page-heading-flow-run__header-meta">
-        <StateBadge :state="flowRun.state" />
-        <DurationIconText :duration="flowRun.duration" />
-        <FlowIconText :flow-id="flowRun.flowId" />
-        <FlowRunStartTime :flow-run="flowRun" />
-      </div>
-    </slot>
+    <template #actions>
+      <FlowRunCancelButton v-if="media.sm" :flow-run="flowRun" />
+      <FlowRunResumeButton v-if="media.sm" :flow-run="flowRun" />
+      <FlowRunRetryButton v-if="media.sm" :flow-run="flowRun" />
+      <FlowRunMenu :flow-run-id="flowRun.id" :show-all="!media.sm" @delete="emit('delete')" />
+    </template>
   </page-heading>
 </template>
 
 <script lang="ts" setup>
-  import { PIconButtonMenu } from '@prefecthq/prefect-design'
+  import { media } from '@prefecthq/prefect-design'
+  import { useSubscription } from '@prefecthq/vue-compositions'
   import { computed } from 'vue'
-  import { StateBadge, PageHeading, DurationIconText, FlowIconText, CopyOverflowMenuItem, ConfirmDeleteModal, FlowRunStartTime, FlowRunRetryButton } from '@/components'
-  import { useWorkspaceApi } from '@/compositions'
-  import { useCan } from '@/compositions/useCan'
-  import { useShowModal } from '@/compositions/useShowModal'
-  import { FlowRun } from '@/models'
-  import { flowRunsRouteKey } from '@/router'
-  import { deleteItem, inject } from '@/utilities'
+  import FlowRunMenu from './FlowRunMenu.vue'
+  import { StateBadge, PageHeading,  FlowRunRetryButton, FlowRunResumeButton, FlowRunCancelButton } from '@/components'
+  import { useWorkspaceApi, useWorkspaceRoutes } from '@/compositions'
 
   const props = defineProps<{
-    flowRun: FlowRun,
+    flowRunId: string,
   }>()
 
-  const can = useCan()
   const api = useWorkspaceApi()
-  const { showModal, open } = useShowModal()
-  const flowRunsRoute = inject(flowRunsRouteKey)
+  const routes = useWorkspaceRoutes()
+
+  const emit = defineEmits<{
+    (event: 'delete'): void,
+  }>()
+
   // It doesn't seem like we should need to coalesce here but
   // the flow run model dictates the flow run name can be null
   const crumbs = computed(() => [
-    { text: 'Flow Runs', to: flowRunsRoute() },
-    { text: props.flowRun.name ?? '' },
+    { text: 'Flow Runs', to: routes.flowRuns() },
+    { text: flowRun.value?.name ?? '' },
   ])
 
-  const emit = defineEmits(['delete'])
-
-  const deleteFlowRun = async (id: string): Promise<void> => {
-    await deleteItem(id, api.flowRuns.deleteFlowRun, 'Flow run')
-    emit('delete', id)
-  }
+  const flowRunId = computed(() => props.flowRunId)
+  const flowRunSubscription =  useSubscription(api.flowRuns.getFlowRun, [flowRunId], { interval: 30000 })
+  const flowRun = computed(() => flowRunSubscription.response)
 </script>
-
-<style>
-.page-heading-flow-run__header-meta {
-  @apply
-  flex
-  gap-2
-  items-center
-  xl:hidden
-}
-</style>

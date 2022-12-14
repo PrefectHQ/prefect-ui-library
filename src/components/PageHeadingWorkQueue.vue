@@ -12,18 +12,17 @@
   import WorkQueueMenu from './WorkQueueMenu.vue'
   import PageHeading from '@/components/PageHeading.vue'
   import WorkQueueToggle from '@/components/WorkQueueToggle.vue'
+  import { useWorkspaceRoutes } from '@/compositions'
   import { WorkQueue } from '@/models'
-  import { workQueuesRouteKey } from '@/router'
-  import { inject } from '@/utilities'
 
   const props = defineProps<{
     workQueue: WorkQueue,
   }>()
 
-  const workQueueRoute = inject(workQueuesRouteKey)
+  const routes = useWorkspaceRoutes()
 
   const crumbs = computed(() => [
-    { text: 'Work Queues', to: workQueueRoute() },
+    { text: 'Work Queues', to: routes.workQueues() },
     { text: props.workQueue.name },
   ])
 

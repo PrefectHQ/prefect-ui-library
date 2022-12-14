@@ -6,7 +6,7 @@
       </div>
     </template>
 
-    <p-link v-if="taskRun" :to="taskRunRoute(taskRun.id)" class="radar-node-task-run__content">
+    <p-link v-if="taskRun" :to="routes.taskRun(taskRun.id)" class="radar-node-task-run__content">
       {{ taskRunName }}
     </p-link>
 
@@ -28,19 +28,17 @@
   import DurationIconText from './DurationIconText.vue'
   import ORadarNode from './RadarNode.vue'
   import StateIcon from './StateIcon.vue'
-  import { useWorkspaceApi } from '@/compositions'
+  import { useWorkspaceApi, useWorkspaceRoutes } from '@/compositions'
   import { TaskRun, GraphNode, StateType } from '@/models'
-  import { taskRunRouteKey } from '@/router/routes'
-  import { inject } from '@/utilities/inject'
 
   const props = defineProps<{
     graphNode: GraphNode,
   }>()
 
   const api = useWorkspaceApi()
-  const taskRunRoute = inject(taskRunRouteKey)
+  const routes = useWorkspaceRoutes()
 
-  const subscription = useSubscription(api.taskRuns.getTaskRun, [props.graphNode.id])
+  const subscription = useSubscription(api.taskRuns.getTaskRun, [props.graphNode.id], { interval: 5000 })
   const taskRun = computed<TaskRun | undefined>(() => subscription.response)
 
   const taskRunName = computed(() => taskRun.value?.name)

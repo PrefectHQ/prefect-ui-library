@@ -1,7 +1,5 @@
 <template>
   <div class="flow-run-details">
-    <StateBadge :state="flowRun.state" />
-
     <p-key-value label="Flow" :alternate="alternate">
       <template #value>
         <FlowIconText :flow-id="flowRun.flowId" />
@@ -20,11 +18,21 @@
       </template>
     </p-key-value>
 
-    <FlowRunTaskCountKeyValue :flow-run="flowRun" />
+    <p-key-value label="Task Runs" :alternate="alternate">
+      <template v-if="tasksCount" #value>
+        <FlowRunTaskCount :tasks-count="tasksCount" />
+      </template>
+    </p-key-value>
 
     <p-key-value v-if="can.read.deployment && flowRun.deploymentId" label="Deployment" :alternate="alternate">
       <template #value>
         <DeploymentIconText :deployment-id="flowRun.deploymentId" />
+      </template>
+    </p-key-value>
+
+    <p-key-value label="State Message" :alternate="alternate">
+      <template v-if="flowRun.state?.message" #value>
+        <p-text-truncate :text="flowRun.state?.message" />
       </template>
     </p-key-value>
 
@@ -49,7 +57,7 @@
 
     <p-divider />
 
-    <router-link :to="radarRoute(flowRun.id)" class="flow-run__small-radar-link">
+    <router-link :to="routes.flowRunRadar(flowRun.id)" class="flow-run__small-radar-link">
       <RadarSmall :flow-run-id="flowRun.id" class="flow-run__small-radar" />
     </router-link>
 
@@ -88,24 +96,12 @@
 </template>
 
 <script lang="ts" setup>
-  import { PKeyValue, PTags } from '@prefecthq/prefect-design'
+  import { PKeyValue, PTags, PTextTruncate } from '@prefecthq/prefect-design'
   import { useSubscriptionWithDependencies } from '@prefecthq/vue-compositions'
   import { computed } from 'vue'
-  import DeploymentIconText from './DeploymentIconText.vue'
-  import DurationIconText from './DurationIconText.vue'
-  import FlowIconText from './FlowIconText.vue'
-  import FlowRunStartTime from './FlowRunStartTime.vue'
-  import FlowRunTaskCountKeyValue from './FlowRunTaskCountKeyValue.vue'
-  import RadarSmall from './RadarSmall.vue'
-  import StateBadge from './StateBadge.vue'
-  import WorkQueueStatusIcon from './WorkQueueStatusIcon.vue'
-  import  FlowRunIconText  from '@/components/FlowRunIconText.vue'
-  import  WorkQueueIconText  from '@/components/WorkQueueIconText.vue'
-  import { useWorkspaceApi } from '@/compositions'
-  import { useCan } from '@/compositions/useCan'
+  import  { WorkQueueIconText, FlowRunIconText, WorkQueueStatusIcon, RadarSmall, FlowRunTaskCount, FlowRunStartTime, FlowIconText, DurationIconText, DeploymentIconText }  from '@/components'
+  import { useTaskRunsCount, useWorkspaceApi, useWorkspaceRoutes, useCan } from '@/compositions'
   import { FlowRun } from '@/models/FlowRun'
-  import { radarRouteKey } from '@/router'
-  import { inject } from '@/utilities'
   import { formatDateTimeNumeric } from '@/utilities/dates'
 
   const api = useWorkspaceApi()
@@ -116,6 +112,11 @@
   }>()
 
   const can = useCan()
+  const routes = useWorkspaceRoutes()
+
+  const flowRunId = computed(() => props.flowRun.id)
+  const tasksCount = useTaskRunsCount(flowRunId)
+
   const flowRunFilter = computed<Parameters<typeof api.flowRuns.getFlowRuns> | null>(() => {
     if (props.flowRun.parentTaskRunId) {
       return [
@@ -133,6 +134,7 @@
 
   const parentFlowRunListSubscription = useSubscriptionWithDependencies(api.flowRuns.getFlowRuns, flowRunFilter)
   const parentFlowRunList = computed(() => parentFlowRunListSubscription.response ?? [])
+
   const parentFlowRunId = computed(() => {
     if (!parentFlowRunList.value.length) {
       return
@@ -140,8 +142,6 @@
     const [value] = parentFlowRunList.value
     return value.id
   })
-
-  const radarRoute = inject(radarRouteKey)
 </script>
 
 <style>

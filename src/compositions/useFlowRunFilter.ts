@@ -1,7 +1,7 @@
-import { addDays, endOfToday, startOfToday, subDays } from 'date-fns'
 import { ComputedRef, ref, Ref } from 'vue'
 import { useFilter, UseFilterArgs } from './useFilter'
 import { FlowRunSortValues, MaybeRef, UnionFilters } from '@/types'
+import { dateFunctions } from '@/utilities/timezone'
 
 export type UseFlowRunFilterArgs = UseFilterArgs<FlowRunSortValues>
 
@@ -13,10 +13,10 @@ export type UseRecentFlowRunFilterArgs = Omit<UseFlowRunFilterArgs, 'startDate' 
 
 export function useRecentFlowRunFilter(filters: UseRecentFlowRunFilterArgs): Ref<UnionFilters> {
   const refs = { ...filters }
-  const startDate = ref<Date>(subDays(startOfToday(), 7))
-  const endDate = ref<Date>(addDays(endOfToday(), 1))
+  const startDate = ref<Date>(dateFunctions.subDays(dateFunctions.startOfToday(), 7))
+  const endDate = ref<Date>(dateFunctions.addDays(dateFunctions.endOfToday(), 1))
 
-  refs.sort ??= ref<FlowRunSortValues>('EXPECTED_START_TIME_DESC')
+  refs.sort ??= ref<FlowRunSortValues>('START_TIME_DESC')
 
   return useFlowRunFilter({ startDate, endDate, ...refs })
 }

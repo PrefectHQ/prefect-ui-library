@@ -5,7 +5,7 @@
     </template>
 
     <template #heading>
-      You haven't added a description to this deployment yet
+      Add deployment description
     </template>
 
     <template #description>
@@ -15,9 +15,9 @@
 
     <template #actions>
       <DocumentationButton topic="deployments" />
-      <router-link v-if="can.update.deployment" :to="editDeploymentRoute(deployment.id)">
+      <router-link v-if="can.update.deployment" :to="routes.deploymentEdit(deployment.id)">
         <p-button>
-          Add description
+          Add Description
         </p-button>
       </router-link>
     </template>
@@ -27,15 +27,13 @@
 <script lang="ts" setup>
   import { PEmptyState, PIcon } from '@prefecthq/prefect-design'
   import DocumentationButton from './DocumentationButton.vue'
-  import { useCan } from '@/compositions/useCan'
+  import { useCan, useWorkspaceRoutes } from '@/compositions'
   import { Deployment } from '@/models'
-  import { editDeploymentRouteKey } from '@/router'
-  import { inject } from '@/utilities'
 
   defineProps<{
     deployment: Deployment,
   }>()
 
   const can = useCan()
-  const editDeploymentRoute = inject(editDeploymentRouteKey)
+  const routes = useWorkspaceRoutes()
 </script>

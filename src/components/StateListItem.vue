@@ -72,6 +72,10 @@
   bg-state-pending-500
 }
 
+.state-list-item--paused .list-item-input__checkbox { @apply
+  bg-state-paused-500
+}
+
 .state-list-item--failed .list-item-input__checkbox { @apply
   bg-state-failed-500
 }

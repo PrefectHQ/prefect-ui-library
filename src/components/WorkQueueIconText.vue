@@ -1,6 +1,6 @@
 <template>
   <template v-if="workQueue">
-    <p-link :to="workQueueRoute(workQueue.id)">
+    <p-link :to="routes.workQueue(workQueue.id)">
       <p-icon-text icon="DatabaseIcon">
         {{ workQueue.name }}
       </p-icon-text>
@@ -16,17 +16,14 @@
 <script lang="ts" setup>
   import { useSubscription } from '@prefecthq/vue-compositions'
   import { computed } from 'vue'
-  import { useWorkspaceApi } from '@/compositions'
-  import { workQueueRouteKey } from '@/router/routes'
-  import { inject } from '@/utilities/inject'
+  import { useWorkspaceApi, useWorkspaceRoutes } from '@/compositions'
 
   const props = defineProps<{
     workQueueName: string,
   }>()
 
-  const workQueueRoute = inject(workQueueRouteKey)
-
   const api = useWorkspaceApi()
+  const routes = useWorkspaceRoutes()
 
   const workQueuesSubscription =  useSubscription(api.workQueues.getWorkQueueByName, [props.workQueueName])
   const workQueue = computed(() => workQueuesSubscription.response)

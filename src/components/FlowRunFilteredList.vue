@@ -1,10 +1,15 @@
 <template>
   <div class="flow-run-filtered-list">
     <div class="flow-run-filtered-list__controls">
-      <ResultsCount :count="flowRunCount" class="mr-auto" label="Flow run" />
+      <div class="flow-run-filtered-list__controls--right">
+        <ResultsCount v-if="selectedFlowRuns.length == 0" :count="flowRunCount" label="Flow run" />
+        <SelectedCount v-else :count="selectedFlowRuns.length" />
+
+        <FlowRunsDeleteButton v-if="can.delete.flow_run" :selected="selectedFlowRuns" @delete="deleteFlowRuns" />
+      </div>
+
       <StateSelect :selected="state" empty-message="All run states" class="flow-run-filtered-list__state-select" @update:selected="updateState" />
       <FlowRunsSort v-model="sort" class="flow-run-filtered-list__flow-runs-sort" />
-      <DeleteFlowRunsButton v-if="can.delete.flow_run" :selected="selectedFlowRuns" @delete="deleteFlowRuns" />
     </div>
     <FlowRunList v-model:selected="selectedFlowRuns" :flow-runs="flowRuns" :disabled="disabled || !can.delete.flow_run" @bottom="flowRunsSubscription.loadMore" />
     <PEmptyResults v-if="empty">
@@ -23,8 +28,7 @@
 <script lang="ts" setup>
   import { useSubscription } from '@prefecthq/vue-compositions'
   import { computed, onMounted, ref } from 'vue'
-  import { ResultsCount, StateSelect, FlowRunsSort, FlowRunList } from '@/components'
-  import DeleteFlowRunsButton from '@/components/DeleteFlowRunsButton.vue'
+  import { ResultsCount, StateSelect, FlowRunsSort, FlowRunList, SelectedCount, FlowRunsDeleteButton } from '@/components'
   import { useWorkspaceApi } from '@/compositions'
   import { useCan } from '@/compositions/useCan'
   import { usePaginatedSubscription } from '@/compositions/usePaginatedSubscription'
@@ -32,31 +36,33 @@
   import { mapper } from '@/services'
   import { FlowRunSortValues, UnionFilters } from '@/types'
 
-  type StateTypeOrLate = StateType | 'late'
+  type StateTypeOrStateName = StateType | 'late' | 'cancelling'
 
   const props = defineProps<{
     flowRunFilter: UnionFilters,
-    states?: StateTypeOrLate[],
+    states?: StateTypeOrStateName[],
     disabled?: boolean,
   }>()
 
   const emit = defineEmits<{
-    (event: 'update:states', value: StateTypeOrLate[]): void,
+    (event: 'update:states', value: StateTypeOrStateName[]): void,
   }>()
 
   const can = useCan()
   const api = useWorkspaceApi()
   const selectedFlowRuns = ref<string[]>([])
-  const state = ref<StateTypeOrLate[]>(props.states ?? [])
+  const state = ref<StateTypeOrStateName[]>(props.states ?? [])
   const stateWithoutLate = computed(()=> state.value.filter(state => state !== 'late') as StateType[])
   const stateIncludesLate = computed(()=>state.value.includes('late'))
+  const stateWithoutCancelling = computed(()=> state.value.filter(state => state !== 'cancelling') as StateType[])
+  const stateIncludesCancelling = computed(()=>state.value.includes('cancelling'))
 
   const updateState = (newValue: string | string[] | null): void => {
-    state.value = newValue as StateTypeOrLate[]
+    state.value = newValue as StateTypeOrStateName[]
     emit('update:states', state.value)
   }
 
-  const sort = ref<FlowRunSortValues>('EXPECTED_START_TIME_DESC')
+  const sort = ref<FlowRunSortValues>('START_TIME_DESC')
   const hasFilters = computed(() => state.value.length)
 
   const filter = computed<UnionFilters>(() => {
@@ -82,6 +88,24 @@
           operator: 'or_',
           name: {
             any_: ['Late'],
+          },
+        }
+      }
+    }
+
+    if (state.value.length) {
+      flowRunsFilter.state = {
+        type: {
+          any_: stateWithoutCancelling.value.map(state => mapper.map('StateType', state, 'ServerStateType')),
+        },
+      }
+
+      if (stateIncludesCancelling.value) {
+        flowRunsFilter.state = {
+          ...flowRunsFilter.state,
+          operator: 'or_',
+          name: {
+            any_: ['Cancelling'],
           },
         }
       }
@@ -127,6 +151,19 @@
   items-center
   flex-col
   sm:flex-row
+  sticky
+  top-0
+  bg-white
+  bg-opacity-90
+  py-2
+  z-10
+}
+
+.flow-run-filtered-list__controls--right { @apply
+  mr-auto
+  flex
+  gap-2
+  items-center
 }
 
 .flow-run-filtered-list__state-select { @apply

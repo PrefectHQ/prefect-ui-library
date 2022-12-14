@@ -93,3 +93,7 @@ export function mapEntries<PreviousKey extends ObjectKey, PreviousValue, NewKey 
 export function isEmptyObject(value: unknown): value is Record<string, never> {
   return typeof value === 'object' && !Array.isArray(value) && value !== null && Object.keys(value).length === 0
 }
+
+export function isTypeRequired<T extends Record<string | number | symbol, unknown>>(value: Partial<T>): value is Required<T> {
+  return Object.values(value).every(value => value !== undefined)
+}

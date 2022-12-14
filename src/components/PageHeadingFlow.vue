@@ -10,21 +10,24 @@
   import { computed } from 'vue'
   import FlowMenu from '@/components/FlowMenu.vue'
   import PageHeading from '@/components/PageHeading.vue'
+  import { useWorkspaceRoutes } from '@/compositions'
   import { Flow } from '@/models'
-  import { flowsRouteKey } from '@/router'
-  import { inject } from '@/utilities'
 
   const props = defineProps<{
     flow: Flow,
   }>()
 
-  const flowsRoute = inject(flowsRouteKey)
+  const emit = defineEmits<{
+    (event: 'delete', value: string): void,
+  }>()
+
+  const routes = useWorkspaceRoutes()
 
   const crumbs = computed(() => [
-    { text: 'Flows', to: flowsRoute() },
+    { text: 'Flows', to: routes.flows() },
     { text: props.flow.name },
   ])
-  const emit = defineEmits(['delete'])
+
   const deleteFlow = (id: string): void => {
     emit('delete', id)
   }

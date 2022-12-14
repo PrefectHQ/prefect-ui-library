@@ -1,7 +1,7 @@
 <template>
   <div class="flow-run-sub-flows">
     <div class="flow-run-sub-flows__filters">
-      <StateSelect v-model:selected="state" empty-message="All states" class="mr-auto" />
+      <StateSelect v-model:selected="state" empty-message="All states" class="flow-run-sub-flows__state" />
       <SearchInput v-model="searchTerm" placeholder="Search by run name" label="Search by run name" />
       <FlowRunsSort v-model="sort" />
     </div>
@@ -46,12 +46,25 @@
   const state = ref<StateType[]>([])
   const searchTerm = ref('')
   const searchTermDebounced = useDebouncedRef(searchTerm, 1200)
-  const sort = ref<FlowRunSortValues>('EXPECTED_START_TIME_DESC')
+  const sort = ref<FlowRunSortValues>('START_TIME_DESC')
   const hasFilters = computed(() => state.value.length || searchTerm.value.length)
+
+  // this is a hack because api/task_runs/filter doesn't support START_TIME_ASC or START_TIME_DESC
+  // https://github.com/PrefectHQ/prefect/issues/7730
+  const taskRunSort = computed<UnionFilters['sort']>(() => {
+    switch (sort.value) {
+      case 'START_TIME_ASC':
+        return 'EXPECTED_START_TIME_ASC'
+      case 'START_TIME_DESC':
+        return 'EXPECTED_START_TIME_DESC'
+      default:
+        return sort.value
+    }
+  })
 
   const subFlowRunTaskRunFilter = computed<UnionFilters>(() => {
     const runFilter: UnionFilters = {
-      sort: sort.value,
+      sort: taskRunSort.value,
       flow_runs: {
         id: {
           any_: [props.flowRunId],
@@ -63,18 +76,21 @@
         },
       },
     }
+
     if (state.value.length) {
       runFilter.task_runs!.state = {
-        name: {
+        type: {
           any_: state.value.map(state => mapper.map('StateType', state, 'ServerStateType')),
         },
       }
     }
+
     if (searchTermDebounced.value) {
       runFilter.task_runs!.name ={
         any_: [searchTermDebounced.value],
       }
     }
+
     return runFilter
   })
 
@@ -117,6 +133,11 @@
 
 
 <style>
+.flow-run-sub-flows__state { @apply
+  mr-auto;
+  min-width: 128px;
+}
+
 .flow-run-sub-flows__filters { @apply
   flex
   justify-end

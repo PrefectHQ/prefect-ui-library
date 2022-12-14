@@ -1,7 +1,7 @@
-import { addDays, endOfToday, startOfToday, subDays } from 'date-fns'
 import { SavedSearch, SavedSearchFilter } from '@/models/SavedSearch'
 import { asArray, isSame } from '@/utilities/arrays'
 import { formatDateTimeNumeric } from '@/utilities/dates'
+import { dateFunctions } from '@/utilities/timezone'
 
 export function isSameFilter(filterA: SavedSearchFilter, filterB: SavedSearchFilter): boolean {
   if (!isSame(asArray(filterA.state), asArray(filterB.state))) {
@@ -24,8 +24,8 @@ export function isSameFilter(filterA: SavedSearchFilter, filterB: SavedSearchFil
 }
 
 export const oneWeekFilter: SavedSearchFilter = {
-  startDate: formatDateTimeNumeric(subDays(startOfToday(), 7)),
-  endDate: formatDateTimeNumeric(addDays(endOfToday(), 1)),
+  startDate: formatDateTimeNumeric(dateFunctions.subDays(dateFunctions.startOfToday(), 7)),
+  endDate: formatDateTimeNumeric(dateFunctions.addDays(dateFunctions.endOfToday(), 1)),
   state: [],
   flow: [],
   tag: [],
@@ -33,12 +33,12 @@ export const oneWeekFilter: SavedSearchFilter = {
 }
 
 export const noScheduleFilter: SavedSearchFilter = {
-  state: ['completed', 'failed', 'running', 'pending', 'crashed', 'cancelled'],
+  state: ['completed', 'failed', 'running', 'pending', 'crashed', 'cancelled', 'paused'],
   flow: [],
   tag: [],
   deployment: [],
-  startDate: formatDateTimeNumeric(subDays(startOfToday(), 7)),
-  endDate: formatDateTimeNumeric(addDays(endOfToday(), 1)),
+  startDate: formatDateTimeNumeric(dateFunctions.subDays(dateFunctions.startOfToday(), 7)),
+  endDate: formatDateTimeNumeric(dateFunctions.addDays(dateFunctions.endOfToday(), 1)),
 }
 
 export const customSavedSearch = new SavedSearch({

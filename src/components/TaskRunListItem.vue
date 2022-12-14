@@ -1,7 +1,7 @@
 <template>
   <StateListItem v-model:selected="model" v-bind="{ value, disabled, tags, stateType }" class="task-run-list-item">
     <template #name>
-      <p-link :to="taskRunRoute(taskRun.id)">
+      <p-link :to="routes.taskRun(taskRun.id)">
         <span>{{ taskRun.name }}</span>
       </p-link>
     </template>
@@ -27,9 +27,8 @@
   import { computed } from 'vue'
   import StateBadge from '@/components/StateBadge.vue'
   import StateListItem from '@/components/StateListItem.vue'
+  import { useWorkspaceRoutes } from '@/compositions'
   import { TaskRun } from '@/models/TaskRun'
-  import { taskRunRouteKey } from '@/router'
-  import { inject } from '@/utilities'
   import { formatDateTimeNumeric } from '@/utilities/dates'
   import { secondsToApproximateString } from '@/utilities/seconds'
 
@@ -51,8 +50,8 @@
       emit('update:selected', value)
     },
   })
-  const taskRunRoute = inject(taskRunRouteKey)
 
+  const routes = useWorkspaceRoutes()
   const stateType = computed(() => props.taskRun.state?.type)
   const tags = computed(() => props.taskRun.tags)
   const value = computed(() => props.taskRun.id)

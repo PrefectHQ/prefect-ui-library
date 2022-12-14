@@ -5,20 +5,18 @@
 <script lang="ts" setup>
   import { computed } from 'vue'
   import PageHeading from './PageHeading.vue'
+  import { useWorkspaceRoutes } from '@/compositions'
   import { Deployment } from '@/models'
-  import { deploymentRouteKey, deploymentsRouteKey } from '@/router'
-  import { inject } from '@/utilities'
 
   const props = defineProps<{
     deployment: Deployment,
   }>()
 
-  const deploymentsRoute = inject(deploymentsRouteKey)
-  const deploymentRoute = inject(deploymentRouteKey)
+  const routes = useWorkspaceRoutes()
 
   const crumbs = computed(() => [
-    { text: 'Deployments', to: deploymentsRoute() },
-    { text: props.deployment.name, to: deploymentRoute(props.deployment.id) },
+    { text: 'Deployments', to: routes.deployments() },
+    { text: props.deployment.name, to: routes.deployment(props.deployment.id) },
     { text: 'Run' },
   ])
 </script>

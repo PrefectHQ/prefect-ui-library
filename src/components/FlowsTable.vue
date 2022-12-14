@@ -1,21 +1,35 @@
 <template>
   <p-content class="flows-table">
     <div class="flows-table__controls">
-      <ResultsCount class="flows-table__count" label="Flow" :count="flowsCount" />
+      <div class="flows-table__controls--right">
+        <ResultsCount v-if="selectedFlows.length == 0" label="Flow" :count="flowsCount" />
+        <SelectedCount v-else :count="selectedFlows.length" />
+
+        <FlowsDeleteButton v-if="can.delete.flow" :selected="selectedFlows" @delete="deleteFlows" />
+      </div>
+
       <SearchInput v-model="name" placeholder="Search flows" label="Search flows" />
-
-      <template v-if="canFilterDeployments">
-        <DeploymentCombobox v-model:selected="deployments" empty-message="All deployments" class="flows-table__deployments" />
-      </template>
-
       <p-select v-model="sort" :options="flowSortOptions" />
+      <p-tags-input v-model="tags" empty-message="Flow run tags" class="flows-table__tags" />
     </div>
 
     <p-table :data="flows" :columns="columns">
+      <template #selection-heading>
+        <p-checkbox v-model="model" @update:model-value="selectAllFlows" />
+      </template>
+
+      <template #selection="{ row }">
+        <p-checkbox v-model="selectedFlows" :value="row.id" />
+      </template>
+
       <template #name="{ row }">
-        <p-link :to="flowRoute(row.id)">
+        <p-link :to="routes.flow(row.id)">
           <span>{{ row.name }}</span>
         </p-link>
+      </template>
+
+      <template #deployments="{ row }">
+        <DeploymentsCount :flow-id="row.id" />
       </template>
 
       <template #created="{ row }">
@@ -53,41 +67,38 @@
 </template>
 
 <script lang="ts" setup>
-  import { PTable, PEmptyResults, PLink } from '@prefecthq/prefect-design'
+  import { PTable, PEmptyResults, PLink, CheckboxModel } from '@prefecthq/prefect-design'
   import { useSubscription } from '@prefecthq/vue-compositions'
-  import { computed, unref } from 'vue'
-  import DeploymentCombobox from './DeploymentCombobox.vue'
-  import ResultsCount from './ResultsCount.vue'
-  import SearchInput from './SearchInput.vue'
-  import FlowActivityChart from '@/components/FlowActivityChart.vue'
-  import FlowMenu from '@/components/FlowMenu.vue'
-  import { UseFlowFilterArgs, useFlowFilterFromRoute, useWorkspaceApi } from '@/compositions'
-  import { flowRouteKey } from '@/router'
+  import { computed, ref } from 'vue'
+  import { FlowsDeleteButton, DeploymentsCount, ResultsCount, SearchInput, FlowActivityChart, FlowMenu, SelectedCount } from '@/components'
+  import { useCan, UseFlowFilterArgs, useFlowFilterFromRoute, useWorkspaceApi, useWorkspaceRoutes } from '@/compositions'
   import { flowSortOptions } from '@/types/SortOptionTypes'
-  import { inject } from '@/utilities'
   import { formatDateTimeNumeric } from '@/utilities/dates'
-
-  const flowRoute = inject(flowRouteKey)
 
   const props = defineProps<{
     filter?: UseFlowFilterArgs,
   }>()
 
   const api = useWorkspaceApi()
+  const can = useCan()
+  const routes = useWorkspaceRoutes()
   const filter = computed(() => props.filter ?? {})
-  const { deployments, name, sort, filter: unionFilter } = useFlowFilterFromRoute(filter)
-
-  const canFilterDeployments = computed(() => {
-    const filterHasDeployments = !!unref(filter.value.deployments)?.length
-    const filterHasDeploymentName = !!unref(filter.value.deploymentName)?.length
-
-    return !filterHasDeployments && !filterHasDeploymentName
-  })
+  const { name, sort, tags, filter: unionFilter } = useFlowFilterFromRoute(filter)
 
   const columns = [
     {
+      label: 'selection',
+      width: '20px',
+      visible: can.delete.flow,
+    },
+    {
       property: 'name',
       label: 'Name',
+      width: '125px',
+    },
+    {
+      property: 'deployments',
+      label: 'Deployments',
       width: '125px',
     },
     {
@@ -106,6 +117,23 @@
     },
   ]
 
+  const selectedFlows = ref<string[]>([])
+  const selectAllFlows = (allFlowsSelected: CheckboxModel): string[] => {
+    if (allFlowsSelected) {
+      return selectedFlows.value = [...flows.value.map(flow => flow.id)]
+    }
+    return selectedFlows.value = []
+  }
+
+  const model = computed({
+    get() {
+      return selectedFlows.value.length === flows.value.length
+    },
+    set(value: boolean) {
+      selectAllFlows(value)
+    },
+  })
+
   const flowsSubscription = useSubscription(api.flows.getFlows, [unionFilter])
   const flows = computed(() => flowsSubscription.response ?? [])
 
@@ -119,12 +147,26 @@
 
   function clear(): void {
     name.value = ''
+    tags.value = []
+  }
+
+  const emit = defineEmits<{
+    (event: 'delete'): void,
+  }>()
+
+  const deleteFlows = (): void => {
+    selectedFlows.value = []
+    refresh()
+    emit('delete')
   }
 </script>
 
 <style>
-.flows-table__count { @apply
+.flows-table__controls--right { @apply
   mr-auto
+  flex
+  gap-2
+  items-center
 }
 
 .flows-table__controls { @apply
@@ -134,6 +176,12 @@
   flex-col
   sm:flex-row
   sm:items-center
+  sticky
+  top-0
+  bg-white
+  bg-opacity-90
+  py-2
+  z-10
 }
 
 .flows-table__search { @apply
@@ -143,7 +191,8 @@
   mb-4
 }
 
-.flows-table__deployments {
+.flows-table__deployments,
+.flows-table__tags {
   min-width: 128px;
 }
 

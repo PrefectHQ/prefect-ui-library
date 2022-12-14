@@ -1,12 +1,12 @@
 <template>
-  <Transition name="delete-flow-runs-button-slide">
+  <Transition name="deployments-delete-button-transition">
     <p-button v-if="selected.length > 0" danger icon="TrashIcon" @click="open" />
   </Transition>
   <ConfirmDeleteModal
     v-model:showModal="showModal"
-    name="selected flow runs"
-    label="Flow Runs"
-    @delete="deleteFlowRuns(selected)"
+    name="selected deployments"
+    label="Deployments"
+    @delete="deleteDeployments(selected)"
   />
 </template>
 
@@ -29,40 +29,35 @@
 
   const api = useWorkspaceApi()
 
-  const deleteFlowRuns = async (flowRuns: string[]): Promise<void> => {
+  const deleteDeployments = async (deployments: string[]): Promise<void> => {
     const toastMessage = computed(() => {
-      if (flowRuns.length === 1) {
-        return 'Flow run deleted'
+      if (deployments.length === 1) {
+        return localization.success.delete('Deployment')
       }
-      return `${flowRuns.length} flow runs deleted`
+      return localization.success.delete(`${deployments.length} deployments`)
     })
 
-    close()
-
     try {
-      const deleteFlowRuns = flowRuns.map(api.flowRuns.deleteFlowRun)
-      await Promise.all(deleteFlowRuns)
-
+      const deleteDeployments = deployments.map(api.deployments.deleteDeployment)
+      await Promise.all(deleteDeployments)
       showToast(toastMessage, 'success')
       emit('delete')
     } catch (error) {
-      showToast(localization.error.delete('Flow Run'), 'error')
+      showToast(localization.error.delete('deployments'), 'error')
+    } finally {
+      close()
     }
   }
 </script>
 
 <style>
-.delete-flow-runs-button-slide-enter-active {
-  transition: all 0.4s ease;
+.deployments-delete-button-transition-enter-active,
+.deployments-delete-button-transition-leave-active {
+  transition: opacity 0.25s ease;
 }
 
-.delete-flow-runs-button-slide-leave-active {
-  transition: all 0.4s ease;
-}
-
-.delete-flow-runs-button-slide-enter-from,
-.delete-flow-runs-button-slide-leave-to {
-  transform: translateX(25px);
+.deployments-delete-button-transition-enter-from,
+.deployments-delete-button-transition-leave-to {
   opacity: 0;
 }
 </style>

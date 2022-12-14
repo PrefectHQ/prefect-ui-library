@@ -113,17 +113,9 @@ export function isWorkspacePermissionString(permissionString: PermissionString):
 }
 
 const featureFlags = [
-  'access:billing',
-  'access:collaboration',
-  'access:notifications',
-  'access:organizations',
-  'access:retention',
-  'access:workos',
-  'access:scim',
-  'access:selfServeOrgs',
-  'access:auditLogs',
-  'access:retry',
   'access:automation',
+  'access:chameleon',
+  'access:transfer',
 ] as const
 
 export type FeatureFlagString = typeof featureFlags[number]
@@ -144,6 +136,7 @@ type ActionKeys<
 export type AccountKey = ActionKeys<AccountPermissionString>
 export type WorkspaceKey = ActionKeys<WorkspacePermissionString>
 export type FeatureFlag = ActionKeys<FeatureFlagString>
+export type PermissionKey = AccountKey | WorkspaceKey | FeatureFlag
 
 export type Can = { [A in PermissionAction]: Record<ActionKeys<PermissionString, A>, PermissionValue> }
 
@@ -155,13 +148,23 @@ export function getAppPermissions(
   const permissions = [...accountPermissions, ...workspacePermissions, ...featureFlags]
 
   return permissions.reduce<PartialCan>((result, permission) => {
-    const [action, key] = permission.split(':') as [PermissionAction, AccountKey | WorkspaceKey | FeatureFlag]
+    const [action, key] = permissionStringToPermissionTuple(permission)
     const resultAction = result[action] ??= {}
 
     resultAction[key] = checkPermission(permission)
 
     return result
   }, {}) as Can
+}
+
+type PermissionTuple<S extends PermissionString> = S extends `${infer Action}:${infer Key}`
+  ? [Action, Key]
+  : never
+
+export function permissionStringToPermissionTuple<S extends PermissionString>(permission: S): PermissionTuple<S> {
+  const [action, key] = permission.split(':')
+
+  return [action, key] as PermissionTuple<S>
 }
 
 export const canKey: InjectionKey<Can> = Symbol('canInjectionKey')

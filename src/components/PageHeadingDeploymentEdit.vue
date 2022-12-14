@@ -1,38 +1,22 @@
 <template>
-  <page-heading class="page-heading-deployment-edit" :crumbs="crumbs">
-    <slot>
-      <div class="page-heading-deployment-edit__header-meta">
-        <FlowIconText :flow-id="deployment.flowId" />
-      </div>
-    </slot>
-  </page-heading>
+  <page-heading class="page-heading-deployment-edit" :crumbs="crumbs" />
 </template>
 
 <script lang="ts" setup>
   import { computed } from 'vue'
-  import FlowIconText from '@/components/FlowIconText.vue'
   import PageHeading from '@/components/PageHeading.vue'
+  import { useWorkspaceRoutes } from '@/compositions'
   import { Deployment } from '@/models'
-  import { deploymentRouteKey, deploymentsRouteKey } from '@/router'
-  import { inject } from '@/utilities'
-
-  const deploymentsRoute = inject(deploymentsRouteKey)
 
   const props = defineProps<{
     deployment: Deployment,
   }>()
 
-  const deploymentRoute = inject(deploymentRouteKey)
+  const routes = useWorkspaceRoutes()
 
   const crumbs = computed(() => [
-    { text: 'Deployments', to: deploymentsRoute() },
-    { text: props.deployment.name, to: deploymentRoute(props.deployment.id) },
+    { text: 'Deployments', to: routes.deployments() },
+    { text: props.deployment.name, to: routes.deployment(props.deployment.id) },
     { text: 'Edit' },
   ])
 </script>
-
-<style>
-.page-heading-deployment-edit__header-meta { @apply
-  xl:hidden
-}
-</style>

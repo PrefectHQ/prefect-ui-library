@@ -5,13 +5,12 @@
 <script lang="ts" setup>
   import { BreadCrumbs } from '@prefecthq/prefect-design'
   import PageHeading from '@/components/PageHeading.vue'
-  import { blocksRouteKey } from '@/router/routes'
-  import { inject } from '@/utilities'
+  import { useWorkspaceRoutes } from '@/compositions'
 
-  const blocksRoute = inject(blocksRouteKey)
+  const routes = useWorkspaceRoutes()
 
   const crumbs: BreadCrumbs = [
-    { text: 'Blocks', to: blocksRoute() },
+    { text: 'Blocks', to: routes.blocks() },
     { text: 'Choose a Block' },
   ]
 </script>
