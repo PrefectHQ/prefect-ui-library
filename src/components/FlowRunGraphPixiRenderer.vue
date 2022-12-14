@@ -38,36 +38,45 @@
 
   const styles = {
     defaultViewportPadding: 40,
+    timelineGuidesXPadding: 1000,
   }
 
   let pixiApp: Application
   let viewport: Viewport
   let textStyles: TextStyles
 
-  let graphWidth: number
   let minimumStartDate: Date
   let maximumEndDate: Date
-  let graphTimeSpan: number
+  let overallTimeSpan: number
+  let overallGraphWidth: number
 
-  const guidesContainer = new Container()
-  const minGuideGap = 80
-  const maxGuideGap = 260
-  let guideTimeSpan = 1000 * 30
+  const timelineGuidesContainer = new Container()
+  let timelineGuidesIdealCount = 10
+  const timelineGuidesMinGap = 80
+  const timelineGuidesMaxGap = 260
+  let timelineGuidesCurrentTimeGap = 1000 * 30
 
   let nodes: Record<string, Container> = {}
 
   onMounted(() => {
     initTimeScale()
     initPixiApp()
-    initTimeGuidesLayer()
+    // init guides before viewport for proper z-indexing
+    initTimelineGuidesContainer()
     initViewport()
 
-    setGuideTimeSpan()
+    timelineGuidesIdealCount = stage.value
+      ? Math.ceil(
+        stage.value.clientWidth / (timelineGuidesMaxGap - timelineGuidesMinGap / 2),
+      ) : 0
+    setTimelineGuidesCurrentTimeGap()
 
     initBitmapFonts({ devicePixelRatio })
       .then(newTextStyles => {
         textStyles = newTextStyles
-        initTimeGuides()
+        initTimelineGuides()
+
+        // @TODO after rendering content update the viewport clamp bounds so the height of content is well covered.
         initContent()
       })
   })
@@ -192,18 +201,142 @@
     maximumEndDate = max
 
     const timeSpan = maximumEndDate.getTime() - minimumStartDate.getTime()
-    graphTimeSpan = timeSpan < minimumTimeSpan ? minimumTimeSpan : timeSpan
+    overallTimeSpan = timeSpan < minimumTimeSpan ? minimumTimeSpan : timeSpan
 
-    // @TODO: graphWidth determine the overall width of the chart for layout purposes.
+    // @TODO: overallGraphWidth determine the overall width of the chart for layout purposes.
     //        Since our total time scale is unknown, determine a method for choosing a
     //        nice looking width of the graph.
-    graphWidth = stage.value?.clientWidth ? stage.value.clientWidth * 2 : 2000
+    overallGraphWidth = stage.value?.clientWidth ? stage.value.clientWidth * 2 : 2000
   }
 
-  function setGuideTimeSpan(): void {
-    const viewportWidth = viewport.right - viewport.left
-    const guideCount = Math.ceil(viewportWidth / (maxGuideGap - minGuideGap / 2))
-    const span = graphTimeSpan / guideCount
+  function getDateBounds(
+    datesArray: { startTime: Date | null, endTime: Date | null }[],
+  ): { min: Date, max: Date } {
+    let min: Date | undefined
+    let max: Date | undefined
+
+    datesArray.forEach((dates) => {
+      if (
+        dates.startTime !== null
+        && (
+          min === undefined
+          || min > dates.startTime
+          || isNaN(dates.startTime.getDate())
+        )
+      ) {
+        min = dates.startTime
+      }
+
+      if (
+        dates.endTime !== null
+        && (
+          max === undefined
+          || max < dates.endTime
+          || isNaN(dates.endTime.getDate())
+        )
+      ) {
+        max = dates.endTime
+      }
+    })
+
+    return {
+      min: min ?? new Date(NaN),
+      max: max ?? new Date(NaN),
+    }
+  }
+
+  function initTimelineGuidesContainer(): void {
+    pixiApp.stage.addChild(timelineGuidesContainer)
+  }
+
+  function initTimelineGuides(): void {
+    pixiApp.ticker.add(() => {
+      updateTimelineGuides()
+    })
+  }
+
+
+  // @TODO
+  // Draw from the left negative margin to the right positive margin
+  // save each guide, update their x position on zoom to the world x of viewport
+  // if timelineGuidesCurrentTimeGap changes, redraw
+
+  let timelineGuides: Record<string, Container> = {}
+  let previousTimelineGuidesTimeGap: number = 0
+
+  function updateTimelineGuides(): void {
+    setTimelineGuidesCurrentTimeGap()
+
+    if (previousTimelineGuidesTimeGap !== timelineGuidesCurrentTimeGap) {
+      // rebuild
+      if (Object.keys(timelineGuides).length > 0) {
+        Object.keys(timelineGuides).forEach((key) => {
+          timelineGuides[key].destroy()
+        })
+        timelineGuides = {}
+      }
+      createTimelineGuides()
+      previousTimelineGuidesTimeGap = timelineGuidesCurrentTimeGap
+    } else {
+      updateTimelineGuidesPositions()
+    }
+  }
+
+  function createTimelineGuides(): void {
+    let lastGuidePoint
+    const maxGuidePlacement = dateScale(overallGraphWidth + styles.timelineGuidesXPadding)
+    const firstGuide = new Date(Math.ceil(dateScale(-styles.timelineGuidesXPadding) / timelineGuidesCurrentTimeGap) * timelineGuidesCurrentTimeGap)
+
+    lastGuidePoint = firstGuide
+
+    while (lastGuidePoint.getTime() < maxGuidePlacement) {
+      const guide = createTimelineGuide(lastGuidePoint)
+
+      timelineGuides[lastGuidePoint.getTime()] = guide
+
+      timelineGuidesContainer.addChild(guide)
+
+      lastGuidePoint = new Date(lastGuidePoint.getTime() + timelineGuidesCurrentTimeGap)
+    }
+  }
+
+  function createTimelineGuide(date: Date): Container {
+    const guide = new Container()
+    guide.position.set(getGuidePosition(date), 0)
+
+    const guideLine = new Graphics()
+    guideLine.beginFill(0xc9d5e2)
+    guideLine.drawRect(
+      0,
+      0,
+      1,
+      pixiApp.renderer.height,
+    )
+    guideLine.endFill()
+
+    const guideLabel = new BitmapText(date.toLocaleTimeString(), textStyles.timeMarkerLabel)
+    guideLabel.position.set(4, 4)
+
+    guide.addChild(guideLine)
+    guide.addChild(guideLabel)
+
+    return guide
+  }
+
+  function updateTimelineGuidesPositions(): void {
+    Object.keys(timelineGuides).forEach((key) => {
+      const guide = timelineGuides[key]
+      guide.position.set(getGuidePosition(new Date(Number(key))), 0)
+    })
+  }
+
+  function getGuidePosition(date: Date): number {
+    return xScale(date) * viewport.scale._x + viewport.worldTransform.tx
+  }
+
+  function setTimelineGuidesCurrentTimeGap(): void {
+    const pxSpan = Math.ceil((viewport.right - viewport.left) / timelineGuidesIdealCount)
+    const timeSpan = dateScale(pxSpan) - minimumStartDate.getTime()
 
     const time = {
       second: 1000,
@@ -214,6 +347,15 @@
     }
     const timeSpanSlots = [
       {
+        ceiling: time.second * 4,
+        span: time.second,
+      }, {
+        ceiling: time.second * 8,
+        span: time.second * 5,
+      }, {
+        ceiling: time.second * 13,
+        span: time.second * 10,
+      }, {
         ceiling: time.second * 20,
         span: time.second * 15,
       }, {
@@ -258,107 +400,7 @@
       },
     ]
 
-    const guideTimeSpan = timeSpanSlots.find(timeSlot => timeSlot.ceiling > span)?.span ?? time.minute
-
-    const nextDate = new Date(minimumStartDate.getTime() + guideTimeSpan)
-
-    console.log('yo', { gap: xScale(nextDate), nextDate, guideCount, graphWidth, span })
-    // if guideTimeSpan is.....
-    // between 13 mins and 1.24 hrs, round to the nearest 30 minues
-    // between 1.24 and 3 hrs, round to 1 hr
-    // between 3 and 8 hours, round to 5 hrs
-    // between 8 and 13 hours, round to 10 hours
-    // between 13 and 24 hours, round to 12 hours
-    // between 24 hours and 1.5 weeks, round to 1 day
-    // between 1.5 weeks and 3 weeks, round to 1 week
-    // 3 weeks and up, round to months
-
-    // if (span)
-  }
-
-  function getDateBounds(
-    datesArray: { startTime: Date | null, endTime: Date | null }[],
-  ): { min: Date, max: Date } {
-    let min: Date | undefined
-    let max: Date | undefined
-
-    datesArray.forEach((dates) => {
-      if (
-        dates.startTime !== null
-        && (
-          min === undefined
-          || min > dates.startTime
-          || isNaN(dates.startTime.getDate())
-        )
-      ) {
-        min = dates.startTime
-      }
-
-      if (
-        dates.endTime !== null
-        && (
-          max === undefined
-          || max < dates.endTime
-          || isNaN(dates.endTime.getDate())
-        )
-      ) {
-        max = dates.endTime
-      }
-    })
-
-    return {
-      min: min ?? new Date(NaN),
-      max: max ?? new Date(NaN),
-    }
-  }
-
-  function initTimeGuidesLayer(): void {
-    pixiApp.stage.addChild(guidesContainer)
-  }
-
-  function initTimeGuides(): void {
-    const guideLine = new Graphics()
-    guideLine.beginFill(0xc9d5e2)
-    guideLine.drawRect(
-      xScale(minimumStartDate),
-      0,
-      1,
-      pixiApp.renderer.height,
-    )
-    guideLine.endFill()
-    // guideLine.beginFill(0xc9d5e2)
-    // guideLine.drawRect(
-    //   xScale(minimumStartDate) + 240,
-    //   0,
-    //   1,
-    //   pixiApp.renderer.height,
-    // )
-    // guideLine.endFill()
-
-    const guideLabel = new BitmapText(minimumStartDate.toLocaleTimeString(), textStyles.timeMarkerLabel)
-    guideLabel.position.set(4, 4)
-
-    guidesContainer.addChild(guideLine)
-    guidesContainer.addChild(guideLabel)
-
-    pixiApp.ticker.add(() => {
-      updateGuides()
-      guidesContainer.position.set(
-        viewport.worldTransform.tx,
-        0,
-      )
-    })
-  }
-
-
-  function updateGuides(): void {
-    const visibleStartTime = dateScale(-viewport.worldTransform.tx)
-    const visibleEndTime = dateScale(-viewport.worldTransform.tx + viewport.screenWidth)
-    const totalVisibleTime = visibleEndTime - visibleStartTime
-
-    // init guideTimeSpan with a value based on the total time span.
-    // take the totalVisibleTime, separate it into guideTimeSpan chunks
-    // if that amount of time makes a gap outside the bounds of min/max, adjust the guideTimeSpan
+    timelineGuidesCurrentTimeGap = timeSpanSlots.find(timeSlot => timeSlot.ceiling > timeSpan)?.span ?? timeSpanSlots[0].span
   }
 
   type InitBitmapFonts = {
@@ -518,12 +560,12 @@
 
   // Convert a date to an X position
   function xScale(date: Date): number {
-    return Math.ceil((date.getTime() - minimumStartDate.getTime()) * (graphWidth / graphTimeSpan))
+    return Math.ceil((date.getTime() - minimumStartDate.getTime()) * (overallGraphWidth / overallTimeSpan))
   }
 
   // Convert an X position to a timestamp
   function dateScale(xPosition: number): number {
-    return Math.ceil(minimumStartDate.getTime() + xPosition * (graphTimeSpan / graphWidth))
+    return Math.ceil(minimumStartDate.getTime() + xPosition * (overallTimeSpan / overallGraphWidth))
   }
 </script>
 
