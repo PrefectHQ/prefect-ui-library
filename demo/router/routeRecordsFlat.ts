@@ -15,17 +15,21 @@ function flattenRouteRecords(records: RouteRecordRaw[]): RouteRecordsFlat {
 }
 
 function flattenRouteRecord(record: RouteRecordRaw): RouteRecordsFlat | undefined {
-  if (!record.children) {
-    const route = { name: record.name }
-
-    if (record.path.startsWith('/')) {
-      return undefined
-    }
-
-    return { [getRouteRecordKey(route)]: route }
+  if (record.name === 'home') {
+    return undefined
   }
 
-  return flattenRouteRecords(record.children)
+  if (record.children) {
+    return flattenRouteRecords(record.children)
+  }
+
+  const route = { name: record.name }
+
+  if (record.path.startsWith('/')) {
+    return undefined
+  }
+
+  return { [getRouteRecordKey(route)]: route }
 }
 
 function getRouteRecordKey(route: { name?: RouteRecordName | null }): string {
