@@ -79,50 +79,6 @@
       })
   })
 
-  // watchEffect(() => {
-  //   // when graphData updates, re-render
-  //   const updatedData = props.graphData
-
-  //   if (!!pixiApp && updatedData.length > 0) {
-  //     // @TODO – This doesn't really work
-  //     // Need to find any new nodes in the data and add it to the stage while updating any other nodes.
-  //     nodes = Object.keys(nodes).reduce((acc: Record<string, Container>, nodeId) => {
-  //       const nodeContainer = nodes[nodeId]
-  //       const nodeData = updatedData.find(node => node.id === nodeId)
-
-  //       if (!nodeData) {
-  //         nodeContainer.destroy()
-  //         return acc
-  //       }
-
-  //       if (nodeContainer) {
-  //         const box = nodeContainer.children[0] as Graphics
-  //         const label = nodeContainer.children[1] as BitmapText
-  //         const stateFill = nodeData.state?.name ? stateColors[nodeData.state.name] : 0x9aa3b0
-
-  //         if (box.fill !== stateFill) {
-  //           box.clear()
-  //           box.beginFill(stateFill)
-  //           box.drawRoundedRect(
-  //             0,
-  //             0,
-  //             label.width + 24 * 2,
-  //             label.height + 24 * 2,
-  //             12,
-  //           )
-  //           box.endFill()
-  //         }
-
-  //         acc[nodeId] = nodeContainer
-  //       } else {
-  //         // @TODO - add a new node
-  //       }
-
-  //       return acc
-  //     }, {})
-  //   }
-  // })
-
   function initPixiApp(): void {
     if (!stage.value) {
       console.error('Stage reference not found in initPixiApp')
