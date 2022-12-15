@@ -3,12 +3,15 @@
     <p-label label="Current Flow Run State">
       <StateBadge :state="flowRun.state" />
     </p-label>
+    <p-label label="Timeout" :message="timeoutErrorMessage" :state="timeoutState">
+      <p-number-input v-model="timeout" min="5" :state="timeoutState" />
+    </p-label>
     <div>
-      Do you want to pause {{ flowRun.name }}? This will put flow run into a <StateBadge :state="{ name: 'Paused', type: 'paused' }" class="flow-run-pause-modal__state-badge" /> state.
+      Do you want to pause {{ flowRun.name }}? This will put flow run into a <StateBadge :state="{ name: 'Paused', type: 'paused' }" class="flow-run-pause-modal__state-badge" /> state for {{ secondsToApproximateString(timeout) }}.
     </div>
 
     <template #actions>
-      <p-button @click="pause">
+      <p-button :loading="isSubmitting" @click="submit">
         Submit
       </p-button>
     </template>
@@ -18,16 +21,26 @@
 <script lang="ts" setup>
   import { showToast } from '@prefecthq/prefect-design'
   import { useSubscription } from '@prefecthq/vue-compositions'
-  import { computed } from 'vue'
+  import { addSeconds } from 'date-fns'
+  import { useField } from 'vee-validate'
+  import { computed, ref } from 'vue'
   import StateBadge from '@/components/StateBadge.vue'
-  import { useWorkspaceApi } from '@/compositions'
+  import { useForm, useWorkspaceApi } from '@/compositions'
   import { localization } from '@/localization'
   import { StateUpdateDetails } from '@/models'
+  import { fieldRules, isGreaterThan, isRequired } from '@/utilities'
+  import { secondsToApproximateString } from '@/utilities/seconds'
 
   const props = defineProps<{
     showModal: boolean,
     flowRunId: string,
   }>()
+
+  const defaultPauseTimeout = ref<number>(300)
+
+  const { handleSubmit, isSubmitting } = useForm()
+
+  const { value: timeout, meta: timeoutState, errorMessage: timeoutErrorMessage } = useField<number>('timeout', fieldRules('Limit', isRequired, isGreaterThan(4)), { initialValue: defaultPauseTimeout })
 
   const emit = defineEmits<{
     (event: 'update:showModal', value: boolean): void,
@@ -47,11 +60,16 @@
   const flowRunSubscription = useSubscription(api.flowRuns.getFlowRun, [props.flowRunId])
   const flowRun = computed(() => flowRunSubscription.response)
 
-  const pause = async (): Promise<void> => {
+  const submit = handleSubmit(async (formValues): Promise<void> => {
     try {
+      const { timeout } = formValues
       const values: StateUpdateDetails = {
         type: 'paused',
         name: 'Paused',
+        stateDetails: {
+          pauseTimeout: addSeconds(new Date(), timeout),
+          pauseRescheduledTime: true,
+        },
       }
       await api.flowRuns.setFlowRunState(props.flowRunId, { state: values })
       flowRunSubscription.refresh()
@@ -61,7 +79,7 @@
       console.error(error)
       showToast(localization.error.pauseFlowRun, 'error')
     }
-  }
+  })
 </script>
 
 <style>
