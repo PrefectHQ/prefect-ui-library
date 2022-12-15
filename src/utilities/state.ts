@@ -1,3 +1,4 @@
+import { capitalize } from './strings'
 import { StateType } from '@/models'
 
 export function mapStateNameToStateType(stateName: string = 'Unknown'): { name: string, type: StateType | null } {
@@ -15,5 +16,21 @@ export function mapStateNameToStateType(stateName: string = 'Unknown'): { name: 
     case 'resuming': return { name: 'Resuming', type: 'scheduled' }
     case 'paused': return { name: 'Paused', type: 'paused' }
     default: return { name: stateName, type: null }
+  }
+}
+
+export function mapStateTypeOrNameToStateName(stateTypeOrName: string): string {
+  switch (stateTypeOrName) {
+    case 'completed':
+    case 'running':
+    case 'scheduled':
+    case 'pending':
+    case 'failed':
+    case 'cancelled':
+    case 'crashed':
+    case 'paused':
+      return capitalize(stateTypeOrName)
+    default:
+      return stateTypeOrName
   }
 }

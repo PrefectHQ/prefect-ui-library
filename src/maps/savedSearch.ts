@@ -1,4 +1,4 @@
-import { asArray } from '..'
+import { asArray, mapStateTypeOrNameToStateName } from '..'
 import { SavedSearchFilterResponse, SavedSearchResponse } from '@/models/api/SavedSearchResponse'
 import { SavedSearch, SavedSearchFilter } from '@/models/SavedSearch'
 import { MapFunction } from '@/services/Mapper'
@@ -31,11 +31,12 @@ function mapSavedSearchFilters(filters: SavedSearchFilterResponse[] | undefined)
     const deployment = filters.find(filter => filter.property === 'deployment')?.value ?? []
     const workQueue = filters.find(filter => filter.property === 'workQueue')?.value ?? []
 
-    filter.state = asArray(state)
     filter.flow = asArray(flow)
-    filter.tag = asArray(tag)
     filter.deployment = asArray(deployment)
     filter.workQueue = asArray(workQueue)
+    filter.tag = asArray(tag)
+
+    filter.state = asArray(state).map(state => mapStateTypeOrNameToStateName(state))
   }
 
   return filter
