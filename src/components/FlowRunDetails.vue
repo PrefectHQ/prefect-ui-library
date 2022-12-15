@@ -121,7 +121,7 @@
     if (props.flowRun.parentTaskRunId) {
       return [
         {
-          task_runs: {
+          'task_runs': {
             id: {
               any_: [props.flowRun.parentTaskRunId],
             },

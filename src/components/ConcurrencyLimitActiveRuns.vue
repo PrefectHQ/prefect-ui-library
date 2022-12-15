@@ -22,7 +22,7 @@
 
   const concurrencyLimitTaskRunFilter = computed<UnionFilters>(() => {
     const runFilter: UnionFilters = {
-      task_runs: {
+      'task_runs': {
         id: {
           any_: props.activeSlots,
         },

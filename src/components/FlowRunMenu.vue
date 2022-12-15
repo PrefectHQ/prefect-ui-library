@@ -97,7 +97,7 @@
     if (flowRun.value?.parentTaskRunId) {
       return [
         {
-          task_runs: {
+          'task_runs': {
             id: {
               any_: [flowRun.value.parentTaskRunId],
             },

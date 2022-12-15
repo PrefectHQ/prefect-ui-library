@@ -48,7 +48,7 @@
 
   const filter = computed<UnionFilters>(() => {
     const runFilter: UnionFilters = {
-      flow_runs: {
+      'flow_runs': {
         id: {
           any_: [props.flowRunId],
         },
@@ -57,7 +57,7 @@
     }
 
     const taskRunsFilter: TaskRunFilter = {
-      subflow_runs: {
+      'subflow_runs': {
         exists_: false,
       },
     }
@@ -75,7 +75,7 @@
         },
       }
     }
-    return { ...runFilter, task_runs: { ...taskRunsFilter } }
+    return { ...runFilter, 'task_runs': { ...taskRunsFilter } }
   })
 
   const api = useWorkspaceApi()

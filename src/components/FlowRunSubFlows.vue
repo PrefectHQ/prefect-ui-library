@@ -65,13 +65,13 @@
   const subFlowRunTaskRunFilter = computed<UnionFilters>(() => {
     const runFilter: UnionFilters = {
       sort: taskRunSort.value,
-      flow_runs: {
+      'flow_runs': {
         id: {
           any_: [props.flowRunId],
         },
       },
-      task_runs: {
-        subflow_runs: {
+      'task_runs': {
+        'subflow_runs': {
           exists_: true,
         },
       },
@@ -101,7 +101,7 @@
   const subFlowRunsFilter = computed<UnionFilters>(() => {
     const subFlowFilter: UnionFilters = {
       sort: sort.value,
-      flow_runs: {
+      'flow_runs': {
         id: {
           any_: subFlowRunIds.value,
         },

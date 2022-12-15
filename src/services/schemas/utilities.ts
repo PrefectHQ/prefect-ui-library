@@ -120,9 +120,9 @@ export function getSchemaPropertyComponentWithDefaultProps({ component, props }:
         showFormatButton: true,
         ...props,
       })
+    default:
+      return { component, props }
   }
-
-  return { component, props }
 }
 
 /*

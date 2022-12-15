@@ -40,5 +40,7 @@ function getSchemaPropertyServiceConstructor(property: SchemaProperty): SchemaPr
       return SchemaPropertyBlock
     case undefined:
       return SchemaPropertyAny
+    default:
+      throw new Error(`getSchemaPropertyServiceConstructor missing case for ${property.type}`)
   }
 }

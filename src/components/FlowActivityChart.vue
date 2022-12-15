@@ -32,9 +32,9 @@
   })
 
   const historyFilter = computed(() => ({
-    history_end: intervalEnd.value.toISOString(),
-    history_start: intervalStart.value.toISOString(),
-    history_interval_seconds: intervalSeconds.value,
+    'history_end': intervalEnd.value.toISOString(),
+    'history_start': intervalStart.value.toISOString(),
+    'history_interval_seconds': intervalSeconds.value,
     flows: {
       id: {
         any_: [props.flow.id],

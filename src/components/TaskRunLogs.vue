@@ -53,7 +53,7 @@
   const hasFilter = computed(() => logLevel.value !== 0)
   const logsFilter = computed<LogsRequestFilter>(() => ({
     logs: {
-      task_run_id: {
+      'task_run_id': {
         any_: [props.taskRun.id],
       },
       level: {
