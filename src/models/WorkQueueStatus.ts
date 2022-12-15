@@ -1,4 +1,4 @@
-import { WorkQueueHealthPolicy } from './WorkQueueHealthPolicy'
+import { WorkQueueHealthPolicy } from '@/models/WorkQueueHealthPolicy'
 
 export interface IWorkQueueStatus {
   healthy: boolean,

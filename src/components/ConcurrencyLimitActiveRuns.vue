@@ -10,7 +10,7 @@
 <script lang="ts" setup>
   import { useSubscription } from '@prefecthq/vue-compositions'
   import { computed } from 'vue'
-  import TaskRunList from './TaskRunList.vue'
+  import TaskRunList from '@/components/TaskRunList.vue'
   import { useWorkspaceApi } from '@/compositions'
   import { UnionFilters } from '@/types'
 
@@ -24,7 +24,7 @@
     const runFilter: UnionFilters = {
       task_runs: {
         id: {
-          any_:props.activeSlots,
+          any_: props.activeSlots,
         },
       },
     }
@@ -32,5 +32,5 @@
   })
   const api = useWorkspaceApi()
   const activeRunsSubscription = useSubscription(api.taskRuns.getTaskRuns, [concurrencyLimitTaskRunFilter])
-  const activeRuns = computed(()=> activeRunsSubscription.response ?? [])
+  const activeRuns = computed(() => activeRunsSubscription.response ?? [])
 </script>

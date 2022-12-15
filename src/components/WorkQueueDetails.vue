@@ -47,8 +47,8 @@
 
 <script lang="ts" setup>
   import { computed } from 'vue'
-  import DeploymentIconText from './DeploymentIconText.vue'
   import { WorkQueueStatusBadge } from '@/components'
+  import DeploymentIconText from '@/components/DeploymentIconText.vue'
   import { useWorkQueueStatus } from '@/compositions'
   import { WorkQueue } from '@/models/WorkQueue'
   import { formatDateTimeNumeric } from '@/utilities/dates'

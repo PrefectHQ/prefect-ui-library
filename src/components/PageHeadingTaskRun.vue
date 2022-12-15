@@ -46,7 +46,7 @@
   const can = useCan()
   const api = useWorkspaceApi()
   const routes = useWorkspaceRoutes()
-  const taskRunSubscription =  useSubscription(api.taskRuns.getTaskRun, [props.taskRunId])
+  const taskRunSubscription = useSubscription(api.taskRuns.getTaskRun, [props.taskRunId])
   const taskRun = computed(() => taskRunSubscription.response)
 
   const flowRunId = computed(() => taskRun.value?.flowRunId)

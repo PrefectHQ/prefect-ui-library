@@ -10,7 +10,7 @@
 <script lang="ts" setup>
   import { useSubscription } from '@prefecthq/vue-compositions'
   import { computed, ref } from 'vue'
-  import ActivityChart from './ActivityChart.vue'
+  import ActivityChart from '@/components/ActivityChart.vue'
   import { useWorkspaceApi } from '@/compositions'
   import { Flow } from '@/models'
   import { ceil } from '@/utilities/math'

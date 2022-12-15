@@ -16,15 +16,15 @@
 
   const api = useWorkspaceApi()
 
-  const workQueueName = computed(()=>props.workQueueName)
-  const workQueuesSubscription =  useSubscription(api.workQueues.getWorkQueueByName, [workQueueName])
+  const workQueueName = computed(() => props.workQueueName)
+  const workQueuesSubscription = useSubscription(api.workQueues.getWorkQueueByName, [workQueueName])
   const workQueue = computed(() => workQueuesSubscription.response)
 
-  const workQueueId = computed(()=>workQueue.value?.id)
+  const workQueueId = computed(() => workQueue.value?.id)
   const workQueueStatus = useWorkQueueStatus(workQueueId)
-  const healthy = computed(()=> workQueueStatus.value?.healthy)
+  const healthy = computed(() => workQueueStatus.value?.healthy)
 
-  const status = computed<{ name: string, icon: Icon }>(()=> {
+  const status = computed<{ name: string, icon: Icon }>(() => {
     if (workQueue.value?.isPaused) {
       return { name: 'Paused', icon: 'PauseIcon' }
     }

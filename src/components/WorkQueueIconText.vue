@@ -25,6 +25,6 @@
   const api = useWorkspaceApi()
   const routes = useWorkspaceRoutes()
 
-  const workQueuesSubscription =  useSubscription(api.workQueues.getWorkQueueByName, [props.workQueueName])
+  const workQueuesSubscription = useSubscription(api.workQueues.getWorkQueueByName, [props.workQueueName])
   const workQueue = computed(() => workQueuesSubscription.response)
 </script>

@@ -79,13 +79,13 @@
 </template>
 
 <script lang="ts" setup>
-  import  { PButton, ButtonGroupOption } from '@prefecthq/prefect-design'
+  import { PButton, ButtonGroupOption } from '@prefecthq/prefect-design'
   import { zonedTimeToUtc } from 'date-fns-tz'
   import { useField } from 'vee-validate'
   import { computed, ref } from 'vue'
-  import SchemaFormFields from './SchemaFormFields.vue'
-  import TimezoneSelect from './TimezoneSelect.vue'
   import DateInput from '@/components/DateInput.vue'
+  import SchemaFormFields from '@/components/SchemaFormFields.vue'
+  import TimezoneSelect from '@/components/TimezoneSelect.vue'
   import { useForm } from '@/compositions/useForm'
   import { Deployment, DeploymentFlowRunCreate } from '@/models'
   import { mocker } from '@/services'

@@ -44,10 +44,10 @@
     },
   })
 
-  const flowRunSubscription =  useSubscription(api.flowRuns.getFlowRun, [props.flowRunId])
+  const flowRunSubscription = useSubscription(api.flowRuns.getFlowRun, [props.flowRunId])
   const flowRun = computed(() => flowRunSubscription.response)
 
-  const pause  = async (): Promise<void>=> {
+  const pause = async (): Promise<void> => {
     try {
       const values: StateUpdateDetails = {
         type: 'paused',

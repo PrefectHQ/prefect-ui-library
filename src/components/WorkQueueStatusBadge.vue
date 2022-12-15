@@ -9,7 +9,7 @@
 
 <script lang="ts" setup>
   import { computed } from 'vue'
-  import WorkQueueStatusIcon from './WorkQueueStatusIcon.vue'
+  import WorkQueueStatusIcon from '@/components/WorkQueueStatusIcon.vue'
   import { useWorkQueueStatus } from '@/compositions'
   import { WorkQueue } from '@/models'
 
@@ -17,12 +17,12 @@
     workQueue: WorkQueue,
   }>()
 
-  const workQueueName = computed(()=>props.workQueue.name)
-  const workQueueId = computed(()=>props.workQueue.id)
+  const workQueueName = computed(() => props.workQueue.name)
+  const workQueueId = computed(() => props.workQueue.id)
   const workQueueStatus = useWorkQueueStatus(workQueueId)
-  const healthy = computed(()=> workQueueStatus.value?.healthy)
+  const healthy = computed(() => workQueueStatus.value?.healthy)
 
-  const label = computed(()=> {
+  const label = computed(() => {
     if (props.workQueue.isPaused) {
       return 'Paused'
     }

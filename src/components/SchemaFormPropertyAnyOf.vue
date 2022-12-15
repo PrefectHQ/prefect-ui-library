@@ -25,7 +25,7 @@
   import { ButtonGroupOption } from '@prefecthq/prefect-design'
   import { useField } from 'vee-validate'
   import { computed, ref, watch } from 'vue'
-  import SchemaFormProperty from './SchemaFormProperty.vue'
+  import SchemaFormProperty from '@/components/SchemaFormProperty.vue'
   import { getSchemaPropertyDefaultValue, getSchemaValueAnyOfDefinitionIndex } from '@/services/schemas'
   import { SchemaPropertyAnyOf } from '@/types/schemas'
 

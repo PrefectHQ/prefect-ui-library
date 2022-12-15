@@ -12,7 +12,7 @@ export function flip<K extends string, V extends string>(obj: Record<K, V>): Rec
   return result
 }
 
-export function omit<T extends Record<string, unknown>, K extends (keyof T)[]>(source: T, keys: K): Omit<T, K[number]> {
+export function omit<T extends Record<string, unknown>, K extends(keyof T)[]>(source: T, keys: K): Omit<T, K[number]> {
   const copy = { ...source }
 
   keys.forEach(key => delete copy[key])
@@ -32,7 +32,7 @@ export function clone<T>(source: T): T {
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const copy = new (source as any).constructor()
+  const copy = new source as any.constructor()
 
   for (const key in source) {
     copy[key] = clone(source[key])

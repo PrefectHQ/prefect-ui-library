@@ -13,7 +13,7 @@
 <script lang="ts" setup>
   import { PPopOver } from '@prefecthq/prefect-design'
   import { onMounted, onUnmounted, ref } from 'vue'
-  import FlowRunPopoverContent from './FlowRunPopOverContent.vue'
+  import FlowRunPopoverContent from '@/components/FlowRunPopOverContent.vue'
 
   defineProps<{
     flowRunId: string,

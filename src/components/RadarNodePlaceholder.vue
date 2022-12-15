@@ -3,7 +3,7 @@
 </template>
 
 <script lang="ts" setup>
-  import ORadarNode from './RadarNode.vue'
+  import ORadarNode from '@/components/RadarNode.vue'
 </script>
 
 <style>

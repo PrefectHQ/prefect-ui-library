@@ -28,7 +28,7 @@
     alternate?: boolean,
   }>()
 
-  const classes= computed(() => ({
+  const classes = computed(() => ({
     'marketing-banner--alternate': props.alternate,
   }))
 </script>

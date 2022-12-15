@@ -74,10 +74,10 @@
 <script lang="ts" setup>
   import { showToast, PLoadingIcon } from '@prefecthq/prefect-design'
   import { ref, computed } from 'vue'
-  import ScheduleFieldset from './ScheduleFieldset.vue'
-  import WorkQueueIconText from './WorkQueueIconText.vue'
   import BlockIconText from '@/components/BlockIconText.vue'
   import FlowIconText from '@/components/FlowIconText.vue'
+  import ScheduleFieldset from '@/components/ScheduleFieldset.vue'
+  import WorkQueueIconText from '@/components/WorkQueueIconText.vue'
   import { useWorkspaceApi } from '@/compositions'
   import { useCan } from '@/compositions/useCan'
   import { localization } from '@/localization'
@@ -113,7 +113,7 @@
     }
   })
 
-  const updateSchedule =  async (schedule: Schedule | null): Promise<void> => {
+  const updateSchedule = async (schedule: Schedule | null): Promise<void> => {
     const currentSchedule = props.deployment.schedule
 
     let successMessage, errorMessage

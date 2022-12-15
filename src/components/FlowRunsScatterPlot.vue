@@ -11,7 +11,7 @@
 <script lang="ts" setup>
   import { ScatterPlot } from '@prefecthq/vue-charts'
   import { computed } from 'vue'
-  import FlowRunPopOver from './FlowRunPopOver.vue'
+  import FlowRunPopOver from '@/components/FlowRunPopOver.vue'
   import { UiFlowRunHistory } from '@/models/UiFlowRunHistory'
   import { mapper } from '@/services/Mapper'
 

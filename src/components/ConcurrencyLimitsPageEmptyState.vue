@@ -25,8 +25,8 @@
 
 <script lang="ts" setup>
   import { PEmptyState, PButton, PIcon } from '@prefecthq/prefect-design'
-  import ConcurrencyLimitsCreateModal from './ConcurrencyLimitsCreateModal.vue'
-  import DocumentationButton from './DocumentationButton.vue'
+  import ConcurrencyLimitsCreateModal from '@/components/ConcurrencyLimitsCreateModal.vue'
+  import DocumentationButton from '@/components/DocumentationButton.vue'
   import { useCan } from '@/compositions/useCan'
   import { useShowModal } from '@/compositions/useShowModal'
 

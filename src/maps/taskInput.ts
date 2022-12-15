@@ -30,8 +30,8 @@ export const mapTaskInputResponseToTaskInput: MapFunction<TaskInputResponse, Tas
 export const mapTaskInputToTaskInputResponse: MapFunction<TaskInput, TaskInputResponse> = function(source: TaskInput): TaskInputResponse {
   return {
     'input_type': source.inputType,
-    'type': (source as ConstantTaskInput).type,
-    'name': (source as ParameterTaskInput).name,
-    'id': (source as TaskRunTaskInput).id,
+    'type': source as ConstantTaskInput.type,
+    'name': source as ParameterTaskInput.name,
+    'id': source as TaskRunTaskInput.id,
   }
 }

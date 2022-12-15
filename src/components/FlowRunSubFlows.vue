@@ -25,10 +25,10 @@
   import { PEmptyResults } from '@prefecthq/prefect-design'
   import { useDebouncedRef } from '@prefecthq/vue-compositions'
   import { computed, ref, watch } from 'vue'
-  import FlowRunList from './FlowRunList.vue'
-  import FlowRunsSort from './FlowRunsSort.vue'
-  import SearchInput from './SearchInput.vue'
-  import StateSelect from './StateSelect.vue'
+  import FlowRunList from '@/components/FlowRunList.vue'
+  import FlowRunsSort from '@/components/FlowRunsSort.vue'
+  import SearchInput from '@/components/SearchInput.vue'
+  import StateSelect from '@/components/StateSelect.vue'
   import { useWorkspaceApi } from '@/compositions'
   import { usePaginatedSubscription } from '@/compositions/usePaginatedSubscription'
   import { FlowRun } from '@/models/FlowRun'
@@ -86,7 +86,7 @@
     }
 
     if (searchTermDebounced.value) {
-      runFilter.task_runs!.name ={
+      runFilter.task_runs!.name = {
         any_: [searchTermDebounced.value],
       }
     }
@@ -95,7 +95,7 @@
   })
 
   const subFlowRunTaskRunSubscription = usePaginatedSubscription(api.taskRuns.getTaskRuns, [subFlowRunTaskRunFilter])
-  const subFlowRunTaskRuns = computed(()=> subFlowRunTaskRunSubscription.response ?? [])
+  const subFlowRunTaskRuns = computed(() => subFlowRunTaskRunSubscription.response ?? [])
   const subFlowRunIds = computed(() => subFlowRunTaskRuns.value.map((run: TaskRun) => run.state!.stateDetails!.childFlowRunId!))
 
   const subFlowRunsFilter = computed<UnionFilters>(() => {

@@ -1,10 +1,10 @@
-import { WorkspaceApi } from './WorkspaceApi'
 import { DeploymentFlowRunCreate, DeploymentUpdate } from '@/models'
 import { Deployment } from '@/models/Deployment'
 import { DeploymentResponse } from '@/models/DeploymentResponse'
 import { FlowRun } from '@/models/FlowRun'
 import { FlowRunResponse } from '@/models/FlowRunResponse'
 import { mapper } from '@/services/Mapper'
+import { WorkspaceApi } from '@/services/WorkspaceApi'
 import { UnionFilters } from '@/types/UnionFilters'
 
 export interface IWorkspaceDeploymentsApi {

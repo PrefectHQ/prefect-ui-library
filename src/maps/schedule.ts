@@ -58,10 +58,10 @@ export const mapScheduleToScheduleRequest: MapFunction<Schedule, ScheduleRespons
 export const mapScheduleToScheduleResponse: MapFunction<Schedule, ScheduleResponse> = function(source: Schedule): ScheduleResponse {
   return {
     'timezone': source.timezone,
-    'rrule': (source as RRuleSchedule).rrule,
-    'cron': (source as CronSchedule).cron,
-    'day_or': (source as CronSchedule).dayOr,
-    'interval': (source as IntervalSchedule).interval,
-    'anchor_date': this.map('Date', (source as IntervalSchedule).anchorDate, 'string'),
+    'rrule': source as RRuleSchedule.rrule,
+    'cron': source as CronSchedule.cron,
+    'day_or': source as CronSchedule.dayOr,
+    'interval': source as IntervalSchedule.interval,
+    'anchor_date': this.map('Date', source as IntervalSchedule.anchorDate, 'string'),
   }
 }

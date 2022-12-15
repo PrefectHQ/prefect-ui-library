@@ -1,9 +1,9 @@
-import { WorkspaceApi } from './WorkspaceApi'
 import { ConcurrencyLimitResponse } from '@/models/api/ConcurrencyLimitResponse'
 import { ConcurrencyLimit } from '@/models/ConcurrencyLimit'
 import { ConcurrencyLimitCreate } from '@/models/ConcurrencyLimitCreate'
 import { ConcurrencyLimitsFilter } from '@/models/ConcurrencyLimitsFilter'
 import { mapper } from '@/services/Mapper'
+import { WorkspaceApi } from '@/services/WorkspaceApi'
 
 export interface IWorkspaceConcurrencyLimitsApi {
   getConcurrencyLimit: (concurrencyLimitId: string) => Promise<ConcurrencyLimit>,

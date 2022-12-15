@@ -24,10 +24,10 @@
 <script lang="ts" setup>
   import { useDebouncedRef } from '@prefecthq/vue-compositions'
   import { computed, ref } from 'vue'
-  import SearchInput from './SearchInput.vue'
-  import StateSelect from './StateSelect.vue'
-  import TaskRunList from './TaskRunList.vue'
-  import TaskRunsSort from './TaskRunsSort.vue'
+  import SearchInput from '@/components/SearchInput.vue'
+  import StateSelect from '@/components/StateSelect.vue'
+  import TaskRunList from '@/components/TaskRunList.vue'
+  import TaskRunsSort from '@/components/TaskRunsSort.vue'
   import { useWorkspaceApi } from '@/compositions'
   import { usePaginatedSubscription } from '@/compositions/usePaginatedSubscription'
   import { StateType } from '@/models/StateType'
@@ -75,7 +75,7 @@
         },
       }
     }
-    return  { ...runFilter, task_runs: { ...taskRunsFilter } }
+    return { ...runFilter, task_runs: { ...taskRunsFilter } }
   })
 
   const api = useWorkspaceApi()

@@ -1,6 +1,6 @@
 import { PNumberInput, PSelect } from '@prefecthq/prefect-design'
-import { SchemaPropertyComponentWithProps } from '../utilities'
-import { SchemaPropertyService } from './SchemaPropertyService'
+import { SchemaPropertyService } from '@/services/schemas/properties/SchemaPropertyService'
+import { SchemaPropertyComponentWithProps } from '@/services/schemas/utilities'
 import { SchemaPropertyInputAttrs, SchemaValue } from '@/types/schemas'
 
 export class SchemaPropertyNumber extends SchemaPropertyService {

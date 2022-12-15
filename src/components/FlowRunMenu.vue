@@ -75,7 +75,7 @@
 
   const retryingRun = ref(false)
 
-  const flowRunSubscription =  useSubscription(api.flowRuns.getFlowRun, [props.flowRunId], { interval: 30000 })
+  const flowRunSubscription = useSubscription(api.flowRuns.getFlowRun, [props.flowRunId], { interval: 30000 })
   const flowRun = computed(() => flowRunSubscription.response)
 
   const canRetry = computed(() => {
@@ -85,7 +85,7 @@
     return isTerminalStateType(flowRun.value.stateType)
   })
 
-  const canResume = computed(()=> {
+  const canResume = computed(() => {
     if (!can.update.flow_run || !flowRun.value?.stateType) {
       return false
     }
@@ -116,14 +116,14 @@
     const [value] = parentFlowRunList.value
     return value.id
   })
-  const canCancel = computed(()=> {
+  const canCancel = computed(() => {
     if (!can.update.flow_run || !flowRun.value?.stateType || parentFlowRunId.value) {
       return false
     }
     return isStuckStateType(flowRun.value.stateType)
   })
 
-  const canPause = computed(()=> {
+  const canPause = computed(() => {
     if (!can.update.flow_run || !flowRun.value?.stateType || !flowRun.value.deploymentId) {
       return false
     }
