@@ -1,4 +1,4 @@
-import { StateType } from './StateType'
+import { StateType } from '@/models/StateType'
 
 export interface StateUpdateDetails {
   type: StateType,

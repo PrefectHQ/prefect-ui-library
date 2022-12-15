@@ -1,4 +1,4 @@
-import { BlockType } from './BlockType'
+import { BlockType } from '@/models/BlockType'
 import { Schema } from '@/types/schemas'
 
 export interface IBlockSchema {

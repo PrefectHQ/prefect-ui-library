@@ -52,10 +52,10 @@
   const api = useWorkspaceApi()
   const selectedFlowRuns = ref<string[]>([])
   const state = ref<StateTypeOrStateName[]>(props.states ?? [])
-  const stateWithoutLate = computed(()=> state.value.filter(state => state !== 'late') as StateType[])
-  const stateIncludesLate = computed(()=>state.value.includes('late'))
-  const stateWithoutCancelling = computed(()=> state.value.filter(state => state !== 'cancelling') as StateType[])
-  const stateIncludesCancelling = computed(()=>state.value.includes('cancelling'))
+  const stateWithoutLate = computed(() => state.value.filter(state => state !== 'late') as StateType[])
+  const stateIncludesLate = computed(() => state.value.includes('late'))
+  const stateWithoutCancelling = computed(() => state.value.filter(state => state !== 'cancelling') as StateType[])
+  const stateIncludesCancelling = computed(() => state.value.includes('cancelling'))
 
   const updateState = (newValue: string | string[] | null): void => {
     state.value = newValue as StateTypeOrStateName[]
@@ -111,7 +111,7 @@
       }
     }
 
-    return { ...runFilter, flow_runs: { ...flowRunsFilter } }
+    return { ...runFilter, 'flow_runs': { ...flowRunsFilter } }
   })
 
   const flowRunCountSubscription = useSubscription(api.flowRuns.getFlowRunsCount, [filter], { interval: 30000 })

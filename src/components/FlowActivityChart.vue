@@ -10,7 +10,7 @@
 <script lang="ts" setup>
   import { useSubscription } from '@prefecthq/vue-compositions'
   import { computed, ref } from 'vue'
-  import ActivityChart from './ActivityChart.vue'
+  import ActivityChart from '@/components/ActivityChart.vue'
   import { useWorkspaceApi } from '@/compositions'
   import { Flow } from '@/models'
   import { ceil } from '@/utilities/math'
@@ -32,9 +32,9 @@
   })
 
   const historyFilter = computed(() => ({
-    history_end: intervalEnd.value.toISOString(),
-    history_start: intervalStart.value.toISOString(),
-    history_interval_seconds: intervalSeconds.value,
+    'history_end': intervalEnd.value.toISOString(),
+    'history_start': intervalStart.value.toISOString(),
+    'history_interval_seconds': intervalSeconds.value,
     flows: {
       id: {
         any_: [props.flow.id],

@@ -20,7 +20,7 @@
 
 <script lang="ts" setup>
   import { computed } from 'vue'
-  import PythonView from './PythonView.vue'
+  import PythonView from '@/components/PythonView.vue'
   import { useScrollLinking } from '@/compositions'
 
   const props = defineProps<{

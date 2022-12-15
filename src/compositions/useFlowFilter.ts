@@ -1,6 +1,6 @@
 import { useRouteQueryParam, useDebouncedRef } from '@prefecthq/vue-compositions'
 import { computed, ComputedRef, Ref, ref } from 'vue'
-import { useFilter, UseFilterArgs } from './useFilter'
+import { useFilter, UseFilterArgs } from '@/compositions/useFilter'
 import { FlowSortValues, isFlowSortValue, MaybeRef, UnionFilters } from '@/types'
 
 export type UseFlowFilterArgs = UseFilterArgs<FlowSortValues>

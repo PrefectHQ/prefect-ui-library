@@ -1,5 +1,5 @@
 import { ComputedRef, ref, Ref } from 'vue'
-import { useFilter, UseFilterArgs } from './useFilter'
+import { useFilter, UseFilterArgs } from '@/compositions/useFilter'
 import { FlowRunSortValues, MaybeRef, UnionFilters } from '@/types'
 import { dateFunctions } from '@/utilities/timezone'
 

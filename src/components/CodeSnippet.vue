@@ -10,9 +10,9 @@
 <script lang="ts" setup>
   import { PButton } from '@prefecthq/prefect-design'
   import { computed } from 'vue'
-  import CodeView from './CodeView.vue'
-  import JsonView from './JsonView.vue'
-  import PythonView from './PythonView.vue'
+  import CodeView from '@/components/CodeView.vue'
+  import JsonView from '@/components/JsonView.vue'
+  import PythonView from '@/components/PythonView.vue'
   import { copyToClipboard } from '@/utilities/copy'
 
   const props = defineProps<{

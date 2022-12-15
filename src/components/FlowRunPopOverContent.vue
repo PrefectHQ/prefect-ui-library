@@ -34,11 +34,11 @@
 <script lang="ts" setup>
   import { useSubscription } from '@prefecthq/vue-compositions'
   import { computed } from 'vue'
-  import DeploymentIconText from './DeploymentIconText.vue'
-  import DurationIconText from './DurationIconText.vue'
-  import FlowRouterLink from './FlowRouterLink.vue'
-  import StateBadge from './StateBadge.vue'
+  import DeploymentIconText from '@/components/DeploymentIconText.vue'
+  import DurationIconText from '@/components/DurationIconText.vue'
+  import FlowRouterLink from '@/components/FlowRouterLink.vue'
   import FlowRunStartTime from '@/components/FlowRunStartTime.vue'
+  import StateBadge from '@/components/StateBadge.vue'
   import { useWorkspaceApi, useWorkspaceRoutes } from '@/compositions'
 
   const props = defineProps<{

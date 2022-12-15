@@ -16,8 +16,8 @@
 <script lang="ts" setup>
   import { useSubscription } from '@prefecthq/vue-compositions'
   import { computed } from 'vue'
-  import BlockDocumentsSelect from './BlockDocumentsSelect.vue'
-  import BlockTypeLogo from './BlockTypeLogo.vue'
+  import BlockDocumentsSelect from '@/components/BlockDocumentsSelect.vue'
+  import BlockTypeLogo from '@/components/BlockTypeLogo.vue'
   import { useWorkspaceApi, useWorkspaceRoutes } from '@/compositions'
   import { withRedirect } from '@/utilities/routes'
 

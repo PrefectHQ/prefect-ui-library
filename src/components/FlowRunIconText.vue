@@ -17,6 +17,6 @@
 
   const api = useWorkspaceApi()
   const routes = useWorkspaceRoutes()
-  const flowRunSubscription =  useSubscription(api.flowRuns.getFlowRun, [props.flowRunId])
+  const flowRunSubscription = useSubscription(api.flowRuns.getFlowRun, [props.flowRunId])
   const flowRunName = computed(() => flowRunSubscription.response?.name)
 </script>

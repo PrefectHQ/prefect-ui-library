@@ -1,4 +1,4 @@
-import { ServerStateType } from '../StateType'
+import { ServerStateType } from '@/models/StateType'
 
 export interface StateUpdateRequestDetails {
   type: ServerStateType,

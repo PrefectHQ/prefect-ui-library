@@ -1,5 +1,5 @@
-import { BlockSchemaResponse } from './BlockSchemaResponse'
-import { BlockTypeResponse } from './BlockTypeResponse'
+import { BlockSchemaResponse } from '@/models/api/BlockSchemaResponse'
+import { BlockTypeResponse } from '@/models/api/BlockTypeResponse'
 
 export type BlockDocumentResponseData = Record<string, unknown>
 

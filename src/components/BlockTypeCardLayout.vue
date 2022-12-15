@@ -9,7 +9,7 @@
 </template>
 
 <script lang="ts" setup>
-  import BlockTypeCardPreview from './BlockTypeCardPreview.vue'
+  import BlockTypeCardPreview from '@/components/BlockTypeCardPreview.vue'
   import { BlockType } from '@/models'
 
   defineProps<{

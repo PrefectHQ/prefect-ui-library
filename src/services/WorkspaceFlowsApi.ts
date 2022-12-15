@@ -1,6 +1,6 @@
-import { mapper } from './Mapper'
-import { WorkspaceApi } from './WorkspaceApi'
 import { Flow, FlowResponse } from '@/models'
+import { mapper } from '@/services/Mapper'
+import { WorkspaceApi } from '@/services/WorkspaceApi'
 import { UnionFilters } from '@/types'
 
 export interface IWorkspaceFlowsApi {
