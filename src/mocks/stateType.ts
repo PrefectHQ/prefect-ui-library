@@ -1,5 +1,4 @@
-import { stateType } from '@/models/StateType'
-import type { StateType } from '@/models/StateType'
+import { stateType, StateType } from '@/models/StateType'
 import { MockFunction } from '@/services/Mocker'
 
 export const randomStateType: MockFunction<StateType, []> = function() {

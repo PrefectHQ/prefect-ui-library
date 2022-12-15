@@ -13,8 +13,8 @@ export type RouterTab = Tab & {
 }
 
 export function isRouterTab(input: Tab | RouterTab): input is RouterTab {
-  const route = input as unknown as RouterTab['route']
-  return !!route
+  const routerTab = input as RouterTab
+  return !!routerTab.route
 }
 
 type WithCount<T> = T & {

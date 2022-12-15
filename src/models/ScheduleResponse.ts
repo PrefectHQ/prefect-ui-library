@@ -18,16 +18,16 @@ export type IntervalScheduleResponse = {
 }
 
 export function isRRuleScheduleResponse(schedule: ScheduleResponse): schedule is RRuleScheduleResponse {
-  const rrule = schedule as unknown as RRuleScheduleResponse['rrule']
-  return !!rrule
+  const rruleScheduleResponse = schedule as RRuleScheduleResponse
+  return !!rruleScheduleResponse.rrule
 }
 
 export function isCronScheduleResponse(schedule: ScheduleResponse): schedule is CronScheduleResponse {
-  const cron = schedule as unknown as CronScheduleResponse['cron']
-  return !!cron
+  const cronScheduleResponse = schedule as CronScheduleResponse
+  return !!cronScheduleResponse.cron
 }
 
 export function isIntervalScheduleResponse(schedule: ScheduleResponse): schedule is IntervalScheduleResponse {
-  const interval = schedule as unknown as IntervalScheduleResponse['interval']
-  return !!interval
+  const intervalScheduleResponse = schedule as IntervalScheduleResponse
+  return !!intervalScheduleResponse.interval
 }
