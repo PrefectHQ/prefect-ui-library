@@ -4,6 +4,7 @@ export function mapStateNameToStateType(stateName: string = 'Unknown'): { name: 
   switch (stateName.toLowerCase()) {
     case 'completed': return { name: 'Completed', type: 'completed' }
     case 'failed': return { name: 'Failed', type: 'failed' }
+    case 'timedout': return { name: 'TimedOut', type: 'failed' }
     case 'running': return { name: 'Running', type: 'running' }
     case 'scheduled': return { name: 'Scheduled', type: 'scheduled' }
     case 'pending': return { name: 'Pending', type: 'pending' }

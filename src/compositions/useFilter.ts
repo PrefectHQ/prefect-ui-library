@@ -81,23 +81,10 @@ export function useFilter(filters: MaybeRef<UseFilterArgs>): ComputedRef<UnionFi
     }
 
     if (states.value?.length) {
-      const stateFilter: StateFilter = { operator: 'or_' }
-
-      states.value.forEach(state => {
-        if (isStateType(state)) {
-          stateFilter.type ??= {}
-          stateFilter.type.any_ ??= []
-          stateFilter.type.any_.push(mapper.map('StateType', state, 'ServerStateType'))
-        } else {
-          const capitalizedState = capitalize(state)
-          stateFilter.name ??= {}
-          stateFilter.name.any_ ??= []
-          stateFilter.name.any_.push(capitalizedState)
-        }
-      })
-
       response.flow_runs ??= {}
-      response.flow_runs.state = stateFilter
+      response.flow_runs.state ??= {}
+      response.flow_runs.state.name ??= {}
+      response.flow_runs.state.name.any_ = states.value
     }
 
     if (startDate.value) {
