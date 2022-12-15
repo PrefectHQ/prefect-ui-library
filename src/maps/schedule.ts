@@ -58,10 +58,15 @@ export const mapScheduleToScheduleRequest: MapFunction<Schedule, ScheduleRespons
 export const mapScheduleToScheduleResponse: MapFunction<Schedule, ScheduleResponse> = function(source: Schedule): ScheduleResponse {
   return {
     'timezone': source.timezone,
-    'rrule': source as unknown as RRuleSchedule['rrule'],
-    'cron': source as unknown as CronSchedule['cron'],
-    'day_or': source as unknown as CronSchedule['dayOr'],
-    'interval': source as unknown as IntervalSchedule['interval'],
-    'anchor_date': this.map('Date', source as unknown as IntervalSchedule['anchorDate'], 'string'),
+    // eslint-disable-next-line no-extra-parens
+    'rrule': (source as RRuleSchedule).rrule,
+    // eslint-disable-next-line no-extra-parens
+    'cron': (source as CronSchedule).cron,
+    // eslint-disable-next-line no-extra-parens
+    'day_or': (source as CronSchedule).dayOr,
+    // eslint-disable-next-line no-extra-parens
+    'interval': (source as IntervalSchedule).interval,
+    // eslint-disable-next-line no-extra-parens
+    'anchor_date': this.map('Date', (source as IntervalSchedule).anchorDate, 'string'),
   }
 }
