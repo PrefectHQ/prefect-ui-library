@@ -40,7 +40,7 @@
 
   const { handleSubmit, isSubmitting } = useForm()
 
-  const { value: timeout, meta: timeoutState, errorMessage: timeoutErrorMessage  } = useField<number>('timeout', fieldRules('Limit', isRequired, isGreaterThan(4)), { initialValue: defaultPauseTimeout })
+  const { value: timeout, meta: timeoutState, errorMessage: timeoutErrorMessage } = useField<number>('timeout', fieldRules('Limit', isRequired, isGreaterThan(4)), { initialValue: defaultPauseTimeout })
 
   const emit = defineEmits<{
     (event: 'update:showModal', value: boolean): void,
