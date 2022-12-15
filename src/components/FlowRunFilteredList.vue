@@ -75,7 +75,7 @@
       }
     }
 
-    return { ...runFilter, flow_runs: { ...flowRunsFilter } }
+    return { ...runFilter, 'flow_runs': { ...flowRunsFilter } }
   })
 
   const flowRunCountSubscription = useSubscription(api.flowRuns.getFlowRunsCount, [filter], { interval: 30000 })
