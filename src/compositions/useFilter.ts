@@ -1,8 +1,7 @@
 /* eslint-disable camelcase */
-import { ComputedRef, computed, ref, capitalize } from 'vue'
-import { isStateType } from '@/models'
+import { ComputedRef, computed, ref } from 'vue'
 import { mapper } from '@/services'
-import { MaybeRef, FlowSortValues, FlowRunSortValues, UnionFilters, StateFilter } from '@/types'
+import { MaybeRef, FlowSortValues, FlowRunSortValues, UnionFilters } from '@/types'
 
 export type FilterSortValues = FlowSortValues | FlowRunSortValues
 

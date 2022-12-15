@@ -9,7 +9,7 @@
 
 <script lang="ts">
   import { defineComponent } from 'vue'
-  import ConfirmDeleteModal from './ConfirmDeleteModal.vue'
+  import ConfirmDeleteModal from '@/components/ConfirmDeleteModal.vue'
   import { useShowModal } from '@/compositions/useShowModal'
 
   export default defineComponent({

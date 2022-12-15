@@ -1,7 +1,7 @@
 import { useRouteQueryParam, useDebouncedRef } from '@prefecthq/vue-compositions'
 import { computed, ComputedRef, ref, Ref } from 'vue'
 import { useRouter } from 'vue-router'
-import { useFilter, UseFilterArgs } from './useFilter'
+import { useFilter, UseFilterArgs } from '@/compositions/useFilter'
 import { DeploymentSortValues, isDeploymentSortValue, MaybeRef, UnionFilters } from '@/types'
 import { clearSelectedFilters } from '@/utilities/routes'
 

@@ -11,7 +11,7 @@ export type UsePaginatedSubscription<T extends PaginatedAction> = {
 
 export function usePaginatedSubscription<T extends PaginatedAction>(...[action, args, options = {}]: SubscribeArguments<T>): UsePaginatedSubscription<T> {
   const subscriptions = reactive<UseSubscription<T>[]>([])
-  const argsWithDefault = args ?? ([] as unknown as ActionArguments<T>)
+  const argsWithDefault = args ?? [] as unknown as ActionArguments<T>
   const pages = ref(0)
   const watchable = watchableArgs(argsWithDefault)
 

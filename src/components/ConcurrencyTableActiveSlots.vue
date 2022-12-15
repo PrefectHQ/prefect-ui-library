@@ -14,5 +14,5 @@
     activeSlots: string[],
   }>()
 
-  const taskRunCount = computed(()=> props.activeSlots.length)
+  const taskRunCount = computed(() => props.activeSlots.length)
 </script>

@@ -7,4 +7,6 @@ export type StateDetailsRequest = {
   scheduled_time?: DateString | null,
   cache_key?: string | null,
   cache_expiration?: string | null,
+  pause_timeout?: DateString | null,
+  pause_rescheduled_time?: boolean | null,
 }

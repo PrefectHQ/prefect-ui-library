@@ -1,5 +1,5 @@
-import { capitalize } from './strings'
 import { StateType } from '@/models'
+import { capitalize } from '@/utilities/strings'
 
 export function mapStateNameToStateType(stateName: string = 'Unknown'): { name: string, type: StateType | null } {
   switch (stateName.toLowerCase()) {

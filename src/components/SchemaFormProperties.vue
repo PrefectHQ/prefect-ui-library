@@ -10,7 +10,7 @@
 
 <script lang="ts" setup>
   import { computed } from 'vue'
-  import SchemaFormProperty from './SchemaFormProperty.vue'
+  import SchemaFormProperty from '@/components/SchemaFormProperty.vue'
   import { SchemaProperty } from '@/types/schemas'
 
   const props = defineProps<{

@@ -19,7 +19,7 @@
   import { media } from '@prefecthq/prefect-design'
   import { useSubscription } from '@prefecthq/vue-compositions'
   import { computed } from 'vue'
-  import { StateBadge, PageHeading,  FlowRunRetryButton, FlowRunResumeButton, FlowRunCancelButton, FlowRunPauseButton, FlowRunMenu } from '@/components'
+  import { StateBadge, PageHeading, FlowRunRetryButton, FlowRunResumeButton, FlowRunCancelButton, FlowRunPauseButton, FlowRunMenu } from '@/components'
   import { useWorkspaceApi, useWorkspaceRoutes } from '@/compositions'
 
   const props = defineProps<{
@@ -41,6 +41,6 @@
   ])
 
   const flowRunId = computed(() => props.flowRunId)
-  const flowRunSubscription =  useSubscription(api.flowRuns.getFlowRun, [flowRunId], { interval: 30000 })
+  const flowRunSubscription = useSubscription(api.flowRuns.getFlowRun, [flowRunId], { interval: 30000 })
   const flowRun = computed(() => flowRunSubscription.response)
 </script>

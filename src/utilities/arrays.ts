@@ -1,5 +1,5 @@
-import { floor, random } from './math'
 import { mocker } from '@/services'
+import { floor, random } from '@/utilities/math'
 
 // we really do want any here
 // eslint-disable-next-line @typescript-eslint/no-explicit-any

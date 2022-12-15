@@ -1,7 +1,7 @@
-import { SchemaPropertyComponentWithProps } from '../utilities'
-import { SchemaPropertyService } from './SchemaPropertyService'
 import BlockDocumentInput from '@/components/BlockDocumentInput.vue'
 import { BlockDocumentReferenceValue, isBlockDocumentReferenceValue } from '@/models/api/BlockDocumentCreateRequest'
+import { SchemaPropertyService } from '@/services/schemas/properties/SchemaPropertyService'
+import { SchemaPropertyComponentWithProps } from '@/services/schemas/utilities'
 import { SchemaValue } from '@/types/schemas'
 
 export class SchemaPropertyBlock extends SchemaPropertyService {

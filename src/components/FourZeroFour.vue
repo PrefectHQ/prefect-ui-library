@@ -268,7 +268,7 @@
     name: 'NotFound',
     data() {
       return {
-        circles:[],
+        circles: [],
         interval: 0,
       }
     },

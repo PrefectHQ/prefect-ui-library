@@ -35,9 +35,9 @@
 
 <script lang="ts" setup>
   import { ref, computed } from 'vue'
-  import LogLevelSelect from './LogLevelSelect.vue'
-  import LogsSort from './LogsSort.vue'
+  import LogLevelSelect from '@/components/LogLevelSelect.vue'
   import LogsContainer from '@/components/LogsContainer.vue'
+  import LogsSort from '@/components/LogsSort.vue'
   import { useWorkspaceApi } from '@/compositions'
   import { usePaginatedSubscription } from '@/compositions/usePaginatedSubscription'
   import { Log, LogLevel } from '@/models/Log'
@@ -53,7 +53,7 @@
   const hasFilter = computed(() => logLevel.value !== 0)
   const logsFilter = computed<LogsRequestFilter>(() => ({
     logs: {
-      task_run_id: {
+      'task_run_id': {
         any_: [props.taskRun.id],
       },
       level: {
@@ -64,7 +64,7 @@
   }))
 
   const api = useWorkspaceApi()
-  const logsSubscription = usePaginatedSubscription(api.logs.getLogs, [logsFilter], { interval:  5000 })
+  const logsSubscription = usePaginatedSubscription(api.logs.getLogs, [logsFilter], { interval: 5000 })
   const logs = computed<Log[]>(() => logsSubscription.response ?? [])
 
   function clear(): void {

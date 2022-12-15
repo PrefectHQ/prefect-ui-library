@@ -1,7 +1,7 @@
-import { mapBlockDocumentResponseReferencesToBlockDocumentReferences } from './blockDocumentReferences'
 import { mapBlockDocumentResponseToBlockDocument, mapBlockDocumentToSelectOption } from '@/maps/blockDocument'
 import { mapBlockDocumentCreateToBlockDocumentCreateRequest } from '@/maps/blockDocumentCreate'
 import { mapBlockDocumentFilterToBlockDocumentFilterRequest } from '@/maps/blockDocumentFilter'
+import { mapBlockDocumentResponseReferencesToBlockDocumentReferences } from '@/maps/blockDocumentReferences'
 import { mapBlockDocumentUpdateToBlockDocumentUpdateRequest } from '@/maps/blockDocumentUpdate'
 import { mapBlockSchemaResponseToBlockSchema } from '@/maps/blockSchema'
 import { mapBlockSchemaFilterToBlockSchemaFilterRequest } from '@/maps/blockSchemaFilter'
@@ -33,7 +33,7 @@ import { mapSchemaDefinitionsResponseToSchemaDefinitions, mapSchemaPropertiesRes
 import { mapSchemaValuesToSchemaValuesRequest } from '@/maps/schemaValuesRequest'
 import { mapSchemaValuesResponseToSchemaValues } from '@/maps/schemaValuesResponse'
 import { mapStateResponseToState, mapStateToStateResponse, mapStateCreateToStateRequest } from '@/maps/state'
-import { mapStateDetailsCreateToStateDetailsRequest, mapStateDetailsResponseToStateDetails, mapStateDetailsToStateDetailsResponse } from '@/maps/stateDetails'
+import { mapStateDetailsCreateToStateDetailsRequest, mapStateDetailsResponseToStateDetails, mapStateDetailsToStateDetailsRequest, mapStateDetailsToStateDetailsResponse } from '@/maps/stateDetails'
 import { mapStateHistoryToStateHistoryResponse, mapStateHistoryResponseToStateHistory } from '@/maps/stateHistory'
 import { mapServerStateTypeToStateType, mapStateTypeToServerStateType } from '@/maps/stateType'
 import { mapStateUpdateToStateUpdateRequest } from '@/maps/stateUpdate'
@@ -93,7 +93,7 @@ export const maps = {
   ServerStateType: { StateType: mapServerStateTypeToStateType },
   State: { StateResponse: mapStateToStateResponse },
   StateCreate: { StateRequest: mapStateCreateToStateRequest },
-  StateDetails: { StateDetailsResponse: mapStateDetailsToStateDetailsResponse },
+  StateDetails: { StateDetailsResponse: mapStateDetailsToStateDetailsResponse, StateDetailsRequest: mapStateDetailsToStateDetailsRequest },
   StateDetailsCreate: { StateDetailsRequest: mapStateDetailsCreateToStateDetailsRequest },
   StateDetailsResponse: { StateDetails: mapStateDetailsResponseToStateDetails },
   StateHistory: { StateHistoryResponse: mapStateHistoryToStateHistoryResponse },

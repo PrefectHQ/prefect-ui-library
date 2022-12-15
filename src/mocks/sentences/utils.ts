@@ -3,7 +3,7 @@
 import {
   nouns,
   adjectives
-} from './sample'
+} from '@/mocks/sentences/sample'
 import { vowels } from '@/utilities'
 import { uniform } from '@/utilities/math'
 
