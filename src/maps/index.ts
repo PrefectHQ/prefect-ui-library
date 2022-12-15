@@ -41,6 +41,7 @@ import { mapTaskInputToTaskInputResponse, mapTaskInputResponseToTaskInput } from
 import { mapTaskRunToTaskRunResponse, mapTaskRunResponseToTaskRun } from '@/maps/taskRun'
 import { mapUiFlowRunHistoryResponseToUiFlowRunHistory } from '@/maps/uiFlowRunHistory'
 import { mapWorkerPoolCreateToWorkerPoolCreateRequest, mapWorkerPoolEditToWorkerPoolEditRequest, mapWorkerPoolResponseToWorkerPool, mapWorkerPoolToWorkerPoolResponse } from '@/maps/workerPool'
+import { mapWorkerPoolQueueCreateToWorkerPoolQueueCreateRequest, mapWorkerPoolQueueResponseToWorkerPoolQueue, mapWorkerPoolQueueToWorkerPoolQueueResponse } from '@/maps/workerPoolQueue'
 import { mapWorkQueueToWorkQueueResponse, mapWorkQueueResponseToWorkQueue, mapWorkQueueCreateToWorkQueueCreateRequest, mapWorkQueueEditToWorkQueueEditRequest } from '@/maps/workQueue'
 import { mapWorkQueueFilterToWorkQueueFilterResponse, mapWorkQueueFilterResponseToWorkQueueFilter } from '@/maps/workQueueFilter'
 import { mapWorkQueueHealthPolicyResponseToWorkQueueHealthPolicy } from '@/maps/workQueueHealthPolicy'
@@ -113,6 +114,10 @@ export const maps = {
   WorkerPoolCreate: { WorkerPoolCreateRequest: mapWorkerPoolCreateToWorkerPoolCreateRequest },
   WorkerPoolEdit: { WorkerPoolEditRequest: mapWorkerPoolEditToWorkerPoolEditRequest },
   WorkerPoolResponse: { WorkerPool: mapWorkerPoolResponseToWorkerPool },
+  WorkerPoolQueue: { WorkerPoolQueueResponse: mapWorkerPoolQueueToWorkerPoolQueueResponse },
+  WorkerPoolQueueCreate: { WorkerPoolQueueCreateRequest: mapWorkerPoolQueueCreateToWorkerPoolQueueCreateRequest },
+  WorkerPoolQueueEdit: { WorkerPoolQueue: mapWorkerPoolQueueResponseToWorkerPoolQueue },
+  WorkerPoolQueueResponse: { WorkerPoolQueue: mapWorkerPoolQueueResponseToWorkerPoolQueue },
   WorkQueue: { WorkQueueResponse: mapWorkQueueToWorkQueueResponse },
   WorkQueueCreate: { WorkQueueCreateRequest: mapWorkQueueCreateToWorkQueueCreateRequest },
   WorkQueueEdit: { WorkQueueEditRequest: mapWorkQueueEditToWorkQueueEditRequest },
