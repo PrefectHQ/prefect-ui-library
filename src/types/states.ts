@@ -15,3 +15,15 @@ export const prefectStateNames = [
   'TimedOut',
 ] as const
 export type PrefectStateNames = typeof prefectStateNames[number]
+
+export const prefectStateNamesWithoutScheduled = [
+  'Pending',
+  'Paused',
+  'Running',
+  'Completed',
+  'Cancelled',
+  'Cancelling',
+  'Crashed',
+  'Failed',
+  'TimedOut',
+] as const

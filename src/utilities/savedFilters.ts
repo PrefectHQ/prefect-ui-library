@@ -1,4 +1,5 @@
 import { SavedSearch, SavedSearchFilter } from '@/models/SavedSearch'
+import { prefectStateNamesWithoutScheduled } from '@/types/states'
 import { asArray, isSame } from '@/utilities/arrays'
 import { formatDateTimeNumeric } from '@/utilities/dates'
 import { dateFunctions } from '@/utilities/timezone'
@@ -33,7 +34,7 @@ export const oneWeekFilter: SavedSearchFilter = {
 }
 
 export const noScheduleFilter: SavedSearchFilter = {
-  state: ['completed', 'failed', 'running', 'pending', 'crashed', 'cancelled', 'paused'],
+  state: prefectStateNamesWithoutScheduled.slice(),
   flow: [],
   tag: [],
   deployment: [],
