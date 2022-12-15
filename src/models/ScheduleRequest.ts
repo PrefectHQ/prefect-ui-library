@@ -18,13 +18,16 @@ export type IntervalScheduleRequest = {
 }
 
 export function isRRuleScheduleRequest(schedule: ScheduleRequest): schedule is RRuleScheduleRequest {
-  return !!schedule as RRuleScheduleRequest.rrule
+  const rrule = schedule as unknown as RRuleScheduleRequest['rrule']
+  return !!rrule
 }
 
 export function isCronScheduleRequest(schedule: ScheduleRequest): schedule is CronScheduleRequest {
-  return !!schedule as CronScheduleRequest.cron
+  const cron = schedule as unknown as CronScheduleRequest['cron']
+  return !!cron
 }
 
 export function isIntervalScheduleRequest(schedule: ScheduleRequest): schedule is IntervalScheduleRequest {
-  return !!schedule as IntervalScheduleRequest.interval
+  const interval = schedule as unknown as IntervalScheduleRequest['interval']
+  return !!interval
 }

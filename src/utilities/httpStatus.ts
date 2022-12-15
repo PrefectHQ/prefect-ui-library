@@ -10,7 +10,8 @@ type HttpStatusResponse = {
 }
 
 function isAxiosResponse(value: unknown): value is AxiosResponse {
-  return typeof value as AxiosResponse.status === 'number'
+  const status = value as unknown as AxiosResponse['status']
+  return typeof status === 'number'
 }
 
 function getStatusCode(value: AxiosError | AxiosResponse | number): number {
