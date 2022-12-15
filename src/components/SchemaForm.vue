@@ -34,6 +34,6 @@
     },
   })
 
-  const { handleSubmit } = useReactiveForm(internalValue, { initialValues:  { ...props.modelValue }  })
+  const { handleSubmit } = useReactiveForm(internalValue, { initialValues: { ...props.modelValue } })
   const submit = handleSubmit(values => emit('submit', values))
 </script>

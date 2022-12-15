@@ -1,4 +1,4 @@
-import { LogLevel } from './Log'
+import { LogLevel } from '@/models/Log'
 
 
 export type OrionSettings = {

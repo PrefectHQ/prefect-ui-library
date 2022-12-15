@@ -27,7 +27,7 @@
   const can = useCan()
   const { showModal, open } = useShowModal()
 
-  const canPause = computed(()=> {
+  const canPause = computed(() => {
     if (!can.update.flow_run || !props.flowRun.stateType || !props.flowRun.deploymentId) {
       return false
     }

@@ -8,8 +8,8 @@
 </template>
 
 <script lang="ts" setup>
-  import ConcurrencyLimitsCreateModal from './ConcurrencyLimitsCreateModal.vue'
-  import PageHeading from './PageHeading.vue'
+  import ConcurrencyLimitsCreateModal from '@/components/ConcurrencyLimitsCreateModal.vue'
+  import PageHeading from '@/components/PageHeading.vue'
   import { useCan } from '@/compositions/useCan'
   import { useShowModal } from '@/compositions/useShowModal'
 

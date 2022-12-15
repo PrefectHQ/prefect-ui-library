@@ -36,7 +36,7 @@
     if (props.flowRun.parentTaskRunId) {
       return [
         {
-          task_runs: {
+          'task_runs': {
             id: {
               any_: [props.flowRun.parentTaskRunId],
             },
@@ -56,7 +56,7 @@
     return value.id
   })
 
-  const canCancel = computed(()=> {
+  const canCancel = computed(() => {
     if (!can.update.flow_run || !props.flowRun.stateType || parentFlowRunId.value || !props.flowRun.deploymentId) {
       return false
     }

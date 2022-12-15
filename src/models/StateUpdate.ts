@@ -1,5 +1,5 @@
-import { StateType } from './StateType'
 import { StateDetails } from '@/models/StateDetails'
+import { StateType } from '@/models/StateType'
 
 export interface StateUpdateDetails {
   type: StateType,

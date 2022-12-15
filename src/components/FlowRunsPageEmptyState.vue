@@ -22,5 +22,5 @@
 
 <script lang="ts" setup>
   import { PEmptyState, PIcon } from '@prefecthq/prefect-design'
-  import DocumentationButton from './DocumentationButton.vue'
+  import DocumentationButton from '@/components/DocumentationButton.vue'
 </script>

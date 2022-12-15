@@ -1,4 +1,4 @@
-import { camelCase, snakeCase } from './strings'
+import { camelCase, snakeCase } from '@/utilities/strings'
 
 type SnakeToCamelCase<T> =
   T extends string

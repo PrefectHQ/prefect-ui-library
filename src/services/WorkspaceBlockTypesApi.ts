@@ -1,10 +1,10 @@
-import { mapper } from './Mapper'
-import { WorkspaceApi } from './WorkspaceApi'
 import { BlockDocumentResponse } from '@/models/api/BlockDocumentResponse'
 import { BlockTypeResponse } from '@/models/api/BlockTypeResponse'
 import { BlockDocument } from '@/models/BlockDocument'
 import { BlockType } from '@/models/BlockType'
 import { BlockTypeFilter } from '@/models/BlockTypeFilter'
+import { mapper } from '@/services/Mapper'
+import { WorkspaceApi } from '@/services/WorkspaceApi'
 
 export interface IWorkspaceBlockTypesApi {
   getBlockType: (blockTypeId: string) => Promise<BlockType>,

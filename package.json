@@ -1,6 +1,6 @@
 {
     "name": "@prefecthq/orion-design",
-    "version": "1.1.37",
+    "version": "1.1.38",
     "private": false,
     "repository": {
         "type": "git",
@@ -38,7 +38,7 @@
     ],
     "types": "./dist/types/src/index.d.ts",
     "devDependencies": {
-        "@prefecthq/eslint-config": "1.0.17",
+        "@prefecthq/eslint-config": "1.0.19",
         "@tailwindcss/line-clamp": "0.4.2",
         "@types/lodash.camelcase": "4.3.7",
         "@types/lodash.debounce": "4.0.7",

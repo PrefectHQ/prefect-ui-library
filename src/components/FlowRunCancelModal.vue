@@ -23,10 +23,10 @@
   import { showToast } from '@prefecthq/prefect-design'
   import { useSubscription } from '@prefecthq/vue-compositions'
   import { computed } from 'vue'
-  import StateBadge from './StateBadge.vue'
+  import StateBadge from '@/components/StateBadge.vue'
   import { useWorkspaceApi } from '@/compositions'
   import { localization } from '@/localization'
-  import {  StateUpdateDetails } from '@/models'
+  import { StateUpdateDetails } from '@/models'
 
   const props = defineProps<{
     showModal: boolean,
@@ -50,10 +50,10 @@
     },
   })
 
-  const flowRunSubscription =  useSubscription(api.flowRuns.getFlowRun, [props.flowRunId], { interval: 30000 })
+  const flowRunSubscription = useSubscription(api.flowRuns.getFlowRun, [props.flowRunId], { interval: 30000 })
   const flowRun = computed(() => flowRunSubscription.response)
 
-  const cancel  = async (): Promise<void>=> {
+  const cancel = async (): Promise<void> => {
     try {
       const values: StateUpdateDetails = {
         type: 'cancelled',

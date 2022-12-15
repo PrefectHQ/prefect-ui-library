@@ -71,9 +71,9 @@
 <script lang="ts" setup>
   import { useField } from 'vee-validate'
   import { computed } from 'vue'
-  import WorkQueueCombobox from './WorkQueueCombobox.vue'
   import ScheduleFieldset from '@/components/ScheduleFieldset.vue'
   import SchemaFormFields from '@/components/SchemaFormFields.vue'
+  import WorkQueueCombobox from '@/components/WorkQueueCombobox.vue'
   import { useForm } from '@/compositions/useForm'
   import { Deployment, DeploymentUpdate, Schedule } from '@/models'
 

@@ -1,8 +1,8 @@
-import { WorkspaceApi } from './WorkspaceApi'
 import { StateUpdate } from '@/models/StateUpdate'
 import { TaskRun } from '@/models/TaskRun'
 import { TaskRunResponse } from '@/models/TaskRunResponse'
 import { mapper } from '@/services/Mapper'
+import { WorkspaceApi } from '@/services/WorkspaceApi'
 import { UnionFilters } from '@/types/UnionFilters'
 
 export interface IWorkspaceTaskRunsApi {

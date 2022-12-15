@@ -1,4 +1,4 @@
-import { FlowRunSortValues, FlowSortValues, TaskRunSortValues } from './SortOptionTypes'
+import { FlowRunSortValues, FlowSortValues, TaskRunSortValues } from '@/types/SortOptionTypes'
 
 /** A list where results will be returned only if they match all the values in the list */
 type all_ = { all_?: string[] }

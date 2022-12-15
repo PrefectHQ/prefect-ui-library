@@ -8,7 +8,7 @@
 
 <script lang="ts" setup>
   import { BreadCrumbs } from '@prefecthq/prefect-design'
-  import BlockDocumentMenu from './BlockDocumentMenu.vue'
+  import BlockDocumentMenu from '@/components/BlockDocumentMenu.vue'
   import PageHeading from '@/components/PageHeading.vue'
   import { useWorkspaceRoutes } from '@/compositions'
   import { BlockDocument } from '@/models/BlockDocument'

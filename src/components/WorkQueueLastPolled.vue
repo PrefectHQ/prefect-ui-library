@@ -13,7 +13,7 @@
     workQueueId: string,
   }>()
 
-  const workQueueId = computed(()=>props.workQueueId)
+  const workQueueId = computed(() => props.workQueueId)
   const workQueueStatus = useWorkQueueStatus(workQueueId)
-  const lastPolled = computed(()=> workQueueStatus.value?.lastPolled)
+  const lastPolled = computed(() => workQueueStatus.value?.lastPolled)
 </script>

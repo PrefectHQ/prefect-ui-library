@@ -1,5 +1,5 @@
 <template>
-  <PContent class="schema-properties">
+  <PContent class="schema-properties-key-values">
     <template v-for="(property, key) in schema.properties" :key="key">
       <SchemaProperty v-if="property" :property="property" :value="getPropertyValue(key)" />
     </template>
@@ -8,7 +8,7 @@
 
 <script lang="ts" setup>
   import { PContent } from '@prefecthq/prefect-design'
-  import SchemaProperty from './SchemaProperty.vue'
+  import SchemaProperty from '@/components/SchemaPropertyKeyValue.vue'
   import { Schema, SchemaValues } from '@/types/schemas'
 
   const props = defineProps<{

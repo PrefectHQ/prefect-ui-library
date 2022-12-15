@@ -6,10 +6,10 @@
 
 <script lang="ts" setup>
   import { computed } from 'vue'
-  import SchemaFormInput from './SchemaFormInput.vue'
-  import SchemaFormProperties from './SchemaFormProperties.vue'
-  import SchemaFormPropertyAllOf from './SchemaFormPropertyAllOf.vue'
-  import SchemaFormPropertyAnyOf from './SchemaFormPropertyAnyOf.vue'
+  import SchemaFormInput from '@/components/SchemaFormInput.vue'
+  import SchemaFormProperties from '@/components/SchemaFormProperties.vue'
+  import SchemaFormPropertyAllOf from '@/components/SchemaFormPropertyAllOf.vue'
+  import SchemaFormPropertyAnyOf from '@/components/SchemaFormPropertyAnyOf.vue'
   import { SchemaProperty, schemaHas } from '@/types/schemas'
 
   const props = defineProps<{

@@ -57,11 +57,10 @@
     },
   })
 
-  const flowRunSubscription =  useSubscription(api.flowRuns.getFlowRun, [props.flowRunId])
+  const flowRunSubscription = useSubscription(api.flowRuns.getFlowRun, [props.flowRunId])
   const flowRun = computed(() => flowRunSubscription.response)
 
   const submit  = handleSubmit(async (formValues): Promise<void>=> {
-
     try {
       const { timeout } = formValues
       const values: StateUpdateDetails = {

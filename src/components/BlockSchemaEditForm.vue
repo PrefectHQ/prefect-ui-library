@@ -18,8 +18,8 @@
 </template>
 
 <script lang="ts" setup>
-  import SchemaFormFields from './SchemaFormFields.vue'
-  import SubmitButton from './SubmitButton.vue'
+  import SchemaFormFields from '@/components/SchemaFormFields.vue'
+  import SubmitButton from '@/components/SubmitButton.vue'
   import { useForm } from '@/compositions/useForm'
   import { BlockDocumentUpdate } from '@/models'
   import { BlockSchema } from '@/models/BlockSchema'

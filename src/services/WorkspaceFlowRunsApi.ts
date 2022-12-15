@@ -1,4 +1,3 @@
-import { WorkspaceApi } from './WorkspaceApi'
 import { StateUpdate } from '@/models'
 import { FlowRun } from '@/models/FlowRun'
 import { FlowRunGraphResponse } from '@/models/FlowRunGraphResponse'
@@ -7,6 +6,7 @@ import { FlowRunResponse } from '@/models/FlowRunResponse'
 import { GraphNode } from '@/models/GraphNode'
 import { RunHistory } from '@/models/RunHistory'
 import { mapper } from '@/services/Mapper'
+import { WorkspaceApi } from '@/services/WorkspaceApi'
 import { FlowRunsHistoryFilter, UnionFilters } from '@/types/UnionFilters'
 
 export interface IWorkspaceFlowRunsApi {
