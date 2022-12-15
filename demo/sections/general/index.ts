@@ -1,6 +1,7 @@
 import { Section } from '@/demo/router/routeRecords'
 
 export const general: Section = {
+  Query: () => import ('./Query.vue'),
   CodeBanner: () => import ('./CodeBanner.vue'),
   CodeSnippet: () => import ('./CodeSnippet.vue'),
   CodeView: () => import ('./CodeView.vue'),

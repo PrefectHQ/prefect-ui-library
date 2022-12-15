@@ -1,4 +1,5 @@
-import { useRouteQueryParam } from '@prefecthq/vue-compositions'
+/* eslint-disable max-classes-per-file */
+import { BooleanRouteParam, InvalidRouteParamValue, ObjectRouteParam, ObjectRouteParamSchema, RouteParam, RouteParamClass, StringRouteParam, useRouteQueryParam } from '@prefecthq/vue-compositions'
 import { Ref, ref, reactive, computed, watch } from 'vue'
 import { LocationQueryValue, onBeforeRouteLeave, useRoute, useRouter } from 'vue-router'
 import { BlockDocumentFilter, BlockSchemaFilter, BlockTypeFilter, DeploymentFilter, DeploymentsFilter, FlowFilter, FlowRunFilter, FlowRunsFilter, FlowsFilter, isOperation, Operation, StateFilter, TagFilter, TaskRunFilter, TaskRunsFilter, UnionFilter, UnionFilterSort } from '@/models/Filters'
@@ -10,229 +11,6 @@ type UseFilter<T extends Record<string, unknown>> = Required<{
   [Property in keyof T]: NonNullable<T[Property]> extends Record<string, unknown> ? UseFilter<NonNullable<T[Property]>> | undefined : Ref<T[Property]>
 }> & { filter: T }
 
-type Params<T extends Record<string, unknown>> = {
-  [P in keyof T]-?: Param<NonNullable<T[P]>>
-}
-
-type ParamType = 'boolean' | 'number' | 'date' | 'operation' | 'string' | 'sort'
-
-type Param<T> = T extends boolean ? 'boolean'
-  : T extends number ? 'number'
-    : T extends Date ? 'date'
-      : T extends Operation ? 'operation'
-        : T extends string | string[] ? 'string'
-          : T extends UnionFilterSort ? 'sort'
-            : never
-
-type ParamReturn<T extends ParamType> = T extends 'boolean' ? boolean
-  : T extends 'number' ? number
-    : T extends 'date' ? Date
-      : T extends 'operation' ? Operation
-        : T extends 'string' ? string | string[]
-          : T extends 'sort' ? UnionFilterSort
-            : never
-
-type QueryValue = LocationQueryValue | LocationQueryValue[]
-
-function parseQueryParamValue<T extends ParamType, R extends ParamReturn<T>>(value: QueryValue, format: T): R | null {
-  switch (format) {
-    case 'string':
-      return parseQueryParamString(value) as R
-    case 'number': { throw new Error('Not implemented yet: "number" case') }
-    case 'boolean': { throw new Error('Not implemented yet: "boolean" case') }
-    case 'date': { throw new Error('Not implemented yet: "date" case') }
-    case 'operation': { throw new Error('Not implemented yet: "operation" case') }
-    case 'sort': { throw new Error('Not implemented yet: "sort" case') }
-  }
-
-  return null
-}
-
-function parseQueryParamString(value: QueryValue): ParamReturn<'string'> | null {
-  if (Array.isArray(value)) {
-    return value.filter(value => value !== null) as string[]
-  }
-
-  if (value) {
-    return value
-  }
-
-  return null
-}
-
-function formatQueryParamValue(value: QueryValue, format: ParamType): string | string[] | null {
-  if (value === null) {
-    return value
-  }
-
-  switch (format) {
-    case 'string':
-      return value as string
-    case 'number': { throw new Error('Not implemented yet: "number" case') }
-    case 'boolean': { throw new Error('Not implemented yet: "boolean" case') }
-    case 'date': { throw new Error('Not implemented yet: "date" case') }
-    case 'operation': { throw new Error('Not implemented yet: "operation" case') }
-    case 'sort': { throw new Error('Not implemented yet: "sort" case') }
-  }
-}
-
-function useRouteQueryParams<T extends Record<string, unknown>>(filter: T, formats: Params<Required<T>>, prefix?: string): void {
-  const router = useRouter()
-  const route = useRoute()
-  const prefixed = withPrefixFactory(prefix)
-
-  // I don't think these watcher are recursive but its possible
-  const unwatchRoute = watch(route, () => {
-    Object.keys(filter).forEach(key => {
-      const keyPrefixed = prefixed(key)
-      const value = parseQueryParamValue(route.query[keyPrefixed], formats[key])
-
-      if (value !== null) {
-        // typescript sucks with generics....
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        filter[key as keyof T] = value as any
-      }
-    })
-  }, { immediate: true })
-
-  const unwatchFilter = watch(filter, () => {
-    const query: Record<string, string | string[]> = {}
-
-    Object.keys(filter).forEach(key => {
-      const keyPrefixed = prefixed(key)
-      const value = formatQueryParamValue(route.query[keyPrefixed], formats[key])
-
-      if (value !== null) {
-        query[keyPrefixed] = value
-      }
-    })
-
-    router.push({ query: { ...route.query, ...query } })
-  })
-
-  onBeforeRouteLeave(() => {
-    unwatchRoute()
-    unwatchFilter()
-  })
-
-}
-
-
-function withPrefix(prefix: string | undefined, value: string): string {
-  if (prefix) {
-    return `${prefix}.${value}`
-  }
-
-  return value
-}
-
-function withPrefixFactory(prefix?: string): (value: string) => string {
-  return value => withPrefix(prefix, value)
-}
-
-// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-function useWithPrefix(prefix?: string) {
-  const prefixed = withPrefixFactory(prefix)
-
-  return {
-    useBoolean: (param: string, defaultValue?: boolean) => useBooleanQueryParam(prefixed(param), defaultValue),
-    useNumber: (param: string, defaultValue?: number) => useNumberQueryParam(prefixed(param), defaultValue),
-    useOperation: (param: string, defaultValue?: Operation) => useOperationQueryParam(prefixed(param), defaultValue),
-    useDate: (param: string, defaultValue?: Date) => useDateQueryParam(prefixed(param), defaultValue),
-    useAny: (param: string, defaultValue: string | string[] = '') => useRouteQueryParam(prefixed(param), defaultValue as string),
-    useLike: (param: string, defaultValue: string = '') => useRouteQueryParam(prefixed(param), defaultValue),
-    useSort: <T extends UnionFilterSort>(sorts: Readonly<T[]>, param: string, defaultValue?: T) => useSortQueryParam(sorts, prefixed(param), defaultValue),
-    useStateFilter: (prefix: string) => useStateFilterFromRoute(prefixed(prefix)),
-    useTagFilter: (prefix: string) => useTagFilterFromRoute(prefixed(prefix)),
-    useFlowFilter: (prefix: string) => useFlowFilterFromRoute(prefixed(prefix)),
-    useFlowRunFilter: (prefix: string) => useFlowRunFilterFromRoute(prefixed(prefix)),
-    useTaskRunFilter: (prefix: string) => useTaskRunFilterFromRoute(prefixed(prefix)),
-    useDeploymentFilter: (prefix: string) => useDeploymentFilterFromRoute(prefixed(prefix)),
-  }
-}
-
-function useSortQueryParam<T extends UnionFilterSort>(sorts: Readonly<T[]>, param: string, defaultValue?: T): Ref<T | undefined> {
-  const valueRef = useRouteQueryParam(param, defaultValue ?? '')
-
-  return computed({
-    get() {
-      if (sorts.includes(valueRef.value as T)) {
-        return valueRef.value as T
-      }
-
-      return defaultValue
-    },
-    set(value: T | undefined) {
-      valueRef.value = value as string
-    },
-  })
-}
-
-function useBooleanQueryParam(param: string, defaultValue: boolean = false): Ref<boolean> {
-  const valueRef = useRouteQueryParam(param, `${defaultValue}`)
-
-  return computed({
-    get() {
-      return valueRef.value === 'true'
-    },
-    set(value: boolean) {
-      valueRef.value = `${value}`
-    },
-  })
-}
-
-function useNumberQueryParam(param: string, defaultValue?: number): Ref<number | undefined> {
-  const defaultValueString = defaultValue ? `${defaultValue}` : ''
-  const valueRef = useRouteQueryParam(param, defaultValueString)
-
-  return computed({
-    get() {
-      const int = parseInt(valueRef.value)
-
-      if (isNaN(int)) {
-        return undefined
-      }
-
-      return int
-    },
-    set(value: number | undefined) {
-      valueRef.value = `${value}`
-    },
-  })
-}
-
-function useOperationQueryParam(param: string, defaultValue: Operation = 'and'): Ref<Operation> {
-  const valueRef = useRouteQueryParam(param, defaultValue)
-
-  return computed({
-    get() {
-      if (isOperation(valueRef.value)) {
-        return valueRef.value
-      }
-
-      return defaultValue
-    },
-    set(value: Operation) {
-      valueRef.value = value
-    },
-  })
-}
-
-function useDateQueryParam(param: string, defaultValue?: Date): Ref<Date | undefined> {
-  const defaultValueString = defaultValue?.toISOString() ?? ''
-  const valueRef = useRouteQueryParam(param, defaultValueString)
-
-  return computed<Date | undefined>({
-    get() {
-      // todo: parse the valueRef to a date
-      return defaultValue
-    },
-    set(value: Date | undefined) {
-      valueRef.value = value?.toISOString() ?? ''
-    },
-  })
-
-}
 
 export function useTagFilter(): UseFilter<TagFilter> {
   const operator = ref<TagFilter['operator']>()
@@ -252,14 +30,32 @@ export function useTagFilter(): UseFilter<TagFilter> {
   }
 }
 
+class OperatorRouteParam extends RouteParam<Operation> {
+  protected override parse(value: LocationQueryValue): Operation {
+    if (value === null || !isOperation(value)) {
+      throw new InvalidRouteParamValue()
+    }
+
+    return value
+  }
+
+  protected override format(value: Operation): LocationQueryValue {
+    return `${value}`
+  }
+}
+
+class TagFilterRouteParam extends ObjectRouteParam<TagFilter> {
+  protected schema: ObjectRouteParamSchema<TagFilter> = {
+    operator: OperatorRouteParam,
+    name: StringRouteParam,
+    isNull: BooleanRouteParam,
+  }
+}
+
 export function useTagFilterFromRoute(prefix?: string): UseFilter<TagFilter> {
   const response = useTagFilter()
 
-  useRouteQueryParams(response.filter, {
-    operator: 'operation',
-    name: 'string',
-    isNull: 'boolean',
-  }, prefix)
+  const query = useRouteQueryParam(prefix, TagFilterRouteParam, {})
 
   return response
 }
