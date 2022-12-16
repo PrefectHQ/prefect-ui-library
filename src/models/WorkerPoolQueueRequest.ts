@@ -1,13 +1,15 @@
 export type WorkerPoolQueueCreateRequest = {
   name: string,
   description?: string | null,
-  // add more fields once I figure out what they are
+  is_paused?: boolean,
+  concurrency_limit?: number | null,
+  priority: number,
 }
 
 export type WorkerPoolQueueEditRequest = {
   name?: string,
   description?: string | null,
-  isPaused?: boolean,
-  concurrencyLimit?: number | null,
+  is_paused?: boolean,
+  concurrency_limit?: number | null,
   priority?: number,
 }
