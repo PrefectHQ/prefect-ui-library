@@ -1,5 +1,5 @@
-export type WorkerPoolEdit = {
-  description?: string | null,
-  isPaused?: boolean,
-  concurrencyLimit?: number | null,
-}
+export type WorkerPoolEdit = Partial<{
+  description: string,
+  isPaused: boolean,
+  concurrencyLimit: number,
+}>

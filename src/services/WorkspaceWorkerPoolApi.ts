@@ -1,19 +1,18 @@
-import { WorkspaceApi } from './WorkspaceApi'
-import { WorkerPool, WorkerPoolCreate, WorkerPoolEdit, WorkerPoolResponse } from '@/models'
-import { mapper } from '@/services/Mapper'
+import { WorkerPool, WorkerPoolCreate, WorkerPoolEdit, WorkerPoolFilter, WorkerPoolResponse, WorkerFlowRunResponse, WorkerFlowRun, WorkerFlowRuns } from '@/models'
+import { mapper, WorkspaceApi } from '@/services'
 
 export interface IWorkspaceWorkerPoolApi {
   createWorkerPool: (request: WorkerPoolCreate) => Promise<WorkerPool>,
   getWorkerPoolByName: (workerPoolName: string) => Promise<WorkerPool>,
-  getWorkerPools: (filter: any) => Promise<WorkerPool[]>,
+  getWorkerPools: (filter: WorkerPoolFilter) => Promise<WorkerPool[]>,
   updateWorkerPool: (workerPoolName: string, request: WorkerPoolEdit) => Promise<void>,
   deleteWorkerPool: (workerPoolName: string) => Promise<void>,
-  // getWorkerPoolRuns: (workerPoolName: string) => Promise<any[]>,
+  getWorkerPoolRuns: (workerPoolName: string, request: WorkerFlowRuns) => Promise<WorkerFlowRun[]>,
 }
 
 export class WorkspaceWorkerPoolApi extends WorkspaceApi implements IWorkspaceWorkerPoolApi {
 
-  protected override routePrefix = '/workers/pools'
+  protected override routePrefix = '/experimental/worker_pools/'
 
   public async createWorkerPool(request: WorkerPoolCreate): Promise<WorkerPool> {
     const body = mapper.map('WorkerPoolCreate', request, 'WorkerPoolCreateRequest')
@@ -28,7 +27,7 @@ export class WorkspaceWorkerPoolApi extends WorkspaceApi implements IWorkspaceWo
     return mapper.map('WorkerPoolResponse', data, 'WorkerPool')
   }
 
-  public async getWorkerPools(filter: any): Promise<WorkerPool[]> {
+  public async getWorkerPools(filter: WorkerPoolFilter): Promise<WorkerPool[]> {
     const { data } = await this.post<WorkerPoolResponse[]>('/filter', filter)
 
     return mapper.map('WorkerPoolResponse', data, 'WorkerPool')
@@ -44,9 +43,10 @@ export class WorkspaceWorkerPoolApi extends WorkspaceApi implements IWorkspaceWo
     return this.delete(`/${name}`)
   }
 
-  // public async getWorkerPoolRuns(name: string): Promise<any[]> {
-  //   const { data } = await this.post<any[]>(`/${name}/get_work`)
+  public async getWorkerPoolRuns(name: string, request: WorkerFlowRuns): Promise<WorkerFlowRun[]> {
+    const body = mapper.map('WorkerFlowRuns', request, 'WorkerFlowRunsRequest')
+    const { data } = await this.post<WorkerFlowRunResponse[]>(`/${name}/get_scheduled_flow_runs`, body)
 
-  //   return mapper.map('RunResponse', data, 'Run')
-  // }
+    return mapper.map('WorkerFlowRunResponse', data, 'WorkerFlowRun')
+  }
 }
