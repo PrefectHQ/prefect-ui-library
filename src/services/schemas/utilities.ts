@@ -1,5 +1,5 @@
-import { schemaPropertyServiceFactory } from './properties'
 import { JsonInput } from '@/components'
+import { schemaPropertyServiceFactory } from '@/services/schemas/properties'
 import { SchemaProperty, SchemaPropertyInputAttrs, Schema, SchemaValues, SchemaValue, schemaHas, SchemaPropertyAnyOf } from '@/types/schemas'
 import { withPropsWithoutExcludedFactory } from '@/utilities/components'
 import { stringify } from '@/utilities/json'
@@ -120,9 +120,9 @@ export function getSchemaPropertyComponentWithDefaultProps({ component, props }:
         showFormatButton: true,
         ...props,
       })
+    default:
+      return { component, props }
   }
-
-  return { component, props }
 }
 
 /*

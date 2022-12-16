@@ -47,8 +47,8 @@
 <script lang="ts" setup>
   import { useField } from 'vee-validate'
   import { computed, ref, withDefaults, watch, onMounted } from 'vue'
-  import DayOrDescriptionModal from './DayOrDescriptionModal.vue'
-  import TimezoneSelect from './TimezoneSelect.vue'
+  import DayOrDescriptionModal from '@/components/DayOrDescriptionModal.vue'
+  import TimezoneSelect from '@/components/TimezoneSelect.vue'
   import { CronSchedule } from '@/models'
   import { containsCronRandomExpression } from '@/types/cron'
   import { isRequired, ValidationMethod } from '@/utilities/validation'

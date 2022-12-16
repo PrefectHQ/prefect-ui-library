@@ -29,10 +29,10 @@
 <script lang="ts" setup>
   import { useSubscription } from '@prefecthq/vue-compositions'
   import { computed } from 'vue'
-  import DurationIconText from './DurationIconText.vue'
-  import FlowRouterLink from './FlowRouterLink.vue'
-  import ORadarNode from './RadarNode.vue'
-  import StateIcon from './StateIcon.vue'
+  import DurationIconText from '@/components/DurationIconText.vue'
+  import FlowRouterLink from '@/components/FlowRouterLink.vue'
+  import ORadarNode from '@/components/RadarNode.vue'
+  import StateIcon from '@/components/StateIcon.vue'
   import { useWorkspaceApi, useWorkspaceRoutes } from '@/compositions'
   import { FlowRun, GraphNode, StateType } from '@/models'
 

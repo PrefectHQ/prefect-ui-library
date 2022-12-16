@@ -30,8 +30,8 @@
 <script lang="ts" setup>
   import { ButtonGroupOption } from '@prefecthq/prefect-design'
   import { computed, ref, watch } from 'vue'
-  import CronScheduleForm from './CronScheduleForm.vue'
-  import IntervalScheduleForm from './IntervalScheduleForm.vue'
+  import CronScheduleForm from '@/components/CronScheduleForm.vue'
+  import IntervalScheduleForm from '@/components/IntervalScheduleForm.vue'
   import { useShowModal } from '@/compositions'
   import { Schedule, getScheduleType, ScheduleType, isCronSchedule, isIntervalSchedule, CronSchedule, IntervalSchedule } from '@/models'
 
@@ -75,7 +75,7 @@
   const scheduleForm = ref<ScheduleType>(getScheduleType(props.schedule) ?? 'interval')
   const scheduleFormOptions: ButtonGroupOption[] = [{ label: 'Interval', value: 'interval' }, { label: 'Cron', value: 'cron' }, { label: 'RRule', value: 'rrule' }]
 
-  const updateSchedules = (): void  => {
+  const updateSchedules = (): void => {
     cronSchedule.value = isCronSchedule(props.schedule) ? props.schedule : undefined
     intervalSchedule.value = isIntervalSchedule(props.schedule) ? props.schedule : undefined
   }

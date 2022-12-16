@@ -1,7 +1,7 @@
-import { WorkspaceApi } from './WorkspaceApi'
 import { FlowRun, FlowRunResponse, WorkQueueCreate, WorkQueueEdit, WorkQueueResponse, WorkQueueStatus, WorkQueueStatusResponse } from '@/models'
 import { WorkQueue } from '@/models/WorkQueue'
 import { mapper } from '@/services/Mapper'
+import { WorkspaceApi } from '@/services/WorkspaceApi'
 import { PaginatedFilter } from '@/types/UnionFilters'
 
 export interface IWorkspaceWorkQueuesApi {

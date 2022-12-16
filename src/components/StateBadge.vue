@@ -7,7 +7,7 @@
 
 <script lang="ts" setup>
   import { computed } from 'vue'
-  import StateIcon from './StateIcon.vue'
+  import StateIcon from '@/components/StateIcon.vue'
   import { StateType } from '@/models/StateType'
   import { TailwindColor } from '@/types/tailwind'
   import { mapStateNameToStateType } from '@/utilities/state'

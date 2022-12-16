@@ -1,8 +1,8 @@
-import { mapper } from './Mapper'
-import { WorkspaceApi } from './WorkspaceApi'
 import { BlockSchemaResponse } from '@/models/api/BlockSchemaResponse'
 import { BlockSchema } from '@/models/BlockSchema'
 import { BlockSchemaFilter } from '@/models/BlockSchemaFilter'
+import { mapper } from '@/services/Mapper'
+import { WorkspaceApi } from '@/services/WorkspaceApi'
 
 export interface IWorkspaceBlockSchemasApi {
   getBlockSchema: (blockSchemaId: string) => Promise<BlockSchema>,

@@ -10,7 +10,7 @@
 </template>
 
   <script lang="ts" setup>
-  import {  showToast, PButton } from '@prefecthq/prefect-design'
+  import { showToast, PButton } from '@prefecthq/prefect-design'
   import { computed } from 'vue'
   import { useWorkspaceApi } from '@/compositions'
   import { localization } from '@/localization'
@@ -44,11 +44,11 @@
     },
   })
 
-  const retryModalTitle = computed(()=> `Retry ${props.flowRun.name}?`)
+  const retryModalTitle = computed(() => `Retry ${props.flowRun.name}?`)
 
   const api = useWorkspaceApi()
 
-  const retryFromFailed = async (): Promise<void>=> {
+  const retryFromFailed = async (): Promise<void> => {
     retryingRun.value = true
     try {
       await api.flowRuns.retryFlowRun(props.flowRun.id)

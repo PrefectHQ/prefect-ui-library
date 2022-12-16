@@ -38,6 +38,8 @@ export const randomSchedule: MockFunction<Schedule, [{ type?: ScheduleType }?, P
     case 'rrule':
       schedule = new RRuleSchedule({ rrule, timezone: null })
       break
+    default:
+      throw new Error(`randomSchedule missing case for ${type ?? randomScheduleType}`)
   }
 
   return schedule

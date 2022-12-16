@@ -1,7 +1,7 @@
-import { WorkspaceApi } from './WorkspaceApi'
 import { SavedSearchResponse } from '@/models/api/SavedSearchResponse'
 import { SavedSearch, SavedSearchCreate } from '@/models/SavedSearch'
 import { mapper } from '@/services/Mapper'
+import { WorkspaceApi } from '@/services/WorkspaceApi'
 import { defaultSavesSearches } from '@/utilities/savedFilters'
 
 export class WorkspaceSavedSearchesApi extends WorkspaceApi {

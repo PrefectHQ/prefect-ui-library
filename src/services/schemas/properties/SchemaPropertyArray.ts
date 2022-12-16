@@ -1,7 +1,7 @@
 import { PCombobox, PSelect } from '@prefecthq/prefect-design'
-import { SchemaPropertyComponentWithProps } from '../utilities'
-import { SchemaPropertyService } from './SchemaPropertyService'
 import { JsonInput } from '@/components'
+import { SchemaPropertyService } from '@/services/schemas/properties/SchemaPropertyService'
+import { SchemaPropertyComponentWithProps } from '@/services/schemas/utilities'
 import { SchemaValue } from '@/types/schemas'
 import { parseUnknownJson, stringifyUnknownJson } from '@/utilities/json'
 

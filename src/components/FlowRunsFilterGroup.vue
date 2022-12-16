@@ -5,7 +5,7 @@
         <DateRangeInput v-model:startDate="internalStartDate" v-model:endDate="internalEndDate" clearable />
       </p-label>
       <p-label label="States">
-        <StateSelect v-model:selected="states" empty-message="All run states" />
+        <StateNameSelect v-model:selected="states" empty-message="All run states" />
       </p-label>
     </div>
     <div class="flow-runs-filter-group__row">
@@ -35,7 +35,7 @@
   import DeploymentCombobox from '@/components/DeploymentCombobox.vue'
   import FlowCombobox from '@/components/FlowCombobox.vue'
   import SearchInput from '@/components/SearchInput.vue'
-  import StateSelect from '@/components/StateSelect.vue'
+  import StateNameSelect from '@/components/StateNameSelect.vue'
   import WorkQueueCombobox from '@/components/WorkQueueCombobox.vue'
   import { useFlowRunFilterFromRoute } from '@/compositions/useFlowRunFilterFromRoute'
 

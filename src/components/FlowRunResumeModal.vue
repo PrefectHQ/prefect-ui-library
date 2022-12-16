@@ -4,7 +4,7 @@
       <StateBadge :state="flowRun.state" />
     </p-label>
     <div>
-      Do you want to resume {{ flowRun.name }}. This will put flow run into a <StateBadge :state="{ name: 'Running', type: 'running' }" class="flow-run-resume-modal__state-badge" /> state.
+      Do you want to resume {{ flowRun.name }}?
     </div>
 
     <template #actions>
@@ -19,10 +19,9 @@
   import { showToast } from '@prefecthq/prefect-design'
   import { useSubscription } from '@prefecthq/vue-compositions'
   import { computed } from 'vue'
-  import StateBadge from './StateBadge.vue'
+  import StateBadge from '@/components/StateBadge.vue'
   import { useWorkspaceApi } from '@/compositions'
   import { localization } from '@/localization'
-  import {  StateUpdateDetails } from '@/models'
 
   const props = defineProps<{
     showModal: boolean,
@@ -44,16 +43,12 @@
     },
   })
 
-  const flowRunSubscription =  useSubscription(api.flowRuns.getFlowRun, [props.flowRunId], { interval: 30000 })
+  const flowRunSubscription = useSubscription(api.flowRuns.getFlowRun, [props.flowRunId], { interval: 30000 })
   const flowRun = computed(() => flowRunSubscription.response)
 
-  const resume  = async (): Promise<void>=> {
+  const resume = async (): Promise<void> => {
     try {
-      const values: StateUpdateDetails = {
-        type: 'running',
-        name: 'Running',
-      }
-      await api.flowRuns.setFlowRunState(props.flowRunId, { state: values })
+      await api.flowRuns.resumeFlowRun(props.flowRunId)
       flowRunSubscription.refresh()
       internalValue.value = false
       showToast(localization.success.resumeFlowRun, 'success')

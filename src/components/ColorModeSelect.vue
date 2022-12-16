@@ -12,7 +12,7 @@
 <script lang="ts" setup>
   import { PSelect } from '@prefecthq/prefect-design'
   import { computed } from 'vue'
-  import ColorModeSelectOption from './ColorModeSelectOption.vue'
+  import ColorModeSelectOption from '@/components/ColorModeSelectOption.vue'
   import { colorModes } from '@/types/ColorMode'
   import { isColorMode } from '@/utilities/colorMode'
 
