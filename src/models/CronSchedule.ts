@@ -1,7 +1,7 @@
 import cronstrue from 'cronstrue/i18n'
-import { CronStringLengthError } from './CronStringLengthError'
-import { PublicCron } from './PublicCron'
 import { CronScheduleResponse, ISchedule } from '@/models'
+import { CronStringLengthError } from '@/models/CronStringLengthError'
+import { PublicCron } from '@/models/PublicCron'
 import { CronKeyword, isCronKeyword, containsCronRandomExpression, cronKeywordMap } from '@/types/cron'
 import { capitalize } from '@/utilities'
 

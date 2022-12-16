@@ -42,7 +42,7 @@
   import { PLabel, PTextInput, PNumberInput, PToggle, PForm } from '@prefecthq/prefect-design'
   import { useField } from 'vee-validate'
   import { computed } from 'vue'
-  import SubmitButton from './SubmitButton.vue'
+  import SubmitButton from '@/components/SubmitButton.vue'
   import { useForm } from '@/compositions/useForm'
   import { WorkQueueEdit, WorkQueue } from '@/models'
 

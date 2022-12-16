@@ -9,8 +9,8 @@
 
 <script lang="ts" setup>
   import { computed } from 'vue'
-  import WorkQueueMenu from './WorkQueueMenu.vue'
   import PageHeading from '@/components/PageHeading.vue'
+  import WorkQueueMenu from '@/components/WorkQueueMenu.vue'
   import WorkQueueToggle from '@/components/WorkQueueToggle.vue'
   import { useWorkspaceRoutes } from '@/compositions'
   import { WorkQueue } from '@/models'

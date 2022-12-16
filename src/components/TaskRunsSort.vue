@@ -5,7 +5,7 @@
 <script lang="ts" setup>
   import { PSelect, SelectModelValue } from '@prefecthq/prefect-design'
   import { computed } from 'vue'
-  import { TaskRunSortOptions } from  '../types/SortOptionTypes'
+  import { TaskRunSortOptions } from '@/types/SortOptionTypes'
 
   const props = defineProps<{
     modelValue: string,

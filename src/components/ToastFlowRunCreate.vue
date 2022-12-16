@@ -20,7 +20,7 @@
 <script lang="ts" setup>
   import { PButton } from '@prefecthq/prefect-design'
   import { ref } from 'vue'
-  import { Router  } from 'vue-router'
+  import { Router } from 'vue-router'
   import { FlowRun } from '@/models/FlowRun'
   import { Route } from '@/router'
 

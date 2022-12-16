@@ -36,7 +36,7 @@
 <script lang="ts" setup>
   import { useField } from 'vee-validate'
   import { computed, watch, withDefaults } from 'vue'
-  import StateBadge from './StateBadge.vue'
+  import StateBadge from '@/components/StateBadge.vue'
   import StateSelect from '@/components/StateSelect.vue'
   import { useForm } from '@/compositions'
   import { FlowRun, StateUpdateDetails, TaskRun } from '@/models'

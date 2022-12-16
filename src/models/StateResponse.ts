@@ -1,5 +1,5 @@
-import { StateType } from './StateType'
 import { StateDetailsResponse } from '@/models/StateDetailsResponse'
+import { StateType } from '@/models/StateType'
 
 export type StateResponse = {
   id: string,

@@ -3,7 +3,7 @@
 </template>
 
 <script lang="ts" setup>
-  import PageHeading from './PageHeading.vue'
+  import PageHeading from '@/components/PageHeading.vue'
 
   const crumbs = [{ text: 'Create Notification' }]
 </script>

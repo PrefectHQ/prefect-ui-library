@@ -26,8 +26,8 @@
 
 <script lang="ts" setup>
   import { PEmptyState, PIcon } from '@prefecthq/prefect-design'
-  import DocumentationButton from './DocumentationButton.vue'
-  const href= 'https://discourse.prefect.io/t/deployments-are-now-simplified-and-follow-a-declarative-syntax/1255'
+  import DocumentationButton from '@/components/DocumentationButton.vue'
+  const href = 'https://discourse.prefect.io/t/deployments-are-now-simplified-and-follow-a-declarative-syntax/1255'
 </script>
 
 <style>

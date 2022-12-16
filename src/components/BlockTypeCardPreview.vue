@@ -28,7 +28,7 @@
 <script lang="ts" setup>
   import { useSubscription } from '@prefecthq/vue-compositions'
   import { computed, useSlots } from 'vue'
-  import BlockSchemaCapabilities from './BlockSchemaCapabilities.vue'
+  import BlockSchemaCapabilities from '@/components/BlockSchemaCapabilities.vue'
   import BlockTypeLogo from '@/components/BlockTypeLogo.vue'
   import { useWorkspaceApi, useWorkspaceRoutes } from '@/compositions'
   import { BlockType } from '@/models/BlockType'

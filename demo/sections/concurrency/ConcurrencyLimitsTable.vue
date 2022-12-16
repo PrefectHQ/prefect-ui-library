@@ -1,7 +1,7 @@
 <template>
   <ComponentPage title="Concurrency Limit">
     <ConcurrencyLimitsTable />
-  </componentpage>
+  </ComponentPage>
 </template>
 
 <script lang="ts" setup>

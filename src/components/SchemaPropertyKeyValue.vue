@@ -4,7 +4,7 @@
   </template>
   <!-- todo: support displaying nested objects -->
   <template v-else>
-    <p-key-value :label="property.title" :value="value" class="schema-property">
+    <p-key-value :label="property.title" :value="value" class="schema-property-key-value">
       <template v-if="isDefined && isJsonProperty" #value>
         <JsonView :value="jsonValue" />
       </template>
@@ -14,8 +14,8 @@
 
 <script lang="ts" setup>
   import { computed } from 'vue'
-  import BlockDocumentKeyValue from './BlockDocumentKeyValue.vue'
   import { JsonView, JsonInput } from '.'
+  import BlockDocumentKeyValue from '@/components/BlockDocumentKeyValue.vue'
   import { SchemaProperty, SchemaValue } from '@/types/schemas'
   import { stringifyUnknownJson } from '@/utilities/json'
 

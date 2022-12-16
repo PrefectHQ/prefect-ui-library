@@ -1,4 +1,4 @@
-import { SchemaPropertyService } from './SchemaPropertyService'
+import { SchemaPropertyService } from '@/services/schemas/properties/SchemaPropertyService'
 import { SchemaValue } from '@/types/schemas'
 
 export class SchemaPropertyNone extends SchemaPropertyService {

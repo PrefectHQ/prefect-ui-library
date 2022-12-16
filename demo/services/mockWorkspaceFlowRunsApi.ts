@@ -49,6 +49,15 @@ export class MockWorkspaceFlowRunsApi extends MockApi implements IWorkspaceFlowR
     return await Promise.resolve()
   }
 
+  public resumeFlowRun(flowRunId: string): Promise<void> {
+    const flowRun = this.flowRuns.get(flowRunId)
+    flowRun.stateType = 'running'
+
+    this.flowRuns.patch(flowRunId, flowRun)
+
+    return Promise.resolve()
+  }
+
   public async deleteFlowRun(flowRunId: string): Promise<void> {
     return await this.flowRuns.delete(flowRunId)
   }

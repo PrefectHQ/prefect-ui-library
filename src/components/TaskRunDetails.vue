@@ -55,8 +55,8 @@
 
 <script lang="ts" setup>
   import { PKeyValue, PTags } from '@prefecthq/prefect-design'
-  import DurationIconText from './DurationIconText.vue'
-  import FlowRunIconText from './FlowRunIconText.vue'
+  import DurationIconText from '@/components/DurationIconText.vue'
+  import FlowRunIconText from '@/components/FlowRunIconText.vue'
   import { TaskRun } from '@/models/TaskRun'
   import { formatDateTimeNumeric } from '@/utilities/dates'
   import { secondsToApproximateString } from '@/utilities/seconds'

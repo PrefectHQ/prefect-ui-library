@@ -1,3 +1,4 @@
+/* eslint-disable no-dupe-class-members */
 import { maps } from '@/maps'
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
