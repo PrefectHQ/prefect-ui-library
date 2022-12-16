@@ -6,7 +6,7 @@
 
     <div class="notification-form__horizontal-fields">
       <p-label label="Run states">
-        <StateSelect v-model:selected="stateNames" empty-message="All states" />
+        <StateNameSelect v-model:selected="stateNames" empty-message="All states" />
       </p-label>
 
       <p-label label="Tags (Optional)">
@@ -46,7 +46,7 @@
   import { computed, watchEffect, ref, watch, reactive } from 'vue'
   import NotificationDetails from '@/components/NotificationDetails.vue'
   import SchemaFormFields from '@/components/SchemaFormFields.vue'
-  import StateSelect from '@/components/StateSelect.vue'
+  import StateNameSelect from '@/components/StateNameSelect.vue'
   import SubmitButton from '@/components/SubmitButton.vue'
   import { useBlockSchemaForBlockType, useForm, useReactiveField, useWorkspaceApi } from '@/compositions'
   import { localization } from '@/localization'

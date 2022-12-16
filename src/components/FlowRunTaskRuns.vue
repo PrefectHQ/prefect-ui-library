@@ -1,7 +1,7 @@
 <template>
   <div class="flow-run-task-runs">
     <div class="flow-run-task-runs__filters">
-      <StateSelect v-model:selected="state" empty-message="All states" class="mr-auto" />
+      <StateNameSelect v-model:selected="states" empty-message="All states" class="mr-auto" />
       <SearchInput v-model="searchTerm" placeholder="Search by run name" label="Search by run name" />
       <TaskRunsSort v-model="sort" />
     </div>
@@ -25,14 +25,12 @@
   import { useDebouncedRef } from '@prefecthq/vue-compositions'
   import { computed, ref } from 'vue'
   import SearchInput from '@/components/SearchInput.vue'
-  import StateSelect from '@/components/StateSelect.vue'
+  import StateNameSelect from '@/components/StateNameSelect.vue'
   import TaskRunList from '@/components/TaskRunList.vue'
   import TaskRunsSort from '@/components/TaskRunsSort.vue'
   import { useWorkspaceApi } from '@/compositions'
   import { usePaginatedSubscription } from '@/compositions/usePaginatedSubscription'
-  import { StateType } from '@/models/StateType'
   import { TaskRun } from '@/models/TaskRun'
-  import { mapper } from '@/services/Mapper'
   import { TaskRunSortValues } from '@/types/SortOptionTypes'
   import { TaskRunFilter, UnionFilters } from '@/types/UnionFilters'
 
@@ -40,11 +38,11 @@
     flowRunId: string,
   }>()
 
-  const state = ref<StateType[]>([])
+  const states = ref<string[]>([])
   const searchTerm = ref('')
   const searchTermDebounced = useDebouncedRef(searchTerm, 1200)
   const sort = ref<TaskRunSortValues>('EXPECTED_START_TIME_DESC')
-  const hasFilters = computed(() => state.value.length || searchTerm.value.length)
+  const hasFilters = computed(() => states.value.length || searchTerm.value.length)
 
   const filter = computed<UnionFilters>(() => {
     const runFilter: UnionFilters = {
@@ -68,10 +66,10 @@
       }
     }
 
-    if (state.value.length) {
+    if (states.value.length) {
       taskRunsFilter.state = {
-        type: {
-          any_: state.value.map(state => mapper.map('StateType', state, 'ServerStateType')),
+        name: {
+          any_: states.value,
         },
       }
     }
@@ -84,7 +82,7 @@
   const empty = computed(() => taskRunsSubscription.executed && taskRuns.value.length === 0)
 
   function clear(): void {
-    state.value = []
+    states.value = []
     searchTerm.value = ''
   }
 </script>

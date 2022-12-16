@@ -1,4 +1,3 @@
-import { StateType } from '@/models/StateType'
 
 export type SavedSearchResponse = {
   id: string,
@@ -8,7 +7,7 @@ export type SavedSearchResponse = {
   filters?: SavedSearchFilterResponse[],
 }
 
-export type FilterResponseValue = string | string[] | StateType[]
+export type FilterResponseValue = string | string[]
 export interface SavedSearchFilterResponse {
   object?: string,
   property?: string,

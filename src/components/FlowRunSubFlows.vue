@@ -1,7 +1,7 @@
 <template>
   <div class="flow-run-sub-flows">
     <div class="flow-run-sub-flows__filters">
-      <StateSelect v-model:selected="state" empty-message="All states" class="flow-run-sub-flows__state" />
+      <StateNameSelect v-model:selected="states" empty-message="All states" class="flow-run-sub-flows__state" />
       <SearchInput v-model="searchTerm" placeholder="Search by run name" label="Search by run name" />
       <FlowRunsSort v-model="sort" />
     </div>
@@ -28,13 +28,11 @@
   import FlowRunList from '@/components/FlowRunList.vue'
   import FlowRunsSort from '@/components/FlowRunsSort.vue'
   import SearchInput from '@/components/SearchInput.vue'
-  import StateSelect from '@/components/StateSelect.vue'
+  import StateNameSelect from '@/components/StateNameSelect.vue'
   import { useWorkspaceApi } from '@/compositions'
   import { usePaginatedSubscription } from '@/compositions/usePaginatedSubscription'
   import { FlowRun } from '@/models/FlowRun'
-  import { StateType } from '@/models/StateType'
   import { TaskRun } from '@/models/TaskRun'
-  import { mapper } from '@/services/Mapper'
   import { FlowRunSortValues } from '@/types/SortOptionTypes'
   import { UnionFilters } from '@/types/UnionFilters'
 
@@ -43,11 +41,11 @@
   }>()
 
   const api = useWorkspaceApi()
-  const state = ref<StateType[]>([])
+  const states = ref<string[]>([])
   const searchTerm = ref('')
   const searchTermDebounced = useDebouncedRef(searchTerm, 1200)
   const sort = ref<FlowRunSortValues>('START_TIME_DESC')
-  const hasFilters = computed(() => state.value.length || searchTerm.value.length)
+  const hasFilters = computed(() => states.value.length || searchTerm.value.length)
 
   // this is a hack because api/task_runs/filter doesn't support START_TIME_ASC or START_TIME_DESC
   // https://github.com/PrefectHQ/prefect/issues/7730
@@ -77,10 +75,10 @@
       },
     }
 
-    if (state.value.length) {
+    if (states.value.length) {
       runFilter.task_runs!.state = {
-        type: {
-          any_: state.value.map(state => mapper.map('StateType', state, 'ServerStateType')),
+        name: {
+          any_: states.value,
         },
       }
     }
@@ -126,7 +124,7 @@
   }
 
   function clear(): void {
-    state.value = []
+    states.value = []
     searchTerm.value = ''
   }
 </script>

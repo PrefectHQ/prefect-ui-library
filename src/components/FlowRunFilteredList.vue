@@ -8,7 +8,7 @@
         <FlowRunsDeleteButton v-if="can.delete.flow_run" :selected="selectedFlowRuns" @delete="deleteFlowRuns" />
       </div>
 
-      <StateSelect :selected="state" empty-message="All run states" class="flow-run-filtered-list__state-select" @update:selected="updateState" />
+      <StateNameSelect :selected="states" empty-message="All run states" class="flow-run-filtered-list__state-select" @update:selected="updateState" />
       <FlowRunsSort v-model="sort" class="flow-run-filtered-list__flow-runs-sort" />
     </div>
     <FlowRunList v-model:selected="selectedFlowRuns" :flow-runs="flowRuns" :disabled="disabled || !can.delete.flow_run" @bottom="flowRunsSubscription.loadMore" />
@@ -28,42 +28,34 @@
 <script lang="ts" setup>
   import { useSubscription } from '@prefecthq/vue-compositions'
   import { computed, onMounted, ref } from 'vue'
-  import { ResultsCount, StateSelect, FlowRunsSort, FlowRunList, SelectedCount, FlowRunsDeleteButton } from '@/components'
+  import { ResultsCount, StateNameSelect, FlowRunsSort, FlowRunList, SelectedCount, FlowRunsDeleteButton } from '@/components'
   import { useWorkspaceApi } from '@/compositions'
   import { useCan } from '@/compositions/useCan'
   import { usePaginatedSubscription } from '@/compositions/usePaginatedSubscription'
-  import { StateType } from '@/models'
-  import { mapper } from '@/services'
-  import { FlowRunSortValues, UnionFilters } from '@/types'
-
-  type StateTypeOrStateName = StateType | 'late' | 'cancelling'
+  import { FlowRunSortValues, PrefectStateNames, UnionFilters } from '@/types'
 
   const props = defineProps<{
     flowRunFilter: UnionFilters,
-    states?: StateTypeOrStateName[],
+    states?: PrefectStateNames[],
     disabled?: boolean,
   }>()
 
   const emit = defineEmits<{
-    (event: 'update:states', value: StateTypeOrStateName[]): void,
+    (event: 'update:states', value: PrefectStateNames[]): void,
   }>()
 
   const can = useCan()
   const api = useWorkspaceApi()
   const selectedFlowRuns = ref<string[]>([])
-  const state = ref<StateTypeOrStateName[]>(props.states ?? [])
-  const stateWithoutLate = computed(() => state.value.filter(state => state !== 'late') as StateType[])
-  const stateIncludesLate = computed(() => state.value.includes('late'))
-  const stateWithoutCancelling = computed(() => state.value.filter(state => state !== 'cancelling') as StateType[])
-  const stateIncludesCancelling = computed(() => state.value.includes('cancelling'))
+  const states = ref<PrefectStateNames[]>(props.states ?? [])
 
   const updateState = (newValue: string | string[] | null): void => {
-    state.value = newValue as StateTypeOrStateName[]
-    emit('update:states', state.value)
+    states.value = newValue as PrefectStateNames[]
+    emit('update:states', states.value)
   }
 
   const sort = ref<FlowRunSortValues>('START_TIME_DESC')
-  const hasFilters = computed(() => state.value.length)
+  const hasFilters = computed(() => states.value.length)
 
   const filter = computed<UnionFilters>(() => {
     const runFilter: UnionFilters = {
@@ -75,39 +67,11 @@
       ...props.flowRunFilter.flow_runs,
     }
 
-    if (state.value.length) {
+    if (states.value.length) {
       flowRunsFilter.state = {
-        type: {
-          any_: stateWithoutLate.value.map(state => mapper.map('StateType', state, 'ServerStateType')),
+        name: {
+          any_: states.value,
         },
-      }
-
-      if (stateIncludesLate.value) {
-        flowRunsFilter.state = {
-          ...flowRunsFilter.state,
-          operator: 'or_',
-          name: {
-            any_: ['Late'],
-          },
-        }
-      }
-    }
-
-    if (state.value.length) {
-      flowRunsFilter.state = {
-        type: {
-          any_: stateWithoutCancelling.value.map(state => mapper.map('StateType', state, 'ServerStateType')),
-        },
-      }
-
-      if (stateIncludesCancelling.value) {
-        flowRunsFilter.state = {
-          ...flowRunsFilter.state,
-          operator: 'or_',
-          name: {
-            any_: ['Cancelling'],
-          },
-        }
       }
     }
 
@@ -123,7 +87,7 @@
   const empty = computed(() => flowRunsSubscription.executed && flowRuns.value.length === 0)
 
   function clear(): void {
-    state.value = []
+    states.value = []
   }
 
   const deleteFlowRuns = (): void => {
@@ -134,7 +98,7 @@
 
   onMounted(() => {
     if (props.states) {
-      state.value = props.states
+      states.value = props.states
     }
   })
 </script>
