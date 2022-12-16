@@ -1,4 +1,4 @@
-import { WorkerPool, WorkerPoolCreate, WorkerPoolEdit, WorkerPoolFilter, WorkerPoolResponse, WorkerFlowRunResponse, WorkerFlowRunsRequest, WorkerFlowRun, WorkerFlowRuns } from '@/models'
+import { WorkerPool, WorkerPoolCreate, WorkerPoolEdit, WorkerPoolFilter, WorkerPoolResponse, WorkerFlowRunResponse, WorkerFlowRun, WorkerFlowRuns } from '@/models'
 import { mapper, WorkspaceApi } from '@/services'
 
 export interface IWorkspaceWorkerPoolApi {
