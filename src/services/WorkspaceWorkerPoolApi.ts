@@ -4,7 +4,7 @@ import { mapper } from '@/services/Mapper'
 
 export interface IWorkspaceWorkerPoolApi {
   createWorkerPool: (request: WorkerPoolCreate) => Promise<WorkerPool>,
-  // getWorkerPoolByName: (workerPoolName: string) => Promise<WorkerPool>,
+  getWorkerPoolByName: (workerPoolName: string) => Promise<WorkerPool>,
   // getWorkerPools: (filter: any) => Promise<WorkerPool[]>,
   // updateWorkerPool: (workerPoolName: string, request: WorkerPoolEdit) => Promise<void>,
   // deleteWorkerPool: (workerPoolName: string) => Promise<void>,
@@ -22,11 +22,11 @@ export class WorkspaceWorkerPoolApi extends WorkspaceApi implements IWorkspaceWo
     return mapper.map('WorkerPoolResponse', data, 'WorkerPool')
   }
 
-  // public async getWorkerPoolByName(name: string): Promise<WorkerPool> {
-  //   const { data } = await this.get<WorkerPoolResponse>(`/${name}`)
+  public async getWorkerPoolByName(name: string): Promise<WorkerPool> {
+    const { data } = await this.get<WorkerPoolResponse>(`/${name}`)
 
-  //   return mapper.map('WorkerPoolResponse', data, 'WorkerPool')
-  // }
+    return mapper.map('WorkerPoolResponse', data, 'WorkerPool')
+  }
 
   // public async getWorkerPools(filter: any): Promise<WorkerPool[]> {
   //   const { data } = await this.post<WorkerPoolResponse[]>('/filter', filter)
