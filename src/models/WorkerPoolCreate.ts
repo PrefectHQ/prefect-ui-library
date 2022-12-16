@@ -1,5 +1,7 @@
-export type WorkerPoolCreate = {
+export type WorkerPoolCreate = Partial<{
   name: string,
-  description?: string | null,
+  description: string,
   type: string,
-}
+  isPaused: boolean,
+  concurrencyLimit: number,
+}>
