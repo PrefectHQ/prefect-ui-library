@@ -7,7 +7,7 @@ export interface IWorkspaceWorkerPoolApi {
   getWorkerPoolByName: (workerPoolName: string) => Promise<WorkerPool>,
   // getWorkerPools: (filter: any) => Promise<WorkerPool[]>,
   // updateWorkerPool: (workerPoolName: string, request: WorkerPoolEdit) => Promise<void>,
-  // deleteWorkerPool: (workerPoolName: string) => Promise<void>,
+  deleteWorkerPool: (workerPoolName: string) => Promise<void>,
   // getWorkerPoolRuns: (workerPoolName: string) => Promise<any[]>,
 }
 
@@ -40,9 +40,9 @@ export class WorkspaceWorkerPoolApi extends WorkspaceApi implements IWorkspaceWo
   //   return this.patch(`/${name}`, body)
   // }
 
-  // public deleteWorkerPool(name: string): Promise<void> {
-  //   return this.delete(`/${name}`)
-  // }
+  public deleteWorkerPool(name: string): Promise<void> {
+    return this.delete(`/${name}`)
+  }
 
   // public async getWorkerPoolRuns(name: string): Promise<any[]> {
   //   const { data } = await this.post<any[]>(`/${name}/get_work`)
