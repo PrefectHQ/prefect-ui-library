@@ -5,7 +5,7 @@ import { mapper } from '@/services/Mapper'
 export interface IWorkspaceWorkerPoolQueueApi {
   createWorkerPoolQueue: (workerPoolName: string, request: WorkerPoolQueueCreate) => Promise<WorkerPoolQueue>,
   getWorkerPoolQueues: (workerPoolName: string) => Promise<WorkerPoolQueue[]>,
-  // getWorkerPoolQueueByName: (workerPoolName: string, queueName: string) => Promise<WorkerPoolQueue>,
+  getWorkerPoolQueueByName: (workerPoolName: string, queueName: string) => Promise<WorkerPoolQueue>,
   // updateWorkerPoolQueue: (workerPoolName: string, queueName: string, request: WorkerPoolQueueCreate) => Promise<void>,
   // deleteWorkerPoolQueue: (workerPoolName: string, queueName: string) => Promise<void>,
   // updateWorkerPoolQueuePriority: (workerPoolName: string, queueName: string, priority: number) => Promise<void>,
@@ -30,11 +30,11 @@ export class WorkspaceWorkerPoolQueueApi extends WorkspaceApi implements IWorksp
     return mapper.map('WorkerPoolQueueResponse', data, 'WorkerPoolQueue')
   }
 
-  // public async getWorkerPoolQueueByName(workerPoolName: string, queueName: string): Promise<WorkerPoolQueue> {
-  //   const { data } = await this.get<WorkerPoolQueue>(`/${workerPoolName}/queues/${queueName}`)
+  public async getWorkerPoolQueueByName(workerPoolName: string, queueName: string): Promise<WorkerPoolQueue> {
+    const { data } = await this.get<WorkerPoolQueueResponse>(`/${workerPoolName}/queues/${queueName}`)
 
-  //   return mapper.map('WorkerPoolQueueResponse', data, 'WorkerPoolQueue')
-  // }
+    return mapper.map('WorkerPoolQueueResponse', data, 'WorkerPoolQueue')
+  }
 
   // public updateWorkerPoolQueue(workerPoolName: string, queueName: string, request: WorkerPoolQueueEdit): Promise<void> {
   //   const body = mapper.map('WorkerPoolQueueEdit', request, 'WorkerPoolQueueEditRequest')
