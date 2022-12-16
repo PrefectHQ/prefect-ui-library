@@ -6,8 +6,8 @@ export type WorkerPoolCreateRequest = Partial<{
   concurrency_limit: number,
 }>
 
-// export type WorkerPoolEditRequest = Partial<{
-//   description: string | null,
-//   is_paused: boolean | null,
-//   concurrency_limit: number | null,
-// }>
+export type WorkerPoolEditRequest = Partial<{
+  description: string,
+  is_paused: boolean,
+  concurrency_limit: number,
+}>
