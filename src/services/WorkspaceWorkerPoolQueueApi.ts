@@ -8,8 +8,6 @@ export interface IWorkspaceWorkerPoolQueueApi {
   getWorkerPoolQueueByName: (workerPoolName: string, queueName: string) => Promise<WorkerPoolQueue>,
   updateWorkerPoolQueue: (workerPoolName: string, queueName: string, request: WorkerPoolQueueCreate) => Promise<void>,
   deleteWorkerPoolQueue: (workerPoolName: string, queueName: string) => Promise<void>,
-  // updateWorkerPoolQueuePriority: (workerPoolName: string, queueName: string, priority: number) => Promise<void>,
-  // updateWorkerPoolQueue: (workerPoolName: string, queueName: string) => Promise<any[]>,
 }
 
 export class WorkspaceWorkerPoolQueueApi extends WorkspaceApi implements IWorkspaceWorkerPoolQueueApi {
@@ -46,13 +44,7 @@ export class WorkspaceWorkerPoolQueueApi extends WorkspaceApi implements IWorksp
     return this.delete(`/${workerPoolName}/queues/${queueName}`)
   }
 
-  // public updateWorkerPoolQueuePriority(workerPoolName: string, queueName: string, priority: number): Promise<void> {
-  //   return this.patch(`/${workerPoolName}/queues/${queueName}/update_priority`, { priority })
-  // }
-
-  // public async getWorkerPoolRuns(name: string): Promise<any[]> {
-  //   const { data } = await this.post<any[]>(`/${name}/get_work`)
-
-  //   return mapper.map('RunResponse', data, 'Run')
-  // }
+  public updateWorkerPoolQueuePriority(workerPoolName: string, queueName: string, priority: number): Promise<void> {
+    return this.patch(`/${workerPoolName}/queues/${queueName}/update_priority`, { priority })
+  }
 }
