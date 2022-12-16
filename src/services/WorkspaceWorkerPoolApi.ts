@@ -1,6 +1,5 @@
-import { WorkspaceApi } from './WorkspaceApi'
-import { WorkerPool, WorkerPoolCreate, WorkerPoolEdit, WorkerPoolFilter, WorkerPoolResponse } from '@/models'
-import { mapper } from '@/services/Mapper'
+import { WorkerPool, WorkerPoolCreate, WorkerPoolEdit, WorkerPoolFilter, WorkerPoolResponse, WorkerFlowRunResponse, WorkerFlowRunsRequest, WorkerFlowRun } from '@/models'
+import { mapper, WorkspaceApi } from '@/services'
 
 export interface IWorkspaceWorkerPoolApi {
   createWorkerPool: (request: WorkerPoolCreate) => Promise<WorkerPool>,
@@ -8,7 +7,7 @@ export interface IWorkspaceWorkerPoolApi {
   getWorkerPools: (filter: WorkerPoolFilter) => Promise<WorkerPool[]>,
   updateWorkerPool: (workerPoolName: string, request: WorkerPoolEdit) => Promise<void>,
   deleteWorkerPool: (workerPoolName: string) => Promise<void>,
-  // getWorkerPoolRuns: (workerPoolName: string) => Promise<any[]>,
+  getWorkerPoolRuns: (workerPoolName: string, body: WorkerFlowRunsRequest) => Promise<WorkerFlowRun[]>,
 }
 
 export class WorkspaceWorkerPoolApi extends WorkspaceApi implements IWorkspaceWorkerPoolApi {
@@ -44,9 +43,9 @@ export class WorkspaceWorkerPoolApi extends WorkspaceApi implements IWorkspaceWo
     return this.delete(`/${name}`)
   }
 
-  // public async getWorkerPoolRuns(name: string): Promise<any[]> {
-  //   const { data } = await this.post<any[]>(`/${name}/get_work`)
+  public async getWorkerPoolRuns(name: string, body: WorkerFlowRunsRequest): Promise<WorkerFlowRun[]> {
+    const { data } = await this.post<WorkerFlowRunResponse[]>(`/${name}/get_scheduled_flow_runs`, body)
 
-  //   return mapper.map('RunResponse', data, 'Run')
-  // }
+    return mapper.map('WorkerFlowRunResponse', data, 'WorkerFlowRun')
+  }
 }

@@ -40,6 +40,7 @@ import { mapStateUpdateToStateUpdateRequest } from '@/maps/stateUpdate'
 import { mapTaskInputToTaskInputResponse, mapTaskInputResponseToTaskInput } from '@/maps/taskInput'
 import { mapTaskRunToTaskRunResponse, mapTaskRunResponseToTaskRun } from '@/maps/taskRun'
 import { mapUiFlowRunHistoryResponseToUiFlowRunHistory } from '@/maps/uiFlowRunHistory'
+import { mapWorkerFlowRunResponseToWorkerFlowRun } from '@/maps/workerFlowRun'
 import { mapWorkerPoolCreateToWorkerPoolCreateRequest, mapWorkerPoolEditToWorkerPoolEditRequest, mapWorkerPoolResponseToWorkerPool, mapWorkerPoolToWorkerPoolResponse } from '@/maps/workerPool'
 import { mapWorkQueueToWorkQueueResponse, mapWorkQueueResponseToWorkQueue, mapWorkQueueCreateToWorkQueueCreateRequest, mapWorkQueueEditToWorkQueueEditRequest } from '@/maps/workQueue'
 import { mapWorkQueueFilterToWorkQueueFilterResponse, mapWorkQueueFilterResponseToWorkQueueFilter } from '@/maps/workQueueFilter'
@@ -109,6 +110,7 @@ export const maps = {
   TaskRunResponse: { TaskRun: mapTaskRunResponseToTaskRun },
   UiFlowRunHistory: { ScatterPlotItem: mapUiFlowRunHistoryToScatterPlotItem },
   UiFlowRunHistoryResponse: { UiFlowRunHistory: mapUiFlowRunHistoryResponseToUiFlowRunHistory },
+  WorkerFlowRunResponse: { WorkerFlowRun: mapWorkerFlowRunResponseToWorkerFlowRun },
   WorkerPool: { WorkerPoolResponse: mapWorkerPoolToWorkerPoolResponse },
   WorkerPoolCreate: { WorkerPoolCreateRequest: mapWorkerPoolCreateToWorkerPoolCreateRequest },
   WorkerPoolEdit: { WorkerPoolEditRequest: mapWorkerPoolEditToWorkerPoolEditRequest },
