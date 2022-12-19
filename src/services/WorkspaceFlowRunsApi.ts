@@ -1,4 +1,4 @@
-import { StateUpdate } from '@/models'
+import { StateUpdate, TimelineNode } from '@/models'
 import { FlowRun } from '@/models/FlowRun'
 import { FlowRunGraphResponse } from '@/models/FlowRunGraphResponse'
 import { FlowRunHistoryResponse } from '@/models/FlowRunHistoryResponse'
@@ -15,6 +15,7 @@ export interface IWorkspaceFlowRunsApi {
   getFlowRunsCount: (filter: UnionFilters) => Promise<number>,
   getFlowRunsHistory: (filter: FlowRunsHistoryFilter) => Promise<RunHistory[]>,
   getFlowRunsGraph: (flowRunId: string) => Promise<GraphNode[]>,
+  getFlowRunsTimeline: (flowRunId: string) => Promise<TimelineNode[]>,
   retryFlowRun: (flowRunId: string) => Promise<void>,
   setFlowRunState: (flowRunId: string, body: StateUpdate) => Promise<void>,
   resumeFlowRun: (flowRunId: string) => Promise<void>,
@@ -49,10 +50,16 @@ export class WorkspaceFlowRunsApi extends WorkspaceApi implements IWorkspaceFlow
     return mapper.map('FlowRunHistoryResponse', data, 'RunHistory')
   }
 
-  public async getFlowRunsGraph(id: string): Promise<GraphNode[]> {
-    const { data } = await this.get<FlowRunGraphResponse[]>(`/${id}/graph`)
+  public async getFlowRunsGraph(flowRunId: string): Promise<GraphNode[]> {
+    const { data } = await this.get<FlowRunGraphResponse[]>(`/${flowRunId}/graph`)
 
     return mapper.map('FlowRunGraphResponse', data, 'GraphNode')
+  }
+
+  public async getFlowRunsTimeline(id: string): Promise<TimelineNode[]> {
+    const { data } = await this.get<FlowRunGraphResponse[]>(`/${id}/graph`)
+
+    return mapper.map('FlowRunGraphResponse', data, 'TimelineNode')
   }
 
   public retryFlowRun(id: string): Promise<void> {
