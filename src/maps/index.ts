@@ -40,6 +40,8 @@ import { mapStateUpdateToStateUpdateRequest } from '@/maps/stateUpdate'
 import { mapTaskInputToTaskInputResponse, mapTaskInputResponseToTaskInput } from '@/maps/taskInput'
 import { mapTaskRunToTaskRunResponse, mapTaskRunResponseToTaskRun } from '@/maps/taskRun'
 import { mapUiFlowRunHistoryResponseToUiFlowRunHistory } from '@/maps/uiFlowRunHistory'
+import { mapWorkerFlowRunResponseToWorkerFlowRun, mapWorkerFlowRunsToWorkerFlowRunsRequest } from '@/maps/workerFlowRun'
+import { mapWorkerPoolCreateToWorkerPoolCreateRequest, mapWorkerPoolEditToWorkerPoolEditRequest, mapWorkerPoolResponseToWorkerPool, mapWorkerPoolToWorkerPoolResponse } from '@/maps/workerPool'
 import { mapWorkQueueToWorkQueueResponse, mapWorkQueueResponseToWorkQueue, mapWorkQueueCreateToWorkQueueCreateRequest, mapWorkQueueEditToWorkQueueEditRequest } from '@/maps/workQueue'
 import { mapWorkQueueFilterToWorkQueueFilterResponse, mapWorkQueueFilterResponseToWorkQueueFilter } from '@/maps/workQueueFilter'
 import { mapWorkQueueHealthPolicyResponseToWorkQueueHealthPolicy } from '@/maps/workQueueHealthPolicy'
@@ -57,8 +59,8 @@ export const maps = {
   BlockSchemaResponse: { BlockSchema: mapBlockSchemaResponseToBlockSchema },
   BlockTypeFilter: { BlockTypeFilterRequest: mapBlockTypeFilterToBlockTypeFilterRequest },
   BlockTypeResponse: { BlockType: mapBlockTypeResponseToBlockType },
-  ConcurrencyLimitResponse: { ConcurrencyLimit: mapConcurrencyLimitResponseToConcurrencyLimit },
   ConcurrencyLimitCreate: { ConcurrencyLimitCreateRequest: mapConcurrencyLimitCreateToConcurrencyLimitCreateRequest },
+  ConcurrencyLimitResponse: { ConcurrencyLimit: mapConcurrencyLimitResponseToConcurrencyLimit },
   CreatedOrUpdatedByResponse: { CreatedOrUpdatedBy: mapCreatedOrUpdatedByResponseToCreatedOrUpdatedBy },
   Date: { string: mapDateToString },
   DeploymentFlowRunCreate: { DeploymentFlowRunRequest: mapDeploymentFlowRunCreateToDeploymentFlowRunRequest },
@@ -108,6 +110,12 @@ export const maps = {
   TaskRunResponse: { TaskRun: mapTaskRunResponseToTaskRun },
   UiFlowRunHistory: { ScatterPlotItem: mapUiFlowRunHistoryToScatterPlotItem },
   UiFlowRunHistoryResponse: { UiFlowRunHistory: mapUiFlowRunHistoryResponseToUiFlowRunHistory },
+  WorkerFlowRuns: { WorkerFlowRunsRequest: mapWorkerFlowRunsToWorkerFlowRunsRequest },
+  WorkerFlowRunResponse: { WorkerFlowRun: mapWorkerFlowRunResponseToWorkerFlowRun },
+  WorkerPool: { WorkerPoolResponse: mapWorkerPoolToWorkerPoolResponse },
+  WorkerPoolCreate: { WorkerPoolCreateRequest: mapWorkerPoolCreateToWorkerPoolCreateRequest },
+  WorkerPoolEdit: { WorkerPoolEditRequest: mapWorkerPoolEditToWorkerPoolEditRequest },
+  WorkerPoolResponse: { WorkerPool: mapWorkerPoolResponseToWorkerPool },
   WorkQueue: { WorkQueueResponse: mapWorkQueueToWorkQueueResponse },
   WorkQueueCreate: { WorkQueueCreateRequest: mapWorkQueueCreateToWorkQueueCreateRequest },
   WorkQueueEdit: { WorkQueueEditRequest: mapWorkQueueEditToWorkQueueEditRequest },
