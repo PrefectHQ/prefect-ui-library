@@ -1,6 +1,5 @@
-import { WorkspaceApi } from './WorkspaceApi'
 import { WorkerPoolQueueCreate, WorkerPoolQueue, WorkerPoolQueueEdit, WorkerPoolQueueResponse } from '@/models'
-import { mapper } from '@/services/Mapper'
+import { mapper, WorkspaceApi } from '@/services'
 
 export interface IWorkspaceWorkerPoolQueueApi {
   createWorkerPoolQueue: (workerPoolName: string, request: WorkerPoolQueueCreate) => Promise<WorkerPoolQueue>,
