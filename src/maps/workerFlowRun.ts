@@ -1,4 +1,3 @@
-/* eslint-disable camelcase */
 import { WorkerFlowRun, WorkerFlowRunResponse, WorkerFlowRuns, WorkerFlowRunsRequest } from '@/models'
 import { MapFunction } from '@/services'
 
