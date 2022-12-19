@@ -285,13 +285,17 @@ export function createWorkspaceRouteRecords(components: Partial<WorkspaceRouteCo
           component: components.workerPools,
         },
         {
-          name: 'workspace.worker-pools.worker-pool',
           path: 'worker-pool/:workerPoolName',
           component: components.workerPool,
           children: [
             {
+              name: 'workspace.worker-pools.worker-pool',
+              path: '',
+              component: components.workerPools,
+            },
+            {
               name: 'workspace.worker-pools.worker-pool.worker-pool-queue',
-              path: 'worker-pool/:workerPoolName/queue/:workerPoolQueueId',
+              path: 'queue/:workerPoolQueueId',
               component: components.workerPoolQueue,
               meta: {
                 can: 'read:worker_pool_queue',
@@ -299,7 +303,7 @@ export function createWorkspaceRouteRecords(components: Partial<WorkspaceRouteCo
             },
             {
               name: 'workspace.worker-pools.worker-pool.worker-pool-queue-create',
-              path: 'worker-pool/:workerPoolName/queue/create',
+              path: 'queue/create',
               component: components.workerPoolQueueCreate,
               meta: {
                 can: 'create:worker_pool_queue',
@@ -307,7 +311,7 @@ export function createWorkspaceRouteRecords(components: Partial<WorkspaceRouteCo
             },
             {
               name: 'workspace.worker-pools.worker-pool.worker-pool-queue-edit',
-              path: 'worker-pool/:workerPoolName/queue/:workerPoolQueueId/edit',
+              path: 'queue/:workerPoolQueueId/edit',
               component: components.workerPoolQueueEdit,
               meta: {
                 can: 'update:worker_pool_queue',
