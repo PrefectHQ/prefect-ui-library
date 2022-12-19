@@ -1,4 +1,3 @@
-/* eslint-disable camelcase */
 import { WorkerFlowRun, WorkerFlowRunResponse, WorkerFlowRuns, WorkerFlowRunsRequest } from '@/models'
 import { MapFunction } from '@/services'
 
@@ -12,9 +11,9 @@ export const mapWorkerFlowRunResponseToWorkerFlowRun: MapFunction<WorkerFlowRunR
 
 export const mapWorkerFlowRunsToWorkerFlowRunsRequest: MapFunction<WorkerFlowRuns, WorkerFlowRunsRequest> = function(source: WorkerFlowRuns): WorkerFlowRunsRequest {
   return {
-    worker_pool_queue_names: source.workerPoolQueueNames,
-    scheduled_before: source.scheduledBefore,
-    scheduled_after: source.scheduledAfter,
-    limit: source.limit,
+    'worker_pool_queue_names': source.workerPoolQueueNames,
+    'scheduled_before': source.scheduledBefore,
+    'scheduled_after': source.scheduledAfter,
+    'limit': source.limit,
   }
 }
