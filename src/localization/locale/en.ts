@@ -9,6 +9,7 @@ export const en = {
     deployments: 'https://docs.prefect.io/ui/deployments/',
     concurrency: 'https://docs.prefect.io/concepts/tasks/?h=conc#task-run-concurrency-limits',
     automations: 'https://docs.prefect.io/ui/automations/',
+    workerPools: 'https://docs.prefect.io/ui/worker-pools/',
   },
   error: {
     activateDeployment: 'Failed to activate deployment',
