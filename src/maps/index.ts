@@ -42,6 +42,7 @@ import { mapTaskRunToTaskRunResponse, mapTaskRunResponseToTaskRun } from '@/maps
 import { mapUiFlowRunHistoryResponseToUiFlowRunHistory } from '@/maps/uiFlowRunHistory'
 import { mapWorkerFlowRunResponseToWorkerFlowRun, mapWorkerFlowRunsToWorkerFlowRunsRequest } from '@/maps/workerFlowRun'
 import { mapWorkerPoolCreateToWorkerPoolCreateRequest, mapWorkerPoolEditToWorkerPoolEditRequest, mapWorkerPoolResponseToWorkerPool, mapWorkerPoolToWorkerPoolResponse } from '@/maps/workerPool'
+import { mapWorkerPoolQueueCreateToWorkerPoolQueueCreateRequest, mapWorkerPoolQueueEditToWorkerPoolQueueEditRequest, mapWorkerPoolQueueResponseToWorkerPoolQueue, mapWorkerPoolQueueToWorkerPoolQueueResponse } from '@/maps/workerPoolQueue'
 import { mapWorkQueueToWorkQueueResponse, mapWorkQueueResponseToWorkQueue, mapWorkQueueCreateToWorkQueueCreateRequest, mapWorkQueueEditToWorkQueueEditRequest } from '@/maps/workQueue'
 import { mapWorkQueueFilterToWorkQueueFilterResponse, mapWorkQueueFilterResponseToWorkQueueFilter } from '@/maps/workQueueFilter'
 import { mapWorkQueueHealthPolicyResponseToWorkQueueHealthPolicy } from '@/maps/workQueueHealthPolicy'
@@ -116,6 +117,10 @@ export const maps = {
   WorkerPoolCreate: { WorkerPoolCreateRequest: mapWorkerPoolCreateToWorkerPoolCreateRequest },
   WorkerPoolEdit: { WorkerPoolEditRequest: mapWorkerPoolEditToWorkerPoolEditRequest },
   WorkerPoolResponse: { WorkerPool: mapWorkerPoolResponseToWorkerPool },
+  WorkerPoolQueue: { WorkerPoolQueueResponse: mapWorkerPoolQueueToWorkerPoolQueueResponse },
+  WorkerPoolQueueCreate: { WorkerPoolQueueCreateRequest: mapWorkerPoolQueueCreateToWorkerPoolQueueCreateRequest },
+  WorkerPoolQueueEdit: { WorkerPoolQueueEditRequest: mapWorkerPoolQueueEditToWorkerPoolQueueEditRequest },
+  WorkerPoolQueueResponse: { WorkerPoolQueue: mapWorkerPoolQueueResponseToWorkerPoolQueue },
   WorkQueue: { WorkQueueResponse: mapWorkQueueToWorkQueueResponse },
   WorkQueueCreate: { WorkQueueCreateRequest: mapWorkQueueCreateToWorkQueueCreateRequest },
   WorkQueueEdit: { WorkQueueEditRequest: mapWorkQueueEditToWorkQueueEditRequest },
