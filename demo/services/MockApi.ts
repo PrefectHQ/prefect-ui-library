@@ -42,4 +42,12 @@ export class MockApi {
   protected get workQueues() {
     return data.workQueues
   }
+
+  protected get workerPools() {
+    return data.workerPools
+  }
+
+  protected get workerPoolQueues() {
+    return data.workerPoolQueues
+  }
 }
