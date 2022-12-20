@@ -8,6 +8,7 @@ export class MockWorkspaceWorkerPoolsApi extends MockApi implements IWorkspaceWo
   public async createWorkerPool(request: WorkerPoolCreate): Promise<WorkerPool> {
     const workerPool = mocker.create('workerPool', [request])
     this.workerPools.create(workerPool)
+
     return await workerPool
   }
 
