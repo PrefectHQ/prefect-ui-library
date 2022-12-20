@@ -5,10 +5,12 @@ import { repeat } from '@/utilities'
 
 
 export function useWorkerPoolQueueMock(override?: Partial<WorkerPoolQueue>): WorkerPoolQueue {
-  const workerPoolQueue = mocker.create('workerPoolQueue', [override])
+  const workerPool = mocker.create('workerPool')
+  const workerPoolQueue = mocker.create('workerPoolQueue', [{ ...override, workerPoolId: workerPool.id }])
 
   useSeeds({
     workerPoolQueues: [workerPoolQueue],
+    workerPools: [workerPool],
   })
 
   return workerPoolQueue

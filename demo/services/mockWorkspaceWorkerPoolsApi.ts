@@ -17,7 +17,7 @@ export class MockWorkspaceWorkerPoolsApi extends MockApi implements IWorkspaceWo
 
   public async getWorkerPools(filter: WorkerPoolFilter): Promise<WorkerPool[]> {
     if (Object.keys(filter).length) {
-      console.warn('MockWorkspaceWorkerPoolsApi has not implemented the filter argument of the getWorkQueues method')
+      console.warn('MockWorkspaceWorkerPoolsApi has not implemented the filter argument of the getWorkerPools method')
     }
 
     return await this.workerPools.getAll()
