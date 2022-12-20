@@ -1,15 +1,11 @@
 <template>
-  <ComponentPage title="Worker Pools Stuff" :demos="demos">
-    <template #pools>
-      {{ workerPool }}
-    </template>
-    <template #queues>
-      {{ workerPoolQueue }}
-    </template>
+  <ComponentPage title="Worker Pools Stuff">
+    <WorkerPoolCard :worker-pool="workerPool" />
   </ComponentPage>
 </template>
 
 <script lang="ts" setup>
+  import WorkerPoolCard from '@/components/WorkerPoolCard.vue'
   import ComponentPage from '@/demo/components/ComponentPage.vue'
   import { useWorkerPoolMock } from '@/demo/compositions/useWorkerPoolMock'
   import { useWorkerPoolQueuesMock } from '@/demo/compositions/useWorkerPoolQueueMock'
