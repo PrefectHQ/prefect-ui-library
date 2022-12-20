@@ -1,6 +1,7 @@
 import { useSeeds } from '@/../demo/compositions/useSeeds'
 import { WorkerPoolQueue } from '@/models'
 import { mocker } from '@/services'
+import { repeat } from '@/utilities'
 
 
 export function useWorkerPoolQueueMock(override?: Partial<WorkerPoolQueue>): WorkerPoolQueue {
@@ -11,4 +12,8 @@ export function useWorkerPoolQueueMock(override?: Partial<WorkerPoolQueue>): Wor
   })
 
   return workerPoolQueue
+}
+
+export function useWorkerPoolQueuesMock(count: number, override?: Partial<WorkerPoolQueue>): WorkerPoolQueue[] {
+  return repeat(count, () => useWorkerPoolQueueMock(override))
 }
