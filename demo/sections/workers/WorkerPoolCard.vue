@@ -12,7 +12,7 @@
 <script lang="ts" setup>
   import ComponentPage from '@/demo/components/ComponentPage.vue'
   import { useWorkerPoolMock } from '@/demo/compositions/useWorkerPoolMock'
-  import { useWorkerPoolQueueMock } from '@/demo/compositions/useWorkerPoolQueueMock'
+  import { useWorkerPoolQueuesMock } from '@/demo/compositions/useWorkerPoolQueueMock'
   import { DemoSection } from '@/demo/types/demoSection'
 
   const demos: DemoSection[] = [
@@ -21,5 +21,5 @@
   ]
 
   const workerPool = useWorkerPoolMock()
-  const workerPoolQueue = useWorkerPoolQueueMock()
+  const workerPoolQueue = useWorkerPoolQueuesMock(3)
 </script>
