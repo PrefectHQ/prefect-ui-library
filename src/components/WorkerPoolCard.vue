@@ -24,6 +24,7 @@
 </template>
 
 <script lang="ts" setup>
+  import { WorkerPoolMenu, WorkerPoolToggle } from '@/components'
   import { useWorkspaceRoutes } from '@/compositions'
   import { WorkerPool } from '@/models'
 
@@ -37,4 +38,37 @@
     (event: 'update'): void,
   }>()
 </script>
+
+<style>
+.worker-pool-card { @apply
+  grid
+  gap-2
+}
+
+.worker-pool-card__header { @apply
+  flex
+  gap-2
+  items-center
+  justify-between
+}
+
+.worker-pool-card__name { @apply
+  text-lg
+}
+
+.worker-pool-card__header-actions { @apply
+  flex
+  gap-2
+  items-center
+}
+
+.worker-pool-card__description { @apply
+  text-sm
+}
+
+.worker-pool-card__details-label { @apply
+  font-medium
+  mr-2
+}
+</style>
 
