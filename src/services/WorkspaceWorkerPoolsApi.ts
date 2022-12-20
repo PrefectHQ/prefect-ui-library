@@ -1,7 +1,7 @@
 import { WorkerPool, WorkerPoolCreate, WorkerPoolEdit, WorkerPoolFilter, WorkerPoolResponse, WorkerFlowRunResponse, WorkerFlowRun, WorkerFlowRuns } from '@/models'
 import { mapper, WorkspaceApi } from '@/services'
 
-export interface IWorkspaceWorkerPoolApi {
+export interface IWorkspaceWorkerPoolsApi {
   createWorkerPool: (request: WorkerPoolCreate) => Promise<WorkerPool>,
   getWorkerPoolByName: (workerPoolName: string) => Promise<WorkerPool>,
   getWorkerPools: (filter: WorkerPoolFilter) => Promise<WorkerPool[]>,
@@ -10,7 +10,7 @@ export interface IWorkspaceWorkerPoolApi {
   getWorkerPoolRuns: (workerPoolName: string, request: WorkerFlowRuns) => Promise<WorkerFlowRun[]>,
 }
 
-export class WorkspaceWorkerPoolApi extends WorkspaceApi implements IWorkspaceWorkerPoolApi {
+export class WorkspaceWorkerPoolsApi extends WorkspaceApi implements IWorkspaceWorkerPoolsApi {
 
   protected override routePrefix = '/experimental/worker_pools/'
 
