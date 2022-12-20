@@ -1,6 +1,6 @@
 import { onUnmounted } from 'vue'
 import { data } from '../utilities/data'
-import { Flow, FlowRun, Deployment, WorkQueue, TaskRun, BlockDocument, BlockType, BlockSchema, ConcurrencyLimit } from '@/models'
+import { Flow, FlowRun, Deployment, WorkQueue, TaskRun, BlockDocument, BlockType, BlockSchema, ConcurrencyLimit, WorkerPool, WorkerPoolQueue } from '@/models'
 
 type Seeds = {
   blockDocuments?: BlockDocument[],
@@ -13,6 +13,8 @@ type Seeds = {
   flows?: Flow[],
   taskRuns?: TaskRun[],
   workQueues?: WorkQueue[],
+  workerPools?: WorkerPool[],
+  workerPoolQueues?: WorkerPoolQueue[],
 }
 
 export function useSeeds(seed: Seeds): void {
@@ -91,5 +93,19 @@ export function useSeeds(seed: Seeds): void {
     const ids = concurrencyLimits.map(concurrencyLimit => concurrencyLimit.id)
 
     onUnmounted(() => data.concurrencyLimits.deleteAll(ids))
+  }
+
+  if (seed.workerPools) {
+    const workerPools = data.workerPools.createAll(seed.workerPools)
+    const names = workerPools.map(workerPool => workerPool.name)
+
+    onUnmounted(() => data.workerPools.deleteAll(names))
+  }
+
+  if (seed.workerPoolQueues) {
+    const workerPoolQueues = data.workerPoolQueues.createAll(seed.workerPoolQueues)
+    const ids = workerPoolQueues.map(workerPoolQueue => workerPoolQueue.id)
+
+    onUnmounted(() => data.workerPools.deleteAll(ids))
   }
 }
