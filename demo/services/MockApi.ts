@@ -46,4 +46,8 @@ export class MockApi {
   protected get workerPools() {
     return data.workerPools
   }
+
+  protected get workerPoolQueues() {
+    return data.workerPoolQueues
+  }
 }

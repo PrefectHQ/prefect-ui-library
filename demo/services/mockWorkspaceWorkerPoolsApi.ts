@@ -1,8 +1,7 @@
 
 import { MockApi } from '@/../demo/services/MockApi'
 import { WorkerFlowRun, WorkerFlowRuns, WorkerPool, WorkerPoolCreate, WorkerPoolEdit, WorkerPoolFilter } from '@/models'
-import { mocker } from '@/services'
-import { IWorkspaceWorkerPoolsApi } from '@/services/WorkspaceWorkerPoolsApi'
+import { IWorkspaceWorkerPoolsApi, mocker } from '@/services'
 
 export class MockWorkspaceWorkerPoolsApi extends MockApi implements IWorkspaceWorkerPoolsApi {
 

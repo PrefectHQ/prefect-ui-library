@@ -34,6 +34,7 @@ import { randomTaskRun } from '@/mocks/taskRun'
 import { randomUiFlowRunHistory } from '@/mocks/UiFlowRunHistory'
 import { randomUrl } from '@/mocks/url'
 import { randomWorkerPool } from '@/mocks/workerPool'
+import { randomWorkerPoolQueue } from '@/mocks/workerPoolQueue'
 import { randomWorkQueue, randomWorkQueueFilter } from '@/mocks/workQueue'
 import { randomWorkQueueCreate } from '@/mocks/workQueueCreate'
 import { randomWorkQueueHealthPolicy } from '@/mocks/workQueueHealthPolicy'
@@ -91,4 +92,5 @@ export const mocks = {
   flowResponse: randomFlowResponse,
   blockTypeSnippet: randomBlockTypeSnippet,
   workerPool: randomWorkerPool,
+  workerPoolQueue: randomWorkerPoolQueue,
 }
