@@ -9,8 +9,9 @@ import { MockWorkspaceDeploymentsApi } from '../services/mockWorkspaceDeployment
 import { MockWorkspaceFlowRunsApi } from '../services/mockWorkspaceFlowRunsApi'
 import { MockWorkspaceFlowsApi } from '../services/mockWorkspaceFlowsApi'
 import { MockWorkspaceTaskRunsApi } from '../services/mockWorkspaceTaskRunsApi'
+import { MockWorkspaceWorkerPoolsApi } from '../services/mockWorkspaceWorkerPoolsApi'
 import { MockWorkspaceWorkQueuesApi } from '../services/mockWorkspaceWorkQueuesApi'
-import { BlockDocument, BlockSchema, BlockType, Deployment, Flow, FlowRun, TaskRun, WorkQueue } from '@/models'
+import { BlockDocument, BlockSchema, BlockType, Deployment, Flow, FlowRun, TaskRun, WorkerPool, WorkQueue } from '@/models'
 import { ConcurrencyLimit } from '@/models/ConcurrencyLimit'
 import { CreateApi, workspaceApiKey } from '@/utilities'
 
@@ -25,6 +26,7 @@ export type ApiMockSeeds = {
   deployments?: Deployment[],
   workQueues?: WorkQueue[],
   blockCapabilities?: string[],
+  workerPools?: WorkerPool[],
 }
 
 function createApiMock(): Partial<CreateApi> {
@@ -39,6 +41,7 @@ function createApiMock(): Partial<CreateApi> {
     taskRuns: createActions(new MockWorkspaceTaskRunsApi()),
     deployments: createActions(new MockWorkspaceDeploymentsApi()),
     workQueues: createActions(new MockWorkspaceWorkQueuesApi()),
+    workerPools: createActions(new MockWorkspaceWorkerPoolsApi()),
   }
 }
 
