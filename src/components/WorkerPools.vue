@@ -37,3 +37,18 @@
     )
   })
 </script>
+
+<style>
+.worker-pools { @apply
+  grid
+  gap-4
+}
+
+.worker-pools__filters { @apply
+  grid
+  md:flex
+  gap-2
+  justify-between
+  items-center
+}
+</style>
