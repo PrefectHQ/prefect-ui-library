@@ -8,6 +8,7 @@ export class MockWorkspaceWorkerPoolQueuesApi extends MockApi implements IWorksp
     const workerPool = this.workerPools.find(workerPool => workerPool.name === workerPoolName)!
     const workerPoolQueue = mocker.create('workerPoolQueue', [{ ...request, workerPoolId: workerPool.id }])
     this.workerPoolQueues.create(workerPoolQueue)
+
     return await workerPoolQueue
   }
 
