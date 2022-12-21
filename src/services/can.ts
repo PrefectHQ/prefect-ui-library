@@ -80,7 +80,7 @@ export type Can<T extends string> = {
 export type PermissionCheck<T> = (permission: T) => boolean | undefined
 
 export function createCan<T extends string>(permissions: Readonly<T[]>, permissionCheck: PermissionCheck<T>): Can<T> {
-  return new Proxy<Can<T>>({} as Can<T>, {
+  return new Proxy({} as Can<T>, {
     get(target, verb) {
       return new Proxy({}, {
         get(target, key) {
