@@ -31,7 +31,6 @@ export const workspacePermissions = [
   'delete:worker_pool',
   'delete:workspace_bot_access',
   'delete:workspace_user_access',
-  'delete:workspace',
   'read:automation',
   'read:block',
   'read:concurrency_limit',
