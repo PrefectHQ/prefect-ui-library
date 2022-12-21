@@ -22,7 +22,7 @@
 
   const internalValue = computed({
     get() {
-      return !!props.workerPool.isPaused
+      return !props.workerPool.isPaused
     },
     set(value: boolean) {
       toggle(value)
@@ -36,13 +36,13 @@
 
     try {
       if (value) {
-        await api.workerPools.updateWorkerPool(props.workerPool.name, { isPaused: true })
-
-        showToast(localization.success.pauseWorkerPool, 'success')
-      } else {
-        await api.workerPools.updateWorkerPool(props.workerPool.name, { isPaused: false })
+        await api.workerPools.resumeWorkerPool(props.workerPool.name)
 
         showToast(localization.success.activateWorkerPool, 'success')
+      } else {
+        await api.workerPools.pauseWorkerPool(props.workerPool.name)
+
+        showToast(localization.success.pauseWorkerPool, 'success')
       }
 
       emit('update')
@@ -56,4 +56,3 @@
     }
   }
 </script>
-

@@ -37,7 +37,7 @@ export function createApi(workspaceConfig: WorkspaceApiConfig) {
     savedSearches: createActions(new WorkspaceSavedSearchesApi(workspaceConfig)),
     workerPools: createActions(new WorkspaceWorkerPoolsApi(workspaceConfig)),
     workerPoolQueues: createActions(new WorkspaceWorkerPoolQueuesApi(workspaceConfig)),
-    WorkerPoolWorkers: createActions(new WorkspaceWorkerPoolWorkersApi(workspaceConfig)),
+    workerPoolWorkers: createActions(new WorkspaceWorkerPoolWorkersApi(workspaceConfig)),
   }
 }
 

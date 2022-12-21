@@ -141,6 +141,7 @@ export { default as PageHeadingWorkQueueEdit } from './PageHeadingWorkQueueEdit.
 export { default as PageHeadingWorkQueues } from './PageHeadingWorkQueues.vue'
 export { default as PageHeadingWorkspaceSettings } from './PageHeadingWorkspaceSettings.vue'
 export { default as ParametersTable } from './ParametersTable.vue'
+export { default as ProcessTypeBadge } from './ProcessTypeBadge.vue'
 export { default as PythonInput } from './PythonInput.vue'
 export { default as PythonView } from './PythonView.vue'
 export { default as RadarApp } from './RadarApp.vue'

@@ -5,7 +5,7 @@
         <p-link class="worker-pool-card__name" :to="routes.workerPool(workerPool.name)">
           {{ workerPool.name }}
         </p-link>
-        <ProcessTypeBadge :type="workerPool.type" />
+        <ProcessTypeBadge v-if="workerPool.type" :type="workerPool.type" />
       </div>
 
       <div class="worker-pool-card__header-actions">
@@ -55,7 +55,7 @@
   }
   const currentTime = now()
 
-  const workerPoolWorkersSubscription = useSubscription(api.WorkerPoolWorkers.getWorkers, [props.workerPool.name, {}], subscriptionOptions)
+  const workerPoolWorkersSubscription = useSubscription(api.workerPoolWorkers.getWorkers, [props.workerPool.name, {}], subscriptionOptions)
   const workerPoolWorkers = computed(() => workerPoolWorkersSubscription.response ?? [])
   const lastWorkerHeartbeat = computed(() => workerPoolWorkers.value[0].lastHeartbeatTime)
 
@@ -109,4 +109,3 @@
   items-center
 }
 </style>
-
