@@ -135,6 +135,7 @@ export { default as PageHeadingNotificationCreate } from './PageHeadingNotificat
 export { default as PageHeadingNotificationEdit } from './PageHeadingNotificationEdit.vue'
 export { default as PageHeadingNotifications } from './PageHeadingNotifications.vue'
 export { default as PageHeadingTaskRun } from './PageHeadingTaskRun.vue'
+export { default as PageHeadingWorkerPool } from './PageHeadingWorkerPool.vue'
 export { default as PageHeadingWorkerPools } from './PageHeadingWorkerPools.vue'
 export { default as PageHeadingWorkQueue } from './PageHeadingWorkQueue.vue'
 export { default as PageHeadingWorkQueueCreate } from './PageHeadingWorkQueueCreate.vue'
