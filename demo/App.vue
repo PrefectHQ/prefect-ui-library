@@ -18,7 +18,7 @@
 
 <script lang="ts" setup>
   import { media, PGlobalSidebar, PIcon } from '@prefecthq/prefect-design'
-  import { computed, provide, watchEffect, ref } from 'vue'
+  import { computed, provide, watchEffect } from 'vue'
   import { RouterView } from 'vue-router'
   import { useWorkspaceApiMock } from '@/../demo/utilities/api'
   import ContextSidebar from '@/demo/components/ContextSidebar.vue'
