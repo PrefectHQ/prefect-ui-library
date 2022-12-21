@@ -1,6 +1,6 @@
-import { Can, canKey } from '@/types/permissions'
+import { Can, WorkspacePermission, canKey } from '@/services/can'
 import { inject } from '@/utilities/inject'
 
-export function useCan(): Can {
+export function useCan(): Can<WorkspacePermission> {
   return inject(canKey)
 }

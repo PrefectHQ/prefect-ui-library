@@ -1,4 +1,4 @@
-import { MockApi } from '@/../demo/services/MockApi'
+import { MockApi } from './MockApi'
 import { WorkerPoolQueue, WorkerPoolQueueCreate, WorkerPoolQueueEdit } from '@/models'
 import { IWorkspaceWorkerPoolQueuesApi, mocker } from '@/services/'
 

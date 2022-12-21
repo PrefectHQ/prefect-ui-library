@@ -1,4 +1,4 @@
-import { useSeeds } from '@/../demo/compositions/useSeeds'
+import { useSeeds } from './useSeeds'
 import { WorkerPoolQueue } from '@/models'
 import { mocker } from '@/services'
 import { repeat } from '@/utilities'
