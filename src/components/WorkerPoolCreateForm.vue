@@ -16,14 +16,7 @@
       <p-label label="Status (Optional)">
         <p-toggle v-model="isActive">
           <template #append>
-            <div>
-              <template v-if="isActive">
-                Active
-              </template>
-              <template v-else>
-                Paused
-              </template>
-            </div>
+            {{ isActiveLabel }}
           </template>
         </p-toggle>
       </p-label>
@@ -61,15 +54,8 @@
   const description = ref<string>()
   const type = ref<string>('')
   const concurrencyLimit = ref<number>()
-  const isPaused = ref<boolean>()
-  const isActive = computed({
-    get() {
-      return !isPaused.value
-    },
-    set() {
-      isPaused.value = !isPaused.value
-    },
-  })
+  const isActive = ref<boolean>(true)
+  const isActiveLabel = computed(() => isActive.value ? 'Active' : 'Paused')
 
   const isRequired: ValidationRule<string> = (value) => value.trim().length > 0
 
@@ -91,7 +77,7 @@
         name: name.value,
         description: description.value,
         type: type.value,
-        isPaused: isPaused.value,
+        isPaused: !isActive.value,
         concurrencyLimit: concurrencyLimit.value,
       }
 
