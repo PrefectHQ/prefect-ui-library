@@ -1,3 +1,6 @@
+export const workerPoolTypes = ['ECS', 'Kubernetes', 'GCP Cloud Run', 'Azure Container', 'Docker Container', 'Process'] as const
+export type WorkerPoolType = typeof workerPoolTypes[number]
+
 export interface IWorkerPool {
   readonly id: string,
   created: Date,
