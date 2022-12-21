@@ -24,7 +24,7 @@
   import ContextSidebar from '@/demo/components/ContextSidebar.vue'
   import { mobileMenuOpen, toggle } from '@/demo/router/menu'
   import { createWorkspaceRoutes, workspaceRoutesKey } from '@/router'
-  import { canKey, createCan, permissions } from '@/services/can'
+  import { canKey, createCan, workspacePermissions } from '@/services/can'
 
   const showMenu = computed(() => media.lg || mobileMenuOpen.value)
 
@@ -32,7 +32,7 @@
 
   useWorkspaceApiMock()
 
-  const can = createCan(permissions, () => true)
+  const can = createCan(workspacePermissions, () => true)
   provide(canKey, can)
 
   const routes = createWorkspaceRoutes()

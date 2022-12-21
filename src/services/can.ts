@@ -1,56 +1,6 @@
 import { InjectionKey } from 'vue'
 
-const accountPermissions = [
-  'administrate:sso',
-  'administrate:workspace',
-  'create:account_role',
-  'create:audit_event',
-  'create:bot',
-  'create:invitation',
-  'create:team',
-  'create:workspace_invitation',
-  'create:workspace_role',
-  'create:workspace_role',
-  'create:workspace',
-  'delete:account',
-  'delete:account_membership',
-  'delete:account_role',
-  'delete:bot',
-  'delete:team',
-  'delete:workspace_role',
-  'delete:workspace_role',
-  'read:account_membership',
-  'read:account_role',
-  'read:account',
-  'read:audit_event',
-  'read:billing',
-  'read:bot',
-  'read:invitation',
-  'read:sso',
-  'read:team',
-  'read:workspace_invitation',
-  'read:workspace_role',
-  'read:workspace_role',
-  'read:workspace',
-  'update:account_membership',
-  'update:account_role',
-  'update:account',
-  'update:billing',
-  'update:bot',
-  'update:invitation',
-  'update:team',
-  'update:workspace_invitation',
-  'update:workspace_role',
-  'update:workspace_role',
-] as const
-
-export type AccountPermissionString = typeof accountPermissions[number]
-
-export function isAccountPermissionString(permissionString: unknown): permissionString is AccountPermissionString {
-  return accountPermissions.includes(permissionString as AccountPermissionString)
-}
-
-const workspacePermissions = [
+export const workspacePermissions = [
   'create:automation',
   'create:block',
   'create:concurrency_limit',
@@ -114,14 +64,11 @@ const workspacePermissions = [
   'update:workspace',
 ] as const
 
-export type WorkspacePermissionString = typeof workspacePermissions[number]
 
-export function isWorkspacePermissionString(permissionString: unknown): permissionString is WorkspacePermissionString {
-  return workspacePermissions.includes(permissionString as WorkspacePermissionString)
+export type WorkspacePermission = typeof workspacePermissions[number]
+export function isWorkspacePermissionString(value: unknown): value is WorkspacePermission {
+  return workspacePermissions.includes(value as WorkspacePermission)
 }
-
-export const permissions = [...accountPermissions, ...workspacePermissions] as const
-export type Permissions = typeof permissions[number]
 
 export type PermissionVerb<T extends string> = T extends `${infer Action}:${string}` ? Action : never
 export type Can<T extends string> = {
@@ -139,6 +86,7 @@ export function createCan<T extends string>(permissions: Readonly<T[]>, permissi
       return new Proxy({}, {
         get(target, key) {
           const permissionString = `${verb.toString()}:${key.toString()}` as T
+
           if (permissions.includes(permissionString)) {
             return permissionCheck(permissionString)
           }
@@ -150,5 +98,4 @@ export function createCan<T extends string>(permissions: Readonly<T[]>, permissi
   })
 }
 
-export const can = createCan(permissions, () => false)
-export const canKey: InjectionKey<Can<Permissions>> = Symbol('canInjectionKey')
+export const canKey: InjectionKey<Can<WorkspacePermission>> = Symbol('canInjectionKey')
