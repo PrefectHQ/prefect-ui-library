@@ -20,7 +20,7 @@
   import { media, PGlobalSidebar, PIcon } from '@prefecthq/prefect-design'
   import { computed, provide, watchEffect } from 'vue'
   import { RouterView } from 'vue-router'
-  import { useWorkspaceApiMock } from '@/../demo/utilities/api'
+  import { useWorkspaceApiMock } from './utilities/api'
   import ContextSidebar from '@/demo/components/ContextSidebar.vue'
   import { mobileMenuOpen, toggle } from '@/demo/router/menu'
   import { createWorkspaceRoutes, workspaceRoutesKey } from '@/router'
