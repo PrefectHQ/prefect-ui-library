@@ -6,6 +6,8 @@ export interface IWorkspaceWorkerPoolsApi {
   getWorkerPoolByName: (workerPoolName: string) => Promise<WorkerPool>,
   getWorkerPools: (filter: WorkerPoolFilter) => Promise<WorkerPool[]>,
   updateWorkerPool: (workerPoolName: string, request: WorkerPoolEdit) => Promise<void>,
+  pauseWorkerPool: (workerPoolName: string) => Promise<void>,
+  resumeWorkerPool: (workerPoolName: string) => Promise<void>,
   deleteWorkerPool: (workerPoolName: string) => Promise<void>,
   getWorkerPoolRuns: (workerPoolName: string, request: WorkerFlowRuns) => Promise<WorkerFlowRun[]>,
 }
@@ -37,6 +39,14 @@ export class WorkspaceWorkerPoolsApi extends WorkspaceApi implements IWorkspaceW
     const body = mapper.map('WorkerPoolEdit', request, 'WorkerPoolEditRequest')
 
     return this.patch(`/${name}`, body)
+  }
+
+  public pauseWorkerPool(name: string): Promise<void> {
+    return this.patch(`/${name}`, { 'is_paused': true })
+  }
+
+  public resumeWorkerPool(name: string): Promise<void> {
+    return this.patch(`/${name}`, { 'is_paused': false })
   }
 
   public deleteWorkerPool(name: string): Promise<void> {

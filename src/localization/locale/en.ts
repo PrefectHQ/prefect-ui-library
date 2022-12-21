@@ -14,6 +14,7 @@ export const en = {
   error: {
     activateDeployment: 'Failed to activate deployment',
     activateNotification: 'Failed to activate notification',
+    activateWorkerPool: 'Failed to activate worker pool',
     activateWorkQueue: 'Failed to activate work queue',
     cancelFlowRun: 'Failed to cancel flow run',
     changeFlowRunState: 'Failed to change flow run state',
@@ -29,6 +30,7 @@ export const en = {
     pauseDeployment: 'Failed to pause deployment',
     pauseFlowRun: 'Failed to pause flow run',
     pauseNotification: 'Failed to pause notification',
+    pauseWorkerPool: 'Failed to pause worker pool',
     pauseWorkQueue: 'Failed to pause work queue',
     removeSchedule: 'Failed to remove schedule',
     resumeFlowRun: 'Failed to resume flow run',
@@ -43,6 +45,7 @@ export const en = {
   success: {
     activateDeployment: 'Deployment active',
     activateNotification: 'Notification active',
+    activateWorkerPool: 'Worker pool active',
     activateWorkQueue: 'Work queue active',
     cancelFlowRun: 'Flow run cancelled',
     changeFlowRunState: 'Flow run state changed',
@@ -58,6 +61,7 @@ export const en = {
     pauseDeployment: 'Deployment paused',
     pauseFlowRun: 'Flow run paused',
     pauseNotification: 'Notification paused',
+    pauseWorkerPool: 'Worker pool paused',
     pauseWorkQueue: 'Work queue paused',
     removeSchedule: 'Schedule removed',
     resumeFlowRun: 'Flow run resumed',
