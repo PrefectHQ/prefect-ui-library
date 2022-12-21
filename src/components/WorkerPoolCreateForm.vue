@@ -52,18 +52,18 @@
 
   const { validate, pending } = useValidationObserver()
 
-  const name = ref<string>('')
+  const name = ref<string>()
   const description = ref<string>()
   // Once types feature is implemented by backend, this should be changed to
-  // const type = ref<string>('')
+  // const type = ref<string>()
   const type = ref<string>('prefect-agent')
   const concurrencyLimit = ref<number>()
   const isActive = ref<boolean>(true)
   const isActiveLabel = computed(() => isActive.value ? 'Active' : 'Paused')
 
-  const isRequired: ValidationRule<string> = (value) => value.trim().length > 0
+  const isRequired: ValidationRule<string | undefined> = (value) => value!.trim().length > 0
 
-  const rules: Record<string, ValidationRule<string>[]> = {
+  const rules: Record<string, ValidationRule<string | undefined>[]> = {
     name: [isRequired],
     type: [isRequired],
   }
