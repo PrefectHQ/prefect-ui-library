@@ -1,7 +1,7 @@
 import { KeyedDataStore } from '../services/KeyedDataStore'
 import { SimpleDataStore } from '../services/SimpleDataStore'
-import { ApiMockSeeds } from './api'
-import { Flow, FlowRun, BlockDocument, BlockSchema, TaskRun, Deployment, WorkQueue, BlockType, ConcurrencyLimit } from '@/models'
+import { ApiMockSeeds } from '@/../demo/utilities/api'
+import { Flow, FlowRun, BlockDocument, BlockSchema, TaskRun, Deployment, WorkQueue, BlockType, ConcurrencyLimit, WorkerPool, WorkerPoolQueue } from '@/models'
 import { resolveSchema } from '@/services/schemas/resolvers/schemas'
 
 function hydrateBlockSchema(blockSchema: BlockSchema): BlockSchema {
@@ -26,6 +26,8 @@ export function createDataStores(seeds: ApiMockSeeds = {}) {
     workQueues: new KeyedDataStore({ seeds: seeds.workQueues, hydrate: workQueue => new WorkQueue(workQueue) }),
     blockTypes: new KeyedDataStore({ seeds: seeds.blockTypes, hydrate: blockType => new BlockType(blockType) }),
     blockSchemaCapabilities: new SimpleDataStore({ seeds: seeds.blockCapabilities }),
+    workerPools: new KeyedDataStore({ seeds: seeds.workerPools, hydrate: workerPool => new WorkerPool(workerPool) }),
+    workerPoolQueues: new KeyedDataStore({ seeds: seeds.workerPoolQueues, hydrate: workerPoolQueue => new WorkerPoolQueue(workerPoolQueue) }),
   }
 }
 

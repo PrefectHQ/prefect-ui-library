@@ -13,6 +13,8 @@ import { WorkspaceLogsApi } from '@/services/WorkspaceLogsApi'
 import { WorkspaceNotificationsApi } from '@/services/WorkspaceNotificationsApi'
 import { WorkspaceSavedSearchesApi } from '@/services/WorkspaceSavedSearchesApi'
 import { WorkspaceTaskRunsApi } from '@/services/WorkspaceTaskRunsApi'
+import { WorkspaceWorkerPoolQueuesApi } from '@/services/WorkspaceWorkerPoolQueuesApi'
+import { WorkspaceWorkerPoolsApi } from '@/services/WorkspaceWorkerPoolsApi'
 import { WorkspaceWorkQueuesApi } from '@/services/WorkspaceWorkQueuesApi'
 
 // We want the return type to be inferred
@@ -32,6 +34,8 @@ export function createApi(workspaceConfig: WorkspaceApiConfig) {
     taskRuns: createActions(new WorkspaceTaskRunsApi(workspaceConfig)),
     workQueues: createActions(new WorkspaceWorkQueuesApi(workspaceConfig)),
     savedSearches: createActions(new WorkspaceSavedSearchesApi(workspaceConfig)),
+    workerPools: createActions(new WorkspaceWorkerPoolsApi(workspaceConfig)),
+    workerPoolQueues: createActions(new WorkspaceWorkerPoolQueuesApi(workspaceConfig)),
   }
 }
 

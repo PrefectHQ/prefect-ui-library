@@ -1,7 +1,7 @@
 import { WorkerPoolQueueCreate, WorkerPoolQueue, WorkerPoolQueueEdit, WorkerPoolQueueResponse } from '@/models'
 import { mapper, WorkspaceApi } from '@/services'
 
-export interface IWorkspaceWorkerPoolQueueApi {
+export interface IWorkspaceWorkerPoolQueuesApi {
   createWorkerPoolQueue: (workerPoolName: string, request: WorkerPoolQueueCreate) => Promise<WorkerPoolQueue>,
   getWorkerPoolQueues: (workerPoolName: string) => Promise<WorkerPoolQueue[]>,
   getWorkerPoolQueueByName: (workerPoolName: string, queueName: string) => Promise<WorkerPoolQueue>,
@@ -9,7 +9,7 @@ export interface IWorkspaceWorkerPoolQueueApi {
   deleteWorkerPoolQueue: (workerPoolName: string, queueName: string) => Promise<void>,
 }
 
-export class WorkspaceWorkerPoolQueueApi extends WorkspaceApi implements IWorkspaceWorkerPoolQueueApi {
+export class WorkspaceWorkerPoolQueuesApi extends WorkspaceApi implements IWorkspaceWorkerPoolQueuesApi {
 
   protected override routePrefix = '/experimental/worker_pools/'
 
