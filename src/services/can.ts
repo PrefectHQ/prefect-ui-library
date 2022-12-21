@@ -66,9 +66,6 @@ export const workspacePermissions = [
 ] as const
 
 export type WorkspacePermission = typeof workspacePermissions[number]
-export function isWorkspacePermission(value: unknown): value is WorkspacePermission {
-  return workspacePermissions.includes(value as WorkspacePermission)
-}
 
 export type PermissionValue = boolean | undefined
 export type PermissionVerb<T extends string> = T extends `${infer Action}:${string}` ? Action : never
