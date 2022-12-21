@@ -10,9 +10,7 @@
       </p-label>
 
       <p-label label="Type" :state="typeState" :message="typeErrorMessage">
-        <p-text-input v-model="type" :state="typeState" />
-
-        <!-- <WorkerPoolTypeSelect v-model:type="type" :state="typeState" /> -->
+        <WorkerPoolTypeSelect v-model:selected="type" :state="typeState" />
       </p-label>
 
       <p-label label="Status (Optional)">
@@ -45,23 +43,25 @@
 </template>
 
 <script lang="ts" setup>
+  import { showToast } from '@prefecthq/prefect-design'
   import { useValidation, useValidationObserver, ValidationRule } from '@prefecthq/vue-compositions'
   import { computed, ref } from 'vue'
-  import { SubmitButton } from '@/components'
-  import { WorkerPoolCreate } from '@/models'
+  import { useRouter } from 'vue-router'
+  import { SubmitButton, WorkerPoolTypeSelect } from '@/components'
+  import { useWorkspaceApi, useWorkspaceRoutes } from '@/compositions'
+  import { localization } from '@/localization'
 
-  const emit = defineEmits<{
-    (event: 'submit', value: WorkerPoolCreate): void,
-    (event: 'cancel'): void,
-  }>()
+  const api = useWorkspaceApi()
+  const router = useRouter()
+  const routes = useWorkspaceRoutes()
 
-  const name = ref()
-  const description = ref()
-  const type = ref()
-  const isPaused = ref(true)
-  const concurrencyLimit = ref()
   const { validate, pending } = useValidationObserver()
 
+  const name = ref('')
+  const description = ref()
+  const type = ref('')
+  const concurrencyLimit = ref()
+  const isPaused = ref()
   const isActive = computed({
     get() {
       return !isPaused.value
@@ -71,7 +71,7 @@
     },
   })
 
-  const isRequired: ValidationRule<string> = (value) => value.length > 0
+  const isRequired: ValidationRule<string> = (value) => value.trim().length > 0
 
   const rules: Record<string, ValidationRule<string>[]> = {
     name: [isRequired],
@@ -82,13 +82,28 @@
   const { error: typeErrorMessage, state: typeState } = useValidation(type, 'Type', rules.type)
 
   function cancel(): void {
-    emit('cancel')
+    router.push(routes.workerPools())
   }
   const submit = async (): Promise<void> => {
     const valid = await validate()
     if (valid) {
-      emit('submit', { name: name.value, description: description.value, type: type.value, isPaused: isPaused.value, concurrencyLimit: concurrencyLimit.value })
-      cancel()
+      const values = {
+        name: name.value,
+        description: description.value,
+        type: type.value,
+        isPaused: isPaused.value,
+        concurrencyLimit: concurrencyLimit.value,
+      }
+
+      try {
+        const { name } = await api.workerPools.createWorkerPool(values)
+        showToast(localization.success.createWorkerPool, 'success')
+
+        router.push(routes.workerPool(name))
+      } catch (error) {
+        showToast(localization.error.createWorkerPool, 'error')
+        console.error(error)
+      }
     }
   }
 </script>
