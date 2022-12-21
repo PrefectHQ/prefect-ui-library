@@ -1,4 +1,5 @@
-import { InjectionKey } from 'vue'
+import { InjectionKey, ref } from 'vue'
+import { MaybeRef } from '@/types/reactivity'
 
 export const workspacePermissions = [
   'create:automation',
@@ -66,7 +67,7 @@ export const workspacePermissions = [
 
 
 export type WorkspacePermission = typeof workspacePermissions[number]
-export function isWorkspacePermissionString(value: unknown): value is WorkspacePermission {
+export function isWorkspacePermission(value: unknown): value is WorkspacePermission {
   return workspacePermissions.includes(value as WorkspacePermission)
 }
 
@@ -80,18 +81,15 @@ export type Can<T extends string> = {
 }
 export type PermissionCheck<T> = (permission: T) => PermissionValue
 
-export function createCan<T extends string>(permissions: Readonly<T[]>, permissionCheck: PermissionCheck<T>): Can<T> {
+export function createCan<T extends string>(permissions: MaybeRef<Readonly<T[]>>): Can<T> {
+  const permissionsRef = ref(permissions)
+
   return new Proxy({} as Can<T>, {
     get(target, verb) {
       return new Proxy({}, {
         get(target, key) {
-          const permissionString = `${verb.toString()}:${key.toString()}` as T
-
-          if (permissions.includes(permissionString)) {
-            return permissionCheck(permissionString)
-          }
-
-          return false
+          // @ts-expect-error we know that permissionsRef.value is just string[]
+          return permissionsRef.value.includes(`${verb.toString()}:${key.toString()}`)
         },
       })
     },

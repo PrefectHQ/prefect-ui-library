@@ -18,13 +18,13 @@
 
 <script lang="ts" setup>
   import { media, PGlobalSidebar, PIcon } from '@prefecthq/prefect-design'
-  import { computed, provide, watchEffect } from 'vue'
+  import { computed, provide, watchEffect, ref } from 'vue'
   import { RouterView } from 'vue-router'
   import { useWorkspaceApiMock } from '@/../demo/utilities/api'
   import ContextSidebar from '@/demo/components/ContextSidebar.vue'
   import { mobileMenuOpen, toggle } from '@/demo/router/menu'
   import { createWorkspaceRoutes, workspaceRoutesKey } from '@/router'
-  import { canKey, createCan, workspacePermissions } from '@/services/can'
+  import { canKey, createCan, workspacePermissions, WorkspacePermission } from '@/services/can'
 
   const showMenu = computed(() => media.lg || mobileMenuOpen.value)
 
@@ -32,7 +32,7 @@
 
   useWorkspaceApiMock()
 
-  const can = createCan(workspacePermissions, () => true)
+  const can = createCan<WorkspacePermission>(ref(workspacePermissions))
   provide(canKey, can)
 
   const routes = createWorkspaceRoutes()
