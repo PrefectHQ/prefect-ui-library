@@ -70,14 +70,15 @@ export function isWorkspacePermissionString(value: unknown): value is WorkspaceP
   return workspacePermissions.includes(value as WorkspacePermission)
 }
 
+export type PermissionValue = boolean | undefined
 export type PermissionVerb<T extends string> = T extends `${infer Action}:${string}` ? Action : never
 export type Can<T extends string> = {
   [K in PermissionVerb<T>]:
   Extract<T, `${K}:${string}`> extends `${string}:${infer Key}`
-    ? Record<Key, boolean>
+    ? Record<Key, PermissionValue>
     : never
 }
-export type PermissionCheck<T> = (permission: T) => boolean | undefined
+export type PermissionCheck<T> = (permission: T) => PermissionValue
 
 export function createCan<T extends string>(permissions: Readonly<T[]>, permissionCheck: PermissionCheck<T>): Can<T> {
   return new Proxy({} as Can<T>, {
