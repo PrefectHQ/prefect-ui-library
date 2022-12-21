@@ -61,7 +61,7 @@
   const isActive = ref<boolean>(true)
   const isActiveLabel = computed(() => isActive.value ? 'Active' : 'Paused')
 
-  const isRequired: ValidationRule<string | undefined> = (value) => value!.trim().length > 0
+  const isRequired: ValidationRule<string | undefined> = (value) => value !== undefined && value.trim().length > 0
 
   const rules: Record<string, ValidationRule<string | undefined>[]> = {
     name: [isRequired],
