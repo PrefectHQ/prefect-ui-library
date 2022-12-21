@@ -28,6 +28,14 @@ export class MockWorkspaceWorkerPoolsApi extends MockApi implements IWorkspaceWo
     return await this.workerPools.patch(workerPoolName, request)
   }
 
+  public async pauseWorkerPool(name: string): Promise<void> {
+    return await this.workerPools.patch(name, { isPaused: true })
+  }
+
+  public async resumeWorkerPool(name: string): Promise<void> {
+    return await this.workerPools.patch(name, { isPaused: false })
+  }
+
   public async deleteWorkerPool(workerPoolName: string): Promise<void> {
     return await this.workerPools.delete(workerPoolName)
   }
