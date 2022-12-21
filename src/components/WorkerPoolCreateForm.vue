@@ -57,11 +57,11 @@
 
   const { validate, pending } = useValidationObserver()
 
-  const name = ref('')
-  const description = ref()
-  const type = ref('')
-  const concurrencyLimit = ref()
-  const isPaused = ref()
+  const name = ref<string>('')
+  const description = ref<string>()
+  const type = ref<string>('')
+  const concurrencyLimit = ref<number>()
+  const isPaused = ref<boolean>()
   const isActive = computed({
     get() {
       return !isPaused.value
