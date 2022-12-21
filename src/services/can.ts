@@ -65,7 +65,6 @@ export const workspacePermissions = [
   'update:workspace',
 ] as const
 
-
 export type WorkspacePermission = typeof workspacePermissions[number]
 export function isWorkspacePermission(value: unknown): value is WorkspacePermission {
   return workspacePermissions.includes(value as WorkspacePermission)
@@ -88,8 +87,8 @@ export function createCan<T extends string>(permissions: MaybeRef<Readonly<T[]>>
     get(target, verb) {
       return new Proxy({}, {
         get(target, key) {
-          // @ts-expect-error we know that permissionsRef.value is just string[]
-          return permissionsRef.value.includes(`${verb.toString()}:${key.toString()}`)
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          return permissionsRef.value.includes(`${verb.toString()}:${key.toString()}` as any)
         },
       })
     },
