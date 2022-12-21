@@ -82,7 +82,7 @@
   const { error: typeErrorMessage, state: typeState } = useValidation(type, 'Type', rules.type)
 
   function cancel(): void {
-    router.push(routes.workerPools())
+    router.back()
   }
   const submit = async (): Promise<void> => {
     const valid = await validate()
