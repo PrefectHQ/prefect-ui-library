@@ -111,7 +111,7 @@
 <style>
 .worker-pool-create-form {
 @apply
-  border-[1px]
+  border
   border-gray-300
   px-6
   py-6

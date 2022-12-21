@@ -37,12 +37,3 @@
     return options
   })
 </script>
-
-<!--
-  ECS
-  Kubernetes
-  GCP Cloud Run
-  Azure Container
-  Docker Container
-  Process
--->
