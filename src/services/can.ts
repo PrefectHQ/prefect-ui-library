@@ -1,3 +1,5 @@
+import { InjectionKey } from 'vue'
+
 const accountPermissions = [
   'administrate:sso',
   'administrate:workspace',
@@ -99,22 +101,30 @@ const workspacePermissions = [
 ] as const
 
 export const permissions = [...accountPermissions, ...workspacePermissions] as const
+export type Permissions = typeof permissions[number]
 
-type PermissionVerb<T extends string> = T extends `${infer Action}:${string}` ? Action : never
-type PermissionKey<T extends string, A extends PermissionVerb<T>> = T extends `${A}:${infer Entity}` ? Entity : never
-type PermissionValue = boolean | undefined
-type PermissionCheck<T> = (permission: T) => PermissionValue
+export type PermissionVerb<T extends string> = T extends `${infer Action}:${string}` ? Action : never
+export type Can<T extends string> = {
+  [K in PermissionVerb<T>]:
+  Extract<T, `${K}:${string}`> extends `${string}:${infer Key}`
+    ? Record<Key, boolean>
+    : never
+}
+export type PermissionCheck<T> = (permission: T) => boolean | undefined
 
-type CanProperties<T extends string, V extends PermissionVerb<T> = PermissionVerb<T>> = Record<V, Record<PermissionKey<T, V>, boolean>>
-export function createCan<T extends string>(permissions: Readonly<T[]>, permissionCheck: PermissionCheck<T>): CanProperties<T> {
+export function createCan<T extends string>(permissions: Readonly<T[]>, permissionCheck: PermissionCheck<T>): Can<T> {
   // @ts-expect-error proxy
-  return new Proxy<CanProperties<T>>({}, {
-    get(target, property) {
-      console.log('verb', property)
-      // @ts-expect-error proxy
-      return new Proxy<Record<PermissionKey<T, V>, boolean>>({}, {
-        get(target, property) {
-          console.log('key', property)
+  return new Proxy({}, {
+    get(target, verb) {
+      console.log('verb', verb)
+      return new Proxy({}, {
+        get(target, key) {
+          const permissionString = `${verb.toString()}:${key.toString()}` as T
+          if (permissions.includes(permissionString)) {
+            return permissionCheck(permissionString)
+          }
+
+          return false
         },
       })
     },
@@ -122,4 +132,4 @@ export function createCan<T extends string>(permissions: Readonly<T[]>, permissi
 }
 
 export const can = createCan(permissions, () => false)
-can.administrate
+export const canKey: InjectionKey<Can<Permissions>> = Symbol('canInjectionKey')

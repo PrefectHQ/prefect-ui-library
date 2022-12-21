@@ -20,23 +20,16 @@
   import { media, PGlobalSidebar, PIcon } from '@prefecthq/prefect-design'
   import { computed, provide, watchEffect } from 'vue'
   import { RouterView } from 'vue-router'
-  import { useWorkspaceApiMock } from './utilities/api'
+  import { useWorkspaceApiMock } from '@/../demo/utilities/api'
   import ContextSidebar from '@/demo/components/ContextSidebar.vue'
   import { mobileMenuOpen, toggle } from '@/demo/router/menu'
   import { createWorkspaceRoutes, workspaceRoutesKey } from '@/router'
-  import { getAppPermissions, canKey } from '@/types'
 
   const showMenu = computed(() => media.lg || mobileMenuOpen.value)
 
   watchEffect(() => document.body.classList.toggle('body-scrolling-disabled', showMenu.value && !media.lg))
 
   useWorkspaceApiMock()
-
-  const can = getAppPermissions(
-    () => true,
-  )
-
-  provide(canKey, can)
 
   const routes = createWorkspaceRoutes()
 
