@@ -2,11 +2,11 @@ import { WorkerPoolWorker, WorkerPoolWorkerFilter } from '@/models'
 import { WorkerPoolWorkerResponse } from '@/models/api/WorkerPoolWorkerResponse'
 import { mapper, WorkspaceApi } from '@/services'
 
-export interface IWorkspaceWorkerPoolWorkerApi {
+export interface IWorkspaceWorkerPoolWorkersApi {
   getWorkers: (workerPoolName: string, filter: WorkerPoolWorkerFilter) => Promise<WorkerPoolWorker[]>,
 }
 
-export class WorkspaceWorkerPoolWorkerApi extends WorkspaceApi implements IWorkspaceWorkerPoolWorkerApi {
+export class WorkspaceWorkerPoolWorkersApi extends WorkspaceApi implements IWorkspaceWorkerPoolWorkersApi {
   protected override routePrefix = '/experimental/worker_pools/'
 
   public async getWorkers(workerPoolName: string, filter: WorkerPoolWorkerFilter): Promise<WorkerPoolWorker[]> {
