@@ -116,7 +116,6 @@ export function createCan<T extends string>(permissions: Readonly<T[]>, permissi
   // @ts-expect-error proxy
   return new Proxy({}, {
     get(target, verb) {
-      console.log('verb', verb)
       return new Proxy({}, {
         get(target, key) {
           const permissionString = `${verb.toString()}:${key.toString()}` as T
