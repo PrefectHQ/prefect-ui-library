@@ -4,7 +4,9 @@
       <PageHeadingWorkerPools />
     </template>
     <template #worker-pool>
-      <PageHeadingWorkerPool :worker-pool="workerPool" />
+      <div class="worker-headings__header-container">
+        <PageHeadingWorkerPool :worker-pool="workerPool" />
+      </div>
     </template>
   </ComponentPage>
 </template>
@@ -22,3 +24,9 @@
 
   const workerPool = useWorkerPoolMock()
 </script>
+
+<style>
+.worker-headings__header-container { @apply
+  mb-48
+}
+</style>
