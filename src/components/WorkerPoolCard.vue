@@ -21,8 +21,16 @@
     </template>
 
     <div class="worker-pool-card__details">
-      <span class="worker-pool-card__details-label">Concurrency Limit</span>
-      {{ workerPool.concurrencyLimit ? workerPool.concurrencyLimit : 'Unlimited' }}
+      <div>
+        <span class="worker-pool-card__details-label">Concurrency Limit</span>
+        {{ workerPool.concurrencyLimit ? workerPool.concurrencyLimit : 'Unlimited' }}
+      </div>
+
+
+      <div v-if="workerPoolWorkers.length">
+        <span class="worker-pool-card__details-label">Last Polled</span>
+        {{ formatDateTimeRelative(lastWorkerHeartbeat, currentTime) }}
+      </div>
     </div>
   </p-card>
 </template>
@@ -33,8 +41,9 @@
   import { WorkerPoolMenu, WorkerPoolToggle, ProcessTypeBadge } from '@/components'
   import { useWorkspaceApi, useWorkspaceRoutes } from '@/compositions'
   import { WorkerPool } from '@/models'
+  import { now, formatDateTimeRelative } from '@/utilities'
 
-  defineProps<{
+  const props = defineProps<{
     workerPool: WorkerPool,
   }>()
 
@@ -44,9 +53,11 @@
   const subscriptionOptions = {
     interval: 30000,
   }
+  const currentTime = now()
 
-  const workerPoolsSubscription = useSubscription(api.workerPools.getWorkerPools, [{}], subscriptionOptions)
-  const workerPools = computed(() => workerPoolsSubscription.response ?? [])
+  const workerPoolWorkersSubscription = useSubscription(api.WorkerPoolWorkers.getWorkers, [props.workerPool.name, {}], subscriptionOptions)
+  const workerPoolWorkers = computed(() => workerPoolWorkersSubscription.response ?? [])
+  const lastWorkerHeartbeat = computed(() => workerPoolWorkers.value[0].lastHeartbeatTime)
 
   const emit = defineEmits<{
     (event: 'update'): void,
@@ -77,6 +88,13 @@
 }
 
 .worker-pool-card__description { @apply
+  text-sm
+}
+
+.worker-pool-card__details { @apply
+  flex
+  gap-8
+  items-center
   text-sm
 }
 

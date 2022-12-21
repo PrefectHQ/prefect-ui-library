@@ -7,7 +7,7 @@
     </div>
 
     <div class="worker-pools__list">
-      <WorkerPoolList :worker-pools="filteredWorkerPools" />
+      <WorkerPoolList :worker-pools="filteredWorkerPools" @update="workerPoolsSubscription.refresh" />
     </div>
   </div>
 </template>
