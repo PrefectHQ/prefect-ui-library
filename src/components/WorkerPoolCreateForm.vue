@@ -10,7 +10,9 @@
       </p-label>
 
       <p-label label="Type" :state="typeState" :message="typeErrorMessage">
-        <WorkerPoolTypeSelect v-model:selected="type" :state="typeState" />
+        <p-select model-value="Prefect Agent" :options="['Prefect Agent']" disabled />
+        <!-- Types feature is not implemented by backend yet -->
+        <!-- <WorkerPoolTypeSelect v-model:selected="type" :state="typeState" /> -->
       </p-label>
 
       <p-label label="Status (Optional)">
@@ -40,7 +42,7 @@
   import { useValidation, useValidationObserver, ValidationRule } from '@prefecthq/vue-compositions'
   import { computed, ref } from 'vue'
   import { useRouter } from 'vue-router'
-  import { SubmitButton, WorkerPoolTypeSelect } from '@/components'
+  import { SubmitButton } from '@/components'
   import { useWorkspaceApi, useWorkspaceRoutes } from '@/compositions'
   import { localization } from '@/localization'
 
@@ -52,7 +54,9 @@
 
   const name = ref<string>('')
   const description = ref<string>()
-  const type = ref<string>('')
+  // Once types feature is implemented by backend, this should be changed to
+  // const type = ref<string>('')
+  const type = ref<string>('prefect-agent')
   const concurrencyLimit = ref<number>()
   const isActive = ref<boolean>(true)
   const isActiveLabel = computed(() => isActive.value ? 'Active' : 'Paused')
