@@ -44,6 +44,12 @@ const accountPermissions = [
   'update:workspace_role',
 ] as const
 
+export type AccountPermissionString = typeof accountPermissions[number]
+
+export function isAccountPermissionString(permissionString: unknown): permissionString is AccountPermissionString {
+  return accountPermissions.includes(permissionString as AccountPermissionString)
+}
+
 const workspacePermissions = [
   'create:automation',
   'create:block',
@@ -107,6 +113,12 @@ const workspacePermissions = [
   'update:workspace_user_access',
   'update:workspace',
 ] as const
+
+export type WorkspacePermissionString = typeof workspacePermissions[number]
+
+export function isWorkspacePermissionString(permissionString: unknown): permissionString is WorkspacePermissionString {
+  return workspacePermissions.includes(permissionString as WorkspacePermissionString)
+}
 
 export const permissions = [...accountPermissions, ...workspacePermissions] as const
 export type Permissions = typeof permissions[number]
