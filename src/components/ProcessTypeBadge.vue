@@ -1,7 +1,7 @@
 <template>
   <p-tag class="process-type-badge">
     <p-icon icon="CogIcon" />
-    <span>{{ type }}</span>
+    <span>{{ mapProcessTypeValueToProcessTypeLabel(type) }}</span>
   </p-tag>
 </template>
 
@@ -9,6 +9,16 @@
   defineProps<{
     type: string,
   }>()
+
+  // Expand this mapper as more process types are added
+  const mapProcessTypeValueToProcessTypeLabel = (processType: string): string => {
+    switch (processType) {
+      case 'prefect-agent':
+        return 'Prefect Agent'
+      default:
+        return 'Unknown'
+    }
+  }
 </script>
 
 <style>
