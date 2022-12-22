@@ -34,7 +34,8 @@
 
     <p-table v-bind="attrs" :data="_data" :columns="_columns">
       <template #select-heading>
-        <p-checkbox v-model="select" :disabled="disableSelect" />
+        <p-checkbox v-if="!noData" v-model="select" :disabled="disableSelect" />
+        <span v-else />
       </template>
 
       <template #actions-heading>
@@ -60,7 +61,7 @@
             No {{ emptyResultsLabel }}
           </template>
           <template #actions>
-            <p-button size="sm" secondary @click="clear">
+            <p-button v-if="!noData" size="sm" secondary @click="clear">
               Clear Filters
             </p-button>
           </template>
@@ -182,6 +183,10 @@
     }
 
     return props.data.filter((row, index, arr) => props.search(search.value, row, index, arr))
+  })
+
+  const noData = computed(() => {
+    return props.data.length === 0 && search.value === ''
   })
 </script>
 
