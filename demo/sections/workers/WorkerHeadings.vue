@@ -9,14 +9,10 @@
       </div>
     </template>
     <template #worker-pool-create>
-      <div class="worker-headings__header-container">
-        <PageHeadingWorkerPoolCreate :worker-pool="workerPool" />
-      </div>
+      <PageHeadingWorkerPoolCreate :worker-pool="workerPool" />
     </template>
     <template #worker-pool-edit>
-      <div class="worker-headings__header-container">
-        <PageHeadingWorkerPoolEdit :worker-pool="workerPool" />
-      </div>
+      <PageHeadingWorkerPoolEdit :worker-pool="workerPool" />
     </template>
   </ComponentPage>
 </template>
