@@ -67,7 +67,7 @@
     "dependencies": {
         "@fontsource/inconsolata": "^4.5.9",
         "@fontsource/inter": "4.5.14",
-        "@prefecthq/graphs": "0.1.6",
+        "@prefecthq/graphs": "0.1.7",
         "@prefecthq/radar": "0.0.17",
         "@prefecthq/vue-charts": "0.0.19",
         "@prefecthq/vue-compositions": "1.1.3",
