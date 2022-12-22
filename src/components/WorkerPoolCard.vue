@@ -5,7 +5,7 @@
         <p-link class="worker-pool-card__name" :to="routes.workerPool(workerPool.name)">
           {{ workerPool.name }}
         </p-link>
-        <ProcessTypeBadge v-if="workerPool.type" :type="workerPool.type" />
+        <ProcessTypeBadge :type-label="workerPool.typeLabel" />
       </div>
 
       <div class="worker-pool-card__header-actions">

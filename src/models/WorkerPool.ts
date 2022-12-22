@@ -1,3 +1,5 @@
+import { mapProcessTypeValueToProcessTypeLabel } from '@/utilities'
+
 export const workerPoolTypes = ['ECS', 'Kubernetes', 'GCP Cloud Run', 'Azure Container', 'Docker Container', 'Process'] as const
 export type WorkerPoolType = typeof workerPoolTypes[number]
 
@@ -7,7 +9,7 @@ export interface IWorkerPool {
   updated: Date,
   name: string,
   description: string | null,
-  type: string | null,
+  type: string,
   isPaused: boolean,
   defaultQueueId: string,
   concurrencyLimit: number | null,
@@ -19,7 +21,7 @@ export class WorkerPool implements IWorkerPool {
   public updated: Date
   public name: string
   public description: string | null
-  public type: string | null
+  public type: string
   public isPaused: boolean
   public defaultQueueId: string
   public concurrencyLimit: number | null
@@ -34,5 +36,9 @@ export class WorkerPool implements IWorkerPool {
     this.isPaused = workerPool.isPaused
     this.defaultQueueId = workerPool.defaultQueueId
     this.concurrencyLimit = workerPool.concurrencyLimit
+  }
+
+  public get typeLabel(): string {
+    return mapProcessTypeValueToProcessTypeLabel(this.type)
   }
 }

@@ -6,7 +6,7 @@ export type WorkerPoolResponse = {
   updated: DateString,
   name: string,
   description: string | null,
-  type: string | null,
+  type: string,
   is_paused: boolean | null,
   concurrency_limit: number | null,
   default_queue_id: string,
