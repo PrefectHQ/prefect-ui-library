@@ -111,6 +111,7 @@ export { default as NotificationsPageEmptyState } from './NotificationsPageEmpty
 export { default as NotificationsTable } from './NotificationsTable.vue'
 export { default as NotificationStatusSelect } from './NotificationStatusSelect.vue'
 export { default as NotificationToggle } from './NotificationToggle.vue'
+export { default as OTable } from './PageHeading.vue'
 export { default as PageHeading } from './PageHeading.vue'
 export { default as PageHeadingAccountSettings } from './PageHeadingAccountSettings.vue'
 export { default as PageHeadingApiKeys } from './PageHeadingApiKeys.vue'
