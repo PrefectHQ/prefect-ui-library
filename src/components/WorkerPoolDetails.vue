@@ -10,7 +10,7 @@
 
     <p-key-value label="Last Updated" :value="formatDateTimeNumeric(workerPool.updated)" :alternate="alternate" />
 
-    <p-key-value v-if="workerPoolWorkers.length" label="Last Updated" :value="formatDateTimeNumeric(lastWorkerHeartbeat)" :alternate="alternate" />
+    <p-key-value v-if="workerPoolWorkers.length" label="Last Polled" :value="formatDateTimeNumeric(lastWorkerHeartbeat)" :alternate="alternate" />
   </div>
 </template>
 
