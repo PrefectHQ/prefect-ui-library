@@ -30,7 +30,7 @@
       <p-button inset @click="cancel">
         Cancel
       </p-button>
-      <SubmitButton action="Create" :loading="pending" />
+      <SubmitButton action="Save" :loading="pending" />
     </template>
   </p-form>
 </template>
@@ -75,11 +75,11 @@
         concurrencyLimit: concurrencyLimit.value,
       }
       try {
-        const { name } = await api.workerPools.updateWorkerPool(props.workerPool.name, values)
-        showToast(localization.success.editWorkerPool, 'success')
-        router.push(routes.workerPool(name))
+        await api.workerPools.updateWorkerPool(props.workerPool.name, values)
+        showToast(localization.success.updateWorkerPool, 'success')
+        router.push(routes.workerPool(props.workerPool.name))
       } catch (error) {
-        showToast(localization.error.editWorkerPool, 'error')
+        showToast(localization.error.updateWorkerPool, 'error')
         console.error(error)
       }
     }
