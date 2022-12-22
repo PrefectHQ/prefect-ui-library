@@ -20,6 +20,7 @@ import { mapFlowRunResponseToFlowRun } from '@/maps/flowRun'
 import { mapSavedSearchFilterToFlowRunFilters } from '@/maps/flowRunFilter'
 import { mapGraphNodeToFlowRunGraphResponse, mapFlowRunGraphResponseToGraphNode } from '@/maps/flowRunGraph'
 import { mapRunHistoryToFlowRunHistoryResponse, mapFlowRunHistoryResponseToRunHistory } from '@/maps/flowRunHistory'
+import { mapFlowRunGraphResponseToTimelineNode } from '@/maps/flowRunTimeline'
 import { mapLogToLogResponse, mapLogResponseToLog } from '@/maps/logs'
 import { mapNotificationResponseToNotification } from '@/maps/notification'
 import { mapNotificationCreateToNotificationCreateRequest } from '@/maps/notificationCreate'
@@ -72,7 +73,10 @@ export const maps = {
   EmpiricalPolicyResponse: { EmpiricalPolicy: mapEmpiricalPolicyResponseToEmpiricalPolicy },
   Flow: { FlowResponse: mapFlowToFlowResponse },
   FlowResponse: { Flow: mapFlowResponseToFlow },
-  FlowRunGraphResponse: { GraphNode: mapFlowRunGraphResponseToGraphNode },
+  FlowRunGraphResponse: {
+    GraphNode: mapFlowRunGraphResponseToGraphNode,
+    TimelineNode: mapFlowRunGraphResponseToTimelineNode,
+  },
   FlowRunHistoryResponse: { RunHistory: mapFlowRunHistoryResponseToRunHistory },
   FlowRunResponse: { FlowRun: mapFlowRunResponseToFlowRun },
   GraphNode: { FlowRunGraphResponse: mapGraphNodeToFlowRunGraphResponse },

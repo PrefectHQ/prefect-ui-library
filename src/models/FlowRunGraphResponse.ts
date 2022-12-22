@@ -4,6 +4,7 @@ import { DateString } from '@/types/dates'
 
 export type FlowRunGraphResponse = {
   id: string,
+  name?: string,
   upstream_dependencies: {
     id: string,
     input_type: TaskRunInputType,

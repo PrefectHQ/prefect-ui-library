@@ -1,7 +1,7 @@
 import { KeyedDataStore } from '../services/KeyedDataStore'
 import { SimpleDataStore } from '../services/SimpleDataStore'
-import { ApiMockSeeds } from '@/../demo/utilities/api'
-import { Flow, FlowRun, BlockDocument, BlockSchema, TaskRun, Deployment, WorkQueue, BlockType, ConcurrencyLimit, WorkerPool, WorkerPoolQueue } from '@/models'
+import { ApiMockSeeds } from './api'
+import { Flow, FlowRun, BlockDocument, BlockSchema, TaskRun, Deployment, WorkQueue, BlockType, WorkerPool, WorkerPoolQueue } from '@/models'
 import { resolveSchema } from '@/services/schemas/resolvers/schemas'
 
 function hydrateBlockSchema(blockSchema: BlockSchema): BlockSchema {
