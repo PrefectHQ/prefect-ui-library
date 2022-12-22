@@ -1,11 +1,13 @@
 <template>
   <p-tag class="process-type-badge">
     <p-icon icon="CogIcon" />
-    <span>{{ type }}</span>
+    <span>{{ mapProcessTypeValueToProcessTypeLabel(type) }}</span>
   </p-tag>
 </template>
 
 <script lang="ts" setup>
+  import { mapProcessTypeValueToProcessTypeLabel } from '@/utilities'
+
   defineProps<{
     type: string,
   }>()
