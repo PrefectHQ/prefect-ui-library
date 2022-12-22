@@ -56,7 +56,7 @@
   const { validate, pending } = useValidationObserver()
 
   const description = ref<string | null | undefined>(props.workerPool.description)
-  const type = ref<string | null | undefined>(props.workerPool.type)
+  const type = ref<string>(props.workerPool.type!)
   const typeLabel = computed(() => mapProcessTypeValueToProcessTypeLabel(type.value))
   const concurrencyLimit = ref<number | null | undefined>(props.workerPool.concurrencyLimit)
   const isActive = ref<boolean | undefined>(!props.workerPool.isPaused)
