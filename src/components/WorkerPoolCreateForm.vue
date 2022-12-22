@@ -1,7 +1,7 @@
 <template>
   <p-form class="worker-pool-create-form" @submit="submit">
     <p-content>
-      <p-label label="Name " :message="nameErrorMessage" :state="nameState">
+      <p-label label="Name" :message="nameErrorMessage" :state="nameState">
         <p-text-input v-model="name" :state="nameState" />
       </p-label>
 
