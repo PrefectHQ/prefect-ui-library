@@ -6,19 +6,11 @@
 </template>
 
 <script lang="ts" setup>
+  import { mapProcessTypeValueToProcessTypeLabel } from '@/utilities'
+
   defineProps<{
     type: string,
   }>()
-
-  // Expand this mapper as more process types are added
-  const mapProcessTypeValueToProcessTypeLabel = (processType: string): string => {
-    switch (processType) {
-      case 'prefect-agent':
-        return 'Prefect Agent'
-      default:
-        return 'Unknown'
-    }
-  }
 </script>
 
 <style>
