@@ -1,7 +1,7 @@
 <template>
   <p-icon-button-menu v-bind="$attrs" class="worker-pool-menu">
     <CopyOverflowMenuItem label="Copy ID" :item="workerPool.id" />
-    <router-link :to="routes.workerPoolEdit(workerPool.id)">
+    <router-link :to="routes.workerPoolEdit(workerPool.name)">
       <p-overflow-menu-item v-if="can.update.worker_pool" label="Edit" />
     </router-link>
     <p-overflow-menu-item v-if="can.delete.worker_pool" label="Delete" @click="open" />
