@@ -85,10 +85,3 @@
     }
   }
 </script>
-
-
- <!--
-   description: string,
-   isPaused: boolean,
-   concurrencyLimit: number,
- -->
