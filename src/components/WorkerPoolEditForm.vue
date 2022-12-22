@@ -10,7 +10,7 @@
       </p-label>
 
       <p-label label="Type">
-        <p-select :model-value="typeLabel" :options="[typeLabel]" disabled />
+        <p-select :model-value="workerPool.typeLabel" :options="[workerPool.typeLabel]" disabled />
       </p-label>
 
       <p-label label="Status (Optional)">
@@ -44,7 +44,6 @@
   import { useWorkspaceApi, useWorkspaceRoutes } from '@/compositions'
   import { localization } from '@/localization'
   import { WorkerPool } from '@/models'
-  import { mapProcessTypeValueToProcessTypeLabel } from '@/utilities'
 
   const props = defineProps<{
     workerPool: WorkerPool,
@@ -56,8 +55,6 @@
   const { validate, pending } = useValidationObserver()
 
   const description = ref<string | null | undefined>(props.workerPool.description)
-  const type = ref<string>(props.workerPool.type)
-  const typeLabel = computed(() => mapProcessTypeValueToProcessTypeLabel(type.value))
   const concurrencyLimit = ref<number | null | undefined>(props.workerPool.concurrencyLimit)
   const isActive = ref<boolean | undefined>(!props.workerPool.isPaused)
   const isActiveLabel = computed(() => isActive.value ? 'Active' : 'Paused')
@@ -85,3 +82,13 @@
     }
   }
 </script>
+
+<style>
+.worker-pool-edit-form { @apply
+  border
+  border-gray-300
+  px-6
+  py-6
+  rounded-lg
+}
+</style>
