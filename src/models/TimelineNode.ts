@@ -6,8 +6,8 @@ interface ModifiedTimelineNodeData extends Omit<TimelineNodeData, 'start'> {
 
 export function isValidTimelineNodeData(value: TimelineNode): value is TimelineNodeData {
   return typeof value === 'object'
-    && 'startTime' in value
-    && value.startTime instanceof Date
+    && 'start' in value
+    && value.start instanceof Date
 }
 
 export class TimelineNode implements ModifiedTimelineNodeData {

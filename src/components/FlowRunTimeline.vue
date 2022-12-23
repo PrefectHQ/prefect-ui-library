@@ -1,10 +1,9 @@
 <template>
-  <div class="flow-run-timeline-container">
+  <div v-if="graphData.length > 0" class="flow-run-timeline-container">
     <div class="flow-run-timeline-container__beta-badge">
       <BetaBadge />
     </div>
     <FlowRunTimeline
-      v-if="graphData.length > 0"
       :graph-data="graphData"
       :is-running="isRunning"
     />
@@ -48,9 +47,8 @@
 
 <style>
 .flow-run-timeline-container {
-  min-height: 400px;
+  min-height: 300px;
   height: 40vh;
-  max-height: 600px;
   position: relative;
 }
 .flow-run-timeline-container__beta-badge { @apply
