@@ -14,19 +14,16 @@
 
     <template #actions>
       <DocumentationButton topic="workerPools" />
-      <router-link v-if="can.create.worker_pool" :to="routes.workerPoolCreate()">
-        <p-button>
-          Create Worker Pool
-          <p-icon icon="PlusIcon" class="worker-pools-page-empty-state__link-icon" />
-        </p-button>
-      </router-link>
+      <p-button v-if="can.create.worker_pool" :to="routes.workerPoolCreate()">
+        Create Worker Pool
+        <p-icon icon="PlusIcon" class="worker-pools-page-empty-state__link-icon" />
+      </p-button>
     </template>
   </p-empty-state>
 </template>
 
   <script lang="ts" setup>
   import { PEmptyState, PButton, PIcon } from '@prefecthq/prefect-design'
-  import { RouterLink } from 'vue-router'
   import DocumentationButton from '@/components/DocumentationButton.vue'
   import { useWorkspaceRoutes } from '@/compositions'
   import { useCan } from '@/compositions/useCan'
