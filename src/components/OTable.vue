@@ -2,7 +2,7 @@
   <div class="o-table">
     <div class="o-table__controls-header">
       <slot name="controls-header">
-        <div class="o-table__controls-header__section o-table__controls-header__section-start">
+        <div class="o-table__controls__section o-table__controls__section-start">
           <slot name="controls-header__start">
             <slot name="controls-header__start-before" />
 
@@ -15,7 +15,7 @@
           </slot>
         </div>
 
-        <div class="o-table__controls-header__section o-table__controls-header__section-end">
+        <div class="o-table__controls__section o-table__controls__section-end">
           <slot name="controls__header__end">
             <slot name="controls-header__end-before" />
 
@@ -71,11 +71,17 @@
       </template>
     </p-table>
 
+    <div class="o-table__controls-footer">
+      <slot name="controls__footer">
+        <div class="o-table__controls__section o-table__controls__section-start">
+          <slot name="controls__footer__start" />
+        </div>
 
-    <slot name="controls__footer">
-      <slot name="controls__footer__start" />
-      <slot name="controls__footer__end" />
-    </slot>
+        <div class="o-table__controls__section o-table__controls__section-end">
+          <slot name="controls__footer__end" />
+        </div>
+      </slot>
+    </div>
   </div>
 </template>
 
@@ -205,17 +211,28 @@
   z-10
 }
 
-.o-table__controls-header__section { @apply
+.o-table__controls-footer { @apply
+  flex
+  justify-between
+  items-center
+  mt-2
+  bg-white
+  bg-opacity-90
+  py-2
+  z-10
+}
+
+.o-table__controls__section { @apply
   flex
   gap-2
   items-center
 }
 
-.o-table__controls-header__section-start { @apply
+.o-table__controls__section-start { @apply
   mr-auto
 }
 
-.o-table__controls-header__section-end { @apply
+.o-table__controls__section-end { @apply
   ml-auto
 }
 
