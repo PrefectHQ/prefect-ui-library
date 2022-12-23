@@ -1,9 +1,7 @@
 <template>
   <page-heading class="page-heading-worker-pools" :crumbs="crumbs">
-    <template #after-crumbs>
-      <router-link v-if="can.create.worker_pool" :to="routes.workerPoolCreate()">
-        <p-button inset size="xs" icon="PlusIcon" />
-      </router-link>
+    <template v-if="can.create.worker_pool" #after-crumbs>
+      <p-button inset size="xs" icon="PlusIcon" :to="routes.workerPoolCreate()" />
     </template>
   </page-heading>
 </template>

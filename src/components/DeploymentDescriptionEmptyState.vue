@@ -15,11 +15,9 @@
 
     <template #actions>
       <DocumentationButton topic="deployments" />
-      <router-link v-if="can.update.deployment" :to="routes.deploymentEdit(deployment.id)">
-        <p-button>
-          Add Description
-        </p-button>
-      </router-link>
+      <p-button v-if="can.update.deployment" :to="routes.deploymentEdit(deployment.id)">
+        Add Description
+      </p-button>
     </template>
   </p-empty-state>
 </template>

@@ -5,11 +5,9 @@
     <template v-if="blockDocuments.length">
       <BlockDocumentsSelect v-model:selected="model" v-bind="{ blockDocuments }" class="block-document-input__select" />
     </template>
-    <router-link v-if="blockTypeSlug" :to="withRedirect(routes.blockCreate(blockTypeSlug))">
-      <p-button inset>
-        Add <p-icon icon="PlusIcon" />
-      </p-button>
-    </router-link>
+    <p-button v-if="blockTypeSlug" inset :to="withRedirect(routes.blockCreate(blockTypeSlug))">
+      Add <p-icon icon="PlusIcon" />
+    </p-button>
   </div>
 </template>
 

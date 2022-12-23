@@ -14,12 +14,10 @@
 
     <template #actions>
       <DocumentationButton topic="blocks" />
-      <router-link v-if="can.create.block" :to="routes.blocksCatalog()">
-        <p-button>
-          Add Block
-          <p-icon icon="PlusIcon" class="empty-work-queue--link-icon" />
-        </p-button>
-      </router-link>
+      <p-button v-if="can.create.block" :to="routes.blocksCatalog()">
+        Add Block
+        <p-icon icon="PlusIcon" class="empty-work-queue--link-icon" />
+      </p-button>
     </template>
   </p-empty-state>
 </template>
