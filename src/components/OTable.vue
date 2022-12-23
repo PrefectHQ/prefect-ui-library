@@ -46,7 +46,9 @@
         <p-checkbox v-model="_selectedRows" :value="row" :disabled="disableSelect" />
       </template>
 
-      <slot />
+      <template v-for="(_, name) in $slots" #[name]="slotData">
+        <slot :name="name" v-bind="slotData" />
+      </template>
 
       <template #actions="{ row }">
         <div class="o-table__row__actions">
@@ -160,6 +162,10 @@
     search.value = ''
   }
 
+  // const filteredSlots = computed(() => {
+  //   const slots = Object.keys()
+  //   return slots.filter((slot) => !slot.startsWith('o-table'))
+  // })
 
   const _columns = computed(() => {
     return [
