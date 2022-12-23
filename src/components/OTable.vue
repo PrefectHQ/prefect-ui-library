@@ -162,11 +162,6 @@
     search.value = ''
   }
 
-  // const filteredSlots = computed(() => {
-  //   const slots = Object.keys()
-  //   return slots.filter((slot) => !slot.startsWith('o-table'))
-  // })
-
   const _columns = computed(() => {
     return [
       {
