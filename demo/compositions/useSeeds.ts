@@ -1,6 +1,6 @@
 import { onUnmounted } from 'vue'
 import { data } from '../utilities/data'
-import { Flow, FlowRun, Deployment, WorkQueue, TaskRun, BlockDocument, BlockType, BlockSchema, ConcurrencyLimit, WorkerPool, WorkerPoolQueue } from '@/models'
+import { Flow, FlowRun, Deployment, WorkQueue, TaskRun, BlockDocument, BlockType, BlockSchema, ConcurrencyLimit, WorkerPool, WorkerPoolQueue, WorkerPoolWorker } from '@/models'
 
 type Seeds = {
   blockDocuments?: BlockDocument[],
@@ -15,6 +15,7 @@ type Seeds = {
   workQueues?: WorkQueue[],
   workerPools?: WorkerPool[],
   workerPoolQueues?: WorkerPoolQueue[],
+  workerPoolWorkers?: WorkerPoolWorker[],
 }
 
 export function useSeeds(seed: Seeds): void {
@@ -105,6 +106,13 @@ export function useSeeds(seed: Seeds): void {
   if (seed.workerPoolQueues) {
     const workerPoolQueues = data.workerPoolQueues.createAll(seed.workerPoolQueues)
     const ids = workerPoolQueues.map(workerPoolQueue => workerPoolQueue.id)
+
+    onUnmounted(() => data.workerPools.deleteAll(ids))
+  }
+
+  if (seed.workerPoolWorkers) {
+    const workerPoolWorkers = data.workerPoolWorkers.createAll(seed.workerPoolWorkers)
+    const ids = workerPoolWorkers.map(worker => worker.id)
 
     onUnmounted(() => data.workerPools.deleteAll(ids))
   }
