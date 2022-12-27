@@ -2,7 +2,13 @@
   <div class="flow-runs-filter-group">
     <div class="flow-runs-filter-group__row">
       <p-label :label="media.hover ? 'Date Range' : ''">
-        <DateRangeInput v-model:startDate="internalStartDate" v-model:endDate="internalEndDate" clearable />
+        <DateRangeInput v-model:startDate="internalStartDate" v-model:endDate="internalEndDate" clearable>
+          <template #date="{ date }">
+            <div>
+              {{ date.getDate() }}*
+            </div>
+          </template>
+        </DateRangeInput>
       </p-label>
       <p-label label="States">
         <StateNameSelect v-model:selected="states" empty-message="All run states" />
@@ -30,7 +36,8 @@
 
 <script lang="ts" setup>
   import { media } from '@prefecthq/prefect-design'
-  import { ref, watch } from 'vue'
+  import { useSubscription } from '@prefecthq/vue-compositions'
+  import { computed, ref, watch } from 'vue'
   import DateRangeInput from '@/components/DateRangeInput.vue'
   import DeploymentCombobox from '@/components/DeploymentCombobox.vue'
   import FlowCombobox from '@/components/FlowCombobox.vue'
@@ -38,8 +45,15 @@
   import StateNameSelect from '@/components/StateNameSelect.vue'
   import WorkQueueCombobox from '@/components/WorkQueueCombobox.vue'
   import { useFlowRunFilterFromRoute } from '@/compositions/useFlowRunFilterFromRoute'
+  import { useWorkspaceApi } from '@/compositions/useWorkspaceApi'
 
-  const { states, deployments, workQueues, flows, tags, name, startDate, endDate, updateFilters } = useFlowRunFilterFromRoute()
+  const api = useWorkspaceApi()
+
+  const { states, deployments, workQueues, flows, tags, name, startDate, endDate, updateFilters, filter } = useFlowRunFilterFromRoute()
+  const flowRunsSurveyResultsSubscription = useSubscription(api.flowRuns.getFlowRunsSurveyResults, [filter])
+  const flowRunsSurveyResults = computed(() => flowRunsSurveyResultsSubscription.response ?? [])
+
+  watch(flowRunsSurveyResults, () => console.log(flowRunsSurveyResults.value))
 
   const internalStartDate = ref<Date | null>(startDate.value)
   const internalEndDate = ref<Date | null>(endDate.value)
