@@ -40,9 +40,9 @@ export function createWorkspaceRoutes(config?: CreateWorkspaceRoutesConfig) {
     workerPool: (workerPoolName: string) => ({ name: 'workspace.worker-pools.worker-pool', params: { workerPoolName, ...config } }) as const,
     workerPoolCreate: () => ({ name: 'workspace.worker-pools.worker-pool-create', params: { ...config } }) as const,
     workerPoolEdit: (workerPoolName: string) => ({ name: 'workspace.worker-pools.worker-pool-edit', params: { workerPoolName, ...config } }) as const,
-    workerPoolQueue: (workerPoolName: string, workQueueId: string) => ({ name: 'workspace.worker-pools.worker-pool.worker-pool-queue', params: { workerPoolName, workQueueId, ...config } }) as const,
+    workerPoolQueue: (workerPoolName: string, workerPoolQueueId: string) => ({ name: 'workspace.worker-pools.worker-pool.worker-pool-queue', params: { workerPoolName, workerPoolQueueId, ...config } }) as const,
     workerPoolQueueCreate: (workerPoolName: string) => ({ name: 'workspace.worker-pools.worker-pool.worker-pool-queue-create', params: { workerPoolName, ...config } }) as const,
-    workerPoolQueueEdit: (workerPoolName: string, workQueueId: string) => ({ name: 'workspace.worker-pools.worker-pool.worker-pool-queue-edit', params: { workerPoolName, workQueueId, ...config } }) as const,
+    workerPoolQueueEdit: (workerPoolName: string, workerPoolQueueId: string) => ({ name: 'workspace.worker-pools.worker-pool.worker-pool-queue-edit', params: { workerPoolName, workerPoolQueueId, ...config } }) as const,
   }
 }
 
@@ -286,12 +286,11 @@ export function createWorkspaceRouteRecords(components: Partial<WorkspaceRouteCo
         },
         {
           path: 'worker-pool/:workerPoolName',
-          component: components.workerPool,
           children: [
             {
               name: 'workspace.worker-pools.worker-pool',
               path: '',
-              component: components.workerPools,
+              component: components.workerPool,
             },
             {
               name: 'workspace.worker-pools.worker-pool.worker-pool-queue',
