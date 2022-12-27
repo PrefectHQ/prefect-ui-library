@@ -90,7 +90,6 @@
       }
 
       try {
-        console.log(values)
         const { name } = await api.workerPoolQueues.createWorkerPoolQueue(props.workerPoolName, values)
         showToast(localization.success.createWorkerPoolQueue, 'success')
 
