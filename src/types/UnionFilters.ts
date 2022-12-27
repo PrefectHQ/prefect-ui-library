@@ -65,6 +65,7 @@ export interface FlowRunFilter extends Filter {
   next_scheduled_start_time?: TimeFrameFilter,
   parent_task_run_id?: any_ & is_null_,
   task_runs?: TaskRunFilter,
+  worker_pool_queue_id?: any_,
 }
 
 export interface TaskRunFilter extends Filter {

@@ -18,6 +18,7 @@ export type UseFilterArgs<T = FilterSortValues> = {
   sort?: MaybeRef<T>,
   name?: MaybeRef<string>,
   workQueues?: MaybeRef<string[]>,
+  workerPoolQueues?: MaybeRef<string[]>,
 }
 
 export function useFilter(filters: MaybeRef<UseFilterArgs>): ComputedRef<UnionFilters> {
@@ -35,6 +36,7 @@ export function useFilter(filters: MaybeRef<UseFilterArgs>): ComputedRef<UnionFi
     const sort = ref(filtersRef.value.sort)
     const name = ref(filtersRef.value.name)
     const workQueues = ref(filtersRef.value.workQueues)
+    const workerPoolQueues = ref(filtersRef.value.workerPoolQueues)
 
     const response: UnionFilters = {}
 
@@ -116,6 +118,13 @@ export function useFilter(filters: MaybeRef<UseFilterArgs>): ComputedRef<UnionFi
       response.flow_runs.work_queue_name ??= {}
 
       response.flow_runs.work_queue_name.any_ = workQueues.value
+    }
+
+    if (workerPoolQueues.value?.length) {
+      response.flow_runs ??= {}
+      response.flow_runs.worker_pool_queue_id ??= {}
+
+      response.flow_runs.worker_pool_queue_id.any_ = workerPoolQueues.value
     }
 
     return response

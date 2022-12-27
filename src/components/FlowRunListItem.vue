@@ -29,9 +29,13 @@
             <span>Deployment</span> <DeploymentIconText :deployment-id="flowRun.deploymentId" />
           </div>
         </template>
-        <template v-if="flowRun.workQueueName">
-          <div class="flow-run-list-item__relation">
+        <template v-if="flowRun.workQueueName || flowRun.workerPoolQueueId">
+          <div v-if="flowRun.workQueueName" class="flow-run-list-item__relation">
             <span>Work Queue</span> <WorkQueueIconText :work-queue-name="flowRun.workQueueName" />
+          </div>
+          <div v-else class="flow-run-list-item__relation">
+            <span>Worker Pool</span>
+            <!-- <WorkerPoolQueueIconText :worker-pool-id="flowRun.workerPoolQueueId" /> -->
           </div>
         </template>
       </template>
