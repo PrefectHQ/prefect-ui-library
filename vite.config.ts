@@ -26,6 +26,9 @@ export default defineConfig(({ mode }) => {
     return {
       root: './demo',
       ...baseConfig,
+      build: {
+        cssCodeSplit: false,
+      },
     }
   }
 
