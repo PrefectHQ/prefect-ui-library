@@ -40,9 +40,9 @@
   import LogsSort from '@/components/LogsSort.vue'
   import { useWorkspaceApi } from '@/compositions'
   import { usePaginatedSubscription } from '@/compositions/usePaginatedSubscription'
+  import { LogsRequestSort, LogsRequestFilter } from '@/models/api/LogsRequestFilter'
   import { Log, LogLevel } from '@/models/Log'
   import { TaskRun } from '@/models/TaskRun'
-  import { LogsRequestSort, LogsRequestFilter } from '@/types/LogsRequestFilter'
 
   const props = defineProps<{
     taskRun: TaskRun,

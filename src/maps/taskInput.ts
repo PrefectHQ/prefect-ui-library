@@ -1,5 +1,5 @@
+import { isConstantTaskInputResponse, isParameterTaskInputResponse, isTaskRunTaskInputResponse, TaskInputResponse } from '@/models/api/TaskInputResponse'
 import { ConstantTaskInput, ParameterTaskInput, TaskInput, TaskRunTaskInput } from '@/models/TaskInput'
-import { isConstantTaskInputResponse, isParameterTaskInputResponse, isTaskRunTaskInputResponse, TaskInputResponse } from '@/models/TaskInputResponse'
 import { MapFunction } from '@/services/Mapper'
 
 export const mapTaskInputResponseToTaskInput: MapFunction<TaskInputResponse, TaskInput> = function(source: TaskInputResponse): TaskInput {

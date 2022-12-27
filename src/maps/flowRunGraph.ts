@@ -1,4 +1,4 @@
-import { FlowRunGraphResponse } from '@/models/FlowRunGraphResponse'
+import { FlowRunGraphResponse } from '@/models/api/FlowRunGraphResponse'
 import { GraphNode } from '@/models/GraphNode'
 import { MapFunction } from '@/services/Mapper'
 
