@@ -17,6 +17,7 @@ import { randomFlowResponse } from '@/mocks/flowResponse'
 import { randomFlowRun } from '@/mocks/flowRun'
 import { randomFlowRunGraph, randomGraphNode } from '@/mocks/flowRunGraph'
 import { randomFlowRunHistory } from '@/mocks/flowRunHistory'
+import { randomFlowRunsSurveyResult } from '@/mocks/flowRunsSurveyResult'
 import { randomFlowRunStateHistory } from '@/mocks/flowRunStateHistory'
 import { randomId } from '@/mocks/id'
 import { randomImage } from '@/mocks/image'
@@ -48,18 +49,21 @@ export const mocks = {
   blockSchemaCapabilities: randomBlockSchemaCapabilities,
   blockSchemaCapability: randomBlockSchemaCapability,
   blockType: randomBlockType,
+  blockTypeSnippet: randomBlockTypeSnippet,
   boolean: randomBoolean,
   char: randomChar,
-  createdOrUpdatedBy: randomCreatedOrUpdatedBy,
   concurrencyLimit: randomConcurrencyLimit,
+  createdOrUpdatedBy: randomCreatedOrUpdatedBy,
   date: randomDate,
   dateString: randomDateString,
   deployment: randomDeployment,
   email: randomEmail,
   flow: randomFlow,
+  flowResponse: randomFlowResponse,
   flowRun: randomFlowRun,
   flowRunGraph: randomFlowRunGraph,
   flowRunHistory: randomFlowRunHistory,
+  flowRunsSurveyResult: randomFlowRunsSurveyResult,
   flowRunStateHistory: randomFlowRunStateHistory,
   graphNode: randomGraphNode,
   id: randomId,
@@ -84,13 +88,11 @@ export const mocks = {
   taskRun: randomTaskRun,
   uiFlowRunHistory: randomUiFlowRunHistory,
   url: randomUrl,
+  workerPool: randomWorkerPool,
+  workerPoolQueue: randomWorkerPoolQueue,
   workQueue: randomWorkQueue,
   workQueueCreate: randomWorkQueueCreate,
   workQueueFilter: randomWorkQueueFilter,
   workQueueHealthPolicy: randomWorkQueueHealthPolicy,
   workQueueStatus: randomWorkQueueStatus,
-  flowResponse: randomFlowResponse,
-  blockTypeSnippet: randomBlockTypeSnippet,
-  workerPool: randomWorkerPool,
-  workerPoolQueue: randomWorkerPoolQueue,
 }
