@@ -33,4 +33,5 @@ export type FlowRunResponse = {
   auto_scheduled: boolean | null,
   state: StateResponse | null,
   work_queue_name: string | null,
+  worker_pool_queue_id: string | null,
 }
