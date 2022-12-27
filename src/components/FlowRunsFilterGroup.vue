@@ -4,8 +4,12 @@
       <p-label :label="media.hover ? 'Date Range' : ''">
         <DateRangeInput v-model:startDate="internalStartDate" v-model:endDate="internalEndDate" clearable>
           <template #date="{ date }">
-            <div>
-              {{ date.getDate() }}*
+            <div class="flow-runs-filter-group__date" :class="classes.date(date)">
+              <div class="flow-runs-filter-group__date-value">
+                {{ date.getDate() }}
+              </div>
+              <div class="flow-runs-filter-group__date-indicator flow-runs-filter-group__date-indicator--completed" />
+              <div class="flow-runs-filter-group__date-indicator flow-runs-filter-group__date-indicator--failed" />
             </div>
           </template>
         </DateRangeInput>
@@ -46,14 +50,23 @@
   import WorkQueueCombobox from '@/components/WorkQueueCombobox.vue'
   import { useFlowRunFilterFromRoute } from '@/compositions/useFlowRunFilterFromRoute'
   import { useWorkspaceApi } from '@/compositions/useWorkspaceApi'
+  import { FlowRunsSurveyResult } from '@/models/FlowRunsSurveyResult'
 
   const api = useWorkspaceApi()
 
-  const { states, deployments, workQueues, flows, tags, name, startDate, endDate, updateFilters, filter } = useFlowRunFilterFromRoute()
-  const flowRunsSurveyResultsSubscription = useSubscription(api.flowRuns.getFlowRunsSurveyResults, [filter])
-  const flowRunsSurveyResults = computed(() => flowRunsSurveyResultsSubscription.response ?? [])
+  const { states, deployments, workQueues, flows, tags, name, startDate, endDate, updateFilters } = useFlowRunFilterFromRoute()
+  // const flowRunsSurveyResultsSubscription = useSubscription(api.flowRuns.getFlowRunsSurveyResults, [filter])
+  // const flowRunsSurveyResults = computed(() => flowRunsSurveyResultsSubscription.response ?? new Map<string, FlowRunsSurveyResult>())
+  const classes = computed(() => ({
+    date: (date: Date) => {
+      // const surveyResult = flowRunsSurveyResults.value.get(date.toISOString())
 
-  watch(flowRunsSurveyResults, () => console.log(flowRunsSurveyResults.value))
+      return {
+        // 'flow-runs-filter-group__date--with-completed': !!surveyResult?.completedCount,
+        // 'flow-runs-filter-group__date--with-failed': !!surveyResult?.failedCount,
+      }
+    },
+  }))
 
   const internalStartDate = ref<Date | null>(startDate.value)
   const internalEndDate = ref<Date | null>(endDate.value)
@@ -81,5 +94,33 @@
 
 .flow-runs-filter-group__search { @apply
   md:hidden
+}
+
+.flow-runs-filter-group__date { @apply
+  flex
+  flex-wrap
+  justify-center
+  gap-1
+}
+
+.flow-runs-filter-group__date-value { @apply
+  w-full
+}
+
+.flow-runs-filter-group__date-indicator { @apply
+  h-1
+  w-1
+  flex-grow-0
+  flex-shrink-0
+  bg-gray-400
+  rounded-full
+}
+
+.flow-runs-filter-group__date--with-completed .flow-runs-filter-group__date-indicator--completed { @apply
+  bg-green-400
+}
+
+.flow-runs-filter-group__date--with-failed .flow-runs-filter-group__date-indicator--failed { @apply
+  bg-red-400
 }
 </style>
