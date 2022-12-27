@@ -2,7 +2,7 @@ import { MockApi } from '@/../demo/services/MockApi'
 import { FlowRun, GraphNode, RunHistory, StateUpdate, TimelineNode } from '@/models'
 import { FlowRunsSurveyResult } from '@/models/FlowRunsSurveyResult'
 import { IWorkspaceFlowRunsApi, mapper, mocker } from '@/services'
-import { UnionFilters, FlowRunsHistoryFilter } from '@/types'
+import { UnionFilters, FlowRunsHistoryFilter, DateString } from '@/types'
 import { dateFunctions } from '@/utilities/timezone'
 
 export class MockWorkspaceFlowRunsApi extends MockApi implements IWorkspaceFlowRunsApi {
@@ -68,7 +68,7 @@ export class MockWorkspaceFlowRunsApi extends MockApi implements IWorkspaceFlowR
     return await this.flowRuns.delete(flowRunId)
   }
 
-  public getFlowRunsSurveyResults(filter: UnionFilters = {}): Promise<FlowRunsSurveyResult[]> {
+  public getFlowRunsSurveyResults(filter: UnionFilters = {}): Promise<Map<DateString, FlowRunsSurveyResult>> {
     let start = dateFunctions.startOfMonth(dateFunctions.startOfToday())
 
     if (filter.flow_runs?.expected_start_time?.after_) {
@@ -80,9 +80,12 @@ export class MockWorkspaceFlowRunsApi extends MockApi implements IWorkspaceFlowR
       end = mapper.map('string', filter.flow_runs.expected_start_time.before_, 'Date')
     }
 
-    const response = dateFunctions.eachDayOfInterval({ start, end }).map(date => mocker.create('flowRunsSurveyResult', [{ date }]))
+    const map = new Map(dateFunctions.eachDayOfInterval({ start, end }).map(date => {
+      const result = mocker.create('flowRunsSurveyResult', [{ date }])
+      return [date.toISOString(), result]
+    }))
 
-    return Promise.resolve(response)
+    return Promise.resolve(map)
   }
 
 }
