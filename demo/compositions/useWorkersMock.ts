@@ -30,6 +30,7 @@ export function useWorkersMock(count: number, override?: () => Partial<WorkerPoo
   })
 
   useSeeds({
+    workerPools: [workerPool],
     workerPoolWorkers,
   })
 

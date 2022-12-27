@@ -61,7 +61,7 @@
 
   const workerPoolNameRef = computed(() => props.workerPoolName)
 
-  const workerPoolWorkersSubscription = useSubscription(api.workerPoolWorkers.getWorkers, [workerPoolNameRef.value, {}], subscriptionOptions)
+  const workerPoolWorkersSubscription = useSubscription(api.workerPoolWorkers.getWorkers, [workerPoolNameRef.value], subscriptionOptions)
   const workerPoolWorkers = computed(() => workerPoolWorkersSubscription.response ?? [])
 
   const searchValue = ref<string>('')
