@@ -18,7 +18,6 @@ export function useWorkerMock(override?: Partial<WorkerPoolWorker>): WorkerPoolW
 }
 
 export function useWorkersMock(count: number, override?: () => Partial<WorkerPoolWorker>): WorkerPoolWorker[] {
-  console.log('here')
   const workerPool = useWorkerPoolMock()
 
   const workerPoolWorkers = repeat(count, () => {
