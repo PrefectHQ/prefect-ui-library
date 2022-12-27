@@ -80,25 +80,28 @@
 
   const submit = async (): Promise<void> => {
     const valid = await validate()
-    if (valid) {
-      const values = {
-        name: name.value,
-        description: description.value,
-        isPaused: !isActive.value,
-        concurrencyLimit: concurrencyLimit.value,
-        priority: queuePriority.value,
-      }
-
-      try {
-        const { name } = await api.workerPoolQueues.createWorkerPoolQueue(props.workerPoolName, values)
-        showToast(localization.success.createWorkerPoolQueue, 'success')
-
-        router.push(routes.workerPoolQueue(props.workerPoolName, name))
-      } catch (error) {
-        showToast(localization.error.createWorkerPoolQueue, 'error')
-        console.error(error)
-      }
+    if (!valid) {
+      return
     }
+
+    const values = {
+      name: name.value,
+      description: description.value,
+      isPaused: !isActive.value,
+      concurrencyLimit: concurrencyLimit.value,
+      priority: queuePriority.value,
+    }
+
+    try {
+      const { name } = await api.workerPoolQueues.createWorkerPoolQueue(props.workerPoolName, values)
+      showToast(localization.success.createWorkerPoolQueue, 'success')
+
+      router.push(routes.workerPoolQueue(props.workerPoolName, name))
+    } catch (error) {
+      showToast(localization.error.createWorkerPoolQueue, 'error')
+      console.error(error)
+    }
+
   }
 </script>
 
