@@ -1,5 +1,9 @@
 <template>
-  <p-date-range-input v-model:startDate="adjustedStartDate" v-model:endDate="adjustedEndDate" />
+  <p-date-range-input v-model:startDate="adjustedStartDate" v-model:endDate="adjustedEndDate">
+    <template v-for="(index, name) in $slots" #[name]="data">
+      <slot :name="name" v-bind="data" />
+    </template>
+  </p-date-range-input>
 </template>
 
 <script lang="ts" setup>

@@ -4,7 +4,11 @@
     :show-time="showTime"
     :min="adjustedMin"
     :max="adjustedMax"
-  />
+  >
+    <template v-for="(index, name) in $slots" #[name]="data">
+      <slot :name="name" v-bind="data" />
+    </template>
+  </p-date-input>
 </template>
 
 <script lang="ts" setup>
