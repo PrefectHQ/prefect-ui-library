@@ -1,4 +1,4 @@
-import { WorkQueueFilterResponse } from '@/models/WorkQueueFilterResponse'
+import { WorkQueueFilterResponse } from '@/models/api/WorkQueueFilterResponse'
 import { DateString } from '@/types/dates'
 
 export type WorkQueueResponse = {

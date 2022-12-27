@@ -34,6 +34,7 @@ import { randomChar, randomString, randomSentence, randomParagraph, randomRunNam
 import { randomTaskRun } from '@/mocks/taskRun'
 import { randomUiFlowRunHistory } from '@/mocks/UiFlowRunHistory'
 import { randomUrl } from '@/mocks/url'
+import { randomWorker } from '@/mocks/worker'
 import { randomWorkerPool } from '@/mocks/workerPool'
 import { randomWorkerPoolQueue } from '@/mocks/workerPoolQueue'
 import { randomWorkQueue, randomWorkQueueFilter } from '@/mocks/workQueue'
@@ -88,6 +89,7 @@ export const mocks = {
   taskRun: randomTaskRun,
   uiFlowRunHistory: randomUiFlowRunHistory,
   url: randomUrl,
+  worker: randomWorker,
   workerPool: randomWorkerPool,
   workerPoolQueue: randomWorkerPoolQueue,
   workQueue: randomWorkQueue,

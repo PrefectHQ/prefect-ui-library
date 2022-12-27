@@ -1,4 +1,4 @@
-import { StateDetailsResponse } from '@/models/StateDetailsResponse'
+import { StateDetailsResponse } from '@/models/api/StateDetailsResponse'
 import { StateType } from '@/models/StateType'
 
 export type StateResponse = {

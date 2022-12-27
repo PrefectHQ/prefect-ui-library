@@ -1,4 +1,4 @@
-import { StateDetailsRequest } from '@/models/StateDetailsRequest'
+import { StateDetailsRequest } from '@/models/api/StateDetailsRequest'
 import { ServerStateType } from '@/models/StateType'
 
 export interface StateUpdateRequestDetails {

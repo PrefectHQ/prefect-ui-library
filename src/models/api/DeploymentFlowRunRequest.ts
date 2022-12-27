@@ -1,4 +1,4 @@
-import { StateRequest } from '@/models/StateRequest'
+import { StateRequest } from '@/models/api/StateRequest'
 import { SchemaValues } from '@/types/schemas'
 
 export type DeploymentFlowRunRequest = Partial<{

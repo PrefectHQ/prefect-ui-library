@@ -1,4 +1,4 @@
-import { LogResponse } from '@/models/LogResponse'
+import { LogResponse } from '@/models/api/LogResponse'
 
 export type LogsRequestSort = `${Uppercase<keyof LogResponse>}_${'ASC' | 'DESC'}`
 

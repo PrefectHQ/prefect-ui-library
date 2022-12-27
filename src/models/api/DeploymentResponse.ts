@@ -1,6 +1,6 @@
 import { CreatedOrUpdatedByResponse } from '@/models/api/CreatedOrUpdatedByResponse'
+import { ScheduleResponse } from '@/models/api/ScheduleResponse'
 import { SchemaResponse } from '@/models/api/SchemaResponse'
-import { ScheduleResponse } from '@/models/ScheduleResponse'
 import { DateString } from '@/types/dates'
 import { SchemaValues } from '@/types/schemas'
 
