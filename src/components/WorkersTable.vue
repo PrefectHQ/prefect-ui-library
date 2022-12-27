@@ -11,8 +11,8 @@
         <span>{{ row.name }}</span>
       </template>
 
-      <template #last-polled="{ row }">
-        <span>{{ formatDateTimeNumeric(row.lastHeartbeatTime) }}</span>
+      <template #last-polled="{ value }">
+        <span>{{ formatDateTimeNumeric(value) }}</span>
       </template>
 
       <template #action-heading>
@@ -45,7 +45,7 @@
 
 <script lang="ts" setup>
   import { useSubscription } from '@prefecthq/vue-compositions'
-  import { computed, ref } from 'vue'
+  import { computed, ref, toRefs } from 'vue'
   import { ResultsCount, SearchInput, CopyOverflowMenuItem } from '@/components'
   import { useWorkspaceApi } from '@/compositions'
   import { formatDateTimeNumeric } from '@/utilities/dates'
@@ -59,9 +59,9 @@
     interval: 30000,
   }
 
-  const workerPoolNameRef = computed(() => props.workerPoolName)
+  const { workerPoolName } = toRefs(props)
 
-  const workerPoolWorkersSubscription = useSubscription(api.workerPoolWorkers.getWorkers, [workerPoolNameRef.value, {}], subscriptionOptions)
+  const workerPoolWorkersSubscription = useSubscription(api.workerPoolWorkers.getWorkers, [workerPoolName.value], subscriptionOptions)
   const workerPoolWorkers = computed(() => workerPoolWorkersSubscription.response ?? [])
 
   const searchValue = ref<string>('')
@@ -85,6 +85,7 @@
       label: 'Name',
     },
     {
+      property: 'lastHeartbeatTime',
       label: 'Last Polled',
     },
     {
