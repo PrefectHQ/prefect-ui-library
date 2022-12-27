@@ -85,6 +85,7 @@
       label: 'Name',
     },
     {
+      property: 'lastHeartbeatTime',
       label: 'Last Polled',
     },
     {
