@@ -11,8 +11,8 @@
         <span>{{ row.name }}</span>
       </template>
 
-      <template #last-polled="{ row }">
-        <span>{{ formatDateTimeNumeric(row.lastHeartbeatTime) }}</span>
+      <template #last-polled="{ value }">
+        <span>{{ formatDateTimeNumeric(value) }}</span>
       </template>
 
       <template #action-heading>
