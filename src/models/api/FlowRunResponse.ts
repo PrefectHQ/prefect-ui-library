@@ -1,5 +1,5 @@
 import { CreatedOrUpdatedByResponse } from '@/models/api/CreatedOrUpdatedByResponse'
-import { StateResponse } from '@/models/StateResponse'
+import { StateResponse } from '@/models/api/StateResponse'
 import { ServerStateType } from '@/models/StateType'
 import { DateString } from '@/types/dates'
 import { SchemaValues } from '@/types/schemas'

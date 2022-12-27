@@ -1,4 +1,4 @@
-import { FlowResponse } from '@/models/FlowResponse'
+import { FlowResponse } from '@/models/api/FlowResponse'
 import { MockFunction } from '@/services/Mocker'
 
 export const randomFlowResponse: MockFunction<FlowResponse, [Partial<FlowResponse>?]> = function(overrides = {}) {

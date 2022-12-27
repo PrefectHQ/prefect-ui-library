@@ -1,7 +1,7 @@
 import { StateDetailsCreate } from '@/models'
+import { StateDetailsRequest } from '@/models/api/StateDetailsRequest'
+import { StateDetailsResponse } from '@/models/api/StateDetailsResponse'
 import { StateDetails } from '@/models/StateDetails'
-import { StateDetailsRequest } from '@/models/StateDetailsRequest'
-import { StateDetailsResponse } from '@/models/StateDetailsResponse'
 import { MapFunction } from '@/services/Mapper'
 import { mapCamelToSnakeCase } from '@/utilities'
 

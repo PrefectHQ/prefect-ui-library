@@ -1,4 +1,4 @@
-import { FlowRunHistoryResponse } from '@/models/FlowRunHistoryResponse'
+import { FlowRunHistoryResponse } from '@/models/api/FlowRunHistoryResponse'
 import { RunHistory } from '@/models/RunHistory'
 import { MapFunction } from '@/services/Mapper'
 

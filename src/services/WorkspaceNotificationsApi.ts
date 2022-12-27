@@ -1,7 +1,7 @@
+import { NotificationFilter } from '@/models/api/NotificationFilter'
 import { NotificationResponse } from '@/models/api/NotificationResponse'
 import { Notification } from '@/models/Notification'
 import { NotificationCreate } from '@/models/NotificationCreate'
-import { NotificationFilter } from '@/models/NotificationFilter'
 import { NotificationUpdate } from '@/models/NotificationUpdate'
 import { mapper } from '@/services/Mapper'
 import { WorkspaceApi } from '@/services/WorkspaceApi'

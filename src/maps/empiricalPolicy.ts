@@ -1,5 +1,5 @@
+import { EmpiricalPolicyResponse } from '@/models/api/EmpiricalPolicyResponse'
 import { EmpiricalPolicy } from '@/models/EmpiricalPolicy'
-import { EmpiricalPolicyResponse } from '@/models/EmpiricalPolicyResponse'
 import { MapFunction } from '@/services/Mapper'
 
 export const mapEmpiricalPolicyResponseToEmpiricalPolicy: MapFunction<EmpiricalPolicyResponse, EmpiricalPolicy> = function(source: EmpiricalPolicyResponse): EmpiricalPolicy {
