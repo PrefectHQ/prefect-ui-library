@@ -12,7 +12,7 @@
       </template>
 
       <template #last-polled="{ row }">
-        <span>{{ row.lastHeartbeatTime }}</span>
+        <span>{{ formatDateTimeNumeric(row.lastHeartbeatTime) }}</span>
       </template>
 
       <template #action-heading>
@@ -48,6 +48,7 @@
   import { computed, ref } from 'vue'
   import { ResultsCount, SearchInput, CopyOverflowMenuItem } from '@/components'
   import { useWorkspaceApi } from '@/compositions'
+  import { formatDateTimeNumeric } from '@/utilities/dates'
 
   const props = defineProps<{
     workerPoolName: string,
