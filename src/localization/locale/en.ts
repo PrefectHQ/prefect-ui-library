@@ -45,6 +45,7 @@ export const en = {
     updateNotification: 'Failed to update notification',
     updateSchedule: 'Failed to update schedule',
     updateWorkerPool: 'Failed to update worker pool',
+    updateWorkerPoolQueue: 'Failed to update worker pool queue',
     updateWorkQueue: 'Failed to update work queue',
   },
   success: {
@@ -80,6 +81,7 @@ export const en = {
     updateNotification: 'Notification updated',
     updateSchedule: 'Schedule updated',
     updateWorkerPool: 'Worker pool updated',
+    updateWorkerPoolQueue: 'Worker pool queue updated',
     updateWorkQueue: 'Work queue updated',
   },
   info: {
