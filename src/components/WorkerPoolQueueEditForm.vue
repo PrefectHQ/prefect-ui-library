@@ -51,7 +51,6 @@
   const routes = useWorkspaceRoutes()
   const { validate, pending } = useValidationObserver()
 
-
   const name = ref<string>(props.workerPoolQueue.name)
   const description = ref<string | null | undefined>(props.workerPoolQueue.description)
   const concurrencyLimit = ref<number | null | undefined>(props.workerPoolQueue.concurrencyLimit)
