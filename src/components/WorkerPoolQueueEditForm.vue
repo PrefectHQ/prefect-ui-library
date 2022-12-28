@@ -90,7 +90,7 @@
         await api.workerPoolQueues.updateWorkerPoolQueue(props.workerPoolName, props.workerPoolQueue.name, values)
 
         showToast(localization.success.updateWorkerPoolQueue, 'success')
-        router.push(routes.workerPoolQueue(props.workerPoolName, props.workerPoolQueue.name))
+        router.push(routes.workerPoolQueue(props.workerPoolName, values.name))
       } catch (error) {
         showToast(localization.error.updateWorkerPool, 'error')
         console.error(error)
