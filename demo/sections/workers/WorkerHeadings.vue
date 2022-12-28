@@ -19,7 +19,7 @@
       <PageHeadingWorkerPoolQueueCreate :worker-pool-name="workerPool.name" />
     </template>
     <template #worker-pool-queue-edit>
-      <PageHeadingWorkerPoolQueueEdit :worker-pool-queue-name="workerPoolQueue.name" :worker-pool-name="workerPool.name" />
+      <PageHeadingWorkerPoolQueueEdit :worker-pool-queue="workerPoolQueue" :worker-pool-name="workerPool.name" />
     </template>
   </ComponentPage>
 </template>
