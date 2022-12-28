@@ -1,17 +1,17 @@
 <template>
   <ComponentPage title="OTable" :demos="demos">
-    <OTable :data="data" :columns="columns" />
+    <OTable v-model:search="search" :data="filteredData" :columns="columns" />
 
     <template #empty>
-      <OTable :data="[]" :columns="[]" />
+      <OTable v-model:search="search" :data="[]" :columns="[]" />
     </template>
 
     <template #no-select>
-      <OTable :data="data" :columns="columns" hide-select-column disable-select />
+      <OTable v-model:search="search" :data="filteredData" :columns="columns" hide-select-column disable-select />
     </template>
 
     <template #custom-column>
-      <OTable :data="data" :columns="columns">
+      <OTable v-model:search="search" :data="filteredData" :columns="columns">
         <template #status="{ row }">
           <p-tag :class="getClassForStatus(row.status)">
             {{ row.status }}
@@ -23,6 +23,7 @@
 </template>
 
 <script lang="ts" setup>
+  import { ref, computed } from 'vue'
   import { OTable } from '@/components'
   import ComponentPage from '@/demo/components/ComponentPage.vue'
   import { DemoSection } from '@/demo/types/demoSection'
@@ -50,6 +51,8 @@
     },
   ]
 
+  const search = ref<string>('')
+
   const statuses = ['active', 'inactive', 'offline'] as const
 
   const data = Array.from({ length: 10 }, () => {
@@ -60,6 +63,13 @@
       email: `${name}@email.com`,
       status: choice(statuses),
     }
+  })
+
+  const filteredData = computed(() => {
+    return data.filter((row) => {
+      const values = Object.values(row).join(' ').toLowerCase()
+      return values.includes(search.value.toLowerCase())
+    })
   })
 
   const getClassForStatus = (status: typeof statuses[number]): Record<string, boolean> => {

@@ -7,7 +7,7 @@
             <slot name="controls-header__start-before" />
 
             <slot name="controls-header__counts">
-              <ResultsCount v-if="internalSelectedRows.length === 0" :label="rowsCountLabel" :count="_data.length" />
+              <ResultsCount v-if="internalSelectedRows.length === 0" :label="label" :count="data.length" />
               <SelectedCount v-else :count="internalSelectedRows.length" />
             </slot>
 
@@ -22,7 +22,7 @@
 
             <template v-if="!hideSearch">
               <slot name="controls-header__search">
-                <SearchInput v-model="search" :disabled="disableSearch" :placeholder="searchPlaceholder" :label="searchLabel" />
+                <SearchInput v-model="internalSearch" :disabled="disableSearch" :placeholder="searchPlaceholder" :label="label" />
               </slot>
             </template>
 
@@ -32,7 +32,7 @@
       </slot>
     </div>
 
-    <p-table v-bind="attrs" :data="_data" :columns="internalColumns">
+    <p-table v-bind="attrs" :data="data" :columns="internalColumns">
       <template #select-heading>
         <p-checkbox v-if="!noData" v-model="select" :disabled="disableSelect" />
         <span v-else />
@@ -60,7 +60,7 @@
       <template #empty-state>
         <p-empty-results>
           <template #message>
-            No {{ emptyResultsLabel }}
+            No {{ pluralize(label) }}
           </template>
           <template #actions>
             <p-button v-if="!noData" size="sm" secondary @click="clear">
@@ -95,44 +95,47 @@
 
 <script lang="ts" setup>
   import { TableColumn, TableData } from '@prefecthq/prefect-design'
-  import { ref, useAttrs, computed } from 'vue'
+  import { useAttrs, computed } from 'vue'
   import { SearchInput, ResultsCount, SelectedCount } from '@/components'
+  import { pluralize } from '@/utilities'
 
   export type TableDataFilter = (term: string, row: TableData, index: number, arr: TableData[]) => boolean
 
   const attrs = useAttrs()
 
   const props = withDefaults(defineProps<{
+    search?: string,
     selectedRows?: TableData[],
     columns: TableColumn[],
     data: TableData[],
-    emptyResultsLabel?: string,
+    label?: string,
     searchPlaceholder?: string,
-    searchLabel?: string,
-    rowsCountLabel?: string,
     disableSelect?: boolean,
     disableSearch?: boolean,
     hideSearch?: boolean,
     hideSelectColumn?: boolean,
     hideActionsColumn?: boolean,
-    search?: TableDataFilter,
   }>(), {
+    search: '',
     selectedRows: () => [],
-    emptyResultsLabel: 'results',
+    label: 'result',
     searchPlaceholder: 'Search',
-    searchLabel: 'Search',
-    rowsCountLabel: 'row',
-    search: (term: string, row: TableData) => {
-      const values = Object.values(row).join(' ').toLowerCase()
-      return values.includes(term.toLowerCase())
-    },
   })
 
   const emit = defineEmits<{
+    (event: 'update:search', value: string): void,
+    (event: 'clear'): void,
     (event: 'update:selectedRows', value: TableData[]): void,
   }>()
 
-  const search = ref<string>('')
+  const internalSearch = computed<string>({
+    get() {
+      return props.search
+    },
+    set(value: string) {
+      emit('update:search', value)
+    },
+  })
 
   const internalSelectedRows = computed({
     get() {
@@ -165,7 +168,8 @@
   }
 
   function clear(): void {
-    search.value = ''
+    internalSearch.value = ''
+    emit('clear')
   }
 
   const internalColumns = computed(() => {
@@ -184,16 +188,8 @@
     ]
   })
 
-  const _data = computed(() => {
-    if (!search.value) {
-      return props.data
-    }
-
-    return props.data.filter((row, index, arr) => props.search(search.value, row, index, arr))
-  })
-
   const noData = computed(() => {
-    return props.data.length === 0 && search.value === ''
+    return props.data.length === 0 && internalSearch.value === ''
   })
 </script>
 
