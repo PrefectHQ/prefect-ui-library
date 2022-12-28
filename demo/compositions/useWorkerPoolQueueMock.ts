@@ -1,5 +1,4 @@
 import { useSeeds } from './useSeeds'
-import { useWorkerPoolMock } from './useWorkerPoolMock'
 import { WorkerPoolQueue } from '@/models'
 import { mocker } from '@/services'
 import { repeat } from '@/utilities'
