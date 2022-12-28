@@ -1,5 +1,5 @@
 <template>
-  <Transition name="work-pool-queue-delete-button-transition">
+  <Transition name="worker-pool-queuess-delete-button-transition">
     <p-button v-if="workerPoolQueues.length > 0" danger icon="TrashIcon" @click="open" />
   </Transition>
   <ConfirmDeleteModal
@@ -53,13 +53,13 @@
 </script>
 
 <style>
-.worker-pool-queue-delete-button-transition-enter-active,
-.worker-pool-queue-delete-button-transition-leave-active {
+.worker-pool-queues-delete-button-transition-enter-active,
+.worker-pool-queues-delete-button-transition-leave-active {
   transition: opacity 0.25s ease;
 }
 
-.worker-pool-queue-delete-button-transition-enter-from,
-.worker-pool-queue-delete-button-transition-leave-to {
+.worker-pool-queues-delete-button-transition-enter-from,
+.worker-pool-queues-delete-button-transition-leave-to {
   opacity: 0;
 }
 </style>
