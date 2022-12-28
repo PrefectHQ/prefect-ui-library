@@ -9,6 +9,7 @@
 
 <script lang="ts" setup>
   import { media } from '@prefecthq/prefect-design'
+  import { computed } from 'vue'
   import { useRouter } from 'vue-router'
   import { PageHeading, WorkerPoolToggle, WorkerPoolMenu } from '@/components'
   import { useWorkspaceRoutes } from '@/compositions'
@@ -25,7 +26,10 @@
     (event: 'update' | 'delete'): void,
   }>()
 
-  const crumbs = [{ text: 'Worker Pools', to: routes.workerPools() }, { text: props.workerPool.name }]
+  const crumbs = computed(() => [
+    { text: 'Worker Pools', to: routes.workerPools() },
+    { text: props.workerPool.name },
+  ])
 
   const handleDelete = (): void => {
     router.back()
