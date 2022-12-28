@@ -49,7 +49,7 @@
   })
 
   const showDelete = computed(() => {
-    return workerPool.value && workerPool.value.defaultQueueId !== props.workerPoolQueue.id && can.delete.worker_pool_queue
+    return !workerPool.value || workerPool.value.defaultQueueId !== props.workerPoolQueue.id && can.delete.worker_pool_queue
   })
 
   async function deleteWorkerPoolQueue(name: string): Promise<void> {

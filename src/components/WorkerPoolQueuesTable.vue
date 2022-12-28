@@ -34,6 +34,7 @@
 </template>
 
 <script lang="ts" setup>
+  import { TableData } from '@prefecthq/prefect-design'
   import { useSubscription } from '@prefecthq/vue-compositions'
   import { ref, computed } from 'vue'
   import { SearchInput, ResultsCount, SelectedCount, WorkerPoolQueuesDeleteButton, WorkerPoolQueueMenu } from '@/components'
@@ -50,14 +51,25 @@
 
   const search = ref('')
 
+  const workerPoolSubscription = useSubscription(api.workerPools.getWorkerPoolByName, [props.workerPoolName])
+  const workerPool = computed(() => {
+    return workerPoolSubscription.response
+  })
   const workerPoolQueuesSubscription = useSubscription(api.workerPoolQueues.getWorkerPoolQueues, [props.workerPoolName])
   const workerPoolQueues = computed(() => workerPoolQueuesSubscription.response ?? [])
+  const workerPoolQueuesData = computed<TableData[]>(() => workerPoolQueues.value.map(queue => {
+    return {
+      ...queue,
+      disabled: !workerPool.value || workerPool.value.defaultQueueId == queue.id,
+    }
+  }))
+
   const filteredWorkerPoolQueues = computed(() => {
     if (search.value.length == 0) {
-      return workerPoolQueues.value
+      return workerPoolQueuesData.value
     }
 
-    return workerPoolQueues.value.filter(queue => {
+    return workerPoolQueuesData.value.filter(queue => {
       const values = Object.values(queue).map(value => value.toString().toLowerCase()).join('')
       return values.includes(search.value.toLowerCase())
     })
