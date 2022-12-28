@@ -6,7 +6,7 @@
           <ResultsCount v-if="selected.length == 0" label="queue" :count="workerPoolQueues.length" />
           <SelectedCount v-else :count="selected.length" />
 
-          <WorkerPoolQueuesDeleteButton :worker-pool-name="workerPoolName" :worker-pool-queues="selected" />
+          <WorkerPoolQueuesDeleteButton :worker-pool-name="workerPoolName" :worker-pool-queues="selected" @delete="refresh" />
         </template>
       </template>
 
@@ -25,7 +25,7 @@
         </template>
 
         <template #actions="{ row }">
-          <WorkerPoolQueueMenu :worker-pool-name="workerPoolName" :worker-pool-queue="row" size="xs" />
+          <WorkerPoolQueueMenu :worker-pool-name="workerPoolName" :worker-pool-queue="row" size="xs" @delete="refresh" />
         </template>
       </p-table>
     </p-layout-table>
@@ -69,4 +69,6 @@
       width: '42px',
     },
   ]
+
+  const refresh = (): Promise<void> => workerPoolQueuesSubscription.refresh()
 </script>
