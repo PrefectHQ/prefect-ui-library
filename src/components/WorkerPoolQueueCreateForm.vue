@@ -2,11 +2,15 @@
   <p-form class="worker-pool-queue-create-form" @submit="submit">
     <p-content>
       <p-label label="Name" :message="nameErrorMessage" :state="nameState">
-        <p-text-input v-model="name" :state="nameState" />
+        <template #default="{ id }">
+          <p-text-input :id="id" v-model="name" :state="nameState" />
+        </template>
       </p-label>
 
       <p-label label="Description (Optional)">
-        <p-textarea v-model="description" rows="7" />
+        <template #default="{ id }">
+          <p-textarea :id="id" v-model="description" rows="7" />
+        </template>
       </p-label>
 
       <p-label label="Status (Optional)">
@@ -18,11 +22,15 @@
       </p-label>
 
       <p-label label="Flow Run Concurrency (Optional)">
-        <p-number-input v-model="concurrencyLimit" placeholder="Unlimited" :min="0" />
+        <template #default="{ id }">
+          <p-number-input :id="id" v-model="concurrencyLimit" placeholder="Unlimited" :min="0" />
+        </template>
       </p-label>
 
       <p-label label="Priority" :message="queuePriorityErrorMessage" :state="queuePriorityState">
-        <p-number-input v-model="queuePriority" :min="1" :state="queuePriorityState" />
+        <template #default="{ id }">
+          <p-number-input :id="id" v-model="queuePriority" :min="1" :state="queuePriorityState" />
+        </template>
       </p-label>
     </p-content>
     <template #footer>
