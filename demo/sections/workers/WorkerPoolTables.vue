@@ -1,7 +1,7 @@
 <template>
   <ComponentPage title="Worker Pool Tables" :demos="demos">
     <template #queues-table>
-      <WorkerPoolQueuesTable :worker-pool-name="workerPool.name" :worker-pool-queues="workerPoolQueues" />
+      <WorkerPoolQueuesTable :worker-pool-name="workerPool.name" />
     </template>
   </ComponentPage>
 </template>
@@ -15,5 +15,5 @@
 
   const demos: DemoSection[] = [{ title: 'Queues Table' }]
   const workerPool = useWorkerPoolMock()
-  const workerPoolQueues = useWorkerPoolQueuesMock(15, { workerPoolId: workerPool.id })
+  useWorkerPoolQueuesMock(15, { workerPoolId: workerPool.id })
 </script>

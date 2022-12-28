@@ -33,22 +33,22 @@
 </template>
 
 <script lang="ts" setup>
-  import { ref } from 'vue'
+  import { useSubscription } from '@prefecthq/vue-compositions'
+  import { ref, computed } from 'vue'
   import { ResultsCount, SelectedCount, WorkerPoolQueuesDeleteButton, WorkerPoolQueueMenu } from '@/components'
-  import { useCan, useWorkspaceRoutes } from '@/compositions'
+  import { useCan, useWorkspaceRoutes, useWorkspaceApi } from '@/compositions'
   import { WorkerPoolQueue } from '@/models'
 
   const props = defineProps<{
     workerPoolName: string,
-    workerPoolQueues: WorkerPoolQueue[],
   }>()
 
-  const emit = defineEmits<{
-    (event: 'update' | 'delete'): void,
-  }>()
-
+  const api = useWorkspaceApi()
   const can = useCan()
   const routes = useWorkspaceRoutes()
+
+  const workerPoolQueuesSubscription = useSubscription(api.workerPoolQueues.getWorkerPoolQueues, [props.workerPoolName])
+  const workerPoolQueues = computed(() => workerPoolQueuesSubscription.response ?? [])
 
   const selected = ref<WorkerPoolQueue[] | undefined>(can.update.worker_pool_queue ? [] : undefined)
   const columns = [
@@ -69,9 +69,4 @@
       width: '42px',
     },
   ]
-
-  const deleteWorkerPoolQueues = (workerPoolQueues: WorkerPoolQueue[]): void => {
-    console.log('delete worker pool queues', workerPoolQueues)
-    // emit('delete')
-  }
 </script>
