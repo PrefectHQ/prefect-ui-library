@@ -16,9 +16,9 @@
 
   const demos: DemoSection[] = [{ title: 'Queues Table' }]
   const workerPool = useWorkerPoolMock()
-  const workerPools = useWorkerPoolQueuesMock(15, { workerPoolId: workerPool.id })
+  const workerPoolQueuess = useWorkerPoolQueuesMock(15, { workerPoolId: workerPool.id })
 
-  workerPool.defaultQueueId = workerPools[0].id
+  workerPool.defaultQueueId = workerPoolQueuess[0].id
   useSeeds({
     workerPools: [workerPool],
   })
