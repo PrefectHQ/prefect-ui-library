@@ -1,17 +1,16 @@
 <template>
   <div class="work-pool-queues-table">
     <p-layout-table>
-      <template #controls-header__start>
+      <template #header-start>
         <template v-if="selected">
           <ResultsCount v-if="selected.length == 0" label="queue" :count="workerPoolQueues.length" />
           <SelectedCount v-else :count="selected.length" />
 
-          <WorkerPoolQueuesDeleteButton :worker-pool-name="workerPoolName" :worker-pool-queues="selected" @delete="refresh" />
+          <WorkerPoolQueuesDeleteButton :worker-pool-name="workerPoolName" :worker-pool-queues="selected" @delete="handleDelete" />
         </template>
       </template>
 
-      <template #controls-header__end />
-
+      <template #header-end />
 
       <p-table v-model:selected="selected" :data="workerPoolQueues" :columns="columns">
         <template #actions-heading>
@@ -25,7 +24,7 @@
         </template>
 
         <template #actions="{ row }">
-          <WorkerPoolQueueMenu :worker-pool-name="workerPoolName" :worker-pool-queue="row" size="xs" @delete="refresh" />
+          <WorkerPoolQueueMenu :worker-pool-name="workerPoolName" :worker-pool-queue="row" size="xs" @delete="handleDelete" />
         </template>
       </p-table>
     </p-layout-table>
@@ -70,5 +69,8 @@
     },
   ]
 
-  const refresh = (): Promise<void> => workerPoolQueuesSubscription.refresh()
+  const handleDelete = async (): Promise<void> => {
+    await workerPoolQueuesSubscription.refresh()
+    selected.value = selected.value?.filter(queue => workerPoolQueues.value.find(_queue => _queue.id === queue.id))
+  }
 </script>
