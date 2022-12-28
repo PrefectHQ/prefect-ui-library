@@ -2,7 +2,7 @@
   <page-heading class="page-heading-worker-pool-queue" :crumbs="crumbs">
     <template #actions>
       <WorkerPoolQueueToggle :worker-pool-queue="workerPoolQueue" :worker-pool-name="workerPoolName" @update="emit('update')" />
-      <WorkerPoolQueueMenu :worker-pool-queue="workerPoolQueue" :show-all="!media.sm" @delete="handleDelete" />
+      <WorkerPoolQueueMenu :worker-pool-queue="workerPoolQueue" :worker-pool-name="workerPoolName" :show-all="!media.sm" @delete="handleDelete" />
     </template>
   </page-heading>
 </template>
