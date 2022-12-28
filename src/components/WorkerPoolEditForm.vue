@@ -2,15 +2,21 @@
   <p-form class="worker-pool-edit-form" @submit="submit">
     <p-content>
       <p-label label="Name">
-        <p-text-input :model-value="workerPool.name" disabled />
+        <template #default="{ id }">
+          <p-text-input :id="id" :model-value="workerPool.name" disabled />
+        </template>
       </p-label>
 
       <p-label label="Description (Optional)">
-        <p-textarea v-model="description" rows="7" />
+        <template #default="{ id }">
+          <p-textarea :id="id" v-model="description" rows="7" />
+        </template>
       </p-label>
 
       <p-label label="Type">
-        <p-select :model-value="workerPool.typeLabel" :options="[workerPool.typeLabel]" disabled />
+        <template #default="{ id }">
+          <p-select :id="id" :model-value="workerPool.typeLabel" :options="[workerPool.typeLabel]" disabled />
+        </template>
       </p-label>
 
       <p-label label="Status (Optional)">
@@ -22,7 +28,9 @@
       </p-label>
 
       <p-label label="Flow Run Concurrency (Optional)">
-        <p-number-input v-model="concurrencyLimit" placeholder="Unlimited" :min="0" />
+        <template #default="{ id }">
+          <p-number-input :id="id" v-model="concurrencyLimit" placeholder="Unlimited" :min="0" />
+        </template>
       </p-label>
     </p-content>
 
