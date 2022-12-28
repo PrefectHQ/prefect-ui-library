@@ -7,8 +7,8 @@
             <slot name="controls-header__start-before" />
 
             <slot name="controls-header__counts">
-              <ResultsCount v-if="_selectedRows.length === 0" :label="rowsCountLabel" :count="_data.length" />
-              <SelectedCount v-else :count="_selectedRows.length" />
+              <ResultsCount v-if="internalSelectedRows.length === 0" :label="rowsCountLabel" :count="_data.length" />
+              <SelectedCount v-else :count="internalSelectedRows.length" />
             </slot>
 
             <slot name="controls-header__start-after" />
@@ -32,7 +32,7 @@
       </slot>
     </div>
 
-    <p-table v-bind="attrs" :data="_data" :columns="_columns">
+    <p-table v-bind="attrs" :data="_data" :columns="internalColumns">
       <template #select-heading>
         <p-checkbox v-if="!noData" v-model="select" :disabled="disableSelect" />
         <span v-else />
@@ -43,7 +43,7 @@
       </template>
 
       <template #select="{ row }">
-        <p-checkbox v-model="_selectedRows" :value="row" :disabled="disableSelect" />
+        <p-checkbox v-model="internalSelectedRows" :value="row" :disabled="disableSelect" />
       </template>
 
       <template v-for="(_, name) in $slots" #[name]="slotData">
@@ -134,7 +134,7 @@
 
   const search = ref<string>('')
 
-  const _selectedRows = computed({
+  const internalSelectedRows = computed({
     get() {
       return props.disableSelect ? [] : props.selectedRows
     },
@@ -149,7 +149,7 @@
 
   const select = computed({
     get() {
-      return _selectedRows.value.length === props.data.length
+      return internalSelectedRows.value.length === props.data.length
     },
     set(value: boolean) {
       handleRowSelectAll(value)
@@ -158,9 +158,9 @@
 
   const handleRowSelectAll = (value: boolean): void => {
     if (value) {
-      _selectedRows.value = props.data
+      internalSelectedRows.value = props.data
     } else {
-      _selectedRows.value = []
+      internalSelectedRows.value = []
     }
   }
 
@@ -168,7 +168,7 @@
     search.value = ''
   }
 
-  const _columns = computed(() => {
+  const internalColumns = computed(() => {
     return [
       {
         label: 'select',
