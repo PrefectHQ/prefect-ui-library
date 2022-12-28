@@ -7,7 +7,9 @@
         </template>
       </p-label>
       <p-label label="Description (Optional)">
-        <p-textarea v-model="description" rows="7" />
+        <template #default="{ id }">
+          <p-textarea :id="id" v-model="description" rows="7" />
+        </template>
       </p-label>
       <p-label label="Status (Optional)">
         <p-toggle v-model="isActive">
@@ -17,10 +19,14 @@
         </p-toggle>
       </p-label>
       <p-label label="Flow Run Concurrency (Optional)">
-        <p-number-input v-model="concurrencyLimit" placeholder="Unlimited" :min="0" />
+        <template #default="{ id }">
+          <p-number-input :id="id" v-model="concurrencyLimit" placeholder="Unlimited" :min="0" />
+        </template>
       </p-label>
       <p-label label="Priority" :message="queuePriorityErrorMessage" :state="queuePriorityState">
-        <p-number-input v-model="queuePriority" :min="1" :state="queuePriorityState" />
+        <template #default="{ id }">
+          <p-number-input :id="id" v-model="queuePriority" :min="1" :state="queuePriorityState" />
+        </template>
       </p-label>
     </p-content>
 
