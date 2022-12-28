@@ -6,6 +6,8 @@ export interface IWorkspaceWorkerPoolQueuesApi {
   getWorkerPoolQueues: (workerPoolName: string) => Promise<WorkerPoolQueue[]>,
   getWorkerPoolQueueByName: (workerPoolName: string, queueName: string) => Promise<WorkerPoolQueue>,
   updateWorkerPoolQueue: (workerPoolName: string, queueName: string, request: WorkerPoolQueueCreate) => Promise<void>,
+  pauseWorkerPoolQueue: (workerPoolName: string, queueName: string) => Promise<void>,
+  resumeWorkerPoolQueue: (workerPoolName: string, queueName: string) => Promise<void>,
   deleteWorkerPoolQueue: (workerPoolName: string, queueName: string) => Promise<void>,
 }
 
@@ -28,7 +30,7 @@ export class WorkspaceWorkerPoolQueuesApi extends WorkspaceApi implements IWorks
   }
 
   public async getWorkerPoolQueueByName(workerPoolName: string, queueName: string): Promise<WorkerPoolQueue> {
-    const { data } = await this.get<WorkerPoolQueueResponse>(`/${workerPoolName}/queues/${queueName}`)
+    const { data } = await this.get<WorkerPoolQueueResponse>(`/${workerPoolName}/queues/${queueName}/`)
 
     return mapper.map('WorkerPoolQueueResponse', data, 'WorkerPoolQueue')
   }
@@ -37,6 +39,14 @@ export class WorkspaceWorkerPoolQueuesApi extends WorkspaceApi implements IWorks
     const body = mapper.map('WorkerPoolQueueEdit', request, 'WorkerPoolQueueEditRequest')
 
     return this.patch(`/${workerPoolName}/queues/${queueName}`, body)
+  }
+
+  public pauseWorkerPoolQueue(workerPoolName: string, queueName: string): Promise<void> {
+    return this.patch(`/${workerPoolName}/queues/${queueName}`, { 'is_paused': true })
+  }
+
+  public resumeWorkerPoolQueue(workerPoolName: string, queueName: string): Promise<void> {
+    return this.patch(`/${workerPoolName}/queues/${queueName}`, { 'is_paused': false })
   }
 
   public deleteWorkerPoolQueue(workerPoolName: string, queueName: string): Promise<void> {
