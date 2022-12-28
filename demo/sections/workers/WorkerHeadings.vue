@@ -4,9 +4,7 @@
       <PageHeadingWorkerPools />
     </template>
     <template #worker-pool>
-      <div>
         <PageHeadingWorkerPool :worker-pool="workerPool" />
-      </div>
     </template>
     <template #worker-pool-create>
       <PageHeadingWorkerPoolCreate :worker-pool="workerPool" />

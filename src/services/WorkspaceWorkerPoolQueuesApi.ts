@@ -30,7 +30,7 @@ export class WorkspaceWorkerPoolQueuesApi extends WorkspaceApi implements IWorks
   }
 
   public async getWorkerPoolQueueByName(workerPoolName: string, queueName: string): Promise<WorkerPoolQueue> {
-    const { data } = await this.get<WorkerPoolQueueResponse>(`/${workerPoolName}/queues/${queueName}/`)
+    const { data } = await this.get<WorkerPoolQueueResponse>(`/${workerPoolName}/queues/${queueName}`)
 
     return mapper.map('WorkerPoolQueueResponse', data, 'WorkerPoolQueue')
   }
