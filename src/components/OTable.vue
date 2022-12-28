@@ -104,7 +104,7 @@
   const attrs = useAttrs()
 
   const props = withDefaults(defineProps<{
-    search?: string,
+    search: string,
     selectedRows?: TableData[],
     columns: TableColumn[],
     data: TableData[],
@@ -116,7 +116,6 @@
     hideSelectColumn?: boolean,
     hideActionsColumn?: boolean,
   }>(), {
-    search: '',
     selectedRows: () => [],
     label: 'result',
     searchPlaceholder: 'Search',
