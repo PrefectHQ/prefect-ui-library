@@ -10,9 +10,11 @@
         </template>
       </template>
 
-      <template #header-end />
+      <template #header-end>
+        <SearchInput v-model="search" label="Search" placeholder="Search" />
+      </template>
 
-      <p-table v-model:selected="selected" :data="workerPoolQueues" :columns="columns">
+      <p-table v-model:selected="selected" :data="filteredWorkerPoolQueues" :columns="columns">
         <template #actions-heading>
           <span />
         </template>
@@ -34,7 +36,7 @@
 <script lang="ts" setup>
   import { useSubscription } from '@prefecthq/vue-compositions'
   import { ref, computed } from 'vue'
-  import { ResultsCount, SelectedCount, WorkerPoolQueuesDeleteButton, WorkerPoolQueueMenu } from '@/components'
+  import { SearchInput, ResultsCount, SelectedCount, WorkerPoolQueuesDeleteButton, WorkerPoolQueueMenu } from '@/components'
   import { useCan, useWorkspaceRoutes, useWorkspaceApi } from '@/compositions'
   import { WorkerPoolQueue } from '@/models'
 
@@ -46,8 +48,20 @@
   const can = useCan()
   const routes = useWorkspaceRoutes()
 
+  const search = ref('')
+
   const workerPoolQueuesSubscription = useSubscription(api.workerPoolQueues.getWorkerPoolQueues, [props.workerPoolName])
   const workerPoolQueues = computed(() => workerPoolQueuesSubscription.response ?? [])
+  const filteredWorkerPoolQueues = computed(() => {
+    if (search.value.length == 0) {
+      return workerPoolQueues.value
+    }
+
+    return workerPoolQueues.value.filter(queue => {
+      const values = Object.values(queue).map(value => value.toString().toLowerCase()).join('')
+      return values.includes(search.value.toLowerCase())
+    })
+  })
 
   const selected = ref<WorkerPoolQueue[] | undefined>(can.update.worker_pool_queue ? [] : undefined)
   const columns = [
