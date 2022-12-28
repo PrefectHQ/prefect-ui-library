@@ -2,7 +2,9 @@
   <p-form class="worker-pool-queue-edit-form" @submit="submit">
     <p-content>
       <p-label label="Name" :message="nameErrorMessage" :state="nameState">
-        <p-text-input v-model="name" :state="nameState" />
+        <template #default="{ id }">
+          <p-text-input :id="id" v-model="name" :state="nameState" />
+        </template>
       </p-label>
       <p-label label="Description (Optional)">
         <p-textarea v-model="description" rows="7" />
