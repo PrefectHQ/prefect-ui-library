@@ -2,22 +2,22 @@
   <div class="o-table">
     <div class="o-table__controls-header">
       <slot name="controls-header">
-        <div class="o-table__controls__section o-table__controls__section-start">
+        <div class="o-table__controls__section o-table__controls__section--start">
           <slot name="controls-header__start">
-            <slot name="controls-header__start-before" />
+            <slot name="controls-header__start--before" />
 
             <slot name="controls-header__counts">
               <ResultsCount v-if="internalSelectedRows.length === 0" :label="label" :count="data.length" />
               <SelectedCount v-else :count="internalSelectedRows.length" />
             </slot>
 
-            <slot name="controls-header__start-after" />
+            <slot name="controls-header__start--after" />
           </slot>
         </div>
 
-        <div class="o-table__controls__section o-table__controls__section-end">
-          <slot name="controls__header__end">
-            <slot name="controls-header__end-before" />
+        <div class="o-table__controls__section o-table__controls__section--end">
+          <slot name="controls-header__end">
+            <slot name="controls-header__end--before" />
 
 
             <template v-if="!hideSearch">
@@ -26,7 +26,7 @@
               </slot>
             </template>
 
-            <slot name="controls-header__end-after" />
+            <slot name="controls-header__end--after" />
           </slot>
         </div>
       </slot>
@@ -72,13 +72,13 @@
     </p-table>
 
     <div class="o-table__controls-footer">
-      <slot name="controls__footer">
-        <div class="o-table__controls__section o-table__controls__section-start">
-          <slot name="controls__footer__start" />
+      <slot name="controls-footer">
+        <div class="o-table__controls__section o-table__controls__section--start">
+          <slot name="controls-footer__start" />
         </div>
 
-        <div class="o-table__controls__section o-table__controls__section-end">
-          <slot name="controls__footer__end" />
+        <div class="o-table__controls__section o-table__controls__section--end">
+          <slot name="controls-footer__end" />
         </div>
       </slot>
     </div>
@@ -223,11 +223,11 @@
   items-center
 }
 
-.o-table__controls__section-start { @apply
+.o-table__controls__section--start { @apply
   mr-auto
 }
 
-.o-table__controls__section-end { @apply
+.o-table__controls__section--end { @apply
   ml-auto
 }
 
