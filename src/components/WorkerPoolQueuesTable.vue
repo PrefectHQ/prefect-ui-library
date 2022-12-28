@@ -1,11 +1,17 @@
 <template>
   <div class="work-pool-queues-table">
-    {{ workerPoolQueues }}
+    <OTable v-model:selected-rows="selectedRows" disable-select :data="workerPoolQueues" :columns="columns">
+      <template #actions>
+        HELLO!
+      </template>
+    </OTable>
   </div>
 </template>
 
 <script lang="ts" setup>
-  import { ref } from 'vue'
+  import { media } from '@prefecthq/prefect-design'
+  import { ref, watch } from 'vue'
+  import { OTable } from '@/components'
   import { useCan, useWorkspaceRoutes } from '@/compositions'
   import { WorkerPoolQueue } from '@/models'
 
@@ -20,25 +26,28 @@
   const can = useCan()
   const routes = useWorkspaceRoutes()
 
+  const selectedRows = ref<WorkerPoolQueue[]>([])
+
+  watch(selectedRows, (value) => {
+    console.log(value)
+  })
+
   const columns = [
-    {
-      label: 'selection',
-      width: '20px',
-      visible: can.delete.worker_pool_queue,
-    },
     {
       property: 'name',
       label: 'Name',
     },
     {
-      label: 'Concurrency',
+      property: 'concurrencyLimit',
+      label: 'Concurrency Limit',
     },
     {
+      property: 'priority',
       label: 'Priority',
     },
     {
-      label: 'Action',
-      width: '42px',
+      label: '',
+      visible: media.md,
     },
   ]
 </script>
