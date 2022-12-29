@@ -6,11 +6,11 @@
     </div>
 
     <p-table :data="filtered" :columns="columns" class="notifications-table">
-      <template #notification="{ row }">
-        <div class="notifications-table__details">
-          <BlockDocument v-slot="{ blockDocument }" :block-document-id="row.blockDocumentId">
+      <template #notification="{ row: notification }: { row: Notification }">
+        <div class="notifications-table__details" :data-notification-id="notification.id">
+          <BlockDocument v-slot="{ blockDocument }" :block-document-id="notification.blockDocumentId">
             <NotificationDetails
-              :notification="row"
+              :notification="notification"
               :block-type="blockDocument.blockType"
               :data="blockDocument.data"
             />
