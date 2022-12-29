@@ -41,10 +41,10 @@ import { mapStateUpdateToStateUpdateRequest } from '@/maps/stateUpdate'
 import { mapTaskInputToTaskInputResponse, mapTaskInputResponseToTaskInput } from '@/maps/taskInput'
 import { mapTaskRunToTaskRunResponse, mapTaskRunResponseToTaskRun } from '@/maps/taskRun'
 import { mapUiFlowRunHistoryResponseToUiFlowRunHistory } from '@/maps/uiFlowRunHistory'
-import { mapWorkerFlowRunResponseToWorkerFlowRun, mapWorkerFlowRunsToWorkerFlowRunsRequest } from '@/maps/workerFlowRun'
 import { mapWorkerPoolCreateToWorkerPoolCreateRequest, mapWorkerPoolEditToWorkerPoolEditRequest, mapWorkerPoolResponseToWorkerPool, mapWorkerPoolToWorkerPoolResponse } from '@/maps/workerPool'
 import { mapWorkerPoolQueueCreateToWorkerPoolQueueCreateRequest, mapWorkerPoolQueueEditToWorkerPoolQueueEditRequest, mapWorkerPoolQueueResponseToWorkerPoolQueue, mapWorkerPoolQueueToWorkerPoolQueueResponse } from '@/maps/workerPoolQueue'
 import { mapWorkerPoolWorkerResponseToWorkerPoolWorker } from '@/maps/workerPoolWorker'
+import { mapWorkerScheduledFlowRunResponseToWorkerScheduledFlowRun, mapWorkerScheduledFlowRunsToWorkerScheduledFlowRunsRequest } from '@/maps/WorkerScheduledFlowRun'
 import { mapWorkQueueToWorkQueueResponse, mapWorkQueueResponseToWorkQueue, mapWorkQueueCreateToWorkQueueCreateRequest, mapWorkQueueEditToWorkQueueEditRequest } from '@/maps/workQueue'
 import { mapWorkQueueFilterToWorkQueueFilterResponse, mapWorkQueueFilterResponseToWorkQueueFilter } from '@/maps/workQueueFilter'
 import { mapWorkQueueHealthPolicyResponseToWorkQueueHealthPolicy } from '@/maps/workQueueHealthPolicy'
@@ -116,8 +116,8 @@ export const maps = {
   TaskRunResponse: { TaskRun: mapTaskRunResponseToTaskRun },
   UiFlowRunHistory: { ScatterPlotItem: mapUiFlowRunHistoryToScatterPlotItem },
   UiFlowRunHistoryResponse: { UiFlowRunHistory: mapUiFlowRunHistoryResponseToUiFlowRunHistory },
-  WorkerFlowRunResponse: { WorkerFlowRun: mapWorkerFlowRunResponseToWorkerFlowRun },
-  WorkerFlowRuns: { WorkerFlowRunsRequest: mapWorkerFlowRunsToWorkerFlowRunsRequest },
+  WorkerScheduledFlowRunResponse: { WorkerScheduledFlowRun: mapWorkerScheduledFlowRunResponseToWorkerScheduledFlowRun },
+  WorkerScheduledFlowRuns: { WorkerScheduledFlowRunsRequest: mapWorkerScheduledFlowRunsToWorkerScheduledFlowRunsRequest },
   WorkerPool: { WorkerPoolResponse: mapWorkerPoolToWorkerPoolResponse },
   WorkerPoolCreate: { WorkerPoolCreateRequest: mapWorkerPoolCreateToWorkerPoolCreateRequest },
   WorkerPoolEdit: { WorkerPoolEditRequest: mapWorkerPoolEditToWorkerPoolEditRequest },

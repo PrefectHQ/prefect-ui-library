@@ -1,6 +1,6 @@
 
 import { MockApi } from './MockApi'
-import { WorkerFlowRun, WorkerFlowRuns, WorkerPool, WorkerPoolCreate, WorkerPoolEdit, WorkerPoolFilter } from '@/models'
+import { WorkerScheduledFlowRun, WorkerScheduledFlowRuns, WorkerPool, WorkerPoolCreate, WorkerPoolEdit, WorkerPoolFilter } from '@/models'
 import { IWorkspaceWorkerPoolsApi, mocker } from '@/services'
 
 export class MockWorkspaceWorkerPoolsApi extends MockApi implements IWorkspaceWorkerPoolsApi {
@@ -41,7 +41,7 @@ export class MockWorkspaceWorkerPoolsApi extends MockApi implements IWorkspaceWo
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars, no-unused-vars
-  public async getWorkerPoolRuns(workerPoolName: string, request: WorkerFlowRuns): Promise<WorkerFlowRun[]> {
+  public async getWorkerPoolScheduledRuns(workerPoolName: string, request: WorkerScheduledFlowRuns): Promise<WorkerScheduledFlowRun[]> {
     const workerPool = this.workerPools.get(workerPoolName)
     const flowRun = mocker.create('flowRun')
 
