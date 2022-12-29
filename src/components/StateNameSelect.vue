@@ -4,14 +4,19 @@
       <template #option="{ option }">
         <StateBadge :state="{ name: option.label, type: option.value as StateType }" />
       </template>
-      <template #default="{ selectedOption, unselectOption }">
+      <template v-if="multiple" #tag="{ label, value, dismiss }">
+        <StateBadge
+          class="state-name-select__option state-name-select__option--multiple"
+          :state="{ name: label, type: value as StateType }"
+          dismissible
+          @dismiss="dismiss"
+        />
+      </template>
+      <template v-else #default="{ label, value }">
         <StateBadge
           class="state-name-select__option"
-          :class="{ 'state-name-select__option--multiple': multiple }"
-          :state="{ name: selectedOption.label, type: selectedOption.value as StateType }"
-          :flat="!multiple"
-          :dismissible="multiple"
-          @dismiss="unselectOption"
+          :state="{ name: label, type: value as StateType }"
+          flat
         />
       </template>
     </p-select>
@@ -19,7 +24,7 @@
 </template>
 
 <script lang="ts" setup>
-  import { PSelect, SelectOption } from '@prefecthq/prefect-design'
+  import { isArray, PSelect, SelectOption } from '@prefecthq/prefect-design'
   import { computed } from 'vue'
   import StateBadge from '@/components/StateBadge.vue'
   import { StateType } from '@/models/StateType'
@@ -43,14 +48,14 @@
       if (!value) {
         emits('update:selected', null)
       } else if (multiple.value) {
-        emits('update:selected', Array.isArray(value) ? value : [value])
+        emits('update:selected', isArray(value) ? value : [value])
       } else {
         emits('update:selected', value)
       }
     },
   })
 
-  const multiple = computed(() => Array.isArray(internalValue.value))
+  const multiple = computed(() => isArray(internalValue.value))
 
   const options = computed<SelectOption[]>(() => prefectStateNames.map((stateName) => {
     const { name, type } = mapStateNameToStateType(stateName)
