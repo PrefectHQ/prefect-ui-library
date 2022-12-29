@@ -1,16 +1,16 @@
 <template>
-  <p-icon-button-menu v-bind="$attrs" class="worker-pool-menu">
+  <p-icon-button-menu v-bind="$attrs" class="worker-pool-queue-menu">
     <CopyOverflowMenuItem label="Copy ID" :item="workerPoolQueue.id" />
     <router-link :to="routes.workerPoolQueueEdit(workerPoolName, workerPoolQueue.name)">
       <p-overflow-menu-item v-if="can.update.worker_pool_queue" label="Edit" />
     </router-link>
-    <p-overflow-menu-item v-if="can.delete.worker_pool_queue" label="Delete" @click="open" />
+    <p-overflow-menu-item v-if="showDelete" label="Delete" @click="open" />
   </p-icon-button-menu>
   <ConfirmDeleteModal
     v-model:showModal="showModal"
     label="Worker Pool Queue"
     :name="workerPoolQueue.name"
-    @delete="deleteWorkerPool(workerPoolQueue.name)"
+    @delete="deleteWorkerPoolQueue(workerPoolQueue.name)"
   />
 </template>
 
@@ -23,11 +23,12 @@
 </script>
 
 <script lang="ts" setup>
-  import { showToast } from '@prefecthq/prefect-design'
+  import { useSubscription } from '@prefecthq/vue-compositions'
+  import { computed } from 'vue'
   import { CopyOverflowMenuItem, ConfirmDeleteModal } from '@/components'
   import { useCan, useShowModal, useWorkspaceApi, useWorkspaceRoutes } from '@/compositions'
-  import { localization } from '@/localization'
   import { WorkerPoolQueue } from '@/models'
+  import { deleteItem } from '@/utilities'
 
   const props = defineProps<{
     workerPoolName: string,
@@ -42,19 +43,18 @@
   const api = useWorkspaceApi()
   const routes = useWorkspaceRoutes()
   const { showModal, open, close } = useShowModal()
+  const workerPoolSubscription = useSubscription(api.workerPools.getWorkerPoolByName, [props.workerPoolName])
+  const workerPool = computed(() => {
+    return workerPoolSubscription.response
+  })
 
-  async function deleteWorkerPool(name: string): Promise<void> {
-    try {
-      await api.workerPoolQueues.deleteWorkerPoolQueue(props.workerPoolName, props.workerPoolQueue.name)
+  const showDelete = computed(() => {
+    return !workerPool.value || workerPool.value.defaultQueueId !== props.workerPoolQueue.id && can.delete.worker_pool_queue
+  })
 
-      showToast(localization.success.delete('Worker Pool Queue'), 'success')
-    } catch (error) {
-      showToast(localization.error.delete('worker pool queue'), 'error')
-
-      console.error(error)
-    } finally {
-      close()
-      emit('delete')
-    }
+  async function deleteWorkerPoolQueue(name: string): Promise<void> {
+    close()
+    await deleteItem([props.workerPoolName, name], api.workerPoolQueues.deleteWorkerPoolQueue, 'Worker pool queue')
+    emit('delete')
   }
 </script>

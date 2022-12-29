@@ -203,6 +203,8 @@ export { default as WorkerPoolQueueCreateForm } from './WorkerPoolQueueCreateFor
 export { default as WorkerPoolQueueDetails } from './WorkerPoolQueueDetails.vue'
 export { default as WorkerPoolQueueEditForm } from './WorkerPoolQueueEditForm.vue'
 export { default as WorkerPoolQueueMenu } from './WorkerPoolQueueMenu.vue'
+export { default as WorkerPoolQueuesDeleteButton } from './WorkerPoolQueuesDeleteButton.vue'
+export { default as WorkerPoolQueuesTable } from './WorkerPoolQueuesTable.vue'
 export { default as WorkerPoolQueueToggle } from './WorkerPoolQueueToggle.vue'
 export { default as WorkerPools } from './WorkerPools.vue'
 export { default as WorkerPoolsPageEmptyState } from './WorkerPoolsPageEmptyState.vue'
