@@ -4,13 +4,18 @@
       <template #option="{ option }">
         <StateBadge :state="{ name: option.label, type: option.value as StateType }" />
       </template>
-      <template #tag="{ label, value, dismiss }">
+      <template v-if="multiple" #tag="{ label, value, dismiss }">
+        <StateBadge
+          class="state-select__option state-select__option--multiple"
+          :state="{ name: label, type: value as StateType }"
+          dismissible
+          @dismiss="dismiss"
+        />
+      </template>
+      <template v-else #default="{ label, value }">
         <StateBadge
           class="state-select__option"
-          :class="{ 'state-select__option--multiple': multiple }"
           :state="{ name: label, type: value as StateType }"
-          :dismissible="multiple"
-          @dismiss="dismiss"
         />
       </template>
     </p-select>
