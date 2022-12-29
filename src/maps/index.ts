@@ -44,7 +44,7 @@ import { mapUiFlowRunHistoryResponseToUiFlowRunHistory } from '@/maps/uiFlowRunH
 import { mapWorkerPoolCreateToWorkerPoolCreateRequest, mapWorkerPoolEditToWorkerPoolEditRequest, mapWorkerPoolResponseToWorkerPool, mapWorkerPoolToWorkerPoolResponse } from '@/maps/workerPool'
 import { mapWorkerPoolQueueCreateToWorkerPoolQueueCreateRequest, mapWorkerPoolQueueEditToWorkerPoolQueueEditRequest, mapWorkerPoolQueueResponseToWorkerPoolQueue, mapWorkerPoolQueueToWorkerPoolQueueResponse } from '@/maps/workerPoolQueue'
 import { mapWorkerPoolWorkerResponseToWorkerPoolWorker } from '@/maps/workerPoolWorker'
-import { mapWorkerScheduledFlowRunResponseToWorkerScheduledFlowRun, mapWorkerScheduledFlowRunsToWorkerScheduledFlowRunsRequest } from '@/maps/WorkerScheduledFlowRun'
+import { mapWorkerScheduledFlowRunResponseToWorkerScheduledFlowRun, mapWorkerScheduledFlowRunsToWorkerScheduledFlowRunsRequest } from '@/maps/workerScheduledFlowRun'
 import { mapWorkQueueToWorkQueueResponse, mapWorkQueueResponseToWorkQueue, mapWorkQueueCreateToWorkQueueCreateRequest, mapWorkQueueEditToWorkQueueEditRequest } from '@/maps/workQueue'
 import { mapWorkQueueFilterToWorkQueueFilterResponse, mapWorkQueueFilterResponseToWorkQueueFilter } from '@/maps/workQueueFilter'
 import { mapWorkQueueHealthPolicyResponseToWorkQueueHealthPolicy } from '@/maps/workQueueHealthPolicy'
