@@ -41,6 +41,7 @@ import { mapStateUpdateToStateUpdateRequest } from '@/maps/stateUpdate'
 import { mapTaskInputToTaskInputResponse, mapTaskInputResponseToTaskInput } from '@/maps/taskInput'
 import { mapTaskRunToTaskRunResponse, mapTaskRunResponseToTaskRun } from '@/maps/taskRun'
 import { mapUiFlowRunHistoryResponseToUiFlowRunHistory } from '@/maps/uiFlowRunHistory'
+import { filterMaps } from '@/maps/unionFilters'
 import { mapWorkerPoolCreateToWorkerPoolCreateRequest, mapWorkerPoolEditToWorkerPoolEditRequest, mapWorkerPoolResponseToWorkerPool, mapWorkerPoolToWorkerPoolResponse } from '@/maps/workerPool'
 import { mapWorkerPoolQueueCreateToWorkerPoolQueueCreateRequest, mapWorkerPoolQueueEditToWorkerPoolQueueEditRequest, mapWorkerPoolQueueResponseToWorkerPoolQueue, mapWorkerPoolQueueToWorkerPoolQueueResponse } from '@/maps/workerPoolQueue'
 import { mapWorkerPoolWorkerResponseToWorkerPoolWorker } from '@/maps/workerPoolWorker'
@@ -73,10 +74,7 @@ export const maps = {
   EmpiricalPolicyResponse: { EmpiricalPolicy: mapEmpiricalPolicyResponseToEmpiricalPolicy },
   Flow: { FlowResponse: mapFlowToFlowResponse },
   FlowResponse: { Flow: mapFlowResponseToFlow },
-  FlowRunGraphResponse: {
-    GraphNode: mapFlowRunGraphResponseToGraphNode,
-    TimelineNode: mapFlowRunGraphResponseToTimelineNode,
-  },
+  FlowRunGraphResponse: { GraphNode: mapFlowRunGraphResponseToGraphNode, TimelineNode: mapFlowRunGraphResponseToTimelineNode },
   FlowRunHistoryResponse: { RunHistory: mapFlowRunHistoryResponseToRunHistory },
   FlowRunResponse: { FlowRun: mapFlowRunResponseToFlowRun },
   GraphNode: { FlowRunGraphResponse: mapGraphNodeToFlowRunGraphResponse },
@@ -135,4 +133,5 @@ export const maps = {
   WorkQueueHealthPolicyResponse: { WorkQueueHealthPolicy: mapWorkQueueHealthPolicyResponseToWorkQueueHealthPolicy },
   WorkQueueResponse: { WorkQueue: mapWorkQueueResponseToWorkQueue },
   WorkQueueStatusResponse: { WorkQueueStatus: mapWorkQueueStatusResponseToWorkQueueStatus },
+  ...filterMaps,
 }

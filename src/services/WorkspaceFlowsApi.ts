@@ -1,7 +1,7 @@
 import { Flow, FlowResponse } from '@/models'
+import { UnionFilters } from '@/models/api/UnionFilters'
 import { mapper } from '@/services/Mapper'
 import { WorkspaceApi } from '@/services/WorkspaceApi'
-import { UnionFilters } from '@/types'
 
 export interface IWorkspaceFlowsApi {
   getFlow: (flowId: string) => Promise<Flow>,

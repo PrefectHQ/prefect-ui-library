@@ -30,9 +30,9 @@
   import TaskRunsSort from '@/components/TaskRunsSort.vue'
   import { useWorkspaceApi } from '@/compositions'
   import { usePaginatedSubscription } from '@/compositions/usePaginatedSubscription'
+  import { TaskRunFilter, UnionFilters } from '@/models/api/UnionFilters'
   import { TaskRun } from '@/models/TaskRun'
   import { TaskRunSortValues } from '@/types/SortOptionTypes'
-  import { TaskRunFilter, UnionFilters } from '@/types/UnionFilters'
 
   const props = defineProps<{
     flowRunId: string,

@@ -1,7 +1,6 @@
 import { MockApi } from './MockApi'
-import { FlowRun, WorkQueue, WorkQueueCreate, WorkQueueEdit, WorkQueueStatus } from '@/models'
+import { FlowRun, PaginatedFilter, WorkQueue, WorkQueueCreate, WorkQueueEdit, WorkQueueStatus } from '@/models'
 import { IWorkspaceWorkQueuesApi, mocker } from '@/services'
-import { PaginatedFilter } from '@/types'
 
 export class MockWorkspaceWorkQueuesApi extends MockApi implements IWorkspaceWorkQueuesApi {
 

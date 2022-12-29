@@ -2,9 +2,9 @@ import { useDebouncedRef, useRouteQueryParam } from '@prefecthq/vue-compositions
 import { computed, Ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useFlowRunFilter } from '@/compositions/useFlowRunFilter'
+import { UnionFilters } from '@/models/api/UnionFilters'
 import { FlowRunFilters, FlowRunFiltersInRoute } from '@/types/filter'
 import { FlowRunSortValues } from '@/types/SortOptionTypes'
-import { UnionFilters } from '@/types/UnionFilters'
 import { formatDateTimeNumeric, parseDateTimeNumeric } from '@/utilities/dates'
 import { dateFunctions } from '@/utilities/timezone'
 

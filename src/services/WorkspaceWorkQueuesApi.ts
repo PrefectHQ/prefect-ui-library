@@ -1,8 +1,8 @@
 import { FlowRun, FlowRunResponse, WorkQueueCreate, WorkQueueEdit, WorkQueueResponse, WorkQueueStatus, WorkQueueStatusResponse } from '@/models'
+import { PaginatedFilter } from '@/models/api/UnionFilters'
 import { WorkQueue } from '@/models/WorkQueue'
 import { mapper } from '@/services/Mapper'
 import { WorkspaceApi } from '@/services/WorkspaceApi'
-import { PaginatedFilter } from '@/types/UnionFilters'
 
 export interface IWorkspaceWorkQueuesApi {
   getWorkQueue: (workQueueId: string) => Promise<WorkQueue>,

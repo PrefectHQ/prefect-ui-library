@@ -12,7 +12,7 @@
   import { computed } from 'vue'
   import TaskRunList from '@/components/TaskRunList.vue'
   import { useWorkspaceApi } from '@/compositions'
-  import { UnionFilters } from '@/types'
+  import { UnionFilters } from '@/models/api/UnionFilters'
 
   const props = defineProps<{
     activeSlots: string[],

@@ -1,7 +1,6 @@
 import { MockApi } from './MockApi'
-import { Deployment, DeploymentFlowRunCreate, DeploymentUpdate, FlowRun } from '@/models'
+import { Deployment, DeploymentFlowRunCreate, DeploymentUpdate, FlowRun, UnionFilters } from '@/models'
 import { IWorkspaceDeploymentsApi, mocker } from '@/services'
-import { UnionFilters } from '@/types'
 
 export class MockWorkspaceDeploymentsApi extends MockApi implements IWorkspaceDeploymentsApi {
 

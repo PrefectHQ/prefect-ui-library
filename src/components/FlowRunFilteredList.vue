@@ -32,7 +32,8 @@
   import { useWorkspaceApi } from '@/compositions'
   import { useCan } from '@/compositions/useCan'
   import { usePaginatedSubscription } from '@/compositions/usePaginatedSubscription'
-  import { FlowRunSortValues, PrefectStateNames, UnionFilters } from '@/types'
+  import { UnionFilters } from '@/models/api/UnionFilters'
+  import { FlowRunSortValues, PrefectStateNames } from '@/types'
 
   const props = defineProps<{
     flowRunFilter: UnionFilters,

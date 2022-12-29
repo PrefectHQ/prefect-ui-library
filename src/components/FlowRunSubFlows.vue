@@ -31,10 +31,10 @@
   import StateNameSelect from '@/components/StateNameSelect.vue'
   import { useWorkspaceApi } from '@/compositions'
   import { usePaginatedSubscription } from '@/compositions/usePaginatedSubscription'
+  import { UnionFilters } from '@/models/api/UnionFilters'
   import { FlowRun } from '@/models/FlowRun'
   import { TaskRun } from '@/models/TaskRun'
   import { FlowRunSortValues } from '@/types/SortOptionTypes'
-  import { UnionFilters } from '@/types/UnionFilters'
 
   const props = defineProps<{
     flowRunId: string,

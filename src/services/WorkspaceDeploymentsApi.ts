@@ -1,12 +1,12 @@
 import { DeploymentResponse } from '@/models/api/DeploymentResponse'
 import { FlowRunResponse } from '@/models/api/FlowRunResponse'
+import { UnionFilters } from '@/models/api/UnionFilters'
 import { Deployment } from '@/models/Deployment'
 import { DeploymentFlowRunCreate } from '@/models/DeploymentFlowRunCreate'
 import { DeploymentUpdate } from '@/models/DeploymentUpdate'
 import { FlowRun } from '@/models/FlowRun'
 import { mapper } from '@/services/Mapper'
 import { WorkspaceApi } from '@/services/WorkspaceApi'
-import { UnionFilters } from '@/types/UnionFilters'
 
 export interface IWorkspaceDeploymentsApi {
   getDeployment: (deploymentId: string) => Promise<Deployment>,

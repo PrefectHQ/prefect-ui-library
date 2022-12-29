@@ -1,7 +1,6 @@
 import { MockApi } from '@/../demo/services/MockApi'
-import { FlowRun, GraphNode, RunHistory, StateUpdate, TimelineNode } from '@/models'
+import { FlowRun, GraphNode, RunHistory, StateUpdate, TimelineNode, FlowRunsHistoryFilter, UnionFilters } from '@/models'
 import { IWorkspaceFlowRunsApi, mocker } from '@/services'
-import { UnionFilters, FlowRunsHistoryFilter } from '@/types'
 
 export class MockWorkspaceFlowRunsApi extends MockApi implements IWorkspaceFlowRunsApi {
 

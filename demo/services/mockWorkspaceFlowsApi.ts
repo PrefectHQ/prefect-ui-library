@@ -1,7 +1,6 @@
 import { MockApi } from './MockApi'
-import { Flow } from '@/models'
+import { Flow, UnionFilters } from '@/models'
 import { IWorkspaceFlowsApi } from '@/services'
-import { UnionFilters } from '@/types'
 
 export class MockWorkspaceFlowsApi extends MockApi implements IWorkspaceFlowsApi {
 

@@ -2,12 +2,12 @@ import { StateUpdate, TimelineNode } from '@/models'
 import { FlowRunGraphResponse } from '@/models/api/FlowRunGraphResponse'
 import { FlowRunHistoryResponse } from '@/models/api/FlowRunHistoryResponse'
 import { FlowRunResponse } from '@/models/api/FlowRunResponse'
+import { FlowRunsHistoryFilter, UnionFilters } from '@/models/api/UnionFilters'
 import { FlowRun } from '@/models/FlowRun'
 import { GraphNode } from '@/models/GraphNode'
 import { RunHistory } from '@/models/RunHistory'
 import { mapper } from '@/services/Mapper'
 import { WorkspaceApi } from '@/services/WorkspaceApi'
-import { FlowRunsHistoryFilter, UnionFilters } from '@/types/UnionFilters'
 
 export interface IWorkspaceFlowRunsApi {
   getFlowRun: (flowRunId: string) => Promise<FlowRun>,

@@ -1,7 +1,6 @@
 import { MockApi } from './MockApi'
-import { StateUpdate, TaskRun } from '@/models'
+import { StateUpdate, TaskRun, UnionFilters } from '@/models'
 import { IWorkspaceTaskRunsApi, mocker } from '@/services'
-import { UnionFilters } from '@/types'
 
 export class MockWorkspaceTaskRunsApi extends MockApi implements IWorkspaceTaskRunsApi {
 

@@ -1,6 +1,7 @@
 import { ComputedRef, ref, Ref } from 'vue'
 import { useFilter, UseFilterArgs } from '@/compositions/useFilter'
-import { FlowRunSortValues, MaybeRef, UnionFilters } from '@/types'
+import { UnionFilters } from '@/models/api/UnionFilters'
+import { FlowRunSortValues, MaybeRef } from '@/types'
 import { dateFunctions } from '@/utilities/timezone'
 
 export type UseFlowRunFilterArgs = UseFilterArgs<FlowRunSortValues>
