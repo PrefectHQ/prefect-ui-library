@@ -1,7 +1,7 @@
 <template>
   <p-select v-model="model" :options="options" class="block-schema-capability-select">
-    <template #default="{ selectedOption }">
-      Capability: {{ selectedOption.label }}
+    <template #default="{ label }">
+      Capability: {{ label }}
     </template>
   </p-select>
 </template>
