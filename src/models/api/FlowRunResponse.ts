@@ -21,6 +21,7 @@ export type FlowRunResponse = {
   empirical_config: unknown,
   tags: string[] | null,
   parent_task_run_id: string | null,
+  state_name: string | null,
   state_type: ServerStateType | null,
   run_count: number | null,
   expected_start_time: DateString | null,
