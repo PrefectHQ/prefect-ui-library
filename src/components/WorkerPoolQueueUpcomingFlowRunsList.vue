@@ -30,13 +30,13 @@
   const { workerPoolName } = toRefs(props)
   const { workerPoolQueue } = toRefs(props)
 
-  const workerPoolScheduledRunsSubscription = useSubscription(api.workerPools.getWorkerPoolScheduledRuns, [workerPoolName.value, {}], { interval: 30000 })
+  const workerPoolScheduledRunsSubscription = useSubscription(api.workerPools.getWorkerPoolScheduledRuns, [workerPoolName.value, { workerPoolQueueNames: [workerPoolQueue.value.name] }], { interval: 30000 })
   const workerPoolScheduledRuns = computed(() => workerPoolScheduledRunsSubscription.response ?? [])
 
   const empty = computed(() => workerPoolScheduledRunsSubscription.executed && workerPoolScheduledRuns.value.length === 0)
   const isPaused = computed(() => workerPoolQueue.value.isPaused)
 
-  const filteredFlowRuns = computed(() => workerPoolScheduledRuns.value.filter(run => run.workerPoolQueueId === workerPoolQueue.value.id && run.flowRun.stateName !== 'Late'))
+  const filteredFlowRuns = computed(() => workerPoolScheduledRuns.value.filter(run => run.flowRun.stateName !== 'Late'))
 
   watch(() => workerPoolQueue, () => {
     workerPoolScheduledRunsSubscription.refresh()
