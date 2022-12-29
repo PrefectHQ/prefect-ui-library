@@ -24,8 +24,7 @@
 </script>
 
 <style>
-.work-queue-late-indicator { @apply
-  text-xs
+.worker-pool-late-indicator { @apply
   bg-state-scheduled-100
   text-state-scheduled-700
   }
