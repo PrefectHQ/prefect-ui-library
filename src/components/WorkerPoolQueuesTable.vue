@@ -1,10 +1,16 @@
 <template>
-  <div class="work-pool-queues-table">
+  <div class="worker-pool-queues-table">
     <p-layout-table>
       <template #header-start>
         <template v-if="selected">
-          <ResultsCount v-if="selected.length == 0" label="queue" :count="workerPoolQueues.length" />
-          <SelectedCount v-else :count="selected.length" />
+          <div class="worker-pool-queues-table__controls--right">
+            <ResultsCount v-if="selected.length == 0" label="queue" :count="workerPoolQueues.length" />
+            <SelectedCount v-else :count="selected.length" />
+
+            <p-button v-if="can.create.worker_pool_queue && !selected.length" inset :to="routes.workerPoolQueueCreate(workerPoolName)" size="sm">
+              Add Queue
+            </p-button>
+          </div>
 
           <WorkerPoolQueuesDeleteButton :worker-pool-name="workerPoolName" :worker-pool-queues="selected" @delete="handleDelete" />
         </template>
@@ -98,3 +104,12 @@
     selected.value = selected.value?.filter(queue => workerPoolQueues.value.find(({ id }) => id === queue.id))
   }
 </script>
+
+<style>
+.worker-pool-queues-table__controls--right { @apply
+  mr-auto
+  flex
+  gap-4
+  items-center
+}
+</style>
