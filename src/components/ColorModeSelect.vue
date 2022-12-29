@@ -4,7 +4,7 @@
       <ColorModeSelectOption :mode="option.value" />
     </template>
     <template #default="{ value }">
-      <ColorModeSelectOption v-if="isColorMode(value)" :mode="value" />
+      <ColorModeSelectOption v-if="isColorMode(value) || value === null" :mode="value" />
     </template>
   </p-select>
 </template>
