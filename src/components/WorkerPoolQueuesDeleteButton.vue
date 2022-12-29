@@ -34,7 +34,7 @@
   const deleteWorkerPoolQueues = async (workerPoolQueues: WorkerPoolQueue[]): Promise<void> => {
     const toastMessage = computed(() => {
       if (workerPoolQueues.length === 1) {
-        return localization.success.delete('Work queue')
+        return localization.success.delete('Worker pool queue')
       }
       return localization.success.delete(`${workerPoolQueues.length} worker pool queues`)
     })
