@@ -17,6 +17,7 @@
 <script lang="ts" setup>
   import { useSubscription } from '@prefecthq/vue-compositions'
   import { computed, toRefs, watch } from 'vue'
+  import { FlowRunList } from '@/components'
   import { useWorkspaceApi } from '@/compositions'
   import { WorkerPoolQueue } from '@/models'
 
