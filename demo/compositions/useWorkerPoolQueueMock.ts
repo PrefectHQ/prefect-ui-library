@@ -5,12 +5,23 @@ import { repeat } from '@/utilities'
 
 
 export function useWorkerPoolQueueMock(override?: Partial<WorkerPoolQueue>): WorkerPoolQueue {
-  const workerPool = mocker.create('workerPool')
-  const workerPoolQueue = mocker.create('workerPoolQueue', [{ ...override, workerPoolId: workerPool.id }])
+  let workerPoolId
+
+  if (override?.workerPoolId) {
+    // eslint-disable-next-line prefer-destructuring
+    workerPoolId = override.workerPoolId
+  } else {
+    const workerPool = mocker.create('workerPool')
+    workerPoolId = workerPool.id
+    useSeeds({
+      workerPools: [workerPool],
+    })
+  }
+
+  const workerPoolQueue = mocker.create('workerPoolQueue', [{ ...override, workerPoolId }])
 
   useSeeds({
     workerPoolQueues: [workerPoolQueue],
-    workerPools: [workerPool],
   })
 
   return workerPoolQueue

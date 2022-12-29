@@ -49,8 +49,7 @@ export class MockWorkspaceWorkerPoolQueuesApi extends MockApi implements IWorksp
   public async deleteWorkerPoolQueue(workerPoolName: string, queueName: string): Promise<void> {
     const workerPool = this.workerPools.find(workerPool => workerPool.name === workerPoolName)!
     const workerPoolQueue = this.workerPoolQueues.find(workerPoolQueue => workerPoolQueue.name === queueName && workerPoolQueue.workerPoolId === workerPool.id)!
-
-    return await this.workerPoolQueues.delete(workerPoolQueue.name)
+    return await this.workerPoolQueues.delete(workerPoolQueue.id)
   }
 
   public async updateWorkerPoolQueuePriority(workerPoolName: string, queueName: string, priority: number): Promise<void> {
