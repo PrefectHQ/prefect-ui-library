@@ -10,8 +10,8 @@ export namespace FilterOperation {
   export type Equal = { equal?: boolean }
   export type Exists = { exists?: boolean }
   export type IsNull = { isNull?: boolean }
-  export type Before = { before?: string }
-  export type After = { after?: string }
+  export type Before = { before?: Date }
+  export type After = { after?: Date }
   export type Operator = 'and_' | 'or_'
 }
 

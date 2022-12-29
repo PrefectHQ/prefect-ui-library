@@ -24,10 +24,10 @@ export const mapIsNullToIsNull: MapFunction<Filters.FilterOperation.IsNull, Resp
   return { 'is_null_': source.isNull }
 }
 export const mapBeforeToBefore: MapFunction<Filters.FilterOperation.Before, ResponseFilters.FilterOperation.before_> = function(source) {
-  return { 'before_': source.before }
+  return { 'before_': this.map('Date', source.before, 'string') }
 }
 export const mapAfterToAfter: MapFunction<Filters.FilterOperation.After, ResponseFilters.FilterOperation.after_> = function(source) {
-  return { 'after_': source.after }
+  return { 'after_': this.map('Date', source.after, 'string') }
 }
 
 export const mapFilterToFilter: MapFunction<Filters.Filter, ResponseFilters.Filter> = function(source) {
