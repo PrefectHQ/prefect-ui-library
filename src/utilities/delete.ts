@@ -1,19 +1,19 @@
 import { showToast } from '@prefecthq/prefect-design'
+import { Action } from '@prefecthq/vue-compositions'
 import { localization } from '@/localization'
+import { asArray } from '@/utilities/arrays'
 
-export type itemType = 'Flow' | 'Deployment' | 'Flow run' | 'Work queue' | 'Block' | 'Notification' | 'Task run' | 'Concurrency Limit' | 'Worker pool' | 'Worker pool queue'
+export type ItemType = 'Flow' | 'Deployment' | 'Flow run' | 'Work queue' | 'Block' | 'Notification' | 'Task run' | 'Concurrency Limit' | 'Worker pool' | 'Worker pool queue'
+type MaybeSingleParam<T extends Action, Params = Parameters<T>> = Params extends [unknown] ? Params[0] | Params : Params
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export type DeleteItemEndpointArgs = any[] | any
-export type DeleteItemEndpoint = (...args: DeleteItemEndpointArgs[]) => Promise<void>
+export async function deleteItem<T extends Action>(args: MaybeSingleParam<T>, endpoint: T, type: ItemType): Promise<ReturnType<T> | void> {
+  let result: Promise<ReturnType<T>>
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export async function deleteItem(args: DeleteItemEndpointArgs, endpoint: DeleteItemEndpoint, type: itemType): Promise<void> {
   try {
-    const endpointArgs = Array.isArray(args) ? args : [args]
-    await endpoint(...endpointArgs)
-
+    const endpointArgs = asArray(args)
+    result = await endpoint(...endpointArgs)
     showToast(localization.success.delete(type), 'success')
+    return result
   } catch (error) {
     showToast(localization.error.delete(type.toLowerCase()), 'error')
 
