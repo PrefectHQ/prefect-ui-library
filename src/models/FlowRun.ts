@@ -1,6 +1,7 @@
 import { CreatedOrUpdatedBy } from '@/models/CreatedOrUpdatedBy'
 import { State } from '@/models/State'
 import { StateType } from '@/models/StateType'
+import { PrefectStateNames } from '@/types'
 import { SchemaValues } from '@/types/schemas'
 import { secondsToApproximateString } from '@/utilities/seconds'
 
@@ -25,6 +26,7 @@ export interface IFlowRun {
   name: string | null,
   parentTaskRunId: string | null,
   stateId: string | null,
+  stateName: PrefectStateNames | null,
   stateType: StateType | null,
   state: State | null,
   tags: string[] | null,
@@ -57,6 +59,7 @@ export class FlowRun implements IFlowRun {
   public name: string | null
   public parentTaskRunId: string | null
   public stateId: string | null
+  public stateName: PrefectStateNames | null
   public stateType: StateType | null
   public state: State | null
   public tags: string[] | null
@@ -86,6 +89,7 @@ export class FlowRun implements IFlowRun {
     this.name = flowRun.name
     this.parentTaskRunId = flowRun.parentTaskRunId
     this.stateId = flowRun.stateId
+    this.stateName = flowRun.stateName
     this.stateType = flowRun.stateType
     this.state = flowRun.state
     this.tags = flowRun.tags

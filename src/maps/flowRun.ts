@@ -24,6 +24,7 @@ export const mapFlowRunResponseToFlowRun: MapFunction<FlowRunResponse, FlowRun> 
     name: source.name,
     parentTaskRunId: source.parent_task_run_id,
     stateId: source.state_id,
+    stateName: source.state_name,
     stateType: this.map('ServerStateType', source.state_type, 'StateType'),
     state: this.map('StateResponse', source.state, 'State'),
     tags: source.tags,
