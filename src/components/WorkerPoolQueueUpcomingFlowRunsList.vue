@@ -28,8 +28,7 @@
 
   const api = useWorkspaceApi()
 
-  const { workerPoolName } = toRefs(props)
-  const { workerPoolQueue } = toRefs(props)
+  const { workerPoolName, workerPoolQueue } = toRefs(props)
 
   const workerPoolScheduledRunsSubscription = useSubscription(api.workerPools.getWorkerPoolScheduledRuns, [workerPoolName.value, { workerPoolQueueNames: [workerPoolQueue.value.name] }], { interval: 30000 })
   const workerPoolScheduledRuns = computed(() => workerPoolScheduledRunsSubscription.response ?? [])
