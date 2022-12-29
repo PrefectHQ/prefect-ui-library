@@ -95,6 +95,6 @@
 
   const handleDelete = async (): Promise<void> => {
     await workerPoolQueuesSubscription.refresh()
-    selected.value = selected.value?.filter(queue => workerPoolQueues.value.find(_queue => _queue.id === queue.id))
+    selected.value = selected.value?.filter(queue => workerPoolQueues.value.find(({ id }) => id === queue.id))
   }
 </script>
