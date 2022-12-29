@@ -37,7 +37,7 @@
   const empty = computed(() => workerPoolScheduledRunsSubscription.executed && workerPoolScheduledRuns.value.length === 0)
   const isPaused = computed(() => workerPoolQueue.value.isPaused)
 
-  const filteredFlowRuns = computed(() => workerPoolScheduledRuns.value.filter(run => run.flowRun.stateName !== 'Late'))
+  const filteredFlowRuns = computed(() => workerPoolScheduledRuns.value.filter(run => run.flowRun.stateName !== 'Late').map(run => run.flowRun))
 
   watch(() => workerPoolQueue, () => {
     workerPoolScheduledRunsSubscription.refresh()
