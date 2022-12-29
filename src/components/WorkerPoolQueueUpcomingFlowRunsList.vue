@@ -30,7 +30,7 @@
 
   const { workerPoolName, workerPoolQueue } = toRefs(props)
 
-  const workerPoolScheduledRunsSubscription = useSubscription(api.workerPools.getWorkerPoolScheduledRuns, [workerPoolName.value, { workerPoolQueueNames: [workerPoolQueue.value.name] }], { interval: 30000 })
+  const workerPoolScheduledRunsSubscription = useSubscription(api.workerPools.getWorkerPoolScheduledRuns, [workerPoolName.value, { workerPoolQueueNames: [workerPoolQueue.value.name] }], { interval: 10000 })
   const workerPoolScheduledRuns = computed(() => workerPoolScheduledRunsSubscription.response ?? [])
 
   const empty = computed(() => workerPoolScheduledRunsSubscription.executed && workerPoolScheduledRuns.value.length === 0)
