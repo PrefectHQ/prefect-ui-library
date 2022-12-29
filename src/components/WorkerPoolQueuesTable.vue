@@ -40,6 +40,7 @@
   import { SearchInput, ResultsCount, SelectedCount, WorkerPoolQueuesDeleteButton, WorkerPoolQueueMenu } from '@/components'
   import { useCan, useWorkspaceRoutes, useWorkspaceApi } from '@/compositions'
   import { WorkerPoolQueue } from '@/models'
+  import { hasString } from '@/utilities'
 
   const props = defineProps<{
     workerPoolName: string,
@@ -69,10 +70,7 @@
       return workerPoolQueuesData.value
     }
 
-    return workerPoolQueuesData.value.filter(queue => {
-      const values = Object.values(queue).map(value => value.toString().toLowerCase()).join('')
-      return values.includes(search.value.toLowerCase())
-    })
+    return workerPoolQueuesData.value.filter(queue => hasString(queue, search.value))
   })
 
   const selected = ref<WorkerPoolQueue[] | undefined>(can.update.worker_pool_queue ? [] : undefined)
