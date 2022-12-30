@@ -28,11 +28,24 @@ export class MockWorkspaceFlowRunsApi extends MockApi implements IWorkspaceFlowR
   }
 
   public getFlowRunsHistory(filter: FlowRunsHistoryFilter): Promise<RunHistory[]> {
-    if (Object.keys(filter).length) {
-      console.warn('MockWorkspaceFlowRunsApi has not implemented the filter argument of the getFlowRunsCount method')
+    let start = mapper.map('string', filter.history_start, 'Date')
+    const end = mapper.map('string', filter.history_end, 'Date')
+    const runHistory: RunHistory[] = []
+
+    console.log({ start, end, interval: filter.history_interval_seconds })
+
+    while (dateFunctions.isBefore(start, end)) {
+      const intervalEnd = dateFunctions.addSeconds(start, filter.history_interval_seconds)
+
+      runHistory.push({
+        intervalStart: start,
+        intervalEnd,
+        states: mocker.createMany('flowRunStateHistory', mocker.create('number', [0, 3])),
+      })
+      start = intervalEnd
     }
 
-    throw new Error('MockWorkspaceFlowRunsApi has not implemented the getFlowRunsHistory method')
+    return Promise.resolve(runHistory)
   }
 
   public getFlowRunsGraph(): Promise<GraphNode[]> {
