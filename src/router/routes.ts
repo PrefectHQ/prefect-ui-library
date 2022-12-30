@@ -40,9 +40,9 @@ export function createWorkspaceRoutes(config?: CreateWorkspaceRoutesConfig) {
     workerPool: (workerPoolName: string) => ({ name: 'workspace.worker-pools.worker-pool', params: { workerPoolName, ...config } }) as const,
     workerPoolCreate: () => ({ name: 'workspace.worker-pools.worker-pool-create', params: { ...config } }) as const,
     workerPoolEdit: (workerPoolName: string) => ({ name: 'workspace.worker-pools.worker-pool-edit', params: { workerPoolName, ...config } }) as const,
-    workerPoolQueue: (workerPoolName: string, workerPoolQueueId: string) => ({ name: 'workspace.worker-pools.worker-pool.worker-pool-queue', params: { workerPoolName, workerPoolQueueId, ...config } }) as const,
+    workerPoolQueue: (workerPoolName: string, workerPoolQueueName: string) => ({ name: 'workspace.worker-pools.worker-pool.worker-pool-queue', params: { workerPoolName, workerPoolQueueName, ...config } }) as const,
     workerPoolQueueCreate: (workerPoolName: string) => ({ name: 'workspace.worker-pools.worker-pool.worker-pool-queue-create', params: { workerPoolName, ...config } }) as const,
-    workerPoolQueueEdit: (workerPoolName: string, workerPoolQueueId: string) => ({ name: 'workspace.worker-pools.worker-pool.worker-pool-queue-edit', params: { workerPoolName, workerPoolQueueId, ...config } }) as const,
+    workerPoolQueueEdit: (workerPoolName: string, workerPoolQueueName: string) => ({ name: 'workspace.worker-pools.worker-pool.worker-pool-queue-edit', params: { workerPoolName, workerPoolQueueName, ...config } }) as const,
   }
 }
 
@@ -294,7 +294,7 @@ export function createWorkspaceRouteRecords(components: Partial<WorkspaceRouteCo
             },
             {
               name: 'workspace.worker-pools.worker-pool.worker-pool-queue',
-              path: 'queue/:workerPoolQueueId',
+              path: 'queue/:workerPoolQueueName',
               component: components.workerPoolQueue,
               meta: {
                 can: 'read:worker_pool_queue',
@@ -310,7 +310,7 @@ export function createWorkspaceRouteRecords(components: Partial<WorkspaceRouteCo
             },
             {
               name: 'workspace.worker-pools.worker-pool.worker-pool-queue-edit',
-              path: 'queue/:workerPoolQueueId/edit',
+              path: 'queue/:workerPoolQueueName/edit',
               component: components.workerPoolQueueEdit,
               meta: {
                 can: 'update:worker_pool_queue',

@@ -1,4 +1,4 @@
-export type WorkerFlowRuns = Partial<{
+export type WorkerScheduledFlowRuns = Partial<{
   workerPoolQueueNames: string[],
   scheduledBefore: string,
   scheduledAfter: string,

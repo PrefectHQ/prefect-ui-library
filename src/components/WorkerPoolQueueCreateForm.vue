@@ -1,5 +1,5 @@
 <template>
-  <p-form class="worker-pool-create-form" @submit="submit">
+  <p-form class="worker-pool-queue-create-form" @submit="submit">
     <p-content>
       <p-label label="Name" :message="nameErrorMessage" :state="nameState">
         <template #default="{ id }">
@@ -11,14 +11,6 @@
         <template #default="{ id }">
           <p-textarea :id="id" v-model="description" rows="7" />
         </template>
-      </p-label>
-
-      <p-label label="Type" :state="typeState" :message="typeErrorMessage">
-        <template #default="{ id }">
-          <p-select :id="id" model-value="Prefect Agent" :options="['Prefect Agent']" disabled />
-        </template>
-        <!-- Types feature is not implemented by backend yet -->
-        <!-- <WorkerPoolTypeSelect v-model:selected="type" :state="typeState" /> -->
       </p-label>
 
       <p-label label="Status (Optional)">
@@ -34,8 +26,13 @@
           <p-number-input :id="id" v-model="concurrencyLimit" placeholder="Unlimited" :min="0" />
         </template>
       </p-label>
-    </p-content>
 
+      <p-label label="Priority" :message="queuePriorityErrorMessage" :state="queuePriorityState">
+        <template #default="{ id }">
+          <p-number-input :id="id" v-model="queuePriority" :min="1" :state="queuePriorityState" />
+        </template>
+      </p-label>
+    </p-content>
     <template #footer>
       <p-button inset @click="cancel">
         Cancel
@@ -45,7 +42,7 @@
   </p-form>
 </template>
 
-<script lang="ts" setup>
+  <script lang="ts" setup>
   import { showToast } from '@prefecthq/prefect-design'
   import { useValidation, useValidationObserver, ValidationRule } from '@prefecthq/vue-compositions'
   import { computed, ref } from 'vue'
@@ -54,30 +51,36 @@
   import { useWorkspaceApi, useWorkspaceRoutes } from '@/compositions'
   import { localization } from '@/localization'
 
+  const props = defineProps<{
+    workerPoolName: string,
+  }>()
+
   const api = useWorkspaceApi()
   const router = useRouter()
   const routes = useWorkspaceRoutes()
-
   const { validate, pending } = useValidationObserver()
 
   const name = ref<string>()
   const description = ref<string>()
-  // Once types feature is implemented by backend, this should be changed to
-  // const type = ref<string>()
-  const type = ref<string>('prefect-agent')
   const concurrencyLimit = ref<number>()
   const isActive = ref<boolean>(true)
-  const isActiveLabel = computed(() => isActive.value ? 'Active' : 'Paused')
+  const isActiveLabel = computed(() => isActive.value ? 'Active' :
+    'Paused')
+  const queuePriority = ref<number>()
 
   const isRequired: ValidationRule<string | undefined> = (value) => value !== undefined && value.trim().length > 0
 
-  const rules: Record<string, ValidationRule<string | undefined>[]> = {
-    name: [isRequired],
-    type: [isRequired],
+  const isGreaterThanZero: ValidationRule<number | undefined> = (value, name) => {
+    if (value && value > 0) {
+      return true
+    }
+
+    return `${name} must be greater than 0`
   }
 
-  const { error: nameErrorMessage, state: nameState } = useValidation(name, 'Name', rules.name)
-  const { error: typeErrorMessage, state: typeState } = useValidation(type, 'Type', rules.type)
+
+  const { error: nameErrorMessage, state: nameState } = useValidation(name, 'Name', [isRequired])
+  const { error: queuePriorityErrorMessage, state: queuePriorityState } = useValidation(queuePriority, 'Priority', [isGreaterThanZero])
 
   function cancel(): void {
     router.back()
@@ -85,30 +88,33 @@
 
   const submit = async (): Promise<void> => {
     const valid = await validate()
-    if (valid) {
-      const values = {
-        name: name.value,
-        description: description.value,
-        type: type.value,
-        isPaused: !isActive.value,
-        concurrencyLimit: concurrencyLimit.value,
-      }
-
-      try {
-        const { name } = await api.workerPools.createWorkerPool(values)
-        showToast(localization.success.createWorkerPool, 'success')
-
-        router.push(routes.workerPool(name))
-      } catch (error) {
-        showToast(localization.error.createWorkerPool, 'error')
-        console.error(error)
-      }
+    if (!valid) {
+      return
     }
+
+    const values = {
+      name: name.value,
+      description: description.value,
+      isPaused: !isActive.value,
+      concurrencyLimit: concurrencyLimit.value,
+      priority: queuePriority.value,
+    }
+
+    try {
+      const { name } = await api.workerPoolQueues.createWorkerPoolQueue(props.workerPoolName, values)
+      showToast(localization.success.createWorkerPoolQueue, 'success')
+
+      router.push(routes.workerPoolQueue(props.workerPoolName, name))
+    } catch (error) {
+      showToast(localization.error.createWorkerPoolQueue, 'error')
+      console.error(error)
+    }
+
   }
 </script>
 
 <style>
-.worker-pool-create-form {
+.worker-pool-queue-create-form {
 @apply
   border
   border-gray-300

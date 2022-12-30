@@ -1,26 +1,16 @@
 <template>
-  <p-form class="worker-pool-create-form" @submit="submit">
+  <p-form class="worker-pool-queue-edit-form" @submit="submit">
     <p-content>
       <p-label label="Name" :message="nameErrorMessage" :state="nameState">
         <template #default="{ id }">
           <p-text-input :id="id" v-model="name" :state="nameState" />
         </template>
       </p-label>
-
       <p-label label="Description (Optional)">
         <template #default="{ id }">
           <p-textarea :id="id" v-model="description" rows="7" />
         </template>
       </p-label>
-
-      <p-label label="Type" :state="typeState" :message="typeErrorMessage">
-        <template #default="{ id }">
-          <p-select :id="id" model-value="Prefect Agent" :options="['Prefect Agent']" disabled />
-        </template>
-        <!-- Types feature is not implemented by backend yet -->
-        <!-- <WorkerPoolTypeSelect v-model:selected="type" :state="typeState" /> -->
-      </p-label>
-
       <p-label label="Status (Optional)">
         <p-toggle v-model="isActive">
           <template #append>
@@ -28,10 +18,14 @@
           </template>
         </p-toggle>
       </p-label>
-
       <p-label label="Flow Run Concurrency (Optional)">
         <template #default="{ id }">
           <p-number-input :id="id" v-model="concurrencyLimit" placeholder="Unlimited" :min="0" />
+        </template>
+      </p-label>
+      <p-label label="Priority" :message="queuePriorityErrorMessage" :state="queuePriorityState">
+        <template #default="{ id }">
+          <p-number-input :id="id" v-model="queuePriority" :min="1" :state="queuePriorityState" />
         </template>
       </p-label>
     </p-content>
@@ -40,12 +34,12 @@
       <p-button inset @click="cancel">
         Cancel
       </p-button>
-      <SubmitButton action="Create" :loading="pending" />
+      <SubmitButton action="Save" :loading="pending" />
     </template>
   </p-form>
 </template>
 
-<script lang="ts" setup>
+  <script lang="ts" setup>
   import { showToast } from '@prefecthq/prefect-design'
   import { useValidation, useValidationObserver, ValidationRule } from '@prefecthq/vue-compositions'
   import { computed, ref } from 'vue'
@@ -53,31 +47,37 @@
   import { SubmitButton } from '@/components'
   import { useWorkspaceApi, useWorkspaceRoutes } from '@/compositions'
   import { localization } from '@/localization'
+  import { WorkerPoolQueue } from '@/models'
+
+  const props = defineProps<{
+    workerPoolName: string,
+    workerPoolQueue: WorkerPoolQueue,
+  }>()
 
   const api = useWorkspaceApi()
   const router = useRouter()
   const routes = useWorkspaceRoutes()
-
   const { validate, pending } = useValidationObserver()
 
-  const name = ref<string>()
-  const description = ref<string>()
-  // Once types feature is implemented by backend, this should be changed to
-  // const type = ref<string>()
-  const type = ref<string>('prefect-agent')
-  const concurrencyLimit = ref<number>()
-  const isActive = ref<boolean>(true)
+  const name = ref<string>(props.workerPoolQueue.name)
+  const description = ref<string | null | undefined>(props.workerPoolQueue.description)
+  const concurrencyLimit = ref<number | null | undefined>(props.workerPoolQueue.concurrencyLimit)
+  const queuePriority = ref<number>(props.workerPoolQueue.priority)
+  const isActive = ref<boolean | undefined>(!props.workerPoolQueue.isPaused)
   const isActiveLabel = computed(() => isActive.value ? 'Active' : 'Paused')
 
   const isRequired: ValidationRule<string | undefined> = (value) => value !== undefined && value.trim().length > 0
 
-  const rules: Record<string, ValidationRule<string | undefined>[]> = {
-    name: [isRequired],
-    type: [isRequired],
+  const isGreaterThanZero: ValidationRule<number | undefined> = (value, name) => {
+    if (value && value > 0) {
+      return true
+    }
+
+    return `${name} must be greater than 0`
   }
 
-  const { error: nameErrorMessage, state: nameState } = useValidation(name, 'Name', rules.name)
-  const { error: typeErrorMessage, state: typeState } = useValidation(type, 'Type', rules.type)
+  const { error: nameErrorMessage, state: nameState } = useValidation(name, 'Name', [isRequired])
+  const { error: queuePriorityErrorMessage, state: queuePriorityState } = useValidation(queuePriority, 'Priority', [isGreaterThanZero])
 
   function cancel(): void {
     router.back()
@@ -89,27 +89,26 @@
       const values = {
         name: name.value,
         description: description.value,
-        type: type.value,
         isPaused: !isActive.value,
         concurrencyLimit: concurrencyLimit.value,
+        priority: queuePriority.value,
       }
-
       try {
-        const { name } = await api.workerPools.createWorkerPool(values)
-        showToast(localization.success.createWorkerPool, 'success')
+        await api.workerPoolQueues.updateWorkerPoolQueue(props.workerPoolName, props.workerPoolQueue.name, values)
 
-        router.push(routes.workerPool(name))
+        showToast(localization.success.updateWorkerPoolQueue, 'success')
+        router.push(routes.workerPoolQueue(props.workerPoolName, values.name))
       } catch (error) {
-        showToast(localization.error.createWorkerPool, 'error')
+        showToast(localization.error.updateWorkerPool, 'error')
         console.error(error)
       }
     }
   }
-</script>
+  </script>
+
 
 <style>
-.worker-pool-create-form {
-@apply
+.worker-pool-queue-edit-form { @apply
   border
   border-gray-300
   px-6

@@ -4,13 +4,18 @@
       <template #option="{ option }">
         <StateBadge :state="{ name: option.label, type: option.value as StateType }" />
       </template>
-      <template #default="{ selectedOption, unselectOption }">
+      <template v-if="multiple" #tag="{ label, value, dismiss }">
+        <StateBadge
+          class="state-select__option state-select__option--multiple"
+          :state="{ name: label, type: value as StateType }"
+          dismissible
+          @dismiss="dismiss"
+        />
+      </template>
+      <template v-else #default="{ label, value }">
         <StateBadge
           class="state-select__option"
-          :class="{ 'state-select__option--multiple': multiple }"
-          :state="{ name: selectedOption.label, type: selectedOption.value as StateType }"
-          :dismissible="multiple"
-          @dismiss="unselectOption"
+          :state="{ name: label, type: value as StateType }"
         />
       </template>
     </p-select>
@@ -18,7 +23,7 @@
 </template>
 
 <script lang="ts" setup>
-  import { PSelect, SelectOption } from '@prefecthq/prefect-design'
+  import { isArray, PSelect, SelectOption } from '@prefecthq/prefect-design'
   import { computed } from 'vue'
   import StateBadge from '@/components/StateBadge.vue'
   import { stateType, StateType, terminalStateType } from '@/models/StateType'
@@ -42,14 +47,14 @@
       if (!value) {
         emits('update:selected', null)
       } else if (multiple.value) {
-        emits('update:selected', Array.isArray(value) ? value : [value])
+        emits('update:selected', isArray(value) ? value : [value])
       } else {
         emits('update:selected', value)
       }
     },
   })
 
-  const multiple = computed(() => Array.isArray(internalValue.value))
+  const multiple = computed(() => isArray(internalValue.value))
 
   const options = computed<SelectOption[]>(() => {
     if (props.terminalState) {
@@ -66,7 +71,7 @@
 </script>
 
 <style>
-.state-badge__icon { @apply
+.state-select__option .state-badge__icon { @apply
   w-5
   h-5
 }
