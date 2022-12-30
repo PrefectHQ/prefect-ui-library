@@ -13,7 +13,7 @@
 
 <style>
   .flow-runs-filter-group__demo { @apply
-    h-96
+    h-[450px]
     flex
     flex-col
     gap-4

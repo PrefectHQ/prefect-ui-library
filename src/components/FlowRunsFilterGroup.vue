@@ -2,17 +2,7 @@
   <div class="flow-runs-filter-group">
     <div class="flow-runs-filter-group__row">
       <p-label :label="media.hover ? 'Date Range' : ''">
-        <DateRangeInput v-model:startDate="internalStartDate" v-model:endDate="internalEndDate" clearable>
-          <template #date="{ date }">
-            <div class="flow-runs-filter-group__date" :class="classes.date(date)">
-              <div class="flow-runs-filter-group__date-value">
-                {{ date.getDate() }}
-              </div>
-              <div class="flow-runs-filter-group__date-indicator flow-runs-filter-group__date-indicator--completed" />
-              <div class="flow-runs-filter-group__date-indicator flow-runs-filter-group__date-indicator--failed" />
-            </div>
-          </template>
-        </DateRangeInput>
+        <DateRangeInputWithFlowRunHistory />
       </p-label>
       <p-label label="States">
         <StateNameSelect v-model:selected="states" empty-message="All run states" />
@@ -40,42 +30,15 @@
 
 <script lang="ts" setup>
   import { media } from '@prefecthq/prefect-design'
-  import { useSubscription } from '@prefecthq/vue-compositions'
-  import { computed, ref, watch } from 'vue'
-  import DateRangeInput from '@/components/DateRangeInput.vue'
+  import DateRangeInputWithFlowRunHistory from '@/components/DateRangeInputWithFlowRunHistory.vue'
   import DeploymentCombobox from '@/components/DeploymentCombobox.vue'
   import FlowCombobox from '@/components/FlowCombobox.vue'
   import SearchInput from '@/components/SearchInput.vue'
   import StateNameSelect from '@/components/StateNameSelect.vue'
   import WorkQueueCombobox from '@/components/WorkQueueCombobox.vue'
   import { useFlowRunFilterFromRoute } from '@/compositions/useFlowRunFilterFromRoute'
-  import { useWorkspaceApi } from '@/compositions/useWorkspaceApi'
-  import { FlowRunsSurveyResult } from '@/models/FlowRunsSurveyResult'
 
-  const api = useWorkspaceApi()
-
-  const { states, deployments, workQueues, flows, tags, name, startDate, endDate, updateFilters } = useFlowRunFilterFromRoute()
-  // const flowRunsSurveyResultsSubscription = useSubscription(api.flowRuns.getFlowRunsSurveyResults, [filter])
-  // const flowRunsSurveyResults = computed(() => flowRunsSurveyResultsSubscription.response ?? new Map<string, FlowRunsSurveyResult>())
-  const classes = computed(() => ({
-    date: (date: Date) => {
-      // const surveyResult = flowRunsSurveyResults.value.get(date.toISOString())
-
-      return {
-        // 'flow-runs-filter-group__date--with-completed': !!surveyResult?.completedCount,
-        // 'flow-runs-filter-group__date--with-failed': !!surveyResult?.failedCount,
-      }
-    },
-  }))
-
-  const internalStartDate = ref<Date | null>(startDate.value)
-  const internalEndDate = ref<Date | null>(endDate.value)
-
-  watch([internalStartDate, internalEndDate], ([startDate, endDate]) => {
-    if (startDate && endDate) {
-      updateFilters({ startDate, endDate })
-    }
-  })
+  const { states, deployments, workQueues, flows, tags, name } = useFlowRunFilterFromRoute()
 </script>
 
 <style>
