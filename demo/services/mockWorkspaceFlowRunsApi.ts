@@ -1,5 +1,5 @@
 import { MockApi } from '@/../demo/services/MockApi'
-import { FlowRun, GraphNode, RunHistory, StateUpdate, TimelineNode } from '@/models'
+import { FlowRun, GraphNode, RunHistory, stateType, StateUpdate, TimelineNode } from '@/models'
 import { FlowRunsSurveyResult } from '@/models/FlowRunsSurveyResult'
 import { IWorkspaceFlowRunsApi, mapper, mocker } from '@/services'
 import { UnionFilters, FlowRunsHistoryFilter, DateString } from '@/types'
@@ -32,15 +32,18 @@ export class MockWorkspaceFlowRunsApi extends MockApi implements IWorkspaceFlowR
     const end = mapper.map('string', filter.history_end, 'Date')
     const runHistory: RunHistory[] = []
 
-    console.log({ start, end, interval: filter.history_interval_seconds })
-
     while (dateFunctions.isBefore(start, end)) {
       const intervalEnd = dateFunctions.addSeconds(start, filter.history_interval_seconds)
 
       runHistory.push({
         intervalStart: start,
         intervalEnd,
-        states: mocker.createMany('flowRunStateHistory', mocker.create('number', [0, 3])),
+        states: stateType.map(stateType => mocker.create('flowRunStateHistory', [
+          {
+            stateType,
+            countRuns: mocker.create('number', [-2, 1]),
+          },
+        ])),
       })
       start = intervalEnd
     }

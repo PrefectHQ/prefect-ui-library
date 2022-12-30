@@ -11,10 +11,10 @@ export class FlowRunHistoryMap {
     this.map = new Map(runHistory.map(history => [this.getKey(history.intervalStart), history.states]))
   }
 
-  public get(date: Date): StateHistory[] | undefined {
+  public get(date: Date): StateHistory[] {
     const key = this.getKey(date)
 
-    return this.map.get(key)
+    return this.map.get(key) ?? []
   }
 
   private getKey(date: Date): DateString {

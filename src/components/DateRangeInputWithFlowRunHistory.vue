@@ -7,12 +7,12 @@
   >
     <template #date="{ date }">
       <div class="date-range-input-with-flow-run-history__date">
-        <div class="date-range-input-with-flow-run-history__date-value">
-          {{ date.getDate() }}
+        <p>{{ date.getDate() }}</p>
+        <div class="date-range-input-with-flow-run-history__indicators">
+          <template v-for="history in getRunHistory(date)" :key="getRunHistoryKey(date, history.stateType)">
+            <div class="date-range-input-with-flow-run-history__indicator" :class="`bg-state-${history.stateType}-600`" />
+          </template>
         </div>
-        <template v-for="history in flowRunsHistory.get(date)" :key="`${date.toISOString}-${history.stateType}`">
-          <div class="date-range-input-with-flow-run-history__date-indicator" :class="`bg-state-${history.stateType}-200`" />
-        </template>
       </div>
     </template>
   </DateRangeInput>
@@ -25,6 +25,8 @@
   import { useFlowRunFilterFromRoute } from '@/compositions/useFlowRunFilterFromRoute'
   import { useWorkspaceApi } from '@/compositions/useWorkspaceApi'
   import { FlowRunHistoryMap } from '@/models/FlowRunHistoryMap'
+  import { StateHistory } from '@/models/StateHistory'
+  import { StateType } from '@/models/StateType'
   import { FlowRunsHistoryFilter } from '@/types/UnionFilters'
   import { secondsInDay } from '@/utilities/dates'
   import { dateFunctions } from '@/utilities/timezone'
@@ -67,23 +69,36 @@
   })
   const flowRunsHistorySubscription = useSubscriptionWithDependencies(api.flowRuns.getFlowRunsHistory, flowRunsHistorySubscriptionArgs)
   const flowRunsHistory = computed(() => new FlowRunHistoryMap(flowRunsHistorySubscription.response ?? []))
+
+  function getRunHistory(date: Date): StateHistory[] {
+    return flowRunsHistory.value.get(date)
+      .filter(history => history.countRuns > 0)
+      .sort((h1, h2) => h2.countRuns - h1.countRuns)
+      .slice(0, 2)
+  }
+
+  function getRunHistoryKey(date: Date, state: StateType): string {
+    return `${date.toISOString()}-${state}`
+  }
 </script>
 
 <style>
 .date-range-input-with-flow-run-history__date { @apply
   flex
-  flex-wrap
-  justify-center
+  flex-col
+  items-center
   gap-1
 }
 
-.date-range-input-with-flow-run-history__date-value { @apply
-  w-full
+.date-range-input-with-flow-run-history__indicators { @apply
+  flex
+  gap-[1px]
+  items-center
 }
 
-.date-range-input-with-flow-run-history__date-indicator { @apply
-  h-1
-  w-1
+.date-range-input-with-flow-run-history__indicator { @apply
+  h-1.5
+  w-1.5
   flex-grow-0
   flex-shrink-0
   rounded-full
