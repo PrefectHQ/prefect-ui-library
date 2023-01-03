@@ -75,6 +75,18 @@ export interface TaskRunFilter extends Filter {
   subflow_runs?: exists_,
 }
 
+export interface WorkerPoolFilter extends Omit<Filter, 'tags'> {
+  type?: any_,
+}
+
+export type PaginatedWorkerPoolFilter = {
+  worker_pools?: WorkerPoolFilter,
+  limit?: number,
+  offset?: number,
+}
+
+export type WorkerPoolQueueFilter = Omit<Filter, 'tags'>
+
 export type PaginatedFilter = {
   limit?: number,
   offset?: number,
@@ -93,12 +105,16 @@ export type DeploymentsFilter = { deployments?: DeploymentFilter }
 export type FlowsFilter = { flows?: FlowFilter }
 export type TaskRunsFilter = { task_runs?: TaskRunFilter }
 export type FlowRunsFilter = { flow_runs?: FlowRunFilter }
+export type WorkerPoolsFilter = { worker_pools?: WorkerPoolFilter }
+export type WorkerPoolQueuesFilter = { worker_pool_queues?: WorkerPoolQueueFilter }
 
 export type UnionFilters =
   & FlowsFilter
   & DeploymentsFilter
   & FlowRunsFilter
   & TaskRunsFilter
+  & WorkerPoolsFilter
+  & WorkerPoolQueuesFilter
   & (Sortable<FlowFilter & DeploymentFilter> | RunSort<FlowSortValues | FlowRunSortValues | TaskRunSortValues>)
 
 interface Historical {
