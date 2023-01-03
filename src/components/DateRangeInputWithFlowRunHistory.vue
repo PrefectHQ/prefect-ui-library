@@ -58,7 +58,10 @@
     const historyFilter: FlowRunsHistoryFilter = {
       'flow_runs': {
         ...filter.value.flow_runs,
-        'state': undefined,
+        'expected_start_time': {
+          'after_': start.toISOString(),
+          'before_': end.toISOString(),
+        },
       },
       'history_start': start.toISOString(),
       'history_end': end.toISOString(),
