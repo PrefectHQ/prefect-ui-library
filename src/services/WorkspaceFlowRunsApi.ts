@@ -3,7 +3,6 @@ import { FlowRunGraphResponse } from '@/models/api/FlowRunGraphResponse'
 import { FlowRunHistoryResponse } from '@/models/api/FlowRunHistoryResponse'
 import { FlowRunResponse } from '@/models/api/FlowRunResponse'
 import { FlowRun } from '@/models/FlowRun'
-import { FlowRunsSurveyResult } from '@/models/FlowRunsSurveyResult'
 import { GraphNode } from '@/models/GraphNode'
 import { RunHistory } from '@/models/RunHistory'
 import { mapper } from '@/services/Mapper'
@@ -84,9 +83,5 @@ export class WorkspaceFlowRunsApi extends WorkspaceApi implements IWorkspaceFlow
 
   public deleteFlowRun(flowRunId: string): Promise<void> {
     return this.delete(`/${flowRunId}`)
-  }
-
-  public getFlowRunsSurveyResults(filter: UnionFilters = {}): Promise<FlowRunsSurveyResult[]> {
-    throw 'not implemented'
   }
 }
