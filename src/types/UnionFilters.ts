@@ -75,7 +75,8 @@ export interface TaskRunFilter extends Filter {
   subflow_runs?: exists_,
 }
 
-export interface WorkerPoolFilter extends Omit<Filter, 'tags'> {
+export interface WorkerPoolFilter extends Omit<Filter, 'tags' | 'name'> {
+  name?: any_,
   type?: any_,
 }
 
@@ -85,7 +86,9 @@ export type PaginatedWorkerPoolFilter = {
   offset?: number,
 }
 
-export type WorkerPoolQueueFilter = Omit<Filter, 'tags'>
+export interface WorkerPoolQueueFilter extends Omit<Filter, 'tags' | 'name'> {
+  name?: any_,
+}
 
 export type PaginatedFilter = {
   limit?: number,
