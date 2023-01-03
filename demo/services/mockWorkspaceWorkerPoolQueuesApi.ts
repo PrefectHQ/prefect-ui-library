@@ -32,11 +32,24 @@ export class MockWorkspaceWorkerPoolQueuesApi extends MockApi implements IWorksp
     return await this.workerPoolQueues.patch(workerPoolQueue.name, request)
   }
 
-  public async deleteWorkerPoolQueue(workerPoolName: string, queueName: string): Promise<void> {
+  public async pauseWorkerPoolQueue(workerPoolName: string, queueName: string): Promise<void> {
     const workerPool = this.workerPools.find(workerPool => workerPool.name === workerPoolName)!
     const workerPoolQueue = this.workerPoolQueues.find(workerPoolQueue => workerPoolQueue.name === queueName && workerPoolQueue.workerPoolId === workerPool.id)!
 
-    return await this.workerPoolQueues.delete(workerPoolQueue.name)
+    return await this.workerPools.patch(workerPoolQueue.name, { isPaused: true })
+  }
+
+  public async resumeWorkerPoolQueue(workerPoolName: string, queueName: string): Promise<void> {
+    const workerPool = this.workerPools.find(workerPool => workerPool.name === workerPoolName)!
+    const workerPoolQueue = this.workerPoolQueues.find(workerPoolQueue => workerPoolQueue.name === queueName && workerPoolQueue.workerPoolId === workerPool.id)!
+
+    return await this.workerPools.patch(workerPoolQueue.name, { isPaused: false })
+  }
+
+  public async deleteWorkerPoolQueue(workerPoolName: string, queueName: string): Promise<void> {
+    const workerPool = this.workerPools.find(workerPool => workerPool.name === workerPoolName)!
+    const workerPoolQueue = this.workerPoolQueues.find(workerPoolQueue => workerPoolQueue.name === queueName && workerPoolQueue.workerPoolId === workerPool.id)!
+    return await this.workerPoolQueues.delete(workerPoolQueue.id)
   }
 
   public async updateWorkerPoolQueuePriority(workerPoolName: string, queueName: string, priority: number): Promise<void> {

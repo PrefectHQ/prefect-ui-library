@@ -1,7 +1,7 @@
-import { EmpiricalPolicyResponse } from '@/models/EmpiricalPolicyResponse'
-import { StateResponse } from '@/models/StateResponse'
+import { EmpiricalPolicyResponse } from '@/models/api/EmpiricalPolicyResponse'
+import { StateResponse } from '@/models/api/StateResponse'
+import { TaskInputResponse } from '@/models/api/TaskInputResponse'
 import { ServerStateType } from '@/models/StateType'
-import { TaskInputResponse } from '@/models/TaskInputResponse'
 import { DateString } from '@/types/dates'
 
 export type TaskRunResponse = {

@@ -1,8 +1,8 @@
+import { LogResponse } from '@/models/api/LogResponse'
+import { LogsRequestFilter } from '@/models/api/LogsRequestFilter'
 import { Log } from '@/models/Log'
-import { LogResponse } from '@/models/LogResponse'
 import { mapper } from '@/services/Mapper'
 import { WorkspaceApi } from '@/services/WorkspaceApi'
-import { LogsRequestFilter } from '@/types/LogsRequestFilter'
 
 export class WorkspaceLogsApi extends WorkspaceApi {
 

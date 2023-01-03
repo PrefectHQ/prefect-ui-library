@@ -66,3 +66,8 @@ export function isEmptyObject(value: unknown): value is Record<string, never> {
 export function isTypeRequired<T extends Record<string | number | symbol, unknown>>(value: Partial<T>): value is Required<T> {
   return Object.values(value).every(value => value !== undefined)
 }
+
+export function hasString(obj: Record<string | number | symbol, unknown>, str: string): boolean {
+  const values = Object.values(obj).map(val => val?.toString().toLowerCase() ?? '').join('')
+  return values.includes(str.toLowerCase())
+}

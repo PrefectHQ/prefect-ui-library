@@ -1,6 +1,6 @@
 import { StateCreate, StateRequest } from '@/models'
+import { StateResponse } from '@/models/api/StateResponse'
 import { State } from '@/models/State'
-import { StateResponse } from '@/models/StateResponse'
 import { MapFunction } from '@/services/Mapper'
 
 export const mapStateResponseToState: MapFunction<StateResponse, State> = function(source: StateResponse): State {

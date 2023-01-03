@@ -1,5 +1,6 @@
 import { FlowRun } from '@/models/FlowRun'
 import { MockFunction } from '@/services/Mocker'
+import { PrefectStateNames } from '@/types'
 import { random } from '@/utilities/math'
 
 export const randomFlowRun: MockFunction<FlowRun, [Partial<FlowRun>?]> = function(overrides = {}) {
@@ -25,6 +26,7 @@ export const randomFlowRun: MockFunction<FlowRun, [Partial<FlowRun>?]> = functio
     name: this.create('runName'),
     parentTaskRunId: random() > 0.9 ? this.create('id') : null,
     stateId: state.id,
+    stateName: state.name as PrefectStateNames,
     stateType: state.type,
     state: state,
     tags: this.createMany('noun', this.create('number', [0, 10])),

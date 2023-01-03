@@ -3,8 +3,8 @@
     <template #option="{ option }">
       <ColorModeSelectOption :mode="option.value" />
     </template>
-    <template #default="{ selectedOption }">
-      <ColorModeSelectOption :mode="selectedOption.value" />
+    <template #default="{ value }">
+      <ColorModeSelectOption v-if="isColorMode(value) || value === null" :mode="value" />
     </template>
   </p-select>
 </template>

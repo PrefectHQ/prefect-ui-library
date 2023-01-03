@@ -2,15 +2,21 @@
   <p-form class="worker-pool-create-form" @submit="submit">
     <p-content>
       <p-label label="Name" :message="nameErrorMessage" :state="nameState">
-        <p-text-input v-model="name" :state="nameState" />
+        <template #default="{ id }">
+          <p-text-input :id="id" v-model="name" :state="nameState" />
+        </template>
       </p-label>
 
       <p-label label="Description (Optional)">
-        <p-textarea v-model="description" rows="7" />
+        <template #default="{ id }">
+          <p-textarea :id="id" v-model="description" rows="7" />
+        </template>
       </p-label>
 
       <p-label label="Type" :state="typeState" :message="typeErrorMessage">
-        <p-select model-value="Prefect Agent" :options="['Prefect Agent']" disabled />
+        <template #default="{ id }">
+          <p-select :id="id" model-value="Prefect Agent" :options="['Prefect Agent']" disabled />
+        </template>
         <!-- Types feature is not implemented by backend yet -->
         <!-- <WorkerPoolTypeSelect v-model:selected="type" :state="typeState" /> -->
       </p-label>
@@ -24,7 +30,9 @@
       </p-label>
 
       <p-label label="Flow Run Concurrency (Optional)">
-        <p-number-input v-model="concurrencyLimit" placeholder="Unlimited" :min="0" />
+        <template #default="{ id }">
+          <p-number-input :id="id" v-model="concurrencyLimit" placeholder="Unlimited" :min="0" />
+        </template>
       </p-label>
     </p-content>
 

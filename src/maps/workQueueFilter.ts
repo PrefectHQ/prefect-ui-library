@@ -1,5 +1,5 @@
+import { WorkQueueFilterResponse } from '@/models/api/WorkQueueFilterResponse'
 import { WorkQueueFilter } from '@/models/WorkQueueFilter'
-import { WorkQueueFilterResponse } from '@/models/WorkQueueFilterResponse'
 import { MapFunction } from '@/services/Mapper'
 
 export const mapWorkQueueFilterResponseToWorkQueueFilter: MapFunction<WorkQueueFilterResponse, WorkQueueFilter> = function(source: WorkQueueFilterResponse): WorkQueueFilter {

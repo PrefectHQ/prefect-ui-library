@@ -1,6 +1,6 @@
 
 import { ISchedule } from '@/models'
-import { RRuleScheduleResponse } from '@/models/ScheduleResponse'
+import { RRuleScheduleResponse } from '@/models/api/ScheduleResponse'
 
 export interface IRRuleSchedule extends ISchedule {
   timezone: string | null,

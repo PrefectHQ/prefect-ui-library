@@ -1,5 +1,5 @@
+import { FlowRunResponse } from '@/models/api/FlowRunResponse'
 import { FlowRun } from '@/models/FlowRun'
-import { FlowRunResponse } from '@/models/FlowRunResponse'
 import { MapFunction } from '@/services/Mapper'
 
 export const mapFlowRunResponseToFlowRun: MapFunction<FlowRunResponse, FlowRun> = function(source: FlowRunResponse): FlowRun {
@@ -24,6 +24,7 @@ export const mapFlowRunResponseToFlowRun: MapFunction<FlowRunResponse, FlowRun> 
     name: source.name,
     parentTaskRunId: source.parent_task_run_id,
     stateId: source.state_id,
+    stateName: source.state_name,
     stateType: this.map('ServerStateType', source.state_type, 'StateType'),
     state: this.map('StateResponse', source.state, 'State'),
     tags: source.tags,

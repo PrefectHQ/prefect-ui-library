@@ -1,6 +1,6 @@
 import { InjectionKey } from 'vue'
+import { UiFlowRunHistoryResponse } from '@/models/api/UiFlowRunHistoryResponse'
 import { UiFlowRunHistory } from '@/models/UiFlowRunHistory'
-import { UiFlowRunHistoryResponse } from '@/models/UiFlowRunHistoryResponse'
 import { Api, ApiRoute } from '@/services/Api'
 import { mapper } from '@/services/Mapper'
 import { UnionFilters } from '@/types/UnionFilters'

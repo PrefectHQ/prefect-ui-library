@@ -1,5 +1,5 @@
+import { FlowResponse } from '@/models/api/FlowResponse'
 import { Flow } from '@/models/Flow'
-import { FlowResponse } from '@/models/FlowResponse'
 import { MapFunction } from '@/services/Mapper'
 
 export const mapFlowResponseToFlow: MapFunction<FlowResponse, Flow> = function(source: FlowResponse): Flow {

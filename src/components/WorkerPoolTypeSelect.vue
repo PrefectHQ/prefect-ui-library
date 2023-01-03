@@ -1,7 +1,7 @@
 <template>
   <PSelect v-model="model" :options="options" class="block-type-select">
-    <template #default="{ selectedOption }">
-      {{ selectedOption.label }}
+    <template #default="{ label }">
+      {{ label }}
     </template>
   </PSelect>
 </template>
