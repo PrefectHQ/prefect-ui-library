@@ -42,6 +42,7 @@
   })
 
   function refresh(): void {
+    workerPoolsSubscription.refresh()
     emit('update')
   }
 </script>
