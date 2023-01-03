@@ -1,8 +1,8 @@
 import { InjectionKey, ref } from 'vue'
 import { MaybeRef } from '@/types/reactivity'
 
-export const featureFlags = [] as const
-export type FeatureFlags = typeof featureFlags[number]
+export const workspaceFeatureFlags = [] as const
+export type WorkspaceFeatureFlag = typeof workspaceFeatureFlags[number]
 
 export const workspacePermissions = [
   'create:automation',
@@ -93,4 +93,4 @@ export function createCan<T extends string>(permissions: MaybeRef<Readonly<T[]>>
   })
 }
 
-export const canKey: InjectionKey<Can<WorkspacePermission | FeatureFlags>> = Symbol('canInjectionKey')
+export const canKey: InjectionKey<Can<WorkspacePermission | WorkspaceFeatureFlag>> = Symbol('canInjectionKey')
