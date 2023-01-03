@@ -7,7 +7,7 @@
     </div>
 
     <div class="worker-pools__list">
-      <WorkerPoolList :worker-pools="filteredWorkerPools" @update="workerPoolsSubscription.refresh" />
+      <WorkerPoolList :worker-pools="filteredWorkerPools" @update="refresh" />
     </div>
   </div>
 </template>
@@ -23,6 +23,10 @@
     interval: 30000,
   }
 
+  const emit = defineEmits<{
+    (event: 'update'): void,
+  }>()
+
   const workerPoolsSubscription = useSubscription(api.workerPools.getWorkerPools, [{}], subscriptionOptions)
   const workerPools = computed(() => workerPoolsSubscription.response ?? [])
 
@@ -36,6 +40,10 @@
     return workerPools.value.filter(key => key.name.toLowerCase().includes(searchValue.value.toLowerCase()),
     )
   })
+
+  function refresh(): void {
+    emit('update')
+  }
 </script>
 
 <style>
