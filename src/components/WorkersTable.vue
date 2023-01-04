@@ -1,9 +1,9 @@
 <template>
   <div class="workers-table">
     <div class="workers-table__filters">
-      <ResultsCount label="Worker Pool" :count="filteredWorkers.length" class="worker-pools__results" />
+      <ResultsCount label="Worker" :count="filteredWorkers.length" class="workers-table__results" />
 
-      <SearchInput v-model="searchValue" class="worker-pools__search" placeholder="Search worker pools" />
+      <SearchInput v-model="searchValue" class="workers-table__search" placeholder="Search workers" />
     </div>
 
     <p-table :data="filteredWorkers" :columns="columns">
