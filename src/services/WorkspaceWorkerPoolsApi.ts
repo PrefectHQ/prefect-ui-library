@@ -1,10 +1,11 @@
-import { WorkerPool, WorkerPoolCreate, WorkerPoolEdit, WorkerPoolFilter, WorkerPoolResponse, WorkerScheduledFlowRunResponse, WorkerScheduledFlowRun, WorkerScheduledFlowRuns } from '@/models'
+import { WorkerPool, WorkerPoolCreate, WorkerPoolEdit, WorkerPoolResponse, WorkerScheduledFlowRunResponse, WorkerScheduledFlowRun, WorkerScheduledFlowRuns } from '@/models'
 import { mapper, WorkspaceApi } from '@/services'
+import { PaginatedWorkerPoolFilter } from '@/types'
 
 export interface IWorkspaceWorkerPoolsApi {
   createWorkerPool: (request: WorkerPoolCreate) => Promise<WorkerPool>,
   getWorkerPoolByName: (workerPoolName: string) => Promise<WorkerPool>,
-  getWorkerPools: (filter: WorkerPoolFilter) => Promise<WorkerPool[]>,
+  getWorkerPools: (filter: PaginatedWorkerPoolFilter) => Promise<WorkerPool[]>,
   updateWorkerPool: (workerPoolName: string, request: WorkerPoolEdit) => Promise<void>,
   pauseWorkerPool: (workerPoolName: string) => Promise<void>,
   resumeWorkerPool: (workerPoolName: string) => Promise<void>,
@@ -29,7 +30,7 @@ export class WorkspaceWorkerPoolsApi extends WorkspaceApi implements IWorkspaceW
     return mapper.map('WorkerPoolResponse', data, 'WorkerPool')
   }
 
-  public async getWorkerPools(filter: WorkerPoolFilter): Promise<WorkerPool[]> {
+  public async getWorkerPools(filter: PaginatedWorkerPoolFilter): Promise<WorkerPool[]> {
     const { data } = await this.post<WorkerPoolResponse[]>('/filter', filter)
 
     return mapper.map('WorkerPoolResponse', data, 'WorkerPool')
