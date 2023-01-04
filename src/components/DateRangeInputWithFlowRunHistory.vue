@@ -95,6 +95,7 @@
 
 .date-range-input-with-flow-run-history__indicators { @apply
   flex
+  h-1
   gap-[1px]
   items-center
 }
