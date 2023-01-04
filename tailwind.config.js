@@ -44,6 +44,7 @@ const colors = () => {
 }
 
 module.exports = {
+  darkMode: 'class',
   content: [
     './index.html',
     './demo/**/*.{vue,js,ts,jsx,tsx}',
