@@ -175,7 +175,7 @@ export function resolve<T>(value: T, resolvers: ResolverCallback<T>[]): T {
 export function getSchemaValueAnyOfDefinition(property: SchemaPropertyAnyOf, value: SchemaValue): Schema | null {
   const index = getSchemaValueAnyOfDefinitionIndex(property, value)
 
-  if (index === null) {
+  if (index === null || index === -1) {
     console.warn('Schema property with anyOf had a value but could not be associated with a definition')
 
     return null
