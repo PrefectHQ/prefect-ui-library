@@ -26,6 +26,6 @@
 
   const sortedSchemaProperties = computed(() => {
     const properties = Object.entries(props.schema.properties ?? {})
-    return properties.sort(([, propA], [, propB]) => (propA?.position ?? 0) - (propB?.position ?? 0))
+    return properties.sort(([, propA], [, propB]) => (propB?.position ?? 0) - (propA?.position ?? 0))
   })
 </script>
