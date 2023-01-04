@@ -4,7 +4,7 @@
       <template #header-start>
         <template v-if="selected">
           <div class="worker-pool-queues-table__controls--right">
-            <ResultsCount v-if="selected.length == 0" label="queue" :count="workerPoolQueues.length" />
+            <ResultsCount v-if="selected.length == 0" label="Queue" :count="workerPoolQueues.length" />
             <SelectedCount v-else :count="selected.length" />
 
             <p-button v-if="can.create.worker_pool_queue && !selected.length" inset :to="routes.workerPoolQueueCreate(workerPoolName)" size="sm">
