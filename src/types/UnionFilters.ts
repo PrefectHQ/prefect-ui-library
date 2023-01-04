@@ -65,7 +65,7 @@ export interface FlowRunFilter extends Filter {
   next_scheduled_start_time?: TimeFrameFilter,
   parent_task_run_id?: any_ & is_null_,
   task_runs?: TaskRunFilter,
-  worker_pool_queue_id?: any_,
+  work_pool_queue_id?: any_,
 }
 
 export interface TaskRunFilter extends Filter {
@@ -75,18 +75,18 @@ export interface TaskRunFilter extends Filter {
   subflow_runs?: exists_,
 }
 
-export interface WorkerPoolFilter extends Omit<Filter, 'tags' | 'name'> {
+export interface WorkPoolFilter extends Omit<Filter, 'tags' | 'name'> {
   name?: any_,
   type?: any_,
 }
 
-export type PaginatedWorkerPoolFilter = {
-  worker_pools?: WorkerPoolFilter,
+export type PaginatedWorkPoolFilter = {
+  work_pools?: WorkPoolFilter,
   limit?: number,
   offset?: number,
 }
 
-export interface WorkerPoolQueueFilter extends Omit<Filter, 'tags' | 'name'> {
+export interface WorkPoolQueueFilter extends Omit<Filter, 'tags' | 'name'> {
   name?: any_,
 }
 
@@ -108,16 +108,16 @@ export type DeploymentsFilter = { deployments?: DeploymentFilter }
 export type FlowsFilter = { flows?: FlowFilter }
 export type TaskRunsFilter = { task_runs?: TaskRunFilter }
 export type FlowRunsFilter = { flow_runs?: FlowRunFilter }
-export type WorkerPoolsFilter = { worker_pools?: WorkerPoolFilter }
-export type WorkerPoolQueuesFilter = { worker_pool_queues?: WorkerPoolQueueFilter }
+export type WorkPoolsFilter = { work_pools?: WorkPoolFilter }
+export type WorkPoolQueuesFilter = { work_pool_queues?: WorkPoolQueueFilter }
 
 export type UnionFilters =
   & FlowsFilter
   & DeploymentsFilter
   & FlowRunsFilter
   & TaskRunsFilter
-  & WorkerPoolsFilter
-  & WorkerPoolQueuesFilter
+  & WorkPoolsFilter
+  & WorkPoolQueuesFilter
   & (Sortable<FlowFilter & DeploymentFilter> | RunSort<FlowSortValues | FlowRunSortValues | TaskRunSortValues>)
 
 interface Historical {

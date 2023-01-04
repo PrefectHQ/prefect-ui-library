@@ -1,7 +1,7 @@
 import { KeyedDataStore } from '../services/KeyedDataStore'
 import { SimpleDataStore } from '../services/SimpleDataStore'
 import { ApiMockSeeds } from './api'
-import { Flow, FlowRun, BlockDocument, BlockSchema, TaskRun, Deployment, WorkQueue, BlockType, WorkerPool, WorkerPoolQueue, WorkerPoolWorker } from '@/models'
+import { Flow, FlowRun, BlockDocument, BlockSchema, TaskRun, Deployment, WorkQueue, BlockType, WorkPool, WorkPoolQueue, WorkPoolWorker } from '@/models'
 import { resolveSchema } from '@/services/schemas/resolvers/schemas'
 
 function hydrateBlockSchema(blockSchema: BlockSchema): BlockSchema {
@@ -26,9 +26,9 @@ export function createDataStores(seeds: ApiMockSeeds = {}) {
     workQueues: new KeyedDataStore({ seeds: seeds.workQueues, hydrate: workQueue => new WorkQueue(workQueue) }),
     blockTypes: new KeyedDataStore({ seeds: seeds.blockTypes, hydrate: blockType => new BlockType(blockType) }),
     blockSchemaCapabilities: new SimpleDataStore({ seeds: seeds.blockCapabilities }),
-    workerPools: new KeyedDataStore({ seeds: seeds.workerPools, hydrate: workerPool => new WorkerPool(workerPool) }),
-    workerPoolQueues: new KeyedDataStore({ seeds: seeds.workerPoolQueues, hydrate: workerPoolQueue => new WorkerPoolQueue(workerPoolQueue) }),
-    workerPoolWorkers: new KeyedDataStore({ seeds: seeds.workerPoolWorkers, hydrate: workerPoolWorker => new WorkerPoolWorker(workerPoolWorker) }),
+    workPools: new KeyedDataStore({ seeds: seeds.workPools, hydrate: workPool => new WorkPool(workPool) }),
+    workPoolQueues: new KeyedDataStore({ seeds: seeds.workPoolQueues, hydrate: workPoolQueue => new WorkPoolQueue(workPoolQueue) }),
+    workPoolWorkers: new KeyedDataStore({ seeds: seeds.workPoolWorkers, hydrate: workPoolWorker => new WorkPoolWorker(workPoolWorker) }),
   }
 }
 
