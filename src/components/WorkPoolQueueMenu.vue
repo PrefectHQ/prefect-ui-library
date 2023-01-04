@@ -54,7 +54,7 @@
 
   async function deleteWorkPoolQueue(name: string): Promise<void> {
     close()
-    await deleteItem([props.workPoolName, name], api.workPoolQueues.deleteWorkPoolQueue, 'Worker pool queue')
+    await deleteItem([props.workPoolName, name], api.workPoolQueues.deleteWorkPoolQueue, 'Work pool queue')
     emit('delete')
   }
 </script>

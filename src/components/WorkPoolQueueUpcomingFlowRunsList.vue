@@ -5,7 +5,7 @@
     <p-empty-results v-if="empty">
       <template v-if="isPaused" #message>
         <p-icon class="work-queue-flow-runs-list__icon" icon="PauseIcon" />
-        This worker pool queue is paused and will not submit runs
+        This work pool queue is paused and will not submit runs
       </template>
       <template v-else #message>
         No upcoming runs

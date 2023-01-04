@@ -43,7 +43,7 @@
 
   async function deleteWorkPool(name: string): Promise<void> {
     close()
-    await deleteItem(name, api.workPools.deleteWorkPool, 'Worker pool')
+    await deleteItem(name, api.workPools.deleteWorkPool, 'Work pool')
     emit('delete')
   }
 </script>

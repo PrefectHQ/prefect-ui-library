@@ -5,11 +5,11 @@
     </template>
 
     <template #heading>
-      Create a worker pool to get started
+      Create a work pool to get started
     </template>
 
     <template #description>
-      Worker pools are API objects with rich configuration that are used to organize and configure worker processes running in potentially remote location
+      Work pools are API objects with rich configuration that are used to organize and configure worker processes running in potentially remote location
     </template>
 
     <template #actions>

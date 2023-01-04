@@ -1,9 +1,9 @@
 <template>
   <div class="work-pools">
     <div class="work-pools__filters">
-      <ResultsCount label="Worker pool" :count="filteredWorkPools.length" class="work-pools__results" />
+      <ResultsCount label="Work pool" :count="filteredWorkPools.length" class="work-pools__results" />
 
-      <SearchInput v-model="searchValue" class="work-pools__search" placeholder="Search worker pools" />
+      <SearchInput v-model="searchValue" class="work-pools__search" placeholder="Search work pools" />
     </div>
 
     <div class="work-pools__list">

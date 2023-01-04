@@ -5,7 +5,7 @@ export const randomWorkPool: MockFunction<WorkPool, [Partial<WorkPool>?]> = func
   const name = this.create('noun')
 
   return new WorkPool({
-    // Setting the id to the name allows us to reference the worker pool by name
+    // Setting the id to the name allows us to reference the work pool by name
     // in the demo application key data stores without throwing errors.
     id: name,
     created: this.create('date'),
