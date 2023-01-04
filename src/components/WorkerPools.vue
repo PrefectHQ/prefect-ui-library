@@ -27,7 +27,7 @@
     (event: 'update'): void,
   }>()
 
-  const workerPoolsSubscription = useSubscription(api.workerPools.getWorkerPools, [{}], subscriptionOptions)
+  const workerPoolsSubscription = useSubscription(api.workerPools.getWorkerPools, [], subscriptionOptions)
   const workerPools = computed(() => workerPoolsSubscription.response ?? [])
 
   const searchValue = ref<string>('')
