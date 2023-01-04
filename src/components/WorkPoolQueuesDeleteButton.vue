@@ -5,7 +5,7 @@
   <ConfirmDeleteModal
     v-model:showModal="showModal"
     name="selected work pool queues"
-    label="Worker Pool Queues"
+    label="Work Pool Queues"
     @delete="deleteWorkPoolQueues(workPoolQueues)"
   />
 </template>

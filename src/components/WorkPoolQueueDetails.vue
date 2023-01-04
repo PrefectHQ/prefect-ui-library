@@ -1,12 +1,12 @@
 <template>
   <div class="work-pool-queue-details">
-    <p-key-value label="Worker Pool" :alternate="alternate">
+    <p-key-value label="Work Pool" :alternate="alternate">
       <template #value>
         <WorkPoolIconText :work-pool-name="workPoolName" />
       </template>
     </p-key-value>
 
-    <p-key-value label="Worker Pool Type" :value="workPoolTypeLabel" :alternate="alternate" />
+    <p-key-value label="Work Pool Type" :value="workPoolTypeLabel" :alternate="alternate" />
 
     <p-key-value label="Description" :value="workPoolQueue.description" :alternate="alternate" />
 
@@ -14,7 +14,7 @@
 
     <p-divider />
 
-    <p-key-value label="Worker Pool Queue ID" :value="workPoolQueue.id" :alternate="alternate" />
+    <p-key-value label="Work Pool Queue ID" :value="workPoolQueue.id" :alternate="alternate" />
 
     <p-key-value label="Flow Run Concurrency" :value="workPoolQueue.concurrencyLimit" :alternate="alternate" />
 

@@ -27,7 +27,7 @@
   }>()
 
   const crumbs = computed(() => [
-    { text: 'Worker Pools', to: routes.workPools() },
+    { text: 'Work Pools', to: routes.workPools() },
     { text: props.workPool.name },
   ])
 

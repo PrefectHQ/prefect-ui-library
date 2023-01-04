@@ -15,7 +15,7 @@
   const routes = useWorkspaceRoutes()
 
   const crumbs = computed(() => [
-    { text: 'Worker Pools', to: routes.workPools() },
+    { text: 'Work Pools', to: routes.workPools() },
     { text: props.workPoolName, to: routes.workPool(props.workPoolName) },
     { text: props.workPoolQueueName, to: routes.workPoolQueue(props.workPoolName, props.workPoolQueueName) },
     { text: 'Edit' },

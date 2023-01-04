@@ -10,7 +10,7 @@
   import PageHeading from '@/components/PageHeading.vue'
   import { useWorkspaceRoutes, useCan } from '@/compositions'
 
-  const crumbs = [{ text: 'Worker Pools' }]
+  const crumbs = [{ text: 'Work Pools' }]
 
   const can = useCan()
   const routes = useWorkspaceRoutes()

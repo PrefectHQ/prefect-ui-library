@@ -1,5 +1,5 @@
 <template>
-  <ComponentPage title="Worker Pools Stuff" :demos="demos">
+  <ComponentPage title="Work Pools Stuff" :demos="demos">
     <template #pools>
       {{ workPool }}
     </template>

@@ -8,7 +8,7 @@
   </p-icon-button-menu>
   <ConfirmDeleteModal
     v-model:showModal="showModal"
-    label="Worker Pool"
+    label="Work Pool"
     :name="workPool.name"
     @delete="deleteWorkPool(workPool.name)"
   />

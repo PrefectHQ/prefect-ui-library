@@ -32,13 +32,13 @@
   import { DemoSection } from '@/demo/types/demoSection'
 
   const demos: DemoSection[] = [
-    { title: 'Worker Pools' },
-    { title: 'Worker Pool' },
-    { title: 'Worker Pool Create' },
-    { title: 'Worker Pool Edit' },
-    { title: 'Worker Pool Queue' },
-    { title: 'Worker Pool Queue Create' },
-    { title: 'Worker Pool Queue Edit' },
+    { title: 'Work Pools' },
+    { title: 'Work Pool' },
+    { title: 'Work Pool Create' },
+    { title: 'Work Pool Edit' },
+    { title: 'Work Pool Queue' },
+    { title: 'Work Pool Queue Create' },
+    { title: 'Work Pool Queue Edit' },
   ]
 
   const workPool = useWorkPoolMock()

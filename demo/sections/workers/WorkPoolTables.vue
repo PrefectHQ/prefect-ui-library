@@ -1,5 +1,5 @@
 <template>
-  <ComponentPage title="Worker Pool Tables" :demos="demos">
+  <ComponentPage title="Work Pool Tables" :demos="demos">
     <template #queues-table>
       <WorkPoolQueuesTable :work-pool-name="workPool.name" />
     </template>

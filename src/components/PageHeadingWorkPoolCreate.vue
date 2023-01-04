@@ -9,7 +9,7 @@
   const routes = useWorkspaceRoutes()
 
   const crumbs = [
-    { text: 'Worker Pools', to: routes.workPools() },
+    { text: 'Work Pools', to: routes.workPools() },
     { text: 'Create' },
   ]
 </script>

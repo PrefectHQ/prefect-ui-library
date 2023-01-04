@@ -14,7 +14,7 @@
 
 
   const crumbs = [
-    { text: 'Worker Pools', to: routes.workPools() },
+    { text: 'Work Pools', to: routes.workPools() },
     { text: props.workPoolName, to: routes.workPool(props.workPoolName) },
     { text: 'Create' },
   ]

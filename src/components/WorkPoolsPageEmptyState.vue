@@ -15,7 +15,7 @@
     <template #actions>
       <DocumentationButton topic="workPools" />
       <p-button v-if="can.create.work_pool" :to="routes.workPoolCreate()">
-        Create Worker Pool
+        Create Work Pool
         <p-icon icon="PlusIcon" class="work-pools-page-empty-state__link-icon" />
       </p-button>
     </template>
