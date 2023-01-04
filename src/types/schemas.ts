@@ -45,6 +45,7 @@ export type SchemaProperty = {
   // prefect specific properties
   blockTypeSlug?: string,
   meta?: SchemaPropertyMeta,
+  position?: number,
 
   // open api properties
   $ref?: SchemaReference,
