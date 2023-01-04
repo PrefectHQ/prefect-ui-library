@@ -17,7 +17,7 @@ export class MockWorkspaceWorkerPoolsApi extends MockApi implements IWorkspaceWo
     return await this.workerPools.find(workerPool => workerPool.name === workerPoolName)!
   }
 
-  public async getWorkerPools(filter: PaginatedWorkerPoolFilter): Promise<WorkerPool[]> {
+  public async getWorkerPools(filter: PaginatedWorkerPoolFilter = {}): Promise<WorkerPool[]> {
     if (Object.keys(filter).length) {
       console.warn('MockWorkspaceWorkerPoolsApi has not implemented the filter argument of the getWorkerPools method')
     }

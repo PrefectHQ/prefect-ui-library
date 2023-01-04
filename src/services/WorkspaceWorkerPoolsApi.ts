@@ -30,7 +30,7 @@ export class WorkspaceWorkerPoolsApi extends WorkspaceApi implements IWorkspaceW
     return mapper.map('WorkerPoolResponse', data, 'WorkerPool')
   }
 
-  public async getWorkerPools(filter: PaginatedWorkerPoolFilter): Promise<WorkerPool[]> {
+  public async getWorkerPools(filter: PaginatedWorkerPoolFilter = {}): Promise<WorkerPool[]> {
     const { data } = await this.post<WorkerPoolResponse[]>('/filter', filter)
 
     return mapper.map('WorkerPoolResponse', data, 'WorkerPool')
