@@ -42,8 +42,7 @@ export default defineConfig(({ mode }) => {
         name: 'orion-design',
       },
       rollupOptions: {
-      // ensures vue isn't added to the bundle
-        external: ['vue', 'vue-router', 'vee-validate'],
+        external: ['vue', 'vue-router', 'vee-validate', '@prefecthq/vue-compositions', '@prefecthq/prefect-design'],
         output: {
           exports: 'named',
           // Provide vue as a global variable to use in the UMD build
