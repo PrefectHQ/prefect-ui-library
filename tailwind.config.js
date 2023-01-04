@@ -20,17 +20,27 @@ const stateColors = states.reduce((colors, state) => {
   return colors
 }, {})
 
-const prefectPalette = {
-  50: '#F2F6FF',
-  100: '#E6EDFF',
-  200: '#C0D3FF',
-  300: '#9AB8FE',
-  400: '#4E82FE',
-  500: '#024DFD',
-  600: '#0245E4',
-  700: '#023ABE',
-  800: '#012E98',
-  900: '#01267C',
+const generateColorPalette = (base) => {
+  const colors = {
+    DEFAULT: `hsl(var(--${base}) / <alpha-value>)`,
+  }
+  const keys = [50, 100, 200, 300, 400, 500, 600, 700, 800, 900]
+  keys.forEach((key) => colors[key] = `hsl(var(--${base}-${key}) / <alpha-value>)`)
+  return colors
+}
+
+const colors = () => {
+  const primary = generateColorPalette('primary')
+
+  return {
+    prefect: primary,
+    primary: primary,
+    ...stateColors,
+    danger: generateColorPalette('danger'),
+    success: generateColorPalette('success'),
+    foreground: generateColorPalette('foreground'),
+    background: generateColorPalette('background'),
+  }
 }
 
 module.exports = {
@@ -50,10 +60,7 @@ module.exports = {
       mono: ['InconsolataVariable', ...defaultTheme.fontFamily.mono],
     },
     extend: {
-      colors: {
-        ...stateColors,
-        prefect: prefectPalette,
-      },
+      colors: colors,
     },
   },
   plugins: [require('@tailwindcss/line-clamp')],

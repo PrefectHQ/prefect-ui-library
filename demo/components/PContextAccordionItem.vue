@@ -57,7 +57,7 @@
     }
 
     const matchedPaths = route.matched.map(({ name }) => name)
-    const childPaths =  props.children.map(({ to }) => getRouteName(to))
+    const childPaths = props.children.map(({ to }) => getRouteName(to))
 
     return childPaths.some(path => path && matchedPaths.includes(path))
   })
@@ -97,12 +97,15 @@
   font-medium
   w-full
   text-left
-  hover:bg-slate-600
-  active:bg-slate-800
+  hover:bg-primary-800
+  dark:hover:bg-primary-200
+  active:bg-primary-700
+  dark:active:bg-primary-300
 }
 
 .p-context-accordion-item__header--highlighted { @apply
-  bg-white/25
+  bg-primary-900
+  dark:bg-primary-100
 }
 
 .p-context-accordion-item__icon { @apply
@@ -119,7 +122,8 @@
   flex
   flex-col
   rounded-md
-  bg-slate-800
+  bg-foreground-600
+  dark:bg-background-400
   gap-1
   p-1
 }
@@ -134,13 +138,17 @@
   select-none
   font-medium
   cursor-pointer
-  hover:bg-slate-600
-  active:bg-slate-800
-  focus:bg-white/25
+  hover:bg-primary-800
+  dark:hover:bg-primary-200
+  active:bg-primary-700
+  dark:active:bg-primary-300
+  focus:bg-primary-800
+  dark:focus:bg-primary-200
 }
 
 .p-context-accordion-item__content-child--active { @apply
-  bg-white/25
+  bg-primary-900
+  dark:bg-primary-100
 }
 
 .p-context-accordion-item__indicator { @apply
