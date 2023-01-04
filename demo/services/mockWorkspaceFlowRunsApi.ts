@@ -1,7 +1,8 @@
 import { MockApi } from '@/../demo/services/MockApi'
-import { FlowRun, GraphNode, RunHistory, StateUpdate, TimelineNode } from '@/models'
-import { IWorkspaceFlowRunsApi, mocker } from '@/services'
-import { UnionFilters, FlowRunsHistoryFilter } from '@/types'
+import { FlowRun, GraphNode, RunHistory, stateType, StateUpdate, TimelineNode } from '@/models'
+import { IWorkspaceFlowRunsApi, mapper, mocker } from '@/services'
+import { UnionFilters, FlowRunsHistoryFilter, DateString } from '@/types'
+import { dateFunctions } from '@/utilities/timezone'
 
 export class MockWorkspaceFlowRunsApi extends MockApi implements IWorkspaceFlowRunsApi {
 
@@ -26,11 +27,27 @@ export class MockWorkspaceFlowRunsApi extends MockApi implements IWorkspaceFlowR
   }
 
   public getFlowRunsHistory(filter: FlowRunsHistoryFilter): Promise<RunHistory[]> {
-    if (Object.keys(filter).length) {
-      console.warn('MockWorkspaceFlowRunsApi has not implemented the filter argument of the getFlowRunsCount method')
+    let start = mapper.map('string', filter.history_start, 'Date')
+    const end = mapper.map('string', filter.history_end, 'Date')
+    const runHistory: RunHistory[] = []
+
+    while (dateFunctions.isBefore(start, end)) {
+      const intervalEnd = dateFunctions.addSeconds(start, filter.history_interval_seconds)
+
+      runHistory.push({
+        intervalStart: start,
+        intervalEnd,
+        states: stateType.map(stateType => mocker.create('flowRunStateHistory', [
+          {
+            stateType,
+            countRuns: mocker.create('number', [-2, 1]),
+          },
+        ])),
+      })
+      start = intervalEnd
     }
 
-    throw new Error('MockWorkspaceFlowRunsApi has not implemented the getFlowRunsHistory method')
+    return Promise.resolve(runHistory)
   }
 
   public getFlowRunsGraph(): Promise<GraphNode[]> {
