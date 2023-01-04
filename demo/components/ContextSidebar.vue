@@ -34,11 +34,10 @@
 </template>
 
 <script lang="ts" setup>
-  import { PContextNavItem } from '@prefecthq/prefect-design'
+  import { PContextNavItem, PContextAccordionItem } from '@prefecthq/prefect-design'
   import { ref } from 'vue'
   import { RouteLocationRaw, RouteRecordRaw, useRouter } from 'vue-router'
   import { ContextAccordionChildItem } from './contextAccordionChildItem'
-  import PContextAccordionItem from './PContextAccordionItem.vue'
   import { routeRecords } from '@/demo/router'
   import { mobileMenuOpen } from '@/demo/router/menu'
   import { routeRecordsFlat } from '@/demo/router/routeRecordsFlat'
