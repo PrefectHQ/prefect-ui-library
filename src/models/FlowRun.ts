@@ -35,7 +35,8 @@ export interface IFlowRun {
   createdBy: CreatedOrUpdatedBy | null,
   updated: Date,
   workQueueName: string | null,
-  workerPoolQueueId: string | null,
+  workerPoolName: string | null,
+  workerPoolQueueName: string | null,
 }
 
 export class FlowRun implements IFlowRun {
@@ -68,7 +69,8 @@ export class FlowRun implements IFlowRun {
   public created: Date
   public createdBy: CreatedOrUpdatedBy | null
   public updated: Date
-  public workerPoolQueueId: string | null
+  public workerPoolName: string | null
+  public workerPoolQueueName: string | null
 
   public constructor(flowRun: IFlowRun) {
     this.id = flowRun.id
@@ -100,7 +102,8 @@ export class FlowRun implements IFlowRun {
     this.createdBy = flowRun.createdBy
     this.updated = flowRun.updated
     this.workQueueName = flowRun.workQueueName
-    this.workerPoolQueueId = flowRun.workerPoolQueueId
+    this.workerPoolName = flowRun.workerPoolName
+    this.workerPoolQueueName = flowRun.workerPoolQueueName
   }
 
   public get duration(): number {
