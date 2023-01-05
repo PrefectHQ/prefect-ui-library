@@ -13,15 +13,14 @@
 </template>
 
 <script lang="ts" setup>
-  import { PCombobox, SelectOption } from '@prefecthq/prefect-design'
+  import { PCombobox } from '@prefecthq/prefect-design'
   import { useSubscription } from '@prefecthq/vue-compositions'
-  import { computed } from 'vue'
-  import { useFlowRunFilterFromRoute, useWorkspaceApi } from '@/compositions'
+  import { computed, ComputedRef } from 'vue'
+  import { useWorkspaceApi } from '@/compositions'
 
   const props = defineProps<{
     selected: string | string[] | null | undefined,
     emptyMessage?: string,
-    allowUnset?: boolean,
   }>()
 
   const emits = defineEmits<{
@@ -45,9 +44,11 @@
     },
   })
 
-  const { filter } = useFlowRunFilterFromRoute()
-
   const api = useWorkspaceApi()
-  const flowRunsSubscription = useSubscription(api.flowRuns.getFlowRuns, [filter])
+  const flowRunsSubscription = useSubscription(api.flowRuns.getFlowRuns, [])
   const flowRuns = computed(() => flowRunsSubscription.response ?? [])
+
+  const recentFlowRunTags: ComputedRef<string[][]> = computed(() => flowRuns.value.map(run => run.tags ?? []))
+  const tagList = computed(() => recentFlowRunTags.value.flat())
+  const options = computed(() => [...new Set(tagList.value)])
 </script>

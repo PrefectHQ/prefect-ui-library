@@ -35,6 +35,7 @@
   import FlowCombobox from '@/components/FlowCombobox.vue'
   import SearchInput from '@/components/SearchInput.vue'
   import StateNameSelect from '@/components/StateNameSelect.vue'
+  import TagCombobox from '@/components/TagCombobox.vue'
   import WorkQueueCombobox from '@/components/WorkQueueCombobox.vue'
   import { useFlowRunFilterFromRoute } from '@/compositions/useFlowRunFilterFromRoute'
 
