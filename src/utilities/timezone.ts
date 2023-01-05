@@ -5,7 +5,7 @@ import { isDate } from '@/utilities/dates'
 
 export const selectedTimezone = ref<string | null>(null)
 
-export const utcTimezone = '-00:00'
+export const utcTimezone = 'Etc/UTC'
 export function timezoneIsUtc(timezone: string): timezone is typeof utcTimezone {
   return timezone === utcTimezone
 }

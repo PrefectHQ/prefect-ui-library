@@ -1,13 +1,14 @@
 <template>
   <page-heading class="page-heading-work-pools" :crumbs="crumbs">
-    <template v-if="can.create.work_pool" #after-crumbs>
-      <p-button inset size="xs" icon="PlusIcon" :to="routes.workPoolCreate()" />
+    <template #after-crumbs>
+      <BetaBadge />
+      <p-button v-if="can.create.work_pool" inset size="xs" icon="PlusIcon" :to="routes.workPoolCreate()" />
     </template>
   </page-heading>
 </template>
 
 <script lang="ts" setup>
-  import PageHeading from '@/components/PageHeading.vue'
+  import { PageHeading, BetaBadge } from '@/components'
   import { useWorkspaceRoutes, useCan } from '@/compositions'
 
   const crumbs = [{ text: 'Work Pools' }]
