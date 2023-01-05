@@ -1,6 +1,7 @@
 import { Section } from '@/demo/router/routeRecords'
 
 export const blocks: Section = {
+  BlockCapabilityBlockDocumentInput: () => import('./BlockCapabilityBlockDocumentInput.vue'),
   BlockDocumentCard: () => import('./BlockDocumentCard.vue'),
   BlockDocumentInput: () => import('./BlockDocumentInput.vue'),
   BlockDocumentKeyValue: () => import('./BlockDocumentKeyValue.vue'),
