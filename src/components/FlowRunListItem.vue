@@ -29,10 +29,17 @@
             <span>Deployment</span> <DeploymentIconText :deployment-id="flowRun.deploymentId" />
           </div>
         </template>
-        <template v-if="flowRun.workQueueName">
-          <div class="flow-run-list-item__relation">
-            <span>Work Queue</span> <WorkQueueIconText :work-queue-name="flowRun.workQueueName" />
+        <template v-if="flowRun.workQueueName || flowRun.workerPoolName">
+          <div v-if="flowRun.workerPoolName" class="flow-run-list-item__relation">
+            <span>Worker Pool</span>
+            <WorkerPoolIconText :worker-pool-name="flowRun.workerPoolName" />
           </div>
+          <template v-else>
+            <div v-if="flowRun.workQueueName" class="flow-run-list-item__relation">
+              <span>Work Queue</span>
+              <WorkQueueIconText :work-queue-name="flowRun.workQueueName" />
+            </div>
+          </template>
         </template>
       </template>
     </StateListItem>
@@ -50,6 +57,7 @@
   import FlowRunTaskCount from '@/components/FlowRunTaskCount.vue'
   import StateBadge from '@/components/StateBadge.vue'
   import StateListItem from '@/components/StateListItem.vue'
+  import WorkerPoolIconText from '@/components/WorkerPoolIconText.vue'
   import WorkQueueIconText from '@/components/WorkQueueIconText.vue'
   import { useTaskRunsCount, useWorkspaceRoutes } from '@/compositions'
   import { FlowRun } from '@/models/FlowRun'

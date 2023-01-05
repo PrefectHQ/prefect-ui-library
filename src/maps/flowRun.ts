@@ -33,6 +33,7 @@ export const mapFlowRunResponseToFlowRun: MapFunction<FlowRunResponse, FlowRun> 
     createdBy: this.map('CreatedOrUpdatedByResponse', source.created_by, 'CreatedOrUpdatedBy'),
     updated: this.map('string', source.updated, 'Date'),
     workQueueName: source.work_queue_name,
-    workerPoolQueueId: source.worker_pool_queue_id,
+    workerPoolName: source.worker_pool_name,
+    workerPoolQueueName: source.worker_pool_queue_name,
   })
 }
