@@ -1,5 +1,6 @@
 export { default as ActivityChart } from './ActivityChart.vue'
 export { default as BetaBadge } from './BetaBadge.vue'
+export { default as BlockCapabilityBlockDocumentInput } from './BlockCapabilityBlockDocumentInput.vue'
 export { default as BlockDocumentCard } from './BlockDocumentCard.vue'
 export { default as BlockDocumentInput } from './BlockDocumentInput.vue'
 export { default as BlockDocumentKeyValue } from './BlockDocumentKeyValue.vue'
