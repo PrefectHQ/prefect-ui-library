@@ -34,10 +34,12 @@
             <span>Worker Pool</span>
             <WorkerPoolIconText :worker-pool-name="flowRun.workerPoolName" />
           </div>
-          <div v-else class="flow-run-list-item__relation">
-            <span>Work Queue</span>
-            <WorkQueueIconText :work-queue-name="flowRun.workQueueName" />
-          </div>
+          <template v-else>
+            <div v-if="flowRun.workQueueName" class="flow-run-list-item__relation">
+              <span>Work Queue</span>
+              <WorkQueueIconText :work-queue-name="flowRun.workQueueName" />
+            </div>
+          </template>
         </template>
       </template>
     </StateListItem>
