@@ -1,8 +1,15 @@
 <template>
-  <div class="block-capability-block-document-input">
-    <BlockTypeLogo v-if="blockDocument" :block-type="blockDocument.blockType" />
-
-    <BlockDocumentsSelect v-model:selected="internalModalValue" class="block-capability-block-document-input__select" :block-documents="blockDocuments" required />
+  <div class="block-capability-block-document-input" :class="classes" :style="styles" v-bind="listeners">
+    <BlockDocumentsSelect v-model:selected="internalModalValue" class="block-capability-block-document-input__select" :block-documents="blockDocuments" v-bind="attrs" required>
+      <template #default="{ label, value }">
+        <div class="block-capability-block-document-input__option">
+          <template v-if="value === blockDocument?.id">
+            <BlockTypeLogo v-if="blockDocument" :block-type="blockDocument.blockType" class="block-capability-block-document-input__logo" />
+          </template>
+          {{ label }}
+        </div>
+      </template>
+    </BlockDocumentsSelect>
 
     <p-button inset :to="withQuery(routes.blocksCatalog(), { capability })">
       Add <p-icon icon="PlusIcon" />
@@ -10,7 +17,16 @@
   </div>
 </template>
 
+<script lang="ts">
+  export default {
+    name: 'BlockCapabilityBlockDocumentInput',
+    expose: [],
+    inheritAttrs: false,
+  }
+</script>
+
 <script lang="ts" setup>
+  import { useAttrsStylesClassesAndListeners } from '@prefecthq/prefect-design'
   import { useSubscription, useSubscriptionWithDependencies } from '@prefecthq/vue-compositions'
   import { computed, toRefs } from 'vue'
   import BlockDocumentsSelect from '@/components/BlockDocumentsSelect.vue'
@@ -32,6 +48,7 @@
   const { capability } = toRefs(props)
   const api = useWorkspaceApi()
   const routes = useWorkspaceRoutes()
+  const { classes, styles, listeners, attrs } = useAttrsStylesClassesAndListeners()
 
   const internalModalValue = computed({
     get() {
@@ -88,5 +105,16 @@
 
 .block-capability-block-document-input__select { @apply
   grow
+}
+
+.block-capability-block-document-input__option { @apply
+  flex
+  gap-2
+  items-center
+}
+
+.block-capability-block-document-input__logo { @apply
+  w-5
+  h-5
 }
 </style>
