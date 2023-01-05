@@ -19,7 +19,7 @@
         <WorkQueueCombobox v-model:selected="workQueues" empty-message="All work queues" />
       </p-label>
       <p-label label="Tags">
-        <p-tags-input v-model="tags" empty-message="All tags" />
+        <TagCombobox v-model:selected="tags" empty-message="All tags" />
       </p-label>
     </div>
     <p-label class="flow-runs-filter-group__search" label="Search">
