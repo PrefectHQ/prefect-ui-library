@@ -45,7 +45,7 @@
   })
 
   const api = useWorkspaceApi()
-  const flowRunsSubscription = useSubscription(api.flowRuns.getFlowRuns, [])
+  const flowRunsSubscription = useSubscription(api.flowRuns.getFlowRuns, [{}])
   const flowRuns = computed(() => flowRunsSubscription.response ?? [])
 
   const recentFlowRunTags: ComputedRef<string[][]> = computed(() => flowRuns.value.map(run => run.tags ?? []))
