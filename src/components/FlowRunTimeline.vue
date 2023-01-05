@@ -6,6 +6,9 @@
     <FlowRunTimeline
       :graph-data="graphData"
       :is-running="isRunning"
+      :format-time-by-seconds="formatTimeNumeric"
+      :format-time-by-minutes="formatTimeShortNumeric"
+      :format-date="formatDate"
     />
   </div>
 </template>
@@ -17,6 +20,7 @@
   import { BetaBadge } from '@/components'
   import { useWorkspaceApi } from '@/compositions'
   import { FlowRun, isValidTimelineNodeData } from '@/models'
+  import { formatTimeNumeric, formatTimeShortNumeric, formatDate } from '@/utilities'
 
   const props = defineProps<{
     flowRun: FlowRun,

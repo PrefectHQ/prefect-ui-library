@@ -4,6 +4,7 @@ import { dateFunctions, toDate, formatDateInTimezone } from '@/utilities/timezon
 
 const dateTimeNumericFormat = 'yyyy/MM/dd hh:mm:ss a'
 const timeNumericFormat = 'hh:mm:ss a'
+const timeNumericShortFormat = 'hh:mm a'
 const dateFormat = 'MMM do, yyyy'
 
 export {
@@ -60,6 +61,10 @@ export function parseDateTimeNumeric(value: string, reference: Date = new Date()
 
 export function formatTimeNumeric(value: Date | string): string {
   return formatDate(value, timeNumericFormat)
+}
+
+export function formatTimeShortNumeric(value: Date | string): string {
+  return formatDate(value, timeNumericShortFormat)
 }
 
 export function parseTimeNumeric(value: string, reference: Date = new Date()): Date {
