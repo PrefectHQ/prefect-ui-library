@@ -7,9 +7,7 @@
             <ResultsCount v-if="selected.length == 0" label="Queue" :count="workPoolQueues.length" />
             <SelectedCount v-else :count="selected.length" />
 
-            <p-button v-if="can.create.work_pool_queue && !selected.length" inset :to="routes.workPoolQueueCreate(workPoolName)" size="sm">
-              Add Queue
-            </p-button>
+            <p-button v-if="can.create.work_pool_queue && !selected.length" inset size="sm" icon="PlusIcon" :to="routes.workPoolQueueCreate(workPoolName)" />
           </div>
 
           <WorkPoolQueuesDeleteButton :work-pool-name="workPoolName" :work-pool-queues="selected" @delete="handleDelete" />
