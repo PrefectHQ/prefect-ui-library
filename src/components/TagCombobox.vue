@@ -1,5 +1,5 @@
 <template>
-  <p-combobox v-model="internalValue" :options="options" :empty-message="emptyMessage">
+  <p-combobox v-model="internalValue" placeholder="Search or enter new tag" allow-unknown-value :options="options" :empty-message="emptyMessage">
     <template #combobox-options-empty>
       No tags
     </template>
@@ -16,9 +16,8 @@
   import { PCombobox } from '@prefecthq/prefect-design'
   import { useSubscription } from '@prefecthq/vue-compositions'
   import { computed, ComputedRef } from 'vue'
-  import { useWorkspaceApi } from '@/compositions'
-  import { UnionFilters } from '@/types'
-  import { dateFunctions } from '@/utilities/timezone'
+  import { useWorkspaceApi, useFlowRunFilterFromRoute } from '@/compositions'
+
 
   const props = defineProps<{
     selected: string | string[] | null | undefined,
@@ -47,25 +46,10 @@
   })
 
   const api = useWorkspaceApi()
-
-  const defaultStartDate = dateFunctions.subDays(dateFunctions.startOfToday(), 30)
-  const subscriptionOptions = {
-    interval: 30000,
-  }
+  const { filter } = useFlowRunFilterFromRoute()
 
 
-  const recentFlowRunFilter: UnionFilters = computed(() => {
-    const filter = {
-      'flow_runs': {
-        'expected_start_time': {
-          after_: defaultStartDate,
-        },
-      },
-      sort: 'EXPECTED_START_TIME_DESC',
-    }
-    return filter
-  })
-  const flowRunsSubscription = useSubscription(api.flowRuns.getFlowRuns, [recentFlowRunFilter], subscriptionOptions)
+  const flowRunsSubscription = useSubscription(api.flowRuns.getFlowRuns, [filter])
   const flowRuns = computed(() => flowRunsSubscription.response ?? [])
 
   const recentFlowRunTags: ComputedRef<string[][]> = computed(() => flowRuns.value.map(run => run.tags ?? []))
