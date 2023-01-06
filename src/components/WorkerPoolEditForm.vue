@@ -38,7 +38,7 @@
 <script lang="ts" setup>
   import { showToast } from '@prefecthq/prefect-design'
   import { useValidationObserver } from '@prefecthq/vue-compositions'
-  import { computed, ref } from 'vue'
+  import { ref } from 'vue'
   import { useRouter } from 'vue-router'
   import { SubmitButton } from '@/components'
   import { useWorkspaceApi, useWorkspaceRoutes } from '@/compositions'
