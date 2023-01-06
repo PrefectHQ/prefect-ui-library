@@ -21,14 +21,6 @@
         <!-- <WorkerPoolTypeSelect v-model:selected="type" :state="typeState" /> -->
       </p-label>
 
-      <p-label label="Status (Optional)">
-        <p-toggle v-model="isActive">
-          <template #append>
-            {{ isActiveLabel }}
-          </template>
-        </p-toggle>
-      </p-label>
-
       <p-label label="Flow Run Concurrency (Optional)">
         <template #default="{ id }">
           <p-number-input :id="id" v-model="concurrencyLimit" placeholder="Unlimited" :min="0" />
@@ -48,7 +40,7 @@
 <script lang="ts" setup>
   import { showToast } from '@prefecthq/prefect-design'
   import { useValidation, useValidationObserver, ValidationRule } from '@prefecthq/vue-compositions'
-  import { computed, ref } from 'vue'
+  import { ref } from 'vue'
   import { useRouter } from 'vue-router'
   import { SubmitButton } from '@/components'
   import { useWorkspaceApi, useWorkspaceRoutes } from '@/compositions'
@@ -66,8 +58,6 @@
   // const type = ref<string>()
   const type = ref<string>('prefect-agent')
   const concurrencyLimit = ref<number>()
-  const isActive = ref<boolean>(true)
-  const isActiveLabel = computed(() => isActive.value ? 'Active' : 'Paused')
 
   const isRequired: ValidationRule<string | undefined> = (value) => value !== undefined && value.trim().length > 0
 
@@ -90,7 +80,7 @@
         name: name.value,
         description: description.value,
         type: type.value,
-        isPaused: !isActive.value,
+        isPaused: false,
         concurrencyLimit: concurrencyLimit.value,
       }
 
