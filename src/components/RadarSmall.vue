@@ -58,8 +58,7 @@
   })
 
   const getStateColor = (item: Item): string => {
-    const color = item.state?.type ? computedStyle.getPropertyValue(`--state-${item.state?.type}-500`) : computedStyle.getPropertyValue('--log-level-error')
-    console.log({ item, color })
+    const color = computedStyle.getPropertyValue(`--state-${item.state?.type}-500`)
     return color
   }
 </script>
