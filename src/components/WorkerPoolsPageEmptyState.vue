@@ -9,9 +9,8 @@
     </template>
 
     <template #description>
-      Worker pools are API objects with rich configuration that are used to organize and configure worker processes running in potentially remote location
+      Worker pools are API objects used to organize and configure worker processes, which may be running in remote locations.
     </template>
-
     <template #actions>
       <DocumentationButton topic="workerPools" />
       <p-button v-if="can.create.worker_pool" :to="routes.workerPoolCreate()">
