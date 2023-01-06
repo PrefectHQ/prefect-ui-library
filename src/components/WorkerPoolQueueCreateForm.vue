@@ -20,6 +20,12 @@
       </p-label>
 
       <p-label label="Priority" :message="queuePriorityErrorMessage" :state="queuePriorityState">
+        <template #label>
+          <div class="worker-pool-queue-create-form__priority-label">
+            Priority
+            <PriorityDescriptionModal />
+          </div>
+        </template>
         <template #default="{ id }">
           <p-number-input :id="id" v-model="queuePriority" :min="1" :state="queuePriorityState" />
         </template>
@@ -39,7 +45,7 @@
   import { useValidation, useValidationObserver, ValidationRule } from '@prefecthq/vue-compositions'
   import { ref } from 'vue'
   import { useRouter } from 'vue-router'
-  import { SubmitButton } from '@/components'
+  import { SubmitButton, PriorityDescriptionModal } from '@/components'
   import { useWorkspaceApi, useWorkspaceRoutes } from '@/compositions'
   import { localization } from '@/localization'
 
@@ -110,5 +116,11 @@
   px-6
   py-6
   rounded-lg
+}
+
+.worker-pool-queue-create-form__priority-label { @apply
+  flex
+  gap-1
+  items-center
 }
 </style>

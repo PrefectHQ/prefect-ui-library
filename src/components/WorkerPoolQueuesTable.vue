@@ -19,6 +19,13 @@
       </template>
 
       <p-table v-model:selected="selected" :data="filteredWorkerPoolQueues" :columns="columns">
+        <template #priority-heading>
+          <div class="worker-pool-queues-table__priority-heading">
+            Priority
+            <PriorityDescriptionModal />
+          </div>
+        </template>
+
         <template #actions-heading>
           <span />
         </template>
@@ -45,7 +52,7 @@
   import { TableData } from '@prefecthq/prefect-design'
   import { useSubscription } from '@prefecthq/vue-compositions'
   import { ref, computed } from 'vue'
-  import { SearchInput, ResultsCount, SelectedCount, WorkerPoolQueuesDeleteButton, WorkerPoolQueueMenu, WorkersLateIndicator, WorkerPoolQueueToggle } from '@/components'
+  import { SearchInput, ResultsCount, SelectedCount, WorkerPoolQueuesDeleteButton, WorkerPoolQueueMenu, WorkersLateIndicator, WorkerPoolQueueToggle, PriorityDescriptionModal } from '@/components'
   import { useCan, useWorkspaceRoutes, useWorkspaceApi } from '@/compositions'
   import { WorkerPoolQueue } from '@/models'
   import { hasString } from '@/utilities'
@@ -57,10 +64,6 @@
   const api = useWorkspaceApi()
   const can = useCan()
   const routes = useWorkspaceRoutes()
-
-  const emit = defineEmits<{
-    (event: 'update' | 'delete'): void,
-  }>()
 
   const search = ref('')
 
@@ -129,5 +132,11 @@
   items-center
   flex
   gap-2
+}
+
+.worker-pool-queues-table__priority-heading { @apply
+  flex
+  gap-1
+  items-center
 }
 </style>
