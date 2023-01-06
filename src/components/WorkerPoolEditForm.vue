@@ -19,14 +19,6 @@
         </template>
       </p-label>
 
-      <p-label label="Status (Optional)">
-        <p-toggle v-model="isActive">
-          <template #append>
-            {{ isActiveLabel }}
-          </template>
-        </p-toggle>
-      </p-label>
-
       <p-label label="Flow Run Concurrency (Optional)">
         <template #default="{ id }">
           <p-number-input :id="id" v-model="concurrencyLimit" placeholder="Unlimited" :min="0" />
@@ -64,8 +56,6 @@
 
   const description = ref<string | null | undefined>(props.workerPool.description)
   const concurrencyLimit = ref<number | null | undefined>(props.workerPool.concurrencyLimit)
-  const isActive = ref<boolean | undefined>(!props.workerPool.isPaused)
-  const isActiveLabel = computed(() => isActive.value ? 'Active' : 'Paused')
 
   function cancel(): void {
     router.back()
@@ -76,7 +66,6 @@
     if (valid) {
       const values = {
         description: description.value,
-        isPaused: !isActive.value,
         concurrencyLimit: concurrencyLimit.value,
       }
       try {
