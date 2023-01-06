@@ -30,7 +30,11 @@
         </template>
 
         <template #actions="{ row }">
-          <WorkerPoolQueueMenu :worker-pool-name="workerPoolName" :worker-pool-queue="row" size="xs" @delete="handleDelete" />
+          <div class="worker-pool-queues-table__actions">
+            <WorkersLateIndicator :worker-pool-name="workerPoolName" :worker-queue-pool-names="[row.name]" />
+            <WorkerPoolQueueToggle :worker-pool-queue="row" :worker-pool-name="workerPoolName" @update="refresh" />
+            <WorkerPoolQueueMenu :worker-pool-name="workerPoolName" :worker-pool-queue="row" size="xs" @delete="handleDelete" />
+          </div>
         </template>
       </p-table>
     </p-layout-table>
@@ -41,7 +45,7 @@
   import { TableData } from '@prefecthq/prefect-design'
   import { useSubscription } from '@prefecthq/vue-compositions'
   import { ref, computed } from 'vue'
-  import { SearchInput, ResultsCount, SelectedCount, WorkerPoolQueuesDeleteButton, WorkerPoolQueueMenu } from '@/components'
+  import { SearchInput, ResultsCount, SelectedCount, WorkerPoolQueuesDeleteButton, WorkerPoolQueueMenu, WorkersLateIndicator, WorkerPoolQueueToggle } from '@/components'
   import { useCan, useWorkspaceRoutes, useWorkspaceApi } from '@/compositions'
   import { WorkerPoolQueue } from '@/models'
   import { hasString } from '@/utilities'
@@ -53,6 +57,10 @@
   const api = useWorkspaceApi()
   const can = useCan()
   const routes = useWorkspaceRoutes()
+
+  const emit = defineEmits<{
+    (event: 'update' | 'delete'): void,
+  }>()
 
   const search = ref('')
 
@@ -97,6 +105,11 @@
     },
   ]
 
+  function refresh(): void {
+    workerPoolSubscription.refresh()
+    workerPoolQueuesSubscription.refresh()
+  }
+
   const handleDelete = async (): Promise<void> => {
     await workerPoolQueuesSubscription.refresh()
     selected.value = selected.value?.filter(queue => workerPoolQueues.value.find(({ id }) => id === queue.id))
@@ -109,5 +122,12 @@
   flex
   gap-4
   items-center
+}
+
+.worker-pool-queues-table__actions { @apply
+  justify-end
+  items-center
+  flex
+  gap-2
 }
 </style>

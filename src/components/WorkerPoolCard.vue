@@ -9,7 +9,7 @@
       </div>
 
       <div class="worker-pool-card__header-actions">
-        <WorkerPoolLateIndicator :worker-pool-name="workerPool.name" />
+        <WorkersLateIndicator :worker-pool-name="workerPool.name" />
         <WorkerPoolToggle :worker-pool="workerPool" @update="emit('update')" />
         <WorkerPoolMenu :worker-pool="workerPool" @delete="emit('update')" />
       </div>
@@ -39,7 +39,7 @@
 <script lang="ts" setup>
   import { useSubscription } from '@prefecthq/vue-compositions'
   import { computed } from 'vue'
-  import { WorkerPoolMenu, WorkerPoolToggle, ProcessTypeBadge, WorkerPoolLateIndicator } from '@/components'
+  import { WorkerPoolMenu, WorkerPoolToggle, ProcessTypeBadge, WorkersLateIndicator } from '@/components'
   import { useWorkspaceApi, useWorkspaceRoutes } from '@/compositions'
   import { WorkerPool } from '@/models'
   import { now, formatDateTimeRelative } from '@/utilities'
