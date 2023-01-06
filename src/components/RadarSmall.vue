@@ -57,8 +57,8 @@
     return _radar.minimumRings(5).items(graph.value)
   })
 
-  const getStateColor = (item: Item): string => {
-    const color = computedStyle.getPropertyValue(`--state-${item.state?.type}-500`)
+  const getStateColor = (item?: Item): string => {
+    const color = computedStyle.getPropertyValue(`--state-${item?.state?.type}-500`)
     return color
   }
 </script>
@@ -67,5 +67,7 @@
 .radar-small { @apply
   w-full
   h-full
+  bg-background-500/50
+  rounded
 }
 </style>
