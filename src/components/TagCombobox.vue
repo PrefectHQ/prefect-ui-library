@@ -15,7 +15,7 @@
 <script lang="ts" setup>
   import { PCombobox } from '@prefecthq/prefect-design'
   import { useSubscription } from '@prefecthq/vue-compositions'
-  import { computed, ComputedRef } from 'vue'
+  import { computed } from 'vue'
   import { useWorkspaceApi, useFlowRunFilterFromRoute } from '@/compositions'
 
 
@@ -48,11 +48,8 @@
   const api = useWorkspaceApi()
   const { filter } = useFlowRunFilterFromRoute()
 
-
   const flowRunsSubscription = useSubscription(api.flowRuns.getFlowRuns, [filter])
   const flowRuns = computed(() => flowRunsSubscription.response ?? [])
-
-  const recentFlowRunTags: ComputedRef<string[][]> = computed(() => flowRuns.value.map(run => run.tags ?? []))
-  const tagList = computed(() => recentFlowRunTags.value.flat())
+  const tagList = computed(() => flowRuns.value.flatMap(run => run.tags ?? []))
   const options = computed(() => [...new Set(tagList.value)])
 </script>
