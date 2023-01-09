@@ -19,7 +19,7 @@
         <WorkQueueCombobox v-model:selected="workQueues" empty-message="All work queues" />
       </p-label>
       <p-label label="Tags">
-        <TagCombobox v-model:selected="tags" :filter="filter" empty-message="All tags" />
+        <FlowRunTagCombobox v-model:selected="tags" :filter="filter" empty-message="All tags" />
       </p-label>
     </div>
     <p-label class="flow-runs-filter-group__search" label="Search">
@@ -33,9 +33,9 @@
   import DateRangeInputWithFlowRunHistory from '@/components/DateRangeInputWithFlowRunHistory.vue'
   import DeploymentCombobox from '@/components/DeploymentCombobox.vue'
   import FlowCombobox from '@/components/FlowCombobox.vue'
+  import FlowRunTagCombobox from '@/components/FlowRunTagCombobox.vue'
   import SearchInput from '@/components/SearchInput.vue'
   import StateNameSelect from '@/components/StateNameSelect.vue'
-  import TagCombobox from '@/components/TagCombobox.vue'
   import WorkQueueCombobox from '@/components/WorkQueueCombobox.vue'
   import { useFlowRunFilterFromRoute } from '@/compositions/useFlowRunFilterFromRoute'
 
