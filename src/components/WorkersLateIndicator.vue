@@ -19,19 +19,19 @@
   import { toPluralString } from '@/utilities'
 
   const props = defineProps<{
-    workerPoolName: string,
-    workerPoolQueueNames?: string[],
+    workPoolName: string,
+    workPoolQueueNames?: string[],
   }>()
 
-  const workerPoolQueueNames = computed(() => props.workerPoolQueueNames ?? [])
+  const workPoolQueueNames = computed(() => props.workPoolQueueNames ?? [])
 
   const api = useWorkspaceApi()
-  const { workerPoolName } = toRefs(props)
+  const { workPoolName } = toRefs(props)
 
-  const workerPoolScheduledRunsSubscription = useSubscription(api.workerPools.getWorkerPoolScheduledRuns, [workerPoolName.value, { workerPoolQueueNames: workerPoolQueueNames.value }], { interval: 30000 })
-  const workerPoolScheduledRuns = computed(() => workerPoolScheduledRunsSubscription.response ?? [])
+  const workPoolScheduledRunsSubscription = useSubscription(api.workPools.getWorkPoolScheduledRuns, [workPoolName.value, { workPoolQueueNames: workPoolQueueNames.value }], { interval: 30000 })
+  const workPoolScheduledRuns = computed(() => workPoolScheduledRunsSubscription.response ?? [])
 
-  const lateRunsCount = computed(() => workerPoolScheduledRuns.value.filter(run => run.flowRun.stateName === 'Late').length)
+  const lateRunsCount = computed(() => workPoolScheduledRuns.value.filter(run => run.flowRun.stateName === 'Late').length)
 </script>
 
 <style>
