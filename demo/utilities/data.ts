@@ -13,10 +13,10 @@ function hydrateBlockSchema(blockSchema: BlockSchema): BlockSchema {
   })
 }
 
-function hydrateGraph(graph: FlowRunGraphMock): FlowRunGraphMock {
+function hydrateGraph({ id, graph }: FlowRunGraphMock): FlowRunGraphMock {
   return {
-    id: graph.id,
-    graph: graph.graph.map(node => new GraphNode(node)),
+    id,
+    graph: graph.map(node => new GraphNode(node)),
   }
 }
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
