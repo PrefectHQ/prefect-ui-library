@@ -54,5 +54,10 @@ export class MockWorkspaceWorkPoolsApi extends MockApi implements IWorkspaceWork
 
     return await [data]
   }
+
+  public async getWorkPoolLateRuns(workPoolName: string, request: WorkerScheduledFlowRuns): Promise<WorkerScheduledFlowRun[]> {
+    const data = await this.getWorkPoolScheduledRuns(workPoolName, request)
+    return data.filter(run => run.flowRun.stateName === 'Late')
+  }
 }
 

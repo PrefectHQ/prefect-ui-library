@@ -20,6 +20,9 @@
       </p-label>
 
       <p-label label="Priority" :message="queuePriorityErrorMessage" :state="queuePriorityState">
+        <template #label>
+          <WorkPoolQueuePriorityLabel />
+        </template>
         <template #default="{ id }">
           <p-number-input :id="id" v-model="queuePriority" :min="1" :state="queuePriorityState" />
         </template>
@@ -39,7 +42,7 @@
   import { useValidation, useValidationObserver, ValidationRule } from '@prefecthq/vue-compositions'
   import { ref } from 'vue'
   import { useRouter } from 'vue-router'
-  import { SubmitButton } from '@/components'
+  import { SubmitButton, WorkPoolQueuePriorityLabel } from '@/components'
   import { useWorkspaceApi, useWorkspaceRoutes } from '@/compositions'
   import { localization } from '@/localization'
 
