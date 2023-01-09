@@ -19,6 +19,10 @@
       </template>
 
       <p-table v-model:selected="selected" :data="filteredWorkPoolQueues" :columns="columns">
+        <template #priority-heading>
+          <WorkPoolQueuePriorityLabel />
+        </template>
+
         <template #actions-heading>
           <span />
         </template>
@@ -41,7 +45,7 @@
   import { TableData } from '@prefecthq/prefect-design'
   import { useSubscription } from '@prefecthq/vue-compositions'
   import { ref, computed } from 'vue'
-  import { SearchInput, ResultsCount, SelectedCount, WorkPoolQueuesDeleteButton, WorkPoolQueueMenu } from '@/components'
+  import { SearchInput, ResultsCount, SelectedCount, WorkPoolQueuesDeleteButton, WorkPoolQueueMenu, WorkPoolQueuePriorityLabel } from '@/components'
   import { useCan, useWorkspaceRoutes, useWorkspaceApi } from '@/compositions'
   import { WorkPoolQueue } from '@/models'
   import { hasString } from '@/utilities'

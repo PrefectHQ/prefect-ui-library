@@ -208,6 +208,7 @@ export { default as WorkPoolQueueCreateForm } from './WorkPoolQueueCreateForm.vu
 export { default as WorkPoolQueueDetails } from './WorkPoolQueueDetails.vue'
 export { default as WorkPoolQueueEditForm } from './WorkPoolQueueEditForm.vue'
 export { default as WorkPoolQueueMenu } from './WorkPoolQueueMenu.vue'
+export { default as WorkPoolQueuePriorityLabel } from './WorkPoolQueuePriorityLabel.vue'
 export { default as WorkPoolQueuesDeleteButton } from './WorkPoolQueuesDeleteButton.vue'
 export { default as WorkPoolQueuesTable } from './WorkPoolQueuesTable.vue'
 export { default as WorkPoolQueueToggle } from './WorkPoolQueueToggle.vue'
