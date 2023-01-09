@@ -1,11 +1,10 @@
 <template>
   <div class="help-icon-modal">
     {{ title }}
-    <p-icon class="help-icon-modal__icon" v-bind="attrs" icon="QuestionMarkCircleIcon" solid @click.stop.prevent="open" />
-
+    <p-icon class="help-icon-modal__icon" v-bind="attrs" :icon="icon" solid @click.stop.prevent="open" />
 
     <p-modal v-model:show-modal="showModal" :title="title">
-      {{ description }}
+      <slot name="description" />
 
       <slot name="content" />
 
@@ -30,7 +29,7 @@
 
   defineProps<{
     title: string,
-    description: string,
+    icon: string,
   }>()
 
   const attrs = useAttrs()
