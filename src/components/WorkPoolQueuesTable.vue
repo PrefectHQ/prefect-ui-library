@@ -34,7 +34,11 @@
         </template>
 
         <template #actions="{ row }">
-          <WorkPoolQueueMenu :work-pool-name="workPoolName" :work-pool-queue="row" size="xs" @delete="handleDelete" />
+          <div class="worker-pool-queues-table__actions">
+            <WorkersLateIndicator :work-pool-name="workPoolName" :work-queue-pool-names="[row.name]" />
+            <WorkPoolQueueToggle :work-pool-queue="row" :work-pool-name="workPoolName" @update="refresh" />
+            <WorkPoolQueueMenu :work-pool-name="workPoolName" :work-pool-queue="row" size="xs" @delete="handleDelete" />
+          </div>
         </template>
       </p-table>
     </p-layout-table>
@@ -45,7 +49,7 @@
   import { TableData } from '@prefecthq/prefect-design'
   import { useSubscription } from '@prefecthq/vue-compositions'
   import { ref, computed } from 'vue'
-  import { SearchInput, ResultsCount, SelectedCount, WorkPoolQueuesDeleteButton, WorkPoolQueueMenu, WorkPoolQueuePriorityLabel } from '@/components'
+  import { SearchInput, ResultsCount, SelectedCount, WorkPoolQueuesDeleteButton, WorkPoolQueueMenu, WorkPoolQueuePriorityLabel, WorkersLateIndicator, WorkPoolQueueToggle } from '@/components'
   import { useCan, useWorkspaceRoutes, useWorkspaceApi } from '@/compositions'
   import { WorkPoolQueue } from '@/models'
   import { hasString } from '@/utilities'
@@ -105,6 +109,11 @@
     await workPoolQueuesSubscription.refresh()
     selected.value = selected.value?.filter(queue => workPoolQueues.value.find(({ id }) => id === queue.id))
   }
+
+  function refresh(): void {
+    workPoolSubscription.refresh()
+    workPoolQueuesSubscription.refresh()
+  }
 </script>
 
 <style>
@@ -113,5 +122,12 @@
   flex
   gap-4
   items-center
+}
+
+.worker-pool-queues-table__actions { @apply
+  justify-end
+  items-center
+  flex
+  gap-2
 }
 </style>

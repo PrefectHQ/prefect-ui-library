@@ -1,6 +1,6 @@
 <template>
-  <p-tag v-if="lateRunsCount" class="workers-late-indicator">
-    {{ lateRunsCount }} {{ toPluralString('Late run', lateRunsCount) }}
+  <p-tag v-if="workPoolLateRunsCount" class="workers-late-indicator">
+    {{ workPoolLateRunsCount }} {{ toPluralString('Late run', workPoolLateRunsCount) }}
   </p-tag>
 </template>
 
@@ -28,10 +28,8 @@
   const api = useWorkspaceApi()
   const { workPoolName } = toRefs(props)
 
-  const workPoolScheduledRunsSubscription = useSubscription(api.workPools.getWorkPoolScheduledRuns, [workPoolName.value, { workPoolQueueNames: workPoolQueueNames.value }], { interval: 30000 })
-  const workPoolScheduledRuns = computed(() => workPoolScheduledRunsSubscription.response ?? [])
-
-  const lateRunsCount = computed(() => workPoolScheduledRuns.value.filter(run => run.flowRun.stateName === 'Late').length)
+  const workPoolLateRunsSubscription = useSubscription(api.workPools.getWorkPoolLateRuns, [workPoolName.value, { workPoolQueueNames: workPoolQueueNames.value }], { interval: 30000 })
+  const workPoolLateRunsCount = computed(() => workPoolLateRunsSubscription.response?.length)
 </script>
 
 <style>

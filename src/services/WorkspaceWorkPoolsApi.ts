@@ -11,6 +11,7 @@ export interface IWorkspaceWorkPoolsApi {
   resumeWorkPool: (workPoolName: string) => Promise<void>,
   deleteWorkPool: (workPoolName: string) => Promise<void>,
   getWorkPoolScheduledRuns: (workPoolName: string, request: WorkerScheduledFlowRuns) => Promise<WorkerScheduledFlowRun[]>,
+  getWorkPoolLateRuns: (workPoolName: string, request: WorkerScheduledFlowRuns) => Promise<WorkerScheduledFlowRun[]>,
 }
 
 export class WorkspaceWorkPoolsApi extends WorkspaceApi implements IWorkspaceWorkPoolsApi {
@@ -59,5 +60,11 @@ export class WorkspaceWorkPoolsApi extends WorkspaceApi implements IWorkspaceWor
     const { data } = await this.post<WorkerScheduledFlowRunResponse[]>(`/${name}/get_scheduled_flow_runs`, body)
 
     return mapper.map('WorkerScheduledFlowRunResponse', data, 'WorkerScheduledFlowRun')
+  }
+
+  public async getWorkPoolLateRuns(name: string, request: WorkerScheduledFlowRuns): Promise<WorkerScheduledFlowRun[]> {
+    const data = await this.getWorkPoolScheduledRuns(name, request)
+
+    return data.filter(run => run.flowRun.stateName === 'Late')
   }
 }
