@@ -20,10 +20,7 @@
 
       <p-table v-model:selected="selected" :data="filteredWorkerPoolQueues" :columns="columns">
         <template #priority-heading>
-          <div class="worker-pool-queues-table__priority-heading">
-            Priority
-            <PriorityDescriptionModal />
-          </div>
+          <HelpIconModal title="Priority" description="Priority specifies how Prefect prioritizes the delivery of work — more precisely, execution of flow runs among worker pools. Priority must be a unique, positive integer. Lower numbers indicate higher pool priorities. For example, 1 is the highest priority queue and its flow run execution takes precedence over any lower-priority pool. 10 is a lower priority queue than 1, and 100 is lower priority than both 1 and 10. If you specify a priority that already exists, the new priority supersedes any previously set priority on a worker pool." />
         </template>
 
         <template #actions-heading>
@@ -52,7 +49,7 @@
   import { TableData } from '@prefecthq/prefect-design'
   import { useSubscription } from '@prefecthq/vue-compositions'
   import { ref, computed } from 'vue'
-  import { SearchInput, ResultsCount, SelectedCount, WorkerPoolQueuesDeleteButton, WorkerPoolQueueMenu, WorkersLateIndicator, WorkerPoolQueueToggle, PriorityDescriptionModal } from '@/components'
+  import { SearchInput, ResultsCount, SelectedCount, WorkerPoolQueuesDeleteButton, WorkerPoolQueueMenu, WorkersLateIndicator, WorkerPoolQueueToggle, HelpIconModal } from '@/components'
   import { useCan, useWorkspaceRoutes, useWorkspaceApi } from '@/compositions'
   import { WorkerPoolQueue } from '@/models'
   import { hasString } from '@/utilities'
@@ -132,11 +129,5 @@
   items-center
   flex
   gap-2
-}
-
-.worker-pool-queues-table__priority-heading { @apply
-  flex
-  gap-1
-  items-center
 }
 </style>

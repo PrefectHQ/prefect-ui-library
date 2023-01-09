@@ -21,10 +21,7 @@
 
       <p-label label="Priority" :message="queuePriorityErrorMessage" :state="queuePriorityState">
         <template #label>
-          <div class="worker-pool-queue-create-form__priority-label">
-            Priority
-            <PriorityDescriptionModal />
-          </div>
+          <HelpIconModal title="Priority" description="Priority specifies how Prefect prioritizes the delivery of work — more precisely, execution of flow runs among worker pools. Priority must be a unique, positive integer. Lower numbers indicate higher pool priorities. For example, 1 is the highest priority queue and its flow run execution takes precedence over any lower-priority pool. 10 is a lower priority queue than 1, and 100 is lower priority than both 1 and 10. If you specify a priority that already exists, the new priority supersedes any previously set priority on a worker pool." />
         </template>
         <template #default="{ id }">
           <p-number-input :id="id" v-model="queuePriority" :min="1" :state="queuePriorityState" />
@@ -45,7 +42,7 @@
   import { useValidation, useValidationObserver, ValidationRule } from '@prefecthq/vue-compositions'
   import { ref } from 'vue'
   import { useRouter } from 'vue-router'
-  import { SubmitButton, PriorityDescriptionModal } from '@/components'
+  import { SubmitButton, HelpIconModal } from '@/components'
   import { useWorkspaceApi, useWorkspaceRoutes } from '@/compositions'
   import { localization } from '@/localization'
 
@@ -116,11 +113,5 @@
   px-6
   py-6
   rounded-lg
-}
-
-.worker-pool-queue-create-form__priority-label { @apply
-  flex
-  gap-1
-  items-center
 }
 </style>
