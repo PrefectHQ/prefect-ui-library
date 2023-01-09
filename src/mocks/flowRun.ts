@@ -35,8 +35,8 @@ export const randomFlowRun: MockFunction<FlowRun, [Partial<FlowRun>?]> = functio
     createdBy: this.create('createdOrUpdatedBy'),
     updated: this.create('date'),
     workQueueName: random() > 0.7 ? this.create('noun') : null,
-    workerPoolName: random() > 0.7 ? this.create('noun') : null,
-    workerPoolQueueName: random() > 0.7 ? this.create('noun') : null,
+    workPoolName: random() > 0.7 ? this.create('noun') : null,
+    workPoolQueueName: random() > 0.7 ? this.create('noun') : null,
     ...overrides,
   })
 }

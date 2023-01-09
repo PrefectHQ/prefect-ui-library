@@ -1,18 +1,18 @@
 <template>
   <ComponentPage title="Worker Table">
-    <WorkersTable :worker-pool-name="workerPool.name" />
+    <WorkersTable :work-pool-name="workPool.name" />
   </ComponentPage>
 </template>
 
 <script lang="ts" setup>
   import { WorkersTable } from '@/components'
   import ComponentPage from '@/demo/components/ComponentPage.vue'
-  import { useWorkerPoolMock } from '@/demo/compositions/useWorkerPoolMock'
+  import { useWorkPoolMock } from '@/demo/compositions/useWorkPoolMock'
   import { useWorkersMock } from '@/demo/compositions/useWorkersMock'
 
-  const workerPool = useWorkerPoolMock()
+  const workPool = useWorkPoolMock()
 
   useWorkersMock(5, () => ({
-    workerPoolId: workerPool.id,
+    workPoolId: workPool.id,
   }))
 </script>

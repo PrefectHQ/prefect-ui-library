@@ -18,10 +18,10 @@ export type UseFilterArgs<T = FilterSortValues> = {
   sort?: MaybeRef<T>,
   name?: MaybeRef<string>,
   workQueues?: MaybeRef<string[]>,
-  workerPools?: MaybeRef<string[]>,
-  workerPoolName?: MaybeRef<string[]>,
-  workerPoolQueues?: MaybeRef<string[]>,
-  workerPoolQueueName?: MaybeRef<string[]>,
+  workPools?: MaybeRef<string[]>,
+  workPoolName?: MaybeRef<string[]>,
+  workPoolQueues?: MaybeRef<string[]>,
+  workPoolQueueName?: MaybeRef<string[]>,
 }
 
 export function useFilter(filters: MaybeRef<UseFilterArgs>): ComputedRef<UnionFilters> {
@@ -39,10 +39,10 @@ export function useFilter(filters: MaybeRef<UseFilterArgs>): ComputedRef<UnionFi
     const sort = ref(filtersRef.value.sort)
     const name = ref(filtersRef.value.name)
     const workQueues = ref(filtersRef.value.workQueues)
-    const workerPools = ref(filtersRef.value.workerPools)
-    const workerPoolName = ref(filtersRef.value.workerPoolName)
-    const workerPoolQueues = ref(filtersRef.value.workerPoolQueues)
-    const workerPoolQueueName = ref(filtersRef.value.workerPoolQueueName)
+    const workPools = ref(filtersRef.value.workPools)
+    const workPoolName = ref(filtersRef.value.workPoolName)
+    const workPoolQueues = ref(filtersRef.value.workPoolQueues)
+    const workPoolQueueName = ref(filtersRef.value.workPoolQueueName)
 
     const response: UnionFilters = {}
 
@@ -126,32 +126,32 @@ export function useFilter(filters: MaybeRef<UseFilterArgs>): ComputedRef<UnionFi
       response.flow_runs.work_queue_name.any_ = workQueues.value
     }
 
-    if (workerPools.value?.length) {
-      response.worker_pools ??= {}
-      response.worker_pools.id ??= {}
+    if (workPools.value?.length) {
+      response.work_pools ??= {}
+      response.work_pools.id ??= {}
 
-      response.worker_pools.id.any_ = workerPools.value
+      response.work_pools.id.any_ = workPools.value
     }
 
-    if (workerPoolName.value?.length) {
-      response.worker_pools ??= {}
-      response.worker_pools.name ??= {}
+    if (workPoolName.value?.length) {
+      response.work_pools ??= {}
+      response.work_pools.name ??= {}
 
-      response.worker_pools.name.any_ = workerPoolName.value
+      response.work_pools.name.any_ = workPoolName.value
     }
 
-    if (workerPoolQueues.value?.length) {
-      response.worker_pool_queues ??= {}
-      response.worker_pool_queues.id ??= {}
+    if (workPoolQueues.value?.length) {
+      response.work_pool_queues ??= {}
+      response.work_pool_queues.id ??= {}
 
-      response.worker_pool_queues.id.any_ = workerPoolQueues.value
+      response.work_pool_queues.id.any_ = workPoolQueues.value
     }
 
-    if (workerPoolQueueName.value?.length) {
-      response.worker_pool_queues ??= {}
-      response.worker_pool_queues.name ??= {}
+    if (workPoolQueueName.value?.length) {
+      response.work_pool_queues ??= {}
+      response.work_pool_queues.name ??= {}
 
-      response.worker_pool_queues.name.any_ = workerPoolQueueName.value
+      response.work_pool_queues.name.any_ = workPoolQueueName.value
     }
 
     return response

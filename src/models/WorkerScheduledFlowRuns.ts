@@ -1,5 +1,5 @@
 export type WorkerScheduledFlowRuns = Partial<{
-  workerPoolQueueNames: string[],
+  workPoolQueueNames: string[],
   scheduledBefore: string,
   scheduledAfter: string,
   limit: number,
