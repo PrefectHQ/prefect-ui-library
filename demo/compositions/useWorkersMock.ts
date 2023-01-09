@@ -1,38 +1,38 @@
 import { useSeeds } from './useSeeds'
-import { useWorkerPoolMock } from './useWorkerPoolMock'
-import { WorkerPoolWorker } from '@/models'
+import { useWorkPoolMock } from './useWorkPoolMock'
+import { WorkPoolWorker } from '@/models'
 import { mocker } from '@/services'
 import { repeat } from '@/utilities'
 
 
-export function useWorkerMock(override?: Partial<WorkerPoolWorker>): WorkerPoolWorker {
-  const workerPool = useWorkerPoolMock()
-  const worker = mocker.create('worker', [{ ...override, workerPoolId: workerPool.id }])
+export function useWorkerMock(override?: Partial<WorkPoolWorker>): WorkPoolWorker {
+  const workPool = useWorkPoolMock()
+  const worker = mocker.create('worker', [{ ...override, workPoolId: workPool.id }])
 
   useSeeds({
-    workerPoolWorkers: [worker],
-    workerPools: [workerPool],
+    workPoolWorkers: [worker],
+    workPools: [workPool],
   })
 
   return worker
 }
 
-export function useWorkersMock(count: number, override?: () => Partial<WorkerPoolWorker>): WorkerPoolWorker[] {
-  const workerPool = useWorkerPoolMock()
+export function useWorkersMock(count: number, override?: () => Partial<WorkPoolWorker>): WorkPoolWorker[] {
+  const workPool = useWorkPoolMock()
 
-  const workerPoolWorkers = repeat(count, () => {
+  const workPoolWorkers = repeat(count, () => {
     return mocker.create('worker', [
       {
-        workerPoolId: workerPool.id,
+        workPoolId: workPool.id,
         ...override?.(),
       },
     ])
   })
 
   useSeeds({
-    workerPools: [workerPool],
-    workerPoolWorkers,
+    workPools: [workPool],
+    workPoolWorkers,
   })
 
-  return workerPoolWorkers
+  return workPoolWorkers
 }

@@ -9,12 +9,12 @@ import { MockWorkspaceDeploymentsApi } from '../services/mockWorkspaceDeployment
 import { MockWorkspaceFlowRunsApi } from '../services/mockWorkspaceFlowRunsApi'
 import { MockWorkspaceFlowsApi } from '../services/mockWorkspaceFlowsApi'
 import { MockWorkspaceTaskRunsApi } from '../services/mockWorkspaceTaskRunsApi'
-import { MockWorkspaceWorkerPoolQueuesApi } from '../services/mockWorkspaceWorkerPoolQueuesApi'
-import { MockWorkspaceWorkerPoolsApi } from '../services/mockWorkspaceWorkerPoolsApi'
-import { MockWorkspaceWorkerPoolWorkerApi } from '../services/mockWorkspaceWorkerPoolWorkerApi'
+import { MockWorkspaceWorkPoolQueuesApi } from '../services/mockWorkspaceWorkPoolQueuesApi'
+import { MockWorkspaceWorkPoolsApi } from '../services/mockWorkspaceWorkPoolsApi'
+import { MockWorkspaceWorkPoolWorkerApi } from '../services/mockWorkspaceWorkPoolWorkerApi'
 import { MockWorkspaceWorkQueuesApi } from '../services/mockWorkspaceWorkQueuesApi'
 import { FlowRunGraphMock } from '@/demo/types/flowRunGraphMock'
-import { BlockDocument, BlockSchema, BlockType, Deployment, Flow, FlowRun, TaskRun, WorkerPool, WorkerPoolQueue, WorkQueue, WorkerPoolWorker, GraphNode } from '@/models'
+import { BlockDocument, BlockSchema, BlockType, Deployment, Flow, FlowRun, TaskRun, WorkPool, WorkPoolQueue, WorkQueue, WorkPoolWorker } from '@/models'
 import { ConcurrencyLimit } from '@/models/ConcurrencyLimit'
 import { CreateApi, workspaceApiKey } from '@/utilities'
 
@@ -30,9 +30,9 @@ export type ApiMockSeeds = {
   deployments?: Deployment[],
   workQueues?: WorkQueue[],
   blockCapabilities?: string[],
-  workerPools?: WorkerPool[],
-  workerPoolQueues?: WorkerPoolQueue[],
-  workerPoolWorkers?: WorkerPoolWorker[],
+  workPools?: WorkPool[],
+  workPoolQueues?: WorkPoolQueue[],
+  workPoolWorkers?: WorkPoolWorker[],
 }
 
 function createApiMock(): Partial<CreateApi> {
@@ -47,9 +47,9 @@ function createApiMock(): Partial<CreateApi> {
     taskRuns: createActions(new MockWorkspaceTaskRunsApi()),
     deployments: createActions(new MockWorkspaceDeploymentsApi()),
     workQueues: createActions(new MockWorkspaceWorkQueuesApi()),
-    workerPools: createActions(new MockWorkspaceWorkerPoolsApi()),
-    workerPoolQueues: createActions(new MockWorkspaceWorkerPoolQueuesApi()),
-    workerPoolWorkers: createActions(new MockWorkspaceWorkerPoolWorkerApi()),
+    workPools: createActions(new MockWorkspaceWorkPoolsApi()),
+    workPoolQueues: createActions(new MockWorkspaceWorkPoolQueuesApi()),
+    workPoolWorkers: createActions(new MockWorkspaceWorkPoolWorkerApi()),
   }
 }
 
