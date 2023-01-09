@@ -50,8 +50,7 @@
 }
 
 .state-badge--flat { @apply
-  p-0
   bg-transparent
-  text-background-700
+  text-foreground
 }
 </style>
