@@ -24,6 +24,8 @@
   import { useColorTheme, toPixels } from '@prefecthq/prefect-design'
   import { computed, ref, nextTick } from 'vue'
   import ResizeIcon from '@/demo/components/ResizeIcon.svg'
+  import { activeColorMode } from '@/demo/utilities/colorMode'
+  import { getColorModeClass } from '@/utilities'
 
   const container = ref<HTMLDivElement>()
   const dragging = ref(false)
@@ -37,6 +39,7 @@
 
   const classes = computed(() => ({
     content: {
+      [getColorModeClass(activeColorMode.value)]: true,
       'dark': colorTheme.value === 'dark',
       'light': colorTheme.value === 'light',
       'bg-background-700': colorTheme.value === 'light',
