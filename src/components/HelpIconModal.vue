@@ -2,17 +2,20 @@
   <div class="help-icon-modal">
     {{ title }}
     <p-icon class="help-icon-modal__icon" v-bind="attrs" icon="QuestionMarkCircleIcon" solid @click.stop.prevent="open" />
+
+
+    <p-modal v-model:show-modal="showModal" :title="title">
+      {{ description }}
+
+      <slot name="content" />
+
+      <template #cancel>
+        <p-button inset @click="showModal = false">
+          Close
+        </p-button>
+      </template>
+    </p-modal>
   </div>
-
-  <p-modal v-model:show-modal="showModal" :title="title">
-    {{ description }}
-
-    <template #cancel>
-      <p-button inset @click="showModal = false">
-        Close
-      </p-button>
-    </template>
-  </p-modal>
 </template>
 
 <script lang="ts">
