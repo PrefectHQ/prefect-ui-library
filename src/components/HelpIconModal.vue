@@ -4,9 +4,7 @@
     <p-icon class="help-icon-modal__icon" v-bind="attrs" :icon="icon" solid @click.stop.prevent="open" />
 
     <p-modal v-model:show-modal="showModal" :title="title">
-      <slot name="description" />
-
-      <slot name="content" />
+      <slot />
 
       <template #cancel>
         <p-button inset @click="showModal = false">
