@@ -87,9 +87,9 @@
 .radar-node {
   @apply
   shadow
-  bg-white
+  bg-background
   hover:shadow-md
-  focus:bg-slate-50
+  focus:bg-background-600
   focus:outline
   flex
   relative
@@ -103,6 +103,7 @@
   flex-col
   justify-between
   p-2
+  min-w-0
 }
 
 .radar-node__aside {
@@ -119,6 +120,10 @@
   flex
   justify-between
   items-center
+  flex-wrap
+  text-ellipsis
+  overflow-hidden
+  max-w-full
 }
 
 .radar-node__collapse-link {

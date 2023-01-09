@@ -86,7 +86,8 @@
 .radar-node-sub-flow-run__collapsed-badge { @apply
   text-xs
   text-white
-  bg-slate-600
+  bg-background-300
+  dark:bg-background-600
   p-1
   rounded-full
   min-w-[24px]

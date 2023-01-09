@@ -46,11 +46,12 @@
 .state-badge__icon { @apply
   w-4
   h-4
+  text-inherit
 }
 
 .state-badge--flat { @apply
   p-0
   bg-transparent
-  text-slate-700
+  text-background-700
 }
 </style>

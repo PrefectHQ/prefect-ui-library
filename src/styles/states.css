@@ -2,44 +2,60 @@
 .state--completed { @apply
   bg-state-completed-50
   text-state-completed-600
+  dark:bg-state-completed-600
+  dark:text-state-completed-50
 }
 
 .state--running { @apply
   bg-state-running-100
   text-state-running-700
+  dark:bg-state-running-700
+  dark:text-state-running-100
 }
 
 .state--scheduled { @apply
   bg-state-scheduled-100
   text-state-scheduled-700
+  dark:bg-state-scheduled-700
+  dark:text-state-scheduled-100
 }
 
 .state--pending { @apply
   bg-state-pending-300
   text-state-pending-800
+  dark:bg-state-pending-800
+  dark:text-state-pending-300
 }
 
 .state--paused { @apply
   bg-state-paused-300
   text-state-paused-800
+  dark:bg-state-paused-800
+  dark:text-state-paused-300
 }
 
 .state--failed { @apply
   bg-state-failed-50
   text-state-failed-700
+  dark:bg-state-failed-700
+  dark:text-state-failed-50
 }
 
 .state--cancelled { @apply
   bg-state-cancelled-100
   text-state-cancelled-600
+  dark:bg-state-cancelled-600
+  dark:text-state-cancelled-100
 }
 
 .state--crashed { @apply
   bg-state-crashed-50
   text-state-crashed-600
+  dark:bg-state-crashed-600
+  dark:text-state-crashed-50
 }
 
 .state--unknown { @apply
-  bg-slate-300
-  text-slate-700
+  bg-background-300
+  text-foreground-700
 }
