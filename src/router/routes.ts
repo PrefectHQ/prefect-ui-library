@@ -36,13 +36,13 @@ export function createWorkspaceRoutes(config?: CreateWorkspaceRoutesConfig) {
     notificationEdit: (notificationId: string) => ({ name: 'workspace.notifications.notification-edit', params: { notificationId, ...config } }) as const,
     concurrencyLimit: (concurrencyLimitId: string) => ({ name: 'workspace.concurrency-limits.concurrency-limit', params: { concurrencyLimitId, ...config } }) as const,
     concurrencyLimits: () => ({ name: 'workspace.concurrency-limits', params: { ...config } }) as const,
-    workerPools: () => ({ name: 'workspace.worker-pools', params: { ...config } }) as const,
-    workerPool: (workerPoolName: string) => ({ name: 'workspace.worker-pools.worker-pool', params: { workerPoolName, ...config } }) as const,
-    workerPoolCreate: () => ({ name: 'workspace.worker-pools.worker-pool-create', params: { ...config } }) as const,
-    workerPoolEdit: (workerPoolName: string) => ({ name: 'workspace.worker-pools.worker-pool-edit', params: { workerPoolName, ...config } }) as const,
-    workerPoolQueue: (workerPoolName: string, workerPoolQueueName: string) => ({ name: 'workspace.worker-pools.worker-pool.worker-pool-queue', params: { workerPoolName, workerPoolQueueName, ...config } }) as const,
-    workerPoolQueueCreate: (workerPoolName: string) => ({ name: 'workspace.worker-pools.worker-pool.worker-pool-queue-create', params: { workerPoolName, ...config } }) as const,
-    workerPoolQueueEdit: (workerPoolName: string, workerPoolQueueName: string) => ({ name: 'workspace.worker-pools.worker-pool.worker-pool-queue-edit', params: { workerPoolName, workerPoolQueueName, ...config } }) as const,
+    workPools: () => ({ name: 'workspace.work-pools', params: { ...config } }) as const,
+    workPool: (workPoolName: string) => ({ name: 'workspace.work-pools.work-pool', params: { workPoolName, ...config } }) as const,
+    workPoolCreate: () => ({ name: 'workspace.work-pools.work-pool-create', params: { ...config } }) as const,
+    workPoolEdit: (workPoolName: string) => ({ name: 'workspace.work-pools.work-pool-edit', params: { workPoolName, ...config } }) as const,
+    workPoolQueue: (workPoolName: string, workPoolQueueName: string) => ({ name: 'workspace.work-pools.work-pool.work-pool-queue', params: { workPoolName, workPoolQueueName, ...config } }) as const,
+    workPoolQueueCreate: (workPoolName: string) => ({ name: 'workspace.work-pools.work-pool.work-pool-queue-create', params: { workPoolName, ...config } }) as const,
+    workPoolQueueEdit: (workPoolName: string, workPoolQueueName: string) => ({ name: 'workspace.work-pools.work-pool.work-pool-queue-edit', params: { workPoolName, workPoolQueueName, ...config } }) as const,
   }
 }
 
@@ -274,64 +274,64 @@ export function createWorkspaceRouteRecords(components: Partial<WorkspaceRouteCo
       ],
     },
     {
-      path: 'worker-pools',
+      path: 'work-pools',
       meta: {
-        can: 'read:worker_pool',
+        can: 'read:work_pool',
       },
       children: [
         {
-          name: 'workspace.worker-pools',
+          name: 'workspace.work-pools',
           path: '',
-          component: components.workerPools,
+          component: components.workPools,
         },
         {
-          path: 'worker-pool/:workerPoolName',
+          path: 'work-pool/:workPoolName',
           children: [
             {
-              name: 'workspace.worker-pools.worker-pool',
+              name: 'workspace.work-pools.work-pool',
               path: '',
-              component: components.workerPool,
+              component: components.workPool,
             },
             {
-              name: 'workspace.worker-pools.worker-pool.worker-pool-queue',
-              path: 'queue/:workerPoolQueueName',
-              component: components.workerPoolQueue,
+              name: 'workspace.work-pools.work-pool.work-pool-queue',
+              path: 'queue/:workPoolQueueName',
+              component: components.workPoolQueue,
               meta: {
-                can: 'read:worker_pool_queue',
+                can: 'read:work_pool_queue',
               },
             },
             {
-              name: 'workspace.worker-pools.worker-pool.worker-pool-queue-create',
+              name: 'workspace.work-pools.work-pool.work-pool-queue-create',
               path: 'queue/create',
-              component: components.workerPoolQueueCreate,
+              component: components.workPoolQueueCreate,
               meta: {
-                can: 'create:worker_pool_queue',
+                can: 'create:work_pool_queue',
               },
             },
             {
-              name: 'workspace.worker-pools.worker-pool.worker-pool-queue-edit',
-              path: 'queue/:workerPoolQueueName/edit',
-              component: components.workerPoolQueueEdit,
+              name: 'workspace.work-pools.work-pool.work-pool-queue-edit',
+              path: 'queue/:workPoolQueueName/edit',
+              component: components.workPoolQueueEdit,
               meta: {
-                can: 'update:worker_pool_queue',
+                can: 'update:work_pool_queue',
               },
             },
           ],
         },
         {
-          name: 'workspace.worker-pools.worker-pool-create',
+          name: 'workspace.work-pools.work-pool-create',
           path: 'create',
-          component: components.workerPoolCreate,
+          component: components.workPoolCreate,
           meta: {
-            can: 'create:worker_pool',
+            can: 'create:work_pool',
           },
         },
         {
-          name: 'workspace.worker-pools.worker-pool-edit',
-          path: 'worker-pool/:workerPoolName/edit',
-          component: components.workerPoolEdit,
+          name: 'workspace.work-pools.work-pool-edit',
+          path: 'work-pool/:workPoolName/edit',
+          component: components.workPoolEdit,
           meta: {
-            can: 'update:worker_pool',
+            can: 'update:work_pool',
           },
         },
       ],

@@ -1,48 +1,48 @@
 <template>
   <ComponentPage title="Worker Headings" :demos="demos">
-    <template #worker-pools>
-      <PageHeadingWorkerPools />
+    <template #work-pools>
+      <PageHeadingWorkPools />
     </template>
-    <template #worker-pool>
-      <PageHeadingWorkerPool :worker-pool="workerPool" />
+    <template #work-pool>
+      <PageHeadingWorkPool :work-pool="workPool" />
     </template>
-    <template #worker-pool-create>
-      <PageHeadingWorkerPoolCreate :worker-pool="workerPool" />
+    <template #work-pool-create>
+      <PageHeadingWorkPoolCreate :work-pool="workPool" />
     </template>
-    <template #worker-pool-edit>
-      <PageHeadingWorkerPoolEdit :worker-pool="workerPool" />
+    <template #work-pool-edit>
+      <PageHeadingWorkPoolEdit :work-pool="workPool" />
     </template>
-    <template #worker-pool-queue>
-      <PageHeadingWorkerPoolQueue :worker-pool-queue="workerPoolQueue" :worker-pool-name="workerPool.name" />
+    <template #work-pool-queue>
+      <PageHeadingWorkPoolQueue :work-pool-queue="workPoolQueue" :work-pool-name="workPool.name" />
     </template>
-    <template #worker-pool-queue-create>
-      <PageHeadingWorkerPoolQueueCreate :worker-pool-name="workerPool.name" />
+    <template #work-pool-queue-create>
+      <PageHeadingWorkPoolQueueCreate :work-pool-name="workPool.name" />
     </template>
-    <template #worker-pool-queue-edit>
-      <PageHeadingWorkerPoolQueueEdit :worker-pool-queue-name="workerPoolQueue.name" :worker-pool-name="workerPool.name" />
+    <template #work-pool-queue-edit>
+      <PageHeadingWorkPoolQueueEdit :work-pool-queue-name="workPoolQueue.name" :work-pool-name="workPool.name" />
     </template>
   </ComponentPage>
 </template>
 
 <script lang="ts" setup>
-  import { PageHeadingWorkerPool, PageHeadingWorkerPoolCreate, PageHeadingWorkerPoolEdit, PageHeadingWorkerPools, PageHeadingWorkerPoolQueueCreate, PageHeadingWorkerPoolQueue, PageHeadingWorkerPoolQueueEdit } from '@/components'
+  import { PageHeadingWorkPool, PageHeadingWorkPoolCreate, PageHeadingWorkPoolEdit, PageHeadingWorkPools, PageHeadingWorkPoolQueueCreate, PageHeadingWorkPoolQueue, PageHeadingWorkPoolQueueEdit } from '@/components'
   import ComponentPage from '@/demo/components/ComponentPage.vue'
-  import { useWorkerPoolMock } from '@/demo/compositions/useWorkerPoolMock'
-  import { useWorkerPoolQueueMock } from '@/demo/compositions/useWorkerPoolQueueMock'
+  import { useWorkPoolMock } from '@/demo/compositions/useWorkPoolMock'
+  import { useWorkPoolQueueMock } from '@/demo/compositions/useWorkPoolQueueMock'
   import { DemoSection } from '@/demo/types/demoSection'
 
   const demos: DemoSection[] = [
-    { title: 'Worker Pools' },
-    { title: 'Worker Pool' },
-    { title: 'Worker Pool Create' },
-    { title: 'Worker Pool Edit' },
-    { title: 'Worker Pool Queue' },
-    { title: 'Worker Pool Queue Create' },
-    { title: 'Worker Pool Queue Edit' },
+    { title: 'Work Pools' },
+    { title: 'Work Pool' },
+    { title: 'Work Pool Create' },
+    { title: 'Work Pool Edit' },
+    { title: 'Work Pool Queue' },
+    { title: 'Work Pool Queue Create' },
+    { title: 'Work Pool Queue Edit' },
   ]
 
-  const workerPool = useWorkerPoolMock()
-  const workerPoolQueue = useWorkerPoolQueueMock({
-    workerPoolId: workerPool.id,
+  const workPool = useWorkPoolMock()
+  const workPoolQueue = useWorkPoolQueueMock({
+    workPoolId: workPool.id,
   })
 </script>

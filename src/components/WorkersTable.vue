@@ -51,7 +51,7 @@
   import { formatDateTimeNumeric } from '@/utilities/dates'
 
   const props = defineProps<{
-    workerPoolName: string,
+    workPoolName: string,
   }>()
 
   const api = useWorkspaceApi()
@@ -59,19 +59,19 @@
     interval: 30000,
   }
 
-  const { workerPoolName } = toRefs(props)
+  const { workPoolName } = toRefs(props)
 
-  const workerPoolWorkersSubscription = useSubscription(api.workerPoolWorkers.getWorkers, [workerPoolName.value], subscriptionOptions)
-  const workerPoolWorkers = computed(() => workerPoolWorkersSubscription.response ?? [])
+  const workPoolWorkersSubscription = useSubscription(api.workPoolWorkers.getWorkers, [workPoolName.value], subscriptionOptions)
+  const workPoolWorkers = computed(() => workPoolWorkersSubscription.response ?? [])
 
   const searchValue = ref<string>('')
 
   const filteredWorkers = computed(() => {
     if (!searchValue.value) {
-      return workerPoolWorkers.value
+      return workPoolWorkers.value
     }
 
-    return workerPoolWorkers.value.filter(key => key.name.toLowerCase().includes(searchValue.value.toLowerCase()),
+    return workPoolWorkers.value.filter(key => key.name.toLowerCase().includes(searchValue.value.toLowerCase()),
     )
   })
 
