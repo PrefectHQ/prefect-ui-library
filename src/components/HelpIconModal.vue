@@ -24,12 +24,13 @@
 </script>
 
 <script lang="ts" setup>
+  import { Icon } from '@prefecthq/prefect-design'
   import { useAttrs } from 'vue'
   import { useShowModal } from '@/compositions'
 
   defineProps<{
     title: string,
-    icon: string,
+    icon: Icon,
   }>()
 
   const attrs = useAttrs()
