@@ -50,8 +50,8 @@ export class MockWorkspaceFlowRunsApi extends MockApi implements IWorkspaceFlowR
     return Promise.resolve(runHistory)
   }
 
-  public getFlowRunsGraph(): Promise<GraphNode[]> {
-    throw new Error('MockWorkspaceFlowRunsApi has not implemented the getFlowRunGraph method')
+  public async getFlowRunsGraph(graphId: string): Promise<GraphNode[]> {
+    return await this.flowRunGraphs.get(graphId).graph
   }
 
   public getFlowRunsTimeline(): Promise<TimelineNode[]> {

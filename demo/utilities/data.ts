@@ -1,23 +1,30 @@
 import { KeyedDataStore } from '../services/KeyedDataStore'
 import { SimpleDataStore } from '../services/SimpleDataStore'
 import { ApiMockSeeds } from './api'
-import { Flow, FlowRun, BlockDocument, BlockSchema, TaskRun, Deployment, WorkQueue, BlockType, WorkPool, WorkPoolQueue, WorkPoolWorker } from '@/models'
+import { FlowRunGraphMock } from '@/demo/types/flowRunGraphMock'
+import { Flow, FlowRun, BlockDocument, BlockSchema, TaskRun, Deployment, WorkQueue, BlockType, WorkPool, WorkPoolQueue, WorkPoolWorker, GraphNode } from '@/models'
 import { resolveSchema } from '@/services/schemas/resolvers/schemas'
 
 function hydrateBlockSchema(blockSchema: BlockSchema): BlockSchema {
   const fields = resolveSchema(blockSchema.fields)
-
   return new BlockSchema({
     ...blockSchema,
     fields,
   })
 }
 
+function hydrateGraph(graph: FlowRunGraphMock): FlowRunGraphMock {
+  return {
+    id: graph.id,
+    graph: graph.graph.map(node => new GraphNode(node)),
+  }
+}
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 export function createDataStores(seeds: ApiMockSeeds = {}) {
   return {
     flows: new KeyedDataStore({ seeds: seeds.flows, hydrate: flow => new Flow(flow) }),
     flowRuns: new KeyedDataStore({ seeds: seeds.flowRuns, hydrate: flowRun => new FlowRun(flowRun) }),
+    flowRunGraphs: new KeyedDataStore({ seeds: seeds.flowRunGraphs, hydrate: hydrateGraph }),
     blockDocuments: new KeyedDataStore({ seeds: seeds.blockDocuments, hydrate: blockDocument => new BlockDocument(blockDocument) }),
     blockSchemas: new KeyedDataStore({ seeds: seeds.blockSchemas, hydrate: hydrateBlockSchema }),
     concurrencyLimits: new KeyedDataStore({ seeds: seeds.concurrencyLimits, hydrate: concurrencyLimit => concurrencyLimit }),
@@ -31,7 +38,5 @@ export function createDataStores(seeds: ApiMockSeeds = {}) {
     workPoolWorkers: new KeyedDataStore({ seeds: seeds.workPoolWorkers, hydrate: workPoolWorker => new WorkPoolWorker(workPoolWorker) }),
   }
 }
-
 export type CreateDataStores = ReturnType<typeof createDataStores>
-
 export const data = createDataStores()
