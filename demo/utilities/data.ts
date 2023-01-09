@@ -2,7 +2,7 @@ import { KeyedDataStore } from '../services/KeyedDataStore'
 import { SimpleDataStore } from '../services/SimpleDataStore'
 import { ApiMockSeeds } from './api'
 import { FlowRunGraphMock } from '@/demo/types/flowRunGraphMock'
-import { Flow, FlowRun, BlockDocument, BlockSchema, TaskRun, Deployment, WorkQueue, BlockType, WorkPool, WorkPoolQueue, WorkPoolWorker } from '@/models'
+import { Flow, FlowRun, BlockDocument, BlockSchema, TaskRun, Deployment, WorkQueue, BlockType, WorkPool, WorkPoolQueue, WorkPoolWorker, GraphNode } from '@/models'
 import { resolveSchema } from '@/services/schemas/resolvers/schemas'
 
 function hydrateBlockSchema(blockSchema: BlockSchema): BlockSchema {

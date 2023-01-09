@@ -1,7 +1,9 @@
 <template>
   <ComponentPage title="Work Pool Tables" :demos="demos">
     <template #queues-table>
-      <WorkPoolQueuesTable :work-pool-name="workPool.name" />
+      <div class="work-pool-tables__queues-table">
+        <WorkPoolQueuesTable :work-pool-name="workPool.name" />
+      </div>
     </template>
   </ComponentPage>
 </template>
@@ -23,3 +25,9 @@
     workPools: [workPool],
   })
 </script>
+
+<style>
+.work-pool-tables__queues-table {
+  max-height:400px;
+}
+</style>

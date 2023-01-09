@@ -1,6 +1,6 @@
 <template>
   <div class="work-pool-queues-table">
-    <p-layout-table>
+    <p-layout-table sticky>
       <template #header-start>
         <template v-if="selected">
           <div class="work-pool-queues-table__controls--right">
