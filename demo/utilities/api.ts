@@ -13,13 +13,15 @@ import { MockWorkspaceWorkerPoolQueuesApi } from '../services/mockWorkspaceWorke
 import { MockWorkspaceWorkerPoolsApi } from '../services/mockWorkspaceWorkerPoolsApi'
 import { MockWorkspaceWorkerPoolWorkerApi } from '../services/mockWorkspaceWorkerPoolWorkerApi'
 import { MockWorkspaceWorkQueuesApi } from '../services/mockWorkspaceWorkQueuesApi'
-import { BlockDocument, BlockSchema, BlockType, Deployment, Flow, FlowRun, TaskRun, WorkerPool, WorkerPoolQueue, WorkQueue, WorkerPoolWorker } from '@/models'
+import { FlowRunGraphMock } from '@/demo/types/flowRunGraphMock'
+import { BlockDocument, BlockSchema, BlockType, Deployment, Flow, FlowRun, TaskRun, WorkerPool, WorkerPoolQueue, WorkQueue, WorkerPoolWorker, GraphNode } from '@/models'
 import { ConcurrencyLimit } from '@/models/ConcurrencyLimit'
 import { CreateApi, workspaceApiKey } from '@/utilities'
 
 export type ApiMockSeeds = {
   flows?: Flow[],
   flowRuns?: FlowRun[],
+  flowRunGraphs?: FlowRunGraphMock[],
   blockDocuments?: BlockDocument[],
   blockSchemas?: BlockSchema[],
   blockTypes?: BlockType[],

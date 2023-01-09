@@ -6,6 +6,7 @@ import { UnionFilters } from '@/types'
 export class MockWorkspaceTaskRunsApi extends MockApi implements IWorkspaceTaskRunsApi {
 
   public async getTaskRun(taskRunId: string): Promise<TaskRun> {
+    console.log('MockWorkspaceTaskRunsApi.getTaskRun', taskRunId, this)
     return await this.taskRuns.get(taskRunId)
   }
 

@@ -7,6 +7,7 @@ export type GraphOptions = {
   shape?: Shape,
   size?: number,
   fanMultiplier?: number,
+  ids?: string[],
 }
 
 export type UpstreamReference = {
@@ -15,29 +16,30 @@ export type UpstreamReference = {
 }
 
 export const randomGraphNode: MockFunction<GraphNode, [Partial<GraphNode>?]> = function(overrides = {}) {
+  const taskRun = this.create('taskRun', [{ id: overrides.id }])
   return new GraphNode({
-    id: this.create('id'),
     upstreamDependencies: [],
-    state: this.create('state'),
-    estimatedRunTime: this.create('number'),
-    expectedStartTime: this.create('date'),
-    totalRunTime: this.create('number'),
-    startTime: this.create('date'),
-    endTime: this.create('date'),
+    ...taskRun,
     ...overrides,
   })
 }
 
 export const randomFlowRunGraph: MockFunction<GraphNode[], [Partial<GraphOptions>?]> = function(options = {}) {
   const nodes: GraphNode[] = []
-  const { size = 3, shape = 'linear', fanMultiplier = 1 } = options
+  const { size = 3, shape = 'linear', fanMultiplier = 1, ids = this.createMany('id', size) } = options
+
+  if (options.size && size !== ids.length) {
+    throw new Error('The number of ids must match the size of the graph')
+  }
 
   // Create nodes
+  let i = 0
   while (nodes.length < size) {
-    const target: GraphNode = this.create('graphNode')
+    const target: GraphNode = this.create('graphNode', [{ id: ids[i] }])
 
     const proxy = new Proxy(target, {})
     nodes.push(proxy)
+    ++i
   }
 
   // Create dependency tree

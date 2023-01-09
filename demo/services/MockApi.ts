@@ -11,6 +11,10 @@ export class MockApi {
     return data.flowRuns
   }
 
+  protected get flowRunGraphs() {
+    return data.flowRunGraphs
+  }
+
   protected get taskRuns() {
     return data.taskRuns
   }

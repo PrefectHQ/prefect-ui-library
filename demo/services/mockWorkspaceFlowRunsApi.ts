@@ -50,9 +50,8 @@ export class MockWorkspaceFlowRunsApi extends MockApi implements IWorkspaceFlowR
     return Promise.resolve(runHistory)
   }
 
-  public getFlowRunsGraph(): Promise<GraphNode[]> {
-    const graph = mocker.create('flowRunGraph', [{ size: mocker.create('number', [3, 40]), shape: 'fanOut', fanMultiplier: 2 }])
-    return Promise.resolve(graph)
+  public async getFlowRunsGraph(graphId: string): Promise<GraphNode[]> {
+    return await this.flowRunGraphs.get(graphId).graph
   }
 
   public getFlowRunsTimeline(): Promise<TimelineNode[]> {

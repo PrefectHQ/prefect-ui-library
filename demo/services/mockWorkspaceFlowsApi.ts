@@ -6,6 +6,7 @@ import { UnionFilters } from '@/types'
 export class MockWorkspaceFlowsApi extends MockApi implements IWorkspaceFlowsApi {
 
   public async getFlow(flowId: string): Promise<Flow> {
+    console.log('MockWorkspaceFlowsApi.getFlow', flowId, this)
     return await this.flows.get(flowId)
   }
 
