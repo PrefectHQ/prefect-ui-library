@@ -6,23 +6,19 @@
           <p-text-input :id="id" v-model="name" :state="nameState" />
         </template>
       </p-label>
+
       <p-label label="Description (Optional)">
         <template #default="{ id }">
           <p-textarea :id="id" v-model="description" rows="7" />
         </template>
       </p-label>
-      <p-label label="Status (Optional)">
-        <p-toggle v-model="isActive">
-          <template #append>
-            {{ isActiveLabel }}
-          </template>
-        </p-toggle>
-      </p-label>
+
       <p-label label="Flow Run Concurrency (Optional)">
         <template #default="{ id }">
           <p-number-input :id="id" v-model="concurrencyLimit" placeholder="Unlimited" :min="0" />
         </template>
       </p-label>
+
       <p-label label="Priority" :message="queuePriorityErrorMessage" :state="queuePriorityState">
         <template #default="{ id }">
           <p-number-input :id="id" v-model="queuePriority" :min="1" :state="queuePriorityState" />
@@ -42,7 +38,7 @@
   <script lang="ts" setup>
   import { showToast } from '@prefecthq/prefect-design'
   import { useValidation, useValidationObserver, ValidationRule } from '@prefecthq/vue-compositions'
-  import { computed, ref } from 'vue'
+  import { ref } from 'vue'
   import { useRouter } from 'vue-router'
   import { SubmitButton } from '@/components'
   import { useWorkspaceApi, useWorkspaceRoutes } from '@/compositions'
@@ -63,8 +59,6 @@
   const description = ref<string | null | undefined>(props.workPoolQueue.description)
   const concurrencyLimit = ref<number | null | undefined>(props.workPoolQueue.concurrencyLimit)
   const queuePriority = ref<number>(props.workPoolQueue.priority)
-  const isActive = ref<boolean | undefined>(!props.workPoolQueue.isPaused)
-  const isActiveLabel = computed(() => isActive.value ? 'Active' : 'Paused')
 
   const isRequired: ValidationRule<string | undefined> = (value) => value !== undefined && value.trim().length > 0
 
@@ -89,7 +83,6 @@
       const values = {
         name: name.value,
         description: description.value,
-        isPaused: !isActive.value,
         concurrencyLimit: concurrencyLimit.value,
         priority: queuePriority.value,
       }

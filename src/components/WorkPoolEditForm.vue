@@ -19,14 +19,6 @@
         </template>
       </p-label>
 
-      <p-label label="Status (Optional)">
-        <p-toggle v-model="isActive">
-          <template #append>
-            {{ isActiveLabel }}
-          </template>
-        </p-toggle>
-      </p-label>
-
       <p-label label="Flow Run Concurrency (Optional)">
         <template #default="{ id }">
           <p-number-input :id="id" v-model="concurrencyLimit" placeholder="Unlimited" :min="0" />
@@ -46,7 +38,7 @@
 <script lang="ts" setup>
   import { showToast } from '@prefecthq/prefect-design'
   import { useValidationObserver } from '@prefecthq/vue-compositions'
-  import { computed, ref } from 'vue'
+  import { ref } from 'vue'
   import { useRouter } from 'vue-router'
   import { SubmitButton } from '@/components'
   import { useWorkspaceApi, useWorkspaceRoutes } from '@/compositions'
@@ -64,8 +56,6 @@
 
   const description = ref<string | null | undefined>(props.workPool.description)
   const concurrencyLimit = ref<number | null | undefined>(props.workPool.concurrencyLimit)
-  const isActive = ref<boolean | undefined>(!props.workPool.isPaused)
-  const isActiveLabel = computed(() => isActive.value ? 'Active' : 'Paused')
 
   function cancel(): void {
     router.back()
@@ -76,7 +66,6 @@
     if (valid) {
       const values = {
         description: description.value,
-        isPaused: !isActive.value,
         concurrencyLimit: concurrencyLimit.value,
       }
       try {
