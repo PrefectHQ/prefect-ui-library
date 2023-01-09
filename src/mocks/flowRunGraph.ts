@@ -36,9 +36,7 @@ export const randomFlowRunGraph: MockFunction<GraphNode[], [Partial<GraphOptions
   let i = 0
   while (nodes.length < size) {
     const target: GraphNode = this.create('graphNode', [{ id: ids[i] }])
-
-    const proxy = new Proxy(target, {})
-    nodes.push(proxy)
+    nodes.push(target)
     ++i
   }
 
