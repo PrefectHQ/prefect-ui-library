@@ -145,4 +145,9 @@
   @apply
   mr-1
 }
+
+.radar-app .radar__minimap-container { @apply
+  bg-background-500
+  dark:bg-background
+}
 </style>
