@@ -2,10 +2,15 @@ import { inject, InjectionKey } from 'vue'
 import * as components from '@/components'
 
 type Components = typeof components
+type ComponentDefinition<T> = { new (...args: unknown[]): { $props: T } }
 
-export const componentsKey: InjectionKey<Partial<Components>> = Symbol()
+type ProvidedComponents = {
+  [P in keyof Components]?: ComponentDefinition<InstanceType<Components[P]>['$props']>
+}
 
-export function useComponent(): Components {
+export const componentsKey: InjectionKey<ProvidedComponents> = Symbol()
+
+export function useComponent(): ProvidedComponents {
   const injected = inject(componentsKey, {})
 
   return { ...components, ...injected }
