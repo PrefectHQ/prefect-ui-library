@@ -1,69 +1,75 @@
 <template>
-  <p-content class="flows-table">
-    <div class="flows-table__controls">
-      <div class="flows-table__controls--right">
-        <ResultsCount v-if="selectedFlows.length == 0" label="Flow" :count="flowsCount" />
-        <SelectedCount v-else :count="selectedFlows.length" />
+  <div class="flows-table">
+    <p-layout-table sticky>
+      <template #header-start>
+        <div class="flows-table__header-start">
+          <ResultsCount v-if="selectedFlows.length == 0" label="Flow" :count="flowsCount" />
+          <SelectedCount v-else :count="selectedFlows.length" />
 
-        <FlowsDeleteButton v-if="can.delete.flow" :selected="selectedFlows" @delete="deleteFlows" />
-      </div>
-
-      <SearchInput v-model="name" placeholder="Search flows" label="Search flows" />
-      <p-select v-model="sort" :options="flowSortOptions" />
-      <p-tags-input v-model="tags" empty-message="Flow run tags" class="flows-table__tags" />
-    </div>
-
-    <p-table :data="flows" :columns="columns">
-      <template #selection-heading>
-        <p-checkbox v-model="model" @update:model-value="selectAllFlows" />
-      </template>
-
-      <template #selection="{ row }">
-        <p-checkbox v-model="selectedFlows" :value="row.id" />
-      </template>
-
-      <template #name="{ row }">
-        <p-link :to="routes.flow(row.id)">
-          <span>{{ row.name }}</span>
-        </p-link>
-      </template>
-
-      <template #deployments="{ row }">
-        <DeploymentsCount :flow-id="row.id" />
-      </template>
-
-      <template #created="{ row }">
-        {{ formatDateTimeNumeric(row.created) }}
-      </template>
-
-      <template #activity="{ row }">
-        <FlowActivityChart :flow="row" class="flows-table__activity-chart" />
-      </template>
-
-      <template #action-heading>
-        <span />
-      </template>
-
-      <template #action="{ row }">
-        <div class="flows-table__action">
-          <FlowMenu size="xs" :flow="row" @delete="refresh" />
+          <FlowsDeleteButton v-if="can.delete.flow" :selected="selectedFlows" @delete="deleteFlows" />
         </div>
       </template>
 
-      <template #empty-state>
-        <PEmptyResults>
-          <template #message>
-            No flows
-          </template>
-          <template #actions>
-            <p-button size="sm" secondary @click="clear">
-              Clear Filters
-            </p-button>
-          </template>
-        </PEmptyResults>
+      <template #header-end>
+        <div class="flows-table__header-end">
+          <SearchInput v-model="name" placeholder="Search flows" label="Search flows" />
+          <p-select v-model="sort" :options="flowSortOptions" />
+          <p-tags-input v-model="tags" empty-message="Flow run tags" class="flows-table__tags" />
+        </div>
       </template>
-    </p-table>
-  </p-content>
+
+      <p-table :data="flows" :columns="columns">
+        <template #selection-heading>
+          <p-checkbox v-model="model" @update:model-value="selectAllFlows" />
+        </template>
+
+        <template #selection="{ row }">
+          <p-checkbox v-model="selectedFlows" :value="row.id" />
+        </template>
+
+        <template #name="{ row }">
+          <p-link :to="routes.flow(row.id)">
+            <span>{{ row.name }}</span>
+          </p-link>
+        </template>
+
+        <template #deployments="{ row }">
+          <DeploymentsCount :flow-id="row.id" />
+        </template>
+
+        <template #created="{ row }">
+          {{ formatDateTimeNumeric(row.created) }}
+        </template>
+
+        <template #activity="{ row }">
+          <FlowActivityChart :flow="row" class="flows-table__activity-chart" />
+        </template>
+
+        <template #action-heading>
+          <span />
+        </template>
+
+        <template #action="{ row }">
+          <div class="flows-table__action">
+            <FlowMenu size="xs" :flow="row" @delete="refresh" />
+          </div>
+        </template>
+
+        <template #empty-state>
+          <PEmptyResults>
+            <template #message>
+              No flows
+            </template>
+            <template #actions>
+              <p-button size="sm" secondary @click="clear">
+                Clear Filters
+              </p-button>
+            </template>
+          </PEmptyResults>
+        </template>
+      </p-table>
+    </p-layout-table>
+  </div>
 </template>
 
 <script lang="ts" setup>
@@ -162,33 +168,18 @@
 </script>
 
 <style>
-.flows-table__controls--right { @apply
-  mr-auto
-  flex
-  gap-2
-  items-center
+.flows-table__header-start { @apply
+  grow
+  whitespace-nowrap
 }
 
-.flows-table__controls { @apply
+.flows-table__header-end { @apply
   flex
+  flex-wrap
+  pl-2
+  ml-auto
+  shrink
   gap-2
-  items-stretch
-  flex-col
-  sm:flex-row
-  sm:items-center
-  sticky
-  top-0
-  bg-white
-  bg-opacity-90
-  py-2
-  z-10
-}
-
-.flows-table__search { @apply
-  flex
-  justify-between
-  items-center
-  mb-4
 }
 
 .flows-table__deployments,
@@ -197,7 +188,7 @@
 }
 
 .flows-table__activity-chart { @apply
-  h-12
+  !h-12
 }
 
 .flows-table__action { @apply

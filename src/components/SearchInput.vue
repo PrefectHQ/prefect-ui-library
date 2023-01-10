@@ -45,7 +45,7 @@
 }
 
 .search__icon { @apply
-  text-gray-500
+  text-foreground-400
   ml-2
 }
 </style>

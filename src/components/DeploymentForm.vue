@@ -122,8 +122,8 @@
 <style>
 .deployment-form {
   @apply
-  border-[1px]
-  border-gray-300
+  border
+  dark:border-background-600
   px-6
   py-6
   rounded-lg
@@ -133,17 +133,6 @@
   @apply
   text-lg
   font-semibold
-}
-
-.deployment-form__schedule-tag, .deployment-form__schedule-button {
-  @apply
-  max-w-fit
-}
-
-.deployment-form__schedule-button-icon {
-  @apply
-  w-3
-  h-3
 }
 
 .deployment-form__schedule-row {
@@ -156,18 +145,5 @@
 .deployment-form__schedule {
   @apply
   text-lg
-}
-
-.deployment-form__schedule-tag {
-  @apply
-  bg-slate-500
-  text-white
-  cursor-pointer
-}
-
-.deployment-form__schedule-tag .p-tag__dismiss {
-  @apply
-  text-slate-100
-  hover:text-slate-900
 }
 </style>

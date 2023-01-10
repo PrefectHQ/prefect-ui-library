@@ -21,7 +21,9 @@
 <style>
 .work-queue-late-indicator { @apply
   text-xs
-  bg-state-scheduled-100
-  text-state-scheduled-700
-  }
+  bg-amber-100
+  text-amber-800
+  dark:bg-amber-700
+  dark:text-white
+}
 </style>

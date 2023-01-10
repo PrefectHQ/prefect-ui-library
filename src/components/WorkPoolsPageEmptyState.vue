@@ -21,7 +21,7 @@
   </p-empty-state>
 </template>
 
-  <script lang="ts" setup>
+<script lang="ts" setup>
   import { PEmptyState, PButton, PIcon } from '@prefecthq/prefect-design'
   import DocumentationButton from '@/components/DocumentationButton.vue'
   import { useWorkspaceRoutes } from '@/compositions'
@@ -29,17 +29,17 @@
 
   const can = useCan()
   const routes = useWorkspaceRoutes()
-    </script>
+</script>
 
-  <style>
-    .work-pools-page-empty-state__icon { @apply
-    w-12
-    h-12;
-    }
+<style>
+.work-pools-page-empty-state__icon { @apply
+  w-12
+  h-12;
+}
 
-    .work-pools-page-empty-state__link-icon { @apply
-    ml-2
-    w-4
-    h-4;
-    }
-  </style>
+.work-pools-page-empty-state__link-icon { @apply
+  ml-2
+  w-4
+  h-4;
+}
+</style>

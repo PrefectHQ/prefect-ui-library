@@ -7,7 +7,7 @@
 <style>
 .beta-badge { @apply
   inline-flex
-  border-gray-200
+  border-foreground-50
   border-[1px]
   items-center
   rounded-full

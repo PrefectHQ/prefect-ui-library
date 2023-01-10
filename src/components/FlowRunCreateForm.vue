@@ -23,13 +23,7 @@
       </p-label>
 
       <p-label label="Tags (optional)">
-        <p-tags-input v-model="tags" :options="deploymentTags">
-          <template #default="{ selectedOption }">
-            <p-tag :dismissible="!selectedOption.disabled">
-              {{ selectedOption.label }}
-            </p-tag>
-          </template>
-        </p-tags-input>
+        <p-tags-input v-model="tags" :options="deploymentTags" />
       </p-label>
 
       <p-divider v-if="deployment.parameters" />
@@ -161,8 +155,8 @@
 
 <style>
 .flow-run-create-form { @apply
-  border-[1px]
-  border-gray-300
+  border
+  dark:border-background-600
   px-6
   py-6
   rounded-lg
@@ -189,5 +183,9 @@
   grid
   gap-2
   grid-cols-2
+}
+
+.flow-run-create-form__tag { @apply
+  py-0
 }
 </style>

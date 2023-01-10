@@ -106,8 +106,7 @@
 </script>
 
 <style>
-.work-pool-queue-create-form {
-@apply
+.work-pool-queue-create-form { @apply
   border
   dark:border-background-600
   px-6

@@ -1,76 +1,83 @@
 <template>
-  <p-content class="deployments-table">
-    <div class="deployments-table__controls">
-      <div class="deployments-table__controls--right">
-        <ResultsCount v-if="selectedDeployments.length == 0" label="Deployment" :count="deploymentsCount" />
-        <SelectedCount v-else :count="selectedDeployments.length" />
+  <div class="deployments-table">
+    <p-layout-table sticky>
+      <template #header-start>
+        <div class="deployments-table__header-start">
+          <ResultsCount v-if="selectedDeployments.length == 0" label="Deployment" :count="deploymentsCount" />
+          <SelectedCount v-else :count="selectedDeployments.length" />
 
-        <DeploymentsDeleteButton v-if="can.delete.deployment" :selected="selectedDeployments" @delete="deleteDeployments" />
-      </div>
-      <SearchInput v-model="name" placeholder="Search deployments" label="Search deployments" />
-
-      <template v-if="canFilterFlows">
-        <FlowCombobox v-model:selected="flows" empty-message="All flows" class="deployments-table__flows" />
-      </template>
-
-      <p-select v-model="sort" :options="deploymentSortOptions" />
-
-      <p-tags-input v-model="tags" empty-message="All tags" class="deployments-table__tags" />
-    </div>
-
-    <p-table :data="deployments" :columns="columns" class="deployments-table">
-      <template #selection-heading>
-        <p-checkbox v-model="model" @update:model-value="selectAllDeployments" />
-      </template>
-
-      <template #selection="{ row }">
-        <p-checkbox v-model="selectedDeployments" :value="row.id" />
-      </template>
-
-      <template #name="{ row }">
-        <FlowRouterLink :flow-id="row.flowId" after=" / " />
-        <p-link :to="routes.deployment(row.id)">
-          <span>{{ row.name }}</span>
-        </p-link>
-      </template>
-
-      <template #schedule="{ row }">
-        <span :title="row.schedule?.toString({ verbose: true })">{{ handleSchedule(row.schedule) }}</span>
-      </template>
-
-      <template #tags="{ row }">
-        <p-tag-wrapper :tags="row.tags" justify="left" />
-      </template>
-
-      <template #applied-by="{ row }">
-        {{ row.appliedBy }}
-      </template>
-
-      <template #action-heading>
-        <span />
-      </template>
-
-      <template #action="{ row }">
-        <div class="deployments-table__actions">
-          <DeploymentToggle :deployment="row" @update="refresh" />
-          <DeploymentMenu size="xs" :deployment="row" show-all @delete="refresh" />
+          <DeploymentsDeleteButton v-if="can.delete.deployment" :selected="selectedDeployments" @delete="deleteDeployments" />
         </div>
       </template>
 
-      <template #empty-state>
-        <PEmptyResults>
-          <template #message>
-            No deployments
+      <template #header-end>
+        <div class="deployments-table__header-end">
+          <SearchInput v-model="name" placeholder="Search deployments" label="Search deployments" />
+
+          <template v-if="canFilterFlows">
+            <FlowCombobox v-model:selected="flows" empty-message="All flows" class="deployments-table__flows" />
           </template>
-          <template v-if="hasFilters" #actions>
-            <p-button size="sm" secondary @click="clearFilters">
-              Clear Filters
-            </p-button>
-          </template>
-        </PEmptyResults>
+
+          <p-select v-model="sort" :options="deploymentSortOptions" />
+
+          <p-tags-input v-model="tags" empty-message="All tags" class="deployments-table__tags" />
+        </div>
       </template>
-    </p-table>
-  </p-content>
+
+      <p-table :data="deployments" :columns="columns" class="deployments-table">
+        <template #selection-heading>
+          <p-checkbox v-model="model" @update:model-value="selectAllDeployments" />
+        </template>
+
+        <template #selection="{ row }">
+          <p-checkbox v-model="selectedDeployments" :value="row.id" />
+        </template>
+
+        <template #name="{ row }">
+          <FlowRouterLink :flow-id="row.flowId" after=" / " />
+          <p-link :to="routes.deployment(row.id)">
+            <span>{{ row.name }}</span>
+          </p-link>
+        </template>
+
+        <template #schedule="{ row }">
+          <span :title="row.schedule?.toString({ verbose: true })">{{ handleSchedule(row.schedule) }}</span>
+        </template>
+
+        <template #tags="{ row }">
+          <p-tag-wrapper :tags="row.tags" justify="left" />
+        </template>
+
+        <template #applied-by="{ row }">
+          {{ row.appliedBy }}
+        </template>
+
+        <template #action-heading>
+          <span />
+        </template>
+
+        <template #action="{ row }">
+          <div class="deployments-table__actions">
+            <DeploymentToggle :deployment="row" @update="refresh" />
+            <DeploymentMenu size="xs" :deployment="row" show-all @delete="refresh" />
+          </div>
+        </template>
+
+        <template #empty-state>
+          <PEmptyResults>
+            <template #message>
+              No deployments
+            </template>
+            <template v-if="hasFilters" #actions>
+              <p-button size="sm" secondary @click="clearFilters">
+                Clear Filters
+              </p-button>
+            </template>
+          </PEmptyResults>
+        </template>
+      </p-table>
+    </p-layout-table>
+  </div>
 </template>
 
 <script lang="ts" setup>
@@ -177,33 +184,18 @@
 </script>
 
 <style>
-.deployments-table__controls--right { @apply
-  mr-auto
-  flex
-  gap-2
-  items-center
+.deployments-table__header-start { @apply
+  grow
+  whitespace-nowrap
 }
 
-.deployments-table__controls { @apply
+.deployments-table__header-end { @apply
   flex
+  flex-wrap
+  pl-2
+  ml-auto
+  shrink
   gap-2
-  items-stretch
-  flex-col
-  sm:flex-row
-  sm:items-center
-  sticky
-  top-0
-  bg-white
-  bg-opacity-90
-  py-2
-  z-10
-}
-
-.deployments-table__search { @apply
-  flex
-  justify-between
-  items-center
-  mb-4
 }
 
 .deployments-table__flows,

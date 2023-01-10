@@ -17,7 +17,7 @@
     </span>
     <template #actions>
       <slot name="actions">
-        <p-button class="delete-modal__delete-button" @click="handleDeleteClick">
+        <p-button danger @click="handleDeleteClick">
           {{ action }}
         </p-button>
       </slot>
@@ -62,7 +62,7 @@
 
 <style>
 .delete-modal__icon { @apply
-  stroke-red-500
+  stroke-danger-500
 }
 
 .delete-modal__title { @apply
@@ -70,13 +70,7 @@
 }
 
 .delete-modal__message { @apply
-  text-red-500
+  text-danger
   font-bold
-}
-
-.delete-modal__delete-button { @apply
-  bg-red-500
-  focus:ring-red-600
-  hover:!bg-red-700
 }
 </style>

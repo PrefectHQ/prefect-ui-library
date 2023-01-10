@@ -82,18 +82,16 @@
 </script>
 
 <style>
-.work-queue-create-form {
-@apply
-  border-[1px]
-  border-gray-300
+.work-queue-create-form { @apply
+  border
+  dark:border-background-600
   px-6
   py-6
   rounded-lg
 }
 
-.work-queue-create-form__section-header {
-  @apply
+.work-queue-create-form__section-header { @apply
   text-base
-  text-gray-500
+  text-foreground-300
 }
 </style>
