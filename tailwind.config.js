@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-require-imports */
-const defaultTheme = require('tailwindcss/defaultTheme')
+/* eslint-disable @typescript-eslint/no-var-requires */
+const prefectDesignPlugin = require('@prefecthq/prefect-design/dist/tailwindPlugin.js')
 
 const states = ['completed', 'failed', 'running', 'pending', 'scheduled', 'cancelled', 'crashed', 'paused']
 
@@ -20,19 +21,6 @@ const stateColors = states.reduce((colors, state) => {
   return colors
 }, {})
 
-const prefectPalette = {
-  50: '#F2F6FF',
-  100: '#E6EDFF',
-  200: '#C0D3FF',
-  300: '#9AB8FE',
-  400: '#4E82FE',
-  500: '#024DFD',
-  600: '#0245E4',
-  700: '#023ABE',
-  800: '#012E98',
-  900: '#01267C',
-}
-
 module.exports = {
   content: [
     './index.html',
@@ -45,16 +33,11 @@ module.exports = {
     },
   ],
   theme: {
-    fontFamily: {
-      sans: ['InterVariable', ...defaultTheme.fontFamily.sans],
-      mono: ['InconsolataVariable', ...defaultTheme.fontFamily.mono],
-    },
     extend: {
       colors: {
         ...stateColors,
-        prefect: prefectPalette,
       },
     },
   },
-  plugins: [require('@tailwindcss/line-clamp')],
+  plugins: [prefectDesignPlugin, require('@tailwindcss/line-clamp')],
 }
