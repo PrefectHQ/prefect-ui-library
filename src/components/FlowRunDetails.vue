@@ -57,8 +57,8 @@
 
     <p-divider />
 
-    <router-link :to="routes.flowRunRadar(flowRun.id)" class="flow-run__small-radar-link">
-      <RadarSmall :flow-run-id="flowRun.id" class="flow-run__small-radar" />
+    <router-link :to="routes.flowRunRadar(flowRun.id)" class="flow-run-details__small-radar-link">
+      <RadarSmall :flow-run-id="flowRun.id" class="flow-run-details__small-radar" />
     </router-link>
 
     <p-divider />
@@ -145,25 +145,25 @@
 </script>
 
 <style>
-  .flow-run-details { @apply
-    flex
-    flex-col
-    gap-3
-    items-start
-  }
+.flow-run-details { @apply
+  flex
+  flex-col
+  gap-3
+  items-start
+}
 
-  .flow-run-details__work-queue-value { @apply
-    flex
-    items-center
-    gap-1
-  }
+.flow-run-details__work-queue-value { @apply
+  flex
+  items-center
+  gap-1
+}
 
-  .flow-run-details__tags { @apply
-    mb-1
-    mr-1
-  }
+.flow-run-details__tags { @apply
+  mb-1
+  mr-1
+}
 
-  .flow-run-details__small-radar { @apply
+.flow-run-details .flow-run-details__small-radar { @apply
   h-[250px]
   w-[250px]
 }
