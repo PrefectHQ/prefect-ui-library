@@ -14,6 +14,7 @@
 
   const props = defineProps<{
     modelValue: string | null,
+    showTimestamp?: boolean,
   }>()
 
   const emit = defineEmits<{
@@ -30,7 +31,7 @@
   })
 
   const currentTime = ref(new Date())
-  const timestamp = computed(() => formatDateInTimezone(currentTime.value, 'hh:mm a', props.modelValue))
+  const timestamp = computed(() => props.showTimestamp ? formatDateInTimezone(currentTime.value, 'hh:mm a', props.modelValue) : undefined)
 
   function updateCurrentTime(): void {
     currentTime.value = new Date()
