@@ -10,15 +10,15 @@
 <script lang="ts" setup>
   import { computed } from 'vue'
   import PageHeading from '@/components/PageHeading.vue'
-  import WorkQueueMenu from '@/components/WorkQueueMenu.vue'
   import WorkQueueToggle from '@/components/WorkQueueToggle.vue'
-  import { useWorkspaceRoutes } from '@/compositions'
+  import { useComponent, useWorkspaceRoutes } from '@/compositions'
   import { WorkQueue } from '@/models'
 
   const props = defineProps<{
     workQueue: WorkQueue,
   }>()
 
+  const WorkQueueMenu = useComponent('WorkQueueMenu')
   const routes = useWorkspaceRoutes()
 
   const crumbs = computed(() => [
