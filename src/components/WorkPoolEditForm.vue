@@ -83,7 +83,7 @@
 <style>
 .work-pool-edit-form { @apply
   border
-  border-gray-300
+  dark:border-background-600
   px-6
   py-6
   rounded-lg
