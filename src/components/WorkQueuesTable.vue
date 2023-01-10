@@ -68,8 +68,8 @@
 <script lang="ts" setup>
   import { PTable, PEmptyResults, PLink, CheckboxModel } from '@prefecthq/prefect-design'
   import { computed, ref } from 'vue'
-  import { WorkQueueToggle, WorkQueueMenu, WorkQueueLateIndicator, SearchInput, ResultsCount, WorkQueueLastPolled, WorkQueueStatusBadge, SelectedCount, WorkQueuesDeleteButton } from '@/components'
-  import { useCan, useWorkspaceRoutes } from '@/compositions'
+  import { WorkQueueToggle, WorkQueueLateIndicator, SearchInput, ResultsCount, WorkQueueLastPolled, WorkQueueStatusBadge, SelectedCount, WorkQueuesDeleteButton } from '@/components'
+  import { useCan, useComponent, useWorkspaceRoutes } from '@/compositions'
   import { WorkQueue } from '@/models'
 
   const props = defineProps<{
@@ -80,6 +80,7 @@
     (event: 'update' | 'delete'): void,
   }>()
 
+  const { WorkQueueMenu } = useComponent()
   const can = useCan()
   const routes = useWorkspaceRoutes()
   const searchTerm = ref('')
