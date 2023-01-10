@@ -50,7 +50,7 @@
 }
 
 .state-badge--flat { @apply
-  p-0
+  py-0
   bg-transparent
   text-foreground
 }
