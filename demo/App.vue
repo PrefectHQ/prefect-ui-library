@@ -17,7 +17,7 @@
 </template>
 
 <script lang="ts" setup>
-  import { media, PGlobalSidebar, PIcon } from '@prefecthq/prefect-design'
+  import { media, PGlobalSidebar, PIcon, useColorTheme } from '@prefecthq/prefect-design'
   import { computed, provide, watchEffect } from 'vue'
   import { RouterView } from 'vue-router'
   import { useWorkspaceApiMock } from './utilities/api'
@@ -41,6 +41,8 @@
   const routes = createWorkspaceRoutes()
 
   provide(workspaceRoutesKey, routes)
+
+  useColorTheme()
 </script>
 
 <style>
