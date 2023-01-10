@@ -20,7 +20,7 @@
     (event: 'delete', value: string): void,
   }>()
 
-  const FlowMenu = useComponent('FlowMenu')
+  const { FlowMenu } = useComponent()
   const routes = useWorkspaceRoutes()
 
   const crumbs = computed(() => [

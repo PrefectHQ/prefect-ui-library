@@ -80,7 +80,7 @@
     filter?: UseFlowFilterArgs,
   }>()
 
-  const FlowMenu = useComponent('FlowMenu')
+  const { FlowMenu } = useComponent()
 
   const api = useWorkspaceApi()
   const can = useCan()

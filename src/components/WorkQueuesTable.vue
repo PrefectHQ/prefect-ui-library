@@ -80,7 +80,7 @@
     (event: 'update' | 'delete'): void,
   }>()
 
-  const WorkQueueMenu = useComponent('WorkQueueMenu')
+  const { WorkQueueMenu } = useComponent()
   const can = useCan()
   const routes = useWorkspaceRoutes()
   const searchTerm = ref('')

@@ -18,7 +18,7 @@
     workQueue: WorkQueue,
   }>()
 
-  const WorkQueueMenu = useComponent('WorkQueueMenu')
+  const { WorkQueueMenu } = useComponent()
   const routes = useWorkspaceRoutes()
 
   const crumbs = computed(() => [
