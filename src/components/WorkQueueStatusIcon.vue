@@ -36,17 +36,3 @@
 
   const classes = computed(() => `work-queue-status-icon--${status.value.name.toLowerCase()}`)
 </script>
-
-<style>
-.work-queue-status-icon--healthy{ @apply
-  text-state-completed-600
-}
-
-.work-queue-status-icon--unhealthy{ @apply
-  text-state-failed-700
-}
-
-.work-queue-status-icon--paused{ @apply
-  text-state-pending-700
-}
-</style>

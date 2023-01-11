@@ -90,7 +90,7 @@
   w-full
   h-full
   min-h-[inherit]
-  bg-slate-700
+  bg-slate-800 /* This should match the background color of the base input component in its darkest mode */
   text-transparent
   caret-slate-50
   p-4

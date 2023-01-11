@@ -38,7 +38,6 @@
 
 <style>
 .code-snippet { @apply
-  bg-slate-700
   rounded
   gap-2
   max-w-full

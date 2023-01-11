@@ -62,7 +62,7 @@
   flex
   justify-center
   w-full
-  bg-slate-700
+  bg-slate-800
   sticky
   -top-2;
 }
@@ -79,7 +79,7 @@
 }
 
 .logs__divider-time { @apply
-  bg-slate-700
+  bg-slate-800
   relative
   rounded
   px-2

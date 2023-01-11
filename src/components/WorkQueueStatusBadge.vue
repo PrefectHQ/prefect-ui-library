@@ -1,7 +1,7 @@
 <template>
   <template v-if="workQueue && workQueueStatus">
     <p-tag class="work-queue-status-badge" :class="classes">
-      <WorkQueueStatusIcon :work-queue-name="workQueueName" />
+      <WorkQueueStatusIcon :work-queue-name="workQueueName" class="work-queue-status-badge__icon" />
       {{ label }}
     </p-tag>
   </template>
@@ -38,18 +38,25 @@
   pl-2
 }
 
-.work-queue-status-badge--healthy { @apply
-  bg-state-completed-50
-  text-state-completed-600
+.p-tag.work-queue-status-badge--healthy { @apply
+  bg-success-200
+  text-success-900
+  dark:bg-success-100
+  dark:text-white
 }
 
-.work-queue-status-badge--unhealthy { @apply
-  bg-state-failed-50
-  text-state-failed-700
+.p-tag.work-queue-status-badge--unhealthy { @apply
+  bg-danger-200
+  text-danger-900
+  dark:bg-danger-100
+  dark:text-white
 }
 
-.work-queue-status-badge--paused { @apply
-  bg-state-pending-200
-  text-state-pending-700
+
+.p-tag.work-queue-status-badge--paused { @apply
+  bg-state-pending-300
+  text-state-pending-900
+  dark:bg-state-pending-800
+  dark:text-white
 }
 </style>

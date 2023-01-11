@@ -38,7 +38,7 @@
 
 .scatter-plot-item { @apply
   border-[1px]
-  border-white
+  border-foreground-300
 }
 
 .scatter-plot-item {

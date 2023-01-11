@@ -70,21 +70,4 @@
 .flow-runs-filter-group__date-value { @apply
   w-full
 }
-
-.flow-runs-filter-group__date-indicator { @apply
-  h-1
-  w-1
-  flex-grow-0
-  flex-shrink-0
-  bg-gray-400
-  rounded-full
-}
-
-.flow-runs-filter-group__date--with-completed .flow-runs-filter-group__date-indicator--completed { @apply
-  bg-green-400
-}
-
-.flow-runs-filter-group__date--with-failed .flow-runs-filter-group__date-indicator--failed { @apply
-  bg-red-400
-}
 </style>

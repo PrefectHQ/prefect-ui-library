@@ -113,7 +113,7 @@
   items-center
   h-full
   px-2
-  text-slate-700
+  text-foreground-300
   rounded-tl
   rounded-bl
 }
@@ -121,7 +121,8 @@
 .radar-node-flow-run__collapsed-badge { @apply
   text-xs
   text-white
-  bg-slate-600
+  bg-background-300
+  dark:bg-background-600
   p-1
   rounded-full
   min-w-[24px]

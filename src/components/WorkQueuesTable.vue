@@ -1,67 +1,69 @@
 <template>
   <div class="work-queues-table">
-    <div class="work-queues-table__controls">
-      <div class="work-queues-table__controls--right">
+    <p-layout-table>
+      <template #header-start>
         <ResultsCount v-if="selectedWorkQueues.length == 0" label="Work queue" :count="filteredWorkQueues.length" />
         <SelectedCount v-else :count="selectedWorkQueues.length" />
 
         <WorkQueuesDeleteButton v-if="can.delete.work_queue" :selected="selectedWorkQueues" @delete="deleteWorkQueues" />
-      </div>
-
-      <SearchInput v-model="searchTerm" placeholder="Search work queues" label="Search work queues" />
-    </div>
-
-    <p-table :data="filteredWorkQueues" :columns="columns">
-      <template #selection-heading>
-        <p-checkbox v-model="model" @update:model-value="selectAllWorkQueues" />
       </template>
 
-      <template #selection="{ row }">
-        <p-checkbox v-model="selectedWorkQueues" :value="row.id" />
-      </template>
-      <template #name="{ row }">
-        <p-link :to="routes.workQueue(row.id)">
-          <span>{{ row.name }}</span>
-        </p-link>
+      <template #header-end>
+        <SearchInput v-model="searchTerm" placeholder="Search work queues" label="Search work queues" />
       </template>
 
-      <template #concurrency="{ row }">
-        <span> {{ row.concurrencyLimit ?? 'Unlimited' }} </span>
-      </template>
+      <p-table :data="filteredWorkQueues" :columns="columns">
+        <template #selection-heading>
+          <p-checkbox v-model="model" @update:model-value="selectAllWorkQueues" />
+        </template>
 
-      <template #status="{ row }">
-        <WorkQueueStatusBadge :work-queue="row" />
-      </template>
+        <template #selection="{ row }">
+          <p-checkbox v-model="selectedWorkQueues" :value="row.id" />
+        </template>
+        <template #name="{ row }">
+          <p-link :to="routes.workQueue(row.id)">
+            <span>{{ row.name }}</span>
+          </p-link>
+        </template>
 
-      <template #last-polled="{ row }">
-        <WorkQueueLastPolled :work-queue-id="row.id" />
-      </template>
+        <template #concurrency="{ row }">
+          <span> {{ row.concurrencyLimit ?? 'Unlimited' }} </span>
+        </template>
 
-      <template #action-heading>
-        <span />
-      </template>
+        <template #status="{ row }">
+          <WorkQueueStatusBadge :work-queue="row" />
+        </template>
 
-      <template #action="{ row }">
-        <div class="work-queues-table__actions">
-          <WorkQueueLateIndicator :work-queue-id="row.id" />
-          <WorkQueueToggle :work-queue="row" @update="emit('update')" />
-          <WorkQueueMenu size="xs" :work-queue="row" @delete="emit('delete')" />
-        </div>
-      </template>
+        <template #last-polled="{ row }">
+          <WorkQueueLastPolled :work-queue-id="row.id" />
+        </template>
 
-      <template #empty-state>
-        <PEmptyResults>
-          <template #message>
-            No work queues
-          </template>
-          <template #actions>
-            <p-button size="sm" secondary @click="clear">
-              Clear Filters
-            </p-button>
-          </template>
-        </PEmptyResults>
-      </template>
-    </p-table>
+        <template #action-heading>
+          <span />
+        </template>
+
+        <template #action="{ row }">
+          <div class="work-queues-table__actions">
+            <WorkQueueLateIndicator :work-queue-id="row.id" />
+            <WorkQueueToggle :work-queue="row" @update="emit('update')" />
+            <WorkQueueMenu size="xs" :work-queue="row" @delete="emit('delete')" />
+          </div>
+        </template>
+
+        <template #empty-state>
+          <PEmptyResults>
+            <template #message>
+              No work queues
+            </template>
+            <template #actions>
+              <p-button size="sm" secondary @click="clear">
+                Clear Filters
+              </p-button>
+            </template>
+          </PEmptyResults>
+        </template>
+      </p-table>
+    </p-layout-table>
   </div>
 </template>
 
@@ -149,26 +151,6 @@
 </script>
 
 <style>
-.work-queues-table__controls { @apply
-  flex
-  justify-between
-  items-center
-  mb-4
-  sticky
-  top-0
-  bg-white
-  bg-opacity-90
-  py-2
-  z-10
-}
-
-.work-queues-table__controls--right { @apply
-  mr-auto
-  flex
-  gap-2
-  items-center
-}
-
 .work-queues-table__actions { @apply
   justify-end
   items-center

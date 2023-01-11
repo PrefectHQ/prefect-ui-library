@@ -23,7 +23,7 @@
 
 <style>
 .schema-form-properties__fields { @apply
-  border-gray-300
+  border-background-500
   border-[1px]
   p-4
   rounded

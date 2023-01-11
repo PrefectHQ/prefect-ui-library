@@ -218,15 +218,15 @@
 <style>
 .notification-form {
   @apply
-  border-[1px]
-  border-gray-300
+  border
+  dark:border-background-600
   p-6
   rounded-lg
 }
 .notification-form__message {
   @apply
   text-base
-  text-gray-500
+  text-foreground
 }
 .notification-form__horizontal-fields {
   @apply
@@ -236,7 +236,7 @@
 .notification-form__review-block {
   @apply
   border-[3px]
-  border-prefect-100
+  border-background-500
   rounded-lg
   p-4
   pb-6

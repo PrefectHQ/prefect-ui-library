@@ -5,8 +5,13 @@ import { repeat } from '@/utilities'
 
 export function useFlowMock(override?: Partial<Flow>): Flow {
   const flow = mocker.create('flow', [override])
-  const deployment = mocker.create('deployment')
   const workQueue = mocker.create('workQueue')
+  const deployment = mocker.create('deployment', [
+    {
+      flowId: flow.id,
+      workQueueName: workQueue.name,
+    },
+  ])
   const flowRuns = mocker.createMany('flowRun', mocker.create('number'), [
     {
       flowId: flow.id,
