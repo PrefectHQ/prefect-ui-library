@@ -66,7 +66,7 @@
         "vue-router": "^4.0.12"
     },
     "dependencies": {
-        "@prefecthq/graphs": "0.1.9",
+        "@prefecthq/graphs": "0.1.10",
         "@prefecthq/radar": "0.0.18",
         "@prefecthq/vue-charts": "0.0.19",
         "axios": "0.27.2",

@@ -35,7 +35,7 @@
   const graphSubscription = useSubscription(
     api.flowRuns.getFlowRunsTimeline,
     [props.flowRun.id],
-    { interval: isRunning.value ? 5000 : undefined },
+    { interval: 5000 },
   )
 
   const graphData = computed(() => {
@@ -51,8 +51,7 @@
 
 <style>
 .flow-run-timeline-container {
-  min-height: 300px;
-  height: 40vh;
+  height: 350px;
   position: relative;
 }
 .flow-run-timeline-container__beta-badge { @apply
