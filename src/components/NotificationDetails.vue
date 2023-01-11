@@ -31,7 +31,7 @@
 <script lang="ts" setup>
   import { Icon, PIcon, PTag } from '@prefecthq/prefect-design'
   import { computed } from 'vue'
-  import SeparatedList from './SeparatedList.vue'
+  import SeparatedList from '@/components/SeparatedList.vue'
   import StateBadge from '@/components/StateBadge.vue'
   import { BlockType, Notification } from '@/models'
   import { SchemaValues } from '@/types/schemas'

@@ -21,7 +21,7 @@
 
 <script lang="ts" setup>
   import { computed } from 'vue'
-  import LogLevelLabel from './LogLevelLabel.vue'
+  import LogLevelLabel from '@/components/LogLevelLabel.vue'
   import { useTaskRun } from '@/compositions'
   import { Log } from '@/models'
   import { formatTimeNumeric } from '@/utilities/dates'

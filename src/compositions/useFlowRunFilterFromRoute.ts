@@ -2,7 +2,6 @@ import { useDebouncedRef, useRouteQueryParam } from '@prefecthq/vue-compositions
 import { computed, Ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useFlowRunFilter } from '@/compositions/useFlowRunFilter'
-import { StateType } from '@/models/StateType'
 import { FlowRunFilters, FlowRunFiltersInRoute } from '@/types/filter'
 import { FlowRunSortValues } from '@/types/SortOptionTypes'
 import { UnionFilters } from '@/types/UnionFilters'
@@ -14,7 +13,7 @@ export type UseFlowRunFilterFromRoute = {
   sort: Ref<FlowRunSortValues>,
   startDate: Ref<Date>,
   endDate: Ref<Date>,
-  states: Ref<StateType[]>,
+  states: Ref<string[]>,
   deployments: Ref<string[]>,
   flows: Ref<string[]>,
   tags: Ref<string[]>,
@@ -58,7 +57,7 @@ export function useFlowRunFilterFromRoute(): UseFlowRunFilterFromRoute {
 
   const nameDebounced = useDebouncedRef(name, 1200)
 
-  const states = useRouteQueryParam('state', []) as Ref<StateType[]>
+  const states = useRouteQueryParam('state', [])
   const deployments = useRouteQueryParam('deployment', [])
   const flows = useRouteQueryParam('flow', [])
   const tags = useRouteQueryParam('tag', [])

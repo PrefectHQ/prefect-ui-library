@@ -36,9 +36,9 @@
 <script lang="ts" setup>
   import { PEmptyResults } from '@prefecthq/prefect-design'
   import { computed, ref } from 'vue'
-  import ResultsCount from './ResultsCount.vue'
   import BlockSchemaCapabilitySelect from '@/components/BlockSchemaCapabilitySelect.vue'
   import BlockTypeCardPreview from '@/components/BlockTypeCardPreview.vue'
+  import ResultsCount from '@/components/ResultsCount.vue'
   import SearchInput from '@/components/SearchInput.vue'
   import { useWorkspaceRoutes } from '@/compositions'
   import { BlockType } from '@/models/BlockType'
@@ -68,7 +68,7 @@
   const filtered = computed(() => searchTerm.value.length || props.capability !== null)
   const empty = computed(() => filtered.value && filteredBlockTypes.value.length === 0)
 
-  function filterBlockType({ name  }: BlockType): boolean {
+  function filterBlockType({ name }: BlockType): boolean {
     return `${name}`.toLowerCase().includes(searchTerm.value.toLowerCase())
   }
 

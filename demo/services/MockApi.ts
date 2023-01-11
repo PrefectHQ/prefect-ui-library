@@ -11,6 +11,10 @@ export class MockApi {
     return data.flowRuns
   }
 
+  protected get flowRunGraphs() {
+    return data.flowRunGraphs
+  }
+
   protected get taskRuns() {
     return data.taskRuns
   }
@@ -41,5 +45,17 @@ export class MockApi {
 
   protected get workQueues() {
     return data.workQueues
+  }
+
+  protected get workPools() {
+    return data.workPools
+  }
+
+  protected get workPoolQueues() {
+    return data.workPoolQueues
+  }
+
+  protected get workPoolWorkers() {
+    return data.workPoolWorkers
   }
 }

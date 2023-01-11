@@ -4,6 +4,7 @@
     <router-link v-if="can.update.work_queue && !workQueue.deprecated" :to="routes.workQueueEdit(workQueue.id)">
       <p-overflow-menu-item label="Edit" />
     </router-link>
+    <slot v-bind="{ workQueue }" />
     <p-overflow-menu-item v-if="can.delete.work_queue" label="Delete" @click="open" />
   </p-icon-button-menu>
 

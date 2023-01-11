@@ -1,5 +1,5 @@
-import { BlockSchema } from './BlockSchema'
-import { BlockType } from './BlockType'
+import { BlockSchema } from '@/models/BlockSchema'
+import { BlockType } from '@/models/BlockType'
 import { SchemaValues } from '@/types/schemas'
 
 export type BlockDocumentReference = {

@@ -3,14 +3,14 @@
 import {
   sentenceTemplates,
   phrases
-} from './sample'
+} from '@/mocks/sentences/sample'
 
 import {
   rand,
   pickLastPunc,
   generator,
   GeneratorKey
-} from './utils'
+} from '@/mocks/sentences/utils'
 import { uniform, random } from '@/utilities/math'
 
 

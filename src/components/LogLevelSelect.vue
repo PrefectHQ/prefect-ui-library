@@ -1,7 +1,7 @@
 <template>
   <p-select v-model="model" :options="options" class="log-level-select">
-    <template #default="{ selectedOption }">
-      Level: {{ selectedOption.label.toLowerCase() }}
+    <template #default="{ label }">
+      Level: {{ label.toLowerCase() }}
     </template>
   </p-select>
 </template>

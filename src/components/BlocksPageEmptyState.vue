@@ -14,19 +14,17 @@
 
     <template #actions>
       <DocumentationButton topic="blocks" />
-      <router-link v-if="can.create.block" :to="routes.blocksCatalog()">
-        <p-button>
-          Add Block
-          <p-icon icon="PlusIcon" class="empty-work-queue--link-icon" />
-        </p-button>
-      </router-link>
+      <p-button v-if="can.create.block" :to="routes.blocksCatalog()">
+        Add Block
+        <p-icon icon="PlusIcon" class="empty-work-queue--link-icon" />
+      </p-button>
     </template>
   </p-empty-state>
 </template>
 
 <script lang="ts" setup>
   import { PEmptyState, PButton, PIcon } from '@prefecthq/prefect-design'
-  import DocumentationButton from './DocumentationButton.vue'
+  import DocumentationButton from '@/components/DocumentationButton.vue'
   import { useWorkspaceRoutes } from '@/compositions'
   import { useCan } from '@/compositions/useCan'
 

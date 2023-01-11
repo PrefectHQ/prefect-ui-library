@@ -1,5 +1,5 @@
+import { StateHistoryResponse } from '@/models/api/StateHistoryResponse'
 import { StateHistory } from '@/models/StateHistory'
-import { StateHistoryResponse } from '@/models/StateHistoryResponse'
 import { MapFunction } from '@/services/Mapper'
 
 

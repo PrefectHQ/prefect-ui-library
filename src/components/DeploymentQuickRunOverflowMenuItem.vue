@@ -10,7 +10,7 @@
   import { showToast } from '@prefecthq/prefect-design'
   import { h } from 'vue'
   import { useRouter } from 'vue-router'
-  import ToastFlowRunCreate from './ToastFlowRunCreate.vue'
+  import ToastFlowRunCreate from '@/components/ToastFlowRunCreate.vue'
   import { useWorkspaceApi, useWorkspaceRoutes } from '@/compositions'
   import { localization } from '@/localization'
 

@@ -1,4 +1,4 @@
-import { FlowRunSortValues, FlowSortValues, TaskRunSortValues } from './SortOptionTypes'
+import { FlowRunSortValues, FlowSortValues, TaskRunSortValues } from '@/types/SortOptionTypes'
 
 /** A list where results will be returned only if they match all the values in the list */
 type all_ = { all_?: string[] }
@@ -88,6 +88,28 @@ export interface TaskRunFilter extends Filter {
   start_time?: TimeFrameFilter,
   subflow_runs?: exists_,
 }
+
+/**
+ * @deprecated
+ */
+export interface WorkPoolFilter extends Omit<Filter, 'tags' | 'name'> {
+  name?: any_,
+  type?: any_,
+}
+
+export type PaginatedWorkPoolFilter = {
+  work_pools?: WorkPoolFilter,
+  limit?: number,
+  offset?: number,
+}
+
+/**
+ * @deprecated
+ */
+export interface WorkPoolQueueFilter extends Omit<Filter, 'tags' | 'name'> {
+  name?: any_,
+}
+
 /**
  * @deprecated
  */
@@ -95,6 +117,7 @@ export type PaginatedFilter = {
   limit?: number,
   offset?: number,
 }
+
 /**
  * @deprecated
  */
@@ -102,6 +125,7 @@ type StringKeys<T extends Filter> = Extract<keyof T, string>
 type Sortable<T extends Filter> = PaginatedFilter & {
   sort?: `${Uppercase<StringKeys<T>>}_${'ASC' | 'DESC'}`,
 }
+
 /**
  * @deprecated
  */
@@ -127,11 +151,21 @@ export type FlowRunsFilter = { flow_runs?: FlowRunFilter }
 /**
  * @deprecated
  */
+export type WorkPoolsFilter = { work_pools?: WorkPoolFilter }
+/**
+ * @deprecated
+ */
+export type WorkPoolQueuesFilter = { work_pool_queues?: WorkPoolQueueFilter }
+/**
+ * @deprecated
+ */
 export type UnionFilters =
   & FlowsFilter
   & DeploymentsFilter
   & FlowRunsFilter
   & TaskRunsFilter
+  & WorkPoolsFilter
+  & WorkPoolQueuesFilter
   & (Sortable<FlowFilter & DeploymentFilter> | RunSort<FlowSortValues | FlowRunSortValues | TaskRunSortValues>)
 /**
  * @deprecated

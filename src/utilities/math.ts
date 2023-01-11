@@ -1,4 +1,4 @@
-import { choice, range } from './arrays'
+import { choice, range } from '@/utilities/arrays'
 
 export const { random, floor, ceil } = Math
 

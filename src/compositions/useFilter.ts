@@ -1,8 +1,7 @@
 /* eslint-disable camelcase */
-import { ComputedRef, computed, ref, capitalize } from 'vue'
-import { isStateType } from '@/models'
+import { ComputedRef, computed, ref } from 'vue'
 import { mapper } from '@/services'
-import { MaybeRef, FlowSortValues, FlowRunSortValues, UnionFilters, StateFilter } from '@/types'
+import { MaybeRef, FlowSortValues, FlowRunSortValues, UnionFilters } from '@/types'
 
 export type FilterSortValues = FlowSortValues | FlowRunSortValues
 
@@ -19,6 +18,10 @@ export type UseFilterArgs<T = FilterSortValues> = {
   sort?: MaybeRef<T>,
   name?: MaybeRef<string>,
   workQueues?: MaybeRef<string[]>,
+  workPools?: MaybeRef<string[]>,
+  workPoolName?: MaybeRef<string[]>,
+  workPoolQueues?: MaybeRef<string[]>,
+  workPoolQueueName?: MaybeRef<string[]>,
 }
 
 export function useFilter(filters: MaybeRef<UseFilterArgs>): ComputedRef<UnionFilters> {
@@ -36,6 +39,10 @@ export function useFilter(filters: MaybeRef<UseFilterArgs>): ComputedRef<UnionFi
     const sort = ref(filtersRef.value.sort)
     const name = ref(filtersRef.value.name)
     const workQueues = ref(filtersRef.value.workQueues)
+    const workPools = ref(filtersRef.value.workPools)
+    const workPoolName = ref(filtersRef.value.workPoolName)
+    const workPoolQueues = ref(filtersRef.value.workPoolQueues)
+    const workPoolQueueName = ref(filtersRef.value.workPoolQueueName)
 
     const response: UnionFilters = {}
 
@@ -81,23 +88,10 @@ export function useFilter(filters: MaybeRef<UseFilterArgs>): ComputedRef<UnionFi
     }
 
     if (states.value?.length) {
-      const stateFilter: StateFilter = { operator: 'or_' }
-
-      states.value.forEach(state => {
-        if (isStateType(state)) {
-          stateFilter.type ??= {}
-          stateFilter.type.any_ ??= []
-          stateFilter.type.any_.push(mapper.map('StateType', state, 'ServerStateType'))
-        } else {
-          const capitalizedState = capitalize(state)
-          stateFilter.name ??= {}
-          stateFilter.name.any_ ??= []
-          stateFilter.name.any_.push(capitalizedState)
-        }
-      })
-
       response.flow_runs ??= {}
-      response.flow_runs.state = stateFilter
+      response.flow_runs.state ??= {}
+      response.flow_runs.state.name ??= {}
+      response.flow_runs.state.name.any_ = states.value
     }
 
     if (startDate.value) {
@@ -130,6 +124,34 @@ export function useFilter(filters: MaybeRef<UseFilterArgs>): ComputedRef<UnionFi
       response.flow_runs.work_queue_name ??= {}
 
       response.flow_runs.work_queue_name.any_ = workQueues.value
+    }
+
+    if (workPools.value?.length) {
+      response.work_pools ??= {}
+      response.work_pools.id ??= {}
+
+      response.work_pools.id.any_ = workPools.value
+    }
+
+    if (workPoolName.value?.length) {
+      response.work_pools ??= {}
+      response.work_pools.name ??= {}
+
+      response.work_pools.name.any_ = workPoolName.value
+    }
+
+    if (workPoolQueues.value?.length) {
+      response.work_pool_queues ??= {}
+      response.work_pool_queues.id ??= {}
+
+      response.work_pool_queues.id.any_ = workPoolQueues.value
+    }
+
+    if (workPoolQueueName.value?.length) {
+      response.work_pool_queues ??= {}
+      response.work_pool_queues.name ??= {}
+
+      response.work_pool_queues.name.any_ = workPoolQueueName.value
     }
 
     return response

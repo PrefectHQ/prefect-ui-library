@@ -1,6 +1,7 @@
 import { CreatedOrUpdatedBy } from '@/models/CreatedOrUpdatedBy'
 import { State } from '@/models/State'
 import { StateType } from '@/models/StateType'
+import { PrefectStateNames } from '@/types'
 import { SchemaValues } from '@/types/schemas'
 import { secondsToApproximateString } from '@/utilities/seconds'
 
@@ -25,6 +26,7 @@ export interface IFlowRun {
   name: string | null,
   parentTaskRunId: string | null,
   stateId: string | null,
+  stateName: PrefectStateNames | null,
   stateType: StateType | null,
   state: State | null,
   tags: string[] | null,
@@ -33,6 +35,8 @@ export interface IFlowRun {
   createdBy: CreatedOrUpdatedBy | null,
   updated: Date,
   workQueueName: string | null,
+  workPoolName: string | null,
+  workPoolQueueName: string | null,
 }
 
 export class FlowRun implements IFlowRun {
@@ -57,6 +61,7 @@ export class FlowRun implements IFlowRun {
   public name: string | null
   public parentTaskRunId: string | null
   public stateId: string | null
+  public stateName: PrefectStateNames | null
   public stateType: StateType | null
   public state: State | null
   public tags: string[] | null
@@ -64,6 +69,8 @@ export class FlowRun implements IFlowRun {
   public created: Date
   public createdBy: CreatedOrUpdatedBy | null
   public updated: Date
+  public workPoolName: string | null
+  public workPoolQueueName: string | null
 
   public constructor(flowRun: IFlowRun) {
     this.id = flowRun.id
@@ -86,6 +93,7 @@ export class FlowRun implements IFlowRun {
     this.name = flowRun.name
     this.parentTaskRunId = flowRun.parentTaskRunId
     this.stateId = flowRun.stateId
+    this.stateName = flowRun.stateName
     this.stateType = flowRun.stateType
     this.state = flowRun.state
     this.tags = flowRun.tags
@@ -94,6 +102,8 @@ export class FlowRun implements IFlowRun {
     this.createdBy = flowRun.createdBy
     this.updated = flowRun.updated
     this.workQueueName = flowRun.workQueueName
+    this.workPoolName = flowRun.workPoolName
+    this.workPoolQueueName = flowRun.workPoolQueueName
   }
 
   public get duration(): number {

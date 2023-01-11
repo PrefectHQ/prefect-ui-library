@@ -1,5 +1,5 @@
+import { TaskRunResponse } from '@/models/api/TaskRunResponse'
 import { TaskRun } from '@/models/TaskRun'
-import { TaskRunResponse } from '@/models/TaskRunResponse'
 import { MapFunction } from '@/services/Mapper'
 
 export const mapTaskRunResponseToTaskRun: MapFunction<TaskRunResponse, TaskRun> = function(source: TaskRunResponse): TaskRun {

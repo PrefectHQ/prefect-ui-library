@@ -1,6 +1,6 @@
-import { resolve, ResolverCallback } from '../utilities'
-import { schemaDefinitionsResolver } from './definitions'
-import { schemaMetaResolver } from './meta'
+import { schemaDefinitionsResolver } from '@/services/schemas/resolvers/definitions'
+import { schemaMetaResolver } from '@/services/schemas/resolvers/meta'
+import { resolve, ResolverCallback } from '@/services/schemas/utilities'
 import { Schema } from '@/types/schemas'
 
 export type SchemaResolver = ResolverCallback<Schema>

@@ -1,5 +1,5 @@
-import { BlockTypeResponse } from './BlockTypeResponse'
-import { SchemaResponse } from './SchemaResponse'
+import { BlockTypeResponse } from '@/models/api/BlockTypeResponse'
+import { SchemaResponse } from '@/models/api/SchemaResponse'
 
 export type BlockSchemaResponse = {
   id: string,

@@ -2,10 +2,10 @@
   <div class="flow-runs-filter-group">
     <div class="flow-runs-filter-group__row">
       <p-label :label="media.hover ? 'Date Range' : ''">
-        <DateRangeInput v-model:startDate="internalStartDate" v-model:endDate="internalEndDate" clearable />
+        <DateRangeInputWithFlowRunHistory />
       </p-label>
       <p-label label="States">
-        <StateSelect v-model:selected="states" empty-message="All run states" />
+        <StateNameSelect v-model:selected="states" empty-message="All run states" />
       </p-label>
     </div>
     <div class="flow-runs-filter-group__row">
@@ -19,7 +19,7 @@
         <WorkQueueCombobox v-model:selected="workQueues" empty-message="All work queues" />
       </p-label>
       <p-label label="Tags">
-        <p-tags-input v-model="tags" empty-message="All tags" />
+        <FlowRunTagCombobox v-model:selected="tags" :filter="filter" empty-message="All tags" />
       </p-label>
     </div>
     <p-label class="flow-runs-filter-group__search" label="Search">
@@ -30,25 +30,16 @@
 
 <script lang="ts" setup>
   import { media } from '@prefecthq/prefect-design'
-  import { ref, watch } from 'vue'
-  import DateRangeInput from '@/components/DateRangeInput.vue'
+  import DateRangeInputWithFlowRunHistory from '@/components/DateRangeInputWithFlowRunHistory.vue'
   import DeploymentCombobox from '@/components/DeploymentCombobox.vue'
   import FlowCombobox from '@/components/FlowCombobox.vue'
+  import FlowRunTagCombobox from '@/components/FlowRunTagCombobox.vue'
   import SearchInput from '@/components/SearchInput.vue'
-  import StateSelect from '@/components/StateSelect.vue'
+  import StateNameSelect from '@/components/StateNameSelect.vue'
   import WorkQueueCombobox from '@/components/WorkQueueCombobox.vue'
   import { useFlowRunFilterFromRoute } from '@/compositions/useFlowRunFilterFromRoute'
 
-  const { states, deployments, workQueues, flows, tags, name, startDate, endDate, updateFilters } = useFlowRunFilterFromRoute()
-
-  const internalStartDate = ref<Date | null>(startDate.value)
-  const internalEndDate = ref<Date | null>(endDate.value)
-
-  watch([internalStartDate, internalEndDate], ([startDate, endDate]) => {
-    if (startDate && endDate) {
-      updateFilters({ startDate, endDate })
-    }
-  })
+  const { states, deployments, workQueues, flows, tags, name, filter } = useFlowRunFilterFromRoute()
 </script>
 
 <style>
@@ -67,5 +58,33 @@
 
 .flow-runs-filter-group__search { @apply
   md:hidden
+}
+
+.flow-runs-filter-group__date { @apply
+  flex
+  flex-wrap
+  justify-center
+  gap-1
+}
+
+.flow-runs-filter-group__date-value { @apply
+  w-full
+}
+
+.flow-runs-filter-group__date-indicator { @apply
+  h-1
+  w-1
+  flex-grow-0
+  flex-shrink-0
+  bg-gray-400
+  rounded-full
+}
+
+.flow-runs-filter-group__date--with-completed .flow-runs-filter-group__date-indicator--completed { @apply
+  bg-green-400
+}
+
+.flow-runs-filter-group__date--with-failed .flow-runs-filter-group__date-indicator--failed { @apply
+  bg-red-400
 }
 </style>

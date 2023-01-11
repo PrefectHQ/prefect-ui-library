@@ -24,7 +24,7 @@
 
 <script lang="ts" setup>
   import { computed } from 'vue'
-  import JsonView from './JsonView.vue'
+  import JsonView from '@/components/JsonView.vue'
   import { useScrollLinking } from '@/compositions'
   import { stringify } from '@/utilities/json'
 

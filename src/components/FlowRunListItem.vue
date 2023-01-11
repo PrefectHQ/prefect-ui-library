@@ -29,10 +29,17 @@
             <span>Deployment</span> <DeploymentIconText :deployment-id="flowRun.deploymentId" />
           </div>
         </template>
-        <template v-if="flowRun.workQueueName">
-          <div class="flow-run-list-item__relation">
-            <span>Work Queue</span> <WorkQueueIconText :work-queue-name="flowRun.workQueueName" />
+        <template v-if="flowRun.workQueueName || flowRun.workPoolName">
+          <div v-if="flowRun.workPoolName" class="flow-run-list-item__relation">
+            <span>Work Pool</span>
+            <WorkPoolIconText :work-pool-name="flowRun.workPoolName" />
           </div>
+          <template v-else>
+            <div v-if="flowRun.workQueueName" class="flow-run-list-item__relation">
+              <span>Work Queue</span>
+              <WorkQueueIconText :work-queue-name="flowRun.workQueueName" />
+            </div>
+          </template>
         </template>
       </template>
     </StateListItem>
@@ -43,14 +50,15 @@
   import { CheckboxModel } from '@prefecthq/prefect-design'
   import { useIntersectionObserver } from '@prefecthq/vue-compositions'
   import { computed, onMounted, ref } from 'vue'
-  import DeploymentIconText from './DeploymentIconText.vue'
-  import DurationIconText from './DurationIconText.vue'
-  import FlowRouterLink from './FlowRouterLink.vue'
-  import FlowRunTaskCount from './FlowRunTaskCount.vue'
-  import WorkQueueIconText from './WorkQueueIconText.vue'
+  import DeploymentIconText from '@/components/DeploymentIconText.vue'
+  import DurationIconText from '@/components/DurationIconText.vue'
+  import FlowRouterLink from '@/components/FlowRouterLink.vue'
   import FlowRunStartTime from '@/components/FlowRunStartTime.vue'
+  import FlowRunTaskCount from '@/components/FlowRunTaskCount.vue'
   import StateBadge from '@/components/StateBadge.vue'
   import StateListItem from '@/components/StateListItem.vue'
+  import WorkPoolIconText from '@/components/WorkPoolIconText.vue'
+  import WorkQueueIconText from '@/components/WorkQueueIconText.vue'
   import { useTaskRunsCount, useWorkspaceRoutes } from '@/compositions'
   import { FlowRun } from '@/models/FlowRun'
   import { toPluralString } from '@/utilities'

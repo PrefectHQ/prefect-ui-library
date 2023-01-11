@@ -6,7 +6,7 @@
       </p-label>
 
       <p-label label="Timezone">
-        <TimezoneSelect v-model="selectedTimezone">
+        <TimezoneSelect v-model="selectedTimezone" show-timestamp>
           <template #empty-message>
             <em class="gray-400">browser default</em>
           </template>

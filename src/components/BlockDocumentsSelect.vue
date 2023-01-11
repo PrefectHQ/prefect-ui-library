@@ -1,6 +1,10 @@
 <template>
   <div class="block-documents-select" :class="classes" :style="styles">
-    <p-select v-model="model" :options="options" :required="required" v-bind="attrs" />
+    <p-select v-model="model" :options="options" :required="required" v-bind="attrs">
+      <template v-for="(index, name) in $slots" #[name]="scope">
+        <slot :name="name" v-bind="scope" />
+      </template>
+    </p-select>
   </div>
 </template>
 

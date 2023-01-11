@@ -1,6 +1,7 @@
 import { onUnmounted } from 'vue'
 import { data } from '../utilities/data'
-import { Flow, FlowRun, Deployment, WorkQueue, TaskRun, BlockDocument, BlockType, BlockSchema, ConcurrencyLimit } from '@/models'
+import { FlowRunGraphMock } from '@/demo/types/flowRunGraphMock'
+import { Flow, FlowRun, Deployment, WorkQueue, TaskRun, BlockDocument, BlockType, BlockSchema, ConcurrencyLimit, WorkPool, WorkPoolQueue, WorkPoolWorker } from '@/models'
 
 type Seeds = {
   blockDocuments?: BlockDocument[],
@@ -9,10 +10,14 @@ type Seeds = {
   blockTypes?: BlockType[],
   concurrencyLimit?: ConcurrencyLimit[],
   deployments?: Deployment[],
+  flowRunGraphs?: FlowRunGraphMock[],
   flowRuns?: FlowRun[],
   flows?: Flow[],
   taskRuns?: TaskRun[],
   workQueues?: WorkQueue[],
+  workPools?: WorkPool[],
+  workPoolQueues?: WorkPoolQueue[],
+  workPoolWorkers?: WorkPoolWorker[],
 }
 
 export function useSeeds(seed: Seeds): void {
@@ -30,6 +35,14 @@ export function useSeeds(seed: Seeds): void {
     const ids = flowRuns.map(taskRun => taskRun.id)
 
     onUnmounted(() => data.flowRuns.deleteAll(ids))
+  }
+
+  if (seed.flowRunGraphs) {
+    const flowRunGraphs = data.flowRunGraphs.createAll(seed.flowRunGraphs)
+
+    const ids = flowRunGraphs.map(flowRunGraph => flowRunGraph.id)
+
+    onUnmounted(() => data.flowRunGraphs.deleteAll(ids))
   }
 
   if (seed.taskRuns) {
@@ -91,5 +104,26 @@ export function useSeeds(seed: Seeds): void {
     const ids = concurrencyLimits.map(concurrencyLimit => concurrencyLimit.id)
 
     onUnmounted(() => data.concurrencyLimits.deleteAll(ids))
+  }
+
+  if (seed.workPools) {
+    const workPools = data.workPools.createAll(seed.workPools)
+    const names = workPools.map(workPool => workPool.name)
+
+    onUnmounted(() => data.workPools.deleteAll(names))
+  }
+
+  if (seed.workPoolQueues) {
+    const workPoolQueues = data.workPoolQueues.createAll(seed.workPoolQueues)
+    const ids = workPoolQueues.map(workPoolQueue => workPoolQueue.id)
+
+    onUnmounted(() => data.workPools.deleteAll(ids))
+  }
+
+  if (seed.workPoolWorkers) {
+    const workPoolWorkers = data.workPoolWorkers.createAll(seed.workPoolWorkers)
+    const ids = workPoolWorkers.map(worker => worker.id)
+
+    onUnmounted(() => data.workPools.deleteAll(ids))
   }
 }

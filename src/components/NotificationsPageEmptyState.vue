@@ -14,20 +14,17 @@
 
     <template #actions>
       <DocumentationButton topic="notifications" />
-      <router-link v-if="can.create.notification_policy" :to="routes.notificationCreate()">
-        <p-button>
-          Create Notification
-          <p-icon icon="PlusIcon" class="workspace-notifications-empty-state__link-icon" />
-        </p-button>
-      </router-link>
+      <p-button v-if="can.create.notification_policy" :to="routes.notificationCreate()">
+        Create Notification
+        <p-icon icon="PlusIcon" class="workspace-notifications-empty-state__link-icon" />
+      </p-button>
     </template>
   </p-empty-state>
 </template>
 
 <script lang="ts" setup>
   import { PEmptyState, PButton, PIcon } from '@prefecthq/prefect-design'
-  import { RouterLink } from 'vue-router'
-  import DocumentationButton from './DocumentationButton.vue'
+  import DocumentationButton from '@/components/DocumentationButton.vue'
   import { useWorkspaceRoutes } from '@/compositions'
   import { useCan } from '@/compositions/useCan'
 

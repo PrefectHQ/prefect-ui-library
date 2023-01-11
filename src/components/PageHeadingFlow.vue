@@ -8,9 +8,8 @@
 
 <script lang="ts" setup>
   import { computed } from 'vue'
-  import FlowMenu from '@/components/FlowMenu.vue'
   import PageHeading from '@/components/PageHeading.vue'
-  import { useWorkspaceRoutes } from '@/compositions'
+  import { useComponent, useWorkspaceRoutes } from '@/compositions'
   import { Flow } from '@/models'
 
   const props = defineProps<{
@@ -21,6 +20,7 @@
     (event: 'delete', value: string): void,
   }>()
 
+  const { FlowMenu } = useComponent()
   const routes = useWorkspaceRoutes()
 
   const crumbs = computed(() => [

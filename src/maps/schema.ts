@@ -5,7 +5,7 @@ import { Schema, SchemaDefinitions, schemaHas, SchemaProperties, SchemaProperty 
 import { mapValues, mapSnakeToCamelCase } from '@/utilities'
 
 export const mapSchemaResponseToSchema: MapFunction<SchemaResponse, Schema> = function(source: SchemaResponse): Schema {
-  // eslint-disable-next-line camelcase, @typescript-eslint/no-unused-vars
+  // eslint-disable-next-line camelcase, no-unused-vars
   const { definitions, block_schema_references, properties, $ref, ...rest } = source
 
   const mapped: Schema = {

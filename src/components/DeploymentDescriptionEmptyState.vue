@@ -15,18 +15,16 @@
 
     <template #actions>
       <DocumentationButton topic="deployments" />
-      <router-link v-if="can.update.deployment" :to="routes.deploymentEdit(deployment.id)">
-        <p-button>
-          Add Description
-        </p-button>
-      </router-link>
+      <p-button v-if="can.update.deployment" :to="routes.deploymentEdit(deployment.id)">
+        Add Description
+      </p-button>
     </template>
   </p-empty-state>
 </template>
 
 <script lang="ts" setup>
   import { PEmptyState, PIcon } from '@prefecthq/prefect-design'
-  import DocumentationButton from './DocumentationButton.vue'
+  import DocumentationButton from '@/components/DocumentationButton.vue'
   import { useCan, useWorkspaceRoutes } from '@/compositions'
   import { Deployment } from '@/models'
 

@@ -7,7 +7,7 @@
 </template>
 
 <script lang="ts" setup>
-  import SchemaFormProperty from './SchemaFormProperty.vue'
+  import SchemaFormProperty from '@/components/SchemaFormProperty.vue'
   import { SchemaPropertyAllOf } from '@/types/schemas'
 
   defineProps<{

@@ -4,7 +4,7 @@
 
 <script lang="ts" setup>
   import { computed } from 'vue'
-  import { LogsRequestSort } from '@/types'
+  import type { LogsRequestSort } from '@/models'
 
   const props = defineProps<{
     selected: LogsRequestSort,

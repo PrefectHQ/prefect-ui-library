@@ -1,4 +1,4 @@
-import { WorkQueueHealthPolicyResponse } from './WorkQueueHealthPolicyResponse'
+import { WorkQueueHealthPolicyResponse } from '@/models/api/WorkQueueHealthPolicyResponse'
 import { DateString } from '@/types/dates'
 
 export type WorkQueueStatusResponse = {

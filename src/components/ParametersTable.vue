@@ -43,17 +43,20 @@
   const properties = computed(() => props.deployment.parameterOpenApiSchema.properties ?? {})
 
   const data = computed(() => {
-    return Object.entries(properties.value).map(([key, value]) => {
-      const service = schemaPropertyServiceFactory(value!, 0)
-      const mapped = service.mapRequestValue(props.deployment.parameters[key])
+    return Object.entries(properties.value)
+      .map(([key, value]) => {
+        const service = schemaPropertyServiceFactory(value!, 0)
+        const mapped = service.mapRequestValue(props.deployment.parameters[key])
 
-      return {
-        key,
-        value: mapped,
-        defaultValue: value!.default,
-        type: value!.type,
-      }
-    })
+        return {
+          key,
+          value: mapped,
+          defaultValue: value!.default,
+          type: value!.type,
+          position: value?.position ?? 0,
+        }
+      })
+      .sort((propA, propB) => propA.position - propB.position)
   })
 
   const filtered = computed(() => {

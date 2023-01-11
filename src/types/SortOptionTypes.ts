@@ -1,6 +1,6 @@
 /* eslint-disable no-redeclare */
 import { ref, Ref } from 'vue'
-import { MaybeRef } from './reactivity'
+import { MaybeRef } from '@/types/reactivity'
 
 export const flowSortValues = ['CREATED_DESC', 'UPDATED_DESC', 'NAME_DESC', 'NAME_ASC'] as const
 export type FlowSortValues = typeof flowSortValues[number]

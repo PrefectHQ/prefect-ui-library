@@ -2,10 +2,12 @@ import { StateUpdate, StateUpdateRequest } from '@/models'
 import { MapFunction } from '@/services/Mapper'
 
 export const mapStateUpdateToStateUpdateRequest: MapFunction<StateUpdate, StateUpdateRequest> = function(source: StateUpdate): StateUpdateRequest {
+  const { type, stateDetails, ...state } = source.state
   return {
     state: {
-      ...source.state,
-      type: this.map('StateType', source.state.type, 'ServerStateType'),
+      ...state,
+      type: this.map('StateType', type, 'ServerStateType'),
+      'state_details': this.map('StateDetails', stateDetails, 'StateDetailsRequest'),
     },
   }
 }

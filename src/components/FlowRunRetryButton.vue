@@ -29,7 +29,7 @@
   const can = useCan()
   const { showModal, open } = useShowModal()
 
-  const canRetry = computed(()=> {
+  const canRetry = computed(() => {
     if (!can.update.flow_run || !props.flowRun.stateType || !props.flowRun.deploymentId) {
       return false
     }

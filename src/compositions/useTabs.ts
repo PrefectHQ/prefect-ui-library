@@ -1,5 +1,4 @@
-import { computed } from '@vue/reactivity'
-import { Ref, ref } from 'vue'
+import { computed, Ref, ref } from 'vue'
 
 export type ConditionalTab = {
   label: string,

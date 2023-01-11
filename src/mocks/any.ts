@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { randomBoolean } from './boolean'
-import { randomDate } from './date'
-import { randomNumber } from './number'
-import { randomString } from './string'
+import { randomBoolean } from '@/mocks/boolean'
+import { randomDate } from '@/mocks/date'
+import { randomNumber } from '@/mocks/number'
+import { randomString } from '@/mocks/string'
 import { MockFunction } from '@/services/Mocker'
 import { choice } from '@/utilities/arrays'
 

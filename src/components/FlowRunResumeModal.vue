@@ -19,7 +19,7 @@
   import { showToast } from '@prefecthq/prefect-design'
   import { useSubscription } from '@prefecthq/vue-compositions'
   import { computed } from 'vue'
-  import StateBadge from './StateBadge.vue'
+  import StateBadge from '@/components/StateBadge.vue'
   import { useWorkspaceApi } from '@/compositions'
   import { localization } from '@/localization'
 
@@ -43,10 +43,10 @@
     },
   })
 
-  const flowRunSubscription =  useSubscription(api.flowRuns.getFlowRun, [props.flowRunId], { interval: 30000 })
+  const flowRunSubscription = useSubscription(api.flowRuns.getFlowRun, [props.flowRunId], { interval: 30000 })
   const flowRun = computed(() => flowRunSubscription.response)
 
-  const resume  = async (): Promise<void>=> {
+  const resume = async (): Promise<void> => {
     try {
       await api.flowRuns.resumeFlowRun(props.flowRunId)
       flowRunSubscription.refresh()

@@ -12,7 +12,7 @@ export function flip<K extends string, V extends string>(obj: Record<K, V>): Rec
   return result
 }
 
-export function omit<T extends Record<string, unknown>, K extends (keyof T)[]>(source: T, keys: K): Omit<T, K[number]> {
+export function omit<T extends Record<string, unknown>, K extends(keyof T)[]>(source: T, keys: K): Omit<T, K[number]> {
   const copy = { ...source }
 
   keys.forEach(key => delete copy[key])
@@ -31,8 +31,9 @@ export function clone<T>(source: T): T {
     return new Date(source)
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const copy = new (source as any).constructor()
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-expect-error
+  const copy = new source()
 
   for (const key in source) {
     copy[key] = clone(source[key])
@@ -96,4 +97,9 @@ export function isEmptyObject(value: unknown): value is Record<string, never> {
 
 export function isTypeRequired<T extends Record<string | number | symbol, unknown>>(value: Partial<T>): value is Required<T> {
   return Object.values(value).every(value => value !== undefined)
+}
+
+export function hasString(obj: Record<string | number | symbol, unknown>, str: string): boolean {
+  const values = Object.values(obj).map(val => val?.toString().toLowerCase() ?? '').join('')
+  return values.includes(str.toLowerCase())
 }

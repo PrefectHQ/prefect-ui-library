@@ -1,4 +1,4 @@
-import { WorkspaceApi } from './WorkspaceApi'
+import { WorkspaceApi } from '@/services/WorkspaceApi'
 
 export interface IWorkspaceBlockCapabilitiesApi {
   getBlockCapabilities: () => Promise<string[]>,

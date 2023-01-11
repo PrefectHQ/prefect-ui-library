@@ -1,6 +1,6 @@
 import { markRaw } from 'vue'
-import { schemaPropertyServiceFactory } from '../properties'
-import { SchemaResolver } from './schemas'
+import { schemaPropertyServiceFactory } from '@/services/schemas/properties'
+import { SchemaResolver } from '@/services/schemas/resolvers/schemas'
 import { Schema, SchemaProperties, SchemaProperty } from '@/types/schemas'
 import { mapValues } from '@/utilities'
 

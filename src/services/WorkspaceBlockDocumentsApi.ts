@@ -1,10 +1,9 @@
-import { mapper } from './Mapper'
-import { WorkspaceApi } from './WorkspaceApi'
 import { BlockDocumentResponse } from '@/models/api/BlockDocumentResponse'
 import { BlockDocument } from '@/models/BlockDocument'
 import { BlockDocumentCreate } from '@/models/BlockDocumentCreate'
 import { BlockDocumentUpdate } from '@/models/BlockDocumentUpdate'
-import { BlockDocumentsFilter } from '@/models/Filters'
+import { mapper } from '@/services/Mapper'
+import { WorkspaceApi } from '@/services/WorkspaceApi'
 
 export interface IWorkspaceBlockDocumentsApi {
   getBlockDocument: (blockDocumentId: string) => Promise<BlockDocument>,
