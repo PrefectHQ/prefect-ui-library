@@ -1,7 +1,7 @@
 <template>
   <div class="log-row">
     <div class="log-row__leading">
-      <log-level-label :level="log.level" />
+      <LogLevelLabel :level="log.level" />
     </div>
 
     <div class="log-row__content">

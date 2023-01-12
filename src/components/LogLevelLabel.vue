@@ -35,25 +35,33 @@
   px-2;
 }
 
-.log-level-label--custom,
+.log-level-label--custom { @apply
+  bg-slate-500
+  dark:bg-slate-500
+}
+
 .log-level-label--info { @apply
-  !text-slate-800;
-  background-color: var(--log-level-info);
+  bg-[var(--log-level-info)]
+  dark:bg-[var(--log-level-info)]
 }
 
-.log-level-label--debug {
-  background-color: var(--log-level-debug);
+.log-level-label--debug { @apply
+  bg-[var(--log-level-debug)]
+  dark:bg-[var(--log-level-debug)]
 }
 
-.log-level-label--warning {
-  background-color: var(--log-level-warning);
+.log-level-label--warning { @apply
+  bg-[var(--log-level-warning)]
+  dark:bg-[var(--log-level-warning)]
 }
 
-.log-level-label--error {
-  background-color: var(--log-level-error);
+.log-level-label--error { @apply
+  bg-[var(--log-level-error)]
+  dark:bg-[var(--log-level-error)]
 }
 
-.log-level-label--critical {
-  background-color: var(--log-level-critical);
+.log-level-label--critical { @apply
+  bg-[var(--log-level-critical)]
+  dark:bg-[var(--log-level-critical)]
 }
 </style>
