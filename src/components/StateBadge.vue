@@ -46,7 +46,7 @@
 .state-badge__icon { @apply
   w-4
   h-4
-  text-inherit
+  !text-inherit
 }
 
 .state-badge--flat { @apply
