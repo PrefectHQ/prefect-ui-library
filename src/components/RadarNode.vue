@@ -94,6 +94,8 @@
   flex
   relative
   rounded
+  border
+  dark:border-foreground-100
 }
 
 .radar-node__content {
