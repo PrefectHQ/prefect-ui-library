@@ -100,7 +100,18 @@
     return [filter]
   })
   const blockDocumentsSubscription = useSubscriptionWithDependencies(api.blockDocuments.getBlockDocuments, blockDocumentFilter)
-  const blockDocuments = computed(() => blockDocumentsSubscription.response ?? [])
+  const blockDocuments = computed(() => {
+    const documents = blockDocumentsSubscription.response ?? []
+
+    if (blockDocument.value && !documents.some(document => document.id === blockDocument.value?.id)) {
+      documents.push({
+        ...blockDocument.value,
+        name: 'Anonymous Block',
+      })
+    }
+
+    return documents
+  })
 
   const options = computed<SelectOptionGroup[]>(() => blockTypes.value.flatMap(blockType => {
     const documents = blockDocuments.value.filter(blockDocument => blockDocument.blockTypeId === blockType.id)
