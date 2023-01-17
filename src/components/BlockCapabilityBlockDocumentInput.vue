@@ -1,6 +1,6 @@
 <template>
   <div class="block-capability-block-document-input" :class="classes" :style="styles" v-bind="listeners">
-    <BlockDocumentsSelect v-model:selected="internalModalValue" class="block-capability-block-document-input__select" :block-documents="blockDocuments" v-bind="attrs" required>
+    <p-select v-model="modalValue" v-bind="attrs" :options="options" class="block-capability-block-document-input__select">
       <template #default="{ label, value }">
         <div class="block-capability-block-document-input__option">
           <template v-if="value === blockDocument?.id">
@@ -9,7 +9,13 @@
           {{ label }}
         </div>
       </template>
-    </BlockDocumentsSelect>
+      <template #group="{ group }">
+        <div class="block-capability-block-document-input__group">
+          <BlockTypeLogo :block-type="group.blockType" class="block-capability-block-document-input__logo" />
+          {{ group.label }}
+        </div>
+      </template>
+    </p-select>
 
     <p-button inset :to="withQuery(routes.blocksCatalog(), { capability })">
       Add <p-icon icon="PlusIcon" />
@@ -26,14 +32,14 @@
 </script>
 
 <script lang="ts" setup>
-  import { useAttrsStylesClassesAndListeners } from '@prefecthq/prefect-design'
+  import { SelectOptionGroup, useAttrsStylesClassesAndListeners } from '@prefecthq/prefect-design'
   import { useSubscription, useSubscriptionWithDependencies } from '@prefecthq/vue-compositions'
   import { computed, toRefs } from 'vue'
-  import BlockDocumentsSelect from '@/components/BlockDocumentsSelect.vue'
   import BlockTypeLogo from '@/components/BlockTypeLogo.vue'
   import { useWorkspaceApi, useWorkspaceRoutes } from '@/compositions'
-  import { BlockDocumentFilter } from '@/models'
+  import { BlockDocumentFilter, BlockType } from '@/models'
   import { BlockTypeFilter } from '@/models/BlockTypeFilter'
+  import { mapper } from '@/services'
   import { withQuery } from '@/utilities'
 
   const props = defineProps<{
@@ -50,7 +56,7 @@
   const routes = useWorkspaceRoutes()
   const { classes, styles, listeners, attrs } = useAttrsStylesClassesAndListeners()
 
-  const internalModalValue = computed({
+  const modalValue = computed({
     get() {
       return props.modelValue
     },
@@ -58,6 +64,7 @@
       emit('update:modelValue', value)
     },
   })
+
   const blockDocumentArgs = computed<[string] | null>(() => {
     if (!props.modelValue) {
       return null
@@ -94,6 +101,22 @@
   })
   const blockDocumentsSubscription = useSubscriptionWithDependencies(api.blockDocuments.getBlockDocuments, blockDocumentFilter)
   const blockDocuments = computed(() => blockDocumentsSubscription.response ?? [])
+
+  const options = computed<SelectOptionGroup[]>(() => blockTypes.value.flatMap(blockType => {
+    const documents = blockDocuments.value.filter(blockDocument => blockDocument.blockTypeId === blockType.id)
+
+    if (documents.length === 0) {
+      return []
+    }
+
+    const group: SelectOptionGroup & { blockType: BlockType } = {
+      blockType,
+      label: blockType.name,
+      options: mapper.map('BlockDocument', documents, 'SelectOption'),
+    }
+
+    return group
+  }))
 </script>
 
 <style>
@@ -107,6 +130,7 @@
   grow
 }
 
+.block-capability-block-document-input__group,
 .block-capability-block-document-input__option { @apply
   flex
   gap-2
