@@ -1,16 +1,15 @@
 /* eslint-disable max-classes-per-file */
-import { BooleanRouteParam, InvalidRouteParamValue, ObjectRouteParam, ObjectRouteParamSchema, RouteParam, RouteParamClass, StringRouteParam, useRouteQueryParam } from '@prefecthq/vue-compositions'
-import { Ref, ref, reactive, computed, watch } from 'vue'
-import { LocationQueryValue, onBeforeRouteLeave, useRoute, useRouter } from 'vue-router'
-import { BlockDocumentFilter, BlockSchemaFilter, BlockTypeFilter, DeploymentFilter, DeploymentsFilter, FlowFilter, FlowRunFilter, FlowRunsFilter, FlowsFilter, isOperation, Operation, StateFilter, TagFilter, TaskRunFilter, TaskRunsFilter, UnionFilter, UnionFilterSort } from '@/models/Filters'
+import { BooleanRouteParam, DateRouteParam, InvalidRouteParamValue, RouteParam, RouteQueryParamsSchema, StringRouteParam, useRouteQueryParams } from '@prefecthq/vue-compositions'
+import { Ref, ref, reactive } from 'vue'
+import { LocationQueryValue } from 'vue-router'
+import { BlockDocumentFilter, BlockSchemaFilter, BlockTypeFilter, DeploymentFilter, DeploymentsFilter, FlowFilter, FlowRunFilter, FlowRunsFilter, FlowsFilter, isOperation, Operation, StateFilter, TagFilter, TaskRunFilter, TaskRunsFilter, UnionFilter } from '@/models/Filters'
 import { deploymentSortValues, flowRunSortValues, flowSortValues, taskRunSortValues } from '@/types/SortOptionTypes'
 
-// todo: useRouteQueryParam returns an empty string. Is that fine? Or do these methods need to return undefined same as the non route versions
-
-type UseFilter<T extends Record<string, unknown>> = Required<{
-  [Property in keyof T]: NonNullable<T[Property]> extends Record<string, unknown> ? UseFilter<NonNullable<T[Property]>> | undefined : Ref<T[Property]>
+type UseFilter<T extends Record<PropertyKey, unknown>> = Required<{
+  [Property in keyof T]: NonNullable<T[Property]> extends Record<PropertyKey, unknown>
+    ? Omit<UseFilter<NonNullable<T[Property]>>, 'filter'> | undefined
+    : Ref<T[Property]>
 }> & { filter: T }
-
 
 export function useTagFilter(): UseFilter<TagFilter> {
   const operator = ref<TagFilter['operator']>()
@@ -44,20 +43,20 @@ class OperatorRouteParam extends RouteParam<Operation> {
   }
 }
 
-class TagFilterRouteParam extends ObjectRouteParam<TagFilter> {
-  protected schema: ObjectRouteParamSchema<TagFilter> = {
-    operator: OperatorRouteParam,
-    name: StringRouteParam,
-    isNull: BooleanRouteParam,
-  }
+const tagFilterSchema: RouteQueryParamsSchema<TagFilter> = {
+  operator: OperatorRouteParam,
+  name: StringRouteParam,
+  isNull: BooleanRouteParam,
 }
 
 export function useTagFilterFromRoute(prefix?: string): UseFilter<TagFilter> {
-  const response = useTagFilter()
+  const params = useRouteQueryParams(tagFilterSchema, {}, prefix)
+  const filter = reactive(params)
 
-  const query = useRouteQueryParam(prefix, TagFilterRouteParam, {})
-
-  return response
+  return {
+    ...params,
+    filter,
+  }
 }
 
 export function useStateFilter(): UseFilter<StateFilter> {
@@ -78,16 +77,20 @@ export function useStateFilter(): UseFilter<StateFilter> {
   }
 }
 
+const stateFilterSchema: RouteQueryParamsSchema<StateFilter> = {
+  operator: OperatorRouteParam,
+  type: StringRouteParam,
+  name: StringRouteParam,
+}
+
 export function useStateFilterFromRoute(prefix?: string): UseFilter<StateFilter> {
-  const response = useStateFilter()
+  const params = useRouteQueryParams(stateFilterSchema, {}, prefix)
+  const filter = reactive(params)
 
-  useRouteQueryParams(response.filter, {
-    operator: 'operation',
-    name: 'string',
-    type: 'string',
-  }, prefix)
-
-  return response
+  return {
+    ...params,
+    filter,
+  }
 }
 
 export function useFlowFilter(): UseFilter<FlowFilter> {
@@ -114,27 +117,20 @@ export function useFlowFilter(): UseFilter<FlowFilter> {
   }
 }
 
+const flowFilterSchema: RouteQueryParamsSchema<FlowFilter> = {
+  operator: OperatorRouteParam,
+  id: StringRouteParam,
+  name: StringRouteParam,
+  nameLike: StringRouteParam,
+  tags: tagFilterSchema,
+}
+
 export function useFlowFilterFromRoute(prefix?: string): UseFilter<FlowFilter> {
-  const { useOperation, useAny, useLike } = useWithPrefix(prefix)
-  const operator = useOperation('operator')
-  const id = useAny('id')
-  const name = useAny('name')
-  const nameLike = useLike('nameLike')
-  const tags = useTagFilter()
-  const filter = reactive({
-    operator,
-    id,
-    name,
-    nameLike,
-    tags: tags.filter,
-  })
+  const params = useRouteQueryParams(flowFilterSchema, {}, prefix)
+  const filter = reactive(params)
 
   return {
-    operator,
-    id,
-    name,
-    nameLike,
-    tags,
+    ...params,
     filter,
   }
 }
@@ -220,84 +216,39 @@ export function useFlowRunFilter(): UseFilter<FlowRunFilter> {
   }
 }
 
+const flowRunFilterSchema: RouteQueryParamsSchema<FlowRunFilter> = {
+  operator: OperatorRouteParam,
+  id: StringRouteParam,
+  notId: StringRouteParam,
+  name: StringRouteParam,
+  nameLike: StringRouteParam,
+  tags: tagFilterSchema,
+  deploymentIdOperator: OperatorRouteParam,
+  deploymentId: StringRouteParam,
+  deploymentIdNull: BooleanRouteParam,
+  workQueueNameOperator: OperatorRouteParam,
+  workQueueName: StringRouteParam,
+  workQueueNameIsNull: BooleanRouteParam,
+  state: stateFilterSchema,
+  flowVersion: StringRouteParam,
+  expectedStartTimeBefore: DateRouteParam,
+  expectedStartTimeAfter: DateRouteParam,
+  nextExpectedStartTimeBefore: DateRouteParam,
+  nextExpectedStartTimeAfter: DateRouteParam,
+  startTimeBefore: DateRouteParam,
+  startTimeAfter: DateRouteParam,
+  startTimeNull: BooleanRouteParam,
+  parentTaskRunIdOperator: OperatorRouteParam,
+  parentTaskRunId: StringRouteParam,
+  parentTaskRunIdNull: BooleanRouteParam,
+}
+
 export function useFlowRunFilterFromRoute(prefix?: string): UseFilter<FlowRunFilter> {
-  const { useOperation, useAny, useBoolean, useDate, useLike, useStateFilter } = useWithPrefix(prefix)
-  const operator = useOperation('operator')
-  const id = useAny('id')
-  const notId = useAny('notId')
-  const name = useAny('name')
-  const nameLike = useLike('nameLike')
-  const tags = useTagFilterFromRoute('flow-run')
-  const deploymentIdOperator = useOperation('deploymentIdOperator')
-  const deploymentId = useAny('deploymentId')
-  const deploymentIdNull = useBoolean('deploymentIdNull')
-  const workQueueNameOperator = useOperation('workQueueNameOperator')
-  const workQueueName = useAny('workQueueName')
-  const workQueueNameIsNull = useBoolean('workQueueNameIsNull')
-  const state = useStateFilter('state')
-  const flowVersion = useAny('flowVersion')
-  const expectedStartTimeBefore = useDate('expectedStartTimeBefore')
-  const expectedStartTimeAfter = useDate('expectedStartTimeAfter')
-  const nextExpectedStartTimeBefore = useDate('nextExpectedStartTimeBefore')
-  const nextExpectedStartTimeAfter = useDate('nextExpectedStartTimeAfter')
-  const startTimeBefore = useDate('startTimeBefore')
-  const startTimeAfter = useDate('startTimeAfter')
-  const startTimeNull = useBoolean('startTimeNull')
-  const parentTaskRunIdOperator = useOperation('parentTaskRunIdOperator')
-  const parentTaskRunId = useAny('parentTaskRunId')
-  const parentTaskRunIdNull = useBoolean('parentTaskRunIdNull')
-  const filter = reactive({
-    operator,
-    id,
-    notId,
-    name,
-    nameLike,
-    tags: tags.filter,
-    deploymentIdOperator,
-    deploymentId,
-    deploymentIdNull,
-    workQueueNameOperator,
-    workQueueName,
-    workQueueNameIsNull,
-    state: state.filter,
-    flowVersion,
-    expectedStartTimeBefore,
-    expectedStartTimeAfter,
-    nextExpectedStartTimeBefore,
-    nextExpectedStartTimeAfter,
-    startTimeBefore,
-    startTimeAfter,
-    startTimeNull,
-    parentTaskRunIdOperator,
-    parentTaskRunId,
-    parentTaskRunIdNull,
-  })
+  const params = useRouteQueryParams(flowRunFilterSchema, {}, prefix)
+  const filter = reactive(params)
 
   return {
-    operator,
-    id,
-    notId,
-    name,
-    nameLike,
-    tags,
-    deploymentIdOperator,
-    deploymentId,
-    deploymentIdNull,
-    workQueueNameOperator,
-    workQueueName,
-    workQueueNameIsNull,
-    state,
-    flowVersion,
-    expectedStartTimeBefore,
-    expectedStartTimeAfter,
-    nextExpectedStartTimeBefore,
-    nextExpectedStartTimeAfter,
-    startTimeBefore,
-    startTimeAfter,
-    startTimeNull,
-    parentTaskRunIdOperator,
-    parentTaskRunId,
-    parentTaskRunIdNull,
+    ...params,
     filter,
   }
 }
@@ -341,42 +292,25 @@ export function useTaskRunFilter(): UseFilter<TaskRunFilter> {
   }
 }
 
+const taskRunFilterSchema: RouteQueryParamsSchema<TaskRunFilter> = {
+  operator: OperatorRouteParam,
+  id: StringRouteParam,
+  name: StringRouteParam,
+  nameLike: StringRouteParam,
+  tags: tagFilterSchema,
+  state: stateFilterSchema,
+  startTimeBefore: DateRouteParam,
+  startTimeAfter: DateRouteParam,
+  startTimeNull: BooleanRouteParam,
+  subFlowRunsExist: BooleanRouteParam,
+}
+
 export function useTaskRunFilterFromRoute(prefix?: string): UseFilter<TaskRunFilter> {
-  const { useOperation, useAny, useBoolean, useDate, useLike, useStateFilter, useTagFilter } = useWithPrefix(prefix)
-  const operator = useOperation('operator')
-  const id = useAny('id')
-  const name = useAny('name')
-  const nameLike = useLike('nameLike')
-  const tags = useTagFilter('tags')
-  const state = useStateFilter('state')
-  const startTimeBefore = useDate('startTimeBefore')
-  const startTimeAfter = useDate('startTimeAfter')
-  const startTimeNull = useBoolean('startTimeNull')
-  const subFlowRunsExist = useBoolean('subFlowRunsExist')
-  const filter = reactive({
-    operator,
-    id,
-    name,
-    nameLike,
-    tags: tags.filter,
-    state: state.filter,
-    startTimeBefore,
-    startTimeAfter,
-    startTimeNull,
-    subFlowRunsExist,
-  })
+  const params = useRouteQueryParams(taskRunFilterSchema, {}, prefix)
+  const filter = reactive(params)
 
   return {
-    operator,
-    id,
-    name,
-    nameLike,
-    tags,
-    state,
-    startTimeBefore,
-    startTimeAfter,
-    startTimeNull,
-    subFlowRunsExist,
+    ...params,
     filter,
   }
 }
@@ -408,30 +342,21 @@ export function useDeploymentFilter(): UseFilter<DeploymentFilter> {
   }
 }
 
+const deploymentFilterSchema: RouteQueryParamsSchema<DeploymentFilter> = {
+  operator: OperatorRouteParam,
+  id: StringRouteParam,
+  name: StringRouteParam,
+  nameLike: StringRouteParam,
+  isScheduleActive: BooleanRouteParam,
+  workQueueName: StringRouteParam,
+}
+
 export function useDeploymentFilterFromRoute(prefix?: string): UseFilter<DeploymentFilter> {
-  const { useOperation, useAny, useLike, useBoolean } = useWithPrefix(prefix)
-  const operator = useOperation('operator')
-  const id = useAny('id')
-  const name = useAny('id')
-  const nameLike = useLike('id')
-  const isScheduleActive = useBoolean('isScheduleActive')
-  const workQueueName = useAny('workQueueName')
-  const filter = reactive({
-    operator,
-    id,
-    name,
-    nameLike,
-    isScheduleActive,
-    workQueueName,
-  })
+  const params = useRouteQueryParams(deploymentFilterSchema, {}, prefix)
+  const filter = reactive(params)
 
   return {
-    operator,
-    id,
-    name,
-    nameLike,
-    isScheduleActive,
-    workQueueName,
+    ...params,
     filter,
   }
 }
@@ -451,18 +376,17 @@ export function useBlockTypeFilter(): UseFilter<BlockTypeFilter> {
   }
 }
 
+const blockTypeFilterSchema: RouteQueryParamsSchema<BlockTypeFilter> = {
+  nameLike: StringRouteParam,
+  slug: StringRouteParam,
+}
+
 export function useBlockTypeFilterFromRoute(prefix?: string): UseFilter<BlockTypeFilter> {
-  const { useLike, useAny } = useWithPrefix(prefix)
-  const nameLike = useLike('nameLike')
-  const slug = useAny('slug')
-  const filter = reactive({
-    nameLike,
-    slug,
-  })
+  const params = useRouteQueryParams(blockTypeFilterSchema, {}, prefix)
+  const filter = reactive(params)
 
   return {
-    nameLike,
-    slug,
+    ...params,
     filter,
   }
 }
@@ -491,27 +415,20 @@ export function useBlockSchemaFilter(): UseFilter<BlockSchemaFilter> {
   }
 }
 
+const blockSchemaFilterSchema: RouteQueryParamsSchema<BlockSchemaFilter> = {
+  operator: OperatorRouteParam,
+  id: StringRouteParam,
+  blockTypeId: StringRouteParam,
+  blockCapability: StringRouteParam,
+  version: StringRouteParam,
+}
+
 export function useBlockSchemaFilterFromRoute(prefix?: string): UseFilter<BlockSchemaFilter> {
-  const { useOperation, useAny } = useWithPrefix(prefix)
-  const operator = useOperation('operator')
-  const id = useAny('id')
-  const blockTypeId = useAny('blockTypeId')
-  const blockCapability = useAny('blockCapability')
-  const version = useAny('version')
-  const filter = reactive({
-    operator,
-    id,
-    blockTypeId,
-    blockCapability,
-    version,
-  })
+  const params = useRouteQueryParams(blockSchemaFilterSchema, {}, prefix)
+  const filter = reactive(params)
 
   return {
-    operator,
-    id,
-    blockTypeId,
-    blockCapability,
-    version,
+    ...params,
     filter,
   }
 }
@@ -540,44 +457,37 @@ export function useBlockDocumentFilter(): UseFilter<BlockDocumentFilter> {
   }
 }
 
+const blockDocumentFilterSchema: RouteQueryParamsSchema<BlockDocumentFilter> = {
+  operator: OperatorRouteParam,
+  id: StringRouteParam,
+  isAnonymous: BooleanRouteParam,
+  blockTypeId: StringRouteParam,
+  name: StringRouteParam,
+}
+
 export function useBlockDocumentFilterFromRoute(prefix?: string): UseFilter<BlockDocumentFilter> {
-  const { useOperation, useAny, useBoolean } = useWithPrefix(prefix)
-  const operator = useOperation('operator')
-  const id = useAny('id')
-  const isAnonymous = useBoolean('isAnonymous')
-  const blockTypeId = useAny('blockTypeId')
-  const name = useAny('name')
-  const filter = reactive({
-    operator,
-    id,
-    isAnonymous,
-    blockTypeId,
-    name,
-  })
+  const params = useRouteQueryParams(blockDocumentFilterSchema, {}, prefix)
+  const filter = reactive(params)
 
   return {
-    operator,
-    id,
-    isAnonymous,
-    blockTypeId,
-    name,
+    ...params,
     filter,
   }
 }
 
 export function useUnionFilter<T extends UnionFilter>(): UseFilter<T> {
-  const flows = useFlowFilter()
-  const flowRuns = useFlowRunFilter()
-  const taskRuns = useTaskRunFilter()
-  const deployments = useDeploymentFilter()
+  const { filter: flowsFilter, ...flows } = useFlowFilter()
+  const { filter: flowRunsFilter, ...flowRuns } = useFlowRunFilter()
+  const { filter: taskRunsFilter, ...taskRuns } = useTaskRunFilter()
+  const { filter: deploymentsFilter, ...deployments } = useDeploymentFilter()
   const sort = ref<T['sort']>()
   const offset = ref<number>()
   const limit = ref<number>()
   const filter = reactive({
-    flows: flows.filter,
-    flowRuns: flowRuns.filter,
-    taskRuns: taskRuns.filter,
-    deployments: deployments.filter,
+    flows: flowsFilter,
+    flowRuns: flowRunsFilter,
+    taskRuns: taskRunsFilter,
+    deployments: deploymentsFilter,
     sort,
     offset,
     limit,
@@ -601,34 +511,7 @@ export const useTaskRunsFilter = useUnionFilter<TaskRunsFilter>()
 export const useDeploymentsFilter = useUnionFilter<DeploymentsFilter>()
 
 export function useUnionFilterFromRoute<T extends UnionFilter>(sorts: Readonly<NonNullable<T['sort']>[]>, prefix?: string): UseFilter<T> {
-  const { useFlowFilter, useFlowRunFilter, useTaskRunFilter, useDeploymentFilter, useNumber, useSort } = useWithPrefix(prefix)
-  const flows = useFlowFilter('flows')
-  const flowRuns = useFlowRunFilter('flowRuns')
-  const taskRuns = useTaskRunFilter('taskRuns')
-  const deployments = useDeploymentFilter('deployments')
-  const sort = useSort(sorts, 'sort')
-  const offset = useNumber('offset')
-  const limit = useNumber('limit')
-  const filter = reactive({
-    flows: flows.filter,
-    flowRuns: flowRuns.filter,
-    taskRuns: taskRuns.filter,
-    deployments: deployments.filter,
-    sort,
-    offset,
-    limit,
-  })
 
-  return {
-    flows,
-    flowRuns,
-    taskRuns,
-    deployments,
-    sort,
-    offset,
-    limit,
-    filter,
-  } as UseFilter<T>
 }
 
 export const useFlowsFilterFromRoute = (): UseFilter<FlowsFilter> => useUnionFilterFromRoute<FlowsFilter>(flowSortValues)
