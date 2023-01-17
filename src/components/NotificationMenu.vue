@@ -1,5 +1,5 @@
 <template>
-  <p-icon-button-menu v-if="can.update.notification_policy">
+  <p-icon-button-menu>
     <p-overflow-menu-item v-if="false" label="Send Test" />
     <router-link v-if="can.update.notification_policy" :to="routes.notificationEdit(notification.id)">
       <p-overflow-menu-item label="Edit" />
