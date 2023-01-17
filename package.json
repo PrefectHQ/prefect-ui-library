@@ -59,7 +59,7 @@
         "vue-tsc": "1.0.24"
     },
     "peerDependencies": {
-        "@prefecthq/prefect-design": "^1.2.0",
+        "@prefecthq/prefect-design": "^1.2.1",
         "@prefecthq/vue-compositions": "^1.2.3",
         "vee-validate": "^4.6.5",
         "vue": "^3.2.45",
