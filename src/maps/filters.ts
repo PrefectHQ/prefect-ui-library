@@ -1,7 +1,7 @@
 /* eslint-disable camelcase */
 import { asArray } from '@prefecthq/prefect-design'
-import { Any, Like, All, IsNull, OperatorRequest, TagFilterRequest, FlowFilterRequest, FlowRunFilterRequest, NotAny, StateFilterRequest, Before, After, TaskRunFilterRequest, Exists, DeploymentFilterRequest, Equals, FlowsFilterRequest, FlowRunsFilterRequest, TaskRunsFilterRequest, DeploymentsFilterRequest, BlockTypeFilterRequest, BlockSchemaFilterRequest, BlockDocumentFilterRequest, NotificationsFilterRequest, SavedSearchesFilterRequest, LogsFilterRequest, GreaterThan, LessThan, ConcurrencyLimitsFilterRequest, BlockTypesFilterRequest, BlockSchemasFilterRequest, BlockDocumentsFilterRequest, WorkQueuesFilterRequest, StartsWith, WorkPoolFilterRequest, WorkPoolsFilterRequest } from '@/models/api/Filters'
-import { FlowFilter, FlowRunFilter, Operation, StateFilter, TagFilter, TaskRunFilter, DeploymentFilter, FlowsFilter, FlowRunsFilter, TaskRunsFilter, DeploymentsFilter, BlockTypeFilter, BlockSchemaFilter, BlockDocumentFilter, NotificationsFilter, SavedSearchesFilter, LogsFilter, ConcurrencyLimitsFilter, BlockTypesFilter, BlockSchemasFilter, BlockDocumentsFilter, WorkQueuesFilter, WorkPoolFilter, WorkPoolsFilter } from '@/models/Filters'
+import { Any, Like, All, IsNull, OperatorRequest, TagFilterRequest, FlowFilterRequest, FlowRunFilterRequest, NotAny, StateFilterRequest, Before, After, TaskRunFilterRequest, Exists, DeploymentFilterRequest, Equals, FlowsFilterRequest, FlowRunsFilterRequest, TaskRunsFilterRequest, DeploymentsFilterRequest, BlockTypeFilterRequest, BlockSchemaFilterRequest, BlockDocumentFilterRequest, NotificationsFilterRequest, SavedSearchesFilterRequest, LogsFilterRequest, GreaterThan, LessThan, ConcurrencyLimitsFilterRequest, BlockTypesFilterRequest, BlockSchemasFilterRequest, BlockDocumentsFilterRequest, WorkQueuesFilterRequest, StartsWith, WorkPoolFilterRequest, WorkPoolsFilterRequest, WorkPoolQueueFilterRequest } from '@/models/api/Filters'
+import { FlowFilter, FlowRunFilter, Operation, StateFilter, TagFilter, TaskRunFilter, DeploymentFilter, FlowsFilter, FlowRunsFilter, TaskRunsFilter, DeploymentsFilter, BlockTypeFilter, BlockSchemaFilter, BlockDocumentFilter, NotificationsFilter, SavedSearchesFilter, LogsFilter, ConcurrencyLimitsFilter, BlockTypesFilter, BlockSchemasFilter, BlockDocumentsFilter, WorkQueuesFilter, WorkPoolFilter, WorkPoolsFilter, WorkPoolQueueFilter } from '@/models/Filters'
 import { MapFunction } from '@/services'
 
 function toOperator(value?: Operation): OperatorRequest | undefined {
@@ -212,12 +212,31 @@ export const mapDeploymentFilter: MapFunction<DeploymentFilter, DeploymentFilter
   }
 }
 
+export const mapWorkPoolFilter: MapFunction<WorkPoolFilter, WorkPoolFilterRequest> = function(source) {
+  return {
+    ...toOperator(source.operator),
+    id: toAny(source.id),
+    name: toAny(source.name),
+    type: toAny(source.type),
+  }
+}
+
+export const mapWorkPoolQueueFilter: MapFunction<WorkPoolQueueFilter, WorkPoolQueueFilterRequest> = function(source) {
+  return {
+    ...toOperator(source.operator),
+    id: toAny(source.id),
+    name: toAny(source.name),
+  }
+}
+
 export const mapFlowsFilter: MapFunction<FlowsFilter, FlowsFilterRequest> = function(source) {
   return {
     flows: this.map('FlowFilter', source.flows, 'FlowFilterRequest'),
     flow_runs: this.map('FlowRunFilter', source.flowRuns, 'FlowRunFilterRequest'),
     task_runs: this.map('TaskRunFilter', source.taskRuns, 'TaskRunFilterRequest'),
     deployments: this.map('DeploymentFilter', source.deployments, 'DeploymentFilterRequest'),
+    work_pools: this.map('WorkPoolFilter', source.workPools, 'WorkPoolFilterRequest'),
+    work_pool_queues: this.map('WorkPoolQueueFilter', source.workPoolQueues, 'WorkPoolQueueFilterRequest'),
     sort: source.sort,
     limit: source.limit,
     offset: source.offset,
@@ -230,6 +249,8 @@ export const mapFlowRunsFilter: MapFunction<FlowRunsFilter, FlowRunsFilterReques
     flow_runs: this.map('FlowRunFilter', source.flowRuns, 'FlowRunFilterRequest'),
     task_runs: this.map('TaskRunFilter', source.taskRuns, 'TaskRunFilterRequest'),
     deployments: this.map('DeploymentFilter', source.deployments, 'DeploymentFilterRequest'),
+    work_pools: this.map('WorkPoolFilter', source.workPools, 'WorkPoolFilterRequest'),
+    work_pool_queues: this.map('WorkPoolQueueFilter', source.workPoolQueues, 'WorkPoolQueueFilterRequest'),
     sort: source.sort,
     limit: source.limit,
     offset: source.offset,
@@ -242,6 +263,8 @@ export const mapTaskRunsFilter: MapFunction<TaskRunsFilter, TaskRunsFilterReques
     flow_runs: this.map('FlowRunFilter', source.flowRuns, 'FlowRunFilterRequest'),
     task_runs: this.map('TaskRunFilter', source.taskRuns, 'TaskRunFilterRequest'),
     deployments: this.map('DeploymentFilter', source.deployments, 'DeploymentFilterRequest'),
+    work_pools: this.map('WorkPoolFilter', source.workPools, 'WorkPoolFilterRequest'),
+    work_pool_queues: this.map('WorkPoolQueueFilter', source.workPoolQueues, 'WorkPoolQueueFilterRequest'),
     sort: source.sort,
     limit: source.limit,
     offset: source.offset,
@@ -254,6 +277,8 @@ export const mapDeploymentsFilter: MapFunction<DeploymentsFilter, DeploymentsFil
     flow_runs: this.map('FlowRunFilter', source.flowRuns, 'FlowRunFilterRequest'),
     task_runs: this.map('TaskRunFilter', source.taskRuns, 'TaskRunFilterRequest'),
     deployments: this.map('DeploymentFilter', source.deployments, 'DeploymentFilterRequest'),
+    work_pools: this.map('WorkPoolFilter', source.workPools, 'WorkPoolFilterRequest'),
+    work_pool_queues: this.map('WorkPoolQueueFilter', source.workPoolQueues, 'WorkPoolQueueFilterRequest'),
     sort: source.sort,
     limit: source.limit,
     offset: source.offset,
@@ -379,11 +404,7 @@ export const mapWorkQueuesFilter: MapFunction<WorkQueuesFilter, WorkQueuesFilter
 
 export const mapWorkPoolsFilter: MapFunction<WorkPoolsFilter, WorkPoolsFilterRequest> = function(source) {
   return {
-    work_pools: {
-      ...toOperator(source.workPools?.operator),
-      name: toAny(source.workPools?.name),
-      type: toAny(source.workPools?.type),
-    },
+    work_pools: this.map('WorkPoolFilter', source.workPools, 'WorkPoolFilterRequest'),
     offset: source.offset,
     limit: source.limit,
   }

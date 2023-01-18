@@ -81,11 +81,19 @@ export type WorkPoolFilterRequest = {
   type?: Any,
 }
 
+export type WorkPoolQueueFilterRequest = {
+  operator?: OperationRequest,
+  id?: Any,
+  name?: Any,
+}
+
 export type UnionFilterRequest<T> = {
   flows?: FlowFilterRequest,
   flow_runs?: FlowRunFilterRequest,
   task_runs?: TaskRunFilterRequest,
   deployments?: DeploymentFilterRequest,
+  work_pools?: WorkPoolFilterRequest,
+  work_pool_queues?: WorkPoolQueueFilterRequest,
   sort?: T,
   offset?: number,
   limit?: number,

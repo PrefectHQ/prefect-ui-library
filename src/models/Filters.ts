@@ -82,12 +82,20 @@ export type WorkPoolFilter = {
   type?: string | string[],
 }
 
+export type WorkPoolQueueFilter = {
+  operator?: Operation,
+  id?: string | string[],
+  name?: string | string[],
+}
+
 export type UnionFilterSort = FlowSortValues | FlowRunSortValues | TaskRunSortValues | DeploymentSortValues
 export type UnionFilter<T extends UnionFilterSort = UnionFilterSort> = {
   flows?: FlowFilter,
   flowRuns?: FlowRunFilter,
   taskRuns?: TaskRunFilter,
   deployments?: DeploymentFilter,
+  workPools?: WorkPoolFilter,
+  workPoolQueues?: WorkPoolQueueFilter,
   sort?: T,
   offset?: number,
   limit?: number,
