@@ -1,9 +1,9 @@
 /* eslint-disable max-classes-per-file */
-import { BooleanRouteParam, DateRouteParam, InvalidRouteParamValue, RouteParam, RouteQueryParamsSchema, StringRouteParam, useRouteQueryParams } from '@prefecthq/vue-compositions'
+import { BooleanRouteParam, DateRouteParam, InvalidRouteParamValue, NumberRouteParam, RouteParam, RouteQueryParamsSchema, StringRouteParam, useRouteQueryParams } from '@prefecthq/vue-compositions'
 import { Ref, ref, reactive } from 'vue'
 import { LocationQueryValue } from 'vue-router'
-import { BlockDocumentFilter, BlockSchemaFilter, BlockTypeFilter, DeploymentFilter, DeploymentsFilter, FlowFilter, FlowRunFilter, FlowRunsFilter, FlowsFilter, isOperation, Operation, StateFilter, TagFilter, TaskRunFilter, TaskRunsFilter, UnionFilter } from '@/models/Filters'
-import { deploymentSortValues, flowRunSortValues, flowSortValues, taskRunSortValues } from '@/types/SortOptionTypes'
+import { BlockDocumentFilter, BlockSchemaFilter, BlockTypeFilter, DeploymentFilter, DeploymentsFilter, FlowFilter, FlowRunFilter, FlowRunsFilter, FlowsFilter, isOperation, Operation, StateFilter, TagFilter, TaskRunFilter, TaskRunsFilter, UnionFilter, UnionFilterSort } from '@/models/Filters'
+import { DeploymentSortValues, FlowRunSortValues, FlowSortValues, isDeploymentSortValue, isFlowRunSortValue, isFlowSortValue, isTaskRunSortValue, TaskRunSortValues } from '@/types/SortOptionTypes'
 
 type UseFilter<T extends Record<PropertyKey, unknown>> = Required<{
   [Property in keyof T]: NonNullable<T[Property]> extends Record<PropertyKey, unknown>
@@ -465,8 +465,8 @@ const blockDocumentFilterSchema: RouteQueryParamsSchema<BlockDocumentFilter> = {
   name: StringRouteParam,
 }
 
-export function useBlockDocumentFilterFromRoute(prefix?: string): UseFilter<BlockDocumentFilter> {
-  const params = useRouteQueryParams(blockDocumentFilterSchema, {}, prefix)
+export function useBlockDocumentFilterFromRoute(defaultValue: BlockDocumentFilter = {}, prefix?: string): UseFilter<BlockDocumentFilter> {
+  const params = useRouteQueryParams(blockDocumentFilterSchema, defaultValue, prefix)
   const filter = reactive(params)
 
   return {
@@ -510,11 +510,109 @@ export const useFlowRunsFilter = useUnionFilter<FlowRunsFilter>()
 export const useTaskRunsFilter = useUnionFilter<TaskRunsFilter>()
 export const useDeploymentsFilter = useUnionFilter<DeploymentsFilter>()
 
-export function useUnionFilterFromRoute<T extends UnionFilter>(sorts: Readonly<NonNullable<T['sort']>[]>, prefix?: string): UseFilter<T> {
-
+const unionFilterSchema: Omit<RouteQueryParamsSchema<UnionFilter>, 'sort'> = {
+  flows: flowFilterSchema,
+  flowRuns: flowRunFilterSchema,
+  taskRuns: taskRunFilterSchema,
+  deployments: deploymentFilterSchema,
+  offset: NumberRouteParam,
+  limit: NumberRouteParam,
 }
 
-export const useFlowsFilterFromRoute = (): UseFilter<FlowsFilter> => useUnionFilterFromRoute<FlowsFilter>(flowSortValues)
-export const useFlowRunsFilterFromRoute = (): UseFilter<FlowRunsFilter> => useUnionFilterFromRoute<FlowRunsFilter>(flowRunSortValues)
-export const useTaskRunsFilterFromRoute = (): UseFilter<TaskRunsFilter> => useUnionFilterFromRoute<TaskRunsFilter>(taskRunSortValues)
-export const useDeploymentsFilterFromRoute = (): UseFilter<DeploymentsFilter> => useUnionFilterFromRoute<DeploymentsFilter>(deploymentSortValues)
+export function useUnionFilterFromRoute<T extends UnionFilterSort>(sort: RouteQueryParamsSchema<UnionFilter<T>>['sort'], defaultValue: UnionFilter<T>, prefix?: string): UseFilter<UnionFilter<T>> {
+  const schema: RouteQueryParamsSchema<UnionFilter<T>> = {
+    ...unionFilterSchema,
+    sort: sort,
+  }
+  const params = useRouteQueryParams(schema, defaultValue, prefix)
+  const filter = reactive(params)
+
+  return {
+    ...params,
+    filter,
+  } as UseFilter<UnionFilter<T>>
+}
+
+class FlowSortValuesSortParam extends RouteParam<FlowSortValues> {
+  protected parse(value: LocationQueryValue): FlowSortValues {
+    if (isFlowSortValue(value)) {
+      return value
+    }
+
+    throw new InvalidRouteParamValue()
+  }
+  protected format(value: FlowSortValues): LocationQueryValue {
+    if (isFlowSortValue(value)) {
+      return value
+    }
+
+    throw new InvalidRouteParamValue()
+  }
+}
+
+export function useFlowsFilterFromRoute(defaultValue: FlowsFilter = {}, prefix?: string): UseFilter<FlowsFilter> {
+  return useUnionFilterFromRoute(FlowSortValuesSortParam, defaultValue, prefix)
+}
+
+class FlowRunSortValuesSortParam extends RouteParam<FlowRunSortValues> {
+  protected parse(value: LocationQueryValue): FlowRunSortValues {
+    if (isFlowRunSortValue(value)) {
+      return value
+    }
+
+    throw new InvalidRouteParamValue()
+  }
+  protected format(value: FlowRunSortValues): LocationQueryValue {
+    if (isFlowRunSortValue(value)) {
+      return value
+    }
+
+    throw new InvalidRouteParamValue()
+  }
+}
+
+export function useFlowRunsFilterFromRoute(defaultValue: FlowRunsFilter = {}, prefix?: string): UseFilter<FlowRunsFilter> {
+  return useUnionFilterFromRoute(FlowRunSortValuesSortParam, defaultValue, prefix)
+}
+
+class TaskRunSortValuesSortParam extends RouteParam<TaskRunSortValues> {
+  protected parse(value: LocationQueryValue): TaskRunSortValues {
+    if (isTaskRunSortValue(value)) {
+      return value
+    }
+
+    throw new InvalidRouteParamValue()
+  }
+  protected format(value: TaskRunSortValues): LocationQueryValue {
+    if (isTaskRunSortValue(value)) {
+      return value
+    }
+
+    throw new InvalidRouteParamValue()
+  }
+}
+
+export function useTaskRunsFilterFromRoute(defaultValue: TaskRunsFilter = {}, prefix?: string): UseFilter<TaskRunsFilter> {
+  return useUnionFilterFromRoute(TaskRunSortValuesSortParam, defaultValue, prefix)
+}
+
+class DeploymentSortValuesSortParam extends RouteParam<DeploymentSortValues> {
+  protected parse(value: LocationQueryValue): DeploymentSortValues {
+    if (isDeploymentSortValue(value)) {
+      return value
+    }
+
+    throw new InvalidRouteParamValue()
+  }
+  protected format(value: DeploymentSortValues): LocationQueryValue {
+    if (isDeploymentSortValue(value)) {
+      return value
+    }
+
+    throw new InvalidRouteParamValue()
+  }
+}
+
+export function useDeploymentsFilterFromRoute(defaultValue: DeploymentsFilter = {}, prefix?: string): UseFilter<DeploymentsFilter> {
+  return useUnionFilterFromRoute(DeploymentSortValuesSortParam, defaultValue, prefix)
+}
