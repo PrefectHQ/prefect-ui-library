@@ -97,6 +97,9 @@ export interface WorkPoolFilter extends Omit<Filter, 'tags' | 'name'> {
   type?: any_,
 }
 
+/**
+ * @deprecated
+ */
 export type PaginatedWorkPoolFilter = {
   work_pools?: WorkPoolFilter,
   limit?: number,

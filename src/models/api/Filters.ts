@@ -74,6 +74,13 @@ export type DeploymentFilterRequest = {
   work_queue_name?: Any,
 }
 
+export type WorkPoolFilterRequest = {
+  operator?: OperationRequest,
+  id?: Any,
+  name?: Any,
+  type?: Any,
+}
+
 export type UnionFilterRequest<T> = {
   flows?: FlowFilterRequest,
   flow_runs?: FlowRunFilterRequest,
@@ -168,6 +175,12 @@ export type WorkQueuesFilterRequest = {
     operator?: OperationRequest,
     name?: Any & StartsWith,
   },
+  offset?: number,
+  limit?: number,
+}
+
+export type WorkPoolsFilterRequest = {
+  work_pools?: WorkPoolFilterRequest,
   offset?: number,
   limit?: number,
 }
