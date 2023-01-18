@@ -38,7 +38,7 @@
   relative
   overflow-hidden
   rounded
-  bg-prefect-600
+  bg-prefect
   text-white
 }
 
@@ -89,9 +89,10 @@
 }
 
 .marketing-banner--alternate { @apply
-  bg-white
-  text-slate-600
+  bg-background
+  text-foreground
   border
+  dark:border-background-600
   shadow-md;
   background-image: none;
 }

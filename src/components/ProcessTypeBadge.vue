@@ -12,10 +12,10 @@
 </script>
 
 <style>
-.process-type-badge { @apply
+.p-tag.process-type-badge { @apply
   text-xs
   pl-2
-  bg-slate-300
-  text-slate-700
+  bg-foreground-100
+  text-foreground
 }
 </style>

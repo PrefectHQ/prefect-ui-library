@@ -1,38 +1,35 @@
 <template>
-  <div class="not-found">
+  <div class="four-zero-four">
     <svg
-      class="not-found__message"
+      class="four-zero-four__message"
       fill="none"
       viewBox="0 0 607 511"
       xmlns="http://www.w3.org/2000/svg"
     >
       <title>404 Page Not Found</title>
-      <path
-        d="M200.2 505v-17.5h6.1c1.8 0 3.1.4 4 1.2 1 .8 1.4 2 1.4 3.4v2.2c0 1.5-.4 2.6-1.4 3.4-.9.8-2.2 1.2-4 1.2h-4v6.1h-2.1Zm2.2-8h3.9c1.2 0 2-.2 2.5-.7.5-.4.8-1.1.8-2v-2c0-1-.3-1.7-.8-2.1-.5-.5-1.3-.7-2.5-.7h-4v7.5Zm18 6.3c.8 0 1.6 0 2.2-.4a4 4 0 0 0 1.8-1.4v-2h-4.6c-.6 0-1.1 0-1.5.4-.4.2-.6.7-.6 1.5 0 .6.2 1 .7 1.4.4.4 1 .5 2 .5Zm-.3 2c-1.1 0-2.2-.4-3-1-1-.6-1.4-1.5-1.4-2.8 0-1.2.3-2 1-2.7a4 4 0 0 1 2.8-1h4.9v-1.9c0-.7-.3-1.2-.8-1.7-.5-.4-1.2-.7-2.2-.7-1 0-1.8.2-2.4.5-.5.3-1 1-1.2 2l-1.9-.6c.3-1.1.8-2 1.7-2.7.8-.7 2-1 3.7-1 1.5 0 2.8.3 3.8 1 1 .6 1.5 1.6 1.5 3v5.8c0 .8.2 1.3.6 1.5.5.2 1.1.2 2 0v2c-1 .2-1.8.1-2.6-.1-.7-.3-1.2-1-1.3-2h-.4c-.4.6-1 1.2-2 1.6a6 6 0 0 1-2.8.7Zm26.3.7c0 1.2-.4 2.1-1.3 2.7-.9.6-2 .9-3.2.9h-4c-1.4 0-2.5-.3-3.3-.8-.9-.5-1.3-1.3-1.3-2.4 0-.7.2-1.3.6-1.7.3-.4.9-.6 1.6-.7v-.5c-.5 0-1-.3-1.3-.6-.3-.3-.4-.8-.4-1.5s.2-1.2.5-1.7c.4-.5 1.1-.8 2-.9v-.4c-.7-.2-1.2-.6-1.4-1a3 3 0 0 1-.4-1.4v-.6a3 3 0 0 1 1.3-2.5c.9-.7 2-1 3.6-1h6.5v2l-3.4-.5v.4c.6.1 1 .4 1.3.9.3.4.5.9.5 1.3v.6a3 3 0 0 1-1.2 2.4c-.8.7-2 1-3.8 1h-2.6c-.4 0-.7 0-.9.3-.2.2-.3.5-.3 1 0 .4.1.7.4 1 .3.2.7.3 1.3.3h5c1.2 0 2.2.3 3 .8.8.5 1.2 1.4 1.2 2.6Zm-7-7.7c1 0 1.6-.2 2-.5.5-.3.8-.8.8-1.5v-.7c0-.7-.3-1.2-.7-1.5-.5-.3-1.2-.4-2-.4-1 0-1.6.1-2.1.4-.5.3-.7.8-.7 1.5v.7c0 .7.2 1.2.7 1.5.5.3 1.1.5 2 .5Zm-1.6 9.5h4.4a3 3 0 0 0 1.6-.3c.4-.3.6-.7.6-1.3 0-.6-.2-1-.5-1.3-.4-.2-.9-.3-1.5-.3h-6.9v1.4c0 .6.2 1 .6 1.4.4.3 1 .4 1.7.4Zm24.1-5.7c-.4 1.1-1 1.9-1.8 2.4-.9.5-2 .7-3.6.7a6 6 0 0 1-4-1.2c-1-.9-1.5-2.1-1.5-3.8v-3.5c0-1.7.5-3 1.5-3.7a6 6 0 0 1 4-1.3c1.6 0 3 .4 4 1.3.9.8 1.4 2.1 1.4 3.9v2h-8.7v1.4c0 1 .2 1.8.8 2.3.5.5 1.3.8 2.4.8 1 0 1.9-.2 2.3-.5.5-.3.9-.7 1.1-1.4l2.1.6Zm-8.7-5.4v.6h6.5v-.4c0-1.2-.3-2-.8-2.5-.6-.6-1.4-.9-2.5-.9-1 0-1.9.3-2.4.8-.6.5-.8 1.3-.8 2.4Zm36.5 8.3-7.9-14.5V505h-2v-17.5h3l8 14.9v-14.9h2V505h-3Zm13.2.2c-1.6 0-3-.4-4-1.2-1-.8-1.5-2-1.5-3.7v-3.6c0-1.7.5-3 1.5-3.8a6 6 0 0 1 4-1.2 6 6 0 0 1 4 1.2c1 .9 1.4 2.1 1.4 3.8v3.6c0 1.7-.5 2.9-1.5 3.7-1 .8-2.3 1.2-4 1.2Zm0-2c1 0 1.9-.2 2.4-.6.6-.5.9-1.3.9-2.3v-3.6c0-1-.3-1.8-.9-2.3-.5-.5-1.3-.7-2.4-.7-1.1 0-2 .2-2.5.7-.5.5-.8 1.3-.8 2.3v3.6c0 1 .3 1.8.8 2.3.6.4 1.4.7 2.5.7Zm16.5 2c-1.4 0-2.5-.4-3.2-1.1-.7-.8-1.1-2-1.1-3.4v-6.8h-2.6v-2h2.6v-4.4h2.2v4.4h4.8v2h-4.8v6.8c0 .9.2 1.5.6 2 .4.3 1 .5 1.7.5l1-.1a8 8 0 0 0 1.2-.3l.5 1.9a8 8 0 0 1-2.9.5Zm20.1-.2v-17.5H351v2h-9.2v6.8h7.6v2h-7.6v6.7h-2.2Zm21 .2c-1.7 0-3-.4-4-1.2-1-.8-1.5-2-1.5-3.7v-3.6c0-1.7.5-3 1.5-3.8a6 6 0 0 1 4-1.2 6 6 0 0 1 3.9 1.2c1 .9 1.5 2.1 1.5 3.8v3.6c0 1.7-.5 2.9-1.5 3.7-1 .8-2.3 1.2-4 1.2Zm0-2c1 0 1.9-.2 2.4-.6.5-.5.8-1.3.8-2.3v-3.6c0-1-.3-1.8-.8-2.3-.5-.5-1.4-.7-2.5-.7-1 0-1.9.2-2.4.7-.6.5-.8 1.3-.8 2.3v3.6c0 1 .2 1.8.8 2.3.5.4 1.4.7 2.4.7Zm14.2 2a4 4 0 0 1-3-1.2 4.5 4.5 0 0 1-1.2-3.3V492h2.2v8.4c0 1 .2 1.6.6 2.1.4.5 1 .7 2 .7a4 4 0 0 0 2-.5c.6-.4 1.2-1 1.9-1.7v-9h2.2V505h-2.2v-2.2h-.7c-.3.7-.8 1.3-1.5 1.8-.7.4-1.4.6-2.3.6Zm11.3-.2v-13h2.1v2h.7c.3-.6.8-1.2 1.5-1.7.7-.4 1.5-.6 2.3-.6a4 4 0 0 1 3.1 1.2c.8.8 1.2 1.9 1.2 3.3v8.8h-2.2v-8.4c0-1-.3-1.7-.8-2.1-.4-.5-1-.7-1.8-.7s-1.6.2-2.2.6c-.6.4-1.2 1-1.8 1.7v8.9H386Zm20.2-1.9c.8 0 1.5-.1 2-.5.7-.4 1.3-1 2-1.7v-6.5l-1.5-.6a6 6 0 0 0-1.6-.2c-1.1 0-2 .3-2.6.8-.6.5-.9 1.3-.9 2.3v3.5c0 1.2.3 2 .7 2.4a3 3 0 0 0 2 .5Zm3.3-.3c-.4.8-.9 1.4-1.5 1.8-.7.4-1.4.6-2.3.6a4 4 0 0 1-3.1-1.3 5.4 5.4 0 0 1-1.2-3.7v-3.5c0-1.5.5-2.8 1.5-3.7a6 6 0 0 1 4.2-1.3 7.6 7.6 0 0 1 3 .6v-4.8h2.2V505h-2.1v-2.2h-.7Z"
-        fill="#fff"
-      />
+      <text x="50%" y="90%" class="four-zero-four__text">Page not found</text>
       <circle cx="126.5" cy="301.5" r="4.5" fill="#fff" />
       <circle cx="21.5" cy="279.5" r="4.5" fill="#fff" />
       <circle cx="276.5" cy="233.5" r="4.5" fill="#fff" />
       <circle cx="276.5" cy="311.5" r="4.5" fill="#fff" />
       <circle cx="429.5" cy="86.5" r="4.5" fill="#fff" />
       <circle cx="533.5" cy="108.5" r="4.5" fill="#fff" />
-      <g filter="url(#a)" class="not-found__circle">
+      <g filter="url(#a)" class="four-zero-four__circle">
         <circle cx="22" cy="280" r="16" fill="#fff" fill-opacity=".2" />
       </g>
-      <g filter="url(#b)" class="not-found__circle">
+      <g filter="url(#b)" class="four-zero-four__circle">
         <circle cx="126" cy="302" r="16" fill="#fff" fill-opacity=".2" />
       </g>
-      <g filter="url(#c)" class="not-found__circle">
+      <g filter="url(#c)" class="four-zero-four__circle">
         <circle cx="276" cy="234" r="16" fill="#fff" fill-opacity=".2" />
       </g>
-      <g filter="url(#d)" class="not-found__circle">
+      <g filter="url(#d)" class="four-zero-four__circle">
         <circle cx="429" cy="87" r="16" fill="#fff" fill-opacity=".2" />
       </g>
-      <g filter="url(#e)" class="not-found__circle">
+      <g filter="url(#e)" class="four-zero-four__circle">
         <circle cx="533" cy="109" r="16" fill="#fff" fill-opacity=".2" />
       </g>
-      <g filter="url(#f)" class="not-found__circle">
+      <g filter="url(#f)" class="four-zero-four__circle">
         <circle cx="276" cy="312" r="16" fill="#fff" fill-opacity=".2" />
       </g>
       <g filter="url(#g)">
@@ -274,7 +271,7 @@
     },
 
     mounted() {
-      this.circles = this.$el.querySelectorAll('.not-found__circle')
+      this.circles = this.$el.querySelectorAll('.four-zero-four__circle')
       this.startAnimation()
     },
 
@@ -305,7 +302,7 @@
       },
 
       animateCircle(circle: Element) {
-        const animationClass = 'not-found__circle--animate'
+        const animationClass = 'four-zero-four__circle--animate'
         circle.addEventListener(
           'animationend',
           () => {
@@ -332,32 +329,43 @@
 </script>
 
 <style>
-.not-found {
+.four-zero-four {
   display: flex;
   align-items: center;
   justify-content: center;
-  background:#0a2053;
+}
+
+.four-zero-four { @apply
+  bg-primary-100
+  w-full
+  h-full
 }
 
 @media screen and (max-width: 1024px) {
-  .not-found {
+  .four-zero-four {
     background-size: 150px auto, 500px auto;
   }
 }
 
-.not-found__message {
+.four-zero-four__message {
   width: 600px;
   max-width: 80%;
   margin-top: -15%;
 }
 
-.not-found__circle {
+.four-zero-four__text { @apply
+  text-xl
+  font-semibold
+  fill-foreground-400
+}
+
+.four-zero-four__circle {
   transform-box: fill-box;
   transform-origin: center;
   opacity: 0;
 }
 
-.not-found__circle--animate {
+.four-zero-four__circle--animate {
   animation: pulse-black 1.5s;
 }
 

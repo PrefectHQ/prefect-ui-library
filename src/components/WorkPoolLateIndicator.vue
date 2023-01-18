@@ -27,5 +27,5 @@
 .work-pool-late-indicator { @apply
   bg-state-scheduled-100
   text-state-scheduled-700
-  }
+}
 </style>

@@ -1,6 +1,6 @@
 {
     "name": "@prefecthq/orion-design",
-    "version": "1.1.58",
+    "version": "1.2.2",
     "private": false,
     "repository": {
         "type": "git",
@@ -47,7 +47,7 @@
         "@vitejs/plugin-vue": "4.0.0",
         "auto-changelog": "^2.4.0",
         "autoprefixer": "10.4.13",
-        "eslint": "8.31.0",
+        "eslint": "8.32.0",
         "lodash.camelcase": "4.3.0",
         "lodash.debounce": "4.0.8",
         "postcss": "8.4.21",
@@ -56,17 +56,17 @@
         "typescript": "^4.9.4",
         "vite": "4.0.4",
         "vite-svg-loader": "^4.0.0",
-        "vue-tsc": "1.0.22"
+        "vue-tsc": "1.0.24"
     },
     "peerDependencies": {
-        "@prefecthq/prefect-design": "^1.1.43",
+        "@prefecthq/prefect-design": "^1.2.1",
         "@prefecthq/vue-compositions": "^1.2.3",
-        "vee-validate": "^4.5.11",
+        "vee-validate": "^4.6.5",
         "vue": "^3.2.45",
         "vue-router": "^4.0.12"
     },
     "dependencies": {
-        "@prefecthq/graphs": "0.1.9",
+        "@prefecthq/graphs": "0.1.10",
         "@prefecthq/radar": "0.0.18",
         "@prefecthq/vue-charts": "0.0.19",
         "axios": "0.27.2",

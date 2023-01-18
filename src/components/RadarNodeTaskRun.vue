@@ -2,7 +2,7 @@
   <ORadarNode class="radar-node-task-run">
     <template #aside>
       <div class="radar-node-task-run__aside" :class="classes.asideClass" :title="stateName">
-        <StateIcon :state-type="stateType" />
+        <StateIcon :state-type="stateType" class="radar-node-task-run__icon" />
       </div>
     </template>
 
@@ -78,10 +78,15 @@
   rounded-bl
 }
 
+.radar-node-task-run__icon { @apply
+  text-inherit
+}
+
 .radar-node-task-run__collapsed-badge { @apply
   text-xs
   text-white
-  bg-slate-600
+  bg-background-300
+  dark:bg-background-600
   p-1
   rounded-full
   min-w-[24px]

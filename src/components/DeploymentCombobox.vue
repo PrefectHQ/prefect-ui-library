@@ -17,13 +17,13 @@
 </template>
 
 <script lang="ts" setup>
-  import { PCombobox, SelectOption } from '@prefecthq/prefect-design'
+  import { PCombobox, SelectOptionNormalized } from '@prefecthq/prefect-design'
   import { useSubscription } from '@prefecthq/vue-compositions'
   import { computed } from 'vue'
   import { DeploymentComboboxOption } from '@/components'
   import { useWorkspaceApi } from '@/compositions'
 
-  type DeploymentOption = SelectOption & { flowId?: string }
+  type DeploymentOption = SelectOptionNormalized & { flowId?: string }
 
   const props = defineProps<{
     selected: string | string[] | null | undefined,

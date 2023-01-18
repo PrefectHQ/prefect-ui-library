@@ -62,7 +62,7 @@
   flex
   justify-center
   w-full
-  bg-slate-700
+  bg-slate-700/70
   sticky
   -top-2;
 }
@@ -74,7 +74,7 @@
   left-0
   right-0
   top-1/2
-  bg-slate-600;
+  bg-slate-800;
   content: '';
 }
 
@@ -86,7 +86,7 @@
   py-2
   text-center
   text-xs
-  text-slate-500
+  text-white
   z-[1];
 }
 </style>

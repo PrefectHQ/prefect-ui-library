@@ -54,6 +54,7 @@
   import NotificationStatusSelect from '@/components/NotificationStatusSelect.vue'
   import NotificationToggle from '@/components/NotificationToggle.vue'
   import ResultsCount from '@/components/ResultsCount.vue'
+  import { useCan } from '@/compositions'
   import { Notification, NotificationStatus } from '@/models'
 
   const props = defineProps<{
@@ -68,6 +69,8 @@
   const selectedStatus = ref<NotificationStatus>('all')
   const hasFilter = computed(() => selectedStatus.value !== 'all')
 
+  const can = useCan()
+
   const columns = [
     {
       property: 'notification',
@@ -76,6 +79,7 @@
     {
       label: 'Action',
       width: '42px',
+      visible: can.update.notification_policy,
     },
   ]
 
@@ -111,5 +115,6 @@
 .notifications-table__actions { @apply
   flex
   gap-2
+  items-center
 }
 </style>

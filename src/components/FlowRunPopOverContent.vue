@@ -57,9 +57,9 @@
   p-3
   grid
   gap-1
-  bg-white
-  border-[1px]
-  border-slate-300
+  bg-background
+  border
+  dark:border-background-600
   rounded
   max-w-xs
   w-screen

@@ -67,7 +67,6 @@
 </script>
 
 <style>
-.schedule-fieldset__tag,
 .schedule-fieldset__button { @apply
   max-w-fit
 }
@@ -86,16 +85,5 @@
 .schedule-fieldset__button-icon { @apply
   w-3
   h-3
-}
-
-.schedule-fieldset__tag { @apply
-  bg-slate-500
-  text-white
-  cursor-pointer
-}
-
-.schedule-fieldset__tag .p-tag__dismiss { @apply
-  text-slate-100
-  hover:text-slate-900
 }
 </style>

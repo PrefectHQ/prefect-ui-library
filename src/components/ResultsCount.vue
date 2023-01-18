@@ -18,7 +18,7 @@
 
 <style>
 .results-count { @apply
-  text-gray-500
+  text-foreground-300
   text-base
 }
 </style>
