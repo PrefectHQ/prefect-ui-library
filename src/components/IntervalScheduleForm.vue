@@ -22,7 +22,7 @@
         </p-label>
 
         <p-label label="Timezone" class="interval-schedule-form__column--span-2">
-          <TimezoneSelect v-model="timezone" />
+          <TimezoneSelect v-model="timezone" hide-unset />
         </p-label>
       </div>
     </p-content>
