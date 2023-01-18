@@ -15,6 +15,7 @@
   const props = defineProps<{
     modelValue: string | null,
     showTimestamp?: boolean,
+    hideUnset?: boolean,
   }>()
 
   const emit = defineEmits<{
@@ -47,12 +48,13 @@
 
   onUnmounted(() => clearTimeout(timeout))
 
-  const localTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone
-
   const timezones = Intl.supportedValuesOf('timeZone').map(timezone => ({ label: timezone, value: timezone }))
   const options: SelectOption[] = [
-    { label: 'Use browser default', value: localTimezone },
     { label: 'UTC', value: utcTimezone },
     ...timezones,
   ]
+
+  if (!props.hideUnset) {
+    options.unshift({ label: 'Use browser default', value: null })
+  }
 </script>
