@@ -132,6 +132,7 @@
     updateScheduleLoading.value = true
 
     try {
+      console.log('schedule', schedule)
       await api.deployments.updateDeployment(props.deployment.id, { schedule })
 
       emit('update')

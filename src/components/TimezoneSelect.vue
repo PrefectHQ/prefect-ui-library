@@ -47,9 +47,11 @@
 
   onUnmounted(() => clearTimeout(timeout))
 
+  const localTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone
+
   const timezones = Intl.supportedValuesOf('timeZone').map(timezone => ({ label: timezone, value: timezone }))
   const options: SelectOption[] = [
-    { label: 'Use browser default', value: null },
+    { label: 'Use browser default', value: localTimezone },
     { label: 'UTC', value: utcTimezone },
     ...timezones,
   ]
