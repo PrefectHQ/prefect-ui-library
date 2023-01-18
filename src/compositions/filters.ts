@@ -5,7 +5,7 @@ import { FlowRunSortValuesSortParam } from '@/formatters/FlowRunSortValuesSortPa
 import { FlowSortValuesSortParam } from '@/formatters/FlowSortValuesSortParam'
 import { OperatorRouteParam } from '@/formatters/OperatorRouteParam'
 import { TaskRunSortValuesSortParam } from '@/formatters/TaskRunSortValuesSortParam'
-import { BlockDocumentFilter, BlockSchemaFilter, BlockTypeFilter, DeploymentFilter, DeploymentsFilter, FlowFilter, FlowRunFilter, FlowRunsFilter, FlowsFilter, Operation, StateFilter, TagFilter, TaskRunFilter, TaskRunsFilter, UnionFilter, UnionFilterSort } from '@/models/Filters'
+import { BlockDocumentFilter, BlockSchemaFilter, BlockTypeFilter, DeploymentFilter, DeploymentsFilter, FlowFilter, FlowRunFilter, FlowRunsFilter, FlowsFilter, Operation, StateFilter, TagFilter, TaskRunFilter, TaskRunsFilter, UnionFilter, UnionFilterSort, WorkPoolFilter, WorkPoolQueueFilter } from '@/models/Filters'
 
 type UseFilter<T extends Record<PropertyKey, unknown>> = Required<{
   [Property in keyof T]: NonNullable<T[Property]> extends Record<PropertyKey, unknown>
@@ -349,6 +349,78 @@ export function useDeploymentFilterFromRoute(prefix?: string): UseFilter<Deploym
   }
 }
 
+export function useWorkPoolFilter(): UseFilter<WorkPoolFilter> {
+  const operator = ref<Operation>()
+  const id = ref<string | string[]>()
+  const name = ref<string | string[]>()
+  const type = ref<string | string[]>()
+  const filter = reactive({
+    operator,
+    id,
+    name,
+    type,
+  })
+
+  return {
+    operator,
+    id,
+    name,
+    type,
+    filter,
+  }
+}
+
+const workPoolFilterSchema: RouteQueryParamsSchema<WorkPoolFilter> = {
+  operator: OperatorRouteParam,
+  id: StringRouteParam,
+  name: StringRouteParam,
+  type: StringRouteParam,
+}
+
+export function useWorkPoolFilterFromRoute(prefix?: string): UseFilter<WorkPoolFilter> {
+  const params = useRouteQueryParams(workPoolFilterSchema, {}, prefix)
+  const filter = reactive(params)
+
+  return {
+    ...params,
+    filter,
+  }
+}
+
+export function useWorkPoolQueueFilter(): UseFilter<WorkPoolQueueFilter> {
+  const operator = ref<Operation>()
+  const id = ref<string | string[]>()
+  const name = ref<string | string[]>()
+  const filter = reactive({
+    operator,
+    id,
+    name,
+  })
+
+  return {
+    operator,
+    id,
+    name,
+    filter,
+  }
+}
+
+const workPoolQueueFilterSchema: RouteQueryParamsSchema<WorkPoolQueueFilter> = {
+  operator: OperatorRouteParam,
+  id: StringRouteParam,
+  name: StringRouteParam,
+}
+
+export function useWorkPoolQueueFilterFromRoute(prefix?: string): UseFilter<WorkPoolQueueFilter> {
+  const params = useRouteQueryParams(workPoolQueueFilterSchema, {}, prefix)
+  const filter = reactive(params)
+
+  return {
+    ...params,
+    filter,
+  }
+}
+
 export function useBlockTypeFilter(): UseFilter<BlockTypeFilter> {
   const nameLike = ref<string>()
   const slug = ref<string | string[]>()
@@ -503,6 +575,8 @@ const unionFilterSchema: Omit<RouteQueryParamsSchema<UnionFilter>, 'sort'> = {
   flowRuns: flowRunFilterSchema,
   taskRuns: taskRunFilterSchema,
   deployments: deploymentFilterSchema,
+  workPools: workPoolFilterSchema,
+  workPoolQueues: workPoolQueueFilterSchema,
   offset: NumberRouteParam,
   limit: NumberRouteParam,
 }
