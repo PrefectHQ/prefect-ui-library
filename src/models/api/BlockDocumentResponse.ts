@@ -25,4 +25,5 @@ export type BlockDocumentResponse = {
   block_type_id: string,
   block_type: BlockTypeResponse,
   block_document_references: BlockDocumentReferencesResponse,
+  is_anonymous: boolean,
 }
