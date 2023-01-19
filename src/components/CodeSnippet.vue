@@ -1,6 +1,6 @@
 <template>
   <div class="code-snippet">
-    <component :is="view" class="code-snippet__code" :value="snippet" />
+    <component :is="view" class="code-snippet__code" :value="snippet" :show-line-numbers="showLineNumbers" />
     <PButton size="sm" class="code-snippet__button" @click="copy">
       Copy <p-icon icon="DuplicateIcon" />
     </PButton>
@@ -18,6 +18,7 @@
   const props = defineProps<{
     snippet: string,
     language?: 'JSON' | 'python',
+    showLineNumbers?: boolean,
   }>()
 
   const view = computed(() => {
@@ -44,6 +45,9 @@
   relative
   min-w-0
   overflow-auto
+  p-4
+  text-slate-50
+  bg-slate-700
 }
 
 .code-snippet:hover .code-snippet__button { @apply

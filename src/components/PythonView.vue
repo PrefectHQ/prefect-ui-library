@@ -1,6 +1,8 @@
 <template>
-  <!-- eslint-disable-next-line vue/no-v-html -->
-  <pre class="python-view"><code multiline v-html="innerHtml" /></pre>
+  <code class="python-view" :class="classes">
+    <!-- eslint-disable-next-line vue/no-v-html -->
+    <pre class="python-view__lines"><template v-for="(line, index) in lines" :key="index"><span class="python-view__line" v-html="line" /></template></pre>
+  </code>
 </template>
 
 <script lang="ts" setup>
@@ -12,11 +14,16 @@
 
   const props = defineProps<{
     value?: string,
+    showLineNumbers?: boolean,
   }>()
 
-  const innerHtml = computed(() => {
-    return highlight(props.value ?? '', languages.python, 'python')
+  const lines = computed(() => {
+    return highlight(props.value ?? '', languages.python, 'python').split('\n')
   })
+
+  const classes = computed(() => ({
+    'python-view--with-line-numbers': props.showLineNumbers,
+  }))
 </script>
 
 <style>
@@ -35,10 +42,29 @@
   whitespace-pre
   break-normal
   rounded
-  text-left
-  p-4
-  text-slate-50
-  bg-slate-700
+  text-left;
+}
+
+.python-view__lines { @apply
+  py-1;
+  counter-reset: line;
+}
+
+.python-view__line { @apply
+  h-5
+  w-full
+  block
+}
+
+.python-view--with-line-numbers .python-view__line:before { @apply
+  inline-block
+  px-3
+  mr-5
+  border-r-[1px]
+  border-slate-200
+  text-slate-400;
+  counter-increment: line;
+  content: counter(line);
 }
 
 .python-view .token.comment,

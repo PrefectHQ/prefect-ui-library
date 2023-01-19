@@ -1,6 +1,8 @@
 <template>
-  <!-- eslint-disable-next-line vue/no-v-html -->
-  <pre class="json-view"><code multiline v-html="innerHtml" /></pre>
+  <code class="json-view" :class="classes">
+    <!-- eslint-disable-next-line vue/no-v-html -->
+    <pre class="json-view__lines"><template v-for="(line, index) in lines" :key="index"><span class="json-view__line" v-html="line" /></template></pre>
+  </code>
 </template>
 
 <script lang="ts" setup>
@@ -12,11 +14,16 @@
 
   const props = defineProps<{
     value?: string | null | undefined,
+    showLineNumbers?: boolean,
   }>()
 
-  const innerHtml = computed(() => {
-    return highlight(props.value ?? '', languages.json, 'json')
+  const lines = computed(() => {
+    return highlight(props.value ?? '', languages.json, 'json').split('\n')
   })
+
+  const classes = computed(() => ({
+    'json-view--with-line-numbers': props.showLineNumbers,
+  }))
 </script>
 
 <style>
@@ -35,10 +42,29 @@
   whitespace-pre
   break-normal
   rounded
-  text-left
-  p-4
-  text-slate-50
-  bg-slate-700
+  text-left;
+}
+
+.json-view__lines { @apply
+  py-1;
+  counter-reset: line;
+}
+
+.json-view__line { @apply
+  h-5
+  w-full
+  block
+}
+
+.json-view--with-line-numbers .json-view__line:before { @apply
+  inline-block
+  px-3
+  mr-5
+  border-r-[1px]
+  border-slate-200
+  text-slate-400;
+  counter-increment: line;
+  content: counter(line);
 }
 
 .json-view .token.comment,

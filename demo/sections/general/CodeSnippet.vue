@@ -7,7 +7,7 @@
     </template>
 
     <template #python>
-      <CodeSnippet language="python" :snippet="python" />
+      <CodeSnippet language="python" :snippet="python" show-line-numbers />
     </template>
   </ComponentPage>
 </template>
