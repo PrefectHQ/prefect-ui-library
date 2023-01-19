@@ -5,6 +5,7 @@
         <BetaBadge />
       </div>
       <FlowRunTimeline
+        class="flow-run-timeline__timeline"
         :graph-data="graphData"
         :is-running="isRunning"
         :format-time-by-seconds="formatTimeNumeric"
@@ -80,6 +81,12 @@
   flex
   overflow-hidden
 }
+
+.flow-run-timeline__timeline { @apply
+  bg-background-600
+  dark:bg-background
+}
+
 .flow-run-timeline-container {
   height: 350px;
   width: 100%;
