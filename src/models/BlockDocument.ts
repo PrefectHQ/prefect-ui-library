@@ -16,6 +16,7 @@ export interface IBlockDocument {
   created: Date,
   updated: Date,
   name: string,
+  isAnonymous: boolean,
   data: SchemaValues,
   blockSchemaId: string,
   blockSchema: BlockSchema,
@@ -28,6 +29,7 @@ export class BlockDocument implements IBlockDocument {
   public readonly id: string
   public readonly created: Date
   public readonly updated: Date
+  public readonly isAnonymous: boolean
   public name: string
   public data: SchemaValues
   public blockSchemaId: string
@@ -40,6 +42,7 @@ export class BlockDocument implements IBlockDocument {
     this.id = blockDocument.id
     this.created = blockDocument.created
     this.updated = blockDocument.updated
+    this.isAnonymous = blockDocument.isAnonymous
     this.name = blockDocument.name
     this.data = blockDocument.data
     this.blockSchemaId = blockDocument.blockSchemaId
