@@ -11,6 +11,7 @@ export const randomBlockDocument: MockFunction<BlockDocument, [Partial<BlockDocu
     id: this.create('string'),
     created: this.create('date'),
     updated: this.create('date'),
+    isAnonymous: this.create('boolean'),
     name: this.create('noun'),
     data,
     blockSchemaId: blockSchema.id,
