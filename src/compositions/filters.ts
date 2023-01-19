@@ -5,7 +5,7 @@ import { FlowRunSortValuesSortParam } from '@/formatters/FlowRunSortValuesSortPa
 import { FlowSortValuesSortParam } from '@/formatters/FlowSortValuesSortParam'
 import { OperatorRouteParam } from '@/formatters/OperatorRouteParam'
 import { TaskRunSortValuesSortParam } from '@/formatters/TaskRunSortValuesSortParam'
-import { BlockDocumentFilter, BlockSchemaFilter, BlockTypeFilter, DeploymentFilter, DeploymentsFilter, FlowFilter, FlowRunFilter, FlowRunsFilter, FlowsFilter, Operation, StateFilter, TagFilter, TaskRunFilter, TaskRunsFilter, UnionFilter, UnionFilterSort, WorkPoolFilter, WorkPoolQueueFilter } from '@/models/Filters'
+import { BlockDocumentFilter, BlockSchemaFilter, BlockTypeFilter, DeploymentFilter, DeploymentsFilter, FlowFilter, FlowRunFilter, FlowRunsFilter, FlowsFilter, Operation, StateFilter, TagFilter, TaskRunFilter, TaskRunsFilter, UnionFilter, UnionFilterSort, WorkPoolFilter, WorkPoolQueueFilter, WorkPoolsFilter } from '@/models/Filters'
 
 type UseFilter<T extends Record<PropertyKey, unknown>> = Required<{
   [Property in keyof T]: NonNullable<T[Property]> extends Record<PropertyKey, unknown>
@@ -535,11 +535,21 @@ export function useBlockDocumentFilterFromRoute(defaultValue: BlockDocumentFilte
   }
 }
 
+export function useWorkPoolsFilter(): UseFilter<WorkPoolsFilter> {
+
+}
+
+export function useWorkPoolsFilterFromRoute(): UseFilter<WorkPoolsFilter> {
+
+}
+
 export function useUnionFilter<T extends UnionFilter>(): UseFilter<T> {
   const { filter: flowsFilter, ...flows } = useFlowFilter()
   const { filter: flowRunsFilter, ...flowRuns } = useFlowRunFilter()
   const { filter: taskRunsFilter, ...taskRuns } = useTaskRunFilter()
   const { filter: deploymentsFilter, ...deployments } = useDeploymentFilter()
+  const { filter: workPoolsFilter, ...workPools } = useWorkPoolFilter()
+  const { filter: workPoolQueuesFilter, ...workPoolQueues } = useWorkPoolQueueFilter()
   const sort = ref<T['sort']>()
   const offset = ref<number>()
   const limit = ref<number>()
@@ -548,6 +558,8 @@ export function useUnionFilter<T extends UnionFilter>(): UseFilter<T> {
     flowRuns: flowRunsFilter,
     taskRuns: taskRunsFilter,
     deployments: deploymentsFilter,
+    workPools: workPoolsFilter,
+    workPoolQueues: workPoolQueuesFilter,
     sort,
     offset,
     limit,
@@ -558,6 +570,8 @@ export function useUnionFilter<T extends UnionFilter>(): UseFilter<T> {
     flowRuns,
     taskRuns,
     deployments,
+    workPools,
+    workPoolQueues,
     sort,
     offset,
     limit,
