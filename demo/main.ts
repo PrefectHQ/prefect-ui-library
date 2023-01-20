@@ -1,6 +1,4 @@
 import '@prefecthq/prefect-design/dist/style.css'
-import '@/styles/python.css'
-import '@/styles/json.css'
 import '@/styles/style.css'
 
 import { plugin as PrefectDesign } from '@prefecthq/prefect-design'
