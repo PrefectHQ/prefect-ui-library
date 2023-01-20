@@ -1,0 +1,87 @@
+.code-highlighting--python .token.comment,
+.code-highlighting--python .token.block-comment,
+.code-highlighting--python .token.prolog,
+.code-highlighting--python .token.doctype,
+.code-highlighting--python .token.cdata {
+  @apply
+  text-slate-400
+}
+
+.code-highlighting--python .token.punctuation {
+  @apply
+  text-slate-50
+}
+
+.code-highlighting--python .token.tag,
+.code-highlighting--python .token.attr-name,
+.code-highlighting--python .token.namespace,
+.code-highlighting--python .token.deleted {
+  @apply
+  text-rose-400
+}
+
+.code-highlighting--python .token.function-name {
+  @apply
+  text-blue-400
+}
+
+.code-highlighting--python .token.boolean,
+.code-highlighting--python .token.number,
+.code-highlighting--python .token.function {
+  @apply
+  text-orange-400
+}
+
+.code-highlighting--python .token.property,
+.code-highlighting--python .token.class-name,
+.code-highlighting--python .token.constant,
+.code-highlighting--python .token.symbol {
+  @apply
+  text-yellow-400
+}
+
+.code-highlighting--python .token.selector,
+.code-highlighting--python .token.important,
+.code-highlighting--python .token.atrule,
+.code-highlighting--python .token.keyword,
+.code-highlighting--python .token.builtin {
+  @apply
+  text-rose-300
+}
+
+.code-highlighting--python .token.string,
+.code-highlighting--python .token.char,
+.code-highlighting--python .token.attr-value,
+.code-highlighting--python .token.regex,
+.code-highlighting--python .token.variable {
+  @apply
+  text-emerald-400
+}
+
+.code-highlighting--python .token.operator,
+.code-highlighting--python .token.entity,
+.code-highlighting--python .token.url {
+  @apply
+  text-blue-400
+}
+
+.code-highlighting--python .token.important,
+.code-highlighting--python .token.bold {
+  @apply
+  font-medium
+}
+
+.code-highlighting--python .token.italic {
+  /* Can't use the apply style here due to circular imports */
+  font-style: italic;
+}
+
+.code-highlighting--python .token.entity {
+  @apply
+  cursor-help
+}
+
+.code-highlighting--python .token.inserted {
+  @apply
+  text-emerald-600
+}

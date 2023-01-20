@@ -3,11 +3,11 @@
     <CodeSnippet snippet="hello world" />
 
     <template #json>
-      <CodeSnippet language="JSON" :snippet="json" />
+      <CodeSnippet language="json" :snippet="json" />
     </template>
 
     <template #python>
-      <CodeSnippet language="python" :snippet="python" />
+      <CodeSnippet language="python" :snippet="python" show-line-numbers />
     </template>
   </ComponentPage>
 </template>

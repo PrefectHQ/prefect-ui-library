@@ -12,7 +12,7 @@
         v-bind="attrs"
       />
       <div ref="target" class="python-input__view-area">
-        <PythonView :value="internalValue" class="python-input__python-view" v-bind="attrs" />
+        <CodeHighlighting language="python" :value="internalValue" class="python-input__python-view" v-bind="attrs" />
       </div>
     </template>
   </p-base-input>
@@ -20,7 +20,7 @@
 
 <script lang="ts" setup>
   import { computed } from 'vue'
-  import PythonView from '@/components/PythonView.vue'
+  import CodeHighlighting from '@/components/CodeHighlighting.vue'
   import { useScrollLinking } from '@/compositions'
 
   const props = defineProps<{
@@ -32,7 +32,6 @@
   }>()
 
   const { source, target } = useScrollLinking()
-
 
   const internalValue = computed({
     get() {

@@ -6,7 +6,7 @@
   <template v-else>
     <p-key-value :label="property.title" :value="value" class="schema-property-key-value">
       <template v-if="isDefined && isJsonProperty" #value>
-        <JsonView :value="jsonValue" />
+        <CodeHighlighting language="json" :value="jsonValue" />
       </template>
     </p-key-value>
   </template>
@@ -14,8 +14,9 @@
 
 <script lang="ts" setup>
   import { computed } from 'vue'
-  import { JsonView, JsonInput } from '.'
   import BlockDocumentKeyValue from '@/components/BlockDocumentKeyValue.vue'
+  import CodeHighlighting from '@/components/CodeHighlighting.vue'
+  import JsonInput from '@/components/JsonInput.vue'
   import { SchemaProperty, SchemaValue } from '@/types/schemas'
   import { stringifyUnknownJson } from '@/utilities/json'
 
@@ -28,7 +29,7 @@
     return props.property.type === 'array' || props.property.meta?.component === JsonInput
   })
 
-  const jsonValue = computed(() => stringifyUnknownJson(props.value))
+  const jsonValue = computed(() => stringifyUnknownJson(props.value) ?? undefined)
   const isBlockDocumentProperty = computed(() => props.property.type === 'block')
 
   // todo: copied from PKeyValue. Hoping to update PKeyValue to eliminate the need for this
