@@ -3,7 +3,7 @@
     <CodeSnippet snippet="hello world" />
 
     <template #json>
-      <CodeSnippet language="JSON" :snippet="json" />
+      <CodeSnippet language="json" :snippet="json" />
     </template>
 
     <template #python>

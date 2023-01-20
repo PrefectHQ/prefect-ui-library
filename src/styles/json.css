@@ -1,0 +1,87 @@
+.code-highlighting--json .token.comment,
+.code-highlighting--json .token.block-comment,
+.code-highlighting--json .token.prolog,
+.code-highlighting--json .token.doctype,
+.code-highlighting--json .token.cdata {
+  @apply
+  text-slate-400
+}
+
+.code-highlighting--json .token.punctuation {
+  @apply
+  text-slate-50
+}
+
+.code-highlighting--json .token.tag,
+.code-highlighting--json .token.attr-name,
+.code-highlighting--json .token.namespace,
+.code-highlighting--json .token.deleted {
+  @apply
+  text-rose-400
+}
+
+.code-highlighting--json .token.function-name {
+  @apply
+  text-blue-400
+}
+
+.code-highlighting--json .token.boolean,
+.code-highlighting--json .token.number,
+.code-highlighting--json .token.function {
+  @apply
+  text-orange-400
+}
+
+.code-highlighting--json .token.property,
+.code-highlighting--json .token.class-name,
+.code-highlighting--json .token.constant,
+.code-highlighting--json .token.symbol {
+  @apply
+  text-yellow-400
+}
+
+.code-highlighting--json .token.selector,
+.code-highlighting--json .token.important,
+.code-highlighting--json .token.atrule,
+.code-highlighting--json .token.keyword,
+.code-highlighting--json .token.builtin {
+  @apply
+  text-rose-300
+}
+
+.code-highlighting--json .token.string,
+.code-highlighting--json .token.char,
+.code-highlighting--json .token.attr-value,
+.code-highlighting--json .token.regex,
+.code-highlighting--json .token.variable {
+  @apply
+  text-emerald-400
+}
+
+.code-highlighting--json .token.operator,
+.code-highlighting--json .token.entity,
+.code-highlighting--json .token.url {
+  @apply
+  text-blue-400
+}
+
+.code-highlighting--json .token.important,
+.code-highlighting--json .token.bold {
+  @apply
+  font-medium
+}
+
+.code-highlighting--json .token.italic {
+  /* Can't use the apply style here due to circular imports */
+  font-style: italic;
+}
+
+.code-highlighting--json .token.entity {
+  @apply
+  cursor-help
+}
+
+.code-highlighting--json .token.inserted {
+  @apply
+  text-emerald-600
+}
