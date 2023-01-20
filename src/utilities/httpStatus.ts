@@ -15,7 +15,8 @@ function isAxiosResponse(value: unknown): value is AxiosResponse {
 }
 
 function isAxiosError(value: unknown): value is AxiosError {
-  return value instanceof AxiosError
+  const error = value as AxiosError
+  return isAxiosResponse(error.response)
 }
 
 function getStatusCode(value: unknown): number {
