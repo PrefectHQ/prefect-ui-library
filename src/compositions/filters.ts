@@ -536,11 +536,37 @@ export function useBlockDocumentFilterFromRoute(defaultValue: BlockDocumentFilte
 }
 
 export function useWorkPoolsFilter(): UseFilter<WorkPoolsFilter> {
+  const { filter: workPoolsFilter, ...workPools } = useWorkPoolFilter()
+  const offset = ref<number>()
+  const limit = ref<number>()
+  const filter = reactive({
+    workPools: workPoolsFilter,
+    offset,
+    limit,
+  })
 
+  return {
+    workPools,
+    offset,
+    limit,
+    filter,
+  }
 }
 
-export function useWorkPoolsFilterFromRoute(): UseFilter<WorkPoolsFilter> {
+const workPoolsFilterSchema: RouteQueryParamsSchema<WorkPoolsFilter> = {
+  workPools: workPoolFilterSchema,
+  offset: NumberRouteParam,
+  limit: NumberRouteParam,
+}
 
+export function useWorkPoolsFilterFromRoute(prefix?: string): UseFilter<WorkPoolsFilter> {
+  const params = useRouteQueryParams(workPoolsFilterSchema, {}, prefix)
+  const filter = reactive(params)
+
+  return {
+    ...params,
+    filter,
+  }
 }
 
 export function useUnionFilter<T extends UnionFilter>(): UseFilter<T> {
