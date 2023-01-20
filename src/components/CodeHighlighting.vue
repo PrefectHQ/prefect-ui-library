@@ -1,5 +1,5 @@
 <template>
-  <code class="code-highlighting" :class="`code-highlighting--${language ?? 'none'}`">
+  <code class="code-highlighting" :class="classes">
     <CodeLines :code="code" :show-line-numbers="showLineNumbers" />
   </code>
 </template>
@@ -35,6 +35,8 @@
 
     return props.value ?? ''
   })
+
+  const classes = computed(() => `code-highlighting--${props.language ?? 'none'}`)
 </script>
 
 <style>
