@@ -1,13 +1,13 @@
 <template>
-  <code class="python-view" :class="classes">
-    <!-- eslint-disable-next-line vue/no-v-html -->
-    <pre class="python-view__lines"><template v-for="(line, index) in lines" :key="index"><span class="python-view__line" v-html="line" /></template></pre>
+  <code class="python-view">
+    <CodeLines :code="code" :show-line-numbers="showLineNumbers" />
   </code>
 </template>
 
 <script lang="ts" setup>
   import { highlight, languages } from 'prismjs'
   import { computed } from 'vue'
+  import CodeLines from '@/components/CodeLines.vue'
   import { definition } from '@/utilities/languageDefinitions/python'
 
   languages.python = definition
@@ -17,13 +17,9 @@
     showLineNumbers?: boolean,
   }>()
 
-  const lines = computed(() => {
-    return highlight(props.value ?? '', languages.python, 'python').split('\n')
+  const code = computed(() => {
+    return highlight(props.value ?? '', languages.python, 'python')
   })
-
-  const classes = computed(() => ({
-    'python-view--with-line-numbers': props.showLineNumbers,
-  }))
 </script>
 
 <style>
@@ -43,28 +39,6 @@
   break-normal
   rounded
   text-left;
-}
-
-.python-view__lines { @apply
-  py-1;
-  counter-reset: line;
-}
-
-.python-view__line { @apply
-  h-5
-  w-full
-  block
-}
-
-.python-view--with-line-numbers .python-view__line:before { @apply
-  inline-block
-  px-3
-  mr-5
-  border-r-[1px]
-  border-slate-200
-  text-slate-400;
-  counter-increment: line;
-  content: counter(line);
 }
 
 .python-view .token.comment,
