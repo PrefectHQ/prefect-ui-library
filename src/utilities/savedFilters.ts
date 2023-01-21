@@ -56,7 +56,7 @@ export const oneWeekSavedSearch = new SavedSearch({
 
 export const excludeScheduledSavedSearch = new SavedSearch({
   id: null,
-  name: 'No scheduled',
+  name: 'Hide Scheduled Runs',
   filters: noScheduleFilter,
 })
 

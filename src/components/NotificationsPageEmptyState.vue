@@ -5,11 +5,11 @@
     </template>
 
     <template #heading>
-      Create a notification to get started
+      Create a notification to begin monitoring your flows
     </template>
 
     <template #description>
-      Send an alert when any flow enters any state you specify.
+      Send an alert when a flow enters a specific state.
     </template>
 
     <template #actions>

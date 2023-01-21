@@ -5,11 +5,12 @@
     </template>
 
     <template #heading>
-      Create a flow to get started
+      Run a flow to get started
     </template>
 
     <template #description>
-      Flows are the most basic Prefect object. They are containers for workflow logic and allow users to interact with and reason about the state of their workflows.
+      Flows represent workflow logic and encapsulate dependencies between other Prefect objects.
+      They are dynamically registered the first time they are run.
     </template>
 
     <template #actions>
