@@ -14,7 +14,12 @@ function isAxiosResponse(value: unknown): value is AxiosResponse {
   return typeof response.status === 'number'
 }
 
-function getStatusCode(value: AxiosError | AxiosResponse | number): number {
+function isAxiosError(value: unknown): value is AxiosError {
+  const error = value as AxiosError
+  return isAxiosResponse(error.response)
+}
+
+function getStatusCode(value: unknown): number {
   if (typeof value === 'number') {
     return value
   }
@@ -23,14 +28,14 @@ function getStatusCode(value: AxiosError | AxiosResponse | number): number {
     return value.status
   }
 
-  if (value.response) {
+  if (isAxiosError(value)) {
     return getStatusCode(value.response)
   }
 
   throw 'Invalid argument provided to httpStatus'
 }
 
-export function httpStatus(value: AxiosError | AxiosResponse | number): HttpStatusResponse {
+export function httpStatus(value: unknown): HttpStatusResponse {
   const status = getStatusCode(value)
 
   return {
@@ -39,7 +44,7 @@ export function httpStatus(value: AxiosError | AxiosResponse | number): HttpStat
   }
 }
 
-const httpStatusCode = {
+export const httpStatusCode = {
   Continue: 100,
   SwitchingProtocols: 101,
   Processing: 102,
