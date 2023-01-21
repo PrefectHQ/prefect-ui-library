@@ -9,7 +9,7 @@
     </template>
 
     <template #description>
-      Send an alert when a flow enters a specific state.
+      Send an alert when a flow run enters a specific state.
     </template>
 
     <template #actions>
