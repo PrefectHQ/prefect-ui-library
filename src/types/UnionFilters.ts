@@ -89,6 +89,12 @@ export interface WorkPoolQueueFilter extends Omit<Filter, 'tags' | 'name'> {
   name?: any_,
 }
 
+export type PaginatedWorkPoolQueueFilter = {
+  work_pools?: WorkPoolQueueFilter,
+  limit?: number,
+  offset?: number,
+}
+
 export type PaginatedFilter = {
   limit?: number,
   offset?: number,

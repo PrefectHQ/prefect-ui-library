@@ -9,7 +9,8 @@
     </template>
 
     <template #description>
-      Work pools are API objects used to organize and configure worker processes, which may be running in remote locations.
+      Work pools allow you to prioritize and manage deployment runs
+      to be picked up by a corresponding agent.
     </template>
     <template #actions>
       <DocumentationButton topic="workPools" />
