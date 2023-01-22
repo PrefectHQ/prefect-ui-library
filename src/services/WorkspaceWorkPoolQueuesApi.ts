@@ -1,9 +1,10 @@
 import { WorkPoolQueueCreate, WorkPoolQueue, WorkPoolQueueEdit, WorkPoolQueueResponse } from '@/models'
 import { mapper, WorkspaceApi } from '@/services'
+import { PaginatedWorkPoolQueueFilter } from '@/types'
 
 export interface IWorkspaceWorkPoolQueuesApi {
   createWorkPoolQueue: (workPoolName: string, request: WorkPoolQueueCreate) => Promise<WorkPoolQueue>,
-  getWorkPoolQueues: (workPoolName: string) => Promise<WorkPoolQueue[]>,
+  getWorkPoolQueues: (workPoolName: string, filter: PaginatedWorkPoolQueueFilter) => Promise<WorkPoolQueue[]>,
   getWorkPoolQueueByName: (workPoolName: string, queueName: string) => Promise<WorkPoolQueue>,
   updateWorkPoolQueue: (workPoolName: string, queueName: string, request: WorkPoolQueueCreate) => Promise<void>,
   pauseWorkPoolQueue: (workPoolName: string, queueName: string) => Promise<void>,
@@ -23,8 +24,8 @@ export class WorkspaceWorkPoolQueuesApi extends WorkspaceApi implements IWorkspa
     return mapper.map('WorkPoolQueueResponse', data, 'WorkPoolQueue')
   }
 
-  public async getWorkPoolQueues(workPoolName: string): Promise<WorkPoolQueue[]> {
-    const { data } = await this.get<WorkPoolQueueResponse[]>(`/${workPoolName}/queues`)
+  public async getWorkPoolQueues(workPoolName: string, filter: PaginatedWorkPoolQueueFilter = {}): Promise<WorkPoolQueue[]> {
+    const { data } = await this.post<WorkPoolQueueResponse[]>(`/${workPoolName}/queues/filter`, filter)
 
     return mapper.map('WorkPoolQueueResponse', data, 'WorkPoolQueue')
   }
