@@ -19,7 +19,7 @@
         </template>
       </p-label>
 
-      <p-label label="Priority" :message="queuePriorityErrorMessage" :state="queuePriorityState">
+      <p-label label="Priority (Optional)" :message="queuePriorityErrorMessage" :state="queuePriorityState">
         <template #label>
           <WorkPoolQueuePriorityLabel />
         </template>
@@ -63,7 +63,7 @@
   const isRequired: ValidationRule<string | undefined> = (value) => value !== undefined && value.trim().length > 0
 
   const isGreaterThanZero: ValidationRule<number | undefined> = (value, name) => {
-    if (value && value > 0) {
+    if (value == null || value > 0) {
       return true
     }
 
