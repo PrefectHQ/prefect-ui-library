@@ -9,7 +9,7 @@
     </template>
 
     <template #description>
-      Flow runs represent the execution of flow and task functions in a script. Here you can see what was supposed to happen, what actually happened, and if there was a difference.
+      Flow runs represent the observed execution of a Prefect flow.
     </template>
 
     <template #actions>

@@ -9,7 +9,8 @@
     </template>
 
     <template #description>
-      Blocks securely store credentials and configuration to connect to and use external systems.
+      Blocks securely store credentials and configuration to easily
+      manage connections to external systems.
     </template>
 
     <template #actions>

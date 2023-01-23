@@ -7,12 +7,11 @@
     </template>
 
     <template #heading>
-      Create a work queue to get started
+      Create a work queue to run your deployments
     </template>
 
     <template #description>
-      Work queues choose the criteria for flow runs to be picked up by a corresponding agent process, which runs in your
-      execution environment.
+      Work queues organize runs into meaningful groups to be picked up by a corresponding agent process.
     </template>
 
     <template #actions>
