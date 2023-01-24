@@ -1,4 +1,5 @@
 import { JsonInput } from '@/components'
+import { isBlockDocumentValue } from '@/models'
 import { schemaPropertyServiceFactory } from '@/services/schemas/properties'
 import { SchemaProperty, SchemaPropertyInputAttrs, Schema, SchemaValues, SchemaValue, schemaHas, SchemaPropertyAnyOf } from '@/types/schemas'
 import { withPropsWithoutExcludedFactory } from '@/utilities/components'
@@ -202,6 +203,10 @@ export function getSchemaValueAnyOfDefinitionIndex({ anyOf: definitions }: Schem
 function findObjectDefinitionIndex(definitions: Schema[], value: object | null): number | null {
   if (value === null) {
     return null
+  }
+
+  if (isBlockDocumentValue(value)) {
+    return definitions.findIndex(definition => definition.blockTypeSlug === value.blockTypeSlug)
   }
 
   if (Array.isArray(value)) {

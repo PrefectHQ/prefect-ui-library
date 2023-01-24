@@ -1,6 +1,6 @@
 <template>
-  <template v-if="isBlockDocumentProperty && typeof value === 'string'">
-    <BlockDocumentKeyValue :block-document-id="value" />
+  <template v-if="isBlockDocumentValue(value)">
+    <BlockDocumentKeyValue :block-document-id="value.blockDocumentId!" />
   </template>
   <!-- todo: support displaying nested objects -->
   <template v-else>
@@ -17,6 +17,7 @@
   import BlockDocumentKeyValue from '@/components/BlockDocumentKeyValue.vue'
   import CodeHighlighting from '@/components/CodeHighlighting.vue'
   import JsonInput from '@/components/JsonInput.vue'
+  import { isBlockDocumentValue } from '@/models'
   import { SchemaProperty, SchemaValue } from '@/types/schemas'
   import { stringifyUnknownJson } from '@/utilities/json'
 
@@ -30,7 +31,6 @@
   })
 
   const jsonValue = computed(() => stringifyUnknownJson(props.value) ?? undefined)
-  const isBlockDocumentProperty = computed(() => props.property.type === 'block')
 
   // todo: copied from PKeyValue. Hoping to update PKeyValue to eliminate the need for this
   const isDefined = computed((): boolean => {
