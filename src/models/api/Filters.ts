@@ -125,6 +125,12 @@ export type FlowRunsFilterRequest = UnionFilterRequest<FlowRunSortValues>
 export type TaskRunsFilterRequest = UnionFilterRequest<TaskRunSortValues>
 export type DeploymentsFilterRequest = UnionFilterRequest<DeploymentSortValues>
 
+export type FlowRunsHistoryFilterRequest = FlowRunsFilterRequest & {
+  history_start: string,
+  history_end: string,
+  history_interval_seconds: number,
+}
+
 export type NotificationsFilterRequest = {
   flow_run_notification_policy_filter?: {
     is_active?: Equals,
@@ -191,4 +197,13 @@ export type WorkPoolsFilterRequest = {
   work_pools?: WorkPoolFilterRequest,
   offset?: number,
   limit?: number,
+}
+
+export type WorkPoolWorkersFilterRequest = {
+  workers?: {
+    operator?: OperationRequest,
+    last_heartbeat_time?: Before & After,
+  },
+  limit?: number,
+  offset?: number,
 }
