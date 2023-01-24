@@ -8,39 +8,39 @@ export function isOperation(value: string): value is Operation {
 
 export type TagFilter = {
   operator?: Operation,
-  name?: string | string[],
+  name?: string[],
   isNull?: boolean,
 }
 
 export type StateFilter = {
   operator?: Operation,
-  type?: string | string[],
-  name?: string | string[],
+  type?: string[],
+  name?: string[],
 }
 
 export type FlowFilter = {
   operator?: Operation,
-  id?: string | string[],
-  name?: string | string[],
+  id?: string[],
+  name?: string[],
   nameLike?: string,
   tags?: TagFilter,
 }
 
 export type FlowRunFilter = {
   operator?: Operation,
-  id?: string | string[],
-  notId?: string | string[],
-  name?: string | string[],
+  id?: string[],
+  notId?: string[],
+  name?: string[],
   nameLike?: string,
   tags?: TagFilter,
   deploymentIdOperator?: Operation,
-  deploymentId?: string | string[],
+  deploymentId?: string[],
   deploymentIdNull?: boolean,
   workQueueNameOperator?: Operation,
-  workQueueName?: string | string[],
+  workQueueName?: string[],
   workQueueNameIsNull?: boolean,
   state?: StateFilter,
-  flowVersion?: string | string[],
+  flowVersion?: string[],
   expectedStartTimeBefore?: Date,
   expectedStartTimeAfter?: Date,
   nextExpectedStartTimeBefore?: Date,
@@ -49,14 +49,14 @@ export type FlowRunFilter = {
   startTimeAfter?: Date,
   startTimeNull?: boolean,
   parentTaskRunIdOperator?: Operation,
-  parentTaskRunId?: string | string[],
+  parentTaskRunId?: string[],
   parentTaskRunIdNull?: boolean,
 }
 
 export type TaskRunFilter = {
   operator?: Operation,
-  id?: string | string[],
-  name?: string | string[],
+  id?: string[],
+  name?: string[],
   nameLike?: string,
   tags?: TagFilter,
   state?: StateFilter,
@@ -68,24 +68,24 @@ export type TaskRunFilter = {
 
 export type DeploymentFilter = {
   operator?: Operation,
-  id?: string | string[],
-  name?: string | string[],
+  id?: string[],
+  name?: string[],
   nameLike?: string,
   isScheduleActive?: boolean,
-  workQueueName?: string | string[],
+  workQueueName?: string[],
 }
 
 export type WorkPoolFilter = {
   operator?: Operation,
-  id?: string | string[],
-  name?: string | string[],
-  type?: string | string[],
+  id?: string[],
+  name?: string[],
+  type?: string[],
 }
 
 export type WorkPoolQueueFilter = {
   operator?: Operation,
-  id?: string | string[],
-  name?: string | string[],
+  id?: string[],
+  name?: string[],
 }
 
 export type UnionFilterSort = FlowSortValues | FlowRunSortValues | TaskRunSortValues | DeploymentSortValues
@@ -103,29 +103,35 @@ export type UnionFilter<T extends UnionFilterSort = UnionFilterSort> = {
 
 export type BlockTypeFilter = {
   nameLike?: string,
-  slug?: string | string[],
+  slug?: string[],
 }
 
 export type BlockSchemaFilter = {
   operator?: Operation,
-  id?: string | string[],
-  blockTypeId?: string | string[],
-  blockCapability?: string | string[],
-  version?: string | string[],
+  id?: string[],
+  blockTypeId?: string[],
+  blockCapabilities?: string[],
+  version?: string[],
 }
 
 export type BlockDocumentFilter = {
   operator?: Operation,
-  id?: string | string[],
+  id?: string[],
   isAnonymous?: boolean,
-  blockTypeId?: string | string[],
-  name?: string | string[],
+  blockTypeId?: string[],
+  name?: string[],
 }
 
 export type FlowsFilter = UnionFilter<FlowSortValues>
 export type FlowRunsFilter = UnionFilter<FlowRunSortValues>
 export type TaskRunsFilter = UnionFilter<TaskRunSortValues>
 export type DeploymentsFilter = UnionFilter<DeploymentSortValues>
+
+export type FlowRunsHistoryFilter = FlowRunsFilter & {
+  historyStart: Date,
+  historyEnd: Date,
+  historyIntervalSeconds: number,
+}
 
 export type NotificationsFilter = {
   notification?: {
@@ -147,8 +153,8 @@ export type LogsFilter = {
     levelLessThan?: number,
     timestampBefore?: Date,
     timestampAfter?: Date,
-    flowRunId?: string | string[],
-    taskRunId?: string | string[],
+    flowRunId?: string[],
+    taskRunId?: string[],
   },
   sort?: LogSortValues,
   offset?: number,
@@ -185,8 +191,8 @@ export type BlockDocumentsFilter = {
 export type WorkQueuesFilter = {
   workQueues?: {
     operator?: Operation,
-    name?: string | string[],
-    nameStartsWith: string | string[],
+    name?: string[],
+    nameStartsWith: string[],
   },
   offset?: number,
   limit?: number,
@@ -196,4 +202,14 @@ export type WorkPoolsFilter = {
   workPools?: WorkPoolFilter,
   offset?: number,
   limit?: number,
+}
+
+export type WorkPoolWorkersFilter = {
+  workers?: {
+    operator?: Operation,
+    lastHeartbeatTimeBefore?: Date,
+    lastHeartbeatTimeAfter?: Date,
+  },
+  limit?: number,
+  offset?: number,
 }
