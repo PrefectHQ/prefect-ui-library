@@ -2,6 +2,7 @@ import { BlockDocumentResponse } from '@/models/api/BlockDocumentResponse'
 import { BlockDocument } from '@/models/BlockDocument'
 import { BlockDocumentCreate } from '@/models/BlockDocumentCreate'
 import { BlockDocumentUpdate } from '@/models/BlockDocumentUpdate'
+import { BlockDocumentsFilter } from '@/models/Filters'
 import { mapper } from '@/services/Mapper'
 import { WorkspaceApi } from '@/services/WorkspaceApi'
 
@@ -24,7 +25,8 @@ export class WorkspaceBlockDocumentsApi extends WorkspaceApi implements IWorkspa
   }
 
   public async getBlockDocuments(filter: BlockDocumentsFilter = {}): Promise<BlockDocument[]> {
-    const { data } = await this.post<BlockDocumentResponse[]>('/filter', mapper.map('BlockDocumentsFilter', filter, 'BlockDocumentsFilterRequest'))
+    const request = mapper.map('BlockDocumentsFilter', filter, 'BlockDocumentsFilterRequest')
+    const { data } = await this.post<BlockDocumentResponse[]>('/filter', request)
 
     return mapper.map('BlockDocumentResponse', data, 'BlockDocument')
   }

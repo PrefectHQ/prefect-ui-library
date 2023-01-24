@@ -1,7 +1,7 @@
 import { MockApi } from './MockApi'
 import { FlowRun, WorkQueue, WorkQueueCreate, WorkQueueEdit, WorkQueueStatus } from '@/models'
+import { WorkQueuesFilter } from '@/models/Filters'
 import { IWorkspaceWorkQueuesApi, mocker } from '@/services'
-import { PaginatedFilter } from '@/types'
 
 export class MockWorkspaceWorkQueuesApi extends MockApi implements IWorkspaceWorkQueuesApi {
 
@@ -13,7 +13,7 @@ export class MockWorkspaceWorkQueuesApi extends MockApi implements IWorkspaceWor
     return await this.workQueues.find(workQueue => workQueue.name === workQueueName)!
   }
 
-  public async getWorkQueues(filter: PaginatedFilter): Promise<WorkQueue[]> {
+  public async getWorkQueues(filter: WorkQueuesFilter): Promise<WorkQueue[]> {
     if (Object.keys(filter).length) {
       console.warn('MockWorkspaceWorkQueuesApi has not implemented the filter argument of the getWorkQueues method')
     }

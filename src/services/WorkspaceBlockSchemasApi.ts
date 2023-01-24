@@ -1,6 +1,6 @@
 import { BlockSchemaResponse } from '@/models/api/BlockSchemaResponse'
 import { BlockSchema } from '@/models/BlockSchema'
-import { BlockSchemaFilter } from '@/models/BlockSchemaFilter'
+import { BlockSchemasFilter } from '@/models/Filters'
 import { mapper } from '@/services/Mapper'
 import { WorkspaceApi } from '@/services/WorkspaceApi'
 
@@ -21,7 +21,8 @@ export class WorkspaceBlockSchemasApi extends WorkspaceApi implements IWorkspace
   }
 
   public async getBlockSchemas(filter: BlockSchemasFilter = {}): Promise<BlockSchema[]> {
-    const { data } = await this.post<BlockSchemaResponse[]>('/filter', mapper.map('BlockSchemasFilter', filter, 'BlockSchemasFilterRequest'))
+    const request = mapper.map('BlockSchemasFilter', filter, 'BlockSchemasFilterRequest')
+    const { data } = await this.post<BlockSchemaResponse[]>('/filter', request)
 
     return mapper.map('BlockSchemaResponse', data, 'BlockSchema')
   }
@@ -29,7 +30,7 @@ export class WorkspaceBlockSchemasApi extends WorkspaceApi implements IWorkspace
   public async getBlockSchemaForBlockType(blockTypeId: string): Promise<BlockSchema> {
     const filter: BlockSchemasFilter = {
       blockSchemas: {
-        blockTypeId,
+        blockTypeId: [blockTypeId],
       },
     }
 

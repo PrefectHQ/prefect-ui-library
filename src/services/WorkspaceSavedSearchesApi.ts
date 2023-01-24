@@ -1,4 +1,5 @@
 import { SavedSearchResponse } from '@/models/api/SavedSearchResponse'
+import { SavedSearchesFilter } from '@/models/Filters'
 import { SavedSearch, SavedSearchCreate } from '@/models/SavedSearch'
 import { mapper } from '@/services/Mapper'
 import { WorkspaceApi } from '@/services/WorkspaceApi'
@@ -8,8 +9,9 @@ export class WorkspaceSavedSearchesApi extends WorkspaceApi {
 
   protected routePrefix = '/saved_searches'
 
-  public async getSavedSearches(filter = {}): Promise<SavedSearch[]> {
-    const { data } = await this.post<SavedSearchResponse[]>('/filter', filter)
+  public async getSavedSearches(filter: SavedSearchesFilter = {}): Promise<SavedSearch[]> {
+    const request = mapper.map('SavedSearchesFilter', filter, 'SavedSearchesFilterRequest')
+    const { data } = await this.post<SavedSearchResponse[]>('/filter', request)
     const mapped = mapper.map('SavedSearchResponse', data, 'SavedSearch')
 
     return [...defaultSavesSearches, ...mapped]

@@ -1,5 +1,6 @@
 import { MockApi } from './MockApi'
-import { BlockDocument, BlockDocumentFilter, BlockDocumentCreate, BlockDocumentUpdate } from '@/models'
+import { BlockDocument, BlockDocumentCreate, BlockDocumentUpdate } from '@/models'
+import { BlockDocumentsFilter } from '@/models/Filters'
 import { mocker, IWorkspaceBlockDocumentsApi } from '@/services'
 
 export class MockWorkspaceBlockDocumentsApi extends MockApi implements IWorkspaceBlockDocumentsApi {
@@ -8,7 +9,7 @@ export class MockWorkspaceBlockDocumentsApi extends MockApi implements IWorkspac
     return await this.blockDocuments.get(blockDocumentId)
   }
 
-  public async getBlockDocuments(filter: BlockDocumentFilter = {}): Promise<BlockDocument[]> {
+  public async getBlockDocuments(filter: BlockDocumentsFilter = {}): Promise<BlockDocument[]> {
     if (Object.keys(filter).length) {
       let blockDocuments = this.blockDocuments.getAll()
 
@@ -18,7 +19,7 @@ export class MockWorkspaceBlockDocumentsApi extends MockApi implements IWorkspac
         blockDocuments = blockDocuments.filter(blockDocument => filterBlockTypeSlug.includes(blockDocument.blockType.slug))
       }
 
-      const filterBlockTypeName = filter.blockTypes?.name
+      const filterBlockTypeName = filter.blockTypes?.nameLike
 
       if (filterBlockTypeName) {
         blockDocuments = blockDocuments.filter(blockDocument => blockDocument.name.includes(filterBlockTypeName))

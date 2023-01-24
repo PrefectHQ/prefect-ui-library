@@ -1,17 +1,19 @@
 import { InjectionKey } from 'vue'
 import { UiFlowRunHistoryResponse } from '@/models/api/UiFlowRunHistoryResponse'
+import { FlowRunsHistoryFilter } from '@/models/Filters'
 import { UiFlowRunHistory } from '@/models/UiFlowRunHistory'
 import { Api, ApiRoute } from '@/services/Api'
 import { mapper } from '@/services/Mapper'
-import { UnionFilters } from '@/types/UnionFilters'
 
 export class UiApi extends Api {
 
   protected route: ApiRoute = '/ui'
 
-  public getFlowRunHistory(filter: UnionFilters): Promise<UiFlowRunHistory[]> {
-    return this.post<UiFlowRunHistoryResponse[]>('/flow_runs/history', filter)
-      .then(({ data }) => mapper.map('UiFlowRunHistoryResponse', data, 'UiFlowRunHistory'))
+  public async getFlowRunHistory(filter: FlowRunsHistoryFilter): Promise<UiFlowRunHistory[]> {
+    const request = mapper.map('FlowRunsHistoryFilter', filter, 'FlowRunsHistoryFilterRequest')
+    const { data } = await this.post<UiFlowRunHistoryResponse[]>('/flow_runs/history', request)
+
+    return mapper.map('UiFlowRunHistoryResponse', data, 'UiFlowRunHistory')
   }
 
 }

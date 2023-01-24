@@ -32,8 +32,8 @@ export class WorkspaceWorkPoolsApi extends WorkspaceApi implements IWorkspaceWor
   }
 
   public async getWorkPools(filter: WorkPoolsFilter = {}): Promise<WorkPool[]> {
-    const body = mapper.map('WorkPoolsFilter', filter, 'WorkPoolsFilterRequest')
-    const { data } = await this.post<WorkPoolResponse[]>('/filter', body)
+    const request = mapper.map('WorkPoolsFilter', filter, 'WorkPoolsFilterRequest')
+    const { data } = await this.post<WorkPoolResponse[]>('/filter', request)
 
     return mapper.map('WorkPoolResponse', data, 'WorkPool')
   }

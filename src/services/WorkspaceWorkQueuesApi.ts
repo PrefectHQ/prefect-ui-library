@@ -1,13 +1,13 @@
 import { FlowRun, FlowRunResponse, WorkQueueCreate, WorkQueueEdit, WorkQueueResponse, WorkQueueStatus, WorkQueueStatusResponse } from '@/models'
+import { WorkQueuesFilter } from '@/models/Filters'
 import { WorkQueue } from '@/models/WorkQueue'
 import { mapper } from '@/services/Mapper'
 import { WorkspaceApi } from '@/services/WorkspaceApi'
-import { PaginatedFilter } from '@/types/UnionFilters'
 
 export interface IWorkspaceWorkQueuesApi {
   getWorkQueue: (workQueueId: string) => Promise<WorkQueue>,
   getWorkQueueByName: (workQueueName: string) => Promise<WorkQueue>,
-  getWorkQueues: (filter: PaginatedFilter) => Promise<WorkQueue[]>,
+  getWorkQueues: (filter: WorkQueuesFilter) => Promise<WorkQueue[]>,
   createWorkQueue: (request: WorkQueueCreate) => Promise<WorkQueue>,
   pauseWorkQueue: (workQueueId: string) => Promise<void>,
   resumeWorkQueue: (workQueueId: string) => Promise<void>,
@@ -33,7 +33,8 @@ export class WorkspaceWorkQueuesApi extends WorkspaceApi implements IWorkspaceWo
     return mapper.map('WorkQueueResponse', data, 'WorkQueue')
   }
 
-  public async getWorkQueues(filter: PaginatedFilter): Promise<WorkQueue[]> {
+  public async getWorkQueues(filter: WorkQueuesFilter): Promise<WorkQueue[]> {
+    const request = mapper.map('WorkQueuesFilter', filter, 'WorkQueuesFilterRequest')
     const { data } = await this.post<WorkQueueResponse[]>('/filter', filter)
 
     return mapper.map('WorkQueueResponse', data, 'WorkQueue')

@@ -1,7 +1,7 @@
 import { MockApi } from '@/../demo/services/MockApi'
 import { FlowRun, GraphNode, RunHistory, stateType, StateUpdate, TimelineNode } from '@/models'
-import { IWorkspaceFlowRunsApi, mapper, mocker } from '@/services'
-import { UnionFilters, FlowRunsHistoryFilter, DateString } from '@/types'
+import { FlowRunsFilter, FlowRunsHistoryFilter } from '@/models/Filters'
+import { IWorkspaceFlowRunsApi, mocker } from '@/services'
 import { dateFunctions } from '@/utilities/timezone'
 
 export class MockWorkspaceFlowRunsApi extends MockApi implements IWorkspaceFlowRunsApi {
@@ -10,7 +10,7 @@ export class MockWorkspaceFlowRunsApi extends MockApi implements IWorkspaceFlowR
     return await this.flowRuns.get(flowRunId)
   }
 
-  public async getFlowRuns(filter: UnionFilters): Promise<FlowRun[]> {
+  public async getFlowRuns(filter: FlowRunsFilter): Promise<FlowRun[]> {
     if (Object.keys(filter).length) {
       console.warn('MockWorkspaceFlowRunsApi has not implemented the filter argument of the getFlowRuns method')
     }
@@ -18,7 +18,7 @@ export class MockWorkspaceFlowRunsApi extends MockApi implements IWorkspaceFlowR
     return await this.flowRuns.getAll()
   }
 
-  public async getFlowRunsCount(filter: UnionFilters): Promise<number> {
+  public async getFlowRunsCount(filter: FlowRunsFilter): Promise<number> {
     if (Object.keys(filter).length) {
       console.warn('MockWorkspaceFlowRunsApi has not implemented the filter argument of the getFlowRunsCount method')
     }
@@ -27,12 +27,12 @@ export class MockWorkspaceFlowRunsApi extends MockApi implements IWorkspaceFlowR
   }
 
   public getFlowRunsHistory(filter: FlowRunsHistoryFilter): Promise<RunHistory[]> {
-    let start = mapper.map('string', filter.history_start, 'Date')
-    const end = mapper.map('string', filter.history_end, 'Date')
+    let start = filter.historyStart
+    const end = filter.historyEnd
     const runHistory: RunHistory[] = []
 
     while (dateFunctions.isBefore(start, end)) {
-      const intervalEnd = dateFunctions.addSeconds(start, filter.history_interval_seconds)
+      const intervalEnd = dateFunctions.addSeconds(start, filter.historyIntervalSeconds)
 
       runHistory.push({
         intervalStart: start,

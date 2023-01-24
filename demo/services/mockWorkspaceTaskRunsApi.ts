@@ -1,7 +1,7 @@
 import { MockApi } from './MockApi'
 import { StateUpdate, TaskRun } from '@/models'
+import { TaskRunsFilter } from '@/models/Filters'
 import { IWorkspaceTaskRunsApi, mocker } from '@/services'
-import { UnionFilters } from '@/types'
 
 export class MockWorkspaceTaskRunsApi extends MockApi implements IWorkspaceTaskRunsApi {
 
@@ -9,7 +9,7 @@ export class MockWorkspaceTaskRunsApi extends MockApi implements IWorkspaceTaskR
     return await this.taskRuns.get(taskRunId)
   }
 
-  public async getTaskRuns(filter: UnionFilters = {}): Promise<TaskRun[]> {
+  public async getTaskRuns(filter: TaskRunsFilter = {}): Promise<TaskRun[]> {
     if (Object.keys(filter).length) {
       console.warn('MockWorkspaceTaskRunsApi has not implemented the filter argument of the getTaskRuns method')
     }
@@ -17,7 +17,7 @@ export class MockWorkspaceTaskRunsApi extends MockApi implements IWorkspaceTaskR
     return await this.taskRuns.getAll()
   }
 
-  public async getTaskRunsCount(filter: UnionFilters = {}): Promise<number> {
+  public async getTaskRunsCount(filter: TaskRunsFilter = {}): Promise<number> {
     if (Object.keys(filter).length) {
       console.warn('MockWorkspaceTaskRunsApi has not implemented the filter argument of the getTaskRuns method')
     }

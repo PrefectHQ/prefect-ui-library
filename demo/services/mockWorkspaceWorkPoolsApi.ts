@@ -1,8 +1,8 @@
 
 import { MockApi } from './MockApi'
 import { WorkerScheduledFlowRun, WorkerScheduledFlowRuns, WorkPool, WorkPoolCreate, WorkPoolEdit } from '@/models'
+import { WorkPoolsFilter } from '@/models/Filters'
 import { IWorkspaceWorkPoolsApi, mocker } from '@/services'
-import { PaginatedWorkPoolFilter } from '@/types'
 
 export class MockWorkspaceWorkPoolsApi extends MockApi implements IWorkspaceWorkPoolsApi {
 
@@ -17,7 +17,7 @@ export class MockWorkspaceWorkPoolsApi extends MockApi implements IWorkspaceWork
     return await this.workPools.find(workPool => workPool.name === workPoolName)!
   }
 
-  public async getWorkPools(filter: PaginatedWorkPoolFilter = {}): Promise<WorkPool[]> {
+  public async getWorkPools(filter: WorkPoolsFilter = {}): Promise<WorkPool[]> {
     if (Object.keys(filter).length) {
       console.warn('MockWorkspaceWorkPoolsApi has not implemented the filter argument of the getWorkPools method')
     }

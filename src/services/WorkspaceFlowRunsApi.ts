@@ -2,17 +2,17 @@ import { StateUpdate, TimelineNode } from '@/models'
 import { FlowRunGraphResponse } from '@/models/api/FlowRunGraphResponse'
 import { FlowRunHistoryResponse } from '@/models/api/FlowRunHistoryResponse'
 import { FlowRunResponse } from '@/models/api/FlowRunResponse'
+import { FlowRunsFilter, FlowRunsHistoryFilter } from '@/models/Filters'
 import { FlowRun } from '@/models/FlowRun'
 import { GraphNode } from '@/models/GraphNode'
 import { RunHistory } from '@/models/RunHistory'
 import { mapper } from '@/services/Mapper'
 import { WorkspaceApi } from '@/services/WorkspaceApi'
-import { FlowRunsHistoryFilter, UnionFilters } from '@/types/UnionFilters'
 
 export interface IWorkspaceFlowRunsApi {
   getFlowRun: (flowRunId: string) => Promise<FlowRun>,
-  getFlowRuns: (filter: UnionFilters) => Promise<FlowRun[]>,
-  getFlowRunsCount: (filter: UnionFilters) => Promise<number>,
+  getFlowRuns: (filter: FlowRunsFilter) => Promise<FlowRun[]>,
+  getFlowRunsCount: (filter: FlowRunsFilter) => Promise<number>,
   getFlowRunsHistory: (filter: FlowRunsHistoryFilter) => Promise<RunHistory[]>,
   getFlowRunsGraph: (flowRunId: string) => Promise<GraphNode[]>,
   getFlowRunsTimeline: (flowRunId: string) => Promise<TimelineNode[]>,
@@ -32,20 +32,23 @@ export class WorkspaceFlowRunsApi extends WorkspaceApi implements IWorkspaceFlow
     return mapper.map('FlowRunResponse', data, 'FlowRun')
   }
 
-  public async getFlowRuns(filter: UnionFilters = {}): Promise<FlowRun[]> {
-    const { data } = await this.post<FlowRunResponse[]>('/filter', filter)
+  public async getFlowRuns(filter: FlowRunsFilter = {}): Promise<FlowRun[]> {
+    const request = mapper.map('FlowRunsFilter', filter, 'FlowRunsFilterRequest')
+    const { data } = await this.post<FlowRunResponse[]>('/filter', request)
 
     return mapper.map('FlowRunResponse', data, 'FlowRun')
   }
 
-  public async getFlowRunsCount(filter: UnionFilters = {}): Promise<number> {
-    const { data } = await this.post<number>('/count', filter)
+  public async getFlowRunsCount(filter: FlowRunsFilter = {}): Promise<number> {
+    const request = mapper.map('FlowRunsFilter', filter, 'FlowRunsFilterRequest')
+    const { data } = await this.post<number>('/count', request)
 
     return data
   }
 
   public async getFlowRunsHistory(filter: FlowRunsHistoryFilter): Promise<RunHistory[]> {
-    const { data } = await this.post<FlowRunHistoryResponse[]>('/history', filter)
+    const request = mapper.map('FlowRunsHistoryFilter', filter, 'FlowRunsHistoryFilterRequest')
+    const { data } = await this.post<FlowRunHistoryResponse[]>('/history', request)
 
     return mapper.map('FlowRunHistoryResponse', data, 'RunHistory')
   }

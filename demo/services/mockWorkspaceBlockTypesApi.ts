@@ -18,7 +18,7 @@ export class MockWorkspaceBlockTypesApi extends MockApi implements IWorkspaceBlo
     if (Object.keys(filter).length) {
       console.warn('MockWorkspaceBlockTypesApi has not implemented all of filter argument of the getBlockTypes method')
 
-      const filterCapabilities = filter.blockSchemas?.blockCapability
+      const filterCapabilities = filter.blockSchemas?.blockCapabilities
 
       if (filterCapabilities) {
         const blockSchemas = this.blockSchemas.findAll(blockSchema => intersects(blockSchema.capabilities, asArray(filterCapabilities)))
