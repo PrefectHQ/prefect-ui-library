@@ -1,18 +1,33 @@
+import { FlowRunsFilter } from '@/models/Filters'
 import { SavedSearchFilter } from '@/models/SavedSearch'
-import { StateType } from '@/models/StateType'
 import { MapFunction } from '@/services/Mapper'
-import { FlowRunFilters } from '@/types/filter'
 import { asArray } from '@/utilities/arrays'
 import { parseDateTimeNumeric } from '@/utilities/dates'
-import { isString } from '@/utilities/strings'
 
-export const mapSavedSearchFilterToFlowRunFilters: MapFunction<SavedSearchFilter, FlowRunFilters> = function(source: SavedSearchFilter): FlowRunFilters {
+export const mapSavedSearchFilterToFlowRunFilters: MapFunction<SavedSearchFilter, FlowRunsFilter> = function(source) {
+  const flowIds = source.flow ? asArray(source.flow) : undefined
+  const deploymentIds = source.deployment ? asArray(source.deployment) : undefined
+  const tagNames = source.tag ? asArray(source.tag) : undefined
+  const stateNames = source.state ? asArray(source.state) : undefined
+  const startDate = source.startDate ? parseDateTimeNumeric(source.startDate) : undefined
+  const endDate = source.endDate ? parseDateTimeNumeric(source.endDate) : undefined
+
   return {
-    flow: source.flow ? asArray(source.flow) : undefined,
-    deployment: source.deployment ? asArray(source.deployment) : undefined,
-    tag: source.tag ? asArray(source.tag) : undefined,
-    state: source.state ? asArray(source.state) as StateType[] : undefined,
-    startDate: isString(source.startDate) ? parseDateTimeNumeric(source.startDate) : undefined,
-    endDate: isString(source.endDate) ? parseDateTimeNumeric(source.endDate) : undefined,
+    flows: {
+      id: flowIds,
+    },
+    deployments: {
+      id: deploymentIds,
+    },
+    flowRuns: {
+      tags: {
+        name: tagNames,
+      },
+      state: {
+        name: stateNames,
+      },
+      expectedStartTimeAfter: startDate,
+      nextExpectedStartTimeAfter: endDate,
+    },
   }
 }

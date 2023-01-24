@@ -1,7 +1,7 @@
 /* eslint-disable camelcase */
 import { asArray } from '@prefecthq/prefect-design'
-import { Any, Like, All, IsNull, OperatorRequest, TagFilterRequest, FlowFilterRequest, FlowRunFilterRequest, NotAny, StateFilterRequest, Before, After, TaskRunFilterRequest, Exists, DeploymentFilterRequest, Equals, FlowsFilterRequest, FlowRunsFilterRequest, TaskRunsFilterRequest, DeploymentsFilterRequest, BlockTypeFilterRequest, BlockSchemaFilterRequest, BlockDocumentFilterRequest, NotificationsFilterRequest, SavedSearchesFilterRequest, LogsFilterRequest, GreaterThan, LessThan, ConcurrencyLimitsFilterRequest, BlockTypesFilterRequest, BlockSchemasFilterRequest, BlockDocumentsFilterRequest, WorkQueuesFilterRequest, StartsWith, WorkPoolFilterRequest, WorkPoolsFilterRequest, WorkPoolQueueFilterRequest } from '@/models/api/Filters'
-import { FlowFilter, FlowRunFilter, Operation, StateFilter, TagFilter, TaskRunFilter, DeploymentFilter, FlowsFilter, FlowRunsFilter, TaskRunsFilter, DeploymentsFilter, BlockTypeFilter, BlockSchemaFilter, BlockDocumentFilter, NotificationsFilter, SavedSearchesFilter, LogsFilter, ConcurrencyLimitsFilter, BlockTypesFilter, BlockSchemasFilter, BlockDocumentsFilter, WorkQueuesFilter, WorkPoolFilter, WorkPoolsFilter, WorkPoolQueueFilter } from '@/models/Filters'
+import { Any, Like, All, IsNull, OperatorRequest, TagFilterRequest, FlowFilterRequest, FlowRunFilterRequest, NotAny, StateFilterRequest, Before, After, TaskRunFilterRequest, Exists, DeploymentFilterRequest, Equals, FlowsFilterRequest, FlowRunsFilterRequest, TaskRunsFilterRequest, DeploymentsFilterRequest, BlockTypeFilterRequest, BlockSchemaFilterRequest, BlockDocumentFilterRequest, NotificationsFilterRequest, SavedSearchesFilterRequest, LogsFilterRequest, GreaterThan, LessThan, ConcurrencyLimitsFilterRequest, BlockTypesFilterRequest, BlockSchemasFilterRequest, BlockDocumentsFilterRequest, WorkQueuesFilterRequest, StartsWith, WorkPoolFilterRequest, WorkPoolsFilterRequest, WorkPoolQueueFilterRequest, FlowRunsHistoryFilterRequest, WorkPoolWorkersFilterRequest } from '@/models/api/Filters'
+import { FlowFilter, FlowRunFilter, Operation, StateFilter, TagFilter, TaskRunFilter, DeploymentFilter, FlowsFilter, FlowRunsFilter, TaskRunsFilter, DeploymentsFilter, BlockTypeFilter, BlockSchemaFilter, BlockDocumentFilter, NotificationsFilter, SavedSearchesFilter, LogsFilter, ConcurrencyLimitsFilter, BlockTypesFilter, BlockSchemasFilter, BlockDocumentsFilter, WorkQueuesFilter, WorkPoolFilter, WorkPoolsFilter, WorkPoolQueueFilter, FlowRunsHistoryFilter, WorkPoolWorkersFilter } from '@/models/Filters'
 import { MapFunction } from '@/services'
 
 function toOperator(value?: Operation): OperatorRequest | undefined {
@@ -257,6 +257,17 @@ export const mapFlowRunsFilter: MapFunction<FlowRunsFilter, FlowRunsFilterReques
   }
 }
 
+export const mapFlowRunsHistoryFilter: MapFunction<FlowRunsHistoryFilter, FlowRunsHistoryFilterRequest> = function(source) {
+  const { historyStart, historyEnd, historyIntervalSeconds, ...filter } = source
+
+  return {
+    ...this.map('FlowRunsFilter', filter, 'FlowRunsFilterRequest'),
+    history_start: this.map('Date', historyStart, 'string'),
+    history_end: this.map('Date', historyEnd, 'string'),
+    history_interval_seconds: historyIntervalSeconds,
+  }
+}
+
 export const mapTaskRunsFilter: MapFunction<TaskRunsFilter, TaskRunsFilterRequest> = function(source) {
   return {
     flows: this.map('FlowFilter', source.flows, 'FlowFilterRequest'),
@@ -296,7 +307,7 @@ export const mapBlockSchemaFilter: MapFunction<BlockSchemaFilter, BlockSchemaFil
   return {
     ...toOperator(source.operator),
     block_type_id: toAny(source.blockTypeId),
-    block_capabilities: toAll(source.blockCapability),
+    block_capabilities: toAll(source.blockCapabilities),
     id: toAny(source.id),
     version: toAny(source.version),
   }
@@ -407,5 +418,19 @@ export const mapWorkPoolsFilter: MapFunction<WorkPoolsFilter, WorkPoolsFilterReq
     work_pools: this.map('WorkPoolFilter', source.workPools, 'WorkPoolFilterRequest'),
     offset: source.offset,
     limit: source.limit,
+  }
+}
+
+export const mapWorkPoolWorkersFilter: MapFunction<WorkPoolWorkersFilter, WorkPoolWorkersFilterRequest> = function(source) {
+  return {
+    workers: {
+      ...toOperator(source.workers?.operator),
+      last_heartbeat_time: {
+        ...toAfter(source.workers?.lastHeartbeatTimeAfter),
+        ...toBefore(source.workers?.lastHeartbeatTimeBefore),
+      },
+    },
+    limit: source.limit,
+    offset: source.offset,
   }
 }

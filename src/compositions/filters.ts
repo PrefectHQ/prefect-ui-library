@@ -13,6 +13,7 @@ type BaseFilter<T extends Record<PropertyKey, unknown>> = {
   filter: T,
   hasFilters: ComputedRef<boolean>,
   clearFilters: () => void,
+  setFilters: (filters: T) => void,
 }
 
 type FilterExtras<T extends Record<PropertyKey, unknown>> = Omit<BaseFilter<T>, 'filter'>
@@ -32,17 +33,22 @@ function useFilterExtras<T extends Record<PropertyKey, unknown>>(filter: T, defa
   const hasFilters = computed(() => true)
 
   const clearFilters = (): void => {
-    Object.assign(filter, defaultValue)
+    setFilters(defaultValue)
+  }
+
+  const setFilters = (value: T): void => {
+    Object.assign(filter, value)
   }
 
   return {
     hasFilters,
     clearFilters,
+    setFilters,
   }
 }
 
 function omitExtras<T extends Record<PropertyKey, unknown>>(value: T): Omit<T, keyof FilterExtras<T>> {
-  return omit(value, ['hasFilters', 'clearFilters'])
+  return omit(value, ['hasFilters', 'clearFilters', 'setFilters'])
 }
 
 export function useTagFilter(defaultValue: TagFilter = {}): UseFilter<TagFilter> {
@@ -505,13 +511,13 @@ export function useBlockSchemaFilter(defaultValue: BlockSchemaFilter = {}): UseF
   const operator = toRef(defaultValue, 'operator')
   const id = toRef(defaultValue, 'id')
   const blockTypeId = toRef(defaultValue, 'blockTypeId')
-  const blockCapability = toRef(defaultValue, 'blockCapability')
+  const blockCapabilities = toRef(defaultValue, 'blockCapabilities')
   const version = toRef(defaultValue, 'version')
   const filter = reactive({
     operator,
     id,
     blockTypeId,
-    blockCapability,
+    blockCapabilities,
     version,
   })
 
@@ -519,7 +525,7 @@ export function useBlockSchemaFilter(defaultValue: BlockSchemaFilter = {}): UseF
     operator,
     id,
     blockTypeId,
-    blockCapability,
+    blockCapabilities,
     version,
     filter,
     ...useFilterExtras(filter, defaultValue),
@@ -530,7 +536,7 @@ const blockSchemaFilterSchema: RouteQueryParamsSchema<BlockSchemaFilter> = {
   operator: OperatorRouteParam,
   id: StringRouteParam,
   blockTypeId: StringRouteParam,
-  blockCapability: StringRouteParam,
+  blockCapabilities: StringRouteParam,
   version: StringRouteParam,
 }
 
