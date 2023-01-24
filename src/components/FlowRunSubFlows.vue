@@ -31,10 +31,10 @@
   import StateNameSelect from '@/components/StateNameSelect.vue'
   import { useWorkspaceApi } from '@/compositions'
   import { usePaginatedSubscription } from '@/compositions/usePaginatedSubscription'
+  import { FlowRunsFilter, TaskRunsFilter } from '@/models/Filters'
   import { FlowRun } from '@/models/FlowRun'
   import { TaskRun } from '@/models/TaskRun'
-  import { FlowRunSortValues } from '@/types/SortOptionTypes'
-  import { UnionFilters } from '@/types/UnionFilters'
+  import { FlowRunSortValues, isTaskRunSortValue, TaskRunSortValues } from '@/types/SortOptionTypes'
 
   const props = defineProps<{
     flowRunId: string,
@@ -49,64 +49,47 @@
 
   // this is a hack because api/task_runs/filter doesn't support START_TIME_ASC or START_TIME_DESC
   // https://github.com/PrefectHQ/prefect/issues/7730
-  const taskRunSort = computed<UnionFilters['sort']>(() => {
-    switch (sort.value) {
-      case 'START_TIME_ASC':
-        return 'EXPECTED_START_TIME_ASC'
-      case 'START_TIME_DESC':
-        return 'EXPECTED_START_TIME_DESC'
-      default:
-        return sort.value
+  const taskRunSort = computed<TaskRunSortValues>(() => {
+    if (sort.value === 'START_TIME_ASC') {
+      return 'EXPECTED_START_TIME_ASC'
     }
+
+    if (sort.value === 'START_TIME_DESC') {
+      return 'EXPECTED_START_TIME_DESC'
+    }
+
+    // this should never happen but this makes typescript happy
+    if (!isTaskRunSortValue(sort.value)) {
+      throw new Error('Invalid task run sort')
+    }
+
+    return sort.value
   })
 
-  const subFlowRunTaskRunFilter = computed<UnionFilters>(() => {
-    const runFilter: UnionFilters = {
-      sort: taskRunSort.value,
-      'flow_runs': {
-        id: {
-          any_: [props.flowRunId],
-        },
+  const subFlowRunTaskRunFilter = computed<TaskRunsFilter>(() => ({
+    flowRuns: {
+      id: [props.flowRunId],
+    },
+    taskRuns: {
+      subFlowRunsExist: true,
+      nameLike: searchTermDebounced.value,
+      state: {
+        name: states.value,
       },
-      'task_runs': {
-        'subflow_runs': {
-          exists_: true,
-        },
-      },
-    }
-
-    if (states.value.length) {
-      runFilter.task_runs!.state = {
-        name: {
-          any_: states.value,
-        },
-      }
-    }
-
-    if (searchTermDebounced.value) {
-      runFilter.task_runs!.name = {
-        any_: [searchTermDebounced.value],
-      }
-    }
-
-    return runFilter
-  })
+    },
+    sort: taskRunSort.value,
+  }))
 
   const subFlowRunTaskRunSubscription = usePaginatedSubscription(api.taskRuns.getTaskRuns, [subFlowRunTaskRunFilter])
   const subFlowRunTaskRuns = computed(() => subFlowRunTaskRunSubscription.response ?? [])
   const subFlowRunIds = computed(() => subFlowRunTaskRuns.value.map((run: TaskRun) => run.state!.stateDetails!.childFlowRunId!))
 
-  const subFlowRunsFilter = computed<UnionFilters>(() => {
-    const subFlowFilter: UnionFilters = {
-      sort: sort.value,
-      'flow_runs': {
-        id: {
-          any_: subFlowRunIds.value,
-        },
-      },
-    }
-    return subFlowFilter
-  })
+  const subFlowRunsFilter = computed<FlowRunsFilter>(() => ({
+    flowRuns: {
+      id: subFlowRunIds.value,
+    },
+    sort: sort.value,
+  }))
 
   const flowRunsSubscription = usePaginatedSubscription(api.flowRuns.getFlowRuns, [subFlowRunsFilter])
 

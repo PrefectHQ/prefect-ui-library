@@ -50,7 +50,7 @@
   import SubmitButton from '@/components/SubmitButton.vue'
   import { useBlockSchemaForBlockType, useForm, useReactiveField, useWorkspaceApi } from '@/compositions'
   import { localization } from '@/localization'
-  import { Notification, BlockTypeFilter } from '@/models'
+  import { Notification } from '@/models'
   import { BlockTypesFilter } from '@/models/Filters'
   import { getSchemaDefaultValues } from '@/services/schemas/utilities'
   import { FormAction } from '@/types/buttons'
@@ -131,7 +131,7 @@
 
   const blockTypesSubscriptionFilter: BlockTypesFilter = {
     blockSchemas: {
-      blockCapability: 'notify',
+      blockCapabilities: ['notify'],
     },
   }
   const blockTypesSubscription = useSubscription(api.blockTypes.getBlockTypes, [blockTypesSubscriptionFilter])

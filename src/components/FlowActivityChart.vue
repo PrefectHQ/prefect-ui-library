@@ -13,6 +13,7 @@
   import ActivityChart from '@/components/ActivityChart.vue'
   import { useWorkspaceApi } from '@/compositions'
   import { Flow } from '@/models'
+  import { FlowRunsHistoryFilter } from '@/models/Filters'
   import { ceil } from '@/utilities/math'
 
   const props = defineProps<{
@@ -31,14 +32,12 @@
     return ceil((intervalEnd.value.getTime() - intervalStart.value.getTime()) / 1000 / 10)
   })
 
-  const historyFilter = computed(() => ({
-    'history_end': intervalEnd.value.toISOString(),
-    'history_start': intervalStart.value.toISOString(),
-    'history_interval_seconds': intervalSeconds.value,
+  const historyFilter = computed<FlowRunsHistoryFilter>(() => ({
+    historyEnd: intervalEnd.value,
+    historyStart: intervalStart.value,
+    historyIntervalSeconds: intervalSeconds.value,
     flows: {
-      id: {
-        any_: [props.flow.id],
-      },
+      id: [props.flow.id],
     },
   }))
 

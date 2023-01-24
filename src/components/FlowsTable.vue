@@ -12,9 +12,9 @@
 
       <template #header-end>
         <div class="flows-table__header-end">
-          <SearchInput v-model="name" placeholder="Search flows" label="Search flows" />
+          <SearchInput v-model="nameLike" placeholder="Search flows" label="Search flows" />
           <p-select v-model="sort" :options="flowSortOptions" />
-          <p-tags-input v-model="tags" empty-message="Flow run tags" class="flows-table__tags" />
+          <p-tags-input v-model="tagNames" empty-message="Flow run tags" class="flows-table__tags" />
         </div>
       </template>
 
@@ -60,8 +60,8 @@
             <template #message>
               No flows
             </template>
-            <template #actions>
-              <p-button size="sm" secondary @click="clear">
+            <template v-if="hasFilters" #actions>
+              <p-button size="sm" secondary @click="clearFilters">
                 Clear Filters
               </p-button>
             </template>
@@ -73,17 +73,18 @@
 </template>
 
 <script lang="ts" setup>
-  import { PTable, PEmptyResults, PLink, CheckboxModel } from '@prefecthq/prefect-design'
+  import { PTable, PEmptyResults, PLink, CheckboxModel, asArray } from '@prefecthq/prefect-design'
   import { useSubscription } from '@prefecthq/vue-compositions'
   import { computed, ref } from 'vue'
   import { FlowsDeleteButton, DeploymentsCount, ResultsCount, SearchInput, FlowActivityChart, SelectedCount } from '@/components'
-  import { useCan, UseFlowFilterArgs, useFlowFilterFromRoute, useWorkspaceApi, useWorkspaceRoutes } from '@/compositions'
+  import { useCan, useFlowsFilterFromRoute, useWorkspaceApi, useWorkspaceRoutes } from '@/compositions'
   import { useComponent } from '@/compositions/useComponent'
+  import { FlowsFilter } from '@/models/Filters'
   import { flowSortOptions } from '@/types/SortOptionTypes'
   import { formatDateTimeNumeric } from '@/utilities/dates'
 
   const props = defineProps<{
-    filter?: UseFlowFilterArgs,
+    filter?: FlowsFilter,
   }>()
 
   const { FlowMenu } = useComponent()
@@ -91,8 +92,22 @@
   const api = useWorkspaceApi()
   const can = useCan()
   const routes = useWorkspaceRoutes()
-  const filter = computed(() => props.filter ?? {})
-  const { name, sort, tags, filter: unionFilter } = useFlowFilterFromRoute(filter)
+
+  // this takes a prop. Does the default value of the from route compositions need to be reactive?
+  const { sort, flows: flowFilter, filter: flowsFilter, hasFilters, clearFilters } = useFlowsFilterFromRoute(props.filter)
+  const { nameLike } = flowFilter
+
+  // this is needed because of the `string | string[]` decision. Does that decision make sense in application?
+  const tagNames = computed({
+    get() {
+      const tags = flowFilter.tags.name.value
+
+      return tags ? asArray(tags) : undefined
+    },
+    set(tags) {
+      flowFilter.tags.name.value = tags
+    },
+  })
 
   const columns = [
     {
@@ -143,10 +158,10 @@
     },
   })
 
-  const flowsSubscription = useSubscription(api.flows.getFlows, [unionFilter])
+  const flowsSubscription = useSubscription(api.flows.getFlows, [flowsFilter])
   const flows = computed(() => flowsSubscription.response ?? [])
 
-  const flowsCountSubscription = useSubscription(api.flows.getFlowsCount, [unionFilter])
+  const flowsCountSubscription = useSubscription(api.flows.getFlowsCount, [flowsFilter])
   const flowsCount = computed(() => flowsCountSubscription.response)
 
   function refresh(): void {
@@ -155,8 +170,8 @@
   }
 
   function clear(): void {
-    name.value = ''
-    tags.value = []
+    flowFilter.nameLike.value = ''
+    flowFilter.tags.name.value = []
   }
 
   const emit = defineEmits<{

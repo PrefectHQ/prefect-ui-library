@@ -12,7 +12,7 @@
   import { computed } from 'vue'
   import TaskRunList from '@/components/TaskRunList.vue'
   import { useWorkspaceApi } from '@/compositions'
-  import { UnionFilters } from '@/types'
+  import { TaskRunsFilter } from '@/models/Filters'
 
   const props = defineProps<{
     activeSlots: string[],
@@ -20,16 +20,11 @@
 
   const hasActiveSlots = computed(() => props.activeSlots.length)
 
-  const concurrencyLimitTaskRunFilter = computed<UnionFilters>(() => {
-    const runFilter: UnionFilters = {
-      'task_runs': {
-        id: {
-          any_: props.activeSlots,
-        },
-      },
-    }
-    return runFilter
-  })
+  const concurrencyLimitTaskRunFilter = computed<TaskRunsFilter>(() => ({
+    taskRuns: {
+      id: props.activeSlots,
+    },
+  }))
   const api = useWorkspaceApi()
   const activeRunsSubscription = useSubscription(api.taskRuns.getTaskRuns, [concurrencyLimitTaskRunFilter])
   const activeRuns = computed(() => activeRunsSubscription.response ?? [])

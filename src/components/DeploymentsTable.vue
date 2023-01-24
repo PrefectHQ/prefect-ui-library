@@ -12,15 +12,15 @@
 
       <template #header-end>
         <div class="deployments-table__header-end">
-          <SearchInput v-model="name" placeholder="Search deployments" label="Search deployments" />
+          <SearchInput v-model="deploymentName" placeholder="Search deployments" label="Search deployments" />
 
-          <template v-if="canFilterFlows">
-            <FlowCombobox v-model:selected="flows" empty-message="All flows" class="deployments-table__flows" />
+          <template v-if="hideFlowFilter">
+            <FlowCombobox v-model:selected="flowIds" empty-message="All flows" class="deployments-table__flows" />
           </template>
 
           <p-select v-model="sort" :options="deploymentSortOptions" />
 
-          <p-tags-input v-model="tags" empty-message="All tags" class="deployments-table__tags" />
+          <p-tags-input v-model="tagNames" empty-message="All tags" class="deployments-table__tags" />
         </div>
       </template>
 
@@ -81,30 +81,41 @@
 </template>
 
 <script lang="ts" setup>
-  import { PTable, PTagWrapper, PEmptyResults, PLink, TableColumn, CheckboxModel } from '@prefecthq/prefect-design'
+  import { PTable, PTagWrapper, PEmptyResults, PLink, TableColumn, CheckboxModel, asArray } from '@prefecthq/prefect-design'
   import { useSubscription } from '@prefecthq/vue-compositions'
-  import { computed, unref, ref } from 'vue'
+  import { computed, ref } from 'vue'
   import { SearchInput, ResultsCount, DeploymentToggle, DeploymentMenu, FlowRouterLink, FlowCombobox, DeploymentsDeleteButton, SelectedCount } from '@/components'
-  import { useWorkspaceApi, useWorkspaceRoutes, useCan } from '@/compositions'
-  import { UseDeploymentFilterArgs, useDeploymentFilterFromRoute } from '@/compositions/useDeploymentFilter'
+  import { useWorkspaceApi, useWorkspaceRoutes, useCan, useDeploymentsFilterFromRoute } from '@/compositions'
   import { isRRuleSchedule, Schedule } from '@/models'
+  import { DeploymentsFilter } from '@/models/Filters'
   import { deploymentSortOptions } from '@/types/SortOptionTypes'
 
   const props = defineProps<{
-    filter?: UseDeploymentFilterArgs,
+    filter?: DeploymentsFilter,
+    hideFlowFilter?: boolean,
+  }>()
+
+  const emit = defineEmits<{
+    (event: 'delete'): void,
   }>()
 
   const api = useWorkspaceApi()
   const can = useCan()
   const routes = useWorkspaceRoutes()
-  const filter = computed(() => props.filter ?? {})
-  const { flows, name, sort, tags, hasFilters, clearFilters, filter: unionFilter } = useDeploymentFilterFromRoute(filter)
+  const { flows: flowFilter, deployments: deploymentFilter, sort, filter, hasFilters, clearFilters } = useDeploymentsFilterFromRoute(props.filter)
+  const { id: flowIds } = flowFilter
+  const { nameLike: deploymentName } = deploymentFilter
 
-  const canFilterFlows = computed(() => {
-    const filterHasFlows = !!unref(filter.value.flows)?.length
-    const filterHasFlowName = !!unref(filter.value.flowName)?.length
+  // this is needed because of the `string | string[]` decision. Does that decision make sense in application?
+  const tagNames = computed({
+    get() {
+      const tags = flowFilter.tags.name.value
 
-    return !filterHasFlows && !filterHasFlowName
+      return tags ? asArray(tags) : undefined
+    },
+    set(tags) {
+      flowFilter.tags.name.value = tags
+    },
   })
 
   const columns = computed<TableColumn[]>(() => [
@@ -155,10 +166,10 @@
     },
   })
 
-  const deploymentsSubscription = useSubscription(api.deployments.getDeployments, [unionFilter])
+  const deploymentsSubscription = useSubscription(api.deployments.getDeployments, [filter])
   const deployments = computed(() => deploymentsSubscription.response ?? [])
 
-  const deploymentsCountSubscription = useSubscription(api.deployments.getDeploymentsCount, [unionFilter])
+  const deploymentsCountSubscription = useSubscription(api.deployments.getDeploymentsCount, [filter])
   const deploymentsCount = computed(() => deploymentsCountSubscription.response)
 
   const handleSchedule = (schedule: Schedule| null): string => {
@@ -173,9 +184,6 @@
     deploymentsCountSubscription.refresh()
   }
 
-  const emit = defineEmits<{
-    (event: 'delete'): void,
-  }>()
   const deleteDeployments = (): void => {
     selectedDeployments.value = []
     refresh()

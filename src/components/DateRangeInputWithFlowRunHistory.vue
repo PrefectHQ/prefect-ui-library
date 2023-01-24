@@ -1,7 +1,7 @@
 <template>
   <DateRangeInput
-    v-model:startDate="internalStartDate"
-    v-model:endDate="internalEndDate"
+    v-model:startDate="startDate"
+    v-model:endDate="endDate"
     v-model:viewingDate="viewingDate"
     clearable
   >
@@ -20,30 +20,46 @@
 
 <script lang="ts" setup>
   import { useSubscriptionWithDependencies } from '@prefecthq/vue-compositions'
-  import { computed, ref, watch } from 'vue'
+  import { computed, ref } from 'vue'
   import DateRangeInput from '@/components/DateRangeInput.vue'
-  import { useFlowRunFilterFromRoute } from '@/compositions/useFlowRunFilterFromRoute'
   import { useWorkspaceApi } from '@/compositions/useWorkspaceApi'
+  import { FlowRunsHistoryFilter } from '@/models/Filters'
   import { FlowRunHistoryMap } from '@/models/FlowRunHistoryMap'
   import { StateHistory } from '@/models/StateHistory'
   import { StateType } from '@/models/StateType'
-  import { FlowRunsHistoryFilter } from '@/types/UnionFilters'
   import { secondsInDay } from '@/utilities/dates'
   import { dateFunctions } from '@/utilities/timezone'
 
+  const props = defineProps<{
+    startDate: Date | null | undefined,
+    endDate: Date | null | undefined,
+  }>()
+
+  const emit = defineEmits<{
+    (event: 'update:startDate' | 'update:endDate', value: Date | null | undefined): void,
+  }>()
+
+  const startDate = computed({
+    get() {
+      return props.startDate
+    },
+    set(value) {
+      emit('update:startDate', value)
+    },
+  })
+
+  const endDate = computed({
+    get() {
+      return props.endDate
+    },
+    set(value) {
+      emit('update:endDate', value)
+    },
+  })
+
   const api = useWorkspaceApi()
 
-  const { startDate, endDate, updateFilters, filter } = useFlowRunFilterFromRoute()
-
-  const internalStartDate = ref<Date | null>(startDate.value)
-  const internalEndDate = ref<Date | null>(endDate.value)
   const viewingDate = ref<Date>()
-
-  watch([internalStartDate, internalEndDate], ([startDate, endDate]) => {
-    if (startDate && endDate) {
-      updateFilters({ startDate, endDate })
-    }
-  })
 
   const flowRunsHistorySubscriptionArgs = computed<Parameters<typeof api.flowRuns.getFlowRunsHistory> | null>(() => {
     if (viewingDate.value === undefined) {
@@ -56,16 +72,13 @@
     const end = dateFunctions.endOfWeek(monthEnd)
 
     const historyFilter: FlowRunsHistoryFilter = {
-      'flow_runs': {
-        ...filter.value.flow_runs,
-        'expected_start_time': {
-          'after_': start.toISOString(),
-          'before_': end.toISOString(),
-        },
+      flowRuns: {
+        expectedStartTimeAfter: start,
+        expectedStartTimeBefore: end,
       },
-      'history_start': start.toISOString(),
-      'history_end': end.toISOString(),
-      'history_interval_seconds': secondsInDay,
+      historyStart: start,
+      historyEnd: end,
+      historyIntervalSeconds: secondsInDay,
     }
 
     return [historyFilter]

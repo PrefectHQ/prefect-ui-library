@@ -30,9 +30,9 @@
   import TaskRunsSort from '@/components/TaskRunsSort.vue'
   import { useWorkspaceApi } from '@/compositions'
   import { usePaginatedSubscription } from '@/compositions/usePaginatedSubscription'
+  import { TaskRunsFilter } from '@/models/Filters'
   import { TaskRun } from '@/models/TaskRun'
   import { TaskRunSortValues } from '@/types/SortOptionTypes'
-  import { TaskRunFilter, UnionFilters } from '@/types/UnionFilters'
 
   const props = defineProps<{
     flowRunId: string,
@@ -44,37 +44,19 @@
   const sort = ref<TaskRunSortValues>('EXPECTED_START_TIME_DESC')
   const hasFilters = computed(() => states.value.length || searchTerm.value.length)
 
-  const filter = computed<UnionFilters>(() => {
-    const runFilter: UnionFilters = {
-      'flow_runs': {
-        id: {
-          any_: [props.flowRunId],
-        },
+  const filter = computed<TaskRunsFilter>(() => ({
+    flowRuns: {
+      id: [props.flowRunId],
+    },
+    taskRuns: {
+      subFlowRunsExist: false,
+      nameLike: searchTermDebounced.value,
+      state: {
+        name: states.value,
       },
-      sort: sort.value,
-    }
-
-    const taskRunsFilter: TaskRunFilter = {
-      'subflow_runs': {
-        exists_: false,
-      },
-    }
-
-    if (searchTermDebounced.value) {
-      taskRunsFilter.name = {
-        like_: searchTermDebounced.value,
-      }
-    }
-
-    if (states.value.length) {
-      taskRunsFilter.state = {
-        name: {
-          any_: states.value,
-        },
-      }
-    }
-    return { ...runFilter, 'task_runs': { ...taskRunsFilter } }
-  })
+    },
+    sort: sort.value,
+  }))
 
   const api = useWorkspaceApi()
   const taskRunsSubscription = usePaginatedSubscription(api.taskRuns.getTaskRuns, [filter], { interval: 30000 })

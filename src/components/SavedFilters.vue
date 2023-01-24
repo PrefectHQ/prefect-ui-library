@@ -14,14 +14,14 @@
   import { useSubscription } from '@prefecthq/vue-compositions'
   import { computed } from 'vue'
   import SavedFiltersMenu from '@/components/SavedFiltersMenu.vue'
-  import { useFlowRunFilterFromRoute, useWorkspaceApi } from '@/compositions'
+  import { useFlowRunsFilterFromRoute, useWorkspaceApi } from '@/compositions'
   import { SavedSearch, SavedSearchFilter } from '@/models/SavedSearch'
   import { mapper } from '@/services'
   import { customSavedSearch, isSameFilter } from '@/utilities/savedFilters'
 
   const api = useWorkspaceApi()
 
-  const { states, flows, deployments, tags, setFilters } = useFlowRunFilterFromRoute()
+  const { filter, setFilters } = useFlowRunsFilterFromRoute()
   const savedSearchesSubscription = useSubscription(api.savedSearches.getSavedSearches)
   const savedSearches = computed(() => savedSearchesSubscription.response ?? [])
 
@@ -42,10 +42,10 @@
   const selectedSavedSearch = computed({
     get() {
       const inRoute: SavedSearchFilter = {
-        state: states.value,
-        flow: flows.value,
-        deployment: deployments.value,
-        tag: tags.value,
+        state: filter.flowRuns?.state?.name ?? [],
+        flow: filter.flows?.name ?? [],
+        deployment: filter.deployments?.id ?? [],
+        tag: filter.flowRuns?.tags?.name ?? [],
       }
 
       const found = savedSearches.value.find(({ name, filters }) => name != customSavedSearch.name && isSameFilter(filters, inRoute))
@@ -53,10 +53,9 @@
       return found ?? customSavedSearch
     },
     set(search: SavedSearch) {
-      const selectedFilter = search.filters
-      const filtersRequest = mapper.map('SavedSearchFilter', selectedFilter, 'FlowRunFilters')
+      const filters = mapper.map('SavedSearchFilter', search.filters, 'FlowRunFilters')
 
-      setFilters(filtersRequest)
+      setFilters(filters)
     },
   })
 

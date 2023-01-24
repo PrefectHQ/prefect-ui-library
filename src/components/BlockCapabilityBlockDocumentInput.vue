@@ -37,8 +37,8 @@
   import { computed, toRefs } from 'vue'
   import BlockTypeLogo from '@/components/BlockTypeLogo.vue'
   import { useWorkspaceApi, useWorkspaceRoutes } from '@/compositions'
-  import { BlockDocumentFilter, BlockType } from '@/models'
-  import { BlockTypeFilter } from '@/models/BlockTypeFilter'
+  import { BlockType } from '@/models'
+  import { BlockDocumentsFilter, BlockTypesFilter } from '@/models/Filters'
   import { mapper } from '@/services'
   import { withQuery } from '@/utilities'
 
@@ -75,23 +75,21 @@
   const blockDocumentSubscription = useSubscriptionWithDependencies(api.blockDocuments.getBlockDocument, blockDocumentArgs)
   const blockDocument = computed(() => blockDocumentSubscription.response)
 
-  const blockTypeFilter = computed<BlockTypeFilter>(() => ({
+  const blockTypeFilter = computed<BlockTypesFilter>(() => ({
     blockSchemas: {
-      blockCapabilities: {
-        all_: [capability.value],
-      },
+      blockCapabilities: [capability.value],
     },
   }))
   const blockTypesSubscription = useSubscription(api.blockTypes.getBlockTypes, [blockTypeFilter])
   const blockTypes = computed(() => blockTypesSubscription.response ?? [])
   const blockTypeSlugs = computed(() => blockTypes.value.map(blockType => blockType.slug))
 
-  const blockDocumentFilter = computed<[BlockDocumentFilter] | null>(() => {
+  const blockDocumentFilter = computed<[BlockDocumentsFilter] | null>(() => {
     if (blockTypeSlugs.value.length == 0) {
       return null
     }
 
-    const filter: BlockDocumentFilter = {
+    const filter: BlockDocumentsFilter = {
       blockTypes: {
         slug: blockTypeSlugs.value,
       },

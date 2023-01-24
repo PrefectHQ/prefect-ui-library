@@ -2,28 +2,28 @@
   <div class="flow-runs-filter-group">
     <div class="flow-runs-filter-group__row">
       <p-label :label="media.hover ? 'Date Range' : ''">
-        <DateRangeInputWithFlowRunHistory />
+        <DateRangeInputWithFlowRunHistory v-model:start-date="expectedStartTimeAfter" v-model:end-date="expectedStartTimeBefore" />
       </p-label>
       <p-label label="States">
-        <StateNameSelect v-model:selected="states" empty-message="All run states" />
+        <StateNameSelect v-model:selected="stateNames" empty-message="All run states" />
       </p-label>
     </div>
     <div class="flow-runs-filter-group__row">
       <p-label label="Flows">
-        <FlowCombobox v-model:selected="flows" empty-message="All flows" />
+        <FlowCombobox v-model:selected="flowIds" empty-message="All flows" />
       </p-label>
       <p-label label="Deployments">
-        <DeploymentCombobox v-model:selected="deployments" empty-message="All deployments" />
+        <DeploymentCombobox v-model:selected="deploymentIds" empty-message="All deployments" />
       </p-label>
       <p-label label="Work Queues">
-        <WorkQueueCombobox v-model:selected="workQueues" empty-message="All work queues" />
+        <WorkQueueCombobox v-model:selected="workQueueName" empty-message="All work queues" />
       </p-label>
       <p-label label="Tags">
-        <FlowRunTagCombobox v-model:selected="tags" :filter="filter" empty-message="All tags" />
+        <FlowRunTagCombobox v-model:selected="tagNames" :filter="filter" empty-message="All tags" />
       </p-label>
     </div>
     <p-label class="flow-runs-filter-group__search" label="Search">
-      <SearchInput v-model="name" placeholder="Search by flow run name" label="Search by flow run name" />
+      <SearchInput v-model="nameLike" placeholder="Search by flow run name" label="Search by flow run name" />
     </p-label>
   </div>
 </template>
@@ -37,9 +37,14 @@
   import SearchInput from '@/components/SearchInput.vue'
   import StateNameSelect from '@/components/StateNameSelect.vue'
   import WorkQueueCombobox from '@/components/WorkQueueCombobox.vue'
-  import { useFlowRunFilterFromRoute } from '@/compositions/useFlowRunFilterFromRoute'
+  import { useFlowRunsFilterFromRoute } from '@/compositions/filters'
 
-  const { states, deployments, workQueues, flows, tags, name, filter } = useFlowRunFilterFromRoute()
+  const { flows, flowRuns, deployments, filter } = useFlowRunsFilterFromRoute()
+  const { expectedStartTimeAfter, expectedStartTimeBefore, state, tags, nameLike, workQueueName } = flowRuns
+  const { name: stateNames } = state
+  const { name: tagNames } = tags
+  const { id: flowIds } = flows
+  const { id: deploymentIds } = deployments
 </script>
 
 <style>

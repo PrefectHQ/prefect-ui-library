@@ -24,8 +24,7 @@
   import { useSubscription } from '@prefecthq/vue-compositions'
   import { useField } from 'vee-validate'
   import { computed } from 'vue'
-  import { useWorkspaceApi } from '@/compositions'
-  import { useFlowRunFilterFromRoute } from '@/compositions/useFlowRunFilterFromRoute'
+  import { useFlowRunsFilterFromRoute, useWorkspaceApi } from '@/compositions'
   import { useForm } from '@/compositions/useForm'
   import { localization } from '@/localization'
   import { SavedSearch } from '@/models/SavedSearch'
@@ -54,8 +53,7 @@
   }>()
 
   const api = useWorkspaceApi()
-  const { flows, states, tags, deployments } = useFlowRunFilterFromRoute()
-
+  const { filter } = useFlowRunsFilterFromRoute()
   const savedSearchesSubscription = useSubscription(api.savedSearches.getSavedSearches)
   const savedSearches = computed(() => savedSearchesSubscription.response ?? [])
 
@@ -71,15 +69,19 @@
 
   const saveFilter = async (filterName: string): Promise<void> => {
     try {
+      const { state, tags, name: flowName } = filter.flowRuns ?? {}
+      const { name: deploymentName } = filter.deployments ?? {}
+
       const savedSearch = await api.savedSearches.createSavedSearch({
         name: filterName,
         filters: {
-          state: states.value,
-          tag: tags.value,
-          flow: flows.value,
-          deployment: deployments.value,
+          state: state?.name,
+          tag: tags?.name,
+          flow: flowName,
+          deployment: deploymentName,
         },
       })
+
       savedSearchesSubscription.refresh()
       showToast(localization.success.createSavedSearch, 'success')
       internalShowModal.value = false
