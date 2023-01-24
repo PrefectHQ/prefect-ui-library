@@ -2,7 +2,7 @@
   <p-icon-button-menu v-bind="$attrs" class="work-pool-queue-menu">
     <CopyOverflowMenuItem label="Copy ID" :item="workPoolQueue.id" />
     <router-link :to="routes.workPoolQueueEdit(workPoolName, workPoolQueue.name)">
-      <p-overflow-menu-item v-if="can.update.work_pool_queue" label="Edit" />
+      <p-overflow-menu-item v-if="can.update.work_queue" label="Edit" />
     </router-link>
     <p-overflow-menu-item v-if="showDelete" label="Delete" @click="open" />
   </p-icon-button-menu>
@@ -49,7 +49,7 @@
   })
 
   const showDelete = computed(() => {
-    return !workPool.value || workPool.value.defaultQueueId !== props.workPoolQueue.id && can.delete.work_pool_queue
+    return !workPool.value || workPool.value.defaultQueueId !== props.workPoolQueue.id && can.delete.work_queue
   })
 
   async function deleteWorkPoolQueue(name: string): Promise<void> {

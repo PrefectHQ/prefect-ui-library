@@ -1,5 +1,5 @@
 <template>
-  <p-toggle v-if="can.update.work_pool_queue" v-model="internalValue" />
+  <p-toggle v-if="can.update.work_queue" v-model="internalValue" />
 </template>
 
 <script lang="ts" setup>

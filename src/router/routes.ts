@@ -297,7 +297,7 @@ export function createWorkspaceRouteRecords(components: Partial<WorkspaceRouteCo
               path: 'queue/:workPoolQueueName',
               component: components.workPoolQueue,
               meta: {
-                can: 'read:work_pool_queue',
+                can: 'read:work_queue',
               },
             },
             {
@@ -305,7 +305,7 @@ export function createWorkspaceRouteRecords(components: Partial<WorkspaceRouteCo
               path: 'queue/create',
               component: components.workPoolQueueCreate,
               meta: {
-                can: 'create:work_pool_queue',
+                can: 'create:work_queue',
               },
             },
             {
@@ -313,7 +313,7 @@ export function createWorkspaceRouteRecords(components: Partial<WorkspaceRouteCo
               path: 'queue/:workPoolQueueName/edit',
               component: components.workPoolQueueEdit,
               meta: {
-                can: 'update:work_pool_queue',
+                can: 'update:work_queue',
               },
             },
           ],
