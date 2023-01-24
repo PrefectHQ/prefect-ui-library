@@ -9,7 +9,8 @@
     </template>
 
     <template #description>
-      Task run concurrency limits let you limit concurrency by tag
+      Creating a limit allows you to limit the number of tasks running
+      simultaneously with a given tag.
     </template>
 
     <template #actions>

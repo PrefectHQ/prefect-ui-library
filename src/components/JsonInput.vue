@@ -12,7 +12,7 @@
         v-bind="attrs"
       />
       <div ref="target" class="json-input__view-area">
-        <JsonView :value="internalValue" class="json-input__json-view" v-bind="attrs" />
+        <CodeHighlighting language="json" :value="internalValue" class="json-input__json-view" v-bind="attrs" />
       </div>
 
       <p-button v-if="showFormatButton" class="json-input__prettify-button" size="xs" @click="format">
@@ -24,7 +24,7 @@
 
 <script lang="ts" setup>
   import { computed } from 'vue'
-  import JsonView from '@/components/JsonView.vue'
+  import CodeHighlighting from '@/components/CodeHighlighting.vue'
   import { useScrollLinking } from '@/compositions'
   import { stringify } from '@/utilities/json'
 

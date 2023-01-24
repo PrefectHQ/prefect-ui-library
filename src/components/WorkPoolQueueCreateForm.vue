@@ -19,7 +19,7 @@
         </template>
       </p-label>
 
-      <p-label label="Priority" :message="queuePriorityErrorMessage" :state="queuePriorityState">
+      <p-label label="Priority (Optional)" :message="queuePriorityErrorMessage" :state="queuePriorityState">
         <template #label>
           <WorkPoolQueuePriorityLabel />
         </template>
@@ -62,8 +62,8 @@
 
   const isRequired: ValidationRule<string | undefined> = (value) => value !== undefined && value.trim().length > 0
 
-  const isGreaterThanZero: ValidationRule<number | undefined> = (value, name) => {
-    if (value && value > 0) {
+  const isGreaterThanZeroOrNull: ValidationRule<number | undefined> = (value, name) => {
+    if (value == null || value > 0) {
       return true
     }
 
@@ -72,7 +72,7 @@
 
 
   const { error: nameErrorMessage, state: nameState } = useValidation(name, 'Name', [isRequired])
-  const { error: queuePriorityErrorMessage, state: queuePriorityState } = useValidation(queuePriority, 'Priority', [isGreaterThanZero])
+  const { error: queuePriorityErrorMessage, state: queuePriorityState } = useValidation(queuePriority, 'Priority', [isGreaterThanZeroOrNull])
 
   function cancel(): void {
     router.back()
