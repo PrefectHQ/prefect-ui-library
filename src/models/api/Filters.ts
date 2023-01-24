@@ -199,6 +199,12 @@ export type WorkPoolsFilterRequest = {
   limit?: number,
 }
 
+export type WorkPoolQueuesFilterRequest = {
+  work_pools?: WorkPoolFilterRequest,
+  offset?: number,
+  limit?: number,
+}
+
 export type WorkPoolWorkersFilterRequest = {
   workers?: {
     operator?: OperationRequest,
