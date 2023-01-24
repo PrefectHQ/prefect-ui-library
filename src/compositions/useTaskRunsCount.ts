@@ -19,15 +19,11 @@ export function useTaskRunsCount(flowRunId: string | Ref<string | null | undefin
 
     return [
       {
-        flow_runs: {
-          id: {
-            any_: [id.value],
-          },
+        flowRuns: {
+          id: [id.value],
         },
-        task_runs: {
-          subflow_runs: {
-            exists_: false,
-          },
+        taskRuns: {
+          subFlowRunsExist: false,
         },
       },
     ]
