@@ -14,7 +14,7 @@
     </template>
 
     <template #actions>
-      <DocumentationButton topic="concurrency" />
+      <DocumentationButton :to="localization.docs.concurrency" />
       <p-button v-if="can.create.concurrency_limit" @click="open">
         Add Concurrency Limit
         <p-icon icon="PlusIcon" />
@@ -30,6 +30,7 @@
   import DocumentationButton from '@/components/DocumentationButton.vue'
   import { useCan } from '@/compositions/useCan'
   import { useShowModal } from '@/compositions/useShowModal'
+  import { localization } from '@/localization'
 
   const { showModal, open } = useShowModal()
 

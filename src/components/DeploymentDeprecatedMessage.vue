@@ -13,7 +13,7 @@
     </template>
 
     <template #actions>
-      <DocumentationButton topic="deployments" />
+      <DocumentationButton :to="localization.docs.deployments" />
       <a :href="href" target="_blank">
         <p-button>
           Find Out More
@@ -27,6 +27,7 @@
 <script lang="ts" setup>
   import { PEmptyState, PIcon } from '@prefecthq/prefect-design'
   import DocumentationButton from '@/components/DocumentationButton.vue'
+  import { localization } from '@/localization'
   const href = 'https://discourse.prefect.io/t/deployments-are-now-simplified-and-follow-a-declarative-syntax/1255'
 </script>
 
