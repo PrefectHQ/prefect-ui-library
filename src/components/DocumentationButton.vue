@@ -1,5 +1,5 @@
 <template>
-  <a :href="href" class="documentation-button" target="_blank">
+  <a :href="to" class="documentation-button" target="_blank">
     <p-button inset>
       <slot>
         View Docs
@@ -10,16 +10,9 @@
 </template>
 
 <script lang="ts" setup>
-  import { computed } from 'vue'
-  import { localization } from '@/localization'
-
-  type Topic = keyof typeof localization.docs
-
-  const props = defineProps<{
-    topic: Topic,
+  defineProps<{
+    to: string,
   }>()
-
-  const href = computed(() => localization.docs[props.topic])
 </script>
 
 <style>

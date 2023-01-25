@@ -14,7 +14,7 @@
     </template>
 
     <template #actions>
-      <DocumentationButton topic="blocks" />
+      <DocumentationButton :to="localization.docs.blocks" />
       <p-button v-if="can.create.block" :to="routes.blocksCatalog()">
         Add Block
         <p-icon icon="PlusIcon" class="empty-work-queue--link-icon" />
@@ -28,6 +28,7 @@
   import DocumentationButton from '@/components/DocumentationButton.vue'
   import { useWorkspaceRoutes } from '@/compositions'
   import { useCan } from '@/compositions/useCan'
+  import { localization } from '@/localization'
 
   const can = useCan()
   const routes = useWorkspaceRoutes()

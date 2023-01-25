@@ -13,7 +13,7 @@
       to be picked up by a corresponding agent.
     </template>
     <template #actions>
-      <DocumentationButton topic="workPools" />
+      <DocumentationButton :to="localization.docs.workPools" />
       <p-button v-if="can.create.work_pool" :to="routes.workPoolCreate()">
         Create Work Pool
         <p-icon icon="PlusIcon" class="work-pools-page-empty-state__link-icon" />
@@ -27,6 +27,7 @@
   import DocumentationButton from '@/components/DocumentationButton.vue'
   import { useWorkspaceRoutes } from '@/compositions'
   import { useCan } from '@/compositions/useCan'
+  import { localization } from '@/localization'
 
   const can = useCan()
   const routes = useWorkspaceRoutes()
