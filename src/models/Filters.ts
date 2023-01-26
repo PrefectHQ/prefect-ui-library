@@ -67,11 +67,12 @@ export type TaskRunFilter = {
 }
 
 export type DeploymentFilter = {
-  operator?: Operation,
   id?: string[],
+  isScheduleActive?: boolean,
   name?: string[],
   nameLike?: string,
-  isScheduleActive?: boolean,
+  operator?: Operation,
+  tags?: TagFilter,
   workQueueName?: string[],
 }
 
