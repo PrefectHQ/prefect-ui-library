@@ -49,21 +49,23 @@
   onUnmounted(() => clearTimeout(timeout))
 
   const timezones = Intl.supportedValuesOf('timeZone').map(timezone => ({ label: timezone, value: timezone }))
-  const options: SelectOptionGroup[] = [
-    {
-      label: 'Suggested timezones',
-      options: [{ label: 'UTC', value: utcTimezone }],
-    },
-    {
-      label: 'All timezones',
-      options: [...timezones],
-    },
-  ]
+  const options = computed<SelectOptionGroup[]>(() => {
+    return [
+      {
+        label: 'Suggested timezones',
+        options: [{ label: 'UTC', value: utcTimezone }],
+      },
+      {
+        label: 'All timezones',
+        options: [...timezones],
+      },
+    ]
+  })
 
   const localTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone
   if (!props.hideUnset) {
-    options[0].options.unshift({ label: 'Use browser default', value: null })
+    options.value[0].options.unshift({ label: 'Use browser default', value: null })
   } else {
-    options[0].options.unshift({ label: localTimezone, value: localTimezone })
+    options.value[0].options.unshift({ label: localTimezone, value: localTimezone })
   }
 </script>
