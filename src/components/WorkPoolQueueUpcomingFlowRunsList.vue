@@ -1,11 +1,11 @@
 <template>
   <div class="work-pool-queue-upcoming-flow-runs-list">
-    <FlowRunList :selected="[]" :flow-runs="filteredFlowRuns" disabled />
+    <FlowRunList :selected="[]" :flow-runs="scheduledFlowRuns" disabled />
 
     <p-empty-results v-if="empty">
       <template v-if="isPaused" #message>
         <p-icon class="work-queue-flow-runs-list__icon" icon="PauseIcon" />
-        This work pool queue is paused and will not submit runs
+        This work queue is paused and will not submit runs
       </template>
       <template v-else #message>
         No upcoming runs
@@ -30,15 +30,26 @@
 
   const { workPoolName, workPoolQueue } = toRefs(props)
 
-  const workPoolScheduledRunsSubscription = useSubscription(api.workPools.getWorkPoolScheduledRuns, [workPoolName.value, { workPoolQueueNames: [workPoolQueue.value.name] }], { interval: 10000 })
-  const workPoolScheduledRuns = computed(() => workPoolScheduledRunsSubscription.response ?? [])
+  const flowRunFilter = computed<Parameters<typeof api.flowRuns.getFlowRuns>>(() => [
+    {
+      'work_pool_queues': { name: { any_: [workPoolQueue.value.name] } },
+      'work_pools': { name: { any_: [workPoolName.value] } },
+      'flow_runs': {
+        'state': { name: { any_: ['Scheduled'] } },
+      },
+      sort: 'START_TIME_ASC',
+    },
+  ],
+  )
 
-  const empty = computed(() => workPoolScheduledRunsSubscription.executed && workPoolScheduledRuns.value.length === 0)
+  const flowRunsSubscription = useSubscription(api.flowRuns.getFlowRuns, flowRunFilter, { interval: 30000 })
+  const scheduledFlowRuns = computed(() => flowRunsSubscription.response ?? [])
+
+  const empty = computed(() => flowRunsSubscription.executed && scheduledFlowRuns.value.length === 0)
   const isPaused = computed(() => workPoolQueue.value.isPaused)
 
-  const filteredFlowRuns = computed(() => workPoolScheduledRuns.value.filter(run => run.flowRun.stateName !== 'Late').map(run => run.flowRun))
 
   watch(() => workPoolQueue, () => {
-    workPoolScheduledRunsSubscription.refresh()
+    flowRunsSubscription.refresh()
   })
 </script>

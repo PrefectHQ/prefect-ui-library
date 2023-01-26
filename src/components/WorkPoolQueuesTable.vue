@@ -35,7 +35,7 @@
 
         <template #actions="{ row }">
           <div class="worker-pool-queues-table__actions">
-            <WorkersLateIndicator :work-pool-name="workPoolName" :work-queue-pool-names="[row.name]" />
+            <WorkersLateIndicator :work-pool-name="workPoolName" :work-pool-queue-names="[row.name]" />
             <WorkPoolQueueToggle :work-pool-queue="row" :work-pool-name="workPoolName" @update="refresh" />
             <WorkPoolQueueMenu :work-pool-name="workPoolName" :work-pool-queue="row" size="xs" @delete="handleDelete" />
           </div>
