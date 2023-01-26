@@ -1,5 +1,5 @@
 <template>
-  <p-combobox v-model="internalValue" :options="options" :append="timestamp">
+  <p-combobox v-model="internalValue" :options="timezoneOptions" :append="timestamp">
     <template v-for="(index, name) in $slots" #[name]="data">
       <slot :name="name" v-bind="data" />
     </template>
@@ -49,7 +49,7 @@
   onUnmounted(() => clearTimeout(timeout))
 
   const timezones = Intl.supportedValuesOf('timeZone').map(timezone => ({ label: timezone, value: timezone }))
-  const options = computed<SelectOptionGroup[]>(() => {
+  const timezoneOptions = computed<SelectOptionGroup[]>(() => {
     return [
       {
         label: 'Suggested timezones',
@@ -64,8 +64,8 @@
 
   const localTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone
   if (!props.hideUnset) {
-    options.value[0].options.unshift({ label: 'Use browser default', value: null })
+    timezoneOptions.value[0].options.unshift({ label: 'Use browser default', value: null })
   } else {
-    options.value[0].options.unshift({ label: localTimezone, value: localTimezone })
+    timezoneOptions.value[0].options.unshift({ label: localTimezone, value: localTimezone })
   }
 </script>
