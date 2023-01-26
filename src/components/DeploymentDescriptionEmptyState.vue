@@ -14,7 +14,7 @@
     </template>
 
     <template #actions>
-      <DocumentationButton topic="deployments" />
+      <DocumentationButton :to="localization.docs.deployments" />
       <p-button v-if="can.update.deployment" :to="routes.deploymentEdit(deployment.id)">
         Add Description
       </p-button>
@@ -26,6 +26,7 @@
   import { PEmptyState, PIcon } from '@prefecthq/prefect-design'
   import DocumentationButton from '@/components/DocumentationButton.vue'
   import { useCan, useWorkspaceRoutes } from '@/compositions'
+  import { localization } from '@/localization'
   import { Deployment } from '@/models'
 
   defineProps<{

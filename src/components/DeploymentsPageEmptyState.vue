@@ -15,7 +15,7 @@
     </template>
 
     <template #actions>
-      <DocumentationButton topic="deployments" />
+      <DocumentationButton :to="localization.docs.deployments" />
     </template>
   </p-empty-state>
 </template>
@@ -23,4 +23,5 @@
 <script lang="ts" setup>
   import { PEmptyState, PIcon } from '@prefecthq/prefect-design'
   import DocumentationButton from '@/components/DocumentationButton.vue'
+  import { localization } from '@/localization'
 </script>

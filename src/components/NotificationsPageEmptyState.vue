@@ -13,7 +13,7 @@
     </template>
 
     <template #actions>
-      <DocumentationButton topic="notifications" />
+      <DocumentationButton :to="localization.docs.notifications" />
       <p-button v-if="can.create.notification_policy" :to="routes.notificationCreate()">
         Create Notification
         <p-icon icon="PlusIcon" class="workspace-notifications-empty-state__link-icon" />
@@ -27,6 +27,7 @@
   import DocumentationButton from '@/components/DocumentationButton.vue'
   import { useWorkspaceRoutes } from '@/compositions'
   import { useCan } from '@/compositions/useCan'
+  import { localization } from '@/localization'
 
   const can = useCan()
   const routes = useWorkspaceRoutes()

@@ -10,6 +10,15 @@ export function isBlockDocumentReferenceValue(value: SchemaValue): value is Bloc
   return typeof value === 'object' && value !== null && '$ref' in value
 }
 
+export type BlockDocumentValue = {
+  blockTypeSlug: string,
+  blockDocumentId: string | null,
+}
+
+export function isBlockDocumentValue(value: SchemaValue): value is BlockDocumentValue {
+  return typeof value === 'object' && value !== null && 'blockTypeSlug' in value && 'blockDocumentId' in value
+}
+
 export type BlockDocumentRequestData = Record<string, unknown | BlockDocumentReferenceValue>
 
 export type BlockDocumentCreateNamedRequest = {

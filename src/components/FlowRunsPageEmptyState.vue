@@ -13,7 +13,7 @@
     </template>
 
     <template #actions>
-      <DocumentationButton topic="gettingStarted">
+      <DocumentationButton :to="localization.docs.gettingStarted">
         Get Started
       </DocumentationButton>
     </template>
@@ -23,4 +23,5 @@
 <script lang="ts" setup>
   import { PEmptyState, PIcon } from '@prefecthq/prefect-design'
   import DocumentationButton from '@/components/DocumentationButton.vue'
+  import { localization } from '@/localization'
 </script>
