@@ -7,7 +7,7 @@
 </template>
 
 <script lang="ts" setup>
-  import { SelectOption } from '@prefecthq/prefect-design'
+  import { SelectOptionGroup } from '@prefecthq/prefect-design'
   import { computed, onUnmounted, ref } from 'vue'
   import { secondsInMinute, millisecondsInSecond, millisecondsInMinute } from '@/utilities/dates'
   import { formatDateInTimezone, utcTimezone } from '@/utilities/timezone'
@@ -49,12 +49,21 @@
   onUnmounted(() => clearTimeout(timeout))
 
   const timezones = Intl.supportedValuesOf('timeZone').map(timezone => ({ label: timezone, value: timezone }))
-  const options: SelectOption[] = [
-    { label: 'UTC', value: utcTimezone },
-    ...timezones,
+  const options: SelectOptionGroup[] = [
+    {
+      label: 'Suggested timezones',
+      options: [{ label: 'UTC', value: utcTimezone }],
+    },
+    {
+      label: 'All timezones',
+      options: [...timezones],
+    },
   ]
 
+  const localTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone
   if (!props.hideUnset) {
-    options.unshift({ label: 'Use browser default', value: null })
+    options[0].options.unshift({ label: 'Use browser default', value: null })
+  } else {
+    options[0].options.unshift({ label: localTimezone, value: localTimezone })
   }
 </script>
