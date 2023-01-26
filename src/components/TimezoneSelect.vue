@@ -7,7 +7,7 @@
 </template>
 
 <script lang="ts" setup>
-  import { SelectOptionGroup } from '@prefecthq/prefect-design'
+  import { SelectOptionGroup, SelectOption } from '@prefecthq/prefect-design'
   import { computed, onUnmounted, ref } from 'vue'
   import { secondsInMinute, millisecondsInSecond, millisecondsInMinute } from '@/utilities/dates'
   import { formatDateInTimezone, utcTimezone } from '@/utilities/timezone'
@@ -48,24 +48,29 @@
 
   onUnmounted(() => clearTimeout(timeout))
 
+
   const timezones = Intl.supportedValuesOf('timeZone').map(timezone => ({ label: timezone, value: timezone }))
+  const localTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone
+
   const timezoneOptions = computed<SelectOptionGroup[]>(() => {
+    const suggested: SelectOption[] = [
+      { label: localTimezone, value: localTimezone },
+      { label: 'UTC', value: utcTimezone },
+    ]
+
+    if (!props.hideUnset) {
+      suggested.unshift({ label: 'Use browser default', value: null })
+    }
+
     return [
       {
         label: 'Suggested timezones',
-        options: [{ label: 'UTC', value: utcTimezone }],
+        options: suggested,
       },
       {
         label: 'All timezones',
-        options: [...timezones],
+        options: timezones,
       },
     ]
   })
-
-  const localTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone
-  if (!props.hideUnset) {
-    timezoneOptions.value[0].options.unshift({ label: 'Use browser default', value: null })
-  } else {
-    timezoneOptions.value[0].options.unshift({ label: localTimezone, value: localTimezone })
-  }
 </script>
