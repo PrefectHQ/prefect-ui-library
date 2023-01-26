@@ -103,3 +103,35 @@ export function hasString(obj: Record<string | number | symbol, unknown>, str: s
   const values = Object.values(obj).map(val => val?.toString().toLowerCase() ?? '').join('')
   return values.includes(str.toLowerCase())
 }
+
+export function isRecord(item: unknown): item is Record<PropertyKey, unknown> {
+  return item !== null && typeof item === 'object' && !Array.isArray(item)
+}
+
+export function merge<T>(target: T, ...sources: T[]): T {
+  if (sources.length === 0) {
+    return target
+  }
+
+  const [source, ...rest] = sources
+
+  for (const key in source) {
+    const targetValue: unknown = target[key]
+    const sourceValue: unknown = source[key]
+
+    if (isRecord(targetValue) && isRecord(sourceValue)) {
+      merge(targetValue, sourceValue)
+      continue
+    }
+
+    if (isRecord(targetValue) && isRecord(source) && !(key in source)) {
+      merge(targetValue, { [key]: {} })
+      continue
+    }
+
+    target[key] = source[key]
+
+  }
+
+  return merge(target, ...rest)
+}
