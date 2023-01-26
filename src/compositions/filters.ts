@@ -5,7 +5,7 @@ import { FlowRunSortValuesSortParam } from '@/formatters/FlowRunSortValuesSortPa
 import { FlowSortValuesSortParam } from '@/formatters/FlowSortValuesSortParam'
 import { OperatorRouteParam } from '@/formatters/OperatorRouteParam'
 import { TaskRunSortValuesSortParam } from '@/formatters/TaskRunSortValuesSortParam'
-import { BlockDocumentFilter, BlockSchemaFilter, BlockTypeFilter, DeploymentFilter, DeploymentsFilter, FlowFilter, FlowRunFilter, FlowRunsFilter, FlowRunsHistoryFilter, FlowsFilter, StateFilter, TagFilter, TaskRunFilter, TaskRunsFilter, UnionFilter, UnionFilterSort, WorkPoolFilter, WorkPoolQueueFilter, WorkPoolsFilter } from '@/models/Filters'
+import { BlockDocumentFilter, BlockDocumentsFilter, BlockSchemaFilter, BlockSchemasFilter, BlockTypeFilter, BlockTypesFilter, DeploymentFilter, DeploymentsFilter, FlowFilter, FlowRunFilter, FlowRunsFilter, FlowRunsHistoryFilter, FlowsFilter, StateFilter, TagFilter, TaskRunFilter, TaskRunsFilter, UnionFilter, UnionFilterSort, WorkPoolFilter, WorkPoolQueueFilter, WorkPoolsFilter } from '@/models/Filters'
 import { AnyRecord } from '@/types/any'
 import { MaybeReactive } from '@/types/reactivity'
 import { merge } from '@/utilities/object'
@@ -401,6 +401,95 @@ export function useBlockDocumentFilterFromRoute(defaultValue: MaybeReactive<Bloc
   const defaultValueReactive = reactive(defaultValue)
   const params = useRouteQueryParams(blockDocumentFilterSchema, defaultValueReactive, prefix)
   const filter: Filter<BlockDocumentFilter> = reactive(params)
+
+  return withExtras(filter)
+}
+
+export function useBlockTypesFilter(defaultValue: MaybeReactive<BlockTypesFilter> = {}): UseFilter<BlockTypesFilter> {
+  const defaultValueReactive = reactive(defaultValue)
+  const blockTypes = useBlockTypeFilter(defaultValueReactive.blockTypes)
+  const blockSchemas = useBlockSchemaFilter(defaultValueReactive.blockSchemas)
+  const filter: Filter<BlockTypesFilter> = reactive({
+    blockSchemas: blockSchemas.filter,
+    blockTypes: blockTypes.filter,
+    limit: toRef(defaultValueReactive, 'limit'),
+    offset: toRef(defaultValueReactive, 'offset'),
+  })
+
+  return withExtras(filter)
+}
+
+const blockTypesFilterSchema: RouteQueryParamsSchema<BlockTypesFilter> = {
+  blockTypes: blockTypeFilterSchema,
+  blockSchemas: blockSchemaFilterSchema,
+  limit: NumberRouteParam,
+  offset: NumberRouteParam,
+}
+
+export function useBlockTypesFilterFromRoute(defaultValue: MaybeReactive<BlockTypesFilter> = {}, prefix?: string): UseFilter<BlockTypesFilter> {
+  const defaultValueReactive = reactive(defaultValue)
+  const params = useRouteQueryParams(blockTypesFilterSchema, defaultValueReactive, prefix)
+  const filter: Filter<BlockTypesFilter> = reactive(params)
+
+  return withExtras(filter)
+}
+
+export function useBlockSchemasFilter(defaultValue: MaybeReactive<BlockSchemasFilter> = {}): UseFilter<BlockSchemasFilter> {
+  const defaultValueReactive = reactive(defaultValue)
+  const blockSchemas = useBlockSchemaFilter(defaultValueReactive.blockSchemas)
+  const filter: Filter<BlockSchemasFilter> = reactive({
+    blockSchemas: blockSchemas.filter,
+    limit: toRef(defaultValueReactive, 'limit'),
+    offset: toRef(defaultValueReactive, 'offset'),
+  })
+
+  return withExtras(filter)
+}
+
+const blockSchemasFilterSchema: RouteQueryParamsSchema<BlockSchemasFilter> = {
+  blockSchemas: blockSchemaFilterSchema,
+  limit: NumberRouteParam,
+  offset: NumberRouteParam,
+}
+
+export function useBlockSchemasFilterFromRoute(defaultValue: MaybeReactive<BlockSchemasFilter> = {}, prefix?: string): UseFilter<BlockSchemasFilter> {
+  const defaultValueReactive = reactive(defaultValue)
+  const params = useRouteQueryParams(blockSchemasFilterSchema, defaultValueReactive, prefix)
+  const filter: Filter<BlockSchemasFilter> = reactive(params)
+
+  return withExtras(filter)
+}
+
+export function useBlockDocumentsFilter(defaultValue: MaybeReactive<BlockDocumentsFilter> = {}): UseFilter<BlockDocumentsFilter> {
+  const defaultValueReactive = reactive(defaultValue)
+  const blockTypes = useBlockTypeFilter(defaultValueReactive.blockTypes)
+  const blockSchemas = useBlockSchemaFilter(defaultValueReactive.blockSchemas)
+  const blockDocuments = useBlockDocumentFilter(defaultValueReactive.blockDocuments)
+  const filter: Filter<BlockDocumentsFilter> = reactive({
+    blockTypes: blockTypes.filter,
+    blockSchemas: blockSchemas.filter,
+    blockDocuments: blockDocuments.filter,
+    includeSecrets: toRef(defaultValueReactive, 'includeSecrets'),
+    limit: toRef(defaultValueReactive, 'limit'),
+    offset: toRef(defaultValueReactive, 'offset'),
+  })
+
+  return withExtras(filter)
+}
+
+const blockDocumentsFilterSchema: RouteQueryParamsSchema<BlockDocumentsFilter> = {
+  blockTypes: blockTypeFilterSchema,
+  blockSchemas: blockSchemaFilterSchema,
+  blockDocuments: blockDocumentFilterSchema,
+  limit: NumberRouteParam,
+  offset: NumberRouteParam,
+  includeSecrets: BooleanRouteParam,
+}
+
+export function useBlockDocumentsFilterFromRoute(defaultValue: MaybeReactive<BlockDocumentsFilter> = {}, prefix?: string): UseFilter<BlockDocumentsFilter> {
+  const defaultValueReactive = reactive(defaultValue)
+  const params = useRouteQueryParams(blockDocumentsFilterSchema, defaultValueReactive, prefix)
+  const filter: Filter<BlockDocumentsFilter> = reactive(params)
 
   return withExtras(filter)
 }
