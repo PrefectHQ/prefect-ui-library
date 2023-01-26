@@ -15,7 +15,7 @@
     </template>
 
     <template #actions>
-      <DocumentationButton topic="workQueues" />
+      <DocumentationButton :to="localization.docs.workQueues" />
       <p-button v-if="can.create.work_queue" :to="routes.workQueueCreate()">
         Create Work Queue
         <p-icon icon="PlusIcon" class="empty-work-queue--link-icon" />
@@ -29,6 +29,7 @@
   import DocumentationButton from '@/components/DocumentationButton.vue'
   import { useWorkspaceRoutes } from '@/compositions'
   import { useCan } from '@/compositions/useCan'
+  import { localization } from '@/localization'
 
   const can = useCan()
   const routes = useWorkspaceRoutes()

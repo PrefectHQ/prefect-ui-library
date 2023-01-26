@@ -14,7 +14,7 @@
     </template>
 
     <template #actions>
-      <DocumentationButton topic="flows" />
+      <DocumentationButton :to="localization.docs.flows" />
     </template>
   </p-empty-state>
 </template>
@@ -22,6 +22,7 @@
 <script lang="ts" setup>
   import { PEmptyState, PIcon } from '@prefecthq/prefect-design'
   import DocumentationButton from '@/components/DocumentationButton.vue'
+  import { localization } from '@/localization'
 </script>
 
 <style>

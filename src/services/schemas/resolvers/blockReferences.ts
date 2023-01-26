@@ -1,4 +1,4 @@
-import { BlockDocumentReferencesResponse, BlockDocumentReferenceValue } from '@/models'
+import { BlockDocumentReferencesResponse, BlockDocumentValue } from '@/models'
 import { isSchemaValues, SchemaValues } from '@/types/schemas'
 import { mapEntries } from '@/utilities'
 
@@ -11,10 +11,9 @@ export function schemaValuesBlockReferencesResolver(values: SchemaValues, refere
     const reference = references[key]
 
     if (reference) {
-      const resolved: BlockDocumentReferenceValue = {
-        $ref: {
-          'block_document_id': reference.block_document.id,
-        },
+      const resolved: BlockDocumentValue = {
+        blockTypeSlug: reference.block_document.block_type.slug,
+        blockDocumentId: reference.block_document.id,
       }
 
       return resolved
