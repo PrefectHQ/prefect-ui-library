@@ -1,92 +1,62 @@
 import { BooleanRouteParam, DateRouteParam, NumberRouteParam, RouteQueryParamsSchema, StringRouteParam, useRouteQueryParams } from '@prefecthq/vue-compositions'
-import { Ref, reactive, ComputedRef, toRef, computed, ref } from 'vue'
+import { Ref, reactive, ComputedRef, toRef, computed } from 'vue'
 import { DeploymentSortValuesSortParam } from '@/formatters/DeploymentSortValuesSortParam'
 import { FlowRunSortValuesSortParam } from '@/formatters/FlowRunSortValuesSortParam'
 import { FlowSortValuesSortParam } from '@/formatters/FlowSortValuesSortParam'
 import { OperatorRouteParam } from '@/formatters/OperatorRouteParam'
 import { TaskRunSortValuesSortParam } from '@/formatters/TaskRunSortValuesSortParam'
 import { BlockDocumentFilter, BlockSchemaFilter, BlockTypeFilter, DeploymentFilter, DeploymentsFilter, FlowFilter, FlowRunFilter, FlowRunsFilter, FlowRunsHistoryFilter, FlowsFilter, StateFilter, TagFilter, TaskRunFilter, TaskRunsFilter, UnionFilter, UnionFilterSort, WorkPoolFilter, WorkPoolQueueFilter, WorkPoolsFilter } from '@/models/Filters'
-import { MaybeReactive } from '@/types'
+import { AnyRecord } from '@/types/any'
+import { MaybeReactive } from '@/types/reactivity'
 import { merge } from '@/utilities/object'
 import { dateFunctions } from '@/utilities/timezone'
 
-type ExpandRecursively<T> = T extends object
-  ? T extends infer O ? { [K in keyof O]: ExpandRecursively<O[K]> } : never
-  : T
+export type Filter<T extends AnyRecord> = {
+  [P in keyof Required<T>]: [T[P]] extends [AnyRecord | undefined]
+    ? Filter<Exclude<T[P], undefined>>
+    : T[P]
+}
 
-type AnyRecord = Record<PropertyKey, unknown>
-
-type Filters<T extends AnyRecord> = Required<{
-  [Property in keyof T]: NonNullable<T[Property]> extends Record<PropertyKey, unknown>
-    ? Filters<NonNullable<T[Property]>> | undefined
-    : Ref<T[Property]>
-}>
-
-type FilterWithExtras<T extends AnyRecord> = T & {
+export type Extras<T extends AnyRecord> = {
   clear: () => void,
   set: (filters: T) => void,
   exist: ComputedRef<boolean>,
 }
 
-type UseFilter<T extends AnyRecord> = Filters<T> & { filter: FilterWithExtras<T> }
+export type UseFilter<T extends AnyRecord> = {
+  filter: Filter<T>,
+} & Extras<T>
 
-
-export type Filter<T extends AnyRecord> = {
-  [P in keyof Required<T>]: [T[P]] extends [undefined]
-    ? 'true'
-    : 'false'
-}
-
-export type RouteQueryParams<T extends AnyRecord> = {
-  [P in keyof T]-?: T[P] extends [AnyRecord | undefined]
-    ? [T[P]] extends [AnyRecord]
-      ? RouteQueryParams<T[P]>
-      : true
-    : Ref<T[P]>
-}
-
-
-type Test = ExpandRecursively<Filter<FlowFilter>>
-type Test2 = ExpandRecursively<RouteQueryParams<FlowFilter>>
-
-function withExtras<T extends AnyRecord>(filters: T): FilterWithExtras<T> {
-  const internalFilters = filters
-  const defaultValue: T = JSON.parse(JSON.stringify(filters))
+function withExtras<T extends AnyRecord>(filter: Filter<T>): UseFilter<T> {
+  const defaultValue: T = JSON.parse(JSON.stringify(filter))
 
   const clear = (): void => {
-    Object.assign(filters, defaultValue)
+    Object.assign(filter, defaultValue)
   }
 
-  const set = (filters: T): void => {
-    merge(internalFilters, filters)
+  const set = (newFilters: T): void => {
+    merge(filter as T, newFilters)
   }
 
-  const exist = computed(() => JSON.stringify(filters) === JSON.stringify(defaultValue))
+  const exist = computed(() => JSON.stringify(filter) === JSON.stringify(defaultValue))
 
-  return Object.assign(filters, {
+  return {
+    filter,
     clear,
     set,
     exist,
-  })
+  }
 }
 
 export function useTagFilter(defaultValue: MaybeReactive<TagFilter> = {}): UseFilter<TagFilter> {
   const defaultValueReactive = reactive(defaultValue)
-  const operator = toRef(defaultValueReactive, 'operator')
-  const name = toRef(defaultValueReactive, 'name')
-  const isNull = toRef(defaultValueReactive, 'isNull')
-  const filter = reactive({
-    operator,
-    name,
-    isNull,
+  const filter: Filter<TagFilter> = reactive({
+    operator: toRef(defaultValueReactive, 'operator'),
+    name: toRef(defaultValueReactive, 'name'),
+    isNull: toRef(defaultValueReactive, 'isNull'),
   })
 
-  return {
-    operator,
-    name,
-    isNull,
-    filter: withExtras<TagFilter>(filter),
-  }
+  return withExtras(filter)
 }
 
 const tagFilterSchema: RouteQueryParamsSchema<TagFilter> = {
@@ -98,31 +68,20 @@ const tagFilterSchema: RouteQueryParamsSchema<TagFilter> = {
 export function useTagFilterFromRoute(defaultValue: MaybeReactive<TagFilter> = {}, prefix?: string): UseFilter<TagFilter> {
   const defaultValueReactive = reactive(defaultValue)
   const params = useRouteQueryParams(tagFilterSchema, defaultValueReactive, prefix)
-  const filter = reactive(params)
+  const filter: Filter<TagFilter> = reactive(params)
 
-  return {
-    ...params,
-    filter: withExtras<TagFilter>(filter),
-  }
+  return withExtras(filter)
 }
 
 export function useStateFilter(defaultValue: MaybeReactive<StateFilter> = {}): UseFilter<StateFilter> {
   const defaultValueReactive = reactive(defaultValue)
-  const operator = toRef(defaultValueReactive, 'operator')
-  const name = toRef(defaultValueReactive, 'name')
-  const type = toRef(defaultValueReactive, 'type')
-  const filter = reactive({
-    operator,
-    name,
-    type,
+  const filter: Filter<StateFilter> = reactive({
+    operator: toRef(defaultValueReactive, 'operator'),
+    name: toRef(defaultValueReactive, 'name'),
+    type: toRef(defaultValueReactive, 'type'),
   })
 
-  return {
-    operator,
-    name,
-    type,
-    filter: withExtras<StateFilter>(filter),
-  }
+  return withExtras(filter)
 }
 
 const stateFilterSchema: RouteQueryParamsSchema<StateFilter> = {
@@ -134,37 +93,23 @@ const stateFilterSchema: RouteQueryParamsSchema<StateFilter> = {
 export function useStateFilterFromRoute(defaultValue: MaybeReactive<StateFilter> = {}, prefix?: string): UseFilter<StateFilter> {
   const defaultValueReactive = reactive(defaultValue)
   const params = useRouteQueryParams(stateFilterSchema, defaultValueReactive, prefix)
-  const filter = reactive(params)
+  const filter: Filter<StateFilter> = reactive(params)
 
-  return {
-    ...params,
-    filter: withExtras<StateFilter>(filter),
-  }
+  return withExtras(filter)
 }
 
 export function useFlowFilter(defaultValue: MaybeReactive<FlowFilter> = {}): UseFilter<FlowFilter> {
   const defaultValueReactive = reactive(defaultValue)
-  const operator = toRef(defaultValueReactive, 'operator')
-  const id = toRef(defaultValueReactive, 'id')
-  const name = toRef(defaultValueReactive, 'name')
-  const nameLike = toRef(defaultValueReactive, 'nameLike')
-  const tags = useTagFilter()
-  const filter = reactive({
-    operator,
-    id,
-    name,
-    nameLike,
+  const tags = useTagFilter(defaultValueReactive.tags)
+  const filter: Filter<FlowFilter> = reactive({
+    operator: toRef(defaultValueReactive, 'operator'),
+    id: toRef(defaultValueReactive, 'id'),
+    name: toRef(defaultValueReactive, 'name'),
+    nameLike: toRef(defaultValueReactive, 'nameLike'),
     tags: tags.filter,
   })
 
-  return {
-    operator,
-    id,
-    name,
-    nameLike,
-    tags,
-    filter: withExtras<FlowFilter>(filter),
-  }
+  return withExtras(filter)
 }
 
 const flowFilterSchema: RouteQueryParamsSchema<FlowFilter> = {
@@ -178,94 +123,43 @@ const flowFilterSchema: RouteQueryParamsSchema<FlowFilter> = {
 export function useFlowFilterFromRoute(defaultValue: MaybeReactive<FlowFilter> = {}, prefix?: string): UseFilter<FlowFilter> {
   const defaultValueReactive = reactive(defaultValue)
   const params = useRouteQueryParams(flowFilterSchema, defaultValueReactive, prefix)
-  const filter = reactive(params)
+  const filter: Filter<FlowFilter> = reactive(params)
 
-  return {
-    ...params,
-    filter: withExtras<FlowFilter>(filter),
-  }
+  return withExtras(filter)
 }
 
 export function useFlowRunFilter(defaultValue: MaybeReactive<FlowRunFilter> = {}): UseFilter<FlowRunFilter> {
   const defaultValueReactive = reactive(defaultValue)
-  const operator = toRef(defaultValueReactive, 'operator')
-  const id = toRef(defaultValueReactive, 'id')
-  const notId = toRef(defaultValueReactive, 'notId')
-  const name = toRef(defaultValueReactive, 'name')
-  const nameLike = toRef(defaultValueReactive, 'nameLike')
-  const tags = useTagFilter()
-  const deploymentIdOperator = toRef(defaultValueReactive, 'deploymentIdOperator')
-  const deploymentId = toRef(defaultValueReactive, 'deploymentId')
-  const deploymentIdNull = toRef(defaultValueReactive, 'deploymentIdNull')
-  const workQueueNameOperator = toRef(defaultValueReactive, 'workQueueNameOperator')
-  const workQueueName = toRef(defaultValueReactive, 'workQueueName')
-  const workQueueNameIsNull = toRef(defaultValueReactive, 'workQueueNameIsNull')
-  const state = useStateFilter()
-  const flowVersion = toRef(defaultValueReactive, 'flowVersion')
-  const expectedStartTimeBefore = toRef(defaultValueReactive, 'expectedStartTimeBefore')
-  const expectedStartTimeAfter = toRef(defaultValueReactive, 'expectedStartTimeAfter')
-  const nextExpectedStartTimeBefore = toRef(defaultValueReactive, 'nextExpectedStartTimeBefore')
-  const nextExpectedStartTimeAfter = toRef(defaultValueReactive, 'nextExpectedStartTimeAfter')
-  const startTimeBefore = toRef(defaultValueReactive, 'startTimeBefore')
-  const startTimeAfter = toRef(defaultValueReactive, 'startTimeAfter')
-  const startTimeNull = toRef(defaultValueReactive, 'startTimeNull')
-  const parentTaskRunIdOperator = toRef(defaultValueReactive, 'parentTaskRunIdOperator')
-  const parentTaskRunId = toRef(defaultValueReactive, 'parentTaskRunId')
-  const parentTaskRunIdNull = toRef(defaultValueReactive, 'parentTaskRunIdNull')
-  const filter = reactive({
-    operator,
-    id,
-    notId,
-    name,
-    nameLike,
-    tags: tags.filter,
-    deploymentIdOperator,
-    deploymentId,
-    deploymentIdNull,
-    workQueueNameOperator,
-    workQueueName,
-    workQueueNameIsNull,
+  const state = useStateFilter(defaultValueReactive.state)
+  const tags = useTagFilter(defaultValueReactive.tags)
+  const filter: Filter<FlowRunFilter> = reactive({
+    deploymentId: toRef(defaultValueReactive, 'deploymentId'),
+    deploymentIdNull: toRef(defaultValueReactive, 'deploymentIdNull'),
+    deploymentIdOperator: toRef(defaultValueReactive, 'deploymentIdOperator'),
+    expectedStartTimeAfter: toRef(defaultValueReactive, 'expectedStartTimeAfter'),
+    expectedStartTimeBefore: toRef(defaultValueReactive, 'expectedStartTimeBefore'),
+    flowVersion: toRef(defaultValueReactive, 'flowVersion'),
+    id: toRef(defaultValueReactive, 'id'),
+    name: toRef(defaultValueReactive, 'name'),
+    nameLike: toRef(defaultValueReactive, 'nameLike'),
+    nextExpectedStartTimeAfter: toRef(defaultValueReactive, 'nextExpectedStartTimeAfter'),
+    nextExpectedStartTimeBefore: toRef(defaultValueReactive, 'nextExpectedStartTimeBefore'),
+    notId: toRef(defaultValueReactive, 'notId'),
+    operator: toRef(defaultValueReactive, 'operator'),
+    parentTaskRunId: toRef(defaultValueReactive, 'parentTaskRunId'),
+    parentTaskRunIdNull: toRef(defaultValueReactive, 'parentTaskRunIdNull'),
+    parentTaskRunIdOperator: toRef(defaultValueReactive, 'parentTaskRunIdOperator'),
+    startTimeAfter: toRef(defaultValueReactive, 'startTimeAfter'),
+    startTimeBefore: toRef(defaultValueReactive, 'startTimeBefore'),
+    startTimeNull: toRef(defaultValueReactive, 'startTimeNull'),
     state: state.filter,
-    flowVersion,
-    expectedStartTimeBefore,
-    expectedStartTimeAfter,
-    nextExpectedStartTimeBefore,
-    nextExpectedStartTimeAfter,
-    startTimeBefore,
-    startTimeAfter,
-    startTimeNull,
-    parentTaskRunIdOperator,
-    parentTaskRunId,
-    parentTaskRunIdNull,
+    tags: tags.filter,
+    workQueueName: toRef(defaultValueReactive, 'workQueueName'),
+    workQueueNameIsNull: toRef(defaultValueReactive, 'workQueueNameIsNull'),
+    workQueueNameOperator: toRef(defaultValueReactive, 'workQueueNameOperator'),
   })
 
-  return {
-    operator,
-    id,
-    notId,
-    name,
-    nameLike,
-    tags,
-    deploymentIdOperator,
-    deploymentId,
-    deploymentIdNull,
-    workQueueNameOperator,
-    workQueueName,
-    workQueueNameIsNull,
-    state,
-    flowVersion,
-    expectedStartTimeBefore,
-    expectedStartTimeAfter,
-    nextExpectedStartTimeBefore,
-    nextExpectedStartTimeAfter,
-    startTimeBefore,
-    startTimeAfter,
-    startTimeNull,
-    parentTaskRunIdOperator,
-    parentTaskRunId,
-    parentTaskRunIdNull,
-    filter: withExtras<FlowRunFilter>(filter),
-  }
+  return withExtras(filter)
 }
 
 const flowRunFilterSchema: RouteQueryParamsSchema<FlowRunFilter> = {
@@ -298,52 +192,29 @@ const flowRunFilterSchema: RouteQueryParamsSchema<FlowRunFilter> = {
 export function useFlowRunFilterFromRoute(defaultValue: MaybeReactive<FlowRunFilter> = {}, prefix?: string): UseFilter<FlowRunFilter> {
   const defaultValueReactive = reactive(defaultValue)
   const params = useRouteQueryParams(flowRunFilterSchema, defaultValueReactive, prefix)
-  const filter = reactive(params)
+  const filter: Filter<FlowRunFilter> = reactive(params)
 
-  return {
-    ...params,
-    filter: withExtras<FlowRunFilter>(filter),
-  }
+  return withExtras(filter)
 }
 
 export function useTaskRunFilter(defaultValue: MaybeReactive<TaskRunFilter> = {}): UseFilter<TaskRunFilter> {
   const defaultValueReactive = reactive(defaultValue)
-  const operator = toRef(defaultValueReactive, 'operator')
-  const id = toRef(defaultValueReactive, 'id')
-  const name = toRef(defaultValueReactive, 'name')
-  const nameLike = toRef(defaultValueReactive, 'nameLike')
   const tags = useTagFilter(defaultValueReactive.tags)
   const state = useStateFilter(defaultValueReactive.state)
-  const startTimeBefore = toRef(defaultValueReactive, 'startTimeBefore')
-  const startTimeAfter = toRef(defaultValueReactive, 'startTimeAfter')
-  const startTimeNull = toRef(defaultValueReactive, 'startTimeNull')
-  const subFlowRunsExist = toRef(defaultValueReactive, 'subFlowRunsExist')
-  const filter = reactive({
-    operator,
-    id,
-    name,
-    nameLike,
-    tags: tags.filter,
+  const filter: Filter<TaskRunFilter> = reactive({
+    id: toRef(defaultValueReactive, 'id'),
+    name: toRef(defaultValueReactive, 'name'),
+    nameLike: toRef(defaultValueReactive, 'nameLike'),
+    operator: toRef(defaultValueReactive, 'operator'),
+    startTimeAfter: toRef(defaultValueReactive, 'startTimeAfter'),
+    startTimeBefore: toRef(defaultValueReactive, 'startTimeBefore'),
+    startTimeNull: toRef(defaultValueReactive, 'startTimeNull'),
     state: state.filter,
-    startTimeBefore,
-    startTimeAfter,
-    startTimeNull,
-    subFlowRunsExist,
+    subFlowRunsExist: toRef(defaultValueReactive, 'subFlowRunsExist'),
+    tags: tags.filter,
   })
 
-  return {
-    operator,
-    id,
-    name,
-    nameLike,
-    tags,
-    state,
-    startTimeBefore,
-    startTimeAfter,
-    startTimeNull,
-    subFlowRunsExist,
-    filter: withExtras<TaskRunFilter>(filter),
-  }
+  return withExtras(filter)
 }
 
 const taskRunFilterSchema: RouteQueryParamsSchema<TaskRunFilter> = {
@@ -362,40 +233,23 @@ const taskRunFilterSchema: RouteQueryParamsSchema<TaskRunFilter> = {
 export function useTaskRunFilterFromRoute(defaultValue: MaybeReactive<TaskRunFilter> = {}, prefix?: string): UseFilter<TaskRunFilter> {
   const defaultValueReactive = reactive(defaultValue)
   const params = useRouteQueryParams(taskRunFilterSchema, defaultValueReactive, prefix)
-  const filter = reactive(params)
+  const filter: Filter<TaskRunFilter> = reactive(params)
 
-  return {
-    ...params,
-    filter: withExtras<TaskRunFilter>(filter),
-  }
+  return withExtras(filter)
 }
 
 export function useDeploymentFilter(defaultValue: MaybeReactive<DeploymentFilter> = {}): UseFilter<DeploymentFilter> {
   const defaultValueReactive = reactive(defaultValue)
-  const operator = toRef(defaultValueReactive, 'operator')
-  const id = toRef(defaultValueReactive, 'id')
-  const name = toRef(defaultValueReactive, 'name')
-  const nameLike = toRef(defaultValueReactive, 'nameLike')
-  const isScheduleActive = toRef(defaultValueReactive, 'isScheduleActive')
-  const workQueueName = toRef(defaultValueReactive, 'workQueueName')
-  const filter = reactive({
-    operator,
-    id,
-    name,
-    nameLike,
-    isScheduleActive,
-    workQueueName,
+  const filter: Filter<DeploymentFilter> = reactive({
+    operator: toRef(defaultValueReactive, 'operator'),
+    id: toRef(defaultValueReactive, 'id'),
+    name: toRef(defaultValueReactive, 'name'),
+    nameLike: toRef(defaultValueReactive, 'nameLike'),
+    isScheduleActive: toRef(defaultValueReactive, 'isScheduleActive'),
+    workQueueName: toRef(defaultValueReactive, 'workQueueName'),
   })
 
-  return {
-    operator,
-    id,
-    name,
-    nameLike,
-    isScheduleActive,
-    workQueueName,
-    filter: withExtras<DeploymentFilter>(filter),
-  }
+  return withExtras(filter)
 }
 
 const deploymentFilterSchema: RouteQueryParamsSchema<DeploymentFilter> = {
@@ -410,34 +264,21 @@ const deploymentFilterSchema: RouteQueryParamsSchema<DeploymentFilter> = {
 export function useDeploymentFilterFromRoute(defaultValue: MaybeReactive<DeploymentFilter> = {}, prefix?: string): UseFilter<DeploymentFilter> {
   const defaultValueReactive = reactive(defaultValue)
   const params = useRouteQueryParams(deploymentFilterSchema, defaultValueReactive, prefix)
-  const filter = reactive(params)
+  const filter: Filter<DeploymentFilter> = reactive(params)
 
-  return {
-    ...params,
-    filter: withExtras<DeploymentFilter>(filter),
-  }
+  return withExtras(filter)
 }
 
 export function useWorkPoolFilter(defaultValue: MaybeReactive<WorkPoolFilter> = {}): UseFilter<WorkPoolFilter> {
   const defaultValueReactive = reactive(defaultValue)
-  const operator = toRef(defaultValueReactive, 'operator')
-  const id = toRef(defaultValueReactive, 'id')
-  const name = toRef(defaultValueReactive, 'name')
-  const type = toRef(defaultValueReactive, 'type')
-  const filter = reactive({
-    operator,
-    id,
-    name,
-    type,
+  const filter: Filter<WorkPoolFilter> = reactive({
+    operator: toRef(defaultValueReactive, 'operator'),
+    id: toRef(defaultValueReactive, 'id'),
+    name: toRef(defaultValueReactive, 'name'),
+    type: toRef(defaultValueReactive, 'type'),
   })
 
-  return {
-    operator,
-    id,
-    name,
-    type,
-    filter: withExtras<WorkPoolFilter>(filter),
-  }
+  return withExtras(filter)
 }
 
 const workPoolFilterSchema: RouteQueryParamsSchema<WorkPoolFilter> = {
@@ -450,31 +291,20 @@ const workPoolFilterSchema: RouteQueryParamsSchema<WorkPoolFilter> = {
 export function useWorkPoolFilterFromRoute(defaultValue: MaybeReactive<WorkPoolFilter> = {}, prefix?: string): UseFilter<WorkPoolFilter> {
   const defaultValueReactive = reactive(defaultValue)
   const params = useRouteQueryParams(workPoolFilterSchema, defaultValueReactive, prefix)
-  const filter = reactive(params)
+  const filter: Filter<WorkPoolFilter> = reactive(params)
 
-  return {
-    ...params,
-    filter: withExtras<WorkPoolFilter>(filter),
-  }
+  return withExtras(filter)
 }
 
 export function useWorkPoolQueueFilter(defaultValue: MaybeReactive<WorkPoolQueueFilter> = {}): UseFilter<WorkPoolQueueFilter> {
   const defaultValueReactive = reactive(defaultValue)
-  const operator = toRef(defaultValueReactive, 'operator')
-  const id = toRef(defaultValueReactive, 'id')
-  const name = toRef(defaultValueReactive, 'name')
-  const filter = reactive({
-    operator,
-    id,
-    name,
+  const filter: Filter<WorkPoolQueueFilter> = reactive({
+    operator: toRef(defaultValueReactive, 'operator'),
+    id: toRef(defaultValueReactive, 'id'),
+    name: toRef(defaultValueReactive, 'name'),
   })
 
-  return {
-    operator,
-    id,
-    name,
-    filter: withExtras<WorkPoolQueueFilter>(filter),
-  }
+  return withExtras(filter)
 }
 
 const workPoolQueueFilterSchema: RouteQueryParamsSchema<WorkPoolQueueFilter> = {
@@ -486,28 +316,19 @@ const workPoolQueueFilterSchema: RouteQueryParamsSchema<WorkPoolQueueFilter> = {
 export function useWorkPoolQueueFilterFromRoute(defaultValue: MaybeReactive<WorkPoolQueueFilter> = {}, prefix?: string): UseFilter<WorkPoolQueueFilter> {
   const defaultValueReactive = reactive(defaultValue)
   const params = useRouteQueryParams(workPoolQueueFilterSchema, defaultValueReactive, prefix)
-  const filter = reactive(params)
+  const filter: Filter<WorkPoolQueueFilter> = reactive(params)
 
-  return {
-    ...params,
-    filter: withExtras<WorkPoolQueueFilter>(filter),
-  }
+  return withExtras(filter)
 }
 
 export function useBlockTypeFilter(defaultValue: MaybeReactive<BlockTypeFilter> = {}): UseFilter<BlockTypeFilter> {
   const defaultValueReactive = reactive(defaultValue)
-  const nameLike = toRef(defaultValueReactive, 'nameLike')
-  const slug = toRef(defaultValueReactive, 'slug')
-  const filter = reactive({
-    nameLike,
-    slug,
+  const filter: Filter<BlockTypeFilter> = reactive({
+    nameLike: toRef(defaultValueReactive, 'nameLike'),
+    slug: toRef(defaultValueReactive, 'slug'),
   })
 
-  return {
-    nameLike,
-    slug,
-    filter: withExtras<BlockTypeFilter>(filter),
-  }
+  return withExtras(filter)
 }
 
 const blockTypeFilterSchema: RouteQueryParamsSchema<BlockTypeFilter> = {
@@ -518,37 +339,22 @@ const blockTypeFilterSchema: RouteQueryParamsSchema<BlockTypeFilter> = {
 export function useBlockTypeFilterFromRoute(defaultValue: MaybeReactive<BlockTypeFilter> = {}, prefix?: string): UseFilter<BlockTypeFilter> {
   const defaultValueReactive = reactive(defaultValue)
   const params = useRouteQueryParams(blockTypeFilterSchema, defaultValueReactive, prefix)
-  const filter = reactive(params)
+  const filter: Filter<BlockTypeFilter> = reactive(params)
 
-  return {
-    ...params,
-    filter: withExtras<BlockTypeFilter>(filter),
-  }
+  return withExtras(filter)
 }
 
 export function useBlockSchemaFilter(defaultValue: MaybeReactive<BlockSchemaFilter> = {}): UseFilter<BlockSchemaFilter> {
   const defaultValueReactive = reactive(defaultValue)
-  const operator = toRef(defaultValueReactive, 'operator')
-  const id = toRef(defaultValueReactive, 'id')
-  const blockTypeId = toRef(defaultValueReactive, 'blockTypeId')
-  const blockCapabilities = toRef(defaultValueReactive, 'blockCapabilities')
-  const version = toRef(defaultValueReactive, 'version')
-  const filter = reactive({
-    operator,
-    id,
-    blockTypeId,
-    blockCapabilities,
-    version,
+  const filter: Filter<BlockSchemaFilter> = reactive({
+    operator: toRef(defaultValueReactive, 'operator'),
+    id: toRef(defaultValueReactive, 'id'),
+    blockTypeId: toRef(defaultValueReactive, 'blockTypeId'),
+    blockCapabilities: toRef(defaultValueReactive, 'blockCapabilities'),
+    version: toRef(defaultValueReactive, 'version'),
   })
 
-  return {
-    operator,
-    id,
-    blockTypeId,
-    blockCapabilities,
-    version,
-    filter: withExtras<BlockSchemaFilter>(filter),
-  }
+  return withExtras(filter)
 }
 
 const blockSchemaFilterSchema: RouteQueryParamsSchema<BlockSchemaFilter> = {
@@ -562,37 +368,22 @@ const blockSchemaFilterSchema: RouteQueryParamsSchema<BlockSchemaFilter> = {
 export function useBlockSchemaFilterFromRoute(defaultValue: MaybeReactive<BlockSchemaFilter> = {}, prefix?: string): UseFilter<BlockSchemaFilter> {
   const defaultValueReactive = reactive(defaultValue)
   const params = useRouteQueryParams(blockSchemaFilterSchema, defaultValueReactive, prefix)
-  const filter = reactive(params)
+  const filter: Filter<BlockSchemaFilter> = reactive(params)
 
-  return {
-    ...params,
-    filter: withExtras<BlockSchemaFilter>(filter),
-  }
+  return withExtras(filter)
 }
 
 export function useBlockDocumentFilter(defaultValue: MaybeReactive<BlockDocumentFilter> = {}): UseFilter<BlockDocumentFilter> {
   const defaultValueReactive = reactive(defaultValue)
-  const operator = toRef(defaultValueReactive, 'operator')
-  const id = toRef(defaultValueReactive, 'id')
-  const isAnonymous = toRef(defaultValueReactive, 'isAnonymous')
-  const blockTypeId = toRef(defaultValueReactive, 'blockTypeId')
-  const name = toRef(defaultValueReactive, 'name')
-  const filter = reactive({
-    operator,
-    id,
-    isAnonymous,
-    blockTypeId,
-    name,
+  const filter: Filter<BlockDocumentFilter> = reactive({
+    operator: toRef(defaultValueReactive, 'operator'),
+    id: toRef(defaultValueReactive, 'id'),
+    isAnonymous: toRef(defaultValueReactive, 'isAnonymous'),
+    blockTypeId: toRef(defaultValueReactive, 'blockTypeId'),
+    name: toRef(defaultValueReactive, 'name'),
   })
 
-  return {
-    operator,
-    id,
-    isAnonymous,
-    blockTypeId,
-    name,
-    filter: withExtras<BlockDocumentFilter>(filter),
-  }
+  return withExtras(filter)
 }
 
 const blockDocumentFilterSchema: RouteQueryParamsSchema<BlockDocumentFilter> = {
@@ -606,31 +397,21 @@ const blockDocumentFilterSchema: RouteQueryParamsSchema<BlockDocumentFilter> = {
 export function useBlockDocumentFilterFromRoute(defaultValue: MaybeReactive<BlockDocumentFilter> = {}, prefix?: string): UseFilter<BlockDocumentFilter> {
   const defaultValueReactive = reactive(defaultValue)
   const params = useRouteQueryParams(blockDocumentFilterSchema, defaultValueReactive, prefix)
-  const filter = reactive(params)
+  const filter: Filter<BlockDocumentFilter> = reactive(params)
 
-  return {
-    ...params,
-    filter: withExtras<BlockDocumentFilter>(filter),
-  }
+  return withExtras(filter)
 }
 
 export function useWorkPoolsFilter(defaultValue: MaybeReactive<WorkPoolsFilter> = {}): UseFilter<WorkPoolsFilter> {
   const defaultValueReactive = reactive(defaultValue)
   const workPools = useWorkPoolFilter(defaultValueReactive.workPools)
-  const offset = toRef(defaultValueReactive, 'offset')
-  const limit = toRef(defaultValueReactive, 'limit')
-  const filter = reactive({
+  const filter: Filter<WorkPoolsFilter> = reactive({
+    offset: toRef(defaultValueReactive, 'offset'),
+    limit: toRef(defaultValueReactive, 'limit'),
     workPools: workPools.filter,
-    offset,
-    limit,
   })
 
-  return {
-    workPools,
-    offset,
-    limit,
-    filter: withExtras<WorkPoolsFilter>(filter),
-  }
+  return withExtras(filter)
 }
 
 const workPoolsFilterSchema: RouteQueryParamsSchema<WorkPoolsFilter> = {
@@ -642,49 +423,32 @@ const workPoolsFilterSchema: RouteQueryParamsSchema<WorkPoolsFilter> = {
 export function useWorkPoolsFilterFromRoute(defaultValue: MaybeReactive<WorkPoolsFilter> = {}, prefix?: string): UseFilter<WorkPoolsFilter> {
   const defaultValueReactive = reactive(defaultValue)
   const params = useRouteQueryParams(workPoolsFilterSchema, defaultValueReactive, prefix)
-  const filter = reactive(params)
+  const filter: Filter<WorkPoolsFilter> = reactive(params)
 
-  return {
-    ...params,
-    filter: withExtras<WorkPoolsFilter>(filter),
-  }
+  return withExtras(filter)
 }
 
 export function useUnionFilter<T extends UnionFilter>(defaultValue: MaybeReactive<T>): UseFilter<T> {
   const defaultValueReactive = reactive(defaultValue) as T
-  const { filter: flowsFilter, ...flows } = useFlowFilter(defaultValueReactive.flows)
-  const { filter: flowRunsFilter, ...flowRuns } = useFlowRunFilter(defaultValueReactive.flowRuns)
-  const { filter: taskRunsFilter, ...taskRuns } = useTaskRunFilter(defaultValueReactive.taskRuns)
-  const { filter: deploymentsFilter, ...deployments } = useDeploymentFilter(defaultValueReactive.deployments)
-  const { filter: workPoolsFilter, ...workPools } = useWorkPoolFilter(defaultValueReactive.workPools)
-  const { filter: workPoolQueuesFilter, ...workPoolQueues } = useWorkPoolQueueFilter(defaultValueReactive.workPoolQueues)
-  const sort = toRef(defaultValueReactive, 'sort') as Ref<T['sort']>
-  const offset = toRef(defaultValueReactive, 'offset')
-  const limit = toRef(defaultValueReactive, 'limit')
+  const flows = useFlowFilter(defaultValueReactive.flows)
+  const flowRuns = useFlowRunFilter(defaultValueReactive.flowRuns)
+  const taskRuns = useTaskRunFilter(defaultValueReactive.taskRuns)
+  const deployments = useDeploymentFilter(defaultValueReactive.deployments)
+  const workPools = useWorkPoolFilter(defaultValueReactive.workPools)
+  const workPoolQueues = useWorkPoolQueueFilter(defaultValueReactive.workPoolQueues)
   const filter = reactive({
-    flows: flowsFilter,
-    flowRuns: flowRunsFilter,
-    taskRuns: taskRunsFilter,
-    deployments: deploymentsFilter,
-    workPools: workPoolsFilter,
-    workPoolQueues: workPoolQueuesFilter,
-    sort,
-    offset,
-    limit,
-  }) as T
+    flows: flows.filter,
+    flowRuns: flowRuns.filter,
+    taskRuns: taskRuns.filter,
+    deployments: deployments.filter,
+    workPools: workPools.filter,
+    workPoolQueues: workPoolQueues.filter,
+    sort: toRef(defaultValueReactive, 'sort') as Ref<T['sort']>,
+    offset: toRef(defaultValueReactive, 'offset'),
+    limit: toRef(defaultValueReactive, 'limit'),
+  }) as Filter<T>
 
-  return {
-    flows,
-    flowRuns,
-    taskRuns,
-    deployments,
-    workPools,
-    workPoolQueues,
-    sort,
-    offset,
-    limit,
-    filter: withExtras<T>(filter),
-  } as UseFilter<T>
+  return withExtras(filter)
 }
 
 export const useFlowsFilter = (defaultValue: MaybeReactive<FlowsFilter> = {}): UseFilter<FlowsFilter> => useUnionFilter<FlowsFilter>(defaultValue)
@@ -692,16 +456,6 @@ export const useFlowRunsFilter = (defaultValue: MaybeReactive<FlowRunsFilter> = 
 export const useTaskRunsFilter = (defaultValue: MaybeReactive<TaskRunsFilter> = {}): UseFilter<TaskRunsFilter> => useUnionFilter<TaskRunsFilter>(defaultValue)
 export const useDeploymentsFilter = (defaultValue: MaybeReactive<DeploymentsFilter> = {}): UseFilter<DeploymentsFilter> => useUnionFilter<DeploymentsFilter>(defaultValue)
 
-const foo: MaybeReactive<FlowsFilter> = {
-  taskRuns: {
-    name: ref(['']),
-  },
-}
-const test = useFlowRunsFilter({
-  taskRuns: {
-    name: undefined,
-  },
-})
 const unionFilterSchema: Omit<RouteQueryParamsSchema<UnionFilter>, 'sort'> = {
   flows: flowFilterSchema,
   flowRuns: flowRunFilterSchema,
@@ -720,12 +474,9 @@ export function useUnionFilterFromRoute<T extends UnionFilterSort>(sort: RouteQu
   }
   const defaultValueReactive = reactive(defaultValue) as UnionFilter<T>
   const params = useRouteQueryParams(schema, defaultValueReactive, prefix)
-  const filter = reactive(params) as UnionFilter<T>
+  const filter = reactive(params) as Filter<UnionFilter<T>>
 
-  return {
-    ...params,
-    filter: withExtras(filter),
-  } as UseFilter<UnionFilter<T>>
+  return withExtras(filter)
 }
 
 export function useFlowsFilterFromRoute(defaultValue: MaybeReactive<FlowsFilter> = {}, prefix?: string): UseFilter<FlowsFilter> {
@@ -737,15 +488,29 @@ export function useFlowRunsFilterFromRoute(defaultValue: MaybeReactive<FlowRunsF
 }
 
 export function useRecentFlowRunsFilter(defaultValue: MaybeReactive<FlowRunsFilter>): UseFilter<FlowRunsFilter> {
-  const { filter, ...params } = useFlowRunsFilter(defaultValue)
+  const { filter, ...extras } = useFlowRunsFilter(defaultValue)
 
-  params.flowRuns.expectedStartTimeAfter.value = dateFunctions.subDays(dateFunctions.startOfToday(), 7)
-  params.flowRuns.expectedStartTimeBefore.value = dateFunctions.addDays(dateFunctions.endOfToday(), 1)
+  filter.flowRuns.expectedStartTimeAfter = dateFunctions.subDays(dateFunctions.startOfToday(), 7)
+  filter.flowRuns.expectedStartTimeBefore = dateFunctions.addDays(dateFunctions.endOfToday(), 1)
 
   return {
-    ...params,
     filter,
+    ...extras,
   }
+}
+
+export function useFlowRunsHistoryFilter(defaultValue: MaybeReactive<FlowRunsHistoryFilter>): UseFilter<FlowRunsHistoryFilter> {
+  const defaultValueReactive = reactive(defaultValue)
+  const { filter: flowRunsFilter } = useFlowRunsFilter(defaultValueReactive)
+
+  const filter: Filter<FlowRunsHistoryFilter> = reactive({
+    ...flowRunsFilter,
+    historyEnd: toRef(defaultValueReactive, 'historyEnd'),
+    historyStart: toRef(defaultValueReactive, 'historyStart'),
+    historyIntervalSeconds: toRef(defaultValueReactive, 'historyIntervalSeconds'),
+  })
+
+  return withExtras(filter)
 }
 
 export function useTaskRunsFilterFromRoute(defaultValue: MaybeReactive<TaskRunsFilter> = {}, prefix?: string): UseFilter<TaskRunsFilter> {
