@@ -2,28 +2,28 @@
   <div class="flow-runs-filter-group">
     <div class="flow-runs-filter-group__row">
       <p-label :label="media.hover ? 'Date Range' : ''">
-        <DateRangeInputWithFlowRunHistory v-model:start-date="expectedStartTimeAfter" v-model:end-date="expectedStartTimeBefore" />
+        <DateRangeInputWithFlowRunHistory v-model:start-date="filter.flowRuns.expectedStartTimeAfter" v-model:end-date="filter.flowRuns.nextExpectedStartTimeBefore" />
       </p-label>
       <p-label label="States">
-        <StateNameSelect v-model:selected="stateNames" empty-message="All run states" />
+        <StateNameSelect v-model:selected="filter.flowRuns.state.name" empty-message="All run states" />
       </p-label>
     </div>
     <div class="flow-runs-filter-group__row">
       <p-label label="Flows">
-        <FlowCombobox v-model:selected="flowIds" empty-message="All flows" />
+        <FlowCombobox v-model:selected="filter.flows.id" empty-message="All flows" />
       </p-label>
       <p-label label="Deployments">
-        <DeploymentCombobox v-model:selected="deploymentIds" empty-message="All deployments" />
+        <DeploymentCombobox v-model:selected="filter.deployments.id" empty-message="All deployments" />
       </p-label>
       <p-label label="Work Queues">
-        <WorkQueueCombobox v-model:selected="workQueueName" empty-message="All work queues" />
+        <WorkQueueCombobox v-model:selected="filter.flowRuns.workQueueName" empty-message="All work queues" />
       </p-label>
       <p-label label="Tags">
-        <FlowRunTagCombobox v-model:selected="tagNames" :filter="filter" empty-message="All tags" />
+        <FlowRunTagCombobox v-model:selected="filter.flowRuns.tags.name" :filter="filter" empty-message="All tags" />
       </p-label>
     </div>
     <p-label class="flow-runs-filter-group__search" label="Search">
-      <SearchInput v-model="nameLike" placeholder="Search by flow run name" label="Search by flow run name" />
+      <SearchInput v-model="filter.flowRuns.nameLike" placeholder="Search by flow run name" label="Search by flow run name" />
     </p-label>
   </div>
 </template>
@@ -39,12 +39,7 @@
   import WorkQueueCombobox from '@/components/WorkQueueCombobox.vue'
   import { useFlowRunsFilterFromRoute } from '@/compositions/filters'
 
-  const { flows, flowRuns, deployments, filter } = useFlowRunsFilterFromRoute()
-  const { expectedStartTimeAfter, expectedStartTimeBefore, state, tags, nameLike, workQueueName } = flowRuns
-  const { name: stateNames } = state
-  const { name: tagNames } = tags
-  const { id: flowIds } = flows
-  const { id: deploymentIds } = deployments
+  const { filter } = useFlowRunsFilterFromRoute()
 </script>
 
 <style>

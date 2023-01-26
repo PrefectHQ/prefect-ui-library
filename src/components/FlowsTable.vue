@@ -12,9 +12,9 @@
 
       <template #header-end>
         <div class="flows-table__header-end">
-          <SearchInput v-model="nameLike" placeholder="Search flows" label="Search flows" />
-          <p-select v-model="sort" :options="flowSortOptions" />
-          <p-tags-input v-model="tagNames" empty-message="Flow run tags" class="flows-table__tags" />
+          <SearchInput v-model="filter.flows.nameLike" placeholder="Search flows" label="Search flows" />
+          <p-select v-model="filter.sort" :options="flowSortOptions" />
+          <p-tags-input v-model="filter.flowRuns.tags.name" empty-message="Flow run tags" class="flows-table__tags" />
         </div>
       </template>
 
@@ -60,8 +60,8 @@
             <template #message>
               No flows
             </template>
-            <template v-if="hasFilters" #actions>
-              <p-button size="sm" secondary @click="clearFilters">
+            <template v-if="exist" #actions>
+              <p-button size="sm" secondary @click="clear">
                 Clear Filters
               </p-button>
             </template>
@@ -73,7 +73,7 @@
 </template>
 
 <script lang="ts" setup>
-  import { PTable, PEmptyResults, PLink, CheckboxModel, asArray } from '@prefecthq/prefect-design'
+  import { PTable, PEmptyResults, PLink, CheckboxModel } from '@prefecthq/prefect-design'
   import { useSubscription } from '@prefecthq/vue-compositions'
   import { computed, ref } from 'vue'
   import { FlowsDeleteButton, DeploymentsCount, ResultsCount, SearchInput, FlowActivityChart, SelectedCount } from '@/components'
@@ -94,20 +94,8 @@
   const routes = useWorkspaceRoutes()
 
   // this takes a prop. Does the default value of the from route compositions need to be reactive?
-  const { sort, flows: flowFilter, filter: flowsFilter, hasFilters, clearFilters } = useFlowsFilterFromRoute(props.filter)
-  const { nameLike } = flowFilter
+  const { filter, clear, exist } = useFlowsFilterFromRoute(props.filter)
 
-  // this is needed because of the `string | string[]` decision. Does that decision make sense in application?
-  const tagNames = computed({
-    get() {
-      const tags = flowFilter.tags.name.value
-
-      return tags ? asArray(tags) : undefined
-    },
-    set(tags) {
-      flowFilter.tags.name.value = tags
-    },
-  })
 
   const columns = [
     {
@@ -158,20 +146,15 @@
     },
   })
 
-  const flowsSubscription = useSubscription(api.flows.getFlows, [flowsFilter])
+  const flowsSubscription = useSubscription(api.flows.getFlows, [filter])
   const flows = computed(() => flowsSubscription.response ?? [])
 
-  const flowsCountSubscription = useSubscription(api.flows.getFlowsCount, [flowsFilter])
+  const flowsCountSubscription = useSubscription(api.flows.getFlowsCount, [filter])
   const flowsCount = computed(() => flowsCountSubscription.response)
 
   function refresh(): void {
     flowsSubscription.refresh()
     flowsCountSubscription.refresh()
-  }
-
-  function clear(): void {
-    flowFilter.nameLike.value = ''
-    flowFilter.tags.name.value = []
   }
 
   const emit = defineEmits<{

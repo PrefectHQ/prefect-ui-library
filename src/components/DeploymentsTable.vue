@@ -12,15 +12,15 @@
 
       <template #header-end>
         <div class="deployments-table__header-end">
-          <SearchInput v-model="deploymentName" placeholder="Search deployments" label="Search deployments" />
+          <SearchInput v-model="filter.deployments.nameLike" placeholder="Search deployments" label="Search deployments" />
 
           <template v-if="hideFlowFilter">
-            <FlowCombobox v-model:selected="flowIds" empty-message="All flows" class="deployments-table__flows" />
+            <FlowCombobox v-model:selected="filter.flows.id" empty-message="All flows" class="deployments-table__flows" />
           </template>
 
-          <p-select v-model="sort" :options="deploymentSortOptions" />
+          <p-select v-model="filter.sort" :options="deploymentSortOptions" />
 
-          <p-tags-input v-model="tagNames" empty-message="All tags" class="deployments-table__tags" />
+          <p-tags-input v-model="filter.deployments.tags.name" empty-message="All tags" class="deployments-table__tags" />
         </div>
       </template>
 
@@ -68,8 +68,8 @@
             <template #message>
               No deployments
             </template>
-            <template v-if="hasFilters" #actions>
-              <p-button size="sm" secondary @click="clearFilters">
+            <template v-if="exist" #actions>
+              <p-button size="sm" secondary @click="clear">
                 Clear Filters
               </p-button>
             </template>
@@ -81,7 +81,7 @@
 </template>
 
 <script lang="ts" setup>
-  import { PTable, PTagWrapper, PEmptyResults, PLink, TableColumn, CheckboxModel, asArray } from '@prefecthq/prefect-design'
+  import { PTable, PTagWrapper, PEmptyResults, PLink, TableColumn, CheckboxModel } from '@prefecthq/prefect-design'
   import { useSubscription } from '@prefecthq/vue-compositions'
   import { computed, ref } from 'vue'
   import { SearchInput, ResultsCount, DeploymentToggle, DeploymentMenu, FlowRouterLink, FlowCombobox, DeploymentsDeleteButton, SelectedCount } from '@/components'
@@ -102,21 +102,7 @@
   const api = useWorkspaceApi()
   const can = useCan()
   const routes = useWorkspaceRoutes()
-  const { flows: flowFilter, deployments: deploymentFilter, sort, filter, hasFilters, clearFilters } = useDeploymentsFilterFromRoute(props.filter)
-  const { id: flowIds } = flowFilter
-  const { nameLike: deploymentName } = deploymentFilter
-
-  // this is needed because of the `string | string[]` decision. Does that decision make sense in application?
-  const tagNames = computed({
-    get() {
-      const tags = flowFilter.tags.name.value
-
-      return tags ? asArray(tags) : undefined
-    },
-    set(tags) {
-      flowFilter.tags.name.value = tags
-    },
-  })
+  const { filter, exist, clear } = useDeploymentsFilterFromRoute(props.filter)
 
   const columns = computed<TableColumn[]>(() => [
     {

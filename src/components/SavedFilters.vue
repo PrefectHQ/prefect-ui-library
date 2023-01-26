@@ -21,7 +21,7 @@
 
   const api = useWorkspaceApi()
 
-  const { filter, setFilters } = useFlowRunsFilterFromRoute()
+  const { filter, set: setFilters } = useFlowRunsFilterFromRoute()
   const savedSearchesSubscription = useSubscription(api.savedSearches.getSavedSearches)
   const savedSearches = computed(() => savedSearchesSubscription.response ?? [])
 
@@ -42,10 +42,10 @@
   const selectedSavedSearch = computed({
     get() {
       const inRoute: SavedSearchFilter = {
-        state: filter.flowRuns?.state?.name ?? [],
-        flow: filter.flows?.name ?? [],
-        deployment: filter.deployments?.id ?? [],
-        tag: filter.flowRuns?.tags?.name ?? [],
+        state: filter.flowRuns.state.name ?? [],
+        flow: filter.flows.name ?? [],
+        deployment: filter.deployments.id ?? [],
+        tag: filter.flowRuns.tags.name ?? [],
       }
 
       const found = savedSearches.value.find(({ name, filters }) => name != customSavedSearch.name && isSameFilter(filters, inRoute))
