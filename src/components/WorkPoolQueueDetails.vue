@@ -6,8 +6,6 @@
       </template>
     </p-key-value>
 
-    <p-key-value label="Work Pool Type" :value="workPoolTypeLabel" :alternate="alternate" />
-
     <p-key-value label="Description" :value="workPoolQueue.description" :alternate="alternate" />
 
     <p-key-value label="Priority" :value="workPoolQueue.priority" :alternate="alternate" />
@@ -25,10 +23,8 @@
 </template>
 
 <script lang="ts" setup>
-  import { useSubscription } from '@prefecthq/vue-compositions'
-  import { computed, toRefs } from 'vue'
+  import { toRefs } from 'vue'
   import { WorkPoolIconText } from '@/components'
-  import { useWorkspaceApi } from '@/compositions'
   import { WorkPoolQueue } from '@/models'
   import { formatDateTimeNumeric } from '@/utilities/dates'
 
@@ -38,12 +34,7 @@
     alternate?: boolean,
   }>()
 
-  const api = useWorkspaceApi()
   const { workPoolName } = toRefs(props)
-
-  const workPoolSubscription = useSubscription(api.workPools.getWorkPoolByName, [workPoolName])
-  const workPool = computed(() => workPoolSubscription.response)
-  const workPoolTypeLabel = computed(() => workPool.value?.typeLabel)
 </script>
 
 

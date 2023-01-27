@@ -61,7 +61,7 @@
     "peerDependencies": {
         "@prefecthq/prefect-design": "^1.2.1",
         "@prefecthq/vue-compositions": "^1.2.3",
-        "vee-validate": "^4.6.5",
+        "vee-validate": "^4.7.0",
         "vue": "^3.2.45",
         "vue-router": "^4.0.12"
     },
