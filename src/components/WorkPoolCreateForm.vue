@@ -59,7 +59,6 @@
   }
 
   const { error: nameErrorMessage, state: nameState } = useValidation(name, 'Name', rules.name)
-  const { error: typeErrorMessage, state: typeState } = useValidation(type, 'Type', rules.type)
 
   function cancel(): void {
     router.back()
