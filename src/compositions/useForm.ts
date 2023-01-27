@@ -20,6 +20,8 @@ export const useForm: typeof useVeeForm = (options) => {
     return handleSubmit(onSuccessWrapped, onErrorWrapped)
   }
 
+  submit.withControlled = handleSubmit.withControlled
+
   return {
     ...rest,
     handleSubmit: submit,
