@@ -1,15 +1,18 @@
 import { BooleanRouteParam, DateRouteParam, NumberRouteParam, RouteQueryParamsSchema, StringRouteParam, useRouteQueryParams } from '@prefecthq/vue-compositions'
-import { Ref, reactive, ComputedRef, toRef, computed } from 'vue'
+import { Ref, reactive, ComputedRef, toRef, computed, toRefs, isReactive } from 'vue'
 import { DeploymentSortValuesSortParam } from '@/formatters/DeploymentSortValuesSortParam'
 import { FlowRunSortValuesSortParam } from '@/formatters/FlowRunSortValuesSortParam'
 import { FlowSortValuesSortParam } from '@/formatters/FlowSortValuesSortParam'
 import { OperatorRouteParam } from '@/formatters/OperatorRouteParam'
 import { TaskRunSortValuesSortParam } from '@/formatters/TaskRunSortValuesSortParam'
 import { BlockDocumentFilter, BlockDocumentsFilter, BlockSchemaFilter, BlockSchemasFilter, BlockTypeFilter, BlockTypesFilter, DeploymentFilter, DeploymentsFilter, FlowFilter, FlowRunFilter, FlowRunsFilter, FlowRunsHistoryFilter, FlowsFilter, StateFilter, TagFilter, TaskRunFilter, TaskRunsFilter, UnionFilter, UnionFilterSort, WorkPoolFilter, WorkPoolQueueFilter, WorkPoolsFilter } from '@/models/Filters'
+import { defaultDeploymentSort, defaultFlowRunSort, defaultFlowSort, defaultTaskRunSort } from '@/types'
 import { AnyRecord } from '@/types/any'
 import { MaybeReactive } from '@/types/reactivity'
 import { merge } from '@/utilities/object'
 import { dateFunctions } from '@/utilities/timezone'
+
+type AnySortableRecord = AnyRecord & { sort?: string }
 
 export type Filter<T extends AnyRecord> = {
   [P in keyof Required<T>]: [T[P]] extends [AnyRecord | undefined]
@@ -17,7 +20,7 @@ export type Filter<T extends AnyRecord> = {
     : T[P]
 }
 
-export type Extras<T extends AnyRecord> = {
+export type FilterExtras<T extends AnyRecord> = {
   clear: () => void,
   set: (filters: T) => void,
   exist: ComputedRef<boolean>,
@@ -25,7 +28,7 @@ export type Extras<T extends AnyRecord> = {
 
 export type UseFilter<T extends AnyRecord> = {
   filter: Filter<T>,
-} & Extras<T>
+} & FilterExtras<T>
 
 function withExtras<T extends AnyRecord>(filter: Filter<T>): UseFilter<T> {
   const defaultValue: T = JSON.parse(JSON.stringify(filter))
@@ -46,6 +49,12 @@ function withExtras<T extends AnyRecord>(filter: Filter<T>): UseFilter<T> {
     set,
     exist,
   }
+}
+
+function getDefaultValueWithDefaultSort<T extends AnySortableRecord>(defaultValue: MaybeReactive<T>, defaultSort: T['sort']): T {
+  const { sort = defaultSort, ...rest } = isReactive(defaultValue) ? toRefs(defaultValue) : defaultValue
+
+  return reactive({ ...rest, sort }) as T
 }
 
 export function useTagFilter(defaultValue: MaybeReactive<TagFilter> = {}): UseFilter<TagFilter> {
@@ -520,8 +529,8 @@ export function useWorkPoolsFilterFromRoute(defaultValue: MaybeReactive<WorkPool
   return withExtras(filter)
 }
 
-export function useUnionFilter<T extends UnionFilter>(defaultValue: MaybeReactive<T>): UseFilter<T> {
-  const defaultValueReactive = reactive(defaultValue) as T
+function useUnionFilter<T extends UnionFilter>(defaultValue: MaybeReactive<T>, defaultSort: Exclude<T['sort'], undefined>): UseFilter<T> {
+  const defaultValueReactive = getDefaultValueWithDefaultSort(defaultValue, defaultSort)
   const flows = useFlowFilter(defaultValueReactive.flows)
   const flowRuns = useFlowRunFilter(defaultValueReactive.flowRuns)
   const taskRuns = useTaskRunFilter(defaultValueReactive.taskRuns)
@@ -543,10 +552,21 @@ export function useUnionFilter<T extends UnionFilter>(defaultValue: MaybeReactiv
   return withExtras(filter)
 }
 
-export const useFlowsFilter = (defaultValue: MaybeReactive<FlowsFilter> = {}): UseFilter<FlowsFilter> => useUnionFilter<FlowsFilter>(defaultValue)
-export const useFlowRunsFilter = (defaultValue: MaybeReactive<FlowRunsFilter> = {}): UseFilter<FlowRunsFilter> => useUnionFilter<FlowRunsFilter>(defaultValue)
-export const useTaskRunsFilter = (defaultValue: MaybeReactive<TaskRunsFilter> = {}): UseFilter<TaskRunsFilter> => useUnionFilter<TaskRunsFilter>(defaultValue)
-export const useDeploymentsFilter = (defaultValue: MaybeReactive<DeploymentsFilter> = {}): UseFilter<DeploymentsFilter> => useUnionFilter<DeploymentsFilter>(defaultValue)
+export function useFlowsFilter(defaultValue: MaybeReactive<FlowsFilter> = {}): UseFilter<FlowsFilter> {
+  return useUnionFilter<FlowsFilter>(defaultValue, defaultFlowSort)
+}
+
+export function useFlowRunsFilter(defaultValue: MaybeReactive<FlowRunsFilter> = {}): UseFilter<FlowRunsFilter> {
+  return useUnionFilter<FlowRunsFilter>(defaultValue, defaultFlowRunSort)
+}
+
+export function useTaskRunsFilter(defaultValue: MaybeReactive<TaskRunsFilter> = {}): UseFilter<TaskRunsFilter> {
+  return useUnionFilter<TaskRunsFilter>(defaultValue, defaultTaskRunSort)
+}
+
+export function useDeploymentsFilter(defaultValue: MaybeReactive<DeploymentsFilter> = {}): UseFilter<DeploymentsFilter> {
+  return useUnionFilter<DeploymentsFilter>(defaultValue, defaultDeploymentSort)
+}
 
 const unionFilterSchema: Omit<RouteQueryParamsSchema<UnionFilter>, 'sort'> = {
   flows: flowFilterSchema,
@@ -559,12 +579,18 @@ const unionFilterSchema: Omit<RouteQueryParamsSchema<UnionFilter>, 'sort'> = {
   limit: NumberRouteParam,
 }
 
-export function useUnionFilterFromRoute<T extends UnionFilterSort>(sort: RouteQueryParamsSchema<UnionFilter<T>>['sort'], defaultValue: MaybeReactive<UnionFilter<T>>, prefix?: string): UseFilter<UnionFilter<T>> {
+// eslint-disable-next-line max-params
+function useUnionFilterFromRoute<T extends UnionFilterSort>(
+  sortSchema: RouteQueryParamsSchema<UnionFilter<T>>['sort'],
+  defaultValue: MaybeReactive<UnionFilter<T>>,
+  defaultSort: UnionFilter<T>['sort'],
+  prefix?: string,
+): UseFilter<UnionFilter<T>> {
   const schema: RouteQueryParamsSchema<UnionFilter<T>> = {
     ...unionFilterSchema,
-    sort,
+    sort: sortSchema,
   }
-  const defaultValueReactive = reactive(defaultValue) as UnionFilter<T>
+  const defaultValueReactive = getDefaultValueWithDefaultSort(defaultValue, defaultSort)
   const params = useRouteQueryParams(schema, defaultValueReactive, prefix)
   const filter = reactive(params) as Filter<UnionFilter<T>>
 
@@ -572,19 +598,19 @@ export function useUnionFilterFromRoute<T extends UnionFilterSort>(sort: RouteQu
 }
 
 export function useFlowsFilterFromRoute(defaultValue: MaybeReactive<FlowsFilter> = {}, prefix?: string): UseFilter<FlowsFilter> {
-  return useUnionFilterFromRoute(FlowSortValuesSortParam, defaultValue, prefix)
+  return useUnionFilterFromRoute(FlowSortValuesSortParam, defaultValue, defaultFlowSort, prefix)
 }
 
 export function useFlowRunsFilterFromRoute(defaultValue: MaybeReactive<FlowRunsFilter> = {}, prefix?: string): UseFilter<FlowRunsFilter> {
-  return useUnionFilterFromRoute(FlowRunSortValuesSortParam, defaultValue, prefix)
+  return useUnionFilterFromRoute(FlowRunSortValuesSortParam, defaultValue, defaultFlowRunSort, prefix)
 }
 
 export function useTaskRunsFilterFromRoute(defaultValue: MaybeReactive<TaskRunsFilter> = {}, prefix?: string): UseFilter<TaskRunsFilter> {
-  return useUnionFilterFromRoute(TaskRunSortValuesSortParam, defaultValue, prefix)
+  return useUnionFilterFromRoute(TaskRunSortValuesSortParam, defaultValue, defaultTaskRunSort, prefix)
 }
 
 export function useDeploymentsFilterFromRoute(defaultValue: MaybeReactive<DeploymentsFilter> = {}, prefix?: string): UseFilter<DeploymentsFilter> {
-  return useUnionFilterFromRoute(DeploymentSortValuesSortParam, defaultValue, prefix)
+  return useUnionFilterFromRoute(DeploymentSortValuesSortParam, defaultValue, defaultDeploymentSort, prefix)
 }
 
 export function useRecentFlowRunsFilter(defaultValue: MaybeReactive<FlowRunsFilter>): UseFilter<FlowRunsFilter> {
