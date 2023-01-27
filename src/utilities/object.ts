@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/indent */
 import isDate from 'date-fns/isDate'
 
 export function flip<K extends string, V extends string>(obj: Record<K, V>): Record<V, K> {
@@ -134,4 +135,35 @@ export function merge<T>(target: T, ...sources: T[]): T {
   }
 
   return merge(target, ...rest)
+}
+
+type EmptyObjectsRemoved<T extends Record<PropertyKey, unknown>> = {
+  [P in keyof T]: T[P] extends Record<PropertyKey, unknown> ? EmptyObjectsRemoved<T[P]> | undefined : T[P];
+}
+
+export function removeEmptyObjects<T extends Record<PropertyKey, unknown>>(input: T): EmptyObjectsRemoved<T> {
+  const response: Record<PropertyKey, unknown> = {}
+  const keys = Object.keys(input)
+
+  for (const key of keys) {
+    const value = input[key]
+
+    if (value === undefined) {
+      continue
+    }
+
+    if (isRecord(value)) {
+      const possiblyEmptyObject = removeEmptyObjects(value)
+
+      if (Object.keys(possiblyEmptyObject).length) {
+        response[key] = possiblyEmptyObject
+      }
+
+      continue
+    }
+
+    response[key] = value
+  }
+
+  return response as EmptyObjectsRemoved<T>
 }

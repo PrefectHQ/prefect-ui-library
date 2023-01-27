@@ -3,6 +3,7 @@ import { asArray } from '@prefecthq/prefect-design'
 import { Any, Like, All, IsNull, OperatorRequest, TagFilterRequest, FlowFilterRequest, FlowRunFilterRequest, NotAny, StateFilterRequest, Before, After, TaskRunFilterRequest, Exists, DeploymentFilterRequest, Equals, FlowsFilterRequest, FlowRunsFilterRequest, TaskRunsFilterRequest, DeploymentsFilterRequest, BlockTypeFilterRequest, BlockSchemaFilterRequest, BlockDocumentFilterRequest, NotificationsFilterRequest, SavedSearchesFilterRequest, LogsFilterRequest, GreaterThan, LessThan, ConcurrencyLimitsFilterRequest, BlockTypesFilterRequest, BlockSchemasFilterRequest, BlockDocumentsFilterRequest, WorkQueuesFilterRequest, StartsWith, WorkPoolFilterRequest, WorkPoolsFilterRequest, WorkPoolQueueFilterRequest, FlowRunsHistoryFilterRequest, WorkPoolWorkersFilterRequest, WorkPoolQueuesFilterRequest } from '@/models/api/Filters'
 import { FlowFilter, FlowRunFilter, Operation, StateFilter, TagFilter, TaskRunFilter, DeploymentFilter, FlowsFilter, FlowRunsFilter, TaskRunsFilter, DeploymentsFilter, BlockTypeFilter, BlockSchemaFilter, BlockDocumentFilter, NotificationsFilter, SavedSearchesFilter, LogsFilter, ConcurrencyLimitsFilter, BlockTypesFilter, BlockSchemasFilter, BlockDocumentsFilter, WorkQueuesFilter, WorkPoolFilter, WorkPoolsFilter, WorkPoolQueueFilter, FlowRunsHistoryFilter, WorkPoolWorkersFilter, WorkPoolQueuesFilter } from '@/models/Filters'
 import { MapFunction } from '@/services'
+import { removeEmptyObjects } from '@/utilities'
 
 function toOperator(value?: Operation): OperatorRequest | undefined {
   if (typeof value === 'undefined') {
@@ -117,15 +118,15 @@ export const mapTagFilter: MapFunction<TagFilter, TagFilterRequest> = function(s
 }
 
 export const mapStateFilter: MapFunction<StateFilter, StateFilterRequest> = function(source) {
-  return {
+  return removeEmptyObjects({
     ...toOperator(source.operator),
     type: toAny(source.type),
     name: toAny(source.name),
-  }
+  })
 }
 
 export const mapFlowFilter: MapFunction<FlowFilter, FlowFilterRequest> = function(source) {
-  return {
+  return removeEmptyObjects({
     ...toOperator(source.operator),
     id: toAny(source.id),
     name: {
@@ -133,11 +134,11 @@ export const mapFlowFilter: MapFunction<FlowFilter, FlowFilterRequest> = functio
       ...toLike(source.nameLike),
     },
     tags: this.map('TagFilter', source.tags, 'TagFilterRequest'),
-  }
+  })
 }
 
 export const mapFlowRunFilter: MapFunction<FlowRunFilter, FlowRunFilterRequest> = function(source) {
-  return {
+  return removeEmptyObjects({
     ...toOperator(source.operator),
     id: {
       ...toAny(source.id),
@@ -178,11 +179,11 @@ export const mapFlowRunFilter: MapFunction<FlowRunFilter, FlowRunFilterRequest> 
       ...toAny(source.parentTaskRunId),
       ...toIsNull(source.parentTaskRunIdNull),
     },
-  }
+  })
 }
 
 export const mapTaskRunFilter: MapFunction<TaskRunFilter, TaskRunFilterRequest> = function(source) {
-  return {
+  return removeEmptyObjects({
     ...toOperator(source.operator),
     id: toAny(source.id),
     name: {
@@ -197,11 +198,11 @@ export const mapTaskRunFilter: MapFunction<TaskRunFilter, TaskRunFilterRequest> 
       ...toIsNull(source.startTimeNull),
     },
     subflow_runs: toExists(source.subFlowRunsExist),
-  }
+  })
 }
 
 export const mapDeploymentFilter: MapFunction<DeploymentFilter, DeploymentFilterRequest> = function(source) {
-  return {
+  return removeEmptyObjects({
     ...toOperator(source.operator),
     name: {
       ...toAny(source.name),
@@ -209,7 +210,7 @@ export const mapDeploymentFilter: MapFunction<DeploymentFilter, DeploymentFilter
     },
     is_schedule_active: toEquals(source.isScheduleActive),
     work_queue_name: toAny(source.workQueueName),
-  }
+  })
 }
 
 export const mapWorkPoolFilter: MapFunction<WorkPoolFilter, WorkPoolFilterRequest> = function(source) {
@@ -230,7 +231,7 @@ export const mapWorkPoolQueueFilter: MapFunction<WorkPoolQueueFilter, WorkPoolQu
 }
 
 export const mapFlowsFilter: MapFunction<FlowsFilter, FlowsFilterRequest> = function(source) {
-  return {
+  return removeEmptyObjects({
     flows: this.map('FlowFilter', source.flows, 'FlowFilterRequest'),
     flow_runs: this.map('FlowRunFilter', source.flowRuns, 'FlowRunFilterRequest'),
     task_runs: this.map('TaskRunFilter', source.taskRuns, 'TaskRunFilterRequest'),
@@ -240,11 +241,11 @@ export const mapFlowsFilter: MapFunction<FlowsFilter, FlowsFilterRequest> = func
     sort: source.sort,
     limit: source.limit,
     offset: source.offset,
-  }
+  })
 }
 
 export const mapFlowRunsFilter: MapFunction<FlowRunsFilter, FlowRunsFilterRequest> = function(source) {
-  return {
+  return removeEmptyObjects({
     flows: this.map('FlowFilter', source.flows, 'FlowFilterRequest'),
     flow_runs: this.map('FlowRunFilter', source.flowRuns, 'FlowRunFilterRequest'),
     task_runs: this.map('TaskRunFilter', source.taskRuns, 'TaskRunFilterRequest'),
@@ -254,22 +255,22 @@ export const mapFlowRunsFilter: MapFunction<FlowRunsFilter, FlowRunsFilterReques
     sort: source.sort,
     limit: source.limit,
     offset: source.offset,
-  }
+  })
 }
 
 export const mapFlowRunsHistoryFilter: MapFunction<FlowRunsHistoryFilter, FlowRunsHistoryFilterRequest> = function(source) {
   const { historyStart, historyEnd, historyIntervalSeconds, ...filter } = source
 
-  return {
+  return removeEmptyObjects({
     ...this.map('FlowRunsFilter', filter, 'FlowRunsFilterRequest'),
     history_start: this.map('Date', historyStart, 'string'),
     history_end: this.map('Date', historyEnd, 'string'),
     history_interval_seconds: historyIntervalSeconds,
-  }
+  })
 }
 
 export const mapTaskRunsFilter: MapFunction<TaskRunsFilter, TaskRunsFilterRequest> = function(source) {
-  return {
+  return removeEmptyObjects({
     flows: this.map('FlowFilter', source.flows, 'FlowFilterRequest'),
     flow_runs: this.map('FlowRunFilter', source.flowRuns, 'FlowRunFilterRequest'),
     task_runs: this.map('TaskRunFilter', source.taskRuns, 'TaskRunFilterRequest'),
@@ -279,11 +280,11 @@ export const mapTaskRunsFilter: MapFunction<TaskRunsFilter, TaskRunsFilterReques
     sort: source.sort,
     limit: source.limit,
     offset: source.offset,
-  }
+  })
 }
 
 export const mapDeploymentsFilter: MapFunction<DeploymentsFilter, DeploymentsFilterRequest> = function(source) {
-  return {
+  return removeEmptyObjects({
     flows: this.map('FlowFilter', source.flows, 'FlowFilterRequest'),
     flow_runs: this.map('FlowRunFilter', source.flowRuns, 'FlowRunFilterRequest'),
     task_runs: this.map('TaskRunFilter', source.taskRuns, 'TaskRunFilterRequest'),
@@ -293,7 +294,7 @@ export const mapDeploymentsFilter: MapFunction<DeploymentsFilter, DeploymentsFil
     sort: source.sort,
     limit: source.limit,
     offset: source.offset,
-  }
+  })
 }
 
 export const mapBlockTypeFilter: MapFunction<BlockTypeFilter, BlockTypeFilterRequest> = function(source) {
@@ -324,13 +325,13 @@ export const mapBlockDocumentFilter: MapFunction<BlockDocumentFilter, BlockDocum
 }
 
 export const mapNotificationsFilter: MapFunction<NotificationsFilter, NotificationsFilterRequest> = function(source) {
-  return {
+  return removeEmptyObjects({
     flow_run_notification_policy_filter: {
       is_active: toEquals(source.notification?.isActive),
     },
     offset: source.offset,
     limit: source.limit,
-  }
+  })
 }
 
 export const mapSavedSearchesFilter: MapFunction<SavedSearchesFilter, SavedSearchesFilterRequest> = function(source) {
@@ -341,7 +342,7 @@ export const mapSavedSearchesFilter: MapFunction<SavedSearchesFilter, SavedSearc
 }
 
 export const mapLogsFilter: MapFunction<LogsFilter, LogsFilterRequest> = function(source) {
-  return {
+  return removeEmptyObjects({
     logs: {
       ...toOperator(source.logs?.operator),
       level: {
@@ -358,7 +359,7 @@ export const mapLogsFilter: MapFunction<LogsFilter, LogsFilterRequest> = functio
     sort: source.sort,
     offset: source.offset,
     limit: source.limit,
-  }
+  })
 }
 
 export const mapConcurrencyLimitsFilter: MapFunction<ConcurrencyLimitsFilter, ConcurrencyLimitsFilterRequest> = function(source) {
@@ -368,39 +369,36 @@ export const mapConcurrencyLimitsFilter: MapFunction<ConcurrencyLimitsFilter, Co
   }
 }
 
-// maps already exist for BlockTypeFilter and BlockSchemaFilter
 export const mapBlockTypesFilter: MapFunction<BlockTypesFilter, BlockTypesFilterRequest> = function(source) {
-  return {
+  return removeEmptyObjects({
     block_types: this.map('BlockTypeFilter', source.blockTypes, 'BlockTypeFilterRequest'),
     block_schemas: this.map('BlockSchemaFilter', source.blockSchemas, 'BlockSchemaFilterRequest'),
     offset: source.offset,
     limit: source.limit,
-  }
+  })
 }
 
-// maps already exist for BlockSchemaFilter
 export const mapBlockSchemasFilter: MapFunction<BlockSchemasFilter, BlockSchemasFilterRequest> = function(source) {
-  return {
+  return removeEmptyObjects({
     block_schemas: this.map('BlockSchemaFilter', source.blockSchemas, 'BlockSchemaFilterRequest'),
     offset: source.offset,
     limit: source.limit,
-  }
+  })
 }
 
-// maps already exist for BlockTypeFilter and BlockSchemaFilter and BlockDocumentFilter
 export const mapBlockDocumentsFilter: MapFunction<BlockDocumentsFilter, BlockDocumentsFilterRequest> = function(source) {
-  return {
+  return removeEmptyObjects({
     block_documents: this.map('BlockDocumentFilter', source.blockDocuments, 'BlockDocumentFilterRequest'),
     block_schemas: this.map('BlockSchemaFilter', source.blockSchemas, 'BlockSchemaFilterRequest'),
     block_types: this.map('BlockTypeFilter', source.blockTypes, 'BlockTypeFilterRequest'),
     include_secrets: source.includeSecrets,
     offset: source.offset,
     limit: source.limit,
-  }
+  })
 }
 
 export const mapWorkQueuesFilter: MapFunction<WorkQueuesFilter, WorkQueuesFilterRequest> = function(source) {
-  return {
+  return removeEmptyObjects({
     work_queues: {
       ...toOperator(source.workQueues?.operator),
       name: {
@@ -410,19 +408,19 @@ export const mapWorkQueuesFilter: MapFunction<WorkQueuesFilter, WorkQueuesFilter
     },
     offset: source.offset,
     limit: source.limit,
-  }
+  })
 }
 
 export const mapWorkPoolsFilter: MapFunction<WorkPoolsFilter, WorkPoolsFilterRequest> = function(source) {
-  return {
+  return removeEmptyObjects({
     work_pools: this.map('WorkPoolFilter', source.workPools, 'WorkPoolFilterRequest'),
     offset: source.offset,
     limit: source.limit,
-  }
+  })
 }
 
 export const mapWorkPoolWorkersFilter: MapFunction<WorkPoolWorkersFilter, WorkPoolWorkersFilterRequest> = function(source) {
-  return {
+  return removeEmptyObjects({
     workers: {
       ...toOperator(source.workers?.operator),
       last_heartbeat_time: {
@@ -432,13 +430,13 @@ export const mapWorkPoolWorkersFilter: MapFunction<WorkPoolWorkersFilter, WorkPo
     },
     limit: source.limit,
     offset: source.offset,
-  }
+  })
 }
 
 export const mapWorkPoolQueuesFilter: MapFunction<WorkPoolQueuesFilter, WorkPoolQueuesFilterRequest> = function(source) {
-  return {
+  return removeEmptyObjects({
     work_pools: this.map('WorkPoolFilter', source.workPools, 'WorkPoolFilterRequest'),
     offset: source.offset,
     limit: source.limit,
-  }
+  })
 }
