@@ -1,9 +1,11 @@
 /* eslint-disable no-redeclare */
 import { ref, Ref } from 'vue'
+import TaskRunsSort from '@/components/TaskRunsSort.vue'
 import { MaybeRef } from '@/types/reactivity'
 
 export const flowSortValues = ['CREATED_DESC', 'UPDATED_DESC', 'NAME_DESC', 'NAME_ASC'] as const
 export type FlowSortValues = typeof flowSortValues[number]
+export const defaultFlowSort: FlowSortValues = 'CREATED_DESC'
 
 export function isFlowSortValue(value: unknown): value is FlowSortValues
 export function isFlowSortValue(value: Ref<unknown>): value is Ref<FlowSortValues>
@@ -21,6 +23,7 @@ export const flowSortOptions = [
 
 export const deploymentSortValues = ['CREATED_DESC', 'UPDATED_DESC', 'NAME_DESC', 'NAME_ASC'] as const
 export type DeploymentSortValues = typeof deploymentSortValues[number]
+export const defaultDeploymentSort: DeploymentSortValues = 'CREATED_DESC'
 
 export function isDeploymentSortValue(value: unknown): value is DeploymentSortValues
 export function isDeploymentSortValue(value: Ref<unknown>): value is Ref<DeploymentSortValues>
@@ -38,6 +41,7 @@ export const deploymentSortOptions = [
 
 export const flowRunSortValues = ['CREATED_DESC', 'NAME_DESC', 'NAME_ASC', 'EXPECTED_START_TIME_DESC', 'EXPECTED_START_TIME_ASC', 'NEXT_SCHEDULED_START_TIME_ASC', 'START_TIME_DESC', 'START_TIME_ASC'] as const
 export type FlowRunSortValues = typeof flowRunSortValues[number]
+export const defaultFlowRunSort: FlowRunSortValues = 'CREATED_DESC'
 
 export function isFlowRunSortValue(value: unknown): value is FlowRunSortValues
 export function isFlowRunSortValue(value: Ref<unknown>): value is Ref<FlowRunSortValues>
@@ -51,6 +55,7 @@ export type FlowRunSortOptions = { label: string, value: FlowRunSortValues }[]
 
 export const taskRunSortValues = ['ID_DESC', 'EXPECTED_START_TIME_ASC', 'EXPECTED_START_TIME_DESC', 'NEXT_SCHEDULED_START_TIME_ASC', 'END_TIME_DESC'] as const
 export type TaskRunSortValues = typeof taskRunSortValues[number]
+export const defaultTaskRunSort: TaskRunSortValues = 'EXPECTED_START_TIME_DESC'
 
 export function isTaskRunSortValue(value: unknown): value is TaskRunSortValues
 export function isTaskRunSortValue(value: Ref<unknown>): value is Ref<TaskRunSortValues>
@@ -64,6 +69,7 @@ export type TaskRunSortOptions = { label: string, value: TaskRunSortValues }[]
 
 const logSortValues = ['TIMESTAMP_ASC', 'TIMESTAMP_DESC', 'LEVEL_ASC', 'LEVEL_DESC', 'FLOW_RUN_ID_ASC', 'FLOW_RUN_ID_DESC', 'TASK_RUN_ID_ASC', 'TASK_RUN_ID_DESC']
 export type LogSortValues = typeof logSortValues[number]
+export const defaultLogSort: LogSortValues = 'TIMESTAMP_ASC'
 
 export function isLogSortValue(value: unknown): value is LogSortValues
 export function isLogSortValue(value: Ref<unknown>): value is Ref<LogSortValues>
