@@ -13,14 +13,6 @@
         </template>
       </p-label>
 
-      <p-label label="Type" :state="typeState" :message="typeErrorMessage">
-        <template #default="{ id }">
-          <p-select :id="id" model-value="Prefect Agent" :options="['Prefect Agent']" disabled />
-        </template>
-        <!-- Types feature is not implemented by backend yet -->
-        <!-- <WorkPoolTypeSelect v-model:selected="type" :state="typeState" /> -->
-      </p-label>
-
       <p-label label="Flow Run Concurrency (Optional)">
         <template #default="{ id }">
           <p-number-input :id="id" v-model="concurrencyLimit" placeholder="Unlimited" :min="0" />

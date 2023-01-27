@@ -13,12 +13,6 @@
         </template>
       </p-label>
 
-      <p-label label="Type">
-        <template #default="{ id }">
-          <p-select :id="id" :model-value="workPool.typeLabel" :options="[workPool.typeLabel]" disabled />
-        </template>
-      </p-label>
-
       <p-label label="Flow Run Concurrency (Optional)">
         <template #default="{ id }">
           <p-number-input :id="id" v-model="concurrencyLimit" placeholder="Unlimited" :min="0" />
