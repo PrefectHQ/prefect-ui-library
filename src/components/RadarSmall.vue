@@ -5,6 +5,7 @@
     hide-viewport
     disable-interactions
     :color-accessor="getStateColor"
+    :ring-color-accessor="getRingColor"
   />
 </template>
 
@@ -60,6 +61,11 @@
   const getStateColor = (item?: Item): string => {
     const color = computedStyle.getPropertyValue(`--state-${item?.state?.type}-500`)
     return color
+  }
+
+  const getRingColor = (): string => {
+    const [hue, saturation, lightness] = computedStyle.getPropertyValue('--foreground-50').trim().split(' ').map(val => parseInt(val))
+    return `hsl(${hue}deg, ${saturation}%, ${lightness}%)`
   }
 </script>
 
