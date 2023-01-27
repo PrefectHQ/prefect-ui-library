@@ -3,6 +3,7 @@
     :id="flowRunId"
     class="radar-app"
     :items="graph"
+    :ring-color-accessor="getRingColor"
     :edge-color-accessor="getStateColor"
     :minimum-rings="5"
     id-accessor="id"
@@ -107,6 +108,11 @@
   const getStateColor = (item: Item): string => {
     const color = computedStyle.getPropertyValue(`--state-${item.state?.type}-500`)
     return color
+  }
+
+  const getRingColor = (): string => {
+    const [hue, saturation, lightness] = computedStyle.getPropertyValue('--foreground-50').trim().split(' ').map(val => parseInt(val))
+    return `hsl(${hue}deg, ${saturation}%, ${lightness}%)`
   }
 
   const isTaskRun = (item: GraphNode): boolean => {

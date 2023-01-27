@@ -67,7 +67,7 @@
     },
     "dependencies": {
         "@prefecthq/graphs": "0.1.10",
-        "@prefecthq/radar": "0.0.18",
+        "@prefecthq/radar": "0.0.19",
         "@prefecthq/vue-charts": "0.0.19",
         "axios": "0.27.2",
         "cronstrue": "^2.21.0",
