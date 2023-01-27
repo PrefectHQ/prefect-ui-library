@@ -1,6 +1,4 @@
-/* eslint-disable no-redeclare */
 import { ref, Ref } from 'vue'
-import TaskRunsSort from '@/components/TaskRunsSort.vue'
 import { MaybeRef } from '@/types/reactivity'
 
 export const flowSortValues = ['CREATED_DESC', 'UPDATED_DESC', 'NAME_DESC', 'NAME_ASC'] as const
@@ -41,7 +39,7 @@ export const deploymentSortOptions = [
 
 export const flowRunSortValues = ['CREATED_DESC', 'NAME_DESC', 'NAME_ASC', 'EXPECTED_START_TIME_DESC', 'EXPECTED_START_TIME_ASC', 'NEXT_SCHEDULED_START_TIME_ASC', 'START_TIME_DESC', 'START_TIME_ASC'] as const
 export type FlowRunSortValues = typeof flowRunSortValues[number]
-export const defaultFlowRunSort: FlowRunSortValues = 'CREATED_DESC'
+export const defaultFlowRunSort: FlowRunSortValues = 'START_TIME_DESC'
 
 export function isFlowRunSortValue(value: unknown): value is FlowRunSortValues
 export function isFlowRunSortValue(value: Ref<unknown>): value is Ref<FlowRunSortValues>
