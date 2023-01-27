@@ -1,5 +1,5 @@
 <template>
-  <p-combobox v-model="internalValue" :options="options" :append="timestamp">
+  <p-combobox v-model="internalValue" :options="timezoneOptions" :append="timestamp">
     <template v-for="(index, name) in $slots" #[name]="data">
       <slot :name="name" v-bind="data" />
     </template>
@@ -7,7 +7,7 @@
 </template>
 
 <script lang="ts" setup>
-  import { SelectOption } from '@prefecthq/prefect-design'
+  import { SelectOptionGroup, SelectOption } from '@prefecthq/prefect-design'
   import { computed, onUnmounted, ref } from 'vue'
   import { secondsInMinute, millisecondsInSecond, millisecondsInMinute } from '@/utilities/dates'
   import { formatDateInTimezone, utcTimezone } from '@/utilities/timezone'
@@ -48,13 +48,29 @@
 
   onUnmounted(() => clearTimeout(timeout))
 
-  const timezones = Intl.supportedValuesOf('timeZone').map(timezone => ({ label: timezone, value: timezone }))
-  const options: SelectOption[] = [
-    { label: 'UTC', value: utcTimezone },
-    ...timezones,
-  ]
 
-  if (!props.hideUnset) {
-    options.unshift({ label: 'Use browser default', value: null })
-  }
+  const timezones = Intl.supportedValuesOf('timeZone').map(timezone => ({ label: timezone, value: timezone }))
+  const localTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone
+
+  const timezoneOptions = computed<SelectOptionGroup[]>(() => {
+    const suggested: SelectOption[] = [
+      { label: localTimezone, value: localTimezone },
+      { label: 'UTC', value: utcTimezone },
+    ]
+
+    if (!props.hideUnset) {
+      suggested.unshift({ label: 'Use browser default', value: null })
+    }
+
+    return [
+      {
+        label: 'Suggested timezones',
+        options: suggested,
+      },
+      {
+        label: 'All timezones',
+        options: timezones,
+      },
+    ]
+  })
 </script>
