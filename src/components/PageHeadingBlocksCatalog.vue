@@ -1,7 +1,6 @@
 <template>
   <page-heading class="page-heading-blocks-catalog" :crumbs="crumbs" />
   <p-message class="page-heading-blocks-catalog__message">
-    Below are all the block types currently registered.
     If you don't see a block for the service you're using check out our
     <p-link :to="localization.docs.collections">
       Collections Catalog
