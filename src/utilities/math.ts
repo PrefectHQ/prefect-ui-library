@@ -16,6 +16,10 @@ const weightedNumber = (): number => {
   return choice(range(101, 1000))
 }
 
+export function countDigits(value: number): number {
+  return `${value}`.length
+}
+
 export {
   uniform,
   coinflip,
