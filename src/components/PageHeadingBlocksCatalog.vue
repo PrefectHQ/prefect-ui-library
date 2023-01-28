@@ -4,7 +4,7 @@
     Below are all the block types currently registered.
     If you don't see a block for the service you're using check out our
     <p-link :to="localization.docs.collections">
-      collections catalog
+      Collections Catalog
     </p-link>
     to view a list of integrations and their corresponding blocks.
   </p-message>
