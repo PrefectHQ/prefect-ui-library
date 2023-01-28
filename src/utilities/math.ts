@@ -16,6 +16,10 @@ const weightedNumber = (): number => {
   return choice(range(101, 1000))
 }
 
+export function countDigits(value: number): number {
+  return Math.max(Math.floor(Math.log10(Math.abs(value))), 0) + 1
+}
+
 export {
   uniform,
   coinflip,
