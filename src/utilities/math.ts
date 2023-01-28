@@ -17,7 +17,7 @@ const weightedNumber = (): number => {
 }
 
 export function countDigits(value: number): number {
-  return Math.max(Math.floor(Math.log10(Math.abs(value))), 0) + 1
+  return `${value}`.length
 }
 
 export {
