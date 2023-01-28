@@ -1,7 +1,7 @@
 <template>
   <page-heading class="page-heading-blocks-catalog" :crumbs="crumbs" />
   <p-message class="page-heading-blocks-catalog__message">
-    If you don't see a block for the service you're using check out our
+    If you don't see a block for the service you're using, check out our
     <p-link :to="localization.docs.collections">
       Collections Catalog
     </p-link>
