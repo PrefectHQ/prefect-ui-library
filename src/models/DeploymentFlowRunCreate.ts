@@ -1,3 +1,4 @@
+import { EmpiricalPolicy } from '@/models/EmpiricalPolicy'
 import { StateCreate } from '@/models/StateCreate'
 import { Schema, SchemaValues } from '@/types/schemas'
 
@@ -5,7 +6,7 @@ type Base = {
   name?: string | null,
   idempotencyKey?: string | null,
   context?: unknown,
-  empiricalPolicy?: unknown,
+  empiricalPolicy?: EmpiricalPolicy,
   tags?: string[] | null,
   parentTaskRunId?: string | null,
   infrastructureDocumentId?: string | null,
