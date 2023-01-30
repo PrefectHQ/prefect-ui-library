@@ -25,5 +25,6 @@ export type DeploymentResponse = {
   parameter_openapi_schema: SchemaResponse | null,
   storage_document_id: string | null,
   infrastructure_document_id: string | null,
+  infra_overrides: Record<string, unknown> | null,
   work_queue_name: string | null,
 }

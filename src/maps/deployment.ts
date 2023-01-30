@@ -27,6 +27,7 @@ export const mapDeploymentResponseToDeployment: MapFunction<DeploymentResponse, 
     entrypoint: source.entrypoint,
     storageDocumentId: source.storage_document_id,
     infrastructureDocumentId: source.infrastructure_document_id,
+    infrastructureOverrides: source.infra_overrides,
     parameterOpenApiSchema: schema,
     workQueueName: source.work_queue_name,
   })
