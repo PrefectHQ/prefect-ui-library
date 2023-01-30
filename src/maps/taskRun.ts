@@ -1,3 +1,4 @@
+import { sortStringArray } from '@prefecthq/prefect-design'
 import { TaskRunResponse } from '@/models/api/TaskRunResponse'
 import { TaskRun } from '@/models/TaskRun'
 import { MapFunction } from '@/services/Mapper'
@@ -27,7 +28,7 @@ export const mapTaskRunResponseToTaskRun: MapFunction<TaskRunResponse, TaskRun> 
     stateId: source.state_id,
     stateType: this.map('ServerStateType', source.state_type, 'StateType'),
     state: this.map('StateResponse', source.state, 'State'),
-    tags: source.tags,
+    tags: source.tags ? sortStringArray(source.tags) : null,
   })
 }
 

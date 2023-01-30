@@ -1,10 +1,11 @@
+import { sortStringArray } from '@prefecthq/prefect-design'
 import { WorkQueueFilterResponse } from '@/models/api/WorkQueueFilterResponse'
 import { WorkQueueFilter } from '@/models/WorkQueueFilter'
 import { MapFunction } from '@/services/Mapper'
 
 export const mapWorkQueueFilterResponseToWorkQueueFilter: MapFunction<WorkQueueFilterResponse, WorkQueueFilter> = function(source: WorkQueueFilterResponse): WorkQueueFilter {
   return new WorkQueueFilter({
-    tags: source.tags ?? [],
+    tags: sortStringArray(source.tags ?? []),
     deploymentIds: source.deployment_ids ?? [],
   })
 }

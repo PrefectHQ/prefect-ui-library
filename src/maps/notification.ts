@@ -1,3 +1,4 @@
+import { sortStringArray } from '@prefecthq/prefect-design'
 import { NotificationResponse } from '@/models/api/NotificationResponse'
 import { Notification } from '@/models/Notification'
 import { MapFunction } from '@/services/Mapper'
@@ -9,7 +10,7 @@ export const mapNotificationResponseToNotification: MapFunction<NotificationResp
     updated: this.map('string', source.updated, 'Date'),
     isActive: source.is_active,
     stateNames: source.state_names,
-    tags: source.tags,
+    tags: sortStringArray(source.tags),
     blockDocumentId: source.block_document_id,
   })
 }
