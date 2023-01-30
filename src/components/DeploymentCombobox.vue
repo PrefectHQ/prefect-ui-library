@@ -1,5 +1,6 @@
 <template>
-  <p-combobox v-model="internalValue" :options="options" :empty-message="emptyMessage">
+  {{ typeof selected }}
+  <p-combobox v-model="internalValue" v-bind="{ options, multiple, emptyMessage }">
     <template #combobox-options-empty>
       No deployments
     </template>
@@ -29,6 +30,7 @@
     selected: string | string[] | null | undefined,
     emptyMessage?: string,
     allowUnset?: boolean,
+    multiple?: boolean,
   }>()
 
   const emits = defineEmits<{

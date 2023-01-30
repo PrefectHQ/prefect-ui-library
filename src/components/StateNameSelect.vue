@@ -1,6 +1,6 @@
 <template>
   <div class="state-name-select">
-    <p-select v-model="internalValue" :options="options" :empty-message="emptyMessage">
+    <p-select v-model="internalValue" v-bind="{ options, multiple, emptyMessage }">
       <template #option="{ option }">
         <StateBadge :state="{ name: option.label, type: option.value as StateType }" />
       </template>
@@ -34,6 +34,7 @@
   const props = defineProps<{
     selected: string | string[] | null | undefined,
     emptyMessage?: string,
+    multiple?: boolean,
   }>()
 
   const emits = defineEmits<{

@@ -5,7 +5,7 @@
         <DateRangeInputWithFlowRunHistory v-model:start-date="filter.flowRuns.expectedStartTimeAfter" v-model:end-date="filter.flowRuns.nextExpectedStartTimeBefore" />
       </p-label>
       <p-label label="States">
-        <StateNameSelect v-model:selected="filter.flowRuns.state.name" empty-message="All run states" />
+        <StateNameSelect v-model:selected="filter.flowRuns.state.name" empty-message="All run states" multiple />
       </p-label>
     </div>
     <div class="flow-runs-filter-group__row">
@@ -13,7 +13,7 @@
         <FlowCombobox v-model:selected="filter.flows.id" empty-message="All flows" />
       </p-label>
       <p-label label="Deployments">
-        <DeploymentCombobox v-model:selected="filter.deployments.id" empty-message="All deployments" />
+        <DeploymentCombobox v-model:selected="filter.deployments.id" empty-message="All deployments" multiple />
       </p-label>
       <p-label label="Work Queues">
         <WorkQueueCombobox v-model:selected="filter.flowRuns.workQueueName" empty-message="All work queues" />

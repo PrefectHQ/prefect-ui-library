@@ -20,7 +20,7 @@
 
           <p-select v-model="filter.sort" :options="deploymentSortOptions" />
 
-          <p-tags-input v-model="filter.deployments.tags.name" empty-message="All tags" class="deployments-table__tags" />
+          <p-tags-input v-model="filter.deployments.tags.name" empty-message="All tags" class="deployments-table__tags" multiple />
         </div>
       </template>
 
