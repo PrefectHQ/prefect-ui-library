@@ -2,7 +2,7 @@
   <div class="flow-runs-filter-group">
     <div class="flow-runs-filter-group__row">
       <p-label :label="media.hover ? 'Date Range' : ''">
-        <DateRangeInputWithFlowRunHistory v-model:start-date="filter.flowRuns.expectedStartTimeAfter" v-model:end-date="filter.flowRuns.nextExpectedStartTimeBefore" />
+        <DateRangeInputWithFlowRunHistory v-model:start-date="filter.flowRuns.expectedStartTimeAfter" v-model:end-date="filter.flowRuns.expectedStartTimeBefore" />
       </p-label>
       <p-label label="States">
         <StateNameSelect v-model:selected="filter.flowRuns.state.name" empty-message="All run states" multiple />
@@ -10,16 +10,16 @@
     </div>
     <div class="flow-runs-filter-group__row">
       <p-label label="Flows">
-        <FlowCombobox v-model:selected="filter.flows.id" empty-message="All flows" />
+        <FlowCombobox v-model:selected="filter.flows.id" empty-message="All flows" multiple />
       </p-label>
       <p-label label="Deployments">
         <DeploymentCombobox v-model:selected="filter.deployments.id" empty-message="All deployments" multiple />
       </p-label>
       <p-label label="Work Queues">
-        <WorkQueueCombobox v-model:selected="filter.flowRuns.workQueueName" empty-message="All work queues" />
+        <WorkQueueCombobox v-model:selected="filter.flowRuns.workQueueName" empty-message="All work queues" multiple />
       </p-label>
       <p-label label="Tags">
-        <FlowRunTagCombobox v-model:selected="filter.flowRuns.tags.name" :filter="filter" empty-message="All tags" />
+        <FlowRunTagCombobox v-model:selected="filter.flowRuns.tags.name" :filter="filter" empty-message="All tags" multiple />
       </p-label>
     </div>
     <p-label class="flow-runs-filter-group__search" label="Search">

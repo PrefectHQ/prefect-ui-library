@@ -70,7 +70,7 @@ export function useTagFilter(defaultValue: MaybeReactive<TagFilter> = {}): UseFi
 
 const tagFilterSchema: RouteQueryParamsSchema<TagFilter> = {
   operator: OperatorRouteParam,
-  name: StringRouteParam,
+  name: [StringRouteParam],
   isNull: BooleanRouteParam,
 }
 
@@ -95,8 +95,8 @@ export function useStateFilter(defaultValue: MaybeReactive<StateFilter> = {}): U
 
 const stateFilterSchema: RouteQueryParamsSchema<StateFilter> = {
   operator: OperatorRouteParam,
-  type: StringRouteParam,
-  name: StringRouteParam,
+  type: [StringRouteParam],
+  name: [StringRouteParam],
 }
 
 export function useStateFilterFromRoute(defaultValue: MaybeReactive<StateFilter> = {}, prefix?: string): UseFilter<StateFilter> {
@@ -123,8 +123,8 @@ export function useFlowFilter(defaultValue: MaybeReactive<FlowFilter> = {}): Use
 
 const flowFilterSchema: RouteQueryParamsSchema<FlowFilter> = {
   operator: OperatorRouteParam,
-  id: StringRouteParam,
-  name: StringRouteParam,
+  id: [StringRouteParam],
+  name: [StringRouteParam],
   nameLike: StringRouteParam,
   tags: tagFilterSchema,
 }
@@ -173,19 +173,19 @@ export function useFlowRunFilter(defaultValue: MaybeReactive<FlowRunFilter> = {}
 
 const flowRunFilterSchema: RouteQueryParamsSchema<FlowRunFilter> = {
   operator: OperatorRouteParam,
-  id: StringRouteParam,
-  notId: StringRouteParam,
-  name: StringRouteParam,
+  id: [StringRouteParam],
+  notId: [StringRouteParam],
+  name: [StringRouteParam],
   nameLike: StringRouteParam,
   tags: tagFilterSchema,
   deploymentIdOperator: OperatorRouteParam,
-  deploymentId: StringRouteParam,
+  deploymentId: [StringRouteParam],
   deploymentIdNull: BooleanRouteParam,
   workQueueNameOperator: OperatorRouteParam,
-  workQueueName: StringRouteParam,
+  workQueueName: [StringRouteParam],
   workQueueNameIsNull: BooleanRouteParam,
   state: stateFilterSchema,
-  flowVersion: StringRouteParam,
+  flowVersion: [StringRouteParam],
   expectedStartTimeBefore: DateRouteParam,
   expectedStartTimeAfter: DateRouteParam,
   nextExpectedStartTimeBefore: DateRouteParam,
@@ -194,7 +194,7 @@ const flowRunFilterSchema: RouteQueryParamsSchema<FlowRunFilter> = {
   startTimeAfter: DateRouteParam,
   startTimeNull: BooleanRouteParam,
   parentTaskRunIdOperator: OperatorRouteParam,
-  parentTaskRunId: StringRouteParam,
+  parentTaskRunId: [StringRouteParam],
   parentTaskRunIdNull: BooleanRouteParam,
 }
 
@@ -228,8 +228,8 @@ export function useTaskRunFilter(defaultValue: MaybeReactive<TaskRunFilter> = {}
 
 const taskRunFilterSchema: RouteQueryParamsSchema<TaskRunFilter> = {
   operator: OperatorRouteParam,
-  id: StringRouteParam,
-  name: StringRouteParam,
+  id: [StringRouteParam],
+  name: [StringRouteParam],
   nameLike: StringRouteParam,
   tags: tagFilterSchema,
   state: stateFilterSchema,
@@ -265,11 +265,11 @@ export function useDeploymentFilter(defaultValue: MaybeReactive<DeploymentFilter
 
 const deploymentFilterSchema: RouteQueryParamsSchema<DeploymentFilter> = {
   operator: OperatorRouteParam,
-  id: StringRouteParam,
-  name: StringRouteParam,
+  id: [StringRouteParam],
+  name: [StringRouteParam],
   nameLike: StringRouteParam,
   isScheduleActive: BooleanRouteParam,
-  workQueueName: StringRouteParam,
+  workQueueName: [StringRouteParam],
   tags: tagFilterSchema,
 }
 
@@ -295,9 +295,9 @@ export function useWorkPoolFilter(defaultValue: MaybeReactive<WorkPoolFilter> = 
 
 const workPoolFilterSchema: RouteQueryParamsSchema<WorkPoolFilter> = {
   operator: OperatorRouteParam,
-  id: StringRouteParam,
-  name: StringRouteParam,
-  type: StringRouteParam,
+  id: [StringRouteParam],
+  name: [StringRouteParam],
+  type: [StringRouteParam],
 }
 
 export function useWorkPoolFilterFromRoute(defaultValue: MaybeReactive<WorkPoolFilter> = {}, prefix?: string): UseFilter<WorkPoolFilter> {
@@ -321,8 +321,8 @@ export function useWorkPoolQueueFilter(defaultValue: MaybeReactive<WorkPoolQueue
 
 const workPoolQueueFilterSchema: RouteQueryParamsSchema<WorkPoolQueueFilter> = {
   operator: OperatorRouteParam,
-  id: StringRouteParam,
-  name: StringRouteParam,
+  id: [StringRouteParam],
+  name: [StringRouteParam],
 }
 
 export function useWorkPoolQueueFilterFromRoute(defaultValue: MaybeReactive<WorkPoolQueueFilter> = {}, prefix?: string): UseFilter<WorkPoolQueueFilter> {
@@ -345,7 +345,7 @@ export function useBlockTypeFilter(defaultValue: MaybeReactive<BlockTypeFilter> 
 
 const blockTypeFilterSchema: RouteQueryParamsSchema<BlockTypeFilter> = {
   nameLike: StringRouteParam,
-  slug: StringRouteParam,
+  slug: [StringRouteParam],
 }
 
 export function useBlockTypeFilterFromRoute(defaultValue: MaybeReactive<BlockTypeFilter> = {}, prefix?: string): UseFilter<BlockTypeFilter> {
@@ -371,10 +371,10 @@ export function useBlockSchemaFilter(defaultValue: MaybeReactive<BlockSchemaFilt
 
 const blockSchemaFilterSchema: RouteQueryParamsSchema<BlockSchemaFilter> = {
   operator: OperatorRouteParam,
-  id: StringRouteParam,
-  blockTypeId: StringRouteParam,
-  blockCapabilities: StringRouteParam,
-  version: StringRouteParam,
+  id: [StringRouteParam],
+  blockTypeId: [StringRouteParam],
+  blockCapabilities: [StringRouteParam],
+  version: [StringRouteParam],
 }
 
 export function useBlockSchemaFilterFromRoute(defaultValue: MaybeReactive<BlockSchemaFilter> = {}, prefix?: string): UseFilter<BlockSchemaFilter> {
@@ -400,10 +400,10 @@ export function useBlockDocumentFilter(defaultValue: MaybeReactive<BlockDocument
 
 const blockDocumentFilterSchema: RouteQueryParamsSchema<BlockDocumentFilter> = {
   operator: OperatorRouteParam,
-  id: StringRouteParam,
+  id: [StringRouteParam],
   isAnonymous: BooleanRouteParam,
-  blockTypeId: StringRouteParam,
-  name: StringRouteParam,
+  blockTypeId: [StringRouteParam],
+  name: [StringRouteParam],
 }
 
 export function useBlockDocumentFilterFromRoute(defaultValue: MaybeReactive<BlockDocumentFilter> = {}, prefix?: string): UseFilter<BlockDocumentFilter> {
