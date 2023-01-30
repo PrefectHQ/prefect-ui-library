@@ -1,5 +1,4 @@
 <template>
-  {{ typeof selected }}
   <p-combobox v-model="internalValue" v-bind="{ options, multiple, emptyMessage }">
     <template #combobox-options-empty>
       No deployments
@@ -37,7 +36,7 @@
     (event: 'update:selected', value: string | string[] | null): void,
   }>()
 
-  const multiple = computed(() => Array.isArray(props.selected))
+  const multiple = computed(() => props.multiple === true || Array.isArray(props.selected))
 
   const internalValue = computed({
     get() {

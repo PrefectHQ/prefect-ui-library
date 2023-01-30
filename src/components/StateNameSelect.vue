@@ -41,6 +41,8 @@
     (event: 'update:selected', value: string | string[] | null): void,
   }>()
 
+  const multiple = computed(() => props.multiple === true || isArray(internalValue.value))
+
   const internalValue = computed({
     get() {
       return props.selected ?? null
@@ -55,8 +57,6 @@
       }
     },
   })
-
-  const multiple = computed(() => isArray(internalValue.value))
 
   const options = computed<SelectOption[]>(() => prefectStateNames.map((stateName) => {
     const { name, type } = mapStateNameToStateType(stateName)
