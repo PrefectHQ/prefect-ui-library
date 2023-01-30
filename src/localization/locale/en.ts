@@ -10,6 +10,7 @@ export const en = {
     concurrency: 'https://docs.prefect.io/concepts/tasks/?h=conc#task-run-concurrency-limits',
     automations: 'https://docs.prefect.io/ui/automations/',
     workPools: 'https://docs.prefect.io/ui/work-pools/',
+    collections: 'https://orion-docs.prefect.io/collections/catalog/',
   },
   error: {
     activateDeployment: 'Failed to activate deployment',
