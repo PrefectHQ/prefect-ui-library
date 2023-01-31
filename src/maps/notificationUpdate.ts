@@ -1,4 +1,3 @@
-/* eslint-disable camelcase */
 import { NotificationUpdateRequest } from '@/models/api/NotificationUpdateRequest'
 import { NotificationUpdate } from '@/models/NotificationUpdate'
 import { MapFunction } from '@/services/Mapper'

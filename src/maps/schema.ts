@@ -5,8 +5,7 @@ import { Schema, SchemaDefinitions, schemaHas, SchemaProperties, SchemaProperty 
 import { mapEntries } from '@/utilities'
 
 export const mapSchemaResponseToSchema: MapFunction<SchemaResponse, Schema> = function(source: SchemaResponse): Schema {
-  // eslint-disable-next-line camelcase, no-unused-vars
-  const { definitions, block_schema_references, properties, $ref, ...rest } = source
+  const { definitions, properties, $ref } = source
 
   const mapped: Schema = {
     secretFields: source.secret_fields,

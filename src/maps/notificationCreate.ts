@@ -1,5 +1,3 @@
-/* eslint-disable camelcase */
-
 import { NotificationCreateRequest } from '@/models/api/NotificationCreateRequest'
 import { NotificationCreate } from '@/models/NotificationCreate'
 import { MapFunction } from '@/services/Mapper'

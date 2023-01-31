@@ -1,9 +1,8 @@
-/* eslint-disable camelcase */
 import { BlockTypeFilterRequest } from '@/models/api/BlockTypeFilterRequest'
 import { BlockTypeFilter } from '@/models/BlockTypeFilter'
 import { MapFunction } from '@/services/Mapper'
 
-export const mapBlockTypeFilterToBlockTypeFilterRequest: MapFunction<BlockTypeFilter, BlockTypeFilterRequest> = function(source: BlockTypeFilter): BlockTypeFilterRequest {
+export const mapBlockTypeFilterToBlockTypeFilterRequest: MapFunction<BlockTypeFilter, BlockTypeFilterRequest> = function(source) {
   const filter: BlockTypeFilterRequest = {}
 
   if (source.limit) {
