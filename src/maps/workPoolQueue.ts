@@ -1,7 +1,7 @@
 import { WorkPoolQueue, WorkPoolQueueCreate, WorkPoolQueueCreateRequest, WorkPoolQueueEdit, WorkPoolQueueEditRequest, WorkPoolQueueResponse } from '@/models'
 import { MapFunction } from '@/services/Mapper'
 
-export const mapWorkPoolQueueResponseToWorkPoolQueue: MapFunction<WorkPoolQueueResponse, WorkPoolQueue> = function(source: WorkPoolQueueResponse): WorkPoolQueue {
+export const mapWorkPoolQueueResponseToWorkPoolQueue: MapFunction<WorkPoolQueueResponse, WorkPoolQueue> = function(source) {
   return new WorkPoolQueue({
     id: source.id,
     created: this.map('string', source.created, 'Date'),
@@ -15,36 +15,36 @@ export const mapWorkPoolQueueResponseToWorkPoolQueue: MapFunction<WorkPoolQueueR
   })
 }
 
-export const mapWorkPoolQueueToWorkPoolQueueResponse: MapFunction<WorkPoolQueue, WorkPoolQueueResponse> = function(source: WorkPoolQueue): WorkPoolQueueResponse {
+export const mapWorkPoolQueueToWorkPoolQueueResponse: MapFunction<WorkPoolQueue, WorkPoolQueueResponse> = function(source) {
   return {
-    'id': source.id,
-    'created': this.map('Date', source.created, 'string'),
-    'updated': this.map('Date', source.updated, 'string'),
-    'work_pool_id': source.workPoolId,
-    'name': source.name,
-    'description': source.description,
-    'is_paused': source.isPaused,
-    'concurrency_limit': source.concurrencyLimit,
-    'priority': source.priority,
+    id: source.id,
+    created: this.map('Date', source.created, 'string'),
+    updated: this.map('Date', source.updated, 'string'),
+    work_pool_id: source.workPoolId,
+    name: source.name,
+    description: source.description,
+    is_paused: source.isPaused,
+    concurrency_limit: source.concurrencyLimit,
+    priority: source.priority,
   }
 }
 
-export const mapWorkPoolQueueCreateToWorkPoolQueueCreateRequest: MapFunction<WorkPoolQueueCreate, WorkPoolQueueCreateRequest> = function(source: WorkPoolQueueCreate): WorkPoolQueueCreateRequest {
+export const mapWorkPoolQueueCreateToWorkPoolQueueCreateRequest: MapFunction<WorkPoolQueueCreate, WorkPoolQueueCreateRequest> = function(source) {
   return {
-    'name': source.name,
-    'description': source.description,
-    'is_paused': source.isPaused,
-    'concurrency_limit': source.concurrencyLimit,
-    'priority': source.priority,
+    name: source.name,
+    description: source.description,
+    is_paused: source.isPaused,
+    concurrency_limit: source.concurrencyLimit,
+    priority: source.priority,
   }
 }
 
-export const mapWorkPoolQueueEditToWorkPoolQueueEditRequest: MapFunction<WorkPoolQueueEdit, WorkPoolQueueEditRequest> = function(source: WorkPoolQueueEdit): WorkPoolQueueEditRequest {
+export const mapWorkPoolQueueEditToWorkPoolQueueEditRequest: MapFunction<WorkPoolQueueEdit, WorkPoolQueueEditRequest> = function(source) {
   return {
-    'name': source.name,
-    'description': source.description,
-    'is_paused': source.isPaused,
-    'concurrency_limit': source.concurrencyLimit,
-    'priority': source.priority,
+    name: source.name,
+    description: source.description,
+    is_paused: source.isPaused,
+    concurrency_limit: source.concurrencyLimit,
+    priority: source.priority,
   }
 }

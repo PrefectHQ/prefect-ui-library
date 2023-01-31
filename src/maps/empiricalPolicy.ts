@@ -14,10 +14,10 @@ export const mapEmpiricalPolicyResponseToEmpiricalPolicy: MapFunction<EmpiricalP
 
 export const mapEmpiricalPolicyToEmpiricalPolicyResponse: MapFunction<EmpiricalPolicy, EmpiricalPolicyResponse> = function(source) {
   return {
-    'retries': source.retries,
-    'retry_delay': source.retryDelay,
-    'max_retries': source.maxRetries,
-    'retry_delay_seconds': source.retryDelaySeconds,
+    retries: source.retries,
+    retry_delay: source.retryDelay,
+    max_retries: source.maxRetries,
+    retry_delay_seconds: source.retryDelaySeconds,
   }
 }
 
