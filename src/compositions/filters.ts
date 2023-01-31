@@ -31,18 +31,18 @@ export type UseFilter<T extends AnyRecord> = {
   filter: Filter<T>,
 } & FilterFunctions<T>
 
-function withFilterFunctions<T extends AnyRecord>(filter: Filter<T>): UseFilter<T> {
-  const defaultValue: T = JSON.parse(JSON.stringify(filter))
+function withFilterFunctions<T extends AnyRecord>(filter: Filter<T>, defaultValue?: T): UseFilter<T> {
+  const defaultValueCopy: T = JSON.parse(JSON.stringify(defaultValue ?? filter))
 
   const clear = (): void => {
-    merge(filter as T, defaultValue)
+    merge(filter as T, defaultValueCopy)
   }
 
   const set = (newFilters: T): void => {
     merge(filter as T, newFilters)
   }
 
-  const isDefaultFilter = computed(() => JSON.stringify(filter) === JSON.stringify(defaultValue))
+  const isDefaultFilter = computed(() => JSON.stringify(filter) === JSON.stringify(defaultValueCopy))
   const isCustomFilter = computed(() => !isDefaultFilter.value)
 
   return {
@@ -65,12 +65,12 @@ function useFilterFromRoute<T extends AnyRecord>(schema: RouteQueryParamsSchema<
   const params = useRouteQueryParams(schema, defaultValueReactive, prefix)
   const filter = reactive(params) as Filter<T>
 
-  watch(defaultValueReactive, value => {
-    merge(filter, value as Filter<T>)
-  }, { deep: true })
+  // watch(defaultValueReactive, value => {
+  //   merge(filter, value as Filter<T>)
+  // }, { deep: true })
 
 
-  return withFilterFunctions(filter)
+  return withFilterFunctions(filter, defaultValueReactive)
 }
 
 export function useTagFilter(defaultValue: MaybeReactive<TagFilter> = {}): UseFilter<TagFilter> {
