@@ -1,7 +1,7 @@
 import { CronSchedule, IntervalSchedule, RRuleSchedule, Schedule, ScheduleRequest, ScheduleResponse, isCronScheduleResponse, isIntervalScheduleResponse, isRRuleScheduleResponse, isIntervalSchedule, isRRuleSchedule, isCronSchedule, IntervalScheduleRequest, RRuleScheduleRequest, CronScheduleRequest } from '@/models'
 import { MapFunction } from '@/services/Mapper'
 
-export const mapScheduleResponseToSchedule: MapFunction<ScheduleResponse, Schedule> = function(source: ScheduleResponse): Schedule {
+export const mapScheduleResponseToSchedule: MapFunction<ScheduleResponse, Schedule> = function(source) {
   if (isRRuleScheduleResponse(source)) {
     return new RRuleSchedule({
       timezone: source.timezone,
@@ -28,7 +28,7 @@ export const mapScheduleResponseToSchedule: MapFunction<ScheduleResponse, Schedu
   throw 'Invalid ScheduleResponse'
 }
 
-export const mapScheduleToScheduleRequest: MapFunction<Schedule, ScheduleResponse> = function(source: Schedule): ScheduleRequest {
+export const mapScheduleToScheduleRequest: MapFunction<Schedule, ScheduleResponse> = function(source) {
   if (isRRuleSchedule(source)) {
     return {
       timezone: source.timezone,
@@ -55,7 +55,7 @@ export const mapScheduleToScheduleRequest: MapFunction<Schedule, ScheduleRespons
   throw 'Invalid ScheduleRequest'
 }
 
-export const mapScheduleToScheduleResponse: MapFunction<Schedule, ScheduleResponse> = function(source: Schedule): ScheduleResponse {
+export const mapScheduleToScheduleResponse: MapFunction<Schedule, ScheduleResponse> = function(source) {
   return {
     timezone: source.timezone,
     // eslint-disable-next-line no-extra-parens

@@ -2,7 +2,7 @@ import { DivergingBarChartData, DivergingBarChartItem } from '@prefecthq/vue-cha
 import { RunHistory } from '@/models/RunHistory'
 import { MapFunction } from '@/services/Mapper'
 
-export const mapRunHistoryToDivergingBarChartItem: MapFunction<RunHistory, DivergingBarChartItem> = function(source: RunHistory): DivergingBarChartItem {
+export const mapRunHistoryToDivergingBarChartItem: MapFunction<RunHistory, DivergingBarChartItem> = function(source) {
   return {
     intervalStart: source.intervalStart,
     intervalEnd: source.intervalEnd,

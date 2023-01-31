@@ -3,7 +3,7 @@ import { DeploymentResponse } from '@/models/api/DeploymentResponse'
 import { Deployment } from '@/models/Deployment'
 import { MapFunction } from '@/services/Mapper'
 
-export const mapDeploymentResponseToDeployment: MapFunction<DeploymentResponse, Deployment> = function(source: DeploymentResponse): Deployment {
+export const mapDeploymentResponseToDeployment: MapFunction<DeploymentResponse, Deployment> = function(source) {
   const schema = this.map('SchemaResponse', source.parameter_openapi_schema ?? {}, 'Schema')
   const values = this.map('SchemaValuesResponse', { values: source.parameters, schema }, 'SchemaValues')
 

@@ -1,7 +1,7 @@
 import { WorkerScheduledFlowRun, WorkerScheduledFlowRunResponse, WorkerScheduledFlowRuns, WorkerScheduledFlowRunsRequest } from '@/models'
 import { MapFunction } from '@/services'
 
-export const mapWorkerScheduledFlowRunResponseToWorkerScheduledFlowRun: MapFunction<WorkerScheduledFlowRunResponse, WorkerScheduledFlowRun> = function(source: WorkerScheduledFlowRunResponse): WorkerScheduledFlowRun {
+export const mapWorkerScheduledFlowRunResponseToWorkerScheduledFlowRun: MapFunction<WorkerScheduledFlowRunResponse, WorkerScheduledFlowRun> = function(source) {
   return {
     workPoolId: source.work_pool_id,
     workPoolQueueId: source.work_pool_queue_id,
@@ -9,7 +9,7 @@ export const mapWorkerScheduledFlowRunResponseToWorkerScheduledFlowRun: MapFunct
   }
 }
 
-export const mapWorkerScheduledFlowRunsToWorkerScheduledFlowRunsRequest: MapFunction<WorkerScheduledFlowRuns, WorkerScheduledFlowRunsRequest> = function(source: WorkerScheduledFlowRuns): WorkerScheduledFlowRunsRequest {
+export const mapWorkerScheduledFlowRunsToWorkerScheduledFlowRunsRequest: MapFunction<WorkerScheduledFlowRuns, WorkerScheduledFlowRunsRequest> = function(source) {
   return {
     work_pool_queue_names: source.workPoolQueueNames,
     scheduled_before: source.scheduledBefore,

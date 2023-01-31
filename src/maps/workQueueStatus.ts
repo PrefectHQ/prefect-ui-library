@@ -1,7 +1,7 @@
 import { WorkQueueStatus, WorkQueueStatusResponse } from '@/models'
 import { MapFunction } from '@/services/Mapper'
 
-export const mapWorkQueueStatusResponseToWorkQueueStatus: MapFunction<WorkQueueStatusResponse, WorkQueueStatus> = function(source: WorkQueueStatusResponse): WorkQueueStatus {
+export const mapWorkQueueStatusResponseToWorkQueueStatus: MapFunction<WorkQueueStatusResponse, WorkQueueStatus> = function(source) {
   return new WorkQueueStatus({
     healthy: source.healthy,
     lateRunsCount: source.late_runs_count,

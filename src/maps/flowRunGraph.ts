@@ -2,7 +2,7 @@ import { FlowRunGraphResponse } from '@/models/api/FlowRunGraphResponse'
 import { GraphNode } from '@/models/GraphNode'
 import { MapFunction } from '@/services/Mapper'
 
-export const mapFlowRunGraphResponseToGraphNode: MapFunction<FlowRunGraphResponse, GraphNode> = function(source: FlowRunGraphResponse): GraphNode {
+export const mapFlowRunGraphResponseToGraphNode: MapFunction<FlowRunGraphResponse, GraphNode> = function(source) {
   return new GraphNode({
     id: source.id,
     expectedStartTime: this.map('string', source.expected_start_time, 'Date'),
@@ -20,7 +20,7 @@ export const mapFlowRunGraphResponseToGraphNode: MapFunction<FlowRunGraphRespons
   })
 }
 
-export const mapGraphNodeToFlowRunGraphResponse: MapFunction<GraphNode, FlowRunGraphResponse> = function(source: GraphNode): FlowRunGraphResponse {
+export const mapGraphNodeToFlowRunGraphResponse: MapFunction<GraphNode, FlowRunGraphResponse> = function(source) {
   return {
     id: source.id,
     expected_start_time: this.map('Date', source.expectedStartTime, 'string'),

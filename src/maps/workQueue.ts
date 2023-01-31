@@ -1,7 +1,7 @@
 import { WorkQueueCreateRequest, WorkQueueEditRequest, WorkQueueCreate, WorkQueueEdit, WorkQueue, WorkQueueResponse } from '@/models'
 import { MapFunction } from '@/services/Mapper'
 
-export const mapWorkQueueResponseToWorkQueue: MapFunction<WorkQueueResponse, WorkQueue> = function(source: WorkQueueResponse): WorkQueue {
+export const mapWorkQueueResponseToWorkQueue: MapFunction<WorkQueueResponse, WorkQueue> = function(source) {
   return new WorkQueue({
     id: source.id,
     created: this.map('string', source.created, 'Date'),
@@ -14,7 +14,7 @@ export const mapWorkQueueResponseToWorkQueue: MapFunction<WorkQueueResponse, Wor
   })
 }
 
-export const mapWorkQueueToWorkQueueResponse: MapFunction<WorkQueue, WorkQueueResponse> = function(source: WorkQueue): WorkQueueResponse {
+export const mapWorkQueueToWorkQueueResponse: MapFunction<WorkQueue, WorkQueueResponse> = function(source) {
   return {
     id: source.id,
     created: this.map('Date', source.created, 'string'),
@@ -27,7 +27,7 @@ export const mapWorkQueueToWorkQueueResponse: MapFunction<WorkQueue, WorkQueueRe
   }
 }
 
-export const mapWorkQueueCreateToWorkQueueCreateRequest: MapFunction<WorkQueueCreate, WorkQueueCreateRequest> = function(source: WorkQueueCreate): WorkQueueCreateRequest {
+export const mapWorkQueueCreateToWorkQueueCreateRequest: MapFunction<WorkQueueCreate, WorkQueueCreateRequest> = function(source) {
   return {
     name: source.name,
     description: source.description,
@@ -36,7 +36,7 @@ export const mapWorkQueueCreateToWorkQueueCreateRequest: MapFunction<WorkQueueCr
   }
 }
 
-export const mapWorkQueueEditToWorkQueueEditRequest: MapFunction<WorkQueueEdit, WorkQueueEditRequest> = function(source: WorkQueueEdit): WorkQueueEditRequest {
+export const mapWorkQueueEditToWorkQueueEditRequest: MapFunction<WorkQueueEdit, WorkQueueEditRequest> = function(source) {
   return {
     description: source.description,
     is_paused: source.isPaused,
