@@ -23,7 +23,8 @@ export type Filter<T extends AnyRecord> = {
 export type FilterFunctions<T extends AnyRecord> = {
   clear: () => void,
   set: (filters: T) => void,
-  isDefault: ComputedRef<boolean>,
+  isDefaultFilter: ComputedRef<boolean>,
+  isCustomFilter: ComputedRef<boolean>,
 }
 
 export type UseFilter<T extends AnyRecord> = {
@@ -41,13 +42,15 @@ function withExtras<T extends AnyRecord>(filter: Filter<T>): UseFilter<T> {
     merge(filter as T, newFilters)
   }
 
-  const isDefault = computed(() => JSON.stringify(filter) === JSON.stringify(defaultValue))
+  const isDefaultFilter = computed(() => JSON.stringify(filter) === JSON.stringify(defaultValue))
+  const isCustomFilter = computed(() => !isDefaultFilter.value)
 
   return {
     filter,
     clear,
     set,
-    isDefault,
+    isDefaultFilter,
+    isCustomFilter,
   }
 }
 
