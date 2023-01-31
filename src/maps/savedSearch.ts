@@ -5,7 +5,7 @@ import { asArray, mapStateTypeOrNameToStateName } from '@/utilities'
 import { formatDateTimeNumeric } from '@/utilities/dates'
 import { dateFunctions } from '@/utilities/timezone'
 
-export const mapSavedSearchResponseToSavedSearch: MapFunction<SavedSearchResponse, SavedSearch> = function(source: SavedSearchResponse): SavedSearch {
+export const mapSavedSearchResponseToSavedSearch: MapFunction<SavedSearchResponse, SavedSearch> = function(source) {
   return new SavedSearch({
     id: source.id,
     name: source.name,

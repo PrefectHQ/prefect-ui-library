@@ -7,6 +7,6 @@ type MapSchemaValuesSource = {
   schema: Schema,
 }
 
-export const mapSchemaValuesToSchemaValuesRequest: MapFunction<MapSchemaValuesSource, SchemaValues> = function(source: MapSchemaValuesSource): SchemaValues {
+export const mapSchemaValuesToSchemaValuesRequest: MapFunction<MapSchemaValuesSource, SchemaValues> = function(source) {
   return getSchemaRequestValue(source.schema, source.values)
 }
