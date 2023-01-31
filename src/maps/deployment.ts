@@ -1,4 +1,4 @@
-import { DeploymentFlowRunCreate, DeploymentFlowRunRequest, DeploymentUpdate, DeploymentUpdateRequest } from '@/models'
+import { DeploymentFlowRunCreate, DeploymentFlowRunRequest, DeploymentUpdate, DeploymentUpdateRequest, EmpiricalPolicy, StateCreate } from '@/models'
 import { DeploymentResponse } from '@/models/api/DeploymentResponse'
 import { Deployment } from '@/models/Deployment'
 import { MapFunction } from '@/services/Mapper'
@@ -53,6 +53,7 @@ export const mapDeploymentFlowRunCreateToDeploymentFlowRunRequest: MapFunction<D
     parent_task_run_id: source.parentTaskRunId,
     infrastructure_document_id: source.infrastructureDocumentId,
     state: this.map('StateCreate', source.state, 'StateRequest'),
+    empirical_policy: this.map('EmpiricalPolicy', source.empiricalPolicy, 'EmpiricalPolicyRequest'),
   }
 }
 
