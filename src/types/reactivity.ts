@@ -3,7 +3,7 @@ import { AnyArray, AnyRecord } from '@/types/any'
 
 export type MaybeRef<T> = Ref<T> | T
 
-export type MaybeReactive<T extends object> = {
+export type MaybeReactive<T extends object> = T | {
   [P in keyof T]: [T[P]] extends [object | undefined]
     ? [T[P]] extends [AnyRecord | undefined]
       ? MaybeRef<Exclude<T[P], undefined>> | MaybeReactive<Exclude<T[P], undefined>>
