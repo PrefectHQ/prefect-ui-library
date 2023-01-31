@@ -79,7 +79,7 @@ function useSortableFilterFromRoute<T extends AnySortableRecord>(
   const params = useRouteQueryParams(schema, defaultValueReactive, prefix)
   const filter = reactive(params) as Filter<T>
 
-  return withFilterFunctions(filter, { ...defaultValueReactive, sort: undefined })
+  return withFilterFunctions(filter, { ...defaultValueReactive })
 }
 
 export function useTagFilter(defaultValue: MaybeReactive<TagFilter> = {}): UseFilter<TagFilter> {
