@@ -2,14 +2,14 @@ import { SchemaDefinitionsResponse, SchemaPropertiesResponse, SchemaPropertyResp
 import { MapFunction } from '@/services/Mapper'
 import { resolveSchema } from '@/services/schemas/resolvers/schemas'
 import { Schema, SchemaDefinitions, schemaHas, SchemaProperties, SchemaProperty } from '@/types/schemas'
-import { mapEntries, mapSnakeToCamelCase } from '@/utilities'
+import { mapEntries } from '@/utilities'
 
 export const mapSchemaResponseToSchema: MapFunction<SchemaResponse, Schema> = function(source: SchemaResponse): Schema {
   // eslint-disable-next-line camelcase, no-unused-vars
   const { definitions, block_schema_references, properties, $ref, ...rest } = source
 
   const mapped: Schema = {
-    ...mapSnakeToCamelCase({ ...rest }),
+    secretFields: source.secret_fields,
     properties: this.map('SchemaPropertiesResponse', properties, 'SchemaProperties'),
     definitions: this.map('SchemaDefinitionsResponse', definitions, 'SchemaDefinitions'),
     // todo: this map isn't working (ts error). Not using this anywhere so commenting it out for now
@@ -34,7 +34,10 @@ export const mapSchemaPropertiesResponseToSchemaProperties: MapFunction<SchemaPr
 export const mapSchemaPropertyResponseToSchemaProperty: MapFunction<SchemaPropertyResponse, SchemaProperty> = function(source: SchemaPropertyResponse): SchemaProperty {
   const { properties, $ref, ...rest } = source
 
-  const mapped: SchemaProperty = mapSnakeToCamelCase({ ...rest })
+  const mapped: SchemaProperty = {
+    blockTypeSlug: source.block_type_slug,
+    ...rest,
+  }
 
   // its important that if mapped.properties doesn't exist at all that we don't add it as undefined
   if (schemaHas(source, 'properties')) {

@@ -1,12 +1,11 @@
-/* eslint-disable camelcase */
 import { BlockSchemaFilterRequest } from '@/models/api/BlockSchemaFilterRequest'
 import { BlockSchemaFilter } from '@/models/BlockSchemaFilter'
 import { MapFunction } from '@/services/Mapper'
-import { mapCamelToSnakeCase } from '@/utilities/mapping'
 
-export const mapBlockSchemaFilterToBlockSchemaFilterRequest: MapFunction<BlockSchemaFilter, BlockSchemaFilterRequest> = function(source: BlockSchemaFilter): BlockSchemaFilterRequest {
+export const mapBlockSchemaFilterToBlockSchemaFilterRequest: MapFunction<BlockSchemaFilter, BlockSchemaFilterRequest> = function(source) {
   return {
-    ...mapCamelToSnakeCase(source),
-    block_schemas: source.blockSchemas ? mapCamelToSnakeCase(source.blockSchemas) : undefined,
+    'offset': source.offset,
+    'limit': source.limit,
+    'block_schemas': source.blockSchemas ? { 'block_type_id': source.blockSchemas.blockTypeId } : undefined,
   }
 }
