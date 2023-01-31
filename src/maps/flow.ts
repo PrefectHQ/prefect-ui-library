@@ -2,7 +2,7 @@ import { FlowResponse } from '@/models/api/FlowResponse'
 import { Flow } from '@/models/Flow'
 import { MapFunction } from '@/services/Mapper'
 
-export const mapFlowResponseToFlow: MapFunction<FlowResponse, Flow> = function(source: FlowResponse): Flow {
+export const mapFlowResponseToFlow: MapFunction<FlowResponse, Flow> = function(source) {
   return new Flow({
     id: source.id,
     name: source.name,
@@ -12,7 +12,7 @@ export const mapFlowResponseToFlow: MapFunction<FlowResponse, Flow> = function(s
   })
 }
 
-export const mapFlowToFlowResponse: MapFunction<Flow, FlowResponse> = function(source: Flow): FlowResponse {
+export const mapFlowToFlowResponse: MapFunction<Flow, FlowResponse> = function(source) {
   return {
     id: source.id,
     name: source.name,

@@ -2,7 +2,7 @@ import { isConstantTaskInputResponse, isParameterTaskInputResponse, isTaskRunTas
 import { ConstantTaskInput, ParameterTaskInput, TaskInput, TaskRunTaskInput } from '@/models/TaskInput'
 import { MapFunction } from '@/services/Mapper'
 
-export const mapTaskInputResponseToTaskInput: MapFunction<TaskInputResponse, TaskInput> = function(source: TaskInputResponse): TaskInput {
+export const mapTaskInputResponseToTaskInput: MapFunction<TaskInputResponse, TaskInput> = function(source) {
   if (isConstantTaskInputResponse(source)) {
     return new ConstantTaskInput({
       inputType: source.input_type,
@@ -27,7 +27,7 @@ export const mapTaskInputResponseToTaskInput: MapFunction<TaskInputResponse, Tas
   throw 'Invalid TaskInputResponse'
 }
 
-export const mapTaskInputToTaskInputResponse: MapFunction<TaskInput, TaskInputResponse> = function(source: TaskInput): TaskInputResponse {
+export const mapTaskInputToTaskInputResponse: MapFunction<TaskInput, TaskInputResponse> = function(source) {
   return {
     input_type: source.inputType,
     // eslint-disable-next-line no-extra-parens

@@ -2,7 +2,7 @@ import { FlowRunResponse } from '@/models/api/FlowRunResponse'
 import { FlowRun } from '@/models/FlowRun'
 import { MapFunction } from '@/services/Mapper'
 
-export const mapFlowRunResponseToFlowRun: MapFunction<FlowRunResponse, FlowRun> = function(source: FlowRunResponse): FlowRun {
+export const mapFlowRunResponseToFlowRun: MapFunction<FlowRunResponse, FlowRun> = function(source) {
   return new FlowRun({
     id: source.id,
     deploymentId: source.deployment_id,

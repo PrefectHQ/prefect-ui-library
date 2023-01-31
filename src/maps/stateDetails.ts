@@ -4,7 +4,7 @@ import { StateDetailsResponse } from '@/models/api/StateDetailsResponse'
 import { StateDetails } from '@/models/StateDetails'
 import { MapFunction } from '@/services/Mapper'
 
-export const mapStateDetailsResponseToStateDetails: MapFunction<StateDetailsResponse, StateDetails> = function(source: StateDetailsResponse): StateDetails {
+export const mapStateDetailsResponseToStateDetails: MapFunction<StateDetailsResponse, StateDetails> = function(source) {
   return {
     flowRunId: source.flow_run_id,
     taskRunId: source.task_run_id,
@@ -17,7 +17,7 @@ export const mapStateDetailsResponseToStateDetails: MapFunction<StateDetailsResp
   }
 }
 
-export const mapStateDetailsToStateDetailsResponse: MapFunction<StateDetails, StateDetailsResponse> = function(source: StateDetails): StateDetailsResponse {
+export const mapStateDetailsToStateDetailsResponse: MapFunction<StateDetails, StateDetailsResponse> = function(source) {
   return {
     flow_run_id: source.flowRunId,
     task_run_id: source.taskRunId,
@@ -30,7 +30,7 @@ export const mapStateDetailsToStateDetailsResponse: MapFunction<StateDetails, St
   }
 }
 
-export const mapStateDetailsCreateToStateDetailsRequest: MapFunction<StateDetailsCreate, StateDetailsRequest> = function(source: StateDetailsCreate): StateDetailsRequest {
+export const mapStateDetailsCreateToStateDetailsRequest: MapFunction<StateDetailsCreate, StateDetailsRequest> = function(source) {
   return {
     flow_run_id: source.flowRunId,
     task_run_id: source.taskRunId,
@@ -41,7 +41,7 @@ export const mapStateDetailsCreateToStateDetailsRequest: MapFunction<StateDetail
   }
 }
 
-export const mapStateDetailsToStateDetailsRequest: MapFunction<StateDetails, StateDetailsRequest> = function(source: StateDetails): StateDetailsRequest {
+export const mapStateDetailsToStateDetailsRequest: MapFunction<StateDetails, StateDetailsRequest> = function(source) {
   return {
     flow_run_id: source.flowRunId,
     task_run_id: source.taskRunId,

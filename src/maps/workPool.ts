@@ -1,7 +1,7 @@
 import { WorkPool, WorkPoolCreateRequest, WorkPoolEdit, WorkPoolEditRequest, WorkPoolResponse, WorkPoolCreate } from '@/models'
 import { MapFunction } from '@/services/Mapper'
 
-export const mapWorkPoolResponseToWorkPool: MapFunction<WorkPoolResponse, WorkPool> = function(source: WorkPoolResponse): WorkPool {
+export const mapWorkPoolResponseToWorkPool: MapFunction<WorkPoolResponse, WorkPool> = function(source) {
   return new WorkPool({
     id: source.id,
     created: this.map('string', source.created, 'Date'),
@@ -15,7 +15,7 @@ export const mapWorkPoolResponseToWorkPool: MapFunction<WorkPoolResponse, WorkPo
   })
 }
 
-export const mapWorkPoolToWorkPoolResponse: MapFunction<WorkPool, WorkPoolResponse> = function(source: WorkPool): WorkPoolResponse {
+export const mapWorkPoolToWorkPoolResponse: MapFunction<WorkPool, WorkPoolResponse> = function(source) {
   return {
     id: source.id,
     created: this.map('Date', source.created, 'string'),
@@ -29,7 +29,7 @@ export const mapWorkPoolToWorkPoolResponse: MapFunction<WorkPool, WorkPoolRespon
   }
 }
 
-export const mapWorkPoolCreateToWorkPoolCreateRequest: MapFunction<WorkPoolCreate, WorkPoolCreateRequest> = function(source: WorkPoolCreate): WorkPoolCreateRequest {
+export const mapWorkPoolCreateToWorkPoolCreateRequest: MapFunction<WorkPoolCreate, WorkPoolCreateRequest> = function(source) {
   return {
     name: source.name,
     description: source.description,
@@ -39,7 +39,7 @@ export const mapWorkPoolCreateToWorkPoolCreateRequest: MapFunction<WorkPoolCreat
   }
 }
 
-export const mapWorkPoolEditToWorkPoolEditRequest: MapFunction<WorkPoolEdit, WorkPoolEditRequest> = function(source: WorkPoolEdit): WorkPoolEditRequest {
+export const mapWorkPoolEditToWorkPoolEditRequest: MapFunction<WorkPoolEdit, WorkPoolEditRequest> = function(source) {
   return {
     description: source.description,
     is_paused: source.isPaused,

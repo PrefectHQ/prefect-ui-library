@@ -2,7 +2,7 @@ import { NotificationResponse } from '@/models/api/NotificationResponse'
 import { Notification } from '@/models/Notification'
 import { MapFunction } from '@/services/Mapper'
 
-export const mapNotificationResponseToNotification: MapFunction<NotificationResponse, Notification> = function(source: NotificationResponse): Notification {
+export const mapNotificationResponseToNotification: MapFunction<NotificationResponse, Notification> = function(source) {
   return new Notification({
     id: source.id,
     created: this.map('string', source.created, 'Date'),

@@ -2,7 +2,7 @@ import { NotificationUpdateRequest } from '@/models/api/NotificationUpdateReques
 import { NotificationUpdate } from '@/models/NotificationUpdate'
 import { MapFunction } from '@/services/Mapper'
 
-export const mapNotificationUpdateToNotificationUpdateRequest: MapFunction<NotificationUpdate, NotificationUpdateRequest> = function(source: NotificationUpdate): NotificationUpdateRequest {
+export const mapNotificationUpdateToNotificationUpdateRequest: MapFunction<NotificationUpdate, NotificationUpdateRequest> = function(source) {
   return {
     state_names: source.stateNames,
     tags: source.tags,

@@ -10,7 +10,7 @@ type MapSchemaValuesSource = {
   references?: BlockDocumentReferencesResponse,
 }
 
-export const mapSchemaValuesResponseToSchemaValues: MapFunction<MapSchemaValuesSource, SchemaValues> = function(source: MapSchemaValuesSource): SchemaValues {
+export const mapSchemaValuesResponseToSchemaValues: MapFunction<MapSchemaValuesSource, SchemaValues> = function(source) {
   let resolved: SchemaValues = source.values
 
   if (source.references) {

@@ -2,7 +2,7 @@ import { TaskRunResponse } from '@/models/api/TaskRunResponse'
 import { TaskRun } from '@/models/TaskRun'
 import { MapFunction } from '@/services/Mapper'
 
-export const mapTaskRunResponseToTaskRun: MapFunction<TaskRunResponse, TaskRun> = function(source: TaskRunResponse): TaskRun {
+export const mapTaskRunResponseToTaskRun: MapFunction<TaskRunResponse, TaskRun> = function(source) {
   return new TaskRun({
     id: source.id,
     flowRunId: source.flow_run_id,
@@ -31,7 +31,7 @@ export const mapTaskRunResponseToTaskRun: MapFunction<TaskRunResponse, TaskRun> 
   })
 }
 
-export const mapTaskRunToTaskRunResponse: MapFunction<TaskRun, TaskRunResponse> = function(source: TaskRun): TaskRunResponse {
+export const mapTaskRunToTaskRunResponse: MapFunction<TaskRun, TaskRunResponse> = function(source) {
   return {
     id: source.id,
     flow_run_id: source.flowRunId,

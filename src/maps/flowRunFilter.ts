@@ -6,7 +6,7 @@ import { asArray } from '@/utilities/arrays'
 import { parseDateTimeNumeric } from '@/utilities/dates'
 import { isString } from '@/utilities/strings'
 
-export const mapSavedSearchFilterToFlowRunFilters: MapFunction<SavedSearchFilter, FlowRunFilters> = function(source: SavedSearchFilter): FlowRunFilters {
+export const mapSavedSearchFilterToFlowRunFilters: MapFunction<SavedSearchFilter, FlowRunFilters> = function(source) {
   return {
     flow: source.flow ? asArray(source.flow) : undefined,
     deployment: source.deployment ? asArray(source.deployment) : undefined,

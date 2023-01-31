@@ -2,7 +2,7 @@ import { NotificationCreateRequest } from '@/models/api/NotificationCreateReques
 import { NotificationCreate } from '@/models/NotificationCreate'
 import { MapFunction } from '@/services/Mapper'
 
-export const mapNotificationCreateToNotificationCreateRequest: MapFunction<NotificationCreate, NotificationCreateRequest> = function(source: NotificationCreate): NotificationCreateRequest {
+export const mapNotificationCreateToNotificationCreateRequest: MapFunction<NotificationCreate, NotificationCreateRequest> = function(source) {
   return {
     state_names: source.stateNames ?? [],
     tags: source.tags ?? [],
