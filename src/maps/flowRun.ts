@@ -1,3 +1,4 @@
+import { sortStringArray } from '@prefecthq/prefect-design'
 import { FlowRunResponse } from '@/models/api/FlowRunResponse'
 import { FlowRun } from '@/models/FlowRun'
 import { MapFunction } from '@/services/Mapper'
@@ -27,7 +28,7 @@ export const mapFlowRunResponseToFlowRun: MapFunction<FlowRunResponse, FlowRun> 
     stateName: source.state_name,
     stateType: this.map('ServerStateType', source.state_type, 'StateType'),
     state: this.map('StateResponse', source.state, 'State'),
-    tags: source.tags,
+    tags: source.tags ? sortStringArray(source.tags) : null,
     runCount: source.run_count,
     created: this.map('string', source.created, 'Date'),
     createdBy: this.map('CreatedOrUpdatedByResponse', source.created_by, 'CreatedOrUpdatedBy'),

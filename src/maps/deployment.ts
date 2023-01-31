@@ -1,4 +1,5 @@
-import { DeploymentFlowRunCreate, DeploymentFlowRunRequest, DeploymentUpdate, DeploymentUpdateRequest, EmpiricalPolicy, StateCreate } from '@/models'
+import { sortStringArray } from '@prefecthq/prefect-design'
+import { DeploymentFlowRunCreate, DeploymentFlowRunRequest, DeploymentUpdate, DeploymentUpdateRequest } from '@/models'
 import { DeploymentResponse } from '@/models/api/DeploymentResponse'
 import { Deployment } from '@/models/Deployment'
 import { MapFunction } from '@/services/Mapper'
@@ -20,7 +21,7 @@ export const mapDeploymentResponseToDeployment: MapFunction<DeploymentResponse, 
     schedule: this.map('ScheduleResponse', source.schedule, 'Schedule'),
     isScheduleActive: source.is_schedule_active,
     parameters: values,
-    tags: source.tags,
+    tags: source.tags ? sortStringArray(source.tags) : null,
     manifestPath: source.manifest_path,
     path: source.path,
     entrypoint: source.entrypoint,
