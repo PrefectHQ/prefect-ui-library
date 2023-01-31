@@ -31,19 +31,18 @@ export type UseFilter<T extends AnyRecord> = {
   filter: Filter<T>,
 } & FilterFunctions<T>
 
-function withFilterFunctions<T extends AnyRecord>(filter: Filter<T>, defaultValue?: T): UseFilter<T> {
-  const defaultValueCopy: T = JSON.parse(JSON.stringify(defaultValue ?? filter))
+function withFilterFunctions<T extends AnyRecord>(filter: Filter<T>): UseFilter<T> {
+  const defaultValue: T = JSON.parse(JSON.stringify(filter))
 
   const clear = (): void => {
-    Object.assign(filter, defaultValueCopy)
-    console.log('here', filter, defaultValueCopy)
+    merge(filter as T, defaultValue)
   }
 
   const set = (newFilters: T): void => {
     merge(filter as T, newFilters)
   }
 
-  const isDefaultFilter = computed(() => JSON.stringify(filter) === JSON.stringify(defaultValueCopy))
+  const isDefaultFilter = computed(() => JSON.stringify(filter) === JSON.stringify(defaultValue))
   const isCustomFilter = computed(() => !isDefaultFilter.value)
 
   return {
@@ -61,69 +60,17 @@ function getDefaultValueWithDefaultSort<T extends AnySortableRecord>(defaultValu
   return reactive({ ...rest, sort }) as T
 }
 
-function isSame(valueA: unknown, valueB: unknown): boolean {
-  if (stringifiesToNull(valueA) && stringifiesToNull(valueB)) {
-    return valueA === valueB
-  }
-
-  return JSON.stringify(valueA) === JSON.stringify(valueB)
-}
-
-// JSON.stringify(null)
-// JSON.stringify(Infinity)
-// JSON.stringify(-Infinity)
-function stringifiesToNull(value: unknown): boolean {
-  return JSON.stringify(value) === 'null'
-}
-
-function useFilterFromRoute<T extends AnyRecord>(
-  schema: RouteQueryParamsSchema<T>,
-  defaultValue: MaybeReactive<T>,
-  prefix?: string,
-): UseFilter<T> {
+function useFilterFromRoute<T extends AnyRecord>(schema: RouteQueryParamsSchema<T>, defaultValue: MaybeReactive<T>, prefix?: string): UseFilter<T> {
   const defaultValueReactive = reactive(defaultValue) as T
   const params = useRouteQueryParams(schema, defaultValueReactive, prefix)
   const filter = reactive(params) as Filter<T>
 
-  // watch(defaultValueReactive, value => {
-  //   if (!isSame(filter, value)) {
-  //     merge(filter, value as Filter<T>)
-  //   }
-  // }, { deep: true })
+  watch(defaultValueReactive, value => {
+    merge(filter, value as Filter<T>)
+  }, { deep: true })
 
 
   return withFilterFunctions(filter)
-}
-
-// eslint-disable-next-line max-params
-function useSortableFilterFromRoute<T extends AnySortableRecord>(
-  schema: RouteQueryParamsSchema<T>,
-  defaultValue: MaybeReactive<T>,
-  defaultSort: T['sort'],
-  prefix?: string,
-): UseFilter<T> {
-  const defaultValueReactive = getDefaultValueWithDefaultSort(defaultValue, defaultSort) as T
-  console.log(JSON.stringify(defaultValueReactive))
-  const params = useRouteQueryParams(schema, defaultValueReactive, prefix)
-  const filter = reactive(params) as Filter<T>
-  // console.log('default', JSON.stringify(defaultValueReactive))
-  const response = withFilterFunctions(filter, defaultValueReactive)
-
-  // watch(defaultValueReactive, value => {
-  //   if (!isSame(filter, value)) {
-  //     console.log('update from default value')
-  //     merge(filter, value as Filter<T>)
-  //   }
-  // }, { deep: true })
-
-  // watch(filter, value => {
-  //   if (!isSame(defaultValueReactive, value)) {
-  //     console.log('update from filters')
-  //     Object.assign(defaultValueReactive, value)
-  //   }
-  // }, { deep: true, immediate: true })
-
-  return response
 }
 
 export function useTagFilter(defaultValue: MaybeReactive<TagFilter> = {}): UseFilter<TagFilter> {
@@ -256,7 +203,11 @@ const flowRunFilterSchema: RouteQueryParamsSchema<FlowRunFilter> = {
 }
 
 export function useFlowRunFilterFromRoute(defaultValue: MaybeReactive<FlowRunFilter> = {}, prefix?: string): UseFilter<FlowRunFilter> {
-  return useFilterFromRoute(flowRunFilterSchema, defaultValue, prefix)
+  const defaultValueReactive = reactive(defaultValue)
+  const params = useRouteQueryParams(flowRunFilterSchema, defaultValueReactive, prefix)
+  const filter: Filter<FlowRunFilter> = reactive(params)
+
+  return withFilterFunctions(filter)
 }
 
 export function useTaskRunFilter(defaultValue: MaybeReactive<TaskRunFilter> = {}): UseFilter<TaskRunFilter> {
@@ -594,9 +545,7 @@ const flowsFilterSchema: RouteQueryParamsSchema<FlowsFilter> = {
 }
 
 export function useFlowsFilterFromRoute(defaultValue: MaybeReactive<FlowsFilter> = {}, prefix?: string): UseFilter<FlowsFilter> {
-  const { filter } = useFlowsFilter(defaultValue)
-
-  return useSortableFilterFromRoute(flowsFilterSchema, filter, defaultFlowSort, prefix)
+  return useFilterFromRoute(flowsFilterSchema, defaultValue, prefix)
 }
 
 const flowRunsFilterSchema: RouteQueryParamsSchema<FlowRunsFilter> = {
@@ -605,7 +554,7 @@ const flowRunsFilterSchema: RouteQueryParamsSchema<FlowRunsFilter> = {
 }
 
 export function useFlowRunsFilterFromRoute(defaultValue: MaybeReactive<FlowRunsFilter> = {}, prefix?: string): UseFilter<FlowRunsFilter> {
-  return useSortableFilterFromRoute(flowRunsFilterSchema, defaultValue, defaultFlowRunSort, prefix)
+  return useFilterFromRoute(flowRunsFilterSchema, defaultValue, prefix)
 }
 
 const taskRunsFilterSchema: RouteQueryParamsSchema<TaskRunsFilter> = {
@@ -614,7 +563,7 @@ const taskRunsFilterSchema: RouteQueryParamsSchema<TaskRunsFilter> = {
 }
 
 export function useTaskRunsFilterFromRoute(defaultValue: MaybeReactive<TaskRunsFilter> = {}, prefix?: string): UseFilter<TaskRunsFilter> {
-  return useSortableFilterFromRoute(taskRunsFilterSchema, defaultValue, defaultTaskRunSort, prefix)
+  return useFilterFromRoute(taskRunsFilterSchema, defaultValue, prefix)
 }
 
 const deploymentsFilterSchema: RouteQueryParamsSchema<DeploymentsFilter> = {
@@ -623,7 +572,7 @@ const deploymentsFilterSchema: RouteQueryParamsSchema<DeploymentsFilter> = {
 }
 
 export function useDeploymentsFilterFromRoute(defaultValue: MaybeReactive<DeploymentsFilter> = {}, prefix?: string): UseFilter<DeploymentsFilter> {
-  return useSortableFilterFromRoute(deploymentsFilterSchema, defaultValue, defaultDeploymentSort, prefix)
+  return useFilterFromRoute(deploymentsFilterSchema, defaultValue, prefix)
 }
 
 export function useRecentFlowRunsFilter(defaultValue: MaybeReactive<FlowRunsFilter>): UseFilter<FlowRunsFilter> {
@@ -661,5 +610,5 @@ const flowRunsHistoryFilterSchema: RouteQueryParamsSchema<FlowRunsHistoryFilter>
 }
 
 export function useFlowRunsHistoryFilterFromRoute(defaultValue: MaybeReactive<FlowRunsHistoryFilter>, prefix?: string): UseFilter<FlowRunsHistoryFilter> {
-  return useSortableFilterFromRoute(flowRunsHistoryFilterSchema, defaultValue, defaultFlowRunSort, prefix)
+  return useFilterFromRoute(flowRunsHistoryFilterSchema, defaultValue, prefix)
 }

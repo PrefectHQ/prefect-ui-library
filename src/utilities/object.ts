@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/indent */
 import isDate from 'date-fns/isDate'
+import { unique } from '@/utilities/arrays'
 
 export function flip<K extends string, V extends string>(obj: Record<K, V>): Record<V, K> {
   const result = {} as Record<V, K>
@@ -109,14 +110,16 @@ export function isRecord(item: unknown): item is Record<PropertyKey, unknown> {
   return item !== null && typeof item === 'object' && !Array.isArray(item)
 }
 
-export function merge<T>(target: T, ...sources: T[]): T {
+export function merge<T extends Record<PropertyKey, unknown>>(target: T, ...sources: T[]): T {
   if (sources.length === 0) {
     return target
   }
 
   const [source, ...rest] = sources
 
-  for (const key in source) {
+  const keys = unique([...Object.keys(target), ...Object.keys(source)])
+
+  for (const key of keys) {
     const targetValue: unknown = target[key]
     const sourceValue: unknown = source[key]
 
@@ -130,8 +133,8 @@ export function merge<T>(target: T, ...sources: T[]): T {
       continue
     }
 
-    target[key] = source[key]
-
+    // this is really sloppy typescript...
+    target[key as keyof T] = source[key] as any
   }
 
   return merge(target, ...rest)
