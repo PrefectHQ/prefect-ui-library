@@ -1,6 +1,5 @@
 import { WorkPool, WorkPoolCreateRequest, WorkPoolEdit, WorkPoolEditRequest, WorkPoolResponse, WorkPoolCreate } from '@/models'
 import { MapFunction } from '@/services/Mapper'
-import { mapCamelToSnakeCase } from '@/utilities'
 
 export const mapWorkPoolResponseToWorkPool: MapFunction<WorkPoolResponse, WorkPool> = function(source: WorkPoolResponse): WorkPool {
   return new WorkPool({
@@ -32,12 +31,18 @@ export const mapWorkPoolToWorkPoolResponse: MapFunction<WorkPool, WorkPoolRespon
 
 export const mapWorkPoolCreateToWorkPoolCreateRequest: MapFunction<WorkPoolCreate, WorkPoolCreateRequest> = function(source: WorkPoolCreate): WorkPoolCreateRequest {
   return {
-    ...mapCamelToSnakeCase(source),
+    'name': source.name,
+    'description': source.description,
+    'type': source.type,
+    'is_paused': source.isPaused,
+    'concurrency_limit': source.concurrencyLimit,
   }
 }
 
 export const mapWorkPoolEditToWorkPoolEditRequest: MapFunction<WorkPoolEdit, WorkPoolEditRequest> = function(source: WorkPoolEdit): WorkPoolEditRequest {
   return {
-    ...mapCamelToSnakeCase(source),
+    'description': source.description,
+    'is_paused': source.isPaused,
+    'concurrency_limit': source.concurrencyLimit,
   }
 }

@@ -2,7 +2,6 @@ import { DeploymentFlowRunCreate, DeploymentFlowRunRequest, DeploymentUpdate, De
 import { DeploymentResponse } from '@/models/api/DeploymentResponse'
 import { Deployment } from '@/models/Deployment'
 import { MapFunction } from '@/services/Mapper'
-import { mapCamelToSnakeCase } from '@/utilities'
 
 export const mapDeploymentResponseToDeployment: MapFunction<DeploymentResponse, Deployment> = function(source) {
   const schema = this.map('SchemaResponse', source.parameter_openapi_schema ?? {}, 'Schema')
@@ -27,43 +26,34 @@ export const mapDeploymentResponseToDeployment: MapFunction<DeploymentResponse, 
     entrypoint: source.entrypoint,
     storageDocumentId: source.storage_document_id,
     infrastructureDocumentId: source.infrastructure_document_id,
+    infrastructureOverrides: source.infra_overrides,
     parameterOpenApiSchema: schema,
     workQueueName: source.work_queue_name,
   })
 }
 
 export const mapDeploymentUpdateToDeploymentUpdateRequest: MapFunction<DeploymentUpdate, DeploymentUpdateRequest> = function(source) {
-  const { parameters, schema, schedule, ...rest } = source
-  const mapped = mapCamelToSnakeCase<DeploymentUpdateRequest>(rest)
-
-  // type check is necessary in case data doesn't match the type exactly
-  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-  if (parameters && schema) {
-    mapped.parameters = this.map('SchemaValues', { values: parameters, schema }, 'SchemaValuesRequest')
+  return {
+    'description': source.description,
+    'schedule': this.map('Schedule', source.schedule, 'ScheduleRequest'),
+    'is_schedule_active': source.isScheduleActive,
+    'parameters': source.parameters ? this.map('SchemaValues', { values: source.parameters, schema: source.schema }, 'SchemaValuesRequest') : undefined,
+    'tags': source.tags,
+    'work_queue_name': source.workQueueName,
   }
-
-  mapped.schedule = this.map('Schedule', schedule, 'ScheduleRequest')
-
-  return mapped
 }
 
 export const mapDeploymentFlowRunCreateToDeploymentFlowRunRequest: MapFunction<DeploymentFlowRunCreate, DeploymentFlowRunRequest> = function(source) {
-  const { parameters, state, schema, empiricalPolicy, ...rest } = source
-  const mapped = mapCamelToSnakeCase(rest) as DeploymentFlowRunRequest
-
-  if (parameters) {
-    mapped.parameters = this.map('SchemaValues', { values: parameters, schema }, 'SchemaValuesRequest')
+  return {
+    'name': source.name,
+    'parameters': source.parameters ? this.map('SchemaValues', { values: source.parameters, schema: source.schema }, 'SchemaValuesRequest') : undefined,
+    'idempotency_key': source.idempotencyKey,
+    'context': source.context,
+    'tags': source.tags,
+    'parent_task_run_id': source.parentTaskRunId,
+    'infrastructure_document_id': source.infrastructureDocumentId,
+    'state': this.map('StateCreate', source.state, 'StateRequest'),
+    'empirical_policy': this.map('EmpiricalPolicy', source.empiricalPolicy, 'EmpiricalPolicyRequest'),
   }
-
-  if (state) {
-    mapped.state = this.map('StateCreate', state, 'StateRequest')
-  }
-
-  if (empiricalPolicy) {
-    // eslint-disable-next-line camelcase
-    mapped.empirical_policy = this.map('EmpiricalPolicy', empiricalPolicy, 'EmpiricalPolicyRequest')
-  }
-
-  return mapped
 }
 
