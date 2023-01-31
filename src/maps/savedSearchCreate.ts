@@ -2,7 +2,7 @@ import { SavedSearchFilterResponse, SavedSearchCreateRequest } from '@/models/ap
 import { SavedSearchFilter, SavedSearchCreate } from '@/models/SavedSearch'
 import { MapFunction } from '@/services/Mapper'
 
-export const mapSavedSearchCreateToSavedSearchCreateRequest: MapFunction<SavedSearchCreate, SavedSearchCreateRequest> = function(source: SavedSearchCreate): SavedSearchCreateRequest {
+export const mapSavedSearchCreateToSavedSearchCreateRequest: MapFunction<SavedSearchCreate, SavedSearchCreateRequest> = function(source) {
   return {
     name: source.name,
     filters: mapSavedSearchFiltersToSavedSearchCreate(source.filters),

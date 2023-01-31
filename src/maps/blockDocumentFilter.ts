@@ -1,9 +1,8 @@
-/* eslint-disable camelcase */
 import { BlockDocumentFilterRequest } from '@/models/api/BlockDocumentFilterRequest'
 import { BlockDocumentFilter } from '@/models/BlockDocumentFilter'
 import { MapFunction } from '@/services/Mapper'
 
-export const mapBlockDocumentFilterToBlockDocumentFilterRequest: MapFunction<BlockDocumentFilter, BlockDocumentFilterRequest> = function(source: BlockDocumentFilter): BlockDocumentFilterRequest {
+export const mapBlockDocumentFilterToBlockDocumentFilterRequest: MapFunction<BlockDocumentFilter, BlockDocumentFilterRequest> = function(source) {
   return {
     limit: source.limit,
     offset: source.offset,
