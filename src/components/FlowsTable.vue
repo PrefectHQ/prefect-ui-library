@@ -1,5 +1,6 @@
 <template>
   <div class="flows-table">
+    {{ filter }}
     <p-layout-table sticky>
       <template #header-start>
         <div class="flows-table__header-start">
@@ -60,7 +61,7 @@
             <template #message>
               No flows
             </template>
-            <template v-if="exist" #actions>
+            <template v-if="isCustomFilter" #actions>
               <p-button size="sm" secondary @click="clear">
                 Clear Filters
               </p-button>
@@ -74,10 +75,10 @@
 
 <script lang="ts" setup>
   import { PTable, PEmptyResults, PLink, CheckboxModel } from '@prefecthq/prefect-design'
-  import { useSubscription } from '@prefecthq/vue-compositions'
+  import { useDebouncedRef, useSubscription } from '@prefecthq/vue-compositions'
   import { computed, ref } from 'vue'
   import { FlowsDeleteButton, DeploymentsCount, ResultsCount, SearchInput, FlowActivityChart, SelectedCount } from '@/components'
-  import { useCan, useFlowsFilterFromRoute, useWorkspaceApi, useWorkspaceRoutes } from '@/compositions'
+  import { useCan, useFlowsFilter, useWorkspaceApi, useWorkspaceRoutes } from '@/compositions'
   import { useComponent } from '@/compositions/useComponent'
   import { FlowsFilter } from '@/models/Filters'
   import { flowSortOptions } from '@/types/SortOptionTypes'
@@ -93,9 +94,9 @@
   const can = useCan()
   const routes = useWorkspaceRoutes()
 
-  // this takes a prop. Does the default value of the from route compositions need to be reactive?
-  const { filter, clear, exist } = useFlowsFilterFromRoute(props.filter)
-
+  // const search = ref<string>()
+  // const searchDebounced = useDebouncedRef(search, 1200)
+  const { filter, clear, isCustomFilter } = useFlowsFilter()
 
   const columns = [
     {

@@ -12,7 +12,7 @@
 
       <template #header-end>
         <div class="deployments-table__header-end">
-          <SearchInput v-model="filter.deployments.nameLike" placeholder="Search deployments" label="Search deployments" />
+          <SearchInput v-model="search" placeholder="Search deployments" label="Search deployments" />
 
           <template v-if="hideFlowFilter">
             <FlowCombobox v-model:selected="filter.flows.id" empty-message="All flows" class="deployments-table__flows" />
@@ -68,7 +68,7 @@
             <template #message>
               No deployments
             </template>
-            <template v-if="exist" #actions>
+            <template v-if="isCustomFilter" #actions>
               <p-button size="sm" secondary @click="clear">
                 Clear Filters
               </p-button>
@@ -82,7 +82,7 @@
 
 <script lang="ts" setup>
   import { PTable, PTagWrapper, PEmptyResults, PLink, TableColumn, CheckboxModel } from '@prefecthq/prefect-design'
-  import { useSubscription } from '@prefecthq/vue-compositions'
+  import { useDebouncedRef, useSubscription } from '@prefecthq/vue-compositions'
   import { computed, ref } from 'vue'
   import { SearchInput, ResultsCount, DeploymentToggle, DeploymentMenu, FlowRouterLink, FlowCombobox, DeploymentsDeleteButton, SelectedCount } from '@/components'
   import { useWorkspaceApi, useWorkspaceRoutes, useCan, useDeploymentsFilterFromRoute } from '@/compositions'
@@ -102,7 +102,15 @@
   const api = useWorkspaceApi()
   const can = useCan()
   const routes = useWorkspaceRoutes()
-  const { filter, exist, clear } = useDeploymentsFilterFromRoute(props.filter)
+  const search = ref<string>()
+  const searchDebounced = useDebouncedRef(search, 1200)
+  const { filter, clear, isCustomFilter } = useDeploymentsFilterFromRoute({
+    ...props.filter,
+    deployments: {
+      ...props.filter?.deployments,
+      nameLike: searchDebounced,
+    },
+  })
 
   const columns = computed<TableColumn[]>(() => [
     {
