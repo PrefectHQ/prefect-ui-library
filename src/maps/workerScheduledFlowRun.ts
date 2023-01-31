@@ -11,9 +11,9 @@ export const mapWorkerScheduledFlowRunResponseToWorkerScheduledFlowRun: MapFunct
 
 export const mapWorkerScheduledFlowRunsToWorkerScheduledFlowRunsRequest: MapFunction<WorkerScheduledFlowRuns, WorkerScheduledFlowRunsRequest> = function(source: WorkerScheduledFlowRuns): WorkerScheduledFlowRunsRequest {
   return {
-    'work_pool_queue_names': source.workPoolQueueNames,
-    'scheduled_before': source.scheduledBefore,
-    'scheduled_after': source.scheduledAfter,
-    'limit': source.limit,
+    work_pool_queue_names: source.workPoolQueueNames,
+    scheduled_before: source.scheduledBefore,
+    scheduled_after: source.scheduledAfter,
+    limit: source.limit,
   }
 }

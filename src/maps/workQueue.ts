@@ -16,30 +16,30 @@ export const mapWorkQueueResponseToWorkQueue: MapFunction<WorkQueueResponse, Wor
 
 export const mapWorkQueueToWorkQueueResponse: MapFunction<WorkQueue, WorkQueueResponse> = function(source: WorkQueue): WorkQueueResponse {
   return {
-    'id': source.id,
-    'created': this.map('Date', source.created, 'string'),
-    'updated': this.map('Date', source.updated, 'string'),
-    'name': source.name,
-    'filter': this.map('WorkQueueFilter', source.filter, 'WorkQueueFilterResponse'),
-    'description': source.description,
-    'is_paused': source.isPaused,
-    'concurrency_limit': source.concurrencyLimit,
+    id: source.id,
+    created: this.map('Date', source.created, 'string'),
+    updated: this.map('Date', source.updated, 'string'),
+    name: source.name,
+    filter: this.map('WorkQueueFilter', source.filter, 'WorkQueueFilterResponse'),
+    description: source.description,
+    is_paused: source.isPaused,
+    concurrency_limit: source.concurrencyLimit,
   }
 }
 
 export const mapWorkQueueCreateToWorkQueueCreateRequest: MapFunction<WorkQueueCreate, WorkQueueCreateRequest> = function(source: WorkQueueCreate): WorkQueueCreateRequest {
   return {
-    'name': source.name,
-    'description': source.description,
-    'is_paused': source.isPaused,
-    'concurrency_limit': source.concurrencyLimit,
+    name: source.name,
+    description: source.description,
+    is_paused: source.isPaused,
+    concurrency_limit: source.concurrencyLimit,
   }
 }
 
 export const mapWorkQueueEditToWorkQueueEditRequest: MapFunction<WorkQueueEdit, WorkQueueEditRequest> = function(source: WorkQueueEdit): WorkQueueEditRequest {
   return {
-    'description': source.description,
-    'is_paused': source.isPaused,
-    'concurrency_limit': source.concurrencyLimit,
+    description: source.description,
+    is_paused: source.isPaused,
+    concurrency_limit: source.concurrencyLimit,
   }
 }

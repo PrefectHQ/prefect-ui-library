@@ -2,11 +2,11 @@ import { ConcurrencyLimitCreateRequest } from '@/models/api/ConcurrencyLimitCrea
 import { ConcurrencyLimitCreate } from '@/models/ConcurrencyLimitCreate'
 import { MapFunction } from '@/services/Mapper'
 
-export const mapConcurrencyLimitCreateToConcurrencyLimitCreateRequest: MapFunction<ConcurrencyLimitCreate, ConcurrencyLimitCreateRequest> = function(source: ConcurrencyLimitCreate): ConcurrencyLimitCreateRequest {
+export const mapConcurrencyLimitCreateToConcurrencyLimitCreateRequest: MapFunction<ConcurrencyLimitCreate, ConcurrencyLimitCreateRequest> = function(source) {
   const { tag } = source
 
   return {
     tag,
-    'concurrency_limit': source.concurrencyLimit,
+    concurrency_limit: source.concurrencyLimit,
   }
 }

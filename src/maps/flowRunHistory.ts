@@ -12,8 +12,8 @@ export const mapFlowRunHistoryResponseToRunHistory: MapFunction<FlowRunHistoryRe
 
 export const mapRunHistoryToFlowRunHistoryResponse: MapFunction<RunHistory, FlowRunHistoryResponse> = function(source: RunHistory): FlowRunHistoryResponse {
   return {
-    'interval_start': this.map('Date', source.intervalStart, 'string'),
-    'interval_end': this.map('Date', source.intervalEnd, 'string'),
-    'states': this.map('StateHistory', source.states, 'StateHistoryResponse'),
+    interval_start: this.map('Date', source.intervalStart, 'string'),
+    interval_end: this.map('Date', source.intervalEnd, 'string'),
+    states: this.map('StateHistory', source.states, 'StateHistoryResponse'),
   }
 }

@@ -11,7 +11,7 @@ export const mapWorkQueueFilterResponseToWorkQueueFilter: MapFunction<WorkQueueF
 
 export const mapWorkQueueFilterToWorkQueueFilterResponse: MapFunction<WorkQueueFilter, WorkQueueFilterResponse> = function(source: WorkQueueFilter): WorkQueueFilterResponse {
   return {
-    'tags': source.tags,
-    'deployment_ids': source.deploymentIds,
+    tags: source.tags,
+    deployment_ids: source.deploymentIds,
   }
 }
