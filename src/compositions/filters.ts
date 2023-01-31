@@ -68,6 +68,7 @@ function useFilterFromRoute<T extends AnyRecord>(schema: RouteQueryParamsSchema<
   return withFilterFunctions(filter, defaultValueReactive)
 }
 
+// eslint-disable-next-line max-params
 function useSortableFilterFromRoute<T extends AnySortableRecord>(
   schema: RouteQueryParamsSchema<T>,
   defaultValue: MaybeReactive<T>,
@@ -78,7 +79,7 @@ function useSortableFilterFromRoute<T extends AnySortableRecord>(
   const params = useRouteQueryParams(schema, defaultValueReactive, prefix)
   const filter = reactive(params) as Filter<T>
 
-  return withFilterFunctions(filter, defaultValueReactive)
+  return withFilterFunctions(filter, { ...defaultValueReactive, sort: undefined })
 }
 
 export function useTagFilter(defaultValue: MaybeReactive<TagFilter> = {}): UseFilter<TagFilter> {
