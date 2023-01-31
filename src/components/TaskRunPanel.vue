@@ -32,7 +32,7 @@
 
 <script lang="ts" setup>
   import { useSubscriptionWithDependencies } from '@prefecthq/vue-compositions'
-  import { computed, ref, toRefs } from 'vue'
+  import { computed, toRefs } from 'vue'
   import { StateBadge, DurationIconText, PageHeading } from '@/components'
   import { useWorkspaceApi, useWorkspaceRoutes } from '@/compositions'
   import { formatDateTimeNumeric } from '@/utilities/dates'

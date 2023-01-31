@@ -4,10 +4,8 @@ import { BlockSchemaReferences } from '@/types/schemas'
 import { mapEntries } from '@/utilities'
 
 export const mapBlockSchemaReferencesResponseToBlockSchemaReferences: MapFunction<BlockSchemaReferencesResponse, BlockSchemaReferences> = function(source) {
-  return mapEntries(source, (key, value) => {
-    return {
-      blockSchemaChecksum: value!.block_schema_checksum,
-      blockTypeSlug: value!.block_type_slug
-    }
-  })
+  return mapEntries(source, (key, value) => ({
+    blockSchemaChecksum: value!.block_schema_checksum,
+    blockTypeSlug: value!.block_type_slug,
+  }))
 }
