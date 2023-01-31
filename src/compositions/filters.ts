@@ -65,6 +65,31 @@ function useFilterFromRoute<T extends AnyRecord>(schema: RouteQueryParamsSchema<
   const params = useRouteQueryParams(schema, defaultValueReactive, prefix)
   const filter = reactive(params) as Filter<T>
 
+  let defaultValueWatchTriggered = false
+  let filterWatchTriggered = false
+
+  watch(defaultValueReactive, () => {
+    if (filterWatchTriggered) {
+      filterWatchTriggered = false
+      return
+    }
+
+    defaultValueWatchTriggered = true
+
+    merge(filter as T, defaultValueReactive)
+  }, { deep: true })
+
+  watch(filter, () => {
+    if (defaultValueWatchTriggered) {
+      defaultValueWatchTriggered = false
+      return
+    }
+
+    filterWatchTriggered = true
+
+    merge(defaultValueReactive, filter as T)
+  }, { deep: true })
+
   return withFilterFunctions(filter, defaultValueReactive)
 }
 
@@ -79,7 +104,32 @@ function useSortableFilterFromRoute<T extends AnySortableRecord>(
   const params = useRouteQueryParams(schema, defaultValueReactive, prefix)
   const filter = reactive(params) as Filter<T>
 
-  return withFilterFunctions(filter, { ...defaultValueReactive })
+  let defaultValueWatchTriggered = false
+  let filterWatchTriggered = false
+
+  watch(defaultValueReactive, () => {
+    if (filterWatchTriggered) {
+      filterWatchTriggered = false
+      return
+    }
+
+    defaultValueWatchTriggered = true
+
+    merge(filter as T, defaultValueReactive)
+  }, { deep: true })
+
+  watch(filter, () => {
+    if (defaultValueWatchTriggered) {
+      defaultValueWatchTriggered = false
+      return
+    }
+
+    filterWatchTriggered = true
+
+    merge(defaultValueReactive, filter as T)
+  }, { deep: true })
+
+  return withFilterFunctions(filter, defaultValueReactive)
 }
 
 export function useTagFilter(defaultValue: MaybeReactive<TagFilter> = {}): UseFilter<TagFilter> {
