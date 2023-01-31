@@ -29,12 +29,12 @@ export const mapTaskInputResponseToTaskInput: MapFunction<TaskInputResponse, Tas
 
 export const mapTaskInputToTaskInputResponse: MapFunction<TaskInput, TaskInputResponse> = function(source: TaskInput): TaskInputResponse {
   return {
-    'input_type': source.inputType,
+    input_type: source.inputType,
     // eslint-disable-next-line no-extra-parens
-    'type': (source as ConstantTaskInput).type,
+    type: (source as ConstantTaskInput).type,
     // eslint-disable-next-line no-extra-parens
-    'name': (source as ParameterTaskInput).name,
+    name: (source as ParameterTaskInput).name,
     // eslint-disable-next-line no-extra-parens
-    'id': (source as TaskRunTaskInput).id,
+    id: (source as TaskRunTaskInput).id,
   }
 }

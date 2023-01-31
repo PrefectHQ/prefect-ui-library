@@ -22,18 +22,18 @@ export const mapFlowRunGraphResponseToGraphNode: MapFunction<FlowRunGraphRespons
 
 export const mapGraphNodeToFlowRunGraphResponse: MapFunction<GraphNode, FlowRunGraphResponse> = function(source: GraphNode): FlowRunGraphResponse {
   return {
-    'id': source.id,
-    'expected_start_time': this.map('Date', source.expectedStartTime, 'string'),
-    'start_time': this.map('Date', source.startTime, 'string'),
-    'end_time': this.map('Date', source.endTime, 'string'),
-    'total_run_time': source.totalRunTime,
-    'estimated_run_time': source.estimatedRunTime,
-    'upstream_dependencies': source.upstreamDependencies.map(x => {
+    id: source.id,
+    expected_start_time: this.map('Date', source.expectedStartTime, 'string'),
+    start_time: this.map('Date', source.startTime, 'string'),
+    end_time: this.map('Date', source.endTime, 'string'),
+    total_run_time: source.totalRunTime,
+    estimated_run_time: source.estimatedRunTime,
+    upstream_dependencies: source.upstreamDependencies.map(x => {
       return {
-        'id': x.id,
-        'input_type': x.inputType,
+        id: x.id,
+        input_type: x.inputType,
       }
     }),
-    'state': this.map('State', source.state!, 'StateResponse'),
+    state: this.map('State', source.state!, 'StateResponse'),
   }
 }

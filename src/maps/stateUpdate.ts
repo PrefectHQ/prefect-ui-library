@@ -7,7 +7,7 @@ export const mapStateUpdateToStateUpdateRequest: MapFunction<StateUpdate, StateU
     state: {
       ...state,
       type: this.map('StateType', type, 'ServerStateType'),
-      'state_details': this.map('StateDetails', stateDetails, 'StateDetailsRequest'),
+      state_details: this.map('StateDetails', stateDetails, 'StateDetailsRequest'),
     },
   }
 }

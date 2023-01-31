@@ -1,4 +1,3 @@
-/* eslint-disable camelcase */
 import { BlockDocumentReferencesResponse, BlockDocumentReferences, BlockDocumentReference } from '@/models'
 import { MapFunction } from '@/services/Mapper'
 

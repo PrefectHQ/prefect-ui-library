@@ -15,10 +15,10 @@ export const mapStateHistoryResponseToStateHistory: MapFunction<StateHistoryResp
 
 export const mapStateHistoryToStateHistoryResponse: MapFunction<StateHistory, StateHistoryResponse> = function(source: StateHistory): StateHistoryResponse {
   return {
-    'state_type': this.map('StateType', source.stateType, 'ServerStateType'),
-    'state_name': source.stateName,
-    'count_runs': source.countRuns,
-    'sum_estimated_run_time': source.sumEstimatedRunTime,
-    'sum_estimated_lateness': source.sumEstimatedLateness,
+    state_type: this.map('StateType', source.stateType, 'ServerStateType'),
+    state_name: source.stateName,
+    count_runs: source.countRuns,
+    sum_estimated_run_time: source.sumEstimatedRunTime,
+    sum_estimated_lateness: source.sumEstimatedLateness,
   }
 }

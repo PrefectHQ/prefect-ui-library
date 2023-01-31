@@ -34,25 +34,25 @@ export const mapDeploymentResponseToDeployment: MapFunction<DeploymentResponse, 
 
 export const mapDeploymentUpdateToDeploymentUpdateRequest: MapFunction<DeploymentUpdate, DeploymentUpdateRequest> = function(source) {
   return {
-    'description': source.description,
-    'schedule': this.map('Schedule', source.schedule, 'ScheduleRequest'),
-    'is_schedule_active': source.isScheduleActive,
-    'parameters': source.parameters ? this.map('SchemaValues', { values: source.parameters, schema: source.schema }, 'SchemaValuesRequest') : undefined,
-    'tags': source.tags,
-    'work_queue_name': source.workQueueName,
+    description: source.description,
+    schedule: this.map('Schedule', source.schedule, 'ScheduleRequest'),
+    is_schedule_active: source.isScheduleActive,
+    parameters: source.parameters ? this.map('SchemaValues', { values: source.parameters, schema: source.schema }, 'SchemaValuesRequest') : undefined,
+    tags: source.tags,
+    work_queue_name: source.workQueueName,
   }
 }
 
 export const mapDeploymentFlowRunCreateToDeploymentFlowRunRequest: MapFunction<DeploymentFlowRunCreate, DeploymentFlowRunRequest> = function(source) {
   return {
-    'name': source.name,
-    'parameters': source.parameters ? this.map('SchemaValues', { values: source.parameters, schema: source.schema }, 'SchemaValuesRequest') : undefined,
-    'idempotency_key': source.idempotencyKey,
-    'context': source.context,
-    'tags': source.tags,
-    'parent_task_run_id': source.parentTaskRunId,
-    'infrastructure_document_id': source.infrastructureDocumentId,
-    'state': this.map('StateCreate', source.state, 'StateRequest'),
+    name: source.name,
+    parameters: source.parameters ? this.map('SchemaValues', { values: source.parameters, schema: source.schema }, 'SchemaValuesRequest') : undefined,
+    idempotency_key: source.idempotencyKey,
+    context: source.context,
+    tags: source.tags,
+    parent_task_run_id: source.parentTaskRunId,
+    infrastructure_document_id: source.infrastructureDocumentId,
+    state: this.map('StateCreate', source.state, 'StateRequest'),
   }
 }
 
