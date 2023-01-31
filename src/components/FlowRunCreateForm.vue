@@ -26,11 +26,7 @@
         <p-tags-input v-model="tags" :options="deploymentTags" />
       </p-label>
 
-      <p-label label="Add Retries">
-        <p-toggle v-model="addRetries" />
-      </p-label>
-
-      <template v-if="addRetries">
+      <div class="flow-run-create-form__retries">
         <p-label label="Retries (optional)">
           <p-number-input v-model="retries" :min="0" />
         </p-label>
@@ -38,7 +34,7 @@
         <p-label label="Retry Delay (optional)">
           <p-number-input v-model="retryDelay" :min="0" append="Seconds" />
         </p-label>
-      </template>
+      </div>
 
       <p-divider v-if="deployment.parameters" />
 
@@ -90,7 +86,7 @@
   import { PButton, ButtonGroupOption } from '@prefecthq/prefect-design'
   import { zonedTimeToUtc } from 'date-fns-tz'
   import { useField } from 'vee-validate'
-  import { computed, ref, watch } from 'vue'
+  import { computed, ref } from 'vue'
   import DateInput from '@/components/DateInput.vue'
   import SchemaFormFields from '@/components/SchemaFormFields.vue'
   import TimezoneSelect from '@/components/TimezoneSelect.vue'
@@ -134,7 +130,6 @@
 
   const { value: start, meta: startState, errorMessage: startErrorMessage } = useField<Date>('state.stateDetails.scheduledTime', rules.start)
   const { value: tags } = useField<string[]>('tags')
-  const addRetries = ref(false)
   const { value: retries } = useField<number | null>('empiricalPolicy.retries')
   const { value: retryDelay } = useField<number | null>('empiricalPolicy.retryDelay')
   const { value: name } = useField<string>('name')
@@ -167,13 +162,6 @@
     }
 
     emit('submit', resolvedValues)
-  })
-
-  watch(addRetries, value => {
-    if (!value) {
-      retries.value = null
-      retryDelay.value = null
-    }
   })
 </script>
 
@@ -211,5 +199,10 @@
 
 .flow-run-create-form__tag { @apply
   py-0
+}
+
+.flow-run-create-form__retries { @apply
+  flex
+  gap-4
 }
 </style>
