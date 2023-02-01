@@ -159,8 +159,11 @@
   dark:bg-background
   rounded-lg
 }
-.flow-run-timeline__timeline--panel-open {
-  width: calc(100% - 320px);
+
+@media (min-width: 640px) {
+  .flow-run-timeline__timeline--panel-open {
+    width: calc(100% - 320px);
+  }
 }
 
 .flow-run-timeline__task-panel { @apply
@@ -170,6 +173,7 @@
   bottom-0
   z-10
   w-[320px]
+  max-w-full
   pl-4
   translate-x-full
   transition-transform
