@@ -123,6 +123,10 @@ export function merge<T extends Record<PropertyKey, unknown>>(target: T, ...sour
     const targetValue: unknown = target[key]
     const sourceValue: unknown = source[key]
 
+    if (targetValue === sourceValue) {
+      continue
+    }
+
     if (isRecord(targetValue) && isRecord(sourceValue)) {
       merge(targetValue, sourceValue)
       continue
