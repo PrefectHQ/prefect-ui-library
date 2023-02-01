@@ -1,4 +1,6 @@
 import { BooleanRouteParam, DateRouteParam, NumberRouteParam, RouteQueryParamsSchema, StringRouteParam, useRouteQueryParams } from '@prefecthq/vue-compositions'
+import debounce from 'lodash.debounce'
+import isEqual from 'lodash.isequal'
 import { Ref, reactive, ComputedRef, toRef, computed, toRefs, isReactive, watch } from 'vue'
 import { DeploymentSortValuesSortParam } from '@/formatters/DeploymentSortValuesSortParam'
 import { FlowRunSortValuesSortParam } from '@/formatters/FlowRunSortValuesSortParam'
@@ -60,11 +62,31 @@ function getDefaultValueWithDefaultSort<T extends AnySortableRecord>(defaultValu
   return reactive({ ...rest, sort }) as T
 }
 
+function syncFilterWithFilterFromRoute<T extends AnyRecord>(filter: Filter<T>, query: Filter<T>): void {
+  merge(filter, query)
+
+  watch(filter, () => {
+    merge(query, filter)
+  })
+
+  const updateFiltersFromQuery = debounce(() => {
+    const equal = isEqual(filter, query)
+
+    if (!equal) {
+      merge(filter, query)
+    }
+  }, 100)
+
+  watch(query, () => {
+    updateFiltersFromQuery()
+  }, { deep: true })
+}
+
 function useFilterFromRoute<T extends AnyRecord>(schema: RouteQueryParamsSchema<T>, defaultValue: MaybeReactive<T>, prefix?: string): UseFilter<T> {
   const defaultValueReactive = reactive(defaultValue) as T
   const params = useRouteQueryParams(schema, defaultValueReactive, prefix)
   const filter = reactive(params) as Filter<T>
-  const response = withFilterFunctions(filter, { ...defaultValueReactive, sort: undefined })
+  const response = withFilterFunctions(filter)
 
   return response
 }
@@ -119,10 +141,6 @@ const stateFilterSchema: RouteQueryParamsSchema<StateFilter> = {
   name: [StringRouteParam],
 }
 
-export function useStateFilterFromRoute(defaultValue: MaybeReactive<StateFilter> = {}, prefix?: string): UseFilter<StateFilter> {
-  return useFilterFromRoute(stateFilterSchema, defaultValue, prefix)
-}
-
 export function useFlowFilter(defaultValue: MaybeReactive<FlowFilter> = {}): UseFilter<FlowFilter> {
   const defaultValueReactive = reactive(defaultValue)
   const tags = useTagFilter(defaultValueReactive.tags)
@@ -143,10 +161,6 @@ const flowFilterSchema: RouteQueryParamsSchema<FlowFilter> = {
   name: [StringRouteParam],
   nameLike: StringRouteParam,
   tags: tagFilterSchema,
-}
-
-export function useFlowFilterFromRoute(defaultValue: MaybeReactive<FlowFilter> = {}, prefix?: string): UseFilter<FlowFilter> {
-  return useFilterFromRoute(flowFilterSchema, defaultValue, prefix)
 }
 
 export function useFlowRunFilter(defaultValue: MaybeReactive<FlowRunFilter> = {}): UseFilter<FlowRunFilter> {
@@ -210,14 +224,6 @@ const flowRunFilterSchema: RouteQueryParamsSchema<FlowRunFilter> = {
   parentTaskRunIdNull: BooleanRouteParam,
 }
 
-export function useFlowRunFilterFromRoute(defaultValue: MaybeReactive<FlowRunFilter> = {}, prefix?: string): UseFilter<FlowRunFilter> {
-  const defaultValueReactive = reactive(defaultValue)
-  const params = useRouteQueryParams(flowRunFilterSchema, defaultValueReactive, prefix)
-  const filter: Filter<FlowRunFilter> = reactive(params)
-
-  return withFilterFunctions(filter)
-}
-
 export function useTaskRunFilter(defaultValue: MaybeReactive<TaskRunFilter> = {}): UseFilter<TaskRunFilter> {
   const defaultValueReactive = reactive(defaultValue)
   const tags = useTagFilter(defaultValueReactive.tags)
@@ -251,10 +257,6 @@ const taskRunFilterSchema: RouteQueryParamsSchema<TaskRunFilter> = {
   subFlowRunsExist: BooleanRouteParam,
 }
 
-export function useTaskRunFilterFromRoute(defaultValue: MaybeReactive<TaskRunFilter> = {}, prefix?: string): UseFilter<TaskRunFilter> {
-  return useFilterFromRoute(taskRunFilterSchema, defaultValue, prefix)
-}
-
 export function useDeploymentFilter(defaultValue: MaybeReactive<DeploymentFilter> = {}): UseFilter<DeploymentFilter> {
   const defaultValueReactive = reactive(defaultValue)
   const tags = useTagFilter(defaultValueReactive.tags)
@@ -281,10 +283,6 @@ const deploymentFilterSchema: RouteQueryParamsSchema<DeploymentFilter> = {
   tags: tagFilterSchema,
 }
 
-export function useDeploymentFilterFromRoute(defaultValue: MaybeReactive<DeploymentFilter> = {}, prefix?: string): UseFilter<DeploymentFilter> {
-  return useFilterFromRoute(deploymentFilterSchema, defaultValue, prefix)
-}
-
 export function useWorkPoolFilter(defaultValue: MaybeReactive<WorkPoolFilter> = {}): UseFilter<WorkPoolFilter> {
   const defaultValueReactive = reactive(defaultValue)
   const filter: Filter<WorkPoolFilter> = reactive({
@@ -304,10 +302,6 @@ const workPoolFilterSchema: RouteQueryParamsSchema<WorkPoolFilter> = {
   type: [StringRouteParam],
 }
 
-export function useWorkPoolFilterFromRoute(defaultValue: MaybeReactive<WorkPoolFilter> = {}, prefix?: string): UseFilter<WorkPoolFilter> {
-  return useFilterFromRoute(workPoolFilterSchema, defaultValue, prefix)
-}
-
 export function useWorkPoolQueueFilter(defaultValue: MaybeReactive<WorkPoolQueueFilter> = {}): UseFilter<WorkPoolQueueFilter> {
   const defaultValueReactive = reactive(defaultValue)
   const filter: Filter<WorkPoolQueueFilter> = reactive({
@@ -325,10 +319,6 @@ const workPoolQueueFilterSchema: RouteQueryParamsSchema<WorkPoolQueueFilter> = {
   name: [StringRouteParam],
 }
 
-export function useWorkPoolQueueFilterFromRoute(defaultValue: MaybeReactive<WorkPoolQueueFilter> = {}, prefix?: string): UseFilter<WorkPoolQueueFilter> {
-  return useFilterFromRoute(flowFilterSchema, defaultValue, prefix)
-}
-
 export function useBlockTypeFilter(defaultValue: MaybeReactive<BlockTypeFilter> = {}): UseFilter<BlockTypeFilter> {
   const defaultValueReactive = reactive(defaultValue)
   const filter: Filter<BlockTypeFilter> = reactive({
@@ -342,10 +332,6 @@ export function useBlockTypeFilter(defaultValue: MaybeReactive<BlockTypeFilter> 
 const blockTypeFilterSchema: RouteQueryParamsSchema<BlockTypeFilter> = {
   nameLike: StringRouteParam,
   slug: [StringRouteParam],
-}
-
-export function useBlockTypeFilterFromRoute(defaultValue: MaybeReactive<BlockTypeFilter> = {}, prefix?: string): UseFilter<BlockTypeFilter> {
-  return useFilterFromRoute(blockTypeFilterSchema, defaultValue, prefix)
 }
 
 export function useBlockSchemaFilter(defaultValue: MaybeReactive<BlockSchemaFilter> = {}): UseFilter<BlockSchemaFilter> {
@@ -369,10 +355,6 @@ const blockSchemaFilterSchema: RouteQueryParamsSchema<BlockSchemaFilter> = {
   version: [StringRouteParam],
 }
 
-export function useBlockSchemaFilterFromRoute(defaultValue: MaybeReactive<BlockSchemaFilter> = {}, prefix?: string): UseFilter<BlockSchemaFilter> {
-  return useFilterFromRoute(blockSchemaFilterSchema, defaultValue, prefix)
-}
-
 export function useBlockDocumentFilter(defaultValue: MaybeReactive<BlockDocumentFilter> = {}): UseFilter<BlockDocumentFilter> {
   const defaultValueReactive = reactive(defaultValue)
   const filter: Filter<BlockDocumentFilter> = reactive({
@@ -392,10 +374,6 @@ const blockDocumentFilterSchema: RouteQueryParamsSchema<BlockDocumentFilter> = {
   isAnonymous: BooleanRouteParam,
   blockTypeId: [StringRouteParam],
   name: [StringRouteParam],
-}
-
-export function useBlockDocumentFilterFromRoute(defaultValue: MaybeReactive<BlockDocumentFilter> = {}, prefix?: string): UseFilter<BlockDocumentFilter> {
-  return useFilterFromRoute(blockDocumentFilterSchema, defaultValue, prefix)
 }
 
 export function useBlockTypesFilter(defaultValue: MaybeReactive<BlockTypesFilter> = {}): UseFilter<BlockTypesFilter> {
@@ -494,7 +472,12 @@ const workPoolsFilterSchema: RouteQueryParamsSchema<WorkPoolsFilter> = {
 }
 
 export function useWorkPoolsFilterFromRoute(defaultValue: MaybeReactive<WorkPoolsFilter> = {}, prefix?: string): UseFilter<WorkPoolsFilter> {
-  return useFilterFromRoute(workPoolsFilterSchema, defaultValue, prefix)
+  const response = useWorkPoolsFilter(defaultValue)
+  const { filter: query } = useFilterFromRoute(workPoolsFilterSchema, defaultValue, prefix)
+
+  syncFilterWithFilterFromRoute(response.filter, query)
+
+  return response
 }
 
 function useUnionFilter<T extends UnionFilter>(defaultValue: MaybeReactive<T>, defaultSort: Exclude<T['sort'], undefined>): UseFilter<T> {
@@ -553,7 +536,12 @@ const flowsFilterSchema: RouteQueryParamsSchema<FlowsFilter> = {
 }
 
 export function useFlowsFilterFromRoute(defaultValue: MaybeReactive<FlowsFilter> = {}, prefix?: string): UseFilter<FlowsFilter> {
-  return useSortableFilterFromRoute(flowsFilterSchema, defaultValue, defaultFlowSort, prefix)
+  const response = useFlowsFilter(defaultValue)
+  const { filter: query } = useSortableFilterFromRoute(flowsFilterSchema, defaultValue, defaultFlowSort, prefix)
+
+  syncFilterWithFilterFromRoute(response.filter, query)
+
+  return response
 }
 
 const flowRunsFilterSchema: RouteQueryParamsSchema<FlowRunsFilter> = {
@@ -562,7 +550,12 @@ const flowRunsFilterSchema: RouteQueryParamsSchema<FlowRunsFilter> = {
 }
 
 export function useFlowRunsFilterFromRoute(defaultValue: MaybeReactive<FlowRunsFilter> = {}, prefix?: string): UseFilter<FlowRunsFilter> {
-  return useSortableFilterFromRoute(flowRunsFilterSchema, defaultValue, defaultFlowRunSort, prefix)
+  const response = useFlowRunsFilter(defaultValue)
+  const { filter: query } = useSortableFilterFromRoute(flowRunsFilterSchema, defaultValue, defaultFlowRunSort, prefix)
+
+  syncFilterWithFilterFromRoute(response.filter, query)
+
+  return response
 }
 
 const taskRunsFilterSchema: RouteQueryParamsSchema<TaskRunsFilter> = {
@@ -571,7 +564,12 @@ const taskRunsFilterSchema: RouteQueryParamsSchema<TaskRunsFilter> = {
 }
 
 export function useTaskRunsFilterFromRoute(defaultValue: MaybeReactive<TaskRunsFilter> = {}, prefix?: string): UseFilter<TaskRunsFilter> {
-  return useSortableFilterFromRoute(taskRunsFilterSchema, defaultValue, defaultTaskRunSort, prefix)
+  const response = useTaskRunsFilter(defaultValue)
+  const { filter: query } = useSortableFilterFromRoute(taskRunsFilterSchema, defaultValue, defaultTaskRunSort, prefix)
+
+  syncFilterWithFilterFromRoute(response.filter, query)
+
+  return response
 }
 
 const deploymentsFilterSchema: RouteQueryParamsSchema<DeploymentsFilter> = {
@@ -580,7 +578,12 @@ const deploymentsFilterSchema: RouteQueryParamsSchema<DeploymentsFilter> = {
 }
 
 export function useDeploymentsFilterFromRoute(defaultValue: MaybeReactive<DeploymentsFilter> = {}, prefix?: string): UseFilter<DeploymentsFilter> {
-  return useSortableFilterFromRoute(deploymentsFilterSchema, defaultValue, defaultDeploymentSort, prefix)
+  const response = useDeploymentsFilter(defaultValue)
+  const { filter: query } = useSortableFilterFromRoute(deploymentsFilterSchema, defaultValue, defaultDeploymentSort, prefix)
+
+  syncFilterWithFilterFromRoute(response.filter, query)
+
+  return response
 }
 
 export function useRecentFlowRunsFilter(defaultValue: MaybeReactive<FlowRunsFilter>): UseFilter<FlowRunsFilter> {
@@ -618,5 +621,10 @@ const flowRunsHistoryFilterSchema: RouteQueryParamsSchema<FlowRunsHistoryFilter>
 }
 
 export function useFlowRunsHistoryFilterFromRoute(defaultValue: MaybeReactive<FlowRunsHistoryFilter>, prefix?: string): UseFilter<FlowRunsHistoryFilter> {
-  return useSortableFilterFromRoute(flowRunsHistoryFilterSchema, defaultValue, defaultFlowRunSort, prefix)
+  const response = useFlowRunsHistoryFilter(defaultValue)
+  const { filter: query } = useSortableFilterFromRoute(flowRunsHistoryFilterSchema, defaultValue, defaultFlowRunSort, prefix)
+
+  syncFilterWithFilterFromRoute(response.filter, query)
+
+  return response
 }
