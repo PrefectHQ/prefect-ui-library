@@ -120,10 +120,6 @@ const tagFilterSchema: RouteQueryParamsSchema<TagFilter> = {
   isNull: BooleanRouteParam,
 }
 
-export function useTagFilterFromRoute(defaultValue: MaybeReactive<TagFilter> = {}, prefix?: string): UseFilter<TagFilter> {
-  return useFilterFromRoute(tagFilterSchema, defaultValue, prefix)
-}
-
 export function useStateFilter(defaultValue: MaybeReactive<StateFilter> = {}): UseFilter<StateFilter> {
   const defaultValueReactive = reactive(defaultValue)
   const filter: Filter<StateFilter> = reactive({
