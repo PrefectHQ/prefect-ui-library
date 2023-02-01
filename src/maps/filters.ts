@@ -204,6 +204,7 @@ export const mapTaskRunFilter: MapFunction<TaskRunFilter, TaskRunFilterRequest> 
 export const mapDeploymentFilter: MapFunction<DeploymentFilter, DeploymentFilterRequest> = function(source) {
   return removeEmptyObjects({
     ...toOperator(source.operator),
+    id: toAny(source.id),
     name: {
       ...toAny(source.name),
       ...toLike(source.nameLike),
