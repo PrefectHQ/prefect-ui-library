@@ -1,5 +1,5 @@
 <template>
-  <button v-bind="attrs" type="button" @click.stop.prevent="show = true">
+  <button class="extra-info-modal__button" v-bind="attrs" type="button" @click.stop.prevent="show = true">
     <p-icon icon="QuestionMarkCircleIcon" solid />
   </button>
   <p-modal v-model:show-modal="show" :title="title">
@@ -32,3 +32,10 @@
     },
   })
 </script>
+
+<style>
+.extra-info-modal__button {
+  @apply
+  pl-1
+}
+</style>
