@@ -26,6 +26,16 @@
         <p-tags-input v-model="tags" :options="deploymentTags" />
       </p-label>
 
+      <div class="flow-run-create-form__retries">
+        <p-label label="Retries (optional)">
+          <p-number-input v-model="retries" :min="0" />
+        </p-label>
+
+        <p-label label="Retry Delay (optional)">
+          <p-number-input v-model="retryDelay" :min="0" append="Seconds" />
+        </p-label>
+      </div>
+
       <p-divider v-if="deployment.parameters" />
 
       <h3 class="flow-run-create-form__section-header">
@@ -120,6 +130,8 @@
 
   const { value: start, meta: startState, errorMessage: startErrorMessage } = useField<Date>('state.stateDetails.scheduledTime', rules.start)
   const { value: tags } = useField<string[]>('tags')
+  const { value: retries } = useField<number | null>('empiricalPolicy.retries')
+  const { value: retryDelay } = useField<number | null>('empiricalPolicy.retryDelay')
   const { value: name } = useField<string>('name')
   const { value: stateMessage } = useField<string>('state.message')
 
@@ -187,5 +199,10 @@
 
 .flow-run-create-form__tag { @apply
   py-0
+}
+
+.flow-run-create-form__retries { @apply
+  flex
+  gap-4
 }
 </style>

@@ -9,7 +9,7 @@ type ScatterPlotItem = {
   itemClass?: string,
 }
 
-export const mapUiFlowRunHistoryToScatterPlotItem: MapFunction<UiFlowRunHistory, ScatterPlotItem> = function(source: UiFlowRunHistory): ScatterPlotItem {
+export const mapUiFlowRunHistoryToScatterPlotItem: MapFunction<UiFlowRunHistory, ScatterPlotItem> = function(source) {
   return {
     id: source.id,
     x: source.timestamp,

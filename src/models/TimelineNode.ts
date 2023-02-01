@@ -1,4 +1,4 @@
-import { TimelineNodeData, TimelineNodeState } from '@prefecthq/graphs'
+import { TimelineNodeData } from '@prefecthq/graphs'
 
 interface ModifiedTimelineNodeData extends Omit<TimelineNodeData, 'start'> {
   start: Date | null,
@@ -15,7 +15,8 @@ export class TimelineNode implements ModifiedTimelineNodeData {
   public label: string
   public start: Date | null
   public end: Date | null
-  public state: TimelineNodeState | string
+  public state: string
+  public upstreamDependencies?: string[]
 
   public constructor(timelineNode: TimelineNode) {
     this.id = timelineNode.id
@@ -23,5 +24,6 @@ export class TimelineNode implements ModifiedTimelineNodeData {
     this.start = timelineNode.start ?? null
     this.end = timelineNode.end ?? null
     this.state = timelineNode.state
+    this.upstreamDependencies = timelineNode.upstreamDependencies
   }
 }
