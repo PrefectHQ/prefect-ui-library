@@ -167,8 +167,8 @@ export const mapFlowRunFilter: MapFunction<FlowRunFilter, FlowRunFilterRequest> 
       ...toIsNull(source.startTimeNull),
     },
     expected_start_time: {
-      ...toBefore(source.startTimeBefore),
-      ...toAfter(source.startTimeAfter),
+      ...toBefore(source.expectedStartTimeBefore),
+      ...toAfter(source.expectedStartTimeAfter),
     },
     next_scheduled_start_time: {
       ...toBefore(source.nextExpectedStartTimeBefore),
