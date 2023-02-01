@@ -34,7 +34,6 @@ export type UseFilter<T extends AnyRecord> = {
 function withFilterFunctions<T extends AnyRecord>(filter: Filter<T>, defaultValue?: T): UseFilter<T> {
   const defaultValueCopy: T = JSON.parse(JSON.stringify(defaultValue ?? filter))
 
-
   const clear = (): void => {
     merge(filter as T, defaultValueCopy)
   }
@@ -65,31 +64,7 @@ function useFilterFromRoute<T extends AnyRecord>(schema: RouteQueryParamsSchema<
   const defaultValueReactive = reactive(defaultValue) as T
   const params = useRouteQueryParams(schema, defaultValueReactive, prefix)
   const filter = reactive(params) as Filter<T>
-  const response = withFilterFunctions(filter, defaultValueReactive)
-
-  let defaultValueWatchTriggered = false
-  let filterWatchTriggered = false
-
-  watch(defaultValueReactive, () => {
-    if (filterWatchTriggered) {
-      filterWatchTriggered = false
-      return
-    }
-
-    defaultValueWatchTriggered = true
-    merge(filter as T, defaultValueReactive)
-  }, { deep: true })
-
-  watch(filter, () => {
-    if (defaultValueWatchTriggered) {
-      defaultValueWatchTriggered = false
-      return
-    }
-
-    filterWatchTriggered = true
-
-    merge(defaultValueReactive, filter as T)
-  }, { deep: true })
+  const response = withFilterFunctions(filter, { ...defaultValueReactive, sort: undefined })
 
   return response
 }
