@@ -75,10 +75,10 @@
 
 <script lang="ts" setup>
   import { PTable, PEmptyResults, PLink, CheckboxModel } from '@prefecthq/prefect-design'
-  import { useDebouncedRef, useSubscription } from '@prefecthq/vue-compositions'
+  import { useSubscription } from '@prefecthq/vue-compositions'
   import { computed, ref } from 'vue'
   import { FlowsDeleteButton, DeploymentsCount, ResultsCount, SearchInput, FlowActivityChart, SelectedCount } from '@/components'
-  import { useCan, useFlowsFilter, useWorkspaceApi, useWorkspaceRoutes } from '@/compositions'
+  import { useCan, useFlowsFilterFromRoute, useWorkspaceApi, useWorkspaceRoutes } from '@/compositions'
   import { useComponent } from '@/compositions/useComponent'
   import { FlowsFilter } from '@/models/Filters'
   import { flowSortOptions } from '@/types/SortOptionTypes'
@@ -94,9 +94,7 @@
   const can = useCan()
   const routes = useWorkspaceRoutes()
 
-  // const search = ref<string>()
-  // const searchDebounced = useDebouncedRef(search, 1200)
-  const { filter, clear, isCustomFilter } = useFlowsFilter()
+  const { filter, clear, isCustomFilter } = useFlowsFilterFromRoute(props.filter)
 
   const columns = [
     {
