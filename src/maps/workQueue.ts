@@ -1,8 +1,7 @@
 import { WorkQueueCreateRequest, WorkQueueEditRequest, WorkQueueCreate, WorkQueueEdit, WorkQueue, WorkQueueResponse } from '@/models'
 import { MapFunction } from '@/services/Mapper'
-import { mapCamelToSnakeCase } from '@/utilities'
 
-export const mapWorkQueueResponseToWorkQueue: MapFunction<WorkQueueResponse, WorkQueue> = function(source: WorkQueueResponse): WorkQueue {
+export const mapWorkQueueResponseToWorkQueue: MapFunction<WorkQueueResponse, WorkQueue> = function(source) {
   return new WorkQueue({
     id: source.id,
     created: this.map('string', source.created, 'Date'),
@@ -15,27 +14,32 @@ export const mapWorkQueueResponseToWorkQueue: MapFunction<WorkQueueResponse, Wor
   })
 }
 
-export const mapWorkQueueToWorkQueueResponse: MapFunction<WorkQueue, WorkQueueResponse> = function(source: WorkQueue): WorkQueueResponse {
+export const mapWorkQueueToWorkQueueResponse: MapFunction<WorkQueue, WorkQueueResponse> = function(source) {
   return {
-    'id': source.id,
-    'created': this.map('Date', source.created, 'string'),
-    'updated': this.map('Date', source.updated, 'string'),
-    'name': source.name,
-    'filter': this.map('WorkQueueFilter', source.filter, 'WorkQueueFilterResponse'),
-    'description': source.description,
-    'is_paused': source.isPaused,
-    'concurrency_limit': source.concurrencyLimit,
+    id: source.id,
+    created: this.map('Date', source.created, 'string'),
+    updated: this.map('Date', source.updated, 'string'),
+    name: source.name,
+    filter: this.map('WorkQueueFilter', source.filter, 'WorkQueueFilterResponse'),
+    description: source.description,
+    is_paused: source.isPaused,
+    concurrency_limit: source.concurrencyLimit,
   }
 }
 
-export const mapWorkQueueCreateToWorkQueueCreateRequest: MapFunction<WorkQueueCreate, WorkQueueCreateRequest> = function(source: WorkQueueCreate): WorkQueueCreateRequest {
+export const mapWorkQueueCreateToWorkQueueCreateRequest: MapFunction<WorkQueueCreate, WorkQueueCreateRequest> = function(source) {
   return {
-    ...mapCamelToSnakeCase(source),
+    name: source.name,
+    description: source.description,
+    is_paused: source.isPaused,
+    concurrency_limit: source.concurrencyLimit,
   }
 }
 
-export const mapWorkQueueEditToWorkQueueEditRequest: MapFunction<WorkQueueEdit, WorkQueueEditRequest> = function(source: WorkQueueEdit): WorkQueueEditRequest {
+export const mapWorkQueueEditToWorkQueueEditRequest: MapFunction<WorkQueueEdit, WorkQueueEditRequest> = function(source) {
   return {
-    ...mapCamelToSnakeCase(source),
+    description: source.description,
+    is_paused: source.isPaused,
+    concurrency_limit: source.concurrencyLimit,
   }
 }

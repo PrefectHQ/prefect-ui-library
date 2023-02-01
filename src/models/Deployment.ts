@@ -22,6 +22,7 @@ export interface IDeployment {
   entrypoint: string | null,
   storageDocumentId: string | null,
   infrastructureDocumentId: string | null,
+  infrastructureOverrides: Record<string, unknown> | null,
   workQueueName: string | null,
 }
 
@@ -45,6 +46,7 @@ export class Deployment implements IDeployment {
   public entrypoint: string | null
   public storageDocumentId: string | null
   public infrastructureDocumentId: string | null
+  public infrastructureOverrides: Record<string, unknown> | null
   public workQueueName: string | null
 
   public constructor(deployment: IDeployment) {
@@ -67,6 +69,7 @@ export class Deployment implements IDeployment {
     this.entrypoint = deployment.entrypoint
     this.storageDocumentId = deployment.storageDocumentId
     this.infrastructureDocumentId = deployment.infrastructureDocumentId
+    this.infrastructureOverrides = deployment.infrastructureOverrides
     this.workQueueName = deployment.workQueueName
   }
 

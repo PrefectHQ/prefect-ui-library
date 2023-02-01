@@ -1,10 +1,9 @@
-/* eslint-disable camelcase */
 import { BlockDocumentCreateRequest } from '@/models/api/BlockDocumentCreateRequest'
 import { BlockDocumentCreate, isBlockDocumentCreateNamed } from '@/models/BlockDocumentCreate'
 import { MapFunction } from '@/services/Mapper'
 
 
-export const mapBlockDocumentCreateToBlockDocumentCreateRequest: MapFunction<BlockDocumentCreate, BlockDocumentCreateRequest> = function(source: BlockDocumentCreate): BlockDocumentCreateRequest {
+export const mapBlockDocumentCreateToBlockDocumentCreateRequest: MapFunction<BlockDocumentCreate, BlockDocumentCreateRequest> = function(source) {
   const { blockSchema, data: values } = source
   const schema = blockSchema.fields
   const data = this.map('SchemaValues', { values, schema }, 'SchemaValuesRequest')
