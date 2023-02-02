@@ -6,13 +6,13 @@
     <template #control="{ attrs }">
       <textarea
         ref="source"
-        v-model="internalValue"
+        v-model="stringifyInternalValue"
         spellcheck="false"
         class="json-input__input-area"
         v-bind="attrs"
       />
       <div ref="target" class="json-input__view-area">
-        <CodeHighlighting language="json" :value="internalValue" class="json-input__json-view" v-bind="attrs" />
+        <CodeHighlighting language="json" :value="stringifyInternalValue ?? ''" class="json-input__json-view" v-bind="attrs" />
       </div>
 
       <p-button v-if="showFormatButton" class="json-input__prettify-button" size="xs" @click="format">
@@ -28,33 +28,55 @@
   import { useScrollLinking } from '@/compositions'
   import { stringify } from '@/utilities/json'
 
+  type ModelValue = string | number | boolean | undefined | null
+  type ExtendedModelValue = ModelValue | ModelValue[] | Record<string, ModelValue>
+
   const props = defineProps<{
-    modelValue: string | undefined,
+    modelValue: ExtendedModelValue,
     showFormatButton?: boolean,
   }>()
 
   const emit = defineEmits<{
-    (event: 'update:modelValue', value: string): void,
+    (event: 'update:modelValue', value: ExtendedModelValue): void,
   }>()
+
 
   const { source, target } = useScrollLinking()
 
   const internalValue = computed({
     get() {
-      return props.modelValue ?? ''
+      return props.modelValue
     },
-    set(val: string) {
+    set(val: ExtendedModelValue) {
       emit('update:modelValue', val)
     },
   })
 
   const format = (): void => {
     try {
-      internalValue.value = stringify(JSON.parse(internalValue.value))
+      internalValue.value = JSON.parse(stringify(internalValue.value))
     } catch {
       // do nothing
     }
   }
+
+  const stringifyInternalValue = computed({
+    get() {
+      return stringify(internalValue.value)
+    },
+    set(val: string | undefined) {
+      try {
+        if (!val) {
+          internalValue.value = undefined
+          return
+        }
+
+        internalValue.value = JSON.parse(val)
+      } catch {
+        // do nothing
+      }
+    },
+  })
 </script>
 
 <style>
