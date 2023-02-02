@@ -22,6 +22,10 @@ export class SchemaPropertyBlock extends SchemaPropertyService {
       return value
     }
 
+    if (!value.blockDocumentId) {
+      return undefined
+    }
+
     const request: BlockDocumentReferenceValue = {
       $ref: {
         'block_document_id': value.blockDocumentId!,

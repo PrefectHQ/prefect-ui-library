@@ -1,6 +1,6 @@
 <template>
   <template v-if="isBlockDocumentValue(value)">
-    <BlockDocumentKeyValue :block-document-id="value.blockDocumentId!" />
+    <SchemaPropertyBlockKeyValue v-bind="{ property, value }" />
   </template>
   <!-- todo: support displaying nested objects -->
   <template v-else>
@@ -14,9 +14,9 @@
 
 <script lang="ts" setup>
   import { computed } from 'vue'
-  import BlockDocumentKeyValue from '@/components/BlockDocumentKeyValue.vue'
   import CodeSnippet from '@/components/CodeSnippet.vue'
   import JsonInput from '@/components/JsonInput.vue'
+  import SchemaPropertyBlockKeyValue from '@/components/SchemaPropertyBlockKeyValue.vue'
   import { isBlockDocumentValue } from '@/models'
   import { SchemaProperty, SchemaValue } from '@/types/schemas'
   import { stringifyUnknownJson } from '@/utilities/json'

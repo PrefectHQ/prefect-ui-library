@@ -1,33 +1,21 @@
 <template>
-  <p-combobox v-model="internalValue" placeholder="Search or enter new tag" allow-unknown-value :options="options" :empty-message="emptyMessage">
-    <template #combobox-options-empty>
-      No tags
-    </template>
-    <template #default="scope">
-      <slot v-bind="scope" />
-    </template>
-    <template #option="{ option }">
-      <slot name="option" :option="option" />
-    </template>
-  </p-combobox>
+  <p-tags-input v-model="internalValue" placeholder="Search or enter new tag" :options="options" :empty-message="emptyMessage" />
 </template>
 
 <script lang="ts" setup>
-  import { PCombobox } from '@prefecthq/prefect-design'
   import { useSubscription } from '@prefecthq/vue-compositions'
   import { computed } from 'vue'
   import { useWorkspaceApi } from '@/compositions'
   import { FlowRunFilter } from '@/types'
 
-
   const props = defineProps<{
-    selected: string | string[] | null | undefined,
+    selected: string[] | null | undefined,
     emptyMessage?: string,
     filter: FlowRunFilter,
   }>()
 
   const emits = defineEmits<{
-    (event: 'update:selected', value: string | string[] | null): void,
+    (event: 'update:selected', value: string[] | null): void,
   }>()
 
   const internalValue = computed({
