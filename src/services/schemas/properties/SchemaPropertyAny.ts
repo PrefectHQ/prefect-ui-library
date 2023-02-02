@@ -1,7 +1,7 @@
-import { schemaPropertyServiceFactory } from '..'
+import { getSchemaValueDefinition, schemaPropertyServiceFactory } from '..'
 import { JsonInput } from '@/components'
 import { SchemaPropertyService } from '@/services/schemas/properties/SchemaPropertyService'
-import { getSchemaValueAnyOfDefinition, getSchemaPropertyDefaultValue, SchemaPropertyComponentWithProps } from '@/services/schemas/utilities'
+import { getSchemaPropertyDefaultValue, SchemaPropertyComponentWithProps } from '@/services/schemas/utilities'
 import { SchemaValue } from '@/types/schemas'
 import { isEmptyObject, sameValue } from '@/utilities'
 import { parseUnknownJson, stringifyUnknownJson } from '@/utilities/json'
@@ -12,8 +12,8 @@ export class SchemaPropertyAny extends SchemaPropertyService {
       return ''
     }
 
-    if (this.has('anyOf')) {
-      return this.getDefaultValueForFirstAnyOfDefinition()
+    if (this.has('anyOf') || this.has('allOf')) {
+      return this.getDefaultValueForFirstDefinition()
     }
 
     return null
@@ -29,31 +29,27 @@ export class SchemaPropertyAny extends SchemaPropertyService {
   }
 
   protected request(value: SchemaValue): unknown {
-    if (this.has('anyOf')) {
-      return this.anyOfRequest(value)
+    if (this.has('anyOf') || this.has('allOf')) {
+      return this.referenceRequest(value)
     }
 
     return parseUnknownJson(value)
   }
 
   protected response(value: SchemaValue): unknown {
-    if (this.has('anyOf')) {
-      return this.anyOfResponse(value)
+    if (this.has('anyOf') || this.has('allOf')) {
+      return this.referenceResponse(value)
     }
 
     return stringifyUnknownJson(value)
   }
 
-  private anyOfResponse(value: SchemaValue): SchemaValue {
-    if (!this.has('anyOf')) {
-      return value
-    }
-
+  private referenceResponse(value: SchemaValue): SchemaValue {
     if (value === undefined) {
       return this.invalid()
     }
 
-    const definition = getSchemaValueAnyOfDefinition(this.property, value)
+    const definition = getSchemaValueDefinition(this.property, value)
 
     if (definition === null) {
       return this.invalid()
@@ -66,16 +62,12 @@ export class SchemaPropertyAny extends SchemaPropertyService {
 
   }
 
-  private anyOfRequest(value: SchemaValue): SchemaValue {
-    if (!this.has('anyOf')) {
-      return value
-    }
-
-    if (this.isDefaultValueForAnyOf(value)) {
+  private referenceRequest(value: SchemaValue): SchemaValue {
+    if (this.isDefaultValueForReference(value)) {
       return undefined
     }
 
-    const definition = getSchemaValueAnyOfDefinition(this.property, value)
+    const definition = getSchemaValueDefinition(this.property, value)
 
     if (definition === null) {
       return value
@@ -89,20 +81,24 @@ export class SchemaPropertyAny extends SchemaPropertyService {
     }
 
     return mapped
+
   }
 
-  private getDefaultValueForFirstAnyOfDefinition(): SchemaValue {
-    const [firstDefinition] = this.property.anyOf!
+  private getDefaultValueForFirstDefinition(): SchemaValue {
+    const [firstDefinition] = this.property.anyOf ?? this.property.allOf ?? []
 
-    return getSchemaPropertyDefaultValue(firstDefinition)
-  }
-
-  private isDefaultValueForAnyOf(value: SchemaValue): boolean {
-    if (!this.has('anyOf')) {
-      return false
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+    if (firstDefinition) {
+      return getSchemaPropertyDefaultValue(firstDefinition)
     }
 
-    return this.property.anyOf.some(definition => sameValue(value, getSchemaPropertyDefaultValue(definition)))
+    throw new Error('Could not find first definition for schema property')
+  }
+
+  private isDefaultValueForReference(value: SchemaValue): boolean {
+    const definitions = this.property.anyOf ?? this.property.allOf ?? []
+
+    return definitions.some(definition => sameValue(value, getSchemaPropertyDefaultValue(definition)))
   }
 
 }
