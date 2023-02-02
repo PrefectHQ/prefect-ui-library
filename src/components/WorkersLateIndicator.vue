@@ -24,12 +24,9 @@
     workPoolQueueNames?: string[],
   }>()
 
-
   const api = useWorkspaceApi()
 
   const { workPoolName } = toRefs(props)
-  const workPoolQueueNames = computed(() => props.workPoolQueueNames ?? [])
-
 
   const flowRunFilter = computed<UnionFilters>(() => {
 
@@ -42,7 +39,7 @@
     }
 
     if (props.workPoolQueueNames) {
-      flowRunFilter.work_pool_queues = { name: { any_: workPoolQueueNames.value } }
+      flowRunFilter.work_pool_queues = { name: { any_: props.workPoolQueueNames } }
     }
 
     return flowRunFilter
