@@ -86,17 +86,18 @@
   import { PButton, ButtonGroupOption } from '@prefecthq/prefect-design'
   import { zonedTimeToUtc } from 'date-fns-tz'
   import { useField } from 'vee-validate'
-  import { computed, ref } from 'vue'
+  import { computed, ref, watchEffect } from 'vue'
   import DateInput from '@/components/DateInput.vue'
   import SchemaFormFields from '@/components/SchemaFormFields.vue'
   import TimezoneSelect from '@/components/TimezoneSelect.vue'
   import { useForm } from '@/compositions/useForm'
-  import { Deployment, DeploymentFlowRunCreate } from '@/models'
+  import { Deployment, DeploymentFlowRunCreate, FlowRun } from '@/models'
   import { mocker } from '@/services'
   import { fieldRules, isRequiredIf } from '@/utilities/validation'
 
   const props = defineProps<{
     deployment: Deployment,
+    flowRun?: FlowRun,
   }>()
 
   const generateRandomName = (): string => {
@@ -116,6 +117,14 @@
     start: fieldRules('Start date', isRequiredIf(() => when.value === 'later')),
   }
 
+  const parameters = computed(() => {
+    if (props.flowRun) {
+      return { ...props.deployment.parameters, ...props.flowRun.parameters }
+    }
+
+    return props.deployment.parameters
+  })
+
   const { handleSubmit } = useForm<DeploymentFlowRunCreate>({
     initialValues: {
       state: {
@@ -123,7 +132,7 @@
       },
       tags: props.deployment.tags ?? [],
       name: generateRandomName(),
-      parameters: props.deployment.parameters,
+      parameters: parameters.value,
       schema: props.deployment.parameterOpenApiSchema,
     },
   })
@@ -162,6 +171,11 @@
     }
 
     emit('submit', resolvedValues)
+  })
+
+  watchEffect(() => {
+    console.log(props.deployment.parameters)
+    console.log({ ...props.deployment.parameters, ...props.flowRun?.parameters })
   })
 </script>
 
