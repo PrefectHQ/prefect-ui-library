@@ -86,7 +86,7 @@
   import { PButton, ButtonGroupOption } from '@prefecthq/prefect-design'
   import { zonedTimeToUtc } from 'date-fns-tz'
   import { useField } from 'vee-validate'
-  import { computed, ref, watchEffect } from 'vue'
+  import { computed, ref } from 'vue'
   import DateInput from '@/components/DateInput.vue'
   import SchemaFormFields from '@/components/SchemaFormFields.vue'
   import TimezoneSelect from '@/components/TimezoneSelect.vue'
@@ -171,11 +171,6 @@
     }
 
     emit('submit', resolvedValues)
-  })
-
-  watchEffect(() => {
-    console.log(props.deployment.parameters)
-    console.log({ ...props.deployment.parameters, ...props.flowRun?.parameters })
   })
 </script>
 
