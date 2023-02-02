@@ -14,7 +14,7 @@ import { mapCreatedOrUpdatedByResponseToCreatedOrUpdatedBy } from '@/maps/create
 import { mapStringToDate, mapDateToString } from '@/maps/date'
 import { mapDeploymentResponseToDeployment, mapDeploymentUpdateToDeploymentUpdateRequest, mapDeploymentFlowRunCreateToDeploymentFlowRunRequest } from '@/maps/deployment'
 import { mapRunHistoryToDivergingBarChartItem } from '@/maps/divergingBarChartItem'
-import { mapEmpiricalPolicyToEmpiricalPolicyResponse, mapEmpiricalPolicyResponseToEmpiricalPolicy } from '@/maps/empiricalPolicy'
+import { mapEmpiricalPolicyToEmpiricalPolicyResponse, mapEmpiricalPolicyResponseToEmpiricalPolicy, mapEmpiricalPolicyToEmpiricalPolicyRequest } from '@/maps/empiricalPolicy'
 import { mapFlowToFlowResponse, mapFlowResponseToFlow } from '@/maps/flow'
 import { mapFlowRunResponseToFlowRun } from '@/maps/flowRun'
 import { mapSavedSearchFilterToFlowRunFilters } from '@/maps/flowRunFilter'
@@ -69,7 +69,7 @@ export const maps = {
   DeploymentFlowRunCreate: { DeploymentFlowRunRequest: mapDeploymentFlowRunCreateToDeploymentFlowRunRequest },
   DeploymentResponse: { Deployment: mapDeploymentResponseToDeployment },
   DeploymentUpdate: { DeploymentUpdateRequest: mapDeploymentUpdateToDeploymentUpdateRequest },
-  EmpiricalPolicy: { EmpiricalPolicyResponse: mapEmpiricalPolicyToEmpiricalPolicyResponse },
+  EmpiricalPolicy: { EmpiricalPolicyResponse: mapEmpiricalPolicyToEmpiricalPolicyResponse, EmpiricalPolicyRequest: mapEmpiricalPolicyToEmpiricalPolicyRequest },
   EmpiricalPolicyResponse: { EmpiricalPolicy: mapEmpiricalPolicyResponseToEmpiricalPolicy },
   Flow: { FlowResponse: mapFlowToFlowResponse },
   FlowResponse: { Flow: mapFlowResponseToFlow },

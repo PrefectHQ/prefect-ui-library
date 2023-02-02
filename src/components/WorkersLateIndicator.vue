@@ -1,6 +1,6 @@
 <template>
-  <p-tag v-if="workPoolLateRunsCount" class="workers-late-indicator">
-    {{ workPoolLateRunsCount }} {{ toPluralString('Late run', workPoolLateRunsCount) }}
+  <p-tag v-if="lateFlowRunsCount" class="workers-late-indicator">
+    {{ lateFlowRunsCount }} {{ toPluralString('Late run', lateFlowRunsCount) }}
   </p-tag>
 </template>
 
@@ -16,6 +16,7 @@
   import { useSubscription } from '@prefecthq/vue-compositions'
   import { computed, toRefs } from 'vue'
   import { useWorkspaceApi } from '@/compositions'
+  import { UnionFilters } from '@/types'
   import { toPluralString } from '@/utilities'
 
   const props = defineProps<{
@@ -23,13 +24,30 @@
     workPoolQueueNames?: string[],
   }>()
 
-  const workPoolQueueNames = computed(() => props.workPoolQueueNames ?? [])
-
   const api = useWorkspaceApi()
+
   const { workPoolName } = toRefs(props)
 
-  const workPoolLateRunsSubscription = useSubscription(api.workPools.getWorkPoolLateRuns, [workPoolName.value, { workPoolQueueNames: workPoolQueueNames.value }], { interval: 30000 })
-  const workPoolLateRunsCount = computed(() => workPoolLateRunsSubscription.response?.length)
+  const flowRunFilter = computed<UnionFilters>(() => {
+
+    const flowRunFilter: UnionFilters = {
+      'work_pools': { name: { any_: [workPoolName.value] } },
+      'flow_runs': {
+        state: { name: { any_: ['Late'] } },
+      },
+      sort: 'START_TIME_ASC',
+    }
+
+    if (props.workPoolQueueNames) {
+      flowRunFilter.work_pool_queues = { name: { any_: props.workPoolQueueNames } }
+    }
+
+    return flowRunFilter
+  },
+  )
+
+  const flowRunsCountSubscription = useSubscription(api.flowRuns.getFlowRunsCount, [flowRunFilter], { interval: 30000 })
+  const lateFlowRunsCount = computed(() => flowRunsCountSubscription.response ?? 0)
 </script>
 
 <style>

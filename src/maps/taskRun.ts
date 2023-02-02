@@ -1,8 +1,9 @@
+import { sortStringArray } from '@prefecthq/prefect-design'
 import { TaskRunResponse } from '@/models/api/TaskRunResponse'
 import { TaskRun } from '@/models/TaskRun'
 import { MapFunction } from '@/services/Mapper'
 
-export const mapTaskRunResponseToTaskRun: MapFunction<TaskRunResponse, TaskRun> = function(source: TaskRunResponse): TaskRun {
+export const mapTaskRunResponseToTaskRun: MapFunction<TaskRunResponse, TaskRun> = function(source) {
   return new TaskRun({
     id: source.id,
     flowRunId: source.flow_run_id,
@@ -27,35 +28,35 @@ export const mapTaskRunResponseToTaskRun: MapFunction<TaskRunResponse, TaskRun> 
     stateId: source.state_id,
     stateType: this.map('ServerStateType', source.state_type, 'StateType'),
     state: this.map('StateResponse', source.state, 'State'),
-    tags: source.tags,
+    tags: source.tags ? sortStringArray(source.tags) : null,
   })
 }
 
-export const mapTaskRunToTaskRunResponse: MapFunction<TaskRun, TaskRunResponse> = function(source: TaskRun): TaskRunResponse {
+export const mapTaskRunToTaskRunResponse: MapFunction<TaskRun, TaskRunResponse> = function(source) {
   return {
-    'id': source.id,
-    'flow_run_id': source.flowRunId,
-    'cache_expiration': source.cacheExpiration,
-    'cache_key': source.cacheKey,
-    'created': this.map('Date', source.created, 'string'),
-    'dynamic_key': source.dynamicKey,
-    'empirical_policy': this.map('EmpiricalPolicy', source.empiricalPolicy, 'EmpiricalPolicyResponse'),
-    'estimated_run_time': source.estimatedRunTime,
-    'estimated_start_time_delta': source.estimatedStartTimeDelta,
-    'total_run_time': source.totalRunTime,
-    'expected_start_time': this.map('Date', source.expectedStartTime, 'string'),
-    'next_scheduled_start_time': source.nextScheduledStartTime,
-    'run_count': source.runCount,
-    'name': source.name,
-    'task_inputs': this.mapEntries('TaskInput', source.taskInputs, 'TaskInputResponse'),
-    'task_key': source.taskKey,
-    'task_version': source.taskVersion,
-    'updated': this.map('Date', source.updated, 'string'),
-    'start_time': this.map('Date', source.startTime, 'string'),
-    'end_time': this.map('Date', source.endTime, 'string'),
-    'state_id': source.stateId,
-    'state_type': this.map('StateType', source.stateType, 'ServerStateType'),
-    'state': this.map('State', source.state, 'StateResponse'),
-    'tags': source.tags,
+    id: source.id,
+    flow_run_id: source.flowRunId,
+    cache_expiration: source.cacheExpiration,
+    cache_key: source.cacheKey,
+    created: this.map('Date', source.created, 'string'),
+    dynamic_key: source.dynamicKey,
+    empirical_policy: this.map('EmpiricalPolicy', source.empiricalPolicy, 'EmpiricalPolicyResponse'),
+    estimated_run_time: source.estimatedRunTime,
+    estimated_start_time_delta: source.estimatedStartTimeDelta,
+    total_run_time: source.totalRunTime,
+    expected_start_time: this.map('Date', source.expectedStartTime, 'string'),
+    next_scheduled_start_time: source.nextScheduledStartTime,
+    run_count: source.runCount,
+    name: source.name,
+    task_inputs: this.mapEntries('TaskInput', source.taskInputs, 'TaskInputResponse'),
+    task_key: source.taskKey,
+    task_version: source.taskVersion,
+    updated: this.map('Date', source.updated, 'string'),
+    start_time: this.map('Date', source.startTime, 'string'),
+    end_time: this.map('Date', source.endTime, 'string'),
+    state_id: source.stateId,
+    state_type: this.map('StateType', source.stateType, 'ServerStateType'),
+    state: this.map('State', source.state, 'StateResponse'),
+    tags: source.tags,
   }
 }

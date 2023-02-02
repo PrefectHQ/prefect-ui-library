@@ -1,5 +1,5 @@
 // this can be used to cache bust between releases. Incrementing this will remove all caches using the previous version
-const cacheVersion = 2
+const cacheVersion = 4
 const cachePrefix = 'cache-key'
 const cacheKeyPrefix = `${cachePrefix}-${cacheVersion}`
 
