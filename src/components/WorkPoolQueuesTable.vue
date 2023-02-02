@@ -53,7 +53,7 @@
   import { TableData } from '@prefecthq/prefect-design'
   import { useSubscription } from '@prefecthq/vue-compositions'
   import { ref, computed } from 'vue'
-  import { SearchInput, ResultsCount, SelectedCount, WorkPoolQueuesDeleteButton, WorkPoolQueueMenu, WorkPoolQueuePriorityLabel, WorkersLateIndicator, WorkQueueLateIndicator, WorkPoolQueueToggle, WorkQueueStatusBadge } from '@/components'
+  import { SearchInput, ResultsCount, SelectedCount, WorkPoolQueuesDeleteButton, WorkPoolQueueMenu, WorkPoolQueuePriorityLabel, WorkersLateIndicator, WorkPoolQueueToggle, WorkQueueStatusBadge } from '@/components'
   import { useCan, useWorkspaceRoutes, useWorkspaceApi } from '@/compositions'
   import { WorkPoolQueue } from '@/models'
   import { hasString } from '@/utilities'
