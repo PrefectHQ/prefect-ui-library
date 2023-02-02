@@ -6,7 +6,7 @@
   <template v-else>
     <p-key-value :label="property.title" :value="value" class="schema-property-key-value">
       <template v-if="isDefined && isJsonProperty" #value>
-        <CodeSnippet language="json" :snippet="jsonValue || ''" />
+        <CodeSnippet language="json" :snippet="jsonValue ?? ''" />
       </template>
     </p-key-value>
   </template>
