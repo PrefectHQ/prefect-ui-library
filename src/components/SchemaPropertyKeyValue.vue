@@ -6,7 +6,7 @@
   <template v-else>
     <p-key-value :label="property.title" :value="value" class="schema-property-key-value">
       <template v-if="isDefined && isJsonProperty" #value>
-        <CodeHighlighting language="json" :value="jsonValue" />
+        <CodeSnippet language="json" :snippet="jsonValue ?? ''" />
       </template>
     </p-key-value>
   </template>
@@ -15,7 +15,7 @@
 <script lang="ts" setup>
   import { computed } from 'vue'
   import BlockDocumentKeyValue from '@/components/BlockDocumentKeyValue.vue'
-  import CodeHighlighting from '@/components/CodeHighlighting.vue'
+  import CodeSnippet from '@/components/CodeSnippet.vue'
   import JsonInput from '@/components/JsonInput.vue'
   import { isBlockDocumentValue } from '@/models'
   import { SchemaProperty, SchemaValue } from '@/types/schemas'
