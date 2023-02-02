@@ -46,14 +46,7 @@ export function resolveSchemaPropertyDefinition(property: SchemaProperty | undef
   if (allOf) {
     const resolvedAllOf = allOf.map(value => resolveSchemaPropertyDefinition(value, definitions)!)
 
-    // if there is only one schema we flatten it and treat this property as a simple property
-    if (resolvedAllOf.length === 1) {
-      const [first] = resolvedAllOf
-
-      resolved = flattenPropertyWithDefinition(resolved, first)
-    } else {
-      resolved.allOf = resolvedAllOf
-    }
+    resolved.allOf = resolvedAllOf
   }
 
   if (anyOf) {
