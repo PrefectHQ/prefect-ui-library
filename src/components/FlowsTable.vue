@@ -13,7 +13,7 @@
 
       <template #header-end>
         <div class="flows-table__header-end">
-          <SearchInput v-model="filter.flows.nameLike" placeholder="Search flows" label="Search flows" />
+          <SearchInput v-model="nameLike" placeholder="Search flows" label="Search flows" />
           <p-select v-model="filter.sort" :options="flowSortOptions" />
           <p-tags-input v-model="filter.flowRuns.tags.name" empty-message="Flow run tags" class="flows-table__tags" />
         </div>
@@ -75,7 +75,7 @@
 
 <script lang="ts" setup>
   import { PTable, PEmptyResults, PLink, CheckboxModel } from '@prefecthq/prefect-design'
-  import { useSubscription } from '@prefecthq/vue-compositions'
+  import { useDebouncedRef, useSubscription } from '@prefecthq/vue-compositions'
   import { computed, ref } from 'vue'
   import { FlowsDeleteButton, DeploymentsCount, ResultsCount, SearchInput, FlowActivityChart, SelectedCount } from '@/components'
   import { useCan, useFlowsFilterFromRoute, useWorkspaceApi, useWorkspaceRoutes } from '@/compositions'
@@ -93,8 +93,14 @@
   const api = useWorkspaceApi()
   const can = useCan()
   const routes = useWorkspaceRoutes()
-
-  const { filter, clear, isCustomFilter } = useFlowsFilterFromRoute(props.filter)
+  const nameLike = ref<string>('')
+  const { filter, clear, isCustomFilter } = useFlowsFilterFromRoute({
+    ...props.filter,
+    flows: {
+      ...props.filter,
+      nameLike,
+    },
+  })
 
   const columns = [
     {

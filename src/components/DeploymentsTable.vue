@@ -108,7 +108,7 @@
     ...props.filter,
     deployments: {
       ...props.filter?.deployments,
-      nameLike: searchDebounced,
+      nameLike: search,
     },
   })
 
