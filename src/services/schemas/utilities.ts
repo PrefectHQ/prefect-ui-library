@@ -1,7 +1,7 @@
 import { JsonInput } from '@/components'
 import { isBlockDocumentValue } from '@/models'
 import { schemaPropertyServiceFactory } from '@/services/schemas/properties'
-import { SchemaProperty, SchemaPropertyInputAttrs, Schema, SchemaValues, SchemaValue, schemaHas, SchemaPropertyAnyOf } from '@/types/schemas'
+import { SchemaProperty, SchemaPropertyInputAttrs, Schema, SchemaValues, SchemaValue, schemaHas, SchemaPropertyAnyOf, SchemaPropertyAllOf } from '@/types/schemas'
 import { withPropsWithoutExcludedFactory } from '@/utilities/components'
 import { stringify } from '@/utilities/json'
 import { isGreaterThan, isGreaterThanOrEqual, isLessThan, isLessThanOrEqual, isRequired, fieldRules, ValidationMethod, ValidationMethodFactory } from '@/utilities/validation'
@@ -173,6 +173,21 @@ export function resolve<T>(value: T, resolvers: ResolverCallback<T>[]): T {
 /*
  * Sometimes we have to guess which schema an anyOf property is using
  */
+export function getSchemaValueDefinition(property: SchemaProperty, value: SchemaValue): Schema | null {
+  if (property.anyOf) {
+    return getSchemaValueAnyOfDefinition(property as SchemaPropertyAnyOf, value)
+  }
+
+  if (property.allOf) {
+    return getSchemaValueAllOfDefinition(property as SchemaPropertyAllOf, value)
+  }
+
+  throw new Error('Schema property missing allOf and anyOf definitions')
+}
+
+/*
+ * Sometimes we have to guess which schema an anyOf property is using
+ */
 export function getSchemaValueAnyOfDefinition(property: SchemaPropertyAnyOf, value: SchemaValue): Schema | null {
   const index = getSchemaValueAnyOfDefinitionIndex(property, value)
 
@@ -186,6 +201,29 @@ export function getSchemaValueAnyOfDefinition(property: SchemaPropertyAnyOf, val
 }
 
 export function getSchemaValueAnyOfDefinitionIndex({ anyOf: definitions }: SchemaPropertyAnyOf, value: SchemaValue): number | null {
+  return getSchemaValueDefinitionIndex(definitions, value)
+}
+
+/*
+ * Sometimes we have to guess which schema an allOf property is using
+ */
+export function getSchemaValueAllOfDefinition(property: SchemaPropertyAllOf, value: SchemaValue): Schema | null {
+  const index = getSchemaValueAllOfDefinitionIndex(property, value)
+
+  if (index === null || index === -1) {
+    console.warn('Schema property with allOf had a value but could not be associated with a definition')
+
+    return null
+  }
+
+  return property.allOf[index]
+}
+
+export function getSchemaValueAllOfDefinitionIndex({ allOf: definitions }: SchemaPropertyAllOf, value: SchemaValue): number | null {
+  return getSchemaValueDefinitionIndex(definitions, value)
+}
+
+export function getSchemaValueDefinitionIndex(definitions: Schema[], value: SchemaValue): number | null {
   switch (typeof value) {
     case 'number':
       return definitions.findIndex(definition => definition.type == 'number' || definition.type === 'integer')
