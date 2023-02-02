@@ -38,7 +38,7 @@
     ],
     "types": "./dist/types/src/index.d.ts",
     "devDependencies": {
-        "@prefecthq/eslint-config": "1.0.22",
+        "@prefecthq/eslint-config": "1.0.23",
         "@tailwindcss/line-clamp": "0.4.2",
         "@types/lodash.camelcase": "4.3.7",
         "@types/lodash.debounce": "4.0.7",
