@@ -2,7 +2,7 @@
   <p-icon-button-menu>
     <template #default>
       <router-link :to="routes.customFlowRunCreate(flowRunId)">
-        <p-overflow-menu-item label="Run again" />
+        <p-overflow-menu-item label="Custom run" />
       </router-link>
       <p-overflow-menu-item v-if="canRetry && showAll" label="Retry" @click="openRetryModal" />
       <p-overflow-menu-item v-if="canResume && showAll" label="Resume" @click="openResumeModal" />
