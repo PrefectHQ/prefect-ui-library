@@ -2,24 +2,23 @@
   <div class="work-queues-table">
     <p-layout-table>
       <template #header-start>
-        <ResultsCount v-if="selectedWorkQueues.length == 0" label="Work queue" :count="filteredWorkQueues.length" />
-        <SelectedCount v-else :count="selectedWorkQueues.length" />
+        <template v-if="selected">
+          <ResultsCount v-if="selected.length == 0" label="Work queue" :count="filteredWorkQueues.length" />
+          <SelectedCount v-else :count="selected.length" />
 
-        <WorkQueuesDeleteButton v-if="can.delete.work_queue" :selected="selectedWorkQueues" @delete="deleteWorkQueues" />
+          <WorkQueuesDeleteButton v-if="can.delete.work_queue" :selected="selected" @delete="handleDelete" />
+        </template>
       </template>
 
       <template #header-end>
-        <SearchInput v-model="searchTerm" placeholder="Search work queues" label="Search work queues" />
+        <SearchInput v-model="search" placeholder="Search work queues" label="Search work queues" />
       </template>
 
-      <p-table :data="filteredWorkQueues" :columns="columns">
-        <template #selection-heading>
-          <p-checkbox v-model="model" @update:model-value="selectAllWorkQueues" />
+      <p-table v-model:selected="selected" :data="filteredWorkQueues" :columns="columns">
+        <template #action-heading>
+          <span />
         </template>
 
-        <template #selection="{ row }">
-          <p-checkbox v-model="selectedWorkQueues" :value="row.id" />
-        </template>
         <template #name="{ row }">
           <p-link :to="routes.workQueue(row.id)">
             <span>{{ row.name }}</span>
@@ -38,15 +37,11 @@
           <WorkQueueLastPolled :work-queue-id="row.id" />
         </template>
 
-        <template #action-heading>
-          <span />
-        </template>
-
         <template #action="{ row }">
           <div class="work-queues-table__actions">
             <WorkQueueLateIndicator :work-queue-id="row.id" />
             <WorkQueueToggle :work-queue="row" @update="emit('update')" />
-            <WorkQueueMenu size="xs" :work-queue="row" @delete="emit('delete')" />
+            <WorkQueueMenu size="xs" :work-queue="row" @delete="handleDelete" />
           </div>
         </template>
 
@@ -68,31 +63,32 @@
 </template>
 
 <script lang="ts" setup>
-  import { PTable, PEmptyResults, PLink, CheckboxModel } from '@prefecthq/prefect-design'
-  import { computed, ref } from 'vue'
-  import { WorkQueueToggle, WorkQueueLateIndicator, SearchInput, ResultsCount, WorkQueueLastPolled, WorkQueueStatusBadge, SelectedCount, WorkQueuesDeleteButton } from '@/components'
-  import { useCan, useComponent, useWorkspaceRoutes } from '@/compositions'
+  import { PTable, PEmptyResults, PLink, TableData } from '@prefecthq/prefect-design'
+  import { useSubscription } from '@prefecthq/vue-compositions'
+  import { computed, ref, toRefs } from 'vue'
+  import { WorkQueueToggle, WorkQueueLateIndicator, SearchInput, ResultsCount, WorkQueueLastPolled, WorkQueueStatusBadge, SelectedCount, WorkQueuesDeleteButton, WorkQueueMenu } from '@/components'
+  import { useCan, useWorkspaceApi, useWorkspaceRoutes } from '@/compositions'
   import { WorkQueue } from '@/models'
+  import { hasString } from '@/utilities'
 
   const props = defineProps<{
     workQueues: WorkQueue[],
   }>()
 
+  const { workQueues } = toRefs(props)
+
   const emit = defineEmits<{
     (event: 'update' | 'delete'): void,
   }>()
 
-  const { WorkQueueMenu } = useComponent()
+  const api = useWorkspaceApi()
   const can = useCan()
   const routes = useWorkspaceRoutes()
-  const searchTerm = ref('')
+
+  const search = ref('')
+  const selected = ref<WorkQueue[] | undefined>(can.delete.work_queue ? [] : undefined)
 
   const columns = [
-    {
-      label: 'selection',
-      width: '20px',
-      visible: can.delete.work_queue,
-    },
     {
       property: 'name',
       label: 'Name',
@@ -112,41 +108,36 @@
     },
   ]
 
-  const selectedWorkQueues = ref<string[]>([])
-  const selectAllWorkQueues = (allWorkQueuesSelected: CheckboxModel): string[] => {
-    if (allWorkQueuesSelected) {
-      return selectedWorkQueues.value = [...filteredWorkQueues.value.map(workQueue => workQueue.id)]
-    }
-    return selectedWorkQueues.value = []
+  const subscriptionOptions = {
+    interval: 30000,
   }
-  const model = computed({
-    get() {
-      return selectedWorkQueues.value.length === filteredWorkQueues.value.length
-    },
-    set(value: boolean) {
-      selectAllWorkQueues(value)
-    },
-  })
+
+  const workPoolsSubscription = useSubscription(api.workPools.getWorkPools, [], subscriptionOptions)
+  const workPools = computed(() => workPoolsSubscription.response ?? [])
+
+  const workQueuesData = computed<TableData[]>(() => workQueues.value.map(queue => {
+    return {
+      ...queue,
+      disabled: workPools.value.some(pool => pool.defaultQueueId == queue.id),
+    }
+  }))
 
   const filteredWorkQueues = computed(() => {
-    if (searchTerm.value.length === 0) {
-      return props.workQueues
+    if (search.value.length === 0) {
+      return workQueuesData.value
     }
 
-    return props.workQueues.filter(filterWorkQueue)
+    return workQueuesData.value.filter(queue => hasString(queue, search.value))
   })
 
-  function filterWorkQueue({ name, concurrencyLimit }: WorkQueue): boolean {
-    return `${name} ${concurrencyLimit}`.toLowerCase().includes(searchTerm.value.toLowerCase())
+  const handleDelete = (): void => {
+    emit('delete')
+    selected.value = []
+    selected.value = selected.value.filter(queue => workQueues.value.find(({ id }) => id === queue.id))
   }
 
   function clear(): void {
-    searchTerm.value = ''
-  }
-
-  const deleteWorkQueues = (): void => {
-    selectedWorkQueues.value = []
-    emit('delete')
+    search.value = ''
   }
 </script>
 

@@ -23,10 +23,6 @@
           <WorkPoolQueuePriorityLabel />
         </template>
 
-        <template #status="{ row }">
-          <WorkQueueStatusBadge :work-queue="row" />
-        </template>
-
         <template #actions-heading>
           <span />
         </template>
@@ -35,6 +31,10 @@
           <p-link :to="routes.workPoolQueue(workPoolName, row.name)">
             <span>{{ row.name }}</span>
           </p-link>
+        </template>
+
+        <template #status="{ row }">
+          <WorkQueueStatusBadge :work-queue="row" />
         </template>
 
         <template #actions="{ row }">
@@ -89,7 +89,7 @@
     return workPoolQueuesData.value.filter(queue => hasString(queue, search.value))
   })
 
-  const selected = ref<WorkPoolQueue[] | undefined>(can.update.work_queue ? [] : undefined)
+  const selected = ref<WorkPoolQueue[] | undefined>(can.delete.work_queue ? [] : undefined)
   const columns = [
     {
       property: 'name',
