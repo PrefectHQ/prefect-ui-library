@@ -3,7 +3,7 @@
     <div class="flow-run-task-runs__filters">
       <StateNameSelect v-model:selected="states" empty-message="All states" class="mr-auto" />
       <SearchInput v-model="searchTerm" placeholder="Search by run name" label="Search by run name" />
-      <TaskRunsSort v-model="sort" />
+      <TaskRunsSort v-model="filter.sort" />
     </div>
 
     <TaskRunList :selected="[]" :task-runs="taskRuns" disabled @bottom="taskRunsSubscription.loadMore" />
@@ -12,7 +12,7 @@
       <template #message>
         No task runs
       </template>
-      <template v-if="hasFilters" #actions>
+      <template v-if="isCustomFilter" #actions>
         <p-button size="sm" secondary @click="clear">
           Clear Filters
         </p-button>
@@ -28,35 +28,31 @@
   import StateNameSelect from '@/components/StateNameSelect.vue'
   import TaskRunList from '@/components/TaskRunList.vue'
   import TaskRunsSort from '@/components/TaskRunsSort.vue'
-  import { useWorkspaceApi } from '@/compositions'
+  import { useTaskRunsFilter, useWorkspaceApi } from '@/compositions'
   import { usePaginatedSubscription } from '@/compositions/usePaginatedSubscription'
-  import { TaskRunsFilter } from '@/models/Filters'
   import { TaskRun } from '@/models/TaskRun'
-  import { TaskRunSortValues } from '@/types/SortOptionTypes'
 
   const props = defineProps<{
     flowRunId: string,
   }>()
 
   const states = ref<string[]>([])
-  const searchTerm = ref('')
+  const searchTerm = ref<string>()
   const searchTermDebounced = useDebouncedRef(searchTerm, 1200)
-  const sort = ref<TaskRunSortValues>('EXPECTED_START_TIME_DESC')
-  const hasFilters = computed(() => states.value.length || searchTerm.value.length)
+  const flowRunsIds = computed(() => [props.flowRunId])
 
-  const filter = computed<TaskRunsFilter>(() => ({
+  const { filter, isCustomFilter } = useTaskRunsFilter({
     flowRuns: {
-      id: [props.flowRunId],
+      id: flowRunsIds,
     },
     taskRuns: {
       subFlowRunsExist: false,
-      nameLike: searchTermDebounced.value,
+      nameLike: searchTermDebounced,
       state: {
-        name: states.value,
+        name: states,
       },
     },
-    sort: sort.value,
-  }))
+  })
 
   const api = useWorkspaceApi()
   const taskRunsSubscription = usePaginatedSubscription(api.taskRuns.getTaskRuns, [filter], { interval: 30000 })

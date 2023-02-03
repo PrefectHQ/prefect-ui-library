@@ -23,13 +23,15 @@
       </p-label>
     </div>
     <p-label class="flow-runs-filter-group__search" label="Search">
-      <SearchInput v-model="filter.flowRuns.nameLike" placeholder="Search by flow run name" label="Search by flow run name" />
+      <SearchInput v-model="flowRunNameLike" placeholder="Search by flow run name" label="Search by flow run name" />
     </p-label>
   </div>
 </template>
 
 <script lang="ts" setup>
-  import { media } from '@prefecthq/prefect-design'
+  import { media, PLabel } from '@prefecthq/prefect-design'
+  import { useDebouncedRef } from '@prefecthq/vue-compositions'
+  import { ref } from 'vue'
   import DateRangeInputWithFlowRunHistory from '@/components/DateRangeInputWithFlowRunHistory.vue'
   import DeploymentCombobox from '@/components/DeploymentCombobox.vue'
   import FlowCombobox from '@/components/FlowCombobox.vue'
@@ -39,7 +41,13 @@
   import WorkQueueCombobox from '@/components/WorkQueueCombobox.vue'
   import { useFlowRunsFilterFromRoute } from '@/compositions/filters'
 
-  const { filter } = useFlowRunsFilterFromRoute()
+  const flowRunNameLike = ref<string>()
+  const flowRunNameLikeDebounced = useDebouncedRef(flowRunNameLike, 1200)
+  const { filter } = useFlowRunsFilterFromRoute({
+    flowRuns: {
+      nameLike: flowRunNameLikeDebounced,
+    },
+  })
 </script>
 
 <style>

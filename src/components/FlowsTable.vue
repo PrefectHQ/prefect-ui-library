@@ -1,6 +1,5 @@
 <template>
   <div class="flows-table">
-    {{ filter }}
     <p-layout-table sticky>
       <template #header-start>
         <div class="flows-table__header-start">
@@ -13,7 +12,7 @@
 
       <template #header-end>
         <div class="flows-table__header-end">
-          <SearchInput v-model="nameLike" placeholder="Search flows" label="Search flows" />
+          <SearchInput v-model="flowNameLike" placeholder="Search flows" label="Search flows" />
           <p-select v-model="filter.sort" :options="flowSortOptions" />
           <p-tags-input v-model="filter.flowRuns.tags.name" empty-message="Flow run tags" class="flows-table__tags" />
         </div>
@@ -93,12 +92,13 @@
   const api = useWorkspaceApi()
   const can = useCan()
   const routes = useWorkspaceRoutes()
-  const nameLike = ref<string>('')
+  const flowNameLike = ref<string>()
+  const flowNameLikeDebounced = useDebouncedRef(flowNameLike, 1200)
   const { filter, clear, isCustomFilter } = useFlowsFilterFromRoute({
     ...props.filter,
     flows: {
       ...props.filter,
-      nameLike,
+      nameLike: flowNameLikeDebounced,
     },
   })
 

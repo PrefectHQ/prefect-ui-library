@@ -12,7 +12,7 @@
 
       <template #header-end>
         <div class="deployments-table__header-end">
-          <SearchInput v-model="search" placeholder="Search deployments" label="Search deployments" />
+          <SearchInput v-model="deploymentName" placeholder="Search deployments" label="Search deployments" />
 
           <template v-if="hideFlowFilter">
             <FlowCombobox v-model:selected="filter.flows.id" empty-message="All flows" class="deployments-table__flows" />
@@ -102,13 +102,13 @@
   const api = useWorkspaceApi()
   const can = useCan()
   const routes = useWorkspaceRoutes()
-  const search = ref<string>()
-  const searchDebounced = useDebouncedRef(search, 1200)
+  const deploymentName = ref<string>()
+  const deploymentNameDebounced = useDebouncedRef(deploymentName, 1200)
   const { filter, clear, isCustomFilter } = useDeploymentsFilterFromRoute({
     ...props.filter,
     deployments: {
       ...props.filter?.deployments,
-      nameLike: search,
+      nameLike: deploymentNameDebounced,
     },
   })
 
