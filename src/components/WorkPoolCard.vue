@@ -5,10 +5,11 @@
         <p-link class="work-pool-card__name" :to="routes.workPool(workPool.name)">
           {{ workPool.name }}
         </p-link>
+        <WorkersLateIndicator v-if="!media.sm" :work-pool-name="workPool.name" />
       </div>
 
       <div class="work-pool-card__header-actions">
-        <WorkersLateIndicator :work-pool-name="workPool.name" />
+        <WorkersLateIndicator v-if="media.sm" :work-pool-name="workPool.name" />
         <WorkPoolToggle :work-pool="workPool" @update="emit('update')" />
         <WorkPoolMenu :work-pool="workPool" @delete="emit('update')" />
       </div>
@@ -36,6 +37,7 @@
 </template>
 
 <script lang="ts" setup>
+  import { media } from '@prefecthq/prefect-design'
   import { useSubscription } from '@prefecthq/vue-compositions'
   import { computed } from 'vue'
   import { WorkPoolMenu, WorkPoolToggle, WorkersLateIndicator } from '@/components'
@@ -105,7 +107,8 @@
 
 .work-pool-card__heading { @apply
   flex
+  flex-col
   gap-2
-  items-center
+  items-start
 }
 </style>
