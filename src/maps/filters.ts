@@ -13,25 +13,37 @@ function toOperator(value?: Operation): OperatorRequest | undefined {
   return { operator: `${value}_` }
 }
 
-function toAny(value?: string | string[]): Any | undefined {
+function toAny(value?: string[]): Any | undefined {
   if (typeof value === 'undefined') {
     return value
+  }
+
+  if (value.length === 0) {
+    return undefined
   }
 
   return { any_: asArray(value) }
 }
 
-function toNotAny(value?: string | string[]): NotAny | undefined {
+function toNotAny(value?: string[]): NotAny | undefined {
   if (typeof value === 'undefined') {
     return value
+  }
+
+  if (value.length === 0) {
+    return undefined
   }
 
   return { not_any_: asArray(value) }
 }
 
-function toAll(value?: string | string[]): All | undefined {
+function toAll(value?: string[]): All | undefined {
   if (typeof value === 'undefined') {
     return value
+  }
+
+  if (value.length === 0) {
+    return undefined
   }
 
   return { all_: asArray(value) }
