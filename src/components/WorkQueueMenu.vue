@@ -26,6 +26,7 @@
 
 <script lang="ts" setup>
   import { PIconButtonMenu, POverflowMenuItem } from '@prefecthq/prefect-design'
+  import { useSubscription } from '@prefecthq/vue-compositions'
   import { computed } from 'vue'
   import { RouterLink } from 'vue-router'
   import ConfirmDeleteModal from '@/components/ConfirmDeleteModal.vue'
@@ -37,7 +38,7 @@
   import { deleteItem } from '@/utilities'
 
   const props = defineProps<{
-    workQueue: WorkQueue & { disabled?: boolean },
+    workQueue: WorkQueue,
   }>()
 
   const emits = defineEmits<{
@@ -49,8 +50,15 @@
   const routes = useWorkspaceRoutes()
   const { showModal, open, close } = useShowModal()
 
+  const workPoolsSubscription = useSubscription(api.workPools.getWorkPools, [])
+  const workPools = computed(() => workPoolsSubscription.response ?? [])
+
+  const isDefaultQueue = computed(() => {
+    return workPools.value.some(workPool => workPool.defaultQueueId === props.workQueue.id)
+  })
+
   const showDelete = computed(() => {
-    return !props.workQueue.disabled && can.delete.work_queue
+    return !isDefaultQueue.value && can.delete.work_queue
   })
 
   const deleteWorkQueue = async (id: string): Promise<void> => {
