@@ -1,5 +1,5 @@
 <template>
-  <Transition name="work-pool-queuess-delete-button-transition">
+  <Transition name="work-pool-queues-delete-button-transition">
     <p-button v-if="workPoolQueues.length > 0" danger icon="TrashIcon" @click="open" />
   </Transition>
   <ConfirmDeleteModal
