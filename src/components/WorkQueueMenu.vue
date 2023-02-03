@@ -37,7 +37,7 @@
   import { deleteItem } from '@/utilities'
 
   const props = defineProps<{
-    workQueue: WorkQueue & { disabled: boolean },
+    workQueue: WorkQueue & { disabled?: boolean },
   }>()
 
   const emits = defineEmits<{

@@ -89,7 +89,7 @@
     return workPoolQueuesData.value.filter(queue => hasString(queue, search.value))
   })
 
-  const selected = ref<WorkPoolQueue[] | undefined>(can.update.work_queue ? [] : undefined)
+  const selected = ref<WorkPoolQueue[] | undefined>(can.delete.work_queue ? [] : undefined)
   const columns = [
     {
       property: 'name',

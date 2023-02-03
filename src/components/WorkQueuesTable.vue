@@ -65,7 +65,7 @@
 <script lang="ts" setup>
   import { PTable, PEmptyResults, PLink, TableData } from '@prefecthq/prefect-design'
   import { useSubscription } from '@prefecthq/vue-compositions'
-  import { computed, ref } from 'vue'
+  import { computed, ref, toRefs } from 'vue'
   import { WorkQueueToggle, WorkQueueLateIndicator, SearchInput, ResultsCount, WorkQueueLastPolled, WorkQueueStatusBadge, SelectedCount, WorkQueuesDeleteButton, WorkQueueMenu } from '@/components'
   import { useCan, useWorkspaceApi, useWorkspaceRoutes } from '@/compositions'
   import { WorkQueue } from '@/models'
@@ -74,6 +74,8 @@
   const props = defineProps<{
     workQueues: WorkQueue[],
   }>()
+
+  const { workQueues } = toRefs(props)
 
   const emit = defineEmits<{
     (event: 'update' | 'delete'): void,
@@ -84,7 +86,7 @@
   const routes = useWorkspaceRoutes()
 
   const search = ref('')
-  const selected = ref<WorkQueue[] | undefined>(can.update.work_queue ? [] : undefined)
+  const selected = ref<WorkQueue[] | undefined>(can.delete.work_queue ? [] : undefined)
 
   const columns = [
     {
@@ -113,7 +115,7 @@
   const workPoolsSubscription = useSubscription(api.workPools.getWorkPools, [], subscriptionOptions)
   const workPools = computed(() => workPoolsSubscription.response ?? [])
 
-  const workQueuesData = computed<TableData[]>(() => props.workQueues.map(queue => {
+  const workQueuesData = computed<TableData[]>(() => workQueues.value.map(queue => {
     return {
       ...queue,
       disabled: workPools.value.some(pool => pool.defaultQueueId == queue.id),
@@ -130,7 +132,8 @@
 
   const handleDelete = (): void => {
     emit('delete')
-    selected.value = selected.value?.filter(queue => props.workQueues.find(({ id }) => id === queue.id))
+    selected.value = []
+    selected.value = selected.value.filter(queue => workQueues.value.find(({ id }) => id === queue.id))
   }
 
   function clear(): void {
