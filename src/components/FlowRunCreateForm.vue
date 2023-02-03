@@ -118,11 +118,7 @@
   }
 
   const parameters = computed(() => {
-    if (props.flowRun) {
-      return { ...props.deployment.parameters, ...props.flowRun.parameters }
-    }
-
-    return props.deployment.parameters
+    return { ...props.deployment.parameters, ...props.flowRun?.parameters }
   })
 
   const { handleSubmit } = useForm<DeploymentFlowRunCreate>({
