@@ -1,6 +1,9 @@
 <template>
   <p-icon-button-menu>
     <template #default>
+      <router-link v-if="flowRun?.deploymentId" :to="routes.deploymentFlowRunCreate(flowRun.deploymentId, flowRun.parameters)">
+        <p-overflow-menu-item label="Custom run" />
+      </router-link>
       <p-overflow-menu-item v-if="canRetry && showAll" label="Retry" @click="openRetryModal" />
       <p-overflow-menu-item v-if="canResume && showAll" label="Resume" @click="openResumeModal" />
       <p-overflow-menu-item v-if="canPause && showAll" label="Pause" @click="openPauseModal" />
@@ -53,7 +56,7 @@
   import { useSubscription, useSubscriptionWithDependencies } from '@prefecthq/vue-compositions'
   import { computed, ref } from 'vue'
   import { FlowRunRetryModal, FlowRunResumeModal, FlowRunCancelModal, FlowRunPauseModal, ConfirmStateChangeModal, ConfirmDeleteModal, CopyOverflowMenuItem } from '@/components'
-  import { useCan, useWorkspaceApi, useShowModal } from '@/compositions'
+  import { useCan, useWorkspaceApi, useShowModal, useWorkspaceRoutes } from '@/compositions'
   import { localization } from '@/localization'
   import { isPausedStateType, isRunningStateType, isStuckStateType, isTerminalStateType, StateUpdateDetails } from '@/models'
   import { deleteItem } from '@/utilities'
@@ -65,6 +68,7 @@
 
   const can = useCan()
   const api = useWorkspaceApi()
+  const routes = useWorkspaceRoutes()
 
   const { showModal: showRetryModal, open: openRetryModal } = useShowModal()
   const { showModal: showResumeModal, open: openResumeModal } = useShowModal()
