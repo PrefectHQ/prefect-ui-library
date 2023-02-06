@@ -20,7 +20,7 @@ export function createWorkspaceRoutes(config?: CreateWorkspaceRoutesConfig) {
     deployments: () => ({ name: 'workspace.deployments', params: { ...config } }) as const,
     deployment: (deploymentId: string) => ({ name: 'workspace.deployments.deployment', params: { deploymentId, ...config } }) as const,
     deploymentEdit: (deploymentId: string) => ({ name: 'workspace.deployments.deployment-edit', params: { deploymentId, ...config } }) as const,
-    deploymentFlowRunCreate: (deploymentId: string, parameters?: any) => ({ name: 'workspace.deployments.deployment-flow-run-create', params: { deploymentId, ...config }, query: { parameters } }) as const,
+    deploymentFlowRunCreate: (deploymentId: string, parameters?: Record<string, unknown>) => ({ name: 'workspace.deployments.deployment-flow-run-create', params: { deploymentId, ...config }, query: { parameters: encodeURIComponent(JSON.stringify(parameters)) } }) as const,
     workQueues: () => ({ name: 'workspace.work-queues', params: { ...config } }) as const,
     workQueue: (workQueueId: string) => ({ name: 'workspace.work-queues.work-queue', params: { workQueueId, ...config } }) as const,
     workQueueCreate: () => ({ name: 'workspace.work-queues.work-queue-create', params: { ...config } }) as const,
