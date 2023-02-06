@@ -16,9 +16,10 @@
   import ConfirmDeleteModal from '@/components/ConfirmDeleteModal.vue'
   import { useShowModal, useWorkspaceApi } from '@/compositions'
   import { localization } from '@/localization'
+  import { WorkQueue } from '@/models'
 
   defineProps<{
-    selected: string[],
+    selected: WorkQueue[],
   }>()
 
   const emit = defineEmits<{
@@ -29,7 +30,7 @@
 
   const api = useWorkspaceApi()
 
-  const deleteWorkQueues = async (workQueues: string[]): Promise<void> => {
+  const deleteWorkQueues = async (workQueues: WorkQueue[]): Promise<void> => {
     const toastMessage = computed(() => {
       if (workQueues.length === 1) {
         return localization.success.delete('Work queue')
@@ -38,7 +39,7 @@
     })
 
     try {
-      const deleteWorkQueues = workQueues.map(api.workQueues.deleteWorkQueue)
+      const deleteWorkQueues = workQueues.map(queue => api.workQueues.deleteWorkQueue(queue.id))
       await Promise.all(deleteWorkQueues)
       showToast(toastMessage, 'success')
       emit('delete')

@@ -5,7 +5,7 @@
       <p-overflow-menu-item label="Edit" />
     </router-link>
     <slot v-bind="{ workQueue }" />
-    <p-overflow-menu-item v-if="can.delete.work_queue" label="Delete" @click="open" />
+    <p-overflow-menu-item v-if="showDelete" label="Delete" @click="open" />
   </p-icon-button-menu>
 
   <ConfirmDeleteModal
@@ -26,6 +26,8 @@
 
 <script lang="ts" setup>
   import { PIconButtonMenu, POverflowMenuItem } from '@prefecthq/prefect-design'
+  import { useSubscription } from '@prefecthq/vue-compositions'
+  import { computed } from 'vue'
   import { RouterLink } from 'vue-router'
   import ConfirmDeleteModal from '@/components/ConfirmDeleteModal.vue'
   import CopyOverflowMenuItem from '@/components/CopyOverflowMenuItem.vue'
@@ -35,7 +37,7 @@
   import { WorkQueue } from '@/models'
   import { deleteItem } from '@/utilities'
 
-  defineProps<{
+  const props = defineProps<{
     workQueue: WorkQueue,
   }>()
 
@@ -47,6 +49,17 @@
   const can = useCan()
   const routes = useWorkspaceRoutes()
   const { showModal, open, close } = useShowModal()
+
+  const workPoolsSubscription = useSubscription(api.workPools.getWorkPools, [])
+  const workPools = computed(() => workPoolsSubscription.response ?? [])
+
+  const isDefaultQueue = computed(() => {
+    return workPools.value.some(workPool => workPool.defaultQueueId === props.workQueue.id)
+  })
+
+  const showDelete = computed(() => {
+    return !isDefaultQueue.value && can.delete.work_queue
+  })
 
   const deleteWorkQueue = async (id: string): Promise<void> => {
     close()

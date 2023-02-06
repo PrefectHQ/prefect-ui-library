@@ -4,7 +4,7 @@
       <template #header-start>
         <template v-if="selected">
           <div class="work-pool-queues-table__controls--right">
-            <ResultsCount v-if="selected.length == 0" label="Queue" :count="workPoolQueues.length" />
+            <ResultsCount v-if="selected.length == 0" label="Work Queue" :count="workPoolQueues.length" />
             <SelectedCount v-else :count="selected.length" />
 
             <p-button v-if="can.create.work_queue && !selected.length" inset size="sm" icon="PlusIcon" :to="routes.workPoolQueueCreate(workPoolName)" />
@@ -23,10 +23,6 @@
           <WorkPoolQueuePriorityLabel />
         </template>
 
-        <template #status="{ row }">
-          <WorkQueueStatusBadge :work-queue="row" />
-        </template>
-
         <template #actions-heading>
           <span />
         </template>
@@ -35,6 +31,10 @@
           <p-link :to="routes.workPoolQueue(workPoolName, row.name)">
             <span>{{ row.name }}</span>
           </p-link>
+        </template>
+
+        <template #status="{ row }">
+          <WorkQueueStatusBadge :work-queue="row" />
         </template>
 
         <template #actions="{ row }">
@@ -89,7 +89,7 @@
     return workPoolQueuesData.value.filter(queue => hasString(queue, search.value))
   })
 
-  const selected = ref<WorkPoolQueue[] | undefined>(can.update.work_queue ? [] : undefined)
+  const selected = ref<WorkPoolQueue[] | undefined>(can.delete.work_queue ? [] : undefined)
   const columns = [
     {
       property: 'name',

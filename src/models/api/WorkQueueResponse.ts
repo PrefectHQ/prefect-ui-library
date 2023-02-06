@@ -10,4 +10,6 @@ export type WorkQueueResponse = {
   description: string | null,
   is_paused: boolean | null,
   concurrency_limit: number | null,
+  priority: number,
+  work_pool_id: string,
 }
