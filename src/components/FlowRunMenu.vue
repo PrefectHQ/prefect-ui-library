@@ -1,7 +1,7 @@
 <template>
   <p-icon-button-menu>
     <template #default>
-      <router-link :to="routes.customFlowRunCreate(flowRunId)">
+      <router-link v-if="flowRun?.deploymentId" :to="routes.deploymentFlowRunCreate(flowRun.deploymentId, parameters)">
         <p-overflow-menu-item label="Custom run" />
       </router-link>
       <p-overflow-menu-item v-if="canRetry && showAll" label="Retry" @click="openRetryModal" />
@@ -59,7 +59,7 @@
   import { useCan, useWorkspaceApi, useShowModal, useWorkspaceRoutes } from '@/compositions'
   import { localization } from '@/localization'
   import { isPausedStateType, isRunningStateType, isStuckStateType, isTerminalStateType, StateUpdateDetails } from '@/models'
-  import { deleteItem } from '@/utilities'
+  import { convertObjectToRouteParameters, deleteItem } from '@/utilities'
 
   const props = defineProps<{
     flowRunId: string,
@@ -81,6 +81,13 @@
 
   const flowRunSubscription = useSubscription(api.flowRuns.getFlowRun, [props.flowRunId], { interval: 30000 })
   const flowRun = computed(() => flowRunSubscription.response)
+
+  const parameters = computed(() => {
+    if (!flowRun.value?.parameters) {
+      return {}
+    }
+    return convertObjectToRouteParameters(flowRun.value.parameters)
+  })
 
   const canRetry = computed(() => {
     if (!can.update.flow_run || !flowRun.value?.stateType || !flowRun.value.deploymentId) {

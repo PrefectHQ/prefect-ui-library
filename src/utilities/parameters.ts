@@ -33,3 +33,27 @@ export function getSchemaDefaults(schema: Schema): SchemaValues {
 
   return values
 }
+
+export function convertObjectToRouteParameters(object: Record<string, unknown>): string {
+
+  const queryString = Object.entries(object)
+    .map(([key, value]) => {
+      let stringValue
+      if (Array.isArray(value)) {
+        stringValue = JSON.stringify(value)
+      } if (typeof value === 'object') {
+        stringValue = JSON.stringify(value)
+      } else if (typeof value === 'string') {
+        stringValue = value
+      } else if (typeof value === 'number' || typeof value === 'boolean') {
+        stringValue = value.toString()
+      } else {
+        stringValue = ''
+      }
+
+      return `${encodeURIComponent(key)}=${encodeURIComponent(stringValue)}`
+    })
+    .join('&')
+
+  return queryString
+}
