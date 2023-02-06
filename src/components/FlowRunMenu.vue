@@ -59,7 +59,7 @@
   import { useCan, useWorkspaceApi, useShowModal, useWorkspaceRoutes } from '@/compositions'
   import { localization } from '@/localization'
   import { isPausedStateType, isRunningStateType, isStuckStateType, isTerminalStateType, StateUpdateDetails } from '@/models'
-  import { convertObjectToRouteParameters, deleteItem } from '@/utilities'
+  import { deleteItem } from '@/utilities'
 
   const props = defineProps<{
     flowRunId: string,
