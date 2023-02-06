@@ -11,6 +11,8 @@ export const mapWorkQueueResponseToWorkQueue: MapFunction<WorkQueueResponse, Wor
     description: source.description,
     isPaused: source.is_paused ?? false,
     concurrencyLimit: source.concurrency_limit,
+    priority: source.priority,
+    workPoolId: source.work_pool_id,
   })
 }
 
@@ -24,6 +26,8 @@ export const mapWorkQueueToWorkQueueResponse: MapFunction<WorkQueue, WorkQueueRe
     description: source.description,
     is_paused: source.isPaused,
     concurrency_limit: source.concurrencyLimit,
+    priority: source.priority,
+    work_pool_id: source.workPoolId,
   }
 }
 
