@@ -91,13 +91,13 @@
   import SchemaFormFields from '@/components/SchemaFormFields.vue'
   import TimezoneSelect from '@/components/TimezoneSelect.vue'
   import { useForm } from '@/compositions/useForm'
-  import { Deployment, DeploymentFlowRunCreate, FlowRun } from '@/models'
+  import { Deployment, DeploymentFlowRunCreate } from '@/models'
   import { mocker } from '@/services'
   import { fieldRules, isRequiredIf } from '@/utilities/validation'
 
   const props = defineProps<{
     deployment: Deployment,
-    flowRun?: FlowRun,
+    parameters?: Deployment['parameters'],
   }>()
 
   const generateRandomName = (): string => {
@@ -118,7 +118,7 @@
   }
 
   const parameters = computed(() => {
-    return { ...props.deployment.parameters, ...props.flowRun?.parameters }
+    return { ...props.deployment.parameters, ...props.parameters }
   })
 
   const { handleSubmit } = useForm<DeploymentFlowRunCreate>({
