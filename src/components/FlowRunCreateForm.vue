@@ -97,6 +97,7 @@
 
   const props = defineProps<{
     deployment: Deployment,
+    parameters?: Deployment['parameters'],
   }>()
 
   const generateRandomName = (): string => {
@@ -116,6 +117,10 @@
     start: fieldRules('Start date', isRequiredIf(() => when.value === 'later')),
   }
 
+  const parameters = computed(() => {
+    return { ...props.deployment.parameters, ...props.parameters }
+  })
+
   const { handleSubmit } = useForm<DeploymentFlowRunCreate>({
     initialValues: {
       state: {
@@ -123,7 +128,7 @@
       },
       tags: props.deployment.tags ?? [],
       name: generateRandomName(),
-      parameters: props.deployment.parameters,
+      parameters: parameters.value,
       schema: props.deployment.parameterOpenApiSchema,
     },
   })

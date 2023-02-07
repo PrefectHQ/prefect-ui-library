@@ -6,6 +6,7 @@ const dateTimeNumericFormat = 'yyyy/MM/dd hh:mm:ss a'
 const timeNumericFormat = 'hh:mm:ss a'
 const timeNumericShortFormat = 'hh:mm a'
 const dateFormat = 'MMM do, yyyy'
+const dateNumericFormat = 'yyyy/MM/dd'
 
 export {
   daysInWeek,
@@ -49,6 +50,10 @@ export function formatDate(value: Date | string, format = dateFormat): string {
   const date = toDate(value)
 
   return formatDateInTimezone(date, format)
+}
+
+export function formatDateNumeric(value: Date): string {
+  return formatDate(value, dateNumericFormat)
 }
 
 export function formatDateTimeNumeric(value: Date | string): string {

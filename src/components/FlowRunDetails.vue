@@ -57,7 +57,7 @@
 
     <p-divider />
 
-    <router-link :to="routes.flowRunRadar(flowRun.id)" class="flow-run-details__small-radar-link">
+    <router-link v-if="!hideRadar" :to="routes.flowRunRadar(flowRun.id)" class="flow-run-details__small-radar-link">
       <RadarSmall :flow-run-id="flowRun.id" class="flow-run-details__small-radar" />
     </router-link>
 
@@ -109,6 +109,7 @@
   const props = defineProps<{
     flowRun: FlowRun,
     alternate?: boolean,
+    hideRadar?: boolean,
   }>()
 
   const can = useCan()

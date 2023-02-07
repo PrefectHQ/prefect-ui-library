@@ -9,6 +9,8 @@ export interface IWorkQueue {
   description: string | null,
   isPaused: boolean,
   concurrencyLimit: number | null,
+  priority: number,
+  workPoolId: string,
 }
 
 // deployments have new editable field called work_queue_name
@@ -23,6 +25,8 @@ export class WorkQueue implements IWorkQueue {
   public description: string | null
   public isPaused: boolean
   public concurrencyLimit: number | null
+  public priority: number
+  public workPoolId: string
 
   public get deprecated(): boolean {
     return !!this.filter
@@ -37,5 +41,7 @@ export class WorkQueue implements IWorkQueue {
     this.description = workQueue.description
     this.isPaused = workQueue.isPaused
     this.concurrencyLimit = workQueue.concurrencyLimit
+    this.priority = workQueue.priority
+    this.workPoolId = workQueue.workPoolId
   }
 }
