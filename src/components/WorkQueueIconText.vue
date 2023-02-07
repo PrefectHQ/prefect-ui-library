@@ -33,7 +33,13 @@
       return null
     }
 
-    return [{ 'work_pools': { id: { any_: [workQueue.value.workPoolId] } } }]
+    return [
+      {
+        workPools: {
+          id: [workQueue.value.workPoolId],
+        },
+      },
+    ]
   })
 
   const workPoolsSubscription = useSubscriptionWithDependencies(api.workPools.getWorkPools, workPoolArgs)
