@@ -72,7 +72,6 @@
     },
     taskRuns: {
       subFlowRunsExist: true,
-      nameLike: searchTermDebounced.value,
       state: {
         name: states.value,
       },
@@ -87,6 +86,7 @@
   const subFlowRunsFilter = computed<FlowRunsFilter>(() => ({
     flowRuns: {
       id: subFlowRunIds.value,
+      nameLike: searchTermDebounced.value,
     },
     sort: sort.value,
   }))
