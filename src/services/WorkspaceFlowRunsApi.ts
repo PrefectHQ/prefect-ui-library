@@ -1,4 +1,3 @@
-/* eslint-disable max-classes-per-file */
 import { StateUpdate, TimelineNode } from '@/models'
 import { FlowRunGraphResponse } from '@/models/api/FlowRunGraphResponse'
 import { FlowRunHistoryResponse } from '@/models/api/FlowRunHistoryResponse'
