@@ -4,9 +4,10 @@ export type BatchCallbackLookup<V, R> = (value: V) => MaybePromise<R>
 export type BatchCallback<V, R> = (values: V[]) => MaybePromise<Map<V, R>> | BatchCallbackLookup<V, R>
 export type BatchOptions = {
   maxBatchSize?: number,
-  maxCycles?: number,
+  maxWait?: number,
 }
 
+type Timer = ReturnType<typeof setTimeout>
 type Resolve<V> = (value: V) => void
 type Reject = (reason?: unknown) => void
 type BatchQueueValue<V, R> = {
@@ -18,11 +19,11 @@ type BatchQueueValue<V, R> = {
 type BatchQueue<V, R> = Map<V, BatchQueueValue<V, R>>
 
 export class Batcher<V, R> {
-  private readonly queue: BatchQueue<V, R> = new Map()
-  private timeout: ReturnType<typeof setTimeout> | null = null
   private readonly callback: BatchCallback<V, R>
   private readonly options: BatchOptions
-  private readonly loops: number = 0
+  private readonly queue: BatchQueue<V, R> = new Map()
+  private timeout: Timer | null = null
+  private waitingSince: number | null = null
 
   public constructor(callback: BatchCallback<V, R>, options: BatchOptions = {}) {
     this.callback = callback
@@ -49,36 +50,59 @@ export class Batcher<V, R> {
       reject,
     })
 
-    this.requestBatchProcessOnNextCycle()
+    this.requestProcessQueue()
 
     return response
   }
 
-  private requestBatchProcessOnNextCycle(): void {
+  private requestProcessQueue(): void {
+    if (this.shouldProcessNow()) {
+      this.processQueue()
+      return
+    }
+
+    this.waitToProcessQueue()
+  }
+
+  private waitToProcessQueue(): void {
+    if (this.waitingSince === null) {
+      this.waitingSince = Date.now()
+    }
+
     if (this.timeout) {
       clearTimeout(this.timeout)
-    }
-
-    const { maxBatchSize = Infinity } = this.options
-
-    if (this.queue.size >= maxBatchSize) {
-      this.processQueue()
-      return
-    }
-
-    const maxCycles = this.options.maxCycles ?? 100
-
-    if (this.loops >= maxCycles) {
-      this.processQueue()
-      return
     }
 
     this.timeout = setTimeout(() => this.processQueue())
   }
 
+  private shouldProcessNow(): boolean {
+    return this.maxBatchSizeReached() || this.maxWaitReached()
+  }
+
+  private maxBatchSizeReached(): boolean {
+    const { maxBatchSize = Infinity } = this.options
+
+    return this.queue.size >= maxBatchSize
+  }
+
+  private maxWaitReached(): boolean {
+    const { maxWait = Infinity } = this.options
+    const now = Date.now()
+    const since = this.waitingSince ?? 0
+
+    return now - since >= maxWait
+  }
+
   private getBatchToProcess(): BatchQueue<V, R> {
     const batch = new Map(this.queue)
+
     this.queue.clear()
+    this.waitingSince = null
+
+    if (this.timeout) {
+      clearTimeout(this.timeout)
+    }
 
     return batch
   }
