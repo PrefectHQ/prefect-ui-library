@@ -6,14 +6,14 @@
       </template>
     </p-key-value>
 
-    <p-key-value label="Work Pool" :alternate="alternate">
-      <template v-if="deployment.workPoolName" #value>
+    <p-key-value v-if="deployment.workPoolName" label="Work Pool" :alternate="alternate">
+      <template #value>
         <WorkPoolIconText :work-pool-name="deployment.workPoolName!" />
       </template>
     </p-key-value>
 
-    <p-key-value label="Work Queue" :alternate="alternate">
-      <template v-if="deployment.workQueueName" #value>
+    <p-key-value v-if="deployment.workQueueName" label="Work Queue" :alternate="alternate">
+      <template #value>
         <WorkQueueIconText :work-queue-name="deployment.workQueueName!" :work-pool-name="deployment.workPoolName" />
       </template>
     </p-key-value>
