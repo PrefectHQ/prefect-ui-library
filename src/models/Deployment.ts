@@ -1,6 +1,8 @@
+import { SchemaResponse } from '@/models/api/SchemaResponse'
 import { CreatedOrUpdatedBy } from '@/models/CreatedOrUpdatedBy'
 import { Schedule } from '@/models/Schedule'
 import { Schema, SchemaValues } from '@/types/schemas'
+
 
 export interface IDeployment {
   id: string,
@@ -19,6 +21,7 @@ export interface IDeployment {
   tags: string[] | null,
   manifestPath: string | null,
   path: string | null,
+  rawSchema: SchemaResponse | null,
   entrypoint: string | null,
   storageDocumentId: string | null,
   infrastructureDocumentId: string | null,
@@ -40,6 +43,7 @@ export class Deployment implements IDeployment {
   public isScheduleActive: boolean
   public parameters: SchemaValues
   public parameterOpenApiSchema: Schema
+  public readonly rawSchema: SchemaResponse | null
   public tags: string[] | null
   public manifestPath: string | null
   public path: string | null
@@ -65,6 +69,7 @@ export class Deployment implements IDeployment {
     this.parameterOpenApiSchema = deployment.parameterOpenApiSchema
     this.tags = deployment.tags
     this.manifestPath = deployment.manifestPath
+    this.rawSchema = deployment.rawSchema
     this.path = deployment.path
     this.entrypoint = deployment.entrypoint
     this.storageDocumentId = deployment.storageDocumentId
