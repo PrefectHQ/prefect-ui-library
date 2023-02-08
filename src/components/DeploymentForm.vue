@@ -88,7 +88,6 @@
   })
 
   const name = computed(() => props.deployment.name)
-  const workPool = computed(() => workPoolName.value ?? props.deployment.workPoolName)
 
   const { handleSubmit, isSubmitting } = useForm<DeploymentUpdate>({
     initialValues: {
