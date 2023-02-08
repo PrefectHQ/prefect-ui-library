@@ -12,4 +12,5 @@ export type DeploymentUpdateRequest = Partial<{
   storage_document_id: string | null,
   infrastructure_document_id: string | null,
   work_queue_name: string | null,
+  work_pool_name: string | null,
 }>

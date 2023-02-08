@@ -14,8 +14,12 @@
           <p-textarea v-model="description" rows="7" :state="descriptionState" />
         </p-label>
 
-        <p-label label="Work Queue (Optional)">
-          <WorkQueueCombobox v-model:selected="workQueueName" />
+        <p-label label="Work Pool (Optional)">
+          <WorkPoolCombobox v-model:selected="workPoolName" />
+        </p-label>
+
+        <p-label v-if="workPoolName" label="Work Queue (Optional)">
+          <WorkPoolQueueCombobox v-model:selected="workQueueName" :work-pool-name="workPoolName" />
         </p-label>
 
         <p-label label="Tags (Optional)">
@@ -71,9 +75,7 @@
 <script lang="ts" setup>
   import { useField } from 'vee-validate'
   import { computed } from 'vue'
-  import ScheduleFieldset from '@/components/ScheduleFieldset.vue'
-  import SchemaFormFields from '@/components/SchemaFormFields.vue'
-  import WorkQueueCombobox from '@/components/WorkQueueCombobox.vue'
+  import { ScheduleFieldset, WorkPoolCombobox, SchemaFormFields, WorkPoolQueueCombobox } from '@/components'
   import { useForm } from '@/compositions/useForm'
   import { Deployment, DeploymentUpdate, Schedule } from '@/models'
 
@@ -93,6 +95,7 @@
       parameters: props.deployment.parameters,
       schedule: props.deployment.schedule,
       isScheduleActive: props.deployment.isScheduleActive,
+      workPoolName: props.deployment.workPoolName,
       workQueueName: props.deployment.workQueueName,
       tags: props.deployment.tags,
       schema: props.deployment.parameterOpenApiSchema,
@@ -102,6 +105,7 @@
   const { value: description, meta: descriptionState } = useField<string>('description')
   const { value: schedule } = useField<Schedule | null>('schedule')
   const { value: isScheduleActive } = useField<boolean>('isScheduleActive')
+  const { value: workPoolName } = useField<string | null>('workPoolName')
   const { value: workQueueName } = useField<string | null>('workQueueName')
   const { value: tags } = useField<string[] | null>('tags')
 

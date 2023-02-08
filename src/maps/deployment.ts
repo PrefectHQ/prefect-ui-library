@@ -30,6 +30,7 @@ export const mapDeploymentResponseToDeployment: MapFunction<DeploymentResponse, 
     infrastructureOverrides: source.infra_overrides,
     parameterOpenApiSchema: schema,
     workQueueName: source.work_queue_name,
+    workPoolName: source.work_pool_name,
   })
 }
 
@@ -41,6 +42,7 @@ export const mapDeploymentUpdateToDeploymentUpdateRequest: MapFunction<Deploymen
     parameters: source.parameters ? this.map('SchemaValues', { values: source.parameters, schema: source.schema }, 'SchemaValuesRequest') : undefined,
     tags: source.tags,
     work_queue_name: source.workQueueName,
+    work_pool_name: source.workPoolName,
   }
 }
 

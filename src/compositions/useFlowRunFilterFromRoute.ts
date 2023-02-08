@@ -18,6 +18,9 @@ export type UseFlowRunFilterFromRoute = {
   flows: Ref<string[]>,
   tags: Ref<string[]>,
   workQueues: Ref<string[]>,
+  workPools: Ref<string[]>,
+  workPoolName: Ref<string[]>,
+  workPoolQueues: Ref<string[]>,
   filter: Ref<UnionFilters>,
   hasFilters: Ref<boolean>,
   setFilters: (filters: FlowRunFilters) => Promise<void>,
@@ -62,8 +65,11 @@ export function useFlowRunFilterFromRoute(): UseFlowRunFilterFromRoute {
   const flows = useRouteQueryParam('flow', [])
   const tags = useRouteQueryParam('tag', [])
   const workQueues = useRouteQueryParam('work-queue', [])
+  const workPools = useRouteQueryParam('work-pool', [])
+  const workPoolName = useRouteQueryParam('work-pool-name', [])
+  const workPoolQueues = useRouteQueryParam('work-pool-queue', [])
 
-  const filter = useFlowRunFilter({ states, deployments, flows, tags, workQueues, startDate, endDate, sort, name: nameDebounced })
+  const filter = useFlowRunFilter({ states, deployments, flows, tags, workQueues, workPools, workPoolName, workPoolQueues, startDate, endDate, sort, name: nameDebounced })
 
   const hasFilters = computed(() => {
     return !!states.value.length ||
@@ -71,6 +77,9 @@ export function useFlowRunFilterFromRoute(): UseFlowRunFilterFromRoute {
       !!flows.value.length ||
       !!tags.value.length ||
       !!workQueues.value.length ||
+      !!workPools.value.length ||
+      !!workPoolName.value.length ||
+      !!workPoolQueues.value.length ||
       startDateParam.value !== defaultStartDate ||
       endDateParam.value !== defaultEndDate
   })
@@ -122,6 +131,18 @@ export function useFlowRunFilterFromRoute(): UseFlowRunFilterFromRoute {
       query['work-queue'] = filters.workQueue
     }
 
+    if (filters.workPool) {
+      query['work-pool'] = filters.workPool
+    }
+
+    if (filters.workPoolName) {
+      query['work-pool-name'] = filters.workPoolName
+    }
+
+    if (filters.workPoolQueue) {
+      query['work-pool-queue'] = filters.workPoolQueue
+    }
+
     return query
   }
 
@@ -147,6 +168,9 @@ export function useFlowRunFilterFromRoute(): UseFlowRunFilterFromRoute {
     flows,
     tags,
     workQueues,
+    workPools,
+    workPoolName,
+    workPoolQueues,
     filter,
     hasFilters,
     setFilters,

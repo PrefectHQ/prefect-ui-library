@@ -24,6 +24,7 @@ export interface IDeployment {
   infrastructureDocumentId: string | null,
   infrastructureOverrides: Record<string, unknown> | null,
   workQueueName: string | null,
+  workPoolName: string | null,
 }
 
 export class Deployment implements IDeployment {
@@ -48,6 +49,7 @@ export class Deployment implements IDeployment {
   public infrastructureDocumentId: string | null
   public infrastructureOverrides: Record<string, unknown> | null
   public workQueueName: string | null
+  public workPoolName: string | null
 
   public constructor(deployment: IDeployment) {
     this.id = deployment.id
@@ -71,6 +73,7 @@ export class Deployment implements IDeployment {
     this.infrastructureDocumentId = deployment.infrastructureDocumentId
     this.infrastructureOverrides = deployment.infrastructureOverrides
     this.workQueueName = deployment.workQueueName
+    this.workPoolName = deployment.workPoolName
   }
 
   public get deprecated(): boolean {

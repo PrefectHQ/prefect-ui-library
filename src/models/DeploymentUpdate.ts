@@ -7,6 +7,7 @@ type Base = {
   isScheduleActive?: boolean,
   tags?: string[] | null,
   workQueueName?: string | null,
+  workPoolName?: string | null,
 }
 
 type WithoutParameters = Base & {
