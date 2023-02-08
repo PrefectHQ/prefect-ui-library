@@ -32,7 +32,7 @@
       return null
     }
 
-    return [{ 'work_pools': { id: { _any: props.workPoolId } } }]
+    return [{ 'work_pools': { id: { any_: [props.workPoolId] } } }]
 
   })
 
