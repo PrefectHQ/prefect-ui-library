@@ -16,7 +16,7 @@
 <script lang="ts" setup>
   import { PCombobox, SelectOption } from '@prefecthq/prefect-design'
   import { useSubscriptionWithDependencies } from '@prefecthq/vue-compositions'
-  import { computed, watchEffect } from 'vue'
+  import { computed } from 'vue'
   import { useWorkspaceApi } from '@/compositions'
 
   const props = defineProps<{
@@ -73,9 +73,5 @@
     }
 
     return options
-  })
-
-  watchEffect(() => {
-    console.log(props.workPoolName)
   })
 </script>
