@@ -11,6 +11,9 @@ export type FlowRunFilters = {
   flow?: string[],
   tag?: string[],
   workQueue?: string[],
+  workPool?: string[],
+  workPoolName?: string[],
+  workPoolQueue?: string[],
 }
 
 export type FlowRunFiltersInRoute = {
@@ -23,4 +26,7 @@ export type FlowRunFiltersInRoute = {
   'flow'?: string[],
   'tag'?: string[],
   'work-queue'?: string[],
+  'work-pool'?: string[],
+  'work-pool-name'?: string[],
+  'work-pool-queue'?: string[],
 }

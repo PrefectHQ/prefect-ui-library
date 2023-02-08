@@ -15,8 +15,8 @@
       <p-label label="Deployments">
         <DeploymentCombobox v-model:selected="deployments" empty-message="All deployments" />
       </p-label>
-      <p-label label="Work Queues">
-        <WorkQueueCombobox v-model:selected="workQueues" empty-message="All work queues" />
+      <p-label label="Work Pools">
+        <WorkPoolCombobox v-model:selected="workPoolNames" empty-message="All pools" />
       </p-label>
       <p-label label="Tags">
         <FlowRunTagsInput v-model:selected="tags" :filter="filter" empty-message="All tags" />
@@ -36,10 +36,10 @@
   import FlowRunTagsInput from '@/components/FlowRunTagsInput.vue'
   import SearchInput from '@/components/SearchInput.vue'
   import StateNameSelect from '@/components/StateNameSelect.vue'
-  import WorkQueueCombobox from '@/components/WorkQueueCombobox.vue'
+  import WorkPoolCombobox from '@/components/WorkPoolCombobox.vue'
   import { useFlowRunFilterFromRoute } from '@/compositions/useFlowRunFilterFromRoute'
 
-  const { states, deployments, workQueues, flows, tags, name, filter } = useFlowRunFilterFromRoute()
+  const { states, deployments, workPoolNames, flows, tags, name, filter } = useFlowRunFilterFromRoute()
 </script>
 
 <style>
