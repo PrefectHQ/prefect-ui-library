@@ -101,7 +101,7 @@
   const { handleSubmit, isSubmitting } = useForm<DeploymentUpdate>({
     initialValues: {
       description: props.deployment.description,
-      parameters: { ...props.deployment.parameters, paramTest: 'test' },
+      parameters: props.deployment.parameters,
       schedule: props.deployment.schedule,
       isScheduleActive: props.deployment.isScheduleActive,
       workQueueName: props.deployment.workQueueName,
