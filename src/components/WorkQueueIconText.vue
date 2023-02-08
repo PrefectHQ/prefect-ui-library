@@ -20,8 +20,8 @@
 
   const props = defineProps<{
     workQueueName: string,
-    workPoolName?: string,
-    workPoolId?: string,
+    workPoolName?: string | null,
+    workPoolId?: string | null,
   }>()
 
   const api = useWorkspaceApi()
