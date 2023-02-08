@@ -1,6 +1,6 @@
 <template>
   <template v-if="workPoolQueue">
-    <p-link :to="routes.workPoolQueue(workPoolNameRef, workQueueName)">
+    <p-link :to="routes.workPoolQueue(workPoolName, workQueueName)">
       <p-icon-text icon="DatabaseIcon">
         {{ workQueueName }}
       </p-icon-text>
@@ -38,11 +38,7 @@
 
   const workPoolsSubscription = useSubscriptionWithDependencies(api.workPools.getWorkPools, workPoolArgs)
   const workPools = computed(() => workPoolsSubscription.response ?? [])
-  const workPoolName = computed(() => workPools.value[0].name)
-
-  const workPoolNameRef = computed(() => {
-    return props.workPoolName ?? workPoolName.value
-  })
+  const workPoolName = computed(() => props.workPoolName ?? workPools.value[0].name)
 
   const workPoolQueueArgs = computed<Parameters<typeof api.workPoolQueues.getWorkPoolQueueByName> | null>(() => {
     if (props.workPoolName) {
