@@ -7,14 +7,18 @@ export type BatchOptions = {
   maxCycles?: number,
 }
 
-type Batch<V, R> = Map<V, BatchPromise<R>>
-type BatchPromise<T> = {
-  resolve: (value: T) => void,
-  reject: (reason?: unknown) => void,
+type Resolve<V> = (value: V) => void
+type Reject = (reason?: unknown) => void
+type BatchQueueValue<V, R> = {
+  response: Promise<R>,
+  resolve: Resolve<R>,
+  reject: Reject,
 }
 
+type BatchQueue<V, R> = Map<V, BatchQueueValue<V, R>>
+
 export class Batcher<V, R> {
-  private readonly queue: Batch<V, R> = new Map()
+  private readonly queue: BatchQueue<V, R> = new Map()
   private timeout: ReturnType<typeof setTimeout> | null = null
   private readonly callback: BatchCallback<V, R>
   private readonly options: BatchOptions
@@ -26,9 +30,23 @@ export class Batcher<V, R> {
   }
 
   public batch(value: V): Promise<R> {
+    if (this.queue.has(value)) {
+      const { response } = this.queue.get(value)!
 
-    const response = new Promise<R>((resolve, reject) => {
-      this.queue.set(value, { resolve, reject })
+      return response
+    }
+
+    let resolve!: Resolve<R>
+    let reject!: Reject
+
+    const response = new Promise<R>((...args) => {
+      [resolve, reject] = args
+    })
+
+    this.queue.set(value, {
+      response,
+      resolve,
+      reject,
     })
 
     this.requestBatchProcessOnNextCycle()
@@ -58,7 +76,7 @@ export class Batcher<V, R> {
     this.timeout = setTimeout(() => this.processQueue())
   }
 
-  private getBatchToProcess(): Map<V, BatchPromise<R>> {
+  private getBatchToProcess(): BatchQueue<V, R> {
     const batch = new Map(this.queue)
     this.queue.clear()
 
@@ -83,19 +101,19 @@ export class Batcher<V, R> {
     }
   }
 
-  private resolveBatch(batch: Batch<V, R>, map: Map<V, R>): void {
+  private resolveBatch(batch: BatchQueue<V, R>, map: Map<V, R>): void {
     batch.forEach(({ resolve }, id) => {
       resolve(map.get(id)!)
     })
   }
 
-  private resolveBatchUsingLookup(batch: Batch<V, R>, lookup: BatchCallbackLookup<V, R>): void {
+  private resolveBatchUsingLookup(batch: BatchQueue<V, R>, lookup: BatchCallbackLookup<V, R>): void {
     batch.forEach(async ({ resolve }, id) => {
       resolve(await lookup(id))
     })
   }
 
-  private rejectBatch(batch: Batch<V, R>, error: unknown): void {
+  private rejectBatch(batch: BatchQueue<V, R>, error: unknown): void {
     batch.forEach(({ reject }) => reject(error))
   }
 
