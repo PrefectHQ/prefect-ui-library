@@ -6,9 +6,15 @@
       </template>
     </p-key-value>
 
+    <p-key-value label="Work Pool" :alternate="alternate">
+      <template v-if="deployment.workPoolName" #value>
+        <WorkPoolIconText :work-pool-name="deployment.workPoolName!" />
+      </template>
+    </p-key-value>
+
     <p-key-value label="Work Queue" :alternate="alternate">
       <template v-if="deployment.workQueueName" #value>
-        <WorkQueueIconText :work-queue-name="deployment.workQueueName!" />
+        <WorkQueueIconText :work-queue-name="deployment.workQueueName!" :work-pool-name="deployment.workPoolName" />
       </template>
     </p-key-value>
 
@@ -74,15 +80,10 @@
 <script lang="ts" setup>
   import { showToast, PLoadingIcon } from '@prefecthq/prefect-design'
   import { ref, computed } from 'vue'
-  import BlockIconText from '@/components/BlockIconText.vue'
-  import FlowIconText from '@/components/FlowIconText.vue'
-  import ScheduleFieldset from '@/components/ScheduleFieldset.vue'
-  import WorkQueueIconText from '@/components/WorkQueueIconText.vue'
-  import { useWorkspaceApi } from '@/compositions'
-  import { useCan } from '@/compositions/useCan'
+  import { BlockIconText, WorkPoolIconText, FlowIconText, ScheduleFieldset, WorkQueueIconText } from '@/components'
+  import { useWorkspaceApi, useCan } from '@/compositions'
   import { localization } from '@/localization'
-  import { Schedule } from '@/models'
-  import { Deployment } from '@/models/Deployment'
+  import { Schedule, Deployment } from '@/models'
   import { formatDateTimeNumeric } from '@/utilities/dates'
 
   const props = defineProps<{
