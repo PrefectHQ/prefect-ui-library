@@ -19,7 +19,7 @@ export type UseFlowRunFilterFromRoute = {
   tags: Ref<string[]>,
   workQueues: Ref<string[]>,
   workPools: Ref<string[]>,
-  workPoolNames: Ref<string[]>,
+  workPoolName: Ref<string[]>,
   workPoolQueues: Ref<string[]>,
   filter: Ref<UnionFilters>,
   hasFilters: Ref<boolean>,
@@ -66,10 +66,10 @@ export function useFlowRunFilterFromRoute(): UseFlowRunFilterFromRoute {
   const tags = useRouteQueryParam('tag', [])
   const workQueues = useRouteQueryParam('work-queue', [])
   const workPools = useRouteQueryParam('work-pool', [])
-  const workPoolNames = useRouteQueryParam('work-pool-name', [])
+  const workPoolName = useRouteQueryParam('work-pool-name', [])
   const workPoolQueues = useRouteQueryParam('work-pool-queue', [])
 
-  const filter = useFlowRunFilter({ states, deployments, flows, tags, workQueues, workPools, workPoolNames, workPoolQueues, startDate, endDate, sort, name: nameDebounced })
+  const filter = useFlowRunFilter({ states, deployments, flows, tags, workQueues, workPools, workPoolName, workPoolQueues, startDate, endDate, sort, name: nameDebounced })
 
   const hasFilters = computed(() => {
     return !!states.value.length ||
@@ -78,7 +78,7 @@ export function useFlowRunFilterFromRoute(): UseFlowRunFilterFromRoute {
       !!tags.value.length ||
       !!workQueues.value.length ||
       !!workPools.value.length ||
-      !!workPoolNames.value.length ||
+      !!workPoolName.value.length ||
       !!workPoolQueues.value.length ||
       startDateParam.value !== defaultStartDate ||
       endDateParam.value !== defaultEndDate
@@ -169,7 +169,7 @@ export function useFlowRunFilterFromRoute(): UseFlowRunFilterFromRoute {
     tags,
     workQueues,
     workPools,
-    workPoolNames,
+    workPoolName,
     workPoolQueues,
     filter,
     hasFilters,

@@ -16,7 +16,7 @@
         <DeploymentCombobox v-model:selected="deployments" empty-message="All deployments" />
       </p-label>
       <p-label label="Work Pools">
-        <WorkPoolCombobox v-model:selected="workPoolNames" empty-message="All pools" />
+        <WorkPoolCombobox v-model:selected="workPoolName" empty-message="All pools" />
       </p-label>
       <p-label label="Tags">
         <FlowRunTagsInput v-model:selected="tags" :filter="filter" empty-message="All tags" />
@@ -39,7 +39,7 @@
   import WorkPoolCombobox from '@/components/WorkPoolCombobox.vue'
   import { useFlowRunFilterFromRoute } from '@/compositions/useFlowRunFilterFromRoute'
 
-  const { states, deployments, workPoolNames, flows, tags, name, filter } = useFlowRunFilterFromRoute()
+  const { states, deployments, workPoolName, flows, tags, name, filter } = useFlowRunFilterFromRoute()
 </script>
 
 <style>
