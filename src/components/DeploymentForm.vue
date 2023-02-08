@@ -18,7 +18,7 @@
           <WorkPoolCombobox v-model:selected="workPoolName" />
         </p-label>
 
-        <p-label label="Work Queue (Optional)">
+        <p-label v-if="workPoolName" label="Work Queue (Optional)">
           <WorkPoolQueueCombobox v-model:selected="workQueueName" :work-pool-name="workPoolName" />
         </p-label>
 
