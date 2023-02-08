@@ -41,7 +41,7 @@ export class Batcher<V, R> {
       clearTimeout(this.timeout)
     }
 
-    const maxBatchSize = this.options.maxBatchSize ?? Infinity
+    const { maxBatchSize = Infinity } = this.options
 
     if (this.queue.size >= maxBatchSize) {
       this.processQueue()
