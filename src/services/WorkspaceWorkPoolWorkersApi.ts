@@ -7,7 +7,7 @@ export interface IWorkspaceWorkPoolWorkersApi {
 }
 
 export class WorkspaceWorkPoolWorkersApi extends WorkspaceApi implements IWorkspaceWorkPoolWorkersApi {
-  protected override routePrefix = '/experimental/work_pools/'
+  protected override routePrefix = '/work_pools/'
 
   public async getWorkers(workPoolName: string, filter: WorkPoolWorkerFilter = {}): Promise<WorkPoolWorker[]> {
     const { data } = await this.post<WorkPoolWorkerResponse[]>(`/${workPoolName}/workers/filter`, filter)
