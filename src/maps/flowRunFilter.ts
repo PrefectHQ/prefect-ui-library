@@ -27,7 +27,7 @@ export const mapSavedSearchFilterToFlowRunFilters: MapFunction<SavedSearchFilter
         name: stateNames,
       },
       expectedStartTimeAfter: startDate,
-      nextExpectedStartTimeAfter: endDate,
+      expectedStartTimeBefore: endDate,
     },
   }
 }
