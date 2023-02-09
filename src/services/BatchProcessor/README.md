@@ -7,11 +7,11 @@ A callback can return either `Map<Value, Response>` or `(value: Value) => Respon
 
 ## Example 
 ```typescript
-const batcher = new BatchProcessor<string, User>(async users => {
-  const users: User[] = await getUsersArray(users)
+const batcher = new BatchProcessor<string, User>(async userIds => {
+  const users: User[] = await getUsersArray(userIds)
 
   // this is using a lookup function
-  return user => users.find(user)
+  return userId => users.find(user => user.id === userId)
 })
 
 const user1: Promise<User> = batcher.batch('userId1')
