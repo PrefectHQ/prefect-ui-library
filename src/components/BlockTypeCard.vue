@@ -1,7 +1,7 @@
 <template>
   <p-card class="block-type-card">
     <p-content>
-      <BlockTypeLogo :block-type="blockType" class="block-type-card__logo" />
+      <LogoImage :url="blockType.logoUrl" class="block-type-card__logo" />
 
       <p-key-value label="Name" :value="blockType.name" />
 
@@ -52,8 +52,8 @@
   import { useSubscription } from '@prefecthq/vue-compositions'
   import { computed } from 'vue'
   import BlockSchemaCapabilities from '@/components/BlockSchemaCapabilities.vue'
-  import BlockTypeLogo from '@/components/BlockTypeLogo.vue'
   import BlockTypeSnippet from '@/components/BlockTypeSnippet.vue'
+  import LogoImage from '@/components/LogoImage.vue'
   import { useWorkspaceApi, useWorkspaceRoutes } from '@/compositions'
   import { BlockType } from '@/models/BlockType'
 
