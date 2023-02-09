@@ -114,18 +114,18 @@ export class BatchProcessor<V, R> {
     try {
       const response = await this.callback(values)
 
-      if (typeof response === 'function') {
+      if (this.isBatchCallbackLookup(response)) {
         return this.resolveBatchUsingLookup(batch, response)
       }
 
-      return this.resolveBatch(batch, response)
+      return this.resolveBatchUsingMap(batch, response)
 
     } catch (error) {
       this.rejectBatch(batch, error)
     }
   }
 
-  private resolveBatch(batch: BatchQueue<V, R>, map: Map<V, R>): void {
+  private resolveBatchUsingMap(batch: BatchQueue<V, R>, map: Map<V, R>): void {
     batch.forEach(({ resolve }, id) => {
       resolve(map.get(id)!)
     })
@@ -139,6 +139,10 @@ export class BatchProcessor<V, R> {
 
   private rejectBatch(batch: BatchQueue<V, R>, error: unknown): void {
     batch.forEach(({ reject }) => reject(error))
+  }
+
+  private isBatchCallbackLookup(value: ReturnType<BatchCallback<V, R>>): value is BatchCallbackLookup<V, R> {
+    return typeof value === 'function'
   }
 
 }
