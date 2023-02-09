@@ -22,7 +22,7 @@ export class Batcher<V, R> {
   private readonly callback: BatchCallback<V, R>
   private readonly options: BatchOptions
   private readonly queue: BatchQueue<V, R> = new Map()
-  private timeout: Timer | null = null
+  private timeout: Timer | undefined = undefined
   private waitingSince: number | null = null
 
   public constructor(callback: BatchCallback<V, R>, options: BatchOptions = {}) {
@@ -69,9 +69,7 @@ export class Batcher<V, R> {
       this.waitingSince = Date.now()
     }
 
-    if (this.timeout) {
-      clearTimeout(this.timeout)
-    }
+    clearTimeout(this.timeout)
 
     this.timeout = setTimeout(() => this.processQueue())
   }
