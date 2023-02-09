@@ -5,7 +5,7 @@ import { FlowRunResponse } from '@/models/api/FlowRunResponse'
 import { FlowRun } from '@/models/FlowRun'
 import { GraphNode } from '@/models/GraphNode'
 import { RunHistory } from '@/models/RunHistory'
-import { Batcher } from '@/services/Batcher'
+import { BatchProcessor } from '@/services/BatchProcessor'
 import { mapper } from '@/services/Mapper'
 import { WorkspaceApi } from '@/services/WorkspaceApi'
 import { FlowRunsHistoryFilter, UnionFilters } from '@/types/UnionFilters'
@@ -28,7 +28,7 @@ export class WorkspaceFlowRunsApi extends WorkspaceApi implements IWorkspaceFlow
 
   protected routePrefix = '/flow_runs'
 
-  private readonly batcher = new Batcher<string, FlowRun>(async ids => {
+  private readonly batcher = new BatchProcessor<string, FlowRun>(async ids => {
     const flowRuns = await this.getFlowRuns({
       'flow_runs': {
         id: {

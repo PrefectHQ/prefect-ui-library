@@ -4,7 +4,7 @@ export type BatchCallbackLookup<V, R> = (value: V) => MaybePromise<R>
 export type BatchCallback<V, R> = (values: V[]) => MaybePromise<Map<V, R>> | BatchCallbackLookup<V, R>
 export type BatchOptions = {
   maxBatchSize?: number,
-  maxWait?: number,
+  maxWaitMilliseconds?: number,
 }
 
 type Timer = ReturnType<typeof setTimeout>
@@ -18,7 +18,7 @@ type BatchQueueValue<R> = {
 
 type BatchQueue<V, R> = Map<V, BatchQueueValue<R>>
 
-export class Batcher<V, R> {
+export class BatchProcessor<V, R> {
   private readonly callback: BatchCallback<V, R>
   private readonly options: BatchOptions
   private readonly queue: BatchQueue<V, R> = new Map()
@@ -85,11 +85,11 @@ export class Batcher<V, R> {
   }
 
   private maxWaitReached(): boolean {
-    const { maxWait = Infinity } = this.options
+    const { maxWaitMilliseconds = Infinity } = this.options
     const now = Date.now()
     const since = this.waitingSince ?? 0
 
-    return now - since >= maxWait
+    return now - since >= maxWaitMilliseconds
   }
 
   private getBatchToProcess(): BatchQueue<V, R> {
@@ -98,9 +98,7 @@ export class Batcher<V, R> {
     this.queue.clear()
     this.waitingSince = null
 
-    if (this.timeout) {
-      clearTimeout(this.timeout)
-    }
+    clearTimeout(this.timeout)
 
     return batch
   }
