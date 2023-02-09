@@ -1,11 +1,11 @@
 <template>
-  <ComponentPage title="BlockTypeLogo">
-    <BlockTypeLogo :block-type="blockType" />
+  <ComponentPage title="LogoImage">
+    <LogoImage :url="blockType.logoUrl" />
   </ComponentPage>
 </template>
 
 <script lang="ts" setup>
-  import BlockTypeLogo from '@/components/BlockTypeLogo.vue'
+  import LogoImage from '@/components/LogoImage.vue'
   import ComponentPage from '@/demo/components/ComponentPage.vue'
   import { useBlockTypeMock } from '@/demo/compositions/useBlockTypeMock'
 

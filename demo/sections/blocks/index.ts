@@ -18,7 +18,6 @@ export const blocks: Section = {
   BlockTypeCardLayout: () => import('./BlockTypeCardLayout.vue'),
   BlockTypeCardPreview: () => import('./BlockTypeCardPreview.vue'),
   BlockTypeList: () => import('./BlockTypeList.vue'),
-  BlockTypeLogo: () => import('./BlockTypeLogo.vue'),
   BlockTypeSelect: () => import('./BlockTypeSelect.vue'),
   BlockTypeSnippet: () => import('./BlockTypeSnippet.vue'),
 }
