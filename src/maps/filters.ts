@@ -216,6 +216,7 @@ export const mapTaskRunFilter: MapFunction<TaskRunFilter, TaskRunFilterRequest> 
 export const mapDeploymentFilter: MapFunction<DeploymentFilter, DeploymentFilterRequest> = function(source) {
   return removeEmptyObjects({
     ...toOperator(source.operator),
+    tags: this.map('TagFilter', source.tags, 'TagFilterRequest'),
     id: toAny(source.id),
     name: {
       ...toAny(source.name),
