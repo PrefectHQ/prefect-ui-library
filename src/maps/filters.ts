@@ -22,7 +22,7 @@ function toAny(value?: string[]): Any | undefined {
     return undefined
   }
 
-  return { any_: asArray(value) }
+  return { any_: value }
 }
 
 function toNotAny(value?: string[]): NotAny | undefined {
@@ -34,7 +34,7 @@ function toNotAny(value?: string[]): NotAny | undefined {
     return undefined
   }
 
-  return { not_any_: asArray(value) }
+  return { not_any_: value }
 }
 
 function toAll(value?: string[]): All | undefined {
@@ -46,7 +46,7 @@ function toAll(value?: string[]): All | undefined {
     return undefined
   }
 
-  return { all_: asArray(value) }
+  return { all_: value }
 }
 
 function toIsNull(value?: boolean): IsNull | undefined {

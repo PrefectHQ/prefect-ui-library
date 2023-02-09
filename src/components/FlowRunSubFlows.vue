@@ -6,7 +6,9 @@
       <FlowRunsSort v-model="sort" />
     </div>
 
-    <FlowRunList :selected="[]" :flow-runs="flowRuns" disabled @bottom="loadMoreSubFlowRuns" />
+    <template v-if="!empty">
+      <FlowRunList :selected="[]" :flow-runs="flowRuns" disabled @bottom="loadMoreSubFlowRuns" />
+    </template>
 
     <PEmptyResults v-if="empty">
       <template #message>
@@ -94,7 +96,7 @@
   const flowRunsSubscription = usePaginatedSubscription(api.flowRuns.getFlowRuns, [subFlowRunsFilter])
 
   const flowRuns = computed<FlowRun[]>(() => flowRunsSubscription.response ?? [])
-  const empty = computed(() => !flowRunsSubscription.loading && flowRuns.value.length === 0)
+  const empty = computed(() => !flowRunsSubscription.loading && subFlowRunIds.value.length === 0)
 
   function loadMoreSubFlowRuns(): void {
     const unwatch = watch(subFlowRunIds, (newValue, oldValue) => {
@@ -110,6 +112,9 @@
     states.value = []
     searchTerm.value = ''
   }
+
+  // always load the first page
+  loadMoreSubFlowRuns()
 </script>
 
 
