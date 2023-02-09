@@ -1,15 +1,24 @@
 <template>
   <div class="flow-run-timeline">
-    <div v-if="graphData.length > 0" class="flow-run-timeline__container">
+    <div class="flow-run-timeline__options">
+      <FlowRunTimelineOptions
+        :layout="layout"
+        :hide-edges="hideEdges"
+        @update:layout="updateLayout"
+        @update:hide-edges="updateHideEdges"
+      />
+    </div>
+    <div v-if="graphData.length > 0" class="flow-run-timeline__graph-wrapper">
       <FlowRunTimeline
-        class="flow-run-timeline__timeline"
-        :class="{ 'flow-run-timeline__timeline--panel-open': showTaskRunPanel }"
+        class="flow-run-timeline__graph"
+        :class="{ 'flow-run-timeline__graph--panel-open': showTaskRunPanel }"
         :graph-data="graphData"
+        :layout="layout"
+        :hide-edges="hideEdges"
         :is-running="isRunning"
         :format-date-fns="formatDateFns"
-        :selected-node-id="selectedNode"
         :theme="theme"
-        layout="nearestParent"
+        :selected-node-id="selectedNode"
         @click="selectNode"
       />
     </div>
@@ -26,11 +35,19 @@
 </template>
 
 <script lang="ts" setup>
-  import { FlowRunTimeline, FormatDateFns, HSL, ThemeStyleOverrides, TimelineNodeData, TimelineThemeOptions } from '@prefecthq/graphs'
+  import {
+    FlowRunTimeline,
+    FormatDateFns,
+    HSL,
+    ThemeStyleOverrides,
+    TimelineNodeData,
+    TimelineNodesLayoutOptions,
+    TimelineThemeOptions
+  } from '@prefecthq/graphs'
   import { useColorTheme } from '@prefecthq/prefect-design'
   import { useSubscription } from '@prefecthq/vue-compositions'
-  import { computed, Ref, ref } from 'vue'
-  import { TaskRunPanel } from '@/components'
+  import { computed, Ref, ref, watch } from 'vue'
+  import { TaskRunPanel, FlowRunTimelineOptions } from '@/components'
   import { useWorkspaceApi } from '@/compositions'
   import { FlowRun, isValidTimelineNodeData } from '@/models'
   import { formatTimeNumeric, formatTimeShortNumeric, formatDate } from '@/utilities'
@@ -41,6 +58,11 @@
 
   const { value: colorThemeValue } = useColorTheme()
 
+  const defaultOptionThresholds = {
+    nearestParentLayout: 100,
+    hideEdges: 40,
+  }
+
   const showTaskRunPanel = ref(false)
   const selectedNode: Ref<string | null> = ref(null)
   const formatDateFns: FormatDateFns = {
@@ -48,6 +70,8 @@
     timeByMinutes: formatTimeShortNumeric,
     date: formatDate,
   }
+  const layout: Ref<TimelineNodesLayoutOptions> = ref('nearestParent')
+  const hideEdges = ref(false)
 
   const selectNode = (value: string | null): void => {
     if (!value || value === selectedNode.value) {
@@ -60,8 +84,16 @@
     showTaskRunPanel.value = true
   }
 
-  const closePanel = (): void => {
+  function closePanel(): void {
     showTaskRunPanel.value = false
+  }
+
+  function updateLayout(value: TimelineNodesLayoutOptions): void {
+    layout.value = value
+  }
+
+  function updateHideEdges(value: boolean): void {
+    hideEdges.value = value
   }
 
   const isRunning = computed(() => {
@@ -86,10 +118,27 @@
     return items
   })
 
+  const unwatchInitialData = watch(graphData, (value) => {
+    if (value.length > 0) {
+      if (value.length > defaultOptionThresholds.nearestParentLayout) {
+        layout.value = 'waterfall'
+      }
+
+      if (value.length > defaultOptionThresholds.hideEdges) {
+        hideEdges.value = true
+      }
+
+      unwatchInitialData()
+    }
+  })
+
+  /*
+  * Theme overrides
+  */
   const documentStyles = getComputedStyle(document.documentElement)
   const bodyStyles = getComputedStyle(document.body)
 
-  const getStateColor = (cssVariable: string): string => {
+  function getStateColor(cssVariable: string): string {
     return bodyStyles.getPropertyValue(cssVariable).trim()
   }
 
@@ -116,7 +165,7 @@
     alphaNodeDimmed: 0.2,
   }))
 
-  const getHslColor = (defaultCssVariable: string, darkCssVariable?: string): HSL => {
+  function getHslColor(defaultCssVariable: string, darkCssVariable?: string): HSL {
     const propertyValue = darkCssVariable && colorThemeValue.value === 'dark'
       ? darkCssVariable
       : defaultCssVariable
@@ -145,23 +194,31 @@
 .flow-run-timeline { @apply
   flex
   overflow-hidden
+  relative
 }
 
-.flow-run-timeline__container { @apply
+.flow-run-timeline__options { @apply
+  absolute
+  bottom-1
+  right-1
+  z-10
+}
+
+.flow-run-timeline__graph-wrapper { @apply
   h-[320px]
   w-full
   relative
   overflow-hidden
 }
 
-.flow-run-timeline__timeline { @apply
+.flow-run-timeline__graph { @apply
   bg-background-600
   dark:bg-background
   rounded-lg
 }
 
 @media (min-width: 640px) {
-  .flow-run-timeline__timeline--panel-open {
+  .flow-run-timeline__graph--panel-open {
     width: calc(100% - 320px);
   }
 }
