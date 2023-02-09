@@ -55,6 +55,10 @@ export class BatchProcessor<V, R> {
     return response
   }
 
+  public process(): void {
+    this.processQueue()
+  }
+
   private requestProcessQueue(): void {
     if (this.shouldProcessNow()) {
       this.processQueue()
