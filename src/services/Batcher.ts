@@ -10,13 +10,13 @@ export type BatchOptions = {
 type Timer = ReturnType<typeof setTimeout>
 type Resolve<V> = (value: V) => void
 type Reject = (reason?: unknown) => void
-type BatchQueueValue<V, R> = {
+type BatchQueueValue<R> = {
   response: Promise<R>,
   resolve: Resolve<R>,
   reject: Reject,
 }
 
-type BatchQueue<V, R> = Map<V, BatchQueueValue<V, R>>
+type BatchQueue<V, R> = Map<V, BatchQueueValue<R>>
 
 export class Batcher<V, R> {
   private readonly callback: BatchCallback<V, R>
