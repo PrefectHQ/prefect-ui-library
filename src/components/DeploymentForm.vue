@@ -52,7 +52,7 @@
         </h3>
 
         <template v-if="hasParameters">
-          <SchemaFormFields property="parameters" :schema="deployment.parameterOpenApiSchema" />
+          <SchemaFormFields property="parameters" :schema="parameterOpenApiSchema" />
         </template>
 
         <template v-else>
@@ -78,6 +78,7 @@
   import { ScheduleFieldset, WorkPoolCombobox, SchemaFormFields, WorkPoolQueueCombobox } from '@/components'
   import { useForm } from '@/compositions/useForm'
   import { Deployment, DeploymentUpdate, Schedule } from '@/models'
+  import { mapper } from '@/services'
 
   const props = defineProps<{
     deployment: Deployment,
@@ -88,6 +89,16 @@
   })
 
   const name = computed(() => props.deployment.name)
+
+  const parameterOpenApiSchema = computed(() => {
+    const { rawSchema } = props.deployment
+
+    if (rawSchema && 'required' in rawSchema) {
+      rawSchema.required = []
+    }
+
+    return mapper.map('SchemaResponse', rawSchema ?? {}, 'Schema')
+  })
 
   const { handleSubmit, isSubmitting } = useForm<DeploymentUpdate>({
     initialValues: {
