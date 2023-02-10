@@ -1,6 +1,6 @@
 import { CollectionItem } from '@/models/CollectionItem'
 
-export type CollectionFlow = CollectionItem<'flow'> & {
+export type CollectionFlow = CollectionItem & {
   returns: string,
   examples: string[],
   documentationUrl: string,
@@ -9,4 +9,5 @@ export type CollectionFlow = CollectionItem<'flow'> & {
   pathContainingFlow: string,
   repositoryUrl: string,
   slug: string,
+  collectionType: 'flow',
 }

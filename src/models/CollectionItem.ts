@@ -1,6 +1,6 @@
-export type CollectionItem<T extends 'flow' | 'block'> = {
-  collectionType: T,
+export type CollectionItem = {
   name: string,
   description: string,
   logoUrl: string,
+  collectionType: string,
 }

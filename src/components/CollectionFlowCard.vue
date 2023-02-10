@@ -30,12 +30,6 @@
             </p-button>
           </a>
         </template>
-
-        <p-link :to="routes.blockCreate(collectionFlow.slug)" class="collection-card__action">
-          <p-button class="collection-card__button">
-            Add Block<p-icon icon="PlusIcon" />
-          </p-button>
-        </p-link>
       </div>
     </p-content>
   </p-card>

@@ -13,7 +13,7 @@ export const randomCollectionFlow: MockFunction<CollectionFlow, [Partial<Collect
     examples: this.createMany('paragraph', 1),
     documentationUrl: this.create('string'),
     installCommand: this.create('string'),
-    logoUrl: this.create('string'),
+    logoUrl: this.create('image'),
     pathContainingFlow: this.create('string'),
     repositoryUrl: this.create('string'),
     slug: kebabCase(name),

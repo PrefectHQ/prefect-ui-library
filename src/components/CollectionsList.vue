@@ -7,7 +7,7 @@
 
     <div class="collections-list__types">
       <template v-for="collectionFlow in filteredCollectionFlows" :key="collectionFlow.name">
-        <CollectionCardPreview :collection-flow="collectionFlow" />
+        <CollectionCardPreview :collection-item="collectionFlow" />
       </template>
     </div>
 
@@ -30,7 +30,7 @@
   import CollectionCardPreview from '@/components/CollectionCardPreview.vue'
   import ResultsCount from '@/components/ResultsCount.vue'
   import SearchInput from '@/components/SearchInput.vue'
-  import { CollectionFlow } from '@/models'
+  import { CollectionItem } from '@/models'
   import { collectionsApi } from '@/services'
 
   const searchTerm = ref('')
@@ -40,8 +40,8 @@
   const filteredCollectionFlows = computed(() => collectionFlows.value.filter(filterByName))
   const empty = computed(() => collectionSubscription.executed && collectionFlows.value.length === 0)
 
-  function filterByName({ name }: CollectionFlow): boolean {
-    return `${name}`.toLowerCase().includes(searchTerm.value.toLowerCase())
+  function filterByName({ name }: CollectionItem): boolean {
+    return name.toLowerCase().includes(searchTerm.value.toLowerCase())
   }
 
   function clear(): void {
@@ -65,7 +65,6 @@
 .collections-list__filters {
   grid-template-columns: minmax(0, 1fr);
   grid-template-areas: "search"
-                       "capability"
                        "results";
 }
 
@@ -81,10 +80,6 @@
 
 .collections-list__search {
   grid-area: search;
-}
-
-.collections-list__capabilities {
-  grid-area: capability;
 }
 
 .collections-list__types { @apply

@@ -69,7 +69,7 @@
   const empty = computed(() => filtered.value && filteredBlockTypes.value.length === 0)
 
   function filterBlockType({ name }: BlockType): boolean {
-    return `${name}`.toLowerCase().includes(searchTerm.value.toLowerCase())
+    return name.toLowerCase().includes(searchTerm.value.toLowerCase())
   }
 
   function clear(): void {

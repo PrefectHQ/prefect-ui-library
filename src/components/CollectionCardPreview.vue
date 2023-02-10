@@ -1,17 +1,17 @@
 <template>
   <p-card class="collection-card-preview">
-    <LogoImage :url="collectionFlow.logoUrl" class="collection-card-preview__logo" />
+    <LogoImage :url="collectionItem.logoUrl" size="lg" class="collection-card-preview__logo" />
     <div class="collection-card-preview__type-tag">
-      <p-tag :label="collectionFlow.collectionType" />
+      <p-tag :label="collectionItem.collectionType" />
     </div>
     <p class="collection-card-preview__name">
-      <p-link :to="routes.flowCollection(collectionFlow.name)">
-        {{ collectionFlow.name }}
+      <p-link :to="routes.flowCollection(collectionItem.name)">
+        {{ collectionItem.name }}
       </p-link>
     </p>
 
     <p class="collection-card-preview__description">
-      {{ collectionFlow.description }}
+      {{ collectionItem.description }}
     </p>
   </p-card>
 </template>
@@ -19,10 +19,10 @@
 <script lang="ts" setup>
   import LogoImage from '@/components/LogoImage.vue'
   import { useWorkspaceRoutes } from '@/compositions'
-  import { CollectionFlow } from '@/models'
+  import { CollectionItem } from '@/models'
 
   defineProps<{
-    collectionFlow: CollectionFlow,
+    collectionItem: CollectionItem,
   }>()
 
   const routes = useWorkspaceRoutes()
@@ -39,9 +39,7 @@
   grid-template-columns: 1fr min-content;
 }
 
-.collection-card-preview__logo { @apply
-  !w-11
-  !h-11;
+.collection-card-preview__logo {
   grid-area: logo;
 }
 
@@ -60,10 +58,6 @@
   text-sm
   line-clamp-5;
   grid-area: description;
-}
-
-.collection-card-preview__capabilities { @apply
-  mb-2
 }
 
 .collection-card-preview__action { @apply
