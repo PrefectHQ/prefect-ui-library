@@ -29,17 +29,17 @@
             <span>Deployment</span> <DeploymentIconText :deployment-id="flowRun.deploymentId" />
           </div>
         </template>
-        <template v-if="flowRun.workQueueName || flowRun.workPoolName">
-          <div v-if="flowRun.workPoolName" class="flow-run-list-item__relation">
-            <span>Work Pool</span>
-            <WorkPoolIconText :work-pool-name="flowRun.workPoolName" />
+
+        <template v-if="flowRun.workPoolName">
+          <div class="flow-run-list-item__relation">
+            <span>Work Pool</span> <WorkPoolIconText :work-pool-name="flowRun.workPoolName" />
           </div>
-          <template v-else>
-            <div v-if="flowRun.workQueueName" class="flow-run-list-item__relation">
-              <span>Work Queue</span>
-              <WorkQueueIconText :work-queue-name="flowRun.workQueueName" :work-pool-name="flowRun.workPoolName" />
-            </div>
-          </template>
+        </template>
+
+        <template v-if="flowRun.workQueueName">
+          <div class="flow-run-list-item__relation">
+            <span>Work Queue</span> <WorkQueueIconText :work-queue-name="flowRun.workQueueName" :work-pool-name="flowRun.workPoolName" />
+          </div>
         </template>
       </template>
     </StateListItem>
