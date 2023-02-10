@@ -29,7 +29,7 @@ const randomChars = mocker.createMany('char', 500) // string[]
 ```
 
 ## Adding new Mocker profiles ##
-In order for the mocker to know how to create this new type, we need to define a [`MockFunction`](https://github.com/PrefectHQ/orion/blob/main/orion-ui/packages/prefect-ui-library/src/services/Mocker.ts#L43).
+In order for the mocker to know how to create this new type, we need to define a [`MockFunction`](https://github.com/PrefectHQ/prefect-ui-library/src/services/Mocker.ts).
 ```ts 
 import { MockFunction } from '@/services/Mocker'
 
@@ -42,7 +42,7 @@ export const randomThing: MockFunction<Thing> = function() {
 - because of the point above, it's important to define your function as I've done above and not as an arrow function as you would lose the context.
 - the name of this file doesn't _actually_ matter, but camel case of the destination type is the standard, which in this case is `src/mocks/thing.ts`.
 
-You're not done yet, just creating this mock function does NOT make it available to `mocker.create`. The next step is to add your mock function to that [predefined index](https://github.com/PrefectHQ/orion/blob/main/orion-ui/packages/prefect-ui-library/src/mocks/index.ts) I mentioned above.
+You're not done yet, just creating this mock function does NOT make it available to `mocker.create`. The next step is to add your mock function to that [predefined index](https://github.com/PrefectHQ/prefect-ui-library/src/mocks/index.ts) I mentioned above.
 
 ```ts
 import { randomThing } from './thing'

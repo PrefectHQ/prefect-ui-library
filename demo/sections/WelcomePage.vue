@@ -4,10 +4,10 @@
     <p-icon class="welcome-page__logo-icon" icon="PrefectGradient" />
     <div class="welcome-page__intro">
       <p class="welcome-page__title">
-        Orion Design
+        Prefect UI Library
       </p>
       <p class="welcome-page__description">
-        Orion Design is UI Component library built on Vue 3 and Typescript. These components are specifically for use in both Prefect 2.0 and Prefect Cloud 2.0 and are not meant for general consumption.
+        The Prefect UI Library is built on Vue 3 and Typescript. These components are specifically for use in Prefect 2.0 and Prefect Cloud 2.0 and are not meant for general consumption.
       </p>
     </div>
     <p-terminal class="welcome-page__terminal" command="npm i @prefecthq/prefect-ui-library" />

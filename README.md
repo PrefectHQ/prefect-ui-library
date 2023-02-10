@@ -1,5 +1,5 @@
 # prefect-ui-library
-Orion Design is the Vue and Typescript component library for [Prefect 2.0](https://github.com/PrefectHQ/prefect) and [Prefect Cloud 2.0)[https://www.prefect.io/cloud/]. The components and utilities in this project are not meant to be used independently. 
+This lribary is the Vue and Typescript component library for [Prefect 2.0](https://github.com/PrefectHQ/prefect) and [Prefect Cloud 2.0](https://www.prefect.io/cloud/). _The components and utilities in this project are not meant to be used independently_. 
 
 ## Install
 ```
@@ -11,17 +11,17 @@ https://prefect-ui-library.netlify.app/
 
 To run locally for devlopment you can use `npm run serve` and go to the url outputted to the console.
 
-## Developing with Prefect Orion-UI
+## Developing with Prefect UI
 
-If you plan to develop against the Prefect Orion-UI you can install the prefect-ui-library package locally.
+If you plan to develop against the Prefect UI you can install the prefect-ui-library package locally.
 
 We recommend using the cli and running
 
 `npm i @prefecthq/prefect-ui-library@../../prefect-ui-library --save`
 
-in the Prefect Orion-UI project where `../../prefect-ui-library` is the relative path from your Prefect orion-UI project’s directory to the prefect-ui-library project directory. You can also use an absolute path. 
+in the Prefect UI project where `../../prefect-ui-library` is the relative path from your Prefect UI project’s directory to the prefect-ui-library project directory. You can also use an absolute path. 
 
-If you have done this succesfully, you should see your Prefect Orion-UI package.json and package-lock.json updated to show your local prefect-ui-library. 
+If you have done this succesfully, you should see your Prefect UI package.json and package-lock.json updated to show your local prefect-ui-library. 
 
 <aside>
 💡 Keep in mind this will update both the package.json and package-lock.json files. Be sure to not commit the changes to these two files.
@@ -30,17 +30,17 @@ If you have done this succesfully, you should see your Prefect Orion-UI package.
 
 </aside>
 
-Then when linking prefect-ui-library to the prefect/orion-ui project you can do the following:
+Then when linking prefect-ui-library to the prefect/UI project you can do the following:
 
 In prefect-ui-library (this repo):
 
 `npm run dev`
 
-In [orion-ui](https://github.com/PrefectHQ/prefect/tree/main/orion-ui):
+In [ui](https://github.com/PrefectHQ/prefect/tree/main/UI):
 
 `npm run serve`
 
-Now any change you make in prefect-ui-library will trigger a reload in orion-ui. 
+Now any change you make in prefect-ui-library will trigger a reload in UI. 
 
 ## Update
 To update a package in a project you can either install `latest` or a specific version like
