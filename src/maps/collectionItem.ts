@@ -1,7 +1,7 @@
-import { CollectionFlow, CollectionFlowResponse } from '@/models'
+import { CollectionItem, CollectionItemResponse } from '@/models'
 import { MapFunction } from '@/services/Mapper'
 
-export const mapCollectionFlowResponseToCollectionFlow: MapFunction<CollectionFlowResponse, CollectionFlow> = function(source) {
+export const mapCollectionItemResponseToCollectionItem: MapFunction<CollectionItemResponse, CollectionItem> = function(source) {
   return {
     collectionType: 'flow',
     name: source.name,

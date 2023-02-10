@@ -1,8 +1,8 @@
 import { kebabCase } from '@prefecthq/prefect-design'
-import { CollectionFlow } from '@/models'
+import { CollectionItem } from '@/models'
 import { MockFunction } from '@/services/Mocker'
 
-export const randomCollectionFlow: MockFunction<CollectionFlow, [Partial<CollectionFlow>?]> = function(overrides) {
+export const randomCollectionItem: MockFunction<CollectionItem, [Partial<CollectionItem>?]> = function(overrides) {
   const name = this.create('runName')
 
   return {

@@ -1,17 +1,17 @@
 <template>
   <p-card class="collection-card">
-    <p-content v-if="collectionFlow">
-      <LogoImage :url="collectionFlow.logoUrl" class="collection-card__logo" />
+    <p-content v-if="collectionItem">
+      <LogoImage :url="collectionItem.logoUrl" class="collection-card__logo" />
 
-      <p-key-value label="Name" :value="collectionFlow.name" />
+      <p-key-value label="Name" :value="collectionItem.name" />
 
-      <p-key-value label="Slug" :value="collectionFlow.slug" />
+      <p-key-value label="Slug" :value="collectionItem.slug" />
 
-      <template v-if="collectionFlow.description">
-        <p-key-value label="Description" :value="collectionFlow.description" />
+      <template v-if="collectionItem.description">
+        <p-key-value label="Description" :value="collectionItem.description" />
       </template>
 
-      <template v-for="(example, index) in collectionFlow.examples" :key="index">
+      <template v-for="(example, index) in collectionItem.examples" :key="index">
         <p-key-value label="Example" class="collection-card__example">
           <template #value>
             <p-code-highlight lang="python" :text="example" show-line-numbers />
@@ -20,8 +20,8 @@
       </template>
 
       <div class="collection-card__actions">
-        <template v-if="collectionFlow.documentationUrl">
-          <a :href="collectionFlow.documentationUrl" target="_blank">
+        <template v-if="collectionItem.documentationUrl">
+          <a :href="collectionItem.documentationUrl" target="_blank">
             <p-button inset>
               <slot>
                 View Docs
@@ -38,10 +38,10 @@
 <script lang="ts" setup>
   import LogoImage from '@/components/LogoImage.vue'
   import { useWorkspaceRoutes } from '@/compositions'
-  import { CollectionFlow } from '@/models'
+  import { CollectionItem } from '@/models'
 
   defineProps<{
-    collectionFlow: CollectionFlow,
+    collectionItem: CollectionItem,
   }>()
 
   const routes = useWorkspaceRoutes()

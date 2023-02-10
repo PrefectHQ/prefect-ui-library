@@ -1,13 +1,13 @@
 <template>
   <div class="collections-list">
     <div class="collections-list__filters">
-      <ResultsCount label="Flow" :count="filteredCollectionFlows.length" class="collections-list__results" />
+      <ResultsCount label="Flow" :count="filteredCollectionItems.length" class="collections-list__results" />
       <SearchInput v-model="searchTerm" class="collections-list__search" placeholder="Search collections" />
     </div>
 
     <div class="collections-list__types">
-      <template v-for="collectionFlow in filteredCollectionFlows" :key="collectionFlow.name">
-        <CollectionCardPreview :collection-item="collectionFlow" />
+      <template v-for="collectionItem in filteredCollectionItems" :key="collectionItem.name">
+        <CollectionCardPreview :collection-item="collectionItem" />
       </template>
     </div>
 
@@ -36,9 +36,9 @@
   const searchTerm = ref('')
 
   const collectionSubscription = useSubscription(collectionsApi.getFlowCollection, [])
-  const collectionFlows = computed(() => collectionSubscription.response ?? [])
-  const filteredCollectionFlows = computed(() => collectionFlows.value.filter(filterByName))
-  const empty = computed(() => collectionSubscription.executed && collectionFlows.value.length === 0)
+  const collectionItems = computed(() => collectionSubscription.response ?? [])
+  const filteredCollectionItems = computed(() => collectionItems.value.filter(filterByName))
+  const empty = computed(() => collectionSubscription.executed && collectionItems.value.length === 0)
 
   function filterByName({ name }: CollectionItem): boolean {
     return name.toLowerCase().includes(searchTerm.value.toLowerCase())

@@ -1,4 +1,4 @@
-export type CollectionFlowResponse = {
+export type CollectionItemResponse = {
   description: {
     summary: string,
     returns: string,

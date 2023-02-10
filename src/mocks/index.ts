@@ -7,7 +7,7 @@ import { randomBlockSchemaCapability } from '@/mocks/blockSchemaCapability'
 import { randomBlockType } from '@/mocks/blockType'
 import { randomBlockTypeSnippet } from '@/mocks/blockTypeSnippet'
 import { randomBoolean } from '@/mocks/boolean'
-import { randomCollectionFlow } from '@/mocks/collectionFlow'
+import { randomCollectionItem } from '@/mocks/collectionItem'
 import { randomConcurrencyLimit } from '@/mocks/concurrencyLimit'
 import { randomCreatedOrUpdatedBy } from '@/mocks/createdOrUpdatedBy'
 import { randomDate, randomDateString } from '@/mocks/date'
@@ -53,7 +53,7 @@ export const mocks = {
   blockTypeSnippet: randomBlockTypeSnippet,
   boolean: randomBoolean,
   char: randomChar,
-  collectionFlow: randomCollectionFlow,
+  collectionItem: randomCollectionItem,
   concurrencyLimit: randomConcurrencyLimit,
   createdOrUpdatedBy: randomCreatedOrUpdatedBy,
   date: randomDate,
