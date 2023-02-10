@@ -35,7 +35,7 @@ export class WorkspaceWorkQueuesApi extends WorkspaceApi implements IWorkspaceWo
 
   public async getWorkQueues(filter: WorkQueuesFilter): Promise<WorkQueue[]> {
     const request = mapper.map('WorkQueuesFilter', filter, 'WorkQueuesFilterRequest')
-    const { data } = await this.post<WorkQueueResponse[]>('/filter', filter)
+    const { data } = await this.post<WorkQueueResponse[]>('/filter', request)
 
     return mapper.map('WorkQueueResponse', data, 'WorkQueue')
   }
