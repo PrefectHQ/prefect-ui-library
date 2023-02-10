@@ -9,7 +9,7 @@
     </template>
 
     <template #description>
-      With the General Availability release of Prefect 2.0, we modified the approach to creating deployments.
+      With the General Availability release of Prefect 2, we modified the approach to creating deployments.
     </template>
 
     <template #actions>

@@ -7,7 +7,7 @@
         Prefect UI Library
       </p>
       <p class="welcome-page__description">
-        The Prefect UI Library is built on Vue 3 and Typescript. These components are specifically for use in Prefect 2.0 and Prefect Cloud 2.0 and are not meant for general consumption.
+        The Prefect UI Library is built on Vue 3 and Typescript. These components are specifically for use in Prefect 2 and Prefect Cloud 2 and are not meant for general consumption.
       </p>
     </div>
     <p-terminal class="welcome-page__terminal" command="npm i @prefecthq/prefect-ui-library" />
