@@ -39,7 +39,7 @@ export default defineConfig(({ mode }) => {
       sourcemap: true,
       lib: {
         entry: resolve(__dirname, 'src/index.ts'),
-        name: 'orion-design',
+        name: 'prefect-ui-library',
       },
       rollupOptions: {
         external: ['vue', 'vue-router', 'vee-validate', '@prefecthq/vue-compositions', '@prefecthq/prefect-design'],

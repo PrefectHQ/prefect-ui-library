@@ -1,15 +1,15 @@
 {
-    "name": "@prefecthq/orion-design",
+    "name": "@prefecthq/prefect-ui-library",
     "version": "1.2.23",
     "private": false,
     "repository": {
         "type": "git",
-        "url": "https://github.com/PrefectHQ/orion-design"
+        "url": "https://github.com/PrefectHQ/prefect-ui-library"
     },
     "bugs": {
-        "url": "https://github.com/PrefectHQ/orion-design/issues"
+        "url": "https://github.com/PrefectHQ/prefect-ui-library/issues"
     },
-    "homepage": "https://github.com/PrefectHQ/orion-design#readme",
+    "homepage": "https://github.com/PrefectHQ/prefect-ui-library#readme",
     "keywords": [
         "prefect 2.0",
         "vue3"
@@ -24,12 +24,12 @@
         "changelog": "auto-changelog --package --commit-limit 0",
         "version": "npm run changelog && git add CHANGELOG.md"
     },
-    "main": "./dist/orion-design.umd.js",
-    "module": "./dist/orion-design.mjs",
+    "main": "./dist/prefect-ui-library.umd.js",
+    "module": "./dist/prefect-ui-library.mjs",
     "exports": {
         ".": {
-            "import": "./dist/orion-design.mjs",
-            "require": "./dist/orion-design.umd.js"
+            "import": "./dist/prefect-ui-library.mjs",
+            "require": "./dist/prefect-ui-library.umd.js"
         },
         "./dist/style.css": "./dist/style.css"
     },
