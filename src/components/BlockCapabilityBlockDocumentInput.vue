@@ -4,14 +4,14 @@
       <template #default="{ label, value }">
         <div class="block-capability-block-document-input__option">
           <template v-if="value === blockDocument?.id">
-            <BlockTypeLogo v-if="blockDocument" :block-type="blockDocument.blockType" class="block-capability-block-document-input__logo" />
+            <LogoImage v-if="blockDocument" :url="blockDocument.blockType.logoUrl" class="block-capability-block-document-input__logo" />
           </template>
           {{ label }}
         </div>
       </template>
       <template #group="{ group }">
         <div class="block-capability-block-document-input__group">
-          <BlockTypeLogo :block-type="group.blockType" class="block-capability-block-document-input__logo" />
+          <LogoImage :url="group.blockType.logoUrl" class="block-capability-block-document-input__logo" />
           {{ group.label }}
         </div>
       </template>
@@ -35,7 +35,7 @@
   import { SelectOptionGroup, useAttrsStylesClassesAndListeners } from '@prefecthq/prefect-design'
   import { useSubscription, useSubscriptionWithDependencies } from '@prefecthq/vue-compositions'
   import { computed, toRefs } from 'vue'
-  import BlockTypeLogo from '@/components/BlockTypeLogo.vue'
+  import LogoImage from '@/components/LogoImage.vue'
   import { useWorkspaceApi, useWorkspaceRoutes } from '@/compositions'
   import { BlockType } from '@/models'
   import { BlockDocumentsFilter, BlockTypesFilter } from '@/models/Filters'

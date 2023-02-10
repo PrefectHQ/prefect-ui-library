@@ -10,7 +10,7 @@ export const en = {
     concurrency: 'https://docs.prefect.io/concepts/tasks/?h=conc#task-run-concurrency-limits',
     automations: 'https://docs.prefect.io/ui/automations/',
     workPools: 'https://docs.prefect.io/ui/work-pools/',
-    collections: 'https://orion-docs.prefect.io/collections/catalog/',
+    collections: 'https://docs.prefect.io/collections/catalog/',
   },
   error: {
     activateDeployment: 'Failed to activate deployment',
@@ -88,5 +88,6 @@ export const en = {
   info: {
     deprecatedWorkQueue: 'This work queue uses a deprecated tag-based approach to matching flow runs; it will continue to work but you can\'t modify it',
     deploymentMissingWorkQueue: 'This deployment doesn\'t have an associated work queue; runs will be scheduled but won\'t be picked up by your agents',
+    taskInput: 'Currently task inputs show parameter keys. The can also show task run relationships.',
   },
 }

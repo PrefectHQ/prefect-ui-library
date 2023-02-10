@@ -37,7 +37,7 @@
           <template v-else>
             <div v-if="flowRun.workQueueName" class="flow-run-list-item__relation">
               <span>Work Queue</span>
-              <WorkQueueIconText :work-queue-name="flowRun.workQueueName" />
+              <WorkQueueIconText :work-queue-name="flowRun.workQueueName" :work-pool-name="flowRun.workPoolName" />
             </div>
           </template>
         </template>

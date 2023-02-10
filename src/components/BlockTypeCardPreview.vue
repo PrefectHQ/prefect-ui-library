@@ -1,6 +1,6 @@
 <template>
   <p-card class="block-type-card-preview">
-    <BlockTypeLogo :block-type="blockType" class="block-type-card-preview__logo" />
+    <LogoImage :url="blockType.logoUrl" class="block-type-card-preview__logo" />
     <p class="block-type-card-preview__name">
       <p-link :to="routes.blocksCatalogView(blockType.slug)">
         {{ blockType.name }}
@@ -29,7 +29,7 @@
   import { useSubscription } from '@prefecthq/vue-compositions'
   import { computed, useSlots } from 'vue'
   import BlockSchemaCapabilities from '@/components/BlockSchemaCapabilities.vue'
-  import BlockTypeLogo from '@/components/BlockTypeLogo.vue'
+  import LogoImage from '@/components/LogoImage.vue'
   import { useWorkspaceApi, useWorkspaceRoutes } from '@/compositions'
   import { BlockType } from '@/models/BlockType'
 

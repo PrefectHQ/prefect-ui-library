@@ -6,8 +6,10 @@ import { FlowRunsFilter, FlowRunsHistoryFilter } from '@/models/Filters'
 import { FlowRun } from '@/models/FlowRun'
 import { GraphNode } from '@/models/GraphNode'
 import { RunHistory } from '@/models/RunHistory'
+import { BatchProcessor } from '@/services/BatchProcessor'
 import { mapper } from '@/services/Mapper'
 import { WorkspaceApi } from '@/services/WorkspaceApi'
+import { toMap } from '@/utilities'
 
 export interface IWorkspaceFlowRunsApi {
   getFlowRun: (flowRunId: string) => Promise<FlowRun>,
@@ -26,10 +28,18 @@ export class WorkspaceFlowRunsApi extends WorkspaceApi implements IWorkspaceFlow
 
   protected routePrefix = '/flow_runs'
 
-  public async getFlowRun(id: string): Promise<FlowRun> {
-    const { data } = await this.get<FlowRunResponse>(`/${id}`)
+  private readonly batcher = new BatchProcessor<string, FlowRun>(async ids => {
+    const flowRuns = await this.getFlowRuns({
+      flowRuns: {
+        id: ids,
+      },
+    })
 
-    return mapper.map('FlowRunResponse', data, 'FlowRun')
+    return toMap(flowRuns, 'id')
+  }, { maxBatchSize: 200 })
+
+  public getFlowRun(id: string): Promise<FlowRun> {
+    return this.batcher.batch(id)
   }
 
   public async getFlowRuns(filter: FlowRunsFilter = {}): Promise<FlowRun[]> {

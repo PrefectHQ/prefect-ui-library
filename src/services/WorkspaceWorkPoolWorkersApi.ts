@@ -8,7 +8,7 @@ export interface IWorkspaceWorkPoolWorkersApi {
 }
 
 export class WorkspaceWorkPoolWorkersApi extends WorkspaceApi implements IWorkspaceWorkPoolWorkersApi {
-  protected override routePrefix = '/experimental/work_pools/'
+  protected override routePrefix = '/work_pools/'
 
   public async getWorkers(workPoolName: string, filter: WorkPoolWorkersFilter = {}): Promise<WorkPoolWorker[]> {
     const request = mapper.map('WorkPoolWorkersFilter', filter, 'WorkPoolWorkersFilterRequest')

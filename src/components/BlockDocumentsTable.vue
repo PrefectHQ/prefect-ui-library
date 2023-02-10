@@ -9,7 +9,7 @@
     <p-table :data="sortedBlocks" :columns="columns">
       <template #name="{ row }: { row: BlockDocument }">
         <div class="block-documents-table__name-column">
-          <BlockTypeLogo :block-type="row.blockType" class="block-documents-table__name-img" />
+          <LogoImage :url="row.blockType.logoUrl" class="block-documents-table__name-img" />
           <div class="block-documents-table__name-content">
             <span class="block-documents-table__crumbs">
               {{ row.blockType.name }} /
@@ -57,8 +57,8 @@
   import BlockDocumentMenu from '@/components/BlockDocumentMenu.vue'
   import BlockSchemaCapabilities from '@/components/BlockSchemaCapabilities.vue'
   import BlockSchemaCapabilitySelect from '@/components/BlockSchemaCapabilitySelect.vue'
-  import BlockTypeLogo from '@/components/BlockTypeLogo.vue'
   import BlockTypeSelect from '@/components/BlockTypeSelect.vue'
+  import LogoImage from '@/components/LogoImage.vue'
   import ResultsCount from '@/components/ResultsCount.vue'
   import SearchInput from '@/components/SearchInput.vue'
   import { useWorkspaceRoutes } from '@/compositions'

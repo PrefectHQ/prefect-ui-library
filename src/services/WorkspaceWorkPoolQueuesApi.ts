@@ -14,7 +14,7 @@ export interface IWorkspaceWorkPoolQueuesApi {
 
 export class WorkspaceWorkPoolQueuesApi extends WorkspaceApi implements IWorkspaceWorkPoolQueuesApi {
 
-  protected override routePrefix = '/experimental/work_pools/'
+  protected override routePrefix = '/work_pools/'
 
   public async createWorkPoolQueue(workPoolName: string, request: WorkPoolQueueCreate): Promise<WorkPoolQueue> {
     const body = mapper.map('WorkPoolQueueCreate', request, 'WorkPoolQueueCreateRequest')

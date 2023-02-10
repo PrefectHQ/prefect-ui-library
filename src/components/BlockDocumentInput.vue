@@ -1,6 +1,6 @@
 <template>
   <div class="block-document-input">
-    <BlockTypeLogo v-if="blockType" :block-type="blockType" />
+    <LogoImage v-if="blockType" :url="blockType.logoUrl" />
 
     <template v-if="blockDocuments.length">
       <BlockDocumentsSelect v-model:selected="model" v-bind="{ blockDocuments }" class="block-document-input__select" />
@@ -15,7 +15,7 @@
   import { useSubscription } from '@prefecthq/vue-compositions'
   import { computed } from 'vue'
   import BlockDocumentsSelect from '@/components/BlockDocumentsSelect.vue'
-  import BlockTypeLogo from '@/components/BlockTypeLogo.vue'
+  import LogoImage from '@/components/LogoImage.vue'
   import { useWorkspaceApi, useWorkspaceRoutes } from '@/compositions'
   import { withRedirect } from '@/utilities/routes'
 

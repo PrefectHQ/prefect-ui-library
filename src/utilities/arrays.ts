@@ -3,13 +3,12 @@ import { floor, random } from '@/utilities/math'
 
 // we really do want any here
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function toRecord<T extends any[], K extends keyof T[number]>(source: T, key: K): Record<K, T> {
-  return source.reduce((result, item) => {
-    const itemKey = item[key]
-    result[itemKey] = item
+export function toMap<T extends any[], K extends keyof T[number]>(source: T, key: K): Map<T[number][K], T[number]> {
+  return source.reduce<Map<K, T>>((result, item) => {
+    result.set(item[key], item)
 
     return result
-  }, {})
+  }, new Map())
 }
 
 // Random element selector equivalent to python's choice method

@@ -20,7 +20,7 @@ import { App, Plugin } from 'vue'
 import { clearOldCacheKeys } from '@/utilities/cache'
 
 // hacky safeguard for keeping window references from breaking the umd build
-// which is used for node and specifically integration tests in orion-ui
+// which is used for node and specifically integration tests in UI
 // the specific window reference that's causing issues is in the pixi-viewport
 // package. But this should also safeguard us from other window references sneaking
 // into the umd bundle.

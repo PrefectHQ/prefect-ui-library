@@ -19,6 +19,7 @@ export const randomDeployment: MockFunction<Deployment, [Partial<Deployment>?]> 
     isScheduleActive: this.create('boolean'),
     parameters: this.create('parameters', [{}, schema]),
     parameterOpenApiSchema: schema,
+    rawSchema: schema,
     tags: this.createMany('noun', this.create('number', [0, 5])),
     manifestPath: this.create('id'),
     path: this.create('id'),
@@ -28,6 +29,7 @@ export const randomDeployment: MockFunction<Deployment, [Partial<Deployment>?]> 
     infrastructureOverrides: this.create('parameters', [{}, schema]),
     deprecated: false,
     workQueueName: random() > 0.05 ? this.create('noun') : null,
+    workPoolName: random() > 0.05 ? this.create('noun') : null,
     appliedBy: random() > 0.05 ? this.create('noun') : null,
     ...overrides,
   }

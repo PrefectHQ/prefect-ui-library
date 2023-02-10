@@ -27,4 +27,5 @@ export type DeploymentResponse = {
   infrastructure_document_id: string | null,
   infra_overrides: Record<string, unknown> | null,
   work_queue_name: string | null,
+  work_pool_name: string | null,
 }
