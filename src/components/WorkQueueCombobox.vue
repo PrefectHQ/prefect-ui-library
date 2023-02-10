@@ -1,5 +1,5 @@
 <template>
-  <p-combobox v-model="internalValue" :options="options" :empty-message="emptyMessage">
+  <p-combobox v-model="internalValue" v-bind="{ options, multiple, emptyMessage }">
     <template #combobox-options-empty>
       No work queues
     </template>
@@ -22,13 +22,14 @@
     selected: string | string[] | null | undefined,
     emptyMessage?: string,
     allowUnset?: boolean,
+    multiple?: boolean,
   }>()
 
   const emits = defineEmits<{
     (event: 'update:selected', value: string | string[] | null): void,
   }>()
 
-  const multiple = computed(() => Array.isArray(props.selected))
+  const multiple = computed(() => props.multiple === true || Array.isArray(props.selected))
 
   const internalValue = computed<typeof props.selected>({
     get() {

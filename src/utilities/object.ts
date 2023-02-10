@@ -1,4 +1,6 @@
+/* eslint-disable @typescript-eslint/indent */
 import isDate from 'date-fns/isDate'
+import { unique } from '@/utilities/arrays'
 
 export function flip<K extends string, V extends string>(obj: Record<K, V>): Record<V, K> {
   const result = {} as Record<V, K>
@@ -46,14 +48,46 @@ export function hasProperty<T extends Record<string | symbol, unknown>>(needle: 
   return (typeof property === 'string' || typeof property === 'symbol') && property in needle
 }
 
-export type MapEntriesCallback<K, V, R> = (key: K, value: V) => R
+export type ObjectKey = string | number | symbol
 
-export function mapEntries<K extends string | number | symbol, V, R>(object: Record<K, V>, callback: MapEntriesCallback<K, V, R>): Record<K, R> {
+export type MapKeysCallback<PreviousKey extends ObjectKey, Value, NewKey extends ObjectKey> = (key: PreviousKey, value: Value) => NewKey
+
+export function mapKeys<K extends ObjectKey, V, Key extends ObjectKey>(object: Record<K, V>, callback: MapKeysCallback<K, V, Key>): Record<Key, V> {
   const entries = Object.entries(object) as [K, V][]
-  const result = {} as Record<K, R>
+  const result = {} as Record<Key, V>
+
+  return entries.reduce((result, [key, value]) => {
+    const newKey = callback(key, value)
+
+    result[newKey] = object[key]
+
+    return result
+  }, result)
+}
+
+export type MapValuesCallback<Key extends ObjectKey, PreviousValue, NewValue> = (key: Key, value: PreviousValue) => NewValue
+
+export function mapValues<Key extends ObjectKey, PreviousValue, NewValue>(object: Record<Key, PreviousValue>, callback: MapValuesCallback<Key, PreviousValue, NewValue>): Record<Key, NewValue> {
+  const entries = Object.entries(object) as [Key, PreviousValue][]
+  const result = {} as Record<Key, NewValue>
 
   return entries.reduce((result, [key, value]) => {
     result[key] = callback(key, value)
+
+    return result
+  }, result)
+}
+
+export type MapEntriesCallback<PreviousKey extends ObjectKey, PreviousValue, NewKey extends ObjectKey, NewValue> = (key: PreviousKey, value: PreviousValue) => [NewKey, NewValue]
+
+export function mapEntries<PreviousKey extends ObjectKey, PreviousValue, NewKey extends ObjectKey, NewValue>(object: Partial<Record<PreviousKey, PreviousValue>>, callback: MapEntriesCallback<PreviousKey, PreviousValue, NewKey, NewValue>): Partial<Record<NewKey, NewValue>> {
+  const entries = Object.entries(object) as [PreviousKey, PreviousValue][]
+  const result = {} as Record<NewKey, NewValue>
+
+  return entries.reduce((result, [key, value]) => {
+    const [newKey, newValue] = callback(key, value)
+
+    result[newKey] = newValue
 
     return result
   }, result)
@@ -70,4 +104,73 @@ export function isTypeRequired<T extends Record<string | number | symbol, unknow
 export function hasString(obj: Record<string | number | symbol, unknown>, str: string): boolean {
   const values = Object.values(obj).map(val => val?.toString().toLowerCase() ?? '').join('')
   return values.includes(str.toLowerCase())
+}
+
+export function isRecord(item: unknown): item is Record<PropertyKey, unknown> {
+  return item !== null && typeof item === 'object' && !Array.isArray(item)
+}
+
+export function merge<T extends Record<PropertyKey, unknown>>(target: T, ...sources: T[]): T {
+  if (sources.length === 0) {
+    return target
+  }
+
+  const [source, ...rest] = sources
+
+  const keys = unique([...Object.keys(target), ...Object.keys(source)])
+
+  for (const key of keys) {
+    const targetValue: unknown = target[key]
+    const sourceValue: unknown = source[key]
+
+    if (targetValue === sourceValue) {
+      continue
+    }
+
+    if (isRecord(targetValue) && isRecord(sourceValue)) {
+      merge(targetValue, sourceValue)
+      continue
+    }
+
+    if (isRecord(targetValue) && isRecord(source) && !(key in source)) {
+      merge(targetValue, { [key]: {} })
+      continue
+    }
+
+    // this is really sloppy typescript...
+    target[key as keyof T] = source[key] as any
+  }
+
+  return merge(target, ...rest)
+}
+
+type EmptyObjectsRemoved<T extends Record<PropertyKey, unknown>> = {
+  [P in keyof T]: T[P] extends Record<PropertyKey, unknown> ? EmptyObjectsRemoved<T[P]> | undefined : T[P];
+}
+
+export function removeEmptyObjects<T extends Record<PropertyKey, unknown>>(input: T): EmptyObjectsRemoved<T> {
+  const response: Record<PropertyKey, unknown> = {}
+  const keys = Object.keys(input)
+
+  for (const key of keys) {
+    const value = input[key]
+
+    if (value === undefined) {
+      continue
+    }
+
+    if (isRecord(value)) {
+      const possiblyEmptyObject = removeEmptyObjects(value)
+
+      if (Object.keys(possiblyEmptyObject).length) {
+        response[key] = possiblyEmptyObject
+      }
+
+      continue
+    }
+
+    response[key] = value
+  }
+
+  return response as EmptyObjectsRemoved<T>
 }

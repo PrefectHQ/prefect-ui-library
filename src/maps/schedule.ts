@@ -1,4 +1,4 @@
-import { CronSchedule, IntervalSchedule, RRuleSchedule, Schedule, ScheduleRequest, ScheduleResponse, isCronScheduleResponse, isIntervalScheduleResponse, isRRuleScheduleResponse, isIntervalSchedule, isRRuleSchedule, isCronSchedule, IntervalScheduleRequest, RRuleScheduleRequest, CronScheduleRequest } from '@/models'
+import { CronSchedule, IntervalSchedule, RRuleSchedule, Schedule, ScheduleResponse, isCronScheduleResponse, isIntervalScheduleResponse, isRRuleScheduleResponse, isIntervalSchedule, isRRuleSchedule, isCronSchedule, IntervalScheduleRequest, RRuleScheduleRequest, CronScheduleRequest } from '@/models'
 import { MapFunction } from '@/services/Mapper'
 
 export const mapScheduleResponseToSchedule: MapFunction<ScheduleResponse, Schedule> = function(source) {

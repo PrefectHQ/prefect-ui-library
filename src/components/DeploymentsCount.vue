@@ -27,9 +27,7 @@
     return [
       {
         flows: {
-          id: {
-            any_: [props.flowId],
-          },
+          id: [props.flowId],
         },
       },
     ]

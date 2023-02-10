@@ -6,12 +6,12 @@
   import { useSubscription } from '@prefecthq/vue-compositions'
   import { computed } from 'vue'
   import { useWorkspaceApi } from '@/compositions'
-  import { FlowRunFilter } from '@/types'
+  import { FlowRunsFilter } from '@/models/Filters'
 
   const props = defineProps<{
     selected: string[] | null | undefined,
     emptyMessage?: string,
-    filter: FlowRunFilter,
+    filter: FlowRunsFilter,
   }>()
 
   const emits = defineEmits<{

@@ -12,9 +12,9 @@
 
       <template #header-end>
         <div class="flows-table__header-end">
-          <SearchInput v-model="name" placeholder="Search flows" label="Search flows" />
-          <p-select v-model="sort" :options="flowSortOptions" />
-          <p-tags-input v-model="tags" empty-message="Flow run tags" class="flows-table__tags" />
+          <SearchInput v-model="flowNameLike" placeholder="Search flows" label="Search flows" />
+          <p-select v-model="filter.sort" :options="flowSortOptions" />
+          <p-tags-input v-model="filter.flowRuns.tags.name" empty-message="Flow run tags" class="flows-table__tags" />
         </div>
       </template>
 
@@ -60,7 +60,7 @@
             <template #message>
               No flows
             </template>
-            <template #actions>
+            <template v-if="isCustomFilter" #actions>
               <p-button size="sm" secondary @click="clear">
                 Clear Filters
               </p-button>
@@ -74,16 +74,17 @@
 
 <script lang="ts" setup>
   import { PTable, PEmptyResults, PLink, CheckboxModel } from '@prefecthq/prefect-design'
-  import { useSubscription } from '@prefecthq/vue-compositions'
+  import { useDebouncedRef, useSubscription } from '@prefecthq/vue-compositions'
   import { computed, ref } from 'vue'
   import { FlowsDeleteButton, DeploymentsCount, ResultsCount, SearchInput, FlowActivityChart, SelectedCount } from '@/components'
-  import { useCan, UseFlowFilterArgs, useFlowFilterFromRoute, useWorkspaceApi, useWorkspaceRoutes } from '@/compositions'
+  import { useCan, useFlowsFilterFromRoute, useWorkspaceApi, useWorkspaceRoutes } from '@/compositions'
   import { useComponent } from '@/compositions/useComponent'
+  import { FlowsFilter } from '@/models/Filters'
   import { flowSortOptions } from '@/types/SortOptionTypes'
   import { formatDateTimeNumeric } from '@/utilities/dates'
 
   const props = defineProps<{
-    filter?: UseFlowFilterArgs,
+    filter?: FlowsFilter,
   }>()
 
   const { FlowMenu } = useComponent()
@@ -91,8 +92,15 @@
   const api = useWorkspaceApi()
   const can = useCan()
   const routes = useWorkspaceRoutes()
-  const filter = computed(() => props.filter ?? {})
-  const { name, sort, tags, filter: unionFilter } = useFlowFilterFromRoute(filter)
+  const flowNameLike = ref<string>()
+  const flowNameLikeDebounced = useDebouncedRef(flowNameLike, 1200)
+  const { filter, clear, isCustomFilter } = useFlowsFilterFromRoute({
+    ...props.filter,
+    flows: {
+      ...props.filter,
+      nameLike: flowNameLikeDebounced,
+    },
+  })
 
   const columns = [
     {
@@ -143,20 +151,15 @@
     },
   })
 
-  const flowsSubscription = useSubscription(api.flows.getFlows, [unionFilter])
+  const flowsSubscription = useSubscription(api.flows.getFlows, [filter])
   const flows = computed(() => flowsSubscription.response ?? [])
 
-  const flowsCountSubscription = useSubscription(api.flows.getFlowsCount, [unionFilter])
+  const flowsCountSubscription = useSubscription(api.flows.getFlowsCount, [filter])
   const flowsCount = computed(() => flowsCountSubscription.response)
 
   function refresh(): void {
     flowsSubscription.refresh()
     flowsCountSubscription.refresh()
-  }
-
-  function clear(): void {
-    name.value = ''
-    tags.value = []
   }
 
   const emit = defineEmits<{

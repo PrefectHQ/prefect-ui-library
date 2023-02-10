@@ -49,7 +49,7 @@
     get() {
       return props.savedSearch
     },
-    set(value: SavedSearch | null) {
+    set(value) {
       emit('update:selectedSearchOption', value)
     },
   })

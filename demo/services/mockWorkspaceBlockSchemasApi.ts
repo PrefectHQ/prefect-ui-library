@@ -1,5 +1,6 @@
 import { MockApi } from './MockApi'
-import { BlockSchema, BlockSchemaFilter } from '@/models'
+import { BlockSchema } from '@/models'
+import { BlockSchemasFilter } from '@/models/Filters'
 import { IWorkspaceBlockSchemasApi } from '@/services'
 
 export class MockWorkspaceBlockSchemasApi extends MockApi implements IWorkspaceBlockSchemasApi {
@@ -8,7 +9,7 @@ export class MockWorkspaceBlockSchemasApi extends MockApi implements IWorkspaceB
     return await this.blockSchemas.get(blockSchemaId)
   }
 
-  public async getBlockSchemas(filter: BlockSchemaFilter = {}): Promise<BlockSchema[]> {
+  public async getBlockSchemas(filter: BlockSchemasFilter = {}): Promise<BlockSchema[]> {
     if (Object.keys(filter).length) {
       console.warn('MockWorkspaceBlockSchemasApi has not implemented the filter argument of the getBlockSchemas method')
     }

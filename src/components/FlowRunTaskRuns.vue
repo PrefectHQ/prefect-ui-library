@@ -3,7 +3,7 @@
     <div class="flow-run-task-runs__filters">
       <StateNameSelect v-model:selected="states" empty-message="All states" class="mr-auto" />
       <SearchInput v-model="searchTerm" placeholder="Search by run name" label="Search by run name" />
-      <TaskRunsSort v-model="sort" />
+      <TaskRunsSort v-model="filter.sort" />
     </div>
 
     <TaskRunList :selected="[]" :task-runs="taskRuns" disabled @bottom="taskRunsSubscription.loadMore" />
@@ -12,7 +12,7 @@
       <template #message>
         No task runs
       </template>
-      <template v-if="hasFilters" #actions>
+      <template v-if="isCustomFilter" #actions>
         <p-button size="sm" secondary @click="clear">
           Clear Filters
         </p-button>
@@ -28,52 +28,30 @@
   import StateNameSelect from '@/components/StateNameSelect.vue'
   import TaskRunList from '@/components/TaskRunList.vue'
   import TaskRunsSort from '@/components/TaskRunsSort.vue'
-  import { useWorkspaceApi } from '@/compositions'
+  import { useTaskRunsFilter, useWorkspaceApi } from '@/compositions'
   import { usePaginatedSubscription } from '@/compositions/usePaginatedSubscription'
   import { TaskRun } from '@/models/TaskRun'
-  import { TaskRunSortValues } from '@/types/SortOptionTypes'
-  import { TaskRunFilter, UnionFilters } from '@/types/UnionFilters'
 
   const props = defineProps<{
     flowRunId: string,
   }>()
 
   const states = ref<string[]>([])
-  const searchTerm = ref('')
+  const searchTerm = ref<string>()
   const searchTermDebounced = useDebouncedRef(searchTerm, 1200)
-  const sort = ref<TaskRunSortValues>('EXPECTED_START_TIME_DESC')
-  const hasFilters = computed(() => states.value.length || searchTerm.value.length)
+  const flowRunsIds = computed(() => [props.flowRunId])
 
-  const filter = computed<UnionFilters>(() => {
-    const runFilter: UnionFilters = {
-      'flow_runs': {
-        id: {
-          any_: [props.flowRunId],
-        },
+  const { filter, isCustomFilter } = useTaskRunsFilter({
+    flowRuns: {
+      id: flowRunsIds,
+    },
+    taskRuns: {
+      subFlowRunsExist: false,
+      nameLike: searchTermDebounced,
+      state: {
+        name: states,
       },
-      sort: sort.value,
-    }
-
-    const taskRunsFilter: TaskRunFilter = {
-      'subflow_runs': {
-        exists_: false,
-      },
-    }
-
-    if (searchTermDebounced.value) {
-      taskRunsFilter.name = {
-        like_: searchTermDebounced.value,
-      }
-    }
-
-    if (states.value.length) {
-      taskRunsFilter.state = {
-        name: {
-          any_: states.value,
-        },
-      }
-    }
-    return { ...runFilter, 'task_runs': { ...taskRunsFilter } }
+    },
   })
 
   const api = useWorkspaceApi()

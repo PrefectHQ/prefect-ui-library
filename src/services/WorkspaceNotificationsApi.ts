@@ -1,5 +1,5 @@
-import { NotificationFilter } from '@/models/api/NotificationFilter'
 import { NotificationResponse } from '@/models/api/NotificationResponse'
+import { NotificationsFilter } from '@/models/Filters'
 import { Notification } from '@/models/Notification'
 import { NotificationCreate } from '@/models/NotificationCreate'
 import { NotificationUpdate } from '@/models/NotificationUpdate'
@@ -22,8 +22,9 @@ export class WorkspaceNotificationsApi extends WorkspaceApi {
     return mapper.map('NotificationResponse', data, 'Notification')
   }
 
-  public async getNotifications(filter: NotificationFilter = {}): Promise<Notification[]> {
-    const { data } = await this.post<NotificationResponse[]>('/filter', filter)
+  public async getNotifications(filter: NotificationsFilter = {}): Promise<Notification[]> {
+    const request = mapper.map('NotificationsFilter', filter, 'NotificationsFilterRequest')
+    const { data } = await this.post<NotificationResponse[]>('/filter', request)
 
     return mapper.map('NotificationResponse', data, 'Notification')
   }

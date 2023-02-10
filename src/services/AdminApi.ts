@@ -1,4 +1,4 @@
-import { OrionSettings } from '@/models/OrionSettings'
+import { ServerSettings } from '@/models/ServerSettings'
 import { Api, ApiRoute } from '@/services/Api'
 
 
@@ -6,8 +6,8 @@ export class AdminApi extends Api {
 
   protected override route: ApiRoute = '/admin'
 
-  public getSettings(): Promise<OrionSettings> {
-    return this.get<OrionSettings>('/settings').then(({ data }) => data)
+  public getSettings(): Promise<ServerSettings> {
+    return this.get<ServerSettings>('/settings').then(({ data }) => data)
   }
 
   public async getVersion(): Promise<string> {

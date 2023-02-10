@@ -1,5 +1,5 @@
 <template>
-  <p-combobox v-model="internalValue" :options="options" :empty-message="emptyMessage">
+  <p-combobox v-model="internalValue" v-bind="{ options, emptyMessage, multiple }">
     <template #combobox-options-empty>
       No work pools
     </template>
@@ -22,6 +22,7 @@
     selected: string | string[] | null | undefined,
     emptyMessage?: string,
     allowUnset?: boolean,
+    multiple?: boolean,
   }>()
 
   const emits = defineEmits<{

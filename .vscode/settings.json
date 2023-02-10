@@ -24,6 +24,7 @@
         "Combobox",
         "deuteranomaly",
         "idempotency",
+        "isequal",
         "kubernetes",
         "openapi",
         "pinia",

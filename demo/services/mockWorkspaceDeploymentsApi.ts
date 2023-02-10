@@ -1,7 +1,7 @@
 import { MockApi } from './MockApi'
 import { Deployment, DeploymentFlowRunCreate, DeploymentUpdate, FlowRun } from '@/models'
+import { DeploymentsFilter } from '@/models/Filters'
 import { IWorkspaceDeploymentsApi, mocker } from '@/services'
-import { UnionFilters } from '@/types'
 
 export class MockWorkspaceDeploymentsApi extends MockApi implements IWorkspaceDeploymentsApi {
 
@@ -9,7 +9,7 @@ export class MockWorkspaceDeploymentsApi extends MockApi implements IWorkspaceDe
     return await this.deployments.get(deploymentId)
   }
 
-  public async getDeployments(filter: UnionFilters): Promise<Deployment[]> {
+  public async getDeployments(filter: DeploymentsFilter): Promise<Deployment[]> {
     if (Object.keys(filter).length) {
       console.warn('MockWorkspaceDeploymentsApi has not implemented the filter argument of the getDeployments method')
     }
@@ -18,7 +18,7 @@ export class MockWorkspaceDeploymentsApi extends MockApi implements IWorkspaceDe
 
   }
 
-  public async getDeploymentsCount(filter: UnionFilters): Promise<number> {
+  public async getDeploymentsCount(filter: DeploymentsFilter): Promise<number> {
     if (Object.keys(filter).length) {
       console.warn('MockWorkspaceDeploymentsApi has not implemented the filter argument of the getDeploymentsCount method')
     }

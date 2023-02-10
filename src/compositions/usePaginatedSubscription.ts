@@ -55,11 +55,7 @@ export function usePaginatedSubscription<T extends PaginatedAction>(...[action, 
   }
 
   if (watchable !== null) {
-    unwatch = watch(watchable, (newValue, oldValue) => {
-      if (JSON.stringify(newValue) === JSON.stringify(oldValue)) {
-        return
-      }
-
+    unwatch = watch(watchable, () => {
       if (!isSubscribed()) {
         unwatch!()
         return
