@@ -8,7 +8,7 @@
 
 example converting `Date` => `string`
 ```ts
-import { mapper } from '@prefecthq/orion-design'
+import { mapper } from '@prefecthq/prefect-ui-library'
 
 const mySourceValue = new Date()
 const myDestinationValue = mapper.map('Date', mySourceValue, 'string')
@@ -17,7 +17,7 @@ const myDestinationValue = mapper.map('Date', mySourceValue, 'string')
 ```
 
 ## Adding new Mapper profiles ##
-In order for the mapper to know how to map from `BlueType` to `RedType`, we need to define a [`MapperFunction`](https://github.com/PrefectHQ/orion/blob/d8f5439590504de2acdf78639281ec6f58530f7a/orion-ui/packages/orion-design/src/services/Mapper.ts#L51).
+In order for the mapper to know how to map from `BlueType` to `RedType`, we need to define a [`MapperFunction`](https://github.com/PrefectHQ/prefect-ui-library/src/services/Mapper.ts).
 ```ts 
 import { MapFunction } from '@/services/Mapper'
 
@@ -30,7 +30,7 @@ export const mapBlueTypeToRedType: MapFunction<BlueType, RedType> = function(sou
 - because of the point above, it's important to define your function as I've done above and not as an arrow function as you would lose the context.
 - the name of this file doesn't _actually_ matter, but camel case of the destination type is the standard, which in this case is `src/maps/redType.ts`.
 
-You're not done yet, just creating this map function does NOT make it available to `mapper.map`. The next step is to add your map function to that [predefined index](https://github.com/PrefectHQ/orion/blob/d8f5439590504de2acdf78639281ec6f58530f7a/orion-ui/packages/orion-design/src/maps/index.ts) I mentioned above.
+You're not done yet, just creating this map function does NOT make it available to `mapper.map`. The next step is to add your map function to that [predefined index](https://github.com/PrefectHQ/prefect-ui-library/src/maps/index.ts) I mentioned above.
 
 ```ts
 import { mapBlueTypeToRedType } from './redType'

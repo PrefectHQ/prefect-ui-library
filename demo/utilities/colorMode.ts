@@ -3,7 +3,7 @@ import { computed } from 'vue'
 import { ColorMode } from '@/types/ColorMode'
 import { applyColorModeClass, isColorMode } from '@/utilities/colorMode'
 
-const colorModeLocalStorageKey = 'orion-design-color-mode'
+const colorModeLocalStorageKey = 'prefect-ui-library-color-mode'
 const nonJsonVersion = localStorage.getItem(colorModeLocalStorageKey)
 const defaultValue = isColorMode(nonJsonVersion) ? nonJsonVersion : null
 

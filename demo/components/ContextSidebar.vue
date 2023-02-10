@@ -4,7 +4,7 @@
       <template v-if="!mobileMenuOpen">
         <div class="context-sidebar__header">
           <p-icon class="context-sidebar__icon" icon="PrefectGradient" />
-          <span class="context-sidebar__heading">Orion Design</span>
+          <span class="context-sidebar__heading">Prefect UI Library</span>
         </div>
       </template>
 
