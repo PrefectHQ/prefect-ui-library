@@ -40,25 +40,22 @@
   import LogsSort from '@/components/LogsSort.vue'
   import { useWorkspaceApi } from '@/compositions'
   import { usePaginatedSubscription } from '@/compositions/usePaginatedSubscription'
-  import { LogsRequestSort, LogsRequestFilter } from '@/models/api/LogsRequestFilter'
+  import { LogsFilter } from '@/models/Filters'
   import { Log, LogLevel } from '@/models/Log'
   import { TaskRun } from '@/models/TaskRun'
+  import { LogSortValues } from '@/types'
 
   const props = defineProps<{
     taskRun: TaskRun,
   }>()
 
   const logLevel = ref<LogLevel>(0)
-  const logsSort = ref<LogsRequestSort>('TIMESTAMP_ASC')
+  const logsSort = ref<LogSortValues>('TIMESTAMP_ASC')
   const hasFilter = computed(() => logLevel.value !== 0)
-  const logsFilter = computed<LogsRequestFilter>(() => ({
+  const logsFilter = computed<LogsFilter>(() => ({
     logs: {
-      'task_run_id': {
-        any_: [props.taskRun.id],
-      },
-      level: {
-        ge_: logLevel.value,
-      },
+      taskRunId: [props.taskRun.id],
+      levelGreaterThan: logLevel.value,
     },
     sort: logsSort.value,
   }))

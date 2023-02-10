@@ -1,7 +1,7 @@
 import { ConcurrencyLimitResponse } from '@/models/api/ConcurrencyLimitResponse'
 import { ConcurrencyLimit } from '@/models/ConcurrencyLimit'
 import { ConcurrencyLimitCreate } from '@/models/ConcurrencyLimitCreate'
-import { ConcurrencyLimitsFilter } from '@/models/ConcurrencyLimitsFilter'
+import { ConcurrencyLimitsFilter } from '@/models/Filters'
 import { mapper } from '@/services/Mapper'
 import { WorkspaceApi } from '@/services/WorkspaceApi'
 

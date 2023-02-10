@@ -4,26 +4,26 @@
 
 <script lang="ts" setup>
   import { computed } from 'vue'
-  import type { LogsRequestSort } from '@/models'
+  import { LogSortOptions, LogSortValues } from '@/types/SortOptionTypes'
 
   const props = defineProps<{
-    selected: LogsRequestSort,
+    selected: LogSortValues,
   }>()
 
   const emits = defineEmits<{
-    (event: 'update:selected', value: LogsRequestSort): void,
+    (event: 'update:selected', value: LogSortValues): void,
   }>()
 
   const internalValue = computed({
     get() {
       return props.selected
     },
-    set(value: LogsRequestSort) {
+    set(value) {
       emits('update:selected', value)
     },
   })
 
-  const options: { label: string, value: LogsRequestSort }[] = [
+  const options: LogSortOptions = [
     { label: 'Newest to oldest', value: 'TIMESTAMP_DESC' },
     { label: 'Oldest to newest', value: 'TIMESTAMP_ASC' },
   ]

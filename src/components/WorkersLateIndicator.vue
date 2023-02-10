@@ -14,9 +14,9 @@
 
 <script lang="ts" setup>
   import { useSubscription } from '@prefecthq/vue-compositions'
-  import { computed, toRefs } from 'vue'
+  import { computed } from 'vue'
   import { useWorkspaceApi } from '@/compositions'
-  import { UnionFilters } from '@/types'
+  import { FlowRunsFilter } from '@/models'
   import { toPluralString } from '@/utilities'
 
   const props = defineProps<{
@@ -26,27 +26,21 @@
 
   const api = useWorkspaceApi()
 
-  const { workPoolName } = toRefs(props)
-
-  const flowRunFilter = computed<UnionFilters>(() => {
-
-    const flowRunFilter: UnionFilters = {
-      'work_pools': { name: { any_: [workPoolName.value] } },
-      'flow_runs': {
-        state: { name: { any_: ['Late'] } },
+  const flowRunsFilter = computed<FlowRunsFilter>(() => ({
+    workPools: {
+      name: [props.workPoolName],
+    },
+    workPoolQueues: {
+      name: props.workPoolQueueNames,
+    },
+    flowRuns: {
+      state: {
+        name: ['Late'],
       },
-      sort: 'START_TIME_ASC',
-    }
+    },
+  }))
 
-    if (props.workPoolQueueNames) {
-      flowRunFilter.work_pool_queues = { name: { any_: props.workPoolQueueNames } }
-    }
-
-    return flowRunFilter
-  },
-  )
-
-  const flowRunsCountSubscription = useSubscription(api.flowRuns.getFlowRunsCount, [flowRunFilter], { interval: 30000 })
+  const flowRunsCountSubscription = useSubscription(api.flowRuns.getFlowRunsCount, [flowRunsFilter], { interval: 30000 })
   const lateFlowRunsCount = computed(() => flowRunsCountSubscription.response ?? 0)
 </script>
 

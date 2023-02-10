@@ -1,9 +1,10 @@
 import { MockApi } from './MockApi'
-import { WorkPoolWorker, WorkPoolWorkerFilter } from '@/models'
+import { WorkPoolWorker } from '@/models'
+import { WorkPoolWorkersFilter } from '@/models/Filters'
 import { IWorkspaceWorkPoolWorkersApi } from '@/services'
 export class MockWorkspaceWorkPoolWorkerApi extends MockApi implements IWorkspaceWorkPoolWorkersApi {
 
-  public async getWorkers(workPoolName: string, filter: WorkPoolWorkerFilter = {}): Promise<WorkPoolWorker[]> {
+  public async getWorkers(workPoolName: string, filter: WorkPoolWorkersFilter = {}): Promise<WorkPoolWorker[]> {
     if (Object.keys(filter).length) {
       console.warn('MockWorkspaceWorkPoolWorkerApi has not implemented the filter argument of the getWorkers method')
     }

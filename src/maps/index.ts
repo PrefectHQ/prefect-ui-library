@@ -1,13 +1,10 @@
 import { mapBlockDocumentResponseToBlockDocument, mapBlockDocumentToSelectOption } from '@/maps/blockDocument'
 import { mapBlockDocumentCreateToBlockDocumentCreateRequest } from '@/maps/blockDocumentCreate'
-import { mapBlockDocumentFilterToBlockDocumentFilterRequest } from '@/maps/blockDocumentFilter'
 import { mapBlockDocumentResponseReferencesToBlockDocumentReferences } from '@/maps/blockDocumentReferences'
 import { mapBlockDocumentUpdateToBlockDocumentUpdateRequest } from '@/maps/blockDocumentUpdate'
 import { mapBlockSchemaResponseToBlockSchema } from '@/maps/blockSchema'
-import { mapBlockSchemaFilterToBlockSchemaFilterRequest } from '@/maps/blockSchemaFilter'
 import { mapBlockSchemaReferencesResponseToBlockSchemaReferences } from '@/maps/blockSchemaReferences'
 import { mapBlockTypeResponseToBlockType } from '@/maps/blockType'
-import { mapBlockTypeFilterToBlockTypeFilterRequest } from '@/maps/blockTypeFilter'
 import { mapConcurrencyLimitResponseToConcurrencyLimit } from '@/maps/concurrencyLimit'
 import { mapConcurrencyLimitCreateToConcurrencyLimitCreateRequest } from '@/maps/concurrencyLimitCreate'
 import { mapCreatedOrUpdatedByResponseToCreatedOrUpdatedBy } from '@/maps/createdOrUpdatedBy'
@@ -15,6 +12,7 @@ import { mapStringToDate, mapDateToString } from '@/maps/date'
 import { mapDeploymentResponseToDeployment, mapDeploymentUpdateToDeploymentUpdateRequest, mapDeploymentFlowRunCreateToDeploymentFlowRunRequest } from '@/maps/deployment'
 import { mapRunHistoryToDivergingBarChartItem } from '@/maps/divergingBarChartItem'
 import { mapEmpiricalPolicyToEmpiricalPolicyResponse, mapEmpiricalPolicyResponseToEmpiricalPolicy, mapEmpiricalPolicyToEmpiricalPolicyRequest } from '@/maps/empiricalPolicy'
+import { mapFlowFilter, mapDeploymentFilter, mapFlowRunFilter, mapStateFilter, mapFlowsFilter, mapDeploymentsFilter, mapFlowRunsFilter, mapTagFilter, mapTaskRunFilter, mapTaskRunsFilter, mapBlockDocumentFilter, mapBlockSchemaFilter, mapBlockTypeFilter, mapBlockDocumentsFilter, mapBlockSchemasFilter, mapBlockTypesFilter, mapWorkPoolsFilter, mapWorkPoolFilter, mapWorkPoolQueueFilter, mapFlowRunsHistoryFilter, mapLogsFilter, mapNotificationsFilter, mapSavedSearchesFilter, mapWorkQueuesFilter, mapWorkPoolWorkersFilter, mapWorkPoolQueuesFilter } from '@/maps/filters'
 import { mapFlowToFlowResponse, mapFlowResponseToFlow } from '@/maps/flow'
 import { mapFlowRunResponseToFlowRun } from '@/maps/flowRun'
 import { mapSavedSearchFilterToFlowRunFilters } from '@/maps/flowRunFilter'
@@ -51,16 +49,29 @@ import { mapWorkQueueHealthPolicyResponseToWorkQueueHealthPolicy } from '@/maps/
 import { mapWorkQueueStatusResponseToWorkQueueStatus } from '@/maps/workQueueStatus'
 
 export const maps = {
+  FlowFilter: { FlowFilterRequest: mapFlowFilter },
+  FlowRunFilter: { FlowRunFilterRequest: mapFlowRunFilter },
+  TaskRunFilter: { TaskRunFilterRequest: mapTaskRunFilter },
+  DeploymentFilter: { DeploymentFilterRequest: mapDeploymentFilter },
+  TagFilter: { TagFilterRequest: mapTagFilter },
+  StateFilter: { StateFilterRequest: mapStateFilter },
+  FlowsFilter: { FlowsFilterRequest: mapFlowsFilter },
+  FlowRunsFilter: { FlowRunsFilterRequest: mapFlowRunsFilter },
+  TaskRunsFilter: { TaskRunsFilterRequest: mapTaskRunsFilter },
+  DeploymentsFilter: { DeploymentsFilterRequest: mapDeploymentsFilter },
+  BlockDocumentFilter: { BlockDocumentFilterRequest: mapBlockDocumentFilter },
+  BlockSchemaFilter: { BlockSchemaFilterRequest: mapBlockSchemaFilter },
+  BlockTypeFilter: { BlockTypeFilterRequest: mapBlockTypeFilter },
+  BlockDocumentsFilter: { BlockDocumentsFilterRequest: mapBlockDocumentsFilter },
+  BlockSchemasFilter: { BlockSchemasFilterRequest: mapBlockSchemasFilter },
+  BlockTypesFilter: { BlockTypesFilterRequest: mapBlockTypesFilter },
   BlockDocument: { SelectOption: mapBlockDocumentToSelectOption },
   BlockDocumentCreate: { BlockDocumentCreateRequest: mapBlockDocumentCreateToBlockDocumentCreateRequest },
-  BlockDocumentFilter: { BlockDocumentFilterRequest: mapBlockDocumentFilterToBlockDocumentFilterRequest },
   BlockDocumentReferencesResponse: { BlockDocumentReferences: mapBlockDocumentResponseReferencesToBlockDocumentReferences },
   BlockDocumentResponse: { BlockDocument: mapBlockDocumentResponseToBlockDocument },
   BlockDocumentUpdate: { BlockDocumentUpdateRequest: mapBlockDocumentUpdateToBlockDocumentUpdateRequest },
-  BlockSchemaFilter: { BlockSchemaFilterRequest: mapBlockSchemaFilterToBlockSchemaFilterRequest },
   BlockSchemaReferencesResponse: { BlockSchemaReferences: mapBlockSchemaReferencesResponseToBlockSchemaReferences },
   BlockSchemaResponse: { BlockSchema: mapBlockSchemaResponseToBlockSchema },
-  BlockTypeFilter: { BlockTypeFilterRequest: mapBlockTypeFilterToBlockTypeFilterRequest },
   BlockTypeResponse: { BlockType: mapBlockTypeResponseToBlockType },
   ConcurrencyLimitCreate: { ConcurrencyLimitCreateRequest: mapConcurrencyLimitCreateToConcurrencyLimitCreateRequest },
   ConcurrencyLimitResponse: { ConcurrencyLimit: mapConcurrencyLimitResponseToConcurrencyLimit },
@@ -135,4 +146,14 @@ export const maps = {
   WorkQueueHealthPolicyResponse: { WorkQueueHealthPolicy: mapWorkQueueHealthPolicyResponseToWorkQueueHealthPolicy },
   WorkQueueResponse: { WorkQueue: mapWorkQueueResponseToWorkQueue },
   WorkQueueStatusResponse: { WorkQueueStatus: mapWorkQueueStatusResponseToWorkQueueStatus },
+  WorkPoolsFilter: { WorkPoolsFilterRequest: mapWorkPoolsFilter },
+  WorkPoolQueuesFilter: { WorkPoolQueuesFilterRequest: mapWorkPoolQueuesFilter },
+  WorkPoolFilter: { WorkPoolFilterRequest: mapWorkPoolFilter },
+  WorkPoolQueueFilter: { WorkPoolQueueFilterRequest: mapWorkPoolQueueFilter },
+  FlowRunsHistoryFilter: { FlowRunsHistoryFilterRequest: mapFlowRunsHistoryFilter },
+  LogsFilter: { LogsFilterRequest: mapLogsFilter },
+  NotificationsFilter: { NotificationsFilterRequest: mapNotificationsFilter },
+  SavedSearchesFilter: { SavedSearchesFilterRequest: mapSavedSearchesFilter },
+  WorkQueuesFilter: { WorkQueuesFilterRequest: mapWorkQueuesFilter },
+  WorkPoolWorkersFilter: { WorkPoolWorkersFilterRequest: mapWorkPoolWorkersFilter },
 }

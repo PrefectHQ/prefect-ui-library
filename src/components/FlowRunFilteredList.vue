@@ -32,10 +32,11 @@
   import { useWorkspaceApi } from '@/compositions'
   import { useCan } from '@/compositions/useCan'
   import { usePaginatedSubscription } from '@/compositions/usePaginatedSubscription'
-  import { FlowRunSortValues, PrefectStateNames, UnionFilters } from '@/types'
+  import { FlowRunsFilter } from '@/models/Filters'
+  import { FlowRunSortValues, PrefectStateNames } from '@/types'
 
   const props = defineProps<{
-    flowRunFilter: UnionFilters,
+    flowRunFilter: FlowRunsFilter,
     states?: PrefectStateNames[],
     disabled?: boolean,
   }>()
@@ -57,26 +58,16 @@
   const sort = ref<FlowRunSortValues>('START_TIME_DESC')
   const hasFilters = computed(() => states.value.length)
 
-  const filter = computed<UnionFilters>(() => {
-    const runFilter: UnionFilters = {
-      ...props.flowRunFilter,
-      sort: sort.value,
-    }
-
-    const flowRunsFilter = {
-      ...props.flowRunFilter.flow_runs,
-    }
-
-    if (states.value.length) {
-      flowRunsFilter.state = {
-        name: {
-          any_: states.value,
-        },
-      }
-    }
-
-    return { ...runFilter, 'flow_runs': { ...flowRunsFilter } }
-  })
+  const filter = computed<FlowRunsFilter>(() => ({
+    ...props.flowRunFilter,
+    flowRuns: {
+      ...props.flowRunFilter.flowRuns,
+      state: {
+        name: states.value.length ? states.value : props.flowRunFilter.flowRuns?.state?.name,
+      },
+    },
+    sort: sort.value,
+  }))
 
   const flowRunCountSubscription = useSubscription(api.flowRuns.getFlowRunsCount, [filter], { interval: 30000 })
   const flowRunCount = computed(() => flowRunCountSubscription.response)

@@ -2,7 +2,7 @@ import { SchemaDefinitionsResponse, SchemaPropertiesResponse, SchemaPropertyResp
 import { MapFunction } from '@/services/Mapper'
 import { resolveSchema } from '@/services/schemas/resolvers/schemas'
 import { Schema, SchemaDefinitions, schemaHas, SchemaProperties, SchemaProperty } from '@/types/schemas'
-import { mapEntries } from '@/utilities'
+import { mapValues } from '@/utilities'
 
 export const mapSchemaResponseToSchema: MapFunction<SchemaResponse, Schema> = function(source) {
   const { definitions, properties, $ref, secret_fields, block_type_slug, ...rest } = source
@@ -25,11 +25,11 @@ export const mapSchemaResponseToSchema: MapFunction<SchemaResponse, Schema> = fu
 }
 
 export const mapSchemaDefinitionsResponseToSchemaDefinitions: MapFunction<SchemaDefinitionsResponse, SchemaDefinitions> = function(source) {
-  return mapEntries(source, (key, value) => this.map('SchemaResponse', value, 'Schema'))
+  return mapValues(source, (key, value) => this.map('SchemaResponse', value, 'Schema'))
 }
 
 export const mapSchemaPropertiesResponseToSchemaProperties: MapFunction<SchemaPropertiesResponse, SchemaProperties> = function(source) {
-  return mapEntries(source, (key, value) => this.map('SchemaPropertyResponse', value, 'SchemaProperty'))
+  return mapValues(source, (key, value) => this.map('SchemaPropertyResponse', value, 'SchemaProperty'))
 }
 
 export const mapSchemaPropertyResponseToSchemaProperty: MapFunction<SchemaPropertyResponse, SchemaProperty> = function(source) {

@@ -1,7 +1,7 @@
 import { MockApi } from './MockApi'
 import { Flow } from '@/models'
+import { FlowsFilter } from '@/models/Filters'
 import { IWorkspaceFlowsApi } from '@/services'
-import { UnionFilters } from '@/types'
 
 export class MockWorkspaceFlowsApi extends MockApi implements IWorkspaceFlowsApi {
 
@@ -9,7 +9,7 @@ export class MockWorkspaceFlowsApi extends MockApi implements IWorkspaceFlowsApi
     return await this.flows.get(flowId)
   }
 
-  public async getFlows(filter: UnionFilters = {}): Promise<Flow[]> {
+  public async getFlows(filter: FlowsFilter = {}): Promise<Flow[]> {
     if (Object.keys(filter).length) {
       console.warn('MockWorkspaceFlowsApi has not implemented the filter argument of the getFlows method')
     }
@@ -17,7 +17,7 @@ export class MockWorkspaceFlowsApi extends MockApi implements IWorkspaceFlowsApi
     return await this.flows.getAll()
   }
 
-  public async getFlowsCount(filter: UnionFilters = {}): Promise<number> {
+  public async getFlowsCount(filter: FlowsFilter = {}): Promise<number> {
     if (Object.keys(filter).length) {
       console.warn('MockWorkspaceFlowsApi has not implemented the filter argument of the getFlows method')
     }

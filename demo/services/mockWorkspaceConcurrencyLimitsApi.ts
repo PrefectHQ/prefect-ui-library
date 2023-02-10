@@ -2,7 +2,7 @@ import { DataStoreDataNotFound } from './KeyedDataStore'
 import { MockApi } from './MockApi'
 import { ConcurrencyLimit } from '@/models/ConcurrencyLimit'
 import { ConcurrencyLimitCreate } from '@/models/ConcurrencyLimitCreate'
-import { ConcurrencyLimitsFilter } from '@/models/ConcurrencyLimitsFilter'
+import { ConcurrencyLimitsFilter } from '@/models/Filters'
 import { mocker } from '@/services'
 import { IWorkspaceConcurrencyLimitsApi } from '@/services/WorkspaceConcurrencyLimitsApi'
 
