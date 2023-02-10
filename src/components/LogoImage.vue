@@ -16,15 +16,17 @@
     size: 'md',
   })
 
-  const background = computed(() => `url(${props.url})`)
   const classes = computed(() => [`logo-image--size-${props.size}`])
 </script>
 
 <style>
 .logo-image { @apply
   bg-cover
-  bg-center;
-  background-image: v-bind(background)
+  bg-center
+  dark:rounded
+  dark:p-0.5
+  dark:overflow-hidden
+  dark:bg-white
 }
 
 .logo-image--size-sm { @apply
