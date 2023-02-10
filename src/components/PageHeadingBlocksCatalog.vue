@@ -1,13 +1,15 @@
 <template>
-  <page-heading class="page-heading-blocks-catalog" :crumbs="crumbs" />
+  <p-content>
+    <page-heading class="page-heading-blocks-catalog" :crumbs="crumbs" />
 
-  <p-message>
-    If you don't see a block for the service you're using, check out our
-    <p-link :to="localization.docs.collections">
-      Collections Catalog
-    </p-link>
-    to view a list of integrations and their corresponding blocks.
-  </p-message>
+    <p-message>
+      If you don't see a block for the service you're using, check out our
+      <p-link :to="localization.docs.collections">
+        Collections Catalog
+      </p-link>
+      to view a list of integrations and their corresponding blocks.
+    </p-message>
+  </p-content>
 </template>
 
 <script lang="ts" setup>
