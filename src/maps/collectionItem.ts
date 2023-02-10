@@ -9,10 +9,11 @@ export const mapCollectionItemResponseToCollectionItem: MapFunction<CollectionIt
     returns: source.description.returns,
     examples: source.description.examples,
     documentationUrl: source.documentation_url,
+    entrypoint: source.entrypoint,
     installCommand: source.install_command,
     logoUrl: source.logo_url,
     parameters: source.parameters,
-    pathContainingFlow: source.path_containing_flow,
+    path: source.path_containing_flow,
     repositoryUrl: source.repo_url,
     slug: source.slug,
   }
