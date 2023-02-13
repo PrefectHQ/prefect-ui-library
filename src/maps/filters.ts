@@ -250,7 +250,9 @@ export const mapArtifactFilter: MapFunction<ArtifactFilter, ArtifactFilterReques
     key: {
       ...toAny(source.key),
       ...toLike(source.keyLike),
-    }
+    },
+    flow_run_id: toAny(source.flowRunId),
+    task_run_id: toAny(source.taskRunId),
   }
 }
 
