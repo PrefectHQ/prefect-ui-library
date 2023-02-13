@@ -7,7 +7,7 @@ export class CollectionsApi extends Api {
   protected override route: ApiRoute = '/collections'
 
   public getFlowCollection(): Promise<CollectionItem[]> {
-    return this.get<CollectionItemResponse[]>('views/flow')
+    return this.get<CollectionItemResponse[]>('views/aggregate-flow-metadata')
       .then(({ data }) => mapper.map('CollectionItemResponse', data, 'CollectionItem'))
   }
 }
