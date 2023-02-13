@@ -69,6 +69,7 @@ export type TaskRunFilter = {
 export type ArtifactFilter = {
   id?: string[],
   key?: string[],
+  keyLike?: string,
   flowRunId?: string[],
   taskRunId?: string[],
 }
