@@ -19,7 +19,7 @@
   import { computed, toRefs, watch } from 'vue'
   import { FlowRunList } from '@/components'
   import { useWorkspaceApi } from '@/compositions'
-  import { WorkPoolQueue } from '@/models'
+  import { FlowRunsFilter, WorkPoolQueue } from '@/models'
 
   const props = defineProps<{
     workPoolName: string,
@@ -28,21 +28,23 @@
 
   const api = useWorkspaceApi()
 
-  const { workPoolName, workPoolQueue } = toRefs(props)
+  const { workPoolQueue } = toRefs(props)
 
-  const flowRunFilter = computed<Parameters<typeof api.flowRuns.getFlowRuns>>(() => [
-    {
-      'work_pool_queues': { name: { any_: [workPoolQueue.value.name] } },
-      'work_pools': { name: { any_: [workPoolName.value] } },
-      'flow_runs': {
-        'state': { name: { any_: ['Scheduled'] } },
+  const filter = computed<FlowRunsFilter>(() => ({
+    flowRuns: {
+      state: {
+        name: ['Scheduled'],
       },
-      sort: 'START_TIME_ASC',
     },
-  ],
-  )
+    workPools: {
+      name: [props.workPoolName],
+    },
+    workPoolQueues: {
+      name: [props.workPoolQueue.name],
+    },
+  }))
 
-  const flowRunsSubscription = useSubscription(api.flowRuns.getFlowRuns, flowRunFilter, { interval: 30000 })
+  const flowRunsSubscription = useSubscription(api.flowRuns.getFlowRuns, [filter], { interval: 30000 })
   const scheduledFlowRuns = computed(() => flowRunsSubscription.response ?? [])
 
   const empty = computed(() => flowRunsSubscription.executed && scheduledFlowRuns.value.length === 0)
