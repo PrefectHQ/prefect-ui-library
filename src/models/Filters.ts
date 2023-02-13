@@ -1,4 +1,4 @@
-import { FlowSortValues, FlowRunSortValues, TaskRunSortValues, DeploymentSortValues, LogSortValues } from '@/types'
+import { ArtifactSortValues, FlowSortValues, FlowRunSortValues, TaskRunSortValues, DeploymentSortValues, LogSortValues } from '@/types'
 
 export type Operation = 'and' | 'or'
 
@@ -64,6 +64,22 @@ export type TaskRunFilter = {
   startTimeAfter?: Date,
   startTimeNull?: boolean,
   subFlowRunsExist?: boolean,
+}
+
+export type ArtifactFilter = {
+  id?: string[],
+  key?: string[],
+  flowRunId?: string[],
+  taskRunId?: string[],
+}
+
+export type ArtifactsFilter = {
+  artifacts?: ArtifactFilter,
+  flowRuns?: FlowRunFilter,
+  taskRuns?: TaskRunFilter,
+  sort?: ArtifactSortValues,
+  limit?: number,
+  offset?: number,
 }
 
 export type DeploymentFilter = {

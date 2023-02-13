@@ -1,4 +1,4 @@
-import { DeploymentSortValues, FlowRunSortValues, FlowSortValues, LogSortValues, TaskRunSortValues } from '@/types/SortOptionTypes'
+import { ArtifactSortValues, DeploymentSortValues, FlowRunSortValues, FlowSortValues, LogSortValues, TaskRunSortValues } from '@/types/SortOptionTypes'
 
 /** A list where results will be returned only if they match all the values in the list */
 export type All = { all_?: string[] }
@@ -124,6 +124,22 @@ export type FlowsFilterRequest = UnionFilterRequest<FlowSortValues>
 export type FlowRunsFilterRequest = UnionFilterRequest<FlowRunSortValues>
 export type TaskRunsFilterRequest = UnionFilterRequest<TaskRunSortValues>
 export type DeploymentsFilterRequest = UnionFilterRequest<DeploymentSortValues>
+
+export type ArtifactFilterRequest = {
+  id?: Any,
+  key?: Any & Like,
+  flow_run_id?: Any,
+  task_run_id?: Any,
+}
+
+export type ArtifactsFilterRequest = {
+  artifacts?: ArtifactFilterRequest,
+  task_runs?: TaskRunFilterRequest,
+  flow_runs?: FlowRunFilterRequest,
+  sort?: ArtifactSortValues,
+  offset?: number,
+  limit?: number,
+}
 
 export type FlowRunsHistoryFilterRequest = FlowRunsFilterRequest & {
   history_start: string,

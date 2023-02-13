@@ -1,6 +1,17 @@
 import { ref, Ref } from 'vue'
 import { MaybeRef } from '@/types/reactivity'
 
+export const artifactSortValues = ['CREATED_DESC', 'UPDATED_DESC', 'KEY_DESC', 'KEY_ASC', 'ID_ASC', 'ID_DESC'] as const
+export type ArtifactSortValues = typeof artifactSortValues[number]
+export const defaultArtifactSort: FlowSortValues = 'CREATED_DESC'
+
+export function isArtifactSortValue(value: unknown): value is ArtifactSortValues
+export function isArtifactSortValue(value: Ref<unknown>): value is Ref<ArtifactSortValues>
+export function isArtifactSortValue(value: MaybeRef<unknown>): value is MaybeRef<ArtifactSortValues> {
+  const valueRef = ref(value)
+  return artifactSortValues.includes(valueRef.value as ArtifactSortValues)
+}
+
 export const flowSortValues = ['CREATED_DESC', 'UPDATED_DESC', 'NAME_DESC', 'NAME_ASC'] as const
 export type FlowSortValues = typeof flowSortValues[number]
 export const defaultFlowSort: FlowSortValues = 'CREATED_DESC'
