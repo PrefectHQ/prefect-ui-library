@@ -1,5 +1,6 @@
 import { useSubscription, ActionArguments, ActionResponse, SubscribeArguments, UseSubscription, unrefArgs, watchableArgs } from '@prefecthq/vue-compositions'
 import { computed, getCurrentInstance, onUnmounted, reactive, ref, watch } from 'vue'
+import { uniqueValueWatcher } from '@/utilities/reactivity'
 
 export type Paginated = { limit?: number, offset?: number }
 // any is correct here
@@ -55,7 +56,7 @@ export function usePaginatedSubscription<T extends PaginatedAction>(...[action, 
   }
 
   if (watchable !== null) {
-    unwatch = watch(watchable, () => {
+    unwatch = uniqueValueWatcher(watchable, () => {
       if (!isSubscribed()) {
         unwatch!()
         return
