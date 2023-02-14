@@ -1,3 +1,4 @@
+export * from './ArtifactResponse'
 export * from './BlockDocumentCreateRequest'
 export * from './BlockDocumentResponse'
 export * from './BlockDocumentUpdateRequest'
