@@ -22,7 +22,7 @@
           </p-radio-group>
         </div>
         <div class="flow-run-timeline-options__popover-option-set">
-          <p-checkbox v-model="hideDependencyArrowsModel" label="Hide Dependency Arrows" />
+          <p-checkbox v-model="hideDependencyArrowsModel" label="Hide Dependency Arrows (a)" />
         </div>
       </p-overflow-menu>
     </div>
