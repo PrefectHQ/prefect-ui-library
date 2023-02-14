@@ -241,7 +241,7 @@
 
 .flow-run-timeline--fullscreen { @apply
   h-screen
-  w-screen
+  w-full
   absolute
   top-0
   left-0
