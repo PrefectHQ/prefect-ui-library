@@ -11,8 +11,8 @@
   import { mapper, mocker } from '@/services'
 
   const deploymentParameters = {
-    rat: 99,
-    horse: 99,
+    rat: 33,
+    horse: 33,
   }
 
   const parameters = {
@@ -25,12 +25,12 @@
     properties: {
       rat: {
         title: 'rat',
-        type: 'integer',
+        type: 'number',
         default: 11,
       },
       horse: {
         title: 'horse',
-        type: 'integer',
+        type: 'number',
       },
     },
   }
