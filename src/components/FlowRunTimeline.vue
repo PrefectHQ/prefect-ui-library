@@ -246,6 +246,8 @@
   top-0
   left-0
   z-50
+  bg-background-600
+  dark:bg-background
 }
 
 .flow-run-timeline__options { @apply
@@ -273,6 +275,10 @@
   bg-background-600
   dark:bg-background
   rounded-lg
+}
+
+.flow-run-timeline--fullscreen .flow-run-timeline__graph {
+  animation: fadeGraphIn 1.5s ease
 }
 
 @media (min-width: 640px) {
@@ -308,5 +314,10 @@
 .flow-run-timeline__task-panel--panel-open { @apply
   translate-x-0
   duration-500
+}
+
+@keyframes fadeGraphIn {
+  0% { opacity: 0 }
+  100% { opacity: 1 }
 }
 </style>
