@@ -1,7 +1,9 @@
 import { Artifact, ArtifactResponse } from '@/models'
 import { ArtifactFilter } from '@/models/Filters'
+import { BatchProcessor } from '@/services/BatchProcessor'
 import { mapper } from '@/services/Mapper'
 import { WorkspaceApi } from '@/services/WorkspaceApi'
+import { toMap } from '@/utilities'
 
 export interface IWorkspaceArtifactsApi {
   getArtifact: (id: string) => Promise<Artifact>,
@@ -14,9 +16,13 @@ export class WorkspaceArtifactsApi extends WorkspaceApi implements IWorkspaceArt
 
   protected override routePrefix = '/artifacts'
 
-  public async getArtifact(id: string): Promise<Artifact> {
-    const { data } = await this.get<ArtifactResponse>(`/${id}`)
-    return mapper.map('ArtifactResponse', data, 'Artifact')
+  private readonly batcher = new BatchProcessor<string, Artifact>(async ids => {
+    const artifacts = await this.getArtifacts({ id: ids })
+    return toMap(artifacts, 'id')
+  }, { maxBatchSize: 200 })
+
+  public getArtifact(id: string): Promise<Artifact> {
+    return this.batcher.batch(id)
   }
 
   public async getArtifacts(filter: ArtifactFilter = {}): Promise<Artifact[]> {
