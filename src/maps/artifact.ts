@@ -1,8 +1,8 @@
-import { MapFunction } from '@/services/Mapper'
 import { ArtifactResponse } from '@/models/api/ArtifactResponse'
 import { Artifact } from '@/models/Artifact'
+import { MapFunction } from '@/services/Mapper'
 
-export const mapArtifactResponseToArtifact: MapFunction<ArtifactResponse, Artifact> = function (source) {
+export const mapArtifactResponseToArtifact: MapFunction<ArtifactResponse, Artifact> = function(source) {
   return new Artifact({
     id: source.id,
     created: new Date(source.created),

@@ -22,7 +22,7 @@ export class Artifact implements IArtifact {
   public type: string
   public data: ArtifactData
   public metadata: ArtifactData
-  
+
   public constructor(artifact: IArtifact) {
     this.id = artifact.id
     this.created = artifact.created
