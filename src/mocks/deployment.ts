@@ -3,7 +3,7 @@ import { MockFunction } from '@/services/Mocker'
 import { random } from '@/utilities/math'
 
 export const randomDeployment: MockFunction<Deployment, [Partial<Deployment>?]> = function(overrides = {}) {
-  const schema = this.create('schema')
+  const schema = this.create('schema', [overrides.parameterOpenApiSchema])
 
   return {
     id: this.create('id'),

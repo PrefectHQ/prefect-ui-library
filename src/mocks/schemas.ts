@@ -28,7 +28,7 @@ export const randomSchemaProperty: MockFunction<SchemaProperty, [SchemaProperty?
     boolean: false,
     integer: 1,
     number: 1.6,
-    object: '{}',
+    object: {},
     block: null,
   }
 
