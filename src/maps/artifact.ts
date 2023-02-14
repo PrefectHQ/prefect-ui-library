@@ -5,8 +5,8 @@ import { MapFunction } from '@/services/Mapper'
 export const mapArtifactResponseToArtifact: MapFunction<ArtifactResponse, Artifact> = function(source) {
   return new Artifact({
     id: source.id,
-    created: new Date(source.created),
-    updated: new Date(source.updated),
+    created: this.map('string', source.created, 'Date'),
+    updated: this.map('string', source.updated, 'Date'),
     key: source.key,
     type: source.type,
     data: source.data,

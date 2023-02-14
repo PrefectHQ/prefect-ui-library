@@ -2,8 +2,8 @@ export type ArtifactDataResponse = Record<string, unknown>
 
 export type ArtifactResponse = {
   id: string,
-  created: Date,
-  updated: Date,
+  created: string,
+  updated: string,
   key: string,
   type: string,
   data: ArtifactDataResponse,
