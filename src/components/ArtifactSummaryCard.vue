@@ -101,9 +101,9 @@
 
 <style>
 .artifact-summary-card__header { @apply
-  text-lg
+  text-2xl
   font-bold
-  mb-4
+  mb-2
 }
 
 .artifact-summary-card__summary-container { @apply
@@ -116,6 +116,8 @@
   flex
   justify-between
   flex-row-reverse
+  items-baseline
+  pb-2
   border-b
   border-b-foreground-50
 }
