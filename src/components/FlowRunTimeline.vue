@@ -1,35 +1,67 @@
 <template>
-  <div class="flow-run-timeline">
-    <div class="flow-run-timeline__options">
-      <FlowRunTimelineOptions
-        :layout="layout"
-        :hide-edges="hideEdges"
-        @update:layout="updateLayout"
-        @update:hide-edges="updateHideEdges"
+  <div
+    class="flow-run-timeline"
+    :class="classes.root"
+    tabindex="0"
+    aria-label="Flow run timeline graph"
+  >
+    <div class="flow-run-timeline__wrapper">
+      <p-button
+        v-if="isFullscreen"
+        class="flow-run-timeline__fullscreen-exit"
+        icon="XIcon"
+        flat
+        size="lg"
+        @click="toggleFullscreen"
       />
-    </div>
-    <div v-if="graphData.length > 0" class="flow-run-timeline__graph-wrapper">
-      <FlowRunTimeline
-        class="flow-run-timeline__graph"
-        :class="{ 'flow-run-timeline__graph--panel-open': showTaskRunPanel }"
-        :graph-data="graphData"
-        :layout="layout"
-        :hide-edges="hideEdges"
-        :is-running="isRunning"
-        :format-date-fns="formatDateFns"
-        :theme="theme"
-        :selected-node-id="selectedNode"
-        @click="selectNode"
-      />
-    </div>
-    <div
-      class="flow-run-timeline__task-panel"
-      :class="{ 'flow-run-timeline__task-panel--panel-open': showTaskRunPanel }"
-    >
-      <TaskRunPanel
-        :task-run-id="selectedNode"
-        @dismiss="closePanel"
-      />
+      <div class="flow-run-timeline__options">
+        <p-button
+          title="Recenter Timeline (c)"
+          icon="Target"
+          flat
+          @click="centerGraphViewport"
+        />
+        <p-button
+          title="View Timeline in Fullscreen (f)"
+          icon="ArrowsExpandIcon"
+          flat
+          @click="toggleFullscreen"
+        />
+        <FlowRunTimelineOptions
+          :layout="layout"
+          :hide-edges="hideEdges"
+          @update:layout="updateLayout"
+          @update:hide-edges="updateHideEdges"
+        />
+      </div>
+      <div
+        v-if="graphData.length > 0"
+        ref="timelineGraphContainer"
+        class="flow-run-timeline__graph-wrapper"
+      >
+        <FlowRunTimeline
+          ref="timelineGraph"
+          class="flow-run-timeline__graph"
+          :class="classes.graph"
+          :graph-data="graphData"
+          :layout="layout"
+          :hide-edges="hideEdges"
+          :is-running="isRunning"
+          :format-date-fns="formatDateFns"
+          :theme="theme"
+          :selected-node-id="selectedNode"
+          @click="selectNode"
+        />
+      </div>
+      <div
+        class="flow-run-timeline__task-panel"
+        :class="classes.panel"
+      >
+        <TaskRunPanel
+          :task-run-id="selectedNode"
+          @dismiss="closePanel"
+        />
+      </div>
     </div>
   </div>
 </template>
@@ -46,7 +78,7 @@
   } from '@prefecthq/graphs'
   import { useColorTheme } from '@prefecthq/prefect-design'
   import { useSubscription } from '@prefecthq/vue-compositions'
-  import { computed, Ref, ref, watch } from 'vue'
+  import { computed, onMounted, onUnmounted, Ref, ref, watch } from 'vue'
   import { TaskRunPanel, FlowRunTimelineOptions } from '@/components'
   import { useWorkspaceApi } from '@/compositions'
   import { FlowRun, isValidTimelineNodeData } from '@/models'
@@ -63,6 +95,23 @@
     hideEdges: 40,
   }
 
+  const classes = computed(() => {
+    return {
+      root: {
+        'flow-run-timeline--fullscreen': isFullscreen.value,
+      },
+      graph: {
+        'flow-run-timeline__graph--panel-open': showTaskRunPanel.value,
+      },
+      panel: {
+        'flow-run-timeline__task-panel--panel-open': showTaskRunPanel.value,
+      },
+    }
+  })
+
+  const timelineGraphContainer = ref<HTMLElement | null>(null)
+  const timelineGraph = ref<InstanceType<typeof FlowRunTimeline> | null>(null)
+  const isFullscreen = ref(false)
   const showTaskRunPanel = ref(false)
   const selectedNode: Ref<string | null> = ref(null)
   const formatDateFns: FormatDateFns = {
@@ -72,6 +121,32 @@
   }
   const layout: Ref<TimelineNodesLayoutOptions> = ref('nearestParent')
   const hideEdges = ref(false)
+
+  onMounted(() => {
+    window.addEventListener('keydown', keyboardShortcutListener)
+  })
+
+  onUnmounted(() => {
+    window.removeEventListener('keydown', keyboardShortcutListener)
+  })
+
+  function keyboardShortcutListener(event: KeyboardEvent): void {
+    switch (event.key) {
+      case 'c':
+        centerGraphViewport()
+        break
+      case 'f':
+        toggleFullscreen()
+        break
+      case 'Escape':
+        if (isFullscreen.value) {
+          toggleFullscreen()
+        }
+        break
+      default:
+        break
+    }
+  }
 
   const selectNode = (value: string | null): void => {
     if (!value || value === selectedNode.value) {
@@ -94,6 +169,26 @@
 
   function updateHideEdges(value: boolean): void {
     hideEdges.value = value
+  }
+
+  function toggleFullscreen(): void {
+    const originalWidth = timelineGraphContainer.value?.clientWidth ?? 0
+    const originalHeight = timelineGraphContainer.value?.clientHeight ?? 0
+
+    isFullscreen.value = !isFullscreen.value
+
+    setTimeout(() => {
+      const newWidth = timelineGraphContainer.value?.clientWidth ?? 0
+      const newHeight = timelineGraphContainer.value?.clientHeight ?? 0
+
+      const xOffset = (newWidth - originalWidth) / 2
+      const yOffset = (newHeight - originalHeight) / 2
+
+      timelineGraph.value?.moveViewportCenter({
+        xOffset,
+        yOffset,
+      })
+    }, 0)
   }
 
   const isRunning = computed(() => {
@@ -131,6 +226,10 @@
       unwatchInitialData()
     }
   })
+
+  function centerGraphViewport(): void {
+    timelineGraph.value?.centerViewport()
+  }
 
   /*
   * Theme overrides
@@ -192,20 +291,46 @@
 
 <style>
 .flow-run-timeline { @apply
-  flex
-  overflow-hidden
+  h-[320px]
+  outline-none
+}
+
+.flow-run-timeline__wrapper { @apply
+  h-full
+  w-full
   relative
+  overflow-hidden
+}
+
+.flow-run-timeline--fullscreen .flow-run-timeline__wrapper { @apply
+  h-screen
+  w-full
+  absolute
+  top-0
+  left-0
+  z-20
+  bg-background-600
+  dark:bg-background
 }
 
 .flow-run-timeline__options { @apply
+  inline-flex
+  gap-1
   absolute
   bottom-1
   right-1
   z-10
 }
 
+.flow-run-timeline__fullscreen-exit { @apply
+  absolute
+  top-1
+  right-1
+  z-10
+}
+
 .flow-run-timeline__graph-wrapper { @apply
-  h-[320px]
+  h-full
   w-full
   relative
   overflow-hidden
@@ -214,12 +339,27 @@
 .flow-run-timeline__graph { @apply
   bg-background-600
   dark:bg-background
-  rounded-lg
+  rounded-lg;
+}
+
+.flow-run-timeline__graph canvas {
+  animation: fadeGraphIn 200ms ease-in-out;
+}
+
+.flow-run-timeline--fullscreen .flow-run-timeline__graph  canvas {
+  animation: none;
+}
+
+.flow-run-timeline--fullscreen .flow-run-timeline__graph {
+  animation: scaleGraphIn 0.5s ease;
 }
 
 @media (min-width: 640px) {
   .flow-run-timeline__graph--panel-open {
     width: calc(100% - 320px);
+  }
+  .flow-run-timeline--fullscreen .flow-run-timeline__graph--panel-open { @apply
+    w-full
   }
 }
 
@@ -237,8 +377,37 @@
   duration-300
 }
 
+.flow-run-timeline--fullscreen .flow-run-timeline__task-panel { @apply
+  h-auto
+  top-4
+  right-4
+  bottom-auto
+}
+
 .flow-run-timeline__task-panel--panel-open { @apply
   translate-x-0
   duration-500
+}
+
+@keyframes fadeGraphIn {
+  0% {
+    transform: scale(1.1);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes scaleGraphIn {
+  0% {
+    transform: scale(0.9);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
 }
 </style>
