@@ -45,3 +45,10 @@
     return typeof props.value !== 'undefined' && props.value !== null && props.value !== ''
   })
 </script>
+
+<style>
+.schema-property-key-value { @apply
+  max-w-full
+  min-w-0
+}
+</style>
