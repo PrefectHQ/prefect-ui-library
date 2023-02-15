@@ -1,4 +1,5 @@
 import { parse, isValid, isDate as dateFnsIsDate } from 'date-fns'
+import { localization } from '@/localization'
 import { secondsToApproximateString } from '@/utilities/seconds'
 import { dateFunctions, toDate, formatDateInTimezone } from '@/utilities/timezone'
 
@@ -6,6 +7,8 @@ const dateTimeNumericFormat = 'yyyy/MM/dd hh:mm:ss a'
 const timeNumericFormat = 'hh:mm:ss a'
 const timeNumericShortFormat = 'hh:mm a'
 const dateFormat = 'MMM do, yyyy'
+const dateMonthDayFormat = 'MMM d'
+const dateMonthDayYearFormat = 'MMM d, yyyy'
 const dateNumericFormat = 'yyyy/MM/dd'
 
 export {
@@ -88,4 +91,36 @@ export function formatDateTimeRelative(value: Date | string, comparedTo: Date | 
   }
 
   return `in ${formatted}`
+}
+
+export function formatDateTime(value: Date | string, formatTime = timeNumericShortFormat): string {
+  const date = toDate(value)
+  const today = new Date()
+  const isToday = dateFunctions.isSameDay(date, today)
+  const isTomorrow = dateFunctions.isTomorrow(date)
+  const isYesterday = dateFunctions.isYesterday(date)
+  const isThisYear = dateFunctions.isSameYear(date, today)
+
+  let format: string
+  let prefix = ''
+
+  if (isThisYear) {
+    if (isToday || isTomorrow || isYesterday) {
+      format = formatTime
+
+      if (isToday) {
+        prefix = localization.info.today
+      } else if (isTomorrow) {
+        prefix = localization.info.tomorrow
+      } else if (isYesterday) {
+        prefix = localization.info.yesterday
+      }
+    } else {
+      format = dateMonthDayFormat
+    }
+  } else {
+    format = dateMonthDayYearFormat
+  }
+
+  return [prefix, formatDateInTimezone(date, format)].join(' ')
 }
