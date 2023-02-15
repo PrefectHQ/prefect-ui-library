@@ -1,9 +1,9 @@
 import { useSeeds } from './useSeeds'
 import { Artifact } from '@/models'
 import { mocker } from '@/services'
-import { repeat } from '@/utilities/arrays'
+import { coinflip, repeat } from '@/utilities'
 
-export function useArtifactMock(override?: Partial<Artifact>): Artifact {
+export function useArtifactMock(override?: Partial<Artifact>, useTaskRun: boolean = coinflip(0.5)): Artifact {
   const flow = mocker.create('flow')
   const deployment = mocker.create('deployment')
   const workQueue = mocker.create('workQueue')
@@ -15,7 +15,18 @@ export function useArtifactMock(override?: Partial<Artifact>): Artifact {
     },
   ])
 
-  const artifact = mocker.create('artifact', [{ ...override }])
+  const taskRun = mocker.create('taskRun', [
+    {
+      flowRunId: flowRun.id,
+    },
+  ])
+
+  const artifact = mocker.create('artifact', [
+    {
+      flowRunId: flowRun.id,
+      taskRunId: useTaskRun ? taskRun.id : null,
+    },
+  ])
 
   useSeeds({
     artifacts: [artifact],
@@ -23,6 +34,7 @@ export function useArtifactMock(override?: Partial<Artifact>): Artifact {
     deployments: [deployment],
     workQueues: [workQueue],
     flowRuns: [flowRun],
+    taskRuns: [taskRun],
   })
 
   return artifact

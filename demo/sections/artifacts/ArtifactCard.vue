@@ -11,15 +11,18 @@
 </template>
 
 <script lang="ts" setup>
+  import { computed } from 'vue'
   import ArtifactSummaryCard from '@/components/ArtifactSummaryCard.vue'
   import ComponentPage from '@/demo/components/ComponentPage.vue'
   import { useArtifactsMock } from '@/demo/compositions/useArtifactsMock'
   import { DemoSection } from '@/demo/types/demoSection'
-  import { mocker } from '@/services'
 
   const demos: DemoSection[] = [{ title: 'Summary Card', description: 'An artifact summary card used for lists of artifacts or brief overlays' }]
 
   const start = new Date()
   start.setHours(0)
-  const artifact = mocker.create('artifact', [{ created: mocker.create('date', [start]) }])
+
+  const artifacts = useArtifactsMock(1)
+
+  const artifact = computed(() => artifacts[0])
 </script>

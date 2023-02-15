@@ -91,6 +91,8 @@ export const en = {
     tomorrow: 'tomorrow',
     artifactCreatedTimestampLabel: 'Created',
     artifactUpdatedTimestampLabel: 'Last Updated',
+    artifactRunLabel: 'Run',
+    artifactRunNone: 'None',
     deprecatedWorkQueue: 'This work queue uses a deprecated tag-based approach to matching flow runs; it will continue to work but you can\'t modify it',
     deploymentMissingWorkQueue: 'This deployment doesn\'t have an associated work queue; runs will be scheduled but won\'t be picked up by your agents',
     taskInput: 'Task inputs show parameter keys and can also show task run relationships.',
