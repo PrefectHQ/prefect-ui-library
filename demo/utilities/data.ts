@@ -22,6 +22,7 @@ function hydrateGraph({ id, graph }: FlowRunGraphMock): FlowRunGraphMock {
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 export function createDataStores(seeds: ApiMockSeeds = {}) {
   return {
+    artifacts: new KeyedDataStore({ seeds: seeds.artifacts }),
     flows: new KeyedDataStore({ seeds: seeds.flows, hydrate: flow => new Flow(flow) }),
     flowRuns: new KeyedDataStore({ seeds: seeds.flowRuns, hydrate: flowRun => new FlowRun(flowRun) }),
     flowRunGraphs: new KeyedDataStore({ seeds: seeds.flowRunGraphs, hydrate: hydrateGraph }),

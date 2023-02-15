@@ -1,4 +1,5 @@
 import { randomAny } from '@/mocks/any'
+import { randomArtifact } from '@/mocks/artifact'
 import { randomBlockDocument } from '@/mocks/blockDocument'
 import { randomBlockDocumentData } from '@/mocks/blockDocumentData'
 import { randomBlockSchema } from '@/mocks/blockSchema'
@@ -43,6 +44,7 @@ import { randomWorkQueueStatus } from '@/mocks/workQueueStatus'
 
 export const mocks = {
   any: randomAny,
+  artifact: randomArtifact,
   blockDocument: randomBlockDocument,
   blockDocumentData: randomBlockDocumentData,
   blockSchema: randomBlockSchema,
