@@ -110,7 +110,7 @@
   })
 
   const timelineGraphContainer = ref<HTMLElement | null>(null)
-  const timelineGraph = ref<typeof FlowRunTimeline | null>(null)
+  const timelineGraph = ref<InstanceType<typeof FlowRunTimeline> | null>(null)
   const isFullscreen = ref(false)
   const showTaskRunPanel = ref(false)
   const selectedNode: Ref<string | null> = ref(null)
@@ -181,13 +181,13 @@
       const newWidth = timelineGraphContainer.value?.clientWidth ?? 0
       const newHeight = timelineGraphContainer.value?.clientHeight ?? 0
 
-      const offsetX = (newWidth - originalWidth) / 2
-      const offsetY = (newHeight - originalHeight) / 2
+      const xOffset = (newWidth - originalWidth) / 2
+      const yOffset = (newHeight - originalHeight) / 2
 
-      timelineGraph.value?.updateViewportCenter(
-        offsetX,
-        offsetY,
-      )
+      timelineGraph.value?.moveViewportCenter({
+        xOffset,
+        yOffset,
+      })
     }, 0)
   }
 
