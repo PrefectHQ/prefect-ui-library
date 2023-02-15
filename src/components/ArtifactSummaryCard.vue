@@ -4,27 +4,13 @@
       <h3>
         {{ artifact.key }}
       </h3>
+
+      <template v-if="hasRun">
+        <p-bread-crumbs :crumbs="crumbs" class="artifact-summary-card__bread-crumbs" />
+      </template>
     </header>
 
     <div class="artifact-summary-card__summary-container">
-      <div class="artifact-summary-card__summary-item">
-        <span class="artifact-summary-card__summary-item-label">
-          {{ localization.info.artifactRunLabel }}
-        </span>
-        <span class="artifact-summary-card__summary-item-value">
-          <template v-if="hasRun">
-            <span class="artifact-summary-card__summary-item-run">
-              <p-bread-crumbs :crumbs="crumbs" class="artifact-summary-card__summary-item-run-crumbs" />
-            </span>
-          </template>
-          <template v-else>
-            <span class="artifact-summary-card__summary-item-none">
-              {{ localization.info.artifactRunNone }}
-            </span>
-          </template>
-        </span>
-      </div>
-
       <div
         class="artifact-summary-card__summary-item"
         :title="artifact.updated.toLocaleString()"
@@ -132,7 +118,7 @@
   text-foreground-200
 }
 
-.artifact-summary-card__summary-item-run-crumbs { @apply
+.artifact-summary-card__bread-crumbs { @apply
   text-base
 }
 </style>
