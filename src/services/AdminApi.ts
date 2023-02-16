@@ -12,4 +12,3 @@ export class AdminApi extends BaseApi {
     return await this.get<string>('/version').then(({ data }) => data)
   }
 }
-

@@ -6,7 +6,7 @@ export type PrefectConfig = {
 }
 
 export type GetApiBaseUrl<T extends PrefectConfig = PrefectConfig> = (config: T) => string
-export type GetApiHeaders<T extends Partial<PrefectConfig> = Partial<PrefectConfig>> = (config: T) => AxiosRequestHeaders
+export type GetApiHeaders<T extends PrefectConfig = PrefectConfig> = (config: T) => AxiosRequestHeaders
 
 export const getPrefectBaseUrl: GetApiBaseUrl = (config) => {
   return config.baseUrl
@@ -41,8 +41,17 @@ export class BaseApi<T extends PrefectConfig = PrefectConfig> {
     this.getBaseUrl = getPrefectBaseUrl
   }
 
-  protected get baseUrl(): string {
+  protected composeBaseUrl(): string {
     return this.getBaseUrl(this.apiConfig)
+  }
+
+  protected composeHeaders(): AxiosRequestHeaders {
+    return this.getHeaders.reduce((headers, getHeaders) => {
+      return {
+        ...headers,
+        ...getHeaders(this.apiConfig),
+      }
+    }, {})
   }
 
   protected removeUndefinedPaths(input: string | undefined): input is string {
@@ -60,19 +69,10 @@ export class BaseApi<T extends PrefectConfig = PrefectConfig> {
       .join('/')
   }
 
-  protected get headers(): AxiosRequestHeaders {
-    return this.getHeaders.reduce((headers, getHeaders) => {
-      return {
-        ...headers,
-        ...getHeaders(this.apiConfig),
-      }
-    }, {})
-  }
-
   protected instance(): AxiosInstance {
     const config: AxiosRequestConfig = {
-      baseURL: this.baseUrl,
-      headers: this.headers,
+      baseURL: this.composeBaseUrl(),
+      headers: this.composeHeaders(),
     }
 
     return axios.create(config)
