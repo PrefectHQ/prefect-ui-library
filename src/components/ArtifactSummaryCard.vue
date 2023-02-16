@@ -69,14 +69,14 @@
 
     if (flowRunId.value) {
       internalCrumbs.push({
-        text: flowRun.value?.name ?? '',
+        text: flowRun.value?.name ?? '|',
         to: routes.flowRun(flowRunId.value),
       })
     }
 
     if (taskRunId.value) {
       internalCrumbs.push({
-        text: taskRun.value?.name ?? '',
+        text: taskRun.value?.name ?? '|',
         to: routes.taskRun(taskRunId.value),
       })
     }
@@ -101,7 +101,8 @@
 .artifact-summary-card__summary-item { @apply
   flex
   justify-between
-  flex-row-reverse
+  flex-col
+  sm:flex-row-reverse
   items-baseline
   pb-2
   border-b
