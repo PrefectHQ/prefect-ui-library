@@ -1,8 +1,8 @@
 <template>
   <ComponentPage title="ArtifactCards" :demos="demos">
-    <div class="h-64">
+    <template #description>
       <ArtifactSummaryCard :artifact="artifact" />
-    </div>
+    </template>
 
     <template #summary-card>
       <ArtifactSummaryCard :artifact="artifact" />
