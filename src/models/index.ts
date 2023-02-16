@@ -1,5 +1,4 @@
 export * from './api'
-export * from './ApiRouteParams'
 export * from './Artifact'
 export * from './BlockDocument'
 export * from './BlockDocumentCreate'

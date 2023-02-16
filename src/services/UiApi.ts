@@ -1,13 +1,11 @@
-import { InjectionKey } from 'vue'
 import { UiFlowRunHistoryResponse } from '@/models/api/UiFlowRunHistoryResponse'
 import { FlowRunsFilter } from '@/models/Filters'
 import { UiFlowRunHistory } from '@/models/UiFlowRunHistory'
-import { Api, ApiRoute } from '@/services/Api'
 import { mapper } from '@/services/Mapper'
+import { WorkspaceApi } from '@/services/WorkspaceApi'
 
-export class UiApi extends Api {
-
-  protected route: ApiRoute = '/ui'
+export class UiApi extends WorkspaceApi {
+  protected override routePrefix = '/ui'
 
   public async getFlowRunHistory(filter: FlowRunsFilter): Promise<UiFlowRunHistory[]> {
     const request = mapper.map('FlowRunsFilter', filter, 'FlowRunsFilterRequest')
@@ -17,5 +15,3 @@ export class UiApi extends Api {
   }
 
 }
-
-export const uiApiKey: InjectionKey<UiApi> = Symbol('uiApiKey')

@@ -15,7 +15,7 @@ export interface IWorkspaceTaskRunsApi {
 
 export class WorkspaceTaskRunsApi extends WorkspaceApi implements IWorkspaceTaskRunsApi {
 
-  protected routePrefix = '/task_runs'
+  protected override routePrefix = '/task_runs'
 
   public async getTaskRun(id: string): Promise<TaskRun> {
     const { data } = await this.get<TaskRunResponse>(`/${id}`)

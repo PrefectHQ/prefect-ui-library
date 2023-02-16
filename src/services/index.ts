@@ -1,5 +1,5 @@
 export * from './AdminApi'
-export * from './Api'
+export * from './BaseApi'
 export * from './can'
 export * from './HealthApi'
 export * from './Mapper'
