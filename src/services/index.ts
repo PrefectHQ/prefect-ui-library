@@ -1,4 +1,3 @@
-export * from './AdminApi'
 export * from './BaseApi'
 export * from './can'
 export * from './HealthApi'
