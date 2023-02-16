@@ -1,24 +1,22 @@
+import { asArray } from '@prefecthq/prefect-design'
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosRequestHeaders, AxiosResponse } from 'axios'
+import { MaybeArray } from '@/types/utilities'
+import { isDefined } from '@/utilities/variables'
 
 export type PrefectConfig = {
   baseUrl: string,
   token?: string,
 }
 
-export type GetApiBaseUrl<T extends PrefectConfig = PrefectConfig> = (config: T) => string
-export type GetApiHeaders<T extends PrefectConfig = PrefectConfig> = (config: T) => AxiosRequestHeaders
+type ConfigFunction<R, T extends PrefectConfig = PrefectConfig> = (config: T) => R
+export type ApiBaseUrl<T extends PrefectConfig = PrefectConfig> = string | ConfigFunction<string, T>
+export type ApiHeaders<T extends PrefectConfig = PrefectConfig> = AxiosRequestHeaders | ConfigFunction<AxiosRequestHeaders, T>
 
-export const getPrefectBaseUrl: GetApiBaseUrl = (config) => {
-  return config.baseUrl
-}
+export const getPrefectBaseUrl: ApiBaseUrl = (config) => config.baseUrl
 
-export const getPrefectUIHeaders: GetApiHeaders = () => {
-  return {
-    'X-PREFECT-UI': true,
-  }
-}
+export const getPrefectUIHeaders: ApiHeaders = { 'X-PREFECT-UI': true }
 
-export const getAuthorizationHeaders: GetApiHeaders = (config) => {
+export const getAuthorizationHeaders: ApiHeaders = (config) => {
   const value: AxiosRequestHeaders = {}
 
   if (config.token) {
@@ -28,34 +26,35 @@ export const getAuthorizationHeaders: GetApiHeaders = (config) => {
   return value
 }
 
-export class BaseApi<T extends PrefectConfig = PrefectConfig> {
+export class Api<T extends PrefectConfig = PrefectConfig> {
   protected readonly apiConfig: T
+  protected apiHeaders: MaybeArray<ApiHeaders> = [getPrefectUIHeaders, getAuthorizationHeaders]
+  protected apiBaseUrl: ApiBaseUrl = getPrefectBaseUrl
   protected routePrefix: string | undefined
-  protected getHeaders: GetApiHeaders[]
-  protected getBaseUrl: GetApiBaseUrl
 
   public constructor(apiConfig: T) {
     this.apiConfig = apiConfig
-
-    this.getHeaders = [getPrefectUIHeaders, getAuthorizationHeaders]
-    this.getBaseUrl = getPrefectBaseUrl
   }
 
   protected composeBaseUrl(): string {
-    return this.getBaseUrl(this.apiConfig)
+    if (typeof this.apiBaseUrl === 'string') {
+      return this.apiBaseUrl
+    }
+
+    return this.apiBaseUrl(this.apiConfig)
   }
 
   protected composeHeaders(): AxiosRequestHeaders {
-    return this.getHeaders.reduce((headers, getHeaders) => {
+    const array = asArray(this.apiHeaders)
+
+    return array.reduce<AxiosRequestHeaders>((headers, header) => {
+      const value = typeof header === 'function' ? header(this.apiConfig) : header
+
       return {
         ...headers,
-        ...getHeaders(this.apiConfig),
+        ...value,
       }
     }, {})
-  }
-
-  protected removeUndefinedPaths(input: string | undefined): input is string {
-    return !!input
   }
 
   protected removeLeadingAndTrailingSlashes(input: string): string {
@@ -64,7 +63,7 @@ export class BaseApi<T extends PrefectConfig = PrefectConfig> {
 
   protected combinePath(route: string | undefined): string {
     return [this.routePrefix, route]
-      .filter(this.removeUndefinedPaths)
+      .filter(isDefined)
       .map(this.removeLeadingAndTrailingSlashes)
       .join('/')
   }

@@ -1,5 +1,5 @@
 import { CloudConfigMissingParamsError } from '@/models/CloudConfigMissingParamsError'
-import { BaseApi, GetApiBaseUrl, PrefectConfig } from '@/services/BaseApi'
+import { Api, ApiBaseUrl, PrefectConfig } from '@/services/Api'
 
 export type CloudApiConfig = PrefectConfig & {
   accountId: string,
@@ -12,7 +12,7 @@ export function isCloudConfig(config: WorkspaceApiConfig): config is CloudApiCon
   return 'accountId' in config && 'workspaceId' in config && 'token' in config
 }
 
-export const getCloudBaseUrl: GetApiBaseUrl = (config) => {
+const getWorkspaceBaseUrl: ApiBaseUrl = (config) => {
   if (!isCloudConfig(config)) {
     return config.baseUrl
   }
@@ -24,10 +24,6 @@ export const getCloudBaseUrl: GetApiBaseUrl = (config) => {
   throw new CloudConfigMissingParamsError()
 }
 
-export class WorkspaceApi extends BaseApi<WorkspaceApiConfig> {
-  public constructor(apiConfig: WorkspaceApiConfig) {
-    super(apiConfig)
-
-    this.getBaseUrl = getCloudBaseUrl
-  }
+export class WorkspaceApi extends Api<WorkspaceApiConfig> {
+  protected override apiBaseUrl = getWorkspaceBaseUrl
 }

@@ -1,4 +1,4 @@
-export * from './BaseApi'
+export * from './Api'
 export * from './can'
 export * from './HealthApi'
 export * from './Mapper'
