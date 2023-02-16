@@ -11,11 +11,11 @@
       </template>
     </div>
 
-    <p-empty-results v-if="empty">
+    <p-empty-results v-if="isEmpty">
       <template #message>
         No collections
       </template>
-      <template #actions>
+      <template v-if="isFiltered" #actions>
         <p-button size="sm" secondary @click="clear">
           Clear Filters
         </p-button>
@@ -30,15 +30,18 @@
   import CollectionCardPreview from '@/components/CollectionCardPreview.vue'
   import ResultsCount from '@/components/ResultsCount.vue'
   import SearchInput from '@/components/SearchInput.vue'
+  import { useWorkspaceApi } from '@/compositions'
   import { CollectionItem } from '@/models'
-  import { collectionsApi } from '@/services'
 
   const searchTerm = ref('')
+  const api = useWorkspaceApi()
 
-  const collectionSubscription = useSubscription(collectionsApi.getFlowCollection, [])
+  const collectionSubscription = useSubscription(api.collections.getFlowCollection, [])
   const collectionItems = computed(() => collectionSubscription.response ?? [])
   const filteredCollectionItems = computed(() => collectionItems.value.filter(filterByName))
-  const empty = computed(() => collectionSubscription.executed && collectionItems.value.length === 0)
+
+  const isFiltered = computed(() => !!searchTerm.value)
+  const isEmpty = computed(() => collectionSubscription.executed && collectionItems.value.length === 0)
 
   function filterByName({ name }: CollectionItem): boolean {
     return name.toLowerCase().includes(searchTerm.value.toLowerCase())

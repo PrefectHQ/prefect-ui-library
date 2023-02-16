@@ -1,15 +1,12 @@
 import { CollectionItem, CollectionItemResponse } from '@/models'
-import { Api, ApiRoute } from '@/services/Api'
+import { BaseApi } from '@/services/BaseApi'
 import { mapper } from '@/services/Mapper'
 
-export class CollectionsApi extends Api {
-
-  protected override route: ApiRoute = '/collections'
+export class CollectionsApi extends BaseApi {
+  protected override routePrefix = '/collections'
 
   public getFlowCollection(): Promise<CollectionItem[]> {
-    return this.get<CollectionItemResponse[]>('views/aggregate-flow-metadata')
+    return this.get<CollectionItemResponse[]>('/views/aggregate-flow-metadata')
       .then(({ data }) => mapper.map('CollectionItemResponse', data, 'CollectionItem'))
   }
 }
-
-export const collectionsApi = new CollectionsApi()
