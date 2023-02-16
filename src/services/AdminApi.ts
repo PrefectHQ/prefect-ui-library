@@ -1,10 +1,8 @@
 import { ServerSettings } from '@/models/ServerSettings'
-import { Api, ApiRoute } from '@/services/Api'
+import { BaseApi } from '@/services/BaseApi'
 
-
-export class AdminApi extends Api {
-
-  protected override route: ApiRoute = '/admin'
+export class AdminApi extends BaseApi {
+  protected override routePrefix = '/admin'
 
   public getSettings(): Promise<ServerSettings> {
     return this.get<ServerSettings>('/settings').then(({ data }) => data)

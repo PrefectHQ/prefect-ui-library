@@ -26,7 +26,7 @@ export interface IWorkspaceFlowRunsApi {
 
 export class WorkspaceFlowRunsApi extends WorkspaceApi implements IWorkspaceFlowRunsApi {
 
-  protected routePrefix = '/flow_runs'
+  protected override routePrefix = '/flow_runs'
 
   private readonly batcher = new BatchProcessor<string, FlowRun>(async ids => {
     const flowRuns = await this.getFlowRuns({

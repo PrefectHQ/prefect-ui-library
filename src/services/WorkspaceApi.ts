@@ -1,100 +1,28 @@
-import axios, { AxiosInstance, AxiosRequestConfig, AxiosRequestHeaders, AxiosResponse } from 'axios'
+import { BaseApi, GetApiBaseUrl, PrefectConfig } from '@/services/BaseApi'
 
-export type PrefectConfig = {
-  baseUrl: string,
-}
-
-export type PrefectCloudConfig = {
-  baseUrl: string,
+export type CloudApiConfig = PrefectConfig & {
   accountId: string,
   workspaceId: string,
-  token: string,
 }
 
-function isCloudConfig(config: WorkspaceApiConfig): config is PrefectCloudConfig {
+export function isCloudConfig(config: WorkspaceApiConfig): config is CloudApiConfig {
   return 'accountId' in config && 'workspaceId' in config && 'token' in config
 }
 
-export type WorkspaceApiConfig = PrefectConfig | PrefectCloudConfig
+export type WorkspaceApiConfig = PrefectConfig | CloudApiConfig
 
-export class WorkspaceApi {
-
-  private readonly workspaceConfig: WorkspaceApiConfig
-
-  protected routePrefix: string = ''
-
-  public constructor(workspaceConfig: WorkspaceApiConfig) {
-    this.workspaceConfig = workspaceConfig
+export const getCloudBaseUrl: GetApiBaseUrl = (config) => {
+  if (isCloudConfig(config)) {
+    return `${config.baseUrl}/accounts/${config.accountId}/workspaces/${config.workspaceId}`
   }
 
-  private get config(): AxiosRequestConfig {
-    return {
-      baseURL: this.baseUrl,
-      headers: this.headers,
-    }
-  }
+  return config.baseUrl
+}
 
-  private get baseUrl(): string {
-    const { baseUrl } = this.workspaceConfig
+export class WorkspaceApi extends BaseApi<WorkspaceApiConfig> {
+  public constructor(apiConfig: WorkspaceApiConfig) {
+    super(apiConfig)
 
-    if (isCloudConfig(this.workspaceConfig)) {
-      const { accountId, workspaceId } = this.workspaceConfig
-
-      return `${baseUrl}/accounts/${accountId}/workspaces/${workspaceId}${this.routePrefix}`
-    }
-
-    return `${baseUrl}${this.routePrefix}`
-  }
-
-  private get headers(): AxiosRequestHeaders {
-    const headers: AxiosRequestHeaders = {
-      'X-PREFECT-UI': true,
-    }
-
-    if (isCloudConfig(this.workspaceConfig)) {
-      const { token } = this.workspaceConfig
-
-      headers.Authorization = `bearer ${token}`
-    }
-
-    return headers
-  }
-
-  protected instance(): AxiosInstance {
-    return axios.create(this.config)
-  }
-
-  protected get<T, R = AxiosResponse<T>>(url: string, config?: AxiosRequestConfig): Promise<R> {
-    return this.instance().get(url, config)
-  }
-
-  protected delete<T, R = AxiosResponse<T>>(url: string, config?: AxiosRequestConfig): Promise<R> {
-    return this.instance().delete(url, config)
-  }
-
-  protected head<T, R = AxiosResponse<T>>(url: string, config?: AxiosRequestConfig): Promise<R> {
-    return this.instance().head(url, config)
-  }
-
-  protected options<T, R = AxiosResponse<T>>(url: string, config?: AxiosRequestConfig): Promise<R> {
-    return this.instance().options(url, config)
-  }
-
-  // axios uses any for the data argument
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  protected post<T, R = AxiosResponse<T>>(url: string, data?: any, config?: AxiosRequestConfig): Promise<R> {
-    return this.instance().post(url, data, config)
-  }
-
-  // axios uses any for the data argument
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  protected put<T, R = AxiosResponse<T>>(url: string, data?: any, config?: AxiosRequestConfig): Promise<R> {
-    return this.instance().put(url, data, config)
-  }
-
-  // axios uses any for the data argument
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  protected patch<T, R = AxiosResponse<T>>(url: string, data?: any, config?: AxiosRequestConfig): Promise<R> {
-    return this.instance().patch(url, data, config)
+    this.getBaseUrl = getCloudBaseUrl
   }
 }

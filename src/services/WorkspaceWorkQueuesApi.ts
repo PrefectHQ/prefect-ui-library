@@ -19,7 +19,7 @@ export interface IWorkspaceWorkQueuesApi {
 
 export class WorkspaceWorkQueuesApi extends WorkspaceApi implements IWorkspaceWorkQueuesApi {
 
-  protected routePrefix = '/work_queues'
+  protected override routePrefix = '/work_queues'
 
   public async getWorkQueue(id: string): Promise<WorkQueue> {
     const { data } = await this.get<WorkQueueResponse>(`/${id}`)
