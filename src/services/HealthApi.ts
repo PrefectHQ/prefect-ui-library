@@ -1,10 +1,17 @@
-import { Api, ApiRoute } from '@/services/Api'
+import { Api } from '@/services/Api'
 
 export class HealthApi extends Api {
+  protected override routePrefix = '/health'
 
-  protected override route: ApiRoute = '/health'
+  public getHealth(): Promise<boolean> {
+    return this.get<boolean>().then(({ data }) => data)
+  }
 
-  public getHealth(): Promise<string> {
-    return this.get('').then(({ data }) => data)
+  public async isHealthy(): Promise<boolean> {
+    try {
+      return await this.getHealth()
+    } catch {
+      return false
+    }
   }
 }

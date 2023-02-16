@@ -7,7 +7,7 @@ import { defaultSavesSearches } from '@/utilities/savedFilters'
 
 export class WorkspaceSavedSearchesApi extends WorkspaceApi {
 
-  protected routePrefix = '/saved_searches'
+  protected override routePrefix = '/saved_searches'
 
   public async getSavedSearches(filter: SavedSearchesFilter = {}): Promise<SavedSearch[]> {
     const request = mapper.map('SavedSearchesFilter', filter, 'SavedSearchesFilterRequest')

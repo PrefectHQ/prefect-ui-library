@@ -6,7 +6,7 @@ import { WorkspaceApi } from '@/services/WorkspaceApi'
 
 export class WorkspaceLogsApi extends WorkspaceApi {
 
-  protected routePrefix = '/logs'
+  protected override routePrefix = '/logs'
 
   public async getLogs(filter: LogsFilter = {}): Promise<Log[]> {
     const request = mapper.map('LogsFilter', filter, 'LogsFilterRequest')

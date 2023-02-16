@@ -1,5 +1,7 @@
 import { createActions } from '@prefecthq/vue-compositions'
 import { InjectionKey } from 'vue'
+import { HealthApi } from '@/services/HealthApi'
+import { UiApi } from '@/services/UiApi'
 import { WorkspaceApiConfig } from '@/services/WorkspaceApi'
 import { WorkspaceBlockCapabilitiesApi } from '@/services/WorkspaceBlockCapabilitiesApi'
 import { WorkspaceBlockDocumentsApi } from '@/services/WorkspaceBlockDocumentsApi'
@@ -30,14 +32,16 @@ export function createApi(workspaceConfig: WorkspaceApiConfig) {
     deployments: createActions(new WorkspaceDeploymentsApi(workspaceConfig)),
     flowRuns: createActions(new WorkspaceFlowRunsApi(workspaceConfig)),
     flows: createActions(new WorkspaceFlowsApi(workspaceConfig)),
+    health: createActions(new HealthApi(workspaceConfig)),
     logs: createActions(new WorkspaceLogsApi(workspaceConfig)),
     notifications: createActions(new WorkspaceNotificationsApi(workspaceConfig)),
-    taskRuns: createActions(new WorkspaceTaskRunsApi(workspaceConfig)),
-    workQueues: createActions(new WorkspaceWorkQueuesApi(workspaceConfig)),
     savedSearches: createActions(new WorkspaceSavedSearchesApi(workspaceConfig)),
-    workPools: createActions(new WorkspaceWorkPoolsApi(workspaceConfig)),
+    taskRuns: createActions(new WorkspaceTaskRunsApi(workspaceConfig)),
+    ui: createActions(new UiApi(workspaceConfig)),
     workPoolQueues: createActions(new WorkspaceWorkPoolQueuesApi(workspaceConfig)),
+    workPools: createActions(new WorkspaceWorkPoolsApi(workspaceConfig)),
     workPoolWorkers: createActions(new WorkspaceWorkPoolWorkersApi(workspaceConfig)),
+    workQueues: createActions(new WorkspaceWorkQueuesApi(workspaceConfig)),
   }
 }
 

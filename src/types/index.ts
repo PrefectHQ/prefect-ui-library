@@ -1,5 +1,4 @@
 export * from './buttons'
-export * from './classes'
 export * from './ColorMode'
 export * from './css'
 export * from './dates'

@@ -1,112 +1,127 @@
-// disabling because axios uses any in its method declarations
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios'
-import { ApiRouteParams } from '@/models/ApiRouteParams'
-import { Require } from '@/types/utilities'
+import { asArray } from '@prefecthq/prefect-design'
+import axios, { AxiosInstance, AxiosRequestConfig, AxiosRequestHeaders, AxiosResponse } from 'axios'
+import { MaybeArray } from '@/types/utilities'
+import { isDefined } from '@/utilities/variables'
 
-/**
- * @deprecated
- */
-export type ApiRoute = string | ((params?: ApiRouteParams) => string)
+export type PrefectConfig = {
+  baseUrl: string,
+  token?: string,
+}
 
-/**
- * @deprecated
- */
-export type ApiServer = string | Promise<string>
+type ConfigFunction<R, T extends PrefectConfig = PrefectConfig> = (config: T) => R
+export type ApiBaseUrl<T extends PrefectConfig = PrefectConfig> = string | ConfigFunction<string, T>
+export type ApiHeaders<T extends PrefectConfig = PrefectConfig> = AxiosRequestHeaders | ConfigFunction<AxiosRequestHeaders, T>
 
-/**
- * @deprecated
- */
-export abstract class Api {
-  protected server: ApiServer = ''
-  protected route: ApiRoute = ''
+export const getPrefectBaseUrl: ApiBaseUrl = (config) => config.baseUrl
 
-  private _config: AxiosRequestConfig | null = null
-  private _instance: AxiosInstance | null = null
-  private _params: ApiRouteParams | undefined = undefined
+export const getPrefectUIHeaders: ApiHeaders = { 'X-PREFECT-UI': true }
 
-  public constructor(config?: AxiosRequestConfig) {
-    if (config) {
-      this._config = config
-    }
+export const getAuthorizationHeaders: ApiHeaders = (config) => {
+  const value: AxiosRequestHeaders = {}
+
+  if (config.token) {
+    value.Authorization = `bearer ${config.token}`
   }
 
-  protected async instance(): Promise<AxiosInstance> {
-    if (this._instance) {
-      return this._instance
-    }
+  return value
+}
 
-    const config = await this.config()
+export class Api<T extends PrefectConfig = PrefectConfig> {
+  protected readonly apiConfig: T
+  protected apiHeaders: MaybeArray<ApiHeaders> = [getPrefectUIHeaders, getAuthorizationHeaders]
+  protected apiBaseUrl: ApiBaseUrl = getPrefectBaseUrl
+  protected routePrefix: string | undefined
 
-    return this._instance = axios.create(config)
+  public constructor(apiConfig: T) {
+    this.apiConfig = apiConfig
   }
 
-  protected async config(): Promise<AxiosRequestConfig> {
-    if (this._config) {
-      return this._config
+  protected composeBaseUrl(): string {
+    if (typeof this.apiBaseUrl === 'string') {
+      return this.apiBaseUrl
     }
 
-    return this._config = {
-      baseURL: await this.server,
-      headers: { 'X-PREFECT-UI': true },
-    }
+    return this.apiBaseUrl(this.apiConfig)
   }
 
-  protected async request<T = any, R = AxiosResponse<T>>(config: Require<AxiosRequestConfig, 'url' | 'method'>): Promise<R> {
-    const urlWithRoute = this.withRoute(config.url, this._params)
-    const configWithRoute = { ...config, url: urlWithRoute }
-    const instance = await this.instance()
-    const response: Promise<R> = instance.request(configWithRoute)
+  protected composeHeaders(): AxiosRequestHeaders {
+    const array = asArray(this.apiHeaders)
 
-    this._params = undefined
+    return array.reduce<AxiosRequestHeaders>((headers, header) => {
+      const value = typeof header === 'function' ? header(this.apiConfig) : header
 
-    return response
+      return {
+        ...headers,
+        ...value,
+      }
+    }, {})
   }
 
-  protected get<T = any, R = AxiosResponse<T>>(url: string, config?: AxiosRequestConfig): Promise<R> {
-    return this.request({ ...config, method: 'GET', url })
+  protected removeLeadingAndTrailingSlashes(input: string): string {
+    return input.replace(/^(\/)|(\/)$/g, '')
   }
 
-  protected delete<T = any, R = AxiosResponse<T>>(url: string, config?: AxiosRequestConfig): Promise<R> {
-    return this.request({ ...config, method: 'DELETE', url })
+  protected combinePath(route: string | undefined): string {
+    return [this.routePrefix, route]
+      .filter(isDefined)
+      .map(this.removeLeadingAndTrailingSlashes)
+      .join('/')
   }
 
-  protected head<T = any, R = AxiosResponse<T>>(url: string, config?: AxiosRequestConfig): Promise<R> {
-    return this.request({ ...config, method: 'HEAD', url })
-  }
-
-  protected options<T = any, R = AxiosResponse<T>>(url: string, config?: AxiosRequestConfig): Promise<R> {
-    return this.request({ ...config, method: 'OPTIONS', url })
-  }
-
-  protected post<T = any, R = AxiosResponse<T>>(url: string, data?: any, config?: AxiosRequestConfig): Promise<R> {
-    return this.request({ ...config, method: 'POST', url, data })
-  }
-
-  protected put<T = any, R = AxiosResponse<T>>(url: string, data?: any, config?: AxiosRequestConfig): Promise<R> {
-    return this.request({ ...config, method: 'PUT', url, data })
-  }
-
-  protected patch<T = any, R = AxiosResponse<T>>(url: string, data?: any, config?: AxiosRequestConfig): Promise<R> {
-    return this.request({ ...config, method: 'PATCH', url, data })
-  }
-
-  protected withParams(params?: ApiRouteParams): this {
-    if (params) {
-      this._params = params
+  protected instance(): AxiosInstance {
+    const config: AxiosRequestConfig = {
+      baseURL: this.composeBaseUrl(),
+      headers: this.composeHeaders(),
     }
 
-    return this
+    return axios.create(config)
   }
 
-  protected getRoute(params?: ApiRouteParams): string {
-    return typeof this.route === 'function' ? this.route(params) : this.route
+  protected get<T, R = AxiosResponse<T>>(route?: string, config?: AxiosRequestConfig): Promise<R> {
+    const path = this.combinePath(route)
+
+    return this.instance().get(path, config)
   }
 
-  private withRoute(url: string, params?: ApiRouteParams): string {
-    const route = this.getRoute(params)
+  protected delete<T, R = AxiosResponse<T>>(route?: string, config?: AxiosRequestConfig): Promise<R> {
+    const path = this.combinePath(route)
 
-    return `${route}${url}`
+    return this.instance().delete(path, config)
   }
 
+  protected head<T, R = AxiosResponse<T>>(route?: string, config?: AxiosRequestConfig): Promise<R> {
+    const path = this.combinePath(route)
+
+    return this.instance().head(path, config)
+  }
+
+  protected options<T, R = AxiosResponse<T>>(route?: string, config?: AxiosRequestConfig): Promise<R> {
+    const path = this.combinePath(route)
+
+    return this.instance().options(path, config)
+  }
+
+  // axios uses any for the data argument
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  protected post<T, R = AxiosResponse<T>>(route?: string, data?: any, config?: AxiosRequestConfig): Promise<R> {
+    const path = this.combinePath(route)
+
+    return this.instance().post(path, data, config)
+  }
+
+  // axios uses any for the data argument
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  protected put<T, R = AxiosResponse<T>>(route?: string, data?: any, config?: AxiosRequestConfig): Promise<R> {
+    const path = this.combinePath(route)
+
+    return this.instance().put(path, data, config)
+  }
+
+  // axios uses any for the data argument
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  protected patch<T, R = AxiosResponse<T>>(route?: string, data?: any, config?: AxiosRequestConfig): Promise<R> {
+    const path = this.combinePath(route)
+
+    return this.instance().patch(path, data, config)
+  }
 }
