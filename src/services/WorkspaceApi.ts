@@ -13,7 +13,11 @@ export function isCloudConfig(config: WorkspaceApiConfig): config is CloudApiCon
 }
 
 export const getCloudBaseUrl: GetApiBaseUrl = (config) => {
-  if (isCloudConfig(config) && config.accountId && config.workspaceId) {
+  if (!isCloudConfig(config)) {
+    return config.baseUrl
+  }
+
+  if (config.accountId && config.workspaceId) {
     return `${config.baseUrl}/accounts/${config.accountId}/workspaces/${config.workspaceId}`
   }
 
