@@ -1,7 +1,10 @@
 <template>
   <p-card>
     <header class="artifact-summary-card__header">
-      <h3>
+      <h6 class="artifact-summary-card__subheader">
+        {{ artifactLabel }}
+      </h6>
+      <h3 v-if="artifact.key">
         {{ artifact.key }}
       </h3>
 
@@ -64,6 +67,10 @@
 
   const hasRun = computed(() => props.artifact.flowRunId || props.artifact.taskRunId)
 
+  const artifactLabel = computed(() => {
+    return props.artifact.key ? localization.info.artifactLabel : localization.info.artifactResultLabel
+  })
+
   const crumbs = computed<BreadCrumbs>(() => {
     const internalCrumbs: BreadCrumbs = []
 
@@ -121,5 +128,11 @@
 
 .artifact-summary-card__bread-crumbs { @apply
   text-base
+}
+
+.artifact-summary-card__subheader { @apply
+  text-sm
+  text-foreground-200
+  capitalize
 }
 </style>

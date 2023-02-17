@@ -89,6 +89,8 @@ export const en = {
     today: 'today',
     yesterday: 'yesterday',
     tomorrow: 'tomorrow',
+    artifactLabel: 'Artifact',
+    artifactResultLabel: 'Result',
     artifactCreatedTimestampLabel: 'Created',
     artifactUpdatedTimestampLabel: 'Last Updated',
     artifactRunLabel: 'Run',
