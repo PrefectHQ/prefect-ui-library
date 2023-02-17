@@ -14,7 +14,7 @@
       <template v-for="(example, index) in collectionItem.examples" :key="index">
         <p-key-value label="Example" class="collection-card__example">
           <template #value>
-            <p-code-highlight lang="python" :text="example" show-line-numbers />
+            <p-markdown-renderer :text="example" />
           </template>
         </p-key-value>
       </template>
@@ -61,8 +61,8 @@
   h-5
 }
 
-.collection-card__example,
-.collection-card__example .p-key-value__value { @apply
-  overflow-auto
+.collection-card__example .p-code-highlight { @apply
+  dark:bg-slate-900
+  bg-slate-300
 }
 </style>
