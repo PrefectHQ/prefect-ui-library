@@ -85,21 +85,21 @@ type MarkdownLine = {
   level?: number,
 }
 
-export const randomMarkdownString: MockFunction<string, [{ lines?: number }?]> = function({ lines = 10 } = {}) {
+export const randomMarkdownString: MockFunction<string, [{ sections?: number }?]> = function({ sections = 5 } = {}) {
 
   const markdownLines: MarkdownLine[] = []
 
   markdownLines.push({
     type: 'header',
-    content: this.create('markdownHeaderString'),
-    level: 0,
+    content: this.create('markdownHeaderString', [{ level: 1 }]),
+    level: 1,
   })
 
-  for (let i = 0; i < lines; i++) {
+  for (let i = 0; i < sections; i++) {
     const lastLine: MarkdownLine | undefined = markdownLines[markdownLines.length - 1]
     const type = choice(markdownTypes)
 
-    if (type == 'header') {
+    if (type == 'header' && i < sections - 1) {
       let headerLevel: number = 1
 
       if (lastLine.type == 'header' && lastLine.level && lastLine.level < 6) {
@@ -110,7 +110,7 @@ export const randomMarkdownString: MockFunction<string, [{ lines?: number }?]> =
 
       markdownLines.push({
         type: 'header',
-        content: this.create('markdownHeaderString'),
+        content: this.create('markdownHeaderString', [{ level: headerLevel }]),
         level: headerLevel,
       })
 
@@ -154,5 +154,5 @@ export const randomMarkdownString: MockFunction<string, [{ lines?: number }?]> =
     continue
   }
 
-  return markdownLines.map(mdl => mdl.content).join('\n')
+  return markdownLines.map(mdl => mdl.content).join('\n\n')
 }
