@@ -73,19 +73,14 @@ export const randomMarkdownString: MockFunction<string, [{ lines?: number }?]> =
   }
   const markdownLines: MarkdownLine[] = []
 
+  markdownLines.push({
+    type: 'header',
+    content: this.create('markdownHeaderString'),
+    level: 0,
+  })
+
   for (let i = 0; i < lines; i++) {
     const lastLine: MarkdownLine | undefined = markdownLines[markdownLines.length - 1]
-
-    if (!lastLine) {
-      markdownLines.push({
-        type: 'header',
-        content: this.create('markdownHeaderString'),
-        level: 1,
-      })
-
-      continue
-    }
-
     const isHeader = random() > 0.9
 
     if (isHeader) {
