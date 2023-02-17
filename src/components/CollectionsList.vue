@@ -43,8 +43,8 @@
   const isFiltered = computed(() => !!searchTerm.value)
   const isEmpty = computed(() => collectionSubscription.executed && collectionItems.value.length === 0)
 
-  function filterByName({ name }: CollectionItem): boolean {
-    return name.toLowerCase().includes(searchTerm.value.toLowerCase())
+  function filterByName({ name, category, slug }: CollectionItem): boolean {
+    return `${name}.${category ?? ''}.${slug}`.toLowerCase().includes(searchTerm.value.toLowerCase())
   }
 
   function clear(): void {
