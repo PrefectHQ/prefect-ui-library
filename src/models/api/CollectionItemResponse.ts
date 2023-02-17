@@ -13,4 +13,7 @@ export type CollectionItemResponse = {
   path_containing_flow: string,
   repo_url: string,
   slug: string,
+  category: string,
 }
+
+export type CollectionsResponse = Record<string, Record<string, CollectionItemResponse>>

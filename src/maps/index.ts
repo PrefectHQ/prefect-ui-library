@@ -6,7 +6,7 @@ import { mapBlockDocumentUpdateToBlockDocumentUpdateRequest } from '@/maps/block
 import { mapBlockSchemaResponseToBlockSchema } from '@/maps/blockSchema'
 import { mapBlockSchemaReferencesResponseToBlockSchemaReferences } from '@/maps/blockSchemaReferences'
 import { mapBlockTypeResponseToBlockType } from '@/maps/blockType'
-import { mapCollectionItemResponseToCollectionItem } from '@/maps/collectionItem'
+import { mapCollectionItemResponseToCollectionItem, mapCollectionResponseToCollectionItems } from '@/maps/collectionItem'
 import { mapConcurrencyLimitResponseToConcurrencyLimit } from '@/maps/concurrencyLimit'
 import { mapConcurrencyLimitCreateToConcurrencyLimitCreateRequest } from '@/maps/concurrencyLimitCreate'
 import { mapCreatedOrUpdatedByResponseToCreatedOrUpdatedBy } from '@/maps/createdOrUpdatedBy'
@@ -79,6 +79,7 @@ export const maps = {
   BlockSchemaResponse: { BlockSchema: mapBlockSchemaResponseToBlockSchema },
   BlockTypeResponse: { BlockType: mapBlockTypeResponseToBlockType },
   CollectionItemResponse: { CollectionItem: mapCollectionItemResponseToCollectionItem },
+  CollectionResponse: { CollectionItems: mapCollectionResponseToCollectionItems },
   ConcurrencyLimitCreate: { ConcurrencyLimitCreateRequest: mapConcurrencyLimitCreateToConcurrencyLimitCreateRequest },
   ConcurrencyLimitResponse: { ConcurrencyLimit: mapConcurrencyLimitResponseToConcurrencyLimit },
   CreatedOrUpdatedByResponse: { CreatedOrUpdatedBy: mapCreatedOrUpdatedByResponseToCreatedOrUpdatedBy },
