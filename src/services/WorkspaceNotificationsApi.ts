@@ -8,7 +8,7 @@ import { WorkspaceApi } from '@/services/WorkspaceApi'
 
 export class WorkspaceNotificationsApi extends WorkspaceApi {
 
-  protected routePrefix = '/flow_run_notification_policies'
+  protected override routePrefix = '/flow_run_notification_policies'
 
   public async getNotification(id: string): Promise<Notification> {
     const { data } = await this.get<NotificationResponse>(`/${id}`)

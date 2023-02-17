@@ -17,7 +17,7 @@ export interface IWorkspaceConcurrencyLimitsApi {
 
 export class WorkspaceConcurrencyLimitsApi extends WorkspaceApi {
 
-  protected routePrefix = '/concurrency_limits'
+  protected override routePrefix = '/concurrency_limits'
 
   public async getConcurrencyLimits(filter: ConcurrencyLimitsFilter = {}): Promise<ConcurrencyLimit[]> {
     const { data } = await this.post<ConcurrencyLimitResponse[]>('/filter', filter)
