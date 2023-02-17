@@ -1,6 +1,6 @@
 <template>
   <p-card class="artifact-card">
-    <p-markdown-renderer />
+    <p-markdown-renderer :text="artifact.metadata.description" />
   </p-card>
 </template>
 

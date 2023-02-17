@@ -1,4 +1,7 @@
 export type ArtifactDataResponse = Record<string, unknown>
+export type ArtifactMetadataResponse = {
+  description_: string,
+}
 
 export type ArtifactResponse = {
   id: string,
@@ -7,7 +10,7 @@ export type ArtifactResponse = {
   key: string,
   type: string,
   data: ArtifactDataResponse,
-  metadata_: ArtifactDataResponse,
+  metadata_: ArtifactMetadataResponse,
   flow_run_id: string | null,
   task_run_id: string | null,
 }

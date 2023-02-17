@@ -1,4 +1,7 @@
 export type ArtifactData = Record<string, unknown>
+export type ArtifactMetadata = {
+  description: string,
+}
 
 export interface IArtifact {
   id: string,
@@ -7,7 +10,7 @@ export interface IArtifact {
   key: string,
   type: string,
   data: ArtifactData,
-  metadata: ArtifactData,
+  metadata: ArtifactMetadata,
   flowRunId: string | null,
   taskRunId: string | null,
 }
@@ -21,7 +24,7 @@ export class Artifact implements IArtifact {
   public key: string
   public type: string
   public data: ArtifactData
-  public metadata: ArtifactData
+  public metadata: ArtifactMetadata
 
   public constructor(artifact: IArtifact) {
     this.id = artifact.id
