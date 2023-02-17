@@ -33,6 +33,7 @@
   h-5
   w-full
   block
+  text-white
 }
 
 .code-lines--with-line-numbers .code-lines__line:before { @apply

@@ -1,6 +1,10 @@
 import { mocker } from '@/services'
 import { floor, random } from '@/utilities/math'
 
+export function isArray(value: unknown): value is unknown[] {
+  return Array.isArray(value)
+}
+
 // we really do want any here
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function toMap<T extends any[], K extends keyof T[number]>(source: T, key: K): Map<T[number][K], T[number]> {

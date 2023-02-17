@@ -88,6 +88,6 @@ export const en = {
   info: {
     deprecatedWorkQueue: 'This work queue uses a deprecated tag-based approach to matching flow runs; it will continue to work but you can\'t modify it',
     deploymentMissingWorkQueue: 'This deployment doesn\'t have an associated work queue; runs will be scheduled but won\'t be picked up by your agents',
-    taskInput: 'Currently task inputs show parameter keys. The can also show task run relationships.',
+    taskInput: 'Task inputs show parameter keys and can also show task run relationships.',
   },
 }
