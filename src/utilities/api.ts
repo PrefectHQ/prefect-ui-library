@@ -1,5 +1,6 @@
 import { createActions } from '@prefecthq/vue-compositions'
 import { InjectionKey } from 'vue'
+import { CollectionsApi } from '@/services/CollectionsApi'
 import { HealthApi } from '@/services/HealthApi'
 import { UiApi } from '@/services/UiApi'
 import { WorkspaceApiConfig } from '@/services/WorkspaceApi'

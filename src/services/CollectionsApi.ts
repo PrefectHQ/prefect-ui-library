@@ -1,8 +1,8 @@
 import { CollectionItem, CollectionItemResponse } from '@/models'
-import { BaseApi } from '@/services/BaseApi'
+import { Api } from '@/services/Api'
 import { mapper } from '@/services/Mapper'
 
-export class CollectionsApi extends BaseApi {
+export class CollectionsApi extends Api {
   protected override routePrefix = '/collections'
 
   public getFlowCollection(): Promise<CollectionItem[]> {
