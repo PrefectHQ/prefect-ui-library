@@ -1,7 +1,7 @@
 <template>
   <ComponentPage title="ArtifactCards" :demos="demos">
     <template #description>
-      <ArtifactSummaryRow :artifact="artifact" />
+      <ArtifactSummaryCard :artifact="artifact" />
     </template>
 
     <template #summary-card>
@@ -22,7 +22,6 @@
   import { computed } from 'vue'
   import ArtifactDescription from '@/components/ArtifactDescription.vue'
   import ArtifactSummaryCard from '@/components/ArtifactSummaryCard.vue'
-  import ArtifactSummaryRow from '@/components/ArtifactSummaryRow.vue'
   import ComponentPage from '@/demo/components/ComponentPage.vue'
   import { useArtifactsMock } from '@/demo/compositions/useArtifactsMock'
   import { DemoSection } from '@/demo/types/demoSection'

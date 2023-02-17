@@ -131,8 +131,8 @@
 }
 
 .artifact-summary-card__subheader { @apply
-  text-sm
+  text-xs
   text-foreground-200
-  capitalize
+  uppercase
 }
 </style>
