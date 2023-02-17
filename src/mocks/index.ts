@@ -22,6 +22,7 @@ import { randomFlowRunStateHistory } from '@/mocks/flowRunStateHistory'
 import { randomId } from '@/mocks/id'
 import { randomImage } from '@/mocks/image'
 import { randomLogLevel, randomLog } from '@/mocks/log'
+import { randomMarkdownString } from '@/mocks/markdown'
 import { randomNotification } from '@/mocks/notification'
 import { randomNotificationCreate } from '@/mocks/notificationCreate'
 import { randomNumber } from '@/mocks/number'
@@ -71,6 +72,7 @@ export const mocks = {
   image: randomImage,
   log: randomLog,
   logLevel: randomLogLevel,
+  markdownString: randomMarkdownString,
   notification: randomNotification,
   notificationCreate: randomNotificationCreate,
   noun: randomNoun,
