@@ -11,7 +11,7 @@ export const randomArtifact: MockFunction<Artifact, [Partial<Artifact>?]> = func
     flowRunId: this.create('id'),
     taskRunId: this.create('id'),
     data: { [this.create('noun')]: this.create('string') },
-    metadata: { description: this.create('markdownString') },
+    metadata: { description: this.create('markdownString', [{ sections: 2 }]) },
     ...overrides,
   })
 }

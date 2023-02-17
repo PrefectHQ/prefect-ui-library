@@ -1,5 +1,5 @@
 <template>
-  <p-card class="artifact-card">
+  <p-card class="artifact-description">
     <p-markdown-renderer :text="artifact.metadata.description" />
   </p-card>
 </template>
@@ -13,7 +13,7 @@
 </script>
 
 <style>
-.artifact-card { @apply
+.artifact-description { @apply
   max-w-full
   overflow-auto
 }

@@ -7,7 +7,7 @@ export type ArtifactResponse = {
   id: string,
   created: string,
   updated: string,
-  key: string,
+  key: string | null,
   type: string,
   data: ArtifactDataResponse,
   metadata_: ArtifactMetadataResponse,
