@@ -41,7 +41,7 @@
       </div>
     </div>
 
-    <div class="artifact-summary-card__slot">
+    <div v-if="slots.default" class="artifact-summary-card__slot">
       <slot />
     </div>
   </p-card>
@@ -49,7 +49,7 @@
 
 <script lang="ts" setup>
   import { BreadCrumbs } from '@prefecthq/prefect-design'
-  import { computed, ref } from 'vue'
+  import { computed, ref, useSlots } from 'vue'
   import { useFlowRun, useTaskRun, useWorkspaceRoutes } from '@/compositions'
   import { localization } from '@/localization'
   import { Artifact } from '@/models'
@@ -60,6 +60,7 @@
     condense?: boolean,
   }>()
 
+  const slots = useSlots()
   const routes = useWorkspaceRoutes()
 
   const flowRunId = ref(props.artifact.flowRunId)

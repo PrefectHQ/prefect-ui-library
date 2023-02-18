@@ -6,7 +6,7 @@
     </template>
 
     <template #summary-card>
-      <p-checkbox v-model="condense" />
+      <p-checkbox v-model="condense" label="Condense" />
       <ArtifactSummaryCard :artifact="artifact" :condense="condense" />
     </template>
 
