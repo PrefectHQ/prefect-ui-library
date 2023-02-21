@@ -26,14 +26,14 @@
           </template>
         </p-key-value>
       </template>
-      <div class="block-catalog-view__actions">
+      <div class="block-type-card__actions">
         <template v-if="blockType.documentationUrl">
           <a :href="blockType.documentationUrl" target="_blank">
             <p-button inset>
               <slot>
                 View Docs
               </slot>
-              <p-icon icon="ExternalLinkIcon" class="blocks-catalog-view__documentation-icon" />
+              <p-icon icon="ExternalLinkIcon" class="block-type-card__documentation-icon" />
             </p-button>
           </a>
         </template>
@@ -71,14 +71,14 @@
 </script>
 
 <style>
-.block-catalog-view__actions { @apply
+.block-type-card__actions { @apply
   flex
   gap-2
   items-center
   justify-end
 }
 
-.blocks-catalog-view__documentation-icon { @apply
+.block-type-card__documentation-icon { @apply
   ml-2
   w-5
   h-5

@@ -1,5 +1,6 @@
 import { createActions } from '@prefecthq/vue-compositions'
 import { InjectionKey } from 'vue'
+import { CollectionsApi } from '@/services/CollectionsApi'
 import { HealthApi } from '@/services/HealthApi'
 import { UiApi } from '@/services/UiApi'
 import { WorkspaceApiConfig } from '@/services/WorkspaceApi'
@@ -28,6 +29,7 @@ export function createApi(workspaceConfig: WorkspaceApiConfig) {
     blockDocuments: createActions(new WorkspaceBlockDocumentsApi(workspaceConfig)),
     blockSchemas: createActions(new WorkspaceBlockSchemasApi(workspaceConfig)),
     blockTypes: createActions(new WorkspaceBlockTypesApi(workspaceConfig)),
+    collections: createActions(new CollectionsApi(workspaceConfig)),
     concurrencyLimits: createActions(new WorkspaceConcurrencyLimitsApi(workspaceConfig)),
     deployments: createActions(new WorkspaceDeploymentsApi(workspaceConfig)),
     flowRuns: createActions(new WorkspaceFlowRunsApi(workspaceConfig)),
