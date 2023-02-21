@@ -25,6 +25,7 @@ export function useArtifactMock(override?: Partial<Artifact>, useTaskRun: boolea
     {
       flowRunId: flowRun.id,
       taskRunId: useTaskRun ? taskRun.id : null,
+      ...override,
     },
   ])
 

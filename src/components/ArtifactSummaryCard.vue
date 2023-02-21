@@ -20,7 +20,7 @@
           :title="artifact.updated.toLocaleString()"
         >
           <span class="artifact-summary-card__summary-item-label">
-            {{ localization.info.artifactUpdatedTimestampLabel }}
+            {{ localization.info.lastUpdated }}
           </span>
           <span class="artifact-summary-card__summary-item-value">
             {{ formatDateTime(artifact.updated) }}
@@ -32,7 +32,7 @@
           :title="artifact.created.toLocaleString()"
         >
           <span class="artifact-summary-card__summary-item-label">
-            {{ localization.info.artifactCreatedTimestampLabel }}
+            {{ localization.info.created }}
           </span>
           <span class="artifact-summary-card__summary-item-value">
             {{ formatDateTime(artifact.created) }}
@@ -49,7 +49,7 @@
 
 <script lang="ts" setup>
   import { BreadCrumbs } from '@prefecthq/prefect-design'
-  import { computed, ref, useSlots } from 'vue'
+  import { computed, useSlots } from 'vue'
   import { useFlowRun, useTaskRun, useWorkspaceRoutes } from '@/compositions'
   import { localization } from '@/localization'
   import { Artifact } from '@/models'
@@ -63,16 +63,16 @@
   const slots = useSlots()
   const routes = useWorkspaceRoutes()
 
-  const flowRunId = ref(props.artifact.flowRunId)
-  const taskRunId = ref(props.artifact.taskRunId)
+  const flowRunId = computed(() => props.artifact.flowRunId)
+  const taskRunId = computed(() => props.artifact.taskRunId)
 
   const flowRun = useFlowRun(flowRunId)
   const taskRun = useTaskRun(taskRunId)
 
-  const hasRun = computed(() => props.artifact.flowRunId || props.artifact.taskRunId)
+  const hasRun = computed(() => !!props.artifact.flowRunId || !!props.artifact.taskRunId)
 
   const artifactLabel = computed(() => {
-    return props.artifact.key ? localization.info.artifactLabel : localization.info.artifactResultLabel
+    return props.artifact.key ? localization.info.artifact : localization.info.result
   })
 
   const crumbs = computed<BreadCrumbs>(() => {
@@ -80,14 +80,14 @@
 
     if (flowRunId.value) {
       internalCrumbs.push({
-        text: flowRun.value?.name ?? '|',
+        text: flowRun.value?.name ?? '',
         to: routes.flowRun(flowRunId.value),
       })
     }
 
     if (taskRunId.value) {
       internalCrumbs.push({
-        text: taskRun.value?.name ?? '|',
+        text: taskRun.value?.name ?? '',
         to: routes.taskRun(taskRunId.value),
       })
     }

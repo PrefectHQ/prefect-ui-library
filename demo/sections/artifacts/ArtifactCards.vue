@@ -17,11 +17,11 @@
 </template>
 
 <script lang="ts" setup>
-  import { ref, computed } from 'vue'
+  import { ref } from 'vue'
   import ArtifactDescription from '@/components/ArtifactDescription.vue'
   import ArtifactSummaryCard from '@/components/ArtifactSummaryCard.vue'
   import ComponentPage from '@/demo/components/ComponentPage.vue'
-  import { useArtifactsMock } from '@/demo/compositions/useArtifactsMock'
+  import { useArtifactMock } from '@/demo/compositions/useArtifactsMock'
   import { DemoSection } from '@/demo/types/demoSection'
 
   const demos: DemoSection[] = [
@@ -33,7 +33,5 @@
   start.setHours(0)
 
   const condense = ref(false)
-  const artifacts = useArtifactsMock(1)
-
-  const artifact = computed(() => artifacts[0])
+  const artifact = useArtifactMock()
 </script>
