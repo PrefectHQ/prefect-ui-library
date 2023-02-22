@@ -5,8 +5,10 @@ import { DeploymentFlowRunCreate } from '@/models/DeploymentFlowRunCreate'
 import { DeploymentUpdate } from '@/models/DeploymentUpdate'
 import { DeploymentsFilter } from '@/models/Filters'
 import { FlowRun } from '@/models/FlowRun'
+import { BatchProcessor } from '@/services/BatchProcessor'
 import { mapper } from '@/services/Mapper'
 import { WorkspaceApi } from '@/services/WorkspaceApi'
+import { toMap } from '@/utilities/arrays'
 
 export interface IWorkspaceDeploymentsApi {
   getDeployment: (deploymentId: string) => Promise<Deployment>,
@@ -23,10 +25,18 @@ export class WorkspaceDeploymentsApi extends WorkspaceApi implements IWorkspaceD
 
   protected override routePrefix = '/deployments'
 
-  public async getDeployment(deploymentId: string): Promise<Deployment> {
-    const { data } = await this.get<DeploymentResponse>(`/${deploymentId}`)
+  private readonly batcher = new BatchProcessor<string, Deployment>(async ids => {
+    const deployments = await this.getDeployments({
+      deployments: {
+        id: ids,
+      },
+    })
 
-    return mapper.map('DeploymentResponse', data, 'Deployment')
+    return toMap(deployments, 'id')
+  }, { maxBatchSize: 200 })
+
+  public getDeployment(deploymentId: string): Promise<Deployment> {
+    return this.batcher.batch(deploymentId)
   }
 
   public async getDeployments(filter: DeploymentsFilter = {}): Promise<Deployment[]> {

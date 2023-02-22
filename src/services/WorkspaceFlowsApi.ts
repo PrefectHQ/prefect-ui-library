@@ -1,7 +1,9 @@
 import { Flow, FlowResponse } from '@/models'
 import { FlowsFilter } from '@/models/Filters'
+import { BatchProcessor } from '@/services/BatchProcessor'
 import { mapper } from '@/services/Mapper'
 import { WorkspaceApi } from '@/services/WorkspaceApi'
+import { toMap } from '@/utilities'
 
 export interface IWorkspaceFlowsApi {
   getFlow: (flowId: string) => Promise<Flow>,
@@ -14,10 +16,18 @@ export class WorkspaceFlowsApi extends WorkspaceApi implements IWorkspaceFlowsAp
 
   protected override routePrefix = '/flows'
 
-  public async getFlow(flowId: string): Promise<Flow> {
-    const { data } = await this.get<FlowResponse>(`/${flowId}`)
+  private readonly batcher = new BatchProcessor<string, Flow>(async ids => {
+    const flows = await this.getFlows({
+      flows: {
+        id: ids,
+      },
+    })
 
-    return mapper.map('FlowResponse', data, 'Flow')
+    return toMap(flows, 'id')
+  }, { maxBatchSize: 200 })
+
+  public getFlow(flowId: string): Promise<Flow> {
+    return this.batcher.batch(flowId)
   }
 
   public async getFlows(filter: FlowsFilter = {}): Promise<Flow[]> {
