@@ -1,6 +1,6 @@
 <template>
   <div class="code-snippet">
-    <CodeHighlighting class="code-snippet__code" :value="snippet" :language="language" :show-line-numbers="showLineNumbers" />
+    <p-code-highlight class="code-snippet__code" :text="snippet" :lang="language" :show-line-numbers="showLineNumbers" />
     <PButton size="sm" class="code-snippet__button" @click="copy">
       Copy <p-icon icon="DuplicateIcon" />
     </PButton>
@@ -9,14 +9,15 @@
 
 <script lang="ts" setup>
   import { PButton } from '@prefecthq/prefect-design'
-  import CodeHighlighting from '@/components/CodeHighlighting.vue'
   import { copyToClipboard } from '@/utilities/copy'
 
-  const props = defineProps<{
+  const props = withDefaults(defineProps<{
     snippet: string,
     language?: 'json' | 'python',
     showLineNumbers?: boolean,
-  }>()
+  }>(), {
+    language: 'json',
+  })
 
   function copy(): void {
     copyToClipboard(props.snippet)
