@@ -107,7 +107,7 @@ export function hasString(obj: Record<string | number | symbol, unknown>, str: s
 }
 
 export function isRecord(item: unknown): item is Record<PropertyKey, unknown> {
-  return item !== null && typeof item === 'object' && !Array.isArray(item)
+  return item !== null && typeof item === 'object' && !Array.isArray(item) && !isDate(item)
 }
 
 export function merge<T extends Record<PropertyKey, unknown>>(target: T, ...sources: T[]): T {
