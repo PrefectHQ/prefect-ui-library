@@ -1,27 +1,12 @@
 <template>
-  <p-base-input class="python-input">
-    <template v-for="(index, name) in $slots" #[name]="scope">
-      <slot :name="name" v-bind="scope" />
-    </template>
-    <template #control="{ attrs }">
-      <textarea
-        ref="source"
-        v-model="internalValue"
-        spellcheck="false"
-        class="python-input__input-area"
-        v-bind="attrs"
-      />
-      <div ref="target" class="python-input__view-area">
-        <CodeHighlighting language="python" :value="internalValue" class="python-input__python-view" v-bind="attrs" />
-      </div>
-    </template>
-  </p-base-input>
+  <p-code-input v-model="internalValue" />
 </template>
 
 <script lang="ts" setup>
+  /**
+   * @deprecated use [p-code-input](https://main--prefect-design.netlify.app/components/code-input) instead
+   */
   import { computed } from 'vue'
-  import CodeHighlighting from '@/components/CodeHighlighting.vue'
-  import { useScrollLinking } from '@/compositions'
 
   const props = defineProps<{
     modelValue: string,
@@ -30,8 +15,6 @@
   const emit = defineEmits<{
     (event: 'update:modelValue', value: string): void,
   }>()
-
-  const { source, target } = useScrollLinking()
 
   const internalValue = computed({
     get() {
