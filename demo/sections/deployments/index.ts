@@ -1,5 +1,7 @@
 import { Section } from '@/demo/router/routeRecords'
 
 export const deployments: Section = {
-  CronScheduleForm: () => import ('./CronScheduleForm.vue'),
+  CreateRunForm: () => import('./CreateRunForm.vue'),
+  CronScheduleForm: () => import('./CronScheduleForm.vue'),
+  DeploymentForm: () => import('./DeploymentForm.vue'),
 }
