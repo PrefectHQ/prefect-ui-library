@@ -57,15 +57,13 @@ export class Api<T extends PrefectConfig = PrefectConfig> {
     }, {})
   }
 
-  protected removeLeadingAndTrailingSlashes(input: string): string {
-    return input.replace(/^(\/)|(\/)$/g, '')
-  }
-
   protected combinePath(route: string | undefined): string {
+    const repeatingSlashes = /(\/+)/g
+
     return [this.routePrefix, route]
       .filter(isDefined)
-      .map(this.removeLeadingAndTrailingSlashes)
       .join('/')
+      .replace(repeatingSlashes, '/')
   }
 
   protected instance(): AxiosInstance {
