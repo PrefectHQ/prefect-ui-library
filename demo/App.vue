@@ -52,7 +52,7 @@
 
 .app { @apply
   text-foreground
-  bg-background
+  bg-background-600
   dark:bg-background-400
 }
 
