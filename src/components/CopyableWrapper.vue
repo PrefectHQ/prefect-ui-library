@@ -1,9 +1,14 @@
 <template>
   <div class="copyable-wrapper">
     <slot />
-    <PButton size="sm" class="copyable-wrapper__button" @click="copy">
-      Copy <p-icon icon="DuplicateIcon" />
-    </PButton>
+    <PButton
+      flat
+      size="sm"
+      class="copyable-wrapper__button"
+      title="copy"
+      icon="DuplicateIcon"
+      @click="copy"
+    />
   </div>
 </template>
 
@@ -26,21 +31,9 @@
   min-h-[32px]
 }
 
-.copyable-wrapper:hover .copyable-wrapper__button { @apply
-  opacity-100
-}
-
 .copyable-wrapper__button { @apply
   absolute
   top-0
   right-0
-  opacity-0
-  transition-opacity
-}
-
-@media (pointer: coarse) {
-  .copyable-wrapper__button { @apply
-    opacity-100
-  }
 }
 </style>
