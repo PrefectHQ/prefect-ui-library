@@ -39,19 +39,14 @@
   import SearchInput from '@/components/SearchInput.vue'
   import StateNameSelect from '@/components/StateNameSelect.vue'
   import WorkPoolCombobox from '@/components/WorkPoolCombobox.vue'
-  import { useFlowRunsFilterFromRoute } from '@/compositions/filters'
-  import { dateFunctions } from '@/utilities/timezone'
+  import { useRecentFlowRunsFilterFromRoute } from '@/compositions/filters'
 
   const flowRunNameLike = ref<string>()
   const flowRunNameLikeDebounced = useDebouncedRef(flowRunNameLike, 1200)
-  const expectedStartTimeAfter = dateFunctions.subDays(dateFunctions.startOfToday(), 7)
-  const expectedStartTimeBefore = dateFunctions.addDays(dateFunctions.endOfToday(), 1)
 
-  const { filter } = useFlowRunsFilterFromRoute({
+  const { filter } = useRecentFlowRunsFilterFromRoute({
     flowRuns: {
       nameLike: flowRunNameLikeDebounced,
-      expectedStartTimeAfter,
-      expectedStartTimeBefore,
     },
   })
 
