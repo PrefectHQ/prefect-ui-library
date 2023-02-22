@@ -84,6 +84,7 @@
 
 <style>
 .context-sidebar { @apply
+  w-80
   z-50
 }
 
