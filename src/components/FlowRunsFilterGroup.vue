@@ -2,7 +2,7 @@
   <div class="flow-runs-filter-group">
     <div class="flow-runs-filter-group__row">
       <p-label :label="media.hover ? 'Date Range' : ''">
-        <DateRangeInputWithFlowRunHistory v-model:start-date="filter.flowRuns.expectedStartTimeAfter" v-model:end-date="filter.flowRuns.expectedStartTimeBefore" />
+        <DateRangeInputWithFlowRunHistory v-model:range="range" />
       </p-label>
       <p-label label="States">
         <StateNameSelect v-model:selected="filter.flowRuns.state.name" empty-message="All run states" multiple />
@@ -31,7 +31,7 @@
 <script lang="ts" setup>
   import { media, PLabel } from '@prefecthq/prefect-design'
   import { useDebouncedRef } from '@prefecthq/vue-compositions'
-  import { ref } from 'vue'
+  import { computed, ref } from 'vue'
   import DateRangeInputWithFlowRunHistory from '@/components/DateRangeInputWithFlowRunHistory.vue'
   import DeploymentCombobox from '@/components/DeploymentCombobox.vue'
   import FlowCombobox from '@/components/FlowCombobox.vue'
@@ -52,6 +52,16 @@
       nameLike: flowRunNameLikeDebounced,
       expectedStartTimeAfter,
       expectedStartTimeBefore,
+    },
+  })
+
+  const range = computed<[Date, Date]>({
+    get() {
+      return [filter.flowRuns.expectedStartTimeAfter!, filter.flowRuns.expectedStartTimeBefore!]
+    },
+    set([expectedStartTimeAfter, expectedStartTimeBefore]) {
+      filter.flowRuns.expectedStartTimeAfter = expectedStartTimeAfter
+      filter.flowRuns.expectedStartTimeBefore = expectedStartTimeBefore
     },
   })
 </script>
