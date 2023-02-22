@@ -23,7 +23,9 @@ export class WorkspaceSavedSearchesApi extends WorkspaceApi {
   }
 
   public async createSavedSearch(search: SavedSearchCreate): Promise<SavedSearch> {
-    const { data } = await this.put<SavedSearchResponse>('/', mapper.map('SavedSearchCreate', search, 'SavedSearchCreateRequest'))
+    const request = mapper.map('SavedSearchCreate', search, 'SavedSearchCreateRequest')
+
+    const { data } = await this.put<SavedSearchResponse>('/', request)
     return mapper.map('SavedSearchResponse', data, 'SavedSearch')
   }
 
