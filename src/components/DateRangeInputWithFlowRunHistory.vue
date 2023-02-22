@@ -3,6 +3,7 @@
     v-model:startDate="startDate"
     v-model:endDate="endDate"
     v-model:viewingDate="viewingDate"
+    clearable
   >
     <template #date="{ date }">
       <div class="date-range-input-with-flow-run-history__date">
