@@ -18,6 +18,18 @@
           <p-number-input :id="id" v-model="concurrencyLimit" placeholder="Unlimited" :min="0" />
         </template>
       </p-label>
+
+      <p-label label="Type" :state="typeState" :message="typeErrorMessage">
+      <WorkPoolTypeSelect v-model:selected="type" />
+      </p-label>  
+
+      <p-label label="Base Job Configuration" v-if="type && baseJobConfigs.variables">
+        <!-- {{ baseJobConfigs.variables }} -->
+        <!-- <template v-for="item in workersCollectionItems" :key="item.type"> -->
+          <SchemaFormFields :schema="baseJobConfigs.variables" property="parameters" />
+      <!-- </template> -->
+      </p-label>
+
     </p-content>
 
     <template #footer>
@@ -31,10 +43,10 @@
 
 <script lang="ts" setup>
   import { showToast } from '@prefecthq/prefect-design'
-  import { useValidation, useValidationObserver, ValidationRule } from '@prefecthq/vue-compositions'
-  import { ref } from 'vue'
+  import { useSubscription, useValidation, useValidationObserver, ValidationRule } from '@prefecthq/vue-compositions'
+  import { computed, ref, watchEffect } from 'vue'
   import { useRouter } from 'vue-router'
-  import { SubmitButton } from '@/components'
+  import { SubmitButton, WorkPoolTypeSelect, SchemaFormFields } from '@/components'
   import { useWorkspaceApi, useWorkspaceRoutes } from '@/compositions'
   import { localization } from '@/localization'
 
@@ -46,10 +58,12 @@
 
   const name = ref<string>()
   const description = ref<string>()
-  // Once types feature is implemented by backend, this should be changed to
-  // const type = ref<string>()
-  const type = ref<string>('prefect-agent')
+  const type = ref<string>()
   const concurrencyLimit = ref<number>()
+
+  const baseJobConfigs = computed(() => {
+    return workersCollectionItems.value?.find((item) => item.type === type.value)?.defaultBaseJobConfiguration ?? {}
+  })
 
   const isRequired: ValidationRule<string | undefined> = (value) => value !== undefined && value.trim().length > 0
 
@@ -59,6 +73,7 @@
   }
 
   const { error: nameErrorMessage, state: nameState } = useValidation(name, 'Name', rules.name)
+  const { error: typeErrorMessage, state: typeState } = useValidation(type, 'Type', rules.type)
 
   function cancel(): void {
     router.back()
@@ -86,6 +101,14 @@
       }
     }
   }
+
+  /// /////////////////////////
+  const workersCollectionSubscription = useSubscription(api.collections.getWorkerCollection, [])
+  const workersCollectionItems = computed(() => workersCollectionSubscription.response)
+
+  watchEffect(() => {
+    console.log(workersCollectionItems)
+  })
 </script>
 
 <style>
