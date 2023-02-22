@@ -20,7 +20,8 @@
 
 <script lang="ts" setup>
   import { useSubscriptionWithDependencies } from '@prefecthq/vue-compositions'
-  import { computed, ref } from 'vue'
+  import { isEqual } from 'lodash'
+  import { computed, ref, toRefs, watch } from 'vue'
   import DateRangeInput from '@/components/DateRangeInput.vue'
   import { useWorkspaceApi } from '@/compositions/useWorkspaceApi'
   import { FlowRunsHistoryFilter } from '@/models/Filters'
@@ -31,31 +32,29 @@
   import { dateFunctions } from '@/utilities/timezone'
 
   const props = defineProps<{
-    startDate: Date | null | undefined,
-    endDate: Date | null | undefined,
+    range: [Date, Date],
   }>()
 
   const emit = defineEmits<{
-    (event: 'update:startDate' | 'update:endDate', value: Date | null | undefined): void,
+    (event: 'update:range', value: [Date, Date]): void,
   }>()
 
-  const startDate = computed({
-    get() {
-      return props.startDate
-    },
-    set(value) {
-      emit('update:startDate', value)
-    },
+  const { range } = toRefs(props)
+  const startDate = ref<Date | null>()
+  const endDate = ref<Date | null>()
+
+  watch([startDate, endDate], ([startDate, endDate]) => {
+    const [startDateProp, endDateProp] = range.value
+
+    if (startDate && endDate && !isEqual(startDate, startDateProp) && !isEqual(endDate, endDateProp)) {
+      emit('update:range', [startDate, endDate])
+    }
   })
 
-  const endDate = computed({
-    get() {
-      return props.endDate
-    },
-    set(value) {
-      emit('update:endDate', value)
-    },
-  })
+  watch(range, ([startDateProp, endDateProp]) => {
+    startDate.value = startDateProp
+    endDate.value = endDateProp
+  }, { immediate: true })
 
   const api = useWorkspaceApi()
 

@@ -594,6 +594,15 @@ export function useRecentFlowRunsFilter(defaultValue: MaybeReactive<FlowRunsFilt
   }
 }
 
+export function useRecentFlowRunsFilterFromRoute(defaultValue: MaybeReactive<FlowRunsFilter> = {}, prefix?: string): UseFilter<FlowRunsFilter> {
+  const response = useRecentFlowRunsFilter(defaultValue)
+  const { filter: query } = useSortableFilterFromRoute(flowRunsFilterSchema, defaultValue, defaultFlowRunSort, prefix)
+
+  syncFilterWithFilterFromRoute(response.filter, query)
+
+  return response
+}
+
 export function useFlowRunsHistoryFilter(defaultValue: MaybeReactive<FlowRunsHistoryFilter>): UseFilter<FlowRunsHistoryFilter> {
   const defaultValueReactive = reactive(defaultValue)
   const { filter: flowRunsFilter } = useFlowRunsFilter(defaultValueReactive)
