@@ -69,16 +69,17 @@
 
   const saveFilter = async (filterName: string): Promise<void> => {
     try {
-      const { state, tags, name: flowName } = filter.flowRuns
-      const { name: deploymentName } = filter.deployments
+      const { state, tags } = filter.flowRuns
+      const { id: flows } = filter.flows
+      const { id: deployments } = filter.deployments
 
       const savedSearch = await api.savedSearches.createSavedSearch({
         name: filterName,
         filters: {
           state: state.name,
           tag: tags.name,
-          flow: flowName,
-          deployment: deploymentName,
+          flow: flows,
+          deployment: deployments,
         },
       })
 
