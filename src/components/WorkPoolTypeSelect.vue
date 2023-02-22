@@ -9,10 +9,12 @@
 <script lang="ts" setup>
   import { SelectOption } from '@prefecthq/prefect-design'
   import { computed } from 'vue'
-  import { WorkPoolType, workPoolTypes } from '@/models'
+import { titleCase } from '@/utilities';
+import { useWorkspaceApi } from '@/compositions';
+import { useSubscription } from '@prefecthq/vue-compositions';
 
   const props = defineProps<{
-    selected: string | null,
+    selected: string | null | undefined,
   }>()
 
   const emit = defineEmits<{
@@ -21,16 +23,20 @@
 
   const model = computed({
     get() {
-      return props.selected
+      return props.selected ?? null
     },
     set(value: string | null) {
       emit('update:selected', value)
     },
   })
 
+  const api = useWorkspaceApi()
+  const workersCollectionSubscription = useSubscription(api.collections.getWorkerCollection, [])
+  const workersCollectionItems = computed(() => workersCollectionSubscription.response ?? [])
+
   const options = computed<SelectOption[]>(() => {
-    const options: { label: string, value: WorkPoolType }[] = workPoolTypes.map((type) => ({
-      label: type,
+    const options: { label: string, value: any }[] = workersCollectionItems.value.map(({type}) => ({
+      label: titleCase(type!),
       value: type,
     }))
 
