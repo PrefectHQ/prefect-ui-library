@@ -8,6 +8,7 @@ export const randomCollectionItem: MockFunction<CollectionItem, [Partial<Collect
   return {
     name,
     collectionType: 'flow',
+    category: this.create('noun'),
     description: this.create('sentence'),
     returns: this.create('string'),
     examples: this.createMany('paragraph', 1),

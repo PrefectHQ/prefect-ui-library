@@ -37,6 +37,7 @@
   'name name'
   'description description';
   grid-template-columns: 1fr min-content;
+  grid-template-rows: min-content;
 }
 
 .collection-card-preview__logo {

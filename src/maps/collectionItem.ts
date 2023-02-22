@@ -1,4 +1,4 @@
-import { CollectionItem, CollectionItemResponse } from '@/models'
+import { CollectionItem, CollectionItemResponse, CollectionsResponse } from '@/models'
 import { MapFunction } from '@/services/Mapper'
 
 export const mapCollectionItemResponseToCollectionItem: MapFunction<CollectionItemResponse, CollectionItem> = function(source) {
@@ -17,4 +17,12 @@ export const mapCollectionItemResponseToCollectionItem: MapFunction<CollectionIt
     repositoryUrl: source.repo_url,
     slug: source.slug,
   }
+}
+
+export const mapCollectionResponseToCollectionItems: MapFunction<CollectionsResponse, CollectionItem[]> = function(source) {
+  return Object.entries(source).flatMap(([category, collection]) => {
+    const mapped = this.map('CollectionItemResponse', Object.values(collection), 'CollectionItem')
+
+    return mapped.map(item => ({ ...item, category }))
+  })
 }
