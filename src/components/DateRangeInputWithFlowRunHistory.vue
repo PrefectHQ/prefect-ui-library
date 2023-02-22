@@ -45,8 +45,9 @@
 
   watch([startDate, endDate], ([startDate, endDate]) => {
     const [startDateProp, endDateProp] = range.value
+    const sameRange = isEqual(startDate, startDateProp) && isEqual(endDate, endDateProp)
 
-    if (startDate && endDate && !isEqual(startDate, startDateProp) && !isEqual(endDate, endDateProp)) {
+    if (startDate && endDate && !sameRange) {
       emit('update:range', [startDate, endDate])
     }
   })
