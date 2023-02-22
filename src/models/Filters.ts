@@ -209,8 +209,9 @@ export type BlockDocumentsFilter = {
 export type WorkQueuesFilter = {
   workQueues?: {
     operator?: Operation,
+    id?: string[],
     name?: string[],
-    nameStartsWith: string[],
+    nameStartsWith?: string[],
   },
   offset?: number,
   limit?: number,

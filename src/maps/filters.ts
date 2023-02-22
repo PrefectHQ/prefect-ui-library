@@ -438,6 +438,7 @@ export const mapWorkQueuesFilter: MapFunction<WorkQueuesFilter, WorkQueuesFilter
   return removeEmptyObjects({
     work_queues: {
       ...toOperator(source.workQueues?.operator),
+      id: toAny(source.workQueues?.name),
       name: {
         ...toAny(source.workQueues?.name),
         ...toStartsWith(source.workQueues?.nameStartsWith),
