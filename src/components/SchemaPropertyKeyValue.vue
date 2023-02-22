@@ -6,7 +6,9 @@
   <template v-else>
     <p-key-value :label="property.title" :value="value" class="schema-property-key-value">
       <template v-if="isDefined && isJsonProperty" #value>
-        <CodeSnippet language="json" :snippet="jsonValue ?? ''" />
+        <CopyableWrapper :text-to-copy="jsonValue ?? ''">
+          <p-code-highlight lang="json" :text="jsonValue ?? ''" />
+        </CopyableWrapper>
       </template>
     </p-key-value>
   </template>
@@ -14,7 +16,7 @@
 
 <script lang="ts" setup>
   import { computed } from 'vue'
-  import CodeSnippet from '@/components/CodeSnippet.vue'
+  import CopyableWrapper from '@/components/CopyableWrapper.vue'
   import JsonInput from '@/components/JsonInput.vue'
   import SchemaPropertyBlockKeyValue from '@/components/SchemaPropertyBlockKeyValue.vue'
   import { isBlockDocumentValue } from '@/models'
