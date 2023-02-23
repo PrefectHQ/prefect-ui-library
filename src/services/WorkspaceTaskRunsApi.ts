@@ -2,8 +2,10 @@ import { TaskRunResponse } from '@/models/api/TaskRunResponse'
 import { TaskRunsFilter } from '@/models/Filters'
 import { StateUpdate } from '@/models/StateUpdate'
 import { TaskRun } from '@/models/TaskRun'
+import { BatchProcessor } from '@/services/BatchProcessor'
 import { mapper } from '@/services/Mapper'
 import { WorkspaceApi } from '@/services/WorkspaceApi'
+import { toMap } from '@/utilities'
 
 export interface IWorkspaceTaskRunsApi {
   getTaskRun: (taskRunId: string) => Promise<TaskRun>,
@@ -17,10 +19,18 @@ export class WorkspaceTaskRunsApi extends WorkspaceApi implements IWorkspaceTask
 
   protected override routePrefix = '/task_runs'
 
-  public async getTaskRun(id: string): Promise<TaskRun> {
-    const { data } = await this.get<TaskRunResponse>(`/${id}`)
+  private readonly batcher = new BatchProcessor<string, TaskRun>(async ids => {
+    const taskRuns = await this.getTaskRuns({
+      taskRuns: {
+        id: ids,
+      },
+    })
 
-    return mapper.map('TaskRunResponse', data, 'TaskRun')
+    return toMap(taskRuns, 'id')
+  }, { maxBatchSize: 200 })
+
+  public getTaskRun(taskRunId: string): Promise<TaskRun> {
+    return this.batcher.batch(taskRunId)
   }
 
   public async getTaskRuns(filter: TaskRunsFilter = {}): Promise<TaskRun[]> {

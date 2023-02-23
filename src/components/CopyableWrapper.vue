@@ -2,7 +2,7 @@
   <div class="copyable-wrapper">
     <slot />
     <PButton
-      flat
+      inset
       size="sm"
       class="copyable-wrapper__button"
       title="copy"
@@ -28,12 +28,11 @@
 <style>
 .copyable-wrapper { @apply
   relative
-  min-h-[32px]
 }
 
 .copyable-wrapper__button { @apply
   absolute
-  top-0
-  right-0
+  top-[2px]
+  right-[2px]
 }
 </style>
