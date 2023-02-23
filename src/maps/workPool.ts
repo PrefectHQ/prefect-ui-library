@@ -12,6 +12,7 @@ export const mapWorkPoolResponseToWorkPool: MapFunction<WorkPoolResponse, WorkPo
     isPaused: source.is_paused ?? false,
     concurrencyLimit: source.concurrency_limit,
     defaultQueueId: source.default_queue_id,
+    baseJobTemplate: source.base_job_template,
   })
 }
 
@@ -26,6 +27,7 @@ export const mapWorkPoolToWorkPoolResponse: MapFunction<WorkPool, WorkPoolRespon
     is_paused: source.isPaused,
     concurrency_limit: source.concurrencyLimit,
     default_queue_id: source.defaultQueueId,
+    base_job_template: source.baseJobTemplate,
   }
 }
 
@@ -36,6 +38,7 @@ export const mapWorkPoolCreateToWorkPoolCreateRequest: MapFunction<WorkPoolCreat
     type: source.type,
     is_paused: source.isPaused,
     concurrency_limit: source.concurrencyLimit,
+    base_job_template: source.baseJobTemplate,
   }
 }
 
@@ -44,5 +47,6 @@ export const mapWorkPoolEditToWorkPoolEditRequest: MapFunction<WorkPoolEdit, Wor
     description: source.description,
     is_paused: source.isPaused,
     concurrency_limit: source.concurrencyLimit,
+    base_job_template: source.baseJobTemplate,
   }
 }

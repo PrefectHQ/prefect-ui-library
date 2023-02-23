@@ -10,4 +10,5 @@ export type WorkPoolResponse = {
   is_paused: boolean | null,
   concurrency_limit: number | null,
   default_queue_id: string,
+  base_job_template: Record<string, unknown>,
 }

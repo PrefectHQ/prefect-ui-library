@@ -13,6 +13,7 @@ export interface IWorkPool {
   isPaused: boolean,
   defaultQueueId: string,
   concurrencyLimit: number | null,
+  baseJobTemplate: Record<string, unknown>,
 }
 
 export class WorkPool implements IWorkPool {
@@ -25,6 +26,7 @@ export class WorkPool implements IWorkPool {
   public isPaused: boolean
   public defaultQueueId: string
   public concurrencyLimit: number | null
+  public baseJobTemplate: Record<string, unknown>
 
   public constructor(workPool: IWorkPool) {
     this.id = workPool.id
@@ -36,9 +38,6 @@ export class WorkPool implements IWorkPool {
     this.isPaused = workPool.isPaused
     this.defaultQueueId = workPool.defaultQueueId
     this.concurrencyLimit = workPool.concurrencyLimit
-  }
-
-  public get typeLabel(): string {
-    return mapProcessTypeValueToProcessTypeLabel(this.type)
+    this.baseJobTemplate = workPool.baseJobTemplate
   }
 }
