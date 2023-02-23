@@ -41,7 +41,7 @@ import { mapStateUpdateToStateUpdateRequest } from '@/maps/stateUpdate'
 import { mapTaskInputToTaskInputResponse, mapTaskInputResponseToTaskInput } from '@/maps/taskInput'
 import { mapTaskRunToTaskRunResponse, mapTaskRunResponseToTaskRun } from '@/maps/taskRun'
 import { mapUiFlowRunHistoryResponseToUiFlowRunHistory } from '@/maps/uiFlowRunHistory'
-import { mapPrefectWorkerCollectionResponseToWorkerCollectionItem } from '@/maps/workerCollectionItem'
+import { mapPrefectWorkerCollectionResponseToWorkerCollectionItem, mapWorkerSchemaValuesToWorkerSchemaValuesRequest } from '@/maps/workerCollectionItem'
 import { mapWorkerScheduledFlowRunResponseToWorkerScheduledFlowRun, mapWorkerScheduledFlowRunsToWorkerScheduledFlowRunsRequest } from '@/maps/workerScheduledFlowRun'
 import { mapWorkPoolCreateToWorkPoolCreateRequest, mapWorkPoolEditToWorkPoolEditRequest, mapWorkPoolResponseToWorkPool, mapWorkPoolToWorkPoolResponse } from '@/maps/workPool'
 import { mapWorkPoolQueueCreateToWorkPoolQueueCreateRequest, mapWorkPoolQueueEditToWorkPoolQueueEditRequest, mapWorkPoolQueueResponseToWorkPoolQueue, mapWorkPoolQueueToWorkPoolQueueResponse } from '@/maps/workPoolQueue'
@@ -159,6 +159,7 @@ export const maps = {
   WorkPoolQueuesFilter: { WorkPoolQueuesFilterRequest: mapWorkPoolQueuesFilter },
   WorkPoolFilter: { WorkPoolFilterRequest: mapWorkPoolFilter },
   WorkPoolQueueFilter: { WorkPoolQueueFilterRequest: mapWorkPoolQueueFilter },
+  WorkerSchemaProperty: { WorkerSchemaPropertyRequest: mapWorkerSchemaValuesToWorkerSchemaValuesRequest },
   FlowRunsHistoryFilter: { FlowRunsHistoryFilterRequest: mapFlowRunsHistoryFilter },
   LogsFilter: { LogsFilterRequest: mapLogsFilter },
   NotificationsFilter: { NotificationsFilterRequest: mapNotificationsFilter },
