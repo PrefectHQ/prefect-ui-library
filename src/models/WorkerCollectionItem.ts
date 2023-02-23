@@ -1,3 +1,10 @@
+import { SchemaProperty } from "@/types"
+
+export type DefaultBaseJobConfiguration = {
+  jobConfiguration: Record<string, unknown>,
+  variables: SchemaProperty,
+}
+
 export type WorkerCollectionItem = {
   defaultBaseJobConfiguration?: Record<string, unknown>,
   description?: string,
