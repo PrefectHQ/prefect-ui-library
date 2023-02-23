@@ -23,11 +23,8 @@
       <WorkPoolTypeSelect v-model:selected="type" />
       </p-label>  
 
-      <p-label label="Base Job Configuration" v-if="type && baseJobConfigs.variables">
-        <!-- {{ baseJobConfigs.variables }} -->
-        <!-- <template v-for="item in workersCollectionItems" :key="item.type"> -->
-          <SchemaFormFields :schema="baseJobConfigs.variables" property="parameters" />
-      <!-- </template> -->
+      <p-label label="Base Job Configuration" v-if="type && schemaHasProperties">
+          <SchemaFormFieldsWithValues v-model:values="parameters" :schema="testSchema" />
       </p-label>
 
     </p-content>
@@ -44,11 +41,14 @@
 <script lang="ts" setup>
   import { showToast } from '@prefecthq/prefect-design'
   import { useSubscription, useValidation, useValidationObserver, ValidationRule } from '@prefecthq/vue-compositions'
-  import { computed, ref, watchEffect } from 'vue'
+  import { computed, ref } from 'vue'
   import { useRouter } from 'vue-router'
-  import { SubmitButton, WorkPoolTypeSelect, SchemaFormFields } from '@/components'
+  import { SubmitButton, WorkPoolTypeSelect, SchemaFormFieldsWithValues } from '@/components'
   import { useWorkspaceApi, useWorkspaceRoutes } from '@/compositions'
   import { localization } from '@/localization'
+  import { WorkPoolCreate } from '@/models'
+  import { mapper } from '@/services'
+import { WorkerSchema } from '@/types'
 
   const api = useWorkspaceApi()
   const router = useRouter()
@@ -61,8 +61,21 @@
   const type = ref<string>()
   const concurrencyLimit = ref<number>()
 
+  const workersCollectionSubscription = useSubscription(api.collections.getWorkerCollection, [])
+  const workersCollectionItems = computed(() => workersCollectionSubscription.response)
   const baseJobConfigs = computed(() => {
     return workersCollectionItems.value?.find((item) => item.type === type.value)?.defaultBaseJobConfiguration ?? {}
+  })
+
+  const schema= computed<WorkerSchema>(() => mapper.map('SchemaResponse', baseJobConfigs.value.variables ?? {}, 'Schema'))
+  const parameters = ref()
+
+  const testSchema = computed<WorkerSchema>(() =>{ return {...schema.value, type:'object'}}) 
+
+  const schemaHasProperties = computed(() => {
+    const { properties } = schema.value ?? {}
+
+    return properties && Object.keys(properties).length > 0
   })
 
   const isRequired: ValidationRule<string | undefined> = (value) => value !== undefined && value.trim().length > 0
@@ -80,14 +93,18 @@
   }
 
   const submit = async (): Promise<void> => {
+
+    const baseJobTemplateSchema = mapper.map('WorkerSchemaProperty', { values:parameters.value, schema: baseJobConfigs.value }, 'WorkerSchemaPropertyRequest')
+
     const valid = await validate()
     if (valid) {
-      const values = {
+      const values: WorkPoolCreate = {
         name: name.value,
         description: description.value,
         type: type.value,
         isPaused: false,
         concurrencyLimit: concurrencyLimit.value,
+        baseJobTemplate: baseJobTemplateSchema
       }
 
       try {
@@ -101,14 +118,6 @@
       }
     }
   }
-
-  /// /////////////////////////
-  const workersCollectionSubscription = useSubscription(api.collections.getWorkerCollection, [])
-  const workersCollectionItems = computed(() => workersCollectionSubscription.response)
-
-  watchEffect(() => {
-    console.log(workersCollectionItems)
-  })
 </script>
 
 <style>
