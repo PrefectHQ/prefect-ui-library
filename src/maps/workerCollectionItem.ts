@@ -1,8 +1,6 @@
-import { PrefectWorkerCollectionResponse, SchemaPropertyResponse, WorkerCollectionItem, WorkerCollectionItemResponse } from '@/models'
-import { getSchemaRequestValue } from '@/services';
+import { PrefectWorkerCollectionResponse, SchemaPropertyResponse, WorkerCollectionItem } from '@/models'
 import { MapFunction } from '@/services/Mapper'
-import { Schema, SchemaProperty, SchemaValues, WorkerSchema } from '@/types/schemas'
-import { computed } from 'vue';
+import { SchemaValues, WorkerSchema } from '@/types/schemas'
 
 export const mapPrefectWorkerCollectionResponseToWorkerCollectionItem: MapFunction<PrefectWorkerCollectionResponse, WorkerCollectionItem[]> = function(source) {
   const { prefect: { workers } } = source;
@@ -27,7 +25,7 @@ export const mapWorkerSchemaValuesToWorkerSchemaValuesRequest: MapFunction<MapSc
 
   const object:WorkerSchema = schema
 
-  Object.keys(values).map(key => {
+  Object.keys(values).map((key:string) => {
     if(object.variables && object.variables.properties && values[key]) {
       object.variables.properties[key].default = values[key]
     }

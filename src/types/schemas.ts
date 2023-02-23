@@ -84,6 +84,10 @@ export type Schema = SchemaProperty & {
   definitions?: SchemaDefinitions,
 }
 
+export type WorkerSchema = Schema & {
+    variables?: SchemaProperties
+}
+
 export function isSchemaValues(input: unknown): input is SchemaValues {
   return typeof input === 'object' && input !== null && !Array.isArray(input)
 }
