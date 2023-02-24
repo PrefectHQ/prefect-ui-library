@@ -1,3 +1,5 @@
+import { titleCase } from ".."
+
 export interface IWorkPool {
   readonly id: string,
   created: Date,
@@ -34,5 +36,9 @@ export class WorkPool implements IWorkPool {
     this.defaultQueueId = workPool.defaultQueueId
     this.concurrencyLimit = workPool.concurrencyLimit
     this.baseJobTemplate = workPool.baseJobTemplate
+  }
+
+  public get typeLabel(): string {
+    return titleCase(this.type)
   }
 }
