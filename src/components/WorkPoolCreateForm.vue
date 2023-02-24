@@ -19,7 +19,7 @@
         </template>
       </p-label>
 
-      <p-label label="Type" :state="typeState" :message="typeErrorMessage" v-if="can.access.workers">
+      <p-label v-if="can.access.workers" label="Type" :state="typeState" :message="typeErrorMessage">
         <WorkPoolTypeSelect v-model:selected="type" />
       </p-label>
 

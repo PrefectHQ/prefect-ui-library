@@ -1,4 +1,4 @@
-import { titleCase } from ".."
+import { titleCase } from "@/utilities"
 
 export interface IWorkPool {
   readonly id: string,
