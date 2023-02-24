@@ -1,8 +1,3 @@
-import { mapProcessTypeValueToProcessTypeLabel } from '@/utilities'
-
-export const workPoolTypes = ['ECS', 'Kubernetes', 'GCP Cloud Run', 'Azure Container', 'Docker Container', 'Process'] as const
-export type WorkPoolType = typeof workPoolTypes[number]
-
 export interface IWorkPool {
   readonly id: string,
   created: Date,
