@@ -120,8 +120,8 @@ export function asSingle<T>(value: T | T[]): T {
   return value
 }
 
-export function repeat<T>(count: number, method: () => T): T[] {
-  return new Array(count).fill(null).map(method)
+export function repeat<T>(count: number, method: (index?: number) => T): T[] {
+  return new Array(count).fill(null).map((value, index) => method(index))
 }
 
 export function some<T>(source: T[], min?: number, max?: number): T[] {
