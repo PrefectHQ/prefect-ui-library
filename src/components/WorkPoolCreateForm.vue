@@ -19,11 +19,11 @@
         </template>
       </p-label>
 
-      <p-label label="Type" :state="typeState" :message="typeErrorMessage">
+      <p-label label="Type" :state="typeState" :message="typeErrorMessage" v-if="can.access.workers">
         <WorkPoolTypeSelect v-model:selected="type" />
       </p-label>
 
-      <p-label v-if="type && schemaHasProperties" label="Base Job Configuration">
+      <p-label v-if="type && schemaHasProperties && can.access.workers" label="Base Job Configuration">
         <SchemaFormFieldsWithValues v-model:values="parameters" :schema="testSchema" />
       </p-label>
     </p-content>
@@ -43,13 +43,14 @@
   import { computed, ref } from 'vue'
   import { useRouter } from 'vue-router'
   import { SubmitButton, WorkPoolTypeSelect, SchemaFormFieldsWithValues } from '@/components'
-  import { useWorkspaceApi, useWorkspaceRoutes } from '@/compositions'
+  import { useCan, useWorkspaceApi, useWorkspaceRoutes } from '@/compositions'
   import { localization } from '@/localization'
   import { WorkPoolCreate } from '@/models'
   import { mapper } from '@/services'
   import { WorkerSchema } from '@/types'
 
   const api = useWorkspaceApi()
+  const can = useCan()
   const router = useRouter()
   const routes = useWorkspaceRoutes()
 
