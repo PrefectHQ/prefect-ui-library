@@ -85,7 +85,7 @@ export type Schema = SchemaProperty & {
 }
 
 export type WorkerSchema = Schema & {
-    variables?: SchemaProperties
+  variables?: SchemaProperties,
 }
 
 export function isSchemaValues(input: unknown): input is SchemaValues {

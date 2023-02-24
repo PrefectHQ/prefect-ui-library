@@ -5,10 +5,10 @@
 <script lang="ts" setup>
   import { useValidation } from '@prefecthq/vue-compositions'
   import { computed } from 'vue'
-  import { Schema, SchemaValues, WorkerSchema } from '@/types';
-  import { getSchemaDefaultValues, mapper } from '@/services';
-  import { useReactiveForm } from '@/compositions';
-  import SchemaFormFields from '@/components/SchemaFormFields.vue';
+  import SchemaFormFields from '@/components/SchemaFormFields.vue'
+  import { useReactiveForm } from '@/compositions'
+  import { getSchemaDefaultValues, mapper } from '@/services'
+  import { Schema, SchemaValues, WorkerSchema } from '@/types'
 
   const props = defineProps<{
     schema: Schema | WorkerSchema,

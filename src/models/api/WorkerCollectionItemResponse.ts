@@ -1,4 +1,4 @@
-import { SchemaPropertyResponse } from "./SchemaResponse"
+import { SchemaPropertyResponse } from '@/models/api/SchemaResponse'
 
 export type DefaultBaseJobConfigurationResponse = {
   job_configuration: Record<string, unknown>,
@@ -18,6 +18,6 @@ export type WorkerColectionResponse = Record<string, WorkerCollectionItemRespons
 
 export type PrefectWorkerCollectionResponse = {
   prefect: {
-    workers: WorkerColectionResponse
-  }
+    workers: WorkerColectionResponse,
+  },
 }

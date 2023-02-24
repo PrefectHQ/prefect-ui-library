@@ -8,10 +8,10 @@
 
 <script lang="ts" setup>
   import { SelectOption } from '@prefecthq/prefect-design'
+  import { useSubscription } from '@prefecthq/vue-compositions'
   import { computed } from 'vue'
-import { titleCase } from '@/utilities';
-import { useWorkspaceApi } from '@/compositions';
-import { useSubscription } from '@prefecthq/vue-compositions';
+  import { useWorkspaceApi } from '@/compositions'
+  import { titleCase } from '@/utilities'
 
   const props = defineProps<{
     selected: string | null | undefined,
@@ -35,7 +35,7 @@ import { useSubscription } from '@prefecthq/vue-compositions';
   const workersCollectionItems = computed(() => workersCollectionSubscription.response ?? [])
 
   const options = computed<SelectOption[]>(() => {
-    const options: { label: string, value: any }[] = workersCollectionItems.value.map(({type}) => ({
+    const options: { label: string, value: any }[] = workersCollectionItems.value.map(({ type }) => ({
       label: titleCase(type!),
       value: type,
     }))

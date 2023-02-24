@@ -20,13 +20,12 @@
       </p-label>
 
       <p-label label="Type" :state="typeState" :message="typeErrorMessage">
-      <WorkPoolTypeSelect v-model:selected="type" />
-      </p-label>  
-
-      <p-label label="Base Job Configuration" v-if="type && schemaHasProperties">
-          <SchemaFormFieldsWithValues v-model:values="parameters" :schema="testSchema" />
+        <WorkPoolTypeSelect v-model:selected="type" />
       </p-label>
 
+      <p-label v-if="type && schemaHasProperties" label="Base Job Configuration">
+        <SchemaFormFieldsWithValues v-model:values="parameters" :schema="testSchema" />
+      </p-label>
     </p-content>
 
     <template #footer>
@@ -48,7 +47,7 @@
   import { localization } from '@/localization'
   import { WorkPoolCreate } from '@/models'
   import { mapper } from '@/services'
-import { WorkerSchema } from '@/types'
+  import { WorkerSchema } from '@/types'
 
   const api = useWorkspaceApi()
   const router = useRouter()
@@ -67,10 +66,12 @@ import { WorkerSchema } from '@/types'
     return workersCollectionItems.value?.find((item) => item.type === type.value)?.defaultBaseJobConfiguration ?? {}
   })
 
-  const schema= computed<WorkerSchema>(() => mapper.map('SchemaResponse', baseJobConfigs.value.variables ?? {}, 'Schema'))
+  const schema = computed<WorkerSchema>(() => mapper.map('SchemaResponse', baseJobConfigs.value.variables ?? {}, 'Schema'))
   const parameters = ref()
 
-  const testSchema = computed<WorkerSchema>(() =>{ return {...schema.value, type:'object'}}) 
+  const testSchema = computed<WorkerSchema>(() => {
+    return { ...schema.value, type: 'object' }
+  })
 
   const schemaHasProperties = computed(() => {
     const { properties } = schema.value ?? {}
@@ -94,7 +95,7 @@ import { WorkerSchema } from '@/types'
 
   const submit = async (): Promise<void> => {
 
-    const baseJobTemplateSchema = mapper.map('WorkerSchemaProperty', { values:parameters.value, schema: baseJobConfigs.value }, 'WorkerSchemaPropertyRequest')
+    const baseJobTemplateSchema = mapper.map('WorkerSchemaProperty', { values: parameters.value, schema: baseJobConfigs.value }, 'WorkerSchemaPropertyRequest')
 
     const valid = await validate()
     if (valid) {
@@ -104,7 +105,7 @@ import { WorkerSchema } from '@/types'
         type: type.value,
         isPaused: false,
         concurrencyLimit: concurrencyLimit.value,
-        baseJobTemplate: baseJobTemplateSchema
+        baseJobTemplate: baseJobTemplateSchema,
       }
 
       try {

@@ -1,4 +1,4 @@
-import { SchemaProperty } from "@/types"
+import { SchemaProperty } from '@/types'
 
 export type DefaultBaseJobConfiguration = {
   jobConfiguration: Record<string, unknown>,
@@ -18,6 +18,6 @@ export type WorkerColection = Record<string, WorkerCollectionItem>
 
 export type PrefectWorkerCollection = {
   prefect: {
-    workers: WorkerColection
-  }
+    workers: WorkerColection,
+  },
 }
