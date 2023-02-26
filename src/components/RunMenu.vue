@@ -5,7 +5,7 @@
         ref="runButton"
         class="run-menu__run-button"
         inset
-        :disabled="deployment.deprecated"
+        :disabled="disabled"
         @click="toggle"
       >
         Run
@@ -13,25 +13,27 @@
       </p-button>
     </template>
     <p-overflow-menu class="run-menu__overflow-menu" @click="close">
-      <DeploymentQuickRunOverflowMenuItem :deployment-id="deployment.id" />
-      <DeploymentCustomRunOverflowMenuItem :deployment-id="deployment.id" />
+      <template v-if="slots.buttons">
+        <div class="block-type-card-preview__action">
+          <slot name="buttons" />
+        </div>
+      </template>
     </p-overflow-menu>
   </p-pop-over>
 </template>
 
 <script lang="ts" setup>
   import { PPopOver, PButton, positions } from '@prefecthq/prefect-design'
-  import { ref } from 'vue'
-  import { DeploymentQuickRunOverflowMenuItem, DeploymentCustomRunOverflowMenuItem } from '@/components'
-  import { Deployment } from '@/models'
+  import { ref, useSlots } from 'vue'
 
   defineProps<{
-    deployment: Deployment,
+    disabled: boolean,
   }>()
 
   const popOver = ref<InstanceType<typeof PPopOver>>()
   const runButton = ref<InstanceType<typeof PButton>>()
   const placement = [positions.bottomRight, positions.bottomLeft, positions.topRight, positions.topLeft]
+  const slots = useSlots()
 
   function close(): void {
     if (popOver.value) {
