@@ -14,10 +14,6 @@ export type WorkerCollectionItemResponse = {
   type?: string,
 }
 
-export type WorkerColectionResponse = Record<string, WorkerCollectionItemResponse>
+export type WorkerCollectionResponse = Record<string, WorkerCollectionItemResponse>
 
-export type PrefectWorkerCollectionResponse = {
-  prefect: {
-    workers: WorkerColectionResponse,
-  },
-}
+export type PrefectWorkerCollectionResponse = Record<string, WorkerCollectionResponse>

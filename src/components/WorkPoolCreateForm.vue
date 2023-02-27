@@ -95,6 +95,7 @@
   }
 
   const submit = async (): Promise<void> => {
+    console.log({ values: parameters.value, schema: baseJobConfigs.value })
 
     const baseJobTemplateSchema = mapper.map('WorkerSchemaProperty', { values: parameters.value, schema: baseJobConfigs.value }, 'WorkerSchemaPropertyRequest')
 

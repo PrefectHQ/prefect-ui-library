@@ -1,17 +1,26 @@
-import { PrefectWorkerCollectionResponse, SchemaPropertyResponse, WorkerCollectionItem } from '@/models'
+import {
+  PrefectWorkerCollectionResponse,
+  SchemaPropertyResponse,
+  WorkerCollectionItem,
+  WorkerCollectionItemResponse
+} from '@/models'
 import { MapFunction } from '@/services/Mapper'
 import { SchemaValues, WorkerSchema, SchemaProperty } from '@/types/schemas'
 
-export const mapPrefectWorkerCollectionResponseToWorkerCollectionItem: MapFunction<PrefectWorkerCollectionResponse, WorkerCollectionItem[]> = function(source) {
-  const { prefect: { workers } } = source
-
-  return Object.keys(workers).map(key => ({
-    defaultBaseJobConfiguration: workers[key].default_base_job_configuration,
-    description: workers[key].description,
-    documentationUrl: workers[key].documentation_url,
-    installCommand: workers[key].install_command,
-    logoUrl: workers[key].logo_url,
-    type: workers[key].type,
+export const mapPrefectWorkerCollectionResponseToWorkerCollectionItemArray: MapFunction<
+PrefectWorkerCollectionResponse,
+WorkerCollectionItem[]
+> = function(source) {
+  return Object.values(source).reduce<WorkerCollectionItemResponse[]>(
+    (acc, package_data) => [...acc, ...Object.values(package_data)],
+    [],
+  ).map((worker_data) => ({
+    defaultBaseJobConfiguration: worker_data.default_base_job_configuration,
+    description: worker_data.description,
+    documentationUrl: worker_data.documentation_url,
+    installCommand: worker_data.install_command,
+    logoUrl: worker_data.logo_url,
+    type: worker_data.type,
   }))
 }
 
@@ -20,8 +29,11 @@ type MapSchemaValuesSource = {
   schema: WorkerSchema,
 }
 
-export const mapWorkerSchemaValuesToWorkerSchemaValuesRequest: MapFunction<MapSchemaValuesSource, SchemaPropertyResponse> = function(source) {
-  const { values, schema } = source
+export const mapWorkerSchemaValuesToWorkerSchemaValuesRequest: MapFunction<
+MapSchemaValuesSource,
+SchemaPropertyResponse
+> = function(source) {
+  const { values = {}, schema } = source
 
   const object: WorkerSchema = schema as WorkerSchema
 
@@ -32,8 +44,10 @@ export const mapWorkerSchemaValuesToWorkerSchemaValuesRequest: MapFunction<MapSc
   const keys = Object.keys(values) as (keyof SchemaProperty)[]
 
   keys.forEach((key) => {
-    if (object.variables?.properties && values[key]) {
-      const property = object.variables.properties[key] as SchemaProperty | undefined
+    if (object.variables?.properties && values[key] !== undefined) {
+      const property = object.variables.properties[key] as
+        | SchemaProperty
+        | undefined
 
       if (property !== undefined) {
         property.default = values[key]
@@ -43,5 +57,3 @@ export const mapWorkerSchemaValuesToWorkerSchemaValuesRequest: MapFunction<MapSc
 
   return object
 }
-
-
