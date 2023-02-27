@@ -10,7 +10,7 @@ export const mapArtifactResponseToArtifact: MapFunction<ArtifactResponse, Artifa
     key: source.key,
     type: source.type,
     data: source.data,
-    metadata: { description: source.metadata_.description_ },
+    metadata: source.metadata_ ? { description: source.metadata_.description_ } : null,
     flowRunId: source.flow_run_id,
     taskRunId: source.task_run_id,
   })

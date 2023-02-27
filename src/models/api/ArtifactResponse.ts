@@ -10,7 +10,7 @@ export type ArtifactResponse = {
   key: string | null,
   type: string,
   data: ArtifactDataResponse,
-  metadata_: ArtifactMetadataResponse,
+  metadata_: ArtifactMetadataResponse | null,
   flow_run_id: string | null,
   task_run_id: string | null,
 }

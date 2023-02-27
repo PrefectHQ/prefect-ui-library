@@ -10,7 +10,7 @@ export interface IArtifact {
   key: string | null,
   type: string,
   data: ArtifactData,
-  metadata: ArtifactMetadata,
+  metadata: ArtifactMetadata | null,
   flowRunId: string | null,
   taskRunId: string | null,
 }
@@ -24,7 +24,7 @@ export class Artifact implements IArtifact {
   public key: string | null
   public type: string
   public data: ArtifactData
-  public metadata: ArtifactMetadata
+  public metadata: ArtifactMetadata | null
 
   public constructor(artifact: IArtifact) {
     this.id = artifact.id
