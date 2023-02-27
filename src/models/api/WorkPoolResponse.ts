@@ -1,4 +1,10 @@
+import { SchemaResponse } from '@/models/api/SchemaResponse'
 import { DateString } from '@/types/dates'
+
+export type BaseJobTemplateResponse = {
+  job_configuration?: Record<string, string>,
+  variables?: SchemaResponse,
+}
 
 export type WorkPoolResponse = {
   id: string,
@@ -10,5 +16,5 @@ export type WorkPoolResponse = {
   is_paused: boolean | null,
   concurrency_limit: number | null,
   default_queue_id: string,
-  base_job_template: Record<string, unknown>,
+  base_job_template: BaseJobTemplateResponse,
 }

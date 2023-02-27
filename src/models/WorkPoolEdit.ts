@@ -1,6 +1,8 @@
+import { WorkerBaseJobTemplate } from '@/types/schemas'
+
 export type WorkPoolEdit = Partial<{
   description: string | null,
   isPaused: boolean,
   concurrencyLimit: number | null,
-  baseJobTemplate: Record<string, unknown>,
+  baseJobTemplate: WorkerBaseJobTemplate,
 }>

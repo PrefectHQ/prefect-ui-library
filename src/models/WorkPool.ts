@@ -1,3 +1,4 @@
+import { BaseJobTemplateRequest } from '@/models/api/WorkPoolRequest'
 import { titleCase } from '@/utilities'
 
 export interface IWorkPool {
@@ -23,7 +24,7 @@ export class WorkPool implements IWorkPool {
   public isPaused: boolean
   public defaultQueueId: string
   public concurrencyLimit: number | null
-  public baseJobTemplate: Record<string, unknown>
+  public baseJobTemplate: BaseJobTemplateRequest
 
   public constructor(workPool: IWorkPool) {
     this.id = workPool.id

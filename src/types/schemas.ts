@@ -84,8 +84,9 @@ export type Schema = SchemaProperty & {
   definitions?: SchemaDefinitions,
 }
 
-export type WorkerSchema = Schema & {
-  variables?: SchemaProperties,
+export type WorkerBaseJobTemplate = {
+  job_configuration?: Record<string, string>,
+  variables?: Schema,
 }
 
 export function isSchemaValues(input: unknown): input is SchemaValues {

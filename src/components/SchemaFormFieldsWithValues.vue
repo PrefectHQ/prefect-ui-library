@@ -8,10 +8,10 @@
   import SchemaFormFields from '@/components/SchemaFormFields.vue'
   import { useReactiveForm } from '@/compositions'
   import { getSchemaDefaultValues, mapper } from '@/services'
-  import { Schema, SchemaValues, WorkerSchema } from '@/types'
+  import { Schema, SchemaValues, WorkerBaseJobTemplate } from '@/types'
 
   const props = defineProps<{
-    schema: Schema | WorkerSchema,
+    schema: Schema,
     values: SchemaValues | null | undefined,
   }>(
   )

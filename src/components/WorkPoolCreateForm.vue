@@ -47,7 +47,7 @@
   import { localization } from '@/localization'
   import { WorkPoolCreate } from '@/models'
   import { mapper } from '@/services'
-  import { WorkerSchema } from '@/types'
+  import { Schema } from '@/types'
 
   const api = useWorkspaceApi()
   const can = useCan()
@@ -67,10 +67,10 @@
     return workersCollectionItems.value?.find((item) => item.type === type.value)?.defaultBaseJobConfiguration ?? {}
   })
 
-  const schema = computed<WorkerSchema>(() => mapper.map('SchemaResponse', baseJobConfigs.value.variables ?? {}, 'Schema'))
+  const schema = computed<Schema>(() => mapper.map('SchemaResponse', baseJobConfigs.value.variables ?? {}, 'Schema'))
   const parameters = ref()
 
-  const testSchema = computed<WorkerSchema>(() => {
+  const testSchema = computed<Schema>(() => {
     return { ...schema.value, type: 'object' }
   })
 

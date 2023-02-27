@@ -1,11 +1,11 @@
 import {
+  BaseJobTemplateResponse,
   PrefectWorkerCollectionResponse,
-  SchemaPropertyResponse,
   WorkerCollectionItem,
   WorkerCollectionItemResponse
 } from '@/models'
 import { MapFunction } from '@/services/Mapper'
-import { SchemaValues, WorkerSchema, SchemaProperty } from '@/types/schemas'
+import { SchemaValues, WorkerBaseJobTemplate, SchemaProperty } from '@/types/schemas'
 
 export const mapPrefectWorkerCollectionResponseToWorkerCollectionItemArray: MapFunction<
 PrefectWorkerCollectionResponse,
@@ -26,26 +26,24 @@ WorkerCollectionItem[]
 
 type MapSchemaValuesSource = {
   values: SchemaValues,
-  schema: WorkerSchema,
+  schema: WorkerBaseJobTemplate,
 }
 
 export const mapWorkerSchemaValuesToWorkerSchemaValuesRequest: MapFunction<
 MapSchemaValuesSource,
-SchemaPropertyResponse
+WorkerBaseJobTemplate
 > = function(source) {
   const { values = {}, schema } = source
 
-  const object: WorkerSchema = schema as WorkerSchema
-
-  if (object.variables !== undefined) {
-    object.variables.properties = object.variables.properties ?? {}
+  if (schema.variables !== undefined) {
+    schema.variables.properties = schema.variables.properties ?? {}
   }
 
-  const keys = Object.keys(values) as (keyof SchemaProperty)[]
+  const keys = Object.keys(schema.variables?.properties ?? {})
 
   keys.forEach((key) => {
-    if (object.variables?.properties && values[key] !== undefined) {
-      const property = object.variables.properties[key] as
+    if (schema.variables?.properties && values[key] !== undefined) {
+      const property = schema.variables.properties[key] as
         | SchemaProperty
         | undefined
 
@@ -55,5 +53,5 @@ SchemaPropertyResponse
     }
   })
 
-  return object
+  return schema
 }
