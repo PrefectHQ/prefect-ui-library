@@ -1,5 +1,4 @@
 import {
-  BaseJobTemplateResponse,
   PrefectWorkerCollectionResponse,
   WorkerCollectionItem,
   WorkerCollectionItemResponse
