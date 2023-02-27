@@ -145,7 +145,7 @@
   const when = ref<'now' | 'later'>('now')
 
   const overrideParametersOptions: ButtonGroupOption[] = [{ label: 'Default', value: 'default' }, { label: 'Custom', value: 'custom' }]
-  const overrideParameters = ref<'default' | 'custom'>('default')
+  const overrideParameters = ref<'default' | 'custom'>(props.parameters ? 'custom' : 'default')
 
   const timezone = ref('UTC')
   const deploymentTags = computed(() => props.deployment.tags?.map((tag) => ({ label: tag, value: tag, disabled: true })))

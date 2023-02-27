@@ -3,13 +3,19 @@ import { localization } from '@/localization'
 import { secondsToApproximateString } from '@/utilities/seconds'
 import { dateFunctions, toDate, formatDateInTimezone } from '@/utilities/timezone'
 
-const dateTimeNumericFormat = 'yyyy/MM/dd hh:mm:ss a'
+// formats defined by the style guide
+// https://www.notion.so/prefect/Formatting-Basics-1d4d83bcb2ba471ead90910aeb5913b2?pvs=4#b79673ff9e9b47f58236c449e5fe764a
+const dateFormat = 'MMM do, yyyy'
+const timeFormat = 'hh:mm a'
+const dateTimeFormat = `${dateFormat} ''at'' ${timeFormat}`
+
 const timeNumericFormat = 'hh:mm:ss a'
 const timeNumericShortFormat = 'hh:mm a'
-const dateFormat = 'MMM do, yyyy'
 const dateMonthDayFormat = 'MMM d'
 const dateMonthDayYearFormat = 'MMM d, yyyy'
 const dateNumericFormat = 'yyyy/MM/dd'
+const dateTimeNumericFormat = `${dateNumericFormat} ${timeNumericFormat}`
+const dateTimeNumericShortFormat = `${dateNumericFormat} ${timeNumericShortFormat}`
 
 export {
   daysInWeek,
@@ -33,10 +39,6 @@ export {
 } from 'date-fns'
 export const hoursInDay = 24
 
-export function parseDate(value: string, reference: Date = new Date()): Date {
-  return parse(value, dateFormat, reference)
-}
-
 export function isDate(value: unknown): value is Date {
   return dateFnsIsDate(value)
 }
@@ -55,8 +57,48 @@ export function formatDate(value: Date | string, format = dateFormat): string {
   return formatDateInTimezone(date, format)
 }
 
+export function parseDate(value: string, reference: Date = new Date()): Date {
+  return parse(value, dateFormat, reference)
+}
+
+export function formatTime(value: Date): string {
+  return formatDate(value, timeFormat)
+}
+
+export function parseTime(value: string, reference: Date = new Date()): Date {
+  return parse(value, timeFormat, reference)
+}
+
+export function formatDateTime(value: Date): string {
+  return formatDate(value, dateTimeFormat)
+}
+
+export function parseDateTime(value: string, reference: Date = new Date()): Date {
+  return parse(value, dateTimeFormat, reference)
+}
+
+export function formatTimeNumeric(value: Date | string): string {
+  return formatDate(value, timeNumericFormat)
+}
+
+export function parseTimeNumeric(value: string, reference: Date = new Date()): Date {
+  return parse(value, timeNumericFormat, reference)
+}
+
+export function formatTimeShortNumeric(value: Date | string): string {
+  return formatDate(value, timeNumericShortFormat)
+}
+
+export function parseTimeShortNumeric(value: string, reference: Date = new Date()): Date {
+  return parse(value, timeNumericShortFormat, reference)
+}
+
 export function formatDateNumeric(value: Date): string {
   return formatDate(value, dateNumericFormat)
+}
+
+export function parseDateNumeric(value: string, reference: Date = new Date()): Date {
+  return parse(value, dateNumericFormat, reference)
 }
 
 export function formatDateTimeNumeric(value: Date | string): string {
@@ -67,16 +109,12 @@ export function parseDateTimeNumeric(value: string, reference: Date = new Date()
   return parse(value, dateTimeNumericFormat, reference)
 }
 
-export function formatTimeNumeric(value: Date | string): string {
-  return formatDate(value, timeNumericFormat)
+export function formatDateTimeShortNumeric(value: Date | string): string {
+  return formatDate(value, dateTimeNumericShortFormat)
 }
 
-export function formatTimeShortNumeric(value: Date | string): string {
-  return formatDate(value, timeNumericShortFormat)
-}
-
-export function parseTimeNumeric(value: string, reference: Date = new Date()): Date {
-  return parse(value, timeNumericFormat, reference)
+export function parseDateTimeShortNumeric(value: string, reference: Date = new Date()): Date {
+  return parse(value, dateTimeNumericShortFormat, reference)
 }
 
 export function formatDateTimeRelative(value: Date | string, comparedTo: Date | string = new Date()): string {
@@ -93,7 +131,7 @@ export function formatDateTimeRelative(value: Date | string, comparedTo: Date | 
   return `in ${formatted}`
 }
 
-export function formatDateTime(value: Date | string, formatTime = timeNumericShortFormat): string {
+export function formatDateTimeColloquial(value: Date | string, formatTime = timeNumericShortFormat): string {
   const date = toDate(value)
   const today = new Date()
   const isToday = dateFunctions.isSameDay(date, today)

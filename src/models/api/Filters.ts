@@ -203,6 +203,7 @@ export type BlockDocumentsFilterRequest = {
 export type WorkQueuesFilterRequest = {
   work_queues?: {
     operator?: OperationRequest,
+    id?: Any,
     name?: Any & StartsWith,
   },
   offset?: number,

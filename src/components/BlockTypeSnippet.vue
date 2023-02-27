@@ -1,10 +1,12 @@
 <template>
-  <CodeSnippet :snippet="snippet" language="python" class="block-type-snippet" />
+  <CopyableWrapper :text-to-copy="snippet" class="block-type-snippet">
+    <p-code-highlight lang="python" :text="snippet" />
+  </CopyableWrapper>
 </template>
 
 <script lang="ts" setup>
   import { computed } from 'vue'
-  import CodeSnippet from '@/components/CodeSnippet.vue'
+  import CopyableWrapper from '@/components/CopyableWrapper.vue'
 
   const props = defineProps<{
     snippet: string,
