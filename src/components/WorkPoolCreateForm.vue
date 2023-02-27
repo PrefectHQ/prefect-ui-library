@@ -75,7 +75,7 @@
   })
 
   const schemaHasProperties = computed(() => {
-    const { properties } = schema.value ?? {}
+    const { properties } = schema.value
 
     return properties && Object.keys(properties).length > 0
   })

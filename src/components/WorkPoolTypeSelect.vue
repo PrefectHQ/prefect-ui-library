@@ -35,9 +35,9 @@
   const workersCollectionItems = computed(() => workersCollectionSubscription.response ?? [])
 
   const options = computed<SelectOption[]>(() => {
-    const options: { label: string, value: any }[] = workersCollectionItems.value.map(({ type }) => ({
+    const options: { label: string, value: string }[] = workersCollectionItems.value.map(({ type }) => ({
       label: titleCase(type!),
-      value: type,
+      value: type!,
     }))
 
     return options

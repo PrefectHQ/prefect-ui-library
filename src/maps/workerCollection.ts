@@ -1,6 +1,6 @@
 import { PrefectWorkerCollectionResponse, SchemaPropertyResponse, WorkerCollectionItem } from '@/models'
 import { MapFunction } from '@/services/Mapper'
-import { SchemaValues, WorkerSchema, SchemaProperty, SchemaProperties } from '@/types/schemas'
+import { SchemaValues, WorkerSchema, SchemaProperty } from '@/types/schemas'
 
 export const mapPrefectWorkerCollectionResponseToWorkerCollectionItem: MapFunction<PrefectWorkerCollectionResponse, WorkerCollectionItem[]> = function(source) {
   const { prefect: { workers } } = source
@@ -26,17 +26,17 @@ export const mapWorkerSchemaValuesToWorkerSchemaValuesRequest: MapFunction<MapSc
   const object: WorkerSchema = schema as WorkerSchema
 
   if (object.variables !== undefined) {
-    object.variables.properties = object.variables.properties as { [key in keyof SchemaProperty]: SchemaProperty[key] } || {}
+    object.variables.properties = object.variables.properties ?? {}
   }
 
   const keys = Object.keys(values) as (keyof SchemaProperty)[]
 
   keys.forEach((key) => {
     if (object.variables?.properties && values[key]) {
-      const property = object.variables.properties[key] as SchemaProperty[keyof SchemaProperty] | undefined
+      const property = object.variables.properties[key] as SchemaProperty | undefined
 
       if (property !== undefined) {
-        property as any.default = values[key]
+        property.default = values[key]
       }
     }
   })
