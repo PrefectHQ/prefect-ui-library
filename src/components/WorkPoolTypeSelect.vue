@@ -1,5 +1,5 @@
 <template>
-  <PSelect v-model="model" :options="options" class="block-type-select">
+  <PSelect v-model="model" :options="options" class="block-type-select" :disabled="disabled">
     <template #default="{ label }">
       {{ label }}
     </template>
@@ -13,9 +13,10 @@
   import { useWorkspaceApi } from '@/compositions'
   import { titleCase } from '@/utilities'
 
-  const props = defineProps<{
+  const props = withDefaults(defineProps<{
     selected: string | null | undefined,
-  }>()
+    disabled: boolean,
+  }>(), { disabled: false })
 
   const emit = defineEmits<{
     (event: 'update:selected', value: string | null): void,
