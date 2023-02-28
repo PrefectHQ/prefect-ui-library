@@ -20,7 +20,7 @@
       </p-label>
 
       <p-label v-if="can.access.workers" label="Type">
-        <WorkPoolTypeSelect v-model:selected="type" disabled />
+        <WorkPoolTypeSelect :selected="type" disabled />
       </p-label>
 
       <p-label v-if="type && schemaHasProperties && can.access.workers" label="Base Job Configuration">
