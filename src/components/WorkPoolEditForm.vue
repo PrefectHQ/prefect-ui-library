@@ -43,7 +43,7 @@
   import { useValidationObserver } from '@prefecthq/vue-compositions'
   import { ref, computed } from 'vue'
   import { useRouter } from 'vue-router'
-  import { SubmitButton, WorkPoolTypeSelect, SchemaFormFieldsWithValues, SchemaPropertiesKeyValues } from '@/components'
+  import { SubmitButton, WorkPoolTypeSelect, SchemaFormFieldsWithValues } from '@/components'
   import { useCan, useWorkspaceApi, useWorkspaceRoutes } from '@/compositions'
   import { localization } from '@/localization'
   import { WorkPool, WorkPoolEdit } from '@/models'
