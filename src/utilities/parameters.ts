@@ -1,5 +1,6 @@
 import { Schema, SchemaProperties, SchemaValues } from '@/types/schemas'
 import { stringify } from '@/utilities/json'
+import { mapEntries } from '@/utilities/object'
 
 export function getSchemaValuesWithDefaults(
   values: SchemaValues,
@@ -37,17 +38,12 @@ export function getSchemaDefaults(schema: Schema): SchemaValues {
 export function getSchemaPropertiesWithoutDefaults(
   schemaProperties: SchemaProperties = {},
 ): SchemaProperties {
-  return Object.entries(schemaProperties).reduce((acc, [key, property]) => {
-    if (!property) {
-      return acc
-    }
+  return mapEntries(schemaProperties, (key, property) => {
     // eslint-disable-next-line no-unused-vars
-    const { default: _default, ...rest } = property
-    return {
-      ...acc,
-      [key]: rest,
-    }
-  }, {})
+    const { default: __, ...rest } = property
+
+    return [key, rest]
+  })
 }
 
 export function getSchemaWithoutDefaults(schema: Schema): Schema {
