@@ -151,14 +151,12 @@
 
 .result-summary-card__subheader { @apply
   text-sm
-  text-foreground-200
+  text-foreground-100
   uppercase
 }
 
 .result-summary-card__subheader--condensed { @apply
   text-xs
-  text-foreground-200
-  uppercase
 }
 
 .result-summary-card__bread-crumbs { @apply
