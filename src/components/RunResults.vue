@@ -6,7 +6,7 @@
 
     <template v-else-if="loaded && !artifacts.length">
       <p class="run-results__no-results">
-        {{ localization.info.none }}
+        {{ localization.info.noResults }}
       </p>
     </template>
   </div>
