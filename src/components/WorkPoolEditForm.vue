@@ -23,9 +23,10 @@
         <WorkPoolTypeSelect :selected="type" disabled />
       </p-label>
 
-      <p-label v-if="showSchemaForm" label="Base Job Configuration">
+      <template v-if="showSchemaForm">
+        <h3>Base Job Configuration</h3>
         <SchemaFormFieldsWithValues v-model:values="parameters" :schema="schema" />
-      </p-label>
+      </template>
     </p-content>
 
 
