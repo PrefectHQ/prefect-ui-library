@@ -23,7 +23,7 @@
         <WorkPoolTypeSelect :selected="type" disabled />
       </p-label>
 
-      <p-label v-if="type && schemaHasProperties && can.access.workers" label="Base Job Configuration">
+      <p-label v-if="showSchemaForm" label="Base Job Configuration">
         <SchemaFormFieldsWithValues v-model:values="parameters" :schema="schema" />
       </p-label>
     </p-content>
@@ -43,12 +43,13 @@
   import { useValidationObserver } from '@prefecthq/vue-compositions'
   import { ref, computed } from 'vue'
   import { useRouter } from 'vue-router'
-  import { SubmitButton, WorkPoolTypeSelect, SchemaFormFieldsWithValues } from '@/components'
+  import { SubmitButton, WorkPoolTypeSelect, SchemaFormFieldsWithValues, SchemaPropertiesKeyValues } from '@/components'
   import { useCan, useWorkspaceApi, useWorkspaceRoutes } from '@/compositions'
   import { localization } from '@/localization'
   import { WorkPool, WorkPoolEdit } from '@/models'
   import { mapper } from '@/services/Mapper'
   import { Schema } from '@/types/schemas'
+  import { getSchemaDefaults } from '@/utilities/parameters'
 
   const props = defineProps<{
     workPool: WorkPool,
@@ -65,29 +66,28 @@
   const concurrencyLimit = ref<number | null | undefined>(props.workPool.concurrencyLimit)
   const schema = computed<Schema>(() => mapper.map('SchemaResponse', props.workPool.baseJobTemplate.variables ?? {}, 'Schema'))
   // Set parameters to the default values from the schema so they are pre-filled in the form
-  const parameters = ref<Record<string, unknown>>(
-    Object.entries(props.workPool.baseJobTemplate.variables?.properties ?? {}).reduce((acc, [key, value]) => ({ ...acc, [key]: value?.default }), {}),
+  const parameters = ref(
+    getSchemaDefaults(props.workPool.baseJobTemplate.variables ?? {}),
   )
-
   const schemaHasProperties = computed(() => {
     const { properties } = schema.value
 
     return properties && Object.keys(properties).length > 0
   })
+  const showSchemaForm = computed(() => type.value && schemaHasProperties.value && can.access.workers)
 
   function cancel(): void {
     router.back()
   }
 
   const submit = async (): Promise<void> => {
-    const baseJobTemplateSchema = mapper.map('WorkerSchemaProperty', { values: parameters.value, schema: props.workPool.baseJobTemplate }, 'WorkerSchemaPropertyRequest')
-
     const valid = await validate()
     if (valid) {
       const values: WorkPoolEdit = {
         description: description.value,
         concurrencyLimit: concurrencyLimit.value,
-        baseJobTemplate: baseJobTemplateSchema,
+        baseJobTemplate: props.workPool.baseJobTemplate,
+        updatedDefaultVariableValues: parameters.value,
       }
       try {
         await api.workPools.updateWorkPool(props.workPool.name, values)

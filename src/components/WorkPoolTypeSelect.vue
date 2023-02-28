@@ -13,10 +13,10 @@
   import { useWorkspaceApi } from '@/compositions'
   import { titleCase } from '@/utilities'
 
-  const props = withDefaults(defineProps<{
+  const props = defineProps<{
     selected: string | null | undefined,
-    disabled: boolean,
-  }>(), { disabled: false })
+    disabled?: boolean,
+  }>()
 
   const emit = defineEmits<{
     (event: 'update:selected', value: string | null): void,
