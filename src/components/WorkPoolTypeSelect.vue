@@ -1,5 +1,5 @@
 <template>
-  <PSelect v-model="model" :options="options" class="block-type-select" :disabled="disabled">
+  <PSelect v-model="model" class="block-type-select" v-bind="{ options, disabled }">
     <template #default="{ label }">
       {{ label }}
     </template>
