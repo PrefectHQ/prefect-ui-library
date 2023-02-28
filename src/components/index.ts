@@ -1,4 +1,5 @@
 export { default as ActivityChart } from './ActivityChart.vue'
+export { default as ArtifactsSort } from './ArtifactsSort.vue'
 export { default as BetaBadge } from './BetaBadge.vue'
 export { default as BlockCapabilityBlockDocumentInput } from './BlockCapabilityBlockDocumentInput.vue'
 export { default as BlockDocumentCard } from './BlockDocumentCard.vue'

@@ -1,7 +1,8 @@
 <template>
   <div class="artifact-list">
     <div class="artifact-list__button-group-container">
-      <p-button-group v-model="view" :options="viewOptions" />
+      <slot name="actions" />
+      <p-button-group v-if="!hideViewOptions" v-model="view" :options="viewOptions" />
     </div>
 
     <div class="artifact-list__artifacts" :class="classes.artifacts">
@@ -19,11 +20,14 @@
   import ResultSummaryCard from '@/components/ResultSummaryCard.vue'
   import { Artifact } from '@/models'
 
-  defineProps<{
+  type ViewOption = 'grid' | 'rows'
+  const props = defineProps<{
     artifacts: Artifact[],
+    view?: ViewOption,
+    hideViewOptions?: boolean,
   }>()
 
-  const view = ref<'grid' | 'rows'>('grid')
+  const view = ref<ViewOption>(props.view ?? 'grid')
   const viewOptions: ButtonGroupOption[] = [
     { label: '', value: 'grid', icon: 'ViewGridIcon' },
     { label: '', value: 'rows', icon: 'ViewListIcon' },
@@ -59,6 +63,7 @@
 .artifact-list__button-group-container { @apply
   flex
   justify-end
+  gap-4
 }
 
 .artifact-list__artifacts--grid { @apply

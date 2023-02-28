@@ -90,6 +90,7 @@ export const en = {
     yesterday: 'yesterday',
     tomorrow: 'tomorrow',
     artifact: 'Artifact',
+    artifactSearchPlaceholder: 'Filter artifacts by key',
     result: 'Result',
     created: 'Created',
     lastUpdated: 'Last Updated',
