@@ -49,7 +49,7 @@
   import { WorkPool, WorkPoolEdit } from '@/models'
   import { mapper } from '@/services/Mapper'
   import { Schema } from '@/types/schemas'
-  import { getSchemaDefaults } from '@/utilities/parameters'
+  import { getSchemaDefaults, getSchemaWithoutDefaults } from '@/utilities/parameters'
 
   const props = defineProps<{
     workPool: WorkPool,
@@ -64,7 +64,7 @@
   const description = ref<string | null | undefined>(props.workPool.description)
   const type = ref<string>(props.workPool.type)
   const concurrencyLimit = ref<number | null | undefined>(props.workPool.concurrencyLimit)
-  const schema = computed<Schema>(() => mapper.map('SchemaResponse', props.workPool.baseJobTemplate.variables ?? {}, 'Schema'))
+  const schema = computed<Schema>(() => mapper.map('SchemaResponse', getSchemaWithoutDefaults(props.workPool.baseJobTemplate.variables ?? {}), 'Schema'))
   // Set parameters to the default values from the schema so they are pre-filled in the form
   const parameters = ref(
     getSchemaDefaults(props.workPool.baseJobTemplate.variables ?? {}),

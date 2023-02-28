@@ -1,4 +1,4 @@
-import { Schema, SchemaValues } from '@/types/schemas'
+import { Schema, SchemaProperties, SchemaValues } from '@/types/schemas'
 import { stringify } from '@/utilities/json'
 
 export function getSchemaValuesWithDefaults(
@@ -32,4 +32,26 @@ export function getSchemaDefaults(schema: Schema): SchemaValues {
   }
 
   return values
+}
+
+export function getSchemaPropertiesWithoutDefaults(
+  schemaProperties: SchemaProperties = {},
+): SchemaProperties {
+  return Object.entries(schemaProperties).reduce((acc, [key, property]) => {
+    if (!property) {
+      return acc
+    }
+    const { default: __, ...rest } = property
+    return {
+      ...acc,
+      [key]: rest,
+    }
+  }, {})
+}
+
+export function getSchemaWithoutDefaults(schema: Schema): Schema {
+  return {
+    ...schema,
+    properties: getSchemaPropertiesWithoutDefaults(schema.properties),
+  }
 }

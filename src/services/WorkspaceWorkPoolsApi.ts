@@ -39,14 +39,6 @@ export class WorkspaceWorkPoolsApi extends WorkspaceApi implements IWorkspaceWor
   }
 
   public updateWorkPool(name: string, request: WorkPoolEdit): Promise<void> {
-    const baseJobTemplateSchema = mapper.map(
-      'WorkerSchemaProperty',
-      { values: request.updatedDefaultVariableValues ?? {}, schema: request.baseJobTemplate ?? {} },
-      'WorkerSchemaPropertyRequest',
-    )
-
-    request.baseJobTemplate = baseJobTemplateSchema
-
     const body = mapper.map('WorkPoolEdit', request, 'WorkPoolEditRequest')
 
     return this.patch(`/${name}`, body)

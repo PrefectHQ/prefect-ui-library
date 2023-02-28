@@ -43,10 +43,16 @@ export const mapWorkPoolCreateToWorkPoolCreateRequest: MapFunction<WorkPoolCreat
 }
 
 export const mapWorkPoolEditToWorkPoolEditRequest: MapFunction<WorkPoolEdit, WorkPoolEditRequest> = function(source) {
+  const baseJobTemplateSchema = this.map(
+    'WorkerSchemaProperty',
+    { values: source.updatedDefaultVariableValues ?? {}, schema: source.baseJobTemplate ?? {} },
+    'WorkerSchemaPropertyRequest',
+  )
+
   return {
     description: source.description,
     is_paused: source.isPaused,
     concurrency_limit: source.concurrencyLimit,
-    base_job_template: source.baseJobTemplate,
+    base_job_template: baseJobTemplateSchema,
   }
 }
