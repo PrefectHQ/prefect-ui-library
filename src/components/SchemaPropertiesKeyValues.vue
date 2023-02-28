@@ -1,7 +1,7 @@
 <template>
   <PContent class="schema-properties-key-values">
     <template v-for="[key, property] in sortedSchemaProperties" :key="key">
-      <SchemaProperty v-if="property" :property="property" :value="getPropertyValue(key)" />
+      <SchemaProperty v-if="property" :value="getPropertyValue(key)" v-bind="{ property, alternate }" />
     </template>
   </PContent>
 </template>
@@ -15,6 +15,7 @@
   const props = defineProps<{
     schema: Schema,
     values: SchemaValues,
+    alternate?: boolean,
   }>()
 
   function getPropertyValue(blockSchemaPropertyKey: string): unknown {

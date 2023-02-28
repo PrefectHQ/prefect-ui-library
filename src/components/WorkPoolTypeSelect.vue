@@ -1,5 +1,5 @@
 <template>
-  <PSelect v-model="model" :options="options" class="block-type-select">
+  <PSelect v-model="model" class="block-type-select" v-bind="{ options, disabled }">
     <template #default="{ label }">
       {{ label }}
     </template>
@@ -8,11 +8,14 @@
 
 <script lang="ts" setup>
   import { SelectOption } from '@prefecthq/prefect-design'
+  import { useSubscription } from '@prefecthq/vue-compositions'
   import { computed } from 'vue'
-  import { WorkPoolType, workPoolTypes } from '@/models'
+  import { useWorkspaceApi } from '@/compositions'
+  import { titleCase } from '@/utilities'
 
   const props = defineProps<{
-    selected: string | null,
+    selected: string | null | undefined,
+    disabled?: boolean,
   }>()
 
   const emit = defineEmits<{
@@ -21,17 +24,21 @@
 
   const model = computed({
     get() {
-      return props.selected
+      return props.selected ?? null
     },
     set(value: string | null) {
       emit('update:selected', value)
     },
   })
 
+  const api = useWorkspaceApi()
+  const workersCollectionSubscription = useSubscription(api.collections.getWorkerCollection, [])
+  const workersCollectionItems = computed(() => workersCollectionSubscription.response ?? [])
+
   const options = computed<SelectOption[]>(() => {
-    const options: { label: string, value: WorkPoolType }[] = workPoolTypes.map((type) => ({
-      label: type,
-      value: type,
+    const options: { label: string, value: string }[] = workersCollectionItems.value.map(({ type }) => ({
+      label: titleCase(type!),
+      value: type!,
     }))
 
     return options
