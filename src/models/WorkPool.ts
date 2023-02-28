@@ -1,7 +1,5 @@
-import { mapProcessTypeValueToProcessTypeLabel } from '@/utilities'
-
-export const workPoolTypes = ['ECS', 'Kubernetes', 'GCP Cloud Run', 'Azure Container', 'Docker Container', 'Process'] as const
-export type WorkPoolType = typeof workPoolTypes[number]
+import { BaseJobTemplateRequest } from '@/models/api/WorkPoolRequest'
+import { titleCase } from '@/utilities'
 
 export interface IWorkPool {
   readonly id: string,
@@ -13,6 +11,7 @@ export interface IWorkPool {
   isPaused: boolean,
   defaultQueueId: string,
   concurrencyLimit: number | null,
+  baseJobTemplate: Record<string, unknown>,
 }
 
 export class WorkPool implements IWorkPool {
@@ -25,6 +24,7 @@ export class WorkPool implements IWorkPool {
   public isPaused: boolean
   public defaultQueueId: string
   public concurrencyLimit: number | null
+  public baseJobTemplate: BaseJobTemplateRequest
 
   public constructor(workPool: IWorkPool) {
     this.id = workPool.id
@@ -36,9 +36,10 @@ export class WorkPool implements IWorkPool {
     this.isPaused = workPool.isPaused
     this.defaultQueueId = workPool.defaultQueueId
     this.concurrencyLimit = workPool.concurrencyLimit
+    this.baseJobTemplate = workPool.baseJobTemplate
   }
 
   public get typeLabel(): string {
-    return mapProcessTypeValueToProcessTypeLabel(this.type)
+    return titleCase(this.type)
   }
 }

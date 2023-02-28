@@ -4,7 +4,7 @@
   </template>
   <!-- todo: support displaying nested objects -->
   <template v-else>
-    <p-key-value :label="property.title" :value="value" class="schema-property-key-value">
+    <p-key-value :label="property.title" class="schema-property-key-value" v-bind="{ value, alternate }">
       <template v-if="isDefined && isJsonProperty" #value>
         <CopyableWrapper :text-to-copy="jsonValue ?? ''">
           <p-code-highlight lang="json" :text="jsonValue ?? ''" />
@@ -26,6 +26,7 @@
   const props = defineProps<{
     property: SchemaProperty,
     value: SchemaValue,
+    alternate?: boolean,
   }>()
 
   const isJsonProperty = computed(() => {

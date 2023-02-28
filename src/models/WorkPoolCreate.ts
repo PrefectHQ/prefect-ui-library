@@ -4,4 +4,5 @@ export type WorkPoolCreate = Partial<{
   type: string,
   isPaused: boolean,
   concurrencyLimit: number,
+  baseJobTemplate: Record<string, unknown>,
 }>
