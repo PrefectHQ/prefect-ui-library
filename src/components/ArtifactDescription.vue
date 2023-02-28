@@ -1,15 +1,18 @@
 <template>
   <p-card class="artifact-description">
-    <p-markdown-renderer :text="artifact.metadata?.description ?? ''" />
+    <p-markdown-renderer :text="description" />
   </p-card>
 </template>
 
 <script lang="ts" setup>
+  import { computed } from 'vue'
   import { Artifact } from '@/models'
 
-  defineProps<{
+  const props = defineProps<{
     artifact: Artifact,
   }>()
+
+  const description = computed(() => props.artifact.metadata?.description ?? '')
 </script>
 
 <style>
