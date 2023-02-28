@@ -15,10 +15,7 @@ PrefectWorkerCollectionResponse,
 WorkerCollectionItem[]
 > = function(source) {
   return Object.values(source)
-    .reduce<WorkerCollectionItemResponse[]>(
-    (acc, package_data) => [...acc, ...Object.values(package_data)],
-    [],
-    )
+    .reduce<WorkerCollectionItemResponse[]>((acc, package_data) => [...acc, ...Object.values(package_data)], [])
     .map((worker_data) => ({
       defaultBaseJobConfiguration: worker_data.default_base_job_configuration,
       description: worker_data.description,

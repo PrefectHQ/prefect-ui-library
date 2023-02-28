@@ -41,7 +41,8 @@ export function getSchemaPropertiesWithoutDefaults(
     if (!property) {
       return acc
     }
-    const { default: __, ...rest } = property
+    // eslint-disable-next-line no-unused-vars
+    const { default: _default, ...rest } = property
     return {
       ...acc,
       [key]: rest,
