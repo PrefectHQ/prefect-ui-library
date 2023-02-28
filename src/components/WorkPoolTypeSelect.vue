@@ -1,5 +1,5 @@
 <template>
-  <PSelect v-model="model" :options="options" class="block-type-select">
+  <PSelect v-model="model" class="block-type-select" v-bind="{ options, disabled }">
     <template #default="{ label }">
       {{ label }}
     </template>
@@ -15,6 +15,7 @@
 
   const props = defineProps<{
     selected: string | null | undefined,
+    disabled?: boolean,
   }>()
 
   const emit = defineEmits<{
