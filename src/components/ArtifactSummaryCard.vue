@@ -5,7 +5,7 @@
         <h6 class="artifact-summary-card__subheader" :class="classes.subheader">
           {{ artifactLabel }}
         </h6>
-        <h3 v-if="artifact.key">
+        <h3 v-if="hasKey">
           {{ artifact.key }}
         </h3>
 
@@ -15,6 +15,19 @@
       </header>
 
       <div class="artifact-summary-card__summary-container" :class="classes.summaryContainer">
+        <template v-if="!hasKey">
+          <template v-for="[key, value] in artifactDataEntries" :key="key">
+            <div class="artifact-summary-card__summary-item">
+              <span class="artifact-summary-card__summary-item-label">
+                {{ key }}
+              </span>
+              <span class="artifact-summary-card__summary-item-value" :class="{ 'artifact-summary-card__summary-item-value--none': !isDefined(value) }">
+                {{ value ?? localization.info.none }}
+              </span>
+            </div>
+          </template>
+        </template>
+
         <div
           class="artifact-summary-card__summary-item"
           :title="artifact.updated.toLocaleString()"
@@ -23,7 +36,7 @@
             {{ localization.info.lastUpdated }}
           </span>
           <span class="artifact-summary-card__summary-item-value">
-            {{ formatDateTime(artifact.updated) }}
+            {{ formatDateTimeColloquial(artifact.updated) }}
           </span>
         </div>
 
@@ -35,7 +48,7 @@
             {{ localization.info.created }}
           </span>
           <span class="artifact-summary-card__summary-item-value">
-            {{ formatDateTime(artifact.created) }}
+            {{ formatDateTimeColloquial(artifact.created) }}
           </span>
         </div>
       </div>
@@ -53,7 +66,7 @@
   import { useFlowRun, useTaskRun, useWorkspaceRoutes } from '@/compositions'
   import { localization } from '@/localization'
   import { Artifact } from '@/models'
-  import { formatDateTime } from '@/utilities'
+  import { formatDateTimeColloquial, isDefined } from '@/utilities'
 
   const props = defineProps<{
     artifact: Artifact,
@@ -70,9 +83,14 @@
   const taskRun = useTaskRun(taskRunId)
 
   const hasRun = computed(() => !!props.artifact.flowRunId || !!props.artifact.taskRunId)
+  const hasKey = computed(() => !!props.artifact.key)
 
   const artifactLabel = computed(() => {
     return props.artifact.key ? localization.info.artifact : localization.info.result
+  })
+
+  const artifactDataEntries = computed(() => {
+    return Object.entries(props.artifact.data)
   })
 
   const crumbs = computed<BreadCrumbs>(() => {
@@ -215,10 +233,12 @@
 .artifact-summary-card__summary-item-label { @apply
   text-sm
   text-foreground-200
+  capitalize
 }
 
-.artifact-summary-card__summary-item-none { @apply
+.artifact-summary-card__summary-item-value--none { @apply
   text-sm
-  text-foreground-200
+  text-foreground-100
+  italic
 }
 </style>

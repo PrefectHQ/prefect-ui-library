@@ -76,8 +76,8 @@ export type ArtifactFilter = {
 
 export type ArtifactsFilter = {
   artifacts?: ArtifactFilter,
-  flowRuns?: FlowRunFilter,
-  taskRuns?: TaskRunFilter,
+  flowRuns?: FlowRunsFilter,
+  taskRuns?: TaskRunsFilter,
   sort?: ArtifactSortValues,
   limit?: number,
   offset?: number,

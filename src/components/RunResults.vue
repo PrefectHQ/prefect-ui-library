@@ -1,30 +1,46 @@
 <template>
   <div class="flow-run-results">
-    {{ artifacts }}
+    <template v-if="loaded && artifacts.length">
+      <ArtifactList :artifacts="artifacts" />
+    </template>
+
+    <template v-else-if="loaded && !artifacts.length">
+      <p class="flow-run-results__no-results">
+        {{ localization.info.none }}
+      </p>
+    </template>
   </div>
 </template>
 
 <script lang="ts" setup>
   import { useSubscription } from '@prefecthq/vue-compositions'
-  import { ref, computed } from 'vue'
+  import { ref, computed, watchEffect } from 'vue'
+  import ArtifactList from '@/components/ArtifactList.vue'
   import { useWorkspaceApi } from '@/compositions'
+  import { localization } from '@/localization'
   import { Artifact } from '@/models/Artifact'
   import { ArtifactsFilter } from '@/models/Filters'
-  import { FlowRun } from '@/models/FlowRun'
   import { ArtifactSortValues } from '@/types'
 
   const props = defineProps<{
-    flowRun: FlowRun,
+    filter: ArtifactsFilter,
   }>()
 
   const sort = ref<ArtifactSortValues>('UPDATED_DESC')
   const filter = computed<ArtifactsFilter>(() => ({
+    ...props.filter,
     sort: sort.value,
   }))
 
   const api = useWorkspaceApi()
-  const artifactsSubscription = useSubscription(api.artifacts.getArtifacts, [filter], { interval: 15000 })
+  // TODO: add interval
+  const artifactsSubscription = useSubscription(api.artifacts.getArtifacts, [filter])
   const artifacts = computed<Artifact[]>(() => artifactsSubscription.response ?? [])
+  const loaded = computed<boolean>(() => artifactsSubscription.executed)
+
+  watchEffect(() => {
+    console.log(artifacts.value)
+  })
 </script>
 
 <style>

@@ -1,12 +1,12 @@
 <template>
   <div class="artifact-list">
-    <div>
+    <div class="artifact-list__button-group-container">
       <p-button-group v-model="view" :options="viewOptions" />
     </div>
 
     <div class="artifact-list__artifacts" :class="classes.artifacts">
       <template v-for="artifact in artifacts" :key="artifact.id">
-        <ArtifactSummaryCard :artifact="artifact" :condense="condense" />
+        <component :is="getArtifactComponent(artifact)" :artifact="artifact" :condense="condense" />
       </template>
     </div>
   </div>
@@ -16,6 +16,7 @@
   import { ButtonGroupOption } from '@prefecthq/prefect-design'
   import { ref, computed } from 'vue'
   import ArtifactSummaryCard from '@/components/ArtifactSummaryCard.vue'
+  import ResultSummaryCard from '@/components/ResultSummaryCard.vue'
   import { Artifact } from '@/models'
 
   defineProps<{
@@ -38,6 +39,14 @@
       },
     }
   })
+
+  const getArtifactComponent = (artifact: Artifact): typeof ArtifactSummaryCard | typeof ResultSummaryCard => {
+    if (artifact.key) {
+      return ArtifactSummaryCard
+    }
+
+    return ResultSummaryCard
+  }
 </script>
 
 <style>
@@ -45,6 +54,11 @@
   flex
   flex-col
   gap-4
+}
+
+.artifact-list__button-group-container { @apply
+  flex
+  justify-end
 }
 
 .artifact-list__artifacts--grid { @apply

@@ -11,8 +11,6 @@ const dateTimeFormat = `${dateFormat} ''at'' ${timeFormat}`
 
 const timeNumericFormat = 'hh:mm:ss a'
 const timeNumericShortFormat = 'hh:mm a'
-const dateMonthDayFormat = 'MMM d'
-const dateMonthDayYearFormat = 'MMM d, yyyy'
 const dateNumericFormat = 'yyyy/MM/dd'
 const dateTimeNumericFormat = `${dateNumericFormat} ${timeNumericFormat}`
 const dateTimeNumericShortFormat = `${dateNumericFormat} ${timeNumericShortFormat}`
@@ -142,22 +140,18 @@ export function formatDateTimeColloquial(value: Date | string, formatTime = time
   let format: string
   let prefix = ''
 
-  if (isThisYear) {
-    if (isToday || isTomorrow || isYesterday) {
-      format = formatTime
+  if (isThisYear && (isToday || isTomorrow || isYesterday)) {
+    format = formatTime
 
-      if (isToday) {
-        prefix = localization.info.today
-      } else if (isTomorrow) {
-        prefix = localization.info.tomorrow
-      } else if (isYesterday) {
-        prefix = localization.info.yesterday
-      }
-    } else {
-      format = dateMonthDayFormat
+    if (isToday) {
+      prefix = localization.info.today
+    } else if (isTomorrow) {
+      prefix = localization.info.tomorrow
+    } else if (isYesterday) {
+      prefix = localization.info.yesterday
     }
   } else {
-    format = dateMonthDayYearFormat
+    format = dateFormat
   }
 
   return [prefix, formatDateInTimezone(date, format)].join(' ')
