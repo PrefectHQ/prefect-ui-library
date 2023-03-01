@@ -117,7 +117,7 @@
         isPaused: false,
         concurrencyLimit: concurrencyLimit.value,
         baseJobTemplate: baseJobConfigs.value,
-        defaultVariableValues: parameters.value,
+        defaultVariableValues: parametersMap.get(type.value!),
       }
 
       try {
