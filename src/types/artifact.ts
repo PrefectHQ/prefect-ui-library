@@ -1,4 +1,4 @@
-import { ArtifactType, ResultArtifact, ResultArtifactData, MarkdownArtifact, MarkdownArtifactData, UnknownArtifact, Artifact, ArtifactData, TableArtifact, TableArtifactData } from '@/models/artifact'
+import { ArtifactType, ResultArtifact, ResultArtifactData, MarkdownArtifact, MarkdownArtifactData, UnknownArtifact, Artifact, ArtifactData, TableArtifact, TableArtifactData } from '@/models/Artifact'
 
 export function isResultArtifact(artifact: Artifact): artifact is ResultArtifact {
   return artifact.type === ArtifactType.Result
