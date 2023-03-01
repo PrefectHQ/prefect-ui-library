@@ -1,22 +1,22 @@
-import { Artifact, ArtifactType } from '@/models'
+import { Artifact, ArtifactType, artifactTypes } from '@/models'
 import { MockFunction } from '@/services/Mocker'
 import { choice } from '@/utilities'
 
 export const randomArtifact: MockFunction<Artifact, [Partial<Artifact>?]> = function(overrides = {}) {
-  const type = choice<ArtifactType>([ArtifactType.Markdown, ArtifactType.Result, ArtifactType.Table])
+  const type = choice<ArtifactType>(artifactTypes)
   let data = null
 
   switch (type) {
-    case ArtifactType.Result:
+    case 'result':
       data = {
         type: choice(['literal']),
         value: this.create('string'),
       }
       break
-    case ArtifactType.Markdown:
+    case 'markdown':
       data = this.create('markdownString', [{ sections: 4 }])
       break
-    case ArtifactType.Table:
+    case 'table':
       // TODO: Figure out table data type
       data = []
       break
