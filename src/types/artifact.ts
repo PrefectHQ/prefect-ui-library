@@ -12,6 +12,10 @@ export function isTableArtifact(artifact: Artifact): artifact is TableArtifact {
   return artifact.type === ArtifactType.Table
 }
 
+export function isKnownArtifactType(type: string): type is ArtifactType {
+  return Object.values(ArtifactType).includes(type as ArtifactType)
+}
+
 export function isUnknownArtifact(artifact: Artifact): artifact is UnknownArtifact {
   return artifact.type === ArtifactType.Unknown
 }
