@@ -4,7 +4,7 @@ export interface IArtifact {
   id: string,
   created: Date,
   updated: Date,
-  key: string,
+  key: string | null,
   type: string,
   description: string | null,
   data: ArtifactData,
@@ -15,11 +15,11 @@ export interface IArtifact {
 
 export class Artifact implements IArtifact {
   public readonly id: string
+  public readonly key: string | null
   public readonly flowRunId: string | null
   public readonly taskRunId: string | null
   public readonly created: Date
   public readonly updated: Date
-  public key: string
   public type: string
   public description: string | null
   public data: ArtifactData
