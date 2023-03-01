@@ -41,6 +41,7 @@
 <script lang="ts" setup>
   import { showToast } from '@prefecthq/prefect-design'
   import { useSubscription, useValidation, useValidationObserver, ValidationRule } from '@prefecthq/vue-compositions'
+  import { set } from 'lodash'
   import { computed, ref, watch } from 'vue'
   import { useRouter } from 'vue-router'
   import { SubmitButton, WorkPoolTypeSelect, SchemaFormFieldsWithValues } from '@/components'
@@ -48,7 +49,7 @@
   import { localization } from '@/localization'
   import { WorkPoolCreate } from '@/models'
   import { mapper } from '@/services'
-  import { Schema } from '@/types'
+  import { Schema, SchemaValues } from '@/types'
   import { getSchemaDefaults, getSchemaWithoutDefaults } from '@/utilities/parameters'
 
   const api = useWorkspaceApi()
@@ -71,13 +72,19 @@
 
   const schema = computed<Schema>(() => mapper.map('SchemaResponse', getSchemaWithoutDefaults(baseJobConfigs.value.variables ?? {}), 'Schema'))
   const schemaDefaultValues = computed(() => getSchemaDefaults(baseJobConfigs.value.variables ?? {}))
-  const parameters = ref()
-
-  // Update default values for form selected type changes
-  watch(type, (newType, oldType) => {
-    if (newType !== oldType) {
-      parameters.value = schemaDefaultValues.value
-    }
+  const parametersMap = new Map<string, SchemaValues>()
+  const parameters = computed({
+    get() {
+      if (type.value) {
+        return parametersMap.get(type.value) ?? schemaDefaultValues.value
+      }
+      return {}
+    },
+    set(parameters) {
+      if (type.value) {
+        parametersMap.set(type.value, parameters)
+      }
+    },
   })
 
   const schemaHasProperties = computed(() => {
