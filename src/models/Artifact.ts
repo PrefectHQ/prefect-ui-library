@@ -6,6 +6,7 @@ export interface IArtifact {
   updated: Date,
   key: string,
   type: string,
+  description: string | null,
   data: ArtifactData,
   metadata: ArtifactData,
   flowRunId: string | null,
@@ -20,6 +21,7 @@ export class Artifact implements IArtifact {
   public readonly updated: Date
   public key: string
   public type: string
+  public description: string | null
   public data: ArtifactData
   public metadata: ArtifactData
 
@@ -29,6 +31,7 @@ export class Artifact implements IArtifact {
     this.updated = artifact.updated
     this.key = artifact.key
     this.type = artifact.type
+    this.description = artifact.description
     this.data = artifact.data
     this.metadata = artifact.metadata
     this.flowRunId = artifact.flowRunId

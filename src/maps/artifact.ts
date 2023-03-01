@@ -7,6 +7,7 @@ export const mapArtifactResponseToArtifact: MapFunction<ArtifactResponse, Artifa
     id: source.id,
     created: this.map('string', source.created, 'Date'),
     updated: this.map('string', source.updated, 'Date'),
+    description: source.description,
     key: source.key,
     type: source.type,
     data: source.data,
