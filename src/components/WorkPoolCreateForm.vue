@@ -41,7 +41,7 @@
 <script lang="ts" setup>
   import { showToast } from '@prefecthq/prefect-design'
   import { useSubscription, useValidation, useValidationObserver, ValidationRule } from '@prefecthq/vue-compositions'
-  import { computed, ref } from 'vue'
+  import { computed, reactive, ref } from 'vue'
   import { useRouter } from 'vue-router'
   import { SubmitButton, WorkPoolTypeSelect, SchemaFormFieldsWithValues } from '@/components'
   import { useCan, useWorkspaceApi, useWorkspaceRoutes } from '@/compositions'
@@ -71,7 +71,7 @@
 
   const schema = computed<Schema>(() => mapper.map('SchemaResponse', getSchemaWithoutDefaults(baseJobConfigs.value.variables ?? {}), 'Schema'))
   const schemaDefaultValues = computed(() => getSchemaDefaults(baseJobConfigs.value.variables ?? {}))
-  const parametersMap = new Map<string, SchemaValues>()
+  const parametersMap = reactive(new Map<string, SchemaValues>())
   const parameters = computed({
     get() {
       if (type.value) {
@@ -117,7 +117,7 @@
         isPaused: false,
         concurrencyLimit: concurrencyLimit.value,
         baseJobTemplate: baseJobConfigs.value,
-        defaultVariableValues: parametersMap.get(type.value!),
+        defaultVariableValues: parameters.value,
       }
 
       try {
