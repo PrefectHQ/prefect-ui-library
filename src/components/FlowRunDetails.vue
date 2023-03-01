@@ -24,7 +24,7 @@
       </template>
     </p-key-value>
 
-    <p-key-value v-if="can.read.deployment && flowRun.deploymentId" label="Deployment" :alternate="alternate">
+    <p-key-value v-if="can.read.deployment && flowRun.deploymentId && deployment?.name" label="Deployment" :alternate="alternate">
       <template #value>
         <DeploymentIconText :deployment-id="flowRun.deploymentId" />
       </template>
@@ -101,6 +101,7 @@
   import { computed } from 'vue'
   import { WorkQueueIconText, FlowRunIconText, WorkQueueStatusIcon, RadarSmall, FlowRunTaskCount, FlowRunStartTime, FlowIconText, DurationIconText, DeploymentIconText } from '@/components'
   import { useTaskRunsCount, useWorkspaceApi, useWorkspaceRoutes, useCan } from '@/compositions'
+  import { useDeployment } from '@/compositions/useDeployment'
   import { FlowRun } from '@/models/FlowRun'
   import { formatDateTimeNumeric } from '@/utilities/dates'
 
@@ -117,6 +118,8 @@
 
   const flowRunId = computed(() => props.flowRun.id)
   const tasksCount = useTaskRunsCount(flowRunId)
+  const deploymentId = computed(() => props.flowRun.deploymentId)
+  const deployment = useDeployment(deploymentId)
 
   const flowRunFilter = computed<Parameters<typeof api.flowRuns.getFlowRuns> | null>(() => {
     if (props.flowRun.parentTaskRunId) {
