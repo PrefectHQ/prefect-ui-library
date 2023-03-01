@@ -23,9 +23,10 @@
         <WorkPoolTypeSelect v-model:selected="type" />
       </p-label>
 
-      <p-label v-if="type && schemaHasProperties && can.access.workers" label="Base Job Configuration">
-        <SchemaFormFieldsWithValues v-model:values="parameters" :schema="testSchema" />
-      </p-label>
+      <template v-if="showSchemaForm">
+        <h3>Base Job Configuration</h3>
+        <SchemaFormFieldsWithValues v-model:values="parameters" :schema="schema" />
+      </template>
     </p-content>
 
     <template #footer>
@@ -47,7 +48,8 @@
   import { localization } from '@/localization'
   import { WorkPoolCreate } from '@/models'
   import { mapper } from '@/services'
-  import { Schema } from '@/types'
+  import { Schema, SchemaValues } from '@/types'
+  import { getSchemaDefaults, getSchemaWithoutDefaults } from '@/utilities/parameters'
 
   const api = useWorkspaceApi()
   const can = useCan()
@@ -67,11 +69,21 @@
     return workersCollectionItems.value?.find((item) => item.type === type.value)?.defaultBaseJobConfiguration ?? {}
   })
 
-  const schema = computed<Schema>(() => mapper.map('SchemaResponse', baseJobConfigs.value.variables ?? {}, 'Schema'))
-  const parameters = ref()
-
-  const testSchema = computed<Schema>(() => {
-    return { ...schema.value, type: 'object' }
+  const schema = computed<Schema>(() => mapper.map('SchemaResponse', getSchemaWithoutDefaults(baseJobConfigs.value.variables ?? {}), 'Schema'))
+  const schemaDefaultValues = computed(() => getSchemaDefaults(baseJobConfigs.value.variables ?? {}))
+  const parametersMap = new Map<string, SchemaValues>()
+  const parameters = computed({
+    get() {
+      if (type.value) {
+        return parametersMap.get(type.value) ?? schemaDefaultValues.value
+      }
+      return {}
+    },
+    set(parameters) {
+      if (type.value) {
+        parametersMap.set(type.value, parameters)
+      }
+    },
   })
 
   const schemaHasProperties = computed(() => {
@@ -79,6 +91,7 @@
 
     return properties && Object.keys(properties).length > 0
   })
+  const showSchemaForm = computed(() => type.value && schemaHasProperties.value && can.access.workers)
 
   const isRequired: ValidationRule<string | undefined> = (value) => value !== undefined && value.trim().length > 0
 
@@ -95,8 +108,6 @@
   }
 
   const submit = async (): Promise<void> => {
-    const baseJobTemplateSchema = mapper.map('WorkerSchemaProperty', { values: parameters.value, schema: baseJobConfigs.value }, 'WorkerSchemaPropertyRequest')
-
     const valid = await validate()
     if (valid) {
       const values: WorkPoolCreate = {
@@ -105,7 +116,8 @@
         type: type.value,
         isPaused: false,
         concurrencyLimit: concurrencyLimit.value,
-        baseJobTemplate: baseJobTemplateSchema,
+        baseJobTemplate: baseJobConfigs.value,
+        defaultVariableValues: parameters.value,
       }
 
       try {
