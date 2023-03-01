@@ -1,23 +1,11 @@
-import { ArtifactType, ResultArtifact, ResultArtifactData, MarkdownArtifact, MarkdownArtifactData, UnknownArtifact, Artifact, ArtifactData, TableArtifact, TableArtifactData } from '@/models/Artifact'
+import { ArtifactType, artifactTypes, ResultArtifactData, MarkdownArtifactData, Artifact, ArtifactData, TableArtifactData } from '@/models/Artifact'
 
-export function isResultArtifact(artifact: Artifact): artifact is ResultArtifact {
-  return artifact.type === ArtifactType.Result
+export function isArtifactType<T extends ArtifactType>(artifact: Artifact, type: T): artifact is Artifact & { type: T } {
+  return artifact.type === type
 }
 
-export function isMarkdownArtifact(artifact: Artifact): artifact is MarkdownArtifact {
-  return artifact.type === ArtifactType.Markdown
-}
-
-export function isTableArtifact(artifact: Artifact): artifact is TableArtifact {
-  return artifact.type === ArtifactType.Table
-}
-
-export function isKnownArtifactType(type: string): type is ArtifactType {
-  return Object.values(ArtifactType).includes(type as ArtifactType)
-}
-
-export function isUnknownArtifact(artifact: Artifact): artifact is UnknownArtifact {
-  return artifact.type === ArtifactType.Unknown
+export function isKnownArtifactType(type: unknown): type is ArtifactType & Exclude<ArtifactType, 'unknown'> {
+  return typeof type === 'string' && artifactTypes.includes(type as ArtifactType) && type !== 'unknown'
 }
 
 export function isResultArtifactData(data: ArtifactData): data is ResultArtifactData {

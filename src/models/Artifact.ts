@@ -1,9 +1,11 @@
-export enum ArtifactType {
-  Result = 'result',
-  Markdown = 'markdown',
-  Table = 'table',
-  Unknown = 'unknown'
-}
+export const artifactTypes = [
+  'result',
+  'markdown',
+  'table',
+  'unknown',
+] as const
+
+export type ArtifactType = typeof artifactTypes[number]
 
 export type ResultArtifactData = Record<string, unknown>
 export type MarkdownArtifactData = string
@@ -27,22 +29,22 @@ export interface IArtifact {
 }
 
 export type ResultArtifact = IArtifact & {
-  type: ArtifactType.Result,
+  type: 'result',
   data: ResultArtifactData,
 }
 
 export type MarkdownArtifact = IArtifact & {
-  type: ArtifactType.Markdown,
+  type: 'markdown',
   data: MarkdownArtifactData,
 }
 
 export type TableArtifact = IArtifact & {
-  type: ArtifactType.Table,
+  type: 'table',
   data: TableArtifactData,
 }
 
 export type UnknownArtifact = IArtifact & {
-  type: ArtifactType.Unknown,
+  type: 'unknown',
   data: unknown,
 }
 
