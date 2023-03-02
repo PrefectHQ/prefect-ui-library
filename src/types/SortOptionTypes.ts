@@ -12,6 +12,13 @@ export function isArtifactSortValue(value: MaybeRef<unknown>): value is MaybeRef
   return artifactSortValues.includes(valueRef.value as ArtifactSortValues)
 }
 
+export const artifactSortOptions = [
+  { label: 'Created', value: 'CREATED_DESC' },
+  { label: 'Updated', value: 'UPDATED_DESC' },
+  { label: 'A to Z', value: 'KEY_ASC' },
+  { label: 'Z to A', value: 'KEY_DESC' },
+]
+
 export const flowSortValues = ['CREATED_DESC', 'UPDATED_DESC', 'NAME_DESC', 'NAME_ASC'] as const
 export type FlowSortValues = typeof flowSortValues[number]
 export const defaultFlowSort: FlowSortValues = 'CREATED_DESC'

@@ -2,7 +2,7 @@ import { KeyedDataStore } from '../services/KeyedDataStore'
 import { SimpleDataStore } from '../services/SimpleDataStore'
 import { ApiMockSeeds } from './api'
 import { FlowRunGraphMock } from '@/demo/types/flowRunGraphMock'
-import { Flow, FlowRun, BlockDocument, BlockSchema, TaskRun, Deployment, WorkQueue, BlockType, WorkPool, WorkPoolQueue, WorkPoolWorker, GraphNode } from '@/models'
+import { Flow, FlowRun, BlockDocument, BlockSchema, TaskRun, Deployment, WorkQueue, BlockType, WorkPool, WorkPoolQueue, WorkPoolWorker, GraphNode, Artifact } from '@/models'
 import { resolveSchema } from '@/services/schemas/resolvers/schemas'
 
 function hydrateBlockSchema(blockSchema: BlockSchema): BlockSchema {
@@ -22,6 +22,7 @@ function hydrateGraph({ id, graph }: FlowRunGraphMock): FlowRunGraphMock {
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 export function createDataStores(seeds: ApiMockSeeds = {}) {
   return {
+    artifacts: new KeyedDataStore({ seeds: seeds.artifacts, hydrate: artifact => new Artifact(artifact) }),
     flows: new KeyedDataStore({ seeds: seeds.flows, hydrate: flow => new Flow(flow) }),
     flowRuns: new KeyedDataStore({ seeds: seeds.flowRuns, hydrate: flowRun => new FlowRun(flowRun) }),
     flowRunGraphs: new KeyedDataStore({ seeds: seeds.flowRunGraphs, hydrate: hydrateGraph }),
