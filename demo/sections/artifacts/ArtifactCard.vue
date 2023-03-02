@@ -5,7 +5,7 @@
     </template>
 
     <template v-for="demo in demos" #[demo.slot] :key="demo.title">
-      <ArtifactCard :artifact="demo.artifact" />
+      <ArtifactCard :artifact="demo.artifact" :condense="condense" />
     </template>
   </ComponentPage>
 </template>
