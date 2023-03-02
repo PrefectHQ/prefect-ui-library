@@ -7,6 +7,7 @@
 <script lang="ts" setup>
   import { computed } from 'vue'
   import { Artifact } from '@/models'
+  
   const props = defineProps<{
     artifact: Artifact,
   }>()
