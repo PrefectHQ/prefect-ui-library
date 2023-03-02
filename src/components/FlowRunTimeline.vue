@@ -39,7 +39,6 @@
         ref="timelineGraphContainer"
         class="flow-run-timeline__graph-wrapper"
       >
-        <h1>{{ graphData.length }} YOOOO</h1>
         <FlowRunTimeline
           ref="timelineGraph"
           class="flow-run-timeline__graph"
