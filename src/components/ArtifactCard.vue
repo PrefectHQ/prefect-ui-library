@@ -53,7 +53,7 @@
   import { useFlowRun, useTaskRun, useWorkspaceRoutes } from '@/compositions'
   import { localization } from '@/localization'
   import { Artifact } from '@/models'
-  import { formatDateTimeRelative, isDefined } from '@/utilities'
+  import { formatDateTimeRelative } from '@/utilities'
 
   const props = defineProps<{
     artifact: Artifact,
@@ -160,7 +160,7 @@
 }
 
 .artifact-card__subheader { @apply
-  text-sm
+  text-xs
   text-foreground-200
   uppercase
 }
