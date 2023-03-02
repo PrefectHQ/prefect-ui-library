@@ -10,7 +10,7 @@
   const props = defineProps<{
     artifact: Artifact,
   }>()
-  
+
   const description = computed(() => props.artifact.description ?? '')
 </script>
 
