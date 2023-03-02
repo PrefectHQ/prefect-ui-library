@@ -1,5 +1,6 @@
 <template>
   <div
+    v-if="graphData.length > 0"
     class="flow-run-timeline"
     :class="classes.root"
     tabindex="0"
@@ -35,10 +36,10 @@
         />
       </div>
       <div
-        v-if="graphData.length > 0"
         ref="timelineGraphContainer"
         class="flow-run-timeline__graph-wrapper"
       >
+        <h1>{{ graphData.length }} YOOOO</h1>
         <FlowRunTimeline
           ref="timelineGraph"
           class="flow-run-timeline__graph"
