@@ -24,7 +24,7 @@
         </template>
       </template>
       <template v-if="visible && (flowRun.deploymentId || flowRun.workQueueName)" #relationships>
-        <template v-if="flowRun.deploymentId">
+        <template v-if="flowRun.deploymentId && deployment?.name">
           <div class="flow-run-list-item__relation">
             <span>Deployment</span> <DeploymentIconText :deployment-id="flowRun.deploymentId" />
           </div>
@@ -60,6 +60,7 @@
   import WorkPoolIconText from '@/components/WorkPoolIconText.vue'
   import WorkQueueIconText from '@/components/WorkQueueIconText.vue'
   import { useTaskRunsCount, useWorkspaceRoutes } from '@/compositions'
+  import { useDeployment } from '@/compositions/useDeployment'
   import { FlowRun } from '@/models/FlowRun'
   import { toPluralString } from '@/utilities'
 
@@ -89,6 +90,9 @@
 
   const flowRunId = computed(() => props.flowRun.id)
   const tasksCount = useTaskRunsCount(flowRunId)
+
+  const deploymentId = computed(() => props.flowRun.deploymentId)
+  const deployment = useDeployment(deploymentId)
 
   const visible = ref(false)
   const el = ref<HTMLDivElement>()
