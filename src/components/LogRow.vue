@@ -15,6 +15,9 @@
       <div v-if="taskRunName">
         {{ taskRunName }}
       </div>
+      <div v-if="log.name">
+        {{ log.name }}
+      </div>
     </div>
   </div>
 </template>
