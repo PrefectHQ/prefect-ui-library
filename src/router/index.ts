@@ -22,6 +22,11 @@ type WorkspaceRouteComponents = Record<WorkspaceRouteKey, WorkspaceComponent>
 export function createWorkspaceRouteRecords(components: Partial<WorkspaceRouteComponents>): WorkspaceRouteRecord[] {
   return [
     {
+      path: 'artifact/:artifactId',
+      name: 'workspace.artifact',
+      component: components.artifact,
+    },
+    {
       path: 'flow-runs',
       meta: {
         can: 'read:flow_run',
