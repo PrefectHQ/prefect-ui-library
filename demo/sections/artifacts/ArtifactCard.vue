@@ -1,25 +1,32 @@
 <template>
   <ComponentPage title="ArtifactCard" :demos="demos">
+    <template #description>
+      <p-checkbox v-model="condense" label="Condense" />
+    </template>
+
     <template #unknown>
-      <ArtifactCard :artifact="artifact" />
+      <ArtifactCard :artifact="artifact" :condense="condense" />
     </template>
     <template #result>
-      <ArtifactCard :artifact="result" />
+      <ArtifactCard :artifact="result" :condense="condense" />
     </template>
     <template #markdown>
-      <ArtifactCard :artifact="markdown" />
+      <ArtifactCard :artifact="markdown" :condense="condense" />
     </template>
     <template #table>
-      <ArtifactCard :artifact="table" />
+      <ArtifactCard :artifact="table" :condense="condense" />
     </template>
   </ComponentPage>
 </template>
 
 <script lang="ts" setup>
+  import { ref } from 'vue'
   import ArtifactCard from '@/components/ArtifactCard.vue'
   import ComponentPage from '@/demo/components/ComponentPage.vue'
   import { useArtifactMock } from '@/demo/compositions/useArtifactsMock'
   import { DemoSection } from '@/demo/types/demoSection'
+
+  const condense = ref()
 
   const demos: DemoSection[] = [
     {
