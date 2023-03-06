@@ -4,15 +4,15 @@
       <template #option="{ option }">
         <StateBadge :state="getStateFromTagValue(option.value)" />
       </template>
-      <template v-if="multiple" #tag="{ value, dismiss }">
+      <template #tag="{ value, dismiss }">
         <StateBadge
           class="state-name-select__option state-name-select__option--multiple"
-          :state="getStateFromTagValue(value)"
+          :state="getStateFromTagValue(value.value)"
           dismissible
           @dismiss="dismiss"
         />
       </template>
-      <template v-else #default="{ value }">
+      <template #default="{ value }">
         <StateBadge
           class="state-name-select__option"
           :state="getStateFromTagValue(value)"
@@ -24,7 +24,7 @@
 </template>
 
 <script lang="ts" setup>
-  import { isArray, PSelect, SelectOption, TagValue } from '@prefecthq/prefect-design'
+  import { isArray, PSelect, SelectOption } from '@prefecthq/prefect-design'
   import { computed } from 'vue'
   import StateBadge from '@/components/StateBadge.vue'
   import { StateBadgeState } from '@/types/stateBadge'
@@ -68,7 +68,7 @@
     }
   }))
 
-  const getStateFromTagValue = ({ value }: TagValue): StateBadgeState | null => {
+  const getStateFromTagValue = (value: unknown): StateBadgeState | null => {
     if (typeof value == 'string') {
       return mapStateNameToStateType(value)
     }
