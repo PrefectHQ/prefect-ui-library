@@ -1,6 +1,7 @@
 <template>
   <p-icon-button-menu v-bind="$attrs" class="work-pool-queue-menu">
     <CopyOverflowMenuItem label="Copy ID" :item="workPoolQueue.id" />
+    <slot v-bind="{ workPoolQueue }" />
     <router-link :to="routes.workPoolQueueEdit(workPoolName, workPoolQueue.name)">
       <p-overflow-menu-item v-if="can.update.work_queue" label="Edit" />
     </router-link>
@@ -44,9 +45,7 @@
   const routes = useWorkspaceRoutes()
   const { showModal, open, close } = useShowModal()
   const workPoolSubscription = useSubscription(api.workPools.getWorkPoolByName, [props.workPoolName])
-  const workPool = computed(() => {
-    return workPoolSubscription.response
-  })
+  const workPool = computed(() => workPoolSubscription.response)
 
   const showDelete = computed(() => {
     return !workPool.value || workPool.value.defaultQueueId !== props.workPoolQueue.id && can.delete.work_queue
