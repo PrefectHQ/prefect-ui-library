@@ -7,7 +7,7 @@
       <template #tag="{ value, dismiss }">
         <StateBadge
           class="state-name-select__option state-name-select__option--multiple"
-          :state="getStateFromTagValue(value.value)"
+          :state="getStateFromTagValue(value)"
           dismissible
           @dismiss="dismiss"
         />

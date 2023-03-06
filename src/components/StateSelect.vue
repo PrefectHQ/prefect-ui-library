@@ -7,7 +7,7 @@
       <template v-if="multiple" #tag="{ value, dismiss }">
         <StateBadge
           class="state-select__option state-select__option--multiple"
-          :state="getStateFromTagValue(value.value)"
+          :state="getStateFromTagValue(value)"
           dismissible
           @dismiss="dismiss"
         />
