@@ -23,5 +23,5 @@
   const demos: DemoSection[] = [{ title: 'Multiple' }]
 
   const selected = ref('scheduled')
-  const multiple = ref(['Failed', 'Crashed'])
+  const multiple = ref(['failed', 'crashed'])
 </script>
