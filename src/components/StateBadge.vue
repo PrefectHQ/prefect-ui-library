@@ -8,12 +8,12 @@
 <script lang="ts" setup>
   import { computed } from 'vue'
   import StateIcon from '@/components/StateIcon.vue'
-  import { StateType } from '@/models/StateType'
+  import { StateBadgeState } from '@/types/stateBadge'
   import { TailwindColor } from '@/types/tailwind'
   import { mapStateNameToStateType } from '@/utilities/state'
 
   const props = defineProps<{
-    state: { name: string, type: StateType | null } | null,
+    state: StateBadgeState | null,
     flat?: boolean,
     dismissible?: boolean,
   }>()
