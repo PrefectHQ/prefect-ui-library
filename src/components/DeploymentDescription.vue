@@ -1,7 +1,5 @@
 <template>
-  <p>
-    {{ description }}
-  </p>
+  <p-markdown-renderer :text="description" />
 </template>
 
 <script lang="ts" setup>
