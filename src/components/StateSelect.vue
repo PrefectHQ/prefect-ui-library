@@ -2,20 +2,20 @@
   <div class="state-select">
     <p-select v-model="internalValue" :options="options" :empty-message="emptyMessage">
       <template #option="{ option }">
-        <StateBadge :state="{ name: option.label, type: option.value as StateType }" />
+        <StateBadge :state="getStateFromTagValue(option.value)" />
       </template>
-      <template v-if="multiple" #tag="{ label, value, dismiss }">
+      <template v-if="multiple" #tag="{ value, dismiss }">
         <StateBadge
           class="state-select__option state-select__option--multiple"
-          :state="{ name: label, type: value as StateType }"
+          :state="getStateFromTagValue(value)"
           dismissible
           @dismiss="dismiss"
         />
       </template>
-      <template v-else #default="{ label, value }">
+      <template v-else #default="{ value }">
         <StateBadge
           class="state-select__option"
-          :state="{ name: label, type: value as StateType }"
+          :state="getStateFromTagValue(value)"
         />
       </template>
     </p-select>
@@ -26,8 +26,9 @@
   import { isArray, PSelect, SelectOption } from '@prefecthq/prefect-design'
   import { computed } from 'vue'
   import StateBadge from '@/components/StateBadge.vue'
-  import { stateType, StateType, terminalStateType } from '@/models/StateType'
-  import { capitalize } from '@/utilities'
+  import { stateType, terminalStateType } from '@/models/StateType'
+  import { StateBadgeState } from '@/types/stateBadge'
+  import { capitalize, mapStateNameToStateType } from '@/utilities'
 
   const props = defineProps<{
     selected: string | string[] | null | undefined,
@@ -68,6 +69,14 @@
 
     return [...stateMap, { label: 'Late', value: 'late' }, { label: 'Cancelling', value: 'cancelling' }]
   })
+
+  const getStateFromTagValue = (value: unknown): StateBadgeState | null => {
+    if (typeof value == 'string') {
+      return mapStateNameToStateType(value)
+    }
+
+    return null
+  }
 </script>
 
 <style>

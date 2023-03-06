@@ -46,6 +46,7 @@
 <style>
 .run-logs__logs-container { @apply
   max-h-96
+  overflow-auto
 }
 
 .run-logs__log-row-container { @apply

@@ -15,6 +15,9 @@
       <div v-if="taskRunName">
         {{ taskRunName }}
       </div>
+      <div v-if="log.name" class="log-row__logger">
+        {{ log.name }}
+      </div>
     </div>
   </div>
 </template>
@@ -37,18 +40,34 @@
 
 <style>
 .log-row { @apply
-  flex w-full py-2;
+  flex
+  w-full
+  py-2;
 }
 
 .log-row__leading { @apply
-  w-[84px] select-none;
+  w-[84px]
+  select-none;
 }
 
 .log-row__content { @apply
-  flex-1 select-auto whitespace-pre-wrap;
+  flex-1
+  select-auto
+  whitespace-pre-wrap;
 }
 
 .log-row__trailing { @apply
-  text-xs text-slate-500 shrink-0 text-right;
+  text-xs
+  text-slate-500
+  shrink-0
+  text-right
+  pl-1
+  max-w-[15%]
+}
+
+.log-row__logger { @apply
+  font-black
+  break-all
+  whitespace-normal
 }
 </style>

@@ -11,7 +11,7 @@
         </p-label>
 
         <p-label label="Description (Optional)" :state="descriptionState">
-          <p-textarea v-model="description" rows="7" :state="descriptionState" />
+          <p-code-input v-model="description" lang="markdown" show-line-numbers :state="descriptionState" />
         </p-label>
 
         <p-label label="Work Pool (Optional)">
