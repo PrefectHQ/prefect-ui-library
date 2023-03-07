@@ -71,17 +71,17 @@
   const crumbs = computed<BreadCrumbs>(() => {
     const internalCrumbs: BreadCrumbs = []
 
-    if (flowRunId.value && !routeIncludes.value.flowRun) {
+    if (flowRun.value && !routeIncludes.value.flowRun) {
       internalCrumbs.push({
-        text: flowRun.value?.name ?? '',
-        to: routes.flowRun(flowRunId.value),
+        text: flowRun.value.name ?? '',
+        to: routes.flowRun(flowRun.value.id),
       })
     }
 
-    if (taskRunId.value && !routeIncludes.value.taskRun) {
+    if (taskRun.value && !routeIncludes.value.taskRun) {
       internalCrumbs.push({
-        text: taskRun.value?.name ?? '',
-        to: routes.taskRun(taskRunId.value),
+        text: taskRun.value.name ?? '',
+        to: routes.taskRun(taskRun.value.id),
       })
     }
 
