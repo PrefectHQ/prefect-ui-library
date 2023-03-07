@@ -7,8 +7,9 @@
 <script lang="ts" setup>
   import { useSubscription } from '@prefecthq/vue-compositions'
   import { computed } from 'vue'
-  import { ArtifactsFilter, useWorkspaceApi } from '..'
+  import { useWorkspaceApi } from '@/compositions'
   import { FlowRun } from '@/models'
+  import { ArtifactsFilter } from '@/models/Filters'
 
   const props = defineProps<{
     flowRun: FlowRun,

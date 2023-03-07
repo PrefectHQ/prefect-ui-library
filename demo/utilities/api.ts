@@ -1,5 +1,6 @@
 import { createActions } from '@prefecthq/vue-compositions'
 import { provide } from 'vue'
+import { MockWorkspaceArtifactsApi } from '../services/mockWorkspaceArtifactsApi'
 import { MockWorkspaceBlockCapabilitiesApi } from '../services/mockWorkspaceBlockCapabilitiesApi'
 import { MockWorkspaceBlockDocumentsApi } from '../services/mockWorkspaceBlockDocumentsApi'
 import { MockWorkspaceBlockSchemasApi } from '../services/mockWorkspaceBlockSchemasApi'
@@ -38,6 +39,7 @@ export type ApiMockSeeds = {
 
 function createApiMock(): Partial<CreateApi> {
   return {
+    artifacts: createActions(new MockWorkspaceArtifactsApi()),
     flows: createActions(new MockWorkspaceFlowsApi()),
     flowRuns: createActions(new MockWorkspaceFlowRunsApi()),
     blockDocuments: createActions(new MockWorkspaceBlockDocumentsApi()),

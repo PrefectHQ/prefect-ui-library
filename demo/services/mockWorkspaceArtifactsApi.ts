@@ -4,7 +4,6 @@ import { ArtifactsFilter } from '@/models/Filters'
 import { IWorkspaceArtifactsApi } from '@/services/WorkspaceArtifactsApi'
 
 export class MockWorkspaceArtifactsApi extends MockApi implements IWorkspaceArtifactsApi {
-
   public async getArtifact(id: string): Promise<Artifact> {
     return await this.artifacts.get(id)
   }
@@ -13,8 +12,6 @@ export class MockWorkspaceArtifactsApi extends MockApi implements IWorkspaceArti
     if (Object.keys(filter).length) {
       console.warn('MockWorkspaceArtifactsApi has not implemented the filter argument of the getArtifacts method')
     }
-
-
     return await this.artifacts.getAll()
   }
 
@@ -22,7 +19,6 @@ export class MockWorkspaceArtifactsApi extends MockApi implements IWorkspaceArti
     if (Object.keys(filter).length) {
       console.warn('MockWorkspaceArtifactsApi has not implemented the filter argument of the getArtifactsCount method')
     }
-
     return await this.artifacts.count()
   }
 
