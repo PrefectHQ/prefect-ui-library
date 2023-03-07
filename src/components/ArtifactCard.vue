@@ -207,9 +207,11 @@
   border-b-0
   pb-0
   gap-x-2
+  sm:flex-col
   flex-row
   justify-self-stretch
   sm:justify-end
+  sm:items-end
   items-center
 }
 
@@ -217,6 +219,10 @@
   text-sm
   text-foreground-200
   capitalize
+}
+
+.artifact-card__summary-container--condensed .artifact-card__summary-item-label { @apply
+  sm:text-xs
 }
 
 .artifact-card__summary-item-value--none { @apply
