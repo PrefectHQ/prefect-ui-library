@@ -15,10 +15,7 @@
       </header>
 
       <div class="artifact-card__summary-container" :class="classes.summaryContainer">
-        <div
-          class="artifact-card__summary-item"
-          :title="artifact.updated.toLocaleString()"
-        >
+        <div class="artifact-card__summary-item">
           <span class="artifact-card__summary-item-label">
             {{ localization.info.lastUpdated }}
           </span>
@@ -27,10 +24,7 @@
           </span>
         </div>
 
-        <div
-          class="artifact-card__summary-item"
-          :title="artifact.created.toLocaleString()"
-        >
+        <div class="artifact-card__summary-item">
           <span class="artifact-card__summary-item-label">
             {{ localization.info.created }}
           </span>
