@@ -189,6 +189,7 @@
   justify-center
   self-stretch
   sm:self-auto
+  sm:whitespace-nowrap
 }
 
 .artifact-card__summary-item { @apply
