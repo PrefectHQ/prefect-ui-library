@@ -68,17 +68,20 @@
   const hasRun = computed(() => !!props.artifact.flowRunId || !!props.artifact.taskRunId)
   const hasKey = computed(() => !!props.artifact.key)
 
+  const viewingFlowRun = computed(() => flowRunId.value && route.fullPath.includes(flowRunId.value))
+  const viewingTaskRun = computed(() => taskRunId.value && route.fullPath.includes(taskRunId.value))
+
   const crumbs = computed<BreadCrumbs>(() => {
     const internalCrumbs: BreadCrumbs = []
 
-    if (flowRun.value && !routeIncludes.value.flowRun) {
+    if (flowRun.value && !viewingFlowRun.value) {
       internalCrumbs.push({
         text: flowRun.value.name ?? '',
         to: routes.flowRun(flowRun.value.id),
       })
     }
 
-    if (taskRun.value && !routeIncludes.value.taskRun) {
+    if (taskRun.value && !viewingTaskRun.value) {
       internalCrumbs.push({
         text: taskRun.value.name ?? '',
         to: routes.taskRun(taskRun.value.id),
@@ -88,12 +91,6 @@
     return internalCrumbs
   })
 
-  const routeIncludes = computed(() => {
-    return {
-      flowRun: flowRunId.value && route.fullPath.includes(flowRunId.value),
-      taskRun: taskRunId.value && route.fullPath.includes(taskRunId.value),
-    }
-  })
 
   const classes = computed(() => {
     return {
