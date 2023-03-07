@@ -132,6 +132,8 @@
 .artifact-card__body { @apply
   flex
   flex-col
+  h-full
+  justify-between
   gap-y-2
 }
 
@@ -169,6 +171,15 @@
 
 .artifact-card__bread-crumbs { @apply
   text-base
+  flex-nowrap
+  w-full
+  overflow-hidden
+}
+
+.artifact-card__bread-crumbs .p-bread-crumbs__crumb { @apply
+  whitespace-nowrap
+  overflow-ellipsis
+  max-w-fit
 }
 
 .artifact-card__bread-crumbs--condensed { @apply
@@ -195,6 +206,7 @@
   flex-col
   sm:flex-row-reverse
   items-baseline
+  text-sm
   pb-1
   border-b
   border-b-foreground-50
