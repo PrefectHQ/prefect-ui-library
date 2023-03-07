@@ -2,6 +2,8 @@
   <div class="work-pool-details">
     <p-key-value label="Description" :value="workPool.description" :alternate="alternate" />
 
+    <p-key-value v-if="can.access.workers" label="Type" :value="workPool.typeLabel" :alternate="alternate" />
+
     <p-key-value label="Concurrency Limit" :value="workPool.concurrencyLimit" :alternate="alternate" />
 
     <p-key-value label="Created" :value="formatDateTimeNumeric(workPool.created)" :alternate="alternate" />

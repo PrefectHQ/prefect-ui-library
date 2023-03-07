@@ -24,7 +24,7 @@
       </p-label>
 
       <template v-if="showSchemaForm">
-        <h3>Base Job Configuration</h3>
+        <h3>Base Job Configuration <BetaBadge /></h3>
         <SchemaFormFieldsWithValues v-model:values="parameters" :schema="schema" />
       </template>
     </p-content>
@@ -44,7 +44,7 @@
   import { useValidationObserver } from '@prefecthq/vue-compositions'
   import { ref, computed } from 'vue'
   import { useRouter } from 'vue-router'
-  import { SubmitButton, WorkPoolTypeSelect, SchemaFormFieldsWithValues } from '@/components'
+  import { SubmitButton, WorkPoolTypeSelect, SchemaFormFieldsWithValues, BetaBadge } from '@/components'
   import { useCan, useWorkspaceApi, useWorkspaceRoutes } from '@/compositions'
   import { localization } from '@/localization'
   import { WorkPool, WorkPoolEdit } from '@/models'
