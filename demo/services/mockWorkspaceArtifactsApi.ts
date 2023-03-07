@@ -9,10 +9,13 @@ export class MockWorkspaceArtifactsApi extends MockApi implements IWorkspaceArti
   }
 
   public async getArtifacts(filter: ArtifactsFilter = {}): Promise<Artifact[]> {
-    if (Object.keys(filter).length) {
-      console.warn('MockWorkspaceArtifactsApi has not implemented the filter argument of the getArtifacts method')
+    let artifacts = await this.artifacts.getAll()
+
+    if (filter.artifacts?.flowRunId?.length) {
+      artifacts = artifacts.filter(artifact => artifact.flowRunId && filter.artifacts?.flowRunId?.includes(artifact.flowRunId))
     }
-    return await this.artifacts.getAll()
+
+    return artifacts
   }
 
   public async getArtifactsCount(filter: ArtifactsFilter = {}): Promise<number> {

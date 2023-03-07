@@ -5,11 +5,21 @@
       <p-button-group v-model="view" :options="viewOptions" />
     </div>
 
-    <div class="flow-run-results__list" :class="classes.list">
-      <template v-for="result in results" :key="result.id">
-        <ArtifactCard :artifact="result" :condense="condense" />
-      </template>
-    </div>
+    <template v-if="noResults">
+      <p-empty-state>
+        <template #description>
+          {{ localization.info.noResults }}
+        </template>
+      </p-empty-state>
+    </template>
+
+    <template v-else>
+      <div class="flow-run-results__list" :class="classes.list">
+        <template v-for="result in results" :key="result.id">
+          <ArtifactCard :artifact="result" :condense="condense" />
+        </template>
+      </div>
+    </template>
   </div>
 </template>
 
@@ -19,6 +29,7 @@
   import { computed, ref } from 'vue'
   import ArtifactCard from '@/components/ArtifactCard.vue'
   import { useWorkspaceApi } from '@/compositions'
+  import { localization } from '@/localization'
   import { FlowRun } from '@/models'
   import { ArtifactsFilter } from '@/models/Filters'
 
@@ -45,6 +56,7 @@
   })
   const resultsSubscription = useSubscription(api.artifacts.getArtifacts, [resultsFilter])
   const results = computed(() => resultsSubscription.response ?? [])
+  const noResults = computed(() => resultsSubscription.executed && results.value.length === 0)
 
   const classes = computed(() => {
     return {
