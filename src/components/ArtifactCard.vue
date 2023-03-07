@@ -2,12 +2,12 @@
   <p-card class="artifact-card" :class="classes.root">
     <div class="artifact-card__body" :class="classes.body">
       <header class="artifact-card__header" :class="classes.header">
-        <h6 class="artifact-card__subheader" :class="classes.subheader">
+        <div class="artifact-card__subheader" :class="classes.subheader">
           {{ artifact.type }}
-        </h6>
-        <h3 v-if="hasKey">
+        </div>
+        <div v-if="hasKey" class="artifact-card__title">
           {{ artifact.key }}
-        </h3>
+        </div>
 
         <template v-if="hasRun && crumbs.length">
           <p-bread-crumbs :crumbs="crumbs" class="artifact-card__bread-crumbs" :class="classes.breadCrumbs" />
