@@ -72,11 +72,9 @@
 
 .flow-run-results__list--grid { @apply
   grid
-  grid-cols-1
-  gap-4
-  md:grid-cols-1
-  lg:grid-cols-2
-  xl:grid-cols-3
+  gap-4;
+
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
 }
 
 .flow-run-results__list--rows { @apply
