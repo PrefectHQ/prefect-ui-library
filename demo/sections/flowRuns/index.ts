@@ -6,4 +6,5 @@ export const flowRuns: Section = {
   FlowRunListItem: () => import('./FlowRunListItem.vue'),
   FlowRunRadar: () => import('./FlowRunRadar.vue'),
   FlowRunsFilterGroup: () => import('./FlowRunsFilterGroup.vue'),
+  FlowRunResults: () => import('./FlowRunResults.vue'),
 }
