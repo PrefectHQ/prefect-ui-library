@@ -172,14 +172,12 @@
 .artifact-card__bread-crumbs { @apply
   text-base
   flex-nowrap
-  w-full
   overflow-hidden
 }
 
 .artifact-card__bread-crumbs .p-bread-crumbs__crumb { @apply
   whitespace-nowrap
   overflow-ellipsis
-  max-w-fit
 }
 
 .artifact-card__bread-crumbs--condensed { @apply
@@ -204,6 +202,7 @@
   flex
   justify-between
   flex-col
+  gap-x-4
   sm:flex-row-reverse
   items-baseline
   text-sm
@@ -224,10 +223,18 @@
   items-center
 }
 
+.artifact-card__summary-item-value { @apply
+  shrink
+  whitespace-nowrap
+  overflow-hidden
+  overflow-ellipsis
+}
+
 .artifact-card__summary-item-label { @apply
   text-sm
   text-foreground-200
   capitalize
+  whitespace-nowrap
 }
 
 .artifact-card__summary-container--condensed .artifact-card__summary-item-label { @apply
