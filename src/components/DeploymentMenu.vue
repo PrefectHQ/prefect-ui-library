@@ -1,6 +1,6 @@
 <template>
   <p-icon-button-menu v-bind="$attrs">
-    <DeploymentQuickRunOverflowMenuItem v-if="can.run.deployment && showAll" :deployment-id="deployment.id" />
+    <DeploymentQuickRunOverflowMenuItem v-if="can.run.deployment && showAll" :deployment="deployment" :open-modal="openParametersModal" />
 
     <DeploymentCustomRunOverflowMenuItem v-if="can.run.deployment && showAll" :deployment-id="deployment.id" />
 
@@ -10,15 +10,17 @@
       <p-overflow-menu-item label="Edit" />
     </router-link>
 
-    <p-overflow-menu-item v-if="can.delete.deployment" label="Delete" @click="open" />
+    <p-overflow-menu-item v-if="can.delete.deployment" label="Delete" @click="openConfirmDeleteModal" />
   </p-icon-button-menu>
 
   <ConfirmDeleteModal
-    v-model:showModal="showModal"
+    v-model:showModal="showConfirmDeleteModal"
     label="Deployment"
     :name="deployment.name"
     @delete="deleteDeployment(deployment.id)"
   />
+
+  <QuickRunParametersModal v-model:showModal="showParametersModal" :deployment="deployment" />
 </template>
 
 <script lang="ts">
@@ -30,7 +32,7 @@
 </script>
 
 <script lang="ts" setup>
-  import { DeploymentQuickRunOverflowMenuItem, DeploymentCustomRunOverflowMenuItem, ConfirmDeleteModal, CopyOverflowMenuItem } from '@/components'
+  import { DeploymentQuickRunOverflowMenuItem, DeploymentCustomRunOverflowMenuItem, ConfirmDeleteModal, CopyOverflowMenuItem, QuickRunParametersModal } from '@/components'
   import { useWorkspaceApi, useWorkspaceRoutes, useCan, useShowModal } from '@/compositions'
   import { Deployment } from '@/models'
   import { deleteItem } from '@/utilities'
@@ -46,13 +48,14 @@
 
   const can = useCan()
 
-  const { showModal, open, close } = useShowModal()
+  const { showModal: showConfirmDeleteModal, open: openConfirmDeleteModal, close: closeConfirmDeleteModal } = useShowModal()
+  const { showModal: showParametersModal, open: openParametersModal } = useShowModal()
 
   const api = useWorkspaceApi()
   const routes = useWorkspaceRoutes()
 
   const deleteDeployment = async (id: string): Promise<void> => {
-    close()
+    closeConfirmDeleteModal()
     await deleteItem(id, api.deployments.deleteDeployment, 'Deployment')
     emits('delete', id)
   }

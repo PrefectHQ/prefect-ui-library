@@ -167,6 +167,7 @@ export { default as PageHeadingWorkspaceSettings } from './PageHeadingWorkspaceS
 export { default as ParametersTable } from './ParametersTable.vue'
 export { default as ProcessTypeBadge } from './ProcessTypeBadge.vue'
 export { default as PythonInput } from './PythonInput.vue'
+export { default as QuickRunParametersModal } from './QuickRunParametersModal.vue'
 export { default as RadarApp } from './RadarApp.vue'
 export { default as RadarNode } from './RadarNode.vue'
 export { default as RadarNodeFlowRun } from './RadarNodeFlowRun.vue'
