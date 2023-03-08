@@ -260,7 +260,7 @@ export function createWorkspaceRouteRecords(components: Partial<WorkspaceRouteCo
         },
         {
           name: 'workspace.artifacts.artifact',
-          path: 'artifacts/:artifactId',
+          path: 'artifact/:artifactId',
           component: components.artifact,
         },
       ],
