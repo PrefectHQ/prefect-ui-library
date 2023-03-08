@@ -1,5 +1,6 @@
 <template>
   <div
+    v-if="graphData.length > 0"
     class="flow-run-timeline"
     :class="classes.root"
     tabindex="0"
@@ -35,7 +36,6 @@
         />
       </div>
       <div
-        v-if="graphData.length > 0"
         ref="timelineGraphContainer"
         class="flow-run-timeline__graph-wrapper"
       >
@@ -83,6 +83,7 @@
   import { useWorkspaceApi } from '@/compositions'
   import { FlowRun, isValidTimelineNodeData } from '@/models'
   import { formatTimeNumeric, formatTimeShortNumeric, formatDate } from '@/utilities'
+  import { eventTargetIsInput } from '@/utilities/eventTarget'
 
   const props = defineProps<{
     flowRun: FlowRun,
@@ -131,6 +132,10 @@
   })
 
   function keyboardShortcutListener(event: KeyboardEvent): void {
+    if (eventTargetIsInput(event.target)) {
+      return
+    }
+
     switch (event.key) {
       case 'c':
         centerGraphViewport()

@@ -1,14 +1,14 @@
 <template>
-  <ComponentPage title="BlockDocumentCard">
+  <ComponentPage title="BlockDocumentCombobox">
     <div class="h-64">
-      <BlockDocumentsSelect v-model:selected="selected" :block-documents="blockDocuments" />
+      <BlockDocumentCombobox v-model:selected="selected" :block-documents="blockDocuments" />
     </div>
   </ComponentPage>
 </template>
 
 <script lang="ts" setup>
   import { ref } from 'vue'
-  import BlockDocumentsSelect from '@/components/BlockDocumentsSelect.vue'
+  import BlockDocumentCombobox from '@/components/BlockDocumentCombobox.vue'
   import ComponentPage from '@/demo/components/ComponentPage.vue'
   import { useBlockDocumentsMock } from '@/demo/compositions/useBlockDocumentMock'
 

@@ -1,9 +1,10 @@
 import { onUnmounted } from 'vue'
 import { data } from '../utilities/data'
 import { FlowRunGraphMock } from '@/demo/types/flowRunGraphMock'
-import { Flow, FlowRun, Deployment, WorkQueue, TaskRun, BlockDocument, BlockType, BlockSchema, ConcurrencyLimit, WorkPool, WorkPoolQueue, WorkPoolWorker } from '@/models'
+import { Artifact, Flow, FlowRun, Deployment, WorkQueue, TaskRun, BlockDocument, BlockType, BlockSchema, ConcurrencyLimit, WorkPool, WorkPoolQueue, WorkPoolWorker } from '@/models'
 
 type Seeds = {
+  artifacts?: Artifact[],
   blockDocuments?: BlockDocument[],
   blockSchemaCapabilities?: string[],
   blockSchemas?: BlockSchema[],
@@ -51,6 +52,14 @@ export function useSeeds(seed: Seeds): void {
     const ids = taskRuns.map(taskRun => taskRun.id)
 
     onUnmounted(() => data.taskRuns.deleteAll(ids))
+  }
+
+  if (seed.artifacts) {
+    const artifacts = data.artifacts.createAll(seed.artifacts)
+
+    const ids = artifacts.map(artifact => artifact.id)
+
+    onUnmounted(() => data.artifacts.deleteAll(ids))
   }
 
   if (seed.deployments) {

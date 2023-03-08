@@ -16,6 +16,7 @@ export const randomWorkPool: MockFunction<WorkPool, [Partial<WorkPool>?]> = func
     isPaused: this.create('boolean'),
     concurrencyLimit: this.create('number'),
     defaultQueueId: this.create('id'),
+    baseJobTemplate: this.create('parameters', [{}, this.create('schema')]),
     ...overrides,
   })
 }

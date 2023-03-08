@@ -18,7 +18,17 @@
           <p-number-input :id="id" v-model="concurrencyLimit" placeholder="Unlimited" :min="0" />
         </template>
       </p-label>
+
+      <p-label v-if="can.access.workers" label="Type">
+        <WorkPoolTypeSelect :selected="type" disabled />
+      </p-label>
+
+      <template v-if="showSchemaForm">
+        <h3>Base Job Configuration <BetaBadge /></h3>
+        <SchemaFormFieldsWithValues v-model:values="parameters" :schema="schema" />
+      </template>
     </p-content>
+
 
     <template #footer>
       <p-button inset @click="cancel">
@@ -32,24 +42,40 @@
 <script lang="ts" setup>
   import { showToast } from '@prefecthq/prefect-design'
   import { useValidationObserver } from '@prefecthq/vue-compositions'
-  import { ref } from 'vue'
+  import { ref, computed } from 'vue'
   import { useRouter } from 'vue-router'
-  import { SubmitButton } from '@/components'
-  import { useWorkspaceApi, useWorkspaceRoutes } from '@/compositions'
+  import { SubmitButton, WorkPoolTypeSelect, SchemaFormFieldsWithValues, BetaBadge } from '@/components'
+  import { useCan, useWorkspaceApi, useWorkspaceRoutes } from '@/compositions'
   import { localization } from '@/localization'
-  import { WorkPool } from '@/models'
+  import { WorkPool, WorkPoolEdit } from '@/models'
+  import { mapper } from '@/services/Mapper'
+  import { Schema } from '@/types/schemas'
+  import { getSchemaDefaults, getSchemaWithoutDefaults } from '@/utilities/parameters'
 
   const props = defineProps<{
     workPool: WorkPool,
   }>()
 
   const api = useWorkspaceApi()
+  const can = useCan()
   const router = useRouter()
   const routes = useWorkspaceRoutes()
   const { validate, pending } = useValidationObserver()
 
   const description = ref<string | null | undefined>(props.workPool.description)
+  const type = ref<string>(props.workPool.type)
   const concurrencyLimit = ref<number | null | undefined>(props.workPool.concurrencyLimit)
+  const schema = computed<Schema>(() => mapper.map('SchemaResponse', getSchemaWithoutDefaults(props.workPool.baseJobTemplate.variables ?? {}), 'Schema'))
+  // Set parameters to the default values from the schema so they are pre-filled in the form
+  const parameters = ref(
+    getSchemaDefaults(props.workPool.baseJobTemplate.variables ?? {}),
+  )
+  const schemaHasProperties = computed(() => {
+    const { properties } = schema.value
+
+    return properties && Object.keys(properties).length > 0
+  })
+  const showSchemaForm = computed(() => type.value && schemaHasProperties.value && can.access.workers)
 
   function cancel(): void {
     router.back()
@@ -58,9 +84,11 @@
   const submit = async (): Promise<void> => {
     const valid = await validate()
     if (valid) {
-      const values = {
+      const values: WorkPoolEdit = {
         description: description.value,
         concurrencyLimit: concurrencyLimit.value,
+        baseJobTemplate: props.workPool.baseJobTemplate,
+        updatedDefaultVariableValues: parameters.value,
       }
       try {
         await api.workPools.updateWorkPool(props.workPool.name, values)

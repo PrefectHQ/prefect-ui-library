@@ -12,6 +12,7 @@ export const mapWorkPoolResponseToWorkPool: MapFunction<WorkPoolResponse, WorkPo
     isPaused: source.is_paused ?? false,
     concurrencyLimit: source.concurrency_limit,
     defaultQueueId: source.default_queue_id,
+    baseJobTemplate: source.base_job_template,
   })
 }
 
@@ -26,23 +27,38 @@ export const mapWorkPoolToWorkPoolResponse: MapFunction<WorkPool, WorkPoolRespon
     is_paused: source.isPaused,
     concurrency_limit: source.concurrencyLimit,
     default_queue_id: source.defaultQueueId,
+    base_job_template: source.baseJobTemplate,
   }
 }
 
 export const mapWorkPoolCreateToWorkPoolCreateRequest: MapFunction<WorkPoolCreate, WorkPoolCreateRequest> = function(source) {
+  const baseJobTemplateSchema = this.map(
+    'WorkerSchemaProperty',
+    { values: source.defaultVariableValues ?? {}, schema: source.baseJobTemplate ?? {} },
+    'WorkerSchemaPropertyRequest',
+  )
+
   return {
     name: source.name,
     description: source.description,
     type: source.type,
     is_paused: source.isPaused,
     concurrency_limit: source.concurrencyLimit,
+    base_job_template: baseJobTemplateSchema,
   }
 }
 
 export const mapWorkPoolEditToWorkPoolEditRequest: MapFunction<WorkPoolEdit, WorkPoolEditRequest> = function(source) {
+  const baseJobTemplateSchema = this.map(
+    'WorkerSchemaProperty',
+    { values: source.updatedDefaultVariableValues ?? {}, schema: source.baseJobTemplate ?? {} },
+    'WorkerSchemaPropertyRequest',
+  )
+
   return {
     description: source.description,
     is_paused: source.isPaused,
     concurrency_limit: source.concurrencyLimit,
+    base_job_template: baseJobTemplateSchema,
   }
 }

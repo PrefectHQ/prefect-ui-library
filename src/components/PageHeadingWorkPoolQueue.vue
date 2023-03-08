@@ -11,8 +11,8 @@
   import { media } from '@prefecthq/prefect-design'
   import { computed } from 'vue'
   import { useRouter } from 'vue-router'
-  import { PageHeading, WorkPoolQueueToggle, WorkPoolQueueMenu } from '@/components'
-  import { useWorkspaceRoutes } from '@/compositions'
+  import { PageHeading, WorkPoolQueueToggle } from '@/components'
+  import { useComponent, useWorkspaceRoutes } from '@/compositions'
   import { WorkPoolQueue } from '@/models'
 
   const props = defineProps<{
@@ -22,6 +22,7 @@
 
   const routes = useWorkspaceRoutes()
   const router = useRouter()
+  const { WorkPoolQueueMenu } = useComponent()
 
   const emit = defineEmits<{
     (event: 'update' | 'delete'): void,

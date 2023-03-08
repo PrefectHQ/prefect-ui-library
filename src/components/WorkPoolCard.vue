@@ -5,6 +5,7 @@
         <p-link class="work-pool-card__name" :to="routes.workPool(workPool.name)">
           {{ workPool.name }}
         </p-link>
+        <ProcessTypeBadge :type-label="workPool.typeLabel" />
         <WorkersLateIndicator v-if="!media.sm" :work-pool-name="workPool.name" />
       </div>
 
@@ -40,7 +41,7 @@
   import { media } from '@prefecthq/prefect-design'
   import { useSubscription } from '@prefecthq/vue-compositions'
   import { computed } from 'vue'
-  import { WorkPoolMenu, WorkPoolToggle, WorkersLateIndicator } from '@/components'
+  import { WorkPoolMenu, WorkPoolToggle, WorkersLateIndicator, ProcessTypeBadge } from '@/components'
   import { useWorkspaceApi, useWorkspaceRoutes } from '@/compositions'
   import { WorkPool } from '@/models'
   import { now, formatDateTimeRelative } from '@/utilities'
