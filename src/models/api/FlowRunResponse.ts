@@ -1,4 +1,5 @@
 import { CreatedOrUpdatedByResponse } from '@/models/api/CreatedOrUpdatedByResponse'
+import { EmpiricalPolicyResponse } from '@/models/api/EmpiricalPolicyResponse'
 import { StateResponse } from '@/models/api/StateResponse'
 import { ServerStateType } from '@/models/StateType'
 import { PrefectStateNames } from '@/types'
@@ -18,7 +19,7 @@ export type FlowRunResponse = {
   parameters: SchemaValues,
   idempotency_key: string | null,
   context: unknown,
-  empirical_policy: unknown,
+  empirical_policy: EmpiricalPolicyResponse | null,
   empirical_config: unknown,
   tags: string[] | null,
   parent_task_run_id: string | null,

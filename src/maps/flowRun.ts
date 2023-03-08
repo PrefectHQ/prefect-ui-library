@@ -16,7 +16,7 @@ export const mapFlowRunResponseToFlowRun: MapFunction<FlowRunResponse, FlowRun> 
     autoScheduled: source.auto_scheduled,
     context: source.context,
     empiricalConfig: source.empirical_config,
-    empiricalPolicy: source.empirical_policy,
+    empiricalPolicy: this.map('EmpiricalPolicyResponse', source.empirical_policy, 'EmpiricalPolicy'),
     estimatedRunTime: source.estimated_run_time,
     estimatedStartTimeDelta: source.estimated_start_time_delta,
     totalRunTime: source.total_run_time,
