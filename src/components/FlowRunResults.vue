@@ -1,6 +1,6 @@
 <template>
   <div class="flow-run-results">
-    <div class="flow-run-results__button-group-container">
+    <div v-if="!noResults" class="flow-run-results__button-group-container">
       <slot name="actions" />
       <p-button-group v-model="view" :options="viewOptions" />
     </div>

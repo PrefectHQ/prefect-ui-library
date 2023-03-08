@@ -143,7 +143,7 @@
   gap-x-2
   gap-y-0
   items-start
-  sm:items-center
+  sm:items-start
   sm:justify-between
 }
 
