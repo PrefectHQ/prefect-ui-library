@@ -6,33 +6,9 @@
       </template>
     </p-key-value>
 
-    <p-key-value label="Start Time" :alternate="alternate">
-      <template #value>
-        <FlowRunStartTime :flow-run="flowRun" />
-      </template>
-    </p-key-value>
-
-    <p-key-value label="Duration" :alternate="alternate">
-      <template #value>
-        <DurationIconText :duration="flowRun.duration" />
-      </template>
-    </p-key-value>
-
-    <p-key-value label="Task Runs" :alternate="alternate">
-      <template v-if="tasksCount" #value>
-        <FlowRunTaskCount :tasks-count="tasksCount" />
-      </template>
-    </p-key-value>
-
     <p-key-value v-if="flowRun.deploymentId && showDeployment" label="Deployment" :alternate="alternate">
       <template #value>
         <DeploymentIconText :deployment-id="flowRun.deploymentId" />
-      </template>
-    </p-key-value>
-
-    <p-key-value label="State Message" :alternate="alternate">
-      <template v-if="flowRun.state?.message" #value>
-        <p-text-truncate :text="flowRun.state?.message" />
       </template>
     </p-key-value>
 
@@ -57,11 +33,23 @@
 
     <p-divider />
 
-    <router-link v-if="!hideRadar" :to="routes.flowRunRadar(flowRun.id)" class="flow-run-details__small-radar-link">
-      <RadarSmall :flow-run-id="flowRun.id" class="flow-run-details__small-radar" />
-    </router-link>
+    <p-heading :heading="heading">
+      Flow Run
+    </p-heading>
 
-    <p-divider />
+    <p-key-value label="Start Time" :alternate="alternate">
+      <template #value>
+        <FlowRunStartTime :flow-run="flowRun" />
+      </template>
+    </p-key-value>
+
+    <p-key-value label="Duration" :alternate="alternate">
+      <template #value>
+        <DurationIconText :duration="flowRun.duration" />
+      </template>
+    </p-key-value>
+
+    <p-key-value label="Run Count" :value="flowRun.runCount ?? 0" :alternate="alternate" />
 
     <p-key-value label="Created" :value="formatDateTimeNumeric(flowRun.created)" :alternate="alternate" />
 
@@ -70,18 +58,6 @@
     </template>
 
     <p-key-value label="Last Updated" :value="formatDateTimeNumeric(flowRun.updated)" :alternate="alternate" />
-
-    <p-key-value label="Flow Run ID" :value="flowRun.id" :alternate="alternate" />
-
-    <p-key-value label="Flow ID" :value="flowRun.flowId" :alternate="alternate" />
-
-    <p-key-value label="Flow Version" :value="flowRun.flowVersion" :alternate="alternate" />
-
-    <p-key-value label="Run Count" :value="flowRun.runCount ?? 0" :alternate="alternate" />
-
-    <template v-if="can.read.deployment && flowRun.deploymentId">
-      <p-key-value label="Deployment ID" :value="flowRun.deploymentId" :alternate="alternate" />
-    </template>
 
     <template v-if="flowRun.idempotencyKey">
       <p-key-value label="Idempotency Key" :value="flowRun.idempotencyKey" :alternate="alternate" />
@@ -92,15 +68,38 @@
         <p-tags :tags="flowRun.tags!" />
       </template>
     </p-key-value>
+
+    <p-key-value label="Flow Run ID" :value="flowRun.id" :alternate="alternate" />
+
+    <p-divider />
+
+    <router-link v-if="!hideRadar" :to="routes.flowRunRadar(flowRun.id)" class="flow-run-details__small-radar-link">
+      <RadarSmall :flow-run-id="flowRun.id" class="flow-run-details__small-radar" />
+    </router-link>
+
+    <template v-if="flowRun.flowVersion || flowRun.empiricalPolicy">
+      <p-divider />
+
+      <p-heading :heading="heading">
+        Flow configuration
+      </p-heading>
+
+      <p-key-value label="Flow Version" :value="flowRun.flowVersion" :alternate="alternate" />
+
+      <template v-if="flowRun.empiricalPolicy">
+        <p-key-value label="Retries" :value="flowRun.empiricalPolicy.retries" :alternate="alternate" />
+        <p-key-value label="Retry Delay" :value="`${flowRun.empiricalPolicy.retryDelaySeconds}s`" :alternate="alternate" />
+      </template>
+    </template>
   </div>
 </template>
 
 <script lang="ts" setup>
-  import { PKeyValue, PTags, PTextTruncate } from '@prefecthq/prefect-design'
+  import { PKeyValue, PTags } from '@prefecthq/prefect-design'
   import { useSubscriptionWithDependencies } from '@prefecthq/vue-compositions'
   import { computed } from 'vue'
-  import { WorkQueueIconText, FlowRunIconText, WorkQueueStatusIcon, RadarSmall, FlowRunTaskCount, FlowRunStartTime, FlowIconText, DurationIconText, DeploymentIconText } from '@/components'
-  import { useTaskRunsCount, useWorkspaceApi, useWorkspaceRoutes, useCan } from '@/compositions'
+  import { WorkQueueIconText, FlowRunIconText, WorkQueueStatusIcon, RadarSmall, FlowRunStartTime, FlowIconText, DurationIconText, DeploymentIconText } from '@/components'
+  import { useWorkspaceApi, useWorkspaceRoutes, useCan } from '@/compositions'
   import { useDeployment } from '@/compositions/useDeployment'
   import { FlowRun } from '@/models/FlowRun'
   import { isDefined } from '@/utilities'
@@ -116,9 +115,8 @@
 
   const can = useCan()
   const routes = useWorkspaceRoutes()
+  const heading = computed(() => props.alternate ? 6 : 5)
 
-  const flowRunId = computed(() => props.flowRun.id)
-  const tasksCount = useTaskRunsCount(flowRunId)
   const deploymentId = computed(() => props.flowRun.deploymentId)
   const deployment = useDeployment(deploymentId)
   const showDeployment = computed(() => can.read.deployment && isDefined(deployment.value))
