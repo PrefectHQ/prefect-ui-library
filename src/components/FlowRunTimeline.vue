@@ -83,6 +83,7 @@
   import { useWorkspaceApi } from '@/compositions'
   import { FlowRun, isValidTimelineNodeData } from '@/models'
   import { formatTimeNumeric, formatTimeShortNumeric, formatDate } from '@/utilities'
+  import { eventTargetIsInput } from '@/utilities/eventTarget'
 
   const props = defineProps<{
     flowRun: FlowRun,
@@ -131,6 +132,10 @@
   })
 
   function keyboardShortcutListener(event: KeyboardEvent): void {
+    if (eventTargetIsInput(event.target)) {
+      return
+    }
+
     switch (event.key) {
       case 'c':
         centerGraphViewport()

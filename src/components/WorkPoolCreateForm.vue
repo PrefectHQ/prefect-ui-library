@@ -20,11 +20,19 @@
       </p-label>
 
       <p-label v-if="can.access.workers" label="Type" :state="typeState" :message="typeErrorMessage">
+        <template #description>
+          <p>
+            The type of worker to run within this work pool. To learn more about workers, check out
+            <p-link :to="localization.docs.workPools">
+              the docs
+            </p-link>.
+          </p>
+        </template>
         <WorkPoolTypeSelect v-model:selected="type" />
       </p-label>
 
       <template v-if="showSchemaForm">
-        <h3>Base Job Configuration</h3>
+        <h3>Base Job Configuration <BetaBadge /></h3>
         <SchemaFormFieldsWithValues v-model:values="parameters" :schema="schema" />
       </template>
     </p-content>
@@ -43,7 +51,7 @@
   import { useSubscription, useValidation, useValidationObserver, ValidationRule } from '@prefecthq/vue-compositions'
   import { computed, reactive, ref } from 'vue'
   import { useRouter } from 'vue-router'
-  import { SubmitButton, WorkPoolTypeSelect, SchemaFormFieldsWithValues } from '@/components'
+  import { SubmitButton, WorkPoolTypeSelect, SchemaFormFieldsWithValues, BetaBadge } from '@/components'
   import { useCan, useWorkspaceApi, useWorkspaceRoutes } from '@/compositions'
   import { localization } from '@/localization'
   import { WorkPoolCreate } from '@/models'
@@ -60,7 +68,7 @@
 
   const name = ref<string>()
   const description = ref<string>()
-  const type = ref<string>()
+  const type = ref<string>('prefect-agent')
   const concurrencyLimit = ref<number>()
 
   const workersCollectionSubscription = useSubscription(api.collections.getWorkerCollection, [])

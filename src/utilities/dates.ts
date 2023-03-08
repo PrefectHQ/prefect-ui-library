@@ -6,7 +6,7 @@ import { dateFunctions, toDate, formatDateInTimezone } from '@/utilities/timezon
 // https://www.notion.so/prefect/Formatting-Basics-1d4d83bcb2ba471ead90910aeb5913b2?pvs=4#b79673ff9e9b47f58236c449e5fe764a
 const dateFormat = 'MMM do, yyyy'
 const timeFormat = 'hh:mm a'
-const dateTimeFormat = `${dateFormat} ''at'' ${timeFormat}`
+const dateTimeFormat = `${dateFormat} 'at' ${timeFormat}`
 
 const timeNumericFormat = 'hh:mm:ss a'
 const timeNumericShortFormat = 'hh:mm a'
