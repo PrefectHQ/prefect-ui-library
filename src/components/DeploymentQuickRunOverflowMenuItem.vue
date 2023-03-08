@@ -25,7 +25,7 @@
   const routes = useWorkspaceRoutes()
 
   const run = async (): Promise<void> => {
-    if (props.deployment.parameterOpenApiSchema.required) {
+    if (props.deployment.parameterOpenApiSchema.required?.length > 0) {
       props.openModal()
     } else {
       try {
