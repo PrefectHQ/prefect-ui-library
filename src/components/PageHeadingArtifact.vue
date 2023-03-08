@@ -1,13 +1,19 @@
 <template>
-  <page-heading class="page-heading-artifact" :crumbs="crumbs" />
+  <PageHeading class="page-heading-artifact" :crumbs="crumbs">
+    <template #actions>
+      <ArtifactMenu :artifact="artifact" />
+    </template>
+  </PageHeading>
 </template>
 
 <script lang="ts" setup>
   import { BreadCrumbs } from '@prefecthq/prefect-design'
   import { computed } from 'vue'
+  import ArtifactMenu from '@/components/ArtifactMenu.vue'
   import PageHeading from '@/components/PageHeading.vue'
   import { useFlowRun, useTaskRun, useWorkspaceRoutes } from '@/compositions'
   import { Artifact } from '@/models'
+  import { capitalize } from '@/utilities'
 
   const props = defineProps<{
     artifact: Artifact,
@@ -27,7 +33,6 @@
     const internalCrumbs: BreadCrumbs = []
 
     if (hasRun.value) {
-
       if (flowRun.value) {
         internalCrumbs.push({
           text: flowRun.value.name ?? '',
@@ -49,6 +54,10 @@
         text: props.artifact.key,
       })
     }
+
+    internalCrumbs.push({
+      text: capitalize(props.artifact.type),
+    })
 
     return internalCrumbs
   })
