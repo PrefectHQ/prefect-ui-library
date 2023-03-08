@@ -86,6 +86,7 @@ export const en = {
     updateWorkQueue: 'Work queue updated',
   },
   info: {
+    artifact: 'Artifact',
     noResults: 'No tracked results',
     created: 'Created',
     lastUpdated: 'Last Updated',
