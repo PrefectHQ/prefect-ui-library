@@ -1,6 +1,6 @@
 export { default as ActivityChart } from './ActivityChart.vue'
 export { default as ArtifactCard } from './ArtifactCard.vue'
-export { default as ArtifactData } from './ArtifactData.vue'
+export { default as ArtifactDataView } from './ArtifactDataView.vue'
 export { default as ArtifactDataMarkdown } from './ArtifactDataMarkdown.vue'
 export { default as ArtifactDataResult } from './ArtifactDataResult.vue'
 export { default as ArtifactDataUnknown } from './ArtifactDataUnknown.vue'

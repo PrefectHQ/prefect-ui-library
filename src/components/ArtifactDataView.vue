@@ -1,5 +1,5 @@
 <template>
-  <section class="artifact-data">
+  <section class="artifact-data-view">
     <component :is="component" :artifact="artifact" />
   </section>
 </template>
