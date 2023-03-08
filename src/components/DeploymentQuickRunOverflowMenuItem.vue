@@ -7,9 +7,13 @@
 </template>
 
 <script lang="ts" setup>
+  import { showToast } from '@prefecthq/prefect-design'
+  import { h } from 'vue'
   import { useRouter } from 'vue-router'
+  import ToastFlowRunCreate from '@/components/ToastFlowRunCreate.vue'
   import { useWorkspaceApi, useWorkspaceRoutes } from '@/compositions'
-  import { Deployment, DeploymentFlowRunCreate } from '@/models'
+  import { localization } from '@/localization'
+  import { Deployment } from '@/models'
 
   const props = defineProps<{
     deployment: Deployment,
@@ -20,21 +24,29 @@
   const router = useRouter()
   const routes = useWorkspaceRoutes()
 
-  const emit = defineEmits<{
-    (event: 'run', id: string, value: DeploymentFlowRunCreate): void,
-  }>()
-
   const run = async (): Promise<void> => {
     if (props.deployment.parameterOpenApiSchema.required) {
       props.openModal()
     } else {
-      const resolvedValues: DeploymentFlowRunCreate = {
-        state: {
-          type: 'scheduled',
-          message: 'Run from the Prefect UI',
-        },
+      try {
+        const flowRun = await api.deployments.createDeploymentFlowRun(props.deployment.id, {
+          state: {
+            type: 'scheduled',
+            message: 'Run from the Prefect UI with defaults',
+          },
+        })
+
+        const toastMessage = h(ToastFlowRunCreate, {
+          flowRun,
+          flowRunRoute: routes.flowRun,
+          router,
+          immediate: true,
+        })
+        showToast(toastMessage, 'success')
+      } catch (error) {
+        showToast(localization.error.scheduleFlowRun, 'error')
+        console.error(error)
       }
-      emit('run', props.deployment.id, resolvedValues)
     }
   }
 </script>

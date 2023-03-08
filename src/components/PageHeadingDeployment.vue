@@ -3,22 +3,27 @@
     <template #actions>
       <DeploymentToggle :deployment="deployment" @update="emit('update')" />
 
-      <DeploymentMenu :deployment="deployment" @delete="handleDelete" />
+      <RunMenu v-if="can.run.deployment && media.sm" :deployment="deployment" />
+
+      <DeploymentMenu :deployment="deployment" :show-all="!media.sm" @delete="handleDelete" />
     </template>
   </page-heading>
 </template>
 
 <script lang="ts" setup>
+  import { media } from '@prefecthq/prefect-design'
   import { computed } from 'vue'
   import { useRouter } from 'vue-router'
-  import { DeploymentMenu, DeploymentToggle, PageHeading } from '@/components'
+  import { DeploymentMenu, DeploymentToggle, PageHeading, RunMenu } from '@/components'
   import { useWorkspaceRoutes } from '@/compositions'
+  import { useCan } from '@/compositions/useCan'
   import { Deployment } from '@/models'
 
   const props = defineProps<{
     deployment: Deployment,
   }>()
 
+  const can = useCan()
   const router = useRouter()
   const routes = useWorkspaceRoutes()
 

@@ -59,7 +59,7 @@
         <template #action="{ row }">
           <div class="deployments-table__actions">
             <DeploymentToggle :deployment="row" @update="refresh" />
-            <DeploymentMenu size="xs" :deployment="row" @delete="refresh" />
+            <DeploymentMenu size="xs" :deployment="row" show-all @delete="refresh" />
           </div>
         </template>
 
