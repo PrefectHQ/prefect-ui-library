@@ -16,7 +16,9 @@
     <template v-else>
       <div class="flow-run-results__list" :class="classes.list">
         <template v-for="result in results" :key="result.id">
-          <ArtifactCard :artifact="result" :condense="condense" />
+          <router-link :to="routes.artifact(result.id)" class="flow-run-results__artifact-router-link">
+            <ArtifactCard :artifact="result" :condense="condense" class="flow-run-results__artifact" />
+          </router-link>
         </template>
       </div>
     </template>
@@ -28,7 +30,7 @@
   import { useSubscription } from '@prefecthq/vue-compositions'
   import { computed, ref } from 'vue'
   import ArtifactCard from '@/components/ArtifactCard.vue'
-  import { useWorkspaceApi } from '@/compositions'
+  import { useWorkspaceApi, useWorkspaceRoutes } from '@/compositions'
   import { localization } from '@/localization'
   import { FlowRun } from '@/models'
   import { ArtifactsFilter } from '@/models/Filters'
@@ -38,6 +40,8 @@
     flowRun: FlowRun,
     view?: ViewOption,
   }>()
+
+  const routes = useWorkspaceRoutes()
 
   const view = ref<ViewOption>(props.view ?? 'grid')
   const viewOptions: ButtonGroupOption[] = [
@@ -93,5 +97,11 @@
   flex
   flex-col
   gap-4
+}
+
+.flow-run-results__artifact { @apply
+  hover:border-primary
+  focus:border-primary
+  h-full
 }
 </style>

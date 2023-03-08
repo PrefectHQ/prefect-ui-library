@@ -251,6 +251,21 @@ export function createWorkspaceRouteRecords(components: Partial<WorkspaceRouteCo
       ],
     },
     {
+      path: 'artifacts',
+      children: [
+        {
+          name: 'workspace.artifacts',
+          path: '',
+          component: components.artifacts,
+        },
+        {
+          name: 'workspace.artifacts.artifact',
+          path: 'artifacts/:artifactId',
+          component: components.artifact,
+        },
+      ],
+    },
+    {
       path: 'work-pools',
       meta: {
         can: 'read:work_pool',
