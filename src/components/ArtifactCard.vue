@@ -132,6 +132,8 @@
 .artifact-card__body { @apply
   flex
   flex-col
+  h-full
+  justify-between
   gap-y-2
 }
 
@@ -141,7 +143,7 @@
   gap-x-2
   gap-y-0
   items-start
-  sm:items-center
+  sm:items-start
   sm:justify-between
 }
 
@@ -169,6 +171,13 @@
 
 .artifact-card__bread-crumbs { @apply
   text-base
+  flex-nowrap
+  overflow-hidden
+}
+
+.artifact-card__bread-crumbs .p-bread-crumbs__crumb { @apply
+  whitespace-nowrap
+  overflow-ellipsis
 }
 
 .artifact-card__bread-crumbs--condensed { @apply
@@ -193,8 +202,10 @@
   flex
   justify-between
   flex-col
+  gap-x-4
   sm:flex-row-reverse
   items-baseline
+  text-sm
   pb-1
   border-b
   border-b-foreground-50
@@ -212,10 +223,18 @@
   items-center
 }
 
+.artifact-card__summary-item-value { @apply
+  shrink
+  whitespace-nowrap
+  overflow-hidden
+  overflow-ellipsis
+}
+
 .artifact-card__summary-item-label { @apply
   text-sm
   text-foreground-200
   capitalize
+  whitespace-nowrap
 }
 
 .artifact-card__summary-container--condensed .artifact-card__summary-item-label { @apply

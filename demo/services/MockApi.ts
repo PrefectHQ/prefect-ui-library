@@ -2,6 +2,9 @@
 import { data } from '@/demo/utilities/data'
 
 export class MockApi {
+  protected get artifacts() {
+    return data.artifacts
+  }
 
   protected get flows() {
     return data.flows

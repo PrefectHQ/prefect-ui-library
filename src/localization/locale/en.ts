@@ -86,6 +86,8 @@ export const en = {
     updateWorkQueue: 'Work queue updated',
   },
   info: {
+    artifact: 'Artifact',
+    noResults: 'No tracked results',
     created: 'Created',
     lastUpdated: 'Last Updated',
     deprecatedWorkQueue: 'This work queue uses a deprecated tag-based approach to matching flow runs; it will continue to work but you can\'t modify it',

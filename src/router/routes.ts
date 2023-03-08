@@ -6,6 +6,8 @@ type CreateWorkspaceRoutesConfig = {
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 export function createWorkspaceRoutes(config?: CreateWorkspaceRoutesConfig) {
   return {
+    artifact: (artifactId: string) => ({ name: 'workspace.artifacts.artifact', params: { artifactId, ...config } }) as const,
+    artifacts: () => ({ name: 'workspace.artifacts', params: { ...config } }) as const,
     flowRuns: () => ({ name: 'workspace.flow-runs', params: { ...config } }) as const,
     flowRun: (flowRunId: string) => ({ name: 'workspace.flow-runs.flow-run', params: { flowRunId, ...config } }) as const,
     flowRunRadar: (flowRunId: string) => ({ name: 'workspace.flow-runs.flow-run-radar', params: { flowRunId, ...config } }) as const,

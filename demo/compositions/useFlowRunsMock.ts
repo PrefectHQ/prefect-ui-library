@@ -15,8 +15,16 @@ export function useFlowRunMock(override?: Partial<FlowRun>): FlowRun {
       ...override,
     },
   ])
+  const result = mocker.create('artifact', [
+    {
+      type: 'result',
+      taskRunId: null,
+      flowRunId: flowRun.id,
+    },
+  ])
 
   useSeeds({
+    artifacts: [result],
     flows: [flow],
     deployments: [deployment],
     workQueues: [workQueue],
