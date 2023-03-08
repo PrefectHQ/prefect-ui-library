@@ -26,7 +26,7 @@
   useTaskRunsMock(10, { flowRunId: flowRun.id })
 
   const flowRunNoResult = useFlowRunMock()
-  const artifact = data.artifacts.getAll().find(artifact => artifact.flowRunId === flowRunNoResult.id)
+  const artifact = data.artifacts.find(artifact => artifact.flowRunId === flowRunNoResult.id)
 
   if (artifact) {
     data.artifacts.delete(artifact.id)
