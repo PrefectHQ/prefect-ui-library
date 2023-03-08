@@ -1,5 +1,7 @@
 export { default as ActivityChart } from './ActivityChart.vue'
 export { default as ArtifactCard } from './ArtifactCard.vue'
+export { default as ArtifactData } from './ArtifactData.vue'
+export { default as ArtifactDataMarkdown } from './ArtifactDataMarkdown.vue'
 export { default as ArtifactDescription } from './ArtifactDescription.vue'
 export { default as ArtifactMenu } from './ArtifactMenu.vue'
 export { default as BetaBadge } from './BetaBadge.vue'
