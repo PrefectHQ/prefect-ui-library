@@ -1,4 +1,5 @@
 import { randomAny } from '@/mocks/any'
+import { randomArtifact } from '@/mocks/artifact'
 import { randomBlockDocument } from '@/mocks/blockDocument'
 import { randomBlockDocumentData } from '@/mocks/blockDocumentData'
 import { randomBlockSchema } from '@/mocks/blockSchema'
@@ -22,6 +23,7 @@ import { randomFlowRunStateHistory } from '@/mocks/flowRunStateHistory'
 import { randomId } from '@/mocks/id'
 import { randomImage } from '@/mocks/image'
 import { randomLogLevel, randomLog } from '@/mocks/log'
+import { randomMarkdownString, randomMarkdownCodeBlockString, randomMarkdownCodeSpanString, randomMarkdownContentString, randomMarkdownHeaderString, randomMarkdownQuoteString, randomMarkdownTableString } from '@/mocks/markdown'
 import { randomNotification } from '@/mocks/notification'
 import { randomNotificationCreate } from '@/mocks/notificationCreate'
 import { randomNumber } from '@/mocks/number'
@@ -30,7 +32,7 @@ import { randomSchedule } from '@/mocks/schedule'
 import { randomSchema, randomSchemaProperties, randomSchemaProperty } from '@/mocks/schemas'
 import { randomState } from '@/mocks/state'
 import { randomStateType } from '@/mocks/stateType'
-import { randomChar, randomString, randomSentence, randomParagraph, randomRunName, randomNoun } from '@/mocks/string'
+import { randomChar, randomString, randomSentence, randomParagraph, randomRunName, randomNoun, randomAdjective } from '@/mocks/string'
 import { randomTaskRun } from '@/mocks/taskRun'
 import { randomUiFlowRunHistory } from '@/mocks/UiFlowRunHistory'
 import { randomUrl } from '@/mocks/url'
@@ -43,7 +45,9 @@ import { randomWorkQueueHealthPolicy } from '@/mocks/workQueueHealthPolicy'
 import { randomWorkQueueStatus } from '@/mocks/workQueueStatus'
 
 export const mocks = {
+  adjective: randomAdjective,
   any: randomAny,
+  artifact: randomArtifact,
   blockDocument: randomBlockDocument,
   blockDocumentData: randomBlockDocumentData,
   blockSchema: randomBlockSchema,
@@ -71,6 +75,13 @@ export const mocks = {
   image: randomImage,
   log: randomLog,
   logLevel: randomLogLevel,
+  markdownCodeBlockString: randomMarkdownCodeBlockString,
+  markdownCodeSpanString: randomMarkdownCodeSpanString,
+  markdownContentString: randomMarkdownContentString,
+  markdownHeaderString: randomMarkdownHeaderString,
+  markdownQuoteString: randomMarkdownQuoteString,
+  markdownString: randomMarkdownString,
+  markdownTableString: randomMarkdownTableString,
   notification: randomNotification,
   notificationCreate: randomNotificationCreate,
   noun: randomNoun,

@@ -4,6 +4,7 @@ import { CollectionsApi } from '@/services/CollectionsApi'
 import { HealthApi } from '@/services/HealthApi'
 import { UiApi } from '@/services/UiApi'
 import { WorkspaceApiConfig } from '@/services/WorkspaceApi'
+import { WorkspaceArtifactsApi } from '@/services/WorkspaceArtifactsApi'
 import { WorkspaceBlockCapabilitiesApi } from '@/services/WorkspaceBlockCapabilitiesApi'
 import { WorkspaceBlockDocumentsApi } from '@/services/WorkspaceBlockDocumentsApi'
 import { WorkspaceBlockSchemasApi } from '@/services/WorkspaceBlockSchemasApi'
@@ -25,6 +26,7 @@ import { WorkspaceWorkQueuesApi } from '@/services/WorkspaceWorkQueuesApi'
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 export function createApi(workspaceConfig: WorkspaceApiConfig) {
   return {
+    artifacts: createActions(new WorkspaceArtifactsApi(workspaceConfig)),
     blockCapabilities: createActions(new WorkspaceBlockCapabilitiesApi(workspaceConfig)),
     blockDocuments: createActions(new WorkspaceBlockDocumentsApi(workspaceConfig)),
     blockSchemas: createActions(new WorkspaceBlockSchemasApi(workspaceConfig)),

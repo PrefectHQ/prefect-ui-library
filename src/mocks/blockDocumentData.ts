@@ -16,7 +16,8 @@ export const randomBlockDocumentData: MockFunction<Record<string, unknown>, [Blo
       dataObject[dataType] = `https://hooks.slack.com/${ this.create('noun')}`
       break
     default:
-      throw new Error(`randomBlockDocumentData missing case for ${dataType}`)
+      console.warn(`randomBlockDocumentData missing case for ${dataType}`)
+      dataObject[dataType] = []
   }
 
   return dataObject

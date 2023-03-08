@@ -3,7 +3,7 @@
     <LogoImage v-if="blockType" :url="blockType.logoUrl" />
 
     <template v-if="blockDocuments.length">
-      <BlockDocumentsSelect v-model:selected="model" v-bind="{ blockDocuments }" class="block-document-input__select" />
+      <BlockDocumentCombobox v-model:selected="model" v-bind="{ blockDocuments }" class="block-document-input__select" />
     </template>
     <p-button v-if="blockTypeSlug" inset :to="withRedirect(routes.blockCreate(blockTypeSlug))">
       Add <p-icon icon="PlusIcon" />
@@ -14,7 +14,7 @@
 <script lang="ts" setup>
   import { useSubscription } from '@prefecthq/vue-compositions'
   import { computed } from 'vue'
-  import BlockDocumentsSelect from '@/components/BlockDocumentsSelect.vue'
+  import BlockDocumentCombobox from '@/components/BlockDocumentCombobox.vue'
   import LogoImage from '@/components/LogoImage.vue'
   import { useWorkspaceApi, useWorkspaceRoutes } from '@/compositions'
   import { withRedirect } from '@/utilities/routes'

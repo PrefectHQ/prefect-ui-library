@@ -1,3 +1,5 @@
+import { SchemaValues } from '@/types/schemas'
+
 export type WorkPoolCreate = Partial<{
   name: string,
   description: string,
@@ -5,4 +7,5 @@ export type WorkPoolCreate = Partial<{
   isPaused: boolean,
   concurrencyLimit: number,
   baseJobTemplate: Record<string, unknown>,
+  defaultVariableValues: SchemaValues,
 }>

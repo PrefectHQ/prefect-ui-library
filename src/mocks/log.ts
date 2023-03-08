@@ -11,7 +11,7 @@ export const randomLog: MockFunction<Log, [Partial<Log>?]> = function(overrides 
     id: this.create('id'),
     created: this.create('date'),
     updated: this.create('date'),
-    name: this.create('noun'),
+    name: `${this.create('adjective')}.${this.create('noun')}`,
     level: this.create('logLevel'),
     message: random() > 0.75 ? this.create('paragraph') : this.create('sentence'),
     timestamp: this.create('date'),

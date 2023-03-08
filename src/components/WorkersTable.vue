@@ -1,5 +1,11 @@
 <template>
   <div class="workers-table">
+    <p-message info>
+      Workers are currently in beta. To learn more about workers, check out
+      <p-link :to="localization.docs.workPools">
+        the docs.
+      </p-link>.
+    </p-message>
     <div class="workers-table__filters">
       <ResultsCount label="Worker" :count="filteredWorkers.length" class="workers-table__results" />
 
@@ -48,6 +54,7 @@
   import { computed, ref, toRefs } from 'vue'
   import { ResultsCount, SearchInput, CopyOverflowMenuItem } from '@/components'
   import { useWorkspaceApi } from '@/compositions'
+  import { localization } from '@/localization'
   import { formatDateTimeNumeric } from '@/utilities/dates'
 
   const props = defineProps<{

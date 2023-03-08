@@ -1,5 +1,5 @@
 import { paragraph, sentence } from '@/mocks/sentences/generateText'
-import { nouns } from '@/mocks/sentences/sample'
+import { adjectives, nouns } from '@/mocks/sentences/sample'
 import { generateStarName } from '@/mocks/starnames'
 import { MockFunction } from '@/services/Mocker'
 import { choice } from '@/utilities/arrays'
@@ -13,6 +13,10 @@ export const randomChar: MockFunction<typeof characters[number], []> = function(
 
 export const randomNoun: MockFunction<typeof nouns[number], []> = function() {
   return choice(nouns)
+}
+
+export const randomAdjective: MockFunction<typeof adjectives[number], []> = function() {
+  return choice(adjectives)
 }
 
 export const randomString: MockFunction<string, [number?]> = function(chars) {
