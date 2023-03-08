@@ -1,19 +1,11 @@
 <template>
   <div class="flow-run-results">
-    <div v-if="!noResults" class="flow-run-results__button-group-container">
-      <slot name="actions" />
-      <p-button-group v-model="view" :options="viewOptions" />
-    </div>
+    <template v-if="hasResults">
+      <div class="flow-run-results__button-group-container">
+        <slot name="actions" />
+        <p-button-group v-model="view" :options="viewOptions" />
+      </div>
 
-    <template v-if="noResults">
-      <p-empty-state>
-        <template #description>
-          {{ localization.info.noResults }}
-        </template>
-      </p-empty-state>
-    </template>
-
-    <template v-else>
       <div class="flow-run-results__list" :class="classes.list">
         <template v-for="result in results" :key="result.id">
           <router-link :to="routes.artifact(result.id)" class="flow-run-results__artifact-router-link">
@@ -21,6 +13,14 @@
           </router-link>
         </template>
       </div>
+    </template>
+
+    <template v-else-if="resultsSubscription.executed">
+      <p-empty-state>
+        <template #description>
+          {{ localization.info.noResults }}
+        </template>
+      </p-empty-state>
     </template>
   </div>
 </template>
@@ -60,7 +60,7 @@
   })
   const resultsSubscription = useSubscription(api.artifacts.getArtifacts, [resultsFilter])
   const results = computed(() => resultsSubscription.response ?? [])
-  const noResults = computed(() => resultsSubscription.executed && results.value.length === 0)
+  const hasResults = computed(() => resultsSubscription.executed && results.value.length > 0)
 
   const classes = computed(() => {
     return {
