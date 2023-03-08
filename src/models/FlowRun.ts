@@ -1,4 +1,5 @@
 import { CreatedOrUpdatedBy } from '@/models/CreatedOrUpdatedBy'
+import { EmpiricalPolicy } from '@/models/EmpiricalPolicy'
 import { State } from '@/models/State'
 import { StateType } from '@/models/StateType'
 import { PrefectStateNames } from '@/types'
@@ -17,7 +18,7 @@ export interface IFlowRun {
   autoScheduled: boolean | null,
   context: unknown,
   empiricalConfig: unknown,
-  empiricalPolicy: unknown,
+  empiricalPolicy: EmpiricalPolicy | null,
   estimatedRunTime: number,
   estimatedStartTimeDelta: number | null,
   totalRunTime: number,
@@ -52,7 +53,7 @@ export class FlowRun implements IFlowRun {
   public autoScheduled: boolean | null
   public context: unknown
   public empiricalConfig: unknown
-  public empiricalPolicy: unknown
+  public empiricalPolicy: EmpiricalPolicy | null
   public estimatedRunTime: number
   public estimatedStartTimeDelta: number | null
   public totalRunTime: number

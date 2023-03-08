@@ -17,7 +17,7 @@ export const randomFlowRun: MockFunction<FlowRun, [Partial<FlowRun>?]> = functio
     autoScheduled: this.create('boolean'),
     context: {},
     empiricalConfig: {},
-    empiricalPolicy: {},
+    empiricalPolicy: null,
     estimatedRunTime: this.create('number'),
     estimatedStartTimeDelta: this.create('number'),
     totalRunTime: this.create('number'),
