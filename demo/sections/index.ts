@@ -4,6 +4,7 @@ import { blocks } from '@/demo/sections/blocks'
 import { concurrency } from '@/demo/sections/concurrency'
 import { deployments } from '@/demo/sections/deployments'
 import { flowRuns } from '@/demo/sections/flowRuns'
+import { flows } from '@/demo/sections/flows'
 import { general } from '@/demo/sections/general'
 import { logs } from '@/demo/sections/logs'
 import { notifications } from '@/demo/sections/notifications'
@@ -16,6 +17,7 @@ export const sections: Section = {
   blocks,
   deployments,
   concurrency,
+  flows,
   flowRuns,
   logs,
   notifications,
