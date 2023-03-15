@@ -71,8 +71,9 @@
 .task-run-panel { @apply
   border
   dark:border-background-600
-  bg-background-800
-  dark:bg-background
+  bg-background
+  bg-opacity-80
+  backdrop-blur
   w-full
   h-full
   p-4

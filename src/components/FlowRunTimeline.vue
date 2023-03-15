@@ -49,8 +49,10 @@
           :is-running="isRunning"
           :format-date-fns="formatDateFns"
           :theme="theme"
-          :selected-node-id="selectedNode"
-          @click="selectNode"
+          :selected-node-id="selectedNodeId"
+          :expanded-sub-nodes="expandedSubFlows"
+          @selection="selectNode"
+          @sub-flow-toggle="toggleSubFlow"
         />
       </div>
       <div
@@ -58,7 +60,7 @@
         :class="classes.panel"
       >
         <TaskRunPanel
-          :task-run-id="selectedNode"
+          :task-run-id="selectedNodeId"
           @dismiss="closePanel"
         />
       </div>
@@ -114,7 +116,8 @@
   const timelineGraph = ref<InstanceType<typeof FlowRunTimeline> | null>(null)
   const isFullscreen = ref(false)
   const showTaskRunPanel = ref(false)
-  const selectedNode: Ref<string | null> = ref(null)
+  const selectedNodeId: Ref<string | null> = ref(null)
+  const expandedSubFlows = ref<Map<string, TimelineNodeData[]>>(new Map())
   const formatDateFns: FormatDateFns = {
     timeBySeconds: formatTimeNumeric,
     timeByMinutes: formatTimeShortNumeric,
@@ -154,14 +157,27 @@
   }
 
   const selectNode = (value: string | null): void => {
-    if (!value || value === selectedNode.value) {
-      selectedNode.value = null
+    if (!value || value === selectedNodeId.value) {
+      selectedNodeId.value = null
       showTaskRunPanel.value = false
       return
     }
 
-    selectedNode.value = value
+    selectedNodeId.value = value
     showTaskRunPanel.value = true
+  }
+
+  const toggleSubFlow = (value: string): void => {
+    const isValueVisible = expandedSubFlows.value.has(value)
+
+    if (isValueVisible) {
+      expandedSubFlows.value.delete(value)
+      return
+    }
+
+    expandedSubFlows.value.set(value, [])
+
+    // request subFlowData then append to map position.
   }
 
   function closePanel(): void {
@@ -262,6 +278,9 @@
     colorTextInverse: getHslColor('--white', '--background'),
     colorTextSubdued: getHslColor('--foreground-300', '--foreground-200'),
     colorNodeSelection: getHslColor('--primary-default-400'),
+    colorButtonBg: getHslColor('--background'),
+    colorButtonBgHover: getHslColor('--bg-primary-200', '--bg-primary-50'),
+    colorButtonBorder: getHslColor('--bg-primary-100'),
     colorEdge: getHslColor('--foreground-200', '--foreground-300'),
     colorGuideLine: getHslColor('--foreground-50'),
     colorPlayheadBg: getHslColor('--primary-default-400'),
@@ -286,6 +305,8 @@
         }
         return {
           fill: stateColors[node.state],
+          onFillSubNodeToggleHoverBg: '#000000',
+          onFillSubNodeToggleHoverBgAlpha: 0.4,
           inverseTextOnFill,
         }
       },
@@ -314,8 +335,7 @@
   top-0
   left-0
   z-20
-  bg-background-600
-  dark:bg-background
+  bg-background
 }
 
 .flow-run-timeline__options { @apply
@@ -325,6 +345,10 @@
   bottom-1
   right-1
   z-10
+}
+.flow-run-timeline__options button { @apply
+  bg-transparent
+  shadow-none
 }
 
 .flow-run-timeline__fullscreen-exit { @apply
@@ -342,8 +366,7 @@
 }
 
 .flow-run-timeline__graph { @apply
-  bg-background-600
-  dark:bg-background
+  bg-background
   rounded-lg;
 }
 

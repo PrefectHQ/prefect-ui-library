@@ -10,5 +10,6 @@ export const mapFlowRunGraphResponseToTimelineNode: MapFunction<FlowRunGraphResp
     end: this.map('string', source.end_time, 'Date'),
     state: source.state.name.toLocaleLowerCase(),
     upstreamDependencies: source.upstream_dependencies.map(x => x.id),
+    subFlowId: source.state.state_details?.child_flow_run_id ?? undefined,
   })
 }

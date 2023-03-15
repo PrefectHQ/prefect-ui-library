@@ -17,6 +17,7 @@ export class TimelineNode implements ModifiedTimelineNodeData {
   public end: Date | null
   public state: string
   public upstreamDependencies?: string[]
+  public subFlowId?: string
 
   public constructor(timelineNode: TimelineNode) {
     this.id = timelineNode.id
@@ -25,5 +26,6 @@ export class TimelineNode implements ModifiedTimelineNodeData {
     this.end = timelineNode.end ?? null
     this.state = timelineNode.state
     this.upstreamDependencies = timelineNode.upstreamDependencies
+    this.subFlowId = timelineNode.subFlowId
   }
 }
