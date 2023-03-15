@@ -9,10 +9,6 @@ import { parseUnknownJson, stringifyUnknownJson } from '@/utilities/json'
 export class SchemaPropertyObject extends SchemaPropertyService {
 
   protected override get component(): SchemaPropertyComponentWithProps {
-    if (this.isMaxLevel) {
-      return this.withProps(JsonInput)
-    }
-
     if (this.has('properties')) {
       return null
     }
@@ -21,10 +17,6 @@ export class SchemaPropertyObject extends SchemaPropertyService {
   }
 
   protected get default(): unknown {
-    if (this.isMaxLevel) {
-      return ''
-    }
-
     // some object properties don't have specific properties and a JsonInput is used
     if (!this.has('properties')) {
       return ''
@@ -34,10 +26,6 @@ export class SchemaPropertyObject extends SchemaPropertyService {
   }
 
   protected request(value: SchemaValue): unknown {
-    if (this.isMaxLevel) {
-      return this.maxLevelRequestValue(value)
-    }
-
     if (!this.has('properties')) {
       return parseUnknownJson(value)
     }
@@ -61,10 +49,6 @@ export class SchemaPropertyObject extends SchemaPropertyService {
   }
 
   protected response(value: SchemaValue): unknown {
-    if (this.isMaxLevel) {
-      return this.maxLevelResponseValue(value)
-    }
-
     // if there are no nested properties a JsonInput is used
     if (!this.has('properties')) {
       return stringifyUnknownJson(value)
@@ -81,25 +65,4 @@ export class SchemaPropertyObject extends SchemaPropertyService {
       return service.mapResponseValue(propertyValue)
     })
   }
-
-  private maxLevelRequestValue(value: SchemaValue): unknown {
-    const mapped = parseUnknownJson(value)
-
-    if (mapped === null || mapped === undefined) {
-      return this.invalid()
-    }
-
-    return mapped
-  }
-
-  private maxLevelResponseValue(value: SchemaValue): unknown {
-    const mapped = stringifyUnknownJson(value)
-
-    if (mapped === null || mapped === undefined) {
-      return this.invalid()
-    }
-
-    return mapped
-  }
-
 }
