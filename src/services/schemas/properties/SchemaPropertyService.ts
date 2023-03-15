@@ -1,6 +1,5 @@
 import { SelectOption } from '@prefecthq/prefect-design'
 import { InvalidSchemaValueError } from '@/models/InvalidSchemaValueError'
-import { MAX_SCHEMA_PROPERTY_LEVEL } from '@/services/schemas/constants'
 import { getSchemaPropertyAttrs, getSchemaPropertyComponentWithDefaultProps, getSchemaPropertyDefaultValidators, schemaPropertyComponentWithProps, SchemaPropertyComponentWithProps } from '@/services/schemas/utilities'
 import { schemaHas, SchemaProperty, SchemaPropertyInputAttrs, SchemaPropertyMeta, SchemaValue } from '@/types/schemas'
 import { Require } from '@/types/utilities'
@@ -55,10 +54,6 @@ export abstract class SchemaPropertyService {
   protected property: SchemaProperty
   protected level: number
   protected withProps = schemaPropertyComponentWithProps
-
-  protected get isMaxLevel(): boolean {
-    return this.level > MAX_SCHEMA_PROPERTY_LEVEL
-  }
 
   public constructor({ property, level }: SchemaPropertyServiceSource) {
     this.property = property
