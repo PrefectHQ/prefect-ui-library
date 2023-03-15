@@ -18,10 +18,6 @@
   }>()
 
   const is = computed(() => {
-    if (schemaHas(props.property, 'meta')) {
-      return SchemaFormInput
-    }
-
     if (schemaHas(props.property, 'properties')) {
       return SchemaFormProperties
     }
