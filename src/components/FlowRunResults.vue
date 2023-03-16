@@ -119,6 +119,12 @@
   gap-4
 }
 
+.flow-run-results__list { @apply
+  flex
+  flex-col
+  gap-4
+}
+
 .flow-run-results__list--grid { @apply
   grid
   gap-4;
