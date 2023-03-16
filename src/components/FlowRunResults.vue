@@ -10,10 +10,17 @@
         {{ localization.info.flowRunResults }}
       </p-heading>
       <div class="flow-run-results__list" :class="classes.list">
-        <template v-for="result in flowRunResults" :key="result.id">
-          <ArtifactCard :artifact="result" :condense="condense" class="flow-run-results__artifact">
-            <p-markdown-renderer v-if="result.description" :text="result.description" />
-          </ArtifactCard>
+        <template v-if="flowRunResults.length">
+          <template v-for="result in flowRunResults" :key="result.id">
+            <ArtifactCard :artifact="result" :condense="condense" class="flow-run-results__artifact">
+              <p-markdown-renderer v-if="result.description" :text="result.description" />
+            </ArtifactCard>
+          </template>
+        </template>
+        <template v-else>
+          <div class="flow-run-results__none">
+            {{ localization.info.noResults }}
+          </div>
         </template>
       </div>
 
@@ -23,10 +30,17 @@
         {{ localization.info.taskRunResults }}
       </p-heading>
       <div class="flow-run-results__list" :class="classes.list">
-        <template v-for="result in taskRunResults" :key="result.id">
-          <ArtifactCard :artifact="result" :condense="condense" class="flow-run-results__artifact">
-            <p-markdown-renderer v-if="result.description" :text="result.description" />
-          </ArtifactCard>
+        <template v-if="taskRunResults.length">
+          <template v-for="result in taskRunResults" :key="result.id">
+            <ArtifactCard :artifact="result" :condense="condense" class="flow-run-results__artifact">
+              <p-markdown-renderer v-if="result.description" :text="result.description" />
+            </ArtifactCard>
+          </template>
+        </template>
+        <template v-else>
+          <div class="flow-run-results__none">
+            {{ localization.info.noResults }}
+          </div>
         </template>
       </div>
     </template>
@@ -124,6 +138,10 @@
 }
 
 .flow-run-results__subheading { @apply
+  text-foreground-50
+}
+
+.flow-run-results__none { @apply
   text-foreground-50
 }
 </style>

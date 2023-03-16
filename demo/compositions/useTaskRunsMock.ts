@@ -27,6 +27,7 @@ export function useTaskRunMock(override?: Partial<TaskRun>): TaskRun {
       type: 'result',
       taskRunId: taskRun.id,
       flowRunId: flowRun.id,
+      description: `${mocker.create('adjective')} ${mocker.create('runName')} ${mocker.create('markdownCodeSpanString')}`,
     },
   ])
 
