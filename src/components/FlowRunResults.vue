@@ -84,7 +84,7 @@
       },
     }
   })
-  const resultsSubscription = useSubscription(api.artifacts.getArtifacts, [resultsFilter])
+  const resultsSubscription = useSubscription(api.artifacts.getArtifacts, [resultsFilter], { interval: 5000 })
   const results = computed(() => resultsSubscription.response ?? [])
 
   const taskRunResults = computed(() => results.value.filter(result => !!result.taskRunId))
