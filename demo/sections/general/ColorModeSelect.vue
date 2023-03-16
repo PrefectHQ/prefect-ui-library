@@ -10,6 +10,4 @@
   import ColorModeSelect from '@/components/ColorModeSelect.vue'
   import ComponentPage from '@/demo/components/ComponentPage.vue'
   import { activeColorMode } from '@/demo/utilities/colorMode'
-
-  // const { value: selected } = useColorTheme()
 </script>

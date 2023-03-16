@@ -1,9 +1,5 @@
 <template>
   <ComponentPage title="FlowRunResults" :demos="demos">
-    <template #description>
-      <FlowRunResults :flow-run="flowRun" />
-    </template>
-
     <FlowRunResults :flow-run="flowRun" />
 
     <template #no-results>
