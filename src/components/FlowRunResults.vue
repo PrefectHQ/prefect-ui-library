@@ -7,7 +7,7 @@
       </div>
 
       <p-heading heading="6" class="flow-run-results__subheading">
-        {{ localization.info.flowRunResults }}
+        {{ localization.info.flowRun }}
       </p-heading>
       <div class="flow-run-results__list" :class="classes.list">
         <template v-if="flowRunResults.length">
@@ -27,7 +27,7 @@
       <p-divider />
 
       <p-heading heading="6" class="flow-run-results__subheading">
-        {{ localization.info.taskRunResults }}
+        {{ localization.info.taskRuns }}
       </p-heading>
       <div class="flow-run-results__list" :class="classes.list">
         <template v-if="taskRunResults.length">
