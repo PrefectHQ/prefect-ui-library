@@ -17,15 +17,6 @@
       <div class="artifact-card__summary-container" :class="classes.summaryContainer">
         <div class="artifact-card__summary-item">
           <span class="artifact-card__summary-item-label">
-            {{ localization.info.lastUpdated }}
-          </span>
-          <span class="artifact-card__summary-item-value">
-            {{ formatDateTime(artifact.updated) }}
-          </span>
-        </div>
-
-        <div class="artifact-card__summary-item">
-          <span class="artifact-card__summary-item-label">
             {{ localization.info.created }}
           </span>
           <span class="artifact-card__summary-item-value">
@@ -91,7 +82,6 @@
     return internalCrumbs
   })
 
-
   const classes = computed(() => {
     return {
       root: {
@@ -132,8 +122,6 @@
 .artifact-card__body { @apply
   flex
   flex-col
-  h-full
-  justify-between
   gap-y-2
 }
 

@@ -6,9 +6,27 @@
         <p-button-group v-model="view" :options="viewOptions" />
       </div>
 
+      <p-heading heading="6" class="flow-run-results__subheading">
+        {{ localization.info.flowRunResults }}
+      </p-heading>
       <div class="flow-run-results__list" :class="classes.list">
-        <template v-for="result in results" :key="result.id">
-          <ArtifactCard :artifact="result" :condense="condense" class="flow-run-results__artifact" />
+        <template v-for="result in flowRunResults" :key="result.id">
+          <ArtifactCard :artifact="result" :condense="condense" class="flow-run-results__artifact">
+            <p-markdown-renderer v-if="result.description" :text="result.description" />
+          </ArtifactCard>
+        </template>
+      </div>
+
+      <p-divider />
+
+      <p-heading heading="6" class="flow-run-results__subheading">
+        {{ localization.info.taskRunResults }}
+      </p-heading>
+      <div class="flow-run-results__list" :class="classes.list">
+        <template v-for="result in taskRunResults" :key="result.id">
+          <ArtifactCard :artifact="result" :condense="condense" class="flow-run-results__artifact">
+            <p-markdown-renderer v-if="result.description" :text="result.description" />
+          </ArtifactCard>
         </template>
       </div>
     </template>
@@ -56,6 +74,10 @@
   })
   const resultsSubscription = useSubscription(api.artifacts.getArtifacts, [resultsFilter])
   const results = computed(() => resultsSubscription.response ?? [])
+
+  const taskRunResults = computed(() => results.value.filter(result => !!result.taskRunId))
+  const flowRunResults = computed(() => results.value.filter(result => !!result.flowRunId && !result.taskRunId))
+
   const hasResults = computed(() => resultsSubscription.executed && results.value.length > 0)
 
   const classes = computed(() => {
@@ -99,5 +121,9 @@
   hover:border-primary
   focus:border-primary
   h-full
+}
+
+.flow-run-results__subheading { @apply
+  text-foreground-50
 }
 </style>
