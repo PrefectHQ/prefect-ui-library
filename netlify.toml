@@ -30,6 +30,8 @@
     #   'self' - all connections to current origin are permitted
     # font-src
     #   'self' - all fonts from current origin are permitted
+    #   data: - fonts embedded inline are permitted
+    #
     # frame-ancestors
     #   'self' - allow embedding in current origin
     # frame-src
@@ -57,7 +59,7 @@
     Content-Security-Policy = """\
       default-src 'self'; \
       connect-src 'self'; \
-      font-src 'self'; \
+      font-src 'self' data:; \
       frame-ancestors 'self'; \
       frame-src 'self'; \
       img-src 'self' data: https://picsum.photos https://i.picsum.photos; \
