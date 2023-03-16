@@ -3,7 +3,7 @@
     <template v-if="hasResults">
       <div class="flow-run-results__button-group-container">
         <slot name="actions" />
-        <p-button-group v-model="view" :options="viewOptions" />
+        <p-button-group v-model="activeViewMode" :options="viewOptions" />
       </div>
 
       <p-heading heading="6" class="flow-run-results__subheading">
@@ -58,25 +58,23 @@
 <script lang="ts" setup>
   import { ButtonGroupOption } from '@prefecthq/prefect-design'
   import { useSubscription } from '@prefecthq/vue-compositions'
-  import { computed, ref } from 'vue'
+  import { computed } from 'vue'
   import ArtifactCard from '@/components/ArtifactCard.vue'
   import { useWorkspaceApi } from '@/compositions'
   import { localization } from '@/localization'
   import { FlowRun } from '@/models'
   import { ArtifactsFilter } from '@/models/Filters'
+  import { activeViewMode } from '@/utilities/artifactsViewMode'
 
-  type ViewOption = 'grid' | 'rows'
   const props = defineProps<{
     flowRun: FlowRun,
-    view?: ViewOption,
   }>()
 
-  const view = ref<ViewOption>(props.view ?? 'grid')
   const viewOptions: ButtonGroupOption[] = [
     { label: '', value: 'grid', icon: 'ViewGridIcon' },
     { label: '', value: 'rows', icon: 'ViewListIcon' },
   ]
-  const condense = computed(() => view.value === 'rows')
+  const condense = computed(() => activeViewMode.value === 'rows')
 
   const api = useWorkspaceApi()
   const resultsFilter = computed<ArtifactsFilter>(() => {
@@ -97,8 +95,8 @@
   const classes = computed(() => {
     return {
       list: {
-        'flow-run-results__list--grid': view.value === 'grid',
-        'flow-run-results__list--rows': view.value === 'rows',
+        'flow-run-results__list--grid': activeViewMode.value === 'grid',
+        'flow-run-results__list--rows': activeViewMode.value === 'rows',
       },
     }
   })
