@@ -77,7 +77,7 @@
   ]
 
   const { activeViewMode } = useActiveViewMode()
-  const condense = computed(() => activeViewMode.value === 'rows')
+  const condense = computed(() => activeViewMode.value !== 'grid')
 
   const api = useWorkspaceApi()
   const resultsFilter = computed<ArtifactsFilter>(() => {
