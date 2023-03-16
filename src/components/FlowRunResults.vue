@@ -137,10 +137,6 @@
   h-full
 }
 
-.flow-run-results__subheading { @apply
-  text-foreground-50
-}
-
 .flow-run-results__none { @apply
   text-foreground-50
 }
