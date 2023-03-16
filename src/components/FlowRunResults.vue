@@ -140,7 +140,6 @@
 .flow-run-results__artifact { @apply
   hover:border-primary
   focus:border-primary
-  h-full
 }
 
 .flow-run-results__none { @apply
