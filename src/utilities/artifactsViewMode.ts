@@ -8,7 +8,7 @@ const defaultValue: ViewOption = 'grid'
 
 export function useActiveViewMode(): { activeViewMode: WritableComputedRef<ViewOption | null> } {
   const { value: viewMode, set: setViewMode } = useLocalStorage<ViewOption | null>(viewModeLocalStorageKey, defaultValue)
-
+  console.log(viewModeLocalStorageKey, viewMode.value, localStorage.getItem(viewModeLocalStorageKey))
   const activeViewMode = computed({
     get() {
       console.log(viewMode.value)
