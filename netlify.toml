@@ -30,6 +30,8 @@
     #   'self' - all connections to current origin are permitted
     # font-src
     #   'self' - all fonts from current origin are permitted
+    #   data: - fonts embedded inline are permitted
+    #
     # frame-ancestors
     #   'self' - allow embedding in current origin
     # frame-src
@@ -44,21 +46,28 @@
     #   'none' - no legacy objects are allowed; see
     #            https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy/object-src
     # script-src
-    #   'self' - all resources from current origin are permitted
+    #  'self' - all resources from current origin are permitted
+    #  'unsafe-inline' - Some prefect-design scripts are injected inline
+    #
+    # worker-src
+    #   'self' - all workers from current origin are permitted
+    #   blob: - workers from blob URLs are permitted
+    #
     # style-src
     #   'self' - all styles from current origin are permitted
     #   'unsafe-inline' - Tailwind styles are injected inline
     Content-Security-Policy = """\
       default-src 'self'; \
       connect-src 'self'; \
-      font-src 'self'; \
+      font-src 'self' data:; \
       frame-ancestors 'self'; \
       frame-src 'self'; \
       img-src 'self' data: https://picsum.photos https://i.picsum.photos; \
       media-src 'none'; \
       object-src 'none'; \
-      script-src 'self'; \
-      style-src 'self' 'unsafe-inline' \
+      script-src 'self' 'unsafe-inline' 'unsafe-eval'; \
+      worker-src 'self' blob:; \
+      style-src 'self' 'unsafe-inline'; \
       """
 
     # Referrer-Policy controls the Referer header in requests.

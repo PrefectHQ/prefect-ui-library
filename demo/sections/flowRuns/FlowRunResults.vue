@@ -5,6 +5,14 @@
     <template #no-results>
       <FlowRunResults :flow-run="flowRunNoResult" />
     </template>
+
+    <template #no-flow-run-results>
+      <FlowRunResults :flow-run="flowRunNoFlowRunResult" />
+    </template>
+
+    <template #no-task-run-results>
+      <FlowRunResults :flow-run="flowRunNoTaskRunResult" />
+    </template>
   </ComponentPage>
 </template>
 
@@ -18,7 +26,13 @@
 
   const demos: DemoSection[] = [
     {
-      title: 'No Results',
+      title: 'No results',
+    },
+    {
+      title: 'No flow run results',
+    },
+    {
+      title: 'No task run results',
     },
   ]
 
@@ -31,4 +45,15 @@
   if (artifact) {
     data.artifacts.delete(artifact.id)
   }
+
+  const flowRunNoFlowRunResult = useFlowRunMock()
+  const flowRunNoFlowRunResultArtifact = data.artifacts.find(artifact => artifact.flowRunId === flowRunNoFlowRunResult.id)
+
+  if (flowRunNoFlowRunResultArtifact) {
+    data.artifacts.delete(flowRunNoFlowRunResultArtifact.id)
+  }
+
+  useTaskRunsMock(10, { flowRunId: flowRunNoFlowRunResult.id })
+
+  const flowRunNoTaskRunResult = useFlowRunMock()
 </script>

@@ -20,6 +20,7 @@ export function useFlowRunMock(override?: Partial<FlowRun>): FlowRun {
       type: 'result',
       taskRunId: null,
       flowRunId: flowRun.id,
+      description: `${mocker.create('adjective')} ${mocker.create('runName')} ${mocker.create('markdownCodeSpanString')}`,
     },
   ])
 

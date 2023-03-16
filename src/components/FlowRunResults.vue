@@ -3,14 +3,44 @@
     <template v-if="hasResults">
       <div class="flow-run-results__button-group-container">
         <slot name="actions" />
-        <p-button-group v-model="view" :options="viewOptions" />
+        <p-button-group v-model="activeViewMode" :options="viewOptions" />
       </div>
 
+      <p-heading heading="6" class="flow-run-results__subheading">
+        {{ localization.info.flowRun }}
+      </p-heading>
       <div class="flow-run-results__list" :class="classes.list">
-        <template v-for="result in results" :key="result.id">
-          <router-link :to="routes.artifact(result.id)" class="flow-run-results__artifact-router-link">
-            <ArtifactCard :artifact="result" :condense="condense" class="flow-run-results__artifact" />
-          </router-link>
+        <template v-if="flowRunResults.length">
+          <template v-for="result in flowRunResults" :key="result.id">
+            <ArtifactCard :artifact="result" :condense="condense" class="flow-run-results__artifact">
+              <p-markdown-renderer v-if="result.description" :text="result.description" />
+            </ArtifactCard>
+          </template>
+        </template>
+        <template v-else>
+          <div class="flow-run-results__none">
+            {{ localization.info.noResults }}
+          </div>
+        </template>
+      </div>
+
+      <p-divider />
+
+      <p-heading heading="6" class="flow-run-results__subheading">
+        {{ localization.info.taskRuns }}
+      </p-heading>
+      <div class="flow-run-results__list" :class="classes.list">
+        <template v-if="taskRunResults.length">
+          <template v-for="result in taskRunResults" :key="result.id">
+            <ArtifactCard :artifact="result" :condense="condense" class="flow-run-results__artifact">
+              <p-markdown-renderer v-if="result.description" :text="result.description" />
+            </ArtifactCard>
+          </template>
+        </template>
+        <template v-else>
+          <div class="flow-run-results__none">
+            {{ localization.info.noResults }}
+          </div>
         </template>
       </div>
     </template>
@@ -28,27 +58,25 @@
 <script lang="ts" setup>
   import { ButtonGroupOption } from '@prefecthq/prefect-design'
   import { useSubscription } from '@prefecthq/vue-compositions'
-  import { computed, ref } from 'vue'
+  import { computed } from 'vue'
   import ArtifactCard from '@/components/ArtifactCard.vue'
-  import { useWorkspaceApi, useWorkspaceRoutes } from '@/compositions'
+  import { useWorkspaceApi } from '@/compositions'
   import { localization } from '@/localization'
   import { FlowRun } from '@/models'
   import { ArtifactsFilter } from '@/models/Filters'
+  import { useActiveViewMode } from '@/utilities/artifactsViewMode'
 
-  type ViewOption = 'grid' | 'rows'
   const props = defineProps<{
     flowRun: FlowRun,
-    view?: ViewOption,
   }>()
 
-  const routes = useWorkspaceRoutes()
-
-  const view = ref<ViewOption>(props.view ?? 'grid')
   const viewOptions: ButtonGroupOption[] = [
     { label: '', value: 'grid', icon: 'ViewGridIcon' },
     { label: '', value: 'rows', icon: 'ViewListIcon' },
   ]
-  const condense = computed(() => view.value === 'rows')
+
+  const { activeViewMode } = useActiveViewMode()
+  const condense = computed(() => activeViewMode.value !== 'grid')
 
   const api = useWorkspaceApi()
   const resultsFilter = computed<ArtifactsFilter>(() => {
@@ -58,15 +86,19 @@
       },
     }
   })
-  const resultsSubscription = useSubscription(api.artifacts.getArtifacts, [resultsFilter])
+  const resultsSubscription = useSubscription(api.artifacts.getArtifacts, [resultsFilter], { interval: 5000 })
   const results = computed(() => resultsSubscription.response ?? [])
+
+  const taskRunResults = computed(() => results.value.filter(result => !!result.taskRunId))
+  const flowRunResults = computed(() => results.value.filter(result => !!result.flowRunId && !result.taskRunId))
+
   const hasResults = computed(() => resultsSubscription.executed && results.value.length > 0)
 
   const classes = computed(() => {
     return {
       list: {
-        'flow-run-results__list--grid': view.value === 'grid',
-        'flow-run-results__list--rows': view.value === 'rows',
+        'flow-run-results__list--grid': activeViewMode.value === 'grid',
+        'flow-run-results__list--rows': activeViewMode.value === 'rows',
       },
     }
   })
@@ -83,6 +115,12 @@
 .flow-run-results__button-group-container { @apply
   flex
   justify-end
+  gap-4
+}
+
+.flow-run-results__list { @apply
+  flex
+  flex-col
   gap-4
 }
 
@@ -103,5 +141,9 @@
   hover:border-primary
   focus:border-primary
   h-full
+}
+
+.flow-run-results__none { @apply
+  text-foreground-50
 }
 </style>
