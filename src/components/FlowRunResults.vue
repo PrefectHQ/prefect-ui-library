@@ -76,6 +76,8 @@
   ]
   const condense = computed(() => activeViewMode.value === 'rows')
 
+  console.log(activeViewMode.value)
+
   const api = useWorkspaceApi()
   const resultsFilter = computed<ArtifactsFilter>(() => {
     return {
