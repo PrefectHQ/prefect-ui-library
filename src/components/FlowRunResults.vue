@@ -3,6 +3,7 @@
     <template v-if="hasResults">
       <div class="flow-run-results__button-group-container">
         <slot name="actions" />
+        {{ activeViewMode }}
         <p-button-group v-model="activeViewMode" :options="viewOptions" />
       </div>
 
@@ -75,8 +76,6 @@
     { label: '', value: 'rows', icon: 'ViewListIcon' },
   ]
   const condense = computed(() => activeViewMode.value === 'rows')
-
-  console.log(activeViewMode.value)
 
   const api = useWorkspaceApi()
   const resultsFilter = computed<ArtifactsFilter>(() => {
