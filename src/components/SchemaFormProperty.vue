@@ -18,6 +18,10 @@
   }>()
 
   const is = computed(() => {
+    if (props.property.type === 'block') {
+      return SchemaFormInput
+    }
+
     if (schemaHas(props.property, 'properties')) {
       return SchemaFormProperties
     }
