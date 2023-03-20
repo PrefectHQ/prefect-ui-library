@@ -19,7 +19,7 @@
         </template>
         <template v-else>
           <div class="flow-run-results__none">
-            {{ localization.info.noResults }}
+            <p-markdown-renderer :text="localization.info.noResults" />
           </div>
         </template>
       </div>
@@ -39,7 +39,7 @@
         </template>
         <template v-else>
           <div class="flow-run-results__none">
-            {{ localization.info.noResults }}
+            <p-markdown-renderer :text="localization.info.noResults" />
           </div>
         </template>
       </div>
@@ -48,7 +48,7 @@
     <template v-else-if="resultsSubscription.executed">
       <p-empty-state>
         <template #description>
-          {{ localization.info.noResults }}
+          <p-markdown-renderer :text="localization.info.noResults" />
         </template>
       </p-empty-state>
     </template>
