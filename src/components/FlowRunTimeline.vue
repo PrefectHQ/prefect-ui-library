@@ -49,6 +49,7 @@
           :is-running="isRunning"
           :format-date-fns="formatDateFns"
           :theme="theme"
+          :sub-node-labels="subFlowRunLabels"
           :selected-node-id="selectedNodeId"
           :expanded-sub-nodes="expandedSubFlows"
           @selection="selectNode"
@@ -59,8 +60,9 @@
         class="flow-run-timeline__task-panel"
         :class="classes.panel"
       >
-        <TaskRunPanel
-          :task-run-id="selectedNodeId"
+        <FlowRunTimelineSelectionPanel
+          :id="selectedNodeId"
+          :type="selectedNodeType"
           @dismiss="closePanel"
         />
       </div>
@@ -74,16 +76,19 @@
     FormatDateFns,
     HSL,
     ThemeStyleOverrides,
-    TimelineNodeData,
+    GraphTimelineNode,
     TimelineNodesLayoutOptions,
-    TimelineThemeOptions
+    TimelineThemeOptions,
+    ExpandedSubNodes,
+    NodeSelectionEvent,
+    NodeSelectionEventTypes
   } from '@prefecthq/graphs'
   import { useColorTheme } from '@prefecthq/prefect-design'
-  import { useSubscription } from '@prefecthq/vue-compositions'
-  import { computed, onMounted, onUnmounted, Ref, ref, watch } from 'vue'
-  import { TaskRunPanel, FlowRunTimelineOptions } from '@/components'
+  import { useSubscription, useSubscriptionWithDependencies } from '@prefecthq/vue-compositions'
+  import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
+  import { FlowRunTimelineSelectionPanel, FlowRunTimelineOptions } from '@/components'
   import { useWorkspaceApi } from '@/compositions'
-  import { FlowRun, isValidTimelineNodeData } from '@/models'
+  import { FlowRun, hasSubFlowRunId, isValidGraphTimelineNode, TimelineNode } from '@/models'
   import { formatTimeNumeric, formatTimeShortNumeric, formatDate } from '@/utilities'
   import { eventTargetIsInput } from '@/utilities/eventTarget'
 
@@ -116,14 +121,17 @@
   const timelineGraph = ref<InstanceType<typeof FlowRunTimeline> | null>(null)
   const isFullscreen = ref(false)
   const showTaskRunPanel = ref(false)
-  const selectedNodeId: Ref<string | null> = ref(null)
-  const expandedSubFlows = ref<Map<string, TimelineNodeData[]>>(new Map())
+  const selectedNodeType = ref<NodeSelectionEventTypes>('task')
+  const selectedNodeId = ref<string | null>(null)
+  const expandedSubFlows = ref<ExpandedSubNodes<{
+    subscription: ReturnType<typeof useSubscriptionWithDependencies>,
+  }>>(new Map())
   const formatDateFns: FormatDateFns = {
     timeBySeconds: formatTimeNumeric,
     timeByMinutes: formatTimeShortNumeric,
     date: formatDate,
   }
-  const layout: Ref<TimelineNodesLayoutOptions> = ref('nearestParent')
+  const layout = ref<TimelineNodesLayoutOptions>('nearestParent')
   const hideEdges = ref(false)
 
   onMounted(() => {
@@ -156,28 +164,16 @@
     }
   }
 
-  const selectNode = (value: string | null): void => {
-    if (!value || value === selectedNodeId.value) {
+  const selectNode = (value: NodeSelectionEvent | null): void => {
+    if (!value || value.id === selectedNodeId.value) {
       selectedNodeId.value = null
       showTaskRunPanel.value = false
       return
     }
 
-    selectedNodeId.value = value
+    selectedNodeId.value = value.id
+    selectedNodeType.value = value.type
     showTaskRunPanel.value = true
-  }
-
-  const toggleSubFlow = (value: string): void => {
-    const isValueVisible = expandedSubFlows.value.has(value)
-
-    if (isValueVisible) {
-      expandedSubFlows.value.delete(value)
-      return
-    }
-
-    expandedSubFlows.value.set(value, [])
-
-    // request subFlowData then append to map position.
   }
 
   function closePanel(): void {
@@ -225,13 +221,7 @@
   )
 
   const graphData = computed(() => {
-    const items: TimelineNodeData[] = (graphSubscription.response ?? [])
-      .filter((node): node is TimelineNodeData => isValidTimelineNodeData(node))
-      .sort((nodeA, nodeB) => {
-        return nodeA.start.getTime() - nodeB.start.getTime()
-      })
-
-    return items
+    return removeNullStartsAndSort(graphSubscription.response ?? [])
   })
 
   const unwatchInitialData = watch(graphData, (value) => {
@@ -251,6 +241,119 @@
   function centerGraphViewport(): void {
     timelineGraph.value?.centerViewport()
   }
+
+  function toggleSubFlow(id: string): void {
+    const isValueVisible = expandedSubFlows.value.has(id)
+
+    if (isValueVisible) {
+      const subFlowRun = expandedSubFlows.value.get(id)
+      subFlowRun?.subscription.unsubscribe()
+      expandedSubFlows.value.delete(id)
+      return
+    }
+
+    const subFlowId = findSubFlowId(id)
+
+    if (!subFlowId) {
+      console.warn('No subflow ID found for node', id)
+      return
+    }
+
+    const subscription = useSubscription(
+      api.flowRuns.getFlowRunsTimeline,
+      [subFlowId],
+      { interval: 5000 },
+    )
+
+    const data = computed(() => {
+      return removeNullStartsAndSort(subscription.response ?? [])
+    })
+
+    expandedSubFlows.value.set(id, {
+      data,
+      subscription,
+    })
+  }
+
+  function findSubFlowId(id: string): string | null {
+    let subFlowId = graphData.value.find((node) => node.id === id)?.subFlowRunId
+
+    if (subFlowId) {
+      return subFlowId
+    }
+
+    for (const value of expandedSubFlows.value.values()) {
+      if ('value' in value.data) {
+        subFlowId = value.data.value.find((node) => node.id === id)?.subFlowRunId
+      } else {
+        subFlowId = value.data.find((node) => node.id === id)?.subFlowRunId
+      }
+
+      if (subFlowId) {
+        return subFlowId
+      }
+    }
+
+    return null
+  }
+
+  function removeNullStartsAndSort(nodes: TimelineNode[]): GraphTimelineNode[] {
+    return nodes.filter((node): node is GraphTimelineNode => isValidGraphTimelineNode(node))
+      .sort((nodeA, nodeB) => {
+        return nodeA.start.getTime() - nodeB.start.getTime()
+      })
+  }
+
+  /**
+   * SubFlow Names
+   */
+  const allSubFlowIds = computed<string[] | null>(() => {
+    if (!graphData.value.length) {
+      return null
+    }
+
+    const rootDataIds = graphData.value
+      .filter(hasSubFlowRunId)
+      .map((node) => node.subFlowRunId)
+
+    if (expandedSubFlows.value.size > 0) {
+      const expandedSubFlowIds = Array.from(expandedSubFlows.value.values())
+        .map((subFlow) => 'value' in subFlow.data ? subFlow.data.value : subFlow.data)
+        .flat()
+        .filter(hasSubFlowRunId)
+        .map((node) => node.subFlowRunId)
+
+      return [...rootDataIds, ...expandedSubFlowIds]
+    }
+
+    return [...rootDataIds]
+  })
+  const subFlowsSubscriptionFilter = computed<Parameters<typeof api.flowRuns.getFlowRuns> | null>(() => {
+    if (!allSubFlowIds.value || allSubFlowIds.value.length < 1) {
+      return null
+    }
+
+    return [
+      {
+        flowRuns: {
+          id: allSubFlowIds.value,
+        },
+      },
+    ]
+  })
+  const subFlowsSubscription = useSubscriptionWithDependencies(
+    api.flowRuns.getFlowRuns,
+    subFlowsSubscriptionFilter,
+  )
+  const subFlowRunLabels = computed(() => {
+    return (subFlowsSubscription.response ?? [])
+      .reduce((acc, curr) => {
+        if (curr.name) {
+          acc.set(curr.id, curr.name)
+        }
+        return acc
+      }, new Map<string, string>())
+  })
 
   /*
   * Theme overrides
@@ -278,9 +381,9 @@
     colorTextInverse: getHslColor('--white', '--background'),
     colorTextSubdued: getHslColor('--foreground-300', '--foreground-200'),
     colorNodeSelection: getHslColor('--primary-default-400'),
-    colorButtonBg: getHslColor('--background'),
-    colorButtonBgHover: getHslColor('--bg-primary-200', '--bg-primary-50'),
-    colorButtonBorder: getHslColor('--bg-primary-100'),
+    colorButtonBg: getHslColor('--background', '--background-100'),
+    colorButtonBgHover: getHslColor('--background-400', '--background-100'),
+    colorButtonBorder: colorThemeValue.value === 'dark' ? null : getHslColor('--background-400'),
     colorEdge: getHslColor('--foreground-200', '--foreground-300'),
     colorGuideLine: getHslColor('--foreground-50'),
     colorPlayheadBg: getHslColor('--primary-default-400'),
@@ -298,7 +401,7 @@
 
   const theme = computed<TimelineThemeOptions>(() => {
     return {
-      node: (node: TimelineNodeData) => {
+      node: (node: GraphTimelineNode) => {
         let inverseTextOnFill = colorThemeValue.value !== 'dark'
         if (node.state === 'scheduled') {
           inverseTextOnFill = colorThemeValue.value === 'dark'

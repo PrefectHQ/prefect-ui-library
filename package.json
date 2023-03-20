@@ -66,7 +66,7 @@
         "vue-router": "^4.0.12"
     },
     "dependencies": {
-        "@prefecthq/graphs": "0.1.18",
+        "@prefecthq/graphs": "1.0.0",
         "@prefecthq/radar": "0.0.19",
         "@prefecthq/vue-charts": "0.0.19",
         "@types/lodash.isequal": "4.5.6",
