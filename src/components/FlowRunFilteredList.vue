@@ -14,7 +14,9 @@
     <FlowRunList v-model:selected="selectedFlowRuns" :flow-runs="flowRuns" :disabled="disabled || !can.delete.flow_run" @bottom="flowRunsSubscription.loadMore" />
     <PEmptyResults v-if="empty">
       <template #message>
-        No runs from the last 7 days
+        <slot name="empty-message">
+          No runs from the last 7 days
+        </slot>
       </template>
       <template v-if="hasFilters" #actions>
         <p-button size="sm" secondary @click="clear">
