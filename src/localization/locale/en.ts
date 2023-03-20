@@ -7,10 +7,11 @@ export const en = {
     workQueues: 'https://docs.prefect.io/ui/work-queues/',
     notifications: 'https://docs.prefect.io/ui/notifications/',
     deployments: 'https://docs.prefect.io/ui/deployments/',
-    concurrency: 'https://docs.prefect.io/concepts/tasks/?h=conc#task-run-concurrency-limits',
+    concurrency: 'https://docs.prefect.io/concepts/tasks#task-run-concurrency-limits',
     automations: 'https://docs.prefect.io/ui/automations/',
     workPools: 'https://docs.prefect.io/ui/work-pools/',
     collections: 'https://docs.prefect.io/collections/catalog/',
+    resultsPersistence: 'https://docs.prefect.io/concepts/results/#persisting-results',
   },
   error: {
     activateDeployment: 'Failed to activate deployment',
@@ -87,7 +88,7 @@ export const en = {
   },
   info: {
     artifact: 'Artifact',
-    noResults: 'No tracked results',
+    noResults: 'No tracked results, enable [result persistence](https://docs.prefect.io/concepts/results/#persisting-results) to track results.',
     flowRun: 'Flow run',
     taskRuns: 'Task runs',
     created: 'Created',
