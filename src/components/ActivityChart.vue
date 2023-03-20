@@ -52,7 +52,7 @@
   const positiveSentimentKeys = [...StateDirections.entries()].filter(([, direction]) => direction < 0).map(([key]) => key)
   const negativeSentimentKeys = [...StateDirections.entries()].filter(([, direction]) => direction > 0).map(([key]) => key)
 
-  const getStateColor = (state: StateType): string => `bg-state-${state.toLowerCase()}-500`
+  const getStateColor = (state: string): string => `bg-state-${state.toLowerCase()}-500`
 
   const items = computed(() => mapper
     .map('RunHistory', props.history, 'DivergingBarChartItem')
