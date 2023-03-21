@@ -25,7 +25,7 @@
 
 <style>
 .flow-run-bread-crumbs { @apply
-  text-slate-700
+  text-foreground-200
 }
 
 .flow-run-bread-crumbs__flow-link { @apply

@@ -106,7 +106,7 @@
 
 .state-list-item__name { @apply
   text-base
-  text-slate-700
+  text-foreground-200
   shrink-0
   whitespace-nowrap
   grow-0
