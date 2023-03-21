@@ -82,7 +82,11 @@ export function secondsFromEpoch(date?: Date | string): number {
 
 export const dateFunctions = new Proxy({ ...dateFns }, {
   get(target, prop, receiver) {
-    const method = Reflect.get(target, prop, receiver)
+    const property = Reflect.get(target, prop, receiver)
+
+    if (typeof property !== 'function') {
+      return property
+    }
 
     return (...args: unknown[]) => {
       const anyDateArgsUnapplied = args.map(arg => {
@@ -93,7 +97,7 @@ export const dateFunctions = new Proxy({ ...dateFns }, {
         return arg
       })
 
-      const value = method.apply(this, anyDateArgsUnapplied)
+      const value = property.apply(this, anyDateArgsUnapplied)
 
       if (!isDate(value)) {
         return value
