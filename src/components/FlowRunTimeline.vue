@@ -283,8 +283,7 @@
   })
   const expandedSubFlowRunIds = computed<string[]>(() => {
     return Array.from(expandedSubFlowRuns.value.values())
-      .map((subFlowRun) => 'value' in subFlowRun.data ? subFlowRun.data.value : subFlowRun.data)
-      .flat()
+      .flatMap(subFlowRun => 'value' in subFlowRun.data ? subFlowRun.data.value : subFlowRun.data)
       .filter(hasSubFlowRunId)
       .map((node) => node.subFlowRunId)
   })
