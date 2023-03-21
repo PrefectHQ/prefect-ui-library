@@ -2,14 +2,7 @@
   <div ref="el" class="flow-run-list-item">
     <StateListItem v-model:selected="model" v-bind="{ value, disabled, tags, stateType }">
       <template #name>
-        <FlowRouterLink :flow-id="flowRun.flowId" class="flow-run-list-item__flow-link">
-          <template #after>
-            <p-icon icon="ChevronRightIcon" size="small" />
-          </template>
-        </FlowRouterLink>
-        <p-link :to="routes.flowRun(flowRun.id)" class="flow-run-list-item__flow-run-link">
-          <span>{{ flowRun.name }}</span>
-        </p-link>
+        <FlowRunBreadCrumbs :flow-run="flowRun" />
       </template>
       <template #meta>
         <StateBadge :state="flowRun.state" />
@@ -52,14 +45,14 @@
   import { computed, onMounted, ref } from 'vue'
   import DeploymentIconText from '@/components/DeploymentIconText.vue'
   import DurationIconText from '@/components/DurationIconText.vue'
-  import FlowRouterLink from '@/components/FlowRouterLink.vue'
+  import FlowRunBreadCrumbs from '@/components/FlowRunBreadCrumbs.vue'
   import FlowRunStartTime from '@/components/FlowRunStartTime.vue'
   import FlowRunTaskCount from '@/components/FlowRunTaskCount.vue'
   import StateBadge from '@/components/StateBadge.vue'
   import StateListItem from '@/components/StateListItem.vue'
   import WorkPoolIconText from '@/components/WorkPoolIconText.vue'
   import WorkQueueIconText from '@/components/WorkQueueIconText.vue'
-  import { useTaskRunsCount, useWorkspaceRoutes } from '@/compositions'
+  import { useTaskRunsCount } from '@/compositions'
   import { useDeployment } from '@/compositions/useDeployment'
   import { FlowRun } from '@/models/FlowRun'
   import { toPluralString } from '@/utilities'
@@ -83,7 +76,6 @@
     },
   })
 
-  const routes = useWorkspaceRoutes()
   const stateType = computed(() => props.flowRun.state?.type)
   const tags = computed(() => props.flowRun.tags)
   const value = computed(() => props.flowRun.id)
@@ -114,14 +106,6 @@
 </script>
 
 <style>
-.flow-run-list-item__flow-link { @apply
-  font-semibold
-}
-
-.flow-run-list-item__flow-run-link { @apply
-  font-normal
-}
-
 .flow-run-list-item__relation { @apply
   flex gap-1
 }
