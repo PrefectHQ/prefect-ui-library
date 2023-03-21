@@ -50,10 +50,10 @@
           :format-date-fns="formatDateFns"
           :theme="theme"
           :sub-node-labels="subFlowRunLabels"
-          :selected-node-id="selectedNodeId"
-          :expanded-sub-nodes="expandedSubFlows"
+          :selected-node-id="selectedNode?.id"
+          :expanded-sub-nodes="expandedSubFlowRuns"
           @selection="selectNode"
-          @sub-flow-toggle="toggleSubFlow"
+          @sub-node-toggle="toggleSubFlowRun"
         />
       </div>
       <div
@@ -61,8 +61,8 @@
         :class="classes.panel"
       >
         <FlowRunTimelineSelectionPanel
-          :id="selectedNodeId"
-          :type="selectedNodeType"
+          :selected-node="selectedNode"
+          :floating="isFullscreen"
           @dismiss="closePanel"
         />
       </div>
@@ -80,15 +80,15 @@
     TimelineNodesLayoutOptions,
     TimelineThemeOptions,
     ExpandedSubNodes,
-    NodeSelectionEvent,
-    NodeSelectionEventTypes
+    NodeSelectionEvent
   } from '@prefecthq/graphs'
   import { useColorTheme } from '@prefecthq/prefect-design'
-  import { useSubscription, useSubscriptionWithDependencies } from '@prefecthq/vue-compositions'
+  import { UseSubscription, useSubscription, useSubscriptionWithDependencies } from '@prefecthq/vue-compositions'
   import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
   import { FlowRunTimelineSelectionPanel, FlowRunTimelineOptions } from '@/components'
   import { useWorkspaceApi } from '@/compositions'
   import { FlowRun, hasSubFlowRunId, isValidGraphTimelineNode, TimelineNode } from '@/models'
+  import { WorkspaceFlowRunsApi } from '@/services'
   import { formatTimeNumeric, formatTimeShortNumeric, formatDate } from '@/utilities'
   import { eventTargetIsInput } from '@/utilities/eventTarget'
 
@@ -121,10 +121,9 @@
   const timelineGraph = ref<InstanceType<typeof FlowRunTimeline> | null>(null)
   const isFullscreen = ref(false)
   const showTaskRunPanel = ref(false)
-  const selectedNodeType = ref<NodeSelectionEventTypes>('task')
-  const selectedNodeId = ref<string | null>(null)
-  const expandedSubFlows = ref<ExpandedSubNodes<{
-    subscription: ReturnType<typeof useSubscriptionWithDependencies>,
+  const selectedNode = ref<NodeSelectionEvent | null>(null)
+  const expandedSubFlowRuns = ref<ExpandedSubNodes<{
+    subscription: UseSubscription<WorkspaceFlowRunsApi['getFlowRunsTimeline']>,
   }>>(new Map())
   const formatDateFns: FormatDateFns = {
     timeBySeconds: formatTimeNumeric,
@@ -133,6 +132,9 @@
   }
   const layout = ref<TimelineNodesLayoutOptions>('nearestParent')
   const hideEdges = ref(false)
+
+  const documentStyles = getComputedStyle(document.documentElement)
+  const bodyStyles = getComputedStyle(document.body)
 
   onMounted(() => {
     window.addEventListener('keydown', keyboardShortcutListener)
@@ -165,14 +167,13 @@
   }
 
   const selectNode = (value: NodeSelectionEvent | null): void => {
-    if (!value || value.id === selectedNodeId.value) {
-      selectedNodeId.value = null
+    if (!value || value === selectedNode.value) {
+      selectedNode.value = null
       showTaskRunPanel.value = false
       return
     }
 
-    selectedNodeId.value = value.id
-    selectedNodeType.value = value.type
+    selectedNode.value = value
     showTaskRunPanel.value = true
   }
 
@@ -242,26 +243,19 @@
     timelineGraph.value?.centerViewport()
   }
 
-  function toggleSubFlow(id: string): void {
-    const isValueVisible = expandedSubFlows.value.has(id)
+  function toggleSubFlowRun(id: string): void {
+    const isValueVisible = expandedSubFlowRuns.value.has(id)
 
     if (isValueVisible) {
-      const subFlowRun = expandedSubFlows.value.get(id)
+      const subFlowRun = expandedSubFlowRuns.value.get(id)
       subFlowRun?.subscription.unsubscribe()
-      expandedSubFlows.value.delete(id)
-      return
-    }
-
-    const subFlowId = findSubFlowId(id)
-
-    if (!subFlowId) {
-      console.warn('No subflow ID found for node', id)
+      expandedSubFlowRuns.value.delete(id)
       return
     }
 
     const subscription = useSubscription(
       api.flowRuns.getFlowRunsTimeline,
-      [subFlowId],
+      [id],
       { interval: 5000 },
     )
 
@@ -269,84 +263,54 @@
       return removeNullStartsAndSort(subscription.response ?? [])
     })
 
-    expandedSubFlows.value.set(id, {
+    expandedSubFlowRuns.value.set(id, {
       data,
       subscription,
     })
   }
 
-  function findSubFlowId(id: string): string | null {
-    let subFlowId = graphData.value.find((node) => node.id === id)?.subFlowRunId
-
-    if (subFlowId) {
-      return subFlowId
-    }
-
-    for (const value of expandedSubFlows.value.values()) {
-      if ('value' in value.data) {
-        subFlowId = value.data.value.find((node) => node.id === id)?.subFlowRunId
-      } else {
-        subFlowId = value.data.find((node) => node.id === id)?.subFlowRunId
-      }
-
-      if (subFlowId) {
-        return subFlowId
-      }
-    }
-
-    return null
-  }
-
   function removeNullStartsAndSort(nodes: TimelineNode[]): GraphTimelineNode[] {
-    return nodes.filter((node): node is GraphTimelineNode => isValidGraphTimelineNode(node))
+    return nodes.filter(isValidGraphTimelineNode)
       .sort((nodeA, nodeB) => {
         return nodeA.start.getTime() - nodeB.start.getTime()
       })
   }
 
-  /**
-   * SubFlow Names
-   */
-  const allSubFlowIds = computed<string[] | null>(() => {
-    if (!graphData.value.length) {
-      return null
-    }
-
-    const rootDataIds = graphData.value
+  const rootSubFlowRunIds = computed<string[]>(() => {
+    return graphData.value
       .filter(hasSubFlowRunId)
       .map((node) => node.subFlowRunId)
-
-    if (expandedSubFlows.value.size > 0) {
-      const expandedSubFlowIds = Array.from(expandedSubFlows.value.values())
-        .map((subFlow) => 'value' in subFlow.data ? subFlow.data.value : subFlow.data)
-        .flat()
-        .filter(hasSubFlowRunId)
-        .map((node) => node.subFlowRunId)
-
-      return [...rootDataIds, ...expandedSubFlowIds]
-    }
-
-    return [...rootDataIds]
   })
-  const subFlowsSubscriptionFilter = computed<Parameters<typeof api.flowRuns.getFlowRuns> | null>(() => {
-    if (!allSubFlowIds.value || allSubFlowIds.value.length < 1) {
+  const expandedSubFlowRunIds = computed<string[]>(() => {
+    return Array.from(expandedSubFlowRuns.value.values())
+      .map((subFlowRun) => 'value' in subFlowRun.data ? subFlowRun.data.value : subFlowRun.data)
+      .flat()
+      .filter(hasSubFlowRunId)
+      .map((node) => node.subFlowRunId)
+  })
+  const allSubFlowRunIds = computed<string[]>(() => {
+    return [...rootSubFlowRunIds.value, ...expandedSubFlowRunIds.value]
+  })
+
+  const subFlowRunsSubscriptionFilter = computed<Parameters<typeof api.flowRuns.getFlowRuns> | null>(() => {
+    if (allSubFlowRunIds.value.length < 1) {
       return null
     }
 
     return [
       {
         flowRuns: {
-          id: allSubFlowIds.value,
+          id: allSubFlowRunIds.value,
         },
       },
     ]
   })
-  const subFlowsSubscription = useSubscriptionWithDependencies(
+  const subFlowRunsSubscription = useSubscriptionWithDependencies(
     api.flowRuns.getFlowRuns,
-    subFlowsSubscriptionFilter,
+    subFlowRunsSubscriptionFilter,
   )
   const subFlowRunLabels = computed(() => {
-    return (subFlowsSubscription.response ?? [])
+    return (subFlowRunsSubscription.response ?? [])
       .reduce((acc, curr) => {
         if (curr.name) {
           acc.set(curr.id, curr.name)
@@ -354,12 +318,6 @@
         return acc
       }, new Map<string, string>())
   })
-
-  /*
-  * Theme overrides
-  */
-  const documentStyles = getComputedStyle(document.documentElement)
-  const bodyStyles = getComputedStyle(document.body)
 
   function getStateColor(cssVariable: string): string {
     return bodyStyles.getPropertyValue(cssVariable).trim()
