@@ -323,15 +323,39 @@
     return bodyStyles.getPropertyValue(cssVariable).trim()
   }
 
-  const stateColors: Record<string, string> = {
-    completed: getStateColor('--state-completed-600'),
-    running: getStateColor('--state-running-600'),
-    scheduled: getStateColor('--state-scheduled-600'),
-    pending: getStateColor('--state-pending-600'),
-    failed: getStateColor('--state-failed-600'),
-    cancelled: getStateColor('--state-cancelled-600'),
-    crashed: getStateColor('--state-crashed-600'),
-    paused: getStateColor('--state-paused-600'),
+  const stateColors: Record<string, Record<'default' | 'hover', string>> = {
+    completed: {
+      default: getStateColor('--state-completed-600'),
+      hover: getStateColor('--state-completed-700'),
+    },
+    running: {
+      default: getStateColor('--state-running-600'),
+      hover: getStateColor('--state-running-700'),
+    },
+    scheduled: {
+      default: getStateColor('--state-scheduled-600'),
+      hover: getStateColor('--state-scheduled-700'),
+    },
+    pending: {
+      default: getStateColor('--state-pending-600'),
+      hover: getStateColor('--state-pending-700'),
+    },
+    failed: {
+      default: getStateColor('--state-failed-600'),
+      hover: getStateColor('--state-failed-700'),
+    },
+    cancelled: {
+      default: getStateColor('--state-cancelled-600'),
+      hover: getStateColor('--state-cancelled-700'),
+    },
+    crashed: {
+      default: getStateColor('--state-crashed-600'),
+      hover: getStateColor('--state-crashed-700'),
+    },
+    paused: {
+      default: getStateColor('--state-paused-600'),
+      hover: getStateColor('--state-paused-700'),
+    },
   }
 
   const themeDefaultOverrides = computed<Partial<ThemeStyleOverrides>>(() => ({
@@ -365,9 +389,9 @@
           inverseTextOnFill = colorThemeValue.value === 'dark'
         }
         return {
-          fill: stateColors[node.state],
-          onFillSubNodeToggleHoverBg: '#000000',
-          onFillSubNodeToggleHoverBgAlpha: 0.4,
+          fill: stateColors[node.state].default,
+          onFillSubNodeToggleHoverBg: stateColors[node.state].hover,
+          onFillSubNodeToggleHoverBgAlpha: 1,
           inverseTextOnFill,
         }
       },
