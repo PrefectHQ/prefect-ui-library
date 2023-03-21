@@ -15,6 +15,18 @@ export class MockWorkspaceArtifactsApi extends MockApi implements IWorkspaceArti
       artifacts = artifacts.filter(artifact => artifact.flowRunId && filter.artifacts?.flowRunId?.includes(artifact.flowRunId))
     }
 
+    if (filter.artifacts?.taskRunId?.length) {
+      artifacts = artifacts.filter(artifact => artifact.taskRunId && filter.artifacts?.taskRunId?.includes(artifact.taskRunId))
+    }
+
+    if (filter.artifacts?.key?.length) {
+      artifacts = artifacts.filter(artifact => artifact.key && filter.artifacts?.key?.includes(artifact.key))
+    }
+
+    if (filter.artifacts?.type?.length) {
+      artifacts = artifacts.filter(artifact => filter.artifacts?.type?.includes(artifact.type))
+    }
+
     return artifacts
   }
 
