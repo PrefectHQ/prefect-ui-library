@@ -1,14 +1,7 @@
 <template>
   <template v-if="flowRun">
     <article class="flow-run-popover-content">
-      <header class="flow-run-popover-content__header">
-        <h5>
-          <FlowRouterLink :flow-id="flowRun.flowId" after=" / " />
-          <p-link :to="routes.flowRun(flowRun.id)">
-            <span>{{ flowRun.name }}</span>
-          </p-link>
-        </h5>
-      </header>
+      <FlowRunBreadCrumbs :flow-run="flowRun" />
 
       <StateBadge :state="flowRun.state" class="max-w-min" />
 
@@ -36,17 +29,16 @@
   import { computed } from 'vue'
   import DeploymentIconText from '@/components/DeploymentIconText.vue'
   import DurationIconText from '@/components/DurationIconText.vue'
-  import FlowRouterLink from '@/components/FlowRouterLink.vue'
+  import FlowRunBreadCrumbs from '@/components/FlowRunBreadCrumbs.vue'
   import FlowRunStartTime from '@/components/FlowRunStartTime.vue'
   import StateBadge from '@/components/StateBadge.vue'
-  import { useWorkspaceApi, useWorkspaceRoutes } from '@/compositions'
+  import { useWorkspaceApi } from '@/compositions'
 
   const props = defineProps<{
     flowRunId: string,
   }>()
 
   const api = useWorkspaceApi()
-  const routes = useWorkspaceRoutes()
   const flowRunSubscription = useSubscription(api.flowRuns.getFlowRun, [props.flowRunId])
   const flowRun = computed(() => flowRunSubscription.response)
   const tags = computed(() => flowRun.value?.tags ?? [])
@@ -64,11 +56,6 @@
   max-w-xs
   w-screen
   shadow-md
-}
-
-.flow-run-popover-content__header { @apply
-  grid
-  gap-1
 }
 
 .flow-run-popover-content__aside { @apply
