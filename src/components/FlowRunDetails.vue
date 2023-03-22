@@ -71,6 +71,12 @@
 
     <p-key-value label="Flow Run ID" :value="flowRun.id" :alternate="alternate" />
 
+    <p-key-value label="State Message" :alternate="alternate">
+      <template v-if="stateMessage" #value>
+        <p-text-truncate :text="stateMessage" />
+      </template>
+    </p-key-value>
+
     <p-divider />
 
     <router-link v-if="!hideRadar" :to="routes.flowRunRadar(flowRun.id)" class="flow-run-details__small-radar-link">
@@ -120,6 +126,7 @@
   const deploymentId = computed(() => props.flowRun.deploymentId)
   const deployment = useDeployment(deploymentId)
   const showDeployment = computed(() => can.read.deployment && isDefined(deployment.value))
+  const stateMessage = computed(() => props.flowRun.state?.message)
 
   const flowRunFilter = computed<Parameters<typeof api.flowRuns.getFlowRuns> | null>(() => {
     if (props.flowRun.parentTaskRunId) {
