@@ -1,6 +1,10 @@
 <template>
   <div v-if="task">
-    <page-heading :crumbs="crumbs" size="sm" class="mb-2" />
+    <p-heading element="h3" heading="5">
+      <p-link :to="routes.taskRun(taskRunId)">
+        {{ task.name }}
+      </p-link>
+    </p-heading>
     <div class="flow-run-timeline-task-details__content">
       <p-key-value label="State" :alternate="alternate">
         <template #value>
@@ -26,7 +30,7 @@
 <script lang="ts" setup>
   import { useSubscriptionWithDependencies } from '@prefecthq/vue-compositions'
   import { computed, toRefs } from 'vue'
-  import { StateBadge, PageHeading, DurationIconText } from '@/components'
+  import { StateBadge, DurationIconText } from '@/components'
   import { useWorkspaceApi, useWorkspaceRoutes } from '@/compositions'
   import { formatDateTimeNumeric } from '@/utilities/dates'
 
@@ -39,6 +43,7 @@
   const alternate = true
 
   const routes = useWorkspaceRoutes()
+
   const api = useWorkspaceApi()
   const taskSubscriptionArgs = computed<[string]>(() => [taskRunId.value])
   const taskSubscription = useSubscriptionWithDependencies(
@@ -47,19 +52,11 @@
   )
 
   const task = computed(() => taskSubscription.response)
-
-  const crumbs = computed(() => {
-    return [
-      {
-        text: task.value?.name ?? '',
-        to: routes.taskRun(taskRunId.value),
-      },
-    ]
-  })
 </script>
 
 <style>
 .flow-run-timeline-task-details__content { @apply
+  mt-2
   flex
   flex-col
   gap-3
