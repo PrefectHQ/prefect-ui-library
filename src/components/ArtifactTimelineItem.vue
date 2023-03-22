@@ -162,8 +162,9 @@
 
 .artifact-timeline-item__point { @apply
   bg-foreground-200
-  border
-  border-background
+  border-2
+  border-background-600
+  dark:border-background-300
   h-4
   max-w-full
   rounded-full
@@ -187,10 +188,7 @@
   font-normal
 }
 
-.artifact-timeline-item__point--expanded {
-  transform: scale(1.5);
-}
-
+.artifact-timeline-item__point--expanded,
 .artifact-timeline-item:hover .artifact-timeline-item__point:not(.artifact-timeline-item__point--expanded) {
   transform: scale(1.5);
 }
@@ -217,10 +215,7 @@
   text-sm
 }
 
-.artifact-timeline-item__card-heading--expanded { @apply
-  p-4
-}
-
+.artifact-timeline-item__card-heading--expanded,
 .artifact-timeline-item__card-body { @apply
   p-4
 }
