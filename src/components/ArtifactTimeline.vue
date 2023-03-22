@@ -1,21 +1,13 @@
 <template>
-  <div>
-    <ResultsCount
-      :count="artifactsCount"
-      :label="localization.info.artifact"
-    />
-
+  <div class="artifact-timeline">
     <p-virtual-scroller
       :items="artifacts"
       :item-estimate-height="112"
-      class="artifact-timeline"
+      class="artifact-timeline__virtual-scroller"
       @bottom="fetchMore"
     >
-      <template #default="{ item: artifact, index }">
-        <p-heading heading="3">
-          {{ index }} - {{ artifact.id }}
-        </p-heading>
-        <ArtifactTimelineItem v-bind="{ artifact }" />
+      <template #default="{ item: artifact }">
+        <ArtifactTimelineItem v-bind="{ artifact }" class="artifact-timeline__artifact-timeline-item" />
       </template>
     </p-virtual-scroller>
   </div>
@@ -25,9 +17,7 @@
   import { useSubscription } from '@prefecthq/vue-compositions'
   import { computed, ref, watch, onBeforeMount } from 'vue'
   import ArtifactTimelineItem from '@/components/ArtifactTimelineItem.vue'
-  import ResultsCount from '@/components/ResultsCount.vue'
   import { useWorkspaceApi } from '@/compositions'
-  import { localization } from '@/localization'
   import { Artifact } from '@/models'
   import { ArtifactsFilter } from '@/models/Filters'
 
@@ -82,5 +72,19 @@
 </script>
 
 <style>
+.artifact-timeline { @apply
+  border-l
+  border-foreground-100
+  pr-4
+}
 
+.artifact-timeline__virtual-scroller { @apply
+  -ml-4
+  max-w-full
+}
+
+.artifact-timeline__artifact-timeline-item { @apply
+  max-w-full
+  w-full
+}
 </style>
