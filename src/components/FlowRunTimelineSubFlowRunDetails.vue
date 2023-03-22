@@ -1,11 +1,7 @@
 <template>
-  <template v-if="subFlowRun">
-    <page-heading :crumbs="crumbs" size="sm" class="mb-2">
-      <template #actions>
-        <slot />
-      </template>
-    </page-heading>
-    <div class="timeline-sub-flow-details__content">
+  <div v-if="subFlowRun">
+    <page-heading :crumbs="crumbs" size="sm" class="mb-2" />
+    <div class="flow-run-timeline-sub-flow-run-details__content">
       <p-key-value label="State" :alternate="alternate">
         <template #value>
           <StateBadge :state="subFlowRun.state" class="timeline-task-details__state-badge" />
@@ -20,11 +16,11 @@
       <p-key-value label="Created" :value="formatDateTimeNumeric(subFlowRun.created)" :alternate="alternate" />
       <p-key-value label="Tags" :alternate="alternate">
         <template v-if="subFlowRun.tags?.length" #value>
-          <p-tags :tags="subFlowRun.tags!" class="timeline-sub-flow-details__tags" />
+          <p-tags :tags="subFlowRun.tags!" class="flow-run-timeline-sub-flow-run-details__tags" />
         </template>
       </p-key-value>
     </div>
-  </template>
+  </div>
 </template>
 
 <script lang="ts" setup>
@@ -35,16 +31,16 @@
   import { formatDateTimeNumeric } from '@/utilities/dates'
 
   const props = defineProps<{
-    id: string,
+    flowRunId: string,
   }>()
 
-  const { id } = toRefs(props)
+  const { flowRunId } = toRefs(props)
 
   const alternate = true
 
   const routes = useWorkspaceRoutes()
   const api = useWorkspaceApi()
-  const flowRunSubscriptionArgs = computed<[string]>(() => [id.value])
+  const flowRunSubscriptionArgs = computed<[string]>(() => [flowRunId.value])
   const flowRunSubscription = useSubscriptionWithDependencies(
     api.flowRuns.getFlowRun,
     flowRunSubscriptionArgs,
@@ -56,21 +52,21 @@
     return [
       {
         text: subFlowRun.value?.name ?? '',
-        to: routes.flowRun(id.value),
+        to: routes.flowRun(flowRunId.value),
       },
     ]
   })
 </script>
 
 <style>
-.timeline-sub-flow-details__content { @apply
+.flow-run-timeline-sub-flow-run-details__content { @apply
   flex
   flex-col
   gap-3
 }
 
-.timeline-sub-flow-details__tags .p-tag,
-.timeline-sub-flow-details__state-badge .p-tag { @apply
+.flow-run-timeline-sub-flow-run-details__tags .p-tag,
+.flow-run-timeline-sub-flow-run-details__state-badge .p-tag { @apply
   !text-xs
 }
 </style>

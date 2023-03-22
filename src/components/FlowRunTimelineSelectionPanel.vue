@@ -1,17 +1,16 @@
 <template>
   <div :class="classes">
+    <div class="flex justify-end">
+      <p-button size="xs" icon="XIcon" flat @click="closePanel" />
+    </div>
     <FlowRunTimelineTaskDetails
       v-if="selectedNode && selectedNode.type === 'task'"
-      :id="selectedNode.id"
-    >
-      <p-button size="xs" icon="XIcon" flat @click="closePanel" />
-    </FlowRunTimelineTaskDetails>
+      :task-run-id="selectedNode.id"
+    />
     <FlowRunTimelineSubFlowRunDetails
       v-if="selectedNode && selectedNode.type === 'subFlowRun'"
-      :id="selectedNode.id"
-    >
-      <p-button size="xs" icon="XIcon" flat @click="closePanel" />
-    </FlowRunTimelineSubFlowRunDetails>
+      :flow-run-id="selectedNode.id"
+    />
   </div>
 </template>
 
@@ -26,7 +25,7 @@
   const props = defineProps<{
     /** selectedNode and all inner content is optional for the sake of outgoing animations */
     selectedNode: NodeSelectionEvent | null,
-    floating?: boolean,
+    floating: boolean,
   }>()
 
   const emit = defineEmits<{
@@ -38,7 +37,7 @@
   const classes = computed(() => {
     return {
       'timeline-selection-panel': true,
-      'timeline-selection-panel--floating': floating?.value,
+      'timeline-selection-panel--floating': floating.value,
     }
   })
 
