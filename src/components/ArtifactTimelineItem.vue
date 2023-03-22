@@ -1,22 +1,31 @@
 <template>
   <div class="artifact-timeline-item" :class="classes.root">
     <div class="artifact-timeline-item__icon-container">
-      <div class="artifact-timeline-item__icon" />
+      <div class="artifact-timeline-item__icon" :class="classes.icon" />
     </div>
 
-    <p-card class="artifact-timeline-item__card" :class="classes.card">
-      <p-heading heading="6" @click="toggleExpanded">
-        {{ id }}
+    <p-card
+      class="artifact-timeline-item__card"
+      :class="classes.card"
+      tabindex="0"
+      @keyup.self.enter="toggleExpanded"
+    >
+      <p-heading :class="classes.cardHeading" class="artifact-timeline-item__card-heading" heading="6" @click.self="toggleExpanded">
+        <p-link :to="routes.artifact(artifact.id)">
+          {{ id }}
+        </p-link>
       </p-heading>
 
       <template v-if="expanded">
-        <template v-if="artifact.description">
-          <p-markdown-renderer :text="artifact.description" />
+        <section class="artifact-timeline-item__card-body">
+          <template v-if="artifact.description">
+            <p-markdown-renderer :text="artifact.description" />
 
-          <p-divider />
-        </template>
+            <p-divider />
+          </template>
 
-        <ArtifactDataView :artifact="artifact" />
+          <ArtifactDataView :artifact="artifact" />
+        </section>
       </template>
     </p-card>
   </div>
@@ -26,6 +35,7 @@
   import { isArray } from '@prefecthq/prefect-design'
   import { computed } from 'vue'
   import ArtifactDataView from '@/components/ArtifactDataView.vue'
+  import { useWorkspaceRoutes } from '@/compositions'
   import { Artifact } from '@/models'
   import { isNullish } from '@/utilities'
 
@@ -36,6 +46,8 @@
     expanded?: Expanded | null,
     value?: unknown,
   }>()
+
+  const routes = useWorkspaceRoutes()
 
   const emit = defineEmits<{
     (event: 'update:expanded', value: Expanded): void,
@@ -89,13 +101,22 @@
     card: {
       'artifact-timeline-item__card--expanded': expanded.value,
     },
+    cardHeading: {
+      'artifact-timeline-item__card-heading--expanded': expanded.value,
+    },
+    icon: {
+      'artifact-timeline-item__icon--expanded': expanded.value,
+    },
   }))
 </script>
 
 <style>
 .artifact-timeline-item { @apply
   flex
-  pt-2
+}
+
+.artifact-timeline-item--expanded { @apply
+  mt-4
 }
 
 .artifact-timeline-item__icon-container { @apply
@@ -103,8 +124,6 @@
   h-full
   items-start
   justify-center
-  pt-1
-  px-2
 }
 
 .artifact-timeline-item__icon { @apply
@@ -115,20 +134,48 @@
   max-w-full
   overflow-auto
   rounded-full
+  transition-all
   w-4
 }
 
+.artifact-timeline-item__icon--expanded { @apply
+  h-5
+  w-5
+}
+
 .artifact-timeline-item__card { @apply
+  outline-none
   focus:outline-none
   max-w-full
+  p-0
   transition-all
   w-full
 }
 
+.artifact-timeline-item__card--expanded { @apply
+  -mt-4
+}
+
+.artifact-timeline-item__card-heading { @apply
+  cursor-pointer
+  flex
+  justify-between
+  transition-all
+}
+
+.artifact-timeline-item__card-heading--expanded { @apply
+  p-4
+}
+
+.artifact-timeline-item__card-body { @apply
+  p-4
+}
+
 .artifact-timeline-item__card:not(.artifact-timeline-item__card--expanded) { @apply
-  p-0
   bg-transparent
   border-none
   shadow-none
+  focus:bg-background-900
+  hover:bg-background-900
 }
 </style>
