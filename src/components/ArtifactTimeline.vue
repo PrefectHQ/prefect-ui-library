@@ -1,8 +1,10 @@
 <template>
   <div>
-    <div>
-      {{ artifactsCount }}
-    </div>
+    <ResultsCount
+      :count="artifactsCount"
+      :label="localization.info.artifact"
+    />
+
     <p-virtual-scroller
       :items="artifacts"
       :item-estimate-height="112"
@@ -23,7 +25,9 @@
   import { useSubscription } from '@prefecthq/vue-compositions'
   import { computed, ref, watch, onBeforeMount } from 'vue'
   import ArtifactTimelineItem from '@/components/ArtifactTimelineItem.vue'
+  import ResultsCount from '@/components/ResultsCount.vue'
   import { useWorkspaceApi } from '@/compositions'
+  import { localization } from '@/localization'
   import { Artifact } from '@/models'
   import { ArtifactsFilter } from '@/models/Filters'
 
