@@ -7,7 +7,12 @@
       @bottom="fetchMore"
     >
       <template #default="{ item: artifact }">
-        <ArtifactTimelineItem v-bind="{ artifact }" class="artifact-timeline__artifact-timeline-item" />
+        <ArtifactTimelineItem
+          v-bind="{ artifact }"
+          v-model:expanded="expanded"
+          :value="artifact.id"
+          class="artifact-timeline__artifact-timeline-item"
+        />
       </template>
     </p-virtual-scroller>
   </div>
@@ -69,6 +74,8 @@
   onBeforeMount(() => {
     getArtifacts()
   })
+
+  const expanded = ref<string[]>([])
 </script>
 
 <style>

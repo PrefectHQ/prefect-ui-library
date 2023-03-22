@@ -4,7 +4,7 @@
       <div class="artifact-timeline-item__icon" />
     </div>
 
-    <p-card class="artifact-timeline-item__card" :class="classes.card" tabindex="0" @focus="handleFocusIn" @blur="handleFocusOut">
+    <p-card class="artifact-timeline-item__card" :class="classes.card">
       <p-heading heading="6" @click="toggleExpanded">
         {{ id }}
       </p-heading>
@@ -23,29 +23,64 @@
 </template>
 
 <script lang="ts" setup>
-  import { computed, ref } from 'vue'
+  import { isArray } from '@prefecthq/prefect-design'
+  import { computed } from 'vue'
   import ArtifactDataView from '@/components/ArtifactDataView.vue'
   import { Artifact } from '@/models'
+  import { isNullish } from '@/utilities'
+
+  type Expanded = boolean | unknown[] | undefined
 
   const props = defineProps<{
     artifact: Artifact,
+    expanded?: Expanded | null,
+    value?: unknown,
   }>()
 
-  const expanded = ref(false)
+  const emit = defineEmits<{
+    (event: 'update:expanded', value: Expanded): void,
+  }>()
 
-  const id = computed(() => expanded.value ? props.artifact.id : props.artifact.id.slice(0, 8))
+  const expandedModel = computed({
+    get() {
+      return props.expanded ?? undefined
+    },
+    set(value) {
+      emit('update:expanded', value)
+    },
+  })
 
-  const handleFocusIn = (): void => {
-    expanded.value = true
-  }
+  const expanded = computed(() => {
+    if (isNullish(expandedModel.value)) {
+      return false
+    }
 
-  const handleFocusOut = (): void => {
-    expanded.value = false
-  }
+    if (isArray(expandedModel.value)) {
+      return expandedModel.value.includes(props.value)
+    }
+
+    return expandedModel.value
+  })
 
   const toggleExpanded = (): void => {
-    expanded.value = !expanded.value
+    if (isNullish(expandedModel.value)) {
+      return
+    }
+
+    if (isArray(expandedModel.value)) {
+      if (expanded.value) {
+        expandedModel.value = expandedModel.value.filter((value) => value !== props.value)
+      } else {
+        expandedModel.value = [...expandedModel.value, props.value]
+      }
+
+      return
+    }
+
+    expandedModel.value = !expandedModel.value
   }
+
+  const id = computed(() => expanded.value ? props.artifact.id : props.artifact.id.slice(0, 8))
 
   const classes = computed(() => ({
     root: {
