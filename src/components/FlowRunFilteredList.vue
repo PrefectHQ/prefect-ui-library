@@ -15,7 +15,7 @@
     <PEmptyResults v-if="empty">
       <template #message>
         <slot name="empty-message">
-          No runs from the last 7 days
+          No runs found
         </slot>
       </template>
       <template v-if="hasFilters" #actions>
