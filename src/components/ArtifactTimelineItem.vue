@@ -149,6 +149,11 @@
   mt-6
 }
 
+/* Note that this won't be necessary once https://github.com/PrefectHQ/prefect-design/pull/698 is released */
+.artifact-timeline-item.artifact-timeline-item--expanded .p-divider { @apply
+  bg-foreground-50
+}
+
 .artifact-timeline-item__point-container { @apply
   flex
   h-6
