@@ -156,6 +156,7 @@
   focus:outline-none
   max-w-full
   p-0
+  pt-1
   transition-all
   w-full
 }
