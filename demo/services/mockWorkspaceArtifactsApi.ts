@@ -9,7 +9,9 @@ export class MockWorkspaceArtifactsApi extends MockApi implements IWorkspaceArti
   }
 
   public async getArtifacts(filter: ArtifactsFilter = {}): Promise<Artifact[]> {
+    const { limit = 200, offset = 0 } = filter
     let artifacts = await this.artifacts.getAll()
+    console.log(`Artifacts: ${artifacts.length}, limit: ${limit}, offset: ${offset}`)
 
     if (filter.artifacts?.flowRunId?.length) {
       artifacts = artifacts.filter(artifact => artifact.flowRunId && filter.artifacts?.flowRunId?.includes(artifact.flowRunId))
@@ -21,11 +23,15 @@ export class MockWorkspaceArtifactsApi extends MockApi implements IWorkspaceArti
 
     if (filter.artifacts?.key?.length) {
       artifacts = artifacts.filter(artifact => artifact.key && filter.artifacts?.key?.includes(artifact.key))
+      console.log(`Length after key filter: ${artifacts.length}`)
     }
 
     if (filter.artifacts?.type?.length) {
       artifacts = artifacts.filter(artifact => filter.artifacts?.type?.includes(artifact.type))
     }
+
+    artifacts = artifacts.slice(offset, offset + limit)
+    console.log(`Length after slice: ${artifacts.length}, offset + limit: ${offset + limit}`)
 
     return artifacts
   }

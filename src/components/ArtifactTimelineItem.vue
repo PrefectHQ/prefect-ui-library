@@ -1,15 +1,21 @@
 <template>
-  <div class="artifact-timeline">
-    {{ artifactKey }}
+  <div class="artifact-timeline-item">
+    {{ artifact.key }}
+    {{ artifact.description }}
   </div>
 </template>
 
 <script lang="ts" setup>
+  import { Artifact } from '@/models'
+
   const props = defineProps<{
-    artifactKey: string,
+    artifact: Artifact,
   }>()
 </script>
 
 <style>
-
+.artifact-timeline-item { @apply
+  max-h-28
+  overflow-hidden
+}
 </style>

@@ -1,6 +1,8 @@
 <template>
   <ComponentPage title="ArtifactTimeline">
-    <ArtifactTimeline :artifact-key="key" />
+    <template #description>
+      <ArtifactTimeline :artifact-key="key" />
+    </template>
   </ComponentPage>
 </template>
 
@@ -12,5 +14,5 @@
 
 
   const key = `${mocker.create('adjective')}-${mocker.create('noun')}`
-  useArtifactsMock(50, { key })
+  useArtifactsMock(100, { key })
 </script>
