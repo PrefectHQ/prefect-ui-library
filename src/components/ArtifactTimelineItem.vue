@@ -147,6 +147,10 @@
   transform: scale(1.5);
 }
 
+.artifact-timeline-item:hover .artifact-timeline-item__icon:not(.artifact-timeline-item__icon--expanded) {
+  transform: scale(1.3);
+}
+
 .artifact-timeline-item__card { @apply
   outline-none
   focus:outline-none
@@ -179,7 +183,5 @@
   bg-transparent
   border-none
   shadow-none
-  focus:bg-background-900
-  hover:bg-background-900
 }
 </style>
