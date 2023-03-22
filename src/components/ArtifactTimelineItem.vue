@@ -11,6 +11,9 @@
       @keyup.self.enter="toggleExpanded"
     >
       <p-heading :class="classes.cardHeading" class="artifact-timeline-item__card-heading" heading="6" @click.self="toggleExpanded">
+        <span>
+          {{ formatDateTimeRelative(artifact.created) }}
+        </span>
         <p-link :to="routes.artifact(artifact.id)">
           {{ id }}
         </p-link>
@@ -37,7 +40,7 @@
   import ArtifactDataView from '@/components/ArtifactDataView.vue'
   import { useWorkspaceRoutes } from '@/compositions'
   import { Artifact } from '@/models'
-  import { isNullish } from '@/utilities'
+  import { formatDateTimeRelative, isNullish } from '@/utilities'
 
   type Expanded = boolean | unknown[] | undefined
 
@@ -117,17 +120,17 @@
   transition-all
 }
 
-.artifact-timeline-item--expanded { @apply
-  mt-4
+.artifact-timeline-item.artifact-timeline-item--expanded { @apply
+  mt-6
 }
 
 .artifact-timeline-item__icon-container { @apply
   flex
-  h-8
+  h-6
   items-center
   justify-center
   relative
-  w-8
+  w-10
 }
 
 .artifact-timeline-item__icon { @apply
@@ -156,13 +159,12 @@
   focus:outline-none
   max-w-full
   p-0
-  pt-1
   transition-all
   w-full
 }
 
 .artifact-timeline-item__card--expanded { @apply
-  -mt-4
+  -mt-3
 }
 
 .artifact-timeline-item__card-heading { @apply

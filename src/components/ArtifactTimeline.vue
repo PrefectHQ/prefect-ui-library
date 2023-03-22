@@ -86,7 +86,7 @@
 }
 
 .artifact-timeline__virtual-scroller { @apply
-  -ml-4
+  -ml-5
   max-w-full
 }
 
