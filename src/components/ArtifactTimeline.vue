@@ -93,6 +93,6 @@
 .artifact-timeline__artifact-timeline-item { @apply
   max-w-full
   w-full
-  my-4
+  my-6
 }
 </style>

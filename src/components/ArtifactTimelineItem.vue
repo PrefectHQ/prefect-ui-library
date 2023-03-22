@@ -1,7 +1,7 @@
 <template>
   <div class="artifact-timeline-item" :class="classes.root">
-    <div class="artifact-timeline-item__icon-container">
-      <div class="artifact-timeline-item__icon" :class="classes.icon" />
+    <div class="artifact-timeline-item__point-container">
+      <div class="artifact-timeline-item__point" :class="classes.point" />
     </div>
 
     <p-card
@@ -11,15 +11,35 @@
       @keyup.self.enter="toggleExpanded"
     >
       <p-heading :class="classes.cardHeading" class="artifact-timeline-item__card-heading" heading="6" @click="toggleExpanded">
-        <span class="artifact-timeline-item__created" :title="formatDateTimeNumeric(artifact.created)">
-          {{ formatDate(artifact.created) }}
-        </span>
+        <div>
+          <div class="artifact-timeline-item__created" :title="formatDateTimeNumeric(artifact.created)">
+            {{ formatDate(artifact.created) }}
+          </div>
+          <div class="artifact-timeline-item__icon-texts-container">
+            <template v-if="artifact.flowRunId">
+              <div class="artifact-timeline-item__icon-text-container">
+                {{ localization.info.flowRun }}
+                <FlowRunIconText class="artifact-timeline-item__icon-text" :flow-run-id="artifact.flowRunId" />
+              </div>
+            </template>
+
+            <template v-if="artifact.taskRunId">
+              <div class="artifact-timeline-item__icon-text-container">
+                {{ localization.info.taskRun }}
+                <TaskRunIconText class="artifact-timeline-item__icon-text" :task-run-id="artifact.taskRunId" />
+              </div>
+            </template>
+          </div>
+        </div>
+
         <p-link :to="routes.artifact(artifact.id)" :title="artifact.id" @click.stop>
           {{ shortId }}
         </p-link>
       </p-heading>
 
       <template v-if="expanded">
+        <p-divider />
+
         <section class="artifact-timeline-item__card-body">
           <template v-if="artifact.description">
             <p-markdown-renderer :text="artifact.description" />
@@ -38,7 +58,10 @@
   import { isArray } from '@prefecthq/prefect-design'
   import { computed } from 'vue'
   import ArtifactDataView from '@/components/ArtifactDataView.vue'
+  import FlowRunIconText from '@/components/FlowRunIconText.vue'
+  import TaskRunIconText from '@/components/TaskRunIconText.vue'
   import { useWorkspaceRoutes } from '@/compositions'
+  import { localization } from '@/localization'
   import { Artifact } from '@/models'
   import { formatDate, formatDateTimeNumeric, isNullish } from '@/utilities'
 
@@ -107,8 +130,8 @@
     cardHeading: {
       'artifact-timeline-item__card-heading--expanded': expanded.value,
     },
-    icon: {
-      'artifact-timeline-item__icon--expanded': expanded.value,
+    point: {
+      'artifact-timeline-item__point--expanded': expanded.value,
     },
   }))
 </script>
@@ -126,7 +149,7 @@
   mt-6
 }
 
-.artifact-timeline-item__icon-container { @apply
+.artifact-timeline-item__point-container { @apply
   flex
   h-6
   items-center
@@ -137,7 +160,7 @@
   w-10
 }
 
-.artifact-timeline-item__icon { @apply
+.artifact-timeline-item__point { @apply
   bg-foreground-200
   border
   border-background
@@ -150,12 +173,26 @@
   transform-origin: center;
 }
 
-.artifact-timeline-item__icon--expanded {
+.artifact-timeline-item__icon-texts-container { @apply
+  mt-1
+  gap-1
+  flex
+  flex-col
+}
+
+.artifact-timeline-item__icon-text-container { @apply
+  flex
+  gap-1
+  text-xs
+  font-normal
+}
+
+.artifact-timeline-item__point--expanded {
   transform: scale(1.5);
 }
 
-.artifact-timeline-item:hover .artifact-timeline-item__icon:not(.artifact-timeline-item__icon--expanded) {
-  transform: scale(1.3);
+.artifact-timeline-item:hover .artifact-timeline-item__point:not(.artifact-timeline-item__point--expanded) {
+  transform: scale(1.5);
 }
 
 .artifact-timeline-item__card { @apply
@@ -195,7 +232,7 @@
 }
 
 .artifact-timeline-item__created { @apply
-  text-foreground-300
+  text-foreground-400
   text-sm
 }
 </style>
