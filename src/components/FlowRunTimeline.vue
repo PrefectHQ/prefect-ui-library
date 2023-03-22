@@ -49,16 +49,20 @@
           :is-running="isRunning"
           :format-date-fns="formatDateFns"
           :theme="theme"
-          :selected-node-id="selectedNode"
-          @click="selectNode"
+          :sub-node-labels="subFlowRunLabels"
+          :selected-node-id="selectedNode?.id"
+          :expanded-sub-nodes="expandedSubFlowRuns"
+          @selection="selectNode"
+          @sub-node-toggle="toggleSubFlowRun"
         />
       </div>
       <div
         class="flow-run-timeline__task-panel"
         :class="classes.panel"
       >
-        <TaskRunPanel
-          :task-run-id="selectedNode"
+        <FlowRunTimelineSelectionPanel
+          :selected-node="selectedNode"
+          :floating="isFullscreen"
           @dismiss="closePanel"
         />
       </div>
@@ -72,16 +76,20 @@
     FormatDateFns,
     HSL,
     ThemeStyleOverrides,
-    TimelineNodeData,
+    GraphTimelineNode,
     TimelineNodesLayoutOptions,
-    TimelineThemeOptions
+    TimelineThemeOptions,
+    ExpandedSubNodes,
+    NodeSelectionEvent
   } from '@prefecthq/graphs'
   import { useColorTheme } from '@prefecthq/prefect-design'
-  import { useSubscription } from '@prefecthq/vue-compositions'
-  import { computed, onMounted, onUnmounted, Ref, ref, watch } from 'vue'
-  import { TaskRunPanel, FlowRunTimelineOptions } from '@/components'
+  import { UseSubscription, useSubscription, useSubscriptionWithDependencies } from '@prefecthq/vue-compositions'
+  import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
+  import { FlowRunTimelineSelectionPanel, FlowRunTimelineOptions } from '@/components'
   import { useWorkspaceApi } from '@/compositions'
-  import { FlowRun, isValidTimelineNodeData } from '@/models'
+  import { FlowRun, hasSubFlowRunId, isValidGraphTimelineNode, TimelineNode } from '@/models'
+  import { WorkspaceFlowRunsApi } from '@/services'
+  import { prefectStateNames } from '@/types'
   import { formatTimeNumeric, formatTimeShortNumeric, formatDate } from '@/utilities'
   import { eventTargetIsInput } from '@/utilities/eventTarget'
 
@@ -114,14 +122,20 @@
   const timelineGraph = ref<InstanceType<typeof FlowRunTimeline> | null>(null)
   const isFullscreen = ref(false)
   const showTaskRunPanel = ref(false)
-  const selectedNode: Ref<string | null> = ref(null)
+  const selectedNode = ref<NodeSelectionEvent | null>(null)
+  const expandedSubFlowRuns = ref<ExpandedSubNodes<{
+    subscription: UseSubscription<WorkspaceFlowRunsApi['getFlowRunsTimeline']>,
+  }>>(new Map())
   const formatDateFns: FormatDateFns = {
     timeBySeconds: formatTimeNumeric,
     timeByMinutes: formatTimeShortNumeric,
     date: formatDate,
   }
-  const layout: Ref<TimelineNodesLayoutOptions> = ref('nearestParent')
+  const layout = ref<TimelineNodesLayoutOptions>('nearestParent')
   const hideEdges = ref(false)
+
+  const documentStyles = getComputedStyle(document.documentElement)
+  const bodyStyles = getComputedStyle(document.body)
 
   onMounted(() => {
     window.addEventListener('keydown', keyboardShortcutListener)
@@ -153,7 +167,7 @@
     }
   }
 
-  const selectNode = (value: string | null): void => {
+  const selectNode = (value: NodeSelectionEvent | null): void => {
     if (!value || value === selectedNode.value) {
       selectedNode.value = null
       showTaskRunPanel.value = false
@@ -209,13 +223,7 @@
   )
 
   const graphData = computed(() => {
-    const items: TimelineNodeData[] = (graphSubscription.response ?? [])
-      .filter((node): node is TimelineNodeData => isValidTimelineNodeData(node))
-      .sort((nodeA, nodeB) => {
-        return nodeA.start.getTime() - nodeB.start.getTime()
-      })
-
-    return items
+    return removeNullStartsAndSort(graphSubscription.response ?? [])
   })
 
   const unwatchInitialData = watch(graphData, (value) => {
@@ -236,32 +244,102 @@
     timelineGraph.value?.centerViewport()
   }
 
-  /*
-  * Theme overrides
-  */
-  const documentStyles = getComputedStyle(document.documentElement)
-  const bodyStyles = getComputedStyle(document.body)
+  function toggleSubFlowRun(id: string): void {
+    const isValueVisible = expandedSubFlowRuns.value.has(id)
+
+    if (isValueVisible) {
+      const subFlowRun = expandedSubFlowRuns.value.get(id)
+      subFlowRun?.subscription.unsubscribe()
+      expandedSubFlowRuns.value.delete(id)
+      return
+    }
+
+    const subscription = useSubscription(
+      api.flowRuns.getFlowRunsTimeline,
+      [id],
+      { interval: 5000 },
+    )
+
+    const data = computed(() => {
+      return removeNullStartsAndSort(subscription.response ?? [])
+    })
+
+    expandedSubFlowRuns.value.set(id, {
+      data,
+      subscription,
+    })
+  }
+
+  function removeNullStartsAndSort(nodes: TimelineNode[]): GraphTimelineNode[] {
+    return nodes.filter(isValidGraphTimelineNode)
+      .sort((nodeA, nodeB) => {
+        return nodeA.start.getTime() - nodeB.start.getTime()
+      })
+  }
+
+  const rootSubFlowRunIds = computed<string[]>(() => {
+    return graphData.value
+      .filter(hasSubFlowRunId)
+      .map((node) => node.subFlowRunId)
+  })
+  const expandedSubFlowRunIds = computed<string[]>(() => {
+    return Array.from(expandedSubFlowRuns.value.values())
+      .flatMap(subFlowRun => 'value' in subFlowRun.data ? subFlowRun.data.value : subFlowRun.data)
+      .filter(hasSubFlowRunId)
+      .map((node) => node.subFlowRunId)
+  })
+  const allSubFlowRunIds = computed<string[]>(() => {
+    return [...rootSubFlowRunIds.value, ...expandedSubFlowRunIds.value]
+  })
+
+  const subFlowRunsSubscriptionFilter = computed<Parameters<typeof api.flowRuns.getFlowRuns> | null>(() => {
+    if (allSubFlowRunIds.value.length < 1) {
+      return null
+    }
+
+    return [
+      {
+        flowRuns: {
+          id: allSubFlowRunIds.value,
+        },
+      },
+    ]
+  })
+  const subFlowRunsSubscription = useSubscriptionWithDependencies(
+    api.flowRuns.getFlowRuns,
+    subFlowRunsSubscriptionFilter,
+  )
+  const subFlowRunLabels = computed(() => {
+    return (subFlowRunsSubscription.response ?? [])
+      .reduce((acc, curr) => {
+        if (curr.name) {
+          acc.set(curr.id, curr.name)
+        }
+        return acc
+      }, new Map<string, string>())
+  })
 
   function getStateColor(cssVariable: string): string {
     return bodyStyles.getPropertyValue(cssVariable).trim()
   }
 
-  const stateColors: Record<string, string> = {
-    completed: getStateColor('--state-completed-600'),
-    running: getStateColor('--state-running-600'),
-    scheduled: getStateColor('--state-scheduled-600'),
-    pending: getStateColor('--state-pending-600'),
-    failed: getStateColor('--state-failed-600'),
-    cancelled: getStateColor('--state-cancelled-600'),
-    crashed: getStateColor('--state-crashed-600'),
-    paused: getStateColor('--state-paused-600'),
-  }
+  const stateColors = prefectStateNames.reduce((acc, stateName) => {
+    const lowerCaseStateName = stateName.toLowerCase()
+    acc[lowerCaseStateName] = {
+      default: getStateColor(`--state-${lowerCaseStateName}-600`),
+      hover: getStateColor(`--state-${lowerCaseStateName}-700`),
+    }
+    return acc
+  }, {} as Record<string, Record<'default' | 'hover', string>>)
 
   const themeDefaultOverrides = computed<Partial<ThemeStyleOverrides>>(() => ({
     colorTextDefault: getHslColor('--foreground', '--white'),
     colorTextInverse: getHslColor('--white', '--background'),
     colorTextSubdued: getHslColor('--foreground-300', '--foreground-200'),
     colorNodeSelection: getHslColor('--primary-default-400'),
+    colorButtonBg: getHslColor('--background', '--background-100'),
+    colorButtonBgHover: getHslColor('--background-400', '--background-100'),
+    colorButtonBorder: colorThemeValue.value === 'dark' ? null : getHslColor('--background-400'),
     colorEdge: getHslColor('--foreground-200', '--foreground-300'),
     colorGuideLine: getHslColor('--foreground-50'),
     colorPlayheadBg: getHslColor('--primary-default-400'),
@@ -279,13 +357,15 @@
 
   const theme = computed<TimelineThemeOptions>(() => {
     return {
-      node: (node: TimelineNodeData) => {
+      node: (node: GraphTimelineNode) => {
         let inverseTextOnFill = colorThemeValue.value !== 'dark'
         if (node.state === 'scheduled') {
           inverseTextOnFill = colorThemeValue.value === 'dark'
         }
         return {
-          fill: stateColors[node.state],
+          fill: stateColors[node.state].default,
+          onFillSubNodeToggleHoverBg: stateColors[node.state].hover,
+          onFillSubNodeToggleHoverBgAlpha: 1,
           inverseTextOnFill,
         }
       },
@@ -296,7 +376,7 @@
 
 <style>
 .flow-run-timeline { @apply
-  h-[320px]
+  h-[340px]
   outline-none
 }
 
@@ -314,8 +394,7 @@
   top-0
   left-0
   z-20
-  bg-background-600
-  dark:bg-background
+  bg-background
 }
 
 .flow-run-timeline__options { @apply
@@ -325,6 +404,10 @@
   bottom-1
   right-1
   z-10
+}
+.flow-run-timeline__options button { @apply
+  bg-transparent
+  shadow-none
 }
 
 .flow-run-timeline__fullscreen-exit { @apply
@@ -342,8 +425,7 @@
 }
 
 .flow-run-timeline__graph { @apply
-  bg-background-600
-  dark:bg-background
+  bg-background
   rounded-lg;
 }
 
