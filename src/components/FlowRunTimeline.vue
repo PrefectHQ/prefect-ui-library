@@ -89,6 +89,7 @@
   import { useWorkspaceApi } from '@/compositions'
   import { FlowRun, hasSubFlowRunId, isValidGraphTimelineNode, TimelineNode } from '@/models'
   import { WorkspaceFlowRunsApi } from '@/services'
+  import { prefectStateNames } from '@/types'
   import { formatTimeNumeric, formatTimeShortNumeric, formatDate } from '@/utilities'
   import { eventTargetIsInput } from '@/utilities/eventTarget'
 
@@ -322,40 +323,14 @@
     return bodyStyles.getPropertyValue(cssVariable).trim()
   }
 
-  const stateColors: Record<string, Record<'default' | 'hover', string>> = {
-    completed: {
-      default: getStateColor('--state-completed-600'),
-      hover: getStateColor('--state-completed-700'),
-    },
-    running: {
-      default: getStateColor('--state-running-600'),
-      hover: getStateColor('--state-running-700'),
-    },
-    scheduled: {
-      default: getStateColor('--state-scheduled-600'),
-      hover: getStateColor('--state-scheduled-700'),
-    },
-    pending: {
-      default: getStateColor('--state-pending-600'),
-      hover: getStateColor('--state-pending-700'),
-    },
-    failed: {
-      default: getStateColor('--state-failed-600'),
-      hover: getStateColor('--state-failed-700'),
-    },
-    cancelled: {
-      default: getStateColor('--state-cancelled-600'),
-      hover: getStateColor('--state-cancelled-700'),
-    },
-    crashed: {
-      default: getStateColor('--state-crashed-600'),
-      hover: getStateColor('--state-crashed-700'),
-    },
-    paused: {
-      default: getStateColor('--state-paused-600'),
-      hover: getStateColor('--state-paused-700'),
-    },
-  }
+  const stateColors = prefectStateNames.reduce((acc, stateName) => {
+    const lowerCaseStateName = stateName.toLowerCase()
+    acc[lowerCaseStateName] = {
+      default: getStateColor(`--state-${lowerCaseStateName}-600`),
+      hover: getStateColor(`--state-${lowerCaseStateName}-700`),
+    }
+    return acc
+  }, {} as Record<string, Record<'default' | 'hover', string>>)
 
   const themeDefaultOverrides = computed<Partial<ThemeStyleOverrides>>(() => ({
     colorTextDefault: getHslColor('--foreground', '--white'),
@@ -401,7 +376,7 @@
 
 <style>
 .flow-run-timeline { @apply
-  h-[320px]
+  h-[340px]
   outline-none
 }
 
