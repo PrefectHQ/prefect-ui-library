@@ -10,12 +10,12 @@
       tabindex="0"
       @keyup.self.enter="toggleExpanded"
     >
-      <p-heading :class="classes.cardHeading" class="artifact-timeline-item__card-heading" heading="6" @click.self="toggleExpanded">
-        <span>
-          {{ formatDateTimeRelative(artifact.created) }}
+      <p-heading :class="classes.cardHeading" class="artifact-timeline-item__card-heading" heading="6" @click="toggleExpanded">
+        <span class="artifact-timeline-item__created" :title="formatDateTimeNumeric(artifact.created)">
+          {{ formatDate(artifact.created) }}
         </span>
-        <p-link :to="routes.artifact(artifact.id)">
-          {{ id }}
+        <p-link :to="routes.artifact(artifact.id)" :title="artifact.id" @click.stop>
+          {{ shortId }}
         </p-link>
       </p-heading>
 
@@ -40,7 +40,7 @@
   import ArtifactDataView from '@/components/ArtifactDataView.vue'
   import { useWorkspaceRoutes } from '@/compositions'
   import { Artifact } from '@/models'
-  import { formatDateTimeRelative, isNullish } from '@/utilities'
+  import { formatDate, formatDateTimeNumeric, isNullish } from '@/utilities'
 
   type Expanded = boolean | unknown[] | undefined
 
@@ -95,7 +95,7 @@
     expandedModel.value = !expandedModel.value
   }
 
-  const id = computed(() => expanded.value ? props.artifact.id : props.artifact.id.slice(0, 8))
+  const shortId = computed(() => props.artifact.id.slice(0, 8))
 
   const classes = computed(() => ({
     root: {
@@ -116,6 +116,8 @@
 <style>
 .artifact-timeline-item { @apply
   flex
+  items-start
+  justify-start
   h-auto
   transition-all
 }
@@ -129,6 +131,8 @@
   h-6
   items-center
   justify-center
+  grow-0
+  shrink-0
   relative
   w-10
 }
@@ -159,6 +163,7 @@
   focus:outline-none
   max-w-full
   p-0
+  shrink
   transition-all
   w-full
 }
@@ -172,6 +177,7 @@
   flex
   justify-between
   transition-all
+  text-sm
 }
 
 .artifact-timeline-item__card-heading--expanded { @apply
@@ -186,5 +192,10 @@
   bg-transparent
   border-none
   shadow-none
+}
+
+.artifact-timeline-item__created { @apply
+  text-foreground-300
+  text-sm
 }
 </style>
