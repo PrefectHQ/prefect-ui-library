@@ -36,7 +36,6 @@ export class MockWorkspaceArtifactsApi extends MockApi implements IWorkspaceArti
   public async getArtifacts(filter: ArtifactsFilter = {}): Promise<Artifact[]> {
     const { limit = 200, offset = 0 } = filter
     let artifacts = await this.artifacts.findAll(artifactsItemIntersectsFilter(filter))
-    console.log(`Artifacts: ${artifacts.length}, all: ${this.artifacts.count()}, limit: ${limit}, offset: ${offset}`)
     artifacts = artifacts.slice(offset, offset + limit)
 
     return artifacts

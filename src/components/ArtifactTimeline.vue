@@ -4,11 +4,9 @@
       {{ artifactsCount }}
     </div>
     <p-virtual-scroller
-      v-if="executed"
       :items="artifacts"
       :item-estimate-height="112"
       class="artifact-timeline"
-      @top="fetchFewer"
       @bottom="fetchMore"
     >
       <template #default="{ item: artifact, index }">
@@ -23,10 +21,13 @@
 
 <script lang="ts" setup>
   import { useSubscription } from '@prefecthq/vue-compositions'
-  import { computed, ref } from 'vue'
+  import { computed, ref, watch, onBeforeMount } from 'vue'
   import ArtifactTimelineItem from '@/components/ArtifactTimelineItem.vue'
   import { useWorkspaceApi } from '@/compositions'
+  import { Artifact } from '@/models'
   import { ArtifactsFilter } from '@/models/Filters'
+
+  const ARTIFACTS_DEFAULT_FILTER_LIMIT = 10
 
   const props = defineProps<{
     artifactKey: string,
@@ -34,7 +35,6 @@
 
   const api = useWorkspaceApi()
   const artifactsFilterOffset = ref(0)
-  const artifactsFilterLimit = ref(10)
   const artifactsFilter = computed<ArtifactsFilter>(() => {
     return {
       artifacts: {
@@ -42,36 +42,39 @@
       },
       sort: 'CREATED_DESC',
       offset: artifactsFilterOffset.value,
-      limit: artifactsFilterLimit.value,
+      limit: ARTIFACTS_DEFAULT_FILTER_LIMIT,
     }
   })
-  const artifactsSubscription = useSubscription(api.artifacts.getArtifacts, [artifactsFilter])
-  const artifactsCountSubscription = useSubscription(api.artifacts.getArtifactsCount, [artifactsFilter])
 
-  const artifactsCount = computed(() => artifactsCountSubscription.response ?? 0)
-  const artifacts = computed(() => {
-    console.log(JSON.parse(JSON.stringify(artifactsSubscription.response ?? [])))
-    return artifactsSubscription.response ?? []
+  const artifactsCountFilter = computed<ArtifactsFilter>(() => {
+    return {
+      artifacts: {
+        key: [props.artifactKey],
+      },
+    }
   })
-  const executed = computed(() => artifactsSubscription.executed)
+  const artifactsCountSubscription = useSubscription(api.artifacts.getArtifactsCount, [artifactsCountFilter])
+  const artifactsCount = computed(() => artifactsCountSubscription.response ?? 0)
+
+  const artifacts = ref<Artifact[]>([])
+
+  const getArtifacts = async (): Promise<void> => {
+    const result = await api.artifacts.getArtifacts(artifactsFilter.value)
+    artifacts.value = [...artifacts.value, ...result]
+  }
+
+  watch(artifactsFilterOffset, getArtifacts)
 
   const fetchMore = (): void => {
-    console.log('fetchMore')
-    artifactsFilterOffset.value += artifactsFilterLimit.value
-
-    if (artifactsFilterOffset.value > artifactsCount.value) {
-      artifactsFilterOffset.value = artifacts.value.length
+    if (artifacts.value.length >= artifactsCount.value) {
+      return
     }
+    artifactsFilterOffset.value += ARTIFACTS_DEFAULT_FILTER_LIMIT
   }
 
-  const fetchFewer = (): void => {
-    console.log('fetchFewer')
-    artifactsFilterOffset.value -= artifactsFilterLimit.value
-
-    if (artifactsFilterOffset.value < 0) {
-      artifactsFilterOffset.value = 0
-    }
-  }
+  onBeforeMount(() => {
+    getArtifacts()
+  })
 </script>
 
 <style>
