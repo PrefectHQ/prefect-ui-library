@@ -1,15 +1,15 @@
 <template>
-  <div class="artifact-timeline-item">
+  <div class="artifact-timeline-item" :class="classes.root">
     <div class="artifact-timeline-item__icon-container">
       <div class="artifact-timeline-item__icon" />
     </div>
 
-    <p-card class="artifact-timeline__card" tabindex="0" @focus="handleFocusIn" @blur="handleFocusOut">
-      <p-heading heading="6">
+    <p-card class="artifact-timeline-item__card" :class="classes.card" tabindex="0" @focus="handleFocusIn" @blur="handleFocusOut">
+      <p-heading heading="6" @click="toggleExpanded">
         {{ id }}
       </p-heading>
 
-      <template v-if="focused">
+      <template v-if="expanded">
         <template v-if="artifact.description">
           <p-markdown-renderer :text="artifact.description" />
 
@@ -31,17 +31,30 @@
     artifact: Artifact,
   }>()
 
-  const focused = ref(false)
+  const expanded = ref(false)
 
-  const id = computed(() => focused.value ? props.artifact.id : props.artifact.id.slice(0, 8))
+  const id = computed(() => expanded.value ? props.artifact.id : props.artifact.id.slice(0, 8))
 
   const handleFocusIn = (): void => {
-    focused.value = true
+    expanded.value = true
   }
 
   const handleFocusOut = (): void => {
-    focused.value = false
+    expanded.value = false
   }
+
+  const toggleExpanded = (): void => {
+    expanded.value = !expanded.value
+  }
+
+  const classes = computed(() => ({
+    root: {
+      'artifact-timeline-item--expanded': expanded.value,
+    },
+    card: {
+      'artifact-timeline-item__card--expanded': expanded.value,
+    },
+  }))
 </script>
 
 <style>
@@ -70,13 +83,14 @@
   w-4
 }
 
-.artifact-timeline__card { @apply
+.artifact-timeline-item__card { @apply
+  focus:outline-none
   max-w-full
   transition-all
   w-full
 }
 
-.artifact-timeline-item:not(:focus-within) .artifact-timeline__card { @apply
+.artifact-timeline-item__card:not(.artifact-timeline-item__card--expanded) { @apply
   p-0
   bg-transparent
   border-none
