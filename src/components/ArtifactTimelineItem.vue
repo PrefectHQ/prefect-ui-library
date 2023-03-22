@@ -113,6 +113,8 @@
 <style>
 .artifact-timeline-item { @apply
   flex
+  h-auto
+  transition-all
 }
 
 .artifact-timeline-item--expanded { @apply
@@ -121,9 +123,11 @@
 
 .artifact-timeline-item__icon-container { @apply
   flex
-  h-full
-  items-start
+  h-8
+  items-center
   justify-center
+  relative
+  w-8
 }
 
 .artifact-timeline-item__icon { @apply
@@ -132,15 +136,15 @@
   border-background
   h-4
   max-w-full
-  overflow-auto
   rounded-full
   transition-all
-  w-4
+  w-4;
+
+  transform-origin: center;
 }
 
-.artifact-timeline-item__icon--expanded { @apply
-  h-5
-  w-5
+.artifact-timeline-item__icon--expanded {
+  transform: scale(1.5);
 }
 
 .artifact-timeline-item__card { @apply
