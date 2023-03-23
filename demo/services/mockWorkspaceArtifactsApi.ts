@@ -34,8 +34,25 @@ export class MockWorkspaceArtifactsApi extends MockApi implements IWorkspaceArti
   }
 
   public async getArtifacts(filter: ArtifactsFilter = {}): Promise<Artifact[]> {
-    const { limit = 200, offset = 0 } = filter
+    const { limit = 200, offset = 0, sort = 'CREATED_DESC' } = filter
     let artifacts = await this.artifacts.findAll(artifactsItemIntersectsFilter(filter))
+
+    switch (sort) {
+      /* eslint-disable id-length */
+      case 'CREATED_DESC':
+        artifacts = artifacts.sort((a, b) => b.created.getTime() - a.created.getTime())
+        break
+      case 'KEY_ASC':
+        artifacts = artifacts.sort((a, b) => a.key?.localeCompare(b.key ?? '') ?? 0)
+        break
+      case 'KEY_DESC':
+        artifacts = artifacts.sort((a, b) => b.key?.localeCompare(a.key ?? '') ?? 0)
+        break
+      default:
+        break
+      /* eslint-enable id-length */
+    }
+
     artifacts = artifacts.slice(offset, offset + limit)
 
     return artifacts
