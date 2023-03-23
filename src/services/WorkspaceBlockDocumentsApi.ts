@@ -3,8 +3,10 @@ import { BlockDocument } from '@/models/BlockDocument'
 import { BlockDocumentCreate } from '@/models/BlockDocumentCreate'
 import { BlockDocumentUpdate } from '@/models/BlockDocumentUpdate'
 import { BlockDocumentsFilter } from '@/models/Filters'
+import { BatchProcessor } from '@/services/BatchProcessor'
 import { mapper } from '@/services/Mapper'
 import { WorkspaceApi } from '@/services/WorkspaceApi'
+import { toMap } from '@/utilities'
 
 export interface IWorkspaceBlockDocumentsApi {
   getBlockDocument: (blockDocumentId: string) => Promise<BlockDocument>,
@@ -18,10 +20,19 @@ export class WorkspaceBlockDocumentsApi extends WorkspaceApi implements IWorkspa
 
   protected override routePrefix = '/block_documents'
 
-  public async getBlockDocument(blockDocumentId: string): Promise<BlockDocument> {
-    const { data } = await this.get<BlockDocumentResponse>(`/${blockDocumentId}`)
+  private readonly batcher = new BatchProcessor<string, BlockDocument>(async ids => {
+    const blockDocuments = await this.getBlockDocuments({
+      blockDocuments: {
+        id: ids,
+        isAnonymous: null,
+      },
+    })
 
-    return mapper.map('BlockDocumentResponse', data, 'BlockDocument')
+    return toMap(blockDocuments, 'id')
+  }, { maxBatchSize: 200 })
+
+  public getBlockDocument(blockDocumentId: string): Promise<BlockDocument> {
+    return this.batcher.batch(blockDocumentId)
   }
 
   public async getBlockDocuments(filter: BlockDocumentsFilter = {}): Promise<BlockDocument[]> {
