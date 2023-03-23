@@ -25,7 +25,7 @@ export const randomArtifact: MockFunction<Artifact, [Partial<Artifact>?]> = func
   }
 
   return new Artifact({
-    id: this.create('string'),
+    id: this.create('id'),
     created: this.create('date'),
     updated: this.create('date'),
     key: choice([null, this.create('noun')]),

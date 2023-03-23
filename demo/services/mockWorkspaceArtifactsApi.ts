@@ -1,7 +1,32 @@
+import { KeyedDataStoreFindCallback } from './KeyedDataStore'
 import { MockApi } from './MockApi'
 import { Artifact } from '@/models'
 import { ArtifactsFilter } from '@/models/Filters'
 import { IWorkspaceArtifactsApi } from '@/services/WorkspaceArtifactsApi'
+
+const artifactsItemIntersectsFilter = (filter: ArtifactsFilter): KeyedDataStoreFindCallback<Artifact> => {
+  return (artifact: Artifact): boolean => {
+    let filtered = false
+
+    if (filter.artifacts?.flowRunId?.length) {
+      filtered = !!artifact.flowRunId && !filter.artifacts.flowRunId.includes(artifact.flowRunId)
+    }
+
+    if (!filtered && filter.artifacts?.taskRunId?.length) {
+      filtered = !!artifact.taskRunId && !filter.artifacts.taskRunId.includes(artifact.taskRunId)
+    }
+
+    if (!filtered && filter.artifacts?.key?.length) {
+      filtered = !!artifact.key && !filter.artifacts.key.includes(artifact.key)
+    }
+
+    if (!filtered && filter.artifacts?.type?.length) {
+      filtered = !filter.artifacts.type.includes(artifact.type)
+    }
+
+    return !filtered
+  }
+}
 
 export class MockWorkspaceArtifactsApi extends MockApi implements IWorkspaceArtifactsApi {
   public async getArtifact(id: string): Promise<Artifact> {
@@ -9,20 +34,32 @@ export class MockWorkspaceArtifactsApi extends MockApi implements IWorkspaceArti
   }
 
   public async getArtifacts(filter: ArtifactsFilter = {}): Promise<Artifact[]> {
-    let artifacts = await this.artifacts.getAll()
+    const { limit = 200, offset = 0, sort = 'CREATED_DESC' } = filter
+    let artifacts = await this.artifacts.findAll(artifactsItemIntersectsFilter(filter))
 
-    if (filter.artifacts?.flowRunId?.length) {
-      artifacts = artifacts.filter(artifact => artifact.flowRunId && filter.artifacts?.flowRunId?.includes(artifact.flowRunId))
+    switch (sort) {
+      /* eslint-disable id-length */
+      case 'CREATED_DESC':
+        artifacts = artifacts.sort((a, b) => b.created.getTime() - a.created.getTime())
+        break
+      case 'KEY_ASC':
+        artifacts = artifacts.sort((a, b) => a.key?.localeCompare(b.key ?? '') ?? 0)
+        break
+      case 'KEY_DESC':
+        artifacts = artifacts.sort((a, b) => b.key?.localeCompare(a.key ?? '') ?? 0)
+        break
+      default:
+        break
+      /* eslint-enable id-length */
     }
+
+    artifacts = artifacts.slice(offset, offset + limit)
 
     return artifacts
   }
 
   public async getArtifactsCount(filter: ArtifactsFilter = {}): Promise<number> {
-    if (Object.keys(filter).length) {
-      console.warn('MockWorkspaceArtifactsApi has not implemented the filter argument of the getArtifactsCount method')
-    }
-    return await this.artifacts.count()
+    return await this.artifacts.count(artifactsItemIntersectsFilter(filter))
   }
 
   public async deleteArtifact(id: string): Promise<void> {

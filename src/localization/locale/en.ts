@@ -90,6 +90,7 @@ export const en = {
     artifact: 'Artifact',
     noResults: 'No tracked results, enable [result persistence](https://docs.prefect.io/concepts/results/#persisting-results) to track results.',
     flowRun: 'Flow run',
+    taskRun: 'Task run',
     taskRuns: 'Task runs',
     created: 'Created',
     lastUpdated: 'Last Updated',

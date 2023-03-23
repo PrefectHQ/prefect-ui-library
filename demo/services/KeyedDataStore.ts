@@ -11,7 +11,7 @@ export class DataStoreDataNotFound extends Error {
 // https://stackoverflow.com/questions/73732549/narrow-number-argument-of-function-to-be-literal-type?noredirect=1#comment130199140_73732549
 // eslint-disable-next-line @typescript-eslint/ban-types
 type NoInfer<T> = T & {}
-type KeyedDataStoreFindCallback<T> = (value: T) => boolean
+export type KeyedDataStoreFindCallback<T> = (value: T) => boolean
 type KeyedDataStoreHydrateMethod<T> = (value: T) => T
 type KeyedDataStoreOptions<T extends { id: K }, K extends string | number | symbol = T['id']> = {
   seeds?: T | T[],
