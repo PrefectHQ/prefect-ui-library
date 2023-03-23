@@ -77,12 +77,6 @@
       </template>
     </p-key-value>
 
-    <p-divider />
-
-    <router-link v-if="!hideRadar" :to="routes.flowRunRadar(flowRun.id)" class="flow-run-details__small-radar-link">
-      <RadarSmall :flow-run-id="flowRun.id" class="flow-run-details__small-radar" />
-    </router-link>
-
     <template v-if="flowRun.flowVersion || flowRun.empiricalPolicy">
       <p-divider />
 
@@ -104,8 +98,8 @@
   import { PKeyValue, PTags } from '@prefecthq/prefect-design'
   import { useSubscriptionWithDependencies } from '@prefecthq/vue-compositions'
   import { computed } from 'vue'
-  import { WorkQueueIconText, FlowRunIconText, WorkQueueStatusIcon, RadarSmall, FlowRunStartTime, FlowIconText, DurationIconText, DeploymentIconText } from '@/components'
-  import { useWorkspaceApi, useWorkspaceRoutes, useCan } from '@/compositions'
+  import { WorkQueueIconText, FlowRunIconText, WorkQueueStatusIcon, FlowRunStartTime, FlowIconText, DurationIconText, DeploymentIconText } from '@/components'
+  import { useWorkspaceApi, useCan } from '@/compositions'
   import { useDeployment } from '@/compositions/useDeployment'
   import { FlowRun } from '@/models/FlowRun'
   import { isDefined } from '@/utilities'
@@ -116,11 +110,9 @@
   const props = defineProps<{
     flowRun: FlowRun,
     alternate?: boolean,
-    hideRadar?: boolean,
   }>()
 
   const can = useCan()
-  const routes = useWorkspaceRoutes()
   const heading = computed(() => props.alternate ? 6 : 5)
 
   const deploymentId = computed(() => props.flowRun.deploymentId)
