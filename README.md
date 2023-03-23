@@ -53,5 +53,5 @@ OR
 npm i @prefecthq/prefect-ui-library@0.1.60 --save --save-exact
 ```
 
-## Disclaimer
-This project does not follow SEM versioning and major, minor, and patch updates mostly signify progress toward objectives. Breaking changes are introduced regularly without releasing a major version.
+## Versioning
+This project does not follow SEM versioning and major, minor, and patch updates mostly signify progress toward objectives. Breaking changes are introduced regularly without releasing a major version. For more information, see the [Prefect versioning docs](https://docs.prefect.io/contributing/versioning/)
