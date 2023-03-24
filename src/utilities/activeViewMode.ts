@@ -1,14 +1,14 @@
 import { useLocalStorage } from '@prefecthq/vue-compositions'
-import { computed, WritableComputedRef } from 'vue'
+import { computed } from 'vue'
 import { ViewOption } from '@/types/flowRunResults'
 import { getCacheKey } from '@/utilities/cache'
 
-const viewModeLocalStorageKey = getCacheKey('prefect-ui-library-artifacts-view-mode')
+const viewModeLocalStorageKey = getCacheKey('prefect-ui-library-view-mode')
 const defaultValue: ViewOption = 'grid'
 
 const { value: viewMode, set: setViewMode } = useLocalStorage<ViewOption>(viewModeLocalStorageKey, defaultValue)
 
-const activeViewMode = computed({
+export const activeViewMode = computed({
   get() {
     return viewMode.value
   },
@@ -16,9 +16,3 @@ const activeViewMode = computed({
     setViewMode(value)
   },
 })
-
-export function useRowGridViewMode(): { activeViewMode: WritableComputedRef<ViewOption> } {
-  return {
-    activeViewMode,
-  }
-}

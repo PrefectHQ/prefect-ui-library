@@ -6,9 +6,7 @@
 
 <script lang="ts" setup>
   import { computed } from 'vue'
-  import { useRowGridViewMode } from '@/utilities/useRowGridViewMode'
-
-  const { activeViewMode } = useRowGridViewMode()
+  import { activeViewMode } from '@/utilities/activeViewMode'
 
   const classes = computed(() => {
     return {

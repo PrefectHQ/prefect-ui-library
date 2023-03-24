@@ -65,13 +65,12 @@
   import { localization } from '@/localization'
   import { FlowRun } from '@/models'
   import { ArtifactsFilter } from '@/models/Filters'
-  import { useRowGridViewMode } from '@/utilities/useRowGridViewMode'
+  import { activeViewMode } from '@/utilities/activeViewMode'
 
   const props = defineProps<{
     flowRun: FlowRun,
   }>()
 
-  const { activeViewMode } = useRowGridViewMode()
   const condense = computed(() => activeViewMode.value !== 'grid')
 
   const api = useWorkspaceApi()
