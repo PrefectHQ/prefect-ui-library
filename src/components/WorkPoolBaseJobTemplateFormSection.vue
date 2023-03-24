@@ -82,22 +82,20 @@
     emit('update:base-job-template', newTemplate)
   }
 
-  const localBaseJobTemplateJson = ref<string | null>(stringify(props.baseJobTemplate))
+  const localBaseJobTemplateJson = ref<string>(stringify(props.baseJobTemplate))
   watch(() => props.baseJobTemplate, (current) => {
-    if (localBaseJobTemplateJson.value !== null) {
-      try {
-        // Check to see if the base job template has been changed by the parent component
-        // cloneDeep is used to unwrap the proxy
-        if (isEqual(JSON.parse(localBaseJobTemplateJson.value), cloneDeep(current))) {
-          // Set the local value to the parent's value
-          localBaseJobTemplateJson.value = stringify(current)
-        }
-      } catch (ex) {
-        if (ex instanceof SyntaxError) {
-          // Ignore syntax errors
-        } else {
-          throw ex
-        }
+    try {
+      // Check to see if the base job template has been changed by the parent component
+      // cloneDeep is used to unwrap the proxy
+      if (isEqual(JSON.parse(localBaseJobTemplateJson.value), cloneDeep(current))) {
+        // Set the local value to the parent's value
+        localBaseJobTemplateJson.value = stringify(current)
+      }
+    } catch (ex) {
+      if (ex instanceof SyntaxError) {
+        // Ignore syntax errors
+      } else {
+        throw ex
       }
     }
   })
