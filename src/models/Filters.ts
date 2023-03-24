@@ -70,7 +70,10 @@ export type ArtifactFilter = {
   id?: string[],
   key?: string[],
   keyLike?: string,
+  keyExists?: boolean,
+  keyLatest?: boolean,
   type?: string[],
+  notType?: string[],
   flowRunId?: string[],
   taskRunId?: string[],
 }

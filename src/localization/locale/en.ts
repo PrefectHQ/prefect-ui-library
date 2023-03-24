@@ -1,5 +1,6 @@
 export const en = {
   docs: {
+    artifacts: 'https://docs.prefect.io/',
     gettingStarted: 'https://docs.prefect.io/getting-started/overview/',
     flows: 'https://docs.prefect.io/concepts/flows/',
     flowRuns: 'https://docs.prefect.io/ui/flow-runs/',
@@ -88,6 +89,8 @@ export const en = {
   },
   info: {
     artifact: 'Artifact',
+    artifacts: 'Artifacts',
+    artifactSearch: 'Search artifacts',
     noResults: 'No tracked results, enable [result persistence](https://docs.prefect.io/concepts/results/#persisting-results) to track results.',
     flowRun: 'Flow run',
     taskRun: 'Task run',
