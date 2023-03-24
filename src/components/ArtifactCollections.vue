@@ -7,16 +7,15 @@
       <ViewModeButtonGroup class="artifact-collections__view-mode-button-group" />
     </div>
 
-    <template v-if="artifactsCountSubscription.executed && artifactsCount == 0">
-      <ArtifactCollectionsEmptyState />
-    </template>
-    <template v-else>
-      <RowGridLayout>
-        <template v-for="artifact in artifacts" :key="artifact.id">
-          <ArtifactCard :artifact="artifact" />
-        </template>
-      </RowGridLayout>
-    </template>
+    <RowGridLayoutList :items="artifacts">
+      <template #default="{ item }: { item: Artifact }">
+        <ArtifactCard :artifact="item" />
+      </template>
+
+      <template #empty>
+        <ArtifactCollectionsEmptyState />
+      </template>
+    </RowGridLayoutList>
   </div>
 </template>
 
@@ -26,11 +25,11 @@
   import { ArtifactTypeSelect, ResultsCount, SearchInput } from '@/components'
   import ArtifactCard from '@/components/ArtifactCard.vue'
   import ArtifactCollectionsEmptyState from '@/components/ArtifactCollectionsEmptyState.vue'
-  import RowGridLayout from '@/components/RowGridLayout.vue'
+  import RowGridLayoutList from '@/components/RowGridLayoutList.vue'
   import ViewModeButtonGroup from '@/components/ViewModeButtonGroup.vue'
   import { useWorkspaceApi } from '@/compositions'
   import { localization } from '@/localization'
-  import { ArtifactsFilter, ArtifactType } from '@/models'
+  import { ArtifactsFilter, ArtifactType, Artifact } from '@/models'
 
   const searchTerm = ref('')
   const selectedType = ref<ArtifactType | null>(null)

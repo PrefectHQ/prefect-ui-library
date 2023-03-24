@@ -9,40 +9,40 @@
       <p-heading heading="6" class="flow-run-results__subheading">
         {{ localization.info.flowRun }}
       </p-heading>
-      <template v-if="flowRunResults.length">
-        <RowGridLayout>
-          <template v-for="result in flowRunResults" :key="result.id">
-            <ArtifactCard :artifact="result" :condense="condense" class="flow-run-results__artifact">
-              <p-markdown-renderer v-if="result.description" :text="result.description" />
-            </ArtifactCard>
-          </template>
-        </RowGridLayout>
-      </template>
-      <template v-else>
-        <div class="flow-run-results__none">
-          <p-markdown-renderer :text="localization.info.noResults" />
-        </div>
-      </template>
+
+      <RowGridLayoutList :items="flowRunResults">
+        <template #default="{ item }: { item: ResultArtifact }">
+          <ArtifactCard :artifact="item" :condense="condense" class="flow-run-results__artifact">
+            <p-markdown-renderer v-if="item.description" :text="item.description" />
+          </ArtifactCard>
+        </template>
+
+        <template #empty>
+          <div class="flow-run-results__none">
+            <p-markdown-renderer :text="localization.info.noResults" />
+          </div>
+        </template>
+      </RowGridLayoutList>
 
       <p-divider />
 
       <p-heading heading="6" class="flow-run-results__subheading">
         {{ localization.info.taskRuns }}
       </p-heading>
-      <template v-if="taskRunResults.length">
-        <RowGridLayout>
-          <template v-for="result in taskRunResults" :key="result.id">
-            <ArtifactCard :artifact="result" :condense="condense" class="flow-run-results__artifact">
-              <p-markdown-renderer v-if="result.description" :text="result.description" />
-            </ArtifactCard>
-          </template>
-        </RowGridLayout>
-      </template>
-      <template v-else>
-        <div class="flow-run-results__none">
-          <p-markdown-renderer :text="localization.info.noResults" />
-        </div>
-      </template>
+
+      <RowGridLayoutList :items="taskRunResults">
+        <template #default="{ item }: { item: ResultArtifact }">
+          <ArtifactCard :artifact="item" :condense="condense" class="flow-run-results__artifact">
+            <p-markdown-renderer v-if="item.description" :text="item.description" />
+          </ArtifactCard>
+        </template>
+
+        <template #empty>
+          <div class="flow-run-results__none">
+            <p-markdown-renderer :text="localization.info.noResults" />
+          </div>
+        </template>
+      </RowGridLayoutList>
     </template>
 
     <template v-else-if="resultsSubscription.executed">
@@ -59,11 +59,11 @@
   import { useSubscription } from '@prefecthq/vue-compositions'
   import { computed } from 'vue'
   import ArtifactCard from '@/components/ArtifactCard.vue'
-  import RowGridLayout from '@/components/RowGridLayout.vue'
+  import RowGridLayoutList from '@/components/RowGridLayoutList.vue'
   import ViewModeButtonGroup from '@/components/ViewModeButtonGroup.vue'
   import { useWorkspaceApi } from '@/compositions'
   import { localization } from '@/localization'
-  import { FlowRun } from '@/models'
+  import { FlowRun, ResultArtifact } from '@/models'
   import { ArtifactsFilter } from '@/models/Filters'
   import { activeViewMode } from '@/utilities/activeViewMode'
 
