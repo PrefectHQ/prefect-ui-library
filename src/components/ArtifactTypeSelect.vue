@@ -27,6 +27,7 @@
 
   const options: (SelectOption & { value: ArtifactType | null })[] = [
     { label: 'All', value: null },
-    ...artifactTypes.map((type) => ({ label: capitalize(type), value: type })),
-  ].sort((alpha, beta) => alpha.label.localeCompare(beta.label))
+    { label: 'Markdown', value: 'markdown' },
+    { label: 'Table', value: 'table' },
+  ]
 </script>
