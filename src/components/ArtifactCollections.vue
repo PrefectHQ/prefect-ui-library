@@ -37,14 +37,14 @@
   const api = useWorkspaceApi()
 
   const artifactsFilter = computed<ArtifactsFilter>(() => {
-    const likeFilter = searchTerm.value ? searchTerm.value : undefined
-    const typeFilter = selectedType.value ? [selectedType.value] : undefined
+    const keyLike = searchTerm.value ? searchTerm.value : undefined
+    const type = selectedType.value ? [selectedType.value] : undefined
 
     return {
       artifacts: {
-        keyLike: likeFilter,
         keyExists: true,
-        type: typeFilter,
+        keyLike,
+        type,
       },
     }
   })
