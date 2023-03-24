@@ -32,7 +32,7 @@
       </p-label>
 
       <template v-if="showBaseJobTemplateFormSection">
-        <WorkPoolBaseJobTemplateFormSection :base-job-template="baseJobTemplate" @update:base-job-template="onBaseJobTemplateUpdate" />
+        <WorkPoolBaseJobTemplateFormSection v-model:base-job-template="baseJobTemplate" />
       </template>
     </p-content>
 
@@ -88,10 +88,6 @@
       }
     },
   })
-
-  const onBaseJobTemplateUpdate = (value: WorkerBaseJobTemplate): void => {
-    baseJobTemplate.value = value
-  }
 
   const typeIsNotPrefectAgent = computed(() => type.value !== 'prefect-agent')
   const showBaseJobTemplateFormSection = computed(() => type.value && typeIsNotPrefectAgent.value && can.access.workers)

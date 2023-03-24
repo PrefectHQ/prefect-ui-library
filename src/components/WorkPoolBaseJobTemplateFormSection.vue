@@ -3,12 +3,11 @@
     Base Job Template
     <BetaBadge />
   </h3>
-  <p-tabs v-model:selected="tab" :tabs="tabs" class="overflow-auto">
+  <p-tabs :tabs="['Defaults', 'Advanced']" class="overflow-auto">
     <template #defaults>
       <template v-if="variablesSchemaHasProperties">
         <p-message info>
-          The fields below control the default values for the base job template. These values can be
-          overridden by deployments.
+          The fields below control the default values for the base job template. These values can be overridden by deployments.
         </p-message>
         <SchemaFormFieldsWithValues
           :values="currentDefaults"
@@ -18,24 +17,23 @@
       </template>
       <template v-else>
         <p-message warning>
-          This work pool's base job template does not have any customizations. To add customizations,
-          edit the base job template directly with the <b>Advanced</b> tab.
+          This work pool's base job template does not have any customizations. To add customizations, edit the base job template directly with the <b>Advanced</b> tab.
         </p-message>
       </template>
     </template>
     <template #advanced>
-      <p-message info>
-        This is the JSON representation of the base job template. A work pool's based job template
-        controls infrastructure configuration for all flow runs in the work pool, and specifies the
-        configuration that can be overridden by deployments.
-        <br>
-        <br>
-        For more information on the structure of a work pool's base job template, check out
-        <p-link :to="localization.docs.workPools">
-          the docs.
-        </p-link>.
-      </p-message>
-      <JsonInput :model-value="baseJobTemplateJson" show-format-button @update:model-value="onJsonUpdate" />
+      <div class="work-pool-base-job-template-section__advanced_tab">
+        <p-message info>
+          This is the JSON representation of the base job template. A work pool's based job template controls infrastructure configuration for all flow runs in the work pool, and specifies the configuration that can be overridden by deployments.
+          <br>
+          <br>
+          For more information on the structure of a work pool's base job template, check out
+          <p-link :to="localization.docs.workPools">
+            the docs.
+          </p-link>.
+        </p-message>
+        <JsonInput :model-value="localBaseJobTemplateJson" show-format-button @update:model-value="onJsonUpdate" />
+      </div>
     </template>
   </p-tabs>
 </template>
@@ -44,11 +42,10 @@
   import { isEqual, cloneDeep } from 'lodash'
   import { computed, ref, watch } from 'vue'
   import { SchemaFormFieldsWithValues, BetaBadge, JsonInput } from '@/components'
-  import { useTabs } from '@/compositions'
   import { localization } from '@/localization'
   import { mapper } from '@/services'
-  import { Schema, SchemaProperty, SchemaValues, WorkerBaseJobTemplate } from '@/types'
-  import { getSchemaDefaults, getSchemaWithoutDefaults } from '@/utilities'
+  import { Schema, SchemaValues, WorkerBaseJobTemplate } from '@/types'
+  import { getSchemaDefaults, getSchemaWithoutDefaults, mapValues, merge, stringify } from '@/utilities'
 
 
   const props = defineProps<{
@@ -56,59 +53,51 @@
   }>()
 
   const emit = defineEmits<{
-    (e: 'update:base-job-template', json: WorkerBaseJobTemplate): void,
+    (e: 'update:base-job-template', value: WorkerBaseJobTemplate): void,
   }>()
-
-  const computedTabs = computed(() => [
-    { label: 'Defaults' },
-    { label: 'Advanced' },
-  ])
-
-  const { tab, tabs } = useTabs(computedTabs)
 
   const onJsonUpdate = (json: string): void => {
     localBaseJobTemplateJson.value = json
     try {
       emit('update:base-job-template', JSON.parse(json))
     } catch (ex) {
-      // don't emit if the local value is not valid JSON
+      if (ex instanceof SyntaxError) {
+        // Ignore syntax errors
+      } else {
+        throw ex
+      }
     }
   }
 
   const onDefaultValuesUpdate = (values: SchemaValues): void => {
     const { baseJobTemplate } = props
-    const keys = Object.keys(baseJobTemplate.variables?.properties ?? {})
 
-    const newTemplate = {
-      ...baseJobTemplate,
+    const newTemplate = merge(baseJobTemplate, {
       variables: {
-        ...baseJobTemplate.variables,
-        properties: keys.reduce<Record<string, SchemaProperty>>((acc, key) => {
-          acc[key] = {
-            ...baseJobTemplate.variables?.properties?.[key],
-            default: values[key],
-          }
-          return acc
-        }, {}),
+        properties: mapValues(baseJobTemplate.variables?.properties ?? {}, (key, value) => (
+          { ...value, default: values[key] }
+        )),
       },
-    }
-
+    })
     emit('update:base-job-template', newTemplate)
   }
 
-  const localBaseJobTemplateJson = ref<string | null>(null)
-  const baseJobTemplateJson = computed<string>(() => localBaseJobTemplateJson.value ?? JSON.stringify(props.baseJobTemplate, null, 2))
-  watch(() => props.baseJobTemplate, (prev, current) => {
+  const localBaseJobTemplateJson = ref<string | null>(stringify(props.baseJobTemplate))
+  watch(() => props.baseJobTemplate, (current) => {
     if (localBaseJobTemplateJson.value !== null) {
       try {
         // Check to see if the base job template has been changed by the parent component
         // cloneDeep is used to unwrap the proxy
-        if (isEqual(JSON.parse(baseJobTemplateJson.value), cloneDeep(current))) {
-          // Clear the local value to use the parent's value
-          localBaseJobTemplateJson.value = null
+        if (isEqual(JSON.parse(localBaseJobTemplateJson.value), cloneDeep(current))) {
+          // Set the local value to the parent's value
+          localBaseJobTemplateJson.value = stringify(current)
         }
       } catch (ex) {
-        // If the JSON is invalid, keep the local value
+        if (ex instanceof SyntaxError) {
+          // Ignore syntax errors
+        } else {
+          throw ex
+        }
       }
     }
   })
@@ -116,3 +105,9 @@
   const variablesSchemaHasProperties = computed<boolean>(() => Object.keys(variablesSchema.value.properties ?? {}).length > 0)
   const currentDefaults = computed<SchemaValues>(() => getSchemaDefaults(props.baseJobTemplate.variables ?? {}))
 </script>
+
+<style>
+  .work-pool-base-job-template-section__advanced_tab { @apply
+      overflow-auto
+  }
+</style>

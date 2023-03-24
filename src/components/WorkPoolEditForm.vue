@@ -24,7 +24,7 @@
       </p-label>
 
       <template v-if="showBaseJobTemplateFormSection">
-        <WorkPoolBaseJobTemplateFormSection :base-job-template="baseJobTemplate" @update:base-job-template="onBaseJobTemplateUpdate" />
+        <WorkPoolBaseJobTemplateFormSection v-model:base-job-template="baseJobTemplate" />
       </template>
     </p-content>
 
@@ -47,7 +47,6 @@
   import { useCan, useWorkspaceApi, useWorkspaceRoutes } from '@/compositions'
   import { localization } from '@/localization'
   import { WorkPool, WorkPoolEdit } from '@/models'
-  import { WorkerBaseJobTemplate } from '@/types/schemas'
 
   const props = defineProps<{
     workPool: WorkPool,
@@ -63,10 +62,6 @@
   const type = ref<string>(props.workPool.type)
   const concurrencyLimit = ref<number | null | undefined>(props.workPool.concurrencyLimit)
   const baseJobTemplate = ref(props.workPool.baseJobTemplate)
-
-  const onBaseJobTemplateUpdate = (value: WorkerBaseJobTemplate): void => {
-    baseJobTemplate.value = value
-  }
 
   const typeIsNotPrefectAgent = computed(() => type.value !== 'prefect-agent')
   const showBaseJobTemplateFormSection = computed(() => type.value && typeIsNotPrefectAgent.value && can.access.workers)
