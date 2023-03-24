@@ -13,6 +13,7 @@ export type NotAny = { not_any_?: string[] }
 
 /** Matches on boolean equality */
 export type Equals = { eq_?: boolean }
+export type NullableEquals = { eq_?: boolean | null }
 
 /** Matches on boolean equality */
 export type Exists = { exists_?: boolean }
@@ -115,7 +116,7 @@ export type BlockSchemaFilterRequest = {
 export type BlockDocumentFilterRequest = {
   operator?: OperationRequest,
   id?: Any,
-  is_anonymous?: Equals,
+  is_anonymous?: NullableEquals,
   block_type_id?: Any,
   name?: Any,
 }

@@ -1,4 +1,4 @@
-import { BooleanRouteParam, DateRouteParam, NumberRouteParam, RouteQueryParamsSchema, StringRouteParam, useRouteQueryParams } from '@prefecthq/vue-compositions'
+import { BooleanRouteParam, DateRouteParam, NullableBooleanRouteParam, NumberRouteParam, RouteQueryParamsSchema, StringRouteParam, useRouteQueryParams } from '@prefecthq/vue-compositions'
 import debounce from 'lodash.debounce'
 import isEqual from 'lodash.isequal'
 import { Ref, reactive, ComputedRef, toRef, computed, toRefs, isReactive, watch } from 'vue'
@@ -367,7 +367,7 @@ export function useBlockDocumentFilter(defaultValue: MaybeReactive<BlockDocument
 const blockDocumentFilterSchema: RouteQueryParamsSchema<BlockDocumentFilter> = {
   operator: OperatorRouteParam,
   id: [StringRouteParam],
-  isAnonymous: BooleanRouteParam,
+  isAnonymous: NullableBooleanRouteParam,
   blockTypeId: [StringRouteParam],
   name: [StringRouteParam],
 }
