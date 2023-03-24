@@ -3,46 +3,46 @@
     <template v-if="hasResults">
       <div class="flow-run-results__button-group-container">
         <slot name="actions" />
-        <p-button-group v-model="activeViewMode" :options="viewOptions" />
+        <ViewModeButtonGroup class="flow-run-results__view-mode-button-group" />
       </div>
 
       <p-heading heading="6" class="flow-run-results__subheading">
         {{ localization.info.flowRun }}
       </p-heading>
-      <div class="flow-run-results__list" :class="classes.list">
-        <template v-if="flowRunResults.length">
+      <template v-if="flowRunResults.length">
+        <RowGridLayout>
           <template v-for="result in flowRunResults" :key="result.id">
             <ArtifactCard :artifact="result" :condense="condense" class="flow-run-results__artifact">
               <p-markdown-renderer v-if="result.description" :text="result.description" />
             </ArtifactCard>
           </template>
-        </template>
-        <template v-else>
-          <div class="flow-run-results__none">
-            <p-markdown-renderer :text="localization.info.noResults" />
-          </div>
-        </template>
-      </div>
+        </RowGridLayout>
+      </template>
+      <template v-else>
+        <div class="flow-run-results__none">
+          <p-markdown-renderer :text="localization.info.noResults" />
+        </div>
+      </template>
 
       <p-divider />
 
       <p-heading heading="6" class="flow-run-results__subheading">
         {{ localization.info.taskRuns }}
       </p-heading>
-      <div class="flow-run-results__list" :class="classes.list">
-        <template v-if="taskRunResults.length">
+      <template v-if="taskRunResults.length">
+        <RowGridLayout>
           <template v-for="result in taskRunResults" :key="result.id">
             <ArtifactCard :artifact="result" :condense="condense" class="flow-run-results__artifact">
               <p-markdown-renderer v-if="result.description" :text="result.description" />
             </ArtifactCard>
           </template>
-        </template>
-        <template v-else>
-          <div class="flow-run-results__none">
-            <p-markdown-renderer :text="localization.info.noResults" />
-          </div>
-        </template>
-      </div>
+        </RowGridLayout>
+      </template>
+      <template v-else>
+        <div class="flow-run-results__none">
+          <p-markdown-renderer :text="localization.info.noResults" />
+        </div>
+      </template>
     </template>
 
     <template v-else-if="resultsSubscription.executed">
@@ -56,26 +56,22 @@
 </template>
 
 <script lang="ts" setup>
-  import { ButtonGroupOption } from '@prefecthq/prefect-design'
   import { useSubscription } from '@prefecthq/vue-compositions'
   import { computed } from 'vue'
   import ArtifactCard from '@/components/ArtifactCard.vue'
+  import RowGridLayout from '@/components/RowGridLayout.vue'
+  import ViewModeButtonGroup from '@/components/ViewModeButtonGroup.vue'
   import { useWorkspaceApi } from '@/compositions'
   import { localization } from '@/localization'
   import { FlowRun } from '@/models'
   import { ArtifactsFilter } from '@/models/Filters'
-  import { useActiveViewMode } from '@/utilities/artifactsViewMode'
+  import { useRowGridViewMode } from '@/utilities/useRowGridViewMode'
 
   const props = defineProps<{
     flowRun: FlowRun,
   }>()
 
-  const viewOptions: ButtonGroupOption[] = [
-    { label: '', value: 'grid', icon: 'ViewGridIcon' },
-    { label: '', value: 'rows', icon: 'ViewListIcon' },
-  ]
-
-  const { activeViewMode } = useActiveViewMode()
+  const { activeViewMode } = useRowGridViewMode()
   const condense = computed(() => activeViewMode.value !== 'grid')
 
   const api = useWorkspaceApi()
@@ -93,15 +89,6 @@
   const flowRunResults = computed(() => results.value.filter(result => !!result.flowRunId && !result.taskRunId))
 
   const hasResults = computed(() => resultsSubscription.executed && results.value.length > 0)
-
-  const classes = computed(() => {
-    return {
-      list: {
-        'flow-run-results__list--grid': activeViewMode.value === 'grid',
-        'flow-run-results__list--rows': activeViewMode.value === 'rows',
-      },
-    }
-  })
 </script>
 
 
@@ -115,25 +102,6 @@
 .flow-run-results__button-group-container { @apply
   flex
   justify-end
-  gap-4
-}
-
-.flow-run-results__list { @apply
-  flex
-  flex-col
-  gap-4
-}
-
-.flow-run-results__list--grid { @apply
-  grid
-  gap-4;
-
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-}
-
-.flow-run-results__list--rows { @apply
-  flex
-  flex-col
   gap-4
 }
 

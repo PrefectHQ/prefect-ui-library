@@ -17,7 +17,7 @@ const activeViewMode = computed({
   },
 })
 
-export function useActiveViewMode(): { activeViewMode: WritableComputedRef<ViewOption> } {
+export function useRowGridViewMode(): { activeViewMode: WritableComputedRef<ViewOption> } {
   return {
     activeViewMode,
   }

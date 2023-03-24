@@ -4,9 +4,9 @@
 
 <script lang="ts" setup>
   import { ButtonGroupOption } from '@prefecthq/prefect-design'
-  import { useActiveViewMode } from '@/utilities/artifactsViewMode'
+  import { useRowGridViewMode } from '@/utilities/useRowGridViewMode'
 
-  const { activeViewMode } = useActiveViewMode()
+  const { activeViewMode } = useRowGridViewMode()
 
   const viewOptions: ButtonGroupOption[] = [
     { label: '', value: 'grid', icon: 'ViewGridIcon' },
