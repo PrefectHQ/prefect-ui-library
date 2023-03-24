@@ -39,7 +39,6 @@
 </template>
 
 <script lang="ts" setup>
-  import { isEqual, cloneDeep } from 'lodash'
   import { computed, ref, watch } from 'vue'
   import { SchemaFormFieldsWithValues, BetaBadge, JsonInput } from '@/components'
   import { localization } from '@/localization'
@@ -50,6 +49,7 @@
 
   const props = defineProps<{
     baseJobTemplate: WorkerBaseJobTemplate,
+    type: string,
   }>()
 
   const emit = defineEmits<{
@@ -72,31 +72,26 @@
   const onDefaultValuesUpdate = (values: SchemaValues): void => {
     const { baseJobTemplate } = props
 
-    const newTemplate = merge(baseJobTemplate, {
+    const newTemplate = {
+      ...baseJobTemplate,
       variables: {
-        properties: mapValues(baseJobTemplate.variables?.properties ?? {}, (key, value) => (
-          { ...value, default: values[key] }
-        )),
+        ...baseJobTemplate.variables,
+        properties: mapValues(baseJobTemplate.variables?.properties ?? {}, (key, value) => {
+          return {
+            ...value,
+            default: values[key],
+          }
+        }),
       },
-    })
+    }
+    localBaseJobTemplateJson.value = stringify(newTemplate)
     emit('update:base-job-template', newTemplate)
   }
 
   const localBaseJobTemplateJson = ref<string>(stringify(props.baseJobTemplate))
-  watch(() => props.baseJobTemplate, (current) => {
-    try {
-      // Check to see if the base job template has been changed by the parent component
-      // cloneDeep is used to unwrap the proxy
-      if (isEqual(JSON.parse(localBaseJobTemplateJson.value), cloneDeep(current))) {
-        // Set the local value to the parent's value
-        localBaseJobTemplateJson.value = stringify(current)
-      }
-    } catch (ex) {
-      if (ex instanceof SyntaxError) {
-        // Ignore syntax errors
-      } else {
-        throw ex
-      }
+  watch(() => props.type, (current, previous) => {
+    if (previous !== current) {
+      localBaseJobTemplateJson.value = stringify(props.baseJobTemplate)
     }
   })
   const variablesSchema = computed<Schema>(() => mapper.map('SchemaResponse', getSchemaWithoutDefaults(props.baseJobTemplate.variables ?? {}), 'Schema'))
