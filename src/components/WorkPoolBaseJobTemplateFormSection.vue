@@ -39,7 +39,7 @@
 </template>
 
 <script lang="ts" setup>
-  import { cloneDeep, isEqual } from 'lodash'
+  import { isEqual } from 'lodash'
   import { computed, ref, watch } from 'vue'
   import { SchemaFormFieldsWithValues, BetaBadge, JsonInput } from '@/components'
   import { localization } from '@/localization'
@@ -90,7 +90,7 @@
   const localBaseJobTemplateJson = ref<string>(stringify(props.baseJobTemplate))
   watch(() => props.baseJobTemplate, (current) => {
     try {
-      if (!isEqual(JSON.parse(localBaseJobTemplateJson.value), cloneDeep(current))) {
+      if (!isEqual(JSON.parse(localBaseJobTemplateJson.value), current)) {
         localBaseJobTemplateJson.value = stringify(current)
       }
     } catch (ex) {
