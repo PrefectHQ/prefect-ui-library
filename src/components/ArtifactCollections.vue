@@ -40,6 +40,7 @@
   const artifactsFilter = computed<ArtifactsFilter>(() => {
     return {
       artifacts: {
+        keyLike: searchTerm.value ? `%${searchTerm.value}%` : undefined,
         keyExists: true,
         type: selectedType.value ? [selectedType.value] : undefined,
       },
