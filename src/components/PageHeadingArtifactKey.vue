@@ -14,7 +14,6 @@
   import { useWorkspaceRoutes } from '@/compositions'
   import { localization } from '@/localization'
   import { Artifact } from '@/models'
-  import { pluralize } from '@/utilities'
 
   const props = defineProps<{
     artifact: Artifact,
@@ -25,7 +24,7 @@
   const crumbs = computed<BreadCrumbs>(() => {
     const internalCrumbs: BreadCrumbs = [
       {
-        text: pluralize(localization.info.artifact),
+        text: localization.info.artifacts,
         to: routes.artifacts(),
       },
     ]
