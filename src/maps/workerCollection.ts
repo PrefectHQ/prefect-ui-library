@@ -44,7 +44,7 @@ WorkerBaseJobTemplate
         | SchemaProperty
         | undefined
 
-      if (property !== undefined) {
+      if (property !== undefined && values[key] !== undefined) {
         property.default = values[key]
       }
     }
