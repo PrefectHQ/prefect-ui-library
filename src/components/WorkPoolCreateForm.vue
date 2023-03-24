@@ -32,7 +32,7 @@
       </p-label>
 
       <template v-if="showBaseJobTemplateFormSection">
-        <WorkPoolBaseJobTemplateFormSection v-model:base-job-template="baseJobTemplate" :type="type" />
+        <WorkPoolBaseJobTemplateFormSection v-model:base-job-template="baseJobTemplate" />
       </template>
     </p-content>
 
