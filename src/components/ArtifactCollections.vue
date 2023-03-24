@@ -10,7 +10,7 @@
     <template v-if="artifactsCountSubscription.executed && artifactsCount == 0">
       <ArtifactCollectionsEmptyState />
     </template>
-    <template v-else-if="artifacts && artifacts.length">
+    <template v-else>
       <RowGridLayout>
         <template v-for="artifact in artifacts" :key="artifact.id">
           <ArtifactCard :artifact="artifact" />
@@ -52,7 +52,7 @@
 
   const artifactsSubscription = useSubscription(api.artifacts.getArtifacts, [artifactsFilter])
   const artifactsCountSubscription = useSubscription(api.artifacts.getArtifactsCount, [artifactsFilter])
-  const artifacts = computed(() => artifactsSubscription.response)
+  const artifacts = computed(() => artifactsSubscription.response ?? [])
   const artifactsCount = computed(() => artifactsCountSubscription.response)
 </script>
 
@@ -85,7 +85,7 @@
     grid-template-areas: "search search"
                         "type type"
                         "results results"
-                        "view-mode view-mode";
+                        "  view-mode";
   }
 }
 

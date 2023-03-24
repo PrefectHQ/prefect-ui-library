@@ -1,7 +1,7 @@
 <template>
   <p-empty-state class="artifact-collections-empty-state">
     <template #icon>
-      <p-icon icon="PhotographIcon" class="artifact-collections-empty-state__icon" />
+      <p-icon icon="PhotographIcon" />
     </template>
 
     <template #heading>
@@ -25,10 +25,3 @@
   import DocumentationButton from '@/components/DocumentationButton.vue'
   import { localization } from '@/localization'
 </script>
-
-<style>
-.artifact-collections-empty-state__icon { @apply
-  w-12
-  h-12
-}
-</style>
