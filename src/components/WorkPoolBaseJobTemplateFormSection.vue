@@ -45,7 +45,7 @@
   import { localization } from '@/localization'
   import { mapper } from '@/services'
   import { Schema, SchemaValues, WorkerBaseJobTemplate } from '@/types'
-  import { getSchemaDefaults, getSchemaWithoutDefaults, mapValues, merge, stringify } from '@/utilities'
+  import { getSchemaDefaults, getSchemaWithoutDefaults, mapValues, stringify } from '@/utilities'
 
 
   const props = defineProps<{
@@ -88,7 +88,7 @@
   }
 
   const localBaseJobTemplateJson = ref<string>(stringify(props.baseJobTemplate))
-  watch(() => props.baseJobTemplate, (current, previous) => {
+  watch(() => props.baseJobTemplate, (current) => {
     try {
       if (!isEqual(JSON.parse(localBaseJobTemplateJson.value), cloneDeep(current))) {
         localBaseJobTemplateJson.value = stringify(current)
