@@ -42,7 +42,14 @@ export default defineConfig(({ mode }) => {
         name: 'prefect-ui-library',
       },
       rollupOptions: {
-        external: ['vue', 'vue-router', 'vee-validate', '@prefecthq/vue-compositions', '@prefecthq/prefect-design'],
+        external: [
+          'vue',
+          'vue-router',
+          'vee-validate',
+          '@prefecthq/vue-compositions',
+          '@prefecthq/prefect-design',
+          '@prefecthq/vue-charts',
+        ],
         output: {
           exports: 'named',
           // Provide vue as a global variable to use in the UMD build
