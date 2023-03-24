@@ -1,6 +1,6 @@
 /* eslint-disable camelcase */
 import { asArray } from '@prefecthq/prefect-design'
-import { Any, Like, All, IsNull, OperatorRequest, TagFilterRequest, FlowFilterRequest, FlowRunFilterRequest, NotAny, StateFilterRequest, Before, After, TaskRunFilterRequest, Exists, DeploymentFilterRequest, Equals, FlowsFilterRequest, FlowRunsFilterRequest, TaskRunsFilterRequest, DeploymentsFilterRequest, BlockTypeFilterRequest, BlockSchemaFilterRequest, BlockDocumentFilterRequest, NotificationsFilterRequest, SavedSearchesFilterRequest, LogsFilterRequest, GreaterThan, LessThan, ConcurrencyLimitsFilterRequest, BlockTypesFilterRequest, BlockSchemasFilterRequest, BlockDocumentsFilterRequest, WorkQueuesFilterRequest, StartsWith, WorkPoolFilterRequest, WorkPoolsFilterRequest, WorkPoolQueueFilterRequest, FlowRunsHistoryFilterRequest, WorkPoolWorkersFilterRequest, WorkPoolQueuesFilterRequest, ArtifactsFilterRequest, ArtifactFilterRequest } from '@/models/api/Filters'
+import { Any, Like, All, IsNull, OperatorRequest, TagFilterRequest, FlowFilterRequest, FlowRunFilterRequest, NotAny, StateFilterRequest, Before, After, TaskRunFilterRequest, Exists, DeploymentFilterRequest, Equals, FlowsFilterRequest, FlowRunsFilterRequest, TaskRunsFilterRequest, DeploymentsFilterRequest, BlockTypeFilterRequest, BlockSchemaFilterRequest, BlockDocumentFilterRequest, NotificationsFilterRequest, SavedSearchesFilterRequest, LogsFilterRequest, GreaterThan, LessThan, ConcurrencyLimitsFilterRequest, BlockTypesFilterRequest, BlockSchemasFilterRequest, BlockDocumentsFilterRequest, WorkQueuesFilterRequest, StartsWith, WorkPoolFilterRequest, WorkPoolsFilterRequest, WorkPoolQueueFilterRequest, FlowRunsHistoryFilterRequest, WorkPoolWorkersFilterRequest, WorkPoolQueuesFilterRequest, ArtifactsFilterRequest, ArtifactFilterRequest, NullableEquals } from '@/models/api/Filters'
 import { FlowFilter, FlowRunFilter, Operation, StateFilter, TagFilter, TaskRunFilter, DeploymentFilter, FlowsFilter, FlowRunsFilter, TaskRunsFilter, DeploymentsFilter, BlockTypeFilter, BlockSchemaFilter, BlockDocumentFilter, NotificationsFilter, SavedSearchesFilter, LogsFilter, ConcurrencyLimitsFilter, BlockTypesFilter, BlockSchemasFilter, BlockDocumentsFilter, WorkQueuesFilter, WorkPoolFilter, WorkPoolsFilter, WorkPoolQueueFilter, FlowRunsHistoryFilter, WorkPoolWorkersFilter, WorkPoolQueuesFilter, ArtifactsFilter, ArtifactFilter } from '@/models/Filters'
 import { MapFunction } from '@/services'
 import { removeEmptyObjects } from '@/utilities'
@@ -90,6 +90,14 @@ function toExists(value?: boolean): Exists | undefined {
 }
 
 function toEquals(value?: boolean): Equals | undefined {
+  if (typeof value === 'undefined') {
+    return value
+  }
+
+  return { eq_: value }
+}
+
+function toNullableEquals(value?: boolean | null): NullableEquals | undefined {
   if (typeof value === 'undefined') {
     return value
   }
@@ -355,7 +363,7 @@ export const mapBlockDocumentFilter: MapFunction<BlockDocumentFilter, BlockDocum
   return {
     ...toOperator(source.operator),
     id: toAny(source.id),
-    is_anonymous: toEquals(source.isAnonymous),
+    is_anonymous: toNullableEquals(source.isAnonymous),
     block_type_id: toAny(source.blockTypeId),
     name: toAny(source.name),
   }

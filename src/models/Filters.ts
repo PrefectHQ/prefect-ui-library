@@ -136,7 +136,7 @@ export type BlockSchemaFilter = {
 export type BlockDocumentFilter = {
   operator?: Operation,
   id?: string[],
-  isAnonymous?: boolean,
+  isAnonymous?: boolean | null,
   blockTypeId?: string[],
   name?: string[],
 }
