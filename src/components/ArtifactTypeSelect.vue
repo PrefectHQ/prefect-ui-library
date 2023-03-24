@@ -5,8 +5,7 @@
 <script lang="ts" setup>
   import { SelectOption } from '@prefecthq/prefect-design'
   import { computed } from 'vue'
-  import { ArtifactType, artifactTypes } from '@/models'
-  import { capitalize } from '@/utilities'
+  import { ArtifactType } from '@/models'
 
   const props = defineProps<{
     selected: string | null,
