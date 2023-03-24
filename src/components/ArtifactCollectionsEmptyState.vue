@@ -9,6 +9,7 @@
     </template>
 
     <template #description>
+      <!-- TODO: Update this copy and use localization -->
       Artifacts are byproducts of your runs; they can be anything from a markdown string to a table.
     </template>
 
