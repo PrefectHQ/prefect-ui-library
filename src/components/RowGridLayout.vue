@@ -13,8 +13,8 @@
   const classes = computed(() => {
     return {
       root: {
-        'flow-run-results__list--grid': activeViewMode.value === 'grid',
-        'flow-run-results__list--rows': activeViewMode.value === 'rows',
+        'row-grid-layout--grid': activeViewMode.value === 'grid',
+        'row-grid-layout--rows': activeViewMode.value === 'rows',
       },
     }
   })
