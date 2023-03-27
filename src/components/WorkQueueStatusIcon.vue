@@ -21,7 +21,7 @@
   const workQueue = computed(() => workQueuesSubscription.response)
 
   const workQueueId = computed(() => workQueue.value?.id)
-  const workQueueStatus = useWorkQueueStatus(workQueueId)
+  const { workQueueStatus } = useWorkQueueStatus(workQueueId)
   const healthy = computed(() => workQueueStatus.value?.healthy)
 
   const status = computed<{ name: string, icon: Icon }>(() => {

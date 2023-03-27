@@ -43,7 +43,7 @@
     return props.flowId
   })
 
-  const flow = useFlow(flowId)
+  const { flow } = useFlow(flowId)
   const flowName = computed(() => flow.value?.name ?? '')
 </script>
 

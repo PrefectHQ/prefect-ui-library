@@ -7,16 +7,15 @@
 </template>
 
 <script lang="ts" setup>
-  import { useSubscription } from '@prefecthq/vue-compositions'
-  import { computed } from 'vue'
-  import { useWorkspaceApi, useWorkspaceRoutes } from '@/compositions'
+  import { computed, toRefs } from 'vue'
+  import { useFlowRun, useWorkspaceRoutes } from '@/compositions'
 
   const props = defineProps<{
     flowRunId: string,
   }>()
 
-  const api = useWorkspaceApi()
   const routes = useWorkspaceRoutes()
-  const flowRunSubscription = useSubscription(api.flowRuns.getFlowRun, [props.flowRunId])
-  const flowRunName = computed(() => flowRunSubscription.response?.name)
+  const { flowRunId } = toRefs(props)
+  const { flowRun } = useFlowRun(flowRunId)
+  const flowRunName = computed(() => flowRun.value?.name)
 </script>

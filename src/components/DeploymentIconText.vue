@@ -20,6 +20,6 @@
   const can = useCan()
   const routes = useWorkspaceRoutes()
   const deploymentId = computed(() => props.deploymentId)
-  const deployment = useDeployment(deploymentId)
+  const { deployment } = useDeployment(deploymentId)
   const deploymentName = computed(() => deployment.value?.name)
 </script>

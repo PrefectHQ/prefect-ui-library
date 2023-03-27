@@ -19,6 +19,6 @@
   const can = useCan()
   const routes = useWorkspaceRoutes()
   const flowId = computed(() => props.flowId)
-  const flow = useFlow(flowId)
+  const { flow } = useFlow(flowId)
   const flowName = computed(() => flow.value?.name)
 </script>

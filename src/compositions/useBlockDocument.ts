@@ -1,10 +1,13 @@
 import { useSubscriptionWithDependencies } from '@prefecthq/vue-compositions'
-import { computed, ComputedRef, ref, Ref } from 'vue'
+import { computed, ref, Ref } from 'vue'
 import { useCan } from '@/compositions/useCan'
 import { useWorkspaceApi } from '@/compositions/useWorkspaceApi'
-import { BlockDocument } from '@/models/BlockDocument'
+import { WorkspaceBlockDocumentsApi } from '@/services/WorkspaceBlockDocumentsApi'
+import { UseEntitySubscription } from '@/types/useEntitySubscription'
 
-export function useBlockDocument(blockDocumentId: string | Ref<string | null | null>): ComputedRef<BlockDocument | undefined> {
+export type UseBlockDocument = UseEntitySubscription<WorkspaceBlockDocumentsApi['getBlockDocument'], 'blockDocument'>
+
+export function useBlockDocument(blockDocumentId: string | Ref<string | null | null>): UseBlockDocument {
   const id = ref(blockDocumentId)
   const api = useWorkspaceApi()
   const can = useCan()
@@ -24,5 +27,8 @@ export function useBlockDocument(blockDocumentId: string | Ref<string | null | n
   const subscription = useSubscriptionWithDependencies(api.blockDocuments.getBlockDocument, parameters)
   const blockDocument = computed(() => subscription.response)
 
-  return blockDocument
+  return {
+    subscription,
+    blockDocument,
+  }
 }

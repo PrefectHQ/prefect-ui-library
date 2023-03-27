@@ -14,6 +14,6 @@
   }>()
 
   const workQueueId = computed(() => props.workQueueId)
-  const workQueueStatus = useWorkQueueStatus(workQueueId)
+  const { workQueueStatus } = useWorkQueueStatus(workQueueId)
   const lastPolled = computed(() => workQueueStatus.value?.lastPolled)
 </script>

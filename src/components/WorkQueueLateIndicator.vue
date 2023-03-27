@@ -14,7 +14,7 @@
   }>()
 
   const workQueueId = computed(() => props.workQueueId)
-  const workQueueStatus = useWorkQueueStatus(workQueueId)
+  const { workQueueStatus } = useWorkQueueStatus(workQueueId)
   const lateRunsCount = computed(() => workQueueStatus.value?.lateRunsCount)
 </script>
 
