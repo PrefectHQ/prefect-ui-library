@@ -9,7 +9,9 @@
 
     <RowGridLayoutList v-if="artifactsLoaded" :items="artifacts">
       <template #default="{ item }: { item: Artifact }">
-        <ArtifactCard :artifact="item" />
+        <router-link :to="routes.artifact(item.id)">
+          <ArtifactCard :artifact="item" class="artifact-collections__artifact-card" />
+        </router-link>
       </template>
 
       <template #empty>
@@ -27,7 +29,7 @@
   import ArtifactCollectionsEmptyState from '@/components/ArtifactCollectionsEmptyState.vue'
   import RowGridLayoutList from '@/components/RowGridLayoutList.vue'
   import ViewModeButtonGroup from '@/components/ViewModeButtonGroup.vue'
-  import { useWorkspaceApi } from '@/compositions'
+  import { useWorkspaceApi, useWorkspaceRoutes } from '@/compositions'
   import { localization } from '@/localization'
   import { ArtifactsFilter, ArtifactType, Artifact } from '@/models'
 
@@ -35,6 +37,7 @@
   const selectedType = ref<ArtifactType | null>(null)
 
   const api = useWorkspaceApi()
+  const routes = useWorkspaceRoutes()
 
   const artifactsFilter = computed<ArtifactsFilter>(() => {
     const keyLike = searchTerm.value ? searchTerm.value : undefined
@@ -113,5 +116,10 @@
 
 .artifact-collections__view-mode-button-group { @apply
   ml-auto
+}
+
+.artifact-collections__artifact-card { @apply
+  hover:border-primary
+  focus:border-primary
 }
 </style>
