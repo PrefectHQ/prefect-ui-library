@@ -12,9 +12,7 @@
 
       <RowGridLayoutList :items="flowRunResults">
         <template #default="{ item }: { item: ResultArtifact }">
-          <ArtifactCard :artifact="item" :condense="condense" class="flow-run-results__artifact">
-            <p-markdown-renderer v-if="item.description" :text="item.description" />
-          </ArtifactCard>
+          <ArtifactCardResult :artifact="item" :condense="condense" class="flow-run-results__artifact" />
         </template>
 
         <template #empty>
@@ -32,9 +30,7 @@
 
       <RowGridLayoutList :items="taskRunResults">
         <template #default="{ item }: { item: ResultArtifact }">
-          <ArtifactCard :artifact="item" :condense="condense" class="flow-run-results__artifact">
-            <p-markdown-renderer v-if="item.description" :text="item.description" />
-          </ArtifactCard>
+          <ArtifactCardResult :artifact="item" :condense="condense" class="flow-run-results__artifact" />
         </template>
 
         <template #empty>
@@ -58,7 +54,7 @@
 <script lang="ts" setup>
   import { useSubscription } from '@prefecthq/vue-compositions'
   import { computed } from 'vue'
-  import ArtifactCard from '@/components/ArtifactCard.vue'
+  import ArtifactCardResult from '@/components/ArtifactCardResult.vue'
   import RowGridLayoutList from '@/components/RowGridLayoutList.vue'
   import ViewModeButtonGroup from '@/components/ViewModeButtonGroup.vue'
   import { useWorkspaceApi } from '@/compositions'
@@ -78,6 +74,7 @@
     return {
       artifacts: {
         flowRunId: [props.flowRun.id],
+        type: ['result'],
       },
     }
   })
