@@ -5,7 +5,7 @@ import { useWorkspaceApi } from '@/compositions/useWorkspaceApi'
 import { WorkspaceFlowRunsApi } from '@/services'
 import { UseEntitySubscription } from '@/types/useEntitySubscription'
 
-export type UseFlowRun = UseEntitySubscription<WorkspaceFlowRunsApi['getFlowRun']>
+export type UseFlowRun = UseEntitySubscription<WorkspaceFlowRunsApi['getFlowRun'], 'flowRun'>
 
 export function useFlowRun(flowRunId: string | Ref<string | null | undefined>): UseFlowRun {
   const api = useWorkspaceApi()
