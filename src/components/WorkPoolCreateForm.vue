@@ -31,9 +31,8 @@
         <WorkPoolTypeSelect v-model:selected="type" />
       </p-label>
 
-      <template v-if="showSchemaForm">
-        <h3>Base Job Configuration <BetaBadge /></h3>
-        <SchemaFormFieldsWithValues v-model:values="parameters" :schema="schema" />
+      <template v-if="showBaseJobTemplateFormSection">
+        <WorkPoolBaseJobTemplateFormSection v-model:base-job-template="baseJobTemplate" />
       </template>
     </p-content>
 
@@ -51,13 +50,11 @@
   import { useSubscription, useValidation, useValidationObserver, ValidationRule } from '@prefecthq/vue-compositions'
   import { computed, reactive, ref } from 'vue'
   import { useRouter } from 'vue-router'
-  import { SubmitButton, WorkPoolTypeSelect, SchemaFormFieldsWithValues, BetaBadge } from '@/components'
+  import { SubmitButton, WorkPoolTypeSelect, WorkPoolBaseJobTemplateFormSection } from '@/components'
   import { useCan, useWorkspaceApi, useWorkspaceRoutes } from '@/compositions'
   import { localization } from '@/localization'
   import { WorkPoolCreate } from '@/models'
-  import { mapper } from '@/services'
-  import { Schema, SchemaValues } from '@/types'
-  import { getSchemaDefaults, getSchemaWithoutDefaults } from '@/utilities/parameters'
+  import { WorkerBaseJobTemplate } from '@/types'
 
   const api = useWorkspaceApi()
   const can = useCan()
@@ -73,33 +70,27 @@
 
   const workersCollectionSubscription = useSubscription(api.collections.getWorkerCollection, [])
   const workersCollectionItems = computed(() => workersCollectionSubscription.response)
-  const baseJobConfigs = computed(() => {
+
+  const remoteBaseJobTemplate = computed(() => {
     return workersCollectionItems.value?.find((item) => item.type === type.value)?.defaultBaseJobConfiguration ?? {}
   })
-
-  const schema = computed<Schema>(() => mapper.map('SchemaResponse', getSchemaWithoutDefaults(baseJobConfigs.value.variables ?? {}), 'Schema'))
-  const schemaDefaultValues = computed(() => getSchemaDefaults(baseJobConfigs.value.variables ?? {}))
-  const parametersMap = reactive(new Map<string, SchemaValues>())
-  const parameters = computed({
+  const baseJobTemplatesMap = reactive(new Map<string, WorkerBaseJobTemplate>())
+  const baseJobTemplate = computed<WorkerBaseJobTemplate>({
     get() {
       if (type.value) {
-        return parametersMap.get(type.value) ?? schemaDefaultValues.value
+        return baseJobTemplatesMap.get(type.value) ?? remoteBaseJobTemplate.value
       }
       return {}
     },
-    set(parameters) {
+    set(value) {
       if (type.value) {
-        parametersMap.set(type.value, parameters)
+        baseJobTemplatesMap.set(type.value, value)
       }
     },
   })
 
-  const schemaHasProperties = computed(() => {
-    const { properties } = schema.value
-
-    return properties && Object.keys(properties).length > 0
-  })
-  const showSchemaForm = computed(() => type.value && schemaHasProperties.value && can.access.workers)
+  const typeIsNotPrefectAgent = computed(() => type.value !== 'prefect-agent')
+  const showBaseJobTemplateFormSection = computed(() => type.value && typeIsNotPrefectAgent.value && can.access.workers)
 
   const isRequired: ValidationRule<string | undefined> = (value) => value !== undefined && value.trim().length > 0
 
@@ -124,8 +115,7 @@
         type: type.value,
         isPaused: false,
         concurrencyLimit: concurrencyLimit.value,
-        baseJobTemplate: baseJobConfigs.value,
-        defaultVariableValues: parameters.value,
+        baseJobTemplate: baseJobTemplate.value,
       }
 
       try {

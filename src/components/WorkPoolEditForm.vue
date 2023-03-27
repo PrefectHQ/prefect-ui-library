@@ -23,9 +23,8 @@
         <WorkPoolTypeSelect :selected="type" disabled />
       </p-label>
 
-      <template v-if="showSchemaForm">
-        <h3>Base Job Configuration <BetaBadge /></h3>
-        <SchemaFormFieldsWithValues v-model:values="parameters" :schema="schema" />
+      <template v-if="showBaseJobTemplateFormSection">
+        <WorkPoolBaseJobTemplateFormSection v-model:base-job-template="baseJobTemplate" />
       </template>
     </p-content>
 
@@ -44,13 +43,10 @@
   import { useValidationObserver } from '@prefecthq/vue-compositions'
   import { ref, computed } from 'vue'
   import { useRouter } from 'vue-router'
-  import { SubmitButton, WorkPoolTypeSelect, SchemaFormFieldsWithValues, BetaBadge } from '@/components'
+  import { SubmitButton, WorkPoolTypeSelect, WorkPoolBaseJobTemplateFormSection } from '@/components'
   import { useCan, useWorkspaceApi, useWorkspaceRoutes } from '@/compositions'
   import { localization } from '@/localization'
   import { WorkPool, WorkPoolEdit } from '@/models'
-  import { mapper } from '@/services/Mapper'
-  import { Schema } from '@/types/schemas'
-  import { getSchemaDefaults, getSchemaWithoutDefaults } from '@/utilities/parameters'
 
   const props = defineProps<{
     workPool: WorkPool,
@@ -65,17 +61,10 @@
   const description = ref<string | null | undefined>(props.workPool.description)
   const type = ref<string>(props.workPool.type)
   const concurrencyLimit = ref<number | null | undefined>(props.workPool.concurrencyLimit)
-  const schema = computed<Schema>(() => mapper.map('SchemaResponse', getSchemaWithoutDefaults(props.workPool.baseJobTemplate.variables ?? {}), 'Schema'))
-  // Set parameters to the default values from the schema so they are pre-filled in the form
-  const parameters = ref(
-    getSchemaDefaults(props.workPool.baseJobTemplate.variables ?? {}),
-  )
-  const schemaHasProperties = computed(() => {
-    const { properties } = schema.value
+  const baseJobTemplate = ref(props.workPool.baseJobTemplate)
 
-    return properties && Object.keys(properties).length > 0
-  })
-  const showSchemaForm = computed(() => type.value && schemaHasProperties.value && can.access.workers)
+  const typeIsNotPrefectAgent = computed(() => type.value !== 'prefect-agent')
+  const showBaseJobTemplateFormSection = computed(() => type.value && typeIsNotPrefectAgent.value && can.access.workers)
 
   function cancel(): void {
     router.back()
@@ -87,8 +76,7 @@
       const values: WorkPoolEdit = {
         description: description.value,
         concurrencyLimit: concurrencyLimit.value,
-        baseJobTemplate: props.workPool.baseJobTemplate,
-        updatedDefaultVariableValues: parameters.value,
+        baseJobTemplate: baseJobTemplate.value,
       }
       try {
         await api.workPools.updateWorkPool(props.workPool.name, values)
