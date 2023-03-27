@@ -9,12 +9,9 @@
 
     <RowGridLayoutList v-if="artifactsLoaded" :items="artifacts">
       <template #default="{ item }: { item: Artifact }">
-        <router-link v-if="item.id" :to="routes.artifactKey(item.id)">
+        <router-link :to="routes.artifactKey(item.id)">
           <ArtifactCard :artifact="item" class="artifact-collections__artifact-card" />
         </router-link>
-        <template v-else>
-          wtf
-        </template>
       </template>
 
       <template #empty>
