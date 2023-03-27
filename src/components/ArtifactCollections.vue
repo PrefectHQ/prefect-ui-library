@@ -22,7 +22,7 @@
 </template>
 
 <script lang="ts" setup>
-  import { useSubscription } from '@prefecthq/vue-compositions'
+  import { useDebouncedRef, useSubscription } from '@prefecthq/vue-compositions'
   import { computed, ref } from 'vue'
   import { ArtifactTypeSelect, ResultsCount, SearchInput } from '@/components'
   import ArtifactCard from '@/components/ArtifactCard.vue'
@@ -33,14 +33,16 @@
   import { localization } from '@/localization'
   import { ArtifactsFilter, ArtifactType, Artifact } from '@/models'
 
-  const searchTerm = ref('')
+  const searchTerm = ref<string>('')
+  const searchTermDebounced = useDebouncedRef(searchTerm, 1200)
+
   const selectedType = ref<ArtifactType | null>(null)
 
   const api = useWorkspaceApi()
   const routes = useWorkspaceRoutes()
 
   const artifactsFilter = computed<ArtifactsFilter>(() => {
-    const keyLike = searchTerm.value ? searchTerm.value : undefined
+    const keyLike = searchTermDebounced.value ? searchTermDebounced.value : undefined
     const type = selectedType.value ? [selectedType.value] : undefined
 
     return {
