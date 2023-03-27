@@ -7,7 +7,7 @@
       <ViewModeButtonGroup class="artifact-collections__view-mode-button-group" />
     </div>
 
-    <RowGridLayoutList :items="artifacts">
+    <RowGridLayoutList v-if="artifactsLoaded" :items="artifacts">
       <template #default="{ item }: { item: Artifact }">
         <ArtifactCard :artifact="item" />
       </template>
@@ -51,6 +51,7 @@
 
   const artifactsSubscription = useSubscription(api.artifacts.getArtifacts, [artifactsFilter])
   const artifactsCountSubscription = useSubscription(api.artifacts.getArtifactsCount, [artifactsFilter])
+  const artifactsLoaded = computed(() => artifactsSubscription.executed)
   const artifacts = computed(() => artifactsSubscription.response ?? [])
   const artifactsCount = computed(() => artifactsCountSubscription.response)
 </script>
