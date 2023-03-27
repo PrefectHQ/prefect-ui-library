@@ -13,7 +13,7 @@
       <p-heading :class="classes.cardHeading" class="artifact-timeline-item__card-heading" heading="6" @click="toggleExpanded">
         <div>
           <div class="artifact-timeline-item__created" :title="formatDateTimeNumeric(artifact.created)">
-            {{ formatDate(artifact.created) }}
+            {{ formatDate(artifact.created) }} <span v-if="latest" class="artifact-timeline-item__latest">({{ localization.info.latest }})</span>
           </div>
           <div class="artifact-timeline-item__icon-texts-container">
             <template v-if="artifact.flowRunId">
@@ -69,6 +69,7 @@
 
   const props = defineProps<{
     artifact: Artifact,
+    latest?: boolean,
     expanded?: Expanded | null,
     value?: unknown,
   }>()
