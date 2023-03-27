@@ -1,5 +1,6 @@
 export * from './api'
 export * from './Artifact'
+export * from './BatchLookupError'
 export * from './BlockDocument'
 export * from './BlockDocumentCreate'
 export * from './BlockDocumentUpdate'
