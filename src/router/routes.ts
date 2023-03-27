@@ -7,7 +7,7 @@ type CreateWorkspaceRoutesConfig = {
 export function createWorkspaceRoutes(config?: CreateWorkspaceRoutesConfig) {
   return {
     artifact: (artifactId: string) => ({ name: 'workspace.artifacts.artifact', params: { artifactId, ...config } }) as const,
-    artifactKey: () => ({ name: 'workspace.artifacts.artifact.key', params: { ...config } }) as const,
+    artifactKey: (artifactId: string) => ({ name: 'workspace.artifacts.artifact.key', params: { artifactId, ...config } }) as const,
     artifacts: () => ({ name: 'workspace.artifacts', params: { ...config } }) as const,
     flowRuns: () => ({ name: 'workspace.flow-runs', params: { ...config } }) as const,
     flowRun: (flowRunId: string) => ({ name: 'workspace.flow-runs.flow-run', params: { flowRunId, ...config } }) as const,

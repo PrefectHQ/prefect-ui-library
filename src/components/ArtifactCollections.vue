@@ -7,9 +7,11 @@
       <ViewModeButtonGroup class="artifact-collections__view-mode-button-group" />
     </div>
 
-    <RowGridLayoutList :items="artifacts">
+    <RowGridLayoutList v-if="artifactsLoaded" :items="artifacts">
       <template #default="{ item }: { item: Artifact }">
-        <ArtifactCard :artifact="item" />
+        <router-link :to="routes.artifactKey(item.id)">
+          <ArtifactCard :artifact="item" class="artifact-collections__artifact-card" />
+        </router-link>
       </template>
 
       <template #empty>
@@ -20,24 +22,27 @@
 </template>
 
 <script lang="ts" setup>
-  import { useSubscription } from '@prefecthq/vue-compositions'
+  import { useDebouncedRef, useSubscription } from '@prefecthq/vue-compositions'
   import { computed, ref } from 'vue'
   import { ArtifactTypeSelect, ResultsCount, SearchInput } from '@/components'
   import ArtifactCard from '@/components/ArtifactCard.vue'
   import ArtifactCollectionsEmptyState from '@/components/ArtifactCollectionsEmptyState.vue'
   import RowGridLayoutList from '@/components/RowGridLayoutList.vue'
   import ViewModeButtonGroup from '@/components/ViewModeButtonGroup.vue'
-  import { useWorkspaceApi } from '@/compositions'
+  import { useWorkspaceApi, useWorkspaceRoutes } from '@/compositions'
   import { localization } from '@/localization'
   import { ArtifactsFilter, ArtifactType, Artifact } from '@/models'
 
-  const searchTerm = ref('')
+  const searchTerm = ref<string>('')
+  const searchTermDebounced = useDebouncedRef(searchTerm, 1200)
+
   const selectedType = ref<ArtifactType | null>(null)
 
   const api = useWorkspaceApi()
+  const routes = useWorkspaceRoutes()
 
   const artifactsFilter = computed<ArtifactsFilter>(() => {
-    const keyLike = searchTerm.value ? searchTerm.value : undefined
+    const keyLike = searchTermDebounced.value ? searchTermDebounced.value : undefined
     const type = selectedType.value ? [selectedType.value] : undefined
 
     return {
@@ -51,6 +56,7 @@
 
   const artifactsSubscription = useSubscription(api.artifacts.getArtifacts, [artifactsFilter])
   const artifactsCountSubscription = useSubscription(api.artifacts.getArtifactsCount, [artifactsFilter])
+  const artifactsLoaded = computed(() => artifactsSubscription.executed)
   const artifacts = computed(() => artifactsSubscription.response ?? [])
   const artifactsCount = computed(() => artifactsCountSubscription.response)
 </script>
@@ -112,5 +118,10 @@
 
 .artifact-collections__view-mode-button-group { @apply
   ml-auto
+}
+
+.artifact-collections__artifact-card { @apply
+  hover:border-primary
+  focus:border-primary
 }
 </style>

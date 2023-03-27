@@ -91,6 +91,7 @@ export const en = {
     artifact: 'Artifact',
     artifacts: 'Artifacts',
     artifactSearch: 'Search artifacts',
+    latest: 'Latest',
     noResults: 'No tracked results, enable [result persistence](https://docs.prefect.io/concepts/results/#persisting-results) to track results.',
     flowRun: 'Flow run',
     taskRun: 'Task run',

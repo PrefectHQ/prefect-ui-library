@@ -131,7 +131,7 @@ export type DeploymentsFilterRequest = UnionFilterRequest<DeploymentSortValues>
 
 export type ArtifactFilterRequest = {
   id?: Any,
-  key?: Any & Like & Exists,
+  key?: Any & Like & Exists & Latest,
   type?: Any & NotAny,
   flow_run_id?: Any,
   task_run_id?: Any,

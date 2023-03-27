@@ -10,6 +10,7 @@
         <ArtifactTimelineItem
           v-bind="{ artifact }"
           v-model:expanded="expanded"
+          :latest="artifact.id === latestArtifactId"
           :value="artifact.id"
           class="artifact-timeline__artifact-timeline-item"
         />
@@ -44,6 +45,17 @@
       limit: ARTIFACTS_DEFAULT_FILTER_LIMIT,
     }
   })
+
+  const artifactsLatestFilter = computed<ArtifactsFilter>(() => {
+    return {
+      artifacts: {
+        key: [props.artifactKey],
+        keyLatest: true,
+      },
+    }
+  })
+  const artifactsLatestSubscription = useSubscription(api.artifacts.getArtifacts, [artifactsLatestFilter])
+  const latestArtifactId = computed(() => artifactsLatestSubscription.response?.[0].id)
 
   const artifactsCountFilter = computed<ArtifactsFilter>(() => {
     return {
