@@ -1,3 +1,4 @@
+import { BatchLookupError } from '@/index'
 import { MaybePromise } from '@/types'
 
 export type BatchCallbackLookup<V, R> = (value: V) => MaybePromise<R>
@@ -126,8 +127,15 @@ export class BatchProcessor<V, R> {
   }
 
   private resolveBatchUsingMap(batch: BatchQueue<V, R>, map: Map<V, R>): void {
-    batch.forEach(({ resolve }, id) => {
-      resolve(map.get(id)!)
+    batch.forEach(({ resolve, reject }, id) => {
+      const value = map.get(id)
+
+      if (value === undefined) {
+        reject(new BatchLookupError(id))
+        return
+      }
+
+      resolve(value)
     })
   }
 
