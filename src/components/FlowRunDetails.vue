@@ -116,7 +116,7 @@
   const heading = computed(() => props.alternate ? 6 : 5)
 
   const deploymentId = computed(() => props.flowRun.deploymentId)
-  const deployment = useDeployment(deploymentId)
+  const { deployment } = useDeployment(deploymentId)
   const showDeployment = computed(() => can.read.deployment && isDefined(deployment.value))
   const stateMessage = computed(() => props.flowRun.state?.message)
 

@@ -1,9 +1,12 @@
 import { useSubscriptionWithDependencies } from '@prefecthq/vue-compositions'
-import { computed, ComputedRef, ref, Ref } from 'vue'
+import { computed, ref, Ref } from 'vue'
 import { useWorkspaceApi } from '@/compositions/useWorkspaceApi'
-import { BlockType } from '@/models/BlockType'
+import { WorkspaceBlockTypesApi } from '@/services/WorkspaceBlockTypesApi'
+import { UseEntitySubscription } from '@/types/useEntitySubscription'
 
-export function useBlockType(blockTypeId: string | Ref<string | null | undefined>): ComputedRef<BlockType | undefined> {
+export type UseBlockType = UseEntitySubscription<WorkspaceBlockTypesApi['getBlockType'], 'blockType'>
+
+export function useBlockType(blockTypeId: string | Ref<string | null | undefined>): UseBlockType {
   const api = useWorkspaceApi()
   const slug = ref(blockTypeId)
 
@@ -18,10 +21,13 @@ export function useBlockType(blockTypeId: string | Ref<string | null | undefined
   const subscription = useSubscriptionWithDependencies(api.blockTypes.getBlockType, parameters)
   const blockType = computed(() => subscription.response)
 
-  return blockType
+  return {
+    subscription,
+    blockType,
+  }
 }
 
-export function useBlockTypeBySlug(blockTypeSlug: string | Ref<string | null | undefined>): ComputedRef<BlockType | undefined> {
+export function useBlockTypeBySlug(blockTypeSlug: string | Ref<string | null | undefined>): UseBlockType {
   const api = useWorkspaceApi()
   const slug = ref(blockTypeSlug)
 
@@ -36,5 +42,8 @@ export function useBlockTypeBySlug(blockTypeSlug: string | Ref<string | null | u
   const subscription = useSubscriptionWithDependencies(api.blockTypes.getBlockTypeBySlug, parameters)
   const blockType = computed(() => subscription.response)
 
-  return blockType
+  return {
+    subscription,
+    blockType,
+  }
 }

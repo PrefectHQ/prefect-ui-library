@@ -1,9 +1,12 @@
 import { useSubscriptionWithDependencies } from '@prefecthq/vue-compositions'
-import { computed, ComputedRef, ref, Ref } from 'vue'
+import { computed, ref, Ref } from 'vue'
 import { useWorkspaceApi } from '@/compositions/useWorkspaceApi'
-import { BlockSchema } from '@/models/BlockSchema'
+import { WorkspaceBlockSchemasApi } from '@/services/WorkspaceBlockSchemasApi'
+import { UseEntitySubscription } from '@/types/useEntitySubscription'
 
-export function useBlockSchema(blockSchemaId: string | Ref<string | null | null>): ComputedRef<BlockSchema | undefined> {
+export type UseBlockSchema = UseEntitySubscription<WorkspaceBlockSchemasApi['getBlockSchema'], 'blockSchema'>
+
+export function useBlockSchema(blockSchemaId: string | Ref<string | null | null>): UseBlockSchema {
   const id = ref(blockSchemaId)
   const api = useWorkspaceApi()
   const parameters = computed<[string] | null>(() => {
@@ -17,10 +20,13 @@ export function useBlockSchema(blockSchemaId: string | Ref<string | null | null>
   const subscription = useSubscriptionWithDependencies(api.blockSchemas.getBlockSchema, parameters)
   const blockSchema = computed(() => subscription.response)
 
-  return blockSchema
+  return {
+    subscription,
+    blockSchema,
+  }
 }
 
-export function useBlockSchemaForBlockType(blockTypeId: string | Ref<string | null | null>): ComputedRef<BlockSchema | undefined> {
+export function useBlockSchemaForBlockType(blockTypeId: string | Ref<string | null | null>): UseBlockSchema {
   const id = ref(blockTypeId)
   const api = useWorkspaceApi()
   const parameters = computed<[string] | null>(() => {
@@ -34,5 +40,8 @@ export function useBlockSchemaForBlockType(blockTypeId: string | Ref<string | nu
   const subscription = useSubscriptionWithDependencies(api.blockSchemas.getBlockSchemaForBlockType, parameters)
   const blockSchema = computed(() => subscription.response)
 
-  return blockSchema
+  return {
+    subscription,
+    blockSchema,
+  }
 }

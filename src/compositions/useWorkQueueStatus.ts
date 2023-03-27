@@ -1,9 +1,12 @@
 import { useSubscriptionWithDependencies } from '@prefecthq/vue-compositions'
-import { computed, ComputedRef, Ref, ref } from 'vue'
+import { computed, Ref, ref } from 'vue'
 import { useWorkspaceApi } from '@/compositions/useWorkspaceApi'
-import { WorkQueueStatus } from '@/models/WorkQueueStatus'
+import { WorkspaceWorkQueuesApi } from '@/services/WorkspaceWorkQueuesApi'
+import { UseEntitySubscription } from '@/types/useEntitySubscription'
 
-export function useWorkQueueStatus(workQueueId: string | Ref<string | null | undefined>): ComputedRef<WorkQueueStatus | undefined> {
+export type UseWorkQueueStatus = UseEntitySubscription<WorkspaceWorkQueuesApi['getWorkQueueStatus'], 'workQueueStatus'>
+
+export function useWorkQueueStatus(workQueueId: string | Ref<string | null | undefined>): UseWorkQueueStatus {
   const api = useWorkspaceApi()
   const id = ref(workQueueId)
 
@@ -18,5 +21,8 @@ export function useWorkQueueStatus(workQueueId: string | Ref<string | null | und
   const subscription = useSubscriptionWithDependencies(api.workQueues.getWorkQueueStatus, parameters)
   const workQueueStatus = computed(() => subscription.response)
 
-  return workQueueStatus
+  return {
+    subscription,
+    workQueueStatus,
+  }
 }

@@ -67,7 +67,7 @@
     return num > 0 ? `${num} Deployments` : 'Deployments'
   })
 
-  const workQueueStatus = useWorkQueueStatus(props.workQueue.id)
+  const { workQueueStatus } = useWorkQueueStatus(props.workQueue.id)
 </script>
 
 <style>

@@ -9,7 +9,7 @@
         <FlowRunStartTime :flow-run="flowRun" />
         <DurationIconText :duration="flowRun.duration" />
         <template v-if="visible && flowRun.stateType !== 'scheduled'">
-          <FlowRunTaskCount :tasks-count="tasksCount">
+          <FlowRunTaskCount :tasks-count="taskRunsCount">
             <template #default="{ count }">
               {{ count }} task {{ toPluralString('run', count) }}
             </template>
@@ -81,10 +81,10 @@
   const value = computed(() => props.flowRun.id)
 
   const flowRunId = computed(() => props.flowRun.id)
-  const tasksCount = useTaskRunsCount(flowRunId)
+  const { taskRunsCount } = useTaskRunsCount(flowRunId)
 
   const deploymentId = computed(() => props.flowRun.deploymentId)
-  const deployment = useDeployment(deploymentId)
+  const { deployment } = useDeployment(deploymentId)
 
   const visible = ref(false)
   const el = ref<HTMLDivElement>()

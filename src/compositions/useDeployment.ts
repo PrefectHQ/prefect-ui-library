@@ -1,10 +1,13 @@
 import { useSubscriptionWithDependencies } from '@prefecthq/vue-compositions'
-import { computed, ComputedRef, Ref, ref } from 'vue'
+import { computed, Ref, ref } from 'vue'
 import { useCan } from '@/compositions/useCan'
 import { useWorkspaceApi } from '@/compositions/useWorkspaceApi'
-import { Deployment } from '@/models/Deployment'
+import { WorkspaceDeploymentsApi } from '@/services/WorkspaceDeploymentsApi'
+import { UseEntitySubscription } from '@/types/useEntitySubscription'
 
-export function useDeployment(deploymentId: string | Ref<string | null | undefined>): ComputedRef<Deployment | undefined> {
+export type UseDeployment = UseEntitySubscription<WorkspaceDeploymentsApi['getDeployment'], 'deployment'>
+
+export function useDeployment(deploymentId: string | Ref<string | null | undefined>): UseDeployment {
   const api = useWorkspaceApi()
   const can = useCan()
   const id = ref(deploymentId)
@@ -24,5 +27,8 @@ export function useDeployment(deploymentId: string | Ref<string | null | undefin
   const subscription = useSubscriptionWithDependencies(api.deployments.getDeployment, parameters)
   const deployment = computed(() => subscription.response)
 
-  return deployment
+  return {
+    subscription,
+    deployment,
+  }
 }

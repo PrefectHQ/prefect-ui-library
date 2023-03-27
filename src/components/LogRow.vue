@@ -34,7 +34,7 @@
   }>()
 
   const taskRunId = computed(() => props.log.taskRunId)
-  const taskRun = useTaskRun(taskRunId)
+  const { taskRun } = useTaskRun(taskRunId)
   const taskRunName = computed(() => taskRun.value?.name)
 </script>
 

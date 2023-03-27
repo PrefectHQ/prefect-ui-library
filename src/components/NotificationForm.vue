@@ -164,7 +164,7 @@
 
     return selectedBlockTypeId.value
   })
-  const blockSchemaForSelectedBlockType = useBlockSchemaForBlockType(blockTypeId)
+  const { blockSchema: blockSchemaForSelectedBlockType } = useBlockSchemaForBlockType(blockTypeId)
   const blockSchema = computed(() => {
     if (blockDocument.value && selectedBlockTypeId.value === blockDocument.value.blockTypeId) {
       return blockDocument.value.blockSchema

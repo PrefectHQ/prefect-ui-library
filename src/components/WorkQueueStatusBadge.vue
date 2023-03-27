@@ -19,7 +19,7 @@
 
   const workQueueName = computed(() => props.workQueue.name)
   const workQueueId = computed(() => props.workQueue.id)
-  const workQueueStatus = useWorkQueueStatus(workQueueId)
+  const { workQueueStatus } = useWorkQueueStatus(workQueueId)
   const healthy = computed(() => workQueueStatus.value?.healthy)
 
   const label = computed(() => {

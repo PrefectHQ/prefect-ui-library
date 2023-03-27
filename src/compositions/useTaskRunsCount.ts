@@ -1,9 +1,12 @@
-/* eslint-disable camelcase */
 import { useSubscriptionWithDependencies } from '@prefecthq/vue-compositions'
-import { computed, ComputedRef, Ref, ref } from 'vue'
+import { computed, Ref, ref } from 'vue'
 import { useCan, useWorkspaceApi } from '@/compositions'
+import { WorkspaceTaskRunsApi } from '@/services/WorkspaceTaskRunsApi'
+import { UseEntitySubscription } from '@/types/useEntitySubscription'
 
-export function useTaskRunsCount(flowRunId: string | Ref<string | null | undefined>): ComputedRef<number | undefined> {
+export type UseTaskRunsCount = UseEntitySubscription<WorkspaceTaskRunsApi['getTaskRunsCount'], 'taskRunsCount'>
+
+export function useTaskRunsCount(flowRunId: string | Ref<string | null | undefined>): UseTaskRunsCount {
   const api = useWorkspaceApi()
   const can = useCan()
   const id = ref(flowRunId)
@@ -29,8 +32,11 @@ export function useTaskRunsCount(flowRunId: string | Ref<string | null | undefin
     ]
   })
 
-  const taskRunsCountSubscription = useSubscriptionWithDependencies(api.taskRuns.getTaskRunsCount, tasksCountFilter)
-  const taskRunsCount = computed(() => taskRunsCountSubscription.response)
+  const subscription = useSubscriptionWithDependencies(api.taskRuns.getTaskRunsCount, tasksCountFilter)
+  const taskRunsCount = computed(() => subscription.response)
 
-  return taskRunsCount
+  return {
+    subscription,
+    taskRunsCount,
+  }
 }

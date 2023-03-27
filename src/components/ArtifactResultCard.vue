@@ -27,8 +27,8 @@
   const flowRunId = computed(() => props.artifact.flowRunId)
   const taskRunId = computed(() => props.artifact.taskRunId)
 
-  const flowRun = useFlowRun(flowRunId)
-  const taskRun = useTaskRun(taskRunId)
+  const { flowRun } = useFlowRun(flowRunId)
+  const { taskRun } = useTaskRun(taskRunId)
 
   const hasRun = computed(() => !!props.artifact.flowRunId || !!props.artifact.taskRunId)
 
