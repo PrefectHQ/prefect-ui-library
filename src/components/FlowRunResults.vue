@@ -12,7 +12,7 @@
 
       <RowGridLayoutList :items="flowRunResults">
         <template #default="{ item }: { item: ResultArtifact }">
-          <ArtifactCardResult :artifact="item" :condense="condense" class="flow-run-results__artifact" />
+          <ArtifactResultCard :artifact="item" :condense="condense" class="flow-run-results__artifact" />
         </template>
 
         <template #empty>
@@ -30,7 +30,7 @@
 
       <RowGridLayoutList :items="taskRunResults">
         <template #default="{ item }: { item: ResultArtifact }">
-          <ArtifactCardResult :artifact="item" :condense="condense" class="flow-run-results__artifact" />
+          <ArtifactResultCard :artifact="item" :condense="condense" class="flow-run-results__artifact" />
         </template>
 
         <template #empty>
