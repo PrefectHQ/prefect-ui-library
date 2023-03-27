@@ -10,9 +10,8 @@
           The fields below control the default values for the base job template. These values can be overridden by deployments.
         </p-message>
         <SchemaFormFieldsWithValues
-          :values="currentDefaults"
+          v-model:values="currentDefaults"
           :schema="variablesSchema"
-          @update:values="onDefaultValuesUpdate"
         />
       </template>
       <template v-else>
@@ -32,7 +31,7 @@
             the docs.
           </p-link>.
         </p-message>
-        <JsonInput :model-value="localBaseJobTemplateJson" show-format-button @update:model-value="onJsonUpdate" />
+        <JsonInput v-model:model-value="localBaseJobTemplateJson" show-format-button @update:model-value="onLocalBaseJobTemplateJsonUpdate" />
       </div>
     </template>
   </p-tabs>
@@ -56,7 +55,7 @@
     (e: 'update:base-job-template', value: WorkerBaseJobTemplate): void,
   }>()
 
-  const onJsonUpdate = (json: string): void => {
+  const onLocalBaseJobTemplateJsonUpdate = (json: string): void => {
     localBaseJobTemplateJson.value = json
     try {
       emit('update:base-job-template', JSON.parse(json))
@@ -69,41 +68,44 @@
     }
   }
 
-  const onDefaultValuesUpdate = (values: SchemaValues): void => {
-    const { baseJobTemplate } = props
-
-    const newTemplate = {
-      ...baseJobTemplate,
-      variables: {
-        ...baseJobTemplate.variables,
-        properties: mapValues(baseJobTemplate.variables?.properties ?? {}, (key, value) => {
-          return {
-            ...value,
-            default: values[key],
-          }
-        }),
-      },
-    }
-    emit('update:base-job-template', newTemplate)
-  }
-
   const localBaseJobTemplateJson = ref<string>(stringify(props.baseJobTemplate))
-  watch(() => props.baseJobTemplate, (current) => {
+  const localBaseJobTemplate = computed<WorkerBaseJobTemplate | null>(() => {
     try {
-      if (!isEqual(JSON.parse(localBaseJobTemplateJson.value), current)) {
-        localBaseJobTemplateJson.value = stringify(current)
+      return JSON.parse(localBaseJobTemplateJson.value)
+    } catch (error) {
+      if (error instanceof SyntaxError) {
+        return null
       }
-    } catch (ex) {
-      if (ex instanceof SyntaxError) {
-      // Ignore syntax errors
-      } else {
-        throw ex
-      }
+      throw error
+    }
+  })
+  watch(() => props.baseJobTemplate, (template) => {
+    if (!isEqual(template, localBaseJobTemplate.value)) {
+      localBaseJobTemplateJson.value = stringify(template)
     }
   })
   const variablesSchema = computed<Schema>(() => mapper.map('SchemaResponse', getSchemaWithoutDefaults(props.baseJobTemplate.variables ?? {}), 'Schema'))
   const variablesSchemaHasProperties = computed<boolean>(() => Object.keys(variablesSchema.value.properties ?? {}).length > 0)
-  const currentDefaults = computed<SchemaValues>(() => getSchemaDefaults(props.baseJobTemplate.variables ?? {}))
+  const currentDefaults = computed<SchemaValues>({
+    get() {
+      return getSchemaDefaults(props.baseJobTemplate.variables ?? {})
+    },
+    set(values) {
+      const newTemplate = {
+        ...props.baseJobTemplate,
+        variables: {
+          ...props.baseJobTemplate.variables,
+          properties: mapValues(props.baseJobTemplate.variables?.properties ?? {}, (key, value) => {
+            return {
+              ...value,
+              default: values[key],
+            }
+          }),
+        },
+      }
+      emit('update:base-job-template', newTemplate)
+    },
+  })
 </script>
 
 <style>
