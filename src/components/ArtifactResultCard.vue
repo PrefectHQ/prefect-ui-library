@@ -1,7 +1,7 @@
 <template>
   <ArtifactCard :artifact="artifact">
     <template v-if="hasRun && crumbs.length">
-      <p-bread-crumbs :crumbs="crumbs" class="artifact-card-result__bread-crumbs" :class="classes.breadCrumbs" />
+      <p-bread-crumbs :crumbs="crumbs" class="artifact-result-card__bread-crumbs" :class="classes.breadCrumbs" />
 
       <p-markdown-renderer v-if="artifact.description" :text="artifact.description" />
     </template>
@@ -58,25 +58,25 @@
   const classes = computed(() => {
     return {
       breadCrumbs: {
-        'artifact-card-result__bread-crumbs--condensed': props.condense,
+        'artifact-result-card__bread-crumbs--condensed': props.condense,
       },
     }
   })
 </script>
 
 <style>
-.artifact-card-result__bread-crumbs { @apply
+.artifact-result-card__bread-crumbs { @apply
   text-base
   flex-nowrap
   overflow-hidden
 }
 
-.artifact-card-result__bread-crumbs .p-bread-crumbs__crumb { @apply
+.artifact-result-card__bread-crumbs .p-bread-crumbs__crumb { @apply
   whitespace-nowrap
   overflow-ellipsis
 }
 
-.artifact-card-result__bread-crumbs--condensed { @apply
+.artifact-result-card__bread-crumbs--condensed { @apply
   text-sm
 }
 </style>

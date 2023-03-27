@@ -54,7 +54,7 @@
 <script lang="ts" setup>
   import { useSubscription } from '@prefecthq/vue-compositions'
   import { computed } from 'vue'
-  import ArtifactCardResult from '@/components/ArtifactCardResult.vue'
+  import ArtifactResultCard from '@/components/ArtifactResultCard.vue'
   import RowGridLayoutList from '@/components/RowGridLayoutList.vue'
   import ViewModeButtonGroup from '@/components/ViewModeButtonGroup.vue'
   import { useWorkspaceApi } from '@/compositions'
