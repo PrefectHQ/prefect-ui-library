@@ -14,7 +14,7 @@
   import { TableData } from '@prefecthq/prefect-design'
   import { useDebouncedRef } from '@prefecthq/vue-compositions'
   import { computed, ref } from 'vue'
-  import { SearchInput } from '..'
+  import { SearchInput } from '@/components'
   import { TableArtifact } from '@/models'
 
   const props = defineProps<{
