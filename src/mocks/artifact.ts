@@ -17,8 +17,7 @@ export const randomArtifact: MockFunction<Artifact, [Partial<Artifact>?]> = func
       data = this.create('markdownString', [{ sections: 4 }])
       break
     case 'table':
-      // TODO: Figure out table data type
-      data = []
+      data = this.create('table')
       break
     default:
       break

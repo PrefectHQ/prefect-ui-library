@@ -33,6 +33,7 @@ import { randomSchema, randomSchemaProperties, randomSchemaProperty } from '@/mo
 import { randomState } from '@/mocks/state'
 import { randomStateType } from '@/mocks/stateType'
 import { randomChar, randomString, randomSentence, randomParagraph, randomRunName, randomNoun, randomAdjective } from '@/mocks/string'
+import { randomTable } from '@/mocks/table'
 import { randomTaskRun } from '@/mocks/taskRun'
 import { randomUiFlowRunHistory } from '@/mocks/UiFlowRunHistory'
 import { randomUrl } from '@/mocks/url'
@@ -97,6 +98,7 @@ export const mocks = {
   state: randomState,
   stateType: randomStateType,
   string: randomString,
+  table: randomTable,
   taskRun: randomTaskRun,
   uiFlowRunHistory: randomUiFlowRunHistory,
   url: randomUrl,
