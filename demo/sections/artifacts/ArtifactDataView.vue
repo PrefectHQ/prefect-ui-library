@@ -1,19 +1,27 @@
 <template>
   <ComponentPage title="ArtifactDataView" :demos="demos">
     <template #markdown>
-      <ArtifactDataView :artifact="markdown" />
+      <div class="artifact-data-view__container">
+        <ArtifactDataView :artifact="markdown" />
+      </div>
     </template>
 
     <template #table>
-      <ArtifactDataView :artifact="table" />
+      <div class="artifact-data-view__container">
+        <ArtifactDataView :artifact="table" />
+      </div>
     </template>
 
     <template #unknown>
-      <ArtifactDataView :artifact="unknown" />
+      <div class="artifact-data-view__container">
+        <ArtifactDataView :artifact="unknown" />
+      </div>
     </template>
 
     <template #result>
-      <ArtifactDataView :artifact="result" />
+      <div class="artifact-data-view__container">
+        <ArtifactDataView :artifact="result" />
+      </div>
     </template>
   </ComponentPage>
 </template>
@@ -45,3 +53,12 @@
   const table = mocker.create('artifact', [{ type: 'table' }])
   const markdown = mocker.create('artifact', [{ type: 'markdown' }])
 </script>
+
+<style>
+.artifact-data-view__container { @apply
+  max-h-96
+  overflow-auto
+  relative
+  h-96
+}
+</style>

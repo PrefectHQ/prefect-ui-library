@@ -42,12 +42,5 @@
 <style>
 .artifact-data-table { @apply
   max-w-full
-  overflow-auto
-}
-
-.artifact-data-table .p-table-head { @apply
-  sticky
-  top-0
-  z-10
 }
 </style>
