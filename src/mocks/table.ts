@@ -22,9 +22,10 @@ export const randomTable: MockFunction<TableData[], [Partial<MockTableOverrides>
 
   const { keys = defaultKeys, types = defaultTypes } = overrides
 
+  const typesMap: Record<string, MockTableDataTypes> = keys.reduce((acc, key) => ({ ...acc, [key]: choice(types) }), {})
   const table: Record<string, unknown>[] = Array.from({ length: rowCount }, () => {
     const data: Record<string, unknown> = keys.reduce(
-      (acc, key) => ({ ...acc, [key]: this.create(choice(types)) }),
+      (acc, key) => ({ ...acc, [key]: this.create(typesMap[key]) }),
       {})
 
     return data

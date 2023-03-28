@@ -1,10 +1,12 @@
 <template>
-  <p-layout-table>
+  <p-layout-table class="artifact-data-table">
     <template #header-end>
       <SearchInput v-model="search" />
     </template>
 
-    <p-table :data="filteredData" />
+    <p-table :data="filteredData">
+      <template #header />
+    </p-table>
   </p-layout-table>
 </template>
 
@@ -41,5 +43,11 @@
 .artifact-data-table { @apply
   max-w-full
   overflow-auto
+}
+
+.artifact-data-table .p-table-head { @apply
+  sticky
+  top-0
+  z-10
 }
 </style>
