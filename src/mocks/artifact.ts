@@ -3,7 +3,7 @@ import { MockFunction } from '@/services/Mocker'
 import { choice } from '@/utilities'
 
 export const randomArtifact: MockFunction<Artifact, [Partial<Artifact>?]> = function(overrides = {}) {
-  const type = choice<ArtifactType>(artifactTypes)
+  const { type = choice<ArtifactType>(artifactTypes) } = overrides
   let data = null
 
   switch (type) {
@@ -17,6 +17,9 @@ export const randomArtifact: MockFunction<Artifact, [Partial<Artifact>?]> = func
       data = this.create('markdownString', [{ sections: 4 }])
       break
     case 'table':
+      data = this.create('table')
+      break
+    case 'unknown':
       data = this.create('table')
       break
     default:
