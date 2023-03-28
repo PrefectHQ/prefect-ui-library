@@ -11,9 +11,7 @@
       <SearchInput v-model="search" />
     </template>
 
-    <p-table :data="filteredData">
-      <template #header />
-    </p-table>
+    <p-table :data="filteredData" />
   </p-layout-table>
 </template>
 
