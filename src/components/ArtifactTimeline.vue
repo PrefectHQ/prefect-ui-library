@@ -1,12 +1,12 @@
 <template>
   <div class="artifact-timeline">
-    <p-virtual-scroller
+    <p-timeline
       :items="artifacts"
       :item-estimate-height="112"
-      class="artifact-timeline__virtual-scroller"
+      class="artifact-timeline__timeline"
       @bottom="fetchMore"
     >
-      <template #default="{ item: artifact }">
+      <template #content="{ item: artifact }">
         <ArtifactTimelineItem
           v-bind="{ artifact }"
           v-model:expanded="expanded"
@@ -15,7 +15,25 @@
           class="artifact-timeline__artifact-timeline-item"
         />
       </template>
-    </p-virtual-scroller>
+    </p-timeline>
+    <!--
+      <p-virtual-scroller
+      :items="artifacts"
+      :item-estimate-height="112"
+      class="artifact-timeline__virtual-scroller"
+      @bottom="fetchMore"
+      >
+      <template #default="{ item: artifact }">
+      <ArtifactTimelineItem
+      v-bind="{ artifact }"
+      v-model:expanded="expanded"
+      :latest="artifact.id === latestArtifactId"
+      :value="artifact.id"
+      class="artifact-timeline__artifact-timeline-item"
+      />
+      </template>
+      </p-virtual-scroller>
+    -->
   </div>
 </template>
 
