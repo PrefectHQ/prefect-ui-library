@@ -27,9 +27,21 @@
         Artifact
       </p-heading>
 
-      <p-key-value label="Key" :value="artifact.key" :alternate="alternate" />
+      <p-key-value label="Key" :alternate="alternate">
+        <template #value>
+          <p-code inline>
+            {{ artifact.key }}
+          </p-code>
+        </template>
+      </p-key-value>
 
-      <p-key-value label="Type" :value="artifact.type" :alternate="alternate" />
+      <p-key-value label="Type" :alternate="alternate">
+        <template #value>
+          <p-code inline>
+            {{ artifact.type }}
+          </p-code>
+        </template>
+      </p-key-value>
 
       <p-key-value label="Created" :value="formatDateTimeNumeric(artifact.created)" :alternate="alternate" />
     </template>
