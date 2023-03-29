@@ -1,18 +1,19 @@
 <template>
   <section class="artifact-data-raw">
-    <p-code-highlight v-bind="{ lang, text }" show-line-numbers class="artifact-data-raw__code" />
+    <p-code-highlight v-bind="{ lang, text }" class="artifact-data-raw__code" />
   </section>
 </template>
 
 <script lang="ts" setup>
   import { computed } from 'vue'
   import { Artifact } from '@/models'
+  import { formatUnknownJson } from '@/utilities/json'
 
   const props = defineProps<{
     artifact: Artifact,
   }>()
 
-  const text = computed(() => props.artifact.serializedData ?? '')
+  const text = computed(() => formatUnknownJson(props.artifact.serializedData ?? ''))
 
   const lang = computed(() => {
     switch (props.artifact.type) {
@@ -30,9 +31,7 @@
 <style>
 .artifact-data-raw__code { @apply
   w-full
-  h-full
-  min-h-[20rem]
-  max-h-screen
+  h-[45rem]
   overflow-auto
 }
 </style>

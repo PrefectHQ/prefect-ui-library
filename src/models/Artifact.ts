@@ -1,6 +1,3 @@
-import { parseUnknownJson, stringifyUnknownJson } from '..'
-import { isSerializedArtifactData } from '@/types/artifact'
-
 export const artifactTypes = [
   'result',
   'markdown',
@@ -77,6 +74,5 @@ export class Artifact implements IArtifact {
     this.metadata = artifact.metadata
     this.flowRunId = artifact.flowRunId
     this.taskRunId = artifact.taskRunId
-
   }
 }
