@@ -26,6 +26,7 @@ export interface IArtifact {
   type: ArtifactType,
   description: string | null,
   data: ArtifactData,
+  serializedData: string | null | undefined,
   metadata: ArtifactMetadata,
   flowRunId: string | null,
   taskRunId: string | null,
@@ -71,18 +72,11 @@ export class Artifact implements IArtifact {
     this.key = artifact.key
     this.type = artifact.type
     this.description = artifact.description
-
+    this.data = artifact.data
+    this.serializedData = artifact.serializedData
     this.metadata = artifact.metadata
     this.flowRunId = artifact.flowRunId
     this.taskRunId = artifact.taskRunId
 
-
-    if (isSerializedArtifactData(artifact.type, artifact.data)) {
-      this.data = parseUnknownJson(artifact.data)
-      this.serializedData = artifact.data
-    } else {
-      this.data = artifact.data
-      this.serializedData = stringifyUnknownJson(artifact.data)
-    }
   }
 }
