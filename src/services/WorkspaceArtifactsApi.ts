@@ -14,7 +14,7 @@ export interface IWorkspaceArtifactsApi {
 
 export class WorkspaceArtifactsApi extends WorkspaceApi implements IWorkspaceArtifactsApi {
 
-  protected override routePrefix = '/experimental/artifacts'
+  protected override routePrefix = '/artifacts'
 
   private readonly batcher = new BatchProcessor<string, Artifact>(async ids => {
     const artifacts = await this.getArtifacts({ artifacts: { id: ids } })

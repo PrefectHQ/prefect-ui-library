@@ -47,10 +47,9 @@
       const normalized: TableData[] = []
 
       Object.entries(data.value).forEach(([key, values]) => {
-        values.forEach((value) => {
-          normalized.push({
-            [key]: value,
-          })
+        values.forEach((value, index) => {
+          normalized[index] ??= {}
+          normalized[index][key] = value
         })
       })
 
