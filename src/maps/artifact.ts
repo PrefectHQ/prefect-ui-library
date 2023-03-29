@@ -1,9 +1,11 @@
 import { ArtifactResponse } from '@/models/api/ArtifactResponse'
 import { Artifact } from '@/models/Artifact'
 import { MapFunction } from '@/services/Mapper'
-import { isKnownArtifactType } from '@/types/artifact'
+import { isKnownArtifactType, isSerializedArtifactData } from '@/types/artifact'
 
 export const mapArtifactResponseToArtifact: MapFunction<ArtifactResponse, Artifact> = function(source) {
+  const data = isSerializedArtifactData(source.type, source.data) ? JSON.parse(source.data) : source.data
+
   return new Artifact({
     id: source.id,
     created: this.map('string', source.created, 'Date'),
@@ -11,7 +13,7 @@ export const mapArtifactResponseToArtifact: MapFunction<ArtifactResponse, Artifa
     description: source.description,
     key: source.key,
     type: isKnownArtifactType(source.type) ? source.type : 'unknown',
-    data: source.data,
+    data,
     metadata: source.metadata_,
     flowRunId: source.flow_run_id,
     taskRunId: source.task_run_id,

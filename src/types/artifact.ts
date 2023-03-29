@@ -19,3 +19,7 @@ export function isMarkdownArtifactData(data: ArtifactData): data is MarkdownArti
 export function isTableArtifactData(data: ArtifactData): data is TableArtifactData {
   return Array.isArray(data)
 }
+
+export function isSerializedArtifactData(type: string, data: ArtifactData): data is string {
+  return type !== 'markdown' && type !== 'result' && typeof data === 'string'
+}
