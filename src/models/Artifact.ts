@@ -1,3 +1,6 @@
+import { parseUnknownJson, stringifyUnknownJson } from '..'
+import { isSerializedArtifactData } from '@/types/artifact'
+
 export const artifactTypes = [
   'result',
   'markdown',
@@ -58,6 +61,7 @@ export class Artifact implements IArtifact {
   public type: ArtifactType
   public description: string | null
   public data: ArtifactData
+  public readonly serializedData: string | null | undefined
   public metadata: ArtifactMetadata
 
   public constructor(artifact: IArtifact) {
@@ -67,9 +71,18 @@ export class Artifact implements IArtifact {
     this.key = artifact.key
     this.type = artifact.type
     this.description = artifact.description
-    this.data = artifact.data
+
     this.metadata = artifact.metadata
     this.flowRunId = artifact.flowRunId
     this.taskRunId = artifact.taskRunId
+
+
+    if (isSerializedArtifactData(artifact.type, artifact.data)) {
+      this.data = parseUnknownJson(artifact.data)
+      this.serializedData = artifact.data
+    } else {
+      this.data = artifact.data
+      this.serializedData = stringifyUnknownJson(artifact.data)
+    }
   }
 }
