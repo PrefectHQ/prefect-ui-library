@@ -1,5 +1,39 @@
 <template>
   <div class="artifact-details">
+    <template v-if="artifact">
+      <template v-if="hasRunOrKey">
+        <p-key-value v-if="artifact.key" label="Artifact" :alternate="alternate">
+          <template #value>
+            <ArtifactKeyIconText :artifact-id="artifact.id" />
+          </template>
+        </p-key-value>
+
+        <p-key-value v-if="artifact.flowRunId" label="Flow Run" :alternate="alternate">
+          <template #value>
+            <FlowRunIconText :flow-run-id="artifact.flowRunId" />
+          </template>
+        </p-key-value>
+
+        <p-key-value v-if="artifact.taskRunId" label="Task Run" :alternate="alternate">
+          <template #value>
+            <TaskRunIconText :task-run-id="artifact.taskRunId" />
+          </template>
+        </p-key-value>
+
+        <p-divider />
+      </template>
+
+      <p-heading :heading="heading">
+        Artifact
+      </p-heading>
+
+      <p-key-value label="Key" :value="artifact.key" :alternate="alternate" />
+
+      <p-key-value label="Type" :value="artifact.type" :alternate="alternate" />
+
+      <p-key-value label="Created" :value="formatDateTimeNumeric(artifact.created)" :alternate="alternate" />
+    </template>
+
     <template v-if="can.read.flow_run && flowRun">
       <p-divider />
 
@@ -63,7 +97,7 @@
 <script lang="ts" setup>
   import { PKeyValue, PTags } from '@prefecthq/prefect-design'
   import { computed } from 'vue'
-  import { FlowRunStartTime, DurationIconText } from '@/components'
+  import { FlowRunStartTime, DurationIconText, FlowRunIconText, TaskRunIconText, ArtifactKeyIconText } from '@/components'
   import { useCan, useFlowRun, useTaskRun } from '@/compositions'
   import { Artifact } from '@/models'
   import { formatDateTimeNumeric } from '@/utilities/dates'
@@ -82,6 +116,8 @@
 
   const taskRunId = computed(() => props.artifact.taskRunId)
   const { taskRun } = useTaskRun(taskRunId)
+
+  const hasRunOrKey = computed(() => !!props.artifact.key || !!flowRunId.value || !!taskRunId.value)
 </script>
 
 <style>

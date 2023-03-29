@@ -1,4 +1,5 @@
 export * from './filters'
+export * from './useArtifact'
 export * from './useBlockDocument'
 export * from './useBlockSchema'
 export * from './useBlockType'
