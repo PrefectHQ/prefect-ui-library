@@ -1,6 +1,6 @@
 <template>
-  <section class="artifact-data-view">
-    <p-code-highlight v-bind="{ lang, text }" />
+  <section class="artifact-data-raw">
+    <p-code-highlight v-bind="{ lang, text }" show-line-numbers class="artifact-data-raw__code" />
   </section>
 </template>
 
@@ -26,3 +26,13 @@
     }
   })
 </script>
+
+<style>
+.artifact-data-raw__code { @apply
+  w-full
+  h-full
+  min-h-[20rem]
+  max-h-screen
+  overflow-auto
+}
+</style>
