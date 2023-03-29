@@ -19,7 +19,7 @@ export type NullableEquals = { eq_?: boolean | null }
 export type Exists = { exists_?: boolean }
 
 /** Matches on boolean equality */
-export type Latest = { latest_?: boolean }
+export type Latest = { is_latest?: boolean }
 
 /** If true, returns results whose key is null */
 export type IsNull = { is_null_?: boolean }

@@ -94,7 +94,7 @@ function toLatest(value?: boolean): Latest | undefined {
     return value
   }
 
-  return { latest_: value }
+  return { is_latest: value }
 }
 
 function toEquals(value?: boolean): Equals | undefined {
@@ -263,11 +263,11 @@ export const mapWorkPoolQueueFilter: MapFunction<WorkPoolQueueFilter, WorkPoolQu
 export const mapArtifactFilter: MapFunction<ArtifactFilter, ArtifactFilterRequest> = function(source) {
   return {
     id: toAny(source.id),
+    is_latest: { is_latest: source.keyLatest },
     key: {
       ...toExists(source.keyExists),
       ...toAny(source.key),
       ...toLike(source.keyLike),
-      ...toLatest(source.keyLatest),
     },
     type: {
       ...toAny(source.type),
