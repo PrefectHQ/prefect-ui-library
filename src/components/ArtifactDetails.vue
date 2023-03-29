@@ -85,31 +85,10 @@
 </script>
 
 <style>
-.flow-run-details { @apply
+.artifact-details { @apply
   flex
   flex-col
   gap-3
   items-start
-}
-
-.flow-run-details__work-queue-value { @apply
-  flex
-  items-center
-  gap-1
-}
-
-.flow-run-details__tags { @apply
-  mb-1
-  mr-1
-}
-
-.flow-run-details .flow-run-details__small-radar { @apply
-  h-[250px]
-  w-[250px]
-}
-
-.flow-run-details__small-radar-link { @apply
-  cursor-pointer
-  inline-block
 }
 </style>
