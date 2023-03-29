@@ -36,6 +36,7 @@ export const randomArtifact: MockFunction<Artifact, [Partial<Artifact>?]> = func
     flowRunId: this.create('id'),
     taskRunId: this.create('id'),
     data,
+    serializedData: JSON.stringify(data),
     metadata: {},
     ...overrides,
   })
