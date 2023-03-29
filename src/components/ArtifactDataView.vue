@@ -8,6 +8,7 @@
   import { computed } from 'vue'
   import ArtifactDataMarkdown from '@/components/ArtifactDataMarkdown.vue'
   import ArtifactDataResult from '@/components/ArtifactDataResult.vue'
+  import ArtifactDataTable from '@/components/ArtifactDataTable.vue'
   import ArtifactDataUnknown from '@/components/ArtifactDataUnknown.vue'
   import { Artifact } from '@/models'
 
@@ -22,6 +23,7 @@
       case 'markdown':
         return ArtifactDataMarkdown
       case 'table':
+        return ArtifactDataTable
       case 'unknown':
       default:
         return ArtifactDataUnknown
