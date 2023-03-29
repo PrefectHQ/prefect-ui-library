@@ -2,9 +2,10 @@ import { ArtifactResponse } from '@/models/api/ArtifactResponse'
 import { Artifact } from '@/models/Artifact'
 import { MapFunction } from '@/services/Mapper'
 import { isKnownArtifactType, isSerializedArtifactData } from '@/types/artifact'
+import { parseUnknownJson } from '@/utilities/json'
 
 export const mapArtifactResponseToArtifact: MapFunction<ArtifactResponse, Artifact> = function(source) {
-  const data = isSerializedArtifactData(source.type, source.data) ? JSON.parse(source.data) : source.data
+  const data = isSerializedArtifactData(source.type, source.data) ? parseUnknownJson(source.data) : source.data
 
   return new Artifact({
     id: source.id,
