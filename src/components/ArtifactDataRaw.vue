@@ -13,7 +13,7 @@
     artifact: Artifact,
   }>()
 
-  const text = computed(() => formatUnknownJson(props.artifact.serializedData ?? ''))
+  const text = computed(() => formatUnknownJson(props.artifact.data ?? ''))
 
   const lang = computed(() => {
     switch (props.artifact.type) {
