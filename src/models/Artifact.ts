@@ -9,7 +9,7 @@ export type ArtifactType = typeof artifactTypes[number]
 
 export type ResultArtifactData = Record<string, unknown>
 export type MarkdownArtifactData = string
-export type TableArtifactData = Record<string, unknown>[]
+export type TableArtifactData = string
 export type UnknownArtifactData = unknown
 
 export type ArtifactData = ResultArtifactData | MarkdownArtifactData | TableArtifactData | UnknownArtifactData
@@ -23,7 +23,6 @@ export interface IArtifact {
   type: ArtifactType,
   description: string | null,
   data: ArtifactData,
-  serializedData: string | null | undefined,
   metadata: ArtifactMetadata,
   flowRunId: string | null,
   taskRunId: string | null,
@@ -59,7 +58,6 @@ export class Artifact implements IArtifact {
   public type: ArtifactType
   public description: string | null
   public data: ArtifactData
-  public readonly serializedData: string | null | undefined
   public metadata: ArtifactMetadata
 
   public constructor(artifact: IArtifact) {
@@ -70,7 +68,6 @@ export class Artifact implements IArtifact {
     this.type = artifact.type
     this.description = artifact.description
     this.data = artifact.data
-    this.serializedData = artifact.serializedData
     this.metadata = artifact.metadata
     this.flowRunId = artifact.flowRunId
     this.taskRunId = artifact.taskRunId

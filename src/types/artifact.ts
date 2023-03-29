@@ -16,10 +16,14 @@ export function isMarkdownArtifactData(data: ArtifactData): data is MarkdownArti
   return typeof data === 'string'
 }
 
-export function isTableArtifactData(data: ArtifactData): data is TableArtifactData {
-  return Array.isArray(data)
+export function isArrayOfMaps(data: unknown): data is Record<string, unknown>[] {
+  return Array.isArray(data) && data.every(row => typeof row === 'object')
 }
 
-export function isSerializedArtifactData(type: string, data: ArtifactData): data is string {
-  return type !== 'markdown' && type !== 'result' && typeof data === 'string'
+export function isMapOfArrays(data: unknown): data is Record<string, unknown[]> {
+  return !!data && typeof data === 'object' && Object.values(data).every(row => Array.isArray(row))
+}
+
+export function isTableArtifactData(data: ArtifactData): data is TableArtifactData {
+  return isArrayOfMaps(data) || isMapOfArrays(data)
 }

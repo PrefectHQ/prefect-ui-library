@@ -1,6 +1,6 @@
 export const en = {
   docs: {
-    artifacts: 'https://docs.prefect.io/',
+    artifacts: 'https://docs.prefect.io/concepts/artifacts',
     gettingStarted: 'https://docs.prefect.io/getting-started/overview/',
     flows: 'https://docs.prefect.io/concepts/flows/',
     flowRuns: 'https://docs.prefect.io/ui/flow-runs/',
@@ -93,6 +93,8 @@ export const en = {
     artifactSearch: 'Search artifacts',
     latest: 'Latest',
     item: 'Item',
+    noData: 'No data',
+    invalidData: (docsUrl: string) => `Invalid data, see [documentation](${docsUrl}) for more information`,
     noResults: 'No tracked results, enable [result persistence](https://docs.prefect.io/concepts/results/#persisting-results) to track results.',
     flowRun: 'Flow run',
     taskRun: 'Task run',
