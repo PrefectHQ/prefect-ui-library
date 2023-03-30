@@ -7,40 +7,31 @@
       @bottom="fetchMore"
     >
       <template #content="{ item: artifact }">
-        <ArtifactTimelineItem
+        <ArtifactTimelineItemContent
           v-bind="{ artifact }"
           v-model:expanded="expanded"
+          :value="artifact.id"
+          class="artifact-timeline__content"
+        />
+      </template>
+
+      <template #date="{ item: artifact }">
+        <ArtifactTimelineItemDate
+          v-bind="{ artifact }"
           :latest="artifact.id === latestArtifactId"
           :value="artifact.id"
-          class="artifact-timeline__artifact-timeline-item"
+          class="artifact-timeline__date"
         />
       </template>
     </p-timeline>
-    <!--
-      <p-virtual-scroller
-      :items="artifacts"
-      :item-estimate-height="112"
-      class="artifact-timeline__virtual-scroller"
-      @bottom="fetchMore"
-      >
-      <template #default="{ item: artifact }">
-      <ArtifactTimelineItem
-      v-bind="{ artifact }"
-      v-model:expanded="expanded"
-      :latest="artifact.id === latestArtifactId"
-      :value="artifact.id"
-      class="artifact-timeline__artifact-timeline-item"
-      />
-      </template>
-      </p-virtual-scroller>
-    -->
   </div>
 </template>
 
 <script lang="ts" setup>
   import { useSubscription } from '@prefecthq/vue-compositions'
   import { computed, ref, watch, onBeforeMount } from 'vue'
-  import ArtifactTimelineItem from '@/components/ArtifactTimelineItem.vue'
+  import ArtifactTimelineItemContent from '@/components/ArtifactTimelineItemContent.vue'
+  import ArtifactTimelineItemDate from '@/components/ArtifactTimelineItemDate.vue'
   import { useWorkspaceApi } from '@/compositions'
   import { Artifact } from '@/models'
   import { ArtifactsFilter } from '@/models/Filters'
@@ -109,20 +100,7 @@
 </script>
 
 <style>
-.artifact-timeline { @apply
-  border-l
-  border-foreground-100
-  pr-4
-}
-
-.artifact-timeline__virtual-scroller { @apply
-  -ml-5
-  max-w-full
-}
-
-.artifact-timeline__artifact-timeline-item { @apply
-  max-w-full
-  w-full
-  my-6
+.artifact-timeline {
+  --p-timeline-item-date-width: 8rem;
 }
 </style>
