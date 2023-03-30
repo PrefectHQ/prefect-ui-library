@@ -140,7 +140,8 @@
 
 
 .artifact-timeline-item-content--expanded { @apply
-  -mt-3
+  mt-1
+  hover:ml-0
 }
 
 .artifact-timeline-item-content__icon-texts-container { @apply

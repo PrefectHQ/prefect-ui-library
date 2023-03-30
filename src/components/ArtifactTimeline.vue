@@ -8,18 +8,19 @@
       @bottom="fetchMore"
     >
       <template #content="{ item }">
-        <template v-if="item.type == 'artifact'">
-          <ArtifactTimelineItemContent
-            v-model:expanded="expanded"
-            :artifact="item.data"
-            :value="item.data.id"
-            class="artifact-timeline__content"
-          />
-        </template>
+        <div class="artifact-timeline__content">
+          <template v-if="item.type == 'artifact'">
+            <ArtifactTimelineItemContent
+              v-model:expanded="expanded"
+              :artifact="item.data"
+              :value="item.data.id"
+            />
+          </template>
 
-        <template v-else-if="item.type == 'message'">
-          <p-markdown-renderer :text="item.data" />
-        </template>
+          <template v-else-if="item.type == 'message'">
+            <p-markdown-renderer :text="item.data" />
+          </template>
+        </div>
       </template>
 
       <template #date="{ item }">
@@ -110,7 +111,12 @@
     artifacts.value = [...new Map([...artifacts.value, ...result].map(obj => [obj.id, obj])).values()].sort((objA, objB) => sortDates(objB.created, objA.created))
   }
 
-  watch(latestArtifactId, getArtifacts)
+  watch(latestArtifactId, (val, oldVal) => {
+    if (val && !oldVal) {
+      expanded.value = [val]
+    }
+    getArtifacts()
+  })
   watch(artifactsFilterOffset, getOffsetArtifacts)
 
   const fetchMore = (): void => {
@@ -176,7 +182,9 @@
 
   @apply
   border-t
+  border-b
   border-foreground-200
   dark:border-foreground-300
+  relative
 }
 </style>
