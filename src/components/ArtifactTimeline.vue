@@ -103,12 +103,16 @@
 
   const getOffsetArtifacts = async (): Promise<void> => {
     const result = await api.artifacts.getArtifacts(artifactsFilterWithOffset.value)
-    artifacts.value = [...new Map([...artifacts.value, ...result].map(obj => [obj.id, obj])).values()].sort((objA, objB) => sortDates(objB.created, objA.created))
+    const artifactsMap = new Map([...artifacts.value, ...result].map(obj => [obj.id, obj]))
+    const sortedArtifacts = [...artifactsMap.values()].sort((objA, objB) => sortDates(objB.created, objA.created))
+    artifacts.value = sortedArtifacts
   }
 
   const getArtifacts = async (): Promise<void> => {
     const result = await api.artifacts.getArtifacts(artifactsFilter.value)
-    artifacts.value = [...new Map([...artifacts.value, ...result].map(obj => [obj.id, obj])).values()].sort((objA, objB) => sortDates(objB.created, objA.created))
+    const artifactsMap = new Map([...artifacts.value, ...result].map(obj => [obj.id, obj]))
+    const sortedArtifacts = [...artifactsMap.values()].sort((objA, objB) => sortDates(objB.created, objA.created))
+    artifacts.value = sortedArtifacts
   }
 
   watch(latestArtifactId, (val, oldVal) => {
