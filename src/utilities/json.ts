@@ -23,9 +23,3 @@ export function stringifyUnknownJson(value: unknown): string | null | undefined 
 
   return stringify(parsed)
 }
-
-export function formatUnknownJson(value: unknown): string {
-  const parsed = parseUnknownJson(value)
-
-  return stringify(parsed)
-}
