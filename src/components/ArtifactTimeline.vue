@@ -170,6 +170,9 @@
 <style>
 .artifact-timeline {
   --p-timeline-item-date-width: 8rem;
+  --p-timeline-item-gap: 1rem;
+  --virtual-scroller-item-gap: 0;
+
 
   @apply
   border-t
