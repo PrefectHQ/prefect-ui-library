@@ -102,5 +102,10 @@
 <style>
 .artifact-timeline {
   --p-timeline-item-date-width: 8rem;
+
+  @apply
+  border-t
+  border-foreground-200
+  dark:border-foreground-300
 }
 </style>
