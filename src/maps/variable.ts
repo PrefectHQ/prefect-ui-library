@@ -4,7 +4,7 @@ import { VariableCreateRequest, VariableEditRequest } from '@/models/api/Variabl
 import { VariableResponse } from '@/models/api/VariableResponse'
 import { MapFunction } from '@/services/Mapper'
 
-export const mapVariableResponseVariable: MapFunction<VariableResponse, Variable> = function(source) {
+export const mapVariableResponseToVariable: MapFunction<VariableResponse, Variable> = function(source) {
   return new Variable({
     id: source.id,
     name: source.name,
