@@ -15,7 +15,7 @@ export const artifactTypeIconMap: Record<ArtifactType | 'default', Icon> = {
   table: 'TableIcon',
   result: 'CalculatorIcon',
   unknown: 'FingerPrintIcon',
-}
+} satisfies Record<ArtifactType | 'default', Icon>
 
 export type ResultArtifactData = Record<string, unknown>
 export type MarkdownArtifactData = string
