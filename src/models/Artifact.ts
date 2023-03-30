@@ -9,13 +9,13 @@ export const artifactTypes = [
 
 export type ArtifactType = typeof artifactTypes[number]
 
-export const artifactTypeIconMap: Record<ArtifactType | 'default', Icon> = {
+export const artifactTypeIconMap = {
   default: 'FingerPrintIcon',
   markdown: 'DocumentTextIcon',
   table: 'TableIcon',
   result: 'CalculatorIcon',
   unknown: 'FingerPrintIcon',
-} satisfies Record<ArtifactType | 'default', Icon>
+} as const satisfies Record<ArtifactType | 'default', Icon>
 
 export type ResultArtifactData = Record<string, unknown>
 export type MarkdownArtifactData = string
