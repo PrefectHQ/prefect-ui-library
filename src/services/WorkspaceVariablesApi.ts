@@ -4,7 +4,8 @@ import { mapper } from '@/services'
 import { WorkspaceApi } from '@/services/WorkspaceApi'
 
 export interface IWorkspaceVariablesApi {
-  // TODO: Bulk route doesn't exist yet, will soon
+  // TODO: Bulk route doesn't exist yet, will implement
+  // when we know what the filters will be
   // getVariables: (filter: VariablesFilter) => Promise<Variable[]>,
   getVariable: (variableId: string) => Promise<Variable>,
   createVariable: (body: VariableCreate) => Promise<Variable>,
