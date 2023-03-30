@@ -9,7 +9,7 @@ export type ArtifactType = typeof artifactTypes[number]
 
 export type ResultArtifactData = Record<string, unknown>
 export type MarkdownArtifactData = string
-export type TableArtifactData = Record<string, unknown>[]
+export type TableArtifactData = string
 export type UnknownArtifactData = unknown
 
 export type ArtifactData = ResultArtifactData | MarkdownArtifactData | TableArtifactData | UnknownArtifactData

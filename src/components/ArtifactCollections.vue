@@ -43,14 +43,14 @@
 
   const artifactsFilter = computed<ArtifactsFilter>(() => {
     const keyLike = searchTermDebounced.value ? searchTermDebounced.value : undefined
-    const keyLatest = true
+    const isLatest = true
     const keyExists = true
     const type = selectedType.value ? [selectedType.value] : undefined
 
     return {
       artifacts: {
         keyExists,
-        keyLatest,
+        isLatest,
         keyLike,
         type,
       },

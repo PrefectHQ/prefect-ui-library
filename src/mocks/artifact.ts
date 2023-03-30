@@ -20,7 +20,7 @@ export const randomArtifact: MockFunction<Artifact, [Partial<Artifact>?]> = func
       data = this.create('table')
       break
     case 'unknown':
-      data = this.create('table')
+      data = JSON.stringify(this.create('table'))
       break
     default:
       break

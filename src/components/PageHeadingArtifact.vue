@@ -13,7 +13,6 @@
   import PageHeading from '@/components/PageHeading.vue'
   import { useFlowRun, useTaskRun, useWorkspaceRoutes } from '@/compositions'
   import { Artifact } from '@/models'
-  import { capitalize } from '@/utilities'
 
   const props = defineProps<{
     artifact: Artifact,
@@ -32,7 +31,7 @@
   const crumbs = computed<BreadCrumbs>(() => {
     const internalCrumbs: BreadCrumbs = []
 
-    if (hasRun.value) {
+    if (hasRun.value && !props.artifact.key) {
       if (flowRun.value) {
         internalCrumbs.push({
           text: flowRun.value.name ?? '',
@@ -46,17 +45,15 @@
           to: routes.taskRun(taskRun.value.id),
         })
       }
-    }
-
-
-    if (props.artifact.key) {
+    } else if (props.artifact.key) {
       internalCrumbs.push({
         text: props.artifact.key,
+        to: routes.artifactKey(props.artifact.id),
       })
     }
 
     internalCrumbs.push({
-      text: capitalize(props.artifact.type),
+      text: props.artifact.id,
     })
 
     return internalCrumbs

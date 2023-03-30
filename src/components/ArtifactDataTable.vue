@@ -11,7 +11,13 @@
       <SearchInput v-model="search" />
     </template>
 
-    <p-table :data="filteredData" />
+    <p-table :data="filteredData">
+      <template #empty-state>
+        <p-empty-results>
+          <p-markdown-renderer :text="emptyDataText" />
+        </p-empty-results>
+      </template>
+    </p-table>
   </p-layout-table>
 </template>
 
@@ -22,30 +28,62 @@
   import { SearchInput } from '@/components'
   import { localization } from '@/localization'
   import { TableArtifact } from '@/models'
+  import { isTableArtifactData, isArrayOfMaps, isMapOfArrays } from '@/types/artifact'
+  import { parseUnknownJson } from '@/utilities/json'
 
   const props = defineProps<{
     artifact: TableArtifact,
   }>()
 
-  const data = computed<TableData[]>(() => props.artifact.data)
+  const data = computed(() => parseUnknownJson(props.artifact.data))
+  const isValid = computed(() => isTableArtifactData(props.artifact.data))
+
+  const normalizedData = computed(() => {
+    if (isArrayOfMaps(data.value)) {
+      return data.value
+    }
+
+    if (isMapOfArrays(data.value)) {
+      const normalized: TableData[] = []
+
+      Object.entries(data.value).forEach(([key, values]) => {
+        values.forEach((value, index) => {
+          normalized[index] ??= {}
+          normalized[index][key] = value
+        })
+      })
+
+      return normalized
+    }
+
+    return []
+  })
 
   const search = ref('')
   const searchDebounced = useDebouncedRef(search, 250)
 
   const filteredData = computed<TableData[]>(() => {
     if (!searchDebounced.value) {
-      return data.value
+      return normalizedData.value
     }
 
     const correctedSearch = searchDebounced.value.toLowerCase()
-    return data.value.filter((row) => {
+    return normalizedData.value.filter((row) => {
       const correctedJoinedValues = Object.values(row).join(' ').toLowerCase()
       return correctedJoinedValues.includes(correctedSearch)
     })
   })
 
-  const dataCount = computed(() => data.value.length)
+  const dataCount = computed(() => normalizedData.value.length)
   const filteredCount = computed(() => filteredData.value.length)
+
+  const emptyDataText = computed(() => {
+    if (!isValid.value) {
+      return localization.info.invalidData(localization.docs.artifacts)
+    }
+
+    return localization.info.noData
+  })
 </script>
 
 <style>
