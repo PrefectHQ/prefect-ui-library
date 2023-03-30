@@ -2,7 +2,8 @@
   <div class="artifact-timeline">
     <p-timeline
       :items="items"
-      :item-estimate-height="112"
+      :item-estimate-height="60"
+      item-key="id"
       class="artifact-timeline__timeline"
       @bottom="fetchMore"
     >
@@ -17,7 +18,7 @@
         </template>
 
         <template v-else-if="item.type == 'message'">
-          {{ item.message }}
+          <p-markdown-renderer :text="item.data" />
         </template>
       </template>
 
@@ -29,25 +30,23 @@
             class="artifact-timeline__date"
           />
         </template>
-
-        <template v-else-if="item.type == 'message'">
-          {{ item.message }}
-        </template>
       </template>
     </p-timeline>
   </div>
 </template>
 
 <script lang="ts" setup>
-  import { PrefectIcon } from '@prefecthq/prefect-design'
+  import { Icon } from '@prefecthq/prefect-design'
   import { TimelineItem } from '@prefecthq/prefect-design/dist/types/src/types/timeline'
   import { useSubscription } from '@prefecthq/vue-compositions'
   import { computed, ref, watch, onBeforeMount } from 'vue'
   import ArtifactTimelineItemContent from '@/components/ArtifactTimelineItemContent.vue'
   import ArtifactTimelineItemDate from '@/components/ArtifactTimelineItemDate.vue'
   import { useWorkspaceApi } from '@/compositions'
-  import { Artifact } from '@/models'
+  import { localization } from '@/localization'
+  import { Artifact, artifactTypeIconMap } from '@/models'
   import { ArtifactsFilter } from '@/models/Filters'
+  import { sortDates } from '@/utilities'
 
   const ARTIFACTS_DEFAULT_FILTER_LIMIT = 10
 
@@ -72,12 +71,16 @@
     return {
       artifacts: {
         key: [props.artifactKey],
-        keyLatest: true,
+        isLatest: true,
       },
     }
   })
-  const artifactsLatestSubscription = useSubscription(api.artifacts.getArtifacts, [artifactsLatestFilter])
-  const latestArtifactId = computed(() => artifactsLatestSubscription.response?.[0].id)
+  const artifactsLatestSubscription = useSubscription(api.artifacts.getArtifacts, [artifactsLatestFilter], { interval: 10000 })
+  const latestArtifactId = computed(() => {
+    const [latestArtifact = null] = artifactsLatestSubscription.response ?? []
+    console.log('component', latestArtifact?.id)
+    return latestArtifact?.id
+  })
 
   const artifactsCountFilter = computed<ArtifactsFilter>(() => {
     return {
@@ -86,16 +89,20 @@
       },
     }
   })
-  const artifactsCountSubscription = useSubscription(api.artifacts.getArtifactsCount, [artifactsCountFilter])
+  const artifactsCountSubscription = useSubscription(api.artifacts.getArtifactsCount, [artifactsCountFilter], { interval: 10000 })
   const artifactsCount = computed(() => artifactsCountSubscription.response ?? 0)
 
   const artifacts = ref<Artifact[]>([])
 
   const getArtifacts = async (): Promise<void> => {
+    console.log('artifacts count before: ', artifacts.value.length)
     const result = await api.artifacts.getArtifacts(artifactsFilter.value)
-    artifacts.value = [...artifacts.value, ...result]
+    console.log('artifacts count result: ', result.length)
+    artifacts.value = [...new Map([...artifacts.value, ...result].map(obj => [obj.id, obj])).values()].sort((objA, objB) => sortDates(objB.created, objA.created))
+    console.log('artifacts count after: ', artifacts.value.length)
   }
 
+  watch(latestArtifactId, getArtifacts)
   watch(artifactsFilterOffset, getArtifacts)
 
   const fetchMore = (): void => {
@@ -112,7 +119,7 @@
   const expanded = ref<string[]>([])
 
   type ArtifactTimelineItem = TimelineItem & {
-    icon?: PrefectIcon,
+    icon?: Icon,
     id: string,
     data: Artifact | string,
     type: 'artifact' | 'message',
@@ -120,12 +127,31 @@
   const items = computed<ArtifactTimelineItem[]>(() => {
     const items: ArtifactTimelineItem[] = []
 
+    let lastType: string
+
     artifacts.value.forEach((artifact) => {
       items.push({
         id: artifact.id,
         data: artifact,
         type: 'artifact',
       })
+
+      if (lastType && lastType !== artifact.type) {
+        items.push({
+          id: `${artifact.id}-type-change`,
+          data: localization.info.artifactTypeChanged(artifact.type),
+          icon: artifactTypeIconMap[artifact.type],
+          type: 'message',
+        })
+      }
+      lastType = artifact.type
+    })
+
+    items.push({
+      id: `${props.artifactKey}-created`,
+      data: localization.info.artifactCreated(props.artifactKey),
+      icon: artifactTypeIconMap.default,
+      type: 'message',
     })
 
     return items
