@@ -1,33 +1,46 @@
 <template>
   <div class="artifact-timeline">
     <p-timeline
-      :items="artifacts"
+      :items="items"
       :item-estimate-height="112"
       class="artifact-timeline__timeline"
       @bottom="fetchMore"
     >
-      <template #content="{ item: artifact }">
-        <ArtifactTimelineItemContent
-          v-bind="{ artifact }"
-          v-model:expanded="expanded"
-          :value="artifact.id"
-          class="artifact-timeline__content"
-        />
+      <template #content="{ item }">
+        <template v-if="item.type == 'artifact'">
+          <ArtifactTimelineItemContent
+            v-model:expanded="expanded"
+            :artifact="item.data"
+            :value="item.data.id"
+            class="artifact-timeline__content"
+          />
+        </template>
+
+        <template v-else-if="item.type == 'message'">
+          {{ item.message }}
+        </template>
       </template>
 
-      <template #date="{ item: artifact }">
-        <ArtifactTimelineItemDate
-          v-bind="{ artifact }"
-          :latest="artifact.id === latestArtifactId"
-          :value="artifact.id"
-          class="artifact-timeline__date"
-        />
+      <template #date="{ item }">
+        <template v-if="item.type == 'artifact'">
+          <ArtifactTimelineItemDate
+            :artifact="item.data"
+            :latest="item.data.id === latestArtifactId"
+            class="artifact-timeline__date"
+          />
+        </template>
+
+        <template v-else-if="item.type == 'message'">
+          {{ item.message }}
+        </template>
       </template>
     </p-timeline>
   </div>
 </template>
 
 <script lang="ts" setup>
+  import { PrefectIcon } from '@prefecthq/prefect-design'
+  import { TimelineItem } from '@prefecthq/prefect-design/dist/types/src/types/timeline'
   import { useSubscription } from '@prefecthq/vue-compositions'
   import { computed, ref, watch, onBeforeMount } from 'vue'
   import ArtifactTimelineItemContent from '@/components/ArtifactTimelineItemContent.vue'
@@ -97,6 +110,26 @@
   })
 
   const expanded = ref<string[]>([])
+
+  type ArtifactTimelineItem = TimelineItem & {
+    icon?: PrefectIcon,
+    id: string,
+    data: Artifact | string,
+    type: 'artifact' | 'message',
+  }
+  const items = computed<ArtifactTimelineItem[]>(() => {
+    const items: ArtifactTimelineItem[] = []
+
+    artifacts.value.forEach((artifact) => {
+      items.push({
+        id: artifact.id,
+        data: artifact,
+        type: 'artifact',
+      })
+    })
+
+    return items
+  })
 </script>
 
 <style>
