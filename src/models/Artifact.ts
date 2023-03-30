@@ -1,3 +1,5 @@
+import { Icon } from '@prefecthq/prefect-design'
+
 export const artifactTypes = [
   'result',
   'markdown',
@@ -6,6 +8,13 @@ export const artifactTypes = [
 ] as const
 
 export type ArtifactType = typeof artifactTypes[number]
+
+export const artifactTypeIconMap: Record<ArtifactType, Icon> = {
+  markdown: 'DocumentTextIcon',
+  table: 'TableIcon',
+  result: 'CalculatorIcon',
+  unknown: 'FingerPrintIcon',
+}
 
 export type ResultArtifactData = Record<string, unknown>
 export type MarkdownArtifactData = string
