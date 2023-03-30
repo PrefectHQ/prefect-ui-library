@@ -56,35 +56,35 @@
 </script>
 
 <style>
-.state-list-item--completed .list-item-input__checkbox { @apply
+.state-list-item--completed .p-list-item-input__checkbox { @apply
   bg-state-completed-500
 }
 
-.state-list-item--running .list-item-input__checkbox { @apply
+.state-list-item--running .p-list-item-input__checkbox { @apply
   bg-state-running-500
 }
 
-.state-list-item--scheduled .list-item-input__checkbox { @apply
+.state-list-item--scheduled .p-list-item-input__checkbox { @apply
   bg-state-scheduled-500
 }
 
-.state-list-item--pending .list-item-input__checkbox { @apply
+.state-list-item--pending .p-list-item-input__checkbox { @apply
   bg-state-pending-500
 }
 
-.state-list-item--paused .list-item-input__checkbox { @apply
+.state-list-item--paused .p-list-item-input__checkbox { @apply
   bg-state-paused-500
 }
 
-.state-list-item--failed .list-item-input__checkbox { @apply
+.state-list-item--failed .p-list-item-input__checkbox { @apply
   bg-state-failed-500
 }
 
-.state-list-item--cancelled .list-item-input__checkbox { @apply
+.state-list-item--cancelled .p-list-item-input__checkbox { @apply
   bg-state-cancelled-500
 }
 
-.state-list-item--crashed .list-item-input__checkbox { @apply
+.state-list-item--crashed .p-list-item-input__checkbox { @apply
   bg-state-crashed-500
 }
 

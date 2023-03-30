@@ -1,5 +1,5 @@
-import { isRecord } from '..'
 import { ArtifactType, artifactTypes, ResultArtifactData, MarkdownArtifactData, Artifact, ArtifactData, TableArtifactData } from '@/models/Artifact'
+import { isRecord } from '@/utilities/object'
 
 export function isArtifactType<T extends ArtifactType>(artifact: Artifact, type: T): artifact is Artifact & { type: T } {
   return artifact.type === type

@@ -91,6 +91,8 @@ export const en = {
     artifact: 'Artifact',
     artifacts: 'Artifacts',
     artifactSearch: 'Search artifacts',
+    artifactCreated: (key: string) => `Created __${key}__`,
+    artifactTypeChanged: (type: string) => `Changed to \`${type}\` artifact`,
     latest: 'Latest',
     item: 'Item',
     noData: 'No data',

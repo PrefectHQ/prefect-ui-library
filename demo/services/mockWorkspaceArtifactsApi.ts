@@ -55,6 +55,14 @@ export class MockWorkspaceArtifactsApi extends MockApi implements IWorkspaceArti
 
     artifacts = artifacts.slice(offset, offset + limit)
 
+    if (filter.artifacts?.isLatest) {
+      artifacts = artifacts.filter(artifact => {
+        const otherArtifacts = artifacts.filter(otherArtifact => otherArtifact.key === artifact.key)
+        return otherArtifacts.length === 1 || otherArtifacts[0].created.getTime() <= artifact.created.getTime()
+      })
+    }
+
+
     return artifacts
   }
 
