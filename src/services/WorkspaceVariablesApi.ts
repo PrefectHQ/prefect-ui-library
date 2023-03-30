@@ -28,7 +28,7 @@ export class WorkspaceVariablesApi extends WorkspaceApi implements IWorkspaceVar
 
   public async editVariable(variableId: string, body: VariableEdit): Promise<Variable> {
     const requestBody = mapper.map('VariableEdit', body, 'VariableEditRequest')
-    const { data } = await this.put<VariableResponse>(`/${variableId}`, requestBody)
+    const { data } = await this.patch<VariableResponse>(`/${variableId}`, requestBody)
 
     return mapper.map('VariableResponse', data, 'Variable')
   }
