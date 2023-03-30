@@ -55,15 +55,22 @@
   }>()
 
   const api = useWorkspaceApi()
-  const artifactsFilterOffset = ref(0)
+
   const artifactsFilter = computed<ArtifactsFilter>(() => {
     return {
       artifacts: {
         key: [props.artifactKey],
       },
       sort: 'CREATED_DESC',
-      offset: artifactsFilterOffset.value,
       limit: ARTIFACTS_DEFAULT_FILTER_LIMIT,
+    }
+  })
+
+  const artifactsFilterOffset = ref(0)
+  const artifactsFilterWithOffset = computed<ArtifactsFilter>(() => {
+    return {
+      ...artifactsFilter.value,
+      offset: artifactsFilterOffset.value,
     }
   })
 
@@ -75,10 +82,9 @@
       },
     }
   })
-  const artifactsLatestSubscription = useSubscription(api.artifacts.getArtifacts, [artifactsLatestFilter], { interval: 10000 })
+  const artifactsLatestSubscription = useSubscription(api.artifacts.getArtifacts, [artifactsLatestFilter], { interval: 30000 })
   const latestArtifactId = computed(() => {
     const [latestArtifact = null] = artifactsLatestSubscription.response ?? []
-    console.log('component', latestArtifact?.id)
     return latestArtifact?.id
   })
 
@@ -89,21 +95,23 @@
       },
     }
   })
-  const artifactsCountSubscription = useSubscription(api.artifacts.getArtifactsCount, [artifactsCountFilter], { interval: 10000 })
+  const artifactsCountSubscription = useSubscription(api.artifacts.getArtifactsCount, [artifactsCountFilter])
   const artifactsCount = computed(() => artifactsCountSubscription.response ?? 0)
 
   const artifacts = ref<Artifact[]>([])
 
-  const getArtifacts = async (): Promise<void> => {
-    console.log('artifacts count before: ', artifacts.value.length)
-    const result = await api.artifacts.getArtifacts(artifactsFilter.value)
-    console.log('artifacts count result: ', result.length)
+  const getOffsetArtifacts = async (): Promise<void> => {
+    const result = await api.artifacts.getArtifacts(artifactsFilterWithOffset.value)
     artifacts.value = [...new Map([...artifacts.value, ...result].map(obj => [obj.id, obj])).values()].sort((objA, objB) => sortDates(objB.created, objA.created))
-    console.log('artifacts count after: ', artifacts.value.length)
+  }
+
+  const getArtifacts = async (): Promise<void> => {
+    const result = await api.artifacts.getArtifacts(artifactsFilter.value)
+    artifacts.value = [...new Map([...artifacts.value, ...result].map(obj => [obj.id, obj])).values()].sort((objA, objB) => sortDates(objB.created, objA.created))
   }
 
   watch(latestArtifactId, getArtifacts)
-  watch(artifactsFilterOffset, getArtifacts)
+  watch(artifactsFilterOffset, getOffsetArtifacts)
 
   const fetchMore = (): void => {
     if (artifacts.value.length >= artifactsCount.value) {
@@ -130,20 +138,21 @@
     let lastType: string
 
     artifacts.value.forEach((artifact) => {
+      if (lastType && lastType !== artifact.type) {
+        items.push({
+          id: `${artifact.id}-type-change`,
+          data: localization.info.artifactTypeChanged(lastType),
+          icon: artifactTypeIconMap[artifact.type],
+          type: 'message',
+        })
+      }
+
       items.push({
         id: artifact.id,
         data: artifact,
         type: 'artifact',
       })
 
-      if (lastType && lastType !== artifact.type) {
-        items.push({
-          id: `${artifact.id}-type-change`,
-          data: localization.info.artifactTypeChanged(artifact.type),
-          icon: artifactTypeIconMap[artifact.type],
-          type: 'message',
-        })
-      }
       lastType = artifact.type
     })
 
