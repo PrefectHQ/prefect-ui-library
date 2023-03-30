@@ -1,14 +1,18 @@
 
 export interface IVariable {
   id: string,
-  key: string,
+  created: Date,
+  updated: Date,
+  name: string,
   value: string,
   tags: string[],
 }
 
 export class Variable implements IVariable {
   public readonly id: string
-  public key: string
+  public readonly created: Date
+  public readonly updated: Date
+  public name: string
   public value: string
   public tags: string[]
 
@@ -16,8 +20,10 @@ export class Variable implements IVariable {
     variable: IVariable,
   ) {
     this.id = variable.id
-    this.key = variable.key
+    this.name = variable.name
     this.value = variable.value
     this.tags = variable.tags
+    this.created = variable.created
+    this.updated = variable.updated
   }
 }
