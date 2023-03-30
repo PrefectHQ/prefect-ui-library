@@ -7,13 +7,13 @@
 <script lang="ts" setup>
   import { computed } from 'vue'
   import { Artifact } from '@/models'
-  import { formatUnknownJson } from '@/utilities/json'
+  import { stringifyUnknownJson } from '@/utilities/json'
 
   const props = defineProps<{
     artifact: Artifact,
   }>()
 
-  const text = computed(() => formatUnknownJson(props.artifact.data ?? ''))
+  const text = computed(() => stringifyUnknownJson(props.artifact.data) ?? '')
 
   const lang = computed(() => {
     switch (props.artifact.type) {
