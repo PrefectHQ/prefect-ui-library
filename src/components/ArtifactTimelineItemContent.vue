@@ -133,8 +133,11 @@
   flex
   flex-col
   gap-2
+  ml-0
+  hover:ml-1
   transition-all
 }
+
 
 .artifact-timeline-item-content--expanded { @apply
   -mt-3
