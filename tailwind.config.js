@@ -39,5 +39,5 @@ module.exports = {
       },
     },
   },
-  plugins: [prefectDesignPlugin, require('@tailwindcss/line-clamp')],
+  plugins: [prefectDesignPlugin],
 }
