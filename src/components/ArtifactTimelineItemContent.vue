@@ -31,20 +31,29 @@
     <template v-if="expanded">
       <p-divider />
 
-      <section class="artifact-timeline-item-content__body">
-        <template v-if="artifact.description">
-          <p-markdown-renderer :text="artifact.description" />
+      <template v-if="expandedDebounced">
+        <section class="artifact-timeline-item-content__body">
+          <template v-if="artifact.description">
+            <p-markdown-renderer :text="artifact.description" />
 
-          <p-divider />
-        </template>
+            <p-divider />
+          </template>
 
-        <ArtifactDataView :artifact="artifact" />
-      </section>
+          <ArtifactDataView :artifact="artifact" />
+        </section>
+      </template>
+
+      <template v-else>
+        <div class="artifact-timeline-item-content__loading">
+          <p-loading-icon />
+        </div>
+      </template>
     </template>
   </p-card>
 </template>
 
 <script lang="ts" setup>
+  import { useDebouncedRef } from '@prefecthq/vue-compositions'
   import { isArray } from 'lodash'
   import { computed } from 'vue'
   import ArtifactDataView from '@/components/ArtifactDataView.vue'
@@ -86,6 +95,8 @@
     }
     return expandedModel.value
   })
+  const expandedDebounced = useDebouncedRef(expanded, 1000)
+
   const toggleExpanded = (): void => {
     if (isNullish(expandedModel.value)) {
       return
@@ -154,5 +165,12 @@
 .artifact-timeline-item-content__heading--expanded,
 .artifact-timeline-item-content__body { @apply
   p-4
+}
+
+.artifact-timeline-item-content__loading { @apply
+  flex
+  justify-center
+  items-center
+  h-16
 }
 </style>
