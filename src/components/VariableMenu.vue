@@ -7,7 +7,7 @@
     <p-overflow-menu-item v-if="can.delete.variable" :label="localization.info.delete" @click="openDeleteModal" />
   </p-icon-button-menu>
 
-  <VariableEditModal v-model:showModal="showEditModal" :variable="variable" @update="emit('update')" />
+  <VariableEditModal v-model:showModal="showEditModal" :variable="variable" @update="handleUpdate" />
 
   <ConfirmDeleteModal
     v-model:showModal="showDeleteModal"
@@ -38,7 +38,7 @@
 
   const emit = defineEmits<{
     (event: 'delete', value: string): void,
-    (event: 'update'): void,
+    (event: 'update', value: Variable): void,
   }>()
 
   const can = useCan()
@@ -59,5 +59,9 @@
       console.error(error)
       showToast(localization.error.delete(localization.info.variable.toLowerCase()), 'error')
     }
+  }
+
+  const handleUpdate = (variable: Variable): void => {
+    emit('update', variable)
   }
 </script>
