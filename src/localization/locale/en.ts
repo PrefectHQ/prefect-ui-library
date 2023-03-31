@@ -51,6 +51,7 @@ export const en = {
     updateWorkPool: 'Failed to update work pool',
     updateWorkPoolQueue: 'Failed to update work pool queue',
     updateWorkQueue: 'Failed to update work queue',
+    variableAlreadyExists: 'Variable with this name already exists',
   },
   success: {
     activateDeployment: 'Deployment active',

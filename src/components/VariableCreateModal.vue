@@ -61,11 +61,12 @@
     const variable = await api.variables.getVariableByName(name.value)
     return !variable
   })
-  const rules = fieldRules('Name', isRequired, [isUnique, 'Variable with this name already exists'])
+  const nameRules = fieldRules(localization.info.name, isRequired, [isUnique, localization.error.variableAlreadyExists])
+  const valueRules = fieldRules(localization.info.value, isRequired)
 
   const { handleSubmit, isSubmitting, errors } = useForm<Variable>()
-  const { value: name, meta: nameState } = useField<string>('name', rules)
-  const { value: value, meta: valueState } = useField<string>('value')
+  const { value: name, meta: nameState } = useField<string>('name', nameRules)
+  const { value: value, meta: valueState } = useField<string>('value', valueRules)
   const { value: tags, meta: tagsState } = useField<string[]>('tags')
 
   const submit = handleSubmit(async (values) => {
