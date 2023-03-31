@@ -40,20 +40,21 @@
     variable: Variable,
   }>()
 
-  const emits = defineEmits<{
+  const emit = defineEmits<{
     (event: 'delete', value: string): void,
+    (event: 'update'): void,
   }>()
 
   const can = useCan()
 
   const { showModal: showDeleteModal, open: openDeleteModal, close: closeDeleteModal } = useShowModal()
-  const { showModal: showEditModal, open: openEditModal, close: closeEditModal } = useShowModal()
+  const { open: openEditModal } = useShowModal()
 
   const api = useWorkspaceApi()
 
   const deleteVariable = async (id: string): Promise<void> => {
-    close()
-    await deleteItem(id, api.deployments.deleteDeployment, 'Deployment')
-    emits('delete', id)
+    closeDeleteModal()
+    await deleteItem(id, api.variables.deleteVariable, 'Deployment')
+    emit('delete', id)
   }
 </script>
