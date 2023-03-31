@@ -46,7 +46,7 @@
 
         <template #action="{ row }">
           <div class="variables-table__action">
-            <VariableMenu :variable="row" size="xs" @delete="refresh" />
+            <VariableMenu :variable="row" size="xs" @delete="refreshSubscriptions" />
           </div>
         </template>
 
@@ -65,7 +65,7 @@
       </p-table>
 
       <template #footer-end>
-        <!-- <p-pager v-if="variables.length" v-model:page="offset" :pages="variablesCount" /> -->
+        <p-pager v-if="variables.length" v-model:page="offset" :pages="variablesCount" />
       </template>
     </p-layout-table>
   </div>
@@ -158,10 +158,14 @@
   const variablesCountSubscription = useSubscription(api.variables.getVariablesCount, [filter])
   const variablesCount = computed(() => variablesCountSubscription.response)
 
-  function refresh(): void {
+  function refreshSubscriptions(): void {
     variablesSubscription.refresh()
     variablesCountSubscription.refresh()
   }
+
+  defineExpose({
+    refreshSubscriptions,
+  })
 
   const emit = defineEmits<{
     (event: 'delete'): void,
@@ -169,7 +173,7 @@
 
   const deleteVariables = (): void => {
     selectedVariables.value = []
-    refresh()
+    refreshSubscriptions()
     emit('delete')
   }
 </script>

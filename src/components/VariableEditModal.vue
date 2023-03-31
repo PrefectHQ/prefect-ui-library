@@ -7,7 +7,7 @@
         </p-label>
 
         <p-label :label="localization.info.value" :state="valueState" :message="valueErrorMessage">
-          <p-text-input v-model="value" :state="valueState" />
+          <p-textarea v-model="value" :state="valueState" :rows="1" />
         </p-label>
 
         <p-label :label="localization.info.tags">
@@ -79,7 +79,12 @@
 
     try {
       const variable = await api.variables.getVariableByName(value)
-      return variable.id === props.variable.id
+
+      if (variable?.id === props.variable.id) {
+        return true
+      }
+
+      return localization.error.variableAlreadyExists
     } catch {
       /* Variable doesn't exist: silence is golden */
       return true

@@ -7,7 +7,7 @@
         </p-label>
 
         <p-label :label="localization.info.value" :state="valueState" :message="valueErrorMessage">
-          <p-text-input v-model="value" :state="valueState" />
+          <p-textarea v-model="value" :state="valueState" :rows="1" />
         </p-label>
 
         <p-label :label="localization.info.tags">
@@ -78,7 +78,7 @@
 
     try {
       const variable = await api.variables.getVariableByName(value)
-      return !variable
+      return variable ? localization.error.variableAlreadyExists : true
     } catch {
       /* Variable doesn't exist: silence is golden */
       return true
@@ -112,8 +112,8 @@
         const variable = await api.variables.createVariable(values)
 
         showToast(localization.success.createVariable, 'success')
-        internalValue.value = false
         emit('create', variable)
+        internalValue.value = false
       } catch (error) {
         console.error(error)
         showToast(localization.error.createVariable, 'error')
