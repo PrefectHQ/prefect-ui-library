@@ -59,6 +59,10 @@
 
   const api = useWorkspaceApi()
 
+  // TODO: It's possible the better behavior would be to allow the user to
+  // overwrite the other variable but in that case it's not clear
+  // what should happen with this one. For now, we'll just prevent
+  // the user from creating a variable with the same name.
   const isUnique: ValidationRule<string | undefined> = async (value, label, { signal, source, previousValue }) => {
     if (value === previousValue) {
       return
