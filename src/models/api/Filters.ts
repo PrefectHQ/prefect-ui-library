@@ -1,4 +1,4 @@
-import { ArtifactSortValues, DeploymentSortValues, FlowRunSortValues, FlowSortValues, LogSortValues, TaskRunSortValues } from '@/types/SortOptionTypes'
+import { ArtifactSortValues, DeploymentSortValues, FlowRunSortValues, FlowSortValues, LogSortValues, TaskRunSortValues, VariableSortValues } from '@/types/SortOptionTypes'
 
 /** A list where results will be returned only if they match all the values in the list */
 export type All = { all_?: string[] }
@@ -143,6 +143,19 @@ export type ArtifactsFilterRequest = {
   task_runs?: TaskRunFilterRequest,
   flow_runs?: FlowRunFilterRequest,
   sort?: ArtifactSortValues,
+  offset?: number,
+  limit?: number,
+}
+
+export type VariableFilterRequest = {
+  id?: Any,
+  name?: Any & Like,
+  value?: Any & Like,
+}
+
+export type VariablesFilterRequest = {
+  variables?: VariableFilterRequest,
+  sort?: VariableSortValues,
   offset?: number,
   limit?: number,
 }
