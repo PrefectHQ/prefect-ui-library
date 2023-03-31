@@ -37,7 +37,7 @@
   import { useWorkspaceApi } from '@/compositions'
   import { localization } from '@/localization'
   import { Variable, VariableCreate } from '@/models'
-  import { isRequired, isString } from '@/utilities'
+  import { isLowerCase, isRequired, isString } from '@/utilities'
 
   const props = defineProps<{
     showModal: boolean,
@@ -91,7 +91,7 @@
   const tags = ref<string[]>([])
 
   const rules: Record<string, ValidationRule<string | undefined>[]> = {
-    name: [isRequired(localization.info.name), isUnique],
+    name: [isRequired(localization.info.name), isLowerCase(localization.info.name), isUnique],
     value: [isRequired(localization.info.value)],
   }
 

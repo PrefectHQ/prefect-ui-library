@@ -256,3 +256,27 @@ export const isHandle: ValidationMethodFactory = property => value => {
 
   return `${property} must only contain lowercase letters, numbers, and dashes`
 }
+
+export const isLowerCase: ValidationMethodFactory = property => value => {
+  if (isNullish(value) || isEmptyString(value)) {
+    return true
+  }
+
+  if (typeof value === 'string' && value === value.toLowerCase()) {
+    return true
+  }
+
+  return `${property} must be lowercase`
+}
+
+export const isUpperCase: ValidationMethodFactory = property => value => {
+  if (isNullish(value) || isEmptyString(value)) {
+    return true
+  }
+
+  if (typeof value === 'string' && value === value.toUpperCase()) {
+    return true
+  }
+
+  return `${property} must be uppercase`
+}

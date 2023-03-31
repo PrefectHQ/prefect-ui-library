@@ -20,7 +20,7 @@
 
       <p-table :data="variables" :columns="columns">
         <template #selection-heading>
-          <p-checkbox v-model="model" @update:model-value="selectAllVariables" />
+          <p-checkbox v-if="variables.length" v-model="model" @update:model-value="selectAllVariables" />
         </template>
 
         <template #selection="{ row }">
