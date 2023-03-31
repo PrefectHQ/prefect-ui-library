@@ -17,6 +17,7 @@ import { WorkspaceLogsApi } from '@/services/WorkspaceLogsApi'
 import { WorkspaceNotificationsApi } from '@/services/WorkspaceNotificationsApi'
 import { WorkspaceSavedSearchesApi } from '@/services/WorkspaceSavedSearchesApi'
 import { WorkspaceTaskRunsApi } from '@/services/WorkspaceTaskRunsApi'
+import { WorkspaceVariablesApi } from '@/services/WorkspaceVariablesApi'
 import { WorkspaceWorkPoolQueuesApi } from '@/services/WorkspaceWorkPoolQueuesApi'
 import { WorkspaceWorkPoolsApi } from '@/services/WorkspaceWorkPoolsApi'
 import { WorkspaceWorkPoolWorkersApi } from '@/services/WorkspaceWorkPoolWorkersApi'
@@ -42,6 +43,7 @@ export function createApi(workspaceConfig: WorkspaceApiConfig) {
     savedSearches: createActions(new WorkspaceSavedSearchesApi(workspaceConfig)),
     taskRuns: createActions(new WorkspaceTaskRunsApi(workspaceConfig)),
     ui: createActions(new UiApi(workspaceConfig)),
+    variables: createActions(new WorkspaceVariablesApi(workspaceConfig)),
     workPoolQueues: createActions(new WorkspaceWorkPoolQueuesApi(workspaceConfig)),
     workPools: createActions(new WorkspaceWorkPoolsApi(workspaceConfig)),
     workPoolWorkers: createActions(new WorkspaceWorkPoolWorkersApi(workspaceConfig)),
