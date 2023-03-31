@@ -9,7 +9,7 @@ export const mapVariableResponseToVariable: MapFunction<VariableResponse, Variab
     id: source.id,
     name: source.name,
     value: source.value,
-    tags: sortStringArray(source.tags),
+    tags: sortStringArray(source.tags ?? []),
     created: this.map('string', source.created, 'Date'),
     updated: this.map('string', source.updated, 'Date'),
   })

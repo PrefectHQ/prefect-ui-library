@@ -35,6 +35,10 @@
           {{ formatDateTimeNumeric(row.updated) }}
         </template>
 
+        <template #tags="{ row }">
+          <p-tags :tags="row.tags" />
+        </template>
+
         <template #action-heading>
           <span />
         </template>
@@ -107,17 +111,22 @@
     {
       property: 'name',
       label: 'Name',
-      width: '125px',
+      width: '64px',
     },
     {
       property: 'value',
       label: 'Value',
-      width: '125px',
+      width: '124px',
     },
     {
       property: 'updated',
       label: 'Updated',
-      width: '125px',
+      width: '124px',
+    },
+    {
+      property: 'tags',
+      label: 'Tags',
+      width: '124px',
     },
     {
       label: 'Action',
