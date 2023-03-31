@@ -1,12 +1,11 @@
-import { Variable, VariableCreate, VariableEdit } from '@/models'
+import { Variable, VariableCreate, VariableEdit, VariablesFilter } from '@/models'
 import { VariableResponse } from '@/models/api/VariableResponse'
 import { mapper } from '@/services'
 import { WorkspaceApi } from '@/services/WorkspaceApi'
 
 export interface IWorkspaceVariablesApi {
-  // TODO: Bulk route doesn't exist yet, will implement
-  // when we know what the filters will be
-  // getVariables: (filter: VariablesFilter) => Promise<Variable[]>,
+  getVariables: (filter: VariablesFilter) => Promise<Variable[]>,
+  getVariablesCount: (filter: VariablesFilter) => Promise<number>,
   getVariable: (variableId: string) => Promise<Variable>,
   getVariableByName: (variableName: string) => Promise<Variable>,
   createVariable: (body: VariableCreate) => Promise<Variable>,
@@ -25,6 +24,18 @@ export class WorkspaceVariablesApi extends WorkspaceApi implements IWorkspaceVar
   public async getVariableByName(variableName: string): Promise<Variable> {
     const { data } = await this.get<VariableResponse>(`/name/${variableName}`)
     return mapper.map('VariableResponse', data, 'Variable')
+  }
+
+  public async getVariables(filter: VariablesFilter = {}): Promise<Variable[]> {
+    const request = mapper.map('VariablesFilter', filter, 'VariablesFilterRequest')
+    const { data } = await this.post<VariableResponse[]>('/filter', request)
+    return mapper.map('VariableResponse', data, 'Variable')
+  }
+
+  public async getVariablesCount(filter: VariablesFilter = {}): Promise<number> {
+    const request = mapper.map('VariablesFilter', filter, 'VariablesFilterRequest')
+    const { data } = await this.post<number>('/count', request)
+    return data
   }
 
   public async createVariable(body: VariableCreate): Promise<Variable> {

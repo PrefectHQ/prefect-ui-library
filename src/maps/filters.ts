@@ -1,7 +1,7 @@
 /* eslint-disable camelcase */
 import { asArray } from '@prefecthq/prefect-design'
-import { Any, Like, All, IsNull, OperatorRequest, TagFilterRequest, FlowFilterRequest, FlowRunFilterRequest, NotAny, StateFilterRequest, Before, After, TaskRunFilterRequest, Exists, DeploymentFilterRequest, Equals, FlowsFilterRequest, FlowRunsFilterRequest, TaskRunsFilterRequest, DeploymentsFilterRequest, BlockTypeFilterRequest, BlockSchemaFilterRequest, BlockDocumentFilterRequest, NotificationsFilterRequest, SavedSearchesFilterRequest, LogsFilterRequest, GreaterThan, LessThan, ConcurrencyLimitsFilterRequest, BlockTypesFilterRequest, BlockSchemasFilterRequest, BlockDocumentsFilterRequest, WorkQueuesFilterRequest, StartsWith, WorkPoolFilterRequest, WorkPoolsFilterRequest, WorkPoolQueueFilterRequest, FlowRunsHistoryFilterRequest, WorkPoolWorkersFilterRequest, WorkPoolQueuesFilterRequest, ArtifactsFilterRequest, ArtifactFilterRequest, NullableEquals, Latest } from '@/models/api/Filters'
-import { FlowFilter, FlowRunFilter, Operation, StateFilter, TagFilter, TaskRunFilter, DeploymentFilter, FlowsFilter, FlowRunsFilter, TaskRunsFilter, DeploymentsFilter, BlockTypeFilter, BlockSchemaFilter, BlockDocumentFilter, NotificationsFilter, SavedSearchesFilter, LogsFilter, ConcurrencyLimitsFilter, BlockTypesFilter, BlockSchemasFilter, BlockDocumentsFilter, WorkQueuesFilter, WorkPoolFilter, WorkPoolsFilter, WorkPoolQueueFilter, FlowRunsHistoryFilter, WorkPoolWorkersFilter, WorkPoolQueuesFilter, ArtifactsFilter, ArtifactFilter } from '@/models/Filters'
+import { Any, Like, All, IsNull, OperatorRequest, TagFilterRequest, FlowFilterRequest, FlowRunFilterRequest, NotAny, StateFilterRequest, Before, After, TaskRunFilterRequest, Exists, DeploymentFilterRequest, Equals, FlowsFilterRequest, FlowRunsFilterRequest, TaskRunsFilterRequest, DeploymentsFilterRequest, BlockTypeFilterRequest, BlockSchemaFilterRequest, BlockDocumentFilterRequest, NotificationsFilterRequest, SavedSearchesFilterRequest, LogsFilterRequest, GreaterThan, LessThan, ConcurrencyLimitsFilterRequest, BlockTypesFilterRequest, BlockSchemasFilterRequest, BlockDocumentsFilterRequest, WorkQueuesFilterRequest, StartsWith, WorkPoolFilterRequest, WorkPoolsFilterRequest, WorkPoolQueueFilterRequest, FlowRunsHistoryFilterRequest, WorkPoolWorkersFilterRequest, WorkPoolQueuesFilterRequest, ArtifactsFilterRequest, ArtifactFilterRequest, NullableEquals, Latest, VariablesFilterRequest, VariableFilterRequest } from '@/models/api/Filters'
+import { FlowFilter, FlowRunFilter, Operation, StateFilter, TagFilter, TaskRunFilter, DeploymentFilter, FlowsFilter, FlowRunsFilter, TaskRunsFilter, DeploymentsFilter, BlockTypeFilter, BlockSchemaFilter, BlockDocumentFilter, NotificationsFilter, SavedSearchesFilter, LogsFilter, ConcurrencyLimitsFilter, BlockTypesFilter, BlockSchemasFilter, BlockDocumentsFilter, WorkQueuesFilter, WorkPoolFilter, WorkPoolsFilter, WorkPoolQueueFilter, FlowRunsHistoryFilter, WorkPoolWorkersFilter, WorkPoolQueuesFilter, ArtifactsFilter, ArtifactFilter, VariablesFilter, VariableFilter } from '@/models/Filters'
 import { MapFunction } from '@/services'
 import { removeEmptyObjects } from '@/utilities'
 
@@ -283,6 +283,30 @@ export const mapArtifactsFilter: MapFunction<ArtifactsFilter, ArtifactsFilterReq
     artifacts: this.map('ArtifactFilter', source.artifacts, 'ArtifactFilterRequest'),
     flow_runs: this.map('FlowRunFilter', source.flowRuns, 'FlowRunFilterRequest'),
     task_runs: this.map('TaskRunFilter', source.taskRuns, 'TaskRunFilterRequest'),
+    sort: source.sort,
+    limit: source.limit,
+    offset: source.offset,
+  }
+}
+
+export const mapVariableFilter: MapFunction<VariableFilter, VariableFilterRequest> = function(source) {
+  return {
+    id: toAny(source.id),
+    name: {
+      ...toAny(source.name),
+      ...toLike(source.nameLike),
+    },
+    value: {
+      ...toAny(source.value),
+      ...toLike(source.valueLike),
+    },
+    tags: this.map('TagFilter', source.tags, 'TagFilterRequest'),
+  }
+}
+
+export const mapVariablesFilter: MapFunction<VariablesFilter, VariablesFilterRequest> = function(source) {
+  return {
+    variables: this.map('VariableFilter', source.variables, 'VariableFilterRequest'),
     sort: source.sort,
     limit: source.limit,
     offset: source.offset,
