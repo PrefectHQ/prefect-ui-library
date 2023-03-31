@@ -29,14 +29,12 @@
   const api = useWorkspaceApi()
 
   const deleteVariables = async (variableIds: string[]): Promise<void> => {
-    const toastMessage = computed(() => {
-      return localization.success.delete(`${variableIds.length} ${toPluralString(localization.info.variable, variableIds.length)}`)
-    })
-
     try {
       const variableDeletePromises = variableIds.map(api.variables.deleteVariable)
       await Promise.all(variableDeletePromises)
-      showToast(toastMessage, 'success')
+
+      const successMessage = localization.success.delete(`${variableIds.length} ${toPluralString(localization.info.variable, variableIds.length)}`)
+      showToast(successMessage, 'success')
       emit('delete')
     } catch (error) {
       showToast(localization.error.delete(localization.info.variables), 'error')
