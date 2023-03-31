@@ -13,7 +13,7 @@
         <div class="variables-table__header-end">
           <SearchInput v-model="variableLike" :placeholder="localization.info.variablesSearch" :label="localization.info.variablesSearch" />
           <p-select v-model="filter.sort" :options="variableSortOptions" />
-          <p-tags-input v-model="filter.variables.tags.name" :empty-message="localization.info.filterByTags" class="variables-table__tags" />
+          <p-tags-input v-model="filter.variables.tags.name" :empty-message="localization.info.filterByTags" class="variables-table__tags-input" />
         </div>
       </template>
 
@@ -207,6 +207,10 @@
 
 .variables-table__tags { @apply
   h-6
+}
+
+.variables-table__tags-input { @apply
+  w-32
 }
 
 .variables-table__action { @apply
