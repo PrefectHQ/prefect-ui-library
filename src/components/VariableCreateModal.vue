@@ -43,7 +43,7 @@
     showModal: boolean,
   }>()
 
-  const emits = defineEmits<{
+  const emit = defineEmits<{
     (event: 'update:showModal', value: boolean): void,
   }>()
 
@@ -52,7 +52,7 @@
       return props.showModal
     },
     set(value: boolean): void {
-      emits('update:showModal', value)
+      emit('update:showModal', value)
     },
   })
 
@@ -93,6 +93,7 @@
         await api.variables.createVariable(values)
 
         showToast(localization.success.createVariable, 'success')
+        internalValue.value = false
       } catch (error) {
         console.error(error)
         showToast(localization.error.createVariable, 'error')
