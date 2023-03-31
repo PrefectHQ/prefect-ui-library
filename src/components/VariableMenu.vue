@@ -7,7 +7,7 @@
     <p-overflow-menu-item v-if="can.delete.variable" :label="localization.info.delete" @click="openDeleteModal" />
   </p-icon-button-menu>
 
-  <!-- TODO: Add edit modal when that's available -->
+  <VariableEditModal v-model:showModal="showEditModal" :variable="variable" @update="emit('update')" />
 
   <ConfirmDeleteModal
     v-model:showModal="showDeleteModal"
@@ -27,7 +27,7 @@
 
 <script lang="ts" setup>
   import { showToast } from '@prefecthq/prefect-design'
-  import { ConfirmDeleteModal, CopyOverflowMenuItem } from '@/components'
+  import { ConfirmDeleteModal, CopyOverflowMenuItem, VariableEditModal } from '@/components'
   import { useWorkspaceApi, useCan, useShowModal } from '@/compositions'
   import { localization } from '@/localization'
   import { Variable } from '@/models'
@@ -44,7 +44,7 @@
   const can = useCan()
 
   const { showModal: showDeleteModal, open: openDeleteModal, close: closeDeleteModal } = useShowModal()
-  const { open: openEditModal } = useShowModal()
+  const { showModal: showEditModal, open: openEditModal } = useShowModal()
 
   const api = useWorkspaceApi()
 

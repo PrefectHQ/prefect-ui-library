@@ -18,7 +18,7 @@
 
     <template #actions>
       <p-button :loading="pending" @click="submit">
-        {{ localization.info.create }}
+        {{ localization.info.save }}
       </p-button>
     </template>
     <template #cancel>
@@ -36,16 +36,17 @@
   import { computed, ref } from 'vue'
   import { useWorkspaceApi } from '@/compositions'
   import { localization } from '@/localization'
-  import { Variable, VariableCreate } from '@/models'
+  import { Variable, VariableEdit } from '@/models'
   import { isRequired, isString } from '@/utilities'
 
   const props = defineProps<{
+    variable: Variable,
     showModal: boolean,
   }>()
 
   const emit = defineEmits<{
     (event: 'update:showModal', value: boolean): void,
-    (event: 'create', value: Variable): void,
+    (event: 'update', value: Variable): void,
   }>()
 
   const internalValue = computed({
@@ -75,14 +76,20 @@
     if (isNull(value) || !isString(value)) {
       return false
     }
-    const variable = await api.variables.getVariableByName(value)
-    return !variable
+
+    try {
+      const variable = await api.variables.getVariableByName(value)
+      return variable.id === props.variable.id
+    } catch {
+      /* Variable doesn't exist: silence is golden */
+      return true
+    }
   }
 
   const { validate, pending } = useValidationObserver()
-  const name = ref<string>()
-  const value = ref<string>()
-  const tags = ref<string[]>([])
+  const name = ref<string>(props.variable.name)
+  const value = ref<string>(props.variable.value)
+  const tags = ref<string[]>(props.variable.tags)
 
   const rules: Record<string, ValidationRule<string | undefined>[]> = {
     name: [isRequired(localization.info.name), isUnique],
@@ -97,20 +104,20 @@
 
     if (valid) {
       try {
-        const values: VariableCreate = {
-          name: name.value!,
-          value: value.value!,
+        const values: VariableEdit = {
+          name: name.value,
+          value: value.value,
           tags: tags.value,
         }
 
-        const variable = await api.variables.createVariable(values)
+        const variable = await api.variables.editVariable(props.variable.id, values)
 
-        showToast(localization.success.createVariable, 'success')
+        showToast(localization.success.editVariable, 'success')
         internalValue.value = false
-        emit('create', variable)
+        emit('update', variable)
       } catch (error) {
         console.error(error)
-        showToast(localization.error.createVariable, 'error')
+        showToast(localization.error.editVariable, 'error')
       }
     }
   }
