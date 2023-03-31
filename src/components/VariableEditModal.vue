@@ -36,7 +36,7 @@
   import { computed, ref } from 'vue'
   import { useWorkspaceApi } from '@/compositions'
   import { localization } from '@/localization'
-  import { Variable, VariableCreate, VariableEdit } from '@/models'
+  import { Variable, VariableEdit } from '@/models'
   import { isRequired, isString } from '@/utilities'
 
   const props = defineProps<{
@@ -75,8 +75,14 @@
     if (isNull(value) || !isString(value)) {
       return false
     }
-    const variable = await api.variables.getVariableByName(value)
-    return !variable
+
+    try {
+      const variable = await api.variables.getVariableByName(value)
+      return variable.id === props.variable.id
+    } catch {
+      /* Variable doesn't exist: silence is golden */
+      return true
+    }
   }
 
   const { validate, pending } = useValidationObserver()
