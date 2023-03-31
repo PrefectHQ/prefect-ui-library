@@ -1,5 +1,5 @@
-export type VariableEdit = Partial<{
-  name: string | null,
-  value: string | null,
-  tags: string[] | null,
-}>
+export type VariableEdit = {
+  name?: string | null,
+  value?: string | null,
+  tags?: string[] | null,
+}
