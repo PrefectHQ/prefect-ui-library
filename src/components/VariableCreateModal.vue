@@ -31,13 +31,13 @@
 
 <script lang="ts" setup>
   import { showToast } from '@prefecthq/prefect-design'
-  import { useDebouncedRef, useValidation, useValidationObserver, ValidationRule } from '@prefecthq/vue-compositions'
+  import { useValidation, useValidationObserver, ValidationRule } from '@prefecthq/vue-compositions'
   import { isNull } from 'lodash'
   import { computed, ref } from 'vue'
   import { useWorkspaceApi } from '@/compositions'
   import { localization } from '@/localization'
   import { VariableCreate } from '@/models'
-  import { isRequired, isString, isValidIf } from '@/utilities'
+  import { isRequired, isString } from '@/utilities'
 
   const props = defineProps<{
     showModal: boolean,
@@ -58,26 +58,37 @@
 
   const api = useWorkspaceApi()
 
-  const isUnique = isValidIf(async (value) => {
+  const isUnique: ValidationRule<string | undefined> = async (value, label, { signal, source, previousValue }) => {
+    if (value === previousValue) {
+      return
+    }
+
+    if (source === 'validator') {
+      await new Promise((resolve) => setTimeout(resolve, 1000))
+    }
+
+    if (signal.aborted) {
+      return
+    }
+
     if (isNull(value) || !isString(value)) {
       return false
     }
     const variable = await api.variables.getVariableByName(value)
     return !variable
-  })
+  }
 
   const { validate, pending } = useValidationObserver()
   const name = ref<string>()
-  const nameDebounced = useDebouncedRef(name, 1000)
   const value = ref<string>()
   const tags = ref<string[]>([])
 
   const rules: Record<string, ValidationRule<string | undefined>[]> = {
-    name: [isRequired(localization.info.name), isUnique(localization.error.variableAlreadyExists)],
+    name: [isRequired(localization.info.name), isUnique],
     value: [isRequired(localization.info.value)],
   }
 
-  const { error: nameErrorMessage, state: nameState } = useValidation(nameDebounced, localization.info.name, rules.name)
+  const { error: nameErrorMessage, state: nameState } = useValidation(name, localization.info.name, rules.name)
   const { error: valueErrorMessage, state: valueState } = useValidation(value, localization.info.value, rules.value)
 
   const submit = async (): Promise<void> => {
