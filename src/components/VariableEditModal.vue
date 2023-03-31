@@ -7,11 +7,11 @@
         </p-label>
 
         <p-label :label="localization.info.value" :state="valueState" :message="valueErrorMessage">
-          <p-text-input v-model="value" :state="valueState" />
+          <p-textarea v-model="value" :state="valueState" :rows="1" />
         </p-label>
 
         <p-label :label="localization.info.tags">
-          <p-tag-input v-model="tags" />
+          <p-tags-input v-model="tags" />
         </p-label>
       </p-content>
     </p-form>
@@ -37,7 +37,7 @@
   import { useWorkspaceApi } from '@/compositions'
   import { localization } from '@/localization'
   import { Variable, VariableEdit } from '@/models'
-  import { isRequired, isString } from '@/utilities'
+  import { isHandle, isRequired, isString } from '@/utilities'
 
   const props = defineProps<{
     variable: Variable,
@@ -79,7 +79,12 @@
 
     try {
       const variable = await api.variables.getVariableByName(value)
-      return variable.id === props.variable.id
+
+      if (variable?.id === props.variable.id) {
+        return true
+      }
+
+      return localization.error.variableAlreadyExists
     } catch {
       /* Variable doesn't exist: silence is golden */
       return true
@@ -92,7 +97,7 @@
   const tags = ref<string[]>(props.variable.tags)
 
   const rules: Record<string, ValidationRule<string | undefined>[]> = {
-    name: [isRequired(localization.info.name), isUnique],
+    name: [isRequired(localization.info.name), isHandle(localization.info.name), isUnique],
     value: [isRequired(localization.info.value)],
   }
 

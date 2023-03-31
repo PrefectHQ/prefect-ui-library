@@ -7,7 +7,7 @@ export interface IWorkspaceVariablesApi {
   getVariables: (filter: VariablesFilter) => Promise<Variable[]>,
   getVariablesCount: (filter: VariablesFilter) => Promise<number>,
   getVariable: (variableId: string) => Promise<Variable>,
-  getVariableByName: (variableName: string) => Promise<Variable>,
+  getVariableByName: (variableName: string) => Promise<Variable | null>,
   createVariable: (body: VariableCreate) => Promise<Variable>,
   editVariable: (variableId: string, body: VariableEdit) => Promise<Variable>,
   deleteVariable: (variableId: string) => Promise<void>,
@@ -21,9 +21,13 @@ export class WorkspaceVariablesApi extends WorkspaceApi implements IWorkspaceVar
     return mapper.map('VariableResponse', data, 'Variable')
   }
 
-  public async getVariableByName(variableName: string): Promise<Variable> {
-    const { data } = await this.get<VariableResponse>(`/name/${variableName}`)
-    return mapper.map('VariableResponse', data, 'Variable')
+  public async getVariableByName(variableName: string): Promise<Variable | null> {
+    const { data } = await this.get<VariableResponse | null>(`/name/${variableName}`)
+    if (data) {
+      return mapper.map('VariableResponse', data, 'Variable')
+    }
+
+    return null
   }
 
   public async getVariables(filter: VariablesFilter = {}): Promise<Variable[]> {

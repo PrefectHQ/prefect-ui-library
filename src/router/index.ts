@@ -274,7 +274,7 @@ export function createWorkspaceRouteRecords(components: Partial<WorkspaceRouteCo
       name: 'workspace.variables',
       path: 'variables',
       meta: {
-        can: 'read:variables',
+        can: 'read:variable',
       },
       component: components.variables,
     },

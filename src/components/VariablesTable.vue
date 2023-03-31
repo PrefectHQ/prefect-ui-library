@@ -3,10 +3,9 @@
     <p-layout-table sticky>
       <template #header-start>
         <div class="variables-table__header-start">
+          <VariablesDeleteButton v-if="can.delete.variable" :variable-ids="selectedVariables" @delete="deleteVariables" />
           <ResultsCount v-if="selectedVariables.length == 0" :label="localization.info.variable" :count="variablesCount" />
           <SelectedCount v-else :count="selectedVariables.length" />
-
-          <FlowsDeleteButton v-if="can.delete.variable" :selected="selectedVariables" @delete="deleteVariables" />
         </div>
       </template>
 
@@ -14,13 +13,14 @@
         <div class="variables-table__header-end">
           <SearchInput v-model="variableLike" :placeholder="localization.info.variablesSearch" :label="localization.info.variablesSearch" />
           <p-select v-model="filter.sort" :options="variableSortOptions" />
-          <p-tags-input v-model="filter.variables.tags.name" :empty-message="localization.info.tags" class="variables-table__tags" />
+          <p-tags-input v-model="filter.variables.tags.name" :empty-message="localization.info.filterByTags" class="variables-table__tags-input" />
         </div>
       </template>
 
       <p-table :data="variables" :columns="columns">
         <template #selection-heading>
-          <p-checkbox v-model="model" @update:model-value="selectAllVariables" />
+          <p-checkbox v-if="variables.length" v-model="model" @update:model-value="selectAllVariables" />
+          <div v-else />
         </template>
 
         <template #selection="{ row }">
@@ -35,13 +35,17 @@
           {{ formatDateTimeNumeric(row.updated) }}
         </template>
 
+        <template #tags="{ row }">
+          <p-tag-wrapper class="variables-table__tags" :tags="row.tags" justify="left" />
+        </template>
+
         <template #action-heading>
           <span />
         </template>
 
         <template #action="{ row }">
           <div class="variables-table__action">
-            <VariableMenu :variable="row" size="xs" @delete="refresh" />
+            <VariableMenu :variable="row" size="xs" @delete="refreshSubscriptions" />
           </div>
         </template>
 
@@ -60,7 +64,7 @@
       </p-table>
 
       <template #footer-end>
-        <p-pager v-if="variables.length" v-model:page="offset" :pages="variablesCount" />
+        <p-pager v-if="variables.length" v-model:page="page" :pages="pages" />
       </template>
     </p-layout-table>
   </div>
@@ -70,12 +74,14 @@
   import { PTable, PEmptyResults, CheckboxModel } from '@prefecthq/prefect-design'
   import { useDebouncedRef, useSubscription } from '@prefecthq/vue-compositions'
   import { computed, ref } from 'vue'
-  import { FlowsDeleteButton, VariableMenu, ResultsCount, SearchInput, SelectedCount } from '@/components'
+  import { VariablesDeleteButton, VariableMenu, ResultsCount, SearchInput, SelectedCount } from '@/components'
   import { useCan, useVariablesFilter, useWorkspaceApi } from '@/compositions'
   import { localization } from '@/localization'
   import { VariablesFilter } from '@/models/Filters'
   import { variableSortOptions } from '@/types'
   import { formatDateTimeNumeric } from '@/utilities/dates'
+
+  const DEFAULT_LIMIT = 25
 
   const props = defineProps<{
     filter?: VariablesFilter,
@@ -86,7 +92,12 @@
 
   const variableLike = ref<string>()
   const variableLikeDebounced = useDebouncedRef(variableLike, 1000)
-  const offset = ref(0)
+
+  const page = ref(1)
+  const offset = computed(() => {
+    return (page.value - 1) * DEFAULT_LIMIT
+  })
+  const pages = computed(() => Math.ceil((variablesCount.value ?? DEFAULT_LIMIT) / DEFAULT_LIMIT))
 
   const { filter, isCustomFilter, clear } = useVariablesFilter({
     ...props.filter,
@@ -107,17 +118,22 @@
     {
       property: 'name',
       label: 'Name',
-      width: '125px',
+      width: '64px',
     },
     {
       property: 'value',
       label: 'Value',
-      width: '125px',
+      width: '124px',
     },
     {
       property: 'updated',
       label: 'Updated',
-      width: '125px',
+      width: '124px',
+    },
+    {
+      property: 'tags',
+      label: 'Tags',
+      width: '124px',
     },
     {
       label: 'Action',
@@ -148,10 +164,14 @@
   const variablesCountSubscription = useSubscription(api.variables.getVariablesCount, [filter])
   const variablesCount = computed(() => variablesCountSubscription.response)
 
-  function refresh(): void {
+  function refreshSubscriptions(): void {
     variablesSubscription.refresh()
     variablesCountSubscription.refresh()
   }
+
+  defineExpose({
+    refreshSubscriptions,
+  })
 
   const emit = defineEmits<{
     (event: 'delete'): void,
@@ -159,7 +179,7 @@
 
   const deleteVariables = (): void => {
     selectedVariables.value = []
-    refresh()
+    refreshSubscriptions()
     emit('delete')
   }
 </script>
@@ -168,6 +188,10 @@
 .variables-table__header-start { @apply
   grow
   whitespace-nowrap
+  gap-2
+  flex
+  items-center
+  justify-start
 }
 
 .variables-table__header-end { @apply
@@ -179,8 +203,12 @@
   gap-2
 }
 
-.variables-table__tags {
-  min-width: 128px;
+.variables-table__tags { @apply
+  h-6
+}
+
+.variables-table__tags-input { @apply
+  w-32
 }
 
 .variables-table__action { @apply

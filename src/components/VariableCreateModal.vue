@@ -7,11 +7,11 @@
         </p-label>
 
         <p-label :label="localization.info.value" :state="valueState" :message="valueErrorMessage">
-          <p-text-input v-model="value" :state="valueState" />
+          <p-textarea v-model="value" :state="valueState" :rows="1" />
         </p-label>
 
         <p-label :label="localization.info.tags">
-          <p-tag-input v-model="tags" />
+          <p-tags-input v-model="tags" />
         </p-label>
       </p-content>
     </p-form>
@@ -37,7 +37,7 @@
   import { useWorkspaceApi } from '@/compositions'
   import { localization } from '@/localization'
   import { Variable, VariableCreate } from '@/models'
-  import { isRequired, isString } from '@/utilities'
+  import { isHandle, isRequired, isString } from '@/utilities'
 
   const props = defineProps<{
     showModal: boolean,
@@ -75,8 +75,14 @@
     if (isNull(value) || !isString(value)) {
       return false
     }
-    const variable = await api.variables.getVariableByName(value)
-    return !variable
+
+    try {
+      const variable = await api.variables.getVariableByName(value)
+      return variable ? localization.error.variableAlreadyExists : true
+    } catch {
+      /* Variable doesn't exist: silence is golden */
+      return true
+    }
   }
 
   const { validate, pending } = useValidationObserver()
@@ -85,7 +91,7 @@
   const tags = ref<string[]>([])
 
   const rules: Record<string, ValidationRule<string | undefined>[]> = {
-    name: [isRequired(localization.info.name), isUnique],
+    name: [isRequired(localization.info.name), isHandle(localization.info.name), isUnique],
     value: [isRequired(localization.info.value)],
   }
 
@@ -106,8 +112,8 @@
         const variable = await api.variables.createVariable(values)
 
         showToast(localization.success.createVariable, 'success')
-        internalValue.value = false
         emit('create', variable)
+        internalValue.value = false
       } catch (error) {
         console.error(error)
         showToast(localization.error.createVariable, 'error')
