@@ -10,7 +10,6 @@
 
 <script lang="ts" setup>
   import { showToast } from '@prefecthq/prefect-design'
-  import { computed } from 'vue'
   import ConfirmDeleteModal from '@/components/ConfirmDeleteModal.vue'
   import { useShowModal, useWorkspaceApi } from '@/compositions'
   import { localization } from '@/localization'
