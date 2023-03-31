@@ -60,7 +60,7 @@
       </p-table>
 
       <template #footer-end>
-        <p-pager v-if="variables.length" v-model:page="offset" :pages="variablesCount" />
+        <!-- <p-pager v-if="variables.length" v-model:page="offset" :pages="variablesCount" /> -->
       </template>
     </p-layout-table>
   </div>

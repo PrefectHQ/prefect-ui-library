@@ -7,7 +7,7 @@ import { FlowRunSortValuesSortParam } from '@/formatters/FlowRunSortValuesSortPa
 import { FlowSortValuesSortParam } from '@/formatters/FlowSortValuesSortParam'
 import { OperatorRouteParam } from '@/formatters/OperatorRouteParam'
 import { TaskRunSortValuesSortParam } from '@/formatters/TaskRunSortValuesSortParam'
-import { BlockDocumentFilter, BlockDocumentsFilter, BlockSchemaFilter, BlockSchemasFilter, BlockTypeFilter, BlockTypesFilter, DeploymentFilter, DeploymentsFilter, FlowFilter, FlowRunFilter, FlowRunsFilter, FlowRunsHistoryFilter, FlowsFilter, StateFilter, TagFilter, TaskRunFilter, TaskRunsFilter, UnionFilter, UnionFilterSort, VariablesFilter, WorkPoolFilter, WorkPoolQueueFilter, WorkPoolsFilter } from '@/models/Filters'
+import { BlockDocumentFilter, BlockDocumentsFilter, BlockSchemaFilter, BlockSchemasFilter, BlockTypeFilter, BlockTypesFilter, DeploymentFilter, DeploymentsFilter, FlowFilter, FlowRunFilter, FlowRunsFilter, FlowRunsHistoryFilter, FlowsFilter, StateFilter, TagFilter, TaskRunFilter, TaskRunsFilter, UnionFilter, UnionFilterSort, VariableFilter, VariablesFilter, WorkPoolFilter, WorkPoolQueueFilter, WorkPoolsFilter } from '@/models/Filters'
 import { defaultDeploymentSort, defaultFlowRunSort, defaultFlowSort, defaultTaskRunSort, defaultVariableSort } from '@/types'
 import { AnyRecord } from '@/types/any'
 import { MaybeReactive } from '@/types/reactivity'
@@ -515,8 +515,32 @@ export function useDeploymentsFilter(defaultValue: MaybeReactive<DeploymentsFilt
   return useUnionFilter<DeploymentsFilter>(defaultValue, defaultDeploymentSort)
 }
 
+export function useVariableFilter(defaultValue: MaybeReactive<VariableFilter> = {}): UseFilter<VariableFilter> {
+  const defaultValueReactive = reactive(defaultValue)
+  const tags = useTagFilter(defaultValueReactive.tags)
+  const filter: Filter<VariableFilter> = reactive({
+    id: toRef(defaultValueReactive, 'id'),
+    name: toRef(defaultValueReactive, 'name'),
+    nameLike: toRef(defaultValueReactive, 'nameLike'),
+    value: toRef(defaultValueReactive, 'value'),
+    valueLike: toRef(defaultValueReactive, 'valueLike'),
+    tags: tags.filter,
+  })
+
+  return withFilterFunctions(filter)
+}
+
 export function useVariablesFilter(defaultValue: MaybeReactive<VariablesFilter> = {}): UseFilter<VariablesFilter> {
-  return useUnionFilter<VariablesFilter>(defaultValue, defaultVariableSort)
+  const defaultValueReactive = getDefaultValueWithDefaultSort(defaultValue, defaultVariableSort)
+
+  const filter: Filter<VariablesFilter> = reactive({
+    variables: useVariableFilter(defaultValueReactive.variables).filter,
+    offset: defaultValueReactive.offset,
+    limit: defaultValueReactive.limit,
+    sort: defaultValueReactive.sort,
+  })
+
+  return withFilterFunctions(filter)
 }
 
 const unionFilterSchema: Omit<RouteQueryParamsSchema<UnionFilter>, 'sort'> = {
