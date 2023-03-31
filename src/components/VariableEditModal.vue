@@ -46,6 +46,7 @@
 
   const emit = defineEmits<{
     (event: 'update:showModal', value: boolean): void,
+    (event: 'update', value: Variable): void,
   }>()
 
   const internalValue = computed({
@@ -113,10 +114,11 @@
           tags: tags.value,
         }
 
-        await api.variables.editVariable(props.variable.id, values)
+        const variable = await api.variables.editVariable(props.variable.id, values)
 
         showToast(localization.success.editVariable, 'success')
         internalValue.value = false
+        emit('update', variable)
       } catch (error) {
         console.error(error)
         showToast(localization.error.editVariable, 'error')

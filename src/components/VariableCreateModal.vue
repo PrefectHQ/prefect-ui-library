@@ -36,7 +36,7 @@
   import { computed, ref } from 'vue'
   import { useWorkspaceApi } from '@/compositions'
   import { localization } from '@/localization'
-  import { VariableCreate } from '@/models'
+  import { Variable, VariableCreate } from '@/models'
   import { isRequired, isString } from '@/utilities'
 
   const props = defineProps<{
@@ -45,6 +45,7 @@
 
   const emit = defineEmits<{
     (event: 'update:showModal', value: boolean): void,
+    (event: 'create', value: Variable): void,
   }>()
 
   const internalValue = computed({
@@ -102,10 +103,11 @@
           tags: tags.value,
         }
 
-        await api.variables.createVariable(values)
+        const variable = await api.variables.createVariable(values)
 
         showToast(localization.success.createVariable, 'success')
         internalValue.value = false
+        emit('create', variable)
       } catch (error) {
         console.error(error)
         showToast(localization.error.createVariable, 'error')
