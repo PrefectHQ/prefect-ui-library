@@ -65,7 +65,7 @@
       </p-table>
 
       <template #footer-end>
-        <p-pager v-if="variables.length" v-model:page="offset" :pages="variablesCount" />
+        <p-pager v-if="variables.length" v-model:page="page" :pages="pages" />
       </template>
     </p-layout-table>
   </div>
@@ -92,6 +92,15 @@
   const variableLike = ref<string>()
   const variableLikeDebounced = useDebouncedRef(variableLike, 1000)
   const offset = ref(0)
+  const page = computed({
+    get() {
+      return offset.value + 1
+    },
+    set(value: number) {
+      offset.value = value - 1
+    },
+  })
+  const pages = computed(() => Math.ceil((variablesCount.value ?? 200) / 200))
 
   const { filter, isCustomFilter, clear } = useVariablesFilter({
     ...props.filter,
