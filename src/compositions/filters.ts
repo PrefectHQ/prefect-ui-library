@@ -7,8 +7,8 @@ import { FlowRunSortValuesSortParam } from '@/formatters/FlowRunSortValuesSortPa
 import { FlowSortValuesSortParam } from '@/formatters/FlowSortValuesSortParam'
 import { OperatorRouteParam } from '@/formatters/OperatorRouteParam'
 import { TaskRunSortValuesSortParam } from '@/formatters/TaskRunSortValuesSortParam'
-import { BlockDocumentFilter, BlockDocumentsFilter, BlockSchemaFilter, BlockSchemasFilter, BlockTypeFilter, BlockTypesFilter, DeploymentFilter, DeploymentsFilter, FlowFilter, FlowRunFilter, FlowRunsFilter, FlowRunsHistoryFilter, FlowsFilter, StateFilter, TagFilter, TaskRunFilter, TaskRunsFilter, UnionFilter, UnionFilterSort, WorkPoolFilter, WorkPoolQueueFilter, WorkPoolsFilter } from '@/models/Filters'
-import { defaultDeploymentSort, defaultFlowRunSort, defaultFlowSort, defaultTaskRunSort } from '@/types'
+import { BlockDocumentFilter, BlockDocumentsFilter, BlockSchemaFilter, BlockSchemasFilter, BlockTypeFilter, BlockTypesFilter, DeploymentFilter, DeploymentsFilter, FlowFilter, FlowRunFilter, FlowRunsFilter, FlowRunsHistoryFilter, FlowsFilter, StateFilter, TagFilter, TaskRunFilter, TaskRunsFilter, UnionFilter, UnionFilterSort, VariablesFilter, WorkPoolFilter, WorkPoolQueueFilter, WorkPoolsFilter } from '@/models/Filters'
+import { defaultDeploymentSort, defaultFlowRunSort, defaultFlowSort, defaultTaskRunSort, defaultVariableSort } from '@/types'
 import { AnyRecord } from '@/types/any'
 import { MaybeReactive } from '@/types/reactivity'
 import { merge } from '@/utilities/object'
@@ -513,6 +513,10 @@ export function useTaskRunsFilter(defaultValue: MaybeReactive<TaskRunsFilter> = 
 
 export function useDeploymentsFilter(defaultValue: MaybeReactive<DeploymentsFilter> = {}): UseFilter<DeploymentsFilter> {
   return useUnionFilter<DeploymentsFilter>(defaultValue, defaultDeploymentSort)
+}
+
+export function useVariablesFilter(defaultValue: MaybeReactive<VariablesFilter> = {}): UseFilter<VariablesFilter> {
+  return useUnionFilter<VariablesFilter>(defaultValue, defaultVariableSort)
 }
 
 const unionFilterSchema: Omit<RouteQueryParamsSchema<UnionFilter>, 'sort'> = {

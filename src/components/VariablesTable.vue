@@ -1,48 +1,39 @@
 <template>
-  <div class="flows-table">
+  <div class="variables-table">
     <p-layout-table sticky>
       <template #header-start>
-        <div class="flows-table__header-start">
-          <ResultsCount v-if="selectedFlows.length == 0" label="Flow" :count="flowsCount" />
-          <SelectedCount v-else :count="selectedFlows.length" />
+        <div class="variables-table__header-start">
+          <ResultsCount v-if="selectedVariables.length == 0" :label="localization.info.variable" :count="variablesCount" />
+          <SelectedCount v-else :count="selectedVariables.length" />
 
-          <FlowsDeleteButton v-if="can.delete.flow" :selected="selectedFlows" @delete="deleteFlows" />
+          <FlowsDeleteButton v-if="can.delete.variable" :selected="selectedVariables" @delete="deleteVariables" />
         </div>
       </template>
 
       <template #header-end>
-        <div class="flows-table__header-end">
-          <SearchInput v-model="flowNameLike" placeholder="Search flows" label="Search flows" />
-          <p-select v-model="filter.sort" :options="flowSortOptions" />
-          <p-tags-input v-model="filter.flowRuns.tags.name" empty-message="Flow run tags" class="flows-table__tags" />
+        <div class="variables-table__header-end">
+          <SearchInput v-model="variableLike" :placeholder="localization.info.variablesSearch" :label="localization.info.variablesSearch" />
+          <!-- We don't have variable sort options yet - we'll have those when we have filters -->
+          <p-select v-model="filter.sort" :options="variableSortOptions" />
+          <p-tags-input v-model="filter.variables.tags.name" :empty-message="localization.info.tags" class="variables-table__tags" />
         </div>
       </template>
 
-      <p-table :data="flows" :columns="columns">
+      <p-table :data="variables" :columns="columns">
         <template #selection-heading>
-          <p-checkbox v-model="model" @update:model-value="selectAllFlows" />
+          <p-checkbox v-model="model" @update:model-value="selectAllVariables" />
         </template>
 
         <template #selection="{ row }">
-          <p-checkbox v-model="selectedFlows" :value="row.id" />
+          <p-checkbox v-model="selectedVariables" :value="row.id" />
         </template>
 
         <template #name="{ row }">
-          <p-link :to="routes.flow(row.id)">
-            <span>{{ row.name }}</span>
-          </p-link>
+          <span>{{ row.name }}</span>
         </template>
 
-        <template #deployments="{ row }">
-          <DeploymentsCount :flow-id="row.id" />
-        </template>
-
-        <template #created="{ row }">
-          {{ formatDateTimeNumeric(row.created) }}
-        </template>
-
-        <template #activity="{ row }">
-          <FlowActivityChart :flow="row" class="flows-table__activity-chart" />
+        <template #updated="{ row }">
+          {{ formatDateTimeNumeric(row.updated) }}
         </template>
 
         <template #action-heading>
@@ -50,15 +41,15 @@
         </template>
 
         <template #action="{ row }">
-          <div class="flows-table__action">
-            <FlowMenu size="xs" :flow="row" @delete="refresh" />
+          <div class="variables-table__action">
+            <VariableMenu :variable="row" size="xs" @delete="refresh" />
           </div>
         </template>
 
         <template #empty-state>
           <PEmptyResults>
             <template #message>
-              No flows
+              {{ localization.info.noVariables }}
             </template>
             <template v-if="isCustomFilter" #actions>
               <p-button size="sm" secondary @click="clear">
@@ -73,32 +64,32 @@
 </template>
 
 <script lang="ts" setup>
-  import { PTable, PEmptyResults, PLink, CheckboxModel } from '@prefecthq/prefect-design'
+  import { PTable, PEmptyResults, CheckboxModel } from '@prefecthq/prefect-design'
   import { useDebouncedRef, useSubscription } from '@prefecthq/vue-compositions'
   import { computed, ref } from 'vue'
-  import { FlowsDeleteButton, DeploymentsCount, ResultsCount, SearchInput, FlowActivityChart, SelectedCount } from '@/components'
-  import { useCan, useFlowsFilterFromRoute, useWorkspaceApi, useWorkspaceRoutes } from '@/compositions'
-  import { useComponent } from '@/compositions/useComponent'
-  import { FlowsFilter } from '@/models/Filters'
-  import { flowSortOptions } from '@/types/SortOptionTypes'
+  import { FlowsDeleteButton, VariableMenu, ResultsCount, SearchInput, SelectedCount } from '@/components'
+  import { useCan, useVariablesFilter, useWorkspaceApi } from '@/compositions'
+  import { localization } from '@/localization'
+  import { VariablesFilter } from '@/models/Filters'
+  import { variableSortOptions } from '@/types'
   import { formatDateTimeNumeric } from '@/utilities/dates'
 
   const props = defineProps<{
-    filter?: FlowsFilter,
+    filter?: VariablesFilter,
   }>()
-
-  const { FlowMenu } = useComponent()
 
   const api = useWorkspaceApi()
   const can = useCan()
-  const routes = useWorkspaceRoutes()
-  const flowNameLike = ref<string>()
-  const flowNameLikeDebounced = useDebouncedRef(flowNameLike, 1200)
-  const { filter, clear, isCustomFilter } = useFlowsFilterFromRoute({
+
+  const variableLike = ref<string>()
+  const variableLikeDebounced = useDebouncedRef(variableLike, 1000)
+
+  const { filter, isCustomFilter, clear } = useVariablesFilter({
     ...props.filter,
-    flows: {
-      ...props.filter,
-      nameLike: flowNameLikeDebounced,
+    variables: {
+      ...props.filter?.variables,
+      nameLike: variableLikeDebounced,
+      valueLike: variableLikeDebounced,
     },
   })
 
@@ -106,7 +97,7 @@
     {
       label: 'selection',
       width: '20px',
-      visible: can.delete.flow,
+      visible: can.delete.variable,
     },
     {
       property: 'name',
@@ -114,19 +105,14 @@
       width: '125px',
     },
     {
-      property: 'deployments',
-      label: 'Deployments',
+      property: 'value',
+      label: 'Value',
       width: '125px',
     },
     {
-      property: 'created',
-      label: 'Created',
+      property: 'updated',
+      label: 'Updated',
       width: '125px',
-    },
-    {
-      property: 'activity',
-      label: 'Activity',
-      width: '200px',
     },
     {
       label: 'Action',
@@ -134,52 +120,52 @@
     },
   ]
 
-  const selectedFlows = ref<string[]>([])
-  const selectAllFlows = (allFlowsSelected: CheckboxModel): string[] => {
-    if (allFlowsSelected) {
-      return selectedFlows.value = [...flows.value.map(flow => flow.id)]
+  const selectedVariables = ref<string[]>([])
+  const selectAllVariables = (allVariablesSelected: CheckboxModel): string[] => {
+    if (allVariablesSelected) {
+      return selectedVariables.value = [...variables.value.map(variable => variable.id)]
     }
-    return selectedFlows.value = []
+    return selectedVariables.value = []
   }
 
   const model = computed({
     get() {
-      return selectedFlows.value.length === flows.value.length
+      return selectedVariables.value.length === variables.value.length
     },
     set(value: boolean) {
-      selectAllFlows(value)
+      selectAllVariables(value)
     },
   })
 
-  const flowsSubscription = useSubscription(api.flows.getFlows, [filter])
-  const flows = computed(() => flowsSubscription.response ?? [])
+  const variablesSubscription = useSubscription(api.variables.getVariables, [filter])
+  const variables = computed(() => variablesSubscription.response ?? [])
 
-  const flowsCountSubscription = useSubscription(api.flows.getFlowsCount, [filter])
-  const flowsCount = computed(() => flowsCountSubscription.response)
+  const variablesCountSubscription = useSubscription(api.variables.getVariablesCount, [filter])
+  const variablesCount = computed(() => variablesCountSubscription.response)
 
   function refresh(): void {
-    flowsSubscription.refresh()
-    flowsCountSubscription.refresh()
+    variablesSubscription.refresh()
+    variablesCountSubscription.refresh()
   }
 
   const emit = defineEmits<{
     (event: 'delete'): void,
   }>()
 
-  const deleteFlows = (): void => {
-    selectedFlows.value = []
+  const deleteVariables = (): void => {
+    selectedVariables.value = []
     refresh()
     emit('delete')
   }
 </script>
 
 <style>
-.flows-table__header-start { @apply
+.variables-table__header-start { @apply
   grow
   whitespace-nowrap
 }
 
-.flows-table__header-end { @apply
+.variables-table__header-end { @apply
   flex
   flex-wrap
   pl-2
@@ -188,16 +174,11 @@
   gap-2
 }
 
-.flows-table__deployments,
-.flows-table__tags {
+.variables-table__tags {
   min-width: 128px;
 }
 
-.flows-table__activity-chart { @apply
-  !h-12
-}
-
-.flows-table__action { @apply
+.variables-table__action { @apply
   text-right
 }
 </style>

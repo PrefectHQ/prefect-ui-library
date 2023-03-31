@@ -19,6 +19,25 @@ export const artifactSortOptions = [
   { label: 'Z to A', value: 'KEY_DESC' },
 ]
 
+export const variableSortValues = ['CREATED_DESC', 'UPDATED_DESC', 'NAME_DESC', 'NAME_ASC'] as const
+export type VariableSortValues = typeof variableSortValues[number]
+export const defaultVariableSort: VariableSortValues = 'NAME_ASC'
+
+export function isVariableSortValue(value: unknown): value is VariableSortValues
+export function isVariableSortValue(value: Ref<unknown>): value is Ref<VariableSortValues>
+export function isVariableSortValue(value: MaybeRef<unknown>): value is MaybeRef<VariableSortValues> {
+  const valueRef = ref(value)
+
+  return variableSortValues.includes(valueRef.value as VariableSortValues)
+}
+
+export const variableSortOptions = [
+  { label: 'Created', value: 'CREATED_DESC' },
+  { label: 'Updated', value: 'UPDATED_DESC' },
+  { label: 'A to Z', value: 'NAME_ASC' },
+  { label: 'Z to A', value: 'NAME_DESC' },
+]
+
 export const flowSortValues = ['CREATED_DESC', 'UPDATED_DESC', 'NAME_DESC', 'NAME_ASC'] as const
 export type FlowSortValues = typeof flowSortValues[number]
 export const defaultFlowSort: FlowSortValues = 'CREATED_DESC'

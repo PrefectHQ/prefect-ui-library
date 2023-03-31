@@ -1,4 +1,4 @@
-import { ArtifactSortValues, FlowSortValues, FlowRunSortValues, TaskRunSortValues, DeploymentSortValues, LogSortValues } from '@/types'
+import { ArtifactSortValues, FlowSortValues, FlowRunSortValues, TaskRunSortValues, DeploymentSortValues, LogSortValues, VariableSortValues } from '@/types'
 
 export type Operation = 'and' | 'or'
 
@@ -83,6 +83,22 @@ export type ArtifactsFilter = {
   flowRuns?: FlowRunFilter,
   taskRuns?: TaskRunFilter,
   sort?: ArtifactSortValues,
+  limit?: number,
+  offset?: number,
+}
+
+export type VariableFilter = {
+  id?: string[],
+  name?: string[],
+  nameLike?: string,
+  value?: string[],
+  valueLike?: string,
+  tags?: TagFilter,
+}
+
+export type VariablesFilter = {
+  variables?: VariableFilter,
+  sort?: VariableSortValues,
   limit?: number,
   offset?: number,
 }
