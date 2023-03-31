@@ -1,5 +1,4 @@
 import { isDateAfter, isDateAfterOrEqual, isDateBefore, isDateBeforeOrEqual } from '@prefecthq/prefect-design'
-import { ValidationRule } from '@prefecthq/vue-compositions'
 import { isEmptyArray } from '@/utilities/arrays'
 import { isDate, isInvalidDate, formatDate, formatDateTimeNumeric } from '@/utilities/dates'
 import { isEmptyString, isValidEmailAddress } from '@/utilities/strings'
