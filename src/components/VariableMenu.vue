@@ -11,7 +11,7 @@
     <p-overflow-menu-item v-if="can.delete.variable" :label="localization.info.delete" @click="openDeleteModal" />
   </p-icon-button-menu>
 
-  <!-- TODO: Add edit menu when that's available -->
+  <!-- TODO: Add edit modal when that's available -->
 
   <ConfirmDeleteModal
     v-model:showModal="showDeleteModal"
