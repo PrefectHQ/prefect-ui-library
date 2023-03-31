@@ -21,6 +21,7 @@
       <p-table :data="variables" :columns="columns">
         <template #selection-heading>
           <p-checkbox v-if="variables.length" v-model="model" @update:model-value="selectAllVariables" />
+          <div v-else />
         </template>
 
         <template #selection="{ row }">
