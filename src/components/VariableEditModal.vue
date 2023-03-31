@@ -18,7 +18,7 @@
 
     <template #actions>
       <p-button :loading="pending" @click="submit">
-        {{ localization.info.create }}
+        {{ localization.info.save }}
       </p-button>
     </template>
     <template #cancel>
@@ -36,10 +36,11 @@
   import { computed, ref } from 'vue'
   import { useWorkspaceApi } from '@/compositions'
   import { localization } from '@/localization'
-  import { VariableCreate } from '@/models'
+  import { Variable, VariableCreate, VariableEdit } from '@/models'
   import { isRequired, isString } from '@/utilities'
 
   const props = defineProps<{
+    variable: Variable,
     showModal: boolean,
   }>()
 
@@ -79,9 +80,9 @@
   }
 
   const { validate, pending } = useValidationObserver()
-  const name = ref<string>()
-  const value = ref<string>()
-  const tags = ref<string[]>([])
+  const name = ref<string>(props.variable.name)
+  const value = ref<string>(props.variable.value)
+  const tags = ref<string[]>(props.variable.tags)
 
   const rules: Record<string, ValidationRule<string | undefined>[]> = {
     name: [isRequired(localization.info.name), isUnique],
@@ -96,19 +97,19 @@
 
     if (valid) {
       try {
-        const values: VariableCreate = {
+        const values: VariableEdit = {
           name: name.value!,
           value: value.value!,
           tags: tags.value,
         }
 
-        await api.variables.createVariable(values)
+        await api.variables.editVariable(props.variable.id, values)
 
-        showToast(localization.success.createVariable, 'success')
+        showToast(localization.success.editVariable, 'success')
         internalValue.value = false
       } catch (error) {
         console.error(error)
-        showToast(localization.error.createVariable, 'error')
+        showToast(localization.error.editVariable, 'error')
       }
     }
   }
