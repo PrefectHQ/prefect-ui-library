@@ -81,6 +81,8 @@
   import { variableSortOptions } from '@/types'
   import { formatDateTimeNumeric } from '@/utilities/dates'
 
+  const DEFAULT_LIMIT = 25
+
   const props = defineProps<{
     filter?: VariablesFilter,
   }>()
@@ -90,16 +92,12 @@
 
   const variableLike = ref<string>()
   const variableLikeDebounced = useDebouncedRef(variableLike, 1000)
-  const offset = ref(0)
-  const page = computed({
-    get() {
-      return offset.value + 1
-    },
-    set(value: number) {
-      offset.value = value - 1
-    },
+
+  const page = ref(1)
+  const offset = computed(() => {
+    return page.value * DEFAULT_LIMIT
   })
-  const pages = computed(() => Math.ceil((variablesCount.value ?? 200) / 200))
+  const pages = computed(() => Math.ceil((variablesCount.value ?? DEFAULT_LIMIT) / DEFAULT_LIMIT))
 
   const { filter, isCustomFilter, clear } = useVariablesFilter({
     ...props.filter,
