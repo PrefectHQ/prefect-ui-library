@@ -2,7 +2,7 @@
   <p-button v-if="variableIds.length > 0" size="xs" danger icon="TrashIcon" @click="open" />
   <ConfirmDeleteModal
     v-model:showModal="showModal"
-    :name="localization.info.selectedVariables"
+    :name="modalName"
     :label="localization.info.variables"
     @delete="deleteVariables(variableIds)"
   />
@@ -10,12 +10,13 @@
 
 <script lang="ts" setup>
   import { showToast } from '@prefecthq/prefect-design'
+  import { computed } from 'vue'
   import ConfirmDeleteModal from '@/components/ConfirmDeleteModal.vue'
   import { useShowModal, useWorkspaceApi } from '@/compositions'
   import { localization } from '@/localization'
   import { toPluralString } from '@/utilities'
 
-  defineProps<{
+  const props = defineProps<{
     variableIds: string[],
   }>()
 
@@ -26,6 +27,13 @@
   const { showModal, open, close } = useShowModal()
 
   const api = useWorkspaceApi()
+
+  const modalName = computed(() => {
+    if (props.variableIds.length === 1) {
+      return localization.info.thisVariable
+    }
+    return localization.info.theseVariables
+  })
 
   const deleteVariables = async (variableIds: string[]): Promise<void> => {
     try {
