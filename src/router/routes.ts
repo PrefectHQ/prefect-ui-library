@@ -39,6 +39,7 @@ export function createWorkspaceRoutes(config?: CreateWorkspaceRoutesConfig) {
     notificationEdit: (notificationId: string) => ({ name: 'workspace.notifications.notification-edit', params: { notificationId, ...config } }) as const,
     concurrencyLimit: (concurrencyLimitId: string) => ({ name: 'workspace.concurrency-limits.concurrency-limit', params: { concurrencyLimitId, ...config } }) as const,
     concurrencyLimits: () => ({ name: 'workspace.concurrency-limits', params: { ...config } }) as const,
+    variables: () => ({ name: 'workspace.variables', params: { ...config } }) as const,
     workPools: () => ({ name: 'workspace.work-pools', params: { ...config } }) as const,
     workPool: (workPoolName: string) => ({ name: 'workspace.work-pools.work-pool', params: { workPoolName, ...config } }) as const,
     workPoolCreate: () => ({ name: 'workspace.work-pools.work-pool-create', params: { ...config } }) as const,
