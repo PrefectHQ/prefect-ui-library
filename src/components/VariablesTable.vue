@@ -3,10 +3,9 @@
     <p-layout-table sticky>
       <template #header-start>
         <div class="variables-table__header-start">
+          <VariablesDeleteButton v-if="can.delete.variable" :variable-ids="selectedVariables" @delete="deleteVariables" />
           <ResultsCount v-if="selectedVariables.length == 0" :label="localization.info.variable" :count="variablesCount" />
           <SelectedCount v-else :count="selectedVariables.length" />
-
-          <FlowsDeleteButton v-if="can.delete.variable" :selected="selectedVariables" @delete="deleteVariables" />
         </div>
       </template>
 
@@ -14,7 +13,7 @@
         <div class="variables-table__header-end">
           <SearchInput v-model="variableLike" :placeholder="localization.info.variablesSearch" :label="localization.info.variablesSearch" />
           <p-select v-model="filter.sort" :options="variableSortOptions" />
-          <p-tags-input v-model="filter.variables.tags.name" :empty-message="localization.info.tags" class="variables-table__tags" />
+          <p-tags-input v-model="filter.variables.tags.name" :empty-message="localization.info.filterByTags" class="variables-table__tags" />
         </div>
       </template>
 
@@ -37,7 +36,7 @@
         </template>
 
         <template #tags="{ row }">
-          <p-tags :tags="row.tags" />
+          <p-tag-wrapper class="variables-table__tags" :tags="row.tags" justify="left" />
         </template>
 
         <template #action-heading>
@@ -75,7 +74,7 @@
   import { PTable, PEmptyResults, CheckboxModel } from '@prefecthq/prefect-design'
   import { useDebouncedRef, useSubscription } from '@prefecthq/vue-compositions'
   import { computed, ref } from 'vue'
-  import { FlowsDeleteButton, VariableMenu, ResultsCount, SearchInput, SelectedCount } from '@/components'
+  import { VariablesDeleteButton, VariableMenu, ResultsCount, SearchInput, SelectedCount } from '@/components'
   import { useCan, useVariablesFilter, useWorkspaceApi } from '@/compositions'
   import { localization } from '@/localization'
   import { VariablesFilter } from '@/models/Filters'
@@ -191,6 +190,10 @@
 .variables-table__header-start { @apply
   grow
   whitespace-nowrap
+  gap-2
+  flex
+  items-center
+  justify-start
 }
 
 .variables-table__header-end { @apply
@@ -202,8 +205,8 @@
   gap-2
 }
 
-.variables-table__tags {
-  min-width: 128px;
+.variables-table__tags { @apply
+  h-6
 }
 
 .variables-table__action { @apply

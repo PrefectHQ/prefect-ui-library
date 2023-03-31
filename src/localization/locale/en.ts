@@ -116,6 +116,7 @@ export const en = {
     edit: 'Edit',
     delete: 'Delete',
     tags: 'Tags',
+    filterByTags: 'Filter by tags',
     invalidData: (docsUrl: string) => `Invalid data, see [documentation](${docsUrl}) for more information`,
     noResults: 'No tracked results, enable [result persistence](https://docs.prefect.io/concepts/results/#persisting-results) to track results.',
     flowRun: 'Flow run',

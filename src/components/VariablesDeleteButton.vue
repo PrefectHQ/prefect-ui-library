@@ -1,5 +1,5 @@
 <template>
-  <p-button v-if="variableIds.length > 0" danger icon="TrashIcon" @click="open" />
+  <p-button v-if="variableIds.length > 0" size="xs" danger icon="TrashIcon" @click="open" />
   <ConfirmDeleteModal
     v-model:showModal="showModal"
     :name="localization.info.selectedVariables"
