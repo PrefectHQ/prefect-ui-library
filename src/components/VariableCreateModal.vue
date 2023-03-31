@@ -31,7 +31,7 @@
 
 <script lang="ts" setup>
   import { showToast } from '@prefecthq/prefect-design'
-  import { useValidation, useValidationObserver, ValidationRule } from '@prefecthq/vue-compositions'
+  import { useDebouncedRef, useValidation, useValidationObserver, ValidationRule } from '@prefecthq/vue-compositions'
   import { isNull } from 'lodash'
   import { computed, ref } from 'vue'
   import { useWorkspaceApi } from '@/compositions'
@@ -68,6 +68,7 @@
 
   const { validate, pending } = useValidationObserver()
   const name = ref<string>()
+  const nameDebounced = useDebouncedRef(name, 1000)
   const value = ref<string>()
   const tags = ref<string[]>([])
 
@@ -76,7 +77,7 @@
     value: [isRequired(localization.info.value)],
   }
 
-  const { error: nameErrorMessage, state: nameState } = useValidation(name, localization.info.name, rules.name)
+  const { error: nameErrorMessage, state: nameState } = useValidation(nameDebounced, localization.info.name, rules.name)
   const { error: valueErrorMessage, state: valueState } = useValidation(value, localization.info.value, rules.value)
 
   const submit = async (): Promise<void> => {
