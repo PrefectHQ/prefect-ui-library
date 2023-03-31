@@ -5,8 +5,13 @@
         <p-label :label="localization.info.name" :state="nameState" :message="errors.name">
           <p-text-input v-model="name" :state="nameState" />
         </p-label>
+
         <p-label :label="localization.info.value" :state="valueState" :message="errors.value">
           <p-text-input v-model="value" :state="valueState" />
+        </p-label>
+
+        <p-label :label="localization.info.tags" :state="tagsState" :message="errors.tags">
+          <p-tag-input v-model="tags" :state="tagsState" />
         </p-label>
       </p-content>
     </p-form>
@@ -30,12 +35,8 @@
   import { computed } from 'vue'
   import { useWorkspaceApi, useForm } from '@/compositions'
   import { localization } from '@/localization'
+  import { Variable } from '@/models'
   import { fieldRules, isRequired, isValidIf } from '@/utilities'
-
-  interface Variable {
-    name: string,
-    value: string,
-  }
 
   const props = defineProps<{
     showModal: boolean,
@@ -65,6 +66,7 @@
   const { handleSubmit, isSubmitting, errors } = useForm<Variable>()
   const { value: name, meta: nameState } = useField<string>('name', rules)
   const { value: value, meta: valueState } = useField<string>('value')
+  const { value: tags, meta: tagsState } = useField<string[]>('tags')
 
   const submit = handleSubmit(async (values) => {
     try {
