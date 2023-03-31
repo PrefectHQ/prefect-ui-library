@@ -2,22 +2,22 @@
   <p-modal v-model:showModal="internalValue" :title="localization.info.newVariable">
     <p-form @submit="submit">
       <p-content>
-        <p-label :label="localization.info.name" :state="nameState" :message="errors.name">
+        <p-label :label="localization.info.name" :state="nameState" :message="nameErrorMessage">
           <p-text-input v-model="name" :state="nameState" />
         </p-label>
 
-        <p-label :label="localization.info.value" :state="valueState" :message="errors.value">
+        <p-label :label="localization.info.value" :state="valueState" :message="valueErrorMessage">
           <p-text-input v-model="value" :state="valueState" />
         </p-label>
 
-        <p-label :label="localization.info.tags" :state="tagsState" :message="errors.tags">
-          <p-tag-input v-model="tags" :state="tagsState" />
+        <p-label :label="localization.info.tags">
+          <p-tag-input v-model="tags" />
         </p-label>
       </p-content>
     </p-form>
 
     <template #actions>
-      <p-button :loading="isSubmitting" @click="submit">
+      <p-button :loading="pending" @click="submit">
         Create
       </p-button>
     </template>
@@ -31,12 +31,13 @@
 
 <script lang="ts" setup>
   import { showToast } from '@prefecthq/prefect-design'
-  import { useField } from 'vee-validate'
-  import { computed } from 'vue'
-  import { useWorkspaceApi, useForm } from '@/compositions'
+  import { useValidation, useValidationObserver, ValidationRule } from '@prefecthq/vue-compositions'
+  import { isNull } from 'lodash'
+  import { computed, ref } from 'vue'
+  import { useWorkspaceApi } from '@/compositions'
   import { localization } from '@/localization'
-  import { Variable } from '@/models'
-  import { fieldRules, isRequired, isValidIf } from '@/utilities'
+  import { VariableCreate } from '@/models'
+  import { isRequired, isString, isValidIf } from '@/utilities'
 
   const props = defineProps<{
     showModal: boolean,
@@ -57,26 +58,45 @@
 
   const api = useWorkspaceApi()
 
-  const isUnique = isValidIf(async () => {
-    const variable = await api.variables.getVariableByName(name.value)
+  const isUnique = isValidIf(async (value) => {
+    if (isNull(value) || !isString(value)) {
+      return false
+    }
+    const variable = await api.variables.getVariableByName(value)
     return !variable
   })
-  const nameRules = fieldRules(localization.info.name, isRequired, [isUnique, localization.error.variableAlreadyExists])
-  const valueRules = fieldRules(localization.info.value, isRequired)
 
-  const { handleSubmit, isSubmitting, errors } = useForm<Variable>()
-  const { value: name, meta: nameState } = useField<string>('name', nameRules)
-  const { value: value, meta: valueState } = useField<string>('value', valueRules)
-  const { value: tags, meta: tagsState } = useField<string[]>('tags')
+  const { validate, pending } = useValidationObserver()
+  const name = ref<string>()
+  const value = ref<string>()
+  const tags = ref<string[]>([])
 
-  const submit = handleSubmit(async (values) => {
-    try {
-      await api.variables.createVariable(values)
+  const rules: Record<string, ValidationRule<string | undefined>[]> = {
+    name: [isRequired(localization.info.name), isUnique(localization.error.variableAlreadyExists)],
+    value: [isRequired(localization.info.value)],
+  }
 
-      showToast(localization.success.createVariable, 'success')
-    } catch (error) {
-      console.error(error)
-      showToast(localization.error.createVariable, 'error')
+  const { error: nameErrorMessage, state: nameState } = useValidation(name, localization.info.name, rules.name)
+  const { error: valueErrorMessage, state: valueState } = useValidation(value, localization.info.value, rules.value)
+
+  const submit = async (): Promise<void> => {
+    const valid = await validate()
+
+    if (valid) {
+      try {
+        const values: VariableCreate = {
+          name: name.value!,
+          value: value.value!,
+          tags: tags.value,
+        }
+
+        await api.variables.createVariable(values)
+
+        showToast(localization.success.createVariable, 'success')
+      } catch (error) {
+        console.error(error)
+        showToast(localization.error.createVariable, 'error')
+      }
     }
-  })
+  }
 </script>
