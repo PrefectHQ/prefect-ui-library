@@ -11,7 +11,7 @@
         </p-label>
 
         <p-label :label="localization.info.tags">
-          <p-tag-input v-model="tags" />
+          <p-tags-input v-model="tags" />
         </p-label>
       </p-content>
     </p-form>
