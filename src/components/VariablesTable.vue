@@ -95,7 +95,7 @@
 
   const page = ref(1)
   const offset = computed(() => {
-    return page.value * DEFAULT_LIMIT
+    return page.value - 1 * DEFAULT_LIMIT
   })
   const pages = computed(() => Math.ceil((variablesCount.value ?? DEFAULT_LIMIT) / DEFAULT_LIMIT))
 
