@@ -1,4 +1,5 @@
 import { isDateAfter, isDateAfterOrEqual, isDateBefore, isDateBeforeOrEqual } from '@prefecthq/prefect-design'
+import { ValidationRule } from '@prefecthq/vue-compositions'
 import { isEmptyArray } from '@/utilities/arrays'
 import { isDate, isInvalidDate, formatDate, formatDateTimeNumeric } from '@/utilities/dates'
 import { isEmptyString, isValidEmailAddress } from '@/utilities/strings'
@@ -255,28 +256,4 @@ export const isHandle: ValidationMethodFactory = property => value => {
   }
 
   return `${property} must only contain lowercase letters, numbers, and dashes`
-}
-
-export const isLowerCase: ValidationMethodFactory = property => value => {
-  if (isNullish(value) || isEmptyString(value)) {
-    return true
-  }
-
-  if (typeof value === 'string' && value === value.toLowerCase()) {
-    return true
-  }
-
-  return `${property} must be lowercase`
-}
-
-export const isUpperCase: ValidationMethodFactory = property => value => {
-  if (isNullish(value) || isEmptyString(value)) {
-    return true
-  }
-
-  if (typeof value === 'string' && value === value.toUpperCase()) {
-    return true
-  }
-
-  return `${property} must be uppercase`
 }
