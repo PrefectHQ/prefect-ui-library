@@ -54,10 +54,10 @@
     try {
       await api.variables.deleteVariable(id)
       showToast(localization.success.delete(localization.info.variable), 'success')
+      emit('delete', id)
     } catch (error) {
       console.error(error)
       showToast(localization.error.delete(localization.info.variable.toLowerCase()), 'error')
-      emit('delete', id)
     }
   }
 </script>
