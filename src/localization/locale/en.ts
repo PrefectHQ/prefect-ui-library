@@ -114,6 +114,7 @@ export const en = {
     flowRun: 'Flow run',
     taskRun: 'Task run',
     taskRuns: 'Task runs',
+    variable: 'Variable',
     created: 'Created',
     lastUpdated: 'Last Updated',
     deprecatedWorkQueue: 'This work queue uses a deprecated tag-based approach to matching flow runs; it will continue to work but you can\'t modify it',

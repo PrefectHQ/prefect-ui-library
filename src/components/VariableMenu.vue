@@ -30,11 +30,11 @@
 </script>
 
 <script lang="ts" setup>
+  import { showToast } from '@prefecthq/prefect-design'
   import { ConfirmDeleteModal, CopyOverflowMenuItem } from '@/components'
   import { useWorkspaceApi, useCan, useShowModal } from '@/compositions'
   import { localization } from '@/localization'
   import { Variable } from '@/models'
-  import { deleteItem } from '@/utilities'
 
   defineProps<{
     variable: Variable,
@@ -54,7 +54,14 @@
 
   const deleteVariable = async (id: string): Promise<void> => {
     closeDeleteModal()
-    await deleteItem(id, api.variables.deleteVariable, 'Deployment')
-    emit('delete', id)
+
+    try {
+      await api.variables.deleteVariable(id)
+      showToast(localization.success.delete(localization.info.variable), 'success')
+    } catch (error) {
+      console.error(error)
+      showToast(localization.error.delete(localization.info.variable.toLowerCase()), 'error')
+      emit('delete', id)
+    }
   }
 </script>
