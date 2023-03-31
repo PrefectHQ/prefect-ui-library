@@ -271,6 +271,14 @@ export function createWorkspaceRouteRecords(components: Partial<WorkspaceRouteCo
       ],
     },
     {
+      name: 'workspace.variables',
+      path: 'variables',
+      meta: {
+        can: 'read:variables',
+      },
+      component: components.variables,
+    },
+    {
       path: 'work-pools',
       meta: {
         can: 'read:work_pool',

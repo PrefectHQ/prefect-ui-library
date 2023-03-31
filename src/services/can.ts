@@ -1,7 +1,7 @@
 import { InjectionKey, ref } from 'vue'
 import { MaybeRef } from '@/types/reactivity'
 
-export const workspaceFeatureFlags = ['access:collections', 'access:workers'] as const
+export const workspaceFeatureFlags = ['access:collections', 'access:workers', 'access:variables'] as const
 export type WorkspaceFeatureFlag = typeof workspaceFeatureFlags[number]
 
 export const workspacePermissions = [
