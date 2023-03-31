@@ -13,7 +13,6 @@
       <template #header-end>
         <div class="variables-table__header-end">
           <SearchInput v-model="variableLike" :placeholder="localization.info.variablesSearch" :label="localization.info.variablesSearch" />
-          <!-- We don't have variable sort options yet - we'll have those when we have filters -->
           <p-select v-model="filter.sort" :options="variableSortOptions" />
           <p-tags-input v-model="filter.variables.tags.name" :empty-message="localization.info.tags" class="variables-table__tags" />
         </div>
@@ -59,6 +58,10 @@
           </PEmptyResults>
         </template>
       </p-table>
+
+      <template #footer-end>
+        <p-pager v-if="variables.length" v-model:page="offset" :pages="variablesCount" />
+      </template>
     </p-layout-table>
   </div>
 </template>
@@ -83,6 +86,7 @@
 
   const variableLike = ref<string>()
   const variableLikeDebounced = useDebouncedRef(variableLike, 1000)
+  const offset = ref(0)
 
   const { filter, isCustomFilter, clear } = useVariablesFilter({
     ...props.filter,
@@ -91,6 +95,7 @@
       nameLike: variableLikeDebounced,
       valueLike: variableLikeDebounced,
     },
+    offset,
   })
 
   const columns = [
