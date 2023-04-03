@@ -1,5 +1,5 @@
 <template>
-  <p-modal v-model:showModal="internalValue" :title="localization.info.newVariable">
+  <p-modal v-model:showModal="internalValue" :title="localization.info.editVariable(name)">
     <p-form @submit="submit">
       <p-content>
         <p-label :label="localization.info.name" :state="nameState" :message="nameErrorMessage">
@@ -21,11 +21,6 @@
         {{ localization.info.save }}
       </p-button>
     </template>
-    <template #cancel>
-      <p-button inset @click="internalValue = false">
-        {{ localization.info.close }}
-      </p-button>
-    </template>
   </p-modal>
 </template>
 
@@ -37,7 +32,9 @@
   import { useWorkspaceApi } from '@/compositions'
   import { localization } from '@/localization'
   import { Variable, VariableEdit } from '@/models'
-  import { isHandle, isRequired, isString } from '@/utilities'
+  import { isHandle, isRequired, isString, isLessThanOrEqual } from '@/utilities'
+
+  const MAX_CHARS = 255
 
   const props = defineProps<{
     variable: Variable,
@@ -60,7 +57,7 @@
 
   const api = useWorkspaceApi()
 
-  const isUnique: ValidationRule<string | undefined> = async (value, label, { signal, source, previousValue }) => {
+  const nameIsUnique: ValidationRule<string | undefined> = async (value, label, { signal, source, previousValue }) => {
     if (value === previousValue) {
       return
     }
@@ -97,8 +94,16 @@
   const tags = ref<string[]>(props.variable.tags)
 
   const rules: Record<string, ValidationRule<string | undefined>[]> = {
-    name: [isRequired(localization.info.name), isHandle(localization.info.name), isUnique],
-    value: [isRequired(localization.info.value)],
+    name: [
+      isRequired(localization.info.name),
+      isLessThanOrEqual(MAX_CHARS)(localization.info.name),
+      isHandle(localization.info.name),
+      nameIsUnique,
+    ],
+    value: [
+      isRequired(localization.info.value),
+      isLessThanOrEqual(MAX_CHARS)(localization.info.value),
+    ],
   }
 
   const { error: nameErrorMessage, state: nameState } = useValidation(name, localization.info.name, rules.name)

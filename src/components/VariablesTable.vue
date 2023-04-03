@@ -17,10 +17,11 @@
         </div>
       </template>
 
-      <p-table :data="variables" :columns="columns">
+      <p-table :data="variables" :columns="columns" :column-classes="columnClass">
         <template #selection-heading>
-          <p-checkbox v-if="variables.length" v-model="model" @update:model-value="selectAllVariables" />
-          <div v-else />
+          <div class="variables-table__selection">
+            <p-checkbox v-if="variables.length" v-model="model" @update:model-value="selectAllVariables" />
+          </div>
         </template>
 
         <template #selection="{ row }">
@@ -28,7 +29,9 @@
         </template>
 
         <template #name="{ row }">
-          <span>{{ row.name }}</span>
+          <div class="variables-table__name">
+            {{ row.name }}
+          </div>
         </template>
 
         <template #updated="{ row }">
@@ -44,8 +47,8 @@
         </template>
 
         <template #action="{ row }">
-          <div class="variables-table__action">
-            <VariableMenu :variable="row" size="xs" @delete="refreshSubscriptions" />
+          <div :key="row.id" class="variables-table__action">
+            <VariableMenu :variable="row" size="xs" @delete="refreshSubscriptions" @update="handleUpdate" />
           </div>
         </template>
 
@@ -71,13 +74,13 @@
 </template>
 
 <script lang="ts" setup>
-  import { PTable, PEmptyResults, CheckboxModel } from '@prefecthq/prefect-design'
+  import { PTable, PEmptyResults, CheckboxModel, TableColumn, ClassValue } from '@prefecthq/prefect-design'
   import { useDebouncedRef, useSubscription } from '@prefecthq/vue-compositions'
   import { computed, ref } from 'vue'
   import { VariablesDeleteButton, VariableMenu, ResultsCount, SearchInput, SelectedCount } from '@/components'
   import { useCan, useVariablesFilter, useWorkspaceApi } from '@/compositions'
   import { localization } from '@/localization'
-  import { VariablesFilter } from '@/models/Filters'
+  import { VariablesFilter, Variable } from '@/models'
   import { variableSortOptions } from '@/types'
   import { formatDateTimeNumeric } from '@/utilities/dates'
 
@@ -118,12 +121,11 @@
     {
       property: 'name',
       label: 'Name',
-      width: '64px',
+      width: '124px',
     },
     {
       property: 'value',
       label: 'Value',
-      width: '124px',
     },
     {
       property: 'updated',
@@ -133,13 +135,19 @@
     {
       property: 'tags',
       label: 'Tags',
-      width: '124px',
+      width: '248px',
     },
     {
       label: 'Action',
       width: '42px',
     },
   ]
+
+  function columnClass(column: TableColumn): ClassValue {
+    return {
+      'variables-table__value-td': column.label === 'Value',
+    }
+  }
 
   const selectedVariables = ref<string[]>([])
   const selectAllVariables = (allVariablesSelected: CheckboxModel): string[] => {
@@ -175,12 +183,17 @@
 
   const emit = defineEmits<{
     (event: 'delete'): void,
+    (event: 'update', value: Variable): void,
   }>()
 
   const deleteVariables = (): void => {
     selectedVariables.value = []
     refreshSubscriptions()
     emit('delete')
+  }
+
+  const handleUpdate = (variable: Variable): void => {
+    emit('update', variable)
   }
 </script>
 
@@ -213,5 +226,21 @@
 
 .variables-table__action { @apply
   text-right
+  max-w-[42px]
+}
+
+.variables-table__selection { @apply
+  max-w-[20px]
+}
+
+.variables-table__value-td,
+.variables-table__name { @apply
+  min-w-0
+  max-w-0
+  truncate
+}
+
+.variables-table__name { @apply
+  max-w-[124px]
 }
 </style>

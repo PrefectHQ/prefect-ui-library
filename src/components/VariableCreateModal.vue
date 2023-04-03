@@ -21,11 +21,6 @@
         {{ localization.info.create }}
       </p-button>
     </template>
-    <template #cancel>
-      <p-button inset @click="internalValue = false">
-        {{ localization.info.close }}
-      </p-button>
-    </template>
   </p-modal>
 </template>
 
@@ -37,7 +32,9 @@
   import { useWorkspaceApi } from '@/compositions'
   import { localization } from '@/localization'
   import { Variable, VariableCreate } from '@/models'
-  import { isHandle, isRequired, isString } from '@/utilities'
+  import { isHandle, isLessThanOrEqual, isRequired, isString } from '@/utilities'
+
+  const MAX_CHARS = 255
 
   const props = defineProps<{
     showModal: boolean,
@@ -59,7 +56,7 @@
 
   const api = useWorkspaceApi()
 
-  const isUnique: ValidationRule<string | undefined> = async (value, label, { signal, source, previousValue }) => {
+  const nameIsUnique: ValidationRule<string | undefined> = async (value, label, { signal, source, previousValue }) => {
     if (value === previousValue) {
       return
     }
@@ -91,12 +88,26 @@
   const tags = ref<string[]>([])
 
   const rules: Record<string, ValidationRule<string | undefined>[]> = {
-    name: [isRequired(localization.info.name), isHandle(localization.info.name), isUnique],
-    value: [isRequired(localization.info.value)],
+    name: [
+      isRequired(localization.info.name),
+      isLessThanOrEqual(MAX_CHARS)(localization.info.value),
+      isHandle(localization.info.name),
+      nameIsUnique,
+    ],
+    value: [
+      isRequired(localization.info.value),
+      isLessThanOrEqual(MAX_CHARS)(localization.info.value),
+    ],
   }
 
   const { error: nameErrorMessage, state: nameState } = useValidation(name, localization.info.name, rules.name)
   const { error: valueErrorMessage, state: valueState } = useValidation(value, localization.info.value, rules.value)
+
+  const reset = (): void => {
+    name.value = undefined
+    value.value = undefined
+    tags.value = []
+  }
 
   const submit = async (): Promise<void> => {
     const valid = await validate()
@@ -114,6 +125,7 @@
         showToast(localization.success.createVariable, 'success')
         emit('create', variable)
         internalValue.value = false
+        reset()
       } catch (error) {
         console.error(error)
         showToast(localization.error.createVariable, 'error')
