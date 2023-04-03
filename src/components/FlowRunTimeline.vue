@@ -87,7 +87,7 @@
   import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
   import { FlowRunTimelineSelectionPanel, FlowRunTimelineOptions } from '@/components'
   import { useFlowRuns, useWorkspaceApi } from '@/compositions'
-  import { FlowRun, hasSubFlowRunId, isValidGraphTimelineNode, TimelineNode } from '@/models'
+  import { FlowRun, hasSubFlowRunId, isRunningStateType, isValidGraphTimelineNode, TimelineNode } from '@/models'
   import { WorkspaceFlowRunsApi } from '@/services'
   import { prefectStateNames } from '@/types'
   import { formatTimeNumeric, formatTimeShortNumeric, formatDate } from '@/utilities'
@@ -215,11 +215,12 @@
   })
 
   const api = useWorkspaceApi()
+  const interval = isRunningStateType(props.flowRun.stateType) ? { interval: 5000 } : undefined
 
   const graphSubscription = useSubscription(
     api.flowRuns.getFlowRunsTimeline,
     [props.flowRun.id],
-    { interval: 5000 },
+    interval,
   )
 
   const graphData = computed(() => {
@@ -257,7 +258,7 @@
     const subscription = useSubscription(
       api.flowRuns.getFlowRunsTimeline,
       [id],
-      { interval: 5000 },
+      interval,
     )
 
     const data = computed(() => {
