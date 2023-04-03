@@ -292,8 +292,6 @@
     })
 
     expandedSubFlowRuns.value.set(id, {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-expect-error data actually is a valid property
       data,
       subscription,
     })
