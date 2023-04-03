@@ -21,11 +21,6 @@
         {{ localization.info.create }}
       </p-button>
     </template>
-    <template #cancel>
-      <p-button inset @click="internalValue = false">
-        {{ localization.info.close }}
-      </p-button>
-    </template>
   </p-modal>
 </template>
 
