@@ -1,4 +1,5 @@
 import { isDateAfter, isDateAfterOrEqual, isDateBefore, isDateBeforeOrEqual } from '@prefecthq/prefect-design'
+import { localization } from '@/localization'
 import { isEmptyArray } from '@/utilities/arrays'
 import { isDate, isInvalidDate, formatDate, formatDateTimeNumeric } from '@/utilities/dates'
 import { isEmptyString, isValidEmailAddress } from '@/utilities/strings'
@@ -110,19 +111,31 @@ export const isLessThanOrEqual = (max: number): ValidationMethodFactory => prope
     return true
   }
 
-  if (Array.isArray(value) && value.length <= max) {
-    return true
+  if (Array.isArray(value)) {
+    if (value.length <= max) {
+      return true
+    }
+
+    return localization.error.arrayValueTooLong(property, max)
   }
 
-  if (typeof value === 'string' && value.length <= max) {
-    return true
+  if (typeof value === 'string') {
+    if (value.length <= max) {
+      return true
+    }
+
+    return localization.error.stringValueTooLong(property, max)
   }
 
-  if (typeof value === 'number' && value <= max) {
-    return true
+  if (typeof value === 'number') {
+    if (value <= max) {
+      return true
+    }
+
+    return localization.error.numberValueTooLarge(property, max)
   }
 
-  return `${property} must be less than or equal to ${max}`
+  return localization.error.valueTooLarge(property, max)
 }
 
 export const isGreaterThan = (min: number): ValidationMethodFactory => property => (value: unknown) => {
