@@ -45,7 +45,7 @@
 
         <template #action="{ row }">
           <div class="variables-table__action">
-            <VariableMenu :variable="row" size="xs" @delete="refreshSubscriptions" />
+            <VariableMenu :variable="row" size="xs" @delete="refreshSubscriptions" @update="handleUpdate" />
           </div>
         </template>
 
@@ -77,7 +77,7 @@
   import { VariablesDeleteButton, VariableMenu, ResultsCount, SearchInput, SelectedCount } from '@/components'
   import { useCan, useVariablesFilter, useWorkspaceApi } from '@/compositions'
   import { localization } from '@/localization'
-  import { VariablesFilter } from '@/models/Filters'
+  import { VariablesFilter, Variable } from '@/models'
   import { variableSortOptions } from '@/types'
   import { formatDateTimeNumeric } from '@/utilities/dates'
 
@@ -175,12 +175,17 @@
 
   const emit = defineEmits<{
     (event: 'delete'): void,
+    (event: 'update', value: Variable): void,
   }>()
 
   const deleteVariables = (): void => {
     selectedVariables.value = []
     refreshSubscriptions()
     emit('delete')
+  }
+
+  const handleUpdate = (variable: Variable): void => {
+    emit('update', variable)
   }
 </script>
 
