@@ -103,6 +103,12 @@
   const { error: nameErrorMessage, state: nameState } = useValidation(name, localization.info.name, rules.name)
   const { error: valueErrorMessage, state: valueState } = useValidation(value, localization.info.value, rules.value)
 
+  const reset = (): void => {
+    name.value = undefined
+    value.value = undefined
+    tags.value = []
+  }
+
   const submit = async (): Promise<void> => {
     const valid = await validate()
 
@@ -119,9 +125,7 @@
         showToast(localization.success.createVariable, 'success')
         emit('create', variable)
         internalValue.value = false
-        name.value = undefined
-        value.value = undefined
-        tags.value = []
+        reset()
       } catch (error) {
         console.error(error)
         showToast(localization.error.createVariable, 'error')
