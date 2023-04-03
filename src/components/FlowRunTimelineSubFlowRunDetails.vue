@@ -1,22 +1,22 @@
 <template>
-  <div v-if="subFlowRun">
+  <div v-if="flowRun">
     <p-bread-crumbs class="flow-run-timeline-sub-flow-run-details__heading" :crumbs="crumbs" />
     <div class="flow-run-timeline-sub-flow-run-details__content">
       <p-key-value label="State" :alternate="alternate">
         <template #value>
-          <StateBadge :state="subFlowRun.state" class="timeline-task-details__state-badge" />
+          <StateBadge :state="flowRun.state" class="timeline-task-details__state-badge" />
         </template>
       </p-key-value>
-      <p-key-value label="Flow Run ID" :value="subFlowRun.id" :alternate="alternate" />
+      <p-key-value label="Flow Run ID" :value="flowRun.id" :alternate="alternate" />
       <p-key-value label="Duration" :alternate="alternate">
         <template #value>
-          <DurationIconText :duration="subFlowRun.duration" />
+          <DurationIconText :duration="flowRun.duration" />
         </template>
       </p-key-value>
-      <p-key-value label="Created" :value="formatDateTimeNumeric(subFlowRun.created)" :alternate="alternate" />
+      <p-key-value label="Created" :value="formatDateTimeNumeric(flowRun.created)" :alternate="alternate" />
       <p-key-value label="Tags" :alternate="alternate">
-        <template v-if="subFlowRun.tags?.length" #value>
-          <p-tags :tags="subFlowRun.tags!" class="flow-run-timeline-sub-flow-run-details__tags" />
+        <template v-if="flowRun.tags?.length" #value>
+          <p-tags :tags="flowRun.tags!" class="flow-run-timeline-sub-flow-run-details__tags" />
         </template>
       </p-key-value>
     </div>
@@ -25,10 +25,9 @@
 
 <script lang="ts" setup>
   import { BreadCrumbs } from '@prefecthq/prefect-design'
-  import { useSubscriptionWithDependencies } from '@prefecthq/vue-compositions'
   import { computed, toRefs } from 'vue'
   import { StateBadge, DurationIconText } from '@/components'
-  import { useWorkspaceApi, useWorkspaceRoutes } from '@/compositions'
+  import { useFlow, useFlowRun, useWorkspaceRoutes } from '@/compositions'
   import { formatDateTimeNumeric } from '@/utilities/dates'
 
   const props = defineProps<{
@@ -40,23 +39,11 @@
   const alternate = true
 
   const routes = useWorkspaceRoutes()
-  const api = useWorkspaceApi()
 
-  const flowRunSubscriptionArgs = computed<[string]>(() => [flowRunId.value])
-  const flowRunSubscription = useSubscriptionWithDependencies(
-    api.flowRuns.getFlowRun,
-    flowRunSubscriptionArgs,
-  )
+  const { flowRun } = useFlowRun(flowRunId)
 
-  const subFlowRun = computed(() => flowRunSubscription.response)
-
-  const flowSubscriptionArgs = computed<[string]>(() => [flowRunSubscription.response?.flowId || ''])
-  const flowSubscription = useSubscriptionWithDependencies(
-    api.flows.getFlow,
-    flowSubscriptionArgs,
-  )
-
-  const flow = computed(() => flowSubscription.response)
+  const flowId = computed(() => flowRun.value?.flowId)
+  const { flow } = useFlow(flowId)
 
   const crumbs = computed<BreadCrumbs>(() => {
     const internalCrumbs: BreadCrumbs = []
@@ -68,10 +55,10 @@
       })
     }
 
-    if (subFlowRun.value?.name) {
+    if (flowRun.value?.name) {
       internalCrumbs.push({
-        text: subFlowRun.value.name,
-        to: routes.flowRun(subFlowRun.value.id),
+        text: flowRun.value.name,
+        to: routes.flowRun(flowRun.value.id),
       })
     }
 
