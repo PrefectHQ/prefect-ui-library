@@ -1,5 +1,5 @@
 <template>
-  <p-modal v-model:showModal="internalValue" :title="localization.info.newVariable">
+  <p-modal v-model:showModal="internalValue" :title="localization.info.editVariable(name)">
     <p-form @submit="submit">
       <p-content>
         <p-label :label="localization.info.name" :state="nameState" :message="nameErrorMessage">

@@ -119,6 +119,9 @@
         showToast(localization.success.createVariable, 'success')
         emit('create', variable)
         internalValue.value = false
+        name.value = undefined
+        value.value = undefined
+        tags.value = []
       } catch (error) {
         console.error(error)
         showToast(localization.error.createVariable, 'error')

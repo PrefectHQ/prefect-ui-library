@@ -47,8 +47,8 @@
         </template>
 
         <template #action="{ row }">
-          <div class="variables-table__action">
-            <VariableMenu :key="row.id" :variable="row" size="xs" @delete="refreshSubscriptions" @update="handleUpdate" />
+          <div :key="row.id" class="variables-table__action">
+            <VariableMenu :variable="row" size="xs" @delete="refreshSubscriptions" @update="handleUpdate" />
           </div>
         </template>
 
