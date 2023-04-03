@@ -32,7 +32,7 @@
   import { useWorkspaceApi } from '@/compositions'
   import { localization } from '@/localization'
   import { Variable, VariableEdit } from '@/models'
-  import { isHandle, isLessThanOrEqual, isRequired, isString } from '@/utilities'
+  import { isHandle, isRequired, isString } from '@/utilities'
 
   const VALUE_MAX_CHARS = 255
 
@@ -103,7 +103,7 @@
 
   const rules: Record<string, ValidationRule<string | undefined>[]> = {
     name: [isRequired(localization.info.name), isHandle(localization.info.name), nameIsUnique],
-    value: [isRequired(localization.info.value), isLessThanOrEqual(255)(localization.info.value), valueIsLessThanOrEqual],
+    value: [isRequired(localization.info.value), valueIsLessThanOrEqual],
   }
 
   const { error: nameErrorMessage, state: nameState } = useValidation(name, localization.info.name, rules.name)
