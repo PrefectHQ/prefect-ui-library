@@ -83,11 +83,11 @@
     NodeSelectionEvent
   } from '@prefecthq/graphs'
   import { useColorTheme } from '@prefecthq/prefect-design'
-  import { UseSubscription, useSubscription, useSubscriptionWithDependencies } from '@prefecthq/vue-compositions'
+  import { UseSubscription, useSubscription } from '@prefecthq/vue-compositions'
   import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
   import { FlowRunTimelineSelectionPanel, FlowRunTimelineOptions } from '@/components'
-  import { useWorkspaceApi } from '@/compositions'
-  import { FlowRun, hasSubFlowRunId, isValidGraphTimelineNode, TimelineNode } from '@/models'
+  import { useFlowRuns, useWorkspaceApi } from '@/compositions'
+  import { FlowRun, hasSubFlowRunId, isRunningStateType, isTerminalStateType, isValidGraphTimelineNode, TimelineNode } from '@/models'
   import { WorkspaceFlowRunsApi } from '@/services'
   import { prefectStateNames } from '@/types'
   import { formatTimeNumeric, formatTimeShortNumeric, formatDate } from '@/utilities'
@@ -215,11 +215,12 @@
   })
 
   const api = useWorkspaceApi()
+  const interval = isRunningStateType(props.flowRun.stateType) ? { interval: 5000 } : undefined
 
   const graphSubscription = useSubscription(
     api.flowRuns.getFlowRunsTimeline,
     [props.flowRun.id],
-    { interval: 5000 },
+    interval,
   )
 
   const graphData = computed(() => {
@@ -240,6 +241,32 @@
     }
   })
 
+  const unwatchFlowRunStateType = watch(() => props.flowRun.stateType, async type => {
+    if (!isTerminalStateType(type)) {
+      return
+    }
+
+    if (!interval) {
+      return
+    }
+
+    const updates: Promise<void>[] = []
+    const subscriptions = Array.from(expandedSubFlowRuns.value.values()).map(({ subscription }) => subscription)
+
+    updates.push(graphSubscription.refresh())
+
+    subscriptions.forEach(subscription => {
+      updates.push(subscription.refresh())
+    })
+
+    await Promise.all(updates)
+
+    subscriptions.forEach(subscription => subscription.unsubscribe())
+    graphSubscription.unsubscribe()
+
+    unwatchFlowRunStateType()
+  })
+
   function centerGraphViewport(): void {
     timelineGraph.value?.centerViewport()
   }
@@ -257,7 +284,7 @@
     const subscription = useSubscription(
       api.flowRuns.getFlowRunsTimeline,
       [id],
-      { interval: 5000 },
+      interval,
     )
 
     const data = computed(() => {
@@ -288,29 +315,13 @@
       .filter(hasSubFlowRunId)
       .map((node) => node.subFlowRunId)
   })
-  const allSubFlowRunIds = computed<string[]>(() => {
-    return [...rootSubFlowRunIds.value, ...expandedSubFlowRunIds.value]
-  })
 
-  const subFlowRunsSubscriptionFilter = computed<Parameters<typeof api.flowRuns.getFlowRuns> | null>(() => {
-    if (allSubFlowRunIds.value.length < 1) {
-      return null
-    }
+  const allSubFlowRunIds = computed<string[]>(() => [...rootSubFlowRunIds.value, ...expandedSubFlowRunIds.value])
 
-    return [
-      {
-        flowRuns: {
-          id: allSubFlowRunIds.value,
-        },
-      },
-    ]
-  })
-  const subFlowRunsSubscription = useSubscriptionWithDependencies(
-    api.flowRuns.getFlowRuns,
-    subFlowRunsSubscriptionFilter,
-  )
+  const { flowRuns } = useFlowRuns(allSubFlowRunIds)
+
   const subFlowRunLabels = computed(() => {
-    return (subFlowRunsSubscription.response ?? [])
+    return (flowRuns.value ?? [])
       .reduce((acc, curr) => {
         if (curr.name) {
           acc.set(curr.id, curr.name)
