@@ -1,10 +1,6 @@
 <template>
   <div v-if="subFlowRun">
-    <p-heading element="h3" heading="5">
-      <p-link :to="routes.flowRun(flowRunId)">
-        {{ subFlowRun.name }}
-      </p-link>
-    </p-heading>
+    <p-bread-crumbs class="flow-run-timeline-sub-flow-run-details__heading" :crumbs="crumbs" />
     <div class="flow-run-timeline-sub-flow-run-details__content">
       <p-key-value label="State" :alternate="alternate">
         <template #value>
@@ -33,6 +29,7 @@
   import { StateBadge, DurationIconText } from '@/components'
   import { useWorkspaceApi, useWorkspaceRoutes } from '@/compositions'
   import { formatDateTimeNumeric } from '@/utilities/dates'
+  import { BreadCrumbs } from '@prefecthq/prefect-design'
 
   const props = defineProps<{
     flowRunId: string,
@@ -43,8 +40,8 @@
   const alternate = true
 
   const routes = useWorkspaceRoutes()
-
   const api = useWorkspaceApi()
+
   const flowRunSubscriptionArgs = computed<[string]>(() => [flowRunId.value])
   const flowRunSubscription = useSubscriptionWithDependencies(
     api.flowRuns.getFlowRun,
@@ -52,9 +49,41 @@
   )
 
   const subFlowRun = computed(() => flowRunSubscription.response)
+
+  const flowSubscriptionArgs = computed<[string]>(() => [flowRunSubscription.response?.flowId || ''])
+  const flowSubscription = useSubscriptionWithDependencies(
+    api.flows.getFlow,
+    flowSubscriptionArgs,
+  )
+
+  const flow = computed(() => flowSubscription.response)
+
+  const crumbs = computed<BreadCrumbs>(() => {
+    const internalCrumbs: BreadCrumbs = []
+
+    if (flow.value?.name) {
+      internalCrumbs.push({
+        text: flow.value.name,
+        to: routes.flow(flow.value.id),
+      })
+    }
+
+    if (subFlowRun.value?.name) {
+      internalCrumbs.push({
+        text: subFlowRun.value.name,
+        to: routes.flowRun(subFlowRun.value.id),
+      })
+    }
+
+    return internalCrumbs
+  })
 </script>
 
 <style>
+.flow-run-timeline-sub-flow-run-details__heading { @apply
+  text-base
+}
+
 .flow-run-timeline-sub-flow-run-details__content { @apply
   mt-2
   flex
