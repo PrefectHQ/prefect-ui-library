@@ -241,7 +241,7 @@
     }
   })
 
-  const unwatchFlowRunStateType = watch(() => props.flowRun.stateType, type => {
+  const unwatchFlowRunStateType = watch(() => props.flowRun.stateType, async type => {
     if (!isTerminalStateType(type)) {
       return
     }
@@ -250,13 +250,19 @@
       return
     }
 
-    graphSubscription.refresh()
-    graphSubscription.unsubscribe()
+    const updates: Promise<void>[] = []
+    const subscriptions = Array.from(expandedSubFlowRuns.value.values()).map(({ subscription }) => subscription)
 
-    expandedSubFlowRuns.value.forEach(({ subscription }) => {
-      subscription.refresh()
-      subscription.unsubscribe()
+    updates.push(graphSubscription.refresh())
+
+    subscriptions.forEach(subscription => {
+      updates.push(subscription.refresh())
     })
+
+    await Promise.all(updates)
+
+    subscriptions.forEach(subscription => subscription.unsubscribe())
+    graphSubscription.unsubscribe()
 
     unwatchFlowRunStateType()
   })
