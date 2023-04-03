@@ -32,7 +32,7 @@
   import { useWorkspaceApi } from '@/compositions'
   import { localization } from '@/localization'
   import { Variable, VariableCreate } from '@/models'
-  import { isHandle, isRequired, isString } from '@/utilities'
+  import { isHandle, isLessThanOrEqual, isRequired, isString } from '@/utilities'
 
   const props = defineProps<{
     showModal: boolean,
@@ -87,7 +87,7 @@
 
   const rules: Record<string, ValidationRule<string | undefined>[]> = {
     name: [isRequired(localization.info.name), isHandle(localization.info.name), isUnique],
-    value: [isRequired(localization.info.value)],
+    value: [isRequired(localization.info.value), isLessThanOrEqual(255)(localization.info.value)],
   }
 
   const { error: nameErrorMessage, state: nameState } = useValidation(name, localization.info.name, rules.name)
