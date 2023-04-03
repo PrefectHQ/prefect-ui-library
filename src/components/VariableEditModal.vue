@@ -31,10 +31,8 @@
   import { computed, ref } from 'vue'
   import { useWorkspaceApi } from '@/compositions'
   import { localization } from '@/localization'
-  import { Variable, VariableEdit } from '@/models'
+  import { Variable, VariableEdit, MAX_VARIABLE_NAME_LENGTH, MAX_VARIABLE_VALUE_LENGTH } from '@/models'
   import { isHandle, isRequired, isString, isLessThanOrEqual } from '@/utilities'
-
-  const MAX_CHARS = 255
 
   const props = defineProps<{
     variable: Variable,
@@ -96,13 +94,13 @@
   const rules: Record<string, ValidationRule<string | undefined>[]> = {
     name: [
       isRequired(localization.info.name),
-      isLessThanOrEqual(MAX_CHARS)(localization.info.name),
+      isLessThanOrEqual(MAX_VARIABLE_NAME_LENGTH)(localization.info.name),
       isHandle(localization.info.name),
       nameIsUnique,
     ],
     value: [
       isRequired(localization.info.value),
-      isLessThanOrEqual(MAX_CHARS)(localization.info.value),
+      isLessThanOrEqual(MAX_VARIABLE_VALUE_LENGTH)(localization.info.value),
     ],
   }
 

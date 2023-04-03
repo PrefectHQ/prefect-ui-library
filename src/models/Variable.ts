@@ -8,6 +8,9 @@ export interface IVariable {
   tags: string[],
 }
 
+export const MAX_VARIABLE_NAME_LENGTH = 255 as const
+export const MAX_VARIABLE_VALUE_LENGTH = 5000 as const
+
 export class Variable implements IVariable {
   public readonly id: string
   public readonly created: Date
