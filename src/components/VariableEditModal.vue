@@ -34,6 +34,8 @@
   import { Variable, VariableEdit } from '@/models'
   import { isHandle, isLessThanOrEqual, isRequired, isString } from '@/utilities'
 
+  const VALUE_MAX_CHARS = 255
+
   const props = defineProps<{
     variable: Variable,
     showModal: boolean,
@@ -55,7 +57,15 @@
 
   const api = useWorkspaceApi()
 
-  const isUnique: ValidationRule<string | undefined> = async (value, label, { signal, source, previousValue }) => {
+  const valueIsLessThanOrEqual: ValidationRule<string | undefined> = (value) => {
+    if (isNull(value) || !isString(value)) {
+      return false
+    }
+
+    return value.length <= VALUE_MAX_CHARS ? true : localization.error.stringValueTooLong(localization.info.value, VALUE_MAX_CHARS)
+  }
+
+  const nameIsUnique: ValidationRule<string | undefined> = async (value, label, { signal, source, previousValue }) => {
     if (value === previousValue) {
       return
     }
@@ -92,8 +102,8 @@
   const tags = ref<string[]>(props.variable.tags)
 
   const rules: Record<string, ValidationRule<string | undefined>[]> = {
-    name: [isRequired(localization.info.name), isHandle(localization.info.name), isUnique],
-    value: [isRequired(localization.info.value), isLessThanOrEqual(255)(localization.info.value)],
+    name: [isRequired(localization.info.name), isHandle(localization.info.name), nameIsUnique],
+    value: [isRequired(localization.info.value), isLessThanOrEqual(255)(localization.info.value), valueIsLessThanOrEqual],
   }
 
   const { error: nameErrorMessage, state: nameState } = useValidation(name, localization.info.name, rules.name)

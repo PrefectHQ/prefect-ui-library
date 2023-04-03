@@ -45,6 +45,7 @@ export const en = {
     resumeFlowRun: 'Failed to resume flow run',
     retryRun: 'Failed to retry flow run',
     scheduleFlowRun: 'Failed to schedule flow run',
+    stringValueTooLong: (subject: string, chars: number) => `${subject} must be less than or equal to ${chars} characters`,
     submitNotification: 'Failed to submit notification',
     updateBlock: 'Failed to update block',
     updateNotification: 'Failed to update notification',
