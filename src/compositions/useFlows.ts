@@ -7,13 +7,13 @@ import { UseEntitySubscription } from '@/types/useEntitySubscription'
 
 export type UseFlows = UseEntitySubscription<WorkspaceFlowsApi['getFlows'], 'flows'>
 
-export function useFlows(flowRunIds: string[] | Ref<string[] | null | undefined>): UseFlows {
+export function useFlows(flowIds: string[] | Ref<string[] | null | undefined>): UseFlows {
   const api = useWorkspaceApi()
   const can = useCan()
-  const flowRunIdsRef = ref(flowRunIds)
+  const flowIdsRef = ref(flowIds)
 
   const parameters = computed<Parameters<typeof api.flows.getFlows> | null>(() => {
-    const ids = unref(flowRunIdsRef)
+    const ids = unref(flowIdsRef)
 
     if (!ids || ids.length === 0) {
       return null
