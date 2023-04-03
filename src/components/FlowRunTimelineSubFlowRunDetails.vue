@@ -24,12 +24,12 @@
 </template>
 
 <script lang="ts" setup>
+  import { BreadCrumbs } from '@prefecthq/prefect-design'
   import { useSubscriptionWithDependencies } from '@prefecthq/vue-compositions'
   import { computed, toRefs } from 'vue'
   import { StateBadge, DurationIconText } from '@/components'
   import { useWorkspaceApi, useWorkspaceRoutes } from '@/compositions'
   import { formatDateTimeNumeric } from '@/utilities/dates'
-  import { BreadCrumbs } from '@prefecthq/prefect-design'
 
   const props = defineProps<{
     flowRunId: string,
