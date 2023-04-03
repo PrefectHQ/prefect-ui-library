@@ -26,8 +26,8 @@ export const terminalStateType = [
 export type TerminalStateType = typeof terminalStateType[number]
 export type ServerTerminalStateType = Uppercase<TerminalStateType>
 
-export function isTerminalStateType(value: string): value is TerminalStateType {
-  return terminalStateType.includes(value as TerminalStateType)
+export function isTerminalStateType(value: unknown): value is TerminalStateType {
+  return typeof value === 'string' && terminalStateType.includes(value as TerminalStateType)
 }
 
 export const stuckStateTypes = ['running', 'scheduled', 'pending', 'paused']

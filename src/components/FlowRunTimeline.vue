@@ -87,7 +87,7 @@
   import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
   import { FlowRunTimelineSelectionPanel, FlowRunTimelineOptions } from '@/components'
   import { useFlowRuns, useWorkspaceApi } from '@/compositions'
-  import { FlowRun, hasSubFlowRunId, isRunningStateType, isValidGraphTimelineNode, TimelineNode } from '@/models'
+  import { FlowRun, hasSubFlowRunId, isRunningStateType, isTerminalStateType, isValidGraphTimelineNode, TimelineNode } from '@/models'
   import { WorkspaceFlowRunsApi } from '@/services'
   import { prefectStateNames } from '@/types'
   import { formatTimeNumeric, formatTimeShortNumeric, formatDate } from '@/utilities'
@@ -239,6 +239,26 @@
 
       unwatchInitialData()
     }
+  })
+
+  const unwatchFlowRunStateType = watch(() => props.flowRun.stateType, type => {
+    if (!isTerminalStateType(type)) {
+      return
+    }
+
+    if (!interval) {
+      return
+    }
+
+    graphSubscription.refresh()
+    graphSubscription.unsubscribe()
+
+    expandedSubFlowRuns.value.forEach(({ subscription }) => {
+      subscription.refresh()
+      subscription.unsubscribe()
+    })
+
+    unwatchFlowRunStateType()
   })
 
   function centerGraphViewport(): void {
