@@ -292,6 +292,7 @@
     })
 
     expandedSubFlowRuns.value.set(id, {
+      // @ts-expect-error data actually is a valid property
       data,
       subscription,
     })
