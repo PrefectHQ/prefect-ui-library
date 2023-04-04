@@ -168,3 +168,14 @@ export function separate<T>(source: T[], filter: (value: T) => boolean): [found:
     return [found, notFound]
   }, [[], []])
 }
+
+export function toggle<T>(source: T[], value: T, force?: boolean): T[] {
+  const index = source.indexOf(value)
+  const add = force === true || index === -1
+
+  if (add) {
+    return [...source, value]
+  }
+
+  return source.filter(item => item !== value)
+}
