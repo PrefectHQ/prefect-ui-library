@@ -12,7 +12,7 @@
         </router-link>
       </template>
 
-      <template #empty>
+      <template v-if="artifactsSubscription.executed" #empty>
         <p-empty-state>
           <template #description>
             <p-markdown-renderer :text="emptyMessage" />
@@ -59,7 +59,6 @@
   const emptyMessage = computed(() => {
     if (artifactsSubscription.executed && artifacts.value.length === 0) {
       if (isTerminal.value) {
-
         return localization.info.terminalTaskRunNoArtifacts
       }
 
