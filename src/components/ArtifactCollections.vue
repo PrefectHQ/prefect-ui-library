@@ -10,7 +10,14 @@
     <RowGridLayoutList v-if="artifactsLoaded" :items="artifacts">
       <template #default="{ item }: { item: ArtifactCollection }">
         <router-link :to="routes.artifactKey(item.key)">
-          <ArtifactCard :artifact="item" class="artifact-collections__artifact-card" />
+          <ArtifactCard :artifact="item" class="artifact-collections__artifact-card">
+            <template #summary-label>
+              {{ localization.info.lastUpdated }}
+            </template>
+            <template #summary-value>
+              {{ formatDateTime(item.updated) }}
+            </template>
+          </ArtifactCard>
         </router-link>
       </template>
 
@@ -32,6 +39,7 @@
   import { useWorkspaceApi, useWorkspaceRoutes } from '@/compositions'
   import { localization } from '@/localization'
   import { ArtifactsFilter, ArtifactType, ArtifactCollection } from '@/models'
+  import { formatDateTime } from '@/utilities'
 
   const searchTerm = ref<string>('')
   const searchTermDebounced = useDebouncedRef(searchTerm, 1200)
