@@ -10,26 +10,28 @@
         </div>
       </header>
 
-      <div class="artifact-card__summary-container" :class="classes.summaryContainer">
-        <div class="artifact-card__summary-item">
-          <span class="artifact-card__summary-item-label">
-            {{ localization.info.created }}
-          </span>
-          <span class="artifact-card__summary-item-value">
-            {{ formatDateTime(artifact.created) }}
-          </span>
+      <slot>
+        <div class="artifact-card__summary-container" :class="classes.summaryContainer">
+          <div class="artifact-card__summary-item">
+            <span class="artifact-card__summary-item-label">
+              <slot name="summary-label">
+                {{ localization.info.created }}
+              </slot>
+            </span>
+            <span class="artifact-card__summary-item-value">
+              <slot name="summary-value">
+                {{ formatDateTime(artifact.created) }}
+              </slot>
+            </span>
+          </div>
         </div>
-      </div>
-    </div>
-
-    <div v-if="slots.default" class="artifact-card__slot">
-      <slot />
+      </slot>
     </div>
   </p-card>
 </template>
 
 <script lang="ts" setup>
-  import { computed, useSlots } from 'vue'
+  import { computed } from 'vue'
   import { localization } from '@/localization'
   import { Artifact } from '@/models'
   import { formatDateTime } from '@/utilities'
@@ -39,7 +41,6 @@
     condense?: boolean,
   }>()
 
-  const slots = useSlots()
   const hasKey = computed(() => !!props.artifact.key)
 
   const classes = computed(() => {
