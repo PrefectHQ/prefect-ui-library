@@ -1,5 +1,5 @@
 import { useSeeds } from './useSeeds'
-import { Artifact } from '@/models'
+import { Artifact, ArtifactCollection } from '@/models'
 import { mocker } from '@/services'
 import { coinflip, repeat } from '@/utilities'
 
@@ -29,8 +29,19 @@ export function useArtifactMock(override?: Partial<Artifact>, useTaskRun: boolea
     },
   ])
 
+  let artifactCollection: ArtifactCollection | undefined = undefined
+  if (artifact.key) {
+    artifactCollection = {
+      ...artifact,
+      // This seems necessary to infer that the key exists... the spread above doesn't seem to do it.
+      key: artifact.key,
+      latestId: artifact.id,
+    }
+  }
+
   useSeeds({
     artifacts: [artifact],
+    artifactCollections: artifactCollection ? [artifactCollection] : [],
     flows: [flow],
     deployments: [deployment],
     workQueues: [workQueue],

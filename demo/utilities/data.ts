@@ -2,7 +2,7 @@ import { KeyedDataStore } from '../services/KeyedDataStore'
 import { SimpleDataStore } from '../services/SimpleDataStore'
 import { ApiMockSeeds } from './api'
 import { FlowRunGraphMock } from '@/demo/types/flowRunGraphMock'
-import { Flow, FlowRun, BlockDocument, BlockSchema, TaskRun, Deployment, WorkQueue, BlockType, WorkPool, WorkPoolQueue, WorkPoolWorker, GraphNode, Artifact } from '@/models'
+import { Flow, FlowRun, BlockDocument, BlockSchema, TaskRun, Deployment, WorkQueue, BlockType, WorkPool, WorkPoolQueue, WorkPoolWorker, GraphNode, Artifact, ArtifactCollection } from '@/models'
 import { resolveSchema } from '@/services/schemas/resolvers/schemas'
 
 function hydrateBlockSchema(blockSchema: BlockSchema): BlockSchema {
@@ -23,7 +23,7 @@ function hydrateGraph({ id, graph }: FlowRunGraphMock): FlowRunGraphMock {
 export function createDataStores(seeds: ApiMockSeeds = {}) {
   return {
     artifacts: new KeyedDataStore({ seeds: seeds.artifacts, hydrate: artifact => new Artifact({ ...artifact, created: new Date(artifact.created), updated: new Date(artifact.updated) }) }),
-    artifactCollections: new KeyedDataStore({ seeds: seeds.artifactCollections, hydrate: artifactCollection => artifactCollection }),
+    artifactCollections: new KeyedDataStore({ seeds: seeds.artifactCollections, hydrate: artifactCollection => new ArtifactCollection({ ...artifactCollection, created: new Date(artifactCollection.created), updated: new Date(artifactCollection.updated) }) }),
     flows: new KeyedDataStore({ seeds: seeds.flows, hydrate: flow => new Flow(flow) }),
     flowRuns: new KeyedDataStore({ seeds: seeds.flowRuns, hydrate: flowRun => new FlowRun(flowRun) }),
     flowRunGraphs: new KeyedDataStore({ seeds: seeds.flowRunGraphs, hydrate: hydrateGraph }),
