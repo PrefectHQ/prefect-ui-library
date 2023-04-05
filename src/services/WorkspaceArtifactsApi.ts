@@ -12,6 +12,7 @@ export interface IWorkspaceArtifactsApi {
   getArtifacts: (filter: ArtifactsFilter) => Promise<Artifact[]>,
   getArtifactCollections: (filter: ArtifactsFilter) => Promise<ArtifactCollection[]>,
   getArtifactsCount: (filter: ArtifactsFilter) => Promise<number>,
+  getArtifactCollectionsCount: (filter: ArtifactsFilter) => Promise<number>,
   deleteArtifact: (id: string) => Promise<void>,
 }
 
@@ -44,6 +45,12 @@ export class WorkspaceArtifactsApi extends WorkspaceApi implements IWorkspaceArt
     const request = mapper.map('ArtifactsFilter', filter, 'ArtifactsFilterRequest')
     const { data } = await this.post<ArtifactCollectionResponse[]>('latest/filter', request)
     return mapper.map('ArtifactCollectionResponse', data, 'ArtifactCollection')
+  }
+
+  public async getArtifactCollectionsCount(filter: ArtifactsFilter = {}): Promise<number> {
+    const request = mapper.map('ArtifactsFilter', filter, 'ArtifactsFilterRequest')
+    const { data } = await this.post<number>('latest/count', request)
+    return data
   }
 
   public deleteArtifact(id: string): Promise<void> {
