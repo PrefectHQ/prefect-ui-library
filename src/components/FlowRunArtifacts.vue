@@ -12,7 +12,9 @@
 
       <RowGridLayoutList :items="flowRunArtifacts">
         <template #default="{ item }">
-          <ArtifactCard :artifact="item" :condense="condense" class="flow-run-artifacts__artifact" />
+          <router-link :to="routes.artifact(item.id)">
+            <ArtifactCard :artifact="item" :condense="condense" class="flow-run-artifacts__artifact" />
+          </router-link>
         </template>
 
         <template #empty>
@@ -30,7 +32,9 @@
 
       <RowGridLayoutList :items="taskRunArtifacts">
         <template #default="{ item }">
-          <ArtifactCard :artifact="item" :condense="condense" class="flow-run-artifacts__artifact" />
+          <router-link :to="routes.artifact(item.id)">
+            <ArtifactCard :artifact="item" :condense="condense" class="flow-run-artifacts__artifact" />
+          </router-link>
         </template>
 
         <template #empty>
@@ -57,7 +61,7 @@
   import ArtifactCard from '@/components/ArtifactCard.vue'
   import RowGridLayoutList from '@/components/RowGridLayoutList.vue'
   import ViewModeButtonGroup from '@/components/ViewModeButtonGroup.vue'
-  import { useWorkspaceApi } from '@/compositions'
+  import { useWorkspaceApi, useWorkspaceRoutes } from '@/compositions'
   import { localization } from '@/localization'
   import { FlowRun, isTerminalStateType } from '@/models'
   import { ArtifactsFilter } from '@/models/Filters'
@@ -70,6 +74,8 @@
   const condense = computed(() => activeViewMode.value !== 'grid')
 
   const api = useWorkspaceApi()
+  const routes = useWorkspaceRoutes()
+
   const artifactsFilter = computed<ArtifactsFilter>(() => {
     return {
       artifacts: {
