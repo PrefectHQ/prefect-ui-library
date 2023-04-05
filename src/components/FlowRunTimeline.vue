@@ -87,7 +87,7 @@
   import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
   import { FlowRunTimelineSelectionPanel, FlowRunTimelineOptions } from '@/components'
   import { useFlowRuns, useFlows, useWorkspaceApi } from '@/compositions'
-  import { FlowRun, hasSubFlowRunId, isRunningStateType, isTerminalStateType, isValidGraphTimelineNode, TimelineNode } from '@/models'
+  import { FlowRun, isRunningStateType, isTerminalStateType } from '@/models'
   import { WorkspaceFlowRunsApi } from '@/services'
   import { prefectStateNames } from '@/types'
   import { formatTimeNumeric, formatTimeShortNumeric, formatDate } from '@/utilities'
@@ -223,9 +223,7 @@
     interval,
   )
 
-  const graphData = computed(() => {
-    return removeNullStartsAndSort(graphSubscription.response ?? [])
-  })
+  const graphData = computed(() => graphSubscription.response ?? [])
 
   const unwatchInitialData = watch(graphData, (value) => {
     if (value.length > 0) {
@@ -287,9 +285,7 @@
       interval,
     )
 
-    const data = computed(() => {
-      return removeNullStartsAndSort(subscription.response ?? [])
-    })
+    const data = computed(() => subscription.response ?? [])
 
     expandedSubFlowRuns.value.set(id, {
       data,
@@ -297,23 +293,19 @@
     })
   }
 
-  function removeNullStartsAndSort(nodes: TimelineNode[]): GraphTimelineNode[] {
-    return nodes.filter(isValidGraphTimelineNode)
-      .sort((nodeA, nodeB) => {
-        return nodeA.start.getTime() - nodeB.start.getTime()
-      })
-  }
-
-  const rootSubFlowRunIds = computed<string[]>(() => {
-    return graphData.value
-      .filter(hasSubFlowRunId)
+  const getSubFlowRunIds = (data: GraphTimelineNode[]): string[] => {
+    return data
       .map((node) => node.subFlowRunId)
+      .filter((subFlowRunId): subFlowRunId is string => subFlowRunId !== undefined)
+  }
+  const rootSubFlowRunIds = computed<string[]>(() => {
+    return getSubFlowRunIds(graphData.value)
   })
   const expandedSubFlowRunIds = computed<string[]>(() => {
-    return Array.from(expandedSubFlowRuns.value.values())
-      .flatMap(subFlowRun => 'value' in subFlowRun.data ? subFlowRun.data.value : subFlowRun.data)
-      .filter(hasSubFlowRunId)
-      .map((node) => node.subFlowRunId)
+    return getSubFlowRunIds(
+      Array.from(expandedSubFlowRuns.value.values())
+        .flatMap(subFlowRun => 'value' in subFlowRun.data ? subFlowRun.data.value : subFlowRun.data),
+    )
   })
 
   const allSubFlowRunIds = computed<string[]>(() => [...rootSubFlowRunIds.value, ...expandedSubFlowRunIds.value])
