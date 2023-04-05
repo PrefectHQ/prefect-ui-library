@@ -10,6 +10,7 @@ import { toMap } from '@/utilities'
 export interface IWorkspaceArtifactsApi {
   getArtifact: (id: string) => Promise<Artifact>,
   getArtifacts: (filter: ArtifactsFilter) => Promise<Artifact[]>,
+  getArtifactCollection: (key: string) => Promise<ArtifactCollection>,
   getArtifactCollections: (filter: ArtifactsFilter) => Promise<ArtifactCollection[]>,
   getArtifactsCount: (filter: ArtifactsFilter) => Promise<number>,
   getArtifactCollectionsCount: (filter: ArtifactsFilter) => Promise<number>,
@@ -25,8 +26,17 @@ export class WorkspaceArtifactsApi extends WorkspaceApi implements IWorkspaceArt
     return toMap(artifacts, 'id')
   }, { maxBatchSize: 200 })
 
+  private readonly keyBatcher = new BatchProcessor<string, ArtifactCollection>(async keys => {
+    const collections = await this.getArtifactCollections({ artifacts: { key: keys } })
+    return toMap(collections, 'key')
+  }, { maxBatchSize: 200 })
+
   public getArtifact(id: string): Promise<Artifact> {
     return this.batcher.batch(id)
+  }
+
+  public getArtifactCollection(key: string): Promise<ArtifactCollection> {
+    return this.keyBatcher.batch(key)
   }
 
   public async getArtifacts(filter: ArtifactsFilter = {}): Promise<Artifact[]> {
