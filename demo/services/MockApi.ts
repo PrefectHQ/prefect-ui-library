@@ -6,6 +6,10 @@ export class MockApi {
     return data.artifacts
   }
 
+  protected get artifactCollections() {
+    return data.artifactCollections
+  }
+
   protected get flows() {
     return data.flows
   }
