@@ -1,26 +1,26 @@
 <template>
-  <div v-if="task">
+  <div v-if="taskRun">
     <p-heading element="h3" heading="5">
       <p-link :to="routes.taskRun(taskRunId)">
-        {{ task.name }}
+        {{ taskRun.name }}
       </p-link>
     </p-heading>
     <div class="flow-run-timeline-task-details__content">
       <p-key-value label="State" :alternate="alternate">
         <template #value>
-          <StateBadge :state="task.state" class="flow-run-timeline-task-details__state-badge" />
+          <StateBadge :state="taskRun.state" class="flow-run-timeline-task-details__state-badge" />
         </template>
       </p-key-value>
-      <p-key-value label="Task Run ID" :value="task.id" :alternate="alternate" />
+      <p-key-value label="Task Run ID" :value="taskRun.id" :alternate="alternate" />
       <p-key-value label="Duration" :alternate="alternate">
         <template #value>
-          <DurationIconText :duration="task.duration" />
+          <DurationIconText :duration="taskRun.duration" />
         </template>
       </p-key-value>
-      <p-key-value label="Created" :value="formatDateTimeNumeric(task.created)" :alternate="alternate" />
+      <p-key-value label="Created" :value="formatDateTimeNumeric(taskRun.created)" :alternate="alternate" />
       <p-key-value label="Tags" :alternate="alternate">
-        <template v-if="task.tags?.length" #value>
-          <p-tags :tags="task.tags!" class="flow-run-timeline-task-details__tags" />
+        <template v-if="taskRun.tags?.length" #value>
+          <p-tags :tags="taskRun.tags!" class="flow-run-timeline-task-details__tags" />
         </template>
       </p-key-value>
     </div>
@@ -28,10 +28,9 @@
 </template>
 
 <script lang="ts" setup>
-  import { useSubscriptionWithDependencies } from '@prefecthq/vue-compositions'
-  import { computed, toRefs } from 'vue'
+  import { toRefs } from 'vue'
   import { StateBadge, DurationIconText } from '@/components'
-  import { useWorkspaceApi, useWorkspaceRoutes } from '@/compositions'
+  import { useTaskRun, useWorkspaceRoutes } from '@/compositions'
   import { formatDateTimeNumeric } from '@/utilities/dates'
 
   const props = defineProps<{
@@ -44,14 +43,7 @@
 
   const routes = useWorkspaceRoutes()
 
-  const api = useWorkspaceApi()
-  const taskSubscriptionArgs = computed<[string]>(() => [taskRunId.value])
-  const taskSubscription = useSubscriptionWithDependencies(
-    api.taskRuns.getTaskRun,
-    taskSubscriptionArgs,
-  )
-
-  const task = computed(() => taskSubscription.response)
+  const { taskRun } = useTaskRun(taskRunId)
 </script>
 
 <style>

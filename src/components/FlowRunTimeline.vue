@@ -86,7 +86,7 @@
   import { UseSubscription, useSubscription } from '@prefecthq/vue-compositions'
   import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
   import { FlowRunTimelineSelectionPanel, FlowRunTimelineOptions } from '@/components'
-  import { useFlowRuns, useWorkspaceApi } from '@/compositions'
+  import { useFlowRuns, useFlows, useWorkspaceApi } from '@/compositions'
   import { FlowRun, hasSubFlowRunId, isRunningStateType, isTerminalStateType, isValidGraphTimelineNode, TimelineNode } from '@/models'
   import { WorkspaceFlowRunsApi } from '@/services'
   import { prefectStateNames } from '@/types'
@@ -317,14 +317,29 @@
   })
 
   const allSubFlowRunIds = computed<string[]>(() => [...rootSubFlowRunIds.value, ...expandedSubFlowRunIds.value])
+  const { flowRuns: subFlowRuns } = useFlowRuns(allSubFlowRunIds)
 
-  const { flowRuns } = useFlowRuns(allSubFlowRunIds)
+  const allSubFlowRunFlowIds = computed<string[]>(() => {
+    return subFlowRuns.value?.map((flowRun) => flowRun.flowId) ?? []
+  })
+  const { flows: subFlows } = useFlows(allSubFlowRunFlowIds)
 
   const subFlowRunLabels = computed(() => {
-    return (flowRuns.value ?? [])
+    return (subFlowRuns.value ?? [])
       .reduce((acc, curr) => {
         if (curr.name) {
-          acc.set(curr.id, curr.name)
+          let subFlowRunName = ''
+
+          if (subFlows.value) {
+            const subFlow = subFlows.value.find((flow) => flow.id === curr.flowId)
+            if (subFlow) {
+              subFlowRunName = `${subFlow.name} / `
+            }
+          }
+
+          subFlowRunName += curr.name
+
+          acc.set(curr.id, subFlowRunName)
         }
         return acc
       }, new Map<string, string>())

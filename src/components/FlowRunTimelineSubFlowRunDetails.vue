@@ -1,26 +1,22 @@
 <template>
-  <div v-if="subFlowRun">
-    <p-heading element="h3" heading="5">
-      <p-link :to="routes.flowRun(flowRunId)">
-        {{ subFlowRun.name }}
-      </p-link>
-    </p-heading>
+  <div v-if="flowRun">
+    <p-bread-crumbs class="flow-run-timeline-sub-flow-run-details__heading" :crumbs="crumbs" />
     <div class="flow-run-timeline-sub-flow-run-details__content">
       <p-key-value label="State" :alternate="alternate">
         <template #value>
-          <StateBadge :state="subFlowRun.state" class="timeline-task-details__state-badge" />
+          <StateBadge :state="flowRun.state" class="timeline-task-details__state-badge" />
         </template>
       </p-key-value>
-      <p-key-value label="Flow Run ID" :value="subFlowRun.id" :alternate="alternate" />
+      <p-key-value label="Flow Run ID" :value="flowRun.id" :alternate="alternate" />
       <p-key-value label="Duration" :alternate="alternate">
         <template #value>
-          <DurationIconText :duration="subFlowRun.duration" />
+          <DurationIconText :duration="flowRun.duration" />
         </template>
       </p-key-value>
-      <p-key-value label="Created" :value="formatDateTimeNumeric(subFlowRun.created)" :alternate="alternate" />
+      <p-key-value label="Created" :value="formatDateTimeNumeric(flowRun.created)" :alternate="alternate" />
       <p-key-value label="Tags" :alternate="alternate">
-        <template v-if="subFlowRun.tags?.length" #value>
-          <p-tags :tags="subFlowRun.tags!" class="flow-run-timeline-sub-flow-run-details__tags" />
+        <template v-if="flowRun.tags?.length" #value>
+          <p-tags :tags="flowRun.tags!" class="flow-run-timeline-sub-flow-run-details__tags" />
         </template>
       </p-key-value>
     </div>
@@ -28,10 +24,10 @@
 </template>
 
 <script lang="ts" setup>
-  import { useSubscriptionWithDependencies } from '@prefecthq/vue-compositions'
+  import { BreadCrumbs } from '@prefecthq/prefect-design'
   import { computed, toRefs } from 'vue'
   import { StateBadge, DurationIconText } from '@/components'
-  import { useWorkspaceApi, useWorkspaceRoutes } from '@/compositions'
+  import { useFlow, useFlowRun, useWorkspaceRoutes } from '@/compositions'
   import { formatDateTimeNumeric } from '@/utilities/dates'
 
   const props = defineProps<{
@@ -44,17 +40,37 @@
 
   const routes = useWorkspaceRoutes()
 
-  const api = useWorkspaceApi()
-  const flowRunSubscriptionArgs = computed<[string]>(() => [flowRunId.value])
-  const flowRunSubscription = useSubscriptionWithDependencies(
-    api.flowRuns.getFlowRun,
-    flowRunSubscriptionArgs,
-  )
+  const { flowRun } = useFlowRun(flowRunId)
 
-  const subFlowRun = computed(() => flowRunSubscription.response)
+  const flowId = computed(() => flowRun.value?.flowId)
+  const { flow } = useFlow(flowId)
+
+  const crumbs = computed<BreadCrumbs>(() => {
+    const internalCrumbs: BreadCrumbs = []
+
+    if (flow.value?.name) {
+      internalCrumbs.push({
+        text: flow.value.name,
+        to: routes.flow(flow.value.id),
+      })
+    }
+
+    if (flowRun.value?.name) {
+      internalCrumbs.push({
+        text: flowRun.value.name,
+        to: routes.flowRun(flowRun.value.id),
+      })
+    }
+
+    return internalCrumbs
+  })
 </script>
 
 <style>
+.flow-run-timeline-sub-flow-run-details__heading { @apply
+  text-base
+}
+
 .flow-run-timeline-sub-flow-run-details__content { @apply
   mt-2
   flex
