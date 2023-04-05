@@ -55,6 +55,7 @@
   }>()
 
   const api = useWorkspaceApi()
+  const expanded = ref<string[]>([])
 
   const artifactsFilter = computed<ArtifactsFilter>(() => {
     return {
@@ -111,7 +112,8 @@
       expanded.value = [val]
     }
     getArtifacts()
-  })
+  }, { immediate: true })
+
   watch(artifactsFilterOffset, getOffsetArtifacts)
 
   const fetchMore = (): void => {
@@ -125,7 +127,6 @@
     getArtifacts()
   })
 
-  const expanded = ref<string[]>([])
 
   type ArtifactTimelineItem = TimelineItem & {
     icon?: Icon,
