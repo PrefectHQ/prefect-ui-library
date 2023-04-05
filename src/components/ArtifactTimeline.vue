@@ -74,18 +74,10 @@
     }
   })
 
-  const artifactsLatestFilter = computed<ArtifactsFilter>(() => {
-    return {
-      artifacts: {
-        key: [props.artifactKey],
-        isLatest: true,
-      },
-    }
-  })
-  const artifactsLatestSubscription = useSubscription(api.artifacts.getArtifacts, [artifactsLatestFilter], { interval: 30000 })
+  const artifactsLatestSubscription = useSubscription(api.artifacts.getArtifactCollection, [props.artifactKey], { interval: 30000 })
   const latestArtifactId = computed(() => {
-    const [latestArtifact = null] = artifactsLatestSubscription.response ?? []
-    return latestArtifact?.id
+    const latestArtifact = artifactsLatestSubscription.response
+    return latestArtifact?.latestId
   })
 
   const artifactsCountFilter = computed<ArtifactsFilter>(() => {
