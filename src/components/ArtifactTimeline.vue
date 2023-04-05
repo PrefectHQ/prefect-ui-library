@@ -110,8 +110,9 @@
   watch(latestArtifactId, (val, oldVal) => {
     if (val && !oldVal) {
       expanded.value = [val]
+    } else {
+      getArtifacts()
     }
-    getArtifacts()
   }, { immediate: true })
 
   watch(artifactsFilterOffset, getOffsetArtifacts)
