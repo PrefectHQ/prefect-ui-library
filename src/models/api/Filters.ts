@@ -135,7 +135,6 @@ export type ArtifactFilterRequest = {
   type?: Any & NotAny,
   flow_run_id?: Any,
   task_run_id?: Any,
-  is_latest?: Latest,
 }
 
 export type ArtifactsFilterRequest = {

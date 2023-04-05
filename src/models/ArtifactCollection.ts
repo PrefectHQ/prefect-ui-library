@@ -1,17 +1,8 @@
-import { ArtifactData, ArtifactMetadata, ArtifactType } from '@/models/Artifact'
+import { ArtifactData, ArtifactMetadata, ArtifactType, IArtifact } from '@/models/Artifact'
 
-export interface IArtifactCollection {
-  id: string,
+export interface IArtifactCollection extends IArtifact {
   latestId: string,
-  created: Date,
-  updated: Date,
   key: string,
-  type: ArtifactType,
-  description: string | null,
-  data: ArtifactData,
-  metadata: ArtifactMetadata,
-  flowRunId: string | null,
-  taskRunId: string | null,
 }
 
 export class ArtifactCollection implements IArtifactCollection {
