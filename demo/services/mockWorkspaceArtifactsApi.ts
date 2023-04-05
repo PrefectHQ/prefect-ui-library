@@ -84,7 +84,13 @@ export class MockWorkspaceArtifactsApi extends MockApi implements IWorkspaceArti
   }
 
   public async getArtifactCollection(key: string): Promise<ArtifactCollection> {
-    return await this.artifactCollections.get(key)
+    const artifactCollection = await this.artifactCollections.find((artifactCollection: ArtifactCollection) => artifactCollection.key === key)
+
+    if (!artifactCollection) {
+      throw new Error(`Artifact collection with key ${key} not found`)
+    }
+
+    return artifactCollection
   }
 
   public async getArtifactCollectionsCount(filter: ArtifactsFilter): Promise<number> {
