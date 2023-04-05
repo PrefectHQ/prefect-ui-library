@@ -1,5 +1,5 @@
 <template>
-  <p-link :to="routes.artifactKey(artifactId)" class="flow-run-icon-text">
+  <p-link v-if="artifactKey" :to="routes.artifactKey(artifactKey)" class="flow-run-icon-text">
     <p-icon-text :icon="icon">
       <span>{{ artifactKey }}</span>
     </p-icon-text>
