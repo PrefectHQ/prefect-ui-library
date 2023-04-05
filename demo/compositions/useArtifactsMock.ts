@@ -70,7 +70,5 @@ export function useArtifactsMock(count: number, override?: Partial<Artifact>): A
     artifactCollections,
   })
 
-  console.log(artifactCollections)
-
   return artifacts
 }
