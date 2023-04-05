@@ -37,8 +37,7 @@
 </template>
 
 <script lang="ts" setup>
-  import { Icon } from '@prefecthq/prefect-design'
-  import { TimelineItem } from '@prefecthq/prefect-design/dist/types/src/types/timeline'
+  import { Icon, TimelineItem } from '@prefecthq/prefect-design'
   import { useSubscription } from '@prefecthq/vue-compositions'
   import { computed, ref, watch, onBeforeMount } from 'vue'
   import ArtifactTimelineItemContent from '@/components/ArtifactTimelineItemContent.vue'
