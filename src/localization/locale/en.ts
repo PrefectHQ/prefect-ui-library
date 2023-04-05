@@ -124,6 +124,7 @@ export const en = {
     filterByTags: 'Filter by tags',
     invalidData: (docsUrl: string) => `Invalid data, see [documentation](${docsUrl}) for more information`,
     noResults: 'No tracked results, enable [result persistence](https://docs.prefect.io/concepts/results/#persisting-results) to track results.',
+    none: 'None',
     terminalFlowRunNoArtifacts: 'This run did not produce any artifacts; for more information on creating artifacts, see the [documentation](https://docs.prefect.io/concepts/artifacts).',
     nonTerminalFlowRunNoArtifacts: 'This run has not yet produced artifacts; for more information on creating artifacts, see the [documentation](https://docs.prefect.io/concepts/artifacts).',
     flowRun: 'Flow run',

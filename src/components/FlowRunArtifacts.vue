@@ -17,7 +17,7 @@
 
         <template #empty>
           <div class="flow-run-artifacts__none">
-            <p-markdown-renderer :text="localization.info.noResults" />
+            <p-markdown-renderer :text="localization.info.none" />
           </div>
         </template>
       </RowGridLayoutList>
@@ -35,7 +35,7 @@
 
         <template #empty>
           <div class="flow-run-artifacts__none">
-            <p-markdown-renderer :text="localization.info.noResults" />
+            <p-markdown-renderer :text="localization.info.none" />
           </div>
         </template>
       </RowGridLayoutList>
