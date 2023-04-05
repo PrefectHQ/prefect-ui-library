@@ -1,5 +1,6 @@
+import { GraphTimelineNode } from '@prefecthq/graphs'
 import { MockApi } from '@/../demo/services/MockApi'
-import { FlowRun, GraphNode, RunHistory, stateType, StateUpdate, TimelineNode } from '@/models'
+import { FlowRun, GraphNode, RunHistory, stateType, StateUpdate } from '@/models'
 import { FlowRunsFilter, FlowRunsHistoryFilter } from '@/models/Filters'
 import { IWorkspaceFlowRunsApi, mocker } from '@/services'
 import { dateFunctions } from '@/utilities/timezone'
@@ -54,7 +55,7 @@ export class MockWorkspaceFlowRunsApi extends MockApi implements IWorkspaceFlowR
     return await this.flowRunGraphs.get(graphId).graph
   }
 
-  public getFlowRunsTimeline(): Promise<TimelineNode[]> {
+  public getFlowRunsTimeline(): Promise<GraphTimelineNode[]> {
     throw new Error('MockWorkspaceFlowRunsApi has not implemented the getFlowRunGraph method')
   }
 
