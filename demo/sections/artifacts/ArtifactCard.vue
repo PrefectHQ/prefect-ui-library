@@ -10,11 +10,23 @@
     <template #result>
       <ArtifactCard :artifact="result" :condense="condense" />
     </template>
+
     <template #markdown>
       <ArtifactCard :artifact="markdown" :condense="condense" />
     </template>
     <template #table>
       <ArtifactCard :artifact="table" :condense="condense" />
+    </template>
+
+    <template #custom-slot>
+      <ArtifactCard :artifact="markdown" :condense="condense">
+        <template #summary-label>
+          ID (custom)
+        </template>
+        <template #summary-value>
+          {{ markdown.id }}
+        </template>
+      </ArtifactCard>
     </template>
   </ComponentPage>
 </template>
@@ -40,6 +52,9 @@
     },
     {
       title: 'Unknown',
+    },
+    {
+      title: 'Custom slot',
     },
   ]
 
