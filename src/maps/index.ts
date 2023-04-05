@@ -1,4 +1,4 @@
-import { mapArtifactResponseToArtifact } from '@/maps/artifact'
+import { mapArtifactCollectionResponseToArtifactCollection, mapArtifactResponseToArtifact } from '@/maps/artifact'
 import { mapBlockDocumentResponseToBlockDocument, mapBlockDocumentToSelectOption } from '@/maps/blockDocument'
 import { mapBlockDocumentCreateToBlockDocumentCreateRequest } from '@/maps/blockDocumentCreate'
 import { mapBlockDocumentResponseReferencesToBlockDocumentReferences } from '@/maps/blockDocumentReferences'
@@ -55,6 +55,7 @@ import { mapWorkQueueStatusResponseToWorkQueueStatus } from '@/maps/workQueueSta
 export const maps = {
   ArtifactFilter: { ArtifactFilterRequest: mapArtifactFilter },
   ArtifactResponse: { Artifact: mapArtifactResponseToArtifact },
+  ArtifactCollectionResponse: { ArtifactCollection: mapArtifactCollectionResponseToArtifactCollection },
   ArtifactsFilter: { ArtifactsFilterRequest: mapArtifactsFilter },
   BlockDocument: { SelectOption: mapBlockDocumentToSelectOption },
   BlockDocumentCreate: { BlockDocumentCreateRequest: mapBlockDocumentCreateToBlockDocumentCreateRequest },

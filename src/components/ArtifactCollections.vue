@@ -8,8 +8,8 @@
     </div>
 
     <RowGridLayoutList v-if="artifactsLoaded" :items="artifacts">
-      <template #default="{ item }: { item: Artifact }">
-        <router-link :to="routes.artifactKey(item.id)">
+      <template #default="{ item }: { item: ArtifactCollection }">
+        <router-link :to="routes.artifactKey(item.key)">
           <ArtifactCard :artifact="item" class="artifact-collections__artifact-card" />
         </router-link>
       </template>
@@ -31,7 +31,7 @@
   import ViewModeButtonGroup from '@/components/ViewModeButtonGroup.vue'
   import { useWorkspaceApi, useWorkspaceRoutes } from '@/compositions'
   import { localization } from '@/localization'
-  import { ArtifactsFilter, ArtifactType, Artifact } from '@/models'
+  import { ArtifactsFilter, ArtifactType, ArtifactCollection } from '@/models'
 
   const searchTerm = ref<string>('')
   const searchTermDebounced = useDebouncedRef(searchTerm, 1200)
@@ -43,22 +43,20 @@
 
   const artifactsFilter = computed<ArtifactsFilter>(() => {
     const keyLike = searchTermDebounced.value ? searchTermDebounced.value : undefined
-    const isLatest = true
     const keyExists = true
     const type = selectedType.value ? [selectedType.value] : undefined
 
     return {
       artifacts: {
         keyExists,
-        isLatest,
         keyLike,
         type,
       },
     }
   })
 
-  const artifactsSubscription = useSubscription(api.artifacts.getArtifacts, [artifactsFilter])
-  const artifactsCountSubscription = useSubscription(api.artifacts.getArtifactsCount, [artifactsFilter])
+  const artifactsSubscription = useSubscription(api.artifacts.getArtifactCollections, [artifactsFilter])
+  const artifactsCountSubscription = useSubscription(api.artifacts.getArtifactCollectionsCount, [artifactsFilter])
   const artifactsLoaded = computed(() => artifactsSubscription.executed)
   const artifacts = computed(() => artifactsSubscription.response ?? [])
   const artifactsCount = computed(() => artifactsCountSubscription.response)

@@ -1,7 +1,7 @@
 import { useSeeds } from './useSeeds'
 import { Artifact } from '@/models'
 import { mocker } from '@/services'
-import { coinflip, repeat } from '@/utilities'
+import { coinflip, isNotNullish, repeat } from '@/utilities'
 
 export function useArtifactMock(override?: Partial<Artifact>, useTaskRun: boolean = coinflip(0.5)): Artifact {
   const flow = mocker.create('flow')
@@ -42,5 +42,33 @@ export function useArtifactMock(override?: Partial<Artifact>, useTaskRun: boolea
 }
 
 export function useArtifactsMock(count: number, override?: Partial<Artifact>): Artifact[] {
-  return repeat(count, () => useArtifactMock(override))
+  const artifacts = repeat(count, () => useArtifactMock(override))
+
+  const artifactKeys: string[] = [...new Set(artifacts.filter(({ key }) => isNotNullish(key)).map(artifact => artifact.key!))]
+
+  const artifactCollections = artifactKeys.map(key => {
+    const matchingArtifacts = artifacts.filter(artifact => artifact.key === key)
+    if (!matchingArtifacts.length) {
+      throw new Error(`Unable to find artifact with key ${key}`)
+    }
+
+    const latestArtifact = matchingArtifacts.reduce((latest, artifact) => {
+      if (artifact.created > latest.created) {
+        return artifact
+      }
+      return latest
+    })
+
+    return {
+      ...latestArtifact,
+      key,
+      latestId: latestArtifact.id,
+    }
+  })
+
+  useSeeds({
+    artifactCollections,
+  })
+
+  return artifacts
 }

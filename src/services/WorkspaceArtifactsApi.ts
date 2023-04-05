@@ -1,4 +1,6 @@
 import { Artifact, ArtifactResponse } from '@/models'
+import { ArtifactCollectionResponse } from '@/models/api/ArtifactCollectionResponse'
+import { ArtifactCollection } from '@/models/ArtifactCollection'
 import { ArtifactsFilter } from '@/models/Filters'
 import { BatchProcessor } from '@/services/BatchProcessor'
 import { mapper } from '@/services/Mapper'
@@ -8,7 +10,10 @@ import { toMap } from '@/utilities'
 export interface IWorkspaceArtifactsApi {
   getArtifact: (id: string) => Promise<Artifact>,
   getArtifacts: (filter: ArtifactsFilter) => Promise<Artifact[]>,
+  getArtifactCollection: (key: string) => Promise<ArtifactCollection>,
+  getArtifactCollections: (filter: ArtifactsFilter) => Promise<ArtifactCollection[]>,
   getArtifactsCount: (filter: ArtifactsFilter) => Promise<number>,
+  getArtifactCollectionsCount: (filter: ArtifactsFilter) => Promise<number>,
   deleteArtifact: (id: string) => Promise<void>,
 }
 
@@ -21,8 +26,17 @@ export class WorkspaceArtifactsApi extends WorkspaceApi implements IWorkspaceArt
     return toMap(artifacts, 'id')
   }, { maxBatchSize: 200 })
 
+  private readonly keyBatcher = new BatchProcessor<string, ArtifactCollection>(async keys => {
+    const collections = await this.getArtifactCollections({ artifacts: { key: keys } })
+    return toMap(collections, 'key')
+  }, { maxBatchSize: 200 })
+
   public getArtifact(id: string): Promise<Artifact> {
     return this.batcher.batch(id)
+  }
+
+  public getArtifactCollection(key: string): Promise<ArtifactCollection> {
+    return this.keyBatcher.batch(key)
   }
 
   public async getArtifacts(filter: ArtifactsFilter = {}): Promise<Artifact[]> {
@@ -34,6 +48,18 @@ export class WorkspaceArtifactsApi extends WorkspaceApi implements IWorkspaceArt
   public async getArtifactsCount(filter: ArtifactsFilter = {}): Promise<number> {
     const request = mapper.map('ArtifactsFilter', filter, 'ArtifactsFilterRequest')
     const { data } = await this.post<number>('count', request)
+    return data
+  }
+
+  public async getArtifactCollections(filter: ArtifactsFilter = {}): Promise<ArtifactCollection[]> {
+    const request = mapper.map('ArtifactsFilter', filter, 'ArtifactsFilterRequest')
+    const { data } = await this.post<ArtifactCollectionResponse[]>('latest/filter', request)
+    return mapper.map('ArtifactCollectionResponse', data, 'ArtifactCollection')
+  }
+
+  public async getArtifactCollectionsCount(filter: ArtifactsFilter = {}): Promise<number> {
+    const request = mapper.map('ArtifactsFilter', filter, 'ArtifactsFilterRequest')
+    const { data } = await this.post<number>('latest/count', request)
     return data
   }
 

@@ -89,14 +89,6 @@ function toExists(value?: boolean): Exists | undefined {
   return { exists_: value }
 }
 
-function toLatest(value?: boolean): { is_latest: Latest } | undefined {
-  if (typeof value === 'undefined') {
-    return value
-  }
-
-  return { is_latest: { is_latest: value } }
-}
-
 function toEquals(value?: boolean): Equals | undefined {
   if (typeof value === 'undefined') {
     return value
@@ -274,7 +266,6 @@ export const mapArtifactFilter: MapFunction<ArtifactFilter, ArtifactFilterReques
     },
     flow_run_id: toAny(source.flowRunId),
     task_run_id: toAny(source.taskRunId),
-    ...toLatest(source.isLatest),
   }
 }
 

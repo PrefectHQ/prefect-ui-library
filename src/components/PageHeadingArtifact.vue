@@ -48,7 +48,7 @@
     } else if (props.artifact.key) {
       internalCrumbs.push({
         text: props.artifact.key,
-        to: routes.artifactKey(props.artifact.id),
+        to: routes.artifactKey(props.artifact.key),
       })
     }
 

@@ -1,6 +1,6 @@
 import { KeyedDataStoreFindCallback } from './KeyedDataStore'
 import { MockApi } from './MockApi'
-import { Artifact } from '@/models'
+import { Artifact, ArtifactCollection } from '@/models'
 import { ArtifactsFilter } from '@/models/Filters'
 import { IWorkspaceArtifactsApi } from '@/services/WorkspaceArtifactsApi'
 
@@ -55,15 +55,46 @@ export class MockWorkspaceArtifactsApi extends MockApi implements IWorkspaceArti
 
     artifacts = artifacts.slice(offset, offset + limit)
 
-    if (filter.artifacts?.isLatest) {
-      artifacts = artifacts.filter(artifact => {
-        const otherArtifacts = artifacts.filter(otherArtifact => otherArtifact.key === artifact.key)
-        return otherArtifacts.length === 1 || otherArtifacts[0].created.getTime() <= artifact.created.getTime()
-      })
+    return artifacts
+  }
+
+  public async getArtifactCollections(filter: ArtifactsFilter = {}): Promise<ArtifactCollection[]> {
+    const { limit = 200, offset = 0, sort = 'CREATED_DESC' } = filter
+    let artifacts = await this.artifactCollections.findAll(artifactsItemIntersectsFilter(filter))
+
+    switch (sort) {
+      /* eslint-disable id-length */
+      case 'CREATED_DESC':
+        artifacts = artifacts.sort((a, b) => b.created.getTime() - a.created.getTime())
+        break
+      case 'KEY_ASC':
+        artifacts = artifacts.sort((a, b) => a.key.localeCompare(b.key))
+        break
+      case 'KEY_DESC':
+        artifacts = artifacts.sort((a, b) => b.key.localeCompare(a.key))
+        break
+      default:
+        break
+      /* eslint-enable id-length */
     }
 
+    artifacts = artifacts.slice(offset, offset + limit)
 
     return artifacts
+  }
+
+  public async getArtifactCollection(key: string): Promise<ArtifactCollection> {
+    const artifactCollection = await this.artifactCollections.find((artifactCollection: ArtifactCollection) => artifactCollection.key === key)
+
+    if (!artifactCollection) {
+      throw new Error(`Artifact collection with key ${key} not found`)
+    }
+
+    return artifactCollection
+  }
+
+  public async getArtifactCollectionsCount(filter: ArtifactsFilter): Promise<number> {
+    return await this.artifactCollections.count(artifactsItemIntersectsFilter(filter))
   }
 
   public async getArtifactsCount(filter: ArtifactsFilter = {}): Promise<number> {
