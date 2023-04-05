@@ -32,7 +32,7 @@
   import { useWorkspaceApi } from '@/compositions'
   import { localization } from '@/localization'
   import { Variable, VariableEdit, MAX_VARIABLE_NAME_LENGTH, MAX_VARIABLE_VALUE_LENGTH } from '@/models'
-  import { isHandle, isRequired, isString, isLessThanOrEqual } from '@/utilities'
+  import { isSnakeCase, isRequired, isString, isLessThanOrEqual } from '@/utilities'
 
   const props = defineProps<{
     variable: Variable,
@@ -95,7 +95,7 @@
     name: [
       isRequired(localization.info.name),
       isLessThanOrEqual(MAX_VARIABLE_NAME_LENGTH)(localization.info.name),
-      isHandle(localization.info.name),
+      isSnakeCase(localization.info.variableMustBeSnakeCase),
       nameIsUnique,
     ],
     value: [

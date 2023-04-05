@@ -101,6 +101,7 @@ export const en = {
     artifacts: 'Artifacts',
     artifactSearch: 'Search artifacts',
     variablesSearch: 'Search variables',
+    variableMustBeSnakeCase: 'Variable names may only contain letters, numbers, and underscores and may not begin or end with an underscore',
     artifactCreated: (key: string) => `Created __${key}__`,
     artifactTypeChanged: (type: string) => `Changed to \`${type}\` artifact`,
     newVariable: 'New variable',
