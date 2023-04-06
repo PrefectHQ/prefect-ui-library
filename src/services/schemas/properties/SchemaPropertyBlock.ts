@@ -8,7 +8,7 @@ export class SchemaPropertyBlock extends SchemaPropertyService {
 
   protected readonly default: BlockDocumentValue = {
     blockTypeSlug: this.property.blockTypeSlug!,
-    blockDocumentId: null,
+    blockDocumentId: this.property.default?.$ref?.block_document_id ?? null,
   }
 
   protected override get component(): SchemaPropertyComponentWithProps {

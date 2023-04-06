@@ -1,6 +1,5 @@
-import { BlockDocumentReferencesResponse, BlockDocumentValue, isBlockDocumentReferenceValue } from '@/models'
-import { resolveSchemaPropertyDefinition } from '@/services'
-import { isSchemaValues, Schema, SchemaValues } from '@/types/schemas'
+import { BlockDocumentReferencesResponse, BlockDocumentValue } from '@/models'
+import { isSchemaValues, SchemaValues } from '@/types/schemas'
 import { mapValues } from '@/utilities'
 
 export function schemaValuesBlockReferencesResolver(values: SchemaValues, references: BlockDocumentReferencesResponse | undefined): SchemaValues {
@@ -22,30 +21,6 @@ export function schemaValuesBlockReferencesResolver(values: SchemaValues, refere
 
     if (isSchemaValues(value)) {
       return schemaValuesBlockReferencesResolver(value, references)
-    }
-
-    return value
-  })
-}
-
-export function schemaValuesBlockReferencesWithSchemaResolver(values: SchemaValues, schema: Schema): SchemaValues {
-  const { properties, definitions } = schema
-
-  if (properties === undefined || definitions === undefined) {
-    return values
-  }
-
-  return mapValues(values, (key, value) => {
-    if (isBlockDocumentReferenceValue(value)) {
-      const property = properties[key]
-      if (property) {
-        const resolvedProperty = resolveSchemaPropertyDefinition(property, definitions)
-
-        return {
-          blockTypeSlug: resolvedProperty?.blockTypeSlug,
-          blockDocumentId: value.$ref.block_document_id,
-        }
-      }
     }
 
     return value

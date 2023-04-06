@@ -24,12 +24,11 @@
 
 <script lang="ts" setup>
   import { useSubscription } from '@prefecthq/vue-compositions'
-  import { cloneDeep } from 'lodash'
   import { computed } from 'vue'
   import { SchemaPropertiesKeyValues } from '@/components'
   import { useCan, useWorkspaceApi } from '@/compositions'
   import { WorkPool } from '@/models'
-  import { schemaValuesBlockReferencesWithSchemaResolver } from '@/services'
+  import { mapper } from '@/services'
   import { getSchemaDefaults } from '@/utilities'
   import { formatDateTimeNumeric } from '@/utilities/dates'
 
@@ -52,11 +51,10 @@
 
     return properties && Object.keys(properties).length > 0
   })
-  const schema = computed(() => props.workPool.baseJobTemplate.variables ?? {})
+  const schema = computed(() => mapper.map('SchemaResponse', props.workPool.baseJobTemplate.variables ?? {}, 'Schema'))
   const showBaseJobTemplateDetails = computed(() => props.workPool.type && schemaHasProperties.value && can.access.workers)
   const baseJobTemplateVariablesDefaults = computed(() => {
-    const defaults = getSchemaDefaults(props.workPool.baseJobTemplate.variables ?? {})
-    return schemaValuesBlockReferencesWithSchemaResolver(defaults, cloneDeep(schema.value))
+    return getSchemaDefaults(schema.value)
   })
 </script>
 
