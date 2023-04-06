@@ -1,5 +1,5 @@
 import BlockDocumentInput from '@/components/BlockDocumentInput.vue'
-import { BlockDocumentReferenceValue, BlockDocumentValue, isBlockDocumentValue } from '@/models/api/BlockDocumentCreateRequest'
+import { BlockDocumentReferenceValue, BlockDocumentValue, isBlockDocumentReferenceValue, isBlockDocumentValue } from '@/models/api/BlockDocumentCreateRequest'
 import { SchemaPropertyService } from '@/services/schemas/properties/SchemaPropertyService'
 import { SchemaPropertyComponentWithProps } from '@/services/schemas/utilities'
 import { SchemaValue } from '@/types/schemas'
@@ -8,7 +8,7 @@ export class SchemaPropertyBlock extends SchemaPropertyService {
 
   protected readonly default: BlockDocumentValue = {
     blockTypeSlug: this.property.blockTypeSlug!,
-    blockDocumentId: null,
+    blockDocumentId: this.getDefaultBlockDocumentId(),
   }
 
   protected override get component(): SchemaPropertyComponentWithProps {
@@ -41,6 +41,14 @@ export class SchemaPropertyBlock extends SchemaPropertyService {
     }
 
     this.invalid()
+  }
+
+  private getDefaultBlockDocumentId(): string | null {
+    if (isBlockDocumentReferenceValue(this.property.default)) {
+      return this.property.default.$ref.block_document_id
+    }
+
+    return null
   }
 
 }

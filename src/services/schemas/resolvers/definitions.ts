@@ -92,16 +92,3 @@ function resolveDefinition(ref: string, definitions: SchemaDefinitions): SchemaP
 
   return schema
 }
-
-function flattenPropertyWithDefinition(property: SchemaProperty, definition: Schema): SchemaProperty {
-  const flattened = {
-    ...definition,
-    ...property,
-  }
-
-  // if the property doesn't have a title or description try using the title and description from first reference
-  flattened.title = property.title ?? definition.title
-  flattened.description = property.description ?? definition.description
-
-  return flattened
-}

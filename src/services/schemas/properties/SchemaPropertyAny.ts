@@ -8,6 +8,10 @@ import { parseUnknownJson, stringifyUnknownJson } from '@/utilities/json'
 
 export class SchemaPropertyAny extends SchemaPropertyService {
   protected get default(): unknown {
+    if (this.has('default')) {
+      return this.property.default
+    }
+
     if (this.componentIs(JsonInput)) {
       return ''
     }
