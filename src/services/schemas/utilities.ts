@@ -1,6 +1,7 @@
 import { JsonInput } from '@/components'
-import { isBlockDocumentValue } from '@/models'
+import { BlockDocumentReferences, isBlockDocumentReferenceValue, isBlockDocumentValue } from '@/models'
 import { schemaPropertyServiceFactory } from '@/services/schemas/properties'
+import { resolveSchemaPropertyDefinition } from '@/services/schemas/resolvers'
 import { SchemaProperty, SchemaPropertyInputAttrs, Schema, SchemaValues, SchemaValue, schemaHas, SchemaPropertyAnyOf, SchemaPropertyAllOf } from '@/types/schemas'
 import { withPropsWithoutExcludedFactory } from '@/utilities/components'
 import { stringify } from '@/utilities/json'
