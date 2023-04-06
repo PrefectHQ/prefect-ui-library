@@ -43,6 +43,7 @@
   import ArtifactTimelineItemContent from '@/components/ArtifactTimelineItemContent.vue'
   import ArtifactTimelineItemDate from '@/components/ArtifactTimelineItemDate.vue'
   import { useWorkspaceApi } from '@/compositions'
+  import { useArtifactCollection } from '@/compositions/useArtifactCollection'
   import { localization } from '@/localization'
   import { Artifact, artifactTypeIconMap } from '@/models'
   import { ArtifactsFilter } from '@/models/Filters'
@@ -75,11 +76,8 @@
     }
   })
 
-  const artifactsLatestSubscription = useSubscription(api.artifacts.getArtifactCollection, [props.artifactKey], { interval: 30000 })
-  const latestArtifactId = computed(() => {
-    const latestArtifact = artifactsLatestSubscription.response
-    return latestArtifact?.latestId
-  })
+  const { artifactCollection } = useArtifactCollection(props.artifactKey)
+  const latestArtifactId = computed(() => artifactCollection.value?.latestId)
 
   const artifactsCountFilter = computed<ArtifactsFilter>(() => {
     return {
