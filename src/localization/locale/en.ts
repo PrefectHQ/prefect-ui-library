@@ -49,6 +49,7 @@ export const en = {
     stringValueTooLong: (property: string, max: number) => `${property} must be less than or equal to ${max} characters`,
     numberValueTooLarge: (property: string, max: number) => `${property} must be less than or equal to ${max}`,
     valueTooLarge: (property: string, max: number) => `${property} must be less than or equal to ${max}`,
+    mustBeSnakeCase: (property: string) => `${property} may only contain letters, numbers, and underscores and may not begin or end with an underscore`,
     submitNotification: 'Failed to submit notification',
     updateBlock: 'Failed to update block',
     updateNotification: 'Failed to update notification',
