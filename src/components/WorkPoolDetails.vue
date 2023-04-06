@@ -28,7 +28,7 @@
   import { SchemaPropertiesKeyValues } from '@/components'
   import { useCan, useWorkspaceApi } from '@/compositions'
   import { WorkPool } from '@/models'
-  import { getSchemaDefaults } from '@/utilities'
+  import { getSchemaDefaultValues, mapper } from '@/services'
   import { formatDateTimeNumeric } from '@/utilities/dates'
 
   const props = defineProps<{
@@ -50,9 +50,9 @@
 
     return properties && Object.keys(properties).length > 0
   })
-  const schema = computed(() => props.workPool.baseJobTemplate.variables ?? {})
+  const schema = computed(() => mapper.map('SchemaResponse', props.workPool.baseJobTemplate.variables ?? {}, 'Schema'))
   const showBaseJobTemplateDetails = computed(() => props.workPool.type && schemaHasProperties.value && can.access.workers)
-  const baseJobTemplateVariablesDefaults = getSchemaDefaults(props.workPool.baseJobTemplate.variables ?? {})
+  const baseJobTemplateVariablesDefaults = computed(() => getSchemaDefaultValues(schema.value))
 </script>
 
 <style>

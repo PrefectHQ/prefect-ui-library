@@ -11,7 +11,7 @@ export interface IWorkPool {
   isPaused: boolean,
   defaultQueueId: string,
   concurrencyLimit: number | null,
-  baseJobTemplate: Record<string, unknown>,
+  baseJobTemplate: BaseJobTemplateRequest,
 }
 
 export class WorkPool implements IWorkPool {

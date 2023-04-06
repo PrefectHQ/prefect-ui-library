@@ -1,5 +1,6 @@
+import { de } from 'date-fns/locale'
 import { JsonInput } from '@/components'
-import { isBlockDocumentValue } from '@/models'
+import { isBlockDocumentReferenceValue, isBlockDocumentValue } from '@/models'
 import { schemaPropertyServiceFactory } from '@/services/schemas/properties'
 import { SchemaProperty, SchemaPropertyInputAttrs, Schema, SchemaValues, SchemaValue, schemaHas, SchemaPropertyAnyOf, SchemaPropertyAllOf } from '@/types/schemas'
 import { withPropsWithoutExcludedFactory } from '@/utilities/components'
@@ -224,6 +225,10 @@ export function getSchemaValueAllOfDefinitionIndex({ allOf: definitions }: Schem
 }
 
 export function getSchemaValueDefinitionIndex(definitions: Schema[], value: SchemaValue): number | null {
+  if (isBlockDocumentReferenceValue(value)) {
+    return definitions.findIndex(definition => definition.type === 'block')
+  }
+
   switch (typeof value) {
     case 'number':
       return definitions.findIndex(definition => definition.type == 'number' || definition.type === 'integer')

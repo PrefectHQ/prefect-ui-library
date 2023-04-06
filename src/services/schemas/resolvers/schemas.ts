@@ -1,3 +1,4 @@
+import { schemaDefaultValuesResolver } from '@/services/schemas/resolvers/defaults'
 import { schemaDefinitionsResolver } from '@/services/schemas/resolvers/definitions'
 import { schemaMetaResolver } from '@/services/schemas/resolvers/meta'
 import { resolve, ResolverCallback } from '@/services/schemas/utilities'
@@ -8,7 +9,7 @@ export type SchemaResolver = ResolverCallback<Schema>
 /*
  * Resolvers that need to be run on a Schema before it can consumed by the UI. ORDER IS IMPORTANT
  */
-const resolvers = [schemaDefinitionsResolver, schemaMetaResolver]
+const resolvers = [schemaDefinitionsResolver, schemaDefaultValuesResolver, schemaMetaResolver]
 
 /*
  * Run all resolvers that need to be run on a Schema before it can be consumed by the UI

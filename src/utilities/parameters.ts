@@ -21,6 +21,9 @@ export function getSchemaValuesWithDefaultsJson(
   return stringify(defaultValues)
 }
 
+/*
+ * @deprecated use `getSchemaDefaultValues` instead
+ */
 export function getSchemaDefaults(schema: Schema): SchemaValues {
   const values: SchemaValues = {}
 
