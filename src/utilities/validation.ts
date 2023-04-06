@@ -273,6 +273,6 @@ export const isHandle: ValidationMethodFactory = property => value => {
 
 const SNAKE_CASE_REGEX = /^[a-z0-9]+(?:_[a-z0-9]+)*$/
 
-export const isSnakeCase = (message?: string): ValidationRule<unknown> => (value) => {
-  return isNotNullish(value) && isString(value) && SNAKE_CASE_REGEX.test(value) || message
+export const isSnakeCase: ValidationRule<unknown> = (value, field) => {
+  return isNotNullish(value) && isString(value) && SNAKE_CASE_REGEX.test(value) || localization.error.mustBeSnakeCase(field)
 }

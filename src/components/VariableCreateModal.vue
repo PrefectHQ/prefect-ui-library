@@ -89,7 +89,7 @@
     name: [
       isRequired(localization.info.name),
       isLessThanOrEqual(MAX_VARIABLE_NAME_LENGTH)(localization.info.value),
-      isSnakeCase(localization.info.variableMustBeSnakeCase),
+      isSnakeCase,
       nameIsUnique,
     ],
     value: [
