@@ -4,24 +4,24 @@ import { getSchemaValueDefinition } from '@/services/schemas/utilities'
 import { Schema, SchemaProperties, SchemaProperty } from '@/types'
 import { mapValues } from '@/utilities/object'
 
-export const schemaDefaultValuesResolver: SchemaResolver = (schema: Schema): Schema => {
+export const schemaBlockReferenceDefaultValuesResolver: SchemaResolver = (schema: Schema): Schema => {
   const { properties, ...rest } = schema
   const resolved: Schema = rest
 
-  resolved.properties = resolveSchemaPropertyDefaultValues(properties)
+  resolved.properties = resolveSchemaPropertyBlockReferenceDefaultValues(properties)
 
   return resolved
 }
 
-export function resolveSchemaPropertyDefaultValues(properties: SchemaProperties | undefined): SchemaProperties | undefined {
+function resolveSchemaPropertyBlockReferenceDefaultValues(properties: SchemaProperties | undefined): SchemaProperties | undefined {
   if (!properties) {
     return undefined
   }
 
-  return mapValues(properties, (key, property) => resolveSchemaPropertyDefaultValue(property))
+  return mapValues(properties, (key, property) => resolveSchemaPropertyBlockReferenceDefaultValue(property))
 }
 
-export function resolveSchemaPropertyDefaultValue(property: SchemaProperty | undefined): SchemaProperty | undefined {
+function resolveSchemaPropertyBlockReferenceDefaultValue(property: SchemaProperty | undefined): SchemaProperty | undefined {
   if (!property) {
     return undefined
   }
