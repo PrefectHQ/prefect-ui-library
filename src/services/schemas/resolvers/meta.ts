@@ -23,11 +23,11 @@ function resolveSchemaPropertyMeta(property: SchemaProperty, required: boolean, 
   const resolved: SchemaProperty = rest
 
   if (allOf) {
-    resolved.allOf = allOf.map(value => resolveSchemaPropertyMeta(value, false, level))
+    resolved.allOf = allOf.map(value => resolveSchemaPropertyMeta(value, required, level))
   }
 
   if (anyOf) {
-    resolved.anyOf = anyOf.map(value => resolveSchemaPropertyMeta(value, false, level))
+    resolved.anyOf = anyOf.map(value => resolveSchemaPropertyMeta(value, required, level))
   }
 
   if (items) {
