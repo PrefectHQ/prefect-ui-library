@@ -146,7 +146,7 @@
   })
 
   function keyboardShortcutListener(event: KeyboardEvent): void {
-    if (eventTargetIsInput(event.target)) {
+    if (eventTargetIsInput(event.target) || event.metaKey) {
       return
     }
 
