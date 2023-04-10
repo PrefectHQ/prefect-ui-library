@@ -42,6 +42,7 @@
   import { usePaginatedSubscription } from '@/compositions/usePaginatedSubscription'
   import { LogsFilter } from '@/models/Filters'
   import { Log, LogLevel } from '@/models/Log'
+  import { isRunningStateType } from '@/models/StateType'
   import { TaskRun } from '@/models/TaskRun'
   import { LogSortValues } from '@/types'
 
@@ -61,7 +62,10 @@
   }))
 
   const api = useWorkspaceApi()
-  const logsSubscription = usePaginatedSubscription(api.logs.getLogs, [logsFilter], { interval: 5000 })
+  const options = {
+    interval: isRunningStateType(props.taskRun.stateType) ? 5000 : Infinity,
+  }
+  const logsSubscription = usePaginatedSubscription(api.logs.getLogs, [logsFilter], options)
   const logs = computed<Log[]>(() => logsSubscription.response ?? [])
 
   function clear(): void {
