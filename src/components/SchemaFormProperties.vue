@@ -18,7 +18,7 @@
     property: SchemaProperty,
   }>()
 
-  const label = computed(() => props.property.required ? props.property.title : `${props.property.title} (Optional)`)
+  const label = computed(() => props.property.meta?.required ? props.property.title : `${props.property.title} (Optional)`)
 </script>
 
 <style>

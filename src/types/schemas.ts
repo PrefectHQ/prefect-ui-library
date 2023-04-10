@@ -39,7 +39,7 @@ export type SchemaPropertyMetaOptions = {
   required?: boolean,
 }
 
-export type SchemaPropertyMeta = SchemaPropertyComponentWithProps & SchemaPropertyMetaOptions
+export type SchemaPropertyMeta = Partial<SchemaPropertyComponentWithProps> & SchemaPropertyMetaOptions
 
 export type SchemaProperty = {
   // prefect specific properties
