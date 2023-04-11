@@ -1,13 +1,12 @@
 <template>
-  <PContent class="schema-properties-key-values">
+  <p-content class="schema-properties-key-values">
     <template v-for="[key, property] in sortedSchemaProperties" :key="key">
       <SchemaProperty v-if="property" :value="getPropertyValue(key)" v-bind="{ property, alternate }" />
     </template>
-  </PContent>
+  </p-content>
 </template>
 
 <script lang="ts" setup>
-  import { PContent } from '@prefecthq/prefect-design'
   import { computed } from 'vue'
   import SchemaProperty from '@/components/SchemaPropertyKeyValue.vue'
   import { Schema, SchemaValues } from '@/types/schemas'
