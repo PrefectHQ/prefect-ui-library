@@ -34,7 +34,7 @@
 </template>
 
 <script lang="ts" setup>
-  import { ref, computed } from 'vue'
+  import { ref, computed, toRefs } from 'vue'
   import LogLevelSelect from '@/components/LogLevelSelect.vue'
   import LogsContainer from '@/components/LogsContainer.vue'
   import LogsSort from '@/components/LogsSort.vue'
@@ -50,6 +50,7 @@
     flowRun: FlowRun,
   }>()
 
+  const { flowRun } = toRefs(props)
   const logLevel = ref<LogLevel>(0)
   const logsSort = ref<LogSortValues>('TIMESTAMP_ASC')
   const hasFilter = computed(() => logLevel.value !== 0)
@@ -62,8 +63,8 @@
   }))
 
   const api = useWorkspaceApi()
-  const options = useStatePolling(props.flowRun)
-  const logsSubscription = usePaginatedSubscription(api.logs.getLogs, [logsFilter], options.value)
+  const options = useStatePolling(flowRun)
+  const logsSubscription = usePaginatedSubscription(api.logs.getLogs, [logsFilter], options)
   const logs = computed<Log[]>(() => logsSubscription.response ?? [])
 
   function clear(): void {

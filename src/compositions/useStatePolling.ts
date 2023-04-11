@@ -1,5 +1,5 @@
 import { SubscriptionOptions } from '@prefecthq/vue-compositions'
-import { ComputedRef, computed, unref } from 'vue'
+import { ComputedRef, computed, ref, watchEffect } from 'vue'
 import { MaybeRef, PrefectStateNames } from '@/types'
 
 type StateResource = {
@@ -11,8 +11,10 @@ const stateNamesThatShouldPoll: (string | null)[] = ['Pending', 'Running'] satis
 export function useStatePolling(stateName: MaybeRef<string | null>, interval?: number): ComputedRef<SubscriptionOptions>
 export function useStatePolling(resource: MaybeRef<StateResource>, interval?: number): ComputedRef<SubscriptionOptions>
 export function useStatePolling(resourceOrStateName: MaybeRef<StateResource | string | null>, interval: number = 5000): ComputedRef<SubscriptionOptions> {
+  const argRef = ref(resourceOrStateName)
+
   const shouldPoll = computed(() => {
-    const arg = unref(resourceOrStateName)
+    const arg = argRef.value
 
     if (arg === null) {
       return false
