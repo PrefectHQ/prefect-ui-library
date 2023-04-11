@@ -21,6 +21,7 @@
   import { useSessionStorage } from '@prefecthq/vue-compositions'
   import { useField } from 'vee-validate'
   import { computed, watchEffect } from 'vue'
+  import { ValidationMethodFactory, useWorkspaceApi } from '..'
   import SchemaFormFields from '@/components/SchemaFormFields.vue'
   import SubmitButton from '@/components/SubmitButton.vue'
   import { useForm } from '@/compositions/useForm'
@@ -39,6 +40,7 @@
     (event: 'cancel'): void,
   }>()
 
+  const api = useWorkspaceApi()
   const storageKey = computed(() => getCacheKey(`block-schema-form-${props.blockSchema.id}`))
 
   const { initialValue: initialValues, remove: removeFromStorage, set: setStorageValue } = useSessionStorage(storageKey.value, {
@@ -51,7 +53,24 @@
     initialValues,
   })
 
-  const { value: name, meta: nameState, errorMessage: nameError } = useField<string>('name', fieldRules('Name', isRequired, isHandle))
+  const isUniqueBlockName: ValidationMethodFactory = () => async (value) => {
+    if (value && typeof value === 'string') {
+      const documents = await api.blockDocuments.getBlockDocuments({
+        blockDocuments: {
+          name: [value],
+        },
+      })
+
+      if (documents.length) {
+        return 'Block document names must be unique.'
+      }
+
+    }
+
+    return true
+  }
+
+  const { value: name, meta: nameState, errorMessage: nameError } = useField<string>('name', fieldRules('Name', isRequired, isHandle, isUniqueBlockName))
 
   watchEffect(() => setStorageValue(values))
 
