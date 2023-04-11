@@ -40,7 +40,7 @@
   import LogsSort from '@/components/LogsSort.vue'
   import { useWorkspaceApi } from '@/compositions'
   import { usePaginatedSubscription } from '@/compositions/usePaginatedSubscription'
-  import { isRunningStateType } from '@/models'
+  import { useStatePolling } from '@/compositions/useStatePolling'
   import { LogsFilter } from '@/models/Filters'
   import { FlowRun } from '@/models/FlowRun'
   import { Log, LogLevel } from '@/models/Log'
@@ -62,10 +62,8 @@
   }))
 
   const api = useWorkspaceApi()
-  const options = {
-    interval: isRunningStateType(props.flowRun.stateType) ? 5000 : Infinity,
-  }
-  const logsSubscription = usePaginatedSubscription(api.logs.getLogs, [logsFilter], options)
+  const options = useStatePolling(props.flowRun)
+  const logsSubscription = usePaginatedSubscription(api.logs.getLogs, [logsFilter], options.value)
   const logs = computed<Log[]>(() => logsSubscription.response ?? [])
 
   function clear(): void {

@@ -41,7 +41,7 @@
     (event: 'update:selected', value: string | string[] | null): void,
   }>()
 
-  const multiple = computed(() => props.multiple === true || isArray(internalValue.value))
+  const multiple = computed(() => props.multiple || isArray(internalValue.value))
 
   const internalValue = computed({
     get() {
