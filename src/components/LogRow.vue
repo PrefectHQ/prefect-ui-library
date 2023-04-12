@@ -40,13 +40,12 @@
 
 <style>
 .log-row { @apply
-  flex
-  w-full
+  grid
   py-2;
+  grid-template-columns: 84px minmax(0, 1fr) 150px;
 }
 
 .log-row__leading { @apply
-  w-[84px]
   select-none;
 }
 
@@ -63,7 +62,6 @@
   shrink-0
   text-right
   pl-1
-  max-w-[15%]
 }
 
 .log-row__logger { @apply
