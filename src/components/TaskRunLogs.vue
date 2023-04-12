@@ -40,6 +40,7 @@
   import LogsSort from '@/components/LogsSort.vue'
   import { useWorkspaceApi } from '@/compositions'
   import { usePaginatedSubscription } from '@/compositions/usePaginatedSubscription'
+  import { useStatePolling } from '@/compositions/useStatePolling'
   import { LogsFilter } from '@/models/Filters'
   import { Log, LogLevel } from '@/models/Log'
   import { TaskRun } from '@/models/TaskRun'
@@ -61,7 +62,9 @@
   }))
 
   const api = useWorkspaceApi()
-  const logsSubscription = usePaginatedSubscription(api.logs.getLogs, [logsFilter], { interval: 5000 })
+  const taskRunStateName = computed(() => props.taskRun.state?.name ?? null)
+  const logsSubscriptionOptions = useStatePolling(taskRunStateName)
+  const logsSubscription = usePaginatedSubscription(api.logs.getLogs, [logsFilter], logsSubscriptionOptions)
   const logs = computed<Log[]>(() => logsSubscription.response ?? [])
 
   function clear(): void {

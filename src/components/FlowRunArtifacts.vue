@@ -57,11 +57,12 @@
 
 <script lang="ts" setup>
   import { useSubscription } from '@prefecthq/vue-compositions'
-  import { computed } from 'vue'
+  import { computed, toRefs } from 'vue'
   import ArtifactCard from '@/components/ArtifactCard.vue'
   import RowGridLayoutList from '@/components/RowGridLayoutList.vue'
   import ViewModeButtonGroup from '@/components/ViewModeButtonGroup.vue'
   import { useWorkspaceApi, useWorkspaceRoutes } from '@/compositions'
+  import { useStatePolling } from '@/compositions/useStatePolling'
   import { localization } from '@/localization'
   import { FlowRun, isTerminalStateType } from '@/models'
   import { ArtifactsFilter } from '@/models/Filters'
@@ -71,6 +72,7 @@
     flowRun: FlowRun,
   }>()
 
+  const { flowRun } = toRefs(props)
   const condense = computed(() => activeViewMode.value !== 'grid')
 
   const api = useWorkspaceApi()
@@ -84,7 +86,9 @@
       },
     }
   })
-  const artifactsSubscription = useSubscription(api.artifacts.getArtifacts, [artifactsFilter], { interval: 5000 })
+
+  const artifactsSubscriptionOptions = useStatePolling(flowRun)
+  const artifactsSubscription = useSubscription(api.artifacts.getArtifacts, [artifactsFilter], artifactsSubscriptionOptions)
   const artifacts = computed(() => artifactsSubscription.response ?? [])
 
   const taskRunArtifacts = computed(() => artifacts.value.filter(artifact => !!artifact.taskRunId))
