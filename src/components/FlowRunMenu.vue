@@ -2,7 +2,7 @@
   <p-icon-button-menu>
     <template #default>
       <router-link v-if="flowRun?.deploymentId" :to="routes.deploymentFlowRunCreate(flowRun.deploymentId, flowRun.parameters)">
-        <p-overflow-menu-item label="Custom run" />
+        <p-overflow-menu-item label="Copy to new run" />
       </router-link>
       <p-overflow-menu-item v-if="canRetry && showAll" label="Retry" @click="openRetryModal" />
       <p-overflow-menu-item v-if="canResume && showAll" label="Resume" @click="openResumeModal" />
