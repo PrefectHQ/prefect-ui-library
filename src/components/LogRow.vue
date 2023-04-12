@@ -53,7 +53,8 @@
 .log-row__content { @apply
   flex-1
   select-auto
-  whitespace-pre-wrap;
+  whitespace-pre-wrap
+  break-words
 }
 
 .log-row__trailing { @apply
