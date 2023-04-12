@@ -6,8 +6,8 @@
   <template v-else>
     <p-key-value :label="property.title" class="schema-property-key-value" v-bind="{ value, alternate }">
       <template v-if="isDefined && isJsonProperty" #value>
-        <CopyableWrapper :text-to-copy="jsonValue ?? ''">
-          <p-code-highlight lang="json" :text="jsonValue ?? ''" />
+        <CopyableWrapper :text-to-copy="jsonValue">
+          <p-code-highlight lang="json" :text="jsonValue" />
         </CopyableWrapper>
       </template>
     </p-key-value>
@@ -33,7 +33,7 @@
     return props.property.type === 'array' || props.property.meta?.component === JsonInput
   })
 
-  const jsonValue = computed(() => stringifyUnknownJson(props.value) ?? undefined)
+  const jsonValue = computed(() => stringifyUnknownJson(props.value) ?? '')
 
   // todo: copied from PKeyValue. Hoping to update PKeyValue to eliminate the need for this
   const isDefined = computed((): boolean => {
@@ -53,5 +53,6 @@
 .schema-property-key-value { @apply
   max-w-full
   min-w-0
+  items-stretch
 }
 </style>
