@@ -33,14 +33,15 @@
 </script>
 
 <script lang="ts" setup>
-  import { useSubscription } from '@prefecthq/vue-compositions'
+  import { useSubscriptionWithDependencies } from '@prefecthq/vue-compositions'
   import { computed, useAttrs } from 'vue'
   import { StateListItem } from '@/components'
   import { useWorkspaceApi, useWorkspaceRoutes } from '@/compositions'
-  import { Flow } from '@/models'
+  import { DeploymentsFilter, Flow } from '@/models'
 
   const props = defineProps<{
     flow: Flow,
+    filter?: DeploymentsFilter,
   }>()
 
   const attrs = useAttrs()
@@ -48,15 +49,19 @@
   const api = useWorkspaceApi()
   const routes = useWorkspaceRoutes()
 
-  const deploymentsSubscription = useSubscription(
-    api.deployments.getDeployments,
-    [
-      {
-        flows: {
-          id: [props.flow.id],
-        },
+  const deploymentsSubscriptionArgs = computed<[DeploymentsFilter]>(() => {
+    const filter = {
+      ...props.filter,
+      flows: {
+        id: [props.flow.id],
       },
-    ],
+    }
+
+    return [filter]
+  })
+  const deploymentsSubscription = useSubscriptionWithDependencies(
+    api.deployments.getDeployments,
+    deploymentsSubscriptionArgs,
   )
   const deployments = computed(() => deploymentsSubscription.response ?? [])
 
