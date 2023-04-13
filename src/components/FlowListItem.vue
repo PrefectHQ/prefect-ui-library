@@ -19,16 +19,23 @@
       </template>
 
       <template #relationships>
-        <div class="flow-list-item__relationships">
+        <div class="flow-list-item__relationships" @click="toggle">
           <p-divider />
           <div v-if="deploymentsCountSubscription.executed">
+            <p-button
+              size="xs"
+              class="flow-list-item__relationships-toggle"
+              :class="classes.toggle"
+              inset
+              icon="ChevronDownIcon"
+            />
             {{ deploymentsCount }}  {{ toPluralString(localization.info.deployment, deploymentsCount) }}
           </div>
         </div>
       </template>
     </StateListItem>
 
-    <FlowListItemDeployments :filter="deploymentsFilter" class="flow-list-item__deployments" />
+    <FlowListItemDeployments v-show="expanded" :filter="deploymentsFilter" class="flow-list-item__deployments" />
   </div>
 </template>
 
@@ -59,6 +66,7 @@
   const api = useWorkspaceApi()
   const routes = useWorkspaceRoutes()
   const selected = ref([])
+  const expanded = ref(true)
 
   const deploymentsFilter = computed<DeploymentsFilter>(() => {
     const filter = {
@@ -91,6 +99,17 @@
   const flowState = computed(() => {
     return lastRun.value?.state?.type ?? nextRun.value?.state?.type ?? undefined
   })
+
+  const toggle = (): void => {
+    expanded.value = !expanded.value
+  }
+
+
+  const classes = computed(() => ({
+    toggle: {
+      'flow-list-item__relationships-toggle--expanded': expanded.value,
+    },
+  }))
 </script>
 
 <style>
@@ -129,5 +148,16 @@
 
 .flow-list-item__relationships { @apply
   w-full
+}
+
+.flow-list-item__relationships-toggle { @apply
+  relative
+  rounded-full
+  transition-transform
+  mr-2
+}
+
+.flow-list-item__relationships-toggle--expanded { @apply
+  rotate-180
 }
 </style>
