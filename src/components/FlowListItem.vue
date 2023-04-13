@@ -99,26 +99,27 @@
   sm:rounded-bl
 }
 
-.flow-list-item__deployments { @apply
-  sm:pr-4
-  sm:ml-1
+.flow-list-item-container { @apply
   relative
 }
 
-.flow-list-item__deployments::after {
+.flow-list-item__deployments { @apply
+  sm:pr-4
+  sm:ml-2
+}
+
+.flow-list-item__deployments::before {
   content: '';
 
   @apply
   absolute
-  left-0
+  left-2
   top-0
-  bottom-0
+  bottom-1
   border-l-2
-  w-2
-  dark:border-background-600
-  border-background-400
-  rounded-b-full
+  border-foreground-50
   pointer-events-none
+  z-[-1]
 }
 
 .flow-list-item-container .state-list-item__meta { @apply

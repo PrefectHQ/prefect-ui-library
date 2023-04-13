@@ -34,25 +34,27 @@
       -->
     </template>
 
-    <template #relationships>
+    <!--
+      <template #relationships>
       <template v-if="deployment.workPoolName">
-        <div class="deployment-list-item__relation">
-          <span>{{ localization.info.workPool }}</span> <WorkPoolIconText :work-pool-name="deployment.workPoolName" />
-        </div>
+      <div class="deployment-list-item__relation">
+      <span>{{ localization.info.workPool }}</span> <WorkPoolIconText :work-pool-name="deployment.workPoolName" />
+      </div>
       </template>
 
       <template v-if="deployment.workQueueName">
-        <div class="deployment-list-item__relation">
-          <span>{{ localization.info.workQueue }} </span> <WorkQueueIconText :work-queue-name="deployment.workQueueName" :work-pool-name="deployment.workPoolName" />
-        </div>
+      <div class="deployment-list-item__relation">
+      <span>{{ localization.info.workQueue }} </span> <WorkQueueIconText :work-queue-name="deployment.workQueueName" :work-pool-name="deployment.workPoolName" />
+      </div>
       </template>
-    </template>
+      </template>
+    -->
   </StateListItem>
 </template>
 
 <script lang="ts" setup>
   import { computed } from 'vue'
-  import { ListItemMetaFlowRun, StateListItem, WorkPoolIconText, WorkQueueIconText } from '@/components'
+  import { StateListItem, WorkPoolIconText, WorkQueueIconText } from '@/components'
   import { useLastFlowRun, useNextFlowRun, useWorkspaceRoutes } from '@/compositions'
   import { localization } from '@/localization'
   import { Deployment, FlowRunsFilter, isRRuleSchedule } from '@/models'
