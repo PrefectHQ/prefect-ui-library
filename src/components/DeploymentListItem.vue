@@ -6,7 +6,9 @@
           {{ deployment.name }}
         </p-heading>
       </p-link>
+    </template>
 
+    <template #meta>
       <div class="deployment-list-item__schedule">
         <p-icon icon="ClockIcon" />
 
@@ -22,15 +24,14 @@
           </div>
         </template>
       </div>
-    </template>
-
-    <template #meta>
-      <template v-if="lastRun">
+      <!--
+        <template v-if="lastRun">
         <ListItemMetaFlowRun :title="localization.info.lastRun" :flow-run="lastRun" />
-      </template>
-      <template v-if="nextRun">
+        </template>
+        <template v-if="nextRun">
         <ListItemMetaFlowRun :title="localization.info.nextRun" :flow-run="nextRun" />
-      </template>
+        </template>
+      -->
     </template>
 
     <template #relationships>

@@ -113,7 +113,7 @@
   left-0
   top-0
   bottom-0
-  border-l-[3px]
+  border-l-2
   w-2
   dark:border-background-600
   border-background-400
@@ -123,5 +123,9 @@
 
 .flow-list-item-container .state-list-item__meta { @apply
   gap-8
+}
+
+.flow-list-item__relationships { @apply
+  w-full
 }
 </style>
