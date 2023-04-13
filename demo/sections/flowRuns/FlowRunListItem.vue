@@ -9,6 +9,10 @@
     <template #no-relations>
       <FlowRunListItem :flow-run="flowRunWithNoRelations" :selected="[]" class="color-mode-default" disabled />
     </template>
+
+    <template #flat>
+      <FlowRunListItem :flow-run="flowRun" :selected="[]" class="color-mode-default" flat />
+    </template>
   </ComponentPage>
 </template>
 
@@ -21,6 +25,7 @@
   const demos: DemoSection[] = [
     { title: 'Disabled', description: 'With selection disabled' },
     { title: 'No Relations', description: 'With no deployment or work queue' },
+    { title: 'Flat', description: 'With no container and no selection' },
   ]
 
   const flowRun = useFlowRunMock()

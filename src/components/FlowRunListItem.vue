@@ -1,6 +1,6 @@
 <template>
   <div ref="el" class="flow-run-list-item">
-    <StateListItem v-model:selected="model" v-bind="{ value, disabled, tags, stateType }">
+    <StateListItem v-model:selected="model" v-bind="{ value, disabled, tags, stateType }" :flat="flat">
       <template #name>
         <FlowRunBreadCrumbs :flow-run="flowRun" />
       </template>
@@ -61,6 +61,7 @@
     selected: CheckboxModel | null,
     flowRun: FlowRun,
     disabled?: boolean,
+    flat?: boolean,
   }>()
 
   const emit = defineEmits<{

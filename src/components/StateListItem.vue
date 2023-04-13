@@ -1,5 +1,12 @@
 <template>
-  <p-list-item-input v-model:selected="model" :value="value" class="state-list-item" :class="classes" disabled>
+  <component
+    :is="flat ? 'div' : 'p-list-item-input'"
+    v-model:selected="model"
+    :value="value"
+    class="state-list-item"
+    :class="classes"
+    disabled
+  >
     <div class="state-list-item__content">
       <div class="state-list-item__top-section">
         <div class="state-list-item__name">
@@ -22,7 +29,7 @@
         </div>
       </template>
     </div>
-  </p-list-item-input>
+  </component>
 </template>
 
 <script lang="ts" setup>
@@ -35,6 +42,7 @@
     value: unknown,
     stateType: StateType | null | undefined,
     tags?: string[] | null,
+    flat?: boolean,
   }>()
 
   const emit = defineEmits<{
