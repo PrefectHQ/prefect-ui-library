@@ -60,15 +60,24 @@
 </script>
 
 <style>
-.flow-list-item { @apply
-  rounded-bl-none
-}
-
 .flow-list-item__deployments { @apply
   pr-4
-  ml-4
-  border-l-2
+  ml-2
+  relative
+}
+
+.flow-list-item__deployments::after {
+  content: '';
+
+  @apply
+  absolute
+  left-0
+  top-0
+  bottom-0
+  border-l-[3px]
+  w-2
   dark:border-background-600
   border-background-400
+  rounded-b-full
 }
 </style>

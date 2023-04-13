@@ -74,4 +74,8 @@
 .flow-list-item-deployments__deployment { @apply
   rounded-l-none
 }
+
+.flow-list-item-deployments__deployment:last-child { @apply
+  rounded-bl
+}
 </style>
