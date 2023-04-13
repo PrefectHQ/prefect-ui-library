@@ -61,13 +61,14 @@
 
 <style>
 .flow-list-item { @apply
-  rounded-br-none
+  rounded-bl-none
 }
 
 .flow-list-item__deployments { @apply
-  border-l-2
-  border-slate-700
   pr-4
-  ml-5
+  ml-4
+  border-l-2
+  dark:border-background-600
+  border-background-400
 }
 </style>
