@@ -80,7 +80,6 @@
 
   const schedule = computed(() => props.deployment.schedule)
   const scheduleText = computed(() => {
-    console.log(schedule.value, schedule.value?.toString())
     if (isRRuleSchedule(schedule.value)) {
       return 'RRule'
     }
