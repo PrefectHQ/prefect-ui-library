@@ -27,6 +27,8 @@ export function useNextFlowRun(filter: FlowRunsFilter | Ref<FlowRunsFilter | nul
           type: scheduledStateType,
         },
       },
+      limit: 1,
+      sort: 'EXPECTED_START_TIME_ASC',
     }
   })
 

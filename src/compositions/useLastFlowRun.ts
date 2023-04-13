@@ -27,6 +27,8 @@ export function useLastFlowRun(filter: FlowRunsFilter | Ref<FlowRunsFilter | nul
           type: terminalStateType,
         },
       },
+      limit: 1,
+      sort: 'START_TIME_DESC',
     }
   })
 
