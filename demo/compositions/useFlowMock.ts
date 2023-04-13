@@ -5,25 +5,25 @@ import { repeat } from '@/utilities'
 
 export function useFlowMock(override?: Partial<Flow>): Flow {
   const flow = mocker.create('flow', [override])
-  const workQueue = mocker.create('workQueue')
+  const workPool = mocker.create('workPool')
   const deployment = mocker.create('deployment', [
     {
       flowId: flow.id,
-      workQueueName: workQueue.name,
+      workPoolName: workPool.name,
     },
   ])
   const flowRuns = mocker.createMany('flowRun', mocker.create('number'), [
     {
       flowId: flow.id,
       deploymentId: deployment.id,
-      workQueueName: workQueue.name,
+      workPoolName: workPool.name,
     },
   ])
 
   useSeeds({
     flows: [flow],
     deployments: [deployment],
-    workQueues: [workQueue],
+    workPools: [workPool],
     flowRuns,
   })
 
