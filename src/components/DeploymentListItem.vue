@@ -6,6 +6,12 @@
           {{ deployment.name }}
         </p-heading>
       </p-link>
+
+      <template v-if="schedule">
+        <div class="deployment-list-item__schedule">
+          <p-icon icon="ClockIcon" /> <span :title="schedule?.toString({ verbose: true })">{{ scheduleText }}</span>
+        </div>
+      </template>
     </template>
 
     <template #meta>
@@ -38,7 +44,7 @@
   import { ListItemMetaFlowRun, StateListItem, WorkPoolIconText, WorkQueueIconText } from '@/components'
   import { useLastFlowRun, useNextFlowRun, useWorkspaceRoutes } from '@/compositions'
   import { localization } from '@/localization'
-  import { Deployment, FlowRunsFilter } from '@/models'
+  import { Deployment, FlowRunsFilter, isRRuleSchedule } from '@/models'
 
   const props = defineProps<{
     deployment: Deployment,
@@ -61,10 +67,32 @@
   const deploymentState = computed(() => {
     return lastRun.value?.state?.type ?? nextRun.value?.state?.type ?? undefined
   })
+
+  const schedule = computed(() => props.deployment.schedule)
+  const scheduleText = computed(() => {
+    console.log(schedule.value, schedule.value?.toString())
+    if (isRRuleSchedule(schedule.value)) {
+      return 'RRule'
+    }
+
+    return schedule.value?.toString() ?? ''
+  })
 </script>
 
 <style>
 .deployment-list-item .state-list-item__meta { @apply
   gap-8
+}
+
+.deployment-list-item__relation { @apply
+  flex
+  gap-2
+}
+
+.deployment-list-item__schedule { @apply
+  text-foreground
+  flex
+  gap-1
+  items-center
 }
 </style>

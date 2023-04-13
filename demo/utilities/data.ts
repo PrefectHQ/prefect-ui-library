@@ -2,6 +2,7 @@ import { KeyedDataStore } from '../services/KeyedDataStore'
 import { SimpleDataStore } from '../services/SimpleDataStore'
 import { ApiMockSeeds } from './api'
 import { FlowRunGraphMock } from '@/demo/types/flowRunGraphMock'
+import { ScheduleResponse, mapper } from '@/index'
 import { Flow, FlowRun, BlockDocument, BlockSchema, TaskRun, Deployment, WorkQueue, BlockType, WorkPool, WorkPoolQueue, WorkPoolWorker, GraphNode, Artifact, ArtifactCollection } from '@/models'
 import { resolveSchema } from '@/services/schemas/resolvers/schemas'
 
@@ -31,7 +32,13 @@ export function createDataStores(seeds: ApiMockSeeds = {}) {
     blockSchemas: new KeyedDataStore({ seeds: seeds.blockSchemas, hydrate: hydrateBlockSchema }),
     concurrencyLimits: new KeyedDataStore({ seeds: seeds.concurrencyLimits, hydrate: concurrencyLimit => concurrencyLimit }),
     taskRuns: new KeyedDataStore({ seeds: seeds.taskRuns, hydrate: taskRun => new TaskRun(taskRun) }),
-    deployments: new KeyedDataStore({ seeds: seeds.deployments, hydrate: deployment => new Deployment(deployment) }),
+    deployments: new KeyedDataStore({
+      seeds: seeds.deployments,
+      hydrate: deployment => {
+        const schedule = mapper.map('ScheduleResponse', deployment.schedule as unknown as ScheduleResponse, 'Schedule')
+        return new Deployment({ ...deployment, schedule })
+      },
+    }),
     workQueues: new KeyedDataStore({ seeds: seeds.workQueues, hydrate: workQueue => new WorkQueue(workQueue) }),
     blockTypes: new KeyedDataStore({ seeds: seeds.blockTypes, hydrate: blockType => new BlockType(blockType) }),
     blockSchemaCapabilities: new SimpleDataStore({ seeds: seeds.blockCapabilities }),
