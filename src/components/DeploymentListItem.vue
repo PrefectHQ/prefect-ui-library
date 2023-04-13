@@ -9,6 +9,33 @@
     </template>
 
     <template #meta>
+      <template v-if="deployment.workPoolName">
+        <div class="deployment-list-item__relation">
+          <span>{{ localization.info.workPool }}</span> <WorkPoolIconText :work-pool-name="deployment.workPoolName" />
+        </div>
+      </template>
+
+      <template v-if="deployment.workQueueName">
+        <div class="deployment-list-item__relation">
+          <span>{{ localization.info.workQueue }} </span> <WorkQueueIconText :work-queue-name="deployment.workQueueName" :work-pool-name="deployment.workPoolName" />
+        </div>
+      </template>
+
+      <!--
+        <template v-if="lastRun">
+        <ListItemMetaFlowRun :title="localization.info.lastRun" :flow-run="lastRun" />
+        </template>
+        <template v-if="nextRun">
+        <ListItemMetaFlowRun :title="localization.info.nextRun" :flow-run="nextRun" />
+        </template>
+      -->
+    </template>
+
+    <template #action>
+      <DeploymentMenu size="xs" :deployment="deployment" show-all @delete="refresh" />
+    </template>
+
+    <template #relationships>
       <DeploymentToggle :deployment="deployment" :disabled="!schedule" @update="refresh" />
 
       <div class="deployment-list-item__schedule">
@@ -26,34 +53,7 @@
           </div>
         </template>
       </div>
-      <!--
-        <template v-if="lastRun">
-        <ListItemMetaFlowRun :title="localization.info.lastRun" :flow-run="lastRun" />
-        </template>
-        <template v-if="nextRun">
-        <ListItemMetaFlowRun :title="localization.info.nextRun" :flow-run="nextRun" />
-        </template>
-      -->
     </template>
-
-    <template #action>
-      <DeploymentMenu size="xs" :deployment="deployment" show-all @delete="refresh" />
-    </template>
-    <!--
-      <template #relationships>
-      <template v-if="deployment.workPoolName">
-      <div class="deployment-list-item__relation">
-      <span>{{ localization.info.workPool }}</span> <WorkPoolIconText :work-pool-name="deployment.workPoolName" />
-      </div>
-      </template>
-
-      <template v-if="deployment.workQueueName">
-      <div class="deployment-list-item__relation">
-      <span>{{ localization.info.workQueue }} </span> <WorkQueueIconText :work-queue-name="deployment.workQueueName" :work-pool-name="deployment.workPoolName" />
-      </div>
-      </template>
-      </template>
-    -->
   </StateListItem>
 </template>
 
@@ -104,6 +104,10 @@
 .deployment-list-item__relation { @apply
   flex
   gap-2
+  items-start
+  text-xs
+  font-medium
+  whitespace-nowrap
 }
 
 .deployment-list-item__schedule { @apply
