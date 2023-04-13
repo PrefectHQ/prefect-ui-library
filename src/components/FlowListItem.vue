@@ -117,13 +117,13 @@
   sm:left-2
   top-0
   bottom-1
-  border-l-2
-  border-foreground-50
+  border-l
+  border-foreground-100
   pointer-events-none
   z-[-1]
 }
 
-.flow-list-item-container .state-list-item__meta { @apply
+.flow-list-item .state-list-item__meta { @apply
   gap-8
 }
 

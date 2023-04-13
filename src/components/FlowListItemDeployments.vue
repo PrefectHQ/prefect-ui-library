@@ -17,7 +17,7 @@
         @bottom="fetchMore"
       >
         <template #default="{ item: deployment }">
-          <DeploymentListItem v-model:selected="selected" v-bind="{ deployment, disabled }" class="flow-list-item-deployments__deployment" />
+          <DeploymentListItem v-model:selected="selected" v-bind="{ deployment }" class="flow-list-item-deployments__deployment" />
         </template>
       </p-virtual-scroller>
     </template>

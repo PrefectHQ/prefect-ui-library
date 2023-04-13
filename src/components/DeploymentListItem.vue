@@ -1,5 +1,5 @@
 <template>
-  <StateListItem class="deployment-list-item" :tags="tags" :state="deploymentState">
+  <StateListItem class="deployment-list-item" :tags="tags" :state="deploymentState" disabled>
     <template #name>
       <p-link :to="routes.deployment(deployment.id)">
         <p-heading :heading="5">
@@ -9,6 +9,8 @@
     </template>
 
     <template #meta>
+      <DeploymentToggle :deployment="deployment" @update="refresh" />
+
       <div class="deployment-list-item__schedule">
         <p-icon icon="ClockIcon" />
 
@@ -34,6 +36,9 @@
       -->
     </template>
 
+    <template #action>
+      <DeploymentMenu size="xs" :deployment="deployment" show-all @delete="refresh" />
+    </template>
     <!--
       <template #relationships>
       <template v-if="deployment.workPoolName">
@@ -54,7 +59,7 @@
 
 <script lang="ts" setup>
   import { computed } from 'vue'
-  import { StateListItem, WorkPoolIconText, WorkQueueIconText } from '@/components'
+  import { DeploymentMenu, DeploymentToggle, StateListItem, WorkPoolIconText, WorkQueueIconText } from '@/components'
   import { useLastFlowRun, useNextFlowRun, useWorkspaceRoutes } from '@/compositions'
   import { localization } from '@/localization'
   import { Deployment, FlowRunsFilter, isRRuleSchedule } from '@/models'
@@ -89,13 +94,13 @@
 
     return schedule.value?.toString() ?? ''
   })
+
+  const refresh = (): void => {
+    // TODO: impelement
+  }
 </script>
 
 <style>
-.deployment-list-item .state-list-item__meta { @apply
-  gap-8
-}
-
 .deployment-list-item__relation { @apply
   flex
   gap-2

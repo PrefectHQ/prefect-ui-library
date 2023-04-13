@@ -1,24 +1,31 @@
 <template>
   <p-list-item-input v-model:selected="model" :value="value" class="state-list-item" :class="classes" disabled>
-    <div class="state-list-item__content">
-      <div class="state-list-item__top-section">
-        <div class="state-list-item__name">
-          <slot name="name" />
+    <div class="state-list-item__content-container">
+      <div class="state-list-item__content">
+        <div class="state-list-item__top-section">
+          <div class="state-list-item__name">
+            <slot name="name" />
+          </div>
+          <template v-if="$slots.tags || tags.length">
+            <div class="state-list-item__tags">
+              <slot name="tags">
+                <p-tag-wrapper v-bind="{ tags, justify }" />
+              </slot>
+            </div>
+          </template>
         </div>
-        <template v-if="$slots.tags || tags.length">
-          <div class="state-list-item__tags">
-            <slot name="tags">
-              <p-tag-wrapper v-bind="{ tags, justify }" />
-            </slot>
+        <div class="state-list-item__meta">
+          <slot name="meta" />
+        </div>
+        <template v-if="$slots.relationships">
+          <div class="state-list-item__relationships">
+            <slot name="relationships" />
           </div>
         </template>
       </div>
-      <div class="state-list-item__meta">
-        <slot name="meta" />
-      </div>
-      <template v-if="$slots.relationships">
-        <div class="state-list-item__relationships">
-          <slot name="relationships" />
+      <template v-if="$slots.action">
+        <div class="state-list-item__action">
+          <slot name="action" />
         </div>
       </template>
     </div>
@@ -93,6 +100,11 @@
   flex-col
   gap-2
   items-start
+  grow
+}
+
+.state-list-item__content-container { @apply
+  flex
 }
 
 .state-list-item__top-section { @apply
