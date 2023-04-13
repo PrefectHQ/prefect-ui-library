@@ -23,7 +23,9 @@
     </template>
 
     <template v-else>
-      no deployments go here
+      <div class="flow-list-item-deployments__empty-state-container">
+        <FlowListItemDeploymentsEmptyState :flow="flow" />
+      </div>
     </template>
   </div>
 </template>
@@ -34,12 +36,14 @@
   import {
     DeploymentsDeleteButton,
     DeploymentListItem,
+    FlowListItemDeploymentsEmptyState,
     SelectedCount
   } from '@/components'
   import { useCan, useWorkspaceApi } from '@/compositions'
-  import { DeploymentsFilter } from '@/models'
+  import { DeploymentsFilter, Flow } from '@/models'
 
   const props = defineProps<{
+    flow: Flow,
     filter?: DeploymentsFilter,
     disabled?: boolean,
   }>()
@@ -101,5 +105,9 @@
   p-2
   gap-4
   h-min
+}
+
+.flow-list-item-deployments__empty-state-container { @apply
+  p-4
 }
 </style>

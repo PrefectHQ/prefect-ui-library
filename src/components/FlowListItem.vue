@@ -35,7 +35,7 @@
       </template>
     </StateListItem>
 
-    <FlowListItemDeployments v-show="expanded" :filter="deploymentsFilter" class="flow-list-item__deployments" />
+    <FlowListItemDeployments v-show="expanded" :flow="flow" :filter="deploymentsFilter" class="flow-list-item__deployments" />
   </div>
 </template>
 

@@ -8,14 +8,14 @@
       </p-link>
     </template>
 
-    <template #meta>
+    <template v-if="deployment.workPoolName || deployment.workQueueName" #meta>
       <template v-if="deployment.workPoolName">
         <div class="deployment-list-item__relation">
           <span>{{ localization.info.workPool }}</span> <WorkPoolIconText :work-pool-name="deployment.workPoolName" />
         </div>
       </template>
 
-      <template v-if="deployment.workQueueName">
+      <template v-else-if="deployment.workQueueName">
         <div class="deployment-list-item__relation">
           <span>{{ localization.info.workQueue }} </span> <WorkQueueIconText :work-queue-name="deployment.workQueueName" :work-pool-name="deployment.workPoolName" />
         </div>
