@@ -7,11 +7,21 @@
         </p-heading>
       </p-link>
 
-      <template v-if="schedule">
-        <div class="deployment-list-item__schedule">
-          <p-icon icon="ClockIcon" /> <span :title="schedule?.toString({ verbose: true })">{{ scheduleText }}</span>
-        </div>
-      </template>
+      <div class="deployment-list-item__schedule">
+        <p-icon icon="ClockIcon" />
+
+        <template v-if="schedule">
+          <div class="deployment-list-item__schedule-text">
+            <span :title="schedule?.toString({ verbose: true })">{{ scheduleText }}</span>
+          </div>
+        </template>
+
+        <template v-else>
+          <div class="deployment-list-item__schedule-none">
+            {{ localization.info.noSchedule }}
+          </div>
+        </template>
+      </div>
     </template>
 
     <template #meta>
@@ -94,5 +104,15 @@
   flex
   gap-1
   items-center
+  text-sm
+}
+
+.deployment-list-item__schedule-text { @apply
+  font-bold
+}
+
+.deployment-list-item__schedule-none { @apply
+  text-foreground-100
+  font-normal
 }
 </style>

@@ -121,6 +121,7 @@ export const en = {
     copyName: 'Copy name',
     copyValue: 'Copy value',
     edit: 'Edit',
+    noSchedule: 'No schedule',
     delete: 'Delete',
     tags: 'Tags',
     nextRun: 'Next run',
