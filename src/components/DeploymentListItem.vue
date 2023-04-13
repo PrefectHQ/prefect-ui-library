@@ -7,13 +7,28 @@
         </p-heading>
       </p-link>
     </template>
+
+    <template #relationships>
+      <template v-if="deployment.workPoolName">
+        <div class="flow-run-list-item__relation">
+          <span>{{ localization.info.workPool }}</span> <WorkPoolIconText :work-pool-name="deployment.workPoolName" />
+        </div>
+      </template>
+
+      <template v-if="deployment.workQueueName">
+        <div class="flow-run-list-item__relation">
+          <span>{{ localization.info.workQueue }} </span> <WorkQueueIconText :work-queue-name="deployment.workQueueName" :work-pool-name="deployment.workPoolName" />
+        </div>
+      </template>
+    </template>
   </StateListItem>
 </template>
 
 <script lang="ts" setup>
   import { computed } from 'vue'
-  import { StateListItem } from '@/components'
+  import { StateListItem, WorkPoolIconText, WorkQueueIconText } from '@/components'
   import { useWorkspaceRoutes } from '@/compositions'
+  import { localization } from '@/localization'
   import { Deployment } from '@/models'
 
   const props = defineProps<{
