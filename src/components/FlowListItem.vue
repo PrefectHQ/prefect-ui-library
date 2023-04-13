@@ -41,12 +41,12 @@
 </script>
 
 <script lang="ts" setup>
-  import { useSubscription, useSubscriptionWithDependencies } from '@prefecthq/vue-compositions'
+  import { useSubscriptionWithDependencies } from '@prefecthq/vue-compositions'
   import { computed, ref, useAttrs } from 'vue'
   import { FlowListItemDeployments, FlowRunIconText, StateListItem } from '@/components'
-  import { useWorkspaceApi, useWorkspaceRoutes } from '@/compositions'
+  import { useNextFlowRun, useLastFlowRun, useWorkspaceApi, useWorkspaceRoutes } from '@/compositions'
   import { localization } from '@/localization'
-  import { DeploymentsFilter, Flow, FlowRunsFilter, scheduledStateType, terminalStateType } from '@/models'
+  import { DeploymentsFilter, Flow, FlowRunsFilter } from '@/models'
 
   const props = defineProps<{
     flow: Flow,
@@ -76,41 +76,16 @@
   )
   const deploymentsCount = computed(() => deploymentsCountSubscription.response)
 
-  const nextRunFilter = computed<FlowRunsFilter>(() => {
+  const flowRunsFilter = computed<FlowRunsFilter>(() => {
     return {
       flows: {
         id: [props.flow.id],
       },
-      flowRuns: {
-        state: {
-          type: scheduledStateType,
-        },
-      },
     }
   })
-  const nextRunSubscription = useSubscription(
-    api.flowRuns.getFlowRuns,
-    [nextRunFilter],
-  )
-  const nextRun = computed(() => nextRunSubscription.response?.[0])
 
-  const lastRunFilter = computed<FlowRunsFilter>(() => {
-    return {
-      flows: {
-        id: [props.flow.id],
-      },
-      flowRuns: {
-        state: {
-          type: terminalStateType,
-        },
-      },
-    }
-  })
-  const lastRunSubscription = useSubscription(
-    api.flowRuns.getFlowRuns,
-    [lastRunFilter],
-  )
-  const lastRun = computed(() => lastRunSubscription.response?.[0])
+  const { flowRun: nextRun } = useNextFlowRun(flowRunsFilter)
+  const { flowRun: lastRun } = useLastFlowRun(flowRunsFilter)
 </script>
 
 <style>
