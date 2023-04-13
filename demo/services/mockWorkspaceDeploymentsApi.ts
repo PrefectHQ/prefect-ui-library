@@ -1,7 +1,28 @@
+import { KeyedDataStoreFindCallback } from './KeyedDataStore'
 import { MockApi } from './MockApi'
 import { Deployment, DeploymentFlowRunCreate, DeploymentUpdate, FlowRun } from '@/models'
 import { DeploymentsFilter } from '@/models/Filters'
 import { IWorkspaceDeploymentsApi, mocker } from '@/services'
+
+const deploymentsItemIntersectsFilter = (filter: DeploymentsFilter): KeyedDataStoreFindCallback<Deployment> => {
+  return (deployment: Deployment): boolean => {
+    let filtered = false
+
+    if (filter.flows?.id?.length) {
+      filtered = !!deployment.flowId && !filter.flows.id.includes(deployment.flowId)
+    }
+
+    if (!filtered && filter.deployments?.id?.length) {
+      filtered = !filter.deployments.id.includes(deployment.id)
+    }
+
+    if (!filtered && filter.deployments?.name?.length) {
+      filtered = !filter.deployments.name.includes(deployment.name)
+    }
+
+    return !filtered
+  }
+}
 
 export class MockWorkspaceDeploymentsApi extends MockApi implements IWorkspaceDeploymentsApi {
 
@@ -9,21 +30,39 @@ export class MockWorkspaceDeploymentsApi extends MockApi implements IWorkspaceDe
     return await this.deployments.get(deploymentId)
   }
 
+  /**
+   * WARNING: Not all filter arguments have been implemented for the getDeployments method... use at your own risk
+   */
   public async getDeployments(filter: DeploymentsFilter): Promise<Deployment[]> {
-    if (Object.keys(filter).length) {
-      console.warn('MockWorkspaceDeploymentsApi has not implemented the filter argument of the getDeployments method')
+    const { limit = 200, offset = 0, sort = 'CREATED_DESC' } = filter
+    let deployments = await this.deployments.findAll(deploymentsItemIntersectsFilter(filter))
+
+    switch (sort) {
+      /* eslint-disable id-length */
+      case 'CREATED_DESC':
+        deployments = deployments.sort((a, b) => b.created.getTime() - a.created.getTime())
+        break
+      case 'NAME_ASC':
+        deployments = deployments.sort((a, b) => a.name.localeCompare(b.name))
+        break
+      case 'NAME_DESC':
+        deployments = deployments.sort((a, b) => b.name.localeCompare(a.name))
+        break
+      default:
+        console.warn(`MockWorkspaceDeploymentsApi has not implemented the sort argument for ${sort} of the getDeployments method`)
+        break
+      /* eslint-enable id-length */
     }
 
-    return await this.deployments.getAll()
-
+    deployments = deployments.slice(offset, offset + limit)
+    return deployments
   }
 
+  /**
+   * WARNING: Not all filter arguments have been implemented for the getDeployments method... use at your own risk
+   */
   public async getDeploymentsCount(filter: DeploymentsFilter): Promise<number> {
-    if (Object.keys(filter).length) {
-      console.warn('MockWorkspaceDeploymentsApi has not implemented the filter argument of the getDeploymentsCount method')
-    }
-
-    return await this.deployments.count()
+    return await this.deployments.count(deploymentsItemIntersectsFilter(filter))
   }
 
   public async createDeploymentFlowRun(deploymentId: string, request?: DeploymentFlowRunCreate): Promise<FlowRun> {

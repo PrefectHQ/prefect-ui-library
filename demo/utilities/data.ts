@@ -36,7 +36,9 @@ export function createDataStores(seeds: ApiMockSeeds = {}) {
       seeds: seeds.deployments,
       hydrate: deployment => {
         const schedule = mapper.map('ScheduleResponse', deployment.schedule as unknown as ScheduleResponse, 'Schedule')
-        return new Deployment({ ...deployment, schedule })
+        const created = new Date(deployment.created)
+        const updated = new Date(deployment.updated)
+        return new Deployment({ ...deployment, schedule, created, updated })
       },
     }),
     workQueues: new KeyedDataStore({ seeds: seeds.workQueues, hydrate: workQueue => new WorkQueue(workQueue) }),
