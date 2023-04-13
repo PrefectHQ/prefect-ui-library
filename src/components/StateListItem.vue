@@ -31,9 +31,9 @@
   import { StateType } from '@/models/StateType'
 
   const props = defineProps<{
-    selected: CheckboxModel | null,
-    value: unknown,
-    stateType: StateType | null | undefined,
+    selected?: CheckboxModel | null,
+    value?: unknown,
+    stateType?: StateType | null | undefined,
     tags?: string[] | null,
   }>()
 
