@@ -10,7 +10,7 @@
       </template>
     </StateListItem>
 
-    <FlowListItemDeployments :filter="deploymentsFilter" />
+    <FlowListItemDeployments :filter="deploymentsFilter" class="flow-list-item__deployments" />
   </div>
 </template>
 
@@ -61,6 +61,13 @@
 
 <style>
 .flow-list-item { @apply
-  rounded-b-none
+  rounded-br-none
+}
+
+.flow-list-item__deployments { @apply
+  border-l-2
+  border-slate-700
+  pr-4
+  ml-5
 }
 </style>
