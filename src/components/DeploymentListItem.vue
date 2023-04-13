@@ -20,16 +20,17 @@
           <span>{{ localization.info.workQueue }} </span> <WorkQueueIconText :work-queue-name="deployment.workQueueName" :work-pool-name="deployment.workPoolName" />
         </div>
       </template>
-
-      <!--
-        <template v-if="lastRun">
-        <ListItemMetaFlowRun :title="localization.info.lastRun" :flow-run="lastRun" />
-        </template>
-        <template v-if="nextRun">
-        <ListItemMetaFlowRun :title="localization.info.nextRun" :flow-run="nextRun" />
-        </template>
-      -->
     </template>
+
+
+    <!--
+      <template v-if="lastRun">
+      <ListItemMetaFlowRun :title="localization.info.lastRun" :flow-run="lastRun" />
+      </template>
+      <template v-if="nextRun">
+      <ListItemMetaFlowRun :title="localization.info.nextRun" :flow-run="nextRun" />
+      </template>
+    -->
 
     <template #action>
       <DeploymentMenu size="xs" :deployment="deployment" show-all @delete="refresh" />
