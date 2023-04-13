@@ -1,6 +1,6 @@
 <template>
   <ComponentPage title="FlowListItem">
-    <FlowListItem :flow="flow" />
+    <FlowListItem :flow="flowNoDeployments" />
   </ComponentPage>
 </template>
 
@@ -9,5 +9,5 @@
   import ComponentPage from '@/demo/components/ComponentPage.vue'
   import { useFlowMock } from '@/demo/compositions/useFlowMock'
 
-  const flow = useFlowMock()
+  const flowNoDeployments = useFlowMock({}, { deploymentsCount: 0 })
 </script>
