@@ -1,5 +1,5 @@
 <template>
-  <StateListItem class="flow-card">
+  <StateListItem class="flow-list-item">
     hello
   </StateListItem>
 </template>
@@ -9,7 +9,7 @@
 </script>
 
 <style>
-.flow-card { @apply
+.flow-list-item { @apply
   flex
   flex-col
   gap-y-2
