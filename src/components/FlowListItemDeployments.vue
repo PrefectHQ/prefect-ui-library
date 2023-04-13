@@ -98,8 +98,8 @@
 .flow-list-item-deployments__header { @apply
   flex
   items-center
-  p-4
+  p-2
   gap-4
-  h-12
+  h-min
 }
 </style>

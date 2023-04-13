@@ -9,7 +9,7 @@
     </template>
 
     <template #meta>
-      <DeploymentToggle :deployment="deployment" @update="refresh" />
+      <DeploymentToggle :deployment="deployment" :disabled="!schedule" @update="refresh" />
 
       <div class="deployment-list-item__schedule">
         <p-icon icon="ClockIcon" />
