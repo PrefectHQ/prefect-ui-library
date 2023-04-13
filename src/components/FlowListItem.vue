@@ -113,7 +113,8 @@
 
   @apply
   absolute
-  left-2
+  left-0
+  sm:left-2
   top-0
   bottom-1
   border-l-2
