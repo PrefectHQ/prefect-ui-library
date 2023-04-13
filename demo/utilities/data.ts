@@ -26,7 +26,7 @@ export function createDataStores(seeds: ApiMockSeeds = {}) {
     artifacts: new KeyedDataStore({ seeds: seeds.artifacts, hydrate: artifact => new Artifact({ ...artifact, created: new Date(artifact.created), updated: new Date(artifact.updated) }) }),
     artifactCollections: new KeyedDataStore({ seeds: seeds.artifactCollections, hydrate: artifactCollection => new ArtifactCollection({ ...artifactCollection, created: new Date(artifactCollection.created), updated: new Date(artifactCollection.updated) }) }),
     flows: new KeyedDataStore({ seeds: seeds.flows, hydrate: flow => new Flow(flow) }),
-    flowRuns: new KeyedDataStore({ seeds: seeds.flowRuns, hydrate: flowRun => new FlowRun(flowRun) }),
+    flowRuns: new KeyedDataStore({ seeds: seeds.flowRuns, hydrate: flowRun => new FlowRun({ ...flowRun, created: new Date(flowRun.created), updated: new Date(flowRun.updated) }) }),
     flowRunGraphs: new KeyedDataStore({ seeds: seeds.flowRunGraphs, hydrate: hydrateGraph }),
     blockDocuments: new KeyedDataStore({ seeds: seeds.blockDocuments, hydrate: blockDocument => new BlockDocument(blockDocument) }),
     blockSchemas: new KeyedDataStore({ seeds: seeds.blockSchemas, hydrate: hydrateBlockSchema }),
