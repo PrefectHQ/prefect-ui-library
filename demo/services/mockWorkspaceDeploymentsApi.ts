@@ -31,7 +31,7 @@ export class MockWorkspaceDeploymentsApi extends MockApi implements IWorkspaceDe
   }
 
   /**
-   * WARNING: Not all filter arguments have been implemented for the getDeployments method... use at your own risk
+   * WARNING: Not all filter arguments have been implemented for the getDeployments method... feel free to add any missing filters :)
    */
   public async getDeployments(filter: DeploymentsFilter): Promise<Deployment[]> {
     const { limit = 200, offset = 0, sort = 'CREATED_DESC' } = filter
@@ -59,7 +59,7 @@ export class MockWorkspaceDeploymentsApi extends MockApi implements IWorkspaceDe
   }
 
   /**
-   * WARNING: Not all filter arguments have been implemented for the getDeployments method... use at your own risk
+   * WARNING: Not all filter arguments have been implemented for the getDeploymentsCount method... feel free to add any missing filters :)
    */
   public async getDeploymentsCount(filter: DeploymentsFilter): Promise<number> {
     return await this.deployments.count(deploymentsItemIntersectsFilter(filter))

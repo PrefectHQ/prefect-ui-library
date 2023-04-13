@@ -1,9 +1,30 @@
 import { GraphTimelineNode } from '@prefecthq/graphs'
+import { KeyedDataStoreFindCallback } from './KeyedDataStore'
 import { MockApi } from '@/../demo/services/MockApi'
 import { FlowRun, GraphNode, RunHistory, stateType, StateUpdate } from '@/models'
 import { FlowRunsFilter, FlowRunsHistoryFilter } from '@/models/Filters'
 import { IWorkspaceFlowRunsApi, mocker } from '@/services'
 import { dateFunctions } from '@/utilities/timezone'
+
+const flowRunsItemIntersectsFilter = (filter: FlowRunsFilter): KeyedDataStoreFindCallback<FlowRun> => {
+  return (flowRun: FlowRun): boolean => {
+    let filtered = false
+
+    if (filter.flows?.id?.length) {
+      filtered = !!flowRun.flowId && !filter.flows.id.includes(flowRun.flowId)
+    }
+
+    if (!filtered && filter.flowRuns?.id?.length) {
+      filtered = !filter.flowRuns.id.includes(flowRun.id)
+    }
+
+    if (!filtered && filter.flowRuns?.name?.length && flowRun.name) {
+      filtered = !filter.flowRuns.name.includes(flowRun.name)
+    }
+
+    return !filtered
+  }
+}
 
 export class MockWorkspaceFlowRunsApi extends MockApi implements IWorkspaceFlowRunsApi {
 
@@ -11,20 +32,39 @@ export class MockWorkspaceFlowRunsApi extends MockApi implements IWorkspaceFlowR
     return await this.flowRuns.get(flowRunId)
   }
 
+  /**
+   * WARNING: Not all filter arguments have been implemented for the getFlowRuns method... feel free to add any missing filters :)
+   */
   public async getFlowRuns(filter: FlowRunsFilter): Promise<FlowRun[]> {
-    if (Object.keys(filter).length) {
-      console.warn('MockWorkspaceFlowRunsApi has not implemented the filter argument of the getFlowRuns method')
+    const { limit = 200, offset = 0, sort = 'CREATED_DESC' } = filter
+    let flowRuns = await this.flowRuns.findAll(flowRunsItemIntersectsFilter(filter))
+
+    switch (sort) {
+      /* eslint-disable id-length */
+      case 'CREATED_DESC':
+        flowRuns = flowRuns.sort((a, b) => b.created.getTime() - a.created.getTime())
+        break
+      case 'NAME_ASC':
+        flowRuns = flowRuns.sort((a, b) => a.name?.localeCompare(b.name ?? '') ?? 0)
+        break
+      case 'NAME_DESC':
+        flowRuns = flowRuns.sort((a, b) => b.name?.localeCompare(a.name ?? '') ?? 0)
+        break
+      default:
+        console.warn(`MockWorkspaceFlowRunsApi has not implemented the sort argument for ${sort} of the getFlowRuns method`)
+        break
+      /* eslint-enable id-length */
     }
 
-    return await this.flowRuns.getAll()
+    flowRuns = flowRuns.slice(offset, offset + limit)
+    return flowRuns
   }
 
+  /**
+   * WARNING: Not all filter arguments have been implemented for the getFlowRunsCount method... feel free to add any missing filters :)
+   */
   public async getFlowRunsCount(filter: FlowRunsFilter): Promise<number> {
-    if (Object.keys(filter).length) {
-      console.warn('MockWorkspaceFlowRunsApi has not implemented the filter argument of the getFlowRunsCount method')
-    }
-
-    return await this.flowRuns.count()
+    return await this.flowRuns.count(flowRunsItemIntersectsFilter(filter))
   }
 
   public getFlowRunsHistory(filter: FlowRunsHistoryFilter): Promise<RunHistory[]> {

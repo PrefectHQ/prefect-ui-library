@@ -1,10 +1,12 @@
 <template>
   <ComponentPage title="FlowListItem">
-    <FlowListItem :flow="flowNoDeployments" />
+    <p-content>
+      <FlowListItem :flow="flowNoDeployments" />
 
-    <template v-for="flow in flows" :key="flow.id">
-      <FlowListItem :flow="flow" />
-    </template>
+      <template v-for="flow in flows" :key="flow.id">
+        <FlowListItem :flow="flow" />
+      </template>
+    </p-content>
   </ComponentPage>
 </template>
 
