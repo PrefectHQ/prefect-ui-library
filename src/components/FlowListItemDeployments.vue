@@ -34,7 +34,6 @@
   import {
     DeploymentsDeleteButton,
     DeploymentListItem,
-    ResultsCount,
     SelectedCount
   } from '@/components'
   import { useCan, useWorkspaceApi } from '@/compositions'

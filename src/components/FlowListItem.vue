@@ -1,12 +1,30 @@
 <template>
   <div class="flow-list-item-container">
-    <StateListItem v-bind="attrs" class="flow-list-item" :tags="tags">
+    <StateListItem v-model:selected="selected" v-bind="attrs" class="flow-list-item">
       <template #name>
         <p-link :to="routes.flow(flow.id)">
           <p-heading :heading="5">
             {{ flow.name }}
           </p-heading>
         </p-link>
+      </template>
+
+      <template #meta>
+        <template v-if="nextRun">
+          <div class="flow-list-item__relation">
+            <span>{{ localization.info.nextRun }}</span> <FlowRunIconText :flow-run-id="nextRun.id" />
+          </div>
+        </template>
+
+        <template v-if="lastRun">
+          <div class="flow-list-item__relation">
+            <span>{{ localization.info.lastRun }}</span> <FlowRunIconText :flow-run-id="lastRun.id" />
+          </div>
+        </template>
+      </template>
+
+      <template #relationships>
+        {{ deploymentsCount }}
       </template>
     </StateListItem>
 
@@ -23,11 +41,12 @@
 </script>
 
 <script lang="ts" setup>
-  import { useSubscriptionWithDependencies } from '@prefecthq/vue-compositions'
-  import { computed, useAttrs } from 'vue'
-  import { FlowListItemDeployments, StateListItem } from '@/components'
+  import { useSubscription, useSubscriptionWithDependencies } from '@prefecthq/vue-compositions'
+  import { computed, ref, useAttrs } from 'vue'
+  import { FlowListItemDeployments, FlowRunIconText, StateListItem } from '@/components'
   import { useWorkspaceApi, useWorkspaceRoutes } from '@/compositions'
-  import { DeploymentsFilter, Flow } from '@/models'
+  import { localization } from '@/localization'
+  import { DeploymentsFilter, Flow, FlowRunsFilter, scheduledStateType, terminalStateType } from '@/models'
 
   const props = defineProps<{
     flow: Flow,
@@ -38,6 +57,7 @@
 
   const api = useWorkspaceApi()
   const routes = useWorkspaceRoutes()
+  const selected = ref([])
 
   const deploymentsFilter = computed<DeploymentsFilter>(() => {
     const filter = {
@@ -50,13 +70,47 @@
     return filter
   })
   const deploymentsSubscriptionArgs = computed<[DeploymentsFilter]>(() => [deploymentsFilter.value])
-  const deploymentsSubscription = useSubscriptionWithDependencies(
-    api.deployments.getDeployments,
+  const deploymentsCountSubscription = useSubscriptionWithDependencies(
+    api.deployments.getDeploymentsCount,
     deploymentsSubscriptionArgs,
   )
-  const deployments = computed(() => deploymentsSubscription.response ?? [])
+  const deploymentsCount = computed(() => deploymentsCountSubscription.response)
 
-  const tags = computed(() => deployments.value.map((deployment) => deployment.tags ?? []).flat())
+  const nextRunFilter = computed<FlowRunsFilter>(() => {
+    return {
+      flows: {
+        id: [props.flow.id],
+      },
+      flowRuns: {
+        state: {
+          type: scheduledStateType,
+        },
+      },
+    }
+  })
+  const nextRunSubscription = useSubscription(
+    api.flowRuns.getFlowRuns,
+    [nextRunFilter],
+  )
+  const nextRun = computed(() => nextRunSubscription.response?.[0])
+
+  const lastRunFilter = computed<FlowRunsFilter>(() => {
+    return {
+      flows: {
+        id: [props.flow.id],
+      },
+      flowRuns: {
+        state: {
+          type: terminalStateType,
+        },
+      },
+    }
+  })
+  const lastRunSubscription = useSubscription(
+    api.flowRuns.getFlowRuns,
+    [lastRunFilter],
+  )
+  const lastRun = computed(() => lastRunSubscription.response?.[0])
 </script>
 
 <style>
@@ -67,7 +121,7 @@
 
 .flow-list-item__deployments { @apply
   sm:pr-4
-  sm:ml-2
+  sm:ml-1
   relative
 }
 
@@ -85,5 +139,12 @@
   border-background-400
   rounded-b-full
   pointer-events-none
+}
+
+.flow-list-item__relation { @apply
+  flex
+  gap-1
+  text-xs
+  font-medium
 }
 </style>

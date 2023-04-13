@@ -122,6 +122,8 @@ export const en = {
     edit: 'Edit',
     delete: 'Delete',
     tags: 'Tags',
+    nextRun: 'Next run',
+    lastRun: 'Last run',
     workPool: 'Work Pool',
     workQueue: 'Work Queue',
     filterByTags: 'Filter by tags',
