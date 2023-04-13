@@ -60,9 +60,14 @@
 </script>
 
 <style>
+.flow-list-item { @apply
+  rounded-bl-none
+  sm:rounded-bl
+}
+
 .flow-list-item__deployments { @apply
-  pr-4
-  ml-2
+  sm:pr-4
+  sm:ml-2
   relative
 }
 
