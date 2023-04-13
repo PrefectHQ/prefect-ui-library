@@ -10,17 +10,7 @@
       </template>
     </StateListItem>
 
-    <template v-if="deploymentsSubscription.loading">
-      <p-loading-icon />
-    </template>
-
-    <template v-else-if="deployments.length">
-      {{ deployments }}
-    </template>
-
-    <template v-else>
-      No deployments
-    </template>
+    <FlowListItemDeployments :filter="deploymentsFilter" />
   </div>
 </template>
 
@@ -35,7 +25,7 @@
 <script lang="ts" setup>
   import { useSubscriptionWithDependencies } from '@prefecthq/vue-compositions'
   import { computed, useAttrs } from 'vue'
-  import { StateListItem } from '@/components'
+  import { FlowListItemDeployments, StateListItem } from '@/components'
   import { useWorkspaceApi, useWorkspaceRoutes } from '@/compositions'
   import { DeploymentsFilter, Flow } from '@/models'
 
@@ -49,7 +39,7 @@
   const api = useWorkspaceApi()
   const routes = useWorkspaceRoutes()
 
-  const deploymentsSubscriptionArgs = computed<[DeploymentsFilter]>(() => {
+  const deploymentsFilter = computed<DeploymentsFilter>(() => {
     const filter = {
       ...props.filter,
       flows: {
@@ -57,8 +47,9 @@
       },
     }
 
-    return [filter]
+    return filter
   })
+  const deploymentsSubscriptionArgs = computed<[DeploymentsFilter]>(() => [deploymentsFilter.value])
   const deploymentsSubscription = useSubscriptionWithDependencies(
     api.deployments.getDeployments,
     deploymentsSubscriptionArgs,
