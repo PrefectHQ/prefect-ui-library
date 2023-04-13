@@ -106,6 +106,7 @@ export const en = {
     artifactTypeChanged: (type: string) => `Changed to \`${type}\` artifact`,
     newVariable: 'New variable',
     editVariable: (name: string) => `Edit \`${name}\``,
+    deployment: 'Deployment',
     close: 'Close',
     save: 'Save',
     name: 'Name',

@@ -1,6 +1,6 @@
 <template>
   <div class="flow-list-item-container">
-    <StateListItem v-model:selected="selected" v-bind="attrs" class="flow-list-item">
+    <StateListItem v-model:selected="selected" v-bind="attrs" class="flow-list-item" :state-type="flowState">
       <template #name>
         <p-link :to="routes.flow(flow.id)">
           <p-heading :heading="5">
@@ -11,20 +11,33 @@
 
       <template #meta>
         <template v-if="nextRun">
-          <div class="flow-list-item__relation">
-            <span>{{ localization.info.nextRun }}</span> <FlowRunIconText :flow-run-id="nextRun.id" />
+          <div class="flow-list-item__meta">
+            <span>{{ localization.info.nextRun }}:</span>
+            <div class="flow-list-item__meta-content">
+              <FlowRunIconText :flow-run-id="nextRun.id" />
+              <StateBadge :state="nextRun.state" />
+            </div>
           </div>
         </template>
 
         <template v-if="lastRun">
-          <div class="flow-list-item__relation">
-            <span>{{ localization.info.lastRun }}</span> <FlowRunIconText :flow-run-id="lastRun.id" />
+          <div class="flow-list-item__meta">
+            <span>{{ localization.info.lastRun }}:</span>
+            <div class="flow-list-item__meta-content">
+              <FlowRunIconText :flow-run-id="lastRun.id" />
+              <StateBadge :state="lastRun.state" />
+            </div>
           </div>
         </template>
       </template>
 
       <template #relationships>
-        {{ deploymentsCount }}
+        <div class="flow-list-item__relationships">
+          <p-divider />
+          <div v-if="deploymentsCountSubscription.executed">
+            {{ deploymentsCount }}  {{ toPluralString(localization.info.deployment, deploymentsCount) }}
+          </div>
+        </div>
       </template>
     </StateListItem>
 
@@ -41,9 +54,10 @@
 </script>
 
 <script lang="ts" setup>
+  import { toPluralString } from '@prefecthq/prefect-design'
   import { useSubscriptionWithDependencies } from '@prefecthq/vue-compositions'
   import { computed, ref, useAttrs } from 'vue'
-  import { FlowListItemDeployments, FlowRunIconText, StateListItem } from '@/components'
+  import { FlowListItemDeployments, FlowRunIconText, StateBadge, StateListItem } from '@/components'
   import { useNextFlowRun, useLastFlowRun, useWorkspaceApi, useWorkspaceRoutes } from '@/compositions'
   import { localization } from '@/localization'
   import { DeploymentsFilter, Flow, FlowRunsFilter } from '@/models'
@@ -74,7 +88,7 @@
     api.deployments.getDeploymentsCount,
     deploymentsSubscriptionArgs,
   )
-  const deploymentsCount = computed(() => deploymentsCountSubscription.response)
+  const deploymentsCount = computed(() => deploymentsCountSubscription.response ?? 0)
 
   const flowRunsFilter = computed<FlowRunsFilter>(() => {
     return {
@@ -86,6 +100,10 @@
 
   const { flowRun: nextRun } = useNextFlowRun(flowRunsFilter)
   const { flowRun: lastRun } = useLastFlowRun(flowRunsFilter)
+
+  const flowState = computed(() => {
+    return lastRun.value?.state?.type ?? nextRun.value?.state?.type ?? undefined
+  })
 </script>
 
 <style>
@@ -116,10 +134,23 @@
   pointer-events-none
 }
 
-.flow-list-item__relation { @apply
+.flow-list-item__meta { @apply
   flex
   gap-1
   text-xs
-  font-medium
+  font-bold
+}
+
+.flow-list-item__meta-content { @apply
+  flex
+  flex-col
+  gap-1
+  items-center
+}
+
+.flow-list-item__relationships {@apply
+  w-full
+  grow
+  text-base
 }
 </style>

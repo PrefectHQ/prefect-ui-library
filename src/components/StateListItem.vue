@@ -140,6 +140,7 @@
   gap-2
   whitespace-nowrap
   mr-1
+  self-stretch
   md:items-center
   md:flex-wrap
   md:flex-row
