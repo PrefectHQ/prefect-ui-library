@@ -1,6 +1,6 @@
 <template>
   <div class="flow-list-item-container">
-    <StateListItem v-model:selected="selected" v-bind="attrs" class="flow-list-item" :state-type="flowState">
+    <StateListItem v-model:selected="selected" v-bind="attrs" class="flow-list-item" :class="classes.listItem" :state-type="flowState">
       <template #name>
         <p-link :to="routes.flow(flow.id)">
           <p-heading :heading="5">
@@ -104,8 +104,10 @@
     expanded.value = !expanded.value
   }
 
-
   const classes = computed(() => ({
+    listItem: {
+      'flow-list-item--expanded': expanded.value,
+    },
     toggle: {
       'flow-list-item__relationships-toggle--expanded': expanded.value,
     },
@@ -113,9 +115,8 @@
 </script>
 
 <style>
-.flow-list-item { @apply
-  rounded-bl-none
-  sm:rounded-bl
+.flow-list-item--expanded { @apply
+  rounded-bl-sm
 }
 
 .flow-list-item-container { @apply
@@ -139,6 +140,7 @@
   border-l
   border-foreground-100
   pointer-events-none
+  rounded-full
   z-[-1]
 }
 
