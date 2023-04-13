@@ -32,18 +32,24 @@ export function useFlowMock(override?: Partial<Flow>, options?: Partial<FlowMock
   const deploymentIds = [...deployments.map((deployment) => deployment.id), null]
 
   const flowRuns = []
-  for (const deploymentId of deploymentIds) {
-    const deploymentFlowRuns = mocker.createMany('flowRun',
-      mocker.create('number'),
-      [
-        {
-          flowId: flow.id,
-          deploymentId: deploymentId,
-          workPoolName: choice(workPoolNames),
-        },
-      ])
+  const maxFlowRunsCount = deploymentsCount > 0 ? Math.ceil(100 / deploymentsCount) : 100
 
-    flowRuns.push(...deploymentFlowRuns)
+  for (const deploymentId of deploymentIds) {
+    const flowRunsCount = mocker.create('number', [0, maxFlowRunsCount])
+
+    if (flowRunsCount > 0) {
+      const deploymentFlowRuns = mocker.createMany('flowRun',
+        flowRunsCount,
+        [
+          {
+            flowId: flow.id,
+            deploymentId: deploymentId,
+            workPoolName: choice(workPoolNames),
+          },
+        ])
+
+      flowRuns.push(...deploymentFlowRuns)
+    }
   }
 
 
