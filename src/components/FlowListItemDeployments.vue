@@ -1,7 +1,8 @@
 <template>
   <div class="flow-list-item-deployments">
     <div class="flow-list-item-deployments__header">
-      header goes here
+      <DeploymentsDeleteButton v-if="can.delete.deployment" :selected="selected" @delete="deleteDeployments" />
+      <SelectedCount v-if="selected.length" :count="selected.length" />
     </div>
 
     <template v-if="deploymentsSubscription.loading">
@@ -30,8 +31,13 @@
 <script lang="ts" setup>
   import { useSubscription } from '@prefecthq/vue-compositions'
   import { computed, ref } from 'vue'
-  import { DeploymentListItem } from '@/components'
-  import { useWorkspaceApi } from '@/compositions'
+  import {
+    DeploymentsDeleteButton,
+    DeploymentListItem,
+    ResultsCount,
+    SelectedCount
+  } from '@/components'
+  import { useCan, useWorkspaceApi } from '@/compositions'
   import { DeploymentsFilter } from '@/models'
 
   const props = defineProps<{
@@ -45,6 +51,7 @@
 
   const DEPLOYMENTS_DEFAULT_FILTER_LIMIT = 10
 
+  const can = useCan()
   const api = useWorkspaceApi()
   const deploymentsFilter = computed <[DeploymentsFilter]>(() => [
     {
@@ -57,9 +64,19 @@
     api.deployments.getDeployments,
     deploymentsFilter,
   )
+  const deploymentsCountSubscription = useSubscription(
+    api.deployments.getDeploymentsCount,
+    deploymentsFilter,
+  )
+
+  const deploymentsCount = computed(() => deploymentsCountSubscription.response ?? 0)
   const deployments = computed(() => deploymentsSubscription.response ?? [])
 
   const fetchMore = (): void => {
+    // TODO: implement
+  }
+
+  const deleteDeployments = (): void => {
     // TODO: implement
   }
 
@@ -77,5 +94,13 @@
 
 .flow-list-item-deployments__deployment:last-child { @apply
   rounded-bl
+}
+
+.flow-list-item-deployments__header { @apply
+  flex
+  items-center
+  p-4
+  gap-4
+  h-12
 }
 </style>

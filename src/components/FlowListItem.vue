@@ -84,5 +84,6 @@
   dark:border-background-600
   border-background-400
   rounded-b-full
+  pointer-events-none
 }
 </style>
