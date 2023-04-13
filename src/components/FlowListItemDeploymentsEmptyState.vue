@@ -7,11 +7,11 @@
     </template>
 
     <template #heading>
-      Create a deployment to begin remotely managing <span class="flow-list-item-deployments-empty-state__flow-name">{{ flow.name }}</span>
+      {{ localization.info.noDeployments }}
     </template>
 
     <template #description>
-      Deployments are API representations of flows and allow for their remote configuration and scheduling.
+      <p-markdown-renderer :text="localization.info.deploymentsEmptyStateDescription(flow.name)" />
     </template>
 
     <template #actions>
