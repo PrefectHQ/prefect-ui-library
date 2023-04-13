@@ -10,24 +10,11 @@
       </template>
 
       <template #meta>
-        <template v-if="nextRun">
-          <div class="flow-list-item__meta">
-            <span>{{ localization.info.nextRun }}:</span>
-            <div class="flow-list-item__meta-content">
-              <FlowRunIconText :flow-run-id="nextRun.id" />
-              <StateBadge :state="nextRun.state" />
-            </div>
-          </div>
-        </template>
-
         <template v-if="lastRun">
-          <div class="flow-list-item__meta">
-            <span>{{ localization.info.lastRun }}:</span>
-            <div class="flow-list-item__meta-content">
-              <FlowRunIconText :flow-run-id="lastRun.id" />
-              <StateBadge :state="lastRun.state" />
-            </div>
-          </div>
+          <ListItemMetaFlowRun :title="localization.info.lastRun" :flow-run="lastRun" />
+        </template>
+        <template v-if="nextRun">
+          <ListItemMetaFlowRun :title="localization.info.nextRun" :flow-run="nextRun" />
         </template>
       </template>
 
@@ -57,7 +44,7 @@
   import { toPluralString } from '@prefecthq/prefect-design'
   import { useSubscriptionWithDependencies } from '@prefecthq/vue-compositions'
   import { computed, ref, useAttrs } from 'vue'
-  import { FlowListItemDeployments, FlowRunIconText, StateBadge, StateListItem } from '@/components'
+  import { FlowListItemDeployments, ListItemMetaFlowRun, StateListItem } from '@/components'
   import { useNextFlowRun, useLastFlowRun, useWorkspaceApi, useWorkspaceRoutes } from '@/compositions'
   import { localization } from '@/localization'
   import { DeploymentsFilter, Flow, FlowRunsFilter } from '@/models'
@@ -134,23 +121,7 @@
   pointer-events-none
 }
 
-.flow-list-item__meta { @apply
-  flex
-  gap-1
-  text-xs
-  font-bold
-}
-
-.flow-list-item__meta-content { @apply
-  flex
-  flex-col
-  gap-1
-  items-center
-}
-
-.flow-list-item__relationships {@apply
-  w-full
-  grow
-  text-base
+.flow-list-item-container .state-list-item__meta { @apply
+  gap-8
 }
 </style>
