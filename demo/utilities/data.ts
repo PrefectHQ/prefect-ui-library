@@ -26,7 +26,18 @@ export function createDataStores(seeds: ApiMockSeeds = {}) {
     artifacts: new KeyedDataStore({ seeds: seeds.artifacts, hydrate: artifact => new Artifact({ ...artifact, created: new Date(artifact.created), updated: new Date(artifact.updated) }) }),
     artifactCollections: new KeyedDataStore({ seeds: seeds.artifactCollections, hydrate: artifactCollection => new ArtifactCollection({ ...artifactCollection, created: new Date(artifactCollection.created), updated: new Date(artifactCollection.updated) }) }),
     flows: new KeyedDataStore({ seeds: seeds.flows, hydrate: flow => new Flow(flow) }),
-    flowRuns: new KeyedDataStore({ seeds: seeds.flowRuns, hydrate: flowRun => new FlowRun({ ...flowRun, created: new Date(flowRun.created), updated: new Date(flowRun.updated) }) }),
+    flowRuns: new KeyedDataStore({
+      seeds: seeds.flowRuns,
+      hydrate: flowRun => {
+        const created = new Date(flowRun.created)
+        const updated = new Date(flowRun.updated)
+        const startTime = flowRun.startTime ? new Date(flowRun.startTime) : null
+        const endTime = flowRun.endTime ? new Date(flowRun.endTime) : null
+        const expectedStartTime = flowRun.expectedStartTime ? new Date(flowRun.expectedStartTime) : null
+
+        return new FlowRun({ ...flowRun, created, updated, startTime, expectedStartTime, endTime })
+      },
+    }),
     flowRunGraphs: new KeyedDataStore({ seeds: seeds.flowRunGraphs, hydrate: hydrateGraph }),
     blockDocuments: new KeyedDataStore({ seeds: seeds.blockDocuments, hydrate: blockDocument => new BlockDocument(blockDocument) }),
     blockSchemas: new KeyedDataStore({ seeds: seeds.blockSchemas, hydrate: hydrateBlockSchema }),

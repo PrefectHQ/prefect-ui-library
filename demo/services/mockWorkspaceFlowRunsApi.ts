@@ -50,6 +50,18 @@ export class MockWorkspaceFlowRunsApi extends MockApi implements IWorkspaceFlowR
       case 'NAME_DESC':
         flowRuns = flowRuns.sort((a, b) => b.name?.localeCompare(a.name ?? '') ?? 0)
         break
+      case 'START_TIME_DESC':
+        flowRuns = flowRuns.sort((a, b) => (b.startTime?.getTime() ?? 0) - (a.startTime?.getTime() ?? 0))
+        break
+      case 'START_TIME_ASC':
+        flowRuns = flowRuns.sort((a, b) => (a.startTime?.getTime() ?? 0) - (b.startTime?.getTime() ?? 0))
+        break
+      case 'EXPECTED_START_TIME_DESC':
+        flowRuns = flowRuns.sort((a, b) => (b.expectedStartTime?.getTime() ?? 0) - (a.expectedStartTime?.getTime() ?? 0))
+        break
+      case 'EXPECTED_START_TIME_ASC':
+        flowRuns = flowRuns.sort((a, b) => (a.expectedStartTime?.getTime() ?? 0) - (b.expectedStartTime?.getTime() ?? 0))
+        break
       default:
         console.warn(`MockWorkspaceFlowRunsApi has not implemented the sort argument for ${sort} of the getFlowRuns method`)
         break
