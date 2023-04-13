@@ -10,7 +10,7 @@ export function useFlowMock(override?: Partial<Flow>): Flow {
   const workPoolNames = [...workPools.map((workPool) => workPool.name), null]
 
   const deployments = []
-  for (let i = 0; i < mocker.create('number', [0, 0]); i++) {
+  for (let i = 0; i < mocker.create('number', [0, 8]); i++) {
     const deployment = mocker.create('deployment', [
       {
         flowId: flow.id,
