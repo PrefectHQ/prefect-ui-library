@@ -92,11 +92,7 @@
 }
 
 .flow-list-item-deployments__deployment { @apply
-  rounded-l-none
-}
-
-.flow-list-item-deployments__deployment:last-child { @apply
-  rounded-bl
+  rounded-l-sm
 }
 
 .flow-list-item-deployments__header { @apply

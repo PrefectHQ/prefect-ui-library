@@ -124,32 +124,12 @@
 
 <style>
 .flow-list-item--expanded { @apply
-  rounded-bl-sm
-}
-
-.flow-list-item-container { @apply
-  relative
+  rounded-b-sm
 }
 
 .flow-list-item__deployments { @apply
   sm:pr-4
   sm:ml-2
-}
-
-.flow-list-item__deployments::before {
-  content: '';
-
-  @apply
-  absolute
-  left-0
-  sm:left-2
-  top-5
-  bottom-5
-  border-l
-  border-foreground-100
-  pointer-events-none
-  rounded-full
-  z-[-1]
 }
 
 .flow-list-item .state-list-item__meta { @apply
