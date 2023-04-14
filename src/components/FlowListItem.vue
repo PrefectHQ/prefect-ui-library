@@ -7,18 +7,10 @@
             {{ flow.name }}
           </p-heading>
         </p-link>
-        <template v-if="lastRun">
-          <ListItemMetaFlowRun :title="localization.info.lastRun" :flow-run="lastRun" />
-        </template>
       </template>
 
-      <template v-if="false" #meta>
-        <template v-if="lastRun">
-          <ListItemMetaFlowRun :title="localization.info.lastRun" :flow-run="lastRun" />
-        </template>
-        <template v-if="nextRun">
-          <ListItemMetaFlowRun :title="localization.info.nextRun" :flow-run="nextRun" />
-        </template>
+      <template #meta>
+        <ListItemMetaFlowRun :title="localization.info.lastRun" :flow-run="lastRun" />
       </template>
 
       <template #action>
