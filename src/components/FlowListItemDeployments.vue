@@ -7,8 +7,8 @@
       </div>
     </template>
 
-    <template v-if="deploymentsSubscription.loading">
-      <p-loading-icon />
+    <template v-if="!deploymentsSubscription.executed">
+      <p-loading-icon class="flow-list-item-deployments__loading-icon" />
     </template>
 
     <template v-else-if="deployments.length">
@@ -114,5 +114,9 @@
 
 .flow-list-item-deployments__empty-state-container { @apply
   p-4
+}
+
+.flow-list-item-deployments__loading-icon { @apply
+  mx-auto
 }
 </style>
