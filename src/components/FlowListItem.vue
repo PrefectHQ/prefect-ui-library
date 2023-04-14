@@ -149,6 +149,7 @@
 }
 
 .flow-list-item__relationships { @apply
+  cursor-pointer
   w-full
 }
 
