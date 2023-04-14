@@ -7,28 +7,28 @@
       </div>
     </template>
 
-    <template v-if="!deploymentsSubscription.executed">
-      <p-loading-icon class="flow-list-item-deployments__loading-icon" />
-    </template>
+    <p-virtual-scroller
+      :items="deployments"
+      :item-estimate-height="60"
+      :chunk-size="20"
+      item-key="id"
+      @bottom="fetchMore"
+    >
+      <template #default="{ item: deployment }">
+        <DeploymentListItem v-model:selected="selected" v-bind="{ deployment }" class="flow-list-item-deployments__deployment" />
+      </template>
+    </p-virtual-scroller>
 
-    <template v-else-if="deployments.length">
-      <p-virtual-scroller
-        :items="deployments"
-        :item-estimate-height="60"
-        :chunk-size="20"
-        item-key="id"
-        @bottom="fetchMore"
-      >
-        <template #default="{ item: deployment }">
-          <DeploymentListItem v-model:selected="selected" v-bind="{ deployment }" class="flow-list-item-deployments__deployment" />
-        </template>
-      </p-virtual-scroller>
+    <template v-if="deploymentsSubscription.executed">
+      <template v-if="!deployments.length">
+        <div class="flow-list-item-deployments__empty-state-container">
+          <FlowListItemDeploymentsEmptyState :flow="flow" />
+        </div>
+      </template>
     </template>
 
     <template v-else>
-      <div class="flow-list-item-deployments__empty-state-container">
-        <FlowListItemDeploymentsEmptyState :flow="flow" />
-      </div>
+      <p-loading-icon class="flow-list-item-deployments__loading-icon" />
     </template>
   </div>
 </template>

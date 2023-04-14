@@ -40,7 +40,7 @@
     </StateListItem>
 
     <keep-alive>
-      <FlowListItemDeployments v-show="expanded" :flow="flow" :filter="filter" class="flow-list-item__deployments" />
+      <FlowListItemDeployments v-if="expanded" :flow="flow" :filter="filter" class="flow-list-item__deployments" />
     </keep-alive>
   </div>
 </template>
