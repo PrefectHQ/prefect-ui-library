@@ -24,7 +24,7 @@ export function useLastFlowRun(filter: UnionFilter | Ref<UnionFilter | null | un
       ...filterRef.value,
       flowRuns: {
         state: {
-          type: terminalStateType,
+          type: terminalStateType.map(state => state.toUpperCase()),
         },
       },
       limit: 1,

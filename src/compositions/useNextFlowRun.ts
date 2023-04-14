@@ -24,7 +24,7 @@ export function useNextFlowRun(filter: UnionFilter | Ref<UnionFilter | null | un
       ...filterRef.value,
       flowRuns: {
         state: {
-          type: scheduledStateType,
+          type: scheduledStateType.map(state => state.toUpperCase()),
         },
       },
       limit: 1,
