@@ -29,6 +29,8 @@
         </div>
       </template>
     </div>
+
+    <slot />
   </p-list-item-input>
 </template>
 

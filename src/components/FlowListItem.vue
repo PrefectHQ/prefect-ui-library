@@ -145,6 +145,6 @@
 
 .flow-list-item__divider { @apply
   mt-0
-  mb-1
+  mb-3
 }
 </style>

@@ -6,7 +6,9 @@
           {{ deployment.name }}
         </p-heading>
       </p-link>
+    </template>
 
+    <template #relationships>
       <ListItemMetaFlowRun :title="localization.info.lastRun" :flow-run="lastRun" />
     </template>
 
@@ -28,10 +30,10 @@
       <DeploymentMenu size="xs" :deployment="deployment" show-all @delete="refresh" />
     </template>
 
-    <template #relationships>
+    <div class="deployment-list-item__schedule">
       <DeploymentToggle :deployment="deployment" :disabled="!schedule" @update="refresh" />
 
-      <div class="deployment-list-item__schedule">
+      <div class="deployment-list-item__schedule-icon-text">
         <p-icon icon="ClockIcon" />
 
         <template v-if="schedule">
@@ -46,7 +48,7 @@
           </div>
         </template>
       </div>
-    </template>
+    </div>
   </StateListItem>
 </template>
 
@@ -94,29 +96,23 @@
 </script>
 
 <style>
-.deployment-list-item__relation { @apply
-  flex
-  gap-2
-  items-start
-  text-xs
-  font-medium
-  whitespace-nowrap
-}
-
 .deployment-list-item__schedule { @apply
   text-foreground
   flex
-  gap-1
+  gap-2
   items-center
   text-sm
+  font-normal
+  mt-2
 }
 
-.deployment-list-item__schedule-text { @apply
-  font-semibold
+.deployment-list-item__schedule-icon-text { @apply
+  flex
+  gap-1
+  items-center
 }
 
 .deployment-list-item__schedule-none { @apply
   text-foreground-100
-  font-normal
 }
 </style>
