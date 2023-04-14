@@ -58,8 +58,6 @@ export class MockWorkspaceDeploymentsApi extends MockApi implements IWorkspaceDe
       /* eslint-enable id-length */
     }
 
-    console.log('getDeployments')
-
     deployments = deployments.slice(offset, offset + limit)
     return deployments
   }

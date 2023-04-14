@@ -6,6 +6,10 @@
           {{ deployment.name }}
         </p-heading>
       </p-link>
+
+      <template v-if="lastRun">
+        <ListItemMetaFlowRun :title="localization.info.lastRun" :flow-run="lastRun" />
+      </template>
     </template>
 
     <template v-if="deployment.workPoolName || deployment.workQueueName" #meta>
@@ -21,16 +25,6 @@
         </div>
       </template>
     </template>
-
-
-    <!--
-      <template v-if="lastRun">
-      <ListItemMetaFlowRun :title="localization.info.lastRun" :flow-run="lastRun" />
-      </template>
-      <template v-if="nextRun">
-      <ListItemMetaFlowRun :title="localization.info.nextRun" :flow-run="nextRun" />
-      </template>
-    -->
 
     <template #action>
       <DeploymentMenu size="xs" :deployment="deployment" show-all @delete="refresh" />
@@ -60,7 +54,7 @@
 
 <script lang="ts" setup>
   import { computed } from 'vue'
-  import { DeploymentMenu, DeploymentToggle, StateListItem, WorkPoolIconText, WorkQueueIconText } from '@/components'
+  import { DeploymentMenu, DeploymentToggle, ListItemMetaFlowRun, StateListItem, WorkPoolIconText, WorkQueueIconText } from '@/components'
   import { useLastFlowRun, useNextFlowRun, useWorkspaceRoutes } from '@/compositions'
   import { localization } from '@/localization'
   import { Deployment, FlowRunsFilter, isRRuleSchedule } from '@/models'

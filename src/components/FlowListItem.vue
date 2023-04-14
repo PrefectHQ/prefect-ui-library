@@ -7,9 +7,12 @@
             {{ flow.name }}
           </p-heading>
         </p-link>
+        <template v-if="lastRun">
+          <ListItemMetaFlowRun :title="localization.info.lastRun" :flow-run="lastRun" />
+        </template>
       </template>
 
-      <template #meta>
+      <template v-if="false" #meta>
         <template v-if="lastRun">
           <ListItemMetaFlowRun :title="localization.info.lastRun" :flow-run="lastRun" />
         </template>
@@ -24,7 +27,7 @@
 
       <template #relationships>
         <div class="flow-list-item__relationships" @click="toggle">
-          <p-divider />
+          <p-divider class="flow-list-item__divider" />
           <div v-if="deploymentsCountSubscription.executed">
             <p-button
               size="xs"
@@ -142,5 +145,10 @@
 
 .flow-list-item__relationships-toggle--expanded { @apply
   rotate-180
+}
+
+.flow-list-item__divider { @apply
+  mt-0
+  mb-1
 }
 </style>

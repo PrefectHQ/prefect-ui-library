@@ -1,36 +1,32 @@
 <template>
-  <div class="list-item-meta-flow-run">
-    <span>{{ title ?? localization.info.flowRun }}:</span>
-    <div class="list-item-meta-flow-run__content">
+  <ListItemMeta class="list-item-meta-flow-run" :title="title">
+    <template v-if="flowRun">
       <FlowRunIconText :flow-run-id="flowRun.id" />
       <StateBadge :state="flowRun.state" />
-    </div>
-  </div>
+    </template>
+    <template v-else>
+      <span class="list-item-meta-flow-run__none">{{ localization.info.none }}</span>
+    </template>
+  </ListItemMeta>
 </template>
 
 <script lang="ts" setup>
-  import { FlowRunIconText, StateBadge } from '@/components'
+  import { computed } from 'vue'
+  import { ListItemMeta, FlowRunIconText, StateBadge } from '@/components'
   import { localization } from '@/localization'
   import { FlowRun } from '@/models'
 
-  defineProps<{
+  const props = defineProps<{
     title?: string,
-    flowRun: FlowRun,
+    flowRun?: FlowRun,
   }>()
+
+  const title = computed(() => props.title ?? localization.info.flowRun)
 </script>
 
 <style>
-.list-item-meta-flow-run { @apply
-  flex
-  gap-1
-  text-xs
-  font-bold
-}
-
-.list-item-meta-flow-run__content { @apply
-  flex
-  flex-col
-  gap-1
-  items-start
+.list-item-meta-flow-run__none { @apply
+  text-foreground-50
+  italic
 }
 </style>
