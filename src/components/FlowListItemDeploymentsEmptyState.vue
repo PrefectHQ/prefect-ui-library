@@ -36,6 +36,7 @@
 .flow-list-item-deployments-empty-state .p-empty-state__text { @apply
   border-none
   bg-transparent
+  shadow-none
 }
 
 .flow-list-item-deployments-empty-state__flow-name { @apply
