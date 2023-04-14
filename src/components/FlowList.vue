@@ -5,14 +5,13 @@
         <div class="flow-list__header-start">
           <ResultsCount v-if="selected.length == 0" :label="localization.info.flow" :count="flowsCount" />
           <SelectedCount v-else :count="selected.length" />
-
           <FlowsDeleteButton v-if="can.delete.flow" :selected="selected" @delete="deleteFlows" />
         </div>
       </template>
 
       <template #header-end>
         <div class="flow-list__header-end">
-          <SearchInput v-model="search" :placeholder="localization.info.filter" :label="localization.info.filter" />
+          <SearchInput v-model="search" :placeholder="localization.info.searchByFlowName" :label="localization.info.searchByFlowName" />
           <p-select v-model="filter.sort" :options="flowSortOptions" />
           <p-tags-input v-model="filter.flowRuns.tags.name" :placeholder="localization.info.addTagPlaceholder" class="flow-list__flow-run-tags">
             <template #empty-message>
@@ -59,12 +58,6 @@
     ...baseFilter.value,
     flows: {
       ...baseFilter.value.flows,
-      operator: 'or',
-      nameLike: searchDebounced,
-    },
-    deployments: {
-      ...baseFilter.value.deployments,
-      operator: 'or',
       nameLike: searchDebounced,
     },
   })

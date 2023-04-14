@@ -1,9 +1,9 @@
 <template>
   <PageHeading class="page-heading-flows" :crumbs="crumbs">
-    <template v-if="can.access.collections" #after-crumbs>
-      <p-button :to="routes.flowCollections()" secondary>
-        Add from Collection
-      </p-button>
+    <template v-if="can.access.collections">
+      <p-link :to="routes.flowCollections()">
+        Looking for collections?
+      </p-link>
     </template>
   </PageHeading>
 </template>
