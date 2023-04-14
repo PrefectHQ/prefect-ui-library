@@ -17,21 +17,19 @@
         <FlowMenu size="xs" :flow="flow" show-all @delete="refresh" />
       </template>
 
-      <template #relationships>
-        <div class="flow-list-item__relationships" @click="toggle">
-          <p-divider class="flow-list-item__divider" />
-          <div v-if="deploymentsCountSubscription.executed">
-            <p-button
-              size="xs"
-              class="flow-list-item__relationships-toggle"
-              :class="classes.toggle"
-              inset
-              icon="ChevronDownIcon"
-            />
-            {{ deploymentsCount }}  {{ toPluralString(localization.info.deployment, deploymentsCount) }}
-          </div>
+      <div class="flow-list-item__content" @click="toggle">
+        <p-divider class="flow-list-item__divider" />
+        <div v-if="deploymentsCountSubscription.executed">
+          <p-button
+            size="xs"
+            class="flow-list-item__content-toggle"
+            :class="classes.toggle"
+            inset
+            icon="ChevronDownIcon"
+          />
+          {{ deploymentsCount }}  {{ toPluralString(localization.info.deployment, deploymentsCount) }}
         </div>
-      </template>
+      </div>
     </StateListItem>
 
     <FlowListItemDeployments v-show="expanded" :flow="flow" :filter="filter" class="flow-list-item__deployments" />
@@ -104,7 +102,7 @@
       'flow-list-item--expanded': expanded.value,
     },
     toggle: {
-      'flow-list-item__relationships-toggle--expanded': expanded.value,
+      'flow-list-item__content-toggle--expanded': expanded.value,
     },
   }))
 </script>
@@ -119,19 +117,19 @@
   sm:ml-2
 }
 
-.flow-list-item__relationships { @apply
+.flow-list-item__content { @apply
   cursor-pointer
   w-full
 }
 
-.flow-list-item__relationships-toggle { @apply
+.flow-list-item__content-toggle { @apply
   relative
   rounded-full
   transition-transform
   mr-2
 }
 
-.flow-list-item__relationships-toggle--expanded { @apply
+.flow-list-item__content-toggle--expanded { @apply
   rotate-180
 }
 
