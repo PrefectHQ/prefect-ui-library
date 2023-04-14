@@ -18,6 +18,10 @@
         </template>
       </template>
 
+      <template #action>
+        <FlowMenu size="xs" :flow="flow" show-all @delete="refresh" />
+      </template>
+
       <template #relationships>
         <div class="flow-list-item__relationships" @click="toggle">
           <p-divider />
@@ -52,7 +56,7 @@
   import { useSubscriptionWithDependencies } from '@prefecthq/vue-compositions'
   import { computed, ref, useAttrs } from 'vue'
   import { FlowListItemDeployments, ListItemMetaFlowRun, StateListItem } from '@/components'
-  import { useNextFlowRun, useLastFlowRun, useWorkspaceApi, useWorkspaceRoutes } from '@/compositions'
+  import { useNextFlowRun, useLastFlowRun, useWorkspaceApi, useWorkspaceRoutes, useComponent } from '@/compositions'
   import { localization } from '@/localization'
   import { DeploymentsFilter, Flow, FlowRunsFilter } from '@/models'
 
@@ -61,8 +65,8 @@
     filter?: DeploymentsFilter,
   }>()
 
+  const { FlowMenu } = useComponent()
   const attrs = useAttrs()
-
   const api = useWorkspaceApi()
   const routes = useWorkspaceRoutes()
   const selected = ref([])
@@ -102,6 +106,10 @@
 
   const toggle = (): void => {
     expanded.value = !expanded.value
+  }
+
+  const refresh = (): void => {
+    // TODO: implement
   }
 
   const classes = computed(() => ({
