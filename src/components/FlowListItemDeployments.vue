@@ -15,6 +15,7 @@
       <p-virtual-scroller
         :items="deployments"
         :item-estimate-height="60"
+        :chunk-size="20"
         item-key="id"
         @bottom="fetchMore"
       >

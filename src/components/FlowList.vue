@@ -21,7 +21,13 @@
         </div>
       </template>
 
-      <p-virtual-scroller :items="flows" :chunk-size="10" :item-estimate-height="135">
+      <p-virtual-scroller
+        :items="flows"
+        :chunk-size="20"
+        :item-estimate-height="135"
+        item-key="id"
+        @bottom="fetchMore"
+      >
         <template #default="{ item }">
           <FlowListItem v-model:selected="selected" :flow="item" :filter="baseFilter" />
         </template>
@@ -78,6 +84,10 @@
   const emit = defineEmits<{
     (event: 'delete'): void,
   }>()
+
+  const fetchMore = (): void => {
+  // TODO: implement
+  }
 
   const deleteFlows = (): void => {
     selected.value = []
