@@ -41,6 +41,7 @@
       >
         <FlowRunTimeline
           ref="timelineGraph"
+          v-model:visible-date-range="visibleDateRange"
           class="flow-run-timeline__graph"
           :class="classes.graph"
           :graph-data="graphData"
@@ -80,7 +81,8 @@
     TimelineNodesLayoutOptions,
     TimelineThemeOptions,
     ExpandedSubNodes,
-    NodeSelectionEvent
+    NodeSelectionEvent,
+    TimelineVisibleDateRange
   } from '@prefecthq/graphs'
   import { useColorTheme } from '@prefecthq/prefect-design'
   import { UseSubscription, useSubscription } from '@prefecthq/vue-compositions'
@@ -95,6 +97,11 @@
 
   const props = defineProps<{
     flowRun: FlowRun,
+    visibleDateRange?: TimelineVisibleDateRange,
+  }>()
+
+  const emit = defineEmits<{
+    (event: 'update:visibleDateRange', value: TimelineVisibleDateRange | undefined): void,
   }>()
 
   const { value: colorThemeValue } = useColorTheme()
@@ -136,6 +143,15 @@
 
   const documentStyles = getComputedStyle(document.documentElement)
   const bodyStyles = getComputedStyle(document.body)
+
+  const visibleDateRange = computed({
+    get() {
+      return props.visibleDateRange
+    },
+    set(value) {
+      emit('update:visibleDateRange', value)
+    },
+  })
 
   onMounted(() => {
     window.addEventListener('keydown', keyboardShortcutListener)
@@ -444,7 +460,6 @@
 
 .flow-run-timeline__graph { @apply
   bg-background
-  rounded-lg;
 }
 
 .flow-run-timeline__graph canvas {
