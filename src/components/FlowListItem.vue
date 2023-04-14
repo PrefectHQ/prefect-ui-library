@@ -94,9 +94,7 @@
   const { flowRun: nextRun } = useNextFlowRun(filter)
   const { flowRun: lastRun } = useLastFlowRun(filter)
 
-  const flowState = computed(() => {
-    return lastRun.value?.state?.type ?? nextRun.value?.state?.type ?? undefined
-  })
+  const flowState = computed(() => lastRun.value?.state?.type)
 
   const toggle = (): void => {
     expanded.value = !expanded.value
