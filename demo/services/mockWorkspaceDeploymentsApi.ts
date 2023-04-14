@@ -20,6 +20,10 @@ const deploymentsItemIntersectsFilter = (filter: DeploymentsFilter): KeyedDataSt
       filtered = !filter.deployments.name.includes(deployment.name)
     }
 
+    if (!filtered && filter.deployments?.nameLike?.length) {
+      filtered = !deployment.name.includes(filter.deployments.nameLike)
+    }
+
     return !filtered
   }
 }
@@ -53,6 +57,8 @@ export class MockWorkspaceDeploymentsApi extends MockApi implements IWorkspaceDe
         break
       /* eslint-enable id-length */
     }
+
+    console.log('getDeployments')
 
     deployments = deployments.slice(offset, offset + limit)
     return deployments

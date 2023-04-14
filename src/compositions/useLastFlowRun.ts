@@ -2,7 +2,7 @@ import { UseSubscription, useSubscriptionWithDependencies } from '@prefecthq/vue
 import { computed, ComputedRef, Ref, ref } from 'vue'
 import { useCan } from '@/compositions/useCan'
 import { useWorkspaceApi } from '@/compositions/useWorkspaceApi'
-import { FlowRun, FlowRunsFilter, terminalStateType } from '@/models'
+import { FlowRun, FlowRunsFilter, UnionFilter, terminalStateType } from '@/models'
 import { WorkspaceFlowRunsApi } from '@/services'
 
 export type UseLastFlowRun = {
@@ -10,7 +10,7 @@ export type UseLastFlowRun = {
   flowRun: ComputedRef<FlowRun | undefined>,
 }
 
-export function useLastFlowRun(filter: FlowRunsFilter | Ref<FlowRunsFilter | null | undefined>): UseLastFlowRun {
+export function useLastFlowRun(filter: UnionFilter | Ref<UnionFilter | null | undefined>): UseLastFlowRun {
   const filterRef = ref(filter)
   const api = useWorkspaceApi()
   const can = useCan()

@@ -39,7 +39,7 @@
       </template>
     </StateListItem>
 
-    <FlowListItemDeployments v-show="expanded" :flow="flow" :filter="deploymentsFilter" class="flow-list-item__deployments" />
+    <FlowListItemDeployments v-show="expanded" :flow="flow" :filter="filter" class="flow-list-item__deployments" />
   </div>
 </template>
 
@@ -58,11 +58,11 @@
   import { FlowListItemDeployments, ListItemMetaFlowRun, StateListItem } from '@/components'
   import { useNextFlowRun, useLastFlowRun, useWorkspaceApi, useWorkspaceRoutes, useComponent } from '@/compositions'
   import { localization } from '@/localization'
-  import { DeploymentsFilter, Flow, FlowRunsFilter } from '@/models'
+  import { DeploymentsFilter, Flow, FlowsFilter } from '@/models'
 
   const props = defineProps<{
     flow: Flow,
-    filter?: DeploymentsFilter,
+    filter?: FlowsFilter,
   }>()
 
   const { FlowMenu } = useComponent()
@@ -72,33 +72,25 @@
   const selected = ref([])
   const expanded = ref(true)
 
-  const deploymentsFilter = computed<DeploymentsFilter>(() => {
-    const filter = {
+  const filter = computed(() => {
+    return {
       ...props.filter,
       flows: {
+        ...props.filter?.flows,
         id: [props.flow.id],
       },
     }
-
-    return filter
   })
-  const deploymentsSubscriptionArgs = computed<[DeploymentsFilter]>(() => [deploymentsFilter.value])
+
+  const deploymentsCountSubscriptionArgs = computed<[DeploymentsFilter]>(() => [filter.value])
   const deploymentsCountSubscription = useSubscriptionWithDependencies(
     api.deployments.getDeploymentsCount,
-    deploymentsSubscriptionArgs,
+    deploymentsCountSubscriptionArgs,
   )
   const deploymentsCount = computed(() => deploymentsCountSubscription.response ?? 0)
 
-  const flowRunsFilter = computed<FlowRunsFilter>(() => {
-    return {
-      flows: {
-        id: [props.flow.id],
-      },
-    }
-  })
-
-  const { flowRun: nextRun } = useNextFlowRun(flowRunsFilter)
-  const { flowRun: lastRun } = useLastFlowRun(flowRunsFilter)
+  const { flowRun: nextRun } = useNextFlowRun(filter)
+  const { flowRun: lastRun } = useLastFlowRun(filter)
 
   const flowState = computed(() => {
     return lastRun.value?.state?.type ?? nextRun.value?.state?.type ?? undefined

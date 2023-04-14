@@ -31,7 +31,7 @@
 </template>
 
 <script lang="ts" setup>
-  import { useSubscription } from '@prefecthq/vue-compositions'
+  import { useSubscriptionWithDependencies } from '@prefecthq/vue-compositions'
   import { computed, ref } from 'vue'
   import {
     DeploymentsDeleteButton,
@@ -39,40 +39,43 @@
     FlowListItemDeploymentsEmptyState,
     SelectedCount
   } from '@/components'
-  import { useCan, useWorkspaceApi } from '@/compositions'
+  import { useCan, useDeploymentsFilterFromRoute, useWorkspaceApi } from '@/compositions'
   import { DeploymentsFilter, Flow } from '@/models'
 
   const props = defineProps<{
     flow: Flow,
     filter?: DeploymentsFilter,
-    disabled?: boolean,
-  }>()
-
-  const emit = defineEmits<{
-    (event: 'update'): void,
   }>()
 
   const DEPLOYMENTS_DEFAULT_FILTER_LIMIT = 10
 
   const can = useCan()
   const api = useWorkspaceApi()
-  const deploymentsFilter = computed <[DeploymentsFilter]>(() => [
-    {
+
+  const { filter: routeFilter } = useDeploymentsFilterFromRoute()
+
+  const filter = computed<DeploymentsFilter>(() => {
+    return {
       ...props.filter,
-      sort: 'CREATED_DESC',
+      flows: {
+        ...props.filter?.flows,
+        id: [props.flow.id],
+      },
+      deployments: {
+        ...props.filter?.deployments,
+        ...routeFilter.deployments,
+      },
       limit: DEPLOYMENTS_DEFAULT_FILTER_LIMIT,
-    },
-  ])
-  const deploymentsSubscription = useSubscription(
+    }
+  })
+
+  const deploymentsSubscriptionArgs = computed<[DeploymentsFilter]>(() => [filter.value])
+
+  const deploymentsSubscription = useSubscriptionWithDependencies(
     api.deployments.getDeployments,
-    deploymentsFilter,
-  )
-  const deploymentsCountSubscription = useSubscription(
-    api.deployments.getDeploymentsCount,
-    deploymentsFilter,
+    deploymentsSubscriptionArgs,
   )
 
-  const deploymentsCount = computed(() => deploymentsCountSubscription.response ?? 0)
   const deployments = computed(() => deploymentsSubscription.response ?? [])
 
   const fetchMore = (): void => {

@@ -12,8 +12,12 @@ const flowsItemIntersectsFilter = (filter: FlowsFilter): KeyedDataStoreFindCallb
       filtered = !filter.flows.id.includes(flow.id)
     }
 
-    if (!filtered && filter.flows?.name?.length && flow.name) {
+    if (!filtered && filter.flows?.name?.length) {
       filtered = !filter.flows.name.includes(flow.name)
+    }
+
+    if (!filtered && filter.flows?.nameLike?.length) {
+      filtered = !flow.name.includes(filter.flows.nameLike)
     }
 
     return !filtered

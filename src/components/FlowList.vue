@@ -12,7 +12,7 @@
 
       <template #header-end>
         <div class="flow-list__header-end">
-          <SearchInput v-model="flowNameLike" :placeholder="localization.info.flowSearch" :label="localization.info.flowSearch" />
+          <SearchInput v-model="search" :placeholder="localization.info.filter" :label="localization.info.filter" />
           <p-select v-model="filter.sort" :options="flowSortOptions" />
           <p-tags-input v-model="filter.flowRuns.tags.name" :placeholder="localization.info.addTagPlaceholder" class="flow-list__flow-run-tags">
             <template #empty-message>
@@ -24,7 +24,7 @@
 
       <p-virtual-scroller :items="flows">
         <template #default="{ item }">
-          <FlowListItem v-model:selected="selected" :flow="item" :filter="filter" />
+          <FlowListItem v-model:selected="selected" :flow="item" :filter="baseFilter" />
         </template>
       </p-virtual-scroller>
     </p-layout-table>
@@ -46,13 +46,26 @@
 
   const api = useWorkspaceApi()
   const can = useCan()
-  const flowNameLike = ref<string>('')
-  const flowNameLikeDebounced = useDebouncedRef(flowNameLike, 1200)
-  const { filter, clear, isCustomFilter } = useFlowsFilterFromRoute({
-    ...props.filter,
-    flows: {
+  const search = ref<string>('')
+  const searchDebounced = useDebouncedRef(search, 1200)
+
+  const baseFilter = computed(() => {
+    return {
       ...props.filter,
-      nameLike: flowNameLikeDebounced,
+    }
+  })
+
+  const { filter } = useFlowsFilterFromRoute({
+    ...baseFilter.value,
+    flows: {
+      ...baseFilter.value.flows,
+      operator: 'or',
+      nameLike: searchDebounced,
+    },
+    deployments: {
+      ...baseFilter.value.deployments,
+      operator: 'or',
+      nameLike: searchDebounced,
     },
   })
 
@@ -61,7 +74,7 @@
   const flowsSubscription = useSubscription(api.flows.getFlows, [filter])
   const flows = computed(() => flowsSubscription.response ?? [])
 
-  const flowsCountSubscription = useSubscription(api.flows.getFlowsCount, [filter])
+  const flowsCountSubscription = useSubscription(api.flows.getFlowsCount, [baseFilter])
   const flowsCount = computed(() => flowsCountSubscription.response ?? 0)
 
   function refresh(): void {

@@ -11,5 +11,5 @@
   import ComponentPage from '@/demo/components/ComponentPage.vue'
   import { useFlowsMock } from '@/demo/compositions/useFlowMock'
 
-  useFlowsMock(10)
+  useFlowsMock(2)
 </script>
