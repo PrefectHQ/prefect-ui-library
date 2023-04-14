@@ -91,7 +91,7 @@
 
 <style>
 .flow-list-item-deployments {
-  --virtual-scroller-item-gap: theme('spacing.4')
+  --virtual-scroller-item-gap: theme('spacing.2')
 }
 
 .flow-list-item-deployments__deployment { @apply

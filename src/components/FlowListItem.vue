@@ -3,7 +3,7 @@
     <StateListItem v-model:selected="selected" v-bind="attrs" class="flow-list-item" :class="classes.listItem" :state-type="flowState">
       <template #name>
         <p-link :to="routes.flow(flow.id)">
-          <p-heading :heading="5">
+          <p-heading :heading="3">
             {{ flow.name }}
           </p-heading>
         </p-link>
@@ -73,7 +73,7 @@
   const api = useWorkspaceApi()
   const routes = useWorkspaceRoutes()
   const selected = ref([])
-  const expanded = ref(false)
+  const expanded = ref(true)
 
   const filter = computed(() => {
     return {
@@ -125,10 +125,6 @@
 .flow-list-item__deployments { @apply
   sm:pr-4
   sm:ml-2
-}
-
-.flow-list-item .state-list-item__meta { @apply
-  gap-8
 }
 
 .flow-list-item__relationships { @apply

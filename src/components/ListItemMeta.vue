@@ -24,6 +24,7 @@
   gap-1
   text-xs
   font-medium
+  text-foreground
 }
 
 .list-item-meta__content { @apply

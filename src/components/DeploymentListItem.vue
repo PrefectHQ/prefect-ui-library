@@ -7,22 +7,20 @@
         </p-heading>
       </p-link>
 
-      <template v-if="lastRun">
-        <ListItemMetaFlowRun :title="localization.info.lastRun" :flow-run="lastRun" />
-      </template>
+      <ListItemMetaFlowRun :title="localization.info.lastRun" :flow-run="lastRun" />
     </template>
 
     <template v-if="deployment.workPoolName || deployment.workQueueName" #meta>
       <template v-if="deployment.workPoolName">
-        <div class="deployment-list-item__relation">
-          <span>{{ localization.info.workPool }}</span> <WorkPoolIconText :work-pool-name="deployment.workPoolName" />
-        </div>
+        <ListItemMeta :title="localization.info.workPool">
+          <WorkPoolIconText :work-pool-name="deployment.workPoolName" />
+        </ListItemMeta>
       </template>
 
       <template v-else-if="deployment.workQueueName">
-        <div class="deployment-list-item__relation">
-          <span>{{ localization.info.workQueue }} </span> <WorkQueueIconText :work-queue-name="deployment.workQueueName" :work-pool-name="deployment.workPoolName" />
-        </div>
+        <ListItemMeta :title="localization.info.workQueue">
+          <WorkQueueIconText :work-queue-name="deployment.workQueueName" />
+        </ListItemMeta>
       </template>
     </template>
 
@@ -54,7 +52,7 @@
 
 <script lang="ts" setup>
   import { computed } from 'vue'
-  import { DeploymentMenu, DeploymentToggle, ListItemMetaFlowRun, StateListItem, WorkPoolIconText, WorkQueueIconText } from '@/components'
+  import { DeploymentMenu, DeploymentToggle, ListItemMeta, ListItemMetaFlowRun, StateListItem, WorkPoolIconText, WorkQueueIconText } from '@/components'
   import { useLastFlowRun, useNextFlowRun, useWorkspaceRoutes } from '@/compositions'
   import { localization } from '@/localization'
   import { Deployment, FlowRunsFilter, isRRuleSchedule } from '@/models'
@@ -114,7 +112,7 @@
 }
 
 .deployment-list-item__schedule-text { @apply
-  font-bold
+  font-semibold
 }
 
 .deployment-list-item__schedule-none { @apply

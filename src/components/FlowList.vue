@@ -88,7 +88,7 @@
 
 <style>
 .flow-list {
-  --virtual-scroller-item-gap: theme('spacing.8')
+  --virtual-scroller-item-gap: theme('spacing.6')
 }
 
 .flow-list__header-start { @apply
