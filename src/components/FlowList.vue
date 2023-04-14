@@ -24,7 +24,7 @@
 
       <p-virtual-scroller :items="flows">
         <template #default="{ item }">
-          <FlowListItem v-model:selected="selected" :flow="item" />
+          <FlowListItem v-model:selected="selected" :flow="item" :filter="filter" />
         </template>
       </p-virtual-scroller>
     </p-layout-table>
