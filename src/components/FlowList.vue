@@ -44,9 +44,6 @@
     filter?: FlowsFilter,
   }>()
 
-  // TODO: put this in the flow list item component
-  // const { FlowMenu } = useComponent()
-
   const api = useWorkspaceApi()
   const can = useCan()
   const flowNameLike = ref<string>('')

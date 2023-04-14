@@ -26,6 +26,9 @@ export class MockWorkspaceFlowsApi extends MockApi implements IWorkspaceFlowsApi
     return await this.flows.get(flowId)
   }
 
+  /**
+   * WARNING: Not all filter arguments have been implemented for the getFlows method... feel free to add any missing filters :)
+  */
   public async getFlows(filter: FlowsFilter = {}): Promise<Flow[]> {
     const { limit = 200, offset = 0, sort = 'CREATED_DESC' } = filter
     let flows = await this.flows.findAll(flowsItemIntersectsFilter(filter))
@@ -51,6 +54,9 @@ export class MockWorkspaceFlowsApi extends MockApi implements IWorkspaceFlowsApi
     return flows
   }
 
+  /**
+   * WARNING: Not all filter arguments have been implemented for the getFlowsCount method... feel free to add any missing filters :)
+  */
   public async getFlowsCount(filter: FlowsFilter = {}): Promise<number> {
     return await this.flows.count(flowsItemIntersectsFilter(filter))
   }
