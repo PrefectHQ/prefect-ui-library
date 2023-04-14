@@ -21,7 +21,7 @@
         </div>
       </template>
 
-      <p-virtual-scroller :items="flows">
+      <p-virtual-scroller :items="flows" :chunk-size="10" :item-estimate-height="135">
         <template #default="{ item }">
           <FlowListItem v-model:selected="selected" :flow="item" :filter="baseFilter" />
         </template>
