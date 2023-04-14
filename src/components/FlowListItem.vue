@@ -39,7 +39,9 @@
       </div>
     </StateListItem>
 
-    <FlowListItemDeployments v-show="expanded" :flow="flow" :filter="filter" class="flow-list-item__deployments" />
+    <keep-alive>
+      <FlowListItemDeployments v-show="expanded" :flow="flow" :filter="filter" class="flow-list-item__deployments" />
+    </keep-alive>
   </div>
 </template>
 
@@ -70,7 +72,7 @@
   const api = useWorkspaceApi()
   const routes = useWorkspaceRoutes()
   const selected = ref([])
-  const expanded = ref(true)
+  const expanded = ref(false)
 
   const filter = computed(() => {
     return {
