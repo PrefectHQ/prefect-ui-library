@@ -70,7 +70,7 @@
   const api = useWorkspaceApi()
   const routes = useWorkspaceRoutes()
   const selected = ref([])
-  const expanded = ref(true)
+  const expanded = ref(false)
 
   const filter = computed(() => {
     return {
