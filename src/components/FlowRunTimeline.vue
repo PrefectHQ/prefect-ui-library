@@ -41,7 +41,7 @@
       >
         <FlowRunTimeline
           ref="timelineGraph"
-          v-model:visibleDateRange="visibleDateRange"
+          v-model:visible-date-range="visibleDateRange"
           class="flow-run-timeline__graph"
           :class="classes.graph"
           :graph-data="graphData"
@@ -53,7 +53,6 @@
           :sub-node-labels="subFlowRunLabels"
           :selected-node-id="selectedNode?.id"
           :expanded-sub-nodes="expandedSubFlowRuns"
-          @update:visible-date-range="updateVisibleDateRange"
           @selection="selectNode"
           @sub-node-toggle="toggleSubFlowRun"
         />
@@ -128,7 +127,6 @@
 
   const timelineGraphContainer = ref<HTMLElement | null>(null)
   const timelineGraph = ref<InstanceType<typeof FlowRunTimeline> | null>(null)
-  const visibleDateRange = ref<TimelineVisibleDateRange | undefined>(undefined)
   const isFullscreen = ref(false)
   const showTaskRunPanel = ref(false)
   const selectedNode = ref<NodeSelectionEvent | null>(null)
@@ -145,6 +143,15 @@
 
   const documentStyles = getComputedStyle(document.documentElement)
   const bodyStyles = getComputedStyle(document.body)
+
+  const visibleDateRange = computed({
+    get() {
+      return props.visibleDateRange
+    },
+    set(value) {
+      emit('update:visibleDateRange', value)
+    },
+  })
 
   onMounted(() => {
     window.addEventListener('keydown', keyboardShortcutListener)
@@ -174,10 +181,6 @@
       default:
         break
     }
-  }
-
-  const updateVisibleDateRange = (event?: TimelineVisibleDateRange): void => {
-    emit('update:visibleDateRange', event)
   }
 
   const selectNode = (value: NodeSelectionEvent | null): void => {
