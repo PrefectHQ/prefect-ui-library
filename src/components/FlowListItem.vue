@@ -132,9 +132,4 @@
 .flow-list-item__content-toggle--expanded { @apply
   rotate-180
 }
-
-.flow-list-item__divider { @apply
-  mt-0
-  mb-3
-}
 </style>
