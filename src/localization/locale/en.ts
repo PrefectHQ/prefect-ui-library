@@ -100,6 +100,10 @@ export const en = {
   info: {
     artifact: 'Artifact',
     artifacts: 'Artifacts',
+    addTagPlaceholder: 'Add tag (press enter to submit)',
+    flow: 'Flow',
+    flowSearch: 'Search flows',
+    filterByFlowRunTags: 'Filter by flow run tags',
     artifactSearch: 'Search artifacts',
     variablesSearch: 'Search variables',
     artifactCreated: (key: string) => `Created __${key}__`,
