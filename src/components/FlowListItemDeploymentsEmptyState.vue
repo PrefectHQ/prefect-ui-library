@@ -32,6 +32,7 @@
 </script>
 
 <style>
+/* TODO: backfill this to prefect-design as "flat" prop */
 .flow-list-item-deployments-empty-state,
 .flow-list-item-deployments-empty-state .p-empty-state__text { @apply
   border-none
