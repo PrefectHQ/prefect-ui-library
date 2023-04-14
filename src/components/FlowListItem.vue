@@ -122,8 +122,7 @@
 }
 
 .flow-list-item__deployments { @apply
-  sm:pr-4
-  sm:ml-2
+  sm:ml-8
 }
 
 .flow-list-item__content { @apply

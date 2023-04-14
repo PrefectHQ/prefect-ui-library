@@ -77,9 +77,7 @@
   const { flowRun: nextRun } = useNextFlowRun(flowRunsFilter)
   const { flowRun: lastRun } = useLastFlowRun(flowRunsFilter)
 
-  const deploymentState = computed(() => {
-    return lastRun.value?.state?.type ?? nextRun.value?.state?.type ?? undefined
-  })
+  const deploymentState = computed(() => lastRun.value?.state?.type)
 
   const schedule = computed(() => props.deployment.schedule)
   const scheduleText = computed(() => {
