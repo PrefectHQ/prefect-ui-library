@@ -1,5 +1,5 @@
 <template>
-  <StateListItem class="deployment-list-item" :tags="tags" :state="deploymentState" disabled>
+  <StateListItem class="deployment-list-item" :tags="tags" :state-type="deploymentState" disabled>
     <template #name>
       <p-link :to="routes.deployment(deployment.id)">
         <p-heading :heading="5">

@@ -10,8 +10,8 @@ const flowRunsItemIntersectsFilter = (filter: FlowRunsFilter): KeyedDataStoreFin
   return (flowRun: FlowRun): boolean => {
     let filtered = false
 
-    if (filter.flows?.id?.length) {
-      filtered = !!flowRun.flowId && !filter.flows.id.includes(flowRun.flowId)
+    if (filter.flows?.id?.length && flowRun.flowId) {
+      filtered = !filter.flows.id.includes(flowRun.flowId)
     }
 
     if (!filtered && filter.flowRuns?.id?.length) {
@@ -34,6 +34,10 @@ const flowRunsItemIntersectsFilter = (filter: FlowRunsFilter): KeyedDataStoreFin
       if (!filtered && filter.flowRuns.state.name?.length) {
         filtered = !filter.flowRuns.state.name.includes(name)
       }
+    }
+
+    if (!filtered && filter.deployments?.id?.length && flowRun.deploymentId) {
+      filtered = !filter.deployments.id.includes(flowRun.deploymentId)
     }
 
     return !filtered

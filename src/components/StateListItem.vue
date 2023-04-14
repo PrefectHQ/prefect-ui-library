@@ -67,6 +67,10 @@
 </script>
 
 <style>
+.state-list-item .p-list-item-input__checkbox { @apply
+  bg-transparent
+}
+
 .state-list-item--completed .p-list-item-input__checkbox { @apply
   bg-state-completed-500
 }
