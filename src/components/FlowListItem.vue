@@ -135,7 +135,7 @@
   absolute
   left-0
   sm:left-2
-  top-0
+  top-5
   bottom-5
   border-l
   border-foreground-100
