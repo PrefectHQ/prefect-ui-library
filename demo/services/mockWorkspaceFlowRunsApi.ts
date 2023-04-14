@@ -22,6 +22,16 @@ const flowRunsItemIntersectsFilter = (filter: FlowRunsFilter): KeyedDataStoreFin
       filtered = !filter.flowRuns.name.includes(flowRun.name)
     }
 
+    if (!filtered && filter.flowRuns?.state && flowRun.state) {
+      if (filter.flowRuns.state.type?.length) {
+        filtered = !filter.flowRuns.state.type.includes(flowRun.state.type)
+      }
+
+      if (!filtered && filter.flowRuns.state.name?.length) {
+        filtered = !filter.flowRuns.state.name.includes(flowRun.state.name)
+      }
+    }
+
     return !filtered
   }
 }
