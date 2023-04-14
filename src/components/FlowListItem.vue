@@ -136,7 +136,7 @@
   left-0
   sm:left-2
   top-0
-  bottom-1
+  bottom-5
   border-l
   border-foreground-100
   pointer-events-none
