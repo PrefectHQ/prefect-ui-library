@@ -26,6 +26,6 @@
 
 <style>
 .list-item-meta-flow-run__none { @apply
-  text-foreground-50
+  text-foreground-200
 }
 </style>

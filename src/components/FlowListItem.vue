@@ -27,7 +27,14 @@
             inset
             icon="ChevronDownIcon"
           />
-          {{ deploymentsCount }}  {{ toPluralString(localization.info.deployment, deploymentsCount) }}
+
+          <span v-if="deploymentsCount > 0" class="flow-list-item__content-text">
+            {{ deploymentsCount }}  {{ toPluralString(localization.info.deployment, deploymentsCount) }}
+          </span>
+
+          <span v-else class="flow-list-item__content-text-none">
+            {{ localization.info.noDeployments }}
+          </span>
         </div>
       </div>
     </StateListItem>
@@ -119,7 +126,12 @@
 
 .flow-list-item__content { @apply
   cursor-pointer
+  text-sm
   w-full
+}
+
+.flow-list-item__content-text-none { @apply
+  text-foreground-200
 }
 
 .flow-list-item__content-toggle { @apply

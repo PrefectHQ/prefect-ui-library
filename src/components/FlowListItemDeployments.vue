@@ -1,9 +1,11 @@
 <template>
   <div class="flow-list-item-deployments">
-    <div class="flow-list-item-deployments__header">
-      <DeploymentsDeleteButton v-if="can.delete.deployment" :selected="selected" @delete="deleteDeployments" />
-      <SelectedCount v-if="selected.length" :count="selected.length" />
-    </div>
+    <template v-if="showHeader">
+      <div class="flow-list-item-deployments__header">
+        <DeploymentsDeleteButton v-if="can.delete.deployment" :selected="selected" @delete="deleteDeployments" />
+        <SelectedCount v-if="selected.length" :count="selected.length" />
+      </div>
+    </template>
 
     <template v-if="deploymentsSubscription.loading">
       <p-loading-icon />
@@ -87,6 +89,10 @@
   }
 
   const selected = ref([])
+
+  const showHeader = computed(() => {
+    return selected.value.length > 0 || can.delete.deployment
+  })
 </script>
 
 <style>
