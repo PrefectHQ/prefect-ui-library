@@ -41,6 +41,7 @@
       >
         <FlowRunTimeline
           ref="timelineGraph"
+          v-model:visibleDateRange="visibleDateRange"
           class="flow-run-timeline__graph"
           :class="classes.graph"
           :graph-data="graphData"
@@ -52,6 +53,7 @@
           :sub-node-labels="subFlowRunLabels"
           :selected-node-id="selectedNode?.id"
           :expanded-sub-nodes="expandedSubFlowRuns"
+          @update:visible-date-range="updateVisibleDateRange"
           @selection="selectNode"
           @sub-node-toggle="toggleSubFlowRun"
         />
@@ -80,7 +82,8 @@
     TimelineNodesLayoutOptions,
     TimelineThemeOptions,
     ExpandedSubNodes,
-    NodeSelectionEvent
+    NodeSelectionEvent,
+    TimelineVisibleDateRange
   } from '@prefecthq/graphs'
   import { useColorTheme } from '@prefecthq/prefect-design'
   import { UseSubscription, useSubscription } from '@prefecthq/vue-compositions'
@@ -95,6 +98,11 @@
 
   const props = defineProps<{
     flowRun: FlowRun,
+    visibleDateRange?: TimelineVisibleDateRange,
+  }>()
+
+  const emit = defineEmits<{
+    (event: 'update:visibleDateRange', value: TimelineVisibleDateRange | undefined): void,
   }>()
 
   const { value: colorThemeValue } = useColorTheme()
@@ -120,6 +128,7 @@
 
   const timelineGraphContainer = ref<HTMLElement | null>(null)
   const timelineGraph = ref<InstanceType<typeof FlowRunTimeline> | null>(null)
+  const visibleDateRange = ref<TimelineVisibleDateRange | undefined>(undefined)
   const isFullscreen = ref(false)
   const showTaskRunPanel = ref(false)
   const selectedNode = ref<NodeSelectionEvent | null>(null)
@@ -165,6 +174,10 @@
       default:
         break
     }
+  }
+
+  const updateVisibleDateRange = (event?: TimelineVisibleDateRange): void => {
+    emit('update:visibleDateRange', event)
   }
 
   const selectNode = (value: NodeSelectionEvent | null): void => {
@@ -444,7 +457,6 @@
 
 .flow-run-timeline__graph { @apply
   bg-background
-  rounded-lg;
 }
 
 .flow-run-timeline__graph canvas {
