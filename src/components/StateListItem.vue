@@ -116,12 +116,22 @@
 }
 
 .state-list-item__top-section { @apply
-  flex
-  flex-col
+  grid
   w-full
-  gap-2
-  md:flex-row
-  md:gap-4
+  gap-2;
+
+  grid-template-columns: 1fr auto;
+  grid-template-areas:
+    "name action"
+    "tags tags";
+}
+
+@screen md {
+  .state-list-item__top-section {
+    grid-template-columns: auto 1fr auto;
+    grid-template-areas:
+     "name tags action";
+  }
 }
 
 .state-list-item__name { @apply
@@ -131,7 +141,9 @@
   whitespace-nowrap
   grow-0
   text-ellipsis
-  overflow-hidden
+  overflow-hidden;
+
+  grid-area: name;
 }
 
 .state-list-item__meta { @apply
@@ -149,7 +161,13 @@
 
 .state-list-item__tags { @apply
   min-w-0
-  grow
+  grow;
+
+  grid-area: tags;
+}
+
+.state-list-item__action {
+  grid-area: action;
 }
 
 .state-list-item__relationships { @apply

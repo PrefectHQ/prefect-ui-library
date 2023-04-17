@@ -123,6 +123,7 @@
 }
 
 .flow-list-item__deployments { @apply
+  ml-4
   sm:ml-8
 }
 
@@ -155,6 +156,7 @@
   sm:grid-cols-2
   sm:grid-rows-1
   gap-2
+  w-full
 }
 
 .flow-list-item__next-run { @apply
