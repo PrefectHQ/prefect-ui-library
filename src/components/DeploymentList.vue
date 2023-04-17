@@ -18,7 +18,7 @@
       </template>
     </p-virtual-scroller>
 
-    <template v-if="deployments.length">
+    <template v-if="deployments.length && pages > 1">
       <p-pager v-model:page="page" :pages="pages" />
     </template>
   </div>
