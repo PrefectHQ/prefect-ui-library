@@ -14,8 +14,16 @@
         :chunk-size="20"
         item-key="id"
       >
-        <template #default="{ item: deployment }">
-          <DeploymentListItem v-model:selected="selected" v-bind="{ deployment }" class="deployment-list__deployment" @update="handleUpdate" @delete="handleDelete" />
+        <template #default="{ item }">
+          <DeploymentListItem
+            v-model:selected="selected"
+            :value="item.id"
+            :deployment="item"
+            :disabled="disabled"
+            class="deployment-list__deployment"
+            @update="handleUpdate"
+            @delete="handleDelete"
+          />
         </template>
       </p-virtual-scroller>
 
@@ -39,6 +47,7 @@
 
   const props = defineProps<{
     filter?: DeploymentsFilter,
+    disabled?: boolean,
   }>()
 
   const emit = defineEmits<{

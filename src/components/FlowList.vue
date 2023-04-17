@@ -28,7 +28,15 @@
         item-key="id"
       >
         <template #default="{ item }">
-          <FlowListItem v-model:selected="selected" :flow="item" :filter="baseFilter" @delete="handleDelete" />
+          <FlowListItem
+            v-model:selected="selected"
+            :value="item.id"
+            :flow="item"
+            :filter="baseFilter"
+            :disabled="disabled"
+            class="flow-list__flow"
+            @delete="handleDelete"
+          />
         </template>
       </p-virtual-scroller>
 
@@ -50,6 +58,7 @@
 
   const props = defineProps<{
     filter?: FlowsFilter,
+    disabled?: boolean,
   }>()
 
   const emit = defineEmits<{

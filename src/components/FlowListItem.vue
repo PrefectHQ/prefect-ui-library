@@ -1,6 +1,6 @@
 <template>
   <div class="flow-list-item-container">
-    <StateListItem v-model:selected="selected" v-bind="attrs" class="flow-list-item" :class="classes.listItem" :state-type="flowState">
+    <StateListItem v-bind="attrs" class="flow-list-item" :class="classes.listItem" :state-type="flowState">
       <template #name>
         <p-link :to="routes.flow(flow.id)">
           <p-heading :heading="3">
@@ -67,7 +67,7 @@
 <script lang="ts" setup>
   import { toPluralString } from '@prefecthq/prefect-design'
   import { useLocalStorage, useSubscriptionWithDependencies } from '@prefecthq/vue-compositions'
-  import { computed, ref, useAttrs } from 'vue'
+  import { computed, useAttrs } from 'vue'
   import { DeploymentList, FlowListItemDeploymentsEmptyState, ListItemMetaFlowRun, StateListItem } from '@/components'
   import { useNextFlowRun, useLastFlowRun, useWorkspaceApi, useWorkspaceRoutes, useComponent } from '@/compositions'
   import { localization } from '@/localization'
@@ -86,7 +86,6 @@
   const attrs = useAttrs()
   const api = useWorkspaceApi()
   const routes = useWorkspaceRoutes()
-  const selected = ref([])
 
   const { value: expanded } = useLocalStorage(`flow-list-item-${props.flow.id}--expanded`, false)
 
