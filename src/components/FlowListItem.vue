@@ -56,7 +56,7 @@
 
 <script lang="ts" setup>
   import { toPluralString } from '@prefecthq/prefect-design'
-  import { useSubscriptionWithDependencies } from '@prefecthq/vue-compositions'
+  import { useLocalStorage, useSubscriptionWithDependencies } from '@prefecthq/vue-compositions'
   import { computed, ref, useAttrs } from 'vue'
   import { FlowListItemDeployments, ListItemMetaFlowRun, StateListItem } from '@/components'
   import { useNextFlowRun, useLastFlowRun, useWorkspaceApi, useWorkspaceRoutes, useComponent } from '@/compositions'
@@ -77,7 +77,8 @@
   const api = useWorkspaceApi()
   const routes = useWorkspaceRoutes()
   const selected = ref([])
-  const expanded = ref(false)
+
+  const { value: expanded } = useLocalStorage(`flow-list-item-${props.flow.id}--expanded`, false)
 
   const filter = computed(() => {
     return {
