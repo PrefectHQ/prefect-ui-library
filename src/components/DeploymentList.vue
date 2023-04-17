@@ -1,26 +1,28 @@
 <template>
   <div class="deployment-list">
-    <template v-if="showHeader">
-      <div class="deployment-list__header">
-        <DeploymentsDeleteButton v-if="can.delete.deployment" :selected="selected" @delete="deleteDeployments" />
-        <SelectedCount v-if="selected.length" :count="selected.length" />
-      </div>
-    </template>
-
-    <p-virtual-scroller
-      :items="deployments"
-      :item-estimate-height="60"
-      :chunk-size="20"
-      item-key="id"
-    >
-      <template #default="{ item: deployment }">
-        <DeploymentListItem v-model:selected="selected" v-bind="{ deployment }" class="deployment-list__deployment" @update="handleUpdate" @delete="handleDelete" />
+    <p-layout-table sticky>
+      <template #header-start>
+        <div class="deployment-list__header">
+          <DeploymentsDeleteButton v-if="can.delete.deployment" :selected="selected" @delete="deleteDeployments" />
+          <SelectedCount v-if="selected.length" :count="selected.length" />
+        </div>
       </template>
-    </p-virtual-scroller>
 
-    <template v-if="deployments.length && pages > 1">
-      <p-pager v-model:page="page" :pages="pages" />
-    </template>
+      <p-virtual-scroller
+        :items="deployments"
+        :item-estimate-height="60"
+        :chunk-size="20"
+        item-key="id"
+      >
+        <template #default="{ item: deployment }">
+          <DeploymentListItem v-model:selected="selected" v-bind="{ deployment }" class="deployment-list__deployment" @update="handleUpdate" @delete="handleDelete" />
+        </template>
+      </p-virtual-scroller>
+
+      <template v-if="pages > 1" #footer-end>
+        <p-pager v-model:page="page" :pages="pages" />
+      </template>
+    </p-layout-table>
   </div>
 </template>
 
@@ -107,7 +109,7 @@
   const selected = ref([])
 
   const showHeader = computed(() => {
-    return selected.value.length > 0 || can.delete.deployment
+    return can.delete.deployment
   })
 </script>
 
@@ -121,10 +123,6 @@
 }
 
 .deployment-list__header { @apply
-  flex
-  items-center
-  p-2
-  gap-4
   h-min
 }
 </style>

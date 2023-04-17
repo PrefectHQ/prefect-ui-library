@@ -32,7 +32,7 @@
         </template>
       </p-virtual-scroller>
 
-      <template v-if="flows.length && pages > 1" #footer-end>
+      <template v-if="pages > 1" #footer-end>
         <p-pager v-model:page="page" :pages="pages" />
       </template>
     </p-layout-table>
