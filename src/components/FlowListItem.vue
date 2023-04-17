@@ -41,7 +41,17 @@
     </StateListItem>
 
     <keep-alive>
-      <FlowListItemDeployments v-if="expanded" :flow="flow" :filter="filter" class="flow-list-item__deployments" />
+      <template v-if="expanded">
+        <template v-if="deploymentsCountSubscription.executed && deploymentsCount === 0">
+          <FlowListItemDeploymentsEmptyState :flow="flow" class="flow-list-item__deployments-empty" />
+        </template>
+        <template v-else-if="!deploymentsCountSubscription.loading">
+          <FlowListItemDeployments :filter="filter" class="flow-list-item__deployments" />
+        </template>
+        <template v-else>
+          <p-loading-icon class="flow-list-item__loading-icon" />
+        </template>
+      </template>
     </keep-alive>
   </div>
 </template>
@@ -58,7 +68,7 @@
   import { toPluralString } from '@prefecthq/prefect-design'
   import { useLocalStorage, useSubscriptionWithDependencies } from '@prefecthq/vue-compositions'
   import { computed, ref, useAttrs } from 'vue'
-  import { FlowListItemDeployments, ListItemMetaFlowRun, StateListItem } from '@/components'
+  import { FlowListItemDeployments, FlowListItemDeploymentsEmptyState, ListItemMetaFlowRun, StateListItem } from '@/components'
   import { useNextFlowRun, useLastFlowRun, useWorkspaceApi, useWorkspaceRoutes, useComponent } from '@/compositions'
   import { localization } from '@/localization'
   import { DeploymentsFilter, Flow, FlowsFilter } from '@/models'
@@ -165,5 +175,13 @@
 
 .flow-list-item__next-run { @apply
   sm:justify-end
+}
+
+.flow-list-item__loading-icon { @apply
+  mx-auto
+}
+
+.flow-list-item__deployments-empty { @apply
+  p-4
 }
 </style>

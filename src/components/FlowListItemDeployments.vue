@@ -1,7 +1,7 @@
 <template>
-  <div class="flow-list-item-deployments">
+  <div class="deployments-list">
     <template v-if="showHeader">
-      <div class="flow-list-item-deployments__header">
+      <div class="deployments-list__header">
         <DeploymentsDeleteButton v-if="can.delete.deployment" :selected="selected" @delete="deleteDeployments" />
         <SelectedCount v-if="selected.length" :count="selected.length" />
       </div>
@@ -12,23 +12,14 @@
       :item-estimate-height="60"
       :chunk-size="20"
       item-key="id"
-      @bottom="fetchMore"
     >
       <template #default="{ item: deployment }">
-        <DeploymentListItem v-model:selected="selected" v-bind="{ deployment }" class="flow-list-item-deployments__deployment" @update="handleUpdate" @delete="handleDelete" />
+        <DeploymentListItem v-model:selected="selected" v-bind="{ deployment }" class="deployments-list__deployment" @update="handleUpdate" @delete="handleDelete" />
       </template>
     </p-virtual-scroller>
 
-    <template v-if="deploymentsSubscription.executed">
-      <template v-if="!deployments.length">
-        <div class="flow-list-item-deployments__empty-state-container">
-          <FlowListItemDeploymentsEmptyState :flow="flow" />
-        </div>
-      </template>
-    </template>
-
-    <template v-else>
-      <p-loading-icon class="flow-list-item-deployments__loading-icon" />
+    <template v-if="deployments.length">
+      <p-pager v-model:page="page" :pages="pages" />
     </template>
   </div>
 </template>
@@ -39,14 +30,12 @@
   import {
     DeploymentsDeleteButton,
     DeploymentListItem,
-    FlowListItemDeploymentsEmptyState,
     SelectedCount
   } from '@/components'
   import { useCan, useDeploymentsFilterFromRoute, useWorkspaceApi } from '@/compositions'
-  import { DeploymentsFilter, Flow } from '@/models'
+  import { DeploymentsFilter } from '@/models'
 
   const props = defineProps<{
-    flow: Flow,
     filter?: DeploymentsFilter,
   }>()
 
@@ -54,25 +43,36 @@
     (event: 'update' | 'delete', value?: string): void,
   }>()
 
-  const DEPLOYMENTS_DEFAULT_FILTER_LIMIT = 10
+  const DEFAULT_LIMIT = 40
 
   const can = useCan()
   const api = useWorkspaceApi()
 
   const { filter: routeFilter } = useDeploymentsFilterFromRoute()
+  const page = ref(1)
+  const offset = computed({
+    get: () => (page.value - 1) * DEFAULT_LIMIT,
+    set: (value: number) => {
+      page.value = Math.ceil(value / DEFAULT_LIMIT) + 1
+    },
+  })
+  const pages = computed(() => Math.ceil((deploymentsCount.value ?? DEFAULT_LIMIT) / DEFAULT_LIMIT))
+
+  const baseFilter = computed(() => {
+    return {
+      ...props.filter,
+    }
+  })
 
   const filter = computed<DeploymentsFilter>(() => {
     return {
-      ...props.filter,
-      flows: {
-        ...props.filter?.flows,
-        id: [props.flow.id],
-      },
+      ...baseFilter.value,
       deployments: {
         ...props.filter?.deployments,
         ...routeFilter.deployments,
       },
-      limit: DEPLOYMENTS_DEFAULT_FILTER_LIMIT,
+      offset: offset.value,
+      limit: DEFAULT_LIMIT,
     }
   })
 
@@ -85,9 +85,12 @@
 
   const deployments = computed(() => deploymentsSubscription.response ?? [])
 
-  const fetchMore = (): void => {
-    // TODO: implement
-  }
+  const deploymentsCountSubscriptionArgs = computed<[DeploymentsFilter]>(() => [baseFilter.value])
+  const deploymentsCountSubscription = useSubscriptionWithDependencies(
+    api.deployments.getDeploymentsCount,
+    deploymentsCountSubscriptionArgs,
+  )
+  const deploymentsCount = computed(() => deploymentsCountSubscription.response)
 
   const deleteDeployments = (): void => emit('delete')
 
@@ -109,27 +112,19 @@
 </script>
 
 <style>
-.flow-list-item-deployments {
+.deployments-list {
   --virtual-scroller-item-gap: theme('spacing.2')
 }
 
-.flow-list-item-deployments__deployment { @apply
+.deployments-list__deployment { @apply
   rounded-l-sm
 }
 
-.flow-list-item-deployments__header { @apply
+.deployments-list__header { @apply
   flex
   items-center
   p-2
   gap-4
   h-min
-}
-
-.flow-list-item-deployments__empty-state-container { @apply
-  p-4
-}
-
-.flow-list-item-deployments__loading-icon { @apply
-  mx-auto
 }
 </style>
