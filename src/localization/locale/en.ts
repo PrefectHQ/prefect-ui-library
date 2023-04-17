@@ -131,7 +131,6 @@ export const en = {
     delete: 'Delete',
     tags: 'Tags',
     nextRun: 'Next run',
-    nextRunIsLate: 'Next run is late',
     lastRun: 'Last run',
     workPool: 'Work Pool',
     workQueue: 'Work Queue',
