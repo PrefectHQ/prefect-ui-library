@@ -67,7 +67,7 @@
   }>()
 
   const emit = defineEmits<{
-    (event: 'update' | 'delete', value: string | null): void,
+    (event: 'update' | 'delete', value: string): void,
   }>()
 
   const routes = useWorkspaceRoutes()

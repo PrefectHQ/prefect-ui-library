@@ -71,7 +71,7 @@
   }>()
 
   const emit = defineEmits<{
-    (event: 'delete', value: string | null): void,
+    (event: 'delete', value: string): void,
   }>()
 
   const { FlowMenu } = useComponent()

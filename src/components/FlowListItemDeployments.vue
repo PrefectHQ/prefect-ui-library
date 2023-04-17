@@ -51,7 +51,7 @@
   }>()
 
   const emit = defineEmits<{
-    (event: 'update' | 'delete', value: string | null): void,
+    (event: 'update' | 'delete', value?: string): void,
   }>()
 
   const DEPLOYMENTS_DEFAULT_FILTER_LIMIT = 10
@@ -89,16 +89,14 @@
     // TODO: implement
   }
 
-  const deleteDeployments = (): void => {
-    // TODO: implement
-  }
+  const deleteDeployments = (): void => emit('delete')
 
-  const handleDelete = (deploymentId: string | null): void => {
+  const handleDelete = (deploymentId: string): void => {
     emit('delete', deploymentId)
     deploymentsSubscription.refresh()
   }
 
-  const handleUpdate = (deploymentId: string | null): void => {
+  const handleUpdate = (deploymentId: string): void => {
     emit('update', deploymentId)
     deploymentsSubscription.refresh()
   }
