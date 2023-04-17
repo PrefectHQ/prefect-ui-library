@@ -15,7 +15,7 @@
       @bottom="fetchMore"
     >
       <template #default="{ item: deployment }">
-        <DeploymentListItem v-model:selected="selected" v-bind="{ deployment }" class="flow-list-item-deployments__deployment" />
+        <DeploymentListItem v-model:selected="selected" v-bind="{ deployment }" class="flow-list-item-deployments__deployment" @update="handleUpdate" @delete="handleDelete" />
       </template>
     </p-virtual-scroller>
 
@@ -48,6 +48,10 @@
   const props = defineProps<{
     flow: Flow,
     filter?: DeploymentsFilter,
+  }>()
+
+  const emit = defineEmits<{
+    (event: 'update' | 'delete', value: string | null): void,
   }>()
 
   const DEPLOYMENTS_DEFAULT_FILTER_LIMIT = 10
@@ -87,6 +91,16 @@
 
   const deleteDeployments = (): void => {
     // TODO: implement
+  }
+
+  const handleDelete = (deploymentId: string | null): void => {
+    emit('delete', deploymentId)
+    deploymentsSubscription.refresh()
+  }
+
+  const handleUpdate = (deploymentId: string | null): void => {
+    emit('update', deploymentId)
+    deploymentsSubscription.refresh()
   }
 
   const selected = ref([])

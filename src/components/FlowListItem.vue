@@ -17,7 +17,7 @@
       </template>
 
       <template #action>
-        <FlowMenu size="xs" :flow="flow" show-all @delete="refresh" />
+        <FlowMenu size="xs" :flow="flow" show-all @delete="handleDelete" />
       </template>
 
       <div class="flow-list-item__content" @click="toggle">
@@ -70,6 +70,10 @@
     filter?: FlowsFilter,
   }>()
 
+  const emit = defineEmits<{
+    (event: 'delete', value: string | null): void,
+  }>()
+
   const { FlowMenu } = useComponent()
   const attrs = useAttrs()
   const api = useWorkspaceApi()
@@ -103,8 +107,8 @@
     expanded.value = !expanded.value
   }
 
-  const refresh = (): void => {
-    // TODO: implement
+  const handleDelete = (): void => {
+    emit('delete', props.flow.id)
   }
 
   const classes = computed(() => ({

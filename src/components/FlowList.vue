@@ -29,7 +29,7 @@
         @bottom="fetchMore"
       >
         <template #default="{ item }">
-          <FlowListItem v-model:selected="selected" :flow="item" :filter="baseFilter" />
+          <FlowListItem v-model:selected="selected" :flow="item" :filter="baseFilter" @delete="handleDelete" />
         </template>
       </p-virtual-scroller>
     </p-layout-table>
@@ -47,6 +47,10 @@
 
   const props = defineProps<{
     filter?: FlowsFilter,
+  }>()
+
+  const emit = defineEmits<{
+    (event: 'delete'): void,
   }>()
 
   const api = useWorkspaceApi()
@@ -81,12 +85,13 @@
     flowsCountSubscription.refresh()
   }
 
-  const emit = defineEmits<{
-    (event: 'delete'): void,
-  }>()
-
   const fetchMore = (): void => {
   // TODO: implement
+  }
+
+  const handleDelete = (): void => {
+    refresh()
+    emit('delete')
   }
 
   const deleteFlows = (): void => {

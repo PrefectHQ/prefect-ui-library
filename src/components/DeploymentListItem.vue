@@ -30,11 +30,11 @@
     </template>
 
     <template #action>
-      <DeploymentMenu size="xs" :deployment="deployment" show-all @delete="refresh" />
+      <DeploymentMenu size="xs" :deployment="deployment" show-all @delete="handleDelete" />
     </template>
 
     <div class="deployment-list-item__schedule">
-      <DeploymentToggle :deployment="deployment" :disabled="!schedule" @update="refresh" />
+      <DeploymentToggle :deployment="deployment" :disabled="!schedule" @update="handleUpdate" />
 
       <div class="deployment-list-item__schedule-icon-text">
         <p-icon icon="ClockIcon" />
@@ -66,6 +66,10 @@
     deployment: Deployment,
   }>()
 
+  const emit = defineEmits<{
+    (event: 'update' | 'delete', value: string | null): void,
+  }>()
+
   const routes = useWorkspaceRoutes()
   const tags = computed(() => props.deployment.tags ?? [])
 
@@ -91,8 +95,12 @@
     return schedule.value?.toString() ?? ''
   })
 
-  const refresh = (): void => {
-    // TODO: impelement
+  const handleDelete = (): void => {
+    emit('delete', props.deployment.id)
+  }
+
+  const handleUpdate = (): void => {
+    emit('update', props.deployment.id)
   }
 </script>
 
