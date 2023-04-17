@@ -6,11 +6,16 @@
           <div class="state-list-item__name">
             <slot name="name" />
           </div>
-          <template v-if="slots.tags || tags.length">
-            <div class="state-list-item__tags">
-              <slot name="tags">
-                <p-tag-wrapper v-bind="{ tags, justify }" />
-              </slot>
+
+          <div class="state-list-item__tags">
+            <slot name="tags">
+              <p-tag-wrapper v-bind="{ tags, justify }" />
+            </slot>
+          </div>
+
+          <template v-if="slots.action">
+            <div class="state-list-item__action">
+              <slot name="action" />
             </div>
           </template>
         </div>
@@ -23,11 +28,6 @@
           </div>
         </template>
       </div>
-      <template v-if="slots.action">
-        <div class="state-list-item__action">
-          <slot name="action" />
-        </div>
-      </template>
     </div>
 
     <slot />
