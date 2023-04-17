@@ -22,23 +22,21 @@
 
       <div class="flow-list-item__content" @click="toggle">
         <p-divider class="flow-list-item__divider" />
-        <div v-if="deploymentsCountSubscription.executed">
-          <p-button
-            size="xs"
-            class="flow-list-item__content-toggle"
-            :class="classes.toggle"
-            inset
-            icon="ChevronDownIcon"
-          />
+        <p-button
+          size="xs"
+          class="flow-list-item__content-toggle"
+          :class="classes.toggle"
+          inset
+          icon="ChevronDownIcon"
+        />
 
-          <span v-if="deploymentsCount > 0" class="flow-list-item__content-text">
-            {{ deploymentsCount }}  {{ toPluralString(localization.info.deployment, deploymentsCount) }}
-          </span>
+        <span v-if="deploymentsCount > 0" class="flow-list-item__content-text">
+          {{ deploymentsCount }}  {{ toPluralString(localization.info.deployment, deploymentsCount) }}
+        </span>
 
-          <span v-else class="flow-list-item__content-text-none">
-            {{ localization.info.noDeployments }}
-          </span>
-        </div>
+        <span v-else class="flow-list-item__content-text-none">
+          {{ localization.info.noDeployments }}
+        </span>
       </div>
     </StateListItem>
 
@@ -160,6 +158,7 @@
   sm:grid-cols-2
   sm:grid-rows-1
   gap-2
+  min-h-[1.25rem]
   w-full
 }
 
