@@ -155,7 +155,6 @@
   grid-rows-2
   sm:grid-cols-2
   sm:grid-rows-1
-  sm:items-center
   gap-2
 }
 

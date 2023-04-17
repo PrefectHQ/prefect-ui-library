@@ -24,12 +24,13 @@
   gap-1
   text-xs
   font-medium
-  items-start
+  items-center
   text-foreground
 }
 
 .list-item-meta__content { @apply
   flex
   gap-1
+  items-baseline
 }
 </style>
