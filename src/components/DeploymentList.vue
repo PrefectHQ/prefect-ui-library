@@ -1,7 +1,7 @@
 <template>
-  <div class="deployments-list">
+  <div class="deployment-list">
     <template v-if="showHeader">
-      <div class="deployments-list__header">
+      <div class="deployment-list__header">
         <DeploymentsDeleteButton v-if="can.delete.deployment" :selected="selected" @delete="deleteDeployments" />
         <SelectedCount v-if="selected.length" :count="selected.length" />
       </div>
@@ -14,7 +14,7 @@
       item-key="id"
     >
       <template #default="{ item: deployment }">
-        <DeploymentListItem v-model:selected="selected" v-bind="{ deployment }" class="deployments-list__deployment" @update="handleUpdate" @delete="handleDelete" />
+        <DeploymentListItem v-model:selected="selected" v-bind="{ deployment }" class="deployment-list__deployment" @update="handleUpdate" @delete="handleDelete" />
       </template>
     </p-virtual-scroller>
 
@@ -112,15 +112,15 @@
 </script>
 
 <style>
-.deployments-list {
+.deployment-list {
   --virtual-scroller-item-gap: theme('spacing.2')
 }
 
-.deployments-list__deployment { @apply
+.deployment-list__deployment { @apply
   rounded-l-sm
 }
 
-.deployments-list__header { @apply
+.deployment-list__header { @apply
   flex
   items-center
   p-2

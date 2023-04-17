@@ -46,7 +46,7 @@
           <FlowListItemDeploymentsEmptyState :flow="flow" class="flow-list-item__deployments-empty" />
         </template>
         <template v-else-if="!deploymentsCountSubscription.loading">
-          <FlowListItemDeployments :filter="filter" class="flow-list-item__deployments" />
+          <DeploymentList :filter="filter" class="flow-list-item__deployments" />
         </template>
         <template v-else>
           <p-loading-icon class="flow-list-item__loading-icon" />
@@ -68,7 +68,7 @@
   import { toPluralString } from '@prefecthq/prefect-design'
   import { useLocalStorage, useSubscriptionWithDependencies } from '@prefecthq/vue-compositions'
   import { computed, ref, useAttrs } from 'vue'
-  import { FlowListItemDeployments, FlowListItemDeploymentsEmptyState, ListItemMetaFlowRun, StateListItem } from '@/components'
+  import { DeploymentList, FlowListItemDeploymentsEmptyState, ListItemMetaFlowRun, StateListItem } from '@/components'
   import { useNextFlowRun, useLastFlowRun, useWorkspaceApi, useWorkspaceRoutes, useComponent } from '@/compositions'
   import { localization } from '@/localization'
   import { DeploymentsFilter, Flow, FlowsFilter } from '@/models'
