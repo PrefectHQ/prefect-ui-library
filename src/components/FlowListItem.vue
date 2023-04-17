@@ -9,8 +9,8 @@
         </p-link>
       </template>
 
-      <template #meta>
-        <div class="flow-list-item__meta-container">
+      <template #relationships>
+        <div class="flow-list-item__relationships-container">
           <ListItemMetaFlowRun :title="localization.info.lastRun" :flow-run="lastRun" class="flow-list-item__last-run" />
           <ListItemMetaFlowRun :title="localization.info.nextRun" :flow-run="nextRun" class="flow-list-item__next-run" />
         </div>
@@ -60,11 +60,10 @@
   import { toPluralString } from '@prefecthq/prefect-design'
   import { useSubscriptionWithDependencies } from '@prefecthq/vue-compositions'
   import { computed, ref, useAttrs } from 'vue'
-  import { FlowListItemDeployments, ListItemMeta, ListItemMetaFlowRun, StateListItem } from '@/components'
+  import { FlowListItemDeployments, ListItemMetaFlowRun, StateListItem } from '@/components'
   import { useNextFlowRun, useLastFlowRun, useWorkspaceApi, useWorkspaceRoutes, useComponent } from '@/compositions'
   import { localization } from '@/localization'
   import { DeploymentsFilter, Flow, FlowsFilter } from '@/models'
-  import { formatDateTimeRelative } from '@/utilities'
 
   const props = defineProps<{
     flow: Flow,
@@ -148,7 +147,7 @@
   rotate-180
 }
 
-.flow-list-item__meta-container { @apply
+.flow-list-item__relationships-container { @apply
   grow
   grid
   grid-cols-1

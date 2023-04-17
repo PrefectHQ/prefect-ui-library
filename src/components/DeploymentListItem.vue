@@ -9,7 +9,10 @@
     </template>
 
     <template #relationships>
-      <ListItemMetaFlowRun :title="localization.info.lastRun" :flow-run="lastRun" />
+      <div class="deployment-list-item__relationships-container">
+        <ListItemMetaFlowRun :title="localization.info.lastRun" :flow-run="lastRun" class="deployment-list-item__last-run" />
+        <ListItemMetaFlowRun :title="localization.info.nextRun" :flow-run="nextRun" class="deployment-list-item__next-run" />
+      </div>
     </template>
 
     <template v-if="deployment.workPoolName || deployment.workQueueName" #meta>
@@ -112,5 +115,19 @@
 
 .deployment-list-item__schedule-none { @apply
   text-foreground-100
+}
+
+.deployment-list-item__relationships-container { @apply
+  grow
+  grid
+  grid-cols-1
+  grid-rows-2
+  sm:grid-cols-2
+  sm:grid-rows-1
+  gap-2
+}
+
+.deployment-list-item__next-run { @apply
+  sm:justify-end
 }
 </style>
