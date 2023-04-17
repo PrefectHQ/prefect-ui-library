@@ -25,6 +25,7 @@ export function useLastFlowRun(filter: UnionFilter | Ref<UnionFilter | null | un
     return {
       ...filterRef.value,
       flowRuns: {
+        ...filterRef.value?.flowRuns,
         expectedStartTimeBefore: now,
       },
       limit: 1,

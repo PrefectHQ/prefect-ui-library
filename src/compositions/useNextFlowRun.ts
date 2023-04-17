@@ -25,6 +25,7 @@ export function useNextFlowRun(filter: UnionFilter | Ref<UnionFilter | null | un
     return {
       ...filterRef.value,
       flowRuns: {
+        ...filterRef.value?.flowRuns,
         expectedStartTimeAfter: now,
       },
       limit: 1,
