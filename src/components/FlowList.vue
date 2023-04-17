@@ -26,12 +26,15 @@
         :chunk-size="20"
         :item-estimate-height="135"
         item-key="id"
-        @bottom="fetchMore"
       >
         <template #default="{ item }">
           <FlowListItem v-model:selected="selected" :flow="item" :filter="baseFilter" @delete="handleDelete" />
         </template>
       </p-virtual-scroller>
+
+      <template v-if="flows.length" #footer-end>
+        <p-pager v-model:page="page" :pages="pages" />
+      </template>
     </p-layout-table>
   </div>
 </template>
@@ -53,10 +56,21 @@
     (event: 'delete'): void,
   }>()
 
+  const DEFAULT_LIMIT = 40
+
   const api = useWorkspaceApi()
   const can = useCan()
   const search = ref<string>('')
   const searchDebounced = useDebouncedRef(search, 1200)
+
+  const page = ref(1)
+  const offset = computed({
+    get: () => (page.value - 1) * DEFAULT_LIMIT,
+    set: (value: number) => {
+      page.value = Math.ceil(value / DEFAULT_LIMIT) + 1
+    },
+  })
+  const pages = computed(() => Math.ceil((flowsCount.value ?? DEFAULT_LIMIT) / DEFAULT_LIMIT))
 
   const baseFilter = computed(() => {
     return {
@@ -70,6 +84,8 @@
       ...baseFilter.value.flows,
       nameLike: searchDebounced,
     },
+    offset,
+    limit: DEFAULT_LIMIT,
   })
 
   const selected = ref<string[]>([])
@@ -78,15 +94,11 @@
   const flows = computed(() => flowsSubscription.response ?? [])
 
   const flowsCountSubscription = useSubscription(api.flows.getFlowsCount, [baseFilter])
-  const flowsCount = computed(() => flowsCountSubscription.response ?? 0)
+  const flowsCount = computed(() => flowsCountSubscription.response)
 
   function refresh(): void {
     flowsSubscription.refresh()
     flowsCountSubscription.refresh()
-  }
-
-  const fetchMore = (): void => {
-  // TODO: implement
   }
 
   const handleDelete = (): void => {
