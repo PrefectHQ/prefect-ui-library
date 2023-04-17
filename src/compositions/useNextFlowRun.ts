@@ -2,7 +2,7 @@ import { UseSubscription, useSubscriptionWithDependencies } from '@prefecthq/vue
 import { computed, ComputedRef, Ref, ref } from 'vue'
 import { useCan } from '@/compositions/useCan'
 import { useWorkspaceApi } from '@/compositions/useWorkspaceApi'
-import { FlowRun, FlowRunsFilter, UnionFilter, scheduledStateType } from '@/models'
+import { FlowRun, FlowRunsFilter, UnionFilter } from '@/models'
 import { WorkspaceFlowRunsApi } from '@/services'
 
 export type UseNextFlowRun = {
@@ -20,12 +20,12 @@ export function useNextFlowRun(filter: UnionFilter | Ref<UnionFilter | null | un
       return null
     }
 
+    const now = new Date()
+
     return {
       ...filterRef.value,
       flowRuns: {
-        state: {
-          type: scheduledStateType.map(state => state.toUpperCase()),
-        },
+        expectedStartTimeAfter: now,
       },
       limit: 1,
       sort: 'EXPECTED_START_TIME_ASC',

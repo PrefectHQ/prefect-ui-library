@@ -2,7 +2,7 @@ import { UseSubscription, useSubscriptionWithDependencies } from '@prefecthq/vue
 import { computed, ComputedRef, Ref, ref } from 'vue'
 import { useCan } from '@/compositions/useCan'
 import { useWorkspaceApi } from '@/compositions/useWorkspaceApi'
-import { FlowRun, FlowRunsFilter, UnionFilter, terminalStateType } from '@/models'
+import { FlowRun, FlowRunsFilter, UnionFilter } from '@/models'
 import { WorkspaceFlowRunsApi } from '@/services'
 
 export type UseLastFlowRun = {
@@ -20,15 +20,15 @@ export function useLastFlowRun(filter: UnionFilter | Ref<UnionFilter | null | un
       return null
     }
 
+    const now = new Date()
+
     return {
       ...filterRef.value,
       flowRuns: {
-        state: {
-          type: terminalStateType.map(state => state.toUpperCase()),
-        },
+        expectedStartTimeBefore: now,
       },
       limit: 1,
-      sort: 'START_TIME_DESC',
+      sort: 'EXPECTED_START_TIME_DESC',
     }
   })
 

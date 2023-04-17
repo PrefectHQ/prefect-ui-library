@@ -144,6 +144,7 @@
   md:flex-row
   md:flex-wrap
   md:items-center
+  w-full
 }
 
 .state-list-item__tags { @apply
