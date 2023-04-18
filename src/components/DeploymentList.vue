@@ -9,7 +9,7 @@
       </template>
 
       <p-virtual-scroller
-        :items="deployments"
+        :items="deployments ?? []"
         :item-estimate-height="140"
         :chunk-size="20"
         item-key="id"
@@ -39,14 +39,13 @@
 </template>
 
 <script lang="ts" setup>
-  import { useSubscription } from '@prefecthq/vue-compositions'
   import { computed, ref } from 'vue'
   import {
     DeploymentsDeleteButton,
     DeploymentListItem,
     SelectedCount
   } from '@/components'
-  import { useDeploymentsFilterFromRoute, useWorkspaceApi } from '@/compositions'
+  import { useDeployments, useDeploymentsCount, useDeploymentsFilterFromRoute } from '@/compositions'
   import { DeploymentsFilter } from '@/models'
 
   const props = defineProps<{
@@ -60,8 +59,6 @@
 
   const DEFAULT_LIMIT = 40
 
-  const api = useWorkspaceApi()
-
   const { filter: routeFilter } = useDeploymentsFilterFromRoute()
   const page = ref(1)
   const offset = computed({
@@ -70,7 +67,7 @@
       page.value = Math.ceil(value / DEFAULT_LIMIT) + 1
     },
   })
-  const pages = computed(() => Math.ceil((deploymentsCount.value ?? DEFAULT_LIMIT) / DEFAULT_LIMIT))
+  const pages = computed(() => Math.ceil((count.value ?? DEFAULT_LIMIT) / DEFAULT_LIMIT))
 
   const filter = computed<DeploymentsFilter>(() => {
     return {
@@ -84,12 +81,8 @@
     }
   })
 
-
-  const deploymentsSubscription = useSubscription(api.deployments.getDeployments, [filter])
-  const deployments = computed(() => deploymentsSubscription.response ?? [])
-
-  const deploymentsCountSubscription = useSubscription(api.deployments.getDeploymentsCount, [props.filter])
-  const deploymentsCount = computed(() => deploymentsCountSubscription.response)
+  const { subscription: deploymentsSubscription, deployments } = useDeployments(filter)
+  const { subscription: deploymentsCountSubscription, count } = useDeploymentsCount(filter)
 
   const refresh = (): void => {
     deploymentsSubscription.refresh()
