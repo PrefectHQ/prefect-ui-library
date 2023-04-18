@@ -1,5 +1,5 @@
 <template>
-  <div class="flow-list-item-container">
+  <div :class="classes" :styles="styles" class="flow-list-item-container">
     <StateListItem v-bind="attrs" :disabled="disabled" class="flow-list-item" :state-type="flowState">
       <template #name>
         <p-link :to="routes.flow(flow.id)">
@@ -20,13 +20,13 @@
         <FlowMenu size="xs" :flow="flow" show-all @delete="handleDelete" />
       </template>
 
-      <div class="flow-list-item__content" :class="classes.content" @click="toggle">
+      <div class="flow-list-item__content" :class="computedClasses.content" @click="toggle">
         <p-divider class="flow-list-item__divider" />
         <p-button
           v-if="deploymentsCount > 0"
           size="xs"
           class="flow-list-item__content-toggle"
-          :class="classes.toggle"
+          :class="computedClasses.toggle"
           inset
           icon="ChevronDownIcon"
         />
@@ -69,9 +69,9 @@
 </script>
 
 <script lang="ts" setup>
-  import { toPluralString } from '@prefecthq/prefect-design'
+  import { toPluralString, useAttrsStylesAndClasses } from '@prefecthq/prefect-design'
   import { useLocalStorage, useSubscriptionWithDependencies } from '@prefecthq/vue-compositions'
-  import { computed, useAttrs } from 'vue'
+  import { computed } from 'vue'
   import { DeploymentList, DocumentationButton, ExtraInfoModal, ListItemMetaFlowRun, StateListItem } from '@/components'
   import { useNextFlowRun, useLastFlowRun, useWorkspaceApi, useWorkspaceRoutes, useComponent } from '@/compositions'
   import { localization } from '@/localization'
@@ -88,7 +88,7 @@
   }>()
 
   const { FlowMenu } = useComponent()
-  const attrs = useAttrs()
+  const { attrs, classes, styles } = useAttrsStylesAndClasses()
   const api = useWorkspaceApi()
   const routes = useWorkspaceRoutes()
 
@@ -130,7 +130,7 @@
     emit('delete', props.flow.id)
   }
 
-  const classes = computed(() => ({
+  const computedClasses = computed(() => ({
     content: {
       'flow-list-item__content--can-expand': canExpand.value,
     },
