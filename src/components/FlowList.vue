@@ -28,15 +28,18 @@
         item-key="id"
       >
         <template #default="{ item }">
-          <FlowListItem
-            v-model:selected="selected"
-            :value="item.id"
-            :flow="item"
-            :filter="baseFilter"
-            :disabled="disabled"
-            class="flow-list__flow"
-            @delete="handleDelete"
-          />
+          <slot v-bind="{ item, selected, disabled, update: handleUpdate, delete: handleDelete }">
+            <FlowListItem
+              v-model:selected="selected"
+              :value="item.id"
+              :flow="item"
+              :filter="baseFilter"
+              :disabled="disabled"
+              class="flow-list__flow"
+              @update="handleUpdate"
+              @delete="handleDelete"
+            />
+          </slot>
         </template>
       </p-virtual-scroller>
 
@@ -62,7 +65,7 @@
   }>()
 
   const emit = defineEmits<{
-    (event: 'delete'): void,
+    (event: 'delete' | 'update', value?: string): void,
   }>()
 
   const DEFAULT_LIMIT = 40
@@ -110,15 +113,20 @@
     flowsCountSubscription.refresh()
   }
 
-  const handleDelete = (): void => {
+  const handleUpdate = (flowId: string): void => {
+    emit('update', flowId)
     refresh()
-    emit('delete')
+  }
+
+  const handleDelete = (flowId: string): void => {
+    emit('delete', flowId)
+    refresh()
   }
 
   const deleteFlows = (): void => {
-    selected.value = []
-    refresh()
     emit('delete')
+    refresh()
+    selected.value = []
   }
 </script>
 

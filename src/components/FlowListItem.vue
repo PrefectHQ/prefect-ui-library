@@ -42,15 +42,22 @@
 
     <keep-alive>
       <template v-if="expanded">
-        <template v-if="deploymentsCountSubscription.executed && deploymentsCount === 0">
-          <FlowListItemDeploymentsEmptyState :flow="flow" class="flow-list-item__deployments-empty" />
-        </template>
-        <template v-else-if="!deploymentsCountSubscription.loading">
-          <DeploymentList :disabled="disabled" :filter="filter" class="flow-list-item__deployments" />
-        </template>
-        <template v-else>
-          <p-loading-icon class="flow-list-item__loading-icon" />
-        </template>
+        <slot>
+          <template v-if="deploymentsCountSubscription.executed && deploymentsCount === 0">
+            <slot name="empty">
+              <FlowListItemDeploymentsEmptyState :flow="flow" class="flow-list-item__deployments-empty" />
+              <slot />
+            </slot>
+          </template>
+          <template v-else-if="!deploymentsCountSubscription.loading">
+            <slot name="deployments">
+              <DeploymentList :disabled="disabled" :filter="filter" class="flow-list-item__deployments" />
+            </slot>
+          </template>
+          <template v-else>
+            <p-loading-icon class="flow-list-item__loading-icon" />
+          </template>
+        </slot>
       </template>
     </keep-alive>
   </div>

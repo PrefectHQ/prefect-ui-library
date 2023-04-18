@@ -13,15 +13,17 @@
         item-key="id"
       >
         <template #default="{ item }">
-          <DeploymentListItem
-            v-model:selected="selected"
-            :value="item.id"
-            :deployment="item"
-            :disabled="disabled"
-            class="deployment-list__deployment"
-            @update="handleUpdate"
-            @delete="handleDelete"
-          />
+          <slot v-bind="{ item, selected, disabled, update: handleUpdate, delete: handleDelete }">
+            <DeploymentListItem
+              v-model:selected="selected"
+              :value="item.id"
+              :deployment="item"
+              :disabled="disabled"
+              class="deployment-list__deployment"
+              @update="handleUpdate"
+              @delete="handleDelete"
+            />
+          </slot>
         </template>
       </p-virtual-scroller>
 
@@ -101,16 +103,25 @@
   )
   const deploymentsCount = computed(() => deploymentsCountSubscription.response)
 
-  const deleteDeployments = (): void => emit('delete')
+  const refresh = (): void => {
+    deploymentsSubscription.refresh()
+    deploymentsCountSubscription.refresh()
+  }
 
   const handleDelete = (deploymentId: string): void => {
     emit('delete', deploymentId)
-    deploymentsSubscription.refresh()
+    refresh()
   }
 
   const handleUpdate = (deploymentId: string): void => {
     emit('update', deploymentId)
-    deploymentsSubscription.refresh()
+    refresh()
+  }
+
+  const deleteDeployments = (): void => {
+    emit('delete')
+    refresh()
+    selected.value = []
   }
 
   const selected = ref([])
