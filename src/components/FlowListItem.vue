@@ -1,6 +1,6 @@
 <template>
   <div class="flow-list-item-container">
-    <StateListItem v-bind="attrs" class="flow-list-item" :class="classes.listItem" :state-type="flowState">
+    <StateListItem v-bind="attrs" :disabled="disabled" class="flow-list-item" :class="classes.listItem" :state-type="flowState">
       <template #name>
         <p-link :to="routes.flow(flow.id)">
           <p-heading :heading="3">
@@ -46,7 +46,7 @@
           <FlowListItemDeploymentsEmptyState :flow="flow" class="flow-list-item__deployments-empty" />
         </template>
         <template v-else-if="!deploymentsCountSubscription.loading">
-          <DeploymentList :filter="filter" class="flow-list-item__deployments" />
+          <DeploymentList :disabled="disabled" :filter="filter" class="flow-list-item__deployments" />
         </template>
         <template v-else>
           <p-loading-icon class="flow-list-item__loading-icon" />
@@ -76,6 +76,7 @@
   const props = defineProps<{
     flow: Flow,
     filter?: FlowsFilter,
+    disabled?: boolean,
   }>()
 
   const emit = defineEmits<{

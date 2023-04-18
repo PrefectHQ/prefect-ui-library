@@ -1,11 +1,11 @@
 <template>
   <div class="flow-list">
     <p-layout-table sticky>
-      <template #header-start>
+      <template v-if="can.delete.flow" #header-start>
         <div class="flow-list__header-start">
           <ResultsCount v-if="selected.length == 0" :label="localization.info.flow" :count="flowsCount" />
           <SelectedCount v-else :count="selected.length" />
-          <FlowsDeleteButton v-if="can.delete.flow" :selected="selected" @delete="deleteFlows" />
+          <FlowsDeleteButton size="xs" :selected="selected" @delete="deleteFlows" />
         </div>
       </template>
 
@@ -24,7 +24,7 @@
       <p-virtual-scroller
         :items="flows"
         :chunk-size="20"
-        :item-estimate-height="135"
+        :item-estimate-height="140"
         item-key="id"
       >
         <template #default="{ item }">

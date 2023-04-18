@@ -1,16 +1,14 @@
 <template>
   <div class="deployment-list">
     <p-layout-table sticky>
-      <template #header-start>
-        <div class="deployment-list__header">
-          <DeploymentsDeleteButton v-if="can.delete.deployment" :selected="selected" @delete="deleteDeployments" />
-          <SelectedCount v-if="selected.length" :count="selected.length" />
-        </div>
+      <template v-if="can.delete.deployment" #header-start>
+        <DeploymentsDeleteButton size="xs" :selected="selected" @delete="deleteDeployments" />
+        <SelectedCount v-if="selected.length" :count="selected.length" />
       </template>
 
       <p-virtual-scroller
         :items="deployments"
-        :item-estimate-height="60"
+        :item-estimate-height="140"
         :chunk-size="20"
         item-key="id"
       >
@@ -116,10 +114,6 @@
   }
 
   const selected = ref([])
-
-  const showHeader = computed(() => {
-    return can.delete.deployment
-  })
 </script>
 
 <style>
@@ -132,6 +126,6 @@
 }
 
 .deployment-list__header { @apply
-  h-min
+  h-7
 }
 </style>
