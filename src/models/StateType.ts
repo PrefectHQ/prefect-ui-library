@@ -16,8 +16,6 @@ export function isStateType(value: unknown): value is StateType {
   return typeof value === 'string' && stateType.includes(value as StateType)
 }
 
-export const scheduledStateType = ['scheduled', 'pending']
-
 export const terminalStateType = [
   'completed',
   'cancelled',
