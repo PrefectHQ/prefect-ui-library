@@ -1,12 +1,33 @@
 <template>
-  <div v-if="flowRun" class="page-heading-flow-run">
-    <page-heading class="page-heading-flow-run__heading" :crumbs="crumbs">
-      <template #after-crumbs>
-        <div v-if="flowRun.tags && flowRun.tags.length > 0" class="state-list-item__tags">
-          <p-tag-wrapper v-bind="{ tags: flowRun.tags }" />
-        </div>
-      </template>
-      <template #actions>
+  <page-heading v-if="flowRun" class="page-heading-flow-run" :crumbs="crumbs">
+    <template #after-crumbs>
+      <div v-if="flowRun.tags && flowRun.tags.length > 0" class="state-list-item__tags">
+        <p-tag-wrapper v-bind="{ tags: flowRun.tags }" />
+      </div>
+    </template>
+
+    <div class="page-heading-flow-run__flow-details">
+      <div class="page-heading-flow-run__meta">
+        <StateBadge :state="flowRun.state" />
+        <FlowRunStartTime :flow-run="flowRun" />
+        <template v-if="!isPending">
+          <DurationIconText :duration="flowRun.duration" />
+          <FlowRunTaskCount :tasks-count="taskRunsCount" />
+        </template>
+      </div>
+      <div class="page-heading-flow-run__relationships">
+        <FlowRunDeployment v-if="flowRun.deploymentId" :deployment-id="flowRun.deploymentId" />
+        <FlowRunWorkPool v-if="flowRun.workPoolName" :work-pool-name="flowRun.workPoolName" />
+        <FlowRunWorkQueue
+          v-if="flowRun.workQueueName"
+          :work-queue-name="flowRun.workQueueName"
+          :work-pool-name="flowRun.workPoolName"
+        />
+      </div>
+    </div>
+
+    <template #actions>
+      <template v-if="flowRun">
         <template v-if="media.sm">
           <FlowRunPauseButton :flow-run="flowRun" />
           <FlowRunResumeButton :flow-run="flowRun" />
@@ -15,39 +36,8 @@
         </template>
         <FlowRunMenu :flow-run-id="flowRun.id" :show-all="!media.sm" @delete="emit('delete')" />
       </template>
-    </page-heading>
-    <div class="page-heading-flow-run__meta">
-      <StateBadge :state="flowRun.state" />
-      <FlowRunStartTime :flow-run="flowRun" />
-      <DurationIconText :duration="flowRun.duration" />
-      <template v-if="!isPending">
-        <FlowRunTaskCount :tasks-count="taskRunsCount">
-          <template #default="{ count }">
-            {{ count }} task {{ toPluralString('run', count) }}
-          </template>
-        </FlowRunTaskCount>
-      </template>
-    </div>
-    <div class="page-heading-flow-run__relationships">
-      <template v-if="flowRun.deploymentId && deployment?.name">
-        <div class="flow-run-list-item__relation">
-          <span>Deployment</span> <DeploymentIconText :deployment-id="flowRun.deploymentId" />
-        </div>
-      </template>
-
-      <template v-if="flowRun.workPoolName">
-        <div class="flow-run-list-item__relation">
-          <span>Work Pool</span> <WorkPoolIconText :work-pool-name="flowRun.workPoolName" />
-        </div>
-      </template>
-
-      <template v-if="flowRun.workQueueName">
-        <div class="flow-run-list-item__relation">
-          <span>Work Queue</span> <WorkQueueIconText :work-queue-name="flowRun.workQueueName" :work-pool-name="flowRun.workPoolName" />
-        </div>
-      </template>
-    </div>
-  </div>
+    </template>
+  </page-heading>
 </template>
 
 <script lang="ts" setup>
@@ -65,13 +55,12 @@
     FlowRunStartTime,
     DurationIconText
   } from '@/components'
-  import DeploymentIconText from '@/components/DeploymentIconText.vue'
+  import FlowRunDeployment from '@/components/FlowRunDeployment.vue'
   import FlowRunTaskCount from '@/components/FlowRunTaskCount.vue'
-  import WorkPoolIconText from '@/components/WorkPoolIconText.vue'
-  import WorkQueueIconText from '@/components/WorkQueueIconText.vue'
-  import { useDeployment, useTaskRunsCount, useWorkspaceApi, useWorkspaceRoutes } from '@/compositions'
+  import FlowRunWorkPool from '@/components/FlowRunWorkPool.vue'
+  import FlowRunWorkQueue from '@/components/FlowRunWorkQueue.vue'
+  import { useTaskRunsCount, useWorkspaceApi, useWorkspaceRoutes } from '@/compositions'
   import { isPendingStateType } from '@/models'
-  import { toPluralString } from '@/utilities'
 
   const props = defineProps<{
     flowRunId: string,
@@ -97,21 +86,18 @@
 
   const isPending = computed(() => flowRun.value?.stateType ? isPendingStateType(flowRun.value.stateType) : true)
   const { taskRunsCount } = useTaskRunsCount(flowRunId)
-
-  const deploymentId = computed(() => flowRun.value?.deploymentId)
-  const { deployment } = useDeployment(deploymentId)
 </script>
 
 <style>
-.page-heading-flow-run { @apply
+.page-heading-flow-run {
+  display: grid;
+  grid-template-columns: 1fr auto;
+}
+
+.page-heading-flow-run__flow-details { @apply
   flex
   flex-col
   gap-2
-}
-
-.page-heading-flow-run__heading {
-  display: grid;
-  grid-template-columns: 1fr auto;
 }
 
 .page-heading-flow-run__meta { @apply
@@ -119,7 +105,6 @@
   flex-col
   items-start
   gap-2
-  whitespace-nowrap
   mr-1
   md:flex-row
   md:flex-wrap
@@ -133,7 +118,6 @@
   text-xs
   font-medium
   gap-2
-  whitespace-nowrap
   mr-1
   md:items-center
   md:flex-wrap
