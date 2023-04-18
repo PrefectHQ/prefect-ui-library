@@ -1,28 +1,19 @@
 import { useSubscriptionWithDependencies } from '@prefecthq/vue-compositions'
-import { Ref, computed, ref, unref } from 'vue'
-import { isNullish } from '..'
+import { Ref, computed, ref } from 'vue'
 import { useCan } from '@/compositions/useCan'
 import { useWorkspaceApi } from '@/compositions/useWorkspaceApi'
 import { FlowsFilter } from '@/models'
 import { WorkspaceFlowsApi } from '@/services'
 import { MaybeRef } from '@/types'
 import { UseEntitySubscription } from '@/types/useEntitySubscription'
-
+import { isNullish } from '@/utilities'
 
 export type UseFlows = UseEntitySubscription<WorkspaceFlowsApi['getFlows'], 'flows'>
 
 export function useFlows(filter: MaybeRef<FlowsFilter>): UseFlows
 export function useFlows(flowIds: MaybeRef<string[] | null | undefined>): UseFlows
 export function useFlows(filter?: MaybeRef<string[] | FlowsFilter | null | undefined>): UseFlows {
-  const unrefFilter = unref(filter)
-  let filterRef: Ref<string[] | FlowsFilter | null | undefined>
-  if (Array.isArray(unrefFilter)) {
-    filterRef = ref(filter ?? [])
-  }
-
-  if (typeof unrefFilter === 'object') {
-    filterRef = ref(filter ?? {})
-  }
+  const filterRef: Ref<string[] | FlowsFilter | null | undefined> = ref(filter)
 
   const api = useWorkspaceApi()
   const can = useCan()
