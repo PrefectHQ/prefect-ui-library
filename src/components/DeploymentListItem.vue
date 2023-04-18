@@ -41,7 +41,9 @@
 
         <template v-if="schedule">
           <div class="deployment-list-item__schedule-text">
-            <span :title="schedule?.toString({ verbose: true })">{{ scheduleText }}</span>
+            <p-tooltip :text="schedule.toString({ verbose: true })">
+              {{ scheduleText }}
+            </p-tooltip>
           </div>
         </template>
 
