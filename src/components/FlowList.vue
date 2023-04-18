@@ -60,7 +60,7 @@
   import { useDebouncedRef, useSubscription } from '@prefecthq/vue-compositions'
   import { computed, ref } from 'vue'
   import { FlowListItem, FlowsDeleteButton, ResultsCount, SearchInput, SelectedCount } from '@/components'
-  import { useCan, useFlowsFilterFromRoute, useWorkspaceApi } from '@/compositions'
+  import { useFlowsFilterFromRoute, useWorkspaceApi } from '@/compositions'
   import { localization } from '@/localization'
   import { FlowsFilter } from '@/models/Filters'
   import { flowSortOptions } from '@/types/SortOptionTypes'
@@ -77,7 +77,6 @@
   const DEFAULT_LIMIT = 40
 
   const api = useWorkspaceApi()
-  const can = useCan()
   const search = ref<string>('')
   const searchDebounced = useDebouncedRef(search, 1200)
 

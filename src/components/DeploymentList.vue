@@ -46,7 +46,7 @@
     DeploymentListItem,
     SelectedCount
   } from '@/components'
-  import { useCan, useDeploymentsFilterFromRoute, useWorkspaceApi } from '@/compositions'
+  import { useDeploymentsFilterFromRoute, useWorkspaceApi } from '@/compositions'
   import { DeploymentsFilter } from '@/models'
 
   const props = defineProps<{
@@ -60,7 +60,6 @@
 
   const DEFAULT_LIMIT = 40
 
-  const can = useCan()
   const api = useWorkspaceApi()
 
   const { filter: routeFilter } = useDeploymentsFilterFromRoute()
