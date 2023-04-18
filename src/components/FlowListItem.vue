@@ -1,6 +1,6 @@
 <template>
   <div class="flow-list-item-container">
-    <StateListItem v-bind="attrs" :disabled="disabled" class="flow-list-item" :class="classes.listItem" :state-type="flowState">
+    <StateListItem v-bind="attrs" :disabled="disabled" class="flow-list-item" :state-type="flowState">
       <template #name>
         <p-link :to="routes.flow(flow.id)">
           <p-heading :heading="3">
@@ -128,9 +128,6 @@
   }
 
   const classes = computed(() => ({
-    listItem: {
-      'flow-list-item--expanded': expanded.value,
-    },
     toggle: {
       'flow-list-item__content-toggle--expanded': expanded.value,
     },
@@ -138,10 +135,6 @@
 </script>
 
 <style>
-.flow-list-item--expanded { @apply
-  rounded-b-sm
-}
-
 .flow-list-item__deployments { @apply
   ml-4
   sm:ml-8
