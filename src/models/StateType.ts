@@ -23,6 +23,13 @@ export const terminalStateType = [
   'crashed',
 ]
 
+export const pendingStateType = ['scheduled', 'pending']
+export type PendingStateType = typeof pendingStateType[number]
+
+export function isPendingStateType(value: unknown): value is PendingStateType {
+  return typeof value === 'string' && pendingStateType.includes(value as PendingStateType)
+}
+
 export type TerminalStateType = typeof terminalStateType[number]
 export type ServerTerminalStateType = Uppercase<TerminalStateType>
 
