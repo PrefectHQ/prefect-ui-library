@@ -30,7 +30,7 @@
 
 .list-item-meta__content { @apply
   flex
-  gap-1
+  gap-2
   items-baseline
 }
 </style>
