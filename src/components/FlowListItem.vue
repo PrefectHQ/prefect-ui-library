@@ -70,12 +70,12 @@
 
 <script lang="ts" setup>
   import { toPluralString, useAttrsStylesAndClasses } from '@prefecthq/prefect-design'
-  import { useLocalStorage, useSubscriptionWithDependencies } from '@prefecthq/vue-compositions'
+  import { useLocalStorage } from '@prefecthq/vue-compositions'
   import { computed } from 'vue'
   import { DeploymentList, DocumentationButton, ExtraInfoModal, ListItemMetaFlowRun, StateListItem } from '@/components'
-  import { useNextFlowRun, useLastFlowRun, useWorkspaceApi, useWorkspaceRoutes, useComponent } from '@/compositions'
+  import { useNextFlowRun, useLastFlowRun, useWorkspaceRoutes, useComponent, useDeploymentsCount } from '@/compositions'
   import { localization } from '@/localization'
-  import { DeploymentsFilter, Flow, FlowsFilter } from '@/models'
+  import { Flow, FlowsFilter } from '@/models'
 
   const props = defineProps<{
     flow: Flow,
@@ -89,7 +89,6 @@
 
   const { FlowMenu } = useComponent()
   const { attrs, classes, styles } = useAttrsStylesAndClasses()
-  const api = useWorkspaceApi()
   const routes = useWorkspaceRoutes()
 
   const { value: expanded } = useLocalStorage(`flow-list-item-${props.flow.id}--expanded`, false)
@@ -104,18 +103,12 @@
     }
   })
 
-  const deploymentsCountSubscriptionArgs = computed<[DeploymentsFilter]>(() => [filter.value])
-  const deploymentsCountSubscription = useSubscriptionWithDependencies(
-    api.deployments.getDeploymentsCount,
-    deploymentsCountSubscriptionArgs,
-  )
-  const deploymentsCount = computed(() => deploymentsCountSubscription.response ?? 0)
-
+  const { count } = useDeploymentsCount(filter)
   const { flowRun: nextRun } = useNextFlowRun(filter)
   const { flowRun: lastRun } = useLastFlowRun(filter)
 
   const flowState = computed(() => lastRun.value?.state?.type)
-
+  const deploymentsCount = computed(() => count.value ?? 0)
   const canExpand = computed(() => deploymentsCount.value && deploymentsCount.value > 0)
 
   const toggle = (): void => {
