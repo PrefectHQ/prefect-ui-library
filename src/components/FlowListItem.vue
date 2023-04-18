@@ -70,7 +70,7 @@
 
 <script lang="ts" setup>
   import { toPluralString, useAttrsStylesAndClasses } from '@prefecthq/prefect-design'
-  import { useLocalStorage } from '@prefecthq/vue-compositions'
+  import { useSessionStorage } from '@prefecthq/vue-compositions'
   import { computed } from 'vue'
   import { DeploymentList, DocumentationButton, ExtraInfoModal, ListItemMetaFlowRun, StateListItem } from '@/components'
   import { useNextFlowRun, useLastFlowRun, useWorkspaceRoutes, useComponent, useDeploymentsCount } from '@/compositions'
@@ -91,7 +91,7 @@
   const { attrs, classes, styles } = useAttrsStylesAndClasses()
   const routes = useWorkspaceRoutes()
 
-  const { value: expanded } = useLocalStorage(`flow-list-item-${props.flow.id}--expanded`, false)
+  const { value: expanded } = useSessionStorage(`flow-list-item-${props.flow.id}--expanded`, false)
 
   const filter = computed(() => {
     return {
