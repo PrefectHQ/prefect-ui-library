@@ -1,5 +1,5 @@
 <template>
-  <ComponentPage title="FlowListItem">
+  <ComponentPage title="FlowList">
     <p-content>
       <FlowList />
     </p-content>
