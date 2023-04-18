@@ -39,7 +39,7 @@
 </template>
 
 <script lang="ts" setup>
-  import { useSubscriptionWithDependencies } from '@prefecthq/vue-compositions'
+  import { useSubscription } from '@prefecthq/vue-compositions'
   import { computed, ref } from 'vue'
   import {
     DeploymentsDeleteButton,
@@ -72,15 +72,9 @@
   })
   const pages = computed(() => Math.ceil((deploymentsCount.value ?? DEFAULT_LIMIT) / DEFAULT_LIMIT))
 
-  const baseFilter = computed(() => {
-    return {
-      ...props.filter,
-    }
-  })
-
   const filter = computed<DeploymentsFilter>(() => {
     return {
-      ...baseFilter.value,
+      ...props.filter,
       deployments: {
         ...props.filter?.deployments,
         ...routeFilter.deployments,
@@ -90,20 +84,11 @@
     }
   })
 
-  const deploymentsSubscriptionArgs = computed<[DeploymentsFilter]>(() => [filter.value])
 
-  const deploymentsSubscription = useSubscriptionWithDependencies(
-    api.deployments.getDeployments,
-    deploymentsSubscriptionArgs,
-  )
-
+  const deploymentsSubscription = useSubscription(api.deployments.getDeployments, [filter])
   const deployments = computed(() => deploymentsSubscription.response ?? [])
 
-  const deploymentsCountSubscriptionArgs = computed<[DeploymentsFilter]>(() => [baseFilter.value])
-  const deploymentsCountSubscription = useSubscriptionWithDependencies(
-    api.deployments.getDeploymentsCount,
-    deploymentsCountSubscriptionArgs,
-  )
+  const deploymentsCountSubscription = useSubscription(api.deployments.getDeploymentsCount, [props.filter])
   const deploymentsCount = computed(() => deploymentsCountSubscription.response)
 
   const refresh = (): void => {
