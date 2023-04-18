@@ -3,7 +3,7 @@
     <StateListItem v-bind="attrs" :disabled="disabled" class="flow-list-item" :state-type="flowState">
       <template #name>
         <p-link :to="routes.flow(flow.id)">
-          <p-heading :heading="3">
+          <p-heading :heading="5">
             {{ flow.name }}
           </p-heading>
         </p-link>

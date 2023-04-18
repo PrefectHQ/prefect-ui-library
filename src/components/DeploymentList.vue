@@ -120,10 +120,6 @@
   --virtual-scroller-item-gap: theme('spacing.2')
 }
 
-.deployment-list__deployment { @apply
-  rounded-l-sm
-}
-
 .deployment-list__header { @apply
   h-7
 }
