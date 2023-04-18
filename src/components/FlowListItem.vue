@@ -52,14 +52,7 @@
       <p-auto-height-transition>
         <template v-if="expanded">
           <slot>
-            <template v-if="deploymentsCountSubscription.executed">
-              <slot name="deployments">
-                <DeploymentList :disabled="disabled" :filter="filter" class="flow-list-item__deployments" />
-              </slot>
-            </template>
-            <template v-else>
-              <p-loading-icon class="flow-list-item__loading-icon" />
-            </template>
+            <DeploymentList :disabled="disabled" :filter="filter" class="flow-list-item__deployments" />
           </slot>
         </template>
       </p-auto-height-transition>
