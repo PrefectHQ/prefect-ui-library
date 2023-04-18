@@ -20,7 +20,7 @@
         <FlowMenu size="xs" :flow="flow" show-all @delete="handleDelete" />
       </template>
 
-      <div class="flow-list-item__content" @click="toggle">
+      <div class="flow-list-item__content" :class="classes.content" @click="toggle">
         <p-divider class="flow-list-item__divider" />
         <p-button
           v-if="deploymentsCount > 0"
