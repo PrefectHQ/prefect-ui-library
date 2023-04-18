@@ -23,6 +23,7 @@
       <div class="flow-list-item__content" @click="toggle">
         <p-divider class="flow-list-item__divider" />
         <p-button
+          v-if="deploymentsCount > 0"
           size="xs"
           class="flow-list-item__content-toggle"
           :class="classes.toggle"
@@ -36,29 +37,32 @@
 
         <span v-else class="flow-list-item__content-text-none">
           {{ localization.info.noDeployments }}
+
+          <ExtraInfoModal :title="localization.info.noDeployments">
+            <p-markdown-renderer :text="localization.info.deploymentsEmptyStateDescription(flow.name)" />
+            <template #actions>
+              <DocumentationButton :to="localization.docs.deployments" />
+            </template>
+          </ExtraInfoModal>
         </span>
       </div>
     </StateListItem>
 
     <keep-alive>
-      <template v-if="expanded">
-        <slot>
-          <template v-if="deploymentsCountSubscription.executed && deploymentsCount === 0">
-            <slot name="empty">
-              <FlowListItemDeploymentsEmptyState :flow="flow" class="flow-list-item__deployments-empty" />
-              <slot />
-            </slot>
-          </template>
-          <template v-else-if="!deploymentsCountSubscription.loading">
-            <slot name="deployments">
-              <DeploymentList :disabled="disabled" :filter="filter" class="flow-list-item__deployments" />
-            </slot>
-          </template>
-          <template v-else>
-            <p-loading-icon class="flow-list-item__loading-icon" />
-          </template>
-        </slot>
-      </template>
+      <p-auto-height-transition>
+        <template v-if="expanded">
+          <slot>
+            <template v-if="deploymentsCountSubscription.executed">
+              <slot name="deployments">
+                <DeploymentList :disabled="disabled" :filter="filter" class="flow-list-item__deployments" />
+              </slot>
+            </template>
+            <template v-else>
+              <p-loading-icon class="flow-list-item__loading-icon" />
+            </template>
+          </slot>
+        </template>
+      </p-auto-height-transition>
     </keep-alive>
   </div>
 </template>
@@ -75,7 +79,7 @@
   import { toPluralString } from '@prefecthq/prefect-design'
   import { useLocalStorage, useSubscriptionWithDependencies } from '@prefecthq/vue-compositions'
   import { computed, useAttrs } from 'vue'
-  import { DeploymentList, FlowListItemDeploymentsEmptyState, ListItemMetaFlowRun, StateListItem } from '@/components'
+  import { DeploymentList, DocumentationButton, ExtraInfoModal, ListItemMetaFlowRun, StateListItem } from '@/components'
   import { useNextFlowRun, useLastFlowRun, useWorkspaceApi, useWorkspaceRoutes, useComponent } from '@/compositions'
   import { localization } from '@/localization'
   import { DeploymentsFilter, Flow, FlowsFilter } from '@/models'
@@ -120,6 +124,10 @@
   const flowState = computed(() => lastRun.value?.state?.type)
 
   const toggle = (): void => {
+    if (!deploymentsCount.value || deploymentsCount.value === 0) {
+      return
+    }
+
     expanded.value = !expanded.value
   }
 
@@ -148,6 +156,8 @@
 
 .flow-list-item__content-text-none { @apply
   text-foreground-200
+  flex
+  items-center
 }
 
 .flow-list-item__content-toggle { @apply
