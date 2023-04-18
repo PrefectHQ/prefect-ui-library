@@ -48,7 +48,7 @@
       </div>
     </StateListItem>
 
-    <keep-alive>
+    <keep-alive v-if="canExpand">
       <p-auto-height-transition>
         <template v-if="expanded">
           <slot>
@@ -123,8 +123,10 @@
 
   const flowState = computed(() => lastRun.value?.state?.type)
 
+  const canExpand = computed(() => deploymentsCount.value && deploymentsCount.value > 0)
+
   const toggle = (): void => {
-    if (!deploymentsCount.value || deploymentsCount.value === 0) {
+    if (!canExpand.value) {
       return
     }
 
