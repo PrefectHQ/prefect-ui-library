@@ -6,7 +6,7 @@ import { WorkspaceDeploymentsApi } from '@/services/WorkspaceDeploymentsApi'
 import { MaybeRef } from '@/types'
 import { UseEntitySubscription } from '@/types/useEntitySubscription'
 
-export type UseDeploymentsCount = UseEntitySubscription<WorkspaceDeploymentsApi['getDeploymentsCount'], 'deploymentsCount'>
+export type UseDeploymentsCount = UseEntitySubscription<WorkspaceDeploymentsApi['getDeploymentsCount'], 'count'>
 
 export function useDeploymentsCount(filter?: MaybeRef<DeploymentsFilter>): UseDeploymentsCount {
   const api = useWorkspaceApi()
@@ -22,10 +22,10 @@ export function useDeploymentsCount(filter?: MaybeRef<DeploymentsFilter>): UseDe
   })
 
   const subscription = useSubscriptionWithDependencies(api.deployments.getDeploymentsCount, deploymentsCountFilter)
-  const deploymentsCount = computed(() => subscription.response)
+  const count = computed(() => subscription.response)
 
   return {
     subscription,
-    deploymentsCount,
+    count,
   }
 }
