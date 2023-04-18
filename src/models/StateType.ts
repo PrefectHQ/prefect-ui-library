@@ -16,6 +16,13 @@ export function isStateType(value: unknown): value is StateType {
   return typeof value === 'string' && stateType.includes(value as StateType)
 }
 
+export const pendingStateType = ['scheduled', 'pending']
+export type PendingStateType = typeof pendingStateType[number]
+
+export function isPendingStateType(value: unknown): value is PendingStateType {
+  return typeof value === 'string' && pendingStateType.includes(value as PendingStateType)
+}
+
 export const terminalStateType = [
   'completed',
   'cancelled',

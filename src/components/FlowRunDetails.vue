@@ -1,54 +1,5 @@
 <template>
   <div class="flow-run-details">
-    <p-key-value label="Flow" :alternate="alternate">
-      <template #value>
-        <FlowIconText :flow-id="flowRun.flowId" />
-      </template>
-    </p-key-value>
-
-    <p-key-value v-if="flowRun.deploymentId && showDeployment" label="Deployment" :alternate="alternate">
-      <template #value>
-        <DeploymentIconText :deployment-id="flowRun.deploymentId" />
-      </template>
-    </p-key-value>
-
-    <template v-if="can.read.work_queue && flowRun.workQueueName">
-      <p-key-value label="Work Queue" :alternate="alternate">
-        <template #value>
-          <div class="flow-run-details__work-queue-value">
-            <WorkQueueIconText :work-queue-name="flowRun.workQueueName" />
-            <WorkQueueStatusIcon :work-queue-name="flowRun.workQueueName" />
-          </div>
-        </template>
-      </p-key-value>
-    </template>
-
-    <template v-if="parentFlowRunId">
-      <p-key-value label="Parent Flow Run" :alternate="alternate">
-        <template #value>
-          <FlowRunIconText :flow-run-id="parentFlowRunId" />
-        </template>
-      </p-key-value>
-    </template>
-
-    <p-divider />
-
-    <p-heading :heading="heading">
-      Flow Run
-    </p-heading>
-
-    <p-key-value label="Start Time" :alternate="alternate">
-      <template #value>
-        <FlowRunStartTime :flow-run="flowRun" />
-      </template>
-    </p-key-value>
-
-    <p-key-value label="Duration" :alternate="alternate">
-      <template #value>
-        <DurationIconText :duration="flowRun.duration" />
-      </template>
-    </p-key-value>
-
     <p-key-value label="Run Count" :value="flowRun.runCount ?? 0" :alternate="alternate" />
 
     <p-key-value label="Created" :value="formatDateTimeNumeric(flowRun.created)" :alternate="alternate" />
@@ -96,53 +47,18 @@
 
 <script lang="ts" setup>
   import { PKeyValue, PTags } from '@prefecthq/prefect-design'
-  import { useSubscriptionWithDependencies } from '@prefecthq/vue-compositions'
   import { computed } from 'vue'
-  import { WorkQueueIconText, FlowRunIconText, WorkQueueStatusIcon, FlowRunStartTime, FlowIconText, DurationIconText, DeploymentIconText } from '@/components'
-  import { useWorkspaceApi, useCan } from '@/compositions'
-  import { useDeployment } from '@/compositions/useDeployment'
   import { FlowRun } from '@/models/FlowRun'
-  import { isDefined } from '@/utilities'
   import { formatDateTimeNumeric } from '@/utilities/dates'
-
-  const api = useWorkspaceApi()
 
   const props = defineProps<{
     flowRun: FlowRun,
     alternate?: boolean,
   }>()
 
-  const can = useCan()
   const heading = computed(() => props.alternate ? 6 : 5)
 
-  const deploymentId = computed(() => props.flowRun.deploymentId)
-  const { deployment } = useDeployment(deploymentId)
-  const showDeployment = computed(() => can.read.deployment && isDefined(deployment.value))
   const stateMessage = computed(() => props.flowRun.state?.message)
-
-  const flowRunFilter = computed<Parameters<typeof api.flowRuns.getFlowRuns> | null>(() => {
-    if (props.flowRun.parentTaskRunId) {
-      return [
-        {
-          taskRuns: {
-            id: [props.flowRun.parentTaskRunId],
-          },
-        },
-      ]
-    }
-    return null
-  })
-
-  const parentFlowRunListSubscription = useSubscriptionWithDependencies(api.flowRuns.getFlowRuns, flowRunFilter)
-  const parentFlowRunList = computed(() => parentFlowRunListSubscription.response ?? [])
-
-  const parentFlowRunId = computed(() => {
-    if (!parentFlowRunList.value.length) {
-      return
-    }
-    const [value] = parentFlowRunList.value
-    return value.id
-  })
 </script>
 
 <style>
