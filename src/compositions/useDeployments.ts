@@ -55,7 +55,7 @@ export function useDeployments(filter?: MaybeRef<string[] | DeploymentsFilter | 
 
 
   const subscription = useSubscriptionWithDependencies(api.deployments.getDeployments, deploymentsFilter)
-  const deployments = computed(() => subscription.response)
+  const deployments = computed(() => subscription.response ?? [])
 
   return {
     subscription,

@@ -55,7 +55,7 @@ export function useFlows(filter?: MaybeRef<string[] | FlowsFilter | null | undef
 
 
   const subscription = useSubscriptionWithDependencies(api.flows.getFlows, flowsFilter)
-  const flows = computed(() => subscription.response)
+  const flows = computed(() => subscription.response ?? [])
 
   return {
     subscription,
