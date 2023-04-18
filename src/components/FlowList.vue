@@ -37,7 +37,7 @@
               v-model:selected="selected"
               :value="item.id"
               :flow="item"
-              :filter="baseFilter"
+              :filter="props.filter"
               :disabled="disabled"
               class="flow-list__flow"
               @update="handleUpdate"
@@ -89,16 +89,10 @@
   })
   const pages = computed(() => Math.ceil((flowsCount.value ?? DEFAULT_LIMIT) / DEFAULT_LIMIT))
 
-  const baseFilter = computed(() => {
-    return {
-      ...props.filter,
-    }
-  })
-
   const { filter } = useFlowsFilterFromRoute({
-    ...baseFilter.value,
+    ...props.filter,
     flows: {
-      ...baseFilter.value.flows,
+      ...props.filter?.flows,
       nameLike: searchDebounced,
     },
     offset,
@@ -110,7 +104,7 @@
   const flowsSubscription = useSubscription(api.flows.getFlows, [filter])
   const flows = computed(() => flowsSubscription.response ?? [])
 
-  const flowsCountSubscription = useSubscription(api.flows.getFlowsCount, [baseFilter])
+  const flowsCountSubscription = useSubscription(api.flows.getFlowsCount, [filter])
   const flowsCount = computed(() => flowsCountSubscription.response)
 
   function refresh(): void {
