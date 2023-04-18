@@ -78,7 +78,7 @@
 
   const api = useWorkspaceApi()
   const search = ref<string>('')
-  const searchDebounced = useDebouncedRef(search, 1200)
+  const searchDebounced = useDebouncedRef(search, 800)
 
   const page = ref(1)
   const offset = computed({
