@@ -10,10 +10,10 @@ export type UseDeploymentsCount = UseEntitySubscription<WorkspaceDeploymentsApi[
 
 export function useDeploymentsCount(filter?: MaybeRef<DeploymentsFilter>): UseDeploymentsCount {
   const api = useWorkspaceApi()
-  const filterRef = ref(filter)
+  const filterRef = ref(filter ?? {})
   const can = useCan()
 
-  const deploymentsCountFilter = computed<Parameters<typeof api.deployments.getDeploymentsCount> | null>(() => {
+  const deploymentsCountFilter = computed<[DeploymentsFilter] | null>(() => {
     if (!can.read.deployment) {
       return null
     }
