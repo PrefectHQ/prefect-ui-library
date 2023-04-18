@@ -9,31 +9,17 @@
         <FlowRunStartTime :flow-run="flowRun" />
         <DurationIconText :duration="flowRun.duration" />
         <template v-if="visible && flowRun.stateType !== 'scheduled'">
-          <FlowRunTaskCount :tasks-count="taskRunsCount">
-            <template #default="{ count }">
-              {{ count }} task {{ toPluralString('run', count) }}
-            </template>
-          </FlowRunTaskCount>
+          <FlowRunTaskCount :tasks-count="taskRunsCount" />
         </template>
       </template>
       <template v-if="visible && (flowRun.deploymentId || flowRun.workQueueName)" #relationships>
-        <template v-if="flowRun.deploymentId && deployment?.name">
-          <div class="flow-run-list-item__relation">
-            <span>Deployment</span> <DeploymentIconText :deployment-id="flowRun.deploymentId" />
-          </div>
-        </template>
-
-        <template v-if="flowRun.workPoolName">
-          <div class="flow-run-list-item__relation">
-            <span>Work Pool</span> <WorkPoolIconText :work-pool-name="flowRun.workPoolName" />
-          </div>
-        </template>
-
-        <template v-if="flowRun.workQueueName">
-          <div class="flow-run-list-item__relation">
-            <span>Work Queue</span> <WorkQueueIconText :work-queue-name="flowRun.workQueueName" :work-pool-name="flowRun.workPoolName" />
-          </div>
-        </template>
+        <FlowRunDeployment v-if="flowRun.deploymentId" :deployment-id="flowRun.deploymentId" />
+        <FlowRunWorkPool v-if="flowRun.workPoolName" :work-pool-name="flowRun.workPoolName" />
+        <FlowRunWorkQueue
+          v-if="flowRun.workQueueName"
+          :work-queue-name="flowRun.workQueueName"
+          :work-pool-name="flowRun.workPoolName"
+        />
       </template>
     </StateListItem>
   </div>
@@ -43,19 +29,17 @@
   import { CheckboxModel } from '@prefecthq/prefect-design'
   import { useIntersectionObserver } from '@prefecthq/vue-compositions'
   import { computed, onMounted, ref } from 'vue'
-  import DeploymentIconText from '@/components/DeploymentIconText.vue'
   import DurationIconText from '@/components/DurationIconText.vue'
   import FlowRunBreadCrumbs from '@/components/FlowRunBreadCrumbs.vue'
+  import FlowRunDeployment from '@/components/FlowRunDeployment.vue'
   import FlowRunStartTime from '@/components/FlowRunStartTime.vue'
   import FlowRunTaskCount from '@/components/FlowRunTaskCount.vue'
+  import FlowRunWorkPool from '@/components/FlowRunWorkPool.vue'
+  import FlowRunWorkQueue from '@/components/FlowRunWorkQueue.vue'
   import StateBadge from '@/components/StateBadge.vue'
   import StateListItem from '@/components/StateListItem.vue'
-  import WorkPoolIconText from '@/components/WorkPoolIconText.vue'
-  import WorkQueueIconText from '@/components/WorkQueueIconText.vue'
   import { useTaskRunsCount } from '@/compositions'
-  import { useDeployment } from '@/compositions/useDeployment'
   import { FlowRun } from '@/models/FlowRun'
-  import { toPluralString } from '@/utilities'
 
   const props = defineProps<{
     selected: CheckboxModel | null,
@@ -82,9 +66,6 @@
 
   const flowRunId = computed(() => props.flowRun.id)
   const { taskRunsCount } = useTaskRunsCount(flowRunId)
-
-  const deploymentId = computed(() => props.flowRun.deploymentId)
-  const { deployment } = useDeployment(deploymentId)
 
   const visible = ref(false)
   const el = ref<HTMLDivElement>()
