@@ -138,6 +138,9 @@
   }
 
   const classes = computed(() => ({
+    content: {
+      'flow-list-item__content--can-expand': canExpand.value,
+    },
     toggle: {
       'flow-list-item__content-toggle--expanded': expanded.value,
     },
@@ -151,9 +154,12 @@
 }
 
 .flow-list-item__content { @apply
-  cursor-pointer
   text-sm
   w-full
+}
+
+.flow-list-item__content--can-expand { @apply
+  cursor-pointer
 }
 
 .flow-list-item__content-text-none { @apply
