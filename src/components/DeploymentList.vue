@@ -1,9 +1,11 @@
 <template>
   <div class="deployment-list">
     <p-layout-table sticky>
-      <template v-if="can.delete.deployment" #header-start>
-        <DeploymentsDeleteButton size="xs" :selected="selected" @delete="deleteDeployments" />
-        <SelectedCount v-if="selected.length" :count="selected.length" />
+      <template #header-start>
+        <slot name="header-start">
+          <DeploymentsDeleteButton size="xs" :selected="selected" @delete="deleteDeployments" />
+          <SelectedCount v-if="selected.length" :count="selected.length" />
+        </slot>
       </template>
 
       <p-virtual-scroller
@@ -27,8 +29,10 @@
         </template>
       </p-virtual-scroller>
 
-      <template v-if="pages > 1" #footer-end>
-        <p-pager v-model:page="page" :pages="pages" />
+      <template #footer-end>
+        <slot name="footer-end" v-bind="{ page, pages }">
+          <p-pager v-if="pages > 1" v-model:page="page" :pages="pages" />
+        </slot>
       </template>
     </p-layout-table>
   </div>

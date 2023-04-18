@@ -1,24 +1,28 @@
 <template>
   <div class="flow-list">
     <p-layout-table sticky>
-      <template v-if="can.delete.flow" #header-start>
-        <div class="flow-list__header-start">
-          <ResultsCount v-if="selected.length == 0" :label="localization.info.flow" :count="flowsCount" />
-          <SelectedCount v-else :count="selected.length" />
-          <FlowsDeleteButton size="xs" :selected="selected" @delete="deleteFlows" />
-        </div>
+      <template #header-start>
+        <slot name="header-start">
+          <div class="flow-list__header-start">
+            <ResultsCount v-if="selected.length == 0" :label="localization.info.flow" :count="flowsCount" />
+            <SelectedCount v-else :count="selected.length" />
+            <FlowsDeleteButton size="xs" :selected="selected" @delete="deleteFlows" />
+          </div>
+        </slot>
       </template>
 
       <template #header-end>
-        <div class="flow-list__header-end">
-          <SearchInput v-model="search" :placeholder="localization.info.searchByFlowName" :label="localization.info.searchByFlowName" />
-          <p-select v-model="filter.sort" :options="flowSortOptions" />
-          <p-tags-input v-model="filter.flowRuns.tags.name" :placeholder="localization.info.addTagPlaceholder" class="flow-list__flow-run-tags">
-            <template #empty-message>
-              <span class="flow-list__flow-run-tags--empty">{{ localization.info.filterByFlowRunTags }}</span>
-            </template>
-          </p-tags-input>
-        </div>
+        <slot name="header-end">
+          <div class="flow-list__header-end">
+            <SearchInput v-model="search" :placeholder="localization.info.searchByFlowName" :label="localization.info.searchByFlowName" />
+            <p-select v-model="filter.sort" :options="flowSortOptions" />
+            <p-tags-input v-model="filter.flowRuns.tags.name" :placeholder="localization.info.addTagPlaceholder" class="flow-list__flow-run-tags">
+              <template #empty-message>
+                <span class="flow-list__flow-run-tags--empty">{{ localization.info.filterByFlowRunTags }}</span>
+              </template>
+            </p-tags-input>
+          </div>
+        </slot>
       </template>
 
       <p-virtual-scroller
@@ -43,8 +47,10 @@
         </template>
       </p-virtual-scroller>
 
-      <template v-if="pages > 1" #footer-end>
-        <p-pager v-model:page="page" :pages="pages" />
+      <template #footer-end>
+        <slot name="footer-end" v-bind="{ page, pages }">
+          <p-pager v-if="pages > 1" v-model:page="page" :pages="pages" />
+        </slot>
       </template>
     </p-layout-table>
   </div>
