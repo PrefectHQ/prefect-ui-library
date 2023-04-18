@@ -4,7 +4,7 @@
       <template #header-start>
         <slot name="header-start">
           <div class="flow-list__header-start">
-            <ResultsCount v-if="selected.length == 0" :label="localization.info.flow" :count="flowsCount" />
+            <ResultsCount v-if="selected.length == 0" :label="localization.info.flow" :count="count" />
             <SelectedCount v-else :count="selected.length" />
             <FlowsDeleteButton size="xs" :selected="selected" @delete="deleteFlows" />
           </div>
@@ -26,7 +26,7 @@
       </template>
 
       <p-virtual-scroller
-        :items="flows"
+        :items="flows ?? []"
         :chunk-size="20"
         :item-estimate-height="140"
         item-key="id"
@@ -57,10 +57,10 @@
 </template>
 
 <script lang="ts" setup>
-  import { useDebouncedRef, useSubscription } from '@prefecthq/vue-compositions'
+  import { useDebouncedRef } from '@prefecthq/vue-compositions'
   import { computed, ref } from 'vue'
   import { FlowListItem, FlowsDeleteButton, ResultsCount, SearchInput, SelectedCount } from '@/components'
-  import { useFlowsFilterFromRoute, useWorkspaceApi } from '@/compositions'
+  import { useFlows, useFlowsCount, useFlowsFilterFromRoute } from '@/compositions'
   import { localization } from '@/localization'
   import { FlowsFilter } from '@/models/Filters'
   import { flowSortOptions } from '@/types/SortOptionTypes'
@@ -76,7 +76,6 @@
 
   const DEFAULT_LIMIT = 40
 
-  const api = useWorkspaceApi()
   const search = ref<string>('')
   const searchDebounced = useDebouncedRef(search, 800)
 
@@ -87,7 +86,7 @@
       page.value = Math.ceil(value / DEFAULT_LIMIT) + 1
     },
   })
-  const pages = computed(() => Math.ceil((flowsCount.value ?? DEFAULT_LIMIT) / DEFAULT_LIMIT))
+  const pages = computed(() => Math.ceil((count.value ?? DEFAULT_LIMIT) / DEFAULT_LIMIT))
 
   const { filter } = useFlowsFilterFromRoute({
     ...props.filter,
@@ -101,11 +100,8 @@
 
   const selected = ref<string[]>([])
 
-  const flowsSubscription = useSubscription(api.flows.getFlows, [filter])
-  const flows = computed(() => flowsSubscription.response ?? [])
-
-  const flowsCountSubscription = useSubscription(api.flows.getFlowsCount, [filter])
-  const flowsCount = computed(() => flowsCountSubscription.response)
+  const { subscription: flowsSubscription, flows } = useFlows(filter)
+  const { subscription: flowsCountSubscription, count } = useFlowsCount(filter)
 
   function refresh(): void {
     flowsSubscription.refresh()
