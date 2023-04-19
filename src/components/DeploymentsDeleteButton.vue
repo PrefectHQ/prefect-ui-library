@@ -1,7 +1,5 @@
 <template>
-  <Transition name="deployments-delete-button-transition">
-    <p-button v-if="selected.length > 0" danger icon="TrashIcon" @click="open" />
-  </Transition>
+  <p-button v-if="selected.length > 0" v-bind="attrs" danger icon="TrashIcon" @click="open" />
   <ConfirmDeleteModal
     v-model:showModal="showModal"
     name="selected deployments"
@@ -10,9 +8,17 @@
   />
 </template>
 
+<script lang="ts">
+  export default {
+    name: 'DeploymentsDeleteButton',
+    expose: [],
+    inheritAttrs: false,
+  }
+</script>
+
 <script lang="ts" setup>
   import { showToast } from '@prefecthq/prefect-design'
-  import { computed } from 'vue'
+  import { computed, useAttrs } from 'vue'
   import ConfirmDeleteModal from '@/components/ConfirmDeleteModal.vue'
   import { useShowModal, useWorkspaceApi } from '@/compositions'
   import { localization } from '@/localization'
@@ -28,6 +34,7 @@
   const { showModal, open, close } = useShowModal()
 
   const api = useWorkspaceApi()
+  const attrs = useAttrs()
 
   const deleteDeployments = async (deployments: string[]): Promise<void> => {
     const toastMessage = computed(() => {
@@ -49,15 +56,3 @@
     }
   }
 </script>
-
-<style>
-.deployments-delete-button-transition-enter-active,
-.deployments-delete-button-transition-leave-active {
-  transition: opacity 0.25s ease;
-}
-
-.deployments-delete-button-transition-enter-from,
-.deployments-delete-button-transition-leave-to {
-  opacity: 0;
-}
-</style>

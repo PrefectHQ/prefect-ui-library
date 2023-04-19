@@ -4,6 +4,11 @@
   </button>
   <p-modal v-model:show-modal="show" :title="title">
     <slot />
+
+    <template #actions>
+      <slot name="actions" />
+    </template>
+
     <template #cancel>
       <p-button inset @click="show = false">
         Close

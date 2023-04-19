@@ -1,39 +1,52 @@
 import { useSubscriptionWithDependencies } from '@prefecthq/vue-compositions'
-import { computed, Ref, ref, unref } from 'vue'
+import { Ref, computed, ref } from 'vue'
 import { useCan } from '@/compositions/useCan'
 import { useWorkspaceApi } from '@/compositions/useWorkspaceApi'
+import { FlowsFilter } from '@/models'
 import { WorkspaceFlowsApi } from '@/services'
+import { MaybeRef } from '@/types'
 import { UseEntitySubscription } from '@/types/useEntitySubscription'
+import { isNullish } from '@/utilities'
 
 export type UseFlows = UseEntitySubscription<WorkspaceFlowsApi['getFlows'], 'flows'>
 
-export function useFlows(flowIds: string[] | Ref<string[] | null | undefined>): UseFlows {
+export function useFlows(filter: MaybeRef<FlowsFilter>): UseFlows
+export function useFlows(flowIds: MaybeRef<string[] | null | undefined>): UseFlows
+export function useFlows(filter?: MaybeRef<string[] | FlowsFilter | null | undefined>): UseFlows {
+  const filterRef: Ref<string[] | FlowsFilter | null | undefined> = ref(filter)
+
   const api = useWorkspaceApi()
   const can = useCan()
-  const flowIdsRef = ref(flowIds)
 
-  const parameters = computed<Parameters<typeof api.flows.getFlows> | null>(() => {
-    const ids = unref(flowIdsRef)
-
-    if (!ids || ids.length === 0) {
+  const flowsFilter = computed<[FlowsFilter] | null>(() => {
+    if (!can.read.flow) {
       return null
     }
 
-    if (!can.read.flow_run) {
-      return null
+    if (isNullish(filterRef.value)) {
+      return [{}]
     }
 
-    return [
-      {
-        flows: {
-          id: ids,
+    if (Array.isArray(filterRef.value)) {
+      if (filterRef.value.length === 0) {
+        return [{}]
+      }
+
+      return [
+        {
+          flows: {
+            id: filterRef.value,
+          },
         },
-      },
-    ]
+      ]
+    }
+
+    return [filterRef.value]
   })
 
-  const subscription = useSubscriptionWithDependencies(api.flows.getFlows, parameters)
-  const flows = computed(() => subscription.response)
+
+  const subscription = useSubscriptionWithDependencies(api.flows.getFlows, flowsFilter)
+  const flows = computed(() => subscription.response ?? [])
 
   return {
     subscription,

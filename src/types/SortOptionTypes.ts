@@ -40,7 +40,7 @@ export const variableSortOptions = [
 
 export const flowSortValues = ['CREATED_DESC', 'UPDATED_DESC', 'NAME_DESC', 'NAME_ASC'] as const
 export type FlowSortValues = typeof flowSortValues[number]
-export const defaultFlowSort: FlowSortValues = 'CREATED_DESC'
+export const defaultFlowSort: FlowSortValues = 'NAME_ASC'
 
 export function isFlowSortValue(value: unknown): value is FlowSortValues
 export function isFlowSortValue(value: Ref<unknown>): value is Ref<FlowSortValues>
@@ -58,7 +58,7 @@ export const flowSortOptions = [
 
 export const deploymentSortValues = ['CREATED_DESC', 'UPDATED_DESC', 'NAME_DESC', 'NAME_ASC'] as const
 export type DeploymentSortValues = typeof deploymentSortValues[number]
-export const defaultDeploymentSort: DeploymentSortValues = 'CREATED_DESC'
+export const defaultDeploymentSort: DeploymentSortValues = 'NAME_ASC'
 
 export function isDeploymentSortValue(value: unknown): value is DeploymentSortValues
 export function isDeploymentSortValue(value: Ref<unknown>): value is Ref<DeploymentSortValues>

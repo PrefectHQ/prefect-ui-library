@@ -1,29 +1,62 @@
 import { useSeeds } from './useSeeds'
 import { Flow } from '@/models'
 import { mocker } from '@/services'
-import { repeat } from '@/utilities'
+import { choice, repeat } from '@/utilities'
 
-export function useFlowMock(override?: Partial<Flow>): Flow {
+export type FlowMockOptions = {
+  deploymentsCount: number,
+}
+
+export function useFlowMock(override?: Partial<Flow>, options?: Partial<FlowMockOptions>): Flow {
+  const {
+    deploymentsCount = mocker.create('number', [0, 8]),
+  } = options ?? {}
+
   const flow = mocker.create('flow', [override])
-  const workQueue = mocker.create('workQueue')
-  const deployment = mocker.create('deployment', [
-    {
-      flowId: flow.id,
-      workQueueName: workQueue.name,
-    },
-  ])
-  const flowRuns = mocker.createMany('flowRun', mocker.create('number'), [
-    {
-      flowId: flow.id,
-      deploymentId: deployment.id,
-      workQueueName: workQueue.name,
-    },
-  ])
+
+  const workPools = mocker.createMany('workPool', mocker.create('number', [0, 2]))
+  const workPoolNames = [...workPools.map((workPool) => workPool.name), null]
+
+  const deployments = []
+  for (let i = 0; i < deploymentsCount; i++) {
+    const deployment = mocker.create('deployment', [
+      {
+        flowId: flow.id,
+        workPoolName: choice(workPoolNames),
+      },
+    ])
+
+    deployments.push(deployment)
+  }
+
+  const deploymentIds = [...deployments.map((deployment) => deployment.id), null]
+
+  const flowRuns = []
+  const maxFlowRunsCount = deploymentsCount > 0 ? Math.ceil(100 / deploymentsCount) : 100
+
+  for (const deploymentId of deploymentIds) {
+    const flowRunsCount = mocker.create('number', [0, maxFlowRunsCount])
+
+    if (flowRunsCount > 0) {
+      const deploymentFlowRuns = mocker.createMany('flowRun',
+        flowRunsCount,
+        [
+          {
+            flowId: flow.id,
+            deploymentId: deploymentId,
+            workPoolName: choice(workPoolNames),
+          },
+        ])
+
+      flowRuns.push(...deploymentFlowRuns)
+    }
+  }
+
 
   useSeeds({
     flows: [flow],
-    deployments: [deployment],
-    workQueues: [workQueue],
+    deployments,
+    workPools,
     flowRuns,
   })
 

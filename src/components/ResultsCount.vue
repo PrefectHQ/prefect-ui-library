@@ -1,6 +1,6 @@
 <template>
   <span v-if="isNumber(count)" class="results-count">
-    {{ count }} {{ toPluralString(label, count) }}
+    {{ count.toLocaleString() }} {{ toPluralString(label, count) }}
   </span>
 </template>
 
