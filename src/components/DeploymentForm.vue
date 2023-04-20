@@ -61,6 +61,15 @@
       </p-content>
     </p-content>
 
+    <p-content>
+      <h3 class="deployment-form__section-header">
+        Infrastucture overrides
+      </h3>
+
+      <JsonInput v-model:model-value="infrastructureOverrides" show-format-button />
+    </p-content>
+
+
     <template #footer>
       <p-button inset @click="cancel">
         Cancel
@@ -73,12 +82,15 @@
 </template>
 
 <script lang="ts" setup>
+  import { showToast } from '@prefecthq/prefect-design'
   import { useField } from 'vee-validate'
   import { computed } from 'vue'
-  import { ScheduleFieldset, WorkPoolCombobox, SchemaFormFields, WorkPoolQueueCombobox } from '@/components'
+  import { ScheduleFieldset, WorkPoolCombobox, SchemaFormFields, WorkPoolQueueCombobox, JsonInput } from '@/components'
   import { useForm } from '@/compositions/useForm'
+  import { localization } from '@/localization'
   import { Deployment, DeploymentUpdate, Schedule } from '@/models'
   import { mapper } from '@/services'
+  import { stringify } from '@/utilities'
 
   const props = defineProps<{
     deployment: Deployment,
@@ -110,6 +122,7 @@
       workQueueName: props.deployment.workQueueName,
       tags: props.deployment.tags,
       schema: props.deployment.parameterOpenApiSchema,
+      infrastructureOverrides: stringify(props.deployment.infrastructureOverrides),
     },
   })
 
@@ -119,6 +132,7 @@
   const { value: workPoolName } = useField<string | null>('workPoolName')
   const { value: workQueueName } = useField<string | null>('workQueueName')
   const { value: tags } = useField<string[] | null>('tags')
+  const { value: infrastructureOverrides } = useField<string>('infrastructureOverrides')
 
   const emit = defineEmits<{
     (event: 'submit', value: DeploymentUpdate): void,
@@ -126,7 +140,13 @@
   }>()
 
   const submit = handleSubmit((values) => {
-    emit('submit', values)
+    try {
+      JSON.parse(infrastructureOverrides.value)
+      emit('submit', values)
+    } catch (error) {
+      showToast(localization.error.invalidJSON, 'error')
+      throw new Error('Invalid JSON')
+    }
   })
 
   const cancel = (): void => {

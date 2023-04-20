@@ -35,6 +35,7 @@ export const en = {
     delete: (type: string) => `Failed to delete ${type}`,
     deleteSavedSearch: 'Failed to delete saved filter',
     editVariable: 'Failed to updated variable',
+    invalidJSON: 'Invalid JSON',
     pauseDeployment: 'Failed to pause deployment',
     pauseFlowRun: 'Failed to pause flow run',
     pauseNotification: 'Failed to pause notification',

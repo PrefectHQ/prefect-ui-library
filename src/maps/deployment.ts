@@ -44,6 +44,7 @@ export const mapDeploymentUpdateToDeploymentUpdateRequest: MapFunction<Deploymen
     tags: source.tags,
     work_queue_name: source.workQueueName,
     work_pool_name: source.workPoolName,
+    infra_overrides: JSON.parse(source.infrastructureOverrides ?? '{}'),
   }
 }
 
