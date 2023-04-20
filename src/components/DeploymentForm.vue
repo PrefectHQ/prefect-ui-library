@@ -68,7 +68,7 @@
         {{ localization.info.infraOverrides }}
       </h3>
 
-      <JsonInput v-model="infrastructureOverrides" />
+      <JsonInput v-model="infrastructureOverrides" show-format-button />
     </p-content>
 
 
@@ -92,7 +92,7 @@
   import { localization } from '@/localization'
   import { Deployment, DeploymentUpdate, DeploymentEdit, Schedule } from '@/models'
   import { mapper } from '@/services'
-  import { stringify, isJson } from '@/utilities'
+  import { stringify } from '@/utilities'
 
   const props = defineProps<{
     deployment: Deployment,
