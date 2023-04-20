@@ -51,7 +51,7 @@ export class Deployment implements IDeployment {
   public entrypoint: string | null
   public storageDocumentId: string | null
   public infrastructureDocumentId: string | null
-  public infrastructureOverrides: unknown | string | null
+  public infrastructureOverrides: Record<string, unknown> | null
   public workQueueName: string | null
   public workPoolName: string | null
 
