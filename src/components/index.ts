@@ -63,7 +63,6 @@ export { default as DeploymentDeprecatedMessage } from './DeploymentDeprecatedMe
 export { default as DeploymentDescription } from './DeploymentDescription.vue'
 export { default as DeploymentDescriptionEmptyState } from './DeploymentDescriptionEmptyState.vue'
 export { default as DeploymentDetails } from './DeploymentDetails.vue'
-export { default as DeploymentInfraOverridesInput } from './DeploymentInfraOverridesInput.vue'
 export { default as DeploymentForm } from './DeploymentForm.vue'
 export { default as DeploymentIconText } from './DeploymentIconText.vue'
 export { default as DeploymentList } from './DeploymentList.vue'
