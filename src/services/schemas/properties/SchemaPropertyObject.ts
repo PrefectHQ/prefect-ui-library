@@ -18,18 +18,15 @@ export class SchemaPropertyObject extends SchemaPropertyService {
   }
 
   protected get default(): unknown {
-    // some object properties don't have specific properties and a JsonInput is used
-    if (!this.has('properties')) {
-      if (this.has('default')) {
-        return this.property.default
-      }
-      return null
+    if (this.componentIs(JsonInput)) {
+      return stringifyUnknownJson(this.property.default) ?? ''
     }
-    return {}
+
+    return this.property.default ?? {}
   }
 
   protected request(value: SchemaValue): unknown {
-    if (!this.has('properties')) {
+    if (this.componentIs(JsonInput)) {
       return parseUnknownJson(value)
     }
 
@@ -37,7 +34,7 @@ export class SchemaPropertyObject extends SchemaPropertyService {
       return undefined
     }
 
-    const mapped = mapValues(this.property.properties, (key, property) => {
+    const mapped = mapValues(this.property.properties ?? {}, (key, property) => {
       const propertyValue = value[key]
       const service = schemaPropertyServiceFactory(property!, this.level + 1)
 
@@ -52,11 +49,11 @@ export class SchemaPropertyObject extends SchemaPropertyService {
   }
 
   protected response(value: SchemaValue): unknown {
-    // if there are no nested properties a JsonInput is used
-    if (!this.has('properties')) {
-      if (isNullish(value)) {
-        throw new InvalidSchemaValueError()
-      }
+    if (isNullish(value)) {
+      throw new InvalidSchemaValueError()
+    }
+
+    if (this.componentIs(JsonInput)) {
       return stringifyUnknownJson(value)
     }
 
@@ -64,7 +61,7 @@ export class SchemaPropertyObject extends SchemaPropertyService {
     // apparently this isn't uncommon
     const parsed = (parseUnknownJson(value) ?? {}) as SchemaValues
 
-    return mapValues(this.property.properties, (key, property) => {
+    return mapValues(this.property.properties ?? {}, (key, property) => {
       const propertyValue = parsed[key]
       const service = schemaPropertyServiceFactory(property!, this.level + 1)
 
