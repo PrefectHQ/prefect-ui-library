@@ -42,4 +42,4 @@ type WithParametersEdit = BaseEdit & {
 }
 
 export type DeploymentUpdate = WithoutParameters | WithParameters
-export type DeploymentUpdateEdit = WithoutParametersEdit | WithParametersEdit
+export type DeploymentEdit = WithoutParametersEdit | WithParametersEdit

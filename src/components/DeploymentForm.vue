@@ -90,7 +90,7 @@
   import { ScheduleFieldset, WorkPoolCombobox, SchemaFormFields, WorkPoolQueueCombobox, JsonInput } from '@/components'
   import { useForm } from '@/compositions/useForm'
   import { localization } from '@/localization'
-  import { Deployment, DeploymentUpdate, DeploymentUpdateEdit, Schedule } from '@/models'
+  import { Deployment, DeploymentUpdate, DeploymentEdit, Schedule } from '@/models'
   import { mapper } from '@/services'
   import { stringify, isJson } from '@/utilities'
 
@@ -114,7 +114,7 @@
     return mapper.map('SchemaResponse', rawSchema ?? {}, 'Schema')
   })
 
-  const { handleSubmit, isSubmitting } = useForm<DeploymentUpdateEdit>({
+  const { handleSubmit, isSubmitting } = useForm<DeploymentEdit>({
     initialValues: {
       description: props.deployment.description,
       parameters: props.deployment.parameters,
