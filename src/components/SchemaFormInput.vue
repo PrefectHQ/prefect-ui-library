@@ -3,7 +3,7 @@
     <template #description>
       <div class="schema-form-input__description">
         <template v-if="property.description">
-          <p>{{ property.description }}</p>
+          <p-markdown-renderer :text="property.description" />
         </template>
 
         <template v-if="isNullType">
