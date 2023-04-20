@@ -25,7 +25,7 @@ export interface IDeployment {
   entrypoint: string | null,
   storageDocumentId: string | null,
   infrastructureDocumentId: string | null,
-  infrastructureOverrides: unknown | string | null,
+  infrastructureOverrides: Record<string, unknown> | null,
   workQueueName: string | null,
   workPoolName: string | null,
 }

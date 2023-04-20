@@ -8,7 +8,7 @@ type Base = {
   tags?: string[] | null,
   workQueueName?: string | null,
   workPoolName?: string | null,
-  infrastructureOverrides?: string | null,
+  infrastructureOverrides?: Record<string, unknown> | null,
 }
 
 type WithoutParameters = Base & {

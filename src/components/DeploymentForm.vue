@@ -68,7 +68,7 @@
         Infrastucture overrides
       </h3>
 
-      <JsonInput v-model:model-value="infrastructureOverrides" show-format-button />
+      <DeploymentInfraOverridesInput v-model="infrastructureOverrides" />
     </p-content>
 
 
@@ -87,7 +87,7 @@
   import { showToast } from '@prefecthq/prefect-design'
   import { useField } from 'vee-validate'
   import { computed } from 'vue'
-  import { ScheduleFieldset, WorkPoolCombobox, SchemaFormFields, WorkPoolQueueCombobox, JsonInput } from '@/components'
+  import { ScheduleFieldset, WorkPoolCombobox, SchemaFormFields, WorkPoolQueueCombobox, DeploymentInfraOverridesInput } from '@/components'
   import { useForm } from '@/compositions/useForm'
   import { localization } from '@/localization'
   import { Deployment, DeploymentUpdate, Schedule } from '@/models'
@@ -124,7 +124,7 @@
       workQueueName: props.deployment.workQueueName,
       tags: props.deployment.tags,
       schema: props.deployment.parameterOpenApiSchema,
-      infrastructureOverrides: stringify(props.deployment.infrastructureOverrides),
+      infrastructureOverrides: props.deployment.infrastructureOverrides,
     },
   })
 
