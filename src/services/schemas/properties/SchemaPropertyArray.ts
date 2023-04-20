@@ -34,7 +34,7 @@ export class SchemaPropertyArray extends SchemaPropertyService {
       return ''
     }
 
-    return []
+    return this.property.default ?? []
   }
 
   protected request(value: SchemaValue): unknown {

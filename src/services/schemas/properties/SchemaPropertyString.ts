@@ -1,6 +1,7 @@
 import { PNumberInput, PSelect, PTextInput } from '@prefecthq/prefect-design'
 import DateInput from '@/components/DateInput.vue'
 import JsonInput from '@/components/JsonInput.vue'
+import { isString, mapper, stringifyUnknownJson } from '@/index'
 import { InvalidSchemaValueError } from '@/models'
 import { SchemaPropertyService } from '@/services/schemas/properties/SchemaPropertyService'
 import { SchemaPropertyComponentWithProps } from '@/services/schemas/utilities'
@@ -10,6 +11,48 @@ import { dateFunctions } from '@/utilities/timezone'
 import { isEmail, isJson, ValidationMethodFactory } from '@/utilities/validation'
 
 export class SchemaPropertyString extends SchemaPropertyService {
+
+  protected override get component(): SchemaPropertyComponentWithProps {
+    if (this.has('enum')) {
+      return this.withProps(PSelect, {
+        options: this.getSelectOptions(),
+      })
+    }
+
+    switch (this.property.format) {
+      case 'date':
+        return this.withProps(DateInput)
+      case 'date-time':
+        return this.withProps(DateInput, { showTime: true })
+      case 'json-string':
+        return this.withProps(JsonInput)
+      case 'time-delta':
+        return this.withProps(PNumberInput)
+      default:
+        return this.withProps(PTextInput)
+    }
+  }
+
+  protected override get default(): SchemaValue {
+    if (this.componentIs(PSelect)) {
+      return this.property.default ?? null
+    }
+
+    if (this.componentIs(DateInput)) {
+      return isString(this.property.default) ? new Date(this.property.default) : null
+    }
+
+    if (this.componentIs(JsonInput)) {
+      return stringifyUnknownJson(this.property.default) ?? ''
+    }
+
+    if (this.componentIs(PNumberInput)) {
+      return this.property.default ?? null
+    }
+
+    return this.property.default ?? ''
+  }
+
   protected get validators(): ValidationMethodFactory[] {
     const { format } = this.property
 
@@ -47,43 +90,6 @@ export class SchemaPropertyString extends SchemaPropertyService {
         return this.responseDateTimeValue(value)
       default:
         return value
-    }
-  }
-
-  protected override get default(): SchemaValue {
-    // default value for a PSelect
-    if (this.property.enum) {
-      return this.property.default ?? null
-    }
-
-    switch (this.property.format) {
-      case 'date':
-      case 'date-time':
-      case 'time-delta':
-        return null
-      default:
-        return ''
-    }
-  }
-
-  protected override get component(): SchemaPropertyComponentWithProps {
-    if (this.has('enum')) {
-      return this.withProps(PSelect, {
-        options: this.getSelectOptions(),
-      })
-    }
-
-    switch (this.property.format) {
-      case 'date':
-        return this.withProps(DateInput)
-      case 'date-time':
-        return this.withProps(DateInput, { showTime: true })
-      case 'json-string':
-        return this.withProps(JsonInput)
-      case 'time-delta':
-        return this.withProps(PNumberInput)
-      default:
-        return this.withProps(PTextInput)
     }
   }
 

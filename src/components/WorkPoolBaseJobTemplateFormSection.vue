@@ -44,9 +44,9 @@
   import { computed, ref, watch } from 'vue'
   import { SchemaFormFieldsWithValues, BetaBadge, JsonInput } from '@/components'
   import { localization } from '@/localization'
-  import { mapper } from '@/services'
+  import { getSchemaDefaultValues, mapper } from '@/services'
   import { Schema, SchemaProperties, SchemaValues, WorkerBaseJobTemplate } from '@/types'
-  import { getSchemaDefaults, getSchemaWithoutDefaults, mapValues, stringify } from '@/utilities'
+  import { getSchemaWithoutDefaults, mapValues, stringify } from '@/utilities'
 
 
   const props = defineProps<{
@@ -85,7 +85,7 @@
   const variablesSchemaHasProperties = computed<boolean>(() => Object.keys(variablesSchemaProperties.value).length > 0)
   const currentDefaults = computed<SchemaValues>({
     get() {
-      return getSchemaDefaults(variablesSchema.value)
+      return getSchemaDefaultValues(variablesSchema.value)
     },
     set(values) {
       const newTemplate = {
