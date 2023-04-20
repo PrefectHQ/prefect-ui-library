@@ -143,7 +143,6 @@
 
   const submit = handleSubmit((values) => {
     try {
-      isJson(infrastructureOverrides.value)
       const deploymentUpdate: DeploymentUpdate = {
         ...values,
         infrastructureOverrides: JSON.parse(infrastructureOverrides.value),
@@ -151,7 +150,6 @@
       emit('submit', deploymentUpdate)
     } catch (error) {
       showToast(localization.error.invalidJSON, 'error')
-      throw new Error('Invalid JSON')
     }
   })
 
