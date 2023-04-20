@@ -1,9 +1,10 @@
 import { JsonInput } from '@/components'
+import { InvalidSchemaValueError } from '@/models'
 import { schemaPropertyServiceFactory } from '@/services/schemas/properties'
 import { SchemaPropertyService } from '@/services/schemas/properties/SchemaPropertyService'
 import { SchemaPropertyComponentWithProps } from '@/services/schemas/utilities'
 import { SchemaValue, isSchemaValues, SchemaValues } from '@/types/schemas'
-import { isEmptyObject, mapValues } from '@/utilities'
+import { isEmptyObject, isNullish, mapValues } from '@/utilities'
 import { parseUnknownJson, stringifyUnknownJson } from '@/utilities/json'
 
 export class SchemaPropertyObject extends SchemaPropertyService {
@@ -19,9 +20,11 @@ export class SchemaPropertyObject extends SchemaPropertyService {
   protected get default(): unknown {
     // some object properties don't have specific properties and a JsonInput is used
     if (!this.has('properties')) {
-      return ''
+      if (this.has('default')) {
+        return this.property.default
+      }
+      return null
     }
-
     return {}
   }
 
@@ -51,6 +54,9 @@ export class SchemaPropertyObject extends SchemaPropertyService {
   protected response(value: SchemaValue): unknown {
     // if there are no nested properties a JsonInput is used
     if (!this.has('properties')) {
+      if (isNullish(value)) {
+        throw new InvalidSchemaValueError()
+      }
       return stringifyUnknownJson(value)
     }
 

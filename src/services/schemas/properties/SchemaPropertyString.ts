@@ -62,7 +62,7 @@ export class SchemaPropertyString extends SchemaPropertyService {
       case 'time-delta':
         return null
       default:
-        return ''
+        return this.property.default ?? ''
     }
   }
 
