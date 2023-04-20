@@ -67,8 +67,9 @@
       <h3 class="deployment-form__section-header">
         {{ localization.info.infraOverrides }}
       </h3>
-
-      <JsonInput v-model="infrastructureOverrides" show-format-button />
+      <p-label label="Infrastructure Overrides (Optional)" :message="overrideErrorMessage" :state="overrideState">
+        <JsonInput v-model="infrastructureOverrides" show-format-button />
+      </p-label>
     </p-content>
 
 
@@ -84,7 +85,6 @@
 </template>
 
 <script lang="ts" setup>
-  import { showToast } from '@prefecthq/prefect-design'
   import { useField } from 'vee-validate'
   import { computed } from 'vue'
   import { ScheduleFieldset, WorkPoolCombobox, SchemaFormFields, WorkPoolQueueCombobox, JsonInput } from '@/components'
@@ -92,7 +92,7 @@
   import { localization } from '@/localization'
   import { Deployment, DeploymentUpdate, DeploymentEdit, Schedule } from '@/models'
   import { mapper } from '@/services'
-  import { stringify, isJson } from '@/utilities'
+  import { stringify, isJson, fieldRules } from '@/utilities'
 
   const props = defineProps<{
     deployment: Deployment,
@@ -128,13 +128,17 @@
     },
   })
 
+  const rules = {
+    infrastructureOverrides: fieldRules('Infrastructure overrides', isJson),
+  }
+
   const { value: description, meta: descriptionState } = useField<string>('description')
   const { value: schedule } = useField<Schedule | null>('schedule')
   const { value: isScheduleActive } = useField<boolean>('isScheduleActive')
   const { value: workPoolName } = useField<string | null>('workPoolName')
   const { value: workQueueName } = useField<string | null>('workQueueName')
   const { value: tags } = useField<string[] | null>('tags')
-  const { value: infrastructureOverrides } = useField<string>('infrastructureOverrides')
+  const { value: infrastructureOverrides, meta: overrideState, errorMessage: overrideErrorMessage } = useField<string>('infrastructureOverrides', rules.infrastructureOverrides)
 
   const emit = defineEmits<{
     (event: 'submit', value: DeploymentUpdate): void,
@@ -142,7 +146,6 @@
   }>()
 
   const submit = handleSubmit((values) => {
-    isJson(infrastructureOverrides.value)
     const deploymentUpdate: DeploymentUpdate = {
       ...values,
       infrastructureOverrides: JSON.parse(infrastructureOverrides.value),
