@@ -61,6 +61,8 @@
       </p-content>
     </p-content>
 
+    <p-divider />
+
     <p-content>
       <h3 class="deployment-form__section-header">
         Infrastucture overrides
