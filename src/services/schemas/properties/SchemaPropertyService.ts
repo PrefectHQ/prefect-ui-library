@@ -65,7 +65,9 @@ export abstract class SchemaPropertyService {
     try {
       return this.response(value)
     } catch (error) {
-      console.warn(error, this)
+      if (!(error instanceof InvalidSchemaValueError)) {
+        console.error(error)
+      }
     }
 
     return this.default
