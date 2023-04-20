@@ -65,7 +65,7 @@
 
     <p-content>
       <h3 class="deployment-form__section-header">
-        Infrastucture overrides
+        Infrastructure overrides
       </h3>
 
       <JsonInput v-model="infrastructureOverrides" />
