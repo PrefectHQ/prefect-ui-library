@@ -61,6 +61,18 @@
       </p-content>
     </p-content>
 
+    <p-divider />
+
+    <p-content>
+      <h3 class="deployment-form__section-header">
+        {{ localization.info.infraOverrides }}
+      </h3>
+      <p-label label="Infrastructure Overrides (Optional)" :message="overrideErrorMessage" :state="overrideState">
+        <JsonInput v-model="infrastructureOverrides" show-format-button />
+      </p-label>
+    </p-content>
+
+
     <template #footer>
       <p-button inset @click="cancel">
         Cancel
@@ -75,10 +87,12 @@
 <script lang="ts" setup>
   import { useField } from 'vee-validate'
   import { computed } from 'vue'
-  import { ScheduleFieldset, WorkPoolCombobox, SchemaFormFields, WorkPoolQueueCombobox } from '@/components'
+  import { ScheduleFieldset, WorkPoolCombobox, SchemaFormFields, WorkPoolQueueCombobox, JsonInput } from '@/components'
   import { useForm } from '@/compositions/useForm'
-  import { Deployment, DeploymentUpdate, Schedule } from '@/models'
+  import { localization } from '@/localization'
+  import { Deployment, DeploymentUpdate, DeploymentEdit, Schedule } from '@/models'
   import { mapper } from '@/services'
+  import { stringify, isJson, fieldRules } from '@/utilities'
 
   const props = defineProps<{
     deployment: Deployment,
@@ -105,7 +119,7 @@
     return mapper.map('SchemaValuesResponse', source, 'SchemaValues')
   })
 
-  const { handleSubmit, isSubmitting } = useForm<DeploymentUpdate>({
+  const { handleSubmit, isSubmitting } = useForm<DeploymentEdit>({
     initialValues: {
       description: props.deployment.description,
       parameters: parameters.value,
@@ -115,8 +129,13 @@
       workQueueName: props.deployment.workQueueName,
       tags: props.deployment.tags,
       schema: props.deployment.parameterOpenApiSchema,
+      infrastructureOverrides: stringify(props.deployment.infrastructureOverrides),
     },
   })
+
+  const rules = {
+    infrastructureOverrides: fieldRules('Infrastructure overrides', isJson),
+  }
 
   const { value: description, meta: descriptionState } = useField<string>('description')
   const { value: schedule } = useField<Schedule | null>('schedule')
@@ -124,6 +143,7 @@
   const { value: workPoolName } = useField<string | null>('workPoolName')
   const { value: workQueueName } = useField<string | null>('workQueueName')
   const { value: tags } = useField<string[] | null>('tags')
+  const { value: infrastructureOverrides, meta: overrideState, errorMessage: overrideErrorMessage } = useField<string>('infrastructureOverrides', rules.infrastructureOverrides)
 
   const emit = defineEmits<{
     (event: 'submit', value: DeploymentUpdate): void,
@@ -131,7 +151,11 @@
   }>()
 
   const submit = handleSubmit((values) => {
-    emit('submit', values)
+    const deploymentUpdate: DeploymentUpdate = {
+      ...values,
+      infrastructureOverrides: JSON.parse(infrastructureOverrides.value),
+    }
+    emit('submit', deploymentUpdate)
   })
 
   const cancel = (): void => {

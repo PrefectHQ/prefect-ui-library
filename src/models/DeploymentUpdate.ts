@@ -8,9 +8,19 @@ type Base = {
   tags?: string[] | null,
   workQueueName?: string | null,
   workPoolName?: string | null,
+  infrastructureOverrides?: Record<string, unknown> | null,
+}
+
+type BaseEdit = Omit<Base, 'infrastructureOverrides'> & {
+  infrastructureOverrides?: string,
 }
 
 type WithoutParameters = Base & {
+  schema?: never,
+  parameters?: never,
+}
+
+type WithoutParametersEdit = BaseEdit & {
   schema?: never,
   parameters?: never,
 }
@@ -20,4 +30,10 @@ type WithParameters = Base & {
   parameters: SchemaValues,
 }
 
+type WithParametersEdit = BaseEdit & {
+  schema: Schema,
+  parameters: SchemaValues,
+}
+
 export type DeploymentUpdate = WithoutParameters | WithParameters
+export type DeploymentEdit = WithoutParametersEdit | WithParametersEdit
