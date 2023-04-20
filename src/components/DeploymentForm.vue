@@ -68,7 +68,7 @@
         Infrastucture overrides
       </h3>
 
-      <JsonInput v-model:model-value="infrastructureOverrides" show-format-button />
+      <JsonInput v-model="infrastructureOverrides" />
     </p-content>
 
 
@@ -90,9 +90,9 @@
   import { ScheduleFieldset, WorkPoolCombobox, SchemaFormFields, WorkPoolQueueCombobox, JsonInput } from '@/components'
   import { useForm } from '@/compositions/useForm'
   import { localization } from '@/localization'
-  import { Deployment, DeploymentUpdate, Schedule } from '@/models'
+  import { Deployment, DeploymentUpdate, DeploymentUpdateEdit, Schedule } from '@/models'
   import { mapper } from '@/services'
-  import { stringify } from '@/utilities'
+  import { stringify, isJson } from '@/utilities'
 
   const props = defineProps<{
     deployment: Deployment,
@@ -114,7 +114,7 @@
     return mapper.map('SchemaResponse', rawSchema ?? {}, 'Schema')
   })
 
-  const { handleSubmit, isSubmitting } = useForm<DeploymentUpdate>({
+  const { handleSubmit, isSubmitting } = useForm<DeploymentUpdateEdit>({
     initialValues: {
       description: props.deployment.description,
       parameters: props.deployment.parameters,
@@ -143,8 +143,12 @@
 
   const submit = handleSubmit((values) => {
     try {
-      JSON.parse(infrastructureOverrides.value)
-      emit('submit', values)
+      isJson(infrastructureOverrides.value)
+      const deploymentUpdate: DeploymentUpdate = {
+        ...values,
+        infrastructureOverrides: JSON.parse(infrastructureOverrides.value),
+      }
+      emit('submit', deploymentUpdate)
     } catch (error) {
       showToast(localization.error.invalidJSON, 'error')
       throw new Error('Invalid JSON')
