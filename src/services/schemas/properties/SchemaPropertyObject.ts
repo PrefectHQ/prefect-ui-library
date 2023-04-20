@@ -19,7 +19,7 @@ export class SchemaPropertyObject extends SchemaPropertyService {
 
   protected get default(): unknown {
     if (this.componentIs(JsonInput)) {
-      return stringifyUnknownJson(this.property.default) ?? ''
+      return stringifyUnknownJson(this.property.default) ?? null
     }
 
     return this.property.default ?? {}
