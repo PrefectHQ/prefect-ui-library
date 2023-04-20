@@ -11,13 +11,7 @@ type Base = {
   infrastructureOverrides?: Record<string, unknown> | null,
 }
 
-type BaseEdit = {
-  description?: string | null,
-  schedule?: Schedule | null,
-  isScheduleActive?: boolean,
-  tags?: string[] | null,
-  workQueueName?: string | null,
-  workPoolName?: string | null,
+type BaseEdit = Omit<Base, 'infrastructureOverrides'> & {
   infrastructureOverrides?: string,
 }
 

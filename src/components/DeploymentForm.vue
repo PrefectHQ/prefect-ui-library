@@ -92,7 +92,7 @@
   import { localization } from '@/localization'
   import { Deployment, DeploymentUpdate, DeploymentEdit, Schedule } from '@/models'
   import { mapper } from '@/services'
-  import { stringify } from '@/utilities'
+  import { stringify, isJson } from '@/utilities'
 
   const props = defineProps<{
     deployment: Deployment,
@@ -142,15 +142,12 @@
   }>()
 
   const submit = handleSubmit((values) => {
-    try {
-      const deploymentUpdate: DeploymentUpdate = {
-        ...values,
-        infrastructureOverrides: JSON.parse(infrastructureOverrides.value),
-      }
-      emit('submit', deploymentUpdate)
-    } catch (error) {
-      showToast(localization.error.invalidJSON, 'error')
+    isJson(infrastructureOverrides.value)
+    const deploymentUpdate: DeploymentUpdate = {
+      ...values,
+      infrastructureOverrides: JSON.parse(infrastructureOverrides.value),
     }
+    emit('submit', deploymentUpdate)
   })
 
   const cancel = (): void => {
