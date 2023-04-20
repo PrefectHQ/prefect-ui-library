@@ -139,6 +139,7 @@ export const en = {
     invalidData: (docsUrl: string) => `Invalid data, see [documentation](${docsUrl}) for more information`,
     noResults: 'No tracked results, enable [result persistence](https://docs.prefect.io/concepts/results/#persisting-results) to track results.',
     none: 'None',
+    infraOverrides: 'Infrastructure overrides',
     terminalTaskRunNoArtifacts: 'This task run did not produce any artifacts; for more information on creating artifacts, see the [documentation](https://docs.prefect.io/concepts/artifacts).',
     nonTerminalTaskRunNoArtifacts: 'This task run has not yet produced artifacts; for more information on creating artifacts, see the [documentation](https://docs.prefect.io/concepts/artifacts).',
     terminalFlowRunNoArtifacts: 'This run did not produce any artifacts; for more information on creating artifacts, see the [documentation](https://docs.prefect.io/concepts/artifacts).',

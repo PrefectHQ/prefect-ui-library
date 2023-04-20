@@ -65,7 +65,7 @@
 
     <p-content>
       <h3 class="deployment-form__section-header">
-        Infrastructure overrides
+        {{ localization.info.infraOverrides }}
       </h3>
 
       <JsonInput v-model="infrastructureOverrides" />
