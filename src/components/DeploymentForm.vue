@@ -114,10 +114,15 @@
     return mapper.map('SchemaResponse', rawSchema ?? {}, 'Schema')
   })
 
+  const parameters = computed(() => {
+    const source = { values: props.deployment.parameters, schema: parameterOpenApiSchema.value }
+    return mapper.map('SchemaValuesResponse', source, 'SchemaValues')
+  })
+
   const { handleSubmit, isSubmitting } = useForm<DeploymentEdit>({
     initialValues: {
       description: props.deployment.description,
-      parameters: props.deployment.parameters,
+      parameters: parameters.value,
       schedule: props.deployment.schedule,
       isScheduleActive: props.deployment.isScheduleActive,
       workPoolName: props.deployment.workPoolName,
