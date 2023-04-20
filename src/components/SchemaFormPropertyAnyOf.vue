@@ -23,19 +23,32 @@
 
 <script lang="ts" setup>
   import { ButtonGroupOption } from '@prefecthq/prefect-design'
-  import { useField } from 'vee-validate'
   import { computed, ref, watch } from 'vue'
   import SchemaFormProperty from '@/components/SchemaFormProperty.vue'
   import { getSchemaPropertyDefaultValue, getSchemaValueAnyOfDefinitionIndex } from '@/services/schemas'
-  import { SchemaPropertyAnyOf } from '@/types/schemas'
+  import { SchemaPropertyAnyOf, SchemaValue, SchemaValues } from '@/types/schemas'
 
   const props = defineProps<{
+    modelValue?: SchemaValues | SchemaValue,
     propKey: string,
     property: SchemaPropertyAnyOf,
   }>()
 
-  const { value, setValue } = useField(props.propKey)
-  const selected = ref(getSchemaValueAnyOfDefinitionIndex(props.property, value.value) ?? 0)
+
+  const emit = defineEmits<{
+    (event: 'update:modelValue', value: SchemaValues | SchemaValue): void,
+  }>()
+
+  const internalValue = computed({
+    get() {
+      return props.modelValue ?? {}
+    },
+    set(val) {
+      emit('update:modelValue', val)
+    },
+  })
+
+  const selected = ref(getSchemaValueAnyOfDefinitionIndex(props.property, internalValue.value) ?? 0)
   const definitions = computed(() => props.property.anyOf)
   const displayedDefinition = computed(() => definitions.value[selected.value] ?? {})
   const title = computed(() => props.property.title ?? props.propKey.split('.').pop())
@@ -50,10 +63,10 @@
   const selectedDefinitionValueMap = definitions.value.map(definition => getSchemaPropertyDefaultValue(definition))
 
   watch(selected, selected => {
-    setValue(selectedDefinitionValueMap[selected])
+    internalValue.value = selectedDefinitionValueMap[selected] ?? {}
   })
 
-  watch(value, value => {
+  watch(internalValue, value => {
     selectedDefinitionValueMap[selected.value] = value
   }, { immediate: true })
 </script>

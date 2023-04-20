@@ -1,5 +1,5 @@
 <template>
-  <p-label class="schema-form-input" :label="label" :message="errorMessage" :state="state">
+  <p-label class="schema-form-input" :label="label" :message="error" :state="state">
     <template #description>
       <div class="schema-form-input__description">
         <template v-if="property.description">
@@ -13,17 +13,18 @@
     </template>
 
     <template v-if="meta">
-      <component :is="meta.component" v-model="propValue" v-bind="{ ...meta.props, ...meta.attrs }" />
+      <component :is="meta.component" v-model="internalValue" v-bind="{ ...meta.props, ...meta.attrs }" />
     </template>
   </p-label>
 </template>
 
 <script lang="ts" setup>
-  import { useField } from 'vee-validate'
+  import { ValidationRule, useValidation } from '@prefecthq/vue-compositions'
   import { computed } from 'vue'
-  import { SchemaProperty } from '@/types/schemas'
+  import { SchemaValue, SchemaProperty } from '@/types/schemas'
 
   const props = defineProps<{
+    modelValue?: SchemaValue,
     propKey: string,
     property: SchemaProperty,
   }>()
@@ -42,7 +43,29 @@
   const isNullType = computed(() => props.property.type === 'null')
 
   const propKey = computed(() => props.property.type === 'block' ? `${props.propKey}.blockDocumentId` : props.propKey)
-  const { value: propValue, errorMessage, meta: state } = useField(propKey, meta.value?.validators)
+
+  const emit = defineEmits<{
+    (event: 'update:modelValue', value: SchemaValue): void,
+  }>()
+
+  const internalValue = computed({
+    get() {
+      return props.modelValue ?? {}
+    },
+    set(val) {
+      emit('update:modelValue', val)
+    },
+  })
+
+  const rules = computed<ValidationRule<unknown>[]>(() => {
+    if (typeof props.property.meta?.validators === 'function') {
+      return [props.property.meta.validators]
+    }
+
+    return props.property.meta?.validators ?? []
+  })
+
+  const { error, state } = useValidation(internalValue, propKey, rules)
 </script>
 
 <style>

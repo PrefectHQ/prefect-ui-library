@@ -1,19 +1,21 @@
 <template>
   <p-form @submit="submit">
-    <SchemaFormFields :schema="schema" />
+    <SchemaFormFields v-model="internalValue" :schema="schema" />
 
     <template #footer>
-      <p-button type="submit">
-        Save
-      </p-button>
+      <slot name="footer">
+        <p-button type="submit">
+          Save
+        </p-button>
+      </slot>
     </template>
   </p-form>
 </template>
 
 <script lang="ts" setup>
+  import { useValidationObserver } from '@prefecthq/vue-compositions'
   import { computed } from 'vue'
   import SchemaFormFields from '@/components/SchemaFormFields.vue'
-  import { useReactiveForm } from '@/compositions'
   import { Schema, SchemaValues } from '@/types/schemas'
 
   const props = defineProps<{
@@ -34,6 +36,12 @@
     },
   })
 
-  const { handleSubmit } = useReactiveForm(internalValue, { initialValues: { ...props.modelValue } })
-  const submit = handleSubmit(values => emit('submit', values))
+  const { validate } = useValidationObserver()
+
+  const submit = async (): Promise<void> => {
+    const valid = await validate()
+    if (valid) {
+      emit('submit', internalValue.value)
+    }
+  }
 </script>
