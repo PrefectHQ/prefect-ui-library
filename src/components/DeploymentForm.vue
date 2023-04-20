@@ -87,7 +87,7 @@
   import { showToast } from '@prefecthq/prefect-design'
   import { useField } from 'vee-validate'
   import { computed } from 'vue'
-  import { ScheduleFieldset, WorkPoolCombobox, SchemaFormFields, WorkPoolQueueCombobox, JsonInput } from '@/components'
+  import { ScheduleFieldset, WorkPoolCombobox, SchemaFormFields, WorkPoolQueueCombobox } from '@/components'
   import { useForm } from '@/compositions/useForm'
   import { localization } from '@/localization'
   import { Deployment, DeploymentUpdate, DeploymentUpdateEdit, Schedule } from '@/models'
