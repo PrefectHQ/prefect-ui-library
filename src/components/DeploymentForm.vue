@@ -1,5 +1,5 @@
 <template>
-  <p-form class="deployment-form" :loading="isSubmitting" @submit="submit" @cancel="cancel">
+  <p-form class="deployment-form" :loading="pending" @submit="submit" @cancel="cancel">
     <p-content>
       <p-content>
         <h3 class="deployment-form__section-header">
@@ -10,8 +10,8 @@
           <p-text-input :model-value="name" disabled />
         </p-label>
 
-        <p-label label="Description (Optional)" :state="descriptionState">
-          <p-code-input v-model="description" lang="markdown" show-line-numbers :state="descriptionState" />
+        <p-label label="Description (Optional)">
+          <p-code-input v-model="description" lang="markdown" show-line-numbers />
         </p-label>
 
         <p-label label="Work Pool (Optional)">
@@ -52,7 +52,7 @@
         </h3>
 
         <template v-if="hasParameters">
-          <SchemaFormFields property="parameters" :schema="parameterOpenApiSchema" />
+          <SchemaFormFields v-model="parameters" property="parameters" :schema="parameterOpenApiSchema" />
         </template>
 
         <template v-else>
@@ -67,17 +67,16 @@
       <h3 class="deployment-form__section-header">
         {{ localization.info.infraOverrides }}
       </h3>
-      <p-label label="Infrastructure Overrides (Optional)" :message="overrideErrorMessage" :state="overrideState">
+      <p-label label="Infrastructure Overrides (Optional)" :message="infrastructureOverridesError" :state="infrastructureOverridesState">
         <JsonInput v-model="infrastructureOverrides" show-format-button />
       </p-label>
     </p-content>
-
 
     <template #footer>
       <p-button inset @click="cancel">
         Cancel
       </p-button>
-      <p-button type="submit" @click="submit">
+      <p-button type="submit">
         Save
       </p-button>
     </template>
@@ -85,13 +84,13 @@
 </template>
 
 <script lang="ts" setup>
-  import { useField } from 'vee-validate'
-  import { computed } from 'vue'
+  import { useValidation, useValidationObserver } from '@prefecthq/vue-compositions'
+  import { computed, ref } from 'vue'
   import { ScheduleFieldset, WorkPoolCombobox, SchemaFormFields, WorkPoolQueueCombobox, JsonInput } from '@/components'
-  import { useForm } from '@/compositions/useForm'
   import { localization } from '@/localization'
-  import { Deployment, DeploymentUpdate, DeploymentEdit, Schedule } from '@/models'
+  import { Deployment, DeploymentUpdate, Schedule } from '@/models'
   import { mapper } from '@/services'
+  import { SchemaValues } from '@/types/schemas'
   import { stringify, isJson, fieldRules } from '@/utilities'
 
   const props = defineProps<{
@@ -114,49 +113,60 @@
     return mapper.map('SchemaResponse', rawSchema ?? {}, 'Schema')
   })
 
-  const parameters = computed(() => {
-    const source = { values: props.deployment.parameters, schema: parameterOpenApiSchema.value }
-    return mapper.map('SchemaValuesResponse', source, 'SchemaValues')
-  })
+  const description = ref<string | null>(props.deployment.description)
+  const schedule = ref<Schedule | null>(props.deployment.schedule)
+  const parameters = ref<SchemaValues | undefined>(mapper.map('SchemaValuesResponse', { values: props.deployment.parameters, schema: parameterOpenApiSchema.value }, 'SchemaValues'))
+  const isScheduleActive = ref<boolean>(props.deployment.isScheduleActive)
+  const workPoolName = ref<string | null>(props.deployment.workPoolName)
+  const workQueueName = ref<string | null>(props.deployment.workQueueName)
+  const tags = ref<string[] | null>(props.deployment.tags)
+  const infrastructureOverrides = ref<string>(stringify(props.deployment.infrastructureOverrides))
 
-  const { handleSubmit, isSubmitting } = useForm<DeploymentEdit>({
-    initialValues: {
-      description: props.deployment.description,
-      parameters: parameters.value,
-      schedule: props.deployment.schedule,
-      isScheduleActive: props.deployment.isScheduleActive,
-      workPoolName: props.deployment.workPoolName,
-      workQueueName: props.deployment.workQueueName,
-      tags: props.deployment.tags,
-      schema: props.deployment.parameterOpenApiSchema,
-      infrastructureOverrides: stringify(props.deployment.infrastructureOverrides),
-    },
-  })
+  const { pending, validate } = useValidationObserver()
 
   const rules = {
     infrastructureOverrides: fieldRules('Infrastructure overrides', isJson),
   }
 
-  const { value: description, meta: descriptionState } = useField<string>('description')
-  const { value: schedule } = useField<Schedule | null>('schedule')
-  const { value: isScheduleActive } = useField<boolean>('isScheduleActive')
-  const { value: workPoolName } = useField<string | null>('workPoolName')
-  const { value: workQueueName } = useField<string | null>('workQueueName')
-  const { value: tags } = useField<string[] | null>('tags')
-  const { value: infrastructureOverrides, meta: overrideState, errorMessage: overrideErrorMessage } = useField<string>('infrastructureOverrides', rules.infrastructureOverrides)
+  const { error: infrastructureOverridesError, state: infrastructureOverridesState } = useValidation(infrastructureOverrides, rules.infrastructureOverrides)
 
   const emit = defineEmits<{
     (event: 'submit', value: DeploymentUpdate): void,
     (event: 'cancel'): void,
   }>()
 
-  const submit = handleSubmit((values) => {
-    const deploymentUpdate: DeploymentUpdate = {
-      ...values,
+  const values = computed<DeploymentUpdate>(() => {
+    let formValues: DeploymentUpdate = {
+      description: description.value,
+      schedule: schedule.value,
+      isScheduleActive: isScheduleActive.value,
+      workPoolName: workPoolName.value,
+      workQueueName: workQueueName.value,
+      tags: tags.value,
       infrastructureOverrides: JSON.parse(infrastructureOverrides.value),
     }
-    emit('submit', deploymentUpdate)
+
+    if (parameters.value) {
+      formValues = {
+        ...formValues,
+        parameters: parameters.value,
+        schema: parameterOpenApiSchema.value,
+      }
+    }
+
+    return formValues
   })
+
+  const submit = async (): Promise<void> => {
+    const valid = await validate()
+
+    if (!valid) {
+      return
+    }
+
+    emit('submit', values.value)
+  }
+
 
   const cancel = (): void => {
     emit('cancel')
