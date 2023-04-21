@@ -12,3 +12,9 @@
     flowId: string,
   }>()
 </script>
+
+<style>
+.flow-run-flow { @apply
+  flex gap-1
+}
+</style>

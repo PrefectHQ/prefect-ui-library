@@ -1,5 +1,5 @@
 <template>
-  <div v-if="deployment?.name" class="flow-run-list-item__relation">
+  <div v-if="deployment?.name" class="flow-run-deployment">
     <span>Deployment</span> <DeploymentIconText :deployment-id="deploymentId" />
   </div>
 </template>
@@ -14,3 +14,9 @@
 
   const { deployment } = useDeployment(props.deploymentId)
 </script>
+
+<style>
+.flow-run-deployment { @apply
+  flex gap-1
+}
+</style>
