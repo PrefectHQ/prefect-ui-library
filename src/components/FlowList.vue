@@ -4,9 +4,20 @@
       <template #header-start>
         <slot name="header-start">
           <div class="flow-list__header-start">
-            <ResultsCount v-if="selected.length == 0" :label="localization.info.flow" :count="count" />
-            <SelectedCount v-else :count="selected.length" />
-            <FlowsDeleteButton size="xs" :selected="selected" @delete="deleteFlows" />
+            <template v-if="selected.length == 0">
+              <span class="flow-list__results-count">
+                <ResultsCount v-if="flowsCount" :label="localization.info.flow" :count="flowsCount" />
+                <template v-if="!!flowsCount && !!deploymentsCount">
+                  {{ localization.info.with }}
+                </template>
+                <ResultsCount v-if="deploymentsCount" :label="localization.info.deployment" :count="deploymentsCount" />
+              </span>
+            </template>
+
+            <template v-else-if="selected.length">
+              <SelectedCount :count="selected.length" />
+              <FlowsDeleteButton size="xs" :selected="selected" @delete="deleteFlows" />
+            </template>
           </div>
         </slot>
       </template>
@@ -60,7 +71,7 @@
   import { useDebouncedRef } from '@prefecthq/vue-compositions'
   import { computed, ref } from 'vue'
   import { FlowListItem, FlowsDeleteButton, ResultsCount, SearchInput, SelectedCount } from '@/components'
-  import { useFlows, useFlowsCount, useFlowsFilterFromRoute } from '@/compositions'
+  import { useDeploymentsCount, useFlows, useFlowsCount, useFlowsFilterFromRoute } from '@/compositions'
   import { localization } from '@/localization'
   import { FlowsFilter } from '@/models/Filters'
   import { flowSortOptions } from '@/types/SortOptionTypes'
@@ -86,7 +97,7 @@
       page.value = Math.ceil(value / DEFAULT_LIMIT) + 1
     },
   })
-  const pages = computed(() => Math.ceil((count.value ?? DEFAULT_LIMIT) / DEFAULT_LIMIT))
+  const pages = computed(() => Math.ceil((flowsCount.value ?? DEFAULT_LIMIT) / DEFAULT_LIMIT))
 
   const { filter } = useFlowsFilterFromRoute({
     ...props.filter,
@@ -98,10 +109,23 @@
     limit: DEFAULT_LIMIT,
   })
 
+  const countsFilter = computed(() => {
+    return {
+      ...props.filter,
+      flows: {
+        ...props.filter?.flows,
+        nameLike: searchDebounced.value,
+      },
+    }
+  })
+
+  const filterRef = ref(filter)
+
   const selected = ref<string[]>([])
 
-  const { subscription: flowsSubscription, flows } = useFlows(filter)
-  const { subscription: flowsCountSubscription, count } = useFlowsCount(filter)
+  const { subscription: flowsSubscription, flows } = useFlows(filterRef)
+  const { subscription: flowsCountSubscription, count: flowsCount } = useFlowsCount(countsFilter)
+  const { count: deploymentsCount } = useDeploymentsCount(countsFilter)
 
   function refresh(): void {
     flowsSubscription.refresh()
@@ -150,5 +174,10 @@
 
 .flow-list__flow-run-tags--empty { @apply
   text-foreground-50
+}
+
+.flow-list__results-count { @apply
+  text-foreground-300
+  text-base
 }
 </style>

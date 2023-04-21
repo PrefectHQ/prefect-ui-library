@@ -99,6 +99,7 @@ export const en = {
     updateWorkQueue: 'Work queue updated',
   },
   info: {
+    with: 'with',
     artifact: 'Artifact',
     artifacts: 'Artifacts',
     addTagPlaceholder: 'Add tag (press enter to submit)',

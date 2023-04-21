@@ -1,5 +1,5 @@
 import { useSubscriptionWithDependencies } from '@prefecthq/vue-compositions'
-import { Ref, computed, ref } from 'vue'
+import { computed, isRef, ref } from 'vue'
 import { useCan } from '@/compositions/useCan'
 import { useWorkspaceApi } from '@/compositions/useWorkspaceApi'
 import { FlowsFilter } from '@/models'
@@ -13,12 +13,15 @@ export type UseFlows = UseEntitySubscription<WorkspaceFlowsApi['getFlows'], 'flo
 export function useFlows(filter: MaybeRef<FlowsFilter>): UseFlows
 export function useFlows(flowIds: MaybeRef<string[] | null | undefined>): UseFlows
 export function useFlows(filter?: MaybeRef<string[] | FlowsFilter | null | undefined>): UseFlows {
-  const filterRef: Ref<string[] | FlowsFilter | null | undefined> = ref(filter)
+  const filterRef = isRef(filter) ? filter : ref<string[] | FlowsFilter | null | undefined>(filter)
 
   const api = useWorkspaceApi()
   const can = useCan()
 
+  console.log('filter is ref', isRef(filter), filter)
+  // last flow run state
   const flowsFilter = computed<[FlowsFilter] | null>(() => {
+    console.log('flowsFilter updating', filterRef.value)
     if (!can.read.flow) {
       return null
     }
