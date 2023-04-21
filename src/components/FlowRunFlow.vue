@@ -5,7 +5,7 @@
 </template>
 
 <script lang="ts" setup>
-  import WorkPoolIconText from '@/components/FlowIconText.vue'
+  import FlowIconText from '@/components/FlowIconText.vue'
   import { localization } from '@/localization'
 
   defineProps<{
