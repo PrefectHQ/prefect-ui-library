@@ -17,7 +17,7 @@
   import { stringify } from '@/utilities/json'
 
   const props = defineProps<{
-    modelValue: string | undefined,
+    modelValue: string | Record<string, unknown> | undefined,
     showFormatButton?: boolean,
   }>()
 
@@ -27,6 +27,10 @@
 
   const internalValue = computed({
     get() {
+      if (typeof props.modelValue === 'object') {
+        return stringify(props.modelValue)
+      }
+
       return props.modelValue ?? ''
     },
     set(val: string) {

@@ -76,7 +76,7 @@
       <p-button inset @click="cancel">
         Cancel
       </p-button>
-      <p-button type="submit">
+      <p-button :loading="pending" type="submit">
         Save
       </p-button>
     </template>
@@ -150,7 +150,7 @@
       formValues = {
         ...formValues,
         parameters: parameters.value,
-        schema: parameterOpenApiSchema.value,
+        schema: props.deployment.parameterOpenApiSchema,
       }
     }
 
@@ -158,6 +158,8 @@
   })
 
   const submit = async (): Promise<void> => {
+    console.log('submitting', values.value)
+    await new Promise(resolve => setTimeout(resolve, 5000))
     const valid = await validate()
 
     if (!valid) {
