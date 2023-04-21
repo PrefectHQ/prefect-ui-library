@@ -16,6 +16,7 @@
         </template>
       </div>
       <div class="page-heading-flow-run__relationships">
+        <FlowRunFlow v-if="flowRun.flowId" :flow-id="flowRun.flowId" />
         <FlowRunDeployment v-if="flowRun.deploymentId" :deployment-id="flowRun.deploymentId" />
         <FlowRunWorkPool v-if="flowRun.workPoolName" :work-pool-name="flowRun.workPoolName" />
         <FlowRunWorkQueue
@@ -56,6 +57,7 @@
     DurationIconText
   } from '@/components'
   import FlowRunDeployment from '@/components/FlowRunDeployment.vue'
+  import FlowRunFlow from '@/components/FlowRunFlow.vue'
   import FlowRunTaskCount from '@/components/FlowRunTaskCount.vue'
   import FlowRunWorkPool from '@/components/FlowRunWorkPool.vue'
   import FlowRunWorkQueue from '@/components/FlowRunWorkQueue.vue'
