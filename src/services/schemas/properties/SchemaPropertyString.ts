@@ -1,4 +1,4 @@
-import { PNumberInput, PSelect, PTextInput } from '@prefecthq/prefect-design'
+import { PNumberInput, PSelect, PTextarea } from '@prefecthq/prefect-design'
 import DateInput from '@/components/DateInput.vue'
 import JsonInput from '@/components/JsonInput.vue'
 import { isString, mapper, stringifyUnknownJson } from '@/index'
@@ -29,7 +29,7 @@ export class SchemaPropertyString extends SchemaPropertyService {
       case 'time-delta':
         return this.withProps(PNumberInput)
       default:
-        return this.withProps(PTextInput)
+        return this.withProps(PTextarea)
     }
   }
 
