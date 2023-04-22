@@ -31,7 +31,6 @@ export class SchemaPropertyString extends SchemaPropertyService {
       case 'password':
         return this.withProps(PTextInput)
       default:
-        console.log('format', this.property.format)
         return this.withProps(PTextarea)
     }
   }
