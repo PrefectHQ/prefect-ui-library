@@ -1,5 +1,5 @@
 <template>
-  <div class="flow-run-list-item__relation">
+  <div class="flow-run-work-pool">
     <span>Work Pool</span> <WorkPoolIconText :work-pool-name="workPoolName" />
   </div>
 </template>
@@ -11,3 +11,9 @@
     workPoolName: string,
   }>()
 </script>
+
+<style>
+.flow-run-work-pool { @apply
+  flex gap-1
+}
+</style>

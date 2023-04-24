@@ -20,7 +20,7 @@
 
           <p-select v-model="filter.sort" :options="deploymentSortOptions" />
 
-          <p-tags-input v-model="filter.deployments.tags.name" empty-message="All tags" class="deployments-table__tags" multiple />
+          <p-tags-input v-model="filter.deployments.tags.name" empty-message="All tags" :options="options" class="deployments-table__tags" multiple />
         </div>
       </template>
 
@@ -165,6 +165,9 @@
 
   const deploymentsCountSubscription = useSubscription(api.deployments.getDeploymentsCount, [filter])
   const deploymentsCount = computed(() => deploymentsCountSubscription.response)
+
+  const tagList = computed(() => deployments.value.flatMap(deployment => deployment.tags ?? []))
+  const options = computed(() => [...new Set(tagList.value)])
 
   const handleSchedule = (schedule: Schedule| null): string => {
     if (isRRuleSchedule(schedule)) {
