@@ -15,7 +15,7 @@
     <template v-if="result">
       <p-key-value :label="localization.info.result" :alternate="alternate">
         <template v-if="result.description" #value>
-          <p-markdown-renderer :text="result.description" />
+          <p-markdown-renderer v-if="result.description" :text="result.description" class="task-run-details__markdown-renderer" />
         </template>
       </p-key-value>
     </template>
@@ -80,17 +80,19 @@
 </script>
 
 <style>
-  .task-run-details {
-    @apply
-    flex
-    flex-col
-    gap-3
-    items-start
-  }
+.task-run-details { @apply
+  flex
+  flex-col
+  gap-3
+  items-start
+}
 
-  .task-run-details__tags {
-    @apply
-    mb-1
-    mr-1
-  }
+.task-run-details__tags { @apply
+  mb-1
+  mr-1
+}
+
+.task-run-details__markdown-renderer {
+  font-size: inherit;
+}
 </style>
