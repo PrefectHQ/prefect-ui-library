@@ -5,12 +5,10 @@
         <slot name="header-start">
           <div class="flow-list__header-start">
             <template v-if="selected.length == 0">
-              <span class="flow-list__results-count">
-                <ResultsCount v-if="flowsCount" :label="localization.info.flow" :count="flowsCount" />
-                <template v-if="!!flowsCount && !!deploymentsCount">
-                  {{ localization.info.with }}
-                </template>
-                <ResultsCount v-if="deploymentsCount" :label="localization.info.deployment" :count="deploymentsCount" />
+              <span v-if="!!flowsCount && !!deploymentsCount" class="flow-list__results-count">
+                <ResultsCount :label="localization.info.flow" :count="flowsCount" />
+                {{ localization.info.with }}
+                <ResultsCount :label="localization.info.deployment" :count="deploymentsCount" />
               </span>
             </template>
 
