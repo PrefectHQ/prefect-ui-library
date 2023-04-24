@@ -1,8 +1,8 @@
 <template>
   <div class="flow-list">
     <p-layout-table sticky>
-      <template #header-start>
-        <slot name="header-start">
+      <template #header>
+        <div class="flow-list__header">
           <div class="flow-list__header-start">
             <template v-if="selected.length == 0">
               <span v-if="!!flowsCount && !!deploymentsCount" class="flow-list__results-count">
@@ -17,11 +17,7 @@
               <FlowsDeleteButton size="xs" :selected="selected" @delete="deleteFlows" />
             </template>
           </div>
-        </slot>
-      </template>
 
-      <template #header-end>
-        <slot name="header-end">
           <div class="flow-list__header-end">
             <SearchInput v-model="search" :placeholder="localization.info.searchByFlowName" :label="localization.info.searchByFlowName" />
             <p-select v-model="filter.sort" :options="flowSortOptions" />
@@ -31,7 +27,7 @@
               </template>
             </p-tags-input>
           </div>
-        </slot>
+        </div>
       </template>
 
       <p-virtual-scroller
@@ -153,14 +149,23 @@
 .flow-list__header-start { @apply
   grow
   whitespace-nowrap
+  items-end
+}
+
+.flow-list__header { @apply
+  flex
+  flex-col
+  sm:items-center
+  sm:flex-row
+  grow
 }
 
 .flow-list__header-end { @apply
   flex
   flex-wrap
-  pl-2
   ml-auto
   shrink
+  sm:justify-end
   gap-2
 }
 
