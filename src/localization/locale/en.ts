@@ -102,6 +102,7 @@ export const en = {
     artifact: 'Artifact',
     artifacts: 'Artifacts',
     addTagPlaceholder: 'Add tag (press enter to submit)',
+    parentFlowRun: 'Parent Flow Run',
     flow: 'Flow',
     searchByFlowName: 'Search by flow name',
     filterByFlowRunTags: 'Filter by flow run tags',

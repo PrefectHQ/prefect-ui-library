@@ -16,6 +16,7 @@
         </template>
       </div>
       <div class="page-heading-flow-run__relationships">
+        <FlowRunParentFlowRun v-if="flowRun.parentTaskRunId" :parent-task-run-id="flowRun.parentTaskRunId" />
         <FlowRunFlow v-if="flowRun.flowId" :flow-id="flowRun.flowId" />
         <FlowRunDeployment v-if="flowRun.deploymentId" :deployment-id="flowRun.deploymentId" />
         <FlowRunWorkPool v-if="flowRun.workPoolName" :work-pool-name="flowRun.workPoolName" />
@@ -58,6 +59,7 @@
   } from '@/components'
   import FlowRunDeployment from '@/components/FlowRunDeployment.vue'
   import FlowRunFlow from '@/components/FlowRunFlow.vue'
+  import FlowRunParentFlowRun from '@/components/FlowRunParentFlowRun.vue'
   import FlowRunTaskCount from '@/components/FlowRunTaskCount.vue'
   import FlowRunWorkPool from '@/components/FlowRunWorkPool.vue'
   import FlowRunWorkQueue from '@/components/FlowRunWorkQueue.vue'
