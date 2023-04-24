@@ -119,11 +119,9 @@
     }
   })
 
-  const filterRef = ref(filter)
-
   const selected = ref<string[]>([])
 
-  const { subscription: flowsSubscription, flows } = useFlows(filterRef)
+  const { subscription: flowsSubscription, flows } = useFlows(filter)
   const { subscription: flowsCountSubscription, count: flowsCount } = useFlowsCount(countsFilter)
   const { count: deploymentsCount } = useDeploymentsCount(countsFilter)
 

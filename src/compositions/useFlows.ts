@@ -1,5 +1,5 @@
 import { useSubscriptionWithDependencies } from '@prefecthq/vue-compositions'
-import { computed, isRef, ref } from 'vue'
+import { computed, getCurrentInstance, onUnmounted, ref, unref, watch } from 'vue'
 import { useCan } from '@/compositions/useCan'
 import { useWorkspaceApi } from '@/compositions/useWorkspaceApi'
 import { FlowsFilter } from '@/models'
@@ -13,43 +13,53 @@ export type UseFlows = UseEntitySubscription<WorkspaceFlowsApi['getFlows'], 'flo
 export function useFlows(filter: MaybeRef<FlowsFilter>): UseFlows
 export function useFlows(flowIds: MaybeRef<string[] | null | undefined>): UseFlows
 export function useFlows(filter?: MaybeRef<string[] | FlowsFilter | null | undefined>): UseFlows {
-  const filterRef = isRef(filter) ? filter : ref<string[] | FlowsFilter | null | undefined>(filter)
-
   const api = useWorkspaceApi()
   const can = useCan()
+  const filterRef = ref<[FlowsFilter] | null>(null)
 
-  console.log('filter is ref', isRef(filter), filter)
-  // last flow run state
-  const flowsFilter = computed<[FlowsFilter] | null>(() => {
-    console.log('flowsFilter updating', filterRef.value)
+  const unwatch = watch([filter], ([filter]) => {
+    filter = unref(filter)
+
     if (!can.read.flow) {
-      return null
+      filterRef.value = null
+      return
     }
 
-    if (isNullish(filterRef.value)) {
-      return [{}]
+    if (isNullish(filter)) {
+      filterRef.value = [{}]
+      return
     }
 
-    if (Array.isArray(filterRef.value)) {
-      if (filterRef.value.length === 0) {
-        return [{}]
+    if (Array.isArray(filter)) {
+      if (filter.length === 0) {
+        filterRef.value = [{}]
+        return
       }
 
-      return [
+      filterRef.value = [
         {
           flows: {
-            id: filterRef.value,
+            id: filter,
           },
         },
       ]
+      return
     }
 
-    return [filterRef.value]
-  })
+    filterRef.value = [filter]
+  }, { immediate: true, deep: true })
 
 
-  const subscription = useSubscriptionWithDependencies(api.flows.getFlows, flowsFilter)
+  const subscription = useSubscriptionWithDependencies(api.flows.getFlows, filterRef)
   const flows = computed(() => subscription.response ?? [])
+
+
+  if (getCurrentInstance()) {
+    onUnmounted(() => {
+      subscription.unsubscribe()
+      unwatch()
+    })
+  }
 
   return {
     subscription,

@@ -1,32 +1,43 @@
 import { useSubscriptionWithDependencies } from '@prefecthq/vue-compositions'
-import { computed, ref } from 'vue'
+import { computed, getCurrentInstance, onUnmounted, ref, unref, watch } from 'vue'
 import { useCan, useWorkspaceApi } from '@/compositions'
 import { DeploymentsFilter } from '@/models'
 import { WorkspaceDeploymentsApi } from '@/services/WorkspaceDeploymentsApi'
 import { MaybeRef } from '@/types'
 import { UseEntitySubscription } from '@/types/useEntitySubscription'
+import { isNullish } from '@/utilities'
 
 export type UseDeploymentsCount = UseEntitySubscription<WorkspaceDeploymentsApi['getDeploymentsCount'], 'count'>
 
 export function useDeploymentsCount(filter?: MaybeRef<DeploymentsFilter>): UseDeploymentsCount {
   const api = useWorkspaceApi()
-  const filterRef = ref(filter)
+  const filterRef = ref<[DeploymentsFilter] | null>(null)
   const can = useCan()
 
-  const deploymentsCountFilter = computed<[DeploymentsFilter] | null>(() => {
-    console.log('deploymentsCountfilter updating')
+  const unwatch = watch([filter], ([filter]) => {
+    filter = unref(filter)
+
     if (!can.read.deployment) {
-      return null
+      filterRef.value = null
+      return
     }
 
-    if (!filterRef.value) {
-      return null
+    if (isNullish(filter)) {
+      filterRef.value = [{}]
+      return
     }
 
-    return [filterRef.value]
-  })
+    filterRef.value = [filter]
+  }, { immediate: true, deep: true })
 
-  const subscription = useSubscriptionWithDependencies(api.deployments.getDeploymentsCount, deploymentsCountFilter)
+  if (getCurrentInstance()) {
+    onUnmounted(() => {
+      subscription.unsubscribe()
+      unwatch()
+    })
+  }
+
+  const subscription = useSubscriptionWithDependencies(api.deployments.getDeploymentsCount, filterRef)
   const count = computed(() => subscription.response)
 
   return {
