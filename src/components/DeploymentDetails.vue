@@ -51,6 +51,10 @@
       <p-key-value label="Updated By" :value="deployment.updatedBy.displayValue" :alternate="alternate" />
     </template>
 
+    <p-key-value label="Entrypoint" :value="deployment.entrypoint" :alternate="alternate" />
+
+    <p-key-value label="Path" :value="deployment.path" :alternate="alternate" />
+
     <p-divider />
 
     <template v-if="can.read.flow">
