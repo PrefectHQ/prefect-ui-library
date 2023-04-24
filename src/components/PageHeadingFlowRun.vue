@@ -16,8 +16,8 @@
         </template>
       </div>
       <div class="page-heading-flow-run__relationships">
-        <FlowRunParentFlowRun v-if="flowRun.parentTaskRunId" :parent-task-run-id="flowRun.parentTaskRunId" />
         <FlowRunFlow v-if="flowRun.flowId" :flow-id="flowRun.flowId" />
+        <FlowRunParentFlowRun v-if="flowRun.parentTaskRunId" :parent-task-run-id="flowRun.parentTaskRunId" />
         <FlowRunDeployment v-if="flowRun.deploymentId" :deployment-id="flowRun.deploymentId" />
         <FlowRunWorkPool v-if="flowRun.workPoolName" :work-pool-name="flowRun.workPoolName" />
         <FlowRunWorkQueue
