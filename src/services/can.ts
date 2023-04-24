@@ -5,6 +5,7 @@ export const workspaceFeatureFlags = ['access:collections', 'access:workers', 'a
 export type WorkspaceFeatureFlag = typeof workspaceFeatureFlags[number]
 
 export const workspacePermissions = [
+  'create:artifact',
   'create:automation',
   'create:block',
   'create:concurrency_limit',
@@ -21,6 +22,7 @@ export const workspacePermissions = [
   'create:work_pool',
   'create:workspace_bot_access',
   'create:workspace_user_access',
+  'delete:artifact',
   'delete:automation',
   'delete:block',
   'delete:concurrency_limit',
@@ -36,6 +38,7 @@ export const workspacePermissions = [
   'delete:workspace_bot_access',
   'delete:workspace_user_access',
   'delete:variable',
+  'read:artifact',
   'read:automation',
   'read:block',
   'read:concurrency_limit',
