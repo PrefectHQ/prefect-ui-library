@@ -12,6 +12,14 @@
       </template>
     </p-key-value>
 
+    <template v-if="result">
+      <p-key-value :label="localization.info.result" :alternate="alternate">
+        <template v-if="result.description" #value>
+          <p-markdown-renderer :text="result.description" />
+        </template>
+      </p-key-value>
+    </template>
+
     <p-divider />
 
     <p-key-value label="Created" :value="formatDateTimeNumeric(taskRun.created)" :alternate="alternate" />
@@ -57,14 +65,18 @@
   import { PKeyValue, PTags } from '@prefecthq/prefect-design'
   import DurationIconText from '@/components/DurationIconText.vue'
   import FlowRunIconText from '@/components/FlowRunIconText.vue'
+  import { useTaskRunResult } from '@/compositions'
+  import { localization } from '@/localization'
   import { TaskRun } from '@/models/TaskRun'
   import { formatDateTimeNumeric } from '@/utilities/dates'
   import { secondsToApproximateString } from '@/utilities/seconds'
 
-  defineProps<{
+  const props = defineProps<{
     taskRun: TaskRun,
     alternate?: boolean,
   }>()
+
+  const { result } = useTaskRunResult(props.taskRun.id)
 </script>
 
 <style>

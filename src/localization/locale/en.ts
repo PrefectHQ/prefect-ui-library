@@ -139,6 +139,7 @@ export const en = {
     workQueue: 'Work Queue',
     filterByTags: 'Filter by tags',
     invalidData: (docsUrl: string) => `Invalid data, see [documentation](${docsUrl}) for more information`,
+    result: 'Result',
     noResults: 'No tracked results, enable [result persistence](https://docs.prefect.io/concepts/results/#persisting-results) to track results.',
     none: 'None',
     infraOverrides: 'Infrastructure Overrides',
