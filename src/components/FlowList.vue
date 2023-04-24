@@ -1,18 +1,23 @@
 <template>
   <div class="flow-list">
     <p-layout-table sticky>
-      <template #header-start>
-        <slot name="header-start">
+      <template #header>
+        <div class="flow-list__header">
           <div class="flow-list__header-start">
-            <ResultsCount v-if="selected.length == 0" :label="localization.info.flow" :count="count" />
-            <SelectedCount v-else :count="selected.length" />
-            <FlowsDeleteButton size="xs" :selected="selected" @delete="deleteFlows" />
-          </div>
-        </slot>
-      </template>
+            <template v-if="selected.length == 0">
+              <span v-if="!!flowsCount && !!deploymentsCount" class="flow-list__results-count">
+                <ResultsCount :label="localization.info.flow" :count="flowsCount" />
+                {{ localization.info.with }}
+                <ResultsCount :label="localization.info.deployment" :count="deploymentsCount" />
+              </span>
+            </template>
 
-      <template #header-end>
-        <slot name="header-end">
+            <template v-else-if="selected.length">
+              <SelectedCount :count="selected.length" />
+              <FlowsDeleteButton size="xs" :selected="selected" @delete="deleteFlows" />
+            </template>
+          </div>
+
           <div class="flow-list__header-end">
             <SearchInput v-model="search" :placeholder="localization.info.searchByFlowName" :label="localization.info.searchByFlowName" />
             <p-select v-model="filter.sort" :options="flowSortOptions" />
@@ -22,7 +27,7 @@
               </template>
             </p-tags-input>
           </div>
-        </slot>
+        </div>
       </template>
 
       <p-virtual-scroller
@@ -60,7 +65,7 @@
   import { useDebouncedRef } from '@prefecthq/vue-compositions'
   import { computed, ref } from 'vue'
   import { FlowListItem, FlowsDeleteButton, ResultsCount, SearchInput, SelectedCount } from '@/components'
-  import { useFlows, useFlowsCount, useFlowsFilterFromRoute } from '@/compositions'
+  import { useDeploymentsCount, useFlows, useFlowsCount, useFlowsFilterFromRoute } from '@/compositions'
   import { localization } from '@/localization'
   import { FlowsFilter } from '@/models/Filters'
   import { flowSortOptions } from '@/types/SortOptionTypes'
@@ -86,7 +91,7 @@
       page.value = Math.ceil(value / DEFAULT_LIMIT) + 1
     },
   })
-  const pages = computed(() => Math.ceil((count.value ?? DEFAULT_LIMIT) / DEFAULT_LIMIT))
+  const pages = computed(() => Math.ceil((flowsCount.value ?? DEFAULT_LIMIT) / DEFAULT_LIMIT))
 
   const { filter } = useFlowsFilterFromRoute({
     ...props.filter,
@@ -98,10 +103,21 @@
     limit: DEFAULT_LIMIT,
   })
 
+  const countsFilter = computed(() => {
+    return {
+      ...props.filter,
+      flows: {
+        ...props.filter?.flows,
+        nameLike: searchDebounced.value,
+      },
+    }
+  })
+
   const selected = ref<string[]>([])
 
   const { subscription: flowsSubscription, flows } = useFlows(filter)
-  const { subscription: flowsCountSubscription, count } = useFlowsCount(filter)
+  const { subscription: flowsCountSubscription, count: flowsCount } = useFlowsCount(countsFilter)
+  const { count: deploymentsCount } = useDeploymentsCount(countsFilter)
 
   function refresh(): void {
     flowsSubscription.refresh()
@@ -133,14 +149,23 @@
 .flow-list__header-start { @apply
   grow
   whitespace-nowrap
+  items-end
+}
+
+.flow-list__header { @apply
+  flex
+  flex-col
+  sm:items-center
+  sm:flex-row
+  grow
 }
 
 .flow-list__header-end { @apply
   flex
   flex-wrap
-  pl-2
   ml-auto
   shrink
+  sm:justify-end
   gap-2
 }
 
@@ -150,5 +175,10 @@
 
 .flow-list__flow-run-tags--empty { @apply
   text-foreground-50
+}
+
+.flow-list__results-count { @apply
+  text-foreground-300
+  text-base
 }
 </style>

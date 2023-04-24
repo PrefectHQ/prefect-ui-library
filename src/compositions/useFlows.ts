@@ -1,5 +1,5 @@
 import { useSubscriptionWithDependencies } from '@prefecthq/vue-compositions'
-import { Ref, computed, ref } from 'vue'
+import { computed, getCurrentInstance, onUnmounted, ref, unref, watch } from 'vue'
 import { useCan } from '@/compositions/useCan'
 import { useWorkspaceApi } from '@/compositions/useWorkspaceApi'
 import { FlowsFilter } from '@/models'
@@ -13,40 +13,53 @@ export type UseFlows = UseEntitySubscription<WorkspaceFlowsApi['getFlows'], 'flo
 export function useFlows(filter: MaybeRef<FlowsFilter>): UseFlows
 export function useFlows(flowIds: MaybeRef<string[] | null | undefined>): UseFlows
 export function useFlows(filter?: MaybeRef<string[] | FlowsFilter | null | undefined>): UseFlows {
-  const filterRef: Ref<string[] | FlowsFilter | null | undefined> = ref(filter)
-
   const api = useWorkspaceApi()
   const can = useCan()
+  const filterRef = ref<[FlowsFilter] | null>(null)
 
-  const flowsFilter = computed<[FlowsFilter] | null>(() => {
+  const unwatch = watch([filter], ([filter]) => {
+    filter = unref(filter)
+
     if (!can.read.flow) {
-      return null
+      filterRef.value = null
+      return
     }
 
-    if (isNullish(filterRef.value)) {
-      return [{}]
+    if (isNullish(filter)) {
+      filterRef.value = [{}]
+      return
     }
 
-    if (Array.isArray(filterRef.value)) {
-      if (filterRef.value.length === 0) {
-        return [{}]
+    if (Array.isArray(filter)) {
+      if (filter.length === 0) {
+        filterRef.value = [{}]
+        return
       }
 
-      return [
+      filterRef.value = [
         {
           flows: {
-            id: filterRef.value,
+            id: filter,
           },
         },
       ]
+      return
     }
 
-    return [filterRef.value]
-  })
+    filterRef.value = [filter]
+  }, { immediate: true, deep: true })
 
 
-  const subscription = useSubscriptionWithDependencies(api.flows.getFlows, flowsFilter)
+  const subscription = useSubscriptionWithDependencies(api.flows.getFlows, filterRef)
   const flows = computed(() => subscription.response ?? [])
+
+
+  if (getCurrentInstance()) {
+    onUnmounted(() => {
+      subscription.unsubscribe()
+      unwatch()
+    })
+  }
 
   return {
     subscription,
