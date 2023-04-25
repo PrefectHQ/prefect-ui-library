@@ -12,6 +12,14 @@
       </template>
     </p-key-value>
 
+    <template v-if="result">
+      <p-key-value :label="localization.info.result" :alternate="alternate">
+        <template v-if="result.description" #value>
+          <p-markdown-renderer v-if="result.description" :text="result.description" class="task-run-details__markdown-renderer" />
+        </template>
+      </p-key-value>
+    </template>
+
     <p-divider />
 
     <p-key-value label="Created" :value="formatDateTimeNumeric(taskRun.created)" :alternate="alternate" />
@@ -57,28 +65,34 @@
   import { PKeyValue, PTags } from '@prefecthq/prefect-design'
   import DurationIconText from '@/components/DurationIconText.vue'
   import FlowRunIconText from '@/components/FlowRunIconText.vue'
+  import { useTaskRunResult } from '@/compositions'
+  import { localization } from '@/localization'
   import { TaskRun } from '@/models/TaskRun'
   import { formatDateTimeNumeric } from '@/utilities/dates'
   import { secondsToApproximateString } from '@/utilities/seconds'
 
-  defineProps<{
+  const props = defineProps<{
     taskRun: TaskRun,
     alternate?: boolean,
   }>()
+
+  const { result } = useTaskRunResult(props.taskRun.id)
 </script>
 
 <style>
-  .task-run-details {
-    @apply
-    flex
-    flex-col
-    gap-3
-    items-start
-  }
+.task-run-details { @apply
+  flex
+  flex-col
+  gap-3
+  items-start
+}
 
-  .task-run-details__tags {
-    @apply
-    mb-1
-    mr-1
-  }
+.task-run-details__tags { @apply
+  mb-1
+  mr-1
+}
+
+.task-run-details__markdown-renderer {
+  font-size: inherit;
+}
 </style>
