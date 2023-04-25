@@ -95,11 +95,4 @@
 .task-run-details__markdown-renderer {
   font-size: inherit;
 }
-
-/*
-  Note: The core client writes the description as a paragraph token, so we need to override the default margin.
-*/
-.task-run-details__markdown-renderer .markdown-renderer__text--paragraph { @apply
-  mt-0
-}
 </style>
