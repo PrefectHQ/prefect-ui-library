@@ -11,7 +11,15 @@
         </p-label>
 
         <p-label label="Description (Optional)" :state="descriptionState">
-          <p-code-input v-model="description" lang="markdown" show-line-numbers :state="descriptionState" />
+          <p-code-input
+            v-model="description"
+            class="deployment-form__description-input"
+            :min-lines="3"
+            lang="markdown"
+            show-line-numbers
+            :state="descriptionState"
+            :placeholder="localization.info.descriptionPlaceholder"
+          />
         </p-label>
 
         <p-label label="Work Pool (Optional)">
@@ -68,7 +76,13 @@
         {{ localization.info.infraOverrides }}
       </h3>
       <p-label label="Infrastructure Overrides (Optional)" :message="overrideErrorMessage" :state="overrideState">
-        <JsonInput v-model="infrastructureOverrides" show-format-button />
+        <JsonInput
+          v-model="infrastructureOverrides"
+          show-line-numbers
+          :min-lines="3"
+          class="deployment-form__infrastructure-overrides-input"
+          show-format-button
+        />
       </p-label>
     </p-content>
 
@@ -184,6 +198,13 @@
   flex
   gap-2
   items-center
+}
+
+.deployment-form__description-input,
+.deployment-form__infrastructure-overrides-input { @apply
+  min-h-[2.5rem]
+  resize-y
+  min-w-full
 }
 
 .deployment-form__schedule {
