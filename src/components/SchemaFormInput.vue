@@ -51,7 +51,7 @@
   gap-1
 }
 
-.schema-form-input__component { @apply
+.schema-form-input__component .p-code-input { @apply
   max-w-full
   min-h-[2.5rem]
   resize-y
