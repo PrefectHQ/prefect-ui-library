@@ -7,11 +7,11 @@
 </template>
 
 <script lang="ts" setup>
-  import { SelectOption } from '@prefecthq/prefect-design'
+  import { SelectOptionNormalized } from '@prefecthq/prefect-design'
   import { useSubscription } from '@prefecthq/vue-compositions'
   import { computed } from 'vue'
   import { useWorkspaceApi } from '@/compositions'
-  import { titleCase } from '@/utilities'
+  import { getProcessTypeLabel } from '@/utilities'
 
   const props = defineProps<{
     selected: string | null | undefined,
@@ -35,12 +35,12 @@
   const workersCollectionSubscription = useSubscription(api.collections.getWorkerCollection, [])
   const workersCollectionItems = computed(() => workersCollectionSubscription.response ?? [])
 
-  const options = computed<SelectOption[]>(() => {
-    const options: { label: string, value: string }[] = workersCollectionItems.value.map(({ type }) => ({
-      label: titleCase(type!),
+  const options = computed<SelectOptionNormalized[]>(() => {
+    const options: SelectOptionNormalized[] = workersCollectionItems.value.map(({ type }) => ({
+      label: getProcessTypeLabel(type!),
       value: type!,
     }))
 
-    return options
+    return options.sort((optionA, optionB) => optionA.label.localeCompare(optionB.label))
   })
 </script>
