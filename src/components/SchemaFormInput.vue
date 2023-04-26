@@ -13,7 +13,7 @@
     </template>
 
     <template v-if="meta">
-      <component :is="meta.component" v-model="propValue" v-bind="{ ...meta.props, ...meta.attrs }" />
+      <component :is="meta.component" v-model="propValue" class="schema-form-input__component" v-bind="{ ...meta.props, ...meta.attrs }" />
     </template>
   </p-label>
 </template>
@@ -50,6 +50,13 @@
   grid
   gap-1
 }
+
+.schema-form-input__component { @apply
+  max-w-full
+  min-h-[2.5rem]
+  resize-y
+}
+
 .schema-form-input__description {
   overflow-wrap: anywhere;
 }

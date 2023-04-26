@@ -1,4 +1,4 @@
-import { PCombobox, PSelect } from '@prefecthq/prefect-design'
+import { PSelect } from '@prefecthq/prefect-design'
 import { JsonInput } from '@/components'
 import { SchemaPropertyService } from '@/services/schemas/properties/SchemaPropertyService'
 import { SchemaPropertyComponentWithProps } from '@/services/schemas/utilities'
@@ -11,19 +11,7 @@ export class SchemaPropertyArray extends SchemaPropertyService {
     const options = this.getSelectOptions()
 
     if (options.length) {
-      return this.withProps(PSelect, {
-        options: this.getSelectOptions(),
-      })
-    }
-
-    const itemType = this.property.items?.type
-
-    if (itemType === 'number' || itemType === 'string') {
-      return this.withProps(PCombobox, {
-        options: [],
-        allowUnknownValue: true,
-        placeholder: 'Enter value',
-      })
+      return this.withProps(PSelect, { options })
     }
 
     return this.withProps(JsonInput)
@@ -31,7 +19,7 @@ export class SchemaPropertyArray extends SchemaPropertyService {
 
   protected get default(): unknown {
     if (this.componentIs(JsonInput)) {
-      return ''
+      return stringifyUnknownJson(this.property.default ?? [])
     }
 
     return this.property.default ?? []
