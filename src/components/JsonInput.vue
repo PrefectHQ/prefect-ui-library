@@ -1,5 +1,5 @@
 <template>
-  <p-code-input v-model="internalValue" lang="json" class="json-input">
+  <p-code-input v-model="internalValue" lang="json" class="json-input" v-bind="{ showLineNumbers, minLines }">
     <template v-if="showFormatButton" #append>
       <p-button class="json-input__prettify-button" size="xs" @click="format">
         Format
@@ -17,8 +17,10 @@
   import { stringify } from '@/utilities/json'
 
   const props = defineProps<{
+    minLines?: number,
     modelValue: string | undefined,
     showFormatButton?: boolean,
+    showLineNumbers?: boolean,
   }>()
 
   const emit = defineEmits<{
