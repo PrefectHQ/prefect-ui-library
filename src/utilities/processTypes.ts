@@ -1,9 +1,12 @@
-// Expand this mapper as more process types are added to backend
-export function mapProcessTypeValueToProcessTypeLabel(processType: string | null | undefined): string {
+import { titleCase } from '@/utilities/strings'
+
+export function getProcessTypeLabel(processType: string): string {
   switch (processType) {
-    case 'prefect-agent':
-      return 'Prefect Agent'
+    case 'cloud-run':
+      return 'Google Cloud Run'
+    case 'ecs':
+      return 'Amazon Elastic Container Service'
     default:
-      return 'Unknown'
+      return titleCase(processType)
   }
 }
