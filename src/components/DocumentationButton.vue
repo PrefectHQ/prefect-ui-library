@@ -4,7 +4,7 @@
       <slot>
         View Docs
       </slot>
-      <p-icon icon="ExternalLinkIcon" class="documentation-button__icon" />
+      <p-icon icon="ArrowTopRightOnSquareIcon" class="documentation-button__icon" />
     </p-button>
   </a>
 </template>

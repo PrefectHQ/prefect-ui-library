@@ -1,7 +1,7 @@
 <template>
   <p-empty-state>
     <template #icon>
-      <p-icon icon="MenuAlt2Icon" />
+      <p-icon icon="Bars3BottomLeftIcon" />
     </template>
 
     <template #heading>

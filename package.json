@@ -17,7 +17,7 @@
     "scripts": {
         "build:demo": "vite build --mode=demo",
         "build": "vue-tsc && tsc-alias && vite build",
-        "dev": "vue-tsc -w & tsc-alias -w & vite build -w",
+        "dev": "vue-tsc -w & tsc-alias -w & vite build -w --force",
         "lint": "eslint src",
         "lint:fix": "eslint src --fix",
         "serve": "vite --mode=demo --host",

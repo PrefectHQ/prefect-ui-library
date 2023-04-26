@@ -29,7 +29,7 @@
     </template>
 
     <template #minimap-reset-button>
-      <p-button inset icon="BanIcon" size="xs" />
+      <p-button inset icon="NoSymbolIcon" size="xs" />
     </template>
 
     <template #minimap-zoom-in-button>
@@ -41,7 +41,7 @@
     </template>
 
     <template #minimap-reset-viewport-button>
-      <p-button inset icon="ArrowsExpandIcon" size="xs" />
+      <p-button inset icon="ArrowsPointingOutIcon" size="xs" />
     </template>
   </RadarView>
 </template>

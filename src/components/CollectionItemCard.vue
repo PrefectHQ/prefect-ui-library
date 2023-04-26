@@ -26,7 +26,7 @@
               <slot>
                 View Docs
               </slot>
-              <p-icon icon="ExternalLinkIcon" class="collection-card__documentation-icon" />
+              <p-icon icon="ArrowTopRightOnSquareIcon" class="collection-card__documentation-icon" />
             </p-button>
           </a>
         </template>
