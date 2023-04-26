@@ -60,14 +60,14 @@
     },
     "peerDependencies": {
         "@prefecthq/prefect-design": "^1.7.0",
-        "@prefecthq/vue-charts": "^0.4.0",
+        "@prefecthq/vue-charts": "^0.4.1",
         "@prefecthq/vue-compositions": "^1.4.1",
         "vee-validate": "^4.7.0",
         "vue": "^3.2.45",
         "vue-router": "^4.0.12"
     },
     "dependencies": {
-        "@prefecthq/graphs": "1.0.6",
+        "@prefecthq/graphs": "1.0.7",
         "@prefecthq/radar": "0.0.19",
         "@types/lodash.isequal": "4.5.6",
         "axios": "0.27.2",

@@ -5,6 +5,7 @@
     :class="classes.root"
     tabindex="0"
     aria-label="Flow run timeline graph"
+    :style="{ height }"
   >
     <div class="flow-run-timeline__wrapper">
       <p-button
@@ -43,7 +44,6 @@
           ref="timelineGraph"
           v-model:visible-date-range="visibleDateRange"
           class="flow-run-timeline__graph"
-          :class="classes.graph"
           :graph-data="graphData"
           :layout="layout"
           :hide-edges="hideEdges"
@@ -55,16 +55,6 @@
           :expanded-sub-nodes="expandedSubFlowRuns"
           @selection="selectNode"
           @sub-node-toggle="toggleSubFlowRun"
-        />
-      </div>
-      <div
-        class="flow-run-timeline__task-panel"
-        :class="classes.panel"
-      >
-        <FlowRunTimelineSelectionPanel
-          :selected-node="selectedNode"
-          :floating="isFullscreen"
-          @dismiss="closePanel"
         />
       </div>
     </div>
@@ -87,7 +77,7 @@
   import { useColorTheme } from '@prefecthq/prefect-design'
   import { UseSubscription, useSubscription } from '@prefecthq/vue-compositions'
   import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
-  import { FlowRunTimelineSelectionPanel, FlowRunTimelineOptions } from '@/components'
+  import { FlowRunTimelineOptions } from '@/components'
   import { useFlowRuns, useFlows, useWorkspaceApi } from '@/compositions'
   import { FlowRun, isRunningStateType, isTerminalStateType } from '@/models'
   import { WorkspaceFlowRunsApi } from '@/services'
@@ -98,10 +88,14 @@
   const props = defineProps<{
     flowRun: FlowRun,
     visibleDateRange?: TimelineVisibleDateRange,
+    height: string,
+    selectedNode: NodeSelectionEvent | null,
   }>()
 
   const emit = defineEmits<{
     (event: 'update:visibleDateRange', value: TimelineVisibleDateRange | undefined): void,
+    (event: 'selection', value: NodeSelectionEvent | null): void,
+    (event: 'update:fullscreen', value: boolean): void,
   }>()
 
   const { value: colorThemeValue } = useColorTheme()
@@ -116,20 +110,20 @@
       root: {
         'flow-run-timeline--fullscreen': isFullscreen.value,
       },
-      graph: {
-        'flow-run-timeline__graph--panel-open': showTaskRunPanel.value,
-      },
-      panel: {
-        'flow-run-timeline__task-panel--panel-open': showTaskRunPanel.value,
-      },
     }
   })
 
   const timelineGraphContainer = ref<HTMLElement | null>(null)
   const timelineGraph = ref<InstanceType<typeof FlowRunTimeline> | null>(null)
   const isFullscreen = ref(false)
-  const showTaskRunPanel = ref(false)
-  const selectedNode = ref<NodeSelectionEvent | null>(null)
+  const internalSelectedNode = computed<NodeSelectionEvent | null>({
+    get() {
+      return props.selectedNode
+    },
+    set(value) {
+      emit('selection', value)
+    },
+  })
   const expandedSubFlowRuns = ref<ExpandedSubNodes<{
     subscription: UseSubscription<WorkspaceFlowRunsApi['getFlowRunsTimeline']>,
   }>>(new Map())
@@ -184,18 +178,7 @@
   }
 
   const selectNode = (value: NodeSelectionEvent | null): void => {
-    if (!value || value === selectedNode.value) {
-      selectedNode.value = null
-      showTaskRunPanel.value = false
-      return
-    }
-
-    selectedNode.value = value
-    showTaskRunPanel.value = true
-  }
-
-  function closePanel(): void {
-    showTaskRunPanel.value = false
+    internalSelectedNode.value = value
   }
 
   function updateLayout(value: TimelineNodesLayoutOptions): void {
@@ -211,6 +194,7 @@
     const originalHeight = timelineGraphContainer.value?.clientHeight ?? 0
 
     isFullscreen.value = !isFullscreen.value
+    emit('update:fullscreen', isFullscreen.value)
 
     setTimeout(() => {
       const newWidth = timelineGraphContainer.value?.clientWidth ?? 0
@@ -410,7 +394,6 @@
 
 <style>
 .flow-run-timeline { @apply
-  h-[340px]
   outline-none
 }
 
@@ -418,7 +401,6 @@
   h-full
   w-full
   relative
-  overflow-hidden
 }
 
 .flow-run-timeline--fullscreen .flow-run-timeline__wrapper { @apply
@@ -472,41 +454,6 @@
 
 .flow-run-timeline--fullscreen .flow-run-timeline__graph {
   animation: scaleGraphIn 0.5s ease;
-}
-
-@media (min-width: 640px) {
-  .flow-run-timeline__graph--panel-open {
-    width: calc(100% - 320px);
-  }
-  .flow-run-timeline--fullscreen .flow-run-timeline__graph--panel-open { @apply
-    w-full
-  }
-}
-
-.flow-run-timeline__task-panel { @apply
-  absolute
-  top-0
-  right-0
-  bottom-0
-  z-10
-  w-[320px]
-  max-w-full
-  pl-4
-  translate-x-full
-  transition-transform
-  duration-300
-}
-
-.flow-run-timeline--fullscreen .flow-run-timeline__task-panel { @apply
-  h-auto
-  top-4
-  right-4
-  bottom-auto
-}
-
-.flow-run-timeline__task-panel--panel-open { @apply
-  translate-x-0
-  duration-500
 }
 
 @keyframes fadeGraphIn {
