@@ -120,6 +120,8 @@ export function getSchemaPropertyComponentWithDefaultProps({ component, props }:
     case JsonInput:
       return schemaPropertyComponentWithProps(JsonInput, {
         showFormatButton: true,
+        showLineNumbers: true,
+        minLines: 3,
         ...props,
       })
     default:

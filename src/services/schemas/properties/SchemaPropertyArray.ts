@@ -14,7 +14,7 @@ export class SchemaPropertyArray extends SchemaPropertyService {
       return this.withProps(PSelect, { options })
     }
 
-    return this.withProps(JsonInput, { showLineNumbers: true, minLines: 3 })
+    return this.withProps(JsonInput)
   }
 
   protected get default(): unknown {
