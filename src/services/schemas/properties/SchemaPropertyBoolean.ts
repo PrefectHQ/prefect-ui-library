@@ -2,11 +2,22 @@ import { PToggle } from '@prefecthq/prefect-design'
 import { SchemaPropertyService } from '@/services/schemas/properties/SchemaPropertyService'
 import { SchemaPropertyComponentWithProps } from '@/services/schemas/utilities'
 import { SchemaValue } from '@/types/schemas'
+import { isNullish } from '@/utilities'
 
 export class SchemaPropertyBoolean extends SchemaPropertyService {
 
   protected get default(): unknown {
     return this.property.default ?? null
+  }
+
+  public mapRequestValue(value: SchemaValue): SchemaValue | undefined {
+    const mappedValue = this.request(value)
+
+    if (isNullish(mappedValue)) {
+      return undefined
+    }
+
+    return mappedValue
   }
 
   protected override get component(): SchemaPropertyComponentWithProps {
