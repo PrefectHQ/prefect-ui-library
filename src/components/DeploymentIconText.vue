@@ -1,7 +1,7 @@
 <template>
   <template v-if="can.read.deployment">
     <p-link :to="routes.deployment(deploymentId)" class="deployment-icon-text">
-      <p-icon-text icon="LocationMarkerIcon">
+      <p-icon-text icon="MapPinIcon">
         <span>{{ deploymentName }}</span>
       </p-icon-text>
     </p-link>

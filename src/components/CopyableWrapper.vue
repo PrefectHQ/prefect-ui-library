@@ -6,7 +6,7 @@
       size="sm"
       class="copyable-wrapper__button"
       title="copy"
-      icon="DuplicateIcon"
+      icon="DocumentDuplicateIcon"
       @click="copy"
     />
   </div>

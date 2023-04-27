@@ -33,7 +33,7 @@
               <slot>
                 View Docs
               </slot>
-              <p-icon icon="ExternalLinkIcon" class="block-type-card__documentation-icon" />
+              <p-icon icon="ArrowTopRightOnSquareIcon" class="block-type-card__documentation-icon" />
             </p-button>
           </a>
         </template>

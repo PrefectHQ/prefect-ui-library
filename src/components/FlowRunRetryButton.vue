@@ -6,7 +6,7 @@
     @click="open"
   >
     Retry
-    <p-icon icon="RefreshIcon" />
+    <p-icon icon="ArrowPathIcon" />
     <FlowRunRetryModal
       v-model:showModal="showModal"
       v-model:retryingRun="retryingRun"

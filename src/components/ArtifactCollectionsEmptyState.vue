@@ -1,7 +1,7 @@
 <template>
   <p-empty-state class="artifact-collections-empty-state">
     <template #icon>
-      <p-icon icon="PhotographIcon" />
+      <p-icon icon="PhotoIcon" />
     </template>
 
     <template #heading>

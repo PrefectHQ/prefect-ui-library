@@ -5,7 +5,7 @@
     </template>
     <p-text-input v-model="internalValue" type="search" :placeholder="placeholder" class="search__input">
       <template #prepend>
-        <p-icon icon="SearchIcon" class="search__icon" />
+        <p-icon icon="MagnifyingGlassIcon" class="search__icon" />
       </template>
     </p-text-input>
   </div>

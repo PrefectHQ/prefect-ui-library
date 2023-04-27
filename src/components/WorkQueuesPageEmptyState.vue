@@ -2,8 +2,8 @@
   <p-empty-state>
     <template #icon>
       <p-icon icon="Flow" class="empty-work-queue--icon " />
-      <p-icon icon="DotsHorizontalIcon" class="empty-work-queue--icon " />
-      <p-icon icon="DatabaseIcon" class="empty-work-queue--icon " />
+      <p-icon icon="EllipsisHorizontalIcon" class="empty-work-queue--icon " />
+      <p-icon icon="CircleStackIcon" class="empty-work-queue--icon " />
     </template>
 
     <template #heading>

@@ -11,7 +11,7 @@
       <p-button
         v-if="isFullscreen"
         class="flow-run-timeline__fullscreen-exit"
-        icon="XIcon"
+        icon="XMarkIcon"
         flat
         size="lg"
         @click="toggleFullscreen"
@@ -25,7 +25,7 @@
         />
         <p-button
           title="View Timeline in Fullscreen (f)"
-          icon="ArrowsExpandIcon"
+          icon="ArrowsPointingOutIcon"
           flat
           @click="toggleFullscreen"
         />

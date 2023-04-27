@@ -17,7 +17,7 @@
     "scripts": {
         "build:demo": "vite build --mode=demo",
         "build": "vue-tsc && tsc-alias && vite build",
-        "dev": "vue-tsc -w & tsc-alias -w & vite build -w",
+        "dev": "vue-tsc -w & tsc-alias -w & vite build -w --force",
         "lint": "eslint src",
         "lint:fix": "eslint src --fix",
         "serve": "vite --mode=demo --host",
@@ -59,7 +59,7 @@
         "vue-tsc": "1.2.0"
     },
     "peerDependencies": {
-        "@prefecthq/prefect-design": "^1.7.0",
+        "@prefecthq/prefect-design": "^1.8.1",
         "@prefecthq/vue-charts": "^1.0.0",
         "@prefecthq/vue-compositions": "^1.4.1",
         "vee-validate": "^4.7.0",

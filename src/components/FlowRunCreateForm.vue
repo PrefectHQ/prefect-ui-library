@@ -11,7 +11,7 @@
             <p-button
               class="flow-run-create-form__random-name-button"
               color="primary"
-              icon="RefreshIcon"
+              icon="ArrowPathIcon"
               @click="name = generateRandomName()"
             />
           </template>

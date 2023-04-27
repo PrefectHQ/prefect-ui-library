@@ -49,7 +49,7 @@
       case 'Email Addresses':
         return {
           value: asArray(props.data.email_addresses),
-          icon: 'MailIcon',
+          icon: 'EnvelopeIcon',
         }
       case 'Slack Webhook':
         return {

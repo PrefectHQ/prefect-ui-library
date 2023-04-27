@@ -2,8 +2,8 @@
   <p-empty-state>
     <template #icon>
       <p-icon icon="Flow" />
-      <p-icon icon="DotsHorizontalIcon" />
-      <p-icon icon="LocationMarkerIcon" />
+      <p-icon icon="EllipsisHorizontalIcon" />
+      <p-icon icon="MapPinIcon" />
     </template>
 
     <template #heading>
