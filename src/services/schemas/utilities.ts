@@ -232,14 +232,10 @@ export function getSchemaValueDefinitionIndex(definitions: Schema[], value: Sche
     return definitions.findIndex(definition => definition.type === 'block')
   }
 
-  try {
-    const parsedValue = parseUnknownJson(value)
+  const parsedValue = parseUnknownJson(value)
 
-    if (isRecord(parsedValue) || Array.isArray(parsedValue)) {
-      return findObjectDefinitionIndex(definitions, parsedValue)
-    }
-  } catch {
-    // do nothing, use the raw value
+  if (isRecord(parsedValue) || Array.isArray(parsedValue)) {
+    return findObjectDefinitionIndex(definitions, parsedValue)
   }
 
   switch (typeof value) {
