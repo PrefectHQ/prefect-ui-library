@@ -23,10 +23,6 @@ export function useFavicon(stateType: StateType | null | Ref<StateType | null | 
       favicon16 = document.getElementById('favicon-16-light')
       favicon32 = document.getElementById('favicon-32-light')
       break
-    default:
-      favicon16 = document.getElementById('favicon-16-no-preference')
-      favicon32 = document.getElementById('favicon-32-no-preference')
-      break
   }
 
   const stateTypeRef = ref(stateType)
