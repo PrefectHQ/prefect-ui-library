@@ -1,5 +1,6 @@
 import { de } from 'date-fns/locale'
 import { JsonInput } from '@/components'
+import { isRecord } from '@/index'
 import { isBlockDocumentReferenceValue, isBlockDocumentValue } from '@/models'
 import { schemaPropertyServiceFactory } from '@/services/schemas/properties'
 import { SchemaProperty, SchemaPropertyInputAttrs, Schema, SchemaValues, SchemaValue, schemaHas, SchemaPropertyAnyOf, SchemaPropertyAllOf } from '@/types/schemas'
@@ -231,15 +232,17 @@ export function getSchemaValueDefinitionIndex(definitions: Schema[], value: Sche
     return definitions.findIndex(definition => definition.type === 'block')
   }
 
-  let parsedValue = value
-
   try {
-    parsedValue = parseUnknownJson(value)
+    const parsedValue = parseUnknownJson(value)
+
+    if (isRecord(parsedValue) || Array.isArray(parsedValue)) {
+      return findObjectDefinitionIndex(definitions, parsedValue)
+    }
   } catch {
     // do nothing, use the raw value
   }
 
-  switch (typeof parsedValue) {
+  switch (typeof value) {
     case 'number':
       return definitions.findIndex(definition => definition.type == 'number' || definition.type === 'integer')
     case 'string':
@@ -247,7 +250,7 @@ export function getSchemaValueDefinitionIndex(definitions: Schema[], value: Sche
     case 'boolean':
       return definitions.findIndex(definition => definition.type == 'boolean')
     case 'object':
-      return findObjectDefinitionIndex(definitions, parsedValue ?? {})
+      return findObjectDefinitionIndex(definitions, value)
     default:
       return null
   }
