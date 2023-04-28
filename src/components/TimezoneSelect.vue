@@ -10,6 +10,7 @@
   import { SelectOptionGroup, SelectOption } from '@prefecthq/prefect-design'
   import { computed, onUnmounted, ref } from 'vue'
   import { secondsInMinute, millisecondsInSecond, millisecondsInMinute } from '@/utilities/dates'
+  import { titleCase } from '@/utilities/strings'
   import { formatDateInTimezone, utcTimezone } from '@/utilities/timezone'
 
   const props = defineProps<{
@@ -48,13 +49,16 @@
 
   onUnmounted(() => clearTimeout(timeout))
 
+  function getTimezoneLabel(value: string): string {
+    return titleCase(value).replaceAll('/', ' / ')
+  }
 
-  const timezones = Intl.supportedValuesOf('timeZone').map(timezone => ({ label: timezone, value: timezone }))
+  const timezones = Intl.supportedValuesOf('timeZone').map(timezone => ({ label: getTimezoneLabel(timezone), value: timezone }))
   const localTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone
 
   const timezoneOptions = computed<SelectOptionGroup[]>(() => {
     const suggested: SelectOption[] = [
-      { label: localTimezone, value: localTimezone },
+      { label: getTimezoneLabel(localTimezone), value: localTimezone },
       { label: 'UTC', value: utcTimezone },
     ]
 
