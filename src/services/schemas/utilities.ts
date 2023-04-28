@@ -1,10 +1,11 @@
 import { de } from 'date-fns/locale'
 import { JsonInput } from '@/components'
+import { isRecord } from '@/index'
 import { isBlockDocumentReferenceValue, isBlockDocumentValue } from '@/models'
 import { schemaPropertyServiceFactory } from '@/services/schemas/properties'
 import { SchemaProperty, SchemaPropertyInputAttrs, Schema, SchemaValues, SchemaValue, schemaHas, SchemaPropertyAnyOf, SchemaPropertyAllOf } from '@/types/schemas'
 import { withPropsWithoutExcludedFactory } from '@/utilities/components'
-import { stringify } from '@/utilities/json'
+import { parseUnknownJson, stringify } from '@/utilities/json'
 import { isGreaterThan, isGreaterThanOrEqual, isLessThan, isLessThanOrEqual, isRequired, fieldRules, ValidationMethod, ValidationMethodFactory } from '@/utilities/validation'
 
 export type SchemaPropertyComponentWithProps = ReturnType<typeof schemaPropertyComponentWithProps> | null
@@ -229,6 +230,12 @@ export function getSchemaValueAllOfDefinitionIndex({ allOf: definitions }: Schem
 export function getSchemaValueDefinitionIndex(definitions: Schema[], value: SchemaValue): number | null {
   if (isBlockDocumentReferenceValue(value)) {
     return definitions.findIndex(definition => definition.type === 'block')
+  }
+
+  const parsedValue = parseUnknownJson(value)
+
+  if (isRecord(parsedValue) || Array.isArray(parsedValue)) {
+    return findObjectDefinitionIndex(definitions, parsedValue)
   }
 
   switch (typeof value) {
