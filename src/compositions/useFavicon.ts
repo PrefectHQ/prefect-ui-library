@@ -1,9 +1,33 @@
 import { onUnmounted, watchEffect, Ref, ref } from 'vue'
 import { StateType } from '@/models/StateType'
 
+function getPreferredColorScheme(): 'dark' | 'light' | 'no-preference' {
+  if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+    return 'dark'
+  } if (window.matchMedia('(prefers-color-scheme: light)').matches) {
+    return 'light'
+  }
+  return 'no-preference'
+}
+
 export function useFavicon(stateType: StateType | null | Ref<StateType | null | undefined>): void {
-  const favicon16 = document.getElementById('favicon-16')
-  const favicon32 = document.getElementById('favicon-32')
+  let favicon16: HTMLElement | null
+  let favicon32: HTMLElement | null
+
+  switch (getPreferredColorScheme()) {
+    case 'dark':
+      favicon16 = document.getElementById('favicon-16-dark')
+      favicon32 = document.getElementById('favicon-32-dark')
+      break
+    case 'light':
+      favicon16 = document.getElementById('favicon-16-light')
+      favicon32 = document.getElementById('favicon-32-light')
+      break
+    default:
+      favicon16 = document.getElementById('favicon-16-no-preference')
+      favicon32 = document.getElementById('favicon-32-no-preference')
+      break
+  }
 
   const stateTypeRef = ref(stateType)
 
