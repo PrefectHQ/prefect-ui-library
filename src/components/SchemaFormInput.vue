@@ -42,7 +42,8 @@
   const isNullType = computed(() => props.property.type === 'null')
 
   const propKey = computed(() => props.property.type === 'block' ? `${props.propKey}.blockDocumentId` : props.propKey)
-  const { value: propValue, errorMessage, meta: state } = useField(propKey, meta.value?.validators)
+  const validators = computed(() => meta.value?.validators ?? [])
+  const { value: propValue, errorMessage, meta: state } = useField(propKey, validators)
 </script>
 
 <style>
