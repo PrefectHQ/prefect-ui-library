@@ -7,7 +7,9 @@
         </template>
 
         <template v-if="isNullType">
-          <p-icon-text icon="QuestionMarkCircleIcon" solid text="This field has a type 'None' and cannot be modified" />
+          <ExtraInfoModal title="Null Type">
+            This field has a type 'None' and cannot be modified
+          </ExtraInfoModal>
         </template>
       </div>
     </template>
@@ -21,6 +23,7 @@
 <script lang="ts" setup>
   import { useField } from 'vee-validate'
   import { computed } from 'vue'
+  import { ExtraInfoModal } from '..'
   import { SchemaProperty } from '@/types/schemas'
 
   const props = defineProps<{
