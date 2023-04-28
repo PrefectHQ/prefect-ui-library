@@ -19,7 +19,6 @@ export function useFavicon(stateType: StateType | null | Ref<StateType | null | 
       favicon16 = document.getElementById('favicon-16-dark')
       favicon32 = document.getElementById('favicon-32-dark')
       break
-    case 'light':
     default:
       favicon16 = document.getElementById('favicon-16')
       favicon32 = document.getElementById('favicon-32')
