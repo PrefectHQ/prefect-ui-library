@@ -35,6 +35,10 @@ export class SchemaPropertyArray extends SchemaPropertyService {
 
   protected response(value: SchemaValue): unknown {
     if (this.componentIs(JsonInput)) {
+      if (typeof value === 'string') {
+        return value
+      }
+
       return stringifyUnknownJson(value)
     }
 

@@ -4,7 +4,7 @@ import { isBlockDocumentReferenceValue, isBlockDocumentValue } from '@/models'
 import { schemaPropertyServiceFactory } from '@/services/schemas/properties'
 import { SchemaProperty, SchemaPropertyInputAttrs, Schema, SchemaValues, SchemaValue, schemaHas, SchemaPropertyAnyOf, SchemaPropertyAllOf } from '@/types/schemas'
 import { withPropsWithoutExcludedFactory } from '@/utilities/components'
-import { stringify } from '@/utilities/json'
+import { parseUnknownJson, stringify } from '@/utilities/json'
 import { isGreaterThan, isGreaterThanOrEqual, isLessThan, isLessThanOrEqual, isRequired, fieldRules, ValidationMethod, ValidationMethodFactory } from '@/utilities/validation'
 
 export type SchemaPropertyComponentWithProps = ReturnType<typeof schemaPropertyComponentWithProps> | null
@@ -231,7 +231,15 @@ export function getSchemaValueDefinitionIndex(definitions: Schema[], value: Sche
     return definitions.findIndex(definition => definition.type === 'block')
   }
 
-  switch (typeof value) {
+  let parsedValue = value
+
+  try {
+    parsedValue = parseUnknownJson(value)
+  } catch {
+    // do nothing, use the raw value
+  }
+
+  switch (typeof parsedValue) {
     case 'number':
       return definitions.findIndex(definition => definition.type == 'number' || definition.type === 'integer')
     case 'string':
@@ -239,7 +247,7 @@ export function getSchemaValueDefinitionIndex(definitions: Schema[], value: Sche
     case 'boolean':
       return definitions.findIndex(definition => definition.type == 'boolean')
     case 'object':
-      return findObjectDefinitionIndex(definitions, value)
+      return findObjectDefinitionIndex(definitions, parsedValue ?? {})
     default:
       return null
   }
