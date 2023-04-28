@@ -79,11 +79,12 @@
   import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
   import { FlowRunTimelineOptions } from '@/components'
   import { useFlowRuns, useFlows, useStatePolling, useWorkspaceApi } from '@/compositions'
-  import { FlowRun, isRunningStateType, isTerminalStateType } from '@/models'
+  import { FlowRun, isTerminalStateType } from '@/models'
   import { WorkspaceFlowRunsApi } from '@/services'
   import { prefectStateNames } from '@/types'
   import { formatTimeNumeric, formatTimeShortNumeric, formatDate } from '@/utilities'
   import { eventTargetIsInput } from '@/utilities/eventTarget'
+  import { uniqueValueWatcher } from '@/utilities/reactivity'
 
   const props = defineProps<{
     flowRun: FlowRun,
@@ -259,6 +260,11 @@
     graphSubscription.unsubscribe()
 
     unwatchFlowRunStateType()
+  })
+
+  uniqueValueWatcher(flowRunId, () => {
+    expandedSubFlowRuns.value.forEach(({ subscription }) => subscription.unsubscribe())
+    expandedSubFlowRuns.value.clear()
   })
 
   function centerGraphViewport(): void {
