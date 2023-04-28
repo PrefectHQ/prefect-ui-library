@@ -1,4 +1,3 @@
-import '@prefecthq/radar/dist/style.css'
 import '@prefecthq/graphs/dist/style.css'
 
 export * from './components'

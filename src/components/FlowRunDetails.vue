@@ -79,14 +79,4 @@
   mb-1
   mr-1
 }
-
-.flow-run-details .flow-run-details__small-radar { @apply
-  h-[250px]
-  w-[250px]
-}
-
-.flow-run-details__small-radar-link { @apply
-  cursor-pointer
-  inline-block
-}
 </style>
