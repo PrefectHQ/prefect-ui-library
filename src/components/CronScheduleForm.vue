@@ -14,9 +14,7 @@
           <template #label>
             <span>
               Day Or
-              <sup>
-                <DayOrDescriptionModal class="cron-schedule-form__more-info" />
-              </sup>
+              <DayOrDescriptionModal />
             </span>
           </template>
 
@@ -166,12 +164,5 @@
     @apply
     col-span-3
   }
-}
-
-.cron-schedule-form__more-info {
-  @apply
-  inline-block
-  w-4
-  h-4
 }
 </style>

@@ -1,8 +1,8 @@
 <template>
-  <button class="extra-info-modal__button" v-bind="attrs" type="button" @click.stop.prevent="show = true">
+  <button class="extra-info-modal" v-bind="attrs" type="button" @click.stop.prevent="open">
     <p-icon icon="QuestionMarkCircleIcon" solid />
   </button>
-  <p-modal v-model:show-modal="show" :title="title">
+  <p-modal v-model:show-modal="showModal" :title="title">
     <slot />
 
     <template #actions>
@@ -10,7 +10,7 @@
     </template>
 
     <template #cancel>
-      <p-button inset @click="show = false">
+      <p-button inset @click="close">
         Close
       </p-button>
     </template>
@@ -24,23 +24,21 @@
 </script>
 
 <script lang="ts" setup>
-  import { ref, useAttrs } from 'vue'
+  import { useAttrs } from 'vue'
+  import { useShowModal } from '@/compositions/useShowModal'
+
+  defineProps<{
+    title: string,
+  }>()
 
   const attrs = useAttrs()
-
-  const show = ref(false)
-
-  defineProps({
-    title: {
-      type: String,
-      required: true,
-    },
-  })
+  const { showModal, open, close } = useShowModal()
 </script>
 
 <style>
-.extra-info-modal__button {
-  @apply
+.extra-info-modal { @apply
   pl-1
+  align-middle
+  -translate-y-[10%]
 }
 </style>
