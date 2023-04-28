@@ -29,7 +29,7 @@
   import ArtifactCard from '@/components/ArtifactCard.vue'
   import RowGridLayoutList from '@/components/RowGridLayoutList.vue'
   import ViewModeButtonGroup from '@/components/ViewModeButtonGroup.vue'
-  import { useWorkspaceApi, useWorkspaceRoutes } from '@/compositions'
+  import { useStatePolling, useWorkspaceApi, useWorkspaceRoutes } from '@/compositions'
   import { localization } from '@/localization'
   import { TaskRun, isTerminalStateType } from '@/models'
   import { ArtifactsFilter } from '@/models/Filters'
@@ -52,7 +52,9 @@
       },
     }
   })
-  const artifactsSubscription = useSubscription(api.artifacts.getArtifacts, [artifactsFilter], { interval: 10000 })
+  const stateName = computed(() => props.taskRun.state?.name ?? null)
+  const artifactsSubscriptionOptions = useStatePolling(stateName, 10000)
+  const artifactsSubscription = useSubscription(api.artifacts.getArtifacts, [artifactsFilter], artifactsSubscriptionOptions)
   const artifacts = computed(() => artifactsSubscription.response ?? [])
 
   const isTerminal = computed(() => isTerminalStateType(props.taskRun.state?.type))
