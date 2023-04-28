@@ -78,7 +78,7 @@
   import { UseSubscription, useSubscription } from '@prefecthq/vue-compositions'
   import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
   import { FlowRunTimelineOptions } from '@/components'
-  import { useFlowRuns, useFlows, useWorkspaceApi } from '@/compositions'
+  import { useFlowRuns, useFlows, useStatePolling, useWorkspaceApi } from '@/compositions'
   import { FlowRun, isRunningStateType, isTerminalStateType } from '@/models'
   import { WorkspaceFlowRunsApi } from '@/services'
   import { prefectStateNames } from '@/types'
@@ -215,14 +215,10 @@
   })
 
   const api = useWorkspaceApi()
-  const interval = isRunningStateType(props.flowRun.stateType) ? { interval: 5000 } : undefined
-
-  const graphSubscription = useSubscription(
-    api.flowRuns.getFlowRunsTimeline,
-    [props.flowRun.id],
-    interval,
-  )
-
+  const flowRunId = computed(() => props.flowRun.id)
+  const flowRunStateName = computed(() => props.flowRun.stateName)
+  const subscriptionOptions = useStatePolling(flowRunStateName, 5000)
+  const graphSubscription = useSubscription(api.flowRuns.getFlowRunsTimeline, [flowRunId], subscriptionOptions)
   const graphData = computed(() => graphSubscription.response ?? [])
 
   const unwatchInitialData = watch(graphData, (value) => {
@@ -244,7 +240,7 @@
       return
     }
 
-    if (!interval) {
+    if (!subscriptionOptions.value.interval) {
       return
     }
 
@@ -282,7 +278,7 @@
     const subscription = useSubscription(
       api.flowRuns.getFlowRunsTimeline,
       [id],
-      interval,
+      subscriptionOptions,
     )
 
     const data = computed(() => subscription.response ?? [])
