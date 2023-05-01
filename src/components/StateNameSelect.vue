@@ -1,26 +1,24 @@
 <template>
-  <div class="state-name-select">
-    <p-select v-model="internalValue" v-bind="{ options, multiple, emptyMessage }">
-      <template #option="{ option }">
-        <StateBadge :state="getStateFromTagValue(option.value)" />
-      </template>
-      <template #tag="{ value, dismiss }">
-        <StateBadge
-          class="state-name-select__option state-name-select__option--multiple"
-          :state="getStateFromTagValue(value)"
-          dismissible
-          @dismiss="dismiss"
-        />
-      </template>
-      <template #default="{ value }">
-        <StateBadge
-          class="state-name-select__option"
-          :state="getStateFromTagValue(value)"
-          flat
-        />
-      </template>
-    </p-select>
-  </div>
+  <p-select v-model="internalValue" class="state-name-select" v-bind="{ options, multiple, emptyMessage }">
+    <template #option="{ option }">
+      <StateBadge :state="getStateFromTagValue(option.value)" />
+    </template>
+    <template #tag="{ value, dismiss }">
+      <StateBadge
+        class="state-name-select__option state-name-select__option--multiple"
+        :state="getStateFromTagValue(value)"
+        dismissible
+        @dismiss="dismiss"
+      />
+    </template>
+    <template #default="{ value }">
+      <StateBadge
+        class="state-name-select__option"
+        :state="getStateFromTagValue(value)"
+        flat
+      />
+    </template>
+  </p-select>
 </template>
 
 <script lang="ts" setup>

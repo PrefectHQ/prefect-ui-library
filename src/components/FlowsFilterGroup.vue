@@ -22,7 +22,7 @@
 
     <div class="flows-filter-group__row">
       <p-label :label="localization.info.lastFlowRunState">
-        <StateNameSelect v-model:selected="filter.flowRuns.state.name" :empty-message="localization.info.all" multiple />
+        <StateNameSelect v-model:selected="filter.flowRuns.state.name" disabled :empty-message="localization.info.all" multiple />
       </p-label>
 
       <p-label :label="media.hover ? localization.info.lastFlowRunStart : ''">
