@@ -99,6 +99,7 @@ export const en = {
     updateWorkQueue: 'Work queue updated',
   },
   info: {
+    filtersActive: 'Filters active',
     resetFilters: 'Reset filters',
     deploymentName: 'Deployment name',
     searchByDeploymentName: 'Search by deployment name',

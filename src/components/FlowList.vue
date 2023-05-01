@@ -1,6 +1,6 @@
 <template>
   <div class="flow-list">
-    <p-layout-table>
+    <p-layout-table :sticky="media.lg">
       <template #header>
         <div class="flow-list__header-container">
           <div class="flow-list__header">
@@ -29,6 +29,14 @@
           <template v-if="headerExpanded">
             <FlowsFilterGroup />
             <p-divider class="flow-list__divider" />
+          </template>
+          <template v-else-if="isCustomFilter">
+            <div class="flow-list__filters-active">
+              ({{ localization.info.filtersActive }})
+              <p-button size="sm" secondary :disabled="isDefaultFilter" @click="clear">
+                {{ localization.info.resetFilters }}
+              </p-button>
+            </div>
           </template>
         </div>
       </template>
@@ -78,6 +86,7 @@
 </template>
 
 <script lang="ts" setup>
+  import { media } from '@prefecthq/prefect-design'
   import { NumberRouteParam, useDebouncedRef, useRouteQueryParam } from '@prefecthq/vue-compositions'
   import { computed, ref } from 'vue'
   import { FlowListItem, FlowsDeleteButton, ResultsCount, SearchInput, SelectedCount, FlowsFilterGroup } from '@/components'
@@ -101,10 +110,15 @@
   const headerExpanded = ref(false)
   const selected = ref<string[]>([])
 
-  const search = ref<string>('')
+  const search = ref<string>()
   const searchDebounced = useDebouncedRef(search, 800)
-  const nameLike = computed(() => {
-    return searchDebounced.value === '' ? undefined : searchDebounced.value
+  const nameLike = computed({
+    get() {
+      return searchDebounced.value === '' ? undefined : searchDebounced.value
+    },
+    set(value: string | undefined) {
+      searchDebounced.value = value
+    },
   })
 
   const page = useRouteQueryParam<number>('page', NumberRouteParam, 1)
@@ -203,6 +217,15 @@
 
 .flow-list__divider { @apply
   mt-4
+}
+
+.flow-list__filters-active { @apply
+  text-foreground-200
+  text-sm
+  flex
+  gap-2
+  justify-end
+  items-center
 }
 
 .flow-list__filter-button--filter-active .p-icon,

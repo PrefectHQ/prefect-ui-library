@@ -66,8 +66,13 @@
     return scheduleActive.value
   })
 
-  const nameLike = computed(() => {
-    return deploymentNameLikeDebounced.value === '' ? undefined : deploymentNameLikeDebounced.value
+  const nameLike = computed({
+    get() {
+      return deploymentNameLikeDebounced.value === '' ? undefined : deploymentNameLikeDebounced.value
+    },
+    set(value: string | undefined) {
+      deploymentNameLike.value = value
+    },
   })
 
   const { filter, isDefaultFilter, clear } = useFlowsFilterFromRoute({
