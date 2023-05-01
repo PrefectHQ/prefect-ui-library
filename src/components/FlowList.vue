@@ -110,7 +110,7 @@
 
   const countsFilter = computed(() => {
     return {
-      ...props.filter,
+      ...filter,
       flows: {
         ...props.filter?.flows,
         nameLike: searchDebounced.value,

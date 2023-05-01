@@ -63,7 +63,7 @@
 
   const { filter, isDefaultFilter, clear } = useFlowsFilterFromRoute({
     deployments: {
-      nameLike: deploymentNameLikeDebounced.value,
+      nameLike: deploymentNameLikeDebounced,
       isScheduleActive: isNullish(scheduleActive.value) ? undefined : scheduleActive.value,
     },
   })
