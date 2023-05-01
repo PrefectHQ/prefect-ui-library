@@ -136,6 +136,7 @@ export const en = {
     noData: 'No data',
     noVariables: 'No variables',
     noDeployments: 'No deployments',
+    noFlowsOrDeploymentsMatchFilter: 'No flows or deployments match your filters',
     deploymentsEmptyStateDescription: (flowName: string = 'flows') => `Create a deployment to begin remotely managing __${flowName}__`,
     copyId: 'Copy ID',
     copyName: 'Copy name',

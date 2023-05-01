@@ -33,6 +33,19 @@
         </div>
       </template>
 
+      <template v-if="flowsCount === 0">
+        <p-empty-results>
+          <template #message>
+            {{ localization.info.noFlowsOrDeploymentsMatchFilter }}
+          </template>
+          <template v-if="isCustomFilter" #actions>
+            <p-button size="sm" secondary @click="clear">
+              {{ localization.info.resetFilters }}
+            </p-button>
+          </template>
+        </p-empty-results>
+      </template>
+
       <p-virtual-scroller
         :items="flows ?? []"
         :chunk-size="20"
@@ -84,7 +97,7 @@
 
   const DEFAULT_LIMIT = 40
 
-  const headerExpanded = ref(true)
+  const headerExpanded = ref(false)
 
   const search = ref<string>('')
   const searchDebounced = useDebouncedRef(search, 800)
@@ -98,7 +111,7 @@
   })
   const pages = computed(() => Math.ceil((flowsCount.value ?? DEFAULT_LIMIT) / DEFAULT_LIMIT))
 
-  const { filter, isDefaultFilter } = useFlowsFilterFromRoute({
+  const { filter, isDefaultFilter, isCustomFilter, clear } = useFlowsFilterFromRoute({
     ...props.filter,
     flows: {
       ...props.filter?.flows,
