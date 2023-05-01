@@ -66,9 +66,13 @@
     return scheduleActive.value
   })
 
+  const nameLike = computed(() => {
+    return deploymentNameLikeDebounced.value === '' ? undefined : deploymentNameLikeDebounced.value
+  })
+
   const { filter, isDefaultFilter, clear } = useFlowsFilterFromRoute({
     deployments: {
-      nameLike: deploymentNameLikeDebounced,
+      nameLike,
       isScheduleActive,
     },
   })

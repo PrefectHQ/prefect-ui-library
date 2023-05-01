@@ -103,6 +103,9 @@
 
   const search = ref<string>('')
   const searchDebounced = useDebouncedRef(search, 800)
+  const nameLike = computed(() => {
+    return searchDebounced.value === '' ? undefined : searchDebounced.value
+  })
 
   const page = useRouteQueryParam<number>('page', NumberRouteParam, 1)
   const offset = computed(() => {
@@ -114,7 +117,7 @@
     ...props.filter,
     flows: {
       ...props.filter?.flows,
-      nameLike: searchDebounced,
+      nameLike,
     },
   })
   uniqueValueWatcher(routeFilter, () => page.value = 1)
