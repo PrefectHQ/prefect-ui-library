@@ -31,7 +31,7 @@
     </div>
 
     <div class="flows-filter-group__row">
-      <p-button size="sm" secondary :disabled="!isCustomFilter" @click="clear">
+      <p-button size="sm" secondary :disabled="isDefaultFilter" @click="clear">
         {{ localization.info.resetFilters }}
       </p-button>
     </div>
@@ -66,7 +66,7 @@
     return scheduleActive.value
   })
 
-  const { filter, isCustomFilter, clear } = useFlowsFilterFromRoute({
+  const { filter, isDefaultFilter, clear } = useFlowsFilterFromRoute({
     deployments: {
       nameLike: deploymentNameLikeDebounced,
       isScheduleActive,
