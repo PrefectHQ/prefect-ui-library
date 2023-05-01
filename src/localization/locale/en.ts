@@ -102,6 +102,7 @@ export const en = {
     all: 'All',
     active: 'Active',
     inactive: 'Inactive',
+    lastFlowRunState: 'Last Flow Run State',
     scheduleActive: 'Schedule active',
     with: 'with',
     artifact: 'Artifact',

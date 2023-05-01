@@ -39,6 +39,10 @@
               <p-label :label="localization.info.scheduleActive">
                 <p-select v-model="scheduleActive" :options="scheduleActiveOptions" />
               </p-label>
+
+              <p-label :label="localization.info.lastFlowRunState">
+                <StateNameSelect v-model:selected="filter.flowRuns.state.name" :empty-message="localization.info.all" multiple />
+              </p-label>
             </p-content>
           </template>
         </div>
@@ -78,12 +82,12 @@
 <script lang="ts" setup>
   import { useDebouncedRef } from '@prefecthq/vue-compositions'
   import { computed, ref } from 'vue'
-  import { isNullish } from '..'
-  import { FlowListItem, FlowsDeleteButton, ResultsCount, SearchInput, SelectedCount } from '@/components'
+  import { FlowListItem, FlowsDeleteButton, ResultsCount, SearchInput, SelectedCount, StateNameSelect } from '@/components'
   import { useDeploymentsCount, useFlows, useFlowsCount, useFlowsFilterFromRoute } from '@/compositions'
   import { localization } from '@/localization'
   import { FlowsFilter } from '@/models/Filters'
   import { flowSortOptions } from '@/types/SortOptionTypes'
+  import { isNullish } from '@/utilities'
 
   const props = defineProps<{
     filter?: FlowsFilter,
