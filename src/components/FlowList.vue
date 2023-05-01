@@ -22,7 +22,7 @@
             <div class="flow-list__header-end">
               <SearchInput v-model="search" :placeholder="localization.info.searchByFlowName" :label="localization.info.searchByFlowName" />
               <p-select v-model="filter.sort" :options="flowSortOptions" />
-              <p-button icon="AdjustmentsVerticalIcon" inset @click="headerExpanded = !headerExpanded" />
+              <p-button icon="AdjustmentsVerticalIcon" :class="classes.filterButton" inset @click="headerExpanded = !headerExpanded" />
             </div>
           </div>
 
@@ -66,7 +66,7 @@
 
 <script lang="ts" setup>
   import { useDebouncedRef } from '@prefecthq/vue-compositions'
-  import { computed, ref, watchEffect } from 'vue'
+  import { computed, ref } from 'vue'
   import { FlowListItem, FlowsDeleteButton, ResultsCount, SearchInput, SelectedCount, FlowsFilterGroup } from '@/components'
   import { useDeploymentsCount, useFlows, useFlowsCount, useFlowsFilterFromRoute } from '@/compositions'
   import { localization } from '@/localization'
@@ -98,21 +98,14 @@
   })
   const pages = computed(() => Math.ceil((flowsCount.value ?? DEFAULT_LIMIT) / DEFAULT_LIMIT))
 
-  const { filter } = useFlowsFilterFromRoute({
+  const { filter, isDefaultFilter } = useFlowsFilterFromRoute({
     ...props.filter,
     flows: {
       ...props.filter?.flows,
       nameLike: searchDebounced,
     },
-    deployments: {
-      ...props.filter?.deployments,
-    },
     offset,
     limit: DEFAULT_LIMIT,
-  })
-
-  watchEffect(() => filter, () => {
-    console.log('hello')
   })
 
   const countsFilter = computed(() => {
@@ -151,6 +144,13 @@
     refresh()
     selected.value = []
   }
+
+  const classes = computed(() => ({
+    filterButton: {
+      'flow-list__filter-button--filter-active': !isDefaultFilter.value,
+      'flow-list__filter-button--active': headerExpanded.value,
+    },
+  }))
 </script>
 
 <style>
@@ -193,5 +193,10 @@
 
 .flow-list__divider { @apply
   mt-4
+}
+
+.flow-list__filter-button--filter-active .p-icon,
+.flow-list__filter-button--active .p-icon { @apply
+  text-primary
 }
 </style>
