@@ -99,6 +99,7 @@ export const en = {
     updateWorkQueue: 'Work queue updated',
   },
   info: {
+    resetFilters: 'Reset filters',
     deploymentName: 'Deployment name',
     searchByDeploymentName: 'Search by deployment name',
     workPools: 'Work Pools',
@@ -107,7 +108,7 @@ export const en = {
     inactive: 'Inactive',
     lastFlowRunState: 'Last Flow Run State',
     lastFlowRunStart: 'Last Flow Run Start',
-    scheduleActive: 'Schedule active',
+    schedule: 'Schedule',
     with: 'with',
     artifact: 'Artifact',
     artifacts: 'Artifacts',

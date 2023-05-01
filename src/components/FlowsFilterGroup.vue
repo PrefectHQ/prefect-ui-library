@@ -1,22 +1,30 @@
 <template>
   <div class="flows-filter-group">
+    <template v-if="!isDefaultFilter">
+      <div class="flows-filter-group__row">
+        <p-button size="sm" secondary @click="clear">
+          {{ localization.info.resetFilters }}
+        </p-button>
+      </div>
+    </template>
+
     <div class="flows-filter-group__row">
       <p-label :label="localization.info.deploymentName">
         <SearchInput v-model="deploymentNameLike" :placeholder="localization.info.searchByDeploymentName" :label="localization.info.searchByDeploymentName" />
       </p-label>
+
+      <p-label :label="localization.info.deploymentTags">
+        <p-tags-input v-model="filter.flowRuns.tags.name" :empty-message="localization.info.all" :placeholder="localization.info.addTagPlaceholder" class="flows-filter-group__deployment-tags" />
+      </p-label>
     </div>
 
     <div class="flows-filter-group__row">
-      <p-label :label="localization.info.scheduleActive">
+      <p-label :label="localization.info.schedule">
         <p-select v-model="scheduleActive" :options="scheduleActiveOptions" />
       </p-label>
 
       <p-label :label="localization.info.workPools">
         <WorkPoolCombobox v-model:selected="filter.workPools.name" :empty-message="localization.info.all" multiple />
-      </p-label>
-
-      <p-label :label="localization.info.deploymentTags">
-        <p-tags-input v-model="filter.flowRuns.tags.name" :empty-message="localization.info.all" :placeholder="localization.info.addTagPlaceholder" class="flows-filter-group__deployment-tags" />
       </p-label>
     </div>
 
@@ -53,7 +61,7 @@
     { label: localization.info.inactive, value: false },
   ]
 
-  const { filter } = useFlowsFilterFromRoute({
+  const { filter, isDefaultFilter, clear } = useFlowsFilterFromRoute({
     deployments: {
       nameLike: deploymentNameLikeDebounced.value,
       isScheduleActive: isNullish(scheduleActive.value) ? undefined : scheduleActive.value,
@@ -75,14 +83,15 @@
 .flows-filter-group { @apply
   flex
   flex-col
-  gap-2
+  gap-4
 }
 
 .flows-filter-group__row { @apply
   flex
   flex-wrap
   md:flex-nowrap
-  gap-2
+  gap-4
+  justify-end
 }
 
 .flows-filter-group__search { @apply
