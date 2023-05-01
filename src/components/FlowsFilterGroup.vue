@@ -1,13 +1,5 @@
 <template>
   <div class="flows-filter-group">
-    <template v-if="!isDefaultFilter">
-      <div class="flows-filter-group__row">
-        <p-button size="sm" secondary @click="clear">
-          {{ localization.info.resetFilters }}
-        </p-button>
-      </div>
-    </template>
-
     <div class="flows-filter-group__row">
       <p-label :label="localization.info.deploymentName">
         <SearchInput v-model="deploymentNameLike" :placeholder="localization.info.searchByDeploymentName" :label="localization.info.searchByDeploymentName" />
@@ -37,6 +29,12 @@
         <DateRangeInputWithFlowRunHistory v-model:range="range" />
       </p-label>
     </div>
+
+    <div class="flows-filter-group__row">
+      <p-button size="sm" secondary :disabled="!isCustomFilter" @click="clear">
+        {{ localization.info.resetFilters }}
+      </p-button>
+    </div>
   </div>
 </template>
 
@@ -61,10 +59,17 @@
     { label: localization.info.inactive, value: false },
   ]
 
-  const { filter, isDefaultFilter, clear } = useFlowsFilterFromRoute({
+  const isScheduleActive = computed(() => {
+    if (isNullish(scheduleActive.value)) {
+      return undefined
+    }
+    return scheduleActive.value
+  })
+
+  const { filter, isCustomFilter, clear } = useFlowsFilterFromRoute({
     deployments: {
       nameLike: deploymentNameLikeDebounced,
-      isScheduleActive: isNullish(scheduleActive.value) ? undefined : scheduleActive.value,
+      isScheduleActive,
     },
   })
 
