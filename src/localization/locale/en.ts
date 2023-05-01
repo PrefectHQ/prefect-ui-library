@@ -99,6 +99,10 @@ export const en = {
     updateWorkQueue: 'Work queue updated',
   },
   info: {
+    all: 'All',
+    active: 'Active',
+    inactive: 'Inactive',
+    scheduleActive: 'Schedule active',
     with: 'with',
     artifact: 'Artifact',
     artifacts: 'Artifacts',

@@ -2,31 +2,45 @@
   <div class="flow-list">
     <p-layout-table sticky>
       <template #header>
-        <div class="flow-list__header">
-          <div class="flow-list__header-start">
-            <template v-if="selected.length == 0">
-              <span v-if="!!flowsCount && !!deploymentsCount" class="flow-list__results-count">
-                <ResultsCount :label="localization.info.flow" :count="flowsCount" />
-                {{ localization.info.with }}
-                <ResultsCount :label="localization.info.deployment" :count="deploymentsCount" />
-              </span>
-            </template>
-
-            <template v-else-if="selected.length">
-              <SelectedCount :count="selected.length" />
-              <FlowsDeleteButton size="xs" :selected="selected" @delete="deleteFlows" />
-            </template>
-          </div>
-
-          <div class="flow-list__header-end">
-            <SearchInput v-model="search" :placeholder="localization.info.searchByFlowName" :label="localization.info.searchByFlowName" />
-            <p-select v-model="filter.sort" :options="flowSortOptions" />
-            <p-tags-input v-model="filter.flowRuns.tags.name" :placeholder="localization.info.addTagPlaceholder" class="flow-list__flow-run-tags">
-              <template #empty-message>
-                <span class="flow-list__flow-run-tags--empty">{{ localization.info.filterByFlowRunTags }}</span>
+        <div class="flow-list__header-container">
+          <div class="flow-list__header">
+            <div class="flow-list__header-start">
+              <template v-if="selected.length == 0">
+                <span v-if="!!flowsCount && !!deploymentsCount" class="flow-list__results-count">
+                  <ResultsCount :label="localization.info.flow" :count="flowsCount" />
+                  {{ localization.info.with }}
+                  <ResultsCount :label="localization.info.deployment" :count="deploymentsCount" />
+                </span>
               </template>
-            </p-tags-input>
+
+              <template v-else-if="selected.length">
+                <SelectedCount :count="selected.length" />
+                <FlowsDeleteButton size="xs" :selected="selected" @delete="deleteFlows" />
+              </template>
+            </div>
+
+            <div class="flow-list__header-end">
+              <SearchInput v-model="search" :placeholder="localization.info.searchByFlowName" :label="localization.info.searchByFlowName" />
+              <p-select v-model="filter.sort" :options="flowSortOptions" />
+              <p-button icon="ChevronDoubleDownIcon" @click="headerExpanded = !headerExpanded" />
+            </div>
           </div>
+
+          <template v-if="headerExpanded">
+            <p-content class="flow-list__header-content">
+              <p-label :label="localization.info.tags">
+                <p-tags-input v-model="filter.flowRuns.tags.name" :placeholder="localization.info.addTagPlaceholder" class="flow-list__flow-run-tags">
+                  <template #empty-message>
+                    <span class="flow-list__flow-run-tags--empty">{{ localization.info.filterByFlowRunTags }}</span>
+                  </template>
+                </p-tags-input>
+              </p-label>
+
+              <p-label :label="localization.info.scheduleActive">
+                <p-select v-model="scheduleActive" :options="scheduleActiveOptions" />
+              </p-label>
+            </p-content>
+          </template>
         </div>
       </template>
 
@@ -64,6 +78,7 @@
 <script lang="ts" setup>
   import { useDebouncedRef } from '@prefecthq/vue-compositions'
   import { computed, ref } from 'vue'
+  import { isNullish } from '..'
   import { FlowListItem, FlowsDeleteButton, ResultsCount, SearchInput, SelectedCount } from '@/components'
   import { useDeploymentsCount, useFlows, useFlowsCount, useFlowsFilterFromRoute } from '@/compositions'
   import { localization } from '@/localization'
@@ -80,6 +95,15 @@
   }>()
 
   const DEFAULT_LIMIT = 40
+
+  const headerExpanded = ref(true)
+
+  const scheduleActive = ref(null)
+  const scheduleActiveOptions = [
+    { label: localization.info.all, value: null },
+    { label: localization.info.active, value: true },
+    { label: localization.info.inactive, value: false },
+  ]
 
   const search = ref<string>('')
   const searchDebounced = useDebouncedRef(search, 800)
@@ -98,6 +122,10 @@
     flows: {
       ...props.filter?.flows,
       nameLike: searchDebounced,
+    },
+    deployments: {
+      ...props.filter?.deployments,
+      isScheduleActive: isNullish(scheduleActive.value) ? undefined : scheduleActive.value,
     },
     offset,
     limit: DEFAULT_LIMIT,
@@ -144,6 +172,10 @@
 <style>
 .flow-list {
   --virtual-scroller-item-gap: theme('spacing.6')
+}
+
+.flow-list__header-container { @apply
+  w-full
 }
 
 .flow-list__header-start { @apply
