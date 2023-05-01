@@ -1,6 +1,6 @@
 <template>
   <div class="flow-list">
-    <p-layout-table sticky>
+    <p-layout-table>
       <template #header>
         <div class="flow-list__header-container">
           <div class="flow-list__header">
@@ -22,13 +22,13 @@
             <div class="flow-list__header-end">
               <SearchInput v-model="search" :placeholder="localization.info.searchByFlowName" :label="localization.info.searchByFlowName" />
               <p-select v-model="filter.sort" :options="flowSortOptions" />
-              <p-button icon="ChevronDoubleDownIcon" @click="headerExpanded = !headerExpanded" />
+              <p-button icon="AdjustmentsVerticalIcon" inset @click="headerExpanded = !headerExpanded" />
             </div>
           </div>
 
           <template v-if="headerExpanded">
-            <p-divider class="flow-list__divider" />
             <FlowsFilterGroup />
+            <p-divider class="flow-list__divider" />
           </template>
         </div>
       </template>
@@ -66,13 +66,12 @@
 
 <script lang="ts" setup>
   import { useDebouncedRef } from '@prefecthq/vue-compositions'
-  import { computed, ref } from 'vue'
+  import { computed, ref, watchEffect } from 'vue'
   import { FlowListItem, FlowsDeleteButton, ResultsCount, SearchInput, SelectedCount, FlowsFilterGroup } from '@/components'
   import { useDeploymentsCount, useFlows, useFlowsCount, useFlowsFilterFromRoute } from '@/compositions'
   import { localization } from '@/localization'
   import { FlowsFilter } from '@/models/Filters'
   import { flowSortOptions } from '@/types/SortOptionTypes'
-  import { isNullish } from '@/utilities'
 
   const props = defineProps<{
     filter?: FlowsFilter,
@@ -86,13 +85,6 @@
   const DEFAULT_LIMIT = 40
 
   const headerExpanded = ref(true)
-
-  const scheduleActive = ref(null)
-  const scheduleActiveOptions = [
-    { label: localization.info.all, value: null },
-    { label: localization.info.active, value: true },
-    { label: localization.info.inactive, value: false },
-  ]
 
   const search = ref<string>('')
   const searchDebounced = useDebouncedRef(search, 800)
@@ -114,10 +106,13 @@
     },
     deployments: {
       ...props.filter?.deployments,
-      isScheduleActive: isNullish(scheduleActive.value) ? undefined : scheduleActive.value,
     },
     offset,
     limit: DEFAULT_LIMIT,
+  })
+
+  watchEffect(() => filter, () => {
+    console.log('hello')
   })
 
   const countsFilter = computed(() => {
@@ -179,6 +174,7 @@
   sm:items-center
   sm:flex-row
   grow
+  mb-4
 }
 
 .flow-list__header-end { @apply
@@ -196,6 +192,6 @@
 }
 
 .flow-list__divider { @apply
-  my-4
+  mt-4
 }
 </style>

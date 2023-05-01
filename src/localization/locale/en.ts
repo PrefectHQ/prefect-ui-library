@@ -99,6 +99,8 @@ export const en = {
     updateWorkQueue: 'Work queue updated',
   },
   info: {
+    deploymentName: 'Deployment name',
+    searchByDeploymentName: 'Search by deployment name',
     workPools: 'Work Pools',
     all: 'All',
     active: 'Active',

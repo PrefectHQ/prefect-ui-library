@@ -1,6 +1,12 @@
 <template>
   <div class="flows-filter-group">
     <div class="flows-filter-group__row">
+      <p-label :label="localization.info.deploymentName">
+        <SearchInput v-model="deploymentNameLike" :placeholder="localization.info.searchByDeploymentName" :label="localization.info.searchByDeploymentName" />
+      </p-label>
+    </div>
+
+    <div class="flows-filter-group__row">
       <p-label :label="localization.info.scheduleActive">
         <p-select v-model="scheduleActive" :options="scheduleActiveOptions" />
       </p-label>
@@ -30,9 +36,8 @@
   import { media, PLabel } from '@prefecthq/prefect-design'
   import { useDebouncedRef } from '@prefecthq/vue-compositions'
   import { computed, ref } from 'vue'
+  import { SearchInput, StateNameSelect, WorkPoolCombobox } from '@/components'
   import DateRangeInputWithFlowRunHistory from '@/components/DateRangeInputWithFlowRunHistory.vue'
-  import StateNameSelect from '@/components/StateNameSelect.vue'
-  import WorkPoolCombobox from '@/components/WorkPoolCombobox.vue'
   import { useFlowsFilterFromRoute } from '@/compositions/filters'
   import { localization } from '@/localization'
   import { isNullish } from '@/utilities'
@@ -48,14 +53,12 @@
     { label: localization.info.inactive, value: false },
   ]
 
-
   const { filter } = useFlowsFilterFromRoute({
     deployments: {
-      nameLike: deploymentNameLikeDebounced,
+      nameLike: deploymentNameLikeDebounced.value,
       isScheduleActive: isNullish(scheduleActive.value) ? undefined : scheduleActive.value,
     },
   })
-
 
   const range = computed<[Date, Date]>({
     get() {
