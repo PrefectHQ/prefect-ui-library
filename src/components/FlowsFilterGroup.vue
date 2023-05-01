@@ -50,7 +50,7 @@
 
 
   const deploymentNameLike = ref<string>()
-  const deploymentNameLikeDebounced = useDebouncedRef(deploymentNameLike, 1200)
+  const deploymentNameLikeDebounced = useDebouncedRef(deploymentNameLike, 800)
 
   const scheduleActive = ref(null)
   const scheduleActiveOptions = [
