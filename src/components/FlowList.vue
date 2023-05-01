@@ -21,7 +21,7 @@
 
             <div class="flow-list__header-end">
               <SearchInput v-model="search" :placeholder="localization.info.searchByFlowName" :label="localization.info.searchByFlowName" />
-              <p-select v-model="filter.sort" :options="flowSortOptions" />
+              <p-select v-model="routeFilter.sort" :options="flowSortOptions" />
               <p-button icon="AdjustmentsVerticalIcon" :class="classes.filterButton" inset @click="headerExpanded = !headerExpanded" />
             </div>
           </div>
