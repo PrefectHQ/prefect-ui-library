@@ -78,13 +78,14 @@
 </template>
 
 <script lang="ts" setup>
-  import { useDebouncedRef } from '@prefecthq/vue-compositions'
+  import { NumberRouteParam, useDebouncedRef, useRouteQueryParam } from '@prefecthq/vue-compositions'
   import { computed, ref } from 'vue'
   import { FlowListItem, FlowsDeleteButton, ResultsCount, SearchInput, SelectedCount, FlowsFilterGroup } from '@/components'
   import { useDeploymentsCount, useFlows, useFlowsCount, useFlowsFilterFromRoute } from '@/compositions'
   import { localization } from '@/localization'
   import { FlowsFilter } from '@/models/Filters'
   import { flowSortOptions } from '@/types/SortOptionTypes'
+  import { uniqueValueWatcher } from '@/utilities/reactivity'
 
   const props = defineProps<{
     filter?: FlowsFilter,
@@ -98,44 +99,37 @@
   const DEFAULT_LIMIT = 40
 
   const headerExpanded = ref(false)
+  const selected = ref<string[]>([])
 
   const search = ref<string>('')
   const searchDebounced = useDebouncedRef(search, 800)
 
-  const page = ref(1)
-  const offset = computed({
-    get: () => (page.value - 1) * DEFAULT_LIMIT,
-    set: (value: number) => {
-      page.value = Math.ceil(value / DEFAULT_LIMIT) + 1
-    },
+  const page = useRouteQueryParam<number>('page', NumberRouteParam, 1)
+  const offset = computed(() => {
+    return (page.value - 1) * DEFAULT_LIMIT
   })
   const pages = computed(() => Math.ceil((flowsCount.value ?? DEFAULT_LIMIT) / DEFAULT_LIMIT))
 
-  const { filter, isDefaultFilter, isCustomFilter, clear } = useFlowsFilterFromRoute({
+  const { filter: routeFilter, isDefaultFilter, isCustomFilter, clear } = useFlowsFilterFromRoute({
     ...props.filter,
     flows: {
       ...props.filter?.flows,
       nameLike: searchDebounced,
     },
-    offset,
-    limit: DEFAULT_LIMIT,
   })
+  uniqueValueWatcher(routeFilter, () => page.value = 1)
 
-  const countsFilter = computed(() => {
+  const filter = computed(() => {
     return {
-      ...filter,
-      flows: {
-        ...props.filter?.flows,
-        nameLike: searchDebounced.value,
-      },
+      ...routeFilter,
+      limit: DEFAULT_LIMIT,
+      offset: offset.value,
     }
   })
 
-  const selected = ref<string[]>([])
-
   const { subscription: flowsSubscription, flows } = useFlows(filter)
-  const { subscription: flowsCountSubscription, count: flowsCount } = useFlowsCount(countsFilter)
-  const { count: deploymentsCount } = useDeploymentsCount(countsFilter)
+  const { subscription: flowsCountSubscription, count: flowsCount } = useFlowsCount(filter)
+  const { count: deploymentsCount } = useDeploymentsCount(filter)
 
   function refresh(): void {
     flowsSubscription.refresh()
