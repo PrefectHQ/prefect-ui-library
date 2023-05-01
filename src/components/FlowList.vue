@@ -27,23 +27,8 @@
           </div>
 
           <template v-if="headerExpanded">
-            <p-content class="flow-list__header-content">
-              <p-label :label="localization.info.tags">
-                <p-tags-input v-model="filter.flowRuns.tags.name" :placeholder="localization.info.addTagPlaceholder" class="flow-list__flow-run-tags">
-                  <template #empty-message>
-                    <span class="flow-list__flow-run-tags--empty">{{ localization.info.filterByFlowRunTags }}</span>
-                  </template>
-                </p-tags-input>
-              </p-label>
-
-              <p-label :label="localization.info.scheduleActive">
-                <p-select v-model="scheduleActive" :options="scheduleActiveOptions" />
-              </p-label>
-
-              <p-label :label="localization.info.lastFlowRunState">
-                <StateNameSelect v-model:selected="filter.flowRuns.state.name" :empty-message="localization.info.all" multiple />
-              </p-label>
-            </p-content>
+            <p-divider class="flow-list__divider" />
+            <FlowsFilterGroup />
           </template>
         </div>
       </template>
@@ -82,7 +67,7 @@
 <script lang="ts" setup>
   import { useDebouncedRef } from '@prefecthq/vue-compositions'
   import { computed, ref } from 'vue'
-  import { FlowListItem, FlowsDeleteButton, ResultsCount, SearchInput, SelectedCount, StateNameSelect } from '@/components'
+  import { FlowListItem, FlowsDeleteButton, ResultsCount, SearchInput, SelectedCount, FlowsFilterGroup } from '@/components'
   import { useDeploymentsCount, useFlows, useFlowsCount, useFlowsFilterFromRoute } from '@/compositions'
   import { localization } from '@/localization'
   import { FlowsFilter } from '@/models/Filters'
@@ -205,16 +190,12 @@
   gap-2
 }
 
-.flow-list__flow-run-tags { @apply
-  w-64
-}
-
-.flow-list__flow-run-tags--empty { @apply
-  text-foreground-50
-}
-
 .flow-list__results-count { @apply
   text-foreground-300
   text-base
+}
+
+.flow-list__divider { @apply
+  my-4
 }
 </style>
