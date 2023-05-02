@@ -20,15 +20,18 @@
       </p-label>
     </div>
 
-    <div class="flows-filter-group__row">
-      <p-label :label="localization.info.lastFlowRunState">
-        <StateNameSelect v-model:selected="filter.flowRuns.state.name" disabled :empty-message="localization.info.all" multiple />
-      </p-label>
+    <!-- These filters aren't quite right yet - working with the API get the proper ones stood up -->
+    <template v-if="false">
+      <div class="flows-filter-group__row">
+        <p-label :label="localization.info.lastFlowRunState">
+          <StateNameSelect v-model:selected="filter.flowRuns.state.name" disabled :empty-message="localization.info.all" multiple />
+        </p-label>
 
-      <p-label :label="media.hover ? localization.info.lastFlowRunStart : ''">
-        <DateRangeInputWithFlowRunHistory v-model:range="range" />
-      </p-label>
-    </div>
+        <p-label :label="media.hover ? localization.info.lastFlowRunStart : ''">
+          <DateRangeInputWithFlowRunHistory v-model:range="range" />
+        </p-label>
+      </div>
+    </template>
 
     <div class="flows-filter-group__row">
       <p-button size="sm" secondary :disabled="isDefaultFilter" @click="clear">
