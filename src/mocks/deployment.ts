@@ -20,6 +20,7 @@ export const randomDeployment: MockFunction<Deployment, [Partial<Deployment>?]> 
     isScheduleActive: schedule ? this.create('boolean') : false,
     parameters: this.create('parameters', [{}, schema]),
     parameterOpenApiSchema: schema,
+    rawParameters: this.create('parameters', [{}, schema]),
     rawSchema: schema,
     tags: this.createMany('noun', this.create('number', [0, 5])),
     manifestPath: this.create('id'),
