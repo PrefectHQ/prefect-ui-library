@@ -171,7 +171,7 @@
 
   const classes = computed(() => ({
     filterButton: {
-      'flow-list__filter-button--filter-active': !isDefaultFilter.value,
+      'flow-list__filter-button--filter-active': isCustomFilter.value,
       'flow-list__filter-button--active': headerExpanded.value,
     },
   }))
