@@ -59,18 +59,18 @@
           Parameters
         </h3>
 
-        <template v-if="hasParameters">
-          <p-tabs v-model="tab" :tabs="tabs">
-            <template #form>
-              <SchemaFormFields property="parameters" :schema="parameterOpenApiSchema" />
-            </template>
+        <p-button-group v-model="parametersInput" :options="parametersInputOptions" size="sm" />
 
-            <template #json>
-              <p-label :label="localization.info.parameters" :state="jsonParametersState" :message="jsonParametersErrorMessage">
-                <p-code-input v-model="jsonParameters" lang="json" :min-lines="3" show-line-numbers />
-              </p-label>
-            </template>
-          </p-tabs>
+        <template v-if="hasParameters">
+          <template v-if="parametersInput === 'form'">
+            <SchemaFormFields property="parameters" :schema="parameterOpenApiSchema" />
+          </template>
+
+          <template v-else>
+            <p-label :state="jsonParametersState" :message="jsonParametersErrorMessage">
+              <p-code-input v-model="jsonParameters" lang="json" :min-lines="3" show-line-numbers />
+            </p-label>
+          </template>
         </template>
 
         <template v-else>
@@ -110,22 +110,22 @@
 
 <script lang="ts" setup>
   import { useValidation } from '@prefecthq/vue-compositions'
+  import { merge } from 'lodash'
   import { useField } from 'vee-validate'
   import { computed, ref } from 'vue'
   import { ScheduleFieldset, WorkPoolCombobox, SchemaFormFields, WorkPoolQueueCombobox, JsonInput } from '@/components'
-  import { useTabs } from '@/compositions'
   import { useForm } from '@/compositions/useForm'
   import { localization } from '@/localization'
   import { Deployment, DeploymentUpdate, DeploymentEdit, Schedule } from '@/models'
   import { getSchemaDefaultValues, mapper } from '@/services'
-  import { stringify, isJson, fieldRules, stringifyUnknownJson, merge } from '@/utilities'
+  import { stringify, isJson, fieldRules, stringifyUnknownJson, parseUnknownJson, isRecord } from '@/utilities'
 
   const props = defineProps<{
     deployment: Deployment,
   }>()
 
-  const tabs = [{ value: 'form', label: 'Form' }, { value: 'json', label: 'JSON' }]
-  const { tab } = useTabs(tabs)
+  const parametersInputOptions = [{ value: 'form', label: 'Form' }, { value: 'json', label: 'JSON' }]
+  const parametersInput = ref<'form' | 'json'>('form')
 
   const hasParameters = computed(() => {
     return Object.keys(props.deployment.parameterOpenApiSchema.properties ?? {}).length > 0
@@ -175,10 +175,7 @@
   const { value: tags } = useField<string[] | null>('tags')
   const { value: infrastructureOverrides, meta: overrideState, errorMessage: overrideErrorMessage } = useField<string>('infrastructureOverrides', rules.infrastructureOverrides)
 
-  console.log('deployment props', merge(getSchemaDefaultValues(parameterOpenApiSchema.value), props.deployment.parameters))
-
-
-  const jsonParameters = ref(stringifyUnknownJson(merge(getSchemaDefaultValues(parameterOpenApiSchema.value), props.deployment.parameters)))
+  const jsonParameters = ref(stringifyUnknownJson(merge(getSchemaDefaultValues(parameterOpenApiSchema.value), props.deployment.rawParameters)))
   const { error: jsonParametersErrorMessage, state: jsonParametersState } = useValidation(jsonParameters, localization.info.parameters, rules.jsonParameters)
 
   const emit = defineEmits<{
@@ -187,13 +184,19 @@
   }>()
 
   const submit = handleSubmit((values) => {
-    console.log(values)
+    if (parametersInput.value == 'json') {
+      const parsed = parseUnknownJson(jsonParameters.value)
+      if (isRecord(parsed)) {
+        values.parameters = parsed
+      }
+    }
 
     const deploymentUpdate: DeploymentUpdate = {
       ...values,
       infrastructureOverrides: JSON.parse(infrastructureOverrides.value),
     }
-    // emit('submit', deploymentUpdate)
+
+    emit('submit', deploymentUpdate)
   })
 
   const cancel = (): void => {
