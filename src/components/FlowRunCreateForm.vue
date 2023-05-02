@@ -160,7 +160,7 @@
   const { value: stateMessage } = useField<string>('state.message')
 
   const jsonParameters = ref(stringifyUnknownJson(rawParameters.value))
-  const { error: jsonParametersErrorMessage, state: jsonParametersState } = useValidation(jsonParameters, localization.info.parameters, rules.jsonParameters)
+  const { error: jsonParametersErrorMessage, state: jsonParametersState, validate: validateJsonParameters } = useValidation(jsonParameters, localization.info.parameters, rules.jsonParameters)
 
   const adjustedStart = computed(() => zonedTimeToUtc(start.value, timezone.value))
   const whenOptions: ButtonGroupOption[] = [{ label: 'Now', value: 'now' }, { label: 'Later', value: 'later' }]
@@ -173,7 +173,7 @@
   const deploymentTags = computed(() => props.deployment.tags?.map((tag) => ({ label: tag, value: tag, disabled: true })))
 
   const cancel = (): void => emit('cancel')
-  const submit = handleSubmit((values): void => {
+  const submit = handleSubmit(async (values): Promise<void> => {
     const resolvedValues: DeploymentFlowRunCreate = { ...values }
 
     if (when.value == 'now' && resolvedValues.state?.stateDetails?.scheduledTime) {
@@ -187,6 +187,12 @@
     if (overrideParameters.value == 'default') {
       delete resolvedValues.parameters
     } else if (overrideParameters.value == 'json') {
+      const valid = await validateJsonParameters()
+
+      if (!valid) {
+        return
+      }
+
       const parsed = parseUnknownJson(jsonParameters.value)
       if (isRecord(parsed)) {
         resolvedValues.parameters = parsed

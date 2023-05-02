@@ -176,15 +176,21 @@
   const { value: infrastructureOverrides, meta: overrideState, errorMessage: overrideErrorMessage } = useField<string>('infrastructureOverrides', rules.infrastructureOverrides)
 
   const jsonParameters = ref(stringifyUnknownJson(merge(getSchemaDefaultValues(parameterOpenApiSchema.value), props.deployment.rawParameters)))
-  const { error: jsonParametersErrorMessage, state: jsonParametersState } = useValidation(jsonParameters, localization.info.parameters, rules.jsonParameters)
+  const { error: jsonParametersErrorMessage, state: jsonParametersState, validate: validateJsonParameters } = useValidation(jsonParameters, localization.info.parameters, rules.jsonParameters)
 
   const emit = defineEmits<{
     (event: 'submit', value: DeploymentUpdate): void,
     (event: 'cancel'): void,
   }>()
 
-  const submit = handleSubmit((values) => {
+  const submit = handleSubmit(async (values): Promise<void> => {
     if (parametersInput.value == 'json') {
+      const valid = await validateJsonParameters()
+
+      if (!valid) {
+        return
+      }
+
       const parsed = parseUnknownJson(jsonParameters.value)
       if (isRecord(parsed)) {
         values.parameters = parsed
