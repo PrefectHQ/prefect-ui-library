@@ -68,6 +68,12 @@
         <template v-if="overrideParameters == 'custom'">
           <SchemaFormFields property="parameters" :schema="deployment.parameterOpenApiSchema" />
         </template>
+
+        <template v-else-if="overrideParameters == 'json'">
+          <p-label :state="jsonParametersState" :message="jsonParametersErrorMessage">
+            <p-code-input v-model="jsonParameters" lang="json" :min-lines="3" show-line-numbers />
+          </p-label>
+        </template>
       </template>
     </p-content>
 
@@ -84,15 +90,19 @@
 
 <script lang="ts" setup>
   import { PButton, ButtonGroupOption } from '@prefecthq/prefect-design'
+  import { useValidation } from '@prefecthq/vue-compositions'
   import { zonedTimeToUtc } from 'date-fns-tz'
+  import { merge } from 'lodash'
   import { useField } from 'vee-validate'
   import { computed, ref } from 'vue'
+  import { isJson, localization } from '..'
   import DateInput from '@/components/DateInput.vue'
   import SchemaFormFields from '@/components/SchemaFormFields.vue'
   import TimezoneSelect from '@/components/TimezoneSelect.vue'
   import { useForm } from '@/compositions/useForm'
   import { Deployment, DeploymentFlowRunCreate } from '@/models'
-  import { mocker } from '@/services'
+  import { getSchemaDefaultValues, mapper, mocker } from '@/services'
+  import { isRecord, parseUnknownJson, stringifyUnknownJson } from '@/utilities'
   import { fieldRules, isRequiredIf } from '@/utilities/validation'
 
   const props = defineProps<{
@@ -115,10 +125,18 @@
 
   const rules = {
     start: fieldRules('Start date', isRequiredIf(() => when.value === 'later')),
+    jsonParameters: fieldRules('Parameters', isJson),
   }
 
   const parameters = computed(() => {
     return { ...props.deployment.parameters, ...props.parameters }
+  })
+
+  const rawParameters = computed(() => {
+    const schemaDefaults = getSchemaDefaultValues(props.deployment.parameterOpenApiSchema)
+    const unmapped = mapper.map('SchemaValues', { schema: props.deployment.parameterOpenApiSchema, values: parameters.value }, 'SchemaValuesRequest')
+
+    return merge(schemaDefaults, unmapped)
   })
 
   const { handleSubmit } = useForm<DeploymentFlowRunCreate>({
@@ -133,6 +151,7 @@
     },
   })
 
+
   const { value: start, meta: startState, errorMessage: startErrorMessage } = useField<Date>('state.stateDetails.scheduledTime', rules.start)
   const { value: tags } = useField<string[]>('tags')
   const { value: retries } = useField<number | null>('empiricalPolicy.retries')
@@ -140,12 +159,15 @@
   const { value: name } = useField<string>('name')
   const { value: stateMessage } = useField<string>('state.message')
 
+  const jsonParameters = ref(stringifyUnknownJson(rawParameters.value))
+  const { error: jsonParametersErrorMessage, state: jsonParametersState } = useValidation(jsonParameters, localization.info.parameters, rules.jsonParameters)
+
   const adjustedStart = computed(() => zonedTimeToUtc(start.value, timezone.value))
   const whenOptions: ButtonGroupOption[] = [{ label: 'Now', value: 'now' }, { label: 'Later', value: 'later' }]
   const when = ref<'now' | 'later'>('now')
 
-  const overrideParametersOptions: ButtonGroupOption[] = [{ label: 'Default', value: 'default' }, { label: 'Custom', value: 'custom' }]
-  const overrideParameters = ref<'default' | 'custom'>(props.parameters ? 'custom' : 'default')
+  const overrideParametersOptions: ButtonGroupOption[] = [{ label: 'Default', value: 'default' }, { label: 'Custom', value: 'custom' }, { label: 'JSON', value: 'json' }]
+  const overrideParameters = ref<'default' | 'custom' | 'json'>(props.parameters ? 'custom' : 'default')
 
   const timezone = ref('UTC')
   const deploymentTags = computed(() => props.deployment.tags?.map((tag) => ({ label: tag, value: tag, disabled: true })))
@@ -164,6 +186,11 @@
 
     if (overrideParameters.value == 'default') {
       delete resolvedValues.parameters
+    } else if (overrideParameters.value == 'json') {
+      const parsed = parseUnknownJson(jsonParameters.value)
+      if (isRecord(parsed)) {
+        resolvedValues.parameters = parsed
+      }
     }
 
     emit('submit', resolvedValues)
