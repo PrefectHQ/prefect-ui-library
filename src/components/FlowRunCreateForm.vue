@@ -66,7 +66,7 @@
         <p-button-group v-model="overrideParameters" :options="overrideParametersOptions" size="sm" />
 
         <template v-if="overrideParameters == 'custom'">
-          <SchemaFormFields property="parameters" :schema="parameterOpenApiSchema" />
+          <SDeploymentParameters v-model="parameters" :deployment="deployment" />
         </template>
       </template>
     </p-content>
@@ -87,12 +87,11 @@
   import { zonedTimeToUtc } from 'date-fns-tz'
   import { useField } from 'vee-validate'
   import { computed, ref } from 'vue'
-  import DateInput from '@/components/DateInput.vue'
-  import SchemaFormFields from '@/components/SchemaFormFields.vue'
-  import TimezoneSelect from '@/components/TimezoneSelect.vue'
+  import { TimezoneSelect, DateInput, DeploymentParameters } from '@/components'
   import { useForm } from '@/compositions/useForm'
   import { Deployment, DeploymentFlowRunCreate } from '@/models'
-  import { mocker, mapper } from '@/services'
+  import { mocker } from '@/services'
+  import { SchemaValues } from '@/types/schemas'
   import { fieldRules, isRequiredIf } from '@/utilities/validation'
 
   const props = defineProps<{
@@ -117,20 +116,8 @@
     start: fieldRules('Start date', isRequiredIf(() => when.value === 'later')),
   }
 
-  const parameterOpenApiSchema = computed(() => {
-    const { rawSchema } = props.deployment
-
-    if (rawSchema && 'required' in rawSchema) {
-      rawSchema.required = []
-    }
-
-    return mapper.map('SchemaResponse', rawSchema ?? {}, 'Schema')
-  })
-
-  const parameters = computed(() => {
-    const values = { ...props.deployment.parameters, ...props.parameters }
-    const source = { values, schema: parameterOpenApiSchema.value }
-    return mapper.map('SchemaValuesResponse', source, 'SchemaValues')
+  const combinedParameters = computed(() => {
+    return { ...props.deployment.parameters, ...props.parameters }
   })
 
   const { handleSubmit } = useForm<DeploymentFlowRunCreate>({
@@ -140,7 +127,7 @@
       },
       tags: props.deployment.tags ?? [],
       name: generateRandomName(),
-      parameters: parameters.value,
+      parameters: combinedParameters.value,
       schema: props.deployment.parameterOpenApiSchema,
     },
   })
@@ -150,6 +137,7 @@
   const { value: retries } = useField<number | null>('empiricalPolicy.retries')
   const { value: retryDelay } = useField<number | null>('empiricalPolicy.retryDelay')
   const { value: name } = useField<string>('name')
+  const { value: parameters } = useField<SchemaValues | null>('parameters')
   const { value: stateMessage } = useField<string>('state.message')
 
   const adjustedStart = computed(() => zonedTimeToUtc(start.value, timezone.value))
