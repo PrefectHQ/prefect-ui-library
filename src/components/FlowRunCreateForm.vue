@@ -156,7 +156,7 @@
   const { value: retries } = useField<number | null>('empiricalPolicy.retries')
   const { value: retryDelay } = useField<number | null>('empiricalPolicy.retryDelay')
   const { value: name } = useField<string>('name')
-  const { value: parameters } = useField<SchemaValues | null>('parameters')
+  const { value: parameters } = useField<SchemaValues>('parameters')
   const { value: stateMessage } = useField<string>('state.message')
 
   const jsonParameters = ref(stringifyUnknownJson(rawParameters.value))
