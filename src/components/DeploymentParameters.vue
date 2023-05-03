@@ -1,16 +1,21 @@
 <template>
-  <SchemaFormFields property="parameters" :schema="deployment.parameterOpenApiSchema" />
+  <SchemaFormFieldsWithValues v-model:values="parameters" :schema="deployment.parameterOpenApiSchema" />
 </template>
 
 <script setup lang="ts">
   import { computed } from 'vue'
-  import { SchemaFormFields } from '@/components'
+  import { SchemaFormFieldsWithValues } from '@/components'
   import { Deployment } from '@/models'
   import { mapper } from '@/services'
+  import { SchemaValues } from '@/types/schemas'
 
 
   const props = defineProps<{
     deployment: Deployment,
+  }>()
+
+  const emits = defineEmits<{
+    (event: 'update:modelValue', value: SchemaValues): void,
   }>()
 
   const parameterOpenApiSchema = computed(() => {
@@ -23,8 +28,13 @@
     return mapper.map('SchemaResponse', rawSchema ?? {}, 'Schema')
   })
 
-  const parameters = computed(() => {
-    const source = { values: props.deployment.parameters, schema: parameterOpenApiSchema.value }
-    return mapper.map('SchemaValuesResponse', source, 'SchemaValues')
+  const parameters = computed({
+    get() {
+      const source = { values: props.deployment.parameters, schema: parameterOpenApiSchema.value }
+      return mapper.map('SchemaValuesResponse', source, 'SchemaValues')
+    },
+    set(value) {
+      emits('update:modelValue', value)
+    },
   })
 </script>
