@@ -122,6 +122,7 @@ export { default as FlowRunTimelineSelectionPanel } from './FlowRunTimelineSelec
 export { default as FlowRunTimelineSubFlowRunDetails } from './FlowRunTimelineSubFlowRunDetails.vue'
 export { default as FlowRunTimelineTaskDetails } from './FlowRunTimelineTaskDetails.vue'
 export { default as FlowsDeleteButton } from './FlowsDeleteButton.vue'
+export { default as FlowsFilterGroup } from './FlowsFilterGroup.vue'
 export { default as FlowsPageEmptyState } from './FlowsPageEmptyState.vue'
 export { default as FlowsTable } from './FlowsTable.vue'
 export { default as FourZeroFour } from './FourZeroFour.vue'
