@@ -60,7 +60,7 @@
         </h3>
 
         <template v-if="hasParameters">
-          <SchemaFormFields property="parameters" :schema="parameterOpenApiSchema" />
+          <DeploymentParameters property="parameters" :deployment="$props.deployment" />
         </template>
 
         <template v-else>

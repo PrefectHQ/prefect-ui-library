@@ -66,7 +66,7 @@
         <p-button-group v-model="overrideParameters" :options="overrideParametersOptions" size="sm" />
 
         <template v-if="overrideParameters == 'custom'">
-          <SchemaFormFields property="parameters" :schema="deployment.parameterOpenApiSchema" />
+          <SchemaFormFields property="parameters" :schema="parameterOpenApiSchema" />
         </template>
       </template>
     </p-content>
@@ -92,7 +92,7 @@
   import TimezoneSelect from '@/components/TimezoneSelect.vue'
   import { useForm } from '@/compositions/useForm'
   import { Deployment, DeploymentFlowRunCreate } from '@/models'
-  import { mocker } from '@/services'
+  import { mocker, mapper } from '@/services'
   import { fieldRules, isRequiredIf } from '@/utilities/validation'
 
   const props = defineProps<{
@@ -117,8 +117,20 @@
     start: fieldRules('Start date', isRequiredIf(() => when.value === 'later')),
   }
 
+  const parameterOpenApiSchema = computed(() => {
+    const { rawSchema } = props.deployment
+
+    if (rawSchema && 'required' in rawSchema) {
+      rawSchema.required = []
+    }
+
+    return mapper.map('SchemaResponse', rawSchema ?? {}, 'Schema')
+  })
+
   const parameters = computed(() => {
-    return { ...props.deployment.parameters, ...props.parameters }
+    const values = { ...props.deployment.parameters, ...props.parameters }
+    const source = { values, schema: parameterOpenApiSchema.value }
+    return mapper.map('SchemaValuesResponse', source, 'SchemaValues')
   })
 
   const { handleSubmit } = useForm<DeploymentFlowRunCreate>({
