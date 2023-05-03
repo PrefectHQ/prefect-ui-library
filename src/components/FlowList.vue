@@ -1,33 +1,57 @@
 <template>
   <div class="flow-list">
-    <p-layout-table sticky>
+    <p-layout-table :sticky="media.lg">
       <template #header>
-        <div class="flow-list__header">
-          <div class="flow-list__header-start">
-            <template v-if="selected.length == 0">
-              <span v-if="!!flowsCount && !!deploymentsCount" class="flow-list__results-count">
-                <ResultsCount :label="localization.info.flow" :count="flowsCount" />
-                {{ localization.info.with }}
-                <ResultsCount :label="localization.info.deployment" :count="deploymentsCount" />
-              </span>
-            </template>
-
-            <template v-else-if="selected.length">
-              <SelectedCount :count="selected.length" />
-              <FlowsDeleteButton size="xs" :selected="selected" @delete="deleteFlows" />
-            </template>
-          </div>
-
-          <div class="flow-list__header-end">
-            <SearchInput v-model="search" :placeholder="localization.info.searchByFlowName" :label="localization.info.searchByFlowName" />
-            <p-select v-model="filter.sort" :options="flowSortOptions" />
-            <p-tags-input v-model="filter.flowRuns.tags.name" :placeholder="localization.info.addTagPlaceholder" class="flow-list__flow-run-tags">
-              <template #empty-message>
-                <span class="flow-list__flow-run-tags--empty">{{ localization.info.filterByFlowRunTags }}</span>
+        <div class="flow-list__header-container">
+          <div class="flow-list__header">
+            <div class="flow-list__header-start">
+              <template v-if="selected.length == 0">
+                <span v-if="!!flowsCount && !!deploymentsCount" class="flow-list__results-count">
+                  <ResultsCount :label="localization.info.flow" :count="flowsCount" />
+                  {{ localization.info.with }}
+                  <ResultsCount :label="localization.info.deployment" :count="deploymentsCount" />
+                </span>
               </template>
-            </p-tags-input>
+
+              <template v-else-if="selected.length">
+                <SelectedCount :count="selected.length" />
+                <FlowsDeleteButton size="xs" :selected="selected" @delete="deleteFlows" />
+              </template>
+            </div>
+
+            <div class="flow-list__header-end">
+              <SearchInput v-model="search" :placeholder="localization.info.searchByFlowName" :label="localization.info.searchByFlowName" />
+              <p-select v-model="routeFilter.sort" :options="flowSortOptions" />
+              <p-button icon="AdjustmentsVerticalIcon" :class="classes.filterButton" inset @click="headerExpanded = !headerExpanded" />
+            </div>
           </div>
+
+          <template v-if="headerExpanded">
+            <FlowsFilterGroup />
+            <p-divider class="flow-list__divider" />
+          </template>
+          <template v-else-if="isCustomFilter">
+            <div class="flow-list__filters-active">
+              ({{ localization.info.filtersActive }})
+              <p-button size="sm" secondary :disabled="isDefaultFilter" @click="clear">
+                {{ localization.info.resetFilters }}
+              </p-button>
+            </div>
+          </template>
         </div>
+      </template>
+
+      <template v-if="flowsCount === 0">
+        <p-empty-results>
+          <template #message>
+            {{ localization.info.noFlowsOrDeploymentsMatchFilter }}
+          </template>
+          <template v-if="isCustomFilter" #actions>
+            <p-button size="sm" secondary @click="clear">
+              {{ localization.info.resetFilters }}
+            </p-button>
+          </template>
+        </p-empty-results>
       </template>
 
       <p-virtual-scroller
@@ -62,13 +86,15 @@
 </template>
 
 <script lang="ts" setup>
-  import { useDebouncedRef } from '@prefecthq/vue-compositions'
+  import { media } from '@prefecthq/prefect-design'
+  import { NumberRouteParam, useDebouncedRef, useRouteQueryParam } from '@prefecthq/vue-compositions'
   import { computed, ref } from 'vue'
-  import { FlowListItem, FlowsDeleteButton, ResultsCount, SearchInput, SelectedCount } from '@/components'
+  import { FlowListItem, FlowsDeleteButton, ResultsCount, SearchInput, SelectedCount, FlowsFilterGroup } from '@/components'
   import { useDeploymentsCount, useFlows, useFlowsCount, useFlowsFilterFromRoute } from '@/compositions'
   import { localization } from '@/localization'
   import { FlowsFilter } from '@/models/Filters'
   import { flowSortOptions } from '@/types/SortOptionTypes'
+  import { uniqueValueWatcher } from '@/utilities/reactivity'
 
   const props = defineProps<{
     filter?: FlowsFilter,
@@ -81,43 +107,46 @@
 
   const DEFAULT_LIMIT = 40
 
-  const search = ref<string>('')
-  const searchDebounced = useDebouncedRef(search, 800)
+  const headerExpanded = ref(false)
+  const selected = ref<string[]>([])
 
-  const page = ref(1)
-  const offset = computed({
-    get: () => (page.value - 1) * DEFAULT_LIMIT,
-    set: (value: number) => {
-      page.value = Math.ceil(value / DEFAULT_LIMIT) + 1
+  const search = ref<string>()
+  const searchDebounced = useDebouncedRef(search, 800)
+  const nameLike = computed({
+    get() {
+      return searchDebounced.value === '' ? undefined : searchDebounced.value
     },
+    set(value: string | undefined) {
+      searchDebounced.value = value
+    },
+  })
+
+  const page = useRouteQueryParam<number>('page', NumberRouteParam, 1)
+  const offset = computed(() => {
+    return (page.value - 1) * DEFAULT_LIMIT
   })
   const pages = computed(() => Math.ceil((flowsCount.value ?? DEFAULT_LIMIT) / DEFAULT_LIMIT))
 
-  const { filter } = useFlowsFilterFromRoute({
+  const { filter: routeFilter, isDefaultFilter, isCustomFilter, clear } = useFlowsFilterFromRoute({
     ...props.filter,
     flows: {
       ...props.filter?.flows,
-      nameLike: searchDebounced,
+      nameLike,
     },
-    offset,
-    limit: DEFAULT_LIMIT,
   })
+  uniqueValueWatcher(routeFilter, () => page.value = 1)
 
-  const countsFilter = computed(() => {
+  const filter = computed(() => {
     return {
-      ...props.filter,
-      flows: {
-        ...props.filter?.flows,
-        nameLike: searchDebounced.value,
-      },
+      ...routeFilter,
+      limit: DEFAULT_LIMIT,
+      offset: offset.value,
     }
   })
 
-  const selected = ref<string[]>([])
-
   const { subscription: flowsSubscription, flows } = useFlows(filter)
-  const { subscription: flowsCountSubscription, count: flowsCount } = useFlowsCount(countsFilter)
-  const { count: deploymentsCount } = useDeploymentsCount(countsFilter)
+  const { subscription: flowsCountSubscription, count: flowsCount } = useFlowsCount(filter)
+  const { count: deploymentsCount } = useDeploymentsCount(filter)
 
   function refresh(): void {
     flowsSubscription.refresh()
@@ -139,11 +168,22 @@
     refresh()
     selected.value = []
   }
+
+  const classes = computed(() => ({
+    filterButton: {
+      'flow-list__filter-button--filter-active': isCustomFilter.value,
+      'flow-list__filter-button--active': headerExpanded.value,
+    },
+  }))
 </script>
 
 <style>
 .flow-list {
   --virtual-scroller-item-gap: theme('spacing.6')
+}
+
+.flow-list__header-container { @apply
+  w-full
 }
 
 .flow-list__header-start { @apply
@@ -158,6 +198,7 @@
   sm:items-center
   sm:flex-row
   grow
+  mb-4
 }
 
 .flow-list__header-end { @apply
@@ -169,16 +210,26 @@
   gap-2
 }
 
-.flow-list__flow-run-tags { @apply
-  w-64
-}
-
-.flow-list__flow-run-tags--empty { @apply
-  text-foreground-50
-}
-
 .flow-list__results-count { @apply
   text-foreground-300
   text-base
+}
+
+.flow-list__divider { @apply
+  mt-4
+}
+
+.flow-list__filters-active { @apply
+  text-foreground-200
+  text-sm
+  flex
+  gap-2
+  justify-end
+  items-center
+}
+
+.flow-list__filter-button--filter-active .p-icon,
+.flow-list__filter-button--active .p-icon { @apply
+  text-primary
 }
 </style>

@@ -26,7 +26,7 @@
   }>()
 
   const emits = defineEmits<{
-    (event: 'update:selected', value: string | string[] | null): void,
+    (event: 'update:selected', value: string | string[] | null | undefined): void,
   }>()
 
   const multiple = computed(() => Array.isArray(props.selected))
