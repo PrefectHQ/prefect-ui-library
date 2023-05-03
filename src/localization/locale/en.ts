@@ -102,6 +102,7 @@ export const en = {
     with: 'with',
     artifact: 'Artifact',
     artifacts: 'Artifacts',
+    parameters: 'Parameters',
     addTagPlaceholder: 'Add tag (press enter to submit)',
     descriptionPlaceholder: 'Add a description (supports Markdown)',
     parentFlowRun: 'Parent Flow Run',

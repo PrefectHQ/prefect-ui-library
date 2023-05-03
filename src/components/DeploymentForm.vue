@@ -59,8 +59,18 @@
           Parameters
         </h3>
 
+        <p-button-group v-model="parametersInput" :options="parametersInputOptions" size="sm" />
+
         <template v-if="hasParameters">
-          <DeploymentParameters v-model="parameters" :deployment="deployment" />
+          <template v-if="parametersInput === 'form'">
+            <DeploymentParameters v-model="parameters" :deployment="deployment" />
+          </template>
+
+          <template v-else>
+            <p-label :state="jsonParametersState" :message="jsonParametersErrorMessage">
+              <p-code-input v-model="jsonParameters" lang="json" :min-lines="3" show-line-numbers />
+            </p-label>
+          </template>
         </template>
 
         <template v-else>
@@ -99,40 +109,30 @@
 </template>
 
 <script lang="ts" setup>
+  import { useValidation } from '@prefecthq/vue-compositions'
+  import { merge } from 'lodash'
   import { useField } from 'vee-validate'
-  import { computed } from 'vue'
+  import { computed, ref } from 'vue'
   import { ScheduleFieldset, WorkPoolCombobox, DeploymentParameters, WorkPoolQueueCombobox, JsonInput } from '@/components'
   import { useForm } from '@/compositions/useForm'
   import { localization } from '@/localization'
   import { Deployment, DeploymentUpdate, DeploymentEdit, Schedule } from '@/models'
-  // import { mapper } from '@/services'
+  import { getSchemaDefaultValues } from '@/services'
   import { SchemaValues } from '@/types/schemas'
-  import { stringify, isJson, fieldRules } from '@/utilities'
+  import { stringify, isJson, fieldRules, stringifyUnknownJson, parseUnknownJson, isRecord } from '@/utilities'
 
   const props = defineProps<{
     deployment: Deployment,
   }>()
+
+  const parametersInputOptions = [{ value: 'form', label: 'Form' }, { value: 'json', label: 'JSON' }]
+  const parametersInput = ref<'form' | 'json'>('form')
 
   const hasParameters = computed(() => {
     return Object.keys(props.deployment.parameterOpenApiSchema.properties ?? {}).length > 0
   })
 
   const name = computed(() => props.deployment.name)
-
-  // const parameterOpenApiSchema = computed(() => {
-  //   const { rawSchema } = props.deployment
-
-  //   if (rawSchema && 'required' in rawSchema) {
-  //     rawSchema.required = []
-  //   }
-
-  //   return mapper.map('SchemaResponse', rawSchema ?? {}, 'Schema')
-  // })
-
-  // const parameters = computed(() => {
-  //   const source = { values: props.deployment.parameters, schema: parameterOpenApiSchema.value }
-  //   return mapper.map('SchemaValuesResponse', source, 'SchemaValues')
-  // })
 
   const { handleSubmit, isSubmitting } = useForm<DeploymentEdit>({
     initialValues: {
@@ -150,6 +150,7 @@
 
   const rules = {
     infrastructureOverrides: fieldRules('Infrastructure overrides', isJson),
+    jsonParameters: fieldRules('Parameters', isJson),
   }
 
   const { value: description, meta: descriptionState } = useField<string>('description')
@@ -161,16 +162,33 @@
   const { value: tags } = useField<string[] | null>('tags')
   const { value: infrastructureOverrides, meta: overrideState, errorMessage: overrideErrorMessage } = useField<string>('infrastructureOverrides', rules.infrastructureOverrides)
 
+  const jsonParameters = ref(stringifyUnknownJson(merge(getSchemaDefaultValues(parameterOpenApiSchema.value), props.deployment.rawParameters)))
+  const { error: jsonParametersErrorMessage, state: jsonParametersState, validate: validateJsonParameters } = useValidation(jsonParameters, localization.info.parameters, rules.jsonParameters)
+
   const emit = defineEmits<{
     (event: 'submit', value: DeploymentUpdate): void,
     (event: 'cancel'): void,
   }>()
 
-  const submit = handleSubmit((values) => {
+  const submit = handleSubmit(async (values): Promise<void> => {
+    if (parametersInput.value == 'json') {
+      const valid = await validateJsonParameters()
+
+      if (!valid) {
+        return
+      }
+
+      const parsed = parseUnknownJson(jsonParameters.value)
+      if (isRecord(parsed)) {
+        values.parameters = parsed
+      }
+    }
+
     const deploymentUpdate: DeploymentUpdate = {
       ...values,
       infrastructureOverrides: JSON.parse(infrastructureOverrides.value),
     }
+
     emit('submit', deploymentUpdate)
   })
 

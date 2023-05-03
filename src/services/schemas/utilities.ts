@@ -1,4 +1,3 @@
-import { de } from 'date-fns/locale'
 import { JsonInput } from '@/components'
 import { isRecord } from '@/index'
 import { isBlockDocumentReferenceValue, isBlockDocumentValue } from '@/models'

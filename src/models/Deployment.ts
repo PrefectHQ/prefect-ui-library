@@ -21,6 +21,7 @@ export interface IDeployment {
   tags: string[] | null,
   manifestPath: string | null,
   path: string | null,
+  rawParameters: SchemaValues,
   rawSchema: SchemaResponse | null,
   entrypoint: string | null,
   storageDocumentId: string | null,
@@ -44,6 +45,7 @@ export class Deployment implements IDeployment {
   public isScheduleActive: boolean
   public parameters: SchemaValues
   public parameterOpenApiSchema: Schema
+  public readonly rawParameters: SchemaValues
   public readonly rawSchema: SchemaResponse | null
   public tags: string[] | null
   public manifestPath: string | null
@@ -71,6 +73,7 @@ export class Deployment implements IDeployment {
     this.parameterOpenApiSchema = deployment.parameterOpenApiSchema
     this.tags = deployment.tags
     this.manifestPath = deployment.manifestPath
+    this.rawParameters = deployment.rawParameters
     this.rawSchema = deployment.rawSchema
     this.path = deployment.path
     this.entrypoint = deployment.entrypoint

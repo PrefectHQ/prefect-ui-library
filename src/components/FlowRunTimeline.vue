@@ -210,11 +210,8 @@
     }, 0)
   }
 
-  const isRunning = computed(() => {
-    return props.flowRun.state?.name.toLowerCase() === 'running'
-  })
-
   const api = useWorkspaceApi()
+  const isRunning = computed(() => isRunningStateType(props.flowRun.stateType))
   const interval = isRunningStateType(props.flowRun.stateType) ? { interval: 5000 } : undefined
 
   const graphSubscription = useSubscription(
