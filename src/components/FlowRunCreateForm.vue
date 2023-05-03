@@ -66,7 +66,7 @@
         <p-button-group v-model="overrideParameters" :options="overrideParametersOptions" size="sm" />
 
         <template v-if="overrideParameters == 'custom'">
-          <SDeploymentParameters v-model="parameters" :deployment="deployment" />
+          <DeploymentParameters v-model="parameters" :deployment="deployment" />
         </template>
       </template>
     </p-content>
