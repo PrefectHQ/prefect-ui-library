@@ -61,7 +61,7 @@
 
 
         <template v-if="hasParameters">
-          <DeploymentParameters v-model="parameters" :deployment="deployment" />
+          <DeploymentParameters v-model="parameters" v-model:invalid="isInvalid" :deployment="deployment" />
         </template>
         <template v-else>
           <em>This deployment's flow has no parameters</em>
@@ -100,7 +100,7 @@
 
 <script lang="ts" setup>
   import { useField } from 'vee-validate'
-  import { computed } from 'vue'
+  import { computed, ref } from 'vue'
   import { ScheduleFieldset, WorkPoolCombobox, DeploymentParameters, WorkPoolQueueCombobox, JsonInput } from '@/components'
   import { useForm } from '@/compositions/useForm'
   import { localization } from '@/localization'
@@ -146,6 +146,7 @@
   const { value: tags } = useField<string[] | null>('tags')
   const { value: infrastructureOverrides, meta: overrideState, errorMessage: overrideErrorMessage } = useField<string>('infrastructureOverrides', rules.infrastructureOverrides)
 
+  const isInvalid = ref(false)
 
   const emit = defineEmits<{
     (event: 'submit', value: DeploymentUpdate): void,
@@ -153,12 +154,13 @@
   }>()
 
   const submit = handleSubmit((values): void => {
-
+    if (isInvalid.value) {
+      return
+    }
     const deploymentUpdate: DeploymentUpdate = {
       ...values,
       infrastructureOverrides: JSON.parse(infrastructureOverrides.value),
     }
-
     emit('submit', deploymentUpdate)
   })
 

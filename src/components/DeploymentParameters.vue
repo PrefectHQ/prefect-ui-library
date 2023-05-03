@@ -30,6 +30,7 @@
 
   const emits = defineEmits<{
     (event: 'update:modelValue', value: SchemaValues): void,
+    (event: 'update:isInvalid', value: boolean): void,
   }>()
 
   const parametersInputOptions = [{ value: 'form', label: 'Form' }, { value: 'json', label: 'JSON' }]
@@ -45,7 +46,6 @@
     return mapper.map('SchemaResponse', rawSchema ?? {}, 'Schema')
   })
   const rules = {
-    infrastructureOverrides: fieldRules('Infrastructure overrides', isJson),
     jsonParameters: fieldRules('Parameters', isJson),
   }
   const jsonParameters = ref(stringifyUnknownJson(merge(getSchemaDefaultValues(parameterOpenApiSchema.value), props.deployment.rawParameters)))
@@ -58,16 +58,19 @@
     },
     async set(value) {
       if (parametersInput.value === 'form') {
+        emits('update:isInvalid', false)
         emits('update:modelValue', value)
       } else {
         const valid = await validateJsonParameters()
         if (!valid) {
-          return
+          emits('update:isInvalid', true)
         }
         const parsed = parseUnknownJson(value)
         if (isRecord(parsed)) {
+          emits('update:isInvalid', false)
           emits('update:modelValue', parsed)
         } else {
+          emits('update:isInvalid', false)
           emits('update:modelValue', value)
         }
       }
