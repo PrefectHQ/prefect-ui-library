@@ -60,7 +60,7 @@
         </h3>
 
         <template v-if="hasParameters">
-          <DeploymentParameters property="parameters" :deployment="$props.deployment" />
+          <DeploymentParameters v-model="parameters" :deployment="deployment" />
         </template>
 
         <template v-else>
@@ -101,11 +101,12 @@
 <script lang="ts" setup>
   import { useField } from 'vee-validate'
   import { computed } from 'vue'
-  import { ScheduleFieldset, WorkPoolCombobox, SchemaFormFields, WorkPoolQueueCombobox, JsonInput } from '@/components'
+  import { ScheduleFieldset, WorkPoolCombobox, DeploymentParameters, WorkPoolQueueCombobox, JsonInput } from '@/components'
   import { useForm } from '@/compositions/useForm'
   import { localization } from '@/localization'
   import { Deployment, DeploymentUpdate, DeploymentEdit, Schedule } from '@/models'
-  import { mapper } from '@/services'
+  // import { mapper } from '@/services'
+  import { SchemaValues } from '@/types/schemas'
   import { stringify, isJson, fieldRules } from '@/utilities'
 
   const props = defineProps<{
@@ -118,25 +119,25 @@
 
   const name = computed(() => props.deployment.name)
 
-  const parameterOpenApiSchema = computed(() => {
-    const { rawSchema } = props.deployment
+  // const parameterOpenApiSchema = computed(() => {
+  //   const { rawSchema } = props.deployment
 
-    if (rawSchema && 'required' in rawSchema) {
-      rawSchema.required = []
-    }
+  //   if (rawSchema && 'required' in rawSchema) {
+  //     rawSchema.required = []
+  //   }
 
-    return mapper.map('SchemaResponse', rawSchema ?? {}, 'Schema')
-  })
+  //   return mapper.map('SchemaResponse', rawSchema ?? {}, 'Schema')
+  // })
 
-  const parameters = computed(() => {
-    const source = { values: props.deployment.parameters, schema: parameterOpenApiSchema.value }
-    return mapper.map('SchemaValuesResponse', source, 'SchemaValues')
-  })
+  // const parameters = computed(() => {
+  //   const source = { values: props.deployment.parameters, schema: parameterOpenApiSchema.value }
+  //   return mapper.map('SchemaValuesResponse', source, 'SchemaValues')
+  // })
 
   const { handleSubmit, isSubmitting } = useForm<DeploymentEdit>({
     initialValues: {
       description: props.deployment.description,
-      parameters: parameters.value,
+      parameters: props.deployment.parameters,
       schedule: props.deployment.schedule,
       isScheduleActive: props.deployment.isScheduleActive,
       workPoolName: props.deployment.workPoolName,
@@ -153,6 +154,7 @@
 
   const { value: description, meta: descriptionState } = useField<string>('description')
   const { value: schedule } = useField<Schedule | null>('schedule')
+  const { value: parameters } = useField<SchemaValues | null>('parameters')
   const { value: isScheduleActive } = useField<boolean>('isScheduleActive')
   const { value: workPoolName } = useField<string | null>('workPoolName')
   const { value: workQueueName } = useField<string | null>('workQueueName')
