@@ -117,7 +117,7 @@
   import { useForm } from '@/compositions/useForm'
   import { localization } from '@/localization'
   import { Deployment, DeploymentUpdate, DeploymentEdit, Schedule } from '@/models'
-  import { getSchemaDefaultValues } from '@/services'
+  import { getSchemaDefaultValues, mapper } from '@/services'
   import { SchemaValues } from '@/types/schemas'
   import { stringify, isJson, fieldRules, stringifyUnknownJson, parseUnknownJson, isRecord } from '@/utilities'
 
@@ -162,6 +162,15 @@
   const { value: tags } = useField<string[] | null>('tags')
   const { value: infrastructureOverrides, meta: overrideState, errorMessage: overrideErrorMessage } = useField<string>('infrastructureOverrides', rules.infrastructureOverrides)
 
+  const parameterOpenApiSchema = computed(() => {
+    const { rawSchema } = props.deployment
+
+    if (rawSchema && 'required' in rawSchema) {
+      rawSchema.required = []
+    }
+
+    return mapper.map('SchemaResponse', rawSchema ?? {}, 'Schema')
+  })
   const jsonParameters = ref(stringifyUnknownJson(merge(getSchemaDefaultValues(parameterOpenApiSchema.value), props.deployment.rawParameters)))
   const { error: jsonParametersErrorMessage, state: jsonParametersState, validate: validateJsonParameters } = useValidation(jsonParameters, localization.info.parameters, rules.jsonParameters)
 
