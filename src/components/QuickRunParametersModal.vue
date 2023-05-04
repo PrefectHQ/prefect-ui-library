@@ -2,7 +2,7 @@
   <p-modal v-model:showModal="internalShowModal" class="parameters-modal" title="Run Deployment">
     <p-form @submit="submit">
       <p-content>
-        <SchemaFormFields property="parameters" :schema="deployment.parameterOpenApiSchema" />
+        <DeploymentParameters v-model="parameters" :deployment="deployment" />
       </p-content>
     </p-form>
 
@@ -18,14 +18,15 @@
 
 <script lang="ts" setup>
   import { PButton, showToast } from '@prefecthq/prefect-design'
+  import { useField } from 'vee-validate'
   import { computed, h } from 'vue'
   import { useRouter } from 'vue-router'
-  import SchemaFormFields from '@/components/SchemaFormFields.vue'
-  import ToastFlowRunCreate from '@/components/ToastFlowRunCreate.vue'
+  import { ToastFlowRunCreate, DeploymentParameters } from '@/components'
   import { useWorkspaceApi, useWorkspaceRoutes } from '@/compositions'
   import { useForm } from '@/compositions/useForm'
   import { localization } from '@/localization'
   import { Deployment, DeploymentFlowRunCreate } from '@/models'
+  import { SchemaValues } from '@/types/schemas'
 
   const props = defineProps<{
     showModal: boolean,
@@ -67,6 +68,8 @@
     await createDeploymentFlowRun(props.deployment.id, resolvedValues)
     internalShowModal.value = false
   })
+
+  const { value: parameters } = useField<SchemaValues | null>('parameters')
 
   async function createDeploymentFlowRun(deploymentId: string, value: DeploymentFlowRunCreate): Promise<void> {
     try {

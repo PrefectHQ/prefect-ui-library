@@ -66,7 +66,7 @@
         <p-button-group v-model="overrideParameters" :options="overrideParametersOptions" size="sm" />
 
         <template v-if="overrideParameters == 'custom'">
-          <SchemaFormFields property="parameters" :schema="deployment.parameterOpenApiSchema" />
+          <DeploymentParameters v-model="parameters" :deployment="deployment" />
         </template>
 
         <template v-else-if="overrideParameters == 'json'">
@@ -96,12 +96,11 @@
   import { useField } from 'vee-validate'
   import { computed, ref } from 'vue'
   import { isJson, localization } from '..'
-  import DateInput from '@/components/DateInput.vue'
-  import SchemaFormFields from '@/components/SchemaFormFields.vue'
-  import TimezoneSelect from '@/components/TimezoneSelect.vue'
+  import { TimezoneSelect, DateInput, DeploymentParameters } from '@/components'
   import { useForm } from '@/compositions/useForm'
   import { Deployment, DeploymentFlowRunCreate } from '@/models'
   import { getSchemaDefaultValues, mapper, mocker } from '@/services'
+  import { SchemaValues } from '@/types/schemas'
   import { isRecord, parseUnknownJson, stringifyUnknownJson } from '@/utilities'
   import { fieldRules, isRequiredIf } from '@/utilities/validation'
 
@@ -128,7 +127,7 @@
     jsonParameters: fieldRules('Parameters', isJson),
   }
 
-  const parameters = computed(() => {
+  const combinedParameters = computed(() => {
     return { ...props.deployment.parameters, ...props.parameters }
   })
 
@@ -146,7 +145,7 @@
       },
       tags: props.deployment.tags ?? [],
       name: generateRandomName(),
-      parameters: parameters.value,
+      parameters: combinedParameters.value,
       schema: props.deployment.parameterOpenApiSchema,
     },
   })
@@ -157,6 +156,7 @@
   const { value: retries } = useField<number | null>('empiricalPolicy.retries')
   const { value: retryDelay } = useField<number | null>('empiricalPolicy.retryDelay')
   const { value: name } = useField<string>('name')
+  const { value: parameters } = useField<SchemaValues>('parameters')
   const { value: stateMessage } = useField<string>('state.message')
 
   const jsonParameters = ref(stringifyUnknownJson(rawParameters.value))

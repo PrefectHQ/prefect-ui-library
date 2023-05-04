@@ -63,7 +63,7 @@
 
         <template v-if="hasParameters">
           <template v-if="parametersInput === 'form'">
-            <SchemaFormFields property="parameters" :schema="parameterOpenApiSchema" />
+            <DeploymentParameters v-model="parameters" :deployment="deployment" />
           </template>
 
           <template v-else>
@@ -113,11 +113,12 @@
   import { merge } from 'lodash'
   import { useField } from 'vee-validate'
   import { computed, ref } from 'vue'
-  import { ScheduleFieldset, WorkPoolCombobox, SchemaFormFields, WorkPoolQueueCombobox, JsonInput } from '@/components'
+  import { ScheduleFieldset, WorkPoolCombobox, DeploymentParameters, WorkPoolQueueCombobox, JsonInput } from '@/components'
   import { useForm } from '@/compositions/useForm'
   import { localization } from '@/localization'
   import { Deployment, DeploymentUpdate, DeploymentEdit, Schedule } from '@/models'
   import { getSchemaDefaultValues, mapper } from '@/services'
+  import { SchemaValues } from '@/types/schemas'
   import { stringify, isJson, fieldRules, stringifyUnknownJson, parseUnknownJson, isRecord } from '@/utilities'
 
   const props = defineProps<{
@@ -133,25 +134,10 @@
 
   const name = computed(() => props.deployment.name)
 
-  const parameterOpenApiSchema = computed(() => {
-    const { rawSchema } = props.deployment
-
-    if (rawSchema && 'required' in rawSchema) {
-      rawSchema.required = []
-    }
-
-    return mapper.map('SchemaResponse', rawSchema ?? {}, 'Schema')
-  })
-
-  const parameters = computed(() => {
-    const source = { values: props.deployment.parameters, schema: parameterOpenApiSchema.value }
-    return mapper.map('SchemaValuesResponse', source, 'SchemaValues')
-  })
-
   const { handleSubmit, isSubmitting } = useForm<DeploymentEdit>({
     initialValues: {
       description: props.deployment.description,
-      parameters: parameters.value,
+      parameters: props.deployment.parameters,
       schedule: props.deployment.schedule,
       isScheduleActive: props.deployment.isScheduleActive,
       workPoolName: props.deployment.workPoolName,
@@ -169,12 +155,22 @@
 
   const { value: description, meta: descriptionState } = useField<string>('description')
   const { value: schedule } = useField<Schedule | null>('schedule')
+  const { value: parameters } = useField<SchemaValues | null>('parameters')
   const { value: isScheduleActive } = useField<boolean>('isScheduleActive')
   const { value: workPoolName } = useField<string | null>('workPoolName')
   const { value: workQueueName } = useField<string | null>('workQueueName')
   const { value: tags } = useField<string[] | null>('tags')
   const { value: infrastructureOverrides, meta: overrideState, errorMessage: overrideErrorMessage } = useField<string>('infrastructureOverrides', rules.infrastructureOverrides)
 
+  const parameterOpenApiSchema = computed(() => {
+    const { rawSchema } = props.deployment
+
+    if (rawSchema && 'required' in rawSchema) {
+      rawSchema.required = []
+    }
+
+    return mapper.map('SchemaResponse', rawSchema ?? {}, 'Schema')
+  })
   const jsonParameters = ref(stringifyUnknownJson(merge(getSchemaDefaultValues(parameterOpenApiSchema.value), props.deployment.rawParameters)))
   const { error: jsonParametersErrorMessage, state: jsonParametersState, validate: validateJsonParameters } = useValidation(jsonParameters, localization.info.parameters, rules.jsonParameters)
 
