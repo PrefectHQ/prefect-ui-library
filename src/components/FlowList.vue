@@ -66,7 +66,7 @@
               v-model:selected="selected"
               :value="item.id"
               :flow="item"
-              :filter="props.filter"
+              :filter="routeFilter"
               :disabled="disabled"
               class="flow-list__flow"
               @update="handleUpdate"
