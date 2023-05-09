@@ -1,6 +1,6 @@
 <template>
   <div
-    v-if="graphData.length > 0"
+    v-if="graphData.size > 0"
     class="flow-run-timeline"
     :class="classes.root"
     tabindex="0"
@@ -43,7 +43,7 @@
           ref="timelineGraph"
           v-model:visible-date-range="visibleDateRange"
           class="flow-run-timeline__graph"
-          :graph-data="graphData"
+          :data="graphData"
           :layout="layout"
           :hide-edges="hideEdges"
           :is-running="isRunning"
@@ -66,14 +66,14 @@
     FormatDateFns,
     HSL,
     ThemeStyleOverrides,
-    GraphTimelineNode,
     TimelineNodesLayoutOptions,
     TimelineThemeOptions,
     ExpandedSubNodes,
     NodeSelectionEvent,
-    TimelineVisibleDateRange
+    TimelineVisibleDateRange,
+    TimelineData
   } from '@prefecthq/graphs'
-  import { useColorTheme } from '@prefecthq/prefect-design'
+  import { TimelineItem, useColorTheme } from '@prefecthq/prefect-design'
   import { UseSubscription, useDebouncedRef, useSubscription } from '@prefecthq/vue-compositions'
   import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
   import { FlowRunTimelineOptions } from '@/components'
@@ -126,6 +126,7 @@
   const expandedSubFlowRuns = ref<ExpandedSubNodes<{
     subscription: UseSubscription<WorkspaceFlowRunsApi['getFlowRunsTimeline']>,
   }>>(new Map())
+
   const formatDateFns: FormatDateFns = {
     timeBySeconds: formatTimeNumeric,
     timeByMinutes: formatTimeShortNumeric,
@@ -219,15 +220,15 @@
     interval,
   )
 
-  const graphData = computed(() => graphSubscription.response ?? [])
+  const graphData = computed(() => graphSubscription.response ?? new Map())
 
   const unwatchInitialData = watch(graphData, (value) => {
-    if (value.length > 0) {
-      if (value.length > defaultOptionThresholds.nearestParentLayout) {
+    if (value.size > 0) {
+      if (value.size > defaultOptionThresholds.nearestParentLayout) {
         layout.value = 'waterfall'
       }
 
-      if (value.length > defaultOptionThresholds.hideEdges) {
+      if (value.size > defaultOptionThresholds.hideEdges) {
         hideEdges.value = true
       }
 
@@ -281,7 +282,7 @@
       interval,
     )
 
-    const data = computed(() => subscription.response ?? [])
+    const data = computed<TimelineData>(() => subscription.response ?? new Map())
 
     expandedSubFlowRuns.value.set(id, {
       data,
@@ -289,19 +290,31 @@
     })
   }
 
-  const getSubFlowRunIds = (data: GraphTimelineNode[]): string[] => {
-    return data
-      .map((node) => node.subFlowRunId)
-      .filter((subFlowRunId): subFlowRunId is string => subFlowRunId !== undefined)
+  const getSubFlowRunIds = (data: TimelineData): string[] => {
+    const subflowRunIds: string[] = []
+
+    data.forEach(item => {
+      if (item.subflowRunId) {
+        subflowRunIds.push(item.subflowRunId)
+      }
+    })
+
+    return subflowRunIds
   }
   const rootSubFlowRunIds = computed<string[]>(() => {
     return getSubFlowRunIds(graphData.value)
   })
+
   const expandedSubFlowRunIds = computed<string[]>(() => {
-    return getSubFlowRunIds(
-      Array.from(expandedSubFlowRuns.value.values())
-        .flatMap(subFlowRun => 'value' in subFlowRun.data ? subFlowRun.data.value : subFlowRun.data),
-    )
+    const expanded: string[] = []
+
+    expandedSubFlowRuns.value.forEach(value => {
+      const data = 'value' in value.data ? value.data.value : value.data
+
+      expanded.push(...data.keys())
+    })
+
+    return expanded
   })
 
   const subFlowRunsFilter = computed<FlowRunsFilter | null>(() => {
@@ -371,7 +384,7 @@
 
   const theme = computed<TimelineThemeOptions>(() => {
     return {
-      node: (node: GraphTimelineNode) => {
+      node: (node: TimelineItem) => {
         const { type } = mapStateNameToStateType(node.state)
         const { color, background } = getStateTypeStyles(type)
         const isDark = colorThemeValue.value === 'dark'
