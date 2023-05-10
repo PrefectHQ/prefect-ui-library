@@ -11,13 +11,13 @@
             <div v-if="logLevel > 0">
               No logs match your filter criteria
             </div>
-            <div v-else-if="flowRun.stateType == 'scheduled'">
+            <div v-else-if="flowRun.stateType == 'scheduled'" class="flow-run-logs__empty-text">
               This run is scheduled and hasn't generated logs
             </div>
-            <div v-else-if="flowRun.stateType == 'running'">
+            <div v-else-if="flowRun.stateType == 'running'" class="flow-run-logs__empty-text">
               Waiting for logs...
             </div>
-            <div v-else>
+            <div v-else class="flow-run-logs__empty-text">
               This run didn't generate logs
             </div>
           </template>
@@ -79,5 +79,9 @@
   items-center
   mb-4
   gap-2
+}
+
+.flow-run-logs__empty-text { @apply
+  text-white
 }
 </style>
