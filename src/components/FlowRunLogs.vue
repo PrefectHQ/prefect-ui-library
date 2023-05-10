@@ -18,7 +18,7 @@
               Waiting for logs...
             </div>
             <div v-else>
-              This run didn't generate Logs
+              This run didn't generate logs
             </div>
           </template>
 
