@@ -14,7 +14,7 @@
             <div v-else-if="flowRun.stateType == 'scheduled'" class="flow-run-logs__empty-text">
               This run is scheduled and hasn't generated logs
             </div>
-            <div v-else-if="flowRun.stateType == 'running'" class="flow-run-logs__empty-text">
+            <div v-else-if="!isTerminalStateType(flowRun.stateType)" class="flow-run-logs__empty-text">
               Waiting for logs...
             </div>
             <div v-else class="flow-run-logs__empty-text">
@@ -41,6 +41,7 @@
   import { useWorkspaceApi } from '@/compositions'
   import { usePaginatedSubscription } from '@/compositions/usePaginatedSubscription'
   import { useStatePolling } from '@/compositions/useStatePolling'
+  import { isTerminalStateType } from '@/models'
   import { LogsFilter } from '@/models/Filters'
   import { FlowRun } from '@/models/FlowRun'
   import { Log, LogLevel } from '@/models/Log'
