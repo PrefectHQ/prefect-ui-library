@@ -2,6 +2,7 @@ import { CreatedOrUpdatedBy } from '@/models/CreatedOrUpdatedBy'
 import { EmpiricalPolicy } from '@/models/EmpiricalPolicy'
 import { State } from '@/models/State'
 import { StateType } from '@/models/StateType'
+import { StorageItem } from '@/services/storage/StorageItem'
 import { PrefectStateNames } from '@/types'
 import { SchemaValues } from '@/types/schemas'
 import { secondsToApproximateString } from '@/utilities/seconds'
@@ -40,7 +41,7 @@ export interface IFlowRun {
   workPoolQueueName: string | null,
 }
 
-export class FlowRun implements IFlowRun {
+export class FlowRun extends StorageItem implements IFlowRun {
   public readonly id: string
   public readonly flowId: string
   public readonly deploymentId: string | null
@@ -74,6 +75,8 @@ export class FlowRun implements IFlowRun {
   public workPoolQueueName: string | null
 
   public constructor(flowRun: IFlowRun) {
+    super()
+
     this.id = flowRun.id
     this.deploymentId = flowRun.deploymentId
     this.flowId = flowRun.flowId
