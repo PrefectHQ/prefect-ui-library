@@ -78,7 +78,7 @@ export class Storage<T extends StorageItem> {
 
     const value = computed(() => {
       if (idRef.value) {
-        this.store.get(idRef.value)
+        return this.store.get(idRef.value)
       }
 
       return undefined
