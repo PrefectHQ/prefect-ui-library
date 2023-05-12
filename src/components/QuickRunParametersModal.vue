@@ -69,7 +69,7 @@
     internalShowModal.value = false
   })
 
-  const { value: parameters } = useField<SchemaValues | null>('parameters')
+  const { value: parameters } = useField<SchemaValues>('parameters')
 
   async function createDeploymentFlowRun(deploymentId: string, value: DeploymentFlowRunCreate): Promise<void> {
     try {
