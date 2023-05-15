@@ -1,22 +1,21 @@
 import { useSubscriptionWithDependencies } from '@prefecthq/vue-compositions'
-import { computed, onUnmounted, Ref, ref, unref } from 'vue'
+import { computed, Ref, ref, watch } from 'vue'
 import { useCan } from '@/compositions/useCan'
 import { useWorkspaceApi } from '@/compositions/useWorkspaceApi'
+import { FlowRunsFilter } from '@/models/Filters'
 import { WorkspaceFlowRunsApi } from '@/services'
-import { flowRunStorage } from '@/services/storage'
+import { flowRunStorage, useFlowRunStorage } from '@/services/storage'
 import { UseEntitySubscription } from '@/types/useEntitySubscription'
 
 export type UseFlowRuns = UseEntitySubscription<WorkspaceFlowRunsApi['getFlowRuns'], 'flowRuns'>
 
-export function useFlowRuns(flowRunIds: string[] | Ref<string[] | null | undefined>): UseFlowRuns {
+export function useFlowRuns(filter: FlowRunsFilter | Ref<FlowRunsFilter | null | undefined>): UseFlowRuns {
   const api = useWorkspaceApi()
   const can = useCan()
-  const flowRunIdsRef = ref(flowRunIds)
+  const filterRef = ref(filter)
 
-  const parameters = computed<Parameters<typeof api.flowRuns.getFlowRuns> | null>(() => {
-    const ids = unref(flowRunIdsRef)
-
-    if (!ids || ids.length === 0) {
+  const parameters = computed<[FlowRunsFilter] | null>(() => {
+    if (!filterRef.value) {
       return null
     }
 
@@ -24,23 +23,28 @@ export function useFlowRuns(flowRunIds: string[] | Ref<string[] | null | undefin
       return null
     }
 
-    return [
-      {
-        flowRuns: {
-          id: ids,
-        },
-      },
-    ]
+    return [filterRef.value]
   })
 
   const subscription = useSubscriptionWithDependencies(api.flowRuns.getFlowRuns, parameters)
-  const flowRunsResponse = computed(() => subscription.response)
 
-  flowRunStorage.addAll(flowRunsResponse)
+  const storage = useFlowRunStorage()
 
-  const { value: flowRuns, unsubscribe } = flowRunStorage.subscribeAll(flowRunIds)
+  watch(() => subscription.response, response => {
+    if (response) {
+      flowRunStorage.addAll(response)
+    }
+  })
 
-  onUnmounted(() => unsubscribe())
+  const flowRuns = computed(() => {
+    if (subscription.response) {
+      const ids = subscription.response.map(flowRun => flowRun.id)
+
+      return storage.getAll(ids)
+    }
+
+    return undefined
+  })
 
   return {
     subscription,

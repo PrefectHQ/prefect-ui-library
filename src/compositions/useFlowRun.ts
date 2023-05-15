@@ -1,9 +1,9 @@
 import { useSubscriptionWithDependencies } from '@prefecthq/vue-compositions'
-import { computed, onUnmounted, Ref, ref } from 'vue'
+import { computed, Ref, ref, watch } from 'vue'
 import { useCan } from '@/compositions/useCan'
 import { useWorkspaceApi } from '@/compositions/useWorkspaceApi'
 import { WorkspaceFlowRunsApi } from '@/services'
-import { flowRunStorage } from '@/services/storage'
+import { flowRunStorage, useFlowRunStorage } from '@/services/storage'
 import { UseEntitySubscription } from '@/types/useEntitySubscription'
 
 export type UseFlowRun = UseEntitySubscription<WorkspaceFlowRunsApi['getFlowRun'], 'flowRun'>
@@ -26,13 +26,22 @@ export function useFlowRun(flowRunId: string | Ref<string | null | undefined>): 
   })
 
   const subscription = useSubscriptionWithDependencies(api.flowRuns.getFlowRun, parameters)
-  const flowRunResponse = computed(() => subscription.response)
 
-  flowRunStorage.add(flowRunResponse)
+  const storage = useFlowRunStorage()
 
-  const { value: flowRun, unsubscribe } = flowRunStorage.subscribe(flowRunId)
+  watch(() => subscription.response, response => {
+    if (response) {
+      flowRunStorage.add(response)
+    }
+  })
 
-  onUnmounted(() => unsubscribe())
+  const flowRun = computed(() => {
+    if (subscription.response) {
+      return storage.get(subscription.response.id)
+    }
+
+    return undefined
+  })
 
   return {
     subscription,
