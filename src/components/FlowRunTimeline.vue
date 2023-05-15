@@ -79,7 +79,7 @@
   import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
   import { FlowRunTimelineOptions } from '@/components'
   import { useFlowRuns, useFlows, useWorkspaceApi } from '@/compositions'
-  import { FlowRun, isRunningStateType, isTerminalStateType } from '@/models'
+  import { FlowRun, FlowRunsFilter, isRunningStateType, isTerminalStateType } from '@/models'
   import { WorkspaceFlowRunsApi } from '@/services'
   import { prefectStateNames } from '@/types'
   import { formatTimeNumeric, formatTimeShortNumeric, formatDate } from '@/utilities'
@@ -305,8 +305,13 @@
     )
   })
 
-  const allSubFlowRunIds = computed<string[]>(() => [...rootSubFlowRunIds.value, ...expandedSubFlowRunIds.value])
-  const { flowRuns: subFlowRuns } = useFlowRuns(allSubFlowRunIds)
+  const subFlowRunsFilter = computed<FlowRunsFilter>(() => ({
+    flowRuns: {
+      id: [...rootSubFlowRunIds.value, ...expandedSubFlowRunIds.value],
+    },
+  }))
+
+  const { flowRuns: subFlowRuns } = useFlowRuns(subFlowRunsFilter)
 
   const allSubFlowRunFlowIds = computed<string[]>(() => {
     return subFlowRuns.value?.map((flowRun) => flowRun.flowId) ?? []
