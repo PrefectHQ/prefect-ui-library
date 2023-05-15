@@ -76,6 +76,7 @@
   } from '@prefecthq/graphs'
   import { useColorTheme } from '@prefecthq/prefect-design'
   import { UseSubscription, useSubscription } from '@prefecthq/vue-compositions'
+  import { id } from 'date-fns/locale'
   import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
   import { FlowRunTimelineOptions } from '@/components'
   import { useFlowRuns, useFlows, useWorkspaceApi } from '@/compositions'
@@ -305,11 +306,19 @@
     )
   })
 
-  const subFlowRunsFilter = computed<FlowRunsFilter>(() => ({
-    flowRuns: {
-      id: [...rootSubFlowRunIds.value, ...expandedSubFlowRunIds.value],
-    },
-  }))
+  const subFlowRunsFilter = computed<FlowRunsFilter | null>(() => {
+    const ids = [...rootSubFlowRunIds.value, ...expandedSubFlowRunIds.value]
+
+    if (!ids.length) {
+      return null
+    }
+
+    return {
+      flowRuns: {
+        id: ids,
+      },
+    }
+  })
 
   const { flowRuns: subFlowRuns } = useFlowRuns(subFlowRunsFilter)
 
