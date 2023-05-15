@@ -43,3 +43,12 @@ export class WorkPool implements IWorkPool {
     return titleCase(this.type)
   }
 }
+
+export type WorkPoolFormValues = {
+  name?: string,
+  description?: string | null,
+  type?: string,
+  isPaused?: boolean,
+  concurrencyLimit?: number | null,
+  baseJobTemplate?: Record<string, unknown>,
+}
