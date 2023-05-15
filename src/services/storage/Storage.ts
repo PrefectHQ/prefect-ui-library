@@ -74,7 +74,7 @@ export class Storage<T extends StorageItem> {
   private isNewValue(input: T): boolean {
     const existing = this.store.get(input.id)
 
-    if (existing && existing.timestamp.getTime() > input.timestamp.getTime()) {
+    if (existing && existing.storageTimestamp.getTime() > input.storageTimestamp.getTime()) {
       return false
     }
 
