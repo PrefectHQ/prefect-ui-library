@@ -76,7 +76,6 @@
   } from '@prefecthq/graphs'
   import { useColorTheme } from '@prefecthq/prefect-design'
   import { UseSubscription, useSubscription } from '@prefecthq/vue-compositions'
-  import { id } from 'date-fns/locale'
   import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
   import { FlowRunTimelineOptions } from '@/components'
   import { useFlowRuns, useFlows, useWorkspaceApi } from '@/compositions'
