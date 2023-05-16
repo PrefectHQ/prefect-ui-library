@@ -12,6 +12,7 @@
 
   const props = defineProps<{
     deployment: Deployment,
+    modelValue: SchemaValues,
   }>()
 
   const emits = defineEmits<{
@@ -30,7 +31,7 @@
 
   const parameters = computed({
     get() {
-      const source = { values: props.deployment.parameters, schema: parameterOpenApiSchema.value }
+      const source = { values: props.modelValue, schema: parameterOpenApiSchema.value }
       return mapper.map('SchemaValuesResponse', source, 'SchemaValues')
     },
     set(value) {
@@ -38,3 +39,5 @@
     },
   })
 </script>
+
+

@@ -155,7 +155,7 @@
 
   const { value: description, meta: descriptionState } = useField<string>('description')
   const { value: schedule } = useField<Schedule | null>('schedule')
-  const { value: parameters } = useField<SchemaValues | null>('parameters')
+  const { value: parameters } = useField<SchemaValues>('parameters')
   const { value: isScheduleActive } = useField<boolean>('isScheduleActive')
   const { value: workPoolName } = useField<string | null>('workPoolName')
   const { value: workQueueName } = useField<string | null>('workQueueName')
