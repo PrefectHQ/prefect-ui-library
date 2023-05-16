@@ -1,5 +1,6 @@
 import { BaseJobTemplateRequest } from '@/models/api/WorkPoolRequest'
 import { titleCase } from '@/utilities'
+import { SelectOptionNormalized } from '@prefecthq/prefect-design'
 
 export interface IWorkPool {
   readonly id: string,
@@ -52,3 +53,5 @@ export type WorkPoolFormValues = {
   concurrencyLimit?: number | null,
   baseJobTemplate?: Record<string, unknown>,
 }
+
+export type WorkPoolTypeSelectOption = SelectOptionNormalized & { logoUrl: string, description: string }

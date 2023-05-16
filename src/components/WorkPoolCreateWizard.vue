@@ -4,19 +4,21 @@
       <WorkPoolCreateWizardStepInformation v-model:workPool="workPool" />
     </template>
     <template #work-pool-infrastructure-type>
-      <WorkPoolCreateWizardStepInfrastructureType />
+      <WorkPoolCreateWizardStepInfrastructureType v-model:workPool="workPool" :workers="availableWorkers" />
     </template>
-    <template #work-pool-base-job-template>
-      <WorkPoolCreateWizardStepBaseJobTemplate />
+    <template #work-pool-infrastructure-configuration>
+      <WorkPoolCreateWizardStepInfrastructureConfiguration v-model:workPool="workPool" :default-base-job-template="defaultBaseJobTemplate" />
     </template>
   </p-wizard>
 </template>
 
 <script lang="ts" setup>
   import { WizardStep } from '@prefecthq/prefect-design'
-  import { ref } from 'vue'
+  import { useSubscription } from '@prefecthq/vue-compositions'
+  import { computed, reactive } from 'vue'
   import { useRouter } from 'vue-router'
-  import { WorkPoolCreateWizardStepInformation, WorkPoolCreateWizardStepInfrastructureType, WorkPoolCreateWizardStepBaseJobTemplate } from '@/components'
+  import { WorkPoolCreateWizardStepInformation, WorkPoolCreateWizardStepInfrastructureType, WorkPoolCreateWizardStepInfrastructureConfiguration } from '@/components'
+  import { useWorkspaceApi } from '@/compositions'
   import { WorkPool, WorkPoolFormValues } from '@/models'
 
   const router = useRouter()
@@ -29,7 +31,7 @@
     (event: 'submit', value: WorkPoolFormValues): void,
   }>()
 
-  const workPool = ref<WorkPoolFormValues>({
+  const workPool = reactive<WorkPoolFormValues>({
     name: props.workPool?.name,
     description: props.workPool?.description,
     type: props.workPool?.type,
@@ -39,13 +41,22 @@
   })
 
   const steps: WizardStep[] = [
-    { title: 'Information', key: 'work-pool-information' },
+    { title: 'Basic Information', key: 'work-pool-information' },
     { title: 'Infrastructure Type', key: 'work-pool-infrastructure-type' },
-    { title: 'Base Job Template', key: 'work-pool-base-job-template' },
+    { title: 'Configuration', key: 'work-pool-infrastructure-configuration' },
   ]
 
+  const api = useWorkspaceApi()
+
+  const availableWorkersSubscription = useSubscription(api.collections.getWorkerCollection, [])
+  const availableWorkers = computed(() => availableWorkersSubscription.response ?? [])
+
+  const defaultBaseJobTemplate = computed(() => {
+    return availableWorkers.value.find((item) => item.type === workPool.type)?.defaultBaseJobConfiguration ?? {}
+  })
+
   function submit(): void {
-    emit('submit', workPool.value)
+    emit('submit', workPool)
   }
 
   function cancel(): void {
