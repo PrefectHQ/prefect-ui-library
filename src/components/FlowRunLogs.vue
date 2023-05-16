@@ -8,17 +8,19 @@
       <template #empty>
         <p-empty-results>
           <template #message>
-            <div v-if="logLevel > 0" class="flow-run-logs__empty-text">
-              No logs match your filter criteria
-            </div>
-            <div v-else-if="flowRun.stateType == 'scheduled'" class="flow-run-logs__empty-text">
-              This run is scheduled and hasn't generated logs
-            </div>
-            <div v-else-if="waitingForLogs" class="flow-run-logs__empty-text">
-              Waiting for logs...
-            </div>
-            <div v-else class="flow-run-logs__empty-text">
-              This run didn't generate logs
+            <div class="flow-run-logs__empty-text">
+              <div v-if="logLevel > 0">
+                No logs match your filter criteria
+              </div>
+              <div v-else-if="flowRun.stateType == 'scheduled'">
+                This run is scheduled and hasn't generated logs
+              </div>
+              <div v-else-if="waitingForLogs">
+                Waiting for logs...
+              </div>
+              <div v-else>
+                This run didn't generate logs
+              </div>
             </div>
           </template>
 
@@ -84,6 +86,6 @@
 }
 
 .flow-run-logs__empty-text { @apply
-  text-white
+  !text-white
 }
 </style>
