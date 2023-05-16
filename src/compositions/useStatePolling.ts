@@ -1,5 +1,5 @@
 import { SubscriptionOptions } from '@prefecthq/vue-compositions'
-import { ComputedRef, computed, ref, watchEffect } from 'vue'
+import { ComputedRef, computed, ref } from 'vue'
 import { MaybeRef, PrefectStateNames } from '@/types'
 
 type StateResource = {

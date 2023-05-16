@@ -1,7 +1,7 @@
 import { PNumberInput, PSelect, PTextInput } from '@prefecthq/prefect-design'
 import DateInput from '@/components/DateInput.vue'
 import JsonInput from '@/components/JsonInput.vue'
-import { isString, mapper, stringifyUnknownJson } from '@/index'
+import { isString, stringifyUnknownJson } from '@/index'
 import { InvalidSchemaValueError } from '@/models'
 import { SchemaPropertyService } from '@/services/schemas/properties/SchemaPropertyService'
 import { SchemaPropertyComponentWithProps } from '@/services/schemas/utilities'
