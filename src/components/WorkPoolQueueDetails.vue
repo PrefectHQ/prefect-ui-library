@@ -13,7 +13,7 @@
     </p-key-value>
 
     <template v-if="workQueueStatus">
-      <p-key-value label="Last Polled" :value="workQueueStatus.lastPolled ? formatDateTimeNumeric(workQueueStatus.lastPolled) : null" :alternate="alternate" />
+      <p-key-value label="Last Polled" :value="workQueueLastPolled" :alternate="alternate" />
     </template>
 
     <p-key-value label="Description" :value="workPoolQueue.description" :alternate="alternate" />
@@ -63,6 +63,7 @@
   const workPoolsSubscription = useSubscriptionWithDependencies(api.workPools.getWorkPools, workPoolArgs)
   const workPools = computed(() => workPoolsSubscription.response ?? [])
   const workPool = computed(() => workPools.value[0])
+  const workQueueLastPolled = computed(() => workQueueStatus.value?.lastPolled ? formatDateTimeNumeric(workQueueStatus.value.lastPolled) : null)
 </script>
 
 
