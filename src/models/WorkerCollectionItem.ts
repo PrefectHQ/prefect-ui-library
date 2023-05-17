@@ -8,10 +8,12 @@ export type DefaultBaseJobConfiguration = {
 export type WorkerCollectionItem = {
   defaultBaseJobConfiguration?: Record<string, unknown>,
   description?: string,
+  displayName?: string,
   documentationUrl?: string,
   installCommand?: string,
   logoUrl?: string,
   type?: string,
+  isBeta?: boolean,
 }
 
 export type WorkerColection = Record<string, WorkerCollectionItem>

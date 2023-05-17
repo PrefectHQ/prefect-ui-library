@@ -8,10 +8,12 @@ export type DefaultBaseJobConfigurationResponse = {
 export type WorkerCollectionItemResponse = {
   default_base_job_configuration?: DefaultBaseJobConfigurationResponse,
   description?: string,
+  display_name?: string,
   documentation_url?: string,
   install_command?: string,
   logo_url?: string,
   type?: string,
+  is_beta?: boolean,
 }
 
 export type WorkerCollectionResponse = Record<string, WorkerCollectionItemResponse>

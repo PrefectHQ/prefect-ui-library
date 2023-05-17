@@ -2,7 +2,6 @@
   <div>
     <h3>
       Base Job Template
-      <BetaBadge />
     </h3>
     <p-tabs :tabs="['Defaults', 'Advanced']" class="overflow-auto">
       <template #defaults>

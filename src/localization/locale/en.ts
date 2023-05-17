@@ -13,6 +13,7 @@ export const en = {
     workPools: 'https://docs.prefect.io/latest/concepts/work-pools/',
     collections: 'https://docs.prefect.io/collections/catalog/',
     resultsPersistence: 'https://docs.prefect.io/concepts/results/#persisting-results',
+    infrastructure: 'https://docs.prefect.io/latest/concepts/infrastructure/',
   },
   error: {
     activateDeployment: 'Failed to activate deployment',

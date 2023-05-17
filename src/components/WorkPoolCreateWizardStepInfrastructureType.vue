@@ -1,15 +1,15 @@
 <template>
   <p-content>
     <p-label label="Select the infrastructure you want to use to execute your flow runs" :message="error" :state="state" />
-    <template v-for="{ label, value, logoUrl, description } in options" :key="value">
+    <template v-for="{ label, value, logoUrl, description, isBeta } in options" :key="value">
       <p-card>
         <p-radio v-model="type" :value="value" :state="state" :label="label">
           <template #label>
             <div class="work-pool-create-wizard-step-infrastructure-type__infra_type_card_content_container">
-              <LogoImage :url="logoUrl" :alt="label" />
+              <LogoImage :url="logoUrl" :alt="label" size="md" class="block-type-card-preview__logo" />
               <div class="work-pool-create-wizard-step-infrastructure-type__infra_type_card_text_container">
                 <p class="work-pool-create-wizard-step-infrastructure-type__infra_type_card_type_text">
-                  {{ label }}
+                  {{ label }}<BetaBadge v-if="isBeta" class="work-pool-create-wizard-step-infrastructure-type__infra_type_card_beta_label" />
                 </p>
                 <p class="work-pool-create-wizard-step-infrastructure-type__infra_type_card_description_text">
                   {{ description }}
@@ -27,10 +27,10 @@
   import { useWizardStep } from '@prefecthq/prefect-design'
   import { usePatchRef, useValidation, useValidationObserver } from '@prefecthq/vue-compositions'
   import { computed } from 'vue'
-  import { LogoImage } from '@/components'
+  import { LogoImage, BetaBadge } from '@/components'
   import { WorkerCollectionItem } from '@/models'
   import { WorkPoolFormValues, WorkPoolTypeSelectOption } from '@/models/WorkPool'
-  import { getProcessTypeLabel } from '@/utilities'
+  import { getProcessTypeLabel, titleCase } from '@/utilities'
 
 
   const props = defineProps<{
@@ -54,15 +54,24 @@
   const type = usePatchRef(workPool, 'type')
 
   const options = computed<WorkPoolTypeSelectOption[]>(() => {
-    const options: WorkPoolTypeSelectOption[] = props.workers.map(({ type, logoUrl, description, documentationUrl }) => ({
-      label: getProcessTypeLabel(type!),
+    const options: WorkPoolTypeSelectOption[] = props.workers.map(({ type, logoUrl, description, documentationUrl, displayName, isBeta }) => ({
+      label: displayName ?? titleCase(type!),
       value: type!,
       logoUrl: logoUrl!,
       description: description!,
       documentationUrl: documentationUrl!,
+      isBeta: isBeta ?? false,
     }))
 
-    return options.sort((optionA, optionB) => optionA.label.localeCompare(optionB.label))
+    return options.sort((optionA, optionB) => {
+      if (optionA.isBeta && !optionB.isBeta) {
+        return 1
+      }
+      if (!optionA.isBeta && optionB.isBeta) {
+        return -1
+      }
+      return optionA.label.localeCompare(optionB.label)
+    })
   })
 
   const { defineValidate } = useWizardStep()
@@ -80,8 +89,10 @@
 
 <style>
 .work-pool-create-wizard-step-infrastructure-type__infra_type_card_content_container { @apply
-  flex
-  gap-2
+  grid
+  grid-flow-col
+  mx-2
+  gap-4
   items-center
 }
 
@@ -89,6 +100,10 @@
   flex
   flex-col
   gap-2
+}
+
+.work-pool-create-wizard-step-infrastructure-type__infra_type_card_beta_label { @apply
+  ml-2
 }
 
 .work-pool-create-wizard-step-infrastructure-type__infra_type_card_type_text { @apply

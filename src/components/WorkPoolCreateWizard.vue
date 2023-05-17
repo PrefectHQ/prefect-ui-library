@@ -13,32 +13,19 @@
 </template>
 
 <script lang="ts" setup>
-  import { WizardStep } from '@prefecthq/prefect-design'
+  import { WizardStep, showToast } from '@prefecthq/prefect-design'
   import { useSubscription } from '@prefecthq/vue-compositions'
-  import { computed, reactive } from 'vue'
+  import { computed, ref } from 'vue'
   import { useRouter } from 'vue-router'
   import { WorkPoolCreateWizardStepInformation, WorkPoolCreateWizardStepInfrastructureType, WorkPoolCreateWizardStepInfrastructureConfiguration } from '@/components'
-  import { useWorkspaceApi } from '@/compositions'
-  import { WorkPool, WorkPoolFormValues } from '@/models'
+  import { useWorkspaceApi, useWorkspaceRoutes } from '@/compositions'
+  import { localization } from '@/localization'
+  import { WorkPoolCreate, WorkPoolFormValues } from '@/models'
 
   const router = useRouter()
+  const routes = useWorkspaceRoutes()
 
-  const props = defineProps<{
-    workPool?: Partial<WorkPool>,
-  }>()
-
-  const emit = defineEmits<{
-    (event: 'submit', value: WorkPoolFormValues): void,
-  }>()
-
-  const workPool = reactive<WorkPoolFormValues>({
-    name: props.workPool?.name,
-    description: props.workPool?.description,
-    type: props.workPool?.type,
-    baseJobTemplate: props.workPool?.baseJobTemplate,
-    concurrencyLimit: props.workPool?.concurrencyLimit,
-    isPaused: props.workPool?.isPaused,
-  })
+  const workPool = ref<WorkPoolFormValues>({})
 
   const steps: WizardStep[] = [
     { title: 'Basic Information', key: 'work-pool-information' },
@@ -52,11 +39,31 @@
   const availableWorkers = computed(() => availableWorkersSubscription.response ?? [])
 
   const defaultBaseJobTemplate = computed(() => {
-    return availableWorkers.value.find((item) => item.type === workPool.type)?.defaultBaseJobConfiguration ?? {}
+    return availableWorkers.value.find((item) => item.type === workPool.value.type)?.defaultBaseJobConfiguration ?? {}
   })
 
-  function submit(): void {
-    emit('submit', workPool)
+  async function submit(): Promise<void> {
+    if (!workPool.value.baseJobTemplate) {
+      workPool.value.baseJobTemplate = defaultBaseJobTemplate.value
+    }
+    const values: WorkPoolCreate = {
+      ...workPool.value,
+      description: workPool.value.description ?? '',
+      concurrencyLimit: workPool.value.concurrencyLimit ?? undefined,
+      isPaused: false,
+    }
+
+    try {
+      const { name } = await api.workPools.createWorkPool(values)
+      showToast(localization.success.createWorkPool, 'success')
+
+      router.push(routes.workPool(name))
+    } catch (error) {
+      showToast(localization.error.createWorkPool, 'error')
+      console.error(error)
+    }
+
+
   }
 
   function cancel(): void {
