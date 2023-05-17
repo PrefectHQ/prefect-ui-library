@@ -1,7 +1,7 @@
 <template>
   <template v-if="!typeIsPrefectAgent">
     <p class="work-pool-create-wizard-step-infrastructure-configuration__explainer-text">
-      Below you can configure the behavior of workers in this work pool when they are executing flow runs. If you need more configuration options that the ones listed here, you can use the editor in the <b>Advanced</b> section to modify the existing configuration options.
+      Below you can configure the behavior of workers in this work pool when they are executing flow runs. If you need additional configuration options, you can use the editor in the <b>Advanced</b> section to modify the existing configuration options.
     </p>
     <p class="work-pool-create-wizard-step-infrastructure-configuration__explainer-text">
       If you don't need to make any changes to the default behavior, hit <b>Create</b> to create your work pool!
@@ -10,7 +10,7 @@
   </template>
   <template v-else>
     <p class="work-pool-create-wizard-step-infrastructure-configuration__explainer-text">
-      Prefect Agents handle infrastructure configuration via infrastructure blocks attached to deployments. You can hit <b>Create</b> to create this work pool and then head over the <b>Blocks</b> tab to create an infrastructure block for your deployments.
+      Prefect Agents handle infrastructure configuration via infrastructure blocks attached to deployments. You can hit <b>Create</b> to create this work pool and then head over to the <b>Blocks</b> tab to create an infrastructure block for your deployments.
     </p>
     <p class="work-pool-create-wizard-step-infrastructure-configuration__explainer-text">
       To learn more about how to configure infrastructure for Prefect Agents, check out
@@ -29,7 +29,6 @@
   import { WorkPoolFormValues } from '@/models/WorkPool'
   import { WorkerBaseJobTemplate } from '@/types'
 
-  const routes = useWorkspaceRoutes()
 
   const props = defineProps<{
     workPool: WorkPoolFormValues,

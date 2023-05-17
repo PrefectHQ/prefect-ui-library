@@ -30,7 +30,7 @@
   import { LogoImage, BetaBadge } from '@/components'
   import { WorkerCollectionItem } from '@/models'
   import { WorkPoolFormValues, WorkPoolTypeSelectOption } from '@/models/WorkPool'
-  import { getProcessTypeLabel, titleCase } from '@/utilities'
+  import { titleCase } from '@/utilities'
 
 
   const props = defineProps<{
