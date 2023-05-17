@@ -37,14 +37,11 @@
 
 <script lang="ts" setup>
   import LogoImage from '@/components/LogoImage.vue'
-  import { useWorkspaceRoutes } from '@/compositions'
   import { CollectionItem } from '@/models'
 
   defineProps<{
     collectionItem: CollectionItem,
   }>()
-
-  const routes = useWorkspaceRoutes()
 </script>
 
 <style>
