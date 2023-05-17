@@ -71,7 +71,7 @@
   const api = useWorkspaceApi()
 
   const { workQueueStatus } = useWorkQueueStatus(props.workQueue.id)
-  const workPoolArgs = computed<Parameters<typeof api.workPools.getWorkPools> | null>(() => {
+  const workPoolArgs = computed<[WorkPoolsFilter] | null>(() => {
     return [
       {
         workPools: {
