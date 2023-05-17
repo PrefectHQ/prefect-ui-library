@@ -1,4 +1,4 @@
-import { BatchLookupError } from '@/index'
+import { BatchLookupError } from '@/models/BatchLookupError'
 import { MaybePromise } from '@/types'
 
 export type BatchCallbackLookup<V, R> = (value: V) => MaybePromise<R>
