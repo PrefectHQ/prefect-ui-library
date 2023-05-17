@@ -34,7 +34,7 @@
         </template>
 
         <template #status="{ row }">
-          <WorkQueueStatusBadge :work-queue="row" />
+          <WorkQueueStatusBadge v-if="workPool" :work-queue="row" :work-pool="workPool" />
         </template>
 
         <template #actions="{ row }">
