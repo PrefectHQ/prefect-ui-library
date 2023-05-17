@@ -8,7 +8,7 @@
 
     <p-key-value label="Status" :alternate="alternate">
       <template #value>
-        <WorkQueueStatusBadge v-if="workPool" :work-queue="workPoolQueue" :work-pool="workPool" />
+        <WorkPoolQueueStatusBadge v-if="workPool" :work-queue="workPoolQueue" :work-pool="workPool" />
       </template>
     </p-key-value>
 
@@ -35,7 +35,7 @@
 <script lang="ts" setup>
   import { useSubscriptionWithDependencies } from '@prefecthq/vue-compositions'
   import { toRefs, computed } from 'vue'
-  import { WorkPoolIconText, WorkQueueStatusBadge } from '@/components'
+  import { WorkPoolIconText, WorkPoolQueueStatusBadge } from '@/components'
   import { useWorkspaceApi, useWorkQueueStatus } from '@/compositions'
   import { WorkQueue, WorkPoolsFilter } from '@/models'
   import { formatDateTimeNumeric } from '@/utilities/dates'
