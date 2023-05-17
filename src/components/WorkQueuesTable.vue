@@ -29,6 +29,10 @@
           <span> {{ row.concurrencyLimit ?? 'Unlimited' }} </span>
         </template>
 
+        <template #status="{ row }">
+          <WorkQueueStatusBadge :work-queue="row" />
+        </template>
+
         <template #last-polled="{ row }">
           <WorkQueueLastPolled :work-queue-id="row.id" />
         </template>
@@ -63,9 +67,10 @@
   import { useSubscription } from '@prefecthq/vue-compositions'
   import { computed, ref, toRefs } from 'vue'
   import { WorkQueueToggle, WorkQueueLateIndicator, SearchInput, ResultsCount, WorkQueueLastPolled, WorkQueueStatusBadge, SelectedCount, WorkQueuesDeleteButton, WorkQueueMenu } from '@/components'
-  import { useCan, useWorkspaceRoutes, useWorkspaceApi } from '@/compositions'
+  import { useCan, useWorkspaceApi, useWorkspaceRoutes } from '@/compositions'
   import { WorkQueue } from '@/models'
   import { hasString } from '@/utilities'
+
   const props = defineProps<{
     workQueues: WorkQueue[],
   }>()
@@ -90,6 +95,9 @@
     },
     {
       label: 'Concurrency',
+    },
+    {
+      label: 'Status',
     },
     {
       label: 'Last Polled',
