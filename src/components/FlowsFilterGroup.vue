@@ -6,7 +6,7 @@
       </p-label>
 
       <p-label :label="localization.info.deploymentTags">
-        <p-tags-input v-model="filter.flowRuns.tags.name" :empty-message="localization.info.all" :placeholder="localization.info.addTagPlaceholder" class="flows-filter-group__deployment-tags" />
+        <DeploymentTagsComboBox v-model="filter.flowRuns.tags.name" :empty-message="localization.info.all" :placeholder="localization.info.addTagPlaceholder" class="flows-filter-group__deployment-tags" />
       </p-label>
     </div>
 
@@ -45,7 +45,7 @@
   import { media, PLabel } from '@prefecthq/prefect-design'
   import { useDebouncedRef } from '@prefecthq/vue-compositions'
   import { computed, ref } from 'vue'
-  import { SearchInput, StateNameSelect, WorkPoolCombobox } from '@/components'
+  import { SearchInput, StateNameSelect, WorkPoolCombobox, DeploymentTagsComboBox } from '@/components'
   import DateRangeInputWithFlowRunHistory from '@/components/DateRangeInputWithFlowRunHistory.vue'
   import { useFlowsFilterFromRoute } from '@/compositions/filters'
   import { localization } from '@/localization'
