@@ -17,7 +17,7 @@ export function useVariable(variableId: string | Ref<string | null | undefined>)
       return null
     }
 
-    if (!can.read.deployment) {
+    if (!can.read.variable) {
       return null
     }
 
