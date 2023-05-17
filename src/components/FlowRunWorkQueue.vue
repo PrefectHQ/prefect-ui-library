@@ -2,14 +2,14 @@
   <div class="flow-run-work-queue">
     <span>Work Queue</span>
     <WorkQueueIconText :work-queue-name="workQueueName" :work-pool-name="workPoolName" />
-    <WorkQueueStatusIcon v-if="isNotTerminal && workPoolName" :work-queue-name="workQueueName" :work-pool-name="workPoolName" />
+    <WorkPoolQueueStatusIcon v-if="isNotTerminal && workPoolName" :work-queue-name="workQueueName" :work-pool-name="workPoolName" />
   </div>
 </template>
 
 <script lang="ts" setup>
   import { computed } from 'vue'
+  import WorkPoolQueueStatusIcon from '@/components/WorkPoolQueueStatusIcon.vue'
   import WorkQueueIconText from '@/components/WorkQueueIconText.vue'
-  import WorkQueueStatusIcon from '@/components/WorkQueueStatusIcon.vue'
   import { isTerminalStateType } from '@/models'
 
   const props = defineProps<{
