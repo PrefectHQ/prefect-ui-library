@@ -34,7 +34,7 @@
         </template>
 
         <template #status="{ row }">
-          <WorkQueueStatusBadge :work-queue="row" />
+          <WorkPoolQueueStatusBadge v-if="workPool" :work-queue="row" :work-pool="workPool" />
         </template>
 
         <template #actions="{ row }">
@@ -53,7 +53,7 @@
   import { TableData } from '@prefecthq/prefect-design'
   import { useSubscription } from '@prefecthq/vue-compositions'
   import { ref, computed } from 'vue'
-  import { SearchInput, ResultsCount, SelectedCount, WorkPoolQueuesDeleteButton, WorkPoolQueuePriorityLabel, WorkersLateIndicator, WorkPoolQueueToggle, WorkQueueStatusBadge } from '@/components'
+  import { SearchInput, ResultsCount, SelectedCount, WorkPoolQueuesDeleteButton, WorkPoolQueuePriorityLabel, WorkersLateIndicator, WorkPoolQueueToggle, WorkPoolQueueStatusBadge } from '@/components'
   import { useCan, useWorkspaceRoutes, useWorkspaceApi, useComponent } from '@/compositions'
   import { WorkPoolQueue } from '@/models'
   import { hasString } from '@/utilities'
