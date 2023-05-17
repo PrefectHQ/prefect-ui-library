@@ -8,17 +8,19 @@
       <template #empty>
         <p-empty-results>
           <template #message>
-            <div v-if="logLevel > 0">
-              No logs match your filter criteria
-            </div>
-            <div v-else-if="flowRun.stateType == 'scheduled'">
-              This run is scheduled and hasn't generated logs
-            </div>
-            <div v-else-if="flowRun.stateType == 'running'">
-              Waiting for logs...
-            </div>
-            <div v-else>
-              This run didn't generate Logs
+            <div class="flow-run-logs__empty-text">
+              <div v-if="logLevel > 0">
+                No logs match your filter criteria
+              </div>
+              <div v-else-if="flowRun.stateType == 'scheduled'">
+                This run is scheduled and hasn't generated logs
+              </div>
+              <div v-else-if="waitingForLogs">
+                Waiting for logs...
+              </div>
+              <div v-else>
+                This run didn't generate logs
+              </div>
             </div>
           </template>
 
@@ -41,6 +43,7 @@
   import { useWorkspaceApi } from '@/compositions'
   import { usePaginatedSubscription } from '@/compositions/usePaginatedSubscription'
   import { useStatePolling } from '@/compositions/useStatePolling'
+  import { isTerminalStateType } from '@/models'
   import { LogsFilter } from '@/models/Filters'
   import { FlowRun } from '@/models/FlowRun'
   import { Log, LogLevel } from '@/models/Log'
@@ -66,6 +69,7 @@
   const options = useStatePolling(flowRun)
   const logsSubscription = usePaginatedSubscription(api.logs.getLogs, [logsFilter], options)
   const logs = computed<Log[]>(() => logsSubscription.response ?? [])
+  const waitingForLogs = computed(() => !isTerminalStateType(flowRun.value.stateType) || logsSubscription.loading)
 
   function clear(): void {
     logLevel.value = 0
@@ -79,5 +83,9 @@
   items-center
   mb-4
   gap-2
+}
+
+.flow-run-logs__empty-text { @apply
+  !text-white
 }
 </style>
