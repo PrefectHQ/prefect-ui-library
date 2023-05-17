@@ -8,8 +8,7 @@
 
 <script lang="ts" setup>
   import { computed } from 'vue'
-  import WorkPoolQueueStatusIcon from '@/components/WorkPoolQueueStatusIcon.vue'
-  import WorkQueueIconText from '@/components/WorkQueueIconText.vue'
+  import { WorkPoolQueueStatusIcon, WorkQueueIconText } from '@/components'
   import { isTerminalStateType } from '@/models'
 
   const props = defineProps<{
