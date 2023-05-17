@@ -37,7 +37,7 @@
   import { toRefs, computed } from 'vue'
   import { WorkPoolIconText, WorkQueueStatusBadge } from '@/components'
   import { useWorkspaceApi, useWorkQueueStatus } from '@/compositions'
-  import { WorkQueue } from '@/models'
+  import { WorkQueue, WorkPoolsFilter } from '@/models'
   import { formatDateTimeNumeric } from '@/utilities/dates'
 
   const props = defineProps<{

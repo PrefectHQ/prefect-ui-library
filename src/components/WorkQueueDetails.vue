@@ -51,7 +51,7 @@
   import { WorkQueueStatusBadge } from '@/components'
   import DeploymentIconText from '@/components/DeploymentIconText.vue'
   import { useWorkQueueStatus, useWorkspaceApi } from '@/compositions'
-  import { WorkQueue } from '@/models/WorkQueue'
+  import { WorkPoolsFilter, WorkQueue } from '@/models'
   import { formatDateTimeNumeric } from '@/utilities/dates'
 
   const props = defineProps<{
