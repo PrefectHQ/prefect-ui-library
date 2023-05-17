@@ -16,6 +16,10 @@
     artifact: Artifact,
   }>()
 
+  // fixes a typescript error when trying to pass the artifact to the dynamic component
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const artifact = computed<any>(() => props.artifact)
+
   const component = computed(() => {
     switch (props.artifact.type) {
       case 'result':

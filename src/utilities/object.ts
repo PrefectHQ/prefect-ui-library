@@ -138,6 +138,7 @@ export function merge<T extends Record<PropertyKey, unknown>>(target: T, ...sour
     }
 
     // this is really sloppy typescript...
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     target[key as keyof T] = source[key] as any
   }
 

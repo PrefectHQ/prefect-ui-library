@@ -14,7 +14,7 @@
       </div>
     </template>
 
-    <template v-if="meta">
+    <template v-if="meta && meta.component">
       <component :is="meta.component" v-model="propValue" class="schema-form-input__component" v-bind="{ ...meta.props, ...meta.attrs }" />
     </template>
   </p-label>
