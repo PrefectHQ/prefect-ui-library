@@ -16,7 +16,7 @@
   }>()
 
   const api = useWorkspaceApi()
-  const workPoolQueueArgs = computed<Parameters<typeof api.workPoolQueues.getWorkPoolQueueByName> | null>(() => [props.workPoolName, props.workQueueName])
+  const workPoolQueueArgs = computed<[string, string] | null>(() => [props.workPoolName, props.workQueueName])
 
   const workPoolQueuesSubscription = useSubscriptionWithDependencies(api.workPoolQueues.getWorkPoolQueueByName, workPoolQueueArgs)
   const workPoolQueue = computed(() => workPoolQueuesSubscription.response)
