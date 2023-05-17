@@ -11,10 +11,10 @@
   import { computed } from 'vue'
   import WorkQueueStatusIcon from '@/components/WorkQueueStatusIcon.vue'
   import { useWorkQueueStatus } from '@/compositions'
-  import { WorkPool, WorkQueue } from '@/models'
+  import { WorkPool, WorkPoolQueue } from '@/models'
 
   const props = defineProps<{
-    workQueue: WorkQueue,
+    workQueue: WorkPoolQueue,
     workPool: WorkPool,
   }>()
 
