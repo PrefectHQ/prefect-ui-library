@@ -24,6 +24,7 @@
           v-if="flowRun.workQueueName"
           :work-queue-name="flowRun.workQueueName"
           :work-pool-name="flowRun.workPoolName"
+          :flow-run-state="flowRun.stateType"
         />
       </div>
     </div>
