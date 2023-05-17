@@ -1,7 +1,7 @@
 <template>
   <template v-if="workQueue && workQueueStatus">
-    <p-tag class="work-queue-status-badge" :class="classes">
-      <WorkQueueStatusIcon :work-queue-name="workQueueName" :work-pool-name="workPoolName" class="work-queue-status-badge__icon" />
+    <p-tag class="work-pool-queue-status-badge" :class="classes">
+      <WorkPoolQueueStatusIcon :work-queue-name="workQueueName" :work-pool-name="workPoolName" class="work-pool-queue-status-badge__icon" />
       {{ label }}
     </p-tag>
   </template>
@@ -9,7 +9,7 @@
 
 <script lang="ts" setup>
   import { computed } from 'vue'
-  import WorkQueueStatusIcon from '@/components/WorkQueueStatusIcon.vue'
+  import { WorkPoolQueueStatusIcon } from '@/components'
   import { useWorkQueueStatus } from '@/compositions'
   import { WorkPool, WorkPoolQueue } from '@/models'
 
@@ -35,19 +35,19 @@
 </script>
 
 <style>
-.work-queue-status-badge { @apply
+.work-pool-queue-status-badge { @apply
   text-xs
   pl-2
 }
 
-.p-tag.work-queue-status-badge--healthy { @apply
+.p-tag.work-pool-queue-status-badge--healthy { @apply
   bg-success-200
   text-success-900
   dark:bg-success-100
   dark:text-white
 }
 
-.p-tag.work-queue-status-badge--unhealthy { @apply
+.p-tag.work-pool-queue-status-badge--unhealthy { @apply
   bg-danger-200
   text-danger-900
   dark:bg-danger-100
