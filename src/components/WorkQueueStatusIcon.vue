@@ -1,33 +1,31 @@
 <template>
-  <template v-if="workPoolQueue && workQueueStatus">
+  <template v-if="workQueue && workQueueStatus">
     <p-icon :icon="status.icon" size="small" class="work-queue-status-icon" :class="classes" />
   </template>
 </template>
 
 <script lang="ts" setup>
   import { Icon } from '@prefecthq/prefect-design'
-  import { useSubscriptionWithDependencies } from '@prefecthq/vue-compositions'
+  import { useSubscription } from '@prefecthq/vue-compositions'
   import { computed } from 'vue'
   import { useWorkQueueStatus, useWorkspaceApi } from '@/compositions'
 
   const props = defineProps<{
     workQueueName: string,
-    workPoolName: string,
   }>()
 
   const api = useWorkspaceApi()
-  const workPoolQueueArgs = computed<[string, string] | null>(() => [props.workPoolName, props.workQueueName])
 
-  const workPoolQueuesSubscription = useSubscriptionWithDependencies(api.workPoolQueues.getWorkPoolQueueByName, workPoolQueueArgs)
-  const workPoolQueue = computed(() => workPoolQueuesSubscription.response)
+  const workQueueName = computed(() => props.workQueueName)
+  const workQueuesSubscription = useSubscription(api.workQueues.getWorkQueueByName, [workQueueName])
+  const workQueue = computed(() => workQueuesSubscription.response)
 
-
-  const workQueueId = computed(() => workPoolQueue.value?.id)
+  const workQueueId = computed(() => workQueue.value?.id)
   const { workQueueStatus } = useWorkQueueStatus(workQueueId)
   const healthy = computed(() => workQueueStatus.value?.healthy)
 
   const status = computed<{ name: string, icon: Icon }>(() => {
-    if (workPoolQueue.value?.isPaused) {
+    if (workQueue.value?.isPaused) {
       return { name: 'Paused', icon: 'PauseIcon' }
     }
     if (healthy.value) {
@@ -38,17 +36,3 @@
 
   const classes = computed(() => `work-queue-status-icon--${status.value.name.toLowerCase()}`)
 </script>
-
-<style>
-.work-queue-status-icon--healthy{ @apply
-  text-state-completed-600
-}
-
-.work-queue-status-icon--unhealthy{ @apply
-  text-state-failed-700
-}
-
-.work-queue-status-icon--paused{ @apply
-  text-state-pending-700
-}
-</style>
