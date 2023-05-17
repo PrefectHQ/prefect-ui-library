@@ -3,7 +3,7 @@
     <template v-if="workQueueStatus">
       <p-key-value label="Status" :alternate="alternate">
         <template #value>
-          <WorkQueueStatusBadge :work-queue="workQueue" :work-pool="workPool" />
+          <WorkQueueStatusBadge :work-queue="workQueue" />
         </template>
       </p-key-value>
     </template>
@@ -46,12 +46,11 @@
 </template>
 
 <script lang="ts" setup>
-  import { useSubscriptionWithDependencies } from '@prefecthq/vue-compositions'
   import { computed } from 'vue'
   import { WorkQueueStatusBadge } from '@/components'
   import DeploymentIconText from '@/components/DeploymentIconText.vue'
-  import { useWorkQueueStatus, useWorkspaceApi } from '@/compositions'
-  import { WorkPoolsFilter, WorkQueue } from '@/models'
+  import { useWorkQueueStatus } from '@/compositions'
+  import { WorkQueue } from '@/models/WorkQueue'
   import { formatDateTimeNumeric } from '@/utilities/dates'
 
   const props = defineProps<{
@@ -68,22 +67,7 @@
     return num > 0 ? `${num} Deployments` : 'Deployments'
   })
 
-  const api = useWorkspaceApi()
-
   const { workQueueStatus } = useWorkQueueStatus(props.workQueue.id)
-  const workPoolArgs = computed<[WorkPoolsFilter] | null>(() => {
-    return [
-      {
-        workPools: {
-          id: [props.workQueue.workPoolId],
-        },
-      },
-    ]
-  })
-
-  const workPoolsSubscription = useSubscriptionWithDependencies(api.workPools.getWorkPools, workPoolArgs)
-  const workPools = computed(() => workPoolsSubscription.response ?? [])
-  const workPool = computed(() => workPools.value[0])
 </script>
 
 <style>
