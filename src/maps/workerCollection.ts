@@ -18,10 +18,12 @@ WorkerCollectionItem[]
     .map((worker_data) => ({
       defaultBaseJobConfiguration: worker_data.default_base_job_configuration,
       description: worker_data.description,
+      displayName: worker_data.display_name,
       documentationUrl: worker_data.documentation_url,
       installCommand: worker_data.install_command,
       logoUrl: worker_data.logo_url,
       type: worker_data.type,
+      isBeta: worker_data.is_beta ?? false,
     }))
 }
 

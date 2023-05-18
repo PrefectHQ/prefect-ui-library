@@ -2,12 +2,11 @@
   <div>
     <h3>
       Base Job Template
-      <BetaBadge />
     </h3>
     <p-tabs :tabs="['Defaults', 'Advanced']" class="overflow-auto">
       <template #defaults>
         <template v-if="variablesSchemaHasProperties">
-          <p-message info>
+          <p-message info class="work-pool-base-job-template-section__info_message ">
             The fields below control the default values for the base job template. These values can be overridden by deployments.
           </p-message>
           <SchemaFormFieldsWithValues
@@ -23,7 +22,7 @@
       </template>
       <template #advanced>
         <div class="work-pool-base-job-template-section__advanced_tab">
-          <p-message info>
+          <p-message info class="work-pool-base-job-template-section__info_message">
             This is the JSON representation of the base job template. A work pool's  job template controls infrastructure configuration for all flow runs in the work pool, and specifies the configuration that can be overridden by deployments.
             <br>
             <br>
@@ -42,7 +41,7 @@
 <script lang="ts" setup>
   import { isEqual } from 'lodash'
   import { computed, ref, watch } from 'vue'
-  import { SchemaFormFieldsWithValues, BetaBadge, JsonInput } from '@/components'
+  import { SchemaFormFieldsWithValues, JsonInput } from '@/components'
   import { localization } from '@/localization'
   import { getSchemaDefaultValues, mapper } from '@/services'
   import { Schema, SchemaProperties, SchemaValues, WorkerBaseJobTemplate } from '@/types'
@@ -108,5 +107,9 @@
 <style>
   .work-pool-base-job-template-section__advanced_tab { @apply
       overflow-auto
+  }
+
+  .work-pool-base-job-template-section__info_message { @apply
+      mb-4
   }
 </style>

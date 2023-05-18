@@ -1,3 +1,4 @@
+import { SelectOptionNormalized } from '@prefecthq/prefect-design'
 import { BaseJobTemplateRequest } from '@/models/api/WorkPoolRequest'
 import { titleCase } from '@/utilities'
 
@@ -43,3 +44,14 @@ export class WorkPool implements IWorkPool {
     return titleCase(this.type)
   }
 }
+
+export type WorkPoolFormValues = {
+  name?: string,
+  description?: string | null,
+  type?: string,
+  isPaused?: boolean,
+  concurrencyLimit?: number | null,
+  baseJobTemplate?: Record<string, unknown>,
+}
+
+export type WorkPoolTypeSelectOption = SelectOptionNormalized & { logoUrl: string, description: string, isBeta: boolean }
