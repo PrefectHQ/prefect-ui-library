@@ -41,7 +41,7 @@
 <script lang="ts" setup>
   import { isEqual } from 'lodash'
   import { computed, ref, watch } from 'vue'
-  import { SchemaFormFieldsWithValues, BetaBadge, JsonInput } from '@/components'
+  import { SchemaFormFieldsWithValues, JsonInput } from '@/components'
   import { localization } from '@/localization'
   import { getSchemaDefaultValues, mapper } from '@/services'
   import { Schema, SchemaProperties, SchemaValues, WorkerBaseJobTemplate } from '@/types'
