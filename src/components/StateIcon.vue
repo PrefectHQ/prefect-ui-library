@@ -4,7 +4,7 @@
 
 <script lang="ts" setup>
   import { PIcon } from '@prefecthq/prefect-design'
-  import { withDefaults, computed } from 'vue'
+  import { computed } from 'vue'
   import { StateType } from '@/models/StateType'
   import { TailwindColor } from '@/types/tailwind'
   import { capitalize } from '@/utilities/strings'

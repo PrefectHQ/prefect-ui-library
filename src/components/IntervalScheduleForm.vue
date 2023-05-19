@@ -43,7 +43,7 @@
 <script lang="ts" setup>
   import { SelectOption } from '@prefecthq/prefect-design'
   import { useField } from 'vee-validate'
-  import { computed, ref, withDefaults, watch, onMounted } from 'vue'
+  import { computed, ref, watch, onMounted } from 'vue'
   import DateInput from '@/components/DateInput.vue'
   import TimezoneSelect from '@/components/TimezoneSelect.vue'
   import { IntervalSchedule } from '@/models'

@@ -13,7 +13,7 @@
 
 <script lang="ts" setup>
   import { PTextInput, PIcon, PLabel } from '@prefecthq/prefect-design'
-  import { computed, withDefaults } from 'vue'
+  import { computed } from 'vue'
 
   const props = withDefaults(defineProps<{
     modelValue: string | null | undefined,
