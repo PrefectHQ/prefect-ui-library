@@ -2,7 +2,12 @@ import { CollectionItem, CollectionsResponse, PrefectWorkerCollectionResponse, W
 import { Api } from '@/services/Api'
 import { mapper } from '@/services/Mapper'
 
-export class CollectionsApi extends Api {
+export interface ICollectionsApi {
+  getFlowCollection: () => Promise<CollectionItem[]>,
+  getWorkerCollection: () => Promise<WorkerCollectionItem[]>,
+}
+
+export class CollectionsApi extends Api implements ICollectionsApi {
   protected override routePrefix = '/collections'
 
   public getFlowCollection(): Promise<CollectionItem[]> {

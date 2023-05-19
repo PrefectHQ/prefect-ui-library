@@ -1,5 +1,8 @@
 import { createActions } from '@prefecthq/vue-compositions'
 import { provide } from 'vue'
+import { MockCollectionsApi } from '../services/mockCollectionsApi'
+import { MockHealthApi } from '../services/mockHealthApi'
+import { MockUiApi } from '../services/mockUiApi'
 import { MockWorkspaceArtifactsApi } from '../services/mockWorkspaceArtifactsApi'
 import { MockWorkspaceBlockCapabilitiesApi } from '../services/mockWorkspaceBlockCapabilitiesApi'
 import { MockWorkspaceBlockDocumentsApi } from '../services/mockWorkspaceBlockDocumentsApi'
@@ -9,7 +12,11 @@ import { MockWorkspaceConcurrencyLimitsApi } from '../services/mockWorkspaceConc
 import { MockWorkspaceDeploymentsApi } from '../services/mockWorkspaceDeploymentsApi'
 import { MockWorkspaceFlowRunsApi } from '../services/mockWorkspaceFlowRunsApi'
 import { MockWorkspaceFlowsApi } from '../services/mockWorkspaceFlowsApi'
+import { MockWorkspaceLogsApi } from '../services/mockWorkspaceLogs'
+import { MockWorkspaceNotificationsApi } from '../services/mockWorkspaceNotificationsApi'
+import { MockWorkspaceSavedSearchesApi } from '../services/mockWorkspaceSavedSearchesApi'
 import { MockWorkspaceTaskRunsApi } from '../services/mockWorkspaceTaskRunsApi'
+import { MockWorkspaceVariablesApi } from '../services/mockWorkspaceVariablesApi'
 import { MockWorkspaceWorkPoolQueuesApi } from '../services/mockWorkspaceWorkPoolQueuesApi'
 import { MockWorkspaceWorkPoolsApi } from '../services/mockWorkspaceWorkPoolsApi'
 import { MockWorkspaceWorkPoolWorkerApi } from '../services/mockWorkspaceWorkPoolWorkerApi'
@@ -38,26 +45,33 @@ export type ApiMockSeeds = {
   workPoolWorkers?: WorkPoolWorker[],
 }
 
-function createApiMock(): Partial<CreateApi> {
+function createApiMock(): CreateApi {
   return {
     artifacts: createActions(new MockWorkspaceArtifactsApi()),
-    flows: createActions(new MockWorkspaceFlowsApi()),
-    flowRuns: createActions(new MockWorkspaceFlowRunsApi()),
+    blockCapabilities: createActions(new MockWorkspaceBlockCapabilitiesApi()),
     blockDocuments: createActions(new MockWorkspaceBlockDocumentsApi()),
     blockSchemas: createActions(new MockWorkspaceBlockSchemasApi()),
     blockTypes: createActions(new MockWorkspaceBlockTypesApi()),
-    blockCapabilities: createActions(new MockWorkspaceBlockCapabilitiesApi()),
+    collections: createActions(new MockCollectionsApi()),
     concurrencyLimits: createActions(new MockWorkspaceConcurrencyLimitsApi),
-    taskRuns: createActions(new MockWorkspaceTaskRunsApi()),
     deployments: createActions(new MockWorkspaceDeploymentsApi()),
-    workQueues: createActions(new MockWorkspaceWorkQueuesApi()),
-    workPools: createActions(new MockWorkspaceWorkPoolsApi()),
+    flowRuns: createActions(new MockWorkspaceFlowRunsApi()),
+    flows: createActions(new MockWorkspaceFlowsApi()),
+    health: createActions(new MockHealthApi()),
+    logs: createActions(new MockWorkspaceLogsApi()),
+    notifications: createActions(new MockWorkspaceNotificationsApi()),
+    savedSearches: createActions(new MockWorkspaceSavedSearchesApi()),
+    taskRuns: createActions(new MockWorkspaceTaskRunsApi()),
+    ui: createActions(new MockUiApi()),
+    variables: createActions(new MockWorkspaceVariablesApi()),
     workPoolQueues: createActions(new MockWorkspaceWorkPoolQueuesApi()),
+    workPools: createActions(new MockWorkspaceWorkPoolsApi()),
     workPoolWorkers: createActions(new MockWorkspaceWorkPoolWorkerApi()),
+    workQueues: createActions(new MockWorkspaceWorkQueuesApi()),
   }
 }
 
-export function useWorkspaceApiMock(): Partial<CreateApi> {
+export function useWorkspaceApiMock(): CreateApi {
   const api = createApiMock()
 
   provide(workspaceApiKey, api)
