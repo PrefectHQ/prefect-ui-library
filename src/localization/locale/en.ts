@@ -6,7 +6,7 @@ export const en = {
     flowRuns: 'https://docs.prefect.io/concepts/flow-runs/',
     blocks: 'https://docs.prefect.io/concepts/blocks/',
     workQueues: 'https://docs.prefect.io/ui/work-queues/',
-    notifications: 'https://docs.prefect.io/ui/notifications/',
+    notifications: 'https://docs.prefect.io/latest/host/#notifications',
     deployments: 'https://docs.prefect.io/latest/concepts/deployments/',
     concurrency: 'https://docs.prefect.io/concepts/tasks#task-run-concurrency-limits',
     automations: 'https://docs.prefect.io/ui/automations/',
