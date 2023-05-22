@@ -8,7 +8,6 @@
       <p-label :label="localization.info.deploymentTags">
         <DeploymentTagsInput
           v-model:selected="filter.flowRuns.tags.name"
-          v-model="filter.flowRuns.tags.name"
           :filter="filter"
           class="flows-filter-group__deployment-tags"
         />
