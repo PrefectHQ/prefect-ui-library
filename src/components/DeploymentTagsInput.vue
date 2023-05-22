@@ -23,7 +23,7 @@
     (event: 'update:selected', value: string[] | null): void,
   }>()
 
-  const { filter = {} } = toRefs<{ filter?: DeploymentsFilter }>(props)
+  const { filter = {} } = toRefs(props)
 
   const internalValue = computed({
     get() {
