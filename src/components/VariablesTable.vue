@@ -13,7 +13,7 @@
         <div class="variables-table__header-end">
           <SearchInput v-model="variableLike" :placeholder="localization.info.variablesSearch" :label="localization.info.variablesSearch" />
           <p-select v-model="filter.sort" :options="variableSortOptions" />
-          <p-tags-input v-model="filter.variables.tags.name" :empty-message="localization.info.filterByTags" class="variables-table__tags-input" />
+          <VariableTagsInput v-model:selected="filter.variables.tags.name" class="variables-table__tags-input" />
         </div>
       </template>
 
@@ -77,7 +77,7 @@
   import { PTable, PEmptyResults, CheckboxModel, TableColumn, ClassValue } from '@prefecthq/prefect-design'
   import { useDebouncedRef, useSubscription } from '@prefecthq/vue-compositions'
   import { computed, ref } from 'vue'
-  import { VariablesDeleteButton, VariableMenu, ResultsCount, SearchInput, SelectedCount } from '@/components'
+  import { VariablesDeleteButton, VariableMenu, ResultsCount, SearchInput, SelectedCount, VariableTagsInput } from '@/components'
   import { useCan, useVariablesFilter, useWorkspaceApi } from '@/compositions'
   import { localization } from '@/localization'
   import { VariablesFilter, Variable } from '@/models'
