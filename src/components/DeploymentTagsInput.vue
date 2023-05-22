@@ -8,7 +8,7 @@
 </template>
 
 <script lang="ts" setup>
-  import { computed } from 'vue'
+  import { computed, toRefs } from 'vue'
   import { useDeployments } from '@/compositions'
   import { localization } from '@/localization'
   import { DeploymentsFilter } from '@/models/Filters'
@@ -22,6 +22,8 @@
     (event: 'update:selected', value: string[] | null): void,
   }>()
 
+  const { filter = {} } = toRefs<{ filter?: DeploymentsFilter }>(props)
+
   const internalValue = computed({
     get() {
       return props.selected ?? null
@@ -29,12 +31,6 @@
     set(value) {
       emits('update:selected', value)
     },
-  })
-
-  const filter = computed<DeploymentsFilter>(() => {
-    return {
-      ...props.filter,
-    }
   })
 
   const { deployments } = useDeployments(filter)
