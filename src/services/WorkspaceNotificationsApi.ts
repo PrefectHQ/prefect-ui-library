@@ -6,12 +6,20 @@ import { NotificationUpdate } from '@/models/NotificationUpdate'
 import { mapper } from '@/services/Mapper'
 import { WorkspaceApi } from '@/services/WorkspaceApi'
 
-export class WorkspaceNotificationsApi extends WorkspaceApi {
+export interface IWorkspaceNotificationsApi {
+  getNotification: (notificationId: string) => Promise<Notification>,
+  createNotification: (notification: NotificationCreate) => Promise<Notification>,
+  getNotifications: () => Promise<Notification[]>,
+  updateNotification: (notificationId: string, notification: NotificationUpdate) => Promise<void>,
+  deleteNotification: (notificationId: string) => Promise<void>,
+}
+
+export class WorkspaceNotificationsApi extends WorkspaceApi implements IWorkspaceNotificationsApi {
 
   protected override routePrefix = '/flow_run_notification_policies'
 
-  public async getNotification(id: string): Promise<Notification> {
-    const { data } = await this.get<NotificationResponse>(`/${id}`)
+  public async getNotification(notificationId: string): Promise<Notification> {
+    const { data } = await this.get<NotificationResponse>(`/${notificationId}`)
 
     return mapper.map('NotificationResponse', data, 'Notification')
   }
@@ -29,11 +37,11 @@ export class WorkspaceNotificationsApi extends WorkspaceApi {
     return mapper.map('NotificationResponse', data, 'Notification')
   }
 
-  public updateNotification(id: string, notification: NotificationUpdate): Promise<void> {
-    return this.patch(`/${id}`, mapper.map('NotificationUpdate', notification, 'NotificationUpdateRequest'))
+  public updateNotification(notificationId: string, notification: NotificationUpdate): Promise<void> {
+    return this.patch(`/${notificationId}`, mapper.map('NotificationUpdate', notification, 'NotificationUpdateRequest'))
   }
 
-  public deleteNotification(id: string): Promise<void> {
-    return this.delete(`/${id}`)
+  public deleteNotification(notificationId: string): Promise<void> {
+    return this.delete(`/${notificationId}`)
   }
 }

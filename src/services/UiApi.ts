@@ -4,7 +4,11 @@ import { UiFlowRunHistory } from '@/models/UiFlowRunHistory'
 import { mapper } from '@/services/Mapper'
 import { WorkspaceApi } from '@/services/WorkspaceApi'
 
-export class UiApi extends WorkspaceApi {
+export interface IUiApi {
+  getFlowRunHistory: (filter: FlowRunsFilter) => Promise<UiFlowRunHistory[]>,
+}
+
+export class UiApi extends WorkspaceApi implements IUiApi {
   protected override routePrefix = '/ui'
 
   public async getFlowRunHistory(filter: FlowRunsFilter): Promise<UiFlowRunHistory[]> {

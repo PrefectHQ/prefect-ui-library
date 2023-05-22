@@ -27,7 +27,7 @@
 
 
 <script lang="ts" setup>
-  import { computed, withDefaults } from 'vue'
+  import { computed } from 'vue'
 
   const props = withDefaults(defineProps<{
     showModal: boolean,

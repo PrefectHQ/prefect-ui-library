@@ -5,7 +5,7 @@
 </template>
 
 <script lang="ts" setup>
-  import { computed, withDefaults } from 'vue'
+  import { computed } from 'vue'
   import { toPluralString, isNumber } from '@/utilities'
 
   const props = withDefaults(defineProps<{

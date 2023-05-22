@@ -5,7 +5,14 @@ import { mapper } from '@/services/Mapper'
 import { WorkspaceApi } from '@/services/WorkspaceApi'
 import { defaultSavesSearches } from '@/utilities/savedFilters'
 
-export class WorkspaceSavedSearchesApi extends WorkspaceApi {
+export interface IWorkspaceSavedSearchesApi {
+  getSavedSearches: (filter: SavedSearchesFilter) => Promise<SavedSearch[]>,
+  getSavedSearch: (searchId: string) => Promise<SavedSearch>,
+  createSavedSearch: (search: SavedSearchCreate) => Promise<SavedSearch>,
+  deleteSavedSearch: (searchId: string) => Promise<void>,
+}
+
+export class WorkspaceSavedSearchesApi extends WorkspaceApi implements IWorkspaceSavedSearchesApi {
 
   protected override routePrefix = '/saved_searches'
 

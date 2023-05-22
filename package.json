@@ -63,7 +63,7 @@
         "@prefecthq/vue-charts": "^1.0.0",
         "@prefecthq/vue-compositions": "^1.4.1",
         "vee-validate": "^4.7.0",
-        "vue": "^3.2.45",
+        "vue": "^3.3.4",
         "vue-router": "^4.0.12"
     },
     "dependencies": {

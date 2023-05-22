@@ -4,7 +4,11 @@ import { Log } from '@/models/Log'
 import { mapper } from '@/services/Mapper'
 import { WorkspaceApi } from '@/services/WorkspaceApi'
 
-export class WorkspaceLogsApi extends WorkspaceApi {
+export interface IWorkspaceLogsApi {
+  getLogs: () => Promise<Log[]>,
+}
+
+export class WorkspaceLogsApi extends WorkspaceApi implements IWorkspaceLogsApi {
 
   protected override routePrefix = '/logs'
 
