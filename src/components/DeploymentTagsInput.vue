@@ -2,7 +2,7 @@
   <p-tags-input
     v-model="internalValue"
     :placeholder="localization.info.addTagPlaceholder"
-    :options="options"
+    :options="tags"
     :empty-message="localization.info.all"
   />
 </template>
@@ -12,6 +12,7 @@
   import { useDeployments } from '@/compositions'
   import { localization } from '@/localization'
   import { DeploymentsFilter } from '@/models/Filters'
+  import { unique } from '@/utilities'
 
   const props = defineProps<{
     selected: string[] | null | undefined,
@@ -34,6 +35,5 @@
   })
 
   const { deployments } = useDeployments(filter)
-  const tagList = computed(() => deployments.value?.flatMap(deployment => deployment.tags ?? []))
-  const options = computed(() => [...new Set(tagList.value)])
+  const tags = computed(() => unique(deployments.value?.flatMap(deployment => deployment.tags ?? []) ?? []))
 </script>
