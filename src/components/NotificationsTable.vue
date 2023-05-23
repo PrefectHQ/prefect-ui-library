@@ -46,7 +46,7 @@
 </template>
 
 <script lang="ts" setup>
-  import { PTable, PEmptyResults } from '@prefecthq/prefect-design'
+  import { PTable, PEmptyResults, TableColumn } from '@prefecthq/prefect-design'
   import { ref, computed } from 'vue'
   import BlockDocument from '@/components/BlockDocument.vue'
   import NotificationDetails from '@/components/NotificationDetails.vue'
@@ -71,9 +71,8 @@
 
   const can = useCan()
 
-  const columns = [
+  const columns: TableColumn<Notification>[] = [
     {
-      property: 'notification',
       label: 'Notification',
     },
     {

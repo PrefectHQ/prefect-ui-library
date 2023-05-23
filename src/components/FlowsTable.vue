@@ -73,13 +73,14 @@
 </template>
 
 <script lang="ts" setup>
-  import { PTable, PEmptyResults, PLink, CheckboxModel } from '@prefecthq/prefect-design'
+  import { PTable, PEmptyResults, PLink, CheckboxModel, TableColumn } from '@prefecthq/prefect-design'
   import { useDebouncedRef, useSubscription } from '@prefecthq/vue-compositions'
   import { computed, ref } from 'vue'
   import { FlowsDeleteButton, DeploymentsCount, ResultsCount, SearchInput, FlowActivityChart, SelectedCount } from '@/components'
   import { useCan, useFlowsFilterFromRoute, useWorkspaceApi, useWorkspaceRoutes } from '@/compositions'
   import { useComponent } from '@/compositions/useComponent'
   import { FlowsFilter } from '@/models/Filters'
+  import { Flow } from '@/models/Flow'
   import { flowSortOptions } from '@/types/SortOptionTypes'
   import { formatDateTimeNumeric } from '@/utilities/dates'
 
@@ -102,7 +103,7 @@
     },
   })
 
-  const columns = [
+  const columns: TableColumn<Flow>[] = [
     {
       label: 'selection',
       width: '20px',
@@ -114,7 +115,6 @@
       width: '125px',
     },
     {
-      property: 'deployments',
       label: 'Deployments',
       width: '125px',
     },
@@ -124,7 +124,6 @@
       width: '125px',
     },
     {
-      property: 'activity',
       label: 'Activity',
       width: '200px',
     },

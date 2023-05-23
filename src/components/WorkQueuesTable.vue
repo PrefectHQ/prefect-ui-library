@@ -63,13 +63,13 @@
 </template>
 
 <script lang="ts" setup>
-  import { PTable, PEmptyResults, PLink, TableData } from '@prefecthq/prefect-design'
+  import { PTable, PEmptyResults, PLink, TableColumn } from '@prefecthq/prefect-design'
   import { useSubscription } from '@prefecthq/vue-compositions'
   import { computed, ref, toRefs } from 'vue'
   import { WorkQueueToggle, WorkQueueLateIndicator, SearchInput, ResultsCount, WorkQueueLastPolled, WorkQueueStatusBadge, SelectedCount, WorkQueuesDeleteButton, WorkQueueMenu } from '@/components'
   import { useCan, useWorkspaceApi, useWorkspaceRoutes } from '@/compositions'
-  import { WorkQueue } from '@/models'
-  import { hasString } from '@/utilities'
+  import { WorkQueue, WorkQueueTableData } from '@/models'
+  import { hasString, isRecord } from '@/utilities'
 
   const props = defineProps<{
     workQueues: WorkQueue[],
@@ -88,7 +88,7 @@
   const search = ref('')
   const selected = ref<WorkQueue[] | undefined>(can.delete.work_queue ? [] : undefined)
 
-  const columns = [
+  const columns: TableColumn<WorkQueue>[] = [
     {
       property: 'name',
       label: 'Name',
@@ -115,19 +115,17 @@
   const workPoolsSubscription = useSubscription(api.workPools.getWorkPools, [], subscriptionOptions)
   const workPools = computed(() => workPoolsSubscription.response ?? [])
 
-  const workQueuesData = computed<TableData[]>(() => workQueues.value.map(queue => {
-    return {
-      ...queue,
-      disabled: workPools.value.some(pool => pool.defaultQueueId == queue.id),
-    }
-  }))
+  const workQueuesData = computed(() => workQueues.value.map(queue => new WorkQueueTableData({
+    ...queue,
+    disabled: workPools.value.some(pool => pool.defaultQueueId == queue.id),
+  })))
 
   const filteredWorkQueues = computed(() => {
     if (search.value.length === 0) {
       return workQueuesData.value
     }
 
-    return workQueuesData.value.filter(queue => hasString(queue, search.value))
+    return workQueuesData.value.filter(queue => isRecord(queue) && hasString(queue, search.value))
   })
 
   const handleDelete = (): void => {

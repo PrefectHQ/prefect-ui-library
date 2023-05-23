@@ -77,7 +77,7 @@
   const selectedCapability = ref<string | null>(null)
   const selectedType = ref<string | null>(null)
 
-  const columns = computed<TableColumn[]>(() => [
+  const columns = computed<TableColumn<BlockDocument>[]>(() => [
     {
       label: 'Name',
       property: 'name',

@@ -48,11 +48,9 @@ export function hasProperty<T extends Record<string | symbol, unknown>>(needle: 
   return (typeof property === 'string' || typeof property === 'symbol') && property in needle
 }
 
-export type ObjectKey = string | number | symbol
+export type MapKeysCallback<PreviousKey extends PropertyKey, Value, NewKey extends PropertyKey> = (key: PreviousKey, value: Value) => NewKey
 
-export type MapKeysCallback<PreviousKey extends ObjectKey, Value, NewKey extends ObjectKey> = (key: PreviousKey, value: Value) => NewKey
-
-export function mapKeys<K extends ObjectKey, V, Key extends ObjectKey>(object: Record<K, V>, callback: MapKeysCallback<K, V, Key>): Record<Key, V> {
+export function mapKeys<K extends PropertyKey, V, Key extends PropertyKey>(object: Record<K, V>, callback: MapKeysCallback<K, V, Key>): Record<Key, V> {
   const entries = Object.entries(object) as [K, V][]
   const result = {} as Record<Key, V>
 
@@ -65,9 +63,9 @@ export function mapKeys<K extends ObjectKey, V, Key extends ObjectKey>(object: R
   }, result)
 }
 
-export type MapValuesCallback<Key extends ObjectKey, PreviousValue, NewValue> = (key: Key, value: PreviousValue) => NewValue
+export type MapValuesCallback<Key extends PropertyKey, PreviousValue, NewValue> = (key: Key, value: PreviousValue) => NewValue
 
-export function mapValues<Key extends ObjectKey, PreviousValue, NewValue>(object: Record<Key, PreviousValue>, callback: MapValuesCallback<Key, PreviousValue, NewValue>): Record<Key, NewValue> {
+export function mapValues<Key extends PropertyKey, PreviousValue, NewValue>(object: Record<Key, PreviousValue>, callback: MapValuesCallback<Key, PreviousValue, NewValue>): Record<Key, NewValue> {
   const entries = Object.entries(object) as [Key, PreviousValue][]
   const result = {} as Record<Key, NewValue>
 
@@ -78,9 +76,9 @@ export function mapValues<Key extends ObjectKey, PreviousValue, NewValue>(object
   }, result)
 }
 
-export type MapEntriesCallback<PreviousKey extends ObjectKey, PreviousValue, NewKey extends ObjectKey, NewValue> = (key: PreviousKey, value: PreviousValue) => [NewKey, NewValue]
+export type MapEntriesCallback<PreviousKey extends PropertyKey, PreviousValue, NewKey extends PropertyKey, NewValue> = (key: PreviousKey, value: PreviousValue) => [NewKey, NewValue]
 
-export function mapEntries<PreviousKey extends ObjectKey, PreviousValue, NewKey extends ObjectKey, NewValue>(object: Partial<Record<PreviousKey, PreviousValue>>, callback: MapEntriesCallback<PreviousKey, PreviousValue, NewKey, NewValue>): Partial<Record<NewKey, NewValue>> {
+export function mapEntries<PreviousKey extends PropertyKey, PreviousValue, NewKey extends PropertyKey, NewValue>(object: Partial<Record<PreviousKey, PreviousValue>>, callback: MapEntriesCallback<PreviousKey, PreviousValue, NewKey, NewValue>): Partial<Record<NewKey, NewValue>> {
   const entries = Object.entries(object) as [PreviousKey, PreviousValue][]
   const result = {} as Record<NewKey, NewValue>
 
@@ -97,12 +95,13 @@ export function isEmptyObject(value: unknown): value is Record<string, never> {
   return typeof value === 'object' && !Array.isArray(value) && value !== null && Object.keys(value).length === 0
 }
 
-export function isTypeRequired<T extends Record<string | number | symbol, unknown>>(value: Partial<T>): value is Required<T> {
+export function isTypeRequired<T extends Record<PropertyKey, unknown>>(value: Partial<T>): value is Required<T> {
   return Object.values(value).every(value => value !== undefined)
 }
 
-export function hasString(obj: Record<string | number | symbol, unknown>, str: string): boolean {
+export function hasString<T extends Record<PropertyKey, unknown>>(obj: T, str: string): boolean {
   const values = Object.values(obj).map(val => val?.toString().toLowerCase() ?? '').join('')
+
   return values.includes(str.toLowerCase())
 }
 

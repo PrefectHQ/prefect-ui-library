@@ -112,7 +112,7 @@
     offset,
   })
 
-  const columns = [
+  const columns: TableColumn<Variable>[] = [
     {
       label: 'selection',
       width: '20px',
