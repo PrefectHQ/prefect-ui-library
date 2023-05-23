@@ -35,5 +35,5 @@
   })
 
   const { variables } = useVariables(filter)
-  const tags = computed(() => unique(variables.value?.flatMap(variable => variable.tags ?? []) ?? []))
+  const tags = computed(() => unique(variables.value?.flatMap(variable => variable.tags) ?? []))
 </script>
