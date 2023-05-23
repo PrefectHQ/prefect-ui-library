@@ -31,7 +31,15 @@
     deployment: Deployment,
   }>()
 
-  const columns: TableColumn[] = [
+  type Parameter = {
+    key: string,
+    value: unknown,
+    defaultValue: unknown,
+    type: string | undefined,
+    position: number,
+  }
+
+  const columns: TableColumn<Parameter>[] = [
     { label: 'Key', property: 'key', width: '200px' },
     { label: 'Override', property: 'value' },
     { label: 'Default', property: 'defaultValue' },
@@ -42,19 +50,21 @@
 
   const properties = computed(() => props.deployment.parameterOpenApiSchema.properties ?? {})
 
-  const data = computed(() => {
+  const data = computed<Parameter[]>(() => {
     return Object.entries(properties.value)
       .map(([key, value]) => {
         const service = schemaPropertyServiceFactory(value!, 0)
         const mapped = service.mapRequestValue(props.deployment.parameters[key])
 
-        return {
+        const parameter: Parameter = {
           key,
           value: mapped,
           defaultValue: value!.default,
           type: value!.type,
           position: value?.position ?? 0,
         }
+
+        return parameter
       })
       .sort((propA, propB) => propA.position - propB.position)
   })

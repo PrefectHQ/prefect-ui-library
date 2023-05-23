@@ -45,7 +45,9 @@
         </template>
 
         <template #tags="{ row }">
-          <p-tag-wrapper :tags="row.tags" justify="left" />
+          <template v-if="row.tags">
+            <p-tag-wrapper :tags="row.tags" justify="left" />
+          </template>
         </template>
 
         <template #applied-by="{ row }">
@@ -86,7 +88,7 @@
   import { computed, ref } from 'vue'
   import { SearchInput, ResultsCount, DeploymentToggle, DeploymentMenu, FlowRouterLink, FlowCombobox, DeploymentsDeleteButton, SelectedCount } from '@/components'
   import { useWorkspaceApi, useWorkspaceRoutes, useCan, useDeploymentsFilterFromRoute } from '@/compositions'
-  import { isRRuleSchedule, Schedule } from '@/models'
+  import { Deployment, isRRuleSchedule, Schedule } from '@/models'
   import { DeploymentsFilter } from '@/models/Filters'
   import { deploymentSortOptions } from '@/types/SortOptionTypes'
 
@@ -112,7 +114,7 @@
     },
   })
 
-  const columns = computed<TableColumn[]>(() => [
+  const columns = computed<TableColumn<Deployment>[]>(() => [
     {
       label: 'selection',
       width: '20px',

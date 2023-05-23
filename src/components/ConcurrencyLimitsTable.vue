@@ -29,13 +29,15 @@
 </template>
 
 <script lang="ts" setup>
+  import { TableColumn } from '@prefecthq/prefect-design'
   import { useSubscription } from '@prefecthq/vue-compositions'
   import { computed } from 'vue'
   import { ConcurrencyTableActiveSlots, ConcurrencyLimitMenu, ConcurrencyLimitsPageEmptyState } from '@/components'
   import { useWorkspaceApi, useWorkspaceRoutes } from '@/compositions'
+  import { ConcurrencyLimit } from '@/models/ConcurrencyLimit'
 
   const api = useWorkspaceApi()
-  const columns = [
+  const columns: TableColumn<ConcurrencyLimit>[] = [
     {
       property: 'tag',
       label: 'Tag',
@@ -45,7 +47,7 @@
       label: 'Slots',
     },
     {
-      property: 'activeSlot',
+      property: 'activeSlots',
       label: 'Active Task Runs',
     },
     {

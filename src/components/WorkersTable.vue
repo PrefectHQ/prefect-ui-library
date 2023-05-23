@@ -50,8 +50,10 @@
 </template>
 
 <script lang="ts" setup>
+  import { TableColumn } from '@prefecthq/prefect-design'
   import { useSubscription } from '@prefecthq/vue-compositions'
   import { computed, ref, toRefs } from 'vue'
+  import { WorkPoolWorker } from '..'
   import { ResultsCount, SearchInput, CopyOverflowMenuItem } from '@/components'
   import { useWorkspaceApi } from '@/compositions'
   import { localization } from '@/localization'
@@ -86,7 +88,7 @@
     return !!searchValue.value
   })
 
-  const columns = [
+  const columns: TableColumn<WorkPoolWorker>[] = [
     {
       property: 'name',
       label: 'Name',

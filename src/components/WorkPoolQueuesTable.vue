@@ -50,13 +50,13 @@
 </template>
 
 <script lang="ts" setup>
-  import { TableData } from '@prefecthq/prefect-design'
+  import { TableColumn } from '@prefecthq/prefect-design'
   import { useSubscription } from '@prefecthq/vue-compositions'
   import { ref, computed } from 'vue'
   import { SearchInput, ResultsCount, SelectedCount, WorkPoolQueuesDeleteButton, WorkPoolQueuePriorityLabel, WorkersLateIndicator, WorkPoolQueueToggle, WorkPoolQueueStatusBadge } from '@/components'
   import { useCan, useWorkspaceRoutes, useWorkspaceApi, useComponent } from '@/compositions'
-  import { WorkPoolQueue } from '@/models'
-  import { hasString } from '@/utilities'
+  import { WorkPoolQueue, WorkPoolQueueTableData } from '@/models'
+  import { hasString, isRecord } from '@/utilities'
 
   const props = defineProps<{
     workPoolName: string,
@@ -75,23 +75,23 @@
   })
   const workPoolQueuesSubscription = useSubscription(api.workPoolQueues.getWorkPoolQueues, [props.workPoolName])
   const workPoolQueues = computed(() => workPoolQueuesSubscription.response ?? [])
-  const workPoolQueuesData = computed<TableData[]>(() => workPoolQueues.value.map(queue => {
-    return {
-      ...queue,
-      disabled: !workPool.value || workPool.value.defaultQueueId == queue.id,
-    }
-  }))
+
+
+  const workPoolQueuesData = computed(() => workPoolQueues.value.map(queue => new WorkPoolQueueTableData({
+    ...queue,
+    disabled: !workPool.value || workPool.value.defaultQueueId == queue.id,
+  })))
 
   const filteredWorkPoolQueues = computed(() => {
     if (search.value.length == 0) {
       return workPoolQueuesData.value
     }
 
-    return workPoolQueuesData.value.filter(queue => hasString(queue, search.value))
+    return workPoolQueuesData.value.filter(queue => isRecord(queue) && hasString(queue, search.value))
   })
 
   const selected = ref<WorkPoolQueue[] | undefined>(can.delete.work_queue ? [] : undefined)
-  const columns = [
+  const columns: TableColumn<WorkPoolQueue>[] = [
     {
       property: 'name',
       label: 'Name',
@@ -105,7 +105,6 @@
       label: 'Priority',
     },
     {
-      property: 'status',
       label: 'Status',
     },
     {
