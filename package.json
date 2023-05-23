@@ -18,7 +18,6 @@
         "build:demo": "vite build --mode=demo",
         "build": "vue-tsc && tsc-alias && vite build",
         "changelog": "auto-changelog --package --commit-limit 0",
-        "coverage": "vitest run --coverage",
         "dev": "vue-tsc -w & tsc-alias -w & vite build -w --force",
         "lint:fix": "eslint src --fix",
         "lint": "eslint src",
