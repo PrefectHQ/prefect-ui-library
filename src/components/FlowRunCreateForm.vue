@@ -99,14 +99,15 @@
   import { TimezoneSelect, DateInput, DeploymentParameters } from '@/components'
   import { useForm } from '@/compositions/useForm'
   import { Deployment, DeploymentFlowRunCreate } from '@/models'
-  import { getSchemaDefaultValues, mapper, mocker } from '@/services'
+  import { getSchemaDefaultValues, mocker } from '@/services'
   import { SchemaValues } from '@/types/schemas'
   import { isRecord, parseUnknownJson, stringifyUnknownJson } from '@/utilities'
   import { fieldRules, isRequiredIf } from '@/utilities/validation'
 
   const props = defineProps<{
     deployment: Deployment,
-    parameters?: Deployment['parameters'],
+    // these are the unmapped SchemaValues
+    parameters?: SchemaValues,
   }>()
 
   const generateRandomName = (): string => {
@@ -133,9 +134,8 @@
 
   const rawParameters = computed(() => {
     const schemaDefaults = getSchemaDefaultValues(props.deployment.parameterOpenApiSchema)
-    const unmapped = mapper.map('SchemaValues', { schema: props.deployment.parameterOpenApiSchema, values: parameters.value }, 'SchemaValuesRequest')
 
-    return merge(schemaDefaults, unmapped)
+    return merge(schemaDefaults, props.parameters)
   })
 
   const { handleSubmit } = useForm<DeploymentFlowRunCreate>({

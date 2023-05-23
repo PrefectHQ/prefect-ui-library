@@ -43,7 +43,7 @@
 
   const { handleSubmit } = useForm<DeploymentFlowRunCreate>({
     initialValues: {
-      parameters: props.deployment.parameters,
+      parameters: props.deployment.rawParameters,
       schema: props.deployment.parameterOpenApiSchema,
     },
   })
