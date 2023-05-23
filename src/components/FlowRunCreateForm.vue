@@ -106,7 +106,7 @@
 
   const props = defineProps<{
     deployment: Deployment,
-    // these are the unmapped SchemaValues
+    // these must be the unmapped SchemaValues
     parameters?: SchemaValues,
   }>()
 
