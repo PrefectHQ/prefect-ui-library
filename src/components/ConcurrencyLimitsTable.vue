@@ -32,9 +32,9 @@
   import { TableColumn } from '@prefecthq/prefect-design'
   import { useSubscription } from '@prefecthq/vue-compositions'
   import { computed } from 'vue'
-  import { ConcurrencyLimit } from '..'
   import { ConcurrencyTableActiveSlots, ConcurrencyLimitMenu, ConcurrencyLimitsPageEmptyState } from '@/components'
   import { useWorkspaceApi, useWorkspaceRoutes } from '@/compositions'
+  import { ConcurrencyLimit } from '@/models/ConcurrencyLimit'
 
   const api = useWorkspaceApi()
   const columns: TableColumn<ConcurrencyLimit>[] = [
