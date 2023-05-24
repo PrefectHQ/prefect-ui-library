@@ -82,7 +82,7 @@
   import { FlowRun, FlowRunsFilter, isRunningStateType, isTerminalStateType } from '@/models'
   import { WorkspaceFlowRunsApi } from '@/services'
   import { prefectStateNames } from '@/types'
-  import { formatTimeNumeric, formatTimeShortNumeric, formatDate } from '@/utilities'
+  import { formatTimeNumeric, formatTimeShortNumeric, formatDate, mapStateNameToStateType, getStateTypeStyles } from '@/utilities'
   import { eventTargetIsInput } from '@/utilities/eventTarget'
 
   const props = defineProps<{
@@ -347,19 +347,6 @@
       }, new Map<string, string>())
   })
 
-  function getStateColor(cssVariable: string): string {
-    return bodyStyles.getPropertyValue(cssVariable).trim()
-  }
-
-  const stateColors = prefectStateNames.reduce((acc, stateName) => {
-    const lowerCaseStateName = stateName.toLowerCase()
-    acc[lowerCaseStateName] = {
-      default: getStateColor(`--state-${lowerCaseStateName}-600`),
-      hover: getStateColor(`--state-${lowerCaseStateName}-700`),
-    }
-    return acc
-  }, {} as Record<string, Record<'default' | 'hover', string>>)
-
   const themeDefaultOverrides = computed<Partial<ThemeStyleOverrides>>(() => ({
     colorTextDefault: getHslColor('--foreground', '--white'),
     colorTextInverse: getHslColor('--white', '--background'),
@@ -386,14 +373,19 @@
   const theme = computed<TimelineThemeOptions>(() => {
     return {
       node: (node: GraphTimelineNode) => {
+        const { type } = mapStateNameToStateType(node.state)
+        const { background } = getStateTypeStyles(type)
+
         let inverseTextOnFill = colorThemeValue.value !== 'dark'
+
         if (node.state === 'scheduled') {
           inverseTextOnFill = colorThemeValue.value === 'dark'
         }
+
         return {
-          fill: stateColors[node.state].default,
-          onFillSubNodeToggleHoverBg: stateColors[node.state].hover,
-          onFillSubNodeToggleHoverBgAlpha: 1,
+          fill: background,
+          onFillSubNodeToggleHoverBg: '#000',
+          onFillSubNodeToggleHoverBgAlpha: 0.2,
           inverseTextOnFill,
         }
       },
