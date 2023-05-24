@@ -42,10 +42,10 @@ export function useStorage<T extends StorageItem>(storage: Storage<T>): () => Us
     }
 
     return {
-      add: storage.add,
-      addAll: storage.addAll,
-      remove: storage.remove,
-      removeAll: storage.removeAll,
+      add: (value: T) => storage.add(value),
+      addAll: (values: T[]) => storage.addAll(values),
+      remove: (id: string) => storage.remove(id),
+      removeAll: (ids: string[]) => storage.removeAll(ids),
       get,
       getAll,
     }
