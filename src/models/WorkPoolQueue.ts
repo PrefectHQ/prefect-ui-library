@@ -3,6 +3,7 @@ export interface IWorkPoolQueue {
   created: Date,
   updated: Date,
   workPoolId: string,
+  workPoolName: string,
   name: string,
   description: string | null,
   isPaused: boolean,
@@ -15,6 +16,7 @@ export class WorkPoolQueue implements IWorkPoolQueue {
   public created: Date
   public updated: Date
   public workPoolId: string
+  public workPoolName: string
   public name: string
   public description: string | null
   public isPaused: boolean
@@ -26,6 +28,7 @@ export class WorkPoolQueue implements IWorkPoolQueue {
     this.created = workPoolQueue.created
     this.updated = workPoolQueue.updated
     this.workPoolId = workPoolQueue.workPoolId
+    this.workPoolName = workPoolQueue.workPoolName
     this.name = workPoolQueue.name
     this.description = workPoolQueue.description
     this.isPaused = workPoolQueue.isPaused
