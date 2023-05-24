@@ -5,6 +5,7 @@ export type WorkPoolQueueResponse = {
   created: DateString,
   updated: DateString,
   work_pool_id: string,
+  work_pool_name: string,
   name: string,
   description: string | null,
   is_paused: boolean | null,
