@@ -1,5 +1,5 @@
 <template>
-  <SchemaFormFieldsWithValues v-model:values="parameters" :schema="deployment.parameterOpenApiSchema" />
+  <SchemaFormFieldsWithValues v-model:values="parameters" :schema="parameterOpenApiSchema" />
 </template>
 
 <script setup lang="ts">
@@ -31,8 +31,7 @@
 
   const parameters = computed({
     get() {
-      const source = { values: props.modelValue, schema: parameterOpenApiSchema.value }
-      return mapper.map('SchemaValuesResponse', source, 'SchemaValues')
+      return props.modelValue
     },
     set(value) {
       emits('update:modelValue', value)
