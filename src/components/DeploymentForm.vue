@@ -137,7 +137,7 @@
   const { handleSubmit, isSubmitting } = useForm<DeploymentEdit>({
     initialValues: {
       description: props.deployment.description,
-      parameters: props.deployment.parameters,
+      parameters: props.deployment.rawParameters,
       schedule: props.deployment.schedule,
       isScheduleActive: props.deployment.isScheduleActive,
       workPoolName: props.deployment.workPoolName,
