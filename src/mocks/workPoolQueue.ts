@@ -7,6 +7,7 @@ export const randomWorkPoolQueue: MockFunction<WorkPoolQueue, [Partial<WorkPoolQ
     created: this.create('date'),
     updated: this.create('date'),
     workPoolId: this.create('id'),
+    workPoolName: this.create('noun'),
     name: this.create('noun'),
     description: this.create('paragraph'),
     isPaused: this.create('boolean'),

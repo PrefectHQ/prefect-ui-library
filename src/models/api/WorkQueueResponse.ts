@@ -12,4 +12,5 @@ export type WorkQueueResponse = {
   concurrency_limit: number | null,
   priority: number,
   work_pool_id: string,
+  work_pool_name?: string,
 }
