@@ -6,11 +6,31 @@
       </template>
     </p-key-value>
 
+    <template v-if="taskRun.startTime">
+      <p-key-value label="Start Time" :alternate="alternate" :value="formatDateTimeNumeric(taskRun.startTime)" />
+    </template>
+
     <p-key-value label="Duration" :alternate="alternate">
       <template #value>
         <DurationIconText :duration="taskRun.duration" />
       </template>
     </p-key-value>
+
+    <p-key-value label="Run Count" :value="taskRun.runCount ?? 0" :alternate="alternate" />
+
+    <p-key-value label="Estimated Run Time" :value="secondsToApproximateString(taskRun.estimatedRunTime ?? 0)" :alternate="alternate" />
+
+    <p-key-value label="Created" :value="formatDateTimeNumeric(taskRun.created)" :alternate="alternate" />
+
+    <p-key-value label="Last Updated" :value="formatDateTimeNumeric(taskRun.updated)" :alternate="alternate" />
+
+    <p-key-value label="Cache Key" :value="taskRun.cacheKey" :alternate="alternate" />
+
+    <p-key-value label="Cache Expiration" :value="taskRun.cacheExpiration" :alternate="alternate" />
+
+    <p-key-value label="Dynamic Key" :value="taskRun.dynamicKey" :alternate="alternate" />
+
+    <p-key-value label="Task Run ID" :value="taskRun.id" :alternate="alternate" />
 
     <template v-if="result">
       <p-key-value :label="localization.info.result" :alternate="alternate">
@@ -22,25 +42,11 @@
 
     <p-divider />
 
-    <p-key-value label="Created" :value="formatDateTimeNumeric(taskRun.created)" :alternate="alternate" />
+    <p-heading :heading="heading">
+      Task configuration
+    </p-heading>
 
-    <p-key-value label="Last Updated" :value="formatDateTimeNumeric(taskRun.updated)" :alternate="alternate" />
-
-    <p-key-value label="Task Run ID" :value="taskRun.id" :alternate="alternate" />
-
-    <p-key-value label="Flow Run ID" :value="taskRun.flowRunId" :alternate="alternate" />
-
-    <p-key-value label="Task Version" :value="taskRun.taskVersion" :alternate="alternate" />
-
-    <p-key-value label="Dynamic Key" :value="taskRun.dynamicKey" :alternate="alternate" />
-
-    <p-key-value label="Cache Key" :value="taskRun.cacheKey" :alternate="alternate" />
-
-    <p-key-value label="Cache Expiration" :value="taskRun.cacheExpiration" :alternate="alternate" />
-
-    <p-key-value label="Run Count" :value="taskRun.runCount ?? 0" :alternate="alternate" />
-
-    <p-key-value label="Estimated Run Time" :value="secondsToApproximateString(taskRun.estimatedRunTime ?? 0)" :alternate="alternate" />
+    <p-key-value label="Version" :value="taskRun.taskVersion" :alternate="alternate" />
 
     <div v-if="taskRun.empiricalPolicy?.maxRetries">
       <p-key-value label="Max Retries" :value="taskRun.empiricalPolicy?.maxRetries" :alternate="alternate" />
@@ -63,6 +69,7 @@
 
 <script lang="ts" setup>
   import { PKeyValue, PTags } from '@prefecthq/prefect-design'
+  import { computed } from 'vue'
   import DurationIconText from '@/components/DurationIconText.vue'
   import FlowRunIconText from '@/components/FlowRunIconText.vue'
   import { useTaskRunResult } from '@/compositions'
@@ -77,6 +84,8 @@
   }>()
 
   const { result } = useTaskRunResult(props.taskRun.id)
+
+  const heading = computed(() => props.alternate ? 6 : 5)
 </script>
 
 <style>
