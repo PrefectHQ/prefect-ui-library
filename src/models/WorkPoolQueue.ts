@@ -16,7 +16,7 @@ export class WorkPoolQueue implements IWorkPoolQueue {
   public created: Date
   public updated: Date
   public workPoolId: string
-  public workPoolName: string | undefined
+  public workPoolName?: string
   public name: string
   public description: string | null
   public isPaused: boolean
