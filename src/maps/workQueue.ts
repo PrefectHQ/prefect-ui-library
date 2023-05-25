@@ -13,7 +13,7 @@ export const mapWorkQueueResponseToWorkQueue: MapFunction<WorkQueueResponse, Wor
     concurrencyLimit: source.concurrency_limit,
     priority: source.priority,
     workPoolId: source.work_pool_id,
-    workPoolName?: source.work_pool_name,
+    workPoolName: source.work_pool_name,
   })
 }
 
@@ -29,7 +29,7 @@ export const mapWorkQueueToWorkQueueResponse: MapFunction<WorkQueue, WorkQueueRe
     concurrency_limit: source.concurrencyLimit,
     priority: source.priority,
     work_pool_id: source.workPoolId,
-    work_pool_name?: source.workPoolName,
+    work_pool_name: source.workPoolName,
   }
 }
 
