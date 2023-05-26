@@ -1,6 +1,15 @@
 <template>
+  <p-tooltip v-if="disableCancel" :text="localization.info.disableFlowRunCancel">
+    <p-button
+      disabled
+      secondary
+      danger
+    >
+      Cancel
+    </p-button>
+  </p-tooltip>
   <p-button
-    v-if="canCancel"
+    v-else-if="canCancel"
     secondary
     danger
     @click="open"
@@ -15,12 +24,11 @@
 </template>
 
   <script lang="ts" setup>
-  import { useSubscriptionWithDependencies } from '@prefecthq/vue-compositions'
   import { computed } from 'vue'
   import FlowRunCancelModal from '@/components/FlowRunCancelModal.vue'
-  import { useWorkspaceApi } from '@/compositions'
   import { useCan } from '@/compositions/useCan'
   import { useShowModal } from '@/compositions/useShowModal'
+  import { localization } from '@/localization'
   import { FlowRun, isStuckStateType } from '@/models'
 
   const props = defineProps<{
@@ -30,35 +38,17 @@
   const can = useCan()
   const { showModal, open } = useShowModal()
 
-  const api = useWorkspaceApi()
-
-  const flowRunFilter = computed<Parameters<typeof api.flowRuns.getFlowRuns> | null>(() => {
-    if (props.flowRun.parentTaskRunId) {
-      return [
-        {
-          taskRuns: {
-            id: [props.flowRun.parentTaskRunId],
-          },
-        },
-      ]
-    }
-
-    return null
-  })
-  const parentFlowRunListSubscription = useSubscriptionWithDependencies(api.flowRuns.getFlowRuns, flowRunFilter)
-  const parentFlowRunList = computed(() => parentFlowRunListSubscription.response ?? [])
-  const parentFlowRunId = computed(() => {
-    if (!parentFlowRunList.value.length) {
-      return
-    }
-    const [value] = parentFlowRunList.value
-    return value.id
-  })
-
   const canCancel = computed(() => {
-    if (!can.update.flow_run || !props.flowRun.stateType || parentFlowRunId.value || !props.flowRun.deploymentId) {
+    if (!can.update.flow_run || !props.flowRun.stateType) {
       return false
     }
     return isStuckStateType(props.flowRun.stateType)
   })
-  </script>
+
+  const disableCancel = computed(() => {
+    if (!props.flowRun.deploymentId && canCancel.value) {
+      return true
+    }
+    return false
+  })
+</script>
