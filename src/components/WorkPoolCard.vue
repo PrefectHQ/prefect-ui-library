@@ -31,7 +31,7 @@
 
       <div v-if="workPoolWorkers.length">
         <span class="work-pool-card__details-label">Last Polled</span>
-        {{ formatDateTimeRelative(lastWorkerHeartbeat, currentTime) }}
+        {{ lastPolled }}
       </div>
     </div>
   </p-card>
@@ -39,12 +39,13 @@
 
 <script lang="ts" setup>
   import { media } from '@prefecthq/prefect-design'
-  import { useSubscription } from '@prefecthq/vue-compositions'
+  import { useNow, useSubscription } from '@prefecthq/vue-compositions'
+  import max from 'date-fns/max'
   import { computed } from 'vue'
   import { WorkPoolMenu, WorkPoolToggle, WorkersLateIndicator, ProcessTypeBadge } from '@/components'
   import { useWorkspaceApi, useWorkspaceRoutes } from '@/compositions'
   import { WorkPool } from '@/models'
-  import { now, formatDateTimeRelative } from '@/utilities'
+  import { formatDateTimeRelative } from '@/utilities'
 
   const props = defineProps<{
     workPool: WorkPool,
@@ -56,11 +57,16 @@
   const subscriptionOptions = {
     interval: 30000,
   }
-  const currentTime = now()
+  const { now } = useNow({ interval: 1000 })
 
   const workPoolWorkersSubscription = useSubscription(api.workPoolWorkers.getWorkers, [props.workPool.name, {}], subscriptionOptions)
   const workPoolWorkers = computed(() => workPoolWorkersSubscription.response ?? [])
-  const lastWorkerHeartbeat = computed(() => workPoolWorkers.value[0].lastHeartbeatTime)
+  const lastWorkerHeartbeat = computed(() => {
+    const heartbeats = workPoolWorkers.value.map(worker => worker.lastHeartbeatTime)
+
+    return max(heartbeats)
+  })
+  const lastPolled = computed(() => formatDateTimeRelative(lastWorkerHeartbeat.value, now.value))
 
   const emit = defineEmits<{
     (event: 'update'): void,
