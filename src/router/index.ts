@@ -22,6 +22,14 @@ type WorkspaceRouteComponents = Record<WorkspaceRouteKey, WorkspaceComponent>
 export function createWorkspaceRouteRecords(components: Partial<WorkspaceRouteComponents>): WorkspaceRouteRecord[] {
   return [
     {
+      path: 'dashboard',
+      name: 'workspace.dashboard',
+      meta: {
+        can: 'access:dashboard',
+      },
+      component: components.dashboard,
+    },
+    {
       path: 'flow-runs',
       meta: {
         can: 'read:flow_run',
