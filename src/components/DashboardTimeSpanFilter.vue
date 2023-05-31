@@ -21,8 +21,8 @@
   })
 
   const options: ButtonGroupOption[] = [
-    { label: '8H', value: secondsInHour * 8 },
-    { label: '24H', value: secondsInDay },
-    { label: '1W', value: secondsInWeek },
+    { label: '8h', value: secondsInHour * 8 },
+    { label: '24h', value: secondsInDay },
+    { label: '1w', value: secondsInWeek },
   ]
 </script>
