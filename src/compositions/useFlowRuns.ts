@@ -1,5 +1,5 @@
 import { SubscriptionOptions, useSubscriptionWithDependencies } from '@prefecthq/vue-compositions'
-import { computed, Ref, ref, watch } from 'vue'
+import { computed, MaybeRef, Ref, ref, watch } from 'vue'
 import { useCan } from '@/compositions/useCan'
 import { useWorkspaceApi } from '@/compositions/useWorkspaceApi'
 import { FlowRunsFilter } from '@/models/Filters'
@@ -8,6 +8,13 @@ import { useFlowRunStorage } from '@/services/storage'
 import { UseEntitySubscription } from '@/types/useEntitySubscription'
 
 export type UseFlowRuns = UseEntitySubscription<WorkspaceFlowRunsApi['getFlowRuns'], 'flowRuns'>
+
+// the api currently has a default limit of 200 but we want load smaller pages
+const FLOW_RUN_LIMIT = 100
+
+export function useFlowRunsPage(filter: FlowRunsFilter | Ref<FlowRunsFilter | null | undefined>, page: MaybeRef<number>, options?: SubscriptionOptions): UseFlowRuns {
+
+}
 
 export function useFlowRuns(filter: FlowRunsFilter | Ref<FlowRunsFilter | null | undefined>, options?: SubscriptionOptions): UseFlowRuns {
   const api = useWorkspaceApi()
