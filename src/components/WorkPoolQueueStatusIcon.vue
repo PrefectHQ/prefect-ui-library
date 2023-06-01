@@ -43,7 +43,7 @@
     icon: Icon,
   }>(() => {
     if (workPoolQueue.value?.isPaused) {
-      return { state: 'paused', name: 'Paused', icon: 'PauseIcon' }
+      return { state: 'paused', name: 'Paused', icon: 'PauseCircleIcon' }
     }
     if (healthy.value) {
       return { state: 'healthy', name: 'Healthy', icon: 'CheckCircleIcon' }
@@ -58,6 +58,7 @@
 .work-queue-status-icon { @apply
   flex
   items-center
+  cursor-help
 }
 
 .work-queue-status-icon--healthy { @apply
@@ -66,14 +67,13 @@
   align-middle
   bg-green-500
   rounded-full
-  text-state-completed-600
 }
 
 .work-queue-status-icon--unhealthy { @apply
-  text-state-failed-700
+  text-state-failed-500
 }
 
 .work-queue-status-icon--paused { @apply
-  text-state-pending-700
+  text-state-paused-500
 }
 </style>
