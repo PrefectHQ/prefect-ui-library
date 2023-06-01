@@ -21,6 +21,6 @@
 
 <style>
 .work-pools-list {
-  --virtual-scroller-item-gap: theme('spacing.2')
+  --virtual-scroller-item-gap: theme('spacing.3')
 }
 </style>
