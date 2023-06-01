@@ -62,7 +62,7 @@
   flex
   justify-center
   w-full
-  bg-slate-700/70
+  bg-slate-800/70
   sticky
   -top-2;
 }
@@ -74,12 +74,12 @@
   left-0
   right-0
   top-1/2
-  bg-slate-800;
+  bg-slate-600;
   content: '';
 }
 
 .logs__divider-time { @apply
-  bg-slate-700
+  bg-slate-800
   relative
   rounded
   px-2
