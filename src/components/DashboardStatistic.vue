@@ -33,6 +33,6 @@
 }
 
 .dashboard-statistic__meta { @apply
-  text-slate-500
+  text-foreground-200
 }
 </style>
