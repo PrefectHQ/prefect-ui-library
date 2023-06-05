@@ -21,6 +21,7 @@
 
             <div class="flow-list__header-end">
               <SearchInput v-model="search" :placeholder="localization.info.searchByFlowName" :label="localization.info.searchByFlowName" />
+              <SearchInput v-model="deploymentNameSearch" :placeholder="localization.info.searchByDeploymentName" :label="localization.info.searchByDeploymentName" />
               <p-select v-model="routeFilter.sort" :options="flowSortOptions" />
               <p-button icon="AdjustmentsVerticalIcon" :class="classes.filterButton" inset @click="headerExpanded = !headerExpanded" />
             </div>
@@ -121,6 +122,18 @@
     },
   })
 
+  const deploymentNameSearch = ref<string>()
+  const deploymentNameLikeDebounced = useDebouncedRef(deploymentNameSearch, 800)
+
+  const deploymentNameLike = computed({
+    get() {
+      return deploymentNameLikeDebounced.value === '' ? undefined : deploymentNameLikeDebounced.value
+    },
+    set(value: string | undefined) {
+      deploymentNameSearch.value = value
+    },
+  })
+
   const page = useRouteQueryParam<number>('page', NumberRouteParam, 1)
   const offset = computed(() => {
     return (page.value - 1) * DEFAULT_LIMIT
@@ -132,6 +145,9 @@
     flows: {
       ...props.filter?.flows,
       nameLike,
+    },
+    deployments: {
+      nameLike: deploymentNameLike,
     },
   })
   uniqueValueWatcher(routeFilter, () => page.value = 1)
