@@ -2,7 +2,7 @@
   <p-tooltip
     v-if="workPoolQueue && workQueueStatus"
     class="work-queue-status-icon"
-    :text="`Work queue is ${status.state}`"
+    :text="tooltipText"
   >
     <div v-if="status.state === 'healthy'" class="work-queue-status-icon--healthy" />
     <p-icon
@@ -24,6 +24,7 @@
   const props = defineProps<{
     workQueueName: string,
     workPoolName: string,
+    tooltipPreText?: string,
   }>()
 
   const api = useWorkspaceApi()
@@ -31,7 +32,6 @@
 
   const workPoolQueuesSubscription = useSubscriptionWithDependencies(api.workPoolQueues.getWorkPoolQueueByName, workPoolQueueArgs)
   const workPoolQueue = computed(() => workPoolQueuesSubscription.response)
-
 
   const workQueueId = computed(() => workPoolQueue.value?.id)
   const { workQueueStatus } = useWorkQueueStatus(workQueueId)
@@ -51,6 +51,7 @@
     return { state: 'unhealthy', name: 'Unhealthy', icon: 'ExclamationCircleIcon' }
   })
 
+  const tooltipText = computed(() => `${props.tooltipPreText ?? 'Work queue is'} ${status.value.state}`)
   const classes = computed(() => `work-queue-status-icon--${status.value.state}`)
 </script>
 
