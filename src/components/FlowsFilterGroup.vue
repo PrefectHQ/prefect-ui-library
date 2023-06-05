@@ -1,10 +1,6 @@
 <template>
   <div class="flows-filter-group">
     <div class="flows-filter-group__row">
-      <p-label :label="localization.info.deploymentName">
-        <SearchInput v-model="deploymentNameLike" :placeholder="localization.info.searchByDeploymentName" :label="localization.info.searchByDeploymentName" />
-      </p-label>
-
       <p-label :label="localization.info.deploymentTags">
         <DeploymentTagsInput
           v-model:selected="filter.flowRuns.tags.name"
@@ -12,9 +8,7 @@
           class="flows-filter-group__deployment-tags"
         />
       </p-label>
-    </div>
 
-    <div class="flows-filter-group__row">
       <p-label :label="localization.info.schedule">
         <p-select v-model="scheduleActive" :options="scheduleActiveOptions" />
       </p-label>
@@ -47,17 +41,13 @@
 
 <script lang="ts" setup>
   import { media, PLabel } from '@prefecthq/prefect-design'
-  import { useDebouncedRef } from '@prefecthq/vue-compositions'
   import { computed, ref } from 'vue'
-  import { DeploymentTagsInput, SearchInput, StateNameSelect, WorkPoolCombobox } from '@/components'
+  import { DeploymentTagsInput, StateNameSelect, WorkPoolCombobox } from '@/components'
   import DateRangeInputWithFlowRunHistory from '@/components/DateRangeInputWithFlowRunHistory.vue'
   import { useFlowsFilterFromRoute } from '@/compositions/filters'
   import { localization } from '@/localization'
   import { isNullish } from '@/utilities'
 
-
-  const deploymentNameLike = ref<string>()
-  const deploymentNameLikeDebounced = useDebouncedRef(deploymentNameLike, 800)
 
   const scheduleActive = ref(null)
   const scheduleActiveOptions = [
@@ -73,18 +63,10 @@
     return scheduleActive.value
   })
 
-  const nameLike = computed({
-    get() {
-      return deploymentNameLikeDebounced.value === '' ? undefined : deploymentNameLikeDebounced.value
-    },
-    set(value: string | undefined) {
-      deploymentNameLike.value = value
-    },
-  })
 
   const { filter, isDefaultFilter, clear } = useFlowsFilterFromRoute({
     deployments: {
-      nameLike,
+
       isScheduleActive,
     },
   })
