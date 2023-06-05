@@ -56,7 +56,7 @@
   const cancel = async (): Promise<void> => {
     try {
       const values: StateUpdateDetails = {
-        type: 'cancelled',
+        type: 'cancelling',
         name: 'Cancelling',
       }
       await api.flowRuns.setFlowRunState(props.flowRunId, { state: values })

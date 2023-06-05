@@ -31,7 +31,7 @@ export const prefectStateNameTypes = {
   'Completed': 'completed',
   'Skipped': 'completed',
   'Cancelled': 'cancelled',
-  'Cancelling': 'cancelled',
+  'Cancelling': 'cancelling',
   'Crashed': 'crashed',
   'Failed': 'failed',
   'TimedOut': 'failed',

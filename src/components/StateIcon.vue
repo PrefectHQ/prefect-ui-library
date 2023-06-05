@@ -21,6 +21,10 @@
       return 'Pending'
     }
 
+    if (props.stateType === 'cancelling') {
+      return 'Cancelled'
+    }
+
     return capitalize(props.stateType ?? 'QuestionMarkCircleIcon')
   })
 
