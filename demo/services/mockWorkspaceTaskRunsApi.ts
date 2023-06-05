@@ -1,5 +1,5 @@
 import { MockApi } from './MockApi'
-import { StateUpdate, TaskRun } from '@/models'
+import { StateUpdate, TaskRun, TaskRunHistory } from '@/models'
 import { TaskRunsFilter } from '@/models/Filters'
 import { IWorkspaceTaskRunsApi, mocker } from '@/services'
 
@@ -35,6 +35,10 @@ export class MockWorkspaceTaskRunsApi extends MockApi implements IWorkspaceTaskR
 
   public async deleteTaskRun(taskRunId: string): Promise<void> {
     return await this.taskRuns.delete(taskRunId)
+  }
+
+  public getTaskRunsHistory(): Promise<TaskRunHistory[]> {
+    throw new Error('Not implemented')
   }
 
 }

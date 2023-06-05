@@ -81,6 +81,9 @@
     return undefined
   })
 
+  const historyFilter = computed(() => mapper.map('WorkspaceDashboardFilter', props.filter, 'TaskRunsHistoryFilter'))
+  const historySubscription = useSubscription(api.taskRuns.getTaskRunsHistory, [historyFilter])
+
   function toPercent(x: number, y: number): string {
     const decimal = x / y
     const percent = Math.round((decimal + Number.EPSILON) * 10000) / 100
