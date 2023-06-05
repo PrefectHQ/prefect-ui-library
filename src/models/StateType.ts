@@ -5,6 +5,7 @@ export const stateType = [
   'pending',
   'failed',
   'cancelled',
+  'cancelling',
   'crashed',
   'paused',
 ] as const
