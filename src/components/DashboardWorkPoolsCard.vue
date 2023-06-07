@@ -46,6 +46,12 @@
   mb-4
 }
 
+.dashboard-work-pools-card__list { @apply
+  flex
+  flex-col
+  gap-4
+}
+
 .dashboard-work-pools-card__empty { @apply
   text-center
   text-foreground-200

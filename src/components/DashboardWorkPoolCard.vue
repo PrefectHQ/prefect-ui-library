@@ -11,7 +11,7 @@
         {{ lateFlowRunsCount }}
       </DashboardWorkPoolCardDetail>
       <DashboardWorkPoolCardDetail label="Work Queues">
-        -----
+        <DashboardWorkPoolCardWorkQueues :work-pool="workPool" />
       </DashboardWorkPoolCardDetail>
       <DashboardWorkPoolCardDetail label="Complete Ratio">
         ------
@@ -26,6 +26,7 @@
   import { computed } from 'vue'
   import DashboardWorkPoolCardDetail from '@/components/DashboardWorkPoolCardDetail.vue'
   import DashboardWorkPoolCardHeading from '@/components/DashboardWorkPoolCardHeading.vue'
+  import DashboardWorkPoolCardWorkQueues from '@/components/DashboardWorkPoolCardWorkQueues.vue'
   import { useWorkspaceApi } from '@/compositions'
   import { FlowRunsFilter, WorkPool } from '@/models'
   import { formatDateTimeRelative } from '@/utilities'
@@ -47,9 +48,19 @@
   const lastWorkerHeartbeat = computed(() => {
     const heartbeats = workPoolWorkers.value.map(worker => worker.lastHeartbeatTime)
 
+    if (heartbeats.length === 0) {
+      return null
+    }
+
     return max(heartbeats)
   })
-  const lastPolled = computed(() => formatDateTimeRelative(lastWorkerHeartbeat.value, now.value))
+  const lastPolled = computed(() => {
+    if (lastWorkerHeartbeat.value === null) {
+      return 'N/A'
+    }
+
+    return formatDateTimeRelative(lastWorkerHeartbeat.value, now.value)
+  })
 
   const lateFlowRunsFilter = computed<FlowRunsFilter>(() => ({
     workPools: {
@@ -69,6 +80,7 @@
 .dashboard-work-pool-card { @apply
   border
   border-slate-200
+  dark:border-slate-700
   rounded-xl
 }
 
@@ -76,6 +88,7 @@
   p-3
   border-b
   border-slate-200
+  dark:border-slate-700
 }
 
 .dashboard-work-pool-card__details { @apply

@@ -3,13 +3,11 @@
     <p-link :to="routes.workPool(workPool.name)">
       {{ workPool.name }}
     </p-link>
-    <ProcessTypeBadge :type-label="workPool.typeLabel" />
   </div>
 </template>
 
 <script lang="ts" setup>
   import { useWorkspaceRoutes } from '..'
-  import { ProcessTypeBadge } from '@/components'
   import { WorkPool } from '@/models'
 
   defineProps<{

@@ -18,14 +18,12 @@
 <style>
 .dashboard-work-pool-card-detail { @apply
   text-center
+  w-[100px]
+  max-w-[25%]
 }
 
 .dashboard-work-pool-card-detail__label { @apply
   text-xs
   text-slate-500
-}
-
-.dashboard-work-pool-card-detail__value { @apply
-  min-w-[64px]
 }
 </style>
