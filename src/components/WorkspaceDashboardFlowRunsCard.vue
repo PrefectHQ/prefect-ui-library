@@ -34,6 +34,8 @@
 <style>
 .workspace-dashboard-flow-runs-card { @apply
   grid
+  grid-cols-1
+  auto-rows-max
   gap-4
 }
 
