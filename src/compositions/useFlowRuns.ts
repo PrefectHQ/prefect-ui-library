@@ -1,13 +1,16 @@
-import { SubscriptionOptions, useSubscriptionWithDependencies } from '@prefecthq/vue-compositions'
-import { computed, Ref, ref, watch } from 'vue'
+import { SubscriptionOptions, UseSubscription, useSubscriptionWithDependencies } from '@prefecthq/vue-compositions'
+import { computed, ComputedRef, Ref, ref, watch } from 'vue'
 import { useCan } from '@/compositions/useCan'
 import { useWorkspaceApi } from '@/compositions/useWorkspaceApi'
 import { FlowRunsFilter } from '@/models/Filters'
+import { FlowRun } from '@/models/FlowRun'
 import { WorkspaceFlowRunsApi } from '@/services'
 import { useFlowRunStorage } from '@/services/storage'
-import { UseEntitySubscription } from '@/types/useEntitySubscription'
 
-export type UseFlowRuns = UseEntitySubscription<WorkspaceFlowRunsApi['getFlowRuns'], 'flowRuns'>
+export type UseFlowRuns = {
+  subscription: UseSubscription<WorkspaceFlowRunsApi['getFlowRuns']>,
+  flowRuns: ComputedRef<FlowRun[]>,
+}
 
 export function useFlowRuns(filter: FlowRunsFilter | Ref<FlowRunsFilter | null | undefined>, options?: SubscriptionOptions): UseFlowRuns {
   const api = useWorkspaceApi()
@@ -43,7 +46,7 @@ export function useFlowRuns(filter: FlowRunsFilter | Ref<FlowRunsFilter | null |
       return storage.getAll(ids)
     }
 
-    return undefined
+    return []
   })
 
   return {
