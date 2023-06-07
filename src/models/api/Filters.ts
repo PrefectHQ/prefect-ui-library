@@ -248,3 +248,9 @@ export type WorkPoolWorkersFilterRequest = {
   limit?: number,
   offset?: number,
 }
+
+export type TaskRunsHistoryFilterRequest = Pick<TaskRunsFilterRequest, 'deployments' | 'flow_runs' | 'task_runs' | 'flows'> & {
+  history_start: string,
+  history_end: string,
+  history_interval_seconds: number,
+}

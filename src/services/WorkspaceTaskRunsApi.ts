@@ -1,7 +1,9 @@
+import { TaskRunHistoryResponse } from '@/models/api/TaskRunHistoryResponse'
 import { TaskRunResponse } from '@/models/api/TaskRunResponse'
-import { TaskRunsFilter } from '@/models/Filters'
+import { TaskRunsFilter, TaskRunsHistoryFilter } from '@/models/Filters'
 import { StateUpdate } from '@/models/StateUpdate'
 import { TaskRun } from '@/models/TaskRun'
+import { TaskRunHistory } from '@/models/TaskRunHistory'
 import { BatchProcessor } from '@/services/BatchProcessor'
 import { mapper } from '@/services/Mapper'
 import { WorkspaceApi } from '@/services/WorkspaceApi'
@@ -55,5 +57,12 @@ export class WorkspaceTaskRunsApi extends WorkspaceApi implements IWorkspaceTask
 
   public deleteTaskRun(taskRunId: string): Promise<void> {
     return this.delete(`/${taskRunId}`)
+  }
+
+  public async getTaskRunsHistory(filter: TaskRunsHistoryFilter): Promise<TaskRunHistory[]> {
+    const request = mapper.map('TaskRunsHistoryFilter', filter, 'TaskRunsHistoryFilterRequest')
+    const { data } = await this.post<TaskRunHistoryResponse[]>('/history', request)
+
+    return mapper.map('TaskRunHistoryResponse', data, 'TaskRunHistory')
   }
 }
