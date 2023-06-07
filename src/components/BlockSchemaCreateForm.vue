@@ -56,6 +56,9 @@
   const isUniqueBlockName: ValidationMethodFactory = () => async (value) => {
     if (value && typeof value === 'string') {
       const documents = await api.blockDocuments.getBlockDocuments({
+        blockTypes: {
+          slug: [props.blockSchema.blockType.slug],
+        },
         blockDocuments: {
           name: [value],
         },
