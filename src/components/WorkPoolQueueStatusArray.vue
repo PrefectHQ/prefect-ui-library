@@ -1,5 +1,5 @@
 <template>
-  <div v-if="workPoolQueues.length < maxWorkQueues" class="dashboard-work-pool-card-work-queues">
+  <div v-if="workPoolQueues.length < maxWorkQueues" class="work-pool-queue-status-array">
     <WorkPoolQueueStatusIcon
       v-for="workQueue in workPoolQueues"
       :key="workQueue.id"
@@ -30,7 +30,7 @@
 </script>
 
 <style>
-.dashboard-work-pool-card-work-queues { @apply
+.work-pool-queue-status-array { @apply
   inline-flex
   flex-wrap
   items-center

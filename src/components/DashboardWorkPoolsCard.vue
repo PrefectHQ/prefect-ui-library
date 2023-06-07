@@ -3,9 +3,14 @@
     <p-heading heading="5" class="dashboard-work-pools-card__heading">
       Work Pools
     </p-heading>
-    <template v-for="workPool in workPools" :key="workPool.id">
-      <DashboardWorkPoolCard :work-pool="workPool" />
-    </template>
+    <div class="dashboard-work-pools-card__list">
+      <DashboardWorkPoolCard
+        v-for="workPool in workPools"
+        :key="workPool.id"
+        :work-pool="workPool"
+        :filter="filter"
+      />
+    </div>
     <div v-if="workPools.length === 0" class="dashboard-work-pools-card__empty">
       <p>
         There are no active work pools to show. Any work pools you do have are paused.
@@ -23,10 +28,9 @@
   import DashboardWorkPoolCard from '@/components/DashboardWorkPoolCard.vue'
   import { useWorkspaceRoutes } from '@/compositions'
   import { useWorkspaceApi } from '@/compositions/useWorkspaceApi'
-  import { WorkspaceDashboardFilter } from '@/types/dashboard'
+  import { WorkspaceDashboardFilter } from '@/types'
 
-  // TODO - Use this filter to filter the work pools content
-  const props = defineProps<{
+  defineProps<{
     filter: WorkspaceDashboardFilter,
   }>()
 
