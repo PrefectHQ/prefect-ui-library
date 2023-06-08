@@ -12,8 +12,11 @@ export type UseFlowRuns = UseEntitySubscription<WorkspaceFlowRunsApi['getFlowRun
 // the api currently has a default limit of 200 but we want load smaller pages
 const FLOW_RUN_LIMIT = 100
 
-export function useFlowRunsPage(filter: FlowRunsFilter | Ref<FlowRunsFilter | null | undefined>, page: MaybeRef<number>, options?: SubscriptionOptions): UseFlowRuns {
+export type FlowRunsPageFilter = Omit<FlowRunsFilter, 'limit' | 'offset'>
 
+export function useFlowRunsPage(filter: FlowRunsPageFilter | Ref<FlowRunsPageFilter | null | undefined>, page: MaybeRef<number> = 1, options?: SubscriptionOptions): UseFlowRuns {
+  const filterRef = ref(filter)
+  const pageRef = ref(page)
 }
 
 export function useFlowRuns(filter: FlowRunsFilter | Ref<FlowRunsFilter | null | undefined>, options?: SubscriptionOptions): UseFlowRuns {
