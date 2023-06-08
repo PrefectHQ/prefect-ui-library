@@ -142,6 +142,7 @@
   relative
   grid
   gap-4
+  auto-rows-max
   overflow-hidden
 }
 

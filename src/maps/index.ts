@@ -10,7 +10,7 @@ import { mapCollectionItemResponseToCollectionItem, mapCollectionResponseToColle
 import { mapConcurrencyLimitResponseToConcurrencyLimit } from '@/maps/concurrencyLimit'
 import { mapConcurrencyLimitCreateToConcurrencyLimitCreateRequest } from '@/maps/concurrencyLimitCreate'
 import { mapCreatedOrUpdatedByResponseToCreatedOrUpdatedBy } from '@/maps/createdOrUpdatedBy'
-import { mapWorkspaceDashboardFilterToTaskRunsFilter, mapWorkspaceDashboardFilterToTaskRunsHistoryFilter } from '@/maps/dashboard'
+import { mapWorkspaceDashboardFilterToFlowRunsFilter, mapWorkspaceDashboardFilterToTaskRunsFilter, mapWorkspaceDashboardFilterToTaskRunsHistoryFilter } from '@/maps/dashboard'
 import { mapStringToDate, mapDateToString } from '@/maps/date'
 import { mapDeploymentResponseToDeployment, mapDeploymentUpdateToDeploymentUpdateRequest, mapDeploymentFlowRunCreateToDeploymentFlowRunRequest } from '@/maps/deployment'
 import { mapRunHistoryToDivergingBarChartItem } from '@/maps/divergingBarChartItem'
@@ -173,7 +173,7 @@ export const maps = {
   WorkQueueResponse: { WorkQueue: mapWorkQueueResponseToWorkQueue },
   WorkQueuesFilter: { WorkQueuesFilterRequest: mapWorkQueuesFilter },
   WorkQueueStatusResponse: { WorkQueueStatus: mapWorkQueueStatusResponseToWorkQueueStatus },
-  WorkspaceDashboardFilter: { TaskRunsFilter: mapWorkspaceDashboardFilterToTaskRunsFilter, TaskRunsHistoryFilter: mapWorkspaceDashboardFilterToTaskRunsHistoryFilter },
+  WorkspaceDashboardFilter: { TaskRunsFilter: mapWorkspaceDashboardFilterToTaskRunsFilter, TaskRunsHistoryFilter: mapWorkspaceDashboardFilterToTaskRunsHistoryFilter, FlowRunsFilter: mapWorkspaceDashboardFilterToFlowRunsFilter },
   TaskRunHistoryStateResponse: { TaskRunHistoryState: mapTaskRunHistoryStateResponseToTaskRunHistoryState },
   TaskRunHistoryResponse: { TaskRunHistory: mapTaskRunHistoryResponseToTaskRunHistory },
 }
