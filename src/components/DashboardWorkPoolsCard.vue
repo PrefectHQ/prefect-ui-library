@@ -5,13 +5,13 @@
     </p-heading>
     <div class="dashboard-work-pools-card__list">
       <DashboardWorkPoolCard
-        v-for="workPool in workPools"
+        v-for="workPool in activeWorkPools"
         :key="workPool.id"
         :work-pool="workPool"
         :filter="filter"
       />
     </div>
-    <div v-if="workPools.length === 0" class="dashboard-work-pools-card__empty">
+    <div v-if="showEmptyMsg" class="dashboard-work-pools-card__empty">
       <p>
         There are no active work pools to show. Any work pools you do have are paused.
       </p>
@@ -42,7 +42,15 @@
   const api = useWorkspaceApi()
 
   const workPoolsSubscription = useSubscription(api.workPools.getWorkPools, [], subscriptionOptions)
-  const workPools = computed(() => workPoolsSubscription.response?.filter(workPool => !workPool.isPaused) ?? [])
+  const activeWorkPools = computed(() => {
+    const workPools = workPoolsSubscription.response ?? []
+
+    return workPools.filter(workPool => !workPool.isPaused)
+  })
+
+  const showEmptyMsg = computed(() => {
+    return workPoolsSubscription.response && activeWorkPools.value.length === 0
+  })
 </script>
 
 <style>

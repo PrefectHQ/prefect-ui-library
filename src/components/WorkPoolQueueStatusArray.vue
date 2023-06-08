@@ -1,5 +1,5 @@
 <template>
-  <div v-if="workPoolQueues.length < maxWorkQueues" class="work-pool-queue-status-array">
+  <div v-if="workPoolQueues.length <= maxWorkQueues" class="work-pool-queue-status-array">
     <WorkPoolQueueStatusIcon
       v-for="workQueue in workPoolQueues"
       :key="workQueue.id"
@@ -22,7 +22,7 @@
     workPool: WorkPool,
   }>()
 
-  const maxWorkQueues = 26
+  const maxWorkQueues = 50
   const api = useWorkspaceApi()
 
   const workPoolQueuesSubscription = useSubscription(api.workPoolQueues.getWorkPoolQueues, [props.workPool.name])

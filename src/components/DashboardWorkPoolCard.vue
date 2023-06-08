@@ -1,6 +1,6 @@
 <template>
   <div class="dashboard-work-pool-card">
-    <div class="dashboard-work-pool-card__header-row">
+    <div class="dashboard-work-pool-card__header">
       <p-link :to="routes.workPool(workPool.name)">
         {{ workPool.name }}
       </p-link>
@@ -51,7 +51,7 @@
   rounded-xl
 }
 
-.dashboard-work-pool-card__header-row { @apply
+.dashboard-work-pool-card__header { @apply
   p-3
   border-b
   border-slate-200
