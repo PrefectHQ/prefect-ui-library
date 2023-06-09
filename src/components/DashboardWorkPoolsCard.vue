@@ -26,7 +26,7 @@
   import { useSubscription } from '@prefecthq/vue-compositions'
   import { computed } from 'vue'
   import DashboardWorkPoolCard from '@/components/DashboardWorkPoolCard.vue'
-  import { useWorkspaceRoutes } from '@/compositions'
+  import { useDashboardSubscriptionOptions, useWorkspaceRoutes } from '@/compositions'
   import { useWorkspaceApi } from '@/compositions/useWorkspaceApi'
   import { WorkspaceDashboardFilter } from '@/types'
 
@@ -34,9 +34,7 @@
     filter: WorkspaceDashboardFilter,
   }>()
 
-  const subscriptionOptions = {
-    interval: 30000,
-  }
+  const subscriptionOptions = useDashboardSubscriptionOptions()
 
   const routes = useWorkspaceRoutes()
   const api = useWorkspaceApi()

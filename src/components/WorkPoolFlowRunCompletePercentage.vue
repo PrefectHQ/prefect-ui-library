@@ -37,12 +37,12 @@
     },
   }))
 
-  const flowRunFilter = computed(() => mapper.map('WorkspaceDashboardFilter', props.filter, 'FlowRunFilter'))
+  const flowRunFilter = computed(() => mapper.map('WorkspaceDashboardFilter', props.filter, 'FlowRunsFilter'))
 
   const allRunsCountFilter = computed<FlowRunsFilter>(() => ({
     ...baseFilter.value,
     flowRuns: {
-      ...flowRunFilter.value,
+      ...flowRunFilter.value?.flowRuns,
       state: {
         type: ['COMPLETED', 'FAILED', 'CRASHED'],
       },
@@ -54,7 +54,7 @@
   const completeRunsCountFilter = computed<FlowRunsFilter>(() => ({
     ...baseFilter.value,
     flowRuns: {
-      ...flowRunFilter.value,
+      ...flowRunFilter.value?.flowRuns,
       state: {
         type: ['COMPLETED'],
       },
@@ -72,15 +72,18 @@
   })
 
   const prevFlowRunFilter = computed(() => {
-    if (!flowRunFilter.value?.startTimeBefore || !flowRunFilter.value.startTimeAfter || !props.filter?.timeSpanInSeconds) {
+    const rootStartTimeBefore = flowRunFilter.value?.flowRuns?.startTimeBefore
+    const rootStartTimeAfter = flowRunFilter.value?.flowRuns?.startTimeAfter
+
+    if (!rootStartTimeBefore || !rootStartTimeAfter || !props.filter?.timeSpanInSeconds) {
       return null
     }
 
-    const startTimeBefore = new Date(flowRunFilter.value.startTimeBefore.getTime() - props.filter.timeSpanInSeconds * 1000)
-    const startTimeAfter = new Date(flowRunFilter.value.startTimeAfter.getTime() - props.filter.timeSpanInSeconds * 1000)
+    const startTimeBefore = new Date(rootStartTimeBefore.getTime() - props.filter.timeSpanInSeconds * 1000)
+    const startTimeAfter = new Date(rootStartTimeAfter.getTime() - props.filter.timeSpanInSeconds * 1000)
 
     return {
-      ...flowRunFilter.value,
+      ...flowRunFilter.value.flowRuns,
       startTimeBefore,
       startTimeAfter,
     }

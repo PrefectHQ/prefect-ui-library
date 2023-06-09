@@ -13,7 +13,6 @@ import { mapCreatedOrUpdatedByResponseToCreatedOrUpdatedBy } from '@/maps/create
 import {
   mapWorkspaceDashboardFilterToTaskRunsFilter,
   mapWorkspaceDashboardFilterToTaskRunsHistoryFilter,
-  mapWorkspaceDashboardFilterToFlowRunFilter,
   mapWorkspaceDashboardFilterToWorkPoolWorkersFilter,
   mapWorkspaceDashboardFilterToFlowRunsFilter
 } from '@/maps/dashboard'
@@ -182,7 +181,6 @@ export const maps = {
   WorkspaceDashboardFilter: {
     TaskRunsFilter: mapWorkspaceDashboardFilterToTaskRunsFilter,
     TaskRunsHistoryFilter: mapWorkspaceDashboardFilterToTaskRunsHistoryFilter,
-    FlowRunFilter: mapWorkspaceDashboardFilterToFlowRunFilter,
     FlowRunsFilter: mapWorkspaceDashboardFilterToFlowRunsFilter,
     WorkPoolWorkersFilter: mapWorkspaceDashboardFilterToWorkPoolWorkersFilter,
   },

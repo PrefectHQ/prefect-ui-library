@@ -23,13 +23,13 @@
     interval: 30000,
   }
 
-  const flowRunFilter = computed(() => mapper.map('WorkspaceDashboardFilter', props.filter, 'FlowRunFilter'))
+  const flowRunsFilter = computed(() => mapper.map('WorkspaceDashboardFilter', props.filter, 'FlowRunsFilter'))
   const lateFlowRunsFilter = computed<FlowRunsFilter>(() => ({
     workPools: {
       name: [props.workPool.name],
     },
     flowRuns: {
-      ...flowRunFilter.value,
+      ...flowRunsFilter.value?.flowRuns,
       state: {
         name: ['Late'],
       },
