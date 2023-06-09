@@ -19,7 +19,7 @@
 .dashboard-work-pool-card-detail { @apply
   text-center
   w-[100px]
-  max-w-[25%]
+  max-w-full
 }
 
 .dashboard-work-pool-card-detail__label { @apply

@@ -23,6 +23,10 @@
         <WorkPoolQueueStatusArray :work-pool="workPool" />
       </DashboardWorkPoolCardDetail>
 
+      <DashboardWorkPoolCardDetail label="Total runs">
+        <DashboardWorkPoolFlowRunsTotal :work-pool="workPool" :filter="filter" />
+      </DashboardWorkPoolCardDetail>
+
       <DashboardWorkPoolCardDetail label="Completes">
         <DashboardWorkPoolFlowRunCompletes :work-pool="workPool" :filter="filter" />
       </DashboardWorkPoolCardDetail>
@@ -34,6 +38,7 @@
   import { computed } from 'vue'
   import DashboardWorkPoolCardDetail from '@/components/DashboardWorkPoolCardDetail.vue'
   import DashboardWorkPoolFlowRunCompletes from '@/components/DashboardWorkPoolFlowRunCompletes.vue'
+  import DashboardWorkPoolFlowRunsTotal from '@/components/DashboardWorkPoolFlowRunsTotal.vue'
   import FlowRunsBarChart from '@/components/FlowRunsBarChart.vue'
   import WorkPoolLastPolled from '@/components/WorkPoolLastPolled.vue'
   import WorkPoolLateCount from '@/components/WorkPoolLateCount.vue'
