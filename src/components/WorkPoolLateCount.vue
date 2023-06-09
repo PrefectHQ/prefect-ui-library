@@ -9,12 +9,10 @@
   import { computed } from 'vue'
   import { useWorkspaceApi } from '@/compositions'
   import { FlowRunsFilter, WorkPool } from '@/models'
-  import { mapper } from '@/services'
-  import { WorkspaceDashboardFilter } from '@/types'
 
   const props = defineProps<{
     workPool: WorkPool,
-    filter?: WorkspaceDashboardFilter,
+    filter?: FlowRunsFilter,
   }>()
 
   const api = useWorkspaceApi()
@@ -23,13 +21,13 @@
     interval: 30000,
   }
 
-  const flowRunsFilter = computed(() => mapper.map('WorkspaceDashboardFilter', props.filter, 'FlowRunsFilter'))
   const lateFlowRunsFilter = computed<FlowRunsFilter>(() => ({
+    ...props.filter,
     workPools: {
       name: [props.workPool.name],
     },
     flowRuns: {
-      ...flowRunsFilter.value?.flowRuns,
+      ...props.filter?.flowRuns,
       state: {
         name: ['Late'],
       },

@@ -4,6 +4,11 @@
       <p-link :to="routes.workPool(workPool.name)">
         {{ workPool.name }}
       </p-link>
+      <FlowRunsBarChart
+        class="dashboard-work-pool-card__mini-bars"
+        mini
+        :filter="flowRunsFilter"
+      />
     </div>
     <dl class="dashboard-work-pool-card__details">
       <DashboardWorkPoolCardDetail label="Polled">
@@ -11,7 +16,7 @@
       </DashboardWorkPoolCardDetail>
 
       <DashboardWorkPoolCardDetail label="Late runs">
-        <WorkPoolLateCount :work-pool="workPool" :filter="filter" />
+        <WorkPoolLateCount :work-pool="workPool" :filter="flowRunsFilter" />
       </DashboardWorkPoolCardDetail>
 
       <DashboardWorkPoolCardDetail label="Work Queues">
@@ -19,28 +24,33 @@
       </DashboardWorkPoolCardDetail>
 
       <DashboardWorkPoolCardDetail label="Completes">
-        <WorkPoolFlowRunCompletePercentage :work-pool="workPool" :filter="filter" />
+        <DashboardWorkPoolFlowRunCompletes :work-pool="workPool" :filter="filter" />
       </DashboardWorkPoolCardDetail>
     </dl>
   </div>
 </template>
 
 <script lang="ts" setup>
+  import { computed } from 'vue'
   import DashboardWorkPoolCardDetail from '@/components/DashboardWorkPoolCardDetail.vue'
-  import WorkPoolFlowRunCompletePercentage from '@/components/WorkPoolFlowRunCompletePercentage.vue'
+  import DashboardWorkPoolFlowRunCompletes from '@/components/DashboardWorkPoolFlowRunCompletes.vue'
+  import FlowRunsBarChart from '@/components/FlowRunsBarChart.vue'
   import WorkPoolLastPolled from '@/components/WorkPoolLastPolled.vue'
   import WorkPoolLateCount from '@/components/WorkPoolLateCount.vue'
   import WorkPoolQueueStatusArray from '@/components/WorkPoolQueueStatusArray.vue'
   import { useWorkspaceRoutes } from '@/compositions'
   import { WorkPool } from '@/models'
+  import { mapper } from '@/services'
   import { WorkspaceDashboardFilter } from '@/types'
 
-  defineProps<{
+  const props = defineProps<{
     workPool: WorkPool,
     filter: WorkspaceDashboardFilter,
   }>()
 
   const routes = useWorkspaceRoutes()
+
+  const flowRunsFilter = computed(() => mapper.map('WorkspaceDashboardFilter', props.filter, 'FlowRunsFilter'))
 </script>
 
 <style>
@@ -52,10 +62,18 @@
 }
 
 .dashboard-work-pool-card__header { @apply
+  flex
+  justify-between
+  align-middle
   p-3
   border-b
   border-slate-200
   dark:border-slate-700
+}
+
+.dashboard-work-pool-card__mini-bars { @apply
+  w-1/5
+  h-6
 }
 
 .dashboard-work-pool-card__details { @apply
