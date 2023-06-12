@@ -1,5 +1,5 @@
 import { subSeconds } from 'date-fns'
-import { FlowRunsFilter, TaskRunsFilter, TaskRunsHistoryFilter } from '@/models/Filters'
+import { FlowRunsFilter, TaskRunsFilter, TaskRunsHistoryFilter, WorkPoolWorkersFilter } from '@/models/Filters'
 import { MapFunction } from '@/services/Mapper'
 import { WorkspaceDashboardFilter } from '@/types/dashboard'
 
@@ -40,4 +40,15 @@ export const mapWorkspaceDashboardFilterToFlowRunsFilter: MapFunction<WorkspaceD
   }
 
   return filter
+}
+
+export const mapWorkspaceDashboardFilterToWorkPoolWorkersFilter: MapFunction<WorkspaceDashboardFilter, WorkPoolWorkersFilter> = function(source) {
+  const now = new Date()
+
+  return {
+    workers: {
+      lastHeartbeatTimeAfter: subSeconds(now, source.timeSpanInSeconds),
+      lastHeartbeatTimeBefore: now,
+    },
+  }
 }
