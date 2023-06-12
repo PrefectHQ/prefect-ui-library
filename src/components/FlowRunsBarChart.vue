@@ -1,20 +1,30 @@
 <template>
   <div ref="chart" class="flow-runs-bar-chart" :class="classes.root" :style="styles.root">
     <template v-for="bar in bars" :key="bar">
-      <div class="flow-runs-bar-chart__bar-container">
-        <div class="flow-runs-bar-chart__bar" :class="getBarClasses(bar)" :style="getBarStyles(bar)" />
-      </div>
+      <p-pop-over class="flow-runs-bar-chart__bar-container" :placement="placement">
+        <template #target="{ open }">
+          <div class="flow-runs-bar-chart__bar" :class="getBarClasses(bar)" :style="getBarStyles(bar)" @mouseover="open" />
+        </template>
+
+        <template v-if="getBarFlowRun(bar)">
+          <div class="flow-runs-bar-chart__pop-over">
+            <FlowRunPopoverContent :flow-run-id="getBarFlowRun(bar)!.id" />
+          </div>
+        </template>
+      </p-pop-over>
     </template>
   </div>
 </template>
 
 <script lang="ts" setup>
-  import { ClassValue, toPixels } from '@prefecthq/prefect-design'
+  import { ClassValue, toPixels, positions } from '@prefecthq/prefect-design'
   import { useElementRect } from '@prefecthq/vue-compositions'
   import { scaleSymlog } from 'd3'
   import { StyleValue, computed, ref } from 'vue'
+  import FlowRunPopoverContent from '@/components/FlowRunPopOverContent.vue'
   import { useFlowRuns } from '@/compositions/useFlowRuns'
   import { FlowRunsFilter } from '@/models/Filters'
+  import { FlowRun } from '@/models/FlowRun'
 
   const props = defineProps<{
     filter: FlowRunsFilter,
@@ -22,6 +32,7 @@
   }>()
 
   const desiredBarWidth = computed(() => props.mini ? 6 : 12)
+  const placement = [positions.bottom, positions.right, positions.left, positions.top]
 
   const chart = ref<HTMLDivElement>()
   const { width, height } = useElementRect(chart)
@@ -74,8 +85,12 @@
     return scale
   })
 
+  function getBarFlowRun(bar: number): FlowRun | undefined {
+    return barFlowRuns.value.at(bar - 1)
+  }
+
   function getBarClasses(bar: number): ClassValue {
-    const flowRun = barFlowRuns.value.at(bar - 1)
+    const flowRun = getBarFlowRun(bar)
 
     if (!flowRun) {
       return ''
@@ -88,7 +103,7 @@
   }
 
   function getBarStyles(bar: number): StyleValue {
-    const flowRun = barFlowRuns.value.at(bar - 1)
+    const flowRun = getBarFlowRun(bar)
 
     if (!flowRun) {
       return ''
@@ -128,5 +143,9 @@
 
 .flow-runs-bar-chart__bar-flow-run {
   min-height: calc(var(--bar-min-height) * 2);
+}
+
+.flow-runs-bar-chart__pop-over { @apply
+  p-2
 }
 </style>
