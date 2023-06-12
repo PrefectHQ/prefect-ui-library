@@ -22,11 +22,7 @@ export function useWorkPoolLastPolled(
   const workPoolNameRef = ref(workPoolName)
   const filterRef = ref(filter)
 
-  const finalFilters = computed<[string, WorkPoolWorkersFilter] | null>(() => {
-    if (!filterRef.value) {
-      return null
-    }
-
+  const finalFilters = computed<[string, WorkPoolWorkersFilter?] | null>(() => {
     return [
       workPoolNameRef.value,
       filterRef.value,

@@ -10,7 +10,7 @@
       />
     </template>
     <span v-if="!showTooMany && workPoolQueues.length < 1" class="work-pool-queue-status-array__none">N/A</span>
-    <span v-if="showTooMany">Too many to show here.</span>
+    <span v-if="showTooMany" class="work-pool-queue-status-array__too-many">Too many to show here.</span>
   </div>
 </template>
 
@@ -30,10 +30,11 @@
 
   const workPoolQueuesSubscription = useSubscription(
     api.workPoolQueues.getWorkPoolQueues,
-    [props.workPool.name, { limit: maxWorkQueues }],
+    [props.workPool.name, { limit: maxWorkQueues + 1 }],
   )
+
   const workPoolQueues = computed(() => workPoolQueuesSubscription.response ?? [])
-  const showTooMany = computed(() => workPoolQueues.value.length >= maxWorkQueues)
+  const showTooMany = computed(() => workPoolQueues.value.length > maxWorkQueues)
 </script>
 
 <style>
@@ -47,6 +48,11 @@
 }
 
 .work-pool-queue-status-array__none { @apply
+  text-slate-500
+}
+
+.work-pool-queue-status-array__too-many { @apply
+  text-xs
   text-slate-500
 }
 </style>

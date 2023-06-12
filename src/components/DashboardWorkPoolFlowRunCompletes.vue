@@ -13,6 +13,7 @@
 
 <script lang="ts" setup>
   import { useSubscription } from '@prefecthq/vue-compositions'
+  import { subSeconds } from 'date-fns'
   import { computed } from 'vue'
   import { useWorkspaceApi } from '@/compositions'
   import { WorkPool, FlowRunsFilter } from '@/models'
@@ -79,8 +80,8 @@
       return null
     }
 
-    const startTimeBefore = new Date(rootStartTimeBefore.getTime() - props.filter.timeSpanInSeconds * 1000)
-    const startTimeAfter = new Date(rootStartTimeAfter.getTime() - props.filter.timeSpanInSeconds * 1000)
+    const startTimeBefore = subSeconds(rootStartTimeBefore.getTime(), props.filter.timeSpanInSeconds)
+    const startTimeAfter = subSeconds(rootStartTimeAfter.getTime(), props.filter.timeSpanInSeconds)
 
     return {
       ...flowRunsFilter.value.flowRuns,
