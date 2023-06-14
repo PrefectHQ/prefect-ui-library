@@ -55,12 +55,22 @@
   }>()
 
   const component = computed(() => {
-    if (!props.disabled || props.value !== undefined) {
+    if (!props.disabled && isLegacySelectable()) {
       return PListItemInput
     }
 
     return PListItem
   })
+
+  const isLegacySelectable = (): boolean => {
+    // this check preserves legacy functionality where passing in `selected` as an
+    // empty array would hide the checkbox.
+    if (Array.isArray(props.selected) && props.selected.length !== 0) {
+      return false
+    }
+
+    return true
+  }
 
   const emit = defineEmits<{
     (event: 'update:selected', value: CheckboxModel): void,
