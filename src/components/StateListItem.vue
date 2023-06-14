@@ -55,7 +55,7 @@
   }>()
 
   const component = computed(() => {
-    if (!props.disabled && props.value !== undefined) {
+    if (!props.disabled || props.value !== undefined) {
       return PListItemInput
     }
 
