@@ -1,7 +1,7 @@
 <template>
   <div class="flow-run-state-type-count">
     <span class="flow-run-state-type-count__badge" :class="badgeColorClass" />
-    {{ count }}
+    <span class="flow-run-state-type-count__value">{{ count }}</span>
   </div>
 </template>
 
@@ -36,12 +36,18 @@
 .flow-run-state-type-count { @apply
   flex
   flex-col
-  gap-2
+  gap-1
   items-center
 }
 
 .flow-run-state-type-count__badge { @apply
   h-1
   w-3
+  rounded-full
+}
+
+.flow-run-state-type-count__value { @apply
+  text-lg
+  font-bold
 }
 </style>
