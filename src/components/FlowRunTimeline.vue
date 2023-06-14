@@ -49,7 +49,7 @@
           :hide-edges="hideEdges"
           :is-running="isRunning"
           :format-date-fns="formatDateFns"
-          :theme="theme"
+          :theme="themeDebounced"
           :sub-node-labels="subFlowRunLabels"
           :selected-node-id="selectedNode?.id"
           :expanded-sub-nodes="expandedSubFlowRuns"
@@ -75,7 +75,7 @@
     TimelineVisibleDateRange
   } from '@prefecthq/graphs'
   import { useColorTheme } from '@prefecthq/prefect-design'
-  import { UseSubscription, useSubscription } from '@prefecthq/vue-compositions'
+  import { UseSubscription, useDebouncedRef, useSubscription } from '@prefecthq/vue-compositions'
   import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
   import { FlowRunTimelineOptions } from '@/components'
   import { useFlowRuns, useFlows, useWorkspaceApi } from '@/compositions'
@@ -374,16 +374,17 @@
     return {
       node: (node: GraphTimelineNode) => {
         const { type } = mapStateNameToStateType(node.state)
-        const { background } = getStateTypeStyles(type)
+        const { color, background } = getStateTypeStyles(type)
+        const isDark = colorThemeValue.value === 'dark'
 
-        let inverseTextOnFill = colorThemeValue.value !== 'dark'
+        let inverseTextOnFill = !isDark
 
         if (node.state === 'scheduled') {
-          inverseTextOnFill = colorThemeValue.value === 'dark'
+          inverseTextOnFill = isDark
         }
 
         return {
-          fill: background,
+          fill: isDark ? background : color,
           onFillSubNodeToggleHoverBg: '#000',
           onFillSubNodeToggleHoverBgAlpha: 0.2,
           inverseTextOnFill,
@@ -392,6 +393,8 @@
       defaults: themeDefaultOverrides.value,
     }
   })
+
+  const themeDebounced = useDebouncedRef(theme, 100)
 </script>
 
 <style>
