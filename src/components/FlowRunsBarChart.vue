@@ -1,7 +1,7 @@
 <template>
-  <div ref="chart" class="flow-runs-bar-chart" :class="classes.root" :style="styles.root">
+  <div ref="chart" class="flow-runs-bar-chart" :class="classes.root" :style="styles.root" @mouseleave="close">
     <template v-for="bar in bars" :key="bar">
-      <p-pop-over class="flow-runs-bar-chart__bar-container" :placement="placement">
+      <p-pop-over class="flow-runs-bar-chart__bar-container" :to="chart" :placement="placement" :group="group" auto-close>
         <template #target="{ open }">
           <div class="flow-runs-bar-chart__bar" :class="getBarClasses(bar)" :style="getBarStyles(bar)" @mouseover="open" />
         </template>
@@ -17,7 +17,7 @@
 </template>
 
 <script lang="ts" setup>
-  import { ClassValue, toPixels, positions } from '@prefecthq/prefect-design'
+  import { ClassValue, toPixels, positions, usePopOverGroup } from '@prefecthq/prefect-design'
   import { useElementRect } from '@prefecthq/vue-compositions'
   import { scaleSymlog } from 'd3'
   import { StyleValue, computed, ref } from 'vue'
@@ -33,6 +33,8 @@
 
   const desiredBarWidth = computed(() => props.mini ? 6 : 12)
   const placement = [positions.bottom, positions.right, positions.left, positions.top]
+  const group = 'flow-runs-bar-chart-pop-over'
+  const { close } = usePopOverGroup(group)
 
   const chart = ref<HTMLDivElement>()
   const { width, height } = useElementRect(chart)
@@ -117,6 +119,7 @@
 
 <style>
 .flow-runs-bar-chart { @apply
+  relative
   grid
   items-end
   grid-rows-1;
