@@ -1,13 +1,21 @@
 <template>
-  <p-accordion :sections="flowIds" class="flow-runs-accordion">
-    <template #header="{ section: flowId }">
-      {{ flowId }}
-    </template>
-  </p-accordion>
+  <template v-if="flowIds">
+    <p-accordion :sections="flowIds" class="flow-runs-accordion">
+      <!--
+        <template #header="{ section: flowId }">
+        {{ flowId }}
+        </template>
+      -->
+      <template #content="{ section: flowId }">
+        <FlowFlowRunsList :flow-id="flowId" :filter="filter" />
+      </template>
+    </p-accordion>
+  </template>
 </template>
 
 <script lang="ts" setup>
-  import { computed } from 'vue'
+  import { computed, ref, watch } from 'vue'
+  import FlowFlowRunsList from '@/components/FlowFlowRunsList.vue'
   import { useFlows } from '@/compositions/useFlows'
   import { FlowRunsFilter, FlowsFilter } from '@/models/Filters'
 
