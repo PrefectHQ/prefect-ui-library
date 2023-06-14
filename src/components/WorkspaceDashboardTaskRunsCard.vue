@@ -26,6 +26,7 @@
   import { TaskRunsFilter } from '@/models/Filters'
   import { mapper } from '@/services/Mapper'
   import { WorkspaceDashboardFilter } from '@/types/dashboard'
+  import { toPercent } from '@/utilities'
 
   const props = defineProps<{
     filter: WorkspaceDashboardFilter,
@@ -57,7 +58,7 @@
   const completed = computed(() => completedTasksSubscription.response)
   const completedPercentage = computed(() => {
     if (isDefined(completed.value) && isDefined(total.value)) {
-      return toPercent(completed.value, total.value)
+      return `${toPercent(completed.value, total.value)}%`
     }
 
     return undefined
@@ -75,7 +76,7 @@
   const failed = computed(() => failedTasksSubscription.response)
   const failedPercentage = computed(() => {
     if (isDefined(failed.value) && isDefined(total.value)) {
-      return toPercent(failed.value, total.value)
+      return `${toPercent(failed.value, total.value)}%`
     }
 
     return undefined
@@ -124,17 +125,6 @@
 
     return max * 4
   })
-
-  function toPercent(x: number, y: number): string | undefined {
-    const decimal = x / y
-    const percent = Math.round((decimal + Number.EPSILON) * 10000) / 100
-
-    if (isNaN(percent)) {
-      return undefined
-    }
-
-    return `${percent}%`
-  }
 </script>
 
 <style>

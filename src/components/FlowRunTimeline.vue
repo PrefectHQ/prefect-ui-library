@@ -322,7 +322,7 @@
   const { flowRuns: subFlowRuns } = useFlowRuns(subFlowRunsFilter)
 
   const allSubFlowRunFlowIds = computed<string[]>(() => {
-    return subFlowRuns.value?.map((flowRun) => flowRun.flowId) ?? []
+    return subFlowRuns.value.map((flowRun) => flowRun.flowId) ?? []
   })
   const { flows: subFlows } = useFlows(allSubFlowRunFlowIds)
 
