@@ -5,7 +5,7 @@
         <FlowRunsAccordionHeader :flow="getFlow(flowId)!" v-bind="{ id, content, toggle, filter, selected }" />
       </template>
       <template #content="{ section: flowId }">
-        <FlowFlowRunsList :flow-id="flowId" :filter="filter" />
+        <FlowRunsAccordionContent :flow-id="flowId" :filter="filter" />
       </template>
     </p-accordion>
   </template>
@@ -13,7 +13,7 @@
 
 <script lang="ts" setup>
   import { computed } from 'vue'
-  import FlowFlowRunsList from '@/components/FlowFlowRunsList.vue'
+  import FlowRunsAccordionContent from '@/components/FlowRunsAccordionContent.vue'
   import FlowRunsAccordionHeader from '@/components/FlowRunsAccordionHeader.vue'
   import { useFlows } from '@/compositions/useFlows'
   import { FlowRunsFilter, FlowsFilter } from '@/models/Filters'
