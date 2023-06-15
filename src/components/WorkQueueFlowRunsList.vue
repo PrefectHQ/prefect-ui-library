@@ -1,6 +1,6 @@
 <template>
   <div class="work-queue-flow-runs-list">
-    <FlowRunList :selected="[]" :flow-runs="flowRuns" disabled />
+    <FlowRunList disable-deletion :flow-runs="flowRuns" />
 
     <p-empty-results v-if="empty">
       <template v-if="isPaused" #message>

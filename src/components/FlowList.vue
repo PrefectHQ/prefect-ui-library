@@ -69,6 +69,7 @@
               :flow="item"
               :filter="routeFilter"
               :disabled="disabled"
+              selectable
               class="flow-list__flow"
               @update="handleUpdate"
               @delete="handleDelete"

@@ -1,6 +1,6 @@
 <template>
   <ComponentPage title="FlowRunList">
-    <FlowRunList :flow-runs="flowRuns" :selected="[]" class="color-mode-default" />
+    <FlowRunList :flow-runs="flowRuns" disable-deletion class="color-mode-default" />
   </ComponentPage>
 </template>
 

@@ -1,6 +1,6 @@
 <template>
   <div :class="classes" :styles="styles" class="flow-list-item-container">
-    <StateListItem v-bind="attrs" :disabled="disabled" class="flow-list-item" :state-type="flowState">
+    <StateListItem v-bind="attrs" :disabled="disabled" :selectable="selectable" class="flow-list-item" :state-type="flowState">
       <template #name>
         <p-link :to="routes.flow(flow.id)">
           <p-heading :heading="5">
@@ -78,6 +78,7 @@
   import { Flow, FlowsFilter } from '@/models'
 
   const props = defineProps<{
+    selectable?: boolean,
     flow: Flow,
     filter?: FlowsFilter,
     disabled?: boolean,

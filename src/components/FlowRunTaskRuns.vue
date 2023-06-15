@@ -6,7 +6,7 @@
       <TaskRunsSort v-model="filter.sort" />
     </div>
 
-    <TaskRunList :selected="[]" :task-runs="taskRuns" disabled @bottom="taskRunsSubscription.loadMore" />
+    <TaskRunList :task-runs="taskRuns" @bottom="taskRunsSubscription.loadMore" />
 
     <PEmptyResults v-if="empty">
       <template #message>
