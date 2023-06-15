@@ -92,6 +92,7 @@
 </template>
 
 <script lang="ts" setup>
+  import { useValidationObserver } from '@prefecthq/vue-compositions'
   import { useField } from 'vee-validate'
   import { computed } from 'vue'
   import { SchemaInput, ScheduleFieldset, WorkPoolCombobox, WorkPoolQueueCombobox, JsonInput } from '@/components'
@@ -143,7 +144,16 @@
     (event: 'cancel'): void,
   }>()
 
+
+  const { validate } = useValidationObserver()
+
   const submit = handleSubmit(async (values): Promise<void> => {
+    const valid = await validate()
+
+    if (!valid) {
+      return
+    }
+
     const deploymentUpdate: DeploymentUpdate = {
       ...values,
       infrastructureOverrides: JSON.parse(infrastructureOverrides.value),

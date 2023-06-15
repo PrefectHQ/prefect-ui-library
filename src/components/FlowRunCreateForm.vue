@@ -90,6 +90,7 @@
 
 <script lang="ts" setup>
   import { PButton, ButtonGroupOption } from '@prefecthq/prefect-design'
+  import { useValidationObserver } from '@prefecthq/vue-compositions'
   import { zonedTimeToUtc } from 'date-fns-tz'
   import { useField } from 'vee-validate'
   import { computed, ref } from 'vue'
@@ -162,7 +163,17 @@
   const deploymentTags = computed(() => props.deployment.tags?.map((tag) => ({ label: tag, value: tag, disabled: true })))
 
   const cancel = (): void => emit('cancel')
+
+  const { validate } = useValidationObserver()
+
   const submit = handleSubmit(async (values): Promise<void> => {
+    const valid = await validate()
+
+    if (!valid) {
+      return
+    }
+
+
     const resolvedValues: DeploymentFlowRunCreate = { ...values }
 
     if (when.value == 'now' && resolvedValues.state?.stateDetails?.scheduledTime) {

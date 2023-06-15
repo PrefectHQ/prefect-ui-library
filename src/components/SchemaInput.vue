@@ -1,8 +1,10 @@
 <template>
-  <div class="schema-input">
-    <slot name="button-group" v-bind="{ inputType, setInputType }">
-      <p-button-group v-model="inputType" :options="inputTypeOptions" size="sm" />
-    </slot>
+  <p-content class="schema-input">
+    <div class="schema-input__button-group">
+      <slot name="button-group" v-bind="{ inputType, setInputType }">
+        <p-button-group v-model="inputType" :options="inputTypeOptions" size="sm" />
+      </slot>
+    </div>
 
     <template v-if="values && hasPropertiesInSchema">
       <template v-if="inputType === 'form'">
@@ -25,7 +27,7 @@
         <em>{{ localization.info.schemaHasNoProperties }}</em>
       </slot>
     </template>
-  </div>
+  </p-content>
 </template>
 
 <script lang="ts" setup>

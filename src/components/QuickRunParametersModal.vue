@@ -18,6 +18,7 @@
 
 <script lang="ts" setup>
   import { PButton, showToast } from '@prefecthq/prefect-design'
+  import { useValidationObserver } from '@prefecthq/vue-compositions'
   import { useField } from 'vee-validate'
   import { computed, h } from 'vue'
   import { useRouter } from 'vue-router'
@@ -57,7 +58,15 @@
     },
   })
 
+  const { validate } = useValidationObserver()
+
   const submit = handleSubmit(async (values): Promise<void> => {
+    const valid = await validate()
+
+    if (!valid) {
+      return
+    }
+
     const resolvedValues: DeploymentFlowRunCreate = {
       state: {
         type: 'scheduled',
