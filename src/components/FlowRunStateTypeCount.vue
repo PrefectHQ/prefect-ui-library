@@ -11,9 +11,11 @@
   import { useWorkspaceApi } from '@/compositions/useWorkspaceApi'
   import { FlowRunsFilter } from '@/models/Filters'
   import { StateType } from '@/models/StateType'
+  import { MaybeArray } from '@/types/utilities'
+  import { asArray } from '@/utilities/arrays'
 
   const props = defineProps<{
-    stateType: StateType,
+    stateType: MaybeArray<StateType>,
     filter?: FlowRunsFilter,
   }>()
 
@@ -23,13 +25,17 @@
     flowRuns: {
       ...props.filter?.flowRuns,
       state: {
-        type: [props.stateType],
+        type: asArray(props.stateType),
       },
     },
   }))
   const subscription = useSubscription(api.flowRuns.getFlowRunsCount, [filter])
   const count = computed(() => subscription.response)
-  const badgeColorClass = computed(() => `bg-state-${props.stateType}-500`)
+  const badgeColorClass = computed(() => {
+    const [state] = asArray(props.stateType)
+
+    return `bg-state-${state}-500`
+  })
 </script>
 
 <style>

@@ -1,14 +1,12 @@
 <template>
   <p-tabs v-model:selected="selected" :tabs="tabs" class="flow-run-state-type-tabs">
     <template #heading="{ tab }">
-      <template v-if="tab && isStateType(tab.label)">
-        <FlowRunStateTypeCount :state-type="tab.label" :filter="filter" />
+      <template v-if="tab">
+        <FlowRunStateTypeCount :state-type="getTabStates(tab.label)" :filter="filter" />
       </template>
     </template>
     <template #content="{ tab }">
-      <template v-if="isStateType(tab.label)">
-        <FlowRunsAccordion :filter="getStateTypeFilter(tab.label)" />
-      </template>
+      <FlowRunsAccordion :filter="getStateTypeFilter(tab.label)" />
     </template>
   </p-tabs>
 </template>
@@ -18,23 +16,36 @@
   import FlowRunsAccordion from '@/components/FlowRunsAccordion.vue'
   import FlowRunStateTypeCount from '@/components/FlowRunStateTypeCount.vue'
   import { FlowRunsFilter } from '@/models/Filters'
-  import { StateType, isStateType } from '@/models/StateType'
+  import { StateType } from '@/models/StateType'
 
   const props = defineProps<{
     filter?: FlowRunsFilter,
   }>()
 
-  const tabs: StateType[] = ['failed', 'running', 'completed', 'scheduled']
+  const tabStates: Record<string, StateType[]> = {
+    failed: ['failed', 'crashed'],
+    running: ['running'],
+    completed: ['completed'],
+    scheduled: ['scheduled'],
+  }
+  const tabs = Object.keys(tabStates)
+
   const selected = useRouteQueryParam('flow-run-state', 'failed')
 
-  function getStateTypeFilter(type: StateType): FlowRunsFilter {
+  function getTabStates(tab: string): StateType[] {
+    return tabStates[tab]
+  }
+
+  function getStateTypeFilter(tab: string): FlowRunsFilter {
+    const types = getTabStates(tab)
+
     return {
       ...props.filter,
       flowRuns: {
         ...props.filter?.flowRuns,
         state: {
           ...props.filter?.flowRuns?.state,
-          type: [type],
+          type: types,
         },
       },
     }
