@@ -64,11 +64,15 @@
             {{ localization.info.parameters }}
           </h3>
 
-          <p-button-group v-model="parametersInputType" :options="parametersInputTypeOptions" size="sm" />
-
-          <template v-if="parametersInputType !== 'default'">
-            <DeploymentParametersSection v-model="combinedParameters" :input-type="parametersInputType" :deployment="deployment" />
-          </template>
+          <SchemaInput v-model="combinedParameters" :input-type="parametersInputType" :schema="deployment.parameterOpenApiSchema">
+            <template #button-group="{ inputType, setInputType }">
+              <!--
+                The split model-value and update:model-value does the same thing as v-model; unfortunately slots
+                don't support v-model at the moment: https://github.com/vuejs/core/issues/5899
+              -->
+              <p-button-group :model-value="inputType" :options="parametersInputTypeOptions" size="sm" @update:model-value="setInputType" />
+            </template>
+          </SchemaInput>
         </p-content>
       </template>
     </p-content>
@@ -91,11 +95,11 @@
   import { computed, ref } from 'vue'
   import { isJson, localization } from '..'
   import { TimezoneSelect, DateInput } from '@/components'
-  import DeploymentParametersSection from '@/components/DeploymentParametersSection.vue'
+  import SchemaInput from '@/components/SchemaInput.vue'
   import { useForm } from '@/compositions/useForm'
   import { Deployment, DeploymentFlowRunCreate } from '@/models'
   import { mocker } from '@/services'
-  import { DeploymentParametersSectionInputType } from '@/types/deploymentParametersSection'
+  import { SchemaInputType } from '@/types/schemaInput'
   import { SchemaValues } from '@/types/schemas'
   import { fieldRules, isRequiredIf } from '@/utilities/validation'
 
@@ -151,8 +155,8 @@
   const whenOptions: ButtonGroupOption[] = [{ label: 'Now', value: 'now' }, { label: 'Later', value: 'later' }]
   const when = ref<'now' | 'later'>('now')
 
-  const parametersInputTypeOptions: ButtonGroupOption[] = [{ label: 'Default', value: 'default' }, { value: 'form', label: 'Custom' }, { value: 'json', label: 'JSON' }]
-  const parametersInputType = ref<DeploymentParametersSectionInputType | 'default'>(props.parameters ? 'form' : 'default')
+  const parametersInputTypeOptions: ButtonGroupOption[] = [{ label: 'Default', value: null }, { value: 'form', label: 'Custom' }, { value: 'json', label: 'JSON' }]
+  const parametersInputType = ref<SchemaInputType>(props.parameters ? 'form' : null)
 
   const timezone = ref('UTC')
   const deploymentTags = computed(() => props.deployment.tags?.map((tag) => ({ label: tag, value: tag, disabled: true })))
@@ -169,7 +173,7 @@
       resolvedValues.state.stateDetails.scheduledTime = adjustedStart.value
     }
 
-    if (parametersInputType.value == 'default') {
+    if (parametersInputType.value === null) {
       delete resolvedValues.parameters
     } else if (parametersInputType.value == 'json') {
       resolvedValues.parameters = parameters.value

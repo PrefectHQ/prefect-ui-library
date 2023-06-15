@@ -100,6 +100,8 @@ export const en = {
     updateWorkQueue: 'Work queue updated',
   },
   info: {
+    form: 'Form',
+    json: 'JSON',
     deploymentFlowHasNoParameters: 'This deployment\'s flow has no parameters',
     filtersActive: 'Filters active',
     resetFilters: 'Reset filters',
@@ -149,6 +151,7 @@ export const en = {
     noSchedule: 'No schedule',
     delete: 'Delete',
     tags: 'Tags',
+    values: 'Values',
     nextRun: 'Next run',
     lastRun: 'Last run',
     workPool: 'Work Pool',
