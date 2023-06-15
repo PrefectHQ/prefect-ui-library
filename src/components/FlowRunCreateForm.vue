@@ -64,7 +64,7 @@
             {{ localization.info.parameters }}
           </h3>
 
-          <SchemaInput v-model="combinedParameters" :input-type="parametersInputType" :schema="deployment.parameterOpenApiSchema">
+          <SchemaInput v-model="parameters" :input-type="parametersInputType" :schema="deployment.parameterOpenApiSchema">
             <template #button-group="{ inputType, setInputType }">
               <!--
                 The split model-value and update:model-value does the same thing as v-model; unfortunately slots
@@ -172,7 +172,6 @@
     if (!valid) {
       return
     }
-
 
     const resolvedValues: DeploymentFlowRunCreate = { ...values }
 

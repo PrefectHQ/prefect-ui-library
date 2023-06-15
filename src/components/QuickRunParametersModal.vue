@@ -1,9 +1,7 @@
 <template>
   <p-modal v-model:showModal="internalShowModal" class="parameters-modal" title="Run Deployment">
     <p-form @submit="submit">
-      <p-content>
-        <SchemaInput v-model="parameters" :schema="deployment.parameterOpenApiSchema" />
-      </p-content>
+      <SchemaInput v-model="parameters" :schema="deployment.parameterOpenApiSchema" />
     </p-form>
 
     <template #actions>

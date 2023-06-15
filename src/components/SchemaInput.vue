@@ -36,7 +36,7 @@
   import { computed, ref } from 'vue'
   import { SchemaFormFieldsWithValues } from '@/components'
   import { localization } from '@/localization'
-  import { getSchemaDefaultValues } from '@/services'
+  import { getSchemaDefaultValues, mapper } from '@/services'
   import { SchemaInputType, isSchemaInputType } from '@/types/schemaInput'
   import { Schema, SchemaValues } from '@/types/schemas'
   import { isJson, fieldRules, stringifyUnknownJson, parseUnknownJson, isRecord } from '@/utilities'
@@ -55,7 +55,6 @@
     return Object.keys(props.schema.properties ?? {}).length > 0
   })
 
-
   const inputTypeOptions = computed(() => {
     return [
       { value: 'form', label: localization.info.form },
@@ -72,10 +71,15 @@
 
   const values = computed({
     get() {
-      return props.modelValue
+      if (!props.modelValue) {
+        return getSchemaDefaultValues(props.schema)
+      }
+
+      return mapper.map('SchemaValuesResponse', { values: props.modelValue, schema: props.schema }, 'SchemaValues')
     },
     set(value: SchemaValues | null | undefined) {
-      validateAndEmit(value)
+      const values = mapper.map('SchemaValues', { values: value ?? {}, schema: props.schema }, 'SchemaValuesRequest')
+      validateAndEmit(values)
     },
   })
 
