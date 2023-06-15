@@ -48,6 +48,7 @@
           type: types,
         },
       },
+      sort: 'EXPECTED_START_TIME_DESC',
     }
   }
 </script>

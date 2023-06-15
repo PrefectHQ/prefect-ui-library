@@ -1,11 +1,9 @@
 <template>
   <template v-if="flowIds">
     <p-accordion :sections="flowIds" class="flow-runs-accordion">
-      <!--
-        <template #header="{ section: flowId }">
-        {{ flowId }}
-        </template>
-      -->
+      <template #header="{ section: flowId, id, toggle, content }">
+        <FlowRunsAccordionHeader :flow="getFlow(flowId)!" v-bind="{ id, content, toggle, filter }" />
+      </template>
       <template #content="{ section: flowId }">
         <FlowFlowRunsList :flow-id="flowId" :filter="filter" />
       </template>
@@ -14,10 +12,13 @@
 </template>
 
 <script lang="ts" setup>
-  import { computed, ref, watch } from 'vue'
+  import { computed } from 'vue'
   import FlowFlowRunsList from '@/components/FlowFlowRunsList.vue'
+  import FlowRunsAccordionHeader from '@/components/FlowRunsAccordionHeader.vue'
   import { useFlows } from '@/compositions/useFlows'
   import { FlowRunsFilter, FlowsFilter } from '@/models/Filters'
+  import { Flow } from '@/models/Flow'
+  import { toMap } from '@/utilities'
 
   const props = defineProps<{
     filter: FlowRunsFilter,
@@ -32,8 +33,9 @@
 
   const { flows } = useFlows(flowsFilter)
   const flowIds = computed(() => flows.value?.map(flow => flow.id))
+  const flowsLookup = computed(() => toMap(flows.value ?? [], 'id'))
+
+  function getFlow(id: string): Flow | undefined {
+    return flowsLookup.value.get(id)
+  }
 </script>
-
-<style>
-
-</style>
