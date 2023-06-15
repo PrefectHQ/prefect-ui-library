@@ -8,7 +8,7 @@
 
     <template #actions>
       <slot name="actions">
-        <p-button @click="submit">
+        <p-button :disabled="!valid" @click="submit">
           Run
         </p-button>
       </slot>
@@ -58,7 +58,7 @@
     },
   })
 
-  const { validate } = useValidationObserver()
+  const { validate, valid } = useValidationObserver()
 
   const submit = handleSubmit(async (values): Promise<void> => {
     const valid = await validate()
