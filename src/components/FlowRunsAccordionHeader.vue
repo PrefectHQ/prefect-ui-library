@@ -10,7 +10,7 @@
     </div>
     <p-button inset size="sm" :aria-controls="content" @click="toggle">
       {{ count }}
-      <p-icon size="small" icon="ChevronDownIcon" />
+      <p-icon size="small" icon="ChevronDownIcon" class="flow-runs-accordion-header__icon" :class="classes.icon" />
     </p-button>
   </div>
 </template>
@@ -28,6 +28,7 @@
   const props = defineProps<{
     flow: Flow,
     id: string,
+    selected: boolean,
     content: string,
     toggle: () => void,
     filter?: FlowRunsFilter,
@@ -36,6 +37,12 @@
   const api = useWorkspaceApi()
   const routes = useWorkspaceRoutes()
   const { now } = useNow({ interval: 1000 })
+
+  const classes = computed(() => ({
+    icon: {
+      'flow-runs-accordion-header__icon--selected': props.selected,
+    },
+  }))
 
   const filter = computed<FlowRunsFilter>(() => ({
     ...props.filter,
@@ -78,5 +85,13 @@
 .flow-runs-accordion-header__time { @apply
   text-xs
   text-foreground-200
+}
+
+.flow-runs-accordion-header__icon { @apply
+  transition-transform
+}
+
+.flow-runs-accordion-header__icon--selected { @apply
+  rotate-180
 }
 </style>
