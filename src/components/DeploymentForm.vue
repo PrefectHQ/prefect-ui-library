@@ -54,7 +54,15 @@
 
       <p-divider />
 
-      <DeploymentParametersSection v-model="parameters" :deployment="deployment" />
+      <p-content>
+        <h3>
+          {{ localization.info.parameters }}
+        </h3>
+
+        <p-button-group v-model="parametersInputType" :options="parametersInputTypeOptions" size="sm" />
+
+        <DeploymentParametersSection v-model="parameters" :input-type="parametersInputType" :deployment="deployment" />
+      </p-content>
     </p-content>
 
     <p-divider />
@@ -86,12 +94,14 @@
 </template>
 
 <script lang="ts" setup>
+  import { ButtonGroupOption } from '@prefecthq/prefect-design'
   import { useField } from 'vee-validate'
-  import { computed } from 'vue'
+  import { computed, ref } from 'vue'
   import { DeploymentParametersSection, ScheduleFieldset, WorkPoolCombobox, WorkPoolQueueCombobox, JsonInput } from '@/components'
   import { useForm } from '@/compositions/useForm'
   import { localization } from '@/localization'
   import { Deployment, DeploymentUpdate, DeploymentEdit, Schedule } from '@/models'
+  import { DeploymentParametersSectionInputType } from '@/types/deploymentParametersSection'
   import { SchemaValues } from '@/types/schemas'
   import { stringify, isJson, fieldRules } from '@/utilities'
 
@@ -146,6 +156,9 @@
   const cancel = (): void => {
     emit('cancel')
   }
+
+  const parametersInputTypeOptions: ButtonGroupOption[] = [{ value: 'form', label: 'Form' }, { value: 'json', label: 'JSON' }]
+  const parametersInputType = ref<DeploymentParametersSectionInputType>('form')
 </script>
 
 <style>

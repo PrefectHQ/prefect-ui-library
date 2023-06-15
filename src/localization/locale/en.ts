@@ -100,6 +100,7 @@ export const en = {
     updateWorkQueue: 'Work queue updated',
   },
   info: {
+    deploymentFlowHasNoParameters: 'This deployment\'s flow has no parameters',
     filtersActive: 'Filters active',
     resetFilters: 'Reset filters',
     deploymentName: 'Deployment name',
