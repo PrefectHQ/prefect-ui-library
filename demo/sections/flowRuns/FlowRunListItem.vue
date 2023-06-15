@@ -1,13 +1,13 @@
 <template>
   <ComponentPage title="FlowRunListItem" :demos="demos">
-    <FlowRunListItem :flow-run="flowRun" :selected="[]" class="color-mode-default" />
+    <FlowRunListItem :flow-run="flowRun" selectable class="color-mode-default" />
 
     <template #disabled>
-      <FlowRunListItem :flow-run="flowRun" :selected="[]" class="color-mode-default" disabled />
+      <FlowRunListItem :flow-run="flowRun" class="color-mode-default" />
     </template>
 
     <template #no-relations>
-      <FlowRunListItem :flow-run="flowRunWithNoRelations" :selected="[]" class="color-mode-default" disabled />
+      <FlowRunListItem :flow-run="flowRunWithNoRelations" class="color-mode-default" />
     </template>
   </ComponentPage>
 </template>

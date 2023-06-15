@@ -1,6 +1,6 @@
 <template>
   <div :class="classes" :styles="styles" class="flow-list-item-container">
-    <StateListItem v-bind="attrs" :disabled="disabled" class="flow-list-item" :state-type="flowState">
+    <StateListItem v-bind="attrs" :selectable="selectable" class="flow-list-item" :state-type="flowState">
       <template #name>
         <p-link :to="routes.flow(flow.id)">
           <p-heading :heading="5">
@@ -52,7 +52,7 @@
       <p-auto-height-transition>
         <template v-if="expanded">
           <slot>
-            <DeploymentList :disabled="disabled" :filter="filter" class="flow-list-item__deployments" />
+            <DeploymentList :selectable="selectable" :filter="filter" class="flow-list-item__deployments" />
           </slot>
         </template>
       </p-auto-height-transition>
@@ -78,9 +78,9 @@
   import { Flow, FlowsFilter } from '@/models'
 
   const props = defineProps<{
+    selectable?: boolean,
     flow: Flow,
     filter?: FlowsFilter,
-    disabled?: boolean,
   }>()
 
   const emit = defineEmits<{

@@ -1,5 +1,5 @@
 <template>
-  <TaskRunList v-if="hasActiveSlots" :selected="null" :task-runs="activeRuns" disabled />
+  <TaskRunList v-if="hasActiveSlots" :task-runs="activeRuns" />
   <p-empty-results v-else>
     <template #message>
       No active task runs

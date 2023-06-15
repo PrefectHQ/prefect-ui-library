@@ -1,5 +1,5 @@
 <template>
-  <StateListItem v-model:selected="model" v-bind="{ value, disabled, tags, stateType }" class="task-run-list-item">
+  <StateListItem v-model:selected="model" v-bind="{ selectable, value, tags, stateType }" class="task-run-list-item">
     <template #name>
       <p-link :to="routes.taskRun(taskRun.id)">
         <span>{{ taskRun.name }}</span>
@@ -33,9 +33,9 @@
   import { secondsToApproximateString } from '@/utilities/seconds'
 
   const props = defineProps<{
-    selected: CheckboxModel | null,
+    selectable?: boolean,
+    selected?: CheckboxModel | null,
     taskRun: TaskRun,
-    disabled?: boolean,
   }>()
 
   const emit = defineEmits<{

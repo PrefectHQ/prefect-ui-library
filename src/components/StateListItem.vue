@@ -5,7 +5,6 @@
     :value="value"
     class="state-list-item"
     :class="classes"
-    disabled
   >
     <div class="state-list-item__content-container">
       <div class="state-list-item__content">
@@ -47,6 +46,7 @@
   import { StateType } from '@/models/StateType'
 
   const props = defineProps<{
+    selectable?: boolean,
     selected?: CheckboxModel | null,
     value?: unknown,
     stateType?: StateType | null | undefined,
@@ -54,7 +54,7 @@
   }>()
 
   const component = computed(() => {
-    if (props.value !== undefined) {
+    if (props.selectable) {
       return PListItemInput
     }
 
