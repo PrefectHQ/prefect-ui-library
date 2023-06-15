@@ -7,7 +7,7 @@
     </template>
     <template #content="{ tab }">
       <p-content>
-        <span class="flow-run-state-type-tabs__description">Flows with {{ getStateTypeList(tab.label) }} runs</span>
+        <FlowRunStateTypeTabDescription :state-type="getTabStates(tab.label)" :filter="getStateTypeFilter(tab.label)" />
         <FlowRunsAccordion :filter="getStateTypeFilter(tab.label)" />
       </p-content>
     </template>
@@ -18,6 +18,7 @@
   import { useRouteQueryParam } from '@prefecthq/vue-compositions'
   import FlowRunsAccordion from '@/components/FlowRunsAccordion.vue'
   import FlowRunStateTypeCount from '@/components/FlowRunStateTypeCount.vue'
+  import FlowRunStateTypeTabDescription from '@/components/FlowRunStateTypeTabDescription.vue'
   import { FlowRunsFilter } from '@/models/Filters'
   import { StateType } from '@/models/StateType'
 
@@ -37,13 +38,6 @@
 
   function getTabStates(tab: string): StateType[] {
     return tabStates[tab]
-  }
-
-  function getStateTypeList(tab: string): string {
-    const states = getTabStates(tab)
-    const formatter = new Intl.ListFormat('en', { style: 'long', type: 'disjunction' })
-
-    return formatter.format(states)
   }
 
   function getStateTypeFilter(tab: string): FlowRunsFilter {
@@ -73,9 +67,5 @@
   flex
   items-center
   justify-center
-}
-
-.flow-run-state-type-tabs__description { @apply
-  text-foreground-200
 }
 </style>
