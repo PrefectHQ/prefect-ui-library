@@ -1,7 +1,7 @@
 <template>
   <ComponentPage title="FlowList">
     <p-content>
-      <FlowList />
+      <FlowList selectable />
     </p-content>
   </ComponentPage>
 </template>

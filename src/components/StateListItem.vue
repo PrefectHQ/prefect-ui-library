@@ -5,7 +5,6 @@
     :value="value"
     class="state-list-item"
     :class="classes"
-    :disabled="disabled"
   >
     <div class="state-list-item__content-container">
       <div class="state-list-item__content">
@@ -47,30 +46,20 @@
   import { StateType } from '@/models/StateType'
 
   const props = defineProps<{
+    selectable?: boolean,
     selected?: CheckboxModel | null,
     value?: unknown,
     stateType?: StateType | null | undefined,
     tags?: string[] | null,
-    disabled?: boolean,
   }>()
 
   const component = computed(() => {
-    if (!props.disabled && isLegacySelectable()) {
+    if (props.selectable) {
       return PListItemInput
     }
 
     return PListItem
   })
-
-  const isLegacySelectable = (): boolean => {
-    // this check preserves legacy functionality where passing in `selected` as an
-    // empty array would hide the checkbox.
-    if (Array.isArray(props.selected) && props.selected.length !== 0) {
-      return false
-    }
-
-    return true
-  }
 
   const emit = defineEmits<{
     (event: 'update:selected', value: CheckboxModel): void,

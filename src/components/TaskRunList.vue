@@ -1,7 +1,7 @@
 <template>
   <p-virtual-scroller :items="taskRuns" class="task-run-list">
     <template #default="{ item: taskRun }">
-      <TaskRunListItem v-model:selected="model" v-bind="{ taskRun, disabled }" />
+      <TaskRunListItem v-model:selected="model" v-bind="{ taskRun, selectable }" />
     </template>
   </p-virtual-scroller>
 </template>
@@ -12,9 +12,9 @@
   import { TaskRun } from '@/models/TaskRun'
 
   const props = defineProps<{
-    selected: string[] | null,
+    selectable?: boolean,
+    selected?: string[] | null,
     taskRuns: TaskRun[],
-    disabled?: boolean,
   }>()
 
   const emit = defineEmits<{
