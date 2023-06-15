@@ -102,7 +102,7 @@ export const en = {
   info: {
     form: 'Form',
     json: 'JSON',
-    deploymentFlowHasNoParameters: 'This deployment\'s flow has no parameters',
+    schemaHasNoProperties: 'This schema has no properties',
     filtersActive: 'Filters active',
     resetFilters: 'Reset filters',
     deploymentName: 'Deployment name',

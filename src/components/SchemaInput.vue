@@ -11,7 +11,7 @@
 
       <template v-else-if="inputType === 'json'">
         <p-label :state="state" :message="error">
-          <p-code-input v-model="jsonParameters" lang="json" :min-lines="3" show-line-numbers />
+          <p-code-input v-model="jsonValues" lang="json" :min-lines="3" show-line-numbers />
         </p-label>
       </template>
 
@@ -21,7 +21,9 @@
     </template>
 
     <template v-else>
-      <em>{{ localization.info.deploymentFlowHasNoParameters }}</em>
+      <slot name="empty">
+        <em>{{ localization.info.schemaHasNoProperties }}</em>
+      </slot>
     </template>
   </div>
 </template>
@@ -79,8 +81,8 @@
     jsonValues: fieldRules(localization.info.values, isJson),
   }
 
-  const jsonParameters = ref(stringifyUnknownJson(merge(getSchemaDefaultValues(props.schema), props.modelValue)))
-  const { error, state, validate } = useValidation(jsonParameters, localization.info.values, rules.jsonValues)
+  const jsonValues = ref(stringifyUnknownJson(merge(getSchemaDefaultValues(props.schema), props.modelValue)))
+  const { error, state, validate } = useValidation(jsonValues, localization.info.values, rules.jsonValues)
 
   const validateAndEmit = async (value: SchemaValues | null | undefined): Promise<void> => {
     if (inputType.value == 'json') {
@@ -90,7 +92,7 @@
         return
       }
 
-      const parsed = parseUnknownJson(jsonParameters)
+      const parsed = parseUnknownJson(jsonValues)
       if (isRecord(parsed)) {
         emit('update:modelValue', parsed)
       }
