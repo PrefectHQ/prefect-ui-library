@@ -56,13 +56,7 @@
   }))
   const completedTasksSubscription = useSubscription(api.taskRuns.getTaskRunsCount, [completedTasksFilter])
   const completed = computed(() => completedTasksSubscription.response)
-  const completedPercentage = computed(() => {
-    if (isDefined(completed.value) && isDefined(total.value)) {
-      return `${toPercent(completed.value, total.value)}%`
-    }
-
-    return undefined
-  })
+  const completedPercentage = computed(() => getPercent(completed.value, total.value))
 
   const failedTasksFilter = computed<TaskRunsFilter>(() => ({
     taskRuns: {
@@ -74,13 +68,7 @@
   }))
   const failedTasksSubscription = useSubscription(api.taskRuns.getTaskRunsCount, [failedTasksFilter])
   const failed = computed(() => failedTasksSubscription.response)
-  const failedPercentage = computed(() => {
-    if (isDefined(failed.value) && isDefined(total.value)) {
-      return `${toPercent(failed.value, total.value)}%`
-    }
-
-    return undefined
-  })
+  const failedPercentage = computed(() => getPercent(failed.value, total.value))
 
   const historyFilter = computed(() => mapper.map('WorkspaceDashboardFilter', props.filter, 'TaskRunsHistoryFilter'))
   const historySubscription = useSubscription(api.taskRuns.getTaskRunsHistory, [historyFilter])
@@ -125,6 +113,19 @@
 
     return max * 4
   })
+
+  function getPercent(x: number | undefined, y: number | undefined): string | undefined {
+    if (isDefined(x) && isDefined(y)) {
+      const percent = toPercent(x, y)
+
+      if (percent) {
+        return `${percent}%`
+      }
+    }
+
+    return undefined
+
+  }
 </script>
 
 <style>
