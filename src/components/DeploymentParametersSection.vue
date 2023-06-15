@@ -4,14 +4,16 @@
       Parameters
     </h3>
 
-    <template v-if="hasParameters">
-      <p-button-group v-model="parametersInput" :options="parametersInputOptions" size="sm" />
+    <template v-if="parameters && hasParametersInSchema">
+      <slot name="button-group" v-bind="{ parametersInput }">
+        <p-button-group v-model="parametersInput" :options="parametersInputOptions" size="sm" />
+      </slot>
 
       <template v-if="parametersInput === 'form'">
         <DeploymentParameters v-model="parameters" :deployment="deployment" />
       </template>
 
-      <template v-else>
+      <template v-else-if="parametersInput === 'json'">
         <p-label :state="jsonParametersState" :message="jsonParametersErrorMessage">
           <p-code-input v-model="jsonParameters" lang="json" :min-lines="3" show-line-numbers />
         </p-label>
@@ -35,19 +37,21 @@
   import { SchemaValues } from '@/types/schemas'
   import { isJson, fieldRules, stringifyUnknownJson, parseUnknownJson, isRecord } from '@/utilities'
 
+  type FormButtonGroupValue = 'form' | 'json' | null
+
   const props = defineProps<{
-    modelValue: SchemaValues,
+    modelValue: SchemaValues | null | undefined,
     deployment: Deployment,
   }>()
 
   const emit = defineEmits<{
-    (event: 'update:modelValue', value: SchemaValues): void,
+    (event: 'update:modelValue', value: SchemaValues | null | undefined): void,
   }>()
 
   const parametersInputOptions = [{ value: 'form', label: 'Form' }, { value: 'json', label: 'JSON' }]
-  const parametersInput = ref<'form' | 'json'>('form')
+  const parametersInput = ref<FormButtonGroupValue >('form')
 
-  const hasParameters = computed(() => {
+  const hasParametersInSchema = computed(() => {
     return Object.keys(props.deployment.parameterOpenApiSchema.properties ?? {}).length > 0
   })
 
@@ -59,7 +63,7 @@
     get() {
       return props.modelValue
     },
-    set(value: SchemaValues) {
+    set(value: SchemaValues | null | undefined) {
       validateAndEmit(value)
     },
   })
@@ -76,7 +80,7 @@
   const jsonParameters = ref(stringifyUnknownJson(merge(getSchemaDefaultValues(parameterOpenApiSchema.value), props.deployment.rawParameters)))
   const { error: jsonParametersErrorMessage, state: jsonParametersState, validate: validateJsonParameters } = useValidation(jsonParameters, localization.info.parameters, rules.jsonParameters)
 
-  const validateAndEmit = async (value: SchemaValues): Promise<void> => {
+  const validateAndEmit = async (value: SchemaValues | null | undefined): Promise<void> => {
     if (parametersInput.value == 'json') {
       const valid = await validateJsonParameters()
 

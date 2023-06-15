@@ -59,21 +59,15 @@
       <template v-if="hasParameters">
         <p-divider />
 
+        <DeploymentParametersSection v-model="parameters" :deployment="deployment">
+          <template #button-group="{ parametersInput }">
+            <p-button-group v-model="parametersInput" :options="overrideParametersOptions" size="sm" />
+          </template>
+        </DeploymentParametersSection>
+
         <h3 class="flow-run-create-form__section-header">
           Parameters
         </h3>
-
-        <p-button-group v-model="overrideParameters" :options="overrideParametersOptions" size="sm" />
-
-        <template v-if="overrideParameters == 'custom'">
-          <DeploymentParameters v-model="parameters" :deployment="deployment" />
-        </template>
-
-        <template v-else-if="overrideParameters == 'json'">
-          <p-label :state="jsonParametersState" :message="jsonParametersErrorMessage">
-            <p-code-input v-model="jsonParameters" lang="json" :min-lines="3" show-line-numbers />
-          </p-label>
-        </template>
       </template>
     </p-content>
 
@@ -97,6 +91,7 @@
   import { computed, ref } from 'vue'
   import { isJson, localization } from '..'
   import { TimezoneSelect, DateInput, DeploymentParameters } from '@/components'
+  import DeploymentParametersSection from '@/components/DeploymentParametersSection.vue'
   import { useForm } from '@/compositions/useForm'
   import { Deployment, DeploymentFlowRunCreate } from '@/models'
   import { getSchemaDefaultValues, mocker } from '@/services'
