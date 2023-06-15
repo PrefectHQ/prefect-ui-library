@@ -59,11 +59,13 @@
       <template v-if="hasParameters">
         <p-divider />
 
-        <DeploymentParametersSection v-model="parameters" :deployment="deployment">
+        <DeploymentParametersSection v-model="parameters" :deployment="deployment" />
+        <!--
           <template #button-group="{ parametersInput }">
-            <p-button-group v-model="parametersInput" :options="overrideParametersOptions" size="sm" />
+          <p-button-group v-model="parametersInput" :options="overrideParametersOptions" size="sm" />
           </template>
-        </DeploymentParametersSection>
+          </DeploymentParametersSection>
+        -->
 
         <h3 class="flow-run-create-form__section-header">
           Parameters
