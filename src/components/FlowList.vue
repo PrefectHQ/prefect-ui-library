@@ -62,14 +62,13 @@
         item-key="id"
       >
         <template #default="{ item }">
-          <slot v-bind="{ item, selected, disabled, update: handleUpdate, delete: handleDelete }">
+          <slot v-bind="{ item, selected, selectable, update: handleUpdate, delete: handleDelete }">
             <FlowListItem
               v-model:selected="selected"
               :value="item.id"
               :flow="item"
               :filter="routeFilter"
-              :disabled="disabled"
-              selectable
+              :selectable="selectable"
               class="flow-list__flow"
               @update="handleUpdate"
               @delete="handleDelete"
@@ -100,7 +99,7 @@
 
   const props = defineProps<{
     filter?: FlowsFilter,
-    disabled?: boolean,
+    selectable?: boolean,
   }>()
 
   const emit = defineEmits<{

@@ -5,7 +5,6 @@
     :value="value"
     class="state-list-item"
     :class="classes"
-    :disabled="disabled"
   >
     <div class="state-list-item__content-container">
       <div class="state-list-item__content">
@@ -52,11 +51,10 @@
     value?: unknown,
     stateType?: StateType | null | undefined,
     tags?: string[] | null,
-    disabled?: boolean,
   }>()
 
   const component = computed(() => {
-    if (props.selectable && !props.disabled) {
+    if (props.selectable) {
       return PListItemInput
     }
 

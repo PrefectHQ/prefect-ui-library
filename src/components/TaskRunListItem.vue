@@ -1,5 +1,5 @@
 <template>
-  <StateListItem v-model:selected="model" :selectable="selectable" v-bind="{ value, disabled, tags, stateType }" class="task-run-list-item">
+  <StateListItem v-model:selected="model" :selectable="selectable" v-bind="{ value, tags, stateType }" class="task-run-list-item">
     <template #name>
       <p-link :to="routes.taskRun(taskRun.id)">
         <span>{{ taskRun.name }}</span>
@@ -36,7 +36,6 @@
     selectable?: boolean,
     selected?: CheckboxModel | null,
     taskRun: TaskRun,
-    disabled?: boolean,
   }>()
 
   const emit = defineEmits<{

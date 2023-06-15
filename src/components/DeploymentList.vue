@@ -15,12 +15,12 @@
         item-key="id"
       >
         <template #default="{ item }">
-          <slot v-bind="{ item, selected, disabled, update: handleUpdate, delete: handleDelete }">
+          <slot v-bind="{ item, selected, selectable, update: handleUpdate, delete: handleDelete }">
             <DeploymentListItem
               v-model:selected="selected"
               :value="item.id"
               :deployment="item"
-              :disabled="disabled"
+              :selectable="selectable"
               class="deployment-list__deployment"
               @update="handleUpdate"
               @delete="handleDelete"
@@ -50,7 +50,7 @@
 
   const props = defineProps<{
     filter?: DeploymentsFilter,
-    disabled?: boolean,
+    selectable?: boolean,
   }>()
 
   const emit = defineEmits<{

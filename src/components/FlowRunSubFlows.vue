@@ -7,7 +7,7 @@
     </div>
 
     <template v-if="!empty">
-      <FlowRunList :flow-runs="flowRuns" disable-deletion @bottom="loadMoreSubFlowRuns" />
+      <FlowRunList :flow-runs="flowRuns" @bottom="loadMoreSubFlowRuns" />
     </template>
 
     <PEmptyResults v-if="empty">

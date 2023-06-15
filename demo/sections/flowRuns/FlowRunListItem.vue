@@ -3,7 +3,7 @@
     <FlowRunListItem :flow-run="flowRun" selectable class="color-mode-default" />
 
     <template #disabled>
-      <FlowRunListItem :flow-run="flowRun" selectable disabled class="color-mode-default" />
+      <FlowRunListItem :flow-run="flowRun" class="color-mode-default" />
     </template>
 
     <template #no-relations>
