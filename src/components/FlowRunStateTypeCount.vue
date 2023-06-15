@@ -1,14 +1,17 @@
 <template>
   <div class="flow-run-state-type-count">
-    <span class="flow-run-state-type-count__badge" :class="badgeColorClass" />
+    <span class="flow-run-state-type-count__badge">
+      <template v-for="state in states" :key="state">
+        <span class="flow-run-state-type-count__state" :class="getStateTypeClass(state)" />
+      </template>
+    </span>
     <span class="flow-run-state-type-count__value">{{ count }}</span>
   </div>
 </template>
 
 <script lang="ts" setup>
-  import { useSubscription } from '@prefecthq/vue-compositions'
   import { computed } from 'vue'
-  import { useWorkspaceApi } from '@/compositions/useWorkspaceApi'
+  import { useFlowRunsCount } from '@/compositions/useFlowRunsCount'
   import { FlowRunsFilter } from '@/models/Filters'
   import { StateType } from '@/models/StateType'
   import { MaybeArray } from '@/types/utilities'
@@ -19,23 +22,23 @@
     filter?: FlowRunsFilter,
   }>()
 
-  const api = useWorkspaceApi()
   const filter = computed(() => ({
     ...props.filter,
     flowRuns: {
       ...props.filter?.flowRuns,
       state: {
-        type: asArray(props.stateType),
+        type: states.value,
       },
     },
   }))
-  const subscription = useSubscription(api.flowRuns.getFlowRunsCount, [filter])
-  const count = computed(() => subscription.response)
-  const badgeColorClass = computed(() => {
-    const [state] = asArray(props.stateType)
 
+  const states = computed(() => asArray(props.stateType))
+
+  const { count } = useFlowRunsCount(filter)
+
+  function getStateTypeClass(state: StateType): string {
     return `bg-state-${state}-500`
-  })
+  }
 </script>
 
 <style>
@@ -48,8 +51,12 @@
 
 .flow-run-state-type-count__badge { @apply
   h-1
-  w-3
+  w-4
   rounded-full
+  grid
+  auto-cols-fr
+  grid-flow-col
+  overflow-hidden
 }
 
 .flow-run-state-type-count__value { @apply
