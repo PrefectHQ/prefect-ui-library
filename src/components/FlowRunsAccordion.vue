@@ -1,8 +1,8 @@
 <template>
   <template v-if="flowIds">
     <p-accordion :sections="flowIds" class="flow-runs-accordion">
-      <template #header="{ section: flowId, id, toggle, content }">
-        <FlowRunsAccordionHeader :flow="getFlow(flowId)!" v-bind="{ id, content, toggle, filter }" />
+      <template #header="{ section: flowId, id, toggle, content, selected }">
+        <FlowRunsAccordionHeader :flow="getFlow(flowId)!" v-bind="{ id, content, toggle, filter, selected }" />
       </template>
       <template #content="{ section: flowId }">
         <FlowFlowRunsList :flow-id="flowId" :filter="filter" />
