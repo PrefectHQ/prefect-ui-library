@@ -2,7 +2,7 @@
   <p-modal v-model:showModal="internalShowModal" class="parameters-modal" title="Run Deployment">
     <p-form @submit="submit">
       <p-content>
-        <DeploymentParameters v-model="parameters" :deployment="deployment" />
+        <SchemaInput v-model="parameters" :schema="deployment.parameterOpenApiSchema" />
       </p-content>
     </p-form>
 
@@ -21,7 +21,7 @@
   import { useField } from 'vee-validate'
   import { computed, h } from 'vue'
   import { useRouter } from 'vue-router'
-  import { ToastFlowRunCreate, DeploymentParameters } from '@/components'
+  import { ToastFlowRunCreate, SchemaInput } from '@/components'
   import { useWorkspaceApi, useWorkspaceRoutes } from '@/compositions'
   import { useForm } from '@/compositions/useForm'
   import { localization } from '@/localization'
