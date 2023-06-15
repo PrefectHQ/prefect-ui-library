@@ -1,7 +1,7 @@
 <template>
   <p-virtual-scroller :items="flowRuns" class="flow-run-list">
     <template #default="{ item: flowRun }">
-      <FlowRunListItem v-model:selected="model" :flow-run="flowRun" :selectable="selectable" />
+      <FlowRunListItem v-model:selected="model" v-bind="{ flowRun, selectable }" />
     </template>
   </p-virtual-scroller>
 </template>

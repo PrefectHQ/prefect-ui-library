@@ -1,7 +1,7 @@
 <template>
   <p-virtual-scroller :items="taskRuns" class="task-run-list">
     <template #default="{ item: taskRun }">
-      <TaskRunListItem v-model:selected="model" :selectable="selectable" :task-run="taskRun" />
+      <TaskRunListItem v-model:selected="model" v-bind="{ taskRun, selectable }" />
     </template>
   </p-virtual-scroller>
 </template>
