@@ -72,7 +72,7 @@
       <p-label label="Infrastructure Overrides (Optional)" :message="overrideErrorMessage" :state="overrideState">
         <JsonInput
           v-model="infrastructureOverrides"
-          show-line-numb
+          show-line-numbers
           :min-lines="3"
           class="deployment-form__infrastructure-overrides-input"
           show-format-button
