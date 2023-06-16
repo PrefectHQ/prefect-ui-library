@@ -7,19 +7,21 @@
     </div>
 
     <template v-if="modelValue && hasPropertiesInSchema">
-      <template v-if="inputType === 'form'">
-        <SchemaFormFields :schema="schema" />
-      </template>
+      <keep-alive>
+        <template v-if="inputType === 'form'">
+          <SchemaFormFields :schema="schema" />
+        </template>
 
-      <keep-alive v-else-if="inputType === 'json'">
-        <p-label :state="state" :message="error">
-          <p-code-input v-model="stringRef" lang="json" :min-lines="3" show-line-numbers />
-        </p-label>
+        <template v-else-if="inputType === 'json'">
+          <p-label :state="state" :message="error">
+            <p-code-input v-model="stringRef" lang="json" :min-lines="3" show-line-numbers />
+          </p-label>
+        </template>
+
+        <template v-else>
+          <slot name="null-input-type" />
+        </template>
       </keep-alive>
-
-      <template v-else>
-        <slot name="null-input-type" />
-      </template>
     </template>
 
     <template v-else>

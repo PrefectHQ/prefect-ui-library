@@ -1,5 +1,5 @@
 import { Ref, ref, watch } from 'vue'
-import { isRecord } from '..'
+import { isRecord } from '@/utilities'
 
 export type UseSyncedRecordValue = Record<string, unknown>
 
