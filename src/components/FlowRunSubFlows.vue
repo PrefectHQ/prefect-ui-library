@@ -92,8 +92,8 @@
     sort: sort.value,
   }))
 
-  const { flowRuns: subflowRuns, subscription: subFlowRunsSubscription, loadMore } = useFlowRunsInfiniteScroll(subFlowRunsFilter)
-  const empty = computed(() => !subFlowRunsSubscription.loading && subFlowRunIds.value.length === 0)
+  const { flowRuns: subflowRuns, subscriptions: subFlowRunsSubscriptions, loadMore } = useFlowRunsInfiniteScroll(subFlowRunsFilter)
+  const empty = computed(() => !subFlowRunsSubscriptions.loading && subFlowRunIds.value.length === 0)
 
   function loadMoreSubFlowRuns(): void {
     const unwatch = watch(subFlowRunIds, (newValue, oldValue) => {

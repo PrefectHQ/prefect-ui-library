@@ -73,9 +73,9 @@
   const flowRunCountSubscription = useSubscription(api.flowRuns.getFlowRunsCount, [filter], { interval: 30000 })
   const flowRunCount = computed(() => flowRunCountSubscription.response)
 
-  const { flowRuns, subscription, loadMore } = useFlowRunsInfiniteScroll(filter, { interval: 3000 })
+  const { flowRuns, subscriptions, loadMore } = useFlowRunsInfiniteScroll(filter, { interval: 3000 })
 
-  const empty = computed(() => subscription.executed && flowRuns.value.length === 0)
+  const empty = computed(() => subscriptions.executed && flowRuns.value.length === 0)
 
   function clear(): void {
     states.value = []
@@ -83,7 +83,7 @@
 
   const deleteFlowRuns = (): void => {
     selectedFlowRuns.value = []
-    subscription.refresh()
+    subscriptions.refresh()
     flowRunCountSubscription.refresh()
   }
 

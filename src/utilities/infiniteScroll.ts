@@ -18,7 +18,7 @@ export type InfiniteScroll<
   filter: TFilter | Ref<TFilter | null>,
   options?: SubscriptionOptions
 ) => Record<TProperty, ComputedRef<Awaited<ReturnType<TAction>>>> & {
-  subscription: UseSubscriptions<TAction>['subscription'],
+  subscriptions: UseSubscriptions<TAction>['subscriptions'],
   loadMore: () => void,
 }
 
@@ -33,40 +33,40 @@ export function infiniteScrollCompositionFactory<
 ): InfiniteScroll<TFilter, TAction, TProperty> {
 
   const composition: InfiniteScroll<TFilter, TAction, TProperty> = (filter, options) => {
-    const pages = ref(0)
-    const subscriptions = reactive<UseSubscription<TAction>[]>([])
+    const page = ref(0)
+    const pages = reactive<UseSubscription<TAction>[]>([])
 
     function loadMore(): void {
-      if (subscriptions.length * limit > response.value.length) {
+      if (pages.length * limit > response.value.length) {
         return
       }
 
-      pages.value++
+      page.value++
 
-      const { subscription } = callback(filter, pages.value, options)
+      const { subscription } = callback(filter, page.value, options)
 
-      subscriptions.push(subscription)
+      pages.push(subscription)
     }
 
-    const response = computed(() => subscriptions.flatMap(subscription => subscription.response ?? []) as Awaited<ReturnType<TAction>>)
-    const { subscription } = useSubscriptions(subscriptions)
+    const response = computed(() => pages.flatMap(subscription => subscription.response ?? []) as Awaited<ReturnType<TAction>>)
+    const { subscriptions } = useSubscriptions(pages)
 
     const unwatch = uniqueValueWatcher(getValidWatchSource(filter), () => {
-      if (!subscription.isSubscribed()) {
+      if (!subscriptions.isSubscribed()) {
         unwatch!()
         return
       }
 
-      pages.value = 0
-      subscription.unsubscribe()
-      subscriptions.splice(0)
+      page.value = 0
+      subscriptions.unsubscribe()
+      pages.splice(0)
 
       loadMore()
     })
 
     if (getCurrentInstance()) {
       onUnmounted(() => {
-        subscription.unsubscribe()
+        subscriptions.unsubscribe()
         unwatch()
       })
     }
@@ -79,7 +79,7 @@ export function infiniteScrollCompositionFactory<
 
     return {
       ...propertyResponse,
-      subscription,
+      subscriptions,
       loadMore,
     }
   }

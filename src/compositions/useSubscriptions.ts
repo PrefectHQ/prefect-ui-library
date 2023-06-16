@@ -2,7 +2,7 @@ import { Action, UseSubscription } from '@prefecthq/vue-compositions'
 import { computed, reactive } from 'vue'
 
 export type UseSubscriptions<T extends Action> = {
-  subscription: Omit<UseSubscription<T>, 'promise' | 'response' | 'error'> & {
+  subscriptions: Omit<UseSubscription<T>, 'promise' | 'response' | 'error'> & {
     responses: UseSubscription<T>['response'][],
     errors: UseSubscription<T>['error'][],
   },
@@ -29,7 +29,7 @@ export function useSubscriptions<T extends Action>(subscriptions: UseSubscriptio
     return subscriptions.every(subscription => subscription.isSubscribed())
   }
 
-  const subscription: UseSubscriptions<T>['subscription'] = reactive({
+  const response: UseSubscriptions<T>['subscriptions'] = reactive({
     loading,
     errored,
     errors,
@@ -40,5 +40,5 @@ export function useSubscriptions<T extends Action>(subscriptions: UseSubscriptio
     isSubscribed,
   })
 
-  return { subscription }
+  return { subscriptions: response }
 }
