@@ -81,8 +81,8 @@
       <p-button inset @click="cancel">
         Cancel
       </p-button>
-      <p-button type="submit" :disabled="!valid">
-        Run
+      <p-button type="submit">
+        Submit
       </p-button>
     </template>
   </p-form>
@@ -164,7 +164,7 @@
 
   const cancel = (): void => emit('cancel')
 
-  const { validate, valid } = useValidationObserver()
+  const { validate } = useValidationObserver()
 
   const submit = handleSubmit(async (values): Promise<void> => {
     const valid = await validate()

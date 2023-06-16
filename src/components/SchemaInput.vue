@@ -6,16 +6,16 @@
       </slot>
     </div>
 
-    <template v-if="values && hasPropertiesInSchema">
+    <template v-if="modelValue && hasPropertiesInSchema">
       <template v-if="inputType === 'form'">
-        <SchemaFormFieldsWithValues v-model:values="values" :schema="schema" />
+        <SchemaFormFields :schema="schema" />
       </template>
 
-      <template v-else-if="inputType === 'json'">
+      <keep-alive v-else-if="inputType === 'json'">
         <p-label :state="state" :message="error">
-          <p-code-input v-model="jsonValues" lang="json" :min-lines="3" show-line-numbers />
+          <p-code-input v-model="stringRef" lang="json" :min-lines="3" show-line-numbers />
         </p-label>
-      </template>
+      </keep-alive>
 
       <template v-else>
         <slot name="null-input-type" />
@@ -33,13 +33,14 @@
 <script lang="ts" setup>
   import { useValidation } from '@prefecthq/vue-compositions'
   import { merge } from 'lodash'
-  import { computed, ref } from 'vue'
-  import { SchemaFormFieldsWithValues } from '@/components'
+  import { computed, ref, watchEffect } from 'vue'
+  import { SchemaFormFields } from '@/components'
+  import { useForm, useSyncedRecordString } from '@/compositions'
   import { localization } from '@/localization'
-  import { getSchemaDefaultValues, mapper } from '@/services'
+  import { getSchemaDefaultValues } from '@/services'
   import { SchemaInputType, isSchemaInputType } from '@/types/schemaInput'
   import { Schema, SchemaValues } from '@/types/schemas'
-  import { isJson, fieldRules, stringifyUnknownJson, parseUnknownJson, isRecord } from '@/utilities'
+  import { isJson, fieldRules } from '@/utilities'
 
   const props = defineProps<{
     modelValue: SchemaValues | null | undefined,
@@ -62,48 +63,36 @@
     ]
   })
 
-  const inputType = ref<SchemaInputType>(props.defaultInputType ?? 'form')
+  const inputType = ref<SchemaInputType>(props.defaultInputType ?? 'json')
   const setInputType = (value: unknown): void => {
     if (isSchemaInputType(value)) {
       inputType.value = value
     }
   }
 
-  const values = computed({
-    get() {
-      if (!props.modelValue) {
-        return getSchemaDefaultValues(props.schema)
-      }
-
-      return mapper.map('SchemaValuesResponse', { values: props.modelValue, schema: props.schema }, 'SchemaValues')
-    },
-    set(value: SchemaValues | null | undefined) {
-      const values = mapper.map('SchemaValues', { values: value ?? {}, schema: props.schema }, 'SchemaValuesRequest')
-      validateAndEmit(values)
-    },
-  })
+  const defaultValues = merge(getSchemaDefaultValues(props.schema), props.modelValue)
+  const { stringRef, recordRef } = useSyncedRecordString(defaultValues)
 
   const rules = {
     jsonValues: fieldRules(localization.info.values, isJson),
   }
 
-  const jsonValues = ref(stringifyUnknownJson(merge(getSchemaDefaultValues(props.schema), props.modelValue)))
-  const { error, state, validate } = useValidation(jsonValues, localization.info.values, rules.jsonValues)
+  const { error, state } = useValidation(stringRef, localization.info.values, rules.jsonValues)
 
-  const validateAndEmit = async (value: SchemaValues | null | undefined): Promise<void> => {
-    if (inputType.value == 'json') {
-      const valid = await validate()
+  const { validate: validateReactiveForm, errors: reactiveFormErrors, values } = useForm({
+    initialValues: recordRef,
+  })
 
-      if (!valid) {
-        return
-      }
+  useValidation(recordRef, localization.info.values, async () => {
+    await validateReactiveForm()
+    return Object.entries(reactiveFormErrors.value).length === 0
+  })
 
-      const parsed = parseUnknownJson(jsonValues)
-      if (isRecord(parsed)) {
-        emit('update:modelValue', parsed)
-      }
+  watchEffect(() => {
+    if (inputType.value === 'json') {
+      emit('update:modelValue', recordRef.value)
     } else {
-      emit('update:modelValue', value)
+      emit('update:modelValue', values)
     }
-  }
+  })
 </script>
