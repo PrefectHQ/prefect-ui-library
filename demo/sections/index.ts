@@ -2,6 +2,7 @@ import { Section } from '@/demo/router/routeRecords'
 import { artifacts } from '@/demo/sections/artifacts'
 import { blocks } from '@/demo/sections/blocks'
 import { concurrency } from '@/demo/sections/concurrency'
+import { dashboard } from '@/demo/sections/dashboard'
 import { deployments } from '@/demo/sections/deployments'
 import { flowRuns } from '@/demo/sections/flowRuns'
 import { flows } from '@/demo/sections/flows'
@@ -13,6 +14,7 @@ import { workers } from '@/demo/sections/workers'
 
 export const sections: Section = {
   artifacts,
+  dashboard,
   general,
   blocks,
   deployments,

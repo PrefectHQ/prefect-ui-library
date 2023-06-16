@@ -1,6 +1,7 @@
 export * from './buttons'
 export * from './ColorMode'
 export * from './css'
+export * from './dashboard'
 export * from './dates'
 export * from './reactivity'
 export * from './RouteGuard'

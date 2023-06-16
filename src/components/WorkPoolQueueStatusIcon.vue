@@ -1,7 +1,18 @@
 <template>
-  <template v-if="workPoolQueue && workQueueStatus">
-    <p-icon :icon="status.icon" size="small" class="work-queue-status-icon" :class="classes" />
-  </template>
+  <p-tooltip
+    v-if="workPoolQueue && workQueueStatus"
+    class="work-queue-status-icon"
+    :text="tooltipText"
+  >
+    <div v-if="status.state === 'healthy'" class="work-queue-status-icon--healthy" />
+    <p-icon
+      v-if="status.state !== 'healthy'"
+      :icon="status.icon"
+      size="small"
+      class="work-queue-status-icon"
+      :class="classes"
+    />
+  </p-tooltip>
 </template>
 
 <script lang="ts" setup>
@@ -21,34 +32,48 @@
   const workPoolQueuesSubscription = useSubscriptionWithDependencies(api.workPoolQueues.getWorkPoolQueueByName, workPoolQueueArgs)
   const workPoolQueue = computed(() => workPoolQueuesSubscription.response)
 
-
   const workQueueId = computed(() => workPoolQueue.value?.id)
   const { workQueueStatus } = useWorkQueueStatus(workQueueId)
   const healthy = computed(() => workQueueStatus.value?.healthy)
 
-  const status = computed<{ name: string, icon: Icon }>(() => {
+  const status = computed<{
+    state: 'paused' | 'healthy' | 'unhealthy',
+    name: string,
+    icon: Icon,
+  }>(() => {
     if (workPoolQueue.value?.isPaused) {
-      return { name: 'Paused', icon: 'PauseIcon' }
+      return { state: 'paused', name: 'Paused', icon: 'PauseCircleIcon' }
     }
     if (healthy.value) {
-      return { name: 'Healthy', icon: 'CheckCircleIcon' }
+      return { state: 'healthy', name: 'Healthy', icon: 'CheckCircleIcon' }
     }
-    return { name: 'Unhealthy', icon: 'XCircleIcon' }
+    return { state: 'unhealthy', name: 'Unhealthy', icon: 'ExclamationCircleIcon' }
   })
 
-  const classes = computed(() => `work-queue-status-icon--${status.value.name.toLowerCase()}`)
+  const tooltipText = computed(() => `${workPoolQueue.value?.name} work queue is ${status.value.state}`)
+  const classes = computed(() => `work-queue-status-icon--${status.value.state}`)
 </script>
 
 <style>
-.work-queue-status-icon--healthy{ @apply
-  text-state-completed-600
+.work-queue-status-icon { @apply
+  flex
+  items-center
+  cursor-help
 }
 
-.work-queue-status-icon--unhealthy{ @apply
-  text-state-failed-700
+.work-queue-status-icon--healthy { @apply
+  w-2
+  h-2
+  align-middle
+  bg-green-500
+  rounded-full
 }
 
-.work-queue-status-icon--paused{ @apply
-  text-state-pending-700
+.work-queue-status-icon--unhealthy { @apply
+  text-state-failed-500
+}
+
+.work-queue-status-icon--paused { @apply
+  text-state-paused-500
 }
 </style>

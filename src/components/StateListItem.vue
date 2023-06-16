@@ -1,5 +1,11 @@
 <template>
-  <p-list-item-input v-model:selected="model" :value="value" class="state-list-item" :class="classes" disabled>
+  <component
+    :is="component"
+    v-model:selected="model"
+    :value="value"
+    class="state-list-item"
+    :class="classes"
+  >
     <div class="state-list-item__content-container">
       <div class="state-list-item__content">
         <div class="state-list-item__top-section">
@@ -31,20 +37,29 @@
     </div>
 
     <slot />
-  </p-list-item-input>
+  </component>
 </template>
 
 <script lang="ts" setup>
-  import { PListItemInput, CheckboxModel, media } from '@prefecthq/prefect-design'
+  import { PListItemInput, CheckboxModel, media, PListItem } from '@prefecthq/prefect-design'
   import { computed, useSlots } from 'vue'
   import { StateType } from '@/models/StateType'
 
   const props = defineProps<{
+    selectable?: boolean,
     selected?: CheckboxModel | null,
     value?: unknown,
     stateType?: StateType | null | undefined,
     tags?: string[] | null,
   }>()
+
+  const component = computed(() => {
+    if (props.selectable) {
+      return PListItemInput
+    }
+
+    return PListItem
+  })
 
   const emit = defineEmits<{
     (event: 'update:selected', value: CheckboxModel): void,
@@ -67,40 +82,41 @@
 </script>
 
 <style>
-.state-list-item .p-list-item-input__checkbox { @apply
-  bg-transparent
+.state-list-item { @apply
+  border-l-8
+  border-transparent
 }
 
-.state-list-item--completed .p-list-item-input__checkbox { @apply
-  bg-state-completed-500
+.state-list-item--completed { @apply
+  border-state-completed-500
 }
 
-.state-list-item--running .p-list-item-input__checkbox { @apply
-  bg-state-running-500
+.state-list-item--running { @apply
+  border-state-running-500
 }
 
-.state-list-item--scheduled .p-list-item-input__checkbox { @apply
-  bg-state-scheduled-500
+.state-list-item--scheduled { @apply
+  border-state-scheduled-500
 }
 
-.state-list-item--pending .p-list-item-input__checkbox { @apply
-  bg-state-pending-500
+.state-list-item--pending { @apply
+  border-state-pending-500
 }
 
-.state-list-item--paused .p-list-item-input__checkbox { @apply
-  bg-state-paused-500
+.state-list-item--paused { @apply
+  border-state-paused-500
 }
 
-.state-list-item--failed .p-list-item-input__checkbox { @apply
-  bg-state-failed-500
+.state-list-item--failed { @apply
+  border-state-failed-500
 }
 
-.state-list-item--cancelled .p-list-item-input__checkbox { @apply
-  bg-state-cancelled-500
+.state-list-item--cancelled { @apply
+  border-state-cancelled-500
 }
 
-.state-list-item--crashed .p-list-item-input__checkbox { @apply
-  bg-state-crashed-500
+.state-list-item--crashed { @apply
+  border-state-crashed-500
 }
 
 .state-list-item__content { @apply
