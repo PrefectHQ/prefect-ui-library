@@ -14,8 +14,12 @@ export type InfiniteScroll<
   TFilter extends Partial<InfiniteScrollFilter>,
   TAction extends Action,
   TProperty extends string
-> = (filter: TFilter, options?: SubscriptionOptions) => Record<TProperty, ComputedRef<Awaited<ReturnType<TAction>>>> & {
+> = (
+  filter: TFilter | Ref<TFilter | null>,
+  options?: SubscriptionOptions
+) => Record<TProperty, ComputedRef<Awaited<ReturnType<TAction>>>> & {
   subscription: UseSubscriptions<TAction>['subscription'],
+  loadMore: () => void,
 }
 
 export function infiniteScrollCompositionFactory<
@@ -28,7 +32,7 @@ export function infiniteScrollCompositionFactory<
   limit: number,
 ): InfiniteScroll<TFilter, TAction, TProperty> {
 
-  const composition: InfiniteScroll<TFilter, TAction, TProperty> = (filter: TFilter, options?: SubscriptionOptions) => {
+  const composition: InfiniteScroll<TFilter, TAction, TProperty> = (filter, options) => {
     const pages = ref(0)
     const subscriptions = reactive<UseSubscription<TAction>[]>([])
 
@@ -76,6 +80,7 @@ export function infiniteScrollCompositionFactory<
     return {
       ...propertyResponse,
       subscription,
+      loadMore,
     }
   }
 

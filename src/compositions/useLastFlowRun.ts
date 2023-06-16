@@ -1,7 +1,7 @@
-import { UseSubscription, useSubscriptionWithDependencies } from '@prefecthq/vue-compositions'
+import { UseSubscription } from '@prefecthq/vue-compositions'
 import { computed, ComputedRef, Ref, ref } from 'vue'
 import { useCan } from '@/compositions/useCan'
-import { useWorkspaceApi } from '@/compositions/useWorkspaceApi'
+import { useFlowRuns } from '@/compositions/useFlowRuns'
 import { FlowRun, FlowRunsFilter, UnionFilter } from '@/models'
 import { WorkspaceFlowRunsApi } from '@/services'
 
@@ -12,7 +12,6 @@ export type UseLastFlowRun = {
 
 export function useLastFlowRun(filter: UnionFilter | Ref<UnionFilter | null | undefined>): UseLastFlowRun {
   const filterRef = ref(filter)
-  const api = useWorkspaceApi()
   const can = useCan()
 
   const nextFilter = computed<FlowRunsFilter | null>(() => {
@@ -33,9 +32,9 @@ export function useLastFlowRun(filter: UnionFilter | Ref<UnionFilter | null | un
     }
   })
 
-  const subscriptionArgs = computed<[FlowRunsFilter] | null>(() => nextFilter.value ? [nextFilter.value] : null)
-  const subscription = useSubscriptionWithDependencies(api.flowRuns.getFlowRuns, subscriptionArgs)
-  const flowRun = computed(() => subscription.response?.[0])
+  const { flowRuns, subscription } = useFlowRuns(nextFilter)
+
+  const flowRun = computed(() => flowRuns.value.at(0))
 
   return {
     subscription,

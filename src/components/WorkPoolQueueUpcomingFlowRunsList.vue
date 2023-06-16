@@ -1,6 +1,6 @@
 <template>
   <div class="work-pool-queue-upcoming-flow-runs-list">
-    <FlowRunList :flow-runs="scheduledFlowRuns" />
+    <FlowRunList :flow-runs="flowRuns" />
 
     <p-empty-results v-if="empty">
       <template v-if="isPaused" #message>
@@ -15,18 +15,15 @@
 </template>
 
 <script lang="ts" setup>
-  import { useSubscription } from '@prefecthq/vue-compositions'
   import { computed, toRefs, watch } from 'vue'
   import { FlowRunList } from '@/components'
-  import { useWorkspaceApi } from '@/compositions'
+  import { useFlowRuns } from '@/compositions'
   import { FlowRunsFilter, WorkPoolQueue } from '@/models'
 
   const props = defineProps<{
     workPoolName: string,
     workPoolQueue: WorkPoolQueue,
   }>()
-
-  const api = useWorkspaceApi()
 
   const { workPoolQueue } = toRefs(props)
 
@@ -44,14 +41,15 @@
     },
   }))
 
-  const flowRunsSubscription = useSubscription(api.flowRuns.getFlowRuns, [filter], { interval: 30000 })
-  const scheduledFlowRuns = computed(() => flowRunsSubscription.response ?? [])
+  const { flowRuns, subscription } = useFlowRuns(filter)
 
-  const empty = computed(() => flowRunsSubscription.executed && scheduledFlowRuns.value.length === 0)
+  const empty = computed(() => subscription.executed && flowRuns.value.length === 0)
   const isPaused = computed(() => workPoolQueue.value.isPaused)
 
-
+  // pretty sure this isn't needed but I haven't tested for sure
+  // the subscription should refresh automatically because if the workPoolQueue
+  // updates the filter will update which creates a new subscription
   watch(() => workPoolQueue, () => {
-    flowRunsSubscription.refresh()
+    subscription.refresh()
   })
 </script>

@@ -17,9 +17,7 @@ export type UseFlowRuns = {
 // in OSS this can be customized by the user and might not be 200
 const FLOW_RUN_LIMIT = 100
 
-export type FlowRunsPageFilter = Omit<FlowRunsFilter, 'offset'>
-
-export function useFlowRuns(filter: FlowRunsPageFilter | Ref<FlowRunsPageFilter | null | undefined>, page: MaybeRef<number> = 1, options?: SubscriptionOptions): UseFlowRuns {
+export function useFlowRuns(filter: FlowRunsFilter | Ref<FlowRunsFilter | null | undefined>, page: MaybeRef<number> = 1, options?: SubscriptionOptions): UseFlowRuns {
   const filterRef = ref(filter)
   const pageRef = ref(page)
   const can = useCan()
