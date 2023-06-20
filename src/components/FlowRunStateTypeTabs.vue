@@ -28,9 +28,9 @@
 
   const tabStates: Record<string, StateType[]> = {
     failed: ['failed', 'crashed'],
-    running: ['running'],
+    running: ['running', 'pending', 'paused'],
     completed: ['completed'],
-    scheduled: ['scheduled'],
+    scheduled: ['scheduled', 'cancelled'],
   }
   const tabs = Object.keys(tabStates)
 
