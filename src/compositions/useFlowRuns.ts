@@ -1,6 +1,7 @@
 import { SubscriptionOptions, UseSubscription, useSubscriptionWithDependencies } from '@prefecthq/vue-compositions'
 import { computed, ComputedRef, MaybeRef, Ref, ref, watch } from 'vue'
 import { useCan } from '@/compositions/useCan'
+import { useFilterPagination } from '@/compositions/useFilterPagination'
 import { useWorkspaceApi } from '@/compositions/useWorkspaceApi'
 import { FlowRunsFilter } from '@/models/Filters'
 import { FlowRun } from '@/models/FlowRun'
@@ -22,6 +23,8 @@ export function useFlowRuns(filter: FlowRunsFilter | Ref<FlowRunsFilter | null |
   const pageRef = ref(page)
   const can = useCan()
   const api = useWorkspaceApi()
+  const limitRef = computed(() => filterRef.value?.limit)
+  const { limit, offset } = useFilterPagination(pageRef, limitRef)
 
   const parameters = computed<[FlowRunsFilter] | null>(() => {
     if (!filterRef.value) {
@@ -32,13 +35,10 @@ export function useFlowRuns(filter: FlowRunsFilter | Ref<FlowRunsFilter | null |
       return null
     }
 
-    const limit = filterRef.value.limit ?? FLOW_RUN_LIMIT
-    const offset = (pageRef.value - 1) * limit
-
     const filter: FlowRunsFilter = {
       ...filterRef.value,
-      limit,
-      offset,
+      limit: limit.value,
+      offset: offset.value,
     }
 
     return [filter]
