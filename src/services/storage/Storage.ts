@@ -1,4 +1,4 @@
-import { isDefined } from '@prefecthq/prefect-design'
+import { isDefined, randomId } from '@prefecthq/prefect-design'
 import { reactive } from 'vue'
 import { StorageItem } from '@/services/storage/StorageItem'
 
@@ -39,7 +39,7 @@ export class Storage<T extends StorageItem> {
   }
 
   public subscribe(id: string): Unsubscribe {
-    const subscriptionId = crypto.randomUUID()
+    const subscriptionId = randomId()
     const subscriptions = this.getSubscription(id)
 
     subscriptions.add(subscriptionId)
