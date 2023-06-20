@@ -1,6 +1,7 @@
 import { ComputedRef, MaybeRef, computed, ref, unref } from 'vue'
 
-const GLOBAL_API_LIMIT = 200
+// this will eventually need to come from the ui settings
+export const GLOBAL_API_LIMIT = 200
 
 export type UseFilterPagination = {
   limit: ComputedRef<number>,
