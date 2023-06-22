@@ -90,15 +90,15 @@
   import { zonedTimeToUtc } from 'date-fns-tz'
   import { useField } from 'vee-validate'
   import { computed, ref } from 'vue'
-  import { isJson, localization, mapper } from '..'
   import { TimezoneSelect, DateInput } from '@/components'
   import SchemaInput from '@/components/SchemaInput.vue'
   import { useForm } from '@/compositions/useForm'
+  import { localization } from '@/localization'
   import { Deployment, DeploymentFlowRunCreate } from '@/models'
   import { mocker } from '@/services'
   import { SchemaInputType } from '@/types/schemaInput'
   import { SchemaValues } from '@/types/schemas'
-  import { fieldRules, isRequiredIf } from '@/utilities/validation'
+  import { isJson, fieldRules, isRequiredIf } from '@/utilities/validation'
 
   const props = defineProps<{
     deployment: Deployment,
@@ -127,7 +127,7 @@
   const combinedParameters = computed(() => {
     // This is necessary to support unmapped schema values as a prop which is used
     // to allow url-based parameter overrides
-    return { ...props.deployment.parameters, ...mapper.map('SchemaValuesResponse', { schema: props.deployment.parameterOpenApiSchema, values: props.parameters ?? {} }, 'SchemaValues') }
+    return { ...props.deployment.parameters, ...props.parameters ?? {} }
   })
 
   const { handleSubmit } = useForm<DeploymentFlowRunCreate>({

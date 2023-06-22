@@ -39,7 +39,7 @@
   import { SchemaFormFields } from '@/components'
   import { useForm, useSyncedRecordString } from '@/compositions'
   import { localization } from '@/localization'
-  import { getSchemaDefaultValues } from '@/services'
+  import { getSchemaDefaultValues, mapper } from '@/services'
   import { SchemaInputType } from '@/types/schemaInput'
   import { Schema, SchemaValues } from '@/types/schemas'
   import { isJson, fieldRules, isDefined } from '@/utilities'
@@ -77,7 +77,7 @@
     },
   })
 
-  const defaultValues = merge(getSchemaDefaultValues(props.schema), props.modelValue)
+  const defaultValues = merge(getSchemaDefaultValues(props.schema), mapper.map('SchemaValuesResponse', { values: props.modelValue ?? {}, schema: props.schema }, 'SchemaValues'))
   const { stringRef, recordRef } = useSyncedRecordString(defaultValues)
 
   const rules = {
