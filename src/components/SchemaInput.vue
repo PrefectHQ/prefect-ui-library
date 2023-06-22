@@ -4,7 +4,6 @@
       <slot name="button-group">
         <p-button-group v-model="inputType" :options="inputTypeOptions" size="sm" />
       </slot>
-      {{ inputType }}
     </div>
 
     <template v-if="modelValue && hasPropertiesInSchema">

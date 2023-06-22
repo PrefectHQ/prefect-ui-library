@@ -66,7 +66,6 @@
 
           <SchemaInput v-model="parameters" v-model:input-type="parametersInputType" :schema="deployment.parameterOpenApiSchema">
             <template #button-group>
-              {{ parametersInputType }}
               <p-button-group v-model="parametersInputType" :options="parametersInputTypeOptions" size="sm" />
             </template>
           </SchemaInput>
