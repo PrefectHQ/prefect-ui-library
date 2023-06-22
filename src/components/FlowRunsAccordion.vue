@@ -2,7 +2,7 @@
   <template v-if="flowIds">
     <p-accordion :sections="flowIds" class="flow-runs-accordion">
       <template #header="{ section: flowId, id, toggle, content, selected }">
-        <FlowRunsAccordionHeader :flow="getFlow(flowId)!" v-bind="{ id, content, toggle, filter, selected }" />
+        <FlowRunsAccordionHeader :flow="getFlow(flowId)" v-bind="{ id, content, toggle, filter, selected }" />
       </template>
       <template #content="{ section: flowId }">
         <FlowRunsAccordionContent :flow-id="flowId" :filter="filter" />
@@ -35,7 +35,13 @@
   const flowIds = computed(() => flows.value?.map(flow => flow.id))
   const flowsLookup = computed(() => toMap(flows.value ?? [], 'id'))
 
-  function getFlow(id: string): Flow | undefined {
-    return flowsLookup.value.get(id)
+  function getFlow(id: string): Flow {
+    const flow = flowsLookup.value.get(id)
+
+    if (!flow) {
+      throw new Error(`FlowRunsAccordion: Flow with id ${id} not found in flowsLookup`)
+    }
+
+    return flow
   }
 </script>
