@@ -125,9 +125,7 @@
   }
 
   const combinedParameters = computed(() => {
-    // This is necessary to support unmapped schema values as a prop which is used
-    // to allow url-based parameter overrides
-    return { ...props.deployment.parameters, ...props.parameters ?? {} }
+    return { ...props.deployment.parameters, ...props.parameters }
   })
 
   const { handleSubmit } = useForm<DeploymentFlowRunCreate>({
