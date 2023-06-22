@@ -1,18 +1,17 @@
 import { ComputedRef, MaybeRef, computed, ref } from 'vue'
-import { mapper } from '@/services'
-import { Schema, SchemaValues } from '@/types'
+import { SchemaResponse } from '@/models'
+import { Schema } from '@/types'
 
 export type UseOptionalPropertiesSchema = {
   schema: ComputedRef<Schema>,
 }
 
-export function useOptionalPropertiesSchema(rawSchema: MaybeRef<SchemaValues>): UseOptionalPropertiesSchema {
+export function useOptionalPropertiesSchema(rawSchema: MaybeRef<SchemaResponse | Schema>): UseOptionalPropertiesSchema {
   const rawSchemaRef = ref(rawSchema)
 
   const computedSchema = computed(() => {
     rawSchemaRef.value.required = []
-
-    return mapper.map('SchemaResponse', rawSchemaRef.value, 'Schema')
+    return rawSchemaRef.value
   })
 
   return {
