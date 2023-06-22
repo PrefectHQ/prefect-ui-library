@@ -1,5 +1,5 @@
 import { Ref, ref, watch } from 'vue'
-import { isValidJsonString } from '..'
+import { isValidJsonString, stringify } from '@/utilities/json'
 
 export type UseSyncedRecordValue = Record<string, unknown>
 
@@ -19,7 +19,7 @@ export type UseSyncedRecordString = {
 export function useSyncedRecordString(initialValues?: UseSyncedRecordValue | string): UseSyncedRecordString {
   const initialValuesIsString = typeof initialValues === 'string'
   const recordRef = ref<UseSyncedRecordValue>(initialValuesIsString ? JSON.parse(initialValues) : initialValues)
-  const stringRef = ref<string>(JSON.stringify(recordRef.value))
+  const stringRef = ref<string>(stringify(recordRef.value))
   const valid = ref(false)
 
   watch(stringRef, (newString) => {

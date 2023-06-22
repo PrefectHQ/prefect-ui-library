@@ -1,9 +1,10 @@
 <template>
   <p-content class="schema-input">
     <div class="schema-input__button-group">
-      <slot name="button-group" v-bind="{ inputType, setInputType }">
+      <slot name="button-group">
         <p-button-group v-model="inputType" :options="inputTypeOptions" size="sm" />
       </slot>
+      {{ inputType }}
     </div>
 
     <template v-if="modelValue && hasPropertiesInSchema">
@@ -40,18 +41,19 @@
   import { useForm, useSyncedRecordString } from '@/compositions'
   import { localization } from '@/localization'
   import { getSchemaDefaultValues } from '@/services'
-  import { SchemaInputType, isSchemaInputType } from '@/types/schemaInput'
+  import { SchemaInputType } from '@/types/schemaInput'
   import { Schema, SchemaValues } from '@/types/schemas'
-  import { isJson, fieldRules } from '@/utilities'
+  import { isJson, fieldRules, isDefined } from '@/utilities'
 
   const props = defineProps<{
     modelValue: SchemaValues | null | undefined,
     schema: Schema,
-    defaultInputType?: SchemaInputType,
+    inputType?: SchemaInputType,
   }>()
 
   const emit = defineEmits<{
     (event: 'update:modelValue', value: SchemaValues | null | undefined): void,
+    (event: 'update:inputType', value: SchemaInputType): void,
   }>()
 
   const hasPropertiesInSchema = computed(() => {
@@ -65,12 +67,16 @@
     ]
   })
 
-  const inputType = ref<SchemaInputType>(props.defaultInputType ?? 'json')
-  const setInputType = (value: unknown): void => {
-    if (isSchemaInputType(value)) {
-      inputType.value = value
-    }
-  }
+  const inputTypeInternal = ref<SchemaInputType>(props.inputType ?? 'form')
+  const inputType = computed({
+    get() {
+      return isDefined(props.inputType) ? props.inputType : inputTypeInternal.value
+    },
+    set(value: SchemaInputType) {
+      inputTypeInternal.value = value
+      emit('update:inputType', value)
+    },
+  })
 
   const defaultValues = merge(getSchemaDefaultValues(props.schema), props.modelValue)
   const { stringRef, recordRef } = useSyncedRecordString(defaultValues)

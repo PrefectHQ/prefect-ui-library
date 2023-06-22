@@ -64,13 +64,10 @@
             {{ localization.info.parameters }}
           </h3>
 
-          <SchemaInput v-model="parameters" :input-type="parametersInputType" :schema="deployment.parameterOpenApiSchema">
-            <template #button-group="{ inputType, setInputType }">
-              <!--
-                The split model-value and update:model-value does the same thing as v-model; unfortunately slots
-                don't support v-model at the moment: https://github.com/vuejs/core/issues/5899
-              -->
-              <p-button-group :model-value="inputType" :options="parametersInputTypeOptions" size="sm" @update:model-value="setInputType" />
+          <SchemaInput v-model="parameters" v-model:input-type="parametersInputType" :schema="deployment.parameterOpenApiSchema">
+            <template #button-group>
+              {{ parametersInputType }}
+              <p-button-group v-model="parametersInputType" :options="parametersInputTypeOptions" size="sm" />
             </template>
           </SchemaInput>
         </p-content>
@@ -94,7 +91,7 @@
   import { zonedTimeToUtc } from 'date-fns-tz'
   import { useField } from 'vee-validate'
   import { computed, ref } from 'vue'
-  import { isJson, localization } from '..'
+  import { isJson, localization, mapper } from '..'
   import { TimezoneSelect, DateInput } from '@/components'
   import SchemaInput from '@/components/SchemaInput.vue'
   import { useForm } from '@/compositions/useForm'
@@ -129,7 +126,9 @@
   }
 
   const combinedParameters = computed(() => {
-    return { ...props.deployment.parameters, ...props.parameters }
+    // This is necessary to support unmapped schema values as a prop which is used
+    // to allow url-based parameter overrides
+    return { ...props.deployment.parameters, ...mapper.map('SchemaValuesResponse', { schema: props.deployment.parameterOpenApiSchema, values: props.parameters ?? {} }, 'SchemaValues') }
   })
 
   const { handleSubmit } = useForm<DeploymentFlowRunCreate>({
