@@ -10,7 +10,7 @@ export type UseSyncedRecordString = {
 }
 
 /**
- * The useSyncedRecordString composition takes a MaybeRef of SchemaValues
+ * The useSyncedRecordString composition takes a record or record-parsable string
  * and creates two reactive references: a string and an object.
  * It then sets up watchers to sync changes between these two references.
  * @param initialValues UseSyncedRecordValue
