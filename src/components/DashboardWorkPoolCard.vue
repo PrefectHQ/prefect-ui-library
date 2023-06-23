@@ -35,6 +35,7 @@
 </template>
 
 <script lang="ts" setup>
+  import merge from 'lodash.merge'
   import { computed } from 'vue'
   import DashboardWorkPoolCardDetail from '@/components/DashboardWorkPoolCardDetail.vue'
   import DashboardWorkPoolFlowRunCompletes from '@/components/DashboardWorkPoolFlowRunCompletes.vue'
@@ -44,7 +45,7 @@
   import WorkPoolLateCount from '@/components/WorkPoolLateCount.vue'
   import WorkPoolQueueStatusArray from '@/components/WorkPoolQueueStatusArray.vue'
   import { useWorkspaceRoutes } from '@/compositions'
-  import { WorkPool } from '@/models'
+  import { FlowRunsFilter, WorkPool } from '@/models'
   import { mapper } from '@/services'
   import { WorkspaceDashboardFilter } from '@/types'
 
@@ -55,7 +56,17 @@
 
   const routes = useWorkspaceRoutes()
 
-  const flowRunsFilter = computed(() => mapper.map('WorkspaceDashboardFilter', props.filter, 'FlowRunsFilter'))
+  const flowRunsFilter = computed<FlowRunsFilter>(() => {
+    const baseFilter = mapper.map('WorkspaceDashboardFilter', props.filter, 'FlowRunsFilter')
+
+    const workPoolFilter: FlowRunsFilter = {
+      workPools: {
+        id: [props.workPool.id],
+      },
+    }
+
+    return merge(baseFilter, workPoolFilter)
+  })
 </script>
 
 <style>
