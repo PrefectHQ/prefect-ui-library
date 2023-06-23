@@ -57,7 +57,7 @@
   const routes = useWorkspaceRoutes()
 
   const flowRunsFilter = computed<FlowRunsFilter>(() => {
-    const baseFilter = computed(() => mapper.map('WorkspaceDashboardFilter', props.filter, 'FlowRunsFilter'))
+    const baseFilter = mapper.map('WorkspaceDashboardFilter', props.filter, 'FlowRunsFilter')
 
     const workPoolFilter: FlowRunsFilter = {
       workPools: {
