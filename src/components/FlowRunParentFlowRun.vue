@@ -5,35 +5,29 @@
 </template>
 
 <script lang="ts" setup>
-  import { useSubscriptionWithDependencies } from '@prefecthq/vue-compositions'
   import { computed } from 'vue'
   import FlowRunIconText from '@/components/FlowRunIconText.vue'
-  import { useWorkspaceApi } from '@/compositions'
+  import { useFlowRuns } from '@/compositions'
   import { localization } from '@/localization'
+  import { FlowRunsFilter } from '@/models/Filters'
 
   const props = defineProps<{
     parentTaskRunId: string,
   }>()
 
-  const api = useWorkspaceApi()
+  const flowRunFilter = computed<FlowRunsFilter>(() => ({
+    taskRuns: {
+      id: [props.parentTaskRunId],
+    },
+  }))
 
-  const flowRunFilter = computed<Parameters<typeof api.flowRuns.getFlowRuns> | null>(() => {
-    return [
-      {
-        taskRuns: {
-          id: [props.parentTaskRunId],
-        },
-      },
-    ]
-  })
+  const { flowRuns } = useFlowRuns(flowRunFilter)
 
-  const parentFlowRunListSubscription = useSubscriptionWithDependencies(api.flowRuns.getFlowRuns, flowRunFilter)
-  const parentFlowRunList = computed(() => parentFlowRunListSubscription.response ?? [])
   const parentFlowRunId = computed(() => {
-    if (!parentFlowRunList.value.length) {
+    if (!flowRuns.value.length) {
       return
     }
-    const [value] = parentFlowRunList.value
+    const [value] = flowRuns.value
     return value.id
   })
 </script>

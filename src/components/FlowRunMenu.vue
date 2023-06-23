@@ -53,12 +53,11 @@
 
 <script lang="ts" setup>
   import { showToast } from '@prefecthq/prefect-design'
-  import { useSubscription, useSubscriptionWithDependencies } from '@prefecthq/vue-compositions'
-  import { computed, ref } from 'vue'
+  import { computed, ref, toRefs } from 'vue'
   import { FlowRunRetryModal, FlowRunResumeModal, FlowRunCancelModal, FlowRunPauseModal, ConfirmStateChangeModal, ConfirmDeleteModal, CopyOverflowMenuItem } from '@/components'
-  import { useCan, useWorkspaceApi, useShowModal, useWorkspaceRoutes } from '@/compositions'
+  import { useCan, useWorkspaceApi, useShowModal, useWorkspaceRoutes, useFlowRuns, useFlowRun } from '@/compositions'
   import { localization } from '@/localization'
-  import { isPausedStateType, isRunningStateType, isStuckStateType, isTerminalStateType, StateUpdateDetails } from '@/models'
+  import { FlowRunsFilter, isPausedStateType, isRunningStateType, isStuckStateType, isTerminalStateType, StateUpdateDetails } from '@/models'
   import { deleteItem } from '@/utilities'
 
   const props = defineProps<{
@@ -69,6 +68,7 @@
   const can = useCan()
   const api = useWorkspaceApi()
   const routes = useWorkspaceRoutes()
+  const { flowRunId } = toRefs(props)
 
   const { showModal: showRetryModal, open: openRetryModal } = useShowModal()
   const { showModal: showResumeModal, open: openResumeModal } = useShowModal()
@@ -79,8 +79,7 @@
 
   const retryingRun = ref(false)
 
-  const flowRunSubscription = useSubscription(api.flowRuns.getFlowRun, [props.flowRunId], { interval: 30000 })
-  const flowRun = computed(() => flowRunSubscription.response)
+  const { flowRun, subscription: flowRunSubscription } = useFlowRun(flowRunId, { interval: 3000 })
 
   const canRetry = computed(() => {
     if (!can.update.flow_run || !flowRun.value?.stateType || !flowRun.value.deploymentId) {
@@ -97,20 +96,17 @@
     return isPausedStateType(flowRun.value.stateType)
   })
 
-  const flowRunFilter = computed<Parameters<typeof api.flowRuns.getFlowRuns> | null>(() => {
+  const flowRunFilter = computed<FlowRunsFilter | null>(() => {
     if (flowRun.value?.parentTaskRunId) {
-      return [
-        {
-          taskRuns: {
-            id: [flowRun.value.parentTaskRunId],
-          },
+      return {
+        taskRuns: {
+          id: [flowRun.value.parentTaskRunId],
         },
-      ]
+      }
     }
     return null
   })
-  const parentFlowRunListSubscription = useSubscriptionWithDependencies(api.flowRuns.getFlowRuns, flowRunFilter)
-  const parentFlowRunList = computed(() => parentFlowRunListSubscription.response ?? [])
+  const { flowRuns: parentFlowRunList } = useFlowRuns(flowRunFilter)
   const parentFlowRunId = computed(() => {
     if (!parentFlowRunList.value.length) {
       return
