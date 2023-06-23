@@ -6,9 +6,8 @@
       </p-heading>
       <DashboardStatistic label="total" :value="flowRunsCount" />
     </header>
-    <div class="grid gap-2 grid-cols-1">
-      <FlowRunsBarChart class="workspace-dashboard-flow-runs-card__chart" :filter="flowRunsFilter" />
-    </div>
+    <FlowRunsBarChart class="workspace-dashboard-flow-runs-card__chart" :filter="flowRunsFilter" />
+    <FlowRunStateTypeTabs :filter="flowRunsFilter" />
   </p-card>
 </template>
 
@@ -17,6 +16,7 @@
   import { computed } from 'vue'
   import DashboardStatistic from '@/components/DashboardStatistic.vue'
   import FlowRunsBarChart from '@/components/FlowRunsBarChart.vue'
+  import FlowRunStateTypeTabs from '@/components/FlowRunStateTypeTabs.vue'
   import { useWorkspaceApi } from '@/compositions/useWorkspaceApi'
   import { mapper } from '@/services/Mapper'
   import { WorkspaceDashboardFilter } from '@/types/dashboard'

@@ -140,7 +140,7 @@ export const mapTagFilter: MapFunction<TagFilter, TagFilterRequest> = function(s
 export const mapStateFilter: MapFunction<StateFilter, StateFilterRequest> = function(source) {
   return removeEmptyObjects({
     ...toOperator(source.operator),
-    type: toAny(source.type),
+    type: toAny(source.type?.map(type => type.toUpperCase())),
     name: toAny(source.name),
   })
 }
