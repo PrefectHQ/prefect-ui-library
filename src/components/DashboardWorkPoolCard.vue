@@ -56,8 +56,8 @@
 
   const routes = useWorkspaceRoutes()
 
-  const filter = computed(() => mapper.map('WorkspaceDashboardFilter', props.filter, 'FlowRunsFilter'))
   const flowRunsFilter = computed<FlowRunsFilter>(() => {
+    const baseFilter = computed(() => mapper.map('WorkspaceDashboardFilter', props.filter, 'FlowRunsFilter'))
 
     const workPoolFilter: FlowRunsFilter = {
       workPools: {
@@ -65,7 +65,7 @@
       },
     }
 
-    return merge(filter.value, workPoolFilter)
+    return merge(baseFilter, workPoolFilter)
   })
 </script>
 
