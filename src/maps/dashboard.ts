@@ -24,6 +24,11 @@ export const mapWorkspaceDashboardFilterToTaskRunsHistoryFilter: MapFunction<Wor
     historyStart: subSeconds(now, source.timeSpanInSeconds),
     historyEnd: now,
     historyIntervalSeconds: source.timeSpanInSeconds / 20,
+    taskRuns: {
+      tags: {
+        name: source.tags,
+      },
+    },
   }
 }
 
