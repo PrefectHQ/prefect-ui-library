@@ -14,7 +14,7 @@
 
         <template v-else-if="inputType === 'json'">
           <p-label :state="state" :message="error">
-            <p-code-input v-model="stringRef" lang="json" :min-lines="3" show-line-numbers />
+            <p-code-input v-model="json" lang="json" :min-lines="3" show-line-numbers />
           </p-label>
         </template>
 
@@ -37,7 +37,7 @@
   import { merge } from 'lodash'
   import { computed, ref, watchEffect } from 'vue'
   import { SchemaFormFields } from '@/components'
-  import { useForm, useSyncedRecordString } from '@/compositions'
+  import { useForm, useJsonRecord } from '@/compositions'
   import { localization } from '@/localization'
   import { getSchemaDefaultValues, mapper } from '@/services'
   import { SchemaInputType } from '@/types/schemaInput'
@@ -78,26 +78,26 @@
   })
 
   const defaultValues = merge(getSchemaDefaultValues(props.schema), mapper.map('SchemaValuesResponse', { values: props.modelValue ?? {}, schema: props.schema }, 'SchemaValues'))
-  const { stringRef, recordRef } = useSyncedRecordString(defaultValues)
+  const { json, record } = useJsonRecord(defaultValues)
 
   const rules = {
     jsonValues: fieldRules(localization.info.values, isJson),
   }
 
-  const { error, state } = useValidation(stringRef, localization.info.values, rules.jsonValues)
+  const { error, state } = useValidation(json, localization.info.values, rules.jsonValues)
 
   const { validate: validateReactiveForm, errors: reactiveFormErrors, values } = useForm({
-    initialValues: recordRef,
+    initialValues: record,
   })
 
-  useValidation(recordRef, localization.info.values, async () => {
+  useValidation(record, localization.info.values, async () => {
     await validateReactiveForm()
     return Object.entries(reactiveFormErrors.value).length === 0
   })
 
   watchEffect(() => {
     if (inputType.value === 'json') {
-      emit('update:modelValue', recordRef.value)
+      emit('update:modelValue', record.value)
     } else {
       emit('update:modelValue', values)
     }
