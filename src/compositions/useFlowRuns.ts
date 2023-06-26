@@ -1,13 +1,12 @@
 import { SubscriptionOptions, UseSubscription, useSubscriptionWithDependencies } from '@prefecthq/vue-compositions'
 import { computed, ComputedRef, MaybeRef, Ref, ref, watch } from 'vue'
 import { useCan } from '@/compositions/useCan'
-import { GLOBAL_API_LIMIT, useFilterPagination } from '@/compositions/useFilterPagination'
+import { useFilterPagination } from '@/compositions/useFilterPagination'
 import { useWorkspaceApi } from '@/compositions/useWorkspaceApi'
 import { FlowRunsFilter } from '@/models/Filters'
 import { FlowRun } from '@/models/FlowRun'
 import { WorkspaceFlowRunsApi } from '@/services'
 import { useFlowRunStorage } from '@/services/storage'
-import { infiniteScrollCompositionFactory } from '@/utilities/infiniteScroll'
 
 export type UseFlowRuns = {
   flowRuns: ComputedRef<FlowRun[]>,
@@ -65,5 +64,3 @@ export function useFlowRuns(filter: FlowRunsFilter | Ref<FlowRunsFilter | null |
     flowRuns,
   }
 }
-
-export const useFlowRunsInfiniteScroll = infiniteScrollCompositionFactory(useFlowRuns, 'flowRuns', GLOBAL_API_LIMIT)
