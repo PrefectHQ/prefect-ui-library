@@ -20,6 +20,7 @@
   import { isDefined } from '@prefecthq/prefect-design'
   import { LineChart, LineChartData } from '@prefecthq/vue-charts'
   import { useSubscription } from '@prefecthq/vue-compositions'
+  import merge from 'lodash.merge'
   import { computed } from 'vue'
   import DashboardStatistic from '@/components/DashboardStatistic.vue'
   import { useWorkspaceApi } from '@/compositions/useWorkspaceApi'
@@ -35,52 +36,49 @@
   const api = useWorkspaceApi()
   const tasksFilter = computed(() => mapper.map('WorkspaceDashboardFilter', props.filter, 'TaskRunsFilter'))
 
-  const allTasksFilter = computed<TaskRunsFilter>(() => ({
-    taskRuns: {
-      ...tasksFilter.value.taskRuns,
-      state: {
-        type: ['COMPLETED', 'FAILED', 'CRASHED'],
+  const allTasksFilter = computed<TaskRunsFilter>(() => {
+    const stateFilter: TaskRunsFilter = {
+      flowRuns: {
+        state: {
+          type: ['COMPLETED', 'FAILED', 'CRASHED'],
+        },
       },
-    },
-  }))
+    }
+
+    return merge(tasksFilter.value, stateFilter)
+  })
   const allTasksSubscription = useSubscription(api.taskRuns.getTaskRunsCount, [allTasksFilter])
   const total = computed(() => allTasksSubscription.response)
 
-  const completedTasksFilter = computed<TaskRunsFilter>(() => ({
-    taskRuns: {
-      ...tasksFilter.value.taskRuns,
-      state: {
-        type: ['COMPLETED'],
+  const completedTasksFilter = computed<TaskRunsFilter>(() => {
+    const stateFilter: TaskRunsFilter = {
+      flowRuns: {
+        state: {
+          type: ['COMPLETED'],
+        },
       },
-    },
-  }))
+    }
+
+    return merge(tasksFilter.value, stateFilter)
+  })
   const completedTasksSubscription = useSubscription(api.taskRuns.getTaskRunsCount, [completedTasksFilter])
   const completed = computed(() => completedTasksSubscription.response)
-  const completedPercentage = computed(() => {
-    if (isDefined(completed.value) && isDefined(total.value)) {
-      return `${toPercent(completed.value, total.value)}%`
+  const completedPercentage = computed(() => getPercent(completed.value, total.value))
+
+  const failedTasksFilter = computed<TaskRunsFilter>(() => {
+    const stateFilter: TaskRunsFilter = {
+      flowRuns: {
+        state: {
+          type: ['FAILED', 'CRASHED'],
+        },
+      },
     }
 
-    return undefined
+    return merge(tasksFilter.value, stateFilter)
   })
-
-  const failedTasksFilter = computed<TaskRunsFilter>(() => ({
-    taskRuns: {
-      ...tasksFilter.value.taskRuns,
-      state: {
-        type: ['FAILED', 'CRASHED'],
-      },
-    },
-  }))
   const failedTasksSubscription = useSubscription(api.taskRuns.getTaskRunsCount, [failedTasksFilter])
   const failed = computed(() => failedTasksSubscription.response)
-  const failedPercentage = computed(() => {
-    if (isDefined(failed.value) && isDefined(total.value)) {
-      return `${toPercent(failed.value, total.value)}%`
-    }
-
-    return undefined
-  })
+  const failedPercentage = computed(() => getPercent(failed.value, total.value))
 
   const historyFilter = computed(() => mapper.map('WorkspaceDashboardFilter', props.filter, 'TaskRunsHistoryFilter'))
   const historySubscription = useSubscription(api.taskRuns.getTaskRunsHistory, [historyFilter])
@@ -125,6 +123,19 @@
 
     return max * 4
   })
+
+  function getPercent(x: number | undefined, y: number | undefined): string | undefined {
+    if (isDefined(x) && isDefined(y)) {
+      const percent = toPercent(x, y)
+
+      if (percent) {
+        return `${percent}%`
+      }
+    }
+
+    return undefined
+
+  }
 </script>
 
 <style>

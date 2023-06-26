@@ -10,6 +10,9 @@ export type UsePaginatedSubscription<T extends PaginatedAction> = {
   loadMore: () => void,
 } & Omit<UseSubscription<T>, 'promise'>
 
+/**
+ * @deprecated Use dedicated compositions such as useFlowRunInfiniteScroll instead
+ */
 export function usePaginatedSubscription<T extends PaginatedAction>(...[action, args, options = {}]: SubscribeArguments<T>): UsePaginatedSubscription<T> {
   const subscriptions = reactive<UseSubscription<T>[]>([])
   const argsWithDefault = args ?? [] as unknown as ActionArguments<T>

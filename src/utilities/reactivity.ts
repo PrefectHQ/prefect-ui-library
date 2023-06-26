@@ -1,6 +1,6 @@
 import { isEqual } from 'lodash'
-import { isRef, unref, watch } from 'vue'
-import { isArray, isRecord, mapValues } from '@/utilities'
+import { WatchEffect, WatchSource, isReactive, isRef, unref, watch } from 'vue'
+import { isArray, isFunction, isRecord, mapValues } from '@/utilities'
 
 function getRawValue(value: unknown): unknown {
   if (typeof value === 'object') {
@@ -42,4 +42,20 @@ export function uniqueValueWatcher(...[source, callback, options]: Parameters<ty
 
     callback(...args)
   }, options)
+}
+
+export function getValidWatchSource(source: unknown): WatchSource | WatchSource[] | WatchEffect | object {
+  if (isValidWatchValue(source)) {
+    return source
+  }
+
+  if (isArray(source)) {
+    return source.filter(value => isValidWatchValue(value))
+  }
+
+  return []
+}
+
+function isValidWatchValue(value: unknown): value is WatchSource | WatchEffect {
+  return isRef(value) || isReactive(value) || isFunction(value)
 }

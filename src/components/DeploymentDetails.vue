@@ -39,6 +39,10 @@
       </template>
     </p-key-value>
 
+    <slot />
+
+    <p-divider />
+
     <p-key-value label="Created" :value="formatDateTimeNumeric(deployment.created)" :alternate="alternate" />
 
     <template v-if="deployment.createdBy">

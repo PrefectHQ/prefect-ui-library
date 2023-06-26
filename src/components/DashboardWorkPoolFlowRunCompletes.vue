@@ -127,8 +127,14 @@
       return undefined
     }
 
+    // don't subtract floats in js
+    const prevCompletePercentInt = prevCompletePercent.value * 100
+    const completePercentInt = completePercent.value * 100
+    const changeInt = prevCompletePercentInt - completePercentInt
+    const changePercent = changeInt / 100
+
     return {
-      change: Math.abs(prevCompletePercent.value - completePercent.value),
+      change: Math.abs(changePercent),
       direction: prevCompletePercent.value > completePercent.value ? '-' : '+',
     }
   })

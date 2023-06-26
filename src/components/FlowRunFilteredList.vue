@@ -11,7 +11,7 @@
       <StateNameSelect :selected="states" empty-message="All run states" class="flow-run-filtered-list__state-select" @update:selected="updateState" />
       <FlowRunsSort v-model="sort" class="flow-run-filtered-list__flow-runs-sort" />
     </div>
-    <FlowRunList v-model:selected="selectedFlowRuns" :flow-runs="flowRuns" :selectable="!disableDeletion && can.delete.flow_run" @bottom="flowRunsSubscription.loadMore" />
+    <FlowRunList v-model:selected="selectedFlowRuns" :flow-runs="flowRuns" :selectable="!disableDeletion && can.delete.flow_run" @bottom="loadMore" />
     <PEmptyResults v-if="empty">
       <template #message>
         <slot name="empty-message">
@@ -31,9 +31,8 @@
   import { useSubscription } from '@prefecthq/vue-compositions'
   import { computed, onMounted, ref } from 'vue'
   import { ResultsCount, StateNameSelect, FlowRunsSort, FlowRunList, SelectedCount, FlowRunsDeleteButton } from '@/components'
-  import { useWorkspaceApi } from '@/compositions'
+  import { useFlowRunsInfiniteScroll, useWorkspaceApi } from '@/compositions'
   import { useCan } from '@/compositions/useCan'
-  import { usePaginatedSubscription } from '@/compositions/usePaginatedSubscription'
   import { FlowRunsFilter } from '@/models/Filters'
   import { FlowRunSortValues, PrefectStateNames } from '@/types'
 
@@ -74,10 +73,9 @@
   const flowRunCountSubscription = useSubscription(api.flowRuns.getFlowRunsCount, [filter], { interval: 30000 })
   const flowRunCount = computed(() => flowRunCountSubscription.response)
 
-  const flowRunsSubscription = usePaginatedSubscription(api.flowRuns.getFlowRuns, [filter], { interval: 30000 })
-  const flowRuns = computed(() => flowRunsSubscription.response ?? [])
+  const { flowRuns, subscriptions, loadMore } = useFlowRunsInfiniteScroll(filter, { interval: 3000 })
 
-  const empty = computed(() => flowRunsSubscription.executed && flowRuns.value.length === 0)
+  const empty = computed(() => subscriptions.executed && flowRuns.value.length === 0)
 
   function clear(): void {
     states.value = []
@@ -85,7 +83,7 @@
 
   const deleteFlowRuns = (): void => {
     selectedFlowRuns.value = []
-    flowRunsSubscription.refresh()
+    subscriptions.refresh()
     flowRunCountSubscription.refresh()
   }
 

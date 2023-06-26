@@ -7,7 +7,7 @@
     </div>
 
     <template v-if="!empty">
-      <FlowRunList :flow-runs="flowRuns" @bottom="loadMoreSubFlowRuns" />
+      <FlowRunList :flow-runs="subflowRuns" @bottom="loadMoreSubFlowRuns" />
     </template>
 
     <PEmptyResults v-if="empty">
@@ -31,10 +31,9 @@
   import FlowRunsSort from '@/components/FlowRunsSort.vue'
   import SearchInput from '@/components/SearchInput.vue'
   import StateNameSelect from '@/components/StateNameSelect.vue'
-  import { useWorkspaceApi } from '@/compositions'
+  import { useFlowRunsInfiniteScroll, useWorkspaceApi } from '@/compositions'
   import { usePaginatedSubscription } from '@/compositions/usePaginatedSubscription'
   import { FlowRunsFilter, TaskRunsFilter } from '@/models/Filters'
-  import { FlowRun } from '@/models/FlowRun'
   import { TaskRun } from '@/models/TaskRun'
   import { FlowRunSortValues, isTaskRunSortValue, TaskRunSortValues } from '@/types/SortOptionTypes'
 
@@ -93,18 +92,17 @@
     sort: sort.value,
   }))
 
-  const flowRunsSubscription = usePaginatedSubscription(api.flowRuns.getFlowRuns, [subFlowRunsFilter])
-
-  const flowRuns = computed<FlowRun[]>(() => flowRunsSubscription.response ?? [])
-  const empty = computed(() => !flowRunsSubscription.loading && subFlowRunIds.value.length === 0)
+  const { flowRuns: subflowRuns, subscriptions: subFlowRunsSubscriptions, loadMore } = useFlowRunsInfiniteScroll(subFlowRunsFilter)
+  const empty = computed(() => !subFlowRunsSubscriptions.loading && subFlowRunIds.value.length === 0)
 
   function loadMoreSubFlowRuns(): void {
     const unwatch = watch(subFlowRunIds, (newValue, oldValue) => {
       if (newValue.length > oldValue.length) {
-        flowRunsSubscription.loadMore()
+        loadMore()
         unwatch()
       }
     })
+
     subFlowRunTaskRunSubscription.loadMore()
   }
 
