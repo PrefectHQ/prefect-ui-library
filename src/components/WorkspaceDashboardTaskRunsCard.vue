@@ -122,6 +122,8 @@
     return max
   })
 
+  const MAX_ITERATIONS = 10
+
   const maxCompletedValue = computed(() => {
     const completedValues = taskRunsChartData.value.completed.map(([, y]) => y)
     const minValue = 1
@@ -133,7 +135,7 @@
 
     let unit = 1
 
-    while (unit <= 10) {
+    while (unit <= MAX_ITERATIONS) {
       if (maxCompleted > maxValue.value / unit) {
         return maxCompleted * unit
       }
@@ -155,7 +157,7 @@
 
     let unit = 1
 
-    while (unit <= 10) {
+    while (unit <= MAX_ITERATIONS) {
       if (maxFailed > maxValue.value / unit) {
         return maxFailed * unit
       }
