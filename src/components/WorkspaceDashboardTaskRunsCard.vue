@@ -11,7 +11,7 @@
 
     <div class="workspace-dashboard-task-runs-card__chart-container">
       <LineChart :data="taskRunsChartData.failed" :options="{ maxValue: maxFailedValue }" class="workspace-dashboard-task-runs-card__chart workspace-dashboard-task-runs-card__chart--failed" />
-      <LineChart :data="taskRunsChartData.completed" class="workspace-dashboard-task-runs-card__chart workspace-dashboard-task-runs-card__chart--completed" />
+      <LineChart :data="taskRunsChartData.completed" :options="{ maxValue: maxCompletedValue }" class="workspace-dashboard-task-runs-card__chart workspace-dashboard-task-runs-card__chart--completed" />
     </div>
   </p-card>
 </template>
@@ -38,28 +38,28 @@
 
   const allTasksFilter = computed<TaskRunsFilter>(() => {
     const stateFilter: TaskRunsFilter = {
-      flowRuns: {
+      taskRuns: {
         state: {
           type: ['COMPLETED', 'FAILED', 'CRASHED'],
         },
       },
     }
 
-    return merge(tasksFilter.value, stateFilter)
+    return merge({}, tasksFilter.value, stateFilter)
   })
   const allTasksSubscription = useSubscription(api.taskRuns.getTaskRunsCount, [allTasksFilter])
   const total = computed(() => allTasksSubscription.response)
 
   const completedTasksFilter = computed<TaskRunsFilter>(() => {
     const stateFilter: TaskRunsFilter = {
-      flowRuns: {
+      taskRuns: {
         state: {
           type: ['COMPLETED'],
         },
       },
     }
 
-    return merge(tasksFilter.value, stateFilter)
+    return merge({}, tasksFilter.value, stateFilter)
   })
   const completedTasksSubscription = useSubscription(api.taskRuns.getTaskRunsCount, [completedTasksFilter])
   const completed = computed(() => completedTasksSubscription.response)
@@ -67,14 +67,14 @@
 
   const failedTasksFilter = computed<TaskRunsFilter>(() => {
     const stateFilter: TaskRunsFilter = {
-      flowRuns: {
+      taskRuns: {
         state: {
           type: ['FAILED', 'CRASHED'],
         },
       },
     }
 
-    return merge(tasksFilter.value, stateFilter)
+    return merge({}, tasksFilter.value, stateFilter)
   })
   const failedTasksSubscription = useSubscription(api.taskRuns.getTaskRunsCount, [failedTasksFilter])
   const failed = computed(() => failedTasksSubscription.response)
@@ -113,15 +113,59 @@
     }
   })
 
-  const maxFailedValue = computed(() => {
-    const values = taskRunsChartData.value.failed.map(([, y]) => y)
-    const max = Math.max(...values)
+  const maxValue = computed(() => {
+    const completedValues = taskRunsChartData.value.completed.map(([, y]) => y)
+    const failedValues = taskRunsChartData.value.failed.map(([, y]) => y)
+    const minValue = 1
+    const max = Math.max(...completedValues, ...failedValues, minValue)
 
-    if (max === 0) {
-      return undefined
+    return max
+  })
+
+  const MAX_ITERATIONS = 10
+
+  const maxCompletedValue = computed(() => {
+    const completedValues = taskRunsChartData.value.completed.map(([, y]) => y)
+    const minValue = 1
+    const maxCompleted = Math.max(...completedValues, minValue)
+
+    if (maxCompleted === maxValue.value) {
+      return maxCompleted
     }
 
-    return max * 4
+    let unit = 1
+
+    while (unit <= MAX_ITERATIONS) {
+      if (maxCompleted > maxValue.value / unit) {
+        return maxCompleted * unit
+      }
+
+      unit++
+    }
+
+    return maxCompleted * unit
+  })
+
+  const maxFailedValue = computed(() => {
+    const failedValues = taskRunsChartData.value.failed.map(([, y]) => y)
+    const minValue = 1
+    const maxFailed = Math.max(...failedValues, minValue)
+
+    if (maxFailed === maxValue.value) {
+      return maxFailed
+    }
+
+    let unit = 1
+
+    while (unit <= MAX_ITERATIONS) {
+      if (maxFailed > maxValue.value / unit) {
+        return maxFailed * unit
+      }
+
+      unit++
+    }
+
+    return maxFailed * unit
   })
 
   function getPercent(x: number | undefined, y: number | undefined): string | undefined {
