@@ -1,3 +1,4 @@
+import { merge } from 'lodash'
 import { ComputedRef, MaybeRef, computed, ref } from 'vue'
 import { SchemaResponse } from '@/models'
 import { Schema } from '@/types'
@@ -10,8 +11,9 @@ export function useOptionalPropertiesSchema(rawSchema: MaybeRef<SchemaResponse |
   const rawSchemaRef = ref(rawSchema)
 
   const computedSchema = computed(() => {
-    rawSchemaRef.value.required = []
-    return rawSchemaRef.value
+    const newSchema = merge({}, rawSchemaRef.value)
+    newSchema.required = []
+    return newSchema
   })
 
   return {
