@@ -1,3 +1,5 @@
+import { isRecord } from '@/utilities'
+
 type JsonStringify = Parameters<typeof JSON.stringify>
 type JsonValue = JsonStringify[0]
 type JsonReplacer = JsonStringify[1]
@@ -22,4 +24,13 @@ export function stringifyUnknownJson(value: unknown): string | null | undefined 
   const parsed = parseUnknownJson(value)
 
   return stringify(parsed)
+}
+
+export function isValidJsonRecord(value: unknown): value is string {
+  try {
+    const parsed = JSON.parse(value as string)
+    return isRecord(parsed)
+  } catch {
+    return false
+  }
 }

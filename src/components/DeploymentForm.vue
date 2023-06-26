@@ -55,27 +55,11 @@
       <p-divider />
 
       <p-content>
-        <h3 class="deployment-form__section-header">
-          Parameters
+        <h3>
+          {{ localization.info.parameters }}
         </h3>
 
-        <p-button-group v-model="parametersInput" :options="parametersInputOptions" size="sm" />
-
-        <template v-if="hasParameters">
-          <template v-if="parametersInput === 'form'">
-            <DeploymentParameters v-model="parameters" :deployment="deployment" />
-          </template>
-
-          <template v-else>
-            <p-label :state="jsonParametersState" :message="jsonParametersErrorMessage">
-              <p-code-input v-model="jsonParameters" lang="json" :min-lines="3" show-line-numbers />
-            </p-label>
-          </template>
-        </template>
-
-        <template v-else>
-          <em>This deployment's flow has no parameters</em>
-        </template>
+        <SchemaInput v-model="parameters" :schema="schema" />
       </p-content>
     </p-content>
 
@@ -96,7 +80,6 @@
       </p-label>
     </p-content>
 
-
     <template #footer>
       <p-button inset @click="cancel">
         Cancel
@@ -109,28 +92,20 @@
 </template>
 
 <script lang="ts" setup>
-  import { useValidation } from '@prefecthq/vue-compositions'
-  import { merge } from 'lodash'
+  import { useValidationObserver } from '@prefecthq/vue-compositions'
   import { useField } from 'vee-validate'
-  import { computed, ref } from 'vue'
-  import { ScheduleFieldset, WorkPoolCombobox, DeploymentParameters, WorkPoolQueueCombobox, JsonInput } from '@/components'
+  import { computed } from 'vue'
+  import { SchemaInput, ScheduleFieldset, WorkPoolCombobox, WorkPoolQueueCombobox, JsonInput } from '@/components'
   import { useForm } from '@/compositions/useForm'
+  import { useOptionalPropertiesSchema } from '@/compositions/useOptionalPropertiesSchema'
   import { localization } from '@/localization'
   import { Deployment, DeploymentUpdate, DeploymentEdit, Schedule } from '@/models'
-  import { getSchemaDefaultValues, mapper } from '@/services'
   import { SchemaValues } from '@/types/schemas'
-  import { stringify, isJson, fieldRules, stringifyUnknownJson, parseUnknownJson, isRecord } from '@/utilities'
+  import { stringify, isJson, fieldRules } from '@/utilities'
 
   const props = defineProps<{
     deployment: Deployment,
   }>()
-
-  const parametersInputOptions = [{ value: 'form', label: 'Form' }, { value: 'json', label: 'JSON' }]
-  const parametersInput = ref<'form' | 'json'>('form')
-
-  const hasParameters = computed(() => {
-    return Object.keys(props.deployment.parameterOpenApiSchema.properties ?? {}).length > 0
-  })
 
   const name = computed(() => props.deployment.name)
 
@@ -162,35 +137,21 @@
   const { value: tags } = useField<string[] | null>('tags')
   const { value: infrastructureOverrides, meta: overrideState, errorMessage: overrideErrorMessage } = useField<string>('infrastructureOverrides', rules.infrastructureOverrides)
 
-  const parameterOpenApiSchema = computed(() => {
-    const { rawSchema } = props.deployment
-
-    if (rawSchema && 'required' in rawSchema) {
-      rawSchema.required = []
-    }
-
-    return mapper.map('SchemaResponse', rawSchema ?? {}, 'Schema')
-  })
-  const jsonParameters = ref(stringifyUnknownJson(merge(getSchemaDefaultValues(parameterOpenApiSchema.value), props.deployment.rawParameters)))
-  const { error: jsonParametersErrorMessage, state: jsonParametersState, validate: validateJsonParameters } = useValidation(jsonParameters, localization.info.parameters, rules.jsonParameters)
+  const { schema } = useOptionalPropertiesSchema(props.deployment.rawSchema ?? {})
 
   const emit = defineEmits<{
     (event: 'submit', value: DeploymentUpdate): void,
     (event: 'cancel'): void,
   }>()
 
+
+  const { validate } = useValidationObserver()
+
   const submit = handleSubmit(async (values): Promise<void> => {
-    if (parametersInput.value == 'json') {
-      const valid = await validateJsonParameters()
+    const valid = await validate()
 
-      if (!valid) {
-        return
-      }
-
-      const parsed = parseUnknownJson(jsonParameters.value)
-      if (isRecord(parsed)) {
-        values.parameters = parsed
-      }
+    if (!valid) {
+      return
     }
 
     const deploymentUpdate: DeploymentUpdate = {

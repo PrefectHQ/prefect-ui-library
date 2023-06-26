@@ -3,6 +3,9 @@
 </template>
 
 <script lang="ts" setup>
+  /**
+   * @deprecated use [SchemaInput](https://github.com/PrefectHQ/prefect-ui-library/tree/main/src/components/SchemaInput.vue) instead
+   */
   import { useValidation } from '@prefecthq/vue-compositions'
   import { computed } from 'vue'
   import SchemaFormFields from '@/components/SchemaFormFields.vue'
