@@ -26,7 +26,7 @@ export function stringifyUnknownJson(value: unknown): string | null | undefined 
   return stringify(parsed)
 }
 
-export function isValidJsonString(value: unknown): value is string {
+export function isValidJsonRecord(value: unknown): value is string {
   try {
     const parsed = JSON.parse(value as string)
     return isRecord(parsed)

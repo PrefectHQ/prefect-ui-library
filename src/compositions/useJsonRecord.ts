@@ -1,5 +1,5 @@
 import { Ref, ref, watch } from 'vue'
-import { isValidJsonString, stringify } from '@/utilities/json'
+import { isValidJsonRecord, stringify } from '@/utilities/json'
 
 export type UseJsonRecordValue = Record<string, unknown>
 
@@ -23,14 +23,14 @@ export function useJsonRecord(initialValues?: UseJsonRecordValue | string): UseJ
   const valid = ref(false)
 
   watch(json, (newString) => {
-    valid.value = isValidJsonString(newString)
+    valid.value = isValidJsonRecord(newString)
     if (valid.value) {
       record.value = JSON.parse(newString)
     }
   })
 
   watch(record, (newRecord) => {
-    if (isValidJsonString(json.value)) {
+    if (isValidJsonRecord(json.value)) {
       const stringifiedjson = JSON.stringify(JSON.parse(json.value))
       const stringifiedRecord = JSON.stringify(newRecord)
       if (stringifiedjson !== stringifiedRecord) {
