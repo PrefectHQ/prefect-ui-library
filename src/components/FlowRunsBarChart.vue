@@ -1,14 +1,14 @@
 <template>
   <div ref="chart" class="flow-runs-bar-chart" :class="classes.root" :style="styles.root" @mouseleave="close">
-    <template v-for="bar in bars" :key="bar">
+    <template v-for="(flowRun, index) in barFlowRuns" :key="getKey(flowRun, index)">
       <p-pop-over class="flow-runs-bar-chart__bar-container" :to="chart" :placement="placement" :group="group" auto-close>
         <template #target="{ open }">
-          <div class="flow-runs-bar-chart__bar" :class="getBarClasses(bar)" :style="getBarStyles(bar)" @mouseover="open" />
+          <div class="flow-runs-bar-chart__bar" :class="getBarClasses(flowRun)" :style="getBarStyles(flowRun)" @mouseover="open" />
         </template>
 
-        <template v-if="getBarFlowRun(bar)">
+        <template v-if="flowRun">
           <div class="flow-runs-bar-chart__pop-over">
-            <FlowRunPopoverContent :flow-run-id="getBarFlowRun(bar)!.id" />
+            <FlowRunPopoverContent :flow-run-id="flowRun.id" />
           </div>
         </template>
       </p-pop-over>
@@ -69,7 +69,7 @@
     const difference = bars.value - flowRuns.value.length
     const emptyValuesLength = Math.max(difference, 0)
     const emptyValues: undefined[] = new Array(emptyValuesLength)
-    const flowRunsReversed = flowRuns.value.slice().reverse()
+    const flowRunsReversed = flowRuns.value.slice(0, bars.value).reverse()
 
     return [...emptyValues, ...flowRunsReversed]
   })
@@ -91,15 +91,9 @@
     return scale
   })
 
-  function getBarFlowRun(bar: number): FlowRun | undefined {
-    return barFlowRuns.value.at(bar - 1)
-  }
-
-  function getBarClasses(bar: number): ClassValue {
-    const flowRun = getBarFlowRun(bar)
-
+  function getBarClasses(flowRun: FlowRun | undefined): ClassValue {
     if (!flowRun) {
-      return ''
+      return undefined
     }
 
     return [
@@ -108,9 +102,7 @@
     ]
   }
 
-  function getBarStyles(bar: number): StyleValue {
-    const flowRun = getBarFlowRun(bar)
-
+  function getBarStyles(flowRun: FlowRun | undefined): StyleValue {
     if (!flowRun) {
       return ''
     }
@@ -118,6 +110,14 @@
     return {
       height: toPixels(yScale.value(flowRun.duration)),
     }
+  }
+
+  function getKey(flowRun: FlowRun | undefined, index: number): string {
+    if (!flowRun) {
+      return `${index}`
+    }
+
+    return flowRun.id
   }
 </script>
 
