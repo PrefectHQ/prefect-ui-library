@@ -18,7 +18,7 @@
 
 <script lang="ts" setup>
   import { ClassValue, toPixels, positions, usePopOverGroup } from '@prefecthq/prefect-design'
-  import { useElementRect } from '@prefecthq/vue-compositions'
+  import { useDebouncedRef, useElementRect } from '@prefecthq/vue-compositions'
   import { scaleSymlog } from 'd3'
   import { StyleValue, computed, ref } from 'vue'
   import FlowRunPopoverContent from '@/components/FlowRunPopOverContent.vue'
@@ -39,6 +39,7 @@
   const chart = ref<HTMLDivElement>()
   const { width, height } = useElementRect(chart)
   const bars = computed(() => Math.floor(width.value / desiredBarWidth.value))
+  const barsDebounced = useDebouncedRef(bars, 1000)
   const styles = computed(() => ({
     root: `grid-template-columns: repeat(${bars.value}, 1fr)`,
   }))
@@ -50,13 +51,13 @@
   }))
 
   const filter = computed<FlowRunsFilter | null>(() => {
-    if (isNaN(bars.value)) {
+    if (isNaN(barsDebounced.value)) {
       return null
     }
 
     const filter: FlowRunsFilter = {
       ...props.filter,
-      limit: bars.value,
+      limit: barsDebounced.value,
       sort: 'START_TIME_DESC',
     }
 
