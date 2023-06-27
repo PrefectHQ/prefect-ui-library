@@ -57,6 +57,7 @@
     const filter: FlowRunsFilter = {
       ...props.filter,
       limit: bars.value,
+      sort: 'START_TIME_DESC',
     }
 
     return filter
@@ -65,9 +66,11 @@
 
   const barFlowRuns = computed(() => {
     const difference = bars.value - flowRuns.value.length
-    const emptyValues: undefined[] = new Array(difference)
+    const emptyValuesLength = Math.max(difference, 0)
+    const emptyValues: undefined[] = new Array(emptyValuesLength)
+    const flowRunsReversed = flowRuns.value.slice().reverse()
 
-    return [...emptyValues, ...flowRuns.value]
+    return [...emptyValues, ...flowRunsReversed]
   })
 
   const maxDuration = computed(() => flowRuns.value.reduce((max, flowRun) => {
