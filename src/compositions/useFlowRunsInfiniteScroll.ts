@@ -1,7 +1,7 @@
-import { SubscriptionOptions, UseSubscription, useSubscriptionWithDependencies } from '@prefecthq/vue-compositions'
+import { SubscriptionOptions, UseSubscription, useSubscription } from '@prefecthq/vue-compositions'
 import { ComputedRef, Ref, computed, onUnmounted, reactive, ref, watch } from 'vue'
 import { useCan } from '@/compositions/useCan'
-import { GLOBAL_API_LIMIT } from '@/compositions/useFilterPagination'
+import { GLOBAL_API_LIMIT, useFilterPagination } from '@/compositions/useFilterPagination'
 import { UseSubscriptions, useSubscriptions } from '@/compositions/useSubscriptions'
 import { useWorkspaceApi } from '@/compositions/useWorkspaceApi'
 import { FlowRunsFilter } from '@/models/Filters'
@@ -25,31 +25,33 @@ export function useFlowRunsInfiniteScroll(filter: FlowRunsFilter | Ref<FlowRunsF
   const storage = useFlowRunStorage()
   const page = ref(0)
   const pages = reactive<UseSubscription<FlowRunsAction>[]>([])
-  const limit = computed(() => filterRef.value?.limit ?? GLOBAL_API_LIMIT)
-
-  const parameters = computed<[FlowRunsFilter] | null>(() => {
-    if (!filterRef.value) {
-      return null
-    }
-
-    if (!can.read.flow_run) {
-      return null
-    }
-
-    return [filterRef.value]
-  })
+  const pageLimit = computed(() => filterRef.value?.limit ?? GLOBAL_API_LIMIT)
 
   const flowRuns = computed(() => pages.flatMap(page => page.response ?? []))
   const { subscriptions } = useSubscriptions(pages)
 
+  function canLoadMore(): boolean {
+    const loadedMaxPages = pages.length * pageLimit.value > flowRuns.value.length
+
+    return !loadedMaxPages && !!can.read.flow_run && !!filterRef.value
+  }
+
   function loadMore(): void {
-    if (pages.length * limit.value > flowRuns.value.length) {
+    if (!canLoadMore()) {
       return
     }
 
     page.value++
 
-    const subscription = useSubscriptionWithDependencies(api.flowRuns.getFlowRuns, parameters, options)
+    const { limit, offset } = useFilterPagination(page.value, pageLimit.value)
+
+    const filter: FlowRunsFilter = {
+      ...filterRef.value,
+      limit: limit.value,
+      offset: offset.value,
+    }
+
+    const subscription = useSubscription(api.flowRuns.getFlowRuns, [filter], options)
 
     pages.push(subscription)
   }
