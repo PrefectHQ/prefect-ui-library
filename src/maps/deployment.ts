@@ -5,7 +5,8 @@ import { Deployment } from '@/models/Deployment'
 import { MapFunction } from '@/services/Mapper'
 
 export const mapDeploymentResponseToDeployment: MapFunction<DeploymentResponse, Deployment> = function(source) {
-  const schema = this.map('SchemaResponse', source.parameter_openapi_schema ?? {}, 'Schema')
+  const rawSchema = source.parameter_openapi_schema ?? {}
+  const schema = this.map('SchemaResponse', rawSchema, 'Schema')
   const values = this.map('SchemaValuesResponse', { values: source.parameters, schema }, 'SchemaValues')
 
   return new Deployment({
@@ -22,7 +23,7 @@ export const mapDeploymentResponseToDeployment: MapFunction<DeploymentResponse, 
     isScheduleActive: source.is_schedule_active,
     parameters: values,
     rawParameters: source.parameters,
-    rawSchema: source.parameter_openapi_schema,
+    rawSchema,
     tags: source.tags ? sortStringArray(source.tags) : null,
     manifestPath: source.manifest_path,
     path: source.path,

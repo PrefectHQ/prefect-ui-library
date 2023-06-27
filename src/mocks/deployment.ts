@@ -1,9 +1,12 @@
 import { Deployment } from '@/models/Deployment'
+import { mapper } from '@/services'
 import { MockFunction } from '@/services/Mocker'
 import { random } from '@/utilities/math'
 
 export const randomDeployment: MockFunction<Deployment, [Partial<Deployment>?]> = function(overrides = {}) {
   const schema = this.create('schema', [overrides.parameterOpenApiSchema])
+  const rawParameters = this.create('parameters', [{}, schema])
+  const parameters = mapper.map('SchemaValuesResponse', { values: rawParameters, schema }, 'SchemaValues')
   const schedule = random() > 0.25 ? this.create('schedule') : null
 
   return {
@@ -18,9 +21,9 @@ export const randomDeployment: MockFunction<Deployment, [Partial<Deployment>?]> 
     flowId: this.create('id'),
     schedule,
     isScheduleActive: schedule ? this.create('boolean') : false,
-    parameters: this.create('parameters', [{}, schema]),
+    parameters,
     parameterOpenApiSchema: schema,
-    rawParameters: this.create('parameters', [{}, schema]),
+    rawParameters,
     rawSchema: schema,
     tags: this.createMany('noun', this.create('number', [0, 5])),
     manifestPath: this.create('id'),

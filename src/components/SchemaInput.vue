@@ -41,7 +41,7 @@
   import { localization } from '@/localization'
   import { getSchemaDefaultValues, mapper } from '@/services'
   import { SchemaInputType } from '@/types/schemaInput'
-  import { Schema, SchemaValues } from '@/types/schemas'
+  import { SchemaValues, Schema } from '@/types/schemas'
   import { isJson, fieldRules, isDefined } from '@/utilities'
 
   const props = defineProps<{
@@ -77,8 +77,10 @@
     },
   })
 
-  const defaultValues = merge(getSchemaDefaultValues(props.schema), mapper.map('SchemaValuesResponse', { values: props.modelValue ?? {}, schema: props.schema }, 'SchemaValues'))
-  const { json, record } = useJsonRecord(defaultValues)
+  const schemaDefaultValues = getSchemaDefaultValues(props.schema)
+  const defaultValues = merge({}, schemaDefaultValues, props.modelValue ?? {})
+  const unmappedDefaultValues = mapper.map('SchemaValues', { values: defaultValues, schema: props.schema }, 'SchemaValuesRequest')
+  const { json, record } = useJsonRecord(unmappedDefaultValues)
 
   const rules = {
     jsonValues: fieldRules(localization.info.values, isJson),

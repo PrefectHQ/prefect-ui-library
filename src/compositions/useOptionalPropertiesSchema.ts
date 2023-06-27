@@ -1,6 +1,7 @@
 import { merge } from 'lodash'
 import { ComputedRef, MaybeRef, computed, ref } from 'vue'
 import { SchemaResponse } from '@/models'
+import { mapper } from '@/services'
 import { Schema } from '@/types'
 
 export type UseOptionalPropertiesSchema = {
@@ -13,7 +14,7 @@ export function useOptionalPropertiesSchema(rawSchema: MaybeRef<SchemaResponse |
   const computedSchema = computed(() => {
     const newSchema = merge({}, rawSchemaRef.value)
     newSchema.required = []
-    return newSchema
+    return mapper.map('SchemaResponse', newSchema, 'Schema')
   })
 
   return {

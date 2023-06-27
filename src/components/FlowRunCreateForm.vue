@@ -95,7 +95,7 @@
   import { useForm } from '@/compositions/useForm'
   import { localization } from '@/localization'
   import { Deployment, DeploymentFlowRunCreate } from '@/models'
-  import { mocker } from '@/services'
+  import { mapper, mocker } from '@/services'
   import { SchemaInputType } from '@/types/schemaInput'
   import { SchemaValues } from '@/types/schemas'
   import { isJson, fieldRules, isRequiredIf } from '@/utilities/validation'
@@ -125,7 +125,7 @@
   }
 
   const combinedParameters = computed(() => {
-    return { ...props.deployment.parameters, ...props.parameters }
+    return mapper.map('SchemaValuesResponse', { values: { ...props.deployment.rawParameters, ...props.parameters }, schema: props.deployment.parameterOpenApiSchema }, 'SchemaValues')
   })
 
   const { handleSubmit } = useForm<DeploymentFlowRunCreate>({

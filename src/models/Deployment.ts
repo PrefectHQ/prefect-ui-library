@@ -22,7 +22,7 @@ export interface IDeployment {
   manifestPath: string | null,
   path: string | null,
   rawParameters: SchemaValues,
-  rawSchema: SchemaResponse | null,
+  rawSchema: SchemaResponse,
   entrypoint: string | null,
   storageDocumentId: string | null,
   infrastructureDocumentId: string | null,
@@ -46,7 +46,7 @@ export class Deployment implements IDeployment {
   public parameters: SchemaValues
   public parameterOpenApiSchema: Schema
   public readonly rawParameters: SchemaValues
-  public readonly rawSchema: SchemaResponse | null
+  public readonly rawSchema: SchemaResponse
   public tags: string[] | null
   public manifestPath: string | null
   public path: string | null
