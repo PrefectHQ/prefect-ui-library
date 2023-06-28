@@ -22,7 +22,15 @@ export class SchemaPropertyObject extends SchemaPropertyService {
       return stringifyUnknownJson(this.property.default) ?? null
     }
 
-    return this.property.default ?? {}
+    const parsed = (this.property.default ?? {}) as SchemaValues
+    const mapped = mapValues(this.property.properties ?? {}, (key, property) => {
+      const propertyValue = parsed[key]
+      const service = schemaPropertyServiceFactory(property!, this.level + 1)
+
+      return service.mapResponseValue(propertyValue)
+    })
+
+    return mapped
   }
 
   protected request(value: SchemaValue): unknown {
