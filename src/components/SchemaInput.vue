@@ -78,8 +78,9 @@
   })
 
   const schemaDefaultValues = getSchemaDefaultValues(props.schema)
-  const defaultValues = merge({}, schemaDefaultValues, props.modelValue ?? {})
-  const unmappedDefaultValues = mapper.map('SchemaValues', { values: defaultValues, schema: props.schema }, 'SchemaValuesRequest')
+  const unmappedModelValue = mapper.map('SchemaValues', { values: props.modelValue ?? {}, schema: props.schema }, 'SchemaValuesRequest')
+  const unmappedDefaultValues = merge({}, schemaDefaultValues, unmappedModelValue)
+  const mappedDefaultValues = mapper.map('SchemaValuesResponse', { values: unmappedDefaultValues, schema: props.schema }, 'SchemaValues')
   const { json, record } = useJsonRecord(unmappedDefaultValues)
 
   const rules = {
@@ -89,7 +90,7 @@
   const { error, state } = useValidation(json, localization.info.values, rules.jsonValues)
 
   const { validate: validateReactiveForm, errors: reactiveFormErrors, values } = useForm({
-    initialValues: defaultValues,
+    initialValues: mappedDefaultValues,
   })
 
   useValidation(record, localization.info.values, async () => {
