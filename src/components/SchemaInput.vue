@@ -89,7 +89,7 @@
   const { error, state } = useValidation(json, localization.info.values, rules.jsonValues)
 
   const { validate: validateReactiveForm, errors: reactiveFormErrors, values } = useForm({
-    initialValues: record,
+    initialValues: defaultValues,
   })
 
   useValidation(record, localization.info.values, async () => {
@@ -99,7 +99,7 @@
 
   watchEffect(() => {
     if (inputType.value === 'json') {
-      emit('update:modelValue', record.value)
+      emit('update:modelValue', mapper.map('SchemaValuesResponse', { values: record.value, schema: props.schema }, 'SchemaValues'))
     } else {
       emit('update:modelValue', values)
     }
