@@ -170,8 +170,7 @@ export type ResolverCallback<T> = (schema: T) => T
  * A utility for passing a value through an array of resolver methods.
  */
 export function resolve<T>(value: T, resolvers: ResolverCallback<T>[]): T {
-  const resolved = resolvers.reduce((resolved, resolver) => resolver(resolved), value)
-  return { ...resolved, mapped: true }
+  return resolvers.reduce((resolved, resolver) => resolver(resolved), value)
 }
 
 /*
