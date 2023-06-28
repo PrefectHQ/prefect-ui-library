@@ -112,7 +112,7 @@
   const { handleSubmit, isSubmitting } = useForm<DeploymentEdit>({
     initialValues: {
       description: props.deployment.description,
-      parameters: props.deployment.rawParameters,
+      parameters: props.deployment.parameters,
       schedule: props.deployment.schedule,
       isScheduleActive: props.deployment.isScheduleActive,
       workPoolName: props.deployment.workPoolName,
@@ -137,7 +137,7 @@
   const { value: tags } = useField<string[] | null>('tags')
   const { value: infrastructureOverrides, meta: overrideState, errorMessage: overrideErrorMessage } = useField<string>('infrastructureOverrides', rules.infrastructureOverrides)
 
-  const { schema } = useOptionalPropertiesSchema(props.deployment.rawSchema ?? {})
+  const { schema } = useOptionalPropertiesSchema(props.deployment.rawSchema)
 
   const emit = defineEmits<{
     (event: 'submit', value: DeploymentUpdate): void,
