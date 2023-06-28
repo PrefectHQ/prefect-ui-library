@@ -89,7 +89,7 @@
   const { error, state } = useValidation(json, localization.info.values, rules.jsonValues)
 
   const { validate: validateReactiveForm, errors: reactiveFormErrors, values } = useForm({
-    initialValues: record,
+    initialValues: defaultValues,
   })
 
   useValidation(record, localization.info.values, async () => {
