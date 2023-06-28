@@ -38,8 +38,8 @@ export const mapWorkspaceDashboardFilterToFlowRunsFilter: MapFunction<WorkspaceD
   const now = new Date()
   const filter: FlowRunsFilter = {
     flowRuns: {
-      startTimeAfter: subSeconds(now, source.timeSpanInSeconds),
-      startTimeBefore: now,
+      expectedStartTimeAfter: subSeconds(now, source.timeSpanInSeconds),
+      expectedStartTimeBefore: now,
       tags: {
         name: source.tags,
       },
