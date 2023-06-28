@@ -52,8 +52,8 @@ export function getSchemaRequestValue(schema: Schema, values: SchemaValues): Sch
 /*
  * Gets a UI friendly version of a property's api friendly value. Used for mapping.
  */
-export function getSchemaPropertyResponseValue(property: SchemaProperty, value: SchemaValue): SchemaValue {
-  const service = schemaPropertyServiceFactory(property, 0)
+export function getSchemaPropertyResponseValue(property: SchemaProperty, value: SchemaValue, level: number = 0): SchemaValue {
+  const service = schemaPropertyServiceFactory(property, level)
 
   return service.mapResponseValue(value)
 }
@@ -61,8 +61,8 @@ export function getSchemaPropertyResponseValue(property: SchemaProperty, value: 
 /*
  * Gets a api friendly version of a property's UI friendly value. Used for mapping.
  */
-export function getSchemaPropertyRequestValue(property: SchemaProperty, value: SchemaValue): SchemaValue {
-  const service = schemaPropertyServiceFactory(property, 0)
+export function getSchemaPropertyRequestValue(property: SchemaProperty, value: SchemaValue, level: number = 0): SchemaValue {
+  const service = schemaPropertyServiceFactory(property, level)
 
   return service.mapRequestValue(value)
 }
