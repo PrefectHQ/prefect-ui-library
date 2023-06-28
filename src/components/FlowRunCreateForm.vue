@@ -88,6 +88,7 @@
   import { PButton, ButtonGroupOption } from '@prefecthq/prefect-design'
   import { useValidationObserver } from '@prefecthq/vue-compositions'
   import { zonedTimeToUtc } from 'date-fns-tz'
+  import { merge } from 'lodash'
   import { useField } from 'vee-validate'
   import { computed, ref } from 'vue'
   import { TimezoneSelect, DateInput } from '@/components'
@@ -125,7 +126,7 @@
   }
 
   const combinedParameters = computed(() => {
-    return mapper.map('SchemaValuesResponse', { values: { ...props.deployment.rawParameters, ...props.parameters }, schema: props.deployment.parameterOpenApiSchema }, 'SchemaValues')
+    return mapper.map('SchemaValuesResponse', { values: merge({}, props.deployment.rawParameters, props.parameters), schema: props.deployment.parameterOpenApiSchema }, 'SchemaValues')
   })
 
   const { handleSubmit } = useForm<DeploymentFlowRunCreate>({
