@@ -144,7 +144,6 @@
     (event: 'cancel'): void,
   }>()
 
-
   const { validate } = useValidationObserver()
 
   const submit = handleSubmit(async (values): Promise<void> => {

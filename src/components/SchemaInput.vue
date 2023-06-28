@@ -99,7 +99,7 @@
 
   watchEffect(() => {
     if (inputType.value === 'json') {
-      emit('update:modelValue', record.value)
+      emit('update:modelValue', mapper.map('SchemaValuesResponse', { values: record.value, schema: props.schema }, 'SchemaValues'))
     } else {
       emit('update:modelValue', values)
     }
