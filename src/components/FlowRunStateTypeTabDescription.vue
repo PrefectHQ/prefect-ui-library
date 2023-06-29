@@ -1,13 +1,17 @@
 <template>
   <template v-if="hasCount">
-    <span class="flow-run-state-type-tab-description">
+    <span v-if="description" class="flow-run-state-type-tab-description">
       {{ description }}
     </span>
+    <div v-else>
+      <FlowRunStateTypeEmpty :state-type="stateType" />
+    </div>
   </template>
 </template>
 
 <script lang="ts" setup>
   import { computed } from 'vue'
+  import FlowRunStateTypeEmpty from '@/components/FlowRunStateTypeEmpty.vue'
   import { useFlowRunsCount } from '@/compositions/useFlowRunsCount'
   import { FlowRunsFilter } from '@/models/Filters'
   import { StateType } from '@/models/StateType'
@@ -42,7 +46,7 @@
       return `Flows with ${statesString} runs`
     }
 
-    return `No flows with ${statesString} runs`
+    return null
   })
 </script>
 
