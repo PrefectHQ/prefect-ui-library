@@ -16,9 +16,11 @@
 
 <script lang="ts" setup>
   import { useRouteQueryParam } from '@prefecthq/vue-compositions'
+  import { computed } from 'vue'
   import FlowRunsAccordion from '@/components/FlowRunsAccordion.vue'
   import FlowRunStateTypeCount from '@/components/FlowRunStateTypeCount.vue'
   import FlowRunStateTypeTabDescription from '@/components/FlowRunStateTypeTabDescription.vue'
+  import { useFlowRunsCount } from '@/compositions'
   import { FlowRunsFilter } from '@/models/Filters'
   import { StateType } from '@/models/StateType'
 
@@ -28,11 +30,23 @@
 
   const tabStates: Record<string, StateType[]> = {
     failed: ['failed', 'crashed'],
-    running: ['running', 'pending', 'paused'],
+    running: ['running', 'pending', 'cancelling'],
     completed: ['completed'],
-    scheduled: ['scheduled', 'cancelled'],
+    scheduled: ['scheduled', 'paused'],
+    cancelled: ['cancelled'],
   }
-  const tabs = Object.keys(tabStates)
+
+  const { count: cancelledCount } = useFlowRunsCount(getStateTypeFilter('cancelled'))
+
+  const tabs = computed(() => {
+    const tabNames = Object.keys(tabStates)
+
+    if (!cancelledCount.value || cancelledCount.value < 1) {
+      tabNames.splice(tabNames.indexOf('cancelled'), 1)
+    }
+
+    return tabNames
+  })
 
   const selected = useRouteQueryParam('flow-run-state', 'failed')
 
@@ -58,12 +72,8 @@
 </script>
 
 <style>
-.flow-run-state-type-tabs .p-tab-navigation { @apply
-  grid
-  grid-cols-4
-}
-
 .flow-run-state-type-tabs .p-tab { @apply
+  flex-grow
   flex
   items-center
   justify-center
