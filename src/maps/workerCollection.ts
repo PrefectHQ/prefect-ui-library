@@ -39,10 +39,8 @@ BaseJobTemplate
 }
 
 export const mapWorkerCollectionWorkerResponseToWorkerCollectionWorker: MapFunction<WorkerCollectionWorkerResponse, WorkerCollectionWorker> = function(source) {
-  const baseJobTemplate = source.default_base_job_configuration ? this.map('BaseJobTemplateResponse', source.default_base_job_configuration, 'BaseJobTemplate') : undefined
-
   return new WorkerCollectionWorker({
-    baseJobTemplate: baseJobTemplate,
+    baseJobTemplate: this.map('BaseJobTemplateResponse', source.default_base_job_configuration, 'BaseJobTemplate'),
     description: source.description,
     displayName: source.display_name,
     documentationUrl: source.documentation_url,

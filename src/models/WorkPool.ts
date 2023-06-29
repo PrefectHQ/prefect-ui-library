@@ -54,4 +54,4 @@ export type WorkPoolFormValues = {
   baseJobTemplate?: BaseJobTemplate,
 }
 
-export type WorkPoolTypeSelectOption = SelectOptionNormalized & { logoUrl: string, description: string, isBeta: boolean }
+export type WorkPoolTypeSelectOption = SelectOptionNormalized & { logoUrl?: string, description?: string, isBeta?: boolean }

@@ -4,7 +4,7 @@
       <WorkPoolCreateWizardStepInformation v-model:workPool="workPool" />
     </template>
     <template #work-pool-infrastructure-type>
-      <WorkPoolCreateWizardStepInfrastructureType v-model:workPool="workPool" :workers="workers" />
+      <WorkPoolCreateWizardStepInfrastructureType v-model:workPool="workPool" />
     </template>
     <template #work-pool-infrastructure-configuration>
       <!-- <WorkPoolCreateWizardStepInfrastructureConfiguration v-model:workPool="workPool" :default-base-job-template="defaultBaseJobTemplate" /> -->
@@ -14,8 +14,7 @@
 
 <script lang="ts" setup>
   import { WizardStep, showToast } from '@prefecthq/prefect-design'
-  import { useSubscription } from '@prefecthq/vue-compositions'
-  import { computed, ref } from 'vue'
+  import { ref } from 'vue'
   import { useRouter } from 'vue-router'
   import { WorkPoolCreateWizardStepInformation, WorkPoolCreateWizardStepInfrastructureType, WorkPoolCreateWizardStepInfrastructureConfiguration } from '@/components'
   import { useWorkspaceApi, useWorkspaceRoutes } from '@/compositions'
@@ -25,6 +24,7 @@
   const router = useRouter()
   const routes = useWorkspaceRoutes()
 
+  // TODO: CHeck that this works
   const workPool = ref<WorkPoolFormValues>({})
 
   const steps: WizardStep[] = [
@@ -34,14 +34,6 @@
   ]
 
   const api = useWorkspaceApi()
-
-  const workersSubscription = useSubscription(api.collections.getWorkerCollectionWorkers, [])
-  const workers = computed(() => workersSubscription.response ?? [])
-
-  const defaultBaseJobTemplate = computed(() => {
-    console.log(workers.value)
-    return workers.value.find((item) => item.type === workPool.value.type)?.baseJobTemplate ?? {}
-  })
 
   async function submit(): Promise<void> {
     if (!workPool.value.baseJobTemplate) {
@@ -63,8 +55,6 @@
       showToast(localization.error.createWorkPool, 'error')
       console.error(error)
     }
-
-
   }
 
   function cancel(): void {

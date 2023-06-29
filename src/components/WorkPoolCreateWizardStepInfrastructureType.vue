@@ -1,17 +1,17 @@
 <template>
   <p-content>
     <p-label label="Select the infrastructure you want to use to execute your flow runs" :message="error" :state="state" />
-    <template v-for="{ label, value, logoUrl, description, isBeta } in options" :key="value">
+    <template v-for="{ label, value, logoUrl, description, isBeta } in workerOptions" :key="value">
       <p-card>
         <p-radio v-model="type" :value="value" :state="state" :label="label">
           <template #label>
-            <div class="work-pool-create-wizard-step-infrastructure-type__infra_type_card_content_container">
-              <LogoImage :url="logoUrl" :alt="label" size="md" class="block-type-card-preview__logo" />
-              <div class="work-pool-create-wizard-step-infrastructure-type__infra_type_card_text_container">
-                <p class="work-pool-create-wizard-step-infrastructure-type__infra_type_card_type_text">
-                  {{ label }}<BetaBadge v-if="isBeta" class="work-pool-create-wizard-step-infrastructure-type__infra_type_card_beta_label" />
+            <div class="work-pool-create-wizard-step-infrastructure-type__content">
+              <LogoImage v-if="logoUrl" :url="logoUrl" :alt="label" size="md" class="block-type-card-preview__logo" />
+              <div class="work-pool-create-wizard-step-infrastructure-type__text">
+                <p class="work-pool-create-wizard-step-infrastructure-type__type">
+                  {{ label }}<BetaBadge v-if="isBeta" class="work-pool-create-wizard-step-infrastructure-type__beta_label" />
                 </p>
-                <p class="work-pool-create-wizard-step-infrastructure-type__infra_type_card_description_text">
+                <p class="work-pool-create-wizard-step-infrastructure-type__description">
                   {{ description }}
                 </p>
               </div>
@@ -25,17 +25,16 @@
 
 <script lang="ts" setup>
   import { useWizardStep } from '@prefecthq/prefect-design'
-  import { usePatchRef, useValidation, useValidationObserver } from '@prefecthq/vue-compositions'
+  import { usePatchRef, useSubscription, useValidation, useValidationObserver } from '@prefecthq/vue-compositions'
   import { computed } from 'vue'
   import { LogoImage, BetaBadge } from '@/components'
+  import { useWorkspaceApi } from '@/compositions'
   import { WorkerCollectionWorker } from '@/models'
   import { WorkPoolFormValues, WorkPoolTypeSelectOption } from '@/models/WorkPool'
-  import { titleCase } from '@/utilities'
-
+  import { isNotNullish, titleCase } from '@/utilities'
 
   const props = defineProps<{
     workPool: WorkPoolFormValues,
-    workers: WorkerCollectionWorker[],
   }>()
 
   const emit = defineEmits<{
@@ -53,13 +52,19 @@
 
   const type = usePatchRef(workPool, 'type')
 
-  const options = computed<WorkPoolTypeSelectOption[]>(() => {
-    const options: WorkPoolTypeSelectOption[] = props.workers.map(({ type, logoUrl, description, documentationUrl, displayName, isBeta }) => ({
-      label: displayName ?? titleCase(type!),
-      value: type!,
-      logoUrl: logoUrl!,
-      description: description!,
-      documentationUrl: documentationUrl!,
+  const api = useWorkspaceApi()
+  const workersSubscription = useSubscription(api.collections.getWorkerCollectionWorkers, [])
+  const workers = computed(() => workersSubscription.response ?? [])
+
+  const workerOptions = computed<WorkPoolTypeSelectOption[]>(() => {
+    const filteredWorkers: (WorkerCollectionWorker & { type: string })[] = workers.value.filter(({ type }) => isNotNullish(type))
+
+    const options: WorkPoolTypeSelectOption[] = filteredWorkers.map(({ type, logoUrl, description, documentationUrl, displayName, isBeta }) => ({
+      label: displayName ?? titleCase(type),
+      value: type,
+      logoUrl: logoUrl,
+      description: description,
+      documentationUrl: documentationUrl,
       isBeta: isBeta ?? false,
     }))
 
@@ -88,7 +93,7 @@
 </script>
 
 <style>
-.work-pool-create-wizard-step-infrastructure-type__infra_type_card_content_container { @apply
+.work-pool-create-wizard-step-infrastructure-type__content { @apply
   grid
   grid-flow-col
   mx-2
@@ -96,21 +101,21 @@
   items-center
 }
 
-.work-pool-create-wizard-step-infrastructure-type__infra_type_card_text_container { @apply
+.work-pool-create-wizard-step-infrastructure-type__text { @apply
   flex
   flex-col
   gap-2
 }
 
-.work-pool-create-wizard-step-infrastructure-type__infra_type_card_beta_label { @apply
+.work-pool-create-wizard-step-infrastructure-type__beta-label { @apply
   ml-2
 }
 
-.work-pool-create-wizard-step-infrastructure-type__infra_type_card_type_text { @apply
+.work-pool-create-wizard-step-infrastructure-type__type { @apply
   text-base
 }
 
-.work-pool-create-wizard-step-infrastructure-type__infra_type_card_description_text { @apply
+.work-pool-create-wizard-step-infrastructure-type__description { @apply
   text-sm
   text-foreground-200
 }

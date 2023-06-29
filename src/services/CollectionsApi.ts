@@ -1,6 +1,7 @@
 import { CollectionItem, CollectionsResponse, WorkerCollectionResponse, WorkerCollectionWorker } from '@/models'
 import { Api } from '@/services/Api'
 import { mapper } from '@/services/Mapper'
+import { isWorkerCollectionWorkerResponse } from '@/types/workers'
 
 export interface ICollectionsApi {
   getFlowCollection: () => Promise<CollectionItem[]>,
@@ -17,7 +18,10 @@ export class CollectionsApi extends Api implements ICollectionsApi {
 
   public async getWorkerCollectionWorkers(): Promise<WorkerCollectionWorker[]> {
     const { data } = await this.get<WorkerCollectionResponse>('/views/aggregate-worker-metadata')
-    const workerCollectionWorkerResponse = Object.values(data).flatMap((collection) => Object.values(collection))
+    const workerCollectionWorkerResponse = Object.values(data)
+      .flatMap((collection) => Object.values(collection))
+      .filter(isWorkerCollectionWorkerResponse)
+
     return mapper.map('WorkerCollectionWorkerResponse', workerCollectionWorkerResponse, 'WorkerCollectionWorker')
   }
 }

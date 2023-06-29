@@ -5,30 +5,30 @@ import { Schema } from '@/types'
 export type WorkerCollection = Record<string, Record<string, WorkerCollectionWorker>>
 
 export interface IWorkerCollectionWorker {
-  baseJobTemplate?: BaseJobTemplate,
+  type: string,
+  baseJobTemplate: BaseJobTemplate,
   description?: string,
   displayName?: string,
   documentationUrl?: string,
   installCommand?: string,
   logoUrl?: string,
-  type?: string,
   isBeta?: boolean,
 }
 
 export class WorkerCollectionWorker implements IWorkerCollectionWorker {
-  public readonly baseJobTemplate?: BaseJobTemplate
+  public readonly type: string
+  public readonly baseJobTemplate: BaseJobTemplate
   public readonly description?: string
   public readonly displayName?: string
   public readonly documentationUrl?: string
   public readonly installCommand?: string
   public readonly logoUrl?: string
-  public readonly type?: string
   public readonly isBeta?: boolean
 
   private _schema?: Schema
   public get schema(): Schema | undefined {
     if (this._schema === undefined) {
-      this._schema = mapper.map('SchemaResponse', this.baseJobTemplate?.variables, 'Schema')
+      this._schema = mapper.map('SchemaResponse', this.baseJobTemplate.variables, 'Schema')
     }
 
     return this._schema
