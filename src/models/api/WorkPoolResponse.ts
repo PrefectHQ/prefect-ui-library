@@ -1,10 +1,5 @@
-import { SchemaResponse } from '@/models/api/SchemaResponse'
+import { BaseJobTemplateResponse } from '@/models/api/BaseJobTemplateResponse'
 import { DateString } from '@/types/dates'
-
-export type BaseJobTemplateResponse = {
-  job_configuration?: Record<string, string>,
-  variables?: SchemaResponse,
-}
 
 export type WorkPoolResponse = {
   id: string,

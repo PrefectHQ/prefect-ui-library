@@ -1,6 +1,5 @@
 import { JsonInput } from '@/components'
 import { InvalidSchemaValueError } from '@/models'
-import { schemaPropertyServiceFactory } from '@/services/schemas/properties'
 import { SchemaPropertyService } from '@/services/schemas/properties/SchemaPropertyService'
 import { SchemaPropertyComponentWithProps, getSchemaPropertyRequestValue, getSchemaPropertyResponseValue } from '@/services/schemas/utilities'
 import { SchemaValue, isSchemaValues, SchemaValues } from '@/types/schemas'

@@ -1,9 +1,4 @@
-import { SchemaResponse } from '@/models/api/SchemaResponse'
-
-export type BaseJobTemplateRequest = {
-  job_configuration?: Record<string, string>,
-  variables?: SchemaResponse,
-}
+import { BaseJobTemplateRequest } from '@/models/api/BaseJobTemplateRequest'
 
 export type WorkPoolCreateRequest = Partial<{
   name: string,

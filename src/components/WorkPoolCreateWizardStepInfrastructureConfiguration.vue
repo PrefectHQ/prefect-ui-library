@@ -1,7 +1,7 @@
 <template>
   <template v-if="!typeIsPrefectAgent">
     <p-markdown-renderer :text="localization.info.workPoolInfrastructureConfigurationInstructions" class="work-pool-create-wizard-step-infrastructure-configuration__explainer-text" />
-    <WorkPoolBaseJobTemplateFormSection v-model:base-job-template="baseJobTemplate" class="work-pool-create-wizard-step-infrastructure-configuration__base-job-template-form" />
+    <!-- <WorkPoolBaseJobTemplateFormSection v-model:base-job-template="baseJobTemplate" class="work-pool-create-wizard-step-infrastructure-configuration__base-job-template-form" /> -->
   </template>
   <template v-else>
     <p-markdown-renderer :text="localization.info.workPoolInfrastructureConfigurationAgent" />
@@ -12,13 +12,11 @@
   import { computed, reactive } from 'vue'
   import { WorkPoolBaseJobTemplateFormSection } from '@/components'
   import { localization } from '@/localization'
-  import { WorkPoolFormValues } from '@/models/WorkPool'
-  import { WorkerBaseJobTemplate } from '@/types'
-
+  import { BaseJobTemplate, WorkPoolFormValues } from '@/models'
 
   const props = defineProps<{
     workPool: WorkPoolFormValues,
-    defaultBaseJobTemplate: WorkerBaseJobTemplate,
+    defaultBaseJobTemplate: BaseJobTemplate,
   }>()
 
   const typeIsPrefectAgent = computed(() => props.workPool.type === 'prefect-agent')
@@ -36,21 +34,21 @@
     },
   })
 
-  const baseJobTemplatesMap = reactive(new Map<string, WorkerBaseJobTemplate>())
-  const baseJobTemplate = computed<WorkerBaseJobTemplate>({
-    get() {
-      if (props.workPool.type) {
-        return baseJobTemplatesMap.get(props.workPool.type) ?? props.defaultBaseJobTemplate
-      }
-      return {}
-    },
-    set(value) {
-      if (props.workPool.type) {
-        baseJobTemplatesMap.set(props.workPool.type, value)
-        workPool.value.baseJobTemplate = value
-      }
-    },
-  })
+  // const baseJobTemplatesMap = reactive(new Map<string, BaseJobTemplate>())
+  // const baseJobTemplate = computed<BaseJobTemplate>({
+  //   get() {
+  //     if (props.workPool.type) {
+  //       return baseJobTemplatesMap.get(props.workPool.type) ?? props.defaultBaseJobTemplate
+  //     }
+  //     return {}
+  //   },
+  //   set(value) {
+  //     if (props.workPool.type) {
+  //       baseJobTemplatesMap.set(props.workPool.type, value)
+  //       workPool.value.baseJobTemplate = value
+  //     }
+  //   },
+  // })
 </script>
 
 <style>

@@ -1,5 +1,5 @@
+import { WorkerCollectionWorker } from '@/models'
 import { CollectionItem } from '@/models/CollectionItem'
-import { WorkerCollectionItem } from '@/models/WorkerCollectionItem'
 import { ICollectionsApi } from '@/services/CollectionsApi'
 
 export class MockCollectionsApi implements ICollectionsApi {
@@ -8,7 +8,7 @@ export class MockCollectionsApi implements ICollectionsApi {
     throw new Error('Not Implemented')
   }
 
-  public getWorkerCollection(): Promise<WorkerCollectionItem[]> {
+  public getWorkerCollectionWorkers(): Promise<WorkerCollectionWorker[]> {
     throw new Error('Not Implemented')
   }
 

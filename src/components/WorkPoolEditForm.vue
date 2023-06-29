@@ -24,7 +24,7 @@
       </p-label>
 
       <template v-if="showBaseJobTemplateFormSection">
-        <WorkPoolBaseJobTemplateFormSection v-model:base-job-template="baseJobTemplate" />
+        <!-- <WorkPoolBaseJobTemplateFormSection v-model:base-job-template="baseJobTemplate" /> -->
       </template>
     </p-content>
 

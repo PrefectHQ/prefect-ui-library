@@ -1,4 +1,5 @@
 import { mapArtifactCollectionResponseToArtifactCollection, mapArtifactResponseToArtifact } from '@/maps/artifact'
+import { mapBaseJobTemplateResponseToBaseJobTemplate, mapBaseJobTemplateToBaseJobTemplateRequest } from '@/maps/baseJobTemplate'
 import { mapBlockDocumentResponseToBlockDocument, mapBlockDocumentToSelectOption } from '@/maps/blockDocument'
 import { mapBlockDocumentCreateToBlockDocumentCreateRequest } from '@/maps/blockDocumentCreate'
 import { mapBlockDocumentResponseReferencesToBlockDocumentReferences } from '@/maps/blockDocumentReferences'
@@ -49,9 +50,9 @@ import { mapTaskRunToTaskRunResponse, mapTaskRunResponseToTaskRun } from '@/maps
 import { mapTaskRunHistoryResponseToTaskRunHistory, mapTaskRunHistoryStateResponseToTaskRunHistoryState } from '@/maps/taskRunHistory'
 import { mapUiFlowRunHistoryResponseToUiFlowRunHistory } from '@/maps/uiFlowRunHistory'
 import { mapVariableResponseToVariable, mapVariableEditToVariableEditRequest, mapVariableCreateToVariableCreateRequest } from '@/maps/variable'
-import { mapPrefectWorkerCollectionResponseToWorkerCollectionItemArray, mapWorkerSchemaValuesToWorkerSchemaValuesRequest } from '@/maps/workerCollection'
+import { mapWorkerCollectionWorkerResponseToWorkerCollectionWorker, mapWorkerSchemaValuesToWorkerSchemaValuesRequest } from '@/maps/workerCollection'
 import { mapWorkerScheduledFlowRunResponseToWorkerScheduledFlowRun, mapWorkerScheduledFlowRunsToWorkerScheduledFlowRunsRequest } from '@/maps/workerScheduledFlowRun'
-import { mapWorkPoolCreateToWorkPoolCreateRequest, mapWorkPoolEditToWorkPoolEditRequest, mapWorkPoolResponseToWorkPool, mapWorkPoolToWorkPoolResponse } from '@/maps/workPool'
+import { mapWorkPoolCreateToWorkPoolCreateRequest, mapWorkPoolEditToWorkPoolEditRequest, mapWorkPoolResponseToWorkPool } from '@/maps/workPool'
 import { mapWorkPoolQueueCreateToWorkPoolQueueCreateRequest, mapWorkPoolQueueEditToWorkPoolQueueEditRequest, mapWorkPoolQueueResponseToWorkPoolQueue, mapWorkPoolQueueToWorkPoolQueueResponse } from '@/maps/workPoolQueue'
 import { mapWorkPoolWorkerResponseToWorkPoolWorker } from '@/maps/workPoolWorker'
 import { mapWorkQueueToWorkQueueResponse, mapWorkQueueResponseToWorkQueue, mapWorkQueueCreateToWorkQueueCreateRequest, mapWorkQueueEditToWorkQueueEditRequest } from '@/maps/workQueue'
@@ -60,9 +61,9 @@ import { mapWorkQueueHealthPolicyResponseToWorkQueueHealthPolicy } from '@/maps/
 import { mapWorkQueueStatusResponseToWorkQueueStatus } from '@/maps/workQueueStatus'
 
 export const maps = {
+  ArtifactCollectionResponse: { ArtifactCollection: mapArtifactCollectionResponseToArtifactCollection },
   ArtifactFilter: { ArtifactFilterRequest: mapArtifactFilter },
   ArtifactResponse: { Artifact: mapArtifactResponseToArtifact },
-  ArtifactCollectionResponse: { ArtifactCollection: mapArtifactCollectionResponseToArtifactCollection },
   ArtifactsFilter: { ArtifactsFilterRequest: mapArtifactsFilter },
   BlockDocument: { SelectOption: mapBlockDocumentToSelectOption },
   BlockDocumentCreate: { BlockDocumentCreateRequest: mapBlockDocumentCreateToBlockDocumentCreateRequest },
@@ -84,6 +85,8 @@ export const maps = {
   ConcurrencyLimitResponse: { ConcurrencyLimit: mapConcurrencyLimitResponseToConcurrencyLimit },
   CreatedOrUpdatedByResponse: { CreatedOrUpdatedBy: mapCreatedOrUpdatedByResponseToCreatedOrUpdatedBy },
   Date: { string: mapDateToString },
+  BaseJobTemplate: { BaseJobTemplateRequest: mapBaseJobTemplateToBaseJobTemplateRequest },
+  BaseJobTemplateResponse: { BaseJobTemplate: mapBaseJobTemplateResponseToBaseJobTemplate },
   DeploymentFilter: { DeploymentFilterRequest: mapDeploymentFilter },
   DeploymentFlowRunCreate: { DeploymentFlowRunRequest: mapDeploymentFlowRunCreateToDeploymentFlowRunRequest },
   DeploymentResponse: { Deployment: mapDeploymentResponseToDeployment },
@@ -110,7 +113,6 @@ export const maps = {
   NotificationsFilter: { NotificationsFilterRequest: mapNotificationsFilter },
   NotificationUpdate: { NotificationUpdateRequest: mapNotificationUpdateToNotificationUpdateRequest },
   number: { string: mapNumberToString },
-  PrefectWorkerCollectionResponse: { WorkerCollectionItem: mapPrefectWorkerCollectionResponseToWorkerCollectionItemArray },
   RunHistory: { FlowRunHistoryResponse: mapRunHistoryToFlowRunHistoryResponse, DivergingBarChartItem: mapRunHistoryToDivergingBarChartItem },
   SavedSearchCreate: { SavedSearchCreateRequest: mapSavedSearchCreateToSavedSearchCreateRequest },
   SavedSearchesFilter: { SavedSearchesFilterRequest: mapSavedSearchesFilter },
@@ -150,12 +152,12 @@ export const maps = {
   VariableCreate: { VariableCreateRequest: mapVariableCreateToVariableCreateRequest },
   VariableEdit: { VariableEditRequest: mapVariableEditToVariableEditRequest },
   VariableFilter: { VariableFilterRequest: mapVariableFilter },
-  VariablesFilter: { VariablesFilterRequest: mapVariablesFilter },
   VariableResponse: { Variable: mapVariableResponseToVariable },
+  VariablesFilter: { VariablesFilterRequest: mapVariablesFilter },
+  WorkerCollectionWorkerResponse: { WorkerCollectionWorker: mapWorkerCollectionWorkerResponseToWorkerCollectionWorker },
   WorkerScheduledFlowRunResponse: { WorkerScheduledFlowRun: mapWorkerScheduledFlowRunResponseToWorkerScheduledFlowRun },
   WorkerScheduledFlowRuns: { WorkerScheduledFlowRunsRequest: mapWorkerScheduledFlowRunsToWorkerScheduledFlowRunsRequest },
   WorkerSchemaProperty: { WorkerSchemaPropertyRequest: mapWorkerSchemaValuesToWorkerSchemaValuesRequest },
-  WorkPool: { WorkPoolResponse: mapWorkPoolToWorkPoolResponse },
   WorkPoolCreate: { WorkPoolCreateRequest: mapWorkPoolCreateToWorkPoolCreateRequest },
   WorkPoolEdit: { WorkPoolEditRequest: mapWorkPoolEditToWorkPoolEditRequest },
   WorkPoolFilter: { WorkPoolFilterRequest: mapWorkPoolFilter },
@@ -184,6 +186,6 @@ export const maps = {
     FlowRunsFilter: mapWorkspaceDashboardFilterToFlowRunsFilter,
     WorkPoolWorkersFilter: mapWorkspaceDashboardFilterToWorkPoolWorkersFilter,
   },
-  TaskRunHistoryStateResponse: { TaskRunHistoryState: mapTaskRunHistoryStateResponseToTaskRunHistoryState },
   TaskRunHistoryResponse: { TaskRunHistory: mapTaskRunHistoryResponseToTaskRunHistory },
+  TaskRunHistoryStateResponse: { TaskRunHistoryState: mapTaskRunHistoryStateResponseToTaskRunHistoryState },
 }

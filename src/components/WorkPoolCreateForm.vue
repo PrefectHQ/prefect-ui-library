@@ -32,7 +32,7 @@
       </p-label>
 
       <template v-if="showBaseJobTemplateFormSection">
-        <WorkPoolBaseJobTemplateFormSection v-model:base-job-template="baseJobTemplate" />
+        <!-- <WorkPoolBaseJobTemplateFormSection v-model:base-job-template="baseJobTemplate" /> -->
       </template>
     </p-content>
 
@@ -53,8 +53,7 @@
   import { SubmitButton, WorkPoolTypeSelect, WorkPoolBaseJobTemplateFormSection } from '@/components'
   import { useCan, useWorkspaceApi, useWorkspaceRoutes } from '@/compositions'
   import { localization } from '@/localization'
-  import { WorkPoolCreate } from '@/models'
-  import { WorkerBaseJobTemplate } from '@/types'
+  import { BaseJobTemplate, WorkPoolCreate } from '@/models'
 
   const api = useWorkspaceApi()
   const can = useCan()
@@ -68,26 +67,26 @@
   const type = ref<string>('prefect-agent')
   const concurrencyLimit = ref<number>()
 
-  const workersCollectionSubscription = useSubscription(api.collections.getWorkerCollection, [])
-  const workersCollectionItems = computed(() => workersCollectionSubscription.response)
+  const workerCollectionsSubscription = useSubscription(api.collections.getWorkerCollectionWorkers, [])
+  const workerCollections = computed(() => workerCollectionsSubscription.response)
 
   const remoteBaseJobTemplate = computed(() => {
-    return workersCollectionItems.value?.find((item) => item.type === type.value)?.defaultBaseJobConfiguration ?? {}
+    return workerCollections.value?.find((item) => item.type === type.value)?.baseJobTemplate ?? {}
   })
-  const baseJobTemplatesMap = reactive(new Map<string, WorkerBaseJobTemplate>())
-  const baseJobTemplate = computed<WorkerBaseJobTemplate>({
-    get() {
-      if (type.value) {
-        return baseJobTemplatesMap.get(type.value) ?? remoteBaseJobTemplate.value
-      }
-      return {}
-    },
-    set(value) {
-      if (type.value) {
-        baseJobTemplatesMap.set(type.value, value)
-      }
-    },
-  })
+  const baseJobTemplatesMap = reactive(new Map<string, BaseJobTemplate>())
+  // const baseJobTemplate = computed<BaseJobTemplate>({
+  //   get() {
+  //     if (type.value) {
+  //       return baseJobTemplatesMap.get(type.value) ?? remoteBaseJobTemplate.value
+  //     }
+  //     return {}
+  //   },
+  //   set(value) {
+  //     if (type.value) {
+  //       baseJobTemplatesMap.set(type.value, value)
+  //     }
+  //   },
+  // })
 
   const typeIsNotPrefectAgent = computed(() => type.value !== 'prefect-agent')
   const showBaseJobTemplateFormSection = computed(() => type.value && typeIsNotPrefectAgent.value && can.access.workers)
@@ -115,7 +114,7 @@
         type: type.value,
         isPaused: false,
         concurrencyLimit: concurrencyLimit.value,
-        baseJobTemplate: baseJobTemplate.value,
+        // baseJobTemplate: baseJobTemplate.value,
       }
 
       try {

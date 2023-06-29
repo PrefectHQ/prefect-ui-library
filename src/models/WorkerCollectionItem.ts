@@ -1,12 +1,12 @@
-import { SchemaProperty } from '@/types'
+import { SchemaPropertyResponse } from '@/models/api'
 
 export type DefaultBaseJobConfiguration = {
   jobConfiguration: Record<string, unknown>,
-  variables: SchemaProperty,
+  variables: SchemaPropertyResponse,
 }
 
 export type WorkerCollectionItem = {
-  defaultBaseJobConfiguration?: Record<string, unknown>,
+  defaultBaseJobConfiguration?: DefaultBaseJobConfiguration,
   description?: string,
   displayName?: string,
   documentationUrl?: string,

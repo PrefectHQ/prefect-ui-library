@@ -4,10 +4,10 @@
       <WorkPoolCreateWizardStepInformation v-model:workPool="workPool" />
     </template>
     <template #work-pool-infrastructure-type>
-      <WorkPoolCreateWizardStepInfrastructureType v-model:workPool="workPool" :workers="availableWorkers" />
+      <WorkPoolCreateWizardStepInfrastructureType v-model:workPool="workPool" :workers="workers" />
     </template>
     <template #work-pool-infrastructure-configuration>
-      <WorkPoolCreateWizardStepInfrastructureConfiguration v-model:workPool="workPool" :default-base-job-template="defaultBaseJobTemplate" />
+      <!-- <WorkPoolCreateWizardStepInfrastructureConfiguration v-model:workPool="workPool" :default-base-job-template="defaultBaseJobTemplate" /> -->
     </template>
   </p-wizard>
 </template>
@@ -35,16 +35,17 @@
 
   const api = useWorkspaceApi()
 
-  const availableWorkersSubscription = useSubscription(api.collections.getWorkerCollection, [])
-  const availableWorkers = computed(() => availableWorkersSubscription.response ?? [])
+  const workersSubscription = useSubscription(api.collections.getWorkerCollectionWorkers, [])
+  const workers = computed(() => workersSubscription.response ?? [])
 
   const defaultBaseJobTemplate = computed(() => {
-    return availableWorkers.value.find((item) => item.type === workPool.value.type)?.defaultBaseJobConfiguration ?? {}
+    console.log(workers.value)
+    return workers.value.find((item) => item.type === workPool.value.type)?.baseJobTemplate ?? {}
   })
 
   async function submit(): Promise<void> {
     if (!workPool.value.baseJobTemplate) {
-      workPool.value.baseJobTemplate = defaultBaseJobTemplate.value
+      // workPool.value.baseJobTemplate = defaultBaseJobTemplate.value
     }
     const values: WorkPoolCreate = {
       ...workPool.value,

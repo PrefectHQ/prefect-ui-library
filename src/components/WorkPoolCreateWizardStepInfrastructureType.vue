@@ -28,14 +28,14 @@
   import { usePatchRef, useValidation, useValidationObserver } from '@prefecthq/vue-compositions'
   import { computed } from 'vue'
   import { LogoImage, BetaBadge } from '@/components'
-  import { WorkerCollectionItem } from '@/models'
+  import { WorkerCollectionWorker } from '@/models'
   import { WorkPoolFormValues, WorkPoolTypeSelectOption } from '@/models/WorkPool'
   import { titleCase } from '@/utilities'
 
 
   const props = defineProps<{
     workPool: WorkPoolFormValues,
-    workers: WorkerCollectionItem[],
+    workers: WorkerCollectionWorker[],
   }>()
 
   const emit = defineEmits<{

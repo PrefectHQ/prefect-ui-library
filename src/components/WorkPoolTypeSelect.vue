@@ -32,11 +32,11 @@
   })
 
   const api = useWorkspaceApi()
-  const workersCollectionSubscription = useSubscription(api.collections.getWorkerCollection, [])
-  const workersCollectionItems = computed(() => workersCollectionSubscription.response ?? [])
+  const workersSubscription = useSubscription(api.collections.getWorkerCollectionWorkers, [])
+  const workers = computed(() => workersSubscription.response ?? [])
 
   const options = computed<SelectOptionNormalized[]>(() => {
-    const options: SelectOptionNormalized[] = workersCollectionItems.value.map(({ type }) => ({
+    const options: SelectOptionNormalized[] = workers.value.map(({ type }) => ({
       label: getProcessTypeLabel(type!),
       value: type!,
     }))

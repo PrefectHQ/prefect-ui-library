@@ -40,20 +40,22 @@
 
 <script lang="ts" setup>
   import { isEqual } from 'lodash'
-  import { computed, ref, watch } from 'vue'
+  import { computed, ref, watch, watchEffect } from 'vue'
   import { SchemaFormFieldsWithValues, JsonInput } from '@/components'
   import { localization } from '@/localization'
+  import { BaseJobTemplate } from '@/models'
   import { getSchemaDefaultValues, mapper } from '@/services'
-  import { Schema, SchemaProperties, SchemaValues, WorkerBaseJobTemplate } from '@/types'
+  import { Schema, SchemaProperties, SchemaValues } from '@/types'
   import { getSchemaWithoutDefaults, mapValues, stringify } from '@/utilities'
 
+  // TODO: Refactor this - it should take a schema and model value
 
   const props = defineProps<{
-    baseJobTemplate: WorkerBaseJobTemplate,
+    baseJobTemplate: BaseJobTemplate,
   }>()
 
   const emit = defineEmits<{
-    (event: 'update:base-job-template', value: WorkerBaseJobTemplate): void,
+    (event: 'update:base-job-template', value: BaseJobTemplate): void,
   }>()
 
   const onLocalBaseJobTemplateJsonUpdate = (): void => {
@@ -63,7 +65,7 @@
   }
 
   const localBaseJobTemplateJson = ref<string>(stringify(props.baseJobTemplate))
-  const localBaseJobTemplate = computed<WorkerBaseJobTemplate | null>(() => {
+  const localBaseJobTemplate = computed<BaseJobTemplate | null>(() => {
     try {
       return JSON.parse(localBaseJobTemplateJson.value)
     } catch (error) {
@@ -78,13 +80,14 @@
       localBaseJobTemplateJson.value = stringify(template)
     }
   })
-  const variablesSchema = computed<Schema>(() => props.baseJobTemplate.variables ?? {})
+  const variablesSchema = computed<Schema>(() => props.baseJobTemplate.variables)
   const mappedVariablesSchema = computed<Schema>(() => mapper.map('SchemaResponse', getSchemaWithoutDefaults(variablesSchema.value), 'Schema'))
   const variablesSchemaProperties = computed<SchemaProperties>(() => variablesSchema.value.properties ?? {})
   const variablesSchemaHasProperties = computed<boolean>(() => Object.keys(variablesSchemaProperties.value).length > 0)
   const currentDefaults = computed<SchemaValues>({
     get() {
-      return getSchemaDefaultValues(variablesSchema.value)
+      return {}
+      // return getSchemaDefaultValues(variablesSchema.value)
     },
     set(values) {
       const newTemplate = {
@@ -99,8 +102,12 @@
           }),
         },
       }
-      emit('update:base-job-template', newTemplate)
+      // emit('update:base-job-template', newTemplate)
     },
+  })
+
+  watchEffect(() => {
+    console.log(getSchemaDefaultValues(variablesSchema.value))
   })
 </script>
 

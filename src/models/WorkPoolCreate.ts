@@ -1,3 +1,4 @@
+import { BaseJobTemplate } from '@/models/BaseJobTemplate'
 import { SchemaValues } from '@/types/schemas'
 
 export type WorkPoolCreate = Partial<{
@@ -6,6 +7,6 @@ export type WorkPoolCreate = Partial<{
   type: string,
   isPaused: boolean,
   concurrencyLimit: number,
-  baseJobTemplate: Record<string, unknown>,
+  baseJobTemplate: BaseJobTemplate,
   defaultVariableValues: SchemaValues,
 }>

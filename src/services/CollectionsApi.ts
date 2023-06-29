@@ -1,10 +1,10 @@
-import { CollectionItem, CollectionsResponse, PrefectWorkerCollectionResponse, WorkerCollectionItem } from '@/models'
+import { CollectionItem, CollectionsResponse, WorkerCollectionResponse, WorkerCollectionWorker } from '@/models'
 import { Api } from '@/services/Api'
 import { mapper } from '@/services/Mapper'
 
 export interface ICollectionsApi {
   getFlowCollection: () => Promise<CollectionItem[]>,
-  getWorkerCollection: () => Promise<WorkerCollectionItem[]>,
+  getWorkerCollectionWorkers: () => Promise<WorkerCollectionWorker[]>,
 }
 
 export class CollectionsApi extends Api implements ICollectionsApi {
@@ -15,8 +15,9 @@ export class CollectionsApi extends Api implements ICollectionsApi {
       .then(({ data }) => mapper.map('CollectionResponse', data, 'CollectionItems'))
   }
 
-  public getWorkerCollection(): Promise<WorkerCollectionItem[]> {
-    return this.get<PrefectWorkerCollectionResponse>('/views/aggregate-worker-metadata')
-      .then(({ data }) => mapper.map('PrefectWorkerCollectionResponse', data, 'WorkerCollectionItem'))
+  public async getWorkerCollectionWorkers(): Promise<WorkerCollectionWorker[]> {
+    const { data } = await this.get<WorkerCollectionResponse>('/views/aggregate-worker-metadata')
+    const workerCollectionWorkerResponse = Object.values(data).flatMap((collection) => Object.values(collection))
+    return mapper.map('WorkerCollectionWorkerResponse', workerCollectionWorkerResponse, 'WorkerCollectionWorker')
   }
 }

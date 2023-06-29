@@ -1,8 +1,11 @@
-import { WorkPool } from '@/models'
-import { MockFunction } from '@/services'
+import { BaseJobTemplate, WorkPool } from '@/models'
+import { MockFunction, mapper } from '@/services'
 
 export const randomWorkPool: MockFunction<WorkPool, [Partial<WorkPool>?]> = function(overrides = {}) {
   const name = this.create('noun')
+  const schema = this.create('schema', [overrides.baseJobTemplate?.schema])
+  const jobConfiguration = this.create('parameters', [{}, schema])
+  const parameters = mapper.map('SchemaValuesResponse', { values: jobConfiguration, schema }, 'SchemaValues')
 
   return new WorkPool({
     // Setting the id to the name allows us to reference the work pool by name
@@ -16,7 +19,10 @@ export const randomWorkPool: MockFunction<WorkPool, [Partial<WorkPool>?]> = func
     isPaused: this.create('boolean'),
     concurrencyLimit: this.create('number'),
     defaultQueueId: this.create('id'),
-    baseJobTemplate: this.create('parameters', [{}, this.create('schema')]),
+    baseJobTemplate: new BaseJobTemplate({
+      jobConfiguration: parameters,
+      variables: schema,
+    }),
     ...overrides,
   })
 }

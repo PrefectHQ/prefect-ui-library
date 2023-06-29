@@ -1,48 +1,31 @@
 import {
-  PrefectWorkerCollectionResponse,
-  WorkerCollectionItem
+  BaseJobTemplate,
+  WorkerCollectionWorker,
+  WorkerCollectionWorkerResponse
 } from '@/models'
 import { MapFunction } from '@/services/Mapper'
 import {
   SchemaValues,
-  WorkerBaseJobTemplate,
   SchemaProperty
 } from '@/types/schemas'
 
-export const mapPrefectWorkerCollectionResponseToWorkerCollectionItemArray: MapFunction<
-PrefectWorkerCollectionResponse,
-WorkerCollectionItem[]
-> = function(source) {
-  return Object.values(source)
-    .flatMap((package_data) => Object.values(package_data))
-    .map((worker_data) => ({
-      defaultBaseJobConfiguration: worker_data.default_base_job_configuration,
-      description: worker_data.description,
-      displayName: worker_data.display_name,
-      documentationUrl: worker_data.documentation_url,
-      installCommand: worker_data.install_command,
-      logoUrl: worker_data.logo_url,
-      type: worker_data.type,
-      isBeta: worker_data.is_beta ?? false,
-    }))
-}
-
 type MapSchemaValuesSource = {
   values: SchemaValues,
-  schema: WorkerBaseJobTemplate,
+  baseJobTemplate: BaseJobTemplate,
 }
 
+// TODO: Map this as part of the form submission
 export const mapWorkerSchemaValuesToWorkerSchemaValuesRequest: MapFunction<
 MapSchemaValuesSource,
-WorkerBaseJobTemplate
+BaseJobTemplate
 > = function(source) {
-  const { values = {}, schema } = source
+  const { values = {}, baseJobTemplate } = source
 
-  const keys = Object.keys(schema.variables?.properties ?? {})
+  const keys = Object.keys(baseJobTemplate.variables.properties ?? {})
 
   keys.forEach((key) => {
-    if (schema.variables?.properties) {
-      const property = schema.variables.properties[key] as
+    if (baseJobTemplate.variables.properties) {
+      const property = baseJobTemplate.variables.properties[key] as
         | SchemaProperty
         | undefined
 
@@ -52,5 +35,20 @@ WorkerBaseJobTemplate
     }
   })
 
-  return schema
+  return baseJobTemplate
+}
+
+export const mapWorkerCollectionWorkerResponseToWorkerCollectionWorker: MapFunction<WorkerCollectionWorkerResponse, WorkerCollectionWorker> = function(source) {
+  const baseJobTemplate = source.default_base_job_configuration ? this.map('BaseJobTemplateResponse', source.default_base_job_configuration, 'BaseJobTemplate') : undefined
+
+  return new WorkerCollectionWorker({
+    baseJobTemplate: baseJobTemplate,
+    description: source.description,
+    displayName: source.display_name,
+    documentationUrl: source.documentation_url,
+    installCommand: source.install_command,
+    logoUrl: source.logo_url,
+    type: source.type,
+    isBeta: source.is_beta ?? false,
+  })
 }

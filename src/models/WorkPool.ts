@@ -1,5 +1,5 @@
 import { SelectOptionNormalized } from '@prefecthq/prefect-design'
-import { BaseJobTemplateRequest } from '@/models/api/WorkPoolRequest'
+import { BaseJobTemplate } from '@/models'
 import { titleCase } from '@/utilities'
 
 export interface IWorkPool {
@@ -12,7 +12,7 @@ export interface IWorkPool {
   isPaused: boolean,
   defaultQueueId: string,
   concurrencyLimit: number | null,
-  baseJobTemplate: BaseJobTemplateRequest,
+  baseJobTemplate: BaseJobTemplate,
 }
 
 export class WorkPool implements IWorkPool {
@@ -25,7 +25,7 @@ export class WorkPool implements IWorkPool {
   public isPaused: boolean
   public defaultQueueId: string
   public concurrencyLimit: number | null
-  public baseJobTemplate: BaseJobTemplateRequest
+  public baseJobTemplate: BaseJobTemplate
 
   public constructor(workPool: IWorkPool) {
     this.id = workPool.id
@@ -51,7 +51,7 @@ export type WorkPoolFormValues = {
   type?: string,
   isPaused?: boolean,
   concurrencyLimit?: number | null,
-  baseJobTemplate?: Record<string, unknown>,
+  baseJobTemplate?: BaseJobTemplate,
 }
 
 export type WorkPoolTypeSelectOption = SelectOptionNormalized & { logoUrl: string, description: string, isBeta: boolean }

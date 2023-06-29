@@ -1,5 +1,6 @@
 import { getSchemaPropertyResponseValue, getSchemaValueDefinition, schemaPropertyServiceFactory } from '..'
 import { JsonInput } from '@/components'
+import { isBlockDocumentValue } from '@/models'
 import { SchemaPropertyService } from '@/services/schemas/properties/SchemaPropertyService'
 import { getSchemaPropertyDefaultValue, SchemaPropertyComponentWithProps } from '@/services/schemas/utilities'
 import { SchemaValue } from '@/types/schemas'
@@ -9,7 +10,9 @@ import { parseUnknownJson, stringifyUnknownJson } from '@/utilities/json'
 export class SchemaPropertyAny extends SchemaPropertyService {
   protected get default(): unknown {
     if (this.has('default')) {
-      return getSchemaPropertyResponseValue(this.property, this.property.default, this.level + 1)
+      console.log(this.property.title, this.property, this.property.default)
+      return this.property.default
+      // return getSchemaPropertyResponseValue(this.property, this.property.default, this.level + 1)
     }
 
     if (this.componentIs(JsonInput)) {
