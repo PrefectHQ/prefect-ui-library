@@ -1,5 +1,11 @@
 <template>
-  <p-wizard :steps="steps" last-step-text="Create" show-cancel @submit="submit" @cancel="cancel">
+  <p-wizard
+    :steps="steps"
+    last-step-text="Create"
+    show-cancel
+    @submit="submit"
+    @cancel="cancel"
+  >
     <template #work-pool-information>
       <WorkPoolCreateWizardStepInformation v-model:workPool="workPool" />
     </template>
@@ -25,7 +31,10 @@
   const routes = useWorkspaceRoutes()
 
   // TODO: CHeck that this works
-  const workPool = ref<WorkPoolFormValues>({})
+  const workPool = ref<WorkPoolFormValues>({
+    name: 'please-delete-me',
+    description: 'this is from work pool form refactors',
+  })
 
   const steps: WizardStep[] = [
     { title: 'Basic Information', key: 'work-pool-information' },

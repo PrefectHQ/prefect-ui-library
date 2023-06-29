@@ -1,24 +1,22 @@
 <template>
-  <p-content>
+  <p-content class="work-pool-create-wizard-step-infrastructure-type">
     <p-label label="Select the infrastructure you want to use to execute your flow runs" :message="error" :state="state" />
     <template v-for="{ label, value, logoUrl, description, isBeta } in workerOptions" :key="value">
-      <p-card>
-        <p-radio v-model="type" :value="value" :state="state" :label="label">
-          <template #label>
-            <div class="work-pool-create-wizard-step-infrastructure-type__content">
-              <LogoImage v-if="logoUrl" :url="logoUrl" :alt="label" size="md" class="block-type-card-preview__logo" />
-              <div class="work-pool-create-wizard-step-infrastructure-type__text">
-                <p class="work-pool-create-wizard-step-infrastructure-type__type">
-                  {{ label }}<BetaBadge v-if="isBeta" class="work-pool-create-wizard-step-infrastructure-type__beta_label" />
-                </p>
-                <p class="work-pool-create-wizard-step-infrastructure-type__description">
-                  {{ description }}
-                </p>
-              </div>
+      <p-radio v-model="type" :value="value" :state="state" :label="label" class="work-pool-create-wizard-step-infrastructure-type__radio">
+        <template #label>
+          <div class="work-pool-create-wizard-step-infrastructure-type__content">
+            <LogoImage v-if="logoUrl" :url="logoUrl" :alt="label" size="md" class="block-type-card-preview__logo" />
+            <div class="work-pool-create-wizard-step-infrastructure-type__text">
+              <p class="work-pool-create-wizard-step-infrastructure-type__type">
+                {{ label }}<BetaBadge v-if="isBeta" class="work-pool-create-wizard-step-infrastructure-type__beta-label" />
+              </p>
+              <p class="work-pool-create-wizard-step-infrastructure-type__description">
+                {{ description }}
+              </p>
             </div>
-          </template>
-        </p-radio>
-      </p-card>
+          </div>
+        </template>
+      </p-radio>
     </template>
   </p-content>
 </template>
@@ -93,6 +91,14 @@
 </script>
 
 <style>
+.work-pool-create-wizard-step-infrastructure-type { @apply
+  gap-4
+}
+
+.work-pool-create-wizard-step-infrastructure-type__radio { @apply
+  p-4
+}
+
 .work-pool-create-wizard-step-infrastructure-type__content { @apply
   grid
   grid-flow-col
