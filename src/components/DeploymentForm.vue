@@ -94,7 +94,7 @@
 <script lang="ts" setup>
   import { useValidationObserver } from '@prefecthq/vue-compositions'
   import { useField } from 'vee-validate'
-  import { computed } from 'vue'
+  import { computed, ref } from 'vue'
   import { SchemaInput, ScheduleFieldset, WorkPoolCombobox, WorkPoolQueueCombobox, JsonInput } from '@/components'
   import { useForm } from '@/compositions/useForm'
   import { useOptionalPropertiesSchema } from '@/compositions/useOptionalPropertiesSchema'
@@ -109,16 +109,14 @@
 
   const name = computed(() => props.deployment.name)
 
-  const { handleSubmit, isSubmitting } = useForm<DeploymentEdit>({
+  const { handleSubmit, isSubmitting } = useForm<Partial<DeploymentEdit>>({
     initialValues: {
       description: props.deployment.description,
-      parameters: props.deployment.parameters,
       schedule: props.deployment.schedule,
       isScheduleActive: props.deployment.isScheduleActive,
       workPoolName: props.deployment.workPoolName,
       workQueueName: props.deployment.workQueueName,
       tags: props.deployment.tags,
-      schema: props.deployment.parameterOpenApiSchema,
       infrastructureOverrides: stringify(props.deployment.infrastructureOverrides),
     },
   })
@@ -128,9 +126,10 @@
     jsonParameters: fieldRules('Parameters', isJson),
   }
 
+  const parameters = ref<SchemaValues>(props.deployment.parameters)
+
   const { value: description, meta: descriptionState } = useField<string>('description')
   const { value: schedule } = useField<Schedule | null>('schedule')
-  const { value: parameters } = useField<SchemaValues>('parameters')
   const { value: isScheduleActive } = useField<boolean>('isScheduleActive')
   const { value: workPoolName } = useField<string | null>('workPoolName')
   const { value: workQueueName } = useField<string | null>('workQueueName')
@@ -155,6 +154,8 @@
 
     const deploymentUpdate: DeploymentUpdate = {
       ...values,
+      parameters: parameters.value,
+      schema: props.deployment.parameterOpenApiSchema,
       infrastructureOverrides: JSON.parse(infrastructureOverrides.value),
     }
 
