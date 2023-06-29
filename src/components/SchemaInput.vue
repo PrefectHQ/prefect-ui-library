@@ -37,7 +37,7 @@
   import { merge } from 'lodash'
   import { computed, ref, watchEffect } from 'vue'
   import { SchemaFormFields } from '@/components'
-  import { useForm, useJsonRecord } from '@/compositions'
+  import { useJsonRecord, useReactiveForm } from '@/compositions'
   import { localization } from '@/localization'
   import { getSchemaDefaultValues, mapper } from '@/services'
   import { SchemaInputType } from '@/types/schemaInput'
@@ -89,7 +89,16 @@
 
   const { error, state } = useValidation(json, localization.info.values, rules.jsonValues)
 
-  const { validate: validateReactiveForm, errors: reactiveFormErrors, values } = useForm({
+  const mappedRecord = computed({
+    get() {
+      return mapper.map('SchemaValuesResponse', { values: record.value, schema: props.schema }, 'SchemaValues')
+    },
+    set(values) {
+      record.value = values
+    },
+  })
+
+  const { validate: validateReactiveForm, errors: reactiveFormErrors } = useReactiveForm(mappedRecord, {
     initialValues: mappedWithDefaultValues,
   })
 
@@ -102,7 +111,7 @@
     if (inputType.value === 'json') {
       emit('update:modelValue', mapper.map('SchemaValuesResponse', { values: record.value, schema: props.schema }, 'SchemaValues'))
     } else {
-      emit('update:modelValue', values)
+      emit('update:modelValue', mappedRecord.value)
     }
   })
 </script>

@@ -37,7 +37,7 @@ export function useJsonRecord(initialValues?: UseJsonRecordValue | string): UseJ
         json.value = JSON.stringify(newRecord)
       }
     }
-  })
+  }, { deep: true })
 
   return {
     valid,
