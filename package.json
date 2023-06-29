@@ -66,7 +66,7 @@
         "@prefecthq/prefect-design": "^1.11.3",
         "@prefecthq/vue-charts": "^1.0.0",
         "@prefecthq/vue-compositions": "^1.5.6",
-        "vee-validate": "^4.7.0",
+        "vee-validate": "^4.10.2",
         "vue": "^3.3.4",
         "vue-router": "^4.0.12"
     },
