@@ -42,7 +42,7 @@
     const tabNames = Object.keys(tabStates)
 
     if (!cancelledCount.value || cancelledCount.value < 1) {
-      tabNames.splice(tabNames.indexOf('cancelled'), 1)
+      tabNames.filter(value => value !== 'cancelled')
     }
 
     return tabNames
