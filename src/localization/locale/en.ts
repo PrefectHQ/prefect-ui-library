@@ -102,6 +102,7 @@ export const en = {
   info: {
     form: 'Form',
     json: 'JSON',
+    jobConfiguration: 'Job Configuration',
     schemaHasNoProperties: 'This schema has no properties',
     filtersActive: 'Filters active',
     resetFilters: 'Reset filters',

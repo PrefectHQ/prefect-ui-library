@@ -40,7 +40,7 @@ BaseJobTemplate
 
 export const mapWorkerCollectionWorkerResponseToWorkerCollectionWorker: MapFunction<WorkerCollectionWorkerResponse, WorkerCollectionWorker> = function(source) {
   return new WorkerCollectionWorker({
-    baseJobTemplate: this.map('BaseJobTemplateResponse', source.default_base_job_configuration, 'BaseJobTemplate'),
+    defaultBaseJobTemplate: this.map('BaseJobTemplateResponse', source.default_base_job_configuration, 'BaseJobTemplate'),
     description: source.description,
     displayName: source.display_name,
     documentationUrl: source.documentation_url,

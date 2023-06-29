@@ -91,10 +91,6 @@
 </script>
 
 <style>
-.work-pool-create-wizard-step-infrastructure-type { @apply
-  gap-4
-}
-
 .work-pool-create-wizard-step-infrastructure-type__radio { @apply
   p-4
 }

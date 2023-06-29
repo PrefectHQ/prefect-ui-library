@@ -13,7 +13,7 @@
       <WorkPoolCreateWizardStepInfrastructureType v-model:workPool="workPool" />
     </template>
     <template #work-pool-infrastructure-configuration>
-      <!-- <WorkPoolCreateWizardStepInfrastructureConfiguration v-model:workPool="workPool" :default-base-job-template="defaultBaseJobTemplate" /> -->
+      <WorkPoolCreateWizardStepInfrastructureConfiguration v-model:workPool="workPool" />
     </template>
   </p-wizard>
 </template>
@@ -30,7 +30,6 @@
   const router = useRouter()
   const routes = useWorkspaceRoutes()
 
-  // TODO: CHeck that this works
   const workPool = ref<WorkPoolFormValues>({
     name: 'please-delete-me',
     description: 'this is from work pool form refactors',

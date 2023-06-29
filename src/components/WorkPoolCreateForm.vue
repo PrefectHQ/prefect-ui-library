@@ -71,7 +71,7 @@
   const workerCollections = computed(() => workerCollectionsSubscription.response)
 
   const remoteBaseJobTemplate = computed(() => {
-    return workerCollections.value?.find((item) => item.type === type.value)?.baseJobTemplate ?? {}
+    return workerCollections.value?.find((item) => item.type === type.value)?.defaultBaseJobTemplate ?? {}
   })
   const baseJobTemplatesMap = reactive(new Map<string, BaseJobTemplate>())
   // const baseJobTemplate = computed<BaseJobTemplate>({

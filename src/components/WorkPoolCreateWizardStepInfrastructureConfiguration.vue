@@ -1,31 +1,42 @@
 <template>
-  <template v-if="!typeIsPrefectAgent">
-    <p-markdown-renderer :text="localization.info.workPoolInfrastructureConfigurationInstructions" class="work-pool-create-wizard-step-infrastructure-configuration__explainer-text" />
-    <!-- <WorkPoolBaseJobTemplateFormSection v-model:base-job-template="baseJobTemplate" class="work-pool-create-wizard-step-infrastructure-configuration__base-job-template-form" /> -->
-  </template>
-  <template v-else>
-    <p-markdown-renderer :text="localization.info.workPoolInfrastructureConfigurationAgent" />
-  </template>
+  <p-content class="work-pool-create-wizard-step-infrastructure-configuration">
+    <template v-if="typeIsPrefectAgent">
+      <p-markdown-renderer :text="localization.info.workPoolInfrastructureConfigurationAgent" />
+    </template>
+    <template v-else>
+      <p-markdown-renderer :text="localization.info.workPoolInfrastructureConfigurationInstructions" />
+      <p-button-group v-model="inputType" :options="inputTypeOptions" size="sm" />
+
+      <template v-if="internalJobTemplate">
+        <WorkPoolBaseJobTemplateFormSection v-if="showBaseJobTemplateSection" v-model:base-job-template="internalJobTemplate" class="work-pool-create-wizard-step-infrastructure-configuration__base-job-template-form" />
+      </template>
+    </template>
+  </p-content>
 </template>
 
 <script lang="ts" setup>
-  import { computed, reactive } from 'vue'
+  import { ButtonGroupOption } from '@prefecthq/prefect-design'
+  import { useSubscription } from '@prefecthq/vue-compositions'
+  import { computed, ref, watchEffect } from 'vue'
   import { WorkPoolBaseJobTemplateFormSection } from '@/components'
+  import { useWorkspaceApi } from '@/compositions'
   import { localization } from '@/localization'
   import { BaseJobTemplate, WorkPoolFormValues } from '@/models'
 
   const props = defineProps<{
     workPool: WorkPoolFormValues,
-    defaultBaseJobTemplate: BaseJobTemplate,
   }>()
 
-  const typeIsPrefectAgent = computed(() => props.workPool.type === 'prefect-agent')
+  const api = useWorkspaceApi()
+  const workersSubscription = useSubscription(api.collections.getWorkerCollectionWorkers, [])
+  const workers = computed(() => workersSubscription.response ?? [])
+  const selectedWorker = computed(() => workers.value.find(({ type }) => type === props.workPool.type)!)
 
   const emit = defineEmits<{
     (event: 'update:workPool', value: WorkPoolFormValues): void,
   }>()
 
-  const workPool = computed({
+  const internalWorkPool = computed({
     get() {
       return props.workPool
     },
@@ -34,25 +45,25 @@
     },
   })
 
-  // const baseJobTemplatesMap = reactive(new Map<string, BaseJobTemplate>())
-  // const baseJobTemplate = computed<BaseJobTemplate>({
-  //   get() {
-  //     if (props.workPool.type) {
-  //       return baseJobTemplatesMap.get(props.workPool.type) ?? props.defaultBaseJobTemplate
-  //     }
-  //     return {}
-  //   },
-  //   set(value) {
-  //     if (props.workPool.type) {
-  //       baseJobTemplatesMap.set(props.workPool.type, value)
-  //       workPool.value.baseJobTemplate = value
-  //     }
-  //   },
-  // })
-</script>
+  const internalJobTemplate = computed<BaseJobTemplate | undefined>({
+    get() {
+      return internalWorkPool.value.baseJobTemplate
+    },
+    set(value) {
+      internalWorkPool.value.baseJobTemplate = value
+    },
+  })
 
-<style>
-  .work-pool-create-wizard-step-infrastructure-configuration__explainer-text { @apply
-    mb-6
-  }
-</style>
+  type InputType = 'custom' | 'advanced' | null
+  const inputTypeOptions: (ButtonGroupOption & { value: InputType })[] = [{ label: 'Default', value: null }, { label: 'Custom', value: 'custom' }, { label: 'Advanced', value: 'advanced' }]
+  const inputType = ref<InputType>(null)
+
+  const typeIsPrefectAgent = computed(() => props.workPool.type === 'prefect-agent')
+  const showBaseJobTemplateSection = computed(() => inputType.value === 'custom')
+
+  watchEffect(() => {
+    if (inputType.value === null) {
+      internalJobTemplate.value = selectedWorker.value.defaultBaseJobTemplate
+    }
+  })
+</script>

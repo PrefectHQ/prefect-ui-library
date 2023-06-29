@@ -1,122 +1,48 @@
 <template>
-  <div>
-    <h3>
-      Base Job Template
-    </h3>
-    <p-tabs :tabs="['Defaults', 'Advanced']" class="overflow-auto">
-      <template #defaults>
-        <template v-if="variablesSchemaHasProperties">
-          <p-message info class="work-pool-base-job-template-section__info_message ">
-            The fields below control the default values for the base job template. These values can be overridden by deployments.
-          </p-message>
-          <SchemaFormFieldsWithValues
-            v-model:values="currentDefaults"
-            :schema="mappedVariablesSchema"
-          />
-        </template>
-        <template v-else>
-          <p-message warning>
-            This work pool's base job template does not have any customizations. To add customizations, edit the base job template directly with the <b>Advanced</b> tab.
-          </p-message>
-        </template>
-      </template>
-      <template #advanced>
-        <div class="work-pool-base-job-template-section__advanced_tab">
-          <p-message info class="work-pool-base-job-template-section__info_message">
-            This is the JSON representation of the base job template. A work pool's  job template controls infrastructure configuration for all flow runs in the work pool, and specifies the configuration that can be overridden by deployments.
-            <br>
-            <br>
-            For more information on the structure of a work pool's base job template, check out
-            <p-link :to="localization.docs.workPools">
-              the docs.
-            </p-link>.
-          </p-message>
-          <JsonInput v-model:model-value="localBaseJobTemplateJson" show-format-button @update:model-value="onLocalBaseJobTemplateJsonUpdate" />
-        </div>
-      </template>
-    </p-tabs>
-  </div>
+  <p-content class="work-pool-base-job-template-form-section">
+    <p-label :label="localization.info.jobConfiguration">
+      <JsonInput v-model="internalJobConfigurationString" show-format-button />
+    </p-label>
+
+    <p-divider />
+
+    <p-label :label="localization.info.variables">
+      <JsonInput v-model="internalVariablesString" show-format-button />
+    </p-label>
+  </p-content>
 </template>
 
 <script lang="ts" setup>
-  import { isEqual } from 'lodash'
-  import { computed, ref, watch, watchEffect } from 'vue'
-  import { SchemaFormFieldsWithValues, JsonInput } from '@/components'
+  import { computed, watchEffect } from 'vue'
+  import { JsonInput } from '@/components'
+  import { useJsonRecord } from '@/compositions'
   import { localization } from '@/localization'
   import { BaseJobTemplate } from '@/models'
-  import { getSchemaDefaultValues, mapper } from '@/services'
-  import { Schema, SchemaProperties, SchemaValues } from '@/types'
-  import { getSchemaWithoutDefaults, mapValues, stringify } from '@/utilities'
 
-  // TODO: Refactor this - it should take a schema and model value
 
   const props = defineProps<{
     baseJobTemplate: BaseJobTemplate,
   }>()
 
   const emit = defineEmits<{
-    (event: 'update:base-job-template', value: BaseJobTemplate): void,
+    (event: 'update:baseJobTemplate', value: BaseJobTemplate): void,
   }>()
 
-  const onLocalBaseJobTemplateJsonUpdate = (): void => {
-    if (localBaseJobTemplate.value !== null) {
-      emit('update:base-job-template', localBaseJobTemplate.value)
-    }
-  }
-
-  const localBaseJobTemplateJson = ref<string>(stringify(props.baseJobTemplate))
-  const localBaseJobTemplate = computed<BaseJobTemplate | null>(() => {
-    try {
-      return JSON.parse(localBaseJobTemplateJson.value)
-    } catch (error) {
-      if (error instanceof SyntaxError) {
-        return null
-      }
-      throw error
-    }
-  })
-  watch(() => props.baseJobTemplate, (template) => {
-    if (!isEqual(template, localBaseJobTemplate.value)) {
-      localBaseJobTemplateJson.value = stringify(template)
-    }
-  })
-  const variablesSchema = computed<Schema>(() => props.baseJobTemplate.variables)
-  const mappedVariablesSchema = computed<Schema>(() => mapper.map('SchemaResponse', getSchemaWithoutDefaults(variablesSchema.value), 'Schema'))
-  const variablesSchemaProperties = computed<SchemaProperties>(() => variablesSchema.value.properties ?? {})
-  const variablesSchemaHasProperties = computed<boolean>(() => Object.keys(variablesSchemaProperties.value).length > 0)
-  const currentDefaults = computed<SchemaValues>({
+  const internalBaseJobTemplate = computed<BaseJobTemplate>({
     get() {
-      return {}
-      // return getSchemaDefaultValues(variablesSchema.value)
+      return props.baseJobTemplate
     },
-    set(values) {
-      const newTemplate = {
-        ...props.baseJobTemplate,
-        variables: {
-          ...props.baseJobTemplate.variables,
-          properties: mapValues(variablesSchemaProperties.value, (key, value) => {
-            return {
-              ...value,
-              default: values[key],
-            }
-          }),
-        },
-      }
-      // emit('update:base-job-template', newTemplate)
+    set(value) {
+      console.log(value)
+      // emit('update:baseJobTemplate', value)
     },
   })
+
+  const { json: internalJobConfigurationString, record: internalJobConfigurationRecord } = useJsonRecord()
+  const { json: internalVariablesString, record: internalVariablesRecord } = useJsonRecord()
 
   watchEffect(() => {
-    console.log(getSchemaDefaultValues(variablesSchema.value))
+    internalBaseJobTemplate.value.jobConfiguration = internalJobConfigurationRecord.value
+    internalBaseJobTemplate.value.variables = internalVariablesRecord.value
   })
 </script>
-
-<style>
-  .work-pool-base-job-template-section__advanced_tab { @apply
-      overflow-auto
-  }
-
-  .work-pool-base-job-template-section__info_message { @apply
-      mb-4
-  }
-</style>
