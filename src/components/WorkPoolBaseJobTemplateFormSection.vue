@@ -13,13 +13,13 @@
           <template #button-group>
             <!-- We don't want to allow JSON input for this schema input but want to get the benefits of the v-model form -->
             <p-message info>
-              {{ localization.info.baseJobTemplateDefaults }}
+              <p-markdown-renderer :text="localization.info.baseJobTemplateDefaults" />
             </p-message>
           </template>
 
           <template #empty>
             <p-message warning>
-              {{ localization.info.baseJobTemplateVariablesEmpty }}
+              <p-markdown-renderer :text="localization.info.baseJobTemplateVariablesEmpty" />
             </p-message>
           </template>
         </SchemaInput>
