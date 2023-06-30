@@ -1,10 +1,14 @@
 <template>
   <span v-if="completePercent" class="work-pool-flow-run-complete-percentage">
     <span>{{ completePercent }}%</span>
-    <span v-if="percentChange" class="work-pool-flow-run-complete-percentage__difference" :class="percentChangeClasses">
-      {{ percentChange.direction }}
-      {{ percentChange.change }}
-    </span>
+    <template v-if="percentChange">
+      <p-tooltip :text="localization.info.percentChangeOverTimePeriod(`${percentChange.direction}${percentChange.change}`)">
+        <span class="work-pool-flow-run-complete-percentage__difference" :class="percentChangeClasses">
+          {{ percentChange.direction }}
+          {{ percentChange.change }}
+        </span>
+      </p-tooltip>
+    </template>
   </span>
   <span v-else class="work-pool-flow-run-complete-percentage__none">
     N/A
@@ -16,6 +20,7 @@
   import { subSeconds } from 'date-fns'
   import { computed } from 'vue'
   import { useWorkspaceApi } from '@/compositions'
+  import { localization } from '@/localization'
   import { WorkPool, FlowRunsFilter } from '@/models'
   import { mapper } from '@/services'
   import { WorkspaceDashboardFilter } from '@/types'
@@ -153,6 +158,7 @@
 }
 
 .work-pool-flow-run-complete-percentage__difference { @apply
+  cursor-help
   text-xs
 }
 
