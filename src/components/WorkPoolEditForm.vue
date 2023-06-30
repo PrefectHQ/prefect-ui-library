@@ -24,7 +24,7 @@
       </p-label>
 
       <template v-if="showBaseJobTemplateFormSection">
-        <!-- <WorkPoolBaseJobTemplateFormSection v-model:base-job-template="baseJobTemplate" /> -->
+        <WorkPoolBaseJobTemplateFormSection v-model:work-pool="workPool" />
       </template>
     </p-content>
 
@@ -40,7 +40,7 @@
 
 <script lang="ts" setup>
   import { showToast } from '@prefecthq/prefect-design'
-  import { useValidationObserver } from '@prefecthq/vue-compositions'
+  import { usePatchRef, useValidationObserver } from '@prefecthq/vue-compositions'
   import { ref, computed } from 'vue'
   import { useRouter } from 'vue-router'
   import { SubmitButton, WorkPoolTypeSelect, WorkPoolBaseJobTemplateFormSection } from '@/components'
@@ -58,10 +58,12 @@
   const routes = useWorkspaceRoutes()
   const { validate, pending } = useValidationObserver()
 
-  const description = ref<string | null | undefined>(props.workPool.description)
+  const workPool = ref<WorkPoolEdit>(props.workPool)
+
+  const description = usePatchRef(workPool, 'description')
+  const concurrencyLimit = usePatchRef(workPool, 'concurrencyLimit')
+  const baseJobTemplate = usePatchRef(workPool, 'baseJobTemplate')
   const type = ref<string>(props.workPool.type)
-  const concurrencyLimit = ref<number | null | undefined>(props.workPool.concurrencyLimit)
-  const baseJobTemplate = ref(props.workPool.baseJobTemplate)
 
   const typeIsNotPrefectAgent = computed(() => type.value !== 'prefect-agent')
   const showBaseJobTemplateFormSection = computed(() => type.value && typeIsNotPrefectAgent.value && can.access.workers)
@@ -78,6 +80,7 @@
         concurrencyLimit: concurrencyLimit.value,
         baseJobTemplate: baseJobTemplate.value,
       }
+
       try {
         await api.workPools.updateWorkPool(props.workPool.name, values)
         showToast(localization.success.updateWorkPool, 'success')
