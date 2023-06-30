@@ -41,8 +41,8 @@
   const { json: internalVariablesString, record: internalVariablesRecord } = useJsonRecord()
 
   watchEffect(() => {
-    internalBaseJobTemplate.value.jobConfiguration = internalJobConfigurationRecord.value
-    internalBaseJobTemplate.value.variables = internalVariablesRecord.value
+    // internalBaseJobTemplate.value.jobConfiguration = internalJobConfigurationRecord.value
+    // internalBaseJobTemplate.value.variables = internalVariablesRecord.value
   })
 </script>
 

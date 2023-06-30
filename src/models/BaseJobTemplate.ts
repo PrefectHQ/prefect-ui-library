@@ -33,23 +33,21 @@ export class BaseJobTemplate implements IBaseJobTemplate {
     }, {})
   }
 
-  public set defaultValues(value: SchemaValues) {
-    if (this.variables.properties) {
-      const keys = Object.entries(this.variables.properties)
-
-      this.variables.properties = keys.reduce<SchemaPropertiesResponse>((acc, [key, value]) => {
-        if (acc[key]) {
-          acc[key]!.default = value
-          return acc
-        }
-
-        console.warn('Base job template variables has no property for key', key)
-
-        return acc
-      }, {})
+  public set defaultValues(values: SchemaValues) {
+    if (!this.variables.properties) {
+      throw new Error('Base job template variables has no properties; cannot set default values')
     }
 
-    throw new Error('Base job template variables has no properties; cannot set default values')
+    const keys = Object.entries(this.variables.properties)
+
+    this.variables.properties = keys.reduce<SchemaPropertiesResponse>((acc, [key, value]) => {
+      if (value) {
+        value.default = values[key]
+      }
+
+      acc[key] = value
+      return acc
+    }, {})
   }
 
   public constructor(baseJobTemplate: IBaseJobTemplate) {

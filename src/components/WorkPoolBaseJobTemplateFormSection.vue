@@ -2,15 +2,18 @@
   <p-content class="work-pool-base-job-template-form-section">
     <p-button-group v-model="inputType" :options="inputTypeOptions" size="sm" />
     <template v-if="internalJobTemplate">
-      <WorkPoolBaseJobTemplateVariableDefaultsInput
-        v-if="showCustom"
-        v-model:base-job-template="internalJobTemplate"
-      />
+      <keep-alive>
+        <SchemaInput
+          v-if="showCustom"
+          v-model="internalVariableDefaults"
+          :schema="internalJobTemplate.schema"
+        />
 
-      <WorkPoolBaseJobTemplateInput
-        v-if="showAdvanced"
-        v-model:base-job-template="internalJobTemplate"
-      />
+        <WorkPoolBaseJobTemplateInput
+          v-else-if="showAdvanced"
+          v-model:base-job-template="internalJobTemplate"
+        />
+      </keep-alive>
     </template>
   </p-content>
 </template>
@@ -19,8 +22,8 @@
   import { ButtonGroupOption } from '@prefecthq/prefect-design'
   import { useSubscription } from '@prefecthq/vue-compositions'
   import { computed, ref, watchEffect } from 'vue'
+  import SchemaInput from '@/components/SchemaInput.vue'
   import WorkPoolBaseJobTemplateInput from '@/components/WorkPoolBaseJobTemplateInput.vue'
-  import WorkPoolBaseJobTemplateVariableDefaultsInput from '@/components/WorkPoolBaseJobTemplateVariableDefaultsInput.vue'
   import { useWorkspaceApi } from '@/compositions'
   import { BaseJobTemplate, WorkPoolFormValues } from '@/models'
 
@@ -53,6 +56,17 @@
     },
     set(value) {
       internalWorkPool.value.baseJobTemplate = value
+    },
+  })
+
+  const internalVariableDefaults = computed({
+    get() {
+      return internalJobTemplate.value?.defaultValues ?? {}
+    },
+    set(value) {
+      if (internalWorkPool.value.baseJobTemplate) {
+        internalWorkPool.value.baseJobTemplate.defaultValues = value
+      }
     },
   })
 
