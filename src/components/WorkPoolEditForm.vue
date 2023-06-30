@@ -24,6 +24,8 @@
       </p-label>
 
       <template v-if="showBaseJobTemplateFormSection">
+        <p-divider />
+
         <WorkPoolBaseJobTemplateFormSection v-model:work-pool="workPool" />
       </template>
     </p-content>
