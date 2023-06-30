@@ -1,6 +1,6 @@
 <template>
   <template v-if="flowIds">
-    <p-accordion :sections="flowIds" class="flow-runs-accordion">
+    <p-accordion v-model:selected="accordionModel" :sections="flowIds" class="flow-runs-accordion">
       <template #header="{ section: flowId, id, toggle, content, selected }">
         <FlowRunsAccordionHeader :flow="getFlow(flowId)" v-bind="{ id, content, toggle, filter, selected }" />
       </template>
@@ -12,7 +12,7 @@
 </template>
 
 <script lang="ts" setup>
-  import { computed } from 'vue'
+  import { Ref, computed, ref, watch } from 'vue'
   import FlowRunsAccordionContent from '@/components/FlowRunsAccordionContent.vue'
   import FlowRunsAccordionHeader from '@/components/FlowRunsAccordionHeader.vue'
   import { useFlows } from '@/compositions/useFlows'
@@ -34,6 +34,25 @@
   const { flows } = useFlows(flowsFilter)
   const flowIds = computed(() => flows.value?.map(flow => flow.id))
   const flowsLookup = computed(() => toMap(flows.value ?? [], 'id'))
+
+  const selectedAccordionItem: Ref<string | null> = ref(null)
+
+  watch(flowIds, () => {
+    selectedAccordionItem.value = flowIds.value?.[0] ?? null
+  })
+
+  const accordionModel = computed({
+    get() {
+      if (selectedAccordionItem.value) {
+        return selectedAccordionItem.value
+      }
+
+      return null
+    },
+    set(selected) {
+      selectedAccordionItem.value = selected
+    },
+  })
 
   function getFlow(id: string): Flow {
     const flow = flowsLookup.value.get(id)
