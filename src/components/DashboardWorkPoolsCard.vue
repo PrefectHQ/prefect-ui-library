@@ -1,7 +1,10 @@
 <template>
   <p-card class="dashboard-work-pools-card">
     <p-heading heading="5" class="dashboard-work-pools-card__heading">
-      Work Pools
+      <span>Work Pools</span>
+      <p-tooltip :text="localization.info.dashboardWorkPoolsCard">
+        <p-icon class="dashboard-work-pools-card__info" icon="QuestionMarkCircleIcon" />
+      </p-tooltip>
     </p-heading>
     <div class="dashboard-work-pools-card__list">
       <DashboardWorkPoolCard
@@ -28,6 +31,7 @@
   import DashboardWorkPoolCard from '@/components/DashboardWorkPoolCard.vue'
   import { useDashboardSubscriptionOptions, useWorkspaceRoutes } from '@/compositions'
   import { useWorkspaceApi } from '@/compositions/useWorkspaceApi'
+  import { localization } from '@/localization'
   import { WorkspaceDashboardFilter } from '@/types'
 
   defineProps<{
@@ -43,6 +47,8 @@
   const activeWorkPools = computed(() => {
     const workPools = workPoolsSubscription.response ?? []
 
+    console.log(workPoolsSubscription.response)
+
     return workPools.filter(workPool => !workPool.isPaused)
   })
 
@@ -54,6 +60,15 @@
 <style>
 .dashboard-work-pools-card__heading { @apply
   mb-4
+  inline-flex
+  items-center
+  gap-2
+}
+
+.dashboard-work-pools-card__info { @apply
+  cursor-help
+  opacity-70
+  hover:opacity-100
 }
 
 .dashboard-work-pools-card__list { @apply
