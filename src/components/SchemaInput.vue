@@ -13,7 +13,7 @@
         </template>
 
         <template v-else-if="inputType === 'json'">
-          <p-label :state="state" :message="error">
+          <p-label :state="jsonState" :message="jsonError">
             <p-code-input v-model="json" lang="json" :min-lines="3" show-line-numbers />
           </p-label>
         </template>
@@ -35,14 +35,14 @@
 <script lang="ts" setup>
   import { useValidation } from '@prefecthq/vue-compositions'
   import { merge } from 'lodash'
-  import { computed, ref, watchEffect } from 'vue'
+  import { computed, ref, watch } from 'vue'
   import { SchemaFormFields } from '@/components'
-  import { useForm, useJsonRecord } from '@/compositions'
+  import { useReactiveForm } from '@/compositions'
   import { localization } from '@/localization'
   import { getSchemaDefaultValues, mapper } from '@/services'
   import { SchemaInputType } from '@/types/schemaInput'
   import { SchemaValues, Schema } from '@/types/schemas'
-  import { isJson, fieldRules, isDefined } from '@/utilities'
+  import { fieldRules, isDefined, isEmptyObject, isJson, stringify } from '@/utilities'
 
   const props = defineProps<{
     modelValue: SchemaValues | null | undefined,
@@ -55,54 +55,85 @@
     (event: 'update:inputType', value: SchemaInputType): void,
   }>()
 
-  const hasPropertiesInSchema = computed(() => {
-    return Object.keys(props.schema.properties ?? {}).length > 0
-  })
+  const hasPropertiesInSchema = computed(() => !isEmptyObject(props.schema.properties ?? {}))
 
-  const inputTypeOptions = computed(() => {
-    return [
-      { value: 'form', label: localization.info.form },
-      { value: 'json', label: localization.info.json },
-    ]
-  })
+  const inputTypeOptions = [
+    { value: 'form', label: localization.info.form },
+    { value: 'json', label: localization.info.json },
+  ]
 
   const inputTypeInternal = ref<SchemaInputType>(props.inputType ?? 'form')
+
   const inputType = computed({
     get() {
       return isDefined(props.inputType) ? props.inputType : inputTypeInternal.value
     },
     set(value: SchemaInputType) {
       inputTypeInternal.value = value
+
       emit('update:inputType', value)
     },
   })
 
-  const schemaDefaultValues = getSchemaDefaultValues(props.schema)
-  const mappedWithDefaultValues = merge({}, schemaDefaultValues, props.modelValue ?? {})
-  const unmappedWithDefaultValues = mapper.map('SchemaValues', { values: mappedWithDefaultValues, schema: props.schema }, 'SchemaValuesRequest')
+  const values = computed({
+    get() {
+      const defaultValues = getSchemaDefaultValues(props.schema)
 
-  const { json, record } = useJsonRecord(unmappedWithDefaultValues)
+      return merge({}, defaultValues, props.modelValue ?? {})
+    },
+    set(values) {
+      emit('update:modelValue', values)
+    },
+  })
 
-  const rules = {
-    jsonValues: fieldRules(localization.info.values, isJson),
+  const mapped = toSchemaValuesRequest(values.value)
+  const json = ref<string>(stringify(mapped))
+  const { state: jsonState, error: jsonError } = useValidation(json, fieldRules('parameters', isJson))
+
+  function toSchemaValuesRequest(values: SchemaValues): SchemaValues {
+    return mapper.map('SchemaValues', { values, schema: props.schema }, 'SchemaValuesRequest')
   }
 
-  const { error, state } = useValidation(json, localization.info.values, rules.jsonValues)
+  function toSchemaValues(values: SchemaValues): SchemaValues {
+    return mapper.map('SchemaValuesResponse', { values, schema: props.schema }, 'SchemaValues')
+  }
 
-  const { validate: validateReactiveForm, errors: reactiveFormErrors, values } = useForm({
-    initialValues: mappedWithDefaultValues,
+  function shouldSync(values: SchemaValues, json: string): boolean {
+    try {
+      const valuesString = JSON.stringify(values)
+      const jsonRequest = JSON.parse(json)
+      const mappedJson = toSchemaValues(jsonRequest)
+      const jsonString = JSON.stringify(mappedJson)
+
+      return valuesString !== jsonString
+    } catch {
+      return false
+    }
+  }
+
+  const { validate: validateReactiveForm, errors: reactiveFormErrors } = useReactiveForm(values, {
+    initialValues: values.value,
   })
 
-  useValidation(record, localization.info.values, async () => {
+  useValidation(values, localization.info.values, async () => {
     await validateReactiveForm()
-    return Object.entries(reactiveFormErrors.value).length === 0
+
+    return isEmptyObject(reactiveFormErrors.value)
   })
 
-  watchEffect(() => {
-    if (inputType.value === 'json') {
-      emit('update:modelValue', mapper.map('SchemaValuesResponse', { values: record.value, schema: props.schema }, 'SchemaValues'))
-    } else {
-      emit('update:modelValue', values)
+  watch(values, values => {
+    if (shouldSync(values, json.value)) {
+      const mappedValues = toSchemaValuesRequest(values)
+
+      json.value = stringify(mappedValues)
+    }
+  })
+
+  watch(json, json => {
+    if (shouldSync(values.value, json)) {
+      const parsed = JSON.parse(json)
+
+      values.value = toSchemaValues(parsed)
     }
   })
 </script>
