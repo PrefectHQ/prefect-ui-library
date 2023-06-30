@@ -5,13 +5,13 @@ import { Schema, SchemaValues } from '@/types'
 export type JobConfiguration = Record<string, unknown>
 
 export interface IBaseJobTemplate {
-  jobConfiguration: JobConfiguration,
-  variables: SchemaResponse,
+  jobConfiguration?: JobConfiguration,
+  variables?: SchemaResponse,
 }
 
 export class BaseJobTemplate implements IBaseJobTemplate {
-  public jobConfiguration: JobConfiguration
-  public variables: SchemaResponse
+  public jobConfiguration?: JobConfiguration
+  public variables?: SchemaResponse
 
   private internalSchema?: Schema
   public get schema(): Schema {
@@ -19,7 +19,7 @@ export class BaseJobTemplate implements IBaseJobTemplate {
       this.internalSchema = mapper.map('SchemaResponse', this.variables, 'Schema')
     }
 
-    return this.internalSchema
+    return this.internalSchema ?? {}
   }
   public set schema(value: SchemaResponse) {
     this.variables = value
@@ -27,14 +27,14 @@ export class BaseJobTemplate implements IBaseJobTemplate {
   }
 
   public get defaultValues(): SchemaValues {
-    return Object.entries(this.variables.properties ?? {}).reduce<SchemaValues>((acc, [key, value]) => {
+    return Object.entries(this.variables?.properties ?? {}).reduce<SchemaValues>((acc, [key, value]) => {
       acc[key] = value?.default
       return acc
     }, {})
   }
 
   public set defaultValues(values: SchemaValues) {
-    if (!this.variables.properties) {
+    if (!this.variables?.properties) {
       throw new Error('Base job template variables has no properties; cannot set default values')
     }
 

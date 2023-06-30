@@ -44,9 +44,6 @@
   const api = useWorkspaceApi()
 
   async function submit(): Promise<void> {
-    if (!workPool.value.baseJobTemplate) {
-      // workPool.value.baseJobTemplate = defaultBaseJobTemplate.value
-    }
     const values: WorkPoolCreate = {
       ...workPool.value,
       description: workPool.value.description ?? '',

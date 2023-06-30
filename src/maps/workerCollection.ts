@@ -21,10 +21,10 @@ BaseJobTemplate
 > = function(source) {
   const { values = {}, baseJobTemplate } = source
 
-  const keys = Object.keys(baseJobTemplate.variables.properties ?? {})
+  const keys = Object.keys(baseJobTemplate.variables?.properties ?? {})
 
   keys.forEach((key) => {
-    if (baseJobTemplate.variables.properties) {
+    if (baseJobTemplate.variables?.properties) {
       const property = baseJobTemplate.variables.properties[key] as
         | SchemaProperty
         | undefined
