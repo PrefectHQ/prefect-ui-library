@@ -42,7 +42,8 @@
       return props.workPool
     },
     set(value) {
-      emit('update:workPool', value)
+      console.log(value)
+      // emit('update:workPool', value)
     },
   })
 

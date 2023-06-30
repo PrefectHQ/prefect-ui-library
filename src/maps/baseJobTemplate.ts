@@ -5,8 +5,8 @@ import { MapFunction } from '@/services/Mapper'
 
 export const mapBaseJobTemplateResponseToBaseJobTemplate: MapFunction<BaseJobTemplateResponse, BaseJobTemplate> = function(source) {
   return new BaseJobTemplate({
-    jobConfiguration: source.job_configuration,
-    variables: source.variables,
+    jobConfiguration: source.job_configuration ?? {},
+    variables: source.variables ?? {},
   })
 }
 

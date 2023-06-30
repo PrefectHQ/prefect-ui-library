@@ -1,7 +1,6 @@
 import { SchemaPropertiesResponse, SchemaResponse } from '@/models/api'
 import { mapper } from '@/services'
 import { Schema, SchemaValues } from '@/types'
-import { isNotNullish } from '@/utilities'
 
 export type JobConfiguration = Record<string, unknown>
 
