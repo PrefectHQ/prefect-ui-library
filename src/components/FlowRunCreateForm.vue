@@ -86,20 +86,19 @@
 
 <script lang="ts" setup>
   import { PButton, ButtonGroupOption } from '@prefecthq/prefect-design'
-  import { useValidationObserver } from '@prefecthq/vue-compositions'
+  import { useValidation, useValidationObserver } from '@prefecthq/vue-compositions'
   import { zonedTimeToUtc } from 'date-fns-tz'
   import { merge } from 'lodash'
-  import { useField } from 'vee-validate'
   import { computed, ref } from 'vue'
   import { TimezoneSelect, DateInput } from '@/components'
   import SchemaInput from '@/components/SchemaInput.vue'
-  import { useForm } from '@/compositions/useForm'
   import { localization } from '@/localization'
   import { Deployment, DeploymentFlowRunCreate } from '@/models'
   import { mapper, mocker } from '@/services'
   import { SchemaInputType } from '@/types/schemaInput'
   import { SchemaValues } from '@/types/schemas'
-  import { isJson, fieldRules, isRequiredIf } from '@/utilities/validation'
+  import { isEmptyObject } from '@/utilities/object'
+  import { fieldRules, isRequiredIf } from '@/utilities/validation'
 
   const props = defineProps<{
     deployment: Deployment,
@@ -116,40 +115,18 @@
     (event: 'cancel'): void,
   }>()
 
-  const hasParameters = computed(() => {
-    return Object.keys(props.deployment.parameterOpenApiSchema.properties ?? {}).length > 0
-  })
+  const hasParameters = computed(() => !isEmptyObject(props.deployment.parameterOpenApiSchema.properties ?? {}))
 
   const rules = {
     start: fieldRules('Start date', isRequiredIf(() => when.value === 'later')),
-    jsonParameters: fieldRules('Parameters', isJson),
   }
 
   const combinedParameters = computed(() => {
-    return mapper.map('SchemaValuesResponse', { values: merge({}, props.deployment.rawParameters, props.parameters), schema: props.deployment.parameterOpenApiSchema }, 'SchemaValues')
+    const values = merge({}, props.deployment.rawParameters, props.parameters)
+
+    return mapper.map('SchemaValuesResponse', { values, schema: props.deployment.parameterOpenApiSchema }, 'SchemaValues')
   })
 
-  const { handleSubmit } = useForm<DeploymentFlowRunCreate>({
-    initialValues: {
-      state: {
-        type: 'scheduled',
-      },
-      tags: props.deployment.tags ?? [],
-      name: generateRandomName(),
-      parameters: combinedParameters.value,
-      schema: props.deployment.parameterOpenApiSchema,
-    },
-  })
-
-  const { value: start, meta: startState, errorMessage: startErrorMessage } = useField<Date>('state.stateDetails.scheduledTime', rules.start)
-  const { value: tags } = useField<string[]>('tags')
-  const { value: retries } = useField<number | null>('empiricalPolicy.retries')
-  const { value: retryDelay } = useField<number | null>('empiricalPolicy.retryDelay')
-  const { value: name } = useField<string>('name')
-  const { value: parameters } = useField<SchemaValues>('parameters')
-  const { value: stateMessage } = useField<string>('state.message')
-
-  const adjustedStart = computed(() => zonedTimeToUtc(start.value, timezone.value))
   const whenOptions: ButtonGroupOption[] = [{ label: 'Now', value: 'now' }, { label: 'Later', value: 'later' }]
   const when = ref<'now' | 'later'>('now')
 
@@ -163,31 +140,74 @@
 
   const { validate } = useValidationObserver()
 
-  const submit = handleSubmit(async (values): Promise<void> => {
+  const start = ref<Date | null>(null)
+  const { state: startState, error: startErrorMessage } = useValidation(start, rules.start)
+
+  const tags = ref<string[]>(props.deployment.tags ?? [])
+  const retries = ref<number | null>(null)
+  const retryDelay = ref<number | null>(null)
+  const name = ref<string>(generateRandomName())
+  const parameters = ref<SchemaValues>(combinedParameters.value)
+  const stateMessage = ref<string>('')
+
+  function getScheduledTime(): Date | null {
+    if (when.value === 'now' || start.value === null) {
+      return null
+    }
+
+    return zonedTimeToUtc(start.value, timezone.value)
+  }
+
+  function getParameters(): SchemaValues | undefined {
+    if (parametersInputType.value === null) {
+      return undefined
+    }
+
+    return parameters.value
+  }
+
+  async function submit(): Promise<void> {
     const valid = await validate()
 
     if (!valid) {
       return
     }
 
-    const resolvedValues: DeploymentFlowRunCreate = { ...values }
-
-    if (when.value == 'now' && resolvedValues.state?.stateDetails?.scheduledTime) {
-      resolvedValues.state.stateDetails.scheduledTime = null
+    const values: DeploymentFlowRunCreate = {
+      state: {
+        type: 'scheduled',
+        message: stateMessage.value,
+        stateDetails: {
+          scheduledTime: getScheduledTime(),
+        },
+      },
+      tags: tags.value,
+      empiricalPolicy: {
+        retries: retries.value,
+        retryDelay: retryDelay.value,
+        maxRetries: null,
+        retryDelaySeconds: null,
+      },
+      name: name.value,
     }
 
-    if (when.value == 'later' && resolvedValues.state?.stateDetails?.scheduledTime) {
-      resolvedValues.state.stateDetails.scheduledTime = adjustedStart.value
+    const parameters = getParameters()
+
+    if (!parameters) {
+      emit('submit', values)
+      return
     }
 
-    if (parametersInputType.value === null) {
-      delete resolvedValues.parameters
-    } else if (parametersInputType.value == 'json') {
-      resolvedValues.parameters = parameters.value
+    const valuesWithParameters: DeploymentFlowRunCreate = {
+      ...values,
+      parameters,
+      schema: props.deployment.parameterOpenApiSchema,
     }
 
-    emit('submit', resolvedValues)
-  })
+    console.log({ valuesWithParameters: JSON.parse(JSON.stringify(parameters)) })
+
+    emit('submit', valuesWithParameters)
+  }
 </script>
 
 <style>
