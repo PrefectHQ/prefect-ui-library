@@ -73,8 +73,6 @@
       </template>
     </p-content>
 
-    <pre>{{ parameters }}</pre>
-
     <template #footer>
       <p-button inset @click="cancel">
         Cancel
