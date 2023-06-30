@@ -157,6 +157,7 @@ export const en = {
     lastRun: 'Last run',
     workPool: 'Work Pool',
     workQueue: 'Work Queue',
+    required: 'Required',
     filterByTags: 'Filter by tags',
     invalidData: (docsUrl: string) => `Invalid data, see [documentation](${docsUrl}) for more information`,
     result: 'Result',

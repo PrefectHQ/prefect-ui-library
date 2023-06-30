@@ -19,7 +19,7 @@
   import { useJsonRecord } from '@/compositions'
   import { localization } from '@/localization'
   import { BaseJobTemplate } from '@/models'
-  import { isJson, fieldRules } from '@/utilities'
+  import { isJson, fieldRules, isRequired } from '@/utilities'
 
   const props = defineProps<{
     baseJobTemplate: BaseJobTemplate,
@@ -44,7 +44,7 @@
   const { json: internalVariablesString, record: internalVariablesRecord } = useJsonRecord(baseJobTemplate.value.variables)
 
   const rules = {
-    jsonValues: fieldRules(localization.info.json, isJson),
+    jsonValues: fieldRules(localization.info.json, isRequired, isJson),
   }
 
   const { error: jobConfigurationError, state: jobConfigurationState } = useValidation(internalJobConfigurationString, localization.info.values, rules.jsonValues)
