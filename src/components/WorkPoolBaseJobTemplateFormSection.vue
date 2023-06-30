@@ -5,24 +5,10 @@
     <p-button-group v-model="inputType" :options="inputTypeOptions" size="sm" />
     <template v-if="internalJobTemplate">
       <keep-alive>
-        <SchemaInput
+        <WorkPoolBaseJobTemplateDefaultsInput
           v-if="showCustom"
-          v-model="internalVariableDefaults"
-          :schema="internalJobTemplate.schema"
-        >
-          <template #button-group>
-            <!-- We don't want to allow JSON input for this schema input but want to get the benefits of the v-model form -->
-            <p-message info>
-              <p-markdown-renderer :text="localization.info.baseJobTemplateDefaults" />
-            </p-message>
-          </template>
-
-          <template #empty>
-            <p-message warning>
-              <p-markdown-renderer :text="localization.info.baseJobTemplateVariablesEmpty" />
-            </p-message>
-          </template>
-        </SchemaInput>
+          v-model:base-job-template="internalJobTemplate"
+        />
 
         <WorkPoolBaseJobTemplateInput
           v-else-if="showAdvanced"
@@ -35,13 +21,13 @@
 
 <script lang="ts" setup>
   import { ButtonGroupOption } from '@prefecthq/prefect-design'
-  import { useSubscription } from '@prefecthq/vue-compositions'
+  import { usePatchRef, useSubscription } from '@prefecthq/vue-compositions'
   import { computed, ref, watchEffect } from 'vue'
-  import SchemaInput from '@/components/SchemaInput.vue'
+  import WorkPoolBaseJobTemplateDefaultsInput from '@/components/WorkPoolBaseJobTemplateDefaultsInput.vue'
   import WorkPoolBaseJobTemplateInput from '@/components/WorkPoolBaseJobTemplateInput.vue'
   import { useWorkspaceApi } from '@/compositions'
   import { localization } from '@/localization'
-  import { BaseJobTemplate, WorkPoolFormValues } from '@/models'
+  import { WorkPoolFormValues } from '@/models'
 
   const props = defineProps<{
     workPool: WorkPoolFormValues,
@@ -66,25 +52,7 @@
     },
   })
 
-  const internalJobTemplate = computed<BaseJobTemplate | undefined>({
-    get() {
-      return internalWorkPool.value.baseJobTemplate
-    },
-    set(value) {
-      internalWorkPool.value.baseJobTemplate = value
-    },
-  })
-
-  const internalVariableDefaults = computed({
-    get() {
-      return internalJobTemplate.value?.defaultValues ?? {}
-    },
-    set(value) {
-      if (internalWorkPool.value.baseJobTemplate) {
-        internalWorkPool.value.baseJobTemplate.defaultValues = value
-      }
-    },
-  })
+  const internalJobTemplate = usePatchRef(internalWorkPool, 'baseJobTemplate')
 
   // Note: we could pretty easily add a default "null" option here
   type InputType = 'custom' | 'advanced' | null
