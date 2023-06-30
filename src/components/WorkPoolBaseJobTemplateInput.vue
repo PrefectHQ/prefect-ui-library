@@ -14,7 +14,7 @@
 
 <script lang="ts" setup>
   import { useValidation } from '@prefecthq/vue-compositions'
-  import { computed, watchEffect } from 'vue'
+  import { computed, ref, watchEffect } from 'vue'
   import { JsonInput } from '@/components'
   import { useJsonRecord } from '@/compositions'
   import { localization } from '@/localization'
@@ -29,18 +29,19 @@
     (event: 'update:baseJobTemplate', value: BaseJobTemplate): void,
   }>()
 
-  const internalBaseJobTemplate = computed({
+  const internalBaseJobTemplate = ref<BaseJobTemplate>(props.baseJobTemplate)
+  const baseJobTemplate = computed({
     get() {
-      return { jobConfiguration: props.baseJobTemplate.jobConfiguration, variables: props.baseJobTemplate.variables }
+      return internalBaseJobTemplate.value
     },
     set(value) {
-      console.log(value)
-      // emit('update:baseJobTemplate', value)
+      internalBaseJobTemplate.value.jobConfiguration = value.jobConfiguration
+      internalBaseJobTemplate.value.variables = value.variables
+      emit('update:baseJobTemplate', internalBaseJobTemplate.value)
     },
   })
-
-  const { json: internalJobConfigurationString, record: internalJobConfigurationRecord } = useJsonRecord(internalBaseJobTemplate.value)
-  const { json: internalVariablesString, record: internalVariablesRecord } = useJsonRecord(internalBaseJobTemplate.value)
+  const { json: internalJobConfigurationString, record: internalJobConfigurationRecord } = useJsonRecord(baseJobTemplate.value.jobConfiguration)
+  const { json: internalVariablesString, record: internalVariablesRecord } = useJsonRecord(baseJobTemplate.value.variables)
 
   const rules = {
     jsonValues: fieldRules(localization.info.json, isJson),
@@ -49,8 +50,12 @@
   const { error: jobConfigurationError, state: jobConfigurationState } = useValidation(internalJobConfigurationString, localization.info.values, rules.jsonValues)
   const { error: variablesError, state: variablesState } = useValidation(internalVariablesString, localization.info.values, rules.jsonValues)
 
-  watchEffect(() => internalBaseJobTemplate.value.jobConfiguration = internalJobConfigurationRecord.value)
-  watchEffect(() => internalBaseJobTemplate.value.variables = internalVariablesRecord.value)
+  watchEffect(() => {
+    baseJobTemplate.value = new BaseJobTemplate({
+      jobConfiguration: internalJobConfigurationRecord.value,
+      variables: internalVariablesRecord.value,
+    })
+  })
 </script>
 
 <style>

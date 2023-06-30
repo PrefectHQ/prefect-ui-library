@@ -81,7 +81,7 @@
     },
     set(value) {
       console.log(value)
-      // emit('update:workPool', value)
+      emit('update:workPool', value)
     },
   })
 

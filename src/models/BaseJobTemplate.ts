@@ -35,7 +35,7 @@ export class BaseJobTemplate implements IBaseJobTemplate {
 
   public set defaultValues(values: SchemaValues) {
     if (!this.variables?.properties) {
-      throw new Error('Base job template variables has no properties; cannot set default values')
+      return
     }
 
     const keys = Object.entries(this.variables.properties)
