@@ -42,7 +42,7 @@
   import { getSchemaDefaultValues, mapper } from '@/services'
   import { SchemaInputType } from '@/types/schemaInput'
   import { SchemaValues, Schema } from '@/types/schemas'
-  import { fieldRules, isEmptyObject, isJson, stringify } from '@/utilities'
+  import { fieldRules, isDefined, isEmptyObject, isJson, stringify } from '@/utilities'
 
   const props = defineProps<{
     modelValue: SchemaValues | null | undefined,
@@ -66,7 +66,7 @@
 
   const inputType = computed({
     get() {
-      return props.inputType ?? inputTypeInternal.value
+      return isDefined(props.inputType) ? props.inputType : inputTypeInternal.value
     },
     set(value: SchemaInputType) {
       inputTypeInternal.value = value
