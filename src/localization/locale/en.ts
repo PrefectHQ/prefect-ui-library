@@ -161,6 +161,7 @@ export const en = {
     result: 'Result',
     noResults: 'No tracked results, enable [result persistence](https://docs.prefect.io/concepts/results/#persisting-results) to track results.',
     none: 'None',
+    dashboardWorkPoolsCard: 'Showing all Work Pools except those that are paused',
     percentChangeOverTimePeriod: (percent: string | number) => `${percent}% change compared to the previous time period.`,
     infraOverrides: 'Infrastructure Overrides',
     terminalTaskRunNoArtifacts: 'This task run did not produce any artifacts; for more information on creating artifacts, see the [documentation](https://docs.prefect.io/concepts/artifacts).',
