@@ -5,9 +5,9 @@
     <p-button-group v-model="inputType" :options="inputTypeOptions" size="sm" />
     <template v-if="internalJobTemplate">
       <keep-alive>
-        <WorkPoolBaseJobTemplateDefaultsInput
+        <WorkPoolBaseJobTemplateVariablesInput
           v-if="showCustom"
-          v-model:base-job-template="internalJobTemplate"
+          v-model:variables="internalJobTemplate.variables"
         />
 
         <WorkPoolBaseJobTemplateInput
@@ -23,8 +23,8 @@
   import { ButtonGroupOption } from '@prefecthq/prefect-design'
   import { usePatchRef, useSubscription } from '@prefecthq/vue-compositions'
   import { computed, ref, watchEffect } from 'vue'
-  import WorkPoolBaseJobTemplateDefaultsInput from '@/components/WorkPoolBaseJobTemplateDefaultsInput.vue'
   import WorkPoolBaseJobTemplateInput from '@/components/WorkPoolBaseJobTemplateInput.vue'
+  import WorkPoolBaseJobTemplateVariablesInput from '@/components/WorkPoolBaseJobTemplateVariablesInput.vue'
   import { useWorkspaceApi } from '@/compositions'
   import { localization } from '@/localization'
   import { WorkPoolFormValues } from '@/models'

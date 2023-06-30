@@ -3,24 +3,28 @@ import { JsonInput } from '@/components'
 import { SchemaPropertyService } from '@/services/schemas/properties/SchemaPropertyService'
 import { getSchemaPropertyDefaultValue, SchemaPropertyComponentWithProps } from '@/services/schemas/utilities'
 import { SchemaValue } from '@/types/schemas'
-import { isEmptyObject, sameValue } from '@/utilities'
+import { isEmptyObject, isNotNullish, sameValue } from '@/utilities'
 import { parseUnknownJson, stringifyUnknownJson } from '@/utilities/json'
 
 export class SchemaPropertyAny extends SchemaPropertyService {
   protected get default(): unknown {
-    if (this.has('default')) {
+    if (this.has('default') && isNotNullish(this.property.default)) {
       return getSchemaPropertyResponseValue(this.property, this.property.default, this.level + 1)
     }
 
-    if (this.componentIs(JsonInput)) {
-      return ''
-    }
+    const isJson = this.componentIs(JsonInput)
 
     if (this.has('anyOf') || this.has('allOf')) {
-      return this.getDefaultValueForFirstDefinition()
+      const defaultValueForFirstDefinition = this.getDefaultValueForFirstDefinition()
+
+      if (isJson) {
+        return stringifyUnknownJson(defaultValueForFirstDefinition)
+      }
+
+      return defaultValueForFirstDefinition
     }
 
-    return null
+    return this.property.default
   }
 
   protected get component(): SchemaPropertyComponentWithProps {

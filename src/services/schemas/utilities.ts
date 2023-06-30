@@ -228,12 +228,14 @@ export function getSchemaValueAllOfDefinitionIndex({ allOf: definitions }: Schem
 
 export function getSchemaValueDefinitionIndex(definitions: Schema[], value: SchemaValue): number | null {
   if (isBlockDocumentReferenceValue(value)) {
+    console.log('hello')
     return definitions.findIndex(definition => definition.type === 'block')
   }
 
   const parsedValue = parseUnknownJson(value)
 
   if (isRecord(parsedValue) || Array.isArray(parsedValue)) {
+    console.log('hello', definitions, value)
     return findObjectDefinitionIndex(definitions, parsedValue)
   }
 

@@ -3,7 +3,7 @@ import { MockFunction, mapper } from '@/services'
 
 export const randomWorkPool: MockFunction<WorkPool, [Partial<WorkPool>?]> = function(overrides = {}) {
   const name = this.create('noun')
-  const schema = this.create('schema', [overrides.baseJobTemplate?.schema])
+  const schema = this.create('schema')
   const jobConfiguration = this.create('parameters', [{}, schema])
   const parameters = mapper.map('SchemaValuesResponse', { values: jobConfiguration, schema }, 'SchemaValues')
 

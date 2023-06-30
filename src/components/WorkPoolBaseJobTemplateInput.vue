@@ -1,24 +1,25 @@
 <template>
   <p-content class="work-pool-base-job-template-form-section">
     <p-message info>
-      {{ localization.info.baseJobTemplateJsonMessage(localization.docs.workPools) }}
+      <p-markdown-renderer :text="localization.info.baseJobTemplateJsonMessage(localization.docs.workPools)" />
     </p-message>
 
     <p-label :label="localization.info.jobConfiguration" :state="jobConfigurationState" :message="jobConfigurationError">
-      <JsonInput v-model="internalJobConfigurationString" class="work-pool-base-job-template-form-section__input" show-format-button />
+      <JsonInput v-model="internalJobConfigurationString" show-line-numbers class="work-pool-base-job-template-form-section__input" show-format-button />
     </p-label>
 
     <p-divider />
 
     <p-label :label="localization.info.variables" :state="variablesState" :message="variablesError">
-      <JsonInput v-model="internalVariablesString" class="work-pool-base-job-template-form-section__input" show-format-button />
+      <JsonInput v-model="internalVariablesString" show-line-numbers class="work-pool-base-job-template-form-section__input" show-format-button />
     </p-label>
   </p-content>
 </template>
 
 <script lang="ts" setup>
   import { useValidation } from '@prefecthq/vue-compositions'
-  import { computed, ref, watchEffect } from 'vue'
+  import { isEqual } from 'lodash'
+  import { ref, watch } from 'vue'
   import { JsonInput } from '@/components'
   import { useJsonRecord } from '@/compositions'
   import { localization } from '@/localization'
@@ -34,18 +35,8 @@
   }>()
 
   const internalBaseJobTemplate = ref<BaseJobTemplate>(props.baseJobTemplate)
-  const baseJobTemplate = computed({
-    get() {
-      return internalBaseJobTemplate.value
-    },
-    set(value) {
-      internalBaseJobTemplate.value.jobConfiguration = value.jobConfiguration
-      internalBaseJobTemplate.value.variables = value.variables
-      emit('update:baseJobTemplate', internalBaseJobTemplate.value)
-    },
-  })
-  const { json: internalJobConfigurationString, record: internalJobConfigurationRecord } = useJsonRecord(baseJobTemplate.value.jobConfiguration)
-  const { json: internalVariablesString, record: internalVariablesRecord } = useJsonRecord(baseJobTemplate.value.variables)
+  const { json: internalJobConfigurationString, record: internalJobConfigurationRecord } = useJsonRecord(internalBaseJobTemplate.value.jobConfiguration)
+  const { json: internalVariablesString, record: internalVariablesRecord } = useJsonRecord(internalBaseJobTemplate.value.variables)
 
   const rules = {
     jsonValues: fieldRules(localization.info.json, isRequired, isJson),
@@ -54,12 +45,23 @@
   const { error: jobConfigurationError, state: jobConfigurationState } = useValidation(internalJobConfigurationString, localization.info.values, rules.jsonValues)
   const { error: variablesError, state: variablesState } = useValidation(internalVariablesString, localization.info.values, rules.jsonValues)
 
-  watchEffect(() => {
-    baseJobTemplate.value = new BaseJobTemplate({
-      jobConfiguration: internalJobConfigurationRecord.value,
-      variables: internalVariablesRecord.value,
-    })
-  })
+  watch(internalJobConfigurationRecord, (newVal, oldVal) => {
+    if (isEqual(newVal, oldVal)) {
+      return
+    }
+
+    internalBaseJobTemplate.value.jobConfiguration = newVal
+    // emit('update:baseJobTemplate', internalBaseJobTemplate.value)
+  }, { deep: true })
+
+  watch(internalVariablesRecord, (newVal, oldVal) => {
+    if (isEqual(newVal, oldVal)) {
+      return
+    }
+
+    internalBaseJobTemplate.value.variables = newVal
+    // emit('update:baseJobTemplate', internalBaseJobTemplate.value)
+  }, { deep: true })
 </script>
 
 <style>
