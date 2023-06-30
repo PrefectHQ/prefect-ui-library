@@ -42,7 +42,7 @@
   import { getSchemaDefaultValues, mapper } from '@/services'
   import { SchemaInputType } from '@/types/schemaInput'
   import { SchemaValues, Schema } from '@/types/schemas'
-  import { fieldRules, isDefined, isEmptyObject, isJson, stringify } from '@/utilities'
+  import { fieldRules, isEmptyObject, isJson, stringify } from '@/utilities'
 
   const props = defineProps<{
     modelValue: SchemaValues | null | undefined,
@@ -57,21 +57,20 @@
 
   const hasPropertiesInSchema = computed(() => !isEmptyObject(props.schema.properties ?? {}))
 
-  const inputTypeOptions = computed(() => {
-    return [
-      { value: 'form', label: localization.info.form },
-      { value: 'json', label: localization.info.json },
-    ]
-  })
+  const inputTypeOptions = [
+    { value: 'form', label: localization.info.form },
+    { value: 'json', label: localization.info.json },
+  ]
 
   const inputTypeInternal = ref<SchemaInputType>(props.inputType ?? 'form')
 
   const inputType = computed({
     get() {
-      return isDefined(props.inputType) ? props.inputType : inputTypeInternal.value
+      return props.inputType ?? inputTypeInternal.value
     },
     set(value: SchemaInputType) {
       inputTypeInternal.value = value
+
       emit('update:inputType', value)
     },
   })
@@ -87,28 +86,23 @@
     },
   })
 
-  function setValues(json: string): void {
-    if (shouldSync(values.value, json)) {
-      values.value = JSON.parse(json)
-    }
-  }
-
-  const json = ref<string>(stringify(values.value))
+  const mapped = toSchemaValuesRequest(values.value)
+  const json = ref<string>(stringify(mapped))
   const { state: jsonState, error: jsonError } = useValidation(json, fieldRules('parameters', isJson))
 
-  function setJson(values: SchemaValues): void {
-    if (shouldSync(values, json.value)) {
-      const mappedValues = mapper.map('SchemaValuesResponse', { values, schema: props.schema }, 'SchemaValues')
+  function toSchemaValuesRequest(values: SchemaValues): SchemaValues {
+    return mapper.map('SchemaValues', { values, schema: props.schema }, 'SchemaValuesRequest')
+  }
 
-      json.value = stringify(mappedValues)
-    }
+  function toSchemaValues(values: SchemaValues): SchemaValues {
+    return mapper.map('SchemaValuesResponse', { values, schema: props.schema }, 'SchemaValues')
   }
 
   function shouldSync(values: SchemaValues, json: string): boolean {
     try {
       const valuesString = JSON.stringify(values)
       const jsonRequest = JSON.parse(json)
-      const mappedJson = mapper.map('SchemaValuesResponse', { values: jsonRequest, schema: props.schema }, 'SchemaValues')
+      const mappedJson = toSchemaValues(jsonRequest)
       const jsonString = JSON.stringify(mappedJson)
 
       return valuesString !== jsonString
@@ -127,11 +121,19 @@
     return isEmptyObject(reactiveFormErrors.value)
   })
 
-  watch(values, (values) => {
-    setJson(values)
+  watch(values, values => {
+    if (shouldSync(values, json.value)) {
+      const mappedValues = toSchemaValuesRequest(values)
+
+      json.value = stringify(mappedValues)
+    }
   })
 
-  watch(json, (json) => {
-    setValues(json)
+  watch(json, json => {
+    if (shouldSync(values.value, json)) {
+      const parsed = JSON.parse(json)
+
+      values.value = toSchemaValues(parsed)
+    }
   })
 </script>
