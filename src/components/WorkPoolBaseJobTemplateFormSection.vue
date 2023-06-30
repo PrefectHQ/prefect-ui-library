@@ -12,7 +12,15 @@
         >
           <template #button-group>
             <!-- We don't want to allow JSON input for this schema input but want to get the benefits of the v-model form -->
-            <div />
+            <p-message info>
+              {{ localization.info.baseJobTemplateDefaults }}
+            </p-message>
+          </template>
+
+          <template #empty>
+            <p-message warning>
+              {{ localization.info.baseJobTemplateVariablesEmpty }}
+            </p-message>
           </template>
         </SchemaInput>
 
@@ -23,41 +31,6 @@
       </keep-alive>
     </template>
   </p-content>
-
-  <!--
-    <p-tabs :tabs="['Defaults', 'Advanced']" class="overflow-auto">
-    <template #defaults>
-    <template v-if="variablesSchemaHasProperties">
-    <p-message info class="work-pool-base-job-template-section__info_message ">
-    The fields below control the default values for the base job template. These values can be overridden by deployments.
-    </p-message>
-    <SchemaFormFieldsWithValues
-    v-model:values="currentDefaults"
-    :schema="mappedVariablesSchema"
-    />
-    </template>
-    <template v-else>
-    <p-message warning>
-    This work pool's base job template does not have any customizations. To add customizations, edit the base job template directly with the <b>Advanced</b> tab.
-    </p-message>
-    </template>
-    </template>
-    <template #advanced>
-    <div class="work-pool-base-job-template-section__advanced_tab">
-    <p-message info class="work-pool-base-job-template-section__info_message">
-    This is the JSON representation of the base job template. A work pool's  job template controls infrastructure configuration for all flow runs in the work pool, and specifies the configuration that can be overridden by deployments.
-    <br>
-    <br>
-    For more information on the structure of a work pool's base job template, check out
-    <p-link :to="localization.docs.workPools">
-    the docs.
-    </p-link>.
-    </p-message>
-    <JsonInput v-model:model-value="localBaseJobTemplateJson" show-format-button @update:model-value="onLocalBaseJobTemplateJsonUpdate" />
-    </div>
-    </template>
-    </p-tabs>
-  -->
 </template>
 
 <script lang="ts" setup>

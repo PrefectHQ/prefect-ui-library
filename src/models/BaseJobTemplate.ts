@@ -36,7 +36,6 @@ export class BaseJobTemplate implements IBaseJobTemplate {
     }
 
     const unmappedValues = mapper.map('SchemaValues', { values: values, schema: this.schema }, 'SchemaValuesRequest')
-    console.log(values, unmappedValues)
 
     const keys = Object.entries(this.variables.properties)
 

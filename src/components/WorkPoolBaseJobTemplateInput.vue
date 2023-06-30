@@ -1,5 +1,9 @@
 <template>
   <p-content class="work-pool-base-job-template-form-section">
+    <p-message info>
+      {{ localization.info.baseJobTemplateJsonMessage(localization.docs.workPools) }}
+    </p-message>
+
     <p-label :label="localization.info.jobConfiguration" :state="jobConfigurationState" :message="jobConfigurationError">
       <JsonInput v-model="internalJobConfigurationString" class="work-pool-base-job-template-form-section__input" show-format-button />
     </p-label>
