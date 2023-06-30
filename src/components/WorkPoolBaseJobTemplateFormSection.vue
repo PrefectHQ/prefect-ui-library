@@ -9,7 +9,12 @@
           v-if="showCustom"
           v-model="internalVariableDefaults"
           :schema="internalJobTemplate.schema"
-        />
+        >
+          <template #button-group>
+            <!-- We don't want to allow JSON input for this schema input but want to get the benefits of the v-model form -->
+            <div />
+          </template>
+        </SchemaInput>
 
         <WorkPoolBaseJobTemplateInput
           v-else-if="showAdvanced"

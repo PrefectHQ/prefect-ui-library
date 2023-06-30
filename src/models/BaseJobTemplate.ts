@@ -1,5 +1,5 @@
 import { SchemaPropertiesResponse, SchemaResponse } from '@/models/api'
-import { mapper } from '@/services'
+import { getSchemaDefaultValues, mapper } from '@/services'
 import { Schema, SchemaValues } from '@/types'
 
 export type JobConfiguration = Record<string, unknown>
@@ -16,7 +16,7 @@ export class BaseJobTemplate implements IBaseJobTemplate {
   private internalSchema?: Schema
   public get schema(): Schema {
     if (this.internalSchema === undefined) {
-      this.internalSchema = mapper.map('SchemaResponse', this.variables, 'Schema')
+      this.schema = this.variables ?? {}
     }
 
     return this.internalSchema ?? {}
@@ -27,10 +27,7 @@ export class BaseJobTemplate implements IBaseJobTemplate {
   }
 
   public get defaultValues(): SchemaValues {
-    return Object.entries(this.variables?.properties ?? {}).reduce<SchemaValues>((acc, [key, value]) => {
-      acc[key] = value?.default
-      return acc
-    }, {})
+    return getSchemaDefaultValues(this.schema)
   }
 
   public set defaultValues(values: SchemaValues) {
@@ -39,6 +36,7 @@ export class BaseJobTemplate implements IBaseJobTemplate {
     }
 
     const unmappedValues = mapper.map('SchemaValues', { values: values, schema: this.schema }, 'SchemaValuesRequest')
+    console.log(values, unmappedValues)
 
     const keys = Object.entries(this.variables.properties)
 
