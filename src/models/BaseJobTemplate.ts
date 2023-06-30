@@ -38,11 +38,13 @@ export class BaseJobTemplate implements IBaseJobTemplate {
       return
     }
 
+    const unmappedValues = mapper.map('SchemaValues', { values: values, schema: this.schema }, 'SchemaValuesRequest')
+
     const keys = Object.entries(this.variables.properties)
 
     this.variables.properties = keys.reduce<SchemaPropertiesResponse>((acc, [key, value]) => {
       if (value) {
-        value.default = values[key]
+        value.default = unmappedValues[key]
       }
 
       acc[key] = value
