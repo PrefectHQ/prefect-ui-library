@@ -1,48 +1,70 @@
 <template>
   <p-content class="work-pool-base-job-template-form-section">
-    <p-label :label="localization.info.jobConfiguration">
-      <JsonInput v-model="internalJobConfigurationString" show-format-button />
-    </p-label>
+    <p-button-group v-model="inputType" :options="inputTypeOptions" size="sm" />
+    <template v-if="internalJobTemplate">
+      <WorkPoolBaseJobTemplateVariableDefaultsInput
+        v-if="showCustom"
+        v-model:base-job-template="internalJobTemplate"
+      />
 
-    <p-divider />
-
-    <p-label :label="localization.info.variables">
-      <JsonInput v-model="internalVariablesString" show-format-button />
-    </p-label>
+      <WorkPoolBaseJobTemplateInput
+        v-if="showAdvanced"
+        v-model:base-job-template="internalJobTemplate"
+      />
+    </template>
   </p-content>
 </template>
 
 <script lang="ts" setup>
-  import { computed, watchEffect } from 'vue'
-  import { JsonInput } from '@/components'
-  import { useJsonRecord } from '@/compositions'
-  import { localization } from '@/localization'
-  import { BaseJobTemplate } from '@/models'
-
+  import { ButtonGroupOption } from '@prefecthq/prefect-design'
+  import { useSubscription } from '@prefecthq/vue-compositions'
+  import { computed, ref, watchEffect } from 'vue'
+  import WorkPoolBaseJobTemplateInput from '@/components/WorkPoolBaseJobTemplateInput.vue'
+  import WorkPoolBaseJobTemplateVariableDefaultsInput from '@/components/WorkPoolBaseJobTemplateVariableDefaultsInput.vue'
+  import { useWorkspaceApi } from '@/compositions'
+  import { BaseJobTemplate, WorkPoolFormValues } from '@/models'
 
   const props = defineProps<{
-    baseJobTemplate: BaseJobTemplate,
+    workPool: WorkPoolFormValues,
   }>()
+
+  const api = useWorkspaceApi()
+  const workersSubscription = useSubscription(api.collections.getWorkerCollectionWorkers, [])
+  const workers = computed(() => workersSubscription.response ?? [])
+  const selectedWorker = computed(() => workers.value.find(({ type }) => type === props.workPool.type))
 
   const emit = defineEmits<{
-    (event: 'update:baseJobTemplate', value: BaseJobTemplate): void,
+    (event: 'update:workPool', value: WorkPoolFormValues): void,
   }>()
 
-  const internalBaseJobTemplate = computed<BaseJobTemplate>({
+  const internalWorkPool = computed({
     get() {
-      return props.baseJobTemplate
+      return props.workPool
     },
     set(value) {
-      console.log(value)
-      // emit('update:baseJobTemplate', value)
+      emit('update:workPool', value)
     },
   })
 
-  const { json: internalJobConfigurationString, record: internalJobConfigurationRecord } = useJsonRecord()
-  const { json: internalVariablesString, record: internalVariablesRecord } = useJsonRecord()
+  const internalJobTemplate = computed<BaseJobTemplate | undefined>({
+    get() {
+      return internalWorkPool.value.baseJobTemplate
+    },
+    set(value) {
+      internalWorkPool.value.baseJobTemplate = value
+    },
+  })
+
+  type InputType = 'custom' | 'advanced' | null
+  const inputTypeOptions: (ButtonGroupOption & { value: InputType })[] = [{ label: 'Default', value: null }, { label: 'Custom', value: 'custom' }, { label: 'Advanced', value: 'advanced' }]
+  const inputType = ref<InputType>(null)
+
+  const showAdvanced = computed(() => inputType.value === 'advanced')
+  const showCustom = computed(() => inputType.value === 'custom')
 
   watchEffect(() => {
-    internalBaseJobTemplate.value.jobConfiguration = internalJobConfigurationRecord.value
-    internalBaseJobTemplate.value.variables = internalVariablesRecord.value
+    if (inputType.value === null) {
+      internalJobTemplate.value = selectedWorker.value?.defaultBaseJobTemplate
+    }
   })
 </script>

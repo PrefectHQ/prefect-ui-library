@@ -8,7 +8,15 @@
       <p-button-group v-model="inputType" :options="inputTypeOptions" size="sm" />
 
       <template v-if="internalJobTemplate">
-        <WorkPoolBaseJobTemplateFormSection v-if="showBaseJobTemplateSection" v-model:base-job-template="internalJobTemplate" class="work-pool-create-wizard-step-infrastructure-configuration__base-job-template-form" />
+        <WorkPoolBaseJobTemplateVariableDefaultsInput
+          v-if="showCustom"
+          v-model:base-job-template="internalJobTemplate"
+        />
+
+        <WorkPoolBaseJobTemplateInput
+          v-if="showAdvanced"
+          v-model:base-job-template="internalJobTemplate"
+        />
       </template>
     </template>
   </p-content>
@@ -18,7 +26,8 @@
   import { ButtonGroupOption } from '@prefecthq/prefect-design'
   import { useSubscription } from '@prefecthq/vue-compositions'
   import { computed, ref, watchEffect } from 'vue'
-  import { WorkPoolBaseJobTemplateFormSection } from '@/components'
+  import WorkPoolBaseJobTemplateInput from '@/components/WorkPoolBaseJobTemplateInput.vue'
+  import WorkPoolBaseJobTemplateVariableDefaultsInput from '@/components/WorkPoolBaseJobTemplateVariableDefaultsInput.vue'
   import { useWorkspaceApi } from '@/compositions'
   import { localization } from '@/localization'
   import { BaseJobTemplate, WorkPoolFormValues } from '@/models'
@@ -30,7 +39,7 @@
   const api = useWorkspaceApi()
   const workersSubscription = useSubscription(api.collections.getWorkerCollectionWorkers, [])
   const workers = computed(() => workersSubscription.response ?? [])
-  const selectedWorker = computed(() => workers.value.find(({ type }) => type === props.workPool.type)!)
+  const selectedWorker = computed(() => workers.value.find(({ type }) => type === props.workPool.type))
 
   const emit = defineEmits<{
     (event: 'update:workPool', value: WorkPoolFormValues): void,
@@ -59,11 +68,12 @@
   const inputType = ref<InputType>(null)
 
   const typeIsPrefectAgent = computed(() => props.workPool.type === 'prefect-agent')
-  const showBaseJobTemplateSection = computed(() => inputType.value === 'custom')
+  const showAdvanced = computed(() => inputType.value === 'advanced')
+  const showCustom = computed(() => inputType.value === 'custom')
 
   watchEffect(() => {
     if (inputType.value === null) {
-      internalJobTemplate.value = selectedWorker.value.defaultBaseJobTemplate
+      internalJobTemplate.value = selectedWorker.value?.defaultBaseJobTemplate
     }
   })
 </script>
