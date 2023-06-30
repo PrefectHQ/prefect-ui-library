@@ -1,5 +1,7 @@
 <template>
   <p-content class="work-pool-base-job-template-form-section">
+    <p-label :label="localization.info.baseJobTemplate" />
+
     <p-button-group v-model="inputType" :options="inputTypeOptions" size="sm" />
     <template v-if="internalJobTemplate">
       <keep-alive>
@@ -60,6 +62,7 @@
   import SchemaInput from '@/components/SchemaInput.vue'
   import WorkPoolBaseJobTemplateInput from '@/components/WorkPoolBaseJobTemplateInput.vue'
   import { useWorkspaceApi } from '@/compositions'
+  import { localization } from '@/localization'
   import { BaseJobTemplate, WorkPoolFormValues } from '@/models'
 
   const props = defineProps<{
@@ -105,9 +108,10 @@
     },
   })
 
+  // Note: we could pretty easily add a default "null" option here
   type InputType = 'custom' | 'advanced' | null
-  const inputTypeOptions: (ButtonGroupOption & { value: InputType })[] = [{ label: 'Default', value: null }, { label: 'Custom', value: 'custom' }, { label: 'Advanced', value: 'advanced' }]
-  const inputType = ref<InputType>(null)
+  const inputTypeOptions: (ButtonGroupOption & { value: InputType })[] = [{ label: 'Custom', value: 'custom' }, { label: 'Advanced', value: 'advanced' }]
+  const inputType = ref<InputType>('custom')
 
   const showAdvanced = computed(() => inputType.value === 'advanced')
   const showCustom = computed(() => inputType.value === 'custom')
