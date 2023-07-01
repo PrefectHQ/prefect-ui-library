@@ -1,6 +1,6 @@
 import { getSchemaPropertyResponseValue, getSchemaValueDefinition, schemaPropertyServiceFactory } from '..'
 import { JsonInput } from '@/components'
-import { isBlockDocumentReferenceValue } from '@/models'
+import { isBlockDocumentReferenceValue, isBlockDocumentValue } from '@/models'
 import { SchemaPropertyService } from '@/services/schemas/properties/SchemaPropertyService'
 import { getSchemaPropertyDefaultValue, SchemaPropertyComponentWithProps } from '@/services/schemas/utilities'
 import { SchemaValue } from '@/types/schemas'
@@ -9,27 +9,25 @@ import { parseUnknownJson, stringifyUnknownJson } from '@/utilities/json'
 
 export class SchemaPropertyAny extends SchemaPropertyService {
   protected get default(): unknown {
-    if (this.has('default') && isNotNullish(this.property.default)) {
-      if (isBlockDocumentReferenceValue(this.property.default)) {
-        return this.property.default
-      }
-
-      return getSchemaPropertyResponseValue(this.property, this.property.default, this.level + 1)
-    }
-
     const isJson = this.componentIs(JsonInput)
 
+    let defaultValue: unknown
+
     if (this.has('anyOf') || this.has('allOf')) {
-      const defaultValueForFirstDefinition = this.getDefaultValueForFirstDefinition()
-
-      if (isJson) {
-        return stringifyUnknownJson(defaultValueForFirstDefinition)
+      defaultValue = this.getDefaultValueForFirstDefinition()
+    } else if (this.has('default') && isNotNullish(this.property.default)) {
+      if (isBlockDocumentReferenceValue(this.property.default) || isBlockDocumentValue(this.property.default)) {
+        defaultValue = this.property.default
+      } else {
+        defaultValue = getSchemaPropertyDefaultValue(this.property, this.level + 1)
       }
-
-      return defaultValueForFirstDefinition
     }
 
-    return this.property.default
+    if (isJson) {
+      defaultValue = stringifyUnknownJson(defaultValue)
+    }
+
+    return defaultValue
   }
 
   protected get component(): SchemaPropertyComponentWithProps {
@@ -43,7 +41,13 @@ export class SchemaPropertyAny extends SchemaPropertyService {
 
   protected request(value: SchemaValue): unknown {
     if (this.has('anyOf') || this.has('allOf')) {
-      return this.referenceRequest(value)
+      const reference = this.referenceRequest(value)
+
+      if (reference === undefined) {
+        return undefined
+      }
+
+      return reference
     }
 
     return parseUnknownJson(value)
@@ -51,7 +55,13 @@ export class SchemaPropertyAny extends SchemaPropertyService {
 
   protected response(value: SchemaValue): unknown {
     if (this.has('anyOf') || this.has('allOf')) {
-      return this.referenceResponse(value)
+      const reference = this.referenceResponse(value)
+
+      if (reference === undefined) {
+        return undefined
+      }
+
+      return reference
     }
 
     return stringifyUnknownJson(value)
@@ -63,7 +73,6 @@ export class SchemaPropertyAny extends SchemaPropertyService {
     }
 
     const definition = getSchemaValueDefinition(this.property, value)
-
     if (definition === null) {
       return this.invalid()
     }
