@@ -34,13 +34,7 @@ export class SchemaPropertyAny extends SchemaPropertyService {
 
   protected request(value: SchemaValue): unknown {
     if (this.has('anyOf') || this.has('allOf')) {
-      const reference = this.referenceRequest(value)
-
-      if (reference === undefined) {
-        return undefined
-      }
-
-      return reference
+      return this.referenceRequest(value)
     }
 
     return parseUnknownJson(value)
@@ -48,13 +42,7 @@ export class SchemaPropertyAny extends SchemaPropertyService {
 
   protected response(value: SchemaValue): unknown {
     if (this.has('anyOf') || this.has('allOf')) {
-      const reference = this.referenceResponse(value)
-
-      if (reference === undefined) {
-        return undefined
-      }
-
-      return reference
+      return this.referenceResponse(value)
     }
 
     return stringifyUnknownJson(value)
@@ -66,6 +54,7 @@ export class SchemaPropertyAny extends SchemaPropertyService {
     }
 
     const definition = getSchemaValueDefinition(this.property, value)
+
     if (definition === null) {
       return this.invalid()
     }

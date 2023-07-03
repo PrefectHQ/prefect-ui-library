@@ -195,7 +195,7 @@ export function getSchemaValueAnyOfDefinition(property: SchemaPropertyAnyOf, val
   const index = getSchemaValueAnyOfDefinitionIndex(property, value)
 
   if (index === null || index === -1) {
-    console.trace('Schema property with anyOf had a value but could not be associated with a definition', property, value)
+    console.log('Schema property with anyOf had a value but could not be associated with a definition', property, value)
 
     return null
   }
@@ -214,7 +214,7 @@ export function getSchemaValueAllOfDefinition(property: SchemaPropertyAllOf, val
   const index = getSchemaValueAllOfDefinitionIndex(property, value)
 
   if (index === null || index === -1) {
-    console.trace('Schema property with allOf had a value but could not be associated with a definition', property, value)
+    console.log('Schema property with allOf had a value but could not be associated with a definition', property, value)
 
     return null
   }
