@@ -20,7 +20,7 @@ export class SchemaPropertyAny extends SchemaPropertyService {
       return stringifyUnknownJson(defaultValue) ?? ''
     }
 
-    return defaultValue ?? {}
+    return defaultValue
   }
 
   protected get component(): SchemaPropertyComponentWithProps {
