@@ -1,33 +1,26 @@
-import { getSchemaPropertyResponseValue, getSchemaValueDefinition, schemaPropertyServiceFactory } from '..'
 import { JsonInput } from '@/components'
-import { isBlockDocumentReferenceValue, isBlockDocumentValue } from '@/models'
+import { getSchemaValueDefinition, schemaPropertyServiceFactory } from '@/services/schemas'
 import { SchemaPropertyService } from '@/services/schemas/properties/SchemaPropertyService'
 import { getSchemaPropertyDefaultValue, SchemaPropertyComponentWithProps } from '@/services/schemas/utilities'
 import { SchemaValue } from '@/types/schemas'
-import { isEmptyObject, isNotNullish, sameValue } from '@/utilities'
+import { isEmptyObject, sameValue } from '@/utilities'
 import { parseUnknownJson, stringifyUnknownJson } from '@/utilities/json'
 
 export class SchemaPropertyAny extends SchemaPropertyService {
   protected get default(): unknown {
-    const isJson = this.componentIs(JsonInput)
-
     let defaultValue: unknown
 
-    if (this.has('anyOf') || this.has('allOf')) {
+    if (this.has('default')) {
+      defaultValue = this.property.default
+    } else if (this.has('anyOf') || this.has('allOf')) {
       defaultValue = this.getDefaultValueForFirstDefinition()
-    } else if (this.has('default') && isNotNullish(this.property.default)) {
-      if (isBlockDocumentReferenceValue(this.property.default) || isBlockDocumentValue(this.property.default)) {
-        defaultValue = this.property.default
-      } else {
-        defaultValue = getSchemaPropertyDefaultValue(this.property, this.level + 1)
-      }
     }
 
-    if (isJson) {
-      defaultValue = stringifyUnknownJson(defaultValue)
+    if (this.componentIs(JsonInput)) {
+      return stringifyUnknownJson(defaultValue) ?? ''
     }
 
-    return defaultValue
+    return defaultValue ?? {}
   }
 
   protected get component(): SchemaPropertyComponentWithProps {
