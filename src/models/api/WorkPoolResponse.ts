@@ -14,6 +14,7 @@ export type WorkPoolResponse = {
   description: string | null,
   type: string,
   is_paused: boolean | null,
+  is_push_pool?: boolean,
   concurrency_limit: number | null,
   default_queue_id: string,
   base_job_template: BaseJobTemplateResponse,

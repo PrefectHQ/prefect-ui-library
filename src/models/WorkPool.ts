@@ -10,6 +10,7 @@ export interface IWorkPool {
   description: string | null,
   type: string,
   isPaused: boolean,
+  isPushPool: boolean,
   defaultQueueId: string,
   concurrencyLimit: number | null,
   baseJobTemplate: BaseJobTemplateRequest,
@@ -23,6 +24,7 @@ export class WorkPool implements IWorkPool {
   public description: string | null
   public type: string
   public isPaused: boolean
+  public isPushPool: boolean
   public defaultQueueId: string
   public concurrencyLimit: number | null
   public baseJobTemplate: BaseJobTemplateRequest
@@ -35,6 +37,7 @@ export class WorkPool implements IWorkPool {
     this.description = workPool.description
     this.type = workPool.type
     this.isPaused = workPool.isPaused
+    this.isPushPool = workPool.isPushPool
     this.defaultQueueId = workPool.defaultQueueId
     this.concurrencyLimit = workPool.concurrencyLimit
     this.baseJobTemplate = workPool.baseJobTemplate

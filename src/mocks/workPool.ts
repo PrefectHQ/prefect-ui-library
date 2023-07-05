@@ -14,6 +14,7 @@ export const randomWorkPool: MockFunction<WorkPool, [Partial<WorkPool>?]> = func
     description: this.create('paragraph'),
     type: this.create('noun'),
     isPaused: this.create('boolean'),
+    isPushPool: this.create('boolean'),
     concurrencyLimit: this.create('number'),
     defaultQueueId: this.create('id'),
     baseJobTemplate: this.create('parameters', [{}, this.create('schema')]),
