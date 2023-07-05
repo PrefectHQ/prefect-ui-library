@@ -1,7 +1,7 @@
 <template>
   <span class="work-pool-average-late-time" :class="classes">
     <template v-if="averageLateness">
-      {{ averageLateness }}
+      {{ secondsToApproximateString(averageLateness) }}
     </template>
     <template v-else>
       N/A
@@ -41,10 +41,7 @@
   }))
 
   const averageLatenessSubscription = useSubscription(api.flowRuns.getFlowRunsAverageLateness, [lateFlowRunsFilter], subscriptionOptions)
-  const averageLateness = computed(() => averageLatenessSubscription.response
-    ? secondsToApproximateString(averageLatenessSubscription.response)
-    : null,
-  )
+  const averageLateness = computed(() => averageLatenessSubscription.response)
 
   const classes = computed(() => ({
     'work-pool-average-late-time--zero': !averageLateness.value,
