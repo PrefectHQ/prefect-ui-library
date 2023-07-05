@@ -84,7 +84,9 @@
   const variablesSchemaHasProperties = computed<boolean>(() => Object.keys(variablesSchemaProperties.value).length > 0)
   const currentDefaults = computed<SchemaValues>({
     get() {
-      return getSchemaDefaultValues(variablesSchema.value)
+      const schema = mapper.map('SchemaResponse', variablesSchema.value, 'Schema')
+      const defaults = getSchemaDefaultValues(schema)
+      return defaults
     },
     set(values) {
       const newTemplate = {

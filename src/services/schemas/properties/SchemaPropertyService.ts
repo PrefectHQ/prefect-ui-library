@@ -70,6 +70,14 @@ export abstract class SchemaPropertyService {
       }
     }
 
+    try {
+      return this.response(this.default)
+    } catch (error) {
+      if (!(error instanceof InvalidSchemaValueError)) {
+        console.error(error)
+      }
+    }
+
     return this.default
   }
 

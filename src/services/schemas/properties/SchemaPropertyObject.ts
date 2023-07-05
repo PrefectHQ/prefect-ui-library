@@ -1,6 +1,5 @@
 import { JsonInput } from '@/components'
 import { InvalidSchemaValueError } from '@/models'
-import { schemaPropertyServiceFactory } from '@/services/schemas/properties'
 import { SchemaPropertyService } from '@/services/schemas/properties/SchemaPropertyService'
 import { SchemaPropertyComponentWithProps, getSchemaPropertyRequestValue, getSchemaPropertyResponseValue } from '@/services/schemas/utilities'
 import { SchemaValue, isSchemaValues, SchemaValues } from '@/types/schemas'
@@ -22,13 +21,7 @@ export class SchemaPropertyObject extends SchemaPropertyService {
       return stringifyUnknownJson(this.property.default) ?? null
     }
 
-    const parsed = (this.property.default ?? {}) as SchemaValues
-    const mapped = mapValues(this.property.properties ?? {}, (key, property) => {
-      const propertyValue = parsed[key]
-      return getSchemaPropertyResponseValue(property!, propertyValue, this.level + 1)
-    })
-
-    return mapped
+    return this.property.default ?? {}
   }
 
   protected request(value: SchemaValue): unknown {

@@ -1,5 +1,5 @@
-import { getSchemaPropertyResponseValue, getSchemaValueDefinition, schemaPropertyServiceFactory } from '..'
 import { JsonInput } from '@/components'
+import { getSchemaValueDefinition, schemaPropertyServiceFactory } from '@/services/schemas'
 import { SchemaPropertyService } from '@/services/schemas/properties/SchemaPropertyService'
 import { getSchemaPropertyDefaultValue, SchemaPropertyComponentWithProps } from '@/services/schemas/utilities'
 import { SchemaValue } from '@/types/schemas'
@@ -8,19 +8,19 @@ import { parseUnknownJson, stringifyUnknownJson } from '@/utilities/json'
 
 export class SchemaPropertyAny extends SchemaPropertyService {
   protected get default(): unknown {
+    let defaultValue: unknown = null
+
     if (this.has('default')) {
-      return getSchemaPropertyResponseValue(this.property, this.property.default, this.level + 1)
+      defaultValue = this.property.default
+    } else if (this.has('anyOf') || this.has('allOf')) {
+      defaultValue = this.getDefaultValueForFirstDefinition()
     }
 
     if (this.componentIs(JsonInput)) {
-      return ''
+      return stringifyUnknownJson(defaultValue) ?? ''
     }
 
-    if (this.has('anyOf') || this.has('allOf')) {
-      return this.getDefaultValueForFirstDefinition()
-    }
-
-    return null
+    return defaultValue
   }
 
   protected get component(): SchemaPropertyComponentWithProps {
