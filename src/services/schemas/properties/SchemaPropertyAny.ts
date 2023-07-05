@@ -8,7 +8,7 @@ import { parseUnknownJson, stringifyUnknownJson } from '@/utilities/json'
 
 export class SchemaPropertyAny extends SchemaPropertyService {
   protected get default(): unknown {
-    let defaultValue: unknown
+    let defaultValue: unknown = null
 
     if (this.has('default')) {
       defaultValue = this.property.default
