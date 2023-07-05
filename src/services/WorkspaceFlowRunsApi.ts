@@ -10,14 +10,14 @@ import { RunHistory } from '@/models/RunHistory'
 import { BatchProcessor } from '@/services/BatchProcessor'
 import { mapper } from '@/services/Mapper'
 import { WorkspaceApi } from '@/services/WorkspaceApi'
-import { toMap } from '@/utilities'
+import { secondsToApproximateString, toMap } from '@/utilities'
 
 export interface IWorkspaceFlowRunsApi {
   getFlowRun: (flowRunId: string) => Promise<FlowRun>,
   getFlowRuns: (filter: FlowRunsFilter) => Promise<FlowRun[]>,
   getFlowRunsCount: (filter: FlowRunsFilter) => Promise<number>,
   getFlowRunsHistory: (filter: FlowRunsHistoryFilter) => Promise<RunHistory[]>,
-  getFlowRunsAverageLateness: (filter: FlowRunsFilter) => Promise<number>,
+  getFlowRunsAverageLateness: (filter: FlowRunsFilter) => Promise<string | null>,
   getFlowRunsGraph: (flowRunId: string) => Promise<GraphNode[]>,
   getFlowRunsTimeline: (flowRunId: string) => Promise<GraphTimelineNode[]>,
   retryFlowRun: (flowRunId: string) => Promise<void>,
@@ -65,11 +65,11 @@ export class WorkspaceFlowRunsApi extends WorkspaceApi implements IWorkspaceFlow
     return mapper.map('FlowRunHistoryResponse', data, 'RunHistory')
   }
 
-  public async getFlowRunsAverageLateness(filter: FlowRunsFilter): Promise<number> {
+  public async getFlowRunsAverageLateness(filter: FlowRunsFilter): Promise<string | null> {
     const request = mapper.map('FlowRunsFilter', filter, 'FlowRunsFilterRequest')
     const { data } = await this.post<number>('/lateness', request)
 
-    return data
+    return data > 0 ? secondsToApproximateString(data) : null
   }
 
   public async getFlowRunsGraph(flowRunId: string): Promise<GraphNode[]> {

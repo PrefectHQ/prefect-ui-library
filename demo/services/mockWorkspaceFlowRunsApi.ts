@@ -121,7 +121,7 @@ export class MockWorkspaceFlowRunsApi extends MockApi implements IWorkspaceFlowR
     return Promise.resolve(runHistory)
   }
 
-  public getFlowRunsAverageLateness(filter: FlowRunsFilter): Promise<number> {
+  public getFlowRunsAverageLateness(filter: FlowRunsFilter): Promise<string | null> {
     throw new Error('MockWorkspaceFlowRunsApi has not implemented the getFlowRunsAverageLateness method')
   }
 
