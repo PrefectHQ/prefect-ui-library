@@ -5,7 +5,7 @@
 <script lang="ts" setup>
   import { useSubscription } from '@prefecthq/vue-compositions'
   import { computed } from 'vue'
-  import { useWorkspaceApi } from '@/compositions'
+  import { useInterval, useWorkspaceApi } from '@/compositions'
   import { WorkPool, FlowRunsFilter } from '@/models'
   import { mapper } from '@/services'
   import { WorkspaceDashboardFilter } from '@/types'
@@ -14,10 +14,6 @@
     workPool: WorkPool,
     filter?: WorkspaceDashboardFilter,
   }>()
-
-  const subscriptionOptions = {
-    interval: 30000,
-  }
 
   const api = useWorkspaceApi()
 
@@ -38,6 +34,7 @@
       },
     },
   }))
-  const allRunsCountSubscription = useSubscription(api.flowRuns.getFlowRunsCount, [allRunsCountFilter], subscriptionOptions)
+  const options = useInterval({ interval: 30000 })
+  const allRunsCountSubscription = useSubscription(api.flowRuns.getFlowRunsCount, [allRunsCountFilter], options)
   const allRunsCount = computed(() => allRunsCountSubscription.response)
 </script>

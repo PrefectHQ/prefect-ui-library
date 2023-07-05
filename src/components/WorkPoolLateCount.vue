@@ -7,7 +7,7 @@
 <script lang="ts" setup>
   import { useSubscription } from '@prefecthq/vue-compositions'
   import { computed } from 'vue'
-  import { useWorkspaceApi } from '@/compositions'
+  import { useInterval, useWorkspaceApi } from '@/compositions'
   import { FlowRunsFilter, WorkPool } from '@/models'
 
   const props = defineProps<{
@@ -16,10 +16,6 @@
   }>()
 
   const api = useWorkspaceApi()
-
-  const subscriptionOptions = {
-    interval: 30000,
-  }
 
   const lateFlowRunsFilter = computed<FlowRunsFilter>(() => ({
     ...props.filter,
@@ -33,7 +29,9 @@
       },
     },
   }))
-  const lateFlowRunsCountSubscription = useSubscription(api.flowRuns.getFlowRunsCount, [lateFlowRunsFilter], subscriptionOptions)
+
+  const options = useInterval({ interval: 30000 })
+  const lateFlowRunsCountSubscription = useSubscription(api.flowRuns.getFlowRunsCount, [lateFlowRunsFilter], options)
   const lateFlowRunsCount = computed(() => lateFlowRunsCountSubscription.response ?? 0)
 
   const classes = computed(() => ({
