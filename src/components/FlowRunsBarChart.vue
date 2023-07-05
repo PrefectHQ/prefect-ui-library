@@ -67,49 +67,6 @@
 
   const barFlowRuns = computed(() => organizeFlowRunsWithGaps(flowRuns.value))
 
-  const organizeFlowRunsWithGaps = (flowRuns: FlowRun[]): (FlowRun | null)[] => {
-    const { expectedStartTimeAfter, expectedStartTimeBefore } = props.filter.flowRuns ?? {}
-
-    if (!expectedStartTimeBefore || !expectedStartTimeAfter) {
-      return []
-    }
-
-    const totalTime = expectedStartTimeBefore.getTime() - expectedStartTimeAfter.getTime()
-    const bucketSize = totalTime / bars.value
-    const buckets: (FlowRun | null)[] = new Array(bars.value).fill(null)
-
-    function getEmptyBucket(index: number): number | null {
-      if (index < 0) {
-        return null
-      }
-
-      if (buckets[index]) {
-        return getEmptyBucket(index - 1)
-      }
-
-      return index
-    }
-
-    flowRuns.forEach((flowRun) => {
-      const startTime = flowRun.startTime ?? flowRun.expectedStartTime
-
-      if (!startTime) {
-        return
-      }
-
-      const bucketIndex = Math.floor((startTime.getTime() - expectedStartTimeAfter.getTime()) / bucketSize)
-      const emptyBucketIndex = getEmptyBucket(bucketIndex)
-
-      if (emptyBucketIndex === null) {
-        return
-      }
-
-      buckets[emptyBucketIndex] = flowRun
-    })
-
-    return buckets
-  }
-
   const maxDuration = computed(() => flowRuns.value.reduce((max, flowRun) => {
     if (flowRun.duration > max) {
       return flowRun.duration
@@ -154,6 +111,49 @@
     }
 
     return flowRun.id
+  }
+
+  function organizeFlowRunsWithGaps(flowRuns: FlowRun[]): (FlowRun | null)[] {
+    const { expectedStartTimeAfter, expectedStartTimeBefore } = props.filter.flowRuns ?? {}
+
+    if (!expectedStartTimeBefore || !expectedStartTimeAfter) {
+      return []
+    }
+
+    const totalTime = expectedStartTimeBefore.getTime() - expectedStartTimeAfter.getTime()
+    const bucketSize = totalTime / bars.value
+    const buckets: (FlowRun | null)[] = new Array(bars.value).fill(null)
+
+    function getEmptyBucket(index: number): number | null {
+      if (index < 0) {
+        return null
+      }
+
+      if (buckets[index]) {
+        return getEmptyBucket(index - 1)
+      }
+
+      return index
+    }
+
+    flowRuns.forEach((flowRun) => {
+      const startTime = flowRun.startTime ?? flowRun.expectedStartTime
+
+      if (!startTime) {
+        return
+      }
+
+      const bucketIndex = Math.floor((startTime.getTime() - expectedStartTimeAfter.getTime()) / bucketSize)
+      const emptyBucketIndex = getEmptyBucket(bucketIndex)
+
+      if (emptyBucketIndex === null) {
+        return
+      }
+
+      buckets[emptyBucketIndex] = flowRun
+    })
+
+    return buckets
   }
 </script>
 
