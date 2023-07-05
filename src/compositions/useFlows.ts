@@ -1,4 +1,4 @@
-import { useSubscriptionWithDependencies } from '@prefecthq/vue-compositions'
+import { SubscriptionOptions, useSubscriptionWithDependencies } from '@prefecthq/vue-compositions'
 import { computed, getCurrentInstance, onUnmounted, ref } from 'vue'
 import { useCan } from '@/compositions/useCan'
 import { useWorkspaceApi } from '@/compositions/useWorkspaceApi'
@@ -9,9 +9,9 @@ import { UseEntitySubscription } from '@/types/useEntitySubscription'
 
 export type UseFlows = UseEntitySubscription<WorkspaceFlowsApi['getFlows'], 'flows'>
 
-export function useFlows(filter: MaybeRef<FlowsFilter | null | undefined>): UseFlows
-export function useFlows(flowIds: MaybeRef<string[] | null | undefined>): UseFlows
-export function useFlows(filter?: MaybeRef<string[] | FlowsFilter | null | undefined>): UseFlows {
+export function useFlows(filter: MaybeRef<FlowsFilter | null | undefined>, options?: SubscriptionOptions): UseFlows
+export function useFlows(flowIds: MaybeRef<string[] | null | undefined>, options?: SubscriptionOptions): UseFlows
+export function useFlows(filter?: MaybeRef<string[] | FlowsFilter | null | undefined>, options?: SubscriptionOptions): UseFlows {
   const api = useWorkspaceApi()
   const can = useCan()
   const filterRef = ref(filter)
@@ -38,7 +38,7 @@ export function useFlows(filter?: MaybeRef<string[] | FlowsFilter | null | undef
     return [filterRef.value]
   })
 
-  const subscription = useSubscriptionWithDependencies(api.flows.getFlows, parameters)
+  const subscription = useSubscriptionWithDependencies(api.flows.getFlows, parameters, options)
   const flows = computed(() => subscription.response ?? [])
 
   if (getCurrentInstance()) {
