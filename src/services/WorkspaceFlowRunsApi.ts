@@ -17,6 +17,7 @@ export interface IWorkspaceFlowRunsApi {
   getFlowRuns: (filter: FlowRunsFilter) => Promise<FlowRun[]>,
   getFlowRunsCount: (filter: FlowRunsFilter) => Promise<number>,
   getFlowRunsHistory: (filter: FlowRunsHistoryFilter) => Promise<RunHistory[]>,
+  getFlowRunsAverageLateness: (filter: FlowRunsFilter) => Promise<number>,
   getFlowRunsGraph: (flowRunId: string) => Promise<GraphNode[]>,
   getFlowRunsTimeline: (flowRunId: string) => Promise<GraphTimelineNode[]>,
   retryFlowRun: (flowRunId: string) => Promise<void>,
@@ -62,6 +63,13 @@ export class WorkspaceFlowRunsApi extends WorkspaceApi implements IWorkspaceFlow
     const { data } = await this.post<FlowRunHistoryResponse[]>('/history', request)
 
     return mapper.map('FlowRunHistoryResponse', data, 'RunHistory')
+  }
+
+  public async getFlowRunsAverageLateness(filter: FlowRunsFilter): Promise<number> {
+    const request = mapper.map('FlowRunsFilter', filter, 'FlowRunsFilterRequest')
+    const { data } = await this.post<number>('/lateness', request)
+
+    return data
   }
 
   public async getFlowRunsGraph(flowRunId: string): Promise<GraphNode[]> {

@@ -1,6 +1,9 @@
 <template>
   <span class="work-pool-late-count" :class="classes">
     {{ lateFlowRunsCount }}
+    <template v-if="averageLateness">
+      {{ averageLateness }}
+    </template>
   </span>
 </template>
 
@@ -35,6 +38,9 @@
   }))
   const lateFlowRunsCountSubscription = useSubscription(api.flowRuns.getFlowRunsCount, [lateFlowRunsFilter], subscriptionOptions)
   const lateFlowRunsCount = computed(() => lateFlowRunsCountSubscription.response ?? 0)
+
+  const averageLatenessSubscription = useSubscription(api.flowRuns.getFlowRunsAverageLateness, [lateFlowRunsFilter], subscriptionOptions)
+  const averageLateness = computed(() => averageLatenessSubscription.response ?? null)
 
   const classes = computed(() => ({
     'work-pool-late-count--zero': lateFlowRunsCount.value < 1,
