@@ -13,6 +13,7 @@
   import { computed } from 'vue'
   import FlowRunStateTypeEmpty from '@/components/FlowRunStateTypeEmpty.vue'
   import { useFlowRunsCount } from '@/compositions/useFlowRunsCount'
+  import { useInterval } from '@/compositions/useInterval'
   import { FlowRunsFilter } from '@/models/Filters'
   import { StateType } from '@/models/StateType'
   import { MaybeArray } from '@/types/utilities'
@@ -35,7 +36,8 @@
 
   const states = computed(() => asArray(props.stateType))
 
-  const { count } = useFlowRunsCount(filter)
+  const options = useInterval()
+  const { count } = useFlowRunsCount(filter, options)
   const hasCount = computed(() => count.value !== undefined)
 
   const formatter = new Intl.ListFormat('en', { style: 'long', type: 'disjunction' })

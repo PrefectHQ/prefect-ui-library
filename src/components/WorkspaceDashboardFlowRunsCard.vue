@@ -4,7 +4,9 @@
       <p-heading heading="5">
         Flow Runs
       </p-heading>
-      <DashboardStatistic label="total" :value="flowRunsCount" />
+      <template v-if="count">
+        <DashboardStatistic label="total" :value="count" />
+      </template>
     </header>
     <FlowRunsBarChart class="workspace-dashboard-flow-runs-card__chart" :filter="flowRunsFilter" />
     <FlowRunStateTypeTabs :filter="flowRunsFilter" />
@@ -12,12 +14,12 @@
 </template>
 
 <script lang="ts" setup>
-  import { useSubscription } from '@prefecthq/vue-compositions'
   import { computed } from 'vue'
   import DashboardStatistic from '@/components/DashboardStatistic.vue'
   import FlowRunsBarChart from '@/components/FlowRunsBarChart.vue'
   import FlowRunStateTypeTabs from '@/components/FlowRunStateTypeTabs.vue'
-  import { useWorkspaceApi } from '@/compositions/useWorkspaceApi'
+  import { useFlowRunsCount } from '@/compositions/useFlowRunsCount'
+  import { useInterval } from '@/compositions/useInterval'
   import { mapper } from '@/services/Mapper'
   import { WorkspaceDashboardFilter } from '@/types/dashboard'
 
@@ -25,10 +27,9 @@
     filter: WorkspaceDashboardFilter,
   }>()
 
+  const options = useInterval()
   const flowRunsFilter = computed(() => mapper.map('WorkspaceDashboardFilter', props.filter, 'FlowRunsFilter'))
-  const api = useWorkspaceApi()
-  const flowRunsCountSubscription = useSubscription(api.flowRuns.getFlowRunsCount, [flowRunsFilter])
-  const flowRunsCount = computed(() => flowRunsCountSubscription.response ?? 0)
+  const { count } = useFlowRunsCount(flowRunsFilter, options)
 </script>
 
 <style>
