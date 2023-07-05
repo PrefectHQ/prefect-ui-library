@@ -139,7 +139,7 @@
     const changePercent = changeInt / 100
 
     return {
-      change: Math.abs(changePercent),
+      change: Math.abs(changePercent).toFixed(1),
       direction: prevCompletePercent.value > completePercent.value ? '-' : '+',
     }
   })
