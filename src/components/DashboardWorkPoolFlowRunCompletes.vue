@@ -32,7 +32,7 @@
   }>()
 
   const api = useWorkspaceApi()
-  const options = useInterval({ interval: 30000 })
+  const options = useInterval()
 
   const baseFilter = computed<FlowRunsFilter>(() => ({
     workPools: {

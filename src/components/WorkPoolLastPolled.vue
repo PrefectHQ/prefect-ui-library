@@ -24,7 +24,7 @@
   const workPoolName = computed(() => props.workPool.name)
   const workPoolWorkersFilter = computed(() => mapper.map('WorkspaceDashboardFilter', props.filter, 'WorkPoolWorkersFilter'))
 
-  const options = useInterval({ interval: 30000 })
+  const options = useInterval()
   const { lastPolled } = useWorkPoolLastPolled(workPoolName, workPoolWorkersFilter, options)
 </script>
 

@@ -27,11 +27,12 @@
 
   const maxWorkQueues = 50
   const api = useWorkspaceApi()
+  const options = useInterval()
 
-  const options = useInterval({ interval: 30000 })
   const workPoolQueuesSubscription = useSubscription(
     api.workPoolQueues.getWorkPoolQueues,
-    [props.workPool.name, { ...options, limit: maxWorkQueues + 1 }],
+    [props.workPool.name, { limit: maxWorkQueues + 1 }],
+    options,
   )
 
   const workPoolQueues = computed(() => workPoolQueuesSubscription.response ?? [])

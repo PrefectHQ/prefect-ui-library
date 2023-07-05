@@ -34,7 +34,7 @@
       },
     },
   }))
-  const options = useInterval({ interval: 30000 })
+  const options = useInterval()
   const allRunsCountSubscription = useSubscription(api.flowRuns.getFlowRunsCount, [allRunsCountFilter], options)
   const allRunsCount = computed(() => allRunsCountSubscription.response)
 </script>
