@@ -1,4 +1,5 @@
 import { SubscriptionOptions, UseSubscription, useSubscriptionWithDependencies } from '@prefecthq/vue-compositions'
+import merge from 'lodash/merge'
 import { computed, ComputedRef, MaybeRef, Ref, ref, watch } from 'vue'
 import { useCan } from '@/compositions/useCan'
 import { useFilterPagination } from '@/compositions/useFilterPagination'
@@ -30,11 +31,10 @@ export function useFlowRuns(filter: FlowRunsFilter | Ref<FlowRunsFilter | null |
       return null
     }
 
-    const filter: FlowRunsFilter = {
-      ...filterRef.value,
+    const filter: FlowRunsFilter = merge({}, filterRef.value, {
       limit: limit.value,
       offset: offset.value,
-    }
+    })
 
     return [filter]
   })
