@@ -65,18 +65,7 @@
   })
   const { flowRuns } = useFlowRuns(filter)
 
-  const barFlowRuns = computed(() => {
-    const difference = bars.value - flowRuns.value.length
-    const emptyValuesLength = Math.max(difference, 0)
-
-    if (emptyValuesLength > 0) {
-      return organizeFlowRunsWithGaps(flowRuns.value)
-    }
-
-    const flowRunsReversed = flowRuns.value.slice(0, bars.value).reverse()
-
-    return [...flowRunsReversed]
-  })
+  const barFlowRuns = computed(() => organizeFlowRunsWithGaps(flowRuns.value))
 
   const organizeFlowRunsWithGaps = (flowRuns: FlowRun[]): (FlowRun | null)[] => {
     const { expectedStartTimeAfter, expectedStartTimeBefore } = props.filter.flowRuns ?? {}
