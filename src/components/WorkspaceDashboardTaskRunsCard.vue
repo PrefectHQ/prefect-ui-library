@@ -23,6 +23,7 @@
   import merge from 'lodash.merge'
   import { computed } from 'vue'
   import DashboardStatistic from '@/components/DashboardStatistic.vue'
+  import { useInterval } from '@/compositions/useInterval'
   import { useWorkspaceApi } from '@/compositions/useWorkspaceApi'
   import { TaskRunsFilter } from '@/models/Filters'
   import { mapper } from '@/services/Mapper'
@@ -34,6 +35,7 @@
   }>()
 
   const api = useWorkspaceApi()
+  const options = useInterval()
   const tasksFilter = computed(() => mapper.map('WorkspaceDashboardFilter', props.filter, 'TaskRunsFilter'))
 
   const allTasksFilter = computed<TaskRunsFilter>(() => {
@@ -47,7 +49,7 @@
 
     return merge({}, tasksFilter.value, stateFilter)
   })
-  const allTasksSubscription = useSubscription(api.taskRuns.getTaskRunsCount, [allTasksFilter])
+  const allTasksSubscription = useSubscription(api.taskRuns.getTaskRunsCount, [allTasksFilter], options)
   const total = computed(() => allTasksSubscription.response)
 
   const completedTasksFilter = computed<TaskRunsFilter>(() => {
@@ -61,7 +63,7 @@
 
     return merge({}, tasksFilter.value, stateFilter)
   })
-  const completedTasksSubscription = useSubscription(api.taskRuns.getTaskRunsCount, [completedTasksFilter])
+  const completedTasksSubscription = useSubscription(api.taskRuns.getTaskRunsCount, [completedTasksFilter], options)
   const completed = computed(() => completedTasksSubscription.response)
   const completedPercentage = computed(() => getPercent(completed.value, total.value))
 
@@ -76,12 +78,12 @@
 
     return merge({}, tasksFilter.value, stateFilter)
   })
-  const failedTasksSubscription = useSubscription(api.taskRuns.getTaskRunsCount, [failedTasksFilter])
+  const failedTasksSubscription = useSubscription(api.taskRuns.getTaskRunsCount, [failedTasksFilter], options)
   const failed = computed(() => failedTasksSubscription.response)
   const failedPercentage = computed(() => getPercent(failed.value, total.value))
 
   const historyFilter = computed(() => mapper.map('WorkspaceDashboardFilter', props.filter, 'TaskRunsHistoryFilter'))
-  const historySubscription = useSubscription(api.taskRuns.getTaskRunsHistory, [historyFilter])
+  const historySubscription = useSubscription(api.taskRuns.getTaskRunsHistory, [historyFilter], options)
   const history = computed(() => historySubscription.response ?? [])
 
   const taskRunsChartData = computed(() => {
