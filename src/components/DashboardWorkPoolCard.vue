@@ -15,12 +15,16 @@
         <WorkPoolLastPolled :work-pool="workPool" :filter="filter" />
       </DashboardWorkPoolCardDetail>
 
+      <DashboardWorkPoolCardDetail label="Work Queues">
+        <WorkPoolQueueStatusArray :work-pool="workPool" />
+      </DashboardWorkPoolCardDetail>
+
       <DashboardWorkPoolCardDetail label="Late runs">
         <WorkPoolLateCount :work-pool="workPool" :filter="flowRunsFilter" />
       </DashboardWorkPoolCardDetail>
 
-      <DashboardWorkPoolCardDetail label="Work Queues">
-        <WorkPoolQueueStatusArray :work-pool="workPool" />
+      <DashboardWorkPoolCardDetail label="Avg. Late time">
+        <WorkPoolAverageLateTime :work-pool="workPool" :filter="flowRunsFilter" />
       </DashboardWorkPoolCardDetail>
 
       <DashboardWorkPoolCardDetail label="Total runs">
@@ -41,6 +45,7 @@
   import DashboardWorkPoolFlowRunCompletes from '@/components/DashboardWorkPoolFlowRunCompletes.vue'
   import DashboardWorkPoolFlowRunsTotal from '@/components/DashboardWorkPoolFlowRunsTotal.vue'
   import FlowRunsBarChart from '@/components/FlowRunsBarChart.vue'
+  import WorkPoolAverageLateTime from '@/components/WorkPoolAverageLateTime.vue'
   import WorkPoolLastPolled from '@/components/WorkPoolLastPolled.vue'
   import WorkPoolLateCount from '@/components/WorkPoolLateCount.vue'
   import WorkPoolQueueStatusArray from '@/components/WorkPoolQueueStatusArray.vue'

@@ -47,8 +47,6 @@
   const activeWorkPools = computed(() => {
     const workPools = workPoolsSubscription.response ?? []
 
-    console.log(workPoolsSubscription.response)
-
     return workPools.filter(workPool => !workPool.isPaused)
   })
 

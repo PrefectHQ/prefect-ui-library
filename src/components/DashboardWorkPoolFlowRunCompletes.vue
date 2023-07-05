@@ -19,7 +19,7 @@
   import { useSubscription } from '@prefecthq/vue-compositions'
   import { subSeconds } from 'date-fns'
   import { computed } from 'vue'
-  import { useWorkspaceApi } from '@/compositions'
+  import { useInterval, useWorkspaceApi } from '@/compositions'
   import { localization } from '@/localization'
   import { WorkPool, FlowRunsFilter } from '@/models'
   import { mapper } from '@/services'
@@ -31,11 +31,8 @@
     filter?: WorkspaceDashboardFilter,
   }>()
 
-  const subscriptionOptions = {
-    interval: 30000,
-  }
-
   const api = useWorkspaceApi()
+  const options = useInterval()
 
   const baseFilter = computed<FlowRunsFilter>(() => ({
     workPools: {
@@ -54,7 +51,7 @@
       },
     },
   }))
-  const allRunsCountSubscription = useSubscription(api.flowRuns.getFlowRunsCount, [allRunsCountFilter], subscriptionOptions)
+  const allRunsCountSubscription = useSubscription(api.flowRuns.getFlowRunsCount, [allRunsCountFilter], options)
   const allRunsCount = computed(() => allRunsCountSubscription.response)
 
   const completeRunsCountFilter = computed<FlowRunsFilter>(() => ({
@@ -66,7 +63,7 @@
       },
     },
   }))
-  const completeRunsCountSubscription = useSubscription(api.flowRuns.getFlowRunsCount, [completeRunsCountFilter], subscriptionOptions)
+  const completeRunsCountSubscription = useSubscription(api.flowRuns.getFlowRunsCount, [completeRunsCountFilter], options)
   const completeRunsCount = computed(() => completeRunsCountSubscription.response)
 
   const completePercent = computed(() => {
@@ -104,7 +101,7 @@
       },
     },
   }))
-  const prevAllRunsCountSubscription = useSubscription(api.flowRuns.getFlowRunsCount, [prevAllRunsCountFilter], subscriptionOptions)
+  const prevAllRunsCountSubscription = useSubscription(api.flowRuns.getFlowRunsCount, [prevAllRunsCountFilter], options)
   const prevAllRunsCount = computed(() => prevAllRunsCountSubscription.response)
 
   const prevCompleteRunsCountFilter = computed<FlowRunsFilter>(() => ({
@@ -116,7 +113,7 @@
       },
     },
   }))
-  const prevCompleteRunsCountSubscription = useSubscription(api.flowRuns.getFlowRunsCount, [prevCompleteRunsCountFilter], subscriptionOptions)
+  const prevCompleteRunsCountSubscription = useSubscription(api.flowRuns.getFlowRunsCount, [prevCompleteRunsCountFilter], options)
   const prevCompleteRunsCount = computed(() => prevCompleteRunsCountSubscription.response)
 
   const prevCompletePercent = computed(() => {

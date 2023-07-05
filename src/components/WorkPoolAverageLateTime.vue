@@ -1,6 +1,11 @@
 <template>
-  <span class="work-pool-late-count" :class="classes">
-    {{ lateFlowRunsCount }}
+  <span class="work-pool-average-late-time" :class="classes">
+    <template v-if="averageLateness">
+      {{ secondsToApproximateString(averageLateness) }}
+    </template>
+    <template v-else>
+      N/A
+    </template>
   </span>
 </template>
 
@@ -9,6 +14,7 @@
   import { computed } from 'vue'
   import { useInterval, useWorkspaceApi } from '@/compositions'
   import { FlowRunsFilter, WorkPool } from '@/models'
+  import { secondsToApproximateString } from '@/utilities'
 
   const props = defineProps<{
     workPool: WorkPool,
@@ -16,6 +22,7 @@
   }>()
 
   const api = useWorkspaceApi()
+  const options = useInterval()
 
   const lateFlowRunsFilter = computed<FlowRunsFilter>(() => ({
     ...props.filter,
@@ -30,17 +37,16 @@
     },
   }))
 
-  const options = useInterval({ interval: 30000 })
-  const lateFlowRunsCountSubscription = useSubscription(api.flowRuns.getFlowRunsCount, [lateFlowRunsFilter], options)
-  const lateFlowRunsCount = computed(() => lateFlowRunsCountSubscription.response ?? 0)
+  const averageLatenessSubscription = useSubscription(api.flowRuns.getFlowRunsAverageLateness, [lateFlowRunsFilter], options)
+  const averageLateness = computed(() => averageLatenessSubscription.response)
 
   const classes = computed(() => ({
-    'work-pool-late-count--zero': lateFlowRunsCount.value < 1,
+    'work-pool-average-late-time--zero': !averageLateness.value,
   }))
 </script>
 
 <style>
-.work-pool-late-count--zero { @apply
+.work-pool-average-late-time--zero { @apply
   text-slate-500
 }
 </style>
