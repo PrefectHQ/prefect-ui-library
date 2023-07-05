@@ -14,6 +14,7 @@
   import { computed } from 'vue'
   import { useWorkspaceApi } from '@/compositions'
   import { FlowRunsFilter, WorkPool } from '@/models'
+  import { secondsToApproximateString } from '@/utilities'
 
   const props = defineProps<{
     workPool: WorkPool,
@@ -40,7 +41,10 @@
   }))
 
   const averageLatenessSubscription = useSubscription(api.flowRuns.getFlowRunsAverageLateness, [lateFlowRunsFilter], subscriptionOptions)
-  const averageLateness = computed(() => averageLatenessSubscription.response ?? null)
+  const averageLateness = computed(() => averageLatenessSubscription.response
+    ? secondsToApproximateString(averageLatenessSubscription.response)
+    : null,
+  )
 
   const classes = computed(() => ({
     'work-pool-average-late-time--zero': !averageLateness.value,
