@@ -12,7 +12,7 @@
 <script lang="ts" setup>
   import { useSubscription } from '@prefecthq/vue-compositions'
   import { computed } from 'vue'
-  import { useWorkspaceApi } from '@/compositions'
+  import { useInterval, useWorkspaceApi } from '@/compositions'
   import { FlowRunsFilter, WorkPool } from '@/models'
   import { secondsToApproximateString } from '@/utilities'
 
@@ -22,10 +22,7 @@
   }>()
 
   const api = useWorkspaceApi()
-
-  const subscriptionOptions = {
-    interval: 30000,
-  }
+  const options = useInterval()
 
   const lateFlowRunsFilter = computed<FlowRunsFilter>(() => ({
     ...props.filter,
@@ -40,7 +37,7 @@
     },
   }))
 
-  const averageLatenessSubscription = useSubscription(api.flowRuns.getFlowRunsAverageLateness, [lateFlowRunsFilter], subscriptionOptions)
+  const averageLatenessSubscription = useSubscription(api.flowRuns.getFlowRunsAverageLateness, [lateFlowRunsFilter], options)
   const averageLateness = computed(() => averageLatenessSubscription.response)
 
   const classes = computed(() => ({

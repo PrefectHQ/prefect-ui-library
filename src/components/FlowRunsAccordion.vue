@@ -16,6 +16,7 @@
   import FlowRunsAccordionContent from '@/components/FlowRunsAccordionContent.vue'
   import FlowRunsAccordionHeader from '@/components/FlowRunsAccordionHeader.vue'
   import { useFlows } from '@/compositions/useFlows'
+  import { useInterval } from '@/compositions/useInterval'
   import { FlowRunsFilter, FlowsFilter } from '@/models/Filters'
   import { Flow } from '@/models/Flow'
   import { toMap } from '@/utilities'
@@ -31,7 +32,8 @@
     return filter
   })
 
-  const { flows } = useFlows(flowsFilter)
+  const options = useInterval()
+  const { flows } = useFlows(flowsFilter, options)
   const flowIds = computed(() => flows.value?.map(flow => flow.id))
   const flowsLookup = computed(() => toMap(flows.value ?? [], 'id'))
 

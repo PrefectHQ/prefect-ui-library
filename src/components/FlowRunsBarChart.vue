@@ -23,6 +23,7 @@
   import { StyleValue, computed, ref } from 'vue'
   import FlowRunPopoverContent from '@/components/FlowRunPopOverContent.vue'
   import { useFlowRuns } from '@/compositions/useFlowRuns'
+  import { useInterval } from '@/compositions/useInterval'
   import { FlowRunsFilter } from '@/models/Filters'
   import { FlowRun } from '@/models/FlowRun'
 
@@ -63,7 +64,9 @@
 
     return filter
   })
-  const { flowRuns } = useFlowRuns(filter)
+
+  const options = useInterval()
+  const { flowRuns } = useFlowRuns(filter, 1, options)
 
   const barFlowRuns = computed(() => {
     const difference = bars.value - flowRuns.value.length

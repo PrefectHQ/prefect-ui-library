@@ -12,6 +12,7 @@
 <script lang="ts" setup>
   import { computed } from 'vue'
   import { useFlowRunsCount } from '@/compositions/useFlowRunsCount'
+  import { useInterval } from '@/compositions/useInterval'
   import { FlowRunsFilter } from '@/models/Filters'
   import { StateType } from '@/models/StateType'
   import { MaybeArray } from '@/types/utilities'
@@ -34,7 +35,8 @@
 
   const states = computed(() => asArray(props.stateType))
 
-  const { count } = useFlowRunsCount(filter)
+  const options = useInterval()
+  const { count } = useFlowRunsCount(filter, options)
 
   function getStateTypeClass(state: StateType): string {
     return `bg-state-${state}-500`

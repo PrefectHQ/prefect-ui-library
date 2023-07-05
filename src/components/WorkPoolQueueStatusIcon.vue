@@ -19,7 +19,7 @@
   import { Icon } from '@prefecthq/prefect-design'
   import { useSubscriptionWithDependencies } from '@prefecthq/vue-compositions'
   import { computed } from 'vue'
-  import { useWorkQueueStatus, useWorkspaceApi } from '@/compositions'
+  import { useInterval, useWorkQueueStatus, useWorkspaceApi } from '@/compositions'
 
   const props = defineProps<{
     workQueueName: string,
@@ -28,8 +28,9 @@
 
   const api = useWorkspaceApi()
   const workPoolQueueArgs = computed<[string, string] | null>(() => [props.workPoolName, props.workQueueName])
+  const options = useInterval()
 
-  const workPoolQueuesSubscription = useSubscriptionWithDependencies(api.workPoolQueues.getWorkPoolQueueByName, workPoolQueueArgs)
+  const workPoolQueuesSubscription = useSubscriptionWithDependencies(api.workPoolQueues.getWorkPoolQueueByName, workPoolQueueArgs, options)
   const workPoolQueue = computed(() => workPoolQueuesSubscription.response)
 
   const workQueueId = computed(() => workPoolQueue.value?.id)
