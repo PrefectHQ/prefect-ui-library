@@ -82,13 +82,11 @@ export abstract class SchemaPropertyService {
   }
 
   public mapRequestValue(value: SchemaValue): SchemaValue | undefined {
-    const mappedValue = this.request(value)
-
-    if (this.isDefaultValue(mappedValue)) {
+    if (this.isDefaultValue(value)) {
       return undefined
     }
 
-    return mappedValue
+    return this.request(value)
   }
 
   public getDefaultValue(): SchemaValue {
