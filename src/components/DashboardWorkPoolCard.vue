@@ -100,6 +100,9 @@
 .dashboard-work-pool-card__details { @apply
   p-3
   flex
+  flex-wrap
   justify-between
+  gap-y-2
+  sm:flex-nowrap
 }
 </style>
