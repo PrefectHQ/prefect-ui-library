@@ -1,10 +1,7 @@
 <template>
   <p-card class="dashboard-work-pools-card">
     <p-heading heading="5" class="dashboard-work-pools-card__heading">
-      <span>Work Pools</span>
-      <p-tooltip :text="localization.info.dashboardWorkPoolsCard">
-        <p-icon class="dashboard-work-pools-card__info" icon="QuestionMarkCircleIcon" />
-      </p-tooltip>
+      <span>Active Work Pools</span>
     </p-heading>
     <div class="dashboard-work-pools-card__list">
       <DashboardWorkPoolCard
@@ -58,15 +55,6 @@
 <style>
 .dashboard-work-pools-card__heading { @apply
   mb-4
-  inline-flex
-  items-center
-  gap-2
-}
-
-.dashboard-work-pools-card__info { @apply
-  cursor-help
-  opacity-70
-  hover:opacity-100
 }
 
 .dashboard-work-pools-card__list { @apply
