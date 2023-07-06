@@ -42,7 +42,7 @@ export class SchemaPropertyString extends SchemaPropertyService {
     }
 
     if (this.componentIs(DateInput) || this.componentIs(PDateInput)) {
-      return isString(this.property.default) ? new Date(this.property.default) : null
+      return isString(this.property.default) ? parseISO(this.property.default) : null
     }
 
     if (this.componentIs(JsonInput)) {
