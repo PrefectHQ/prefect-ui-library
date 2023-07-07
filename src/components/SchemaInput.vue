@@ -34,7 +34,6 @@
 
 <script lang="ts" setup>
   import { useValidation } from '@prefecthq/vue-compositions'
-  import { merge } from 'lodash'
   import { computed, ref, watch } from 'vue'
   import { SchemaFormFields } from '@/components'
   import { useReactiveForm } from '@/compositions'
@@ -42,7 +41,7 @@
   import { getSchemaDefaultValues, mapper } from '@/services'
   import { SchemaInputType } from '@/types/schemaInput'
   import { SchemaValues, Schema } from '@/types/schemas'
-  import { fieldRules, isDefined, isEmptyObject, isJson, stringify } from '@/utilities'
+  import { fieldRules, isDefined, isEmptyObject, isJson, isNullish, stringify } from '@/utilities'
 
   const props = defineProps<{
     modelValue: SchemaValues | null | undefined,
@@ -77,9 +76,11 @@
 
   const values = computed({
     get() {
-      const defaultValues = getSchemaDefaultValues(props.schema)
+      if (isNullish(props.modelValue) || isEmptyObject(props.modelValue)) {
+        return getSchemaDefaultValues(props.schema)
+      }
 
-      return merge({}, defaultValues, props.modelValue ?? {})
+      return props.modelValue
     },
     set(values) {
       emit('update:modelValue', values)

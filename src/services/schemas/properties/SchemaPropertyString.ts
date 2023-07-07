@@ -1,13 +1,14 @@
-import { PNumberInput, PSelect, PTextInput } from '@prefecthq/prefect-design'
+import { PNumberInput, PSelect, PTextInput, PDateInput } from '@prefecthq/prefect-design'
+import { format, isValid, parseISO } from 'date-fns'
 import DateInput from '@/components/DateInput.vue'
 import JsonInput from '@/components/JsonInput.vue'
-import { isString, stringifyUnknownJson } from '@/index'
 import { InvalidSchemaValueError } from '@/models'
 import { SchemaPropertyService } from '@/services/schemas/properties/SchemaPropertyService'
 import { SchemaPropertyComponentWithProps } from '@/services/schemas/utilities'
 import { SchemaValue } from '@/types/schemas'
 import { isDate } from '@/utilities/dates'
-import { dateFunctions } from '@/utilities/timezone'
+import { stringifyUnknownJson } from '@/utilities/json'
+import { isString } from '@/utilities/strings'
 import { isEmail, isJson, ValidationMethodFactory } from '@/utilities/validation'
 
 export class SchemaPropertyString extends SchemaPropertyService {
@@ -21,8 +22,10 @@ export class SchemaPropertyString extends SchemaPropertyService {
 
     switch (this.property.format) {
       case 'date':
-        return this.withProps(DateInput)
+        // date uses PDateInput because timezone SHOULD NOT be factored into a date string
+        return this.withProps(PDateInput)
       case 'date-time':
+        // date-time uses DateInput because timezone SHOULD be factored into a date-time string
         return this.withProps(DateInput, { showTime: true })
       case 'json-string':
         return this.withProps(JsonInput)
@@ -38,8 +41,8 @@ export class SchemaPropertyString extends SchemaPropertyService {
       return this.property.default ?? null
     }
 
-    if (this.componentIs(DateInput)) {
-      return isString(this.property.default) ? new Date(this.property.default) : null
+    if (this.componentIs(DateInput) || this.componentIs(PDateInput)) {
+      return isString(this.property.default) ? parseISO(this.property.default) : null
     }
 
     if (this.componentIs(JsonInput)) {
@@ -79,7 +82,7 @@ export class SchemaPropertyString extends SchemaPropertyService {
   }
 
   protected override response(value: SchemaValue): unknown {
-    if (typeof value !== 'string') {
+    if (!isString(value)) {
       throw new InvalidSchemaValueError()
     }
 
@@ -95,16 +98,20 @@ export class SchemaPropertyString extends SchemaPropertyService {
 
   private requestDateValue(value: SchemaValue): SchemaValue {
     if (isDate(value)) {
-      return dateFunctions.format(value, 'yyyy-MM-dd')
+      return format(value, 'yyyy-MM-dd')
     }
 
     return value
   }
 
   private responseDateValue(value: SchemaValue): SchemaValue {
-    const date = dateFunctions.parse(value as string, 'yyyy-MM-dd', new Date())
+    if (!isString(value)) {
+      throw new InvalidSchemaValueError()
+    }
 
-    if (!dateFunctions.isValid(date)) {
+    const date = parseISO(value)
+
+    if (!isValid(date)) {
       return this.invalid()
     }
 
@@ -113,16 +120,20 @@ export class SchemaPropertyString extends SchemaPropertyService {
 
   private requestDateTimeValue(value: SchemaValue): SchemaValue {
     if (isDate(value)) {
-      return dateFunctions.format(value, 'yyyy-MM-dd\'T\'HH:mm:ss.000\'Z\'')
+      return value.toISOString()
     }
 
     return value
   }
 
   private responseDateTimeValue(value: SchemaValue): Date {
-    const date = dateFunctions.parseISO(value as string)
+    if (!isString(value)) {
+      throw new InvalidSchemaValueError()
+    }
 
-    if (!dateFunctions.isValid(date)) {
+    const date = parseISO(value)
+
+    if (!isValid(date)) {
       this.invalid()
     }
 
