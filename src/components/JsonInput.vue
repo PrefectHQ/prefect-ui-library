@@ -1,5 +1,5 @@
 <template>
-  <p-code-input v-model="internalValue" lang="json" class="json-input" v-bind="{ showLineNumbers, minLines }">
+  <p-code-input v-model="json" lang="json" class="json-input" v-bind="{ showLineNumbers, minLines }">
     <template v-if="showFormatButton" #append>
       <p-button class="json-input__prettify-button" size="xs" @click="format">
         Format
@@ -13,8 +13,9 @@
    * @deprecated use [p-code-input](https://main--prefect-design.netlify.app/components/code-input) instead
    * NOTE: the one thing this component has that p-code-input doesn't is the "format" button
    */
-  import { computed } from 'vue'
+  import { ref, watch } from 'vue'
   import { stringify } from '@/utilities/json'
+  import { removeWhitespace } from '@/utilities/strings'
 
   const props = defineProps<{
     minLines?: number,
@@ -27,18 +28,27 @@
     (event: 'update:modelValue', value: string): void,
   }>()
 
-  const internalValue = computed({
-    get() {
-      return props.modelValue ?? ''
-    },
-    set(val: string) {
-      emit('update:modelValue', val)
-    },
+  const json = ref<string>(props.modelValue ?? '')
+
+  watch(() => props.modelValue, value => {
+    if (!matches(value, json.value)) {
+      json.value = value ?? ''
+    }
   })
+
+  watch(json, value => {
+    if (!matches(value, props.modelValue)) {
+      emit('update:modelValue', value)
+    }
+  })
+
+  function matches(valueA: string | undefined, valueB: string | undefined): boolean {
+    return removeWhitespace(valueA ?? '') === removeWhitespace(valueB ?? '')
+  }
 
   const format = (): void => {
     try {
-      internalValue.value = stringify(JSON.parse(internalValue.value))
+      json.value = stringify(JSON.parse(json.value))
     } catch {
       // do nothing
     }
