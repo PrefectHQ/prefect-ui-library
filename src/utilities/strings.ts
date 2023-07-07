@@ -75,3 +75,7 @@ const EMAIL_REGEX = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))
 export function isValidEmailAddress(value: unknown): boolean {
   return typeof value === 'string' && EMAIL_REGEX.test(value)
 }
+
+export function removeWhitespace(value: string): string {
+  return value.replace(/\s/g, '')
+}
