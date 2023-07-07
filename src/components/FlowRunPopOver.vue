@@ -1,5 +1,5 @@
 <template>
-  <PPopOver class="flow-run-pop-over" group="flow-run-pop-over" auto-close>
+  <PPopOver class="flow-run-pop-over" group="flow-run-pop-over" auto-close :placement="placement">
     <template #target="{ open }">
       <div class="flow-run-pop-over__trigger" @mouseover="open" />
     </template>
@@ -11,12 +11,14 @@
 </template>
 
 <script lang="ts" setup>
-  import { PPopOver } from '@prefecthq/prefect-design'
+  import { PPopOver, positions } from '@prefecthq/prefect-design'
   import FlowRunPopoverContent from '@/components/FlowRunPopOverContent.vue'
 
   defineProps<{
     flowRunId: string,
   }>()
+
+  const placement = [positions.bottom, positions.top, positions.right, positions.left]
 </script>
 
 <style>
