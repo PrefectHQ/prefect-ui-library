@@ -18,7 +18,7 @@
     flowRunId: string,
   }>()
 
-  const placement = [positions.bottom, positions.top, positions.right, positions.left]
+  const placement = [positions.top, positions.bottom, positions.right, positions.left]
 </script>
 
 <style>
