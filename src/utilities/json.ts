@@ -9,9 +9,18 @@ export function stringify(value: JsonValue, replacer?: JsonReplacer): string {
 }
 
 export function parseUnknownJson(value: unknown): unknown {
-  if (typeof value === 'string') {
+  // If the incoming value is a string, we attempt to parse it as JSON.
+  if (isString(value)) {
     try {
-      return JSON.parse(value)
+      const parsed = JSON.parse(value)
+
+      // If the parsed value isn't a string, we return it.
+      if (!isString(parsed)) {
+        return parsed
+      }
+
+      // Otherwise, we return the original value, since strings are valid JSON.
+      return value
     } catch {
       // silence is golden
     }
