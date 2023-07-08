@@ -106,10 +106,6 @@ export abstract class SchemaPropertyService {
     const defaults = getSchemaPropertyDefaultValidators(this.property, required)
     const validators = fieldRules(title, ...this.validators)
 
-    if (this.componentIs(JsonInput)) {
-      validators.push(isJson(title))
-    }
-
     return [...validators, ...defaults]
   }
 
