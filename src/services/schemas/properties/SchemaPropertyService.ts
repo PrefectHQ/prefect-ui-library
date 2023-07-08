@@ -1,5 +1,4 @@
 import { SelectOption } from '@prefecthq/prefect-design'
-import { JsonInput } from '@/index'
 import { InvalidSchemaValueError } from '@/models/InvalidSchemaValueError'
 import { getSchemaPropertyAttrs, getSchemaPropertyComponentWithDefaultProps, getSchemaPropertyDefaultValidators, schemaPropertyComponentWithProps, SchemaPropertyComponentWithProps } from '@/services/schemas/utilities'
 import { schemaHas, SchemaProperty, SchemaPropertyInputAttrs, SchemaPropertyMeta, SchemaValue } from '@/types/schemas'
@@ -7,7 +6,7 @@ import { Require } from '@/types/utilities'
 import { sameValue } from '@/utilities'
 import { isNumberArray, isStringArray } from '@/utilities/arrays'
 import { ComponentDefinition } from '@/utilities/components'
-import { fieldRules, isJson, ValidationMethod, ValidationMethodFactory } from '@/utilities/validation'
+import { fieldRules, ValidationMethod, ValidationMethodFactory } from '@/utilities/validation'
 
 export type SchemaPropertyServiceSource = {
   property: SchemaProperty,
