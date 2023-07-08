@@ -14,7 +14,7 @@ export function parseUnknownJson(value: unknown): unknown {
     try {
       const parsed = JSON.parse(value)
 
-      // If the parsed value is a record, we return it.
+      // If the parsed value isn't a string, we return it.
       if (!isString(parsed)) {
         return parsed
       }
