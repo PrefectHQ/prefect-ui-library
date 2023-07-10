@@ -13,6 +13,11 @@ describe('json', () => {
     expect(stringifyUnknownJson('{}')).toBe('{}')
     expect(stringifyUnknownJson(null)).toBe('null')
     expect(stringifyUnknownJson('null')).toBe('null')
+    expect(stringifyUnknownJson([1, 2, 3])).toBe('[1,2,3]')
+    expect(stringifyUnknownJson(['foo', 'bar'])).toBe('["foo","bar"]')
+
+    const date = new Date()
+    expect(stringifyUnknownJson(date)).toBe(`"${date.toISOString()}"`)
 
     // invalid json
     expect(stringifyUnknownJson('"foo')).toBe('"foo')
