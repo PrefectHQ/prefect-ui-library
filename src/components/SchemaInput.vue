@@ -42,6 +42,7 @@
   import { SchemaInputType } from '@/types/schemaInput'
   import { SchemaValues, Schema } from '@/types/schemas'
   import { fieldRules, isDefined, isEmptyObject, isJson, isNullish, stringify } from '@/utilities'
+  import { jsonSafeParse } from '@/utilities/jsonSafeParse'
 
   const props = defineProps<{
     modelValue: SchemaValues | null | undefined,
@@ -109,18 +110,35 @@
     return isEmptyObject(reactiveFormErrors.value)
   })
 
-  watch(inputType, type => {
-    if (type === 'form') {
-      const parsed = JSON.parse(json.value)
+  function syncFormToJson(): void {
+    const mappedValues = toSchemaValuesRequest(values.value)
 
-      values.value = toSchemaValues(parsed)
-      return
+    json.value = stringify(mappedValues)
+  }
+
+  function syncJsonToForm(): void {
+    const { value: parsed, success } = jsonSafeParse(json.value)
+
+    if (success) {
+      values.value = toSchemaValues(parsed as SchemaValues)
+    }
+  }
+
+  watch(inputType, (newType, oldType) => {
+    if (newType === 'form') {
+      return syncJsonToForm
     }
 
-    if (type === 'json') {
-      const mappedValues = toSchemaValuesRequest(values.value)
+    if (newType === 'json') {
+      return syncFormToJson()
+    }
 
-      json.value = stringify(mappedValues)
+    if (oldType === 'form') {
+      return syncFormToJson()
+    }
+
+    if (oldType === 'json') {
+      return syncJsonToForm()
     }
   })
 </script>
