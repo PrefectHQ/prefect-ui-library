@@ -99,19 +99,6 @@
     return mapper.map('SchemaValuesResponse', { values, schema: props.schema }, 'SchemaValues')
   }
 
-  function shouldSync(values: SchemaValues, json: string): boolean {
-    try {
-      const valuesString = JSON.stringify(values)
-      const jsonRequest = JSON.parse(json)
-      const mappedJson = toSchemaValues(jsonRequest)
-      const jsonString = JSON.stringify(mappedJson)
-
-      return valuesString !== jsonString
-    } catch {
-      return false
-    }
-  }
-
   const { validate: validateReactiveForm, errors: reactiveFormErrors } = useReactiveForm(values, {
     initialValues: values.value,
   })
@@ -122,19 +109,18 @@
     return isEmptyObject(reactiveFormErrors.value)
   })
 
-  watch(values, values => {
-    if (shouldSync(values, json.value)) {
-      const mappedValues = toSchemaValuesRequest(values)
-
-      json.value = stringify(mappedValues)
-    }
-  })
-
-  watch(json, json => {
-    if (shouldSync(values.value, json)) {
-      const parsed = JSON.parse(json)
+  watch(inputType, type => {
+    if (type === 'form') {
+      const parsed = JSON.parse(json.value)
 
       values.value = toSchemaValues(parsed)
+      return
+    }
+
+    if (type === 'json') {
+      const mappedValues = toSchemaValuesRequest(values.value)
+
+      json.value = stringify(mappedValues)
     }
   })
 </script>
