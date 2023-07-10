@@ -7,7 +7,7 @@
 <script lang="ts" setup>
   import { computed } from 'vue'
   import { Artifact } from '@/models'
-  import { stringifyUnknownJson } from '@/utilities/json'
+  import { stringifyUnknownJson } from '@/utilities/stringifyUnknownJson'
 
   const props = defineProps<{
     artifact: Artifact,

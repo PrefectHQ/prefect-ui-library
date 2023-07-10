@@ -3,8 +3,7 @@ import { InvalidSchemaValueError } from '@/models'
 import { SchemaPropertyService } from '@/services/schemas/properties/SchemaPropertyService'
 import { SchemaPropertyComponentWithProps, getSchemaPropertyRequestValue, getSchemaPropertyResponseValue } from '@/services/schemas/utilities'
 import { SchemaValue, isSchemaValues, SchemaValues } from '@/types/schemas'
-import { isEmptyObject, isNullish, mapValues } from '@/utilities'
-import { parseUnknownJson, stringifyUnknownJson } from '@/utilities/json'
+import { isEmptyObject, isNullish, mapValues, parseUnknownJson, stringifyUnknownJson } from '@/utilities'
 
 export class SchemaPropertyObject extends SchemaPropertyService {
 
