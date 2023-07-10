@@ -12,7 +12,8 @@ type JsonReviver = JsonParse[1]
 const ISO_DATE_REGEX = /\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d\.\d+([+-][0-2]\d:[0-5]\d|Z)/
 
 const reviver: JsonReviver = (key, value) => {
-  if (ISO_DATE_REGEX.test(value)) {
+  // string check makes this significantly faster
+  if (isString(value) && ISO_DATE_REGEX.test(value)) {
     return parseISO(value)
   }
 
