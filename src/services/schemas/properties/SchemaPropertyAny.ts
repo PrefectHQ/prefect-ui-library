@@ -3,7 +3,9 @@ import { getSchemaValueDefinition, schemaPropertyServiceFactory } from '@/servic
 import { SchemaPropertyService } from '@/services/schemas/properties/SchemaPropertyService'
 import { getSchemaPropertyDefaultValue, SchemaPropertyComponentWithProps } from '@/services/schemas/utilities'
 import { SchemaValue } from '@/types/schemas'
-import { isEmptyObject, parseUnknownJson, sameValue, stringifyUnknownJson } from '@/utilities'
+import { isEmptyObject, sameValue } from '@/utilities'
+import { jsonSafeParse } from '@/utilities/jsonSafeParse'
+import { jsonSafeStringify } from '@/utilities/jsonSafeStringify'
 
 export class SchemaPropertyAny extends SchemaPropertyService {
   protected get default(): unknown {
@@ -16,7 +18,7 @@ export class SchemaPropertyAny extends SchemaPropertyService {
     }
 
     if (this.componentIs(JsonInput)) {
-      return stringifyUnknownJson(defaultValue) ?? ''
+      return jsonSafeStringify(defaultValue).value ?? ''
     }
 
     return defaultValue
@@ -36,7 +38,9 @@ export class SchemaPropertyAny extends SchemaPropertyService {
       return this.referenceRequest(value)
     }
 
-    return parseUnknownJson(value)
+    const { value: request } = jsonSafeParse(value)
+
+    return request
   }
 
   protected response(value: SchemaValue): unknown {
@@ -44,7 +48,9 @@ export class SchemaPropertyAny extends SchemaPropertyService {
       return this.referenceResponse(value)
     }
 
-    return stringifyUnknownJson(value)
+    const { value: response } = jsonSafeStringify(value)
+
+    return response
   }
 
   private referenceResponse(value: SchemaValue): SchemaValue {
