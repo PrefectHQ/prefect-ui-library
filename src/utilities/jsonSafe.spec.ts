@@ -16,6 +16,7 @@ const valid = [
   ['null', null],
   ['[1,2,3]', [1, 2, 3]],
   ['["foo","bar"]', ['foo', 'bar']],
+  ['"\\""', '"'],
   [`"${date.toISOString()}"`, date],
 ] as const
 
