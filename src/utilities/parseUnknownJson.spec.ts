@@ -10,9 +10,11 @@ describe('json', () => {
     expect(parseUnknownJson('"foo"')).toBe('"foo"')
     expect(parseUnknownJson('{"foo":"bar"}')).toMatchObject({ foo: 'bar' })
     expect(parseUnknownJson('{}')).toMatchObject({})
+    expect(parseUnknownJson('null')).toBe(null)
 
     // invalid json
     expect(parseUnknownJson('"foo')).toBe('"foo')
+    expect(parseUnknownJson('{ "foo": ')).toBe('{ "foo": ')
   })
 
 })

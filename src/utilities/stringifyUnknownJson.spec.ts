@@ -7,13 +7,16 @@ describe('json', () => {
     // valid json
     expect(stringifyUnknownJson(true)).toBe('true')
     expect(stringifyUnknownJson(1)).toBe('1')
-    expect(stringifyUnknownJson('foo')).toBe('"foo"')
+    expect(stringifyUnknownJson('1')).toBe('1')
+    expect(stringifyUnknownJson('foo')).toBe('foo')
     expect(stringifyUnknownJson({ foo: 'bar' })).toBe('{"foo":"bar"}')
     expect(stringifyUnknownJson('{}')).toBe('{}')
+    expect(stringifyUnknownJson(null)).toBe('null')
+    expect(stringifyUnknownJson('null')).toBe('null')
 
     // invalid json
-    // eslint-disable-next-line quotes
-    expect(stringifyUnknownJson('"foo')).toBe('"\\"foo"')
+    expect(stringifyUnknownJson('"foo')).toBe('"foo')
+    expect(stringifyUnknownJson('{ "foo": ')).toBe('{ "foo": ')
   })
 
 })
