@@ -29,7 +29,7 @@
   import { localization } from '@/localization'
   import { TableArtifact } from '@/models'
   import { isTableArtifactData, isArrayOfMaps, isMapOfArrays } from '@/types/artifact'
-  import { parseUnknownJson } from '@/utilities/json'
+  import { parseUnknownJson } from '@/utilities/parseUnknownJson'
 
   const props = defineProps<{
     artifact: TableArtifact,

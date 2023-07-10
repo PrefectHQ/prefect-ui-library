@@ -7,7 +7,7 @@ import { SchemaPropertyService } from '@/services/schemas/properties/SchemaPrope
 import { SchemaPropertyComponentWithProps } from '@/services/schemas/utilities'
 import { SchemaValue } from '@/types/schemas'
 import { isDate } from '@/utilities/dates'
-import { stringifyUnknownJson } from '@/utilities/json'
+import { stringifyUnknownJson } from '@/utilities/stringifyUnknownJson'
 import { isString } from '@/utilities/strings'
 import { isEmail, isJson, ValidationMethodFactory } from '@/utilities/validation'
 

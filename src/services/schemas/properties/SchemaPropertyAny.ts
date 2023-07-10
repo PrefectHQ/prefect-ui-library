@@ -3,8 +3,7 @@ import { getSchemaValueDefinition, schemaPropertyServiceFactory } from '@/servic
 import { SchemaPropertyService } from '@/services/schemas/properties/SchemaPropertyService'
 import { getSchemaPropertyDefaultValue, SchemaPropertyComponentWithProps } from '@/services/schemas/utilities'
 import { SchemaValue } from '@/types/schemas'
-import { isEmptyObject, sameValue } from '@/utilities'
-import { parseUnknownJson, stringifyUnknownJson } from '@/utilities/json'
+import { isEmptyObject, parseUnknownJson, sameValue, stringifyUnknownJson } from '@/utilities'
 
 export class SchemaPropertyAny extends SchemaPropertyService {
   protected get default(): unknown {

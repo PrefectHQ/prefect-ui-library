@@ -3,7 +3,8 @@ import { JsonInput } from '@/components'
 import { SchemaPropertyService } from '@/services/schemas/properties/SchemaPropertyService'
 import { SchemaPropertyComponentWithProps } from '@/services/schemas/utilities'
 import { SchemaValue } from '@/types/schemas'
-import { parseUnknownJson, stringifyUnknownJson } from '@/utilities/json'
+import { parseUnknownJson } from '@/utilities/parseUnknownJson'
+import { stringifyUnknownJson } from '@/utilities/stringifyUnknownJson'
 
 export class SchemaPropertyArray extends SchemaPropertyService {
 

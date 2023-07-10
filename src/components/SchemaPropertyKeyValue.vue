@@ -21,7 +21,7 @@
   import SchemaPropertyBlockKeyValue from '@/components/SchemaPropertyBlockKeyValue.vue'
   import { isBlockDocumentValue } from '@/models'
   import { SchemaProperty, SchemaValue } from '@/types/schemas'
-  import { stringifyUnknownJson } from '@/utilities/json'
+  import { stringifyUnknownJson } from '@/utilities/stringifyUnknownJson'
 
   const props = defineProps<{
     property: SchemaProperty,

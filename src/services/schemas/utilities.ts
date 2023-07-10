@@ -1,10 +1,11 @@
 import { JsonInput } from '@/components'
-import { isRecord } from '@/index'
 import { isBlockDocumentReferenceValue, isBlockDocumentValue } from '@/models'
 import { schemaPropertyServiceFactory } from '@/services/schemas/properties'
 import { SchemaProperty, SchemaPropertyInputAttrs, Schema, SchemaValues, SchemaValue, schemaHas, SchemaPropertyAnyOf, SchemaPropertyAllOf } from '@/types/schemas'
 import { withPropsWithoutExcludedFactory } from '@/utilities/components'
-import { parseUnknownJson, stringify } from '@/utilities/json'
+import { stringify } from '@/utilities/json'
+import { isRecord } from '@/utilities/object'
+import { parseUnknownJson } from '@/utilities/parseUnknownJson'
 import { isGreaterThan, isGreaterThanOrEqual, isLessThan, isLessThanOrEqual, isRequired, fieldRules, ValidationMethod, ValidationMethodFactory } from '@/utilities/validation'
 
 export type SchemaPropertyComponentWithProps = ReturnType<typeof schemaPropertyComponentWithProps> | null
