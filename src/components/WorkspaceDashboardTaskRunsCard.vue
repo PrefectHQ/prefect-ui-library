@@ -97,7 +97,7 @@
   })
   const runningTasksSubscription = useSubscription(api.taskRuns.getTaskRunsCount, [runningTasksFilter], options)
   const running = computed(() => runningTasksSubscription.response)
-  const runningPercentage = computed(() => getPercent(failed.value, total.value))
+  const runningPercentage = computed(() => getPercent(running.value, total.value))
 
   const historyFilter = computed(() => mapper.map('WorkspaceDashboardFilter', props.filter, 'TaskRunsHistoryFilter'))
   const historySubscription = useSubscription(api.taskRuns.getTaskRunsHistory, [historyFilter], options)
