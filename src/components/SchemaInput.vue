@@ -14,7 +14,7 @@
 
         <template v-else-if="inputType === 'json'">
           <p-label :state="jsonState" :message="jsonError">
-            <p-code-input v-model="json" lang="json" :min-lines="3" show-line-numbers />
+            <p-code-input v-model="json" lang="json" :min-lines="3" show-line-numbers @focusout="syncJsonToForm" />
           </p-label>
         </template>
 
@@ -42,6 +42,7 @@
   import { SchemaInputType } from '@/types/schemaInput'
   import { SchemaValues, Schema } from '@/types/schemas'
   import { fieldRules, isDefined, isEmptyObject, isJson, isNullish, stringify } from '@/utilities'
+  import { jsonSafeParse } from '@/utilities/jsonSafeParse'
 
   const props = defineProps<{
     modelValue: SchemaValues | null | undefined,
@@ -99,42 +100,49 @@
     return mapper.map('SchemaValuesResponse', { values, schema: props.schema }, 'SchemaValues')
   }
 
-  function shouldSync(values: SchemaValues, json: string): boolean {
-    try {
-      const valuesString = JSON.stringify(values)
-      const jsonRequest = JSON.parse(json)
-      const mappedJson = toSchemaValues(jsonRequest)
-      const jsonString = JSON.stringify(mappedJson)
-
-      return valuesString !== jsonString
-    } catch {
-      return false
-    }
-  }
-
   const { validate: validateReactiveForm, errors: reactiveFormErrors } = useReactiveForm(values, {
     initialValues: values.value,
   })
 
   useValidation(values, localization.info.values, async () => {
+    if (inputType.value === 'json') {
+      return true
+    }
+
     await validateReactiveForm()
 
     return isEmptyObject(reactiveFormErrors.value)
   })
 
-  watch(values, values => {
-    if (shouldSync(values, json.value)) {
-      const mappedValues = toSchemaValuesRequest(values)
+  function syncFormToJson(): void {
+    const mappedValues = toSchemaValuesRequest(values.value)
 
-      json.value = stringify(mappedValues)
+    json.value = stringify(mappedValues)
+  }
+
+  function syncJsonToForm(): void {
+    const { value: parsed, success } = jsonSafeParse(json.value)
+
+    if (success) {
+      values.value = toSchemaValues(parsed as SchemaValues)
     }
-  })
+  }
 
-  watch(json, json => {
-    if (shouldSync(values.value, json)) {
-      const parsed = JSON.parse(json)
+  watch(inputType, (newType, oldType) => {
+    if (newType === 'form') {
+      return syncJsonToForm()
+    }
 
-      values.value = toSchemaValues(parsed)
+    if (newType === 'json') {
+      return syncFormToJson()
+    }
+
+    if (oldType === 'form') {
+      return syncFormToJson()
+    }
+
+    if (oldType === 'json') {
+      return syncJsonToForm()
     }
   })
 </script>

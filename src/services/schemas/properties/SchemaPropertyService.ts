@@ -1,4 +1,5 @@
 import { SelectOption } from '@prefecthq/prefect-design'
+import { JsonInput } from '@/components'
 import { InvalidSchemaValueError } from '@/models/InvalidSchemaValueError'
 import { getSchemaPropertyAttrs, getSchemaPropertyComponentWithDefaultProps, getSchemaPropertyDefaultValidators, schemaPropertyComponentWithProps, SchemaPropertyComponentWithProps } from '@/services/schemas/utilities'
 import { schemaHas, SchemaProperty, SchemaPropertyInputAttrs, SchemaPropertyMeta, SchemaValue } from '@/types/schemas'
@@ -6,7 +7,7 @@ import { Require } from '@/types/utilities'
 import { sameValue } from '@/utilities'
 import { isNumberArray, isStringArray } from '@/utilities/arrays'
 import { ComponentDefinition } from '@/utilities/components'
-import { fieldRules, ValidationMethod, ValidationMethodFactory } from '@/utilities/validation'
+import { fieldRules, isJson, ValidationMethod, ValidationMethodFactory } from '@/utilities/validation'
 
 export type SchemaPropertyServiceSource = {
   property: SchemaProperty,
@@ -104,6 +105,10 @@ export abstract class SchemaPropertyService {
     const { title = 'Property' } = this.property
     const defaults = getSchemaPropertyDefaultValidators(this.property, required)
     const validators = fieldRules(title, ...this.validators)
+
+    if (this.componentIs(JsonInput)) {
+      validators.push(isJson(title))
+    }
 
     return [...validators, ...defaults]
   }
