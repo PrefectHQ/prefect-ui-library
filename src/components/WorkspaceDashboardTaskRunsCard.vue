@@ -206,7 +206,7 @@
     let unit = 1
 
     while (unit <= MAX_ITERATIONS) {
-      if (maxrunning > maxValue.value / unit) {
+      if (maxRunning > maxValue.value / unit) {
         return maxRunning * unit
       }
 
