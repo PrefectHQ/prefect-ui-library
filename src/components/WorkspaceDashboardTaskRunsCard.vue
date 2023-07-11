@@ -6,11 +6,13 @@
     <div class="workspace-dashboard-task-runs-card__summary">
       <DashboardStatistic v-if="isDefined(total)" :value="total" primary />
       <DashboardStatistic v-if="isDefined(completed)" :value="completed" label="Completed" :meta="completedPercentage" class="workspace-dashboard-task-runs-card__statistic--completed" />
-      <DashboardStatistic v-if="isDefined(failed)" :value="failed" label="Failed or Crashed" :meta="failedPercentage" class="workspace-dashboard-task-runs-card__statistic--failed" />
+      <DashboardStatistic v-if="isDefined(running)" :value="completed" label="Completed" :meta="completedPercentage" class="workspace-dashboard-task-runs-card__statistic--completed" />
+      <DashboardStatistic v-if="isDefined(failed)" :value="running" label="Running" :meta="runningPercentage" class="workspace-dashboard-task-runs-card__statistic--running" />
     </div>
 
     <div class="workspace-dashboard-task-runs-card__chart-container">
       <LineChart :data="taskRunsChartData.failed" :options="{ maxValue: maxFailedValue }" class="workspace-dashboard-task-runs-card__chart workspace-dashboard-task-runs-card__chart--failed" />
+      <LineChart :data="taskRunsChartData.running" :options="{ maxValue: maxRunningValue }" class="workspace-dashboard-task-runs-card__chart workspace-dashboard-task-runs-card__chart--running" />
       <LineChart :data="taskRunsChartData.completed" :options="{ maxValue: maxCompletedValue }" class="workspace-dashboard-task-runs-card__chart workspace-dashboard-task-runs-card__chart--completed" />
     </div>
   </p-card>
@@ -42,7 +44,7 @@
     const stateFilter: TaskRunsFilter = {
       taskRuns: {
         state: {
-          type: ['COMPLETED', 'FAILED', 'CRASHED'],
+          type: ['COMPLETED', 'FAILED', 'CRASHED', 'RUNNING'],
         },
       },
     }
@@ -82,6 +84,21 @@
   const failed = computed(() => failedTasksSubscription.response)
   const failedPercentage = computed(() => getPercent(failed.value, total.value))
 
+  const runningTasksFilter = computed<TaskRunsFilter>(() => {
+    const stateFilter: TaskRunsFilter = {
+      taskRuns: {
+        state: {
+          type: ['RUNNING'],
+        },
+      },
+    }
+
+    return merge({}, tasksFilter.value, stateFilter)
+  })
+  const runningTasksSubscription = useSubscription(api.taskRuns.getTaskRunsCount, [failedTasksFilter], options)
+  const running = computed(() => failedTasksSubscription.response)
+  const runningPercentage = computed(() => getPercent(failed.value, total.value))
+
   const historyFilter = computed(() => mapper.map('WorkspaceDashboardFilter', props.filter, 'TaskRunsHistoryFilter'))
   const historySubscription = useSubscription(api.taskRuns.getTaskRunsHistory, [historyFilter], options)
   const history = computed(() => historySubscription.response ?? [])
@@ -93,33 +110,40 @@
     history.value.forEach(item => {
       let completedCount = 0
       let failedCount = 0
+      let runningCount = 0
 
       item.states.forEach(state => {
         if (state.stateType === 'COMPLETED') {
           completedCount += state.countRuns
         } else if (['FAILED', 'CRASHED'].includes(state.stateType)) {
           failedCount += state.countRuns
+        } else if (['RUNNING'].includes(state.stateType)) {
+          runningCount += state.countRuns
         }
       })
 
       const [, completedBase = 0] = completed.at(-1) ?? []
       const [, failedBase = 0] = failed.at(-1) ?? []
+      const [, runningBase = 0] = running.value.at(-1) ?? []
 
       completed.push([item.intervalStart, completedBase + completedCount])
       failed.push([item.intervalStart, failedBase + failedCount])
+      running.value.push([item.intervalStart, runningBase + runningCount])
     })
 
     return {
       completed,
       failed,
+      running,
     }
   })
 
   const maxValue = computed(() => {
     const completedValues = taskRunsChartData.value.completed.map(([, y]) => y)
     const failedValues = taskRunsChartData.value.failed.map(([, y]) => y)
+    const runningValues = taskRunsChartData.value.running.map(([, y]) => y)
     const minValue = 1
-    const max = Math.max(...completedValues, ...failedValues, minValue)
+    const max = Math.max(...completedValues, ...failedValues, ...runningValues, minValue)
 
     return max
   })
@@ -170,6 +194,28 @@
     return maxFailed * unit
   })
 
+  const maxRunningValue = computed(() => {
+    const runningValues = taskRunsChartData.value.running.map(([, y]) => y)
+    const minValue = 1
+    const maxRunning = Math.max(...runningValues, minValue)
+
+    if (maxRunning === maxValue.value) {
+      return maxRunning
+    }
+
+    let unit = 1
+
+    while (unit <= MAX_ITERATIONS) {
+      if (maxrunning > maxValue.value / unit) {
+        return maxRunning * unit
+      }
+
+      unit++
+    }
+
+    return maxRunning * unit
+  })
+
   function getPercent(x: number | undefined, y: number | undefined): string | undefined {
     if (isDefined(x) && isDefined(y)) {
       const percent = toPercent(x, y)
@@ -204,6 +250,10 @@
 
 .workspace-dashboard-task-runs-card__statistic--failed .dashboard-statistic__value { @apply
   text-state-failed-700
+}
+
+.workspace-dashboard-task-runs-card__statistic--running .dashboard-statistic__value { @apply
+  text-state-running-700
 }
 
 .workspace-dashboard-task-runs-card__chart-container { @apply
