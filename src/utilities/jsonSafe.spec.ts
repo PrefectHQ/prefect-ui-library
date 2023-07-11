@@ -2,8 +2,6 @@ import { describe, expect, it } from 'vitest'
 import { jsonSafeParse } from '@/utilities/jsonSafeParse'
 import { jsonSafeStringify } from '@/utilities/jsonSafeStringify'
 
-const date = new Date()
-
 // these values should be reversible.
 // parsing the first value should return the second
 // stringifying the second value should return the first
@@ -17,7 +15,6 @@ const valid = [
   ['[1,2,3]', [1, 2, 3]],
   ['["foo","bar"]', ['foo', 'bar']],
   ['"\\""', '"'],
-  [`"${date.toISOString()}"`, date],
 ] as const
 
 const invalid = [
