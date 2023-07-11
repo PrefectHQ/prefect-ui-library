@@ -14,7 +14,7 @@
 
         <template v-else-if="inputType === 'json'">
           <p-label :state="jsonState" :message="jsonError">
-            <p-code-input v-model="json" lang="json" :min-lines="3" show-line-numbers />
+            <p-code-input v-model="json" lang="json" :min-lines="3" show-line-numbers @focusout="syncJsonToForm" />
           </p-label>
         </template>
 
@@ -105,6 +105,10 @@
   })
 
   useValidation(values, localization.info.values, async () => {
+    if (inputType.value === 'json') {
+      return true
+    }
+
     await validateReactiveForm()
 
     return isEmptyObject(reactiveFormErrors.value)
