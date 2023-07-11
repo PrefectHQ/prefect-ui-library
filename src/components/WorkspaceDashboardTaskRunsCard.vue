@@ -6,8 +6,8 @@
     <div class="workspace-dashboard-task-runs-card__summary">
       <DashboardStatistic v-if="isDefined(total)" :value="total" primary />
       <DashboardStatistic v-if="isDefined(completed)" :value="completed" label="Completed" :meta="completedPercentage" class="workspace-dashboard-task-runs-card__statistic--completed" />
-      <DashboardStatistic v-if="isDefined(running)" :value="completed" label="Completed" :meta="completedPercentage" class="workspace-dashboard-task-runs-card__statistic--completed" />
-      <DashboardStatistic v-if="isDefined(failed)" :value="running" label="Running" :meta="runningPercentage" class="workspace-dashboard-task-runs-card__statistic--running" />
+      <DashboardStatistic v-if="isDefined(running)" :value="running" label="Running" :meta="runningPercentage" class="workspace-dashboard-task-runs-card__statistic--running" />
+      <DashboardStatistic v-if="isDefined(failed)" :value="failed" label="Failed" :meta="failedPercentage" class="workspace-dashboard-task-runs-card__statistic--failed" />
     </div>
 
     <div class="workspace-dashboard-task-runs-card__chart-container">
@@ -95,8 +95,8 @@
 
     return merge({}, tasksFilter.value, stateFilter)
   })
-  const runningTasksSubscription = useSubscription(api.taskRuns.getTaskRunsCount, [failedTasksFilter], options)
-  const running = computed(() => failedTasksSubscription.response)
+  const runningTasksSubscription = useSubscription(api.taskRuns.getTaskRunsCount, [runningTasksFilter], options)
+  const running = computed(() => runningTasksSubscription.response)
   const runningPercentage = computed(() => getPercent(failed.value, total.value))
 
   const historyFilter = computed(() => mapper.map('WorkspaceDashboardFilter', props.filter, 'TaskRunsHistoryFilter'))
@@ -281,6 +281,18 @@
 
 .workspace-dashboard-task-runs-card__chart--completed .line-chart__gradient-stop {
   stop-color: theme('colors.green.300');
+}
+
+.workspace-dashboard-task-runs-card__chart--running .line-chart__path {
+  stroke: theme('colors.blue.500');
+}
+
+.dark .workspace-dashboard-task-runs-card__chart--running .line-chart__gradient-stop {
+  stop-color: theme('colors.blue.500');
+}
+
+.workspace-dashboard-task-runs-card__chart--running .line-chart__gradient-stop {
+  stop-color: theme('colors.blue.300');
 }
 
 .workspace-dashboard-task-runs-card__chart--failed .line-chart__path {
