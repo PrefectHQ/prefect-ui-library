@@ -9,6 +9,8 @@
 </template>
 
 <script lang="ts" setup>
+  import { useWizardStep } from '@prefecthq/prefect-design'
+  import { useValidationObserver } from '@prefecthq/vue-compositions'
   import { computed, reactive } from 'vue'
   import { WorkPoolBaseJobTemplateFormSection } from '@/components'
   import { localization } from '@/localization'
@@ -35,6 +37,10 @@
       emit('update:workPool', value)
     },
   })
+
+  const { validate } = useValidationObserver()
+  const { defineValidate } = useWizardStep()
+  defineValidate(validate)
 
   const baseJobTemplatesMap = reactive(new Map<string, WorkerBaseJobTemplate>())
   const baseJobTemplate = computed<WorkerBaseJobTemplate>({
