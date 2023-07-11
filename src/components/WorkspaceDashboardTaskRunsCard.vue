@@ -12,7 +12,6 @@
 
     <div class="workspace-dashboard-task-runs-card__chart-container">
       <LineChart :data="taskRunsChartData.failed" :options="{ maxValue: maxFailedValue }" class="workspace-dashboard-task-runs-card__chart workspace-dashboard-task-runs-card__chart--failed" />
-      <LineChart :data="taskRunsChartData.running" :options="{ maxValue: maxRunningValue }" class="workspace-dashboard-task-runs-card__chart workspace-dashboard-task-runs-card__chart--running" />
       <LineChart :data="taskRunsChartData.completed" :options="{ maxValue: maxCompletedValue }" class="workspace-dashboard-task-runs-card__chart workspace-dashboard-task-runs-card__chart--completed" />
     </div>
   </p-card>
@@ -106,29 +105,25 @@
   const taskRunsChartData = computed(() => {
     const completed: LineChartData = []
     const failed: LineChartData = []
+    const running: LineChartData = []
 
     history.value.forEach(item => {
       let completedCount = 0
       let failedCount = 0
-      let runningCount = 0
 
       item.states.forEach(state => {
         if (state.stateType === 'COMPLETED') {
           completedCount += state.countRuns
         } else if (['FAILED', 'CRASHED'].includes(state.stateType)) {
           failedCount += state.countRuns
-        } else if (['RUNNING'].includes(state.stateType)) {
-          runningCount += state.countRuns
         }
       })
 
       const [, completedBase = 0] = completed.at(-1) ?? []
       const [, failedBase = 0] = failed.at(-1) ?? []
-      const [, runningBase = 0] = running.value.at(-1) ?? []
 
       completed.push([item.intervalStart, completedBase + completedCount])
       failed.push([item.intervalStart, failedBase + failedCount])
-      running.value.push([item.intervalStart, runningBase + runningCount])
     })
 
     return {
@@ -141,9 +136,8 @@
   const maxValue = computed(() => {
     const completedValues = taskRunsChartData.value.completed.map(([, y]) => y)
     const failedValues = taskRunsChartData.value.failed.map(([, y]) => y)
-    const runningValues = taskRunsChartData.value.running.map(([, y]) => y)
     const minValue = 1
-    const max = Math.max(...completedValues, ...failedValues, ...runningValues, minValue)
+    const max = Math.max(...completedValues, ...failedValues, minValue)
 
     return max
   })
@@ -192,28 +186,6 @@
     }
 
     return maxFailed * unit
-  })
-
-  const maxRunningValue = computed(() => {
-    const runningValues = taskRunsChartData.value.running.map(([, y]) => y)
-    const minValue = 1
-    const maxRunning = Math.max(...runningValues, minValue)
-
-    if (maxRunning === maxValue.value) {
-      return maxRunning
-    }
-
-    let unit = 1
-
-    while (unit <= MAX_ITERATIONS) {
-      if (maxRunning > maxValue.value / unit) {
-        return maxRunning * unit
-      }
-
-      unit++
-    }
-
-    return maxRunning * unit
   })
 
   function getPercent(x: number | undefined, y: number | undefined): string | undefined {
@@ -281,18 +253,6 @@
 
 .workspace-dashboard-task-runs-card__chart--completed .line-chart__gradient-stop {
   stop-color: theme('colors.green.300');
-}
-
-.workspace-dashboard-task-runs-card__chart--running .line-chart__path {
-  stroke: theme('colors.blue.500');
-}
-
-.dark .workspace-dashboard-task-runs-card__chart--running .line-chart__gradient-stop {
-  stop-color: theme('colors.blue.500');
-}
-
-.workspace-dashboard-task-runs-card__chart--running .line-chart__gradient-stop {
-  stop-color: theme('colors.blue.300');
 }
 
 .workspace-dashboard-task-runs-card__chart--failed .line-chart__path {
