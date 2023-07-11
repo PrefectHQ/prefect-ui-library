@@ -126,7 +126,7 @@
 
   watch(inputType, (newType, oldType) => {
     if (newType === 'form') {
-      return syncJsonToForm
+      return syncJsonToForm()
     }
 
     if (newType === 'json') {
