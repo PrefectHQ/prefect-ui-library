@@ -216,7 +216,7 @@
   gap-4
   auto-rows-max
   overflow-hidden
-  pb-20
+  pb-8
 }
 
 .workspace-dashboard-task-runs-card__summary { @apply
