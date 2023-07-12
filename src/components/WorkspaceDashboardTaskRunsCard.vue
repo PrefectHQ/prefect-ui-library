@@ -216,11 +216,14 @@
   gap-4
   auto-rows-max
   overflow-hidden
+  pb-8
 }
 
 .workspace-dashboard-task-runs-card__summary { @apply
   grid
   gap-1
+  relative
+  z-10
 }
 
 .workspace-dashboard-task-runs-card__statistic--completed .dashboard-statistic__value { @apply
@@ -237,17 +240,20 @@
 }
 
 .workspace-dashboard-task-runs-card__chart-container { @apply
-  relative
+  absolute
   min-h-0
   h-16
+  left-0
+  right-0
+  bottom-4
 }
 
 .workspace-dashboard-task-runs-card__chart { @apply
   absolute
   min-h-0
-  -left-8
+  left-0
   top-0
-  -right-8
+  right-0
   bottom-0
 }
 
