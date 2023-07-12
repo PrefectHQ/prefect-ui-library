@@ -5,9 +5,9 @@
     </p-heading>
     <div class="workspace-dashboard-task-runs-card__summary">
       <DashboardStatistic v-if="isDefined(total)" :value="total" primary />
+      <DashboardStatistic v-if="isDefined(running) && running > 0" :value="running" label="Running" class="workspace-dashboard-task-runs-card__statistic--running" />
       <DashboardStatistic v-if="isDefined(completed)" :value="completed" label="Completed" :meta="completedPercentage" class="workspace-dashboard-task-runs-card__statistic--completed" />
-      <DashboardStatistic v-if="isDefined(running)" :value="running" label="Running" :meta="runningPercentage" class="workspace-dashboard-task-runs-card__statistic--running" />
-      <DashboardStatistic v-if="isDefined(failed)" :value="failed" label="Failed" :meta="failedPercentage" class="workspace-dashboard-task-runs-card__statistic--failed" />
+      <DashboardStatistic v-if="isDefined(failed) && failed > 0" :value="failed" label="Failed" :meta="failedPercentage" class="workspace-dashboard-task-runs-card__statistic--failed" />
     </div>
 
     <div class="workspace-dashboard-task-runs-card__chart-container">
@@ -52,6 +52,15 @@
   })
   const allTasksSubscription = useSubscription(api.taskRuns.getTaskRunsCount, [allTasksFilter], options)
   const total = computed(() => allTasksSubscription.response)
+  const percentComparisonTotal = computed(() => {
+    let comparisonTotal = total.value ?? 0
+
+    if (running.value) {
+      comparisonTotal = comparisonTotal - running.value
+    }
+
+    return comparisonTotal
+  })
 
   const completedTasksFilter = computed<TaskRunsFilter>(() => {
     const stateFilter: TaskRunsFilter = {
@@ -66,7 +75,7 @@
   })
   const completedTasksSubscription = useSubscription(api.taskRuns.getTaskRunsCount, [completedTasksFilter], options)
   const completed = computed(() => completedTasksSubscription.response)
-  const completedPercentage = computed(() => getPercent(completed.value, total.value))
+  const completedPercentage = computed(() => getPercent(completed.value, percentComparisonTotal.value))
 
   const failedTasksFilter = computed<TaskRunsFilter>(() => {
     const stateFilter: TaskRunsFilter = {
@@ -81,7 +90,7 @@
   })
   const failedTasksSubscription = useSubscription(api.taskRuns.getTaskRunsCount, [failedTasksFilter], options)
   const failed = computed(() => failedTasksSubscription.response)
-  const failedPercentage = computed(() => getPercent(failed.value, total.value))
+  const failedPercentage = computed(() => getPercent(failed.value, percentComparisonTotal.value))
 
   const runningTasksFilter = computed<TaskRunsFilter>(() => {
     const stateFilter: TaskRunsFilter = {
@@ -96,7 +105,6 @@
   })
   const runningTasksSubscription = useSubscription(api.taskRuns.getTaskRunsCount, [runningTasksFilter], options)
   const running = computed(() => runningTasksSubscription.response)
-  const runningPercentage = computed(() => getPercent(running.value, total.value))
 
   const historyFilter = computed(() => mapper.map('WorkspaceDashboardFilter', props.filter, 'TaskRunsHistoryFilter'))
   const historySubscription = useSubscription(api.taskRuns.getTaskRunsHistory, [historyFilter], options)
@@ -198,7 +206,6 @@
     }
 
     return undefined
-
   }
 </script>
 
@@ -225,7 +232,8 @@
 }
 
 .workspace-dashboard-task-runs-card__statistic--running .dashboard-statistic__value { @apply
-  text-state-running-700
+  text-state-running-500
+  dark:text-state-running-400
 }
 
 .workspace-dashboard-task-runs-card__chart-container { @apply
