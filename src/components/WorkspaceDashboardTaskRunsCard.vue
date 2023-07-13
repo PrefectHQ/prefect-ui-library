@@ -216,14 +216,12 @@
   gap-4
   auto-rows-max
   overflow-hidden
-  pb-8
+  pb-20
 }
 
 .workspace-dashboard-task-runs-card__summary { @apply
   grid
   gap-1
-  relative
-  z-10
 }
 
 .workspace-dashboard-task-runs-card__statistic--completed .dashboard-statistic__value { @apply
