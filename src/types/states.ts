@@ -6,6 +6,7 @@ export const prefectStateNames = [
   'Scheduled',
   'Late',
   'Resuming',
+  'AwaitingRetry',
   'Pending',
   'Paused',
   'Running',
@@ -16,7 +17,6 @@ export const prefectStateNames = [
   'Crashed',
   'Failed',
   'TimedOut',
-  'AwaitingRetry',
 ] as const
 export type PrefectStateNames = typeof prefectStateNames[number]
 
@@ -24,6 +24,7 @@ export const prefectStateNameTypes = {
   'Scheduled': 'scheduled',
   'Late': 'scheduled',
   'Resuming': 'scheduled',
+  'AwaitingRetry': 'scheduled',
   'Pending': 'pending',
   'Paused': 'paused',
   'Running': 'running',
@@ -34,7 +35,6 @@ export const prefectStateNameTypes = {
   'Crashed': 'crashed',
   'Failed': 'failed',
   'TimedOut': 'failed',
-  'AwaitingRetry': 'scheduled',
 } as const satisfies Record<PrefectStateNames, StateType>
 
 export const prefectStateNamesWithoutScheduled = [
