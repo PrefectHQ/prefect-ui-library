@@ -46,6 +46,7 @@
   items-center
   justify-center
   gap-1
+  min-h-[1.5rem]
   max-w-full
 }
 

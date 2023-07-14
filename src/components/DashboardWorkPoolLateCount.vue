@@ -1,6 +1,6 @@
 <template>
   <span class="work-pool-late-count" :class="classes">
-    ({{ lateFlowRunsCount }} runs)
+    {{ lateFlowRunsCount }}
   </span>
 </template>
 

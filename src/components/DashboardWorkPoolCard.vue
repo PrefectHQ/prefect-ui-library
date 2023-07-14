@@ -20,9 +20,11 @@
         <WorkPoolQueueStatusArray :work-pool="workPool" />
       </DashboardWorkPoolCardDetail>
 
-      <DashboardWorkPoolCardDetail label="Avg. Late time">
-        <WorkPoolAverageLateTime :work-pool="workPool" :filter="flowRunsFilter" />
-        <DashboardWorkPoolLateCount :work-pool="workPool" :filter="flowRunsFilter" />
+      <DashboardWorkPoolCardDetail label="Late runs">
+        <div class="dashboard-work-pool-card__late-runs">
+          <DashboardWorkPoolLateCount :work-pool="workPool" :filter="flowRunsFilter" />
+          <WorkPoolAverageLateTime :work-pool="workPool" :filter="flowRunsFilter" />
+        </div>
       </DashboardWorkPoolCardDetail>
 
       <DashboardWorkPoolCardDetail label="Completes">
@@ -97,10 +99,14 @@
 
 .dashboard-work-pool-card__details { @apply
   p-3
-  flex
-  flex-wrap
-  justify-between
+  grid
+  grid-cols-4
   gap-y-2
-  sm:flex-nowrap
+}
+
+.dashboard-work-pool-card__late-runs { @apply
+  inline-flex
+  items-center
+  gap-1
 }
 </style>

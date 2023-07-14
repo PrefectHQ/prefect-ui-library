@@ -18,7 +18,6 @@
 <style>
 .dashboard-work-pool-card-detail { @apply
   text-center
-  w-[100px]
   max-w-full
 }
 
