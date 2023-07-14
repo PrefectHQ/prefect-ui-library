@@ -1,10 +1,11 @@
 <template>
-  <span class="dashboard-work-pool-flow-runs-total">{{ allRunsCount }}</span>
+  <DashboardStatistic class="dashboard-work-pool-flow-runs-total" label="total" :value="allRunsCount" />
 </template>
 
 <script lang="ts" setup>
   import { useSubscription } from '@prefecthq/vue-compositions'
   import { computed } from 'vue'
+  import DashboardStatistic from '@/components/DashboardStatistic.vue'
   import { useInterval, useWorkspaceApi } from '@/compositions'
   import { WorkPool, FlowRunsFilter } from '@/models'
   import { mapper } from '@/services'
@@ -36,5 +37,5 @@
   }))
   const options = useInterval()
   const allRunsCountSubscription = useSubscription(api.flowRuns.getFlowRunsCount, [allRunsCountFilter], options)
-  const allRunsCount = computed(() => allRunsCountSubscription.response)
+  const allRunsCount = computed(() => allRunsCountSubscription.response ?? 0)
 </script>

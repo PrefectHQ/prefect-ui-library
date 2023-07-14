@@ -157,6 +157,7 @@
 .work-pool-flow-run-complete-percentage__difference { @apply
   cursor-help
   text-xs
+  whitespace-nowrap
 }
 
 .work-pool-flow-run-complete-percentage__difference--negative { @apply

@@ -1,7 +1,7 @@
 <template>
   <div class="dashboard-work-pool-card">
     <div class="dashboard-work-pool-card__header">
-      <p-link :to="routes.workPool(workPool.name)">
+      <p-link class="dashboard-work-pool-card__name" :to="routes.workPool(workPool.name)">
         {{ workPool.name }}
       </p-link>
       <FlowRunsBarChart
@@ -9,6 +9,7 @@
         mini
         :filter="flowRunsFilter"
       />
+      <DashboardWorkPoolFlowRunsTotal :work-pool="workPool" :filter="filter" />
     </div>
     <dl class="dashboard-work-pool-card__details">
       <DashboardWorkPoolCardDetail label="Polled">
@@ -20,15 +21,10 @@
       </DashboardWorkPoolCardDetail>
 
       <DashboardWorkPoolCardDetail label="Late runs">
-        <WorkPoolLateCount :work-pool="workPool" :filter="flowRunsFilter" />
-      </DashboardWorkPoolCardDetail>
-
-      <DashboardWorkPoolCardDetail label="Avg. Late time">
-        <WorkPoolAverageLateTime :work-pool="workPool" :filter="flowRunsFilter" />
-      </DashboardWorkPoolCardDetail>
-
-      <DashboardWorkPoolCardDetail label="Total runs">
-        <DashboardWorkPoolFlowRunsTotal :work-pool="workPool" :filter="filter" />
+        <div class="dashboard-work-pool-card__late-runs">
+          <DashboardWorkPoolLateCount :work-pool="workPool" :filter="flowRunsFilter" />
+          <WorkPoolAverageLateTime :work-pool="workPool" :filter="flowRunsFilter" />
+        </div>
       </DashboardWorkPoolCardDetail>
 
       <DashboardWorkPoolCardDetail label="Completes">
@@ -44,10 +40,10 @@
   import DashboardWorkPoolCardDetail from '@/components/DashboardWorkPoolCardDetail.vue'
   import DashboardWorkPoolFlowRunCompletes from '@/components/DashboardWorkPoolFlowRunCompletes.vue'
   import DashboardWorkPoolFlowRunsTotal from '@/components/DashboardWorkPoolFlowRunsTotal.vue'
+  import DashboardWorkPoolLateCount from '@/components/DashboardWorkPoolLateCount.vue'
   import FlowRunsBarChart from '@/components/FlowRunsBarChart.vue'
   import WorkPoolAverageLateTime from '@/components/WorkPoolAverageLateTime.vue'
   import WorkPoolLastPolled from '@/components/WorkPoolLastPolled.vue'
-  import WorkPoolLateCount from '@/components/WorkPoolLateCount.vue'
   import WorkPoolQueueStatusArray from '@/components/WorkPoolQueueStatusArray.vue'
   import { useWorkspaceRoutes } from '@/compositions'
   import { FlowRunsFilter, WorkPool } from '@/models'
@@ -84,12 +80,16 @@
 
 .dashboard-work-pool-card__header { @apply
   flex
-  justify-between
-  align-middle
+  items-center
+  gap-4
   p-3
   border-b
   border-slate-200
   dark:border-slate-700
+}
+
+.dashboard-work-pool-card__name { @apply
+  flex-grow
 }
 
 .dashboard-work-pool-card__mini-bars { @apply
@@ -99,10 +99,14 @@
 
 .dashboard-work-pool-card__details { @apply
   p-3
-  flex
-  flex-wrap
-  justify-between
+  grid
+  grid-cols-4
   gap-y-2
-  sm:flex-nowrap
+}
+
+.dashboard-work-pool-card__late-runs { @apply
+  inline-flex
+  items-center
+  gap-1
 }
 </style>
