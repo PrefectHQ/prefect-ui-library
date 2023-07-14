@@ -1,7 +1,7 @@
 <template>
   <div class="dashboard-work-pool-card">
     <div class="dashboard-work-pool-card__header">
-      <p-link :to="routes.workPool(workPool.name)">
+      <p-link class="dashboard-work-pool-card__name" :to="routes.workPool(workPool.name)">
         {{ workPool.name }}
       </p-link>
       <FlowRunsBarChart
@@ -9,6 +9,7 @@
         mini
         :filter="flowRunsFilter"
       />
+      <DashboardWorkPoolFlowRunsTotal :work-pool="workPool" :filter="filter" />
     </div>
     <dl class="dashboard-work-pool-card__details">
       <DashboardWorkPoolCardDetail label="Polled">
@@ -25,10 +26,6 @@
 
       <DashboardWorkPoolCardDetail label="Avg. Late time">
         <WorkPoolAverageLateTime :work-pool="workPool" :filter="flowRunsFilter" />
-      </DashboardWorkPoolCardDetail>
-
-      <DashboardWorkPoolCardDetail label="Total runs">
-        <DashboardWorkPoolFlowRunsTotal :work-pool="workPool" :filter="filter" />
       </DashboardWorkPoolCardDetail>
 
       <DashboardWorkPoolCardDetail label="Completes">
@@ -84,12 +81,16 @@
 
 .dashboard-work-pool-card__header { @apply
   flex
-  justify-between
-  align-middle
+  items-center
+  gap-4
   p-3
   border-b
   border-slate-200
   dark:border-slate-700
+}
+
+.dashboard-work-pool-card__name { @apply
+  flex-grow
 }
 
 .dashboard-work-pool-card__mini-bars { @apply
