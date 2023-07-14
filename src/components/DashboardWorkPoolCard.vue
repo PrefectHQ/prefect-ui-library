@@ -20,12 +20,9 @@
         <WorkPoolQueueStatusArray :work-pool="workPool" />
       </DashboardWorkPoolCardDetail>
 
-      <DashboardWorkPoolCardDetail label="Late runs">
-        <WorkPoolLateCount :work-pool="workPool" :filter="flowRunsFilter" />
-      </DashboardWorkPoolCardDetail>
-
       <DashboardWorkPoolCardDetail label="Avg. Late time">
         <WorkPoolAverageLateTime :work-pool="workPool" :filter="flowRunsFilter" />
+        <DashboardWorkPoolLateCount :work-pool="workPool" :filter="flowRunsFilter" />
       </DashboardWorkPoolCardDetail>
 
       <DashboardWorkPoolCardDetail label="Completes">
@@ -41,10 +38,10 @@
   import DashboardWorkPoolCardDetail from '@/components/DashboardWorkPoolCardDetail.vue'
   import DashboardWorkPoolFlowRunCompletes from '@/components/DashboardWorkPoolFlowRunCompletes.vue'
   import DashboardWorkPoolFlowRunsTotal from '@/components/DashboardWorkPoolFlowRunsTotal.vue'
+  import DashboardWorkPoolLateCount from '@/components/DashboardWorkPoolLateCount.vue'
   import FlowRunsBarChart from '@/components/FlowRunsBarChart.vue'
   import WorkPoolAverageLateTime from '@/components/WorkPoolAverageLateTime.vue'
   import WorkPoolLastPolled from '@/components/WorkPoolLastPolled.vue'
-  import WorkPoolLateCount from '@/components/WorkPoolLateCount.vue'
   import WorkPoolQueueStatusArray from '@/components/WorkPoolQueueStatusArray.vue'
   import { useWorkspaceRoutes } from '@/compositions'
   import { FlowRunsFilter, WorkPool } from '@/models'
