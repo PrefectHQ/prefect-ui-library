@@ -11,7 +11,7 @@
     </div>
 
     <div class="workspace-dashboard-task-runs-card__chart-container">
-      <LineChart :data="taskRunsChartData.failed" :options="{ maxValue: maxFailedValue }" class="workspace-dashboard-task-runs-card__chart workspace-dashboard-task-runs-card__chart--failed" />
+      <LineChart v-if="isDefined(failed) && failed > 0" :data="taskRunsChartData.failed" :options="{ maxValue: maxFailedValue }" class="workspace-dashboard-task-runs-card__chart workspace-dashboard-task-runs-card__chart--failed" />
       <LineChart :data="taskRunsChartData.completed" :options="{ maxValue: maxCompletedValue }" class="workspace-dashboard-task-runs-card__chart workspace-dashboard-task-runs-card__chart--completed" />
     </div>
   </p-card>
