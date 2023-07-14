@@ -22,7 +22,7 @@
 
     <p-divider />
 
-    <p-key-value label="Work Pool Queue ID" :value="workPoolQueue.id" :alternate="alternate" />
+    <p-key-value label="Work Queue ID" :value="workPoolQueue.id" :alternate="alternate" />
 
     <p-key-value label="Flow Run Concurrency" :value="workPoolQueue.concurrencyLimit" :alternate="alternate" />
 

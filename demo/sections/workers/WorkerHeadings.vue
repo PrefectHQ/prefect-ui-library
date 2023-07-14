@@ -36,9 +36,9 @@
     { title: 'Work Pool' },
     { title: 'Work Pool Create' },
     { title: 'Work Pool Edit' },
-    { title: 'Work Pool Queue' },
-    { title: 'Work Pool Queue Create' },
-    { title: 'Work Pool Queue Edit' },
+    { title: 'Work Queue' },
+    { title: 'Work Queue Create' },
+    { title: 'Work Queue Edit' },
   ]
 
   const workPool = useWorkPoolMock()

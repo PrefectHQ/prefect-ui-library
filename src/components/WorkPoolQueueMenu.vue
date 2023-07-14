@@ -9,7 +9,7 @@
   </p-icon-button-menu>
   <ConfirmDeleteModal
     v-model:showModal="showModal"
-    label="Work Pool Queue"
+    label="Work Queue"
     :name="workPoolQueue.name"
     @delete="deleteWorkPoolQueue(workPoolQueue.name)"
   />
@@ -53,7 +53,7 @@
 
   async function deleteWorkPoolQueue(name: string): Promise<void> {
     close()
-    await deleteItem([props.workPoolName, name], api.workPoolQueues.deleteWorkPoolQueue, 'Work pool queue')
+    await deleteItem([props.workPoolName, name], api.workPoolQueues.deleteWorkPoolQueue, 'Work queue')
     emit('delete')
   }
 </script>
