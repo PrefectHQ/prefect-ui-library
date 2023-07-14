@@ -11,7 +11,7 @@
     </div>
 
     <div class="workspace-dashboard-task-runs-card__chart-container">
-      <LineChart :data="taskRunsChartData.failed" :options="{ maxValue: maxFailedValue }" class="workspace-dashboard-task-runs-card__chart workspace-dashboard-task-runs-card__chart--failed" />
+      <LineChart v-if="taskRunsChartData.hasFailed" :data="taskRunsChartData.failed" :options="{ maxValue: maxFailedValue }" class="workspace-dashboard-task-runs-card__chart workspace-dashboard-task-runs-card__chart--failed" />
       <LineChart :data="taskRunsChartData.completed" :options="{ maxValue: maxCompletedValue }" class="workspace-dashboard-task-runs-card__chart workspace-dashboard-task-runs-card__chart--completed" />
     </div>
   </p-card>
@@ -113,6 +113,7 @@
   const taskRunsChartData = computed(() => {
     const completed: LineChartData = []
     const failed: LineChartData = []
+    let hasFailed = false
     const running: LineChartData = []
 
     history.value.forEach(item => {
@@ -124,6 +125,7 @@
           completedCount += state.countRuns
         } else if (['FAILED', 'CRASHED'].includes(state.stateType)) {
           failedCount += state.countRuns
+          hasFailed = true
         }
       })
 
@@ -137,6 +139,7 @@
     return {
       completed,
       failed,
+      hasFailed,
       running,
     }
   })
