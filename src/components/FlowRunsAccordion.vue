@@ -29,7 +29,10 @@
     // eslint-disable-next-line no-unused-vars
     const { sort, limit, offset, ...filter } = props.filter
 
-    return filter
+    return {
+      ...filter,
+      sort: 'UPDATED_DESC',
+    }
   })
 
   const options = useInterval()
