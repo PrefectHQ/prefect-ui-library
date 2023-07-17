@@ -1,5 +1,7 @@
 <template>
-  <p-toggle v-if="can.update.work_queue" v-model="internalValue" />
+  <p-tooltip text="Pause or resume this work queue">
+    <p-toggle v-if="can.update.work_queue" v-model="internalValue" />
+  </p-tooltip>
 </template>
 
 <script lang="ts" setup>
