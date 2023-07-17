@@ -1,5 +1,5 @@
 <template>
-  <p-button-group v-model="selected" :size="size" :options="options" class="simple-time-span-filter" />
+  <p-button-group v-model="selected" :size="size" :options="options" class="time-span-filter" />
 </template>
 
 <script lang="ts" setup>
