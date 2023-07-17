@@ -24,9 +24,6 @@ export function createWorkspaceRouteRecords(components: Partial<WorkspaceRouteCo
     {
       path: 'dashboard',
       name: 'workspace.dashboard',
-      meta: {
-        can: 'access:dashboard',
-      },
       component: components.dashboard,
     },
     {
@@ -70,9 +67,6 @@ export function createWorkspaceRouteRecords(components: Partial<WorkspaceRouteCo
         },
         {
           path: 'collections',
-          meta: {
-            can: 'access:collections',
-          },
           children: [
             {
               name: 'workspace.flows.collections',
