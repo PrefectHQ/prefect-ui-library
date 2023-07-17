@@ -2,7 +2,7 @@
   <div class="work-pool-details">
     <p-key-value label="Description" :value="workPool.description" :alternate="alternate" />
 
-    <p-key-value v-if="can.access.workers" label="Type" :value="workPool.typeLabel" :alternate="alternate" />
+    <p-key-value label="Type" :value="workPool.typeLabel" :alternate="alternate" />
 
     <p-key-value label="Concurrency Limit" :value="workPool.concurrencyLimit" :alternate="alternate" />
 
@@ -51,7 +51,7 @@
     return properties && Object.keys(properties).length > 0
   })
   const schema = computed(() => mapper.map('SchemaResponse', props.workPool.baseJobTemplate.variables ?? {}, 'Schema'))
-  const showBaseJobTemplateDetails = computed(() => props.workPool.type && schemaHasProperties.value && can.access.workers)
+  const showBaseJobTemplateDetails = computed(() => props.workPool.type && schemaHasProperties.value)
   const baseJobTemplateVariablesDefaults = computed(() => getSchemaDefaultValues(schema.value))
 </script>
 

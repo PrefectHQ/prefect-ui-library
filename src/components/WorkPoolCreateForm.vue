@@ -19,7 +19,7 @@
         </template>
       </p-label>
 
-      <p-label v-if="can.access.workers" label="Type" :state="typeState" :message="typeErrorMessage">
+      <p-label label="Type" :state="typeState" :message="typeErrorMessage">
         <template #description>
           <p>
             The type of worker to run within this work pool. To learn more about workers, check out
@@ -90,7 +90,7 @@
   })
 
   const typeIsNotPrefectAgent = computed(() => type.value !== 'prefect-agent')
-  const showBaseJobTemplateFormSection = computed(() => type.value && typeIsNotPrefectAgent.value && can.access.workers)
+  const showBaseJobTemplateFormSection = computed(() => type.value && typeIsNotPrefectAgent.value)
 
   const isRequired: ValidationRule<string | undefined> = (value) => value !== undefined && value.trim().length > 0
 

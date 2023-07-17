@@ -19,7 +19,7 @@
         </template>
       </p-label>
 
-      <p-label v-if="can.access.workers" label="Type">
+      <p-label label="Type">
         <WorkPoolTypeSelect :selected="type" disabled />
       </p-label>
 
@@ -64,7 +64,7 @@
   const baseJobTemplate = ref(props.workPool.baseJobTemplate)
 
   const typeIsNotPrefectAgent = computed(() => type.value !== 'prefect-agent')
-  const showBaseJobTemplateFormSection = computed(() => type.value && typeIsNotPrefectAgent.value && can.access.workers)
+  const showBaseJobTemplateFormSection = computed(() => type.value && typeIsNotPrefectAgent.value)
 
   function cancel(): void {
     router.back()
