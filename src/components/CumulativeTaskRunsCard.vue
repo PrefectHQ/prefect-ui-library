@@ -1,18 +1,18 @@
 <template>
-  <p-card class="workspace-dashboard-task-runs-card">
+  <p-card class="cumulative-task-runs-card">
     <p-heading heading="5">
       Task Runs
     </p-heading>
-    <div class="workspace-dashboard-task-runs-card__summary">
-      <DashboardStatistic v-if="isDefined(total)" :value="total" primary />
-      <DashboardStatistic v-if="isDefined(running) && running > 0" :value="running" label="Running" class="workspace-dashboard-task-runs-card__statistic--running" />
-      <DashboardStatistic v-if="isDefined(completed)" :value="completed" label="Completed" :meta="completedPercentage" class="workspace-dashboard-task-runs-card__statistic--completed" />
-      <DashboardStatistic v-if="isDefined(failed) && failed > 0" :value="failed" label="Failed" :meta="failedPercentage" class="workspace-dashboard-task-runs-card__statistic--failed" />
+    <div class="cumulative-task-runs-card__summary">
+      <ValueKeyStatistic v-if="isDefined(total)" :value="total" primary />
+      <ValueKeyStatistic v-if="isDefined(running) && running > 0" :value="running" label="Running" class="cumulative-task-runs-card__statistic--running" />
+      <ValueKeyStatistic v-if="isDefined(completed)" :value="completed" label="Completed" :meta="completedPercentage" class="cumulative-task-runs-card__statistic--completed" />
+      <ValueKeyStatistic v-if="isDefined(failed) && failed > 0" :value="failed" label="Failed" :meta="failedPercentage" class="cumulative-task-runs-card__statistic--failed" />
     </div>
 
-    <div class="workspace-dashboard-task-runs-card__chart-container">
-      <LineChart v-if="isDefined(failed) && failed > 0" :data="taskRunsChartData.failed" :options="{ maxValue: maxFailedValue }" class="workspace-dashboard-task-runs-card__chart workspace-dashboard-task-runs-card__chart--failed" />
-      <LineChart :data="taskRunsChartData.completed" :options="{ maxValue: maxCompletedValue }" class="workspace-dashboard-task-runs-card__chart workspace-dashboard-task-runs-card__chart--completed" />
+    <div class="cumulative-task-runs-card__chart-container">
+      <LineChart v-if="isDefined(failed) && failed > 0" :data="taskRunsChartData.failed" :options="{ maxValue: maxFailedValue }" class="cumulative-task-runs-card__chart cumulative-task-runs-card__chart--failed" />
+      <LineChart :data="taskRunsChartData.completed" :options="{ maxValue: maxCompletedValue }" class="cumulative-task-runs-card__chart cumulative-task-runs-card__chart--completed" />
     </div>
   </p-card>
 </template>
@@ -22,22 +22,21 @@
   import { LineChart, LineChartData } from '@prefecthq/vue-charts'
   import { useSubscription } from '@prefecthq/vue-compositions'
   import merge from 'lodash.merge'
-  import { computed } from 'vue'
-  import DashboardStatistic from '@/components/DashboardStatistic.vue'
+  import { computed, toRefs } from 'vue'
+  import ValueKeyStatistic from '@/components/ValueKeyStatistic.vue'
   import { useInterval } from '@/compositions/useInterval'
   import { useWorkspaceApi } from '@/compositions/useWorkspaceApi'
   import { TaskRunsFilter } from '@/models/Filters'
   import { mapper } from '@/services/Mapper'
-  import { WorkspaceDashboardFilter } from '@/types/dashboard'
   import { toPercent } from '@/utilities'
 
   const props = defineProps<{
-    filter: WorkspaceDashboardFilter,
+    filter: TaskRunsFilter,
   }>()
 
   const api = useWorkspaceApi()
   const options = useInterval()
-  const tasksFilter = computed(() => mapper.map('WorkspaceDashboardFilter', props.filter, 'TaskRunsFilter'))
+  const { filter } = toRefs(props)
 
   const allTasksFilter = computed<TaskRunsFilter>(() => {
     const stateFilter: TaskRunsFilter = {
@@ -48,7 +47,7 @@
       },
     }
 
-    return merge({}, tasksFilter.value, stateFilter)
+    return merge({}, filter.value, stateFilter)
   })
   const allTasksSubscription = useSubscription(api.taskRuns.getTaskRunsCount, [allTasksFilter], options)
   const total = computed(() => allTasksSubscription.response)
@@ -71,7 +70,7 @@
       },
     }
 
-    return merge({}, tasksFilter.value, stateFilter)
+    return merge({}, filter.value, stateFilter)
   })
   const completedTasksSubscription = useSubscription(api.taskRuns.getTaskRunsCount, [completedTasksFilter], options)
   const completed = computed(() => completedTasksSubscription.response)
@@ -86,7 +85,7 @@
       },
     }
 
-    return merge({}, tasksFilter.value, stateFilter)
+    return merge({}, filter.value, stateFilter)
   })
   const failedTasksSubscription = useSubscription(api.taskRuns.getTaskRunsCount, [failedTasksFilter], options)
   const failed = computed(() => failedTasksSubscription.response)
@@ -101,12 +100,12 @@
       },
     }
 
-    return merge({}, tasksFilter.value, stateFilter)
+    return merge({}, filter.value, stateFilter)
   })
   const runningTasksSubscription = useSubscription(api.taskRuns.getTaskRunsCount, [runningTasksFilter], options)
   const running = computed(() => runningTasksSubscription.response)
 
-  const historyFilter = computed(() => mapper.map('WorkspaceDashboardFilter', props.filter, 'TaskRunsHistoryFilter'))
+  const historyFilter = computed(() => mapper.map('TaskRunsFilter', filter.value, 'TaskRunsHistoryFilter'))
   const historySubscription = useSubscription(api.taskRuns.getTaskRunsHistory, [historyFilter], options)
   const history = computed(() => historySubscription.response ?? [])
 
@@ -210,7 +209,7 @@
 </script>
 
 <style>
-.workspace-dashboard-task-runs-card { @apply
+.cumulative-task-runs-card { @apply
   relative
   grid
   gap-4
@@ -219,25 +218,25 @@
   pb-20
 }
 
-.workspace-dashboard-task-runs-card__summary { @apply
+.cumulative-task-runs-card__summary { @apply
   grid
   gap-1
 }
 
-.workspace-dashboard-task-runs-card__statistic--completed .dashboard-statistic__value { @apply
+.cumulative-task-runs-card__statistic--completed .dashboard-statistic__value { @apply
   text-state-completed-600
 }
 
-.workspace-dashboard-task-runs-card__statistic--failed .dashboard-statistic__value { @apply
+.cumulative-task-runs-card__statistic--failed .dashboard-statistic__value { @apply
   text-state-failed-700
 }
 
-.workspace-dashboard-task-runs-card__statistic--running .dashboard-statistic__value { @apply
+.cumulative-task-runs-card__statistic--running .dashboard-statistic__value { @apply
   text-state-running-500
   dark:text-state-running-400
 }
 
-.workspace-dashboard-task-runs-card__chart-container { @apply
+.cumulative-task-runs-card__chart-container { @apply
   absolute
   min-h-0
   h-16
@@ -246,7 +245,7 @@
   bottom-4
 }
 
-.workspace-dashboard-task-runs-card__chart { @apply
+.cumulative-task-runs-card__chart { @apply
   absolute
   min-h-0
   left-0
@@ -255,27 +254,27 @@
   bottom-0
 }
 
-.workspace-dashboard-task-runs-card__chart--completed .line-chart__path {
+.cumulative-task-runs-card__chart--completed .line-chart__path {
   stroke: theme('colors.green.500');
 }
 
-.dark .workspace-dashboard-task-runs-card__chart--completed .line-chart__gradient-stop {
+.dark .cumulative-task-runs-card__chart--completed .line-chart__gradient-stop {
   stop-color: theme('colors.green.500');
 }
 
-.workspace-dashboard-task-runs-card__chart--completed .line-chart__gradient-stop {
+.cumulative-task-runs-card__chart--completed .line-chart__gradient-stop {
   stop-color: theme('colors.green.300');
 }
 
-.workspace-dashboard-task-runs-card__chart--failed .line-chart__path {
+.cumulative-task-runs-card__chart--failed .line-chart__path {
   stroke: theme('colors.red.500');
 }
 
-.dark .workspace-dashboard-task-runs-card__chart--failed .line-chart__gradient-stop {
+.dark .cumulative-task-runs-card__chart--failed .line-chart__gradient-stop {
   stop-color: theme('colors.red.500');
 }
 
-.workspace-dashboard-task-runs-card__chart--failed .line-chart__gradient-stop {
+.cumulative-task-runs-card__chart--failed .line-chart__gradient-stop {
   stop-color: theme('colors.red.300');
 }
 </style>

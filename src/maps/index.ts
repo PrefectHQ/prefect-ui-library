@@ -27,6 +27,7 @@ import { mapSavedSearchFilterToFlowRunFilters } from '@/maps/flowRunFilter'
 import { mapGraphNodeToFlowRunGraphResponse, mapFlowRunGraphResponseToGraphNode } from '@/maps/flowRunGraph'
 import { mapRunHistoryToFlowRunHistoryResponse, mapFlowRunHistoryResponseToRunHistory } from '@/maps/flowRunHistory'
 import { mapFlowRunGraphResponseToTimelineNode } from '@/maps/flowRunTimeline'
+import { mapFlowStatsFilterToFlowRunsFilter, mapFlowStatsFilterToTaskRunsFilter } from '@/maps/flowStatsFilter'
 import { mapLogToLogResponse, mapLogResponseToLog } from '@/maps/logs'
 import { mapNotificationResponseToNotification } from '@/maps/notification'
 import { mapNotificationCreateToNotificationCreateRequest } from '@/maps/notificationCreate'
@@ -46,7 +47,7 @@ import { mapServerStateTypeToStateType, mapStateTypeToServerStateType } from '@/
 import { mapStateUpdateToStateUpdateRequest } from '@/maps/stateUpdate'
 import { mapTaskInputToTaskInputResponse, mapTaskInputResponseToTaskInput } from '@/maps/taskInput'
 import { mapTaskRunToTaskRunResponse, mapTaskRunResponseToTaskRun } from '@/maps/taskRun'
-import { mapTaskRunHistoryResponseToTaskRunHistory, mapTaskRunHistoryStateResponseToTaskRunHistoryState } from '@/maps/taskRunHistory'
+import { mapTaskRunHistoryResponseToTaskRunHistory, mapTaskRunHistoryStateResponseToTaskRunHistoryState, mapTaskRunsFilterToTaskRunsHistoryFilter } from '@/maps/taskRunHistory'
 import { mapUiFlowRunHistoryResponseToUiFlowRunHistory } from '@/maps/uiFlowRunHistory'
 import { mapVariableResponseToVariable, mapVariableEditToVariableEditRequest, mapVariableCreateToVariableCreateRequest } from '@/maps/variable'
 import { mapPrefectWorkerCollectionResponseToWorkerCollectionItemArray, mapWorkerSchemaValuesToWorkerSchemaValuesRequest } from '@/maps/workerCollection'
@@ -101,6 +102,10 @@ export const maps = {
   FlowRunsFilter: { FlowRunsFilterRequest: mapFlowRunsFilter },
   FlowRunsHistoryFilter: { FlowRunsHistoryFilterRequest: mapFlowRunsHistoryFilter },
   FlowsFilter: { FlowsFilterRequest: mapFlowsFilter },
+  FlowStatsFilter: {
+    FlowRunsFilter: mapFlowStatsFilterToFlowRunsFilter,
+    TaskRunsFilter: mapFlowStatsFilterToTaskRunsFilter,
+  },
   GraphNode: { FlowRunGraphResponse: mapGraphNodeToFlowRunGraphResponse },
   Log: { LogResponse: mapLogToLogResponse },
   LogResponse: { Log: mapLogResponseToLog },
@@ -143,7 +148,10 @@ export const maps = {
   TaskRun: { TaskRunResponse: mapTaskRunToTaskRunResponse },
   TaskRunFilter: { TaskRunFilterRequest: mapTaskRunFilter },
   TaskRunResponse: { TaskRun: mapTaskRunResponseToTaskRun },
-  TaskRunsFilter: { TaskRunsFilterRequest: mapTaskRunsFilter },
+  TaskRunsFilter: {
+    TaskRunsFilterRequest: mapTaskRunsFilter,
+    TaskRunsHistoryFilter: mapTaskRunsFilterToTaskRunsHistoryFilter,
+  },
   TaskRunsHistoryFilter: { TaskRunsHistoryFilterRequest: mapTaskRunsHistoryFilter },
   UiFlowRunHistory: { ScatterPlotItem: mapUiFlowRunHistoryToScatterPlotItem },
   UiFlowRunHistoryResponse: { UiFlowRunHistory: mapUiFlowRunHistoryResponseToUiFlowRunHistory },

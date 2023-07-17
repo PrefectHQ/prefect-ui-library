@@ -5,7 +5,7 @@
         Flow Runs
       </p-heading>
       <template v-if="count">
-        <DashboardStatistic label="total" :value="count" />
+        <ValueKeyStatistic label="total" :value="count" />
       </template>
     </header>
     <FlowRunsBarChart class="workspace-dashboard-flow-runs-card__chart" :filter="flowRunsFilter" />
@@ -15,7 +15,7 @@
 
 <script lang="ts" setup>
   import { computed } from 'vue'
-  import DashboardStatistic from '@/components/DashboardStatistic.vue'
+  import ValueKeyStatistic from '@/components/ValueKeyStatistic.vue'
   import FlowRunsBarChart from '@/components/FlowRunsBarChart.vue'
   import FlowRunStateTypeTabs from '@/components/FlowRunStateTypeTabs.vue'
   import { useFlowRunsCount } from '@/compositions/useFlowRunsCount'
