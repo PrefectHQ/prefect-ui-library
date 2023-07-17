@@ -1,11 +1,11 @@
 <template>
-  <div class="value-key-statistic" :class="classes">
-    <span class="value-key-statistic__value">{{ value.toLocaleString() }}</span>
+  <div class="statistic-key-value" :class="classes">
+    <span class="statistic-key-value__value">{{ value.toLocaleString() }}</span>
     <template v-if="isDefined(label)">
-      <span class="value-key-statistic__label">{{ label.toLocaleString() }}</span>
+      <span class="statistic-key-value__label">{{ label.toLocaleString() }}</span>
     </template>
     <template v-if="isDefined(meta)">
-      <span class="value-key-statistic__meta">{{ meta.toLocaleString() }}</span>
+      <span class="statistic-key-value__meta">{{ meta.toLocaleString() }}</span>
     </template>
   </div>
 </template>
@@ -22,27 +22,27 @@
   }>()
 
   const classes = computed(() => ({
-    'value-key-statistic--primary': props.primary,
+    'statistic-key-value--primary': props.primary,
   }))
 </script>
 
 <style>
-.value-key-statistic { @apply
+.statistic-key-value { @apply
   inline-flex
   items-end
   gap-1
   text-sm
 }
 
-.value-key-statistic--primary { @apply
+.statistic-key-value--primary { @apply
   text-base
 }
 
-.value-key-statistic__value { @apply
+.statistic-key-value__value { @apply
   font-semibold
 }
 
-.value-key-statistic__meta { @apply
+.statistic-key-value__meta { @apply
   text-foreground-200
 }
 </style>

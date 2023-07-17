@@ -1,11 +1,11 @@
 <template>
-  <ValueKeyStatistic class="dashboard-work-pool-flow-runs-total" label="total" :value="allRunsCount" />
+  <StatisticKeyValue class="dashboard-work-pool-flow-runs-total" label="total" :value="allRunsCount" />
 </template>
 
 <script lang="ts" setup>
   import { useSubscription } from '@prefecthq/vue-compositions'
   import { computed } from 'vue'
-  import ValueKeyStatistic from '@/components/ValueKeyStatistic.vue'
+  import StatisticKeyValue from '@/components/StatisticKeyValue.vue'
   import { useInterval, useWorkspaceApi } from '@/compositions'
   import { WorkPool, FlowRunsFilter } from '@/models'
   import { mapper } from '@/services'

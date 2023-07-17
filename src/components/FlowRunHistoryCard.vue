@@ -5,7 +5,7 @@
         Flow Runs
       </p-heading>
       <template v-if="count">
-        <ValueKeyStatistic label="total" :value="count" />
+        <StatisticKeyValue label="total" :value="count" />
       </template>
     </header>
     <FlowRunsBarChart class="flow-run-history-card__chart" :filter="filter" />
@@ -15,7 +15,7 @@
 <script lang="ts" setup>
   import { toRefs } from 'vue'
   import FlowRunsBarChart from '@/components/FlowRunsBarChart.vue'
-  import ValueKeyStatistic from '@/components/ValueKeyStatistic.vue'
+  import StatisticKeyValue from '@/components/StatisticKeyValue.vue'
   import { useFlowRunsCount, useInterval } from '@/compositions'
   import { FlowRunsFilter } from '@/models'
 

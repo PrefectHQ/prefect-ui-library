@@ -1,6 +1,6 @@
 import { Section } from '@/demo/router/routeRecords'
 
 export const stats: Section = {
-  ValueKeyStatistic: () => import('./ValueKeyStatistic.vue'),
+  StatisticKeyValue: () => import('./StatisticKeyValue.vue'),
   SimpleTimeSpanFilter: () => import('./SimpleTimeSpanFilter.vue'),
 }

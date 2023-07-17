@@ -4,10 +4,10 @@
       Task Runs
     </p-heading>
     <div class="cumulative-task-runs-card__summary">
-      <ValueKeyStatistic v-if="isDefined(total)" :value="total" primary />
-      <ValueKeyStatistic v-if="isDefined(running) && running > 0" :value="running" label="Running" class="cumulative-task-runs-card__statistic--running" />
-      <ValueKeyStatistic v-if="isDefined(completed)" :value="completed" label="Completed" :meta="completedPercentage" class="cumulative-task-runs-card__statistic--completed" />
-      <ValueKeyStatistic v-if="isDefined(failed) && failed > 0" :value="failed" label="Failed" :meta="failedPercentage" class="cumulative-task-runs-card__statistic--failed" />
+      <StatisticKeyValue v-if="isDefined(total)" :value="total" primary />
+      <StatisticKeyValue v-if="isDefined(running) && running > 0" :value="running" label="Running" class="cumulative-task-runs-card__statistic--running" />
+      <StatisticKeyValue v-if="isDefined(completed)" :value="completed" label="Completed" :meta="completedPercentage" class="cumulative-task-runs-card__statistic--completed" />
+      <StatisticKeyValue v-if="isDefined(failed) && failed > 0" :value="failed" label="Failed" :meta="failedPercentage" class="cumulative-task-runs-card__statistic--failed" />
     </div>
 
     <div class="cumulative-task-runs-card__chart-container">
@@ -23,7 +23,7 @@
   import { useSubscription } from '@prefecthq/vue-compositions'
   import merge from 'lodash.merge'
   import { computed, toRefs } from 'vue'
-  import ValueKeyStatistic from '@/components/ValueKeyStatistic.vue'
+  import StatisticKeyValue from '@/components/StatisticKeyValue.vue'
   import { useInterval } from '@/compositions/useInterval'
   import { useWorkspaceApi } from '@/compositions/useWorkspaceApi'
   import { TaskRunsFilter } from '@/models/Filters'
