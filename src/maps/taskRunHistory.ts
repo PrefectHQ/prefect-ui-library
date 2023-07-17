@@ -24,21 +24,23 @@ export const mapTaskRunHistoryResponseToTaskRunHistory: MapFunction<TaskRunHisto
 
 export const mapTaskRunsFilterToTaskRunsHistoryFilter: MapFunction<TaskRunsFilter, TaskRunsHistoryFilter> = function(source) {
   const defaultTimeSpanHours = 24
-
   const now = new Date()
+
+  const { flows, flowRuns, deployments, taskRuns } = source
   const {
     startTimeBefore = now,
     startTimeAfter = subHours(now, defaultTimeSpanHours),
-  } = source.taskRuns ?? {}
+  } = taskRuns ?? {}
 
-  const timeSpan = startTimeBefore.getTime() - startTimeAfter.getTime()
+  const timeSpanInSeconds = (startTimeBefore.getTime() - startTimeAfter.getTime()) / 1000
 
   return {
+    flows,
+    flowRuns,
+    deployments,
+    taskRuns,
     historyStart: startTimeAfter,
     historyEnd: startTimeBefore,
-    historyIntervalSeconds: timeSpan / 20,
-    flowRuns: {
-      ...source.flowRuns,
-    },
+    historyIntervalSeconds: timeSpanInSeconds / 20,
   }
 }
