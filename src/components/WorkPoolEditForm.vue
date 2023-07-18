@@ -44,7 +44,7 @@
   import { ref, computed } from 'vue'
   import { useRouter } from 'vue-router'
   import { SubmitButton, WorkPoolTypeSelect, WorkPoolBaseJobTemplateFormSection } from '@/components'
-  import { useCan, useWorkspaceApi, useWorkspaceRoutes } from '@/compositions'
+  import { useWorkspaceApi, useWorkspaceRoutes } from '@/compositions'
   import { localization } from '@/localization'
   import { WorkPool, WorkPoolEdit } from '@/models'
 
@@ -53,7 +53,6 @@
   }>()
 
   const api = useWorkspaceApi()
-  const can = useCan()
   const router = useRouter()
   const routes = useWorkspaceRoutes()
   const { validate, pending } = useValidationObserver()
