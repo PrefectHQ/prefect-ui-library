@@ -517,9 +517,11 @@ export const mapWorkPoolQueuesFilter: MapFunction<WorkPoolQueuesFilter, WorkPool
 }
 
 export const mapTaskRunsHistoryFilter: MapFunction<TaskRunsHistoryFilter, TaskRunsHistoryFilterRequest> = function(source) {
+  const now = new Date()
+
   return {
     history_start: this.map('Date', source.historyStart, 'string'),
-    history_end: this.map('Date', source.historyEnd, 'string'),
+    history_end: this.map('Date', source.historyEnd ?? now, 'string'),
     history_interval_seconds: source.historyIntervalSeconds,
     flows: this.map('FlowFilter', source.flows, 'FlowFilterRequest'),
     deployments: this.map('DeploymentFilter', source.deployments, 'DeploymentFilterRequest'),

@@ -260,6 +260,6 @@ export type WorkPoolWorkersFilter = {
 
 export type TaskRunsHistoryFilter = Pick<TaskRunsFilter, 'deployments' | 'flows' | 'flowRuns' | 'taskRuns'> & {
   historyStart: Date,
-  historyEnd: Date,
+  historyEnd?: Date,
   historyIntervalSeconds: number,
 }

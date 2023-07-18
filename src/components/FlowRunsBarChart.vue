@@ -1,5 +1,5 @@
 <template>
-  <div ref="chart" class="flow-runs-bar-chart" :class="classes.root" :style="styles.root" @mouseleave="close">
+  <div ref="chart" class="flow-runs-bar-chart" :class="classes.root" @mouseleave="close">
     <template v-for="(flowRun, index) in barFlowRuns" :key="getKey(flowRun, index)">
       <p-pop-over class="flow-runs-bar-chart__bar-container" :to="chart" :placement="placement" :group="group" auto-close>
         <template #target="{ open }">
@@ -41,9 +41,6 @@
   const { width, height } = useElementRect(chart)
   const bars = computed(() => Math.floor(width.value / desiredBarWidth.value))
   const barsDebounced = useDebouncedRef(bars, 1000)
-  const styles = computed(() => ({
-    root: `grid-template-columns: repeat(${bars.value}, 1fr)`,
-  }))
 
   const classes = computed(() => ({
     root: {
@@ -117,15 +114,15 @@
   }
 
   function organizeFlowRunsWithGaps(flowRuns: FlowRun[]): (FlowRun | null)[] {
-    const { expectedStartTimeAfter, expectedStartTimeBefore } = props.filter.flowRuns ?? {}
+    const { expectedStartTimeAfter, expectedStartTimeBefore = new Date() } = props.filter.flowRuns ?? {}
 
-    if (!expectedStartTimeBefore || !expectedStartTimeAfter) {
+    if (!expectedStartTimeAfter) {
       return []
     }
 
     const totalTime = expectedStartTimeBefore.getTime() - expectedStartTimeAfter.getTime()
-    const bucketSize = totalTime / bars.value
-    const buckets: (FlowRun | null)[] = new Array(bars.value).fill(null)
+    const bucketSize = totalTime / barsDebounced.value
+    const buckets: (FlowRun | null)[] = new Array(barsDebounced.value).fill(null)
 
     function getEmptyBucket(index: number): number | null {
       if (index < 0) {
@@ -163,9 +160,10 @@
 <style>
 .flow-runs-bar-chart { @apply
   relative
-  grid
-  items-end
-  grid-rows-1;
+  w-full
+  h-full
+  flex
+  items-end;
   --bar-padding: 3px;
   --bar-min-height: 6px;
 }

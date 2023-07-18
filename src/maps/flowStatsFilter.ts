@@ -12,7 +12,7 @@ export const mapFlowStatsFilterToFlowRunsFilter: MapFunction<FlowStatsFilter, Fl
     },
     flowRuns: {
       expectedStartTimeAfter: subSeconds(now, source.timeSpanInSeconds),
-      expectedStartTimeBefore: now,
+      startTimeNull: false,
     },
   }
 
@@ -28,7 +28,7 @@ export const mapFlowStatsFilterToTaskRunsFilter: MapFunction<FlowStatsFilter, Ta
     },
     taskRuns: {
       startTimeAfter: subSeconds(now, source.timeSpanInSeconds),
-      startTimeBefore: now,
+      startTimeNull: false,
     },
   }
 }

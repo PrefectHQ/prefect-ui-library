@@ -28,11 +28,11 @@ export const mapTaskRunsFilterToTaskRunsHistoryFilter: MapFunction<TaskRunsFilte
 
   const { flows, flowRuns, deployments, taskRuns } = source
   const {
-    startTimeBefore = now,
+    startTimeBefore,
     startTimeAfter = subHours(now, defaultTimeSpanHours),
   } = taskRuns ?? {}
 
-  const timeSpanInSeconds = (startTimeBefore.getTime() - startTimeAfter.getTime()) / 1000
+  const timeSpanInSeconds = ((startTimeBefore ?? now).getTime() - startTimeAfter.getTime()) / 1000
 
   return {
     flows,

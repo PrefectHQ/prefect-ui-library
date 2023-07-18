@@ -14,7 +14,7 @@ export const mapWorkspaceDashboardFilterToTaskRunsFilter: MapFunction<WorkspaceD
     },
     taskRuns: {
       startTimeAfter: subSeconds(now, source.timeSpanInSeconds),
-      startTimeBefore: now,
+      startTimeNull: false,
     },
   }
 }
@@ -24,7 +24,6 @@ export const mapWorkspaceDashboardFilterToTaskRunsHistoryFilter: MapFunction<Wor
 
   return {
     historyStart: subSeconds(now, source.timeSpanInSeconds),
-    historyEnd: now,
     historyIntervalSeconds: source.timeSpanInSeconds / 20,
     flowRuns: {
       tags: {
@@ -39,7 +38,7 @@ export const mapWorkspaceDashboardFilterToFlowRunsFilter: MapFunction<WorkspaceD
   const filter: FlowRunsFilter = {
     flowRuns: {
       expectedStartTimeAfter: subSeconds(now, source.timeSpanInSeconds),
-      expectedStartTimeBefore: now,
+      startTimeNull: false,
       tags: {
         name: source.tags,
       },
@@ -55,7 +54,6 @@ export const mapWorkspaceDashboardFilterToWorkPoolWorkersFilter: MapFunction<Wor
   return {
     workers: {
       lastHeartbeatTimeAfter: subSeconds(now, source.timeSpanInSeconds),
-      lastHeartbeatTimeBefore: now,
     },
   }
 }
