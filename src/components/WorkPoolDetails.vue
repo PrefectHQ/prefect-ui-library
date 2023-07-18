@@ -2,7 +2,7 @@
   <div class="work-pool-details">
     <p-key-value label="Description" :value="workPool.description" :alternate="alternate" />
 
-    <p-key-value v-if="can.access.workers" label="Type" :value="workPool.typeLabel" :alternate="alternate" />
+    <p-key-value label="Type" :value="workPool.typeLabel" :alternate="alternate" />
 
     <p-key-value label="Concurrency Limit" :value="workPool.concurrencyLimit" :alternate="alternate" />
 
@@ -26,7 +26,7 @@
   import { useSubscription } from '@prefecthq/vue-compositions'
   import { computed } from 'vue'
   import { SchemaPropertiesKeyValues } from '@/components'
-  import { useCan, useWorkspaceApi } from '@/compositions'
+  import { useWorkspaceApi } from '@/compositions'
   import { WorkPool } from '@/models'
   import { getSchemaDefaultValues, mapper } from '@/services'
   import { formatDateTimeNumeric } from '@/utilities/dates'
@@ -37,7 +37,6 @@
   }>()
 
   const api = useWorkspaceApi()
-  const can = useCan()
   const subscriptionOptions = {
     interval: 30000,
   }
@@ -51,7 +50,7 @@
     return properties && Object.keys(properties).length > 0
   })
   const schema = computed(() => mapper.map('SchemaResponse', props.workPool.baseJobTemplate.variables ?? {}, 'Schema'))
-  const showBaseJobTemplateDetails = computed(() => props.workPool.type && schemaHasProperties.value && can.access.workers)
+  const showBaseJobTemplateDetails = computed(() => props.workPool.type && schemaHasProperties.value)
   const baseJobTemplateVariablesDefaults = computed(() => getSchemaDefaultValues(schema.value))
 </script>
 

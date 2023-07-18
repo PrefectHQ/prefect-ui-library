@@ -19,7 +19,7 @@
         </template>
       </p-label>
 
-      <p-label v-if="can.access.workers" label="Type">
+      <p-label label="Type">
         <WorkPoolTypeSelect :selected="type" disabled />
       </p-label>
 
@@ -44,7 +44,7 @@
   import { ref, computed } from 'vue'
   import { useRouter } from 'vue-router'
   import { SubmitButton, WorkPoolTypeSelect, WorkPoolBaseJobTemplateFormSection } from '@/components'
-  import { useCan, useWorkspaceApi, useWorkspaceRoutes } from '@/compositions'
+  import { useWorkspaceApi, useWorkspaceRoutes } from '@/compositions'
   import { localization } from '@/localization'
   import { WorkPool, WorkPoolEdit } from '@/models'
 
@@ -53,7 +53,6 @@
   }>()
 
   const api = useWorkspaceApi()
-  const can = useCan()
   const router = useRouter()
   const routes = useWorkspaceRoutes()
   const { validate, pending } = useValidationObserver()
@@ -64,7 +63,7 @@
   const baseJobTemplate = ref(props.workPool.baseJobTemplate)
 
   const typeIsNotPrefectAgent = computed(() => type.value !== 'prefect-agent')
-  const showBaseJobTemplateFormSection = computed(() => type.value && typeIsNotPrefectAgent.value && can.access.workers)
+  const showBaseJobTemplateFormSection = computed(() => type.value && typeIsNotPrefectAgent.value)
 
   function cancel(): void {
     router.back()

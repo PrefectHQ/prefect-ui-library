@@ -19,7 +19,7 @@
         </template>
       </p-label>
 
-      <p-label v-if="can.access.workers" label="Type" :state="typeState" :message="typeErrorMessage">
+      <p-label label="Type" :state="typeState" :message="typeErrorMessage">
         <template #description>
           <p>
             The type of worker to run within this work pool. To learn more about workers, check out
@@ -51,13 +51,12 @@
   import { computed, reactive, ref } from 'vue'
   import { useRouter } from 'vue-router'
   import { SubmitButton, WorkPoolTypeSelect, WorkPoolBaseJobTemplateFormSection } from '@/components'
-  import { useCan, useWorkspaceApi, useWorkspaceRoutes } from '@/compositions'
+  import { useWorkspaceApi, useWorkspaceRoutes } from '@/compositions'
   import { localization } from '@/localization'
   import { WorkPoolCreate } from '@/models'
   import { WorkerBaseJobTemplate } from '@/types'
 
   const api = useWorkspaceApi()
-  const can = useCan()
   const router = useRouter()
   const routes = useWorkspaceRoutes()
 
@@ -90,7 +89,7 @@
   })
 
   const typeIsNotPrefectAgent = computed(() => type.value !== 'prefect-agent')
-  const showBaseJobTemplateFormSection = computed(() => type.value && typeIsNotPrefectAgent.value && can.access.workers)
+  const showBaseJobTemplateFormSection = computed(() => type.value && typeIsNotPrefectAgent.value)
 
   const isRequired: ValidationRule<string | undefined> = (value) => value !== undefined && value.trim().length > 0
 
