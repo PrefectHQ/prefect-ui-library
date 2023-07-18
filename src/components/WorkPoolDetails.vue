@@ -26,7 +26,7 @@
   import { useSubscription } from '@prefecthq/vue-compositions'
   import { computed } from 'vue'
   import { SchemaPropertiesKeyValues } from '@/components'
-  import { useCan, useWorkspaceApi } from '@/compositions'
+  import { useWorkspaceApi } from '@/compositions'
   import { WorkPool } from '@/models'
   import { getSchemaDefaultValues, mapper } from '@/services'
   import { formatDateTimeNumeric } from '@/utilities/dates'
@@ -37,7 +37,6 @@
   }>()
 
   const api = useWorkspaceApi()
-  const can = useCan()
   const subscriptionOptions = {
     interval: 30000,
   }
