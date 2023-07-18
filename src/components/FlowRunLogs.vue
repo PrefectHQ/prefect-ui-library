@@ -36,7 +36,7 @@
 </template>
 
 <script lang="ts" setup>
-  import { ref, computed, toRefs } from 'vue'
+  import { ref, computed, toRefs, watch } from 'vue'
   import LogLevelSelect from '@/components/LogLevelSelect.vue'
   import LogsContainer from '@/components/LogsContainer.vue'
   import LogsSort from '@/components/LogsSort.vue'
@@ -74,6 +74,12 @@
   function clear(): void {
     logLevel.value = 0
   }
+
+  watch(() => flowRun.value.stateType, type => {
+    if (isTerminalStateType(type)) {
+      logsSubscription.refresh()
+    }
+  })
 </script>
 
 <style>
