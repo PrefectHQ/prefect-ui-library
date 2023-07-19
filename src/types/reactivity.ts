@@ -1,7 +1,9 @@
 import { Ref } from 'vue'
 import { AnyArray, AnyRecord } from '@/types/any'
 
+export type Getter<T> = () => T
 export type MaybeRef<T> = Ref<T> | T
+export type MaybeGetter<T> = Getter<T> | T
 
 export type MaybeReactive<T extends object> = T | {
   [P in keyof T]: [T[P]] extends [object | undefined]

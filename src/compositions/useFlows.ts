@@ -1,43 +1,45 @@
 import { SubscriptionOptions, useSubscriptionWithDependencies } from '@prefecthq/vue-compositions'
-import { computed, getCurrentInstance, onUnmounted, ref } from 'vue'
+import { MaybeRefOrGetter, computed, getCurrentInstance, onUnmounted, toRef, toValue } from 'vue'
 import { useCan } from '@/compositions/useCan'
 import { useWorkspaceApi } from '@/compositions/useWorkspaceApi'
 import { FlowsFilter } from '@/models'
 import { WorkspaceFlowsApi } from '@/services'
-import { MaybeRef } from '@/types'
+import { Getter } from '@/types'
 import { UseEntitySubscription } from '@/types/useEntitySubscription'
 
 export type UseFlows = UseEntitySubscription<WorkspaceFlowsApi['getFlows'], 'flows'>
 
-export function useFlows(filter: MaybeRef<FlowsFilter | null | undefined>, options?: SubscriptionOptions): UseFlows
-export function useFlows(flowIds: MaybeRef<string[] | null | undefined>, options?: SubscriptionOptions): UseFlows
-export function useFlows(filter?: MaybeRef<string[] | FlowsFilter | null | undefined>, options?: SubscriptionOptions): UseFlows {
+export function useFlows(filter: MaybeRefOrGetter<FlowsFilter | null | undefined>, options?: SubscriptionOptions): UseFlows
+export function useFlows(flowIds: MaybeRefOrGetter<string[] | null | undefined>, options?: SubscriptionOptions): UseFlows
+export function useFlows(filterOrFlowIds?: MaybeRefOrGetter<string[] | FlowsFilter | null | undefined>, options?: SubscriptionOptions): UseFlows {
   const api = useWorkspaceApi()
   const can = useCan()
-  const filterRef = ref(filter)
 
-  const parameters = computed<[FlowsFilter] | null>(() => {
-    if (!filterRef.value) {
-      return null
-    }
-
+  const getter: Getter<[FlowsFilter] | null> = () => {
     if (!can.read.flow) {
       return null
     }
 
-    if (Array.isArray(filterRef.value)) {
+    const value = toValue(filterOrFlowIds)
+
+    if (!value) {
+      return null
+    }
+
+    if (Array.isArray(value)) {
       const filter: FlowsFilter = {
         flows: {
-          id: filterRef.value,
+          id: value,
         },
       }
 
       return [filter]
     }
 
-    return [filterRef.value]
-  })
+    return [value]
+  }
 
+  const parameters = toRef(getter)
   const subscription = useSubscriptionWithDependencies(api.flows.getFlows, parameters, options)
   const flows = computed(() => subscription.response ?? [])
 
