@@ -55,7 +55,7 @@
   }
   const workPoolName = computed(() => props.workPool.name)
 
-  const { lastPolled } = useWorkPoolLastPolled(workPoolName, {}, subscriptionOptions)
+  const { lastPolled } = useWorkPoolLastPolled(workPoolName, subscriptionOptions)
 
   const emit = defineEmits<{
     (event: 'update'): void,

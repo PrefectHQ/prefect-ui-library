@@ -13,7 +13,7 @@
     </div>
     <dl class="dashboard-work-pool-card__details">
       <DashboardWorkPoolCardDetail label="Polled">
-        <WorkPoolLastPolled :work-pool="workPool" :filter="filter" />
+        <WorkPoolLastPolled :work-pool="workPool" />
       </DashboardWorkPoolCardDetail>
 
       <DashboardWorkPoolCardDetail label="Work Queues">
