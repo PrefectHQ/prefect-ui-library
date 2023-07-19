@@ -13,19 +13,14 @@
   import { computed } from 'vue'
   import { useInterval, useWorkPoolLastPolled } from '@/compositions'
   import { WorkPool } from '@/models'
-  import { mapper } from '@/services'
-  import { WorkspaceDashboardFilter } from '@/types'
 
   const props = defineProps<{
     workPool: WorkPool,
-    filter?: WorkspaceDashboardFilter,
   }>()
 
-  const workPoolName = computed(() => props.workPool.name)
-  const workPoolWorkersFilter = computed(() => mapper.map('WorkspaceDashboardFilter', props.filter, 'WorkPoolWorkersFilter'))
-
   const options = useInterval()
-  const { lastPolled } = useWorkPoolLastPolled(workPoolName, workPoolWorkersFilter, options)
+  const workPoolName = computed(() => props.workPool.name)
+  const { lastPolled } = useWorkPoolLastPolled(workPoolName, options)
 </script>
 
 <style>
