@@ -14,6 +14,7 @@ export type WorkerCollectionItem = {
   logoUrl?: string,
   type?: string,
   isBeta?: boolean,
+  isPushPool?: boolean,
 }
 
 export type WorkerColection = Record<string, WorkerCollectionItem>
