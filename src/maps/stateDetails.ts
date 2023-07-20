@@ -13,7 +13,7 @@ export const mapStateDetailsResponseToStateDetails: MapFunction<StateDetailsResp
     scheduledTime: this.map('string', source.scheduled_time, 'Date'),
     cacheExpiration: this.map('string', source.cache_expiration, 'Date'),
     pauseTimeout: this.map('string', source.pause_timeout, 'Date'),
-    pauseRescheduledTime: source.pause_rescheduled_time,
+    pauseReschedule: source.pause_reschedule,
   }
 }
 
@@ -26,7 +26,7 @@ export const mapStateDetailsToStateDetailsResponse: MapFunction<StateDetails, St
     scheduled_time: this.map('Date', source.scheduledTime, 'string'),
     cache_expiration: this.map('Date', source.cacheExpiration, 'string'),
     pause_timeout: this.map('Date', source.pauseTimeout, 'string'),
-    pause_rescheduled_time: source.pauseRescheduledTime,
+    pause_reschedule: source.pauseReschedule,
   }
 }
 
@@ -47,7 +47,7 @@ export const mapStateDetailsToStateDetailsRequest: MapFunction<StateDetails, Sta
     task_run_id: source.taskRunId,
     child_flow_run_id: source.childFlowRunId,
     cache_key: source.cacheKey,
-    pause_rescheduled_time: source.pauseRescheduledTime,
+    pause_reschedule: source.pauseReschedule,
     scheduled_time: source.scheduledTime ? this.map('Date', source.scheduledTime, 'string') : null,
     cache_expiration: source.cacheExpiration ? this.map('Date', source.cacheExpiration, 'string') : null,
     pause_timeout: source.pauseTimeout ? this.map('Date', source.pauseTimeout, 'string') : null,

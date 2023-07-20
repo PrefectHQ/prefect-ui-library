@@ -68,7 +68,7 @@
         name: 'Paused',
         stateDetails: {
           pauseTimeout: addSeconds(new Date(), timeout),
-          pauseRescheduledTime: true,
+          pauseReschedule: true,
         },
       }
       await api.flowRuns.setFlowRunState(props.flowRunId, { state: values })
