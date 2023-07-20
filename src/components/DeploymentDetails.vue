@@ -12,7 +12,7 @@
       </template>
     </p-key-value>
 
-    <p-key-value v-if="deployment.workQueueName && !isPushWorkPool" label="Work Queue" :alternate="alternate">
+    <p-key-value v-if="deployment.workQueueName && !workPool?.isPushPool" label="Work Queue" :alternate="alternate">
       <template #value>
         <WorkQueueIconText :work-queue-name="deployment.workQueueName!" :work-pool-name="deployment.workPoolName" />
       </template>
@@ -108,7 +108,6 @@
   const updateScheduleLoading = ref(false)
 
   const { workPool } = useWorkPool(props.deployment.workPoolName ?? '')
-  const isPushWorkPool = computed(() => workPool.value?.isPushPool)
 
   const internalSchedule = computed({
     get() {

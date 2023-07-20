@@ -1,5 +1,5 @@
 <template>
-  <div v-if="!isPushWorkPool" class="flow-run-work-queue">
+  <div v-if="!workPool?.isPushPool" class="flow-run-work-queue">
     <span>Work Queue</span>
     <WorkQueueIconText :work-queue-name="workQueueName" :work-pool-name="workPoolName" />
     <WorkPoolQueueStatusIcon v-if="isNotTerminal && workPoolName" :work-queue-name="workQueueName" :work-pool-name="workPoolName" />
@@ -20,7 +20,6 @@
 
   const isNotTerminal = computed(() => props.flowRunState && !isTerminalStateType(props.flowRunState))
   const { workPool } = useWorkPool(props.workPoolName ?? '')
-  const isPushWorkPool = computed(() => workPool.value?.isPushPool)
 </script>
 
 <style>
