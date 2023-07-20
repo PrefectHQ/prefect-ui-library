@@ -6,5 +6,5 @@ export type StateDetails = {
   cacheKey?: string | null,
   cacheExpiration?: Date | null,
   pauseTimeout?: Date | null,
-  pauseRescheduledTime?: boolean | null,
+  pauseReschedule?: boolean | null,
 }
