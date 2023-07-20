@@ -61,7 +61,6 @@
 
   const isPushWorkPool = computed(() => {
     const worker = props.workers.find(({ type }) => type === workPool.value.type)
-    console.log('worker', worker)
     return worker?.isPushPool ?? false
   })
 
