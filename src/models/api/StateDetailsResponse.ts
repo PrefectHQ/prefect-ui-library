@@ -8,5 +8,5 @@ export type StateDetailsResponse = {
   cache_key?: string | null,
   cache_expiration?: string | null,
   pause_timeout?: DateString | null,
-  pause_rescheduled_time?: boolean | null,
+  pause_reschedule?: boolean | null,
 }

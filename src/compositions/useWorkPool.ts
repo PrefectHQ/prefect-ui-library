@@ -7,7 +7,7 @@ import { UseEntitySubscription } from '@/types/useEntitySubscription'
 
 export type UseWorkPool = UseEntitySubscription<WorkspaceWorkPoolsApi['getWorkPoolByName'], 'workPool'>
 
-export function useWorkPool(workPoolName: string | Ref<string | null | undefined>): UseWorkPool {
+export function useWorkPool(workPoolName: string | undefined | Ref<string | null | undefined>): UseWorkPool {
   const api = useWorkspaceApi()
   const can = useCan()
   const name = ref(workPoolName)
