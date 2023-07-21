@@ -1,5 +1,5 @@
 <template>
-  <div class="flow-run-work-queue">
+  <div v-if="!workPool?.isPushPool" class="flow-run-work-queue">
     <span>Work Queue</span>
     <WorkQueueIconText :work-queue-name="workQueueName" :work-pool-name="workPoolName" />
     <WorkPoolQueueStatusIcon v-if="isNotTerminal && workPoolName" :work-queue-name="workQueueName" :work-pool-name="workPoolName" />
@@ -7,8 +7,9 @@
 </template>
 
 <script lang="ts" setup>
-  import { computed } from 'vue'
+  import { computed, toRefs } from 'vue'
   import { WorkPoolQueueStatusIcon, WorkQueueIconText } from '@/components'
+  import { useWorkPool } from '@/compositions'
   import { isTerminalStateType } from '@/models'
 
   const props = defineProps<{
@@ -18,6 +19,8 @@
   }>()
 
   const isNotTerminal = computed(() => props.flowRunState && !isTerminalStateType(props.flowRunState))
+  const { workPoolName } = toRefs(props)
+  const { workPool } = useWorkPool(workPoolName)
 </script>
 
 <style>

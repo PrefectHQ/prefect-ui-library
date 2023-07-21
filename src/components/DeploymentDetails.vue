@@ -12,7 +12,7 @@
       </template>
     </p-key-value>
 
-    <p-key-value v-if="deployment.workQueueName" label="Work Queue" :alternate="alternate">
+    <p-key-value v-if="deployment.workQueueName && !workPool?.isPushPool" label="Work Queue" :alternate="alternate">
       <template #value>
         <WorkQueueIconText :work-queue-name="deployment.workQueueName!" :work-pool-name="deployment.workPoolName" />
       </template>
@@ -89,7 +89,7 @@
   import { showToast, PLoadingIcon } from '@prefecthq/prefect-design'
   import { ref, computed } from 'vue'
   import { BlockIconText, WorkPoolIconText, FlowIconText, ScheduleFieldset, WorkQueueIconText } from '@/components'
-  import { useWorkspaceApi, useCan } from '@/compositions'
+  import { useWorkspaceApi, useCan, useWorkPool } from '@/compositions'
   import { localization } from '@/localization'
   import { Schedule, Deployment } from '@/models'
   import { formatDateTimeNumeric } from '@/utilities/dates'
@@ -106,6 +106,8 @@
   const can = useCan()
   const api = useWorkspaceApi()
   const updateScheduleLoading = ref(false)
+
+  const { workPool } = useWorkPool(props.deployment.workPoolName ?? '')
 
   const internalSchedule = computed({
     get() {
