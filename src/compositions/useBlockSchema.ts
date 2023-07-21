@@ -7,7 +7,7 @@ import { UseEntitySubscription } from '@/types/useEntitySubscription'
 
 export type UseBlockSchema = UseEntitySubscription<WorkspaceBlockSchemasApi['getBlockSchema'], 'blockSchema'>
 
-export function useBlockSchema(blockSchemaId: MaybeRefOrGetter<string | null | null>): UseBlockSchema {
+export function useBlockSchema(blockSchemaId: MaybeRefOrGetter<string | null | undefined>): UseBlockSchema {
   const api = useWorkspaceApi()
 
   const getter: Getter<[string] | null> = () => {
@@ -30,7 +30,7 @@ export function useBlockSchema(blockSchemaId: MaybeRefOrGetter<string | null | n
   }
 }
 
-export function useBlockSchemaForBlockType(blockTypeId: MaybeRefOrGetter<string | null | null>): UseBlockSchema {
+export function useBlockSchemaForBlockType(blockTypeId: MaybeRefOrGetter<string | null | undefined>): UseBlockSchema {
   const api = useWorkspaceApi()
   const getter: Getter<[string] | null> = () => {
     const id = toValue(blockTypeId)

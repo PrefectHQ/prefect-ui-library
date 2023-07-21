@@ -8,7 +8,7 @@ import { UseEntitySubscription } from '@/types/useEntitySubscription'
 
 export type UseBlockDocument = UseEntitySubscription<WorkspaceBlockDocumentsApi['getBlockDocument'], 'blockDocument'>
 
-export function useBlockDocument(blockDocumentId: MaybeRefOrGetter<string | null | null>): UseBlockDocument {
+export function useBlockDocument(blockDocumentId: MaybeRefOrGetter<string | null | undefined>): UseBlockDocument {
   const api = useWorkspaceApi()
   const can = useCan()
 
