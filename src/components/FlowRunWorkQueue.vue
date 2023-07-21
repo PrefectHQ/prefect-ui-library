@@ -19,7 +19,8 @@
   }>()
 
   const isNotTerminal = computed(() => props.flowRunState && !isTerminalStateType(props.flowRunState))
-  const { workPool } = useWorkPool(props.workPoolName ?? '')
+  const { workPoolName } = toRefs(props)
+  const { workPool } = useWorkPool(workPoolName)
 </script>
 
 <style>
