@@ -7,7 +7,7 @@
 </template>
 
 <script lang="ts" setup>
-  import { computed } from 'vue'
+  import { computed, toRefs } from 'vue'
   import { WorkPoolQueueStatusIcon, WorkQueueIconText } from '@/components'
   import { useWorkPool } from '@/compositions'
   import { isTerminalStateType } from '@/models'
