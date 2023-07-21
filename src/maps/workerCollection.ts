@@ -24,6 +24,7 @@ WorkerCollectionItem[]
       logoUrl: worker_data.logo_url,
       type: worker_data.type,
       isBeta: worker_data.is_beta ?? false,
+      isPushPool: worker_data.is_push_pool ?? false,
     }))
 }
 

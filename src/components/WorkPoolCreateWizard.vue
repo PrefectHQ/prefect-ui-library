@@ -1,13 +1,13 @@
 <template>
   <p-wizard :steps="steps" last-step-text="Create" show-cancel @submit="submit" @cancel="cancel">
-    <template #work-pool-information>
-      <WorkPoolCreateWizardStepInformation v-model:workPool="workPool" />
-    </template>
     <template #work-pool-infrastructure-type>
       <WorkPoolCreateWizardStepInfrastructureType v-model:workPool="workPool" :workers="availableWorkers" />
     </template>
     <template #work-pool-infrastructure-configuration>
       <WorkPoolCreateWizardStepInfrastructureConfiguration v-model:workPool="workPool" :default-base-job-template="defaultBaseJobTemplate" />
+    </template>
+    <template #work-pool-information>
+      <WorkPoolCreateWizardStepInformation v-model:workPool="workPool" :workers="availableWorkers" />
     </template>
   </p-wizard>
 </template>
@@ -28,9 +28,9 @@
   const workPool = ref<WorkPoolFormValues>({})
 
   const steps: WizardStep[] = [
-    { title: 'Basic Information', key: 'work-pool-information' },
     { title: 'Infrastructure Type', key: 'work-pool-infrastructure-type' },
     { title: 'Configuration', key: 'work-pool-infrastructure-configuration' },
+    { title: 'Details', key: 'work-pool-information' },
   ]
 
   const api = useWorkspaceApi()

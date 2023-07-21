@@ -14,6 +14,7 @@ export type WorkerCollectionItemResponse = {
   logo_url?: string,
   type?: string,
   is_beta?: boolean,
+  is_push_pool?: boolean,
 }
 
 export type WorkerCollectionResponse = Record<string, WorkerCollectionItemResponse>
