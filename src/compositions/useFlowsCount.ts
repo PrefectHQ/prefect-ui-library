@@ -1,43 +1,37 @@
 import { useSubscriptionWithDependencies } from '@prefecthq/vue-compositions'
-import { computed, getCurrentInstance, onUnmounted, ref, unref, watch } from 'vue'
+import merge from 'lodash.merge'
+import { MaybeRefOrGetter, computed, toRef, toValue } from 'vue'
 import { useCan, useWorkspaceApi } from '@/compositions'
 import { FlowsFilter } from '@/models'
 import { WorkspaceFlowsApi } from '@/services/WorkspaceFlowsApi'
-import { MaybeRef } from '@/types'
+import { Getter } from '@/types/reactivity'
 import { UseEntitySubscription } from '@/types/useEntitySubscription'
-import { isNullish } from '@/utilities'
 
 export type UseFlowsCount = UseEntitySubscription<WorkspaceFlowsApi['getFlowsCount'], 'count'>
 
-export function useFlowsCount(filter?: MaybeRef<FlowsFilter>): UseFlowsCount {
+export function useFlowsCount(filter?: MaybeRefOrGetter<FlowsFilter>): UseFlowsCount {
   const api = useWorkspaceApi()
-  const filterRef = ref<[FlowsFilter] | null>(null)
   const can = useCan()
 
-  const unwatch = watch([filter], ([filter]) => {
-    filter = unref(filter)
-
+  const getter: Getter<[FlowsFilter] | null> = () => {
     if (!can.read.flow) {
-      filterRef.value = null
-      return
+      return null
     }
 
-    if (isNullish(filter)) {
-      filterRef.value = [{}]
-      return
+    const filterValue = toValue(filter)
+
+    if (!filterValue) {
+      return null
     }
 
-    filterRef.value = [filter]
-  }, { immediate: true, deep: true })
+    // merge here is important to track changes to `filter` if it is a reactive
+    const parameter = merge({}, filterValue)
 
-  if (getCurrentInstance()) {
-    onUnmounted(() => {
-      subscription.unsubscribe()
-      unwatch()
-    })
+    return [parameter]
   }
 
-  const subscription = useSubscriptionWithDependencies(api.flows.getFlowsCount, filterRef)
+  const parameters = toRef(getter)
+  const subscription = useSubscriptionWithDependencies(api.flows.getFlowsCount, parameters)
   const count = computed(() => subscription.response)
 
   return {

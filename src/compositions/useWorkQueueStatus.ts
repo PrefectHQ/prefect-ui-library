@@ -1,23 +1,32 @@
 import { useSubscriptionWithDependencies } from '@prefecthq/vue-compositions'
-import { computed, Ref, ref } from 'vue'
+import { computed, MaybeRefOrGetter, toRef, toValue } from 'vue'
+import { useCan } from '@/compositions/useCan'
 import { useWorkspaceApi } from '@/compositions/useWorkspaceApi'
 import { WorkspaceWorkQueuesApi } from '@/services/WorkspaceWorkQueuesApi'
+import { Getter } from '@/types/reactivity'
 import { UseEntitySubscription } from '@/types/useEntitySubscription'
 
 export type UseWorkQueueStatus = UseEntitySubscription<WorkspaceWorkQueuesApi['getWorkQueueStatus'], 'workQueueStatus'>
 
-export function useWorkQueueStatus(workQueueId: string | Ref<string | null | undefined>): UseWorkQueueStatus {
+export function useWorkQueueStatus(workQueueId: MaybeRefOrGetter<string | null | undefined>): UseWorkQueueStatus {
   const api = useWorkspaceApi()
-  const id = ref(workQueueId)
+  const can = useCan()
 
-  const parameters = computed<[string] | null>(() => {
-    if (!id.value) {
+  const getter: Getter<[string] | null> = () => {
+    if (!can.read.work_queue) {
       return null
     }
 
-    return [id.value]
-  })
+    const id = toValue(workQueueId)
 
+    if (!id) {
+      return null
+    }
+
+    return [id]
+  }
+
+  const parameters = toRef(getter)
   const subscription = useSubscriptionWithDependencies(api.workQueues.getWorkQueueStatus, parameters)
   const workQueueStatus = computed(() => subscription.response)
 

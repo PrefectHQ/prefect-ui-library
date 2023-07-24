@@ -1,29 +1,32 @@
 import { useSubscriptionWithDependencies } from '@prefecthq/vue-compositions'
-import { computed, Ref, ref } from 'vue'
+import { computed, MaybeRefOrGetter, toRef, toValue } from 'vue'
 import { useCan } from '@/compositions/useCan'
 import { useWorkspaceApi } from '@/compositions/useWorkspaceApi'
 import { WorkspaceFlowsApi } from '@/services/WorkspaceFlowsApi'
+import { Getter } from '@/types/reactivity'
 import { UseEntitySubscription } from '@/types/useEntitySubscription'
 
 export type UseFlow = UseEntitySubscription<WorkspaceFlowsApi['getFlow'], 'flow'>
 
-export function useFlow(flowId: string | Ref<string | null | undefined>): UseFlow {
+export function useFlow(flowId: MaybeRefOrGetter<string | null | undefined>): UseFlow {
   const api = useWorkspaceApi()
   const can = useCan()
-  const id = ref(flowId)
 
-  const parameters = computed<[string] | null>(() => {
-    if (!id.value) {
-      return null
-    }
-
+  const getter: Getter<[string] | null> = () => {
     if (!can.read.flow) {
       return null
     }
 
-    return [id.value]
-  })
+    const id = toValue(flowId)
 
+    if (!id) {
+      return null
+    }
+
+    return [id]
+  }
+
+  const parameters = toRef(getter)
   const subscription = useSubscriptionWithDependencies(api.flows.getFlow, parameters)
   const flow = computed(() => subscription.response)
 

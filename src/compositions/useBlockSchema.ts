@@ -1,22 +1,26 @@
 import { useSubscriptionWithDependencies } from '@prefecthq/vue-compositions'
-import { computed, ref, Ref } from 'vue'
+import { computed, MaybeRefOrGetter, toRef, toValue } from 'vue'
 import { useWorkspaceApi } from '@/compositions/useWorkspaceApi'
 import { WorkspaceBlockSchemasApi } from '@/services/WorkspaceBlockSchemasApi'
+import { Getter } from '@/types/reactivity'
 import { UseEntitySubscription } from '@/types/useEntitySubscription'
 
 export type UseBlockSchema = UseEntitySubscription<WorkspaceBlockSchemasApi['getBlockSchema'], 'blockSchema'>
 
-export function useBlockSchema(blockSchemaId: string | Ref<string | null | null>): UseBlockSchema {
-  const id = ref(blockSchemaId)
+export function useBlockSchema(blockSchemaId: MaybeRefOrGetter<string | null | undefined>): UseBlockSchema {
   const api = useWorkspaceApi()
-  const parameters = computed<[string] | null>(() => {
-    if (!id.value) {
+
+  const getter: Getter<[string] | null> = () => {
+    const id = toValue(blockSchemaId)
+
+    if (!id) {
       return null
     }
 
-    return [id.value]
-  })
+    return [id]
+  }
 
+  const parameters = toRef(getter)
   const subscription = useSubscriptionWithDependencies(api.blockSchemas.getBlockSchema, parameters)
   const blockSchema = computed(() => subscription.response)
 
@@ -26,17 +30,19 @@ export function useBlockSchema(blockSchemaId: string | Ref<string | null | null>
   }
 }
 
-export function useBlockSchemaForBlockType(blockTypeId: string | Ref<string | null | null>): UseBlockSchema {
-  const id = ref(blockTypeId)
+export function useBlockSchemaForBlockType(blockTypeId: MaybeRefOrGetter<string | null | undefined>): UseBlockSchema {
   const api = useWorkspaceApi()
-  const parameters = computed<[string] | null>(() => {
-    if (!id.value) {
+  const getter: Getter<[string] | null> = () => {
+    const id = toValue(blockTypeId)
+
+    if (!id) {
       return null
     }
 
-    return [id.value]
-  })
+    return [id]
+  }
 
+  const parameters = toRef(getter)
   const subscription = useSubscriptionWithDependencies(api.blockSchemas.getBlockSchemaForBlockType, parameters)
   const blockSchema = computed(() => subscription.response)
 

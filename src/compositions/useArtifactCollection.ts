@@ -1,29 +1,32 @@
 import { useSubscriptionWithDependencies } from '@prefecthq/vue-compositions'
-import { computed, Ref, ref } from 'vue'
+import { computed, MaybeRefOrGetter, toRef, toValue } from 'vue'
 import { useCan } from '@/compositions/useCan'
 import { useWorkspaceApi } from '@/compositions/useWorkspaceApi'
 import { WorkspaceArtifactsApi } from '@/services/WorkspaceArtifactsApi'
+import { Getter } from '@/types/reactivity'
 import { UseEntitySubscription } from '@/types/useEntitySubscription'
 
 export type UseArtifactCollection = UseEntitySubscription<WorkspaceArtifactsApi['getArtifactCollection'], 'artifactCollection'>
 
-export function useArtifactCollection(artifactKey: string | Ref<string | null | undefined>): UseArtifactCollection {
+export function useArtifactCollection(artifactKey: MaybeRefOrGetter<string | null | undefined>): UseArtifactCollection {
   const api = useWorkspaceApi()
   const can = useCan()
-  const key = ref(artifactKey)
 
-  const parameters = computed<[string] | null>(() => {
+  const getter: Getter<[string] | null> = () => {
     if (!can.read.artifact) {
       return null
     }
 
-    if (!key.value) {
+    const key = toValue(artifactKey)
+
+    if (!key) {
       return null
     }
 
-    return [key.value]
-  })
+    return [key]
+  }
 
+  const parameters = toRef(getter)
   const subscription = useSubscriptionWithDependencies(api.artifacts.getArtifactCollection, parameters)
   const artifactCollection = computed(() => subscription.response)
 

@@ -1,5 +1,5 @@
 import { SubscriptionOptions, UseSubscription, useSubscription } from '@prefecthq/vue-compositions'
-import { ComputedRef, Ref, computed, onUnmounted, reactive, ref, watch } from 'vue'
+import { ComputedRef, MaybeRefOrGetter, computed, onUnmounted, reactive, ref, toRef, watch } from 'vue'
 import { useCan } from '@/compositions/useCan'
 import { GLOBAL_API_LIMIT, useFilterPagination } from '@/compositions/useFilterPagination'
 import { UseSubscriptions, useSubscriptions } from '@/compositions/useSubscriptions'
@@ -18,8 +18,8 @@ export type UseFlowRunsInfiniteScroll = {
   loadMore: () => void,
 }
 
-export function useFlowRunsInfiniteScroll(filter: FlowRunsFilter | Ref<FlowRunsFilter | null | undefined>, options?: SubscriptionOptions): UseFlowRunsInfiniteScroll {
-  const filterRef = ref(filter)
+export function useFlowRunsInfiniteScroll(filter: MaybeRefOrGetter<FlowRunsFilter | null | undefined>, options?: SubscriptionOptions): UseFlowRunsInfiniteScroll {
+  const filterRef = toRef(filter)
   const can = useCan()
   const api = useWorkspaceApi()
   const storage = useFlowRunStorage()
