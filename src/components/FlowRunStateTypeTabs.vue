@@ -16,6 +16,7 @@
 
 <script lang="ts" setup>
   import { useRouteQueryParam } from '@prefecthq/vue-compositions'
+  import merge from 'lodash.merge'
   import { computed } from 'vue'
   import FlowRunsAccordion from '@/components/FlowRunsAccordion.vue'
   import FlowRunStateTypeCount from '@/components/FlowRunStateTypeCount.vue'
@@ -55,19 +56,16 @@
   }
 
   function getStateTypeFilter(tab: string): FlowRunsFilter {
-    const types = getTabStates(tab)
-
-    return {
-      ...props.filter,
+    const filter: FlowRunsFilter = {
       flowRuns: {
-        ...props.filter?.flowRuns,
         state: {
-          ...props.filter?.flowRuns?.state,
-          type: types,
+          type: getTabStates(tab),
         },
       },
       sort: 'EXPECTED_START_TIME_DESC',
     }
+
+    return merge(props.filter, filter)
   }
 </script>
 
