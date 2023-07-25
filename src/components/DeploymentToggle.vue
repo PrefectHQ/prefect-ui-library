@@ -1,9 +1,11 @@
 <template>
-  <p-toggle v-if="can.update.deployment" v-model="internalValue" :loading="loading" :disabled="deployment.deprecated" />
+  <p-tooltip text="Pause or resume this deployment">
+    <p-toggle v-if="can.update.deployment" v-model="internalValue" :loading="loading" :disabled="deployment.deprecated" />
+  </p-tooltip>
 </template>
 
 <script lang="ts" setup>
-  import { PToggle, showToast } from '@prefecthq/prefect-design'
+  import { showToast } from '@prefecthq/prefect-design'
   import { computed, ref } from 'vue'
   import { useWorkspaceApi } from '@/compositions'
   import { useCan } from '@/compositions/useCan'

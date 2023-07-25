@@ -1,5 +1,7 @@
 <template>
-  <p-toggle v-if="can.update.notification_policy" v-model="internalValue" :loading="loading" />
+  <p-tooltip text="Pause or resume this notification">
+    <p-toggle v-if="can.update.notification_policy" v-model="internalValue" :loading="loading" />
+  </p-tooltip>
 </template>
 
 <script lang="ts" setup>

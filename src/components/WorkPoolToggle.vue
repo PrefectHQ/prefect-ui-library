@@ -1,5 +1,7 @@
 <template>
-  <p-toggle v-if="can.update.work_pool" v-model="internalValue" />
+  <p-tooltip text="Pause or resume this work pool">
+    <p-toggle v-if="can.update.work_pool" v-model="internalValue" />
+  </p-tooltip>
 </template>
 
 <script lang="ts" setup>
