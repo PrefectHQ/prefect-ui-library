@@ -14,7 +14,7 @@
 </template>
 
 <script lang="ts" setup>
-  import { computed } from 'vue'
+  import { toRef } from 'vue'
   import FlowRunsBarChart from '@/components/FlowRunsBarChart.vue'
   import FlowRunStateTypeTabs from '@/components/FlowRunStateTypeTabs.vue'
   import StatisticKeyValue from '@/components/StatisticKeyValue.vue'
@@ -28,7 +28,7 @@
   }>()
 
   const options = useInterval()
-  const flowRunsFilter = computed(() => mapper.map('WorkspaceDashboardFilter', props.filter, 'FlowRunsFilter'))
+  const flowRunsFilter = toRef(() => mapper.map('WorkspaceDashboardFilter', props.filter, 'FlowRunsFilter'))
   const { count } = useFlowRunsCount(flowRunsFilter, options)
 </script>
 
