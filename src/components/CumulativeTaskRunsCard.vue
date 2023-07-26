@@ -22,23 +22,22 @@
   import { LineChart, LineChartData } from '@prefecthq/vue-charts'
   import { useSubscription } from '@prefecthq/vue-compositions'
   import merge from 'lodash.merge'
-  import { computed, toRef } from 'vue'
+  import { computed } from 'vue'
   import StatisticKeyValue from '@/components/StatisticKeyValue.vue'
   import { useInterval } from '@/compositions/useInterval'
   import { useTaskRunsCount } from '@/compositions/useTaskRunsCount'
   import { useWorkspaceApi } from '@/compositions/useWorkspaceApi'
   import { TaskRunsFilter } from '@/models/Filters'
   import { mapper } from '@/services/Mapper'
-  import { Getter, MaybeGetter } from '@/types/reactivity'
+  import { Getter } from '@/types/reactivity'
   import { toPercent } from '@/utilities'
 
   const props = defineProps<{
-    filter: MaybeGetter<TaskRunsFilter>,
+    filter: TaskRunsFilter,
   }>()
 
   const api = useWorkspaceApi()
   const options = useInterval()
-  const filter = toRef(props.filter)
 
   const allTasksFilter: Getter<TaskRunsFilter> = () => {
     const stateFilter: TaskRunsFilter = {
@@ -49,7 +48,7 @@
       },
     }
 
-    return merge({}, filter.value, stateFilter)
+    return merge({}, props.filter, stateFilter)
   }
   const { count: total } = useTaskRunsCount(allTasksFilter, options)
 
@@ -72,7 +71,7 @@
       },
     }
 
-    return merge({}, filter.value, stateFilter)
+    return merge({}, props.filter, stateFilter)
   }
   const { count: completed } = useTaskRunsCount(completedTasksFilter, options)
   const completedPercentage = computed(() => getPercent(completed.value, percentComparisonTotal.value))
@@ -86,7 +85,7 @@
       },
     }
 
-    return merge({}, filter.value, stateFilter)
+    return merge({}, props.filter, stateFilter)
   }
   const { count: failed } = useTaskRunsCount(failedTasksFilter, options)
   const failedPercentage = computed(() => getPercent(failed.value, percentComparisonTotal.value))
@@ -100,11 +99,11 @@
       },
     }
 
-    return merge({}, filter.value, stateFilter)
+    return merge({}, props.filter, stateFilter)
   }
   const { count: running } = useTaskRunsCount(runningTasksFilter, options)
 
-  const historyFilter = computed(() => mapper.map('TaskRunsFilter', filter.value, 'TaskRunsHistoryFilter'))
+  const historyFilter = computed(() => mapper.map('TaskRunsFilter', props.filter, 'TaskRunsHistoryFilter'))
   const historySubscription = useSubscription(api.taskRuns.getTaskRunsHistory, [historyFilter], options)
   const history = computed(() => historySubscription.response ?? [])
 
