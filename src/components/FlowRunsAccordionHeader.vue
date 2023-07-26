@@ -16,10 +16,10 @@
 </template>
 
 <script lang="ts" setup>
-  import { useNow, useSubscription } from '@prefecthq/vue-compositions'
+  import { useNow } from '@prefecthq/vue-compositions'
   import { computed } from 'vue'
+  import { useFlowRunsCount } from '@/compositions/useFlowRunsCount'
   import { useLastFlowRun } from '@/compositions/useLastFlowRun'
-  import { useWorkspaceApi } from '@/compositions/useWorkspaceApi'
   import { useWorkspaceRoutes } from '@/compositions/useWorkspaceRoutes'
   import { FlowRunsFilter } from '@/models/Filters'
   import { Flow } from '@/models/Flow'
@@ -34,7 +34,6 @@
     filter?: FlowRunsFilter,
   }>()
 
-  const api = useWorkspaceApi()
   const routes = useWorkspaceRoutes()
   const { now } = useNow({ interval: 1000 })
 
@@ -61,8 +60,7 @@
     return undefined
   })
 
-  const countSubscription = useSubscription(api.flowRuns.getFlowRunsCount, [filter])
-  const count = computed(() => countSubscription.response)
+  const { count } = useFlowRunsCount(filter)
 </script>
 
 <style>
