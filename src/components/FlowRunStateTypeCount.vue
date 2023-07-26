@@ -10,30 +10,34 @@
 </template>
 
 <script lang="ts" setup>
-  import { computed } from 'vue'
+  import merge from 'lodash.merge'
+  import { computed, toValue } from 'vue'
   import { useFlowRunsCount } from '@/compositions/useFlowRunsCount'
   import { useInterval } from '@/compositions/useInterval'
   import { FlowRunsFilter } from '@/models/Filters'
   import { StateType } from '@/models/StateType'
+  import { Getter, MaybeGetter } from '@/types/reactivity'
   import { MaybeArray } from '@/types/utilities'
   import { asArray } from '@/utilities/arrays'
 
   const props = defineProps<{
     stateType: MaybeArray<StateType>,
-    filter?: FlowRunsFilter,
+    filter?: MaybeGetter<FlowRunsFilter>,
   }>()
 
-  const filter = computed(() => ({
-    ...props.filter,
-    flowRuns: {
-      ...props.filter?.flowRuns,
-      state: {
-        type: states.value,
-      },
-    },
-  }))
-
   const states = computed(() => asArray(props.stateType))
+  const filter: Getter<FlowRunsFilter> = () => {
+    const base = toValue(props.filter)
+    const withTypes: FlowRunsFilter = {
+      flowRuns: {
+        state: {
+          type: states.value,
+        },
+      },
+    }
+
+    return merge({}, base, withTypes)
+  }
 
   const options = useInterval()
   const { count } = useFlowRunsCount(filter, options)

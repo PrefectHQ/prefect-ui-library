@@ -20,18 +20,21 @@
   import { ClassValue, toPixels, positions, usePopOverGroup } from '@prefecthq/prefect-design'
   import { useDebouncedRef, useElementRect } from '@prefecthq/vue-compositions'
   import { scaleSymlog } from 'd3'
-  import { StyleValue, computed, ref } from 'vue'
+  import merge from 'lodash.merge'
+  import { StyleValue, computed, ref, toRef } from 'vue'
   import FlowRunPopoverContent from '@/components/FlowRunPopOverContent.vue'
   import { useFlowRuns } from '@/compositions/useFlowRuns'
   import { useInterval } from '@/compositions/useInterval'
   import { FlowRunsFilter } from '@/models/Filters'
   import { FlowRun } from '@/models/FlowRun'
+  import { Getter, MaybeGetter } from '@/types/reactivity'
 
   const props = defineProps<{
-    filter: FlowRunsFilter,
+    filter: MaybeGetter<FlowRunsFilter>,
     mini?: boolean,
   }>()
 
+  const flowRunsFilter = toRef(props.filter)
   const desiredBarWidth = computed(() => props.mini ? 6 : 12)
   const placement = [positions.bottom, positions.right, positions.left, positions.top]
   const group = 'flow-runs-bar-chart-pop-over'
@@ -51,19 +54,19 @@
     },
   }))
 
-  const filter = computed<FlowRunsFilter | null>(() => {
+  const filter: Getter<FlowRunsFilter | null> = () => {
     if (isNaN(barsDebounced.value)) {
       return null
     }
 
+    const base = flowRunsFilter.value
     const filter: FlowRunsFilter = {
-      ...props.filter,
       limit: barsDebounced.value,
       sort: 'START_TIME_DESC',
     }
 
-    return filter
-  })
+    return merge({}, base, filter)
+  }
 
   const options = useInterval()
   const { flowRuns } = useFlowRuns(filter, 1, options)
@@ -117,7 +120,7 @@
   }
 
   function organizeFlowRunsWithGaps(flowRuns: FlowRun[]): (FlowRun | null)[] {
-    const { expectedStartTimeAfter, expectedStartTimeBefore } = props.filter.flowRuns ?? {}
+    const { expectedStartTimeAfter, expectedStartTimeBefore } = flowRunsFilter.value.flowRuns ?? {}
 
     if (!expectedStartTimeBefore || !expectedStartTimeAfter) {
       return []

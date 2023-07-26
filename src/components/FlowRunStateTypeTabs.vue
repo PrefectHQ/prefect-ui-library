@@ -2,13 +2,13 @@
   <p-tabs v-model:selected="selected" :tabs="tabs" class="flow-run-state-type-tabs">
     <template #heading="{ tab }">
       <template v-if="tab">
-        <FlowRunStateTypeCount :state-type="getTabStates(tab.label)" :filter="getStateTypeFilter(tab.label)" />
+        <FlowRunStateTypeCount :state-type="getTabStates(tab.label)" :filter="getStateTypeFilterGetter(tab.label)" />
       </template>
     </template>
     <template #content="{ tab }">
       <p-content>
-        <FlowRunStateTypeTabDescription :state-type="getTabStates(tab.label)" :filter="getStateTypeFilter(tab.label)" />
-        <FlowRunsAccordion :filter="getStateTypeFilter(tab.label)" />
+        <FlowRunStateTypeTabDescription :state-type="getTabStates(tab.label)" :filter="getStateTypeFilterGetter(tab.label)" />
+        <FlowRunsAccordion :filter="getStateTypeFilterGetter(tab.label)" />
       </p-content>
     </template>
   </p-tabs>
@@ -17,16 +17,17 @@
 <script lang="ts" setup>
   import { useRouteQueryParam } from '@prefecthq/vue-compositions'
   import merge from 'lodash.merge'
-  import { computed } from 'vue'
+  import { computed, toValue } from 'vue'
   import FlowRunsAccordion from '@/components/FlowRunsAccordion.vue'
   import FlowRunStateTypeCount from '@/components/FlowRunStateTypeCount.vue'
   import FlowRunStateTypeTabDescription from '@/components/FlowRunStateTypeTabDescription.vue'
   import { useFlowRunsCount } from '@/compositions'
   import { FlowRunsFilter } from '@/models/Filters'
   import { StateType } from '@/models/StateType'
+  import { Getter, MaybeGetter } from '@/types/reactivity'
 
   const props = defineProps<{
-    filter?: FlowRunsFilter,
+    filter?: MaybeGetter<FlowRunsFilter>,
   }>()
 
   const tabStates: Record<string, StateType[]> = {
@@ -37,7 +38,7 @@
     cancelled: ['cancelled'],
   }
 
-  const { count: cancelledCount } = useFlowRunsCount(getStateTypeFilter('cancelled'))
+  const { count: cancelledCount } = useFlowRunsCount(getStateTypeFilterGetter('cancelled'))
 
   const tabs = computed(() => {
     const tabNames = Object.keys(tabStates)
@@ -55,17 +56,20 @@
     return tabStates[tab]
   }
 
-  function getStateTypeFilter(tab: string): FlowRunsFilter {
-    const filter: FlowRunsFilter = {
-      flowRuns: {
-        state: {
-          type: getTabStates(tab),
+  function getStateTypeFilterGetter(tab: string): Getter<FlowRunsFilter> {
+    return () => {
+      const base = toValue(props.filter)
+      const filter: FlowRunsFilter = {
+        flowRuns: {
+          state: {
+            type: getTabStates(tab),
+          },
         },
-      },
-      sort: 'EXPECTED_START_TIME_DESC',
-    }
+        sort: 'EXPECTED_START_TIME_DESC',
+      }
 
-    return merge(props.filter, filter)
+      return merge({}, base, filter)
+    }
   }
 </script>
 
