@@ -45,7 +45,6 @@
 
 <script lang="ts" setup>
   import { media } from '@prefecthq/prefect-design'
-  import { useSubscription } from '@prefecthq/vue-compositions'
   import { computed } from 'vue'
   import {
     StateBadge,
@@ -64,14 +63,13 @@
   import FlowRunTaskCount from '@/components/FlowRunTaskCount.vue'
   import FlowRunWorkPool from '@/components/FlowRunWorkPool.vue'
   import FlowRunWorkQueue from '@/components/FlowRunWorkQueue.vue'
-  import { useTaskRunsCount, useWorkspaceApi, useWorkspaceRoutes } from '@/compositions'
+  import { useFlowRun, useTaskRunsCount, useWorkspaceRoutes } from '@/compositions'
   import { isPendingStateType } from '@/models'
 
   const props = defineProps<{
     flowRunId: string,
   }>()
 
-  const api = useWorkspaceApi()
   const routes = useWorkspaceRoutes()
 
   const emit = defineEmits<{
@@ -85,12 +83,15 @@
     { text: flowRun.value?.name ?? '' },
   ])
 
-  const flowRunId = computed(() => props.flowRunId)
-  const flowRunSubscription = useSubscription(api.flowRuns.getFlowRun, [flowRunId], { interval: 30000 })
-  const flowRun = computed(() => flowRunSubscription.response)
+  const { flowRun } = useFlowRun(() => props.flowRunId, { interval: 30000 })
 
   const isPending = computed(() => flowRun.value?.stateType ? isPendingStateType(flowRun.value.stateType) : true)
-  const { taskRunsCount } = useTaskRunsCount(flowRunId)
+
+  const { count: taskRunsCount } = useTaskRunsCount(() => ({
+    flowRuns: {
+      id: [props.flowRunId],
+    },
+  }))
 </script>
 
 <style>
