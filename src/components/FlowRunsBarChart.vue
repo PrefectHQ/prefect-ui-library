@@ -21,7 +21,7 @@
   import { useDebouncedRef, useElementRect } from '@prefecthq/vue-compositions'
   import { scaleSymlog } from 'd3'
   import merge from 'lodash.merge'
-  import { StyleValue, computed, ref, toRef } from 'vue'
+  import { StyleValue, computed, ref, toValue } from 'vue'
   import FlowRunPopoverContent from '@/components/FlowRunPopOverContent.vue'
   import { useFlowRuns } from '@/compositions/useFlowRuns'
   import { useInterval } from '@/compositions/useInterval'
@@ -34,7 +34,6 @@
     mini?: boolean,
   }>()
 
-  const flowRunsFilter = toRef(props.filter)
   const desiredBarWidth = computed(() => props.mini ? 6 : 12)
   const placement = [positions.bottom, positions.right, positions.left, positions.top]
   const group = 'flow-runs-bar-chart-pop-over'
@@ -59,7 +58,7 @@
       return null
     }
 
-    const base = flowRunsFilter.value
+    const base = toValue(props.filter)
     const filter: FlowRunsFilter = {
       limit: barsDebounced.value,
       sort: 'START_TIME_DESC',
@@ -120,7 +119,7 @@
   }
 
   function organizeFlowRunsWithGaps(flowRuns: FlowRun[]): (FlowRun | null)[] {
-    const { expectedStartTimeAfter, expectedStartTimeBefore } = flowRunsFilter.value.flowRuns ?? {}
+    const { expectedStartTimeAfter, expectedStartTimeBefore } = toValue(props.filter).flowRuns ?? {}
 
     if (!expectedStartTimeBefore || !expectedStartTimeAfter) {
       return []
