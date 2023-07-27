@@ -10,6 +10,6 @@
   import {FlowRunStateTypeTab} from "@/components"; // Adjust the import path if needed
   import { useFlowRunsMock } from "@/demo/compositions/useFlowRunsMock";
 
-useFlowRunsMock(7);
+useFlowRunsMock(5);
 
 </script>
