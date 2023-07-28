@@ -1,7 +1,7 @@
 import { SubscriptionOptions, UseSubscription, useSubscriptionWithDependencies } from '@prefecthq/vue-compositions'
 import merge from 'lodash.merge'
 import { computed, ComputedRef, MaybeRefOrGetter, toRef, toValue } from 'vue'
-import { TaskRunHistory } from '..'
+import { TaskRunHistory } from '@/models'
 import { useCan, useWorkspaceApi } from '@/compositions'
 import { TaskRunsHistoryFilter } from '@/models/Filters'
 import { WorkspaceTaskRunsApi } from '@/services/WorkspaceTaskRunsApi'
