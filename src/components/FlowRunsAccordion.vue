@@ -27,7 +27,7 @@
   }>()
 
   const flowRunsFilter = toRef(props.filter)
-  const flowsFilterGetter: Getter<FlowsFilter> = () => {
+  const flowsFilter: Getter<FlowsFilter> = () => {
     // eslint-disable-next-line no-unused-vars
     const { sort, limit, offset, ...filter } = flowRunsFilter.value
 
@@ -37,7 +37,7 @@
     }
   }
   const options = useInterval()
-  const { flows } = useFlows(flowsFilterGetter, options)
+  const { flows } = useFlows(flowsFilter, options)
   const flowIds = computed(() => flows.value?.map(flow => flow.id))
   const flowsLookup = computed(() => toMap(flows.value ?? [], 'id'))
 
