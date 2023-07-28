@@ -9,7 +9,7 @@
         mini
         :filter="flowRunsFilter"
       />
-      <DashboardWorkPoolFlowRunsTotal :work-pool="workPool" :filter="filter" />
+      <DashboardWorkPoolFlowRunsTotal :work-pool="workPool" :filter="flowRunsFilter" />
     </div>
     <dl class="dashboard-work-pool-card__details">
       <DashboardWorkPoolCardDetail label="Polled">
@@ -28,7 +28,7 @@
       </DashboardWorkPoolCardDetail>
 
       <DashboardWorkPoolCardDetail label="Completes">
-        <DashboardWorkPoolFlowRunCompletes :work-pool="workPool" :filter="filter" />
+        <DashboardWorkPoolFlowRunCompleteness :work-pool="workPool" :filter="flowRunsFilter" />
       </DashboardWorkPoolCardDetail>
     </dl>
   </div>
@@ -36,9 +36,8 @@
 
 <script lang="ts" setup>
   import merge from 'lodash.merge'
-  import { computed } from 'vue'
   import DashboardWorkPoolCardDetail from '@/components/DashboardWorkPoolCardDetail.vue'
-  import DashboardWorkPoolFlowRunCompletes from '@/components/DashboardWorkPoolFlowRunCompletes.vue'
+  import DashboardWorkPoolFlowRunCompleteness from '@/components/DashboardWorkPoolFlowRunCompleteness.vue'
   import DashboardWorkPoolFlowRunsTotal from '@/components/DashboardWorkPoolFlowRunsTotal.vue'
   import DashboardWorkPoolLateCount from '@/components/DashboardWorkPoolLateCount.vue'
   import FlowRunsBarChart from '@/components/FlowRunsBarChart.vue'
@@ -48,7 +47,7 @@
   import { useWorkspaceRoutes } from '@/compositions'
   import { FlowRunsFilter, WorkPool } from '@/models'
   import { mapper } from '@/services'
-  import { WorkspaceDashboardFilter } from '@/types'
+  import { Getter, WorkspaceDashboardFilter } from '@/types'
 
   const props = defineProps<{
     workPool: WorkPool,
@@ -57,17 +56,17 @@
 
   const routes = useWorkspaceRoutes()
 
-  const flowRunsFilter = computed<FlowRunsFilter>(() => {
-    const baseFilter = mapper.map('WorkspaceDashboardFilter', props.filter, 'FlowRunsFilter')
+  const flowRunsFilter: Getter<FlowRunsFilter> = () => {
+    const base = mapper.map('WorkspaceDashboardFilter', props.filter, 'FlowRunsFilter')
 
-    const workPoolFilter: FlowRunsFilter = {
+    const filter: FlowRunsFilter = {
       workPools: {
         id: [props.workPool.id],
       },
     }
 
-    return merge(baseFilter, workPoolFilter)
-  })
+    return merge({}, base, filter)
+  }
 </script>
 
 <style>

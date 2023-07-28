@@ -1,4 +1,5 @@
-import { useSubscriptionWithDependencies } from '@prefecthq/vue-compositions'
+import { SubscriptionOptions, useSubscriptionWithDependencies } from '@prefecthq/vue-compositions'
+import merge from 'lodash.merge'
 import { computed, MaybeRefOrGetter, toRef, toValue } from 'vue'
 import { useCan, useWorkspaceApi } from '@/compositions'
 import { TaskRunsFilter } from '@/models/Filters'
@@ -6,9 +7,9 @@ import { WorkspaceTaskRunsApi } from '@/services/WorkspaceTaskRunsApi'
 import { Getter } from '@/types/reactivity'
 import { UseEntitySubscription } from '@/types/useEntitySubscription'
 
-export type UseTaskRunsCount = UseEntitySubscription<WorkspaceTaskRunsApi['getTaskRunsCount'], 'taskRunsCount'>
+export type UseTaskRunsCount = UseEntitySubscription<WorkspaceTaskRunsApi['getTaskRunsCount'], 'count'>
 
-export function useTaskRunsCount(flowRunId: MaybeRefOrGetter<string | null | undefined>): UseTaskRunsCount {
+export function useTaskRunsCount(filter: MaybeRefOrGetter<TaskRunsFilter | null | undefined>, options?: SubscriptionOptions): UseTaskRunsCount {
   const api = useWorkspaceApi()
   const can = useCan()
 
@@ -17,30 +18,30 @@ export function useTaskRunsCount(flowRunId: MaybeRefOrGetter<string | null | und
       return null
     }
 
-    const id = toValue(flowRunId)
+    const filterValue = toValue(filter)
 
-    if (!id) {
+    if (!filterValue) {
       return null
     }
 
-    const filter: TaskRunsFilter = {
-      flowRuns: {
-        id: [id],
-      },
+    const base: TaskRunsFilter = {
       taskRuns: {
         subFlowRunsExist: false,
       },
     }
 
-    return [filter]
+    // merge here is important to track changes to `filter` if it is a reactive
+    const parameter = merge({}, base, filterValue)
+
+    return [parameter]
   }
 
   const parameters = toRef(getter)
-  const subscription = useSubscriptionWithDependencies(api.taskRuns.getTaskRunsCount, parameters)
-  const taskRunsCount = computed(() => subscription.response)
+  const subscription = useSubscriptionWithDependencies(api.taskRuns.getTaskRunsCount, parameters, options)
+  const count = computed(() => subscription.response)
 
   return {
     subscription,
-    taskRunsCount,
+    count,
   }
 }

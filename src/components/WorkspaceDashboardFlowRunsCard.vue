@@ -14,21 +14,22 @@
 </template>
 
 <script lang="ts" setup>
-  import { computed } from 'vue'
   import FlowRunsBarChart from '@/components/FlowRunsBarChart.vue'
   import FlowRunStateTypeTabs from '@/components/FlowRunStateTypeTabs.vue'
   import StatisticKeyValue from '@/components/StatisticKeyValue.vue'
   import { useFlowRunsCount } from '@/compositions/useFlowRunsCount'
   import { useInterval } from '@/compositions/useInterval'
+  import { FlowRunsFilter } from '@/models/Filters'
   import { mapper } from '@/services/Mapper'
   import { WorkspaceDashboardFilter } from '@/types/dashboard'
+  import { Getter } from '@/types/reactivity'
 
   const props = defineProps<{
     filter: WorkspaceDashboardFilter,
   }>()
 
   const options = useInterval()
-  const flowRunsFilter = computed(() => mapper.map('WorkspaceDashboardFilter', props.filter, 'FlowRunsFilter'))
+  const flowRunsFilter: Getter<FlowRunsFilter> = () => mapper.map('WorkspaceDashboardFilter', props.filter, 'FlowRunsFilter')
   const { count } = useFlowRunsCount(flowRunsFilter, options)
 </script>
 

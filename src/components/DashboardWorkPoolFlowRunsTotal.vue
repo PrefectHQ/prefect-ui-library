@@ -1,41 +1,35 @@
 <template>
-  <StatisticKeyValue class="dashboard-work-pool-flow-runs-total" label="total" :value="allRunsCount" />
+  <StatisticKeyValue class="dashboard-work-pool-flow-runs-total" label="total" :value="count ?? 0" />
 </template>
 
 <script lang="ts" setup>
-  import { useSubscription } from '@prefecthq/vue-compositions'
-  import { computed } from 'vue'
+  import merge from 'lodash.merge'
+  import { toValue } from 'vue'
   import StatisticKeyValue from '@/components/StatisticKeyValue.vue'
-  import { useInterval, useWorkspaceApi } from '@/compositions'
+  import { useFlowRunsCount, useInterval } from '@/compositions'
   import { WorkPool, FlowRunsFilter } from '@/models'
-  import { mapper } from '@/services'
-  import { WorkspaceDashboardFilter } from '@/types'
+  import { Getter, MaybeGetter } from '@/types/reactivity'
 
   const props = defineProps<{
     workPool: WorkPool,
-    filter?: WorkspaceDashboardFilter,
+    filter?: MaybeGetter<FlowRunsFilter>,
   }>()
 
-  const api = useWorkspaceApi()
-
-  const baseFilter = computed<FlowRunsFilter>(() => ({
-    workPools: {
-      name: [props.workPool.name],
-    },
-  }))
-
-  const flowRunsFilter = computed(() => mapper.map('WorkspaceDashboardFilter', props.filter, 'FlowRunsFilter'))
-
-  const allRunsCountFilter = computed<FlowRunsFilter>(() => ({
-    ...baseFilter.value,
-    flowRuns: {
-      ...flowRunsFilter.value?.flowRuns,
-      state: {
-        type: ['COMPLETED', 'FAILED', 'CRASHED'],
+  const allRunsCountFilter: Getter<FlowRunsFilter> = () => {
+    const base = toValue(props.filter)
+    const filter: FlowRunsFilter = {
+      workPools: {
+        name: [props.workPool.name],
       },
-    },
-  }))
+      flowRuns: {
+        state: {
+          type: ['COMPLETED', 'FAILED', 'CRASHED'],
+        },
+      },
+    }
+
+    return merge({}, base, filter)
+  }
   const options = useInterval()
-  const allRunsCountSubscription = useSubscription(api.flowRuns.getFlowRunsCount, [allRunsCountFilter], options)
-  const allRunsCount = computed(() => allRunsCountSubscription.response ?? 0)
+  const { count } = useFlowRunsCount(allRunsCountFilter, options)
 </script>

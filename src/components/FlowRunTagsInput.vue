@@ -10,7 +10,7 @@
   const props = defineProps<{
     selected: string[] | null | undefined,
     emptyMessage?: string,
-    filter: FlowRunsFilter,
+    filter?: FlowRunsFilter,
   }>()
 
   const emits = defineEmits<{

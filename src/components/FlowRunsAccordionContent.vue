@@ -10,11 +10,10 @@
 </template>
 
 <script lang="ts" setup>
-  import { useSubscription } from '@prefecthq/vue-compositions'
   import { computed } from 'vue'
   import FlowRunList from '@/components/FlowRunList.vue'
+  import { useFlowRunsCount } from '@/compositions/useFlowRunsCount'
   import { useFlowRunsInfiniteScroll } from '@/compositions/useFlowRunsInfiniteScroll'
-  import { useWorkspaceApi } from '@/compositions/useWorkspaceApi'
   import { FlowRunsFilter } from '@/models/Filters'
 
   const props = defineProps<{
@@ -23,7 +22,6 @@
     flowRunLimit?: number,
   }>()
 
-  const api = useWorkspaceApi()
   const limit = computed(() => props.flowRunLimit ?? 3)
 
   const filter = computed<FlowRunsFilter>(() => ({
@@ -36,9 +34,8 @@
   }))
   const { flowRuns, loadMore } = useFlowRunsInfiniteScroll(filter)
 
-  const countSubscription = useSubscription(api.flowRuns.getFlowRunsCount, [filter])
-  const count = computed(() => countSubscription.response ?? 0)
-  const more = computed(() => count.value > limit.value)
+  const { count } = useFlowRunsCount(filter)
+  const more = computed(() => count.value && count.value > limit.value)
 
   loadMore()
 </script>

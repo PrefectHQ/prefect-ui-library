@@ -2,39 +2,40 @@
   <template v-if="flowIds">
     <p-accordion v-model:selected="selectedAccordionItem" :sections="flowIds" class="flow-runs-accordion">
       <template #header="{ section: flowId, id, toggle, content, selected }">
-        <FlowRunsAccordionHeader :flow="getFlow(flowId)" v-bind="{ id, content, toggle, filter, selected }" />
+        <FlowRunsAccordionHeader :flow="getFlow(flowId)" :filter="flowRunsFilter" v-bind="{ id, content, toggle, selected }" />
       </template>
       <template #content="{ section: flowId }">
-        <FlowRunsAccordionContent :flow-id="flowId" :filter="filter" />
+        <FlowRunsAccordionContent :flow-id="flowId" :filter="flowRunsFilter" />
       </template>
     </p-accordion>
   </template>
 </template>
 
 <script lang="ts" setup>
-  import { Ref, computed, ref, watch } from 'vue'
+  import { Ref, computed, ref, toRef, watch } from 'vue'
   import FlowRunsAccordionContent from '@/components/FlowRunsAccordionContent.vue'
   import FlowRunsAccordionHeader from '@/components/FlowRunsAccordionHeader.vue'
   import { useFlows } from '@/compositions/useFlows'
   import { useInterval } from '@/compositions/useInterval'
   import { FlowRunsFilter, FlowsFilter } from '@/models/Filters'
   import { Flow } from '@/models/Flow'
+  import { Getter, MaybeGetter } from '@/types/reactivity'
   import { toMap } from '@/utilities'
 
   const props = defineProps<{
-    filter: FlowRunsFilter,
+    filter: MaybeGetter<FlowRunsFilter>,
   }>()
 
-  const flowsFilter = computed<FlowsFilter>(() => {
+  const flowRunsFilter = toRef(props.filter)
+  const flowsFilter: Getter<FlowsFilter> = () => {
     // eslint-disable-next-line no-unused-vars
-    const { sort, limit, offset, ...filter } = props.filter
+    const { sort, limit, offset, ...filter } = flowRunsFilter.value
 
     return {
       ...filter,
       sort: 'UPDATED_DESC',
     }
-  })
-
+  }
   const options = useInterval()
   const { flows } = useFlows(flowsFilter, options)
   const flowIds = computed(() => flows.value?.map(flow => flow.id))

@@ -20,25 +20,25 @@
 <script lang="ts" setup>
   import { isDefined } from '@prefecthq/prefect-design'
   import { LineChart, LineChartData } from '@prefecthq/vue-charts'
-  import { useSubscription } from '@prefecthq/vue-compositions'
   import merge from 'lodash.merge'
-  import { computed, toRefs } from 'vue'
+  import { computed, toRef } from 'vue'
   import StatisticKeyValue from '@/components/StatisticKeyValue.vue'
   import { useInterval } from '@/compositions/useInterval'
-  import { useWorkspaceApi } from '@/compositions/useWorkspaceApi'
+  import { useTaskRunsCount } from '@/compositions/useTaskRunsCount'
+  import { useTaskRunsHistory } from '@/compositions/useTaskRunsHistory'
   import { TaskRunsFilter } from '@/models/Filters'
   import { mapper } from '@/services/Mapper'
+  import { Getter, MaybeGetter } from '@/types/reactivity'
   import { toPercent } from '@/utilities'
 
   const props = defineProps<{
-    filter: TaskRunsFilter,
+    filter: MaybeGetter<TaskRunsFilter>,
   }>()
 
-  const api = useWorkspaceApi()
   const options = useInterval()
-  const { filter } = toRefs(props)
+  const filter = toRef(props.filter)
 
-  const allTasksFilter = computed<TaskRunsFilter>(() => {
+  const allTasksFilter: Getter<TaskRunsFilter> = () => {
     const stateFilter: TaskRunsFilter = {
       taskRuns: {
         state: {
@@ -48,9 +48,9 @@
     }
 
     return merge({}, filter.value, stateFilter)
-  })
-  const allTasksSubscription = useSubscription(api.taskRuns.getTaskRunsCount, [allTasksFilter], options)
-  const total = computed(() => allTasksSubscription.response)
+  }
+  const { count: total } = useTaskRunsCount(allTasksFilter, options)
+
   const percentComparisonTotal = computed(() => {
     let comparisonTotal = total.value ?? 0
 
@@ -61,7 +61,7 @@
     return comparisonTotal
   })
 
-  const completedTasksFilter = computed<TaskRunsFilter>(() => {
+  const completedTasksFilter: Getter<TaskRunsFilter> = () => {
     const stateFilter: TaskRunsFilter = {
       taskRuns: {
         state: {
@@ -71,12 +71,11 @@
     }
 
     return merge({}, filter.value, stateFilter)
-  })
-  const completedTasksSubscription = useSubscription(api.taskRuns.getTaskRunsCount, [completedTasksFilter], options)
-  const completed = computed(() => completedTasksSubscription.response)
+  }
+  const { count: completed } = useTaskRunsCount(completedTasksFilter, options)
   const completedPercentage = computed(() => getPercent(completed.value, percentComparisonTotal.value))
 
-  const failedTasksFilter = computed<TaskRunsFilter>(() => {
+  const failedTasksFilter: Getter<TaskRunsFilter> = () => {
     const stateFilter: TaskRunsFilter = {
       taskRuns: {
         state: {
@@ -86,12 +85,11 @@
     }
 
     return merge({}, filter.value, stateFilter)
-  })
-  const failedTasksSubscription = useSubscription(api.taskRuns.getTaskRunsCount, [failedTasksFilter], options)
-  const failed = computed(() => failedTasksSubscription.response)
+  }
+  const { count: failed } = useTaskRunsCount(failedTasksFilter, options)
   const failedPercentage = computed(() => getPercent(failed.value, percentComparisonTotal.value))
 
-  const runningTasksFilter = computed<TaskRunsFilter>(() => {
+  const runningTasksFilter: Getter<TaskRunsFilter> = () => {
     const stateFilter: TaskRunsFilter = {
       taskRuns: {
         state: {
@@ -101,13 +99,10 @@
     }
 
     return merge({}, filter.value, stateFilter)
-  })
-  const runningTasksSubscription = useSubscription(api.taskRuns.getTaskRunsCount, [runningTasksFilter], options)
-  const running = computed(() => runningTasksSubscription.response)
+  }
+  const { count: running } = useTaskRunsCount(runningTasksFilter, options)
 
-  const historyFilter = computed(() => mapper.map('TaskRunsFilter', filter.value, 'TaskRunsHistoryFilter'))
-  const historySubscription = useSubscription(api.taskRuns.getTaskRunsHistory, [historyFilter], options)
-  const history = computed(() => historySubscription.response ?? [])
+  const { history } = useTaskRunsHistory(() => mapper.map('TaskRunsFilter', filter.value, 'TaskRunsHistoryFilter'), options)
 
   const taskRunsChartData = computed(() => {
     const completed: LineChartData = []
