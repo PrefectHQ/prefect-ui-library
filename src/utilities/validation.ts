@@ -271,7 +271,7 @@ export const isHandle: ValidationMethodFactory = property => value => {
   return `${property} must only contain lowercase letters, numbers, and dashes`
 }
 
-const SNAKE_CASE_REGEX = /^[a-z0-9]+(?:_[a-z0-9]+)*$/
+const SNAKE_CASE_REGEX = /^[a-z0-9]+(?:_*[a-z0-9]+)*$/
 
 export const isSnakeCase: ValidationRule<unknown> = (value, field) => {
   return isNotNullish(value) && isString(value) && SNAKE_CASE_REGEX.test(value) || localization.error.mustBeSnakeCase(field)
