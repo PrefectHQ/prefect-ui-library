@@ -6,7 +6,7 @@
 
 <script lang="ts" setup>
   import merge from 'lodash.merge'
-  import { toRef } from 'vue'
+  import { toValue } from 'vue'
   import { useFlowRunsAverageLateness, useInterval } from '@/compositions'
   import { FlowRunsFilter, WorkPool } from '@/models'
   import { Getter, MaybeGetter } from '@/types/reactivity'
@@ -17,25 +17,20 @@
     filter?: MaybeGetter<FlowRunsFilter>,
   }>()
 
-  const flowRunsFilter = toRef(props.filter)
   const options = useInterval()
 
-  const lateFlowRunsFilter: Getter<FlowRunsFilter> = () => {
+  const flowRunsFilter: Getter<FlowRunsFilter> = () => {
+    const base = toValue(props.filter)
     const filter: FlowRunsFilter = {
       workPools: {
-        name: [props.workPool.name],
-      },
-      flowRuns: {
-        state: {
-          name: ['Late'],
-        },
+        id: [props.workPool.id],
       },
     }
 
-    return merge({}, flowRunsFilter.value, filter)
+    return merge({}, base, filter)
   }
 
-  const { lateness } = useFlowRunsAverageLateness(lateFlowRunsFilter, options)
+  const { lateness } = useFlowRunsAverageLateness(flowRunsFilter, options)
 </script>
 
 <style>
