@@ -11,4 +11,5 @@ export type DeploymentFlowRunRequest = Partial<{
   parent_task_run_id: string | null,
   infrastructure_document_id: string | null,
   state: Partial<StateRequest>,
+  work_queue_name: string | null,
 }>

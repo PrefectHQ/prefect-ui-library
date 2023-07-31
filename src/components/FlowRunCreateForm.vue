@@ -192,6 +192,7 @@
         },
       },
       tags: tags.value,
+      workQueueName: workQueueName.value,
       empiricalPolicy: {
         retries: retries.value,
         retryDelay: retryDelay.value,
