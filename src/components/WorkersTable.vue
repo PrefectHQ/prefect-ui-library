@@ -50,7 +50,6 @@
   import { WorkPoolWorker } from '..'
   import { ResultsCount, SearchInput, CopyOverflowMenuItem } from '@/components'
   import { useWorkspaceApi } from '@/compositions'
-  import { localization } from '@/localization'
   import { formatDateTimeNumeric } from '@/utilities/dates'
 
   const props = defineProps<{
