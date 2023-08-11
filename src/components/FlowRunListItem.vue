@@ -22,6 +22,7 @@
           :flow-run-state="flowRun.stateType"
         />
       </template>
+      <slot name="after" :flow-run="flowRun" />
     </StateListItem>
   </div>
 </template>

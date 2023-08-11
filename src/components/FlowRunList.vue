@@ -8,7 +8,7 @@
 
 <script lang="ts" setup>
   import { computed } from 'vue'
-  import FlowRunListItem from '@/components/FlowRunListItem.vue'
+  import { useComponent } from '@/compositions'
   import { FlowRun } from '@/models/FlowRun'
 
   const props = defineProps<{
@@ -20,6 +20,8 @@
   const emit = defineEmits<{
     (event: 'update:selected', value: string[]): void,
   }>()
+
+  const { FlowRunListItem } = useComponent()
 
   const model = computed({
     get() {
