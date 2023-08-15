@@ -108,10 +108,6 @@
   sm:flex-row
   sticky
   top-0
-  bg-opacity-90
-  dark:bg-opacity-90
-  bg-background-600
-  dark:bg-background-400
   p-2
   z-10
 }

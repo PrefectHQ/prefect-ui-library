@@ -49,17 +49,12 @@
 <style>
 .timeline-selection-panel { @apply
   border
-  bg-background
-  dark:border-background-600
+  bg-floating
+  shadow-lg
   w-full
   h-full
   p-4
-  rounded-lg
+  rounded-md
   overflow-auto
-}
-
-.timeline-selection-panel--floating { @apply
-  bg-opacity-80
-  backdrop-blur
 }
 </style>
