@@ -1,5 +1,5 @@
 <template>
-  <p-form class="flow-run-create-form" @submit="submit">
+  <p-form class="flow-run-create-form p-background" @submit="submit">
     <p-content class="flow-run-create-form__section">
       <h3 class="flow-run-create-form__section-header">
         General
@@ -212,8 +212,6 @@
 
 <style>
 .flow-run-create-form { @apply
-  border
-  dark:border-background-600
   px-6
   py-6
   rounded-lg

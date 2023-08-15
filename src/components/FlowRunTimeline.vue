@@ -7,7 +7,7 @@
     aria-label="Flow run timeline graph"
     :style="{ height }"
   >
-    <div class="flow-run-timeline__wrapper">
+    <div class="flow-run-timeline__wrapper p-background">
       <p-button
         v-if="isFullscreen"
         class="flow-run-timeline__fullscreen-exit"
@@ -348,16 +348,16 @@
   })
 
   const themeDefaultOverrides = computed<Partial<ThemeStyleOverrides>>(() => ({
-    colorTextDefault: getHslColor('--foreground', '--white'),
-    colorTextInverse: getHslColor('--white', '--background'),
-    colorTextSubdued: getHslColor('--foreground-300', '--foreground-200'),
-    colorNodeSelection: getHslColor('--primary-default-400'),
-    colorButtonBg: getHslColor('--background', '--background-100'),
-    colorButtonBgHover: getHslColor('--background-400', '--background-100'),
-    colorButtonBorder: colorThemeValue.value === 'dark' ? null : getHslColor('--background-400'),
-    colorEdge: getHslColor('--foreground-200', '--foreground-300'),
-    colorGuideLine: getHslColor('--foreground-50'),
-    colorPlayheadBg: getHslColor('--primary-default-400'),
+    colorTextDefault: getHslColor('--p-color-text-default', '--p-color-text-inverse'),
+    colorTextInverse: getHslColor('--p-color-text-inverse'),
+    colorTextSubdued: getHslColor('--p-color-text-subdued'),
+    colorNodeSelection: getHslColor('--p-color-selected'),
+    colorButtonBg: getHslColor('--p-color-button-default-border'),
+    colorButtonBgHover: getHslColor('--p-color-button-default-bg-hover'),
+    colorButtonBorder: getHslColor('--p-color-button-default-border'),
+    colorEdge: getHslColor('--p-color-divider'),
+    colorGuideLine: getHslColor('--p-color-bg-2'),
+    colorPlayheadBg: getHslColor('--p-color-live'),
     textFontFamilyDefault: 'InterVariable',
     alphaNodeDimmed: 0.2,
   }))
@@ -415,7 +415,6 @@
   top-0
   left-0
   z-20
-  bg-background
 }
 
 .flow-run-timeline__options { @apply
@@ -443,10 +442,6 @@
   w-full
   relative
   overflow-hidden
-}
-
-.flow-run-timeline__graph { @apply
-  bg-background
 }
 
 .flow-run-timeline__graph canvas {

@@ -49,13 +49,11 @@
   p-3
   grid
   gap-1
-  bg-background
-  border
-  dark:border-background-600
-  rounded
+  bg-floating
+  rounded-md
   max-w-xs
   w-screen
-  shadow-md
+  shadow-lg
 }
 
 .flow-run-popover-content__aside { @apply

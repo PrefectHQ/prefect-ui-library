@@ -1,5 +1,5 @@
 <template>
-  <p-form class="notification-form" @submit="submit" @cancel="cancel">
+  <p-form class="notification-form p-background" @submit="submit" @cancel="cancel">
     <p class="notification-form__message">
       Choose which flow run states and tags trigger this notification.
     </p>
@@ -24,7 +24,7 @@
       Review your notification.
     </p>
 
-    <div class="notification-form__review-block">
+    <div class="notification-form__review-block p-background">
       <template v-if="blockType && data">
         <NotificationDetails :notification="{ stateNames, tags }" :block-type="blockType" :data="data" />
       </template>
@@ -217,10 +217,8 @@
 <style>
 .notification-form {
   @apply
-  border
-  dark:border-background-600
   p-6
-  rounded-lg
+  rounded-md
 }
 .notification-form__message {
   @apply
@@ -234,9 +232,7 @@
 }
 .notification-form__review-block {
   @apply
-  border-[3px]
-  border-background-500
-  rounded-lg
+  rounded-md
   p-4
   pb-6
 }

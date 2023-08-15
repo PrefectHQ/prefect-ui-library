@@ -89,11 +89,9 @@
 }
 
 .marketing-banner--alternate { @apply
-  bg-background
   text-foreground
-  border
-  dark:border-background-600
-  shadow-md;
+  bg-floating
+  shadow-lg;
   background-image: none;
 }
 
