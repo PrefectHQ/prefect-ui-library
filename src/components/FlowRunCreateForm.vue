@@ -5,7 +5,7 @@
         General
       </h3>
 
-      <p-label label="Name (optional)">
+      <p-label label="Name (Optional)">
         <p-text-input v-model="name">
           <template #append>
             <p-button
@@ -18,11 +18,11 @@
         </p-text-input>
       </p-label>
 
-      <p-label label="Message (optional)">
+      <p-label label="Message (Optional)">
         <p-textarea v-model="stateMessage" placeholder="Created from the Prefect UI" />
       </p-label>
 
-      <p-label label="Tags (optional)">
+      <p-label label="Tags (Optional)">
         <p-tags-input v-model="tags" :options="deploymentTags" />
       </p-label>
 
@@ -158,7 +158,7 @@
   const workPoolName = ref<string | null>(props.deployment.workPoolName)
 
   const { workPool } = useWorkPool(props.deployment.workPoolName ?? '')
-  const workQueueComboboxLabel = computed(() => `Work Queue for ${workPoolName.value} (Optional)`)
+  const workQueueComboboxLabel = computed(() => `Work Queue For ${workPoolName.value} (Optional)`)
 
   function getScheduledTime(): Date | null {
     if (when.value === 'now' || start.value === null) {
