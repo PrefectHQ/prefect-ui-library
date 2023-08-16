@@ -11,6 +11,7 @@ type Base = {
   parentTaskRunId?: string | null,
   infrastructureDocumentId?: string | null,
   state?: StateCreate,
+  workQueueName?: string | null,
 }
 
 type WithoutParameters = Base & {

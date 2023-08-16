@@ -61,6 +61,7 @@ export const mapDeploymentFlowRunCreateToDeploymentFlowRunRequest: MapFunction<D
     infrastructure_document_id: source.infrastructureDocumentId,
     state: this.map('StateCreate', source.state, 'StateRequest'),
     empirical_policy: this.map('EmpiricalPolicy', source.empiricalPolicy, 'EmpiricalPolicyRequest'),
+    work_queue_name: source.workQueueName,
   }
 }
 

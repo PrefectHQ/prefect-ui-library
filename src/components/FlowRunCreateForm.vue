@@ -5,7 +5,7 @@
         General
       </h3>
 
-      <p-label label="Name (optional)">
+      <p-label label="Name (Optional)">
         <p-text-input v-model="name">
           <template #append>
             <p-button
@@ -18,12 +18,16 @@
         </p-text-input>
       </p-label>
 
-      <p-label label="Message (optional)">
+      <p-label label="Message (Optional)">
         <p-textarea v-model="stateMessage" placeholder="Created from the Prefect UI" />
       </p-label>
 
-      <p-label label="Tags (optional)">
+      <p-label label="Tags (Optional)">
         <p-tags-input v-model="tags" :options="deploymentTags" />
+      </p-label>
+
+      <p-label v-if="workPoolName && !workPool?.isPushPool" :label="workQueueComboboxLabel">
+        <WorkPoolQueueCombobox v-model:selected="workQueueName" :work-pool-name="workPoolName" />
       </p-label>
 
       <div class="flow-run-create-form__retries">
@@ -90,8 +94,9 @@
   import { zonedTimeToUtc } from 'date-fns-tz'
   import { merge } from 'lodash'
   import { computed, ref } from 'vue'
-  import { TimezoneSelect, DateInput } from '@/components'
+  import { TimezoneSelect, DateInput, WorkPoolQueueCombobox } from '@/components'
   import SchemaInput from '@/components/SchemaInput.vue'
+  import { useWorkPool } from '@/compositions/useWorkPool'
   import { localization } from '@/localization'
   import { Deployment, DeploymentFlowRunCreate } from '@/models'
   import { mapper, mocker } from '@/services'
@@ -149,6 +154,11 @@
   const name = ref<string>(generateRandomName())
   const parameters = ref<SchemaValues>(combinedParameters.value)
   const stateMessage = ref<string>('')
+  const workQueueName = ref<string | null>(props.deployment.workQueueName)
+  const workPoolName = ref<string | null>(props.deployment.workPoolName)
+
+  const { workPool } = useWorkPool(props.deployment.workPoolName ?? '')
+  const workQueueComboboxLabel = computed(() => `Work Queue for ${workPoolName.value} (Optional)`)
 
   function getScheduledTime(): Date | null {
     if (when.value === 'now' || start.value === null) {
@@ -182,6 +192,7 @@
         },
       },
       tags: tags.value,
+      workQueueName: workQueueName.value,
       empiricalPolicy: {
         retries: retries.value,
         retryDelay: retryDelay.value,
