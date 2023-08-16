@@ -158,7 +158,7 @@
   const workPoolName = ref<string | null>(props.deployment.workPoolName)
 
   const { workPool } = useWorkPool(props.deployment.workPoolName ?? '')
-  const workQueueComboboxLabel = computed(() => `Work Queue For ${workPoolName.value} (Optional)`)
+  const workQueueComboboxLabel = computed(() => `Work Queue for ${workPoolName.value} (Optional)`)
 
   function getScheduledTime(): Date | null {
     if (when.value === 'now' || start.value === null) {
