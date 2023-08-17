@@ -112,6 +112,6 @@
 
 .work-pool-create-wizard-step-infrastructure-type__infra_type_card_description_text { @apply
   text-sm
-  text-foreground-200
+  text-subdued
 }
 </style>

@@ -43,6 +43,6 @@
 }
 
 .statistic-key-value__meta { @apply
-  text-foreground-200
+  text-subdued
 }
 </style>

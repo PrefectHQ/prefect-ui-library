@@ -65,7 +65,7 @@
 
 .dashboard-work-pools-card__empty { @apply
   text-center
-  text-foreground-200
+  text-subdued
   text-sm
   my-8
 }

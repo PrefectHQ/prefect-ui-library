@@ -130,6 +130,6 @@
 }
 
 .flow-run-artifacts__none { @apply
-  text-foreground-50
+  text-subdued
 }
 </style>

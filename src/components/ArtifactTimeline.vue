@@ -178,8 +178,7 @@
   @apply
   border-t
   border-b
-  border-foreground-200
-  dark:border-foreground-300
+  border-divider
   relative
 }
 </style>

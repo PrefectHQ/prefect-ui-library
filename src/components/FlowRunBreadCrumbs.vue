@@ -38,7 +38,7 @@
 
 <style>
 .flow-run-bread-crumbs { @apply
-  text-foreground-200
+  text-subdued
 }
 
 .flow-run-bread-crumbs__flow-link { @apply
@@ -46,7 +46,7 @@
 }
 
 .flow-run-bread-crumbs__flow-run-link:not(a) { @apply
-  text-foreground
+  text-default
 }
 
 .flow-run-bread-crumbs__flow-run-link { @apply

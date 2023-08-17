@@ -110,6 +110,6 @@
 }
 
 .flow-run-results__none { @apply
-  text-foreground-50
+  text-subdued
 }
 </style>
