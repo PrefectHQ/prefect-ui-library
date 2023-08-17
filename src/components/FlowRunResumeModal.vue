@@ -8,7 +8,7 @@
     </div>
 
     <template #actions>
-      <p-button @click="resume">
+      <p-button primary @click="resume">
         Submit
       </p-button>
     </template>

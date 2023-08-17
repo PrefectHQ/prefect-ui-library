@@ -1,7 +1,7 @@
 <template>
   <page-heading class="page-heading-work-pools" :crumbs="crumbs">
     <template #after-crumbs>
-      <p-button v-if="can.create.work_pool" inset size="xs" icon="PlusIcon" :to="routes.workPoolCreate()" />
+      <p-button v-if="can.create.work_pool" small icon="PlusIcon" :to="routes.workPoolCreate()" />
     </template>
   </page-heading>
 </template>

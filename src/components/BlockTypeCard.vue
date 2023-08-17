@@ -29,18 +29,17 @@
       <div class="block-type-card__actions">
         <template v-if="blockType.documentationUrl">
           <a :href="blockType.documentationUrl" target="_blank">
-            <p-button inset>
+            <p-button icon-append="ArrowTopRightOnSquareIcon">
               <slot>
                 View Docs
               </slot>
-              <p-icon icon="ArrowTopRightOnSquareIcon" class="block-type-card__documentation-icon" />
             </p-button>
           </a>
         </template>
 
         <p-link :to="routes.blockCreate(blockType.slug)" class="block-type-card__action">
-          <p-button class="block-type-card__button">
-            Add Block<p-icon icon="PlusIcon" />
+          <p-button icon-append="PlusIcon" class="block-type-card__button">
+            Add Block
           </p-button>
         </p-link>
       </div>
@@ -76,11 +75,5 @@
   gap-2
   items-center
   justify-end
-}
-
-.block-type-card__documentation-icon { @apply
-  ml-2
-  w-5
-  h-5
 }
 </style>

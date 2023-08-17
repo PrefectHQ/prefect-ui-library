@@ -11,8 +11,8 @@
         <BlockTypeCardPreview :block-type="blockType">
           <template #actions>
             <p-link :to="routes.blockCreate(blockType.slug)">
-              <p-button inset class="block-type-list__add">
-                Add <p-icon icon="PlusIcon" />
+              <p-button icon-append="PlusIcon" class="block-type-list__add">
+                Add
               </p-button>
             </p-link>
           </template>
@@ -25,7 +25,7 @@
         No blocks
       </template>
       <template #actions>
-        <p-button size="sm" secondary @click="clear">
+        <p-button small @click="clear">
           Clear Filters
         </p-button>
       </template>

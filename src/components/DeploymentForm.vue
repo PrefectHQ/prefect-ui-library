@@ -81,10 +81,10 @@
     </p-content>
 
     <template #footer>
-      <p-button inset @click="cancel">
+      <p-button @click="cancel">
         Cancel
       </p-button>
-      <p-button type="submit" @click="submit">
+      <p-button primary type="submit" @click="submit">
         Save
       </p-button>
     </template>

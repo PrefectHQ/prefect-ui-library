@@ -14,9 +14,8 @@
 
     <template #actions>
       <DocumentationButton :to="localization.docs.notifications" />
-      <p-button v-if="can.create.notification_policy" :to="routes.notificationCreate()">
+      <p-button v-if="can.create.notification_policy" primary icon-append="PlusIcon" :to="routes.notificationCreate()">
         Create Notification
-        <p-icon icon="PlusIcon" class="workspace-notifications-empty-state__link-icon" />
       </p-button>
     </template>
   </p-empty-state>
@@ -38,11 +37,5 @@
 .workspace-notifications-empty-state__icon { @apply
   w-12
   h-12
-}
-
-.workspace-notifications-empty-state__link-icon { @apply
-  ml-2
-  w-4
-  h-4
 }
 </style>

@@ -3,7 +3,7 @@
     <SchemaFormFields :schema="schema" />
 
     <template #footer>
-      <p-button type="submit">
+      <p-button primary type="submit">
         Save
       </p-button>
     </template>

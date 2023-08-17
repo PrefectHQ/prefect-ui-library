@@ -5,8 +5,8 @@
     <template v-if="blockDocuments.length">
       <BlockDocumentCombobox v-model:selected="model" v-bind="{ blockDocuments }" class="block-document-input__select" />
     </template>
-    <p-button v-if="blockTypeSlug" inset :to="withRedirect(routes.blockCreate(blockTypeSlug))">
-      Add <p-icon icon="PlusIcon" />
+    <p-button v-if="blockTypeSlug" icon-append="PlusIcon" :to="withRedirect(routes.blockCreate(blockTypeSlug))">
+      Add
     </p-button>
   </div>
 </template>

@@ -9,7 +9,7 @@
       <template #empty-state>
         <PEmptyResults>
           <template v-if="searchTerm.length" #actions>
-            <p-button size="sm" secondary @click="clear">
+            <p-button small @click="clear">
               Clear Filters
             </p-button>
           </template>

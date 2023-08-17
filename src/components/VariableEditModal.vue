@@ -17,7 +17,7 @@
     </p-form>
 
     <template #actions>
-      <p-button :loading="pending" @click="submit">
+      <p-button primary :loading="pending" @click="submit">
         {{ localization.info.save }}
       </p-button>
     </template>

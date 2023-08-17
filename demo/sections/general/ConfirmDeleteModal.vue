@@ -1,14 +1,14 @@
 <template>
   <ComponentPage title="ConfirmDeleteModal" :demos="demos">
     <ConfirmDeleteModal v-model:showModal="showModal" label="foo" name="bar" />
-    <p-button danger @click="openDeleteModal">
+    <p-button dangerous @click="openDeleteModal">
       Delete
     </p-button>
 
     <template #with-slot>
       <ConfirmDeleteModalWithSlot label="foo" name="bar">
         <template #default="{ open }">
-          <p-button danger @click="open">
+          <p-button dangerous @click="open">
             Delete
           </p-button>
         </template>

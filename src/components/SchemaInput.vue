@@ -2,7 +2,7 @@
   <p-content class="schema-input">
     <div class="schema-input__button-group">
       <slot name="button-group">
-        <p-button-group v-model="inputType" :options="inputTypeOptions" size="sm" />
+        <p-button-group v-model="inputType" :options="inputTypeOptions" small />
       </slot>
     </div>
 
