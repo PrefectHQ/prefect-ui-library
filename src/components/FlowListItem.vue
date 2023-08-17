@@ -158,11 +158,11 @@
   mr-2
 }
 
-.flow-list-item__content-toggle > * { @apply
+.flow-list-item__content-toggle .p-icon { @apply
   transition-transform
 }
 
-.flow-list-item__content-toggle--expanded > * { @apply
+.flow-list-item__content-toggle--expanded .p-icon { @apply
   rotate-180
 }
 
