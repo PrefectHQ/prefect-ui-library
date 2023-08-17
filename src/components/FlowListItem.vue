@@ -149,7 +149,7 @@
 }
 
 .flow-list-item__content-text-none { @apply
-  text-foreground-200
+  text-subdued
   flex
   items-center
 }

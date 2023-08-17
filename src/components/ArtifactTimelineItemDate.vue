@@ -35,7 +35,7 @@
 .artifact-timeline-item-date__latest { @apply
   inline-flex
   items-center
-  border-foreground-50
+  border-divider
   border
   rounded-full
   px-3
@@ -52,7 +52,7 @@
 
 .artifact-timeline-item-date__date { @apply
   text-xs
-  text-foreground-200
+  text-subdued
   leading-5
 }
 </style>

@@ -70,7 +70,7 @@
   gap-2
   justify-between
   border-t
-  border-foreground-200
+  border-divider
   py-2
 }
 
@@ -82,7 +82,7 @@
 
 .flow-runs-accordion-header__time { @apply
   text-xs
-  text-foreground-200
+  text-subdued
 }
 
 .flow-runs-accordion-header__icon { @apply

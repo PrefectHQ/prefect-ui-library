@@ -89,7 +89,7 @@
 }
 
 .marketing-banner--alternate { @apply
-  text-foreground
+  text-default
   bg-floating
   shadow-lg;
   background-image: none;

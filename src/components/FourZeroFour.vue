@@ -356,7 +356,6 @@
 .four-zero-four__text { @apply
   text-xl
   font-semibold
-  fill-foreground-400
 }
 
 .four-zero-four__circle {

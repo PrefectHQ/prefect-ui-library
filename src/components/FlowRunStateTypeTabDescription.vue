@@ -58,6 +58,6 @@
 
 <style>
 .flow-run-state-type-tab-description { @apply
-  text-foreground-200
+  text-subdued
 }
 </style>
