@@ -1,4 +1,4 @@
-import { GraphTimelineNode } from '@prefecthq/graphs'
+import { TimelineData } from '@prefecthq/graphs'
 import { StateUpdate } from '@/models'
 import { FlowRunGraphResponse } from '@/models/api/FlowRunGraphResponse'
 import { FlowRunHistoryResponse } from '@/models/api/FlowRunHistoryResponse'
@@ -11,6 +11,7 @@ import { BatchProcessor } from '@/services/BatchProcessor'
 import { mapper } from '@/services/Mapper'
 import { WorkspaceApi } from '@/services/WorkspaceApi'
 import { toMap } from '@/utilities'
+import { mapFlowRunGraphResponseToTimelineData } from '@/utilities/timeline'
 
 export interface IWorkspaceFlowRunsApi {
   getFlowRun: (flowRunId: string) => Promise<FlowRun>,
@@ -19,7 +20,7 @@ export interface IWorkspaceFlowRunsApi {
   getFlowRunsHistory: (filter: FlowRunsHistoryFilter) => Promise<RunHistory[]>,
   getFlowRunsAverageLateness: (filter: FlowRunsFilter) => Promise<number | null>,
   getFlowRunsGraph: (flowRunId: string) => Promise<GraphNode[]>,
-  getFlowRunsTimeline: (flowRunId: string) => Promise<GraphTimelineNode[]>,
+  getFlowRunsTimeline: (flowRunId: string) => Promise<TimelineData>,
   retryFlowRun: (flowRunId: string) => Promise<void>,
   setFlowRunState: (flowRunId: string, body: StateUpdate) => Promise<void>,
   resumeFlowRun: (flowRunId: string) => Promise<void>,
@@ -78,10 +79,12 @@ export class WorkspaceFlowRunsApi extends WorkspaceApi implements IWorkspaceFlow
     return mapper.map('FlowRunGraphResponse', data, 'GraphNode')
   }
 
-  public async getFlowRunsTimeline(id: string): Promise<GraphTimelineNode[]> {
+  public async getFlowRunsTimeline(id: string): Promise<TimelineData> {
     const { data } = await this.get<FlowRunGraphResponse[]>(`/${id}/graph`)
 
-    return mapper.map('FlowRunGraphResponse', data, 'TimelineNode')
+    const mapped = mapFlowRunGraphResponseToTimelineData(data)
+
+    return mapped
   }
 
   public retryFlowRun(id: string): Promise<void> {
