@@ -1,6 +1,6 @@
 <template>
   <p-label :label="label" :description="property.description" class="schema-form-properties">
-    <p-content class="schema-form-properties__fields">
+    <p-content class="schema-form-properties__fields p-background">
       <template v-for="(prop, key) in property.properties" :key="key">
         <SchemaFormProperty :property="prop!" :prop-key="`${propKey}.${key}`" />
       </template>
@@ -23,9 +23,7 @@
 
 <style>
 .schema-form-properties__fields { @apply
-  border-background-500
-  border-[1px]
   p-4
-  rounded
+  rounded-md
 }
 </style>

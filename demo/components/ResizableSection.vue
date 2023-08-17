@@ -44,8 +44,7 @@
       [getColorModeClass(activeColorMode.value)]: true,
       'dark': colorTheme.value === 'dark',
       'light': colorTheme.value === 'light',
-      'bg-background-600': colorTheme.value === 'light',
-      'bg-background-400': colorTheme.value === 'dark',
+      'p-background': true,
     },
     iframe: {
       'pointer-events-none': dragging.value,
@@ -93,10 +92,10 @@
   flex
   relative
   border
+  border-divider
   overflow-hidden
   bg-transparent
   rounded
-  dark:border-background-600
 }
 
 .resizable-section__content { @apply
@@ -105,17 +104,13 @@
   max-w-full
   min-w-[200px]
   p-4
-  text-foreground
 }
 
 .resizable-section__aside { @apply
-  bg-background-500
   grow
 }
 
 .resizable-section__handle { @apply
-  bg-background-600
-  text-foreground-300
   w-[v-bind(handleWidthPx)]
   h-full
   flex
@@ -127,9 +122,6 @@
 
 .resizable-section__px { @apply
   select-none
-  bg-opacity-70
-  bg-background
-  text-foreground
   rounded
   px-2
   py-0.5

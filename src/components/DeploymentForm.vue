@@ -1,5 +1,5 @@
 <template>
-  <p-form class="deployment-form" :loading="isSubmitting" @submit="submit" @cancel="cancel">
+  <p-form class="deployment-form p-background" :loading="isSubmitting" @submit="submit" @cancel="cancel">
     <p-content>
       <p-content>
         <h3 class="deployment-form__section-header">
@@ -169,8 +169,6 @@
 <style>
 .deployment-form {
   @apply
-  border
-  dark:border-background-600
   px-6
   py-6
   rounded-lg

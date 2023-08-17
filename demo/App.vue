@@ -50,12 +50,6 @@
   overflow-hidden
 }
 
-.app { @apply
-  text-foreground
-  bg-background-600
-  dark:bg-background-400
-}
-
 .app__prefect-icon { @apply
   w-6
   h-6

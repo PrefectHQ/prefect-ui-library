@@ -1,5 +1,5 @@
 <template>
-  <p-form class="work-queue-edit-form" @submit="submit">
+  <p-form class="work-queue-edit-form p-background" @submit="submit">
     <p-content>
       <p-label label="Name">
         <p-text-input :model-value="workQueue.name" disabled />
@@ -88,8 +88,6 @@
 
 <style>
 .work-queue-edit-form { @apply
-  border
-  dark:border-background-600
   px-6
   py-6
   rounded-lg
