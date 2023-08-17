@@ -39,17 +39,15 @@
 }
 
 .p-tag.work-queue-status-badge--healthy { @apply
-  bg-success-200
-  text-success-900
-  dark:bg-success-100
-  dark:text-white
+  bg-sentiment-positive
+  text-inverse
+  dark:text-default
 }
 
 .p-tag.work-queue-status-badge--unhealthy { @apply
-  bg-danger-200
-  text-danger-900
-  dark:bg-danger-100
-  dark:text-white
+  bg-sentiment-negative
+  text-inverse
+  dark:text-default
 }
 
 

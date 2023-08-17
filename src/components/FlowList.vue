@@ -23,7 +23,7 @@
               <SearchInput v-model="search" :placeholder="localization.info.searchByFlowName" :label="localization.info.searchByFlowName" />
               <SearchInput v-model="deploymentNameSearch" :placeholder="localization.info.searchByDeploymentName" :label="localization.info.searchByDeploymentName" />
               <p-select v-model="routeFilter.sort" :options="flowSortOptions" />
-              <p-button icon="AdjustmentsVerticalIcon" :class="classes.filterButton" inset @click="headerExpanded = !headerExpanded" />
+              <p-button icon="AdjustmentsVerticalIcon" :class="classes.filterButton" :selected="headerExpanded" @click="headerExpanded = !headerExpanded" />
             </div>
           </div>
 
@@ -188,7 +188,6 @@
   const classes = computed(() => ({
     filterButton: {
       'flow-list__filter-button--filter-active': isCustomFilter.value,
-      'flow-list__filter-button--active': headerExpanded.value,
     },
   }))
 </script>
@@ -244,8 +243,7 @@
   items-center
 }
 
-.flow-list__filter-button--filter-active .p-icon,
-.flow-list__filter-button--active .p-icon { @apply
-  text-primary
+.flow-list__filter-button--filter-active .p-icon { @apply
+  text-link
 }
 </style>
