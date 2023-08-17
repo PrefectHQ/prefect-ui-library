@@ -55,6 +55,6 @@
 }
 
 .state--unknown { @apply
-  text-foreground-700;
-  background-color: var(--p-color-sentiment-neutral);
+  text-foreground-700
+  bg-sentiment-neutral
 }
