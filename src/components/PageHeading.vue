@@ -19,10 +19,12 @@
   import { computed } from 'vue'
   import { Size } from '@/types'
 
-  const props = defineProps<{
+  const props = withDefaults(defineProps<{
     crumbs: BreadCrumbs,
     size?: Size,
-  }>()
+  }>(), {
+    size: 'xl',
+  })
 
   const classes = computed(() => ({
     'page-heading__crumbs--xs': props.size === 'xs',
