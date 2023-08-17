@@ -34,7 +34,7 @@
           <template v-else-if="isCustomFilter">
             <div class="flow-list__filters-active">
               ({{ localization.info.filtersActive }})
-              <p-button size="sm" secondary :disabled="isDefaultFilter" @click="clear">
+              <p-button small :disabled="isDefaultFilter" @click="clear">
                 {{ localization.info.resetFilters }}
               </p-button>
             </div>
@@ -48,7 +48,7 @@
             {{ localization.info.noFlowsOrDeploymentsMatchFilter }}
           </template>
           <template v-if="isCustomFilter" #actions>
-            <p-button size="sm" secondary @click="clear">
+            <p-button small @click="clear">
               {{ localization.info.resetFilters }}
             </p-button>
           </template>

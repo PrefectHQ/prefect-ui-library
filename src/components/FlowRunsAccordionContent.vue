@@ -2,7 +2,7 @@
   <FlowRunList :flow-runs="flowRuns" :selected="null" class="flow-flow-runs-list" />
   <template v-if="more">
     <div class="flow-flow-runs-list__more">
-      <p-button size="sm" inset @click="loadMore">
+      <p-button small @click="loadMore">
         Show more
       </p-button>
     </div>

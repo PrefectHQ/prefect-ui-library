@@ -16,9 +16,8 @@
 
     <template #actions>
       <DocumentationButton :to="localization.docs.workQueues" />
-      <p-button v-if="can.create.work_queue" :to="routes.workQueueCreate()">
+      <p-button v-if="can.create.work_queue" icon-append="PlusIcon" :to="routes.workQueueCreate()">
         Create Work Queue
-        <p-icon icon="PlusIcon" class="empty-work-queue--link-icon" />
       </p-button>
     </template>
   </p-empty-state>
@@ -39,11 +38,5 @@
 .empty-work-queue--icon { @apply
   w-12
   h-12
-}
-
-.empty-work-queue--link-icon { @apply
-  ml-2
-  w-4
-  h-4
 }
 </style>

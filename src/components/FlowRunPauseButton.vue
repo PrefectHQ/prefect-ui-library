@@ -1,11 +1,10 @@
 <template>
   <p-button
     v-if="canPause"
-    inset
+    icon-append="PauseIcon"
     @click="open"
   >
     Pause
-    <p-icon icon="PauseIcon" />
     <FlowRunPauseModal
       v-model:showModal="showModal"
       :flow-run-id="flowRun.id"

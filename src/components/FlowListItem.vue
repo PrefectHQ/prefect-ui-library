@@ -24,10 +24,9 @@
         <p-divider class="flow-list-item__divider" />
         <p-button
           v-if="deploymentsCount > 0"
-          size="xs"
+          small
           class="flow-list-item__content-toggle"
           :class="computedClasses.toggle"
-          inset
           icon="ChevronDownIcon"
         />
 
@@ -156,12 +155,14 @@
 
 .flow-list-item__content-toggle { @apply
   relative
-  rounded-full
-  transition-transform
   mr-2
 }
 
-.flow-list-item__content-toggle--expanded { @apply
+.flow-list-item__content-toggle .p-icon { @apply
+  transition-transform
+}
+
+.flow-list-item__content-toggle--expanded .p-icon { @apply
   rotate-180
 }
 

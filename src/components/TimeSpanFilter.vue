@@ -1,15 +1,15 @@
 <template>
-  <p-button-group v-model="selected" :size="size" :options="options" class="time-span-filter" />
+  <p-button-group v-model="selected" :small="small" :options="options" class="time-span-filter" />
 </template>
 
 <script lang="ts" setup>
-  import { ButtonGroupOption, Size } from '@prefecthq/prefect-design'
+  import { ButtonGroupOption } from '@prefecthq/prefect-design'
   import { secondsInDay, secondsInHour, secondsInWeek } from 'date-fns'
   import { computed } from 'vue'
 
   const props = defineProps<{
     selected: number,
-    size?: Size,
+    small?: boolean,
   }>()
 
   const emit = defineEmits<{

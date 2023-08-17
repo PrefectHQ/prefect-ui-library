@@ -1,7 +1,7 @@
 <template>
   <PageHeading :crumbs="[{ text: 'Task Run Concurrency Limits' }]">
     <template #after-crumbs>
-      <p-button v-if="can.create.concurrency_limit" inset size="xs" icon="PlusIcon" @click="open" />
+      <p-button v-if="can.create.concurrency_limit" small icon="PlusIcon" @click="open" />
     </template>
   </PageHeading>
   <ConcurrencyLimitsCreateModal v-model:showModal="showModal" />

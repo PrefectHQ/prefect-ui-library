@@ -10,7 +10,7 @@
     </template>
 
     <template #cancel>
-      <p-button inset @click="close">
+      <p-button @click="close">
         Close
       </p-button>
     </template>

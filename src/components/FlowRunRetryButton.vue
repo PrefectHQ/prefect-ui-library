@@ -1,12 +1,11 @@
 <template>
   <p-button
     v-if="canRetry"
-    inset
+    icon-append="ArrowPathIcon"
     :loading="retryingRun"
     @click="open"
   >
     Retry
-    <p-icon icon="ArrowPathIcon" />
     <FlowRunRetryModal
       v-model:showModal="showModal"
       v-model:retryingRun="retryingRun"

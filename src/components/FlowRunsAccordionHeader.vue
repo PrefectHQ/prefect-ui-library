@@ -8,7 +8,7 @@
         {{ lastRunTime }}
       </span>
     </div>
-    <p-button inset size="sm" :aria-controls="content" @click="toggle">
+    <p-button small :aria-controls="content" @click="toggle">
       {{ count }}
       <p-icon size="small" icon="ChevronDownIcon" class="flow-runs-accordion-header__icon" :class="classes.icon" />
     </p-button>

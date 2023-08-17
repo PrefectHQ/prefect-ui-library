@@ -18,15 +18,10 @@
         </p-button>
       </a>
       <a href="https://github.com/prefectHQ/prefect-ui-library/" target="_blank">
-        <p-button class="welcome-page__github-link" icon="GitHubIcon">
+        <p-button icon="GitHubIcon">
           Github
         </p-button>
       </a>
-      <p-link :to="routeRecordsFlat[firstComponent]">
-        <p-button secondary icon="ArrowRightIcon">
-          Get Started
-        </p-button>
-      </p-link>
     </div>
   </div>
 </template>
@@ -77,15 +72,6 @@
   gap-2
 }
 
-.welcome-page__github-link { @apply
-  text-white
-  bg-black
-  focus:ring-black
-}
-
-.welcome-page__github-link:not(.p-button--disabled) { @apply
-  hover:bg-neutral-900
-}
 
 .welcome-page__logo-icon,
 .welcome-page__intro,

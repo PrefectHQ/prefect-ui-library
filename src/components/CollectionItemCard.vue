@@ -22,11 +22,10 @@
       <div class="collection-card__actions">
         <template v-if="collectionItem.documentationUrl">
           <a :href="collectionItem.documentationUrl" target="_blank">
-            <p-button inset>
+            <p-button icon-append="ArrowTopRightOnSquareIcon">
               <slot>
                 View Docs
               </slot>
-              <p-icon icon="ArrowTopRightOnSquareIcon" class="collection-card__documentation-icon" />
             </p-button>
           </a>
         </template>
@@ -50,12 +49,6 @@
   gap-2
   items-center
   justify-end
-}
-
-.collection-card__documentation-icon { @apply
-  ml-2
-  w-5
-  h-5
 }
 
 .collection-card__example .p-code-highlight { @apply

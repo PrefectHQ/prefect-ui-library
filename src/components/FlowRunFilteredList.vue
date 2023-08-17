@@ -19,7 +19,7 @@
         </slot>
       </template>
       <template v-if="hasFilters" #actions>
-        <p-button size="sm" secondary @click="clear">
+        <p-button small @click="clear">
           Clear Filters
         </p-button>
       </template>

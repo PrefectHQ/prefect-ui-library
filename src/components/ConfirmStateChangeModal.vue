@@ -24,7 +24,7 @@
 
     <template #actions>
       <slot name="actions">
-        <p-button class="state-change-modal__state-change-button" :loading="isSubmitting" @click="submit">
+        <p-button primary class="state-change-modal__state-change-button" :loading="isSubmitting" @click="submit">
           Change
         </p-button>
       </slot>

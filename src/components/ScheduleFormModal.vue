@@ -2,7 +2,7 @@
   <slot :open="open" :close="close" />
   <p-modal v-model:showModal="showModal" :title="schedule ? 'Edit schedule' : 'Add schedule'">
     <p-label label="Schedule type">
-      <p-button-group v-model="scheduleForm" :options="scheduleFormOptions" size="sm" />
+      <p-button-group v-model="scheduleForm" :options="scheduleFormOptions" small />
     </p-label>
 
     <template v-if="scheduleForm == 'rrule'">
@@ -20,7 +20,7 @@
     </template>
 
     <template #actions>
-      <p-button type="submit" :disabled="disabled" @click="submitCurrentForm">
+      <p-button primary type="submit" :disabled="disabled" @click="submitCurrentForm">
         Save
       </p-button>
     </template>

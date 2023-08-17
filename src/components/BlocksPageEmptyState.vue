@@ -15,9 +15,8 @@
 
     <template #actions>
       <DocumentationButton :to="localization.docs.blocks" />
-      <p-button v-if="can.create.block" :to="routes.blocksCatalog()">
+      <p-button v-if="can.create.block" icon-append="PlusIcon" :to="routes.blocksCatalog()">
         Add Block
-        <p-icon icon="PlusIcon" class="empty-work-queue--link-icon" />
       </p-button>
     </template>
   </p-empty-state>

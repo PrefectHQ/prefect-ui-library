@@ -9,9 +9,9 @@
         <p-text-input v-model="name">
           <template #append>
             <p-button
-              class="flow-run-create-form__random-name-button"
               color="primary"
               icon="ArrowPathIcon"
+              flat
               @click="name = generateRandomName()"
             />
           </template>
@@ -46,7 +46,7 @@
         Start
       </h3>
 
-      <p-button-group v-model="when" :options="whenOptions" size="sm" />
+      <p-button-group v-model="when" :options="whenOptions" small />
 
       <template v-if="when == 'later'">
         <div class="flow-run-create-form__row">
@@ -70,7 +70,7 @@
 
           <SchemaInput v-model="parameters" v-model:input-type="parametersInputType" :schema="deployment.parameterOpenApiSchema">
             <template #button-group>
-              <p-button-group v-model="parametersInputType" :options="parametersInputTypeOptions" size="sm" />
+              <p-button-group v-model="parametersInputType" :options="parametersInputTypeOptions" small />
             </template>
           </SchemaInput>
         </p-content>
@@ -78,10 +78,10 @@
     </p-content>
 
     <template #footer>
-      <p-button inset @click="cancel">
+      <p-button @click="cancel">
         Cancel
       </p-button>
-      <p-button type="submit">
+      <p-button primary type="submit">
         Submit
       </p-button>
     </template>
@@ -226,12 +226,6 @@
   px-6
   py-6
   rounded-lg
-}
-
-.flow-run-create-form__random-name-button { @apply
-  rounded-none
-  rounded-tr
-  rounded-br
 }
 
 .flow-run-create-form__title { @apply

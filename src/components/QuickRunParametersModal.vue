@@ -6,7 +6,7 @@
 
     <template #actions>
       <slot name="actions">
-        <p-button @click="submit">
+        <p-button primary @click="submit">
           Run
         </p-button>
       </slot>
