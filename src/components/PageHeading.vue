@@ -15,19 +15,14 @@
 </template>
 
 <script lang="ts" setup>
-  import { PBreadCrumbs, BreadCrumbs, Size } from '@prefecthq/prefect-design'
-  import { PropType, computed } from 'vue'
+  import { PBreadCrumbs, BreadCrumbs } from '@prefecthq/prefect-design'
+  import { computed } from 'vue'
+  import { Size } from '@/types'
 
-  const props = defineProps({
-    crumbs: {
-      type: Array as PropType<BreadCrumbs>,
-      required: true,
-    },
-    size: {
-      type: String as PropType<Size>,
-      default: 'xl',
-    },
-  })
+  const props = defineProps<{
+    crumbs: BreadCrumbs,
+    size?: Size,
+  }>()
 
   const classes = computed(() => ({
     'page-heading__crumbs--xs': props.size === 'xs',
