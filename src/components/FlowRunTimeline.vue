@@ -80,7 +80,6 @@
   import { useFlowRuns, useFlows, useWorkspaceApi } from '@/compositions'
   import { FlowRun, FlowRunsFilter, isRunningStateType, isTerminalStateType } from '@/models'
   import { WorkspaceFlowRunsApi } from '@/services'
-  import { prefectStateNames } from '@/types'
   import { formatTimeNumeric, formatTimeShortNumeric, formatDate, mapStateNameToStateType, getStateTypeStyles } from '@/utilities'
   import { eventTargetIsInput } from '@/utilities/eventTarget'
 
