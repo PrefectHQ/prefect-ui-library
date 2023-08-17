@@ -1,7 +1,7 @@
 <template>
   <page-heading class="page-heading-work-queues" :crumbs="crumbs">
     <template v-if="can.create.work_queue" #after-crumbs>
-      <p-button inset size="xs" icon="PlusIcon" :to="routes.workQueueCreate()" />
+      <p-button small icon="PlusIcon" :to="routes.workQueueCreate()" />
     </template>
   </page-heading>
 </template>

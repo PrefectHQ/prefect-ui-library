@@ -4,7 +4,7 @@
       {{ title }}
     </h3>
 
-    <p-button-group v-model="selected" :options="options" size="sm" />
+    <p-button-group v-model="selected" :options="options" small />
 
     <p-label class="schema-form-property-any-of__fields p-background" :description="description">
       <template v-if="isObject">

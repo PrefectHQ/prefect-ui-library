@@ -1,7 +1,7 @@
 <template>
   <page-heading class="page-heading-notifications" :crumbs="crumbs">
     <template v-if="can.create.notification_policy" #after-crumbs>
-      <p-button inset size="xs" icon="PlusIcon" :to="routes.notificationCreate()" />
+      <p-button small icon="PlusIcon" :to="routes.notificationCreate()" />
     </template>
   </page-heading>
 </template>

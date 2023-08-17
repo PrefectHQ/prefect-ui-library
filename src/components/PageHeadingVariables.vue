@@ -1,7 +1,7 @@
 <template>
   <page-heading class="page-heading-variables" :crumbs="crumbs">
     <template v-if="can.create.variable" #after-crumbs>
-      <p-button inset size="xs" icon="PlusIcon" @click="open" />
+      <p-button small icon="PlusIcon" @click="open" />
     </template>
   </page-heading>
   <VariableCreateModal v-model:show-modal="showModal" @create="emit('create')" />

@@ -17,8 +17,8 @@
       </template>
     </p-select>
 
-    <p-button inset :to="withQuery(routes.blocksCatalog(), { capability })">
-      Add <p-icon icon="PlusIcon" />
+    <p-button icon-append="PlusIcon" :to="withQuery(routes.blocksCatalog(), { capability })">
+      Add
     </p-button>
   </div>
 </template>

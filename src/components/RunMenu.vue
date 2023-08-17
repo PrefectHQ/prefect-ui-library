@@ -4,12 +4,11 @@
       <p-button
         ref="runButton"
         class="run-menu__run-button"
-        inset
+        icon-append="PlayIcon"
         :disabled="deployment.deprecated"
         @click="toggle"
       >
         Run
-        <p-icon class="run-menu__run-icon" icon="PlayIcon" solid />
       </p-button>
     </template>
     <p-overflow-menu class="run-menu__overflow-menu" @click="close">
@@ -64,11 +63,6 @@
 .run-menu__overflow-menu { @apply
   max-w-xs
   my-2
-}
-
-.run-menu__run-icon { @apply
-  w-5
-  h-5
 }
 </style>
 

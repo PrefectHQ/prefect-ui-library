@@ -11,7 +11,7 @@
       </template>
     </div>
 
-    <p-button class="toast-flow-run-create__button" size="xs" @click="handleClick">
+    <p-button class="toast-flow-run-create__button" small @click="handleClick">
       View run
     </p-button>
   </div>

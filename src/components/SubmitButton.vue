@@ -1,5 +1,5 @@
 <template>
-  <p-button type="submit">
+  <p-button primary type="submit">
     {{ action }}
   </p-button>
 </template>

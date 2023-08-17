@@ -13,7 +13,6 @@
         class="flow-run-timeline__fullscreen-exit"
         icon="XMarkIcon"
         flat
-        size="lg"
         @click="toggleFullscreen"
       />
       <div class="flow-run-timeline__options">

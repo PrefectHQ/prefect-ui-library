@@ -31,10 +31,10 @@
 
     <template v-if="!hideActions" #footer>
       <slot name="footer" :disabled="disabled">
-        <p-button inset @click="cancel">
+        <p-button @click="cancel">
           Cancel
         </p-button>
-        <p-button :disabled="disabled" type="submit">
+        <p-button primary :disabled="disabled" type="submit">
           Save
         </p-button>
       </slot>

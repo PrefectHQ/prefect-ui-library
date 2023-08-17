@@ -3,7 +3,7 @@
     <SchemaInput v-model="parameters" :schema="schema" />
 
     <pre>{{ parameters }}</pre>
-    <p-button @click="submit">
+    <p-button primary @click="submit">
       Submit
     </p-button>
   </ComponentPage>
@@ -12,7 +12,6 @@
 <script lang="ts" setup>
   import { useValidationObserver } from '@prefecthq/vue-compositions'
   import { useField } from 'vee-validate'
-  import { ref } from 'vue'
   import SchemaInput from '@/components/SchemaInput.vue'
   import { useForm } from '@/compositions/useForm'
   import ComponentPage from '@/demo/components/ComponentPage.vue'

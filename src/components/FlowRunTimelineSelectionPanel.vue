@@ -1,7 +1,7 @@
 <template>
   <div :class="classes">
     <div class="flex justify-end">
-      <p-button size="xs" icon="XMarkIcon" flat @click="closePanel" />
+      <p-button small icon="XMarkIcon" flat @click="closePanel" />
     </div>
     <FlowRunTimelineTaskDetails
       v-if="selectedNode && selectedNode.type === 'task'"

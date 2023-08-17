@@ -14,9 +14,8 @@
     </template>
     <template #actions>
       <DocumentationButton :to="localization.docs.workPools" />
-      <p-button v-if="can.create.work_pool" :to="routes.workPoolCreate()">
+      <p-button v-if="can.create.work_pool" icon-append="PlusIcon" :to="routes.workPoolCreate()">
         Create Work Pool
-        <p-icon icon="PlusIcon" class="work-pools-page-empty-state__link-icon" />
       </p-button>
     </template>
   </p-empty-state>
@@ -37,11 +36,5 @@
 .work-pools-page-empty-state__icon { @apply
   w-12
   h-12;
-}
-
-.work-pools-page-empty-state__link-icon { @apply
-  ml-2
-  w-4
-  h-4;
 }
 </style>

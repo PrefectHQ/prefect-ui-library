@@ -31,7 +31,7 @@
     </p-content>
 
     <template #footer>
-      <p-button inset @click="cancel">
+      <p-button @click="cancel">
         Cancel
       </p-button>
       <SubmitButton action="Save" :loading="pending" />

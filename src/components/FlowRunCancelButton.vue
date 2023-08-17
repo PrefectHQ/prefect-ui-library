@@ -2,25 +2,23 @@
   <p-tooltip v-if="disableCancel" :text="localization.info.disableFlowRunCancel">
     <p-button
       disabled
-      secondary
-      danger
+      dangerous
     >
       Cancel
     </p-button>
   </p-tooltip>
   <p-button
     v-else-if="canCancel"
-    secondary
-    danger
+    dangerous
     @click="open"
   >
     Cancel
-    <FlowRunCancelModal
-      v-model:showModal="showModal"
-      :flow-run-id="flowRun.id"
-      @change="showModal"
-    />
   </p-button>
+  <FlowRunCancelModal
+    v-model:showModal="showModal"
+    :flow-run-id="flowRun.id"
+    @change="showModal"
+  />
 </template>
 
   <script lang="ts" setup>
