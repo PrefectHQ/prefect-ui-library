@@ -108,7 +108,6 @@
 
 <style>
 .deployment-list-item__schedule { @apply
-  text-foreground
   flex
   gap-2
   items-center
@@ -124,7 +123,7 @@
 }
 
 .deployment-list-item__schedule-none { @apply
-  text-foreground-100
+  text-subdued
 }
 
 .deployment-list-item__relationships-container { @apply

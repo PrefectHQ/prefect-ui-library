@@ -45,7 +45,7 @@
 }
 
 .search__icon { @apply
-  text-foreground-400
-  ml-2
+  ml-2;
+  color: var(--p-color-input-placeholder);
 }
 </style>

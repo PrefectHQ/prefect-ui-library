@@ -113,6 +113,6 @@
 }
 
 .flows-filter-group__deployment-tags--empty { @apply
-  text-foreground-50
+  text-subdued
 }
 </style>

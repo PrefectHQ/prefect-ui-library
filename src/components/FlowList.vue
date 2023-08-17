@@ -227,7 +227,7 @@
 }
 
 .flow-list__results-count { @apply
-  text-foreground-300
+  text-subdued
   text-base
 }
 
@@ -236,7 +236,7 @@
 }
 
 .flow-list__filters-active { @apply
-  text-foreground-200
+  text-subdued
   text-sm
   flex
   gap-2

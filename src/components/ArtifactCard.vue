@@ -105,13 +105,13 @@
 
 .artifact-card__subheader { @apply
   text-sm
-  text-foreground-200
+  text-subdued
   uppercase
 }
 
 .artifact-card__subheader--condensed { @apply
   text-xs
-  text-foreground-200
+  text-subdued
   uppercase
 }
 
@@ -139,7 +139,7 @@
   text-sm
   pb-1
   border-b
-  border-b-foreground-50
+  border-b-divider
 }
 
 .artifact-card__summary-container--condensed .artifact-card__summary-item { @apply
@@ -163,7 +163,7 @@
 
 .artifact-card__summary-item-label { @apply
   text-sm
-  text-foreground-200
+  text-subdued
   capitalize
   whitespace-nowrap
 }
@@ -174,7 +174,7 @@
 
 .artifact-card__summary-item-value--none { @apply
   text-sm
-  text-foreground-100
+  text-subdued
   italic
 }
 </style>

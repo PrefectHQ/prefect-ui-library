@@ -97,7 +97,6 @@
 }
 
 .welcome-page__circles { @apply
-  text-foreground-50
   z-0
   absolute;
   animation-name: spin;

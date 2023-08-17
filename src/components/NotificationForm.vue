@@ -223,7 +223,6 @@
 .notification-form__message {
   @apply
   text-base
-  text-foreground
 }
 .notification-form__horizontal-fields {
   @apply

@@ -64,7 +64,7 @@
 }
 
 .block-document-card__help { @apply
-  text-foreground-300
+  text-subdued
   text-sm
 }
 

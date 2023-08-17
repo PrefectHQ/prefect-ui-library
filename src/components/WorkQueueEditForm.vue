@@ -96,6 +96,6 @@
 .work-queue-edit-form__section-header {
   @apply
   text-base
-  text-foreground-300
+  text-subdued
 }
 </style>

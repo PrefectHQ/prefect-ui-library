@@ -56,7 +56,6 @@
 }
 
 .app__menu-icon { @apply
-  text-foreground
   w-6
   h-6
   cursor-pointer

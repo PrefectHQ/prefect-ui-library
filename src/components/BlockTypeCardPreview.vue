@@ -64,7 +64,7 @@
 }
 
 .block-type-card-preview__description { @apply
-  text-foreground-300
+  text-subdued
   text-sm
   line-clamp-5
 }
