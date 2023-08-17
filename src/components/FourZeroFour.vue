@@ -336,7 +336,6 @@
 }
 
 .four-zero-four { @apply
-  bg-primary-100
   w-full
   h-full
 }

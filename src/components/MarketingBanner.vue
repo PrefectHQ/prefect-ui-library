@@ -1,5 +1,5 @@
 <template>
-  <div class="marketing-banner" :class="classes">
+  <div class="marketing-banner p-background" :class="classes">
     <div class="marketing-banner__background-image" />
     <div class="marketing-banner__content">
       <slot>
@@ -38,7 +38,6 @@
   relative
   overflow-hidden
   rounded
-  bg-prefect
   text-white
 }
 

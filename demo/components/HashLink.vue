@@ -34,7 +34,7 @@
   opacity-0
   translate-x-2
   absolute
-  text-prefect-600
+  text-link
   transition-all
 }
 

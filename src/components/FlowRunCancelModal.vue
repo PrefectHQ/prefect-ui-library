@@ -80,6 +80,6 @@
 }
 
 .flow-run-cancel-modal__icon { @apply
-  stroke-danger
+  stroke-sentiment-negative
 }
 </style>
