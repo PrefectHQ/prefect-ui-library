@@ -86,7 +86,7 @@
 }
 
 .task-run-artifacts__artifact { @apply
-  hover:border-primary
-  focus:border-primary
+  hover:border-selectable-hover
+  focus:border-selectable-hover
 }
 </style>

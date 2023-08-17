@@ -1,5 +1,5 @@
 <template>
-  <div class="code-banner">
+  <div class="code-banner p-background">
     <template v-if="title || slots.title || subtitle || slots.subtitle">
       <div class="code-banner__message">
         <template v-if="title || slots.title">
@@ -43,8 +43,7 @@
   flex-wrap
   gap-x-6
   justify-center
-  items-center
-  bg-prefect-600;
+  items-center;
   background-image: url(/constellations.svg);
   background-position: center;
   background-size: 350px, contain;
