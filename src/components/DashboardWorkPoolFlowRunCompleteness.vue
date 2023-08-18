@@ -106,13 +106,13 @@
 }
 
 .dashboard-work-pool-flow-runs-completeness__difference--negative { @apply
-  text-red-500
+  text-sentiment-negative
 }
 .dashboard-work-pool-flow-runs-completeness__difference--positive { @apply
-  text-green-500
+  text-sentiment-positive
 }
 
 .dashboard-work-pool-flow-runs-completeness__none { @apply
-  text-slate-500
+  text-subdued
 }
 </style>

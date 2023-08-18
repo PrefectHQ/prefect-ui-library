@@ -29,7 +29,6 @@
 
           <template v-if="headerExpanded">
             <FlowsFilterGroup />
-            <p-divider class="flow-list__divider" />
           </template>
           <template v-else-if="isCustomFilter">
             <div class="flow-list__filters-active">
@@ -188,6 +187,7 @@
   const classes = computed(() => ({
     filterButton: {
       'flow-list__filter-button--filter-active': isCustomFilter.value,
+      'flow-list__filter-button--filter-open': headerExpanded.value,
     },
   }))
 </script>
@@ -213,7 +213,6 @@
   sm:items-center
   sm:flex-row
   grow
-  mb-4
 }
 
 .flow-list__header-end { @apply
@@ -230,10 +229,6 @@
   text-base
 }
 
-.flow-list__divider { @apply
-  mt-4
-}
-
 .flow-list__filters-active { @apply
   text-subdued
   text-sm
@@ -241,9 +236,14 @@
   gap-2
   justify-end
   items-center
+  mt-4
 }
 
-.flow-list__filter-button--filter-active .p-icon { @apply
-  text-link
+.flow-list__filter-button--filter-open { @apply
+  cursor-pointer
+}
+
+.flow-list__filter-button--filter-active:not(.flow-list__filter-button--filter-open) .p-icon { @apply
+  text-selected
 }
 </style>
