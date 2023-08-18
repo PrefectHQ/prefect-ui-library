@@ -124,9 +124,9 @@
   gap-4
 }
 
-.flow-run-artifacts__artifact { @apply
-  hover:border-selectable-hover
-  focus:border-selectable-hover
+.flow-run-artifacts__artifact:hover,
+.flow-run-artifacts__artifact:focus {
+  box-shadow: inset 0 0 0 theme('space[0.5]') var(--p-color-text-link);
 }
 
 .flow-run-artifacts__none { @apply

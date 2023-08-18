@@ -129,8 +129,8 @@
   ml-auto
 }
 
-.artifact-collections__artifact-card { @apply
-  hover:border-selectable-hover
-  focus:border-selectable-hover
+.artifact-collections__artifact-card:hover,
+.artifact-collections__artifact-card:focus {
+  box-shadow: inset 0 0 0 theme('space[0.5]') var(--p-color-text-link);
 }
 </style>

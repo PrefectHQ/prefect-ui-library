@@ -32,7 +32,7 @@
 }
 
 .empty-flow--link { @apply
-  text-state-running-600
+  text-link
   font-medium
 }
 
