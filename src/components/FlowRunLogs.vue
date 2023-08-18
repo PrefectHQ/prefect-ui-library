@@ -92,6 +92,6 @@
 }
 
 .flow-run-logs__empty-text { @apply
-  !text-white
+  !text-subdued
 }
 </style>

@@ -45,10 +45,4 @@
   flex
   justify-center
 }
-
-.flow-flow-runs-list .state-list-item { @apply
-  bg-slate-50
-  dark:bg-slate-700
-  dark:bg-opacity-50
-}
 </style>

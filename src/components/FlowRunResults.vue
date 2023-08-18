@@ -104,11 +104,6 @@
   gap-4
 }
 
-.flow-run-results__artifact { @apply
-  hover:border-selectable-hover
-  focus:border-selectable-hover
-}
-
 .flow-run-results__none { @apply
   text-subdued
 }
