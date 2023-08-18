@@ -66,6 +66,6 @@
 
 .schema-form-property-any-of__fields { @apply
   p-4
-  rounded-md
+  rounded-default
 }
 </style>

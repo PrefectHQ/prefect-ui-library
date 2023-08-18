@@ -93,6 +93,6 @@
 .work-pool-edit-form { @apply
   px-6
   py-6
-  rounded-lg
+  rounded-default
 }
 </style>
