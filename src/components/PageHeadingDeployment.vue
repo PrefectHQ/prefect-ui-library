@@ -17,10 +17,11 @@
   import { DeploymentMenu, DeploymentToggle, PageHeading, RunMenu } from '@/components'
   import { useWorkspaceRoutes } from '@/compositions'
   import { useCan } from '@/compositions/useCan'
-  import { Deployment } from '@/models'
+  import { Deployment, Flow } from '@/models'
 
   const props = defineProps<{
     deployment: Deployment,
+    flow: Flow,
   }>()
 
   const can = useCan()
@@ -29,6 +30,7 @@
 
   const crumbs = computed(() => [
     { text: 'Deployments', to: routes.deployments() },
+    { text: props.flow.name },
     { text: props.deployment.name },
   ])
 
