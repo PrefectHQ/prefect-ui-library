@@ -25,6 +25,6 @@
 
 <style>
 .work-pool-last-polled__no-poll { @apply
-  text-slate-500
+  text-subdued
 }
 </style>

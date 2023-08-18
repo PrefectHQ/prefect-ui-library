@@ -66,15 +66,17 @@
   w-2
   h-2
   align-middle
-  bg-green-500
+  bg-sentiment-positive
+  text-inverse
+  dark:text-default
   rounded-full
 }
 
 .work-queue-status-icon--unhealthy { @apply
-  text-state-failed-500
+  text-sentiment-negative
 }
 
 .work-queue-status-icon--paused { @apply
-  text-state-paused-500
+  text-subdued
 }
 </style>

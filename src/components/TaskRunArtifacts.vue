@@ -8,7 +8,7 @@
     <RowGridLayoutList :items="artifacts">
       <template #default="{ item }">
         <router-link :to="routes.artifact(item.id)">
-          <ArtifactCard :artifact="item" :condense="condense" class="task-run-artifacts__artifact" />
+          <ArtifactCard :artifact="item" :condense="condense" interactive />
         </router-link>
       </template>
 
@@ -83,10 +83,5 @@
   flex
   justify-end
   gap-4
-}
-
-.task-run-artifacts__artifact { @apply
-  hover:border-selectable-hover
-  focus:border-selectable-hover
 }
 </style>

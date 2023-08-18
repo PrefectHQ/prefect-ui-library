@@ -39,6 +39,7 @@
   const props = defineProps<{
     artifact: Artifact,
     condense?: boolean,
+    interactive?: boolean,
   }>()
 
   const hasKey = computed(() => !!props.artifact.key)
@@ -47,6 +48,7 @@
     return {
       root: {
         'artifact-card--condensed': props.condense,
+        'artifact-card--interactive': props.interactive,
       },
       body: {
         'artifact-card__body--condensed': props.condense,
@@ -70,11 +72,20 @@
   flex-col
   gap-y-2
   text-base
+  transition-all;
+  transition-property: box-shadow;
+  box-shadow: inset 0 0 0 theme('space[0.5]') transparent;
 }
 
 .artifact-card--condensed { @apply
   text-sm
   p-4
+}
+
+.artifact-card--interactive:hover,
+.artifact-card--interactive:focus { @apply
+  cursor-pointer;
+  box-shadow: inset 0 0 0 theme('space[0.5]') var(--p-color-text-link);
 }
 
 .artifact-card__body { @apply
