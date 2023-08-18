@@ -10,7 +10,7 @@
     <RowGridLayoutList v-if="artifactsLoaded" :items="artifacts">
       <template #default="{ item }: { item: ArtifactCollection }">
         <router-link :to="routes.artifactKey(item.key)">
-          <ArtifactCard :artifact="item" class="artifact-collections__artifact-card">
+          <ArtifactCard :artifact="item" interactive>
             <template #summary-label>
               {{ localization.info.lastUpdated }}
             </template>
@@ -127,10 +127,5 @@
 
 .artifact-collections__view-mode-button-group { @apply
   ml-auto
-}
-
-.artifact-collections__artifact-card:hover,
-.artifact-collections__artifact-card:focus {
-  box-shadow: inset 0 0 0 theme('space[0.5]') var(--p-color-text-link);
 }
 </style>
