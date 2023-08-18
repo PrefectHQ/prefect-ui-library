@@ -95,7 +95,7 @@
   border-divider
   overflow-hidden
   bg-transparent
-  rounded
+  rounded-default
 }
 
 .resizable-section__content { @apply
@@ -122,7 +122,7 @@
 
 .resizable-section__px { @apply
   select-none
-  rounded
+  rounded-default
   px-2
   py-0.5
   absolute

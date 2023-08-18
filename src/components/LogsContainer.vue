@@ -81,7 +81,7 @@
 .logs__divider-time { @apply
   bg-slate-800
   relative
-  rounded
+  rounded-default
   px-2
   py-2
   text-center

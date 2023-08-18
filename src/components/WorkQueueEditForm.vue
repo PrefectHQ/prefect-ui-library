@@ -90,7 +90,7 @@
 .work-queue-edit-form { @apply
   px-6
   py-6
-  rounded-lg
+  rounded-default
 }
 
 .work-queue-edit-form__section-header {

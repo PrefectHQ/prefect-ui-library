@@ -37,7 +37,7 @@
 <style>
 .code-banner { @apply
   min-h-[160px]
-  rounded
+  rounded-default
   text-white
   flex
   flex-wrap

@@ -171,7 +171,7 @@
   @apply
   px-6
   py-6
-  rounded-lg
+  rounded-default
 }
 
 .deployment-form__section-header {

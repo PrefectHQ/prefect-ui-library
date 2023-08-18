@@ -218,7 +218,7 @@
 .notification-form {
   @apply
   p-6
-  rounded-md
+  rounded-default
 }
 .notification-form__message {
   @apply
@@ -231,7 +231,7 @@
 }
 .notification-form__review-block {
   @apply
-  rounded-md
+  rounded-default
   p-4
   pb-6
 }

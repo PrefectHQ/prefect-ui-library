@@ -225,7 +225,7 @@
 .flow-run-create-form { @apply
   px-6
   py-6
-  rounded-lg
+  rounded-default
 }
 
 .flow-run-create-form__title { @apply
