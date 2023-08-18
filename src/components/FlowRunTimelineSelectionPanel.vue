@@ -54,7 +54,7 @@
   w-full
   h-full
   p-4
-  rounded-md
+  rounded-default
   overflow-auto
 }
 </style>

@@ -37,7 +37,7 @@
 .marketing-banner { @apply
   relative
   overflow-hidden
-  rounded
+  rounded-default
   text-white
 }
 

@@ -50,7 +50,7 @@
   grid
   gap-1
   bg-floating
-  rounded-md
+  rounded-default
   max-w-xs
   w-screen
   shadow-lg

@@ -74,7 +74,7 @@
   border
   border-slate-200
   dark:border-slate-700
-  rounded-xl
+  rounded-default
 }
 
 .dashboard-work-pool-card__header { @apply
