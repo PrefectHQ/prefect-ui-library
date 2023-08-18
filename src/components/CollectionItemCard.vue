@@ -50,9 +50,4 @@
   items-center
   justify-end
 }
-
-.collection-card__example .p-code-highlight { @apply
-  dark:bg-slate-900
-  bg-slate-300
-}
 </style>

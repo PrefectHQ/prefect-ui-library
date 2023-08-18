@@ -38,15 +38,11 @@
 .code-banner { @apply
   min-h-[160px]
   rounded-default
-  text-white
   flex
   flex-wrap
   gap-x-6
   justify-center
-  items-center;
-  background-image: url(/constellations.svg);
-  background-position: center;
-  background-size: 350px, contain;
+  items-center
 }
 
 .code-banner__message { @apply
