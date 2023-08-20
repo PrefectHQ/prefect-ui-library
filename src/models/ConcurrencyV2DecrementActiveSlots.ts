@@ -1,4 +1,4 @@
-export type ConcurrencyV2IncrementActiveSlotsRequest = {
+export type ConcurrencyV2DecrementActiveSlots = {
   slots: number,
   names: [
     string
