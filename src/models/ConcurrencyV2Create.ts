@@ -1,4 +1,4 @@
-export type ConcurrencyV2LimitCreate = {
+export type ConcurrencyV2Create = {
   active?: boolean,
   name?: string,
   limit?: number,
