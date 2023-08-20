@@ -26,7 +26,7 @@ export class WorkspaceConcurrencyV2LimitsApi extends WorkspaceApi {
 
   public async getConcurrencyV2Limits(filter: ConcurrencyLimitsFilter = {}): Promise<ConcurrencyV2Limit[]> {
     const { data } = await this.post<ConcurrencyV2Response[]>('/filter', filter)
-    return mapper.map('ConcurrencyV2Response', data, 'ConcurrencyV2Limit')
+    return mapper.map('ConcurrencyV2LimitResponse', data, 'ConcurrencyV2Limit')
   }
 
   public async getConcurrencyV2Limit(id: string): Promise<ConcurrencyV2Limit> {

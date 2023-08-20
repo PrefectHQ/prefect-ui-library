@@ -9,6 +9,7 @@ import { mapBlockTypeResponseToBlockType } from '@/maps/blockType'
 import { mapCollectionItemResponseToCollectionItem, mapCollectionResponseToCollectionItems } from '@/maps/collectionItem'
 import { mapConcurrencyLimitResponseToConcurrencyLimit } from '@/maps/concurrencyLimit'
 import { mapConcurrencyLimitCreateToConcurrencyLimitCreateRequest } from '@/maps/concurrencyLimitCreate'
+import { mapConcurrencyV2ResponseToConcurrencyV2Limit } from '@/maps/concurrencyV2Limit'
 import { mapCreatedOrUpdatedByResponseToCreatedOrUpdatedBy } from '@/maps/createdOrUpdatedBy'
 import {
   mapWorkspaceDashboardFilterToTaskRunsFilter,
@@ -83,6 +84,8 @@ export const maps = {
   CollectionResponse: { CollectionItems: mapCollectionResponseToCollectionItems },
   ConcurrencyLimitCreate: { ConcurrencyLimitCreateRequest: mapConcurrencyLimitCreateToConcurrencyLimitCreateRequest },
   ConcurrencyLimitResponse: { ConcurrencyLimit: mapConcurrencyLimitResponseToConcurrencyLimit },
+  ConcurrencyV2LimitResponse: { ConcurrencyV2Limit: mapConcurrencyV2ResponseToConcurrencyV2Limit },
+  ConcurrencyV2LimitCreate: { ConcurrencyV2LimitCreateRequest: mapConcurrencyV2LimitCreateToConcurrencyV2LimitCreateRequest },
   CreatedOrUpdatedByResponse: { CreatedOrUpdatedBy: mapCreatedOrUpdatedByResponseToCreatedOrUpdatedBy },
   Date: { string: mapDateToString },
   DeploymentFilter: { DeploymentFilterRequest: mapDeploymentFilter },
