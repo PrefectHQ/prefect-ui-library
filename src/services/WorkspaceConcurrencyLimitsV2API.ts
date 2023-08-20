@@ -1,6 +1,10 @@
 import { ConcurrencyV2Response } from '@/models/api/ConcurrencyV2Response'
+import { ConcurrencyV2ActiveSlots } from '@/models/ConcurrencyV2ActiveSlots'
+import { ConcurrencyV2Create } from '@/models/ConcurrencyV2Create'
+import { ConcurrencyV2DecrementActiveSlots } from '@/models/ConcurrencyV2DecrementActiveSlots'
+import { ConcurrencyV2IncrementActiveSlots } from '@/models/ConcurrencyV2IncrementActiveSlots'
 import { ConcurrencyV2Limit } from '@/models/ConcurrencyV2Limit'
-import { ConcurrencyV2LimitCreate } from '@/models/ConcurrencyV2LimitCreate'
+import { ConcurrencyV2Update } from '@/models/ConcurrencyV2Update'
 import { ConcurrencyLimitsFilter } from '@/models/Filters'
 import { mapper } from '@/services/Mapper'
 import { WorkspaceApi } from '@/services/WorkspaceApi'
@@ -8,10 +12,11 @@ import { WorkspaceApi } from '@/services/WorkspaceApi'
 export interface IWorkspaceConcurrencyV2LimitsApi {
   getConcurrencyV2Limit: (concurrencyV2LimitId: string) => Promise<ConcurrencyV2Limit>,
   getConcurrencyV2Limits: (filter: ConcurrencyLimitsFilter) => Promise<ConcurrencyV2Limit[]>,
-  createConcurrencyV2Limit: (concurrencyV2Limit: ConcurrencyV2LimitCreate) => Promise<ConcurrencyV2Limit>,
-  getConcurrencyV2LimitByTag: (tag: string) => Promise<ConcurrencyV2Limit>,
+  createConcurrencyV2Limit: (concurrencyV2Limit: ConcurrencyV2Create) => Promise<ConcurrencyV2Limit>,
+  updateConcurrencyV2Limit: (concurrencyV2Limit: ConcurrencyV2Update) => Promise<ConcurrencyV2Limit>,
   deleteConcurrencyV2Limit: (concurrencyV2LimitId: string) => Promise<void>,
-  deleteConcurrencyV2LimitByTag: (tag: string) => Promise<void>,
+  bulkIncrementActiveSlots: (names: string[], slots: number, mode: string) => Promise<void>,
+  bulkDecrementActiveSlots: (names: string[], slots: number, mode: string) => Promise<void>,
 }
 
 
@@ -29,13 +34,13 @@ export class WorkspaceConcurrencyV2LimitsApi extends WorkspaceApi {
     return mapper.map('ConcurrencyV2LimitResponse', data, 'ConcurrencyV2Limit')
   }
 
-  public async getConcurrencyV2LimitByTag(tag: string): Promise<ConcurrencyV2Limit> {
-    const { data } = await this.get<ConcurrencyV2Response>(`/tag/${tag}`)
+  public async createConcurrencyV2Limit(limit: ConcurrencyV2Create): Promise<ConcurrencyV2Limit> {
+    const { data } = await this.post<ConcurrencyV2Response>('/', mapper.map('ConcurrencyV2LimitCreate', limit, 'ConcurrencyV2LimitCreateRequest'))
     return mapper.map('ConcurrencyV2LimitResponse', data, 'ConcurrencyV2Limit')
   }
 
-  public async createConcurrencyV2Limit(limit: ConcurrencyV2LimitCreate): Promise<ConcurrencyV2Limit> {
-    const { data } = await this.post<ConcurrencyV2Response>('/', mapper.map('ConcurrencyV2LimitCreate', limit, 'ConcurrencyV2LimitCreateRequest'))
+  public async updateConcurrencyV2Limit(limit: ConcurrencyV2Update): Promise<ConcurrencyV2Limit> {
+    const { data } = await this.post<ConcurrencyV2Response>('/', mapper.map('ConcurrencyV2LimitUpdate', limit, 'ConcurrencyV2LimitUpdateRequest'))
     return mapper.map('ConcurrencyV2LimitResponse', data, 'ConcurrencyV2Limit')
   }
 
@@ -43,5 +48,14 @@ export class WorkspaceConcurrencyV2LimitsApi extends WorkspaceApi {
     return this.delete(`/${id}`)
   }
 
+  public async bulkIncrementActiveSlots(names: string[], slots: number, mode: string): Promise<ConcurrencyV2ActiveSlots> {
+    const { data } = await this.post<ConcurrencyV2IncrementActiveSlots>('/bulk_increment', mapper.map('ConcurrencyV2IncrementActiveSlots', { names, slots, mode }, 'ConcurrencyV2IncrementActiveSlotsRequest'))
+    return mapper.map('ConcurrencyV2ActiveSlotsResponse', data, 'ConcurrencyV2ActiveSlots')
+  }
+
+  public async bulkDecrementActiveSlots(names: string[], slots: number, mode: string): Promise<ConcurrencyV2ActiveSlots> {
+    const { data } = await this.post<ConcurrencyV2DecrementActiveSlots>('/bulk_decrement', mapper.map('ConcurrencyV2DecrementActiveSlots', { names, slots, mode }, 'ConcurrencyV2DecrementActiveSlotsRequest'))
+    return mapper.map('ConcurrencyV2ActiveSlotsResponse', data, 'ConcurrencyV2ActiveSlots')
+  }
 }
 
