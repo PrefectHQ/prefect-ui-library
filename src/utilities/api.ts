@@ -35,7 +35,7 @@ export function createApi(workspaceConfig: WorkspaceApiConfig) {
     blockTypes: createActions(new WorkspaceBlockTypesApi(workspaceConfig)),
     collections: createActions(new CollectionsApi(workspaceConfig)),
     concurrencyLimits: createActions(new WorkspaceConcurrencyLimitsApi(workspaceConfig)),
-    concurrencyLimitsV2: createActions(new WorkspaceConcurrencyV2LimitsApi(workspaceConfig)),
+    concurrencyV2Limits: createActions(new WorkspaceConcurrencyV2LimitsApi(workspaceConfig)),
     deployments: createActions(new WorkspaceDeploymentsApi(workspaceConfig)),
     flowRuns: createActions(new WorkspaceFlowRunsApi(workspaceConfig)),
     flows: createActions(new WorkspaceFlowsApi(workspaceConfig)),
