@@ -10,6 +10,8 @@ import { mapCollectionItemResponseToCollectionItem, mapCollectionResponseToColle
 import { mapConcurrencyLimitResponseToConcurrencyLimit } from '@/maps/concurrencyLimit'
 import { mapConcurrencyLimitCreateToConcurrencyLimitCreateRequest } from '@/maps/concurrencyLimitCreate'
 import { mapConcurrencyV2ResponseToConcurrencyV2Limit } from '@/maps/concurrencyV2Limit'
+import { mapConcurrencyV2CreateToConcurrencyV2CreateRequest } from '@/maps/concurrencyV2LimitCreate'
+import { mapConcurrencyV2UpdateToConcurrencyV2UpdateRequest } from '@/maps/concurrencyV2LimitUpdate'
 import { mapCreatedOrUpdatedByResponseToCreatedOrUpdatedBy } from '@/maps/createdOrUpdatedBy'
 import {
   mapWorkspaceDashboardFilterToTaskRunsFilter,
@@ -85,7 +87,8 @@ export const maps = {
   ConcurrencyLimitCreate: { ConcurrencyLimitCreateRequest: mapConcurrencyLimitCreateToConcurrencyLimitCreateRequest },
   ConcurrencyLimitResponse: { ConcurrencyLimit: mapConcurrencyLimitResponseToConcurrencyLimit },
   ConcurrencyV2LimitResponse: { ConcurrencyV2Limit: mapConcurrencyV2ResponseToConcurrencyV2Limit },
-  ConcurrencyV2LimitCreate: { ConcurrencyV2LimitCreateRequest: mapConcurrencyV2LimitCreateToConcurrencyV2LimitCreateRequest },
+  ConcurrencyV2LimitCreate: { ConcurrencyV2CreateRequest: mapConcurrencyV2CreateToConcurrencyV2CreateRequest },
+  ConcurrencyV2LimitUpdate: { ConcurrencyV2UpdateRequest: mapConcurrencyV2UpdateToConcurrencyV2UpdateRequest },
   CreatedOrUpdatedByResponse: { CreatedOrUpdatedBy: mapCreatedOrUpdatedByResponseToCreatedOrUpdatedBy },
   Date: { string: mapDateToString },
   DeploymentFilter: { DeploymentFilterRequest: mapDeploymentFilter },

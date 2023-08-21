@@ -1,8 +1,6 @@
 import { ConcurrencyV2Response } from '@/models/api/ConcurrencyV2Response'
 import { ConcurrencyV2ActiveSlots } from '@/models/ConcurrencyV2ActiveSlots'
 import { ConcurrencyV2Create } from '@/models/ConcurrencyV2Create'
-import { ConcurrencyV2DecrementActiveSlots } from '@/models/ConcurrencyV2DecrementActiveSlots'
-import { ConcurrencyV2IncrementActiveSlots } from '@/models/ConcurrencyV2IncrementActiveSlots'
 import { ConcurrencyV2Limit } from '@/models/ConcurrencyV2Limit'
 import { ConcurrencyV2Update } from '@/models/ConcurrencyV2Update'
 import { ConcurrencyLimitsFilter } from '@/models/Filters'
@@ -49,13 +47,12 @@ export class WorkspaceConcurrencyV2LimitsApi extends WorkspaceApi {
   }
 
   public async bulkIncrementActiveSlots(names: string[], slots: number, mode: string): Promise<ConcurrencyV2ActiveSlots> {
-    const { data } = await this.post<ConcurrencyV2IncrementActiveSlots>('/bulk_increment', mapper.map('ConcurrencyV2IncrementActiveSlots', { names, slots, mode }, 'ConcurrencyV2IncrementActiveSlotsRequest'))
-    return mapper.map('ConcurrencyV2ActiveSlotsResponse', data, 'ConcurrencyV2ActiveSlots')
+    const { data } = await this.post<ConcurrencyV2ActiveSlots>('/bulk_increment', { names, slots, mode })
+    return data
   }
 
   public async bulkDecrementActiveSlots(names: string[], slots: number, mode: string): Promise<ConcurrencyV2ActiveSlots> {
-    const { data } = await this.post<ConcurrencyV2DecrementActiveSlots>('/bulk_decrement', mapper.map('ConcurrencyV2DecrementActiveSlots', { names, slots, mode }, 'ConcurrencyV2DecrementActiveSlotsRequest'))
-    return mapper.map('ConcurrencyV2ActiveSlotsResponse', data, 'ConcurrencyV2ActiveSlots')
+    const { data } = await this.post<ConcurrencyV2ActiveSlots>('/bulk_decrement', { names, slots, mode })
+    return data
   }
 }
-
