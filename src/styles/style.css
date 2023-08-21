@@ -1,9 +1,5 @@
 @import "./colors.css";
 @import "./states.css";
 
-/* syntax highlighting */
-@import "./python.css";
-@import "./json.css";
-
 @tailwind components;
 @tailwind utilities;
