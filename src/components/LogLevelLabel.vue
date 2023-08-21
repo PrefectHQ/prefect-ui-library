@@ -28,7 +28,6 @@
   w-min
   text-[10px]
   leading-snug
-  text-white
   font-semibold
   uppercase
   font-sans
@@ -36,32 +35,32 @@
 }
 
 .log-level-label--custom { @apply
-  bg-slate-500
-  dark:bg-slate-500
+  bg-[var(--p-color-log-custom-bg)]
+  text-[var(--p-color-log-custom-text)]
 }
 
 .log-level-label--info { @apply
-  bg-[var(--log-level-info)]
-  dark:bg-[var(--log-level-info)]
+  bg-[var(--p-color-log-info-bg)]
+  text-[var(--p-color-log-info-text)]
 }
 
 .log-level-label--debug { @apply
-  bg-[var(--log-level-debug)]
-  dark:bg-[var(--log-level-debug)]
+  bg-[var(--p-color-log-debug-bg)]
+  text-[var(--p-color-log-debug-text)]
 }
 
 .log-level-label--warning { @apply
-  bg-[var(--log-level-warning)]
-  dark:bg-[var(--log-level-warning)]
+  bg-[var(--p-color-log-warning-bg)]
+  text-[var(--p-color-log-warning-text)]
 }
 
 .log-level-label--error { @apply
-  bg-[var(--log-level-error)]
-  dark:bg-[var(--log-level-error)]
+  bg-[var(--p-color-log-error-bg)]
+  text-[var(--p-color-log-error-text)]
 }
 
 .log-level-label--critical { @apply
-  bg-[var(--log-level-critical)]
-  dark:bg-[var(--log-level-critical)]
+  bg-[var(--p-color-log-critical-bg)]
+  text-[var(--p-color-log-critical-text)]
 }
 </style>
