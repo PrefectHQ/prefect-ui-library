@@ -50,8 +50,8 @@ export class MockApi {
     return data.concurrencyV2ActiveSlots
   }
 
-  protected get concurrencyLimitsV2() {
-    return data.concurrencyLimitsV2
+  protected get concurrencyV2Limits() {
+    return data.concurrencyV2Limits
   }
 
   protected get deployments() {

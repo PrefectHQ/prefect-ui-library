@@ -13,23 +13,23 @@ export class MockWorkspaceConcurrencyV2LimitsApi extends MockApi implements IWor
       console.warn('MockWorkspaceConcurrencyLimitsApi has not implemented the filter argument of the getConcurrencyLimits method')
     }
 
-    return await this.concurrencyLimitsV2.getAll()
+    return await this.concurrencyV2Limits.getAll()
   }
 
   public async getConcurrencyV2Limit(id: string): Promise<ConcurrencyV2Limit> {
-    return await this.concurrencyLimitsV2.get(id)
+    return await this.concurrencyV2Limits.get(id)
   }
 
 
   public async createConcurrencyV2Limit(limit: ConcurrencyV2Create): Promise<ConcurrencyV2Limit> {
     const newLimit = mocker.create('concurrencyV2Limit', [limit])
-    this.concurrencyLimitsV2.create(newLimit)
+    this.concurrencyV2Limits.create(newLimit)
     return await newLimit
   }
 
   public async updateConcurrencyV2Limit(limit: ConcurrencyV2Create): Promise<ConcurrencyV2Limit> {
     const newLimit = mocker.create('concurrencyV2Limit', [limit])
-    this.concurrencyLimitsV2.create(newLimit)
+    this.concurrencyV2Limits.create(newLimit)
     return await newLimit
   }
 
