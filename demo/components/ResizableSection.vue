@@ -44,7 +44,6 @@
       [getColorModeClass(activeColorMode.value)]: true,
       'dark': colorTheme.value === 'dark',
       'light': colorTheme.value === 'light',
-      'p-background': true,
     },
     iframe: {
       'pointer-events-none': dragging.value,

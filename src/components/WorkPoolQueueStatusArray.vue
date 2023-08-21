@@ -51,11 +51,11 @@
 }
 
 .work-pool-queue-status-array__none { @apply
-  text-slate-500
+  text-subdued
 }
 
 .work-pool-queue-status-array__too-many { @apply
   text-xs
-  text-slate-500
+  text-subdued
 }
 </style>

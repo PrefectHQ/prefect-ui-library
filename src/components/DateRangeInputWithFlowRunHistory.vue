@@ -120,5 +120,6 @@
   flex-shrink-0
   rounded-full
   border
+  border-divider
 }
 </style>

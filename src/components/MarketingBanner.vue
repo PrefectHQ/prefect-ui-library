@@ -38,7 +38,6 @@
   relative
   overflow-hidden
   rounded-default
-  text-white
 }
 
 .marketing-banner__content { @apply

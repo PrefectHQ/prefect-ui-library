@@ -43,6 +43,6 @@
 
 <style>
 .work-pool-late-count--zero { @apply
-  text-slate-500
+  text-subdued
 }
 </style>

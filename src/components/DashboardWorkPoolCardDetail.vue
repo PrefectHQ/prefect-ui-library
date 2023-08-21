@@ -23,6 +23,6 @@
 
 .dashboard-work-pool-card-detail__label { @apply
   text-xs
-  text-slate-500
+  text-subdued
 }
 </style>

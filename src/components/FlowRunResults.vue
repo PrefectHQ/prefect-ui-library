@@ -12,7 +12,7 @@
 
       <RowGridLayoutList :items="flowRunResults">
         <template #default="{ item }: { item: ResultArtifact }">
-          <ArtifactResultCard :artifact="item" :condense="condense" class="flow-run-results__artifact" />
+          <ArtifactResultCard :artifact="item" :condense="condense" />
         </template>
 
         <template #empty>
@@ -30,7 +30,7 @@
 
       <RowGridLayoutList :items="taskRunResults">
         <template #default="{ item }: { item: ResultArtifact }">
-          <ArtifactResultCard :artifact="item" :condense="condense" class="flow-run-results__artifact" />
+          <ArtifactResultCard :artifact="item" :condense="condense" />
         </template>
 
         <template #empty>
@@ -102,11 +102,6 @@
   flex
   justify-end
   gap-4
-}
-
-.flow-run-results__artifact { @apply
-  hover:border-selectable-hover
-  focus:border-selectable-hover
 }
 
 .flow-run-results__none { @apply

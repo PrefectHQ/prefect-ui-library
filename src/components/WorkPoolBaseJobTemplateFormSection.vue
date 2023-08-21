@@ -108,10 +108,10 @@
 
 <style>
   .work-pool-base-job-template-section__advanced_tab { @apply
-      overflow-auto
+    overflow-auto
   }
 
   .work-pool-base-job-template-section__info_message { @apply
-      mb-4
+    mb-4
   }
 </style>

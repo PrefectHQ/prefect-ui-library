@@ -48,7 +48,6 @@
 
 <style>
 .timeline-selection-panel { @apply
-  border
   bg-floating
   shadow-lg
   w-full
