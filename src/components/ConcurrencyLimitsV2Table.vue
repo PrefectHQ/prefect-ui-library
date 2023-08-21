@@ -53,7 +53,7 @@
     },
   ]
 
-  const concurrencyLimitSubscription = useSubscription(api.concurrencyLimitsV2.getConcurrencyV2Limits)
+  const concurrencyLimitSubscription = useSubscription(api.concurrencyV2Limits.getConcurrencyV2Limits)
   const concurrencyLimits = computed(() => concurrencyLimitSubscription.response ?? [])
   const empty = computed(() => concurrencyLimitSubscription.executed && !concurrencyLimits.value.length)
   const loaded = computed(() => concurrencyLimitSubscription.executed)

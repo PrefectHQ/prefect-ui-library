@@ -58,11 +58,11 @@
   })
 
   const api = useWorkspaceApi()
-  const concurrencyLimitSubscription = useSubscription(api.concurrencyLimitsV2.getConcurrencyV2Limits)
+  const concurrencyLimitSubscription = useSubscription(api.concurrencyV2Limits.getConcurrencyV2Limits)
   const submit = handleSubmit(async (values) => {
     try {
       const { name, limit } = values
-      await api.concurrencyLimitsV2.createConcurrencyV2Limit({ name, limit })
+      await api.concurrencyV2Limits.createConcurrencyV2Limit({ name, limit })
       concurrencyLimitSubscription.refresh()
       showToast(localization.success.createConcurrencyLimit, 'success')
     } catch (error) {
