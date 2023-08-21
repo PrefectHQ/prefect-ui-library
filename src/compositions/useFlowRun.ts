@@ -1,9 +1,8 @@
 import { SubscriptionOptions, useSubscriptionWithDependencies } from '@prefecthq/vue-compositions'
-import { computed, MaybeRefOrGetter, toRef, toValue, watch } from 'vue'
+import { computed, MaybeRefOrGetter, toRef, toValue } from 'vue'
 import { useCan } from '@/compositions/useCan'
 import { useWorkspaceApi } from '@/compositions/useWorkspaceApi'
 import { WorkspaceFlowRunsApi } from '@/services'
-import { useFlowRunStorage } from '@/services/storage'
 import { Getter } from '@/types/reactivity'
 import { UseEntitySubscription } from '@/types/useEntitySubscription'
 
@@ -31,21 +30,7 @@ export function useFlowRun(flowRunId: MaybeRefOrGetter<string | null | undefined
 
   const subscription = useSubscriptionWithDependencies(api.flowRuns.getFlowRun, parameters, options)
 
-  const storage = useFlowRunStorage()
-
-  watch(() => subscription.response, response => {
-    if (response) {
-      storage.add(response)
-    }
-  })
-
-  const flowRun = computed(() => {
-    if (subscription.response) {
-      return storage.get(subscription.response.id)
-    }
-
-    return undefined
-  })
+  const flowRun = computed(() => subscription.response)
 
   return {
     subscription,
