@@ -13,13 +13,13 @@ export interface IWorkspaceConcurrencyV2LimitsApi {
   createConcurrencyV2Limit: (concurrencyV2Limit: ConcurrencyV2Create) => Promise<ConcurrencyV2Limit>,
   updateConcurrencyV2Limit: (concurrencyV2Limit: ConcurrencyV2Update) => Promise<ConcurrencyV2Limit>,
   deleteConcurrencyV2Limit: (concurrencyV2LimitId: string) => Promise<void>,
-  bulkIncrementActiveSlots: (names: string[], slots: number, mode: string) => Promise<void>,
-  bulkDecrementActiveSlots: (names: string[], slots: number, mode: string) => Promise<void>,
+  bulkIncrementActiveSlots: (names: string[], slots: number, mode: string) => Promise<ConcurrencyV2ActiveSlots>,
+  bulkDecrementActiveSlots: (names: string[], slots: number, mode: string) => Promise<ConcurrencyV2ActiveSlots>,
 }
 
 export class WorkspaceConcurrencyV2LimitsApi extends WorkspaceApi {
 
-  protected override routePrefix = '/concurrency_limits'
+  protected override routePrefix = '/v2/concurrency_limits'
 
   public async getConcurrencyV2Limits(filter: ConcurrencyLimitsFilter = {}): Promise<ConcurrencyV2Limit[]> {
     const { data } = await this.post<ConcurrencyV2Response[]>('/filter', filter)
