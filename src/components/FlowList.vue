@@ -186,7 +186,7 @@
 
   const classes = computed(() => ({
     filterButton: {
-      'flow-list__filter-button--filter-active': isCustomFilter.value,
+      'flow-list__filter-button--filter-active-text': isCustomFilter.value && !headerExpanded.value,
       'flow-list__filter-button--filter-open': headerExpanded.value,
     },
   }))
@@ -243,7 +243,7 @@
   cursor-pointer
 }
 
-.flow-list__filter-button--filter-active:not(.flow-list__filter-button--filter-open) .p-icon { @apply
+.flow-list__filter-button--filter-active-text .p-icon { @apply
   text-selected
 }
 </style>
