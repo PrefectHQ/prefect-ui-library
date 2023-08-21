@@ -17,7 +17,6 @@ export interface IWorkspaceConcurrencyV2LimitsApi {
   bulkDecrementActiveSlots: (names: string[], slots: number, mode: string) => Promise<void>,
 }
 
-
 export class WorkspaceConcurrencyV2LimitsApi extends WorkspaceApi {
 
   protected override routePrefix = '/concurrency_limits'
@@ -33,12 +32,12 @@ export class WorkspaceConcurrencyV2LimitsApi extends WorkspaceApi {
   }
 
   public async createConcurrencyV2Limit(limit: ConcurrencyV2Create): Promise<ConcurrencyV2Limit> {
-    const { data } = await this.post<ConcurrencyV2Response>('/', mapper.map('ConcurrencyV2LimitCreate', limit, 'ConcurrencyV2LimitCreateRequest'))
+    const { data } = await this.post<ConcurrencyV2Response>('/', mapper.map('ConcurrencyV2LimitCreate', limit, 'ConcurrencyV2CreateRequest'))
     return mapper.map('ConcurrencyV2LimitResponse', data, 'ConcurrencyV2Limit')
   }
 
   public async updateConcurrencyV2Limit(limit: ConcurrencyV2Update): Promise<ConcurrencyV2Limit> {
-    const { data } = await this.post<ConcurrencyV2Response>('/', mapper.map('ConcurrencyV2LimitUpdate', limit, 'ConcurrencyV2LimitUpdateRequest'))
+    const { data } = await this.post<ConcurrencyV2Response>('/', mapper.map('ConcurrencyV2LimitUpdate', limit, 'ConcurrencyV2UpdateRequest'))
     return mapper.map('ConcurrencyV2LimitResponse', data, 'ConcurrencyV2Limit')
   }
 
