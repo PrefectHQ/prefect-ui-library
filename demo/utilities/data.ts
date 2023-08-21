@@ -50,6 +50,8 @@ export function createDataStores(seeds: ApiMockSeeds = {}) {
     blockDocuments: new KeyedDataStore({ seeds: seeds.blockDocuments, hydrate: blockDocument => new BlockDocument(blockDocument) }),
     blockSchemas: new KeyedDataStore({ seeds: seeds.blockSchemas, hydrate: hydrateBlockSchema }),
     concurrencyLimits: new KeyedDataStore({ seeds: seeds.concurrencyLimits, hydrate: concurrencyLimit => concurrencyLimit }),
+    concurrencyLimitsV2: new KeyedDataStore({ seeds: seeds.concurrencyLimitsV2, hydrate: concurrencyLimitV2 => concurrencyLimitV2 }),
+    concurrencyV2ActiveSlots: new KeyedDataStore({ seeds: seeds.concurrencyV2ActiveSlots }),
     taskRuns: new KeyedDataStore({ seeds: seeds.taskRuns, hydrate: taskRun => new TaskRun(taskRun) }),
     deployments: new KeyedDataStore({
       seeds: seeds.deployments,

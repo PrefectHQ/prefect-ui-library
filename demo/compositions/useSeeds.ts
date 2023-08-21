@@ -1,7 +1,7 @@
 import { onUnmounted } from 'vue'
 import { data } from '../utilities/data'
 import { FlowRunGraphMock } from '@/demo/types/flowRunGraphMock'
-import { Artifact, Flow, FlowRun, Deployment, WorkQueue, TaskRun, BlockDocument, BlockType, BlockSchema, ConcurrencyLimit, WorkPool, WorkPoolQueue, WorkPoolWorker, ArtifactCollection } from '@/models'
+import { Artifact, Flow, FlowRun, Deployment, WorkQueue, TaskRun, BlockDocument, BlockType, BlockSchema, ConcurrencyLimit, ConcurrencyV2Limit, WorkPool, WorkPoolQueue, WorkPoolWorker, ArtifactCollection } from '@/models'
 
 type Seeds = {
   artifacts?: Artifact[],
@@ -11,6 +11,7 @@ type Seeds = {
   blockSchemas?: BlockSchema[],
   blockTypes?: BlockType[],
   concurrencyLimit?: ConcurrencyLimit[],
+  concurrencyV2Limit?: ConcurrencyV2Limit[],
   deployments?: Deployment[],
   flowRunGraphs?: FlowRunGraphMock[],
   flowRuns?: FlowRun[],
@@ -120,6 +121,13 @@ export function useSeeds(seed: Seeds): void {
   if (seed.concurrencyLimit) {
     const concurrencyLimits = data.concurrencyLimits.createAll(seed.concurrencyLimit)
     const ids = concurrencyLimits.map(concurrencyLimit => concurrencyLimit.id)
+
+    onUnmounted(() => data.concurrencyLimits.deleteAll(ids))
+  }
+
+  if (seed.concurrencyV2Limit) {
+    const concurrencyV2Limits = data.concurrencyLimitsV2.createAll(seed.concurrencyV2Limit)
+    const ids = concurrencyV2Limits.map(concurrencyLimitV2 => concurrencyLimitV2.id)
 
     onUnmounted(() => data.concurrencyLimits.deleteAll(ids))
   }

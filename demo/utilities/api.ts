@@ -9,6 +9,7 @@ import { MockWorkspaceBlockDocumentsApi } from '../services/mockWorkspaceBlockDo
 import { MockWorkspaceBlockSchemasApi } from '../services/mockWorkspaceBlockSchemasApi'
 import { MockWorkspaceBlockTypesApi } from '../services/mockWorkspaceBlockTypesApi'
 import { MockWorkspaceConcurrencyLimitsApi } from '../services/mockWorkspaceConcurrencyLimitsApi'
+import { MockWorkspaceConcurrencyV2LimitsApi } from '../services/mockWorkspaceConcurrencyV2LimitsAPI'
 import { MockWorkspaceDeploymentsApi } from '../services/mockWorkspaceDeploymentsApi'
 import { MockWorkspaceFlowRunsApi } from '../services/mockWorkspaceFlowRunsApi'
 import { MockWorkspaceFlowsApi } from '../services/mockWorkspaceFlowsApi'
@@ -24,6 +25,8 @@ import { MockWorkspaceWorkQueuesApi } from '../services/mockWorkspaceWorkQueuesA
 import { FlowRunGraphMock } from '@/demo/types/flowRunGraphMock'
 import { Artifact, BlockDocument, BlockSchema, BlockType, Deployment, Flow, FlowRun, TaskRun, WorkPool, WorkPoolQueue, WorkQueue, WorkPoolWorker, ArtifactCollection } from '@/models'
 import { ConcurrencyLimit } from '@/models/ConcurrencyLimit'
+import { ConcurrencyV2ActiveSlots } from '@/models/ConcurrencyV2ActiveSlots'
+import { ConcurrencyV2Limit } from '@/models/ConcurrencyV2Limit'
 import { CreateApi, workspaceApiKey } from '@/utilities'
 
 export type ApiMockSeeds = {
@@ -36,6 +39,8 @@ export type ApiMockSeeds = {
   blockSchemas?: BlockSchema[],
   blockTypes?: BlockType[],
   concurrencyLimits?: ConcurrencyLimit[],
+  concurrencyLimitsV2?: ConcurrencyV2Limit[],
+  concurrencyV2ActiveSlots?: ConcurrencyV2ActiveSlots,
   taskRuns?: TaskRun[],
   deployments?: Deployment[],
   workQueues?: WorkQueue[],
@@ -54,6 +59,7 @@ function createApiMock(): CreateApi {
     blockTypes: createActions(new MockWorkspaceBlockTypesApi()),
     collections: createActions(new MockCollectionsApi()),
     concurrencyLimits: createActions(new MockWorkspaceConcurrencyLimitsApi),
+    concurrencyLimitsV2: createActions(new MockWorkspaceConcurrencyV2LimitsApi),
     deployments: createActions(new MockWorkspaceDeploymentsApi()),
     flowRuns: createActions(new MockWorkspaceFlowRunsApi()),
     flows: createActions(new MockWorkspaceFlowsApi()),
