@@ -126,8 +126,8 @@ export function useSeeds(seed: Seeds): void {
   }
 
   if (seed.concurrencyV2Limit) {
-    const concurrencyV2Limits = data.concurrencyLimitsV2.createAll(seed.concurrencyV2Limit)
-    const ids = concurrencyV2Limits.map(concurrencyLimitV2 => concurrencyLimitV2.id)
+    const concurrencyV2Limits = data.concurrencyV2Limits.createAll(seed.concurrencyV2Limit)
+    const ids = concurrencyV2Limits.map(concurrencyV2Limit => concurrencyV2Limit.id)
 
     onUnmounted(() => data.concurrencyLimits.deleteAll(ids))
   }
