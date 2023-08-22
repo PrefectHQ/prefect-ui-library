@@ -1,6 +1,6 @@
 <template>
   <div class="task-run-details">
-    <p-key-value label="Flow Run" :alternate="alternate">
+    <p-key-value v-if="taskRun.flowRunId" label="Flow Run" :alternate="alternate">
       <template #value>
         <FlowRunIconText :flow-run-id="taskRun.flowRunId" />
       </template>

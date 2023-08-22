@@ -5,7 +5,7 @@ import { TaskInput } from '@/models/TaskInput'
 
 export interface ITaskRun {
   id: string,
-  flowRunId: string,
+  flowRunId: string | null,
   cacheExpiration: string | null,
   cacheKey: string | null,
   created: Date,
@@ -32,7 +32,7 @@ export interface ITaskRun {
 
 export class TaskRun implements ITaskRun {
   public readonly id: string
-  public readonly flowRunId: string
+  public readonly flowRunId: string | null
   public cacheExpiration: string | null
   public cacheKey: string | null
   public created: Date
