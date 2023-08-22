@@ -1,9 +1,18 @@
 <template>
   <StateListItem v-model:selected="model" v-bind="{ selectable, value, tags, stateType }" class="task-run-list-item">
     <template #name>
-      <p-link :to="routes.taskRun(taskRun.id)">
-        <span>{{ taskRun.name }}</span>
-      </p-link>
+      <div class="task-run-list-item__breadcrumbs">
+        <template v-if="taskRun.flowRunId && !isFlowRunRoute && flowRun">
+          <p-link :to="routes.flowRun(taskRun.flowRunId)">
+            {{ flowRun.name }}
+          </p-link>
+          <p-icon icon="ChevronRightIcon" size="small" />
+        </template>
+
+        <p-link :to="routes.taskRun(taskRun.id)">
+          <span>{{ taskRun.name }}</span>
+        </p-link>
+      </div>
     </template>
     <template #meta>
       <StateBadge :state="taskRun.state" />
@@ -25,9 +34,10 @@
 <script lang="ts" setup>
   import { CheckboxModel } from '@prefecthq/prefect-design'
   import { computed } from 'vue'
+  import { useRoute } from 'vue-router'
   import StateBadge from '@/components/StateBadge.vue'
   import StateListItem from '@/components/StateListItem.vue'
-  import { useWorkspaceRoutes } from '@/compositions'
+  import { useFlowRun, useWorkspaceRoutes } from '@/compositions'
   import { TaskRun } from '@/models/TaskRun'
   import { formatDateTimeNumeric } from '@/utilities/dates'
   import { secondsToApproximateString } from '@/utilities/seconds'
@@ -51,8 +61,20 @@
     },
   })
 
+  const route = useRoute()
   const routes = useWorkspaceRoutes()
   const stateType = computed(() => props.taskRun.state?.type)
   const tags = computed(() => props.taskRun.tags)
   const value = computed(() => props.taskRun.id)
+
+  const { flowRun } = useFlowRun(props.taskRun.flowRunId)
+  const isFlowRunRoute = computed(() => route.name === routes.flowRun('').name)
 </script>
+
+<style>
+.task-run-list-item__breadcrumbs { @apply
+  flex
+  items-center
+  gap-1
+}
+</style>
