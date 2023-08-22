@@ -51,6 +51,11 @@ export function createWorkspaceRouteRecords(components: Partial<WorkspaceRouteCo
       },
       children: [
         {
+          name: 'workspace.task-runs',
+          path: '',
+          component: components.taskRuns,
+        },
+        {
           name: 'workspace.task-runs.task-run',
           path: 'task-run/:taskRunId',
           component: components.taskRun,
