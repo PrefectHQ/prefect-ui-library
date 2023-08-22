@@ -1,5 +1,5 @@
 <template>
-  <p-modal v-model:showModal="internalShowModal" class="concurrency-limit-create-modal" title="Add Concurrency Limit">
+  <p-modal v-model:showModal="internalShowModal" class="concurrency-limits-v2-create-modal" title="Add Concurrency Limit">
     <p-form class="concurrency-limits-v2-create-form" @submit="submit">
       <p-content>
         <p-label label="Name" :message="nameErrorMessage" :state="nameState">
