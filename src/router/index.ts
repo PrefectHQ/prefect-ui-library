@@ -42,8 +42,16 @@ export function createWorkspaceRouteRecords(components: Partial<WorkspaceRouteCo
           path: 'flow-run/:flowRunId',
           component: components.flowRun,
         },
+      ],
+    },
+    {
+      path: 'task-runs',
+      meta: {
+        can: 'read:task_run',
+      },
+      children: [
         {
-          name: 'workspace.flow-runs.task-run',
+          name: 'workspace.task-runs.task-run',
           path: 'task-run/:taskRunId',
           component: components.taskRun,
         },

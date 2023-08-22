@@ -12,7 +12,7 @@ export function createWorkspaceRoutes(config?: CreateWorkspaceRoutesConfig) {
     dashboard: () => ({ name: 'workspace.dashboard', params: { ...config } }) as const,
     flowRuns: () => ({ name: 'workspace.flow-runs', params: { ...config } }) as const,
     flowRun: (flowRunId: string) => ({ name: 'workspace.flow-runs.flow-run', params: { flowRunId, ...config } }) as const,
-    taskRun: (taskRunId: string) => ({ name: 'workspace.flow-runs.task-run', params: { taskRunId, ...config } }) as const,
+    taskRun: (taskRunId: string) => ({ name: 'workspace.task-runs.task-run', params: { taskRunId, ...config } }) as const,
     flows: () => ({ name: 'workspace.flows', params: { ...config } }) as const,
     flow: (flowId: string) => ({ name: 'workspace.flows.flow', params: { flowId, ...config } }) as const,
     flowCollections: () => ({ name: 'workspace.flows.collections', params: { ...config } }) as const,
