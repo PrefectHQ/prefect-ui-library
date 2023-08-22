@@ -7,7 +7,7 @@
         </p-label>
 
         <p-label label="Concurrency Limit" :message="limitErrorMessage" :state="limitState">
-          <p-number-input v-model="concurrencyLimit" :min="0" :state="limitState" />
+          <p-number-input v-model="limit" :min="0" :state="limitState" />
         </p-label>
       </p-content>
     </p-form>
@@ -46,7 +46,7 @@
     concurrencyLimit: fieldRules('Limit', isRequired, isGreaterThan(0)),
   }
   const { value: name, meta: nameState, errorMessage: nameErrorMessage } = useField<string>('name', rules.name)
-  const { value: concurrencyLimit, meta: limitState, errorMessage: limitErrorMessage } = useField<number|null>('concurrencyLimit', rules.concurrencyLimit)
+  const { value: limit, meta: limitState, errorMessage: limitErrorMessage } = useField<number|null>('limit', rules.concurrencyLimit)
 
   const internalShowModal = computed({
     get() {
@@ -61,6 +61,7 @@
   const concurrencyLimitSubscription = useSubscription(api.concurrencyV2Limits.getConcurrencyV2Limits)
   const submit = handleSubmit(async (values) => {
     try {
+      console.log('val', values)
       const { name, limit } = values
       await api.concurrencyV2Limits.createConcurrencyV2Limit({ name, limit })
       concurrencyLimitSubscription.refresh()
