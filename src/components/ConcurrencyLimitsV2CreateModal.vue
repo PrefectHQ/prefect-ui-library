@@ -61,7 +61,6 @@
   const concurrencyLimitSubscription = useSubscription(api.concurrencyV2Limits.getConcurrencyV2Limits)
   const submit = handleSubmit(async (values) => {
     try {
-      console.log('val', values)
       const { name, limit } = values
       await api.concurrencyV2Limits.createConcurrencyV2Limit({ name, limit })
       concurrencyLimitSubscription.refresh()
