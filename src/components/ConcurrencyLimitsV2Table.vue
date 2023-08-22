@@ -16,11 +16,11 @@
 
 
     <template #empty-state>
-      <PEmptyResults>
+      <p-empty-results>
         <template #message>
           No task concurrency limits
         </template>
-      </PEmptyResults>
+      </p-empty-results>
     </template>
   </p-table>
 </template>
