@@ -1,6 +1,6 @@
 <template>
   <ConcurrencyLimitsPageEmptyState v-if="empty && loaded" />
-  <p-table v-else class="concurrency-limits-table__table" :columns="columns" :data="concurrencyLimits">
+  <p-table v-else class="concurrency-limits-v2-table" :columns="columns" :data="concurrencyLimits">
     <template #tag="{ row }">
       <p-link :to="routes.concurrencyLimit(row.id)">
         {{ row.name }}
@@ -16,11 +16,11 @@
 
 
     <template #empty-state>
-      <PEmptyResults>
+      <p-empty-results>
         <template #message>
           No task concurrency limits
         </template>
-      </PEmptyResults>
+      </p-empty-results>
     </template>
   </p-table>
 </template>
