@@ -5,7 +5,7 @@ export const randomTaskRun: MockFunction<TaskRun, [Partial<TaskRun>?]> = functio
   const state = this.create('state')
   return new TaskRun({
     id: this.create('id'),
-    flowRunId: this.create('id'),
+    flowRunId: this.create('boolean') ? this.create('id') : null,
     cacheExpiration: this.create('string'),
     cacheKey: this.create('string'),
     created: this.create('date'),

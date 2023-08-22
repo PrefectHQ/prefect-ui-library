@@ -1,5 +1,5 @@
 import { useSeeds } from './useSeeds'
-import { TaskRun } from '@/models'
+import { FlowRun, TaskRun } from '@/models'
 import { mocker } from '@/services'
 import { repeat } from '@/utilities'
 
@@ -7,17 +7,22 @@ export function useTaskRunMock(override?: Partial<TaskRun>): TaskRun {
   const flow = mocker.create('flow')
   const deployment = mocker.create('deployment', [{ flowId: flow.id }])
   const workQueue = mocker.create('workQueue')
-  const flowRun = mocker.create('flowRun', [
-    {
-      id: override?.flowRunId,
-      flowId: flow.id,
-      deploymentId: deployment.id,
-      workQueueName: workQueue.name,
-    },
-  ])
+  let flowRun: FlowRun | null = null
+
+  if (override?.flowRunId) {
+    flowRun = mocker.create('flowRun', [
+      {
+        id: override.flowRunId,
+        flowId: flow.id,
+        deploymentId: deployment.id,
+        workQueueName: workQueue.name,
+      },
+    ])
+  }
+
   const taskRun = mocker.create('taskRun', [
     {
-      flowRunId: flowRun.id,
+      flowRunId: flowRun?.id,
       ...override,
     },
   ])
@@ -26,7 +31,7 @@ export function useTaskRunMock(override?: Partial<TaskRun>): TaskRun {
     {
       type: 'result',
       taskRunId: taskRun.id,
-      flowRunId: flowRun.id,
+      flowRunId: flowRun?.id,
       description: `${mocker.create('adjective')} ${mocker.create('runName')} ${mocker.create('markdownCodeSpanString')}`,
     },
   ])
@@ -36,7 +41,7 @@ export function useTaskRunMock(override?: Partial<TaskRun>): TaskRun {
     flows: [flow],
     deployments: [deployment],
     workQueues: [workQueue],
-    flowRuns: [flowRun],
+    flowRuns: flowRun ? [flowRun] : [],
     taskRuns: [taskRun],
   })
 
