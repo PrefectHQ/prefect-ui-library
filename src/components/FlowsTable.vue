@@ -14,7 +14,7 @@
         <div class="flows-table__header-end">
           <SearchInput v-model="flowNameLike" placeholder="Search flows" label="Search flows" />
           <p-select v-model="filter.sort" :options="flowSortOptions" />
-          <p-tags-input v-model="filter.flowRuns.tags.name" empty-message="Flow run tags" class="flows-table__tags" />
+          <p-tags-input v-model="filter.flowRuns.tags.name" empty-message="Flow run tags" :options="options" class="flows-table__tags" />
         </div>
       </template>
 
@@ -77,7 +77,7 @@
   import { useDebouncedRef, useSubscription } from '@prefecthq/vue-compositions'
   import { computed, ref } from 'vue'
   import { FlowsDeleteButton, DeploymentsCount, ResultsCount, SearchInput, FlowActivityChart, SelectedCount } from '@/components'
-  import { useCan, useFlowsFilterFromRoute, useWorkspaceApi, useWorkspaceRoutes } from '@/compositions'
+  import { useCan, useFlowsFilterFromRoute, useWorkspaceApi, useWorkspaceRoutes, useFlowRuns } from '@/compositions'
   import { useComponent } from '@/compositions/useComponent'
   import { FlowsFilter } from '@/models/Filters'
   import { Flow } from '@/models/Flow'
@@ -155,6 +155,10 @@
 
   const flowsCountSubscription = useSubscription(api.flows.getFlowsCount, [filter])
   const flowsCount = computed(() => flowsCountSubscription.response)
+
+  const { flowRuns } = useFlowRuns({})
+  const tagList = computed(() => flowRuns.value.flatMap(flowRun => flowRun.tags ?? []))
+  const options = computed(() => [...new Set(tagList.value)])
 
   function refresh(): void {
     flowsSubscription.refresh()
