@@ -261,6 +261,24 @@ export function createWorkspaceRouteRecords(components: Partial<WorkspaceRouteCo
       ],
     },
     {
+      path: 'concurrency-limits-v2',
+      meta: {
+        can: 'read:concurrency_limit',
+      },
+      children: [
+        {
+          name: 'workspace.concurrency-limits-v2',
+          path: '',
+          component: components.concurrencyLimitsV2,
+        },
+        {
+          name: 'workspace.concurrency-limits-v2.concurrency-limit',
+          path: 'concurrency-limit-v2/:concurrencyLimitId',
+          component: components.concurrencyLimitV2,
+        },
+      ],
+    },
+    {
       path: 'artifacts',
       children: [
         {
