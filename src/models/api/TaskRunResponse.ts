@@ -9,7 +9,7 @@ export type TaskRunResponse = {
   created: string,
   updated: string,
   name: string | null,
-  flow_run_id: string,
+  flow_run_id: string | null,
   task_key: string,
   dynamic_key: string,
   cache_key: string | null,

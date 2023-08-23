@@ -54,10 +54,17 @@
   const flowRunSubscription = useSubscriptionWithDependencies(api.flowRuns.getFlowRun, flowRunIdArgs)
   const flowRunName = computed(() => flowRunSubscription.response?.name)
 
-  const crumbs = computed(() => [
-    { text: flowRunName.value ?? '', to: routes.flowRun(flowRunId.value!) },
-    { text: taskRun.value?.name ?? '' },
-  ])
+  const crumbs = computed(() => {
+    const crumbs = []
+
+    if (flowRunId.value) {
+      crumbs.push({ text: flowRunName.value ?? '', to: routes.flowRun(flowRunId.value!) })
+    }
+
+    crumbs.push({ text: taskRun.value?.name ?? '' })
+
+    return crumbs
+  })
 
   const showChangeStateMenuItemButton = computed(() => {
     if (can.update.task_run && taskRun.value?.stateType && isTerminalStateType(taskRun.value.stateType)) {
