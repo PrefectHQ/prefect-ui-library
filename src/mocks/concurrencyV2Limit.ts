@@ -6,6 +6,8 @@ export const randomConcurrencyV2Limit: MockFunction<ConcurrencyV2Limit, [Partial
     id: this.create('id'),
     name: this.create('noun'),
     limit: this.create('number'),
+    created: this.create('date'),
+    updated: this.create('date'),
     ...overrides,
   }
 }
