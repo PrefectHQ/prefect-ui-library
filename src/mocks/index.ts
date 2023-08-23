@@ -10,6 +10,7 @@ import { randomBlockTypeSnippet } from '@/mocks/blockTypeSnippet'
 import { randomBoolean } from '@/mocks/boolean'
 import { randomCollectionItem } from '@/mocks/collectionItem'
 import { randomConcurrencyLimit } from '@/mocks/concurrencyLimit'
+import { randomConcurrencyV2Limit } from '@/mocks/concurrencyV2Limit'
 import { randomCreatedOrUpdatedBy } from '@/mocks/createdOrUpdatedBy'
 import { randomDate, randomDateString } from '@/mocks/date'
 import { randomDeployment } from '@/mocks/deployment'
@@ -60,6 +61,7 @@ export const mocks = {
   char: randomChar,
   collectionItem: randomCollectionItem,
   concurrencyLimit: randomConcurrencyLimit,
+  concurrencyV2Limit: randomConcurrencyV2Limit,
   createdOrUpdatedBy: randomCreatedOrUpdatedBy,
   date: randomDate,
   dateString: randomDateString,

@@ -1,4 +1,4 @@
-export type ConcurrencyV2CreateRequest = {
+export type ConcurrencyV2UpdateRequest = {
   active?: boolean,
   name?: string,
   limit?: number,
