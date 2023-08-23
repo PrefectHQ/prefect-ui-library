@@ -14,7 +14,7 @@
 
     <template #actions>
       <slot name="actions">
-        <p-button :loading="isSubmitting" @click="submit">
+        <p-button :loading="pending" @click="submit">
           Add
         </p-button>
       </slot>
@@ -24,14 +24,11 @@
 
 <script lang="ts" setup>
   import { PLabel, PNumberInput, PForm, showToast } from '@prefecthq/prefect-design'
-  import { useSubscription } from '@prefecthq/vue-compositions'
-  import { useField } from 'vee-validate'
-  import { computed } from 'vue'
+  import { useSubscription, useValidation, useValidationObserver } from '@prefecthq/vue-compositions'
+  import { computed, ref } from 'vue'
   import { useWorkspaceApi } from '@/compositions'
-  import { useForm } from '@/compositions/useForm'
   import { localization } from '@/localization'
-  import { ConcurrencyV2Create } from '@/models/ConcurrencyV2Create'
-  import { isRequired, isGreaterThan, fieldRules } from '@/utilities/validation'
+  import { isRequired, isGreaterThanZeroOrNull } from '@/utilities/formValidation'
 
   const props = defineProps<{
     showModal: boolean,
@@ -40,13 +37,14 @@
     (event: 'update:showModal', value: boolean): void,
   }>()
 
-  const { handleSubmit, resetForm, isSubmitting } = useForm<ConcurrencyV2Create>()
-  const rules = {
-    name: isRequired('name'),
-    concurrencyLimit: fieldRules('Limit', isRequired, isGreaterThan(0)),
-  }
-  const { value: name, meta: nameState, errorMessage: nameErrorMessage } = useField<string>('name', rules.name)
-  const { value: limit, meta: limitState, errorMessage: limitErrorMessage } = useField<number|null>('limit', rules.concurrencyLimit)
+  const name = ref('')
+  const { state: nameState, error: nameErrorMessage } = useValidation(name, 'Name', [isRequired])
+
+  const limit = ref(0)
+  const { state: limitState, error: limitErrorMessage } = useValidation(limit, 'Limit', [
+    isRequired,
+    isGreaterThanZeroOrNull,
+  ])
 
   const internalShowModal = computed({
     get() {
@@ -59,18 +57,27 @@
 
   const api = useWorkspaceApi()
   const concurrencyLimitSubscription = useSubscription(api.concurrencyV2Limits.getConcurrencyV2Limits)
-  const submit = handleSubmit(async (values) => {
-    try {
-      const { name, limit } = values
-      await api.concurrencyV2Limits.createConcurrencyV2Limit({ name, limit })
-      concurrencyLimitSubscription.refresh()
-      showToast(localization.success.createConcurrencyLimit, 'success')
-    } catch (error) {
-      console.error(error)
-      showToast(localization.error.createConcurrencyLimit, 'error')
-    } finally {
-      resetForm()
-      internalShowModal.value = false
+
+  const reset = (): void => {
+    name.value = ''
+    limit.value = 0
+  }
+
+  const { valid, pending, validate } = useValidationObserver()
+  const submit = async (): Promise<void> => {
+    await validate()
+    if (valid.value) {
+      try {
+        await api.concurrencyV2Limits.createConcurrencyV2Limit({ name: name.value, limit: limit.value })
+        concurrencyLimitSubscription.refresh()
+        showToast(localization.success.createConcurrencyLimit, 'success')
+      } catch (error) {
+        console.error(error)
+        showToast(localization.error.createConcurrencyLimit, 'error')
+      } finally {
+        reset()
+        internalShowModal.value = false
+      }
     }
-  })
+  }
 </script>
