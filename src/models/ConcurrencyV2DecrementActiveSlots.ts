@@ -1,7 +1,5 @@
 export type ConcurrencyV2DecrementActiveSlots = {
   slots: number,
-  names: [
-    string
-  ],
+  names: string[],
   occupancySeconds: number,
 }

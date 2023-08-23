@@ -1,7 +1,5 @@
 export type ConcurrencyV2IncrementActiveSlots = {
   slots: number,
-  names: [
-    string
-  ],
+  names: string[],
   mode: string,
 }

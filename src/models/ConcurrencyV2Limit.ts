@@ -1,7 +1,7 @@
 export type ConcurrencyV2Limit = {
   id: string,
-  created?: Date,
-  updated?: Date,
+  created: Date,
+  updated: Date,
   active?: boolean,
   name: string,
   limit: number,
