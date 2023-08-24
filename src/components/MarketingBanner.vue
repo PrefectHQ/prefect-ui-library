@@ -1,6 +1,5 @@
 <template>
   <div class="marketing-banner p-background" :class="classes">
-    <div class="marketing-banner__background-image" />
     <div class="marketing-banner__content">
       <slot>
         <div class="marketing-banner__message">
@@ -74,31 +73,9 @@
   flex-shrink-0
 }
 
-.marketing-banner__background-image {
-  position: absolute;
-  background: url("/constellations.svg");
-  background-size: 500px, contain;
-  background-position: right;
-  width: 100%;
-  height: 100%;
-  top: 0;
-  left: 0;
-  z-index: 1;
-}
-
 .marketing-banner--alternate { @apply
   text-default
   bg-floating
-  shadow-lg;
-  background-image: none;
-}
-
-.marketing-banner--alternate .marketing-banner__background-image {
-  background: url("/circle.svg");
-  background-position: center;
-  height: 100vh;
-  width: 100vh;
-  left: 50%;
-  animation: spin 40s linear infinite
+  shadow-lg
 }
 </style>
