@@ -34,6 +34,7 @@ export const mapDeploymentResponseToDeployment: MapFunction<DeploymentResponse, 
     parameterOpenApiSchema: schema,
     workQueueName: source.work_queue_name,
     workPoolName: source.work_pool_name,
+    pullSteps: source.pull_steps,
   })
 }
 

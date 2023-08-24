@@ -77,6 +77,12 @@
       :alternate="alternate"
     />
 
+    <p-key-value v-if="deployment.pullSteps" label="Pull Steps" :alternate="alternate">
+      <template #value>
+        {{ deployment.pullSteps }}
+      </template>
+    </p-key-value>
+
     <p-key-value label="Tags" :alternate="alternate">
       <template v-if="deployment.tags?.length" #value>
         <p-tags :tags="deployment.tags!" class="deployment-details__tags" />

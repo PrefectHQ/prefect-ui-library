@@ -29,6 +29,7 @@ export interface IDeployment {
   infrastructureOverrides: Record<string, unknown> | null,
   workQueueName: string | null,
   workPoolName: string | null,
+  pullSteps: string[] | null,
 }
 
 export class Deployment implements IDeployment {
@@ -56,6 +57,7 @@ export class Deployment implements IDeployment {
   public infrastructureOverrides: Record<string, unknown> | null
   public workQueueName: string | null
   public workPoolName: string | null
+  public pullSteps: string[] | null
 
   public constructor(deployment: IDeployment) {
     this.id = deployment.id
@@ -82,6 +84,7 @@ export class Deployment implements IDeployment {
     this.infrastructureOverrides = deployment.infrastructureOverrides
     this.workQueueName = deployment.workQueueName
     this.workPoolName = deployment.workPoolName
+    this.pullSteps = deployment.pullSteps
   }
 
   public get deprecated(): boolean {
