@@ -355,6 +355,7 @@
 .four-zero-four__text { @apply
   text-xl
   font-semibold
+  text-subdued
 }
 
 .four-zero-four__circle {

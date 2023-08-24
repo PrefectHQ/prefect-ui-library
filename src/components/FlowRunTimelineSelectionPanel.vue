@@ -1,5 +1,5 @@
 <template>
-  <div :class="classes">
+  <div :class="classes" class="p-background">
     <div class="flex justify-end">
       <p-button small icon="XMarkIcon" flat @click="closePanel" />
     </div>
@@ -48,12 +48,15 @@
 
 <style>
 .timeline-selection-panel { @apply
-  bg-floating
-  shadow-lg
   w-full
   h-full
   p-4
   rounded-default
   overflow-auto
+}
+
+.timeline-selection-panel--floating { @apply
+  bg-floating
+  shadow-lg
 }
 </style>

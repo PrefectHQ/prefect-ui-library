@@ -1,9 +1,9 @@
 <template>
   <div class="copyable-wrapper">
     <slot />
-    <PButton
-      inset
-      size="sm"
+    <p-button
+      small
+      flat
       class="copyable-wrapper__button"
       title="copy"
       icon="DocumentDuplicateIcon"
@@ -32,7 +32,7 @@
 
 .copyable-wrapper__button { @apply
   absolute
-  top-[2px]
-  right-[2px]
+  top-2
+  right-2
 }
 </style>
