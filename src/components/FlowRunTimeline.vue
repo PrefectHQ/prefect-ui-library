@@ -7,7 +7,7 @@
     aria-label="Flow run timeline graph"
     :style="{ height }"
   >
-    <div class="flow-run-timeline__wrapper p-background">
+    <div class="flow-run-timeline__wrapper">
       <p-button
         v-if="isFullscreen"
         class="flow-run-timeline__fullscreen-exit"
@@ -64,14 +64,15 @@
   import {
     FlowRunTimeline,
     FormatDateFns,
-    HSL,
     ThemeStyleOverrides,
     TimelineNodesLayoutOptions,
     TimelineThemeOptions,
     ExpandedSubNodes,
     NodeSelectionEvent,
     TimelineVisibleDateRange,
-    TimelineData
+    TimelineData,
+    HEX,
+    Sizing
   } from '@prefecthq/graphs'
   import { TimelineItem, useColorTheme } from '@prefecthq/prefect-design'
   import { UseSubscription, useDebouncedRef, useSubscription } from '@prefecthq/vue-compositions'
@@ -135,7 +136,6 @@
   const hideEdges = ref(false)
 
   const documentStyles = getComputedStyle(document.documentElement)
-  const bodyStyles = getComputedStyle(document.body)
 
   const visibleDateRange = computed({
     get() {
@@ -359,26 +359,28 @@
   })
 
   const themeDefaultOverrides = computed<Partial<ThemeStyleOverrides>>(() => ({
-    colorTextDefault: getHslColor('--p-color-text-default', '--p-color-text-inverse'),
-    colorTextInverse: getHslColor('--p-color-text-inverse'),
-    colorTextSubdued: getHslColor('--p-color-text-subdued'),
-    colorNodeSelection: getHslColor('--p-color-selected'),
-    colorButtonBg: getHslColor('--p-color-button-default-border'),
-    colorButtonBgHover: getHslColor('--p-color-button-default-bg-hover'),
-    colorButtonBorder: getHslColor('--p-color-button-default-border'),
-    colorEdge: getHslColor('--p-color-divider'),
-    colorGuideLine: getHslColor('--p-color-bg-2'),
-    colorPlayheadBg: getHslColor('--p-color-live'),
+    colorTextDefault: getColorToken('--p-color-text-default'),
+    colorTextInverse: getColorToken('--p-color-text-inverse'),
+    colorTextSubdued: getColorToken('--p-color-text-subdued'),
+    colorNodeSelection: getColorToken('--p-color-selected'),
+    colorButtonBg: getColorToken('--p-color-button-default-border'),
+    colorButtonBgHover: getColorToken('--p-color-button-default-bg-hover'),
+    colorButtonBorder: getColorToken('--p-color-button-default-border'),
+    colorEdge: getColorToken('--p-color-divider'),
+    colorGuideLine: getColorToken('--p-color-divider'),
+    colorPlayheadBg: getColorToken('--p-color-live'),
     textFontFamilyDefault: 'InterVariable',
+    borderRadiusNode: getSizeToken('--p-radius-default'),
+    borderRadiusButton: getSizeToken('--p-radius-default'),
     alphaNodeDimmed: 0.2,
   }))
 
-  function getHslColor(defaultCssVariable: string, darkCssVariable?: string): HSL {
-    const propertyValue = darkCssVariable && colorThemeValue.value === 'dark'
-      ? darkCssVariable
-      : defaultCssVariable
-    const [hue, saturation, lightness] = documentStyles.getPropertyValue(propertyValue).trim().split(' ')
-    return `hsl(${hue}, ${saturation}, ${lightness})`
+  function getColorToken(cssVariable: string): HEX {
+    return documentStyles.getPropertyValue(cssVariable).trim() as HEX
+  }
+
+  function getSizeToken(cssVariable: string): Sizing {
+    return documentStyles.getPropertyValue(cssVariable).trim() as Sizing
   }
 
   const theme = computed<TimelineThemeOptions>(() => {
@@ -420,6 +422,7 @@
 }
 
 .flow-run-timeline--fullscreen .flow-run-timeline__wrapper { @apply
+  bg-[var(--p-color-bg-1)]
   h-screen
   w-full
   absolute

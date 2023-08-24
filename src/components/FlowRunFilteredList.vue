@@ -1,6 +1,6 @@
 <template>
   <div class="flow-run-filtered-list">
-    <div class="flow-run-filtered-list__controls">
+    <div ref="stickyControls" class="flow-run-filtered-list__controls" :class="classes.header">
       <div class="flow-run-filtered-list__controls--right">
         <ResultsCount v-if="selectedFlowRuns.length == 0" :count="flowRunCount" label="Flow run" />
         <SelectedCount v-else :count="selectedFlowRuns.length" />
@@ -28,7 +28,7 @@
 </template>
 
 <script lang="ts" setup>
-  import { useSubscription } from '@prefecthq/vue-compositions'
+  import { usePositionStickyObserver, useSubscription } from '@prefecthq/vue-compositions'
   import { computed, onMounted, ref } from 'vue'
   import { ResultsCount, StateNameSelect, FlowRunsSort, FlowRunList, SelectedCount, FlowRunsDeleteButton } from '@/components'
   import { useFlowRunsInfiniteScroll, useWorkspaceApi } from '@/compositions'
@@ -50,6 +50,7 @@
   const api = useWorkspaceApi()
   const selectedFlowRuns = ref<string[]>([])
   const states = ref<PrefectStateNames[]>(props.states ?? [])
+  const stickyControls = ref<HTMLElement>()
 
   const updateState = (newValue: string | string[] | null): void => {
     states.value = newValue as PrefectStateNames[]
@@ -76,6 +77,14 @@
   const { flowRuns, subscriptions, loadMore } = useFlowRunsInfiniteScroll(filter, { interval: 3000 })
 
   const empty = computed(() => subscriptions.executed && flowRuns.value.length === 0)
+
+  const { stuck } = usePositionStickyObserver(stickyControls)
+
+  const classes = computed(() => ({
+    header: {
+      'flow-run-filtered-list__controls--stuck': stuck.value,
+    },
+  }))
 
   function clear(): void {
     states.value = []
@@ -107,9 +116,16 @@
   flex-col
   sm:flex-row
   sticky
+  rounded-b-default
   top-0
   p-2
   z-10
+}
+
+.flow-run-filtered-list__controls--stuck { @apply
+  bg-overlay
+  backdrop-blur-sm
+  shadow-md
 }
 
 .flow-run-filtered-list__controls--right { @apply
