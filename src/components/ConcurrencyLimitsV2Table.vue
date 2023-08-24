@@ -14,11 +14,14 @@
       <span />
     </template>
 
+    <template #action="{ row }">
+      <ConcurrencyLimitV2Menu size="xs" :concurrency-limit="row" @delete="concurrencyLimitSubscription.refresh" />
+    </template>
 
     <template #empty-state>
       <p-empty-results>
         <template #message>
-          No task concurrency limits
+          No concurrency limits
         </template>
       </p-empty-results>
     </template>
@@ -29,7 +32,7 @@
   import { TableColumn } from '@prefecthq/prefect-design'
   import { useSubscription } from '@prefecthq/vue-compositions'
   import { computed } from 'vue'
-  import { ConcurrencyLimitsPageEmptyState } from '@/components'
+  import { ConcurrencyLimitsPageEmptyState, ConcurrencyLimitV2Menu } from '@/components'
   import { useWorkspaceApi, useWorkspaceRoutes } from '@/compositions'
   import { ConcurrencyV2Limit } from '@/models/ConcurrencyV2Limit'
 
