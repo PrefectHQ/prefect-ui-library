@@ -1,5 +1,5 @@
 <template>
-  <ConcurrencyLimitsPageEmptyState v-if="empty && loaded" />
+  <ConcurrencyLimitsV2EmptyState v-if="empty && loaded" />
   <p-table v-else class="concurrency-limits-v2-table" :columns="columns" :data="concurrencyLimits">
     <template #tag="{ row }">
       <p-link :to="routes.concurrencyLimit(row.id)">
@@ -32,7 +32,7 @@
   import { TableColumn } from '@prefecthq/prefect-design'
   import { useSubscription } from '@prefecthq/vue-compositions'
   import { computed } from 'vue'
-  import { ConcurrencyLimitsPageEmptyState, ConcurrencyLimitV2Menu } from '@/components'
+  import { ConcurrencyLimitsV2EmptyState, ConcurrencyLimitV2Menu } from '@/components'
   import { useWorkspaceApi, useWorkspaceRoutes } from '@/compositions'
   import { ConcurrencyV2Limit } from '@/models/ConcurrencyV2Limit'
 

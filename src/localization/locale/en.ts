@@ -9,6 +9,7 @@ export const en = {
     notifications: 'https://docs.prefect.io/latest/host/#notifications',
     deployments: 'https://docs.prefect.io/latest/concepts/deployments/',
     concurrency: 'https://docs.prefect.io/concepts/tasks#task-run-concurrency-limits',
+    concurrencyGuide: 'https://docs.prefect.io/guides/concurrency-limits-v2/',
     automations: 'https://docs.prefect.io/ui/automations/',
     workPools: 'https://docs.prefect.io/latest/concepts/work-pools/',
     collections: 'https://docs.prefect.io/collections/catalog/',
