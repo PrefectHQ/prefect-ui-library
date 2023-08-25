@@ -1,6 +1,6 @@
 <template>
-  <p-modal v-model:showModal="internalShowModal" class="concurrency-limits-v2-create-modal" title="Add Concurrency Limit">
-    <p-form class="concurrency-limits-v2-create-form" @submit="submit">
+  <p-modal v-model:showModal="internalShowModal" class="concurrency-limits-v2-update-modal" :title="updateLimitTitle">
+    <p-form class="concurrency-limits-v2-update-form" @submit="submit">
       <p-content>
         <p-label label="Name" :message="nameErrorMessage" :state="nameState">
           <p-text-input v-model="name" :state="nameState" />
@@ -15,7 +15,7 @@
     <template #actions>
       <slot name="actions">
         <p-button :loading="pending" @click="submit">
-          Create
+          Update
         </p-button>
       </slot>
     </template>
@@ -28,19 +28,23 @@
   import { computed, ref } from 'vue'
   import { useWorkspaceApi } from '@/compositions'
   import { localization } from '@/localization'
+  import { ConcurrencyV2Limit } from '@/models/ConcurrencyV2Limit'
   import { isRequired, isGreaterThanZeroOrNull } from '@/utilities/formValidation'
 
   const props = defineProps<{
     showModal: boolean,
+    concurrencyLimit: ConcurrencyV2Limit,
   }>()
   const emit = defineEmits<{
     (event: 'update:showModal', value: boolean): void,
   }>()
 
-  const name = ref('')
+  const updateLimitTitle = computed(() => `Update ${props.concurrencyLimit.name}`)
+
+  const name = ref(props.concurrencyLimit.name)
   const { state: nameState, error: nameErrorMessage } = useValidation(name, 'Name', [isRequired])
 
-  const limit = ref(0)
+  const limit = ref(props.concurrencyLimit.limit)
   const { state: limitState, error: limitErrorMessage } = useValidation(limit, 'Limit', [
     isRequired,
     isGreaterThanZeroOrNull,
@@ -59,8 +63,8 @@
   const concurrencyLimitSubscription = useSubscription(api.concurrencyV2Limits.getConcurrencyV2Limits)
 
   const reset = (): void => {
-    name.value = ''
-    limit.value = 0
+    name.value = props.concurrencyLimit.name
+    limit.value = props.concurrencyLimit.limit
   }
 
   const { valid, pending, validate } = useValidationObserver()
@@ -68,12 +72,12 @@
     await validate()
     if (valid.value) {
       try {
-        await api.concurrencyV2Limits.createConcurrencyV2Limit({ name: name.value, limit: limit.value })
+        await api.concurrencyV2Limits.updateConcurrencyV2Limit(props.concurrencyLimit.id, { name: name.value, limit: limit.value })
         concurrencyLimitSubscription.refresh()
-        showToast(localization.success.createConcurrencyLimit, 'success')
+        showToast(localization.success.updateConcurrencyLimit, 'success')
       } catch (error) {
         console.error(error)
-        showToast(localization.error.createConcurrencyLimit, 'error')
+        showToast(localization.error.updateConcurrencyLimit, 'error')
       } finally {
         reset()
         internalShowModal.value = false
