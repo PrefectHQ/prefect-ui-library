@@ -11,7 +11,7 @@ export interface IWorkspaceConcurrencyV2LimitsApi {
   getConcurrencyV2Limit: (concurrencyV2LimitId: string) => Promise<ConcurrencyV2Limit>,
   getConcurrencyV2Limits: (filter: ConcurrencyLimitsFilter) => Promise<ConcurrencyV2Limit[]>,
   createConcurrencyV2Limit: (concurrencyV2Limit: ConcurrencyV2Create) => Promise<ConcurrencyV2Limit>,
-  updateConcurrencyV2Limit: (concurrencyV2Limit: ConcurrencyV2Update) => Promise<ConcurrencyV2Limit>,
+  updateConcurrencyV2Limit: (id: string, concurrencyV2Limit: ConcurrencyV2Update) => Promise<ConcurrencyV2Limit>,
   deleteConcurrencyV2Limit: (concurrencyV2LimitId: string) => Promise<void>,
   bulkIncrementActiveSlots: (names: string[], slots: number, mode: string) => Promise<ConcurrencyV2ActiveSlots>,
   bulkDecrementActiveSlots: (names: string[], slots: number, mode: string) => Promise<ConcurrencyV2ActiveSlots>,
@@ -36,8 +36,8 @@ export class WorkspaceConcurrencyV2LimitsApi extends WorkspaceApi {
     return mapper.map('ConcurrencyV2LimitResponse', data, 'ConcurrencyV2Limit')
   }
 
-  public async updateConcurrencyV2Limit(limit: ConcurrencyV2Update): Promise<ConcurrencyV2Limit> {
-    const { data } = await this.post<ConcurrencyV2Response>('/', mapper.map('ConcurrencyV2LimitUpdate', limit, 'ConcurrencyV2UpdateRequest'))
+  public async updateConcurrencyV2Limit(id: string, limit: ConcurrencyV2Update): Promise<ConcurrencyV2Limit> {
+    const { data } = await this.patch<ConcurrencyV2Response>(`/${id}`, mapper.map('ConcurrencyV2LimitUpdate', limit, 'ConcurrencyV2UpdateRequest'))
     return mapper.map('ConcurrencyV2LimitResponse', data, 'ConcurrencyV2Limit')
   }
 

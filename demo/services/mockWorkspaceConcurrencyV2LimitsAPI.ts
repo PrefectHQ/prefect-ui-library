@@ -27,7 +27,7 @@ export class MockWorkspaceConcurrencyV2LimitsApi extends MockApi implements IWor
     return await newLimit
   }
 
-  public async updateConcurrencyV2Limit(limit: ConcurrencyV2Create): Promise<ConcurrencyV2Limit> {
+  public async updateConcurrencyV2Limit(id: string, limit: ConcurrencyV2Create): Promise<ConcurrencyV2Limit> {
     const newLimit = mocker.create('concurrencyV2Limit', [limit])
     this.concurrencyV2Limits.create(newLimit)
     return await newLimit
