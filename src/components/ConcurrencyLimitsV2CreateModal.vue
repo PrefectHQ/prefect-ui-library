@@ -15,7 +15,7 @@
     <template #actions>
       <slot name="actions">
         <p-button :loading="pending" @click="submit">
-          Add
+          Create
         </p-button>
       </slot>
     </template>
