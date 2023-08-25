@@ -41,10 +41,10 @@
 
   const updateLimitTitle = computed(() => `Update ${props.concurrencyLimit.name}`)
 
-  const name = ref(props.concurrencyLimit.name ?? '')
+  const name = ref(props.concurrencyLimit.name)
   const { state: nameState, error: nameErrorMessage } = useValidation(name, 'Name', [isRequired])
 
-  const limit = ref(props.concurrencyLimit.limit ?? 0)
+  const limit = ref(props.concurrencyLimit.limit)
   const { state: limitState, error: limitErrorMessage } = useValidation(limit, 'Limit', [
     isRequired,
     isGreaterThanZeroOrNull,
@@ -63,8 +63,8 @@
   const concurrencyLimitSubscription = useSubscription(api.concurrencyV2Limits.getConcurrencyV2Limits)
 
   const reset = (): void => {
-    name.value = ''
-    limit.value = 0
+    name.value = props.concurrencyLimit.name
+    limit.value = props.concurrencyLimit.limit
   }
 
   const { valid, pending, validate } = useValidationObserver()
@@ -72,7 +72,7 @@
     await validate()
     if (valid.value) {
       try {
-        await api.concurrencyV2Limits.updateConcurrencyV2Limit(props.concurrencyLimit.id, { limit: limit.value })
+        await api.concurrencyV2Limits.updateConcurrencyV2Limit(props.concurrencyLimit.id, { name: name.value, limit: limit.value })
         concurrencyLimitSubscription.refresh()
         showToast(localization.success.updateConcurrencyLimit, 'success')
       } catch (error) {
