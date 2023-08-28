@@ -5,6 +5,7 @@ import { SchemaPropertyComponentWithProps } from '@/services/schemas/utilities'
 import { SchemaValue } from '@/types/schemas'
 import { parseUnknownJson } from '@/utilities/parseUnknownJson'
 import { stringifyUnknownJson } from '@/utilities/stringifyUnknownJson'
+import { isEmptyString } from '@/utilities/strings'
 
 export class SchemaPropertyArray extends SchemaPropertyService {
 
@@ -28,6 +29,10 @@ export class SchemaPropertyArray extends SchemaPropertyService {
 
   protected request(value: SchemaValue): unknown {
     if (this.componentIs(JsonInput)) {
+      if (isEmptyString(value)) {
+        return undefined
+      }
+
       return parseUnknownJson(value)
     }
 
