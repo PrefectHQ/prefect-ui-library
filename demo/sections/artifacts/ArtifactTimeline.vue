@@ -7,9 +7,8 @@
           Add Artifact
         </p-button>
       </div>
-
-      <ArtifactTimeline :artifact-key="key" />
     </template>
+    <ArtifactTimeline :artifact-key="key" />
   </ComponentPage>
 </template>
 

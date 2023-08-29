@@ -8,7 +8,7 @@
         {{ lastRunTime }}
       </span>
     </div>
-    <p-button inset size="sm" :aria-controls="content" @click="toggle">
+    <p-button small :aria-controls="content" @click="toggle">
       {{ count }}
       <p-icon size="small" icon="ChevronDownIcon" class="flow-runs-accordion-header__icon" :class="classes.icon" />
     </p-button>
@@ -70,7 +70,7 @@
   gap-2
   justify-between
   border-t
-  border-foreground-200
+  border-divider
   py-2
 }
 
@@ -82,7 +82,7 @@
 
 .flow-runs-accordion-header__time { @apply
   text-xs
-  text-foreground-200
+  text-subdued
 }
 
 .flow-runs-accordion-header__icon { @apply

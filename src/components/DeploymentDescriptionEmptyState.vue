@@ -15,7 +15,7 @@
 
     <template #actions>
       <DocumentationButton :to="localization.docs.deployments" />
-      <p-button v-if="can.update.deployment" :to="routes.deploymentEdit(deployment.id)">
+      <p-button v-if="can.update.deployment" primary :to="routes.deploymentEdit(deployment.id)">
         Add Description
       </p-button>
     </template>

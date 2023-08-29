@@ -11,7 +11,7 @@
     </div>
 
     <template #actions>
-      <p-button danger @click="cancel">
+      <p-button dangerous primary @click="cancel">
         Confirm
       </p-button>
     </template>
@@ -80,6 +80,6 @@
 }
 
 .flow-run-cancel-modal__icon { @apply
-  stroke-danger
+  stroke-sentiment-negative
 }
 </style>

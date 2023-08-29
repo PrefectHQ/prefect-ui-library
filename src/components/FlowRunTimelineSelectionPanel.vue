@@ -1,7 +1,7 @@
 <template>
-  <div :class="classes">
+  <div :class="classes" class="p-background">
     <div class="flex justify-end">
-      <p-button size="xs" icon="XMarkIcon" flat @click="closePanel" />
+      <p-button small icon="XMarkIcon" flat @click="closePanel" />
     </div>
     <FlowRunTimelineTaskDetails
       v-if="selectedNode && selectedNode.type === 'task'"
@@ -48,18 +48,15 @@
 
 <style>
 .timeline-selection-panel { @apply
-  border
-  bg-background
-  dark:border-background-600
   w-full
   h-full
   p-4
-  rounded-lg
+  rounded-default
   overflow-auto
 }
 
 .timeline-selection-panel--floating { @apply
-  bg-opacity-80
-  backdrop-blur
+  bg-floating
+  shadow-lg
 }
 </style>

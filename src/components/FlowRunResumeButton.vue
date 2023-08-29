@@ -1,11 +1,10 @@
 <template>
   <p-button
     v-if="canResume"
-    inset
+    icon-append="PlayIcon"
     @click="open"
   >
     Resume
-    <p-icon icon="PlayIcon" />
     <FlowRunResumeModal
       v-model:showModal="showModal"
       :flow-run-id="flowRun.id"

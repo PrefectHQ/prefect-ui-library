@@ -148,7 +148,7 @@
 
 .component-page__description,
 .component-page__demo-description { @apply
-  text-foreground-300
+  text-subdued
   text-sm
 }
 

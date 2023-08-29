@@ -1,6 +1,6 @@
 <template>
   <div
-    v-if="graphData.length > 0"
+    v-if="graphData.size > 0"
     class="flow-run-timeline"
     :class="classes.root"
     tabindex="0"
@@ -13,7 +13,6 @@
         class="flow-run-timeline__fullscreen-exit"
         icon="XMarkIcon"
         flat
-        size="lg"
         @click="toggleFullscreen"
       />
       <div class="flow-run-timeline__options">
@@ -44,7 +43,7 @@
           ref="timelineGraph"
           v-model:visible-date-range="visibleDateRange"
           class="flow-run-timeline__graph"
-          :graph-data="graphData"
+          :data="graphData"
           :layout="layout"
           :hide-edges="hideEdges"
           :is-running="isRunning"
@@ -65,23 +64,23 @@
   import {
     FlowRunTimeline,
     FormatDateFns,
-    HSL,
     ThemeStyleOverrides,
-    GraphTimelineNode,
     TimelineNodesLayoutOptions,
     TimelineThemeOptions,
     ExpandedSubNodes,
     NodeSelectionEvent,
-    TimelineVisibleDateRange
+    TimelineVisibleDateRange,
+    TimelineData,
+    HEX,
+    Sizing
   } from '@prefecthq/graphs'
-  import { useColorTheme } from '@prefecthq/prefect-design'
+  import { TimelineItem, useColorTheme } from '@prefecthq/prefect-design'
   import { UseSubscription, useDebouncedRef, useSubscription } from '@prefecthq/vue-compositions'
   import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
   import { FlowRunTimelineOptions } from '@/components'
   import { useFlowRuns, useFlows, useWorkspaceApi } from '@/compositions'
   import { FlowRun, FlowRunsFilter, isRunningStateType, isTerminalStateType } from '@/models'
   import { WorkspaceFlowRunsApi } from '@/services'
-  import { prefectStateNames } from '@/types'
   import { formatTimeNumeric, formatTimeShortNumeric, formatDate, mapStateNameToStateType, getStateTypeStyles } from '@/utilities'
   import { eventTargetIsInput } from '@/utilities/eventTarget'
 
@@ -127,6 +126,7 @@
   const expandedSubFlowRuns = ref<ExpandedSubNodes<{
     subscription: UseSubscription<WorkspaceFlowRunsApi['getFlowRunsTimeline']>,
   }>>(new Map())
+
   const formatDateFns: FormatDateFns = {
     timeBySeconds: formatTimeNumeric,
     timeByMinutes: formatTimeShortNumeric,
@@ -136,7 +136,6 @@
   const hideEdges = ref(false)
 
   const documentStyles = getComputedStyle(document.documentElement)
-  const bodyStyles = getComputedStyle(document.body)
 
   const visibleDateRange = computed({
     get() {
@@ -220,15 +219,15 @@
     interval,
   )
 
-  const graphData = computed(() => graphSubscription.response ?? [])
+  const graphData = computed(() => graphSubscription.response ?? new Map())
 
   const unwatchInitialData = watch(graphData, (value) => {
-    if (value.length > 0) {
-      if (value.length > defaultOptionThresholds.nearestParentLayout) {
+    if (value.size > 0) {
+      if (value.size > defaultOptionThresholds.nearestParentLayout) {
         layout.value = 'waterfall'
       }
 
-      if (value.length > defaultOptionThresholds.hideEdges) {
+      if (value.size > defaultOptionThresholds.hideEdges) {
         hideEdges.value = true
       }
 
@@ -282,7 +281,7 @@
       interval,
     )
 
-    const data = computed(() => subscription.response ?? [])
+    const data = computed<TimelineData>(() => subscription.response ?? new Map())
 
     expandedSubFlowRuns.value.set(id, {
       data,
@@ -290,19 +289,31 @@
     })
   }
 
-  const getSubFlowRunIds = (data: GraphTimelineNode[]): string[] => {
-    return data
-      .map((node) => node.subFlowRunId)
-      .filter((subFlowRunId): subFlowRunId is string => subFlowRunId !== undefined)
+  const getSubFlowRunIds = (data: TimelineData): string[] => {
+    const subflowRunIds: string[] = []
+
+    data.forEach(item => {
+      if (item.subflowRunId) {
+        subflowRunIds.push(item.subflowRunId)
+      }
+    })
+
+    return subflowRunIds
   }
   const rootSubFlowRunIds = computed<string[]>(() => {
     return getSubFlowRunIds(graphData.value)
   })
+
   const expandedSubFlowRunIds = computed<string[]>(() => {
-    return getSubFlowRunIds(
-      Array.from(expandedSubFlowRuns.value.values())
-        .flatMap(subFlowRun => 'value' in subFlowRun.data ? subFlowRun.data.value : subFlowRun.data),
-    )
+    const expanded: string[] = []
+
+    expandedSubFlowRuns.value.forEach(value => {
+      const data = 'value' in value.data ? value.data.value : value.data
+
+      expanded.push(...data.keys())
+    })
+
+    return expanded
   })
 
   const subFlowRunsFilter = computed<FlowRunsFilter | null>(() => {
@@ -348,31 +359,33 @@
   })
 
   const themeDefaultOverrides = computed<Partial<ThemeStyleOverrides>>(() => ({
-    colorTextDefault: getHslColor('--foreground', '--white'),
-    colorTextInverse: getHslColor('--white', '--background'),
-    colorTextSubdued: getHslColor('--foreground-300', '--foreground-200'),
-    colorNodeSelection: getHslColor('--primary-default-400'),
-    colorButtonBg: getHslColor('--background', '--background-100'),
-    colorButtonBgHover: getHslColor('--background-400', '--background-100'),
-    colorButtonBorder: colorThemeValue.value === 'dark' ? null : getHslColor('--background-400'),
-    colorEdge: getHslColor('--foreground-200', '--foreground-300'),
-    colorGuideLine: getHslColor('--foreground-50'),
-    colorPlayheadBg: getHslColor('--primary-default-400'),
+    colorTextDefault: getColorToken('--p-color-text-default'),
+    colorTextInverse: getColorToken('--p-color-text-inverse'),
+    colorTextSubdued: getColorToken('--p-color-text-subdued'),
+    colorNodeSelection: getColorToken('--p-color-selected'),
+    colorButtonBg: getColorToken('--p-color-button-default-border'),
+    colorButtonBgHover: getColorToken('--p-color-button-default-bg-hover'),
+    colorButtonBorder: getColorToken('--p-color-button-default-border'),
+    colorEdge: getColorToken('--p-color-divider'),
+    colorGuideLine: getColorToken('--p-color-divider'),
+    colorPlayheadBg: getColorToken('--p-color-live'),
     textFontFamilyDefault: 'InterVariable',
+    borderRadiusNode: getSizeToken('--p-radius-default'),
+    borderRadiusButton: getSizeToken('--p-radius-default'),
     alphaNodeDimmed: 0.2,
   }))
 
-  function getHslColor(defaultCssVariable: string, darkCssVariable?: string): HSL {
-    const propertyValue = darkCssVariable && colorThemeValue.value === 'dark'
-      ? darkCssVariable
-      : defaultCssVariable
-    const [hue, saturation, lightness] = documentStyles.getPropertyValue(propertyValue).trim().split(' ')
-    return `hsl(${hue}, ${saturation}, ${lightness})`
+  function getColorToken(cssVariable: string): HEX {
+    return documentStyles.getPropertyValue(cssVariable).trim() as HEX
+  }
+
+  function getSizeToken(cssVariable: string): Sizing {
+    return documentStyles.getPropertyValue(cssVariable).trim() as Sizing
   }
 
   const theme = computed<TimelineThemeOptions>(() => {
     return {
-      node: (node: GraphTimelineNode) => {
+      node: (node: TimelineItem) => {
         const { type } = mapStateNameToStateType(node.state)
         const { color, background } = getStateTypeStyles(type)
         const isDark = colorThemeValue.value === 'dark'
@@ -409,13 +422,13 @@
 }
 
 .flow-run-timeline--fullscreen .flow-run-timeline__wrapper { @apply
+  bg-[var(--p-color-bg-1)]
   h-screen
   w-full
   absolute
   top-0
   left-0
   z-20
-  bg-background
 }
 
 .flow-run-timeline__options { @apply
@@ -443,10 +456,6 @@
   w-full
   relative
   overflow-hidden
-}
-
-.flow-run-timeline__graph { @apply
-  bg-background
 }
 
 .flow-run-timeline__graph canvas {

@@ -186,7 +186,7 @@
   w-full
   rounded-full
   min-h-[--bar-min-height]
-  bg-slate-500
+  bg-sentiment-neutral
 }
 
 .flow-runs-bar-chart__bar-flow-run {

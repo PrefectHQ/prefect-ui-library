@@ -23,18 +23,17 @@
               <SearchInput v-model="search" :placeholder="localization.info.searchByFlowName" :label="localization.info.searchByFlowName" />
               <SearchInput v-model="deploymentNameSearch" :placeholder="localization.info.searchByDeploymentName" :label="localization.info.searchByDeploymentName" />
               <p-select v-model="routeFilter.sort" :options="flowSortOptions" />
-              <p-button icon="AdjustmentsVerticalIcon" :class="classes.filterButton" inset @click="headerExpanded = !headerExpanded" />
+              <p-button icon="AdjustmentsVerticalIcon" :class="classes.filterButton" :selected="headerExpanded" @click="headerExpanded = !headerExpanded" />
             </div>
           </div>
 
           <template v-if="headerExpanded">
             <FlowsFilterGroup />
-            <p-divider class="flow-list__divider" />
           </template>
           <template v-else-if="isCustomFilter">
             <div class="flow-list__filters-active">
               ({{ localization.info.filtersActive }})
-              <p-button size="sm" secondary :disabled="isDefaultFilter" @click="clear">
+              <p-button small :disabled="isDefaultFilter" @click="clear">
                 {{ localization.info.resetFilters }}
               </p-button>
             </div>
@@ -48,7 +47,7 @@
             {{ localization.info.noFlowsOrDeploymentsMatchFilter }}
           </template>
           <template v-if="isCustomFilter" #actions>
-            <p-button size="sm" secondary @click="clear">
+            <p-button small @click="clear">
               {{ localization.info.resetFilters }}
             </p-button>
           </template>
@@ -187,8 +186,8 @@
 
   const classes = computed(() => ({
     filterButton: {
-      'flow-list__filter-button--filter-active': isCustomFilter.value,
-      'flow-list__filter-button--active': headerExpanded.value,
+      'flow-list__filter-button--filter-active-text': isCustomFilter.value && !headerExpanded.value,
+      'flow-list__filter-button--filter-open': headerExpanded.value,
     },
   }))
 </script>
@@ -214,7 +213,6 @@
   sm:items-center
   sm:flex-row
   grow
-  mb-4
 }
 
 .flow-list__header-end { @apply
@@ -227,25 +225,25 @@
 }
 
 .flow-list__results-count { @apply
-  text-foreground-300
+  text-subdued
   text-base
 }
 
-.flow-list__divider { @apply
-  mt-4
-}
-
 .flow-list__filters-active { @apply
-  text-foreground-200
+  text-subdued
   text-sm
   flex
   gap-2
   justify-end
   items-center
+  mt-4
 }
 
-.flow-list__filter-button--filter-active .p-icon,
-.flow-list__filter-button--active .p-icon { @apply
-  text-primary
+.flow-list__filter-button--filter-open { @apply
+  cursor-pointer
+}
+
+.flow-list__filter-button--filter-active-text .p-icon { @apply
+  text-selected
 }
 </style>

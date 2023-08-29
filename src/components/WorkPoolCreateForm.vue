@@ -1,5 +1,5 @@
 <template>
-  <p-form class="work-pool-create-form" @submit="submit">
+  <p-form class="work-pool-create-form p-background" @submit="submit">
     <p-content>
       <p-label label="Name" :message="nameErrorMessage" :state="nameState">
         <template #default="{ id }">
@@ -37,7 +37,7 @@
     </p-content>
 
     <template #footer>
-      <p-button inset @click="cancel">
+      <p-button @click="cancel">
         Cancel
       </p-button>
       <SubmitButton action="Create" :loading="pending" />
@@ -132,10 +132,8 @@
 
 <style>
 .work-pool-create-form { @apply
-  border
-  dark:border-background-600
   px-6
   py-6
-  rounded-lg
+  rounded-default
 }
 </style>

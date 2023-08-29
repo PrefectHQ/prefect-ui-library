@@ -73,7 +73,7 @@
 .activity-chart__median {
   @apply
   h-px
-  bg-slate-300
+  bg-divider
   w-full
 }
 </style>

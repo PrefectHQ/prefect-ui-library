@@ -4,9 +4,9 @@
       {{ title }}
     </h3>
 
-    <p-button-group v-model="selected" :options="options" size="sm" />
+    <p-button-group v-model="selected" :options="options" small />
 
-    <p-label class="schema-form-property-any-of__fields" :description="description">
+    <p-label class="schema-form-property-any-of__fields p-background" :description="description">
       <template v-if="isObject">
         <p-content>
           <template v-for="(subProperty, key) in displayedDefinition.properties" :key="key">
@@ -65,9 +65,7 @@
 }
 
 .schema-form-property-any-of__fields { @apply
-  border-background-500
-  border-[1px]
   p-4
-  rounded
+  rounded-default
 }
 </style>

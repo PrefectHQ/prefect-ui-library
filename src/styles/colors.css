@@ -1,10 +1,41 @@
-body {
-  --log-level-custom: theme('colors.sky.400');
-  --log-level-info: theme('colors.sky.400');
-  --log-level-debug: theme('colors.indigo.500');
-  --log-level-warning: theme('colors.amber.400');
-  --log-level-error: theme('colors.rose.500');
-  --log-level-critical: theme('colors.rose.700');
+.dark {
+  --p-color-log-info-bg: #304A76;
+  --p-color-log-info-text: var(--p-color-text-default);
+
+  --p-color-log-debug-bg: #DB6900;
+  --p-color-log-debug-text: var(--p-color-text-default);
+
+  --p-color-log-warning-bg: #F79008;
+  --p-color-log-warning-text: var(--p-color-text-default);
+
+  --p-color-log-error-bg: var(--p-color-sentiment-negative);
+  --p-color-log-error-text: var(--p-color-text-default);
+
+  --p-color-log-critical-bg: var(--p-color-sentiment-negative);
+  --p-color-log-critical-text: var(--p-color-text-default);
+
+  --p-color-log-custom-bg: var(--p-color-sentiment-neutral);
+  --p-color-log-custom-text: var(--p-color-text-default);
+}
+
+.light {
+  --p-color-log-info-bg: #304A76;
+  --p-color-log-info-text: var(--p-color-text-inverse);
+
+  --p-color-log-debug-bg: #DB6900;
+  --p-color-log-debug-text: var(--p-color-text-inverse);
+
+  --p-color-log-warning-bg: #F79008;
+  --p-color-log-warning-text: var(--p-color-text-inverse);
+
+  --p-color-log-error-bg: var(--p-color-sentiment-negative);
+  --p-color-log-error-text: var(--p-color-text-inverse);
+
+  --p-color-log-critical-bg: var(--p-color-sentiment-negative);
+  --p-color-log-critical-text: var(--p-color-text-inverse);
+
+  --p-color-log-custom-bg: var(--p-color-sentiment-neutral);
+  --p-color-log-custom-text: var(--p-color-text-inverse);
 }
 
 .color-mode-default {
@@ -40,7 +71,7 @@ body {
   --state-running-700: #09439B;
   --state-running-800: #06316B;
   --state-running-900: #031D3B;
-  
+
   --state-pending-50: #FFFFFF;
   --state-pending-100: #F8F7F8;
   --state-pending-200: #E4E1E5;
@@ -130,7 +161,7 @@ body {
   --state-running-700: #06286A;
   --state-running-800: #04173F;
   --state-running-900: #010713;
-  
+
   --state-pending-50: #FFFFFF;
   --state-pending-100: #F8F7F8;
   --state-pending-200: #E4E1E5;
@@ -424,7 +455,7 @@ body {
   --state-completed-700: #187330;
   --state-completed-800: #0F491B;
   --state-completed-900: #061F0A;
-  
+
   --state-failed-50: #FFFAFC;
   --state-failed-100: #FCDDED;
   --state-failed-200: #F8A5CC;

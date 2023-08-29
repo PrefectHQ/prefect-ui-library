@@ -25,7 +25,6 @@
   text-xs
   font-medium
   items-center
-  text-foreground
 }
 
 .list-item-meta__content { @apply

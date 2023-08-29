@@ -58,7 +58,7 @@
 
 .log-row__trailing { @apply
   text-xs
-  text-slate-500
+  text-subdued
   shrink-0
   text-right
   pl-1

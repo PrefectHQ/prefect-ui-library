@@ -1,5 +1,5 @@
 <template>
-  <p-form class="deployment-form" :loading="isSubmitting" @submit="submit" @cancel="cancel">
+  <p-form class="deployment-form p-background" :loading="isSubmitting" @submit="submit" @cancel="cancel">
     <p-content>
       <p-content>
         <h3 class="deployment-form__section-header">
@@ -81,10 +81,10 @@
     </p-content>
 
     <template #footer>
-      <p-button inset @click="cancel">
+      <p-button @click="cancel">
         Cancel
       </p-button>
-      <p-button type="submit" @click="submit">
+      <p-button primary type="submit" @click="submit">
         Save
       </p-button>
     </template>
@@ -169,11 +169,9 @@
 <style>
 .deployment-form {
   @apply
-  border
-  dark:border-background-600
   px-6
   py-6
-  rounded-lg
+  rounded-default
 }
 
 .deployment-form__section-header {

@@ -1,10 +1,9 @@
 <template>
   <a :href="to" class="documentation-button" target="_blank">
-    <p-button inset>
+    <p-button icon-append="ArrowTopRightOnSquareIcon">
       <slot>
         View Docs
       </slot>
-      <p-icon icon="ArrowTopRightOnSquareIcon" class="documentation-button__icon" />
     </p-button>
   </a>
 </template>
@@ -14,11 +13,3 @@
     to: string,
   }>()
 </script>
-
-<style>
-.documentation-button__icon { @apply
-  ml-2
-  w-5
-  h-5
-}
-</style>

@@ -170,7 +170,7 @@
 
 .deployment-details__schedule-loading-icon { @apply
   absolute
-  text-primary-500
+  text-live
   left-1/2
   top-1/2
   -translate-y-1/2

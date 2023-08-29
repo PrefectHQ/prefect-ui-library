@@ -52,6 +52,5 @@
 .state-badge--flat { @apply
   py-0
   bg-transparent
-  text-foreground
 }
 </style>

@@ -13,7 +13,7 @@
       <RowGridLayoutList :items="flowRunArtifacts">
         <template #default="{ item }">
           <router-link :to="routes.artifact(item.id)">
-            <ArtifactCard :artifact="item" :condense="condense" class="flow-run-artifacts__artifact" />
+            <ArtifactCard :artifact="item" :condense="condense" interactive />
           </router-link>
         </template>
 
@@ -33,7 +33,7 @@
       <RowGridLayoutList :items="taskRunArtifacts">
         <template #default="{ item }">
           <router-link :to="routes.artifact(item.id)">
-            <ArtifactCard :artifact="item" :condense="condense" class="flow-run-artifacts__artifact" />
+            <ArtifactCard :artifact="item" :condense="condense" interactive />
           </router-link>
         </template>
 
@@ -124,12 +124,7 @@
   gap-4
 }
 
-.flow-run-artifacts__artifact { @apply
-  hover:border-primary
-  focus:border-primary
-}
-
 .flow-run-artifacts__none { @apply
-  text-foreground-50
+  text-subdued
 }
 </style>

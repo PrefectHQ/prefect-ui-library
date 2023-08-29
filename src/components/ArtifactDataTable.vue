@@ -92,7 +92,7 @@
 }
 
 .artifact-data-table__results-count { @apply
-  text-foreground-300
+  text-subdued
   text-sm
 }
 

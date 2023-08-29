@@ -336,7 +336,6 @@
 }
 
 .four-zero-four { @apply
-  bg-primary-100
   w-full
   h-full
 }
@@ -356,7 +355,7 @@
 .four-zero-four__text { @apply
   text-xl
   font-semibold
-  fill-foreground-400
+  text-subdued
 }
 
 .four-zero-four__circle {

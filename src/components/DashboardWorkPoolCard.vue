@@ -72,9 +72,8 @@
 <style>
 .dashboard-work-pool-card { @apply
   border
-  border-slate-200
-  dark:border-slate-700
-  rounded-xl
+  border-default
+  rounded-default
 }
 
 .dashboard-work-pool-card__header { @apply
@@ -83,8 +82,7 @@
   gap-4
   p-3
   border-b
-  border-slate-200
-  dark:border-slate-700
+  border-default
 }
 
 .dashboard-work-pool-card__name { @apply

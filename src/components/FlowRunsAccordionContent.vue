@@ -2,7 +2,7 @@
   <FlowRunList :flow-runs="flowRuns" :selected="null" class="flow-flow-runs-list" />
   <template v-if="more">
     <div class="flow-flow-runs-list__more">
-      <p-button size="sm" inset @click="loadMore">
+      <p-button small @click="loadMore">
         Show more
       </p-button>
     </div>
@@ -44,11 +44,5 @@
 .flow-flow-runs-list__more { @apply
   flex
   justify-center
-}
-
-.flow-flow-runs-list .state-list-item { @apply
-  bg-slate-50
-  dark:bg-slate-700
-  dark:bg-opacity-50
 }
 </style>

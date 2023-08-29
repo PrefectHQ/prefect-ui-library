@@ -55,6 +55,5 @@
 }
 
 .state--unknown { @apply
-  bg-background-300
-  text-foreground-700
+  bg-sentiment-neutral
 }

@@ -93,12 +93,12 @@
 .notification-details__item { @apply
   empty:border-b-2
   empty:w-32
-  empty:border-black
+  empty:border-divider
   empty:mb-2.5
   empty:h-6
 }
 
 .notification-details__icon--gray { @apply
-  stroke-gray-400
+  text-subdued
 }
 </style>

@@ -15,7 +15,5 @@
 .p-tag.process-type-badge { @apply
   text-xs
   pl-2
-  bg-foreground-100
-  text-foreground
 }
 </style>

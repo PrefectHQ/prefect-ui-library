@@ -23,7 +23,7 @@
 .logo-image { @apply
   bg-cover
   bg-center
-  dark:rounded
+  dark:rounded-default
   dark:p-0.5
   dark:overflow-hidden
   dark:bg-white
