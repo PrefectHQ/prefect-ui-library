@@ -5,7 +5,7 @@ on:
     paths: 
       - package.json
     branches:
-      - rebrand
+      - main
       
 jobs:
 
