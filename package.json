@@ -47,7 +47,7 @@
         "@types/lodash.merge": "4.6.7",
         "@types/node": "^20.5.7",
         "@types/prismjs": "^1.26.0",
-        "@vitejs/plugin-vue": "4.3.2",
+        "@vitejs/plugin-vue": "4.3.3",
         "auto-changelog": "^2.4.0",
         "autoprefixer": "10.4.15",
         "eslint": "8.47.0",
