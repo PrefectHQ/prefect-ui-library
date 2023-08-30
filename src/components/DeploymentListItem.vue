@@ -59,8 +59,8 @@
 
 <script lang="ts" setup>
   import { computed } from 'vue'
-  import { DeploymentMenu, DeploymentToggle, ListItemMeta, ListItemMetaFlowRun, StateListItem, WorkPoolIconText, WorkQueueIconText } from '@/components'
-  import { useLastFlowRun, useNextFlowRun, useWorkspaceRoutes } from '@/compositions'
+  import { DeploymentToggle, ListItemMeta, ListItemMetaFlowRun, StateListItem, WorkPoolIconText, WorkQueueIconText } from '@/components'
+  import { useComponent, useLastFlowRun, useNextFlowRun, useWorkspaceRoutes } from '@/compositions'
   import { localization } from '@/localization'
   import { Deployment, FlowRunsFilter, isRRuleSchedule } from '@/models'
 
@@ -71,6 +71,8 @@
   const emit = defineEmits<{
     (event: 'update' | 'delete', value: string): void,
   }>()
+
+  const { DeploymentMenu } = useComponent()
 
   const routes = useWorkspaceRoutes()
   const tags = computed(() => props.deployment.tags ?? [])

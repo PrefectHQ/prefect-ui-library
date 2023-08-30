@@ -14,8 +14,8 @@
   import { media } from '@prefecthq/prefect-design'
   import { computed } from 'vue'
   import { useRouter } from 'vue-router'
-  import { DeploymentMenu, DeploymentToggle, PageHeading, RunMenu } from '@/components'
-  import { useWorkspaceRoutes } from '@/compositions'
+  import { DeploymentToggle, PageHeading, RunMenu } from '@/components'
+  import { useComponent, useWorkspaceRoutes } from '@/compositions'
   import { useCan } from '@/compositions/useCan'
   import { Deployment } from '@/models'
 
@@ -26,6 +26,7 @@
   const can = useCan()
   const router = useRouter()
   const routes = useWorkspaceRoutes()
+  const { DeploymentMenu } = useComponent()
 
   const crumbs = computed(() => [
     { text: 'Deployments', to: routes.deployments() },
