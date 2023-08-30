@@ -19,6 +19,7 @@ function mapSavedSearchFilters(filters: SavedSearchFilterResponse[] | undefined)
     tag: [],
     flow: [],
     deployment: [],
+    workPool: [],
     workQueue: [],
     startDate: formatDateTimeNumeric(dateFunctions.subDays(dateFunctions.startOfToday(), 7)),
     endDate: formatDateTimeNumeric(dateFunctions.addDays(dateFunctions.endOfToday(), 1)),
@@ -30,10 +31,12 @@ function mapSavedSearchFilters(filters: SavedSearchFilterResponse[] | undefined)
     const tag = filters.find(filter => filter.property === 'tag')?.value ?? []
     const deployment = filters.find(filter => filter.property === 'deployment')?.value ?? []
     const workQueue = filters.find(filter => filter.property === 'workQueue')?.value ?? []
+    const workPool = filters.find(filter => filter.property === 'workPool')?.value ?? []
 
     filter.flow = asArray(flow)
     filter.deployment = asArray(deployment)
     filter.workQueue = asArray(workQueue)
+    filter.workPool = asArray(workPool)
     filter.tag = asArray(tag)
 
     filter.state = asArray(state).map(state => mapStateTypeOrNameToStateName(state))

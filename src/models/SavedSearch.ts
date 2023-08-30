@@ -27,6 +27,7 @@ export type SavedSearchFilter = {
   tag?: string[],
   deployment?: string[],
   workQueue?: string[],
+  workPool?: string[],
   startDate?: string,
   endDate?: string,
 }

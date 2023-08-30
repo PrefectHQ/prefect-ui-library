@@ -72,6 +72,7 @@
       const { state, tags } = filter.flowRuns
       const { id: flows } = filter.flows
       const { id: deployments } = filter.deployments
+      const { name: workPools } = filter.workPools
 
       const savedSearch = await api.savedSearches.createSavedSearch({
         name: filterName,
@@ -80,6 +81,7 @@
           tag: tags.name,
           flow: flows,
           deployment: deployments,
+          workPool: workPools,
         },
       })
 

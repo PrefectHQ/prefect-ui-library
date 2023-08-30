@@ -21,6 +21,10 @@ export function isSameFilter(filterA: SavedSearchFilter, filterB: SavedSearchFil
     return false
   }
 
+  if (!isSame(asArray(filterA.workPool), asArray(filterB.workPool))) {
+    return false
+  }
+
   return true
 }
 
@@ -31,6 +35,7 @@ export const oneWeekFilter: SavedSearchFilter = {
   flow: [],
   tag: [],
   deployment: [],
+  workPool: [],
 }
 
 export const noScheduleFilter: SavedSearchFilter = {
@@ -38,6 +43,7 @@ export const noScheduleFilter: SavedSearchFilter = {
   flow: [],
   tag: [],
   deployment: [],
+  workPool: [],
   startDate: formatDateTimeNumeric(dateFunctions.subDays(dateFunctions.startOfToday(), 7)),
   endDate: formatDateTimeNumeric(dateFunctions.addDays(dateFunctions.endOfToday(), 1)),
 }
