@@ -1,6 +1,6 @@
 <template>
   <div class="variables-table">
-    <p-layout-table sticky>
+    <p-layout-table sticky :root-margin="offsetStickyRootMargin">
       <template #header-start>
         <div class="variables-table__header-start">
           <VariablesDeleteButton v-if="can.delete.variable" :variable-ids="selectedVariables" @delete="deleteVariables" />
@@ -78,7 +78,7 @@
   import { useDebouncedRef, useSubscription } from '@prefecthq/vue-compositions'
   import { computed, ref } from 'vue'
   import { VariablesDeleteButton, VariableMenu, ResultsCount, SearchInput, SelectedCount, VariableTagsInput } from '@/components'
-  import { useCan, useVariablesFilter, useWorkspaceApi } from '@/compositions'
+  import { useCan, useOffsetStickyRootMargin, useVariablesFilter, useWorkspaceApi } from '@/compositions'
   import { localization } from '@/localization'
   import { VariablesFilter, Variable } from '@/models'
   import { variableSortOptions } from '@/types'
@@ -92,6 +92,7 @@
 
   const api = useWorkspaceApi()
   const can = useCan()
+  const { offsetStickyRootMargin } = useOffsetStickyRootMargin()
 
   const variableLike = ref<string>()
   const variableLikeDebounced = useDebouncedRef(variableLike, 1000)

@@ -1,6 +1,6 @@
 <template>
   <div class="deployment-list">
-    <p-layout-table sticky>
+    <p-layout-table :root-margin="offsetStickyRootMargin" sticky>
       <template #header-start>
         <slot name="header-start">
           <DeploymentsDeleteButton size="xs" :selected="selected" @delete="deleteDeployments" />
@@ -45,7 +45,7 @@
     DeploymentListItem,
     SelectedCount
   } from '@/components'
-  import { useDeployments, useDeploymentsCount, useDeploymentsFilterFromRoute } from '@/compositions'
+  import { useDeployments, useDeploymentsCount, useDeploymentsFilterFromRoute, useOffsetStickyRootMargin } from '@/compositions'
   import { DeploymentsFilter } from '@/models'
 
   const props = defineProps<{
@@ -56,6 +56,8 @@
   const emit = defineEmits<{
     (event: 'update' | 'delete', value?: string): void,
   }>()
+
+  const { offsetStickyRootMargin } = useOffsetStickyRootMargin()
 
   const DEFAULT_LIMIT = 40
 

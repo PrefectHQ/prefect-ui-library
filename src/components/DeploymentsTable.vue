@@ -1,6 +1,6 @@
 <template>
   <div class="deployments-table">
-    <p-layout-table sticky>
+    <p-layout-table sticky :root-margin="offsetStickyRootMargin">
       <template #header-start>
         <div class="deployments-table__header-start">
           <ResultsCount v-if="selectedDeployments.length == 0" label="Deployment" :count="deploymentsCount" />
@@ -83,11 +83,11 @@
 </template>
 
 <script lang="ts" setup>
-  import { PTable, PTagWrapper, PEmptyResults, PLink, TableColumn, CheckboxModel } from '@prefecthq/prefect-design'
+  import { PTable, PTagWrapper, PEmptyResults, PLink, TableColumn, CheckboxModel, media } from '@prefecthq/prefect-design'
   import { useDebouncedRef, useSubscription } from '@prefecthq/vue-compositions'
   import { computed, ref } from 'vue'
   import { SearchInput, ResultsCount, DeploymentToggle, DeploymentMenu, FlowRouterLink, FlowCombobox, DeploymentsDeleteButton, SelectedCount } from '@/components'
-  import { useWorkspaceApi, useWorkspaceRoutes, useCan, useDeploymentsFilterFromRoute } from '@/compositions'
+  import { useWorkspaceApi, useWorkspaceRoutes, useCan, useDeploymentsFilterFromRoute, useOffsetStickyRootMargin } from '@/compositions'
   import { Deployment, isRRuleSchedule, Schedule } from '@/models'
   import { DeploymentsFilter } from '@/models/Filters'
   import { deploymentSortOptions } from '@/types/SortOptionTypes'
@@ -106,6 +106,7 @@
   const routes = useWorkspaceRoutes()
   const deploymentName = ref<string>()
   const deploymentNameDebounced = useDebouncedRef(deploymentName, 1200)
+  const { offsetStickyRootMargin } = useOffsetStickyRootMargin()
   const { filter, clear, isCustomFilter } = useDeploymentsFilterFromRoute({
     ...props.filter,
     deployments: {
