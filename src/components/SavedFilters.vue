@@ -45,6 +45,7 @@
         state: filter.flowRuns.state.name ?? [],
         flow: filter.flows.name ?? [],
         deployment: filter.deployments.id ?? [],
+        workPool: filter.workPools.name ?? [],
         tag: filter.flowRuns.tags.name ?? [],
       }
 
