@@ -74,3 +74,9 @@
     return null
   }
 </script>
+
+<style>
+.state-name-select {
+  min-width: theme('spacing.40')
+}
+</style>
