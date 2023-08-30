@@ -1,6 +1,6 @@
 <template>
   <div class="flows-table">
-    <p-layout-table :root-margin="offsetStickyRootMargin" sticky>
+    <p-layout-table :root-margin="margin" sticky>
       <template #header-start>
         <div class="flows-table__header-start">
           <ResultsCount v-if="selectedFlows.length == 0" label="Flow" :count="flowsCount" />
@@ -88,7 +88,7 @@
     filter?: FlowsFilter,
   }>()
 
-  const { offsetStickyRootMargin } = useOffsetStickyRootMargin()
+  const { margin } = useOffsetStickyRootMargin()
   const { FlowMenu } = useComponent()
 
   const api = useWorkspaceApi()

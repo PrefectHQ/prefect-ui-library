@@ -1,6 +1,6 @@
 <template>
   <div class="deployments-table">
-    <p-layout-table sticky :root-margin="offsetStickyRootMargin">
+    <p-layout-table sticky :root-margin="margin">
       <template #header-start>
         <div class="deployments-table__header-start">
           <ResultsCount v-if="selectedDeployments.length == 0" label="Deployment" :count="deploymentsCount" />
@@ -106,7 +106,7 @@
   const routes = useWorkspaceRoutes()
   const deploymentName = ref<string>()
   const deploymentNameDebounced = useDebouncedRef(deploymentName, 1200)
-  const { offsetStickyRootMargin } = useOffsetStickyRootMargin()
+  const { margin } = useOffsetStickyRootMargin()
   const { filter, clear, isCustomFilter } = useDeploymentsFilterFromRoute({
     ...props.filter,
     deployments: {

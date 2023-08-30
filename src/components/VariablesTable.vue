@@ -1,6 +1,6 @@
 <template>
   <div class="variables-table">
-    <p-layout-table sticky :root-margin="offsetStickyRootMargin">
+    <p-layout-table sticky :root-margin="margin">
       <template #header-start>
         <div class="variables-table__header-start">
           <VariablesDeleteButton v-if="can.delete.variable" :variable-ids="selectedVariables" @delete="deleteVariables" />
@@ -92,7 +92,7 @@
 
   const api = useWorkspaceApi()
   const can = useCan()
-  const { offsetStickyRootMargin } = useOffsetStickyRootMargin()
+  const { margin } = useOffsetStickyRootMargin()
 
   const variableLike = ref<string>()
   const variableLikeDebounced = useDebouncedRef(variableLike, 1000)

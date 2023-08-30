@@ -1,6 +1,6 @@
 <template>
   <div class="deployment-list">
-    <p-layout-table :root-margin="offsetStickyRootMargin" sticky>
+    <p-layout-table :root-margin="margin" sticky>
       <template #header-start>
         <slot name="header-start">
           <DeploymentsDeleteButton size="xs" :selected="selected" @delete="deleteDeployments" />
@@ -57,7 +57,7 @@
     (event: 'update' | 'delete', value?: string): void,
   }>()
 
-  const { offsetStickyRootMargin } = useOffsetStickyRootMargin()
+  const { margin } = useOffsetStickyRootMargin()
 
   const DEFAULT_LIMIT = 40
 
