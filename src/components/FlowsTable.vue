@@ -1,6 +1,6 @@
 <template>
   <div class="flows-table">
-    <p-layout-table sticky>
+    <p-layout-table :root-margin="margin" sticky>
       <template #header-start>
         <div class="flows-table__header-start">
           <ResultsCount v-if="selectedFlows.length == 0" label="Flow" :count="flowsCount" />
@@ -77,7 +77,7 @@
   import { useDebouncedRef, useSubscription } from '@prefecthq/vue-compositions'
   import { computed, ref } from 'vue'
   import { FlowsDeleteButton, DeploymentsCount, ResultsCount, SearchInput, FlowActivityChart, SelectedCount } from '@/components'
-  import { useCan, useFlowsFilterFromRoute, useWorkspaceApi, useWorkspaceRoutes, useFlowRuns } from '@/compositions'
+  import { useCan, useFlowsFilterFromRoute, useWorkspaceApi, useWorkspaceRoutes, useFlowRuns, useOffsetStickyRootMargin } from '@/compositions'
   import { useComponent } from '@/compositions/useComponent'
   import { FlowsFilter } from '@/models/Filters'
   import { Flow } from '@/models/Flow'
@@ -88,6 +88,7 @@
     filter?: FlowsFilter,
   }>()
 
+  const { margin } = useOffsetStickyRootMargin()
   const { FlowMenu } = useComponent()
 
   const api = useWorkspaceApi()

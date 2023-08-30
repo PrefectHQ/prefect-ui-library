@@ -35,26 +35,6 @@
 <style>
 .work-queue-status-badge { @apply
   text-xs
-  pl-2
-}
-
-.p-tag.work-queue-status-badge--healthy { @apply
-  bg-sentiment-positive
-  text-inverse
-  dark:text-default
-}
-
-.p-tag.work-queue-status-badge--unhealthy { @apply
-  bg-sentiment-negative
-  text-inverse
-  dark:text-default
-}
-
-
-.p-tag.work-queue-status-badge--paused { @apply
-  bg-state-pending-300
-  text-state-pending-900
-  dark:bg-state-pending-800
-  dark:text-white
+  pl-1
 }
 </style>

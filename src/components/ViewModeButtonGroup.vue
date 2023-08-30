@@ -7,7 +7,7 @@
   import { activeViewMode } from '@/utilities/activeViewMode'
 
   const viewOptions: ButtonGroupOption[] = [
-    { label: '', value: 'grid', icon: 'Squares2X2Icon' },
-    { label: '', value: 'rows', icon: 'Bars4Icon' },
+    { value: 'grid', icon: 'Squares2X2Icon' },
+    { value: 'rows', icon: 'Bars4Icon' },
   ]
 </script>
