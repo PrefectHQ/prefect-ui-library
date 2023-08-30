@@ -2,9 +2,8 @@
   <ArtifactCard :artifact="artifact">
     <template v-if="hasRun && crumbs.length">
       <p-bread-crumbs :crumbs="crumbs" class="artifact-result-card__bread-crumbs" :class="classes.breadCrumbs" />
-
-      <p-markdown-renderer v-if="artifact.description" :text="artifact.description" />
     </template>
+    <p-markdown-renderer v-if="artifact.description" :text="artifact.description" />
   </ArtifactCard>
 </template>
 
