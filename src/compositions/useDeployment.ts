@@ -1,4 +1,4 @@
-import { useSubscriptionWithDependencies } from '@prefecthq/vue-compositions'
+import { SubscriptionOptions, useSubscriptionWithDependencies } from '@prefecthq/vue-compositions'
 import { computed, MaybeRefOrGetter, toRef, toValue } from 'vue'
 import { useCan } from '@/compositions/useCan'
 import { useWorkspaceApi } from '@/compositions/useWorkspaceApi'
@@ -8,7 +8,7 @@ import { UseEntitySubscription } from '@/types/useEntitySubscription'
 
 export type UseDeployment = UseEntitySubscription<WorkspaceDeploymentsApi['getDeployment'], 'deployment'>
 
-export function useDeployment(deploymentId: MaybeRefOrGetter<string | null | undefined>): UseDeployment {
+export function useDeployment(deploymentId: MaybeRefOrGetter<string | null | undefined>, options?: SubscriptionOptions): UseDeployment {
   const api = useWorkspaceApi()
   const can = useCan()
 
@@ -27,7 +27,7 @@ export function useDeployment(deploymentId: MaybeRefOrGetter<string | null | und
   }
 
   const parameters = toRef(getter)
-  const subscription = useSubscriptionWithDependencies(api.deployments.getDeployment, parameters)
+  const subscription = useSubscriptionWithDependencies(api.deployments.getDeployment, parameters, options)
   const deployment = computed(() => subscription.response)
 
   return {
