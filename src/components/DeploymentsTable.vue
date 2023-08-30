@@ -34,7 +34,7 @@
         </template>
 
         <template #name="{ row }">
-          <FlowRouterLink :flow-id="row.flowId" after=" / " />
+          <FlowRouterLink :flow-id="row.flowId" after="&nbsp/&nbsp;" />
           <p-link :to="routes.deployment(row.id)">
             <span>{{ row.name }}</span>
           </p-link>
