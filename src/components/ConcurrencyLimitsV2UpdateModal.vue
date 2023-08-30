@@ -14,7 +14,7 @@
 
     <template #actions>
       <slot name="actions">
-        <p-button :loading="pending" @click="submit">
+        <p-button primary :loading="pending" @click="submit">
           Update
         </p-button>
       </slot>
