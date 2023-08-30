@@ -3,8 +3,8 @@
     <div class="flow-run-task-runs__filters">
       <ResultsCount :count="count" label="Task run" class="flow-run-task-runs__count" />
       <SearchInput v-model="searchTerm" placeholder="Search by run name" label="Search by run name" class="flow-run-task-runs__search" />
-      <TaskRunsSort v-model="filter.sort" class="flow-run-task-runs__sort" />
       <StateNameSelect v-model:selected="states" empty-message="All states" class="flow-run-task-runs__state" />
+      <TaskRunsSort v-model="filter.sort" class="flow-run-task-runs__sort" />
     </div>
 
     <TaskRunList :task-runs="taskRuns" @bottom="taskRunsSubscription.loadMore" />
@@ -82,7 +82,7 @@
 
 @screen md {
   .flow-run-task-runs__filters {
-    grid-template-areas: "count search sort state";
+    grid-template-areas: "count search state sort";
     grid-template-columns: 1fr max-content min-content min-content;
   }
 }

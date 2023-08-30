@@ -3,8 +3,8 @@
     <div class="flow-run-sub-flows__filters">
       <ResultsCount :count="count ?? 0" label="Subflow run" class="flow-run-sub-flows__count" />
       <SearchInput v-model="searchTerm" placeholder="Search by run name" label="Search by run name" class="flow-run-sub-flows__search" />
-      <FlowRunsSort v-model="sort" class="flow-run-sub-flows__sort" />
       <StateNameSelect v-model:selected="states" empty-message="All states" class="flow-run-sub-flows__state" />
+      <FlowRunsSort v-model="sort" class="flow-run-sub-flows__sort" />
     </div>
 
     <template v-if="!empty">
@@ -139,7 +139,7 @@
 
 @screen md {
   .flow-run-sub-flows__filters {
-    grid-template-areas: "count search sort state";
+    grid-template-areas: "count search state sort";
     grid-template-columns: 1fr max-content min-content min-content;
   }
 }
