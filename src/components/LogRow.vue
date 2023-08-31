@@ -62,7 +62,7 @@
   shrink-0
   text-right
   pl-1
-  overflow-auto
+  truncate
 }
 
 .log-row__logger { @apply
