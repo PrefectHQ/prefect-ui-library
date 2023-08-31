@@ -9,7 +9,7 @@
       </template>
     </p-accordion>
   </template>
-  <template v-else>
+  <template v-if="!count">
     <FlowRunStateTypeEmpty :state-type="stateType" />
   </template>
 </template>
@@ -20,6 +20,7 @@
   import FlowRunsAccordionHeader from '@/components/FlowRunsAccordionHeader.vue'
   import FlowRunStateTypeEmpty from '@/components/FlowRunStateTypeEmpty.vue'
   import { useFlows } from '@/compositions/useFlows'
+  import { useFlowRunsCount } from '@/compositions/useFlowRunsCount'
   import { useInterval } from '@/compositions/useInterval'
   import { FlowRunsFilter, FlowsFilter } from '@/models/Filters'
   import { StateType } from '@/models/StateType'
@@ -44,6 +45,7 @@
     }
   }
   const options = useInterval()
+  const { count } = useFlowRunsCount(flowRunsFilter, options)
   const { flows } = useFlows(flowsFilter, options)
   const flowIds = computed(() => flows.value?.map(flow => flow.id))
   const flowsLookup = computed(() => toMap(flows.value ?? [], 'id'))
