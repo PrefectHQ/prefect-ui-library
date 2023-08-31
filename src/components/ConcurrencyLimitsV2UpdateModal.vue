@@ -10,8 +10,8 @@
           <p-number-input v-model="limit" :min="0" :state="limitState" />
         </p-label>
 
-        <p-label label="Slot Decay Per Second" :message="decayErrorMessage" :state="decayState">
-          <p-number-input v-model="decay" :min="0" :state="decayState" />
+        <p-label label="Slot Decay Per Second">
+          <p-number-input v-model="decay" :min="0" />
         </p-label>
 
         <p-label label="Active">
