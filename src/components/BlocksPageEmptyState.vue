@@ -14,10 +14,10 @@
     </template>
 
     <template #actions>
-      <DocumentationButton :to="localization.docs.blocks" />
-      <p-button v-if="can.create.block" icon-append="PlusIcon" :to="routes.blocksCatalog()">
+      <p-button v-if="can.create.block" icon-append="PlusIcon" :to="routes.blocksCatalog()" primary>
         Add Block
       </p-button>
+      <DocumentationButton :to="localization.docs.blocks" />
     </template>
   </p-empty-state>
 </template>
