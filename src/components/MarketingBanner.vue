@@ -36,7 +36,10 @@
 .marketing-banner { @apply
   relative
   overflow-hidden
-  rounded-default
+  rounded-default;
+  background-image: url('/marketing-banner-bg.svg');
+  background-size: auto 100%;
+  background-position: top 0px right 0px;
 }
 
 .marketing-banner__content { @apply

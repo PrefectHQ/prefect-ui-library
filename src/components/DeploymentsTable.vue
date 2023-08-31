@@ -83,11 +83,11 @@
 </template>
 
 <script lang="ts" setup>
-  import { PTable, PTagWrapper, PEmptyResults, PLink, TableColumn, CheckboxModel, media } from '@prefecthq/prefect-design'
+  import { PTable, PTagWrapper, PEmptyResults, PLink, TableColumn, CheckboxModel } from '@prefecthq/prefect-design'
   import { useDebouncedRef, useSubscription } from '@prefecthq/vue-compositions'
   import { computed, ref } from 'vue'
-  import { SearchInput, ResultsCount, DeploymentToggle, DeploymentMenu, FlowRouterLink, FlowCombobox, DeploymentsDeleteButton, SelectedCount } from '@/components'
-  import { useWorkspaceApi, useWorkspaceRoutes, useCan, useDeploymentsFilterFromRoute, useOffsetStickyRootMargin } from '@/compositions'
+  import { SearchInput, ResultsCount, DeploymentToggle, FlowRouterLink, FlowCombobox, DeploymentsDeleteButton, SelectedCount } from '@/components'
+  import { useWorkspaceApi, useWorkspaceRoutes, useCan, useDeploymentsFilterFromRoute, useComponent, useOffsetStickyRootMargin } from '@/compositions'
   import { Deployment, isRRuleSchedule, Schedule } from '@/models'
   import { DeploymentsFilter } from '@/models/Filters'
   import { deploymentSortOptions } from '@/types/SortOptionTypes'
@@ -103,6 +103,7 @@
 
   const api = useWorkspaceApi()
   const can = useCan()
+  const { DeploymentMenu } = useComponent()
   const routes = useWorkspaceRoutes()
   const deploymentName = ref<string>()
   const deploymentNameDebounced = useDebouncedRef(deploymentName, 1200)
