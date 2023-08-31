@@ -15,7 +15,9 @@
     </template>
 
     <template #actions>
-      <DocumentationButton :to="localization.docs.deployments" />
+      <slot name="actions">
+        <DocumentationButton :to="localization.docs.deployments" />
+      </slot>
     </template>
   </p-empty-state>
 </template>
