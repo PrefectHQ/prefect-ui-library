@@ -14,7 +14,9 @@
     </template>
 
     <template #actions>
-      <DocumentationButton :to="localization.docs.flows" />
+      <slot name="actions">
+        <DocumentationButton :to="localization.docs.flows" />
+      </slot>
     </template>
   </p-empty-state>
 </template>

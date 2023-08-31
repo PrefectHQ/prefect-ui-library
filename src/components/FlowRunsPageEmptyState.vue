@@ -13,9 +13,11 @@
     </template>
 
     <template #actions>
-      <DocumentationButton :to="localization.docs.gettingStarted">
-        Get Started
-      </DocumentationButton>
+      <slot name="actions">
+        <DocumentationButton :to="localization.docs.gettingStarted">
+          Get Started
+        </DocumentationButton>
+      </slot>
     </template>
   </p-empty-state>
 </template>
