@@ -29,7 +29,7 @@ export function useTabs(tabs: MaybeRef<ConditionalTab[]>, tab?: MaybeRef<string 
     }
 
     tabRef.value = firstVisibleTab.value
-  })
+  }, { immediate: true })
 
   return {
     tabs: visibleTabs,
