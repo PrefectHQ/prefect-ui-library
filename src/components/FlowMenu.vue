@@ -13,7 +13,6 @@
   />
 </template>
 
-
 <script lang="ts">
   export default {
     name: 'FlowMenu',
@@ -31,8 +30,6 @@
 
   defineProps<{
     flow: Flow,
-
-
   }>()
 
   const api = useWorkspaceApi()
