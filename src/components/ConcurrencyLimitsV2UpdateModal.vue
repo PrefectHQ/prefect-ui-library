@@ -62,7 +62,6 @@
 
 
   const decay = ref(0)
-  const { state: decayState, error: decayErrorMessage } = useValidation(decay, 'Slot decay', [isGreaterThanZeroOrNull])
 
 
   const internalShowModal = computed({
