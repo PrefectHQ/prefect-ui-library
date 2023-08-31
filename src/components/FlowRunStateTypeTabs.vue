@@ -7,8 +7,7 @@
     </template>
     <template #content="{ tab }">
       <p-content>
-        <FlowRunStateTypeTabDescription :state-type="getTabStates(tab.label)" :filter="getStateTypeFilterGetter(tab.label)" />
-        <FlowRunsAccordion :filter="getStateTypeFilterGetter(tab.label)" />
+        <FlowRunsAccordion :filter="getStateTypeFilterGetter(tab.label)" :state-type="getTabStates(tab.label)" />
       </p-content>
     </template>
   </p-tabs>
