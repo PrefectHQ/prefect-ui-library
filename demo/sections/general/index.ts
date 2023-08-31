@@ -8,4 +8,5 @@ export const general: Section = {
   CopyableWrapper: () => import('./CopyableWrapper.vue'),
   CopyOverflowMenuItem: () => import('./CopyOverflowMenuItem.vue'),
   LogoImage: () => import('./LogoImage.vue'),
+  MarketingBanner: () => import('./MarketingBanner.vue'),
 }

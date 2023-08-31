@@ -39,7 +39,7 @@
   min-h-[160px]
   rounded-default
   flex
-  flex-wrap
+  flex-col
   gap-x-6
   justify-center
   items-center
