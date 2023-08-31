@@ -19,12 +19,12 @@
   import FlowRunsAccordionContent from '@/components/FlowRunsAccordionContent.vue'
   import FlowRunsAccordionHeader from '@/components/FlowRunsAccordionHeader.vue'
   import FlowRunStateTypeEmpty from '@/components/FlowRunStateTypeEmpty.vue'
-  import { useFlows } from '@/compositions/useFlows'
   import { useFlowRunsCount } from '@/compositions/useFlowRunsCount'
+  import { useFlows } from '@/compositions/useFlows'
   import { useInterval } from '@/compositions/useInterval'
   import { FlowRunsFilter, FlowsFilter } from '@/models/Filters'
-  import { StateType } from '@/models/StateType'
   import { Flow } from '@/models/Flow'
+  import { StateType } from '@/models/StateType'
   import { Getter, MaybeGetter } from '@/types/reactivity'
   import { MaybeArray } from '@/types/utilities'
   import { toMap } from '@/utilities'
@@ -66,6 +66,7 @@
     return flow
   }
 </script>
+
 <style>
 .p-accordion__section:first-child .flow-runs-accordion-header:first-of-type { @apply
   border-transparent

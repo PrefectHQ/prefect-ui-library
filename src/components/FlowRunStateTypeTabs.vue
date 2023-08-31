@@ -19,7 +19,6 @@
   import { computed, toValue } from 'vue'
   import FlowRunsAccordion from '@/components/FlowRunsAccordion.vue'
   import FlowRunStateTypeCount from '@/components/FlowRunStateTypeCount.vue'
-  import FlowRunStateTypeTabDescription from '@/components/FlowRunStateTypeTabDescription.vue'
   import { useFlowRunsCount } from '@/compositions'
   import { FlowRunsFilter } from '@/models/Filters'
   import { StateType } from '@/models/StateType'
