@@ -12,7 +12,7 @@
     </template>
 
     <template #active="{ row }">
-      <ConcurrencyLimitV2Toggle :limit="row" @update="concurrencyLimitSubscription.refresh()" />
+      <ConcurrencyLimitV2Toggle :limit="row" />
     </template>
 
     <template #action-heading>
