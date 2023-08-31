@@ -6,8 +6,13 @@
         {{ row.name }}
       </p-link>
     </template>
-    <template #active-task-runs="{ row }">
+
+    <template #active-slots="{ row }">
       {{ row.activeSlots }}
+    </template>
+
+    <template #active="{ row }">
+      <ConcurrencyLimitV2Toggle :limit="row" @update="concurrencyLimitSubscription.refresh()" />
     </template>
 
     <template #action-heading>
@@ -32,7 +37,7 @@
   import { TableColumn } from '@prefecthq/prefect-design'
   import { useSubscription } from '@prefecthq/vue-compositions'
   import { computed } from 'vue'
-  import { ConcurrencyLimitsPageEmptyState, ConcurrencyLimitV2Menu } from '@/components'
+  import { ConcurrencyLimitsPageEmptyState, ConcurrencyLimitV2Menu, ConcurrencyLimitV2Toggle } from '@/components'
   import { useWorkspaceApi, useWorkspaceRoutes } from '@/compositions'
   import { ConcurrencyV2Limit } from '@/models/ConcurrencyV2Limit'
 
@@ -49,6 +54,14 @@
     {
       property: 'activeSlots',
       label: 'Active Slots',
+    },
+    {
+      property: 'slotDecayPerSecond',
+      label: 'Slot Decay per Second',
+    },
+    {
+      property: 'active',
+      label: 'Active',
     },
     {
       label: 'Action',
