@@ -50,6 +50,7 @@ export { default as ConcurrencyLimitV2Menu } from '@/components/ConcurrencyLimit
 export { default as ConcurrencyLimitsV2Table } from './ConcurrencyLimitsV2Table.vue'
 export { default as ConcurrencyLimitsV2CreateModal } from './ConcurrencyLimitsV2CreateModal.vue'
 export { default as ConcurrencyLimitsV2UpdateModal } from './ConcurrencyLimitsV2UpdateModal.vue'
+export { default as ConcurrencyLimitV2Toggle } from './ConcurrencyLimitV2Toggle.vue'
 export { default as ConcurrencyTableActiveSlots } from './ConcurrencyTableActiveSlots.vue'
 export { default as ConfirmDeleteModal } from './ConfirmDeleteModal.vue'
 export { default as ConfirmDeleteModalWithSlot } from './ConfirmDeleteModalWithSlot.vue'
