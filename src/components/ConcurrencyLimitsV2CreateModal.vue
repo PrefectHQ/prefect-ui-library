@@ -9,6 +9,14 @@
         <p-label label="Concurrency Limit" :message="limitErrorMessage" :state="limitState">
           <p-number-input v-model="limit" :min="0" :state="limitState" />
         </p-label>
+
+        <p-label label="Slot Decay Per Second" :message="decayErrorMessage" :state="decayState">
+          <p-number-input v-model="decay" :min="0" :state="decayState" />
+        </p-label>
+
+        <p-label label="Active">
+          <p-toggle v-model="active" />
+        </p-label>
       </p-content>
     </p-form>
 
@@ -46,6 +54,12 @@
     isGreaterThanZeroOrNull,
   ])
 
+  const active = ref(true)
+
+
+  const decay = ref(0)
+  const { state: decayState, error: decayErrorMessage } = useValidation(decay, 'Slot decay', [isGreaterThanZeroOrNull])
+
   const internalShowModal = computed({
     get() {
       return props.showModal
@@ -61,6 +75,8 @@
   const reset = (): void => {
     name.value = ''
     limit.value = 0
+    decay.value = 0
+    active.value = true
   }
 
   const { valid, pending, validate } = useValidationObserver()
@@ -68,7 +84,7 @@
     await validate()
     if (valid.value) {
       try {
-        await api.concurrencyV2Limits.createConcurrencyV2Limit({ name: name.value, limit: limit.value })
+        await api.concurrencyV2Limits.createConcurrencyV2Limit({ name: name.value, limit: limit.value, slotDecayPerSecond: decay.value, active: active.value })
         concurrencyLimitSubscription.refresh()
         showToast(localization.success.createConcurrencyLimit, 'success')
       } catch (error) {
