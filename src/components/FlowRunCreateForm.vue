@@ -1,11 +1,8 @@
 <template>
   <p-form class="flow-run-create-form p-background" @submit="submit">
     <p-content class="flow-run-create-form__section">
-      <h3 class="flow-run-create-form__section-header">
-        General
-      </h3>
 
-      <p-label label="Name (Optional)">
+      <p-label label="Run Name">
         <p-text-input v-model="name">
           <template #append>
             <p-button
@@ -17,48 +14,6 @@
           </template>
         </p-text-input>
       </p-label>
-
-      <p-label label="Message (Optional)">
-        <p-textarea v-model="stateMessage" placeholder="Created from the Prefect UI" />
-      </p-label>
-
-      <p-label label="Tags (Optional)">
-        <p-tags-input v-model="tags" :options="deploymentTags" />
-      </p-label>
-
-      <p-label v-if="workPoolName && !workPool?.isPushPool" :label="workQueueComboboxLabel">
-        <WorkPoolQueueCombobox v-model:selected="workQueueName" :work-pool-name="workPoolName" />
-      </p-label>
-
-      <div class="flow-run-create-form__retries">
-        <p-label label="Retries (optional)">
-          <p-number-input v-model="retries" :min="0" />
-        </p-label>
-
-        <p-label label="Retry Delay (optional)">
-          <p-number-input v-model="retryDelay" :min="0" append="Seconds" />
-        </p-label>
-      </div>
-
-      <p-divider v-if="deployment.parameters" />
-
-      <h3 class="flow-run-create-form__section-header">
-        Start
-      </h3>
-
-      <p-button-group v-model="when" :options="whenOptions" small />
-
-      <template v-if="when == 'later'">
-        <div class="flow-run-create-form__row">
-          <p-label label="Date" :message="startErrorMessage" :state="startState">
-            <DateInput v-model="start" show-time />
-          </p-label>
-          <p-label label="Timezone">
-            <TimezoneSelect v-model="timezone" />
-          </p-label>
-        </div>
-      </template>
-
 
       <template v-if="hasParameters">
         <p-divider />
@@ -75,6 +30,48 @@
           </SchemaInput>
         </p-content>
       </template>
+
+      <p-accordion :sections="['Additional Options']">
+        <template #content>
+          <p-label label="Message (Optional)">
+            <p-textarea v-model="stateMessage" placeholder="Created from the Prefect UI" />
+          </p-label>
+          <p-label label="Tags (Optional)">
+            <p-tags-input v-model="tags" :options="deploymentTags" />
+          </p-label>
+
+          <p-label v-if="workPoolName && !workPool?.isPushPool" :label="workQueueComboboxLabel">
+            <WorkPoolQueueCombobox v-model:selected="workQueueName" :work-pool-name="workPoolName" />
+          </p-label>
+
+          <div class="flow-run-create-form__retries">
+            <p-label label="Retries (optional)">
+              <p-number-input v-model="retries" :min="0" />
+            </p-label>
+
+            <p-label label="Retry Delay (optional)">
+              <p-number-input v-model="retryDelay" :min="0" append="Seconds" />
+            </p-label>
+          </div>
+
+          <h3 class="flow-run-create-form__section-header">
+            Start
+          </h3>
+
+          <p-button-group v-model="when" :options="whenOptions" small />
+
+          <template v-if="when == 'later'">
+            <div class="flow-run-create-form__row">
+              <p-label label="Date" :message="startErrorMessage" :state="startState">
+                <DateInput v-model="start" show-time />
+              </p-label>
+              <p-label label="Timezone">
+                <TimezoneSelect v-model="timezone" />
+              </p-label>
+            </div>
+          </template>
+        </template>
+      </p-accordion>
     </p-content>
 
     <template #footer>
@@ -253,5 +250,18 @@
 .flow-run-create-form__retries { @apply
   flex
   gap-4
+}
+
+.p-accordion__heading { @apply
+  text-lg
+  font-semibold
+}
+
+.p-accordion__content { @apply
+  pt-5
+}
+
+.p-accordion__content-padding { @apply
+  space-y-5
 }
 </style>
