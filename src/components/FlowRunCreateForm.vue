@@ -109,6 +109,7 @@
     deployment: Deployment,
     // these must be the unmapped SchemaValues
     parameters?: SchemaValues,
+    name?: string,
   }>()
 
   const generateRandomName = (): string => {
@@ -151,7 +152,7 @@
   const tags = ref<string[]>(props.deployment.tags ?? [])
   const retries = ref<number | null>(null)
   const retryDelay = ref<number | null>(null)
-  const name = ref<string>(generateRandomName())
+  const name = ref<string>(props.name ?? generateRandomName())
   const parameters = ref<SchemaValues>(combinedParameters.value)
   const stateMessage = ref<string>('')
   const workQueueName = ref<string | null>(props.deployment.workQueueName)
