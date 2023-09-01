@@ -69,6 +69,6 @@
 
 <style>
 .p-accordion__section:first-child .flow-runs-accordion-header:first-of-type { @apply
-  border-transparent
+  border-0
 }
 </style>
