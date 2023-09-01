@@ -31,9 +31,7 @@
         </p-content>
       </template>
 
-      <h3 class="flow-run-create-form__section-header">
-        Start
-      </h3>
+      <h3>Start</h3>
 
       <p-button-group v-model="when" :options="whenOptions" small />
 
