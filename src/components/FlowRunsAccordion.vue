@@ -9,21 +9,29 @@
       </template>
     </p-accordion>
   </template>
+  <template v-if="!count">
+    <FlowRunStateTypeEmpty :state-type="stateType" />
+  </template>
 </template>
 
 <script lang="ts" setup>
   import { Ref, computed, ref, toRef, watch } from 'vue'
   import FlowRunsAccordionContent from '@/components/FlowRunsAccordionContent.vue'
   import FlowRunsAccordionHeader from '@/components/FlowRunsAccordionHeader.vue'
+  import FlowRunStateTypeEmpty from '@/components/FlowRunStateTypeEmpty.vue'
+  import { useFlowRunsCount } from '@/compositions/useFlowRunsCount'
   import { useFlows } from '@/compositions/useFlows'
   import { useInterval } from '@/compositions/useInterval'
   import { FlowRunsFilter, FlowsFilter } from '@/models/Filters'
   import { Flow } from '@/models/Flow'
+  import { StateType } from '@/models/StateType'
   import { Getter, MaybeGetter } from '@/types/reactivity'
+  import { MaybeArray } from '@/types/utilities'
   import { toMap } from '@/utilities'
 
   const props = defineProps<{
     filter: MaybeGetter<FlowRunsFilter>,
+    stateType: MaybeArray<StateType>,
   }>()
 
   const flowRunsFilter = toRef(props.filter)
@@ -37,6 +45,7 @@
     }
   }
   const options = useInterval()
+  const { count } = useFlowRunsCount(flowRunsFilter, options)
   const { flows } = useFlows(flowsFilter, options)
   const flowIds = computed(() => flows.value?.map(flow => flow.id))
   const flowsLookup = computed(() => toMap(flows.value ?? [], 'id'))
@@ -57,3 +66,9 @@
     return flow
   }
 </script>
+
+<style>
+.p-accordion__section:first-child .flow-runs-accordion-header:first-of-type { @apply
+  border-0
+}
+</style>

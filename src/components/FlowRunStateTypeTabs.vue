@@ -7,8 +7,7 @@
     </template>
     <template #content="{ tab }">
       <p-content>
-        <FlowRunStateTypeTabDescription :state-type="getTabStates(tab.label)" :filter="getStateTypeFilterGetter(tab.label)" />
-        <FlowRunsAccordion :filter="getStateTypeFilterGetter(tab.label)" />
+        <FlowRunsAccordion :filter="getStateTypeFilterGetter(tab.label)" :state-type="getTabStates(tab.label)" />
       </p-content>
     </template>
   </p-tabs>
@@ -20,7 +19,6 @@
   import { computed, toValue } from 'vue'
   import FlowRunsAccordion from '@/components/FlowRunsAccordion.vue'
   import FlowRunStateTypeCount from '@/components/FlowRunStateTypeCount.vue'
-  import FlowRunStateTypeTabDescription from '@/components/FlowRunStateTypeTabDescription.vue'
   import { useFlowRunsCount } from '@/compositions'
   import { FlowRunsFilter } from '@/models/Filters'
   import { StateType } from '@/models/StateType'
