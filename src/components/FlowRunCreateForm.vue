@@ -31,6 +31,23 @@
         </p-content>
       </template>
 
+      <h3 class="flow-run-create-form__section-header">
+        Start
+      </h3>
+
+      <p-button-group v-model="when" :options="whenOptions" small />
+
+      <template v-if="when == 'later'">
+        <div class="flow-run-create-form__row">
+          <p-label label="Date" :message="startErrorMessage" :state="startState">
+            <DateInput v-model="start" show-time />
+          </p-label>
+          <p-label label="Timezone">
+            <TimezoneSelect v-model="timezone" />
+          </p-label>
+        </div>
+      </template>
+
       <p-accordion :sections="['Additional Options']">
         <template #content>
           <p-label label="Message (Optional)">
@@ -53,23 +70,6 @@
               <p-number-input v-model="retryDelay" :min="0" append="Seconds" />
             </p-label>
           </div>
-
-          <h3 class="flow-run-create-form__section-header">
-            Start
-          </h3>
-
-          <p-button-group v-model="when" :options="whenOptions" small />
-
-          <template v-if="when == 'later'">
-            <div class="flow-run-create-form__row">
-              <p-label label="Date" :message="startErrorMessage" :state="startState">
-                <DateInput v-model="start" show-time />
-              </p-label>
-              <p-label label="Timezone">
-                <TimezoneSelect v-model="timezone" />
-              </p-label>
-            </div>
-          </template>
         </template>
       </p-accordion>
     </p-content>
