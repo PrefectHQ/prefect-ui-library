@@ -257,6 +257,10 @@
   font-semibold
 }
 
+.p-content { @apply
+  pb-3
+}
+
 .p-accordion__content { @apply
   pt-5
 }
