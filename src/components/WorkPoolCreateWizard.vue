@@ -3,11 +3,11 @@
     <template #work-pool-infrastructure-type>
       <WorkPoolCreateWizardStepInfrastructureType v-model:workPool="workPool" :workers="availableWorkers" />
     </template>
-    <template #work-pool-infrastructure-configuration>
-      <WorkPoolCreateWizardStepInfrastructureConfiguration v-model:workPool="workPool" :default-base-job-template="defaultBaseJobTemplate" />
-    </template>
     <template #work-pool-information>
       <WorkPoolCreateWizardStepInformation v-model:workPool="workPool" :workers="availableWorkers" />
+    </template>
+    <template #work-pool-infrastructure-configuration>
+      <WorkPoolCreateWizardStepInfrastructureConfiguration v-model:workPool="workPool" :default-base-job-template="defaultBaseJobTemplate" />
     </template>
   </p-wizard>
 </template>
@@ -29,8 +29,8 @@
 
   const steps: WizardStep[] = [
     { title: 'Infrastructure Type', key: 'work-pool-infrastructure-type' },
-    { title: 'Configuration', key: 'work-pool-infrastructure-configuration' },
     { title: 'Details', key: 'work-pool-information' },
+    { title: 'Configuration', key: 'work-pool-infrastructure-configuration' },
   ]
 
   const api = useWorkspaceApi()
