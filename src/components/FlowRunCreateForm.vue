@@ -1,7 +1,6 @@
 <template>
   <p-form class="flow-run-create-form p-background" @submit="submit">
     <p-content class="flow-run-create-form__section">
-
       <p-label label="Run Name">
         <p-text-input v-model="name">
           <template #append>
@@ -47,27 +46,34 @@
       </template>
 
       <p-accordion :sections="['Additional Options']">
+        <template #heading="{ section }">
+          <span class="flow-run-create-form__options-heading">
+            {{ section }}
+          </span>
+        </template>
         <template #content>
-          <p-label label="Message (Optional)">
-            <p-textarea v-model="stateMessage" placeholder="Created from the Prefect UI" />
-          </p-label>
-          <p-label label="Tags (Optional)">
-            <p-tags-input v-model="tags" :options="deploymentTags" />
-          </p-label>
-
-          <p-label v-if="workPoolName && !workPool?.isPushPool" :label="workQueueComboboxLabel">
-            <WorkPoolQueueCombobox v-model:selected="workQueueName" :work-pool-name="workPoolName" />
-          </p-label>
-
-          <div class="flow-run-create-form__retries">
-            <p-label label="Retries (optional)">
-              <p-number-input v-model="retries" :min="0" />
+          <p-content class="flow-run-create-form__options">
+            <p-label label="Message (Optional)">
+              <p-textarea v-model="stateMessage" placeholder="Created from the Prefect UI" />
+            </p-label>
+            <p-label label="Tags (Optional)">
+              <p-tags-input v-model="tags" :options="deploymentTags" />
             </p-label>
 
-            <p-label label="Retry Delay (optional)">
-              <p-number-input v-model="retryDelay" :min="0" append="Seconds" />
+            <p-label v-if="workPoolName && !workPool?.isPushPool" :label="workQueueComboboxLabel">
+              <WorkPoolQueueCombobox v-model:selected="workQueueName" :work-pool-name="workPoolName" />
             </p-label>
-          </div>
+
+            <div class="flow-run-create-form__retries">
+              <p-label label="Retries (optional)">
+                <p-number-input v-model="retries" :min="0" />
+              </p-label>
+
+              <p-label label="Retry Delay (optional)">
+                <p-number-input v-model="retryDelay" :min="0" append="Seconds" />
+              </p-label>
+            </div>
+          </p-content>
         </template>
       </p-accordion>
     </p-content>
@@ -250,20 +256,12 @@
   gap-4
 }
 
-.p-accordion__heading { @apply
+.flow-run-create-form__options-heading { @apply
   text-lg
   font-semibold
 }
 
-.p-content { @apply
-  pb-3
-}
-
-.p-accordion__content { @apply
+.flow-run-create-form__options { @apply
   pt-5
-}
-
-.p-accordion__content-padding { @apply
-  space-y-5
 }
 </style>
