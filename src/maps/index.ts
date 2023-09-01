@@ -29,6 +29,7 @@ import { mapFlowRunResponseToFlowRun } from '@/maps/flowRun'
 import { mapSavedSearchFilterToFlowRunFilters } from '@/maps/flowRunFilter'
 import { mapGraphNodeToFlowRunGraphResponse, mapFlowRunGraphResponseToGraphNode } from '@/maps/flowRunGraph'
 import { mapRunHistoryToFlowRunHistoryResponse, mapFlowRunHistoryResponseToRunHistory } from '@/maps/flowRunHistory'
+import { mapFlowRunGraphResponseToTimelineNode } from '@/maps/flowRunTimeline'
 import { mapFlowStatsFilterToFlowRunsFilter, mapFlowStatsFilterToTaskRunsFilter } from '@/maps/flowStatsFilter'
 import { mapLogToLogResponse, mapLogResponseToLog } from '@/maps/logs'
 import { mapNotificationResponseToNotification } from '@/maps/notification'
@@ -101,7 +102,7 @@ export const maps = {
   FlowFilter: { FlowFilterRequest: mapFlowFilter },
   FlowResponse: { Flow: mapFlowResponseToFlow },
   FlowRunFilter: { FlowRunFilterRequest: mapFlowRunFilter },
-  FlowRunGraphResponse: { GraphNode: mapFlowRunGraphResponseToGraphNode },
+  FlowRunGraphResponse: { GraphNode: mapFlowRunGraphResponseToGraphNode, TimelineNode: mapFlowRunGraphResponseToTimelineNode },
   FlowRunHistoryResponse: { RunHistory: mapFlowRunHistoryResponseToRunHistory },
   FlowRunResponse: { FlowRun: mapFlowRunResponseToFlowRun },
   FlowRunsFilter: { FlowRunsFilterRequest: mapFlowRunsFilter },

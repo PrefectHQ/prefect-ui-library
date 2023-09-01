@@ -1,4 +1,4 @@
-import { TimelineData } from '@prefecthq/graphs'
+import { GraphTimelineNode } from '@prefecthq/graphs'
 import { KeyedDataStoreFindCallback } from './KeyedDataStore'
 import { MockApi } from '@/../demo/services/MockApi'
 import { FlowRun, GraphNode, RunHistory, stateType, StateUpdate } from '@/models'
@@ -129,7 +129,7 @@ export class MockWorkspaceFlowRunsApi extends MockApi implements IWorkspaceFlowR
     return await this.flowRunGraphs.get(graphId).graph
   }
 
-  public getFlowRunsTimeline(): Promise<TimelineData> {
+  public getFlowRunsTimeline(): Promise<GraphTimelineNode> {
     throw new Error('MockWorkspaceFlowRunsApi has not implemented the getFlowRunGraph method')
   }
 
