@@ -29,6 +29,7 @@
   import { localization } from '@/localization'
   import { SavedSearch } from '@/models/SavedSearch'
   import { isRequired, withMessage, isValidIf } from '@/utilities/validation'
+  import { getErrorMessage } from '@/utilities/errors'
 
   const props = defineProps<{
     showModal: boolean,
@@ -91,7 +92,8 @@
       emit('saved', savedSearch)
     } catch (error) {
       console.error(error)
-      showToast(localization.error.createSavedSearch, 'error')
+      const errMessage = getErrorMessage(error, localization.error.createSavedSearch)
+      showToast(errMessage, 'error')
     }
   }
 </script>
