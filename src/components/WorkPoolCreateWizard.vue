@@ -21,6 +21,7 @@
   import { useWorkspaceApi, useWorkspaceRoutes } from '@/compositions'
   import { localization } from '@/localization'
   import { WorkPoolCreate, WorkPoolFormValues } from '@/models'
+  import { getErrorMessage } from '@/utilities/errors'
 
   const router = useRouter()
   const routes = useWorkspaceRoutes()
@@ -59,8 +60,9 @@
 
       router.push(routes.workPool(name))
     } catch (error) {
-      showToast(localization.error.createWorkPool, 'error')
       console.error(error)
+      const errMessage = getErrorMessage(error, localization.error.createWorkPool)
+      showToast(errMessage, 'error')
     }
 
 
