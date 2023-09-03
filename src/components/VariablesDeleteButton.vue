@@ -15,6 +15,7 @@
   import { useShowModal, useWorkspaceApi } from '@/compositions'
   import { localization } from '@/localization'
   import { toPluralString } from '@/utilities'
+  import { getErrorMessage } from '@/utilities/errors'
 
   const props = defineProps<{
     variableIds: string[],
@@ -44,7 +45,8 @@
       showToast(successMessage, 'success')
       emit('delete')
     } catch (error) {
-      showToast(localization.error.delete(localization.info.variables), 'error')
+      const errMessage = getErrorMessage(error, localization.error.delete(localization.info.variables))
+      showToast(errMessage, 'error')
     } finally {
       close()
     }

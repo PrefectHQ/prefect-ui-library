@@ -32,6 +32,7 @@
   import { localization } from '@/localization'
   import { ConcurrencyLimitCreate } from '@/models/ConcurrencyLimitCreate'
   import { isRequired, isGreaterThan, fieldRules } from '@/utilities/validation'
+  import { getErrorMessage } from '@/utilities/errors'
 
   const props = defineProps<{
     showModal: boolean,
@@ -67,7 +68,8 @@
       showToast(localization.success.createConcurrencyLimit, 'success')
     } catch (error) {
       console.error(error)
-      showToast(localization.error.createConcurrencyLimit, 'error')
+      const errMessage = getErrorMessage(error, localization.error.createConcurrencyLimit)
+      showToast(errMessage, 'error')
     } finally {
       resetForm()
       internalShowModal.value = false
