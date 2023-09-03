@@ -59,6 +59,7 @@
   import { localization } from '@/localization'
   import { FlowRunsFilter, isPausedStateType, isRunningStateType, isStuckStateType, isTerminalStateType, StateUpdateDetails } from '@/models'
   import { deleteItem } from '@/utilities'
+  import { getErrorMessage } from '@/utilities/errors'
 
   const props = defineProps<{
     flowRunId: string,
@@ -143,7 +144,8 @@
       showToast(localization.success.changeFlowRunState, 'success')
     } catch (error) {
       console.error(error)
-      showToast(localization.error.changeFlowRunState, 'error')
+      const errMessage = getErrorMessage(error, localization.error.changeFlowRunState)
+      showToast(errMessage, 'error')
     }
   }
 

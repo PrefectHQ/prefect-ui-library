@@ -31,6 +31,7 @@
   import { useWorkspaceApi, useCan, useShowModal } from '@/compositions'
   import { localization } from '@/localization'
   import { Variable } from '@/models'
+  import { getErrorMessage } from '@/utilities/errors'
 
   defineProps<{
     variable: Variable,
@@ -57,7 +58,8 @@
       emit('delete', id)
     } catch (error) {
       console.error(error)
-      showToast(localization.error.delete(localization.info.variable.toLowerCase()), 'error')
+      const errMessage = getErrorMessage(error, localization.info.variable.toLowerCase())
+      showToast(errMessage, 'error')
     }
   }
 
