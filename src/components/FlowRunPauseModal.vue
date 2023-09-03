@@ -29,8 +29,8 @@
   import { localization } from '@/localization'
   import { StateUpdateDetails } from '@/models'
   import { fieldRules, isGreaterThan, isRequired } from '@/utilities'
-  import { secondsToApproximateString } from '@/utilities/seconds'
   import { getErrorMessage } from '@/utilities/errors'
+  import { secondsToApproximateString } from '@/utilities/seconds'
 
   const props = defineProps<{
     showModal: boolean,

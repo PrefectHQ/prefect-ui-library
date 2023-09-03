@@ -11,6 +11,7 @@
   import { useCan } from '@/compositions/useCan'
   import { localization } from '@/localization'
   import { Notification } from '@/models'
+  import { getErrorMessage } from '@/utilities/errors'
 
   const props = defineProps<{
     notification: Notification,
@@ -45,9 +46,9 @@
       showToast(message, 'success')
       emit('update')
     } catch (error) {
-      const message = value ? localization.error.activateNotification : localization.error.pauseNotification
-
-      showToast(message, 'error')
+      const defaultMessage = value ? localization.error.activateNotification : localization.error.pauseNotification
+      const errMessage = getErrorMessage(error, defaultMessage)
+      showToast(errMessage, 'error')
 
       console.error(error)
     } finally {

@@ -28,8 +28,8 @@
   import { useForm } from '@/compositions/useForm'
   import { localization } from '@/localization'
   import { SavedSearch } from '@/models/SavedSearch'
-  import { isRequired, withMessage, isValidIf } from '@/utilities/validation'
   import { getErrorMessage } from '@/utilities/errors'
+  import { isRequired, withMessage, isValidIf } from '@/utilities/validation'
 
   const props = defineProps<{
     showModal: boolean,

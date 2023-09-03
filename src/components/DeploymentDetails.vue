@@ -93,6 +93,7 @@
   import { localization } from '@/localization'
   import { Schedule, Deployment } from '@/models'
   import { formatDateTimeNumeric } from '@/utilities/dates'
+  import { getErrorMessage } from '@/utilities/errors'
 
   const props = defineProps<{
     deployment: Deployment,
@@ -149,7 +150,8 @@
       showToast(successMessage, 'success')
     } catch (error) {
       console.error(error)
-      showToast(errorMessage, 'error')
+      const errMessage = getErrorMessage(error, errorMessage)
+      showToast(errMessage, 'error')
     } finally {
       updateScheduleLoading.value = false
     }

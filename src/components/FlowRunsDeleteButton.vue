@@ -16,6 +16,7 @@
   import ConfirmDeleteModal from '@/components/ConfirmDeleteModal.vue'
   import { useShowModal, useWorkspaceApi } from '@/compositions'
   import { localization } from '@/localization'
+  import { getErrorMessage } from '@/utilities/errors'
 
   defineProps<{
     selected: string[],
@@ -46,7 +47,8 @@
       showToast(toastMessage, 'success')
       emit('delete')
     } catch (error) {
-      showToast(localization.error.delete('Flow Run'), 'error')
+      const errMessage = getErrorMessage(error, localization.error.delete('Flow Run'))
+      showToast(errMessage, 'error')
     }
   }
 </script>
