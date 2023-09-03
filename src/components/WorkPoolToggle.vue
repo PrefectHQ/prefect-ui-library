@@ -10,6 +10,7 @@
   import { useCan, useWorkspaceApi } from '@/compositions'
   import { localization } from '@/localization'
   import { WorkPool } from '@/models'
+  import { getErrorMessage } from '@/utilities/errors'
 
   const props = defineProps<{
     workPool: WorkPool,
@@ -45,8 +46,9 @@
 
       emit('update')
     } catch (error) {
-      const message = value ? localization.error.pauseWorkPool : localization.error.activateWorkPool
-      showToast(message)
+      const defaultMessage = value ? localization.error.pauseWorkPool : localization.error.activateWorkPool
+      const errMessage = getErrorMessage(error, defaultMessage)
+      showToast(errMessage, 'error')
 
       console.error(error)
     }

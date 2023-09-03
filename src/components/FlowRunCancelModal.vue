@@ -27,6 +27,7 @@
   import { useWorkspaceApi } from '@/compositions'
   import { localization } from '@/localization'
   import { StateUpdateDetails } from '@/models'
+  import { getErrorMessage } from '@/utilities/errors'
 
   const props = defineProps<{
     showModal: boolean,
@@ -66,7 +67,8 @@
       showToast(localization.success.cancelFlowRun, 'success')
     } catch (error) {
       console.error(error)
-      showToast(localization.error.cancelFlowRun, 'error')
+      const errMessage = getErrorMessage(error, localization.error.cancelFlowRun)
+      showToast(errMessage, 'error')
     }
   }
 </script>
