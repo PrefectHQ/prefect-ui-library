@@ -30,6 +30,7 @@
   import { StateUpdateDetails } from '@/models'
   import { fieldRules, isGreaterThan, isRequired } from '@/utilities'
   import { secondsToApproximateString } from '@/utilities/seconds'
+  import { getErrorMessage } from '@/utilities/errors'
 
   const props = defineProps<{
     showModal: boolean,
@@ -77,7 +78,8 @@
       showToast(localization.success.pauseFlowRun, 'success')
     } catch (error) {
       console.error(error)
-      showToast(localization.error.pauseFlowRun, 'error')
+      const errMessage = getErrorMessage(error, localization.error.pauseFlowRun)
+      showToast(errMessage, 'error')
     }
   })
 </script>

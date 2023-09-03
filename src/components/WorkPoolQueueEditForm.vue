@@ -48,6 +48,7 @@
   import { useWorkspaceApi, useWorkspaceRoutes } from '@/compositions'
   import { localization } from '@/localization'
   import { WorkPoolQueue } from '@/models'
+  import { getErrorMessage } from '@/utilities/errors'
 
   const props = defineProps<{
     workPoolName: string,
@@ -96,7 +97,8 @@
         showToast(localization.success.updateWorkPoolQueue, 'success')
         router.push(routes.workPoolQueue(props.workPoolName, values.name))
       } catch (error) {
-        showToast(localization.error.updateWorkPool, 'error')
+        const errMessage = getErrorMessage(error, localization.error.updateWorkPool)
+        showToast(errMessage, 'error')
         console.error(error)
       }
     }
