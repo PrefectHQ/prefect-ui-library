@@ -36,8 +36,8 @@
   import { computed, ref } from 'vue'
   import { useWorkspaceApi } from '@/compositions'
   import { localization } from '@/localization'
-  import { isRequired, isGreaterThanZeroOrNull } from '@/utilities/formValidation'
   import { getErrorMessage } from '@/utilities/errors'
+  import { isRequired, isGreaterThanZeroOrNull } from '@/utilities/formValidation'
 
   const props = defineProps<{
     showModal: boolean,

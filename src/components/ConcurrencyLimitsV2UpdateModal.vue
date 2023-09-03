@@ -37,6 +37,7 @@
   import { useWorkspaceApi } from '@/compositions'
   import { localization } from '@/localization'
   import { ConcurrencyV2Limit } from '@/models/ConcurrencyV2Limit'
+  import { getErrorMessage } from '@/utilities/errors'
   import { isRequired, isGreaterThanZeroOrNull } from '@/utilities/formValidation'
 
   const props = defineProps<{
@@ -93,7 +94,8 @@
         showToast(localization.success.updateConcurrencyLimit, 'success')
       } catch (error) {
         console.error(error)
-        showToast(localization.error.updateConcurrencyLimit, 'error')
+        const errMessage = getErrorMessage(error, localization.error.updateConcurrencyLimit)
+        showToast(errMessage, 'error')
       } finally {
         reset()
         internalShowModal.value = false

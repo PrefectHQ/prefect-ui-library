@@ -31,8 +31,8 @@
   import { useForm } from '@/compositions/useForm'
   import { localization } from '@/localization'
   import { ConcurrencyLimitCreate } from '@/models/ConcurrencyLimitCreate'
-  import { isRequired, isGreaterThan, fieldRules } from '@/utilities/validation'
   import { getErrorMessage } from '@/utilities/errors'
+  import { isRequired, isGreaterThan, fieldRules } from '@/utilities/validation'
 
   const props = defineProps<{
     showModal: boolean,
