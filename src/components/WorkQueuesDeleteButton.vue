@@ -17,6 +17,7 @@
   import { useShowModal, useWorkspaceApi } from '@/compositions'
   import { localization } from '@/localization'
   import { WorkQueue } from '@/models'
+  import { getErrorMessage } from '@/utilities/errors'
 
   defineProps<{
     selected: WorkQueue[],
@@ -44,7 +45,8 @@
       showToast(toastMessage, 'success')
       emit('delete')
     } catch (error) {
-      showToast(localization.error.delete('work queues'), 'error')
+      const errMessage = getErrorMessage(error, localization.error.delete('work queues'))
+      showToast(errMessage, 'error')
     } finally {
       close()
     }
