@@ -9,8 +9,7 @@
     </template>
 
     <template #description>
-      Flows represent workflow logic and encapsulate dependencies between other Prefect objects.
-      They are dynamically registered the first time they are run.
+      Flows are Python functions that encapsulate workflow logic and allow users to interact with and reason about the state of their workflows.
     </template>
 
     <template #actions>
