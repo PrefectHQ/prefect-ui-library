@@ -1,7 +1,5 @@
 <template>
-  <template v-if="status">
-    <div class="worker-status-icon" :class="classes" />
-  </template>
+  <div class="worker-status-icon" :class="classes" />
 </template>
 
 <script lang="ts" setup>

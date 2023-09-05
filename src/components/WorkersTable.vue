@@ -12,7 +12,7 @@
       </template>
 
       <template #last-seen="{ value }">
-        <span>{{ formatDateTimeRelative(value) }}</span>
+        <span>{{ formatDateTimeRelative(value, now) }}</span>
       </template>
 
       <template #status="{ row }">
@@ -49,7 +49,7 @@
 
 <script lang="ts" setup>
   import { TableColumn } from '@prefecthq/prefect-design'
-  import { useSubscription } from '@prefecthq/vue-compositions'
+  import { useNow, useSubscription } from '@prefecthq/vue-compositions'
   import { computed, ref, toRefs } from 'vue'
   import { ResultsCount, SearchInput, CopyOverflowMenuItem, WorkerStatusBadge } from '@/components'
   import { useWorkspaceApi } from '@/compositions'
@@ -64,6 +64,7 @@
   const subscriptionOptions = {
     interval: 30000,
   }
+  const { now } = useNow({ interval: 1000 })
 
   const { workPoolName } = toRefs(props)
 
