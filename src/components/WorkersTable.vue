@@ -52,7 +52,7 @@
   import { useSubscription } from '@prefecthq/vue-compositions'
   import { computed, ref, toRefs } from 'vue'
   import { ResultsCount, SearchInput, CopyOverflowMenuItem, WorkerStatusBadge } from '@/components'
-  import { useWorkspaceAp } from '@/compositions'
+  import { useWorkspaceApi } from '@/compositions'
   import { WorkPoolWorker } from '@/models'
   import { formatDateTimeRelative } from '@/utilities'
 
