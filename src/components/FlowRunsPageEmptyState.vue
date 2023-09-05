@@ -9,7 +9,7 @@
     </template>
 
     <template #description>
-      Flow runs represent the observed execution of a Prefect flow.
+      Flow runs store the state history for each execution of a flow.
     </template>
 
     <template #actions>

@@ -7,11 +7,11 @@
     </template>
 
     <template #heading>
-      Create a deployment to begin remotely managing your flows
+      Create a deployment to get started
     </template>
 
     <template #description>
-      Deployments are API representations of flows and allow for their remote configuration and scheduling.
+      Deployments elevate workflows from functions you call manually to API objects that can be remotely triggered.
     </template>
 
     <template #actions>
