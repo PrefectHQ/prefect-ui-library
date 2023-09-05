@@ -1,5 +1,6 @@
 import { SelectOptionNormalized } from '@prefecthq/prefect-design'
 import { BaseJobTemplateRequest } from '@/models/api/WorkPoolRequest'
+import { WorkPoolStatus } from '@/models/WorkPoolStatus'
 import { titleCase } from '@/utilities'
 
 export interface IWorkPool {
@@ -14,6 +15,7 @@ export interface IWorkPool {
   defaultQueueId: string,
   concurrencyLimit: number | null,
   baseJobTemplate: BaseJobTemplateRequest,
+  status: WorkPoolStatus,
 }
 
 export class WorkPool implements IWorkPool {
@@ -28,6 +30,7 @@ export class WorkPool implements IWorkPool {
   public defaultQueueId: string
   public concurrencyLimit: number | null
   public baseJobTemplate: BaseJobTemplateRequest
+  public status: WorkPoolStatus
 
   public constructor(workPool: IWorkPool) {
     this.id = workPool.id
@@ -41,6 +44,7 @@ export class WorkPool implements IWorkPool {
     this.defaultQueueId = workPool.defaultQueueId
     this.concurrencyLimit = workPool.concurrencyLimit
     this.baseJobTemplate = workPool.baseJobTemplate
+    this.status = workPool.status
   }
 
   public get typeLabel(): string {
