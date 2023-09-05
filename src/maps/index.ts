@@ -57,6 +57,7 @@ import { mapPrefectWorkerCollectionResponseToWorkerCollectionItemArray, mapWorke
 import { mapWorkerScheduledFlowRunResponseToWorkerScheduledFlowRun, mapWorkerScheduledFlowRunsToWorkerScheduledFlowRunsRequest } from '@/maps/workerScheduledFlowRun'
 import { mapWorkPoolCreateToWorkPoolCreateRequest, mapWorkPoolEditToWorkPoolEditRequest, mapWorkPoolResponseToWorkPool, mapWorkPoolToWorkPoolResponse } from '@/maps/workPool'
 import { mapWorkPoolQueueCreateToWorkPoolQueueCreateRequest, mapWorkPoolQueueEditToWorkPoolQueueEditRequest, mapWorkPoolQueueResponseToWorkPoolQueue, mapWorkPoolQueueToWorkPoolQueueResponse } from '@/maps/workPoolQueue'
+import { mapServerWorkPoolStatusToWorkPoolStatus, mapWorkPoolStatusToServerWorkPoolStatus } from '@/maps/workPoolStatus'
 import { mapWorkPoolWorkerResponseToWorkPoolWorker } from '@/maps/workPoolWorker'
 import { mapWorkPoolWorkerStatusToServerWorkPoolWorkerStatus, mapServerWorkPoolWorkerStatusToWorkPoolWorkerStatus } from '@/maps/workPoolWorkerStatus'
 import { mapWorkQueueToWorkQueueResponse, mapWorkQueueResponseToWorkQueue, mapWorkQueueCreateToWorkQueueCreateRequest, mapWorkQueueEditToWorkQueueEditRequest } from '@/maps/workQueue'
@@ -137,6 +138,7 @@ export const maps = {
   SchemaValues: { SchemaValuesRequest: mapSchemaValuesToSchemaValuesRequest },
   SchemaValuesResponse: { SchemaValues: mapSchemaValuesResponseToSchemaValues },
   ServerStateType: { StateType: mapServerStateTypeToStateType },
+  ServerWorkPoolStatus: { WorkPoolStatus: mapServerWorkPoolStatusToWorkPoolStatus },
   ServerWorkPoolWorkerStatus: { WorkPoolWorkerStatus: mapServerWorkPoolWorkerStatusToWorkPoolWorkerStatus },
   State: { StateResponse: mapStateToStateResponse },
   StateCreate: { StateRequest: mapStateCreateToStateRequest },
@@ -183,6 +185,7 @@ export const maps = {
   WorkPoolQueuesFilter: { WorkPoolQueuesFilterRequest: mapWorkPoolQueuesFilter },
   WorkPoolResponse: { WorkPool: mapWorkPoolResponseToWorkPool },
   WorkPoolsFilter: { WorkPoolsFilterRequest: mapWorkPoolsFilter },
+  WorkPoolStatus: { ServerWorkPoolStatus: mapWorkPoolStatusToServerWorkPoolStatus },
   WorkPoolWorkerResponse: { WorkPoolWorker: mapWorkPoolWorkerResponseToWorkPoolWorker },
   WorkPoolWorkersFilter: { WorkPoolWorkersFilterRequest: mapWorkPoolWorkersFilter },
   WorkPoolWorkerStatus: { ServerWorkPoolWorkerStatus: mapWorkPoolWorkerStatusToServerWorkPoolWorkerStatus },

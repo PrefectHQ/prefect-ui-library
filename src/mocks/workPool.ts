@@ -18,6 +18,7 @@ export const randomWorkPool: MockFunction<WorkPool, [Partial<WorkPool>?]> = func
     concurrencyLimit: this.create('number'),
     defaultQueueId: this.create('id'),
     baseJobTemplate: this.create('parameters', [{}, this.create('schema')]),
+    status: this.create('workPoolStatus'),
     ...overrides,
   })
 }

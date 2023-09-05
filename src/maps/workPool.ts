@@ -14,6 +14,7 @@ export const mapWorkPoolResponseToWorkPool: MapFunction<WorkPoolResponse, WorkPo
     concurrencyLimit: source.concurrency_limit,
     defaultQueueId: source.default_queue_id,
     baseJobTemplate: source.base_job_template,
+    status: this.map('ServerWorkPoolStatus', source.status, 'WorkPoolStatus'),
   })
 }
 
@@ -30,6 +31,7 @@ export const mapWorkPoolToWorkPoolResponse: MapFunction<WorkPool, WorkPoolRespon
     concurrency_limit: source.concurrencyLimit,
     default_queue_id: source.defaultQueueId,
     base_job_template: source.baseJobTemplate,
+    status: this.map('WorkPoolStatus', source.status, 'ServerWorkPoolStatus'),
   }
 }
 
