@@ -17,14 +17,14 @@
       <p-button v-if="can.create.concurrency_limit" primary icon-append="PlusIcon" @click="open">
         Add Concurrency Limit
       </p-button>
-      <ConcurrencyLimitsCreateModal v-model:showModal="showModal" />
+      <ConcurrencyLimitsV2CreateModal v-model:showModal="showModal" />
     </template>
   </p-empty-state>
 </template>
 
 <script lang="ts" setup>
   import { PEmptyState, PButton, PIcon } from '@prefecthq/prefect-design'
-  import ConcurrencyLimitsCreateModal from '@/components/ConcurrencyLimitsCreateModal.vue'
+  import ConcurrencyLimitsV2CreateModal from '@/components/ConcurrencyLimitsV2CreateModal.vue'
   import DocumentationButton from '@/components/DocumentationButton.vue'
   import { useCan } from '@/compositions/useCan'
   import { useShowModal } from '@/compositions/useShowModal'
