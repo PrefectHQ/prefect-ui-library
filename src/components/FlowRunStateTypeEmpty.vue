@@ -24,7 +24,15 @@
     stateType: MaybeArray<StateType>,
   }>()
 
-  const states = computed(() => asArray(props.stateType))
+  const states = computed(() => asArray(props.stateType).map(stateType => {
+    // the dashboard only looks for runs in the past. so only scheduled runs that are late will appear
+    // forcing this to say "late" rather than "scheduled" to remove confusion.
+    if (stateType === 'scheduled') {
+      return 'late'
+    }
+
+    return stateType
+  }))
 
   const formatter = new Intl.ListFormat('en', { style: 'long', type: 'disjunction' })
   const description = computed(() => {
@@ -46,7 +54,7 @@
       return FlowRunStateTypeEmptyGoodTerminalImage
     }
 
-    if (states.value.includes('scheduled')) {
+    if (states.value.includes('late')) {
       return FlowRunStateTypeEmptyAwaitingImage
     }
 

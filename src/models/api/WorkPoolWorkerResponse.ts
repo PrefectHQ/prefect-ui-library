@@ -1,4 +1,6 @@
+import { ServerWorkPoolWorkerStatus } from '@/models/WorkPoolWorkerStatus'
 import { DateString } from '@/types/dates'
+
 
 export type WorkPoolWorkerResponse = {
   id: string,
@@ -7,4 +9,5 @@ export type WorkPoolWorkerResponse = {
   name: string,
   work_pool_id: string,
   last_heartbeat_time: DateString,
+  status: ServerWorkPoolWorkerStatus,
 }

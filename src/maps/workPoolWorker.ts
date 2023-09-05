@@ -1,6 +1,7 @@
 import { WorkPoolWorker } from '@/models'
 import { WorkPoolWorkerResponse } from '@/models/api/WorkPoolWorkerResponse'
 import { MapFunction } from '@/services/Mapper'
+
 export const mapWorkPoolWorkerResponseToWorkPoolWorker: MapFunction<WorkPoolWorkerResponse, WorkPoolWorker> = function(source) {
   return new WorkPoolWorker({
     id: source.id,
@@ -9,5 +10,6 @@ export const mapWorkPoolWorkerResponseToWorkPoolWorker: MapFunction<WorkPoolWork
     name: source.name,
     workPoolId: source.work_pool_id,
     lastHeartbeatTime: this.map('string', source.last_heartbeat_time, 'Date'),
+    status: this.map('ServerWorkPoolWorkerStatus', source.status, 'WorkPoolWorkerStatus'),
   })
 }

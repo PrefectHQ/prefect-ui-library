@@ -3,7 +3,7 @@
     <p-label label="Select the infrastructure you want to use to execute your flow runs" :message="error" :state="state" />
     <template v-for="{ label, value, logoUrl, description, isBeta } in options" :key="value">
       <p-card>
-        <p-radio v-model="type" :value="value" :state="state" :label="label">
+        <p-radio v-model="type" :value="value" :state="state" :label="label" @update:model-value="wizard.next()">
           <template #label>
             <div class="work-pool-create-wizard-step-infrastructure-type__infra_type_card_content_container">
               <LogoImage :url="logoUrl" :alt="label" size="md" class="block-type-card-preview__logo" />
@@ -74,7 +74,7 @@
     })
   })
 
-  const { defineValidate } = useWizardStep()
+  const { defineValidate, wizard } = useWizardStep()
   const { validate } = useValidationObserver()
   const { state, error } = useValidation(type, 'Work pool infrastructure type', value => {
     if (value) {

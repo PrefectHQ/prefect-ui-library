@@ -29,6 +29,7 @@ import { mapFlowRunResponseToFlowRun } from '@/maps/flowRun'
 import { mapSavedSearchFilterToFlowRunFilters } from '@/maps/flowRunFilter'
 import { mapGraphNodeToFlowRunGraphResponse, mapFlowRunGraphResponseToGraphNode } from '@/maps/flowRunGraph'
 import { mapRunHistoryToFlowRunHistoryResponse, mapFlowRunHistoryResponseToRunHistory } from '@/maps/flowRunHistory'
+import { mapFlowRunGraphResponseToTimelineNode } from '@/maps/flowRunTimeline'
 import { mapFlowStatsFilterToFlowRunsFilter, mapFlowStatsFilterToTaskRunsFilter } from '@/maps/flowStatsFilter'
 import { mapLogToLogResponse, mapLogResponseToLog } from '@/maps/logs'
 import { mapNotificationResponseToNotification } from '@/maps/notification'
@@ -57,6 +58,7 @@ import { mapWorkerScheduledFlowRunResponseToWorkerScheduledFlowRun, mapWorkerSch
 import { mapWorkPoolCreateToWorkPoolCreateRequest, mapWorkPoolEditToWorkPoolEditRequest, mapWorkPoolResponseToWorkPool, mapWorkPoolToWorkPoolResponse } from '@/maps/workPool'
 import { mapWorkPoolQueueCreateToWorkPoolQueueCreateRequest, mapWorkPoolQueueEditToWorkPoolQueueEditRequest, mapWorkPoolQueueResponseToWorkPoolQueue, mapWorkPoolQueueToWorkPoolQueueResponse } from '@/maps/workPoolQueue'
 import { mapWorkPoolWorkerResponseToWorkPoolWorker } from '@/maps/workPoolWorker'
+import { mapWorkPoolWorkerStatusToServerWorkPoolWorkerStatus, mapServerWorkPoolWorkerStatusToWorkPoolWorkerStatus } from '@/maps/workPoolWorkerStatus'
 import { mapWorkQueueToWorkQueueResponse, mapWorkQueueResponseToWorkQueue, mapWorkQueueCreateToWorkQueueCreateRequest, mapWorkQueueEditToWorkQueueEditRequest } from '@/maps/workQueue'
 import { mapWorkQueueFilterToWorkQueueFilterResponse, mapWorkQueueFilterResponseToWorkQueueFilter } from '@/maps/workQueueFilter'
 import { mapWorkQueueHealthPolicyResponseToWorkQueueHealthPolicy } from '@/maps/workQueueHealthPolicy'
@@ -101,7 +103,7 @@ export const maps = {
   FlowFilter: { FlowFilterRequest: mapFlowFilter },
   FlowResponse: { Flow: mapFlowResponseToFlow },
   FlowRunFilter: { FlowRunFilterRequest: mapFlowRunFilter },
-  FlowRunGraphResponse: { GraphNode: mapFlowRunGraphResponseToGraphNode },
+  FlowRunGraphResponse: { GraphNode: mapFlowRunGraphResponseToGraphNode, TimelineNode: mapFlowRunGraphResponseToTimelineNode },
   FlowRunHistoryResponse: { RunHistory: mapFlowRunHistoryResponseToRunHistory },
   FlowRunResponse: { FlowRun: mapFlowRunResponseToFlowRun },
   FlowRunsFilter: { FlowRunsFilterRequest: mapFlowRunsFilter },
@@ -135,6 +137,7 @@ export const maps = {
   SchemaValues: { SchemaValuesRequest: mapSchemaValuesToSchemaValuesRequest },
   SchemaValuesResponse: { SchemaValues: mapSchemaValuesResponseToSchemaValues },
   ServerStateType: { StateType: mapServerStateTypeToStateType },
+  ServerWorkPoolWorkerStatus: { WorkPoolWorkerStatus: mapServerWorkPoolWorkerStatusToWorkPoolWorkerStatus },
   State: { StateResponse: mapStateToStateResponse },
   StateCreate: { StateRequest: mapStateCreateToStateRequest },
   StateDetails: { StateDetailsResponse: mapStateDetailsToStateDetailsResponse, StateDetailsRequest: mapStateDetailsToStateDetailsRequest },
@@ -182,6 +185,7 @@ export const maps = {
   WorkPoolsFilter: { WorkPoolsFilterRequest: mapWorkPoolsFilter },
   WorkPoolWorkerResponse: { WorkPoolWorker: mapWorkPoolWorkerResponseToWorkPoolWorker },
   WorkPoolWorkersFilter: { WorkPoolWorkersFilterRequest: mapWorkPoolWorkersFilter },
+  WorkPoolWorkerStatus: { ServerWorkPoolWorkerStatus: mapWorkPoolWorkerStatusToServerWorkPoolWorkerStatus },
   WorkQueue: { WorkQueueResponse: mapWorkQueueToWorkQueueResponse },
   WorkQueueCreate: { WorkQueueCreateRequest: mapWorkQueueCreateToWorkQueueCreateRequest },
   WorkQueueEdit: { WorkQueueEditRequest: mapWorkQueueEditToWorkQueueEditRequest },
