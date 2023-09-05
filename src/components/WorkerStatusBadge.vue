@@ -1,6 +1,6 @@
 <template>
-  <p-tag class="worker-status-badge">
-    <WorkerStatusIcon :status="worker.status" class="worker-status-badge__icon" />
+  <p-tag>
+    <WorkerStatusIcon :status="worker.status" />
     {{ capitalize(worker.status) }}
   </p-tag>
 </template>
