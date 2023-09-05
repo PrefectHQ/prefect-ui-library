@@ -11,8 +11,12 @@
         <span>{{ row.name }}</span>
       </template>
 
-      <template #last-polled="{ value }">
-        <span>{{ formatDateTimeNumeric(value) }}</span>
+      <template #last-seen="{ value }">
+        <span>{{ formatDateTimeRelative(value) }}</span>
+      </template>
+
+      <template #status="{ row }">
+        <WorkerStatusBadge :worker="row" />
       </template>
 
       <template #action-heading>
@@ -47,10 +51,10 @@
   import { TableColumn } from '@prefecthq/prefect-design'
   import { useSubscription } from '@prefecthq/vue-compositions'
   import { computed, ref, toRefs } from 'vue'
-  import { WorkPoolWorker } from '..'
-  import { ResultsCount, SearchInput, CopyOverflowMenuItem } from '@/components'
-  import { useWorkspaceApi } from '@/compositions'
-  import { formatDateTimeNumeric } from '@/utilities/dates'
+  import { ResultsCount, SearchInput, CopyOverflowMenuItem, WorkerStatusBadge } from '@/components'
+  import { useWorkspaceAp } from '@/compositions'
+  import { WorkPoolWorker } from '@/models'
+  import { formatDateTimeRelative } from '@/utilities'
 
   const props = defineProps<{
     workPoolName: string,
@@ -88,7 +92,11 @@
     },
     {
       property: 'lastHeartbeatTime',
-      label: 'Last Polled',
+      label: 'Last Seen',
+    },
+    {
+      property: 'status',
+      label: 'Status',
     },
     {
       label: 'Action',
