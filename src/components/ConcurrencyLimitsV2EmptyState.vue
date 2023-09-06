@@ -1,7 +1,7 @@
 <template>
   <p-empty-state class="concurrency-limit-page-empty-state">
     <template #icon>
-      <p-icon icon="TruckIcon" />
+      <p-icon icon="QueueListIcon" />
     </template>
 
     <template #heading>
