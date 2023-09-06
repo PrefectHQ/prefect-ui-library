@@ -1,5 +1,6 @@
-<template v-if="status">
+<template>
   <p-tooltip
+    v-if="status"
     :text="tooltipText"
   >
     <div v-if="status !== 'paused'" class="work-pool-status-icon" :class="classes" />

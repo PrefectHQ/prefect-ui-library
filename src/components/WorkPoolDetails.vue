@@ -1,7 +1,4 @@
 <template>
-  <!-- NEED WORK POOL BADGE AND ICON -->
-
-
   <div class="work-pool-details">
     <template v-if="workPool.status">
       <p-key-value label="Status" :alternate="alternate">
