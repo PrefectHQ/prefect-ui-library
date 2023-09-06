@@ -1,4 +1,5 @@
 import { SchemaResponse } from '@/models/api/SchemaResponse'
+import { ServerWorkPoolStatus } from '@/models/WorkPoolStatus'
 import { DateString } from '@/types/dates'
 
 export type BaseJobTemplateResponse = {
@@ -18,4 +19,5 @@ export type WorkPoolResponse = {
   concurrency_limit: number | null,
   default_queue_id: string,
   base_job_template: BaseJobTemplateResponse,
+  status: ServerWorkPoolStatus,
 }

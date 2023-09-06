@@ -2,9 +2,12 @@
   <p-card class="work-pool-card">
     <div class="work-pool-card__header">
       <div class="work-pool-card__heading">
-        <p-link class="work-pool-card__name" :to="routes.workPool(workPool.name)">
-          {{ workPool.name }}
-        </p-link>
+        <div class="work-pool-card__name">
+          <p-link class="work-pool-card__name" :to="routes.workPool(workPool.name)">
+            {{ workPool.name }}
+          </p-link>
+          <WorkPoolStatusIcon :status="workPool.status" />
+        </div>
         <ProcessTypeBadge :type-label="workPool.typeLabel" />
         <WorkersLateIndicator v-if="!media.sm" :work-pool-name="workPool.name" />
       </div>
@@ -40,7 +43,7 @@
 <script lang="ts" setup>
   import { media } from '@prefecthq/prefect-design'
   import { computed } from 'vue'
-  import { WorkPoolMenu, WorkPoolToggle, WorkersLateIndicator, ProcessTypeBadge } from '@/components'
+  import { WorkPoolMenu, WorkPoolToggle, WorkersLateIndicator, ProcessTypeBadge, WorkPoolStatusIcon } from '@/components'
   import { useWorkPoolLastPolled, useWorkspaceRoutes } from '@/compositions'
   import { WorkPool } from '@/models'
 
@@ -106,5 +109,11 @@
   flex-col
   gap-2
   items-start
+}
+
+.work-pool-card__name { @apply
+  flex
+  items-center
+  gap-2
 }
 </style>
