@@ -1,9 +1,12 @@
 <template>
   <div class="dashboard-work-pool-card">
     <div class="dashboard-work-pool-card__header">
-      <p-link class="dashboard-work-pool-card__name" :to="routes.workPool(workPool.name)">
-        {{ workPool.name }}
-      </p-link>
+      <div class="dashboard-work-pool-card__name">
+        <p-link :to="routes.workPool(workPool.name)">
+          {{ workPool.name }}
+        </p-link>
+        <WorkPoolStatusIcon :status="workPool.status" />
+      </div>
       <FlowRunsBarChart
         class="dashboard-work-pool-card__mini-bars"
         mini
@@ -44,6 +47,7 @@
   import WorkPoolAverageLateTime from '@/components/WorkPoolAverageLateTime.vue'
   import WorkPoolLastPolled from '@/components/WorkPoolLastPolled.vue'
   import WorkPoolQueueStatusArray from '@/components/WorkPoolQueueStatusArray.vue'
+  import WorkPoolStatusIcon from '@/components/WorkPoolStatusIcon.vue'
   import { useWorkspaceRoutes } from '@/compositions'
   import { FlowRunsFilter, WorkPool } from '@/models'
   import { mapper } from '@/services'
@@ -86,7 +90,10 @@
 }
 
 .dashboard-work-pool-card__name { @apply
+  flex
   flex-grow
+  items-center
+  gap-2
 }
 
 .dashboard-work-pool-card__mini-bars { @apply

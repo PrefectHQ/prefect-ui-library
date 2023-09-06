@@ -1,5 +1,16 @@
 <template>
+  <!-- NEED WORK POOL BADGE AND ICON -->
+
+
   <div class="work-pool-details">
+    <template v-if="workPool.status">
+      <p-key-value label="Status" :alternate="alternate">
+        <template #value>
+          <WorkPoolStatusBadge :work-pool="workPool" />
+        </template>
+      </p-key-value>
+    </template>
+
     <p-key-value label="Description" :value="workPool.description" :alternate="alternate" />
 
     <p-key-value label="Type" :value="workPool.typeLabel" :alternate="alternate" />
@@ -25,7 +36,7 @@
 <script lang="ts" setup>
   import { useSubscription } from '@prefecthq/vue-compositions'
   import { computed } from 'vue'
-  import { SchemaPropertiesKeyValues } from '@/components'
+  import { SchemaPropertiesKeyValues, WorkPoolStatusBadge } from '@/components'
   import { useWorkspaceApi } from '@/compositions'
   import { WorkPool } from '@/models'
   import { getSchemaDefaultValues, mapper } from '@/services'
