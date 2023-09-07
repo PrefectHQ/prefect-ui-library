@@ -25,7 +25,7 @@
   })
 
   const options: (SelectOption & { value: ArtifactType | null })[] = [
-    { label: 'All', value: null },
+    { label: 'All types', value: null },
     { label: 'Markdown', value: 'markdown' },
     { label: 'Table', value: 'table' },
   ]
