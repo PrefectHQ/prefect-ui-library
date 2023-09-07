@@ -1,19 +1,16 @@
-export function getErrorMessage(error: unknown, defaultErrorMessage: string): string {
-  let errorJson
+import axios from 'axios'
+import { isRecord, isString } from '@/utilities'
 
-  if (typeof error === 'string') {
-    try {
-      errorJson = JSON.parse(error)
-    } catch (parseError) {
-      // Error is not a valid JSON string
-      return defaultErrorMessage
-    }
-  } else if (typeof error === 'object' && error !== null) {
-    errorJson = error
-  } else {
+export function getErrorMessage(error: unknown, defaultErrorMessage: string): string {
+  if (!axios.isAxiosError(error)) {
     return defaultErrorMessage
   }
 
-  const detail = JSON.parse(errorJson?.request?.response ?? '')?.detail
-  return detail || defaultErrorMessage
+  const data = error.response?.data
+
+  if (isRecord(data) && isString(data.detail)) {
+    return data.detail
+  }
+
+  return defaultErrorMessage
 }
