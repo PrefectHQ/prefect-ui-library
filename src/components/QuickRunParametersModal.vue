@@ -26,7 +26,7 @@
   import { localization } from '@/localization'
   import { Deployment, DeploymentFlowRunCreate } from '@/models'
   import { SchemaValues } from '@/types/schemas'
-  import { getErrorMessage } from '@/utilities/errors'
+  import { getApiErrorMessage } from '@/utilities/errors'
 
   const props = defineProps<{
     showModal: boolean,
@@ -86,8 +86,8 @@
       const toastMessage = h(ToastFlowRunCreate, { flowRun, flowRunRoute: routes.flowRun, router, immediate: true })
       showToast(toastMessage, 'success')
     } catch (error) {
-      const errMessage = getErrorMessage(error, localization.error.scheduleFlowRun)
-      showToast(errMessage, 'error')
+      const message = getApiErrorMessage(error, localization.error.scheduleFlowRun)
+      showToast(message, 'error')
       console.error(error)
     }
   }

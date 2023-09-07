@@ -38,7 +38,7 @@
   import { localization } from '@/localization'
   import { isTerminalStateType, StateUpdateDetails } from '@/models'
   import { deleteItem } from '@/utilities'
-  import { getErrorMessage } from '@/utilities/errors'
+  import { getApiErrorMessage } from '@/utilities/errors'
 
   const props = defineProps<{
     taskRunId: string,
@@ -99,8 +99,8 @@
       showToast(localization.success.changeTaskRunState, 'success')
     } catch (error) {
       console.error(error)
-      const errMessage = getErrorMessage(error, localization.error.changeTaskRunState)
-      showToast(errMessage, 'error')
+      const message = getApiErrorMessage(error, localization.error.changeTaskRunState)
+      showToast(message, 'error')
     }
   }
 </script>

@@ -45,7 +45,7 @@
   import { SubmitButton, WorkPoolQueuePriorityLabel } from '@/components'
   import { useWorkspaceApi, useWorkspaceRoutes } from '@/compositions'
   import { localization } from '@/localization'
-  import { getErrorMessage } from '@/utilities/errors'
+  import { getApiErrorMessage } from '@/utilities/errors'
 
   const props = defineProps<{
     workPoolName: string,
@@ -99,8 +99,8 @@
 
       router.push(routes.workPoolQueue(props.workPoolName, name))
     } catch (error) {
-      const errMessage = getErrorMessage(error, localization.error.createWorkPoolQueue)
-      showToast(errMessage, 'error')
+      const message = getApiErrorMessage(error, localization.error.createWorkPoolQueue)
+      showToast(message, 'error')
       console.error(error)
     }
 

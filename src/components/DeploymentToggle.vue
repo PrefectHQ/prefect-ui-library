@@ -11,7 +11,7 @@
   import { useCan } from '@/compositions/useCan'
   import { localization } from '@/localization'
   import { Deployment } from '@/models'
-  import { getErrorMessage } from '@/utilities/errors'
+  import { getApiErrorMessage } from '@/utilities/errors'
 
   const props = defineProps<{
     deployment: Deployment,
@@ -53,8 +53,8 @@
     } catch (error) {
       const defaultMessage = value ? localization.error.activateDeployment : localization.error.pauseDeployment
 
-      const errMessage = getErrorMessage(error, defaultMessage)
-      showToast(errMessage, 'error')
+      const message = getApiErrorMessage(error, defaultMessage)
+      showToast(message, 'error')
 
       console.error(error)
     } finally {

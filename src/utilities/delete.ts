@@ -2,7 +2,7 @@ import { showToast } from '@prefecthq/prefect-design'
 import { Action } from '@prefecthq/vue-compositions'
 import { localization } from '@/localization'
 import { asArray } from '@/utilities/arrays'
-import { getErrorMessage } from '@/utilities/errors'
+import { getApiErrorMessage } from '@/utilities/errors'
 
 export type ItemType = 'Flow' | 'Deployment' | 'Flow run' | 'Work queue' | 'Block' | 'Notification' | 'Task run' | 'Concurrency Limit' | 'Work pool'
 type MaybeSingleParam<T extends Action, Params = Parameters<T>> = Params extends [unknown] ? Params[0] | Params : Params
@@ -16,8 +16,8 @@ export async function deleteItem<T extends Action>(args: MaybeSingleParam<T>, en
     showToast(localization.success.delete(type), 'success')
     return result
   } catch (error) {
-    const errMessage = getErrorMessage(error, localization.error.delete(type.toLowerCase()))
-    showToast(errMessage, 'error')
+    const message = getApiErrorMessage(error, localization.error.delete(type.toLowerCase()))
+    showToast(message, 'error')
 
     console.error(error)
   }

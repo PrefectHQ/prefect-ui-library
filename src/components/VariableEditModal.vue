@@ -33,7 +33,7 @@
   import { localization } from '@/localization'
   import { Variable, VariableEdit, MAX_VARIABLE_NAME_LENGTH, MAX_VARIABLE_VALUE_LENGTH } from '@/models'
   import { isSnakeCase, isRequired, isString, isLessThanOrEqual } from '@/utilities'
-  import { getErrorMessage } from '@/utilities/errors'
+  import { getApiErrorMessage } from '@/utilities/errors'
 
   const props = defineProps<{
     variable: Variable,
@@ -126,8 +126,8 @@
         emit('update', variable)
       } catch (error) {
         console.error(error)
-        const errMessage = getErrorMessage(error, localization.error.editVariable)
-        showToast(errMessage, 'error')
+        const message = getApiErrorMessage(error, localization.error.editVariable)
+        showToast(message, 'error')
       }
     }
   }

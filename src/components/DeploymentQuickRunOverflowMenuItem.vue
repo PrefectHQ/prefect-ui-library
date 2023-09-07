@@ -14,7 +14,7 @@
   import { useWorkspaceApi, useWorkspaceRoutes } from '@/compositions'
   import { localization } from '@/localization'
   import { Deployment } from '@/models'
-  import { getErrorMessage } from '@/utilities/errors'
+  import { getApiErrorMessage } from '@/utilities/errors'
 
   const props = defineProps<{
     deployment: Deployment,
@@ -45,8 +45,8 @@
         })
         showToast(toastMessage, 'success')
       } catch (error) {
-        const errMessage = getErrorMessage(error, localization.error.scheduleFlowRun)
-        showToast(errMessage, 'error')
+        const message = getApiErrorMessage(error, localization.error.scheduleFlowRun)
+        showToast(message, 'error')
         console.error(error)
       }
     }

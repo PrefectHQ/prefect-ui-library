@@ -29,7 +29,7 @@
   import { localization } from '@/localization'
   import { StateUpdateDetails } from '@/models'
   import { fieldRules, isGreaterThan, isRequired } from '@/utilities'
-  import { getErrorMessage } from '@/utilities/errors'
+  import { getApiErrorMessage } from '@/utilities/errors'
   import { secondsToApproximateString } from '@/utilities/seconds'
 
   const props = defineProps<{
@@ -78,8 +78,8 @@
       showToast(localization.success.pauseFlowRun, 'success')
     } catch (error) {
       console.error(error)
-      const errMessage = getErrorMessage(error, localization.error.pauseFlowRun)
-      showToast(errMessage, 'error')
+      const message = getApiErrorMessage(error, localization.error.pauseFlowRun)
+      showToast(message, 'error')
     }
   })
 </script>

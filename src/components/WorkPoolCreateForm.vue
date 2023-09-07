@@ -55,7 +55,7 @@
   import { localization } from '@/localization'
   import { WorkPoolCreate } from '@/models'
   import { WorkerBaseJobTemplate } from '@/types'
-  import { getErrorMessage } from '@/utilities/errors'
+  import { getApiErrorMessage } from '@/utilities/errors'
 
   const api = useWorkspaceApi()
   const router = useRouter()
@@ -124,8 +124,8 @@
 
         router.push(routes.workPool(name))
       } catch (error) {
-        const errMessage = getErrorMessage(error, localization.error.createWorkPool)
-        showToast(errMessage, 'error')
+        const message = getApiErrorMessage(error, localization.error.createWorkPool)
+        showToast(message, 'error')
         console.error(error)
       }
     }

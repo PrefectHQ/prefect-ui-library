@@ -22,7 +22,7 @@
   import StateBadge from '@/components/StateBadge.vue'
   import { useWorkspaceApi } from '@/compositions'
   import { localization } from '@/localization'
-  import { getErrorMessage } from '@/utilities/errors'
+  import { getApiErrorMessage } from '@/utilities/errors'
 
   const props = defineProps<{
     showModal: boolean,
@@ -55,8 +55,8 @@
       showToast(localization.success.resumeFlowRun, 'success')
     } catch (error) {
       console.error(error)
-      const errMessage = getErrorMessage(error, localization.error.resumeFlowRun)
-      showToast(errMessage, 'error')
+      const message = getApiErrorMessage(error, localization.error.resumeFlowRun)
+      showToast(message, 'error')
     }
   }
 </script>

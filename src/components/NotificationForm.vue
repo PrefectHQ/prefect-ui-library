@@ -55,7 +55,7 @@
   import { getSchemaDefaultValues } from '@/services/schemas/utilities'
   import { FormAction } from '@/types/buttons'
   import { SchemaValues } from '@/types/schemas'
-  import { getErrorMessage } from '@/utilities/errors'
+  import { getApiErrorMessage } from '@/utilities/errors'
 
   const props = defineProps<{
     notification?: Notification,
@@ -206,8 +206,8 @@
       emit('update:notification', notification)
       emit('submit', notification)
     } catch (err) {
-      const errMessage = getErrorMessage(err, localization.error.submitNotification)
-      showToast(errMessage, 'error')
+      const message = getApiErrorMessage(err, localization.error.submitNotification)
+      showToast(message, 'error')
     }
   })
 
