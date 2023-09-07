@@ -14,6 +14,10 @@
           <p-number-input v-model="decay" :min="0" />
         </p-label>
 
+        <p-label label="Active Slots">
+          <p-number-input v-model="activeSlots" :min="0" />
+        </p-label>
+
         <p-label label="Active">
           <p-toggle v-model="active" />
         </p-label>
@@ -83,6 +87,7 @@
     limit.value = props.concurrencyLimit.limit
     decay.value = props.concurrencyLimit.slotDecayPerSecond ?? 0
     active.value = props.concurrencyLimit.active ?? true
+    activeSlots.value = props.concurrencyLimit.activeSlots ?? 0
   }
 
   const { valid, pending, validate } = useValidationObserver()
