@@ -14,6 +14,10 @@
           <p-number-input v-model="decay" :min="0" />
         </p-label>
 
+        <p-label label="Active Slots">
+          <p-number-input v-model="activeSlots" :min="0" />
+        </p-label>
+
         <p-label label="Active">
           <p-toggle v-model="active" />
         </p-label>
