@@ -31,7 +31,9 @@
               the docs.
             </p-link>.
           </p-message>
-          <JsonInput v-model:model-value="localBaseJobTemplateJson" show-format-button @update:model-value="onLocalBaseJobTemplateJsonUpdate" />
+          <p-label :message="jsonError" :state="jsonState">
+            <JsonInput v-model:model-value="localBaseJobTemplateJson" :state="jsonState" show-format-button @update:model-value="onLocalBaseJobTemplateJsonUpdate" />
+          </p-label>
         </div>
       </template>
     </p-tabs>
@@ -39,13 +41,14 @@
 </template>
 
 <script lang="ts" setup>
+  import { useValidation } from '@prefecthq/vue-compositions'
   import { isEqual } from 'lodash'
   import { computed, ref, watch } from 'vue'
   import { SchemaFormFieldsWithValues, JsonInput } from '@/components'
   import { localization } from '@/localization'
   import { getSchemaDefaultValues, mapper } from '@/services'
   import { Schema, SchemaProperties, SchemaValues, WorkerBaseJobTemplate } from '@/types'
-  import { getSchemaWithoutDefaults, mapValues, stringify } from '@/utilities'
+  import { getSchemaWithoutDefaults, isJson, mapValues, stringify } from '@/utilities'
 
 
   const props = defineProps<{
@@ -63,6 +66,7 @@
   }
 
   const localBaseJobTemplateJson = ref<string>(stringify(props.baseJobTemplate))
+  const { state: jsonState, error: jsonError } = useValidation(localBaseJobTemplateJson, isJson('Base Job Template'))
   const localBaseJobTemplate = computed<WorkerBaseJobTemplate | null>(() => {
     try {
       return JSON.parse(localBaseJobTemplateJson.value)
