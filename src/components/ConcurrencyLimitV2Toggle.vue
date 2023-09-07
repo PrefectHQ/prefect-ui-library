@@ -25,7 +25,7 @@
 
   const internalValue = computed({
     get() {
-      return !props.limit.active
+      return !!props.limit.active
     },
     set(value: boolean) {
       toggleLimit(value)
@@ -33,7 +33,7 @@
   })
 
   const toggleTooltipText = computed(() => {
-    return internalValue.value ? 'Set concurrency limit to active' : 'Set concuurency limit to inactive'
+    return internalValue.value ? 'Set concurrency limit to inactive' : 'Set concuurency limit to active'
   })
 
   const loading = ref(false)
@@ -42,7 +42,7 @@
     loading.value = true
 
     try {
-      await api.concurrencyV2Limits.updateConcurrencyV2Limit(props.limit.id, { active: !value })
+      await api.concurrencyV2Limits.updateConcurrencyV2Limit(props.limit.id, { active: value })
       showToast(localization.success.updateConcurrencyLimit, 'success')
       concurrencyLimitSubscription.refresh()
       emit('update')
