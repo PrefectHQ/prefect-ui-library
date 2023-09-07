@@ -61,7 +61,7 @@
   const active = ref(true)
 
 
-  const decay = ref(0)
+  const decay = ref(props.concurrencyLimit.slotDecayPerSecond)
 
 
   const internalShowModal = computed({
