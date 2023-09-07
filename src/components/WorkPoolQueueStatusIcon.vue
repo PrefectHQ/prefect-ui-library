@@ -2,7 +2,7 @@
   <p-tooltip
     v-if="workPoolQueue && workQueueStatus"
     class="work-queue-status-icon"
-    :text="tooltipText"
+    text="Work queue health is deprecated and will be removed in a future release. Please use work pool status instead."
   >
     <div v-if="status.state === 'healthy'" class="work-queue-status-icon--healthy" />
     <p-icon
