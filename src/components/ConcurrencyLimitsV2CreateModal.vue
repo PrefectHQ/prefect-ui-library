@@ -40,6 +40,7 @@
   import { computed, ref } from 'vue'
   import { useWorkspaceApi } from '@/compositions'
   import { localization } from '@/localization'
+  import { getApiErrorMessage } from '@/utilities/errors'
   import { isRequired, isGreaterThanZeroOrNull } from '@/utilities/formValidation'
 
   const props = defineProps<{
@@ -102,7 +103,8 @@
         showToast(localization.success.createConcurrencyLimit, 'success')
       } catch (error) {
         console.error(error)
-        showToast(localization.error.createConcurrencyLimit, 'error')
+        const message = getApiErrorMessage(error, localization.error.createConcurrencyLimit)
+        showToast(message, 'error')
       } finally {
         reset()
         internalShowModal.value = false

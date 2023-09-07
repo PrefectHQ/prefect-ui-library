@@ -17,6 +17,7 @@
   import { useShowModal, useWorkspaceApi } from '@/compositions'
   import { localization } from '@/localization'
   import { WorkPoolQueue } from '@/models'
+  import { getApiErrorMessage } from '@/utilities/errors'
 
   const props = defineProps<{
     workPoolName: string,
@@ -45,7 +46,8 @@
       showToast(toastMessage, 'success')
       emit('delete')
     } catch (error) {
-      showToast(localization.error.delete('work queues'), 'error')
+      const message = getApiErrorMessage(error, localization.error.delete('work queues'))
+      showToast(message, 'error')
     } finally {
       close()
     }

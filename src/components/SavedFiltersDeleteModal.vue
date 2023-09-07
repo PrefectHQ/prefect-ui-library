@@ -15,6 +15,7 @@
   import { useWorkspaceApi } from '@/compositions'
   import { localization } from '@/localization'
   import { SavedSearch } from '@/models/SavedSearch'
+  import { getApiErrorMessage } from '@/utilities/errors'
 
   const props = defineProps<{
     showModal: boolean,
@@ -49,7 +50,8 @@
       }
     } catch (error) {
       console.error(error)
-      showToast(localization.error.deleteSavedSearch, 'error')
+      const message = getApiErrorMessage(error, localization.error.deleteSavedSearch)
+      showToast(message, 'error')
     }
   }
 </script>

@@ -11,6 +11,7 @@
   import { useWorkspaceApi } from '@/compositions'
   import { localization } from '@/localization'
   import { ConcurrencyV2Limit } from '@/models'
+  import { getApiErrorMessage } from '@/utilities/errors'
 
   const props = defineProps<{
     limit: ConcurrencyV2Limit,
@@ -47,7 +48,7 @@
       concurrencyLimitSubscription.refresh()
       emit('update')
     } catch (error) {
-      const message = localization.error.updateConcurrencyLimit
+      const message = getApiErrorMessage(error, localization.error.updateConcurrencyLimit)
       showToast(message, 'error')
       console.error(error)
     } finally {

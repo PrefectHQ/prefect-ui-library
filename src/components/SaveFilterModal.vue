@@ -28,6 +28,7 @@
   import { useForm } from '@/compositions/useForm'
   import { localization } from '@/localization'
   import { SavedSearch } from '@/models/SavedSearch'
+  import { getApiErrorMessage } from '@/utilities/errors'
   import { isRequired, withMessage, isValidIf } from '@/utilities/validation'
 
   const props = defineProps<{
@@ -91,7 +92,8 @@
       emit('saved', savedSearch)
     } catch (error) {
       console.error(error)
-      showToast(localization.error.createSavedSearch, 'error')
+      const message = getApiErrorMessage(error, localization.error.createSavedSearch)
+      showToast(message, 'error')
     }
   }
 </script>

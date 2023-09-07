@@ -12,6 +12,7 @@
   import { useCan } from '@/compositions/useCan'
   import { localization } from '@/localization'
   import { WorkQueue } from '@/models'
+  import { getApiErrorMessage } from '@/utilities/errors'
 
   const props = defineProps<{
     workQueue: WorkQueue,
@@ -55,8 +56,8 @@
       workQueueSubscription.refresh()
       emit('update')
     } catch (error) {
-      const message = value ? localization.error.activateWorkQueue : localization.error.pauseWorkQueue
-
+      const defaultMessage = value ? localization.error.activateWorkQueue : localization.error.pauseWorkQueue
+      const message = getApiErrorMessage(error, defaultMessage)
       showToast(message, 'error')
 
       console.error(error)

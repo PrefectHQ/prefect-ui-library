@@ -15,6 +15,7 @@
   import { useWorkspaceApi } from '@/compositions'
   import { localization } from '@/localization'
   import { FlowRun } from '@/models'
+  import { getApiErrorMessage } from '@/utilities/errors'
 
   const props = defineProps<{
     flowRun: FlowRun,
@@ -55,7 +56,8 @@
       showToast(localization.success.retryRun, 'success')
     } catch (error) {
       console.error(error)
-      showToast(localization.error.retryRun, 'error')
+      const message = getApiErrorMessage(error, localization.error.retryRun)
+      showToast(message, 'error')
     } finally {
       retryingRun.value = false
       internalValue.value = false

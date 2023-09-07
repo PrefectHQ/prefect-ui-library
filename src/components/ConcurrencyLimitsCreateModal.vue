@@ -31,6 +31,7 @@
   import { useForm } from '@/compositions/useForm'
   import { localization } from '@/localization'
   import { ConcurrencyLimitCreate } from '@/models/ConcurrencyLimitCreate'
+  import { getApiErrorMessage } from '@/utilities/errors'
   import { isRequired, isGreaterThan, fieldRules } from '@/utilities/validation'
 
   const props = defineProps<{
@@ -67,7 +68,8 @@
       showToast(localization.success.createConcurrencyLimit, 'success')
     } catch (error) {
       console.error(error)
-      showToast(localization.error.createConcurrencyLimit, 'error')
+      const message = getApiErrorMessage(error, localization.error.createConcurrencyLimit)
+      showToast(message, 'error')
     } finally {
       resetForm()
       internalShowModal.value = false

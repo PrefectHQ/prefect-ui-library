@@ -33,6 +33,7 @@
   import { localization } from '@/localization'
   import { Variable, VariableCreate, MAX_VARIABLE_NAME_LENGTH, MAX_VARIABLE_VALUE_LENGTH } from '@/models'
   import { isSnakeCase, isLessThanOrEqual, isRequired, isString } from '@/utilities'
+  import { getApiErrorMessage } from '@/utilities/errors'
 
   const props = defineProps<{
     showModal: boolean,
@@ -126,7 +127,8 @@
         reset()
       } catch (error) {
         console.error(error)
-        showToast(localization.error.createVariable, 'error')
+        const message = getApiErrorMessage(error, localization.error.createVariable)
+        showToast(message, 'error')
       }
     }
   }
