@@ -60,6 +60,8 @@
 
   const active = ref(true)
 
+  const activeSlots = ref(props.concurrencyLimit.activeSlots)
+
 
   const decay = ref(props.concurrencyLimit.slotDecayPerSecond)
 
@@ -88,7 +90,14 @@
     await validate()
     if (valid.value) {
       try {
-        await api.concurrencyV2Limits.updateConcurrencyV2Limit(props.concurrencyLimit.id, { name: name.value, limit: limit.value, active: active.value, slotDecayPerSecond: decay.value })
+        const updatedLimit = {
+          name: name.value,
+          limit: limit.value,
+          active: active.value,
+          slotDecayPerSecond: decay.value,
+          activeSlots: activeSlots.value,
+        }
+        await api.concurrencyV2Limits.updateConcurrencyV2Limit(props.concurrencyLimit.id, updatedLimit)
         concurrencyLimitSubscription.refresh()
         showToast(localization.success.updateConcurrencyLimit, 'success')
       } catch (error) {
