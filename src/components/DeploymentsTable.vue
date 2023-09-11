@@ -78,6 +78,10 @@
           </PEmptyResults>
         </template>
       </p-table>
+
+      <template #footer-end>
+        <p-pager v-if="pages > 1" v-model:page="page" :pages="pages" />
+      </template>
     </p-layout-table>
   </div>
 </template>
@@ -87,7 +91,7 @@
   import { useDebouncedRef, useSubscription } from '@prefecthq/vue-compositions'
   import { computed, ref } from 'vue'
   import { SearchInput, ResultsCount, DeploymentToggle, FlowRouterLink, FlowCombobox, DeploymentsDeleteButton, SelectedCount } from '@/components'
-  import { useWorkspaceApi, useWorkspaceRoutes, useCan, useDeploymentsFilterFromRoute, useComponent, useOffsetStickyRootMargin } from '@/compositions'
+  import { useWorkspaceApi, useWorkspaceRoutes, useCan, useDeploymentsFilterFromRoute, useComponent, useOffsetStickyRootMargin, useFilterPagination } from '@/compositions'
   import { Deployment, isRRuleSchedule, Schedule } from '@/models'
   import { DeploymentsFilter } from '@/models/Filters'
   import { deploymentSortOptions } from '@/types/SortOptionTypes'
@@ -108,8 +112,14 @@
   const deploymentName = ref<string>()
   const deploymentNameDebounced = useDebouncedRef(deploymentName, 1200)
   const { margin } = useOffsetStickyRootMargin()
+
+  const { page, limit, offset } = useFilterPagination()
+  const pages = computed(() => Math.ceil((deploymentsCount.value ?? limit.value) / limit.value))
+
   const { filter, clear, isCustomFilter } = useDeploymentsFilterFromRoute({
     ...props.filter,
+    offset,
+    limit,
     deployments: {
       ...props.filter?.deployments,
       nameLike: deploymentNameDebounced,
