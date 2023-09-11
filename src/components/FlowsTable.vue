@@ -68,6 +68,10 @@
           </PEmptyResults>
         </template>
       </p-table>
+
+      <template #footer-end>
+        <p-pager v-if="pages > 1" v-model:page="page" :pages="pages" />
+      </template>
     </p-layout-table>
   </div>
 </template>
@@ -77,7 +81,7 @@
   import { useDebouncedRef, useSubscription } from '@prefecthq/vue-compositions'
   import { computed, ref } from 'vue'
   import { FlowsDeleteButton, DeploymentsCount, ResultsCount, SearchInput, FlowActivityChart, SelectedCount } from '@/components'
-  import { useCan, useFlowsFilterFromRoute, useWorkspaceApi, useWorkspaceRoutes, useFlowRuns, useOffsetStickyRootMargin } from '@/compositions'
+  import { useCan, useFlowsFilterFromRoute, useWorkspaceApi, useWorkspaceRoutes, useFlowRuns, useOffsetStickyRootMargin, useFilterPagination } from '@/compositions'
   import { useComponent } from '@/compositions/useComponent'
   import { FlowsFilter } from '@/models/Filters'
   import { Flow } from '@/models/Flow'
@@ -94,10 +98,15 @@
   const api = useWorkspaceApi()
   const can = useCan()
   const routes = useWorkspaceRoutes()
+
+  const { page, limit, offset } = useFilterPagination()
+  const pages = computed(() => Math.ceil((flowsCount.value ?? limit.value) / limit.value))
   const flowNameLike = ref<string>()
   const flowNameLikeDebounced = useDebouncedRef(flowNameLike, 1200)
   const { filter, clear, isCustomFilter } = useFlowsFilterFromRoute({
     ...props.filter,
+    limit,
+    offset,
     flows: {
       ...props.filter,
       nameLike: flowNameLikeDebounced,
