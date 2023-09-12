@@ -7,7 +7,7 @@
     aria-label="Flow run timeline graph"
     :style="{ height }"
   >
-    <div class="flow-run-timeline__wrapper">
+    <div v-if="!requireLargeRenderConfirmation" class="flow-run-timeline__wrapper">
       <p-button
         v-if="isFullscreen"
         class="flow-run-timeline__fullscreen-exit"
@@ -57,6 +57,7 @@
         />
       </div>
     </div>
+    <FlowRunTimelineOptIn v-if="requireLargeRenderConfirmation" @confirm="confirmLargeRender" />
   </div>
 </template>
 
@@ -77,6 +78,7 @@
   import { UseSubscription, useDebouncedRef, useSubscription } from '@prefecthq/vue-compositions'
   import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
   import { FlowRunTimelineOptions } from '@/components'
+  import FlowRunTimelineOptIn from '@/components/FlowRunTimelineOptIn.vue'
   import { useFlowRuns, useFlows, useWorkspaceApi } from '@/compositions'
   import { FlowRun, FlowRunsFilter, isRunningStateType, isTerminalStateType } from '@/models'
   import { WorkspaceFlowRunsApi } from '@/services'
@@ -102,6 +104,7 @@
 
   const defaultOptionThresholds = {
     nearestParentLayout: 100,
+    requireLargeRenderConfirmation: 2000,
     hideEdges: 40,
   }
 
@@ -115,6 +118,7 @@
 
   const timelineGraphContainer = ref<HTMLElement | null>(null)
   const timelineGraph = ref<InstanceType<typeof FlowRunTimeline> | null>(null)
+  const requireLargeRenderConfirmation = ref(false)
   const isFullscreen = ref(false)
   const internalSelectedNode = computed<NodeSelectionEvent | null>({
     get() {
@@ -177,6 +181,10 @@
     }
   }
 
+  const confirmLargeRender = (): void => {
+    requireLargeRenderConfirmation.value = false
+  }
+
   const selectNode = (value: NodeSelectionEvent | null): void => {
     internalSelectedNode.value = value
   }
@@ -230,6 +238,10 @@
 
       if (value.length > defaultOptionThresholds.hideEdges) {
         hideEdges.value = true
+      }
+
+      if (value.length > defaultOptionThresholds.requireLargeRenderConfirmation) {
+        requireLargeRenderConfirmation.value = true
       }
 
       unwatchInitialData()
