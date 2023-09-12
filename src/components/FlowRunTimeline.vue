@@ -7,7 +7,7 @@
     aria-label="Flow run timeline graph"
     :style="{ height }"
   >
-    <div class="flow-run-timeline__wrapper">
+    <div v-if="!requireLargeRenderConfirmation" class="flow-run-timeline__wrapper">
       <p-button
         v-if="isFullscreen"
         class="flow-run-timeline__fullscreen-exit"
@@ -57,6 +57,20 @@
         />
       </div>
     </div>
+    <div v-if="requireLargeRenderConfirmation" class="flow-run-timeline__confirmation-wrapper">
+      <div class="flow-run-timeline__confirmation">
+        <p-icon class="flow-run-timeline__confirmation-icon" icon="ExclamationCircleIcon" />
+        <h3 class="flow-run-timeline__confirmation-header">
+          {{ localization.info.flowRunGraphNotDisplayedHeader }}
+        </h3>
+        <p class="flow-run-timeline__confirmation-message">
+          {{ localization.info.flowRunGraphNotDisplayedCopy }}
+        </p>
+        <p-button @click="confirmLargeRender">
+          {{ localization.info.flowRunGraphNotDisplayedCta }}
+        </p-button>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -78,6 +92,7 @@
   import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
   import { FlowRunTimelineOptions } from '@/components'
   import { useFlowRuns, useFlows, useWorkspaceApi } from '@/compositions'
+  import { localization } from '@/localization'
   import { FlowRun, FlowRunsFilter, isRunningStateType, isTerminalStateType } from '@/models'
   import { WorkspaceFlowRunsApi } from '@/services'
   import { formatTimeNumeric, formatTimeShortNumeric, formatDate, mapStateNameToStateType, getStateTypeStyles } from '@/utilities'
@@ -102,6 +117,7 @@
 
   const defaultOptionThresholds = {
     nearestParentLayout: 100,
+    requireLargeRenderConfirmation: 2000,
     hideEdges: 40,
   }
 
@@ -115,6 +131,7 @@
 
   const timelineGraphContainer = ref<HTMLElement | null>(null)
   const timelineGraph = ref<InstanceType<typeof FlowRunTimeline> | null>(null)
+  const requireLargeRenderConfirmation = ref(false)
   const isFullscreen = ref(false)
   const internalSelectedNode = computed<NodeSelectionEvent | null>({
     get() {
@@ -177,6 +194,10 @@
     }
   }
 
+  const confirmLargeRender = (): void => {
+    requireLargeRenderConfirmation.value = false
+  }
+
   const selectNode = (value: NodeSelectionEvent | null): void => {
     internalSelectedNode.value = value
   }
@@ -230,6 +251,10 @@
 
       if (value.length > defaultOptionThresholds.hideEdges) {
         hideEdges.value = true
+      }
+
+      if (value.length > defaultOptionThresholds.requireLargeRenderConfirmation) {
+        requireLargeRenderConfirmation.value = true
       }
 
       unwatchInitialData()
@@ -480,5 +505,36 @@
     transform: scale(1);
     opacity: 1;
   }
+}
+
+.flow-run-timeline__confirmation-wrapper { @apply
+  h-full
+  flex
+  items-center
+  justify-center
+}
+
+.flow-run-timeline__confirmation { @apply
+  text-center
+}
+
+.flow-run-timeline__confirmation-icon { @apply
+  text-subdued
+  mx-auto
+  w-10
+  h-10
+  mb-3
+}
+
+.flow-run-timeline__confirmation-header { @apply
+  text-xl
+  font-semibold
+  mb-2
+}
+
+.flow-run-timeline__confirmation-message { @apply
+  text-subdued
+  px-4
+  mb-4
 }
 </style>
