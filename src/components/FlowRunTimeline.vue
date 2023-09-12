@@ -57,20 +57,7 @@
         />
       </div>
     </div>
-    <div v-if="requireLargeRenderConfirmation" class="flow-run-timeline__confirmation-wrapper">
-      <div class="flow-run-timeline__confirmation">
-        <p-icon class="flow-run-timeline__confirmation-icon" icon="ExclamationCircleIcon" />
-        <h3 class="flow-run-timeline__confirmation-header">
-          {{ localization.info.flowRunGraphNotDisplayedHeader }}
-        </h3>
-        <p class="flow-run-timeline__confirmation-message">
-          {{ localization.info.flowRunGraphNotDisplayedCopy }}
-        </p>
-        <p-button @click="confirmLargeRender">
-          {{ localization.info.flowRunGraphNotDisplayedCta }}
-        </p-button>
-      </div>
-    </div>
+    <FlowRunTimelineOptIn v-if="requireLargeRenderConfirmation" @confirm="confirmLargeRender" />
   </div>
 </template>
 
@@ -91,8 +78,8 @@
   import { UseSubscription, useDebouncedRef, useSubscription } from '@prefecthq/vue-compositions'
   import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
   import { FlowRunTimelineOptions } from '@/components'
+  import FlowRunTimelineOptIn from '@/components/FlowRunTimelineOptIn.vue'
   import { useFlowRuns, useFlows, useWorkspaceApi } from '@/compositions'
-  import { localization } from '@/localization'
   import { FlowRun, FlowRunsFilter, isRunningStateType, isTerminalStateType } from '@/models'
   import { WorkspaceFlowRunsApi } from '@/services'
   import { formatTimeNumeric, formatTimeShortNumeric, formatDate, mapStateNameToStateType, getStateTypeStyles } from '@/utilities'
@@ -505,36 +492,5 @@
     transform: scale(1);
     opacity: 1;
   }
-}
-
-.flow-run-timeline__confirmation-wrapper { @apply
-  h-full
-  flex
-  items-center
-  justify-center
-}
-
-.flow-run-timeline__confirmation { @apply
-  text-center
-}
-
-.flow-run-timeline__confirmation-icon { @apply
-  text-subdued
-  mx-auto
-  w-10
-  h-10
-  mb-3
-}
-
-.flow-run-timeline__confirmation-header { @apply
-  text-xl
-  font-semibold
-  mb-2
-}
-
-.flow-run-timeline__confirmation-message { @apply
-  text-subdued
-  px-4
-  mb-4
 }
 </style>
