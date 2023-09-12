@@ -54,14 +54,13 @@
 <script lang="ts" setup>
   import { media, TableColumn, PEmptyResults } from '@prefecthq/prefect-design'
   import { computed, ref } from 'vue'
-  import BlockDocumentMenu from '@/components/BlockDocumentMenu.vue'
   import BlockSchemaCapabilities from '@/components/BlockSchemaCapabilities.vue'
   import BlockSchemaCapabilitySelect from '@/components/BlockSchemaCapabilitySelect.vue'
   import BlockTypeSelect from '@/components/BlockTypeSelect.vue'
   import LogoImage from '@/components/LogoImage.vue'
   import ResultsCount from '@/components/ResultsCount.vue'
   import SearchInput from '@/components/SearchInput.vue'
-  import { useWorkspaceRoutes } from '@/compositions'
+  import { useComponent, useWorkspaceRoutes } from '@/compositions'
   import { BlockDocument } from '@/models/BlockDocument'
 
   const props = defineProps<{
@@ -72,6 +71,7 @@
     (event: 'delete'): void,
   }>()
 
+  const { BlockDocumentMenu } = useComponent()
   const routes = useWorkspaceRoutes()
   const searchTerm = ref('')
   const selectedCapability = ref<string | null>(null)

@@ -8,9 +8,8 @@
 
 <script lang="ts" setup>
   import { BreadCrumbs } from '@prefecthq/prefect-design'
-  import BlockDocumentMenu from '@/components/BlockDocumentMenu.vue'
   import PageHeading from '@/components/PageHeading.vue'
-  import { useWorkspaceRoutes } from '@/compositions'
+  import { useComponent, useWorkspaceRoutes } from '@/compositions'
   import { BlockDocument } from '@/models/BlockDocument'
 
   const props = defineProps<{
@@ -22,6 +21,7 @@
   }>()
 
   const routes = useWorkspaceRoutes()
+  const { BlockDocumentMenu } = useComponent()
 
   const crumbs: BreadCrumbs = [
     { text: 'Blocks', to: routes.blocks() },

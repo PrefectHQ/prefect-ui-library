@@ -3,6 +3,8 @@
     <copy-overflow-menu-item label="Copy Name" :item="blockDocument.name" />
     <p-overflow-menu-item v-if="can.update.block" label="Edit" @click="editBlock" />
     <p-overflow-menu-item v-if="can.delete.block" label="Delete" @click="openDeleteBlockModal" />
+
+    <slot v-bind="{ blockDocument }" />
   </p-icon-button-menu>
 
   <ConfirmDeleteModal
