@@ -18,6 +18,7 @@
 
 <script lang="ts" setup>
   import { PCombobox, SelectOptionNormalized } from '@prefecthq/prefect-design'
+  import { useDebouncedRef } from '@prefecthq/vue-compositions'
   import { computed, onMounted, ref } from 'vue'
   import { DeploymentComboboxOption } from '@/components'
   import { useDeploymentsInfiniteScroll } from '@/compositions/useDeploymentsInfiniteScroll'
@@ -34,6 +35,7 @@
   }>()
 
   const search = ref()
+  const searchDebounced = useDebouncedRef(search, 500)
 
   const selected = computed({
     get() {
@@ -46,7 +48,7 @@
 
   const { deployments, loadMore } = useDeploymentsInfiniteScroll(() => ({
     deployments: {
-      nameLike: search.value,
+      nameLike: searchDebounced.value,
     },
   }))
 
