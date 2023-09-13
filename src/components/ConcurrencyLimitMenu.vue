@@ -2,7 +2,7 @@
   <p-icon-button-menu v-bind="$attrs">
     <copy-overflow-menu-item label="Copy ID" :item="concurrencyLimit.id" />
     <p-overflow-menu-item v-if="can.delete.concurrency_limit" label="Delete" @click="open" />
-    <p-overflow-menu-item v-if="can.delete.concurrency_limit" label="Reset" @click="openReset" />
+    <p-overflow-menu-item v-if="can.update.concurrency_limit" label="Reset" @click="openReset" />
   </p-icon-button-menu>
   <ConfirmDeleteModal
     v-model:showModal="showModal"
