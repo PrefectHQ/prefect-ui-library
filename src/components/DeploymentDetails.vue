@@ -1,23 +1,5 @@
 <template>
   <div class="deployment-details">
-    <p-key-value label="Flow" :alternate="alternate">
-      <template #value>
-        <FlowIconText :flow-id="deployment.flowId" />
-      </template>
-    </p-key-value>
-
-    <p-key-value v-if="deployment.workPoolName" label="Work Pool" :alternate="alternate">
-      <template #value>
-        <WorkPoolIconText :work-pool-name="deployment.workPoolName!" />
-      </template>
-    </p-key-value>
-
-    <p-key-value v-if="deployment.workQueueName && !workPool?.isPushPool" label="Work Queue" :alternate="alternate">
-      <template #value>
-        <WorkQueueIconText :work-queue-name="deployment.workQueueName!" :work-pool-name="deployment.workPoolName" />
-      </template>
-    </p-key-value>
-
     <p-key-value v-if="deployment.storageDocumentId" label="Storage" :alternate="alternate">
       <template #value>
         <BlockIconText :block-document-id="deployment.storageDocumentId" />
