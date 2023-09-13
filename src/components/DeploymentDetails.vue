@@ -70,7 +70,7 @@
 <script lang="ts" setup>
   import { showToast, PLoadingIcon } from '@prefecthq/prefect-design'
   import { ref, computed } from 'vue'
-  import { BlockIconText, WorkPoolIconText, FlowIconText, ScheduleFieldset, WorkQueueIconText } from '@/components'
+  import { BlockIconText, ScheduleFieldset } from '@/components'
   import { useWorkspaceApi, useCan, useWorkPool } from '@/compositions'
   import { localization } from '@/localization'
   import { Schedule, Deployment } from '@/models'
@@ -89,8 +89,6 @@
   const can = useCan()
   const api = useWorkspaceApi()
   const updateScheduleLoading = ref(false)
-
-  const { workPool } = useWorkPool(props.deployment.workPoolName ?? '')
 
   const internalSchedule = computed({
     get() {
