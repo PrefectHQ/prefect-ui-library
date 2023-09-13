@@ -1,6 +1,6 @@
 <template>
   <p-modal v-model:showModal="internalShowModal" class="concurrency-limit-reset-modal" :title="resetTitle">
-    This will clear all active task runs.
+    This will reset the active task run count to 0.
     <template #actions>
       <slot name="actions">
         <p-button primary @click="submit">
@@ -17,11 +17,12 @@
   import { computed } from 'vue'
   import { useWorkspaceApi } from '@/compositions'
   import { localization } from '@/localization'
+  import { ConcurrencyLimit } from '@/models/ConcurrencyLimit'
   import { getApiErrorMessage } from '@/utilities/errors'
 
   const props = defineProps<{
     showModal: boolean,
-    tag: string,
+    concurrencyLimit: ConcurrencyLimit,
   }>()
   const emit = defineEmits<{
     (event: 'update:showModal', value: boolean): void,
@@ -37,22 +38,23 @@
   })
 
   const resetTitle = computed(() => {
-    return `Reset concurrency limit for tag ${props.tag}?`
+    return `Reset concurrency limit for tag ${props.concurrencyLimit.tag}?`
   })
 
   const api = useWorkspaceApi()
-  const concurrencyLimitSubscription = useSubscription(api.concurrencyLimits.getConcurrencyLimits)
+  const concurrencyLimitSubscription = useSubscription(api.concurrencyLimits.getConcurrencyLimit, [props.concurrencyLimit.id])
+  const concurrencyLimitsSubscription = useSubscription(api.concurrencyLimits.getConcurrencyLimits)
   const submit = async (): Promise<void> => {
     try {
-      await api.concurrencyLimits.resetConcurrencyLimitByTag(props.tag)
+      await api.concurrencyLimits.resetConcurrencyLimitByTag(props.concurrencyLimit.tag)
       concurrencyLimitSubscription.refresh()
-      // showToast(localization.success.resetConcurrencyLimit, 'success')
+      concurrencyLimitsSubscription.refresh()
+      showToast(localization.success.resetConcurrencyLimit, 'success')
     } catch (error) {
       console.error(error)
-      const message = getApiErrorMessage(error, localization.error.createConcurrencyLimit)
+      const message = getApiErrorMessage(error, localization.error.resetConcurrencyLimit)
       showToast(message, 'error')
     } finally {
-      // reset()
       internalShowModal.value = false
     }
   }

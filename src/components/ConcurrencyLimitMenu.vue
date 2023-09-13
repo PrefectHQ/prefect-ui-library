@@ -10,7 +10,7 @@
     label="Concurrency Limit"
     @delete="deleteConcurrencyLimit(concurrencyLimit.id)"
   />
-  <ConcurrencyLimitResetModal v-model:showModal="showResetModal" :tag="concurrencyLimit.tag" />
+  <ConcurrencyLimitResetModal v-model:showModal="showResetModal" :concurrency-limit="concurrencyLimit" />
 </template>
 
 <script lang="ts">
