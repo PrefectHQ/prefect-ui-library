@@ -1,23 +1,5 @@
 <template>
   <div class="deployment-details">
-    <p-key-value label="Flow" :alternate="alternate">
-      <template #value>
-        <FlowIconText :flow-id="deployment.flowId" />
-      </template>
-    </p-key-value>
-
-    <p-key-value v-if="deployment.workPoolName" label="Work Pool" :alternate="alternate">
-      <template #value>
-        <WorkPoolIconText :work-pool-name="deployment.workPoolName!" />
-      </template>
-    </p-key-value>
-
-    <p-key-value v-if="deployment.workQueueName && !workPool?.isPushPool" label="Work Queue" :alternate="alternate">
-      <template #value>
-        <WorkQueueIconText :work-queue-name="deployment.workQueueName!" :work-pool-name="deployment.workPoolName" />
-      </template>
-    </p-key-value>
-
     <p-key-value v-if="deployment.storageDocumentId" label="Storage" :alternate="alternate">
       <template #value>
         <BlockIconText :block-document-id="deployment.storageDocumentId" />
@@ -88,7 +70,7 @@
 <script lang="ts" setup>
   import { showToast, PLoadingIcon } from '@prefecthq/prefect-design'
   import { ref, computed } from 'vue'
-  import { BlockIconText, WorkPoolIconText, FlowIconText, ScheduleFieldset, WorkQueueIconText } from '@/components'
+  import { BlockIconText, ScheduleFieldset } from '@/components'
   import { useWorkspaceApi, useCan, useWorkPool } from '@/compositions'
   import { localization } from '@/localization'
   import { Schedule, Deployment } from '@/models'
@@ -107,8 +89,6 @@
   const can = useCan()
   const api = useWorkspaceApi()
   const updateScheduleLoading = ref(false)
-
-  const { workPool } = useWorkPool(props.deployment.workPoolName ?? '')
 
   const internalSchedule = computed({
     get() {

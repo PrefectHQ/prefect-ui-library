@@ -51,7 +51,6 @@
     return { state: 'unhealthy', name: 'Unhealthy', icon: 'ExclamationCircleIcon' }
   })
 
-  const tooltipText = computed(() => `${workPoolQueue.value?.name} work queue is ${status.value.state}`)
   const classes = computed(() => `work-queue-status-icon--${status.value.state}`)
 </script>
 
