@@ -1,9 +1,12 @@
 <template>
-  <PageHeading :crumbs="crumbs" />
+  <PageHeading :crumbs="crumbs">
+    <DeploymentRelationships :deployment="deployment" />
+  </PageHeading>
 </template>
 
 <script lang="ts" setup>
   import { computed } from 'vue'
+  import DeploymentRelationships from '@/components/DeploymentRelationships.vue'
   import PageHeading from '@/components/PageHeading.vue'
   import { useWorkspaceRoutes } from '@/compositions'
   import { Deployment } from '@/models'

@@ -1,10 +1,10 @@
 <template>
   <page-heading class="page-heading-deployment" :crumbs="crumbs">
+    <DeploymentRelationships :deployment="deployment" />
+
     <template #actions>
       <DeploymentToggle :deployment="deployment" @update="emit('update')" />
-
       <RunMenu v-if="can.run.deployment && media.sm" :deployment="deployment" />
-
       <DeploymentMenu :deployment="deployment" :show-all="!media.sm" @delete="handleDelete" />
     </template>
   </page-heading>
@@ -14,7 +14,7 @@
   import { media } from '@prefecthq/prefect-design'
   import { computed } from 'vue'
   import { useRouter } from 'vue-router'
-  import { DeploymentToggle, PageHeading, RunMenu } from '@/components'
+  import { DeploymentRelationships, DeploymentToggle, PageHeading, RunMenu } from '@/components'
   import { useComponent, useWorkspaceRoutes } from '@/compositions'
   import { useCan } from '@/compositions/useCan'
   import { Deployment } from '@/models'
