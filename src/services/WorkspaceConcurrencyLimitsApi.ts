@@ -12,6 +12,7 @@ export interface IWorkspaceConcurrencyLimitsApi {
   getConcurrencyLimitByTag: (tag: string) => Promise<ConcurrencyLimit>,
   deleteConcurrencyLimit: (concurrencyLimitId: string) => Promise<void>,
   deleteConcurrencyLimitByTag: (tag: string) => Promise<void>,
+  resetConcurrencyLimitByTag: (tag: string) => Promise<ConcurrencyLimit>,
 }
 
 
@@ -45,6 +46,11 @@ export class WorkspaceConcurrencyLimitsApi extends WorkspaceApi {
 
   public deleteConcurrencyLimitByTag(tag: string): Promise<void> {
     return this.delete(`/tag/${tag}`)
+  }
+
+  public async resetConcurrencyLimitByTag(tag: string): Promise<ConcurrencyLimit> {
+    const { data } = await this.post<ConcurrencyLimitResponse>(`/tag/${tag}/reset`)
+    return mapper.map('ConcurrencyLimitResponse', data, 'ConcurrencyLimit')
   }
 
 }
