@@ -1,6 +1,10 @@
 <template>
   <div class="flows-filter-group">
     <div class="flows-filter-group__row">
+      <p-label :label="localization.info.deploymentStatusFilterLabel">
+        <p-button-group v-model="deploymentStatus" class="flows-filter-group__deployment-status" :options="deploymentStatusOptions" />
+      </p-label>
+
       <p-label :label="localization.info.deploymentTags">
         <DeploymentTagsInput
           v-model:selected="filter.flowRuns.tags.name"
@@ -71,6 +75,20 @@
     },
   })
 
+  const deploymentStatusOptions = [
+    { label: localization.info.all, value: null },
+    { label: localization.info.deploymentStatusFilterDeployed, value: false },
+    { label: localization.info.deploymentStatusFilterNotDeployed, value: true },
+  ]
+  const deploymentStatus = computed({
+    get() {
+      return filter.flowRuns.deploymentIdNull ?? null
+    },
+    set(val) {
+      filter.flowRuns.deploymentIdNull = val ?? undefined
+    },
+  })
+
   const range = computed<[Date, Date]>({
     get() {
       return [filter.flowRuns.expectedStartTimeAfter!, filter.flowRuns.expectedStartTimeBefore!]
@@ -95,6 +113,10 @@
   md:flex-nowrap
   gap-4
   justify-end
+}
+
+.flows-filter-group__deployment-status .p-button__content { @apply
+  whitespace-nowrap
 }
 
 .flows-filter-group__search { @apply

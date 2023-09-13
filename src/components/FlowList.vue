@@ -6,7 +6,7 @@
           <div class="flow-list__header">
             <div class="flow-list__header-start">
               <template v-if="selected.length == 0">
-                <span v-if="!!flowsCount && !!deploymentsCount" class="flow-list__results-count">
+                <span class="flow-list__results-count">
                   <ResultsCount :label="localization.info.flow" :count="flowsCount" />
                   {{ localization.info.with }}
                   <ResultsCount :label="localization.info.deployment" :count="deploymentsCount" />
@@ -28,7 +28,7 @@
           </div>
 
           <template v-if="headerExpanded">
-            <FlowsFilterGroup />
+            <FlowsFilterGroup class="flow-list__filter-group" />
           </template>
           <template v-else-if="isCustomFilter">
             <div class="flow-list__filters-active">
@@ -245,5 +245,9 @@
 
 .flow-list__filter-button--filter-active-text .p-icon { @apply
   text-selected
+}
+
+.flow-list__filter-group { @apply
+  pt-4
 }
 </style>
