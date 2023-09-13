@@ -5,11 +5,11 @@
     </template>
     <template #default="scope">
       <slot v-bind="scope">
-        <UseDeployment v-if="isString(scope.value)" :deployment-id="scope.value">
+        <UseDeploymentSlot v-if="isString(scope.value)" :deployment-id="scope.value">
           <template #default="{ deployment }">
             {{ deployment.name }}
           </template>
-        </UseDeployment>
+        </UseDeploymentSlot>
       </slot>
     </template>
     <template #option="{ option }: { option: DeploymentOption }">
@@ -27,7 +27,7 @@
   import { useDebouncedRef } from '@prefecthq/vue-compositions'
   import { computed, ref } from 'vue'
   import { DeploymentComboboxOption } from '@/components'
-  import UseDeployment from '@/components/UseDeployment.vue'
+  import UseDeploymentSlot from '@/components/UseDeploymentSlot.vue'
   import { useDeploymentsInfiniteScroll } from '@/compositions/useDeploymentsInfiniteScroll'
   import { isString } from '@/utilities/strings'
 
