@@ -39,7 +39,7 @@
 
   const { showModal, open, close } = useShowModal()
 
-  const { showModal: showResetModal, open: openReset, close: closeReset } = useShowModal()
+  const { showModal: showResetModal, open: openReset } = useShowModal()
 
   const api = useWorkspaceApi()
 
