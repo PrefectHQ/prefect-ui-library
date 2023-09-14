@@ -1,80 +1,68 @@
 import { SubscriptionOptions, UseSubscription, useSubscription } from '@prefecthq/vue-compositions'
-import { ComputedRef, MaybeRefOrGetter, computed, onUnmounted, reactive, ref, toRef, toValue } from 'vue'
+import { ComputedRef, MaybeRefOrGetter, computed, ref, toValue, watch } from 'vue'
 import { useCan } from '@/compositions/useCan'
-import { GLOBAL_API_LIMIT, useFilterPagination } from '@/compositions/useFilterPagination'
-import { UseSubscriptions, useSubscriptions } from '@/compositions/useSubscriptions'
+import { GLOBAL_API_LIMIT } from '@/compositions/useFilterPagination'
 import { useWorkspaceApi } from '@/compositions/useWorkspaceApi'
 import { Deployment } from '@/models/Deployment'
 import { DeploymentsFilter } from '@/models/Filters'
-import { WorkspaceDeploymentsApi } from '@/services/WorkspaceDeploymentsApi'
-import { uniqueValueWatcher, getValidWatchSource } from '@/utilities/reactivity'
-
-type DeploymentsAction = WorkspaceDeploymentsApi['getDeployments'] | (() => undefined)
+import { repeat } from '@/utilities/arrays'
 
 export type UseDeploymentsInfiniteScroll = {
   deployments: ComputedRef<Deployment[]>,
-  subscriptions: UseSubscriptions<DeploymentsAction>['subscriptions'],
-  loadMore: () => void,
+  subscription: UseSubscription<() => Promise<Deployment[]>>,
+  more: () => void,
 }
 
 export function useDeploymentsInfiniteScroll(filter?: MaybeRefOrGetter<DeploymentsFilter | null | undefined>, options?: SubscriptionOptions): UseDeploymentsInfiniteScroll {
-  const filterRef = computed(() => toValue(filter))
-  const can = useCan()
   const api = useWorkspaceApi()
+  const can = useCan()
   const page = ref(0)
-  const pages = reactive<UseSubscription<DeploymentsAction>[]>([])
-  const pageLimit = computed(() => filterRef.value?.limit ?? 5)
+  const limit = computed(() => toValue(filter)?.limit ?? GLOBAL_API_LIMIT)
+  const filters = ref<DeploymentsFilter[]>()
 
-  const deployments = computed(() => pages.flatMap(page => page.response ?? []))
-  const { subscriptions } = useSubscriptions(pages)
+  async function action(filters?: DeploymentsFilter[]): Promise<Deployment[]> {
+    if (!filters) {
+      return []
+    }
+
+    const promises = filters.map(filter => useSubscription(api.deployments.getDeployments, [filter], options).promise())
+    const subscriptions = await Promise.all(promises)
+    const deployments = subscriptions.flatMap(subscription => subscription.response)
+
+    return deployments
+  }
+
+  const subscription = useSubscription(action, [filters], options)
+  const deployments = computed(() => subscription.response ?? [])
 
   function canLoadMore(): boolean {
-    const loadedMaxPages = pages.length * pageLimit.value > deployments.value.length
+    const loadedMaxPages = page.value * limit.value > deployments.value.length
 
     return !loadedMaxPages && !!can.read.deployment
   }
 
-  function loadMore(): void {
+  function more(): void {
     if (!canLoadMore()) {
       return
     }
 
     page.value++
 
-    const { limit, offset } = useFilterPagination(page.value, pageLimit.value)
-
-    const filter: DeploymentsFilter = {
-      ...filterRef.value,
+    filters.value = repeat(page.value, index => ({
+      ...toValue(filter),
+      offset: limit.value * index,
       limit: limit.value,
-      offset: offset.value,
-    }
-
-    const subscription = useSubscription(api.deployments.getDeployments, [filter], options)
-
-    pages.push(subscription)
+    }))
   }
 
-  const unwatch = uniqueValueWatcher(getValidWatchSource(filterRef), () => {
-    if (!subscriptions.isSubscribed()) {
-      unwatch!()
-      return
-    }
-
+  watch(() => toValue(filter), () => {
     page.value = 0
-    subscriptions.unsubscribe()
-    pages.splice(0)
-
-    loadMore()
-  })
-
-  onUnmounted(() => {
-    subscriptions.unsubscribe()
-    unwatch()
-  })
+    more()
+  }, { deep: true })
 
   return {
     deployments,
-    subscriptions,
-    loadMore,
+    subscription,
+    more,
   }
 }
