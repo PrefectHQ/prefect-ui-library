@@ -1,5 +1,5 @@
 <template>
-  <p-combobox v-model="selected" v-model:search="search" :options="options" manual @bottom="loadMore">
+  <p-combobox v-model="selected" v-model:search="search" :options="options" manual @bottom="more">
     <template #combobox-options-empty>
       No deployments
     </template>
@@ -42,7 +42,7 @@
     (event: 'update:selected', value: string | string[] | null): void,
   }>()
 
-  const search = ref()
+  const search = ref('')
   const searchDebounced = useDebouncedRef(search, 500)
 
   const selected = computed({
@@ -54,10 +54,11 @@
     },
   })
 
-  const { deployments, loadMore } = useDeploymentsInfiniteScroll(() => ({
+  const { deployments, more } = useDeploymentsInfiniteScroll(() => ({
     deployments: {
       nameLike: searchDebounced.value,
     },
+    limit: 50,
   }))
 
   const options = computed<DeploymentOption[]>(() => {
