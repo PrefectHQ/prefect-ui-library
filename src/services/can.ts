@@ -60,6 +60,7 @@ export const workspacePermissions = [
   'run:deployment',
   'update:automation',
   'update:block',
+  'update:concurrency_limit',
   'update:deployment',
   'update:flow_run',
   'update:flow',

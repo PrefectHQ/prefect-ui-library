@@ -46,4 +46,12 @@ export class MockWorkspaceConcurrencyLimitsApi extends MockApi implements IWorks
     return await this.concurrencyLimits.delete(foundTag.id)
   }
 
+  public async resetConcurrencyLimitByTag(tag: string): Promise<ConcurrencyLimit> {
+    const foundTag = this.concurrencyLimits.find(limit => limit.tag == tag)
+    if (!foundTag) {
+      throw new DataStoreDataNotFound()
+    }
+    return await this.getConcurrencyLimitByTag(tag)
+  }
+
 }
