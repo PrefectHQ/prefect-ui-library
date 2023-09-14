@@ -120,7 +120,7 @@ export function asSingle<T>(value: T | T[]): T {
   return value
 }
 
-export function repeat<T>(count: number, method: (index?: number) => T): T[] {
+export function repeat<T>(count: number, method: (index: number) => T): T[] {
   return new Array(count).fill(null).map((value, index) => method(index))
 }
 
