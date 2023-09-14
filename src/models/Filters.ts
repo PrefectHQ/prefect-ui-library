@@ -24,6 +24,7 @@ export type FlowFilter = {
   name?: string[],
   nameLike?: string,
   tags?: TagFilter,
+  deploymentNull?: boolean,
 }
 
 export type FlowRunFilter = {

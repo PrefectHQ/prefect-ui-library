@@ -153,6 +153,9 @@ export const mapFlowFilter: MapFunction<FlowFilter, FlowFilterRequest> = functio
       ...toAny(source.name),
       ...toLike(source.nameLike),
     },
+    deployment: {
+      ...toIsNull(source.deploymentNull),
+    },
     tags: this.map('TagFilter', source.tags, 'TagFilterRequest'),
   })
 }

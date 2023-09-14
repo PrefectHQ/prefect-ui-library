@@ -42,6 +42,7 @@ export type FlowFilterRequest = {
   operator?: OperationRequest,
   id?: Any,
   name?: Any & Like,
+  deployment?: IsNull,
   tags?: TagFilterRequest,
 }
 
