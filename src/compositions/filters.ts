@@ -146,6 +146,7 @@ export function useFlowFilter(defaultValue: MaybeReactive<FlowFilter> = {}): Use
     name: toRef(defaultValueReactive, 'name'),
     nameLike: toRef(defaultValueReactive, 'nameLike'),
     tags: tags.filter,
+    deploymentNull: toRef(defaultValueReactive, 'deploymentNull'),
   })
 
   return withFilterFunctions(filter)
@@ -157,6 +158,7 @@ const flowFilterSchema: RouteQueryParamsSchema<FlowFilter> = {
   name: [StringRouteParam],
   nameLike: StringRouteParam,
   tags: tagFilterSchema,
+  deploymentNull: BooleanRouteParam,
 }
 
 export function useFlowRunFilter(defaultValue: MaybeReactive<FlowRunFilter> = {}): UseFilter<FlowRunFilter> {
