@@ -57,9 +57,9 @@ function toIsNull(value?: boolean): IsNull | undefined {
   return { is_null_: value }
 }
 
-function toLike(value?: string): Like | undefined {
-  if (typeof value === 'undefined') {
-    return value
+function toLike(value?: string | null): Like | undefined {
+  if (!value) {
+    return undefined
   }
 
   return { like_: value }

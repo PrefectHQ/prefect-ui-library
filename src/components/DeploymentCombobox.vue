@@ -1,10 +1,16 @@
 <template>
-  <p-combobox v-model="internalValue" v-bind="{ options, multiple, emptyMessage }">
+  <p-combobox v-model="selected" v-model:search="search" :options="options" manual @bottom="more">
     <template #combobox-options-empty>
       No deployments
     </template>
     <template #default="scope">
-      <slot v-bind="scope" />
+      <slot v-bind="scope">
+        <UseDeploymentSlot v-if="isString(scope.value)" :deployment-id="scope.value">
+          <template #default="{ deployment }">
+            {{ deployment.name }}
+          </template>
+        </UseDeploymentSlot>
+      </slot>
     </template>
     <template #option="{ option }: { option: DeploymentOption }">
       <slot name="option" :option="option">
@@ -17,45 +23,43 @@
 </template>
 
 <script lang="ts" setup>
-  import { PCombobox, SelectOptionNormalized } from '@prefecthq/prefect-design'
-  import { useSubscription } from '@prefecthq/vue-compositions'
-  import { computed } from 'vue'
+  import { PCombobox } from '@prefecthq/prefect-design'
+  import { useDebouncedRef } from '@prefecthq/vue-compositions'
+  import { computed, ref } from 'vue'
   import { DeploymentComboboxOption } from '@/components'
-  import { useWorkspaceApi } from '@/compositions'
+  import UseDeploymentSlot from '@/components/UseDeploymentSlot.vue'
+  import { useDeploymentsInfiniteScroll } from '@/compositions/useDeploymentsInfiniteScroll'
+  import { isString } from '@/utilities/strings'
 
-  type DeploymentOption = SelectOptionNormalized & { flowId?: string }
+  type DeploymentOption = { label: string, value: string | null, flowId?: string }
 
   const props = defineProps<{
     selected: string | string[] | null | undefined,
-    emptyMessage?: string,
     allowUnset?: boolean,
-    multiple?: boolean,
   }>()
 
-  const emits = defineEmits<{
+  const emit = defineEmits<{
     (event: 'update:selected', value: string | string[] | null): void,
   }>()
 
-  const multiple = computed(() => props.multiple || Array.isArray(props.selected))
+  const search = ref('')
+  const searchDebounced = useDebouncedRef(search, 500)
 
-  const internalValue = computed({
+  const selected = computed({
     get() {
       return props.selected ?? null
     },
-    set(value: string | string[] | null) {
-      if (!value) {
-        emits('update:selected', null)
-      } else if (multiple.value) {
-        emits('update:selected', Array.isArray(value) ? value : [value])
-      } else {
-        emits('update:selected', value)
-      }
+    set(value) {
+      emit('update:selected', value)
     },
   })
 
-  const api = useWorkspaceApi()
-  const deploymentsSubscription = useSubscription(api.deployments.getDeployments, [{}])
-  const deployments = computed(() => deploymentsSubscription.response ?? [])
+  const { deployments, more } = useDeploymentsInfiniteScroll(() => ({
+    deployments: {
+      nameLike: searchDebounced.value,
+    },
+    limit: 50,
+  }))
 
   const options = computed<DeploymentOption[]>(() => {
     const options: DeploymentOption[] = deployments.value.map(deployment => ({
