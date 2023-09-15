@@ -1,5 +1,4 @@
 import { JsonInput } from '@/components'
-import { InvalidSchemaValueError } from '@/models'
 import { SchemaPropertyService } from '@/services/schemas/properties/SchemaPropertyService'
 import { SchemaPropertyComponentWithProps, getSchemaPropertyRequestValue, getSchemaPropertyResponseValue } from '@/services/schemas/utilities'
 import { SchemaValue, isSchemaValues, SchemaValues } from '@/types/schemas'
@@ -46,7 +45,7 @@ export class SchemaPropertyObject extends SchemaPropertyService {
 
   protected response(value: SchemaValue): unknown {
     if (isNullish(value)) {
-      throw new InvalidSchemaValueError()
+      return this.invalid()
     }
 
     if (this.componentIs(JsonInput)) {
