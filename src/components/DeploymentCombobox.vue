@@ -23,7 +23,7 @@
 </template>
 
 <script lang="ts" setup>
-  import { PCombobox, SelectOptionNormalized } from '@prefecthq/prefect-design'
+  import { PCombobox } from '@prefecthq/prefect-design'
   import { useDebouncedRef } from '@prefecthq/vue-compositions'
   import { computed, ref } from 'vue'
   import { DeploymentComboboxOption } from '@/components'
@@ -31,7 +31,7 @@
   import { useDeploymentsInfiniteScroll } from '@/compositions/useDeploymentsInfiniteScroll'
   import { isString } from '@/utilities/strings'
 
-  type DeploymentOption = SelectOptionNormalized & { flowId?: string }
+  type DeploymentOption = { label: string, value: string | null, flowId?: string }
 
   const props = defineProps<{
     selected: string | string[] | null | undefined,
