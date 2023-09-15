@@ -43,7 +43,7 @@
     get() {
       const inRoute: SavedSearchFilter = {
         state: filter.flowRuns.state.name ?? [],
-        flow: filter.flows.name ?? [],
+        flow: filter.flows.id ?? [],
         deployment: filter.deployments.id ?? [],
         workPool: filter.workPools.name ?? [],
         tag: filter.flowRuns.tags.name ?? [],
