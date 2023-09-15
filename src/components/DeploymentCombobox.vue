@@ -38,7 +38,7 @@
     allowUnset?: boolean,
   }>()
 
-  const emits = defineEmits<{
+  const emit = defineEmits<{
     (event: 'update:selected', value: string | string[] | null): void,
   }>()
 
@@ -50,7 +50,7 @@
       return props.selected ?? null
     },
     set(value) {
-      emits('update:selected', value)
+      emit('update:selected', value)
     },
   })
 
