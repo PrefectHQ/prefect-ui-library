@@ -90,11 +90,10 @@
   import { NumberRouteParam, useDebouncedRef, useRouteQueryParam } from '@prefecthq/vue-compositions'
   import { computed, ref } from 'vue'
   import { FlowListItem, FlowsDeleteButton, ResultsCount, SearchInput, SelectedCount, FlowsFilterGroup } from '@/components'
-  import { useDeploymentsCount, useFlows, useFlowsCount, useFlowsFilterFromRoute } from '@/compositions'
+  import { useDeploymentsCount, useFlows, useFlowsFilterFromRoute } from '@/compositions'
   import { localization } from '@/localization'
   import { FlowsFilter } from '@/models/Filters'
   import { flowSortOptions } from '@/types/SortOptionTypes'
-  import { uniqueValueWatcher } from '@/utilities/reactivity'
 
   const props = defineProps<{
     filter?: FlowsFilter,
@@ -104,8 +103,6 @@
   const emit = defineEmits<{
     (event: 'delete' | 'update', value?: string): void,
   }>()
-
-  const DEFAULT_LIMIT = 40
 
   const headerExpanded = ref(false)
   const selected = ref<string[]>([])
@@ -134,10 +131,6 @@
   })
 
   const page = useRouteQueryParam<number>('page', NumberRouteParam, 1)
-  const offset = computed(() => {
-    return (page.value - 1) * DEFAULT_LIMIT
-  })
-  const pages = computed(() => Math.ceil((flowsCount.value ?? DEFAULT_LIMIT) / DEFAULT_LIMIT))
 
   const { filter: routeFilter, isDefaultFilter, isCustomFilter, clear } = useFlowsFilterFromRoute({
     ...props.filter,
@@ -149,38 +142,33 @@
       nameLike: deploymentNameLike,
     },
   })
-  uniqueValueWatcher(routeFilter, () => page.value = 1)
 
   const filter = computed(() => {
     return {
       ...routeFilter,
-      limit: DEFAULT_LIMIT,
-      offset: offset.value,
+      limit: 40,
     }
   })
 
-  const { subscription: flowsSubscription, flows } = useFlows(filter)
-  const { subscription: flowsCountSubscription, count: flowsCount } = useFlowsCount(filter)
-  const { count: deploymentsCount } = useDeploymentsCount(filter)
+  const { subscriptions, flows, total: flowsCount, pages } = useFlows(filter, {
+    page,
+  })
 
-  function refresh(): void {
-    flowsSubscription.refresh()
-    flowsCountSubscription.refresh()
-  }
+  const { count: deploymentsCount } = useDeploymentsCount(filter)
 
   const handleUpdate = (flowId: string): void => {
     emit('update', flowId)
-    refresh()
+    subscriptions.refresh()
   }
 
   const handleDelete = (flowId: string): void => {
     emit('delete', flowId)
-    refresh()
+    subscriptions.refresh()
   }
 
   const deleteFlows = (): void => {
     emit('delete')
-    refresh()
+    subscriptions.refresh()
     selected.value = []
   }
 
