@@ -1,6 +1,6 @@
 import { Getter } from '@prefecthq/prefect-design'
 import { SubscriptionOptions, useSubscription, useSubscriptionWithDependencies } from '@prefecthq/vue-compositions'
-import { ComputedRef, Ref, computed, ref, watch } from 'vue'
+import { ComputedRef, MaybeRef, Ref, computed, ref, watch } from 'vue'
 import { GLOBAL_API_LIMIT } from '@/compositions/useFilterPagination'
 import { UseSubscriptions, useSubscriptions } from '@/compositions/useSubscriptions'
 import { repeat } from '@/utilities/arrays'
@@ -21,7 +21,8 @@ type FetchSubscriptionAction<
 > = (parameters: Parameters<TFetch>[]) => Promise<Awaited<ReturnType<TFetch>>>
 
 export type PaginationOptions = SubscriptionOptions & {
-  mode: 'page' | 'infinite',
+  mode?: 'page' | 'infinite',
+  page?: MaybeRef<number>,
 }
 
 export type UsePaginationParameters<
@@ -73,8 +74,8 @@ export function usePagination<
 
   type TFetchFilter = Parameters<TFetch>[0]
 
-  const mode = options?.mode ?? 'page'
-  const page = ref(mode === 'page' ? 1 : 0)
+  const mode = getMode()
+  const page = getPageRef()
   const pages = computed(() => Math.ceil(total.value / getLimit()))
 
   const countSubscriptionParameters = computed(() => {
@@ -167,6 +168,18 @@ export function usePagination<
     const limit = filter?.limit ?? GLOBAL_API_LIMIT
 
     return limit
+  }
+
+  function getPageRef(): Ref<number> {
+    if (options?.page) {
+      return ref(options.page)
+    }
+
+    return ref(mode === 'page' ? 1 : 0)
+  }
+
+  function getMode(): Exclude<PaginationOptions['mode'], undefined> {
+    return options?.mode ?? 'page'
   }
 
   watch(fetchParametersGetter, () => {
