@@ -20,9 +20,11 @@ type FetchSubscriptionAction<
   TFetch extends PaginationFetchAction
 > = (parameters: Parameters<TFetch>[]) => Promise<Awaited<ReturnType<TFetch>>>
 
-type PaginationMode = 'page' | 'infinite'
+export type PaginationOptions = SubscriptionOptions & {
+  mode: 'page' | 'infinite',
+}
 
-type PaginationFactoryParameters<
+export type UsePaginationParameters<
   TFetch extends PaginationFetchAction,
   TFetchParameters extends Getter<Parameters<TFetch> | null>,
   TCount extends PaginationCountAction,
@@ -32,15 +34,22 @@ type PaginationFactoryParameters<
   fetchParametersGetter: TFetchParameters,
   countMethod: TCount,
   countParametersGetter: TCountParameters,
-  mode?: PaginationMode,
-  options?: SubscriptionOptions,
+  options?: PaginationOptions,
 }
 
-type UsePagination<
+export type UsePaginationEntity<
+  TFetch extends PaginationFetchAction,
+  TCount extends PaginationCountAction,
+  TProperty extends string
+> = Omit<UsePagination<TFetch, TCount>, 'results'> & {
+  [ P in TProperty ]: ComputedRef<Awaited<ReturnType<TFetch>>>
+}
+
+export type UsePagination<
   TFetch extends PaginationFetchAction,
   TCount extends PaginationCountAction
 > = {
-  subscriptions: UseSubscriptions<TCount | FetchSubscriptionAction<TFetch> | (() => undefined)>,
+  subscriptions: UseSubscriptions<TCount | FetchSubscriptionAction<TFetch> | (() => undefined)>['subscriptions'],
   results: ComputedRef<Awaited<ReturnType<TFetch>>>,
   total: ComputedRef<number>,
   pages: ComputedRef<number>,
@@ -59,12 +68,12 @@ export function usePagination<
   fetchParametersGetter,
   countMethod,
   countParametersGetter,
-  mode = 'page',
   options,
-}: PaginationFactoryParameters<TFetch, TFetchParameters, TCount, TCountParameters>): UsePagination<TFetch, TCount> {
+}: UsePaginationParameters<TFetch, TFetchParameters, TCount, TCountParameters>): UsePagination<TFetch, TCount> {
 
   type TFetchFilter = Parameters<TFetch>[0]
 
+  const mode = options?.mode ?? 'page'
   const page = ref(mode === 'page' ? 1 : 0)
   const pages = computed(() => Math.ceil(total.value / getLimit()))
 
@@ -97,7 +106,7 @@ export function usePagination<
   const fetchSubscription = useSubscriptionWithDependencies(fetchSubscriptionAction, fetchSubscriptionDependantParameters, options)
   const results = computed(() => fetchSubscription.response ?? [] as unknown as Awaited<ReturnType<TFetch>>)
 
-  const subscriptions = useSubscriptions([
+  const { subscriptions } = useSubscriptions([
     countSubscription,
     fetchSubscription,
   ])
