@@ -1,4 +1,4 @@
-import { BooleanRouteParam, DateRouteParam, NullableBooleanRouteParam, NumberRouteParam, RouteQueryParamsSchema, StringRouteParam, useRouteQueryParams } from '@prefecthq/vue-compositions'
+import { BooleanRouteParam, DateRouteParam, NullableBooleanRouteParam, NumberRouteParam, RouteQueryParamsSchema, StringRouteParam, useLocalStorage, useRouteQueryParams } from '@prefecthq/vue-compositions'
 import debounce from 'lodash.debounce'
 import isEqual from 'lodash.isequal'
 import { Ref, reactive, ComputedRef, toRef, computed, toRefs, isReactive, watch } from 'vue'
@@ -11,6 +11,7 @@ import { BlockDocumentFilter, BlockDocumentsFilter, BlockSchemaFilter, BlockSche
 import { defaultDeploymentSort, defaultFlowRunSort, defaultFlowSort, defaultTaskRunSort, defaultVariableSort } from '@/types'
 import { AnyRecord } from '@/types/any'
 import { MaybeReactive } from '@/types/reactivity'
+import { getCacheKey } from '@/utilities'
 import { merge } from '@/utilities/object'
 import { dateFunctions } from '@/utilities/timezone'
 
@@ -629,6 +630,12 @@ export function useRecentFlowRunsFilterFromRoute(defaultValue: MaybeReactive<Flo
   syncFilterWithFilterFromRoute(response.filter, query)
 
   return response
+}
+
+const customDefaultFlowRunsFilterKey = getCacheKey('prefect-ui-library-custom-default-flow-runs-filter')
+
+export function useCustomDefaultFlowRunsFilter(): ReturnType<typeof useLocalStorage<FlowRunsFilter | null>> {
+  return useLocalStorage<FlowRunsFilter>(customDefaultFlowRunsFilterKey)
 }
 
 export function useFlowRunsHistoryFilter(defaultValue: MaybeReactive<FlowRunsHistoryFilter>): UseFilter<FlowRunsHistoryFilter> {
