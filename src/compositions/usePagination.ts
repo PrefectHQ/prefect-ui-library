@@ -1,6 +1,7 @@
 import { Getter } from '@prefecthq/prefect-design'
-import { useSubscription, useSubscriptionWithDependencies } from '@prefecthq/vue-compositions'
+import { SubscriptionOptions, useSubscription, useSubscriptionWithDependencies } from '@prefecthq/vue-compositions'
 import { ComputedRef, Ref, computed, ref, toValue, watch } from 'vue'
+import { GLOBAL_API_LIMIT } from '@/compositions/useFilterPagination'
 import { UseSubscriptions, useSubscriptions } from '@/compositions/useSubscriptions'
 import { repeat } from '@/utilities/arrays'
 
@@ -9,6 +10,8 @@ type PaginationFilter = {
   offset?: number,
 }
 
+// typescript only lets you use any here
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 type PaginationParameters = [filter?: PaginationFilter, ...any[]]
 type PaginationFetchAction = (...parameters: PaginationParameters) => Promise<unknown[]>
 type PaginationCountAction = (...parameters: PaginationParameters) => Promise<number>
@@ -28,9 +31,10 @@ type PaginationFactoryParameters<
   countMethod: TCount,
   countParametersGetter: Getter<Parameters<TCount>>,
   mode?: PaginationMode,
+  options?: SubscriptionOptions,
 }
 
-type ApiPaginationFactory<
+type UsePagination<
   TFetch extends PaginationFetchAction,
   TCount extends PaginationCountAction
 > = {
@@ -43,7 +47,7 @@ type ApiPaginationFactory<
   previous: () => void,
 }
 
-export function apiPaginationFactory<
+export function usePagination<
   TFetch extends PaginationFetchAction,
   TCount extends PaginationCountAction
 >({
@@ -52,7 +56,8 @@ export function apiPaginationFactory<
   countMethod,
   countParametersGetter,
   mode = 'page',
-}: PaginationFactoryParameters<TFetch, TCount>): ApiPaginationFactory<TFetch, TCount> {
+  options,
+}: PaginationFactoryParameters<TFetch, TCount>): UsePagination<TFetch, TCount> {
 
   type TFetchFilter = Parameters<TFetch>[0]
 
@@ -66,7 +71,7 @@ export function apiPaginationFactory<
 
     return null
   })
-  const countSubscription = useSubscriptionWithDependencies(countMethod, countSubscriptionParameters)
+  const countSubscription = useSubscriptionWithDependencies(countMethod, countSubscriptionParameters, options)
   const total = computed(() => countSubscription.response ?? 0)
 
   async function fetchSubscriptionAction(parameters: Parameters<TFetch>[]): Promise<Awaited<ReturnType<TFetch>>> {
@@ -85,7 +90,7 @@ export function apiPaginationFactory<
 
     return [fetchSubscriptionParameters.value]
   })
-  const fetchSubscription = useSubscriptionWithDependencies(fetchSubscriptionAction, fetchSubscriptionDependantParameters)
+  const fetchSubscription = useSubscriptionWithDependencies(fetchSubscriptionAction, fetchSubscriptionDependantParameters, options)
   const results = computed(() => fetchSubscription.response ?? [] as unknown as Awaited<ReturnType<TFetch>>)
 
   const subscriptions = useSubscriptions([
@@ -140,7 +145,7 @@ export function apiPaginationFactory<
 
   function getLimit(): number {
     const [filter] = toValue(fetchParametersGetter)
-    const limit = filter?.limit ?? 200
+    const limit = filter?.limit ?? GLOBAL_API_LIMIT
 
     return limit
   }
