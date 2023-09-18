@@ -40,7 +40,7 @@
     ],
     "types": "./dist/types/src/index.d.ts",
     "devDependencies": {
-        "@prefecthq/eslint-config": "1.0.29",
+        "@prefecthq/eslint-config": "1.0.31",
         "@types/d3": "7.4.0",
         "@types/lodash.camelcase": "4.3.7",
         "@types/lodash.debounce": "4.0.7",
