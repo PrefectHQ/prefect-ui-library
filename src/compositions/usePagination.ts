@@ -1,6 +1,6 @@
 import { Getter } from '@prefecthq/prefect-design'
 import { SubscriptionOptions, useSubscription, useSubscriptionWithDependencies } from '@prefecthq/vue-compositions'
-import { ComputedRef, Ref, computed, ref, toValue, watch } from 'vue'
+import { ComputedRef, Ref, computed, ref, watch } from 'vue'
 import { GLOBAL_API_LIMIT } from '@/compositions/useFilterPagination'
 import { UseSubscriptions, useSubscriptions } from '@/compositions/useSubscriptions'
 import { repeat } from '@/utilities/arrays'
@@ -79,7 +79,7 @@ export function usePagination<
 
   const countSubscriptionParameters = computed(() => {
     if (page.value) {
-      return toValue(countParametersGetter)
+      return countParametersGetter()
     }
 
     return null
