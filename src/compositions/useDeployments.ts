@@ -16,7 +16,7 @@ export function useDeployments(filter?: MaybeRefOrGetter<DeploymentsFilter | nul
   const api = useWorkspaceApi()
   const can = useCan()
 
-  const getter: Getter<[DeploymentsFilter?] | null> = () => {
+  const parameters: Getter<[DeploymentsFilter?] | null> = () => {
     if (!can.read.deployment) {
       return null
     }
@@ -32,9 +32,9 @@ export function useDeployments(filter?: MaybeRefOrGetter<DeploymentsFilter | nul
 
   const pagination = usePagination({
     fetchMethod: api.deployments.getDeployments,
-    fetchParametersGetter: getter,
+    fetchParameters: parameters,
     countMethod: api.deployments.getDeploymentsCount,
-    countParametersGetter: getter,
+    countParameters: parameters,
     options,
   })
 

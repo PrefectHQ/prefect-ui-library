@@ -31,9 +31,9 @@ export type UsePaginationParameters<
   TCountParameters extends Getter<Parameters<TCount> | null>
 > = {
   fetchMethod: TFetch,
-  fetchParametersGetter: TFetchParameters,
+  fetchParameters: TFetchParameters,
   countMethod: TCount,
-  countParametersGetter: TCountParameters,
+  countParameters: TCountParameters,
   options?: PaginationOptions,
 }
 
@@ -65,9 +65,9 @@ export function usePagination<
   TCountParameters extends Getter<Parameters<TCount> | null>
 >({
   fetchMethod,
-  fetchParametersGetter,
+  fetchParameters: fetchParametersGetter,
   countMethod,
-  countParametersGetter,
+  countParameters: countParametersGetter,
   options,
 }: UsePaginationParameters<TFetch, TFetchParameters, TCount, TCountParameters>): UsePagination<TFetch, TCount> {
 
