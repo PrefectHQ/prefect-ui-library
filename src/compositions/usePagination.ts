@@ -24,12 +24,14 @@ type PaginationMode = 'page' | 'infinite'
 
 type PaginationFactoryParameters<
   TFetch extends PaginationFetchAction,
-  TCount extends PaginationCountAction
+  TFetchParameters extends Getter<Parameters<TFetch> | null>,
+  TCount extends PaginationCountAction,
+  TCountParameters extends Getter<Parameters<TCount> | null>
 > = {
   fetchMethod: TFetch,
-  fetchParametersGetter: Getter<Parameters<TFetch>>,
+  fetchParametersGetter: TFetchParameters,
   countMethod: TCount,
-  countParametersGetter: Getter<Parameters<TCount>>,
+  countParametersGetter: TCountParameters,
   mode?: PaginationMode,
   options?: SubscriptionOptions,
 }
@@ -49,7 +51,9 @@ type UsePagination<
 
 export function usePagination<
   TFetch extends PaginationFetchAction,
-  TCount extends PaginationCountAction
+  TFetchParameters extends Getter<Parameters<TFetch> | null>,
+  TCount extends PaginationCountAction,
+  TCountParameters extends Getter<Parameters<TCount> | null>
 >({
   fetchMethod,
   fetchParametersGetter,
@@ -57,7 +61,7 @@ export function usePagination<
   countParametersGetter,
   mode = 'page',
   options,
-}: PaginationFactoryParameters<TFetch, TCount>): UsePagination<TFetch, TCount> {
+}: PaginationFactoryParameters<TFetch, TFetchParameters, TCount, TCountParameters>): UsePagination<TFetch, TCount> {
 
   type TFetchFilter = Parameters<TFetch>[0]
 
@@ -82,9 +86,9 @@ export function usePagination<
     return response as Awaited<ReturnType<TFetch>>
   }
 
-  const fetchSubscriptionParameters = ref(getFetchSubscriptionParameters()) as Ref<Parameters<TFetch>[]>
+  const fetchSubscriptionParameters = ref(getFetchSubscriptionParameters()) as Ref<Parameters<TFetch>[] | null>
   const fetchSubscriptionDependantParameters = computed<null | [Parameters<TFetch>[]]>(() => {
-    if (total.value === 0) {
+    if (total.value === 0 || fetchSubscriptionParameters.value === null) {
       return null
     }
 
@@ -118,8 +122,14 @@ export function usePagination<
     fetchSubscriptionParameters.value = getFetchSubscriptionParameters()
   }
 
-  function getFetchSubscriptionParameters(): Parameters<TFetch>[] {
-    const [filter, ...rest] = toValue(fetchParametersGetter)
+  function getFetchSubscriptionParameters(): Parameters<TFetch>[] | null {
+    const parameters = fetchParametersGetter()
+
+    if (parameters === null) {
+      return null
+    }
+
+    const [filter, ...rest] = parameters
     const filters = getFetchParametersForPages(page.value, filter)
 
     return filters.map(filter => [filter, ...rest]) as unknown as Parameters<TFetch>[]
@@ -144,7 +154,7 @@ export function usePagination<
   }
 
   function getLimit(): number {
-    const [filter] = toValue(fetchParametersGetter)
+    const [filter] = fetchParametersGetter() ?? []
     const limit = filter?.limit ?? GLOBAL_API_LIMIT
 
     return limit
