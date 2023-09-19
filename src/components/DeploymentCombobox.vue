@@ -1,5 +1,5 @@
 <template>
-  <p-combobox v-model="selected" v-model:search="search" :options="options" manual @bottom="more">
+  <p-combobox v-model="selected" v-model:search="search" :options="options" manual @bottom="next">
     <template #combobox-options-empty>
       No deployments
     </template>
@@ -28,7 +28,8 @@
   import { computed, ref } from 'vue'
   import { DeploymentComboboxOption } from '@/components'
   import UseDeploymentSlot from '@/components/UseDeploymentSlot.vue'
-  import { useDeploymentsInfiniteScroll } from '@/compositions/useDeploymentsInfiniteScroll'
+  import { useDeployments } from '@/compositions/useDeployments'
+  import { DeploymentsFilter } from '@/models/Filters'
   import { isString } from '@/utilities/strings'
 
   type DeploymentOption = { label: string, value: string | null, flowId?: string }
@@ -54,12 +55,14 @@
     },
   })
 
-  const { deployments, more } = useDeploymentsInfiniteScroll(() => ({
+  const filter = (): DeploymentsFilter => ({
     deployments: {
       nameLike: searchDebounced.value,
     },
-    limit: 50,
-  }))
+    limit: 20,
+  })
+
+  const { deployments, next } = useDeployments(filter, { mode: 'infinite' })
 
   const options = computed<DeploymentOption[]>(() => {
     const options: DeploymentOption[] = deployments.value.map(deployment => ({

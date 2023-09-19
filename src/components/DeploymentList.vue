@@ -45,7 +45,7 @@
     DeploymentListItem,
     SelectedCount
   } from '@/components'
-  import { useDeployments, useDeploymentsCount, useDeploymentsFilterFromRoute, useOffsetStickyRootMargin } from '@/compositions'
+  import { useDeployments, useDeploymentsFilterFromRoute, useOffsetStickyRootMargin } from '@/compositions'
   import { DeploymentsFilter } from '@/models'
 
   const props = defineProps<{
@@ -59,17 +59,8 @@
 
   const { margin } = useOffsetStickyRootMargin()
 
-  const DEFAULT_LIMIT = 40
 
   const { filter: routeFilter } = useDeploymentsFilterFromRoute()
-  const page = ref(1)
-  const offset = computed({
-    get: () => (page.value - 1) * DEFAULT_LIMIT,
-    set: (value: number) => {
-      page.value = Math.ceil(value / DEFAULT_LIMIT) + 1
-    },
-  })
-  const pages = computed(() => Math.ceil((count.value ?? DEFAULT_LIMIT) / DEFAULT_LIMIT))
 
   const filter = computed<DeploymentsFilter>(() => {
     return {
@@ -78,32 +69,25 @@
         ...props.filter?.deployments,
         ...routeFilter.deployments,
       },
-      offset: offset.value,
-      limit: DEFAULT_LIMIT,
+      limit: 40,
     }
   })
 
-  const { subscription: deploymentsSubscription, deployments } = useDeployments(filter)
-  const { subscription: deploymentsCountSubscription, count } = useDeploymentsCount(filter)
-
-  const refresh = (): void => {
-    deploymentsSubscription.refresh()
-    deploymentsCountSubscription.refresh()
-  }
+  const { subscriptions, deployments, page, pages } = useDeployments(filter)
 
   const handleDelete = (deploymentId: string): void => {
     emit('delete', deploymentId)
-    refresh()
+    subscriptions.refresh()
   }
 
   const handleUpdate = (deploymentId: string): void => {
     emit('update', deploymentId)
-    refresh()
+    subscriptions.refresh()
   }
 
   const deleteDeployments = (): void => {
     emit('delete')
-    refresh()
+    subscriptions.refresh()
     selected.value = []
   }
 

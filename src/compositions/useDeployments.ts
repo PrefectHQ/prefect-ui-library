@@ -1,55 +1,45 @@
-import { useSubscriptionWithDependencies } from '@prefecthq/vue-compositions'
-import { MaybeRefOrGetter, computed, toRef, toValue } from 'vue'
+import { MaybeRefOrGetter, toValue } from 'vue'
 import { useCan } from '@/compositions/useCan'
+import { PaginationOptions, UsePaginationEntity, usePagination } from '@/compositions/usePagination'
 import { useWorkspaceApi } from '@/compositions/useWorkspaceApi'
 import { DeploymentsFilter } from '@/models'
 import { WorkspaceDeploymentsApi } from '@/services'
 import { Getter } from '@/types/reactivity'
-import { UseEntitySubscription } from '@/types/useEntitySubscription'
-import { isNullish } from '@/utilities'
 
-export type UseDeployments = UseEntitySubscription<WorkspaceDeploymentsApi['getDeployments'], 'deployments'>
+export type UseDeployments = UsePaginationEntity<
+WorkspaceDeploymentsApi['getDeployments'],
+WorkspaceDeploymentsApi['getDeploymentsCount'],
+'deployments'
+>
 
-export function useDeployments(filter: MaybeRefOrGetter<DeploymentsFilter>): UseDeployments
-export function useDeployments(deploymentIds: MaybeRefOrGetter<string[] | null | undefined>): UseDeployments
-export function useDeployments(filterOrDeploymentIds?: MaybeRefOrGetter<string[] | DeploymentsFilter | null | undefined>): UseDeployments {
+export function useDeployments(filter?: MaybeRefOrGetter<DeploymentsFilter | null | undefined>, options?: PaginationOptions): UseDeployments {
   const api = useWorkspaceApi()
   const can = useCan()
 
-  const getter: Getter<[DeploymentsFilter] | null> = () => {
+  const parameters: Getter<[DeploymentsFilter?] | null> = () => {
     if (!can.read.deployment) {
       return null
     }
 
-    const value = toValue(filterOrDeploymentIds)
+    const value = toValue(filter)
 
-    if (isNullish(value)) {
-      return [{}]
-    }
-
-    if (Array.isArray(value)) {
-      if (value.length === 0) {
-        return [{}]
-      }
-
-      const filter: DeploymentsFilter = {
-        deployments: {
-          id: value,
-        },
-      }
-
-      return [filter]
+    if (!value) {
+      return null
     }
 
     return [value]
   }
 
-  const parameters = toRef(getter)
-  const subscription = useSubscriptionWithDependencies(api.deployments.getDeployments, parameters)
-  const deployments = computed(() => subscription.response ?? [])
+  const pagination = usePagination({
+    fetchMethod: api.deployments.getDeployments,
+    fetchParameters: parameters,
+    countMethod: api.deployments.getDeploymentsCount,
+    countParameters: parameters,
+    options,
+  })
 
   return {
-    subscription,
-    deployments,
+    ...pagination,
+    deployments: pagination.results,
   }
 }
