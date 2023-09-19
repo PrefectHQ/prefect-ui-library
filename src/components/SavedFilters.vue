@@ -5,7 +5,7 @@
       :options="options"
       class="saved-filters__select"
     />
-    <SavedFiltersMenu v-model:saved-search="selectedSavedSearch" />
+    <SavedFiltersMenu v-model:saved-search="selectedSavedSearch" :name-of-default-filter="nameOfDefaultFilter" />
   </div>
 </template>
 

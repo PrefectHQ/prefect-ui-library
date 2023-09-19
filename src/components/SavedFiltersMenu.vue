@@ -7,6 +7,13 @@
     <p-overflow-menu-item v-if="canDelete" inset @click="openDeleteModal">
       Delete View
     </p-overflow-menu-item>
+
+    <p-overflow-menu-item v-if="canSetAsDefault" inset @click="openDeleteModal">
+      Set as default
+    </p-overflow-menu-item>
+    <p-overflow-menu-item v-if="canRemoveAsDefault" inset @click="openDeleteModal">
+      Remove as default
+    </p-overflow-menu-item>
   </p-icon-button-menu>
 
   <SaveFilterModal v-model:showModal="showSaveModal" @save="handleSave" />
@@ -37,6 +44,7 @@
 
   const props = defineProps<{
     savedSearch: SavedSearch | null,
+    nameOfDefaultFilter: string,
   }>()
 
   const emit = defineEmits<{
@@ -56,6 +64,10 @@
 
   const canSave = computed(() => internalSavedSearch.value?.name === customSavedSearch.name && can.create.saved_search)
   const canDelete = computed(() => internalSavedSearch.value?.id && can.delete.saved_search)
+
+  const isDefault = computed(() => props.nameOfDefaultFilter === internalSavedSearch.value?.name)
+  const canSetAsDefault = computed(() => !isDefault.value)
+  const canRemoveAsDefault = computed(() => isDefault.value)
 
   const can = useCan()
   const route = useRoute()
