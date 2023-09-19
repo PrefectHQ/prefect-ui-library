@@ -47,13 +47,13 @@
   const options = useInterval()
   const { count } = useFlowRunsCount(flowRunsFilter, options)
   const { flows } = useFlows(flowsFilter, options)
-  const flowIds = computed(() => flows.value?.map(flow => flow.id))
-  const flowsLookup = computed(() => toMap(flows.value ?? [], 'id'))
+  const flowIds = computed(() => flows.value.map(flow => flow.id))
+  const flowsLookup = computed(() => toMap(flows.value, 'id'))
 
   const selectedAccordionItem: Ref<string | null> = ref(null)
 
   watch(flowIds, () => {
-    selectedAccordionItem.value = flowIds.value?.[0] ?? null
+    selectedAccordionItem.value = flowIds.value[0] ?? null
   })
 
   function getFlow(id: string): Flow {

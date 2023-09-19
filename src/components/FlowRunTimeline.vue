@@ -334,22 +334,21 @@
 
   const { flowRuns: subFlowRuns } = useFlowRuns(subFlowRunsFilter)
 
-  const allSubFlowRunFlowIds = computed<string[]>(() => {
-    return subFlowRuns.value.map((flowRun) => flowRun.flowId)
-  })
-  const { flows: subFlows } = useFlows(allSubFlowRunFlowIds)
+  const { flows: subFlows } = useFlows(() => ({
+    flows: {
+      id: subFlowRuns.value.map(({ flowId }) => flowId),
+    },
+  }))
 
   const subFlowRunLabels = computed(() => {
     return subFlowRuns.value
       .reduce((acc, curr) => {
         if (curr.name) {
+          const subFlow = subFlows.value.find((flow) => flow.id === curr.flowId)
           let subFlowRunName = ''
 
-          if (subFlows.value) {
-            const subFlow = subFlows.value.find((flow) => flow.id === curr.flowId)
-            if (subFlow) {
-              subFlowRunName = `${subFlow.name} / `
-            }
+          if (subFlow) {
+            subFlowRunName = `${subFlow.name} / `
           }
 
           subFlowRunName += curr.name
