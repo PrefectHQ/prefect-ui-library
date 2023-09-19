@@ -184,7 +184,14 @@ export function usePagination<
   }
 
   watch(fetchParametersGetter, () => {
-    page.value = 1
+    const newPageValue = 1
+    const manuallySetParameters = page.value === newPageValue
+
+    page.value = newPageValue
+
+    if (manuallySetParameters) {
+      setFetchSubscriptionParameters()
+    }
   }, { deep: true })
 
   watch(page, () => {
