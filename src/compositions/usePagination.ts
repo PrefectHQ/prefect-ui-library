@@ -115,6 +115,7 @@ export function usePagination<
   function next(): void {
     if (mode === 'page') {
       page.value++
+      return
     }
 
     const shouldLoadNextPage = page.value * getLimit() <= results.value.length
