@@ -1,10 +1,16 @@
 <template>
-  <p-combobox v-model="internalValue" v-bind="{ options, multiple, emptyMessage }">
+  <p-combobox v-model="selected" v-model:search="search" :options="options" manual @bottom="next">
     <template #combobox-options-empty>
       No flows
     </template>
     <template #default="scope">
-      <slot v-bind="scope" />
+      <slot v-bind="scope">
+        <UseFlowSlot v-if="isString(scope.value)" :flow-id="scope.value">
+          <template #default="{ flow }">
+            {{ flow.name }}
+          </template>
+        </UseFlowSlot>
+      </slot>
     </template>
     <template #option="{ option }">
       <slot name="option" :option="option" />
@@ -14,41 +20,43 @@
 
 <script lang="ts" setup>
   import { PCombobox, SelectOption } from '@prefecthq/prefect-design'
-  import { useSubscription } from '@prefecthq/vue-compositions'
-  import { computed } from 'vue'
-  import { useWorkspaceApi } from '@/compositions'
+  import { useDebouncedRef } from '@prefecthq/vue-compositions'
+  import { computed, ref } from 'vue'
+  import UseFlowSlot from '@/components/UseFlowSlot.vue'
+  import { useFlows } from '@/compositions'
+  import { FlowsFilter } from '@/models/Filters'
+  import { isString } from '@/utilities'
 
   const props = defineProps<{
     selected: string | string[] | null | undefined,
-    emptyMessage?: string,
     allowUnset?: boolean,
-    multiple?: boolean,
   }>()
 
-  const emits = defineEmits<{
+  const emit = defineEmits<{
     (event: 'update:selected', value: string | string[] | null): void,
   }>()
 
-  const multiple = computed(() => props.multiple || Array.isArray(props.selected))
+  const search = ref('')
+  const searchDebounced = useDebouncedRef(search, 500)
 
-  const internalValue = computed({
+  const selected = computed({
     get() {
       return props.selected ?? null
     },
-    set(value: string | string[] | null) {
-      if (!value) {
-        emits('update:selected', null)
-      } else if (multiple.value) {
-        emits('update:selected', Array.isArray(value) ? value : [value])
-      } else {
-        emits('update:selected', value)
-      }
+    set(value) {
+      emit('update:selected', value)
     },
   })
 
-  const api = useWorkspaceApi()
-  const flowsSubscription = useSubscription(api.flows.getFlows, [{}])
-  const flows = computed(() => flowsSubscription.response ?? [])
+  const filter = (): FlowsFilter => ({
+    flows: {
+      nameLike: searchDebounced.value,
+    },
+    limit: 20,
+  })
+
+  const { flows, next } = useFlows(filter, { mode: 'infinite' })
+
   const options = computed<SelectOption[]>(() => {
     const options: SelectOption[] = flows.value.map(flow => ({
       value: flow.id,
