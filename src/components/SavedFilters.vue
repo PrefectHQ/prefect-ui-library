@@ -19,7 +19,7 @@
   import { useCustomDefaultFlowRunsFilter } from '@/compositions/useCustomDefaultFlowRunsFilter'
   import { SavedSearch, SavedSearchFilter } from '@/models/SavedSearch'
   import { mapper } from '@/services'
-  import { customSavedSearch, isSameFilter, isEmptyFilter } from '@/utilities/savedFilters'
+  import { customSavedSearch, oneWeekSavedSearch, isSameFilter, isEmptyFilter } from '@/utilities/savedFilters'
 
   const api = useWorkspaceApi()
 
@@ -29,7 +29,7 @@
 
   const options = computed<SelectOption[]>(() => {
     const allOptions = savedSearches.value.map(({ name }) => ({
-      label: name,
+      label: name === nameOfDefaultFilter.value ? `${name} (default)` : name,
       value: name,
       disabled: name === customSavedSearch.name,
     }))
@@ -52,7 +52,15 @@
   }))
 
   const router = useRouter()
-  const { value: myCustomDefaultFilter } = useCustomDefaultFlowRunsFilter()
+  const { value: mySavedCustomDefaultFilter, asFlowRunsFilter: myCustomDefaultFilter } = useCustomDefaultFlowRunsFilter()
+  const nameOfDefaultFilter = computed(() => {
+    const customDefault = mySavedCustomDefaultFilter.value
+    if (!savedSearches.value.length || !customDefault) {
+      return oneWeekSavedSearch.name
+    }
+    // TODO: handle case where customDefault is not in savedSearches
+    return savedSearches.value.find(({ filters }) => isSameFilter(filters, customDefault))?.name ?? oneWeekSavedSearch.name
+  })
   watch(filterInRoute, (newValue) => {
     if (myCustomDefaultFilter.value !== null && isEmptyFilter(newValue)) {
       const query = getQueryForFlowRunsFilter(myCustomDefaultFilter.value)

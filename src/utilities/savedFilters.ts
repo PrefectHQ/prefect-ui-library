@@ -61,7 +61,7 @@ export const customSavedSearch = new SavedSearch({
 
 export const oneWeekSavedSearch = new SavedSearch({
   id: null,
-  name: 'Default view',
+  name: 'Past week',
   filters: oneWeekFilter,
 })
 
