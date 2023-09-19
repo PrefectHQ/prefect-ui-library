@@ -35,5 +35,5 @@
   })
 
   const { deployments } = useDeployments(filter)
-  const tags = computed(() => unique(deployments.value?.flatMap(deployment => deployment.tags ?? []) ?? []))
+  const tags = computed(() => unique(deployments.value.flatMap(deployment => deployment.tags ?? [])))
 </script>
