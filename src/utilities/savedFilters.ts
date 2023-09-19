@@ -71,7 +71,9 @@ export const excludeScheduledSavedSearch = new SavedSearch({
   filters: noScheduleFilter,
 })
 
-export const defaultSavesSearches = [
+export const systemDefaultSavedSearch = oneWeekSavedSearch
+
+export const builtinSavedSearches = [
   customSavedSearch,
   oneWeekSavedSearch,
   excludeScheduledSavedSearch,

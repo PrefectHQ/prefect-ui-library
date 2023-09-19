@@ -3,7 +3,7 @@ import { SavedSearchesFilter } from '@/models/Filters'
 import { SavedSearch, SavedSearchCreate } from '@/models/SavedSearch'
 import { mapper } from '@/services/Mapper'
 import { WorkspaceApi } from '@/services/WorkspaceApi'
-import { defaultSavesSearches } from '@/utilities/savedFilters'
+import { builtinSavedSearches } from '@/utilities/savedFilters'
 
 export interface IWorkspaceSavedSearchesApi {
   getSavedSearches: (filter: SavedSearchesFilter) => Promise<SavedSearch[]>,
@@ -21,7 +21,7 @@ export class WorkspaceSavedSearchesApi extends WorkspaceApi implements IWorkspac
     const { data } = await this.post<SavedSearchResponse[]>('/filter', request)
     const mapped = mapper.map('SavedSearchResponse', data, 'SavedSearch')
 
-    return [...defaultSavesSearches, ...mapped]
+    return [...builtinSavedSearches, ...mapped]
   }
 
   public async getSavedSearch(id: string): Promise<SavedSearch> {

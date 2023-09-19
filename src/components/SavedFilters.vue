@@ -19,7 +19,7 @@
   import { useCustomDefaultFlowRunsFilter } from '@/compositions/useCustomDefaultFlowRunsFilter'
   import { SavedSearch, SavedSearchFilter } from '@/models/SavedSearch'
   import { mapper } from '@/services'
-  import { customSavedSearch, oneWeekSavedSearch, isSameFilter, isEmptyFilter } from '@/utilities/savedFilters'
+  import { customSavedSearch, systemDefaultSavedSearch, isSameFilter, isEmptyFilter } from '@/utilities/savedFilters'
 
   const api = useWorkspaceApi()
 
@@ -56,10 +56,10 @@
   const nameOfDefaultFilter = computed(() => {
     const customDefault = mySavedCustomDefaultFilter.value
     if (!savedSearches.value.length || !customDefault) {
-      return oneWeekSavedSearch.name
+      return systemDefaultSavedSearch.name
     }
     // TODO: handle case where customDefault is not in savedSearches
-    return savedSearches.value.find(({ filters }) => isSameFilter(filters, customDefault))?.name ?? oneWeekSavedSearch.name
+    return savedSearches.value.find(({ filters }) => isSameFilter(filters, customDefault))?.name ?? systemDefaultSavedSearch.name
   })
   watch(filterInRoute, (newValue) => {
     if (myCustomDefaultFilter.value !== null && isEmptyFilter(newValue)) {

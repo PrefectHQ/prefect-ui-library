@@ -40,7 +40,7 @@
   import { useShowModal } from '@/compositions'
   import { useCan } from '@/compositions/useCan'
   import { SavedSearch } from '@/models/SavedSearch'
-  import { customSavedSearch } from '@/utilities/savedFilters'
+  import { customSavedSearch, systemDefaultSavedSearch } from '@/utilities/savedFilters'
 
   const props = defineProps<{
     savedSearch: SavedSearch | null,
@@ -67,7 +67,7 @@
 
   const isDefault = computed(() => props.nameOfDefaultFilter === internalSavedSearch.value?.name)
   const canSetAsDefault = computed(() => !isDefault.value)
-  const canRemoveAsDefault = computed(() => isDefault.value)
+  const canRemoveAsDefault = computed(() => isDefault.value && internalSavedSearch.value?.name !== systemDefaultSavedSearch.name)
 
   const can = useCan()
   const route = useRoute()
