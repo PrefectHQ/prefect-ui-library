@@ -13,8 +13,9 @@
   import { SelectOption } from '@prefecthq/prefect-design'
   import { useSubscription } from '@prefecthq/vue-compositions'
   import { computed, watch } from 'vue'
+  import { useRouter } from 'vue-router'
   import SavedFiltersMenu from '@/components/SavedFiltersMenu.vue'
-  import { useFlowRunsFilterFromRoute, useWorkspaceApi } from '@/compositions'
+  import { getQueryForFlowRunsFilter, useFlowRunsFilterFromRoute, useWorkspaceApi } from '@/compositions'
   import { useCustomDefaultFlowRunsFilter } from '@/compositions/useCustomDefaultFlowRunsFilter'
   import { SavedSearch, SavedSearchFilter } from '@/models/SavedSearch'
   import { mapper } from '@/services'
@@ -50,10 +51,12 @@
     endDate: filter.flowRuns.expectedStartTimeBefore != undefined ? String(filter.flowRuns.expectedStartTimeBefore) : undefined,
   }))
 
+  const router = useRouter()
   const { value: myCustomDefaultFilter } = useCustomDefaultFlowRunsFilter()
   watch(filterInRoute, (newValue) => {
     if (myCustomDefaultFilter.value !== null && isEmptyFilter(newValue)) {
-      setFilters(myCustomDefaultFilter.value)
+      const query = getQueryForFlowRunsFilter(myCustomDefaultFilter.value)
+      router.replace({ query })
     }
   }, { immediate: true })
 
