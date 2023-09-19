@@ -26,9 +26,9 @@ import { mapEmpiricalPolicyToEmpiricalPolicyResponse, mapEmpiricalPolicyResponse
 import { mapFlowFilter, mapDeploymentFilter, mapFlowRunFilter, mapStateFilter, mapFlowsFilter, mapDeploymentsFilter, mapFlowRunsFilter, mapTagFilter, mapTaskRunFilter, mapTaskRunsFilter, mapBlockDocumentFilter, mapBlockSchemaFilter, mapBlockTypeFilter, mapBlockDocumentsFilter, mapBlockSchemasFilter, mapBlockTypesFilter, mapWorkPoolsFilter, mapWorkPoolFilter, mapWorkPoolQueueFilter, mapFlowRunsHistoryFilter, mapLogsFilter, mapNotificationsFilter, mapSavedSearchesFilter, mapWorkQueuesFilter, mapWorkPoolWorkersFilter, mapWorkPoolQueuesFilter, mapArtifactFilter, mapArtifactsFilter, mapVariablesFilter, mapVariableFilter, mapTaskRunsHistoryFilter } from '@/maps/filters'
 import { mapFlowToFlowResponse, mapFlowResponseToFlow } from '@/maps/flow'
 import { mapFlowRunResponseToFlowRun } from '@/maps/flowRun'
-import { mapSavedSearchFilterToFlowRunFilters } from '@/maps/flowRunFilter'
 import { mapGraphNodeToFlowRunGraphResponse, mapFlowRunGraphResponseToGraphNode } from '@/maps/flowRunGraph'
 import { mapRunHistoryToFlowRunHistoryResponse, mapFlowRunHistoryResponseToRunHistory } from '@/maps/flowRunHistory'
+import { mapSavedSearchFilterToFlowRunsFilter } from '@/maps/flowRunsFilter'
 import { mapFlowRunGraphResponseToTimelineNode } from '@/maps/flowRunTimeline'
 import { mapFlowStatsFilterToFlowRunsFilter, mapFlowStatsFilterToTaskRunsFilter } from '@/maps/flowStatsFilter'
 import { mapLogToLogResponse, mapLogResponseToLog } from '@/maps/logs'
@@ -127,7 +127,7 @@ export const maps = {
   RunHistory: { FlowRunHistoryResponse: mapRunHistoryToFlowRunHistoryResponse, DivergingBarChartItem: mapRunHistoryToDivergingBarChartItem },
   SavedSearchCreate: { SavedSearchCreateRequest: mapSavedSearchCreateToSavedSearchCreateRequest },
   SavedSearchesFilter: { SavedSearchesFilterRequest: mapSavedSearchesFilter },
-  SavedSearchFilter: { FlowRunFilters: mapSavedSearchFilterToFlowRunFilters },
+  SavedSearchFilter: { FlowRunsFilter: mapSavedSearchFilterToFlowRunsFilter },
   SavedSearchResponse: { SavedSearch: mapSavedSearchResponseToSavedSearch },
   Schedule: { ScheduleResponse: mapScheduleToScheduleResponse, ScheduleRequest: mapScheduleToScheduleRequest },
   ScheduleResponse: { Schedule: mapScheduleResponseToSchedule },

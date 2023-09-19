@@ -75,7 +75,7 @@
       return found ?? customSavedSearch
     },
     set(search: SavedSearch) {
-      const filters = mapper.map('SavedSearchFilter', search.filters, 'FlowRunFilters')
+      const filters = mapper.map('SavedSearchFilter', search.filters, 'FlowRunsFilter')
 
       setFilters(filters)
     },
