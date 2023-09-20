@@ -8,8 +8,8 @@
       Delete View
     </p-overflow-menu-item>
 
-    <p-overflow-menu-item v-if="internalSavedSearch?.name !== systemDefaultSavedSearch.name" inset @click="toggleDefault">
-      <template v-if="isDefault">
+    <p-overflow-menu-item v-if="!isUserDefault || !isSystemDefault" inset @click="toggleDefault">
+      <template v-if="isUserDefault">
         Remove as default
       </template>
 
@@ -48,7 +48,7 @@
 
   const props = defineProps<{
     savedSearch: SavedSearch | null,
-    nameOfDefaultFilter: string,
+    isUserDefault: boolean,
   }>()
 
   const emit = defineEmits<{
@@ -69,11 +69,11 @@
   const canSave = computed(() => internalSavedSearch.value?.name === customSavedSearch.name && can.create.saved_search)
   const canDelete = computed(() => internalSavedSearch.value?.id && can.delete.saved_search)
 
-  const isDefault = computed(() => props.nameOfDefaultFilter === internalSavedSearch.value?.name)
-  // note: cannot remove system default as the default - TF when setting the default, setting the system default should clear localstorage instead of setting it. wait maybe that's okay... hmm
+  const isSystemDefault = computed(() => internalSavedSearch.value?.name === systemDefaultSavedSearch.name)
   const customDefaultFlowRunsFilter = useCustomDefaultFlowRunsFilter()
   function toggleDefault(): void {
-    if (isDefault.value) {
+    // setting the default to the _system_ default is the same as removing the custom default
+    if (props.isUserDefault || isSystemDefault.value) {
       customDefaultFlowRunsFilter.remove()
     } else if (props.savedSearch) {
       customDefaultFlowRunsFilter.set(props.savedSearch.filters)
