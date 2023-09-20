@@ -70,16 +70,13 @@
   const canDelete = computed(() => internalSavedSearch.value?.id && can.delete.saved_search)
 
   const isDefault = computed(() => props.nameOfDefaultFilter === internalSavedSearch.value?.name)
-  const canSetAsDefault = computed(() => !isDefault.value) // note: cannot remove system default as the default - TF when setting the default, setting the system default should clear localstorage instead of setting it. wait maybe that's okay... hmm
-  const canRemoveAsDefault = computed(() => isDefault.value && internalSavedSearch.value?.name !== systemDefaultSavedSearch.name)
-  const { set, remove } = useCustomDefaultFlowRunsFilter()
+  // note: cannot remove system default as the default - TF when setting the default, setting the system default should clear localstorage instead of setting it. wait maybe that's okay... hmm
+  const customDefaultFlowRunsFilter = useCustomDefaultFlowRunsFilter()
   function toggleDefault(): void {
     if (isDefault.value) {
-      // remove as default
-      remove()
+      customDefaultFlowRunsFilter.remove()
     } else if (props.savedSearch) {
-      // set as default
-      set(props.savedSearch.filters)
+      customDefaultFlowRunsFilter.set(props.savedSearch.filters)
     }
   }
 
