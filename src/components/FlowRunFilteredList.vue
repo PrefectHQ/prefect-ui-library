@@ -40,6 +40,7 @@
     flowRunFilter: FlowRunsFilter,
     states?: PrefectStateNames[],
     disableDeletion?: boolean,
+    sort?: FlowRunSortValues,
   }>()
 
   const emit = defineEmits<{
@@ -57,7 +58,7 @@
     emit('update:states', states.value)
   }
 
-  const sort = ref<FlowRunSortValues>('START_TIME_DESC')
+  const sort = ref<FlowRunSortValues>(props.sort ?? 'START_TIME_DESC')
   const hasFilters = computed(() => states.value.length)
 
   const filter = computed<FlowRunsFilter>(() => ({
