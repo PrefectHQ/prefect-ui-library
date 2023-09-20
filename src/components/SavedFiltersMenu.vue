@@ -70,12 +70,17 @@
   const canSave = computed(() => isCustomUnsavedFilter.value && can.create.saved_search)
   const canDelete = computed(() => internalSavedSearch.value?.id && can.delete.saved_search)
 
-  const canToggleDefault = computed(() =>
+  const canToggleDefault = computed(() => {
     // can't set the default to an unsaved filter. save it first
-    !isCustomUnsavedFilter.value &&
+    if (isCustomUnsavedFilter.value) {
+      return false
+    }
     // can't remove the system default
-    !(props.isUserDefault && isSystemDefault.value),
-  )
+    if (props.isUserDefault && isSystemDefault.value) {
+      return false
+    }
+    return true
+  })
 
   const isSystemDefault = computed(() => internalSavedSearch.value?.name === systemDefaultSavedSearch.name)
   const customDefaultFlowRunsFilter = useCustomDefaultFlowRunsFilter()
