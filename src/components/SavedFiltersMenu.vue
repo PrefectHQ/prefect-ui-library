@@ -8,11 +8,14 @@
       Delete View
     </p-overflow-menu-item>
 
-    <p-overflow-menu-item v-if="canSetAsDefault" inset @click="openDeleteModal">
-      Set as default
-    </p-overflow-menu-item>
-    <p-overflow-menu-item v-if="canRemoveAsDefault" inset @click="openDeleteModal">
-      Remove as default
+    <p-overflow-menu-item v-if="internalSavedSearch?.name !== systemDefaultSavedSearch.name" inset @click="toggleDefault">
+      <template v-if="isDefault">
+        Remove as default
+      </template>
+
+      <template v-else>
+        Set as default
+      </template>
     </p-overflow-menu-item>
   </p-icon-button-menu>
 
@@ -39,6 +42,7 @@
   import SaveFilterModal from '@/components/SaveFilterModal.vue'
   import { useShowModal } from '@/compositions'
   import { useCan } from '@/compositions/useCan'
+  import { useCustomDefaultFlowRunsFilter } from '@/compositions/useCustomDefaultFlowRunsFilter'
   import { SavedSearch } from '@/models/SavedSearch'
   import { customSavedSearch, systemDefaultSavedSearch } from '@/utilities/savedFilters'
 
@@ -66,8 +70,18 @@
   const canDelete = computed(() => internalSavedSearch.value?.id && can.delete.saved_search)
 
   const isDefault = computed(() => props.nameOfDefaultFilter === internalSavedSearch.value?.name)
-  const canSetAsDefault = computed(() => !isDefault.value)
+  const canSetAsDefault = computed(() => !isDefault.value) // note: cannot remove system default as the default - TF when setting the default, setting the system default should clear localstorage instead of setting it. wait maybe that's okay... hmm
   const canRemoveAsDefault = computed(() => isDefault.value && internalSavedSearch.value?.name !== systemDefaultSavedSearch.name)
+  const { set, remove } = useCustomDefaultFlowRunsFilter()
+  function toggleDefault(): void {
+    if (isDefault.value) {
+      // remove as default
+      remove()
+    } else if (props.savedSearch) {
+      // set as default
+      set(props.savedSearch.filters)
+    }
+  }
 
   const can = useCan()
   const route = useRoute()
