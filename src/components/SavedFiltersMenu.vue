@@ -8,7 +8,7 @@
       Delete View
     </p-overflow-menu-item>
 
-    <p-overflow-menu-item v-if="!isUserDefault || !isSystemDefault" inset @click="toggleDefault">
+    <p-overflow-menu-item v-if="canToggleDefault" inset @click="toggleDefault">
       <template v-if="isUserDefault">
         Remove as default
       </template>
@@ -66,8 +66,16 @@
     },
   })
 
-  const canSave = computed(() => internalSavedSearch.value?.name === customSavedSearch.name && can.create.saved_search)
+  const isCustomUnsavedFilter = computed(() => internalSavedSearch.value?.name === customSavedSearch.name)
+  const canSave = computed(() => isCustomUnsavedFilter.value && can.create.saved_search)
   const canDelete = computed(() => internalSavedSearch.value?.id && can.delete.saved_search)
+
+  const canToggleDefault = computed(() =>
+    // can't set the default to an unsaved filter. save it first
+    !isCustomUnsavedFilter.value &&
+    // can't remove the system default
+    !(props.isUserDefault && isSystemDefault.value),
+  )
 
   const isSystemDefault = computed(() => internalSavedSearch.value?.name === systemDefaultSavedSearch.name)
   const customDefaultFlowRunsFilter = useCustomDefaultFlowRunsFilter()
