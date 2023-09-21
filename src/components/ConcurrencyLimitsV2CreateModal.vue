@@ -55,11 +55,12 @@
 
   const limit = ref(0)
   const { state: limitState, error: limitErrorMessage } = useValidation(limit, 'Limit', value => {
-    if (value >= 0) {
+    if (value === 0 || value && value > 0) {
       return true
     }
-    return 'Limit can not be none'
+    return 'Limit must be set'
   })
+
 
   const active = ref(true)
 
@@ -69,7 +70,7 @@
     if (value === 0 || value && value > 0) {
       return true
     }
-    return 'Slot delay per second can not be none'
+    return 'Slot delay per second must be set'
   })
 
 
