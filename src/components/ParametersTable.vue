@@ -1,7 +1,7 @@
 <template>
   <div class="deployment-parameters-table">
     <div class="deployment-parameters-table__search">
-      <ResultsCount :count="filtered.length" :label="toPluralString('parameter', filtered.length)" />
+      <ResultsCount :count="filtered.length" label="parameter" />
       <SearchInput v-model="searchTerm" placeholder="Search parameters" label="Search parameters" />
     </div>
 
