@@ -48,6 +48,9 @@
     showModal: boolean,
     concurrencyLimit: ConcurrencyV2Limit,
   }>()
+
+  const { valid, pending, validate } = useValidationObserver()
+
   const emit = defineEmits<{
     (event: 'update:showModal', value: boolean): void,
   }>()
@@ -99,7 +102,6 @@
     activeSlots.value = props.concurrencyLimit.activeSlots ?? 0
   }
 
-  const { valid, pending, validate } = useValidationObserver()
   const submit = async (): Promise<void> => {
     await validate()
     if (valid.value) {
@@ -114,13 +116,12 @@
         await api.concurrencyV2Limits.updateConcurrencyV2Limit(props.concurrencyLimit.id, updatedLimit)
         concurrencyLimitSubscription.refresh()
         showToast(localization.success.updateConcurrencyLimit, 'success')
+        reset()
+        internalShowModal.value = false
       } catch (error) {
         console.error(error)
         const message = getApiErrorMessage(error, localization.error.updateConcurrencyLimit)
         showToast(message, 'error')
-      } finally {
-        reset()
-        internalShowModal.value = false
       }
     }
   }

@@ -50,6 +50,8 @@
     (event: 'update:showModal', value: boolean): void,
   }>()
 
+  const { valid, pending, validate } = useValidationObserver()
+
   const name = ref('')
   const { state: nameState, error: nameErrorMessage } = useValidation(name, 'Name', [isRequired])
 
@@ -96,7 +98,6 @@
     activeSlots.value = 0
   }
 
-  const { valid, pending, validate } = useValidationObserver()
   const submit = async (): Promise<void> => {
     try {
       await validate()
@@ -111,14 +112,13 @@
         await api.concurrencyV2Limits.createConcurrencyV2Limit(concurrencyLimit)
         concurrencyLimitSubscription.refresh()
         showToast(localization.success.createConcurrencyLimit, 'success')
+        reset()
+        internalShowModal.value = false
       }
     } catch (error) {
       console.error(error)
       const message = getApiErrorMessage(error, localization.error.createConcurrencyLimit)
       showToast(message, 'error')
-    } finally {
-      reset()
-      internalShowModal.value = false
     }
   }
 </script>
