@@ -20,14 +20,9 @@ export const choice = <T>(list: T[] | Readonly<T[]>): T => list[floor(random() *
 
 export const range = (min: number, max: number): number[] => Array.from({ length: max - min }, (x, i) => min + i)
 
-
-// we really do want any here
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function unique<T extends any[]>(array: T): T {
-  // eslint-disable-next-line id-length
-  return array.filter((v, i, a) => a.indexOf(v) === i) as T
+export function unique<T>(array: T[]): T[] {
+  return [...new Set(array)]
 }
-
 
 // we really do want any here
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
