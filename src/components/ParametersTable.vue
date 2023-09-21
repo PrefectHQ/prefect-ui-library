@@ -26,7 +26,6 @@
   import SearchInput from '@/components/SearchInput.vue'
   import { Deployment } from '@/models'
   import { schemaPropertyServiceFactory } from '@/services/schemas'
-  import { toPluralString } from '@/utilities'
 
   const props = defineProps<{
     deployment: Deployment,
