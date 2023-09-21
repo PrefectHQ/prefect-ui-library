@@ -60,6 +60,9 @@
         </h3>
 
         <SchemaInput v-model="parameters" :schema="schema" />
+        <p-label label="Enforce Parameter Schema">
+          <p-toggle v-model="enforceParameterSchema" :disabled="!parameters" class="deployment-form__enforce-parameter-schema-toggle" />
+        </p-label>
       </p-content>
     </p-content>
 
@@ -120,6 +123,7 @@
       tags: props.deployment.tags,
       schema: props.deployment.parameterOpenApiSchema,
       infrastructureOverrides: stringify(props.deployment.infrastructureOverrides),
+      enforceParameterSchema: props.deployment.enforceParameterSchema,
     },
   })
 
@@ -136,6 +140,7 @@
   const { value: workQueueName } = useField<string | null>('workQueueName')
   const { value: tags } = useField<string[] | null>('tags')
   const { value: infrastructureOverrides, meta: overrideState, errorMessage: overrideErrorMessage } = useField<string>('infrastructureOverrides', rules.infrastructureOverrides)
+  const { value: enforceParameterSchema } = useField<boolean>('enforceParameterSchema')
 
   const { schema } = useOptionalPropertiesSchema(props.deployment.rawSchema)
 
