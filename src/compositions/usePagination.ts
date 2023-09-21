@@ -151,16 +151,17 @@ export function usePagination<
       return [getFetchFilterForPage(page, filter)]
     }
 
-    return repeat(page, page => getFetchFilterForPage(page, filter))
+    return repeat(page, index => getFetchFilterForPage(index + 1, filter))
   }
 
   function getFetchFilterForPage(page: number, filter?: TFetchFilter): TFetchFilter {
     const limit = getLimit()
+    const offset = getPageOffset(page)
 
     return {
       ...filter,
-      offset: limit * page,
-      limit: limit,
+      offset,
+      limit,
     }
   }
 
@@ -169,6 +170,12 @@ export function usePagination<
     const limit = filter?.limit ?? GLOBAL_API_LIMIT
 
     return limit
+  }
+
+  function getPageOffset(page: number): number {
+    const limit = getLimit()
+
+    return (page - 1) * limit
   }
 
   function getPageRef(): Ref<number> {
