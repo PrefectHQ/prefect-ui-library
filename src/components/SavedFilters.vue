@@ -5,31 +5,28 @@
       :options="options"
       class="saved-filters__select"
     />
-    <SavedFiltersMenu v-model:saved-search="selectedSavedSearch" :is-user-default="nameOfDefaultFilter === selectedSavedSearch.name" />
+    <SavedFiltersMenu v-model:saved-search="selectedSavedSearch" :is-user-default="selectedSavedSearch.isDefault" />
   </div>
 </template>
 
 <script setup lang="ts">
   import { SelectOption } from '@prefecthq/prefect-design'
-  import { useSubscription } from '@prefecthq/vue-compositions'
   import { computed, watch } from 'vue'
   import { useRouter } from 'vue-router'
   import SavedFiltersMenu from '@/components/SavedFiltersMenu.vue'
-  import { getQueryForFlowRunsFilter, useFlowRunsFilterFromRoute, useWorkspaceApi } from '@/compositions'
-  import { useCustomDefaultFlowRunsFilter } from '@/compositions/useCustomDefaultFlowRunsFilter'
+  import { getQueryForFlowRunsFilter, useFlowRunsFilterFromRoute } from '@/compositions'
+  import { SavedFlowRunsSearch, useSavedFlowRunsSearches } from '@/compositions/useSavedFlowRunsSearches'
   import { SavedSearch, SavedSearchFilter } from '@/models/SavedSearch'
   import { mapper } from '@/services'
-  import { customSavedSearch, systemDefaultSavedSearch, isSameFilter, isEmptyFilter } from '@/utilities/savedFilters'
-
-  const api = useWorkspaceApi()
+  import { customSavedSearch, isSameFilter, isEmptyFilter } from '@/utilities/savedFilters'
 
   const { filter, set: setFilters } = useFlowRunsFilterFromRoute()
-  const savedSearchesSubscription = useSubscription(api.savedSearches.getSavedSearches)
-  const savedSearches = computed(() => savedSearchesSubscription.response ?? [])
+
+  const { savedFlowRunsSearches: savedSearches, default: myCustomDefaultFilter, hasCustomDefault } = useSavedFlowRunsSearches()
 
   const options = computed<SelectOption[]>(() => {
-    const allOptions = savedSearches.value.map(({ name }) => ({
-      label: name === nameOfDefaultFilter.value ? `${name} (default)` : name,
+    const allOptions = savedSearches.value.map(({ name, isDefault }) => ({
+      label: isDefault ? `${name} (default)` : name,
       value: name,
       disabled: name === customSavedSearch.name,
     }))
@@ -52,27 +49,18 @@
   }))
 
   const router = useRouter()
-  const { value: mySavedCustomDefaultFilter, asFlowRunsFilter: myCustomDefaultFilter } = useCustomDefaultFlowRunsFilter()
-  const nameOfDefaultFilter = computed(() => {
-    const customDefault = mySavedCustomDefaultFilter.value
-    if (!savedSearches.value.length || !customDefault) {
-      return systemDefaultSavedSearch.name
-    }
-    // TODO: handle case where customDefault is not in savedSearches
-    return savedSearches.value.find(({ filters }) => isSameFilter(filters, customDefault))?.name ?? systemDefaultSavedSearch.name
-  })
   watch(filterInRoute, (newValue) => {
-    if (myCustomDefaultFilter.value !== null && isEmptyFilter(newValue)) {
+    if (hasCustomDefault.value && isEmptyFilter(newValue)) {
       const query = getQueryForFlowRunsFilter(myCustomDefaultFilter.value)
       router.replace({ query })
     }
   }, { immediate: true })
 
-  const selectedSavedSearch = computed({
+  const selectedSavedSearch = computed<SavedFlowRunsSearch>({
     get() {
       const found = savedSearches.value.find(({ name, filters }) => name != customSavedSearch.name && isSameFilter(filters, filterInRoute.value))
 
-      return found ?? customSavedSearch
+      return found ?? SavedFlowRunsSearch.fromSavedSearch(customSavedSearch, false)
     },
     set(search: SavedSearch) {
       const filters = mapper.map('SavedSearchFilter', search.filters, 'FlowRunsFilter')
