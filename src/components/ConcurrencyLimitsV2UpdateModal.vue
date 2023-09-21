@@ -10,7 +10,7 @@
           <p-number-input v-model="limit" :min="0" :state="limitState" />
         </p-label>
 
-        <p-label label="Slot Decay Per Second">
+        <p-label label="Slot Decay Per Second" :message="decayErrorMessage" :state="decayState">
           <p-number-input v-model="decay" :min="0" />
         </p-label>
 
@@ -42,7 +42,7 @@
   import { localization } from '@/localization'
   import { ConcurrencyV2Limit } from '@/models/ConcurrencyV2Limit'
   import { getApiErrorMessage } from '@/utilities/errors'
-  import { isRequired, isGreaterThanZeroOrNull } from '@/utilities/formValidation'
+  import { isRequired } from '@/utilities/formValidation'
 
   const props = defineProps<{
     showModal: boolean,
@@ -58,10 +58,12 @@
   const { state: nameState, error: nameErrorMessage } = useValidation(name, 'Name', [isRequired])
 
   const limit = ref(props.concurrencyLimit.limit)
-  const { state: limitState, error: limitErrorMessage } = useValidation(limit, 'Limit', [
-    isRequired,
-    isGreaterThanZeroOrNull,
-  ])
+  const { state: limitState, error: limitErrorMessage } = useValidation(limit, 'Limit', value => {
+    if (value >= 0) {
+      return true
+    }
+    return 'Limit can not be none'
+  })
 
   const active = ref(true)
 
@@ -69,6 +71,13 @@
 
 
   const decay = ref(props.concurrencyLimit.slotDecayPerSecond)
+  const { state: decayState, error: decayErrorMessage } = useValidation(decay, 'Slot decay per second', value => {
+    if (value === 0 || value && value > 0) {
+      console.log('in validation', value)
+      return true
+    }
+    return 'Slot delay per second can not be none'
+  })
 
 
   const internalShowModal = computed({
@@ -94,6 +103,7 @@
   const { valid, pending, validate } = useValidationObserver()
   const submit = async (): Promise<void> => {
     await validate()
+    console.log('valid', valid)
     if (valid.value) {
       try {
         const updatedLimit = {

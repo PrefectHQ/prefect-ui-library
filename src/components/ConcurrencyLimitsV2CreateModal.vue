@@ -10,7 +10,7 @@
           <p-number-input v-model="limit" :min="0" :state="limitState" />
         </p-label>
 
-        <p-label label="Slot Decay Per Second">
+        <p-label label="Slot Decay Per Second" :message="decayErrorMessage" :state="decayState">
           <p-number-input v-model="decay" :min="0" />
         </p-label>
 
@@ -41,7 +41,7 @@
   import { useWorkspaceApi } from '@/compositions'
   import { localization } from '@/localization'
   import { getApiErrorMessage } from '@/utilities/errors'
-  import { isRequired, isGreaterThanZeroOrNull } from '@/utilities/formValidation'
+  import { isRequired } from '@/utilities/formValidation'
 
   const props = defineProps<{
     showModal: boolean,
@@ -54,15 +54,24 @@
   const { state: nameState, error: nameErrorMessage } = useValidation(name, 'Name', [isRequired])
 
   const limit = ref(0)
-  const { state: limitState, error: limitErrorMessage } = useValidation(limit, 'Limit', [
-    isRequired,
-    isGreaterThanZeroOrNull,
-  ])
+  const { state: limitState, error: limitErrorMessage } = useValidation(limit, 'Limit', value => {
+    if (value >= 0) {
+      return true
+    }
+    return 'Limit can not be none'
+  })
 
   const active = ref(true)
 
 
   const decay = ref(0)
+  const { state: decayState, error: decayErrorMessage } = useValidation(decay, 'Slot decay per second', value => {
+    if (value === 0 || value && value > 0) {
+      return true
+    }
+    return 'Slot delay per second can not be none'
+  })
+
 
   const activeSlots = ref(0)
 
@@ -88,9 +97,9 @@
 
   const { valid, pending, validate } = useValidationObserver()
   const submit = async (): Promise<void> => {
-    await validate()
-    if (valid.value) {
-      try {
+    try {
+      await validate()
+      if (valid.value) {
         const concurrencyLimit = {
           name: name.value,
           limit: limit.value,
@@ -101,14 +110,14 @@
         await api.concurrencyV2Limits.createConcurrencyV2Limit(concurrencyLimit)
         concurrencyLimitSubscription.refresh()
         showToast(localization.success.createConcurrencyLimit, 'success')
-      } catch (error) {
-        console.error(error)
-        const message = getApiErrorMessage(error, localization.error.createConcurrencyLimit)
-        showToast(message, 'error')
-      } finally {
-        reset()
-        internalShowModal.value = false
       }
+    } catch (error) {
+      console.error(error)
+      const message = getApiErrorMessage(error, localization.error.createConcurrencyLimit)
+      showToast(message, 'error')
+    } finally {
+      reset()
+      internalShowModal.value = false
     }
   }
 </script>
