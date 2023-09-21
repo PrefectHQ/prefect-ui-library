@@ -2,20 +2,16 @@
   <div class="flows-table">
     <p-layout-table :root-margin="margin" sticky>
       <template #header-start>
-        <div class="flows-table__header-start">
-          <ResultsCount v-if="selectedFlows.length == 0" label="Flow" :count="flowsCount" />
-          <SelectedCount v-else :count="selectedFlows.length" />
+        <ResultsCount v-if="selectedFlows.length == 0" label="Flow" :count="total" />
+        <SelectedCount v-else :count="selectedFlows.length" />
 
-          <FlowsDeleteButton v-if="can.delete.flow" :selected="selectedFlows" @delete="deleteFlows" />
-        </div>
+        <FlowsDeleteButton v-if="can.delete.flow" :selected="selectedFlows" small @delete="deleteFlows" />
       </template>
 
       <template #header-end>
-        <div class="flows-table__header-end">
-          <SearchInput v-model="flowNameLike" placeholder="Search flows" label="Search flows" />
-          <p-select v-model="filter.sort" :options="flowSortOptions" />
-          <p-tags-input v-model="filter.flowRuns.tags.name" empty-message="Flow run tags" :options="options" class="flows-table__tags" />
-        </div>
+        <SearchInput v-model="flowNameLike" placeholder="Search flows" label="Search flows" />
+        <p-select v-model="filter.sort" :options="flowSortOptions" />
+        <FlowRunTagsInput v-model:selected="filter.flowRuns.tags.name" multiple />
       </template>
 
       <p-table :data="flows" :columns="columns">
@@ -78,10 +74,10 @@
 
 <script lang="ts" setup>
   import { PTable, PEmptyResults, PLink, CheckboxModel, TableColumn } from '@prefecthq/prefect-design'
-  import { useDebouncedRef, useSubscription } from '@prefecthq/vue-compositions'
+  import { NumberRouteParam, useDebouncedRef, useRouteQueryParam } from '@prefecthq/vue-compositions'
   import { computed, ref } from 'vue'
-  import { FlowsDeleteButton, DeploymentsCount, ResultsCount, SearchInput, FlowActivityChart, SelectedCount } from '@/components'
-  import { useCan, useFlowsFilterFromRoute, useWorkspaceApi, useWorkspaceRoutes, useFlowRuns, useOffsetStickyRootMargin, useFilterPagination } from '@/compositions'
+  import { FlowsDeleteButton, DeploymentsCount, ResultsCount, SearchInput, FlowActivityChart, SelectedCount, FlowRunTagsInput } from '@/components'
+  import { useCan, useFlowsFilterFromRoute, useWorkspaceRoutes, useOffsetStickyRootMargin, useFlows } from '@/compositions'
   import { useComponent } from '@/compositions/useComponent'
   import { FlowsFilter } from '@/models/Filters'
   import { Flow } from '@/models/Flow'
@@ -95,22 +91,23 @@
   const { margin } = useOffsetStickyRootMargin()
   const { FlowMenu } = useComponent()
 
-  const api = useWorkspaceApi()
   const can = useCan()
   const routes = useWorkspaceRoutes()
 
-  const { page, limit, offset } = useFilterPagination()
-  const pages = computed(() => Math.ceil((flowsCount.value ?? limit.value) / limit.value))
   const flowNameLike = ref<string>()
   const flowNameLikeDebounced = useDebouncedRef(flowNameLike, 1200)
   const { filter, clear, isCustomFilter } = useFlowsFilterFromRoute({
     ...props.filter,
-    limit,
-    offset,
     flows: {
       ...props.filter,
       nameLike: flowNameLikeDebounced,
     },
+    limit: 50,
+  })
+
+  const page = useRouteQueryParam('page', NumberRouteParam, 1)
+  const { flows, subscriptions, total, pages } = useFlows(filter, {
+    page,
   })
 
   const columns: TableColumn<Flow>[] = [
@@ -160,19 +157,8 @@
     },
   })
 
-  const flowsSubscription = useSubscription(api.flows.getFlows, [filter])
-  const flows = computed(() => flowsSubscription.response ?? [])
-
-  const flowsCountSubscription = useSubscription(api.flows.getFlowsCount, [filter])
-  const flowsCount = computed(() => flowsCountSubscription.response)
-
-  const { flowRuns } = useFlowRuns({})
-  const tagList = computed(() => flowRuns.value.flatMap(flowRun => flowRun.tags ?? []))
-  const options = computed(() => [...new Set(tagList.value)])
-
   function refresh(): void {
-    flowsSubscription.refresh()
-    flowsCountSubscription.refresh()
+    subscriptions.refresh()
   }
 
   const emit = defineEmits<{
@@ -187,25 +173,6 @@
 </script>
 
 <style>
-.flows-table__header-start { @apply
-  grow
-  whitespace-nowrap
-}
-
-.flows-table__header-end { @apply
-  flex
-  flex-wrap
-  pl-2
-  ml-auto
-  shrink
-  gap-2
-}
-
-.flows-table__deployments,
-.flows-table__tags {
-  min-width: 128px;
-}
-
 .flows-table__activity-chart { @apply
   !h-12
 }
