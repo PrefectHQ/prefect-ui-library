@@ -1,21 +1,16 @@
 <template>
-  <p-tags-input
-    v-model="internalValue"
-    :placeholder="localization.info.addTagPlaceholder"
-    :options="tags"
-    :empty-message="localization.info.all"
-  />
+  <p-tags-input v-model="internalValue" class="deployment-tags-input" placeholder="Search or enter new tag" v-bind="{ options, emptyMessage }" />
 </template>
 
 <script lang="ts" setup>
-  import { computed, toRefs } from 'vue'
+  import { computed } from 'vue'
   import { useDeployments } from '@/compositions'
-  import { localization } from '@/localization'
   import { DeploymentsFilter } from '@/models/Filters'
-  import { unique } from '@/utilities'
+  import { unique } from '@/utilities/arrays'
 
   const props = defineProps<{
     selected: string[] | null | undefined,
+    emptyMessage?: string,
     filter?: DeploymentsFilter,
   }>()
 
@@ -23,7 +18,7 @@
     (event: 'update:selected', value: string[] | null): void,
   }>()
 
-  const { filter = {} } = toRefs(props)
+  const emptyMessage = computed(() => props.emptyMessage ?? 'All tags')
 
   const internalValue = computed({
     get() {
@@ -34,6 +29,17 @@
     },
   })
 
-  const { deployments } = useDeployments(filter)
-  const tags = computed(() => unique(deployments.value.flatMap(deployment => deployment.tags ?? [])))
+  const { deployments } = useDeployments(() => props.filter ?? {})
+
+  const options = computed(() => {
+    const tags = deployments.value.flatMap(deployment => deployment.tags ?? [])
+
+    return unique(tags)
+  })
 </script>
+
+<style>
+.deployment-tags-input {
+  min-width: 128px;
+}
+</style>
