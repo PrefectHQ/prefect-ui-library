@@ -1,7 +1,7 @@
 <template>
   <div class="deployment-parameters-table">
     <div class="deployment-parameters-table__search">
-      <ResultsCount :count="filtered.length" label="parameters" />
+      <ResultsCount :count="filtered.length" :label="toPluralString('parameter', filtered.length)" />
       <SearchInput v-model="searchTerm" placeholder="Search parameters" label="Search parameters" />
     </div>
 
@@ -26,6 +26,7 @@
   import SearchInput from '@/components/SearchInput.vue'
   import { Deployment } from '@/models'
   import { schemaPropertyServiceFactory } from '@/services/schemas'
+  import { toPluralString } from '@/utilities'
 
   const props = defineProps<{
     deployment: Deployment,
