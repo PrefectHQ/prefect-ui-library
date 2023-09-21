@@ -9,6 +9,7 @@ type Base = {
   workQueueName?: string | null,
   workPoolName?: string | null,
   infrastructureOverrides?: Record<string, unknown> | null,
+  enforceParameterSchema?: boolean,
 }
 
 type BaseEdit = Omit<Base, 'infrastructureOverrides'> & {
