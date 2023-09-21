@@ -102,7 +102,6 @@
   const { valid, pending, validate } = useValidationObserver()
   const submit = async (): Promise<void> => {
     await validate()
-    console.log('valid', valid)
     if (valid.value) {
       try {
         const updatedLimit = {
