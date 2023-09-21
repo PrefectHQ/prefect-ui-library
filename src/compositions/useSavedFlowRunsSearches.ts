@@ -6,15 +6,7 @@ import { FlowRunsFilter, SavedSearch, SavedSearchCreate } from '@/models'
 import { mapper } from '@/services'
 import { builtinSavedSearches, customSavedSearch, isSameFilter, systemDefaultSavedSearch } from '@/utilities/savedFilters'
 
-export class SavedFlowRunsSearch extends SavedSearch {
-  public isDefault: boolean = false
-
-  public static fromSavedSearch(savedSearch: SavedSearch, isDefault: boolean): SavedFlowRunsSearch {
-    const savedFlowRunsSearch = new SavedFlowRunsSearch(savedSearch)
-    savedFlowRunsSearch.isDefault = isDefault
-    return savedFlowRunsSearch
-  }
-}
+export type SavedFlowRunsSearch = SavedSearch & { isDefault: boolean }
 
 type UseSavedFlowRunsSearches = {
   savedFlowRunsSearches: ComputedRef<SavedFlowRunsSearch[]>,

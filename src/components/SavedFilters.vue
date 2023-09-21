@@ -60,7 +60,7 @@
     get() {
       const found = savedSearches.value.find(({ name, filters }) => name != customSavedSearch.name && isSameFilter(filters, filterInRoute.value))
 
-      return found ?? SavedFlowRunsSearch.fromSavedSearch(customSavedSearch, false)
+      return found ?? { ...customSavedSearch, isDefault: false }
     },
     set(search: SavedSearch) {
       const filters = mapper.map('SavedSearchFilter', search.filters, 'FlowRunsFilter')
