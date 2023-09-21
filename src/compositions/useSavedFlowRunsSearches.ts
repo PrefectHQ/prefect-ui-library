@@ -18,6 +18,7 @@ export class SavedFlowRunsSearch extends SavedSearch {
 
 type UseSavedFlowRunsSearches = {
   savedFlowRunsSearches: ComputedRef<SavedFlowRunsSearch[]>,
+  deleteSavedSearch: (savedSearchId: string) => Promise<void>,
   default: ComputedRef<FlowRunsFilter>,
   hasCustomDefault: ComputedRef<boolean>,
 }
@@ -26,20 +27,28 @@ export function useSavedFlowRunsSearches(): UseSavedFlowRunsSearches {
   const api = useWorkspaceApi()
   const savedSearchesSubscription = useSubscription(api.savedSearches.getSavedSearches)
   const builtinSavedSearches: SavedSearch[] = [] // remove me
-  const savedFlowRunsSearches = computed(() => builtinSavedSearches.concat(savedSearchesSubscription.response ?? [])
-    .map(search => SavedFlowRunsSearch.fromSavedSearch(search,
-      search.name !== customSavedSearch.name && isSameFilter(search.filters, myDefaultSavedFilter.value)),
-    ),
-  )
+  const savedSearches = computed(() => builtinSavedSearches.concat(savedSearchesSubscription.response ?? []))
+  const matchedCustomDefaultSavedSearch = computed(() => savedSearches.value.find(search => search.name !== customSavedSearch.name && isSameFilter(search.filters, myDefaultSavedFilter.value)))
+  const savedFlowRunsSearches = computed(() => savedSearches.value.map(search => ({ ...search, isDefault: matchedCustomDefaultSavedSearch.value?.name === search.name })))
+
   // TODO: handle case where customDefault is not in savedSearches
 
 
-  const { value: myCustomDefaultSavedSearchFilter } = useCustomDefaultFlowRunsFilter()
+  async function deleteSavedSearch(savedSearchId: string): Promise<void> {
+    await api.savedSearches.deleteSavedSearch(savedSearchId)
+    if (matchedCustomDefaultSavedSearch.value?.id === savedSearchId) {
+      removeDefault()
+    }
+    savedSearchesSubscription.refresh()
+  }
+
+  const { value: myCustomDefaultSavedSearchFilter, remove: removeDefault } = useCustomDefaultFlowRunsFilter()
   const hasCustomDefault = computed(() => myCustomDefaultSavedSearchFilter.value !== null)
   const myDefaultSavedFilter = computed(() => myCustomDefaultSavedSearchFilter.value ?? systemDefaultSavedSearch.filters)
   const defaultFlowRunsFilter = computed(() => mapper.map('SavedSearchFilter', myDefaultSavedFilter.value, 'FlowRunsFilter'))
   return {
     savedFlowRunsSearches,
+    deleteSavedSearch,
     default: defaultFlowRunsFilter,
     hasCustomDefault,
   }
