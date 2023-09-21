@@ -21,11 +21,11 @@
 
 <script lang="ts" setup>
   import { showToast } from '@prefecthq/prefect-design'
-  import { useSubscription } from '@prefecthq/vue-compositions'
   import { useField } from 'vee-validate'
   import { computed } from 'vue'
-  import { useFlowRunsFilterFromRoute, useWorkspaceApi } from '@/compositions'
+  import { useFlowRunsFilterFromRoute } from '@/compositions'
   import { useForm } from '@/compositions/useForm'
+  import { useSavedFlowRunsSearches } from '@/compositions/useSavedFlowRunsSearches'
   import { localization } from '@/localization'
   import { SavedSearch } from '@/models/SavedSearch'
   import { getApiErrorMessage } from '@/utilities/errors'
@@ -53,10 +53,8 @@
     filterName: string,
   }>()
 
-  const api = useWorkspaceApi()
   const { filter } = useFlowRunsFilterFromRoute()
-  const savedSearchesSubscription = useSubscription(api.savedSearches.getSavedSearches)
-  const savedSearches = computed(() => savedSearchesSubscription.response ?? [])
+  const { savedFlowRunsSearches: savedSearches, createSavedSearch } = useSavedFlowRunsSearches()
 
   const nameDoesNotExist = isValidIf(value => !savedSearches.value.some(({ name }) => name === value))
 
@@ -75,7 +73,7 @@
       const { id: deployments } = filter.deployments
       const { name: workPools } = filter.workPools
 
-      const savedSearch = await api.savedSearches.createSavedSearch({
+      const savedSearch = await createSavedSearch({
         name: filterName,
         filters: {
           state: state.name,
@@ -86,7 +84,6 @@
         },
       })
 
-      savedSearchesSubscription.refresh()
       showToast(localization.success.createSavedSearch, 'success')
       internalShowModal.value = false
       emit('saved', savedSearch)
