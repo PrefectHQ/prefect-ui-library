@@ -9,7 +9,7 @@
     </p-overflow-menu-item>
 
     <p-overflow-menu-item v-if="canToggleDefault" inset @click="toggleDefault">
-      <template v-if="isUserDefault">
+      <template v-if="savedSearch?.isDefault">
         Remove as default
       </template>
 
@@ -43,12 +43,12 @@
   import { useShowModal } from '@/compositions'
   import { useCan } from '@/compositions/useCan'
   import { useCustomDefaultFlowRunsFilter } from '@/compositions/useCustomDefaultFlowRunsFilter'
+  import { SavedFlowRunsSearch } from '@/compositions/useSavedFlowRunsSearches'
   import { SavedSearch } from '@/models/SavedSearch'
   import { customSavedSearch, systemDefaultSavedSearch } from '@/utilities/savedFilters'
 
   const props = defineProps<{
-    savedSearch: SavedSearch | null,
-    isUserDefault: boolean,
+    savedSearch: SavedFlowRunsSearch | null,
   }>()
 
   const emit = defineEmits<{
@@ -76,7 +76,7 @@
       return false
     }
     // can't remove the system default
-    if (props.isUserDefault && isSystemDefault.value) {
+    if (props.savedSearch?.isDefault && isSystemDefault.value) {
       return false
     }
     return true
@@ -86,7 +86,7 @@
   const customDefaultFlowRunsFilter = useCustomDefaultFlowRunsFilter()
   function toggleDefault(): void {
     // setting the default to the _system_ default is the same as removing the custom default
-    if (props.isUserDefault || isSystemDefault.value) {
+    if (props.savedSearch?.isDefault || isSystemDefault.value) {
       customDefaultFlowRunsFilter.remove()
     } else if (props.savedSearch) {
       customDefaultFlowRunsFilter.set(props.savedSearch.filters)
@@ -101,7 +101,7 @@
   const { showModal: showDeleteModal, open: openDeleteModal } = useShowModal()
 
   function handleSave(savedSearch: SavedSearch): void {
-    internalSavedSearch.value = savedSearch
+    internalSavedSearch.value = { ...savedSearch, isDefault: false }
   }
 
   function handleDelete(): void {
