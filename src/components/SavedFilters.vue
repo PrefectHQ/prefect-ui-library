@@ -12,12 +12,14 @@
 <script setup lang="ts">
   import { SelectOption } from '@prefecthq/prefect-design'
   import { useSubscription } from '@prefecthq/vue-compositions'
-  import { computed } from 'vue'
+  import { computed, watch } from 'vue'
+  import { useRouter } from 'vue-router'
   import SavedFiltersMenu from '@/components/SavedFiltersMenu.vue'
-  import { useFlowRunsFilterFromRoute, useWorkspaceApi } from '@/compositions'
+  import { getQueryForFlowRunsFilter, useFlowRunsFilterFromRoute, useWorkspaceApi } from '@/compositions'
+  import { useCustomDefaultFlowRunsFilter } from '@/compositions/useCustomDefaultFlowRunsFilter'
   import { SavedSearch, SavedSearchFilter } from '@/models/SavedSearch'
   import { mapper } from '@/services'
-  import { customSavedSearch, isSameFilter } from '@/utilities/savedFilters'
+  import { customSavedSearch, isSameFilter, isEmptyFilter } from '@/utilities/savedFilters'
 
   const api = useWorkspaceApi()
 
@@ -39,17 +41,28 @@
     return allOptions
   })
 
+  const filterInRoute = computed<SavedSearchFilter>(() => ({
+    state: filter.flowRuns.state.name ?? [],
+    flow: filter.flows.id ?? [],
+    deployment: filter.deployments.id ?? [],
+    workPool: filter.workPools.name ?? [],
+    tag: filter.flowRuns.tags.name ?? [],
+    startDate: filter.flowRuns.expectedStartTimeAfter != undefined ? String(filter.flowRuns.expectedStartTimeAfter) : undefined,
+    endDate: filter.flowRuns.expectedStartTimeBefore != undefined ? String(filter.flowRuns.expectedStartTimeBefore) : undefined,
+  }))
+
+  const router = useRouter()
+  const { value: myCustomDefaultFilter } = useCustomDefaultFlowRunsFilter()
+  watch(filterInRoute, (newValue) => {
+    if (myCustomDefaultFilter.value !== null && isEmptyFilter(newValue)) {
+      const query = getQueryForFlowRunsFilter(myCustomDefaultFilter.value)
+      router.replace({ query })
+    }
+  }, { immediate: true })
+
   const selectedSavedSearch = computed({
     get() {
-      const inRoute: SavedSearchFilter = {
-        state: filter.flowRuns.state.name ?? [],
-        flow: filter.flows.id ?? [],
-        deployment: filter.deployments.id ?? [],
-        workPool: filter.workPools.name ?? [],
-        tag: filter.flowRuns.tags.name ?? [],
-      }
-
-      const found = savedSearches.value.find(({ name, filters }) => name != customSavedSearch.name && isSameFilter(filters, inRoute))
+      const found = savedSearches.value.find(({ name, filters }) => name != customSavedSearch.name && isSameFilter(filters, filterInRoute.value))
 
       return found ?? customSavedSearch
     },

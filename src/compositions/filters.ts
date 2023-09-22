@@ -1,7 +1,8 @@
-import { BooleanRouteParam, DateRouteParam, NullableBooleanRouteParam, NumberRouteParam, RouteQueryParamsSchema, StringRouteParam, useRouteQueryParams } from '@prefecthq/vue-compositions'
+import { BooleanRouteParam, DateRouteParam, NullableBooleanRouteParam, NumberRouteParam, RouteQueryParamsSchema, StringRouteParam, getLocationQueryForSchema, useRouteQueryParams } from '@prefecthq/vue-compositions'
 import debounce from 'lodash.debounce'
 import isEqual from 'lodash.isequal'
 import { Ref, reactive, ComputedRef, toRef, computed, toRefs, isReactive, watch } from 'vue'
+import { LocationQuery } from 'vue-router'
 import { DeploymentSortValuesSortParam } from '@/formatters/DeploymentSortValuesSortParam'
 import { FlowRunSortValuesSortParam } from '@/formatters/FlowRunSortValuesSortParam'
 import { FlowSortValuesSortParam } from '@/formatters/FlowSortValuesSortParam'
@@ -580,6 +581,11 @@ export function useFlowRunsFilterFromRoute(defaultValue: MaybeReactive<FlowRunsF
   syncFilterWithFilterFromRoute(response.filter, query)
 
   return response
+}
+
+export function getQueryForFlowRunsFilter(filter: FlowRunsFilter): LocationQuery {
+  const query = getLocationQueryForSchema(flowRunsFilterSchema, filter)
+  return query
 }
 
 const taskRunsFilterSchema: RouteQueryParamsSchema<TaskRunsFilter> = {

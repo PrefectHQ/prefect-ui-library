@@ -14,4 +14,5 @@ export type DeploymentUpdateRequest = Partial<{
   work_queue_name: string | null,
   work_pool_name: string | null,
   infra_overrides: Record<string, unknown> | null,
+  enforce_parameter_schema: boolean,
 }>
