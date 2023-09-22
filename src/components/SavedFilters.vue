@@ -22,10 +22,10 @@
 
   const { filter, set: setFilters } = useFlowRunsFilterFromRoute()
 
-  const { savedFlowRunsSearches: savedSearches, default: myCustomDefaultFilter, hasCustomDefault } = useSavedFlowRunsSearches()
+  const { savedFlowRunsSearches, default: myCustomDefaultFilter, hasCustomDefault } = useSavedFlowRunsSearches()
 
   const options = computed<SelectOption[]>(() => {
-    const allOptions = savedSearches.value.map(({ name, isDefault }) => ({
+    const allOptions = savedFlowRunsSearches.value.map(({ name, isDefault }) => ({
       label: isDefault ? `${name} (default)` : name,
       value: name,
       disabled: name === customSavedSearch.name,
@@ -58,7 +58,7 @@
 
   const selectedSavedSearch = computed<SavedFlowRunsSearch>({
     get() {
-      const found = savedSearches.value.find(({ name, filters }) => name != customSavedSearch.name && isSameFilter(filters, filterInRoute.value))
+      const found = savedFlowRunsSearches.value.find(({ name, filters }) => name != customSavedSearch.name && isSameFilter(filters, filterInRoute.value))
 
       return found ?? { ...customSavedSearch, isDefault: false }
     },
@@ -74,7 +74,7 @@
       return selectedSavedSearch.value.name
     },
     set(value: string | null) {
-      const selected = savedSearches.value.find(({ name }) => value === name)!
+      const selected = savedFlowRunsSearches.value.find(({ name }) => value === name)!
 
       selectedSavedSearch.value = selected
     },

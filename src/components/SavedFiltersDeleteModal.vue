@@ -35,12 +35,12 @@
     },
   })
 
-  const { deleteSavedSearch } = useSavedFlowRunsSearches()
+  const { deleteSavedFlowRunsSearch } = useSavedFlowRunsSearches()
 
   async function deleteFilter(): Promise<void> {
     try {
       if (props.savedSearch.id) {
-        await deleteSavedSearch(props.savedSearch.id)
+        await deleteSavedFlowRunsSearch(props.savedSearch.id)
         showToast(localization.success.deleteSavedSearch, 'success')
         internalShowModal.value = false
         emit('deleted')

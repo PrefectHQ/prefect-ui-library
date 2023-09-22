@@ -54,9 +54,9 @@
   }>()
 
   const { filter } = useFlowRunsFilterFromRoute()
-  const { savedFlowRunsSearches: savedSearches, createSavedSearch } = useSavedFlowRunsSearches()
+  const { savedFlowRunsSearches, createSavedFlowRunsSearch } = useSavedFlowRunsSearches()
 
-  const nameDoesNotExist = isValidIf(value => !savedSearches.value.some(({ name }) => name === value))
+  const nameDoesNotExist = isValidIf(value => !savedFlowRunsSearches.value.some(({ name }) => name === value))
 
   const rules = [isRequired('Name'), withMessage(nameDoesNotExist, 'Name must be unique')]
   const { value: filterName, meta: filterNameState, errorMessage: filterErrorMessage } = useField<string>('filterName', rules)
@@ -73,7 +73,7 @@
       const { id: deployments } = filter.deployments
       const { name: workPools } = filter.workPools
 
-      const savedSearch = await createSavedSearch({
+      const savedSearch = await createSavedFlowRunsSearch({
         name: filterName,
         filters: {
           state: state.name,

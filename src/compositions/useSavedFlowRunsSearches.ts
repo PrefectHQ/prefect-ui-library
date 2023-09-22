@@ -11,8 +11,8 @@ export type SavedFlowRunsSearch = SavedSearch & { isDefault: boolean }
 
 type UseSavedFlowRunsSearches = {
   savedFlowRunsSearches: ComputedRef<SavedFlowRunsSearch[]>,
-  createSavedSearch: (search: SavedSearchCreate) => Promise<SavedSearch>,
-  deleteSavedSearch: (savedSearchId: string) => Promise<void>,
+  createSavedFlowRunsSearch: (search: SavedSearchCreate) => Promise<SavedSearch>,
+  deleteSavedFlowRunsSearch: (savedSearchId: string) => Promise<void>,
   default: ComputedRef<FlowRunsFilter>,
   hasCustomDefault: ComputedRef<boolean>,
 }
@@ -38,7 +38,7 @@ export function useSavedFlowRunsSearches(): UseSavedFlowRunsSearches {
     }
   })
 
-  async function deleteSavedSearch(savedSearchId: string): Promise<void> {
+  async function deleteSavedFlowRunsSearch(savedSearchId: string): Promise<void> {
     await api.savedSearches.deleteSavedSearch(savedSearchId)
     if (matchedCustomDefaultSavedSearch.value?.id === savedSearchId) {
       removeDefault()
@@ -46,15 +46,15 @@ export function useSavedFlowRunsSearches(): UseSavedFlowRunsSearches {
     savedSearchesSubscription.refresh()
   }
 
-  async function createSavedSearch(search: SavedSearchCreate): Promise<SavedSearch> {
+  async function createSavedFlowRunsSearch(search: SavedSearchCreate): Promise<SavedSearch> {
     const savedSearch = await api.savedSearches.createSavedSearch(search)
     savedSearchesSubscription.refresh()
     return savedSearch
   }
   return {
     savedFlowRunsSearches,
-    createSavedSearch,
-    deleteSavedSearch,
+    createSavedFlowRunsSearch,
+    deleteSavedFlowRunsSearch,
     default: defaultFlowRunsFilter,
     hasCustomDefault,
   }
