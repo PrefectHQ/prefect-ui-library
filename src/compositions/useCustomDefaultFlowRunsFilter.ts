@@ -11,13 +11,15 @@ type CustomDefaultFlowRunsFilter = {
   asFlowRunsFilter: ComputedRef<FlowRunsFilter | null>,
 }
 
-const { value, set, remove } = useLocalStorage<SavedSearchFilter>(customDefaultFlowRunsFilterKey)
+const { value, set } = useLocalStorage<SavedSearchFilter>(customDefaultFlowRunsFilterKey)
 
 export function useCustomDefaultFlowRunsFilter(): CustomDefaultFlowRunsFilter {
   const asFlowRunsFilter = computed(() => mapper.map('SavedSearchFilter', value.value, 'FlowRunsFilter'))
 
+  const remove = (): void => set(null)
+
   return {
-    value: value,
+    value,
     set,
     remove,
     asFlowRunsFilter,
