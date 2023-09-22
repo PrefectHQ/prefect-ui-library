@@ -42,10 +42,10 @@
   import SaveFilterModal from '@/components/SaveFilterModal.vue'
   import { useShowModal } from '@/compositions'
   import { useCan } from '@/compositions/useCan'
-  import { useCustomDefaultFlowRunsFilter } from '@/compositions/useCustomDefaultFlowRunsFilter'
+  import { useDefaultSavedSearchFilter } from '@/compositions/useDefaultSavedSearchFilter'
   import { SavedFlowRunsSearch } from '@/compositions/useSavedFlowRunsSearches'
   import { SavedSearch } from '@/models/SavedSearch'
-  import { customSavedSearch, systemDefaultSavedSearch } from '@/utilities/savedFilters'
+  import { customSavedSearch } from '@/utilities/savedFilters'
 
   const props = defineProps<{
     savedSearch: SavedFlowRunsSearch | null,
@@ -76,20 +76,18 @@
       return false
     }
     // can't remove the system default
-    if (props.savedSearch?.isDefault && isSystemDefault.value) {
+    if (props.savedSearch?.isDefault && !defaultSavedSearchFilter.isCustom.value) {
       return false
     }
     return true
   })
 
-  const isSystemDefault = computed(() => internalSavedSearch.value?.name === systemDefaultSavedSearch.name)
-  const customDefaultFlowRunsFilter = useCustomDefaultFlowRunsFilter()
+  const defaultSavedSearchFilter = useDefaultSavedSearchFilter()
   function toggleDefault(): void {
-    // setting the default to the _system_ default is the same as removing the custom default
-    if (props.savedSearch?.isDefault || isSystemDefault.value) {
-      customDefaultFlowRunsFilter.remove()
+    if (props.savedSearch?.isDefault) {
+      defaultSavedSearchFilter.remove()
     } else if (props.savedSearch) {
-      customDefaultFlowRunsFilter.set(props.savedSearch.filters)
+      defaultSavedSearchFilter.set(props.savedSearch.filters)
     }
   }
 

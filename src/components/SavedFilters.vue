@@ -22,7 +22,7 @@
 
   const { filter, set: setFilters } = useFlowRunsFilterFromRoute()
 
-  const { savedFlowRunsSearches, default: myCustomDefaultFilter, hasCustomDefault } = useSavedFlowRunsSearches()
+  const { savedFlowRunsSearches } = useSavedFlowRunsSearches()
 
   const options = computed<SelectOption[]>(() => {
     const allOptions = savedFlowRunsSearches.value.map(({ name, isDefault }) => ({
@@ -48,13 +48,13 @@
     endDate: filter.flowRuns.expectedStartTimeBefore != undefined ? String(filter.flowRuns.expectedStartTimeBefore) : undefined,
   }))
 
-  const router = useRouter()
-  watch(filterInRoute, (newValue) => {
-    if (hasCustomDefault.value && isEmptyFilter(newValue)) {
-      const query = getQueryForFlowRunsFilter(myCustomDefaultFilter.value)
-      router.replace({ query })
-    }
-  }, { immediate: true })
+  // const router = useRouter()
+  // watch(filterInRoute, (newValue) => {
+  //   if (hasCustomDefault.value && isEmptyFilter(newValue)) {
+  //     const query = getQueryForFlowRunsFilter(myCustomDefaultFilter.value)
+  //     router.replace({ query })
+  //   }
+  // }, { immediate: true })
 
   const selectedSavedSearch = computed<SavedFlowRunsSearch>({
     get() {
