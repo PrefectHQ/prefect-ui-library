@@ -1,3 +1,4 @@
+import { showToast } from '@prefecthq/prefect-design'
 import { useSubscription } from '@prefecthq/vue-compositions'
 import { computed, ComputedRef, watch } from 'vue'
 import { useCustomDefaultFlowRunsFilter } from '@/compositions/useCustomDefaultFlowRunsFilter'
@@ -32,6 +33,7 @@ export function useSavedFlowRunsSearches(): UseSavedFlowRunsSearches {
   // handle if customDefault is not in savedSearches i.e. someone else deleted it
   watch([matchedCustomDefaultSavedSearch, savedSearchesSubscription], ([found, subscription]) => {
     if (!found && subscription.executed) {
+      showToast('Your custom default flow runs filter was deleted by another user. Resave it or select a new default.')
       removeDefault()
     }
   })
