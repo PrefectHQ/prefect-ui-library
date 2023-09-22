@@ -1,5 +1,7 @@
 import { InjectionKey } from 'vue'
 import { RouteComponent, RouteLocationRaw, RouteRecordRaw } from 'vue-router'
+import { getQueryForFlowRunsFilter, isEmptyObject, mapper } from '..'
+import { useDefaultSavedSearchFilter } from '@/compositions/useDefaultSavedSearchFilter'
 import { createWorkspaceRoutes } from '@/router/routes'
 
 export { createWorkspaceRoutes }
@@ -36,6 +38,15 @@ export function createWorkspaceRouteRecords(components: Partial<WorkspaceRouteCo
           name: 'workspace.flow-runs',
           path: '',
           component: components.flowRuns,
+          beforeEnter: (to, from, next) => {
+            if (isEmptyObject(to.query)) {
+              const defaultFlowRunsSavedSearchFilter = useDefaultSavedSearchFilter()
+              const asFlowRunsFilter = mapper.map('SavedSearchFilter', defaultFlowRunsSavedSearchFilter.value.value, 'FlowRunsFilter')
+              const asQueryParams = getQueryForFlowRunsFilter(asFlowRunsFilter)
+              return next({ ...to, query: asQueryParams })
+            }
+            return next()
+          },
         },
         {
           name: 'workspace.flow-runs.flow-run',

@@ -11,14 +11,13 @@
 
 <script setup lang="ts">
   import { SelectOption } from '@prefecthq/prefect-design'
-  import { computed, watch } from 'vue'
-  import { useRouter } from 'vue-router'
+  import { computed } from 'vue'
   import SavedFiltersMenu from '@/components/SavedFiltersMenu.vue'
-  import { getQueryForFlowRunsFilter, useFlowRunsFilterFromRoute } from '@/compositions'
+  import { useFlowRunsFilterFromRoute } from '@/compositions'
   import { SavedFlowRunsSearch, useSavedFlowRunsSearches } from '@/compositions/useSavedFlowRunsSearches'
   import { SavedSearch, SavedSearchFilter } from '@/models/SavedSearch'
   import { mapper } from '@/services'
-  import { customSavedSearch, isSameFilter, isEmptyFilter } from '@/utilities/savedFilters'
+  import { customSavedSearch, isSameFilter } from '@/utilities/savedFilters'
 
   const { filter, set: setFilters } = useFlowRunsFilterFromRoute()
 
@@ -47,14 +46,6 @@
     startDate: filter.flowRuns.expectedStartTimeAfter != undefined ? String(filter.flowRuns.expectedStartTimeAfter) : undefined,
     endDate: filter.flowRuns.expectedStartTimeBefore != undefined ? String(filter.flowRuns.expectedStartTimeBefore) : undefined,
   }))
-
-  // const router = useRouter()
-  // watch(filterInRoute, (newValue) => {
-  //   if (hasCustomDefault.value && isEmptyFilter(newValue)) {
-  //     const query = getQueryForFlowRunsFilter(myCustomDefaultFilter.value)
-  //     router.replace({ query })
-  //   }
-  // }, { immediate: true })
 
   const selectedSavedSearch = computed<SavedFlowRunsSearch>({
     get() {
