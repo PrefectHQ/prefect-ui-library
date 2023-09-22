@@ -14,7 +14,7 @@
           <p-number-input v-model="decay" :min="0" />
         </p-label>
 
-        <p-label label="Active Slots">
+        <p-label label="Active Slots" :message="activeSlotErrorMessage" :state="activeSlotState">
           <p-number-input v-model="activeSlots" :min="0" />
         </p-label>
 
@@ -42,7 +42,7 @@
   import { localization } from '@/localization'
   import { ConcurrencyV2Limit } from '@/models/ConcurrencyV2Limit'
   import { getApiErrorMessage } from '@/utilities/errors'
-  import { isRequired } from '@/utilities/formValidation'
+  import { isRequired, isGreaterThanOrEqualTo } from '@/utilities/formValidation'
 
   const props = defineProps<{
     showModal: boolean,
@@ -61,25 +61,16 @@
   const { state: nameState, error: nameErrorMessage } = useValidation(name, 'Name', [isRequired])
 
   const limit = ref(props.concurrencyLimit.limit)
-  const { state: limitState, error: limitErrorMessage } = useValidation(limit, 'Limit', value => {
-    if (value === 0 || value && value > 0) {
-      return true
-    }
-    return 'Limit must be set'
-  })
+  const { state: limitState, error: limitErrorMessage } = useValidation(limit, 'Limit', [isGreaterThanOrEqualTo(0)])
 
   const active = ref(true)
 
-  const activeSlots = ref(props.concurrencyLimit.activeSlots)
+  const activeSlots = ref(props.concurrencyLimit.activeSlots ?? 0)
+  const { state: activeSlotState, error: activeSlotErrorMessage } = useValidation(activeSlots, 'Active slots', [isGreaterThanOrEqualTo(0)])
 
 
-  const decay = ref(props.concurrencyLimit.slotDecayPerSecond)
-  const { state: decayState, error: decayErrorMessage } = useValidation(decay, 'Slot decay per second', value => {
-    if (value === 0 || value && value > 0) {
-      return true
-    }
-    return 'Slot delay per second must be set'
-  })
+  const decay = ref(props.concurrencyLimit.slotDecayPerSecond ?? 0)
+  const { state: decayState, error: decayErrorMessage } = useValidation(decay, 'Slot decay per second', [isGreaterThanOrEqualTo(0)])
 
 
   const internalShowModal = computed({
