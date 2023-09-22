@@ -159,7 +159,7 @@
     },
     set(value: boolean) {
       if (value) {
-        selectedDeployments.value = [...deployments.value.map(deployment => deployment.id)]
+        selectedDeployments.value = deployments.value.map(deployment => deployment.id)
         return
       }
 
