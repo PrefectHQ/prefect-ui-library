@@ -57,7 +57,7 @@
     emit('update:states', states.value)
   }
 
-  const sort = ref<FlowRunSortValues>('START_TIME_DESC')
+  const sort = ref<FlowRunSortValues>(props.flowRunFilter.sort ?? 'START_TIME_DESC')
   const hasFilters = computed(() => states.value.length)
 
   const filter = computed<FlowRunsFilter>(() => ({
