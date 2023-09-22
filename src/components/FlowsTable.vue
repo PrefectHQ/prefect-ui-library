@@ -75,6 +75,7 @@
 <script lang="ts" setup>
   import { PTable, PEmptyResults, PLink, CheckboxModel, TableColumn } from '@prefecthq/prefect-design'
   import { NumberRouteParam, useDebouncedRef, useRouteQueryParam } from '@prefecthq/vue-compositions'
+  import merge from 'lodash.merge'
   import { computed, ref } from 'vue'
   import { FlowsDeleteButton, DeploymentsCount, ResultsCount, SearchInput, FlowActivityChart, SelectedCount, FlowRunTagsInput } from '@/components'
   import { useCan, useFlowsFilterFromRoute, useWorkspaceRoutes, useOffsetStickyRootMargin, useFlows } from '@/compositions'
@@ -96,14 +97,12 @@
 
   const flowNameLike = ref<string>()
   const flowNameLikeDebounced = useDebouncedRef(flowNameLike, 1200)
-  const { filter, clear, isCustomFilter } = useFlowsFilterFromRoute({
-    ...props.filter,
+  const { filter, clear, isCustomFilter } = useFlowsFilterFromRoute(merge({}, props.filter, {
     flows: {
-      ...props.filter,
       nameLike: flowNameLikeDebounced,
     },
     limit: 50,
-  })
+  }))
 
   const page = useRouteQueryParam('page', NumberRouteParam, 1)
   const { flows, subscriptions, total, pages } = useFlows(filter, {
