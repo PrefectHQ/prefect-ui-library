@@ -4,7 +4,7 @@ import { getCacheKey, FlowRunsFilter, SavedSearchFilter, mapper } from '..'
 
 const customDefaultFlowRunsFilterKey = getCacheKey('prefect-ui-library-custom-default-flow-runs-filter')
 
-type CustomDefaultFlowRunsFilter = {
+type UseCustomDefaultFlowRunsFilter = {
   value: Ref<SavedSearchFilter | null>,
   set: (value: SavedSearchFilter) => void,
   remove: () => void,
@@ -13,7 +13,7 @@ type CustomDefaultFlowRunsFilter = {
 
 const { value, set } = useLocalStorage<SavedSearchFilter>(customDefaultFlowRunsFilterKey)
 
-export function useCustomDefaultFlowRunsFilter(): CustomDefaultFlowRunsFilter {
+export function useCustomDefaultFlowRunsFilter(): UseCustomDefaultFlowRunsFilter {
   const asFlowRunsFilter = computed(() => mapper.map('SavedSearchFilter', value.value, 'FlowRunsFilter'))
 
   const remove = (): void => set(null)
