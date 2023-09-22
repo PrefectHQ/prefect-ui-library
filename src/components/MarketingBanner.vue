@@ -40,6 +40,7 @@
   background-image: url('/marketing-banner-bg.svg');
   background-size: auto 100%;
   background-position: top 0px right 0px;
+  background-repeat: no-repeat;
 }
 
 .marketing-banner__content { @apply
