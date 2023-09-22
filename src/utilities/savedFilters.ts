@@ -28,6 +28,11 @@ export function isSameFilter(filterA: SavedSearchFilter, filterB: SavedSearchFil
   return true
 }
 
+export function isEmptyFilter(filter: SavedSearchFilter): boolean {
+  const emptyFilters = { state: [], flow: [], deployment: [], workPool: [], tag: [] } satisfies SavedSearchFilter
+  return isSameFilter(filter, emptyFilters) && filter.startDate === undefined && filter.endDate === undefined
+}
+
 export const oneWeekFilter: SavedSearchFilter = {
   startDate: formatDateTimeNumeric(dateFunctions.subDays(dateFunctions.startOfToday(), 7)),
   endDate: formatDateTimeNumeric(dateFunctions.addDays(dateFunctions.endOfToday(), 1)),
