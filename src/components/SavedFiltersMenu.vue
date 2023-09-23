@@ -45,7 +45,7 @@
   import { useDefaultSavedSearchFilter } from '@/compositions/useDefaultSavedSearchFilter'
   import { SavedFlowRunsSearch } from '@/compositions/useSavedFlowRunsSearches'
   import { SavedSearch } from '@/models/SavedSearch'
-  import { customSavedSearch } from '@/utilities/savedFilters'
+  import { customSavedSearch, unsavedPartialSearch } from '@/utilities/savedFilters'
 
   const props = defineProps<{
     savedSearch: SavedFlowRunsSearch | null,
@@ -66,7 +66,7 @@
     },
   })
 
-  const isCustomUnsavedFilter = computed(() => internalSavedSearch.value?.name === customSavedSearch.name)
+  const isCustomUnsavedFilter = computed(() => internalSavedSearch.value?.name === customSavedSearch.name || internalSavedSearch.value?.name === unsavedPartialSearch.name)
   const canSave = computed(() => isCustomUnsavedFilter.value && can.create.saved_search)
   const canDelete = computed(() => internalSavedSearch.value?.id && can.delete.saved_search)
 

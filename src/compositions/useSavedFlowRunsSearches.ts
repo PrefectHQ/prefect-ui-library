@@ -1,11 +1,9 @@
-import { showToast } from '@prefecthq/prefect-design'
 import { useSubscription } from '@prefecthq/vue-compositions'
-import { computed, ComputedRef, watch } from 'vue'
+import { computed, ComputedRef } from 'vue'
 import { useDefaultSavedSearchFilter } from '@/compositions/useDefaultSavedSearchFilter'
 import { useWorkspaceApi } from '@/compositions/useWorkspaceApi'
-import { FlowRunsFilter, SavedSearch, SavedSearchCreate } from '@/models'
-import { mapper } from '@/services'
-import { builtinSavedSearches, customSavedSearch, isSameFilter } from '@/utilities/savedFilters'
+import { SavedSearch, SavedSearchCreate } from '@/models'
+import { builtinSavedSearches, isSameFilter, unsavedPartialSearch } from '@/utilities/savedFilters'
 
 export type SavedFlowRunsSearch = SavedSearch & { isDefault: boolean }
 
@@ -13,7 +11,6 @@ type UseSavedFlowRunsSearches = {
   savedFlowRunsSearches: ComputedRef<SavedFlowRunsSearch[]>,
   createSavedFlowRunsSearch: (search: SavedSearchCreate) => Promise<SavedSearch>,
   deleteSavedFlowRunsSearch: (savedSearchId: string) => Promise<void>,
-  defaultFlowRunsFilter: ComputedRef<FlowRunsFilter>,
 }
 
 export function useSavedFlowRunsSearches(): UseSavedFlowRunsSearches {
@@ -22,24 +19,30 @@ export function useSavedFlowRunsSearches(): UseSavedFlowRunsSearches {
   const savedSearches = computed(() => builtinSavedSearches.concat(savedSearchesSubscription.response ?? []))
 
   const { value: myDefaultSavedFilter } = useDefaultSavedSearchFilter()
-  const defaultFlowRunsFilter = computed(() => mapper.map('SavedSearchFilter', myDefaultSavedFilter.value, 'FlowRunsFilter'))
 
-  const matchedCustomDefaultSavedSearch = computed(() => savedSearches.value.find(search => search.name !== customSavedSearch.name && isSameFilter(search.filters, myDefaultSavedFilter.value)))
-  const savedFlowRunsSearches = computed(() => savedSearches.value.map(search => ({ ...search, isDefault: matchedCustomDefaultSavedSearch.value?.name === search.name })))
+  const savedFlowRunsSearches = computed<SavedFlowRunsSearch[]>(() => {
+    let foundSavedSearchForDefaultSavedFilter = false
+    const all = savedSearches.value.map(savedSearch => {
+      if (isSameFilter(savedSearch.filters, myDefaultSavedFilter.value)) {
+        foundSavedSearchForDefaultSavedFilter = true
+        return { ...savedSearch, isDefault: true }
+      }
+      return { ...savedSearch, isDefault: false }
+    })
 
-  // // handle if customDefault is not in savedSearches i.e. someone else deleted it
-  // watch([matchedCustomDefaultSavedSearch, savedSearchesSubscription], ([found, subscription]) => {
-  //   if (!found && subscription.executed) {
-  //     showToast('Your custom default flow runs filter was deleted by another user. Resave it or select a new default.')
-  //     removeDefault()
-  //   }
-  // })
+    if (!foundSavedSearchForDefaultSavedFilter) {
+      console.log('eslint was wrong')
+      all.push({
+        ...unsavedPartialSearch,
+        filters: myDefaultSavedFilter.value,
+        isDefault: true,
+      })
+    }
+    return all
+  })
 
   async function deleteSavedFlowRunsSearch(savedSearchId: string): Promise<void> {
     await api.savedSearches.deleteSavedSearch(savedSearchId)
-    // if (matchedCustomDefaultSavedSearch.value?.id === savedSearchId) {
-    //   removeDefault()
-    // }
     savedSearchesSubscription.refresh()
   }
 
@@ -52,6 +55,5 @@ export function useSavedFlowRunsSearches(): UseSavedFlowRunsSearches {
     savedFlowRunsSearches,
     createSavedFlowRunsSearch,
     deleteSavedFlowRunsSearch,
-    defaultFlowRunsFilter,
   }
 }

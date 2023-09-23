@@ -24,15 +24,14 @@
   const { savedFlowRunsSearches } = useSavedFlowRunsSearches()
 
   const options = computed<SelectOption[]>(() => {
-    const allOptions = savedFlowRunsSearches.value.map(({ name, isDefault }) => ({
-      label: isDefault ? `${name} (default)` : name,
-      value: name,
-      disabled: name === customSavedSearch.name,
-    }))
+    const allOptions = savedFlowRunsSearches.value
+      .filter(({ name }) => name !== customSavedSearch.name || selectModelValue.value === customSavedSearch.name)
+      .map(({ name, isDefault }) => ({
+        label: isDefault ? `${name} (default)` : name,
+        value: name,
+        disabled: name === customSavedSearch.name,
+      }))
 
-    if (selectModelValue.value !== customSavedSearch.name) {
-      return allOptions.filter(({ label }) => label !== customSavedSearch.name)
-    }
 
     return allOptions
   })

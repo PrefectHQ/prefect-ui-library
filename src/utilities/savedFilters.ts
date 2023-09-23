@@ -71,6 +71,11 @@ export const excludeScheduledSavedSearch = new SavedSearch({
   filters: noScheduleFilter,
 })
 
+export const unsavedPartialSearch = {
+  id: null,
+  name: 'Unsaved',
+}
+
 export const systemDefaultSavedSearch = oneWeekSavedSearch
 
 export const builtinSavedSearches = [
