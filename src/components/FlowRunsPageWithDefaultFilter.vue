@@ -8,7 +8,7 @@
   import { isEmptyObject, mapper, getQueryForFlowRunsFilter, isFunction } from '..'
   import { useDefaultSavedSearchFilter } from '@/compositions/useDefaultSavedSearchFilter'
 
-  const withDefaultFlowRunsFilterQueryIfEmpty: NavigationGuard = (to) => {
+  const setDefaultFlowRunsFilterQueryIfEmpty: NavigationGuard = (to) => {
     const { value: defaultFlowRunsSavedSearchFilter, isCustom } = useDefaultSavedSearchFilter()
     if (isEmptyObject(to.query) && isCustom.value) {
       const asFlowRunsFilter = mapper.map('SavedSearchFilter', defaultFlowRunsSavedSearchFilter.value, 'FlowRunsFilter')
@@ -20,8 +20,8 @@
 
   export default defineComponent({
     expose: [],
-    beforeRouteEnter: withDefaultFlowRunsFilterQueryIfEmpty,
-    beforeRouteUpdate: withDefaultFlowRunsFilterQueryIfEmpty,
+    beforeRouteEnter: setDefaultFlowRunsFilterQueryIfEmpty,
+    beforeRouteUpdate: setDefaultFlowRunsFilterQueryIfEmpty,
   })
 </script>
 
