@@ -12,8 +12,11 @@
 <script setup lang="ts">
   import { SelectOption } from '@prefecthq/prefect-design'
   import { computed } from 'vue'
+  import { onBeforeRouteUpdate } from 'vue-router'
+  import { isEmptyObject } from '..'
   import SavedFiltersMenu from '@/components/SavedFiltersMenu.vue'
-  import { useFlowRunsFilterFromRoute } from '@/compositions'
+  import { getQueryForFlowRunsFilter, useFlowRunsFilterFromRoute } from '@/compositions'
+  import { useDefaultSavedSearchFilter } from '@/compositions/useDefaultSavedSearchFilter'
   import { SavedFlowRunsSearch, useSavedFlowRunsSearches } from '@/compositions/useSavedFlowRunsSearches'
   import { SavedSearch, SavedSearchFilter } from '@/models/SavedSearch'
   import { mapper } from '@/services'
@@ -34,6 +37,16 @@
 
 
     return allOptions
+  })
+
+  onBeforeRouteUpdate((to, from, next) => {
+    if (isEmptyObject(to.query)) {
+      const defaultFlowRunsSavedSearchFilter = useDefaultSavedSearchFilter()
+      const asFlowRunsFilter = mapper.map('SavedSearchFilter', defaultFlowRunsSavedSearchFilter.value.value, 'FlowRunsFilter')
+      const asQueryParams = getQueryForFlowRunsFilter(asFlowRunsFilter)
+      return next({ ...to, query: asQueryParams })
+    }
+    return next()
   })
 
   const filterInRoute = computed<SavedSearchFilter>(() => ({
