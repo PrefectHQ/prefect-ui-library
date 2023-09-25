@@ -13,10 +13,6 @@ type UseDefaultSavedSearchFilter = {
 
 const { value: custom, set: setCustom } = useLocalStorage<SavedSearchFilter>(customDefaultFlowRunsFilterKey)
 
-/**
- * Flow runs filter specifically
- * @returns
- */
 export function useDefaultSavedSearchFilter(): UseDefaultSavedSearchFilter {
   const value = computed(() => custom.value ?? systemDefaultSavedSearch.filters)
 
