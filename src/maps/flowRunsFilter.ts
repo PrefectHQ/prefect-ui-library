@@ -4,7 +4,7 @@ import { MapFunction } from '@/services/Mapper'
 import { asArray } from '@/utilities/arrays'
 import { parseDateTimeNumeric } from '@/utilities/dates'
 
-export const mapSavedSearchFilterToFlowRunFilters: MapFunction<SavedSearchFilter, FlowRunsFilter> = function(source) {
+export const mapSavedSearchFilterToFlowRunsFilter: MapFunction<SavedSearchFilter, FlowRunsFilter> = function(source) {
   const flowIds = source.flow ? asArray(source.flow) : undefined
   const deploymentIds = source.deployment ? asArray(source.deployment) : undefined
   const workPoolNames = source.workPool ? asArray(source.workPool) : undefined

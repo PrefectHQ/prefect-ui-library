@@ -35,7 +35,8 @@ export function createWorkspaceRouteRecords(components: Partial<WorkspaceRouteCo
         {
           name: 'workspace.flow-runs',
           path: '',
-          component: components.flowRuns,
+          component: () => import('@/components/FlowRunsPageWithDefaultFilter.vue'),
+          props: { component: components.flowRuns },
         },
         {
           name: 'workspace.flow-runs.flow-run',

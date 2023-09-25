@@ -9,10 +9,9 @@
 
 <script lang="ts" setup>
   import { showToast } from '@prefecthq/prefect-design'
-  import { useSubscription } from '@prefecthq/vue-compositions'
   import { computed } from 'vue'
   import ConfirmDeleteModal from '@/components/ConfirmDeleteModal.vue'
-  import { useWorkspaceApi } from '@/compositions'
+  import { useSavedFlowRunsSearches } from '@/compositions/useSavedFlowRunsSearches'
   import { localization } from '@/localization'
   import { SavedSearch } from '@/models/SavedSearch'
   import { getApiErrorMessage } from '@/utilities/errors'
@@ -36,14 +35,12 @@
     },
   })
 
-  const api = useWorkspaceApi()
-  const savedSearchesSubscription = useSubscription(api.savedSearches.getSavedSearches)
+  const { deleteSavedFlowRunsSearch } = useSavedFlowRunsSearches()
 
   async function deleteFilter(): Promise<void> {
     try {
       if (props.savedSearch.id) {
-        await api.savedSearches.deleteSavedSearch(props.savedSearch.id)
-        savedSearchesSubscription.refresh()
+        await deleteSavedFlowRunsSearch(props.savedSearch.id)
         showToast(localization.success.deleteSavedSearch, 'success')
         internalShowModal.value = false
         emit('deleted')

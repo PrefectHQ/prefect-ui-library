@@ -7,6 +7,16 @@
     <p-overflow-menu-item v-if="canDelete" inset @click="openDeleteModal">
       Delete View
     </p-overflow-menu-item>
+
+    <p-overflow-menu-item v-if="canToggleDefault" inset @click="toggleDefault">
+      <template v-if="savedSearch?.isDefault">
+        Remove as default
+      </template>
+
+      <template v-else>
+        Set as default
+      </template>
+    </p-overflow-menu-item>
   </p-icon-button-menu>
 
   <SaveFilterModal v-model:showModal="showSaveModal" @save="handleSave" />
@@ -32,11 +42,13 @@
   import SaveFilterModal from '@/components/SaveFilterModal.vue'
   import { useShowModal } from '@/compositions'
   import { useCan } from '@/compositions/useCan'
+  import { useDefaultSavedSearchFilter } from '@/compositions/useDefaultSavedSearchFilter'
+  import { SavedFlowRunsSearch } from '@/compositions/useSavedFlowRunsSearches'
   import { SavedSearch } from '@/models/SavedSearch'
-  import { customSavedSearch } from '@/utilities/savedFilters'
+  import { customSavedSearch, unsavedPartialSearch } from '@/utilities/savedFilters'
 
   const props = defineProps<{
-    savedSearch: SavedSearch | null,
+    savedSearch: SavedFlowRunsSearch | null,
   }>()
 
   const emit = defineEmits<{
@@ -54,8 +66,30 @@
     },
   })
 
-  const canSave = computed(() => internalSavedSearch.value?.name === customSavedSearch.name && can.create.saved_search)
+  const isCustomUnsavedFilter = computed(() => internalSavedSearch.value?.name === customSavedSearch.name || internalSavedSearch.value?.name === unsavedPartialSearch.name)
+  const canSave = computed(() => isCustomUnsavedFilter.value && can.create.saved_search)
   const canDelete = computed(() => internalSavedSearch.value?.id && can.delete.saved_search)
+
+  const canToggleDefault = computed(() => {
+    // can't set the default to an unsaved filter. save it first
+    if (isCustomUnsavedFilter.value) {
+      return false
+    }
+    // can't remove the system default
+    if (props.savedSearch?.isDefault && !defaultSavedSearchFilter.isCustom.value) {
+      return false
+    }
+    return true
+  })
+
+  const defaultSavedSearchFilter = useDefaultSavedSearchFilter()
+  function toggleDefault(): void {
+    if (props.savedSearch?.isDefault) {
+      defaultSavedSearchFilter.remove()
+    } else if (props.savedSearch) {
+      defaultSavedSearchFilter.set(props.savedSearch.filters)
+    }
+  }
 
   const can = useCan()
   const route = useRoute()
@@ -65,7 +99,7 @@
   const { showModal: showDeleteModal, open: openDeleteModal } = useShowModal()
 
   function handleSave(savedSearch: SavedSearch): void {
-    internalSavedSearch.value = savedSearch
+    internalSavedSearch.value = { ...savedSearch, isDefault: false }
   }
 
   function handleDelete(): void {
