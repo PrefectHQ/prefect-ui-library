@@ -1,40 +1,31 @@
 <template>
-  <component :is="routeComponent" v-if="routeComponent != null" />
+  <component :is="routeComponent" v-if="routeComponent !== null" />
 </template>
 
 <script lang="ts">
   import { defineComponent, shallowRef, watch } from 'vue'
+  import { NavigationGuard, RouteComponent } from 'vue-router'
   import { isEmptyObject, mapper, getQueryForFlowRunsFilter, isFunction } from '..'
   import { useDefaultSavedSearchFilter } from '@/compositions/useDefaultSavedSearchFilter'
 
+  const withDefaultFlowRunsFilterQueryIfEmpty: NavigationGuard = (to) => {
+    const { value: defaultFlowRunsSavedSearchFilter, isCustom } = useDefaultSavedSearchFilter()
+    if (isEmptyObject(to.query) && isCustom.value) {
+      const asFlowRunsFilter = mapper.map('SavedSearchFilter', defaultFlowRunsSavedSearchFilter.value, 'FlowRunsFilter')
+      const asQueryParams = getQueryForFlowRunsFilter(asFlowRunsFilter)
+      return { ...to, query: asQueryParams }
+    }
+    return true
+  }
+
   export default defineComponent({
     expose: [],
-    beforeRouteEnter(to, from, next) {
-      console.log('beforeRouteEnter')
-      const { value: defaultFlowRunsSavedSearchFilter, isCustom } = useDefaultSavedSearchFilter()
-      if (isEmptyObject(to.query) && isCustom.value) {
-        const asFlowRunsFilter = mapper.map('SavedSearchFilter', defaultFlowRunsSavedSearchFilter.value, 'FlowRunsFilter')
-        const asQueryParams = getQueryForFlowRunsFilter(asFlowRunsFilter)
-        return next({ ...to, query: asQueryParams })
-      }
-      return next()
-    },
-
-    beforeRouteUpdate(to, from, next) {
-      console.log('beforeRouteUpdate')
-      const { value: defaultFlowRunsSavedSearchFilter, isCustom } = useDefaultSavedSearchFilter()
-      if (isEmptyObject(to.query) && isCustom.value) {
-        const asFlowRunsFilter = mapper.map('SavedSearchFilter', defaultFlowRunsSavedSearchFilter.value, 'FlowRunsFilter')
-        const asQueryParams = getQueryForFlowRunsFilter(asFlowRunsFilter)
-        return next({ ...to, query: asQueryParams })
-      }
-      return next()
-    },
+    beforeRouteEnter: withDefaultFlowRunsFilterQueryIfEmpty,
+    beforeRouteUpdate: withDefaultFlowRunsFilterQueryIfEmpty,
   })
 </script>
 
 <script setup lang="ts">
-  import { RouteComponent } from 'vue-router'
   type LazilyLoadedRouteComponent = () => Promise<{ default: RouteComponent }>
   const props = defineProps<{
     component: RouteComponent | LazilyLoadedRouteComponent,
