@@ -30,6 +30,7 @@ export interface IDeployment {
   workQueueName: string | null,
   workPoolName: string | null,
   enforceParameterSchema: boolean,
+  pullSteps: unknown,
 }
 
 export class Deployment implements IDeployment {
@@ -58,6 +59,7 @@ export class Deployment implements IDeployment {
   public workQueueName: string | null
   public workPoolName: string | null
   public enforceParameterSchema: boolean
+  public pullSteps: unknown
 
   public constructor(deployment: IDeployment) {
     this.id = deployment.id
@@ -85,6 +87,7 @@ export class Deployment implements IDeployment {
     this.workQueueName = deployment.workQueueName
     this.workPoolName = deployment.workPoolName
     this.enforceParameterSchema = deployment.enforceParameterSchema
+    this.pullSteps = deployment.pullSteps
   }
 
   public get deprecated(): boolean {

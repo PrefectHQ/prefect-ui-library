@@ -37,6 +37,7 @@ export const randomDeployment: MockFunction<Deployment, [Partial<Deployment>?]> 
     workPoolName: random() > 0.05 ? this.create('noun') : null,
     appliedBy: random() > 0.05 ? this.create('noun') : null,
     enforceParameterSchema: this.create('boolean'),
+    pullSteps: [],
     ...overrides,
   }
 }

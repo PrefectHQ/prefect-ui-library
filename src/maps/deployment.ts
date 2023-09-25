@@ -35,6 +35,7 @@ export const mapDeploymentResponseToDeployment: MapFunction<DeploymentResponse, 
     workQueueName: source.work_queue_name,
     workPoolName: source.work_pool_name,
     enforceParameterSchema: source.enforce_parameter_schema,
+    pullSteps: source.pull_steps,
   })
 }
 
@@ -48,7 +49,7 @@ export const mapDeploymentUpdateToDeploymentUpdateRequest: MapFunction<Deploymen
     work_queue_name: source.workQueueName,
     work_pool_name: source.workPoolName,
     infra_overrides: source.infrastructureOverrides,
-    enforce_parameter_schema: source.enforceParameterSchema
+    enforce_parameter_schema: source.enforceParameterSchema,
   }
 }
 
