@@ -30,9 +30,9 @@ export function useSavedFlowRunsSearches(): UseSavedFlowRunsSearches {
       return { ...savedSearch, isDefault: false }
     })
 
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition -- false positive
     if (!foundSavedSearchForDefaultSavedFilter) {
-      console.log('eslint was wrong')
-      all.push({
+      all.unshift({
         ...unsavedPartialSearch,
         filters: myDefaultSavedFilter.value,
         isDefault: true,
