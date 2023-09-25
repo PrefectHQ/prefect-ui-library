@@ -51,6 +51,7 @@ export type FlowRunFilter = {
   parentTaskRunIdOperator?: Operation,
   parentTaskRunId?: string[],
   parentTaskRunIdNull?: boolean,
+  parentFlowRunId?: string[],
 }
 
 export type TaskRunFilter = {
