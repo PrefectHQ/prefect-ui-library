@@ -1,4 +1,4 @@
-import { useSubscriptionWithDependencies } from '@prefecthq/vue-compositions'
+import { SubscriptionOptions, useSubscriptionWithDependencies } from '@prefecthq/vue-compositions'
 import { computed, MaybeRefOrGetter, toRef, toValue } from 'vue'
 import { useCan } from '@/compositions/useCan'
 import { useWorkspaceApi } from '@/compositions/useWorkspaceApi'
@@ -8,7 +8,7 @@ import { UseEntitySubscription } from '@/types/useEntitySubscription'
 
 export type UseFlow = UseEntitySubscription<WorkspaceFlowsApi['getFlow'], 'flow'>
 
-export function useFlow(flowId: MaybeRefOrGetter<string | null | undefined>): UseFlow {
+export function useFlow(flowId: MaybeRefOrGetter<string | null | undefined>, options?: SubscriptionOptions): UseFlow {
   const api = useWorkspaceApi()
   const can = useCan()
 
@@ -27,7 +27,7 @@ export function useFlow(flowId: MaybeRefOrGetter<string | null | undefined>): Us
   }
 
   const parameters = toRef(getter)
-  const subscription = useSubscriptionWithDependencies(api.flows.getFlow, parameters)
+  const subscription = useSubscriptionWithDependencies(api.flows.getFlow, parameters, options)
   const flow = computed(() => subscription.response)
 
   return {

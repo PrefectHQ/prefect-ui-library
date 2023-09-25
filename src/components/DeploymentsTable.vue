@@ -2,31 +2,23 @@
   <div class="deployments-table">
     <p-layout-table sticky :root-margin="margin">
       <template #header-start>
-        <div class="deployments-table__header-start">
-          <ResultsCount v-if="selectedDeployments.length == 0" label="Deployment" :count="deploymentsCount" />
-          <SelectedCount v-else :count="selectedDeployments.length" />
+        <ResultsCount v-if="selectedDeployments.length == 0" label="Deployment" :count="total" />
+        <SelectedCount v-else :count="selectedDeployments.length" />
 
-          <DeploymentsDeleteButton v-if="can.delete.deployment" :selected="selectedDeployments" @delete="deleteDeployments" />
-        </div>
+        <DeploymentsDeleteButton v-if="can.delete.deployment" small :selected="selectedDeployments" @delete="deleteDeployments" />
       </template>
 
       <template #header-end>
-        <div class="deployments-table__header-end">
-          <SearchInput v-model="deploymentName" placeholder="Search deployments" label="Search deployments" />
+        <SearchInput v-model="deploymentName" placeholder="Search deployments" label="Search deployments" />
 
-          <template v-if="hideFlowFilter">
-            <FlowCombobox v-model:selected="filter.flows.id" empty-message="All flows" class="deployments-table__flows" />
-          </template>
+        <p-select v-model="filter.sort" :options="deploymentSortOptions" />
 
-          <p-select v-model="filter.sort" :options="deploymentSortOptions" />
-
-          <p-tags-input v-model="filter.deployments.tags.name" empty-message="All tags" :options="options" class="deployments-table__tags" multiple />
-        </div>
+        <DeploymentTagsInput v-model:selected="filter.deployments.tags.name" multiple />
       </template>
 
       <p-table :data="deployments" :columns="columns" class="deployments-table">
         <template #selection-heading>
-          <p-checkbox v-model="model" @update:model-value="selectAllDeployments" />
+          <p-checkbox v-model="selectAllValue" />
         </template>
 
         <template #selection="{ row }">
@@ -87,25 +79,25 @@
 </template>
 
 <script lang="ts" setup>
-  import { PTable, PTagWrapper, PEmptyResults, PLink, TableColumn, CheckboxModel } from '@prefecthq/prefect-design'
-  import { useDebouncedRef, useSubscription } from '@prefecthq/vue-compositions'
+  import { PTable, PTagWrapper, PEmptyResults, PLink, TableColumn } from '@prefecthq/prefect-design'
+  import { NumberRouteParam, useDebouncedRef, useRouteQueryParam } from '@prefecthq/vue-compositions'
+  import merge from 'lodash.merge'
   import { computed, ref } from 'vue'
-  import { SearchInput, ResultsCount, DeploymentToggle, FlowRouterLink, FlowCombobox, DeploymentsDeleteButton, SelectedCount } from '@/components'
-  import { useWorkspaceApi, useWorkspaceRoutes, useCan, useDeploymentsFilterFromRoute, useComponent, useOffsetStickyRootMargin, useFilterPagination } from '@/compositions'
+  import { SearchInput, ResultsCount, DeploymentToggle, FlowRouterLink, DeploymentsDeleteButton, SelectedCount } from '@/components'
+  import DeploymentTagsInput from '@/components/DeploymentTagsInput.vue'
+  import { useWorkspaceRoutes, useCan, useDeploymentsFilterFromRoute, useComponent, useOffsetStickyRootMargin, useDeployments } from '@/compositions'
   import { Deployment, isRRuleSchedule, Schedule } from '@/models'
   import { DeploymentsFilter } from '@/models/Filters'
   import { deploymentSortOptions } from '@/types/SortOptionTypes'
 
   const props = defineProps<{
     filter?: DeploymentsFilter,
-    hideFlowFilter?: boolean,
   }>()
 
   const emit = defineEmits<{
     (event: 'delete'): void,
   }>()
 
-  const api = useWorkspaceApi()
   const can = useCan()
   const { DeploymentMenu } = useComponent()
   const routes = useWorkspaceRoutes()
@@ -113,17 +105,17 @@
   const deploymentNameDebounced = useDebouncedRef(deploymentName, 1200)
   const { margin } = useOffsetStickyRootMargin()
 
-  const { page, limit, offset } = useFilterPagination()
-  const pages = computed(() => Math.ceil((deploymentsCount.value ?? limit.value) / limit.value))
+  const page = useRouteQueryParam('page', NumberRouteParam, 1)
 
-  const { filter, clear, isCustomFilter } = useDeploymentsFilterFromRoute({
-    ...props.filter,
-    offset,
-    limit,
+  const { filter, clear, isCustomFilter } = useDeploymentsFilterFromRoute(merge({}, props.filter, {
     deployments: {
-      ...props.filter?.deployments,
       nameLike: deploymentNameDebounced,
     },
+    limit: 50,
+  }))
+
+  const { deployments, subscriptions, total, pages } = useDeployments(filter, {
+    page,
   })
 
   const columns = computed<TableColumn<Deployment>[]>(() => [
@@ -159,29 +151,20 @@
   ])
 
   const selectedDeployments = ref<string[]>([])
-  const selectAllDeployments = (allDeploymentsSelected: CheckboxModel): string[] => {
-    if (allDeploymentsSelected) {
-      return selectedDeployments.value = [...deployments.value.map(deployment => deployment.id)]
-    }
-    return selectedDeployments.value = []
-  }
-  const model = computed({
+
+  const selectAllValue = computed({
     get() {
       return selectedDeployments.value.length === deployments.value.length
     },
     set(value: boolean) {
-      selectAllDeployments(value)
+      if (value) {
+        selectedDeployments.value = deployments.value.map(deployment => deployment.id)
+        return
+      }
+
+      selectedDeployments.value = []
     },
   })
-
-  const deploymentsSubscription = useSubscription(api.deployments.getDeployments, [filter])
-  const deployments = computed(() => deploymentsSubscription.response ?? [])
-
-  const deploymentsCountSubscription = useSubscription(api.deployments.getDeploymentsCount, [filter])
-  const deploymentsCount = computed(() => deploymentsCountSubscription.response)
-
-  const tagList = computed(() => deployments.value.flatMap(deployment => deployment.tags ?? []))
-  const options = computed(() => [...new Set(tagList.value)])
 
   const handleSchedule = (schedule: Schedule| null): string => {
     if (isRRuleSchedule(schedule)) {
@@ -191,8 +174,7 @@
   }
 
   function refresh(): void {
-    deploymentsSubscription.refresh()
-    deploymentsCountSubscription.refresh()
+    subscriptions.refresh()
   }
 
   const deleteDeployments = (): void => {
@@ -203,25 +185,6 @@
 </script>
 
 <style>
-.deployments-table__header-start { @apply
-  grow
-  whitespace-nowrap
-}
-
-.deployments-table__header-end { @apply
-  flex
-  flex-wrap
-  pl-2
-  ml-auto
-  shrink
-  gap-2
-}
-
-.deployments-table__flows,
-.deployments-table__tags {
-  min-width: 128px;
-}
-
 .deployments-table__actions { @apply
   flex
   gap-2

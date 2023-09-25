@@ -88,6 +88,7 @@
 <script lang="ts" setup>
   import { media } from '@prefecthq/prefect-design'
   import { NumberRouteParam, useDebouncedRef, useRouteQueryParam } from '@prefecthq/vue-compositions'
+  import merge from 'lodash.merge'
   import { computed, ref } from 'vue'
   import { FlowListItem, FlowsDeleteButton, ResultsCount, SearchInput, SelectedCount, FlowsFilterGroup } from '@/components'
   import { useDeploymentsCount, useFlows, useFlowsFilterFromRoute } from '@/compositions'
@@ -132,16 +133,14 @@
 
   const page = useRouteQueryParam<number>('page', NumberRouteParam, 1)
 
-  const { filter: routeFilter, isDefaultFilter, isCustomFilter, clear } = useFlowsFilterFromRoute({
-    ...props.filter,
+  const { filter: routeFilter, isDefaultFilter, isCustomFilter, clear } = useFlowsFilterFromRoute(merge({}, props.filter, {
     flows: {
-      ...props.filter?.flows,
       nameLike,
     },
     deployments: {
       nameLike: deploymentNameLike,
     },
-  })
+  }))
 
   const filter = computed(() => {
     return {

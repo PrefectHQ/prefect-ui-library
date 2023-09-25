@@ -76,6 +76,7 @@
 <script lang="ts" setup>
   import { PTable, PEmptyResults, CheckboxModel, TableColumn, ClassValue } from '@prefecthq/prefect-design'
   import { useDebouncedRef, useSubscription } from '@prefecthq/vue-compositions'
+  import merge from 'lodash.merge'
   import { computed, ref } from 'vue'
   import { VariablesDeleteButton, VariableMenu, ResultsCount, SearchInput, SelectedCount, VariableTagsInput } from '@/components'
   import { useCan, useOffsetStickyRootMargin, useVariablesFilter, useWorkspaceApi } from '@/compositions'
@@ -103,15 +104,13 @@
   })
   const pages = computed(() => Math.ceil((variablesCount.value ?? DEFAULT_LIMIT) / DEFAULT_LIMIT))
 
-  const { filter, isCustomFilter, clear } = useVariablesFilter({
-    ...props.filter,
+  const { filter, isCustomFilter, clear } = useVariablesFilter(merge({}, props.filter, {
     variables: {
-      ...props.filter?.variables,
       nameLike: variableLikeDebounced,
       valueLike: variableLikeDebounced,
     },
     offset,
-  })
+  }))
 
   const columns: TableColumn<Variable>[] = [
     {
