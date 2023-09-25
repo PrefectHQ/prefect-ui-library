@@ -29,4 +29,5 @@ export type DeploymentResponse = {
   work_queue_name: string | null,
   work_pool_name: string | null,
   enforce_parameter_schema: boolean,
+  pull_steps: unknown,
 }
