@@ -81,6 +81,7 @@
 <script lang="ts" setup>
   import { PTable, PTagWrapper, PEmptyResults, PLink, TableColumn } from '@prefecthq/prefect-design'
   import { NumberRouteParam, useDebouncedRef, useRouteQueryParam } from '@prefecthq/vue-compositions'
+  import merge from 'lodash.merge'
   import { computed, ref } from 'vue'
   import { SearchInput, ResultsCount, DeploymentToggle, FlowRouterLink, DeploymentsDeleteButton, SelectedCount } from '@/components'
   import DeploymentTagsInput from '@/components/DeploymentTagsInput.vue'
@@ -106,14 +107,12 @@
 
   const page = useRouteQueryParam('page', NumberRouteParam, 1)
 
-  const { filter, clear, isCustomFilter } = useDeploymentsFilterFromRoute({
-    ...props.filter,
+  const { filter, clear, isCustomFilter } = useDeploymentsFilterFromRoute(merge({}, props.filter, {
     deployments: {
-      ...props.filter?.deployments,
       nameLike: deploymentNameDebounced,
     },
     limit: 50,
-  })
+  }))
 
   const { deployments, subscriptions, total, pages } = useDeployments(filter, {
     page,
