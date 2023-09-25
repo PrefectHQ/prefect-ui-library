@@ -33,7 +33,7 @@
 
   const routeComponent = shallowRef<RouteComponent | null>(null)
 
-  function isLazilyLoadedRouteComponent(component: RouteComponent | (() => Promise<{ default: RouteComponent }>)): component is () => Promise<{ default: RouteComponent }> {
+  function isLazilyLoadedRouteComponent(component: RouteComponent | LazilyLoadedRouteComponent): component is LazilyLoadedRouteComponent {
     return isFunction(component)
   }
 
