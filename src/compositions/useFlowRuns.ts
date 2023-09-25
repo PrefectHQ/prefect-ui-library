@@ -1,72 +1,45 @@
-import { SubscriptionOptions, UseSubscription, useSubscriptionWithDependencies } from '@prefecthq/vue-compositions'
-import merge from 'lodash/merge'
-import { computed, ComputedRef, MaybeRef, MaybeRefOrGetter, ref, toRef, toValue, watch } from 'vue'
+import { MaybeRefOrGetter, toValue } from 'vue'
 import { useCan } from '@/compositions/useCan'
-import { useFilterPagination } from '@/compositions/useFilterPagination'
+import { PaginationOptions, UsePaginationEntity, usePagination } from '@/compositions/usePagination'
 import { useWorkspaceApi } from '@/compositions/useWorkspaceApi'
-import { FlowRunsFilter } from '@/models/Filters'
-import { FlowRun } from '@/models/FlowRun'
+import { FlowRunsFilter } from '@/models'
 import { WorkspaceFlowRunsApi } from '@/services'
-import { useFlowRunStorage } from '@/services/storage'
 import { Getter } from '@/types/reactivity'
 
-export type UseFlowRuns = {
-  flowRuns: ComputedRef<FlowRun[]>,
-  subscription: UseSubscription<WorkspaceFlowRunsApi['getFlowRuns']>,
-}
+export type UseFlowRuns = UsePaginationEntity<
+WorkspaceFlowRunsApi['getFlowRuns'],
+WorkspaceFlowRunsApi['getFlowRunsCount'],
+'flowRuns'
+>
 
-export function useFlowRuns(filter: MaybeRefOrGetter<FlowRunsFilter | null | undefined>, page: MaybeRef<number> = 1, options?: SubscriptionOptions): UseFlowRuns {
-  const pageRef = ref(page)
-  const can = useCan()
+export function useFlowRuns(filter?: MaybeRefOrGetter<FlowRunsFilter | null | undefined>, options?: PaginationOptions): UseFlowRuns {
   const api = useWorkspaceApi()
-  const filterRef = toRef(filter)
-  const limitRef = computed(() => filterRef.value?.limit)
-  const { limit, offset } = useFilterPagination(pageRef, limitRef)
+  const can = useCan()
 
-  const getter: Getter<[FlowRunsFilter] | null> = () => {
+  const parameters: Getter<[FlowRunsFilter?] | null> = () => {
     if (!can.read.flow_run) {
       return null
     }
 
-    const filterValue = toValue(filter)
+    const value = toValue(filter)
 
-    if (!filterValue) {
+    if (!value) {
       return null
     }
 
-    // merge here is important to track changes to `filter` if it is a reactive
-    const parameter: FlowRunsFilter = merge({}, filterValue, {
-      limit: limit.value,
-      offset: offset.value,
-    })
-
-    return [parameter]
+    return [value]
   }
 
-  const parameters = toRef(getter)
-
-  const subscription = useSubscriptionWithDependencies(api.flowRuns.getFlowRuns, parameters, options)
-
-  const storage = useFlowRunStorage()
-
-  watch(() => subscription.response, response => {
-    if (response) {
-      storage.addAll(response)
-    }
-  })
-
-  const flowRuns = computed(() => {
-    if (subscription.response) {
-      const ids = subscription.response.map(flowRun => flowRun.id)
-
-      return storage.getAll(ids)
-    }
-
-    return []
+  const pagination = usePagination({
+    fetchMethod: api.flowRuns.getFlowRuns,
+    fetchParameters: parameters,
+    countMethod: api.flowRuns.getFlowRunsCount,
+    countParameters: parameters,
+    options,
   })
 
   return {
-    subscription,
-    flowRuns,
+    ...pagination,
+    flowRuns: pagination.results,
   }
 }

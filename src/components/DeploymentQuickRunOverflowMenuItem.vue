@@ -31,7 +31,7 @@
     },
   })
 
-  const { subscription: nextRunSubscription } = useNextFlowRun(nextRunFilter)
+  const { subscriptions: nextRunSubscription } = useNextFlowRun(nextRunFilter)
 
   const run = async (): Promise<void> => {
     if (props.deployment.parameterOpenApiSchema.required && props.deployment.parameterOpenApiSchema.required.length > 0) {

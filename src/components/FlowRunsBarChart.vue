@@ -53,7 +53,7 @@
     },
   }))
 
-  const filter: Getter<FlowRunsFilter | null> = () => {
+  const filter = (): FlowRunsFilter | null => {
     if (isNaN(barsDebounced.value)) {
       return null
     }
@@ -68,7 +68,7 @@
   }
 
   const options = useInterval()
-  const { flowRuns } = useFlowRuns(filter, 1, options)
+  const { flowRuns } = useFlowRuns(filter, options)
 
   const barFlowRuns = computed(() => organizeFlowRunsWithGaps(flowRuns.value))
 

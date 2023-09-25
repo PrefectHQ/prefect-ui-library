@@ -1,14 +1,14 @@
 <template>
   <div class="flow-run-sub-flows">
     <div class="flow-run-sub-flows__filters">
-      <ResultsCount :count="count ?? 0" label="Subflow run" class="flow-run-sub-flows__count" />
+      <ResultsCount :count="total" label="Subflow run" class="flow-run-sub-flows__count" />
       <SearchInput v-model="searchTerm" placeholder="Search by run name" label="Search by run name" class="flow-run-sub-flows__search" />
       <StateNameSelect v-model:selected="states" empty-message="All states" class="flow-run-sub-flows__state" />
       <FlowRunsSort v-model="sort" class="flow-run-sub-flows__sort" />
     </div>
 
     <template v-if="!empty">
-      <FlowRunList :flow-runs="subflowRuns" @bottom="loadMore" />
+      <FlowRunList :flow-runs="flowRuns" @bottom="next" />
     </template>
 
     <PEmptyResults v-if="empty">
@@ -33,9 +33,8 @@
   import ResultsCount from '@/components/ResultsCount.vue'
   import SearchInput from '@/components/SearchInput.vue'
   import StateNameSelect from '@/components/StateNameSelect.vue'
-  import { useFlowRunsCount, useFlowRunsInfiniteScroll } from '@/compositions'
+  import { useFlowRuns } from '@/compositions'
   import { FlowRunsFilter } from '@/models/Filters'
-  import { Getter } from '@/types/reactivity'
   import { FlowRunSortValues } from '@/types/SortOptionTypes'
 
   const props = defineProps<{
@@ -48,7 +47,7 @@
   const sort = ref<FlowRunSortValues>('START_TIME_DESC')
   const hasFilters = computed(() => states.value.length || searchTerm.value.length)
 
-  const subFlowRunsFilter: Getter<FlowRunsFilter | null> = () => ({
+  const subFlowRunsFilter = (): FlowRunsFilter => ({
     flowRuns: {
       nameLike: searchTermDebounced.value,
       parentFlowRunId: [props.flowRunId],
@@ -56,10 +55,8 @@
     sort: sort.value,
   })
 
-
-  const { flowRuns: subflowRuns, subscriptions: subFlowRunsSubscriptions, loadMore } = useFlowRunsInfiniteScroll(subFlowRunsFilter)
-  const empty = computed(() => !subFlowRunsSubscriptions.loading && subflowRuns.value.length === 0)
-  const { count } = useFlowRunsCount(subFlowRunsFilter)
+  const { flowRuns, total, subscriptions, next } = useFlowRuns(subFlowRunsFilter)
+  const empty = computed(() => !subscriptions.loading && flowRuns.value.length === 0)
 
   function clear(): void {
     states.value = []
@@ -67,7 +64,7 @@
   }
 
   // always load the first page
-  loadMore()
+  next()
 </script>
 
 
