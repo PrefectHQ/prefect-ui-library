@@ -1,7 +1,7 @@
 <template>
   <p-content class="deployment-configuration">
     <p-heading heading="4">
-      Infrastructure Overrides
+      Job Variables
     </p-heading>
     <CopyableWrapper v-if="deployment" :text-to-copy="overrides">
       <p-code-highlight lang="json" :text="overrides" class="workspace-deployment__infra-overrides" />
