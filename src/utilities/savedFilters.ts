@@ -78,7 +78,7 @@ export const unsavedPartialSearch = {
 
 export const systemDefaultSavedSearch = oneWeekSavedSearch
 
-export const builtinSavedSearches = [
+export const systemSavedSearches = [
   customSavedSearch,
   oneWeekSavedSearch,
   excludeScheduledSavedSearch,
