@@ -30,7 +30,7 @@
         </div>
       </DashboardWorkPoolCardDetail>
 
-      <DashboardWorkPoolCardDetail label="Completes">
+      <DashboardWorkPoolCardDetail label="Completed">
         <DashboardWorkPoolFlowRunCompleteness :work-pool="workPool" :filter="flowRunsFilter" />
       </DashboardWorkPoolCardDetail>
     </dl>
