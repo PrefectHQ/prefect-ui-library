@@ -55,7 +55,7 @@
         "lodash.debounce": "4.0.8",
         "postcss": "8.4.30",
         "tailwindcss": "3.3.3",
-        "tsc-alias": "1.8.7",
+        "tsc-alias": "1.8.8",
         "typescript": "5.2.2",
         "vite": "4.4.9",
         "vite-svg-loader": "^4.0.0",
