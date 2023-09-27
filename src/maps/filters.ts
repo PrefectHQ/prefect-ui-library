@@ -199,6 +199,9 @@ export const mapFlowRunFilter: MapFunction<FlowRunFilter, FlowRunFilterRequest> 
       ...toAny(source.parentTaskRunId),
       ...toIsNull(source.parentTaskRunIdNull),
     },
+    parent_flow_run_id: {
+      ...toAny(source.parentFlowRunId),
+    },
   })
 }
 

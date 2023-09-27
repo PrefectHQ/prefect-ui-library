@@ -58,6 +58,7 @@ export type FlowRunFilterRequest = {
   expected_start_time?: Before & After,
   next_scheduled_start_time?: Before & After,
   parent_task_run_id?: OperatorRequest & Any & IsNull,
+  parent_flow_run_id?: Any,
 }
 
 export type TaskRunFilterRequest = {

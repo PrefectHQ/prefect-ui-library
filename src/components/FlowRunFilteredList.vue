@@ -2,7 +2,7 @@
   <div class="flow-run-filtered-list">
     <div ref="stickyControls" class="flow-run-filtered-list__controls" :class="classes.header">
       <div class="flow-run-filtered-list__controls--right">
-        <ResultsCount v-if="selectedFlowRuns.length == 0" :count="flowRunCount" label="Flow run" />
+        <ResultsCount v-if="selectedFlowRuns.length == 0" :count="total" label="Flow run" />
         <SelectedCount v-else :count="selectedFlowRuns.length" />
 
         <FlowRunsDeleteButton v-if="can.delete.flow_run" :selected="selectedFlowRuns" @delete="deleteFlowRuns" />
@@ -11,7 +11,7 @@
       <StateNameSelect :selected="states" empty-message="All run states" class="flow-run-filtered-list__state-select" @update:selected="updateState" />
       <FlowRunsSort v-model="sort" class="flow-run-filtered-list__flow-runs-sort" />
     </div>
-    <FlowRunList v-model:selected="selectedFlowRuns" :flow-runs="flowRuns" :selectable="!disableDeletion && can.delete.flow_run" @bottom="loadMore" />
+    <FlowRunList v-model:selected="selectedFlowRuns" :flow-runs="flowRuns" :selectable="!disableDeletion && can.delete.flow_run" @bottom="next" />
     <PEmptyResults v-if="empty">
       <template #message>
         <slot name="empty-message">
@@ -28,10 +28,10 @@
 </template>
 
 <script lang="ts" setup>
-  import { usePositionStickyObserver, useSubscription } from '@prefecthq/vue-compositions'
+  import { usePositionStickyObserver } from '@prefecthq/vue-compositions'
   import { computed, onMounted, ref } from 'vue'
   import { ResultsCount, StateNameSelect, FlowRunsSort, FlowRunList, SelectedCount, FlowRunsDeleteButton } from '@/components'
-  import { useFlowRunsInfiniteScroll, useWorkspaceApi } from '@/compositions'
+  import { useFlowRuns } from '@/compositions'
   import { useCan } from '@/compositions/useCan'
   import { FlowRunsFilter } from '@/models/Filters'
   import { FlowRunSortValues, PrefectStateNames } from '@/types'
@@ -47,7 +47,6 @@
   }>()
 
   const can = useCan()
-  const api = useWorkspaceApi()
   const selectedFlowRuns = ref<string[]>([])
   const states = ref<PrefectStateNames[]>(props.states ?? [])
   const stickyControls = ref<HTMLElement>()
@@ -71,10 +70,10 @@
     sort: sort.value,
   }))
 
-  const flowRunCountSubscription = useSubscription(api.flowRuns.getFlowRunsCount, [filter], { interval: 30000 })
-  const flowRunCount = computed(() => flowRunCountSubscription.response)
-
-  const { flowRuns, subscriptions, loadMore } = useFlowRunsInfiniteScroll(filter, { interval: 3000 })
+  const { flowRuns, total, subscriptions, next } = useFlowRuns(filter, {
+    interval: 3000,
+    mode: 'infinite',
+  })
 
   const empty = computed(() => subscriptions.executed && flowRuns.value.length === 0)
 
@@ -93,7 +92,6 @@
   const deleteFlowRuns = (): void => {
     selectedFlowRuns.value = []
     subscriptions.refresh()
-    flowRunCountSubscription.refresh()
   }
 
   onMounted(() => {

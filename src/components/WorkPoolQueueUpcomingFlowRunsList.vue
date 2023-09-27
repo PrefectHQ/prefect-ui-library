@@ -27,7 +27,7 @@
 
   const { workPoolQueue } = toRefs(props)
 
-  const filter = computed<FlowRunsFilter>(() => ({
+  const filter = (): FlowRunsFilter => ({
     flowRuns: {
       state: {
         name: ['Scheduled'],
@@ -39,17 +39,17 @@
     workPoolQueues: {
       name: [props.workPoolQueue.name],
     },
-  }))
+  })
 
-  const { flowRuns, subscription } = useFlowRuns(filter)
+  const { flowRuns, subscriptions } = useFlowRuns(filter)
 
-  const empty = computed(() => subscription.executed && flowRuns.value.length === 0)
+  const empty = computed(() => subscriptions.executed && flowRuns.value.length === 0)
   const isPaused = computed(() => workPoolQueue.value.isPaused)
 
   // pretty sure this isn't needed but I haven't tested for sure
   // the subscription should refresh automatically because if the workPoolQueue
   // updates the filter will update which creates a new subscription
   watch(() => workPoolQueue, () => {
-    subscription.refresh()
+    subscriptions.refresh()
   })
 </script>
