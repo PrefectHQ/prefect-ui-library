@@ -181,6 +181,7 @@ export function useFlowRunFilter(defaultValue: MaybeReactive<FlowRunFilter> = {}
     parentTaskRunId: toRef(defaultValueReactive, 'parentTaskRunId'),
     parentTaskRunIdNull: toRef(defaultValueReactive, 'parentTaskRunIdNull'),
     parentTaskRunIdOperator: toRef(defaultValueReactive, 'parentTaskRunIdOperator'),
+    parentFlowRunId: toRef(defaultValueReactive, 'parentFlowRunId'),
     startTimeAfter: toRef(defaultValueReactive, 'startTimeAfter'),
     startTimeBefore: toRef(defaultValueReactive, 'startTimeBefore'),
     startTimeNull: toRef(defaultValueReactive, 'startTimeNull'),
@@ -219,6 +220,7 @@ const flowRunFilterSchema: RouteQueryParamsSchema<FlowRunFilter> = {
   parentTaskRunIdOperator: OperatorRouteParam,
   parentTaskRunId: [StringRouteParam],
   parentTaskRunIdNull: BooleanRouteParam,
+  parentFlowRunId: [StringRouteParam],
 }
 
 export function useTaskRunFilter(defaultValue: MaybeReactive<TaskRunFilter> = {}): UseFilter<TaskRunFilter> {

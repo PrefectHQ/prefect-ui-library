@@ -1,21 +1,17 @@
-import { UseSubscription } from '@prefecthq/vue-compositions'
 import merge from 'lodash.merge'
 import { computed, ComputedRef, MaybeRefOrGetter, toValue } from 'vue'
 import { useCan } from '@/compositions/useCan'
-import { useFlowRuns } from '@/compositions/useFlowRuns'
+import { UseFlowRuns, useFlowRuns } from '@/compositions/useFlowRuns'
 import { FlowRun, FlowRunsFilter, UnionFilter } from '@/models'
-import { WorkspaceFlowRunsApi } from '@/services'
-import { Getter } from '@/types/reactivity'
 
-export type UseLastFlowRun = {
-  subscription: UseSubscription<WorkspaceFlowRunsApi['getFlowRuns']>,
+export type UseLastFlowRun = Pick<UseFlowRuns, 'subscriptions'> & {
   flowRun: ComputedRef<FlowRun | undefined>,
 }
 
 export function useLastFlowRun(filter: MaybeRefOrGetter<UnionFilter | null | undefined>): UseLastFlowRun {
   const can = useCan()
 
-  const getter: Getter<FlowRunsFilter | null> = () => {
+  const getter = (): FlowRunsFilter | null => {
     if (!can.read.flow_run) {
       return null
     }
@@ -33,11 +29,11 @@ export function useLastFlowRun(filter: MaybeRefOrGetter<UnionFilter | null | und
     return merge({}, filterValue, latestFilter)
   }
 
-  const { flowRuns, subscription } = useFlowRuns(getter)
+  const { flowRuns, subscriptions } = useFlowRuns(getter)
   const flowRun = computed(() => flowRuns.value.at(0))
 
   return {
-    subscription,
+    subscriptions,
     flowRun,
   }
 }

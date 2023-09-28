@@ -318,7 +318,7 @@
     )
   })
 
-  const subFlowRunsFilter = computed<FlowRunsFilter | null>(() => {
+  const subFlowRunsFilter = (): FlowRunsFilter | null => {
     const ids = [...rootSubFlowRunIds.value, ...expandedSubFlowRunIds.value]
 
     if (!ids.length) {
@@ -330,7 +330,7 @@
         id: ids,
       },
     }
-  })
+  }
 
   const { flowRuns: subFlowRuns } = useFlowRuns(subFlowRunsFilter)
 

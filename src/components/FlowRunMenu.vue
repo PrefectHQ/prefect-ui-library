@@ -95,16 +95,17 @@
     return isPausedStateType(flowRun.value.stateType)
   })
 
-  const flowRunFilter = computed<FlowRunsFilter | null>(() => {
-    if (flowRun.value?.parentTaskRunId) {
-      return {
-        taskRuns: {
-          id: [flowRun.value.parentTaskRunId],
-        },
-      }
+  const flowRunFilter = (): FlowRunsFilter | null => {
+    if (!flowRun.value?.parentTaskRunId) {
+      return null
     }
-    return null
-  })
+
+    return {
+      taskRuns: {
+        id: [flowRun.value.parentTaskRunId],
+      },
+    }
+  }
   const { flowRuns: parentFlowRunList } = useFlowRuns(flowRunFilter)
   const parentFlowRunId = computed(() => {
     if (!parentFlowRunList.value.length) {

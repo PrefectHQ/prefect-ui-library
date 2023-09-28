@@ -9,19 +9,16 @@
   import FlowRunIconText from '@/components/FlowRunIconText.vue'
   import { useFlowRuns } from '@/compositions'
   import { localization } from '@/localization'
-  import { FlowRunsFilter } from '@/models/Filters'
 
   const props = defineProps<{
     parentTaskRunId: string,
   }>()
 
-  const flowRunFilter = computed<FlowRunsFilter>(() => ({
+  const { flowRuns } = useFlowRuns(() => ({
     taskRuns: {
       id: [props.parentTaskRunId],
     },
   }))
-
-  const { flowRuns } = useFlowRuns(flowRunFilter)
 
   const parentFlowRunId = computed(() => {
     if (!flowRuns.value.length) {
