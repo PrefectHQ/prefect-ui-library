@@ -3,7 +3,7 @@ import { computed, ComputedRef } from 'vue'
 import { useDefaultSavedSearchFilter } from '@/compositions/useDefaultSavedSearchFilter'
 import { useWorkspaceApi } from '@/compositions/useWorkspaceApi'
 import { SavedSearch, SavedSearchCreate } from '@/models'
-import { systemSavedSearches, isSameFilter, systemDefaultSavedSearch, unsavedPartialSearch } from '@/utilities/savedFilters'
+import { systemSavedSearches, isSameFilter, systemDefaultSavedSearch, unsavedPartialSearch, customSavedSearch } from '@/utilities/savedFilters'
 
 export type SavedFlowRunsSearch = SavedSearch & { isDefault: boolean }
 
@@ -23,7 +23,7 @@ export function useSavedFlowRunsSearches(): UseSavedFlowRunsSearches {
   const savedFlowRunsSearches = computed<SavedFlowRunsSearch[]>(() => {
     let foundSavedSearchForDefaultSavedFilter = false
     const all = savedSearches.value.map(savedSearch => {
-      if (isSameFilter(savedSearch.filters, myDefaultSavedFilter.value)) {
+      if (savedSearch.name !== customSavedSearch.name && isSameFilter(savedSearch.filters, myDefaultSavedFilter.value)) {
         foundSavedSearchForDefaultSavedFilter = true
         return { ...savedSearch, isDefault: true }
       }
