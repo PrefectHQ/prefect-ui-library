@@ -55,7 +55,9 @@
     sort: sort.value,
   })
 
-  const { flowRuns, total, subscriptions, next } = useFlowRuns(subFlowRunsFilter)
+  const { flowRuns, total, subscriptions, next } = useFlowRuns(subFlowRunsFilter, {
+    mode: 'infinite',
+  })
   const empty = computed(() => !subscriptions.loading && flowRuns.value.length === 0)
 
   function clear(): void {
