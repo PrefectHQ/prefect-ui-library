@@ -34,6 +34,10 @@ export default defineConfig(({ mode }) => {
 
   return {
     ...baseConfig,
+    test: {
+      globals: true,
+      environment: 'jsdom',
+    },
     build: {
       emptyOutDir: false,
       sourcemap: true,
