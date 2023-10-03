@@ -1,5 +1,4 @@
-import { mocker } from '@/services'
-import { floor, random } from '@/utilities/math'
+import { floor, random, uniform } from '@/utilities/math'
 
 export function isArray(value: unknown): value is unknown[] {
   return Array.isArray(value)
@@ -122,11 +121,11 @@ export function repeat<T>(count: number, method: (index: number) => T): T[] {
 export function some<T>(source: T[], min?: number, max?: number): T[] {
   const minArg = min ?? 1
   const maxArg = max ?? source.length
-  const count = mocker.create('number', [minArg, maxArg])
+  const count = uniform(minArg, maxArg)
   const copy = [...source]
 
   const value = repeat(count, () => {
-    const index = mocker.create('number', [0, copy.length - 1])
+    const index = uniform(0, copy.length - 1)
     const value = copy.splice(index, 1)
 
     return value[0]
