@@ -5,6 +5,7 @@ import { useWorkspaceApi } from '@/compositions/useWorkspaceApi'
 import { Deployment, DeploymentsFilter, IDeployment } from '@/models'
 import { Can, DeploymentObjectLevelScopes, WorkspaceDeploymentsApi, WorkspaceFeatureFlag, WorkspacePermission } from '@/services'
 import { Getter } from '@/types/reactivity'
+import { isEmptyArray } from '@/utilities/arrays'
 
 export type UseDeployments = UsePaginationEntity<
 (filter?: DeploymentsFilter) => Promise<DeploymentWithObjectLevelScopes[]>,
@@ -18,10 +19,10 @@ function isWildcardAcl(acl?: DeploymentObjectLevelScopes): boolean {
 }
 
 /**
- * Return true if there is an acl but the requesting user is not on it.
+ * Return true if there is an acl but the requesting user is not on it meaning they have no access.
  */
 function isRestrictedAcl(acl?: DeploymentObjectLevelScopes): boolean {
-  return acl != null && acl.length > 0
+  return isEmptyArray(acl)
 }
 
 type DeploymentCan = {
@@ -50,11 +51,7 @@ class DeploymentWithObjectLevelScopes extends Deployment {
         view: Boolean(can.read.deployment),
       }
     } else if (isRestrictedAcl(acl)) {
-      this.can = {
-        manage: false,
-        run: false,
-        view: false,
-      }
+      this.can = lowestPrivilegedDeploymentCan
     } else {
       this.can = acl.reduce((acc, cur) => {
         acc[cur] = true
