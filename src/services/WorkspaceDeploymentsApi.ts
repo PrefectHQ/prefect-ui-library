@@ -21,6 +21,14 @@ export interface IWorkspaceDeploymentsApi {
   deleteDeployment: (deploymentId: string) => Promise<void>,
 }
 
+type DeploymentAccess = {
+  view: boolean,
+  manage: boolean,
+  run: boolean,
+}
+
+type DeploymentsAccess = Record<string, DeploymentAccess>
+
 export class WorkspaceDeploymentsApi extends WorkspaceApi implements IWorkspaceDeploymentsApi {
 
   protected override routePrefix = '/deployments'
@@ -49,6 +57,20 @@ export class WorkspaceDeploymentsApi extends WorkspaceApi implements IWorkspaceD
   public async getDeploymentsCount(filter: DeploymentsFilter = {}): Promise<number> {
     const request = mapper.map('DeploymentsFilter', filter, 'DeploymentsFilterRequest')
     const { data } = await this.post<number>('/count', request)
+
+    return data
+  }
+
+  public async getDeploymentAccess(deploymentId: string): Promise<DeploymentAccess> {
+    const { data } = await this.post<DeploymentAccess>(`/${deploymentId}/my-access`)
+
+    return data
+  }
+
+  public async getDeploymentsAccess(deploymentIds: string[]): Promise<DeploymentsAccess> {
+    const { data } = await this.post<DeploymentsAccess>('/my-access', {
+      deployments: deploymentIds,
+    })
 
     return data
   }

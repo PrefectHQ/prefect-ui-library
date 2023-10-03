@@ -2,15 +2,29 @@ import { MaybeRefOrGetter, toValue } from 'vue'
 import { useCan } from '@/compositions/useCan'
 import { PaginationOptions, UsePaginationEntity, usePagination } from '@/compositions/usePagination'
 import { useWorkspaceApi } from '@/compositions/useWorkspaceApi'
-import { DeploymentsFilter } from '@/models'
-import { WorkspaceDeploymentsApi } from '@/services'
+import { DeploymentsFilter, IDeployment } from '@/models'
+import { Can, WorkspaceDeploymentsApi, WorkspaceFeatureFlag, WorkspacePermission } from '@/services'
 import { Getter } from '@/types/reactivity'
 
 export type UseDeployments = UsePaginationEntity<
-WorkspaceDeploymentsApi['getDeployments'],
+typeof fetch,
 WorkspaceDeploymentsApi['getDeploymentsCount'],
 'deployments'
 >
+
+class AclDeployment extends Deployment {
+  public constructor(deployment: IDeployment, acl: any, can: Can<WorkspacePermission | WorkspaceFeatureFlag>) {
+    super(deployment)
+
+    // acl logic
+    // and scope stuff?
+
+  }
+
+  public canRun(): boolean {
+    return true
+  }
+}
 
 export function useDeployments(filter?: MaybeRefOrGetter<DeploymentsFilter | null | undefined>, options?: PaginationOptions): UseDeployments {
   const api = useWorkspaceApi()
@@ -30,8 +44,17 @@ export function useDeployments(filter?: MaybeRefOrGetter<DeploymentsFilter | nul
     return [value]
   }
 
+
+  async function fetch(filter: DeploymentsFilter = {}): Promise<AclDeployment[]> {
+    const deployments = await api.deployments.getDeployments(filter)
+    const deploymentIds = deployments.map(deployment => deployment.id)
+    const access = await api.deployments.getDeploymentsAccess(deploymentIds)
+
+
+  }
+
   const pagination = usePagination({
-    fetchMethod: api.deployments.getDeployments,
+    fetchMethod: fetch,
     fetchParameters: parameters,
     countMethod: api.deployments.getDeploymentsCount,
     countParameters: parameters,
