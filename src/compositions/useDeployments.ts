@@ -2,27 +2,65 @@ import { MaybeRefOrGetter, toValue } from 'vue'
 import { useCan } from '@/compositions/useCan'
 import { PaginationOptions, UsePaginationEntity, usePagination } from '@/compositions/usePagination'
 import { useWorkspaceApi } from '@/compositions/useWorkspaceApi'
-import { DeploymentsFilter, IDeployment } from '@/models'
-import { Can, WorkspaceDeploymentsApi, WorkspaceFeatureFlag, WorkspacePermission } from '@/services'
+import { Deployment, DeploymentsFilter, IDeployment } from '@/models'
+import { Can, DeploymentObjectLevelScopes, WorkspaceDeploymentsApi, WorkspaceFeatureFlag, WorkspacePermission } from '@/services'
 import { Getter } from '@/types/reactivity'
 
 export type UseDeployments = UsePaginationEntity<
-typeof fetch,
+(filter?: DeploymentsFilter) => Promise<DeploymentWithObjectLevelScopes[]>,
 WorkspaceDeploymentsApi['getDeploymentsCount'],
 'deployments'
 >
 
-class AclDeployment extends Deployment {
-  public constructor(deployment: IDeployment, acl: any, can: Can<WorkspacePermission | WorkspaceFeatureFlag>) {
+function isWildcardAcl(acl?: DeploymentObjectLevelScopes): boolean {
+  // fixme: awaiting api change
+  return acl == null
+}
+
+/**
+ * Return true if there is an acl but the requesting user is not on it.
+ */
+function isRestrictedAcl(acl?: DeploymentObjectLevelScopes): boolean {
+  return acl != null && acl.length > 0
+}
+
+type DeploymentCan = {
+  [key in DeploymentObjectLevelScopes[number]]: boolean
+}
+
+class DeploymentWithObjectLevelScopes extends Deployment {
+  private readonly objectLevelScopes: DeploymentObjectLevelScopes
+  public readonly can: DeploymentCan
+  public constructor(deployment: IDeployment, acl: DeploymentObjectLevelScopes, can: Can<WorkspacePermission | WorkspaceFeatureFlag>) {
     super(deployment)
 
-    // acl logic
-    // and scope stuff?
+    this.objectLevelScopes = acl
 
-  }
+    const lowestPrivilegedDeploymentCan = {
+      manage: false,
+      run: false,
+      view: false,
+    }
 
-  public canRun(): boolean {
-    return true
+    if (isWildcardAcl(acl)) {
+      // fallback to workspace scopes
+      this.can = {
+        manage: Boolean(can.create.deployment && can.update.deployment && can.delete.deployment),
+        run: Boolean(can.run.deployment),
+        view: Boolean(can.read.deployment),
+      }
+    } else if (isRestrictedAcl(acl)) {
+      this.can = {
+        manage: false,
+        run: false,
+        view: false,
+      }
+    } else {
+      this.can = acl.reduce((acc, cur) => {
+        acc[cur] = true
+        return acc
+      }, lowestPrivilegedDeploymentCan)
+    }
   }
 }
 
@@ -45,16 +83,17 @@ export function useDeployments(filter?: MaybeRefOrGetter<DeploymentsFilter | nul
   }
 
 
-  async function fetch(filter: DeploymentsFilter = {}): Promise<AclDeployment[]> {
+  async function getDeploymentsWithObjectLevelScopes(filter: DeploymentsFilter = {}): Promise<DeploymentWithObjectLevelScopes[]> {
     const deployments = await api.deployments.getDeployments(filter)
+
     const deploymentIds = deployments.map(deployment => deployment.id)
-    const access = await api.deployments.getDeploymentsAccess(deploymentIds)
+    const access = await api.deployments.getDeploymentsObjectLevelScopes(deploymentIds)
 
-
+    return deployments.map(deployment => new DeploymentWithObjectLevelScopes(deployment, access[deployment.id], can))
   }
 
   const pagination = usePagination({
-    fetchMethod: fetch,
+    fetchMethod: getDeploymentsWithObjectLevelScopes,
     fetchParameters: parameters,
     countMethod: api.deployments.getDeploymentsCount,
     countParameters: parameters,

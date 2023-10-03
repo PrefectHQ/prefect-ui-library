@@ -21,13 +21,13 @@ export interface IWorkspaceDeploymentsApi {
   deleteDeployment: (deploymentId: string) => Promise<void>,
 }
 
-type DeploymentAccess = {
-  view: boolean,
-  manage: boolean,
-  run: boolean,
-}
+// TODO: deduplicate this from nebula-ui
+// export const deploymentAccessLevels = ['Manage', 'Run', 'View'] as const
+type DeploymentAccessLevel = 'Manage' | 'Run' | 'View'
 
-type DeploymentsAccess = Record<string, DeploymentAccess>
+export type DeploymentObjectLevelScopes = Lowercase<DeploymentAccessLevel>[]
+
+type DeploymentObjectLevelScopesMap = Record<string, DeploymentObjectLevelScopes>
 
 export class WorkspaceDeploymentsApi extends WorkspaceApi implements IWorkspaceDeploymentsApi {
 
@@ -61,15 +61,15 @@ export class WorkspaceDeploymentsApi extends WorkspaceApi implements IWorkspaceD
     return data
   }
 
-  public async getDeploymentAccess(deploymentId: string): Promise<DeploymentAccess> {
-    const { data } = await this.post<DeploymentAccess>(`/${deploymentId}/my-access`)
+  public async getDeploymentObjectLevelScopes(deploymentId: string): Promise<DeploymentObjectLevelScopes> {
+    const deploymentAccesses = await this.getDeploymentsObjectLevelScopes([deploymentId])
 
-    return data
+    return deploymentAccesses[deploymentId]
   }
 
-  public async getDeploymentsAccess(deploymentIds: string[]): Promise<DeploymentsAccess> {
-    const { data } = await this.post<DeploymentsAccess>('/my-access', {
-      deployments: deploymentIds,
+  public async getDeploymentsObjectLevelScopes(deploymentIds: string[]): Promise<DeploymentObjectLevelScopesMap> {
+    const { data } = await this.post<DeploymentObjectLevelScopesMap>('/my-access', {
+      deployment_ids: deploymentIds,
     })
 
     return data
