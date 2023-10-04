@@ -27,7 +27,7 @@ type DeploymentAccessLevel = 'Manage' | 'Run' | 'View'
 
 export type DeploymentObjectLevelScopes = Lowercase<DeploymentAccessLevel>[]
 
-type DeploymentObjectLevelScopesMap = Record<string, DeploymentObjectLevelScopes>
+export type DeploymentObjectLevelScopesMap = Record<string, DeploymentObjectLevelScopes>
 
 export class WorkspaceDeploymentsApi extends WorkspaceApi implements IWorkspaceDeploymentsApi {
 
@@ -67,12 +67,10 @@ export class WorkspaceDeploymentsApi extends WorkspaceApi implements IWorkspaceD
     return deploymentAccesses[deploymentId]
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars, require-await, no-unused-vars
   public async getDeploymentsObjectLevelScopes(deploymentIds: string[]): Promise<DeploymentObjectLevelScopesMap> {
-    const { data } = await this.post<DeploymentObjectLevelScopesMap>('/my-access', {
-      deployment_ids: deploymentIds,
-    })
-
-    return data
+    // a filtered out deployment means fallback to wildcard access thus we return an empty object
+    return Promise.resolve({})
   }
 
   public async createDeploymentFlowRun(deploymentId: string, request: DeploymentFlowRunCreate): Promise<FlowRun> {
