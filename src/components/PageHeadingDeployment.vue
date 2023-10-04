@@ -17,10 +17,10 @@
   import { DeploymentRelationships, DeploymentToggle, PageHeading, RunMenu } from '@/components'
   import { useComponent, useWorkspaceRoutes } from '@/compositions'
   import { useCan } from '@/compositions/useCan'
-  import { Deployment } from '@/models'
+  import { DeploymentWithObjectLevelScopes } from '@/models'
 
   const props = defineProps<{
-    deployment: Deployment,
+    deployment: DeploymentWithObjectLevelScopes, // todo: maybe we should just make the can optional...
   }>()
 
   const can = useCan()
