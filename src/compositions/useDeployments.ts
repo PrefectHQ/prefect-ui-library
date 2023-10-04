@@ -2,13 +2,12 @@ import { MaybeRefOrGetter, toValue } from 'vue'
 import { useCan } from '@/compositions/useCan'
 import { PaginationOptions, UsePaginationEntity, usePagination } from '@/compositions/usePagination'
 import { useWorkspaceApi } from '@/compositions/useWorkspaceApi'
-import { DeploymentsFilter } from '@/models'
-import { DeploymentWithObjectLevelScopes } from '@/models/DeploymentWithObjectLevelScopes'
+import { Deployment, DeploymentsFilter, createDeploymentCan } from '@/models'
 import { WorkspaceDeploymentsApi } from '@/services'
 import { Getter } from '@/types/reactivity'
 
 export type UseDeployments = UsePaginationEntity<
-(filter?: DeploymentsFilter) => Promise<DeploymentWithObjectLevelScopes[]>,
+(filter?: DeploymentsFilter) => Promise<Deployment[]>,
 WorkspaceDeploymentsApi['getDeploymentsCount'],
 'deployments'
 >
@@ -33,13 +32,16 @@ export function useDeployments(filter?: MaybeRefOrGetter<DeploymentsFilter | nul
   }
 
 
-  async function getDeploymentsWithObjectLevelScopes(filter: DeploymentsFilter = {}): Promise<DeploymentWithObjectLevelScopes[]> {
+  async function getDeploymentsWithObjectLevelScopes(filter: DeploymentsFilter = {}): Promise<Deployment[]> {
     const deployments = await api.deployments.getDeployments(filter)
 
     const deploymentIds = deployments.map(deployment => deployment.id)
     const access = await api.deployments.getDeploymentsObjectLevelScopes(deploymentIds)
 
-    return deployments.map(deployment => new DeploymentWithObjectLevelScopes(deployment, access[deployment.id], can))
+    deployments.forEach(deployment => {
+      deployment.can = createDeploymentCan(access[deployment.id], can)
+    })
+    return deployments
   }
 
   const pagination = usePagination({

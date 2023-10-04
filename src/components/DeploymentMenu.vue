@@ -35,12 +35,12 @@
 
 <script lang="ts" setup>
   import { DeploymentQuickRunOverflowMenuItem, DeploymentCustomRunOverflowMenuItem, ConfirmDeleteModal, CopyOverflowMenuItem, QuickRunParametersModal } from '@/components'
-  import { useWorkspaceApi, useWorkspaceRoutes, useCan, useShowModal } from '@/compositions'
-  import { DeploymentWithObjectLevelScopes } from '@/models/DeploymentWithObjectLevelScopes'
+  import { useWorkspaceApi, useWorkspaceRoutes, useShowModal } from '@/compositions'
+  import { Deployment } from '@/models'
   import { deleteItem } from '@/utilities'
 
   defineProps<{
-    deployment: DeploymentWithObjectLevelScopes,
+    deployment: Deployment,
     showAll?: boolean,
   }>()
 
