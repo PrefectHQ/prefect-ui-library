@@ -1,6 +1,6 @@
 import { SchemaResponse } from '@/models/api/SchemaResponse'
 import { CreatedOrUpdatedBy } from '@/models/CreatedOrUpdatedBy'
-import { DeploymentCan, lowestPrivilegedDeploymentCan } from '@/models/DeploymentCan'
+import { createDeploymentCan, DeploymentCan } from '@/models/DeploymentCan'
 import { Schedule } from '@/models/Schedule'
 import { Schema, SchemaValues } from '@/types/schemas'
 
@@ -91,7 +91,7 @@ export class Deployment implements IDeployment {
     this.workPoolName = deployment.workPoolName
     this.enforceParameterSchema = deployment.enforceParameterSchema
     this.pullSteps = deployment.pullSteps
-    this.can = deployment.can ?? lowestPrivilegedDeploymentCan
+    this.can = deployment.can ?? createDeploymentCan()
   }
 
   public get deprecated(): boolean {

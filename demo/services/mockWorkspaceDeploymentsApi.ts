@@ -2,7 +2,7 @@ import { KeyedDataStoreFindCallback } from './KeyedDataStore'
 import { MockApi } from './MockApi'
 import { Deployment, DeploymentFlowRunCreate, DeploymentUpdate, FlowRun } from '@/models'
 import { DeploymentsFilter } from '@/models/Filters'
-import { DeploymentObjectLevelScopes, DeploymentObjectLevelScopesMap, IWorkspaceDeploymentsApi, mocker } from '@/services'
+import { IWorkspaceDeploymentsApi, mocker } from '@/services'
 
 const deploymentsItemIntersectsFilter = (filter: DeploymentsFilter): KeyedDataStoreFindCallback<Deployment> => {
   return (deployment: Deployment): boolean => {
@@ -67,18 +67,6 @@ export class MockWorkspaceDeploymentsApi extends MockApi implements IWorkspaceDe
    */
   public async getDeploymentsCount(filter: DeploymentsFilter): Promise<number> {
     return await this.deployments.count(deploymentsItemIntersectsFilter(filter))
-  }
-
-  public async getDeploymentObjectLevelScopes(deploymentId: string): Promise<DeploymentObjectLevelScopes> {
-    const deploymentAccesses = await this.getDeploymentsObjectLevelScopes([deploymentId])
-
-    return deploymentAccesses[deploymentId]
-  }
-
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars, require-await, no-unused-vars
-  public async getDeploymentsObjectLevelScopes(deploymentIds: string[]): Promise<DeploymentObjectLevelScopesMap> {
-    // a filtered out deployment means fallback to wildcard access thus we return an empty object
-    return Promise.resolve({})
   }
 
   public async createDeploymentFlowRun(deploymentId: string, request?: DeploymentFlowRunCreate): Promise<FlowRun> {

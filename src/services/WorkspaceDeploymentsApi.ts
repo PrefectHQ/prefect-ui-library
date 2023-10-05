@@ -21,14 +21,6 @@ export interface IWorkspaceDeploymentsApi {
   deleteDeployment: (deploymentId: string) => Promise<void>,
 }
 
-// TODO: deduplicate this from nebula-ui
-// export const deploymentAccessLevels = ['Manage', 'Run', 'View'] as const
-type DeploymentAccessLevel = 'Manage' | 'Run' | 'View'
-
-export type DeploymentObjectLevelScopes = Lowercase<DeploymentAccessLevel>[]
-
-export type DeploymentObjectLevelScopesMap = Record<string, DeploymentObjectLevelScopes>
-
 export class WorkspaceDeploymentsApi extends WorkspaceApi implements IWorkspaceDeploymentsApi {
 
   protected override routePrefix = '/deployments'
@@ -59,18 +51,6 @@ export class WorkspaceDeploymentsApi extends WorkspaceApi implements IWorkspaceD
     const { data } = await this.post<number>('/count', request)
 
     return data
-  }
-
-  public async getDeploymentObjectLevelScopes(deploymentId: string): Promise<DeploymentObjectLevelScopes> {
-    const deploymentAccesses = await this.getDeploymentsObjectLevelScopes([deploymentId])
-
-    return deploymentAccesses[deploymentId]
-  }
-
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars, require-await, no-unused-vars
-  public async getDeploymentsObjectLevelScopes(deploymentIds: string[]): Promise<DeploymentObjectLevelScopesMap> {
-    // a filtered out deployment means fallback to wildcard access thus we return an empty object
-    return Promise.resolve({})
   }
 
   public async createDeploymentFlowRun(deploymentId: string, request: DeploymentFlowRunCreate): Promise<FlowRun> {
