@@ -14,6 +14,7 @@ export function useDeploymentsCount(filter?: MaybeRefOrGetter<DeploymentsFilter>
   const can = useCan()
 
   const getter: Getter<[DeploymentsFilter] | null> = () => {
+    // todo: audit [cchoy]
     if (!can.read.deployment) {
       return null
     }

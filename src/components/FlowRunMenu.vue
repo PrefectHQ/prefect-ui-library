@@ -1,7 +1,7 @@
 <template>
   <p-icon-button-menu>
     <template #default>
-      <!-- todo: this PR(https://github.com/PrefectHQ/prefect-ui-library/pull/1743) will only partially work once object acls are on -->
+      <!-- todo: audit [cchoy] this PR(https://github.com/PrefectHQ/prefect-ui-library/pull/1743) will only partially work once object acls are on -->
       <p-overflow-menu-item v-if="flowRun?.deploymentId && can.run.deployment" label="Copy to new run" :to="routes.deploymentFlowRunCreate(flowRun.deploymentId, flowRun.parameters)" />
       <p-overflow-menu-item v-if="canRetry && showAll" label="Retry" @click="openRetryModal" />
       <p-overflow-menu-item v-if="canResume && showAll" label="Resume" @click="openResumeModal" />

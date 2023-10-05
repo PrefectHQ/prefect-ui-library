@@ -5,6 +5,7 @@
         <ResultsCount v-if="selectedDeployments.length == 0" label="Deployment" :count="total" />
         <SelectedCount v-else :count="selectedDeployments.length" />
 
+        <!-- todo: audit [cchoy] -->
         <DeploymentsDeleteButton v-if="can.delete.deployment" small :selected="selectedDeployments" @delete="deleteDeployments" />
       </template>
 
@@ -30,6 +31,7 @@
           <p-link :to="routes.deployment(row.id)">
             <span>{{ row.name }}</span>
           </p-link>
+          <span>{{ JSON.stringify(row.can) }}</span>
         </template>
 
         <template #schedule="{ row }">
@@ -122,6 +124,7 @@
     {
       label: 'selection',
       width: '20px',
+      // todo: audit [cchoy]
       visible: can.delete.deployment,
     },
     {

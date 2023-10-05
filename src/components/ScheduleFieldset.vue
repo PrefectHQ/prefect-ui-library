@@ -4,6 +4,7 @@
       {{ internalValue.toString({ verbose: true }) }}
     </div>
 
+    <!-- todo: audit [cchoy] -->
     <template v-if="can.update.deployment">
       <div class="schedule-fieldset__buttons">
         <ScheduleFormModal :schedule="internalValue" @submit="updateSchedule">
