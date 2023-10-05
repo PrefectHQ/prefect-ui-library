@@ -1,5 +1,5 @@
 import { sortStringArray } from '@prefecthq/prefect-design'
-import { DeploymentFlowRunCreate, DeploymentFlowRunRequest, DeploymentUpdate, DeploymentUpdateRequest } from '@/models'
+import { DeploymentFlowRunCreate, DeploymentFlowRunRequest, DeploymentUpdate, DeploymentUpdateRequest, createDeploymentCan } from '@/models'
 import { DeploymentResponse } from '@/models/api/DeploymentResponse'
 import { Deployment } from '@/models/Deployment'
 import { MapFunction } from '@/services/Mapper'
@@ -36,6 +36,7 @@ export const mapDeploymentResponseToDeployment: MapFunction<DeploymentResponse, 
     workPoolName: source.work_pool_name,
     enforceParameterSchema: source.enforce_parameter_schema,
     pullSteps: source.pull_steps,
+    can: createDeploymentCan(),
   })
 }
 
