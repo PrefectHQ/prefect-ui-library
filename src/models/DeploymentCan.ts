@@ -1,7 +1,7 @@
 type DeploymentObjectLevelPermissions = 'create' | 'read' | 'update' | 'delete' | 'run'
 
 export type DeploymentCan = {
-  [key in DeploymentObjectLevelPermissions[number]]: boolean
+  [key in DeploymentObjectLevelPermissions]: boolean
 }
 
 export function createDeploymentCan(): DeploymentCan {
