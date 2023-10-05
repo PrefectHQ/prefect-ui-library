@@ -47,5 +47,5 @@ jobs:
       - name: Setup
         uses: ./.github/actions/setup
 
-      - name: Build package
+      - name: Run tests
         run: npm run test
