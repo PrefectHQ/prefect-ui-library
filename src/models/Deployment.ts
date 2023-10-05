@@ -1,5 +1,6 @@
 import { SchemaResponse } from '@/models/api/SchemaResponse'
 import { CreatedOrUpdatedBy } from '@/models/CreatedOrUpdatedBy'
+import { DeploymentCan } from '@/models/DeploymentCan'
 import { Schedule } from '@/models/Schedule'
 import { Schema, SchemaValues } from '@/types/schemas'
 
@@ -31,6 +32,7 @@ export interface IDeployment {
   workPoolName: string | null,
   enforceParameterSchema: boolean,
   pullSteps: unknown,
+  can: DeploymentCan,
 }
 
 export class Deployment implements IDeployment {
@@ -60,6 +62,7 @@ export class Deployment implements IDeployment {
   public workPoolName: string | null
   public enforceParameterSchema: boolean
   public pullSteps: unknown
+  public can: DeploymentCan
 
   public constructor(deployment: IDeployment) {
     this.id = deployment.id
@@ -88,6 +91,7 @@ export class Deployment implements IDeployment {
     this.workPoolName = deployment.workPoolName
     this.enforceParameterSchema = deployment.enforceParameterSchema
     this.pullSteps = deployment.pullSteps
+    this.can = deployment.can
   }
 
   public get deprecated(): boolean {

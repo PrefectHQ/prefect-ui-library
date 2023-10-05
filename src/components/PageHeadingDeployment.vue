@@ -4,7 +4,7 @@
 
     <template #actions>
       <DeploymentToggle :deployment="deployment" @update="emit('update')" />
-      <RunMenu v-if="can.run.deployment && media.sm" :deployment="deployment" />
+      <RunMenu v-if="deployment.can.run && media.sm" :deployment="deployment" />
       <DeploymentMenu :deployment="deployment" :show-all="!media.sm" @delete="handleDelete" />
     </template>
   </page-heading>
@@ -16,14 +16,12 @@
   import { useRouter } from 'vue-router'
   import { DeploymentRelationships, DeploymentToggle, PageHeading, RunMenu } from '@/components'
   import { useComponent, useWorkspaceRoutes } from '@/compositions'
-  import { useCan } from '@/compositions/useCan'
   import { Deployment } from '@/models'
 
   const props = defineProps<{
     deployment: Deployment,
   }>()
 
-  const can = useCan()
   const router = useRouter()
   const routes = useWorkspaceRoutes()
   const { DeploymentMenu } = useComponent()

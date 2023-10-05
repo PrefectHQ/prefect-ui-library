@@ -1,3 +1,4 @@
+import { createDeploymentCan } from '@/models'
 import { Deployment } from '@/models/Deployment'
 import { mapper } from '@/services'
 import { MockFunction } from '@/services/Mocker'
@@ -38,6 +39,7 @@ export const randomDeployment: MockFunction<Deployment, [Partial<Deployment>?]> 
     appliedBy: random() > 0.05 ? this.create('noun') : null,
     enforceParameterSchema: this.create('boolean'),
     pullSteps: [],
+    can: createDeploymentCan(),
     ...overrides,
   }
 }

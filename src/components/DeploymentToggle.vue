@@ -1,6 +1,6 @@
 <template>
   <p-tooltip text="Pause or resume this deployment">
-    <p-toggle v-if="can.update.deployment" v-model="internalValue" :loading="loading" :disabled="deployment.deprecated" />
+    <p-toggle v-if="deployment.can.update" v-model="internalValue" :loading="loading" :disabled="deployment.deprecated" />
   </p-tooltip>
 </template>
 
@@ -8,7 +8,6 @@
   import { showToast } from '@prefecthq/prefect-design'
   import { computed, ref } from 'vue'
   import { useWorkspaceApi } from '@/compositions'
-  import { useCan } from '@/compositions/useCan'
   import { localization } from '@/localization'
   import { Deployment } from '@/models'
   import { getApiErrorMessage } from '@/utilities/errors'
@@ -22,7 +21,6 @@
   }>()
 
   const api = useWorkspaceApi()
-  const can = useCan()
 
   const internalValue = computed({
     get() {
