@@ -15,7 +15,7 @@
 
     <template #actions>
       <DocumentationButton :to="localization.docs.deployments" />
-      <p-button v-if="can.update.deployment" primary :to="routes.deploymentEdit(deployment.id)">
+      <p-button v-if="deployment.can.update" primary :to="routes.deploymentEdit(deployment.id)">
         Add Description
       </p-button>
     </template>
@@ -25,7 +25,7 @@
 <script lang="ts" setup>
   import { PEmptyState, PIcon } from '@prefecthq/prefect-design'
   import DocumentationButton from '@/components/DocumentationButton.vue'
-  import { useCan, useWorkspaceRoutes } from '@/compositions'
+  import { useWorkspaceRoutes } from '@/compositions'
   import { localization } from '@/localization'
   import { Deployment } from '@/models'
 
@@ -33,6 +33,5 @@
     deployment: Deployment,
   }>()
 
-  const can = useCan()
   const routes = useWorkspaceRoutes()
 </script>

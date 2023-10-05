@@ -6,11 +6,11 @@
 
     <copy-overflow-menu-item label="Copy ID" :item="deployment.id" />
 
-    <router-link v-if="!deployment.deprecated && deployment.can.manage" :to="routes.deploymentEdit(deployment.id)">
+    <router-link v-if="!deployment.deprecated && deployment.can.update" :to="routes.deploymentEdit(deployment.id)">
       <p-overflow-menu-item label="Edit" />
     </router-link>
 
-    <p-overflow-menu-item v-if="deployment.can.manage" label="Delete" @click="openConfirmDeleteModal" />
+    <p-overflow-menu-item v-if="deployment.can.delete" label="Delete" @click="openConfirmDeleteModal" />
 
     <slot v-bind="{ deployment }" />
   </p-icon-button-menu>
