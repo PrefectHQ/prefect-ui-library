@@ -16,11 +16,11 @@ export type DeploymentCan = {
   [key in DeploymentObjectLevelScopes[number]]: boolean
 }
 
-export const lowestPrivilegedDeploymentCan = {
+export const lowestPrivilegedDeploymentCan = Object.freeze({
   manage: false,
   run: false,
   view: false,
-}
+})
 
 export function createDeploymentCan(acl: DeploymentObjectLevelScopes | undefined, can: Can<WorkspacePermission | WorkspaceFeatureFlag>): DeploymentCan {
 
@@ -35,8 +35,8 @@ export function createDeploymentCan(acl: DeploymentObjectLevelScopes | undefined
     return lowestPrivilegedDeploymentCan
   }
   // use deployment's object-level scopes from the ACL
-  return acl.reduce((acc, cur) => {
+  return acl.reduce<DeploymentCan>((acc, cur) => {
     acc[cur] = true
     return acc
-  }, lowestPrivilegedDeploymentCan)
+  }, { ...lowestPrivilegedDeploymentCan })
 }
