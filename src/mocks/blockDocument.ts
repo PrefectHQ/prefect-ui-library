@@ -1,3 +1,4 @@
+import { createObjectLevelCan } from '..'
 import { BlockDataType } from '@/mocks/blockDocumentData'
 import { BlockDocument } from '@/models/BlockDocument'
 import { MockFunction } from '@/services/Mocker'
@@ -19,6 +20,7 @@ export const randomBlockDocument: MockFunction<BlockDocument, [Partial<BlockDocu
     blockTypeId: blockType.id,
     blockType,
     blockDocumentReferences: {},
+    can: createObjectLevelCan(),
     ...overrides,
   })
 }
