@@ -1,5 +1,6 @@
 <template>
   <page-heading class="page-heading-blocks" :crumbs="crumbs">
+    <!-- todo: audit [cchoy] -->
     <template v-if="can.create.block" #after-crumbs>
       <p-button small icon="PlusIcon" :to="routes.blocksCatalog()" />
     </template>

@@ -13,6 +13,7 @@ export function useBlockDocument(blockDocumentId: MaybeRefOrGetter<string | null
   const can = useCan()
 
   const getter: Getter<[string] | null> = () => {
+    // todo: audit [cchoy]
     if (!can.read.block) {
       return null
     }
