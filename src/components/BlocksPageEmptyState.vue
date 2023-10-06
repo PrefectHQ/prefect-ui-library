@@ -14,7 +14,6 @@
     </template>
 
     <template #actions>
-      <!-- todo: audit [cchoy] -->
       <p-button v-if="can.create.block" icon-append="PlusIcon" :to="routes.blocksCatalog()" primary>
         Add Block
       </p-button>
