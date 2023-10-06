@@ -31,7 +31,6 @@
           <p-link :to="routes.deployment(row.id)">
             <span>{{ row.name }}</span>
           </p-link>
-          <span>{{ JSON.stringify(row.can) }}</span>
         </template>
 
         <template #schedule="{ row }">
