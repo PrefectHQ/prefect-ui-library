@@ -1,8 +1,8 @@
 <template>
   <p-icon-button-menu v-bind="$attrs">
     <copy-overflow-menu-item label="Copy Name" :item="blockDocument.name" />
-    <p-overflow-menu-item v-if="can.update.block" label="Edit" @click="editBlock" />
-    <p-overflow-menu-item v-if="can.delete.block" label="Delete" @click="openDeleteBlockModal" />
+    <p-overflow-menu-item v-if="blockDocument.can.update" label="Edit" @click="editBlock" />
+    <p-overflow-menu-item v-if="blockDocument.can.delete" label="Delete" @click="openDeleteBlockModal" />
 
     <slot v-bind="{ blockDocument }" />
   </p-icon-button-menu>
@@ -42,7 +42,6 @@
     (event: 'delete'): void,
   }>()
 
-  const can = useCan()
   const router = useRouter()
   const routes = useWorkspaceRoutes()
   const api = useWorkspaceApi()
