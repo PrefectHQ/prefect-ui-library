@@ -1,5 +1,6 @@
 import { BlockSchema } from '@/models/BlockSchema'
 import { BlockType } from '@/models/BlockType'
+import { BasicPermissionsObjectLevelCan } from '@/models/ObjectLevelCan'
 import { SchemaValues } from '@/types/schemas'
 
 export type BlockDocumentReference = {
@@ -23,6 +24,7 @@ export interface IBlockDocument {
   blockTypeId: string,
   blockType: BlockType,
   blockDocumentReferences: Record<string, unknown>,
+  can: BasicPermissionsObjectLevelCan,
 }
 
 export class BlockDocument implements IBlockDocument {
@@ -37,6 +39,7 @@ export class BlockDocument implements IBlockDocument {
   public blockTypeId: string
   public blockType: BlockType
   public blockDocumentReferences: Record<string, unknown>
+  public can: BasicPermissionsObjectLevelCan
 
   public constructor(blockDocument: IBlockDocument) {
     this.id = blockDocument.id
@@ -50,5 +53,6 @@ export class BlockDocument implements IBlockDocument {
     this.blockTypeId = blockDocument.blockTypeId
     this.blockType = blockDocument.blockType
     this.blockDocumentReferences = blockDocument.blockDocumentReferences
+    this.can = blockDocument.can
   }
 }
