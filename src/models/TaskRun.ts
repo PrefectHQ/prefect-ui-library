@@ -84,6 +84,6 @@ export class TaskRun implements ITaskRun {
   }
 
   public get duration(): number {
-    return (this.totalRunTime && this.totalRunTime > 0 ? this.totalRunTime : this.estimatedRunTime) ?? 0
+    return (this.estimatedRunTime && this.estimatedRunTime > 0 ? this.estimatedRunTime : this.totalRunTime) ?? 0
   }
 }

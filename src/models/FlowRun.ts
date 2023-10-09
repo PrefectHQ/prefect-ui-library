@@ -111,7 +111,7 @@ export class FlowRun extends StorageItem implements IFlowRun {
   }
 
   public get duration(): number {
-    return this.totalRunTime || this.estimatedRunTime
+    return this.estimatedRunTime || this.totalRunTime 
   }
 
   public isScheduled(): this is FlowRun & { expectedStartTime: Date } {
