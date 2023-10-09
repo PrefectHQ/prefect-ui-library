@@ -26,10 +26,15 @@
         </template>
 
         <template #name="{ row }">
-          <FlowRouterLink :flow-id="row.flowId" after="&nbsp/&nbsp;" />
-          <p-link :to="routes.deployment(row.id)">
-            <span>{{ row.name }}</span>
-          </p-link>
+          <div class="deployments-table__name">
+            <div class="deployments-table__name-links">
+              <FlowRouterLink :flow-id="row.flowId" after="&nbsp/&nbsp;" />
+              <p-link :to="routes.deployment(row.id)">
+                <span>{{ row.name }}</span>
+              </p-link>
+            </div>
+            <DeploymentStatusIcon :status="row.status" />
+          </div>
         </template>
 
         <template #schedule="{ row }">
@@ -83,7 +88,7 @@
   import { NumberRouteParam, useDebouncedRef, useRouteQueryParam } from '@prefecthq/vue-compositions'
   import merge from 'lodash.merge'
   import { computed, ref } from 'vue'
-  import { SearchInput, ResultsCount, DeploymentToggle, FlowRouterLink, DeploymentsDeleteButton, SelectedCount } from '@/components'
+  import { SearchInput, ResultsCount, DeploymentToggle, FlowRouterLink, DeploymentsDeleteButton, SelectedCount, DeploymentStatusBadge, DeploymentStatusIcon } from '@/components'
   import DeploymentTagsInput from '@/components/DeploymentTagsInput.vue'
   import { useWorkspaceRoutes, useDeploymentsFilterFromRoute, useComponent, useOffsetStickyRootMargin, useDeployments } from '@/compositions'
   import { Deployment, isRRuleSchedule, Schedule } from '@/models'
@@ -189,6 +194,12 @@
 
 <style>
 .deployments-table__actions { @apply
+  flex
+  gap-2
+  items-center
+}
+
+.deployments-table__name { @apply
   flex
   gap-2
   items-center

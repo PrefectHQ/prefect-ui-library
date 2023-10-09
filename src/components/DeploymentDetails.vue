@@ -25,6 +25,12 @@
 
     <p-divider />
 
+    <p-key-value label="Status" :alternate="alternate">
+      <template #value>
+        <DeploymentStatusBadge :deployment="deployment" />
+      </template>
+    </p-key-value>
+
     <p-key-value label="Created" :value="formatDateTimeNumeric(deployment.created)" :alternate="alternate" />
 
     <template v-if="deployment.createdBy">
@@ -70,7 +76,7 @@
 <script lang="ts" setup>
   import { showToast, PLoadingIcon } from '@prefecthq/prefect-design'
   import { ref, computed } from 'vue'
-  import { BlockIconText, ScheduleFieldset } from '@/components'
+  import { BlockIconText, ScheduleFieldset, DeploymentStatusBadge } from '@/components'
   import { useWorkspaceApi, useCan } from '@/compositions'
   import { localization } from '@/localization'
   import { Schedule, Deployment } from '@/models'
