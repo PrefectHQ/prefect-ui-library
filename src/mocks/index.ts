@@ -14,6 +14,7 @@ import { randomConcurrencyV2Limit } from '@/mocks/concurrencyV2Limit'
 import { randomCreatedOrUpdatedBy } from '@/mocks/createdOrUpdatedBy'
 import { randomDate, randomDateString } from '@/mocks/date'
 import { randomDeployment } from '@/mocks/deployment'
+import { randomDeploymentStatus } from '@/mocks/deploymentStatus'
 import { randomEmail } from '@/mocks/email'
 import { randomFlow } from '@/mocks/flow'
 import { randomFlowResponse } from '@/mocks/flowResponse'
@@ -68,6 +69,7 @@ export const mocks = {
   date: randomDate,
   dateString: randomDateString,
   deployment: randomDeployment,
+  deploymentStatus: randomDeploymentStatus,
   email: randomEmail,
   flow: randomFlow,
   flowResponse: randomFlowResponse,

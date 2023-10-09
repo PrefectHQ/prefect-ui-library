@@ -1,6 +1,7 @@
 import { CreatedOrUpdatedByResponse } from '@/models/api/CreatedOrUpdatedByResponse'
 import { ScheduleResponse } from '@/models/api/ScheduleResponse'
 import { SchemaResponse } from '@/models/api/SchemaResponse'
+import { ServerDeploymentStatus } from '@/models/DeploymentStatus'
 import { DateString } from '@/types/dates'
 import { SchemaValues } from '@/types/schemas'
 
@@ -30,4 +31,5 @@ export type DeploymentResponse = {
   work_pool_name: string | null,
   enforce_parameter_schema: boolean,
   pull_steps: unknown,
+  status: ServerDeploymentStatus,
 }

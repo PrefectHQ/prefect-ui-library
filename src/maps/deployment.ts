@@ -38,6 +38,7 @@ export const mapDeploymentResponseToDeployment: MapFunction<DeploymentResponse, 
     enforceParameterSchema: source.enforce_parameter_schema,
     pullSteps: source.pull_steps,
     can: createObjectLevelCan(),
+    status: this.map('ServerDeploymentStatus', source.status, 'DeploymentStatus'),
   })
 }
 
