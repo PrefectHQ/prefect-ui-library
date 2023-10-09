@@ -1,5 +1,5 @@
 <template>
-  <router-link v-if="deployment" :to="routes.deploymentFlowRunCreate(deploymentId, deployment.rawParameters)">
+  <router-link :to="routes.deploymentFlowRunCreate(deployment.id, deployment.rawParameters)">
     <p-overflow-menu-item>
       <slot>
         Custom run
@@ -9,14 +9,12 @@
 </template>
 
 <script lang="ts" setup>
-  import { toRefs } from 'vue'
-  import { useDeployment, useWorkspaceRoutes } from '@/compositions'
+  import { useWorkspaceRoutes } from '@/compositions'
+  import { Deployment } from '@/models'
 
-  const props = defineProps<{
-    deploymentId: string,
+  defineProps<{
+    deployment: Deployment,
   }>()
 
-  const { deploymentId } = toRefs(props)
   const routes = useWorkspaceRoutes()
-  const { deployment } = useDeployment(deploymentId)
 </script>
