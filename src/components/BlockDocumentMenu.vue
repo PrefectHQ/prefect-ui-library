@@ -29,7 +29,6 @@
   import ConfirmDeleteModal from '@/components/ConfirmDeleteModal.vue'
   import CopyOverflowMenuItem from '@/components/CopyOverflowMenuItem.vue'
   import { useWorkspaceApi, useWorkspaceRoutes } from '@/compositions'
-  import { useCan } from '@/compositions/useCan'
   import { useShowModal } from '@/compositions/useShowModal'
   import { BlockDocument } from '@/models'
   import { deleteItem } from '@/utilities'

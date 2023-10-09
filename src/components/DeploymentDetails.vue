@@ -71,7 +71,7 @@
   import { showToast, PLoadingIcon } from '@prefecthq/prefect-design'
   import { ref, computed } from 'vue'
   import { BlockIconText, ScheduleFieldset } from '@/components'
-  import { useWorkspaceApi, useCan, useWorkPool } from '@/compositions'
+  import { useWorkspaceApi, useCan } from '@/compositions'
   import { localization } from '@/localization'
   import { Schedule, Deployment } from '@/models'
   import { formatDateTimeNumeric } from '@/utilities/dates'
