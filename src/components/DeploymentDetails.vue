@@ -16,7 +16,7 @@
       <template v-if="!deployment.deprecated" #value>
         <div class="deployment-details__schedule" :class="classes.schedule">
           <p-loading-icon v-if="updateScheduleLoading" class="deployment-details__schedule-loading-icon" />
-          <ScheduleFieldset v-model="internalSchedule" :loading="updateScheduleLoading" />
+          <ScheduleFieldset v-model="internalSchedule" :loading="updateScheduleLoading" :readonly="!deployment.can.update" />
         </div>
       </template>
     </p-key-value>

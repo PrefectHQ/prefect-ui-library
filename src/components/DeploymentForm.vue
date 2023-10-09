@@ -44,7 +44,7 @@
 
         <span>
           <p-label label="Schedule" />
-          <ScheduleFieldset v-model="schedule" />
+          <ScheduleFieldset v-model="schedule" :readonly="!deployment.can.update" />
         </span>
 
         <p-label label="Scheduler">
