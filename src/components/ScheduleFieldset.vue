@@ -37,7 +37,7 @@
   const props = defineProps<{
     modelValue: Schedule | null,
     loading?: boolean,
-    readonly?: boolean,
+    readonly: boolean,
   }>()
 
   const emit = defineEmits<{
