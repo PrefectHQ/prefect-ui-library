@@ -88,7 +88,7 @@
   import { NumberRouteParam, useDebouncedRef, useRouteQueryParam } from '@prefecthq/vue-compositions'
   import merge from 'lodash.merge'
   import { computed, ref } from 'vue'
-  import { SearchInput, ResultsCount, DeploymentToggle, FlowRouterLink, DeploymentsDeleteButton, SelectedCount, DeploymentStatusBadge, DeploymentStatusIcon } from '@/components'
+  import { SearchInput, ResultsCount, DeploymentToggle, FlowRouterLink, DeploymentsDeleteButton, SelectedCount, DeploymentStatusIcon } from '@/components'
   import DeploymentTagsInput from '@/components/DeploymentTagsInput.vue'
   import { useWorkspaceRoutes, useDeploymentsFilterFromRoute, useComponent, useOffsetStickyRootMargin, useDeployments } from '@/compositions'
   import { Deployment, isRRuleSchedule, Schedule } from '@/models'
