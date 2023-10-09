@@ -13,7 +13,7 @@
     </template>
     <p-overflow-menu class="run-menu__overflow-menu" @click="close">
       <DeploymentQuickRunOverflowMenuItem :deployment="deployment" :open-modal="openParametersModal" />
-      <DeploymentCustomRunOverflowMenuItem :deployment-id="deployment.id" />
+      <DeploymentCustomRunOverflowMenuItem :deployment="deployment" />
     </p-overflow-menu>
   </p-pop-over>
   <QuickRunParametersModal v-model:showModal="showParametersModal" :deployment="deployment" />

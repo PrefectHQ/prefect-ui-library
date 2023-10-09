@@ -2,7 +2,7 @@
   <p-icon-button-menu v-bind="$attrs">
     <DeploymentQuickRunOverflowMenuItem v-if="deployment.can.run && showAll" :deployment="deployment" :open-modal="openParametersModal" />
 
-    <DeploymentCustomRunOverflowMenuItem v-if="deployment.can.run && showAll" :deployment-id="deployment.id" />
+    <DeploymentCustomRunOverflowMenuItem v-if="deployment.can.run && showAll" :deployment="deployment" />
 
     <copy-overflow-menu-item label="Copy ID" :item="deployment.id" />
 
