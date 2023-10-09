@@ -27,7 +27,7 @@
   import { useInterval } from '@/compositions/useInterval'
   import { FlowRunsFilter } from '@/models/Filters'
   import { FlowRun } from '@/models/FlowRun'
-  import { Getter, MaybeGetter } from '@/types/reactivity'
+  import { MaybeGetter } from '@/types/reactivity'
 
   const props = defineProps<{
     filter: MaybeGetter<FlowRunsFilter>,
