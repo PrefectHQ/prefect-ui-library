@@ -1,8 +1,7 @@
 <template>
   <p-icon-button-menu>
     <template #default>
-      <!-- todo: this PR(https://github.com/PrefectHQ/prefect-ui-library/pull/1743) will only partially work once object acls are on -->
-      <p-overflow-menu-item v-if="flowRun?.deploymentId && can.run.deployment" label="Copy to new run" :to="routes.deploymentFlowRunCreate(flowRun.deploymentId, flowRun.parameters)" />
+      <p-overflow-menu-item v-if="flowRun?.deploymentId && deployment?.can.run" label="Copy to new run" :to="routes.deploymentFlowRunCreate(flowRun.deploymentId, flowRun.parameters)" />
       <p-overflow-menu-item v-if="canRetry && showAll" label="Retry" @click="openRetryModal" />
       <p-overflow-menu-item v-if="canResume && showAll" label="Resume" @click="openResumeModal" />
       <p-overflow-menu-item v-if="canPause && showAll" label="Pause" @click="openPauseModal" />
@@ -54,7 +53,7 @@
   import { showToast } from '@prefecthq/prefect-design'
   import { computed, ref, toRefs } from 'vue'
   import { FlowRunRetryModal, FlowRunResumeModal, FlowRunCancelModal, FlowRunPauseModal, ConfirmStateChangeModal, ConfirmDeleteModal, CopyOverflowMenuItem } from '@/components'
-  import { useCan, useWorkspaceApi, useShowModal, useWorkspaceRoutes, useFlowRuns, useFlowRun } from '@/compositions'
+  import { useCan, useWorkspaceApi, useShowModal, useWorkspaceRoutes, useFlowRuns, useFlowRun, useDeployment } from '@/compositions'
   import { localization } from '@/localization'
   import { FlowRunsFilter, isPausedStateType, isRunningStateType, isStuckStateType, isTerminalStateType, StateUpdateDetails } from '@/models'
   import { deleteItem } from '@/utilities'
@@ -80,6 +79,7 @@
   const retryingRun = ref(false)
 
   const { flowRun, subscription: flowRunSubscription } = useFlowRun(flowRunId, { interval: 3000 })
+  const { deployment } = useDeployment(() => flowRun.value?.deploymentId)
 
   const canRetry = computed(() => {
     if (!can.update.flow_run || !flowRun.value?.stateType || !flowRun.value.deploymentId) {

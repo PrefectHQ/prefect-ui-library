@@ -5,7 +5,7 @@
         <ResultsCount v-if="selectedDeployments.length == 0" label="Deployment" :count="total" />
         <SelectedCount v-else :count="selectedDeployments.length" />
 
-        <DeploymentsDeleteButton v-if="can.delete.deployment" small :selected="selectedDeployments" @delete="deleteDeployments" />
+        <DeploymentsDeleteButton small :selected="selectedDeployments" @delete="deleteDeployments" />
       </template>
 
       <template #header-end>
@@ -22,7 +22,7 @@
         </template>
 
         <template #selection="{ row }">
-          <p-checkbox v-model="selectedDeployments" :value="row.id" />
+          <p-checkbox v-model="selectedDeployments" :value="row.id" :disabled="!row.can.delete" />
         </template>
 
         <template #name="{ row }">
@@ -85,7 +85,7 @@
   import { computed, ref } from 'vue'
   import { SearchInput, ResultsCount, DeploymentToggle, FlowRouterLink, DeploymentsDeleteButton, SelectedCount } from '@/components'
   import DeploymentTagsInput from '@/components/DeploymentTagsInput.vue'
-  import { useWorkspaceRoutes, useCan, useDeploymentsFilterFromRoute, useComponent, useOffsetStickyRootMargin, useDeployments } from '@/compositions'
+  import { useWorkspaceRoutes, useDeploymentsFilterFromRoute, useComponent, useOffsetStickyRootMargin, useDeployments } from '@/compositions'
   import { Deployment, isRRuleSchedule, Schedule } from '@/models'
   import { DeploymentsFilter } from '@/models/Filters'
   import { deploymentSortOptions } from '@/types/SortOptionTypes'
@@ -98,7 +98,6 @@
     (event: 'delete'): void,
   }>()
 
-  const can = useCan()
   const { DeploymentMenu } = useComponent()
   const routes = useWorkspaceRoutes()
   const deploymentName = ref<string>()
@@ -122,7 +121,7 @@
     {
       label: 'selection',
       width: '20px',
-      visible: can.delete.deployment,
+      visible: deletableDeployments.value.length > 0,
     },
     {
       property: 'name',
@@ -152,13 +151,17 @@
 
   const selectedDeployments = ref<string[]>([])
 
+  const deletableDeployments = computed(() => {
+    return deployments.value.filter(deployment => deployment.can.delete)
+  })
+
   const selectAllValue = computed({
     get() {
-      return selectedDeployments.value.length === deployments.value.length
+      return selectedDeployments.value.length === deletableDeployments.value.length
     },
     set(value: boolean) {
       if (value) {
-        selectedDeployments.value = deployments.value.map(deployment => deployment.id)
+        selectedDeployments.value = deletableDeployments.value.map(deployment => deployment.id)
         return
       }
 

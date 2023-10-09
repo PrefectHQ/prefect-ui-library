@@ -4,7 +4,7 @@
       {{ internalValue.toString({ verbose: true }) }}
     </div>
 
-    <template v-if="can.update.deployment">
+    <template v-if="!readonly">
       <div class="schedule-fieldset__buttons">
         <ScheduleFormModal :schedule="internalValue" @submit="updateSchedule">
           <template #default="{ open }">
@@ -32,12 +32,12 @@
 <script lang="ts" setup>
   import { computed } from 'vue'
   import ScheduleFormModal from '@/components/ScheduleFormModal.vue'
-  import { useCan } from '@/compositions/useCan'
   import { Schedule } from '@/models'
 
   const props = defineProps<{
     modelValue: Schedule | null,
     loading?: boolean,
+    readonly: boolean,
   }>()
 
   const emit = defineEmits<{
@@ -52,8 +52,6 @@
       emit('update:modelValue', value)
     },
   })
-
-  const can = useCan()
 
   const updateSchedule = (schedule: Schedule | null): void => {
     internalValue.value = schedule
