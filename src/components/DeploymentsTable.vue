@@ -85,7 +85,7 @@
   import { computed, ref } from 'vue'
   import { SearchInput, ResultsCount, DeploymentToggle, FlowRouterLink, DeploymentsDeleteButton, SelectedCount } from '@/components'
   import DeploymentTagsInput from '@/components/DeploymentTagsInput.vue'
-  import { useWorkspaceRoutes, useCan, useDeploymentsFilterFromRoute, useComponent, useOffsetStickyRootMargin, useDeployments } from '@/compositions'
+  import { useWorkspaceRoutes, useDeploymentsFilterFromRoute, useComponent, useOffsetStickyRootMargin, useDeployments } from '@/compositions'
   import { Deployment, isRRuleSchedule, Schedule } from '@/models'
   import { DeploymentsFilter } from '@/models/Filters'
   import { deploymentSortOptions } from '@/types/SortOptionTypes'
@@ -98,7 +98,6 @@
     (event: 'delete'): void,
   }>()
 
-  const can = useCan()
   const { DeploymentMenu } = useComponent()
   const routes = useWorkspaceRoutes()
   const deploymentName = ref<string>()
