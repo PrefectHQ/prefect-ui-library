@@ -5,13 +5,21 @@ import { repeat } from '@/utilities/arrays'
 
 export function useFlowRunMock(override?: Partial<FlowRun>): FlowRun {
   const flow = mocker.create('flow')
-  const deployment = mocker.create('deployment')
-  const workQueue = mocker.create('workQueue')
+
+  const workPool = mocker.create('workPool')
+
+  const deployment = mocker.create('deployment', [
+    {
+      flowId: flow.id,
+      workPoolName: workPool.name,
+    },
+  ])
+
   const flowRun = mocker.create('flowRun', [
     {
       flowId: flow.id,
       deploymentId: deployment.id,
-      workQueueName: workQueue.name,
+      workPoolName: workPool.name,
       ...override,
     },
   ])
@@ -28,7 +36,7 @@ export function useFlowRunMock(override?: Partial<FlowRun>): FlowRun {
     artifacts: [result],
     flows: [flow],
     deployments: [deployment],
-    workQueues: [workQueue],
+    workPools: [workPool],
     flowRuns: [flowRun],
   })
 

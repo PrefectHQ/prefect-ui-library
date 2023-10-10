@@ -9,18 +9,9 @@
 <script lang="ts" setup>
   import FlowRunsFilterGroup from '@/components/FlowRunsFilterGroup.vue'
   import ComponentPage from '@/demo/components/ComponentPage.vue'
-  import { useSeeds } from '@/demo/compositions/useSeeds'
-  import { mocker } from '@/services'
+  import { useFlowRunsMock } from '@/demo/compositions/useFlowRunsMock'
 
-  const flowRuns = mocker.createMany('flowRun', 200)
-  const flows = mocker.createMany('flow', 25)
-  const deployments = mocker.createMany('deployment', 8)
-
-  useSeeds({
-    flowRuns,
-    flows,
-    deployments,
-  })
+  useFlowRunsMock(50)
 </script>
 
 <style>
