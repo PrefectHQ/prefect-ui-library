@@ -1,6 +1,6 @@
 import { SchemaResponse } from '@/models/api/SchemaResponse'
 import { CreatedOrUpdatedBy } from '@/models/CreatedOrUpdatedBy'
-import { BasicRunnablePermissionsObjectLevelCan } from '@/models/ObjectLevelCan'
+import { ObjectLevelCan } from '@/models/ObjectLevelCan'
 import { Schedule } from '@/models/Schedule'
 import { Schema, SchemaValues } from '@/types/schemas'
 
@@ -32,7 +32,7 @@ export interface IDeployment {
   workPoolName: string | null,
   enforceParameterSchema: boolean,
   pullSteps: unknown,
-  can: BasicRunnablePermissionsObjectLevelCan,
+  can: ObjectLevelCan<'deployment'>,
 }
 
 export class Deployment implements IDeployment {
@@ -62,7 +62,7 @@ export class Deployment implements IDeployment {
   public workPoolName: string | null
   public enforceParameterSchema: boolean
   public pullSteps: unknown
-  public can: BasicRunnablePermissionsObjectLevelCan
+  public can: ObjectLevelCan<'deployment'>
 
   public constructor(deployment: IDeployment) {
     this.id = deployment.id
