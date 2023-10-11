@@ -7,7 +7,7 @@
       <slot v-bind="scope">
         <UseDeploymentSlot v-if="isString(scope.value)" :deployment-id="scope.value">
           <template #default="{ deployment }">
-            {{ deployment.name }}
+            <DeploymentComboboxOption :flow-id="deployment.flowId" :deployment-name="deployment.name" />
           </template>
         </UseDeploymentSlot>
       </slot>
@@ -15,7 +15,7 @@
     <template #option="{ option }: { option: DeploymentOption }">
       <slot name="option" :option="option">
         <template v-if="option.flowId">
-          <deployment-combobox-option :flow-id="option.flowId" :deployment-name="option.label" />
+          <DeploymentComboboxOption :flow-id="option.flowId" :deployment-name="option.label" />
         </template>
       </slot>
     </template>
