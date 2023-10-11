@@ -1,5 +1,5 @@
 <template>
-  <div ref="element" class="deployment-combobox-option">
+  <div class="deployment-combobox-option">
     <template v-if="flow">
       <span class="deployment-combobox-option__flow-name">
         {{ flow.name }}
@@ -11,7 +11,6 @@
 </template>
 
 <script lang="ts" setup>
-  import { ref } from 'vue'
   import { useFlow } from '@/compositions'
 
   const props = defineProps<{
@@ -19,7 +18,6 @@
     deploymentName?: string,
   }>()
 
-  const element = ref<HTMLDivElement>()
   const { flow } = useFlow(() => props.flowId)
 </script>
 
