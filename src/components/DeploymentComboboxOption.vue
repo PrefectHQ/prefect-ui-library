@@ -20,7 +20,7 @@
   }>()
 
   const element = ref<HTMLDivElement>()
-  const { flow } = useFlow(props.flowId)
+  const { flow } = useFlow(() => props.flowId)
 </script>
 
 <style>
