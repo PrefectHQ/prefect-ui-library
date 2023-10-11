@@ -15,6 +15,7 @@ export function createObjectLevelCan<T extends Record<string, boolean>>(knownPro
   const set = new Set(knownProperties)
   return new Proxy({} as T, {
     get(___, property) {
+      // only proxy known properties so that vue doesn't think it's a ref in templates
       if (set.has(property as unknown as typeof RunnablePermissions[number])) {
         return true
       }
