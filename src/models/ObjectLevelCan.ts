@@ -5,13 +5,19 @@ type ObjectLevelCan<TPermissions extends string> = {
   [key in TPermissions]: boolean
 }
 
-export type BasicPermissionsObjectLevelCan = ObjectLevelCan<BasicPermissions>
-export type BasicRunnablePermissionsObjectLevelCan = ObjectLevelCan<BasicPermissions | 'run'>
+export const BasicPermissions = ['create', 'read', 'update', 'delete'] as const
+export const RunnablePermissions = [...BasicPermissions, 'run'] as const
 
-export function createObjectLevelCan<T extends Record<string, boolean>>(): T {
+export type BasicPermissionsObjectLevelCan = ObjectLevelCan<typeof BasicPermissions[number]>
+export type BasicRunnablePermissionsObjectLevelCan = ObjectLevelCan<typeof RunnablePermissions[number]>
+
+export function createObjectLevelCan<T extends Record<string, boolean>>(knownProperties: typeof BasicPermissions | typeof RunnablePermissions): T {
+  const set = new Set(knownProperties)
   return new Proxy({} as T, {
-    get() {
-      return true
+    get(___, property) {
+      if (set.has(property as unknown as typeof RunnablePermissions[number])) {
+        return true
+      }
     },
   })
 }

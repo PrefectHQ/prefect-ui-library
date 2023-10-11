@@ -1,7 +1,7 @@
 import { SelectOption } from '@prefecthq/prefect-design'
 import { BlockDocumentResponse } from '@/models/api/BlockDocumentResponse'
 import { BlockDocument } from '@/models/BlockDocument'
-import { createObjectLevelCan } from '@/models/ObjectLevelCan'
+import { BasicPermissions, createObjectLevelCan } from '@/models/ObjectLevelCan'
 import { MapFunction } from '@/services/Mapper'
 
 export const mapBlockDocumentResponseToBlockDocument: MapFunction<BlockDocumentResponse, BlockDocument> = function(source) {
@@ -19,7 +19,7 @@ export const mapBlockDocumentResponseToBlockDocument: MapFunction<BlockDocumentR
     blockType: this.map('BlockTypeResponse', source.block_type, 'BlockType'),
     blockSchema,
     data: this.map('SchemaValuesResponse', { values: source.data, references: source.block_document_references, schema: blockSchema.fields }, 'SchemaValues'),
-    can: createObjectLevelCan(),
+    can: createObjectLevelCan(BasicPermissions),
   })
 }
 
