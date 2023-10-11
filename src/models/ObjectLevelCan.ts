@@ -3,7 +3,7 @@ import { PermissionVerb, WorkspacePermission, workspacePermissions } from '@/ser
 type PermissionVerbs = PermissionVerb<WorkspacePermission>
 const permissionVerbs = workspacePermissions.map(permission => permission.split(':')[0]) as readonly PermissionVerbs[]
 
-type ObjectTypesWithPermissions = WorkspacePermission extends `${string}:${infer TObject}` ? TObject : never
+export type ObjectTypesWithPermissions = WorkspacePermission extends `${string}:${infer TObject}` ? TObject : never
 
 type ActionsForObjectsHelper<O extends string, T extends string> = T extends `${infer Action}:${infer TObject}` ? TObject extends O ? Action : never : never
 type PermissionsForObjectType<TObjectType extends ObjectTypesWithPermissions> = ActionsForObjectsHelper<TObjectType, WorkspacePermission>
