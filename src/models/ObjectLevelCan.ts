@@ -1,19 +1,23 @@
-type ObjectLevelCan<TPermissions extends string> = {
-  [key in TPermissions]: boolean
+import { PermissionVerb, WorkspacePermission, workspacePermissions } from '@/services/can'
+
+type PermissionVerbs = PermissionVerb<WorkspacePermission>
+const permissionVerbs = workspacePermissions.map(permission => permission.split(':')[0]) as readonly PermissionVerbs[]
+
+type ObjectTypesWithPermissions = WorkspacePermission extends `${string}:${infer TObject}` ? TObject : never
+
+type ActionsForObjectsHelper<O extends string, T extends string> = T extends `${infer Action}:${infer TObject}` ? TObject extends O ? Action : never : never
+type PermissionsForObjectType<TObjectType extends ObjectTypesWithPermissions> = ActionsForObjectsHelper<TObjectType, WorkspacePermission>
+
+export type ObjectLevelCan<TObjectType extends ObjectTypesWithPermissions> = {
+  [key in PermissionsForObjectType<TObjectType>]: boolean
 }
 
-export const BasicObjectLevelPermissions = ['create', 'read', 'update', 'delete'] as const
-export const RunnableObjectLevelPermissions = [...BasicObjectLevelPermissions, 'run'] as const
-
-export type BasicPermissionsObjectLevelCan = ObjectLevelCan<typeof BasicObjectLevelPermissions[number]>
-export type BasicRunnablePermissionsObjectLevelCan = ObjectLevelCan<typeof RunnableObjectLevelPermissions[number]>
-
-export function createObjectLevelCan<T extends Record<string, boolean>>(knownProperties: typeof BasicObjectLevelPermissions | typeof RunnableObjectLevelPermissions): T {
-  const set = new Set(knownProperties)
-  return new Proxy({} as T, {
-    get(___, property) {
+export function createObjectLevelCan<T extends ObjectTypesWithPermissions>(): ObjectLevelCan<T> {
+  const knownProperties = permissionVerbs
+  return new Proxy({} as ObjectLevelCan<T>, {
+    get(_target, property) {
       // only proxy known properties so that vue doesn't think it's a ref in templates
-      if (set.has(property as unknown as typeof RunnableObjectLevelPermissions[number])) {
+      if (knownProperties.includes(property as PermissionVerbs)) {
         return true
       }
     },

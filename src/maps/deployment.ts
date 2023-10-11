@@ -2,7 +2,7 @@ import { sortStringArray } from '@prefecthq/prefect-design'
 import { DeploymentFlowRunCreate, DeploymentFlowRunRequest, DeploymentUpdate, DeploymentUpdateRequest } from '@/models'
 import { DeploymentResponse } from '@/models/api/DeploymentResponse'
 import { Deployment } from '@/models/Deployment'
-import { RunnableObjectLevelPermissions, createObjectLevelCan } from '@/models/ObjectLevelCan'
+import { createObjectLevelCan } from '@/models/ObjectLevelCan'
 import { MapFunction } from '@/services/Mapper'
 
 export const mapDeploymentResponseToDeployment: MapFunction<DeploymentResponse, Deployment> = function(source) {
@@ -37,7 +37,7 @@ export const mapDeploymentResponseToDeployment: MapFunction<DeploymentResponse, 
     workPoolName: source.work_pool_name,
     enforceParameterSchema: source.enforce_parameter_schema,
     pullSteps: source.pull_steps,
-    can: createObjectLevelCan(RunnableObjectLevelPermissions),
+    can: createObjectLevelCan(),
   })
 }
 
