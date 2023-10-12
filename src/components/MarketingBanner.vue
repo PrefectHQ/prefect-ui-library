@@ -36,8 +36,9 @@
 .marketing-banner { @apply
   relative
   overflow-hidden
-  rounded-default;
-  background-image: url('/marketing-banner-bg.svg');
+  rounded-default
+  bg-[url('/marketing-banner-bg-light.svg')]
+  dark:bg-[url('/marketing-banner-bg-dark.svg')];
   background-size: auto 100%;
   background-position: top 0px right 0px;
   background-repeat: no-repeat;
@@ -47,12 +48,14 @@
   relative
   flex
   flex-col
-  gap-2
-  justify-between
-  items-center
-  py-10
-  px-8
+  items-start
+  gap-3
   z-[2]
+  p-4
+  sm:px-8
+  sm:py-10
+  sm:justify-between
+  sm:items-center
   sm:flex-row
 }
 
