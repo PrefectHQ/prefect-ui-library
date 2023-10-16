@@ -1,6 +1,6 @@
 <template>
   <div class="work-pool-queue-status-array">
-    <template v-if="!showTooMany && workPoolQueues.length > 0">
+    <template v-if="!isPushPool && !showTooMany && workPoolQueues.length > 0">
       <WorkPoolQueueStatusIcon
         v-for="workQueue in workPoolQueues"
         :key="workQueue.id"
@@ -9,7 +9,7 @@
         class="work-pool-queue-status-badge__icon"
       />
     </template>
-    <span v-if="!showTooMany && workPoolQueues.length < 1" class="work-pool-queue-status-array__none">N/A</span>
+    <span v-if="isPushPool || !showTooMany && workPoolQueues.length < 1" class="work-pool-queue-status-array__none">N/A</span>
     <span v-if="showTooMany" class="work-pool-queue-status-array__too-many">Too many to show here.</span>
   </div>
 </template>
@@ -37,6 +37,7 @@
 
   const workPoolQueues = computed(() => workPoolQueuesSubscription.response ?? [])
   const showTooMany = computed(() => workPoolQueues.value.length > maxWorkQueues)
+  const isPushPool = computed(() => !!props.workPool.isPushPool)
 </script>
 
 <style>
