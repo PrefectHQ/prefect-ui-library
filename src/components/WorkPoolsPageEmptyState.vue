@@ -10,7 +10,7 @@
 
     <template #description>
       Work pools allow you to prioritize and manage deployment runs
-      to be picked up by a corresponding agent.
+      and control the infrastructure they run on.
     </template>
     <template #actions>
       <DocumentationButton :to="localization.docs.workPools" />
