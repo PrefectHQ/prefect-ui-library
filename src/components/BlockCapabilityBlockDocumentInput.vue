@@ -17,9 +17,10 @@
       </template>
     </p-select>
 
-    <p-button icon-append="PlusIcon" :to="withQuery(routes.blocksCatalog(), { capability })">
+    <p-button icon-append="PlusIcon" @click="open">
       Add
     </p-button>
+    <NotificationBlockCreateModal v-model:showModal="showModal" @refresh="handleRefresh" />
   </div>
 </template>
 
@@ -36,11 +37,15 @@
   import { useSubscription, useSubscriptionWithDependencies } from '@prefecthq/vue-compositions'
   import { computed, toRefs } from 'vue'
   import LogoImage from '@/components/LogoImage.vue'
+  import NotificationBlockCreateModal from '@/components/NotificationBlockCreateModal.vue'
   import { useWorkspaceApi, useWorkspaceRoutes } from '@/compositions'
+  import { useShowModal } from '@/compositions/useShowModal'
   import { BlockType } from '@/models'
   import { BlockDocumentsFilter, BlockTypesFilter } from '@/models/Filters'
   import { mapper } from '@/services'
-  import { withQuery } from '@/utilities'
+
+  const { showModal, open, close } = useShowModal()
+
 
   const props = defineProps<{
     modelValue: string | null | undefined,
@@ -126,6 +131,12 @@
 
     return group
   }))
+
+  const handleRefresh = (): void => {
+    console.log('refresh')
+    blockDocumentsSubscription.refresh()
+    close()
+  }
 </script>
 
 <style>
