@@ -10,11 +10,9 @@
       <template v-for="blockType in filteredBlockTypes" :key="blockType.id">
         <BlockTypeCardPreview :block-type="blockType">
           <template #actions>
-            <p-link :to="routes.blockCreate(blockType.slug)">
-              <p-button icon-append="PlusIcon" class="block-type-list__add">
-                Add
-              </p-button>
-            </p-link>
+            <p-button icon-append="PlusIcon" class="block-type-list__add" @click="handleAdd(blockType)">
+              Add
+            </p-button>
           </template>
         </BlockTypeCardPreview>
       </template>
@@ -36,6 +34,7 @@
 <script lang="ts" setup>
   import { PEmptyResults } from '@prefecthq/prefect-design'
   import { computed, ref } from 'vue'
+  import { NavigationFailure, useRouter } from 'vue-router'
   import BlockSchemaCapabilitySelect from '@/components/BlockSchemaCapabilitySelect.vue'
   import BlockTypeCardPreview from '@/components/BlockTypeCardPreview.vue'
   import ResultsCount from '@/components/ResultsCount.vue'
@@ -46,13 +45,25 @@
   const props = defineProps<{
     blockTypes: BlockType[],
     capability: string | null,
+    useEmit?: boolean,
   }>()
 
   const emit = defineEmits<{
     (event: 'update:capability', value: string | null): void,
+    (event: 'add', blockType: BlockType): void,
   }>()
 
   const routes = useWorkspaceRoutes()
+  const router = useRouter()
+
+  const handleAdd = (blockType: BlockType): void => {
+    console.log('props.useEmit', props.useEmit, blockType)
+    if (props.useEmit) {
+      emit('add', blockType)
+      return
+    }
+    router.push(routes.blockCreate(blockType.slug))
+  }
 
   const searchTerm = ref('')
   const selectedCapability = computed({
