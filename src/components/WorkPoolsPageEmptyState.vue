@@ -13,10 +13,10 @@
       and control the infrastructure they run on.
     </template>
     <template #actions>
-      <DocumentationButton :to="localization.docs.workPools" />
-      <p-button v-if="can.create.work_pool" icon-append="PlusIcon" :to="routes.workPoolCreate()">
-        Create Work Pool
+      <p-button v-if="can.create.work_pool" primary icon-append="PlusIcon" :to="routes.workPoolCreate()">
+        Add Work Pool
       </p-button>
+      <DocumentationButton :to="localization.docs.workPools" />
     </template>
   </p-empty-state>
 </template>
