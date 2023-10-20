@@ -1,6 +1,6 @@
 <template>
   <div class="block-capability-block-document-input" :class="classes" :style="styles" v-bind="listeners">
-    <p-select v-model="modalValue" v-bind="attrs" :options="options" class="block-capability-block-document-input__select">
+    <p-select v-model="internalModelValue" v-bind="attrs" :options="options" class="block-capability-block-document-input__select">
       <template #default="{ label, value }">
         <div class="block-capability-block-document-input__option">
           <template v-if="value === blockDocument?.id">
@@ -11,16 +11,21 @@
       </template>
       <template #group="{ group }">
         <div class="block-capability-block-document-input__group">
-          <LogoImage :url="group.blockType.logoUrl" class="block-capability-block-document-input__logo" />
+          <LogoImage v-if="group.blockType" :url="group.blockType.logoUrl" class="block-capability-block-document-input__logo" />
           {{ group.label }}
         </div>
       </template>
+      <template #option="{ option }">
+        <p-button v-if="option.new" small append-icon="PlusIcon" @click="handleOpen(option.blockType)">
+          {{ option.label }}
+        </p-button>
+        <template v-else>
+          {{ option.label }}
+        </template>
+      </template>
     </p-select>
 
-    <p-button icon-append="PlusIcon" @click="open">
-      Add
-    </p-button>
-    <NotificationBlockCreateModal v-model:showModal="showModal" @refresh="handleRefresh" />
+    <NotificationBlockCreateModal v-model:showModal="showModal" :provided-block-type="selectedBlockType" @refresh="handleRefresh" />
   </div>
 </template>
 
@@ -35,12 +40,12 @@
 <script lang="ts" setup>
   import { SelectOptionGroup, useAttrsStylesClassesAndListeners } from '@prefecthq/prefect-design'
   import { useSubscription, useSubscriptionWithDependencies } from '@prefecthq/vue-compositions'
-  import { computed, toRefs } from 'vue'
+  import { computed, toRefs, Ref, ref } from 'vue'
   import LogoImage from '@/components/LogoImage.vue'
   import NotificationBlockCreateModal from '@/components/NotificationBlockCreateModal.vue'
-  import { useWorkspaceApi, useWorkspaceRoutes } from '@/compositions'
+  import { useWorkspaceApi } from '@/compositions'
   import { useShowModal } from '@/compositions/useShowModal'
-  import { BlockType } from '@/models'
+  import { BlockType, BlockDocument } from '@/models'
   import { BlockDocumentsFilter, BlockTypesFilter } from '@/models/Filters'
   import { mapper } from '@/services'
 
@@ -58,10 +63,9 @@
 
   const { capability } = toRefs(props)
   const api = useWorkspaceApi()
-  const routes = useWorkspaceRoutes()
   const { classes, styles, listeners, attrs } = useAttrsStylesClassesAndListeners()
 
-  const modalValue = computed({
+  const internalModelValue = computed({
     get() {
       return props.modelValue
     },
@@ -116,7 +120,7 @@
     return documents
   })
 
-  const options = computed<SelectOptionGroup[]>(() => blockTypes.value.flatMap(blockType => {
+  const existingOptions = computed<SelectOptionGroup[]>(() => blockTypes.value.flatMap(blockType => {
     const documents = blockDocuments.value.filter(blockDocument => blockDocument.blockTypeId === blockType.id)
 
     if (documents.length === 0) {
@@ -132,9 +136,37 @@
     return group
   }))
 
-  const handleRefresh = (): void => {
-    console.log('refresh')
-    blockDocumentsSubscription.refresh()
+  const addOptions: Ref<SelectOptionGroup[]> = computed(() => {
+    const addList = blockTypes.value.map(blockType => ({
+      blockType,
+      label: `Add ${blockType.name}`,
+      value: blockType.id,
+      disabled: true,
+      new: true,
+    }))
+    return [
+      {
+        label: 'Add a new block',
+        options: addList,
+      },
+    ]
+  })
+
+  const options = computed(() => {
+    return [...existingOptions.value, ...addOptions.value]
+  })
+
+  const selectedBlockType: Ref<BlockType | undefined> = ref(undefined)
+
+  const handleOpen = (blockType: BlockType): void => {
+    selectedBlockType.value = blockType
+    open()
+  }
+
+  const handleRefresh = async (blockDocument: BlockDocument): Promise<void> => {
+    internalModelValue.value = blockDocument.id
+    await blockTypesSubscription.refresh()
+    await blockDocumentsSubscription.refresh()
     close()
   }
 </script>
