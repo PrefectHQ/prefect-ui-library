@@ -1,6 +1,6 @@
 <template>
   <p-modal v-model:showModal="internalShowModal" class="notification-block-create-modal" :title="modalTitle">
-    <BlockTypeList v-if="!blockType" v-model:capability="capability" use-emit :block-types="blockTypes" @add="handleAdd" />
+    <BlockTypeList v-if="!blockType" v-model:capability="capability" use-emit :block-types="orderedBlockTypes" @add="handleAdd" />
 
     <template v-if="blockType">
       <template v-if="blockSchema">
@@ -18,7 +18,7 @@
 <script lang="ts" setup>
   import { showToast } from '@prefecthq/prefect-design'
   import { useSubscriptionWithDependencies, useSubscription } from '@prefecthq/vue-compositions'
-  import { ref, computed, Ref } from 'vue'
+  import { ref, computed } from 'vue'
   import { BlockDocument } from '..'
   import BlockSchemaCreateForm from '@/components/BlockSchemaCreateForm.vue'
   import BlockTypeList from '@/components/BlockTypeList.vue'
@@ -32,29 +32,28 @@
 
   const api = useWorkspaceApi()
 
-
   const props = defineProps<{
     showModal: boolean,
     providedBlockType?: BlockType,
+    capability?: string,
   }>()
-
 
   const emit = defineEmits<{
     (event: 'update:showModal', value: boolean): void,
     (event: 'refresh', value: BlockDocument): void,
   }>()
 
-
-  const blockType: Ref<BlockType | undefined> = computed(() => {
-    return props.providedBlockType
-  })
+  const blockType = ref(props.providedBlockType)
+  const capability = ref(props.capability ?? '')
 
   const modalTitle = computed(() => {
-    if (blockType.value) {
-      return `Add a ${blockType.value.name} block`
-    }
-
-    return 'Add a Block'
+    // if (blockType.value) {
+    //   return `Add a ${blockType.value.name} block`
+    // }
+    // if (capability.value) {
+    //   return `Add a ${capability.value} block`
+    // }
+    return 'Add a new block'
   })
 
   const handleAdd = (selectedBlockType: BlockType): void => {
@@ -75,6 +74,15 @@
     internalShowModal.value = false
   }
 
+  const { filter } = useBlockTypesFilter({
+    blockSchemas: {
+      blockCapabilities: [capability.value],
+    },
+  })
+
+  const blockTypesSubscription = useSubscription(api.blockTypes.getBlockTypes, [filter])
+  const blockTypes = computed(() => blockTypesSubscription.response ?? [])
+  const orderedBlockTypes = computed(() => [...blockTypes.value].filter(blockType => blockType.name !== 'Slack Incoming Webhook'))
 
   const blockSchemaSubscriptionArgs = computed<Parameters<typeof api.blockSchemas.getBlockSchemaForBlockType> | null>(() => {
     if (!blockType.value) {
@@ -87,17 +95,6 @@
   const blockSchemaSubscription = useSubscriptionWithDependencies(api.blockSchemas.getBlockSchemaForBlockType, blockSchemaSubscriptionArgs)
   const blockSchema = computed(() => blockSchemaSubscription.response)
 
-  const capability = ref('notify')
-  const { filter } = useBlockTypesFilter({
-    blockSchemas: {
-      blockCapabilities: [capability.value],
-    },
-  })
-
-  const blockTypesSubscription = useSubscription(api.blockTypes.getBlockTypes, [filter])
-  const blockTypes = computed(() => blockTypesSubscription.response ?? [],
-  )
-
   function submit(request: BlockDocumentCreateNamed): void {
     api.blockDocuments
       .createBlockDocument(request)
@@ -108,6 +105,7 @@
         showToast(message, 'error')
       })
   }
+
   const onSuccess = (blockDocument: BlockDocument): void => {
     emit('refresh', blockDocument)
   }
