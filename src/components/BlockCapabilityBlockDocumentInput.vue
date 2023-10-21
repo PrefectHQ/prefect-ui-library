@@ -15,17 +15,12 @@
           {{ group.label }}
         </div>
       </template>
-      <template #option="{ option }">
-        <p-button v-if="option.new" small append-icon="PlusIcon" @click="handleOpen(option.blockType)">
-          {{ option.label }}
-        </p-button>
-        <template v-else>
-          {{ option.label }}
-        </template>
-      </template>
     </p-select>
 
-    <NotificationBlockCreateModal v-model:showModal="showModal" :provided-block-type="selectedBlockType" @refresh="handleRefresh" />
+    <p-button icon-append="PlusIcon" @click="handleOpen">
+      Add
+    </p-button>
+    <BlockCreateModal v-model:showModal="showModal" :capability="capability" @refresh="handleRefresh" />
   </div>
 </template>
 
@@ -40,21 +35,23 @@
 <script lang="ts" setup>
   import { SelectOptionGroup, useAttrsStylesClassesAndListeners } from '@prefecthq/prefect-design'
   import { useSubscription, useSubscriptionWithDependencies } from '@prefecthq/vue-compositions'
-  import { computed, toRefs, Ref, ref } from 'vue'
+  import { computed, toRefs } from 'vue'
+  import { useRouter } from 'vue-router'
   import LogoImage from '@/components/LogoImage.vue'
-  import NotificationBlockCreateModal from '@/components/NotificationBlockCreateModal.vue'
-  import { useWorkspaceApi } from '@/compositions'
+  import BlockCreateModal from '@/components/NotificationBlockCreateModal.vue'
+  import { useWorkspaceApi, useWorkspaceRoutes } from '@/compositions'
   import { useShowModal } from '@/compositions/useShowModal'
   import { BlockType, BlockDocument } from '@/models'
   import { BlockDocumentsFilter, BlockTypesFilter } from '@/models/Filters'
   import { mapper } from '@/services'
+  import { withQuery } from '@/utilities'
 
   const { showModal, open, close } = useShowModal()
-
 
   const props = defineProps<{
     modelValue: string | null | undefined,
     capability: string,
+    useModal?: boolean,
   }>()
 
   const emit = defineEmits<{
@@ -120,7 +117,7 @@
     return documents
   })
 
-  const existingOptions = computed<SelectOptionGroup[]>(() => blockTypes.value.flatMap(blockType => {
+  const options = computed<SelectOptionGroup[]>(() => blockTypes.value.flatMap(blockType => {
     const documents = blockDocuments.value.filter(blockDocument => blockDocument.blockTypeId === blockType.id)
 
     if (documents.length === 0) {
@@ -136,33 +133,16 @@
     return group
   }))
 
-  const addOptions: Ref<SelectOptionGroup[]> = computed(() => {
-    const addList = blockTypes.value.map(blockType => ({
-      blockType,
-      label: `Add ${blockType.name}`,
-      value: blockType.id,
-      disabled: true,
-      new: true,
-    }))
-    return [
-      {
-        label: 'Add a new block',
-        options: addList,
-      },
-    ]
-  })
+  const router = useRouter()
+  const routes = useWorkspaceRoutes()
 
-  const options = computed(() => {
-    return [...existingOptions.value, ...addOptions.value]
-  })
-
-  const selectedBlockType: Ref<BlockType | undefined> = ref(undefined)
-
-  const handleOpen = (blockType: BlockType): void => {
-    selectedBlockType.value = blockType
-    open()
+  const handleOpen = (): void => {
+    if (props.useModal) {
+      open()
+    } else {
+      router.push(withQuery(routes.blocksCatalog(), { capability: props.capability }))
+    }
   }
-
   const handleRefresh = async (blockDocument: BlockDocument): Promise<void> => {
     internalModelValue.value = blockDocument.id
     await blockTypesSubscription.refresh()
