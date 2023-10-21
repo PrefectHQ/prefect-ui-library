@@ -1,6 +1,13 @@
 <template>
-  <p-modal v-model:showModal="internalShowModal" class="notification-block-create-modal" :title="modalTitle">
-    <BlockTypeList v-if="!blockType" v-model:capability="capability" use-emit :block-types="orderedBlockTypes" @add="handleAdd" />
+  <p-modal v-model:showModal="internalShowModal" class="block-create-modal" :title="modalTitle">
+    <BlockTypeList
+      v-if="!blockType"
+      v-model:capability="capability"
+      class="block-create-modal__block-type-list"
+      use-emit
+      :block-types="orderedBlockTypes"
+      @add="handleAdd"
+    />
 
     <template v-if="blockType">
       <template v-if="blockSchema">
@@ -110,3 +117,11 @@
     emit('refresh', blockDocument)
   }
 </script>
+
+<style>
+.block-create-modal__block-type-list {
+  .block-type-list__types { @apply
+    grid-cols-1
+  }
+}
+</style>
