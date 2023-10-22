@@ -1,23 +1,16 @@
 <template>
-  <p-modal v-model:showModal="internalShowModal" class="block-create-modal" :title="modalTitle">
+  <p-modal v-model:showModal="internalShowModal" class="block-create-modal" :class="modalClass" :title="modalTitle">
     <BlockTypeList
       v-if="!blockType"
-      v-model:capability="capability"
+      :capability="capability"
       class="block-create-modal__block-type-list"
       use-emit
-      :block-types="orderedBlockTypes"
+      :block-types="filteredBlockTypes"
       @add="handleAdd"
     />
 
     <template v-if="blockType">
-      <template v-if="blockSchema">
-        <BlockSchemaCreateForm :key="blockSchema.id" :block-schema="blockSchema" @cancel="cancel" @submit="submit" />
-      </template>
-    </template>
-    <template #cancel>
-      <p-button v-show="!blockType" @click="cancel">
-        Cancel
-      </p-button>
+      <BlockSchemaCreateForm v-if="blockSchema" :key="blockSchema.id" :block-schema="blockSchema" @cancel="cancel" @submit="submit" />
     </template>
   </p-modal>
 </template>
@@ -63,6 +56,13 @@
     return 'Add a new block'
   })
 
+  const modalClass = computed(() => {
+    if (blockType.value) {
+      return 'block-create-modal--schema-creation'
+    }
+    return ''
+  })
+
   const handleAdd = (selectedBlockType: BlockType): void => {
     blockType.value = selectedBlockType
   }
@@ -72,12 +72,12 @@
       return props.showModal
     },
     set(value: boolean) {
+      blockType.value = props.providedBlockType
       emit('update:showModal', value)
     },
   })
 
   const cancel = (): void => {
-    blockType.value = undefined
     internalShowModal.value = false
   }
 
@@ -86,19 +86,16 @@
       blockCapabilities: [capability.value],
     },
   })
-
   const blockTypesSubscription = useSubscription(api.blockTypes.getBlockTypes, [filter])
   const blockTypes = computed(() => blockTypesSubscription.response ?? [])
-  const orderedBlockTypes = computed(() => [...blockTypes.value].filter(blockType => blockType.name !== 'Slack Incoming Webhook'))
+  const filteredBlockTypes = computed(() => [...blockTypes.value].filter(blockType => blockType.name !== 'Slack Incoming Webhook'))
 
   const blockSchemaSubscriptionArgs = computed<Parameters<typeof api.blockSchemas.getBlockSchemaForBlockType> | null>(() => {
     if (!blockType.value) {
       return null
     }
-
     return [blockType.value.id]
   })
-
   const blockSchemaSubscription = useSubscriptionWithDependencies(api.blockSchemas.getBlockSchemaForBlockType, blockSchemaSubscriptionArgs)
   const blockSchema = computed(() => blockSchemaSubscription.response)
 
@@ -123,5 +120,12 @@
   .block-type-list__types { @apply
     grid-cols-1
   }
+}
+
+.block-create-modal--schema-creation {
+  .p-modal__footer {
+  @apply
+  hidden
+}
 }
 </style>
