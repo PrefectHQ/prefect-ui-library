@@ -1,5 +1,5 @@
 <template>
-  <p-modal v-model:showModal="internalShowModal" class="block-create-modal" :class="modalClass" :title="modalTitle">
+  <p-modal v-model:showModal="internalShowModal" class="block-create-modal" :class="modalClass" title="Add a new block">
     <BlockTypeList
       v-if="!blockType"
       :capability="capability"
@@ -46,15 +46,6 @@
   const blockType = ref(props.providedBlockType)
   const capability = ref(props.capability ?? '')
 
-  const modalTitle = computed(() => {
-    // if (blockType.value) {
-    //   return `Add a ${blockType.value.name} block`
-    // }
-    // if (capability.value) {
-    //   return `Add a ${capability.value} block`
-    // }
-    return 'Add a new block'
-  })
 
   const modalClass = computed(() => {
     if (blockType.value) {
