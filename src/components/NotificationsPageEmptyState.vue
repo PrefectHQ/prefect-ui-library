@@ -13,10 +13,10 @@
     </template>
 
     <template #actions>
-      <DocumentationButton :to="localization.docs.notifications" />
       <p-button v-if="can.create.notification_policy" primary icon-append="PlusIcon" :to="routes.notificationCreate()">
         Create Notification
       </p-button>
+      <DocumentationButton :to="localization.docs.notifications" />
     </template>
   </p-empty-state>
 </template>
