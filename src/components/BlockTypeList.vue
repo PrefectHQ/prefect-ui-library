@@ -34,7 +34,7 @@
 <script lang="ts" setup>
   import { PEmptyResults } from '@prefecthq/prefect-design'
   import { computed, ref } from 'vue'
-  import { NavigationFailure, useRouter } from 'vue-router'
+  import { useRouter } from 'vue-router'
   import BlockSchemaCapabilitySelect from '@/components/BlockSchemaCapabilitySelect.vue'
   import BlockTypeCardPreview from '@/components/BlockTypeCardPreview.vue'
   import ResultsCount from '@/components/ResultsCount.vue'
@@ -57,7 +57,6 @@
   const router = useRouter()
 
   const handleAdd = (blockType: BlockType): void => {
-    console.log('props.useEmit', props.useEmit, blockType)
     if (props.useEmit) {
       emit('add', blockType)
       return
