@@ -17,7 +17,10 @@
       </template>
     </p-select>
 
-    <p-button icon-append="PlusIcon" @click="handleOpen">
+    <p-button v-if="useModal" icon-append="PlusIcon" @click="open">
+      Add
+    </p-button>
+    <p-button v-else icon-append="PlusIcon" :to="withQuery(routes.blocksCatalog(), { capability: props.capability })">
       Add
     </p-button>
     <BlockCreateModal v-model:showModal="showModal" :capability="capability" @refresh="handleRefresh" />
@@ -36,7 +39,6 @@
   import { SelectOptionGroup, useAttrsStylesClassesAndListeners } from '@prefecthq/prefect-design'
   import { useSubscription, useSubscriptionWithDependencies } from '@prefecthq/vue-compositions'
   import { computed, toRefs } from 'vue'
-  import { useRouter } from 'vue-router'
   import BlockCreateModal from '@/components/BlockCreateModal.vue'
   import LogoImage from '@/components/LogoImage.vue'
   import { useWorkspaceApi, useWorkspaceRoutes } from '@/compositions'
@@ -45,8 +47,6 @@
   import { BlockDocumentsFilter, BlockTypesFilter } from '@/models/Filters'
   import { mapper } from '@/services'
   import { withQuery } from '@/utilities'
-
-  const { showModal, open, close } = useShowModal()
 
   const props = defineProps<{
     modelValue: string | null | undefined,
@@ -61,6 +61,8 @@
   const { capability } = toRefs(props)
   const api = useWorkspaceApi()
   const { classes, styles, listeners, attrs } = useAttrsStylesClassesAndListeners()
+  const { showModal, open, close } = useShowModal()
+  const routes = useWorkspaceRoutes()
 
   const internalModelValue = computed({
     get() {
@@ -133,16 +135,6 @@
     return group
   }))
 
-  const router = useRouter()
-  const routes = useWorkspaceRoutes()
-
-  const handleOpen = (): void => {
-    if (props.useModal) {
-      open()
-    } else {
-      router.push(withQuery(routes.blocksCatalog(), { capability: props.capability }))
-    }
-  }
   const handleRefresh = async (blockDocument: BlockDocument): Promise<void> => {
     internalModelValue.value = blockDocument.id
     await blockTypesSubscription.refresh()
