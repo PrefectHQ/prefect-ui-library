@@ -10,7 +10,10 @@
       <template v-for="blockType in filteredBlockTypes" :key="blockType.id">
         <BlockTypeCardPreview :block-type="blockType">
           <template #actions>
-            <p-button icon-append="PlusIcon" class="block-type-list__add" @click="handleAdd(blockType)">
+            <p-button v-if="useEmit" icon-append="PlusIcon" class="block-type-list__add" @click="emit('add', blockType)">
+              Add
+            </p-button>
+            <p-button v-else icon-append="PlusIcon" class="block-type-list__add" :to="routes.blockCreate(blockType.slug)">
               Add
             </p-button>
           </template>
@@ -54,15 +57,6 @@
   }>()
 
   const routes = useWorkspaceRoutes()
-  const router = useRouter()
-
-  const handleAdd = (blockType: BlockType): void => {
-    if (props.useEmit) {
-      emit('add', blockType)
-      return
-    }
-    router.push(routes.blockCreate(blockType.slug))
-  }
 
   const searchTerm = ref('')
   const selectedCapability = computed({
