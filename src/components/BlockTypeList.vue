@@ -13,9 +13,11 @@
             <p-button v-if="useEmit" icon-append="PlusIcon" class="block-type-list__add" @click="emit('add', blockType)">
               Add
             </p-button>
-            <p-button v-else icon-append="PlusIcon" class="block-type-list__add" :to="routes.blockCreate(blockType.slug)">
-              Add
-            </p-button>
+            <p-link v-else :to="routes.blockCreate(blockType.slug)">
+              <p-button icon-append="PlusIcon" class="block-type-list__add">
+                Add
+              </p-button>
+            </p-link>
           </template>
         </BlockTypeCardPreview>
       </template>
