@@ -137,8 +137,10 @@
 
   const handleRefresh = async (blockDocument: BlockDocument): Promise<void> => {
     internalModelValue.value = blockDocument.id
-    await blockTypesSubscription.refresh()
-    await blockDocumentsSubscription.refresh()
+    await Promise.all([
+      blockTypesSubscription.refresh(),
+      blockDocumentsSubscription.refresh(),
+    ])
     close()
   }
 </script>

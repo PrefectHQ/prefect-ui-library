@@ -17,18 +17,17 @@
 
 <script lang="ts" setup>
   import { showToast } from '@prefecthq/prefect-design'
-  import { useSubscriptionWithDependencies, useSubscription } from '@prefecthq/vue-compositions'
+  import { useSubscription } from '@prefecthq/vue-compositions'
   import { ref, computed } from 'vue'
   import BlockSchemaCreateForm from '@/components/BlockSchemaCreateForm.vue'
   import BlockTypeList from '@/components/BlockTypeList.vue'
-  import { useWorkspaceApi } from '@/compositions'
+  import { useWorkspaceApi, useBlockSchemaForBlockType } from '@/compositions'
   import { useBlockTypesFilter } from '@/compositions/filters'
   import { localization } from '@/localization'
   import { BlockDocument } from '@/models/BlockDocument'
   import { BlockDocumentCreateNamed } from '@/models/BlockDocumentCreate'
   import { BlockType } from '@/models/BlockType'
   import { getApiErrorMessage } from '@/utilities/errors'
-
 
   const api = useWorkspaceApi()
 
@@ -81,15 +80,9 @@
   const blockTypes = computed(() => blockTypesSubscription.response ?? [])
   const filteredBlockTypes = computed(() => [...blockTypes.value].filter(blockType => blockType.name !== 'Slack Incoming Webhook'))
 
-  const blockSchemaSubscriptionArgs = computed<Parameters<typeof api.blockSchemas.getBlockSchemaForBlockType> | null>(() => {
-    if (!blockType.value) {
-      return null
-    }
-    return [blockType.value.id]
-  })
 
-  const blockSchemaSubscription = useSubscriptionWithDependencies(api.blockSchemas.getBlockSchemaForBlockType, blockSchemaSubscriptionArgs)
-  const blockSchema = computed(() => blockSchemaSubscription.response)
+  const blockSchemaSubscription = computed(() => useBlockSchemaForBlockType(blockType.value?.id))
+  const blockSchema = computed(() => blockSchemaSubscription.value.blockSchema.value)
 
   const submit = async (request: BlockDocumentCreateNamed): Promise<void> => {
     try {
