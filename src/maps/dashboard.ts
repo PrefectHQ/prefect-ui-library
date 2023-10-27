@@ -3,8 +3,16 @@ import { FlowRunsFilter, TaskRunsFilter, TaskRunsHistoryFilter, WorkPoolWorkersF
 import { MapFunction } from '@/services/Mapper'
 import { WorkspaceDashboardFilter } from '@/types/dashboard'
 
-export const mapWorkspaceDashboardFilterToTaskRunsFilter: MapFunction<WorkspaceDashboardFilter, TaskRunsFilter> = function(source) {
+function nowWithoutMilliseconds(): Date {
   const now = new Date()
+
+  now.setMilliseconds(0)
+
+  return now
+}
+
+export const mapWorkspaceDashboardFilterToTaskRunsFilter: MapFunction<WorkspaceDashboardFilter, TaskRunsFilter> = function(source) {
+  const now = nowWithoutMilliseconds()
 
   return {
     flowRuns: {
@@ -20,7 +28,7 @@ export const mapWorkspaceDashboardFilterToTaskRunsFilter: MapFunction<WorkspaceD
 }
 
 export const mapWorkspaceDashboardFilterToTaskRunsHistoryFilter: MapFunction<WorkspaceDashboardFilter, TaskRunsHistoryFilter> = function(source) {
-  const now = new Date()
+  const now = nowWithoutMilliseconds()
 
   return {
     historyStart: subSeconds(now, source.timeSpanInSeconds),
@@ -35,7 +43,7 @@ export const mapWorkspaceDashboardFilterToTaskRunsHistoryFilter: MapFunction<Wor
 }
 
 export const mapWorkspaceDashboardFilterToFlowRunsFilter: MapFunction<WorkspaceDashboardFilter, FlowRunsFilter> = function(source) {
-  const now = new Date()
+  const now = nowWithoutMilliseconds()
   const filter: FlowRunsFilter = {
     flowRuns: {
       expectedStartTimeAfter: subSeconds(now, source.timeSpanInSeconds),
@@ -50,7 +58,7 @@ export const mapWorkspaceDashboardFilterToFlowRunsFilter: MapFunction<WorkspaceD
 }
 
 export const mapWorkspaceDashboardFilterToWorkPoolWorkersFilter: MapFunction<WorkspaceDashboardFilter, WorkPoolWorkersFilter> = function(source) {
-  const now = new Date()
+  const now = nowWithoutMilliseconds()
 
   return {
     workers: {
