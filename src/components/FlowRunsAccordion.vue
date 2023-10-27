@@ -9,7 +9,7 @@
       </template>
     </p-accordion>
   </template>
-  <template v-if="!count">
+  <template v-if="!count && loaded">
     <FlowRunStateTypeEmpty :state-type="stateType" />
   </template>
 </template>
@@ -45,7 +45,8 @@
     }
   }
   const options = useInterval()
-  const { count } = useFlowRunsCount(flowRunsFilter, options)
+  const { count, subscription } = useFlowRunsCount(flowRunsFilter, options)
+  const loaded = computed(() => subscription.executed)
   const { flows } = useFlows(flowsFilter, options)
   const flowIds = computed(() => flows.value.map(flow => flow.id))
   const flowsLookup = computed(() => toMap(flows.value, 'id'))
