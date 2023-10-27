@@ -5,23 +5,31 @@
     <template v-if="blockDocuments.length">
       <BlockDocumentCombobox v-model:selected="model" v-bind="{ blockDocuments }" class="block-document-input__select" />
     </template>
-    <p-button v-if="blockTypeSlug" icon-append="PlusIcon" :to="withRedirect(routes.blockCreate(blockTypeSlug))">
+    <p-button v-if="blockTypeSlug && useModal" icon-append="PlusIcon" @click="open">
       Add
     </p-button>
+    <p-button v-else-if="blockTypeSlug" icon-append="PlusIcon" :to="withRedirect(routes.blockCreate(props.blockTypeSlug))">
+      Add
+    </p-button>
+    <BlockCreateModal v-if="blockType" v-model:showModal="showModal" :provided-block-type="blockType" @refresh="handleRefresh" />
   </div>
 </template>
 
 <script lang="ts" setup>
   import { useSubscription } from '@prefecthq/vue-compositions'
   import { computed } from 'vue'
+  import BlockCreateModal from '@/components/BlockCreateModal.vue'
   import BlockDocumentCombobox from '@/components/BlockDocumentCombobox.vue'
   import LogoImage from '@/components/LogoImage.vue'
   import { useWorkspaceApi, useWorkspaceRoutes } from '@/compositions'
+  import { useShowModal } from '@/compositions/useShowModal'
+  import { BlockDocument } from '@/models'
   import { withRedirect } from '@/utilities/routes'
 
   const props = defineProps<{
     modelValue: string | null | undefined,
     blockTypeSlug: string,
+    useModal?: boolean,
   }>()
 
   const emit = defineEmits<{
@@ -37,13 +45,21 @@
     },
   })
 
+  const { showModal, open, close } = useShowModal()
   const api = useWorkspaceApi()
   const routes = useWorkspaceRoutes()
   const blockTypeSlug = computed(() => props.blockTypeSlug)
+
   const blockTypeSubscription = useSubscription(api.blockTypes.getBlockTypeBySlug, [blockTypeSlug])
   const blockType = computed(() => blockTypeSubscription.response)
   const blockDocumentsSubscription = useSubscription(api.blockTypes.getBlockDocumentsByBlockTypeSlug, [blockTypeSlug])
   const blockDocuments = computed(() => blockDocumentsSubscription.response ?? [])
+
+  const handleRefresh = async (blockDocument: BlockDocument): Promise<void> => {
+    model.value = blockDocument.id
+    await blockDocumentsSubscription.refresh()
+    close()
+  }
 </script>
 
 <style>

@@ -1,6 +1,6 @@
 <template>
   <div class="block-capability-block-document-input" :class="classes" :style="styles" v-bind="listeners">
-    <p-select v-model="modalValue" v-bind="attrs" :options="options" class="block-capability-block-document-input__select">
+    <p-select v-model="internalModelValue" v-bind="attrs" :options="options" class="block-capability-block-document-input__select">
       <template #default="{ label, value }">
         <div class="block-capability-block-document-input__option">
           <template v-if="value === blockDocument?.id">
@@ -11,15 +11,19 @@
       </template>
       <template #group="{ group }">
         <div class="block-capability-block-document-input__group">
-          <LogoImage :url="group.blockType.logoUrl" class="block-capability-block-document-input__logo" />
+          <LogoImage v-if="group.blockType" :url="group.blockType.logoUrl" class="block-capability-block-document-input__logo" />
           {{ group.label }}
         </div>
       </template>
     </p-select>
 
-    <p-button icon-append="PlusIcon" :to="withQuery(routes.blocksCatalog(), { capability })">
+    <p-button v-if="useModal" icon-append="PlusIcon" @click="open">
       Add
     </p-button>
+    <p-button v-else icon-append="PlusIcon" :to="withQuery(routes.blocksCatalog(), { capability })">
+      Add
+    </p-button>
+    <BlockCreateModal v-model:showModal="showModal" :capability="capability" @refresh="handleRefresh" />
   </div>
 </template>
 
@@ -35,9 +39,11 @@
   import { SelectOptionGroup, useAttrsStylesClassesAndListeners } from '@prefecthq/prefect-design'
   import { useSubscription, useSubscriptionWithDependencies } from '@prefecthq/vue-compositions'
   import { computed, toRefs } from 'vue'
+  import BlockCreateModal from '@/components/BlockCreateModal.vue'
   import LogoImage from '@/components/LogoImage.vue'
   import { useWorkspaceApi, useWorkspaceRoutes } from '@/compositions'
-  import { BlockType } from '@/models'
+  import { useShowModal } from '@/compositions/useShowModal'
+  import { BlockType, BlockDocument } from '@/models'
   import { BlockDocumentsFilter, BlockTypesFilter } from '@/models/Filters'
   import { mapper } from '@/services'
   import { withQuery } from '@/utilities'
@@ -45,6 +51,7 @@
   const props = defineProps<{
     modelValue: string | null | undefined,
     capability: string,
+    useModal?: boolean,
   }>()
 
   const emit = defineEmits<{
@@ -53,10 +60,11 @@
 
   const { capability } = toRefs(props)
   const api = useWorkspaceApi()
-  const routes = useWorkspaceRoutes()
   const { classes, styles, listeners, attrs } = useAttrsStylesClassesAndListeners()
+  const { showModal, open, close } = useShowModal()
+  const routes = useWorkspaceRoutes()
 
-  const modalValue = computed({
+  const internalModelValue = computed({
     get() {
       return props.modelValue
     },
@@ -126,6 +134,15 @@
 
     return group
   }))
+
+  const handleRefresh = async (blockDocument: BlockDocument): Promise<void> => {
+    internalModelValue.value = blockDocument.id
+    await Promise.all([
+      blockTypesSubscription.refresh(),
+      blockDocumentsSubscription.refresh(),
+    ])
+    close()
+  }
 </script>
 
 <style>
