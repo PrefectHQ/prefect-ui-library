@@ -20,7 +20,7 @@
     <p-button v-if="useModal" icon-append="PlusIcon" @click="open">
       Add
     </p-button>
-    <p-button v-else icon-append="PlusIcon" :to="withQuery(routes.blocksCatalog(), { capability: props.capability })">
+    <p-button v-else icon-append="PlusIcon" :to="withQuery(routes.blocksCatalog(), { capability })">
       Add
     </p-button>
     <BlockCreateModal v-model:showModal="showModal" :capability="capability" @refresh="handleRefresh" />
