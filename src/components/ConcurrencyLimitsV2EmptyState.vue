@@ -13,10 +13,10 @@
     </template>
 
     <template #actions>
-      <DocumentationButton :to="localization.docs.globalConcurrency" />
       <p-button v-if="can.create.concurrency_limit" primary icon-append="PlusIcon" @click="open">
         Add Concurrency Limit
       </p-button>
+      <DocumentationButton :to="localization.docs.globalConcurrency" />
       <ConcurrencyLimitsV2CreateModal v-model:showModal="showModal" />
     </template>
   </p-empty-state>
