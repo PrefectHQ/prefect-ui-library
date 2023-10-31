@@ -22,7 +22,7 @@
       case 'ready':
         return 'One or more processes are actively polling this deployment'
       case 'not_ready':
-        return 'This deployment has not been polled in the past 30 seconds'
+        return 'This deployment has not been polled in the past 60 seconds'
       default:
         return ''
     }
