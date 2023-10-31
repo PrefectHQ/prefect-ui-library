@@ -40,6 +40,7 @@ export const randomDeployment: MockFunction<Deployment, [Partial<Deployment>?]> 
     enforceParameterSchema: this.create('boolean'),
     pullSteps: [],
     can: createObjectLevelCan(),
+    status: this.create('deploymentStatus'),
     ...overrides,
   }
 }

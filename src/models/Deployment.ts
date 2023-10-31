@@ -1,5 +1,6 @@
 import { SchemaResponse } from '@/models/api/SchemaResponse'
 import { CreatedOrUpdatedBy } from '@/models/CreatedOrUpdatedBy'
+import { DeploymentStatus } from '@/models/DeploymentStatus'
 import { ObjectLevelCan } from '@/models/ObjectLevelCan'
 import { Schedule } from '@/models/Schedule'
 import { Schema, SchemaValues } from '@/types/schemas'
@@ -33,6 +34,7 @@ export interface IDeployment {
   enforceParameterSchema: boolean,
   pullSteps: unknown,
   can: ObjectLevelCan<'deployment'>,
+  status: DeploymentStatus,
 }
 
 export class Deployment implements IDeployment {
@@ -63,6 +65,7 @@ export class Deployment implements IDeployment {
   public enforceParameterSchema: boolean
   public pullSteps: unknown
   public can: ObjectLevelCan<'deployment'>
+  public status: DeploymentStatus
 
   public constructor(deployment: IDeployment) {
     this.id = deployment.id
@@ -92,6 +95,7 @@ export class Deployment implements IDeployment {
     this.enforceParameterSchema = deployment.enforceParameterSchema
     this.pullSteps = deployment.pullSteps
     this.can = deployment.can
+    this.status = deployment.status
   }
 
   public get deprecated(): boolean {

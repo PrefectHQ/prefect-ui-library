@@ -83,6 +83,8 @@ export { default as DeploymentRelationships } from './DeploymentRelationships.vu
 export { default as DeploymentsCount } from './DeploymentsCount.vue'
 export { default as DeploymentsDeleteButton } from './DeploymentsDeleteButton.vue'
 export { default as DeploymentsPageEmptyState } from './DeploymentsPageEmptyState.vue'
+export { default as DeploymentStatusBadge } from './DeploymentStatusBadge.vue'
+export { default as DeploymentStatusIcon } from './DeploymentStatusIcon.vue'
 export { default as DeploymentsTable } from './DeploymentsTable.vue'
 export { default as DeploymentTagsInput } from './DeploymentTagsInput.vue'
 export { default as DeploymentToggle } from './DeploymentToggle.vue'
