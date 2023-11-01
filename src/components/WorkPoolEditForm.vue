@@ -13,7 +13,7 @@
         </template>
       </p-label>
 
-      <p-label label="Flow Run Concurrency (Optional)">
+      <p-label v-if="!workPool.isPushPool" label="Flow Run Concurrency (Optional)">
         <template #default="{ id }">
           <p-number-input :id="id" v-model="concurrencyLimit" placeholder="Unlimited" :min="0" />
         </template>
@@ -52,6 +52,7 @@
   const props = defineProps<{
     workPool: WorkPool,
   }>()
+
 
   const api = useWorkspaceApi()
   const router = useRouter()
