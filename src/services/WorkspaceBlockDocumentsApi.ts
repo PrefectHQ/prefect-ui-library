@@ -14,6 +14,7 @@ export interface IWorkspaceBlockDocumentsApi {
   createBlockDocument: (blockDocument: BlockDocumentCreate) => Promise<BlockDocument>,
   updateBlockDocument: (blockDocumentId: string, blockDocument: BlockDocumentUpdate) => Promise<void>,
   deleteBlockDocument: (blockDocumentId: string) => Promise<void>,
+  getBlockDocumentsCount: (filter: BlockDocumentsFilter) => Promise<number>,
 }
 
 export class WorkspaceBlockDocumentsApi extends WorkspaceApi implements IWorkspaceBlockDocumentsApi {
@@ -56,6 +57,13 @@ export class WorkspaceBlockDocumentsApi extends WorkspaceApi implements IWorkspa
 
   public deleteBlockDocument(blockDocumentId: string): Promise<void> {
     return this.delete(`/${blockDocumentId}`)
+  }
+
+  public async getBlockDocumentsCount(filter: BlockDocumentsFilter = {}): Promise<number> {
+    const request = mapper.map('BlockDocumentsFilter', filter, 'BlockDocumentsFilterRequest')
+    const { data } = await this.post<number>('/count', request)
+
+    return data
   }
 
 }
