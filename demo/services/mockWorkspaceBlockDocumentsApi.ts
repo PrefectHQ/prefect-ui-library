@@ -47,7 +47,25 @@ export class MockWorkspaceBlockDocumentsApi extends MockApi implements IWorkspac
     return await this.blockDocuments.delete(blockDocumentId)
   }
 
-  public async getBlockDocumentsCount(): Promise<number> {
+  public async getBlockDocumentsCount(filter: BlockDocumentsFilter = {}): Promise<number> {
+    if (Object.keys(filter).length) {
+      let blockDocuments = this.blockDocuments.getAll()
+
+      const filterBlockTypeSlug = filter.blockTypes?.slug
+
+      if (filterBlockTypeSlug) {
+        blockDocuments = blockDocuments.filter(blockDocument => filterBlockTypeSlug.includes(blockDocument.blockType.slug))
+      }
+
+      const filterBlockTypeName = filter.blockTypes?.nameLike
+
+      if (filterBlockTypeName) {
+        blockDocuments = blockDocuments.filter(blockDocument => blockDocument.name.includes(filterBlockTypeName))
+      }
+
+      return await blockDocuments.length
+    }
+
     return await this.blockDocuments.count()
   }
 
