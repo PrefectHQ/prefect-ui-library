@@ -15,7 +15,7 @@ jobs:
         
       - name: Setup
         id: setup
-        uses: prefecthq/ui-nodejs-action@main
+        uses: prefecthq/gha-setup-nodejs@main
 
       - name: Lint application
         run: |
@@ -32,7 +32,7 @@ jobs:
 
       - name: Setup
         id: setup
-        uses: prefecthq/ui-nodejs-action@main
+        uses: prefecthq/gha-setup-nodejs@main
 
       - name: Build package
         run: npm run build
@@ -48,7 +48,7 @@ jobs:
 
       - name: Setup
         id: setup
-        uses: prefecthq/ui-nodejs-action@main
+        uses: prefecthq/gha-setup-nodejs@main
 
       - name: Run tests
         run: npm run test
