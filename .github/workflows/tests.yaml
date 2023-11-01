@@ -14,7 +14,8 @@ jobs:
           persist-credentials: false
         
       - name: Setup
-        uses: ./.github/actions/setup
+        id: setup
+        uses: prefecthq/actions-setup-nodejs@main
 
       - name: Lint application
         run: |
@@ -30,7 +31,8 @@ jobs:
           persist-credentials: false
 
       - name: Setup
-        uses: ./.github/actions/setup
+        id: setup
+        uses: prefecthq/actions-setup-nodejs@main
 
       - name: Build package
         run: npm run build
@@ -45,7 +47,8 @@ jobs:
           persist-credentials: false
 
       - name: Setup
-        uses: ./.github/actions/setup
+        id: setup
+        uses: prefecthq/actions-setup-nodejs@main
 
       - name: Run tests
         run: npm run test
