@@ -104,7 +104,7 @@
 
   const { filter, clear } = useBlockDocumentsFilterFromRoute(merge({}, props.filter, {
     blockDocuments: {
-      nameLike: searchTermDebounced,
+      name: searchTermDebounced,
     },
     limit: 50,
   }))
