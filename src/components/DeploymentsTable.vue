@@ -33,7 +33,7 @@
                 <span>{{ row.name }}</span>
               </p-link>
             </div>
-            <DeploymentStatusIcon v-if="can.access['deployment-status']" :status="row.status" />
+            <DeploymentStatusIcon v-if="can.access.deploymentStatus" :status="row.status" />
           </div>
         </template>
 
