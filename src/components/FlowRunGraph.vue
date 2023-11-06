@@ -17,6 +17,7 @@
 
 <script lang="ts" setup>
   import { NodeSelection, RunGraph, RunGraphConfig, ViewportDateRange } from '@prefecthq/graphs'
+  import { useColorTheme } from '@prefecthq/prefect-design'
   import { computed, ref } from 'vue'
   import FlowRunGraphConfirmation from '@/components/FlowRunGraphConfirmation.vue'
   import { useTaskRunsCount } from '@/compositions/useTaskRunsCount'
@@ -40,6 +41,7 @@
   }>()
 
   const api = useWorkspaceApi()
+  const { value: colorThemeValue } = useColorTheme()
   const load = ref(true)
 
   const viewport = computed({
@@ -82,11 +84,24 @@
     PAUSED: '#554B58',
   } satisfies Record<ServerStateType, string>
 
+  const documentStyles = getComputedStyle(document.documentElement)
+
+  function getColorToken(cssVariable: string): string {
+    return documentStyles.getPropertyValue(cssVariable).trim()
+  }
+
   const config = computed<RunGraphConfig>(() => ({
     runId: props.flowRun.id,
     fetch: api.flowRuns.getFlowRunsGraph,
     styles: {
-      colorMode: 'dark',
+      colorMode: colorThemeValue.value,
+      textDefault: getColorToken('--p-color-text-default'),
+      textInverse: getColorToken('--p-color-text-inverse'),
+      nodeToggleBorderColor: getColorToken('--p-color-button-default-border'),
+      nodeSelectedBorderColor: getColorToken('--p-color-text-selected'),
+      edgeColor: getColorToken('--p-color-text-subdued'),
+      guideLineColor: getColorToken('--p-color-divider'),
+      guideTextColor: getColorToken('--p-color-text-subdued'),
       node: node => ({
         background: stateTypeColors[node.state_type],
       }),
