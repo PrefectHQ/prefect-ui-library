@@ -1,7 +1,7 @@
-import { GraphTimelineNode } from '@prefecthq/graphs'
+import { RunGraphData } from '@prefecthq/graphs'
 import { KeyedDataStoreFindCallback } from './KeyedDataStore'
 import { MockApi } from '@/../demo/services/MockApi'
-import { FlowRun, GraphNode, RunHistory, stateType, StateUpdate } from '@/models'
+import { FlowRun, RunHistory, stateType, StateUpdate } from '@/models'
 import { FlowRunsFilter, FlowRunsHistoryFilter } from '@/models/Filters'
 import { IWorkspaceFlowRunsApi, mocker } from '@/services'
 import { dateFunctions } from '@/utilities/timezone'
@@ -125,12 +125,8 @@ export class MockWorkspaceFlowRunsApi extends MockApi implements IWorkspaceFlowR
     throw new Error('MockWorkspaceFlowRunsApi has not implemented the getFlowRunsAverageLateness method')
   }
 
-  public async getFlowRunsGraph(graphId: string): Promise<GraphNode[]> {
-    return await this.flowRunGraphs.get(graphId).graph
-  }
-
-  public getFlowRunsTimeline(): Promise<GraphTimelineNode[]> {
-    throw new Error('MockWorkspaceFlowRunsApi has not implemented the getFlowRunGraph method')
+  public getFlowRunsGraph(): Promise<RunGraphData> {
+    throw new Error('MockWorkspaceFlowRunsApi has not implemented the getFlowRunsGraph method')
   }
 
   public async retryFlowRun(): Promise<void> {

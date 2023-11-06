@@ -1,3 +1,13 @@
+import {
+  NodeSelection as RunGraphNodeSelection,
+  ViewportDateRange as RunGraphViewportDateRange
+} from '@prefecthq/graphs'
+
+export type {
+  RunGraphNodeSelection,
+  RunGraphViewportDateRange
+}
+
 export * from './buttons'
 export * from './ColorMode'
 export * from './css'
