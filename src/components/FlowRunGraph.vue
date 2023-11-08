@@ -29,9 +29,9 @@
 
   const props = defineProps<{
     flowRun: FlowRun,
-    viewport: ViewportDateRange,
     fullscreen: boolean,
     selected: NodeSelection | null,
+    viewport?: ViewportDateRange,
   }>()
 
   const emit = defineEmits<{
