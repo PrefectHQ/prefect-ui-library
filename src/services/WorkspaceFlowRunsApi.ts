@@ -1,8 +1,8 @@
 import { RunGraphData } from '@prefecthq/graphs'
-import { isValid, parseISO } from 'date-fns'
 import { StateUpdate } from '@/models'
 import { FlowRunHistoryResponse } from '@/models/api/FlowRunHistoryResponse'
 import { FlowRunResponse } from '@/models/api/FlowRunResponse'
+import { RunGraphDataResponse } from '@/models/api/RunGraphDataResponse'
 import { FlowRunsFilter, FlowRunsHistoryFilter } from '@/models/Filters'
 import { FlowRun } from '@/models/FlowRun'
 import { RunHistory } from '@/models/RunHistory'
@@ -71,39 +71,9 @@ export class WorkspaceFlowRunsApi extends WorkspaceApi implements IWorkspaceFlow
   }
 
   public async getFlowRunsGraph(id: string): Promise<RunGraphData> {
-    // todo: should we just send this through the mapper?
-    // context: the idea is that this would be more efficient since the response can be very large.
-    // But that is unproven from a perf perspective. However this is much simpler than a dedicated mapper.
-    // But generally consistency is better so should test if this even makes a difference perf wise.
-    const reviver = (key: string, value: unknown): unknown => {
-      if (key === 'start_time' || key == 'end_time') {
-        if (typeof value !== 'string') {
-          return value
-        }
+    const { data } = await this.get<RunGraphDataResponse>(`/${id}/graph-v2`)
 
-        const date = parseISO(value)
-
-        if (isValid(date)) {
-          return date
-        }
-      }
-
-      if (key === 'nodes') {
-        if (!Array.isArray(value)) {
-          return
-        }
-
-        return new Map(value)
-      }
-
-      return value
-    }
-
-    const { data } = await this.get<RunGraphData>(`/${id}/graph-v2`, {
-      transformResponse: response => JSON.parse(response, reviver),
-    })
-
-    return data
+    return mapper.map('RunGraphDataResponse', data, 'RunGraphData')
   }
 
   public retryFlowRun(id: string): Promise<void> {
