@@ -25,7 +25,7 @@
   import { FlowRun } from '@/models/FlowRun'
   import { ServerStateType } from '@/models/StateType'
 
-  const OPT_IN_THRESHOLD = 2000
+  const NODE_COUNT_TO_REQUIRED_OPT_IN = 2000
 
   const props = defineProps<{
     flowRun: FlowRun,
@@ -119,7 +119,7 @@
 
   await subscription.promise()
 
-  if (count.value! > OPT_IN_THRESHOLD) {
+  if (count.value! > NODE_COUNT_TO_REQUIRED_OPT_IN) {
     load.value = false
   }
 
