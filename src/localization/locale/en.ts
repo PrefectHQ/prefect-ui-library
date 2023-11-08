@@ -189,8 +189,8 @@ export const en = {
     workPoolInfrastructureConfigurationInstructions: 'Below you can configure workers\' behavior when executing flow runs from this work pool. You can use the editor in the **Advanced** section to modify the existing configuration options if you need additional configuration options.\nIf you don\'t need to change the default behavior, hit **Create** to create your work pool!',
     workPoolInfrastructureConfigurationAgent: 'Prefect Agents handle infrastructure configuration via infrastructure blocks attached to deployments. You can hit **Create** to create this work pool and then head over to the **Blocks** tab to create an infrastructure block for your deployments.\nTo learn more about how to configure infrastructure for Prefect Agents, check out the [docs](https://docs.prefect.io/latest/concepts/infrastructure/).',
     disableFlowRunCancel: 'Only runs created from a deployment can be cancelled',
-    flowRunGraphNotDisplayedHeader: 'Graph not displayed',
-    flowRunGraphNotDisplayedCopy: 'Displaying this large graph may crash this web browser tab. Display anyway?',
+    flowRunGraphNotDisplayedHeader: 'Manual graph rendering',
+    flowRunGraphNotDisplayedCopy: 'Large graphs are hidden by default. They may take time to generate and in extreme circumstances, may impact browser performance.',
     flowRunGraphNotDisplayedCta: 'Display graph',
   },
 }

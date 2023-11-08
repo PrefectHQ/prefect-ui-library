@@ -1,11 +1,10 @@
-import { GraphTimelineNode } from '@prefecthq/graphs'
+import { RunGraphData } from '@prefecthq/graphs'
+import { isValid, parseISO } from 'date-fns'
 import { StateUpdate } from '@/models'
-import { FlowRunGraphResponse } from '@/models/api/FlowRunGraphResponse'
 import { FlowRunHistoryResponse } from '@/models/api/FlowRunHistoryResponse'
 import { FlowRunResponse } from '@/models/api/FlowRunResponse'
 import { FlowRunsFilter, FlowRunsHistoryFilter } from '@/models/Filters'
 import { FlowRun } from '@/models/FlowRun'
-import { GraphNode } from '@/models/GraphNode'
 import { RunHistory } from '@/models/RunHistory'
 import { BatchProcessor } from '@/services/BatchProcessor'
 import { mapper } from '@/services/Mapper'
@@ -18,8 +17,7 @@ export interface IWorkspaceFlowRunsApi {
   getFlowRunsCount: (filter: FlowRunsFilter) => Promise<number>,
   getFlowRunsHistory: (filter: FlowRunsHistoryFilter) => Promise<RunHistory[]>,
   getFlowRunsAverageLateness: (filter: FlowRunsFilter) => Promise<number | null>,
-  getFlowRunsGraph: (flowRunId: string) => Promise<GraphNode[]>,
-  getFlowRunsTimeline: (flowRunId: string) => Promise<GraphTimelineNode[]>,
+  getFlowRunsGraph: (flowRunId: string) => Promise<RunGraphData>,
   retryFlowRun: (flowRunId: string) => Promise<void>,
   setFlowRunState: (flowRunId: string, body: StateUpdate) => Promise<void>,
   resumeFlowRun: (flowRunId: string) => Promise<void>,
@@ -72,16 +70,40 @@ export class WorkspaceFlowRunsApi extends WorkspaceApi implements IWorkspaceFlow
     return data
   }
 
-  public async getFlowRunsGraph(flowRunId: string): Promise<GraphNode[]> {
-    const { data } = await this.get<FlowRunGraphResponse[]>(`/${flowRunId}/graph`)
+  public async getFlowRunsGraph(id: string): Promise<RunGraphData> {
+    // todo: should we just send this through the mapper?
+    // context: the idea is that this would be more efficient since the response can be very large.
+    // But that is unproven from a perf perspective. However this is much simpler than a dedicated mapper.
+    // But generally consistency is better so should test if this even makes a difference perf wise.
+    const reviver = (key: string, value: unknown): unknown => {
+      if (key === 'start_time' || key == 'end_time') {
+        if (typeof value !== 'string') {
+          return value
+        }
 
-    return mapper.map('FlowRunGraphResponse', data, 'GraphNode')
-  }
+        const date = parseISO(value)
 
-  public async getFlowRunsTimeline(id: string): Promise<GraphTimelineNode[]> {
-    const { data } = await this.get<FlowRunGraphResponse[]>(`/${id}/graph`)
+        if (isValid(date)) {
+          return date
+        }
+      }
 
-    return mapper.map('FlowRunGraphResponse', data, 'TimelineNode')
+      if (key === 'nodes') {
+        if (!Array.isArray(value)) {
+          return
+        }
+
+        return new Map(value)
+      }
+
+      return value
+    }
+
+    const { data } = await this.get<RunGraphData>(`/${id}/graph-v2`, {
+      transformResponse: response => JSON.parse(response, reviver),
+    })
+
+    return data
   }
 
   public retryFlowRun(id: string): Promise<void> {
