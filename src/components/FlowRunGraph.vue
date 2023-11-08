@@ -98,8 +98,8 @@
       textDefault: getColorToken('--p-color-text-default'),
       textInverse: getColorToken('--p-color-text-inverse'),
       nodeToggleBorderColor: getColorToken('--p-color-button-default-border'),
-      nodeSelectedBorderColor: getColorToken('--p-color-text-selected'),
-      edgeColor: getColorToken('--p-color-text-subdued'),
+      nodeSelectedBorderColor: getColorToken('--p-color-flow-run-graph-node-selected-border'),
+      edgeColor: getColorToken('--p-color-flow-run-graph-edge'),
       guideLineColor: getColorToken('--p-color-divider'),
       guideTextColor: getColorToken('--p-color-text-subdued'),
       node: node => ({
@@ -129,6 +129,11 @@
 </script>
 
 <style>
+:root {
+  --p-color-flow-run-graph-node-selected-border: var(--p-color-text-selected);
+  --p-color-flow-run-graph-edge: var(--p-color-text-subdued);
+}
+
 .flow-run-graph__graph {
   width: 100%;
   height: 340px;
