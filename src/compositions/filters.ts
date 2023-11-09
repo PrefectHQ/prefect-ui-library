@@ -449,7 +449,12 @@ const blockDocumentsFilterSchema: RouteQueryParamsSchema<BlockDocumentsFilter> =
 }
 
 export function useBlockDocumentsFilterFromRoute(defaultValue: MaybeReactive<BlockDocumentsFilter> = {}, prefix?: string): UseFilter<BlockDocumentsFilter> {
-  return useFilterFromRoute(blockDocumentsFilterSchema, defaultValue, prefix)
+  const response = useBlockDocumentsFilter(defaultValue)
+  const { filter: query } = useFilterFromRoute(blockDocumentsFilterSchema, defaultValue, prefix)
+
+  syncFilterWithFilterFromRoute(response.filter, query)
+
+  return response
 }
 
 export function useWorkPoolsFilter(defaultValue: MaybeReactive<WorkPoolsFilter> = {}): UseFilter<WorkPoolsFilter> {
