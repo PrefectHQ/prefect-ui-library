@@ -464,7 +464,8 @@ export const mapBlockSchemasFilter: MapFunction<BlockSchemasFilter, BlockSchemas
 }
 
 export const mapBlockDocumentsFilter: MapFunction<BlockDocumentsFilter, BlockDocumentsFilterRequest> = function(source) {
-  return removeEmptyObjects({
+  console.log('in filter mapper')
+  const returnObject = removeEmptyObjects({
     block_documents: this.map('BlockDocumentFilter', source.blockDocuments, 'BlockDocumentFilterRequest'),
     block_schemas: this.map('BlockSchemaFilter', source.blockSchemas, 'BlockSchemaFilterRequest'),
     block_types: this.map('BlockTypeFilter', source.blockTypes, 'BlockTypeFilterRequest'),
@@ -472,6 +473,8 @@ export const mapBlockDocumentsFilter: MapFunction<BlockDocumentsFilter, BlockDoc
     offset: source.offset,
     limit: source.limit,
   })
+  console.log('return object', returnObject)
+  return returnObject
 }
 
 export const mapWorkQueuesFilter: MapFunction<WorkQueuesFilter, WorkQueuesFilterRequest> = function(source) {

@@ -60,9 +60,11 @@ export class WorkspaceBlockDocumentsApi extends WorkspaceApi implements IWorkspa
   }
 
   public async getBlockDocumentsCount(filter: BlockDocumentsFilter = {}): Promise<number> {
-    const request = mapper.map('BlockDocumentsFilter', filter, 'BlockDocumentsFilterRequest')
-    const { data } = await this.post<number>('/count', request)
-
+    console.log('calling count')
+    // const request = mapper.map('BlockDocumentsFilter', filter, 'BlockDocumentsFilterRequest')
+    // console.log('request', request)
+    const { data } = await this.post<number>('/count', {})
+    console.log('count', data)
     return data
   }
 

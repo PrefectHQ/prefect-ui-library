@@ -33,7 +33,7 @@
                 <span>{{ row.name }}</span>
               </p-link>
             </div>
-            <DeploymentStatusIcon :status="row.status" />
+            <DeploymentStatusIcon v-if="can.access.deploymentStatus" :status="row.status" />
           </div>
         </template>
 
@@ -90,7 +90,7 @@
   import { computed, ref } from 'vue'
   import { SearchInput, ResultsCount, DeploymentToggle, FlowRouterLink, DeploymentsDeleteButton, SelectedCount, DeploymentStatusIcon } from '@/components'
   import DeploymentTagsInput from '@/components/DeploymentTagsInput.vue'
-  import { useWorkspaceRoutes, useDeploymentsFilterFromRoute, useComponent, useOffsetStickyRootMargin, useDeployments } from '@/compositions'
+  import { useWorkspaceRoutes, useDeploymentsFilterFromRoute, useComponent, useOffsetStickyRootMargin, useDeployments, useCan } from '@/compositions'
   import { Deployment, isRRuleSchedule, Schedule } from '@/models'
   import { DeploymentsFilter } from '@/models/Filters'
   import { deploymentSortOptions } from '@/types/SortOptionTypes'
@@ -110,6 +110,8 @@
   const { margin } = useOffsetStickyRootMargin()
 
   const page = useRouteQueryParam('page', NumberRouteParam, 1)
+
+  const can = useCan()
 
   const { filter, clear, isCustomFilter } = useDeploymentsFilterFromRoute(merge({}, props.filter, {
     deployments: {

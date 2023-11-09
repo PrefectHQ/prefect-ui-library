@@ -27,10 +27,8 @@ import { mapEmpiricalPolicyToEmpiricalPolicyResponse, mapEmpiricalPolicyResponse
 import { mapFlowFilter, mapDeploymentFilter, mapFlowRunFilter, mapStateFilter, mapFlowsFilter, mapDeploymentsFilter, mapFlowRunsFilter, mapTagFilter, mapTaskRunFilter, mapTaskRunsFilter, mapBlockDocumentFilter, mapBlockSchemaFilter, mapBlockTypeFilter, mapBlockDocumentsFilter, mapBlockSchemasFilter, mapBlockTypesFilter, mapWorkPoolsFilter, mapWorkPoolFilter, mapWorkPoolQueueFilter, mapFlowRunsHistoryFilter, mapLogsFilter, mapNotificationsFilter, mapSavedSearchesFilter, mapWorkQueuesFilter, mapWorkPoolWorkersFilter, mapWorkPoolQueuesFilter, mapArtifactFilter, mapArtifactsFilter, mapVariablesFilter, mapVariableFilter, mapTaskRunsHistoryFilter } from '@/maps/filters'
 import { mapFlowToFlowResponse, mapFlowResponseToFlow } from '@/maps/flow'
 import { mapFlowRunResponseToFlowRun } from '@/maps/flowRun'
-import { mapGraphNodeToFlowRunGraphResponse, mapFlowRunGraphResponseToGraphNode } from '@/maps/flowRunGraph'
 import { mapRunHistoryToFlowRunHistoryResponse, mapFlowRunHistoryResponseToRunHistory } from '@/maps/flowRunHistory'
 import { mapSavedSearchFilterToFlowRunsFilter } from '@/maps/flowRunsFilter'
-import { mapFlowRunGraphResponseToTimelineNode } from '@/maps/flowRunTimeline'
 import { mapFlowStatsFilterToFlowRunsFilter, mapFlowStatsFilterToTaskRunsFilter } from '@/maps/flowStatsFilter'
 import { mapLogToLogResponse, mapLogResponseToLog } from '@/maps/logs'
 import { mapNotificationResponseToNotification } from '@/maps/notification'
@@ -106,7 +104,6 @@ export const maps = {
   FlowFilter: { FlowFilterRequest: mapFlowFilter },
   FlowResponse: { Flow: mapFlowResponseToFlow },
   FlowRunFilter: { FlowRunFilterRequest: mapFlowRunFilter },
-  FlowRunGraphResponse: { GraphNode: mapFlowRunGraphResponseToGraphNode, TimelineNode: mapFlowRunGraphResponseToTimelineNode },
   FlowRunHistoryResponse: { RunHistory: mapFlowRunHistoryResponseToRunHistory },
   FlowRunResponse: { FlowRun: mapFlowRunResponseToFlowRun },
   FlowRunsFilter: { FlowRunsFilterRequest: mapFlowRunsFilter },
@@ -116,7 +113,6 @@ export const maps = {
     FlowRunsFilter: mapFlowStatsFilterToFlowRunsFilter,
     TaskRunsFilter: mapFlowStatsFilterToTaskRunsFilter,
   },
-  GraphNode: { FlowRunGraphResponse: mapGraphNodeToFlowRunGraphResponse },
   Log: { LogResponse: mapLogToLogResponse },
   LogResponse: { Log: mapLogResponseToLog },
   LogsFilter: { LogsFilterRequest: mapLogsFilter },

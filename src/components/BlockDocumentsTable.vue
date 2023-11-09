@@ -1,55 +1,59 @@
 <template>
   <div class="block-documents-table">
-    <div class="block-documents-table__filters">
-      <ResultsCount label="Block" :count="blockDocuments.length" class="block-documents-table__results" />
-      <SearchInput v-model="searchTerm" placeholder="Search blocks" label="Search blocks" class="block-documents-table__search" />
-      <BlockSchemaCapabilitySelect v-model:selected="selectedCapability" class="block-documents-table__capability" />
-      <BlockTypeSelect v-model:selected="selectedType" class="block-documents-table__type" />
-    </div>
-    <p-table :data="blockDocuments" :columns="columns">
-      <template #name="{ row }: { row: BlockDocument }">
-        <div class="block-documents-table__name-column">
-          <LogoImage :url="row.blockType.logoUrl" class="block-documents-table__name-img" />
-          <div class="block-documents-table__name-content">
-            <span class="block-documents-table__crumbs">
-              {{ row.blockType.name }} /
-              <p-link :to="routes.block(row.id)">
-                {{ row.name }}
-              </p-link>
-            </span>
-            <template v-if="!media.md">
-              <BlockSchemaCapabilities :capabilities="row.blockSchema.capabilities" />
-            </template>
+    <p-layout-table sticky>
+      <template #header-end>
+        <ResultsCount label="Block" :count="total" class="block-documents-table__results" />
+        <SearchInput v-model="searchTerm" placeholder="Search blocks" label="Search blocks" class="block-documents-table__search" />
+        <BlockSchemaCapabilitySelect v-model:selected="selectedCapability" class="block-documents-table__capability" />
+        <BlockTypeSelect v-model:selected="selectedType" class="block-documents-table__type" />
+      </template>
+
+      <p-table :data="blockDocuments" :columns="columns">
+        <template #name="{ row }: { row: BlockDocument }">
+          <div class="block-documents-table__name-column">
+            <LogoImage :url="row.blockType.logoUrl" class="block-documents-table__name-img" />
+            <div class="block-documents-table__name-content">
+              <span class="block-documents-table__crumbs">
+                {{ row.blockType.name }} /
+                <p-link :to="routes.block(row.id)">
+                  {{ row.name }}
+                </p-link>
+              </span>
+              <template v-if="!media.md">
+                <BlockSchemaCapabilities :capabilities="row.blockSchema.capabilities" />
+              </template>
+            </div>
           </div>
-        </div>
-      </template>
+        </template>
 
-      <template #capabilities="{ row }">
-        <BlockSchemaCapabilities :capabilities="row.blockSchema.capabilities" wrapper />
-      </template>
+        <template #capabilities="{ row }">
+          <BlockSchemaCapabilities :capabilities="row.blockSchema.capabilities" wrapper />
+        </template>
 
-      <template #action-heading>
-        <span />
-      </template>
-      <template #action="{ row }">
-        <BlockDocumentMenu :block-document="row" size="xs" @delete="emit('delete')" />
-      </template>
+        <template #action-heading>
+          <span />
+        </template>
+        <template #action="{ row }">
+          <BlockDocumentMenu :block-document="row" size="xs" @delete="emit('delete')" />
+        </template>
 
-      <template #empty-state>
-        <PEmptyResults>
-          <template #message>
-            No blocks
-          </template>
-          <template #actions>
-            <p-button small @click="clear">
-              Clear Filters
-            </p-button>
-          </template>
-        </PEmptyResults>
+        <template #empty-state>
+          <PEmptyResults>
+            <template #message>
+              No blocks
+            </template>
+            <template #actions>
+              <p-button small @click="clear">
+                Clear Filters
+              </p-button>
+            </template>
+          </PEmptyResults>
+        </template>
+      </p-table>
+      <template #footer-end>
+        <p-pager v-if="pages > 1" v-model:page="page" :pages="pages" />
       </template>
-    </p-table>
-
-    <p-pager v-if="pages > 1" v-model:page="page" :pages="pages" />
+    </p-layout-table>
   </div>
 </template>
 
@@ -103,13 +107,10 @@
   const page = useRouteQueryParam('page', NumberRouteParam, 1)
 
   const { filter, clear } = useBlockDocumentsFilterFromRoute(merge({}, props.filter, {
-    blockDocuments: {
-      name: searchTermDebounced,
-    },
-    limit: 50,
+    limit: 5,
   }))
 
-  const { blockDocuments, pages } = useBlockDocuments(filter, {
+  const { blockDocuments, total, pages } = useBlockDocuments(filter, {
     page,
   })
 </script>

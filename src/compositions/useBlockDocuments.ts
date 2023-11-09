@@ -33,7 +33,7 @@ export function useBlockDocuments(filter?: MaybeRefOrGetter<BlockDocumentsFilter
   const pagination = usePagination({
     fetchMethod: api.blockDocuments.getBlockDocuments,
     fetchParameters: parameters,
-    countMethod: api.deployments.getDeploymentsCount,
+    countMethod: api.blockDocuments.getBlockDocumentsCount,
     countParameters: parameters,
     options,
   })

@@ -1,6 +1,6 @@
 {
     "name": "@prefecthq/prefect-ui-library",
-    "version": "2.1.4",
+    "version": "2.2.2",
     "private": false,
     "repository": {
         "type": "git",
@@ -41,23 +41,23 @@
     "types": "./dist/types/src/index.d.ts",
     "devDependencies": {
         "@prefecthq/eslint-config": "1.0.31",
-        "@types/d3": "7.4.2",
-        "@types/lodash.camelcase": "4.3.8",
-        "@types/lodash.debounce": "4.0.8",
-        "@types/lodash.merge": "4.6.8",
-        "@types/node": "^20.8.7",
+        "@types/d3": "7.4.3",
+        "@types/lodash.camelcase": "4.3.9",
+        "@types/lodash.debounce": "4.0.9",
+        "@types/lodash.merge": "4.6.9",
+        "@types/node": "^20.8.10",
         "@types/prismjs": "^1.26.2",
         "@vitejs/plugin-vue": "4.4.0",
         "auto-changelog": "^2.4.0",
         "autoprefixer": "10.4.16",
-        "eslint": "8.51.0",
+        "eslint": "8.53.0",
         "lodash.camelcase": "4.3.0",
         "lodash.debounce": "4.0.8",
         "postcss": "8.4.31",
         "tailwindcss": "3.3.5",
         "tsc-alias": "1.8.8",
         "typescript": "5.2.2",
-        "vite": "4.4.11",
+        "vite": "4.5.0",
         "vite-svg-loader": "^4.0.0",
         "vitest": "^0.34.6",
         "vue-tsc": "1.8.22"
@@ -71,7 +71,7 @@
         "vue-router": "^4.0.12"
     },
     "dependencies": {
-        "@prefecthq/graphs": "1.1.0",
+        "@prefecthq/graphs": "2.1.6",
         "@types/lodash.isequal": "4.5.7",
         "axios": "0.27.2",
         "cronstrue": "^2.32.0",
