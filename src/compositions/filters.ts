@@ -397,7 +397,12 @@ const blockTypesFilterSchema: RouteQueryParamsSchema<BlockTypesFilter> = {
 }
 
 export function useBlockTypesFilterFromRoute(defaultValue: MaybeReactive<BlockTypesFilter> = {}, prefix?: string): UseFilter<BlockTypesFilter> {
-  return useFilterFromRoute(blockTypesFilterSchema, defaultValue, prefix)
+  const response = useBlockTypesFilter(defaultValue)
+  const { filter: query } = useFilterFromRoute(blockTypesFilterSchema, defaultValue, prefix)
+
+  syncFilterWithFilterFromRoute(response.filter, query)
+
+  return response
 }
 
 export function useBlockSchemasFilter(defaultValue: MaybeReactive<BlockSchemasFilter> = {}): UseFilter<BlockSchemasFilter> {
@@ -419,7 +424,12 @@ const blockSchemasFilterSchema: RouteQueryParamsSchema<BlockSchemasFilter> = {
 }
 
 export function useBlockSchemasFilterFromRoute(defaultValue: MaybeReactive<BlockSchemasFilter> = {}, prefix?: string): UseFilter<BlockSchemasFilter> {
-  return useFilterFromRoute(blockSchemasFilterSchema, defaultValue, prefix)
+  const response = useBlockSchemasFilter(defaultValue)
+  const { filter: query } = useFilterFromRoute(blockSchemasFilterSchema, defaultValue, prefix)
+
+  syncFilterWithFilterFromRoute(response.filter, query)
+
+  return response
 }
 
 export function useBlockDocumentsFilter(defaultValue: MaybeReactive<BlockDocumentsFilter> = {}): UseFilter<BlockDocumentsFilter> {
@@ -449,7 +459,12 @@ const blockDocumentsFilterSchema: RouteQueryParamsSchema<BlockDocumentsFilter> =
 }
 
 export function useBlockDocumentsFilterFromRoute(defaultValue: MaybeReactive<BlockDocumentsFilter> = {}, prefix?: string): UseFilter<BlockDocumentsFilter> {
-  return useFilterFromRoute(blockDocumentsFilterSchema, defaultValue, prefix)
+  const response = useBlockDocumentsFilter(defaultValue)
+  const { filter: query } = useFilterFromRoute(blockDocumentsFilterSchema, defaultValue, prefix)
+
+  syncFilterWithFilterFromRoute(response.filter, query)
+
+  return response
 }
 
 export function useWorkPoolsFilter(defaultValue: MaybeReactive<WorkPoolsFilter> = {}): UseFilter<WorkPoolsFilter> {
