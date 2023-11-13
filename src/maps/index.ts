@@ -35,6 +35,7 @@ import { mapNotificationResponseToNotification } from '@/maps/notification'
 import { mapNotificationCreateToNotificationCreateRequest } from '@/maps/notificationCreate'
 import { mapNotificationUpdateToNotificationUpdateRequest } from '@/maps/notificationUpdate'
 import { mapNumberToString, mapStringToNumber } from '@/maps/number'
+import { mapRunGraphDataResponse, mapRunGraphNodeResponse } from '@/maps/runGraphData'
 import { mapSavedSearchResponseToSavedSearch } from '@/maps/savedSearch'
 import { mapSavedSearchCreateToSavedSearchCreateRequest } from '@/maps/savedSearchCreate'
 import { mapUiFlowRunHistoryToScatterPlotItem } from '@/maps/scatterPlotItem'
@@ -122,6 +123,8 @@ export const maps = {
   NotificationUpdate: { NotificationUpdateRequest: mapNotificationUpdateToNotificationUpdateRequest },
   number: { string: mapNumberToString },
   PrefectWorkerCollectionResponse: { WorkerCollectionItem: mapPrefectWorkerCollectionResponseToWorkerCollectionItemArray },
+  RunGraphDataResponse: { RunGraphData: mapRunGraphDataResponse },
+  RunGraphNodeResponse: { RunGraphNode: mapRunGraphNodeResponse },
   RunHistory: { FlowRunHistoryResponse: mapRunHistoryToFlowRunHistoryResponse, DivergingBarChartItem: mapRunHistoryToDivergingBarChartItem },
   SavedSearchCreate: { SavedSearchCreateRequest: mapSavedSearchCreateToSavedSearchCreateRequest },
   SavedSearchesFilter: { SavedSearchesFilterRequest: mapSavedSearchesFilter },
