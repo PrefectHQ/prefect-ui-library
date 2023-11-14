@@ -1,5 +1,5 @@
 import { Action, UseSubscription } from '@prefecthq/vue-compositions'
-import { computed, reactive } from 'vue'
+import { MaybeRefOrGetter, computed, reactive, toValue } from 'vue'
 
 type ExtractAction<T extends readonly UseSubscription<Action>[]> =
   { [K in keyof T]: T[K] extends UseSubscription<infer V> ? V : never }
@@ -11,25 +11,26 @@ export type UseSubscriptions<T extends Action> = {
   },
 }
 
-export function useSubscriptions<T extends UseSubscription<Action>[]>(subscriptions: T): UseSubscriptions<ExtractAction<T>[number]> {
-  const loading = computed(() => subscriptions.some(subscription => subscription.loading))
-  const errored = computed(() => subscriptions.some(subscription => subscription.errored))
-  const errors = computed(() => subscriptions.map(subscription => subscription.error))
-  const executed = computed(() => subscriptions.length > 0 && subscriptions.every(subscription => subscription.executed))
-  const responses = computed(() => subscriptions.map(subscription => subscription.response))
+export function useSubscriptions<T extends UseSubscription<Action>[]>(subscriptions: MaybeRefOrGetter<T>): UseSubscriptions<ExtractAction<T>[number]> {
+  const source = computed(() => toValue(subscriptions))
+  const loading = computed(() => source.value.some(subscription => subscription.loading))
+  const errored = computed(() => source.value.some(subscription => subscription.errored))
+  const errors = computed(() => source.value.map(subscription => subscription.error))
+  const executed = computed(() => source.value.length > 0 && source.value.every(subscription => subscription.executed))
+  const responses = computed(() => source.value.map(subscription => subscription.response))
 
   const unsubscribe = (): void => {
-    subscriptions.forEach(subscription => subscription.unsubscribe())
+    source.value.forEach(subscription => subscription.unsubscribe())
   }
 
   const refresh = async (): Promise<void> => {
-    const promises = subscriptions.map(subscription => subscription.refresh())
+    const promises = source.value.map(subscription => subscription.refresh())
 
     await Promise.all(promises)
   }
 
   const isSubscribed = (): boolean => {
-    return subscriptions.every(subscription => subscription.isSubscribed())
+    return source.value.every(subscription => subscription.isSubscribed())
   }
 
   const response: UseSubscriptions<ExtractAction<T>[number]>['subscriptions'] = reactive({

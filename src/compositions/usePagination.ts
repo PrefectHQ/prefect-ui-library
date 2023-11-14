@@ -1,6 +1,6 @@
 import { Getter } from '@prefecthq/prefect-design'
-import { SubscriptionOptions, useSubscription, useSubscriptionWithDependencies } from '@prefecthq/vue-compositions'
-import { ComputedRef, MaybeRef, Ref, computed, ref, watch } from 'vue'
+import { SubscriptionOptions, UseSubscription, useSubscription, useSubscriptionWithDependencies } from '@prefecthq/vue-compositions'
+import { ComputedRef, MaybeRef, Ref, computed, reactive, ref, watch } from 'vue'
 import { GLOBAL_API_LIMIT } from '@/compositions/useFilterPagination'
 import { UseSubscriptions, useSubscriptions } from '@/compositions/useSubscriptions'
 import { repeat } from '@/utilities/arrays'
@@ -15,10 +15,6 @@ type PaginationFilter = {
 type PaginationParameters = [filter?: PaginationFilter, ...any[]]
 type PaginationFetchAction = (...parameters: PaginationParameters) => Promise<unknown[]>
 type PaginationCountAction = (...parameters: PaginationParameters) => Promise<number>
-
-type FetchSubscriptionAction<
-  TFetch extends PaginationFetchAction
-> = (parameters: Parameters<TFetch>[]) => Promise<Awaited<ReturnType<TFetch>>>
 
 export type PaginationOptions = SubscriptionOptions & {
   mode?: 'page' | 'infinite',
@@ -50,7 +46,7 @@ export type UsePagination<
   TFetch extends PaginationFetchAction,
   TCount extends PaginationCountAction
 > = {
-  subscriptions: UseSubscriptions<TCount | FetchSubscriptionAction<TFetch> | (() => undefined)>['subscriptions'],
+  subscriptions: UseSubscriptions<TCount | TFetch | (() => undefined)>['subscriptions'],
   results: ComputedRef<Awaited<ReturnType<TFetch>>>,
   total: ComputedRef<number>,
   pages: ComputedRef<number>,
@@ -88,28 +84,26 @@ export function usePagination<
   const countSubscription = useSubscriptionWithDependencies(countMethod, countSubscriptionParameters, options)
   const total = computed(() => countSubscription.response ?? 0)
 
-  async function fetchSubscriptionAction(parameters: Parameters<TFetch>[]): Promise<Awaited<ReturnType<TFetch>>> {
-    const promises = parameters.map(parameters => useSubscription(fetchMethod, parameters).promise())
-    const subscriptions = await Promise.all(promises)
-    const response = subscriptions.flatMap(subscription => subscription.response)
-
-    return response as Awaited<ReturnType<TFetch>>
-  }
-
   const fetchSubscriptionParameters = ref(getFetchSubscriptionParameters()) as Ref<Parameters<TFetch>[] | null>
-  const fetchSubscriptionDependantParameters = computed<null | [Parameters<TFetch>[]]>(() => {
-    if (total.value === 0 || fetchSubscriptionParameters.value === null) {
-      return null
+  const fetchSubscriptions: UseSubscription<TFetch>[] = reactive([])
+  const results = computed(() => fetchSubscriptions.flatMap(subscription => subscription.response ?? []) as unknown as Awaited<ReturnType<TFetch>>)
+
+  watch([total, fetchSubscriptionParameters], ([total, parameters]) => {
+    if (parameters === null || total === 0) {
+      fetchSubscriptions.forEach(subscription => subscription.unsubscribe())
+      fetchSubscriptions.splice(0)
+      return
     }
 
-    return [fetchSubscriptionParameters.value]
-  })
-  const fetchSubscription = useSubscriptionWithDependencies(fetchSubscriptionAction, fetchSubscriptionDependantParameters, options)
-  const results = computed(() => fetchSubscription.response ?? [] as unknown as Awaited<ReturnType<TFetch>>)
+    const newSubscriptions = parameters.map(parameter => useSubscription(fetchMethod, parameter, options))
 
-  const { subscriptions } = useSubscriptions([
+    fetchSubscriptions.forEach(subscription => subscription.unsubscribe())
+    fetchSubscriptions.splice(0, Infinity, ...newSubscriptions)
+  }, { immediate: true })
+
+  const { subscriptions } = useSubscriptions(() => [
     countSubscription,
-    fetchSubscription,
+    ...fetchSubscriptions,
   ])
 
   function next(): void {
@@ -167,7 +161,7 @@ export function usePagination<
 
   function getLimit(): number {
     const [filter] = fetchParametersGetter() ?? []
-    const limit = filter?.limit ?? GLOBAL_API_LIMIT
+    const limit = 5
 
     return limit
   }
