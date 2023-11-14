@@ -158,6 +158,7 @@ export type BlockDocumentFilter = {
   isAnonymous?: boolean | null,
   blockTypeId?: string[],
   name?: string[],
+  nameLike?: string,
 }
 
 export type FlowsFilter = UnionFilter<FlowSortValues>

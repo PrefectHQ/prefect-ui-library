@@ -1,29 +1,31 @@
 <template>
-  <PSelect v-model="model" :options="options" class="block-type-select">
+  <p-combobox v-model="model" :options="options" empty-message="Block type" class="block-type-combobox">
     <template #default="{ label }">
       Type: {{ label }}
     </template>
-  </PSelect>
+  </p-combobox>
 </template>
 
 <script lang="ts" setup>
+  import { SelectOption } from '@prefecthq/prefect-design'
   import { useSubscription } from '@prefecthq/vue-compositions'
   import { computed } from 'vue'
   import { useWorkspaceApi } from '@/compositions'
 
   const props = defineProps<{
-    selected: string | null,
+    selected: string | string[] | null | undefined,
+    allowUnset?: boolean,
   }>()
 
   const emit = defineEmits<{
-    (event: 'update:selected', value: string | null): void,
+    (event: 'update:selected', value: string | string[] | null): void,
   }>()
 
   const model = computed({
     get() {
-      return props.selected
+      return props.selected ?? null
     },
-    set(value: string | null) {
+    set(value) {
       emit('update:selected', value)
     },
   })
@@ -32,13 +34,19 @@
   const blockTypesSubscription = useSubscription(api.blockTypes.getBlockTypes)
   const blockTypes = computed(() => blockTypesSubscription.response ?? [])
 
-  const options = computed(() => {
-    const allOption = { label: 'all', value: null }
-    const capabilityOptions = blockTypes.value.map(({ name }) => ({
-      label: name,
-      value: name,
+  const options = computed<SelectOption[]>(() => {
+    const options: SelectOption[] = blockTypes.value.map(type => ({
+      value: type.slug,
+      label: type.name,
     }))
 
-    return [allOption, ...capabilityOptions]
+    if (props.allowUnset) {
+      options.unshift({
+        value: null,
+        label: 'None',
+      })
+    }
+
+    return options
   })
 </script>

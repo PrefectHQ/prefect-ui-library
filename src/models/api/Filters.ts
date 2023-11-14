@@ -122,7 +122,7 @@ export type BlockDocumentFilterRequest = {
   id?: Any,
   is_anonymous?: NullableEquals,
   block_type_id?: Any,
-  name?: Any,
+  name?: Any & Like,
 }
 
 export type FlowsFilterRequest = UnionFilterRequest<FlowSortValues>

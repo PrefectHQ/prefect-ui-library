@@ -362,6 +362,7 @@ export function useBlockDocumentFilter(defaultValue: MaybeReactive<BlockDocument
     isAnonymous: toRef(defaultValueReactive, 'isAnonymous'),
     blockTypeId: toRef(defaultValueReactive, 'blockTypeId'),
     name: toRef(defaultValueReactive, 'name'),
+    nameLike: toRef(defaultValueReactive, 'nameLike'),
   })
 
   return withFilterFunctions(filter)
@@ -373,6 +374,7 @@ const blockDocumentFilterSchema: RouteQueryParamsSchema<BlockDocumentFilter> = {
   isAnonymous: NullableBooleanRouteParam,
   blockTypeId: [StringRouteParam],
   name: [StringRouteParam],
+  nameLike: StringRouteParam,
 }
 
 export function useBlockTypesFilter(defaultValue: MaybeReactive<BlockTypesFilter> = {}): UseFilter<BlockTypesFilter> {
