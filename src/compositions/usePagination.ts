@@ -161,7 +161,7 @@ export function usePagination<
 
   function getLimit(): number {
     const [filter] = fetchParametersGetter() ?? []
-    const limit = 5
+    const limit = filter?.limit ?? GLOBAL_API_LIMIT
 
     return limit
   }
