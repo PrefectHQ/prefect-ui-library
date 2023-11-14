@@ -3,6 +3,7 @@ import debounce from 'lodash.debounce'
 import isEqual from 'lodash.isequal'
 import { Ref, reactive, ComputedRef, toRef, computed, toRefs, isReactive, watch } from 'vue'
 import { LocationQuery } from 'vue-router'
+import { BlockDocumentSortValuesSortParam } from '@/formatters/BlockDocumentSortValuesParam'
 import { DeploymentSortValuesSortParam } from '@/formatters/DeploymentSortValuesSortParam'
 import { FlowRunSortValuesSortParam } from '@/formatters/FlowRunSortValuesSortParam'
 import { FlowSortValuesSortParam } from '@/formatters/FlowSortValuesSortParam'
@@ -446,6 +447,7 @@ export function useBlockDocumentsFilter(defaultValue: MaybeReactive<BlockDocumen
     includeSecrets: toRef(defaultValueReactive, 'includeSecrets'),
     limit: toRef(defaultValueReactive, 'limit'),
     offset: toRef(defaultValueReactive, 'offset'),
+    sort: toRef(defaultValueReactive, 'sort'),
   })
 
   return withFilterFunctions(filter)
@@ -458,6 +460,7 @@ const blockDocumentsFilterSchema: RouteQueryParamsSchema<BlockDocumentsFilter> =
   limit: NumberRouteParam,
   offset: NumberRouteParam,
   includeSecrets: BooleanRouteParam,
+  sort: BlockDocumentSortValuesSortParam,
 }
 
 export function useBlockDocumentsFilterFromRoute(defaultValue: MaybeReactive<BlockDocumentsFilter> = {}, prefix?: string): UseFilter<BlockDocumentsFilter> {

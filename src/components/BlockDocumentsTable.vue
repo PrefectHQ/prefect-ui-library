@@ -112,6 +112,7 @@
       slug: blockTypes,
     },
     limit: 50,
+    sort: 'BLOCK_TYPE_AND_NAME_ASC',
   })
 
   const { blockDocuments, total, pages } = useBlockDocuments(() => merge({}, props.filter, filter), {

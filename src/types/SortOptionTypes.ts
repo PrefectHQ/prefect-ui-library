@@ -1,4 +1,4 @@
-import { ref, Ref } from 'vue'
+import { ref, Ref, toValue } from 'vue'
 import { MaybeRef } from '@/types/reactivity'
 
 export const artifactSortValues = ['CREATED_DESC', 'UPDATED_DESC', 'KEY_DESC', 'KEY_ASC', 'ID_ASC', 'ID_DESC'] as const
@@ -8,8 +8,7 @@ export const defaultArtifactSort: FlowSortValues = 'CREATED_DESC'
 export function isArtifactSortValue(value: unknown): value is ArtifactSortValues
 export function isArtifactSortValue(value: Ref<unknown>): value is Ref<ArtifactSortValues>
 export function isArtifactSortValue(value: MaybeRef<unknown>): value is MaybeRef<ArtifactSortValues> {
-  const valueRef = ref(value)
-  return artifactSortValues.includes(valueRef.value as ArtifactSortValues)
+  return artifactSortValues.includes(toValue(value) as ArtifactSortValues)
 }
 
 export const artifactSortOptions = [
@@ -26,9 +25,7 @@ export const defaultVariableSort: VariableSortValues = 'NAME_ASC'
 export function isVariableSortValue(value: unknown): value is VariableSortValues
 export function isVariableSortValue(value: Ref<unknown>): value is Ref<VariableSortValues>
 export function isVariableSortValue(value: MaybeRef<unknown>): value is MaybeRef<VariableSortValues> {
-  const valueRef = ref(value)
-
-  return variableSortValues.includes(valueRef.value as VariableSortValues)
+  return variableSortValues.includes(toValue(value) as VariableSortValues)
 }
 
 export const variableSortOptions = [
@@ -45,9 +42,7 @@ export const defaultFlowSort: FlowSortValues = 'NAME_ASC'
 export function isFlowSortValue(value: unknown): value is FlowSortValues
 export function isFlowSortValue(value: Ref<unknown>): value is Ref<FlowSortValues>
 export function isFlowSortValue(value: MaybeRef<unknown>): value is MaybeRef<FlowSortValues> {
-  const valueRef = ref(value)
-
-  return flowSortValues.includes(valueRef.value as FlowSortValues)
+  return flowSortValues.includes(toValue(value) as FlowSortValues)
 }
 
 export const flowSortOptions = [
@@ -63,9 +58,7 @@ export const defaultDeploymentSort: DeploymentSortValues = 'NAME_ASC'
 export function isDeploymentSortValue(value: unknown): value is DeploymentSortValues
 export function isDeploymentSortValue(value: Ref<unknown>): value is Ref<DeploymentSortValues>
 export function isDeploymentSortValue(value: MaybeRef<unknown>): value is MaybeRef<DeploymentSortValues> {
-  const valueRef = ref(value)
-
-  return deploymentSortValues.includes(valueRef.value as DeploymentSortValues)
+  return deploymentSortValues.includes(toValue(value) as DeploymentSortValues)
 }
 
 export const deploymentSortOptions = [
@@ -81,9 +74,7 @@ export const defaultFlowRunSort: FlowRunSortValues = 'START_TIME_DESC'
 export function isFlowRunSortValue(value: unknown): value is FlowRunSortValues
 export function isFlowRunSortValue(value: Ref<unknown>): value is Ref<FlowRunSortValues>
 export function isFlowRunSortValue(value: MaybeRef<unknown>): value is MaybeRef<FlowRunSortValues> {
-  const valueRef = ref(value)
-
-  return flowRunSortValues.includes(valueRef.value as FlowRunSortValues)
+  return flowRunSortValues.includes(toValue(value) as FlowRunSortValues)
 }
 
 export type FlowRunSortOptions = { label: string, value: FlowRunSortValues }[]
@@ -95,9 +86,7 @@ export const defaultTaskRunSort: TaskRunSortValues = 'EXPECTED_START_TIME_DESC'
 export function isTaskRunSortValue(value: unknown): value is TaskRunSortValues
 export function isTaskRunSortValue(value: Ref<unknown>): value is Ref<TaskRunSortValues>
 export function isTaskRunSortValue(value: MaybeRef<unknown>): value is MaybeRef<TaskRunSortValues> {
-  const valueRef = ref(value)
-
-  return taskRunSortValues.includes(valueRef.value as TaskRunSortValues)
+  return taskRunSortValues.includes(toValue(value) as TaskRunSortValues)
 }
 
 export type TaskRunSortOptions = { label: string, value: TaskRunSortValues }[]
@@ -109,9 +98,17 @@ export const defaultLogSort: LogSortValues = 'TIMESTAMP_ASC'
 export function isLogSortValue(value: unknown): value is LogSortValues
 export function isLogSortValue(value: Ref<unknown>): value is Ref<LogSortValues>
 export function isLogSortValue(value: MaybeRef<unknown>): value is MaybeRef<LogSortValues> {
-  const valueRef = ref(value)
-
-  return logSortValues.includes(valueRef.value as LogSortValues)
+  return logSortValues.includes(toValue(value) as LogSortValues)
 }
 
 export type LogSortOptions = { label: string, value: LogSortValues }[]
+
+const blockDocumentSortValues = ['NAME_DESC', 'NAME_ASC', 'BLOCK_TYPE_AND_NAME_ASC'] as const
+export type BlockDocumentSortValues = typeof blockDocumentSortValues[number]
+export const defaultBlockDocumentsSort: BlockDocumentSortValues = 'BLOCK_TYPE_AND_NAME_ASC'
+
+export function isBlockDocumentSortValue(value: unknown): value is BlockDocumentSortValues
+export function isBlockDocumentSortValue(value: Ref<unknown>): value is Ref<BlockDocumentSortValues>
+export function isBlockDocumentSortValue(value: MaybeRef<unknown>): value is MaybeRef<BlockDocumentSortValues> {
+  return blockDocumentSortValues.includes(toValue(value) as BlockDocumentSortValues)
+}
