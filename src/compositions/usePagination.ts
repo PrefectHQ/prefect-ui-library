@@ -1,6 +1,6 @@
 import { Getter } from '@prefecthq/prefect-design'
 import { SubscriptionOptions, UseSubscription, useSubscription, useSubscriptionWithDependencies } from '@prefecthq/vue-compositions'
-import { ComputedRef, MaybeRef, Ref, computed, reactive, ref, watch } from 'vue'
+import { ComputedRef, MaybeRef, Ref, computed, onScopeDispose, reactive, ref, watch } from 'vue'
 import { GLOBAL_API_LIMIT } from '@/compositions/useFilterPagination'
 import { UseSubscriptions, useSubscriptions } from '@/compositions/useSubscriptions'
 import { repeat } from '@/utilities/arrays'
@@ -197,6 +197,10 @@ export function usePagination<
 
   watch(page, () => {
     setFetchSubscriptionParameters()
+  })
+
+  onScopeDispose(() => {
+    subscriptions.unsubscribe()
   })
 
   return {
