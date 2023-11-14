@@ -71,7 +71,7 @@
   }))
 
   const { flowRuns, total, subscriptions, next } = useFlowRuns(filter, {
-    interval: 3000,
+    interval: 30000,
     mode: 'infinite',
   })
 
