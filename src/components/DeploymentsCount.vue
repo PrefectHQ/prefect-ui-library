@@ -1,6 +1,6 @@
 <template>
-  <template v-if="deploymentsCount">
-    <span class="deployments-count">{{ deploymentsCount }} {{ toPluralString(localization.info.deployment, deploymentsCount) }}</span>
+  <template v-if="count">
+    <span class="deployments-count">{{ count }} {{ toPluralString(localization.info.deployment, count) }}</span>
   </template>
   <template v-else>
     <span class="deployments-count--none">{{ localization.info.none }}</span>
@@ -9,29 +9,18 @@
 
 <script lang="ts" setup>
   import { toPluralString } from '@prefecthq/prefect-design'
-  import { useSubscriptionWithDependencies } from '@prefecthq/vue-compositions'
-  import { computed } from 'vue'
-  import { useWorkspaceApi } from '@/compositions'
+  import { useDeploymentsCount } from '@/compositions'
   import { localization } from '@/localization'
 
   const props = defineProps<{
     flowId: string,
   }>()
 
-  const api = useWorkspaceApi()
-
-  const deploymentsCountFilter = computed<Parameters<typeof api.deployments.getDeploymentsCount> | null>(() => {
-    return [
-      {
-        flows: {
-          id: [props.flowId],
-        },
-      },
-    ]
-  })
-
-  const deploymentsCountSubscription = useSubscriptionWithDependencies(api.deployments.getDeploymentsCount, deploymentsCountFilter)
-  const deploymentsCount = computed(() => deploymentsCountSubscription.response ?? null)
+  const { count } = useDeploymentsCount(() => ({
+    flows: {
+      id: [props.flowId],
+    },
+  }))
 </script>
 
 <style>

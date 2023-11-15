@@ -3,20 +3,16 @@
 </template>
 
 <script lang="ts" setup>
-  import { computed } from 'vue'
   import { FlowRunName } from '@/components'
   import { useLastFlowRun } from '@/compositions'
-  import { UnionFilter } from '@/models'
 
   const props = defineProps<{
-    flowId?: string,
+    flowId: string,
   }>()
 
-  const filter = computed(() => ({
+  const { flowRun } = useLastFlowRun(() => ({
     flows: {
       id: [props.flowId],
     },
-  })) as UnionFilter
-
-  const { flowRun } = useLastFlowRun(filter)
+  }))
 </script>

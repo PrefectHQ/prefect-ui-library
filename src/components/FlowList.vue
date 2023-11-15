@@ -10,11 +10,8 @@
 
       <template #header-end>
         <SearchInput v-model="flowNameLike" placeholder="Flow names" label="Search flows" />
-        <FlowRunTagsInput v-model:selected="filter.flowRuns.tags.name" multiple />
-      </template>
-
-      <template #header-sort>
         <p-select v-model="filter.sort" :options="flowSortOptions" />
+        <FlowRunTagsInput v-model:selected="filter.flowRuns.tags.name" multiple />
       </template>
 
       <p-table :data="flows" :columns="columns">
@@ -51,7 +48,7 @@
           <MiniFlowHistory
             class="flow-list__activity-chart"
             :flow-id="row.id"
-            :time-span-in-seconds="activityTimeSpanInSeconds"
+            :time-span-in-seconds="secondsInDay"
           />
         </template>
 
@@ -87,8 +84,9 @@
 </template>
 
 <script lang="ts" setup>
-  import { PTable, PEmptyResults, PLink, CheckboxModel, TableColumn } from '@prefecthq/prefect-design'
+  import { CheckboxModel, TableColumn } from '@prefecthq/prefect-design'
   import { NumberRouteParam, useDebouncedRef, useRouteQueryParam } from '@prefecthq/vue-compositions'
+  import { secondsInDay } from 'date-fns/constants'
   import merge from 'lodash.merge'
   import { computed, ref } from 'vue'
   import {
@@ -113,8 +111,6 @@
     filter?: FlowsFilter,
   }>()
 
-  const activityTimeSpanInSeconds = 24 * 60 * 60
-
   const { margin } = useOffsetStickyRootMargin()
   const { FlowMenu } = useComponent()
 
@@ -133,6 +129,7 @@
   const page = useRouteQueryParam('page', NumberRouteParam, 1)
   const { flows, subscriptions, total, pages } = useFlows(filter, {
     page,
+    interval: 30000,
   })
 
   const columns: TableColumn<Flow>[] = [
