@@ -1,6 +1,8 @@
 <template>
   <template v-if="count">
-    <span class="deployments-count">{{ count }} {{ toPluralString(localization.info.deployment, count) }}</span>
+    <p-link class="deployments-count" :to="withQuery(routes.flow(flowId), { tab: 'Deployments' })">
+      {{ count }} {{ toPluralString(localization.info.deployment, count) }}
+    </p-link>
   </template>
   <template v-else>
     <span class="deployments-count--none">{{ localization.info.none }}</span>
@@ -9,12 +11,15 @@
 
 <script lang="ts" setup>
   import { toPluralString } from '@prefecthq/prefect-design'
-  import { useDeploymentsCount } from '@/compositions'
+  import { useDeploymentsCount, useWorkspaceRoutes } from '@/compositions'
   import { localization } from '@/localization'
+  import { withQuery } from '@/utilities'
 
   const props = defineProps<{
     flowId: string,
   }>()
+
+  const routes = useWorkspaceRoutes()
 
   const { count } = useDeploymentsCount(() => ({
     flows: {
