@@ -1,5 +1,5 @@
 import { asArray } from '@prefecthq/prefect-design'
-import axios, { AxiosInstance, AxiosRequestConfig, AxiosRequestHeaders, AxiosResponse } from 'axios'
+import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse, RawAxiosRequestHeaders } from 'axios'
 import { MaybeArray } from '@/types/utilities'
 import { isDefined } from '@/utilities/variables'
 
@@ -10,14 +10,14 @@ export type PrefectConfig = {
 
 type ConfigFunction<R, T extends PrefectConfig = PrefectConfig> = (config: T) => R
 export type ApiBaseUrl<T extends PrefectConfig = PrefectConfig> = string | ConfigFunction<string, T>
-export type ApiHeaders<T extends PrefectConfig = PrefectConfig> = AxiosRequestHeaders | ConfigFunction<AxiosRequestHeaders, T>
+export type ApiHeaders<T extends PrefectConfig = PrefectConfig> = RawAxiosRequestHeaders | ConfigFunction<RawAxiosRequestHeaders, T>
 
 export const getPrefectBaseUrl: ApiBaseUrl = (config) => config.baseUrl
 
-export const getPrefectUIHeaders: ApiHeaders = { 'X-PREFECT-UI': true }
+export const getPrefectUIHeaders: RawAxiosRequestHeaders = { 'X-PREFECT-UI': true }
 
 export const getAuthorizationHeaders: ApiHeaders = (config) => {
-  const value: AxiosRequestHeaders = {}
+  const value: RawAxiosRequestHeaders = {}
 
   if (config.token) {
     value.Authorization = `bearer ${config.token}`
@@ -44,10 +44,10 @@ export class Api<T extends PrefectConfig = PrefectConfig> {
     return this.apiBaseUrl(this.apiConfig)
   }
 
-  protected composeHeaders(): AxiosRequestHeaders {
+  protected composeHeaders(): RawAxiosRequestHeaders {
     const array = asArray(this.apiHeaders)
 
-    return array.reduce<AxiosRequestHeaders>((headers, header) => {
+    return array.reduce<RawAxiosRequestHeaders>((headers, header) => {
       const value = typeof header === 'function' ? header(this.apiConfig) : header
 
       return {
