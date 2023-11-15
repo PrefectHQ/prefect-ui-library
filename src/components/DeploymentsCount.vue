@@ -1,29 +1,26 @@
 <template>
-  <div ref="element">
-    <template v-if="visible && deploymentsCount">
-      {{ deploymentsCount }}
-    </template>
-  </div>
+  <template v-if="deploymentsCount">
+    <span class="deployments-count">{{ deploymentsCount }} {{ toPluralString(localization.info.deployment, deploymentsCount) }}</span>
+  </template>
+  <template v-else>
+    <span class="deployments-count--none">{{ localization.info.none }}</span>
+  </template>
 </template>
 
 <script lang="ts" setup>
-  import { useVisibilityObserver, useSubscriptionWithDependencies } from '@prefecthq/vue-compositions'
-  import { computed, ref } from 'vue'
+  import { toPluralString } from '@prefecthq/prefect-design'
+  import { useSubscriptionWithDependencies } from '@prefecthq/vue-compositions'
+  import { computed } from 'vue'
   import { useWorkspaceApi } from '@/compositions'
+  import { localization } from '@/localization'
 
   const props = defineProps<{
     flowId: string,
   }>()
 
   const api = useWorkspaceApi()
-  const element = ref<HTMLDivElement>()
-  const { visible } = useVisibilityObserver(element, { disconnectWhenVisible: true })
 
   const deploymentsCountFilter = computed<Parameters<typeof api.deployments.getDeploymentsCount> | null>(() => {
-    if (!visible.value) {
-      return null
-    }
-
     return [
       {
         flows: {
@@ -36,3 +33,9 @@
   const deploymentsCountSubscription = useSubscriptionWithDependencies(api.deployments.getDeploymentsCount, deploymentsCountFilter)
   const deploymentsCount = computed(() => deploymentsCountSubscription.response ?? null)
 </script>
+
+<style>
+.deployments-count--none { @apply
+  text-subdued
+}
+</style>
