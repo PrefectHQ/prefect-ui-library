@@ -22,12 +22,28 @@ export class WorkspaceArtifactsApi extends WorkspaceApi implements IWorkspaceArt
   protected override routePrefix = '/artifacts'
 
   private readonly batcher = new BatchProcessor<string, Artifact>(async ids => {
+    if (ids.length === 1) {
+      const [id] = ids
+      const { data } = await this.get<ArtifactResponse>(`/${id}`)
+
+      return () => mapper.map('ArtifactResponse', data, 'Artifact')
+    }
+
     const artifacts = await this.getArtifacts({ artifacts: { id: ids } })
+
     return toMap(artifacts, 'id')
   }, { maxBatchSize: 200 })
 
   private readonly keyBatcher = new BatchProcessor<string, ArtifactCollection>(async keys => {
+    if (keys.length === 1) {
+      const [key] = keys
+      const { data } = await this.get<ArtifactCollectionResponse>(`/${key}/latest`)
+
+      return () => mapper.map('ArtifactCollectionResponse', data, 'ArtifactCollection')
+    }
+
     const collections = await this.getArtifactCollections({ artifacts: { key: keys } })
+
     return toMap(collections, 'key')
   }, { maxBatchSize: 200 })
 

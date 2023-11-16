@@ -22,6 +22,13 @@ export class WorkspaceBlockDocumentsApi extends WorkspaceApi implements IWorkspa
   protected override routePrefix = '/block_documents'
 
   private readonly batcher = new BatchProcessor<string, BlockDocument>(async ids => {
+    if (ids.length === 1) {
+      const [id] = ids
+      const { data } = await this.get<BlockDocumentResponse>(`/${id}`)
+
+      return () => mapper.map('BlockDocumentResponse', data, 'BlockDocument')
+    }
+
     const blockDocuments = await this.getBlockDocuments({
       blockDocuments: {
         id: ids,

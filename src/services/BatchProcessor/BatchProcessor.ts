@@ -2,7 +2,7 @@ import { BatchLookupError } from '@/models/BatchLookupError'
 import { MaybePromise } from '@/types'
 
 export type BatchCallbackLookup<V, R> = (value: V) => MaybePromise<R>
-export type BatchCallback<V, R> = (values: V[]) => MaybePromise<Map<V, R>> | BatchCallbackLookup<V, R>
+export type BatchCallback<V, R> = (values: V[]) => MaybePromise<Map<V, R> | BatchCallbackLookup<V, R>>
 export type BatchOptions = {
   maxBatchSize?: number,
   maxWaitMilliseconds?: number,
