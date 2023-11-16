@@ -24,6 +24,13 @@ export class WorkspaceWorkQueuesApi extends WorkspaceApi implements IWorkspaceWo
   protected override routePrefix = '/work_queues'
 
   private readonly isBatcher = new BatchProcessor<string, WorkQueue>(async ids => {
+    if (ids.length === 1) {
+      const [id] = ids
+      const { data } = await this.get<WorkQueueResponse>(`/${id}`)
+
+      return () => mapper.map('WorkQueueResponse', data, 'WorkQueue')
+    }
+
     const workQueues = await this.getWorkQueues({
       workQueues: {
         id: ids,
@@ -34,6 +41,13 @@ export class WorkspaceWorkQueuesApi extends WorkspaceApi implements IWorkspaceWo
   }, { maxBatchSize: 200 })
 
   private readonly nameBatcher = new BatchProcessor<string, WorkQueue>(async names => {
+    if (names.length === 1) {
+      const [name] = names
+      const { data } = await this.get<WorkQueueResponse>(`/name/${name}`)
+
+      return () => mapper.map('WorkQueueResponse', data, 'WorkQueue')
+    }
+
     const workQueues = await this.getWorkQueues({
       workQueues: {
         name: names,

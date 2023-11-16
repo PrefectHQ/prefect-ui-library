@@ -26,6 +26,13 @@ export class WorkspaceDeploymentsApi extends WorkspaceApi implements IWorkspaceD
   protected override routePrefix = '/deployments'
 
   private readonly batcher = new BatchProcessor<string, Deployment>(async ids => {
+    if (ids.length === 1) {
+      const [id] = ids
+      const { data } = await this.get<DeploymentResponse>(`/${id}`)
+
+      return () => mapper.map('DeploymentResponse', data, 'Deployment')
+    }
+
     const deployments = await this.getDeployments({
       deployments: {
         id: ids,

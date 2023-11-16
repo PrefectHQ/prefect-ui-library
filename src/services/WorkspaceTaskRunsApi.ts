@@ -22,6 +22,13 @@ export class WorkspaceTaskRunsApi extends WorkspaceApi implements IWorkspaceTask
   protected override routePrefix = '/task_runs'
 
   private readonly batcher = new BatchProcessor<string, TaskRun>(async ids => {
+    if (ids.length === 1) {
+      const [id] = ids
+      const { data } = await this.get<TaskRunResponse>(`/${id}`)
+
+      return () => mapper.map('TaskRunResponse', data, 'TaskRun')
+    }
+
     const taskRuns = await this.getTaskRuns({
       taskRuns: {
         id: ids,
