@@ -97,6 +97,7 @@
 
   const props = defineProps<{
     filter?: DeploymentsFilter,
+    prefix?: string,
   }>()
 
   const emit = defineEmits<{
@@ -118,7 +119,7 @@
       nameLike: deploymentNameDebounced,
     },
     limit: 50,
-  }))
+  }), props.prefix)
 
   const { deployments, subscriptions, total, pages } = useDeployments(filter, {
     page,
