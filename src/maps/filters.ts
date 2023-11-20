@@ -397,7 +397,10 @@ export const mapBlockDocumentFilter: MapFunction<BlockDocumentFilter, BlockDocum
     id: toAny(source.id),
     is_anonymous: toNullableEquals(source.isAnonymous),
     block_type_id: toAny(source.blockTypeId),
-    name: toAny(source.name),
+    name: {
+      ...toAny(source.name),
+      ...toLike(source.nameLike),
+    },
   }
 }
 

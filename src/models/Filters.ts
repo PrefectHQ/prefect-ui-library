@@ -1,4 +1,4 @@
-import { ArtifactSortValues, FlowSortValues, FlowRunSortValues, TaskRunSortValues, DeploymentSortValues, LogSortValues, VariableSortValues } from '@/types'
+import { ArtifactSortValues, FlowSortValues, FlowRunSortValues, TaskRunSortValues, DeploymentSortValues, LogSortValues, VariableSortValues, BlockDocumentSortValues } from '@/types'
 
 export type Operation = 'and' | 'or'
 
@@ -158,6 +158,7 @@ export type BlockDocumentFilter = {
   isAnonymous?: boolean | null,
   blockTypeId?: string[],
   name?: string[],
+  nameLike?: string,
 }
 
 export type FlowsFilter = UnionFilter<FlowSortValues>
@@ -222,6 +223,7 @@ export type BlockDocumentsFilter = {
   blockTypes?: BlockTypeFilter,
   blockSchemas?: BlockSchemaFilter,
   includeSecrets?: boolean,
+  sort?: BlockDocumentSortValues,
   offset?: number,
   limit?: number,
 }

@@ -1,12 +1,12 @@
 <template>
   <div class="block-documents-table">
     <div class="block-documents-table__filters">
-      <ResultsCount label="Block" :count="filtered.length" class="block-documents-table__results" />
+      <ResultsCount label="Block" :count="total" class="block-documents-table__results" />
       <SearchInput v-model="searchTerm" placeholder="Search blocks" label="Search blocks" class="block-documents-table__search" />
-      <BlockSchemaCapabilitySelect v-model:selected="selectedCapability" class="block-documents-table__capability" />
-      <BlockTypeSelect v-model:selected="selectedType" class="block-documents-table__type" />
+      <BlockSchemaCapabilitySelect v-model:selected="capabilities" class="block-documents-table__capability" />
+      <BlockTypeSelect v-model:selected="blockTypes" class="block-documents-table__type" />
     </div>
-    <p-table :data="sortedBlocks" :columns="columns">
+    <p-table :data="blockDocuments" :columns="columns">
       <template #name="{ row }: { row: BlockDocument }">
         <div class="block-documents-table__name-column">
           <LogoImage :url="row.blockType.logoUrl" class="block-documents-table__name-img" />
@@ -48,11 +48,15 @@
         </PEmptyResults>
       </template>
     </p-table>
+
+    <p-pager v-if="pages > 1" v-model:page="page" :pages="pages" />
   </div>
 </template>
 
 <script lang="ts" setup>
   import { media, TableColumn, PEmptyResults } from '@prefecthq/prefect-design'
+  import { NumberRouteParam, useDebouncedRef, useRouteQueryParam } from '@prefecthq/vue-compositions'
+  import merge from 'lodash.merge'
   import { computed, ref } from 'vue'
   import BlockSchemaCapabilities from '@/components/BlockSchemaCapabilities.vue'
   import BlockSchemaCapabilitySelect from '@/components/BlockSchemaCapabilitySelect.vue'
@@ -60,11 +64,12 @@
   import LogoImage from '@/components/LogoImage.vue'
   import ResultsCount from '@/components/ResultsCount.vue'
   import SearchInput from '@/components/SearchInput.vue'
-  import { useComponent, useWorkspaceRoutes } from '@/compositions'
+  import { useBlockDocuments, useBlockDocumentsFilterFromRoute, useComponent, useWorkspaceRoutes } from '@/compositions'
   import { BlockDocument } from '@/models/BlockDocument'
+  import { BlockDocumentsFilter } from '@/models/Filters'
 
   const props = defineProps<{
-    blockDocuments: BlockDocument[],
+    filter?: BlockDocumentsFilter,
   }>()
 
   const emit = defineEmits<{
@@ -73,9 +78,6 @@
 
   const { BlockDocumentMenu } = useComponent()
   const routes = useWorkspaceRoutes()
-  const searchTerm = ref('')
-  const selectedCapability = ref<string | null>(null)
-  const selectedType = ref<string | null>(null)
 
   const columns = computed<TableColumn<BlockDocument>[]>(() => [
     {
@@ -93,31 +95,34 @@
     },
   ])
 
-  const filtered = computed(() => props.blockDocuments.filter(filterBlockDocument))
+  const page = useRouteQueryParam('page', NumberRouteParam, 1)
+  const capabilities = ref<string[]>([])
+  const blockTypes = ref<string[]>([])
+  const searchTerm = ref('')
+  const searchTermDebounced = useDebouncedRef(searchTerm, 500)
 
-  function filterBlockDocument({ name, blockType, blockSchema }: BlockDocument): boolean {
-    const { capabilities: blockSchemaCapabilities } = blockSchema
-    const { name: blockTypeName } = blockType
+  const { filter } = useBlockDocumentsFilterFromRoute({
+    blockSchemas: {
+      blockCapabilities: capabilities,
+    },
+    blockDocuments: {
+      nameLike: searchTermDebounced,
+    },
+    blockTypes: {
+      slug: blockTypes,
+    },
+    limit: 50,
+    sort: 'BLOCK_TYPE_AND_NAME_ASC',
+  })
 
-    if (selectedCapability.value && !blockSchemaCapabilities.includes(selectedCapability.value)) {
-      return false
-    }
-
-    if (selectedType.value && blockTypeName != selectedType.value) {
-      return false
-    }
-
-    return `${name} ${blockType.name} ${blockSchemaCapabilities.join(' ')}`.toLowerCase().includes(searchTerm.value.toLowerCase())
-  }
-
-  const sortedBlocks = computed(() => {
-    return [...filtered.value].sort((blockA, blockB) => blockA.blockType.name.localeCompare(blockB.blockType.name))
+  const { blockDocuments, total, pages } = useBlockDocuments(() => merge({}, props.filter, filter), {
+    page,
   })
 
   function clear(): void {
     searchTerm.value = ''
-    selectedCapability.value = null
-    selectedType.value = null
+    capabilities.value = []
+    blockTypes.value = []
   }
 </script>
 
