@@ -1,8 +1,8 @@
-import axios from 'axios'
+import { isAxiosError } from 'axios'
 import { isRecord, isString } from '@/utilities'
 
 export function getApiErrorMessage(error: unknown, defaultErrorMessage: string): string {
-  if (!axios.isAxiosError(error)) {
+  if (!isAxiosError(error)) {
     return defaultErrorMessage
   }
 

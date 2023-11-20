@@ -1,6 +1,6 @@
 {
     "name": "@prefecthq/prefect-ui-library",
-    "version": "2.2.4",
+    "version": "2.2.7",
     "private": false,
     "repository": {
         "type": "git",
@@ -65,7 +65,7 @@
     "peerDependencies": {
         "@prefecthq/prefect-design": "^2.0.11",
         "@prefecthq/vue-charts": "^2.0.3",
-        "@prefecthq/vue-compositions": "1.6.4",
+        "@prefecthq/vue-compositions": "^1.6.6",
         "vee-validate": "^4.7.0",
         "vue": "^3.3.4",
         "vue-router": "^4.0.12"
@@ -73,7 +73,7 @@
     "dependencies": {
         "@prefecthq/graphs": "2.1.7",
         "@types/lodash.isequal": "4.5.8",
-        "axios": "0.27.2",
+        "axios": "1.6.2",
         "cronstrue": "^2.43.0",
         "d3": "7.8.5",
         "date-fns": "2.30.0",

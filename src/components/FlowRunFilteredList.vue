@@ -2,23 +2,25 @@
   <div class="flow-run-filtered-list">
     <div ref="stickyControls" class="flow-run-filtered-list__controls" :class="classes.header">
       <div class="flow-run-filtered-list__controls--right">
-        <ResultsCount v-if="selectedFlowRuns.length == 0" :count="total" label="Flow run" />
-        <SelectedCount v-else :count="selectedFlowRuns.length" />
+        <ResultsCount v-if="selected.length == 0" :count="total" label="Flow run" />
+        <SelectedCount v-else :count="selected.length" />
 
-        <FlowRunsDeleteButton v-if="can.delete.flow_run" :selected="selectedFlowRuns" @delete="deleteFlowRuns" />
+        <FlowRunsDeleteButton v-if="can.delete.flow_run" :selected="selected" @delete="deleteFlowRuns" />
       </div>
 
-      <StateNameSelect :selected="states" empty-message="All run states" class="flow-run-filtered-list__state-select" @update:selected="updateState" />
-      <FlowRunsSort v-model="sort" class="flow-run-filtered-list__flow-runs-sort" />
+      <StateNameSelect v-model:selected="filter.flowRuns.state.name" multiple empty-message="All run states" class="flow-run-filtered-list__state-select" />
+      <FlowRunsSort v-model="filter.sort" class="flow-run-filtered-list__flow-runs-sort" />
     </div>
-    <FlowRunList v-model:selected="selectedFlowRuns" :flow-runs="flowRuns" :selectable="!disableDeletion && can.delete.flow_run" @bottom="next" />
+
+    <FlowRunList v-model:selected="selected" :flow-runs="flowRuns" :selectable="selectable && can.delete.flow_run" @bottom="next" />
+
     <PEmptyResults v-if="empty">
       <template #message>
         <slot name="empty-message">
           No runs found
         </slot>
       </template>
-      <template v-if="hasFilters" #actions>
+      <template v-if="isCustomFilter" #actions>
         <p-button small @click="clear">
           Clear Filters
         </p-button>
@@ -29,46 +31,23 @@
 
 <script lang="ts" setup>
   import { usePositionStickyObserver } from '@prefecthq/vue-compositions'
-  import { computed, onMounted, ref } from 'vue'
+  import merge from 'lodash.merge'
+  import { computed, ref } from 'vue'
   import { ResultsCount, StateNameSelect, FlowRunsSort, FlowRunList, SelectedCount, FlowRunsDeleteButton } from '@/components'
-  import { useFlowRuns } from '@/compositions'
+  import { useFlowRuns, useFlowRunsFilterFromRoute } from '@/compositions'
   import { useCan } from '@/compositions/useCan'
   import { FlowRunsFilter } from '@/models/Filters'
-  import { FlowRunSortValues, PrefectStateNames } from '@/types'
 
   const props = defineProps<{
-    flowRunFilter: FlowRunsFilter,
-    states?: PrefectStateNames[],
-    disableDeletion?: boolean,
-  }>()
-
-  const emit = defineEmits<{
-    (event: 'update:states', value: PrefectStateNames[]): void,
+    filter?: FlowRunsFilter,
+    selectable?: boolean,
+    prefix?: string,
   }>()
 
   const can = useCan()
-  const selectedFlowRuns = ref<string[]>([])
-  const states = ref<PrefectStateNames[]>(props.states ?? [])
-  const stickyControls = ref<HTMLElement>()
+  const selected = ref<string[]>([])
 
-  const updateState = (newValue: string | string[] | null): void => {
-    states.value = newValue as PrefectStateNames[]
-    emit('update:states', states.value)
-  }
-
-  const sort = ref<FlowRunSortValues>(props.flowRunFilter.sort ?? 'START_TIME_DESC')
-  const hasFilters = computed(() => states.value.length)
-
-  const filter = computed<FlowRunsFilter>(() => ({
-    ...props.flowRunFilter,
-    flowRuns: {
-      ...props.flowRunFilter.flowRuns,
-      state: {
-        name: states.value.length ? states.value : props.flowRunFilter.flowRuns?.state?.name,
-      },
-    },
-    sort: sort.value,
-  }))
+  const { filter, clear, isCustomFilter } = useFlowRunsFilterFromRoute(merge({}, props.filter), props.prefix)
 
   const { flowRuns, total, subscriptions, next } = useFlowRuns(filter, {
     interval: 30000,
@@ -77,6 +56,7 @@
 
   const empty = computed(() => subscriptions.executed && flowRuns.value.length === 0)
 
+  const stickyControls = ref<HTMLElement>()
   const { stuck } = usePositionStickyObserver(stickyControls)
 
   const classes = computed(() => ({
@@ -85,20 +65,10 @@
     },
   }))
 
-  function clear(): void {
-    states.value = []
-  }
-
   const deleteFlowRuns = (): void => {
-    selectedFlowRuns.value = []
+    selected.value = []
     subscriptions.refresh()
   }
-
-  onMounted(() => {
-    if (props.states) {
-      states.value = props.states
-    }
-  })
 </script>
 
 <style>

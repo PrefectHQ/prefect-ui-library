@@ -17,6 +17,13 @@ export class WorkspaceFlowsApi extends WorkspaceApi implements IWorkspaceFlowsAp
   protected override routePrefix = '/flows'
 
   private readonly batcher = new BatchProcessor<string, Flow>(async ids => {
+    if (ids.length === 1) {
+      const [id] = ids
+      const { data } = await this.get<FlowResponse>(`${id}`)
+
+      return () => mapper.map('FlowResponse', data, 'Flow')
+    }
+
     const flows = await this.getFlows({
       flows: {
         id: ids,
