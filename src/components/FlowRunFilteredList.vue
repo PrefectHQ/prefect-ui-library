@@ -8,6 +8,7 @@
         <FlowRunsDeleteButton v-if="can.delete.flow_run" :selected="selected" @delete="deleteFlowRuns" />
       </div>
 
+      <SearchInput v-model="searchTerm" placeholder="Search by run name" label="Search by run name" class="flow-run-filtered-list__search" />
       <StateNameSelect v-model:selected="filter.flowRuns.state.name" multiple empty-message="All run states" class="flow-run-filtered-list__state-select" />
       <FlowRunsSort v-model="filter.sort" class="flow-run-filtered-list__flow-runs-sort" />
     </div>
@@ -30,10 +31,11 @@
 </template>
 
 <script lang="ts" setup>
-  import { usePositionStickyObserver } from '@prefecthq/vue-compositions'
+  import { useDebouncedRef, usePositionStickyObserver } from '@prefecthq/vue-compositions'
   import merge from 'lodash.merge'
   import { computed, ref } from 'vue'
   import { ResultsCount, StateNameSelect, FlowRunsSort, FlowRunList, SelectedCount, FlowRunsDeleteButton } from '@/components'
+  import SearchInput from '@/components/SearchInput.vue'
   import { useFlowRuns, useFlowRunsFilterFromRoute } from '@/compositions'
   import { useCan } from '@/compositions/useCan'
   import { FlowRunsFilter } from '@/models/Filters'
@@ -46,8 +48,14 @@
 
   const can = useCan()
   const selected = ref<string[]>([])
+  const searchTerm = ref('')
+  const searchTermDebounced = useDebouncedRef(searchTerm, 500)
 
-  const { filter, clear, isCustomFilter } = useFlowRunsFilterFromRoute(merge({}, props.filter), props.prefix)
+  const { filter, clear, isCustomFilter } = useFlowRunsFilterFromRoute(merge({}, props.filter, {
+    flowRuns: {
+      nameLike: searchTermDebounced,
+    },
+  }), props.prefix)
 
   const { flowRuns, total, subscriptions, next } = useFlowRuns(filter, {
     interval: 30000,
@@ -101,6 +109,11 @@
   flex
   gap-2
   items-center
+}
+
+.flow-run-filtered-list__search { @apply
+  w-full
+  sm:w-fit
 }
 
 .flow-run-filtered-list__state-select { @apply
