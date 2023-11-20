@@ -1,4 +1,4 @@
-import { ref, Ref, toValue } from 'vue'
+import { Ref, toValue } from 'vue'
 import { MaybeRef } from '@/types/reactivity'
 
 export const artifactSortValues = ['CREATED_DESC', 'UPDATED_DESC', 'KEY_DESC', 'KEY_ASC', 'ID_ASC', 'ID_DESC'] as const
