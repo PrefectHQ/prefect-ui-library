@@ -2,7 +2,7 @@ import { JsonInput } from '@/components'
 import { SchemaPropertyService } from '@/services/schemas/properties/SchemaPropertyService'
 import { SchemaPropertyComponentWithProps, getSchemaPropertyRequestValue, getSchemaPropertyResponseValue } from '@/services/schemas/utilities'
 import { SchemaValue, isSchemaValues, SchemaValues } from '@/types/schemas'
-import { isEmptyObject, isNullish, mapValues, parseUnknownJson, stringifyUnknownJson } from '@/utilities'
+import { isEmptyObject, isEmptyString, isNullish, mapValues, parseUnknownJson, stringifyUnknownJson } from '@/utilities'
 
 export class SchemaPropertyObject extends SchemaPropertyService {
 
@@ -24,6 +24,10 @@ export class SchemaPropertyObject extends SchemaPropertyService {
 
   protected request(value: SchemaValue): unknown {
     if (this.componentIs(JsonInput)) {
+      if (isEmptyString(value)) {
+        return undefined
+      }
+
       return parseUnknownJson(value)
     }
 
