@@ -11,7 +11,7 @@
   import { h } from 'vue'
   import { useRouter } from 'vue-router'
   import ToastFlowRunCreate from '@/components/ToastFlowRunCreate.vue'
-  import { useWorkspaceApi, useWorkspaceRoutes, useNextFlowRun, useFlowRunsFilter } from '@/compositions'
+  import { useWorkspaceApi, useWorkspaceRoutes, useNextFlowRun } from '@/compositions'
   import { localization } from '@/localization'
   import { Deployment } from '@/models'
   import { getApiErrorMessage } from '@/utilities/errors'
