@@ -25,13 +25,18 @@
   const router = useRouter()
   const routes = useWorkspaceRoutes()
 
-  const { filter: nextRunFilter } = useFlowRunsFilter({
+  // const { filter: nextRunFilter } = useFlowRunsFilter({
+  //   deployments: {
+  //     id: [props.deployment.id],
+  //   },
+  // })
+
+
+  const { subscriptions: nextRunSubscription } = useNextFlowRun(() => ({
     deployments: {
       id: [props.deployment.id],
     },
-  })
-
-  const { subscriptions: nextRunSubscription } = useNextFlowRun(nextRunFilter)
+  }))
 
   const run = async (): Promise<void> => {
     if (props.deployment.parameterOpenApiSchema.required && props.deployment.parameterOpenApiSchema.required.length > 0) {
