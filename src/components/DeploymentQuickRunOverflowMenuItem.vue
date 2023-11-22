@@ -11,7 +11,7 @@
   import { h } from 'vue'
   import { useRouter } from 'vue-router'
   import ToastFlowRunCreate from '@/components/ToastFlowRunCreate.vue'
-  import { useWorkspaceApi, useWorkspaceRoutes, useNextFlowRun, useFlowRunsFilter } from '@/compositions'
+  import { useWorkspaceApi, useWorkspaceRoutes, useNextFlowRun } from '@/compositions'
   import { localization } from '@/localization'
   import { Deployment } from '@/models'
   import { getApiErrorMessage } from '@/utilities/errors'
@@ -25,13 +25,11 @@
   const router = useRouter()
   const routes = useWorkspaceRoutes()
 
-  const { filter: nextRunFilter } = useFlowRunsFilter({
+  const { subscriptions: nextRunSubscription } = useNextFlowRun(() => ({
     deployments: {
       id: [props.deployment.id],
     },
-  })
-
-  const { subscriptions: nextRunSubscription } = useNextFlowRun(nextRunFilter)
+  }))
 
   const run = async (): Promise<void> => {
     if (props.deployment.parameterOpenApiSchema.required && props.deployment.parameterOpenApiSchema.required.length > 0) {

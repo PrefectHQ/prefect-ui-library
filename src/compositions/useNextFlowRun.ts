@@ -17,11 +17,12 @@ export function useNextFlowRun(filter: MaybeRefOrGetter<UnionFilter | null | und
       return null
     }
 
-    const now = new Date()
     const filterValue = toValue(filter)
     const nextFlowRunFilter: FlowRunsFilter = {
       flowRuns: {
-        expectedStartTimeAfter: now,
+        state: {
+          name: ['Scheduled'],
+        },
       },
       sort: 'EXPECTED_START_TIME_ASC',
       limit: 1,
