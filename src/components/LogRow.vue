@@ -45,6 +45,15 @@
   grid-template-columns: 84px minmax(0, 1fr) 150px;
 }
 
+@media (max-width: 768px) {
+  .log-row { @apply
+  grid
+  py-2;
+  grid-template-columns: none;
+  grid-template-rows: 20px minmax(0, 1fr) 50px;
+}
+}
+
 .log-row__leading { @apply
   select-none;
 }
