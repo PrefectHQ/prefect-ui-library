@@ -7,9 +7,12 @@ export const mapFlowStatsFilterToFlowRunsFilter: MapFunction<FlowStatsFilter, Fl
   const now = new Date()
 
   const filter: FlowRunsFilter = {
-    flows: {
+    flows: source.flowId ? {
       id: [source.flowId],
-    },
+    } : undefined,
+    deployments: source.deploymentId ? {
+      id: [source.deploymentId],
+    } : undefined,
     flowRuns: {
       expectedStartTimeAfter: subSeconds(now, source.timeSpanInSeconds),
       expectedStartTimeBefore: now,
@@ -23,9 +26,12 @@ export const mapFlowStatsFilterToTaskRunsFilter: MapFunction<FlowStatsFilter, Ta
   const now = new Date()
 
   return {
-    flows: {
+    flows: source.flowId ? {
       id: [source.flowId],
-    },
+    } : undefined,
+    deployments: source.deploymentId ? {
+      id: [source.deploymentId],
+    } : undefined,
     taskRuns: {
       startTimeAfter: subSeconds(now, source.timeSpanInSeconds),
       startTimeBefore: now,
