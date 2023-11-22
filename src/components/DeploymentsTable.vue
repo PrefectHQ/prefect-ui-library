@@ -27,13 +27,13 @@
 
         <template #name="{ row }">
           <div class="deployments-table__name">
+            <DeploymentStatusIcon v-if="can.access.deploymentStatus" :status="row.status" />
             <div class="deployments-table__name-links">
               <FlowRouterLink :flow-id="row.flowId" after="&nbsp/&nbsp;" />
               <p-link :to="routes.deployment(row.id)">
                 <span>{{ row.name }}</span>
               </p-link>
             </div>
-            <DeploymentStatusIcon v-if="can.access.deploymentStatus" :status="row.status" />
           </div>
         </template>
 
