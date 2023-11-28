@@ -1,52 +1,47 @@
 <template>
-  <div class="work-pool-queues-table">
-    <p-layout-table>
-      <template #header-start>
-        <template v-if="selected">
-          <div class="work-pool-queues-table__controls--right">
-            <ResultsCount v-if="selected.length == 0" label="Work Queue" :count="filteredWorkPoolQueues.length" />
-            <SelectedCount v-else :count="selected.length" />
+  <p-content class="work-pool-queues-table">
+    <p-list-header sticky>
+      <template v-if="selected">
+        <ResultsCount v-if="selected.length == 0" label="Work Queue" :count="filteredWorkPoolQueues.length" />
+        <SelectedCount v-else :count="selected.length" />
+        <p-button v-if="can.create.work_queue && !selected.length" small icon="PlusIcon" :to="routes.workPoolQueueCreate(workPoolName)" />
 
-            <p-button v-if="can.create.work_queue && !selected.length" small icon="PlusIcon" :to="routes.workPoolQueueCreate(workPoolName)" />
-          </div>
-
-          <WorkPoolQueuesDeleteButton :work-pool-name="workPoolName" :work-pool-queues="selected" @delete="handleDelete" />
-        </template>
+        <WorkPoolQueuesDeleteButton :work-pool-name="workPoolName" :work-pool-queues="selected" @delete="handleDelete" />
       </template>
 
-      <template #header-end>
+      <template #controls>
         <SearchInput v-model="search" label="Search" placeholder="Search" />
       </template>
+    </p-list-header>
 
-      <p-table v-model:selected="selected" :data="filteredWorkPoolQueues" :columns="columns">
-        <template #priority-heading>
-          <WorkPoolQueuePriorityLabel />
-        </template>
+    <p-table v-model:selected="selected" :data="filteredWorkPoolQueues" :columns="columns">
+      <template #priority-heading>
+        <WorkPoolQueuePriorityLabel />
+      </template>
 
-        <template #actions-heading>
-          <span />
-        </template>
+      <template #actions-heading>
+        <span />
+      </template>
 
-        <template #name="{ row }">
-          <p-link :to="routes.workPoolQueue(workPoolName, row.name)">
-            <span>{{ row.name }}</span>
-          </p-link>
-        </template>
+      <template #name="{ row }">
+        <p-link :to="routes.workPoolQueue(workPoolName, row.name)">
+          <span>{{ row.name }}</span>
+        </p-link>
+      </template>
 
-        <template #status="{ row }">
-          <WorkPoolQueueStatusBadge v-if="workPool" :work-queue="row" :work-pool="workPool" />
-        </template>
+      <template #status="{ row }">
+        <WorkPoolQueueStatusBadge v-if="workPool" :work-queue="row" :work-pool="workPool" />
+      </template>
 
-        <template #actions="{ row }">
-          <div class="worker-pool-queues-table__actions">
-            <WorkersLateIndicator :work-pool-name="workPoolName" :work-pool-queue-names="[row.name]" />
-            <WorkPoolQueueToggle :work-pool-queue="row" :work-pool-name="workPoolName" @update="refresh" />
-            <WorkPoolQueueMenu :work-pool-name="workPoolName" :work-pool-queue="row" size="xs" @delete="handleDelete" />
-          </div>
-        </template>
-      </p-table>
-    </p-layout-table>
-  </div>
+      <template #actions="{ row }">
+        <div class="worker-pool-queues-table__actions">
+          <WorkersLateIndicator :work-pool-name="workPoolName" :work-pool-queue-names="[row.name]" />
+          <WorkPoolQueueToggle :work-pool-queue="row" :work-pool-name="workPoolName" @update="refresh" />
+          <WorkPoolQueueMenu :work-pool-name="workPoolName" :work-pool-queue="row" size="xs" @delete="handleDelete" />
+        </div>
+      </template>
+    </p-table>
+  </p-content>
 </template>
 
 <script lang="ts" setup>
@@ -125,13 +120,6 @@
 </script>
 
 <style>
-.work-pool-queues-table__controls--right { @apply
-  mr-auto
-  flex
-  gap-4
-  items-center
-}
-
 .worker-pool-queues-table__actions { @apply
   justify-end
   items-center

@@ -1,86 +1,84 @@
 <template>
-  <div class="flow-list">
-    <p-layout-table :root-margin="margin" sticky>
-      <template #header-start>
-        <ResultsCount v-if="selectedFlows.length == 0" label="Flow" :count="total" />
-        <SelectedCount v-else :count="selectedFlows.length" />
+  <p-content class="flow-list">
+    <p-list-header sticky>
+      <ResultsCount v-if="selectedFlows.length == 0" label="Flow" :count="total" />
+      <SelectedCount v-else :count="selectedFlows.length" />
+      <FlowsDeleteButton v-if="can.delete.flow" :selected="selectedFlows" small @delete="deleteFlows" />
 
-        <FlowsDeleteButton v-if="can.delete.flow" :selected="selectedFlows" small @delete="deleteFlows" />
-      </template>
-
-      <template #header-end>
+      <template #controls>
         <SearchInput v-model="flowNameLike" placeholder="Flow names" label="Search flows" />
-        <p-select v-model="filter.sort" :options="flowSortOptions" />
         <FlowRunTagsInput v-model:selected="filter.flowRuns.tags.name" multiple />
       </template>
 
-      <p-table :data="flows" :columns="columns">
-        <template #selection-heading>
-          <p-checkbox v-model="model" @update:model-value="selectAllFlows" />
-        </template>
-
-        <template #selection="{ row }">
-          <p-checkbox v-model="selectedFlows" :value="row.id" />
-        </template>
-
-        <template #name="{ row }">
-          <div class="flow-list__name-col">
-            <p-link :to="routes.flow(row.id)" class="flow-list__name">
-              <span>{{ row.name }}</span>
-            </p-link>
-            <span class="flow-list__created-date">Created {{ formatDateTimeNumeric(row.created) }}</span>
-          </div>
-        </template>
-
-        <template #last-run="{ row }">
-          <LastFlowRun :flow-id="row.id" />
-        </template>
-
-        <template #next-run="{ row }">
-          <NextFlowRun :flow-id="row.id" />
-        </template>
-
-        <template #deployments="{ row }">
-          <DeploymentsCount :flow-id="row.id" />
-        </template>
-
-        <template #activity="{ row }">
-          <MiniFlowHistory
-            class="flow-list__activity-chart"
-            :flow-id="row.id"
-            :time-span-in-seconds="secondsInDay"
-          />
-        </template>
-
-        <template #action-heading>
-          <span />
-        </template>
-
-        <template #action="{ row }">
-          <div class="flow-list__action">
-            <FlowMenu size="xs" :flow="row" flat @delete="refresh" />
-          </div>
-        </template>
-
-        <template #empty-state>
-          <PEmptyResults>
-            <template #message>
-              No flows
-            </template>
-            <template v-if="isCustomFilter" #actions>
-              <p-button small @click="clear">
-                Clear Filters
-              </p-button>
-            </template>
-          </PEmptyResults>
-        </template>
-      </p-table>
-
-      <template #footer-end>
-        <p-pager v-if="pages > 1" v-model:page="page" :pages="pages" />
+      <template #sort>
+        <p-select v-model="filter.sort" :options="flowSortOptions" />
       </template>
-    </p-layout-table>
-  </div>
+    </p-list-header>
+
+    <p-table :data="flows" :columns="columns">
+      <template #selection-heading>
+        <p-checkbox v-model="model" @update:model-value="selectAllFlows" />
+      </template>
+
+      <template #selection="{ row }">
+        <p-checkbox v-model="selectedFlows" :value="row.id" />
+      </template>
+
+      <template #name="{ row }">
+        <div class="flow-list__name-col">
+          <p-link :to="routes.flow(row.id)" class="flow-list__name">
+            <span>{{ row.name }}</span>
+          </p-link>
+          <span class="flow-list__created-date">Created {{ formatDateTimeNumeric(row.created) }}</span>
+        </div>
+      </template>
+
+      <template #last-run="{ row }">
+        <LastFlowRun :flow-id="row.id" />
+      </template>
+
+      <template #next-run="{ row }">
+        <NextFlowRun :flow-id="row.id" />
+      </template>
+
+      <template #deployments="{ row }">
+        <DeploymentsCount :flow-id="row.id" />
+      </template>
+
+      <template #activity="{ row }">
+        <MiniFlowHistory
+          class="flow-list__activity-chart"
+          :flow-id="row.id"
+          :time-span-in-seconds="secondsInDay"
+        />
+      </template>
+
+      <template #action-heading>
+        <span />
+      </template>
+
+      <template #action="{ row }">
+        <div class="flow-list__action">
+          <FlowMenu size="xs" :flow="row" flat @delete="refresh" />
+        </div>
+      </template>
+
+      <template #empty-state>
+        <PEmptyResults>
+          <template #message>
+            No flows
+          </template>
+          <template v-if="isCustomFilter" #actions>
+            <p-button small @click="clear">
+              Clear Filters
+            </p-button>
+          </template>
+        </PEmptyResults>
+      </template>
+    </p-table>
+
+    <p-pager v-if="pages > 1" v-model:page="page" :pages="pages" />
+  </p-content>
 </template>
 
 <script lang="ts" setup>
@@ -100,7 +98,7 @@
     SelectedCount,
     FlowRunTagsInput
   } from '@/components'
-  import { useCan, useFlowsFilterFromRoute, useWorkspaceRoutes, useOffsetStickyRootMargin, useFlows } from '@/compositions'
+  import { useCan, useFlowsFilterFromRoute, useWorkspaceRoutes, useFlows } from '@/compositions'
   import { useComponent } from '@/compositions/useComponent'
   import { FlowsFilter } from '@/models/Filters'
   import { Flow } from '@/models/Flow'
@@ -111,7 +109,6 @@
     filter?: FlowsFilter,
   }>()
 
-  const { margin } = useOffsetStickyRootMargin()
   const { FlowMenu } = useComponent()
 
   const can = useCan()

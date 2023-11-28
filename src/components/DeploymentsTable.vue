@@ -1,100 +1,96 @@
 <template>
-  <div class="deployments-table">
-    <p-layout-table sticky :root-margin="margin">
-      <template #header-start>
-        <ResultsCount v-if="selectedDeployments.length == 0" label="Deployment" :count="total" />
-        <SelectedCount v-else :count="selectedDeployments.length" />
+  <p-content class="deployments-table">
+    <p-list-header sticky>
+      <ResultsCount v-if="selectedDeployments.length == 0" label="Deployment" :count="total" />
+      <SelectedCount v-else :count="selectedDeployments.length" />
+      <DeploymentsDeleteButton small :selected="selectedDeployments" @delete="deleteDeployments" />
 
-        <DeploymentsDeleteButton small :selected="selectedDeployments" @delete="deleteDeployments" />
-      </template>
-
-      <template #header-end>
+      <template #controls>
         <SearchInput v-model="deploymentName" placeholder="Search deployments" label="Search deployments" />
-
-        <p-select v-model="filter.sort" :options="deploymentSortOptions" />
-
         <DeploymentTagsInput v-model:selected="filter.deployments.tags.name" multiple />
       </template>
 
-      <p-table :data="deployments" :columns="columns" class="deployments-table">
-        <template #selection-heading>
-          <p-checkbox v-model="selectAllValue" />
-        </template>
-
-        <template #name-heading>
-          Flow name / deployment name
-        </template>
-
-        <template #selection="{ row }">
-          <p-checkbox v-model="selectedDeployments" :value="row.id" :disabled="!row.can.delete" />
-        </template>
-
-        <template #name="{ row }">
-          <div class="deployments-table__name">
-            <DeploymentStatusIcon v-if="can.access.deploymentStatus" :status="row.status" />
-            <div class="deployments-table__name-links">
-              <FlowRouterLink :flow-id="row.flowId" after="&nbsp/&nbsp;" />
-              <p-link :to="routes.deployment(row.id)">
-                <span>{{ row.name }}</span>
-              </p-link>
-            </div>
-          </div>
-        </template>
-
-        <template #schedule="{ row }">
-          <span :title="row.schedule?.toString({ verbose: true })">{{ handleSchedule(row.schedule) }}</span>
-        </template>
-
-        <template #tags="{ row }">
-          <template v-if="row.tags">
-            <p-tag-wrapper :tags="row.tags" justify="left" />
-          </template>
-        </template>
-
-        <template #applied-by="{ row }">
-          {{ row.appliedBy }}
-        </template>
-
-        <template #action-heading>
-          <span />
-        </template>
-
-        <template #action="{ row }">
-          <div class="deployments-table__actions">
-            <DeploymentToggle :deployment="row" @update="refresh" />
-            <DeploymentMenu size="xs" :deployment="row" show-all @delete="refresh" />
-          </div>
-        </template>
-
-        <template #empty-state>
-          <PEmptyResults>
-            <template #message>
-              No deployments
-            </template>
-            <template v-if="isCustomFilter" #actions>
-              <p-button small @click="clear">
-                Clear Filters
-              </p-button>
-            </template>
-          </PEmptyResults>
-        </template>
-      </p-table>
-
-      <template #footer-end>
-        <p-pager v-if="pages > 1" v-model:page="page" :pages="pages" />
+      <template #sort>
+        <p-select v-model="filter.sort" :options="deploymentSortOptions" />
       </template>
-    </p-layout-table>
-  </div>
+    </p-list-header>
+
+    <p-table :data="deployments" :columns="columns" class="deployments-table">
+      <template #selection-heading>
+        <p-checkbox v-model="selectAllValue" />
+      </template>
+
+      <template #name-heading>
+        Flow name / deployment name
+      </template>
+
+      <template #selection="{ row }">
+        <p-checkbox v-model="selectedDeployments" :value="row.id" :disabled="!row.can.delete" />
+      </template>
+
+      <template #name="{ row }">
+        <div class="deployments-table__name">
+          <DeploymentStatusIcon v-if="can.access.deploymentStatus" :status="row.status" />
+          <div class="deployments-table__name-links">
+            <FlowRouterLink :flow-id="row.flowId" after="&nbsp/&nbsp;" />
+            <p-link :to="routes.deployment(row.id)">
+              <span>{{ row.name }}</span>
+            </p-link>
+          </div>
+        </div>
+      </template>
+
+      <template #schedule="{ row }">
+        <span :title="row.schedule?.toString({ verbose: true })">{{ handleSchedule(row.schedule) }}</span>
+      </template>
+
+      <template #tags="{ row }">
+        <template v-if="row.tags">
+          <p-tag-wrapper :tags="row.tags" justify="left" />
+        </template>
+      </template>
+
+      <template #applied-by="{ row }">
+        {{ row.appliedBy }}
+      </template>
+
+      <template #action-heading>
+        <span />
+      </template>
+
+      <template #action="{ row }">
+        <div class="deployments-table__actions">
+          <DeploymentToggle :deployment="row" @update="refresh" />
+          <DeploymentMenu size="xs" :deployment="row" show-all @delete="refresh" />
+        </div>
+      </template>
+
+      <template #empty-state>
+        <PEmptyResults>
+          <template #message>
+            No deployments
+          </template>
+          <template v-if="isCustomFilter" #actions>
+            <p-button small @click="clear">
+              Clear Filters
+            </p-button>
+          </template>
+        </PEmptyResults>
+      </template>
+    </p-table>
+
+    <p-pager v-if="pages > 1" v-model:page="page" :pages="pages" />
+  </p-content>
 </template>
 
 <script lang="ts" setup>
-  import { PTable, PTagWrapper, PEmptyResults, PLink, TableColumn } from '@prefecthq/prefect-design'
+  import { TableColumn } from '@prefecthq/prefect-design'
   import { NumberRouteParam, useDebouncedRef, useRouteQueryParam } from '@prefecthq/vue-compositions'
   import merge from 'lodash.merge'
   import { computed, ref } from 'vue'
   import { SearchInput, ResultsCount, DeploymentToggle, FlowRouterLink, DeploymentsDeleteButton, SelectedCount, DeploymentStatusIcon } from '@/components'
   import DeploymentTagsInput from '@/components/DeploymentTagsInput.vue'
-  import { useWorkspaceRoutes, useDeploymentsFilterFromRoute, useComponent, useOffsetStickyRootMargin, useDeployments, useCan } from '@/compositions'
+  import { useWorkspaceRoutes, useDeploymentsFilterFromRoute, useComponent, useDeployments, useCan } from '@/compositions'
   import { Deployment, isRRuleSchedule, Schedule } from '@/models'
   import { DeploymentsFilter } from '@/models/Filters'
   import { deploymentSortOptions } from '@/types/SortOptionTypes'
@@ -112,7 +108,6 @@
   const routes = useWorkspaceRoutes()
   const deploymentName = ref<string>()
   const deploymentNameDebounced = useDebouncedRef(deploymentName, 1200)
-  const { margin } = useOffsetStickyRootMargin()
 
   const page = useRouteQueryParam('page', NumberRouteParam, 1)
 
