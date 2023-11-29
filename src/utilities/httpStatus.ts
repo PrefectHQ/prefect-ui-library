@@ -32,7 +32,7 @@ function getStatusCode(value: unknown): number {
     return getStatusCode(value.response)
   }
 
-  throw 'Invalid argument provided to httpStatus'
+  return 0
 }
 
 export function httpStatus(value: unknown): HttpStatusResponse {
