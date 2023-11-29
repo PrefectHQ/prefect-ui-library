@@ -1,69 +1,66 @@
 <template>
-  <div class="work-queues-table">
-    <p-layout-table>
-      <template #header-start>
-        <template v-if="selected">
-          <ResultsCount v-if="selected.length == 0" label="Work queue" :count="filteredWorkQueues.length" />
-          <SelectedCount v-else :count="selected.length" />
-
-          <WorkQueuesDeleteButton v-if="can.delete.work_queue" :selected="selected" @delete="handleDelete" />
-        </template>
+  <p-content class="work-queues-table">
+    <p-list-header sticky>
+      <template v-if="selected">
+        <ResultsCount v-if="selected.length == 0" label="Work queue" :count="filteredWorkQueues.length" />
+        <SelectedCount v-else :count="selected.length" />
+        <WorkQueuesDeleteButton v-if="can.delete.work_queue" :selected="selected" @delete="handleDelete" />
       </template>
 
-      <template #header-end>
+      <template #controls>
         <SearchInput v-model="search" placeholder="Search work queues" label="Search work queues" />
       </template>
+    </p-list-header>
 
-      <p-table v-model:selected="selected" :data="filteredWorkQueues" :columns="columns">
-        <template #action-heading>
-          <span />
-        </template>
+    <p-table v-model:selected="selected" :data="filteredWorkQueues" :columns="columns">
+      <template #action-heading>
+        <span />
+      </template>
 
-        <template #name="{ row }">
-          <p-link :to="routes.workQueue(row.id)">
-            <span>{{ row.name }}</span>
-          </p-link>
-        </template>
+      <template #name="{ row }">
+        <p-link :to="routes.workQueue(row.id)">
+          <span>{{ row.name }}</span>
+        </p-link>
+      </template>
 
-        <template #concurrency="{ row }">
-          <span> {{ row.concurrencyLimit ?? 'Unlimited' }} </span>
-        </template>
+      <template #concurrency="{ row }">
+        <span> {{ row.concurrencyLimit ?? 'Unlimited' }} </span>
+      </template>
 
-        <template #status="{ row }">
-          <WorkQueueStatusBadge :work-queue="row" />
-        </template>
+      <template #status="{ row }">
+        <WorkQueueStatusBadge :work-queue="row" />
+      </template>
 
-        <template #last-polled="{ row }">
-          <WorkQueueLastPolled :work-queue-id="row.id" />
-        </template>
+      <template #last-polled="{ row }">
+        <WorkQueueLastPolled :work-queue-id="row.id" />
+      </template>
 
-        <template #action="{ row }">
-          <div class="work-queues-table__actions">
-            <WorkQueueLateIndicator :work-queue-id="row.id" />
-            <WorkQueueToggle :work-queue="row" @update="emit('update')" />
-            <WorkQueueMenu size="xs" :work-queue="row" @delete="handleDelete" />
-          </div>
-        </template>
+      <template #action="{ row }">
+        <div class="work-queues-table__actions">
+          <WorkQueueLateIndicator :work-queue-id="row.id" />
+          <WorkQueueToggle :work-queue="row" @update="emit('update')" />
+          <WorkQueueMenu size="xs" :work-queue="row" @delete="handleDelete" />
+        </div>
+      </template>
 
-        <template #empty-state>
-          <PEmptyResults>
-            <template #message>
-              No work queues
-            </template>
-            <template #actions>
-              <p-button small @click="clear">
-                Clear Filters
-              </p-button>
-            </template>
-          </PEmptyResults>
-        </template>
-      </p-table>
-    </p-layout-table>
-  </div>
+      <template #empty-state>
+        <PEmptyResults>
+          <template #message>
+            No work queues
+          </template>
+          <template #actions>
+            <p-button small @click="clear">
+              Clear Filters
+            </p-button>
+          </template>
+        </PEmptyResults>
+      </template>
+    </p-table>
+  </p-content>
 </template>
 
 <script lang="ts" setup>
-  import { PTable, PEmptyResults, PLink, TableColumn } from '@prefecthq/prefect-design'
+  import { TableColumn } from '@prefecthq/prefect-design'
   import { useSubscription } from '@prefecthq/vue-compositions'
   import { computed, ref, toRefs } from 'vue'
   import { WorkQueueToggle, WorkQueueLateIndicator, SearchInput, ResultsCount, WorkQueueLastPolled, WorkQueueStatusBadge, SelectedCount, WorkQueuesDeleteButton, WorkQueueMenu } from '@/components'

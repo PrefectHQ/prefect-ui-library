@@ -1,15 +1,17 @@
 <template>
-  <p-layout-table class="artifact-data-table">
-    <template #header-end>
-      <span class="artifact-data-table__results-count">
-        <template v-if="filteredCount !== dataCount">
-          <span class="artifact-data-table__count">{{ filteredCount }}</span> of
-        </template>
-        <span class="artifact-data-table__count">{{ dataCount }}</span>
-        {{ toPluralString(localization.info.item, dataCount) }}
-      </span>
-      <SearchInput v-model="search" />
-    </template>
+  <p-content class="artifact-data-table">
+    <p-list-header>
+      <template #controls>
+        <span class="artifact-data-table__results-count">
+          <template v-if="filteredCount !== dataCount">
+            <span class="artifact-data-table__count">{{ filteredCount }}</span> of
+          </template>
+          <span class="artifact-data-table__count">{{ dataCount }}</span>
+          {{ toPluralString(localization.info.item, dataCount) }}
+        </span>
+        <SearchInput v-model="search" />
+      </template>
+    </p-list-header>
 
     <p-table :data="filteredData">
       <template #empty-state>
@@ -18,7 +20,7 @@
         </p-empty-results>
       </template>
     </p-table>
-  </p-layout-table>
+  </p-content>
 </template>
 
 <script lang="ts" setup>

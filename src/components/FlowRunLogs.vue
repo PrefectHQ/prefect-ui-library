@@ -1,9 +1,14 @@
 <template>
-  <div class="flow-run-logs">
-    <div class="flow-run-logs__search">
-      <LogLevelSelect v-model:selected="logLevel" />
-      <LogsSort v-model:selected="logsSort" />
-    </div>
+  <p-content class="flow-run-logs">
+    <p-list-header>
+      <template #controls>
+        <LogLevelSelect v-model:selected="logLevel" />
+      </template>
+      <template #sort>
+        <LogsSort v-model:selected="logsSort" />
+      </template>
+    </p-list-header>
+
     <LogsContainer :logs="logs" @bottom="logsSubscription.loadMore">
       <template #empty>
         <p-empty-results>
@@ -32,14 +37,12 @@
         </p-empty-results>
       </template>
     </LogsContainer>
-  </div>
+  </p-content>
 </template>
 
 <script lang="ts" setup>
   import { ref, computed, toRefs, watch } from 'vue'
-  import LogLevelSelect from '@/components/LogLevelSelect.vue'
-  import LogsContainer from '@/components/LogsContainer.vue'
-  import LogsSort from '@/components/LogsSort.vue'
+  import { LogLevelSelect, LogsContainer, LogsSort } from '@/components'
   import { useWorkspaceApi } from '@/compositions'
   import { usePaginatedSubscription } from '@/compositions/usePaginatedSubscription'
   import { useStatePolling } from '@/compositions/useStatePolling'
@@ -83,14 +86,6 @@
 </script>
 
 <style>
-.flow-run-logs__search { @apply
-  flex
-  justify-end
-  items-center
-  mb-4
-  gap-2
-}
-
 .flow-run-logs__empty-text { @apply
   !text-subdued
 }

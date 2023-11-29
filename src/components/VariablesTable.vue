@@ -1,76 +1,71 @@
 <template>
-  <div class="variables-table">
-    <p-layout-table sticky :root-margin="margin">
-      <template #header-start>
-        <div class="variables-table__header-start">
-          <VariablesDeleteButton v-if="can.delete.variable" :variable-ids="selectedVariables" @delete="deleteVariables" />
-          <ResultsCount v-if="selectedVariables.length == 0" :label="localization.info.variable" :count="variablesCount" />
-          <SelectedCount v-else :count="selectedVariables.length" />
+  <p-content class="variables-table">
+    <p-list-header sticky>
+      <ResultsCount v-if="selectedVariables.length == 0" :label="localization.info.variable" :count="variablesCount" />
+      <SelectedCount v-else :count="selectedVariables.length" />
+      <VariablesDeleteButton v-if="can.delete.variable" :variable-ids="selectedVariables" @delete="deleteVariables" />
+
+      <template #controls>
+        <SearchInput v-model="variableLike" :placeholder="localization.info.variablesSearch" :label="localization.info.variablesSearch" />
+        <VariableTagsInput v-model:selected="filter.variables.tags.name" class="variables-table__tags-input" />
+      </template>
+
+      <template #sort>
+        <p-select v-model="filter.sort" :options="variableSortOptions" />
+      </template>
+    </p-list-header>
+
+    <p-table :data="variables" :columns="columns" :column-classes="columnClass">
+      <template #selection-heading>
+        <div class="variables-table__selection">
+          <p-checkbox v-if="variables.length" v-model="model" @update:model-value="selectAllVariables" />
         </div>
       </template>
 
-      <template #header-end>
-        <div class="variables-table__header-end">
-          <SearchInput v-model="variableLike" :placeholder="localization.info.variablesSearch" :label="localization.info.variablesSearch" />
-          <p-select v-model="filter.sort" :options="variableSortOptions" />
-          <VariableTagsInput v-model:selected="filter.variables.tags.name" class="variables-table__tags-input" />
+      <template #selection="{ row }">
+        <p-checkbox v-model="selectedVariables" :value="row.id" />
+      </template>
+
+      <template #name="{ row }">
+        <div class="variables-table__name">
+          {{ row.name }}
         </div>
       </template>
 
-      <p-table :data="variables" :columns="columns" :column-classes="columnClass">
-        <template #selection-heading>
-          <div class="variables-table__selection">
-            <p-checkbox v-if="variables.length" v-model="model" @update:model-value="selectAllVariables" />
-          </div>
-        </template>
-
-        <template #selection="{ row }">
-          <p-checkbox v-model="selectedVariables" :value="row.id" />
-        </template>
-
-        <template #name="{ row }">
-          <div class="variables-table__name">
-            {{ row.name }}
-          </div>
-        </template>
-
-        <template #updated="{ row }">
-          {{ formatDateTimeNumeric(row.updated) }}
-        </template>
-
-        <template #tags="{ row }">
-          <p-tag-wrapper class="variables-table__tags" :tags="row.tags" justify="left" />
-        </template>
-
-        <template #action-heading>
-          <span />
-        </template>
-
-        <template #action="{ row }">
-          <div :key="row.id" class="variables-table__action">
-            <VariableMenu :variable="row" size="xs" @delete="refreshSubscriptions" @update="handleUpdate" />
-          </div>
-        </template>
-
-        <template #empty-state>
-          <PEmptyResults>
-            <template #message>
-              {{ localization.info.noVariables }}
-            </template>
-            <template v-if="isCustomFilter" #actions>
-              <p-button small @click="clear">
-                Clear Filters
-              </p-button>
-            </template>
-          </PEmptyResults>
-        </template>
-      </p-table>
-
-      <template #footer-end>
-        <p-pager v-if="variables.length" v-model:page="page" :pages="pages" />
+      <template #updated="{ row }">
+        {{ formatDateTimeNumeric(row.updated) }}
       </template>
-    </p-layout-table>
-  </div>
+
+      <template #tags="{ row }">
+        <p-tag-wrapper class="variables-table__tags" :tags="row.tags" justify="left" />
+      </template>
+
+      <template #action-heading>
+        <span />
+      </template>
+
+      <template #action="{ row }">
+        <div :key="row.id" class="variables-table__action">
+          <VariableMenu :variable="row" size="xs" @delete="refreshSubscriptions" @update="handleUpdate" />
+        </div>
+      </template>
+
+      <template #empty-state>
+        <PEmptyResults>
+          <template #message>
+            {{ localization.info.noVariables }}
+          </template>
+          <template v-if="isCustomFilter" #actions>
+            <p-button small @click="clear">
+              Clear Filters
+            </p-button>
+          </template>
+        </PEmptyResults>
+      </template>
+    </p-table>
+
+    <p-pager v-if="variables.length" v-model:page="page" :pages="pages" />
+  </p-content>
 </template>
 
 <script lang="ts" setup>
@@ -79,7 +74,7 @@
   import merge from 'lodash.merge'
   import { computed, ref } from 'vue'
   import { VariablesDeleteButton, VariableMenu, ResultsCount, SearchInput, SelectedCount, VariableTagsInput } from '@/components'
-  import { useCan, useOffsetStickyRootMargin, useVariablesFilter, useWorkspaceApi } from '@/compositions'
+  import { useCan, useVariablesFilter, useWorkspaceApi } from '@/compositions'
   import { localization } from '@/localization'
   import { VariablesFilter, Variable } from '@/models'
   import { variableSortOptions } from '@/types'
@@ -93,7 +88,6 @@
 
   const api = useWorkspaceApi()
   const can = useCan()
-  const { margin } = useOffsetStickyRootMargin()
 
   const variableLike = ref<string>()
   const variableLikeDebounced = useDebouncedRef(variableLike, 1000)
@@ -198,30 +192,13 @@
 </script>
 
 <style>
-.variables-table__header-start { @apply
-  grow
-  whitespace-nowrap
-  gap-2
-  flex
-  items-center
-  justify-start
-}
-
-.variables-table__header-end { @apply
-  flex
-  flex-wrap
-  pl-2
-  ml-auto
-  shrink
-  gap-2
-}
-
 .variables-table__tags { @apply
   h-6
 }
 
 .variables-table__tags-input { @apply
-  w-32
+  w-full
+  md:w-32
 }
 
 .variables-table__action { @apply
