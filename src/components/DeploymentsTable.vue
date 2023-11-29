@@ -21,6 +21,10 @@
           <p-checkbox v-model="selectAllValue" />
         </template>
 
+        <template #name-heading>
+          Flow name / deployment name
+        </template>
+
         <template #selection="{ row }">
           <p-checkbox v-model="selectedDeployments" :value="row.id" :disabled="!row.can.delete" />
         </template>
@@ -133,7 +137,7 @@
     },
     {
       property: 'name',
-      label: 'Name',
+      label: 'name',
       width: '150px',
     },
     {
@@ -148,7 +152,7 @@
     },
     {
       property: 'appliedBy',
-      label: 'Applied By',
+      label: 'Applied by',
       visible: deployments.value.some(deployment => deployment.appliedBy),
     },
     {
