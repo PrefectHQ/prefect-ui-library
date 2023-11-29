@@ -22,7 +22,7 @@
         </template>
 
         <template #name-heading>
-          Flow Name / Deployment Name
+          Flow name / deployment name
         </template>
 
         <template #selection="{ row }">
@@ -152,7 +152,7 @@
     },
     {
       property: 'appliedBy',
-      label: 'Applied By',
+      label: 'Applied by',
       visible: deployments.value.some(deployment => deployment.appliedBy),
     },
     {
