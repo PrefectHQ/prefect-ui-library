@@ -2,7 +2,7 @@
   <p-tags-input
     v-model="internalValue"
     :placeholder="localization.info.addTagPlaceholder"
-    :options="tags"
+    :options="options"
     :empty-message="localization.info.all"
   />
 </template>
@@ -35,5 +35,10 @@
   })
 
   const { variables } = useVariables(filter)
-  const tags = computed(() => unique(variables.value?.flatMap(variable => variable.tags) ?? []))
+
+  const options = computed(() => {
+    const tags = variables.value?.flatMap(variable => variable.tags) ?? []
+
+    return unique(tags).sort((tagA, tagB) => tagA.localeCompare(tagB))
+  })
 </script>

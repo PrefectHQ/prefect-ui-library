@@ -34,7 +34,7 @@
   const options = computed(() => {
     const tags = deployments.value.flatMap(deployment => deployment.tags ?? [])
 
-    return unique(tags)
+    return unique(tags).sort((tagA, tagB) => tagA.localeCompare(tagB))
   })
 </script>
 
