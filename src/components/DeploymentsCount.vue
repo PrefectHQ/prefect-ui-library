@@ -1,38 +1,35 @@
 <template>
-  <div ref="element">
-    <template v-if="visible && deploymentsCount">
-      {{ deploymentsCount }}
-    </template>
-  </div>
+  <template v-if="count">
+    <p-link class="deployments-count" :to="withQuery(routes.flow(flowId), { tab: 'Deployments' })">
+      {{ count }} {{ toPluralString(localization.info.deployment, count) }}
+    </p-link>
+  </template>
+  <template v-else>
+    <span class="deployments-count--none">{{ localization.info.none }}</span>
+  </template>
 </template>
 
 <script lang="ts" setup>
-  import { useVisibilityObserver, useSubscriptionWithDependencies } from '@prefecthq/vue-compositions'
-  import { computed, ref } from 'vue'
-  import { useWorkspaceApi } from '@/compositions'
+  import { toPluralString } from '@prefecthq/prefect-design'
+  import { useDeploymentsCount, useWorkspaceRoutes } from '@/compositions'
+  import { localization } from '@/localization'
+  import { withQuery } from '@/utilities'
 
   const props = defineProps<{
     flowId: string,
   }>()
 
-  const api = useWorkspaceApi()
-  const element = ref<HTMLDivElement>()
-  const { visible } = useVisibilityObserver(element, { disconnectWhenVisible: true })
+  const routes = useWorkspaceRoutes()
 
-  const deploymentsCountFilter = computed<Parameters<typeof api.deployments.getDeploymentsCount> | null>(() => {
-    if (!visible.value) {
-      return null
-    }
-
-    return [
-      {
-        flows: {
-          id: [props.flowId],
-        },
-      },
-    ]
-  })
-
-  const deploymentsCountSubscription = useSubscriptionWithDependencies(api.deployments.getDeploymentsCount, deploymentsCountFilter)
-  const deploymentsCount = computed(() => deploymentsCountSubscription.response ?? null)
+  const { count } = useDeploymentsCount(() => ({
+    flows: {
+      id: [props.flowId],
+    },
+  }))
 </script>
+
+<style>
+.deployments-count--none { @apply
+  text-subdued
+}
+</style>
