@@ -1,5 +1,5 @@
 <template>
-  <p-modal v-if="flowRun" v-model:showModal="internalValue" title="Pause Flow Run">
+  <p-modal v-if="flowRun" v-model:showModal="internalValue" title="Suspend Flow Run">
     <p-label label="Current Flow Run State">
       <StateBadge :state="flowRun.state" />
     </p-label>
@@ -7,7 +7,7 @@
       <p-number-input v-model="timeout" min="5" :state="timeoutState" />
     </p-label>
     <div>
-      Do you want to pause {{ flowRun.name }}? This will put flow run into a <StateBadge :state="{ name: 'Paused', type: 'paused' }" class="flow-run-pause-modal__state-badge" /> state for {{ secondsToApproximateString(timeout) }}.
+      Do you want to suspend {{ flowRun.name }}? This will put flow run into a <StateBadge :state="{ name: 'Suspended', type: 'paused' }" class="flow-run-suspend-modal__state-badge" /> state for {{ secondsToApproximateString(timeout) }}.
     </div>
 
     <template #actions>
@@ -37,11 +37,11 @@
     flowRunId: string,
   }>()
 
-  const defaultPauseTimeout = ref<number>(300)
+  const defaultTimeout = ref<number>(300)
 
   const { handleSubmit, isSubmitting } = useForm()
 
-  const { value: timeout, meta: timeoutState, errorMessage: timeoutErrorMessage } = useField<number>('timeout', fieldRules('Limit', isRequired, isGreaterThan(4)), { initialValue: defaultPauseTimeout })
+  const { value: timeout, meta: timeoutState, errorMessage: timeoutErrorMessage } = useField<number>('timeout', fieldRules('Limit', isRequired, isGreaterThan(4)), { initialValue: defaultTimeout })
 
   const emit = defineEmits<{
     (event: 'update:showModal', value: boolean): void,
@@ -66,7 +66,7 @@
       const { timeout } = formValues
       const values: StateUpdateDetails = {
         type: 'paused',
-        name: 'Paused',
+        name: 'Suspended',
         stateDetails: {
           pauseTimeout: addSeconds(new Date(), timeout),
           pauseReschedule: true,
@@ -75,17 +75,17 @@
       await api.flowRuns.setFlowRunState(props.flowRunId, { state: values })
       flowRunSubscription.refresh()
       internalValue.value = false
-      showToast(localization.success.pauseFlowRun, 'success')
+      showToast(localization.success.suspendFlowRun, 'success')
     } catch (error) {
       console.error(error)
-      const message = getApiErrorMessage(error, localization.error.pauseFlowRun)
+      const message = getApiErrorMessage(error, localization.error.suspendFlowRun)
       showToast(message, 'error')
     }
   })
 </script>
 
 <style>
-.flow-run-pause-modal__state-badge { @apply
+.flow-run-suspend-modal__state-badge { @apply
     align-middle
 }
 </style>

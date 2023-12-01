@@ -9,6 +9,7 @@ export const prefectStateNames = [
   'AwaitingRetry',
   'Pending',
   'Paused',
+  'Suspended',
   'Running',
   'Retrying',
   'Completed',
@@ -27,6 +28,7 @@ export const prefectStateNameTypes = {
   'AwaitingRetry': 'scheduled',
   'Pending': 'pending',
   'Paused': 'paused',
+  'Suspended': 'paused',
   'Running': 'running',
   'Retrying': 'running',
   'Completed': 'completed',
@@ -40,6 +42,7 @@ export const prefectStateNameTypes = {
 export const prefectStateNamesWithoutScheduled = [
   'Pending',
   'Paused',
+  'Suspended',
   'Running',
   'Retrying',
   'Completed',
