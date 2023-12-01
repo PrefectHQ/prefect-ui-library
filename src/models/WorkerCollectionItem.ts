@@ -15,6 +15,7 @@ export type WorkerCollectionItem = {
   type?: string,
   isBeta?: boolean,
   isPushPool?: boolean,
+  isMexPool?: boolean,
 }
 
 export type WorkerColection = Record<string, WorkerCollectionItem>
