@@ -25,6 +25,7 @@ WorkerCollectionItem[]
       type: worker_data.type,
       isBeta: worker_data.is_beta ?? false,
       isPushPool: worker_data.is_push_pool ?? false,
+      isMexPool: worker_data.is_mex_pool ?? false,
     }))
 }
 

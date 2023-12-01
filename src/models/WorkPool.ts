@@ -12,6 +12,7 @@ export interface IWorkPool {
   type: string,
   isPaused: boolean,
   isPushPool: boolean,
+  isMexPool: boolean,
   defaultQueueId: string,
   concurrencyLimit: number | null,
   baseJobTemplate: BaseJobTemplateRequest,
@@ -27,6 +28,7 @@ export class WorkPool implements IWorkPool {
   public type: string
   public isPaused: boolean
   public isPushPool: boolean
+  public isMexPool: boolean
   public defaultQueueId: string
   public concurrencyLimit: number | null
   public baseJobTemplate: BaseJobTemplateRequest
@@ -41,6 +43,7 @@ export class WorkPool implements IWorkPool {
     this.type = workPool.type
     this.isPaused = workPool.isPaused
     this.isPushPool = workPool.isPushPool
+    this.isMexPool = workPool.isMexPool
     this.defaultQueueId = workPool.defaultQueueId
     this.concurrencyLimit = workPool.concurrencyLimit
     this.baseJobTemplate = workPool.baseJobTemplate
