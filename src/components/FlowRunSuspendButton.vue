@@ -1,11 +1,11 @@
 <template>
   <p-button
-    v-if="canPause"
+    v-if="canSuspend"
     icon-append="PauseIcon"
     @click="open"
   >
-    Pause
-    <FlowRunPauseModal
+    Suspend
+    <FlowRunSuspendModal
       v-model:showModal="showModal"
       :flow-run-id="flowRun.id"
       @change="showModal"
@@ -15,7 +15,7 @@
 
 <script lang="ts" setup>
   import { computed } from 'vue'
-  import FlowRunPauseModal from '@/components/FlowRunPauseModal.vue'
+  import FlowRunSuspendModal from '@/components/FlowRunSuspendModal.vue'
   import { useCan, useShowModal } from '@/compositions'
   import { FlowRun, isRunningStateType } from '@/models'
 
@@ -26,7 +26,7 @@
   const can = useCan()
   const { showModal, open } = useShowModal()
 
-  const canPause = computed(() => {
+  const canSuspend = computed(() => {
     if (!can.update.flow_run || !props.flowRun.stateType || !props.flowRun.deploymentId) {
       return false
     }

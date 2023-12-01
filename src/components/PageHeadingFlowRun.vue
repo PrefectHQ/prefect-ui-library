@@ -32,7 +32,7 @@
     <template #actions>
       <template v-if="flowRun">
         <template v-if="media.sm">
-          <FlowRunPauseButton :flow-run="flowRun" />
+          <FlowRunSuspendButton :flow-run="flowRun" />
           <FlowRunResumeButton :flow-run="flowRun" />
           <FlowRunRetryButton :flow-run="flowRun" />
           <FlowRunCancelButton :flow-run="flowRun" />
@@ -52,7 +52,7 @@
     FlowRunRetryButton,
     FlowRunResumeButton,
     FlowRunCancelButton,
-    FlowRunPauseButton,
+    FlowRunSuspendButton,
     FlowRunMenu,
     FlowRunStartTime,
     DurationIconText

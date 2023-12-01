@@ -4,7 +4,7 @@
       <p-overflow-menu-item v-if="flowRun?.deploymentId && deployment?.can.run" label="Copy to new run" :to="routes.deploymentFlowRunCreate(flowRun.deploymentId, flowRun.parameters)" />
       <p-overflow-menu-item v-if="canRetry && showAll" label="Retry" @click="openRetryModal" />
       <p-overflow-menu-item v-if="canResume && showAll" label="Resume" @click="openResumeModal" />
-      <p-overflow-menu-item v-if="canPause && showAll" label="Pause" @click="openPauseModal" />
+      <p-overflow-menu-item v-if="canSuspend && showAll" label="Pause" @click="openSuspendModal" />
       <p-overflow-menu-item v-if="canCancel && showAll" label="Cancel" @click="openCancelModal" />
       <p-overflow-menu-item v-if="canChangeState" label="Change state" @click="openChangeStateModal" />
       <copy-overflow-menu-item label="Copy ID" :item="flowRunId" />
@@ -28,10 +28,10 @@
     :flow-run-id="flowRunId"
     @change="showCancelModal"
   />
-  <FlowRunPauseModal
-    v-model:showModal="showPauseModal"
+  <FlowRunSuspendModal
+    v-model:showModal="showSuspendModal"
     :flow-run-id="flowRunId"
-    @change="showPauseModal"
+    @change="showSuspendModal"
   />
   <ConfirmStateChangeModal
     v-if="flowRun"
@@ -52,7 +52,7 @@
 <script lang="ts" setup>
   import { showToast } from '@prefecthq/prefect-design'
   import { computed, ref, toRefs } from 'vue'
-  import { FlowRunRetryModal, FlowRunResumeModal, FlowRunCancelModal, FlowRunPauseModal, ConfirmStateChangeModal, ConfirmDeleteModal, CopyOverflowMenuItem } from '@/components'
+  import { FlowRunRetryModal, FlowRunResumeModal, FlowRunCancelModal, FlowRunSuspendModal, ConfirmStateChangeModal, ConfirmDeleteModal, CopyOverflowMenuItem } from '@/components'
   import { useCan, useWorkspaceApi, useShowModal, useWorkspaceRoutes, useFlowRuns, useFlowRun, useDeployment } from '@/compositions'
   import { localization } from '@/localization'
   import { FlowRunsFilter, isPausedStateType, isRunningStateType, isStuckStateType, isTerminalStateType, StateUpdateDetails } from '@/models'
@@ -72,7 +72,7 @@
   const { showModal: showRetryModal, open: openRetryModal } = useShowModal()
   const { showModal: showResumeModal, open: openResumeModal } = useShowModal()
   const { showModal: showCancelModal, open: openCancelModal } = useShowModal()
-  const { showModal: showPauseModal, open: openPauseModal } = useShowModal()
+  const { showModal: showSuspendModal, open: openSuspendModal } = useShowModal()
   const { showModal: showStateChangeModal, open: openChangeStateModal } = useShowModal()
   const { showModal: showDeleteModal, open: openDeleteModal } = useShowModal()
 
@@ -122,7 +122,7 @@
     return isStuckStateType(flowRun.value.stateType)
   })
 
-  const canPause = computed(() => {
+  const canSuspend = computed(() => {
     if (!can.update.flow_run || !flowRun.value?.stateType || !flowRun.value.deploymentId) {
       return false
     }
