@@ -17,11 +17,12 @@
       </div>
 
       <div class="interval-schedule-form__row">
-        <p-label label="Start date" class="interval-schedule-form__column--span-2">
+        <p-label label="Start date" class="interval-schedule-form__column--span-4">
           <DateInput v-model="anchorDate" show-time />
         </p-label>
-
-        <p-label label="Timezone" class="interval-schedule-form__column--span-2">
+      </div>
+      <div class="interval-schedule-form__row">
+        <p-label label="Timezone" class="interval-schedule-form__column--span-4">
           <TimezoneSelect v-model="timezone" hide-unset />
         </p-label>
       </div>
@@ -153,6 +154,11 @@
   .interval-schedule-form__column--span-3 {
     @apply
     col-span-3
+  }
+
+  .interval-schedule-form__column--span-4 {
+    @apply
+    col-span-4
   }
 }
 </style>
