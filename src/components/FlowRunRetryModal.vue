@@ -1,6 +1,12 @@
 <template>
   <p-modal v-model:showModal="internalValue" :title="retryModalTitle">
-    This will retry flow run {{ flowRun.name }}. Any task runs in a failed, cancelled or crashed state will be run again.
+    This will retry flow run {{ flowRun.name }}.
+    <div>
+      Any task runs without a
+      <p-link :to="localization.docs.resultsPersistence">
+        persisted result
+      </p-link> will be run again.
+    </div>
     <template #actions>
       <p-button primary @click="retryFromFailed">
         Retry
