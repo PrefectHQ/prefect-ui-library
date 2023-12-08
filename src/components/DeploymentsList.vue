@@ -27,10 +27,11 @@
       <template #deployment-name="{ row }">
         <div class="deployment-list__name-col">
           <span>
-            <DeploymentStatusIcon v-if="can.access.deploymentStatus" :status="row.status" />
+
             <p-link :to="routes.deployment(row.id)" class="deployment-list__name">
               <span>{{ row.name }}</span>
             </p-link>
+            <DeploymentStatusIcon v-if="can.access.deploymentStatus" :status="row.status" />
           </span>
           <span class="deployment-list__created-date">Created {{ formatDateTimeNumeric(row.created) }}</span>
         </div>
@@ -182,10 +183,6 @@
       visible: media.md,
     },
     {
-      label: 'Applied by',
-      visible: media.md,
-    },
-    {
       label: 'Action',
     },
   ]
@@ -241,7 +238,7 @@
 
 .deployment-list__name { @apply
   font-medium
-  ml-2
+  mr-2
 }
 
 .deployment-list__created-date { @apply
