@@ -21,5 +21,5 @@
     timeSpanInSeconds: props.timeSpanInSeconds,
   }))
 
-  const deploymentRunsFilter = computed(() => mapper.map('FlowStatsFilter', deploymentStats.value, 'FlowRunsFilter'))
+  const deploymentRunsFilter = computed(() => mapper.map('DeploymentStatsFilter', deploymentStats.value, 'FlowRunsFilter'))
 </script>

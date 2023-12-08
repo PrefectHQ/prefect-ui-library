@@ -26,9 +26,12 @@
 
       <template #deployment-name="{ row }">
         <div class="deployment-list__name-col">
-          <p-link :to="routes.deployment(row.id)" class="deployment-list__name">
-            <span>{{ row.name }}</span>
-          </p-link>
+          <span>
+            <DeploymentStatusIcon v-if="can.access.deploymentStatus" :status="row.status" />
+            <p-link :to="routes.deployment(row.id)" class="deployment-list__name">
+              <span>{{ row.name }}</span>
+            </p-link>
+          </span>
           <span class="deployment-list__created-date">Created {{ formatDateTimeNumeric(row.created) }}</span>
         </div>
       </template>
@@ -109,10 +112,11 @@
     ResultsCount,
     SearchInput,
     FlowRouterLink,
-    // MiniDeploymentHistory,
+    MiniDeploymentHistory,
     SelectedCount,
     DeploymentMenu,
-    DeploymentTagsInput
+    DeploymentTagsInput,
+    DeploymentStatusIcon
   } from '@/components'
   import { useCan, useDeploymentsFilterFromRoute, useWorkspaceRoutes, useDeployments } from '@/compositions'
   import { Deployment, isRRuleSchedule, Schedule } from '@/models'
@@ -174,6 +178,10 @@
       visible: media.md,
     },
     {
+      label: 'Activity',
+      visible: media.md,
+    },
+    {
       label: 'Applied by',
       visible: media.md,
     },
@@ -228,10 +236,12 @@
   flex
   flex-col
   w-48
+  overflow-auto
 }
 
 .deployment-list__name { @apply
   font-medium
+  ml-2
 }
 
 .deployment-list__created-date { @apply
