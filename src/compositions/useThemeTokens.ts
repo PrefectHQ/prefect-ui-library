@@ -1,17 +1,18 @@
-import { useColorTheme, useThemeTokens as useDesignThemeTokens } from '@prefecthq/prefect-design'
+import { useThemeTokens as useDesignThemeTokens } from '@prefecthq/prefect-design'
 import { reactive, watch, readonly } from 'vue'
+import { useColorMode } from '@/utilities/colorMode'
 
 type ThemeTokens = ReturnType<typeof useDesignThemeTokens> & ReturnType<typeof getTokens>
 
 function factory(): () => Readonly<ThemeTokens> {
-  const { value: theme } = useColorTheme()
+  const { value: mode } = useColorMode()
   const designTokens = useDesignThemeTokens()
 
   const tokens = reactive({}) as ThemeTokens
 
   setTokens()
 
-  watch(theme, () => setTokens())
+  watch(mode, () => setTokens())
 
   function setTokens(): void {
     requestAnimationFrame(() => {
