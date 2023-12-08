@@ -75,6 +75,7 @@ export { default as DeploymentDescriptionEmptyState } from './DeploymentDescript
 export { default as DeploymentDetails } from './DeploymentDetails.vue'
 export { default as DeploymentForm } from './DeploymentForm.vue'
 export { default as DeploymentIconText } from './DeploymentIconText.vue'
+export { default as DeploymentsList } from './DeploymentsList.vue'
 export { default as DeploymentMenu } from './DeploymentMenu.vue'
 export { default as DeploymentQuickRunOverflowMenuItem } from './DeploymentQuickRunOverflowMenuItem.vue'
 export { default as DeploymentRelationships } from './DeploymentRelationships.vue'
