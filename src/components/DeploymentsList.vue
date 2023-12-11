@@ -55,15 +55,6 @@
         {{ row.appliedBy }}
       </template>
 
-
-      <template #last-run="{ row }">
-        <LastDeploymentRun :deployment-id="row.flowId" />
-      </template>
-
-      <template #next-run="{ row }">
-        <NextDeploymentRun :deployment-id="row.flowId" />
-      </template>
-
       <template #activity="{ row }">
         <MiniDeploymentHistory
           class="deployment-list__activity-chart"
@@ -78,6 +69,7 @@
 
       <template #action="{ row }">
         <div class="deployment-list__action">
+          <DeploymentToggle :deployment="row" @update="refresh" />
           <DeploymentMenu size="xs" :deployment="row" flat @delete="refresh" />
         </div>
       </template>
@@ -115,7 +107,8 @@
     SelectedCount,
     DeploymentMenu,
     DeploymentTagsInput,
-    DeploymentStatusIcon
+    DeploymentStatusIcon,
+    DeploymentToggle
   } from '@/components'
   import { useCan, useDeploymentsFilterFromRoute, useWorkspaceRoutes, useDeployments } from '@/compositions'
   import { Deployment, isRRuleSchedule, Schedule } from '@/models'
