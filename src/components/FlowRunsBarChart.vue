@@ -128,6 +128,7 @@
     const totalTime = expectedStartTimeBefore.getTime() - expectedStartTimeAfter.getTime()
     const bucketSize = totalTime / bars.value
     const buckets: (FlowRun | null)[] = new Array(bars.value).fill(null)
+    const maxBucketIndex = buckets.length - 1
 
     function getEmptyBucket(index: number): number | null {
       if (index < 0) {
@@ -148,7 +149,7 @@
         return
       }
 
-      const bucketIndex = Math.floor((startTime.getTime() - expectedStartTimeAfter.getTime()) / bucketSize)
+      const bucketIndex = Math.min(Math.floor((startTime.getTime() - expectedStartTimeAfter.getTime()) / bucketSize), maxBucketIndex)
       const emptyBucketIndex = getEmptyBucket(bucketIndex)
 
       if (emptyBucketIndex === null) {
