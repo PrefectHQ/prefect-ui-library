@@ -43,7 +43,7 @@
 }
 
 .flow-run-history-card__chart { @apply
-  min-h-[20px]
+  h-24
   flex-grow
 }
 </style>
