@@ -20,6 +20,7 @@ import {
   mapWorkspaceDashboardFilterToFlowRunsFilter
 } from '@/maps/dashboard'
 import { mapStringToDate, mapDateToString } from '@/maps/date'
+import { mapDateRangeSelectValueToDateRange } from '@/maps/dateRangeSelectValue'
 import { mapDeploymentResponseToDeployment, mapDeploymentUpdateToDeploymentUpdateRequest, mapDeploymentFlowRunCreateToDeploymentFlowRunRequest } from '@/maps/deployment'
 import { mapDeploymentStatsFilterToFlowRunsFilter } from '@/maps/deploymentStatsFilter'
 import { mapDeploymentStatusToServerDeploymentStatus, mapServerDeploymentStatusToDeploymentStatus } from '@/maps/deploymentStatus'
@@ -94,6 +95,7 @@ export const maps = {
   ConcurrencyV2LimitUpdate: { ConcurrencyV2UpdateRequest: mapConcurrencyV2UpdateToConcurrencyV2UpdateRequest },
   CreatedOrUpdatedByResponse: { CreatedOrUpdatedBy: mapCreatedOrUpdatedByResponseToCreatedOrUpdatedBy },
   Date: { string: mapDateToString },
+  DateRangeSelectValue: { DateRange: mapDateRangeSelectValueToDateRange },
   DeploymentFilter: { DeploymentFilterRequest: mapDeploymentFilter },
   DeploymentFlowRunCreate: { DeploymentFlowRunRequest: mapDeploymentFlowRunCreateToDeploymentFlowRunRequest },
   DeploymentResponse: { Deployment: mapDeploymentResponseToDeployment },
