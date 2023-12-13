@@ -17,13 +17,13 @@ type DateRange = {
   timeSpanInSeconds: number,
 }
 
-function mapDateRangeSelectRangeValue({ startDate, endDate }: DateRangeSelectRangeValue): DateRange {
+function mapDateRangeSelectRangeValueToDateRange({ startDate, endDate }: DateRangeSelectRangeValue): DateRange {
   const timeSpanInSeconds = differenceInSeconds(endDate, startDate)
 
   return { startDate, endDate, timeSpanInSeconds }
 }
 
-function mapDateRangeSelectSpanValue({ seconds }: DateRangeSelectSpanValue): DateRange {
+function mapDateRangeSelectSpanValueToDateRange({ seconds }: DateRangeSelectSpanValue): DateRange {
   const now = nowWithoutMilliseconds()
   const then = addSeconds(now, seconds)
   const [startDate, endDate] = [now, then].sort(sortDates)
@@ -34,9 +34,9 @@ function mapDateRangeSelectSpanValue({ seconds }: DateRangeSelectSpanValue): Dat
 export const mapDateRangeSelectValueToDateRange: MapFunction<NonNullable<DateRangeSelectValue>, DateRange> = (source) => {
   switch (source.type) {
     case 'range':
-      return mapDateRangeSelectRangeValue(source)
+      return mapDateRangeSelectRangeValueToDateRange(source)
     case 'span':
-      return mapDateRangeSelectSpanValue(source)
+      return mapDateRangeSelectSpanValueToDateRange(source)
     default:
       const exhaustive: never = source
       throw new Error(`No handler for DateRangeSelectValue.type: ${exhaustive}`)
