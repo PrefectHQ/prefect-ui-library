@@ -1,4 +1,6 @@
+import { DateRangeSelectValue } from '@prefecthq/prefect-design'
+
 export type WorkspaceDashboardFilter = {
-  timeSpanInSeconds: number,
+  range: NonNullable<DateRangeSelectValue>,
   tags: string[],
 }
