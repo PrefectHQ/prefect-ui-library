@@ -38,8 +38,10 @@
 <style>
 .page-heading { @apply
   flex
+  flex-col
+  md:flex-row
+  md:items-center
   gap-2
-  items-center
 }
 
 .page-heading__leading { @apply
@@ -57,15 +59,13 @@
 }
 
 .page-heading__trailing { @apply
-  flex-grow
   flex
+  flex-grow
   items-center
-  self-start
-  gap-2
   justify-end
-  w-fit
-  md:w-fit
-  md:justify-end
+  gap-2
+  min-w-0
+  max-w-full
 }
 
 .page-heading__crumbs--xs { @apply
