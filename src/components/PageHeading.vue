@@ -38,10 +38,8 @@
 <style>
 .page-heading { @apply
   flex
-  flex-col
-  md:flex-row
-  md:items-center
   gap-2
+  items-center
 }
 
 .page-heading__leading { @apply
