@@ -4,13 +4,16 @@
       <StateBadge :state="flowRun.state" />
     </p-label>
 
-    <p-form v-if="inputSchema" @submit="resume">
-      <SchemaInput v-model="parameters" :schema="inputSchema" />
-    </p-form>
-
-    <div>
+    <div v-if="inputSchema">
+      <strong>Flow requires input.</strong> Please fill out the form below to resume.
+    </div>
+    <div v-else>
       Do you want to resume {{ flowRun.name }}?
     </div>
+
+    <p-form v-if="inputSchema" @submit="resume">
+      <SchemaInput v-model="parameters" :schema="inputSchema" disable-input-types />
+    </p-form>
 
     <template #actions>
       <p-button primary @click="resume">
