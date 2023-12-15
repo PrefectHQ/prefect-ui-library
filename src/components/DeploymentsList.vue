@@ -27,11 +27,10 @@
       <template #deployment-name="{ row }">
         <div class="deployment-list__name-col">
           <span>
-
+            <DeploymentStatusIcon v-if="can.access.deploymentStatus" :status="row.status" />
             <p-link :to="routes.deployment(row.id)" class="deployment-list__name">
               <span>{{ row.name }}</span>
             </p-link>
-            <DeploymentStatusIcon v-if="can.access.deploymentStatus" :status="row.status" />
           </span>
           <span class="deployment-list__created-date">Created {{ formatDateTimeNumeric(row.created) }}</span>
         </div>
@@ -70,7 +69,14 @@
       <template #action="{ row }">
         <div class="deployment-list__action">
           <DeploymentToggle :deployment="row" @update="refresh" />
-          <DeploymentMenu size="xs" show-all :deployment="row" flat @delete="refresh" />
+          <DeploymentMenu
+            class="deployment-list__menu"
+            size="xs"
+            show-all
+            :deployment="row"
+            flat
+            @delete="refresh"
+          />
         </div>
       </template>
 
@@ -223,17 +229,19 @@
 .deployment-list__name-col { @apply
   flex
   flex-col
-  w-48
-  overflow-auto
 }
 
 .deployment-list__name { @apply
   font-medium
-  mr-2
+  ml-2
 }
 
 .deployment-list__created-date { @apply
   text-subdued
   text-xs
+}
+
+.deployment-list__menu { @apply
+  ml-2
 }
 </style>
