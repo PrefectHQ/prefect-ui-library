@@ -1,6 +1,6 @@
 <template>
   <p-content class="schema-input">
-    <div class="schema-input__button-group">
+    <div v-if="!disableInputTypes" class="schema-input__button-group">
       <slot name="button-group">
         <p-button-group v-model="inputType" :options="inputTypeOptions" small />
       </slot>
@@ -48,6 +48,7 @@
     modelValue: SchemaValues | null | undefined,
     schema: Schema,
     inputType?: SchemaInputType,
+    disableInputTypes?: boolean,
   }>()
 
   const emit = defineEmits<{

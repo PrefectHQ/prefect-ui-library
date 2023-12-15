@@ -1,5 +1,5 @@
 import { RunGraphData } from '@prefecthq/graphs'
-import { StateUpdate } from '@/models'
+import { StateUpdate, SchemaResponse } from '@/models'
 import { FlowRunHistoryResponse } from '@/models/api/FlowRunHistoryResponse'
 import { FlowRunResponse } from '@/models/api/FlowRunResponse'
 import { RunGraphDataResponse } from '@/models/api/RunGraphDataResponse'
@@ -9,6 +9,7 @@ import { RunHistory } from '@/models/RunHistory'
 import { BatchProcessor } from '@/services/BatchProcessor'
 import { mapper } from '@/services/Mapper'
 import { WorkspaceApi } from '@/services/WorkspaceApi'
+import { Schema, SchemaValues } from '@/types/schemas'
 import { toMap } from '@/utilities'
 
 export interface IWorkspaceFlowRunsApi {
@@ -20,7 +21,7 @@ export interface IWorkspaceFlowRunsApi {
   getFlowRunsGraph: (flowRunId: string) => Promise<RunGraphData>,
   retryFlowRun: (flowRunId: string) => Promise<void>,
   setFlowRunState: (flowRunId: string, body: StateUpdate) => Promise<void>,
-  resumeFlowRun: (flowRunId: string) => Promise<void>,
+  resumeFlowRun: (flowRunId: string, values?: SchemaValues) => Promise<void>,
   deleteFlowRun: (flowRunId: string) => Promise<void>,
 }
 
@@ -83,6 +84,12 @@ export class WorkspaceFlowRunsApi extends WorkspaceApi implements IWorkspaceFlow
     return mapper.map('RunGraphDataResponse', data, 'RunGraphData')
   }
 
+  public async getFlowRunInput(id: string, key: string): Promise<Schema> {
+    const { data } = await this.get<SchemaResponse>(`/${id}/input/${key}`)
+
+    return mapper.map('SchemaResponse', data, 'Schema')
+  }
+
   public retryFlowRun(id: string): Promise<void> {
     return this.setFlowRunState(id, {
       state: {
@@ -98,8 +105,12 @@ export class WorkspaceFlowRunsApi extends WorkspaceApi implements IWorkspaceFlow
     return this.post(`/${id}/set_state`, { state: requestBody.state, force: true })
   }
 
-  public resumeFlowRun(id: string): Promise<void> {
+  public resumeFlowRun(id: string, values?: SchemaValues): Promise<void> {
+    if (values) {
+      return this.post(`/${id}/resume`, { 'run_input': values })
+    }
     return this.post(`/${id}/resume`)
+
   }
 
   public deleteFlowRun(flowRunId: string): Promise<void> {

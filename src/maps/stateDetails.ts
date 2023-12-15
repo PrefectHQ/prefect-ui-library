@@ -1,6 +1,7 @@
 import { StateDetailsCreate } from '@/models'
 import { StateDetailsRequest } from '@/models/api/StateDetailsRequest'
 import { StateDetailsResponse } from '@/models/api/StateDetailsResponse'
+import { FlowRunInputKeyset } from '@/models/FlowRunInputKeyset'
 import { StateDetails } from '@/models/StateDetails'
 import { MapFunction } from '@/services/Mapper'
 
@@ -14,6 +15,7 @@ export const mapStateDetailsResponseToStateDetails: MapFunction<StateDetailsResp
     cacheExpiration: this.map('string', source.cache_expiration, 'Date'),
     pauseTimeout: this.map('string', source.pause_timeout, 'Date'),
     pauseReschedule: source.pause_reschedule,
+    runInputKeyset: source.run_input_keyset,
   }
 }
 
@@ -27,6 +29,7 @@ export const mapStateDetailsToStateDetailsResponse: MapFunction<StateDetails, St
     cache_expiration: this.map('Date', source.cacheExpiration, 'string'),
     pause_timeout: this.map('Date', source.pauseTimeout, 'string'),
     pause_reschedule: source.pauseReschedule,
+    run_input_keyset: this.map('FlowRunInputKeyset', source.runInputKeyset, 'FlowRunInputKeysetResponse'),
   }
 }
 
