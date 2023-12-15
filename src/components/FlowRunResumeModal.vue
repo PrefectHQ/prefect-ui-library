@@ -5,7 +5,7 @@
     </p-label>
 
     <div v-if="inputSchema">
-      <strong>Flow requires input.</strong> Please fill out the form below to resume.
+      <strong>Flow run requires input.</strong> Please fill out the form below to resume.
     </div>
     <div v-else>
       Do you want to resume {{ flowRun.name }}?
