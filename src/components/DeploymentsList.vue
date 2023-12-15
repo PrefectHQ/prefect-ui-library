@@ -70,7 +70,7 @@
       <template #action="{ row }">
         <div class="deployment-list__action">
           <DeploymentToggle :deployment="row" @update="refresh" />
-          <DeploymentMenu size="xs" :deployment="row" flat @delete="refresh" />
+          <DeploymentMenu size="xs" show-all :deployment="row" flat @delete="refresh" />
         </div>
       </template>
 
