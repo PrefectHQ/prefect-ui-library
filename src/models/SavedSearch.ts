@@ -1,3 +1,5 @@
+import { DateRangeSelectValue } from '@prefecthq/prefect-design'
+
 export interface ISavedSearch {
   id: string | null,
   name: string,
@@ -28,6 +30,5 @@ export type SavedSearchFilter = {
   deployment?: string[],
   workQueue?: string[],
   workPool?: string[],
-  startDate?: string,
-  endDate?: string,
+  range?: DateRangeSelectValue,
 }
