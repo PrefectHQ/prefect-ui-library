@@ -3,6 +3,11 @@
     <p-label label="Current Flow Run State">
       <StateBadge :state="flowRun.state" />
     </p-label>
+
+    <p-form v-if="inputSchema" @submit="resume">
+      <SchemaInput v-model="parameters" :schema="inputSchema" />
+    </p-form>
+
     <div>
       Do you want to resume {{ flowRun.name }}?
     </div>
@@ -17,12 +22,15 @@
 
 <script lang="ts" setup>
   import { showToast } from '@prefecthq/prefect-design'
-  import { useSubscription } from '@prefecthq/vue-compositions'
-  import { computed } from 'vue'
+  import { useSubscription, useValidationObserver } from '@prefecthq/vue-compositions'
+  import { computed, ref } from 'vue'
+  import { SchemaInput } from '@/components'
   import StateBadge from '@/components/StateBadge.vue'
   import { useWorkspaceApi } from '@/compositions'
   import { localization } from '@/localization'
+  import { Schema, SchemaValues } from '@/types/schemas'
   import { getApiErrorMessage } from '@/utilities/errors'
+
 
   const props = defineProps<{
     showModal: boolean,
@@ -34,6 +42,7 @@
   }>()
 
   const api = useWorkspaceApi()
+  const parameters = ref<SchemaValues>({})
 
   const internalValue = computed({
     get() {
@@ -46,10 +55,23 @@
 
   const flowRunSubscription = useSubscription(api.flowRuns.getFlowRun, [props.flowRunId], { interval: 30000 })
   const flowRun = computed(() => flowRunSubscription.response)
+  const { validate } = useValidationObserver()
+
+  let inputSchema: Schema
+
+  if (flowRun.value?.state?.stateDetails?.runInputKeyset) {
+    inputSchema = await api.flowRuns.getFlowRunInput(props.flowRunId, flowRun.value.state.stateDetails.runInputKeyset.schema)
+  }
 
   const resume = async (): Promise<void> => {
+    const valid = await validate()
+
+    if (!valid) {
+      return
+    }
+
     try {
-      await api.flowRuns.resumeFlowRun(props.flowRunId)
+      await api.flowRuns.resumeFlowRun(props.flowRunId, parameters.value)
       flowRunSubscription.refresh()
       internalValue.value = false
       showToast(localization.success.resumeFlowRun, 'success')
