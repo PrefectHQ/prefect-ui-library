@@ -27,9 +27,9 @@
       <template #deployment-name="{ row }">
         <div class="deployment-list__name-col">
           <span>
-            <DeploymentStatusIcon v-if="can.access.deploymentStatus" :status="row.status" />
             <p-link :to="routes.deployment(row.id)" class="deployment-list__name">
-              <span>{{ row.name }}</span>
+              {{ row.name }}
+              <DeploymentStatusIcon v-if="can.access.deploymentStatus" :status="row.status" />
             </p-link>
           </span>
           <span class="deployment-list__created-date">Created {{ formatDateTimeNumeric(row.created) }}</span>
@@ -37,7 +37,7 @@
       </template>
 
       <template #flow-name="{ row }">
-        <FlowRouterLink :flow-id="row.flowId" />
+        <FlowRouterLink :flow-id="row.flowId" class="deployments-list__flow-name" />
       </template>
 
       <template #schedule="{ row }">
@@ -233,12 +233,17 @@
 
 .deployment-list__name { @apply
   font-medium
-  ml-2
+  mr-2
+  whitespace-normal
 }
 
 .deployment-list__created-date { @apply
   text-subdued
   text-xs
+}
+
+.deployments-list__flow-name { @apply
+  whitespace-normal
 }
 
 .deployment-list__menu { @apply
