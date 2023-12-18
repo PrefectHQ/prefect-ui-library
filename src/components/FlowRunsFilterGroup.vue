@@ -71,8 +71,10 @@
 .flow-runs-filter-group__row { @apply
   flex
   flex-wrap
-  md:flex-nowrap
   gap-2
+  md:grid
+  md:grid-flow-col
+  md:auto-cols-fr
 }
 
 .flow-runs-filter-group__search { @apply

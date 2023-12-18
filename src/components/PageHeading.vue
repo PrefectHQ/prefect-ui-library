@@ -57,15 +57,13 @@
 }
 
 .page-heading__trailing { @apply
-  flex-grow
   flex
+  flex-grow
   items-center
-  self-start
-  gap-2
   justify-end
-  w-fit
-  md:w-fit
-  md:justify-end
+  gap-2
+  min-w-0
+  max-w-full
 }
 
 .page-heading__crumbs--xs { @apply

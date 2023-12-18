@@ -19,5 +19,6 @@
 .results-count { @apply
   text-subdued
   text-base
+  whitespace-nowrap
 }
 </style>
