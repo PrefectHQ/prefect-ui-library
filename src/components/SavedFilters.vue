@@ -1,11 +1,7 @@
 <template>
   <div class="saved-filters">
-    <p-select
-      v-model="selectModelValue"
-      :options="options"
-      class="saved-filters__select"
-    />
-    <SavedFiltersMenu v-model:saved-search="selectedSavedSearch" />
+    <p-select v-model="selected" :options="options" class="saved-filters__select" />
+    <SavedFiltersMenu v-model:saved-search="selectedSearch" />
   </div>
 </template>
 
@@ -13,62 +9,73 @@
   import { SelectOption } from '@prefecthq/prefect-design'
   import { computed } from 'vue'
   import SavedFiltersMenu from '@/components/SavedFiltersMenu.vue'
-  import { useFlowRunsFilterFromRoute } from '@/compositions'
   import { SavedFlowRunsSearch, useSavedFlowRunsSearches } from '@/compositions/useSavedFlowRunsSearches'
-  import { SavedSearch, SavedSearchFilter } from '@/models/SavedSearch'
-  import { mapper } from '@/services'
-  import { customSavedSearch, isSameFilter } from '@/utilities/savedFilters'
+  import { SavedSearchFilter } from '@/models/SavedSearch'
+  import { customPartialSearch, isSameFilter } from '@/utilities/savedFilters'
 
-  const { filter, set: setFilters } = useFlowRunsFilterFromRoute()
+  const props = defineProps<{
+    filter: SavedSearchFilter,
+  }>()
+
+  const emit = defineEmits<{
+    'update:filter': [SavedSearchFilter],
+  }>()
 
   const { savedFlowRunsSearches } = useSavedFlowRunsSearches()
 
   const options = computed<SelectOption[]>(() => {
-    const allOptions = savedFlowRunsSearches.value
-      .filter(({ name }) => name !== customSavedSearch.name || selectModelValue.value === customSavedSearch.name)
-      .map(({ name, isDefault }) => ({
-        label: isDefault ? `${name} (default)` : name,
-        value: name,
-        disabled: name === customSavedSearch.name,
-      }))
+    const saved = savedFlowRunsSearches.value.map(({ name, isDefault }) => ({
+      label: isDefault ? `${name} (default)` : name,
+      value: name,
+    }))
 
+    if (savedFlowRunsSearches.value.some(({ filters }) => isSameFilter(filters, props.filter))) {
+      return saved
+    }
 
-    return allOptions
+    return [
+      { label: customPartialSearch.name, value: customPartialSearch.name, disabled: true },
+      ...saved,
+    ]
   })
 
-  const filterInRoute = computed<SavedSearchFilter>(() => ({
-    state: filter.flowRuns.state.name ?? [],
-    flow: filter.flows.id ?? [],
-    deployment: filter.deployments.id ?? [],
-    workPool: filter.workPools.name ?? [],
-    tag: filter.flowRuns.tags.name ?? [],
-    startDate: filter.flowRuns.expectedStartTimeAfter != undefined ? String(filter.flowRuns.expectedStartTimeAfter) : undefined,
-    endDate: filter.flowRuns.expectedStartTimeBefore != undefined ? String(filter.flowRuns.expectedStartTimeBefore) : undefined,
-  }))
-
-  const selectedSavedSearch = computed<SavedFlowRunsSearch>({
+  const selectedSearch = computed<SavedFlowRunsSearch>({
     get() {
-      const found = savedFlowRunsSearches.value.find(({ name, filters }) => name != customSavedSearch.name && isSameFilter(filters, filterInRoute.value))
+      const search = findSavedSearchByFilters(props.filter)
 
-      return found ?? { ...customSavedSearch, isDefault: false }
+      if (search) {
+        return search
+      }
+
+      const custom: SavedFlowRunsSearch = { ...customPartialSearch, filters: props.filter, isDefault: false }
+
+      return custom
     },
-    set(search: SavedSearch) {
-      const filters = mapper.map('SavedSearchFilter', search.filters, 'FlowRunsFilter')
-
-      setFilters(filters)
+    set(search) {
+      emit('update:filter', search.filters)
     },
   })
 
-  const selectModelValue = computed({
+  const selected = computed({
     get() {
-      return selectedSavedSearch.value.name
+      return selectedSearch.value.name
     },
-    set(value: string | null) {
-      const selected = savedFlowRunsSearches.value.find(({ name }) => value === name)!
+    set(name) {
+      const search = findSavedSearchByName(name)
 
-      selectedSavedSearch.value = selected
+      if (search) {
+        emit('update:filter', search.filters)
+      }
     },
   })
+
+  function findSavedSearchByFilters(filters: SavedSearchFilter): SavedFlowRunsSearch | undefined {
+    return savedFlowRunsSearches.value.find(search => isSameFilter(search.filters, filters))
+  }
+
+  function findSavedSearchByName(name: string): SavedFlowRunsSearch | undefined {
+    return savedFlowRunsSearches.value.find(search => search.name === name)
+  }
 </script>
 
 <style>

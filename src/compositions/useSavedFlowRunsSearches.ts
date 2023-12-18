@@ -3,7 +3,7 @@ import { computed, ComputedRef } from 'vue'
 import { useDefaultSavedSearchFilter } from '@/compositions/useDefaultSavedSearchFilter'
 import { useWorkspaceApi } from '@/compositions/useWorkspaceApi'
 import { SavedSearch, SavedSearchCreate } from '@/models'
-import { systemSavedSearches, isSameFilter, systemDefaultSavedSearch, unsavedPartialSearch, customSavedSearch } from '@/utilities/savedFilters'
+import { systemSavedSearches, isSameFilter, systemDefaultSavedSearch, unsavedPartialSearch } from '@/utilities/savedFilters'
 
 export type SavedFlowRunsSearch = SavedSearch & { isDefault: boolean }
 
@@ -22,8 +22,9 @@ export function useSavedFlowRunsSearches(): UseSavedFlowRunsSearches {
 
   const savedFlowRunsSearches = computed<SavedFlowRunsSearch[]>(() => {
     let foundSavedSearchForDefaultSavedFilter = false
+
     const all = savedSearches.value.map(savedSearch => {
-      if (savedSearch.name !== customSavedSearch.name && isSameFilter(savedSearch.filters, myDefaultSavedFilter.value)) {
+      if (isSameFilter(savedSearch.filters, myDefaultSavedFilter.value)) {
         foundSavedSearchForDefaultSavedFilter = true
         return { ...savedSearch, isDefault: true }
       }
@@ -32,13 +33,15 @@ export function useSavedFlowRunsSearches(): UseSavedFlowRunsSearches {
 
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition -- false positive
     if (!foundSavedSearchForDefaultSavedFilter) {
-      const unsavedDefault = {
+      const unsavedDefault: SavedFlowRunsSearch = {
         ...unsavedPartialSearch,
         filters: myDefaultSavedFilter.value,
         isDefault: true,
-      } satisfies SavedFlowRunsSearch
+      }
+
       // insert before the system default so that the readonly custom option is always at the top
       const systemDefaultIndex = all.findIndex(savedSearch => savedSearch.name === systemDefaultSavedSearch.name)
+
       all.splice(systemDefaultIndex, 0, unsavedDefault)
     }
     return all

@@ -23,9 +23,8 @@
   import { showToast } from '@prefecthq/prefect-design'
   import { useField } from 'vee-validate'
   import { computed } from 'vue'
-  import { useFlowRunsFilterFromRoute } from '@/compositions'
   import { useForm } from '@/compositions/useForm'
-  import { useSavedFlowRunsSearches } from '@/compositions/useSavedFlowRunsSearches'
+  import { SavedFlowRunsSearch, useSavedFlowRunsSearches } from '@/compositions/useSavedFlowRunsSearches'
   import { localization } from '@/localization'
   import { SavedSearch } from '@/models/SavedSearch'
   import { getApiErrorMessage } from '@/utilities/errors'
@@ -33,6 +32,7 @@
 
   const props = defineProps<{
     showModal: boolean,
+    filter: SavedFlowRunsSearch,
   }>()
 
   const emit = defineEmits<{
@@ -53,7 +53,6 @@
     filterName: string,
   }>()
 
-  const { filter } = useFlowRunsFilterFromRoute()
   const { savedFlowRunsSearches, createSavedFlowRunsSearch } = useSavedFlowRunsSearches()
 
   const nameDoesNotExist = isValidIf(value => !savedFlowRunsSearches.value.some(({ name }) => name === value))
@@ -68,20 +67,9 @@
 
   const saveFilter = async (filterName: string): Promise<void> => {
     try {
-      const { state, tags } = filter.flowRuns
-      const { id: flows } = filter.flows
-      const { id: deployments } = filter.deployments
-      const { name: workPools } = filter.workPools
-
       const savedSearch = await createSavedFlowRunsSearch({
         name: filterName,
-        filters: {
-          state: state.name,
-          tag: tags.name,
-          flow: flows,
-          deployment: deployments,
-          workPool: workPools,
-        },
+        filters: props.filter.filters,
       })
 
       showToast(localization.success.createSavedSearch, 'success')

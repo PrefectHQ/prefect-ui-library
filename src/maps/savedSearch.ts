@@ -1,9 +1,8 @@
 import { DateRangeSelectValue } from '@prefecthq/prefect-design'
-import { secondsInWeek } from 'date-fns'
 import { SavedSearchFilterResponse, SavedSearchResponse, isDateRangeResponse, isDateRangeRangeResponse } from '@/models/api/SavedSearchResponse'
 import { SavedSearch, SavedSearchFilter } from '@/models/SavedSearch'
 import { MapFunction, mapper } from '@/services/Mapper'
-import { asArray, isString, isStringArray, mapStateTypeOrNameToStateName } from '@/utilities'
+import { asArray, filterRangePastWeek, isString, isStringArray, mapStateTypeOrNameToStateName } from '@/utilities'
 
 export const mapSavedSearchResponseToSavedSearch: MapFunction<SavedSearchResponse, SavedSearch> = function(source) {
   return new SavedSearch({
@@ -45,11 +44,11 @@ function getStateFilter(filters: SavedSearchFilterResponse[]): string[] {
   return states.map(state => mapStateTypeOrNameToStateName(state))
 }
 
-function getRangeFilter(filters: SavedSearchFilterResponse[]): DateRangeSelectValue {
+function getRangeFilter(filters: SavedSearchFilterResponse[]): NonNullable<DateRangeSelectValue> {
   const filter = filters.find(filter => filter.property === 'range')
 
   if (!filter || !isDateRangeResponse(filter.value)) {
-    return { type: 'span', seconds: -secondsInWeek }
+    return filterRangePastWeek
   }
 
   if (isDateRangeRangeResponse(filter.value)) {
