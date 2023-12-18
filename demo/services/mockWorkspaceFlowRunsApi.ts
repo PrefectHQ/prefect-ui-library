@@ -1,9 +1,10 @@
 import { RunGraphData } from '@prefecthq/graphs'
 import { KeyedDataStoreFindCallback } from './KeyedDataStore'
 import { MockApi } from '@/../demo/services/MockApi'
-import { FlowRun, RunHistory, stateType, StateUpdate } from '@/models'
+import { FlowRun, RunHistory, SchemaResponse, stateType, StateUpdate } from '@/models'
 import { FlowRunsFilter, FlowRunsHistoryFilter } from '@/models/Filters'
 import { IWorkspaceFlowRunsApi, mocker } from '@/services'
+import { Schema } from '@/types'
 import { dateFunctions } from '@/utilities/timezone'
 
 const flowRunsItemIntersectsFilter = (filter: FlowRunsFilter): KeyedDataStoreFindCallback<FlowRun> => {
@@ -153,5 +154,11 @@ export class MockWorkspaceFlowRunsApi extends MockApi implements IWorkspaceFlowR
   public async deleteFlowRun(flowRunId: string): Promise<void> {
     return await this.flowRuns.delete(flowRunId)
   }
+
+
+  public async getFlowRunInput(id: string, key: string): Promise<Schema> {
+    return await Promise.resolve({} as Schema)
+  }
+
 
 }

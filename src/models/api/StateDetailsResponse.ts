@@ -1,3 +1,4 @@
+import { FlowRunInputKeysetResponse } from '@/models/api/FlowRunInputKeysetResponse'
 import { DateString } from '@/types/dates'
 
 export type StateDetailsResponse = {
@@ -9,4 +10,5 @@ export type StateDetailsResponse = {
   cache_expiration?: string | null,
   pause_timeout?: DateString | null,
   pause_reschedule?: boolean | null,
+  run_input_keyset?: FlowRunInputKeysetResponse | null,
 }

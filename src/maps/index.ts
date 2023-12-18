@@ -33,6 +33,7 @@ import { mapRunHistoryToFlowRunHistoryResponse, mapFlowRunHistoryResponseToRunHi
 import { mapSavedSearchFilterToFlowRunsFilter } from '@/maps/flowRunsFilter'
 import { mapFlowStatsFilterToFlowRunsFilter, mapFlowStatsFilterToTaskRunsFilter } from '@/maps/flowStatsFilter'
 import { mapLogToLogResponse, mapLogResponseToLog } from '@/maps/logs'
+import { mapFlowRunInputKeysetResponseToFlowRunInputKeyset, mapFlowRunInputKeysetToFlowRunInputKeysetResponse } from '@/maps/mapFlowRunInputKeysetResponseToFlowRunInputKeyset'
 import { mapNotificationResponseToNotification } from '@/maps/notification'
 import { mapNotificationCreateToNotificationCreateRequest } from '@/maps/notificationCreate'
 import { mapNotificationUpdateToNotificationUpdateRequest } from '@/maps/notificationUpdate'
@@ -110,6 +111,8 @@ export const maps = {
   FlowResponse: { Flow: mapFlowResponseToFlow },
   FlowRunFilter: { FlowRunFilterRequest: mapFlowRunFilter },
   FlowRunHistoryResponse: { RunHistory: mapFlowRunHistoryResponseToRunHistory },
+  FlowRunInputKeyset: { FlowRunInputKeysetResponse: mapFlowRunInputKeysetResponseToFlowRunInputKeyset },
+  FlowRunInputKeysetResponse: { FlowRunInputKeyset: mapFlowRunInputKeysetToFlowRunInputKeysetResponse },
   FlowRunResponse: { FlowRun: mapFlowRunResponseToFlowRun },
   FlowRunsFilter: { FlowRunsFilterRequest: mapFlowRunsFilter },
   FlowRunsHistoryFilter: { FlowRunsHistoryFilterRequest: mapFlowRunsHistoryFilter },
