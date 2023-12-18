@@ -1,3 +1,4 @@
+import { MaybeReadonly } from '@prefecthq/prefect-design'
 import { MaybeRefOrGetter, toValue } from 'vue'
 import { useCan } from '@/compositions/useCan'
 import { PaginationOptions, UsePaginationEntity, usePagination } from '@/compositions/usePagination'
@@ -12,11 +13,11 @@ WorkspaceFlowRunsApi['getFlowRunsCount'],
 'flowRuns'
 >
 
-export function useFlowRuns(filter?: MaybeRefOrGetter<FlowRunsFilter | null | undefined>, options?: PaginationOptions): UseFlowRuns {
+export function useFlowRuns(filter?: MaybeRefOrGetter<MaybeReadonly<FlowRunsFilter> | null | undefined>, options?: PaginationOptions): UseFlowRuns {
   const api = useWorkspaceApi()
   const can = useCan()
 
-  const parameters: Getter<[FlowRunsFilter?] | null> = () => {
+  const parameters: Getter<[FlowRunsFilter] | null> = () => {
     if (!can.read.flow_run) {
       return null
     }
