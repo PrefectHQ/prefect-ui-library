@@ -3,7 +3,7 @@ import { getSchemaValueDefinition, schemaPropertyServiceFactory } from '@/servic
 import { SchemaPropertyService } from '@/services/schemas/properties/SchemaPropertyService'
 import { getSchemaPropertyDefaultValue, SchemaPropertyComponentWithProps } from '@/services/schemas/utilities'
 import { SchemaValue } from '@/types/schemas'
-import { isEmptyObject, sameValue } from '@/utilities'
+import { isEmptyObject } from '@/utilities'
 import { jsonSafeParse } from '@/utilities/jsonSafeParse'
 import { jsonSafeStringify } from '@/utilities/jsonSafeStringify'
 
@@ -72,10 +72,6 @@ export class SchemaPropertyAny extends SchemaPropertyService {
   }
 
   private referenceRequest(value: SchemaValue): SchemaValue {
-    if (this.isDefaultValueForReference(value)) {
-      return undefined
-    }
-
     const definition = getSchemaValueDefinition(this.property, value)
 
     if (definition === null) {
@@ -103,11 +99,4 @@ export class SchemaPropertyAny extends SchemaPropertyService {
 
     throw new Error('Could not find first definition for schema property')
   }
-
-  private isDefaultValueForReference(value: SchemaValue): boolean {
-    const definitions = this.property.anyOf ?? this.property.allOf ?? []
-
-    return definitions.some(definition => sameValue(value, getSchemaPropertyDefaultValue(definition)))
-  }
-
 }
