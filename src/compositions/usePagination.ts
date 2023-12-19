@@ -1,6 +1,6 @@
 import { Getter } from '@prefecthq/prefect-design'
-import { SubscriptionOptions, UseSubscription, useSubscription, useSubscriptionWithDependencies } from '@prefecthq/vue-compositions'
-import { ComputedRef, MaybeRef, Ref, computed, onScopeDispose, reactive, ref, watch } from 'vue'
+import { SubscriptionOptions, UseSubscription, useSubscriptionWithDependencies } from '@prefecthq/vue-compositions'
+import { ComputedRef, MaybeRef, Ref, computed, onScopeDispose, reactive, ref, toRef, watch } from 'vue'
 import { GLOBAL_API_LIMIT } from '@/compositions/useFilterPagination'
 import { UseSubscriptions, useSubscriptions } from '@/compositions/useSubscriptions'
 import { repeat } from '@/utilities/arrays'
@@ -74,7 +74,7 @@ export function usePagination<
   const page = getPageRef()
   const pages = computed(() => Math.ceil(total.value / getLimit()))
 
-  const countSubscriptionParameters = computed(() => {
+  const countSubscriptionParameters = toRef(() => {
     if (page.value) {
       return countParametersGetter()
     }
@@ -84,18 +84,22 @@ export function usePagination<
   const countSubscription = useSubscriptionWithDependencies(countMethod, countSubscriptionParameters, options)
   const total = computed(() => countSubscription.response ?? 0)
 
-  const fetchSubscriptionParameters = ref(getFetchSubscriptionParameters()) as Ref<Parameters<TFetch>[] | null>
+  const fetchParametersRef = toRef(fetchParametersGetter)
   const fetchSubscriptions: UseSubscription<TFetch>[] = reactive([])
   const results = computed(() => fetchSubscriptions.flatMap(subscription => subscription.response ?? []) as unknown as Awaited<ReturnType<TFetch>>)
 
-  watch([total, fetchSubscriptionParameters], ([total, parameters]) => {
-    if (parameters === null || total === 0) {
+  watch([total, page, fetchParametersRef], ([total, page, parameters]) => {
+    if (total === 0 || page === 0 || parameters === null) {
       fetchSubscriptions.forEach(subscription => subscription.unsubscribe())
       fetchSubscriptions.splice(0)
       return
     }
 
-    const newSubscriptions = parameters.map(parameter => useSubscription(fetchMethod, parameter, options))
+    const newSubscriptions = getPagesToFetch(page).map(page => {
+      const parameters = getFetchParametersForPage(page)
+
+      return useSubscriptionWithDependencies(fetchMethod, parameters, options)
+    })
 
     fetchSubscriptions.forEach(subscription => subscription.unsubscribe())
     fetchSubscriptions.splice(0, Infinity, ...newSubscriptions)
@@ -123,29 +127,27 @@ export function usePagination<
     page.value--
   }
 
-  function setFetchSubscriptionParameters(): void {
-    fetchSubscriptionParameters.value = getFetchSubscriptionParameters()
-  }
-
-  function getFetchSubscriptionParameters(): Parameters<TFetch>[] | null {
-    const parameters = fetchParametersGetter()
-
-    if (parameters === null) {
-      return null
-    }
-
-    const [filter, ...rest] = parameters
-    const filters = getFetchParametersForPages(page.value, filter)
-
-    return filters.map(filter => [filter, ...rest]) as unknown as Parameters<TFetch>[]
-  }
-
-  function getFetchParametersForPages(page: number, filter?: TFetchFilter): TFetchFilter[] {
+  function getPagesToFetch(page: number): number[] {
     if (mode === 'page') {
-      return [getFetchFilterForPage(page, filter)]
+      return [page]
     }
 
-    return repeat(page, index => getFetchFilterForPage(index + 1, filter))
+    return repeat(page, index => index + 1)
+  }
+
+  function getFetchParametersForPage(page: number): Ref<Parameters<TFetch> | null> {
+    return toRef(() => {
+      const parameters = fetchParametersGetter()
+
+      if (parameters === null) {
+        return null
+      }
+
+      const [filter, ...rest] = parameters
+      const pageFilter = getFetchFilterForPage(page, filter)
+
+      return [pageFilter, ...rest]
+    }) as Ref<Parameters<TFetch> | null>
   }
 
   function getFetchFilterForPage(page: number, filter?: TFetchFilter): TFetchFilter {
@@ -185,19 +187,8 @@ export function usePagination<
   }
 
   watch(fetchParametersGetter, () => {
-    const newPageValue = 1
-    const manuallySetParameters = page.value === newPageValue
-
-    page.value = newPageValue
-
-    if (manuallySetParameters) {
-      setFetchSubscriptionParameters()
-    }
+    page.value = 1
   }, { deep: true })
-
-  watch(page, () => {
-    setFetchSubscriptionParameters()
-  })
 
   onScopeDispose(() => {
     subscriptions.unsubscribe()
