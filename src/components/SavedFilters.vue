@@ -1,6 +1,6 @@
 <template>
   <div class="saved-filters">
-    <p-select v-model="selected" :options="options" class="saved-filters__select" />
+    <p-select v-model="selectedSearchName" :options="options" class="saved-filters__select" />
     <SavedFiltersMenu v-model:saved-search="selectedSearch" />
   </div>
 </template>
@@ -56,7 +56,7 @@
     },
   })
 
-  const selected = computed({
+  const selectedSearchName = computed({
     get() {
       return selectedSearch.value.name
     },
