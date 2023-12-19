@@ -1,5 +1,5 @@
 import { Getter } from '@prefecthq/prefect-design'
-import { SubscribeArguments, SubscriptionOptions, UseSubscription, useSubscription, useSubscriptionWithDependencies } from '@prefecthq/vue-compositions'
+import { SubscriptionOptions, UseSubscription, useSubscriptionWithDependencies } from '@prefecthq/vue-compositions'
 import { ComputedRef, MaybeRef, Ref, computed, onScopeDispose, reactive, ref, toRef, watch } from 'vue'
 import { GLOBAL_API_LIMIT } from '@/compositions/useFilterPagination'
 import { UseSubscriptions, useSubscriptions } from '@/compositions/useSubscriptions'
