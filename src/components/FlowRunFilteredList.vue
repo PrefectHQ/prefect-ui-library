@@ -7,7 +7,7 @@
 
       <template #controls>
         <SearchInput v-model="searchTerm" placeholder="Search by run name" label="Search by run name" class="flow-run-filtered-list__search" />
-        <StateNameSelect v-model:selected="filter.flowRuns.state.name" multiple empty-message="All run states" exclude-scheduled />
+        <StateNameSelect v-model:selected="filter.flowRuns.state.name" multiple empty-message="All run states" />
       </template>
 
       <template #sort>
