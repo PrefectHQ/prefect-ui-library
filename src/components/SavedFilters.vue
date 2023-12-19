@@ -29,7 +29,7 @@
       value: name,
     }))
 
-    if (savedFlowRunsSearches.value.some(({ filters }) => isSameFilter(filters, props.filter))) {
+    if (findSavedSearchByFilters(props.filter)) {
       return saved
     }
 
