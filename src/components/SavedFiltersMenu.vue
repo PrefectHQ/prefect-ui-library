@@ -9,7 +9,7 @@
     </p-overflow-menu-item>
 
     <p-overflow-menu-item v-if="canToggleDefault" inset @click="toggleDefault">
-      <template v-if="filter?.isDefault">
+      <template v-if="savedSearch?.isDefault">
         Remove as default
       </template>
 
@@ -19,8 +19,8 @@
     </p-overflow-menu-item>
   </p-icon-button-menu>
 
-  <template v-if="filter">
-    <SaveFilterModal v-model:showModal="showSaveModal" :filter="filter" @save="handleSave" />
+  <template v-if="savedSearch">
+    <SaveFilterModal v-model:showModal="showSaveModal" :saved-search="savedSearch" @save="handleSave" />
   </template>
 
   <template v-if="internalSavedSearch && canDelete">
@@ -50,7 +50,7 @@
   import { customPartialSearch, unsavedPartialSearch } from '@/utilities/savedFilters'
 
   const props = defineProps<{
-    filter: SavedFlowRunsSearch | null,
+    savedSearch: SavedFlowRunsSearch | null,
   }>()
 
   const emit = defineEmits<{
@@ -61,7 +61,7 @@
 
   const internalSavedSearch = computed({
     get() {
-      return props.filter
+      return props.savedSearch
     },
     set(value) {
       emit('update:selectedSearchOption', value)
@@ -78,7 +78,7 @@
       return false
     }
     // can't remove the system default
-    if (props.filter?.isDefault && !defaultSavedSearchFilter.isCustom.value) {
+    if (props.savedSearch?.isDefault && !defaultSavedSearchFilter.isCustom.value) {
       return false
     }
     return true
@@ -86,10 +86,10 @@
 
   const defaultSavedSearchFilter = useDefaultSavedSearchFilter()
   function toggleDefault(): void {
-    if (props.filter?.isDefault) {
+    if (props.savedSearch?.isDefault) {
       defaultSavedSearchFilter.remove()
-    } else if (props.filter) {
-      defaultSavedSearchFilter.set(props.filter.filters)
+    } else if (props.savedSearch) {
+      defaultSavedSearchFilter.set(props.savedSearch.filters)
     }
   }
 

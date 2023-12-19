@@ -32,7 +32,7 @@
 
   const props = defineProps<{
     showModal: boolean,
-    filter: SavedFlowRunsSearch,
+    savedSearch: SavedFlowRunsSearch,
   }>()
 
   const emit = defineEmits<{
@@ -69,7 +69,7 @@
     try {
       const savedSearch = await createSavedFlowRunsSearch({
         name: filterName,
-        filters: props.filter.filters,
+        filters: props.savedSearch.filters,
       })
 
       showToast(localization.success.createSavedSearch, 'success')

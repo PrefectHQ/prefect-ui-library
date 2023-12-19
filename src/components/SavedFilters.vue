@@ -1,7 +1,7 @@
 <template>
   <div class="saved-filters">
     <p-select v-model="selected" :options="options" class="saved-filters__select" />
-    <SavedFiltersMenu v-model:filter="selectedSearch" />
+    <SavedFiltersMenu v-model:saved-search="selectedSearch" />
   </div>
 </template>
 
