@@ -3,7 +3,6 @@
     <div class="flow-runs-filter-group__row">
       <p-label label="Date Range">
         <DateRangeSelect v-model="range" />
-        <!-- <DateRangeInputWithFlowRunHistory v-model:range="range" /> -->
       </p-label>
       <p-label label="States">
         <StateNameSelect v-model:selected="state" empty-message="All run states" multiple />
