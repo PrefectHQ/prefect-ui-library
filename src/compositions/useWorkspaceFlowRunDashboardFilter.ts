@@ -1,12 +1,13 @@
 import { DateRangeSelectValue } from '@prefecthq/prefect-design'
 import { useRouteQueryParam, DateRouteParam, NumberRouteParam } from '@prefecthq/vue-compositions'
-import { computed, reactive } from 'vue'
+import { ComputedRef, computed, reactive } from 'vue'
 import { SavedSearchFilter } from '@/models/SavedSearch'
-import { filterRangePastWeek } from '@/utilities/savedFilters'
+import { filterRangePastWeek, isSameFilter, oneWeekFilter } from '@/utilities/savedFilters'
 
 type UseWorkspaceFlowRunDashboardFilterFromRoute = {
   filter: SavedSearchFilter,
   setFilter: (filter: SavedSearchFilter) => void,
+  isCustom: ComputedRef<boolean>,
 }
 
 export function useWorkspaceFlowRunDashboardFilterFromRoute(): UseWorkspaceFlowRunDashboardFilterFromRoute {
@@ -50,6 +51,18 @@ export function useWorkspaceFlowRunDashboardFilterFromRoute(): UseWorkspaceFlowR
     },
   })
 
+  const filter = reactive({
+    range,
+    tag,
+    deployment,
+    workPool,
+    workQueue,
+    flow,
+    state,
+  })
+
+  const isCustom = computed(() => isSameFilter(filter, oneWeekFilter))
+
   function setFilter(filter: SavedSearchFilter): void {
     range.value = filter.range
     tag.value = filter.tag
@@ -61,15 +74,8 @@ export function useWorkspaceFlowRunDashboardFilterFromRoute(): UseWorkspaceFlowR
   }
 
   return {
-    filter: reactive({
-      range,
-      tag,
-      deployment,
-      workPool,
-      workQueue,
-      flow,
-      state,
-    }),
+    filter,
     setFilter,
+    isCustom,
   }
 }
