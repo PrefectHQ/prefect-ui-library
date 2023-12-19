@@ -43,7 +43,7 @@ export const excludeScheduledSavedSearch = new SavedSearch({
 
 export const customPartialSearch = {
   id: null,
-  name: 'Unsaved',
+  name: 'Custom',
 }
 
 export const unsavedPartialSearch = {
