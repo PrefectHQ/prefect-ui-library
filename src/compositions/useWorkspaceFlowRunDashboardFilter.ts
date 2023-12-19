@@ -4,7 +4,12 @@ import { computed, reactive } from 'vue'
 import { SavedSearchFilter } from '@/models/SavedSearch'
 import { filterRangePastWeek } from '@/utilities/savedFilters'
 
-export function useWorkspaceFlowRunDashboardFilterFromRoute(): SavedSearchFilter {
+type UseWorkspaceFlowRunDashboardFilterFromRoute = {
+  filter: SavedSearchFilter,
+  setFilter: (filter: SavedSearchFilter) => void,
+}
+
+export function useWorkspaceFlowRunDashboardFilterFromRoute(): UseWorkspaceFlowRunDashboardFilterFromRoute {
   const startDate = useRouteQueryParam('startDate', DateRouteParam)
   const endDate = useRouteQueryParam('endDate', DateRouteParam)
   const seconds = useRouteQueryParam('seconds', NumberRouteParam)
@@ -45,13 +50,26 @@ export function useWorkspaceFlowRunDashboardFilterFromRoute(): SavedSearchFilter
     },
   })
 
-  return reactive({
-    range,
-    tag,
-    deployment,
-    workPool,
-    workQueue,
-    flow,
-    state,
-  })
+  function setFilter(filter: SavedSearchFilter): void {
+    range.value = filter.range
+    tag.value = filter.tag
+    deployment.value = filter.deployment
+    workPool.value = filter.workPool
+    workQueue.value = filter.workQueue
+    flow.value = filter.flow
+    state.value = filter.state
+  }
+
+  return {
+    filter: reactive({
+      range,
+      tag,
+      deployment,
+      workPool,
+      workQueue,
+      flow,
+      state,
+    }),
+    setFilter,
+  }
 }

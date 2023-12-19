@@ -28,6 +28,7 @@ export function useSavedFlowRunsSearches(): UseSavedFlowRunsSearches {
         foundSavedSearchForDefaultSavedFilter = true
         return { ...savedSearch, isDefault: true }
       }
+
       return { ...savedSearch, isDefault: false }
     })
 
