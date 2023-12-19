@@ -1,7 +1,7 @@
 <template>
   <ComponentPage title="FlowRunsFilterGroup">
     <div class="flow-runs-filter-group__demo">
-      <FlowRunsFilterGroup />
+      <!-- <FlowRunsFilterGroup /> -->
     </div>
   </ComponentPage>
 </template>
