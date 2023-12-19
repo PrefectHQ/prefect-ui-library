@@ -6,8 +6,8 @@
       <FlowRunsDeleteButton v-if="can.delete.flow_run" :selected="selected" @delete="deleteFlowRuns" />
 
       <template #controls>
-        <SearchInput v-model="searchTerm" placeholder="Search by run name" label="Search by run name" />
-        <StateNameSelect v-model:selected="filter.flowRuns.state.name" multiple empty-message="All run states" />
+        <SearchInput v-model="searchTerm" placeholder="Search by run name" label="Search by run name" class="flow-run-filtered-list__search" />
+        <StateNameSelect v-model:selected="filter.flowRuns.state.name" multiple empty-message="All run states" exclude-scheduled />
       </template>
 
       <template #sort>
@@ -78,3 +78,9 @@
     subscriptions.refresh()
   }
 </script>
+
+<style>
+.flow-run-filtered-list__search { @apply
+  min-w-[224px]
+}
+</style>
