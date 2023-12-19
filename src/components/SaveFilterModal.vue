@@ -5,7 +5,6 @@
         <p-label label="View Name" :state="filterNameState" :message="filterErrorMessage">
           <p-text-input v-model="filterName" />
         </p-label>
-        <span class="save-filter-modal__date-filter-warning"> All saved filters currently use the default time period of 7 days.</span>
       </p-content>
     </p-form>
 
@@ -82,11 +81,3 @@
     }
   }
 </script>
-
-<style>
-.save-filter-modal__date-filter-warning { @apply
-  text-sm
-  font-semibold
-}
-</style>
-
