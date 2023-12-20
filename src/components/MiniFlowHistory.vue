@@ -18,7 +18,7 @@
 
   const flowStats = computed(() => ({
     flowId: props.flowId,
-    timeSpanInSeconds: props.timeSpanInSeconds,
+    range: { type: 'span', seconds: props.timeSpanInSeconds },
   }))
 
   const flowRunsFilter = computed(() => mapper.map('FlowStatsFilter', flowStats.value, 'FlowRunsFilter'))
