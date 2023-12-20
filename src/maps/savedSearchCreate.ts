@@ -34,7 +34,7 @@ type SavedSearchProperty = 'flow' | 'tag' | 'deployment' | 'workQueue' | 'workPo
 function getObjectFilter(filters: SavedSearchFilter, property: SavedSearchProperty): SavedSearchFilterResponse | null {
   const value = filters[property]
 
-  if (!value || isEmptyArray(value)) {
+  if (isEmptyArray(value)) {
     return null
   }
 
