@@ -43,7 +43,7 @@
 
   const props = defineProps<{
     filter: SavedSearchFilter,
-    name: string,
+    nameSearch: string,
   }>()
 
   const emit = defineEmits<{
@@ -62,7 +62,7 @@
 
   const flowRunName = computed({
     get() {
-      return props.name
+      return props.nameSearch
     },
     set(name) {
       emit('update:name', name)

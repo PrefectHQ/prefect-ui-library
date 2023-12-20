@@ -1,7 +1,7 @@
 <template>
   <ComponentPage title="FlowRunsFilterGroup">
     <div class="flow-runs-filter-group__demo">
-      <FlowRunsFilterGroup v-model:name="name" :filter="filter" @update:filter="setFilter" />
+      <FlowRunsFilterGroup v-model:name-search="name" :filter="filter" @update:filter="setFilter" />
     </div>
   </ComponentPage>
 </template>
