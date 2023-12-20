@@ -37,6 +37,7 @@ import { mapNotificationResponseToNotification } from '@/maps/notification'
 import { mapNotificationCreateToNotificationCreateRequest } from '@/maps/notificationCreate'
 import { mapNotificationUpdateToNotificationUpdateRequest } from '@/maps/notificationUpdate'
 import { mapNumberToString, mapStringToNumber } from '@/maps/number'
+import { mapOrchestrationResultResponseToOrchestrationResult } from '@/maps/orchestrationResult'
 import { mapRunGraphDataResponse, mapRunGraphNodeResponse } from '@/maps/runGraphData'
 import { mapSavedSearchResponseToSavedSearch } from '@/maps/savedSearch'
 import { mapSavedSearchCreateToSavedSearchCreateRequest } from '@/maps/savedSearchCreate'
@@ -129,6 +130,7 @@ export const maps = {
   NotificationsFilter: { NotificationsFilterRequest: mapNotificationsFilter },
   NotificationUpdate: { NotificationUpdateRequest: mapNotificationUpdateToNotificationUpdateRequest },
   number: { string: mapNumberToString },
+  OrchestrationResultResponse: { OrchestrationResult: mapOrchestrationResultResponseToOrchestrationResult },
   PrefectWorkerCollectionResponse: { WorkerCollectionItem: mapPrefectWorkerCollectionResponseToWorkerCollectionItemArray },
   RunGraphDataResponse: { RunGraphData: mapRunGraphDataResponse },
   RunGraphNodeResponse: { RunGraphNode: mapRunGraphNodeResponse },

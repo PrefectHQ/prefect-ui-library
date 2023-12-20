@@ -5,8 +5,15 @@
     </p-label>
 
     <div v-if="inputSchema">
-      <strong>Flow run requires input.</strong> Please fill out the form below to resume.
+      <strong>Flow requires input.</strong> Please fill out the form below to resume.
     </div>
+
+    <div v-if="serverValidationError">
+      <p-message error>
+        {{ serverValidationError }}
+      </p-message>
+    </div>
+
     <div v-else>
       Do you want to resume {{ flowRun.name }}?
     </div>
@@ -31,6 +38,7 @@
   import StateBadge from '@/components/StateBadge.vue'
   import { useWorkspaceApi } from '@/compositions'
   import { localization } from '@/localization'
+  import { OrchestrationResult } from '@/models/api/OrchestrationResult'
   import { Schema, SchemaValues } from '@/types/schemas'
   import { getApiErrorMessage } from '@/utilities/errors'
 
@@ -60,6 +68,7 @@
   const flowRun = computed(() => flowRunSubscription.response)
   const { validate } = useValidationObserver()
 
+  let serverValidationError: string
   let inputSchema: Schema
 
   if (flowRun.value?.state?.stateDetails?.runInputKeyset) {
@@ -73,15 +82,29 @@
       return
     }
 
+    let response: OrchestrationResult | null
+
     try {
-      await api.flowRuns.resumeFlowRun(props.flowRunId, parameters.value)
-      flowRunSubscription.refresh()
-      internalValue.value = false
-      showToast(localization.success.resumeFlowRun, 'success')
+      response = await api.flowRuns.resumeFlowRun(props.flowRunId, parameters.value)
     } catch (error) {
       console.error(error)
       const message = getApiErrorMessage(error, localization.error.resumeFlowRun)
       showToast(message, 'error')
+      return
+    }
+
+    if (response.status == 'ACCEPT') {
+      flowRunSubscription.refresh()
+      internalValue.value = false
+      showToast(localization.success.resumeFlowRun, 'success')
+
+      if (serverValidationError) {
+        serverValidationError = ''
+      }
+    } else {
+      showToast(localization.error.resumeFlowRun, 'error')
+      console.log('Orchestration failed: ', response.details.reason)
+      serverValidationError = response.details.reason
     }
   }
 </script>
