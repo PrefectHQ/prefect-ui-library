@@ -31,4 +31,6 @@ export const mapFlowStatsFilterToTaskRunsFilter: MapFunction<FlowStatsFilter, Ta
       startTimeBefore: endDate,
     },
   }
+
+  return filter
 }

@@ -119,9 +119,9 @@
   }
 
   function organizeFlowRunsWithGaps(flowRuns: FlowRun[]): (FlowRun | null)[] {
-    const { expectedStartTimeAfter, expectedStartTimeBefore } = toValue(props.filter).flowRuns ?? {}
+    const { expectedStartTimeAfter, expectedStartTimeBefore } = toValue(props.filter).flowRuns ?? getTimeRangeFromFlows(flowRuns)
 
-    if (!expectedStartTimeBefore || !expectedStartTimeAfter) {
+    if (!expectedStartTimeAfter || !expectedStartTimeBefore) {
       return []
     }
 
@@ -160,6 +160,27 @@
     })
 
     return buckets
+  }
+
+  function getTimeRangeFromFlows(flowRuns: FlowRun[]): { expectedStartTimeAfter: Date, expectedStartTimeBefore: Date } {
+    return flowRuns.reduce((acc, flowRun) => {
+      if (!flowRun.startTime) {
+        return acc
+      }
+
+      if (flowRun.startTime.getTime() < acc.expectedStartTimeAfter.getTime()) {
+        acc.expectedStartTimeAfter = flowRun.startTime
+      }
+
+      if (flowRun.startTime.getTime() > acc.expectedStartTimeBefore.getTime()) {
+        acc.expectedStartTimeBefore = flowRun.startTime
+      }
+
+      return acc
+    }, {
+      expectedStartTimeAfter: new Date(),
+      expectedStartTimeBefore: new Date(),
+    })
   }
 </script>
 

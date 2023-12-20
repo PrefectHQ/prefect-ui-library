@@ -14,7 +14,7 @@
 
   const props = defineProps<{
     flowId: string,
-    timeSpanInSeconds: number,
+    timeSpanInSeconds?: number,
   }>()
 
   const flowStats = computed<FlowStatsFilter>(() => ({

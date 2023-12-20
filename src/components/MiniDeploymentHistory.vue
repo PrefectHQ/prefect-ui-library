@@ -13,7 +13,7 @@
 
   const props = defineProps<{
     deploymentId: string,
-    timeSpanInSeconds: number,
+    timeSpanInSeconds?: number,
   }>()
 
   const deploymentStats = computed(() => ({

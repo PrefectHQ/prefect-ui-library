@@ -1,5 +1,5 @@
 export type DeploymentStatsFilter = {
-  timeSpanInSeconds: number,
+  timeSpanInSeconds?: number,
   deploymentId: string,
 }
 
