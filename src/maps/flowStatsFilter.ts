@@ -5,17 +5,17 @@ import { FlowStatsFilter } from '@/types/flow'
 
 export const mapFlowStatsFilterToFlowRunsFilter: MapFunction<FlowStatsFilter, FlowRunsFilter> = function(source) {
   const now = new Date()
-
+  console.log('source', source)
   const filter: FlowRunsFilter = {
     flows: {
       id: [source.flowId],
     },
     flowRuns: {
-      expectedStartTimeAfter: subSeconds(now, source.timeSpanInSeconds),
-      expectedStartTimeBefore: now,
+      expectedStartTimeAfter: source.expectedStartTimeAfter ?? subSeconds(now, source.timeSpanInSeconds ?? 0),
+      expectedStartTimeBefore: source.expectedStartTimeBefore ?? now,
     },
   }
-
+  console.log('mapped filter', filter)
   return filter
 }
 
@@ -27,7 +27,7 @@ export const mapFlowStatsFilterToTaskRunsFilter: MapFunction<FlowStatsFilter, Ta
       id: [source.flowId],
     },
     taskRuns: {
-      startTimeAfter: subSeconds(now, source.timeSpanInSeconds),
+      startTimeAfter: subSeconds(now, source.timeSpanInSeconds ?? 0),
       startTimeBefore: now,
     },
   }

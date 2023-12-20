@@ -68,6 +68,7 @@
   }
 
   const options = useInterval()
+  console.log('in bar chart', props.filter)
   const { flowRuns } = useFlowRuns(filter, options)
 
   const barFlowRuns = computed(() => organizeFlowRunsWithGaps(flowRuns.value))
