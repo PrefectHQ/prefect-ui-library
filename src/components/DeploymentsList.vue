@@ -54,11 +54,10 @@
         {{ row.appliedBy }}
       </template>
 
-      <template #activity="{ row }">
+      <template #latest-runs="{ row }">
         <MiniDeploymentHistory
-          class="deployment-list__activity-chart"
+          class="deployment-list__latest-runs-chart"
           :deployment-id="row.id"
-          :time-span-in-seconds="secondsInDay"
         />
       </template>
 
@@ -101,7 +100,6 @@
 <script lang="ts" setup>
   import { CheckboxModel, TableColumn, media } from '@prefecthq/prefect-design'
   import { NumberRouteParam, useDebouncedRef, useRouteQueryParam } from '@prefecthq/vue-compositions'
-  import { secondsInDay } from 'date-fns/constants'
   import merge from 'lodash.merge'
   import { computed, ref } from 'vue'
   import {
@@ -176,7 +174,7 @@
       visible: media.md,
     },
     {
-      label: 'Activity',
+      label: 'Latest runs',
       visible: media.md,
     },
     {
@@ -217,7 +215,7 @@
 </script>
 
 <style>
-.deployment-list__activity-chart { @apply
+.deployment-list__latest-runs-chart { @apply
   h-12
   w-20
 }

@@ -20,6 +20,8 @@
   import { ClassValue, toPixels, positions, usePopOverGroup } from '@prefecthq/prefect-design'
   import { useDebouncedRef, useElementRect } from '@prefecthq/vue-compositions'
   import { scaleSymlog } from 'd3'
+  import { max, min, subSeconds } from 'date-fns'
+  import { secondsInDay } from 'date-fns/constants'
   import merge from 'lodash.merge'
   import { StyleValue, computed, ref, toValue } from 'vue'
   import FlowRunPopoverContent from '@/components/FlowRunPopOverContent.vue'
@@ -118,12 +120,18 @@
     return flowRun.id
   }
 
-  function organizeFlowRunsWithGaps(flowRuns: FlowRun[]): (FlowRun | null)[] {
+  function getTimeRange(flowRuns: FlowRun[]): { expectedStartTimeAfter: Date, expectedStartTimeBefore: Date } {
     const { expectedStartTimeAfter, expectedStartTimeBefore } = toValue(props.filter).flowRuns ?? {}
 
-    if (!expectedStartTimeBefore || !expectedStartTimeAfter) {
-      return []
+    if (expectedStartTimeAfter && expectedStartTimeBefore) {
+      return { expectedStartTimeAfter, expectedStartTimeBefore }
     }
+
+    return getTimeRangeFromFlows(flowRuns)
+  }
+
+  function organizeFlowRunsWithGaps(flowRuns: FlowRun[]): (FlowRun | null)[] {
+    const { expectedStartTimeAfter, expectedStartTimeBefore } = getTimeRange(flowRuns)
 
     const totalTime = expectedStartTimeBefore.getTime() - expectedStartTimeAfter.getTime()
     const bucketSize = totalTime / bars.value
@@ -160,6 +168,17 @@
     })
 
     return buckets
+  }
+
+  function getTimeRangeFromFlows(flowRuns: FlowRun[]): { expectedStartTimeAfter: Date, expectedStartTimeBefore: Date } {
+    const maxDate = new Date()
+    const minDate = subSeconds(maxDate, secondsInDay)
+    const startTimes: Date[] = flowRuns.filter((flowRun) => flowRun.startTime).map((flowRun) => flowRun.startTime!)
+
+    return {
+      expectedStartTimeAfter: min([minDate, ...startTimes]),
+      expectedStartTimeBefore: max([maxDate, ...startTimes]),
+    }
   }
 </script>
 
