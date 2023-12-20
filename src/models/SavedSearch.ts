@@ -1,3 +1,5 @@
+import { DateRangeSelectValue } from '@prefecthq/prefect-design'
+
 export interface ISavedSearch {
   id: string | null,
   name: string,
@@ -22,12 +24,11 @@ export class SavedSearch implements ISavedSearch {
 }
 
 export type SavedSearchFilter = {
-  state?: string[],
-  flow?: string[],
-  tag?: string[],
-  deployment?: string[],
-  workQueue?: string[],
-  workPool?: string[],
-  startDate?: string,
-  endDate?: string,
+  state: string[],
+  flow: string[],
+  tag: string[],
+  deployment: string[],
+  workQueue: string[],
+  workPool: string[],
+  range: NonNullable<DateRangeSelectValue>,
 }
