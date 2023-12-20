@@ -1,7 +1,6 @@
 import { StateDetailsCreate } from '@/models'
 import { StateDetailsRequest } from '@/models/api/StateDetailsRequest'
 import { StateDetailsResponse } from '@/models/api/StateDetailsResponse'
-import { FlowRunInputKeyset } from '@/models/FlowRunInputKeyset'
 import { StateDetails } from '@/models/StateDetails'
 import { MapFunction } from '@/services/Mapper'
 

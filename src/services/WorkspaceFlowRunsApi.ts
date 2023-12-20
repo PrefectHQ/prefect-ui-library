@@ -2,6 +2,8 @@ import { RunGraphData } from '@prefecthq/graphs'
 import { StateUpdate, SchemaResponse } from '@/models'
 import { FlowRunHistoryResponse } from '@/models/api/FlowRunHistoryResponse'
 import { FlowRunResponse } from '@/models/api/FlowRunResponse'
+import { OrchestrationResult } from '@/models/api/OrchestrationResult'
+import { OrchestrationResultResponse } from '@/models/api/OrchestrationResultResponse'
 import { RunGraphDataResponse } from '@/models/api/RunGraphDataResponse'
 import { FlowRunsFilter, FlowRunsHistoryFilter } from '@/models/Filters'
 import { FlowRun } from '@/models/FlowRun'
@@ -21,7 +23,7 @@ export interface IWorkspaceFlowRunsApi {
   getFlowRunsGraph: (flowRunId: string) => Promise<RunGraphData>,
   retryFlowRun: (flowRunId: string) => Promise<void>,
   setFlowRunState: (flowRunId: string, body: StateUpdate) => Promise<void>,
-  resumeFlowRun: (flowRunId: string, values?: SchemaValues) => Promise<void>,
+  resumeFlowRun: (flowRunId: string, values?: SchemaValues) => Promise<OrchestrationResult>,
   deleteFlowRun: (flowRunId: string) => Promise<void>,
 }
 
@@ -105,11 +107,13 @@ export class WorkspaceFlowRunsApi extends WorkspaceApi implements IWorkspaceFlow
     return this.post(`/${id}/set_state`, { state: requestBody.state, force: true })
   }
 
-  public resumeFlowRun(id: string, values?: SchemaValues): Promise<void> {
+  public async resumeFlowRun(id: string, values?: SchemaValues): Promise<OrchestrationResult> {
     if (values) {
-      return this.post(`/${id}/resume`, { 'run_input': values })
+      const { data } = await this.post<OrchestrationResultResponse>(`/${id}/resume`, { 'run_input': values })
+      return mapper.map('OrchestrationResultResponse', data, 'OrchestrationResult')
     }
-    return this.post(`/${id}/resume`)
+    const { data } = await this.post<OrchestrationResultResponse>(`/${id}/resume`)
+    return mapper.map('OrchestrationResultResponse', data, 'OrchestrationResult')
 
   }
 

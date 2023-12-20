@@ -2,6 +2,7 @@ import { RunGraphData } from '@prefecthq/graphs'
 import { KeyedDataStoreFindCallback } from './KeyedDataStore'
 import { MockApi } from '@/../demo/services/MockApi'
 import { FlowRun, RunHistory, SchemaResponse, stateType, StateUpdate } from '@/models'
+import { OrchestrationResult } from '@/models/api/OrchestrationResult'
 import { FlowRunsFilter, FlowRunsHistoryFilter } from '@/models/Filters'
 import { IWorkspaceFlowRunsApi, mocker } from '@/services'
 import { Schema } from '@/types'
@@ -142,13 +143,20 @@ export class MockWorkspaceFlowRunsApi extends MockApi implements IWorkspaceFlowR
     return await Promise.resolve()
   }
 
-  public resumeFlowRun(flowRunId: string): Promise<void> {
+  public resumeFlowRun(flowRunId: string): Promise<OrchestrationResult> {
     const flowRun = this.flowRuns.get(flowRunId)
+
     flowRun.stateType = 'running'
 
     this.flowRuns.patch(flowRunId, flowRun)
 
-    return Promise.resolve()
+    return Promise.resolve({
+      status: 'accept',
+      details: {
+        type: 'success',
+        reason: 'Flow run resumed',
+      },
+    })
   }
 
   public async deleteFlowRun(flowRunId: string): Promise<void> {
