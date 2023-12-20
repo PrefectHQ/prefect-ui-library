@@ -20,6 +20,8 @@
   import { ClassValue, toPixels, positions, usePopOverGroup } from '@prefecthq/prefect-design'
   import { useDebouncedRef, useElementRect } from '@prefecthq/vue-compositions'
   import { scaleSymlog } from 'd3'
+  import { subSeconds } from 'date-fns'
+  import { secondsInDay } from 'date-fns/constants'
   import merge from 'lodash.merge'
   import { StyleValue, computed, ref, toValue } from 'vue'
   import FlowRunPopoverContent from '@/components/FlowRunPopOverContent.vue'
@@ -119,7 +121,10 @@
   }
 
   function organizeFlowRunsWithGaps(flowRuns: FlowRun[]): (FlowRun | null)[] {
-    const { expectedStartTimeAfter, expectedStartTimeBefore } = toValue(props.filter).flowRuns ?? getTimeRangeFromFlows(flowRuns)
+    const flowRunsFilter = toValue(props.filter).flowRuns
+    const { expectedStartTimeAfter, expectedStartTimeBefore } = flowRunsFilter?.expectedStartTimeAfter && flowRunsFilter.expectedStartTimeBefore
+      ? flowRunsFilter
+      : getTimeRangeFromFlows(flowRuns)
 
     if (!expectedStartTimeAfter || !expectedStartTimeBefore) {
       return []
@@ -163,24 +168,31 @@
   }
 
   function getTimeRangeFromFlows(flowRuns: FlowRun[]): { expectedStartTimeAfter: Date, expectedStartTimeBefore: Date } {
-    return flowRuns.reduce((acc, flowRun) => {
+    const now = new Date()
+    const minimumSeconds = secondsInDay
+
+    const timeRange = flowRuns.reduce((acc, flowRun) => {
       if (!flowRun.startTime) {
         return acc
       }
 
-      if (flowRun.startTime.getTime() < acc.expectedStartTimeAfter.getTime()) {
+      const startTime = flowRun.startTime.getTime()
+
+      if (startTime < acc.expectedStartTimeAfter.getTime()) {
         acc.expectedStartTimeAfter = flowRun.startTime
       }
 
-      if (flowRun.startTime.getTime() > acc.expectedStartTimeBefore.getTime()) {
+      if (startTime > acc.expectedStartTimeBefore.getTime()) {
         acc.expectedStartTimeBefore = flowRun.startTime
       }
 
       return acc
     }, {
-      expectedStartTimeAfter: new Date(),
-      expectedStartTimeBefore: new Date(),
+      expectedStartTimeAfter: subSeconds(now, minimumSeconds),
+      expectedStartTimeBefore: now,
     })
+
+    return timeRange
   }
 </script>
 
