@@ -1,4 +1,7 @@
+import { DateRangeSelectValue } from '@prefecthq/prefect-design'
+
 export type FlowStatsFilter = {
-  timeSpanInSeconds: number,
+  range: NonNullable<DateRangeSelectValue>,
   flowId: string,
+
 }
