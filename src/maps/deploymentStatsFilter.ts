@@ -4,23 +4,16 @@ import { MapFunction } from '@/services/Mapper'
 import { DeploymentStatsFilter } from '@/types/deployment'
 
 export const mapDeploymentStatsFilterToFlowRunsFilter: MapFunction<DeploymentStatsFilter, FlowRunsFilter> = function(source) {
+  const now = new Date()
+
   const filter: FlowRunsFilter = {
     deployments: {
       id: [source.deploymentId],
     },
-  }
-
-  if (source.timeSpanInSeconds) {
-    const now = new Date()
-
-    filter.flowRuns = {
-      startTimeAfter: subSeconds(now, source.timeSpanInSeconds),
+    flowRuns: {
+      startTimeAfter: source.timeSpanInSeconds ? subSeconds(now, source.timeSpanInSeconds) : undefined,
       startTimeBefore: now,
-    }
-  } else {
-    filter.flowRuns = {
-      startTimeNull: false,
-    }
+    },
   }
 
   return filter
