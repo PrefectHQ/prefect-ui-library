@@ -20,7 +20,7 @@
   import { ClassValue, toPixels, positions, usePopOverGroup } from '@prefecthq/prefect-design'
   import { useDebouncedRef, useElementRect } from '@prefecthq/vue-compositions'
   import { scaleSymlog } from 'd3'
-  import { subSeconds } from 'date-fns'
+  import { max, min, subSeconds } from 'date-fns'
   import { secondsInDay } from 'date-fns/constants'
   import merge from 'lodash.merge'
   import { StyleValue, computed, ref, toValue } from 'vue'
@@ -168,31 +168,14 @@
   }
 
   function getTimeRangeFromFlows(flowRuns: FlowRun[]): { expectedStartTimeAfter: Date, expectedStartTimeBefore: Date } {
-    const now = new Date()
-    const minimumSeconds = secondsInDay
+    const maxDate = new Date()
+    const minDate = subSeconds(maxDate, secondsInDay)
+    const startTimes: Date[] = flowRuns.filter((flowRun) => flowRun.startTime).map((flowRun) => flowRun.startTime!)
 
-    const timeRange = flowRuns.reduce((acc, flowRun) => {
-      if (!flowRun.startTime) {
-        return acc
-      }
-
-      const startTime = flowRun.startTime.getTime()
-
-      if (startTime < acc.expectedStartTimeAfter.getTime()) {
-        acc.expectedStartTimeAfter = flowRun.startTime
-      }
-
-      if (startTime > acc.expectedStartTimeBefore.getTime()) {
-        acc.expectedStartTimeBefore = flowRun.startTime
-      }
-
-      return acc
-    }, {
-      expectedStartTimeAfter: subSeconds(now, minimumSeconds),
-      expectedStartTimeBefore: now,
-    })
-
-    return timeRange
+    return {
+      expectedStartTimeAfter: min([minDate, ...startTimes]),
+      expectedStartTimeBefore: max([maxDate, ...startTimes]),
+    }
   }
 </script>
 
