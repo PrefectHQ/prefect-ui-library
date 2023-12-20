@@ -120,15 +120,18 @@
     return flowRun.id
   }
 
-  function organizeFlowRunsWithGaps(flowRuns: FlowRun[]): (FlowRun | null)[] {
-    const flowRunsFilter = toValue(props.filter).flowRuns
-    const { expectedStartTimeAfter, expectedStartTimeBefore } = flowRunsFilter?.expectedStartTimeAfter && flowRunsFilter.expectedStartTimeBefore
-      ? flowRunsFilter
-      : getTimeRangeFromFlows(flowRuns)
+  function getTimeRange(flowRuns: FlowRun[]): { expectedStartTimeAfter: Date, expectedStartTimeBefore: Date } {
+    const { expectedStartTimeAfter, expectedStartTimeBefore } = toValue(props.filter).flowRuns ?? {}
 
-    if (!expectedStartTimeAfter || !expectedStartTimeBefore) {
-      return []
+    if (expectedStartTimeAfter && expectedStartTimeBefore) {
+      return { expectedStartTimeAfter, expectedStartTimeBefore }
     }
+
+    return getTimeRangeFromFlows(flowRuns)
+  }
+
+  function organizeFlowRunsWithGaps(flowRuns: FlowRun[]): (FlowRun | null)[] {
+    const { expectedStartTimeAfter, expectedStartTimeBefore } = getTimeRange(flowRuns)
 
     const totalTime = expectedStartTimeBefore.getTime() - expectedStartTimeAfter.getTime()
     const bucketSize = totalTime / bars.value
