@@ -1,4 +1,4 @@
-import { subSeconds } from 'date-fns'
+
 import { FlowRunsFilter, TaskRunsFilter } from '@/models'
 import { MapFunction } from '@/services/Mapper'
 import { FlowStatsFilter } from '@/types/flow'
@@ -21,15 +21,14 @@ export const mapFlowStatsFilterToFlowRunsFilter: MapFunction<FlowStatsFilter, Fl
 }
 
 export const mapFlowStatsFilterToTaskRunsFilter: MapFunction<FlowStatsFilter, TaskRunsFilter> = function(source) {
-  const now = new Date()
-
+  const { startDate, endDate } = this.map('DateRangeSelectValue', source.range, 'DateRange')
   return {
     flows: {
       id: [source.flowId],
     },
     taskRuns: {
-      startTimeAfter: source.timeSpanInSeconds ? subSeconds(now, source.timeSpanInSeconds) : source.expectedStartTimeAfter,
-      startTimeBefore: source.expectedStartTimeBefore ?? now,
+      startTimeAfter: startDate,
+      startTimeBefore: endDate,
     },
   }
 }
