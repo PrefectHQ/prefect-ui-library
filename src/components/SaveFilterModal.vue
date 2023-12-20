@@ -5,7 +5,6 @@
         <p-label label="View Name" :state="filterNameState" :message="filterErrorMessage">
           <p-text-input v-model="filterName" />
         </p-label>
-        <span class="save-filter-modal__date-filter-warning"> All saved filters currently use the default time period of 7 days.</span>
       </p-content>
     </p-form>
 
@@ -23,9 +22,8 @@
   import { showToast } from '@prefecthq/prefect-design'
   import { useField } from 'vee-validate'
   import { computed } from 'vue'
-  import { useFlowRunsFilterFromRoute } from '@/compositions'
   import { useForm } from '@/compositions/useForm'
-  import { useSavedFlowRunsSearches } from '@/compositions/useSavedFlowRunsSearches'
+  import { SavedFlowRunsSearch, useSavedFlowRunsSearches } from '@/compositions/useSavedFlowRunsSearches'
   import { localization } from '@/localization'
   import { SavedSearch } from '@/models/SavedSearch'
   import { getApiErrorMessage } from '@/utilities/errors'
@@ -33,6 +31,7 @@
 
   const props = defineProps<{
     showModal: boolean,
+    savedSearch: SavedFlowRunsSearch,
   }>()
 
   const emit = defineEmits<{
@@ -53,7 +52,6 @@
     filterName: string,
   }>()
 
-  const { filter } = useFlowRunsFilterFromRoute()
   const { savedFlowRunsSearches, createSavedFlowRunsSearch } = useSavedFlowRunsSearches()
 
   const nameDoesNotExist = isValidIf(value => !savedFlowRunsSearches.value.some(({ name }) => name === value))
@@ -68,20 +66,9 @@
 
   const saveFilter = async (filterName: string): Promise<void> => {
     try {
-      const { state, tags } = filter.flowRuns
-      const { id: flows } = filter.flows
-      const { id: deployments } = filter.deployments
-      const { name: workPools } = filter.workPools
-
       const savedSearch = await createSavedFlowRunsSearch({
         name: filterName,
-        filters: {
-          state: state.name,
-          tag: tags.name,
-          flow: flows,
-          deployment: deployments,
-          workPool: workPools,
-        },
+        filters: props.savedSearch.filters,
       })
 
       showToast(localization.success.createSavedSearch, 'success')
@@ -94,11 +81,3 @@
     }
   }
 </script>
-
-<style>
-.save-filter-modal__date-filter-warning { @apply
-  text-sm
-  font-semibold
-}
-</style>
-
