@@ -2,6 +2,7 @@ import '@prefecthq/graphs/dist/style.css'
 
 export * from './components'
 export * from './compositions'
+export * from './formatters'
 export * from './localization'
 export * from './mocks'
 export * from './models'

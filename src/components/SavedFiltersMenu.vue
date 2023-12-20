@@ -19,7 +19,9 @@
     </p-overflow-menu-item>
   </p-icon-button-menu>
 
-  <SaveFilterModal v-model:showModal="showSaveModal" @save="handleSave" />
+  <template v-if="savedSearch">
+    <SaveFilterModal v-model:showModal="showSaveModal" :saved-search="savedSearch" @save="handleSave" />
+  </template>
 
   <template v-if="internalSavedSearch && canDelete">
     <SavedFiltersDeleteModal v-model:showModal="showDeleteModal" :saved-search="internalSavedSearch" @delete="handleDelete" />
@@ -45,7 +47,7 @@
   import { useDefaultSavedSearchFilter } from '@/compositions/useDefaultSavedSearchFilter'
   import { SavedFlowRunsSearch } from '@/compositions/useSavedFlowRunsSearches'
   import { SavedSearch } from '@/models/SavedSearch'
-  import { customSavedSearch, unsavedPartialSearch } from '@/utilities/savedFilters'
+  import { customPartialSearch, unsavedPartialSearch } from '@/utilities/savedFilters'
 
   const props = defineProps<{
     savedSearch: SavedFlowRunsSearch | null,
@@ -66,7 +68,7 @@
     },
   })
 
-  const isCustomUnsavedFilter = computed(() => internalSavedSearch.value?.name === customSavedSearch.name || internalSavedSearch.value?.name === unsavedPartialSearch.name)
+  const isCustomUnsavedFilter = computed(() => internalSavedSearch.value?.name === customPartialSearch.name || internalSavedSearch.value?.name === unsavedPartialSearch.name)
   const canSave = computed(() => isCustomUnsavedFilter.value && can.create.saved_search)
   const canDelete = computed(() => internalSavedSearch.value?.id && can.delete.saved_search)
 

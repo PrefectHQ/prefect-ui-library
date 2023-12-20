@@ -1,9 +1,8 @@
-import { SavedSearchFilterResponse, SavedSearchResponse } from '@/models/api/SavedSearchResponse'
+import { DateRangeSelectValue } from '@prefecthq/prefect-design'
+import { SavedSearchFilterResponse, SavedSearchResponse, isDateRangeResponse, isDateRangeRangeResponse } from '@/models/api/SavedSearchResponse'
 import { SavedSearch, SavedSearchFilter } from '@/models/SavedSearch'
-import { MapFunction } from '@/services/Mapper'
-import { asArray, mapStateTypeOrNameToStateName } from '@/utilities'
-import { formatDateTimeNumeric } from '@/utilities/dates'
-import { dateFunctions } from '@/utilities/timezone'
+import { MapFunction, mapper } from '@/services/Mapper'
+import { asArray, filterRangePastWeek, isString, isStringArray, mapStateTypeOrNameToStateName } from '@/utilities'
 
 export const mapSavedSearchResponseToSavedSearch: MapFunction<SavedSearchResponse, SavedSearch> = function(source) {
   return new SavedSearch({
@@ -13,34 +12,52 @@ export const mapSavedSearchResponseToSavedSearch: MapFunction<SavedSearchRespons
   })
 }
 
-function mapSavedSearchFilters(filters: SavedSearchFilterResponse[] | undefined): SavedSearchFilter {
+function mapSavedSearchFilters(filters: SavedSearchFilterResponse[] = []): SavedSearchFilter {
   const filter: SavedSearchFilter = {
-    state: [],
-    tag: [],
-    flow: [],
-    deployment: [],
-    workPool: [],
-    workQueue: [],
-    startDate: formatDateTimeNumeric(dateFunctions.subDays(dateFunctions.startOfToday(), 7)),
-    endDate: formatDateTimeNumeric(dateFunctions.addDays(dateFunctions.endOfToday(), 1)),
-  }
-
-  if (filters) {
-    const state = filters.find(filter => filter.property === 'state')?.value ?? []
-    const flow = filters.find(filter => filter.property === 'flow')?.value ?? []
-    const tag = filters.find(filter => filter.property === 'tag')?.value ?? []
-    const deployment = filters.find(filter => filter.property === 'deployment')?.value ?? []
-    const workQueue = filters.find(filter => filter.property === 'workQueue')?.value ?? []
-    const workPool = filters.find(filter => filter.property === 'workPool')?.value ?? []
-
-    filter.flow = asArray(flow)
-    filter.deployment = asArray(deployment)
-    filter.workQueue = asArray(workQueue)
-    filter.workPool = asArray(workPool)
-    filter.tag = asArray(tag)
-
-    filter.state = asArray(state).map(state => mapStateTypeOrNameToStateName(state))
+    state: getStateFilter(filters),
+    flow: getObjectFilter(filters, 'flow'),
+    tag: getObjectFilter(filters, 'tag'),
+    deployment: getObjectFilter(filters, 'deployment'),
+    workQueue: getObjectFilter(filters, 'workQueue'),
+    workPool: getObjectFilter(filters, 'workPool'),
+    range: getRangeFilter(filters),
   }
 
   return filter
+}
+
+type SavedSearchProperty = 'flow' | 'tag' | 'deployment' | 'workQueue' | 'workPool' | 'state'
+
+function getObjectFilter(filters: SavedSearchFilterResponse[], property: SavedSearchProperty): string[] {
+  const filter = filters.find(filter => filter.property === property)
+
+  if (!filter || !(isString(filter.value) || isStringArray(filter.value))) {
+    return []
+  }
+
+  return asArray(filter.value)
+}
+
+function getStateFilter(filters: SavedSearchFilterResponse[]): string[] {
+  const states = getObjectFilter(filters, 'state')
+
+  return states.map(state => mapStateTypeOrNameToStateName(state))
+}
+
+function getRangeFilter(filters: SavedSearchFilterResponse[]): NonNullable<DateRangeSelectValue> {
+  const filter = filters.find(filter => filter.property === 'range')
+
+  if (!filter || !isDateRangeResponse(filter.value)) {
+    return filterRangePastWeek
+  }
+
+  if (isDateRangeRangeResponse(filter.value)) {
+    return {
+      type: 'range',
+      startDate: mapper.map('string', filter.value.startDate, 'Date'),
+      endDate: mapper.map('string', filter.value.endDate, 'Date'),
+    }
+  }
+
+  return filter.value
 }
