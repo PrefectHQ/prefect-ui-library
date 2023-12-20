@@ -4,18 +4,19 @@ import { MapFunction } from '@/services/Mapper'
 import { FlowStatsFilter } from '@/types/flow'
 
 export const mapFlowStatsFilterToFlowRunsFilter: MapFunction<FlowStatsFilter, FlowRunsFilter> = function(source) {
-  const now = new Date()
-  console.log('source', source)
+
+
+  const { startDate, endDate } = this.map('DateRangeSelectValue', source.range, 'DateRange')
   const filter: FlowRunsFilter = {
     flows: {
       id: [source.flowId],
     },
     flowRuns: {
-      expectedStartTimeAfter: source.expectedStartTimeAfter ?? subSeconds(now, source.timeSpanInSeconds ?? 0),
-      expectedStartTimeBefore: source.expectedStartTimeBefore ?? now,
+      expectedStartTimeAfter: startDate,
+      expectedStartTimeBefore: endDate,
     },
   }
-  console.log('mapped filter', filter)
+
   return filter
 }
 
@@ -27,8 +28,8 @@ export const mapFlowStatsFilterToTaskRunsFilter: MapFunction<FlowStatsFilter, Ta
       id: [source.flowId],
     },
     taskRuns: {
-      startTimeAfter: subSeconds(now, source.timeSpanInSeconds ?? 0),
-      startTimeBefore: now,
+      startTimeAfter: source.timeSpanInSeconds ? subSeconds(now, source.timeSpanInSeconds) : source.expectedStartTimeAfter,
+      startTimeBefore: source.expectedStartTimeBefore ?? now,
     },
   }
 }
