@@ -53,7 +53,6 @@
     FlowRunResumeButton,
     FlowRunCancelButton,
     FlowRunSuspendButton,
-    FlowRunMenu,
     FlowRunStartTime,
     DurationIconText
   } from '@/components'
@@ -63,12 +62,14 @@
   import FlowRunTaskCount from '@/components/FlowRunTaskCount.vue'
   import FlowRunWorkPool from '@/components/FlowRunWorkPool.vue'
   import FlowRunWorkQueue from '@/components/FlowRunWorkQueue.vue'
-  import { useFlowRun, useTaskRunsCount, useWorkspaceRoutes } from '@/compositions'
+  import { useComponent, useFlowRun, useTaskRunsCount, useWorkspaceRoutes } from '@/compositions'
   import { isPendingStateType } from '@/models'
 
   const props = defineProps<{
     flowRunId: string,
   }>()
+
+  const { FlowRunMenu } = useComponent()
 
   const routes = useWorkspaceRoutes()
 

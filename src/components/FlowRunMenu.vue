@@ -9,6 +9,8 @@
       <p-overflow-menu-item v-if="canChangeState" label="Change state" @click="openChangeStateModal" />
       <copy-overflow-menu-item label="Copy ID" :item="flowRunId" />
       <p-overflow-menu-item v-if="can.delete.flow_run" label="Delete" @click="openDeleteModal" />
+
+      <slot v-bind="{ flowRun }" />
     </template>
   </p-icon-button-menu>
 

@@ -5,6 +5,8 @@
       <p-overflow-menu-item v-if="can.update.work_pool" label="Edit" />
     </router-link>
     <p-overflow-menu-item v-if="can.delete.work_pool" label="Delete" @click="open" />
+
+    <slot v-bind="{ workPool }" />
   </p-icon-button-menu>
   <ConfirmDeleteModal
     v-model:showModal="showModal"
