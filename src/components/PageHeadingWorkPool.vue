@@ -11,13 +11,15 @@
   import { media } from '@prefecthq/prefect-design'
   import { computed } from 'vue'
   import { useRouter } from 'vue-router'
-  import { PageHeading, WorkPoolToggle, WorkPoolMenu } from '@/components'
-  import { useWorkspaceRoutes } from '@/compositions'
+  import { PageHeading, WorkPoolToggle } from '@/components'
+  import { useWorkspaceRoutes, useComponent } from '@/compositions'
   import { WorkPool } from '@/models'
 
   const props = defineProps<{
     workPool: WorkPool,
   }>()
+
+  const { WorkPoolMenu } = useComponent()
 
   const routes = useWorkspaceRoutes()
   const router = useRouter()
