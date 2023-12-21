@@ -15,7 +15,7 @@
       </template>
     </p-list-header>
 
-    <p-table :data="deployments" :columns="columns">
+    <p-table :data="deployments" :columns="columns" class="deployments-list__table">
       <template #selection-heading>
         <p-checkbox v-model="model" @update:model-value="selectAllDeployments" />
       </template>
@@ -220,8 +220,13 @@
   w-20
 }
 
+.deployments-list__table .p-table-data { @apply
+  whitespace-normal
+}
+
 .deployment-list__action { @apply
   text-right
+  whitespace-nowrap
 }
 
 .deployment-list__name-col { @apply
@@ -232,16 +237,11 @@
 .deployment-list__name { @apply
   font-medium
   mr-2
-  whitespace-normal
 }
 
 .deployment-list__created-date { @apply
   text-subdued
   text-xs
-}
-
-.deployments-list__flow-name { @apply
-  whitespace-normal
 }
 
 .deployment-list__menu { @apply

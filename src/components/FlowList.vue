@@ -15,7 +15,7 @@
       </template>
     </p-list-header>
 
-    <p-table :data="flows" :columns="columns">
+    <p-table :data="flows" :columns="columns" class="flow-list__table">
       <template #selection-heading>
         <p-checkbox v-model="model" @update:model-value="selectAllFlows" />
       </template>
@@ -42,7 +42,7 @@
       </template>
 
       <template #deployments="{ row }">
-        <DeploymentsCount :flow-id="row.id" />
+        <DeploymentsCount :flow-id="row.id" class="flow-list__deployment-count" />
       </template>
 
       <template #latest-runs="{ row }">
@@ -136,7 +136,6 @@
     {
       property: 'name',
       label: 'Name',
-      width: '125px',
     },
     {
       label: 'Last run',
@@ -188,6 +187,10 @@
 </script>
 
 <style>
+.flow-list__table .p-table-data { @apply
+  whitespace-normal
+}
+
 .flow-list__latest-runs-chart { @apply
   h-12
   w-20
@@ -200,7 +203,6 @@
 .flow-list__name-col { @apply
   flex
   flex-col
-  w-80
 }
 
 .flow-list__name { @apply
@@ -210,5 +212,9 @@
 .flow-list__created-date { @apply
   text-subdued
   text-xs
+}
+
+.flow-list__deployment-count { @apply
+  whitespace-nowrap
 }
 </style>
