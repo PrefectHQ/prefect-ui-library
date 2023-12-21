@@ -26,6 +26,7 @@ export function useDateRangeSelectValueFromRoute(defaultValue: DateRangeSelectVa
         startDate.value = value.startDate
         endDate.value = value.endDate
         seconds.value = undefined
+        return
       }
 
       if (value?.type === 'span') {
@@ -33,6 +34,7 @@ export function useDateRangeSelectValueFromRoute(defaultValue: DateRangeSelectVa
         startDate.value = undefined
         endDate.value = undefined
         seconds.value = value.seconds
+        return
       }
 
       startDate.value = undefined
