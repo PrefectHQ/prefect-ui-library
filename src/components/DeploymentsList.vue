@@ -109,21 +109,21 @@
     FlowRouterLink,
     MiniDeploymentHistory,
     SelectedCount,
-    DeploymentMenu,
     DeploymentTagsInput,
     DeploymentStatusIcon,
     DeploymentToggle
   } from '@/components'
-  import { useCan, useDeploymentsFilterFromRoute, useWorkspaceRoutes, useDeployments } from '@/compositions'
+  import { useCan, useDeploymentsFilterFromRoute, useWorkspaceRoutes, useDeployments, useComponent } from '@/compositions'
   import { Deployment, isRRuleSchedule, Schedule } from '@/models'
   import { DeploymentsFilter } from '@/models/Filters'
   import { deploymentSortOptions } from '@/types/SortOptionTypes'
   import { formatDateTimeNumeric } from '@/utilities/dates'
 
-
   const props = defineProps<{
     filter?: DeploymentsFilter,
   }>()
+
+  const { DeploymentMenu } = useComponent()
 
   const can = useCan()
   const routes = useWorkspaceRoutes()
