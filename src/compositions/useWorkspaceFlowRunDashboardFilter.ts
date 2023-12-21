@@ -1,7 +1,6 @@
 import { DateRangeSelectValue } from '@prefecthq/prefect-design'
-import { useRouteQueryParam } from '@prefecthq/vue-compositions'
+import { useRouteQueryParam, DateRouteParam, NumberRouteParam } from '@prefecthq/vue-compositions'
 import { ComputedRef, computed, reactive } from 'vue'
-import { useDateRangeSelectValueFromRoute } from '@/compositions/useDateRangeSelectValue'
 import { SavedSearchFilter } from '@/models/SavedSearch'
 import { filterRangePastWeek, isSameFilter, oneWeekFilter } from '@/utilities/savedFilters'
 
@@ -12,20 +11,43 @@ type UseWorkspaceFlowRunDashboardFilterFromRoute = {
 }
 
 export function useWorkspaceFlowRunDashboardFilterFromRoute(): UseWorkspaceFlowRunDashboardFilterFromRoute {
+  const startDate = useRouteQueryParam('startDate', DateRouteParam)
+  const endDate = useRouteQueryParam('endDate', DateRouteParam)
+  const seconds = useRouteQueryParam('seconds', NumberRouteParam)
+  const type = useRouteQueryParam('type')
   const tag = useRouteQueryParam('tag', [])
   const deployment = useRouteQueryParam('deployment', [])
   const workPool = useRouteQueryParam('workPool', [])
   const workQueue = useRouteQueryParam('workQueue', [])
   const flow = useRouteQueryParam('flow', [])
   const state = useRouteQueryParam('state', [])
-  const dateRange = useDateRangeSelectValueFromRoute()
 
   const range = computed<NonNullable<DateRangeSelectValue>>({
     get() {
-      return dateRange.range ?? filterRangePastWeek
+      if (type.value === 'range' && startDate.value && endDate.value) {
+        return { type: 'range', startDate: startDate.value, endDate: endDate.value }
+      }
+
+      if (type.value === 'span' && seconds.value) {
+        return { type: 'span', seconds: seconds.value }
+      }
+
+      return filterRangePastWeek
     },
     set(value) {
-      dateRange.range = value
+      if (value.type === 'range') {
+        type.value = 'range'
+        startDate.value = value.startDate
+        endDate.value = value.endDate
+        seconds.value = undefined
+      }
+
+      if (value.type === 'span') {
+        type.value = 'span'
+        startDate.value = undefined
+        endDate.value = undefined
+        seconds.value = value.seconds
+      }
     },
   })
 
