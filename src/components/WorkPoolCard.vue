@@ -43,13 +43,15 @@
 <script lang="ts" setup>
   import { media } from '@prefecthq/prefect-design'
   import { computed } from 'vue'
-  import { WorkPoolMenu, WorkPoolToggle, WorkersLateIndicator, ProcessTypeBadge, WorkPoolStatusIcon } from '@/components'
-  import { useWorkPoolLastPolled, useWorkspaceRoutes } from '@/compositions'
+  import { WorkPoolToggle, WorkersLateIndicator, ProcessTypeBadge, WorkPoolStatusIcon } from '@/components'
+  import { useComponent, useWorkPoolLastPolled, useWorkspaceRoutes } from '@/compositions'
   import { WorkPool } from '@/models'
 
   const props = defineProps<{
     workPool: WorkPool,
   }>()
+
+  const { WorkPoolMenu } = useComponent()
 
   const routes = useWorkspaceRoutes()
 
