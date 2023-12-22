@@ -14,12 +14,12 @@
 
   const props = defineProps<{
     flowId: string,
-    timeSpanInSeconds?: number,
+    timeSpanInSeconds: number,
   }>()
 
   const flowStats = computed<FlowStatsFilter>(() => ({
     flowId: props.flowId,
-    range: props.timeSpanInSeconds ? { type: 'span', seconds: props.timeSpanInSeconds } : undefined,
+    range: { type: 'span', seconds: props.timeSpanInSeconds },
   }))
 
   const flowRunsFilter = computed(() => mapper.map('FlowStatsFilter', flowStats.value, 'FlowRunsFilter'))

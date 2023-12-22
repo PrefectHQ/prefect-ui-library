@@ -45,10 +45,11 @@
         <DeploymentsCount :flow-id="row.id" class="flow-list__deployment-count" />
       </template>
 
-      <template #latest-runs="{ row }">
+      <template #activity="{ row }">
         <MiniFlowHistory
-          class="flow-list__latest-runs-chart"
+          class="flow-list__activity-chart"
           :flow-id="row.id"
+          :time-span-in-seconds="secondsInDay"
         />
       </template>
 
@@ -83,6 +84,7 @@
 <script lang="ts" setup>
   import { CheckboxModel, TableColumn } from '@prefecthq/prefect-design'
   import { NumberRouteParam, useDebouncedRef, useRouteQueryParam } from '@prefecthq/vue-compositions'
+  import { secondsInDay } from 'date-fns/constants'
   import merge from 'lodash.merge'
   import { computed, ref } from 'vue'
   import {
@@ -147,7 +149,7 @@
       label: 'Deployments',
     },
     {
-      label: 'Latest runs',
+      label: 'Activity',
     },
     {
       label: 'Action',
