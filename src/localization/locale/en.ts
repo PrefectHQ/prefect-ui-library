@@ -122,6 +122,7 @@ export const en = {
     with: 'with',
     artifact: 'Artifact',
     artifacts: 'Artifacts',
+    artifactsEmptyState: 'Artifacts are byproducts of your runs; they can be anything from a markdown string to a table.',
     parameters: 'Parameters',
     addTagPlaceholder: 'Add tag (press enter to submit)',
     descriptionPlaceholder: 'Add a description (supports Markdown)',

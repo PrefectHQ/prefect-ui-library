@@ -9,12 +9,10 @@
     </template>
 
     <template #description>
-      <!-- TODO: Update this copy and use localization -->
-      Artifacts are byproducts of your runs; they can be anything from a markdown string to a table.
+      {{ localization.info.artifactsEmptyState }}
     </template>
 
     <template #actions>
-      <!-- TODO: This documentation link doesn't exist yet so I've used a placeholder -->
       <DocumentationButton :to="localization.docs.artifacts" />
     </template>
   </p-empty-state>
