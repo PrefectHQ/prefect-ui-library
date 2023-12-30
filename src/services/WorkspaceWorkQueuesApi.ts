@@ -6,20 +6,7 @@ import { mapper } from '@/services/Mapper'
 import { WorkspaceApi } from '@/services/WorkspaceApi'
 import { toMap } from '@/utilities'
 
-export interface IWorkspaceWorkQueuesApi {
-  getWorkQueue: (workQueueId: string) => Promise<WorkQueue>,
-  getWorkQueueByName: (workQueueName: string) => Promise<WorkQueue>,
-  getWorkQueues: (filter: WorkQueuesFilter) => Promise<WorkQueue[]>,
-  createWorkQueue: (request: WorkQueueCreate) => Promise<WorkQueue>,
-  pauseWorkQueue: (workQueueId: string) => Promise<void>,
-  resumeWorkQueue: (workQueueId: string) => Promise<void>,
-  updateWorkQueue: (workQueueId: string, request: WorkQueueEdit) => Promise<void>,
-  deleteWorkQueue: (workQueueId: string) => Promise<void>,
-  getRuns: (workQueueId: string) => Promise<FlowRun[]>,
-  getWorkQueueStatus: (workQueueId: string) => Promise<WorkQueueStatus>,
-}
-
-export class WorkspaceWorkQueuesApi extends WorkspaceApi implements IWorkspaceWorkQueuesApi {
+export class WorkspaceWorkQueuesApi extends WorkspaceApi {
 
   protected override routePrefix = '/work_queues'
 

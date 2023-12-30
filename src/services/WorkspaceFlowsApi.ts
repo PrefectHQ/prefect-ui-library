@@ -5,14 +5,7 @@ import { mapper } from '@/services/Mapper'
 import { WorkspaceApi } from '@/services/WorkspaceApi'
 import { toMap } from '@/utilities'
 
-export interface IWorkspaceFlowsApi {
-  getFlow: (flowId: string) => Promise<Flow>,
-  getFlows: (filter: FlowsFilter) => Promise<Flow[]>,
-  getFlowsCount: (filter: FlowsFilter) => Promise<number>,
-  deleteFlow: (flowId: string) => Promise<void>,
-}
-
-export class WorkspaceFlowsApi extends WorkspaceApi implements IWorkspaceFlowsApi {
+export class WorkspaceFlowsApi extends WorkspaceApi {
 
   protected override routePrefix = '/flows'
 

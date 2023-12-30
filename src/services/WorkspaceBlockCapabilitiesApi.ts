@@ -1,10 +1,6 @@
 import { WorkspaceApi } from '@/services/WorkspaceApi'
 
-export interface IWorkspaceBlockCapabilitiesApi {
-  getBlockCapabilities: () => Promise<string[]>,
-}
-
-export class WorkspaceBlockCapabilitiesApi extends WorkspaceApi implements IWorkspaceBlockCapabilitiesApi {
+export class WorkspaceBlockCapabilitiesApi extends WorkspaceApi {
 
   protected override routePrefix = '/block_capabilities'
 

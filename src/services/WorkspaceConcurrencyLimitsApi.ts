@@ -5,17 +5,6 @@ import { ConcurrencyLimitsFilter } from '@/models/Filters'
 import { mapper } from '@/services/Mapper'
 import { WorkspaceApi } from '@/services/WorkspaceApi'
 
-export interface IWorkspaceConcurrencyLimitsApi {
-  getConcurrencyLimit: (concurrencyLimitId: string) => Promise<ConcurrencyLimit>,
-  getConcurrencyLimits: (filter: ConcurrencyLimitsFilter) => Promise<ConcurrencyLimit[]>,
-  createConcurrencyLimit: (concurrencyLimit: ConcurrencyLimitCreate) => Promise<ConcurrencyLimit>,
-  getConcurrencyLimitByTag: (tag: string) => Promise<ConcurrencyLimit>,
-  deleteConcurrencyLimit: (concurrencyLimitId: string) => Promise<void>,
-  deleteConcurrencyLimitByTag: (tag: string) => Promise<void>,
-  resetConcurrencyLimitByTag: (tag: string) => Promise<ConcurrencyLimit>,
-}
-
-
 export class WorkspaceConcurrencyLimitsApi extends WorkspaceApi {
 
   protected override routePrefix = '/concurrency_limits'

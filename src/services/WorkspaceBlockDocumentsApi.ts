@@ -8,16 +8,7 @@ import { mapper } from '@/services/Mapper'
 import { WorkspaceApi } from '@/services/WorkspaceApi'
 import { toMap } from '@/utilities'
 
-export interface IWorkspaceBlockDocumentsApi {
-  getBlockDocument: (blockDocumentId: string) => Promise<BlockDocument>,
-  getBlockDocuments: (filter: BlockDocumentsFilter) => Promise<BlockDocument[]>,
-  createBlockDocument: (blockDocument: BlockDocumentCreate) => Promise<BlockDocument>,
-  updateBlockDocument: (blockDocumentId: string, blockDocument: BlockDocumentUpdate) => Promise<void>,
-  deleteBlockDocument: (blockDocumentId: string) => Promise<void>,
-  getBlockDocumentsCount: (filter: BlockDocumentsFilter) => Promise<number>,
-}
-
-export class WorkspaceBlockDocumentsApi extends WorkspaceApi implements IWorkspaceBlockDocumentsApi {
+export class WorkspaceBlockDocumentsApi extends WorkspaceApi {
 
   protected override routePrefix = '/block_documents'
 

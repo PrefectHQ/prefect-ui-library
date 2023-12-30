@@ -2,17 +2,7 @@ import { WorkPoolQueueCreate, WorkPoolQueue, WorkPoolQueueEdit, WorkPoolQueueRes
 import { WorkPoolQueuesFilter } from '@/models/Filters'
 import { mapper, WorkspaceApi } from '@/services'
 
-export interface IWorkspaceWorkPoolQueuesApi {
-  createWorkPoolQueue: (workPoolName: string, request: WorkPoolQueueCreate) => Promise<WorkPoolQueue>,
-  getWorkPoolQueues: (workPoolName: string, filter: WorkPoolQueuesFilter) => Promise<WorkPoolQueue[]>,
-  getWorkPoolQueueByName: (workPoolName: string, queueName: string) => Promise<WorkPoolQueue>,
-  updateWorkPoolQueue: (workPoolName: string, queueName: string, request: WorkPoolQueueCreate) => Promise<void>,
-  pauseWorkPoolQueue: (workPoolName: string, queueName: string) => Promise<void>,
-  resumeWorkPoolQueue: (workPoolName: string, queueName: string) => Promise<void>,
-  deleteWorkPoolQueue: (workPoolName: string, queueName: string) => Promise<void>,
-}
-
-export class WorkspaceWorkPoolQueuesApi extends WorkspaceApi implements IWorkspaceWorkPoolQueuesApi {
+export class WorkspaceWorkPoolQueuesApi extends WorkspaceApi {
 
   protected override routePrefix = '/work_pools/'
 

@@ -9,15 +9,7 @@ import { mapper } from '@/services/Mapper'
 import { WorkspaceApi } from '@/services/WorkspaceApi'
 import { toMap } from '@/utilities'
 
-export interface IWorkspaceTaskRunsApi {
-  getTaskRun: (taskRunId: string) => Promise<TaskRun>,
-  getTaskRuns: (filter: TaskRunsFilter) => Promise<TaskRun[]>,
-  getTaskRunsCount: (filter: TaskRunsFilter) => Promise<number>,
-  setTaskRunState: (taskRunId: string, body: StateUpdate) => Promise<void>,
-  deleteTaskRun: (taskRunId: string) => Promise<void>,
-}
-
-export class WorkspaceTaskRunsApi extends WorkspaceApi implements IWorkspaceTaskRunsApi {
+export class WorkspaceTaskRunsApi extends WorkspaceApi {
 
   protected override routePrefix = '/task_runs'
 

@@ -3,11 +3,7 @@ import { WorkPoolWorkerResponse } from '@/models/api/WorkPoolWorkerResponse'
 import { WorkPoolWorkersFilter } from '@/models/Filters'
 import { mapper, WorkspaceApi } from '@/services'
 
-export interface IWorkspaceWorkPoolWorkersApi {
-  getWorkers: (workPoolName: string, filter: WorkPoolWorkersFilter) => Promise<WorkPoolWorker[]>,
-}
-
-export class WorkspaceWorkPoolWorkersApi extends WorkspaceApi implements IWorkspaceWorkPoolWorkersApi {
+export class WorkspaceWorkPoolWorkersApi extends WorkspaceApi {
   protected override routePrefix = '/work_pools/'
 
   public async getWorkers(workPoolName: string, filter: WorkPoolWorkersFilter = {}): Promise<WorkPoolWorker[]> {

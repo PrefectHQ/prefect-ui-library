@@ -4,14 +4,7 @@ import { SavedSearch, SavedSearchCreate } from '@/models/SavedSearch'
 import { mapper } from '@/services/Mapper'
 import { WorkspaceApi } from '@/services/WorkspaceApi'
 
-export interface IWorkspaceSavedSearchesApi {
-  getSavedSearches: (filter: SavedSearchesFilter) => Promise<SavedSearch[]>,
-  getSavedSearch: (searchId: string) => Promise<SavedSearch>,
-  createSavedSearch: (search: SavedSearchCreate) => Promise<SavedSearch>,
-  deleteSavedSearch: (searchId: string) => Promise<void>,
-}
-
-export class WorkspaceSavedSearchesApi extends WorkspaceApi implements IWorkspaceSavedSearchesApi {
+export class WorkspaceSavedSearchesApi extends WorkspaceApi {
 
   protected override routePrefix = '/saved_searches'
 
