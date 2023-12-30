@@ -20,9 +20,6 @@
       "@/*": [
         "./src/*"
       ],
-      "@/demo/*": [
-        "./demo/*"
-      ]
     },
     "resolveJsonModule": true,
     "skipLibCheck": true,
@@ -38,9 +35,6 @@
     "src/**/*.ts",
     "src/**/*.d.ts",
     "src/**/*.vue",
-    "demo/**/*.d.ts",
-    "demo/**/*.ts",
-    "demo/**/*.vue",
     "./*.ts",
     "./*.d.ts",
     "./postcss.config.js",

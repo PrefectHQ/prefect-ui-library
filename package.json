@@ -15,13 +15,11 @@
         "vue3"
     ],
     "scripts": {
-        "build:demo": "vite build --mode=demo",
         "build": "vue-tsc && tsc-alias && vite build",
         "changelog": "auto-changelog --package --commit-limit 0",
         "dev": "vue-tsc -w & tsc-alias -w & vite build -w --force",
         "lint:fix": "eslint src --fix",
         "lint": "eslint src",
-        "serve": "vite --mode=demo --host",
         "test": "vitest",
         "validate:types": "vue-tsc --noEmit",
         "version": "npm run changelog && git add CHANGELOG.md"
