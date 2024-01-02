@@ -1,4 +1,4 @@
-import { secondsInWeek } from 'date-fns'
+import { secondsInWeek } from 'date-fns/constants'
 import isEqual from 'lodash.isequal'
 import { SavedSearch, SavedSearchFilter } from '@/models/SavedSearch'
 import { prefectStateNamesWithoutScheduled } from '@/types/states'
