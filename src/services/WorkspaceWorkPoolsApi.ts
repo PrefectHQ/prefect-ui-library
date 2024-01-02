@@ -2,19 +2,7 @@ import { WorkPool, WorkPoolCreate, WorkPoolEdit, WorkPoolResponse, WorkerSchedul
 import { WorkPoolsFilter } from '@/models/Filters'
 import { mapper, WorkspaceApi } from '@/services'
 
-export interface IWorkspaceWorkPoolsApi {
-  createWorkPool: (request: WorkPoolCreate) => Promise<WorkPool>,
-  getWorkPoolByName: (workPoolName: string) => Promise<WorkPool>,
-  getWorkPools: (filter: WorkPoolsFilter) => Promise<WorkPool[]>,
-  updateWorkPool: (workPoolName: string, request: WorkPoolEdit) => Promise<void>,
-  pauseWorkPool: (workPoolName: string) => Promise<void>,
-  resumeWorkPool: (workPoolName: string) => Promise<void>,
-  deleteWorkPool: (workPoolName: string) => Promise<void>,
-  getWorkPoolScheduledRuns: (workPoolName: string, request: WorkerScheduledFlowRuns) => Promise<WorkerScheduledFlowRun[]>,
-  getWorkPoolLateRuns: (workPoolName: string, request: WorkerScheduledFlowRuns) => Promise<WorkerScheduledFlowRun[]>,
-}
-
-export class WorkspaceWorkPoolsApi extends WorkspaceApi implements IWorkspaceWorkPoolsApi {
+export class WorkspaceWorkPoolsApi extends WorkspaceApi {
 
   protected override routePrefix = '/work_pools/'
 

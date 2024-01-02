@@ -7,17 +7,7 @@ import { mapper } from '@/services/Mapper'
 import { WorkspaceApi } from '@/services/WorkspaceApi'
 import { toMap } from '@/utilities'
 
-export interface IWorkspaceArtifactsApi {
-  getArtifact: (id: string) => Promise<Artifact>,
-  getArtifacts: (filter: ArtifactsFilter) => Promise<Artifact[]>,
-  getArtifactCollection: (key: string) => Promise<ArtifactCollection>,
-  getArtifactCollections: (filter: ArtifactsFilter) => Promise<ArtifactCollection[]>,
-  getArtifactsCount: (filter: ArtifactsFilter) => Promise<number>,
-  getArtifactCollectionsCount: (filter: ArtifactsFilter) => Promise<number>,
-  deleteArtifact: (id: string) => Promise<void>,
-}
-
-export class WorkspaceArtifactsApi extends WorkspaceApi implements IWorkspaceArtifactsApi {
+export class WorkspaceArtifactsApi extends WorkspaceApi {
 
   protected override routePrefix = '/artifacts'
 

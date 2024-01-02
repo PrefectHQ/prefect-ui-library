@@ -1,11 +1,6 @@
 import { Api } from '@/services/Api'
 
-export interface IHealthApi {
-  getHealth: () => Promise<boolean>,
-  isHealthy: () => Promise<boolean>,
-}
-
-export class HealthApi extends Api implements IHealthApi {
+export class HealthApi extends Api {
   protected override routePrefix = '/health'
 
   public getHealth(): Promise<boolean> {
