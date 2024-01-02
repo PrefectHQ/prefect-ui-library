@@ -10,18 +10,7 @@ import { mapper } from '@/services/Mapper'
 import { WorkspaceApi } from '@/services/WorkspaceApi'
 import { toMap } from '@/utilities/arrays'
 
-export interface IWorkspaceDeploymentsApi {
-  getDeployment: (deploymentId: string) => Promise<Deployment>,
-  getDeployments: (filter: DeploymentsFilter) => Promise<Deployment[]>,
-  getDeploymentsCount: (filter: DeploymentsFilter) => Promise<number>,
-  createDeploymentFlowRun: (deploymentId: string, request: DeploymentFlowRunCreate) => Promise<FlowRun>,
-  updateDeployment: (deploymentId: string, request: DeploymentUpdate) => Promise<void>,
-  pauseDeployment: (deploymentId: string) => Promise<void>,
-  resumeDeployment: (deploymentId: string) => Promise<void>,
-  deleteDeployment: (deploymentId: string) => Promise<void>,
-}
-
-export class WorkspaceDeploymentsApi extends WorkspaceApi implements IWorkspaceDeploymentsApi {
+export class WorkspaceDeploymentsApi extends WorkspaceApi {
 
   protected override routePrefix = '/deployments'
 

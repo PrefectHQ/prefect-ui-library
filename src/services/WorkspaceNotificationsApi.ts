@@ -6,15 +6,7 @@ import { NotificationUpdate } from '@/models/NotificationUpdate'
 import { mapper } from '@/services/Mapper'
 import { WorkspaceApi } from '@/services/WorkspaceApi'
 
-export interface IWorkspaceNotificationsApi {
-  getNotification: (notificationId: string) => Promise<Notification>,
-  createNotification: (notification: NotificationCreate) => Promise<Notification>,
-  getNotifications: () => Promise<Notification[]>,
-  updateNotification: (notificationId: string, notification: NotificationUpdate) => Promise<void>,
-  deleteNotification: (notificationId: string) => Promise<void>,
-}
-
-export class WorkspaceNotificationsApi extends WorkspaceApi implements IWorkspaceNotificationsApi {
+export class WorkspaceNotificationsApi extends WorkspaceApi {
 
   protected override routePrefix = '/flow_run_notification_policies'
 

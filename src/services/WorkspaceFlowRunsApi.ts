@@ -14,20 +14,7 @@ import { WorkspaceApi } from '@/services/WorkspaceApi'
 import { Schema, SchemaValues } from '@/types/schemas'
 import { toMap } from '@/utilities'
 
-export interface IWorkspaceFlowRunsApi {
-  getFlowRun: (flowRunId: string) => Promise<FlowRun>,
-  getFlowRuns: (filter: FlowRunsFilter) => Promise<FlowRun[]>,
-  getFlowRunsCount: (filter: FlowRunsFilter) => Promise<number>,
-  getFlowRunsHistory: (filter: FlowRunsHistoryFilter) => Promise<RunHistory[]>,
-  getFlowRunsAverageLateness: (filter: FlowRunsFilter) => Promise<number | null>,
-  getFlowRunsGraph: (flowRunId: string) => Promise<RunGraphData>,
-  retryFlowRun: (flowRunId: string) => Promise<void>,
-  setFlowRunState: (flowRunId: string, body: StateUpdate) => Promise<void>,
-  resumeFlowRun: (flowRunId: string, values?: SchemaValues) => Promise<OrchestrationResult>,
-  deleteFlowRun: (flowRunId: string) => Promise<void>,
-}
-
-export class WorkspaceFlowRunsApi extends WorkspaceApi implements IWorkspaceFlowRunsApi {
+export class WorkspaceFlowRunsApi extends WorkspaceApi {
 
   protected override routePrefix = '/flow_runs'
 

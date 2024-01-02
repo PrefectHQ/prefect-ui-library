@@ -60,5 +60,9 @@ function getDateRangeResponse(value: NonNullable<DateRangeSelectValue>): DateRan
     return { type: 'range', startDate: value.startDate.toISOString(), endDate: value.endDate.toISOString() }
   }
 
+  if (value.type === 'around') {
+    return { type: 'around', date: value.date.toISOString(), unit: value.unit, quantity: value.quantity }
+  }
+
   return value
 }

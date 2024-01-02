@@ -7,16 +7,6 @@ import { ConcurrencyLimitsFilter } from '@/models/Filters'
 import { mapper } from '@/services/Mapper'
 import { WorkspaceApi } from '@/services/WorkspaceApi'
 
-export interface IWorkspaceConcurrencyV2LimitsApi {
-  getConcurrencyV2Limit: (concurrencyV2LimitId: string) => Promise<ConcurrencyV2Limit>,
-  getConcurrencyV2Limits: (filter: ConcurrencyLimitsFilter) => Promise<ConcurrencyV2Limit[]>,
-  createConcurrencyV2Limit: (concurrencyV2Limit: ConcurrencyV2Create) => Promise<ConcurrencyV2Limit>,
-  updateConcurrencyV2Limit: (id: string, concurrencyV2Limit: ConcurrencyV2Update) => Promise<ConcurrencyV2Limit>,
-  deleteConcurrencyV2Limit: (concurrencyV2LimitId: string) => Promise<void>,
-  bulkIncrementActiveSlots: (names: string[], slots: number, mode: string) => Promise<ConcurrencyV2ActiveSlots>,
-  bulkDecrementActiveSlots: (names: string[], slots: number, mode: string) => Promise<ConcurrencyV2ActiveSlots>,
-}
-
 export class WorkspaceConcurrencyV2LimitsApi extends WorkspaceApi {
 
   protected override routePrefix = '/v2/concurrency_limits'

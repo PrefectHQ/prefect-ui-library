@@ -1,44 +1,15 @@
-import { DateRangeSelectRangeValue, DateRangeSelectSpanValue, DateRangeSelectValue } from '@prefecthq/prefect-design'
-import { differenceInSeconds, addSeconds } from 'date-fns'
+import { DateRangeSelectValue, mapDateRangeSelectValueToDateRange as map } from '@prefecthq/prefect-design'
 import { MapFunction } from '@/services/Mapper'
-import { sortDates } from '@/utilities/dates'
 
-function nowWithoutMilliseconds(): Date {
-  const now = new Date()
+type Source = NonNullable<DateRangeSelectValue>
+type Target = NonNullable<ReturnType<typeof map>>
 
-  now.setMilliseconds(0)
+export const mapDateRangeSelectValueToDateRange: MapFunction<Source, Target> = (source) => {
+  const value = map(source)
 
-  return now
-}
-
-type DateRange = {
-  startDate: Date,
-  endDate: Date,
-  timeSpanInSeconds: number,
-}
-
-function mapDateRangeSelectRangeValueToDateRange({ startDate, endDate }: DateRangeSelectRangeValue): DateRange {
-  const timeSpanInSeconds = differenceInSeconds(endDate, startDate)
-
-  return { startDate, endDate, timeSpanInSeconds }
-}
-
-function mapDateRangeSelectSpanValueToDateRange({ seconds }: DateRangeSelectSpanValue): DateRange {
-  const now = nowWithoutMilliseconds()
-  const then = addSeconds(now, seconds)
-  const [startDate, endDate] = [now, then].sort(sortDates)
-
-  return { startDate, endDate, timeSpanInSeconds: seconds }
-}
-
-export const mapDateRangeSelectValueToDateRange: MapFunction<NonNullable<DateRangeSelectValue>, DateRange> = (source) => {
-  switch (source.type) {
-    case 'range':
-      return mapDateRangeSelectRangeValueToDateRange(source)
-    case 'span':
-      return mapDateRangeSelectSpanValueToDateRange(source)
-    default:
-      const exhaustive: never = source
-      throw new Error(`No handler for DateRangeSelectValue.type: ${exhaustive}`)
+  if (!value) {
+    throw new Error('Failed to map date range because value is null')
   }
+
+  return value
 }

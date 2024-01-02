@@ -6,11 +6,6 @@ This library is the Vue and Typescript component library for [Prefect 2](https:/
 npm i @prefecthq/prefect-ui-library --save --save-exact
 ```
 
-## Demo
-https://prefect-ui-library.netlify.app/
-
-To run locally for devlopment you can use `npm run serve` and go to the url outputted to the console.
-
 ## Developing with Prefect UI
 
 If you plan to develop against the Prefect UI you can install the prefect-ui-library package locally.

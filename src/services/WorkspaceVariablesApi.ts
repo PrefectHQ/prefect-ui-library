@@ -3,17 +3,7 @@ import { VariableResponse } from '@/models/api/VariableResponse'
 import { mapper } from '@/services'
 import { WorkspaceApi } from '@/services/WorkspaceApi'
 
-export interface IWorkspaceVariablesApi {
-  getVariables: (filter: VariablesFilter) => Promise<Variable[]>,
-  getVariablesCount: (filter: VariablesFilter) => Promise<number>,
-  getVariable: (variableId: string) => Promise<Variable>,
-  getVariableByName: (variableName: string) => Promise<Variable | null>,
-  createVariable: (body: VariableCreate) => Promise<Variable>,
-  editVariable: (variableId: string, body: VariableEdit) => Promise<Variable>,
-  deleteVariable: (variableId: string) => Promise<void>,
-}
-
-export class WorkspaceVariablesApi extends WorkspaceApi implements IWorkspaceVariablesApi {
+export class WorkspaceVariablesApi extends WorkspaceApi {
   protected override routePrefix = '/variables'
 
   public async getVariable(variableId: string): Promise<Variable> {

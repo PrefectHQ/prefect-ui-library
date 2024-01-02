@@ -24,7 +24,6 @@ const stateColors = states.reduce((colors, state) => {
 module.exports = {
   content: [
     './index.html',
-    './demo/**/*.{vue,js,ts,jsx,tsx}',
     './src/**/*.{vue,js,ts,jsx,tsx}',
   ],
   safelist: [

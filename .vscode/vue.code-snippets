@@ -21,22 +21,6 @@
             ],
         "description": "Typescript Setup Component"
     },
-    "vue-demo": {
-        "scope": "vue",
-        "prefix": "vue-demo",
-        "body": [
-            "<template>",
-            "  <ComponentPage title=\"${TM_FILENAME_BASE}\">",
-            "    $1",
-            "  </ComponentPage>",
-            "</template>",
-            "",
-            "<script lang=\"ts\" setup>",
-            "  import ComponentPage from '@/demo/components/ComponentPage.vue'",
-            "</script>"
-        ],
-        "description": "vue-demo"
-    },
     "template": {
         "scope": "vue",
         "prefix": "template",
