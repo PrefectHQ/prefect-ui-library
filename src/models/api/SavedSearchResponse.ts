@@ -1,3 +1,4 @@
+import { DateRangeSelectAroundUnit } from '@prefecthq/prefect-design'
 
 export type SavedSearchResponse = {
   id: string,
@@ -38,10 +39,42 @@ export function isDateRangeRangeResponse(value: unknown): value is DateRangeRang
     && typeof value.endDate === 'string'
 }
 
-export type DateRangeResponse = DateRangeSpanResponse | DateRangeRangeResponse
+export type DateRangePeriodResponse = {
+  type: 'period',
+  period: 'Today',
+}
+
+export function isDateRangePeriodResponse(value: unknown): value is DateRangePeriodResponse {
+  return typeof value === 'object'
+    && value !== null
+    && 'type' in value
+    && value.type === 'period'
+    && 'period' in value
+    && value.period === 'Today'
+}
+
+export type DateRangeAroundResponse = {
+  type: 'around',
+  date: string,
+  quantity: number,
+  unit: DateRangeSelectAroundUnit,
+}
+
+export function isDateRangeAroundResponse(value: unknown): value is DateRangeAroundResponse {
+  return typeof value === 'object'
+    && value !== null
+    && 'type' in value
+    && value.type === 'around'
+    && 'date' in value
+    && typeof value.date === 'string'
+    && 'unit' in value
+    && typeof value.unit === 'string'
+}
+
+export type DateRangeResponse = DateRangeSpanResponse | DateRangeRangeResponse | DateRangePeriodResponse | DateRangeAroundResponse
 
 export function isDateRangeResponse(value: unknown): value is DateRangeRangeResponse {
-  return isDateRangeSpanResponse(value) || isDateRangeRangeResponse(value)
+  return isDateRangeSpanResponse(value) || isDateRangeRangeResponse(value) || isDateRangePeriodResponse(value) || isDateRangeAroundResponse(value)
 }
 
 export type FilterResponseValue = string | string[] | DateRangeResponse
