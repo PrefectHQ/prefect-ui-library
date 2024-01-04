@@ -1,12 +1,13 @@
-export type TupleType<T extends string[]> = {
+export type TupleType<T extends unknown[]> = {
   tuple: Readonly<T>,
   isTuple: (value: unknown) => value is T[number],
 }
 
-export function createTuple<const T extends string[]>(tuple: T): TupleType<T> {
+export function createTuple<const T extends unknown[]>(tuple: T): TupleType<T> {
+  const values = new Set(tuple)
 
   function isTuple(value: unknown): value is T[number] {
-    return tuple.includes(value as T[number])
+    return values.has(value)
   }
 
   return {
