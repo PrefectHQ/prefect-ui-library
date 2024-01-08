@@ -84,11 +84,10 @@ export function usePagination<
   const countSubscription = useSubscriptionWithDependencies(countMethod, countSubscriptionParameters, options)
   const total = computed(() => countSubscription.response ?? 0)
 
-  const fetchParametersRef = toRef(fetchParametersGetter)
   const fetchSubscriptions: UseSubscription<TFetch>[] = reactive([])
   const results = computed(() => fetchSubscriptions.flatMap(subscription => subscription.response ?? []) as unknown as Awaited<ReturnType<TFetch>>)
 
-  watch([total, page, fetchParametersRef], ([total, page, parameters]) => {
+  watch([total, page, fetchParametersGetter], ([total, page, parameters]) => {
     if (total === 0 || page === 0 || parameters === null) {
       fetchSubscriptions.forEach(subscription => subscription.unsubscribe())
       fetchSubscriptions.splice(0)
@@ -103,7 +102,7 @@ export function usePagination<
 
     fetchSubscriptions.forEach(subscription => subscription.unsubscribe())
     fetchSubscriptions.splice(0, Infinity, ...newSubscriptions)
-  }, { immediate: true })
+  }, { immediate: true, deep: true })
 
   const { subscriptions } = useSubscriptions(() => [
     countSubscription,

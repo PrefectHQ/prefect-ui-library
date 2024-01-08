@@ -1,5 +1,5 @@
 <template>
-  <span v-if="showLink" class="flow-router-link">
+  <span v-if="flowId" class="flow-router-link">
     <slot name="before">
       <span v-if="before">
         {{ before }}
