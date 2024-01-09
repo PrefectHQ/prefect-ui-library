@@ -54,7 +54,7 @@
   }>()
 
   const emit = defineEmits<{
-    (event: 'update:selectedSearchOption', value: SavedSearch | null): void,
+    (event: 'update:selectedSearchOption', value: SavedFlowRunsSearch | null): void,
   }>()
 
   const attrs = useAttrs()

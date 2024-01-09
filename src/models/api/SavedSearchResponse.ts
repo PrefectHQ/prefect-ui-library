@@ -73,7 +73,7 @@ export function isDateRangeAroundResponse(value: unknown): value is DateRangeAro
 
 export type DateRangeResponse = DateRangeSpanResponse | DateRangeRangeResponse | DateRangePeriodResponse | DateRangeAroundResponse
 
-export function isDateRangeResponse(value: unknown): value is DateRangeRangeResponse {
+export function isDateRangeResponse(value: unknown): value is DateRangeResponse {
   return isDateRangeSpanResponse(value) || isDateRangeRangeResponse(value) || isDateRangePeriodResponse(value) || isDateRangeAroundResponse(value)
 }
 
