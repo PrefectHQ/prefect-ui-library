@@ -1,5 +1,5 @@
-import { DateRangeSelectValue } from '@prefecthq/prefect-design'
-import { SavedSearchFilterResponse, SavedSearchResponse, isDateRangeResponse, isDateRangeRangeResponse } from '@/models/api/SavedSearchResponse'
+import { DateRangeSelectAroundValue, DateRangeSelectRangeValue, DateRangeSelectSpanValue, DateRangeSelectValue, DateRangeSelectPeriodValue } from '@prefecthq/prefect-design'
+import { SavedSearchFilterResponse, SavedSearchResponse, isDateRangeResponse, isDateRangeRangeResponse, isDateRangeAroundResponse, isDateRangeSpanResponse, isDateRangePeriodResponse } from '@/models/api/SavedSearchResponse'
 import { SavedSearch, SavedSearchFilter } from '@/models/SavedSearch'
 import { MapFunction, mapper } from '@/services/Mapper'
 import { asArray, filterRangePastWeek, isString, isStringArray, mapStateTypeOrNameToStateName } from '@/utilities'
@@ -51,13 +51,33 @@ function getRangeFilter(filters: SavedSearchFilterResponse[]): NonNullable<DateR
     return filterRangePastWeek
   }
 
-  if (isDateRangeRangeResponse(filter.value)) {
+  const range = filter.value
+
+  if (isDateRangeRangeResponse(range)) {
     return {
       type: 'range',
-      startDate: mapper.map('string', filter.value.startDate, 'Date'),
-      endDate: mapper.map('string', filter.value.endDate, 'Date'),
-    }
+      startDate: mapper.map('string', range.startDate, 'Date'),
+      endDate: mapper.map('string', range.endDate, 'Date'),
+    } satisfies DateRangeSelectRangeValue
   }
 
-  return filter.value
+  if (isDateRangeAroundResponse(range)) {
+    return {
+      type: 'around',
+      date: mapper.map('string', range.date, 'Date'),
+      unit: range.unit,
+      quantity: range.quantity,
+    } satisfies DateRangeSelectAroundValue
+  }
+
+  if (isDateRangeSpanResponse(range)) {
+    return range satisfies DateRangeSelectSpanValue
+  }
+
+  if (isDateRangePeriodResponse(range)) {
+    return range satisfies DateRangeSelectPeriodValue
+  }
+
+  const exhaustive: never = range
+  throw new Error(`No handler for date range type: ${(exhaustive as any).type}`)
 }
