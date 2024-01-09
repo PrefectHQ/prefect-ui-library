@@ -79,5 +79,6 @@ function getRangeFilter(filters: SavedSearchFilterResponse[]): NonNullable<DateR
   }
 
   const exhaustive: never = range
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   throw new Error(`No handler for date range type: ${(exhaustive as any).type}`)
 }
