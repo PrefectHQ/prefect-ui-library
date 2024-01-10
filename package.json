@@ -65,7 +65,7 @@
         "@prefecthq/vue-charts": "^2.0.3",
         "@prefecthq/vue-compositions": "^1.6.6",
         "vee-validate": "^4.7.0",
-        "vue": "^3.4.4",
+        "vue": "^3.3.4",
         "vue-router": "^4.0.12"
     },
     "dependencies": {
