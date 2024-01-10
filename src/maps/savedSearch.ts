@@ -1,4 +1,5 @@
 import { DateRangeSelectAroundValue, DateRangeSelectRangeValue, DateRangeSelectSpanValue, DateRangeSelectValue, DateRangeSelectPeriodValue } from '@prefecthq/prefect-design'
+import { LocationQuery } from 'vue-router'
 import { SavedSearchFilterResponse, SavedSearchResponse, isDateRangeResponse, isDateRangeRangeResponse, isDateRangeAroundResponse, isDateRangeSpanResponse, isDateRangePeriodResponse } from '@/models/api/SavedSearchResponse'
 import { SavedSearch, SavedSearchFilter } from '@/models/SavedSearch'
 import { MapFunction, mapper } from '@/services/Mapper'
@@ -10,6 +11,64 @@ export const mapSavedSearchResponseToSavedSearch: MapFunction<SavedSearchRespons
     name: source.name,
     filters: mapSavedSearchFilters(source.filters),
   })
+}
+
+export const mapSavedSearchToLocationQuery: MapFunction<SavedSearchFilter, LocationQuery> = function(filter) {
+  const query: LocationQuery = {}
+
+  if (filter.deployment.length) {
+    query.deployment = filter.deployment
+  }
+
+  if (filter.flow.length) {
+    query.flow = filter.flow
+  }
+
+  if (filter.workPool.length) {
+    query.workPool = filter.workPool
+  }
+
+  if (filter.workQueue.length) {
+    query.workQueue = filter.workQueue
+  }
+
+  if (filter.tag.length) {
+    query.tag = filter.tag
+  }
+
+  if (filter.state.length) {
+    query.state = filter.state
+  }
+
+  const { range } = filter
+
+  switch (range.type) {
+    case 'around':
+      query.type = 'around'
+      query.date = this.map('Date', range.date, 'string')
+      query.unit = range.unit
+      query.quantity = range.quantity.toString()
+      break
+    case 'period':
+      query.type = 'period'
+      query.period = range.period
+      break
+    case 'range':
+      query.type = 'range'
+      query.startDate = this.map('Date', range.startDate, 'string')
+      query.endDate = this.map('Date', range.endDate, 'string')
+      break
+    case 'span':
+      query.type = 'span'
+      query.seconds = range.seconds.toString()
+      break
+    default:
+      const exhaustive: never = range
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      throw new Error(`Mapping saved search filters.range missing case for: ${(exhaustive as any).type}`)
+  }
+
+  return query
 }
 
 function mapSavedSearchFilters(filters: SavedSearchFilterResponse[] = []): SavedSearchFilter {

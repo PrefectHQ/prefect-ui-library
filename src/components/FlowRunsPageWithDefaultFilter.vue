@@ -5,15 +5,16 @@
 <script lang="ts">
   import { defineComponent, shallowRef, watch } from 'vue'
   import { NavigationGuard, RouteComponent } from 'vue-router'
-  import { isEmptyObject, mapper, getQueryForFlowRunsFilter, isFunction } from '..'
+  import { isEmptyObject, mapper, isFunction } from '..'
   import { useDefaultSavedSearchFilter } from '@/compositions/useDefaultSavedSearchFilter'
 
   const setDefaultFlowRunsFilterQueryIfEmpty: NavigationGuard = (to) => {
     const { value: defaultFlowRunsSavedSearchFilter, isCustom } = useDefaultSavedSearchFilter()
+
     if (isEmptyObject(to.query) && isCustom.value) {
-      const asFlowRunsFilter = mapper.map('SavedSearchFilter', defaultFlowRunsSavedSearchFilter.value, 'FlowRunsFilter')
-      const asQueryParams = getQueryForFlowRunsFilter(asFlowRunsFilter)
-      return { ...to, query: asQueryParams }
+      const query = mapper.map('SavedSearchFilter', defaultFlowRunsSavedSearchFilter.value, 'LocationQuery')
+
+      return { ...to, query }
     }
     return true
   }

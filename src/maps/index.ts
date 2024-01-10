@@ -39,7 +39,7 @@ import { mapNotificationUpdateToNotificationUpdateRequest } from '@/maps/notific
 import { mapNumberToString, mapStringToNumber } from '@/maps/number'
 import { mapOrchestrationResultResponseToOrchestrationResult } from '@/maps/orchestrationResult'
 import { mapRunGraphDataResponse, mapRunGraphNodeResponse } from '@/maps/runGraphData'
-import { mapSavedSearchResponseToSavedSearch } from '@/maps/savedSearch'
+import { mapSavedSearchResponseToSavedSearch, mapSavedSearchToLocationQuery } from '@/maps/savedSearch'
 import { mapSavedSearchCreateToSavedSearchCreateRequest } from '@/maps/savedSearchCreate'
 import { mapSavedSearchFilterToFlowRunsFilter } from '@/maps/savedSearchFilter'
 import { mapUiFlowRunHistoryToScatterPlotItem } from '@/maps/scatterPlotItem'
@@ -137,7 +137,10 @@ export const maps = {
   RunHistory: { FlowRunHistoryResponse: mapRunHistoryToFlowRunHistoryResponse, DivergingBarChartItem: mapRunHistoryToDivergingBarChartItem },
   SavedSearchCreate: { SavedSearchCreateRequest: mapSavedSearchCreateToSavedSearchCreateRequest },
   SavedSearchesFilter: { SavedSearchesFilterRequest: mapSavedSearchesFilter },
-  SavedSearchFilter: { FlowRunsFilter: mapSavedSearchFilterToFlowRunsFilter },
+  SavedSearchFilter: {
+    FlowRunsFilter: mapSavedSearchFilterToFlowRunsFilter,
+    LocationQuery: mapSavedSearchToLocationQuery,
+  },
   SavedSearchResponse: { SavedSearch: mapSavedSearchResponseToSavedSearch },
   Schedule: { ScheduleResponse: mapScheduleToScheduleResponse, ScheduleRequest: mapScheduleToScheduleRequest },
   ScheduleResponse: { Schedule: mapScheduleResponseToSchedule },
