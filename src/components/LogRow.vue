@@ -5,7 +5,11 @@
     </div>
 
     <div class="log-row__content">
-      {{ log.message }}
+      <!--
+        We pass the log message through an html sanitizer
+        so we can use v-html more securely
+      -->
+      <p-sanitize-html class="log-row__content--parsed" :html="message" :config="config" />
     </div>
 
     <div class="log-row__trailing">
@@ -28,10 +32,23 @@
   import { useTaskRun } from '@/compositions'
   import { Log } from '@/models'
   import { formatTimeNumeric } from '@/utilities/dates'
+  import { urlRegex } from '@/utilities/urls'
 
   const props = defineProps<{
     log: Log,
   }>()
+
+  const config = {
+    ALLOWED_ATTR: ['href', 'target', 'rel'],
+  }
+
+  const convertUrlsToAnchors = (message: string): string => {
+    return message.replace(urlRegex, (url: string) => {
+      return `<a href="${url}" target="_blank" rel="noopener noreferrer">${url}</a>`
+    })
+  }
+
+  const message = computed(() => convertUrlsToAnchors(props.log.message))
 
   const taskRunId = computed(() => props.log.taskRunId)
   const { taskRun } = useTaskRun(taskRunId)
@@ -63,6 +80,11 @@
   select-auto
   whitespace-pre-wrap
   break-words
+}
+
+.log-row__content--parsed a[href] { @apply
+  hover:text-link
+  hover:underline
 }
 
 .log-row__trailing { @apply
