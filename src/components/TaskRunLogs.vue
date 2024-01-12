@@ -38,20 +38,19 @@
   import LogLevelSelect from '@/components/LogLevelSelect.vue'
   import LogsContainer from '@/components/LogsContainer.vue'
   import LogsSort from '@/components/LogsSort.vue'
-  import { useWorkspaceApi } from '@/compositions'
+  import { useLogsSort, useWorkspaceApi } from '@/compositions'
   import { usePaginatedSubscription } from '@/compositions/usePaginatedSubscription'
   import { useStatePolling } from '@/compositions/useStatePolling'
   import { LogsFilter } from '@/models/Filters'
   import { Log, LogLevel } from '@/models/Log'
   import { TaskRun } from '@/models/TaskRun'
-  import { LogSortValues } from '@/types'
 
   const props = defineProps<{
     taskRun: TaskRun,
   }>()
 
   const logLevel = ref<LogLevel>(0)
-  const logsSort = ref<LogSortValues>('TIMESTAMP_ASC')
+  const { sort: logsSort } = useLogsSort()
   const hasFilter = computed(() => logLevel.value !== 0)
   const logsFilter = computed<LogsFilter>(() => ({
     logs: {
