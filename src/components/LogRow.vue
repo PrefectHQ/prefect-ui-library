@@ -32,6 +32,7 @@
   import { useTaskRun } from '@/compositions'
   import { Log } from '@/models'
   import { formatTimeNumeric } from '@/utilities/dates'
+  import { urlRegex } from '@/utilities/urls'
 
   const props = defineProps<{
     log: Log,
@@ -42,8 +43,7 @@
   }
 
   const convertUrlsToAnchors = (message: string): string => {
-    const regex = /https?:\/\/[^\s]+/g
-    return message.replace(regex, (url: string) => {
+    return message.replace(urlRegex, (url: string) => {
       return `<a href="${url}" target="_blank" rel="noopener noreferrer">${url}</a>`
     })
   }
