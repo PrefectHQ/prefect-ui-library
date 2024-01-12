@@ -9,7 +9,7 @@
         We pass the log message through an html sanitizer
         so we can use v-html more securely
       -->
-      <p-sanitize-html class="log-row__content--parsed" :html="message" />
+      <p-sanitize-html class="log-row__content--parsed" :html="message" :config="config" />
     </div>
 
     <div class="log-row__trailing">
@@ -36,6 +36,10 @@
   const props = defineProps<{
     log: Log,
   }>()
+
+  const config = {
+    ALLOWED_ATTR: ['href', 'target', 'rel'],
+  }
 
   const convertUrlsToAnchors = (message: string): string => {
     const regex = /https?:\/\/[^\s]+/g
