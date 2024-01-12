@@ -43,14 +43,13 @@
 <script lang="ts" setup>
   import { ref, computed, toRefs, watch } from 'vue'
   import { LogLevelSelect, LogsContainer, LogsSort } from '@/components'
-  import { useWorkspaceApi } from '@/compositions'
+  import { useLogsSort, useWorkspaceApi } from '@/compositions'
   import { usePaginatedSubscription } from '@/compositions/usePaginatedSubscription'
   import { useStatePolling } from '@/compositions/useStatePolling'
   import { isTerminalStateType } from '@/models'
   import { LogsFilter } from '@/models/Filters'
   import { FlowRun } from '@/models/FlowRun'
   import { Log, LogLevel } from '@/models/Log'
-  import { LogSortValues } from '@/types'
 
   const props = defineProps<{
     flowRun: FlowRun,
@@ -58,7 +57,7 @@
 
   const { flowRun } = toRefs(props)
   const logLevel = ref<LogLevel>(0)
-  const logsSort = ref<LogSortValues>('TIMESTAMP_ASC')
+  const { sort: logsSort } = useLogsSort()
   const hasFilter = computed(() => logLevel.value !== 0)
   const logsFilter = computed<LogsFilter>(() => ({
     logs: {
