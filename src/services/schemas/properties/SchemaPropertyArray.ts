@@ -1,4 +1,4 @@
-import { PSelect } from '@prefecthq/prefect-design'
+import { PCombobox } from '@prefecthq/prefect-design'
 import { JsonInput } from '@/components'
 import { SchemaPropertyService } from '@/services/schemas/properties/SchemaPropertyService'
 import { SchemaPropertyComponentWithProps } from '@/services/schemas/utilities'
@@ -14,7 +14,7 @@ export class SchemaPropertyArray extends SchemaPropertyService {
     const options = this.getSelectOptions()
 
     if (options.length) {
-      return this.withProps(PSelect, { options })
+      return this.withProps(PCombobox, { options })
     }
 
     return this.withProps(JsonInput)

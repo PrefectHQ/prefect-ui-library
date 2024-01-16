@@ -1,4 +1,4 @@
-import { PNumberInput, PSelect } from '@prefecthq/prefect-design'
+import { PNumberInput, PCombobox } from '@prefecthq/prefect-design'
 import { SchemaPropertyService } from '@/services/schemas/properties/SchemaPropertyService'
 import { SchemaPropertyComponentWithProps } from '@/services/schemas/utilities'
 import { SchemaValue } from '@/types/schemas'
@@ -11,7 +11,7 @@ export class SchemaPropertyInteger extends SchemaPropertyService {
 
   protected override get component(): SchemaPropertyComponentWithProps {
     if (this.has('enum')) {
-      return this.withProps(PSelect, {
+      return this.withProps(PCombobox, {
         options: this.getSelectOptions(),
       })
     }
