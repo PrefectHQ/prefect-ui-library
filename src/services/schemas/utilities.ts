@@ -2,6 +2,7 @@ import { JsonInput } from '@/components'
 import { isBlockDocumentReferenceValue, isBlockDocumentValue } from '@/models'
 import { schemaPropertyServiceFactory } from '@/services/schemas/properties'
 import { SchemaProperty, SchemaPropertyInputAttrs, Schema, SchemaValues, SchemaValue, schemaHas, SchemaPropertyAnyOf, SchemaPropertyAllOf } from '@/types/schemas'
+import { isArray } from '@/utilities'
 import { withPropsWithoutExcludedFactory } from '@/utilities/components'
 import { stringify } from '@/utilities/json'
 import { isRecord } from '@/utilities/object'
@@ -111,6 +112,10 @@ export function getSchemaPropertyPlaceholder(property: SchemaProperty): string |
 
   if (typeof placeholder === 'string') {
     return placeholder
+  }
+
+  if (isArray(placeholder)) {
+    return placeholder.join(', ')
   }
 
   return stringify(placeholder)

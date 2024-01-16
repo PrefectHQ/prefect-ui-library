@@ -1,4 +1,4 @@
-import { PNumberInput, PSelect, PTextInput, PDateInput } from '@prefecthq/prefect-design'
+import { PNumberInput, PCombobox, PTextInput, PDateInput } from '@prefecthq/prefect-design'
 import { format, isValid, parseISO } from 'date-fns'
 import DateInput from '@/components/DateInput.vue'
 import JsonInput from '@/components/JsonInput.vue'
@@ -15,7 +15,7 @@ export class SchemaPropertyString extends SchemaPropertyService {
 
   protected override get component(): SchemaPropertyComponentWithProps {
     if (this.has('enum')) {
-      return this.withProps(PSelect, {
+      return this.withProps(PCombobox, {
         options: this.getSelectOptions(),
       })
     }
@@ -37,7 +37,7 @@ export class SchemaPropertyString extends SchemaPropertyService {
   }
 
   protected override get default(): SchemaValue {
-    if (this.componentIs(PSelect)) {
+    if (this.componentIs(PCombobox)) {
       return this.property.default ?? null
     }
 
