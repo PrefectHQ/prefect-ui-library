@@ -80,9 +80,7 @@
   const blockTypes = computed(() => blockTypesSubscription.response ?? [])
   const filteredBlockTypes = computed(() => [...blockTypes.value].filter(blockType => blockType.name !== 'Slack Incoming Webhook'))
 
-
-  const blockSchemaSubscription = computed(() => useBlockSchemaForBlockType(blockType.value?.id))
-  const blockSchema = computed(() => blockSchemaSubscription.value.blockSchema.value)
+  const { blockSchema } = useBlockSchemaForBlockType(() => blockType.value?.id)
 
   const submit = async (request: BlockDocumentCreateNamed): Promise<void> => {
     try {
