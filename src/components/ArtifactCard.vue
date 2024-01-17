@@ -30,7 +30,7 @@
 
     <div class="artifact-card__description-container">
       <slot name="description">
-        <p-markdown-renderer v-if="artifact.description" :text="artifact.description" class="artifact-card__description" />
+        <p-markdown-renderer v-if="firstLineOfDescription" :text="firstLineOfDescription" class="artifact-card__description" />
         <p v-else class="artifact-card__description-empty">
           {{ localization.info.noDescription }}
         </p>
@@ -72,6 +72,16 @@
         'artifact-card__summary-container--condensed': props.condense,
       },
     }
+  })
+
+  const leadingHashes = /^#+/
+  const firstLineOfDescription = computed(() => {
+    if (!props.artifact.description) {
+      return null
+    }
+
+    const lines = props.artifact.description.trim().split('\n')
+    return lines[0].replace(leadingHashes, '').trim()
   })
 </script>
 
