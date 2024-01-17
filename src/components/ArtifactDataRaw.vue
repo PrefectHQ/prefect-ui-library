@@ -39,6 +39,10 @@
   h-[45rem]
 }
 
+.artifact-data-raw__code { @apply
+  min-h-12
+}
+
 .artifact-data-raw__copyable-wrapper { @apply
   h-full
   w-full
