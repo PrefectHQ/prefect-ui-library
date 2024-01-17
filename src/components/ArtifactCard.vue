@@ -27,6 +27,15 @@
         </div>
       </slot>
     </div>
+
+    <div class="artifact-card__description-container">
+      <slot name="description">
+        <p-markdown-renderer v-if="artifact.description" :text="artifact.description" class="artifact-card__description" />
+        <p v-else class="artifact-card__description-empty">
+          {{ localization.info.noDescription }}
+        </p>
+      </slot>
+    </div>
   </p-card>
 </template>
 
@@ -149,8 +158,6 @@
   items-baseline
   text-sm
   pb-1
-  border-b
-  border-b-divider
 }
 
 .artifact-card__summary-container--condensed .artifact-card__summary-item { @apply
@@ -187,5 +194,28 @@
   text-sm
   text-subdued
   italic
+}
+
+.artifact-card__description-container { @apply
+  border-t
+  border-t-divider
+  pt-1
+}
+
+.artifact-card__description { @apply
+  text-sm
+  text-subdued
+}
+
+.artifact-card__description > * { @apply
+  whitespace-nowrap
+  overflow-hidden
+  overflow-ellipsis
+}
+
+.artifact-card__description-empty { @apply
+  italic
+  text-subdued
+  text-sm
 }
 </style>

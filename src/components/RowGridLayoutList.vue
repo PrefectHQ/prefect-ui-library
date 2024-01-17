@@ -36,6 +36,7 @@
   flex
   flex-col
   gap-4
+  min-w-0
 }
 
 .row-grid-layout-list--grid { @apply
