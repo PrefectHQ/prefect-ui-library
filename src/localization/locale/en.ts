@@ -167,6 +167,7 @@ export const en = {
     result: 'Result',
     noResults: 'No tracked results, enable [result persistence](https://docs.prefect.io/concepts/results/#persisting-results) to track results.',
     none: 'None',
+    noDescription: 'No description',
     dashboardWorkPoolCardTitle: 'Active Work Pools',
     dashboardWorkPoolCardEmpty: 'There are no active work pools to show. Any work pools you do have are paused.',
     dashboardWorkPoolCardViewAll: 'View all work pools',
