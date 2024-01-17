@@ -46,6 +46,7 @@
   flex
   flex-col
   gap-2
+  min-w-0
 }
 
 .page-heading__crumbs { @apply
