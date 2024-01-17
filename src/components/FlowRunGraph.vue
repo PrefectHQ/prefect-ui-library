@@ -1,5 +1,5 @@
 <template>
-  <div class="flow-run-graph">
+  <div v-if="showGraph" class="flow-run-graph">
     <template v-if="load">
       <RunGraph
         v-model:viewport="viewport"
@@ -43,6 +43,7 @@
   const api = useWorkspaceApi()
   const { value: colorThemeValue } = useColorTheme()
   const load = ref(true)
+  const showGraph = ref(true)
 
   const viewport = computed({
     get() {
@@ -122,6 +123,8 @@
   if (count.value! > NODE_COUNT_TO_REQUIRED_OPT_IN) {
     load.value = false
   }
+
+  showGraph.value = count.value! > 0
 
   function confirm(): void {
     load.value = true
