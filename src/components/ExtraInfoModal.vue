@@ -1,6 +1,6 @@
 <template>
   <button class="extra-info-modal" v-bind="attrs" type="button" @click.stop.prevent="open">
-    <p-icon icon="InformationCircleIcon" solid class="extra-info-modal__icon" />
+    <p-icon icon="InformationCircleIcon" class="extra-info-modal__icon" />
   </button>
   <p-modal v-model:show-modal="showModal" :title="title">
     <slot />
