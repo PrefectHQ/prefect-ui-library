@@ -1,6 +1,6 @@
 <template>
   <button class="extra-info-modal" v-bind="attrs" type="button" @click.stop.prevent="open">
-    <p-icon icon="QuestionMarkCircleIcon" solid />
+    <p-icon icon="InformationCircleIcon" class="extra-info-modal__icon" />
   </button>
   <p-modal v-model:show-modal="showModal" :title="title">
     <slot />
@@ -40,5 +40,9 @@
   pl-1
   align-middle
   -translate-y-[10%]
+}
+
+.extra-info-modal__icon { @apply
+  cursor-help
 }
 </style>
