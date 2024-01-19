@@ -3,7 +3,7 @@
     <template #description>
       <div class="schema-form-input__description">
         <template v-if="property.description">
-          <p-markdown-renderer :text="property.description" />
+          <p-markdown-renderer :text="property.description" class="schema-form-input__markdown" />
         </template>
 
         <template v-if="isNullType">
@@ -63,5 +63,10 @@
 
 .schema-form-input__description {
   overflow-wrap: anywhere;
+}
+
+.schema-form-input__markdown { @apply
+  text-subdued
+  text-sm
 }
 </style>
