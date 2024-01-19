@@ -1,4 +1,4 @@
-import { useSubscriptionWithDependencies } from '@prefecthq/vue-compositions'
+import { SubscriptionOptions, useSubscriptionWithDependencies } from '@prefecthq/vue-compositions'
 import { computed, MaybeRefOrGetter, toRef, toValue } from 'vue'
 import { useCan } from '@/compositions/useCan'
 import { useWorkspaceApi } from '@/compositions/useWorkspaceApi'
@@ -8,7 +8,7 @@ import { UseEntitySubscription } from '@/types/useEntitySubscription'
 
 export type UseTaskRun = UseEntitySubscription<WorkspaceTaskRunsApi['getTaskRun'], 'taskRun'>
 
-export function useTaskRun(taskRunId: MaybeRefOrGetter<string | null | undefined>): UseTaskRun {
+export function useTaskRun(taskRunId: MaybeRefOrGetter<string | null | undefined>, options?: SubscriptionOptions): UseTaskRun {
   const api = useWorkspaceApi()
   const can = useCan()
 
@@ -27,7 +27,7 @@ export function useTaskRun(taskRunId: MaybeRefOrGetter<string | null | undefined
   }
 
   const parameters = toRef(getter)
-  const subscription = useSubscriptionWithDependencies(api.taskRuns.getTaskRun, parameters)
+  const subscription = useSubscriptionWithDependencies(api.taskRuns.getTaskRun, parameters, options)
   const taskRun = computed(() => subscription.response)
 
   return {
