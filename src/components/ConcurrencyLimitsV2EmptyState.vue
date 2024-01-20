@@ -9,7 +9,7 @@
     </template>
 
     <template #description>
-      Global concucurrency limits can be applied to flow runs, task runs and any operation where you want to control concurrency.
+      Global concurrency limits can be applied to flow runs, task runs and any operation where you want to control concurrency.
     </template>
 
     <template #actions>
