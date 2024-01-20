@@ -15,7 +15,7 @@
       <p-button v-if="can.create.variable" primary icon-append="PlusIcon" @click="open">
         Add Variable
       </p-button>
-      <DocumentationButton :to="localization.docs.workPools" />
+      <DocumentationButton :to="localization.docs.variables" />
       <VariableCreateModal v-model:show-modal="showModal" @create="emit('create')" />
     </template>
   </p-empty-state>

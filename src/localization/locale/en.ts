@@ -15,6 +15,7 @@ export const en = {
     collections: 'https://docs.prefect.io/collections/catalog/',
     resultsPersistence: 'https://docs.prefect.io/concepts/results/#persisting-results',
     infrastructure: 'https://docs.prefect.io/latest/concepts/infrastructure/',
+    variables: 'https://docs.prefect.io/latest/guides/variables/',
   },
   error: {
     activateDeployment: 'Failed to activate deployment',
