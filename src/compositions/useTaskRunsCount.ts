@@ -24,11 +24,7 @@ export function useTaskRunsCount(filter: MaybeRefOrGetter<TaskRunsFilter | null 
       return null
     }
 
-    const base: TaskRunsFilter = {
-      taskRuns: {
-        subFlowRunsExist: false,
-      },
-    }
+    const base = getBaseFilter(filterValue)
 
     // merge here is important to track changes to `filter` if it is a reactive
     const parameter = merge({}, base, filterValue)
@@ -43,5 +39,19 @@ export function useTaskRunsCount(filter: MaybeRefOrGetter<TaskRunsFilter | null 
   return {
     subscription,
     count,
+  }
+}
+
+function getBaseFilter(filter: TaskRunsFilter): TaskRunsFilter {
+  // makes sure that if subFlowRunsExists but was set to undefined (to get both all tasks)
+  // it doesn't get overridden to `false`
+  if ('subFlowRunsExist' in (filter.taskRuns ?? {})) {
+    return {}
+  }
+
+  return {
+    taskRuns: {
+      subFlowRunsExist: false,
+    },
   }
 }
