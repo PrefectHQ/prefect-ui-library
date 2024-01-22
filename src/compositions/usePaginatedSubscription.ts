@@ -26,6 +26,8 @@ export function usePaginatedSubscription<T extends PaginatedAction>(...[action, 
   const error = computed(() => subscriptions.length ? subscriptions[0].error : undefined)
   const executed = computed(() => subscriptions.some(subscription => subscription.executed))
   const response = computed(() => subscriptions.flatMap(subscription => subscription.response ?? []) as ActionResponse<T>)
+  const paused = computed(() => subscriptions.some(subscription => subscription.paused))
+  const late = computed(() => subscriptions.some(subscription => subscription.late))
 
   const unsubscribe = (): void => {
     subscriptions.forEach(subscription => subscription.unsubscribe())
@@ -89,6 +91,8 @@ export function usePaginatedSubscription<T extends PaginatedAction>(...[action, 
     errored,
     error,
     response,
+    paused,
+    late,
     unsubscribe,
     refresh,
     isSubscribed,
