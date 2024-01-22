@@ -18,6 +18,8 @@ export function useSubscriptions<T extends UseSubscription<Action>[]>(subscripti
   const errors = computed(() => source.value.map(subscription => subscription.error))
   const executed = computed(() => source.value.length > 0 && source.value.every(subscription => subscription.executed))
   const responses = computed(() => source.value.map(subscription => subscription.response))
+  const paused = computed(() => source.value.some(subscription => subscription.paused))
+  const late = computed(() => source.value.some(subscription => subscription.late))
 
   const unsubscribe = (): void => {
     source.value.forEach(subscription => subscription.unsubscribe())
@@ -38,6 +40,8 @@ export function useSubscriptions<T extends UseSubscription<Action>[]>(subscripti
     errored,
     errors,
     executed,
+    paused,
+    late,
     responses,
     unsubscribe,
     refresh,

@@ -1,7 +1,8 @@
-import { UseSubscription } from '@prefecthq/vue-compositions'
+import { UseSubscription, SubscriptionManager } from '@prefecthq/vue-compositions'
 import { InjectionKey } from 'vue'
 import { WorkspaceWorkQueuesApi, WorkspaceFlowsApi, WorkspaceDeploymentsApi } from '@/services'
 
+export const backgroundSubscriptionManager = new SubscriptionManager()
 
 export type WorkQueueSubscription = UseSubscription<WorkspaceWorkQueuesApi['getWorkQueue']>
 export type WorkQueuesListSubscription = UseSubscription<WorkspaceWorkQueuesApi['getWorkQueues']>
