@@ -24,11 +24,11 @@ export class SavedSearch implements ISavedSearch {
 }
 
 export type SavedSearchFilter = {
-  state: string[],
-  flow: string[],
-  tag: string[],
-  deployment: string[],
-  workQueue: string[],
-  workPool: string[],
+  state?: string[],
+  flow?: string[],
+  tag?: string[],
+  deployment?: string[],
+  workQueue?: string[],
+  workPool?: string[],
   range: NonNullable<DateRangeSelectValue>,
 }
