@@ -1,5 +1,5 @@
 <template>
-  <p-modal v-model:showModal="internalShowModal" class="block-create-modal" :class="modalClass" title="Add a new block">
+  <p-modal v-model:showModal="internalShowModal" class="block-create-modal" :class="classes" title="Add a new block">
     <BlockTypeList
       v-if="!blockType"
       :capability="capability"
@@ -10,17 +10,25 @@
     />
 
     <template v-if="blockType">
-      <BlockSchemaCreateForm v-if="blockSchema" :key="blockSchema.id" :block-schema="blockSchema" @cancel="cancel" @submit="submit" />
+      <p-heading heading="4">
+        {{ blockType.name }}
+      </p-heading>
+      <BlockSchemaCreateForm v-if="blockSchema" :id="formId" :block-schema="blockSchema" hide-footer @submit="submit" />
+    </template>
+
+    <template #actions>
+      <SubmitButton action="Create" :form-id="formId" />
     </template>
   </p-modal>
 </template>
 
 <script lang="ts" setup>
-  import { showToast } from '@prefecthq/prefect-design'
+  import { randomId, showToast } from '@prefecthq/prefect-design'
   import { useSubscription } from '@prefecthq/vue-compositions'
   import { ref, computed } from 'vue'
   import BlockSchemaCreateForm from '@/components/BlockSchemaCreateForm.vue'
   import BlockTypeList from '@/components/BlockTypeList.vue'
+  import SubmitButton from '@/components/SubmitButton.vue'
   import { useWorkspaceApi, useBlockSchemaForBlockType } from '@/compositions'
   import { useBlockTypesFilter } from '@/compositions/filters'
   import { localization } from '@/localization'
@@ -44,14 +52,11 @@
 
   const blockType = ref(props.providedBlockType)
   const capability = ref(props.capability ?? '')
+  const formId = randomId()
 
-
-  const modalClass = computed(() => {
-    if (blockType.value) {
-      return 'block-create-modal--schema-creation'
-    }
-    return ''
-  })
+  const classes = computed(() => ({
+    'block-create-modal--schema-creation': blockType.value,
+  }))
 
   const handleAdd = (selectedBlockType: BlockType): void => {
     blockType.value = selectedBlockType
@@ -66,10 +71,6 @@
       emit('update:showModal', value)
     },
   })
-
-  const cancel = (): void => {
-    internalShowModal.value = false
-  }
 
   const { filter } = useBlockTypesFilter({
     blockSchemas: {
@@ -95,13 +96,7 @@
 </script>
 
 <style>
-.block-create-modal__block-type-list .block-type-list__types {
-  @apply
+.block-create-modal__block-type-list .block-type-list__types { @apply
   grid-cols-1
-}
-
-.block-create-modal--schema-creation .p-modal__footer {
-  @apply
-  hidden
 }
 </style>

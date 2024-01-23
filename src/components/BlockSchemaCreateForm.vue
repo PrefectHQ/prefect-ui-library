@@ -8,7 +8,7 @@
       <SchemaFormFields :schema="blockSchema.fields" property="data" />
     </p-content>
 
-    <template #footer>
+    <template v-if="!hideFooter" #footer>
       <p-button @click="cancel">
         Cancel
       </p-button>
@@ -33,6 +33,7 @@
 
   const props = defineProps<{
     blockSchema: BlockSchema,
+    hideFooter?: boolean,
   }>()
 
   const emit = defineEmits<{
