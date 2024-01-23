@@ -58,14 +58,6 @@
     'block-create-modal--schema-creation': blockType.value,
   }))
 
-  const title = computed(() => {
-    if (props.providedBlockType) {
-      return `Add a new ${props.providedBlockType.name} block`
-    }
-
-    return 'Add a new block'
-  })
-
   const handleAdd = (selectedBlockType: BlockType): void => {
     blockType.value = selectedBlockType
   }
