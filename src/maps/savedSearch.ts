@@ -16,27 +16,27 @@ export const mapSavedSearchResponseToSavedSearch: MapFunction<SavedSearchRespons
 export const mapSavedSearchToLocationQuery: MapFunction<SavedSearchFilter, LocationQuery> = function(filter) {
   const query: LocationQuery = {}
 
-  if (filter.deployment.length) {
+  if (filter.deployment?.length) {
     query.deployment = filter.deployment
   }
 
-  if (filter.flow.length) {
+  if (filter.flow?.length) {
     query.flow = filter.flow
   }
 
-  if (filter.workPool.length) {
+  if (filter.workPool?.length) {
     query.workPool = filter.workPool
   }
 
-  if (filter.workQueue.length) {
+  if (filter.workQueue?.length) {
     query.workQueue = filter.workQueue
   }
 
-  if (filter.tag.length) {
+  if (filter.tag?.length) {
     query.tag = filter.tag
   }
 
-  if (filter.state.length) {
+  if (filter.state?.length) {
     query.state = filter.state
   }
 
