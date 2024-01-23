@@ -46,7 +46,9 @@
 
       <template #tags="{ row }">
         <template v-if="row.tags">
-          <p-tag-wrapper :tags="row.tags" justify="left" />
+          <div class="deployment-list__tags">
+            <p-tag-wrapper :tags="row.tags" justify="left" />
+          </div>
         </template>
       </template>
 
@@ -172,7 +174,6 @@
     },
     {
       label: 'Tags',
-      width: '100px',
       visible: media.md,
     },
     {
@@ -248,5 +249,10 @@
 
 .deployment-list__menu { @apply
   ml-2
+}
+
+.deployment-list__tags { @apply
+  max-w-80
+  min-w-0
 }
 </style>
