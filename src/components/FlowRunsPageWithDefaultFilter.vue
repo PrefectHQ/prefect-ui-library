@@ -12,10 +12,15 @@
     const { value: defaultFlowRunsSavedSearchFilter, isCustom } = useDefaultSavedSearchFilter()
 
     if (isEmptyObject(to.query) && isCustom.value) {
-      const query = mapper.map('SavedSearchFilter', defaultFlowRunsSavedSearchFilter.value, 'LocationQuery')
+      try {
+        const query = mapper.map('SavedSearchFilter', defaultFlowRunsSavedSearchFilter.value, 'LocationQuery')
 
-      return { ...to, query }
+        return { ...to, query }
+      } catch (error) {
+        console.error(error)
+      }
     }
+
     return true
   }
 
