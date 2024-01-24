@@ -3,7 +3,13 @@ import { createTuple } from '@/utilities/tuples'
 
 export type SchemaValues = Record<string, unknown>
 
-export const { values: prefectKinds, isValue: isPrefectKind } = createTuple([null, 'json', 'jinja', 'workspace_variable'])
+export const { values: prefectKinds, isValue: isPrefectKind } = createTuple([
+  null,
+  'json',
+  'jinja',
+  'workspace_variable',
+])
+
 export type PrefectKind = typeof prefectKinds[number]
 
 export type PrefectKindValue<

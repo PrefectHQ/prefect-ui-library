@@ -1,6 +1,14 @@
 import { createTuple } from '@/utilities'
 
-export const { values: schemaTypes, isValue: isSchemaType } = createTuple(['string', 'boolean', 'integer', 'number', 'array', 'object'])
+export const { values: schemaTypes, isValue: isSchemaType } = createTuple([
+  'string',
+  'boolean',
+  'integer',
+  'number',
+  'array',
+  'object',
+])
+
 export type SchemaType = typeof schemaTypes[number]
 
 export const { values: schemaStringFormat, isValue: isSchemaStringFormat } = createTuple([
@@ -12,6 +20,7 @@ export const { values: schemaStringFormat, isValue: isSchemaStringFormat } = cre
   // 'json-string',
   'password',
 ])
+
 export type SchemaStringFormat = typeof schemaStringFormat[number]
 
 export type SchemaPropertiesResponse = Record<string, SchemaPropertyResponse | undefined>
