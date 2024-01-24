@@ -23,12 +23,18 @@ export const { values: schemaStringFormat, isValue: isSchemaStringFormat } = cre
 
 export type SchemaStringFormat = typeof schemaStringFormat[number]
 
-export type SchemaPropertiesResponse = Record<string, SchemaPropertyResponse | undefined>
-export type SchemaDefinitionsResponse = Record<string, SchemaPropertyResponse | undefined>
+export type SchemaPropertiesResponse = Record<string, SchemaPropertyResponse>
+export type SchemaDefinitionsResponse = Record<string, SchemaPropertyResponse>
+
+export type SchemaDefinition = `#/definitions/${string}`
 
 // Commented out properties are unused. Left here for future reference
 export type SchemaPropertyResponse = {
-  $ref?: `#/definitions/${string}`,
+  // prefect specific properties
+  position?: number,
+
+  // open api properties
+  $ref?: SchemaDefinition,
   anyOf?: SchemaPropertyResponse[],
   allOf?: SchemaPropertyResponse[],
   // oneOf?: SchemaPropertyResponse[],
@@ -61,4 +67,6 @@ export type SchemaResponse = SchemaPropertyResponse & {
 }
 
 // For now these are the same. Once we get to block references and secrets there will be some snake to camel case conversions
+export type SchemaProperties = SchemaPropertiesResponse
+export type SchemaProperty = SchemaPropertyResponse
 export type Schema = SchemaResponse

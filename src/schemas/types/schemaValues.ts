@@ -1,7 +1,8 @@
 import { isRecord, isString } from '@/utilities'
 import { createTuple } from '@/utilities/tuples'
 
-export type SchemaValues = Record<string, unknown>
+export type SchemaValue = unknown
+export type SchemaValues = Record<string, SchemaValue>
 
 export const { values: prefectKinds, isValue: isPrefectKind } = createTuple([
   null,
