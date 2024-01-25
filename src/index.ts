@@ -11,6 +11,7 @@ export * from './router'
 export * from './services'
 export * from './types'
 export * from './utilities'
+export * from './schemas'
 
 import '@/styles/style.css'
 
