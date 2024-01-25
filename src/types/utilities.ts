@@ -30,6 +30,6 @@ export type NumberRange<
 export type MaybeArray<T> = T | T[]
 
 // Converts types like { A: boolean } & { B: number } & { C: string } into a { A: boolean, B: number, C: string}
-export type Simplify<T> = {
-  [KeyType in keyof T]: T[KeyType]
-} & {}
+// this type is somewhat magical and don't wanna mess with the {}
+// eslint-disable-next-line @typescript-eslint/ban-types
+export type Simplify<T> = { [K in keyof T]: T[K] } & {}
