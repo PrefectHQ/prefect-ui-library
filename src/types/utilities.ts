@@ -28,3 +28,8 @@ export type NumberRange<
   )
 
 export type MaybeArray<T> = T | T[]
+
+// Converts types like { A: boolean } & { B: number } & { C: string } into a { A: boolean, B: number, C: string}
+export type Simplify<T> = {
+  [KeyType in keyof T]: T[KeyType]
+} & {}

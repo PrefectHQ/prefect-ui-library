@@ -1,6 +1,7 @@
 import { createTuple } from '@/utilities'
 
 export const { values: schemaTypes, isValue: isSchemaType } = createTuple([
+  'null',
   'string',
   'boolean',
   'integer',
@@ -9,7 +10,11 @@ export const { values: schemaTypes, isValue: isSchemaType } = createTuple([
   'object',
 ])
 
-export type SchemaType = typeof schemaTypes[number]
+export type SchemaPropertyType = typeof schemaTypes[number]
+
+export function isSchemaPropertyType<T extends SchemaPropertyType | undefined>(value: unknown, type: T): value is T {
+  return value === type
+}
 
 export const { values: schemaStringFormat, isValue: isSchemaStringFormat } = createTuple([
   'date',
@@ -58,7 +63,7 @@ export type SchemaPropertyResponse = {
   properties?: SchemaPropertiesResponse,
   required?: string[],
   title?: string,
-  type?: SchemaType,
+  type?: SchemaPropertyType,
   // uniqueItems?: boolean,
 }
 
