@@ -1,3 +1,5 @@
+import { isDefined } from '@prefecthq/prefect-design'
+import { Simplify } from '@/types/utilities'
 import { createTuple } from '@/utilities'
 
 export const { values: schemaTypes, isValue: isSchemaType } = createTuple([
@@ -65,6 +67,12 @@ export type SchemaPropertyResponse = {
   title?: string,
   type?: SchemaPropertyType,
   // uniqueItems?: boolean,
+}
+
+export function isPropertyWith<
+  TKey extends keyof SchemaProperty
+>(value: SchemaProperty, property: TKey): value is Simplify<SchemaProperty & Required<Pick<SchemaProperty, TKey>>> {
+  return isDefined(value[property])
 }
 
 export type SchemaResponse = SchemaPropertyResponse & {
