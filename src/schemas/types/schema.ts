@@ -1,6 +1,9 @@
+import { isDefined } from '@prefecthq/prefect-design'
+import { Simplify } from '@/types/utilities'
 import { createTuple } from '@/utilities'
 
 export const { values: schemaTypes, isValue: isSchemaType } = createTuple([
+  'null',
   'string',
   'boolean',
   'integer',
@@ -9,7 +12,11 @@ export const { values: schemaTypes, isValue: isSchemaType } = createTuple([
   'object',
 ])
 
-export type SchemaType = typeof schemaTypes[number]
+export type SchemaPropertyType = typeof schemaTypes[number]
+
+export function isSchemaPropertyType<T extends SchemaPropertyType | undefined>(value: unknown, type: T): value is T {
+  return value === type
+}
 
 export const { values: schemaStringFormat, isValue: isSchemaStringFormat } = createTuple([
   'date',
@@ -23,12 +30,18 @@ export const { values: schemaStringFormat, isValue: isSchemaStringFormat } = cre
 
 export type SchemaStringFormat = typeof schemaStringFormat[number]
 
-export type SchemaPropertiesResponse = Record<string, SchemaPropertyResponse | undefined>
-export type SchemaDefinitionsResponse = Record<string, SchemaPropertyResponse | undefined>
+export type SchemaPropertiesResponse = Record<string, SchemaPropertyResponse>
+export type SchemaDefinitionsResponse = Record<string, SchemaPropertyResponse>
+
+export type SchemaDefinition = `#/definitions/${string}`
 
 // Commented out properties are unused. Left here for future reference
 export type SchemaPropertyResponse = {
-  $ref?: `#/definitions/${string}`,
+  // prefect specific properties
+  position?: number,
+
+  // open api properties
+  $ref?: SchemaDefinition,
   anyOf?: SchemaPropertyResponse[],
   allOf?: SchemaPropertyResponse[],
   // oneOf?: SchemaPropertyResponse[],
@@ -52,8 +65,14 @@ export type SchemaPropertyResponse = {
   properties?: SchemaPropertiesResponse,
   required?: string[],
   title?: string,
-  type?: SchemaType,
+  type?: SchemaPropertyType,
   // uniqueItems?: boolean,
+}
+
+export function isPropertyWith<
+  TKey extends keyof SchemaProperty
+>(value: SchemaProperty, property: TKey): value is Simplify<SchemaProperty & Required<Pick<SchemaProperty, TKey>>> {
+  return isDefined(value[property])
 }
 
 export type SchemaResponse = SchemaPropertyResponse & {
@@ -61,4 +80,6 @@ export type SchemaResponse = SchemaPropertyResponse & {
 }
 
 // For now these are the same. Once we get to block references and secrets there will be some snake to camel case conversions
+export type SchemaProperties = SchemaPropertiesResponse
+export type SchemaProperty = SchemaPropertyResponse
 export type Schema = SchemaResponse

@@ -1,7 +1,9 @@
+import { Simplify } from '@/types/utilities'
 import { isRecord, isString } from '@/utilities'
 import { createTuple } from '@/utilities/tuples'
 
-export type SchemaValues = Record<string, unknown>
+export type SchemaValue = unknown
+export type SchemaValues = Record<string, SchemaValue>
 
 export const { values: prefectKinds, isValue: isPrefectKind } = createTuple([
   null,
@@ -12,14 +14,16 @@ export const { values: prefectKinds, isValue: isPrefectKind } = createTuple([
 
 export type PrefectKind = typeof prefectKinds[number]
 
-export type PrefectKindValue<
-  TKind extends PrefectKind,
+type BasePrefectKindValue<
+  TKind extends PrefectKind = PrefectKind,
   TRest extends Record<string, unknown> = Record<string, unknown>
 > = {
   __prefect_kind: TKind,
 } & TRest
 
-export function isPrefectKindValue<T extends PrefectKind = PrefectKind>(value: unknown, kind?: T): value is PrefectKindValue<T> {
+export type PrefectKindValue = PrefectKindNull | PrefectKindJinja | PrefectKindJson | PrefectKindWorkspaceVariable
+
+export function isPrefectKindValue<T extends PrefectKind = PrefectKind>(value: unknown, kind?: T): value is Simplify<PrefectKindValue & { __prefect_kind: T }> {
   const isKindObject = isRecord(value) && isPrefectKind(value.__prefect_kind)
 
   if (!isKindObject) {
@@ -33,7 +37,7 @@ export function isPrefectKindValue<T extends PrefectKind = PrefectKind>(value: u
   return true
 }
 
-export type PrefectKindNull = PrefectKindValue<null, {
+export type PrefectKindNull = BasePrefectKindValue<null, {
   value: unknown,
 }>
 
@@ -41,7 +45,7 @@ export function isPrefectKindNull(value: unknown): value is PrefectKindNull {
   return isPrefectKindValue(value, null) && 'value' in value
 }
 
-export type PrefectKindJson = PrefectKindValue<'json', {
+export type PrefectKindJson = BasePrefectKindValue<'json', {
   value: string,
 }>
 
@@ -49,7 +53,7 @@ export function isPrefectKindJson(value: unknown): value is PrefectKindJson {
   return isPrefectKindValue(value, 'json') && isString(value.value)
 }
 
-export type PrefectKindJinja = PrefectKindValue<'jinja', {
+export type PrefectKindJinja = BasePrefectKindValue<'jinja', {
   template: string,
 }>
 
@@ -57,7 +61,7 @@ export function isPrefectKindJinja(value: unknown): value is PrefectKindJinja {
   return isPrefectKindValue(value, 'jinja') && isString(value.template)
 }
 
-export type PrefectKindWorkspaceVariable = PrefectKindValue<'workspace_variable', {
+export type PrefectKindWorkspaceVariable = BasePrefectKindValue<'workspace_variable', {
   variable_name: string,
 }>
 
