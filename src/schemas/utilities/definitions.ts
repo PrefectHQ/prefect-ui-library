@@ -4,5 +4,9 @@ export function getSchemaDefinition(schema: Schema, definition: SchemaDefinition
   const definitionKey = definition.replace('#/definitions/', '')
   const definitionSchema = schema.definitions?.[definitionKey]
 
-  return definitionSchema ?? {}
+  if (!definitionSchema) {
+    throw new Error(`Definition not found for ${definition}`)
+  }
+
+  return definitionSchema
 }
