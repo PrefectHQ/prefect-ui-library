@@ -10,9 +10,9 @@ export const schemaMetaResolver: SchemaResolver = (schema: Schema): Schema => {
 
 type PropertiesSource = Pick<SchemaProperty, 'properties' | 'required'>
 
-function resolveSchemaPropertiesMeta({ required = [], properties = {} }: PropertiesSource, level: number): SchemaProperties {
-  return mapValues(properties, (key, property) => {
-    const propertyIsRequired = required.includes(key)
+function resolveSchemaPropertiesMeta({ required, properties }: PropertiesSource, level: number): SchemaProperties {
+  return mapValues(properties ?? {}, (key, property) => {
+    const propertyIsRequired = required?.includes(key) ?? false
 
     return resolveSchemaPropertyMeta(property!, propertyIsRequired, level)
   })
