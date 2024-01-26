@@ -16,8 +16,8 @@
       <BlockSchemaCreateForm v-if="blockSchema" :id="formId" :block-schema="blockSchema" hide-footer @submit="submit" />
     </template>
 
-    <template #actions>
-      <SubmitButton action="Create" :form-id="formId" />
+    <template v-if="blockSchema" #actions>
+      <SubmitButton action="Create" :form="formId" />
     </template>
   </p-modal>
 </template>
