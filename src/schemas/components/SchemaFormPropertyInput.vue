@@ -34,7 +34,7 @@
 
   const input = computed(() => {
     const { type } = props.property
-    const value = props
+    const { value } = props
 
     if (isSchemaPropertyType(type, 'boolean')) {
       return withProps(PToggle, {
