@@ -47,7 +47,7 @@
 
   const description = computed(() => {
     const { description = '' } = props.property
-    const descriptionWithNewlinesRemoved = description.replace(/\n/g, ' ')
+    const descriptionWithNewlinesRemoved = description.replace(/\n(?!\n)/g, ' ')
 
     return descriptionWithNewlinesRemoved
   })
