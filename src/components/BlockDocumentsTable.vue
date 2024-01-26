@@ -32,7 +32,7 @@
         <span />
       </template>
       <template #action="{ row }">
-        <BlockDocumentMenu :block-document="row" size="xs" @delete="emit('delete')" />
+        <BlockDocumentMenu :block-document="row" size="xs" @delete="onDelete" />
       </template>
 
       <template #empty-state>
@@ -115,7 +115,7 @@
     sort: 'BLOCK_TYPE_AND_NAME_ASC',
   })
 
-  const { blockDocuments, total, pages } = useBlockDocuments(() => merge({}, props.filter, filter), {
+  const { blockDocuments, total, pages, subscriptions } = useBlockDocuments(() => merge({}, props.filter, filter), {
     page,
   })
 
@@ -123,6 +123,12 @@
     searchTerm.value = ''
     capabilities.value = []
     blockTypes.value = []
+  }
+
+  function onDelete(): void {
+    subscriptions.refresh()
+
+    emit('delete')
   }
 </script>
 
