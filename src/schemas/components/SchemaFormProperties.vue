@@ -1,5 +1,5 @@
 <template>
-  <div class="schema-form-properties">
+  <p-content class="schema-form-properties">
     <template v-for="[key, property] in properties" :key="key">
       <template v-if="isPropertyWith(property, '$ref')">
         <SchemaFormProperty
@@ -37,7 +37,7 @@
         />
       </template>
     </template>
-  </div>
+  </p-content>
 </template>
 
 <script lang="ts" setup>
