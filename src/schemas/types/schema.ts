@@ -39,6 +39,7 @@ export type SchemaDefinition = `#/definitions/${string}`
 export type SchemaPropertyResponse = {
   // prefect specific properties
   position?: number,
+  block_type_slug?: string,
 
   // open api properties
   $ref?: SchemaDefinition,
