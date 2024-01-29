@@ -16,7 +16,7 @@
   import SchemaFormProperties from '@/schemas/components/SchemaFormProperties.vue'
   import SchemaFormPropertyBlockDocument from '@/schemas/components/SchemaFormPropertyBlockDocument.vue'
   import { SchemaProperty, isPropertyWith, isSchemaPropertyType } from '@/schemas/types/schema'
-  import { SchemaValue, asPrefectBlockDocumentValue, isPrefectKindValue } from '@/schemas/types/schemaValues'
+  import { SchemaValue, asBlockDocumentReferenceValue, isPrefectKindValue } from '@/schemas/types/schemaValues'
   import { withProps } from '@/utilities/components'
   import { asType } from '@/utilities/types'
 
@@ -40,7 +40,7 @@
     if (isPropertyWith(props.property, 'block_type_slug')) {
       return withProps(SchemaFormPropertyBlockDocument, {
         property: props.property,
-        value: asPrefectBlockDocumentValue(value),
+        value: asBlockDocumentReferenceValue(value),
         'onUpdate:value': update,
       })
     }

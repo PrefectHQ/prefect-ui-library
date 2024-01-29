@@ -6,16 +6,16 @@
   import { computed } from 'vue'
   import BlockDocumentInput from '@/components/BlockDocumentInput.vue'
   import { SchemaProperty } from '@/schemas/types/schema'
-  import { PrefectBlockDocumentValue } from '@/schemas/types/schemaValues'
+  import { BlockDocumentReferenceValue } from '@/schemas/types/schemaValues'
   import { Require } from '@/types/utilities'
 
   const props = defineProps<{
     property: Require<SchemaProperty, 'block_type_slug'>,
-    value: PrefectBlockDocumentValue | null | undefined,
+    value: BlockDocumentReferenceValue | null | undefined,
   }>()
 
   const emit = defineEmits<{
-    'update:value': [PrefectBlockDocumentValue | null | undefined],
+    'update:value': [BlockDocumentReferenceValue | null | undefined],
   }>()
 
   const value = computed({
