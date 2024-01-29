@@ -11,12 +11,13 @@
 <script lang="ts" setup>
   import { ButtonGroupOption } from '@prefecthq/prefect-design'
   import { computed, reactive, ref } from 'vue'
+  import { useWorkspaceApi } from '@/compositions'
   import SchemaFormProperty from '@/schemas/components/SchemaFormProperty.vue'
   import { useSchema } from '@/schemas/compositions/useSchema'
   import { SchemaProperty, isPropertyWith } from '@/schemas/types/schema'
   import { SchemaValue } from '@/schemas/types/schemaValues'
   import { getSchemaDefinition } from '@/schemas/utilities/definitions'
-  import { getSchemaPropertyLabel } from '@/schemas/utilities/properties'
+  import { getInitialIndexForSchemaPropertyAnyOfValue, getSchemaPropertyLabel } from '@/schemas/utilities/properties'
   import { Require } from '@/types/utilities'
 
   const props = defineProps<{
@@ -24,6 +25,9 @@
     value: SchemaValue,
     required: boolean,
   }>()
+
+  const api = useWorkspaceApi()
+  const schema = useSchema()
 
   const emit = defineEmits<{
     'update:value': [SchemaValue],
@@ -39,7 +43,18 @@
     },
   })
 
-  const selectedPropertyIndexValue = ref(0)
+  const initialSelectedPropertyIndex = await getInitialIndexForSchemaPropertyAnyOfValue({
+    schema,
+    property: props.property,
+    value: props.value,
+    api,
+  })
+  
+  if(initialSelectedPropertyIndex === -1) {
+    throw 'not implemented'
+  }
+
+  const selectedPropertyIndexValue = ref(initialSelectedPropertyIndex)
 
   const selectedPropertyIndex = computed({
     get() {
@@ -51,7 +66,6 @@
     },
   })
 
-  const schema = useSchema()
   const propertyValues = reactive<SchemaValue[]>([])
 
   const property = computed(() => {
