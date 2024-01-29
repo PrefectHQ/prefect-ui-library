@@ -10,7 +10,7 @@
   import { Require } from '@/types/utilities'
 
   const props = defineProps<{
-    property: Require<SchemaProperty, 'blockTypeSlug'>,
+    property: Require<SchemaProperty, 'block_type_slug'>,
     value: BlockDocumentReferenceValue | null | undefined,
   }>()
 
