@@ -11,7 +11,7 @@
       </template>
 
       <template v-else-if="isPropertyWith(property, 'allOf')">
-        <SchemaFormPropertyAllOfInput
+        <SchemaFormPropertyAllOf
           :value="getValue(key)"
           :property="property"
           :required="getRequired(key)"
@@ -20,7 +20,7 @@
       </template>
 
       <template v-else-if="isPropertyWith(property, 'anyOf')">
-        <SchemaFormPropertyAnyOfInput
+        <SchemaFormPropertyAnyOf
           :value="getValue(key)"
           :property="property"
           :required="getRequired(key)"
@@ -43,8 +43,8 @@
 <script lang="ts" setup>
   import { computed } from 'vue'
   import SchemaFormProperty from '@/schemas/components/SchemaFormProperty.vue'
-  import SchemaFormPropertyAllOfInput from '@/schemas/components/SchemaFormPropertyAllOfInput.vue'
-  import SchemaFormPropertyAnyOfInput from '@/schemas/components/SchemaFormPropertyAnyOfInput.vue'
+  import SchemaFormPropertyAllOf from '@/schemas/components/SchemaFormPropertyAllOf.vue'
+  import SchemaFormPropertyAnyOf from '@/schemas/components/SchemaFormPropertyAnyOf.vue'
   import { useSchema } from '@/schemas/compositions/useSchema'
   import { SchemaProperty, SchemaProperties, isPropertyWith } from '@/schemas/types/schema'
   import { SchemaValues } from '@/schemas/types/schemaValues'
