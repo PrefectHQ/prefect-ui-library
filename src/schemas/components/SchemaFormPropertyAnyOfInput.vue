@@ -16,6 +16,7 @@
   import { SchemaProperty, isPropertyWith } from '@/schemas/types/schema'
   import { SchemaValue } from '@/schemas/types/schemaValues'
   import { getSchemaDefinition } from '@/schemas/utilities/definitions'
+  import { getSchemaPropertyLabel } from '@/schemas/utilities/properties'
   import { Require } from '@/types/utilities'
 
   const props = defineProps<{
@@ -64,17 +65,17 @@
   })
 
   const options = computed<ButtonGroupOption[]>(() => props.property.anyOf.map((property, index) => ({
-    label: getLabelForProperty(property),
+    label: getOptionLabelForProperty(property),
     value: index,
   })))
 
-  function getLabelForProperty(property: SchemaProperty): string {
+  function getOptionLabelForProperty(property: SchemaProperty): string {
     if (property.$ref) {
       const definition = getSchemaDefinition(schema, property.$ref)
 
-      return getLabelForProperty(definition)
+      return getSchemaPropertyLabel(definition)
     }
 
-    return property.title ?? property.format ?? property.type ?? ''
+    return getSchemaPropertyLabel(property)
   }
 </script>
