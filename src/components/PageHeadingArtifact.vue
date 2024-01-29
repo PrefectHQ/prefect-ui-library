@@ -9,9 +9,8 @@
 <script lang="ts" setup>
   import { BreadCrumbs } from '@prefecthq/prefect-design'
   import { computed } from 'vue'
-  import ArtifactMenu from '@/components/ArtifactMenu.vue'
   import PageHeading from '@/components/PageHeading.vue'
-  import { useFlowRun, useTaskRun, useWorkspaceRoutes } from '@/compositions'
+  import { useComponent, useFlowRun, useTaskRun, useWorkspaceRoutes } from '@/compositions'
   import { Artifact } from '@/models'
 
   const props = defineProps<{
@@ -19,6 +18,8 @@
   }>()
 
   const routes = useWorkspaceRoutes()
+
+  const { ArtifactMenu } = useComponent()
 
   const flowRunId = computed(() => props.artifact.flowRunId)
   const taskRunId = computed(() => props.artifact.taskRunId)

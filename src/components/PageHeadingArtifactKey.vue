@@ -9,9 +9,8 @@
 <script lang="ts" setup>
   import { BreadCrumbs } from '@prefecthq/prefect-design'
   import { computed } from 'vue'
-  import ArtifactMenu from '@/components/ArtifactMenu.vue'
   import PageHeading from '@/components/PageHeading.vue'
-  import { useWorkspaceRoutes } from '@/compositions'
+  import { useComponent, useWorkspaceRoutes } from '@/compositions'
   import { localization } from '@/localization'
   import { Artifact } from '@/models'
 
@@ -20,6 +19,8 @@
   }>()
 
   const routes = useWorkspaceRoutes()
+
+  const { ArtifactMenu } = useComponent()
 
   const crumbs = computed<BreadCrumbs>(() => {
     const internalCrumbs: BreadCrumbs = [
