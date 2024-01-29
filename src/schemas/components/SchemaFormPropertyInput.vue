@@ -14,8 +14,9 @@
   import { computed } from 'vue'
   import SchemaFormKindInput from '@/schemas/components/SchemaFormKindInput.vue'
   import SchemaFormProperties from '@/schemas/components/SchemaFormProperties.vue'
-  import { SchemaProperty, isSchemaPropertyType } from '@/schemas/types/schema'
-  import { SchemaValue, isPrefectKindValue } from '@/schemas/types/schemaValues'
+  import SchemaFormPropertyBlockDocument from '@/schemas/components/SchemaFormPropertyBlockDocument.vue'
+  import { SchemaProperty, isPropertyWith, isSchemaPropertyType } from '@/schemas/types/schema'
+  import { SchemaValue, asPrefectBlockDocumentValue, isPrefectKindValue } from '@/schemas/types/schemaValues'
   import { withProps } from '@/utilities/components'
   import { asType } from '@/utilities/types'
 
@@ -35,6 +36,14 @@
   const input = computed(() => {
     const { type } = props.property
     const { value } = props
+
+    if (isPropertyWith(props.property, 'block_type_slug')) {
+      return withProps(SchemaFormPropertyBlockDocument, {
+        property: props.property,
+        value: asPrefectBlockDocumentValue(value),
+        'onUpdate:value': update,
+      })
+    }
 
     if (isSchemaPropertyType(type, 'boolean')) {
       return withProps(PToggle, {

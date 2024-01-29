@@ -68,3 +68,19 @@ export type PrefectKindWorkspaceVariable = BasePrefectKindValue<'workspace_varia
 export function isPrefectKindWorkspaceVariable(value: unknown): value is PrefectKindWorkspaceVariable {
   return isPrefectKindValue(value, 'workspace_variable') && isString(value.variable_name)
 }
+
+export type PrefectBlockDocumentValue = {
+  $ref: string,
+}
+
+export function isPrefectBlockDocumentValue(value: unknown): value is PrefectBlockDocumentValue {
+  return isRecord(value) && isString(value.$ref)
+}
+
+export function asPrefectBlockDocumentValue(value: unknown): PrefectBlockDocumentValue | null {
+  if (isPrefectBlockDocumentValue(value)) {
+    return value
+  }
+
+  return null
+}
