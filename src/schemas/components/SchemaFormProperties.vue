@@ -42,11 +42,11 @@
   const props = defineProps<{
     parent: SchemaProperty,
     properties: SchemaProperties,
-    values: SchemaValues | null,
+    values: SchemaValues | undefined,
   }>()
 
   const emit = defineEmits<{
-    'update:values': [SchemaValues | null],
+    'update:values': [SchemaValues | undefined],
   }>()
 
   const properties = computed(() => {
@@ -61,7 +61,7 @@
   })
 
   function getValue(propertyKey: string): unknown {
-    return props.values?.[propertyKey] ?? null
+    return props.values?.[propertyKey] ?? undefined
   }
 
   function setValue(propertyKey: string, value: unknown): void {
