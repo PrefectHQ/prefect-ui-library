@@ -21,53 +21,34 @@ export function isSchemaPropertyType<T extends SchemaPropertyType | undefined>(v
 export const { values: schemaStringFormat, isValue: isSchemaStringFormat } = createTuple([
   'date',
   'date-time',
-  // 'time-delta',
   'regex',
-  // 'email',
-  // 'json-string',
   'password',
 ])
 
 export type SchemaStringFormat = typeof schemaStringFormat[number]
-
-export type SchemaPropertiesResponse = Record<string, SchemaPropertyResponse>
-export type SchemaDefinitionsResponse = Record<string, SchemaPropertyResponse>
-
 export type SchemaDefinition = `#/definitions/${string}`
+export type SchemaProperties = Record<string, SchemaProperty>
+export type SchemaDefinitions = Record<string, SchemaProperty>
 
-// Commented out properties are unused. Left here for future reference
-export type SchemaPropertyResponse = {
+export type SchemaProperty = {
   // prefect specific properties
   position?: number,
-  block_type_slug?: string,
+  blockTypeSlug?: string,
 
   // open api properties
   $ref?: SchemaDefinition,
-  anyOf?: SchemaPropertyResponse[],
-  allOf?: SchemaPropertyResponse[],
-  // oneOf?: SchemaPropertyResponse[],
+  anyOf?: SchemaProperty[],
+  allOf?: SchemaProperty[],
   example?: string,
-  // alias?: string,
   default?: unknown,
   description?: string,
   enum?: unknown[],
-  // exclusiveMaximum?: boolean | number,
-  // exclusiveMinimum?: boolean | number,
   format?: SchemaStringFormat,
-  items?: SchemaPropertyResponse,
-  // maximum?: number,
-  // maxItems?: number,
-  // maxLength?: number,
-  // minimum?: number,
-  // minItems?: number,
-  // minLength?: number,
-  // multipleOf?: number,
-  // pattern?: string,
-  properties?: SchemaPropertiesResponse,
+  items?: SchemaProperty,
+  properties?: SchemaProperties,
   required?: string[],
   title?: string,
   type?: SchemaPropertyType,
-  // uniqueItems?: boolean,
 }
 
 export function isPropertyWith<
@@ -76,11 +57,6 @@ export function isPropertyWith<
   return isDefined(value[property])
 }
 
-export type SchemaResponse = SchemaPropertyResponse & {
-  definitions?: SchemaDefinitionsResponse,
+export type Schema = SchemaProperty & {
+  definitions?: SchemaDefinitions,
 }
-
-// For now these are the same. Once we get to block references and secrets there will be some snake to camel case conversions
-export type SchemaProperties = SchemaPropertiesResponse
-export type SchemaProperty = SchemaPropertyResponse
-export type Schema = SchemaResponse
