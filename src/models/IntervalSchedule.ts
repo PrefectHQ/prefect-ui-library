@@ -101,7 +101,7 @@ export class IntervalSchedule implements IIntervalSchedule {
     }
 
     if (this.anchorDate && verbose) {
-      str += ` from ${formatDate(this.anchorDate)} at ${formatTimeNumeric(this.anchorDate)} (${this.timezone ?? 'UTC'})`
+      str += ` using ${formatDate(this.anchorDate)} at ${formatTimeNumeric(this.anchorDate)} (${this.timezone ?? 'UTC'}) as the anchor date`
     }
 
     if (str == '') {
