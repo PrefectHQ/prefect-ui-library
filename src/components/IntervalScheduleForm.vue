@@ -17,7 +17,7 @@
       </div>
 
       <div>
-        <p-label label="Start date">
+        <p-label label="Anchor date">
           <DateInput v-model="anchorDate" show-time />
         </p-label>
       </div>
