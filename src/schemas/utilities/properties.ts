@@ -79,7 +79,7 @@ export async function getInitialIndexForSchemaPropertyAnyOfValue({ value, proper
 async function getBlockDocumentReferenceDefinitionIndex(value: BlockDocumentReferenceValue, definitions: SchemaProperty[], api: CreateApi): Promise<number> {
   const blockDocument = await api.blockDocuments.getBlockDocument(value.$ref)
 
-  const definition = definitions.find(definition => definition.block_type_slug === blockDocument.blockType.slug)
+  const definition = definitions.find(definition => definition.blockTypeSlug === blockDocument.blockType.slug)
 
   if (definition) {
     return definitions.indexOf(definition)

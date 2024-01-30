@@ -37,7 +37,7 @@
     const { type } = props.property
     const { value } = props
 
-    if (isPropertyWith(props.property, 'block_type_slug')) {
+    if (isPropertyWith(props.property, 'blockTypeSlug')) {
       return withProps(SchemaFormPropertyBlockDocument, {
         property: props.property,
         value: asBlockDocumentReferenceValue(value),

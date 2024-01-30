@@ -1,5 +1,5 @@
 <template>
-  <BlockDocumentInput v-model="value" :block-type-slug="property.block_type_slug" class="schema-form-property-block-document" />
+  <BlockDocumentInput v-model="value" :block-type-slug="property.blockTypeSlug" class="schema-form-property-block-document" />
 </template>
 
 <script lang="ts" setup>
@@ -10,7 +10,7 @@
   import { Require } from '@/types/utilities'
 
   const props = defineProps<{
-    property: Require<SchemaProperty, 'block_type_slug'>,
+    property: Require<SchemaProperty, 'blockTypeSlug'>,
     value: BlockDocumentReferenceValue | null | undefined,
   }>()
 
