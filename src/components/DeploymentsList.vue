@@ -125,6 +125,7 @@
 
   const props = defineProps<{
     filter?: DeploymentsFilter,
+    prefix?: string,
   }>()
 
   const { DeploymentMenu } = useComponent()
@@ -139,7 +140,7 @@
       nameLike: deploymentNameLikeDebounced,
     },
     limit: 50,
-  }))
+  }), props.prefix)
 
   const handleSchedule = (schedule: Schedule| null): string => {
     if (isRRuleSchedule(schedule)) {
