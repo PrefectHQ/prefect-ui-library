@@ -36,7 +36,6 @@
   import SchemaFormProperty from '@/schemas/components/SchemaFormProperty.vue'
   import SchemaFormPropertyAllOf from '@/schemas/components/SchemaFormPropertyAllOf.vue'
   import SchemaFormPropertyAnyOf from '@/schemas/components/SchemaFormPropertyAnyOf.vue'
-  import { useSchema } from '@/schemas/compositions/useSchema'
   import { SchemaProperty, SchemaProperties, isPropertyWith } from '@/schemas/types/schema'
   import { SchemaValues } from '@/schemas/types/schemaValues'
 
@@ -49,8 +48,6 @@
   const emit = defineEmits<{
     'update:values': [SchemaValues | null],
   }>()
-
-  const schema = useSchema()
 
   const properties = computed(() => {
     return Object.entries(props.properties).sort((entryA, entryB) => {
