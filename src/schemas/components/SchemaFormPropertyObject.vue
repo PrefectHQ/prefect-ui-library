@@ -12,11 +12,11 @@
 
   const props = defineProps<{
     property: SchemaProperty & { type: 'object' },
-    values: SchemaValues | null,
+    values: SchemaValues | undefined,
   }>()
 
   const emit = defineEmits<{
-    'update:values': [SchemaValues | null],
+    'update:values': [SchemaValues | undefined],
   }>()
 
   const values = computed({
