@@ -11,12 +11,16 @@
 
 <script lang="ts" setup>
   import { PNumberInput, PTextInput, PToggle } from '@prefecthq/prefect-design'
+  import merge from 'lodash.merge'
   import { computed } from 'vue'
   import SchemaFormKindInput from '@/schemas/components/SchemaFormKindInput.vue'
-  import SchemaFormProperties from '@/schemas/components/SchemaFormProperties.vue'
+  import SchemaFormPropertyArray from '@/schemas/components/SchemaFormPropertyArray.vue'
   import SchemaFormPropertyBlockDocument from '@/schemas/components/SchemaFormPropertyBlockDocument.vue'
+  import SchemaFormPropertyObject from '@/schemas/components/SchemaFormPropertyObject.vue'
+  import { useSchema } from '@/schemas/compositions/useSchema'
   import { SchemaProperty, isPropertyWith, isSchemaPropertyType } from '@/schemas/types/schema'
   import { SchemaValue, asBlockDocumentReferenceValue, isPrefectKindValue } from '@/schemas/types/schemaValues'
+  import { getSchemaDefinition } from '@/schemas/utilities/definitions'
   import { withProps } from '@/utilities/components'
   import { asType } from '@/utilities/types'
 
@@ -29,17 +33,27 @@
     'update:value': [SchemaValue],
   }>()
 
+  const schema = useSchema()
+
   function update(value: unknown): void {
     emit('update:value', value)
   }
 
+  const property = computed(() => {
+    if (isPropertyWith(props.property, '$ref')) {
+      return merge({}, getSchemaDefinition(schema, props.property.$ref), props.property)
+    }
+
+    return props.property
+  })
+
   const input = computed(() => {
-    const { type } = props.property
+    const { type } = property.value
     const { value } = props
 
-    if (isPropertyWith(props.property, 'blockTypeSlug')) {
+    if (isPropertyWith(property.value, 'blockTypeSlug')) {
       return withProps(SchemaFormPropertyBlockDocument, {
-        property: props.property,
+        property: property.value,
         value: asBlockDocumentReferenceValue(value),
         'onUpdate:value': update,
       })
@@ -67,14 +81,16 @@
     }
 
     if (isSchemaPropertyType(type, 'array')) {
-      // new list input from prefect-design
-      throw 'not implemented'
+      return withProps(SchemaFormPropertyArray, {
+        property: { ...property.value, type },
+        value: asType(value, Array),
+        'onUpdate:value': update,
+      })
     }
 
     if (isSchemaPropertyType(type, 'object')) {
-      return withProps(SchemaFormProperties, {
-        parent: props.property,
-        properties: props.property.properties ?? {},
+      return withProps(SchemaFormPropertyObject, {
+        property: { ...property.value, type },
         values: asType(value, Object),
         'onUpdate:values': update,
       })
