@@ -4,7 +4,7 @@
     class="work-queue-status-icon"
     text="Work queue health is deprecated and will be removed in a future release. Please use work pool status instead."
   >
-    <div v-if="status.state === 'healthy'" class="work-queue-status-icon--healthy" />
+    <StatusIcon v-if="status.state === 'healthy'" status="ready" />
     <p-icon
       v-if="status.state !== 'healthy'"
       :icon="status.icon"
@@ -19,6 +19,7 @@
   import { Icon } from '@prefecthq/prefect-design'
   import { useSubscriptionWithDependencies } from '@prefecthq/vue-compositions'
   import { computed } from 'vue'
+  import StatusIcon from '@/components/StatusIcon.vue'
   import { useInterval, useWorkQueueStatus, useWorkspaceApi } from '@/compositions'
 
   const props = defineProps<{
@@ -59,16 +60,6 @@
   flex
   items-center
   cursor-help
-}
-
-.work-queue-status-icon--healthy { @apply
-  w-2
-  h-2
-  align-middle
-  bg-sentiment-positive
-  text-inverse
-  dark:text-default
-  rounded-full
 }
 
 .work-queue-status-icon--unhealthy { @apply
