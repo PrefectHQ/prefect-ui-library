@@ -17,6 +17,7 @@ export type SchemaPropertyResponse = {
   example?: string,
   // alias?: string,
   default?: unknown,
+  const?: unknown,
   description?: string,
   enum?: unknown[],
   // exclusiveMaximum?: boolean | number,
