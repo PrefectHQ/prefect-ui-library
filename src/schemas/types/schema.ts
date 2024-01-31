@@ -41,6 +41,7 @@ export type SchemaProperty = {
   allOf?: SchemaProperty[],
   example?: string,
   default?: unknown,
+  const?: unknown,
   description?: string,
   enum?: unknown[],
   format?: SchemaStringFormat,

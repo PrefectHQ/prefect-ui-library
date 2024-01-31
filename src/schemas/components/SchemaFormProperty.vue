@@ -2,17 +2,25 @@
   <p-label class="schema-form-property" :label="label">
     <template v-if="description" #description>
       <div class="schema-form-property__description">
-        <p-markdown-renderer :text="description" class="schema-form-input__markdown" />
+        <p-markdown-renderer :text="description" class="schema-form-property__markdown" />
       </div>
     </template>
 
-    <SchemaFormPropertyInput v-model:value="value" :property="property" />
+    <fieldset class="schema-form-property__fields" :disabled="disabled">
+      <template v-if="Boolean(property.const)">
+        <p class="schema-form-property__const">
+          {{ property.title ?? 'Field' }} is a const and cannot be changed
+        </p>
+      </template>
+      <SchemaFormPropertyInput v-model:value="value" :property="property" />
+    </fieldset>
   </p-label>
 </template>
 
 <script lang="ts" setup>
   import { computed } from 'vue'
   import SchemaFormPropertyInput from '@/schemas/components/SchemaFormPropertyInput.vue'
+  import { useSchemaProperty } from '@/schemas/compositions/useSchemaProperty'
   import { SchemaProperty } from '@/schemas/types/schema'
   import { SchemaValue } from '@/schemas/types/schemaValues'
 
@@ -35,6 +43,8 @@
     },
   })
 
+  const property = useSchemaProperty(() => props.property)
+
   const label = computed(() => {
     const title = props.property.title ?? ''
 
@@ -51,4 +61,28 @@
 
     return descriptionWithNewlinesRemoved
   })
+
+  const disabled = computed(() => Boolean(property.value.const))
 </script>
+
+<style>
+.schema-form-property__fields { @apply
+  grid
+  grid-cols-1
+  gap-1
+}
+
+.schema-form-property__fields[disabled] { @apply
+  cursor-not-allowed
+}
+
+.schema-form-property__markdown { @apply
+  text-subdued
+  text-sm
+}
+
+.schema-form-property__const { @apply
+  text-subdued
+  text-sm
+}
+</style>
