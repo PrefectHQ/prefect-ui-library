@@ -32,12 +32,14 @@
 </template>
 
 <script lang="ts" setup>
+  import debounce from 'lodash.debounce'
   import { computed } from 'vue'
   import SchemaFormProperty from '@/schemas/components/SchemaFormProperty.vue'
   import SchemaFormPropertyAllOf from '@/schemas/components/SchemaFormPropertyAllOf.vue'
   import SchemaFormPropertyAnyOf from '@/schemas/components/SchemaFormPropertyAnyOf.vue'
   import { SchemaProperty, SchemaProperties, isPropertyWith } from '@/schemas/types/schema'
   import { SchemaValues } from '@/schemas/types/schemaValues'
+  import { SchemaValue } from '@/types'
 
   const props = defineProps<{
     parent: SchemaProperty,
@@ -65,13 +67,24 @@
   }
 
   function setValue(propertyKey: string, value: unknown): void {
-    emit('update:values', {
-      ...props.values,
-      [propertyKey]: value,
-    })
+    patches.push({ propertyKey, value })
+
+    flush()
   }
 
   function getRequired(propertyKey: string): boolean {
     return props.parent.required?.includes(propertyKey) ?? false
   }
+
+  const patches: { propertyKey: string, value: SchemaValue }[] = []
+
+  const flush = debounce(() => {
+    const updatedValues = { ...props.values }
+
+    patches.forEach(({ propertyKey, value }) => updatedValues[propertyKey] = value)
+
+    patches.slice(0)
+
+    emit('update:values', updatedValues)
+  }, 10)
 </script>
