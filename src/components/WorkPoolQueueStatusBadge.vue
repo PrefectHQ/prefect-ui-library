@@ -1,7 +1,7 @@
 <template>
   <template v-if="workQueue && workQueueStatus">
     <p-tag class="work-pool-queue-status-badge" :class="classes">
-      <WorkPoolQueueStatusIcon :work-queue-name="workQueueName" :work-pool-name="workPoolName" class="work-pool-queue-status-badge__icon" />
+      <WorkPoolQueueHealthIcon :work-queue-name="workQueueName" :work-pool-name="workPoolName" class="work-pool-queue-status-badge__icon" />
       {{ label }}
     </p-tag>
   </template>
@@ -9,7 +9,7 @@
 
 <script lang="ts" setup>
   import { computed } from 'vue'
-  import { WorkPoolQueueStatusIcon } from '@/components'
+  import { WorkPoolQueueHealthIcon } from '@/components'
   import { useWorkQueueStatus } from '@/compositions'
   import { WorkPool, WorkPoolQueue } from '@/models'
 

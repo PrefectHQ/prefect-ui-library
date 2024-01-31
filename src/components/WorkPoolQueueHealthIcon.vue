@@ -1,7 +1,7 @@
 <template>
   <p-tooltip
     v-if="workPoolQueue && workQueueStatus"
-    class="work-queue-status-icon"
+    class="work-pool-queue-health-icon"
     text="Work queue health is deprecated and will be removed in a future release. Please use work pool status instead."
   >
     <StatusIcon v-if="status.state === 'healthy'" status="ready" />
@@ -9,7 +9,7 @@
       v-if="status.state !== 'healthy'"
       :icon="status.icon"
       size="small"
-      class="work-queue-status-icon"
+      class="work-pool-queue-health-icon"
       :class="classes"
     />
   </p-tooltip>
@@ -52,21 +52,21 @@
     return { state: 'unhealthy', name: 'Unhealthy', icon: 'ExclamationCircleIcon' }
   })
 
-  const classes = computed(() => `work-queue-status-icon--${status.value.state}`)
+  const classes = computed(() => `work-pool-queue-health-icon--${status.value.state}`)
 </script>
 
 <style>
-.work-queue-status-icon { @apply
+.work-pool-queue-health-icon { @apply
   flex
   items-center
   cursor-help
 }
 
-.work-queue-status-icon--unhealthy { @apply
+.work-pool-queue-health-icon--unhealthy { @apply
   text-sentiment-negative
 }
 
-.work-queue-status-icon--paused { @apply
+.work-pool-queue-health-icon--paused { @apply
   text-subdued
 }
 </style>

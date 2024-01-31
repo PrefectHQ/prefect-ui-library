@@ -1,7 +1,7 @@
 <template>
   <div class="work-pool-queue-status-array">
     <template v-if="!isPushPool && !showTooMany && workPoolQueues.length > 0">
-      <WorkPoolQueueStatusIcon
+      <WorkPoolQueueHealthIcon
         v-for="workQueue in workPoolQueues"
         :key="workQueue.id"
         :work-queue-name="workQueue.name"
@@ -17,7 +17,7 @@
 <script lang="ts" setup>
   import { useSubscription } from '@prefecthq/vue-compositions'
   import { computed } from 'vue'
-  import { WorkPoolQueueStatusIcon } from '@/components'
+  import { WorkPoolQueueHealthIcon } from '@/components'
   import { useInterval, useWorkspaceApi } from '@/compositions'
   import { WorkPool } from '@/models'
 
