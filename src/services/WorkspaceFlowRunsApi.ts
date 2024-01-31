@@ -7,6 +7,7 @@ import { OrchestrationResultResponse } from '@/models/api/OrchestrationResultRes
 import { RunGraphDataResponse } from '@/models/api/RunGraphDataResponse'
 import { FlowRunsFilter, FlowRunsHistoryFilter } from '@/models/Filters'
 import { FlowRun } from '@/models/FlowRun'
+import { FlowRunInputKeyset } from '@/models/FlowRunInputKeyset'
 import { RunHistory } from '@/models/RunHistory'
 import { BatchProcessor } from '@/services/BatchProcessor'
 import { mapper } from '@/services/Mapper'
@@ -73,9 +74,13 @@ export class WorkspaceFlowRunsApi extends WorkspaceApi {
     return mapper.map('RunGraphDataResponse', data, 'RunGraphData')
   }
 
-  public async getFlowRunInput(id: string, key: string): Promise<Schema> {
-    const { data } = await this.get<SchemaResponse>(`/${id}/input/${key}`)
+  public async getFlowRunInputDescription(id: string, keyset: FlowRunInputKeyset): Promise <string | null> {
+    const { data } = await this.get<string | null>(`/${id}/input/${keyset.description}`)
+    return data
+  }
 
+  public async getFlowRunInputSchema(id: string, keyset: FlowRunInputKeyset): Promise<Schema> {
+    const { data } = await this.get<SchemaResponse>(`/${id}/input/${keyset.schema}`)
     return mapper.map('SchemaResponse', data, 'Schema')
   }
 

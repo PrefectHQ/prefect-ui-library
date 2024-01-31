@@ -14,6 +14,7 @@
       </p-message>
     </div>
 
+    <p-markdown-renderer v-if="inputDescription" :text="inputDescription" />
     <div v-else>
       Do you want to resume {{ flowRun.name }}?
     </div>
@@ -69,10 +70,12 @@
   const { validate } = useValidationObserver()
 
   let serverValidationError: string
+  let inputDescription: string | null
   let inputSchema: Schema
 
   if (flowRun.value?.state?.stateDetails?.runInputKeyset) {
-    inputSchema = await api.flowRuns.getFlowRunInput(props.flowRunId, flowRun.value.state.stateDetails.runInputKeyset.schema)
+    inputDescription = await api.flowRuns.getFlowRunInputDescription(props.flowRunId, flowRun.value.state.stateDetails.runInputKeyset)
+    inputSchema = await api.flowRuns.getFlowRunInputSchema(props.flowRunId, flowRun.value.state.stateDetails.runInputKeyset)
   }
 
   const resume = async (): Promise<void> => {
