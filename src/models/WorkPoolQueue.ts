@@ -1,3 +1,5 @@
+export type WorkPoolQueueStatus = 'ready' | 'paused' | 'not_ready'
+
 export interface IWorkPoolQueue {
   readonly id: string,
   created: Date,
@@ -9,6 +11,7 @@ export interface IWorkPoolQueue {
   isPaused: boolean,
   concurrencyLimit: number | null,
   priority: number,
+  status: WorkPoolQueueStatus,
 }
 
 export class WorkPoolQueue implements IWorkPoolQueue {
@@ -22,6 +25,7 @@ export class WorkPoolQueue implements IWorkPoolQueue {
   public isPaused: boolean
   public concurrencyLimit: number | null
   public priority: number
+  public status: WorkPoolQueueStatus
 
   public constructor(workPoolQueue: IWorkPoolQueue) {
     this.id = workPoolQueue.id
@@ -34,5 +38,6 @@ export class WorkPoolQueue implements IWorkPoolQueue {
     this.isPaused = workPoolQueue.isPaused
     this.concurrencyLimit = workPoolQueue.concurrencyLimit
     this.priority = workPoolQueue.priority
+    this.status = workPoolQueue.status
   }
 }
