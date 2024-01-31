@@ -26,10 +26,12 @@
 
       <template #deployment-name="{ row }">
         <div class="deployment-list__name-col">
-          <p-link :to="routes.deployment(row.id)" class="deployment-list__name">
-            {{ row.name }}
+          <span class="deployment-list__name">
+            <p-link :to="routes.deployment(row.id)">
+              {{ row.name }}
+            </p-link>
             <DeploymentStatusIcon :status="row.status" />
-          </p-link>
+          </span>
           <span class="deployment-list__created-date">Created {{ formatDateTimeNumeric(row.created) }}</span>
         </div>
       </template>
@@ -237,8 +239,10 @@
 }
 
 .deployment-list__name { @apply
+  inline-flex
+  items-center
+  gap-x-1
   font-medium
-  mr-2
 }
 
 .deployment-list__created-date { @apply
