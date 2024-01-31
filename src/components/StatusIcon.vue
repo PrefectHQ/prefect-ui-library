@@ -1,15 +1,11 @@
 <template>
-  <div class="status-icon" :class="classes" />
+  <div class="status-icon" :class="`status-icon--${status}`" />
 </template>
 
 <script setup lang="ts">
-  import { computed } from 'vue'
+  export type Status = 'ready' | 'not_ready'
 
-  export type Status = 'ready' | 'not_ready' | 'paused'
-
-  const props = defineProps<{ status: Status }>()
-
-  const classes = computed(() => `status-icon--${props.status.toLowerCase()}`)
+  defineProps<{ status: Status }>()
 </script>
 
 <style>

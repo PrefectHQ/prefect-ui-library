@@ -26,12 +26,10 @@
 
       <template #deployment-name="{ row }">
         <div class="deployment-list__name-col">
-          <span>
-            <p-link :to="routes.deployment(row.id)" class="deployment-list__name">
-              {{ row.name }}
-              <DeploymentStatusIcon v-if="can.access.deploymentStatus" :status="row.status" />
-            </p-link>
-          </span>
+          <p-link :to="routes.deployment(row.id)" class="deployment-list__name">
+            {{ row.name }}
+            <DeploymentStatusIcon :status="row.status" />
+          </p-link>
           <span class="deployment-list__created-date">Created {{ formatDateTimeNumeric(row.created) }}</span>
         </div>
       </template>
