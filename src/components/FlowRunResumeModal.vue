@@ -63,11 +63,7 @@
   let inputSchema: Schema
 
   if (flowRun.value?.state?.stateDetails?.runInputKeyset) {
-    try {
-      inputDescription = await api.flowRuns.getFlowRunInputDescription(props.flowRunId, flowRun.value.state.stateDetails.runInputKeyset)
-    } catch (error) {
-      console.log('No description found')
-    }
+    inputDescription = await api.flowRuns.getFlowRunInputDescription(props.flowRunId, flowRun.value.state.stateDetails.runInputKeyset)
     inputSchema = await api.flowRuns.getFlowRunInputSchema(props.flowRunId, flowRun.value.state.stateDetails.runInputKeyset)
   }
 
