@@ -1,11 +1,12 @@
 <template>
-  <p-date-input v-model="value" show-time clearable />
+  <DateInput v-model="value" show-time clearable />
 </template>
 
 <script lang="ts" setup>
   import { isNotNullish } from '@prefecthq/prefect-design'
   import { formatISO, parseISO } from 'date-fns'
   import { computed } from 'vue'
+  import DateInput from '@/components/DateInput.vue'
   import { isInvalidDate } from '@/utilities'
 
   const props = defineProps<{
