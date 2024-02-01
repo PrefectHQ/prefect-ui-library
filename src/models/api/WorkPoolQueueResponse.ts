@@ -13,5 +13,5 @@ export type WorkPoolQueueResponse = {
   is_paused: boolean | null,
   concurrency_limit: number | null,
   priority: number,
-  status: WorkPoolQueueResponseStatus,
+  status?: WorkPoolQueueResponseStatus,
 }

@@ -13,7 +13,7 @@ export const mapWorkPoolQueueResponseToWorkPoolQueue: MapFunction<WorkPoolQueueR
     isPaused: source.is_paused ?? false,
     concurrencyLimit: source.concurrency_limit,
     priority: source.priority,
-    status: source.status.toLowerCase() as Lowercase<WorkPoolQueueResponseStatus>,
+    status: (source.status?.toLowerCase() ?? 'not_ready') as Lowercase<WorkPoolQueueResponseStatus>,
   })
 }
 
