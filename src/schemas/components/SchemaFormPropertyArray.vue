@@ -4,7 +4,7 @@
       <div class="schema-form-property-array__item">
         <PIcon icon="DragHandle" class="schema-form-property-array__handle" @mousedown="handleDown" @mouseup="handleUp" />
 
-        <SchemaFormPropertyInput v-model:value="value[index]" :property="getIndexProperty(index)" />
+        <SchemaFormPropertyInput v-model:value="value[index]" :property="getPropertyForIndex(index)" />
 
         <p-button icon="TrashIcon" @click="deleteItem" />
       </div>
@@ -44,7 +44,7 @@
     },
   })
 
-  function getIndexProperty(index: number): SchemaProperty {
+  function getPropertyForIndex(index: number): SchemaProperty {
     if (isArray(property.value.items)) {
       return property.value.items[index] ?? {}
     }
@@ -54,7 +54,7 @@
 
   function generator(): unknown {
     const index = value.value.length
-    const property = getIndexProperty(index)
+    const property = getPropertyForIndex(index)
 
     return property.default ?? null
   }
