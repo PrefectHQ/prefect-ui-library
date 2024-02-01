@@ -49,7 +49,6 @@
   const isTuple = computed(() => isArray(property.value.items))
 
   function getIndexProperty(index: number): SchemaProperty {
-    // if items is an array this is a tuple
     if (isArray(property.value.items)) {
       return property.value.items[index] ?? {}
     }
