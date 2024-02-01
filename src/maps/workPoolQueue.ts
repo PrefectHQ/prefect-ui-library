@@ -1,4 +1,4 @@
-import { WorkPoolQueue, WorkPoolQueueCreate, WorkPoolQueueCreateRequest, WorkPoolQueueEdit, WorkPoolQueueEditRequest, WorkPoolQueueResponse } from '@/models'
+import { WorkPoolQueue, WorkPoolQueueCreate, WorkPoolQueueCreateRequest, WorkPoolQueueEdit, WorkPoolQueueEditRequest, WorkPoolQueueResponse, WorkPoolQueueResponseStatus, WorkPoolQueueStatus } from '@/models'
 import { MapFunction } from '@/services/Mapper'
 
 export const mapWorkPoolQueueResponseToWorkPoolQueue: MapFunction<WorkPoolQueueResponse, WorkPoolQueue> = function(source) {
@@ -13,6 +13,7 @@ export const mapWorkPoolQueueResponseToWorkPoolQueue: MapFunction<WorkPoolQueueR
     isPaused: source.is_paused ?? false,
     concurrencyLimit: source.concurrency_limit,
     priority: source.priority,
+    status: source.status.toLowerCase() as Lowercase<WorkPoolQueueResponseStatus>,
   })
 }
 
@@ -28,6 +29,7 @@ export const mapWorkPoolQueueToWorkPoolQueueResponse: MapFunction<WorkPoolQueue,
     is_paused: source.isPaused,
     concurrency_limit: source.concurrencyLimit,
     priority: source.priority,
+    status: source.status.toUpperCase() as Uppercase<WorkPoolQueueStatus>,
   }
 }
 

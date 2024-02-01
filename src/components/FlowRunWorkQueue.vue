@@ -2,14 +2,20 @@
   <div v-if="!workPool?.isPushPool" class="flow-run-work-queue">
     <span>Work Queue</span>
     <WorkQueueIconText :work-queue-name="workQueueName" :work-pool-name="workPoolName" />
-    <WorkPoolQueueStatusIcon v-if="isNotTerminal && workPoolName" :work-queue-name="workQueueName" :work-pool-name="workPoolName" />
+
+    <template v-if="isNotTerminal && workPoolName">
+      <WorkPoolQueueStatusIcon v-if="can.access.workQueueStatus && workPoolQueue" :work-pool-queue="workPoolQueue" />
+      <WorkPoolQueueHealthIcon v-else-if="!can.access.workQueueStatus" :work-queue-name="workQueueName" :work-pool-name="workPoolName" />
+    </template>
   </div>
 </template>
 
 <script lang="ts" setup>
+  import { useSubscriptionWithDependencies } from '@prefecthq/vue-compositions'
   import { computed, toRefs } from 'vue'
-  import { WorkPoolQueueStatusIcon, WorkQueueIconText } from '@/components'
-  import { useWorkPool } from '@/compositions'
+  import { WorkPoolQueueHealthIcon, WorkQueueIconText } from '@/components'
+  import WorkPoolQueueStatusIcon from '@/components/WorkPoolQueueStatusIcon.vue'
+  import { useCan, useInterval, useWorkPool, useWorkspaceApi } from '@/compositions'
   import { isTerminalStateType } from '@/models'
 
   const props = defineProps<{
@@ -18,9 +24,23 @@
     flowRunState?: string | null,
   }>()
 
+  const can = useCan()
+
   const isNotTerminal = computed(() => props.flowRunState && !isTerminalStateType(props.flowRunState))
   const { workPoolName } = toRefs(props)
   const { workPool } = useWorkPool(workPoolName)
+
+  const api = useWorkspaceApi()
+  const workPoolQueueArgs = computed<[string, string] | null>(() => {
+    if (!props.workPoolName) {
+      return null
+    }
+    return [props.workPoolName, props.workQueueName]
+  })
+  const options = useInterval()
+
+  const workPoolQueuesSubscription = useSubscriptionWithDependencies(api.workPoolQueues.getWorkPoolQueueByName, workPoolQueueArgs, options)
+  const workPoolQueue = computed(() => workPoolQueuesSubscription.response)
 </script>
 
 <style>
