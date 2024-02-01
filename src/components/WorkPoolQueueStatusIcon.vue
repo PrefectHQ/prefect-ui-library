@@ -23,20 +23,18 @@
     workPoolQueue: WorkPoolQueue,
   }>()
 
-
   const status = computed<{
     state: 'paused' | 'ready' | 'not_ready',
-    name: string,
     icon: Icon,
     tooltip: string,
   }>(() => {
     switch (props.workPoolQueue.status) {
       case 'paused':
-        return { state: 'paused', name: 'Paused', icon: 'PauseCircleIcon', tooltip: 'Work pool queue is paused. No work will be executed.' }
+        return { state: 'paused', icon: 'PauseCircleIcon', tooltip: 'Work pool queue is paused. No work will be executed.' }
       case 'ready':
-        return { state: 'ready', name: 'Ready', icon: 'CheckCircleIcon', tooltip: 'Work pool queue has at least one actively polling worker ready to execute work.' }
+        return { state: 'ready', icon: 'CheckCircleIcon', tooltip: 'Work pool queue has at least one actively polling worker ready to execute work.' }
       case 'not_ready':
-        return { state: 'not_ready', name: 'Not Ready', icon: 'ExclamationCircleIcon', tooltip: 'Work pool queue does not have any actively polling workers ready to execute work.' }
+        return { state: 'not_ready', icon: 'ExclamationCircleIcon', tooltip: 'Work pool queue does not have any actively polling workers ready to execute work.' }
       default:
         const exhaustiveCheck: never = props.workPoolQueue.status
         throw new Error(`Unhandled work pool queue status: ${exhaustiveCheck}`)
@@ -49,6 +47,10 @@
 <style>
 .work-pool-queue-status-icon { @apply
   cursor-help
+}
+
+.work-pool-queue-status-icon--not_ready { @apply
+  text-sentiment-negative
 }
 
 .work-pool-queue-status-icon--paused { @apply
