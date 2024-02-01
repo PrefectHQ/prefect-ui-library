@@ -1,5 +1,5 @@
 <template>
-  <p-draggable-list v-model="value" class="schema-form-property-array" :generator="generator">
+  <p-draggable-list v-model="value" allow-create allow-delete class="schema-form-property-array" :generator="generator">
     <template #item="{ index, handleDown, handleUp, deleteItem }">
       <div class="schema-form-property-array__item">
         <PIcon icon="DragHandle" class="schema-form-property-array__handle" @mousedown="handleDown" @mouseup="handleUp" />
