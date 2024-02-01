@@ -1,14 +1,12 @@
 <template>
-  <p-draggable-list v-model="value" :allow-create="!isTuple" class="schema-form-property-array" :generator="generator">
+  <p-draggable-list v-model="value" class="schema-form-property-array" :generator="generator">
     <template #item="{ index, handleDown, handleUp, deleteItem }">
       <div class="schema-form-property-array__item">
         <PIcon icon="DragHandle" class="schema-form-property-array__handle" @mousedown="handleDown" @mouseup="handleUp" />
 
         <SchemaFormPropertyInput v-model:value="value[index]" :property="getIndexProperty(index)" />
 
-        <template v-if="!isTuple">
-          <p-button icon="TrashIcon" @click="deleteItem" />
-        </template>
+        <p-button icon="TrashIcon" @click="deleteItem" />
       </div>
     </template>
   </p-draggable-list>
@@ -45,8 +43,6 @@
       emit('update:value', value)
     },
   })
-
-  const isTuple = computed(() => isArray(property.value.items))
 
   function getIndexProperty(index: number): SchemaProperty {
     if (isArray(property.value.items)) {
