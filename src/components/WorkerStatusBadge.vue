@@ -1,16 +1,21 @@
 <template>
   <p-tag>
-    <WorkerStatusIcon :status="worker.status" />
-    {{ capitalize(worker.status) }}
+    <StatusIcon :status="worker.status === 'online' ? 'ready' : 'not_ready'" />
+    <span class="worker-status-badge--status-text">{{ worker.status }}</span>
   </p-tag>
 </template>
 
 <script lang="ts" setup>
-  import WorkerStatusIcon from '@/components/WorkerStatusIcon.vue'
+  import StatusIcon from '@/components/StatusIcon.vue'
   import { WorkPoolWorker } from '@/models'
-  import { capitalize } from '@/utilities'
 
   defineProps<{
     worker: WorkPoolWorker,
   }>()
 </script>
+
+<style>
+.worker-status-badge--status-text { @apply
+  capitalize
+}
+</style>

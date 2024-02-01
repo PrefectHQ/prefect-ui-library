@@ -1,21 +1,21 @@
 <template>
   <p-tooltip
     v-if="status"
+    class="deployment-status-icon"
     :text="tooltipText"
   >
-    <div class="deployment-status-icon" :class="classes" />
+    <StatusIcon :status="status" />
   </p-tooltip>
 </template>
 
 <script lang="ts" setup>
   import { computed } from 'vue'
+  import StatusIcon from '@/components/StatusIcon.vue'
   import { DeploymentStatus } from '@/models'
 
   const props = defineProps<{
     status: DeploymentStatus,
   }>()
-
-  const classes = computed(() => `deployment-status-icon--${props.status.toLowerCase()}`)
 
   const tooltipText = computed(() => {
     switch (props.status) {
@@ -31,22 +31,6 @@
 
 <style>
 .deployment-status-icon { @apply
-  flex
-  items-center
   cursor-help
-  w-2
-  h-2
-  align-middle
-  text-inverse
-  dark:text-default
-  rounded-full
-}
-
-.deployment-status-icon--ready { @apply
-  bg-sentiment-positive
-}
-
-.deployment-status-icon--not_ready { @apply
-  bg-sentiment-negative
 }
 </style>
