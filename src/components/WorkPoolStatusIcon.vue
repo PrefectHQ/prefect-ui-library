@@ -1,9 +1,10 @@
 <template>
   <p-tooltip
     v-if="status"
+    class="work-pool-status-icon"
     :text="tooltipText"
   >
-    <div v-if="status !== 'paused'" class="work-pool-status-icon" :class="classes" />
+    <StatusIcon v-if="status !== 'paused'" :status="status" />
     <p-icon
       v-if="status === 'paused'"
       icon="PauseCircleIcon"
@@ -15,13 +16,12 @@
 
 <script lang="ts" setup>
   import { computed } from 'vue'
+  import StatusIcon from '@/components/StatusIcon.vue'
   import { WorkPoolStatus } from '@/models'
 
   const props = defineProps<{
     status: WorkPoolStatus,
   }>()
-
-  const classes = computed(() => props.status === null ? null : `work-pool-status-icon--${props.status.toLowerCase()}`)
 
   const tooltipText = computed(() => {
     switch (props.status) {
@@ -39,23 +39,7 @@
 
 <style>
 .work-pool-status-icon { @apply
-  flex
-  items-center
   cursor-help
-  w-2
-  h-2
-  align-middle
-  text-inverse
-  dark:text-default
-  rounded-full
-}
-
-.work-pool-status-icon--ready { @apply
-  bg-sentiment-positive
-}
-
-.work-pool-status-icon--not_ready { @apply
-  bg-sentiment-negative
 }
 
 .work-pool-status-icon--paused { @apply
