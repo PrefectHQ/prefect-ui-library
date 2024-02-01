@@ -1,26 +1,32 @@
 <template>
-  <p-draggable-list v-model="value" allow-create allow-delete class="schema-form-property-array" :generator="() => null">
+  <p-draggable-list v-model="value" :allow-create="!isTuple" class="schema-form-property-array" :generator="generator">
     <template #item="{ index, handleDown, handleUp, deleteItem }">
       <div class="schema-form-property-array__item">
         <PIcon icon="DragHandle" class="schema-form-property-array__handle" @mousedown="handleDown" @mouseup="handleUp" />
 
-        <SchemaFormPropertyInput v-model:value="value[index]" :property="property.items ?? {}" />
+        <SchemaFormPropertyInput v-model:value="value[index]" :property="getIndexProperty(index)" />
 
-        <p-button icon="TrashIcon" @click="deleteItem" />
+        <template v-if="!isTuple">
+          <p-button icon="TrashIcon" @click="deleteItem" />
+        </template>
       </div>
     </template>
   </p-draggable-list>
 </template>
 
 <script lang="ts" setup>
+  import { isArray } from '@prefecthq/prefect-design'
   import { computed } from 'vue'
   import SchemaFormPropertyInput from '@/schemas/components/SchemaFormPropertyInput.vue'
+  import { useSchemaProperty } from '@/schemas/compositions/useSchemaProperty'
   import { SchemaProperty } from '@/schemas/types/schema'
 
   const props = defineProps<{
     property: SchemaProperty & { type: 'array' },
     value: unknown[] | null,
   }>()
+
+  const property = useSchemaProperty(() => props.property)
 
   const emit = defineEmits<{
     'update:value': [unknown[] | null],
@@ -39,6 +45,24 @@
       emit('update:value', value)
     },
   })
+
+  const isTuple = computed(() => isArray(property.value.items))
+
+  function getIndexProperty(index: number): SchemaProperty {
+    // if items is an array this is a tuple
+    if (isArray(property.value.items)) {
+      return property.value.items[index] ?? {}
+    }
+
+    return property.value.items ?? {}
+  }
+
+  function generator(): unknown {
+    const index = value.value.length
+    const property = getIndexProperty(index)
+
+    return property.default ?? null
+  }
 </script>
 
 <style>
