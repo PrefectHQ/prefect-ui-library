@@ -10,7 +10,7 @@
 </template>
 
 <script lang="ts" setup>
-  import { PNumberInput, PTextInput, PToggle } from '@prefecthq/prefect-design'
+  import { PNumberInput, PToggle } from '@prefecthq/prefect-design'
   import { computed } from 'vue'
   import SchemaFormKindInput from '@/schemas/components/SchemaFormKindInput.vue'
   import SchemaFormPropertyArray from '@/schemas/components/SchemaFormPropertyArray.vue'
