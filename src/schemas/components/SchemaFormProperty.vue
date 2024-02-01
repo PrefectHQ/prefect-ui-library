@@ -18,11 +18,13 @@
 </template>
 
 <script lang="ts" setup>
+  import { isNotNullish } from '@prefecthq/prefect-design'
   import { computed } from 'vue'
   import SchemaFormPropertyInput from '@/schemas/components/SchemaFormPropertyInput.vue'
   import { useSchemaProperty } from '@/schemas/compositions/useSchemaProperty'
   import { SchemaProperty } from '@/schemas/types/schema'
   import { SchemaValue } from '@/schemas/types/schemaValues'
+  import { isNullish } from '@/utilities'
 
   const props = defineProps<{
     property: SchemaProperty,
@@ -34,16 +36,28 @@
     'update:value': [SchemaValue],
   }>()
 
+  const property = useSchemaProperty(() => props.property)
+
   const value = computed({
     get() {
-      return props.value
+      if (isNotNullish(props.value)) {
+        return props.value
+      }
+
+      if (isNotNullish(property.value.default)) {
+        return property.value.default
+      }
+
+      return null
     },
     set(value) {
       emit('update:value', value)
     },
   })
 
-  const property = useSchemaProperty(() => props.property)
+  if (isNullish(props.value) && isNotNullish(property.value.default)) {
+    emit('update:value', property.value.default)
+  }
 
   const label = computed(() => {
     const title = props.property.title ?? ''
