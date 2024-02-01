@@ -40,6 +40,7 @@
   import { SchemaProperty, SchemaProperties, isPropertyWith } from '@/schemas/types/schema'
   import { SchemaValues } from '@/schemas/types/schemaValues'
   import { SchemaValue } from '@/types'
+  import { isNullish } from '@/utilities'
 
   const props = defineProps<{
     parent: SchemaProperty,
@@ -81,7 +82,13 @@
   const flush = debounce(() => {
     const updatedValues = { ...props.values }
 
-    patches.forEach(({ propertyKey, value }) => updatedValues[propertyKey] = value)
+    patches.forEach(({ propertyKey, value }) => {
+      updatedValues[propertyKey] = value
+
+      if (isNullish(value)) {
+        delete updatedValues[propertyKey]
+      }
+    })
 
     patches.slice(0)
 
