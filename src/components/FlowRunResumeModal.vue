@@ -1,22 +1,16 @@
 <template>
   <p-modal v-if="flowRun" v-model:showModal="internalValue" title="Resume Flow Run">
-    <p-label label="Current Flow Run State">
-      <StateBadge :state="flowRun.state" />
-    </p-label>
-
-    <div v-if="inputSchema">
-      <strong>Flow requires input.</strong> Please fill out the form below to resume.
-    </div>
-
     <div v-if="serverValidationError">
       <p-message error>
         {{ serverValidationError }}
       </p-message>
     </div>
 
-    <p-markdown-renderer v-if="inputDescription" :text="inputDescription" />
+    <div v-if="inputSchema">
+      <p-markdown-renderer v-if="inputDescription" :text="inputDescription" />
+    </div>
     <div v-else>
-      Do you want to resume {{ flowRun.name }}?
+      Do you want to resume this flow run?
     </div>
 
     <p-form v-if="inputSchema" @submit="resume">
@@ -36,7 +30,6 @@
   import { useSubscription, useValidationObserver } from '@prefecthq/vue-compositions'
   import { computed, ref } from 'vue'
   import { SchemaInput } from '@/components'
-  import StateBadge from '@/components/StateBadge.vue'
   import { useWorkspaceApi } from '@/compositions'
   import { localization } from '@/localization'
   import { OrchestrationResult } from '@/models/api/OrchestrationResult'

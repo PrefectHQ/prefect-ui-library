@@ -75,8 +75,13 @@ export class WorkspaceFlowRunsApi extends WorkspaceApi {
   }
 
   public async getFlowRunInputDescription(id: string, keyset: FlowRunInputKeyset): Promise <string | null> {
-    const { data } = await this.get<string | null>(`/${id}/input/${keyset.description}`)
-    return data
+    try {
+      const { data } = await this.get<string | null>(`/${id}/input/${keyset.description}`)
+      return data
+    } catch (error) {
+      console.error('Flow run input description not found')
+      return null
+    }
   }
 
   public async getFlowRunInputSchema(id: string, keyset: FlowRunInputKeyset): Promise<Schema> {
