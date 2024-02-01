@@ -79,6 +79,7 @@ export class WorkspaceFlowRunsApi extends WorkspaceApi {
       const { data } = await this.get<string | null>(`/${id}/input/${keyset.description}`)
       return data
     } catch (error) {
+      console.error('Flow run input description not found')
       return null
     }
   }
