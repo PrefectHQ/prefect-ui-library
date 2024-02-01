@@ -1,22 +1,11 @@
 <template>
   <p-modal v-if="flowRun" v-model:showModal="internalValue" title="Resume Flow Run">
-    <p-label label="Current Flow Run State">
-      <StateBadge :state="flowRun.state" />
-    </p-label>
-
-    <div v-if="inputSchema">
-      <strong>Flow requires input.</strong> Please fill out the form below to resume.
-    </div>
+    <p-markdown-renderer v-if="inputDescription" :text="inputDescription" />
 
     <div v-if="serverValidationError">
       <p-message error>
         {{ serverValidationError }}
       </p-message>
-    </div>
-
-    <p-markdown-renderer v-if="inputDescription" :text="inputDescription" />
-    <div v-else>
-      Do you want to resume {{ flowRun.name }}?
     </div>
 
     <p-form v-if="inputSchema" @submit="resume">
