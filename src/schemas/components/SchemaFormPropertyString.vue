@@ -5,6 +5,8 @@
 <script lang="ts" setup>
   import { PTextInput } from '@prefecthq/prefect-design'
   import { computed } from 'vue'
+  import SchemaFormPropertyDate from '@/schemas/components/SchemaFormPropertyDate.vue'
+  import SchemaFormPropertyDateTime from '@/schemas/components/SchemaFormPropertyDateTime.vue'
   import { useSchemaProperty } from '@/schemas/compositions/useSchemaProperty'
   import { SchemaProperty } from '@/schemas/types/schema'
   import { withProps } from '@/utilities'
@@ -24,11 +26,17 @@
     const { format } = property.value
 
     if (format === 'date') {
-      return
+      return withProps(SchemaFormPropertyDate, {
+        value: props.value,
+        'onUpdate:value': update,
+      })
     }
 
     if (format === 'date-time') {
-      return
+      return withProps(SchemaFormPropertyDateTime, {
+        value: props.value,
+        'onUpdate:value': update,
+      })
     }
 
     if (format === 'password') {

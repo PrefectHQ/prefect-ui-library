@@ -1,10 +1,10 @@
 <template>
-  <p-date-input v-model="value" clearable />
+  <p-date-input v-model="value" show-time clearable />
 </template>
 
 <script lang="ts" setup>
   import { isNotNullish } from '@prefecthq/prefect-design'
-  import { format, parse, startOfToday } from 'date-fns'
+  import { formatISO, parseISO } from 'date-fns'
   import { computed } from 'vue'
   import { isInvalidDate } from '@/utilities'
 
@@ -16,12 +16,10 @@
     'update:value': [string | null],
   }>()
 
-  const dateFormat = 'yyyy-MM-dd'
-
   const value = computed({
     get() {
       if (isNotNullish(props.value)) {
-        const parsed = parse(props.value, dateFormat, startOfToday())
+        const parsed = parseISO(props.value)
 
         if (isInvalidDate(parsed)) {
           return null
@@ -34,7 +32,7 @@
     },
     set(value) {
       if (isNotNullish(value)) {
-        emit('update:value', format(value, dateFormat))
+        emit('update:value', formatISO(value))
         return
       }
 
