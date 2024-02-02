@@ -28,6 +28,20 @@
 
   const api = useWorkspaceApi()
   const schema = useSchema()
+  const propertyValues = reactive<SchemaValue[]>([])
+
+  const initialSelectedPropertyIndex = await getInitialIndexForSchemaPropertyAnyOfValue({
+    schema,
+    property: props.property,
+    value: props.value,
+    api,
+  })
+
+  if (initialSelectedPropertyIndex === -1) {
+    throw 'not implemented'
+  }
+
+  const selectedPropertyIndexValue = ref(initialSelectedPropertyIndex)
 
   const emit = defineEmits<{
     'update:value': [SchemaValue],
@@ -43,19 +57,6 @@
     },
   })
 
-  const initialSelectedPropertyIndex = await getInitialIndexForSchemaPropertyAnyOfValue({
-    schema,
-    property: props.property,
-    value: props.value,
-    api,
-  })
-  
-  if(initialSelectedPropertyIndex === -1) {
-    throw 'not implemented'
-  }
-
-  const selectedPropertyIndexValue = ref(initialSelectedPropertyIndex)
-
   const selectedPropertyIndex = computed({
     get() {
       return selectedPropertyIndexValue.value
@@ -65,8 +66,6 @@
       emit('update:value', propertyValues[index])
     },
   })
-
-  const propertyValues = reactive<SchemaValue[]>([])
 
   const property = computed(() => {
     const selectedProperty = props.property.anyOf[selectedPropertyIndex.value]
