@@ -45,7 +45,7 @@ export function isPrefectKindNull(value: unknown): value is PrefectKindNull {
 }
 
 export type PrefectKindJson = BasePrefectKindValue<'json', {
-  value: string | undefined,
+  value: string,
 }>
 
 export function isPrefectKindJson(value: unknown): value is PrefectKindJson {
@@ -53,7 +53,7 @@ export function isPrefectKindJson(value: unknown): value is PrefectKindJson {
 }
 
 export type PrefectKindJinja = BasePrefectKindValue<'jinja', {
-  template: string | undefined,
+  template: string,
 }>
 
 export function isPrefectKindJinja(value: unknown): value is PrefectKindJinja {
@@ -61,7 +61,7 @@ export function isPrefectKindJinja(value: unknown): value is PrefectKindJinja {
 }
 
 export type PrefectKindWorkspaceVariable = BasePrefectKindValue<'workspace_variable', {
-  variable_name: string | undefined,
+  variable_name: string,
 }>
 
 export function isPrefectKindWorkspaceVariable(value: unknown): value is PrefectKindWorkspaceVariable {
