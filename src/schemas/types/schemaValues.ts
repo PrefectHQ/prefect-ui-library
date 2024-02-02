@@ -1,4 +1,3 @@
-import { Simplify } from '@/types/utilities'
 import { isRecord, isString } from '@/utilities'
 import { createTuple } from '@/utilities/tuples'
 
