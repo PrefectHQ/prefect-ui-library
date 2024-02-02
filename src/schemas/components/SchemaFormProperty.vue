@@ -1,5 +1,13 @@
 <template>
-  <p-label class="schema-form-property" :label="label">
+  <p-label class="schema-form-property">
+    <template #label>
+      <div class="schema-form-property__header">
+        <span>{{ label }}</span>
+
+        <SchemaFormPropertyMenu v-model:kind="kind" />
+      </div>
+    </template>
+
     <template v-if="description" #description>
       <div class="schema-form-property__description">
         <p-markdown-renderer :text="description" class="schema-form-property__markdown" />
@@ -23,9 +31,10 @@
   import { computed } from 'vue'
   import SchemaFormPropertyInput from '@/schemas/components/SchemaFormPropertyInput.vue'
   import SchemaFormPropertyKindJson from '@/schemas/components/SchemaFormPropertyKindJson.vue'
+  import SchemaFormPropertyMenu from '@/schemas/components/SchemaFormPropertyMenu.vue'
   import { useSchemaProperty } from '@/schemas/compositions/useSchemaProperty'
   import { SchemaProperty } from '@/schemas/types/schema'
-  import { SchemaValue, isPrefectKindValue } from '@/schemas/types/schemaValues'
+  import { PrefectKind, SchemaValue, isPrefectKindValue } from '@/schemas/types/schemaValues'
   import { isNullish, withProps } from '@/utilities'
 
   const props = defineProps<{
@@ -55,6 +64,28 @@
   if (isNullish(props.value) && isNotNullish(property.value.default)) {
     emit('update:value', property.value.default)
   }
+
+  const kindValuesMap: Partial<Record<PrefectKind, unknown>> = {}
+
+  const kind = computed<PrefectKind>({
+    get() {
+      if (isPrefectKindValue(value.value)) {
+        return value.value.__prefect_kind
+      }
+
+      return 'none'
+    },
+    set(__prefect_kind) {
+      kindValuesMap[kind.value] = props.value
+
+      if (__prefect_kind in kindValuesMap) {
+        emit('update:value', kindValuesMap[__prefect_kind])
+        return
+      }
+
+      emit('update:value', { __prefect_kind })
+    },
+  })
 
   const label = computed(() => {
     const title = props.property.title ?? ''
