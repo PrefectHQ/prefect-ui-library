@@ -4,7 +4,7 @@
       <div class="schema-form-property__header">
         <span>{{ label }}</span>
 
-        <SchemaFormPropertyMenu v-model:kind="kind" />
+        <SchemaFormPropertyMenu v-model:kind="kind" flat />
       </div>
     </template>
 

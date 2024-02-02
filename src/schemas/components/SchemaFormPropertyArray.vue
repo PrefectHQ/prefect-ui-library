@@ -13,8 +13,10 @@
           <SchemaFormPropertyInput v-model:value="value[index]" :property="getPropertyForIndex(index)" />
 
           <SchemaFormPropertyMenu v-model:kind="kind">
-            <template v-if="multipleValues">
+            <template v-if="!isFirstIndex(index)">
               <p-overflow-menu-item icon="ArrowSmallUpIcon" label="Move to top" @click="moveToTop" />
+            </template>
+            <template v-if="!isLastIndex(index)">
               <p-overflow-menu-item icon="ArrowSmallDownIcon" label="Move to bottom" @click="moveToBottom" />
             </template>
 
@@ -42,7 +44,6 @@
 
   const property = useSchemaProperty(() => props.property)
   const empty = computed(() => !props.value?.length)
-  const multipleValues = computed(() => (props.value?.length ?? 0) > 1)
   const kind = ref<PrefectKind>('none')
 
   const emit = defineEmits<{
@@ -77,6 +78,14 @@
 
     return property.default ?? null
   }
+
+  function isFirstIndex(index: number): boolean {
+    return index === 0
+  }
+
+  function isLastIndex(index: number): boolean {
+    return index === (props.value?.length ?? 0) - 1
+  }
 </script>
 
 <style>
@@ -84,10 +93,15 @@
   block
 }
 
+.schema-form-property-array .p-draggable-list > .p-button {
+  margin-left: 30px;
+}
+
 .schema-form-property-array__empty { @apply
   text-subdued
   text-sm
-  italic
+  italic;
+  margin-left: 30px;
 }
 
 .schema-form-property-array__item { @apply
