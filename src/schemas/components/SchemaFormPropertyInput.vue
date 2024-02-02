@@ -93,6 +93,8 @@
     }
 
     if (isSchemaPropertyType(type, undefined)) {
+      // automatically switch to prefect_kind === 'json'?
+      // value might not be json, so will need to convert it to json...
       throw 'not implemented'
     }
 

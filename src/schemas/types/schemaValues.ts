@@ -6,7 +6,7 @@ export type SchemaValue = unknown
 export type SchemaValues = Record<string, SchemaValue>
 
 export const { values: prefectKinds, isValue: isPrefectKind } = createTuple([
-  null,
+  'none',
   'json',
   'jinja',
   'workspace_variable',
@@ -23,7 +23,7 @@ type BasePrefectKindValue<
 
 export type PrefectKindValue = PrefectKindNull | PrefectKindJinja | PrefectKindJson | PrefectKindWorkspaceVariable
 
-export function isPrefectKindValue<T extends PrefectKind = PrefectKind>(value: unknown, kind?: T): value is Simplify<PrefectKindValue & { __prefect_kind: T }> {
+export function isPrefectKindValue<T extends PrefectKind = PrefectKind>(value: unknown, kind?: T): value is PrefectKindValue & { __prefect_kind: T } {
   const isKindObject = isRecord(value) && isPrefectKind(value.__prefect_kind)
 
   if (!isKindObject) {
@@ -37,16 +37,16 @@ export function isPrefectKindValue<T extends PrefectKind = PrefectKind>(value: u
   return true
 }
 
-export type PrefectKindNull = BasePrefectKindValue<null, {
+export type PrefectKindNull = BasePrefectKindValue<'none', {
   value: unknown,
 }>
 
 export function isPrefectKindNull(value: unknown): value is PrefectKindNull {
-  return isPrefectKindValue(value, null) && 'value' in value
+  return isPrefectKindValue(value, 'none') && 'value' in value
 }
 
 export type PrefectKindJson = BasePrefectKindValue<'json', {
-  value: string,
+  value: string | undefined,
 }>
 
 export function isPrefectKindJson(value: unknown): value is PrefectKindJson {
@@ -54,7 +54,7 @@ export function isPrefectKindJson(value: unknown): value is PrefectKindJson {
 }
 
 export type PrefectKindJinja = BasePrefectKindValue<'jinja', {
-  template: string,
+  template: string | undefined,
 }>
 
 export function isPrefectKindJinja(value: unknown): value is PrefectKindJinja {
@@ -62,7 +62,7 @@ export function isPrefectKindJinja(value: unknown): value is PrefectKindJinja {
 }
 
 export type PrefectKindWorkspaceVariable = BasePrefectKindValue<'workspace_variable', {
-  variable_name: string,
+  variable_name: string | undefined,
 }>
 
 export function isPrefectKindWorkspaceVariable(value: unknown): value is PrefectKindWorkspaceVariable {

@@ -51,7 +51,7 @@
         property: props.property,
         value: props.value.value,
         'onUpdate:value': value => emit('update:value', {
-          __prefect_kind: null,
+          __prefect_kind: 'none',
           value,
         }),
       })
