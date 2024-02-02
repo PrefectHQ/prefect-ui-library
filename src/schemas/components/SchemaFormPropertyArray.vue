@@ -1,23 +1,39 @@
 <template>
-  <p-draggable-list v-model="value" allow-create allow-delete class="schema-form-property-array" :generator="generator">
-    <template #item="{ index, handleDown, handleUp, deleteItem }">
-      <div class="schema-form-property-array__item">
-        <PIcon icon="DragHandle" class="schema-form-property-array__handle" @mousedown="handleDown" @mouseup="handleUp" />
-
-        <SchemaFormPropertyInput v-model:value="value[index]" :property="getPropertyForIndex(index)" />
-
-        <p-button icon="TrashIcon" @click="deleteItem" />
-      </div>
+  <div class="schema-form-property-array">
+    <template v-if="empty">
+      <p class="schema-form-property-array__empty">
+        No items in this list
+      </p>
     </template>
-  </p-draggable-list>
+    <p-draggable-list v-model="value" allow-create allow-delete :generator="generator">
+      <template #item="{ index, handleDown, handleUp, deleteItem, moveToTop, moveToBottom }">
+        <div class="schema-form-property-array__item">
+          <PIcon icon="DragHandle" class="schema-form-property-array__handle" @mousedown="handleDown" @mouseup="handleUp" />
+
+          <SchemaFormPropertyInput v-model:value="value[index]" :property="getPropertyForIndex(index)" />
+
+          <SchemaFormPropertyMenu v-model:kind="kind">
+            <template v-if="multipleValues">
+              <p-overflow-menu-item icon="ArrowSmallUpIcon" label="Move to top" @click="moveToTop" />
+              <p-overflow-menu-item icon="ArrowSmallDownIcon" label="Move to bottom" @click="moveToBottom" />
+            </template>
+
+            <p-overflow-menu-item icon="TrashIcon" label="Delete" @click="deleteItem" />
+          </SchemaFormPropertyMenu>
+        </div>
+      </template>
+    </p-draggable-list>
+  </div>
 </template>
 
 <script lang="ts" setup>
   import { isArray } from '@prefecthq/prefect-design'
-  import { computed } from 'vue'
+  import { computed, ref } from 'vue'
   import SchemaFormPropertyInput from '@/schemas/components/SchemaFormPropertyInput.vue'
+  import SchemaFormPropertyMenu from '@/schemas/components/SchemaFormPropertyMenu.vue'
   import { useSchemaProperty } from '@/schemas/compositions/useSchemaProperty'
   import { SchemaProperty } from '@/schemas/types/schema'
+  import { PrefectKind } from '@/schemas/types/schemaValues'
 
   const props = defineProps<{
     property: SchemaProperty & { type: 'array' },
@@ -25,6 +41,9 @@
   }>()
 
   const property = useSchemaProperty(() => props.property)
+  const empty = computed(() => !props.value?.length)
+  const multipleValues = computed(() => (props.value?.length ?? 0) > 1)
+  const kind = ref<PrefectKind>('none')
 
   const emit = defineEmits<{
     'update:value': [unknown[] | null],
@@ -63,6 +82,12 @@
 <style>
 .schema-form-property-array .p-draggable-list__item { @apply
   block
+}
+
+.schema-form-property-array__empty { @apply
+  text-subdued
+  text-sm
+  italic
 }
 
 .schema-form-property-array__item { @apply

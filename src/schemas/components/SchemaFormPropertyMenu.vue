@@ -2,6 +2,11 @@
   <p-icon-button-menu small flat class="schema-form-property-menu">
     <p-overflow-menu-item v-if="showKind('json')" label="Use JSON input" @click="emit('update:kind', 'json')" />
     <p-overflow-menu-item v-if="showKind('none')" label="Use form input" @click="emit('update:kind', 'none')" />
+
+    <template v-if="$slots.default">
+      <p-divider />
+      <slot />
+    </template>
   </p-icon-button-menu>
 </template>
 
