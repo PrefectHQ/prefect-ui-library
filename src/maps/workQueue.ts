@@ -1,4 +1,4 @@
-import { WorkQueueCreateRequest, WorkQueueEditRequest, WorkQueueCreate, WorkQueueEdit, WorkQueue, WorkQueueResponse } from '@/models'
+import { WorkQueueCreateRequest, WorkQueueEditRequest, WorkQueueCreate, WorkQueueEdit, WorkQueue, WorkQueueResponse, WorkPoolQueueResponseStatus } from '@/models'
 import { MapFunction } from '@/services/Mapper'
 
 export const mapWorkQueueResponseToWorkQueue: MapFunction<WorkQueueResponse, WorkQueue> = function(source) {
@@ -14,6 +14,7 @@ export const mapWorkQueueResponseToWorkQueue: MapFunction<WorkQueueResponse, Wor
     priority: source.priority,
     workPoolId: source.work_pool_id,
     workPoolName: source.work_pool_name,
+    status: (source.status?.toLowerCase() ?? 'not_ready') as Lowercase<WorkPoolQueueResponseStatus>,
   })
 }
 

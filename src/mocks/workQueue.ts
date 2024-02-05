@@ -16,6 +16,7 @@ export const randomWorkQueue: MockFunction<WorkQueue, [Partial<WorkQueue>?]> = f
     concurrencyLimit: this.create('number'),
     priority: this.create('number'),
     workPoolId: this.create('id'),
+    status: 'not_ready',
     ...rest,
   })
 }

@@ -12,6 +12,7 @@ export interface IWorkQueue {
   priority: number,
   workPoolId: string,
   workPoolName?: string,
+  status: 'ready' | 'paused' | 'not_ready',
 }
 
 // deployments have new editable field called work_queue_name
@@ -29,6 +30,7 @@ export class WorkQueue implements IWorkQueue {
   public priority: number
   public workPoolId: string
   public workPoolName?: string
+  public status: 'ready' | 'paused' | 'not_ready'
 
   public get deprecated(): boolean {
     return !!this.filter
@@ -46,5 +48,6 @@ export class WorkQueue implements IWorkQueue {
     this.priority = workQueue.priority
     this.workPoolId = workQueue.workPoolId
     this.workPoolName = workQueue.workPoolName
+    this.status = workQueue.status
   }
 }
