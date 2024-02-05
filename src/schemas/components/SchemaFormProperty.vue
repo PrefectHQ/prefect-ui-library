@@ -9,7 +9,9 @@
         </template>
 
         <SchemaFormPropertyMenu v-model:kind="kind" class="ml-auto" :disabled="omitted" flat>
-          <p-overflow-menu-item :label="omitLabel" @click="toggleValue" />
+          <template v-if="!required" #default>
+            <p-overflow-menu-item :label="omitLabel" @click="toggleValue" />
+          </template>
         </SchemaFormPropertyMenu>
       </div>
     </template>
