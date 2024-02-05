@@ -13,11 +13,11 @@
 
   const props = defineProps<{
     property: SchemaProperty & { type: 'string' },
-    value: string | null,
+    value: string | null | undefined,
   }>()
 
   const emit = defineEmits<{
-    'update:value': [string | null],
+    'update:value': [string | null | undefined],
   }>()
 
   const { property } = useSchemaProperty(() => props.property)
@@ -53,7 +53,12 @@
     })
   })
 
-  function update(value: string | null): void {
+  function update(value: string | null | undefined): void {
+    if (!value) {
+      emit('update:value', undefined)
+      return
+    }
+
     emit('update:value', value)
   }
 </script>
