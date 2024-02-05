@@ -32,6 +32,7 @@
 </template>
 
 <script lang="ts" setup>
+  import { isDefined } from '@prefecthq/prefect-design'
   import debounce from 'lodash.debounce'
   import { computed } from 'vue'
   import SchemaFormProperty from '@/schemas/components/SchemaFormProperty.vue'
@@ -40,7 +41,6 @@
   import { SchemaProperty, SchemaProperties, isPropertyWith } from '@/schemas/types/schema'
   import { SchemaValues } from '@/schemas/types/schemaValues'
   import { SchemaValue } from '@/types'
-  import { isNullish } from '@/utilities'
 
   const props = defineProps<{
     parent: SchemaProperty,
@@ -85,7 +85,7 @@
     patches.forEach(({ propertyKey, value }) => {
       updatedValues[propertyKey] = value
 
-      if (isNullish(value)) {
+      if (!isDefined(value)) {
         delete updatedValues[propertyKey]
       }
     })

@@ -88,7 +88,7 @@
       return null
     },
     set(value) {
-      emit('update:value', value)
+      emit('update:value', value ?? undefined)
     },
   })
 
@@ -101,16 +101,18 @@
 
   function toggleValue(): void {
     if (omitted.value) {
-      value.value = omittedValue.value
       omittedValue.value = null
       omitted.value = false
+
+      emit('update:value', omittedValue.value)
 
       return
     }
 
     omittedValue.value = value.value
-    value.value = null
     omitted.value = true
+
+    emit('update:value', null)
   }
 </script>
 
