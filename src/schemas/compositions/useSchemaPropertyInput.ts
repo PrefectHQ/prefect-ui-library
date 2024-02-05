@@ -8,7 +8,7 @@ import { withProps } from '@/utilities/components'
 
 // this is a lot easier to just let typescript infer the return type
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-export function usePropertyInput(schemaProperty: MaybeRefOrGetter<SchemaProperty>, propertyValue: Ref<SchemaValue>) {
+export function useSchemaPropertyInput(schemaProperty: MaybeRefOrGetter<SchemaProperty>, propertyValue: Ref<SchemaValue>) {
   const input = computed(() => {
     const property = toValue(schemaProperty)
 

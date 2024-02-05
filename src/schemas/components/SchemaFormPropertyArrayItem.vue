@@ -23,7 +23,7 @@
   import { computed } from 'vue'
   import SchemaFormPropertyMenu from '@/schemas/components/SchemaFormPropertyMenu.vue'
   import { usePrefectKind } from '@/schemas/compositions/usePrefectKind'
-  import { usePropertyInput } from '@/schemas/compositions/usePropertyInput'
+  import { useSchemaPropertyInput } from '@/schemas/compositions/useSchemaPropertyInput'
   import { SchemaProperty } from '@/schemas/types/schema'
   import { SchemaValue } from '@/schemas/types/schemaValues'
 
@@ -52,7 +52,7 @@
     },
   })
 
-  const { input } = usePropertyInput(() => props.property, value)
+  const { input } = useSchemaPropertyInput(() => props.property, value)
   const { kind } = usePrefectKind(value)
 </script>
 
