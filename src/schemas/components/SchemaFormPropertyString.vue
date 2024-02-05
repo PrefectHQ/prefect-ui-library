@@ -20,7 +20,7 @@
     'update:value': [string | null],
   }>()
 
-  const property = useSchemaProperty(() => props.property)
+  const { property } = useSchemaProperty(() => props.property)
 
   const input = computed(() => {
     const { format } = property.value

@@ -4,7 +4,7 @@
     <p-overflow-menu-item v-if="showKind('none')" label="Use form input" @click="emit('update:kind', 'none')" />
 
     <template v-if="$slots.default">
-      <p-divider />
+      <p-divider class="schema-form-property-menu__divider" />
       <slot />
     </template>
   </p-icon-button-menu>
@@ -25,3 +25,9 @@
     return props.kind !== kind
   }
 </script>
+
+<style>
+.schema-form-property-menu__divider .p-divider { @apply
+  m-0
+}
+</style>

@@ -7,22 +7,17 @@
     </template>
     <p-draggable-list v-model="value" allow-create allow-delete :generator="generator">
       <template #item="{ index, handleDown, handleUp, deleteItem, moveToTop, moveToBottom }">
-        <div class="schema-form-property-array__item">
-          <PIcon icon="DragHandle" class="schema-form-property-array__handle" @mousedown="handleDown" @mouseup="handleUp" />
-
-          <SchemaFormPropertyInput v-model:value="value[index]" :property="getPropertyForIndex(index)" />
-
-          <SchemaFormPropertyMenu v-model:kind="kind">
-            <template v-if="!isFirstIndex(index)">
-              <p-overflow-menu-item icon="ArrowSmallUpIcon" label="Move to top" @click="moveToTop" />
-            </template>
-            <template v-if="!isLastIndex(index)">
-              <p-overflow-menu-item icon="ArrowSmallDownIcon" label="Move to bottom" @click="moveToBottom" />
-            </template>
-
-            <p-overflow-menu-item icon="TrashIcon" label="Delete" @click="deleteItem" />
-          </SchemaFormPropertyMenu>
-        </div>
+        <SchemaFormPropertyArrayItem
+          v-model:value="value[index]"
+          :property="getPropertyForIndex(index)"
+          :is-first="isFirstIndex(index)"
+          :is-last="isLastIndex(index)"
+          @delete-item="deleteItem"
+          @handle-down="handleDown"
+          @handle-up="handleUp"
+          @move-to-top="moveToTop"
+          @move-to-bottom="moveToBottom"
+        />
       </template>
     </p-draggable-list>
   </div>
@@ -30,21 +25,18 @@
 
 <script lang="ts" setup>
   import { isArray } from '@prefecthq/prefect-design'
-  import { computed, ref } from 'vue'
-  import SchemaFormPropertyInput from '@/schemas/components/SchemaFormPropertyInput.vue'
-  import SchemaFormPropertyMenu from '@/schemas/components/SchemaFormPropertyMenu.vue'
+  import { computed } from 'vue'
+  import SchemaFormPropertyArrayItem from '@/schemas/components/SchemaFormPropertyArrayItem.vue'
   import { useSchemaProperty } from '@/schemas/compositions/useSchemaProperty'
   import { SchemaProperty } from '@/schemas/types/schema'
-  import { PrefectKind } from '@/schemas/types/schemaValues'
 
   const props = defineProps<{
     property: SchemaProperty & { type: 'array' },
     value: unknown[] | null,
   }>()
 
-  const property = useSchemaProperty(() => props.property)
+  const { property } = useSchemaProperty(() => props.property)
   const empty = computed(() => !props.value?.length)
-  const kind = ref<PrefectKind>('none')
 
   const emit = defineEmits<{
     'update:value': [unknown[] | null],
@@ -102,17 +94,5 @@
   text-sm
   italic;
   margin-left: 30px;
-}
-
-.schema-form-property-array__item { @apply
-  grid
-  gap-2
-  items-start;
-  grid-template-columns: min-content 1fr min-content;
-}
-
-.schema-form-property-array__handle { @apply
-  cursor-grab
-  mt-2
 }
 </style>

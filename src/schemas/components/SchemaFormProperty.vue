@@ -31,13 +31,13 @@
 <script lang="ts" setup>
   import { isNotNullish } from '@prefecthq/prefect-design'
   import { computed } from 'vue'
-  import SchemaFormPropertyInput from '@/schemas/components/SchemaFormPropertyInput.vue'
-  import SchemaFormPropertyKindJson from '@/schemas/components/SchemaFormPropertyKindJson.vue'
   import SchemaFormPropertyMenu from '@/schemas/components/SchemaFormPropertyMenu.vue'
+  import { usePrefectKind } from '@/schemas/compositions/usePrefectKind'
+  import { usePropertyInput } from '@/schemas/compositions/usePropertyInput'
   import { useSchemaProperty } from '@/schemas/compositions/useSchemaProperty'
   import { SchemaProperty } from '@/schemas/types/schema'
-  import { PrefectKind, SchemaValue, isPrefectKindValue } from '@/schemas/types/schemaValues'
-  import { isNullish, withProps } from '@/utilities'
+  import { SchemaValue } from '@/schemas/types/schemaValues'
+  import { isNullish } from '@/utilities'
 
   const props = defineProps<{
     property: SchemaProperty,
@@ -49,102 +49,31 @@
     'update:value': [SchemaValue],
   }>()
 
-  const property = useSchemaProperty(() => props.property)
+  const { property, label, description, disabled } = useSchemaProperty(() => props.property, () => props.required)
 
-  const value = computed(() => {
-    if (isNotNullish(props.value)) {
-      return props.value
-    }
+  const value = computed({
+    get() {
+      if (isNotNullish(props.value)) {
+        return props.value
+      }
 
-    if (isNotNullish(property.value.default)) {
-      return property.value.default
-    }
+      if (isNotNullish(property.value.default)) {
+        return property.value.default
+      }
 
-    return null
+      return null
+    },
+    set(value) {
+      emit('update:value', value)
+    },
   })
 
   if (isNullish(props.value) && isNotNullish(property.value.default)) {
     emit('update:value', property.value.default)
   }
 
-  const kindValuesMap: Partial<Record<PrefectKind, unknown>> = {}
-
-  const kind = computed<PrefectKind>({
-    get() {
-      if (isPrefectKindValue(value.value)) {
-        return value.value.__prefect_kind
-      }
-
-      return 'none'
-    },
-    set(__prefect_kind) {
-      kindValuesMap[kind.value] = props.value
-
-      if (__prefect_kind in kindValuesMap) {
-        emit('update:value', kindValuesMap[__prefect_kind])
-        return
-      }
-
-      emit('update:value', { __prefect_kind })
-    },
-  })
-
-  const label = computed(() => {
-    const title = props.property.title ?? ''
-
-    if (!props.required) {
-      return `${title} (Optional)`.trim()
-    }
-
-    return title
-  })
-
-  const description = computed(() => {
-    const { description = '' } = props.property
-    const descriptionWithNewlinesRemoved = description.replace(/\n(?!\n)/g, ' ')
-
-    return descriptionWithNewlinesRemoved
-  })
-
-  const disabled = computed(() => Boolean(property.value.const))
-
-  const input = computed(() => {
-    if (!isPrefectKindValue(value.value)) {
-      return withProps(SchemaFormPropertyInput, {
-        property: property.value,
-        value: value.value,
-        'onUpdate:value': update,
-      })
-    }
-
-    if (isPrefectKindValue(value.value, 'json')) {
-      return withProps(SchemaFormPropertyKindJson, {
-        value: value.value,
-        'onUpdate:value': update,
-      })
-    }
-
-    if (isPrefectKindValue(value.value, 'jinja')) {
-      throw 'not implemented'
-    }
-
-    if (isPrefectKindValue(value.value, 'workspace_variable')) {
-      throw 'not implemented'
-    }
-
-    if (isPrefectKindValue(value.value, 'none')) {
-      throw 'not implemented'
-    }
-
-    const exhaustive: never = value.value
-    console.error(new Error(`SchemaFormProperty input is not exhaustive: ${JSON.stringify(exhaustive)}`))
-
-    return { component: null, props: {} }
-  })
-
-  function update(value: unknown): void {
-    emit('update:value', value)
-  }
+  const { kind } = usePrefectKind(value)
+  const { input } = usePropertyInput(property, value)
 </script>
 
 <style>
