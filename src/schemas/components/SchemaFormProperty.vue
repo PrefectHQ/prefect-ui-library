@@ -8,7 +8,7 @@
           <span class="text-subdued">(None)</span>
         </template>
 
-        <SchemaFormPropertyMenu v-model:kind="kind" class="ml-auto" flat>
+        <SchemaFormPropertyMenu v-model:kind="kind" class="ml-auto" :disabled="omitted" flat>
           <p-overflow-menu-item :label="omitLabel" @click="toggleValue" />
         </SchemaFormPropertyMenu>
       </div>

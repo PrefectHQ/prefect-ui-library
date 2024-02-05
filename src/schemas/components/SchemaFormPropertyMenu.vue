@@ -1,10 +1,12 @@
 <template>
   <p-icon-button-menu small class="schema-form-property-menu">
-    <p-overflow-menu-item v-if="showKind('json')" label="Use JSON input" @click="emit('update:kind', 'json')" />
-    <p-overflow-menu-item v-if="showKind('none')" label="Use form input" @click="emit('update:kind', 'none')" />
+    <template v-if="!disabled">
+      <p-overflow-menu-item v-if="showKind('json')" label="Use JSON input" @click="emit('update:kind', 'json')" />
+      <p-overflow-menu-item v-if="showKind('none')" label="Use form input" @click="emit('update:kind', 'none')" />
+    </template>
 
     <template v-if="$slots.default">
-      <p-divider class="schema-form-property-menu__divider" />
+      <p-divider v-if="!disabled" class="schema-form-property-menu__divider" />
       <slot />
     </template>
   </p-icon-button-menu>
@@ -15,6 +17,7 @@
 
   const props = defineProps<{
     kind: PrefectKind,
+    disabled?: boolean,
   }>()
 
   const emit = defineEmits<{
