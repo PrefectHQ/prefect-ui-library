@@ -4,10 +4,6 @@
       <div class="schema-form-property__header">
         <span class="schema-form-property__label" :class="classes.label">{{ label }}</span>
 
-        <template v-if="omitted">
-          <span class="text-subdued">(None)</span>
-        </template>
-
         <SchemaFormPropertyMenu v-model:kind="kind" class="ml-auto" :disabled="omitted" flat>
           <template v-if="!required" #default>
             <p-overflow-menu-item :label="omitLabel" @click="toggleValue" />
@@ -101,18 +97,16 @@
 
   function toggleValue(): void {
     if (omitted.value) {
+      value.value = omittedValue.value
       omittedValue.value = null
       omitted.value = false
-
-      emit('update:value', omittedValue.value)
 
       return
     }
 
+    value.value = undefined
     omittedValue.value = value.value
     omitted.value = true
-
-    emit('update:value', null)
   }
 </script>
 
