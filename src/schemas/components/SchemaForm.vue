@@ -10,15 +10,18 @@
   import { provide, computed } from 'vue'
   import SchemaFormProperties from '@/schemas/components/SchemaFormProperties.vue'
   import { schemaInjectionKey } from '@/schemas/compositions/useSchema'
+  import { schemaFormKindsInjectionKey } from '@/schemas/compositions/useSchemaFormKinds'
   import { Schema } from '@/schemas/types/schema'
-  import { SchemaValues } from '@/schemas/types/schemaValues'
+  import { PrefectKind, SchemaValues } from '@/schemas/types/schemaValues'
 
   const props = defineProps<{
     schema: Schema,
     values: SchemaValues,
+    kinds: PrefectKind[],
   }>()
 
   provide(schemaInjectionKey, props.schema)
+  provide(schemaFormKindsInjectionKey, props.kinds)
 
   const emit = defineEmits<{
     'update:values': [SchemaValues],
