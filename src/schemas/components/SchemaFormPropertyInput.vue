@@ -10,12 +10,13 @@
 </template>
 
 <script lang="ts" setup>
-  import { PNumberInput, PTextInput, PToggle } from '@prefecthq/prefect-design'
+  import { PNumberInput, PToggle } from '@prefecthq/prefect-design'
   import { computed } from 'vue'
   import SchemaFormKindInput from '@/schemas/components/SchemaFormKindInput.vue'
   import SchemaFormPropertyArray from '@/schemas/components/SchemaFormPropertyArray.vue'
   import SchemaFormPropertyBlockDocument from '@/schemas/components/SchemaFormPropertyBlockDocument.vue'
   import SchemaFormPropertyObject from '@/schemas/components/SchemaFormPropertyObject.vue'
+  import SchemaFormPropertyString from '@/schemas/components/SchemaFormPropertyString.vue'
   import { useSchemaProperty } from '@/schemas/compositions/useSchemaProperty'
   import { SchemaProperty, isPropertyWith, isSchemaPropertyType } from '@/schemas/types/schema'
   import { SchemaValue, asBlockDocumentReferenceValue, isPrefectKindValue } from '@/schemas/types/schemaValues'
@@ -57,9 +58,10 @@
     }
 
     if (isSchemaPropertyType(type, 'string')) {
-      return withProps(PTextInput, {
-        modelValue: asType(value, String),
-        'onUpdate:modelValue': update,
+      return withProps(SchemaFormPropertyString, {
+        property: { ...property.value, type },
+        value: asType(value, String),
+        'onUpdate:value': update,
       })
     }
 

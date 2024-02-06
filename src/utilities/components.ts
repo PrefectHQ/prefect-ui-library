@@ -6,12 +6,12 @@ export type ComponentDefinition = { new(...args: unknown[]): Component }
 type NoInfer<T> = T & {}
 
 type WithPropsArgs<T extends ComponentDefinition, E extends string = '', P = InstanceType<T>['$props']> = Omit<Partial<P>, E> extends Omit<P, E>
-  ? [ component: T, props?: Omit<P, E> ]
-  : [ component: T, props: Omit<P, E> ]
+  ? [ component: T, props?: Omit<P, E> & Record<string, unknown> ]
+  : [ component: T, props: Omit<P, E> & Record<string, unknown> ]
 
 type WithProps<T extends ComponentDefinition, E extends string = '', P = InstanceType<T>['$props']> = Omit<Partial<P>, E> extends Omit<P, E>
-  ? { component: T, props?: Omit<P, E> }
-  : { component: T, props: Omit<P, E> }
+  ? { component: T, props?: Omit<P, E> & Record<string, unknown> }
+  : { component: T, props: Omit<P, E> & Record<string, unknown> }
 
 export function withProps<T extends ComponentDefinition>(...[component, props]: WithPropsArgs<T>): WithProps<NoInfer<T>> {
   return {

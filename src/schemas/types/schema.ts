@@ -21,7 +21,6 @@ export function isSchemaPropertyType<T extends SchemaPropertyType | undefined>(v
 export const { values: schemaStringFormat, isValue: isSchemaStringFormat } = createTuple([
   'date',
   'date-time',
-  'regex',
   'password',
 ])
 
