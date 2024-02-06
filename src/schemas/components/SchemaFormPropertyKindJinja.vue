@@ -1,5 +1,5 @@
 <template>
-  <p-code-input v-model="value" lang="jinja" class="schema-form-property-kind-jinja" />
+  <p-code-input v-model="value" lang="jinja" class="schema-form-property-kind-jinja" show-line-numbers />
 </template>
 
 <script lang="ts" setup>

@@ -1,5 +1,5 @@
 <template>
-  <p-code-input v-model="value" lang="json" class="schema-form-property-kind-json" />
+  <p-code-input v-model="value" lang="json" class="schema-form-property-kind-json" show-line-numbers />
 </template>
 
 <script lang="ts" setup>
