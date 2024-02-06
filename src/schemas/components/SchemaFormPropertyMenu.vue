@@ -7,7 +7,7 @@
       <p-overflow-menu-item v-if="showKind('jinja')" label="Create a template" @click="emit('update:kind', 'jinja')" />
     </template>
 
-    <template v-if="$slots.default">
+    <template v-if="slots.default">
       <p-divider v-if="showDivider" class="schema-form-property-menu__divider" />
       <slot />
     </template>
