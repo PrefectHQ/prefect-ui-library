@@ -1,5 +1,5 @@
 <template>
-  <p-icon-button-menu small class="schema-form-property-menu">
+  <p-icon-button-menu v-if="showMenu" small class="schema-form-property-menu">
     <template v-if="!disabled">
       <p-overflow-menu-item v-if="showKind('none')" label="Use form input" @click="emit('update:kind', 'none')" />
       <p-overflow-menu-item v-if="showKind('json')" label="Use JSON input" @click="emit('update:kind', 'json')" />
@@ -7,14 +7,16 @@
       <p-overflow-menu-item v-if="showKind('jinja')" label="Create a template" @click="emit('update:kind', 'jinja')" />
     </template>
 
-    <template v-if="$slots.default">
-      <p-divider v-if="!disabled" class="schema-form-property-menu__divider" />
+    <template v-if="slots.default">
+      <p-divider v-if="showDivider" class="schema-form-property-menu__divider" />
       <slot />
     </template>
   </p-icon-button-menu>
 </template>
 
 <script lang="ts" setup>
+  import { computed, useSlots } from 'vue'
+  import { useSchemaFormKinds } from '@/schemas/compositions/useSchemaFormKinds'
   import { PrefectKind } from '@/schemas/types/schemaValues'
 
   const props = defineProps<{
@@ -26,8 +28,14 @@
     'update:kind': [PrefectKind],
   }>()
 
+  const slots = useSlots()
+  const kinds = useSchemaFormKinds()
+
+  const showMenu = computed(() => kinds.length || slots.default)
+  const showDivider = computed(() => !props.disabled && kinds.length)
+
   function showKind(kind: PrefectKind): boolean {
-    return props.kind !== kind
+    return props.kind !== kind && kinds.includes(kind)
   }
 </script>
 
