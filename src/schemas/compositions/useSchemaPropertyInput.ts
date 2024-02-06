@@ -1,6 +1,7 @@
 import { MaybeRefOrGetter, Ref, computed, toValue } from 'vue'
 import SchemaFormPropertyInput from '@/schemas/components/SchemaFormPropertyInput.vue'
 import SchemaFormPropertyKindJson from '@/schemas/components/SchemaFormPropertyKindJson.vue'
+import SchemaFormPropertyKindWorkspaceVariable from '@/schemas/components/SchemaFormPropertyKindWorkspaceVariable.vue'
 import { SchemaProperty } from '@/schemas/types/schema'
 import { isPrefectKindValue } from '@/schemas/types/schemaValues'
 import { SchemaValue } from '@/types'
@@ -32,7 +33,10 @@ export function useSchemaPropertyInput(schemaProperty: MaybeRefOrGetter<SchemaPr
     }
 
     if (isPrefectKindValue(propertyValue.value, 'workspace_variable')) {
-      throw 'not implemented'
+      return withProps(SchemaFormPropertyKindWorkspaceVariable, {
+        value: propertyValue.value,
+        'onUpdate:value': (value) => propertyValue.value = value,
+      })
     }
 
     if (isPrefectKindValue(propertyValue.value, 'none')) {
