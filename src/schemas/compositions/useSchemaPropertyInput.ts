@@ -1,5 +1,6 @@
 import { MaybeRefOrGetter, Ref, computed, toValue } from 'vue'
 import SchemaFormPropertyInput from '@/schemas/components/SchemaFormPropertyInput.vue'
+import SchemaFormPropertyKindJinja from '@/schemas/components/SchemaFormPropertyKindJinja.vue'
 import SchemaFormPropertyKindJson from '@/schemas/components/SchemaFormPropertyKindJson.vue'
 import SchemaFormPropertyKindWorkspaceVariable from '@/schemas/components/SchemaFormPropertyKindWorkspaceVariable.vue'
 import { SchemaProperty } from '@/schemas/types/schema'
@@ -29,7 +30,10 @@ export function useSchemaPropertyInput(schemaProperty: MaybeRefOrGetter<SchemaPr
     }
 
     if (isPrefectKindValue(propertyValue.value, 'jinja')) {
-      throw 'not implemented'
+      return withProps(SchemaFormPropertyKindJinja, {
+        value: propertyValue.value,
+        'onUpdate:value': (value) => propertyValue.value = value,
+      })
     }
 
     if (isPrefectKindValue(propertyValue.value, 'workspace_variable')) {
