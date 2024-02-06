@@ -1,5 +1,13 @@
 <template>
-  <p-label class="schema-form-property" :label="label">
+  <p-label class="schema-form-property">
+    <template #label>
+      <div class="schema-form-property__header">
+        <span>{{ label }}</span>
+
+        <SchemaFormPropertyMenu v-model:kind="kind" />
+      </div>
+    </template>
+
     <template v-if="description" #description>
       <div class="schema-form-property__description">
         <p-markdown-renderer :text="description" class="schema-form-property__markdown" />
@@ -12,7 +20,10 @@
           {{ property.title ?? 'Field' }} is a const and cannot be changed
         </p>
       </template>
-      <SchemaFormPropertyInput v-model:value="value" :property="property" />
+
+      <keep-alive>
+        <component :is="input.component" v-bind="input.props" />
+      </keep-alive>
     </fieldset>
   </p-label>
 </template>
@@ -21,10 +32,12 @@
   import { isNotNullish } from '@prefecthq/prefect-design'
   import { computed } from 'vue'
   import SchemaFormPropertyInput from '@/schemas/components/SchemaFormPropertyInput.vue'
+  import SchemaFormPropertyKindJson from '@/schemas/components/SchemaFormPropertyKindJson.vue'
+  import SchemaFormPropertyMenu from '@/schemas/components/SchemaFormPropertyMenu.vue'
   import { useSchemaProperty } from '@/schemas/compositions/useSchemaProperty'
   import { SchemaProperty } from '@/schemas/types/schema'
-  import { SchemaValue } from '@/schemas/types/schemaValues'
-  import { isNullish } from '@/utilities'
+  import { PrefectKind, SchemaValue, isPrefectKindValue } from '@/schemas/types/schemaValues'
+  import { isNullish, withProps } from '@/utilities'
 
   const props = defineProps<{
     property: SchemaProperty,
@@ -38,26 +51,43 @@
 
   const property = useSchemaProperty(() => props.property)
 
-  const value = computed({
-    get() {
-      if (isNotNullish(props.value)) {
-        return props.value
-      }
+  const value = computed(() => {
+    if (isNotNullish(props.value)) {
+      return props.value
+    }
 
-      if (isNotNullish(property.value.default)) {
-        return property.value.default
-      }
+    if (isNotNullish(property.value.default)) {
+      return property.value.default
+    }
 
-      return null
-    },
-    set(value) {
-      emit('update:value', value)
-    },
+    return null
   })
 
   if (isNullish(props.value) && isNotNullish(property.value.default)) {
     emit('update:value', property.value.default)
   }
+
+  const kindValuesMap: Partial<Record<PrefectKind, unknown>> = {}
+
+  const kind = computed<PrefectKind>({
+    get() {
+      if (isPrefectKindValue(value.value)) {
+        return value.value.__prefect_kind
+      }
+
+      return 'none'
+    },
+    set(__prefect_kind) {
+      kindValuesMap[kind.value] = props.value
+
+      if (__prefect_kind in kindValuesMap) {
+        emit('update:value', kindValuesMap[__prefect_kind])
+        return
+      }
+
+      emit('update:value', { __prefect_kind })
+    },
+  })
 
   const label = computed(() => {
     const title = props.property.title ?? ''
@@ -77,9 +107,57 @@
   })
 
   const disabled = computed(() => Boolean(property.value.const))
+
+  const input = computed(() => {
+    if (!isPrefectKindValue(value.value)) {
+      return withProps(SchemaFormPropertyInput, {
+        property: property.value,
+        value: value.value,
+        'onUpdate:value': update,
+      })
+    }
+
+    if (isPrefectKindValue(value.value, 'json')) {
+      return withProps(SchemaFormPropertyKindJson, {
+        value: value.value,
+        'onUpdate:value': update,
+      })
+    }
+
+    if (isPrefectKindValue(value.value, 'jinja')) {
+      throw 'not implemented'
+    }
+
+    if (isPrefectKindValue(value.value, 'workspace_variable')) {
+      throw 'not implemented'
+    }
+
+    if (isPrefectKindValue(value.value, 'none')) {
+      throw 'not implemented'
+    }
+
+    const exhaustive: never = value.value
+    console.error(new Error(`SchemaFormProperty input is not exhaustive: ${JSON.stringify(exhaustive)}`))
+
+    return { component: null, props: {} }
+  })
+
+  function update(value: unknown): void {
+    emit('update:value', value)
+  }
 </script>
 
 <style>
+.schema-form-property .p-label__header { @apply
+  items-stretch
+}
+
+.schema-form-property__header { @apply
+  flex
+  justify-between
+  items-center
+}
+
 .schema-form-property__fields { @apply
   grid
   grid-cols-1
