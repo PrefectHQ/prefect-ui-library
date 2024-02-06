@@ -2,9 +2,13 @@
   <p-label class="schema-form-property">
     <template #label>
       <div class="schema-form-property__header">
-        <span>{{ label }}</span>
+        <span class="schema-form-property__label" :class="classes.label">{{ label }}</span>
 
-        <SchemaFormPropertyMenu v-model:kind="kind" flat />
+        <SchemaFormPropertyMenu v-model:kind="kind" class="ml-auto" :disabled="omitted" flat>
+          <template v-if="!required" #default>
+            <p-overflow-menu-item :label="omitLabel" @click="toggleValue" />
+          </template>
+        </SchemaFormPropertyMenu>
       </div>
     </template>
 
@@ -14,7 +18,7 @@
       </div>
     </template>
 
-    <fieldset class="schema-form-property__fields" :disabled="disabled">
+    <fieldset class="schema-form-property__fields" :class="classes.fields" :disabled="disabled || omitted">
       <template v-if="Boolean(property.const)">
         <p class="schema-form-property__const">
           {{ property.title ?? 'Field' }} is a const and cannot be changed
@@ -30,7 +34,7 @@
 
 <script lang="ts" setup>
   import { isNotNullish } from '@prefecthq/prefect-design'
-  import { computed } from 'vue'
+  import { computed, ref } from 'vue'
   import SchemaFormPropertyMenu from '@/schemas/components/SchemaFormPropertyMenu.vue'
   import { usePrefectKind } from '@/schemas/compositions/usePrefectKind'
   import { useSchemaProperty } from '@/schemas/compositions/useSchemaProperty'
@@ -50,9 +54,25 @@
   }>()
 
   const { property, label, description, disabled } = useSchemaProperty(() => props.property, () => props.required)
+  const omitted = ref(false)
+  const omittedValue = ref<SchemaValue>(null)
+  const omitLabel = computed(() => omitted.value ? 'Include value' : 'Omit value')
+
+  const classes = computed(() => ({
+    label: {
+      'schema-form-property__label--omitted': omitted.value,
+    },
+    fields: {
+      'schema-form-property__fields--omitted': omitted.value,
+    },
+  }))
 
   const value = computed({
     get() {
+      if (isNotNullish(omittedValue.value)) {
+        return omittedValue.value
+      }
+
       if (isNotNullish(props.value)) {
         return props.value
       }
@@ -64,7 +84,7 @@
       return null
     },
     set(value) {
-      emit('update:value', value)
+      emit('update:value', value ?? undefined)
     },
   })
 
@@ -74,6 +94,20 @@
 
   const { kind } = usePrefectKind(value)
   const { input } = useSchemaPropertyInput(property, value)
+
+  function toggleValue(): void {
+    if (omitted.value) {
+      value.value = omittedValue.value
+      omittedValue.value = null
+      omitted.value = false
+
+      return
+    }
+
+    value.value = undefined
+    omittedValue.value = value.value
+    omitted.value = true
+  }
 </script>
 
 <style>
@@ -83,8 +117,16 @@
 
 .schema-form-property__header { @apply
   flex
-  justify-between
+  gap-2
   items-center
+}
+
+.schema-form-property__label--omitted { @apply
+  line-through
+}
+
+.schema-form-property__omitted { @apply
+  text-subdued
 }
 
 .schema-form-property__fields { @apply
@@ -93,8 +135,16 @@
   gap-1
 }
 
+.schema-form-property__fields--omitted { @apply
+  opacity-75
+}
+
 .schema-form-property__fields[disabled] { @apply
-  cursor-not-allowed
+  !cursor-not-allowed
+}
+
+.schema-form-property__fields[disabled] * {
+  cursor: inherit;
 }
 
 .schema-form-property__markdown { @apply

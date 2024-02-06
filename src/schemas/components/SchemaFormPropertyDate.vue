@@ -9,11 +9,11 @@
   import { isInvalidDate } from '@/utilities'
 
   const props = defineProps<{
-    value: string | null,
+    value: string | null | undefined,
   }>()
 
   const emit = defineEmits<{
-    'update:value': [string | null],
+    'update:value': [string | null | undefined],
   }>()
 
   const dateFormat = 'yyyy-MM-dd'
@@ -24,7 +24,7 @@
         const parsed = parse(props.value, dateFormat, startOfToday())
 
         if (isInvalidDate(parsed)) {
-          return null
+          return undefined
         }
 
         return parsed
