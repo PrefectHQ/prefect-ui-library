@@ -1,21 +1,32 @@
 <template>
-  <p-draggable-list v-model="value" allow-create allow-delete class="schema-form-property-array" :generator="generator">
-    <template #item="{ index, handleDown, handleUp, deleteItem }">
-      <div class="schema-form-property-array__item">
-        <PIcon icon="DragHandle" class="schema-form-property-array__handle" @mousedown="handleDown" @mouseup="handleUp" />
-
-        <SchemaFormPropertyInput v-model:value="value[index]" :property="getPropertyForIndex(index)" />
-
-        <p-button icon="TrashIcon" @click="deleteItem" />
-      </div>
+  <div class="schema-form-property-array">
+    <template v-if="empty">
+      <p class="schema-form-property-array__empty">
+        No items in this list
+      </p>
     </template>
-  </p-draggable-list>
+    <p-draggable-list v-model="value" allow-create allow-delete :generator="generator">
+      <template #item="{ index, handleDown, handleUp, deleteItem, moveToTop, moveToBottom }">
+        <SchemaFormPropertyArrayItem
+          v-model:value="value[index]"
+          :property="getPropertyForIndex(index)"
+          :is-first="isFirstIndex(index)"
+          :is-last="isLastIndex(index)"
+          @delete-item="deleteItem"
+          @handle-down="handleDown"
+          @handle-up="handleUp"
+          @move-to-top="moveToTop"
+          @move-to-bottom="moveToBottom"
+        />
+      </template>
+    </p-draggable-list>
+  </div>
 </template>
 
 <script lang="ts" setup>
   import { isArray } from '@prefecthq/prefect-design'
   import { computed } from 'vue'
-  import SchemaFormPropertyInput from '@/schemas/components/SchemaFormPropertyInput.vue'
+  import SchemaFormPropertyArrayItem from '@/schemas/components/SchemaFormPropertyArrayItem.vue'
   import { useSchemaProperty } from '@/schemas/compositions/useSchemaProperty'
   import { SchemaProperty } from '@/schemas/types/schema'
 
@@ -24,7 +35,8 @@
     value: unknown[] | null,
   }>()
 
-  const property = useSchemaProperty(() => props.property)
+  const { property } = useSchemaProperty(() => props.property)
+  const empty = computed(() => !props.value?.length)
 
   const emit = defineEmits<{
     'update:value': [unknown[] | null],
@@ -58,6 +70,14 @@
 
     return property.default ?? null
   }
+
+  function isFirstIndex(index: number): boolean {
+    return index === 0
+  }
+
+  function isLastIndex(index: number): boolean {
+    return index === (props.value?.length ?? 0) - 1
+  }
 </script>
 
 <style>
@@ -65,15 +85,14 @@
   block
 }
 
-.schema-form-property-array__item { @apply
-  grid
-  gap-2
-  items-start;
-  grid-template-columns: min-content 1fr min-content;
+.schema-form-property-array .p-draggable-list > .p-button {
+  margin-left: 30px;
 }
 
-.schema-form-property-array__handle { @apply
-  cursor-grab
-  mt-2
+.schema-form-property-array__empty { @apply
+  text-subdued
+  text-sm
+  italic;
+  margin-left: 30px;
 }
 </style>

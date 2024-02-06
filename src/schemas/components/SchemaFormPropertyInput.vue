@@ -36,7 +36,7 @@
     emit('update:value', value)
   }
 
-  const property = useSchemaProperty(() => props.property)
+  const { property } = useSchemaProperty(() => props.property)
 
   const input = computed(() => {
     const { type } = property.value
