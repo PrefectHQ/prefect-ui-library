@@ -1,5 +1,5 @@
 import { SubscriptionOptions, UseSubscription, useNow, useSubscriptionWithDependencies } from '@prefecthq/vue-compositions'
-import max from 'date-fns/max'
+import { max } from 'date-fns'
 import { ComputedRef, MaybeRefOrGetter, computed, toRef, toValue } from 'vue'
 import { useCan } from '@/compositions/useCan'
 import { useWorkspaceApi } from '@/compositions/useWorkspaceApi'

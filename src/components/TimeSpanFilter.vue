@@ -4,7 +4,7 @@
 
 <script lang="ts" setup>
   import { ButtonGroupOption } from '@prefecthq/prefect-design'
-  import { secondsInDay, secondsInHour, secondsInWeek } from 'date-fns'
+  import { secondsInDay, secondsInHour, secondsInWeek } from 'date-fns/constants'
   import { computed } from 'vue'
 
   const props = defineProps<{

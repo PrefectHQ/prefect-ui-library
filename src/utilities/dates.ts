@@ -33,7 +33,7 @@ export {
   secondsInYear,
   secondsInMonth,
   secondsInQuarter
-} from 'date-fns'
+} from 'date-fns/constants'
 export const hoursInDay = 24
 
 export function isDate(value: unknown): value is Date {
