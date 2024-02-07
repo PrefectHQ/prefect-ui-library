@@ -1,16 +1,26 @@
-export type SchemaValuesValidationError = string | SchemaValuesValidationPropertyError | SchemaValuesValidationIndexError
+import { isRecord } from '@/utilities/object'
 
-export type SchemaValuesValidationPropertyError = {
+export type SchemaValueError = string | SchemaValuePropertyError | SchemaValueIndexError
+
+export type SchemaValuePropertyError = {
   property: string,
-  errors: SchemaValuesValidationError[],
+  errors: SchemaValueError[],
 }
 
-export type SchemaValuesValidationIndexError = {
+export function isSchemaValuePropertyError(value: SchemaValueError): value is SchemaValuePropertyError {
+  return isRecord(value) && 'property' in value
+}
+
+export type SchemaValueIndexError = {
   index: number,
-  errors: SchemaValuesValidationError[],
+  errors: SchemaValueError[],
+}
+
+export function isSchemaValueIndexError(value: SchemaValueError): value is SchemaValueIndexError {
+  return isRecord(value) && 'index' in value
 }
 
 export type SchemaValuesValidationResponse = {
-  errors: SchemaValuesValidationError[],
+  errors: SchemaValueError[],
   valid: boolean,
 }

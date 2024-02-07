@@ -1,5 +1,5 @@
 <template>
-  <SchemaFormProperty v-model:value="value" :property="property" :required="required" />
+  <SchemaFormProperty v-model:value="value" :property="property" :required="required" :errors="errors" />
 </template>
 
 <script lang="ts" setup>
@@ -9,6 +9,7 @@
   import { useSchema } from '@/schemas/compositions/useSchema'
   import { SchemaProperty, isPropertyWith } from '@/schemas/types/schema'
   import { SchemaValue } from '@/schemas/types/schemaValues'
+  import { SchemaValueError } from '@/schemas/types/schemaValuesValidationResponse'
   import { getSchemaDefinition } from '@/schemas/utilities/definitions'
   import { Require } from '@/types/utilities'
 
@@ -16,6 +17,7 @@
     property: Require<SchemaProperty, 'allOf'>,
     value: SchemaValue,
     required: boolean,
+    errors: SchemaValueError[],
   }>()
 
   const emit = defineEmits<{

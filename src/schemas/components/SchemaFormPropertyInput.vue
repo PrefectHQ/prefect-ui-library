@@ -10,7 +10,7 @@
 </template>
 
 <script lang="ts" setup>
-  import { PNumberInput, PToggle } from '@prefecthq/prefect-design'
+  import { PNumberInput, PToggle, State } from '@prefecthq/prefect-design'
   import { computed } from 'vue'
   import SchemaFormKindInput from '@/schemas/components/SchemaFormKindInput.vue'
   import SchemaFormPropertyArray from '@/schemas/components/SchemaFormPropertyArray.vue'
@@ -20,12 +20,15 @@
   import { useSchemaProperty } from '@/schemas/compositions/useSchemaProperty'
   import { SchemaProperty, isPropertyWith, isSchemaPropertyType } from '@/schemas/types/schema'
   import { SchemaValue, asBlockDocumentReferenceValue, isPrefectKindValue } from '@/schemas/types/schemaValues'
+  import { SchemaValueError } from '@/schemas/types/schemaValuesValidationResponse'
   import { withProps } from '@/utilities/components'
   import { asType } from '@/utilities/types'
 
   const props = defineProps<{
     property: SchemaProperty,
     value: SchemaValue,
+    errors: SchemaValueError[],
+    state: State,
   }>()
 
   const emit = defineEmits<{
@@ -45,6 +48,7 @@
     if (isPropertyWith(property.value, 'blockTypeSlug')) {
       return withProps(SchemaFormPropertyBlockDocument, {
         property: property.value,
+        state: props.state,
         value: asBlockDocumentReferenceValue(value),
         'onUpdate:value': update,
       })
@@ -53,6 +57,7 @@
     if (isSchemaPropertyType(type, 'boolean')) {
       return withProps(PToggle, {
         modelValue: asType(value, Boolean),
+        state: props.state,
         'onUpdate:modelValue': update,
       })
     }
@@ -61,6 +66,7 @@
       return withProps(SchemaFormPropertyString, {
         property: { ...property.value, type },
         value: asType(value, String),
+        state: props.state,
         'onUpdate:value': update,
       })
     }
@@ -68,6 +74,7 @@
     if (isSchemaPropertyType(type, 'integer') || isSchemaPropertyType(type, 'number')) {
       return withProps(PNumberInput, {
         modelValue: asType(value, Number),
+        state: props.state,
         'onUpdate:modelValue': update,
       })
     }
@@ -76,6 +83,7 @@
       return withProps(SchemaFormPropertyArray, {
         property: { ...property.value, type },
         value: asType(value, Array),
+        state: props.state,
         'onUpdate:value': update,
       })
     }
@@ -84,6 +92,7 @@
       return withProps(SchemaFormPropertyObject, {
         property: { ...property.value, type },
         values: asType(value, Object),
+        errors: props.errors,
         'onUpdate:values': update,
       })
     }

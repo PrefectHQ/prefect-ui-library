@@ -4,7 +4,7 @@
   </div>
 
   <p-card>
-    <SchemaFormProperty :key="selectedPropertyIndexValue" v-model:value="value" :property="property" :required="required" />
+    <SchemaFormProperty :key="selectedPropertyIndexValue" v-model:value="value" :property="property" :required="required" :errors="errors" />
   </p-card>
 </template>
 
@@ -16,6 +16,7 @@
   import { useSchema } from '@/schemas/compositions/useSchema'
   import { SchemaProperty, isPropertyWith } from '@/schemas/types/schema'
   import { SchemaValue } from '@/schemas/types/schemaValues'
+  import { SchemaValueError } from '@/schemas/types/schemaValuesValidationResponse'
   import { getSchemaDefinition } from '@/schemas/utilities/definitions'
   import { getInitialIndexForSchemaPropertyAnyOfValue, getSchemaPropertyLabel } from '@/schemas/utilities/properties'
   import { Require } from '@/types/utilities'
@@ -24,6 +25,7 @@
     property: Require<SchemaProperty, 'anyOf'>,
     value: SchemaValue,
     required: boolean,
+    errors: SchemaValueError[],
   }>()
 
   const api = useWorkspaceApi()

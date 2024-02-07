@@ -5,7 +5,7 @@
         No items in this list
       </p>
     </template>
-    <p-draggable-list v-model="value" allow-create allow-delete :generator="generator">
+    <p-draggable-list v-model="value" allow-create allow-delete :generator="generator" :state="state">
       <template #item="{ index, handleDown, handleUp, deleteItem, moveToTop, moveToBottom }">
         <SchemaFormPropertyArrayItem
           v-model:value="value[index]"
@@ -24,7 +24,7 @@
 </template>
 
 <script lang="ts" setup>
-  import { isArray } from '@prefecthq/prefect-design'
+  import { State, isArray } from '@prefecthq/prefect-design'
   import { computed } from 'vue'
   import SchemaFormPropertyArrayItem from '@/schemas/components/SchemaFormPropertyArrayItem.vue'
   import { useSchemaProperty } from '@/schemas/compositions/useSchemaProperty'
@@ -33,6 +33,7 @@
   const props = defineProps<{
     property: SchemaProperty & { type: 'array' },
     value: unknown[] | null,
+    state: State,
   }>()
 
   const { property } = useSchemaProperty(() => props.property)

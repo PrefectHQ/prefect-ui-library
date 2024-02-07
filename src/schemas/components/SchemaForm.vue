@@ -1,7 +1,7 @@
 <template>
   <p-form class="schema-form" @submit="submit">
     <template v-if="schema.properties">
-      <SchemaFormProperties v-model:values="values" :parent="schema" :properties="schema.properties" />
+      <SchemaFormProperties v-model:values="values" :parent="schema" :properties="schema.properties" :errors="errors" />
     </template>
   </p-form>
 </template>
@@ -14,7 +14,7 @@
   import { schemaFormKindsInjectionKey } from '@/schemas/compositions/useSchemaFormKinds'
   import { Schema } from '@/schemas/types/schema'
   import { PrefectKind, SchemaValues } from '@/schemas/types/schemaValues'
-  import { SchemaValuesValidationError } from '@/schemas/types/schemaValuesValidationResponse'
+  import { SchemaValueError } from '@/schemas/types/schemaValuesValidationResponse'
 
   const props = withDefaults(defineProps<{
     schema: Schema,
@@ -35,7 +35,7 @@
   }>()
 
   const api = useWorkspaceApi()
-  const errors = ref<SchemaValuesValidationError[]>()
+  const errors = ref<SchemaValueError[]>([])
 
   const values = computed({
     get() {
