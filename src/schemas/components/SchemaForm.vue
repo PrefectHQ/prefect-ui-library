@@ -62,7 +62,6 @@
 
     try {
       const { valid, errors: errorsResponse } = await api.schemas.validate(props.schema, values.value)
-      console.log(errorsResponse)
 
       errors.value = errorsResponse
 
