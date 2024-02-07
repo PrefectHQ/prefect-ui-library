@@ -5,11 +5,12 @@
         No items in this list
       </p>
     </template>
-    <p-draggable-list v-model="value" allow-create allow-delete :generator="generator">
+    <p-draggable-list v-model="value" allow-create allow-delete :generator="generator" :state="state">
       <template #item="{ index, handleDown, handleUp, deleteItem, moveToTop, moveToBottom }">
         <SchemaFormPropertyArrayItem
           v-model:value="value[index]"
           :property="getPropertyForIndex(index)"
+          :errors="getSchemaPropertyErrors(index, errors)"
           :is-first="isFirstIndex(index)"
           :is-last="isLastIndex(index)"
           @delete-item="deleteItem"
@@ -24,15 +25,19 @@
 </template>
 
 <script lang="ts" setup>
-  import { isArray } from '@prefecthq/prefect-design'
+  import { State, isArray } from '@prefecthq/prefect-design'
   import { computed } from 'vue'
   import SchemaFormPropertyArrayItem from '@/schemas/components/SchemaFormPropertyArrayItem.vue'
   import { useSchemaProperty } from '@/schemas/compositions/useSchemaProperty'
   import { SchemaProperty } from '@/schemas/types/schema'
+  import { SchemaValueError } from '@/schemas/types/schemaValuesValidationResponse'
+  import { getSchemaPropertyErrors } from '@/schemas/utilities/errors'
 
   const props = defineProps<{
     property: SchemaProperty & { type: 'array' },
     value: unknown[] | null,
+    errors: SchemaValueError[],
+    state: State,
   }>()
 
   const { property } = useSchemaProperty(() => props.property)

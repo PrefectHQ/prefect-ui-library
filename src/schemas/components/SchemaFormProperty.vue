@@ -1,5 +1,5 @@
 <template>
-  <p-label class="schema-form-property">
+  <p-label class="schema-form-property" :state="error.state" :message="error.message">
     <template #label>
       <div class="schema-form-property__header">
         <span class="schema-form-property__label" :class="classes.label">{{ label }}</span>
@@ -41,18 +41,22 @@
   import { useSchemaPropertyInput } from '@/schemas/compositions/useSchemaPropertyInput'
   import { SchemaProperty } from '@/schemas/types/schema'
   import { SchemaValue } from '@/schemas/types/schemaValues'
+  import { SchemaValueError } from '@/schemas/types/schemaValuesValidationResponse'
+  import { getSchemaPropertyError } from '@/schemas/utilities/errors'
   import { isNullish } from '@/utilities'
 
   const props = defineProps<{
     property: SchemaProperty,
     value: SchemaValue,
     required: boolean,
+    errors: SchemaValueError[],
   }>()
 
   const emit = defineEmits<{
     'update:value': [SchemaValue],
   }>()
 
+  const error = computed(() => getSchemaPropertyError(props.errors))
   const { property, label, description, disabled } = useSchemaProperty(() => props.property, () => props.required)
   const omitted = ref(false)
   const omittedValue = ref<SchemaValue>(null)
@@ -93,7 +97,7 @@
   }
 
   const { kind } = usePrefectKind(value)
-  const { input } = useSchemaPropertyInput(property, value)
+  const { input } = useSchemaPropertyInput(property, value, () => props.errors)
 
   function toggleValue(): void {
     if (omitted.value) {

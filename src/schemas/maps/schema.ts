@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 import { MapFunction } from '@/schemas/mapper'
 import { Schema, SchemaProperties, SchemaProperty } from '@/schemas/types/schema'
 import { SchemaPropertiesResponse, SchemaPropertyResponse, SchemaResponse } from '@/schemas/types/schemaResponse'
@@ -44,6 +45,53 @@ export const mapSchemaPropertyResponseToSchemaProperty: MapFunction<SchemaProper
     format: source.format,
     items: source.items,
     properties: this.map('SchemaPropertiesResponse', source.properties, 'SchemaProperties'),
+    required: source.required,
+    title: source.title,
+    type: source.type,
+  }
+}
+
+export const mapSchemaToSchemaResponse: MapFunction<Schema, SchemaResponse> = function(source) {
+  return {
+    definitions: source.definitions,
+    position: source.position,
+    block_type_slug: source.blockTypeSlug,
+    $ref: source.$ref,
+    anyOf: source.anyOf,
+    allOf: source.allOf,
+    example: source.example,
+    default: source.default,
+    const: source.const,
+    description: source.description,
+    enum: source.enum,
+    format: source.format,
+    items: source.items,
+    properties: this.map('SchemaProperties', source.properties, 'SchemaPropertiesResponse'),
+    required: source.required,
+    title: source.title,
+    type: source.type,
+  }
+}
+
+export const mapSchemaPropertiesToSchemaPropertiesResponse: MapFunction<SchemaProperties, SchemaPropertiesResponse> = function(source) {
+  return mapValues(source, (key, value) => this.map('SchemaProperty', value, 'SchemaPropertyResponse'))
+}
+
+export const mapSchemaPropertyToSchemaPropertyResponse: MapFunction<SchemaProperty, SchemaPropertyResponse> = function(source) {
+  return {
+    position: source.position,
+    block_type_slug: source.blockTypeSlug,
+    $ref: source.$ref,
+    anyOf: source.anyOf,
+    allOf: source.allOf,
+    example: source.example,
+    default: source.default,
+    const: source.const,
+    description: source.description,
+    enum: source.enum,
+    format: source.format,
+    items: source.items,
+    properties: this.map('SchemaProperties', source.properties, 'SchemaPropertiesResponse'),
     required: source.required,
     title: source.title,
     type: source.type,

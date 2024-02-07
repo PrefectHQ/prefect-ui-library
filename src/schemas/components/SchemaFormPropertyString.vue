@@ -3,7 +3,7 @@
 </template>
 
 <script lang="ts" setup>
-  import { PTextInput } from '@prefecthq/prefect-design'
+  import { PTextInput, State } from '@prefecthq/prefect-design'
   import { computed } from 'vue'
   import SchemaFormPropertyDate from '@/schemas/components/SchemaFormPropertyDate.vue'
   import SchemaFormPropertyDateTime from '@/schemas/components/SchemaFormPropertyDateTime.vue'
@@ -14,6 +14,7 @@
   const props = defineProps<{
     property: SchemaProperty & { type: 'string' },
     value: string | null | undefined,
+    state: State,
   }>()
 
   const emit = defineEmits<{
@@ -28,6 +29,7 @@
     if (format === 'date') {
       return withProps(SchemaFormPropertyDate, {
         value: props.value,
+        state: props.state,
         'onUpdate:value': update,
       })
     }
@@ -35,6 +37,7 @@
     if (format === 'date-time') {
       return withProps(SchemaFormPropertyDateTime, {
         value: props.value,
+        state: props.state,
         'onUpdate:value': update,
       })
     }
@@ -43,12 +46,14 @@
       return withProps(PTextInput, {
         type: 'password',
         modelValue: props.value,
+        state: props.state,
         'onUpdate:modelValue': update,
       })
     }
 
     return withProps(PTextInput, {
       modelValue: props.value,
+      state: props.state,
       'onUpdate:modelValue': update,
     })
   })

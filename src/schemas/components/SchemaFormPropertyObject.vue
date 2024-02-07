@@ -1,6 +1,6 @@
 <template>
   <p-card class="schema-form-property-object">
-    <SchemaFormProperties v-model:values="values" :parent="property" :properties="property.properties ?? {}" />
+    <SchemaFormProperties v-model:values="values" :parent="property" :properties="property.properties ?? {}" :errors="errors" />
   </p-card>
 </template>
 
@@ -9,10 +9,12 @@
   import SchemaFormProperties from '@/schemas/components/SchemaFormProperties.vue'
   import { SchemaProperty } from '@/schemas/types/schema'
   import { SchemaValues } from '@/schemas/types/schemaValues'
+  import { SchemaValueError } from '@/schemas/types/schemaValuesValidationResponse'
 
   const props = defineProps<{
     property: SchemaProperty & { type: 'object' },
     values: SchemaValues | undefined,
+    errors: SchemaValueError[],
   }>()
 
   const emit = defineEmits<{

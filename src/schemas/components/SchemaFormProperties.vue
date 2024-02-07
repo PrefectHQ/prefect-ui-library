@@ -6,6 +6,7 @@
           :value="getValue(key)"
           :property="property"
           :required="getRequired(key)"
+          :errors="getSchemaPropertyErrors(key, errors)"
           @update:value="setValue(key, $event)"
         />
       </template>
@@ -15,6 +16,7 @@
           :value="getValue(key)"
           :property="property"
           :required="getRequired(key)"
+          :errors="getSchemaPropertyErrors(key, errors)"
           @update:value="setValue(key, $event)"
         />
       </template>
@@ -24,6 +26,7 @@
           :value="getValue(key)"
           :property="property"
           :required="getRequired(key)"
+          :errors="getSchemaPropertyErrors(key, errors)"
           @update:value="setValue(key, $event)"
         />
       </template>
@@ -40,12 +43,15 @@
   import SchemaFormPropertyAnyOf from '@/schemas/components/SchemaFormPropertyAnyOf.vue'
   import { SchemaProperty, SchemaProperties, isPropertyWith } from '@/schemas/types/schema'
   import { SchemaValues } from '@/schemas/types/schemaValues'
+  import { SchemaValueError } from '@/schemas/types/schemaValuesValidationResponse'
+  import { getSchemaPropertyErrors } from '@/schemas/utilities/errors'
   import { SchemaValue } from '@/types'
 
   const props = defineProps<{
     parent: SchemaProperty,
     properties: SchemaProperties,
     values: SchemaValues | undefined,
+    errors: SchemaValueError[],
   }>()
 
   const emit = defineEmits<{
