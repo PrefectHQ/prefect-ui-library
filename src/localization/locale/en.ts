@@ -189,7 +189,7 @@ export const en = {
     deprecatedWorkQueue: 'This work queue uses a deprecated tag-based approach to matching flow runs; it will continue to work but you can\'t modify it',
     deploymentMissingWorkQueue: 'This deployment doesn\'t have an associated work queue; runs will be scheduled but won\'t be picked up by your agents',
     taskInput: 'Task inputs show parameter keys and can also show task run relationships.',
-    workPoolInfrastructureConfigurationInstructions: 'Below you can configure workers\' behavior when executing flow runs from this work pool. You can use the editor in the **Advanced** section to modify the existing configuration options if you need additional configuration options.\nIf you don\'t need to change the default behavior, hit **Create** to create your work pool!',
+    workPoolInfrastructureConfigurationInstructions: 'Below you can configure defaults for deployments that use this work pool. Use the editor in the **Advanced** section to modify the existing configuration options, if needed.\nIf you don\'t need to change the default configuration, click **Create** to create your work pool!',
     workPoolInfrastructureConfigurationAgent: 'Prefect Agents handle infrastructure configuration via infrastructure blocks attached to deployments. You can hit **Create** to create this work pool and then head over to the **Blocks** tab to create an infrastructure block for your deployments.\nTo learn more about how to configure infrastructure for Prefect Agents, check out the [docs](https://docs.prefect.io/latest/concepts/infrastructure/).',
     disableFlowRunCancel: 'Only runs created from a deployment can be cancelled',
     flowRunGraphNotDisplayedHeader: 'Manual graph rendering',
