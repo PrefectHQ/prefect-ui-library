@@ -26,7 +26,7 @@
       </template>
 
       <keep-alive>
-        <component :is="input.component" v-bind="input.props" :errors="errors" />
+        <component :is="input.component" v-bind="input.props" />
       </keep-alive>
     </fieldset>
   </p-label>
