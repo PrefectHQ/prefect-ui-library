@@ -10,6 +10,7 @@
         <SchemaFormPropertyArrayItem
           v-model:value="value[index]"
           :property="getPropertyForIndex(index)"
+          :errors="getSchemaPropertyErrors(index, errors)"
           :is-first="isFirstIndex(index)"
           :is-last="isLastIndex(index)"
           @delete-item="deleteItem"
@@ -29,10 +30,13 @@
   import SchemaFormPropertyArrayItem from '@/schemas/components/SchemaFormPropertyArrayItem.vue'
   import { useSchemaProperty } from '@/schemas/compositions/useSchemaProperty'
   import { SchemaProperty } from '@/schemas/types/schema'
+  import { SchemaValueError } from '@/schemas/types/schemaValuesValidationResponse'
+  import { getSchemaPropertyErrors } from '@/schemas/utilities/errors'
 
   const props = defineProps<{
     property: SchemaProperty & { type: 'array' },
     value: unknown[] | null,
+    errors: SchemaValueError[],
     state: State,
   }>()
 
@@ -68,6 +72,8 @@
   function generator(): unknown {
     const index = value.value.length
     const property = getPropertyForIndex(index)
+
+    console.log(property)
 
     return property.default ?? null
   }

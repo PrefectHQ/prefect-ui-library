@@ -1,9 +1,13 @@
 import { State } from '@prefecthq/prefect-design'
-import { SchemaValueError, isSchemaValuePropertyError } from '@/schemas/types/schemaValuesValidationResponse'
+import { SchemaValueError, isSchemaValueIndexError, isSchemaValuePropertyError } from '@/schemas/types/schemaValuesValidationResponse'
 import { isString } from '@/utilities/strings'
 
-export function getSchemaPropertyErrors(propertyKey: string, errors: SchemaValueError[]): SchemaValueError[] {
-  return errors.filter(isSchemaValuePropertyError).filter(error => error.property === propertyKey).flatMap(error => error.errors)
+export function getSchemaPropertyErrors(propertyKeyOrIndex: string | number, errors: SchemaValueError[]): SchemaValueError[] {
+  if (isString(propertyKeyOrIndex)) {
+    return errors.filter(isSchemaValuePropertyError).filter(error => error.property === propertyKeyOrIndex).flatMap(error => error.errors)
+  }
+
+  return errors.filter(isSchemaValueIndexError).filter(error => error.index == propertyKeyOrIndex).flatMap(error => error.errors)
 }
 
 export type SchemaPropertyError = {

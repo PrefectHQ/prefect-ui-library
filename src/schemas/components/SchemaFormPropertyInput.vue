@@ -83,6 +83,7 @@
       return withProps(SchemaFormPropertyArray, {
         property: { ...property.value, type },
         value: asType(value, Array),
+        errors: props.errors,
         state: props.state,
         'onUpdate:value': update,
       })

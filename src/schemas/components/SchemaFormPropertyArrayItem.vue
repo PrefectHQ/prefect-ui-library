@@ -26,12 +26,14 @@
   import { useSchemaPropertyInput } from '@/schemas/compositions/useSchemaPropertyInput'
   import { SchemaProperty } from '@/schemas/types/schema'
   import { SchemaValue } from '@/schemas/types/schemaValues'
+  import { SchemaValueError } from '@/schemas/types/schemaValuesValidationResponse'
 
   const props = defineProps<{
     property: SchemaProperty,
     value: SchemaValue,
     isLast: boolean,
     isFirst: boolean,
+    errors: SchemaValueError[],
   }>()
 
   const emit = defineEmits<{
@@ -52,7 +54,7 @@
     },
   })
 
-  const { input } = useSchemaPropertyInput(() => props.property, value)
+  const { input } = useSchemaPropertyInput(() => props.property, value, () => props.errors)
   const { kind } = usePrefectKind(value)
 </script>
 
