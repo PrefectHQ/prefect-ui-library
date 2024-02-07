@@ -13,10 +13,11 @@
 </template>
 
 <script lang="ts" setup>
-  import { PCombobox, SelectOption } from '@prefecthq/prefect-design'
+  import { PCombobox, SelectOptionGroup } from '@prefecthq/prefect-design'
   import { useSubscription } from '@prefecthq/vue-compositions'
   import { computed } from 'vue'
   import { useWorkspaceApi } from '@/compositions'
+  import { WorkQueue } from '@/models'
 
   const props = defineProps<{
     selected: string | string[] | null | undefined,
@@ -49,17 +50,28 @@
   const api = useWorkspaceApi()
   const workQueuesSubscription = useSubscription(api.workQueues.getWorkQueues, [{}])
   const workQueues = computed(() => workQueuesSubscription.response ?? [])
-  const options = computed<SelectOption[]>(() => {
-    const options: SelectOption[] = workQueues.value.map(workQueue => ({
-      // Any consumers of the work queue should subscribe to it by name and not id
-      value: workQueue.name,
-      label: workQueue.name,
-    }))
+  const options = computed<SelectOptionGroup[]>(() => {
+    const workQueuesGroupedByWorkPool = workQueues.value.reduce<Map<string, WorkQueue[]>>((acc, workQueue) => {
+      const workPoolName = workQueue.workPoolName ?? 'No work pool'
+      acc.set(workPoolName, (acc.get(workPoolName) ?? []).concat(workQueue))
+      return acc
+    }, new Map())
+
+    const options: SelectOptionGroup[] = []
+    for (const [workPoolName, workQueues] of workQueuesGroupedByWorkPool.entries()) {
+      options.push({
+        label: workPoolName,
+        options: workQueues.map(workQueue => ({
+          value: workQueue.name,
+          label: workQueue.name,
+        })),
+      })
+    }
 
     if (props.allowUnset) {
       options.unshift({
-        value: null,
-        label: 'None',
+        options: [{ value: null, label: 'None' }],
+        label: '',
       })
     }
 
