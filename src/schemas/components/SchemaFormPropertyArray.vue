@@ -73,8 +73,6 @@
     const index = value.value.length
     const property = getPropertyForIndex(index)
 
-    console.log(property)
-
     return property.default ?? null
   }
 
