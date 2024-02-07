@@ -1,7 +1,7 @@
 <template>
   <div class="schema-form-property-input">
     <template v-if="isPrefectKindValue(value)">
-      <SchemaFormKindInput :value="value" :property="property" @update:value="emit('update:value', $event)" />
+      <SchemaFormKindInput v-bind="{ value, property, errors, state }" @update:value="emit('update:value', $event)" />
     </template>
     <template v-else>
       <component :is="input.component" v-bind="input.props" />
