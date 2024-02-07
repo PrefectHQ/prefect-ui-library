@@ -62,7 +62,7 @@
       options.push({
         label: workPoolName,
         options: workQueues.map(workQueue => ({
-          value: workQueue.name,
+          value: workQueue.id,
           label: workQueue.name,
         })),
       })
