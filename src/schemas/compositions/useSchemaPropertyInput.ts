@@ -31,6 +31,8 @@ export function useSchemaPropertyInput(schemaProperty: MaybeRefOrGetter<SchemaPr
     if (isPrefectKindValue(propertyValue.value, 'json')) {
       return withProps(SchemaFormPropertyKindJson, {
         value: propertyValue.value,
+        errors,
+        state,
         'onUpdate:value': (value) => propertyValue.value = value,
       })
     }
