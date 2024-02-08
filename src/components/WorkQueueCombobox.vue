@@ -17,14 +17,16 @@
   import { useSubscription } from '@prefecthq/vue-compositions'
   import { computed, watch } from 'vue'
   import { useWorkspaceApi } from '@/compositions'
-  import { WorkPoolFilter, WorkQueue } from '@/models'
+  import { WorkQueue } from '@/models'
+
+  export type WorkPoolFilterByIdOrName = { id?: string[], name?: string[] }
 
   const props = defineProps<{
     selected: string | string[] | null | undefined,
     emptyMessage?: string,
     allowUnset?: boolean,
     multiple?: boolean,
-    workPoolFilter?: WorkPoolFilter,
+    workPoolFilter?: WorkPoolFilterByIdOrName,
   }>()
 
   const emits = defineEmits<{
