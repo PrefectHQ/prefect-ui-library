@@ -1,5 +1,6 @@
 import { Getter } from '@prefecthq/prefect-design'
 import { SubscriptionOptions, UseSubscription, useSubscriptionWithDependencies } from '@prefecthq/vue-compositions'
+import merge from 'lodash.merge'
 import { ComputedRef, MaybeRef, Ref, computed, onScopeDispose, reactive, ref, toRef, watch } from 'vue'
 import { GLOBAL_API_LIMIT } from '@/compositions/useFilterPagination'
 import { UseSubscriptions, useSubscriptions } from '@/compositions/useSubscriptions'
@@ -74,13 +75,20 @@ export function usePagination<
   const page = getPageRef()
   const pages = computed(() => Math.ceil(total.value / getLimit()))
 
-  const countSubscriptionParameters = toRef(() => {
+  const countSubscriptionParameters = computed(() => {
     if (page.value) {
-      return countParametersGetter()
+      const parameters = countParametersGetter()
+
+      if (parameters) {
+        return merge([], parameters)
+      }
+
+      return parameters
     }
 
     return null
   })
+
   const countSubscription = useSubscriptionWithDependencies(countMethod, countSubscriptionParameters, options)
   const total = computed(() => countSubscription.response ?? 0)
 
