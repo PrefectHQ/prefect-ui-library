@@ -13,17 +13,18 @@
 </template>
 
 <script lang="ts" setup>
-  import { PCombobox, SelectOptionGroup } from '@prefecthq/prefect-design'
+  import { PCombobox, SelectOptionGroup, isSelectOptionNormalized } from '@prefecthq/prefect-design'
   import { useSubscription } from '@prefecthq/vue-compositions'
-  import { computed } from 'vue'
+  import { computed, watch } from 'vue'
   import { useWorkspaceApi } from '@/compositions'
-  import { WorkQueue } from '@/models'
+  import { WorkPoolFilter, WorkQueue } from '@/models'
 
   const props = defineProps<{
     selected: string | string[] | null | undefined,
     emptyMessage?: string,
     allowUnset?: boolean,
     multiple?: boolean,
+    workPoolFilter?: WorkPoolFilter,
   }>()
 
   const emits = defineEmits<{
@@ -52,6 +53,13 @@
   const workQueues = computed(() => workQueuesSubscription.response ?? [])
   const options = computed<SelectOptionGroup[]>(() => {
     const workQueuesGroupedByWorkPool = workQueues.value.reduce<Map<string, WorkQueue[]>>((acc, workQueue) => {
+      // Filter options by work pool id or name
+      if (props.workPoolFilter?.id || props.workPoolFilter?.name) {
+        if (!props.workPoolFilter.id?.includes(workQueue.workPoolId) && !(workQueue.workPoolName && props.workPoolFilter.name?.includes(workQueue.workPoolName))) {
+          return acc
+        }
+      }
+
       const workPoolName = workQueue.workPoolName ?? 'No work pool'
       acc.set(workPoolName, (acc.get(workPoolName) ?? []).concat(workQueue))
       return acc
@@ -76,5 +84,35 @@
     }
 
     return options
+  })
+
+  // Remove previously selected work queues that are no longer options
+  // when the options change
+  watch(options, (newValue, oldValue) => {
+    const newWorkQueueIds = new Set(newValue.flatMap(group => group.options.map((option) => {
+      if (isSelectOptionNormalized(option)) {
+        return option.value
+      }
+      return null
+    })))
+
+    const removedWorkQueueIds = new Set()
+    for (const group of oldValue) {
+      for (const option of group.options) {
+        if (isSelectOptionNormalized(option) && !newWorkQueueIds.has(option.value)) {
+          removedWorkQueueIds.add(option.value)
+        }
+      }
+    }
+
+    if (removedWorkQueueIds.size === 0) {
+      return
+    }
+
+    if (!multiple.value && internalValue.value && removedWorkQueueIds.has(internalValue.value)) {
+      internalValue.value = undefined
+    } else if (Array.isArray(internalValue.value) && internalValue.value.length) {
+      internalValue.value = internalValue.value.filter(id => !removedWorkQueueIds.has(id))
+    }
   })
 </script>
