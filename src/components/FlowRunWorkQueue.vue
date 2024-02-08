@@ -45,6 +45,6 @@
 
 <style>
 .flow-run-work-queue { @apply
-  flex gap-1
+  flex gap-1 items-center
 }
 </style>
