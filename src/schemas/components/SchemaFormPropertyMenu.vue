@@ -35,7 +35,7 @@
   const showDivider = computed(() => !props.disabled && kinds.length)
 
   function showKind(kind: PrefectKind): boolean {
-    return props.kind !== kind && kinds.includes(kind)
+    return props.kind !== kind && (kinds.includes(kind) || kind === 'none')
   }
 </script>
 
