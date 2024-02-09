@@ -25,7 +25,7 @@
 <script lang="ts" setup>
   import { SchemaValueError, isSchemaValuePropertyError, isSchemaValueIndexError } from '@/schemas/types/schemaValuesValidationResponse'
   import { isString } from '@/utilities'
-  
+
   defineProps<{
     errors: SchemaValueError[],
   }>()
