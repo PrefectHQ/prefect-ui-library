@@ -1,6 +1,8 @@
 <template>
-  <p-code-input v-model="value" lang="json" :state="state" class="schema-form-property-kind-json" show-line-numbers />
-  <SchemaFormPropertyErrors :errors="errors" />
+  <p-content secondary class="schema-form-property-kind-json">
+    <p-code-input v-model="value" lang="json" :state="state" show-line-numbers />
+    <SchemaFormPropertyErrors :errors="errors" />
+  </p-content>
 </template>
 
 <script lang="ts" setup>
@@ -35,10 +37,3 @@
 
   const errors = computed(() => getAllChildSchemaPropertyErrors(props.errors))
 </script>
-
-<style>
-.schema-form-property-kind-json__errors { @apply
-  text-invalid
-  text-sm
-}
-</style>

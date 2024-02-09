@@ -35,5 +35,7 @@
 .schema-form-property-errors { @apply
   text-invalid
   text-sm
+  list-disc
+  ml-4
 }
 </style>
