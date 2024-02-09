@@ -3,7 +3,7 @@
     <span>Work Queue</span>
     <WorkQueueIconText :work-queue-name="workQueueName" :work-pool-name="workPoolName" />
 
-    <template v-if="isNotTerminal && workPoolName">
+    <template v-if="showWorkPoolQueueStatus && workPoolName">
       <WorkPoolQueueStatusIcon v-if="can.access.workQueueStatus && workPoolQueue" :work-pool-queue="workPoolQueue" />
       <WorkPoolQueueHealthIcon v-else-if="!can.access.workQueueStatus" :work-queue-name="workQueueName" :work-pool-name="workPoolName" />
     </template>
@@ -26,7 +26,7 @@
 
   const can = useCan()
 
-  const isNotTerminal = computed(() => props.flowRunState && !isTerminalStateType(props.flowRunState))
+  const showWorkPoolQueueStatus = computed(() => props.flowRunState == undefined || !isTerminalStateType(props.flowRunState))
   const { workPoolName } = toRefs(props)
   const { workPool } = useWorkPool(workPoolName)
 
