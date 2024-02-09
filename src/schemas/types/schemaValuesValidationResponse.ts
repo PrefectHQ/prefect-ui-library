@@ -24,3 +24,7 @@ export type SchemaValuesValidationResponse = {
   errors: SchemaValueError[],
   valid: boolean,
 }
+
+export function isNotStringError(value: SchemaValueError): value is SchemaValuePropertyError | SchemaValueIndexError {
+  return isSchemaValueIndexError(value) || isSchemaValuePropertyError(value)
+}

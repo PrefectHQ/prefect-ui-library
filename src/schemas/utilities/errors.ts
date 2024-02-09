@@ -1,5 +1,5 @@
 import { State } from '@prefecthq/prefect-design'
-import { SchemaValueError, isSchemaValueIndexError, isSchemaValuePropertyError } from '@/schemas/types/schemaValuesValidationResponse'
+import { SchemaValueError, isNotStringError, isSchemaValueIndexError, isSchemaValuePropertyError } from '@/schemas/types/schemaValuesValidationResponse'
 import { isString } from '@/utilities/strings'
 
 export function getSchemaPropertyErrors(propertyKeyOrIndex: string | number, errors: SchemaValueError[]): SchemaValueError[] {
@@ -31,4 +31,15 @@ export function getSchemaPropertyError(errors: SchemaValueError[]): SchemaProper
     state,
     message: undefined,
   }
+}
+
+export function getAllSchemaPropertyErrors(errors: SchemaValueError[]): SchemaValueError[] {
+  const propertyErrors = errors.filter(isString)
+  const childErrors = getAllChildSchemaPropertyErrors(errors)
+
+  return [...propertyErrors, ...childErrors]
+}
+
+export function getAllChildSchemaPropertyErrors(errors: SchemaValueError[]): SchemaValueError[] {
+  return errors.filter(isNotStringError)
 }
