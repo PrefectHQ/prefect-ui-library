@@ -45,10 +45,6 @@
 </script>
 
 <style>
-.work-pool-queue-status-icon { @apply
-  cursor-help
-}
-
 .work-pool-queue-status-icon--not_ready { @apply
   text-sentiment-negative
 }
