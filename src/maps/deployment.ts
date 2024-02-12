@@ -11,6 +11,7 @@ export const mapDeploymentResponseToDeployment: MapFunction<DeploymentResponse, 
   const rawSchema = source.parameter_openapi_schema ?? {}
   const schema = this.map('SchemaResponse', rawSchema as SchemaResponse, 'Schema')
   const values = this.map('SchemaValuesResponse', { values: source.parameters, schema }, 'SchemaValues')
+  const schedules = source.schedules.map(schedule => this.map('DeploymentScheduleResponse', schedule, 'DeploymentSchedule'))
 
   return new Deployment({
     id: source.id,
@@ -24,6 +25,8 @@ export const mapDeploymentResponseToDeployment: MapFunction<DeploymentResponse, 
     flowId: source.flow_id,
     schedule: this.map('ScheduleResponse', source.schedule, 'Schedule'),
     isScheduleActive: source.is_schedule_active,
+    paused: source.paused,
+    schedules: schedules,
     parameters: values,
     rawParameters: source.parameters,
     rawSchema: rawSchema as Schema,

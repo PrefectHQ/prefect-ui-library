@@ -8,7 +8,9 @@ export const randomDeployment: MockFunction<Deployment, [Partial<Deployment>?]> 
   const schema = this.create('schema', [overrides.parameterOpenApiSchema])
   const rawParameters = this.create('parameters', [{}, schema])
   const parameters = mapper.map('SchemaValuesResponse', { values: rawParameters, schema }, 'SchemaValues')
+  const paused = random() > 0.25
   const schedule = random() > 0.25 ? this.create('schedule') : null
+
 
   return {
     id: this.create('id'),
@@ -22,6 +24,8 @@ export const randomDeployment: MockFunction<Deployment, [Partial<Deployment>?]> 
     flowId: this.create('id'),
     schedule,
     isScheduleActive: schedule ? this.create('boolean') : false,
+    schedules: this.create('deploymentSchedules'),
+    paused: paused,
     parameters,
     parameterOpenApiSchema: schema,
     parametersV2: {},
