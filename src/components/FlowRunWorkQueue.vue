@@ -1,5 +1,5 @@
 <template>
-  <div v-if="!workPool?.isPushPool" class="flow-run-work-queue">
+  <div class="flow-run-work-queue">
     <span>Work Queue</span>
     <WorkQueueIconText :work-queue-name="workQueueName" :work-pool-name="workPoolName" />
 
