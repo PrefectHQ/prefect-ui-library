@@ -15,6 +15,11 @@
   </p-tooltip>
 </template>
 
+<script lang="ts">
+  /** @deprecated prefer `<WorkPoolQueueStatusIcon>` */
+  export default {}
+</script>
+
 <script lang="ts" setup>
   import { Icon } from '@prefecthq/prefect-design'
   import { useSubscriptionWithDependencies } from '@prefecthq/vue-compositions'

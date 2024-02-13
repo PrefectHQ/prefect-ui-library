@@ -4,6 +4,11 @@
   </template>
 </template>
 
+<script lang="ts">
+  /** @deprecated prefer `<WorkPoolQueueStatusIcon>` */
+  export default {}
+</script>
+
 <script lang="ts" setup>
   import { Icon } from '@prefecthq/prefect-design'
   import { useSubscription } from '@prefecthq/vue-compositions'
