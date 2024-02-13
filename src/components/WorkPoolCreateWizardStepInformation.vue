@@ -24,12 +24,10 @@
   import { useWizardStep } from '@prefecthq/prefect-design'
   import { usePatchRef, useValidation, useValidationObserver } from '@prefecthq/vue-compositions'
   import { computed } from 'vue'
-  import { WorkerCollectionItem } from '@/models'
   import { WorkPoolFormValues } from '@/models/WorkPool'
 
   const props = defineProps<{
     workPool: WorkPoolFormValues,
-    workers: WorkerCollectionItem[],
   }>()
 
   const emit = defineEmits<{
