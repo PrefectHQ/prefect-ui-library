@@ -1,5 +1,5 @@
 <template>
-  <div v-if="!workPool?.isPushPool" class="flow-run-work-queue">
+  <div class="flow-run-work-queue">
     <span>Work Queue</span>
     <WorkQueueIconText :work-queue-name="workQueueName" :work-pool-name="workPoolName" />
 
@@ -15,7 +15,7 @@
   import { computed, toRefs } from 'vue'
   import { WorkPoolQueueHealthIcon, WorkQueueIconText } from '@/components'
   import WorkPoolQueueStatusIcon from '@/components/WorkPoolQueueStatusIcon.vue'
-  import { useCan, useInterval, useWorkPool, useWorkspaceApi } from '@/compositions'
+  import { useCan, useInterval, useWorkspaceApi } from '@/compositions'
   import { isTerminalStateType } from '@/models'
 
   const props = defineProps<{
@@ -28,7 +28,6 @@
 
   const hideWorkPoolQueueStatus = computed(() => props.flowRunState && isTerminalStateType(props.flowRunState))
   const { workPoolName } = toRefs(props)
-  const { workPool } = useWorkPool(workPoolName)
 
   const api = useWorkspaceApi()
   const workPoolQueueArgs = computed<[string, string] | null>(() => {

@@ -12,7 +12,7 @@
       </template>
     </p-label>
 
-    <p-label v-if="!isPushWorkPool && !isMexWorkPool" label="Flow Run Concurrency (Optional)">
+    <p-label label="Flow Run Concurrency (Optional)">
       <template #default="{ id }">
         <p-number-input :id="id" v-model="concurrencyLimit" placeholder="Unlimited" :min="0" />
       </template>
@@ -24,12 +24,10 @@
   import { useWizardStep } from '@prefecthq/prefect-design'
   import { usePatchRef, useValidation, useValidationObserver } from '@prefecthq/vue-compositions'
   import { computed } from 'vue'
-  import { WorkerCollectionItem } from '@/models'
   import { WorkPoolFormValues } from '@/models/WorkPool'
 
   const props = defineProps<{
     workPool: WorkPoolFormValues,
-    workers: WorkerCollectionItem[],
   }>()
 
   const emit = defineEmits<{
@@ -59,14 +57,6 @@
     return 'Name is required'
   })
 
-  const isPushWorkPool = computed(() => {
-    const worker = props.workers.find(({ type }) => type === workPool.value.type)
-    return worker?.isPushPool ?? false
-  })
-  const isMexWorkPool = computed(() => {
-    const worker = props.workers.find(({ type }) => type === workPool.value.type)
-    return worker?.isMexPool ?? false
-  })
 
   defineValidate(validate)
 </script>
