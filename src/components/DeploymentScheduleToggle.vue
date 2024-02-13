@@ -1,6 +1,6 @@
 <template>
-  <p-tooltip text="Pause or resume this deployment">
-    <p-toggle v-if="deployment.can.update" v-model="internalValue" :loading="loading" :disabled="deployment.deprecated" />
+  <p-tooltip text="Pause or resume this schedule">
+    <p-toggle v-if="deployment.can.update" v-model="internalValue" :loading="loading" />
   </p-tooltip>
 </template>
 
@@ -9,13 +9,14 @@
   import { computed, ref } from 'vue'
   import { useCan, useWorkspaceApi } from '@/compositions'
   import { localization } from '@/localization'
-  import { Deployment } from '@/models'
+  import { Deployment, DeploymentSchedule } from '@/models'
   import { getApiErrorMessage } from '@/utilities/errors'
 
   const can = useCan()
 
   const props = defineProps<{
     deployment: Deployment,
+    schedule: DeploymentSchedule,
   }>()
 
   const emit = defineEmits<{
@@ -26,10 +27,7 @@
 
   const internalValue = computed({
     get() {
-      if (can.access.enhancedSchedulingUi) {
-        return !props.deployment.paused
-      }
-      return !!props.deployment.isScheduleActive
+      return !!props.schedule.active
     },
     set(value: boolean) {
       toggleDeploymentSchedule(value)

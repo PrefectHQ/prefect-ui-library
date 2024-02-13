@@ -12,14 +12,37 @@
       </template>
     </p-key-value>
 
-    <p-key-value label="Schedule" :alternate="alternate" :value="deployment.schedule?.toString({ verbose: true })">
-      <template v-if="!deployment.deprecated" #value>
-        <div class="deployment-details__schedule" :class="classes.schedule">
-          <p-loading-icon v-if="updateScheduleLoading" class="deployment-details__schedule-loading-icon" />
-          <ScheduleFieldset v-model="internalSchedule" :loading="updateScheduleLoading" :readonly="!deployment.can.update" />
-        </div>
+    <template v-if="can.access.enhancedSchedulingUi">
+      <p-label label="Schedules" />
+      <template v-for="deploymentSchedule in deployment.schedules" :key="deploymentSchedule.id">
+        <p-list-item class="schedule-card">
+          <div class="schedule-card__content">
+            {{ deploymentSchedule.schedule.toString({ verbose: true }) }}
+          </div>
+          <div class="schedule-card__action">
+            <DeploymentScheduleToggle :deployment="deployment" :schedule="deploymentSchedule" @update="refresh" />
+            <DeploymentScheduleMenu
+              class="deployment-list__menu"
+              size="xs"
+              show-all
+              :deployment="deployment"
+              :schedule="deploymentSchedule"
+              @delete="refresh"
+            />
+          </div>
+        </p-list-item>
       </template>
-    </p-key-value>
+    </template>
+    <template v-else>
+      <p-key-value label="Schedule" :alternate="alternate" :value="deployment.schedule?.toString({ verbose: false })">
+        <template v-if="!deployment.deprecated" #value>
+          <div class="deployment-details__schedule" :class="classes.schedule">
+            <p-loading-icon v-if="updateScheduleLoading" class="deployment-details__schedule-loading-icon" />
+            <ScheduleFieldset v-model="internalSchedule" :loading="updateScheduleLoading" :readonly="!deployment.can.update" />
+          </div>
+        </template>
+      </p-key-value>
+    </template>
 
     <slot />
 
@@ -76,7 +99,7 @@
 <script lang="ts" setup>
   import { showToast, PLoadingIcon } from '@prefecthq/prefect-design'
   import { ref, computed } from 'vue'
-  import { BlockIconText, ScheduleFieldset, DeploymentStatusBadge } from '@/components'
+  import { BlockIconText, ScheduleFieldset, DeploymentScheduleMenu, DeploymentScheduleToggle, DeploymentStatusBadge } from '@/components'
   import { useWorkspaceApi, useCan } from '@/compositions'
   import { localization } from '@/localization'
   import { Schedule, Deployment } from '@/models'
@@ -95,6 +118,10 @@
   const can = useCan()
   const api = useWorkspaceApi()
   const updateScheduleLoading = ref(false)
+
+  function refresh(): void {
+    console.log('refreshing')
+  }
 
   const internalSchedule = computed({
     get() {
@@ -150,6 +177,15 @@
   flex-col
   gap-3
   items-start
+}
+
+.schedule-card { @apply
+  flex
+  flex-row
+  text-sm
+  w-full
+  justify-between
+  items-center
 }
 
 .deployment-details__schedule { @apply
