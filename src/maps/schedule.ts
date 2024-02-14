@@ -1,5 +1,6 @@
 import { CronSchedule, IntervalSchedule, RRuleSchedule, Schedule, ScheduleResponse, isCronScheduleResponse, isIntervalScheduleResponse, isRRuleScheduleResponse, isIntervalSchedule, isRRuleSchedule, isCronSchedule, IntervalScheduleRequest, RRuleScheduleRequest, CronScheduleRequest } from '@/models'
 import { MapFunction } from '@/services/Mapper'
+import { setToTimezone } from '@/utilities/timezone'
 
 export const mapScheduleResponseToSchedule: MapFunction<ScheduleResponse, Schedule> = function(source) {
   if (isRRuleScheduleResponse(source)) {
@@ -33,7 +34,7 @@ export const mapScheduleToScheduleRequest: MapFunction<Schedule, ScheduleRespons
     return {
       timezone: source.timezone,
       rrule: source.rrule,
-    } as RRuleScheduleRequest
+    } satisfies RRuleScheduleRequest
   }
 
   if (isCronSchedule(source)) {
@@ -41,15 +42,23 @@ export const mapScheduleToScheduleRequest: MapFunction<Schedule, ScheduleRespons
       timezone: source.timezone,
       cron: source.cron,
       day_or: source.dayOr,
-    } as CronScheduleRequest
+    } satisfies CronScheduleRequest
   }
 
   if (isIntervalSchedule(source)) {
+    if (source.anchorDate && source.timezone) {
+      return {
+        timezone: source.timezone,
+        interval: source.interval,
+        anchor_date: this.map('Date', setToTimezone(source.anchorDate, source.timezone), 'string'),
+      } satisfies IntervalScheduleRequest
+    }
+
     return {
-      timezone: source.timezone,
       interval: source.interval,
-      anchor_date: source.anchorDate ? this.map('Date', source.anchorDate, 'string') : null,
-    } as IntervalScheduleRequest
+      timezone: null,
+      anchor_date: null,
+    } satisfies IntervalScheduleRequest
   }
 
   throw 'Invalid ScheduleRequest'
@@ -58,15 +67,10 @@ export const mapScheduleToScheduleRequest: MapFunction<Schedule, ScheduleRespons
 export const mapScheduleToScheduleResponse: MapFunction<Schedule, ScheduleResponse> = function(source) {
   return {
     timezone: source.timezone,
-    // eslint-disable-next-line no-extra-parens
     rrule: (source as RRuleSchedule).rrule,
-    // eslint-disable-next-line no-extra-parens
     cron: (source as CronSchedule).cron,
-    // eslint-disable-next-line no-extra-parens
     day_or: (source as CronSchedule).dayOr,
-    // eslint-disable-next-line no-extra-parens
     interval: (source as IntervalSchedule).interval,
-    // eslint-disable-next-line no-extra-parens
     anchor_date: this.map('Date', (source as IntervalSchedule).anchorDate, 'string'),
   }
 }

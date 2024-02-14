@@ -2,8 +2,9 @@ import { toPluralString } from '@prefecthq/prefect-design'
 import { zonedTimeToUtc } from 'date-fns-tz'
 import { ISchedule } from '@/models'
 import { IntervalScheduleResponse } from '@/models/api/ScheduleResponse'
-import { formatDate, formatTimeNumeric, secondsInMinute, minutesInHour } from '@/utilities/dates'
+import { formatDate, formatTimeNumeric, secondsInMinute, minutesInHour, dateFormat, timeNumericFormat } from '@/utilities/dates'
 import { floor } from '@/utilities/math'
+import { formatDateInTimezone } from '@/utilities/timezone'
 
 export type Intervals = {
   seconds: number,
@@ -101,7 +102,9 @@ export class IntervalSchedule implements IIntervalSchedule {
     }
 
     if (this.anchorDate && verbose) {
-      str += ` using ${formatDate(this.anchorDate)} at ${formatTimeNumeric(this.anchorDate)} (${this.timezone ?? 'UTC'}) as the anchor date`
+      const date = formatDateInTimezone(this.anchorDate, dateFormat, this.timezone ?? 'UTC')
+      const time = formatDateInTimezone(this.anchorDate, timeNumericFormat, this.timezone ?? 'UTC')
+      str += ` using ${date} at ${time} (${this.timezone ?? 'UTC'}) as the anchor date`
     }
 
     if (str == '') {
