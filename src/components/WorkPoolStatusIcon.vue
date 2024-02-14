@@ -15,7 +15,7 @@
 </template>
 
 <script lang="ts" setup>
-  import { computed, ref } from 'vue'
+  import { computed } from 'vue'
   import StatusIcon from '@/components/StatusIcon.vue'
   import { WorkPool } from '@/models'
 
@@ -23,7 +23,7 @@
     workPool: WorkPool,
   }>()
 
-  const status = ref(props.workPool.status)
+  const status = computed(() => props.workPool.status)
 
   const tooltipText = computed(() => {
     switch (status.value) {
