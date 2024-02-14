@@ -74,7 +74,7 @@
 
   const cronSchedule = ref<CronSchedule | undefined>(isCronSchedule(props.schedule) ? props.schedule : undefined)
   const intervalSchedule = ref<IntervalSchedule | undefined>(isIntervalSchedule(props.schedule) ? props.schedule : undefined)
-  const scheduleForm = ref<ScheduleType>(getScheduleType(props.schedule.schedule) ?? 'interval')
+  const scheduleForm = ref<ScheduleType>(getScheduleType(props?.schedule?.schedule) ?? 'interval')
   const scheduleFormOptions: ButtonGroupOption[] = [{ label: 'Interval', value: 'interval' }, { label: 'Cron', value: 'cron' }, { label: 'RRule', value: 'rrule' }]
 
   const updateSchedules = (): void => {
