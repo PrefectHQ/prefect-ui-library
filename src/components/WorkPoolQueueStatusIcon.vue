@@ -38,7 +38,6 @@
         if (workPool.value?.isPushPool) {
           return { state: 'ready', icon: 'CheckCircleIcon', tooltip: 'Work queue is ready.' }
         }
-        console.log(workPool, props.workPoolQueue)
         return { state: 'ready', icon: 'CheckCircleIcon', tooltip: 'Work queue has at least one actively polling worker ready to execute work.' }
       case 'not_ready':
         return { state: 'not_ready', icon: 'ExclamationCircleIcon', tooltip: 'Work queue does not have any actively polling workers ready to execute work.' }
