@@ -1,6 +1,6 @@
 import { CronSchedule, IntervalSchedule, RRuleSchedule, Schedule, ScheduleResponse, isCronScheduleResponse, isIntervalScheduleResponse, isRRuleScheduleResponse, isIntervalSchedule, isRRuleSchedule, isCronSchedule, IntervalScheduleRequest, RRuleScheduleRequest, CronScheduleRequest } from '@/models'
 import { MapFunction } from '@/services/Mapper'
-import { setToTimezone } from '@/utilities/timezone'
+import { setTimezone, unsetTimezone } from '@/utilities/timezone'
 
 export const mapScheduleResponseToSchedule: MapFunction<ScheduleResponse, Schedule> = function(source) {
   if (isRRuleScheduleResponse(source)) {
@@ -19,10 +19,18 @@ export const mapScheduleResponseToSchedule: MapFunction<ScheduleResponse, Schedu
   }
 
   if (isIntervalScheduleResponse(source)) {
+    if (source.anchor_date && source.timezone) {
+      return new IntervalSchedule({
+        timezone: source.timezone,
+        interval: source.interval,
+        anchorDate: this.map('string', source.anchor_date, 'Date'),
+      })
+    }
+
     return new IntervalSchedule({
-      timezone: source.timezone,
       interval: source.interval,
-      anchorDate: this.map('string', source.anchor_date, 'Date'),
+      timezone: null,
+      anchorDate: null,
     })
   }
 
@@ -50,7 +58,7 @@ export const mapScheduleToScheduleRequest: MapFunction<Schedule, ScheduleRespons
       return {
         timezone: source.timezone,
         interval: source.interval,
-        anchor_date: this.map('Date', setToTimezone(source.anchorDate, source.timezone), 'string'),
+        anchor_date: this.map('Date', setTimezone(source.anchorDate, source.timezone), 'string'),
       } satisfies IntervalScheduleRequest
     }
 
