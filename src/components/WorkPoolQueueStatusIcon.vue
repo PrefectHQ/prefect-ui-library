@@ -24,7 +24,7 @@
     workPoolQueue: WorkPoolQueue,
   }>()
 
-  const { workPool } = useWorkPool(props.workPoolQueue.workPoolName)
+  const { workPool } = useWorkPool(() => props.workPoolQueue.workPoolName)
 
   const status = computed<{
     state: 'paused' | 'ready' | 'not_ready',
