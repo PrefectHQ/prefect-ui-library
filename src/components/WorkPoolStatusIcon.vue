@@ -17,15 +17,20 @@
 <script lang="ts" setup>
   import { computed } from 'vue'
   import StatusIcon from '@/components/StatusIcon.vue'
-  import { WorkPoolStatus } from '@/models'
+  import { WorkPool } from '@/models'
 
   const props = defineProps<{
-    status: WorkPoolStatus,
+    workPool: WorkPool,
   }>()
 
+  const status = computed(() => props.workPool.status)
+
   const tooltipText = computed(() => {
-    switch (props.status) {
+    switch (status.value) {
       case 'ready':
+        if (props.workPool.isPushPool) {
+          return 'Work pool is ready.'
+        }
         return 'Work pool has at least one online worker ready to execute work.'
       case 'not_ready':
         return 'Work pool does not have any online workers ready to execute work.'

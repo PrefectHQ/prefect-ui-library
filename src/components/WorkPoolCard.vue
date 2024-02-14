@@ -6,7 +6,7 @@
           <p-link class="work-pool-card__name" :to="routes.workPool(workPool.name)">
             {{ workPool.name }}
           </p-link>
-          <WorkPoolStatusIcon :status="workPool.status" />
+          <WorkPoolStatusIcon :work-pool="workPool" />
         </div>
         <ProcessTypeBadge :type-label="workPool.typeLabel" />
         <WorkersLateIndicator v-if="!media.sm" :work-pool-name="workPool.name" />
