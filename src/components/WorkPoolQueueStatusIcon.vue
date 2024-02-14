@@ -17,11 +17,14 @@
   import { Icon } from '@prefecthq/prefect-design'
   import { computed } from 'vue'
   import StatusIcon from '@/components/StatusIcon.vue'
+  import { useWorkPool } from '@/compositions/useWorkPool'
   import { WorkPoolQueue } from '@/models'
 
   const props = defineProps<{
     workPoolQueue: WorkPoolQueue,
   }>()
+
+  const { workPool } = useWorkPool(props.workPoolQueue.workPoolName)
 
   const status = computed<{
     state: 'paused' | 'ready' | 'not_ready',
@@ -32,6 +35,10 @@
       case 'paused':
         return { state: 'paused', icon: 'PauseCircleIcon', tooltip: 'Work queue is paused. No work will be executed.' }
       case 'ready':
+        if (workPool.value?.isPushPool) {
+          return { state: 'ready', icon: 'CheckCircleIcon', tooltip: 'Work queue is ready.' }
+        }
+        console.log(workPool, props.workPoolQueue)
         return { state: 'ready', icon: 'CheckCircleIcon', tooltip: 'Work queue has at least one actively polling worker ready to execute work.' }
       case 'not_ready':
         return { state: 'not_ready', icon: 'ExclamationCircleIcon', tooltip: 'Work queue does not have any actively polling workers ready to execute work.' }

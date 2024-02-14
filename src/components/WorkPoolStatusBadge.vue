@@ -1,7 +1,7 @@
 <template>
   <template v-if="workPool.status">
     <p-tag>
-      <WorkPoolStatusIcon :status="workPool.status" />
+      <WorkPoolStatusIcon :work-pool="workPool" />
       {{ titleCase(workPool.status) }}
     </p-tag>
   </template>

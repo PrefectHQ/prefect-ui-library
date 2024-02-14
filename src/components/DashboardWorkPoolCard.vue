@@ -5,7 +5,7 @@
         <p-link :to="routes.workPool(workPool.name)">
           {{ workPool.name }}
         </p-link>
-        <WorkPoolStatusIcon :status="workPool.status" />
+        <WorkPoolStatusIcon :work-pool="workPool" />
       </div>
       <FlowRunsBarChart
         class="dashboard-work-pool-card__mini-bars"
