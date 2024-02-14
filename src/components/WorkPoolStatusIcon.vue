@@ -43,14 +43,9 @@
 </script>
 
 <style>
-.work-pool-status-icon { @apply
-  cursor-help
-}
-
 .work-pool-status-icon--paused { @apply
   flex
   items-center
-  cursor-help
   text-subdued
 }
 </style>
