@@ -7,7 +7,8 @@
 </template>
 
 <script lang="ts" setup>
-  import { provide, computed, ref } from 'vue'
+  import debounce from 'lodash.debounce'
+  import { provide, computed, ref, watch } from 'vue'
   import { useWorkspaceApi } from '@/compositions'
   import SchemaFormProperties from '@/schemas/components/SchemaFormProperties.vue'
   import { schemaInjectionKey } from '@/schemas/compositions/useSchema'
@@ -46,6 +47,15 @@
     },
   })
 
+  watch(values, () => {
+    // if there are no errors we can wait until the user clicks submit
+    if (!errors.value.length) {
+      return
+    }
+
+    validateDebounced()
+  }, { deep: true })
+
   const loadingFallback = ref(false)
   const loading = computed({
     get() {
@@ -61,9 +71,7 @@
     loading.value = true
 
     try {
-      const { valid, errors: errorsResponse } = await api.schemas.validate(props.schema, values.value)
-
-      errors.value = errorsResponse
+      const valid = await validate()
 
       if (!valid) {
         return
@@ -76,4 +84,14 @@
 
     emit('submit', values.value)
   }
+
+  async function validate(): Promise<boolean> {
+    const { valid, errors: errorsResponse } = await api.schemas.validate(props.schema, values.value)
+
+    errors.value = errorsResponse
+
+    return valid
+  }
+
+  const validateDebounced = debounce(validate, 1_000)
 </script>
