@@ -19,6 +19,7 @@ export const en = {
   },
   error: {
     activateDeployment: 'Failed to activate deployment',
+    activateDeploymentSchedule: 'Failed to activate deployment schedule',
     activateNotification: 'Failed to activate notification',
     activateWorkPool: 'Failed to activate work pool',
     activateWorkPoolQueue: 'Failed to activate work queue',
@@ -41,6 +42,7 @@ export const en = {
     editVariable: 'Failed to updated variable',
     invalidJSON: 'Invalid JSON',
     pauseDeployment: 'Failed to pause deployment',
+    pauseDeploymentSchedule: 'Failed to inactivate deployment schedule',
     pauseNotification: 'Failed to pause notification',
     pauseWorkPool: 'Failed to pause work pool',
     pauseWorkPoolQueue: 'Failed to pause work queue',
@@ -67,6 +69,7 @@ export const en = {
   },
   success: {
     activateDeployment: 'Deployment active',
+    activateDeploymentSchedule: 'Deployment schedule active',
     activateNotification: 'Notification active',
     activateWorkPool: 'Work pool active',
     activateWorkPoolQueue: 'Work queue active',
@@ -88,6 +91,7 @@ export const en = {
     deleteSavedSearch: 'Saved filter deleted',
     editVariable: 'Variable updated',
     pauseDeployment: 'Deployment paused',
+    pauseDeploymentSchedule: 'Deployment schedule inactive',
     pauseNotification: 'Notification paused',
     pauseWorkPool: 'Work pool paused',
     pauseWorkPoolQueue: 'Work queue paused',

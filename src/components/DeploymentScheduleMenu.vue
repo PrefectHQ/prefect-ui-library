@@ -2,9 +2,7 @@
   <p-icon-button-menu v-bind="$attrs">
     <DeploymentQuickRunOverflowMenuItem v-if="deployment.can.run && showAll" :deployment="deployment" :open-modal="openParametersModal" />
 
-    <DeploymentCustomRunOverflowMenuItem v-if="deployment.can.run && showAll" :deployment="deployment" />
-
-    <copy-overflow-menu-item label="Copy ID" :item="deployment.id" />
+    <copy-overflow-menu-item label="Copy ID" :item="schedule.id" />
 
     <router-link v-if="!deployment.deprecated && deployment.can.update" :to="routes.deploymentEdit(deployment.id)">
       <p-overflow-menu-item label="Edit" />
@@ -17,9 +15,9 @@
 
   <ConfirmDeleteModal
     v-model:showModal="showConfirmDeleteModal"
-    label="Deployment"
-    :name="deployment.name"
-    @delete="deleteDeployment(deployment.id)"
+    label="Schedule"
+    :name="`${schedule.schedule.toString({ verbose: false }) } schedule`"
+    @delete="deleteSchedule(deployment.id, schedule.id)"
   />
 
   <QuickRunParametersModal v-model:showModal="showParametersModal" :deployment="deployment" />
@@ -34,7 +32,7 @@
 </script>
 
 <script lang="ts" setup>
-  import { DeploymentQuickRunOverflowMenuItem, DeploymentCustomRunOverflowMenuItem, ConfirmDeleteModal, CopyOverflowMenuItem, QuickRunParametersModal } from '@/components'
+  import { DeploymentQuickRunOverflowMenuItem, ConfirmDeleteModal, CopyOverflowMenuItem, QuickRunParametersModal } from '@/components'
   import { useWorkspaceApi, useWorkspaceRoutes, useShowModal } from '@/compositions'
   import { Deployment, DeploymentSchedule } from '@/models'
   import { deleteItem } from '@/utilities'
@@ -55,9 +53,9 @@
   const api = useWorkspaceApi()
   const routes = useWorkspaceRoutes()
 
-  const deleteDeployment = async (id: string): Promise<void> => {
+  const deleteSchedule = async (deploymentId: string, scheduleId: string): Promise<void> => {
     closeConfirmDeleteModal()
-    await deleteItem(id, api.deployments.deleteDeployment, 'Deployment')
-    emits('delete', id)
+    await deleteItem([deploymentId, scheduleId], api.deploymentSchedules.deleteDeploymentSchedule, 'Schedule')
+    emits('delete', scheduleId)
   }
 </script>

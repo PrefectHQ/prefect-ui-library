@@ -19,6 +19,8 @@
       <IntervalScheduleForm v-model:schedule="intervalSchedule" v-model:disabled="intervalDisabled" hide-actions @submit="submit" />
     </template>
 
+    <!-- <p-toggle v-model="" /> -->
+
     <template #actions>
       <p-button primary type="submit" :disabled="disabled" @click="submitCurrentForm">
         Save
@@ -33,19 +35,19 @@
   import CronScheduleForm from '@/components/CronScheduleForm.vue'
   import IntervalScheduleForm from '@/components/IntervalScheduleForm.vue'
   import { useShowModal } from '@/compositions'
-  import { Schedule, getScheduleType, ScheduleType, isCronSchedule, isIntervalSchedule, CronSchedule, IntervalSchedule } from '@/models'
+  import { DeploymentScheduleCompat, getScheduleType, ScheduleType, isCronSchedule, isIntervalSchedule, CronSchedule, IntervalSchedule } from '@/models'
 
   const { showModal, open, close } = useShowModal()
 
   const props = defineProps<{
-    schedule?: Schedule | null,
+    schedule: DeploymentScheduleCompat | null,
   }>()
 
   const emit = defineEmits<{
-    (event: 'submit', value: Schedule): void,
+    (event: 'submit', value: DeploymentScheduleCompat): void,
   }>()
 
-  const submit = (schedule: Schedule): void => {
+  const submit = (schedule: DeploymentScheduleCompat): void => {
     emit('submit', schedule)
     close()
   }
@@ -72,7 +74,7 @@
 
   const cronSchedule = ref<CronSchedule | undefined>(isCronSchedule(props.schedule) ? props.schedule : undefined)
   const intervalSchedule = ref<IntervalSchedule | undefined>(isIntervalSchedule(props.schedule) ? props.schedule : undefined)
-  const scheduleForm = ref<ScheduleType>(getScheduleType(props.schedule) ?? 'interval')
+  const scheduleForm = ref<ScheduleType>(getScheduleType(props.schedule.schedule) ?? 'interval')
   const scheduleFormOptions: ButtonGroupOption[] = [{ label: 'Interval', value: 'interval' }, { label: 'Cron', value: 'cron' }, { label: 'RRule', value: 'rrule' }]
 
   const updateSchedules = (): void => {
