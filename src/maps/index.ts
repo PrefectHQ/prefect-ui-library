@@ -23,6 +23,7 @@ import { mapStringToDate, mapDateToString } from '@/maps/date'
 import { mapDateRangeSelectValueToDateRange } from '@/maps/dateRangeSelectValue'
 import { mapDeploymentResponseToDeployment, mapDeploymentUpdateToDeploymentUpdateRequest, mapDeploymentFlowRunCreateToDeploymentFlowRunRequest, mapDeploymentFlowRunCreateV2ToDeploymentFlowRunRequest } from '@/maps/deployment'
 import { mapDeploymentScheduleResponseToDeploymentSchedule } from '@/maps/deploymentSchedule'
+import { mapDeploymentScheduleUpdateToDeploymentScheduleUpdateRequest } from '@/maps/deploymentScheduleUpdate'
 import { mapDeploymentStatsFilterToFlowRunsFilter } from '@/maps/deploymentStatsFilter'
 import { mapDeploymentStatusToServerDeploymentStatus, mapServerDeploymentStatusToDeploymentStatus } from '@/maps/deploymentStatus'
 import { mapRunHistoryToDivergingBarChartItem } from '@/maps/divergingBarChartItem'
@@ -104,6 +105,7 @@ export const maps = {
   DeploymentFlowRunCreateV2: { DeploymentFlowRunRequest: mapDeploymentFlowRunCreateV2ToDeploymentFlowRunRequest },
   DeploymentResponse: { Deployment: mapDeploymentResponseToDeployment },
   DeploymentScheduleResponse: { DeploymentSchedule: mapDeploymentScheduleResponseToDeploymentSchedule },
+  DeploymentScheduleUpdate: { DeploymentScheduleUpdateRequest: mapDeploymentScheduleUpdateToDeploymentScheduleUpdateRequest },
   DeploymentsFilter: { DeploymentsFilterRequest: mapDeploymentsFilter },
   DeploymentStatus: { ServerDeploymentStatus: mapDeploymentStatusToServerDeploymentStatus },
   DeploymentStatsFilter: { FlowRunsFilter: mapDeploymentStatsFilterToFlowRunsFilter },

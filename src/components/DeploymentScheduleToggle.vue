@@ -1,6 +1,6 @@
 <template>
   <p-tooltip text="Pause or resume this schedule">
-    <p-toggle v-if="deployment.can.update" v-model="internalValue" :loading="loading" />
+    <p-toggle v-if="deployment.can.update" v-model="internalValue" :disabled="loading" :loading="loading" />
   </p-tooltip>
 </template>
 
@@ -30,34 +30,22 @@
       return !!props.schedule.active
     },
     set(value: boolean) {
-      toggleDeploymentSchedule(value)
+      updateSchedule(value)
     },
   })
 
   const loading = ref(false)
 
-  const toggleDeploymentSchedule = async (value: boolean): Promise<void> => {
+  const updateSchedule = async (value: boolean): Promise<void> => {
     loading.value = true
-
     try {
-      if (value) {
-        await api.deployments.resumeDeployment(props.deployment.id)
-
-        showToast(localization.success.activateDeployment, 'success')
-      } else {
-        await api.deployments.pauseDeployment(props.deployment.id)
-
-        showToast(localization.success.pauseDeployment, 'success')
-      }
-
+      await api.deploymentSchedules.updateDeploymentSchedule(props.deployment.id, props.schedule.id, { active: value })
+      showToast(value ? localization.success.activateDeploymentSchedule : localization.success.pauseDeploymentSchedule, 'success')
       emit('update')
     } catch (error) {
-      const defaultMessage = value ? localization.error.activateDeployment : localization.error.pauseDeployment
-
+      const defaultMessage = value ? localization.error.activateDeploymentSchedule : localization.error.pauseDeploymentSchedule
       const message = getApiErrorMessage(error, defaultMessage)
       showToast(message, 'error')
-
-      console.error(error)
     } finally {
       loading.value = false
     }

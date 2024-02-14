@@ -13,25 +13,7 @@
     </p-key-value>
 
     <template v-if="can.access.enhancedSchedulingUi">
-      <p-label label="Schedules" />
-      <template v-for="deploymentSchedule in deployment.schedules" :key="deploymentSchedule.id">
-        <p-list-item class="schedule-card">
-          <div class="schedule-card__content">
-            {{ deploymentSchedule.schedule.toString({ verbose: true }) }}
-          </div>
-          <div class="schedule-card__action">
-            <DeploymentScheduleToggle :deployment="deployment" :schedule="deploymentSchedule" @update="refresh" />
-            <DeploymentScheduleMenu
-              class="deployment-list__menu"
-              size="xs"
-              show-all
-              :deployment="deployment"
-              :schedule="deploymentSchedule"
-              @delete="refresh"
-            />
-          </div>
-        </p-list-item>
-      </template>
+      <MultipleScheduleFieldset :deployment="deployment" />
     </template>
     <template v-else>
       <p-key-value label="Schedule" :alternate="alternate" :value="deployment.schedule?.toString({ verbose: false })">
@@ -99,7 +81,7 @@
 <script lang="ts" setup>
   import { showToast, PLoadingIcon } from '@prefecthq/prefect-design'
   import { ref, computed } from 'vue'
-  import { BlockIconText, ScheduleFieldset, DeploymentScheduleMenu, DeploymentScheduleToggle, DeploymentStatusBadge } from '@/components'
+  import { BlockIconText, ScheduleFieldset, DeploymentStatusBadge, MultipleScheduleFieldset } from '@/components'
   import { useWorkspaceApi, useCan } from '@/compositions'
   import { localization } from '@/localization'
   import { Schedule, Deployment } from '@/models'
@@ -118,10 +100,6 @@
   const can = useCan()
   const api = useWorkspaceApi()
   const updateScheduleLoading = ref(false)
-
-  function refresh(): void {
-    console.log('refreshing')
-  }
 
   const internalSchedule = computed({
     get() {
