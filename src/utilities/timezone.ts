@@ -111,3 +111,31 @@ export const dateFunctions = new Proxy({ ...dateFns }, {
     }
   },
 })
+
+/**
+ * Converts a date in local time into the same date/time in a different timezone
+ *
+ * @param {Date} date - The date to be converted.
+ * @param {string} timezone - The timezone the date should be offset to.
+ * @returns {Date}
+ */
+export function setTimezone(date: Date, timezone: string): Date {
+  const offset = date.getHours() - assignTimezone(date, timezone).getHours()
+  const offsetDate = dateFns.addHours(date, offset)
+
+  return offsetDate
+}
+
+/**
+ * Converts a date in a timezone into the same date/time in a local date
+ *
+ * @param {Date} date - The date to be converted.
+ * @param {string} timezone - The timezone the date should be offset from.
+ * @returns {Date}
+ */
+export function unsetTimezone(date: Date, timezone: string): Date {
+  const offset = date.getHours() - assignTimezone(date, timezone).getHours()
+  const offsetDate = dateFns.subHours(date, offset)
+
+  return offsetDate
+}

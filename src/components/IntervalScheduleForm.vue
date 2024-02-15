@@ -18,7 +18,7 @@
 
       <div>
         <p-label label="Anchor date">
-          <DateInput v-model="anchorDate" show-time />
+          <p-date-input v-model="anchorDate" show-time />
         </p-label>
       </div>
 
@@ -46,10 +46,9 @@
   import { SelectOption } from '@prefecthq/prefect-design'
   import { useField } from 'vee-validate'
   import { computed, ref, watch, onMounted } from 'vue'
-  import DateInput from '@/components/DateInput.vue'
   import TimezoneSelect from '@/components/TimezoneSelect.vue'
   import { IntervalSchedule } from '@/models'
-  import { toPluralString } from '@/utilities'
+  import { setTimezone, toPluralString, unsetTimezone } from '@/utilities'
   import { IntervalOption, secondsToClosestIntervalOption, secondsToClosestIntervalValue, intervalOptionsToSecondsMap } from '@/utilities/timeIntervals'
   import { fieldRules, isGreaterThanOrEqual, isRequired } from '@/utilities/validation'
 
@@ -72,6 +71,11 @@
 
   const anchorDate = ref(props.schedule.anchorDate)
   const timezone = ref(props.schedule.timezone)
+
+  if (anchorDate.value && timezone.value) {
+    anchorDate.value = unsetTimezone(anchorDate.value, timezone.value)
+  }
+
   const { value: interval, meta: intervalState, errors: intervalErrors } = useField<number>('interval', rules.interval, { initialValue: secondsToClosestIntervalValue(props.schedule.interval) })
   const intervalOption = ref<IntervalOption>(secondsToClosestIntervalOption(props.schedule.interval))
 
