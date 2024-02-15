@@ -13,7 +13,18 @@
     </p-key-value>
 
     <template v-if="can.access.enhancedSchedulingUi">
-      <MultipleScheduleFieldset :deployment="deployment" />
+      <p-label label="Schedules" />
+      <template v-for="deploymentSchedule in deployment.schedules" :key="deploymentSchedule.id">
+        <DeploymentScheduleCard :deployment="deployment" :deployment-schedule="deploymentSchedule" @update="emit('update')" />
+      </template>
+
+      <ScheduleFormModal v-if="deployment.can.update" @submit="createSchedule">
+        <template #default="{ open }">
+          <p-button small icon="PlusIcon" class="schedule-fieldset__button" @click="open">
+            Schedule
+          </p-button>
+        </template>
+      </ScheduleFormModal>
     </template>
     <template v-else>
       <p-key-value label="Schedule" :alternate="alternate" :value="deployment.schedule?.toString({ verbose: false })">
@@ -81,10 +92,10 @@
 <script lang="ts" setup>
   import { showToast, PLoadingIcon } from '@prefecthq/prefect-design'
   import { ref, computed } from 'vue'
-  import { BlockIconText, ScheduleFieldset, DeploymentStatusBadge, MultipleScheduleFieldset } from '@/components'
+  import { BlockIconText, ScheduleFieldset, DeploymentStatusBadge, DeploymentScheduleCard, ScheduleFormModal } from '@/components'
   import { useWorkspaceApi, useCan } from '@/compositions'
   import { localization } from '@/localization'
-  import { Schedule, Deployment } from '@/models'
+  import { Schedule, Deployment, DeploymentScheduleCompat } from '@/models'
   import { formatDateTimeNumeric } from '@/utilities/dates'
   import { getApiErrorMessage } from '@/utilities/errors'
 
@@ -145,6 +156,21 @@
       showToast(message, 'error')
     } finally {
       updateScheduleLoading.value = false
+    }
+  }
+
+  const createSchedule = async (updatedSchedule: DeploymentScheduleCompat): Promise<void> => {
+    if (updatedSchedule.active === null || !updatedSchedule.schedule) {
+      showToast('Unable to update schedule.', 'error')
+      return
+    }
+
+    try {
+      await api.deploymentSchedules.createDeploymentSchedule(props.deployment.id, { active: updatedSchedule.active, schedule: updatedSchedule.schedule })
+      showToast(localization.success.updateDeploymentSchedule, 'success')
+      emit('update')
+    } catch (error) {
+      showToast(localization.error.updateDeploymentSchedule, 'error')
     }
   }
 </script>

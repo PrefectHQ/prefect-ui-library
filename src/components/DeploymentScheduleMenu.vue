@@ -1,17 +1,11 @@
 <template>
   <p-icon-button-menu v-bind="$attrs">
-    <DeploymentQuickRunOverflowMenuItem v-if="deployment.can.run && showAll" :deployment="deployment" :open-modal="openParametersModal" />
-
     <copy-overflow-menu-item label="Copy ID" :item="schedule.id" />
-
-    <router-link v-if="!deployment.deprecated && deployment.can.update" :to="routes.deploymentEdit(deployment.id)">
-      <p-overflow-menu-item label="Edit" />
-    </router-link>
-
+    <p-overflow-menu-item v-if="deployment.can.update" label="Edit" @click="openEditModal" />
     <p-overflow-menu-item v-if="deployment.can.delete" label="Delete" @click="openConfirmDeleteModal" />
-
-    <slot v-bind="{ deployment }" />
   </p-icon-button-menu>
+
+  <ScheduleFormModal ref="scheduleFormModalRef" :schedule="compatSchedule" @submit="updateSchedule" />
 
   <ConfirmDeleteModal
     v-model:showModal="showConfirmDeleteModal"
@@ -19,43 +13,70 @@
     :name="`${schedule.schedule.toString({ verbose: false }) } schedule`"
     @delete="deleteSchedule(deployment.id, schedule.id)"
   />
-
-  <QuickRunParametersModal v-model:showModal="showParametersModal" :deployment="deployment" />
 </template>
 
 <script lang="ts">
   export default {
-    name: 'DeploymentMenu',
+    name: 'DeploymentScheduleMenu',
     expose: [],
     inheritAttrs: false,
   }
 </script>
 
 <script lang="ts" setup>
-  import { DeploymentQuickRunOverflowMenuItem, ConfirmDeleteModal, CopyOverflowMenuItem, QuickRunParametersModal } from '@/components'
-  import { useWorkspaceApi, useWorkspaceRoutes, useShowModal } from '@/compositions'
-  import { Deployment, DeploymentSchedule } from '@/models'
+  import { showToast } from '@prefecthq/prefect-design'
+  import { ref } from 'vue'
+  import { ConfirmDeleteModal, CopyOverflowMenuItem, ScheduleFormModal } from '@/components'
+  import { ScheduleFormModalMethods } from '@/components/ScheduleFormModal.vue'
+  import { useWorkspaceApi, useShowModal } from '@/compositions'
+  import { localization } from '@/localization'
+  import { Deployment, DeploymentSchedule, DeploymentScheduleCompat } from '@/models'
   import { deleteItem } from '@/utilities'
 
-  defineProps<{
+
+  const props = defineProps<{
     deployment: Deployment,
     schedule: DeploymentSchedule,
-    showAll?: boolean,
   }>()
 
-  const emits = defineEmits<{
+  const emit = defineEmits<{
+    (event: 'update', value: DeploymentScheduleCompat): void,
     (event: 'delete', value: string): void,
   }>()
 
-  const { showModal: showConfirmDeleteModal, open: openConfirmDeleteModal, close: closeConfirmDeleteModal } = useShowModal()
-  const { showModal: showParametersModal, open: openParametersModal } = useShowModal()
-
   const api = useWorkspaceApi()
-  const routes = useWorkspaceRoutes()
+
+  const compatSchedule = ref<DeploymentScheduleCompat>({
+    active: props.schedule.active,
+    schedule: props.schedule.schedule,
+  })
+
+  const { showModal: showConfirmDeleteModal, open: openConfirmDeleteModal, close: closeConfirmDeleteModal } = useShowModal()
+
+  const scheduleFormModalRef = ref<ScheduleFormModalMethods | null>(null)
+
+  const openEditModal = (): void => {
+    scheduleFormModalRef.value?.publicOpen?.()
+  }
 
   const deleteSchedule = async (deploymentId: string, scheduleId: string): Promise<void> => {
     closeConfirmDeleteModal()
     await deleteItem([deploymentId, scheduleId], api.deploymentSchedules.deleteDeploymentSchedule, 'Schedule')
-    emits('delete', scheduleId)
+    emit('delete', scheduleId)
+  }
+
+  const updateSchedule = async (updatedSchedule: DeploymentScheduleCompat): Promise<void> => {
+    if (updatedSchedule.active === null || !updatedSchedule.schedule) {
+      showToast('Unable to update schedule.', 'error')
+      return
+    }
+
+    try {
+      await api.deploymentSchedules.updateDeploymentSchedule(props.deployment.id, props.schedule.id, { active: updatedSchedule.active, schedule: updatedSchedule.schedule })
+      showToast(localization.success.updateDeploymentSchedule, 'success')
+      emit('update', updatedSchedule)
+    } catch (error) {
+      showToast(localization.error.updateDeploymentSchedule, 'error')
+    }
   }
 </script>

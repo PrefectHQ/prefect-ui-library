@@ -5,6 +5,10 @@
       <p-button-group v-model="scheduleForm" :options="scheduleFormOptions" small />
     </p-label>
 
+    <p-label v-if="can.access.enhancedSchedulingUi" label="Active">
+      <p-toggle v-model="active" />
+    </p-label>
+
     <template v-if="scheduleForm == 'rrule'">
       <p>
         Sorry, modifying RRule schedules via the UI is currently unsupported; select a different schedule type above or modify your schedule in code.
@@ -12,14 +16,12 @@
     </template>
 
     <template v-else-if="scheduleForm == 'cron'">
-      <CronScheduleForm v-model:schedule="cronSchedule" v-model:disabled="cronDisabled" hide-actions @submit="submit" />
+      <CronScheduleForm v-model:schedule="cronSchedule" v-model:disabled="cronDisabled" hide-actions @submit="scheduleFormSubmit" />
     </template>
 
     <template v-else-if="scheduleForm == 'interval'">
-      <IntervalScheduleForm v-model:schedule="intervalSchedule" v-model:disabled="intervalDisabled" hide-actions @submit="submit" />
+      <IntervalScheduleForm v-model:schedule="intervalSchedule" v-model:disabled="intervalDisabled" hide-actions @submit="scheduleFormSubmit" />
     </template>
-
-    <!-- <p-toggle v-model="" /> -->
 
     <template #actions>
       <p-button primary type="submit" :disabled="disabled" @click="submitCurrentForm">
@@ -34,18 +36,42 @@
   import { computed, ref, watch } from 'vue'
   import CronScheduleForm from '@/components/CronScheduleForm.vue'
   import IntervalScheduleForm from '@/components/IntervalScheduleForm.vue'
-  import { useShowModal } from '@/compositions'
-  import { DeploymentScheduleCompat, getScheduleType, ScheduleType, isCronSchedule, isIntervalSchedule, CronSchedule, IntervalSchedule } from '@/models'
+  import { useCan, useShowModal } from '@/compositions'
+  import { DeploymentScheduleCompat, getScheduleType, Schedule, ScheduleType, isCronSchedule, isIntervalSchedule, CronSchedule, IntervalSchedule } from '@/models'
 
   const { showModal, open, close } = useShowModal()
 
+  const publicOpen = (): void => {
+    open()
+  }
+
+  defineExpose({ publicOpen })
+
+  const can = useCan()
+
   const props = defineProps<{
-    schedule: DeploymentScheduleCompat | null,
+    schedule?: DeploymentScheduleCompat,
   }>()
+
+  const internalActive = ref<boolean>(props.schedule?.active ?? true)
+
+  const active = computed({
+    get: () => {
+      return internalActive.value
+    },
+    set: (value: boolean) => {
+      internalActive.value = value
+    },
+  })
 
   const emit = defineEmits<{
     (event: 'submit', value: DeploymentScheduleCompat): void,
   }>()
+
+
+  const scheduleFormSubmit = (schedule: Schedule): void => {
+    submit({ 'active': active.value, 'schedule': schedule })
+  }
 
   const submit = (schedule: DeploymentScheduleCompat): void => {
     emit('submit', schedule)
@@ -59,27 +85,39 @@
   })
 
   const submitCurrentForm = (): void => {
+    let schedule = null
+
     if (disabled.value) {
       return
     }
 
     if (scheduleForm.value == 'cron' && cronSchedule.value) {
-      submit(cronSchedule.value)
+      schedule = cronSchedule.value
+    } else if (scheduleForm.value == 'interval' && intervalSchedule.value) {
+      schedule = intervalSchedule.value
     }
 
-    if (scheduleForm.value == 'interval' && intervalSchedule.value) {
-      submit(intervalSchedule.value)
-    }
+    submit({
+      'active': active.value,
+      schedule,
+    })
   }
 
-  const cronSchedule = ref<CronSchedule | undefined>(isCronSchedule(props.schedule) ? props.schedule : undefined)
-  const intervalSchedule = ref<IntervalSchedule | undefined>(isIntervalSchedule(props.schedule) ? props.schedule : undefined)
-  const scheduleForm = ref<ScheduleType>(getScheduleType(props?.schedule?.schedule) ?? 'interval')
+  const cronSchedule = ref<CronSchedule | undefined>(isCronSchedule(props.schedule?.schedule) ? props.schedule.schedule : undefined)
+  const intervalSchedule = ref<IntervalSchedule | undefined>(isIntervalSchedule(props.schedule?.schedule) ? props.schedule.schedule : undefined)
+  const scheduleForm = ref<ScheduleType>(getScheduleType(props.schedule?.schedule) ?? 'interval')
   const scheduleFormOptions: ButtonGroupOption[] = [{ label: 'Interval', value: 'interval' }, { label: 'Cron', value: 'cron' }, { label: 'RRule', value: 'rrule' }]
 
-  const updateSchedules = (): void => {
-    cronSchedule.value = isCronSchedule(props.schedule) ? props.schedule : undefined
-    intervalSchedule.value = isIntervalSchedule(props.schedule) ? props.schedule : undefined
+  const updateInternalState = (): void => {
+    cronSchedule.value = isCronSchedule(props.schedule?.schedule) ? props.schedule.schedule : undefined
+    intervalSchedule.value = isIntervalSchedule(props.schedule?.schedule) ? props.schedule.schedule : undefined
+    internalActive.value = props.schedule?.active ?? true
   }
-  watch(() => props.schedule, updateSchedules)
+  watch(() => props.schedule?.schedule, updateInternalState)
+</script>
+
+<script lang="ts">
+  export interface ScheduleFormModalMethods {
+    publicOpen: () => void,
+  }
 </script>

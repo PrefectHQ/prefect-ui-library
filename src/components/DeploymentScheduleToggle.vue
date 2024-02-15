@@ -20,7 +20,7 @@
   }>()
 
   const emit = defineEmits<{
-    (event: 'update'): void,
+    (event: 'update', value: boolean): void,
   }>()
 
   const api = useWorkspaceApi()
@@ -41,7 +41,7 @@
     try {
       await api.deploymentSchedules.updateDeploymentSchedule(props.deployment.id, props.schedule.id, { active: value })
       showToast(value ? localization.success.activateDeploymentSchedule : localization.success.pauseDeploymentSchedule, 'success')
-      emit('update')
+      emit('update', value)
     } catch (error) {
       const defaultMessage = value ? localization.error.activateDeploymentSchedule : localization.error.pauseDeploymentSchedule
       const message = getApiErrorMessage(error, defaultMessage)

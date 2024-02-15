@@ -1,7 +1,7 @@
 <template>
   <div class="schedule-fieldset">
-    <div v-if="internalValue" class="schedule-fieldset__schedule">
-      {{ internalValue.toString({ verbose: true }) }}
+    <div v-if="internalValue.schedule" class="schedule-fieldset__schedule">
+      {{ internalValue.schedule.toString({ verbose: true }) }}
     </div>
 
     <template v-if="!readonly">
@@ -32,7 +32,7 @@
 <script lang="ts" setup>
   import { computed } from 'vue'
   import ScheduleFormModal from '@/components/ScheduleFormModal.vue'
-  import { Schedule } from '@/models'
+  import { DeploymentScheduleCompat, Schedule } from '@/models'
 
   const props = defineProps<{
     modelValue: Schedule | null,
@@ -46,19 +46,25 @@
 
   const internalValue = computed({
     get() {
-      return props.modelValue
+      return {
+        'active': null,
+        'schedule': props.modelValue,
+      }
     },
-    set(value: Schedule | null) {
-      emit('update:modelValue', value)
+    set(value: DeploymentScheduleCompat) {
+      emit('update:modelValue', value.schedule)
     },
   })
 
-  const updateSchedule = (schedule: Schedule | null): void => {
+  const updateSchedule = (schedule: DeploymentScheduleCompat): void => {
     internalValue.value = schedule
   }
 
   const removeSchedule = (): void => {
-    internalValue.value = null
+    internalValue.value = {
+      'active': null,
+      'schedule': null,
+    }
   }
 </script>
 
