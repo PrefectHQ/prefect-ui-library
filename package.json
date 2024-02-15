@@ -17,7 +17,7 @@
     "scripts": {
         "build": "vue-tsc && tsc-alias && vite build",
         "changelog": "auto-changelog --package --commit-limit 0",
-        "dev": "vue-tsc -w & tsc-alias -w & vite build -w --force",
+        "dev": "vue-tsc -w & tsc-alias -w & vite build -w",
         "lint:fix": "eslint src --fix",
         "lint": "eslint src",
         "test": "vitest",
