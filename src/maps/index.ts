@@ -23,6 +23,7 @@ import { mapStringToDate, mapDateToString } from '@/maps/date'
 import { mapDateRangeSelectValueToDateRange } from '@/maps/dateRangeSelectValue'
 import { mapDeploymentResponseToDeployment, mapDeploymentUpdateToDeploymentUpdateRequest, mapDeploymentFlowRunCreateToDeploymentFlowRunRequest } from '@/maps/deployment'
 import { mapDeploymentScheduleResponseToDeploymentSchedule } from '@/maps/deploymentSchedule'
+import { mapDeploymentScheduleCreateToDeploymentScheduleCreateRequest } from '@/maps/deploymentScheduleCreate'
 import { mapDeploymentScheduleUpdateToDeploymentScheduleUpdateRequest } from '@/maps/deploymentScheduleUpdate'
 import { mapDeploymentStatsFilterToFlowRunsFilter } from '@/maps/deploymentStatsFilter'
 import { mapDeploymentStatusToServerDeploymentStatus, mapServerDeploymentStatusToDeploymentStatus } from '@/maps/deploymentStatus'
@@ -104,6 +105,7 @@ export const maps = {
   DeploymentFlowRunCreate: { DeploymentFlowRunRequest: mapDeploymentFlowRunCreateToDeploymentFlowRunRequest },
   DeploymentResponse: { Deployment: mapDeploymentResponseToDeployment },
   DeploymentScheduleResponse: { DeploymentSchedule: mapDeploymentScheduleResponseToDeploymentSchedule },
+  DeploymentScheduleCreate: { DeploymentScheduleCreateRequest: mapDeploymentScheduleCreateToDeploymentScheduleCreateRequest },
   DeploymentScheduleUpdate: { DeploymentScheduleUpdateRequest: mapDeploymentScheduleUpdateToDeploymentScheduleUpdateRequest },
   DeploymentsFilter: { DeploymentsFilterRequest: mapDeploymentsFilter },
   DeploymentStatus: { ServerDeploymentStatus: mapDeploymentStatusToServerDeploymentStatus },

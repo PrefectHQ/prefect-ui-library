@@ -1,6 +1,6 @@
-import { Schedule } from '@/models/Schedule'
+import { ScheduleResponse } from '@/models'
 
 export type DeploymentScheduleUpdateRequest = {
   active?: boolean,
-  schedule?: Schedule,
+  schedule?: ScheduleResponse,
 }

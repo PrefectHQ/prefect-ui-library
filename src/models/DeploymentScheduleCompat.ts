@@ -1,6 +1,6 @@
 import { Schedule } from '@/models/Schedule'
 
 export type DeploymentScheduleCompat = {
-  active?: boolean,
-  schedule?: Schedule,
+  active: boolean | null,
+  schedule: Schedule | null,
 }
