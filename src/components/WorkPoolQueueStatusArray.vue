@@ -6,12 +6,17 @@
           v-if="can.access.workQueueStatus"
           :work-pool-queue="workQueue"
         />
-        <WorkPoolQueueHealthIcon
-          v-else
-          :work-queue-name="workQueue.name"
-          :work-pool-name="workPool.name"
-          class="work-pool-queue-status-badge__icon"
-        />
+        <template v-else>
+          <span v-if="workPool.isPushPool" class="work-pool-queue-status-array__none">
+            N/A
+          </span>
+          <WorkPoolQueueHealthIcon
+            v-else
+            :work-queue-name="workQueue.name"
+            :work-pool-name="workPool.name"
+            class="work-pool-queue-status-badge__icon"
+          />
+        </template>
       </template>
     </template>
     <span v-if="!showTooMany && workPoolQueues.length < 1" class="work-pool-queue-status-array__none">N/A</span>
