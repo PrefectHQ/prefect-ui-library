@@ -41,7 +41,7 @@
       </template>
 
       <template #schedule="{ row }">
-        <span :title="row.schedule?.toString({ verbose: true })">{{ handleSchedule(row.schedule) }}</span>
+        <div class="p-background deployments-list__schedule" v-for="schedule in row.schedules" :title="schedule?.schedule?.toString({ verbose: true })">{{ handleSchedule(schedule?.schedule) }}</div>
       </template>
 
       <template #tags="{ row }">
@@ -243,6 +243,15 @@
   items-center
   gap-x-1
   font-medium
+}
+
+.deployments-list__schedule{
+  padding: 4px 8px;
+  margin: 2px;
+  display: inline-block;
+  white-space: pre-wrap;
+  float: left;
+  clear: left;
 }
 
 .deployment-list__created-date { @apply
