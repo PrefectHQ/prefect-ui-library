@@ -1,6 +1,6 @@
 <template>
   <p-tooltip
-    v-if="workPoolQueue && workQueueStatus"
+    v-if="workPoolQueue && workQueueStatus && !workPool?.isPushPool"
     class="work-pool-queue-health-icon"
     text="Work queue health is deprecated and will be removed in a future release. Please use work pool status instead."
   >
@@ -25,7 +25,7 @@
   import { useSubscriptionWithDependencies } from '@prefecthq/vue-compositions'
   import { computed } from 'vue'
   import StatusIcon from '@/components/StatusIcon.vue'
-  import { useInterval, useWorkQueueStatus, useWorkspaceApi } from '@/compositions'
+  import { useInterval, useWorkQueueStatus, useWorkspaceApi, useWorkPool } from '@/compositions'
 
   const props = defineProps<{
     workQueueName: string,
@@ -38,6 +38,8 @@
 
   const workPoolQueuesSubscription = useSubscriptionWithDependencies(api.workPoolQueues.getWorkPoolQueueByName, workPoolQueueArgs, options)
   const workPoolQueue = computed(() => workPoolQueuesSubscription.response)
+
+  const { workPool } = useWorkPool(() => props.workPoolName)
 
   const workQueueId = computed(() => workPoolQueue.value?.id)
   const { workQueueStatus } = useWorkQueueStatus(workQueueId)
