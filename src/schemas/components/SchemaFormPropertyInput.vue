@@ -19,10 +19,10 @@
   import SchemaFormPropertyString from '@/schemas/components/SchemaFormPropertyString.vue'
   import { useSchemaProperty } from '@/schemas/compositions/useSchemaProperty'
   import { SchemaProperty, isPropertyWith, isSchemaPropertyType } from '@/schemas/types/schema'
-  import { SchemaValue, asBlockDocumentReferenceValue, isPrefectKindValue } from '@/schemas/types/schemaValues'
+  import { PrefectKindJson, SchemaValue, asBlockDocumentReferenceValue, isPrefectKindValue } from '@/schemas/types/schemaValues'
   import { SchemaValueError } from '@/schemas/types/schemaValuesValidationResponse'
   import { withProps } from '@/utilities/components'
-  import { asType } from '@/utilities/types'
+  import { asJson, asType } from '@/utilities/types'
 
   const props = defineProps<{
     property: SchemaProperty,
@@ -103,9 +103,14 @@
     }
 
     if (isSchemaPropertyType(type, undefined)) {
-      // automatically switch to prefect_kind === 'json'?
-      // value might not be json, so will need to convert it to json...
-      throw 'not implemented'
+      const json: PrefectKindJson = {
+        __prefect_kind: 'json',
+        value: asJson(value),
+      }
+
+      update(json)
+
+      return { component: null, props: {} }
     }
 
     const exhaustive: never = type
