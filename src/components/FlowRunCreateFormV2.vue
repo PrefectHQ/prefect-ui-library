@@ -1,51 +1,54 @@
 <template>
-  <p-form class="flow-run-create-form-v2" @submit="submit">
-    <p-label label="Run Name" :state="nameState" :message="nameError">
-      <FlowRunNameInput v-model="name" :state="nameState" />
-    </p-label>
+  <p-form class="flow-run-create-form-v2 p-background" @submit="submit">
+    <p-content>
+      <p-label label="Run Name" :state="nameState" :message="nameError">
+        <FlowRunNameInput v-model="name" :state="nameState" />
+      </p-label>
 
-    <template v-if="hasParameters">
-      <p-divider />
+      <template v-if="hasParameters">
+        <p-divider />
 
-      <p-content>
-        <h3>{{ localization.info.parameters }}</h3>
+        <p-content>
+          <h3>{{ localization.info.parameters }}</h3>
 
-        <SchemaInputV2 v-model:values="parameters" :schema="schema" :errors="errors" :kinds="['json']" />
-      </p-content>
-    </template>
-
-    <h3>Start</h3>
-    <FlowRunCreateFormWhen v-model:start="scheduledTime" />
-
-    <p-accordion :sections="['Additional Options']">
-      <template #heading="{ section }">
-        <h3>{{ section }}</h3>
-      </template>
-
-      <template #content>
-        <p-content class="flow-run-create-form-v2__options">
-          <p-label label="Message (Optional)">
-            <p-textarea v-model="stateMessage" placeholder="Created from the Prefect UI" />
-          </p-label>
-
-          <p-label label="Tags (Optional)">
-            <FlowRunCreateFormTags v-model:tags="tags" :deployment="deployment" />
-          </p-label>
-
-          <FlowRunCreateFormWorkQueueCombobox v-model:work-queue-name="workQueueName" :work-pool-name="deployment.workPoolName" />
-
-          <div class="flow-run-create-form-v2__retries">
-            <p-label label="Retries (Optional)">
-              <p-number-input v-model="retries" :min="0" />
-            </p-label>
-
-            <p-label label="Retry Delay (Optional)">
-              <p-number-input v-model="retryDelay" :min="0" append="Seconds" />
-            </p-label>
-          </div>
+          <SchemaInputV2 v-model:values="parameters" :schema="schema" :errors="errors" :kinds="['json']" />
         </p-content>
       </template>
-    </p-accordion>
+
+      <p-divider />
+      <h3>Start</h3>
+      <FlowRunCreateFormWhen v-model:start="scheduledTime" />
+
+      <p-accordion :sections="['Additional Options']">
+        <template #heading="{ section }">
+          <h3>{{ section }}</h3>
+        </template>
+
+        <template #content>
+          <p-content class="pt-4">
+            <p-label label="Message (Optional)">
+              <p-textarea v-model="stateMessage" placeholder="Created from the Prefect UI" />
+            </p-label>
+
+            <p-label label="Tags (Optional)">
+              <FlowRunCreateFormTags v-model:tags="tags" :deployment="deployment" />
+            </p-label>
+
+            <FlowRunCreateFormWorkQueueCombobox v-model:work-queue-name="workQueueName" :work-pool-name="deployment.workPoolName" />
+
+            <div class="flow-run-create-form-v2__retries">
+              <p-label label="Retries (Optional)">
+                <p-number-input v-model="retries" :min="0" />
+              </p-label>
+
+              <p-label label="Retry Delay (Optional)">
+                <p-number-input v-model="retryDelay" :min="0" append="Seconds" />
+              </p-label>
+            </div>
+          </p-content>
+        </template>
+      </p-accordion>
+    </p-content>
 
     <template #footer>
       <p-button @click="emit('cancel')">
@@ -70,11 +73,13 @@
   import { DeploymentFlowRunCreateV2 } from '@/models/DeploymentFlowRunCreate'
   import { SchemaInputV2, SchemaValuesV2 } from '@/schemas'
   import { useSchemaValidation } from '@/schemas/compositions/useSchemaValidation'
-  import { isEmptyObject } from '@/utilities/object'
+  import { SchemaValues } from '@/schemas/types/schemaValues'
+  import { isEmptyObject, merge } from '@/utilities/object'
   import { isRequired } from '@/utilities/validation'
 
   const props = defineProps<{
     deployment: Deployment,
+    parameters?: SchemaValues,
     name?: string,
   }>()
 
@@ -91,7 +96,7 @@
   const name = ref(props.name)
   const { state: nameState, error: nameError } = useValidation(name, isRequired('name'))
 
-  const parameters = ref<SchemaValuesV2>({})
+  const parameters = ref<SchemaValuesV2>(merge({}, props.deployment.parametersV2, props.parameters ?? {}))
   const scheduledTime = ref<Date | null>(null)
   const stateMessage = ref<string>('')
   const tags = ref<string[]>(props.deployment.tags ?? [])
@@ -103,8 +108,8 @@
 
   async function submit(): Promise<void> {
     const valid = (await Promise.all([
-      validate,
-      validateParameters,
+      validate(),
+      validateParameters(),
     ])).every(value => Boolean(value))
 
     if (!valid) {
@@ -145,5 +150,10 @@
   grid
   grid-cols-2
   gap-4
+}
+
+.flow-run-create-form-v2 .p-accordion__header { @apply
+  mt-2
+  pt-6
 }
 </style>
