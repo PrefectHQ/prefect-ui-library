@@ -99,7 +99,6 @@
   import { useField } from 'vee-validate'
   import { computed } from 'vue'
   import { SchemaInput, ScheduleFieldset, WorkPoolCombobox, WorkPoolQueueCombobox, JsonInput } from '@/components'
-  import { useCan } from '@/compositions'
   import { useForm } from '@/compositions/useForm'
   import { useOptionalPropertiesSchema } from '@/compositions/useOptionalPropertiesSchema'
   import { localization } from '@/localization'
@@ -112,7 +111,6 @@
   }>()
 
   const name = computed(() => props.deployment.name)
-  const can = useCan()
 
   const { handleSubmit, isSubmitting } = useForm<DeploymentEdit>({
     initialValues: {

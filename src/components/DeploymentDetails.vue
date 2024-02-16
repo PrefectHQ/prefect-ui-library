@@ -20,7 +20,7 @@
 
       <ScheduleFormModal v-if="deployment.can.update" @submit="createSchedule">
         <template #default="{ open }">
-          <p-button small icon="PlusIcon" class="schedule-fieldset__button" @click="open">
+          <p-button small icon="PlusIcon" @click="open">
             Schedule
           </p-button>
         </template>
@@ -181,15 +181,6 @@
   flex-col
   gap-3
   items-start
-}
-
-.schedule-card { @apply
-  flex
-  flex-row
-  text-sm
-  w-full
-  justify-between
-  items-center
 }
 
 .deployment-details__schedule { @apply

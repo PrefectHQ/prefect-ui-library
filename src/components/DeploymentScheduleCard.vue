@@ -1,16 +1,15 @@
 <template>
-  <p-list-item class="schedule-card">
+  <p-list-item class="deployment-schedule-card">
     <p-tooltip :text="schedule.schedule?.toString({ verbose: true })">
-      <div class="schedule-card__content">
+      <div class="deployment-schedule-card__content">
         {{ schedule.schedule?.toString({ verbose: false }) }}
       </div>
     </p-tooltip>
-    <div class="schedule-card__action">
+    <div class="deployment-schedule-card__action">
       <DeploymentScheduleToggle :deployment="deployment" :schedule="deploymentSchedule" @update="updateActiveStatus" />
       <DeploymentScheduleMenu
         class="deployment-schedule__menu"
-        size="xs"
-        show-all
+        small
         :deployment="deployment"
         :schedule="deploymentSchedule"
         @update="scheduleUpdated"
@@ -59,3 +58,23 @@
   }
   watch(() => props.deploymentSchedule, updateInternalState)
 </script>
+
+<style>
+.deployment-schedule-card { @apply
+  pl-3
+  pr-2
+  py-2
+  flex
+  flex-row
+  text-sm
+  w-full
+  justify-between
+  items-center
+}
+
+.deployment-schedule-card__action { @apply
+  inline-flex
+  items-center
+  gap-2
+}
+</style>
