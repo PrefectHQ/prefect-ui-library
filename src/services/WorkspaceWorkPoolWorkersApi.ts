@@ -8,7 +8,7 @@ export class WorkspaceWorkPoolWorkersApi extends WorkspaceApi {
 
   public async getWorkers(workPoolName: string, filter: WorkPoolWorkersFilter = {}): Promise<WorkPoolWorker[]> {
     const request = mapper.map('WorkPoolWorkersFilter', filter, 'WorkPoolWorkersFilterRequest')
-    const { data } = await this.post<WorkPoolWorkerResponse[]>(`/${workPoolName}/workers/filter`, request)
+    const { data } = await this.post<WorkPoolWorkerResponse[]>(encodeURI(`/${workPoolName}/workers/filter`), request)
 
     return mapper.map('WorkPoolWorkerResponse', data, 'WorkPoolWorker')
   }

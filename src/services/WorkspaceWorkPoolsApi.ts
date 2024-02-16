@@ -14,7 +14,7 @@ export class WorkspaceWorkPoolsApi extends WorkspaceApi {
   }
 
   public async getWorkPoolByName(name: string): Promise<WorkPool> {
-    const { data } = await this.get<WorkPoolResponse>(`/${name}`)
+    const { data } = await this.get<WorkPoolResponse>(encodeURI(`/${name}`))
 
     return mapper.map('WorkPoolResponse', data, 'WorkPool')
   }
@@ -29,24 +29,24 @@ export class WorkspaceWorkPoolsApi extends WorkspaceApi {
   public updateWorkPool(name: string, request: WorkPoolEdit): Promise<void> {
     const body = mapper.map('WorkPoolEdit', request, 'WorkPoolEditRequest')
 
-    return this.patch(`/${name}`, body)
+    return this.patch(encodeURI(`/${name}`), body)
   }
 
   public pauseWorkPool(name: string): Promise<void> {
-    return this.patch(`/${name}`, { 'is_paused': true })
+    return this.patch(encodeURI(`/${name}`), { 'is_paused': true })
   }
 
   public resumeWorkPool(name: string): Promise<void> {
-    return this.patch(`/${name}`, { 'is_paused': false })
+    return this.patch(encodeURI(`/${name}`), { 'is_paused': false })
   }
 
   public deleteWorkPool(name: string): Promise<void> {
-    return this.delete(`/${name}`)
+    return this.delete(encodeURI(`/${name}`))
   }
 
   public async getWorkPoolScheduledRuns(name: string, request: WorkerScheduledFlowRuns): Promise<WorkerScheduledFlowRun[]> {
     const body = mapper.map('WorkerScheduledFlowRuns', request, 'WorkerScheduledFlowRunsRequest')
-    const { data } = await this.post<WorkerScheduledFlowRunResponse[]>(`/${name}/get_scheduled_flow_runs`, body)
+    const { data } = await this.post<WorkerScheduledFlowRunResponse[]>(encodeURI(`/${name}/get_scheduled_flow_runs`), body)
 
     return mapper.map('WorkerScheduledFlowRunResponse', data, 'WorkerScheduledFlowRun')
   }
