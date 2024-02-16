@@ -3,6 +3,7 @@ import { CreatedOrUpdatedBy } from '@/models/CreatedOrUpdatedBy'
 import { DeploymentStatus } from '@/models/DeploymentStatus'
 import { ObjectLevelCan } from '@/models/ObjectLevelCan'
 import { Schedule } from '@/models/Schedule'
+import { SchemaV2, SchemaValuesV2 } from '@/schemas'
 import { Schema, SchemaValues } from '@/types/schemas'
 
 
@@ -20,6 +21,8 @@ export interface IDeployment {
   isScheduleActive: boolean,
   parameters: SchemaValues,
   parameterOpenApiSchema: Schema,
+  parametersV2: SchemaValuesV2,
+  parameterOpenApiSchemaV2: SchemaV2,
   tags: string[] | null,
   manifestPath: string | null,
   path: string | null,
@@ -51,6 +54,8 @@ export class Deployment implements IDeployment {
   public isScheduleActive: boolean
   public parameters: SchemaValues
   public parameterOpenApiSchema: Schema
+  public parametersV2: SchemaValuesV2
+  public parameterOpenApiSchemaV2: SchemaV2
   public readonly rawParameters: SchemaValues
   public readonly rawSchema: SchemaResponse
   public tags: string[] | null
@@ -81,6 +86,8 @@ export class Deployment implements IDeployment {
     this.isScheduleActive = deployment.isScheduleActive
     this.parameters = deployment.parameters
     this.parameterOpenApiSchema = deployment.parameterOpenApiSchema
+    this.parametersV2 = deployment.parametersV2
+    this.parameterOpenApiSchemaV2 = deployment.parameterOpenApiSchemaV2
     this.tags = deployment.tags
     this.manifestPath = deployment.manifestPath
     this.rawParameters = deployment.rawParameters

@@ -1,13 +1,15 @@
 import { sortStringArray } from '@prefecthq/prefect-design'
-import { DeploymentFlowRunCreate, DeploymentFlowRunRequest, DeploymentUpdate, DeploymentUpdateRequest } from '@/models'
+import { DeploymentFlowRunCreate, DeploymentFlowRunRequest, DeploymentUpdate, DeploymentUpdateRequest, SchemaResponse } from '@/models'
 import { DeploymentResponse } from '@/models/api/DeploymentResponse'
 import { Deployment } from '@/models/Deployment'
 import { createObjectLevelCan } from '@/models/ObjectLevelCan'
+import { SchemaResponseV2, schemaV2Mapper } from '@/schemas'
 import { MapFunction } from '@/services/Mapper'
+import { Schema } from '@/types/schemas'
 
 export const mapDeploymentResponseToDeployment: MapFunction<DeploymentResponse, Deployment> = function(source) {
   const rawSchema = source.parameter_openapi_schema ?? {}
-  const schema = this.map('SchemaResponse', rawSchema, 'Schema')
+  const schema = this.map('SchemaResponse', rawSchema as SchemaResponse, 'Schema')
   const values = this.map('SchemaValuesResponse', { values: source.parameters, schema }, 'SchemaValues')
 
   return new Deployment({
@@ -24,7 +26,9 @@ export const mapDeploymentResponseToDeployment: MapFunction<DeploymentResponse, 
     isScheduleActive: source.is_schedule_active,
     parameters: values,
     rawParameters: source.parameters,
-    rawSchema,
+    rawSchema: rawSchema as Schema,
+    parametersV2: source.parameters,
+    parameterOpenApiSchemaV2: schemaV2Mapper.map('SchemaResponse', rawSchema as SchemaResponseV2, 'Schema'),
     tags: source.tags ? sortStringArray(source.tags) : null,
     manifestPath: source.manifest_path,
     path: source.path,
