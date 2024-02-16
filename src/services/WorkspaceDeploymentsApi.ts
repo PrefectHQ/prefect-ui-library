@@ -73,4 +73,10 @@ export class WorkspaceDeploymentsApi extends WorkspaceApi {
   public deleteDeployment(deploymentId: string): Promise<void> {
     return this.delete(`/${deploymentId}`)
   }
+
+  public createDeployment(request: DeploymentUpdate): Promise<Deployment> {
+    const body = mapper.map('DeploymentUpdate', request, 'DeploymentUpdateRequest')
+
+    return this.post<DeploymentResponse>('/', body).then(({ data }) => mapper.map('DeploymentResponse', data, 'Deployment'))
+  }
 }

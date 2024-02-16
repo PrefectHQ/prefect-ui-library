@@ -10,6 +10,8 @@
       <p-overflow-menu-item label="Edit" />
     </router-link>
 
+    <p-overflow-menu-item v-if="deployment.can.create" label="Duplicate" @click="openDuplicateDeploymentModel" />
+
     <p-overflow-menu-item v-if="deployment.can.delete" label="Delete" @click="openConfirmDeleteModal" />
 
     <slot v-bind="{ deployment }" />
@@ -21,6 +23,8 @@
     :name="deployment.name"
     @delete="deleteDeployment(deployment.id)"
   />
+
+  <DuplicateDeploymentModal v-model:showModal="showDuplicateDeploymentModal" :deployment="deployment" />
 
   <QuickRunParametersModal v-model:showModal="showParametersModal" :deployment="deployment" />
 </template>
@@ -34,7 +38,7 @@
 </script>
 
 <script lang="ts" setup>
-  import { DeploymentQuickRunOverflowMenuItem, DeploymentCustomRunOverflowMenuItem, ConfirmDeleteModal, CopyOverflowMenuItem, QuickRunParametersModal } from '@/components'
+  import { DeploymentQuickRunOverflowMenuItem, DeploymentCustomRunOverflowMenuItem, ConfirmDeleteModal, CopyOverflowMenuItem, QuickRunParametersModal, DuplicateDeploymentModal } from '@/components'
   import { useWorkspaceApi, useWorkspaceRoutes, useShowModal } from '@/compositions'
   import { Deployment } from '@/models'
   import { deleteItem } from '@/utilities'
@@ -50,6 +54,7 @@
 
   const { showModal: showConfirmDeleteModal, open: openConfirmDeleteModal, close: closeConfirmDeleteModal } = useShowModal()
   const { showModal: showParametersModal, open: openParametersModal } = useShowModal()
+  const { showModal: showDuplicateDeploymentModal, open: openDuplicateDeploymentModel } = useShowModal()
 
   const api = useWorkspaceApi()
   const routes = useWorkspaceRoutes()
