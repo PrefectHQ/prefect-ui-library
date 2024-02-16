@@ -11,7 +11,7 @@
         <p-content>
           <h3>{{ localization.info.parameters }}</h3>
 
-          <SchemaInputV2 v-model:values="parameters" :schema="schema" :errors="errors" :kinds="['json']" />
+          <SchemaInputV2 v-model:values="parameters" :schema="schema" :errors="errors" :kinds="['json', 'workspace_variable']" />
         </p-content>
       </template>
 
