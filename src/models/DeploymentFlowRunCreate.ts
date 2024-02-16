@@ -1,5 +1,6 @@
 import { EmpiricalPolicy } from '@/models/EmpiricalPolicy'
 import { StateCreate } from '@/models/StateCreate'
+import { SchemaValuesV2 } from '@/schemas'
 import { Schema, SchemaValues } from '@/types/schemas'
 
 type Base = {
@@ -25,3 +26,9 @@ type WithParameters = Base & {
 }
 
 export type DeploymentFlowRunCreate = WithoutParameters | WithParameters
+
+type WithParametersV2 = Base & {
+  parameters: SchemaValuesV2,
+}
+
+export type DeploymentFlowRunCreateV2 = WithoutParameters | WithParametersV2

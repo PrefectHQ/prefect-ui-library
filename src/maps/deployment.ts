@@ -1,5 +1,5 @@
 import { sortStringArray } from '@prefecthq/prefect-design'
-import { DeploymentFlowRunCreate, DeploymentFlowRunRequest, DeploymentUpdate, DeploymentUpdateRequest, SchemaResponse } from '@/models'
+import { DeploymentFlowRunCreate, DeploymentFlowRunCreateV2, DeploymentFlowRunRequest, DeploymentUpdate, DeploymentUpdateRequest, SchemaResponse } from '@/models'
 import { DeploymentResponse } from '@/models/api/DeploymentResponse'
 import { Deployment } from '@/models/Deployment'
 import { createObjectLevelCan } from '@/models/ObjectLevelCan'
@@ -75,3 +75,17 @@ export const mapDeploymentFlowRunCreateToDeploymentFlowRunRequest: MapFunction<D
   }
 }
 
+export const mapDeploymentFlowRunCreateV2ToDeploymentFlowRunRequest: MapFunction<DeploymentFlowRunCreateV2, DeploymentFlowRunRequest> = function(source) {
+  return {
+    name: source.name,
+    parameters: source.parameters,
+    idempotency_key: source.idempotencyKey,
+    context: source.context,
+    tags: source.tags,
+    parent_task_run_id: source.parentTaskRunId,
+    infrastructure_document_id: source.infrastructureDocumentId,
+    state: this.map('StateCreate', source.state, 'StateRequest'),
+    empirical_policy: this.map('EmpiricalPolicy', source.empiricalPolicy, 'EmpiricalPolicyRequest'),
+    work_queue_name: source.workQueueName,
+  }
+}

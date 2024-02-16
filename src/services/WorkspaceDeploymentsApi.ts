@@ -1,7 +1,7 @@
 import { DeploymentResponse } from '@/models/api/DeploymentResponse'
 import { FlowRunResponse } from '@/models/api/FlowRunResponse'
 import { Deployment } from '@/models/Deployment'
-import { DeploymentFlowRunCreate } from '@/models/DeploymentFlowRunCreate'
+import { DeploymentFlowRunCreate, DeploymentFlowRunCreateV2 } from '@/models/DeploymentFlowRunCreate'
 import { DeploymentUpdate } from '@/models/DeploymentUpdate'
 import { DeploymentsFilter } from '@/models/Filters'
 import { FlowRun } from '@/models/FlowRun'
@@ -51,6 +51,13 @@ export class WorkspaceDeploymentsApi extends WorkspaceApi {
 
   public async createDeploymentFlowRun(deploymentId: string, request: DeploymentFlowRunCreate): Promise<FlowRun> {
     const body = mapper.map('DeploymentFlowRunCreate', request, 'DeploymentFlowRunRequest')
+    const { data } = await this.post<FlowRunResponse>(`/${deploymentId}/create_flow_run`, body)
+
+    return mapper.map('FlowRunResponse', data, 'FlowRun')
+  }
+
+  public async createDeploymentFlowRunV2(deploymentId: string, request: DeploymentFlowRunCreateV2): Promise<FlowRun> {
+    const body = mapper.map('DeploymentFlowRunCreateV2', request, 'DeploymentFlowRunRequest')
     const { data } = await this.post<FlowRunResponse>(`/${deploymentId}/create_flow_run`, body)
 
     return mapper.map('FlowRunResponse', data, 'FlowRun')
