@@ -6,7 +6,7 @@
       <component :is="input.component" v-bind="input.props" />
     </keep-alive>
 
-    <SchemaFormPropertyMenu v-model:kind="kind">
+    <SchemaFormPropertyMenu v-model:kind="kind" :property="property">
       <template v-if="!isFirst">
         <p-overflow-menu-item icon="ArrowSmallUpIcon" label="Move to top" @click="emit('moveToTop')" />
       </template>
