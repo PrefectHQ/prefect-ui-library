@@ -52,7 +52,13 @@ export function useSchemaPropertyInput(schemaProperty: MaybeRefOrGetter<SchemaPr
     }
 
     if (isPrefectKindValue(propertyValue.value, 'none')) {
-      throw 'not implemented'
+      return withProps(SchemaFormPropertyInput, {
+        property: property,
+        value: propertyValue.value,
+        errors,
+        state,
+        'onUpdate:value': (value) => propertyValue.value = value,
+      })
     }
 
     const exhaustive: never = propertyValue.value
