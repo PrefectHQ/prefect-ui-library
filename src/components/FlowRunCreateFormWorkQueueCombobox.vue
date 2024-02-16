@@ -1,5 +1,5 @@
 <template>
-  <template v-if="workPoolName && !workPool?.isPushPool">
+  <template v-if="!workPool?.isPushPool">
     <p-label :label="`Work Queue for ${workPoolName} (Optional)`" class="flow-run-create-form-work-queue-combobox">
       <WorkPoolQueueCombobox v-model:selected="workQueueName" :work-pool-name="workPoolName" />
     </p-label>
@@ -12,7 +12,7 @@
 
   const props = defineProps<{
     workQueueName: string | null,
-    workPoolName: string | null,
+    workPoolName: string,
   }>()
 
   const emit = defineEmits<{

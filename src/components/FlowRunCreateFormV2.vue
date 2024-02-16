@@ -34,7 +34,9 @@
               <FlowRunCreateFormTags v-model:tags="tags" :deployment="deployment" />
             </p-label>
 
-            <FlowRunCreateFormWorkQueueCombobox v-model:work-queue-name="workQueueName" :work-pool-name="deployment.workPoolName" />
+            <template v-if="deployment.workPoolName">
+              <FlowRunCreateFormWorkQueueCombobox v-model:work-queue-name="workQueueName" :work-pool-name="deployment.workPoolName" />
+            </template>
 
             <div class="flow-run-create-form-v2__retries">
               <p-label label="Retries (Optional)">
