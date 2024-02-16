@@ -1,5 +1,8 @@
 <template>
   <PageHeading :crumbs="crumbs">
+    <template #after-crumbs>
+      <slot name="after-crumbs" />
+    </template>
     <DeploymentRelationships :deployment="deployment" />
   </PageHeading>
 </template>

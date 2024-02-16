@@ -7,15 +7,13 @@
 </template>
 
 <script lang="ts" setup>
-  import debounce from 'lodash.debounce'
-  import { provide, computed, ref, watch } from 'vue'
-  import { useWorkspaceApi } from '@/compositions'
+  import { provide, computed, ref } from 'vue'
   import SchemaFormProperties from '@/schemas/components/SchemaFormProperties.vue'
   import { schemaInjectionKey } from '@/schemas/compositions/useSchema'
   import { schemaFormKindsInjectionKey } from '@/schemas/compositions/useSchemaFormKinds'
+  import { useSchemaValidation } from '@/schemas/compositions/useSchemaValidation'
   import { Schema } from '@/schemas/types/schema'
   import { PrefectKind, SchemaValues } from '@/schemas/types/schemaValues'
-  import { SchemaValueError } from '@/schemas/types/schemaValuesValidationResponse'
 
   const props = withDefaults(defineProps<{
     schema: Schema,
@@ -35,9 +33,6 @@
     'submit': [SchemaValues],
   }>()
 
-  const api = useWorkspaceApi()
-  const errors = ref<SchemaValueError[]>([])
-
   const values = computed({
     get() {
       return props.values
@@ -47,14 +42,7 @@
     },
   })
 
-  watch(values, () => {
-    // if there are no errors we can wait until the user clicks submit
-    if (!errors.value.length) {
-      return
-    }
-
-    validateDebounced()
-  }, { deep: true })
+  const { errors, validate } = useSchemaValidation(() => props.schema, values)
 
   const loadingFallback = ref(false)
   const loading = computed({
@@ -84,14 +72,4 @@
 
     emit('submit', values.value)
   }
-
-  async function validate(): Promise<boolean> {
-    const { valid, errors: errorsResponse } = await api.schemas.validate(props.schema, values.value)
-
-    errors.value = errorsResponse
-
-    return valid
-  }
-
-  const validateDebounced = debounce(validate, 1_000)
 </script>
