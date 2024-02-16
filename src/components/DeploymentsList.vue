@@ -41,7 +41,15 @@
       </template>
 
       <template #schedule="{ row }">
-        <div class="p-background deployments-list__schedule" v-for="schedule in row.schedules" :title="schedule?.schedule?.toString({ verbose: true })">{{ handleSchedule(schedule?.schedule) }}</div>
+        <div class="deployment-list__schedules">
+          <template v-for="schedule in row.schedules" :key="schedule.id">
+            <p-tooltip :text="getReadableSchedule(schedule?.schedule, true)">
+              <div class="p-background deployments-list__schedule">
+                {{ getReadableSchedule(schedule?.schedule) }}
+              </div>
+            </p-tooltip>
+          </template>
+        </div>
       </template>
 
       <template #tags="{ row }">
@@ -142,11 +150,12 @@
     limit: 50,
   }), props.prefix)
 
-  const handleSchedule = (schedule: Schedule| null): string => {
+  const getReadableSchedule = (schedule: Schedule | null, verbose: boolean = false): string => {
     if (isRRuleSchedule(schedule)) {
       return 'RRule'
     }
-    return schedule?.toString() ?? ''
+
+    return schedule?.toString({ verbose }) ?? ''
   }
 
   const page = useRouteQueryParam('page', NumberRouteParam, 1)
@@ -245,13 +254,15 @@
   font-medium
 }
 
-.deployments-list__schedule{
-  padding: 4px 8px;
-  margin: 2px;
-  display: inline-block;
-  white-space: pre-wrap;
-  float: left;
-  clear: left;
+.deployment-list__schedules { @apply
+  flex
+  flex-col
+  gap-0.5
+}
+
+.deployments-list__schedule { @apply
+  px-2
+  py-1
 }
 
 .deployment-list__created-date { @apply

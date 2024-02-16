@@ -1,18 +1,16 @@
 <template>
   <p-tooltip text="Pause or resume this schedule">
-    <p-toggle v-if="deployment.can.update" v-model="internalValue" :disabled="loading" :loading="loading" />
+    <p-toggle v-if="deployment.can.update" v-model="internalValue" :disabled="loading" />
   </p-tooltip>
 </template>
 
 <script lang="ts" setup>
   import { showToast } from '@prefecthq/prefect-design'
   import { computed, ref } from 'vue'
-  import { useCan, useWorkspaceApi } from '@/compositions'
+  import { useWorkspaceApi } from '@/compositions'
   import { localization } from '@/localization'
   import { Deployment, DeploymentSchedule } from '@/models'
   import { getApiErrorMessage } from '@/utilities/errors'
-
-  const can = useCan()
 
   const props = defineProps<{
     deployment: Deployment,
