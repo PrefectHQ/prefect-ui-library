@@ -65,9 +65,18 @@
       })
     }
 
-    if (isSchemaPropertyType(type, 'integer') || isSchemaPropertyType(type, 'number')) {
+    if (isSchemaPropertyType(type, 'integer')) {
       return withProps(PNumberInput, {
         modelValue: asType(value, Number),
+        state: props.state,
+        'onUpdate:modelValue': update,
+      })
+    }
+
+    if (isSchemaPropertyType(type, 'number')) {
+      return withProps(PNumberInput, {
+        modelValue: asType(value, Number),
+        step: '0.01',
         state: props.state,
         'onUpdate:modelValue': update,
       })
