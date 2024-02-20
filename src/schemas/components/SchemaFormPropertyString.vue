@@ -51,7 +51,7 @@
         'onUpdate:modelValue': update,
       })
     }
-    
+
     if (format === 'json-string') {
       return withProps(PCodeInput, {
         lang: 'json',
@@ -60,13 +60,13 @@
         'onUpdate:modelValue': update,
       })
     }
-    
+
     if (stringEnum) {
       return withProps(PCombobox, {
         modelValue: props.value,
         state: props.state,
         options: stringEnum.filter(isString),
-        'onUpdate:modelValue': (value) => asType(value, String),
+        'onUpdate:modelValue': (value) => update(asType(value, String)),
       })
     }
 
