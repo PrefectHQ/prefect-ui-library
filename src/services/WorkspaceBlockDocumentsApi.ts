@@ -15,9 +15,7 @@ export class WorkspaceBlockDocumentsApi extends WorkspaceApi {
   private readonly batcher = new BatchProcessor<string, BlockDocument>(async ids => {
     if (ids.length === 1) {
       const [id] = ids
-      const { data } = await this.get<BlockDocumentResponse>(`/${id}`)
-
-      return () => mapper.map('BlockDocumentResponse', data, 'BlockDocument')
+      return this.getSingleBlockDocument.bind(this, id)
     }
 
     const blockDocuments = await this.getBlockDocuments({
@@ -32,6 +30,12 @@ export class WorkspaceBlockDocumentsApi extends WorkspaceApi {
 
   public getBlockDocument(blockDocumentId: string): Promise<BlockDocument> {
     return this.batcher.batch(blockDocumentId)
+  }
+
+  protected async getSingleBlockDocument(blockDocumentId: string): Promise<BlockDocument> {
+    const { data } = await this.get<BlockDocumentResponse>(`/${blockDocumentId}`)
+
+    return mapper.map('BlockDocumentResponse', data, 'BlockDocument')
   }
 
   public async getBlockDocuments(filter: BlockDocumentsFilter = {}): Promise<BlockDocument[]> {
