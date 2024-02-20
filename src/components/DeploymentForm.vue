@@ -35,22 +35,24 @@
         </p-label>
       </p-content>
 
-      <p-divider />
+      <template v-if="!can.access.enhancedSchedulingUi">
+        <p-divider />
 
-      <p-content>
-        <h3 class="deployment-form__section-header">
-          Scheduling
-        </h3>
+        <p-content>
+          <h3 class="deployment-form__section-header">
+            Scheduling
+          </h3>
 
-        <span>
-          <p-label label="Schedule" />
-          <ScheduleFieldset v-model="schedule" :readonly="!deployment.can.update" />
-        </span>
+          <span>
+            <p-label label="Schedule" />
+            <ScheduleFieldset v-model="schedule" :readonly="!deployment.can.update" />
+          </span>
 
-        <p-label label="Scheduler">
-          <p-toggle v-model="isScheduleActive" :disabled="!schedule" class="deployment-form__schedule-toggle" />
-        </p-label>
-      </p-content>
+          <p-label label="Scheduler">
+            <p-toggle v-model="isScheduleActive" :disabled="!schedule" class="deployment-form__schedule-toggle" />
+          </p-label>
+        </p-content>
+      </template>
 
       <p-divider />
 
@@ -99,12 +101,15 @@
   import { useField } from 'vee-validate'
   import { computed } from 'vue'
   import { SchemaInput, ScheduleFieldset, WorkPoolCombobox, WorkPoolQueueCombobox, JsonInput } from '@/components'
+  import { useCan } from '@/compositions'
   import { useForm } from '@/compositions/useForm'
   import { useOptionalPropertiesSchema } from '@/compositions/useOptionalPropertiesSchema'
   import { localization } from '@/localization'
   import { Deployment, DeploymentUpdate, DeploymentEdit, Schedule } from '@/models'
   import { SchemaValues } from '@/types/schemas'
   import { stringify, isJson, fieldRules } from '@/utilities'
+
+  const can = useCan()
 
   const props = defineProps<{
     deployment: Deployment,
