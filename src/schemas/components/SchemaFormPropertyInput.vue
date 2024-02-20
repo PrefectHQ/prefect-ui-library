@@ -68,6 +68,7 @@
     if (isSchemaPropertyType(type, 'integer')) {
       return withProps(PNumberInput, {
         modelValue: asType(value, Number),
+        step: '1',
         state: props.state,
         'onUpdate:modelValue': update,
       })
