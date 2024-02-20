@@ -3,13 +3,14 @@
 </template>
 
 <script lang="ts" setup>
-  import { PTextInput, State } from '@prefecthq/prefect-design'
+  import { PCombobox, PCodeInput, PTextInput, State } from '@prefecthq/prefect-design'
   import { computed } from 'vue'
   import SchemaFormPropertyDate from '@/schemas/components/SchemaFormPropertyDate.vue'
   import SchemaFormPropertyDateTime from '@/schemas/components/SchemaFormPropertyDateTime.vue'
   import { useSchemaProperty } from '@/schemas/compositions/useSchemaProperty'
   import { SchemaProperty } from '@/schemas/types/schema'
-  import { withProps } from '@/utilities'
+  import { isString, withProps } from '@/utilities'
+  import { asType } from '@/utilities/types'
 
   const props = defineProps<{
     property: SchemaProperty & { type: 'string' },
@@ -24,7 +25,7 @@
   const { property } = useSchemaProperty(() => props.property)
 
   const input = computed(() => {
-    const { format } = property.value
+    const { format, enum: stringEnum } = property.value
 
     if (format === 'date') {
       return withProps(SchemaFormPropertyDate, {
@@ -48,6 +49,24 @@
         modelValue: props.value,
         state: props.state,
         'onUpdate:modelValue': update,
+      })
+    }
+    
+    if (format === 'json-string') {
+      return withProps(PCodeInput, {
+        lang: 'json',
+        modelValue: props.value,
+        state: props.state,
+        'onUpdate:modelValue': update,
+      })
+    }
+    
+    if (stringEnum) {
+      return withProps(PCombobox, {
+        modelValue: props.value,
+        state: props.state,
+        options: stringEnum.filter(isString),
+        'onUpdate:modelValue': (value) => asType(value, String),
       })
     }
 
