@@ -14,7 +14,8 @@ export class WorkspaceWorkPoolsApi extends WorkspaceApi {
   }
 
   public async getWorkPoolByName(name: string): Promise<WorkPool> {
-    const { data } = await this.get<WorkPoolResponse>(encodeURI(`/${name}`))
+    const encodedWorkPoolName = encodeURI(name)
+    const { data } = await this.get<WorkPoolResponse>(`/${encodedWorkPoolName}`)
 
     return mapper.map('WorkPoolResponse', data, 'WorkPool')
   }
@@ -28,25 +29,30 @@ export class WorkspaceWorkPoolsApi extends WorkspaceApi {
 
   public updateWorkPool(name: string, request: WorkPoolEdit): Promise<void> {
     const body = mapper.map('WorkPoolEdit', request, 'WorkPoolEditRequest')
+    const encodedWorkPoolName = encodeURI(name)
 
-    return this.patch(encodeURI(`/${name}`), body)
+    return this.patch(`/${encodedWorkPoolName}`, body)
   }
 
   public pauseWorkPool(name: string): Promise<void> {
-    return this.patch(encodeURI(`/${name}`), { 'is_paused': true })
+    const encodedWorkPoolName = encodeURI(name)
+    return this.patch(`/${encodedWorkPoolName}`, { 'is_paused': true })
   }
 
   public resumeWorkPool(name: string): Promise<void> {
-    return this.patch(encodeURI(`/${name}`), { 'is_paused': false })
+    const encodedWorkPoolName = encodeURI(name)
+    return this.patch(`/${encodedWorkPoolName}`, { 'is_paused': false })
   }
 
   public deleteWorkPool(name: string): Promise<void> {
-    return this.delete(encodeURI(`/${name}`))
+    const encodedWorkPoolName = encodeURI(name)
+    return this.delete(`/${encodedWorkPoolName}`)
   }
 
   public async getWorkPoolScheduledRuns(name: string, request: WorkerScheduledFlowRuns): Promise<WorkerScheduledFlowRun[]> {
     const body = mapper.map('WorkerScheduledFlowRuns', request, 'WorkerScheduledFlowRunsRequest')
-    const { data } = await this.post<WorkerScheduledFlowRunResponse[]>(encodeURI(`/${name}/get_scheduled_flow_runs`), body)
+    const encodedWorkPoolName = encodeURI(name)
+    const { data } = await this.post<WorkerScheduledFlowRunResponse[]>(`/${encodedWorkPoolName}/get_scheduled_flow_runs`, body)
 
     return mapper.map('WorkerScheduledFlowRunResponse', data, 'WorkerScheduledFlowRun')
   }
