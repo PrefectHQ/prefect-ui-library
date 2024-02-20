@@ -15,7 +15,7 @@
     <template v-if="can.access.enhancedSchedulingUi">
       <p-key-value label="Schedules" :alternate="alternate" class="items-stretch">
         <template #value>
-          <DeploymentScheduleFieldset :deployment="deployment" :schedules="deployment.schedules" @create="createDeploymentSchedule" @update="emit('update')" />
+          <DeploymentSchedulesFieldset :deployment="deployment" :schedules="deployment.schedules" @create="createDeploymentSchedule" @update="emit('update')" />
         </template>
       </p-key-value>
     </template>
@@ -85,7 +85,7 @@
 <script lang="ts" setup>
   import { showToast, PLoadingIcon } from '@prefecthq/prefect-design'
   import { ref, computed } from 'vue'
-  import { BlockIconText, ScheduleFieldset, DeploymentStatusBadge, DeploymentScheduleFieldset } from '@/components'
+  import { BlockIconText, ScheduleFieldset, DeploymentStatusBadge, DeploymentSchedulesFieldset } from '@/components'
   import { useWorkspaceApi, useCan } from '@/compositions'
   import { localization } from '@/localization'
   import { Schedule, Deployment, DeploymentScheduleCompatible } from '@/models'
@@ -174,10 +174,6 @@
   flex-col
   gap-3
   items-start
-}
-
-.deployment-details__schedules-sidebar { @apply
-  space-y-2
 }
 
 .deployment-details__schedule { @apply

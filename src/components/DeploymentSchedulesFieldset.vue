@@ -1,6 +1,6 @@
 <template>
-  <div class="deployment-details__schedules-sidebar">
-    <template v-for="deploymentSchedule in schedules" :key="deploymentSchedule.id">
+  <div class="deployment-schedule-fieldset">
+    <template v-for="deploymentSchedule in schedules.toSorted(sortByCreated)" :key="deploymentSchedule.id">
       <DeploymentScheduleCard :deployment="deployment" :deployment-schedule="deploymentSchedule" @update="emits('update')" />
     </template>
 
@@ -28,4 +28,14 @@
   const createSchedule = (value: DeploymentScheduleCompatible): void => {
     emits('create', value)
   }
+
+  const sortByCreated = (one: DeploymentSchedule, two: DeploymentSchedule): number => {
+    return one.created.getTime() - two.created.getTime()
+  }
 </script>
+
+<style>
+.deployment-schedule-fieldset { @apply
+  space-y-2
+}
+</style>
