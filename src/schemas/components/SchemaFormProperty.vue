@@ -34,7 +34,7 @@
 
 <script lang="ts" setup>
   import { isNotNullish } from '@prefecthq/prefect-design'
-  import { computed, ref } from 'vue'
+  import { computed, ref, onMounted } from 'vue'
   import SchemaFormPropertyMenu from '@/schemas/components/SchemaFormPropertyMenu.vue'
   import { usePrefectKind } from '@/schemas/compositions/usePrefectKind'
   import { useSchemaProperty } from '@/schemas/compositions/useSchemaProperty'
@@ -61,6 +61,11 @@
   const omitted = ref(false)
   const omittedValue = ref<SchemaValue>(null)
   const omitLabel = computed(() => omitted.value ? 'Include value' : 'Omit value')
+  const initialized = ref(false)
+
+  onMounted(() => {
+    initialized.value = true
+  })
 
   const classes = computed(() => ({
     label: {
@@ -81,7 +86,7 @@
         return props.value
       }
 
-      if (isNotNullish(property.value.default)) {
+      if (!initialized.value && isNotNullish(property.value.default)) {
         return property.value.default
       }
 
