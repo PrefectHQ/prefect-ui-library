@@ -13,21 +13,26 @@
     </p-key-value>
 
     <template v-if="can.access.enhancedSchedulingUi">
-      <p-label label="Schedules" />
-      <template v-for="deploymentSchedule in deployment.schedules" :key="deploymentSchedule.id">
-        <DeploymentScheduleCard :deployment="deployment" :deployment-schedule="deploymentSchedule" @update="emit('update')" />
-      </template>
+      <p-key-value label="Schedules" :alternate="alternate" class="items-stretch">
+        <template #value>
+          <div class="deployment-details__schedules-sidebar">
+            <template v-for="deploymentSchedule in deployment.schedules" :key="deploymentSchedule.id">
+              <DeploymentScheduleCard :deployment="deployment" :deployment-schedule="deploymentSchedule" @update="emit('update')" />
+            </template>
 
-      <ScheduleFormModal v-if="deployment.can.update" @submit="createSchedule">
-        <template #default="{ open }">
-          <p-button small icon="PlusIcon" @click="open">
-            Schedule
-          </p-button>
+            <ScheduleFormModal v-if="deployment.can.update" :active="null" :schedule="null" @submit="createDeploymentSchedule">
+              <template #default="{ open }">
+                <p-button small icon="PlusIcon" @click="open">
+                  Schedule
+                </p-button>
+              </template>
+            </ScheduleFormModal>
+          </div>
         </template>
-      </ScheduleFormModal>
+      </p-key-value>
     </template>
     <template v-else>
-      <p-key-value label="Schedule" :alternate="alternate" :value="deployment.schedule?.toString({ verbose: false })">
+      <p-key-value label="Schedule" :alternate="alternate" :value="deployment.schedule?.toString({ verbose: true })">
         <template v-if="!deployment.deprecated" #value>
           <div class="deployment-details__schedule" :class="classes.schedule">
             <p-loading-icon v-if="updateScheduleLoading" class="deployment-details__schedule-loading-icon" />
@@ -95,7 +100,7 @@
   import { BlockIconText, ScheduleFieldset, DeploymentStatusBadge, DeploymentScheduleCard, ScheduleFormModal } from '@/components'
   import { useWorkspaceApi, useCan } from '@/compositions'
   import { localization } from '@/localization'
-  import { Schedule, Deployment, DeploymentScheduleCompat } from '@/models'
+  import { Schedule, Deployment, DeploymentScheduleCompatible } from '@/models'
   import { formatDateTimeNumeric } from '@/utilities/dates'
   import { getApiErrorMessage } from '@/utilities/errors'
 
@@ -159,9 +164,9 @@
     }
   }
 
-  const createSchedule = async (updatedSchedule: DeploymentScheduleCompat): Promise<void> => {
+  const createDeploymentSchedule = async (updatedSchedule: DeploymentScheduleCompatible): Promise<void> => {
     if (updatedSchedule.active === null || !updatedSchedule.schedule) {
-      showToast('Unable to update schedule.', 'error')
+      showToast('Must provide a schedule and indicate if it should be active or not.', 'error')
       return
     }
 
@@ -181,6 +186,10 @@
   flex-col
   gap-3
   items-start
+}
+
+.deployment-details__schedules-sidebar { @apply
+  space-y-2
 }
 
 .deployment-details__schedule { @apply

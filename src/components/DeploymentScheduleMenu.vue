@@ -5,7 +5,7 @@
     <p-overflow-menu-item v-if="deployment.can.delete" label="Delete" @click="openConfirmDeleteModal" />
   </p-icon-button-menu>
 
-  <ScheduleFormModal ref="scheduleFormModalRef" :schedule="compatSchedule" @submit="updateSchedule" />
+  <ScheduleFormModal ref="scheduleFormModalRef" v-bind="compatSchedule" @submit="updateSchedule" />
 
   <ConfirmDeleteModal
     v-model:showModal="showConfirmDeleteModal"
@@ -30,7 +30,7 @@
   import { ScheduleFormModalMethods } from '@/components/ScheduleFormModal.vue'
   import { useWorkspaceApi, useShowModal } from '@/compositions'
   import { localization } from '@/localization'
-  import { Deployment, DeploymentSchedule, DeploymentScheduleCompat } from '@/models'
+  import { Deployment, DeploymentSchedule, DeploymentScheduleCompatible } from '@/models'
   import { deleteItem } from '@/utilities'
 
 
@@ -40,13 +40,13 @@
   }>()
 
   const emit = defineEmits<{
-    (event: 'update', value: DeploymentScheduleCompat): void,
+    (event: 'update', value: DeploymentScheduleCompatible): void,
     (event: 'delete', value: string): void,
   }>()
 
   const api = useWorkspaceApi()
 
-  const compatSchedule = ref<DeploymentScheduleCompat>({
+  const compatSchedule = ref<DeploymentScheduleCompatible>({
     active: props.schedule.active,
     schedule: props.schedule.schedule,
   })
@@ -65,7 +65,7 @@
     emit('delete', scheduleId)
   }
 
-  const updateSchedule = async (updatedSchedule: DeploymentScheduleCompat): Promise<void> => {
+  const updateSchedule = async (updatedSchedule: DeploymentScheduleCompatible): Promise<void> => {
     if (updatedSchedule.active === null || !updatedSchedule.schedule) {
       showToast('Unable to update schedule.', 'error')
       return

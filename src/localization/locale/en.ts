@@ -42,7 +42,7 @@ export const en = {
     editVariable: 'Failed to updated variable',
     invalidJSON: 'Invalid JSON',
     pauseDeployment: 'Failed to pause deployment',
-    pauseDeploymentSchedule: 'Failed to inactivate deployment schedule',
+    pauseDeploymentSchedule: 'Failed to deactivate deployment schedule',
     pauseNotification: 'Failed to pause notification',
     pauseWorkPool: 'Failed to pause work pool',
     pauseWorkPoolQueue: 'Failed to pause work queue',

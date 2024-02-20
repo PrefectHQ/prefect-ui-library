@@ -6,7 +6,7 @@
     </p-label>
 
     <p-label v-if="can.access.enhancedSchedulingUi" label="Active">
-      <p-toggle v-model="active" />
+      <p-toggle v-model="internalActive" />
     </p-label>
 
     <template v-if="scheduleForm == 'rrule'">
@@ -37,7 +37,7 @@
   import CronScheduleForm from '@/components/CronScheduleForm.vue'
   import IntervalScheduleForm from '@/components/IntervalScheduleForm.vue'
   import { useCan, useShowModal } from '@/compositions'
-  import { DeploymentScheduleCompat, getScheduleType, Schedule, ScheduleType, isCronSchedule, isIntervalSchedule, CronSchedule, IntervalSchedule } from '@/models'
+  import { DeploymentScheduleCompatible, getScheduleType, Schedule, ScheduleType, isCronSchedule, isIntervalSchedule, CronSchedule, IntervalSchedule } from '@/models'
 
   const { showModal, open, close } = useShowModal()
 
@@ -49,31 +49,20 @@
 
   const can = useCan()
 
-  const props = defineProps<{
-    schedule?: DeploymentScheduleCompat,
-  }>()
+  const props = defineProps<DeploymentScheduleCompatible>()
 
-  const internalActive = ref<boolean>(props.schedule?.active ?? true)
-
-  const active = computed({
-    get: () => {
-      return internalActive.value
-    },
-    set: (value: boolean) => {
-      internalActive.value = value
-    },
-  })
+  const internalActive = ref<boolean>(props.active ?? true)
 
   const emit = defineEmits<{
-    (event: 'submit', value: DeploymentScheduleCompat): void,
+    (event: 'submit', value: DeploymentScheduleCompatible): void,
   }>()
 
 
   const scheduleFormSubmit = (schedule: Schedule): void => {
-    submit({ 'active': active.value, 'schedule': schedule })
+    submit({ 'active': internalActive.value, 'schedule': schedule })
   }
 
-  const submit = (schedule: DeploymentScheduleCompat): void => {
+  const submit = (schedule: DeploymentScheduleCompatible): void => {
     emit('submit', schedule)
     close()
   }
@@ -98,22 +87,22 @@
     }
 
     submit({
-      'active': active.value,
+      'active': internalActive.value,
       schedule,
     })
   }
 
-  const cronSchedule = ref<CronSchedule | undefined>(isCronSchedule(props.schedule?.schedule) ? props.schedule.schedule : undefined)
-  const intervalSchedule = ref<IntervalSchedule | undefined>(isIntervalSchedule(props.schedule?.schedule) ? props.schedule.schedule : undefined)
-  const scheduleForm = ref<ScheduleType>(getScheduleType(props.schedule?.schedule) ?? 'interval')
+  const cronSchedule = ref<CronSchedule | undefined>(isCronSchedule(props.schedule) ? props.schedule : undefined)
+  const intervalSchedule = ref<IntervalSchedule | undefined>(isIntervalSchedule(props.schedule) ? props.schedule : undefined)
+  const scheduleForm = ref<ScheduleType>(getScheduleType(props.schedule) ?? 'interval')
   const scheduleFormOptions: ButtonGroupOption[] = [{ label: 'Interval', value: 'interval' }, { label: 'Cron', value: 'cron' }, { label: 'RRule', value: 'rrule' }]
 
   const updateInternalState = (): void => {
-    cronSchedule.value = isCronSchedule(props.schedule?.schedule) ? props.schedule.schedule : undefined
-    intervalSchedule.value = isIntervalSchedule(props.schedule?.schedule) ? props.schedule.schedule : undefined
-    internalActive.value = props.schedule?.active ?? true
+    cronSchedule.value = isCronSchedule(props.schedule) ? props.schedule : undefined
+    intervalSchedule.value = isIntervalSchedule(props.schedule) ? props.schedule : undefined
+    internalActive.value = props.active ?? true
   }
-  watch(() => props.schedule?.schedule, updateInternalState)
+  watch(() => props.schedule, updateInternalState)
 </script>
 
 <script lang="ts">

@@ -1,8 +1,8 @@
 <template>
   <p-list-item class="deployment-schedule-card">
-    <p-tooltip :text="schedule.schedule?.toString({ verbose: true })">
+    <p-tooltip :text="internalValue.schedule?.toString({ verbose: true })">
       <div class="deployment-schedule-card__content">
-        {{ schedule.schedule?.toString({ verbose: false }) }}
+        {{ internalValue.schedule?.toString({ verbose: false }) }}
       </div>
     </p-tooltip>
     <div class="deployment-schedule-card__action">
@@ -21,9 +21,9 @@
 
 
 <script lang="ts" setup>
-  import { computed, ref, watch } from 'vue'
+  import { ref, watch } from 'vue'
   import { DeploymentScheduleMenu, DeploymentScheduleToggle } from '@/components'
-  import { Deployment, DeploymentSchedule, DeploymentScheduleCompat } from '@/models'
+  import { Deployment, DeploymentSchedule, DeploymentScheduleCompatible } from '@/models'
 
   const props = defineProps<{
     deployment: Deployment,
@@ -34,22 +34,14 @@
     (event: 'update'): void,
   }>()
 
-  const internalValue = ref<DeploymentScheduleCompat>({ 'active': props.deploymentSchedule.active, 'schedule': props.deploymentSchedule.schedule })
-  const schedule = computed({
-    get: () => {
-      return internalValue.value
-    },
-    set: (value: DeploymentScheduleCompat) => {
-      internalValue.value = value
-    },
-  })
+  const internalValue = ref<DeploymentScheduleCompatible>({ 'active': props.deploymentSchedule.active, 'schedule': props.deploymentSchedule.schedule })
 
   const updateActiveStatus = (value: boolean): void => {
-    schedule.value.active = value
+    internalValue.value.active = value
     emit('update')
   }
 
-  const scheduleUpdated = (schedule: DeploymentScheduleCompat): void => {
+  const scheduleUpdated = (schedule: DeploymentScheduleCompatible): void => {
     internalValue.value = schedule
   }
 

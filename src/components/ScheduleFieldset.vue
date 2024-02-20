@@ -1,12 +1,12 @@
 <template>
   <div class="schedule-fieldset">
-    <div v-if="internalValue.schedule" class="schedule-fieldset__schedule">
-      {{ internalValue.schedule.toString({ verbose: true }) }}
+    <div v-if="internalValue" class="schedule-fieldset__schedule">
+      {{ internalValue.toString({ verbose: true }) }}
     </div>
 
     <template v-if="!readonly">
       <div class="schedule-fieldset__buttons">
-        <ScheduleFormModal :schedule="internalValue" @submit="updateSchedule">
+        <ScheduleFormModal :active="null" :schedule="internalValue" @submit="updateSchedule">
           <template #default="{ open }">
             <p-button small icon="PencilIcon" class="schedule-fieldset__button" :disabled="loading" @click="open">
               {{ internalValue ? 'Edit' : 'Add' }}
@@ -32,7 +32,7 @@
 <script lang="ts" setup>
   import { computed } from 'vue'
   import ScheduleFormModal from '@/components/ScheduleFormModal.vue'
-  import { DeploymentScheduleCompat, Schedule } from '@/models'
+  import { DeploymentScheduleCompatible, Schedule } from '@/models'
 
   const props = defineProps<{
     modelValue: Schedule | null,
@@ -46,25 +46,19 @@
 
   const internalValue = computed({
     get() {
-      return {
-        'active': null,
-        'schedule': props.modelValue,
-      }
+      return props.modelValue
     },
-    set(value: DeploymentScheduleCompat) {
-      emit('update:modelValue', value.schedule)
+    set(value: Schedule | null) {
+      emit('update:modelValue', value)
     },
   })
 
-  const updateSchedule = (schedule: DeploymentScheduleCompat): void => {
-    internalValue.value = schedule
+  const updateSchedule = (deploymentSchedule: DeploymentScheduleCompatible): void => {
+    internalValue.value = deploymentSchedule.schedule
   }
 
   const removeSchedule = (): void => {
-    internalValue.value = {
-      'active': null,
-      'schedule': null,
-    }
+    internalValue.value = null
   }
 </script>
 
