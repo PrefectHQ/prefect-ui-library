@@ -19,8 +19,9 @@
 <script lang="ts" setup>
   import { computed, useSlots } from 'vue'
   import { useSchemaFormKinds } from '@/schemas/compositions/useSchemaFormKinds'
-  import { SchemaProperty } from '@/schemas/types/schema'
+  import { SchemaProperty, isSchemaPropertyType } from '@/schemas/types/schema'
   import { PrefectKind } from '@/schemas/types/schemaValues'
+  import { isNullish } from '@/utilities'
 
   const props = defineProps<{
     kind: PrefectKind,
@@ -38,7 +39,13 @@
   const showMenu = computed(() => kinds.length || slots.default)
   const showDivider = computed(() => !props.disabled && kinds.length)
 
-  const showNone = computed(() => props.property.type !== undefined)
+  const showNone = computed(() => {
+    if (isSchemaPropertyType(props.property.type, 'object') && isNullish(props.property.properties)) {
+      return false
+    }
+
+    return props.property.type !== undefined
+  })
 
   function showKind(kind: PrefectKind): boolean {
     return props.kind !== kind && (kinds.includes(kind) || kind === 'none')
