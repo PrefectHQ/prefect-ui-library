@@ -22,6 +22,7 @@ export const { values: schemaStringFormat, isValue: isSchemaStringFormat } = cre
   'date',
   'date-time',
   'password',
+  'json-string',
 ])
 
 export type SchemaStringFormat = typeof schemaStringFormat[number]

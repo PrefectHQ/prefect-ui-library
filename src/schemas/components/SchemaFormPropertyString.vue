@@ -3,7 +3,7 @@
 </template>
 
 <script lang="ts" setup>
-  import { PTextInput, State } from '@prefecthq/prefect-design'
+  import { PCodeInput, PTextInput, State } from '@prefecthq/prefect-design'
   import { computed } from 'vue'
   import SchemaFormPropertyDate from '@/schemas/components/SchemaFormPropertyDate.vue'
   import SchemaFormPropertyDateTime from '@/schemas/components/SchemaFormPropertyDateTime.vue'
@@ -45,6 +45,15 @@
     if (format === 'password') {
       return withProps(PTextInput, {
         type: 'password',
+        modelValue: props.value,
+        state: props.state,
+        'onUpdate:modelValue': update,
+      })
+    }
+
+    if (format === 'json-string') {
+      return withProps(PCodeInput, {
+        lang: 'json',
         modelValue: props.value,
         state: props.state,
         'onUpdate:modelValue': update,
