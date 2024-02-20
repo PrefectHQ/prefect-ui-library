@@ -8,8 +8,10 @@
   import { computed } from 'vue'
   import SchemaFormProperties from '@/schemas/components/SchemaFormProperties.vue'
   import { SchemaProperty } from '@/schemas/types/schema'
-  import { SchemaValues } from '@/schemas/types/schemaValues'
+  import { PrefectKindJson, SchemaValues } from '@/schemas/types/schemaValues'
   import { SchemaValueError } from '@/schemas/types/schemaValuesValidationResponse'
+  import { isNullish } from '@/utilities'
+  import { asJson } from '@/utilities/types'
 
   const props = defineProps<{
     property: SchemaProperty & { type: 'object' },
@@ -20,6 +22,15 @@
   const emit = defineEmits<{
     'update:values': [SchemaValues | undefined],
   }>()
+
+  if (isNullish(props.property.properties)) {
+    const json: PrefectKindJson = {
+      __prefect_kind: 'json',
+      value: asJson(props.values),
+    }
+
+    emit('update:values', json)
+  }
 
   const values = computed({
     get() {
