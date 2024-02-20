@@ -36,7 +36,7 @@
       modelValue: asType(props.value, Number),
       step: '1',
       state: props.state,
-      'onUpdate:modelValue': value => emit('update:value', value),
+      'onUpdate:modelValue': value => emit('update:value', asType(value, Number)),
     })
   })
 </script>
