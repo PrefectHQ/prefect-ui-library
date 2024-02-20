@@ -35,7 +35,7 @@
 
   const props = defineProps<{
     property: SchemaProperty & { type: 'array' },
-    value: unknown[] | null,
+    value: unknown[] | undefined,
     errors: SchemaValueError[],
     state: State,
   }>()
@@ -44,7 +44,7 @@
   const empty = computed(() => !props.value?.length)
 
   const emit = defineEmits<{
-    'update:value': [unknown[] | null],
+    'update:value': [unknown[] | undefined],
   }>()
 
   const value = computed({
@@ -53,7 +53,7 @@
     },
     set(value) {
       if (value.length === 0) {
-        emit('update:value', null)
+        emit('update:value', undefined)
         return
       }
 

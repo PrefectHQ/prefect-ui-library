@@ -76,10 +76,10 @@ export function isBlockDocumentReferenceValue(value: unknown): value is BlockDoc
   return isRecord(value) && isString(value.$ref)
 }
 
-export function asBlockDocumentReferenceValue(value: unknown): BlockDocumentReferenceValue | null {
+export function asBlockDocumentReferenceValue(value: unknown): BlockDocumentReferenceValue | undefined {
   if (isBlockDocumentReferenceValue(value)) {
     return value
   }
 
-  return null
+  return undefined
 }

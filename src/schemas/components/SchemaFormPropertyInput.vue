@@ -10,6 +10,7 @@
   import SchemaFormPropertyArray from '@/schemas/components/SchemaFormPropertyArray.vue'
   import SchemaFormPropertyBlockDocument from '@/schemas/components/SchemaFormPropertyBlockDocument.vue'
   import SchemaFormPropertyInteger from '@/schemas/components/SchemaFormPropertyInteger.vue'
+  import SchemaFormPropertyNull from '@/schemas/components/SchemaFormPropertyNull.vue'
   import SchemaFormPropertyObject from '@/schemas/components/SchemaFormPropertyObject.vue'
   import SchemaFormPropertyString from '@/schemas/components/SchemaFormPropertyString.vue'
   import { useSchemaProperty } from '@/schemas/compositions/useSchemaProperty'
@@ -30,10 +31,6 @@
     'update:value': [SchemaValue],
   }>()
 
-  function update(value: unknown): void {
-    emit('update:value', value)
-  }
-
   const { property } = useSchemaProperty(() => props.property)
 
   const input = computed(() => {
@@ -45,7 +42,7 @@
         property: property.value,
         state: props.state,
         value: asBlockDocumentReferenceValue(value),
-        'onUpdate:value': update,
+        'onUpdate:value': (value) => emit('update:value', value),
       })
     }
 
@@ -53,7 +50,7 @@
       return withProps(PToggle, {
         modelValue: asType(value, Boolean),
         state: props.state,
-        'onUpdate:modelValue': update,
+        'onUpdate:modelValue': (value) => emit('update:value', asType(value, Boolean)),
       })
     }
 
@@ -62,7 +59,7 @@
         property: { ...property.value, type },
         value: asType(value, String),
         state: props.state,
-        'onUpdate:value': update,
+        'onUpdate:value': (value) => emit('update:value', asType(value, String)),
       })
     }
 
@@ -71,7 +68,7 @@
         property: { ...property.value, type },
         value: asType(value, Number),
         state: props.state,
-        'onUpdate:value': update,
+        'onUpdate:value': (value) => emit('update:value', asType(value, Number)),
       })
     }
 
@@ -80,7 +77,7 @@
         modelValue: asType(value, Number),
         step: '0.01',
         state: props.state,
-        'onUpdate:modelValue': update,
+        'onUpdate:modelValue': (value) => emit('update:value', asType(value, Number)),
       })
     }
 
@@ -90,7 +87,7 @@
         value: asType(value, Array),
         errors: props.errors,
         state: props.state,
-        'onUpdate:value': update,
+        'onUpdate:value': (value) => emit('update:value', asType(value, Array)),
       })
     }
 
@@ -99,12 +96,16 @@
         property: { ...property.value, type },
         values: asType(value, Object),
         errors: props.errors,
-        'onUpdate:values': update,
+        'onUpdate:values': (value) => emit('update:value', asType(value, Object)),
       })
     }
 
     if (isSchemaPropertyType(type, 'null')) {
-      return { component: null, props: {} }
+      return withProps(SchemaFormPropertyNull, {
+        property: { ...property.value, type },
+        value: null,
+        'onUpdate:value': (value) => emit('update:value', value),
+      })
     }
 
     if (isSchemaPropertyType(type, undefined)) {
@@ -113,7 +114,7 @@
         value: asJson(value),
       }
 
-      update(json)
+      emit('update:value', json)
 
       return { component: null, props: {} }
     }
