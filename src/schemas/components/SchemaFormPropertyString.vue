@@ -3,7 +3,7 @@
 </template>
 
 <script lang="ts" setup>
-  import { PCombobox, PTextInput, State } from '@prefecthq/prefect-design'
+  import { PCombobox, PCodeInput, PTextInput, State } from '@prefecthq/prefect-design'
   import { computed } from 'vue'
   import SchemaFormPropertyDate from '@/schemas/components/SchemaFormPropertyDate.vue'
   import SchemaFormPropertyDateTime from '@/schemas/components/SchemaFormPropertyDateTime.vue'
@@ -51,7 +51,16 @@
         'onUpdate:modelValue': update,
       })
     }
-
+    
+    if (format === 'json-string') {
+      return withProps(PCodeInput, {
+        lang: 'json',
+        modelValue: props.value,
+        state: props.state,
+        'onUpdate:modelValue': update,
+      })
+    }
+    
     if (stringEnum) {
       return withProps(PCombobox, {
         modelValue: props.value,

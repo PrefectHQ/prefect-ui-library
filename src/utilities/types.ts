@@ -1,3 +1,4 @@
+import { stringify } from '@/utilities/json'
 import { isString } from '@/utilities/strings'
 import { isNullish } from '@/utilities/variables'
 
@@ -25,5 +26,5 @@ export function asJson(value: unknown): string {
     // silence is golden
   }
 
-  return JSON.stringify(value)
+  return stringify(value)
 }

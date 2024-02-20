@@ -1,5 +1,5 @@
 <template>
-  <p-form class="schema-form" @submit="submit">
+  <p-form class="schema-form" novalidate @submit="submit">
     <template v-if="schema.properties">
       <SchemaFormProperties v-model:values="values" :parent="schema" :properties="schema.properties" :errors="errors" />
     </template>
