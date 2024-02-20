@@ -38,12 +38,12 @@
   const property = computed(() => {
     const definitions = props.property.allOf.reduce<SchemaProperty>((property, definition) => {
       if (isPropertyWith(definition, '$ref')) {
-        return merge(getSchemaDefinition(schema, definition.$ref), property)
+        return merge({}, getSchemaDefinition(schema, definition.$ref), property)
       }
 
-      return merge(property, definition)
+      return merge({}, property, definition)
     }, {})
 
-    return merge(definitions, props.property)
+    return merge({}, definitions, props.property)
   })
 </script>
