@@ -15,19 +15,7 @@
     <template v-if="can.access.enhancedSchedulingUi">
       <p-key-value label="Schedules" :alternate="alternate" class="items-stretch">
         <template #value>
-          <div class="deployment-details__schedules-sidebar">
-            <template v-for="deploymentSchedule in deployment.schedules" :key="deploymentSchedule.id">
-              <DeploymentScheduleCard :deployment="deployment" :deployment-schedule="deploymentSchedule" @update="emit('update')" />
-            </template>
-
-            <ScheduleFormModal v-if="deployment.can.update" :active="null" :schedule="null" @submit="createDeploymentSchedule">
-              <template #default="{ open }">
-                <p-button small icon="PlusIcon" @click="open">
-                  Schedule
-                </p-button>
-              </template>
-            </ScheduleFormModal>
-          </div>
+          <DeploymentScheduleFieldset :deployment="deployment" :schedules="deployment.schedules" @create="createDeploymentSchedule" @update="emit('update')" />
         </template>
       </p-key-value>
     </template>
@@ -97,7 +85,7 @@
 <script lang="ts" setup>
   import { showToast, PLoadingIcon } from '@prefecthq/prefect-design'
   import { ref, computed } from 'vue'
-  import { BlockIconText, ScheduleFieldset, DeploymentStatusBadge, DeploymentScheduleCard, ScheduleFormModal } from '@/components'
+  import { BlockIconText, ScheduleFieldset, DeploymentStatusBadge, DeploymentScheduleFieldset } from '@/components'
   import { useWorkspaceApi, useCan } from '@/compositions'
   import { localization } from '@/localization'
   import { Schedule, Deployment, DeploymentScheduleCompatible } from '@/models'
