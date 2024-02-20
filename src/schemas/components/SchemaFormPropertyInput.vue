@@ -9,6 +9,7 @@
   import { computed } from 'vue'
   import SchemaFormPropertyArray from '@/schemas/components/SchemaFormPropertyArray.vue'
   import SchemaFormPropertyBlockDocument from '@/schemas/components/SchemaFormPropertyBlockDocument.vue'
+  import SchemaFormPropertyInteger from '@/schemas/components/SchemaFormPropertyInteger.vue'
   import SchemaFormPropertyObject from '@/schemas/components/SchemaFormPropertyObject.vue'
   import SchemaFormPropertyString from '@/schemas/components/SchemaFormPropertyString.vue'
   import { useSchemaProperty } from '@/schemas/compositions/useSchemaProperty'
@@ -66,11 +67,11 @@
     }
 
     if (isSchemaPropertyType(type, 'integer')) {
-      return withProps(PNumberInput, {
-        modelValue: asType(value, Number),
-        step: '1',
+      return withProps(SchemaFormPropertyInteger, {
+        property: { ...property.value, type },
+        value: asType(value, Number),
         state: props.state,
-        'onUpdate:modelValue': update,
+        'onUpdate:value': update,
       })
     }
 
