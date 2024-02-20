@@ -17,9 +17,7 @@ export class WorkspaceDeploymentsApi extends WorkspaceApi {
   private readonly batcher = new BatchProcessor<string, Deployment>(async ids => {
     if (ids.length === 1) {
       const [id] = ids
-      const { data } = await this.get<DeploymentResponse>(`/${id}`)
-
-      return () => mapper.map('DeploymentResponse', data, 'Deployment')
+      return this.getSingleDeployment.bind(this, id)
     }
 
     const deployments = await this.getDeployments({
@@ -33,6 +31,12 @@ export class WorkspaceDeploymentsApi extends WorkspaceApi {
 
   public getDeployment(deploymentId: string): Promise<Deployment> {
     return this.batcher.batch(deploymentId)
+  }
+
+  protected async getSingleDeployment(deploymentId: string): Promise<Deployment> {
+    const { data } = await this.get<DeploymentResponse>(`/${deploymentId}`)
+
+    return mapper.map('DeploymentResponse', data, 'Deployment')
   }
 
   public async getDeployments(filter: DeploymentsFilter = {}): Promise<Deployment[]> {
