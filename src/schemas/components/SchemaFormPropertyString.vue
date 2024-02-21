@@ -14,12 +14,12 @@
 
   const props = defineProps<{
     property: SchemaProperty & { type: 'string' },
-    value: string | null | undefined,
+    value: string | undefined,
     state: State,
   }>()
 
   const emit = defineEmits<{
-    'update:value': [string | null | undefined],
+    'update:value': [string | undefined],
   }>()
 
   const { property } = useSchemaProperty(() => props.property)
@@ -51,7 +51,7 @@
         'onUpdate:modelValue': update,
       })
     }
-    
+
     if (format === 'json-string') {
       return withProps(PCodeInput, {
         lang: 'json',
@@ -60,13 +60,13 @@
         'onUpdate:modelValue': update,
       })
     }
-    
+
     if (stringEnum) {
       return withProps(PCombobox, {
         modelValue: props.value,
         state: props.state,
         options: stringEnum.filter(isString),
-        'onUpdate:modelValue': (value) => asType(value, String),
+        'onUpdate:modelValue': update,
       })
     }
 
@@ -77,12 +77,7 @@
     })
   })
 
-  function update(value: string | null | undefined): void {
-    if (!value) {
-      emit('update:value', undefined)
-      return
-    }
-
-    emit('update:value', value)
+  function update(value: unknown): void {
+    emit('update:value', asType(value, String))
   }
 </script>

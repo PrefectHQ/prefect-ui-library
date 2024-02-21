@@ -12,6 +12,8 @@
       </div>
     </template>
 
+    <slot />
+
     <template v-if="description" #description>
       <div class="schema-form-property__description">
         <p-markdown-renderer :text="description" class="schema-form-property__markdown" />
@@ -93,7 +95,7 @@
       return null
     },
     set(value) {
-      emit('update:value', value ?? undefined)
+      emit('update:value', value)
     },
   })
 
