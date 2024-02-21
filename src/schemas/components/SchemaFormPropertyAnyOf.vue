@@ -1,15 +1,14 @@
 <template>
-  <div class="schema-form-property-any-of-input">
-    <p-button-group v-model="selectedPropertyIndex" :options="options" small />
-  </div>
-
-  <p-card>
-    <SchemaFormProperty :key="selectedPropertyIndexValue" v-model:value="value" :property="property" :required="required" :errors="errors" />
-  </p-card>
+  <keep-alive>
+    <SchemaFormProperty :key="selectedPropertyIndexValue" v-model:value="value" v-bind="{ property, required, errors }" class="schema-form-property-any-of-input">
+      <p-button-group v-model="selectedPropertyIndex" :options="options" small class="mb-2" />
+    </SchemaFormProperty>
+  </keep-alive>
 </template>
 
 <script lang="ts" setup>
   import { ButtonGroupOption } from '@prefecthq/prefect-design'
+  import merge from 'lodash.merge'
   import { computed, reactive, ref } from 'vue'
   import { useWorkspaceApi } from '@/compositions'
   import SchemaFormProperty from '@/schemas/components/SchemaFormProperty.vue'
@@ -73,10 +72,10 @@
     const selectedProperty = props.property.anyOf[selectedPropertyIndex.value]
 
     if (isPropertyWith(selectedProperty, '$ref')) {
-      return getSchemaDefinition(schema, selectedProperty.$ref)
+      return merge({}, getSchemaDefinition(schema, selectedProperty.$ref), props.property)
     }
 
-    return selectedProperty
+    return merge({}, selectedProperty, props.property)
   })
 
   const options = computed<ButtonGroupOption[]>(() => props.property.anyOf.map((property, index) => ({

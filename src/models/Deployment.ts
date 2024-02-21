@@ -1,5 +1,6 @@
 import { SchemaResponse } from '@/models/api/SchemaResponse'
 import { CreatedOrUpdatedBy } from '@/models/CreatedOrUpdatedBy'
+import { DeploymentSchedule } from '@/models/DeploymentSchedule'
 import { DeploymentStatus } from '@/models/DeploymentStatus'
 import { ObjectLevelCan } from '@/models/ObjectLevelCan'
 import { Schedule } from '@/models/Schedule'
@@ -19,6 +20,8 @@ export interface IDeployment {
   flowId: string,
   schedule: Schedule | null,
   isScheduleActive: boolean,
+  paused: boolean,
+  schedules: DeploymentSchedule[],
   parameters: SchemaValues,
   parameterOpenApiSchema: Schema,
   parametersV2: SchemaValuesV2,
@@ -52,6 +55,8 @@ export class Deployment implements IDeployment {
   public readonly flowId: string
   public schedule: Schedule | null
   public isScheduleActive: boolean
+  public paused: boolean
+  public schedules: DeploymentSchedule[]
   public parameters: SchemaValues
   public parameterOpenApiSchema: Schema
   public parametersV2: SchemaValuesV2
@@ -84,6 +89,8 @@ export class Deployment implements IDeployment {
     this.flowId = deployment.flowId
     this.schedule = deployment.schedule
     this.isScheduleActive = deployment.isScheduleActive
+    this.paused = deployment.paused
+    this.schedules = deployment.schedules
     this.parameters = deployment.parameters
     this.parameterOpenApiSchema = deployment.parameterOpenApiSchema
     this.parametersV2 = deployment.parametersV2

@@ -9,15 +9,16 @@
   import { SchemaProperty } from '@/schemas/types/schema'
   import { BlockDocumentReferenceValue } from '@/schemas/types/schemaValues'
   import { Require } from '@/types/utilities'
+  import { isNullish } from '@/utilities/variables'
 
   const props = defineProps<{
     property: Require<SchemaProperty, 'blockTypeSlug'>,
-    value: BlockDocumentReferenceValue | null | undefined,
+    value: BlockDocumentReferenceValue | undefined,
     state: State,
   }>()
 
   const emit = defineEmits<{
-    'update:value': [BlockDocumentReferenceValue | null | undefined],
+    'update:value': [BlockDocumentReferenceValue | undefined],
   }>()
 
   const value = computed({
@@ -25,8 +26,8 @@
       return props.value?.$ref ?? null
     },
     set(value) {
-      if (value === null) {
-        emit('update:value', value)
+      if (isNullish(value)) {
+        emit('update:value', undefined)
         return
       }
 

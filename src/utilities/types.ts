@@ -2,12 +2,12 @@ import { stringify } from '@/utilities/json'
 import { isString } from '@/utilities/strings'
 import { isNullish } from '@/utilities/variables'
 
-export function asType<T extends() => unknown>(value: unknown, type: T): ReturnType<T> | null {
+export function asType<T extends() => unknown>(value: unknown, type: T): ReturnType<T> | undefined {
   if (typeof value === typeof type()) {
     return value as ReturnType<T>
   }
 
-  return null
+  return undefined
 }
 
 export function asJson(value: unknown): string {

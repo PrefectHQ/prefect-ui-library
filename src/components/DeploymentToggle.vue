@@ -7,10 +7,12 @@
 <script lang="ts" setup>
   import { showToast } from '@prefecthq/prefect-design'
   import { computed, ref } from 'vue'
-  import { useWorkspaceApi } from '@/compositions'
+  import { useCan, useWorkspaceApi } from '@/compositions'
   import { localization } from '@/localization'
   import { Deployment } from '@/models'
   import { getApiErrorMessage } from '@/utilities/errors'
+
+  const can = useCan()
 
   const props = defineProps<{
     deployment: Deployment,
@@ -24,6 +26,9 @@
 
   const internalValue = computed({
     get() {
+      if (can.access.enhancedSchedulingUi) {
+        return !props.deployment.paused
+      }
       return !!props.deployment.isScheduleActive
     },
     set(value: boolean) {
@@ -35,18 +40,18 @@
 
   const toggleDeploymentSchedule = async (value: boolean): Promise<void> => {
     loading.value = true
+    const message = value ? localization.success.activateDeployment : localization.success.pauseDeployment
 
     try {
-      if (value) {
+      if (can.access.enhancedSchedulingUi) {
+        await api.deployments.updateDeployment(props.deployment.id, { paused: !value })
+      } else if (value) {
         await api.deployments.resumeDeployment(props.deployment.id)
-
-        showToast(localization.success.activateDeployment, 'success')
       } else {
         await api.deployments.pauseDeployment(props.deployment.id)
-
-        showToast(localization.success.pauseDeployment, 'success')
       }
 
+      showToast(message, 'success')
       emit('update')
     } catch (error) {
       const defaultMessage = value ? localization.error.activateDeployment : localization.error.pauseDeployment
