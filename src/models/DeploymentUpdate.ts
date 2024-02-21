@@ -5,6 +5,7 @@ type Base = {
   description?: string | null,
   schedule?: Schedule | null,
   isScheduleActive?: boolean,
+  paused?: boolean,
   tags?: string[] | null,
   workQueueName?: string | null,
   workPoolName?: string | null,
