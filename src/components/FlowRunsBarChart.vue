@@ -130,19 +130,36 @@
     const buckets: (FlowRun | null)[] = new Array(bars.value).fill(null)
     const maxBucketIndex = buckets.length - 1
 
+    const isFutureTimeSpan = expectedStartTimeBefore.getTime() > new Date().getTime()
+
+    const bucketIncrementDirection = isFutureTimeSpan ? 1 : -1
+    const sortedRuns = isFutureTimeSpan
+      ? flowRuns.sort((runA, runB) => {
+        const aStartTime = runA.startTime ?? runA.expectedStartTime
+        const bStartTime = runB.startTime ?? runB.expectedStartTime
+
+        if (!aStartTime || !bStartTime) {
+          return 0
+        }
+
+        return aStartTime.getTime() - bStartTime.getTime()
+      })
+      : flowRuns
+
+    // const bucketStepper = expectedStartTimeBefore.getTime() > new Date().getTime() ? 1 : -1
     function getEmptyBucket(index: number): number | null {
       if (index < 0) {
         return null
       }
 
       if (buckets[index]) {
-        return getEmptyBucket(index - 1)
+        return getEmptyBucket(index + bucketIncrementDirection)
       }
 
       return index
     }
 
-    flowRuns.forEach((flowRun) => {
+    sortedRuns.forEach((flowRun) => {
       const startTime = flowRun.startTime ?? flowRun.expectedStartTime
 
       if (!startTime) {
