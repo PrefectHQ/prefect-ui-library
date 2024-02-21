@@ -55,6 +55,7 @@ export const mapDeploymentUpdateToDeploymentUpdateRequest: MapFunction<Deploymen
     schedule: this.map('Schedule', source.schedule, 'ScheduleRequest'),
     is_schedule_active: source.isScheduleActive,
     parameters: source.parameters ? this.map('SchemaValues', { values: source.parameters, schema: source.schema }, 'SchemaValuesRequest') : undefined,
+    paused: source.paused,
     tags: source.tags,
     work_queue_name: source.workQueueName,
     work_pool_name: source.workPoolName,

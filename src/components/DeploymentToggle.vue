@@ -40,18 +40,18 @@
 
   const toggleDeploymentSchedule = async (value: boolean): Promise<void> => {
     loading.value = true
+    const message = value ? localization.success.activateDeployment : localization.success.pauseDeployment
 
     try {
-      if (value) {
+      if (can.access.enhancedSchedulingUi) {
+        await api.deployments.updateDeployment(props.deployment.id, { paused: !value })
+      } else if (value) {
         await api.deployments.resumeDeployment(props.deployment.id)
-
-        showToast(localization.success.activateDeployment, 'success')
       } else {
         await api.deployments.pauseDeployment(props.deployment.id)
-
-        showToast(localization.success.pauseDeployment, 'success')
       }
 
+      showToast(message, 'success')
       emit('update')
     } catch (error) {
       const defaultMessage = value ? localization.error.activateDeployment : localization.error.pauseDeployment
