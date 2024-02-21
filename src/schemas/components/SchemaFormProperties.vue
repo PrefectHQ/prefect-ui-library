@@ -4,7 +4,7 @@
       <template v-if="isPropertyWith(property, 'allOf')">
         <SchemaFormPropertyAllOf
           :value="getValue(key)"
-          :property="property"
+          :property="getProperty(property, key)"
           :required="getRequired(key)"
           :errors="getSchemaPropertyErrors(key, errors)"
           @update:value="setValue(key, $event)"
@@ -14,7 +14,7 @@
       <template v-else-if="isPropertyWith(property, 'anyOf')">
         <SchemaFormPropertyAnyOf
           :value="getValue(key)"
-          :property="property"
+          :property="getProperty(property, key)"
           :required="getRequired(key)"
           :errors="getSchemaPropertyErrors(key, errors)"
           @update:value="setValue(key, $event)"
@@ -24,7 +24,7 @@
       <template v-else>
         <SchemaFormProperty
           :value="getValue(key)"
-          :property="property"
+          :property="getProperty(property, key)"
           :required="getRequired(key)"
           :errors="getSchemaPropertyErrors(key, errors)"
           @update:value="setValue(key, $event)"
@@ -68,6 +68,14 @@
       return positionA - positionB
     })
   })
+
+  function getProperty<T extends SchemaProperty>(property: T, key: string): T {
+    if (!property.title) {
+      return { ...property, title: key }
+    }
+
+    return property
+  }
 
   function getValue(propertyKey: string): unknown {
     return props.values?.[propertyKey] ?? undefined
