@@ -5,6 +5,10 @@
       <p-button-group v-model="scheduleForm" :options="scheduleFormOptions" small />
     </p-label>
 
+    <p-label v-if="can.access.enhancedSchedulingUi" label="Active">
+      <p-toggle v-model="internalActive" />
+    </p-label>
+
     <template v-if="scheduleForm == 'rrule'">
       <p>
         Sorry, modifying RRule schedules via the UI is currently unsupported; select a different schedule type above or modify your schedule in code.
@@ -12,11 +16,11 @@
     </template>
 
     <template v-else-if="scheduleForm == 'cron'">
-      <CronScheduleForm v-model:schedule="cronSchedule" v-model:disabled="cronDisabled" hide-actions @submit="submit" />
+      <CronScheduleForm v-model:schedule="cronSchedule" v-model:disabled="cronDisabled" hide-actions @submit="scheduleFormSubmit" />
     </template>
 
     <template v-else-if="scheduleForm == 'interval'">
-      <IntervalScheduleForm v-model:schedule="intervalSchedule" v-model:disabled="intervalDisabled" hide-actions @submit="submit" />
+      <IntervalScheduleForm v-model:schedule="intervalSchedule" v-model:disabled="intervalDisabled" hide-actions @submit="scheduleFormSubmit" />
     </template>
 
     <template #actions>
@@ -32,20 +36,33 @@
   import { computed, ref, watch } from 'vue'
   import CronScheduleForm from '@/components/CronScheduleForm.vue'
   import IntervalScheduleForm from '@/components/IntervalScheduleForm.vue'
-  import { useShowModal } from '@/compositions'
-  import { Schedule, getScheduleType, ScheduleType, isCronSchedule, isIntervalSchedule, CronSchedule, IntervalSchedule } from '@/models'
+  import { useCan, useShowModal } from '@/compositions'
+  import { DeploymentScheduleCompatible, getScheduleType, Schedule, ScheduleType, isCronSchedule, isIntervalSchedule, CronSchedule, IntervalSchedule } from '@/models'
 
   const { showModal, open, close } = useShowModal()
 
-  const props = defineProps<{
-    schedule?: Schedule | null,
-  }>()
+  const publicOpen = (): void => {
+    open()
+  }
+
+  defineExpose({ publicOpen })
+
+  const can = useCan()
+
+  const props = defineProps<DeploymentScheduleCompatible>()
+
+  const internalActive = ref<boolean>(props.active ?? true)
 
   const emit = defineEmits<{
-    (event: 'submit', value: Schedule): void,
+    (event: 'submit', value: DeploymentScheduleCompatible): void,
   }>()
 
-  const submit = (schedule: Schedule): void => {
+
+  const scheduleFormSubmit = (schedule: Schedule): void => {
+    submit({ 'active': internalActive.value, 'schedule': schedule })
+  }
+
+  const submit = (schedule: DeploymentScheduleCompatible): void => {
     emit('submit', schedule)
     close()
   }
@@ -57,17 +74,22 @@
   })
 
   const submitCurrentForm = (): void => {
+    let schedule = null
+
     if (disabled.value) {
       return
     }
 
     if (scheduleForm.value == 'cron' && cronSchedule.value) {
-      submit(cronSchedule.value)
+      schedule = cronSchedule.value
+    } else if (scheduleForm.value == 'interval' && intervalSchedule.value) {
+      schedule = intervalSchedule.value
     }
 
-    if (scheduleForm.value == 'interval' && intervalSchedule.value) {
-      submit(intervalSchedule.value)
-    }
+    submit({
+      'active': internalActive.value,
+      schedule,
+    })
   }
 
   const cronSchedule = ref<CronSchedule | undefined>(isCronSchedule(props.schedule) ? props.schedule : undefined)
@@ -75,9 +97,16 @@
   const scheduleForm = ref<ScheduleType>(getScheduleType(props.schedule) ?? 'interval')
   const scheduleFormOptions: ButtonGroupOption[] = [{ label: 'Interval', value: 'interval' }, { label: 'Cron', value: 'cron' }, { label: 'RRule', value: 'rrule' }]
 
-  const updateSchedules = (): void => {
+  const updateInternalState = (): void => {
     cronSchedule.value = isCronSchedule(props.schedule) ? props.schedule : undefined
     intervalSchedule.value = isIntervalSchedule(props.schedule) ? props.schedule : undefined
+    internalActive.value = props.active ?? true
   }
-  watch(() => props.schedule, updateSchedules)
+  watch(() => props.schedule, updateInternalState)
+</script>
+
+<script lang="ts">
+  export interface ScheduleFormModalMethods {
+    publicOpen: () => void,
+  }
 </script>

@@ -7,10 +7,12 @@
 <script lang="ts" setup>
   import { showToast } from '@prefecthq/prefect-design'
   import { computed, ref } from 'vue'
-  import { useWorkspaceApi } from '@/compositions'
+  import { useCan, useWorkspaceApi } from '@/compositions'
   import { localization } from '@/localization'
   import { Deployment } from '@/models'
   import { getApiErrorMessage } from '@/utilities/errors'
+
+  const can = useCan()
 
   const props = defineProps<{
     deployment: Deployment,
@@ -24,6 +26,9 @@
 
   const internalValue = computed({
     get() {
+      if (can.access.enhancedSchedulingUi) {
+        return !props.deployment.paused
+      }
       return !!props.deployment.isScheduleActive
     },
     set(value: boolean) {

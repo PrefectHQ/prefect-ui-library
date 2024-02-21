@@ -1,4 +1,5 @@
 import { CreatedOrUpdatedByResponse } from '@/models/api/CreatedOrUpdatedByResponse'
+import { DeploymentScheduleResponse } from '@/models/api/DeploymentScheduleResponse'
 import { ScheduleResponse } from '@/models/api/ScheduleResponse'
 import { SchemaResponse } from '@/models/api/SchemaResponse'
 import { ServerDeploymentStatus } from '@/models/DeploymentStatus'
@@ -19,6 +20,8 @@ export type DeploymentResponse = {
   flow_id: string,
   schedule: ScheduleResponse | null,
   is_schedule_active: boolean,
+  paused: boolean,
+  schedules: DeploymentScheduleResponse[],
   parameters: SchemaValues,
   tags: string[] | null,
   manifest_path: string | null,
