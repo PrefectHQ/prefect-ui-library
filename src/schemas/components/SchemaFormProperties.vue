@@ -46,6 +46,7 @@
   import { SchemaValueError } from '@/schemas/types/schemaValuesValidationResponse'
   import { getSchemaPropertyErrors } from '@/schemas/utilities/errors'
   import { SchemaValue } from '@/types'
+  import { titleCase } from '@/utilities/strings'
 
   const props = defineProps<{
     parent: SchemaProperty,
@@ -71,7 +72,7 @@
 
   function getProperty<T extends SchemaProperty>(property: T, key: string): T {
     if (!property.title) {
-      return { ...property, title: key }
+      return { ...property, title: titleCase(key) }
     }
 
     return property
