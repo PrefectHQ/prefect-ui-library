@@ -21,7 +21,7 @@
         />
       </template>
     </p-draggable-list>
-    <template v-if="!allowCreate && property.maxItems">
+    <template v-if="showMaxItemsMessage">
       <p class="schema-form-property-array__max">
         List can only have {{ property.maxItems }} items
       </p>
@@ -73,6 +73,13 @@
     return current < max
   })
 
+  const showMaxItemsMessage = computed(() => {
+    const max = props.property.maxItems ?? Infinity
+    const current = props.value?.length ?? 0
+
+    return current >= max
+  })
+
   function getPropertyForIndex(index: number): SchemaProperty {
     if (isArray(property.value.items)) {
       return property.value.items[index] ?? {}
@@ -98,24 +105,28 @@
 </script>
 
 <style>
+.schema-form-property-array {
+  --schema-form-property-array-item-indent: 30px;
+}
+
 .schema-form-property-array .p-draggable-list__item { @apply
   block
 }
 
 .schema-form-property-array .p-draggable-list > .p-button {
-  margin-left: 30px;
+  margin-left: var(--schema-form-property-array-item-indent);
 }
 
 .schema-form-property-array__empty { @apply
   text-subdued
   text-sm
   italic;
-  margin-left: 30px;
+  margin-left: var(--schema-form-property-array-item-indent);
 }
 
 .schema-form-property-array__max { @apply
   text-subdued
   text-sm;
-  margin-left: 30px;
+  margin-left: var(--schema-form-property-array-item-indent);
 }
 </style>
