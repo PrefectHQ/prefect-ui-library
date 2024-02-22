@@ -10,9 +10,9 @@ export function asType<T extends() => unknown>(value: unknown, type: T): ReturnT
   return undefined
 }
 
-export function asJson(value: unknown): string {
+export function asJson(value: unknown): string | undefined {
   if (isNullish(value)) {
-    return ''
+    return undefined
   }
 
   try {

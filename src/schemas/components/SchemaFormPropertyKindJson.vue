@@ -28,6 +28,14 @@
       return props.value.value
     },
     set(value) {
+      if (value?.length === 0) {
+        emit('update:value', {
+          __prefect_kind: 'json',
+          value: undefined,
+        })
+        return
+      }
+
       emit('update:value', {
         __prefect_kind: 'json',
         value,

@@ -45,7 +45,7 @@ export function isPrefectKindNull(value: unknown): value is PrefectKindNull {
 }
 
 export type PrefectKindJson = BasePrefectKindValue<'json', {
-  value: string,
+  value: string | undefined,
 }>
 
 export function isPrefectKindJson(value: unknown): value is PrefectKindJson {
