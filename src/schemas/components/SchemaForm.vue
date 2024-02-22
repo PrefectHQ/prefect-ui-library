@@ -3,11 +3,15 @@
     <template v-if="schema.properties">
       <SchemaFormProperties v-model:values="values" :parent="schema" :properties="schema.properties" :errors="errors" />
     </template>
+
+    <p-checkbox v-model="shouldValidate" label="Validate parameters before submitting" />
   </p-form>
 </template>
 
 <script lang="ts" setup>
-  import { provide, computed, ref } from 'vue'
+  import { showToast } from '@prefecthq/prefect-design'
+  import { provide, computed, ref, h } from 'vue'
+  import ToastParameterValidationError from '@/components/ToastParameterValidationError.vue'
   import SchemaFormProperties from '@/schemas/components/SchemaFormProperties.vue'
   import { schemaInjectionKey } from '@/schemas/compositions/useSchema'
   import { schemaFormKindsInjectionKey } from '@/schemas/compositions/useSchemaFormKinds'
@@ -33,6 +37,7 @@
     'submit': [SchemaValues],
   }>()
 
+  const shouldValidate = ref(true)
   const values = computed({
     get() {
       return props.values
@@ -59,13 +64,21 @@
     loading.value = true
 
     try {
-      const valid = await validate()
+      if (shouldValidate.value) {
 
-      if (!valid) {
-        return
+        const valid = await validate()
+
+        if (!valid) {
+          return
+        }
+
       }
+
     } catch (error) {
       console.error(error)
+
+      showToast(h(ToastParameterValidationError), 'error')
+      return
     } finally {
       loading.value = false
     }

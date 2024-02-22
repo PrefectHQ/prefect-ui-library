@@ -52,6 +52,8 @@
       </p-accordion>
     </p-content>
 
+    <p-checkbox v-model="shouldValidate" label="Validate parameters before submitting" />
+
     <template #footer>
       <p-button @click="emit('cancel')">
         Cancel
@@ -64,12 +66,14 @@
 </template>
 
 <script lang="ts" setup>
+  import { showToast } from '@prefecthq/prefect-design'
   import { useValidation, useValidationObserver } from '@prefecthq/vue-compositions'
-  import { computed, ref } from 'vue'
+  import { computed, h, ref } from 'vue'
   import FlowRunCreateFormTags from '@/components/FlowRunCreateFormTags.vue'
   import FlowRunCreateFormWhen from '@/components/FlowRunCreateFormWhen.vue'
   import FlowRunCreateFormWorkQueueCombobox from '@/components/FlowRunCreateFormWorkQueueCombobox.vue'
   import FlowRunNameInput from '@/components/FlowRunNameInput.vue'
+  import ToastParameterValidationError from '@/components/ToastParameterValidationError.vue'
   import { localization } from '@/localization'
   import { Deployment } from '@/models/Deployment'
   import { DeploymentFlowRunCreateV2 } from '@/models/DeploymentFlowRunCreate'
@@ -90,6 +94,7 @@
     (event: 'cancel'): void,
   }>()
 
+  const shouldValidate = ref(true)
   const schema = computed(() => props.deployment.parameterOpenApiSchemaV2)
   const hasParameters = computed(() => !isEmptyObject(props.deployment.parameterOpenApiSchemaV2.properties ?? {}))
 
@@ -109,13 +114,21 @@
   const { errors, validate: validateParameters } = useSchemaValidation(schema, parameters)
 
   async function submit(): Promise<void> {
-    const valid = (await Promise.all([
-      validate(),
-      validateParameters(),
-    ])).every(value => Boolean(value))
+    if (shouldValidate.value) {
+      try {
+        const valid = (await Promise.all([
+          validate(),
+          validateParameters(),
+        ])).every(value => Boolean(value))
 
-    if (!valid) {
-      return
+        if (!valid) {
+          return
+        }
+      } catch (error) {
+        console.error(error)
+        showToast(h(ToastParameterValidationError), 'error')
+        return
+      }
     }
 
     const request: DeploymentFlowRunCreateV2 = {
