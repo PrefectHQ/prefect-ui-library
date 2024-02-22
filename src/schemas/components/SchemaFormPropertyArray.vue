@@ -5,7 +5,7 @@
         No items in this list
       </p>
     </template>
-    <p-draggable-list v-model="value" allow-create allow-delete :generator="generator" :state="state">
+    <p-draggable-list v-model="value" v-bind="{ allowCreate, generator, state }" allow-delete>
       <template #item="{ index, handleDown, handleUp, deleteItem, moveToTop, moveToBottom }">
         <SchemaFormPropertyArrayItem
           v-model:value="value[index]"
@@ -21,6 +21,11 @@
         />
       </template>
     </p-draggable-list>
+    <template v-if="!allowCreate && property.maxItems">
+      <p class="schema-form-property-array__max">
+        List can only have {{ property.maxItems }} items
+      </p>
+    </template>
   </div>
 </template>
 
@@ -61,6 +66,13 @@
     },
   })
 
+  const allowCreate = computed(() => {
+    const max = props.property.maxItems ?? Infinity
+    const current = props.value?.length ?? 0
+
+    return current < max
+  })
+
   function getPropertyForIndex(index: number): SchemaProperty {
     if (isArray(property.value.items)) {
       return property.value.items[index] ?? {}
@@ -73,7 +85,7 @@
     const index = value.value.length
     const property = getPropertyForIndex(index)
 
-    return property.default ?? null
+    return property.default ?? undefined
   }
 
   function isFirstIndex(index: number): boolean {
@@ -98,6 +110,12 @@
   text-subdued
   text-sm
   italic;
+  margin-left: 30px;
+}
+
+.schema-form-property-array__max { @apply
+  text-subdued
+  text-sm;
   margin-left: 30px;
 }
 </style>

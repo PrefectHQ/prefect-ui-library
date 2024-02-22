@@ -50,6 +50,8 @@ export type SchemaProperty = {
   required?: string[],
   title?: string,
   type?: SchemaPropertyType,
+  minItems?: number,
+  maxItems?: number,
 }
 
 export function isPropertyWith<
