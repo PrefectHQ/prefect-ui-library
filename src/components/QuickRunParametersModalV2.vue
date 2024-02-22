@@ -1,10 +1,10 @@
 <template>
   <p-modal v-model:showModal="internalShowModal" class="parameters-modal" title="Run Deployment">
-    <SchemaFormV2 :id="formId" v-model:values="parameters" :schema="deployment.parameterOpenApiSchemaV2" :kinds="['json']" />
+    <SchemaFormV2 :id="formId" v-model:values="parameters" :schema="deployment.parameterOpenApiSchemaV2" :kinds="['json']" @submit="submit" />
 
     <template #actions>
       <slot name="actions">
-        <p-button type="submit" primary :form="formId" @click="submit">
+        <p-button type="submit" primary :form="formId">
           Run
         </p-button>
       </slot>
@@ -14,7 +14,6 @@
 
 <script lang="ts" setup>
   import { PButton, randomId, showToast } from '@prefecthq/prefect-design'
-  import { useValidationObserver } from '@prefecthq/vue-compositions'
   import { computed, h, ref } from 'vue'
   import { useRouter } from 'vue-router'
   import { ToastFlowRunCreate } from '@/components'
@@ -50,15 +49,7 @@
     },
   })
 
-  const { validate } = useValidationObserver()
-
   async function submit(): Promise<void> {
-    const valid = await validate()
-
-    if (!valid) {
-      return
-    }
-
     const values: DeploymentFlowRunCreateV2 = {
       state: {
         type: 'scheduled',
