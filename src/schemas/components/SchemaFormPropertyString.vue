@@ -78,6 +78,13 @@
   })
 
   function update(value: unknown): void {
-    emit('update:value', asType(value, String))
+    const asStringOrUndefined = asType(value, String)
+
+    if (asStringOrUndefined?.length === 0) {
+      emit('update:value', undefined)
+      return
+    }
+
+    emit('update:value', asStringOrUndefined)
   }
 </script>
