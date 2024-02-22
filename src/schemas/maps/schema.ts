@@ -23,6 +23,8 @@ export const mapSchemaResponseToSchema: MapFunction<SchemaResponse, Schema> = fu
     required: source.required,
     title: source.title,
     type: source.type,
+    maxItems: source.maxItems,
+    minItems: source.minItems,
   }
 }
 
@@ -48,6 +50,8 @@ export const mapSchemaPropertyResponseToSchemaProperty: MapFunction<SchemaProper
     required: source.required,
     title: source.title,
     type: source.type,
+    maxItems: source.maxItems,
+    minItems: source.minItems,
   }
 }
 
@@ -70,6 +74,8 @@ export const mapSchemaToSchemaResponse: MapFunction<Schema, SchemaResponse> = fu
     required: source.required,
     title: source.title,
     type: source.type,
+    maxItems: source.maxItems,
+    minItems: source.minItems,
   }
 }
 
@@ -95,5 +101,7 @@ export const mapSchemaPropertyToSchemaPropertyResponse: MapFunction<SchemaProper
     required: source.required,
     title: source.title,
     type: source.type,
+    maxItems: source.maxItems,
+    minItems: source.minItems,
   }
 }

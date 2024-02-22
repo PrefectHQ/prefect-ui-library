@@ -2,9 +2,7 @@
   <div class="schema-form-property-array-item">
     <PIcon icon="DragHandle" class="schema-form-property-array-item__handle" @mousedown="emit('handleDown')" @mouseup="emit('handleUp')" />
 
-    <keep-alive>
-      <component :is="input.component" v-bind="input.props" />
-    </keep-alive>
+    <component :is="input.component" v-bind="input.props" />
 
     <SchemaFormPropertyMenu v-model:kind="kind" :property="property">
       <template v-if="!isFirst">
