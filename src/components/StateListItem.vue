@@ -178,6 +178,7 @@
 
 .state-list-item__tags { @apply
   min-w-0
+  overflow-hidden
   grow;
 
   grid-area: tags;
