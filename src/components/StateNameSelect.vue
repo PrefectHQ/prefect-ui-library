@@ -4,6 +4,9 @@
       <template v-if="option.value === allExceptScheduled">
         All except scheduled
       </template>
+      <template v-else-if="option.value === allRunStates">
+        All run states
+      </template>
       <template v-else>
         <StateBadge :state="getStateFromTagValue(option.value)" />
       </template>
@@ -11,6 +14,9 @@
     <template #tag="{ value, dismiss }">
       <template v-if="value === allExceptScheduled">
         All except scheduled
+      </template>
+      <template v-else-if="value === allRunStates">
+        All run states
       </template>
       <template v-else>
         <StateBadge
@@ -24,6 +30,9 @@
     <template #default="{ value }">
       <template v-if="value === allExceptScheduled">
         All except scheduled
+      </template>
+      <template v-else-if="value === allRunStates">
+        All run states
       </template>
       <template v-else>
         <StateBadge
@@ -45,6 +54,7 @@
   import { mapStateNameToStateType } from '@/utilities'
 
   const allExceptScheduled = 'allExceptScheduled'
+  const allRunStates = 'All run states'
 
   const props = defineProps<{
     selected: string | string[] | null | undefined,
@@ -56,22 +66,32 @@
     (event: 'update:selected', value: string | string[] | null): void,
   }>()
 
-  const multiple = computed(() => props.multiple || isArray(internalValue.value))
+  const multiple = computed(() => props.multiple || isArray(internalValue.value) && internalValue.value.length > 0)
 
   const internalValue = computed({
     get() {
-      const isAllExceptScheduled = props.selected?.length === prefectStateNames.length - 1
+      if (isArray(props.selected) && !props.selected.length) {
+        return allRunStates
+      }
+
+      if (!props.selected) {
+        return allRunStates
+      }
+
+      const isAllExceptScheduled = props.selected.length === prefectStateNames.length - 1
         && !props.selected.includes('Scheduled')
 
       if (isAllExceptScheduled) {
         return allExceptScheduled
       }
 
-      return props.selected ?? null
+      return props.selected
     },
     set(value: string | string[] | null) {
       if (!value) {
-        emits('update:selected', null)
+        emits('update:selected', [])
+      } else if (value === allRunStates || value.includes(allRunStates)) {
+        emits('update:selected', [])
       } else if (multiple.value) {
         const values = isArray(value) ? value : [value]
 
@@ -101,6 +121,10 @@
       {
         label: 'All except scheduled',
         value: allExceptScheduled,
+      },
+      {
+        label: 'All run states',
+        value: allRunStates,
       },
       ...stateNames,
     ]
