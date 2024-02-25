@@ -6,6 +6,7 @@
           <p-link class="work-pool-card__name" :to="routes.workPool(workPool.name)">
             {{ workPool.name }}
           </p-link>
+
           <WorkPoolStatusIcon :work-pool="workPool" />
         </div>
         <ProcessTypeBadge :type-label="workPool.typeLabel" />
@@ -29,6 +30,7 @@
       <div>
         <span class="work-pool-card__details-label">Concurrency Limit</span>
         {{ workPool.concurrencyLimit ? workPool.concurrencyLimit : 'Unlimited' }}
+        <WorkPoolConcurrencyWarning :work-pool="workPool" />
       </div>
 
 
@@ -44,6 +46,7 @@
   import { media } from '@prefecthq/prefect-design'
   import { computed } from 'vue'
   import { WorkPoolToggle, WorkersLateIndicator, ProcessTypeBadge, WorkPoolStatusIcon } from '@/components'
+  import WorkPoolConcurrencyWarning from '@/components/workPoolConcurrencyWarning.vue'
   import { useComponent, useWorkPoolLastPolled, useWorkspaceRoutes } from '@/compositions'
   import { WorkPool } from '@/models'
 

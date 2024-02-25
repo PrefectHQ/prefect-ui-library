@@ -8,6 +8,8 @@
       </p-key-value>
     </template>
 
+    <WorkPoolConcurrencyWarning :work-pool="workPool" />
+
     <p-key-value label="Description" :value="workPool.description" :alternate="alternate" />
 
     <p-key-value label="Type" :value="workPool.typeLabel" :alternate="alternate" />
@@ -34,6 +36,7 @@
   import { useSubscription } from '@prefecthq/vue-compositions'
   import { computed } from 'vue'
   import { SchemaPropertiesKeyValues, WorkPoolStatusBadge } from '@/components'
+  import WorkPoolConcurrencyWarning from '@/components/workPoolConcurrencyWarning.vue'
   import { useWorkspaceApi } from '@/compositions'
   import { WorkPool } from '@/models'
   import { getSchemaDefaultValues, mapper } from '@/services'
