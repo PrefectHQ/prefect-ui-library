@@ -7,7 +7,7 @@
 
       <template #controls>
         <SearchInput v-model="searchTerm" placeholder="Search by run name" label="Search by run name" class="flow-run-filtered-list__search" />
-        <StateNameSelect v-model:selected="filter.flowRuns.state.name" multiple empty-message="All run states" />
+        <StateNameSelect v-if="!hideStateSelect" v-model:selected="filter.flowRuns.state.name" multiple empty-message="All run states" />
       </template>
 
       <template #sort>
@@ -53,6 +53,7 @@
     filter?: FlowRunsFilter,
     selectable?: boolean,
     prefix?: string,
+    hideStateSelect?: boolean,
   }>()
 
   const can = useCan()

@@ -8,13 +8,15 @@
       </p-key-value>
     </template>
 
-    <WorkPoolConcurrencyWarning :work-pool="workPool" />
-
     <p-key-value label="Description" :value="workPool.description" :alternate="alternate" />
 
     <p-key-value label="Type" :value="workPool.typeLabel" :alternate="alternate" />
 
-    <p-key-value label="Concurrency Limit" :value="workPool.concurrencyLimit" :alternate="alternate" />
+    <p-key-value label="Concurrency Limit" :alternate="alternate">
+      <template #value>
+        <span> {{ workPool.concurrencyLimit }} <WorkPoolConcurrencyWarning :work-pool="workPool" /> </span>
+      </template>
+    </p-key-value>
 
     <p-key-value label="Created" :value="formatDateTimeNumeric(workPool.created)" :alternate="alternate" />
 
