@@ -153,12 +153,7 @@
 
 .state-list-item__name { @apply
   text-base
-  text-subdued
-  shrink-0
-  whitespace-nowrap
-  grow-0
-  text-ellipsis
-  overflow-hidden;
+  text-subdued;
 
   grid-area: name;
 }
