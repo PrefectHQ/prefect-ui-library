@@ -23,7 +23,6 @@ export const randomDeployment: MockFunction<Deployment, [Partial<Deployment>?]> 
     description: this.create('paragraph'),
     flowId: this.create('id'),
     schedule,
-    isScheduleActive: schedule ? this.create('boolean') : false,
     schedules: this.create('deploymentSchedules'),
     paused: paused,
     parameters,

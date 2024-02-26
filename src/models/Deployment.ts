@@ -18,8 +18,6 @@ export interface IDeployment {
   version: string,
   description: string | null,
   flowId: string,
-  schedule: Schedule | null,
-  isScheduleActive: boolean,
   paused: boolean,
   schedules: DeploymentSchedule[],
   parameters: SchemaValues,
@@ -53,8 +51,6 @@ export class Deployment implements IDeployment {
   public version: string
   public description: string | null
   public readonly flowId: string
-  public schedule: Schedule | null
-  public isScheduleActive: boolean
   public paused: boolean
   public schedules: DeploymentSchedule[]
   public parameters: SchemaValues
@@ -87,8 +83,6 @@ export class Deployment implements IDeployment {
     this.version = deployment.version
     this.description = deployment.description
     this.flowId = deployment.flowId
-    this.schedule = deployment.schedule
-    this.isScheduleActive = deployment.isScheduleActive
     this.paused = deployment.paused
     this.schedules = deployment.schedules
     this.parameters = deployment.parameters
