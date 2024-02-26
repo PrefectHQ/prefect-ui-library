@@ -134,7 +134,7 @@
 .state-list-item__top-section { @apply
   grid
   w-full
-  items-center
+  items-start
   gap-2;
 
   grid-template-columns: 1fr auto;
@@ -153,12 +153,7 @@
 
 .state-list-item__name { @apply
   text-base
-  text-subdued
-  shrink-0
-  whitespace-nowrap
-  grow-0
-  text-ellipsis
-  overflow-hidden;
+  text-subdued;
 
   grid-area: name;
 }
@@ -177,7 +172,7 @@
 }
 
 .state-list-item__tags { @apply
-  min-w-0
+  min-w-12
   grow;
 
   grid-area: tags;
