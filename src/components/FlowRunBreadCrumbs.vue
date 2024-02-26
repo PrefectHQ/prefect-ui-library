@@ -39,6 +39,7 @@
 <style>
 .flow-run-bread-crumbs { @apply
   text-subdued
+  whitespace-normal
 }
 
 .flow-run-bread-crumbs__flow-link { @apply
