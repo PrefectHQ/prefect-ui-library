@@ -134,7 +134,7 @@
 .state-list-item__top-section { @apply
   grid
   w-full
-  items-center
+  items-start
   gap-2;
 
   grid-template-columns: 1fr auto;
