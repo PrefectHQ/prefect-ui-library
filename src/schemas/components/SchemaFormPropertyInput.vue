@@ -13,6 +13,7 @@
   import SchemaFormPropertyNull from '@/schemas/components/SchemaFormPropertyNull.vue'
   import SchemaFormPropertyObject from '@/schemas/components/SchemaFormPropertyObject.vue'
   import SchemaFormPropertyString from '@/schemas/components/SchemaFormPropertyString.vue'
+  import SchemaFormPropertyUnknown from '@/schemas/components/SchemaFormPropertyUnknown.vue'
   import { useSchemaProperty } from '@/schemas/compositions/useSchemaProperty'
   import { SchemaProperty, isPropertyWith, isSchemaPropertyType } from '@/schemas/types/schema'
   import { PrefectKindJson, SchemaValue, asBlockDocumentReferenceValue } from '@/schemas/types/schemaValues'
@@ -109,14 +110,11 @@
     }
 
     if (isSchemaPropertyType(type, undefined)) {
-      const json: PrefectKindJson = {
-        __prefect_kind: 'json',
-        value: asJson(value),
-      }
-
-      emit('update:value', json)
-
-      return { component: null, props: {} }
+      return withProps(SchemaFormPropertyUnknown, {
+        property: { ...property.value, type },
+        value: value,
+        state: props.state,
+      })
     }
 
     const exhaustive: never = type
