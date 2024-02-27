@@ -1,10 +1,7 @@
-import { Schedule } from '@/models/Schedule'
 import { Schema, SchemaValues } from '@/types/schemas'
 
 type Base = {
   description?: string | null,
-  schedule?: Schedule | null,
-  isScheduleActive?: boolean,
   paused?: boolean,
   tags?: string[] | null,
   workQueueName?: string | null,
