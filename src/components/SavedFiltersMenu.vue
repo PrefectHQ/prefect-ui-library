@@ -95,7 +95,7 @@
 
   const can = useCan()
   const route = useRoute()
-  const fullRoute = computed(() => window.location.origin + route.path)
+  const fullRoute = computed(() => window.location.origin + route.fullPath)
 
   const { showModal: showSaveModal, open: openSaveModal } = useShowModal()
   const { showModal: showDeleteModal, open: openDeleteModal } = useShowModal()
