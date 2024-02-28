@@ -26,10 +26,7 @@
 
   const internalValue = computed({
     get() {
-      if (can.access.enhancedSchedulingUi) {
-        return !props.deployment.paused
-      }
-      return !!props.deployment.isScheduleActive
+      return !props.deployment.paused
     },
     set(value: boolean) {
       toggleDeploymentSchedule(value)

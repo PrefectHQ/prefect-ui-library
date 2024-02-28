@@ -35,25 +35,6 @@
         </p-label>
       </p-content>
 
-      <template v-if="!can.access.enhancedSchedulingUi">
-        <p-divider />
-
-        <p-content>
-          <h3 class="deployment-form__section-header">
-            Scheduling
-          </h3>
-
-          <span>
-            <p-label label="Schedule" />
-            <ScheduleFieldset v-model="schedule" :readonly="!deployment.can.update" />
-          </span>
-
-          <p-label label="Scheduler">
-            <p-toggle v-model="isScheduleActive" :disabled="!schedule" class="deployment-form__schedule-toggle" />
-          </p-label>
-        </p-content>
-      </template>
-
       <p-divider />
 
       <p-content>
@@ -100,12 +81,12 @@
   import { useValidationObserver } from '@prefecthq/vue-compositions'
   import { useField } from 'vee-validate'
   import { computed } from 'vue'
-  import { SchemaInput, ScheduleFieldset, WorkPoolCombobox, WorkPoolQueueCombobox, JsonInput } from '@/components'
+  import { SchemaInput, WorkPoolCombobox, WorkPoolQueueCombobox, JsonInput } from '@/components'
   import { useCan } from '@/compositions'
   import { useForm } from '@/compositions/useForm'
   import { useOptionalPropertiesSchema } from '@/compositions/useOptionalPropertiesSchema'
   import { localization } from '@/localization'
-  import { Deployment, DeploymentUpdate, DeploymentEdit, Schedule } from '@/models'
+  import { Deployment, DeploymentUpdate, DeploymentEdit } from '@/models'
   import { SchemaValues } from '@/types/schemas'
   import { stringify, isJson, fieldRules } from '@/utilities'
 
@@ -121,8 +102,6 @@
     initialValues: {
       description: props.deployment.description,
       parameters: props.deployment.parameters,
-      schedule: props.deployment.schedule,
-      isScheduleActive: props.deployment.isScheduleActive,
       workPoolName: props.deployment.workPoolName,
       workQueueName: props.deployment.workQueueName,
       tags: props.deployment.tags,
@@ -138,9 +117,7 @@
   }
 
   const { value: description, meta: descriptionState } = useField<string>('description')
-  const { value: schedule } = useField<Schedule | null>('schedule')
   const { value: parameters } = useField<SchemaValues>('parameters')
-  const { value: isScheduleActive } = useField<boolean>('isScheduleActive')
   const { value: workPoolName } = useField<string | null>('workPoolName')
   const { value: workQueueName } = useField<string | null>('workQueueName')
   const { value: tags } = useField<string[] | null>('tags')
@@ -190,13 +167,6 @@
   font-semibold
 }
 
-.deployment-form__schedule-row {
-  @apply
-  flex
-  gap-2
-  items-center
-}
-
 .deployment-form__description-input,
 .deployment-form__infrastructure-overrides-input { @apply
   min-h-[2.5rem]
@@ -204,8 +174,4 @@
   min-w-full
 }
 
-.deployment-form__schedule {
-  @apply
-  text-lg
-}
 </style>
