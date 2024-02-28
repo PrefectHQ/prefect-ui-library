@@ -1,5 +1,5 @@
 <template>
-  <p-tooltip v-if="limitReached" :text="limitReachedText">
+  <p-tooltip v-if="limitReached" :text="limitReachedText" class="work-pool-concurrency-warning">
     <p-icon icon="StopCircleIcon" size="small" class="work-pool-concurrency-warning__icon" />
   </p-tooltip>
   <!--
@@ -30,7 +30,7 @@
     },
     flowRuns: {
       state: {
-        type: ['Pending', 'Running', 'Cancelling', 'Paused'],
+        type: ['Pending', 'Running'],
       },
     },
   })
@@ -42,8 +42,13 @@
 </script>
 
 <style>
+.work-pool-concurrency-warning {
+  @apply
+  vertical-baseline;
+}
 .work-pool-concurrency-warning__icon {
   @apply
   text-sentiment-warning
+  content-center
 }
 </style>
