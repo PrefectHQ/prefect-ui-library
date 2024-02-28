@@ -3,9 +3,9 @@
     class="work-pool-queue-status-icon"
     :text="status.tooltip"
   >
-    <StatusIcon v-if="status.state === 'ready'" status="ready" />
+    <StatusIcon v-if="status.state === 'ready' || status.state === 'saturated'" :status="status.state" />
     <p-icon
-      v-if="status.state !== 'ready'"
+      v-if="status.state !== 'ready' && status.state !== 'saturated'"
       :icon="status.icon"
       size="small"
       :class="classes"
@@ -17,20 +17,43 @@
   import { Icon } from '@prefecthq/prefect-design'
   import { computed } from 'vue'
   import StatusIcon from '@/components/StatusIcon.vue'
-  import { useWorkPool } from '@/compositions/useWorkPool'
+  import { useWorkPool, useFlowRuns, useFlowRunsFilter } from '@/compositions'
   import { WorkPoolQueue } from '@/models'
 
   const props = defineProps<{
     workPoolQueue: WorkPoolQueue,
+
   }>()
 
   const { workPool } = useWorkPool(() => props.workPoolQueue.workPoolName)
 
+  const { filter } = useFlowRunsFilter({
+    workPools: {
+      name: [props.workPoolQueue.workPoolName!],
+    },
+    workPoolQueues: {
+      name: [props.workPoolQueue.name],
+    },
+    flowRuns: {
+      state: {
+        type: ['Pending', 'Running'],
+      },
+    },
+  })
+
+  const { flowRuns } = useFlowRuns(filter)
+  const limitReached = computed(() => {
+    return props.workPoolQueue.concurrencyLimit && flowRuns.value.length >= props.workPoolQueue.concurrencyLimit
+  })
+
   const status = computed<{
-    state: 'paused' | 'ready' | 'not_ready',
+    state: 'paused' | 'ready' | 'not_ready' | 'saturated',
     icon: Icon,
     tooltip: string,
   }>(() => {
+    if (limitReached.value) {
+      return { state: 'saturated', icon: 'CheckCircleIcon', tooltip: 'Work queue concurrency limit reached' }
+    }
     switch (props.workPoolQueue.status) {
       case 'paused':
         return { state: 'paused', icon: 'PauseCircleIcon', tooltip: 'Work queue is paused. No work will be executed.' }

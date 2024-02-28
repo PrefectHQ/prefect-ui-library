@@ -1,7 +1,9 @@
 <template>
-  <p-tooltip v-if="limitReached" :text="limitReachedText" class="work-pool-concurrency-warning">
-    <p-icon icon="StopCircleIcon" size="small" class="work-pool-concurrency-warning__icon" />
-  </p-tooltip>
+  <!--
+    <p-tooltip v-if="limitReached" :text="limitReachedText" class="work-pool-concurrency-warning">
+    <p-icon icon="CheckCircleIcon" size="small" class="work-pool-concurrency-warning__icon" />
+    </p-tooltip>
+  -->
   <!--
     <div>
     Concurrency Limit Reached
@@ -42,10 +44,6 @@
 </script>
 
 <style>
-.work-pool-concurrency-warning {
-  @apply
-  vertical-baseline;
-}
 .work-pool-concurrency-warning__icon {
   @apply
   text-sentiment-warning

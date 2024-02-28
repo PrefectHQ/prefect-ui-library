@@ -3,7 +3,7 @@
     <p-tag class="work-pool-queue-status-badge" :class="classes">
       <WorkPoolQueueStatusIcon v-if="can.access.workQueueStatus" :work-pool-queue="workQueue" />
       <WorkPoolQueueHealthIcon v-else :work-queue-name="workQueueName" :work-pool-name="workPoolName" class="work-pool-queue-status-badge__icon" />
-      {{ label }}
+      {{ labelMessage }}
     </p-tag>
   </template>
 </template>
@@ -12,7 +12,7 @@
   import { computed } from 'vue'
   import { WorkPoolQueueHealthIcon } from '@/components'
   import WorkPoolQueueStatusIcon from '@/components/WorkPoolQueueStatusIcon.vue'
-  import { useCan, useWorkQueueStatus } from '@/compositions'
+  import { useCan, useWorkQueueStatus, useFlowRunsFilter, useFlowRuns } from '@/compositions'
   import { WorkPool, WorkPoolQueue } from '@/models'
 
   const props = defineProps<{
@@ -22,6 +22,28 @@
 
   const can = useCan()
 
+  const labelMessage = computed(() => label.value === 'Saturated' ? 'Concurrency limit reached' : label.value)
+
+  const { filter } = useFlowRunsFilter({
+    workPools: {
+      name: [props.workPool.name],
+    },
+    workPoolQueues: {
+      name: [props.workQueue.name],
+    },
+    flowRuns: {
+      state: {
+        type: ['Pending', 'Running'],
+      },
+    },
+  })
+
+  const { flowRuns } = useFlowRuns(filter)
+
+  const limitReached = computed(() => {
+    return props.workQueue.concurrencyLimit && flowRuns.value.length >= props.workQueue.concurrencyLimit
+  })
+
   const workQueueName = computed(() => props.workQueue.name)
   const workPoolName = computed(() => props.workPool.name)
   const workQueueId = computed(() => props.workQueue.id)
@@ -29,6 +51,10 @@
   const healthy = computed(() => workQueueStatus.value?.healthy)
 
   const label = computed(() => {
+    if (limitReached.value) {
+      return 'Saturated'
+    }
+
     if (can.access.workQueueStatus) {
       return { 'ready': 'Ready', 'not_ready': 'Not Ready', 'paused': 'Paused' }[props.workQueue.status]
     }
@@ -36,6 +62,7 @@
     if (props.workQueue.isPaused) {
       return 'Paused'
     }
+
     return healthy.value ? 'Healthy' : 'Unhealthy'
   })
 
@@ -60,6 +87,11 @@
   dark:text-default
 }
 
+.p-tag.work-pool-queue-status-badge--saturated { @apply
+  bg-sentiment-warning
+  text-inverse
+  dark:text-default
+}
 
 .p-tag.work-queue-status-badge--paused { @apply
   bg-state-pending-300

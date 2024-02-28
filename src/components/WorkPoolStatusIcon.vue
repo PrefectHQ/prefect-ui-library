@@ -17,13 +17,29 @@
 <script lang="ts" setup>
   import { computed } from 'vue'
   import StatusIcon from '@/components/StatusIcon.vue'
+  import { useFlowRunsFilter, useFlowRuns } from '@/compositions'
   import { WorkPool } from '@/models'
 
   const props = defineProps<{
     workPool: WorkPool,
   }>()
 
-  const status = computed(() => props.workPool.status)
+  const { filter } = useFlowRunsFilter({
+    workPools: {
+      name: [props.workPool.name],
+    },
+    flowRuns: {
+      state: {
+        type: ['Pending', 'Running'],
+      },
+    },
+  })
+
+  const { flowRuns } = useFlowRuns(filter)
+
+  const limitReached = computed(() => props.workPool.concurrencyLimit && flowRuns.value.length >= props.workPool.concurrencyLimit)
+
+  const status = computed(() => limitReached.value ? 'saturated' : props.workPool.status)
 
   const tooltipText = computed(() => {
     switch (status.value) {
@@ -36,6 +52,8 @@
         return 'Work pool does not have any online workers ready to execute work.'
       case 'paused':
         return 'Work pool is paused. No work will be executed.'
+      case 'saturated':
+        return 'Work pool concurrency limit reached'
       default:
         return ''
     }
