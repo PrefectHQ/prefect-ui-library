@@ -1,31 +1,36 @@
 <template>
-  <div v-if="node" class="flow-run-graph-selection-panel">
+  <div v-if="item && isTaskOrFlow" class="flow-run-graph-selection-panel">
     <div class="flex justify-end">
       <p-button small icon="XMarkIcon" flat @click="closePanel" />
     </div>
-    <template v-if="node.kind === 'task-run'">
-      <FlowRunTimelineTaskDetails :task-run-id="node.id" />
+    <template v-if="item.kind === 'task-run'">
+      <FlowRunTimelineTaskDetails :task-run-id="item.id" />
     </template>
-    <template v-if="node.kind === 'flow-run'">
-      <FlowRunTimelineSubFlowRunDetails :flow-run-id="node.id" />
+    <template v-if="item.kind === 'flow-run'">
+      <FlowRunTimelineSubFlowRunDetails :flow-run-id="item.id" />
     </template>
   </div>
 </template>
 
 <script lang="ts" setup>
-  import { NodeSelection } from '@prefecthq/graphs'
+  import { GraphItemSelection } from '@prefecthq/graphs'
+  import { computed } from 'vue'
   import { FlowRunTimelineTaskDetails, FlowRunTimelineSubFlowRunDetails } from '@/components'
 
-  defineProps<{
-    node: NodeSelection | null,
+  const props = defineProps<{
+    item: GraphItemSelection | null,
   }>()
 
+  const isTaskOrFlow = computed(() => {
+    return props.item?.kind === 'task-run' || props.item?.kind === 'flow-run'
+  })
+
   const emit = defineEmits<{
-    'update:node': [null],
+    'update:item': [null],
   }>()
 
   function closePanel(): void {
-    emit('update:node', null)
+    emit('update:item', null)
   }
 </script>
 

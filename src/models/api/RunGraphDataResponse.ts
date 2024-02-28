@@ -6,6 +6,7 @@ export type RunGraphDataResponse = {
   end_time: string | null,
   root_node_ids: string[],
   nodes: [string, RunGraphNodeResponse][],
+  artifacts?: RunGraphArtifactResponse[],
 }
 
 export type RunGraphNodeResponse = {
@@ -18,4 +19,13 @@ export type RunGraphNodeResponse = {
   end_time: string | null,
   parents: RunGraphEdge[],
   children: RunGraphEdge[],
+  artifacts?: RunGraphArtifactResponse[],
+}
+
+export type RunGraphArtifactResponse = {
+  id: string,
+  is_latest: boolean,
+  created: string,
+  key: string,
+  type: string,
 }

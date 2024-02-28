@@ -1,10 +1,10 @@
 import {
-  NodeSelection as RunGraphNodeSelection,
+  GraphItemSelection as RunGraphItemSelection,
   ViewportDateRange as RunGraphViewportDateRange
 } from '@prefecthq/graphs'
 
 export type {
-  RunGraphNodeSelection,
+  RunGraphItemSelection,
   RunGraphViewportDateRange
 }
 
