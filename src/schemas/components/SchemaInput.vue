@@ -1,16 +1,14 @@
 <template>
   <div class="schema-input">
-    <template v-if="schema.properties">
-      <SchemaFormProperties v-model:values="values" :parent="schema" :properties="schema.properties" :errors="errors" />
-    </template>
+    <component :is="input.component" v-bind="input.props" />
   </div>
 </template>
 
 <script lang="ts" setup>
   import { computed, provide } from 'vue'
-  import SchemaFormProperties from '@/schemas/components/SchemaFormProperties.vue'
   import { schemaInjectionKey } from '@/schemas/compositions/useSchema'
   import { schemaFormKindsInjectionKey } from '@/schemas/compositions/useSchemaFormKinds'
+  import { useSchemaPropertyInput } from '@/schemas/compositions/useSchemaPropertyInput'
   import { Schema } from '@/schemas/types/schema'
   import { PrefectKind, SchemaValues } from '@/schemas/types/schemaValues'
   import { SchemaValueError } from '@/schemas/types/schemaValuesValidationResponse'
@@ -37,4 +35,6 @@
       emit('update:values', values)
     },
   })
+
+  const { input } = useSchemaPropertyInput(() => props.schema, values, () => props.errors)
 </script>

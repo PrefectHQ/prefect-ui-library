@@ -7,9 +7,16 @@
 
       <template v-if="hasParameters">
         <p-divider />
+        {{ parameters }}
 
         <p-content>
-          <h3>{{ localization.info.parameters }}</h3>
+          <div class="flow-run-create-form-v2__header">
+            <h3>{{ localization.info.parameters }}</h3>
+            <p-icon-button-menu small>
+              <p-overflow-menu-item v-if="kind === 'json'" label="Use form input" @click="kind = 'none'" />
+              <p-overflow-menu-item v-if="kind === 'none'" label="Use JSON input" @click="kind = 'json'" />
+            </p-icon-button-menu>
+          </div>
 
           <SchemaInputV2 v-model:values="parameters" :schema="schema" :errors="errors" :kinds="['json', 'workspace_variable']" />
         </p-content>
@@ -78,6 +85,7 @@
   import { Deployment } from '@/models/Deployment'
   import { DeploymentFlowRunCreateV2 } from '@/models/DeploymentFlowRunCreate'
   import { SchemaInputV2, SchemaValuesV2 } from '@/schemas'
+  import { usePrefectKind } from '@/schemas/compositions/usePrefectKind'
   import { useSchemaValidation } from '@/schemas/compositions/useSchemaValidation'
   import { SchemaValues } from '@/schemas/types/schemaValues'
   import { isEmptyObject, merge } from '@/utilities/object'
@@ -104,6 +112,7 @@
   const { state: nameState, error: nameError } = useValidation(name, isRequired('name'))
 
   const parameters = ref<SchemaValuesV2>(merge({}, props.deployment.parametersV2, props.parameters ?? {}))
+  const { kind } = usePrefectKind(parameters)
   const scheduledTime = ref<Date | null>(null)
   const stateMessage = ref<string>('')
   const tags = ref<string[]>(props.deployment.tags ?? [])
@@ -159,6 +168,12 @@
 .flow-run-create-form-v2 { @apply
   p-6
   rounded-default
+}
+
+.flow-run-create-form-v2__header { @apply
+  flex
+  items-center
+  justify-between
 }
 
 .flow-run-create-form-v2__retries { @apply
