@@ -102,6 +102,7 @@
 
   const name = ref(props.name)
   const { state: nameState, error: nameError } = useValidation(name, isRequired('name'))
+
   const parameters = ref<SchemaValuesV2>(merge({}, props.deployment.parametersV2, props.parameters ?? {}))
   const scheduledTime = ref<Date | null>(null)
   const stateMessage = ref<string>('')
