@@ -1,6 +1,5 @@
 <template>
   <p-form class="flow-run-create-form-v2 p-background" novalidate @submit="submit">
-    {{ parameters }}
     <p-content>
       <p-label label="Run Name" :state="nameState" :message="nameError">
         <FlowRunNameInput v-model="name" :state="nameState" />
