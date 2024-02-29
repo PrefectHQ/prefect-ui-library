@@ -55,6 +55,7 @@
   bg-floating
   rounded-md
   p-3
+  shadow-lg
   absolute
   mt-2
   -translate-x-2/4;
