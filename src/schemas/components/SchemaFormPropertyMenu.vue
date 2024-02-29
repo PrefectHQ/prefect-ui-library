@@ -17,6 +17,7 @@
 </template>
 
 <script lang="ts" setup>
+  import { isDefined } from '@prefecthq/prefect-design'
   import { computed, useSlots } from 'vue'
   import { useSchemaFormKinds } from '@/schemas/compositions/useSchemaFormKinds'
   import { SchemaProperty, isSchemaPropertyType } from '@/schemas/types/schema'
@@ -42,6 +43,10 @@
   const showNone = computed(() => {
     if (isSchemaPropertyType(props.property.type, 'object') && isNullish(props.property.properties)) {
       return false
+    }
+
+    if (isSchemaPropertyType(props.property.type, undefined) && isDefined(props.property.enum)) {
+      return true
     }
 
     return props.property.type !== undefined

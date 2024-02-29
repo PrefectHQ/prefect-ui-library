@@ -16,10 +16,10 @@
   import SchemaFormPropertyUnknown from '@/schemas/components/SchemaFormPropertyUnknown.vue'
   import { useSchemaProperty } from '@/schemas/compositions/useSchemaProperty'
   import { SchemaProperty, isPropertyWith, isSchemaPropertyType } from '@/schemas/types/schema'
-  import { PrefectKindJson, SchemaValue, asBlockDocumentReferenceValue } from '@/schemas/types/schemaValues'
+  import { SchemaValue, asBlockDocumentReferenceValue } from '@/schemas/types/schemaValues'
   import { SchemaValueError } from '@/schemas/types/schemaValuesValidationResponse'
   import { withProps } from '@/utilities/components'
-  import { asJson, asType } from '@/utilities/types'
+  import { asType } from '@/utilities/types'
 
   const props = defineProps<{
     property: SchemaProperty,
@@ -114,6 +114,7 @@
         property: { ...property.value, type },
         value: value,
         state: props.state,
+        'onUpdate:value': (value) => emit('update:value', value),
       })
     }
 

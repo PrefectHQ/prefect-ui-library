@@ -37,9 +37,7 @@
       {{ localization.info.parameters }}
     </h3>
 
-    {{ parameters }}
-
-    <SchemaInputV2 v-model:values="parameters" :schema="schema" :errors="errors" :kinds="['json']" />
+    <SchemaInputV2 v-model:values="parameters" :schema="schema" :errors="errors" :kinds="['none', 'json']" />
 
     <p-checkbox v-model="shouldValidate" label="Validate parameters before submitting" />
 
@@ -141,7 +139,6 @@
     }
 
     emit('submit', deploymentUpdate)
-
   }
 
   const cancel = (): void => {
