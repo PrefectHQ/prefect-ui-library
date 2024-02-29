@@ -1,5 +1,5 @@
 import { sortStringArray } from '@prefecthq/prefect-design'
-import { DeploymentFlowRunCreate, DeploymentFlowRunCreateV2, DeploymentFlowRunRequest, DeploymentUpdate, DeploymentUpdateRequest, SchemaResponse } from '@/models'
+import { DeploymentFlowRunCreate, DeploymentFlowRunCreateV2, DeploymentFlowRunRequest, DeploymentUpdate, DeploymentUpdateRequest, DeploymentUpdateV2, SchemaResponse } from '@/models'
 import { DeploymentResponse } from '@/models/api/DeploymentResponse'
 import { Deployment } from '@/models/Deployment'
 import { createObjectLevelCan } from '@/models/ObjectLevelCan'
@@ -51,6 +51,19 @@ export const mapDeploymentUpdateToDeploymentUpdateRequest: MapFunction<Deploymen
   return {
     description: source.description,
     parameters: source.parameters ? this.map('SchemaValues', { values: source.parameters, schema: source.schema }, 'SchemaValuesRequest') : undefined,
+    paused: source.paused,
+    tags: source.tags,
+    work_queue_name: source.workQueueName,
+    work_pool_name: source.workPoolName,
+    infra_overrides: source.infrastructureOverrides,
+    enforce_parameter_schema: source.enforceParameterSchema,
+  }
+}
+
+export const mapDeploymentUpdateV2ToDeploymentUpdateRequest: MapFunction<DeploymentUpdateV2, DeploymentUpdateRequest> = function(source) {
+  return {
+    description: source.description,
+    parameters: source.parameters,
     paused: source.paused,
     tags: source.tags,
     work_queue_name: source.workQueueName,
