@@ -7,16 +7,27 @@
   >
     <template v-if="artifactId && artifact">
       <div class="flow-run-graph-artifact-drawer__header">
-        <div class="flow-run-graph-artifact-drawer__title-row">
-          <ArtifactKeyIconText class="flow-run-graph-artifact-drawer__name" :artifact-id="artifactId" />
-          <p-button small flat icon="ArrowTopRightOnSquareIcon" :to="routes.artifact(artifact.id)" target="_blank" />
+        <div class="flow-run-graph-artifact-drawer__details">
+          <div v-if="artifact.key">
+            <span class="flow-run-graph-artifact-drawer__detail-title">Key</span>
+            <ArtifactKeyIconText :artifact-id="artifactId" />
+          </div>
+          <div v-if="taskRun?.tags?.length">
+            <span class="flow-run-graph-artifact-drawer__detail-title">Tags</span>
+            <p-tags :tags="taskRun.tags!" />
+          </div>
+          <div>
+            <span class="flow-run-graph-artifact-drawer__detail-title">Description</span>
+            <ArtifactDescription :artifact="artifact" />
+          </div>
         </div>
-        <template v-if="taskRun?.tags?.length">
-          <p-tags :tags="taskRun.tags!" />
-        </template>
-        <ArtifactDescription :artifact="artifact" />
+        <p-button small flat icon="ArrowTopRightOnSquareIcon" :to="routes.artifact(artifact.id)" target="_blank" />
       </div>
+      <p-divider />
       <ArtifactDataView :artifact="artifact" />
+    </template>
+    <template v-else>
+      <p-loading-icon class="flow-run-graph-artifact-drawer__loading" />
     </template>
   </p-drawer>
 </template>
@@ -75,26 +86,28 @@
 
 .flow-run-graph-artifact-drawer__header { @apply
   flex
+  gap-2
+  items-start
+}
+
+.flow-run-graph-artifact-drawer__details { @apply
+  flex-grow
+  flex
   flex-col
   gap-2
-  border-b
-  border-divider
-  pb-2
-  mb-2
 }
 
-.flow-run-graph-artifact-drawer__title-row { @apply
-  flex
-  items-center
-  justify-between
+.flow-run-graph-artifact-drawer__detail-title { @apply
+  text-xs
+  text-subdued
+  mb-1
 }
 
-.flow-run-graph-artifact-drawer__name .p-icon { @apply
-  w-5
-  h-5
-}
-.flow-run-graph-artifact-drawer__name .p-icon-text__label { @apply
-  text-base
-  font-semibold
+.flow-run-graph-artifact-drawer__loading { @apply
+  absolute
+  top-1/2
+  left-1/2
+  -translate-x-1/2
+  -translate-y-1/2
 }
 </style>
