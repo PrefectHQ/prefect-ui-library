@@ -39,7 +39,7 @@
 
     <SchemaInputV2 v-model:values="parameters" :schema="schema" :errors="errors" :kinds="['none', 'json']" />
 
-    <p-checkbox v-model="shouldValidate" label="Validate parameters before submitting" />
+    <p-checkbox v-model="shouldValidateParameters" label="Validate parameters before submitting" />
 
     <p-label label="Enforce Parameter Schema">
       <p-toggle v-model="enforceParameterSchema" :disabled="!parameters" />
@@ -95,7 +95,7 @@
   const tags = ref(props.deployment.tags)
   const infrastructureOverrides = ref(stringify(props.deployment.infrastructureOverrides))
   const enforceParameterSchema = ref(props.deployment.enforceParameterSchema)
-  const shouldValidate = ref(true)
+  const shouldValidateParameters = ref(true)
 
   const schema = computed(() => {
     return { ...props.deployment.parameterOpenApiSchemaV2, required: [] }
@@ -111,12 +111,15 @@
   }>()
 
   async function submit(): Promise<void> {
-    if (shouldValidate.value) {
+    const valid = await validate()
+
+    if (!valid) {
+      return
+    }
+
+    if (shouldValidateParameters.value) {
       try {
-        const valid = (await Promise.all([
-          validate(),
-          validateParameters(),
-        ])).every(value => Boolean(value))
+        const valid = await validateParameters()
 
         if (!valid) {
           return
