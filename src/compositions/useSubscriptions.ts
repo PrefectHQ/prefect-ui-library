@@ -1,4 +1,4 @@
-import { Action, UseSubscription } from '@prefecthq/vue-compositions'
+import { Action, RefreshChannelOptions, UseSubscription } from '@prefecthq/vue-compositions'
 import { MaybeRefOrGetter, computed, reactive, toValue } from 'vue'
 
 type ExtractAction<T extends readonly UseSubscription<Action>[]> =
@@ -25,8 +25,8 @@ export function useSubscriptions<T extends UseSubscription<Action>[]>(subscripti
     source.value.forEach(subscription => subscription.unsubscribe())
   }
 
-  const refresh = async (): Promise<void> => {
-    const promises = source.value.map(subscription => subscription.refresh())
+  const refresh = async (options?: RefreshChannelOptions): Promise<void> => {
+    const promises = source.value.map(subscription => subscription.refresh(options))
 
     await Promise.all(promises)
   }
