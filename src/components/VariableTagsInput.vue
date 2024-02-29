@@ -37,7 +37,7 @@
   const { variables } = useVariables(filter)
 
   const options = computed(() => {
-    const tags = variables.value?.flatMap(variable => variable.tags) ?? []
+    const tags = variables.value.flatMap(variable => variable.tags)
 
     return unique(tags).sort((tagA, tagB) => tagA.localeCompare(tagB))
   })

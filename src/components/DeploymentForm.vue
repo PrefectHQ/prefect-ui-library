@@ -90,8 +90,6 @@
   import { SchemaValues } from '@/types/schemas'
   import { stringify, isJson, fieldRules } from '@/utilities'
 
-  const can = useCan()
-
   const props = defineProps<{
     deployment: Deployment,
   }>()
@@ -173,5 +171,4 @@
   resize-y
   min-w-full
 }
-
 </style>

@@ -70,9 +70,8 @@
 </template>
 
 <script lang="ts" setup>
-  import { showToast, PLoadingIcon } from '@prefecthq/prefect-design'
-  import { ref, computed } from 'vue'
-  import { BlockIconText, ScheduleFieldset, DeploymentStatusBadge, DeploymentSchedulesFieldset } from '@/components'
+  import { showToast } from '@prefecthq/prefect-design'
+  import { BlockIconText, DeploymentStatusBadge, DeploymentSchedulesFieldset } from '@/components'
   import { useWorkspaceApi, useCan } from '@/compositions'
   import { localization } from '@/localization'
   import { Deployment, DeploymentScheduleCompatible } from '@/models'
@@ -89,13 +88,6 @@
 
   const can = useCan()
   const api = useWorkspaceApi()
-  const updateScheduleLoading = ref(false)
-
-  const classes = computed(() => {
-    return {
-      schedule: { 'deployment-details__schedule--loading': updateScheduleLoading.value },
-    }
-  })
 
   const createDeploymentSchedule = async (updatedSchedule: DeploymentScheduleCompatible): Promise<void> => {
     if (updatedSchedule.active === null || !updatedSchedule.schedule) {
