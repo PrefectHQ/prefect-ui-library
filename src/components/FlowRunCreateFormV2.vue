@@ -1,5 +1,6 @@
 <template>
   <p-form class="flow-run-create-form-v2 p-background" novalidate @submit="submit">
+    {{ parameters }}
     <p-content>
       <p-label label="Run Name" :state="nameState" :message="nameError">
         <FlowRunNameInput v-model="name" :state="nameState" />
@@ -102,7 +103,6 @@
 
   const name = ref(props.name)
   const { state: nameState, error: nameError } = useValidation(name, isRequired('name'))
-
   const parameters = ref<SchemaValuesV2>(merge({}, props.deployment.parametersV2, props.parameters ?? {}))
   const scheduledTime = ref<Date | null>(null)
   const stateMessage = ref<string>('')

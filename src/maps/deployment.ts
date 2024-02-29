@@ -1,4 +1,5 @@
 import { sortStringArray } from '@prefecthq/prefect-design'
+import { readonly } from 'vue'
 import { DeploymentFlowRunCreate, DeploymentFlowRunCreateV2, DeploymentFlowRunRequest, DeploymentUpdate, DeploymentUpdateRequest, DeploymentUpdateV2, SchemaResponse } from '@/models'
 import { DeploymentResponse } from '@/models/api/DeploymentResponse'
 import { Deployment } from '@/models/Deployment'
@@ -8,9 +9,10 @@ import { MapFunction } from '@/services/Mapper'
 import { Schema } from '@/types/schemas'
 
 export const mapDeploymentResponseToDeployment: MapFunction<DeploymentResponse, Deployment> = function(source) {
+  const parameters = readonly(source.parameters)
   const rawSchema = source.parameter_openapi_schema ?? {}
   const schema = this.map('SchemaResponse', rawSchema as SchemaResponse, 'Schema')
-  const values = this.map('SchemaValuesResponse', { values: source.parameters, schema }, 'SchemaValues')
+  const values = this.map('SchemaValuesResponse', { values: parameters, schema }, 'SchemaValues')
   const schedules = source.schedules.map(schedule => this.map('DeploymentScheduleResponse', schedule, 'DeploymentSchedule'))
 
   return new Deployment({
@@ -26,9 +28,9 @@ export const mapDeploymentResponseToDeployment: MapFunction<DeploymentResponse, 
     paused: source.paused,
     schedules: schedules,
     parameters: values,
-    rawParameters: source.parameters,
+    rawParameters: parameters,
     rawSchema: rawSchema as Schema,
-    parametersV2: source.parameters,
+    parametersV2: parameters,
     parameterOpenApiSchemaV2: schemaV2Mapper.map('SchemaResponse', rawSchema as SchemaResponseV2, 'Schema'),
     tags: source.tags ? sortStringArray(source.tags) : null,
     manifestPath: source.manifest_path,
