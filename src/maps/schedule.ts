@@ -1,6 +1,6 @@
 import { CronSchedule, IntervalSchedule, RRuleSchedule, Schedule, ScheduleResponse, isCronScheduleResponse, isIntervalScheduleResponse, isRRuleScheduleResponse, isIntervalSchedule, isRRuleSchedule, isCronSchedule, IntervalScheduleRequest, RRuleScheduleRequest, CronScheduleRequest } from '@/models'
 import { MapFunction } from '@/services/Mapper'
-import { setTimezone, unsetTimezone } from '@/utilities/timezone'
+import { setTimezone } from '@/utilities/timezone'
 
 export const mapScheduleResponseToSchedule: MapFunction<ScheduleResponse, Schedule> = function(source) {
   if (isRRuleScheduleResponse(source)) {

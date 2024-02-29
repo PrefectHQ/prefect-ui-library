@@ -2,7 +2,7 @@ import { toPluralString } from '@prefecthq/prefect-design'
 import { zonedTimeToUtc } from 'date-fns-tz'
 import { ISchedule } from '@/models'
 import { IntervalScheduleResponse } from '@/models/api/ScheduleResponse'
-import { formatDate, formatTimeNumeric, secondsInMinute, minutesInHour, dateFormat, timeNumericFormat } from '@/utilities/dates'
+import { secondsInMinute, minutesInHour, dateFormat, timeNumericFormat } from '@/utilities/dates'
 import { floor } from '@/utilities/math'
 import { formatDateInTimezone } from '@/utilities/timezone'
 

@@ -46,6 +46,7 @@ export type SchemaProperty = {
   enum?: unknown[],
   format?: SchemaStringFormat,
   items?: SchemaProperty | SchemaProperty[],
+  prefixItems?: SchemaProperty[],
   properties?: SchemaProperties,
   required?: string[],
   title?: string,
