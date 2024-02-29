@@ -1,3 +1,4 @@
+import { SchemaValuesV2 } from '@/schemas'
 import { Schema, SchemaValues } from '@/types/schemas'
 
 type Base = {
@@ -36,3 +37,9 @@ type WithParametersEdit = BaseEdit & {
 
 export type DeploymentUpdate = WithoutParameters | WithParameters
 export type DeploymentEdit = WithoutParametersEdit | WithParametersEdit
+
+type WithParametersV2 = Base & {
+  parameters: SchemaValuesV2,
+}
+
+export type DeploymentUpdateV2 = WithoutParameters | WithParametersV2

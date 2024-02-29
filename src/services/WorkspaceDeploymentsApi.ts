@@ -2,7 +2,7 @@ import { DeploymentResponse } from '@/models/api/DeploymentResponse'
 import { FlowRunResponse } from '@/models/api/FlowRunResponse'
 import { Deployment } from '@/models/Deployment'
 import { DeploymentFlowRunCreate, DeploymentFlowRunCreateV2 } from '@/models/DeploymentFlowRunCreate'
-import { DeploymentUpdate } from '@/models/DeploymentUpdate'
+import { DeploymentUpdate, DeploymentUpdateV2 } from '@/models/DeploymentUpdate'
 import { DeploymentsFilter } from '@/models/Filters'
 import { FlowRun } from '@/models/FlowRun'
 import { BatchProcessor } from '@/services/BatchProcessor'
@@ -69,6 +69,12 @@ export class WorkspaceDeploymentsApi extends WorkspaceApi {
 
   public updateDeployment(deploymentId: string, request: DeploymentUpdate): Promise<void> {
     const body = mapper.map('DeploymentUpdate', request, 'DeploymentUpdateRequest')
+
+    return this.patch(`/${deploymentId}`, body)
+  }
+
+  public updateDeploymentV2(deploymentId: string, request: DeploymentUpdateV2): Promise<void> {
+    const body = mapper.map('DeploymentUpdateV2', request, 'DeploymentUpdateRequest')
 
     return this.patch(`/${deploymentId}`, body)
   }
