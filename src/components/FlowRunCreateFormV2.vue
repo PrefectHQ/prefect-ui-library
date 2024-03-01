@@ -7,7 +7,6 @@
 
       <template v-if="hasParameters">
         <p-divider />
-        {{ parameters }}
 
         <p-content>
           <div class="flow-run-create-form-v2__header">

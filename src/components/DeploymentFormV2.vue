@@ -33,9 +33,17 @@
 
     <p-divider />
 
-    <h3 class="deployment-form__heading">
-      {{ localization.info.parameters }}
-    </h3>
+
+    <div class="flow-run-create-form-v2__header">
+      <h3 class="deployment-form__heading">
+        {{ localization.info.parameters }}
+      </h3>
+      <p-icon-button-menu small>
+        <p-overflow-menu-item v-if="kind === 'json'" label="Use form input" @click="kind = 'none'" />
+        <p-overflow-menu-item v-if="kind === 'none'" label="Use JSON input" @click="kind = 'json'" />
+      </p-icon-button-menu>
+    </div>
+
 
     <SchemaInputV2 v-model:values="parameters" :schema="schema" :errors="errors" :kinds="['none', 'json']" />
 
@@ -80,6 +88,7 @@
   import { localization } from '@/localization'
   import { Deployment, DeploymentUpdateV2 } from '@/models'
   import { SchemaInputV2 } from '@/schemas'
+  import { usePrefectKind } from '@/schemas/compositions/usePrefectKind'
   import { useSchemaValidation } from '@/schemas/compositions/useSchemaValidation'
   import { stringify, isJson } from '@/utilities'
 
@@ -96,6 +105,7 @@
   const infrastructureOverrides = ref(stringify(props.deployment.infrastructureOverrides))
   const enforceParameterSchema = ref(props.deployment.enforceParameterSchema)
   const shouldValidateParameters = ref(true)
+  const { kind } = usePrefectKind(parameters)
 
   const schema = computed(() => {
     return { ...props.deployment.parameterOpenApiSchemaV2, required: [] }
