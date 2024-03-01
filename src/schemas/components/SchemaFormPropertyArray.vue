@@ -81,6 +81,10 @@
   })
 
   function getPropertyForIndex(index: number): SchemaProperty {
+    if (isArray(property.value.prefixItems)) {
+      return property.value.prefixItems[index] ?? {}
+    }
+
     if (isArray(property.value.items)) {
       return property.value.items[index] ?? {}
     }
