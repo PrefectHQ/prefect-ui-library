@@ -1,5 +1,5 @@
 <template>
-  <component :is="input.component" v-bind="input.props" flat class="schema-input" />
+  <component :is="input.component" v-bind="input.props" class="schema-input" />
 </template>
 
 <script lang="ts" setup>

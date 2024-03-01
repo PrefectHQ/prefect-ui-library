@@ -1,12 +1,13 @@
 <template>
-  <p-card class="schema-form-property-object">
+  <component :is="element" class="schema-form-property-object">
     <SchemaFormProperties v-model:values="values" :parent="property" :properties="property.properties ?? {}" :errors="errors" />
-  </p-card>
+  </component>
 </template>
 
 <script lang="ts" setup>
-  import { computed } from 'vue'
+  import { computed, inject, provide } from 'vue'
   import SchemaFormProperties from '@/schemas/components/SchemaFormProperties.vue'
+  import { schemaPropertyObjectDepthSymbol } from '@/schemas/symbols'
   import { SchemaProperty } from '@/schemas/types/schema'
   import { PrefectKindJson, SchemaValues } from '@/schemas/types/schemaValues'
   import { SchemaValueError } from '@/schemas/types/schemaValuesValidationResponse'
@@ -19,9 +20,21 @@
     errors: SchemaValueError[],
   }>()
 
+  const depth = inject(schemaPropertyObjectDepthSymbol, 0)
+
+  provide(schemaPropertyObjectDepthSymbol, depth + 1)
+
   const emit = defineEmits<{
     'update:values': [SchemaValues | undefined],
   }>()
+
+  const element = computed(() => {
+    if (depth === 0) {
+      return 'div'
+    }
+
+    return 'p-card'
+  })
 
   if (isNullish(props.property.properties)) {
     const json: PrefectKindJson = {
