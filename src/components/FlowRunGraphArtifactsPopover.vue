@@ -1,15 +1,15 @@
 <template>
   <FlowRunGraphPopover
-    v-if="artifactsSelection"
+    v-if="selection.position"
     class="flow-run-graph-artifacts-popover"
-    :position="artifactsSelection.position"
+    :position="selection.position"
     @on-close="close"
   >
     <h4 class="flow-run-graph-artifacts-popover__label">
       Artifacts
     </h4>
     <div class="flow-run-graph-artifacts-popover__content">
-      <template v-for="artifactId in artifactsSelection.ids" :key="artifactId">
+      <template v-for="artifactId in selection.ids" :key="artifactId">
         <FlowRunGraphArtifactCard :artifact-id="artifactId" />
       </template>
     </div>
@@ -17,25 +17,16 @@
 </template>
 
 <script lang="ts" setup>
-  import { GraphItemSelection, isArtifactsSelection } from '@prefecthq/graphs'
-  import { computed } from 'vue'
+  import { ArtifactsSelection } from '@prefecthq/graphs'
   import { FlowRunGraphPopover, FlowRunGraphArtifactCard } from '@/components'
 
-  const props = defineProps<{
-    selection: GraphItemSelection | null,
+  defineProps<{
+    selection: ArtifactsSelection,
   }>()
 
   const emit = defineEmits<{
     'update:selection': [null],
   }>()
-
-  const artifactsSelection = computed(() => {
-    if (props.selection && isArtifactsSelection(props.selection)) {
-      return props.selection
-    }
-
-    return null
-  })
 
   function close(): void {
     emit('update:selection', null)

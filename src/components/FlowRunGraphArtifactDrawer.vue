@@ -5,21 +5,24 @@
     placement="right"
     @update:open="close"
   >
-    <template v-if="artifactId && artifact">
+    <template v-if="artifact">
       <div class="flow-run-graph-artifact-drawer__header">
         <div class="flow-run-graph-artifact-drawer__details">
-          <div v-if="artifact.key">
-            <span class="flow-run-graph-artifact-drawer__detail-title">Key</span>
-            <ArtifactKeyIconText :artifact-id="artifactId" />
-          </div>
-          <div v-if="taskRun?.tags?.length">
-            <span class="flow-run-graph-artifact-drawer__detail-title">Tags</span>
-            <p-tags :tags="taskRun.tags!" />
-          </div>
-          <div>
-            <span class="flow-run-graph-artifact-drawer__detail-title">Description</span>
-            <ArtifactDescription :artifact="artifact" />
-          </div>
+          <p-key-value v-if="artifact.key" label="Key">
+            <template #value>
+              <ArtifactKeyIconText :artifact-id="artifact.id" />
+            </template>
+          </p-key-value>
+          <p-key-value v-if="taskRun?.tags?.length" label="Tags">
+            <template #value>
+              <p-tags :tags="taskRun.tags!" />
+            </template>
+          </p-key-value>
+          <p-key-value label="Description">
+            <template #value>
+              <ArtifactDescription :artifact="artifact" />
+            </template>
+          </p-key-value>
         </div>
         <p-button small flat icon="ArrowTopRightOnSquareIcon" :to="routes.artifact(artifact.id)" target="_blank" />
       </div>
@@ -95,12 +98,6 @@
   flex
   flex-col
   gap-2
-}
-
-.flow-run-graph-artifact-drawer__detail-title { @apply
-  text-xs
-  text-subdued
-  mb-1
 }
 
 .flow-run-graph-artifact-drawer__loading { @apply

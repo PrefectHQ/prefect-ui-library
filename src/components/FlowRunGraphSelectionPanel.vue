@@ -1,5 +1,5 @@
 <template>
-  <div v-if="selection && isSelectionTaskOrFlow" class="flow-run-graph-selection-panel">
+  <div class="flow-run-graph-selection-panel">
     <div class="flex justify-end">
       <p-button small icon="XMarkIcon" flat @click="closePanel" />
     </div>
@@ -13,17 +13,12 @@
 </template>
 
 <script lang="ts" setup>
-  import { GraphItemSelection, isNodeSelection } from '@prefecthq/graphs'
-  import { computed } from 'vue'
+  import { NodeSelection } from '@prefecthq/graphs'
   import { FlowRunTimelineTaskDetails, FlowRunTimelineSubFlowRunDetails } from '@/components'
 
-  const props = defineProps<{
-    selection: GraphItemSelection | null,
+  defineProps<{
+    selection: NodeSelection,
   }>()
-
-  const isSelectionTaskOrFlow = computed(() => {
-    return props.selection && isNodeSelection(props.selection)
-  })
 
   const emit = defineEmits<{
     'update:selection': [null],

@@ -10,7 +10,6 @@
 </template>
 
 <script lang="ts" setup>
-  import { toRefs } from 'vue'
   import { ArtifactCard } from '@/components'
   import { useArtifact, useWorkspaceRoutes } from '@/compositions'
 
@@ -20,6 +19,5 @@
 
   const routes = useWorkspaceRoutes()
 
-  const { artifactId } = toRefs(props)
-  const { artifact } = useArtifact(artifactId)
+  const { artifact } = useArtifact(() => props.artifactId)
 </script>
