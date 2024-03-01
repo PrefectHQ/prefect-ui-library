@@ -1,7 +1,7 @@
 <template>
   <p-form class="schema-form" novalidate @submit="submit">
     <template v-if="schema.properties">
-      <SchemaFormProperties v-model:values="values" :parent="schema" :properties="schema.properties" :errors="errors" />
+      <SchemaInput v-model:values="values" :schema="schema" :errors="errors" :kinds="kinds" />
     </template>
 
     <p-checkbox v-model="shouldValidate" label="Validate parameters before submitting" />
@@ -10,11 +10,9 @@
 
 <script lang="ts" setup>
   import { showToast } from '@prefecthq/prefect-design'
-  import { provide, computed, ref, h } from 'vue'
+  import { computed, ref, h } from 'vue'
   import ToastParameterValidationError from '@/components/ToastParameterValidationError.vue'
-  import SchemaFormProperties from '@/schemas/components/SchemaFormProperties.vue'
-  import { schemaInjectionKey } from '@/schemas/compositions/useSchema'
-  import { schemaFormKindsInjectionKey } from '@/schemas/compositions/useSchemaFormKinds'
+  import SchemaInput from '@/schemas/components/SchemaInput.vue'
   import { useSchemaValidation } from '@/schemas/compositions/useSchemaValidation'
   import { Schema } from '@/schemas/types/schema'
   import { PrefectKind, SchemaValues } from '@/schemas/types/schemaValues'
@@ -28,9 +26,6 @@
     loading: null,
   })
 
-  provide(schemaInjectionKey, props.schema)
-  provide(schemaFormKindsInjectionKey, props.kinds)
-
   const emit = defineEmits<{
     'update:values': [SchemaValues],
     'update:loading': [boolean],
@@ -38,6 +33,7 @@
   }>()
 
   const shouldValidate = ref(true)
+
   const values = computed({
     get() {
       return props.values

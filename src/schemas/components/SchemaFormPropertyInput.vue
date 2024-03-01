@@ -1,7 +1,5 @@
 <template>
-  <div class="schema-form-property-input">
-    <component :is="input.component" v-bind="input.props" />
-  </div>
+  <component :is="input.component" v-bind="input.props" class="schema-form-property-input" />
 </template>
 
 <script lang="ts" setup>
