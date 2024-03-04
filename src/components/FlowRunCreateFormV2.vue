@@ -74,6 +74,7 @@
 <script lang="ts" setup>
   import { showToast } from '@prefecthq/prefect-design'
   import { useValidation, useValidationObserver } from '@prefecthq/vue-compositions'
+  import merge from 'lodash.merge'
   import { computed, h, ref } from 'vue'
   import FlowRunCreateFormTags from '@/components/FlowRunCreateFormTags.vue'
   import FlowRunCreateFormWhen from '@/components/FlowRunCreateFormWhen.vue'
@@ -87,7 +88,7 @@
   import { usePrefectKind } from '@/schemas/compositions/usePrefectKind'
   import { useSchemaValidation } from '@/schemas/compositions/useSchemaValidation'
   import { SchemaValues } from '@/schemas/types/schemaValues'
-  import { isEmptyObject, merge } from '@/utilities/object'
+  import { isEmptyObject } from '@/utilities/object'
   import { isRequired } from '@/utilities/validation'
 
   const props = defineProps<{

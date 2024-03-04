@@ -3,7 +3,7 @@
 </template>
 
 <script lang="ts" setup>
-  import { PCombobox, SelectModelValue, SelectOption, State } from '@prefecthq/prefect-design'
+  import { PCombobox, SelectModelValue, SelectOption, State, isDefined } from '@prefecthq/prefect-design'
   import { computed } from 'vue'
   import { useSchemaProperty } from '@/schemas/compositions/useSchemaProperty'
   import { SchemaProperty } from '@/schemas/types/schema'
@@ -36,6 +36,17 @@
 
   const { property } = useSchemaProperty(() => props.property)
 
+  if (!isDefined(property.value.enum)) {
+    const valueOrDefaultValue = isDefined(props.value) ? props.value : property.value.default
+
+    const json: PrefectKindJson = {
+      __prefect_kind: 'json',
+      value: asJson(valueOrDefaultValue),
+    }
+
+    emit('update:value', json)
+  }
+
   const input = computed(() => {
     const { enum: unknownEnum } = property.value
 
@@ -47,13 +58,6 @@
         'onUpdate:modelValue': value => emit('update:value', value),
       })
     }
-
-    const json: PrefectKindJson = {
-      __prefect_kind: 'json',
-      value: asJson(props.value),
-    }
-
-    emit('update:value', json)
 
     return { component: null, props: {} }
   })

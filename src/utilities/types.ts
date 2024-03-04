@@ -1,6 +1,6 @@
+import { isDefined } from '@prefecthq/prefect-design'
 import { stringify } from '@/utilities/json'
 import { isString } from '@/utilities/strings'
-import { isNullish } from '@/utilities/variables'
 
 export function asType<T extends() => unknown>(value: unknown, type: T): ReturnType<T> | undefined {
   if (typeof value === typeof type()) {
@@ -11,7 +11,7 @@ export function asType<T extends() => unknown>(value: unknown, type: T): ReturnT
 }
 
 export function asJson(value: unknown): string | undefined {
-  if (isNullish(value)) {
+  if (!isDefined(value)) {
     return undefined
   }
 
