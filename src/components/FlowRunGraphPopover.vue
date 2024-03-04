@@ -1,53 +1,43 @@
 <template>
-  <div ref="target" class="flow-run-graph-popover" :style="styles">
-    <slot />
-  </div>
+  <p-pop-over
+    ref="popOver"
+    auto-close
+    :placement="placement"
+    :style="invisibleTargetStyles"
+  >
+    <div class="flow-run-graph-popover">
+      <slot />
+    </div>
+  </p-pop-over>
 </template>
 
 <script lang="ts" setup>
-  import { computed, onMounted, onUnmounted, ref } from 'vue'
+  import { GraphSelectionPosition } from '@prefecthq/graphs'
+  import { PPopOver, positions } from '@prefecthq/prefect-design'
+  import { StyleValue, computed, onMounted, ref } from 'vue'
 
   const props = defineProps<{
-    position?: {
-      x: number,
-      y: number,
-    },
+    position: GraphSelectionPosition,
   }>()
 
-  const emit = defineEmits<{
-    'onClose': [null],
-  }>()
+  const popOver = ref<InstanceType<typeof PPopOver>>()
 
-  const target = ref<HTMLElement | null>(null)
+  const placement = [positions.bottom, positions.top, positions.left, positions.right]
 
-  const styles = computed(() => ({
-    top: `${props.position?.y ?? 0}px`,
-    left: `${props.position?.x ?? 0}px`,
+  const invisibleTargetStyles = computed<StyleValue>(() => ({
+    cursor: 'pointer',
+    position: 'absolute',
+    top: `${props.position.y}px`,
+    left: `${props.position.x}px`,
+    width: `${props.position.width}px`,
+    height: `${props.position.height}px`,
   }))
 
   onMounted(() => {
     setTimeout(() => {
-      document.addEventListener('click', eventHandler)
-      document.addEventListener('focusin', eventHandler)
+      popOver.value?.open()
     }, 0)
   })
-
-  onUnmounted(() => {
-    document.removeEventListener('click', eventHandler)
-    document.removeEventListener('focusin', eventHandler)
-  })
-
-  function eventHandler(event: MouseEvent | FocusEvent): void {
-    if (target.value?.contains(event.target as Node)) {
-      return
-    }
-
-    close()
-  }
-
-  function close(): void {
-    emit('onClose', null)
-  }
 </script>
 
 <style>
@@ -55,11 +45,7 @@
   bg-floating
   rounded-md
   p-3
+  m-1
   shadow-lg
-  absolute
-  mt-2
-  -translate-x-2/4;
-
-  z-index: var(--p-pop-over-content-z-index, 100)
 }
 </style>
