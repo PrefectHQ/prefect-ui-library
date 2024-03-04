@@ -38,6 +38,11 @@
     api,
   })
 
+  // need to make sure we set the initial value for the selected property
+  // reactivity is handled by the computed value
+  // eslint-disable-next-line vue/no-setup-props-destructure
+  propertyValues[initialSelectedPropertyIndex] = props.value
+
   if (initialSelectedPropertyIndex === -1) {
     throw 'not implemented'
   }
