@@ -5,6 +5,7 @@
 </template>
 
 <script lang="ts" setup>
+  import { isDefined } from '@prefecthq/prefect-design'
   import { computed, inject, provide } from 'vue'
   import SchemaFormProperties from '@/schemas/components/SchemaFormProperties.vue'
   import { schemaPropertyObjectDepthSymbol } from '@/schemas/symbols'
@@ -28,6 +29,17 @@
     'update:values': [SchemaValues | undefined],
   }>()
 
+  if (isNullish(props.property.properties)) {
+    const valueOrDefaultValue = isDefined(props.values) ? props.values : props.property.default
+
+    const json: PrefectKindJson = {
+      __prefect_kind: 'json',
+      value: asJson(valueOrDefaultValue),
+    }
+
+    emit('update:values', json)
+  }
+
   const element = computed(() => {
     if (depth === 0) {
       return 'div'
@@ -35,15 +47,6 @@
 
     return 'p-card'
   })
-
-  if (isNullish(props.property.properties)) {
-    const json: PrefectKindJson = {
-      __prefect_kind: 'json',
-      value: asJson(props.values),
-    }
-
-    emit('update:values', json)
-  }
 
   const values = computed({
     get() {
