@@ -1,13 +1,13 @@
 <template>
-  <div v-if="node" class="flow-run-graph-selection-panel">
+  <div class="flow-run-graph-selection-panel">
     <div class="flex justify-end">
       <p-button small icon="XMarkIcon" flat @click="closePanel" />
     </div>
-    <template v-if="node.kind === 'task-run'">
-      <FlowRunTimelineTaskDetails :task-run-id="node.id" />
+    <template v-if="selection.kind === 'task-run'">
+      <FlowRunTimelineTaskDetails :task-run-id="selection.id" />
     </template>
-    <template v-if="node.kind === 'flow-run'">
-      <FlowRunTimelineSubFlowRunDetails :flow-run-id="node.id" />
+    <template v-if="selection.kind === 'flow-run'">
+      <FlowRunTimelineSubFlowRunDetails :flow-run-id="selection.id" />
     </template>
   </div>
 </template>
@@ -17,15 +17,15 @@
   import { FlowRunTimelineTaskDetails, FlowRunTimelineSubFlowRunDetails } from '@/components'
 
   defineProps<{
-    node: NodeSelection | null,
+    selection: NodeSelection,
   }>()
 
   const emit = defineEmits<{
-    'update:node': [null],
+    'update:selection': [null],
   }>()
 
   function closePanel(): void {
-    emit('update:node', null)
+    emit('update:selection', null)
   }
 </script>
 

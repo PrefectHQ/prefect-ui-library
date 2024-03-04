@@ -16,7 +16,7 @@
 </template>
 
 <script lang="ts" setup>
-  import { NodeSelection, RunGraph, RunGraphConfig, ViewportDateRange } from '@prefecthq/graphs'
+  import { GraphItemSelection, RunGraph, RunGraphConfig, ViewportDateRange } from '@prefecthq/graphs'
   import { useColorTheme } from '@prefecthq/prefect-design'
   import { computed, ref } from 'vue'
   import FlowRunGraphConfirmation from '@/components/FlowRunGraphConfirmation.vue'
@@ -30,14 +30,14 @@
   const props = defineProps<{
     flowRun: FlowRun,
     fullscreen: boolean,
-    selected: NodeSelection | null,
+    selected: GraphItemSelection | null,
     viewport?: ViewportDateRange,
   }>()
 
   const emit = defineEmits<{
     'update:viewport': [ViewportDateRange | undefined],
     'update:fullscreen': [boolean],
-    'update:selected': [NodeSelection | null],
+    'update:selected': [GraphItemSelection | null],
   }>()
 
   const api = useWorkspaceApi()
@@ -99,7 +99,7 @@
       textDefault: getColorToken('--p-color-text-default'),
       textInverse: getColorToken('--p-color-text-inverse'),
       nodeToggleBorderColor: getColorToken('--p-color-button-default-border'),
-      nodeSelectedBorderColor: getColorToken('--p-color-flow-run-graph-node-selected-border'),
+      selectedBorderColor: getColorToken('--p-color-flow-run-graph-node-selected-border'),
       edgeColor: getColorToken('--p-color-flow-run-graph-edge'),
       guideLineColor: getColorToken('--p-color-divider'),
       guideTextColor: getColorToken('--p-color-text-subdued'),
@@ -140,5 +140,10 @@
 .flow-run-graph__graph {
   width: 100%;
   height: 340px;
+}
+
+/* TODO: This temporarily hides the "Hide artifacts" option until that layer goes live */
+.run-graph-settings__menu > .p-checkbox:last-child {
+  display: none;
 }
 </style>
