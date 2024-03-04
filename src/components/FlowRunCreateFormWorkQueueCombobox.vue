@@ -8,6 +8,7 @@
 
 <script lang="ts" setup>
   import { computed } from 'vue'
+  import WorkPoolQueueCombobox from '@/components/WorkPoolQueueCombobox.vue'
   import { useWorkPool } from '@/compositions/useWorkPool'
 
   const props = defineProps<{
