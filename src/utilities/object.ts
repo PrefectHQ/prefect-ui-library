@@ -109,6 +109,9 @@ export function isRecord(item: unknown): item is Record<PropertyKey, unknown> {
   return item !== null && typeof item === 'object' && !Array.isArray(item) && !isDate(item)
 }
 
+/**
+ * @deprecated Please use lodash.merge instead.
+ */
 export function merge<T extends Record<PropertyKey, unknown>>(target: T, ...sources: T[]): T {
   if (sources.length === 0) {
     return target
