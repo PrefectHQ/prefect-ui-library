@@ -53,6 +53,16 @@
                 <p-number-input v-model="retryDelay" :min="0" append="Seconds" />
               </p-label>
             </div>
+
+            <p-label label="Infrastructure Overrides (Optional)" :message="jobVariablesError" :state="jobVariablesState">
+              <JsonInput
+                v-model="jobVariables"
+                show-line-numbers
+                :min-lines="3"
+                class="deployment-form__infrastructure-overrides-input"
+                show-format-button
+              />
+            </p-label>
           </p-content>
         </template>
       </p-accordion>
@@ -80,6 +90,7 @@
   import FlowRunCreateFormWhen from '@/components/FlowRunCreateFormWhen.vue'
   import FlowRunCreateFormWorkQueueCombobox from '@/components/FlowRunCreateFormWorkQueueCombobox.vue'
   import FlowRunNameInput from '@/components/FlowRunNameInput.vue'
+  import JsonInput from '@/components/JsonInput.vue'
   import ToastParameterValidationError from '@/components/ToastParameterValidationError.vue'
   import { localization } from '@/localization'
   import { Deployment } from '@/models/Deployment'
@@ -89,7 +100,7 @@
   import { useSchemaValidation } from '@/schemas/compositions/useSchemaValidation'
   import { SchemaValues } from '@/schemas/types/schemaValues'
   import { isEmptyObject } from '@/utilities/object'
-  import { isRequired } from '@/utilities/validation'
+  import { isJson, isRequired } from '@/utilities/validation'
 
   const props = defineProps<{
     deployment: Deployment,
@@ -119,6 +130,8 @@
   const workQueueName = ref<string | null>(props.deployment.workQueueName)
   const retries = ref<number | null>(null)
   const retryDelay = ref<number | null>(null)
+  const jobVariables = ref<string>()
+  const { state: jobVariablesState, error: jobVariablesError } = useValidation(jobVariables, isJson('job variables'))
 
   const { errors, validate: validateParameters } = useSchemaValidation(schema, parameters)
 
@@ -158,6 +171,7 @@
       },
       name: name.value,
       parameters: parameters.value,
+      jobVariables: jobVariables.value ? JSON.parse(jobVariables.value) : undefined,
     }
 
     emit('submit', request)

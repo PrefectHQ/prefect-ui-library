@@ -87,6 +87,7 @@ export const mapDeploymentFlowRunCreateToDeploymentFlowRunRequest: MapFunction<D
     state: this.map('StateCreate', source.state, 'StateRequest'),
     empirical_policy: this.map('EmpiricalPolicy', source.empiricalPolicy, 'EmpiricalPolicyRequest'),
     work_queue_name: source.workQueueName,
+    job_variables: source.jobVariables,
   }
 }
 
@@ -102,5 +103,6 @@ export const mapDeploymentFlowRunCreateV2ToDeploymentFlowRunRequest: MapFunction
     state: this.map('StateCreate', source.state, 'StateRequest'),
     empirical_policy: this.map('EmpiricalPolicy', source.empiricalPolicy, 'EmpiricalPolicyRequest'),
     work_queue_name: source.workQueueName,
+    job_variables: source.jobVariables,
   }
 }
