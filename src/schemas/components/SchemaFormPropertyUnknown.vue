@@ -36,8 +36,8 @@
 
   const { property } = useSchemaProperty(() => props.property)
 
-  if (!isDefined(props.property.enum)) {
-    const valueOrDefaultValue = isDefined(props.value) ? props.value : props.property.default
+  if (!isDefined(property.value.enum)) {
+    const valueOrDefaultValue = isDefined(props.value) ? props.value : property.value.default
 
     const json: PrefectKindJson = {
       __prefect_kind: 'json',
