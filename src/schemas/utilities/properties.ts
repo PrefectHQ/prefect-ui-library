@@ -1,4 +1,4 @@
-import { isNotNullish } from '@prefecthq/prefect-design'
+import { isDefined } from '@prefecthq/prefect-design'
 import { Schema, SchemaProperty, SchemaPropertyType, isPropertyWith } from '@/schemas/types/schema'
 import { BlockDocumentReferenceValue, SchemaValue, isBlockDocumentReferenceValue } from '@/schemas/types/schemaValues'
 import { getSchemaDefinition } from '@/schemas/utilities/definitions'
@@ -48,8 +48,10 @@ type InitialIndexContext = {
 }
 
 export async function getInitialIndexForSchemaPropertyAnyOfValue({ value, property, schema, api }: InitialIndexContext): Promise<number> {
+  const valueOrDefaultValue = isDefined(value) ? value : property.default
+
   // if there's no value default to showing the first definition
-  if (!isNotNullish(value)) {
+  if (!isDefined(valueOrDefaultValue)) {
     return 0
   }
 
@@ -58,11 +60,11 @@ export async function getInitialIndexForSchemaPropertyAnyOfValue({ value, proper
   // block documents are the only reason this utility is async.
   // if the value is a block document reference we need to fetch the block document from the api
   // to determine the block type
-  if (isBlockDocumentReferenceValue(value)) {
-    return await getBlockDocumentReferenceDefinitionIndex(value, definitions, api)
+  if (isBlockDocumentReferenceValue(valueOrDefaultValue)) {
+    return await getBlockDocumentReferenceDefinitionIndex(valueOrDefaultValue, definitions, api)
   }
 
-  switch (typeof value) {
+  switch (typeof valueOrDefaultValue) {
     case 'string':
       return definitions.findIndex(definition => definition.type == 'string')
     case 'number':
@@ -70,7 +72,7 @@ export async function getInitialIndexForSchemaPropertyAnyOfValue({ value, proper
     case 'boolean':
       return definitions.findIndex(definition => definition.type == 'boolean')
     case 'object':
-      return getObjectDefinitionIndex(value, definitions)
+      return getObjectDefinitionIndex(valueOrDefaultValue, definitions)
     default:
       return -1
   }
