@@ -54,14 +54,8 @@
               </p-label>
             </div>
 
-            <p-label label="Infrastructure Overrides (Optional)" :message="jobVariablesError" :state="jobVariablesState">
-              <JsonInput
-                v-model="jobVariables"
-                show-line-numbers
-                :min-lines="3"
-                class="deployment-form__infrastructure-overrides-input"
-                show-format-button
-              />
+            <p-label label="Job Variables (Optional)" :message="jobVariablesError" :state="jobVariablesState">
+              <JobVariableOverridesInput v-model="jobVariables" :state="jobVariablesState" />
             </p-label>
           </p-content>
         </template>
@@ -90,7 +84,7 @@
   import FlowRunCreateFormWhen from '@/components/FlowRunCreateFormWhen.vue'
   import FlowRunCreateFormWorkQueueCombobox from '@/components/FlowRunCreateFormWorkQueueCombobox.vue'
   import FlowRunNameInput from '@/components/FlowRunNameInput.vue'
-  import JsonInput from '@/components/JsonInput.vue'
+  import JobVariableOverridesInput from '@/components/JobVariableOverridesInput.vue'
   import ToastParameterValidationError from '@/components/ToastParameterValidationError.vue'
   import { localization } from '@/localization'
   import { Deployment } from '@/models/Deployment'
@@ -131,7 +125,7 @@
   const retries = ref<number | null>(null)
   const retryDelay = ref<number | null>(null)
   const jobVariables = ref<string>()
-  const { state: jobVariablesState, error: jobVariablesError } = useValidation(jobVariables, isJson('job variables'))
+  const { state: jobVariablesState, error: jobVariablesError } = useValidation(jobVariables, isJson('Job variables'))
 
   const { errors, validate: validateParameters } = useSchemaValidation(schema, parameters)
 
