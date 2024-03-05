@@ -74,7 +74,7 @@
               </p-label>
             </div>
 
-            <p-label label="Job Variables (Optional)" :message="jobVariablesError" :state="jobVariablesState">
+            <p-label v-if="can.access.flowRunInfraOverrides" label="Job Variables (Optional)" :message="jobVariablesError" :state="jobVariablesState">
               <JobVariableOverridesInput v-model="jobVariables" :state="jobVariablesState" />
             </p-label>
           </p-content>
@@ -101,6 +101,7 @@
   import { computed, ref } from 'vue'
   import { TimezoneSelect, DateInput, WorkPoolQueueCombobox, JobVariableOverridesInput } from '@/components'
   import SchemaInput from '@/components/SchemaInput.vue'
+  import { useCan } from '@/compositions'
   import { useWorkPool } from '@/compositions/useWorkPool'
   import { localization } from '@/localization'
   import { Deployment, DeploymentFlowRunCreate } from '@/models'
@@ -125,6 +126,8 @@
     (event: 'submit', value: DeploymentFlowRunCreate): void,
     (event: 'cancel'): void,
   }>()
+
+  const can = useCan()
 
   const hasParameters = computed(() => !isEmptyObject(props.deployment.parameterOpenApiSchema.properties ?? {}))
 

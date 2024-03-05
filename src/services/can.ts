@@ -6,6 +6,7 @@ export const workspaceFeatureFlags = [
   'access:enhancedSchedulingUi',
   'access:workQueueStatus',
   'access:schemasV2',
+  'access:flowRunInfraOverrides',
 ] as const satisfies Readonly<`access:${string}`[]>
 
 export type WorkspaceFeatureFlag = typeof workspaceFeatureFlags[number]
