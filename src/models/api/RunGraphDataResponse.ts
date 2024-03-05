@@ -1,4 +1,4 @@
-import { RunGraphEdge, RunGraphNodeKind } from '@prefecthq/graphs'
+import { RunGraphEdge, RunGraphNodeKind, StateType } from '@prefecthq/graphs'
 import { ServerStateType } from '@/models/StateType'
 
 export type RunGraphDataResponse = {
@@ -7,6 +7,7 @@ export type RunGraphDataResponse = {
   root_node_ids: string[],
   nodes: [string, RunGraphNodeResponse][],
   artifacts?: RunGraphArtifactResponse[],
+  states?: RunGraphStateResponse[],
 }
 
 export type RunGraphNodeResponse = {
@@ -28,4 +29,11 @@ export type RunGraphArtifactResponse = {
   created: string,
   key: string,
   type: string,
+}
+
+export type RunGraphStateResponse = {
+  id: string,
+  timestamp: string,
+  type: StateType,
+  name: string,
 }

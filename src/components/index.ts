@@ -116,6 +116,7 @@ export { default as FlowRunGraphArtifactDrawer } from './FlowRunGraphArtifactDra
 export { default as FlowRunGraphArtifactsPopover } from './FlowRunGraphArtifactsPopover.vue'
 export { default as FlowRunGraphConfirmation } from '@/components/FlowRunGraphConfirmation.vue'
 export { default as FlowRunGraphPopover } from './FlowRunGraphPopover.vue'
+export { default as FlowRunGraphStatePopover } from './FlowRunGraphStatePopover.vue'
 export { default as FlowRunGraphSelectionPanel } from './FlowRunGraphSelectionPanel.vue'
 export { default as FlowRunHistoryCard } from './FlowRunHistoryCard.vue'
 export { default as FlowRunIconText } from './FlowRunIconText.vue'
