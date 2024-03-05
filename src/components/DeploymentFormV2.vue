@@ -59,13 +59,7 @@
       {{ localization.info.infraOverrides }}
     </h3>
     <p-label label="Infrastructure Overrides (Optional)" :message="overrideError" :state="overrideState">
-      <p-code-input
-        v-model="infrastructureOverrides"
-        show-line-numbers
-        :min-lines="3"
-        class="deployment-form__json"
-        show-format-button
-      />
+      <JobVariableOverridesInput v-model="infrastructureOverrides" :state="overrideState" />
     </p-label>
 
     <template #footer>
@@ -83,7 +77,7 @@
   import { showToast } from '@prefecthq/prefect-design'
   import { useValidation, useValidationObserver } from '@prefecthq/vue-compositions'
   import { computed, h, ref } from 'vue'
-  import { WorkPoolCombobox, WorkPoolQueueCombobox } from '@/components'
+  import { JobVariableOverridesInput, WorkPoolCombobox, WorkPoolQueueCombobox } from '@/components'
   import ToastParameterValidationError from '@/components/ToastParameterValidationError.vue'
   import { localization } from '@/localization'
   import { Deployment, DeploymentUpdateV2 } from '@/models'
@@ -169,10 +163,5 @@
 .deployment-form__heading { @apply
   text-lg
   font-semibold
-}
-
-.deployment-form__json { @apply
-  min-h-[2.5rem]
-  resize-y
 }
 </style>
