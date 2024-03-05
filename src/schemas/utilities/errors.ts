@@ -19,7 +19,7 @@ export function getSchemaPropertyError(errors: SchemaValueError[]): SchemaProper
   const propertyErrors = errors.filter(isString)
   const state: State = { pending: false, valid: true, validated: true }
 
-  if (errors.length) {
+  if (propertyErrors.length) {
     state.valid = false
     return {
       state,
@@ -34,10 +34,14 @@ export function getSchemaPropertyError(errors: SchemaValueError[]): SchemaProper
 }
 
 export function getAllSchemaPropertyErrors(errors: SchemaValueError[]): SchemaValueError[] {
-  const propertyErrors = errors.filter(isString)
+  const propertyErrors = getAllRootSchemaPropertyErrors(errors)
   const childErrors = getAllChildSchemaPropertyErrors(errors)
 
   return [...propertyErrors, ...childErrors]
+}
+
+export function getAllRootSchemaPropertyErrors(errors: SchemaValueError[]): SchemaValueError[] {
+  return errors.filter(isString)
 }
 
 export function getAllChildSchemaPropertyErrors(errors: SchemaValueError[]): SchemaValueError[] {
