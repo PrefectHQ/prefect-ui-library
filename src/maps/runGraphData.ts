@@ -1,5 +1,5 @@
-import { RunGraphData, RunGraphNode, RunGraphArtifact } from '@prefecthq/graphs'
-import { RunGraphDataResponse, RunGraphNodeResponse, RunGraphArtifactResponse } from '@/models/api/RunGraphDataResponse'
+import { RunGraphData, RunGraphNode, RunGraphArtifact, RunGraphStateEvent, StateType } from '@prefecthq/graphs'
+import { RunGraphDataResponse, RunGraphNodeResponse, RunGraphArtifactResponse, RunGraphStateResponse } from '@/models/api/RunGraphDataResponse'
 import { MapFunction } from '@/services/Mapper'
 import { isKnownArtifactType } from '@/types/artifact'
 
@@ -31,6 +31,15 @@ export const mapRunGraphArtifactResponse: MapFunction<RunGraphArtifactResponse, 
   }
 }
 
+export const mapRunGraphStateResponse: MapFunction<RunGraphStateResponse, RunGraphStateEvent> = function(source) {
+  return {
+    id: source.id,
+    timestamp: this.map('string', source.timestamp, 'Date'),
+    type: source.type as StateType,
+    name: source.name,
+  }
+}
+
 export const mapRunGraphDataResponse: MapFunction<RunGraphDataResponse, RunGraphData> = function(source) {
   const nodes: [string, RunGraphNode][] = source.nodes.map(([nodeId, node]) => [
     nodeId,
@@ -41,11 +50,16 @@ export const mapRunGraphDataResponse: MapFunction<RunGraphDataResponse, RunGraph
     return this.map('RunGraphArtifactResponse', artifact, 'RunGraphArtifact')
   }) ?? []
 
+  const states: RunGraphStateEvent[] = source.states?.map(state => {
+    return this.map('RunGraphStateResponse', state, 'RunGraphStateEvent')
+  }) ?? []
+
   return {
     root_node_ids: source.root_node_ids,
     start_time: this.map('string', source.start_time, 'Date'),
     end_time: this.map('string', source.end_time, 'Date'),
     nodes: new Map(nodes),
     artifacts,
+    states,
   }
 }

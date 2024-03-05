@@ -1,5 +1,5 @@
 <template>
-  <div v-if="showGraph" class="flow-run-graph">
+  <div class="flow-run-graph" :class="classes.root">
     <template v-if="load">
       <RunGraph
         v-model:viewport="viewport"
@@ -8,6 +8,9 @@
         :config="config"
         class="flow-run-graph__graph p-background"
       />
+      <p v-if="!hasGraphNodes" class="flow-run-graph__no-nodes-message">
+        No tasks or sub flows were called
+      </p>
     </template>
     <template v-else>
       <FlowRunGraphConfirmation @confirm="confirm" />
@@ -43,7 +46,7 @@
   const api = useWorkspaceApi()
   const { value: colorThemeValue } = useColorTheme()
   const load = ref(true)
-  const showGraph = ref(true)
+  const hasGraphNodes = ref(true)
 
   const viewport = computed({
     get() {
@@ -106,6 +109,9 @@
       node: node => ({
         background: stateTypeColors[node.state_type],
       }),
+      state: state => ({
+        background: stateTypeColors[state.type],
+      }),
     },
   }))
 
@@ -124,7 +130,13 @@
     load.value = false
   }
 
-  showGraph.value = count.value! > 0
+  hasGraphNodes.value = count.value! > 0
+
+  const classes = computed(() => ({
+    root: {
+      'flow-run-graph--no-nodes': !hasGraphNodes.value,
+    },
+  }))
 
   function confirm(): void {
     load.value = true
@@ -137,10 +149,34 @@
   --p-color-flow-run-graph-edge: var(--p-color-text-subdued);
 }
 
+.flow-run-graph { @apply
+  w-full
+  h-96
+  relative
+}
+
+.flow-run-graph--no-nodes { @apply
+  h-40
+}
+
 .flow-run-graph__graph {
   width: 100%;
-  height: 340px;
+  height: 100%;
 }
+
+.flow-run-graph__no-nodes-message { @apply
+  text-center
+  text-subdued
+  max-w-full
+  px-3
+  absolute
+  top-1/2
+  left-1/2
+  -translate-x-1/2
+  -translate-y-1/2
+  pointer-events-none
+}
+
 
 /* TODO: This temporarily hides the "Hide artifacts" option until that layer goes live */
 .run-graph-settings__menu > .p-checkbox:last-child {

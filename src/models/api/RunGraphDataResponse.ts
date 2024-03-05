@@ -7,6 +7,7 @@ export type RunGraphDataResponse = {
   root_node_ids: string[],
   nodes: [string, RunGraphNodeResponse][],
   artifacts?: RunGraphArtifactResponse[],
+  states?: RunGraphStateResponse[],
 }
 
 export type RunGraphNodeResponse = {
@@ -28,4 +29,11 @@ export type RunGraphArtifactResponse = {
   created: string,
   key: string,
   type: string,
+}
+
+export type RunGraphStateResponse = {
+  id: string,
+  timestamp: string,
+  type: string,
+  name: string,
 }
