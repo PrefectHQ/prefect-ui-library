@@ -228,8 +228,6 @@
       schema: props.deployment.parameterOpenApiSchema,
     }
 
-    console.log({ valuesWithParameters: JSON.parse(JSON.stringify(parameters)) })
-
     emit('submit', valuesWithParameters)
   }
 </script>
