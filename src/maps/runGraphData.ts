@@ -1,4 +1,4 @@
-import { RunGraphData, RunGraphNode, RunGraphArtifact, RunGraphStateEvent, StateType } from '@prefecthq/graphs'
+import { RunGraphData, RunGraphNode, RunGraphArtifact, RunGraphStateEvent } from '@prefecthq/graphs'
 import { RunGraphDataResponse, RunGraphNodeResponse, RunGraphArtifactResponse, RunGraphStateResponse } from '@/models/api/RunGraphDataResponse'
 import { MapFunction } from '@/services/Mapper'
 import { isKnownArtifactType } from '@/types/artifact'
@@ -35,7 +35,7 @@ export const mapRunGraphStateResponse: MapFunction<RunGraphStateResponse, RunGra
   return {
     id: source.id,
     timestamp: this.map('string', source.timestamp, 'Date'),
-    type: source.type as StateType,
+    type: source.type,
     name: source.name,
   }
 }
