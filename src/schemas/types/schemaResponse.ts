@@ -24,6 +24,7 @@ export type SchemaPropertyResponse = {
   // exclusiveMinimum?: boolean | number,
   format?: SchemaStringFormat,
   items?: SchemaPropertyResponse | SchemaPropertyResponse[],
+  prefixItems?: SchemaPropertyResponse[],
   // maximum?: number,
   maxItems?: number,
   // maxLength?: number,
