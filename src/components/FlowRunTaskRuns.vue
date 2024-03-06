@@ -4,7 +4,7 @@
       <ResultsCount :count="count" label="Task run" />
       <template #controls>
         <SearchInput v-model="searchTerm" placeholder="Search by run name" label="Search by run name" class="flow-run-task-runs__search" />
-        <StateNameSelect v-model:selected="states" empty-message="All states" />
+        <StateNameSelect v-model:selected="states" empty-message="All states" multiple />
       </template>
       <template #sort>
         <TaskRunsSort v-model="filter.sort" />
