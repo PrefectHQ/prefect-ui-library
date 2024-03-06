@@ -40,13 +40,7 @@
     const message = value ? localization.success.activateDeployment : localization.success.pauseDeployment
 
     try {
-      if (can.access.enhancedSchedulingUi) {
-        await api.deployments.updateDeployment(props.deployment.id, { paused: !value })
-      } else if (value) {
-        await api.deployments.resumeDeployment(props.deployment.id)
-      } else {
-        await api.deployments.pauseDeployment(props.deployment.id)
-      }
+      await api.deployments.updateDeployment(props.deployment.id, { paused: !value })
 
       showToast(message, 'success')
       emit('update')

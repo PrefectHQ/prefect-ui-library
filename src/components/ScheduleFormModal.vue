@@ -5,9 +5,7 @@
       <p-button-group v-model="scheduleForm" :options="scheduleFormOptions" small />
     </p-label>
 
-    <p-label v-if="can.access.enhancedSchedulingUi" label="Active">
-      <p-toggle v-model="internalActive" />
-    </p-label>
+    <p-toggle v-model="internalActive" />
 
     <template v-if="scheduleForm == 'rrule'">
       <p>
