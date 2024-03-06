@@ -1,11 +1,17 @@
 import {
   GraphItemSelection as RunGraphItemSelection,
-  ViewportDateRange as RunGraphViewportDateRange
+  ViewportDateRange as RunGraphViewportDateRange,
+  EventSelection as RunGraphEventSelection,
+  EventsSelection as RunGraphEventsSelection,
+  RunGraphEvent
 } from '@prefecthq/graphs'
 
 export type {
   RunGraphItemSelection,
-  RunGraphViewportDateRange
+  RunGraphViewportDateRange,
+  RunGraphEvent,
+  RunGraphEventSelection,
+  RunGraphEventsSelection
 }
 
 export * from './buttons'
