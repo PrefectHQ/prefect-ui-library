@@ -1,5 +1,5 @@
 <template>
-  <div class="flow-run-task-runs">
+  <p-content class="flow-run-task-runs">
     <p-list-header sticky>
       <ResultsCount :count="count" label="Task run" />
       <template #controls>
@@ -23,7 +23,7 @@
         </p-button>
       </template>
     </PEmptyResults>
-  </div>
+  </p-content>
 </template>
 
 <script lang="ts" setup>
