@@ -3,10 +3,11 @@
 </template>
 
 <script lang="ts" setup>
-  import { PNumberInput, PToggle, State } from '@prefecthq/prefect-design'
+  import { PNumberInput, State } from '@prefecthq/prefect-design'
   import { computed } from 'vue'
   import SchemaFormPropertyArray from '@/schemas/components/SchemaFormPropertyArray.vue'
   import SchemaFormPropertyBlockDocument from '@/schemas/components/SchemaFormPropertyBlockDocument.vue'
+  import SchemaFormPropertyBoolean from '@/schemas/components/SchemaFormPropertyBoolean.vue'
   import SchemaFormPropertyInteger from '@/schemas/components/SchemaFormPropertyInteger.vue'
   import SchemaFormPropertyNull from '@/schemas/components/SchemaFormPropertyNull.vue'
   import SchemaFormPropertyObject from '@/schemas/components/SchemaFormPropertyObject.vue'
@@ -46,8 +47,9 @@
     }
 
     if (isSchemaPropertyType(type, 'boolean')) {
-      return withProps(PToggle, {
-        modelValue: asType(value, Boolean),
+      return withProps(SchemaFormPropertyBoolean, {
+        property: { ...property.value, type },
+        value: asType(value, Boolean),
         state: props.state,
         'onUpdate:modelValue': (value) => emit('update:value', asType(value, Boolean)),
       })
