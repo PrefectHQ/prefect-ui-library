@@ -49,6 +49,7 @@
   const compatSchedule = ref<DeploymentScheduleCompatible>({
     active: props.schedule.active,
     schedule: props.schedule.schedule,
+    jobVariables: props.schedule.jobVariables,
   })
 
   const { showModal: showConfirmDeleteModal, open: openConfirmDeleteModal, close: closeConfirmDeleteModal } = useShowModal()
@@ -72,7 +73,7 @@
     }
 
     try {
-      await api.deploymentSchedules.updateDeploymentSchedule(props.deployment.id, props.schedule.id, { active: updatedSchedule.active, schedule: updatedSchedule.schedule })
+      await api.deploymentSchedules.updateDeploymentSchedule(props.deployment.id, props.schedule.id, { active: updatedSchedule.active, schedule: updatedSchedule.schedule, jobVariables: updatedSchedule.jobVariables })
       showToast(localization.success.updateDeploymentSchedule, 'success')
       emit('update', updatedSchedule)
     } catch (error) {

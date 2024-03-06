@@ -23,6 +23,10 @@
       <IntervalScheduleForm v-model:schedule="intervalSchedule" v-model:disabled="intervalDisabled" hide-actions @submit="scheduleFormSubmit" />
     </template>
 
+    <p-label v-if="can.access.flowRunInfraOverrides" label="Job Variables (Optional)" :message="jobVariablesError" :state="jobVariablesState">
+      <JobVariableOverridesInput v-model="internalJobVariables" :state="jobVariablesState" />
+    </p-label>
+
     <template #actions>
       <p-button primary type="submit" :disabled="disabled" @click="submitCurrentForm">
         Save
@@ -33,9 +37,12 @@
 
 <script lang="ts" setup>
   import { ButtonGroupOption } from '@prefecthq/prefect-design'
+  import { useValidation } from '@prefecthq/vue-compositions'
   import { computed, ref, watch } from 'vue'
+  import { isJson } from '..'
   import CronScheduleForm from '@/components/CronScheduleForm.vue'
   import IntervalScheduleForm from '@/components/IntervalScheduleForm.vue'
+  import JobVariableOverridesInput from '@/components/JobVariableOverridesInput.vue'
   import { useCan, useShowModal } from '@/compositions'
   import { DeploymentScheduleCompatible, getScheduleType, Schedule, ScheduleType, isCronSchedule, isIntervalSchedule, CronSchedule, IntervalSchedule } from '@/models'
 
@@ -53,18 +60,26 @@
 
   const internalActive = ref<boolean>(props.active ?? true)
 
+  const internalJobVariables = ref<string | undefined>(props.jobVariables ? JSON.stringify(props.jobVariables, null, 2) : undefined)
+  const { validate, state: jobVariablesState, error: jobVariablesError } = useValidation(internalJobVariables, isJson('Job variables'))
+
   const emit = defineEmits<{
     (event: 'submit', value: DeploymentScheduleCompatible): void,
   }>()
 
 
   const scheduleFormSubmit = (schedule: Schedule): void => {
-    submit({ 'active': internalActive.value, 'schedule': schedule })
+    submit({ 'active': internalActive.value, 'schedule': schedule, jobVariables: internalJobVariables.value ? JSON.parse(internalJobVariables.value) : internalJobVariables.value })
   }
 
   const submit = (schedule: DeploymentScheduleCompatible): void => {
-    emit('submit', schedule)
-    close()
+    validate().then(isValid => {
+      if (!isValid) {
+        return
+      }
+      emit('submit', schedule)
+      close()
+    })
   }
 
   const cronDisabled = ref<boolean>()
@@ -89,6 +104,7 @@
     submit({
       'active': internalActive.value,
       schedule,
+      jobVariables: internalJobVariables.value ? JSON.parse(internalJobVariables.value) : internalJobVariables.value,
     })
   }
 
@@ -101,6 +117,7 @@
     cronSchedule.value = isCronSchedule(props.schedule) ? props.schedule : undefined
     intervalSchedule.value = isIntervalSchedule(props.schedule) ? props.schedule : undefined
     internalActive.value = props.active ?? true
+    internalJobVariables.value = props.jobVariables ? JSON.stringify(props.jobVariables, null, 2) : undefined
   }
   watch(() => props.schedule, updateInternalState)
 </script>

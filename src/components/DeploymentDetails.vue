@@ -96,7 +96,7 @@
     }
 
     try {
-      await api.deploymentSchedules.createDeploymentSchedule(props.deployment.id, { active: updatedSchedule.active, schedule: updatedSchedule.schedule })
+      await api.deploymentSchedules.createDeploymentSchedule(props.deployment.id, { active: updatedSchedule.active, schedule: updatedSchedule.schedule, jobVariables: updatedSchedule.jobVariables })
       showToast(localization.success.updateDeploymentSchedule, 'success')
       emit('update')
     } catch (error) {

@@ -7,6 +7,7 @@ export interface IDeploymentSchedule {
   updated: Date,
   active: boolean,
   schedule: Schedule,
+  jobVariables: Record<string, unknown>,
 }
 
 export class DeploymentSchedule implements IDeploymentSchedule {
@@ -15,6 +16,7 @@ export class DeploymentSchedule implements IDeploymentSchedule {
   public updated: Date
   public active: boolean
   public schedule: Schedule
+  public jobVariables: Record<string, unknown>
 
   public constructor(deploymentSchedule: IDeploymentSchedule) {
     this.id = deploymentSchedule.id
@@ -22,6 +24,7 @@ export class DeploymentSchedule implements IDeploymentSchedule {
     this.updated = deploymentSchedule.updated
     this.active = deploymentSchedule.active
     this.schedule = deploymentSchedule.schedule
+    this.jobVariables = deploymentSchedule.jobVariables
   }
 
 }
