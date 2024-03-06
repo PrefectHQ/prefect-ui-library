@@ -18,10 +18,3 @@
     value.value = false
   }
 </script>
-
-<style>
-.schema-form-property-null { @apply
-  text-subdued
-  text-sm
-}
-</style>
