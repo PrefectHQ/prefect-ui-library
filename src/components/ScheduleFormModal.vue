@@ -34,7 +34,7 @@
   import { computed, ref, watch } from 'vue'
   import CronScheduleForm from '@/components/CronScheduleForm.vue'
   import IntervalScheduleForm from '@/components/IntervalScheduleForm.vue'
-  import { useCan, useShowModal } from '@/compositions'
+  import { useShowModal } from '@/compositions'
   import { DeploymentScheduleCompatible, getScheduleType, Schedule, ScheduleType, isCronSchedule, isIntervalSchedule, CronSchedule, IntervalSchedule } from '@/models'
 
   const { showModal, open, close } = useShowModal()
@@ -44,8 +44,6 @@
   }
 
   defineExpose({ publicOpen })
-
-  const can = useCan()
 
   const props = defineProps<DeploymentScheduleCompatible>()
 

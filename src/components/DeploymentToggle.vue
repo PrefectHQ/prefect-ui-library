@@ -7,12 +7,10 @@
 <script lang="ts" setup>
   import { showToast } from '@prefecthq/prefect-design'
   import { computed, ref } from 'vue'
-  import { useCan, useWorkspaceApi } from '@/compositions'
+  import { useWorkspaceApi } from '@/compositions'
   import { localization } from '@/localization'
   import { Deployment } from '@/models'
   import { getApiErrorMessage } from '@/utilities/errors'
-
-  const can = useCan()
 
   const props = defineProps<{
     deployment: Deployment,
