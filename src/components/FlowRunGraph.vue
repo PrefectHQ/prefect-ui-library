@@ -19,7 +19,7 @@
 </template>
 
 <script lang="ts" setup>
-  import { GraphItemSelection, RunGraph, RunGraphConfig, ViewportDateRange } from '@prefecthq/graphs'
+  import { GraphItemSelection, RunGraph, RunGraphConfig, ViewportDateRange, RunGraphFetchEvents } from '@prefecthq/graphs'
   import { useColorTheme } from '@prefecthq/prefect-design'
   import { computed, ref } from 'vue'
   import FlowRunGraphConfirmation from '@/components/FlowRunGraphConfirmation.vue'
@@ -35,6 +35,7 @@
     fullscreen: boolean,
     selected: GraphItemSelection | null,
     viewport?: ViewportDateRange,
+    fetchEvents?: RunGraphFetchEvents,
   }>()
 
   const emit = defineEmits<{
@@ -97,6 +98,7 @@
   const config = computed<RunGraphConfig>(() => ({
     runId: props.flowRun.id,
     fetch: api.flowRuns.getFlowRunsGraph,
+    fetchEvents: props.fetchEvents,
     styles: {
       colorMode: colorThemeValue.value,
       textDefault: getColorToken('--p-color-text-default'),
@@ -178,7 +180,10 @@
 }
 
 
-/* TODO: This temporarily hides the "Hide artifacts" option until that layer goes live */
+/* TODO: These temporarily hide the "Hide artifacts" and "Hide events" options until those layers go live */
+.run-graph-settings__menu > .p-checkbox:nth-last-child(2) {
+  display: none;
+}
 .run-graph-settings__menu > .p-checkbox:last-child {
   display: none;
 }
