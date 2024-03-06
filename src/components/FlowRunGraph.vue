@@ -9,7 +9,7 @@
         class="flow-run-graph__graph p-background"
       />
       <p v-if="!hasGraphNodes" class="flow-run-graph__no-nodes-message">
-        No tasks or sub flows were called
+        {{ emptyMessage }}
       </p>
     </template>
     <template v-else>
@@ -26,7 +26,7 @@
   import { useTaskRunsCount } from '@/compositions/useTaskRunsCount'
   import { useWorkspaceApi } from '@/compositions/useWorkspaceApi'
   import { FlowRun } from '@/models/FlowRun'
-  import { ServerStateType } from '@/models/StateType'
+  import { ServerStateType, isTerminalStateType } from '@/models/StateType'
 
   const NODE_COUNT_TO_REQUIRED_OPT_IN = 2000
 
@@ -75,6 +75,15 @@
       emit('update:selected', value)
     },
   })
+
+  const emptyMessage = computed(() => {
+    if (isTerminalStateType(props.flowRun.state?.type)) {
+      return 'This flow run did not generate any task or flow runs'
+    }
+
+    return 'This flow run has not yet generated any task or flow runs'
+  })
+
 
   // these will be replaced with brandon's styles
   const stateTypeColors = {
