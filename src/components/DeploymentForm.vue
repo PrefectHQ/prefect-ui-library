@@ -56,13 +56,7 @@
         {{ localization.info.infraOverrides }}
       </h3>
       <p-label label="Infrastructure Overrides (Optional)" :message="overrideErrorMessage" :state="overrideState">
-        <JsonInput
-          v-model="infrastructureOverrides"
-          show-line-numbers
-          :min-lines="3"
-          class="deployment-form__infrastructure-overrides-input"
-          show-format-button
-        />
+        <JobVariableOverridesInput v-model="infrastructureOverrides" :state="overrideState" />
       </p-label>
     </p-content>
 
@@ -81,8 +75,7 @@
   import { useValidationObserver } from '@prefecthq/vue-compositions'
   import { useField } from 'vee-validate'
   import { computed } from 'vue'
-  import { SchemaInput, WorkPoolCombobox, WorkPoolQueueCombobox, JsonInput } from '@/components'
-  import { useCan } from '@/compositions'
+  import { SchemaInput, WorkPoolCombobox, WorkPoolQueueCombobox, JobVariableOverridesInput } from '@/components'
   import { useForm } from '@/compositions/useForm'
   import { useOptionalPropertiesSchema } from '@/compositions/useOptionalPropertiesSchema'
   import { localization } from '@/localization'
@@ -163,12 +156,5 @@
   @apply
   text-lg
   font-semibold
-}
-
-.deployment-form__description-input,
-.deployment-form__infrastructure-overrides-input { @apply
-  min-h-[2.5rem]
-  resize-y
-  min-w-full
 }
 </style>
