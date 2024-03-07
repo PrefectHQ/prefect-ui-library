@@ -5,9 +5,9 @@
 <script lang="ts" setup>
   import { State, isDefined } from '@prefecthq/prefect-design'
   import { SchemaProperty } from '@/schemas/types/schema'
+  import { asType } from '@/utilities/types'
 
-  defineProps<{
-    // eslint-disable-next-line vue/no-unused-properties
+  const props = defineProps<{
     property: SchemaProperty & { type: 'boolean' },
     state: State,
   }>()
@@ -15,6 +15,6 @@
   const value = defineModel<boolean | undefined>({ default: undefined })
 
   if (!isDefined(value.value)) {
-    value.value = false
+    value.value = asType(props.property.default, Boolean) ?? false
   }
 </script>
