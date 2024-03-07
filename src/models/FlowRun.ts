@@ -39,7 +39,7 @@ export interface IFlowRun {
   workQueueName: string | null,
   workPoolName: string | null,
   workPoolQueueName: string | null,
-  jobVariables: Record<string, unknown> | null,
+  jobVariables: Record<string, unknown>,
 }
 
 export class FlowRun extends StorageItem implements IFlowRun {
@@ -74,7 +74,7 @@ export class FlowRun extends StorageItem implements IFlowRun {
   public updated: Date
   public workPoolName: string | null
   public workPoolQueueName: string | null
-  public jobVariables: Record<string, unknown> | null
+  public jobVariables: Record<string, unknown>
 
   public constructor(flowRun: IFlowRun) {
     super()

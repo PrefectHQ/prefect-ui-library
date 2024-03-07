@@ -38,5 +38,5 @@ export type FlowRunResponse = {
   work_queue_name: string | null,
   work_pool_name: string | null,
   work_pool_queue_name: string | null,
-  job_variables: Record<string, unknown> | null,
+  job_variables?: Record<string, unknown> | null,
 }
