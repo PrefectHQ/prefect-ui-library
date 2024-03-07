@@ -37,6 +37,7 @@ export const randomFlowRun: MockFunction<FlowRun, [Partial<FlowRun>?]> = functio
     workQueueName: random() > 0.7 ? this.create('noun') : null,
     workPoolName: random() > 0.7 ? this.create('noun') : null,
     workPoolQueueName: random() > 0.7 ? this.create('noun') : null,
+    jobVariables: {},
     ...overrides,
   })
 }
