@@ -137,7 +137,7 @@
     },
   }), taskRunCountOptions)
 
-  const hasGraphNodes = computed(() => count.value! > 0)
+  const hasGraphNodes = computed(() => count.value && count.value > 0)
 
   await subscription.promise()
 

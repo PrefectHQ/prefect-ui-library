@@ -4,12 +4,13 @@ import { computed, MaybeRefOrGetter, toRef, toValue } from 'vue'
 import { useCan, useWorkspaceApi } from '@/compositions'
 import { TaskRunsFilter } from '@/models/Filters'
 import { WorkspaceTaskRunsApi } from '@/services/WorkspaceTaskRunsApi'
+import { MaybeRef } from '@/types'
 import { Getter } from '@/types/reactivity'
 import { UseEntitySubscription } from '@/types/useEntitySubscription'
 
 export type UseTaskRunsCount = UseEntitySubscription<WorkspaceTaskRunsApi['getTaskRunsCount'], 'count'>
 
-export function useTaskRunsCount(filter: MaybeRefOrGetter<TaskRunsFilter | null | undefined>, options?: SubscriptionOptions): UseTaskRunsCount {
+export function useTaskRunsCount(filter: MaybeRefOrGetter<TaskRunsFilter | null | undefined>, options?: MaybeRef<SubscriptionOptions>): UseTaskRunsCount {
   const api = useWorkspaceApi()
   const can = useCan()
 
