@@ -47,7 +47,6 @@
   const api = useWorkspaceApi()
   const { value: colorThemeValue } = useColorTheme()
   const load = ref(true)
-  const hasGraphNodes = ref(true)
 
   const viewport = computed({
     get() {
@@ -126,6 +125,9 @@
     },
   }))
 
+  const taskRunCountOptions = computed(() => ({
+    interval: isTerminalStateType(props.flowRun.state?.type) ? undefined : 1000,
+  }))
   const { count, subscription } = useTaskRunsCount(() => ({
     flowRuns: {
       id: [props.flowRun.id],
@@ -133,15 +135,15 @@
     taskRuns: {
       subFlowRunsExist: undefined,
     },
-  }))
+  }), taskRunCountOptions)
+
+  const hasGraphNodes = computed(() => count.value && count.value > 0)
 
   await subscription.promise()
 
   if (count.value! > NODE_COUNT_TO_REQUIRED_OPT_IN) {
     load.value = false
   }
-
-  hasGraphNodes.value = count.value! > 0
 
   const classes = computed(() => ({
     root: {
