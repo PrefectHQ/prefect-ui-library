@@ -41,8 +41,10 @@
   import CronScheduleForm from '@/components/CronScheduleForm.vue'
   import IntervalScheduleForm from '@/components/IntervalScheduleForm.vue'
   import JobVariableOverridesInput from '@/components/JobVariableOverridesInput.vue'
-  import { useShowModal } from '@/compositions'
+  import { useCan, useShowModal } from '@/compositions'
   import { DeploymentScheduleCompatible, getScheduleType, Schedule, ScheduleType, isCronSchedule, isIntervalSchedule, CronSchedule, IntervalSchedule } from '@/models'
+
+  const can = useCan()
 
   const { showModal, open, close } = useShowModal()
 
