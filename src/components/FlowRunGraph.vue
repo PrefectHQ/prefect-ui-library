@@ -1,5 +1,5 @@
 <template>
-  <div v-if="showGraph" class="flow-run-graph">
+  <div class="flow-run-graph" :class="classes.root">
     <template v-if="load">
       <RunGraph
         v-model:viewport="viewport"
@@ -8,6 +8,9 @@
         :config="config"
         class="flow-run-graph__graph p-background"
       />
+      <p v-if="!hasGraphNodes" class="flow-run-graph__no-nodes-message">
+        {{ emptyMessage }}
+      </p>
     </template>
     <template v-else>
       <FlowRunGraphConfirmation @confirm="confirm" />
@@ -16,14 +19,14 @@
 </template>
 
 <script lang="ts" setup>
-  import { GraphItemSelection, RunGraph, RunGraphConfig, ViewportDateRange } from '@prefecthq/graphs'
+  import { GraphItemSelection, RunGraph, RunGraphConfig, ViewportDateRange, RunGraphFetchEvents } from '@prefecthq/graphs'
   import { useColorTheme } from '@prefecthq/prefect-design'
   import { computed, ref } from 'vue'
   import FlowRunGraphConfirmation from '@/components/FlowRunGraphConfirmation.vue'
   import { useTaskRunsCount } from '@/compositions/useTaskRunsCount'
   import { useWorkspaceApi } from '@/compositions/useWorkspaceApi'
   import { FlowRun } from '@/models/FlowRun'
-  import { ServerStateType } from '@/models/StateType'
+  import { ServerStateType, isTerminalStateType } from '@/models/StateType'
 
   const NODE_COUNT_TO_REQUIRED_OPT_IN = 2000
 
@@ -32,6 +35,7 @@
     fullscreen: boolean,
     selected: GraphItemSelection | null,
     viewport?: ViewportDateRange,
+    fetchEvents?: RunGraphFetchEvents,
   }>()
 
   const emit = defineEmits<{
@@ -43,7 +47,6 @@
   const api = useWorkspaceApi()
   const { value: colorThemeValue } = useColorTheme()
   const load = ref(true)
-  const showGraph = ref(true)
 
   const viewport = computed({
     get() {
@@ -72,6 +75,15 @@
     },
   })
 
+  const emptyMessage = computed(() => {
+    if (isTerminalStateType(props.flowRun.state?.type)) {
+      return 'This flow run did not generate any task or flow runs'
+    }
+
+    return 'This flow run has not yet generated any task or flow runs'
+  })
+
+
   // these will be replaced with brandon's styles
   const stateTypeColors = {
     COMPLETED: '#219D4B',
@@ -94,6 +106,7 @@
   const config = computed<RunGraphConfig>(() => ({
     runId: props.flowRun.id,
     fetch: api.flowRuns.getFlowRunsGraph,
+    fetchEvents: props.fetchEvents,
     styles: {
       colorMode: colorThemeValue.value,
       textDefault: getColorToken('--p-color-text-default'),
@@ -106,9 +119,15 @@
       node: node => ({
         background: stateTypeColors[node.state_type],
       }),
+      state: state => ({
+        background: stateTypeColors[state.type],
+      }),
     },
   }))
 
+  const taskRunCountOptions = computed(() => ({
+    interval: isTerminalStateType(props.flowRun.state?.type) ? undefined : 1000,
+  }))
   const { count, subscription } = useTaskRunsCount(() => ({
     flowRuns: {
       id: [props.flowRun.id],
@@ -116,7 +135,9 @@
     taskRuns: {
       subFlowRunsExist: undefined,
     },
-  }))
+  }), taskRunCountOptions)
+
+  const hasGraphNodes = computed(() => count.value && count.value > 0)
 
   await subscription.promise()
 
@@ -124,7 +145,11 @@
     load.value = false
   }
 
-  showGraph.value = count.value! > 0
+  const classes = computed(() => ({
+    root: {
+      'flow-run-graph--no-nodes': !hasGraphNodes.value,
+    },
+  }))
 
   function confirm(): void {
     load.value = true
@@ -137,12 +162,39 @@
   --p-color-flow-run-graph-edge: var(--p-color-text-subdued);
 }
 
-.flow-run-graph__graph {
-  width: 100%;
-  height: 340px;
+.flow-run-graph { @apply
+  w-full
+  h-96
+  relative
 }
 
-/* TODO: This temporarily hides the "Hide artifacts" option until that layer goes live */
+.flow-run-graph--no-nodes { @apply
+  h-40
+}
+
+.flow-run-graph__graph {
+  width: 100%;
+  height: 100%;
+}
+
+.flow-run-graph__no-nodes-message { @apply
+  text-center
+  text-subdued
+  max-w-full
+  px-3
+  absolute
+  top-1/2
+  left-1/2
+  -translate-x-1/2
+  -translate-y-1/2
+  pointer-events-none
+}
+
+
+/* TODO: These temporarily hide the "Hide artifacts" and "Hide events" options until those layers go live */
+.run-graph-settings__menu > .p-checkbox:nth-last-child(2) {
+  display: none;
+}
 .run-graph-settings__menu > .p-checkbox:last-child {
   display: none;
 }

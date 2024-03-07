@@ -41,7 +41,7 @@ import { mapNotificationCreateToNotificationCreateRequest } from '@/maps/notific
 import { mapNotificationUpdateToNotificationUpdateRequest } from '@/maps/notificationUpdate'
 import { mapNumberToString, mapStringToNumber } from '@/maps/number'
 import { mapOrchestrationResultResponseToOrchestrationResult } from '@/maps/orchestrationResult'
-import { mapRunGraphDataResponse, mapRunGraphNodeResponse, mapRunGraphArtifactResponse } from '@/maps/runGraphData'
+import { mapRunGraphDataResponse, mapRunGraphNodeResponse, mapRunGraphArtifactResponse, mapRunGraphStateResponse } from '@/maps/runGraphData'
 import { mapSavedSearchResponseToSavedSearch, mapSavedSearchToLocationQuery } from '@/maps/savedSearch'
 import { mapSavedSearchCreateToSavedSearchCreateRequest } from '@/maps/savedSearchCreate'
 import { mapSavedSearchFilterToFlowRunsFilter } from '@/maps/savedSearchFilter'
@@ -143,6 +143,7 @@ export const maps = {
   RunGraphDataResponse: { RunGraphData: mapRunGraphDataResponse },
   RunGraphNodeResponse: { RunGraphNode: mapRunGraphNodeResponse },
   RunGraphArtifactResponse: { RunGraphArtifact: mapRunGraphArtifactResponse },
+  RunGraphStateResponse: { RunGraphStateEvent: mapRunGraphStateResponse },
   RunHistory: { FlowRunHistoryResponse: mapRunHistoryToFlowRunHistoryResponse, DivergingBarChartItem: mapRunHistoryToDivergingBarChartItem },
   SavedSearchCreate: { SavedSearchCreateRequest: mapSavedSearchCreateToSavedSearchCreateRequest },
   SavedSearchesFilter: { SavedSearchesFilterRequest: mapSavedSearchesFilter },

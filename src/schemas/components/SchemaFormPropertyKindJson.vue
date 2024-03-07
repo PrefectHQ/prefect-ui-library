@@ -1,7 +1,7 @@
 <template>
   <p-content secondary class="schema-form-property-kind-json">
     <p-code-input v-model="value" lang="json" :state="state" show-line-numbers />
-    <SchemaFormPropertyErrors :errors="errors" />
+    <SchemaFormPropertyErrors :errors="childErrors" />
   </p-content>
 </template>
 
@@ -43,5 +43,5 @@
     },
   })
 
-  const errors = computed(() => getAllChildSchemaPropertyErrors(props.errors))
+  const childErrors = computed(() => getAllChildSchemaPropertyErrors(props.errors))
 </script>

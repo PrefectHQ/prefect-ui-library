@@ -2,16 +2,15 @@
   <FlowRunGraphPopover
     v-if="selection.position"
     :position="selection.position"
+    @on-close="onClose"
   >
-    <div class="flow-run-graph-artifacts-popover">
-      <h4 class="flow-run-graph-artifacts-popover__label">
-        Artifacts
-      </h4>
-      <div class="flow-run-graph-artifacts-popover__content">
-        <template v-for="artifactId in selection.ids" :key="artifactId">
-          <FlowRunGraphArtifactCard :artifact-id="artifactId" />
-        </template>
-      </div>
+    <h4 class="flow-run-graph-artifacts-popover__label">
+      Artifacts
+    </h4>
+    <div class="flow-run-graph-artifacts-popover__content">
+      <template v-for="artifactId in selection.ids" :key="artifactId">
+        <FlowRunGraphArtifactCard :artifact-id="artifactId" />
+      </template>
     </div>
   </FlowRunGraphPopover>
 </template>
@@ -23,14 +22,17 @@
   defineProps<{
     selection: ArtifactsSelection,
   }>()
+
+  const emit = defineEmits<{
+    'update:selection': [null],
+  }>()
+
+  const onClose = (): void => {
+    emit('update:selection', null)
+  }
 </script>
 
 <style>
-.flow-run-graph-artifacts-popover { @apply
-  max-h-80
-  overflow-auto
-}
-
 .flow-run-graph-artifacts-popover__label { @apply
   w-full
   text-xs

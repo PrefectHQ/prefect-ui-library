@@ -5,9 +5,7 @@
       <p-button-group v-model="scheduleForm" :options="scheduleFormOptions" small />
     </p-label>
 
-    <p-label v-if="can.access.enhancedSchedulingUi" label="Active">
-      <p-toggle v-model="internalActive" />
-    </p-label>
+    <p-toggle v-model="internalActive" />
 
     <template v-if="scheduleForm == 'rrule'">
       <p>
@@ -43,7 +41,7 @@
   import CronScheduleForm from '@/components/CronScheduleForm.vue'
   import IntervalScheduleForm from '@/components/IntervalScheduleForm.vue'
   import JobVariableOverridesInput from '@/components/JobVariableOverridesInput.vue'
-  import { useCan, useShowModal } from '@/compositions'
+  import { useShowModal } from '@/compositions'
   import { DeploymentScheduleCompatible, getScheduleType, Schedule, ScheduleType, isCronSchedule, isIntervalSchedule, CronSchedule, IntervalSchedule } from '@/models'
 
   const { showModal, open, close } = useShowModal()
@@ -53,8 +51,6 @@
   }
 
   defineExpose({ publicOpen })
-
-  const can = useCan()
 
   const props = defineProps<DeploymentScheduleCompatible>()
 

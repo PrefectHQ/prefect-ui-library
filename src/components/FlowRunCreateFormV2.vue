@@ -18,6 +18,8 @@
           </div>
 
           <SchemaInputV2 v-model:values="parameters" :schema="schema" :errors="errors" :kinds="['json', 'workspace_variable']" />
+
+          <p-checkbox v-model="shouldValidate" label="Validate parameters before submitting" />
         </p-content>
       </template>
 
@@ -61,8 +63,6 @@
         </template>
       </p-accordion>
     </p-content>
-
-    <p-checkbox v-model="shouldValidate" label="Validate parameters before submitting" />
 
     <template #footer>
       <p-button @click="emit('cancel')">

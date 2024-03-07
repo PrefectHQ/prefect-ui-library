@@ -7,12 +7,10 @@
 <script lang="ts" setup>
   import { showToast } from '@prefecthq/prefect-design'
   import { computed, ref } from 'vue'
-  import { useCan, useWorkspaceApi } from '@/compositions'
+  import { useWorkspaceApi } from '@/compositions'
   import { localization } from '@/localization'
   import { Deployment } from '@/models'
   import { getApiErrorMessage } from '@/utilities/errors'
-
-  const can = useCan()
 
   const props = defineProps<{
     deployment: Deployment,
@@ -40,13 +38,7 @@
     const message = value ? localization.success.activateDeployment : localization.success.pauseDeployment
 
     try {
-      if (can.access.enhancedSchedulingUi) {
-        await api.deployments.updateDeployment(props.deployment.id, { paused: !value })
-      } else if (value) {
-        await api.deployments.resumeDeployment(props.deployment.id)
-      } else {
-        await api.deployments.pauseDeployment(props.deployment.id)
-      }
+      await api.deployments.updateDeployment(props.deployment.id, { paused: !value })
 
       showToast(message, 'success')
       emit('update')

@@ -4,6 +4,7 @@
     auto-close
     :placement="placement"
     :style="invisibleTargetStyles"
+    @open="checkOpenState"
   >
     <div class="flow-run-graph-popover">
       <slot />
@@ -18,6 +19,10 @@
 
   const props = defineProps<{
     position: GraphSelectionPosition,
+  }>()
+
+  const emit = defineEmits<{
+    'onClose': [null],
   }>()
 
   const popOver = ref<InstanceType<typeof PPopOver>>()
@@ -38,6 +43,14 @@
       popOver.value?.open()
     }, 0)
   })
+
+  const checkOpenState = (): void => {
+    if (popOver.value?.visible) {
+      return
+    }
+
+    emit('onClose', null)
+  }
 </script>
 
 <style>
@@ -47,5 +60,7 @@
   p-3
   m-1
   shadow-lg
+  max-h-80
+  overflow-auto
 }
 </style>
