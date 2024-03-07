@@ -15,8 +15,6 @@
   const value = defineModel<boolean | undefined>({ default: undefined })
 
   if (!isDefined(value.value)) {
-    const valueOrDefaultValue = isDefined(value.value) ? value.value : asType(props.property.default, Boolean)
-
-    value.value = valueOrDefaultValue
+    value.value = asType(props.property.default, Boolean) ?? false
   }
 </script>
