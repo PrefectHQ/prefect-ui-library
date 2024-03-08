@@ -84,6 +84,7 @@
   import FlowRunJobVariableOverridesLabeledInput from '@/components/FlowRunJobVariableOverridesLabeledInput.vue'
   import FlowRunNameInput from '@/components/FlowRunNameInput.vue'
   import ToastParameterValidationError from '@/components/ToastParameterValidationError.vue'
+  import { useCan } from '@/compositions/useCan'
   import { localization } from '@/localization'
   import { Deployment } from '@/models/Deployment'
   import { DeploymentFlowRunCreateV2 } from '@/models/DeploymentFlowRunCreate'
@@ -105,6 +106,8 @@
     (event: 'cancel'): void,
   }>()
 
+  const can = useCan()
+
   const shouldValidate = ref(true)
   const schema = computed(() => props.deployment.parameterOpenApiSchemaV2)
   const hasParameters = computed(() => !isEmptyObject(props.deployment.parameterOpenApiSchemaV2.properties ?? {}))
@@ -122,7 +125,7 @@
   const workQueueName = ref<string | null>(props.deployment.workQueueName)
   const retries = ref<number | null>(null)
   const retryDelay = ref<number | null>(null)
-  const jobVariables = ref<string>()
+  const jobVariables = ref<string | undefined>(can.access.flowRunInfraOverrides ? '{}' : undefined)
 
   const { errors, validate: validateParameters } = useSchemaValidation(schema, parameters)
 

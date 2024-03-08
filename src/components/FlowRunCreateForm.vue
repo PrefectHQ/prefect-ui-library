@@ -100,6 +100,7 @@
   import { TimezoneSelect, DateInput, WorkPoolQueueCombobox } from '@/components'
   import FlowRunJobVariableOverridesLabeledInput from '@/components/FlowRunJobVariableOverridesLabeledInput.vue'
   import SchemaInput from '@/components/SchemaInput.vue'
+  import { useCan } from '@/compositions'
   import { useWorkPool } from '@/compositions/useWorkPool'
   import { localization } from '@/localization'
   import { Deployment, DeploymentFlowRunCreate } from '@/models'
@@ -124,6 +125,8 @@
     (event: 'submit', value: DeploymentFlowRunCreate): void,
     (event: 'cancel'): void,
   }>()
+
+  const can = useCan()
 
   const hasParameters = computed(() => !isEmptyObject(props.deployment.parameterOpenApiSchema.properties ?? {}))
 
@@ -165,7 +168,7 @@
   const { workPool } = useWorkPool(props.deployment.workPoolName ?? '')
   const workQueueComboboxLabel = computed(() => `Work Queue for ${workPoolName.value} (Optional)`)
 
-  const jobVariables = ref<string>()
+  const jobVariables = ref<string | undefined>(can.access.flowRunInfraOverrides ? '{}' : undefined)
 
   function getScheduledTime(): Date | null {
     if (when.value === 'now' || start.value === null) {
