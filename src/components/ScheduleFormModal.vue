@@ -117,7 +117,7 @@
     cronSchedule.value = isCronSchedule(props.schedule) ? props.schedule : undefined
     intervalSchedule.value = isIntervalSchedule(props.schedule) ? props.schedule : undefined
     internalActive.value = props.active ?? true
-    internalJobVariables.value = props.jobVariables ? JSON.stringify(props.jobVariables, null, 2) : undefined
+    internalJobVariables.value = props.jobVariables ? stringify(props.jobVariables) : undefined
   }
   watch(() => props.schedule, updateInternalState)
 </script>
