@@ -56,9 +56,7 @@
               </p-label>
             </div>
 
-            <p-label v-if="can.access.flowRunInfraOverrides" label="Job Variables (Optional)" :message="jobVariablesError" :state="jobVariablesState">
-              <JobVariableOverridesInput v-model="jobVariables" :state="jobVariablesState" />
-            </p-label>
+            <FlowRunJobVariableOverridesLabeledInput v-model="jobVariables" />
           </p-content>
         </template>
       </p-accordion>
@@ -84,9 +82,7 @@
   import FlowRunCreateFormWhen from '@/components/FlowRunCreateFormWhen.vue'
   import FlowRunCreateFormWorkQueueCombobox from '@/components/FlowRunCreateFormWorkQueueCombobox.vue'
   import FlowRunNameInput from '@/components/FlowRunNameInput.vue'
-  import JobVariableOverridesInput from '@/components/JobVariableOverridesInput.vue'
   import ToastParameterValidationError from '@/components/ToastParameterValidationError.vue'
-  import { useCan } from '@/compositions/useCan'
   import { localization } from '@/localization'
   import { Deployment } from '@/models/Deployment'
   import { DeploymentFlowRunCreateV2 } from '@/models/DeploymentFlowRunCreate'
@@ -95,7 +91,7 @@
   import { useSchemaValidation } from '@/schemas/compositions/useSchemaValidation'
   import { SchemaValues } from '@/schemas/types/schemaValues'
   import { isEmptyObject } from '@/utilities/object'
-  import { isJson, isRequired } from '@/utilities/validation'
+  import { isRequired } from '@/utilities/validation'
 
   const props = defineProps<{
     deployment: Deployment,
@@ -107,8 +103,6 @@
     (event: 'submit', value: DeploymentFlowRunCreateV2): void,
     (event: 'cancel'): void,
   }>()
-
-  const can = useCan()
 
   const shouldValidate = ref(true)
   const schema = computed(() => props.deployment.parameterOpenApiSchemaV2)
@@ -128,7 +122,6 @@
   const retries = ref<number | null>(null)
   const retryDelay = ref<number | null>(null)
   const jobVariables = ref<string>()
-  const { state: jobVariablesState, error: jobVariablesError } = useValidation(jobVariables, isJson('Job variables'))
 
   const { errors, validate: validateParameters } = useSchemaValidation(schema, parameters)
 

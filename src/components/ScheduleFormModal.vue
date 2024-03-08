@@ -21,9 +21,7 @@
       <IntervalScheduleForm v-model:schedule="intervalSchedule" v-model:disabled="intervalDisabled" hide-actions @submit="scheduleFormSubmit" />
     </template>
 
-    <p-label v-if="can.access.flowRunInfraOverrides" label="Job Variables (Optional)" :message="jobVariablesError" :state="jobVariablesState">
-      <JobVariableOverridesInput v-model="internalJobVariables" :state="jobVariablesState" />
-    </p-label>
+    <FlowRunJobVariableOverridesLabeledInput v-model="internalJobVariables" />
 
     <template #actions>
       <p-button primary type="submit" :disabled="disabled" @click="submitCurrentForm">
@@ -35,16 +33,13 @@
 
 <script lang="ts" setup>
   import { ButtonGroupOption } from '@prefecthq/prefect-design'
-  import { useValidation } from '@prefecthq/vue-compositions'
+  import { useValidationObserver } from '@prefecthq/vue-compositions'
   import { computed, ref, watch } from 'vue'
-  import { isJson } from '..'
   import CronScheduleForm from '@/components/CronScheduleForm.vue'
+  import FlowRunJobVariableOverridesLabeledInput from '@/components/FlowRunJobVariableOverridesLabeledInput.vue'
   import IntervalScheduleForm from '@/components/IntervalScheduleForm.vue'
-  import JobVariableOverridesInput from '@/components/JobVariableOverridesInput.vue'
-  import { useCan, useShowModal } from '@/compositions'
+  import { useShowModal } from '@/compositions'
   import { DeploymentScheduleCompatible, getScheduleType, Schedule, ScheduleType, isCronSchedule, isIntervalSchedule, CronSchedule, IntervalSchedule } from '@/models'
-
-  const can = useCan()
 
   const { showModal, open, close } = useShowModal()
 
@@ -58,8 +53,8 @@
 
   const internalActive = ref<boolean>(props.active ?? true)
 
+  const { validate } = useValidationObserver()
   const internalJobVariables = ref<string | undefined>(props.jobVariables ? JSON.stringify(props.jobVariables, null, 2) : undefined)
-  const { validate, state: jobVariablesState, error: jobVariablesError } = useValidation(internalJobVariables, isJson('Job variables'))
 
   const emit = defineEmits<{
     (event: 'submit', value: DeploymentScheduleCompatible): void,
