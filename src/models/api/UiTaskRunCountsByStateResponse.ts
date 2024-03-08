@@ -1,4 +1,3 @@
-
 import { ServerStateType } from '@/models/StateType'
 
 export type UiTaskRunCountsByStateResponse = {
