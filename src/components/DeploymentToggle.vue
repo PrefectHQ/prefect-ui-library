@@ -1,5 +1,5 @@
 <template>
-  <p-tooltip text="Pause or resume this deployment">
+  <p-tooltip text="Pause or resume scheduling flow runs for this deployment">
     <p-toggle v-if="deployment.can.update" v-model="internalValue" :loading="loading" :disabled="deployment.deprecated" />
   </p-tooltip>
 </template>

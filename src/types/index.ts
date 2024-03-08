@@ -3,7 +3,8 @@ import {
   ViewportDateRange as RunGraphViewportDateRange,
   EventSelection as RunGraphEventSelection,
   EventsSelection as RunGraphEventsSelection,
-  RunGraphEvent
+  RunGraphEvent,
+  RunGraphFetchEventsOptions
 } from '@prefecthq/graphs'
 
 export type {
@@ -11,7 +12,8 @@ export type {
   RunGraphViewportDateRange,
   RunGraphEvent,
   RunGraphEventSelection,
-  RunGraphEventsSelection
+  RunGraphEventsSelection,
+  RunGraphFetchEventsOptions
 }
 
 export * from './buttons'
