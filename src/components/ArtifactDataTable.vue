@@ -19,18 +19,30 @@
           <p-markdown-renderer :text="emptyDataText" />
         </p-empty-results>
       </template>
+
+      <template v-for="key in columnKeys" #[kebabCase(key)]="{ row, column }" :key="key">
+        <span class="artifact-data-table__cell">
+          <template v-if="column.property && isString(row[column.property])">
+            <p-markdown-renderer class="artifact-data-table__cell-renderer" :text="row[column.property]" />
+          </template>
+          <template v-else-if="column.property">
+            {{ row[column.property] }}
+          </template>
+        </span>
+      </template>
     </p-table>
   </p-content>
 </template>
 
 <script lang="ts" setup>
-  import { TableData, toPluralString } from '@prefecthq/prefect-design'
+  import { TableData, kebabCase, toPluralString } from '@prefecthq/prefect-design'
   import { useDebouncedRef } from '@prefecthq/vue-compositions'
   import { computed, ref } from 'vue'
   import { SearchInput } from '@/components'
   import { localization } from '@/localization'
   import { TableArtifact } from '@/models'
   import { isTableArtifactData, isArrayOfMaps, isMapOfArrays } from '@/types/artifact'
+  import { isString } from '@/utilities'
   import { parseUnknownJson } from '@/utilities/parseUnknownJson'
 
   const props = defineProps<{
@@ -59,6 +71,14 @@
     }
 
     return []
+  })
+
+  const columnKeys = computed(() => {
+    if (normalizedData.value.length === 0) {
+      return []
+    }
+
+    return Object.keys(normalizedData.value[0])
   })
 
   const search = ref('')
@@ -100,5 +120,10 @@
 
 .artifact-data-table__count { @apply
   font-medium
+}
+
+.artifact-data-table__cell-renderer,
+.artifact-data-table__cell { @apply
+  text-sm
 }
 </style>
