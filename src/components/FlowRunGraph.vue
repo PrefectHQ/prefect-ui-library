@@ -77,10 +77,10 @@
 
   const emptyMessage = computed(() => {
     if (isTerminalStateType(props.flowRun.state?.type)) {
-      return 'This flow run did not generate any task or flow runs'
+      return 'This flow run did not generate any task or subflow runs'
     }
 
-    return 'This flow run has not yet generated any task or flow runs'
+    return 'This flow run has not yet generated any task or subflow runs'
   })
 
 
