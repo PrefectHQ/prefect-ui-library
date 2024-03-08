@@ -81,6 +81,7 @@
   import FlowRunCreateFormTags from '@/components/FlowRunCreateFormTags.vue'
   import FlowRunCreateFormWhen from '@/components/FlowRunCreateFormWhen.vue'
   import FlowRunCreateFormWorkQueueCombobox from '@/components/FlowRunCreateFormWorkQueueCombobox.vue'
+  import FlowRunJobVariableOverridesLabeledInput from '@/components/FlowRunJobVariableOverridesLabeledInput.vue'
   import FlowRunNameInput from '@/components/FlowRunNameInput.vue'
   import ToastParameterValidationError from '@/components/ToastParameterValidationError.vue'
   import { localization } from '@/localization'
