@@ -39,6 +39,7 @@
   }>()
 
   const config = {
+    ALLOWED_TAGS: ['a'],
     ALLOWED_ATTR: ['href', 'target', 'rel'],
   }
 
