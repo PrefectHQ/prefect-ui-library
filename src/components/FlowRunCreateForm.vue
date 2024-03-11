@@ -74,9 +74,7 @@
               </p-label>
             </div>
 
-            <p-label v-if="can.access.flowRunInfraOverrides" label="Job Variables (Optional)" :message="jobVariablesError" :state="jobVariablesState">
-              <JobVariableOverridesInput v-model="jobVariables" :state="jobVariablesState" />
-            </p-label>
+            <FlowRunJobVariableOverridesLabeledInput v-model="jobVariables" />
           </p-content>
         </template>
       </p-accordion>
@@ -99,7 +97,8 @@
   import { zonedTimeToUtc } from 'date-fns-tz'
   import { merge } from 'lodash'
   import { computed, ref } from 'vue'
-  import { TimezoneSelect, DateInput, WorkPoolQueueCombobox, JobVariableOverridesInput } from '@/components'
+  import { TimezoneSelect, DateInput, WorkPoolQueueCombobox } from '@/components'
+  import FlowRunJobVariableOverridesLabeledInput from '@/components/FlowRunJobVariableOverridesLabeledInput.vue'
   import SchemaInput from '@/components/SchemaInput.vue'
   import { useCan } from '@/compositions'
   import { useWorkPool } from '@/compositions/useWorkPool'
@@ -109,7 +108,7 @@
   import { SchemaInputType } from '@/types/schemaInput'
   import { SchemaValues } from '@/types/schemas'
   import { isEmptyObject } from '@/utilities/object'
-  import { fieldRules, isJson, isRequiredIf } from '@/utilities/validation'
+  import { fieldRules, isRequiredIf } from '@/utilities/validation'
 
   const props = defineProps<{
     deployment: Deployment,
@@ -169,8 +168,7 @@
   const { workPool } = useWorkPool(props.deployment.workPoolName ?? '')
   const workQueueComboboxLabel = computed(() => `Work Queue for ${workPoolName.value} (Optional)`)
 
-  const jobVariables = ref<string>()
-  const { state: jobVariablesState, error: jobVariablesError } = useValidation(jobVariables, isJson('Job variables'))
+  const jobVariables = ref<string | undefined>(can.access.flowRunInfraOverrides ? '{}' : undefined)
 
   function getScheduledTime(): Date | null {
     if (when.value === 'now' || start.value === null) {

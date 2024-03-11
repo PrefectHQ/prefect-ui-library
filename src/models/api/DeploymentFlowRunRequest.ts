@@ -12,5 +12,5 @@ export type DeploymentFlowRunRequest = Partial<{
   infrastructure_document_id: string | null,
   state: Partial<StateRequest>,
   work_queue_name: string | null,
-  job_variables: Record<string, unknown> | null,
+  job_variables: Record<string, unknown>,
 }>

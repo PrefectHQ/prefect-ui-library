@@ -13,7 +13,7 @@ type Base = {
   infrastructureDocumentId?: string | null,
   state?: StateCreate,
   workQueueName?: string | null,
-  jobVariables?: Record<string, unknown> | null,
+  jobVariables?: Record<string, unknown>,
 }
 
 type WithoutParameters = Base & {

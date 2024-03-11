@@ -4,7 +4,7 @@
       <DeploymentScheduleCard :deployment="deployment" :deployment-schedule="deploymentSchedule" @update="emits('update')" />
     </template>
 
-    <ScheduleFormModal v-if="deployment.can.update" :active="null" :schedule="null" @submit="createSchedule">
+    <ScheduleFormModal v-if="deployment.can.update" :active="null" :schedule="null" :job-variables="{}" @submit="createSchedule">
       <template #default="{ open }">
         <p-button small icon="PlusIcon" @click="open">
           Schedule
