@@ -120,6 +120,7 @@ export { default as FlowRunGraphStatePopover } from './FlowRunGraphStatePopover.
 export { default as FlowRunGraphSelectionPanel } from './FlowRunGraphSelectionPanel.vue'
 export { default as FlowRunHistoryCard } from './FlowRunHistoryCard.vue'
 export { default as FlowRunIconText } from './FlowRunIconText.vue'
+export { default as FlowRunJobVariableOverridesLabeledInput } from './FlowRunJobVariableOverridesLabeledInput.vue'
 export { default as FlowRunList } from './FlowRunList.vue'
 export { default as FlowRunListItem } from './FlowRunListItem.vue'
 export { default as FlowRunLogs } from './FlowRunLogs.vue'
