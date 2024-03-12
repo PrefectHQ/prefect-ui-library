@@ -70,7 +70,7 @@
         "vue-router": "^4.0.12"
     },
     "dependencies": {
-        "@prefecthq/graphs": "2.2.9",
+        "@prefecthq/graphs": "2.2.10",
         "axios": "1.6.7",
         "cronstrue": "^2.48.0",
         "d3": "7.8.5",
