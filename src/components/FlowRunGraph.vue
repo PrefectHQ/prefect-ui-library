@@ -189,13 +189,4 @@
   -translate-y-1/2
   pointer-events-none
 }
-
-
-/* TODO: These temporarily hide the "Hide artifacts" and "Hide events" options until those layers go live */
-.run-graph-settings__menu > .p-checkbox:nth-last-child(2) {
-  display: none;
-}
-.run-graph-settings__menu > .p-checkbox:last-child {
-  display: none;
-}
 </style>
