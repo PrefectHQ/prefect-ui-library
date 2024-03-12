@@ -12,7 +12,7 @@
     state: State,
   }>()
 
-  const value = defineModel<boolean | undefined>({ default: undefined })
+  const value = defineModel<boolean | undefined>('value', { default: undefined })
 
   if (!isDefined(value.value)) {
     value.value = asType(props.property.default, Boolean) ?? false
