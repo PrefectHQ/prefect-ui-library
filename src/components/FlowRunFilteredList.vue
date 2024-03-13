@@ -1,6 +1,15 @@
 <template>
   <p-content class="flow-run-filtered-list">
     <p-list-header sticky>
+      <template v-if="selectable">
+        <p-button v-if="selected.length !== flowRuns.length" @click="selectAll">
+          Select All
+        </p-button>
+        <p-button v-else-if="selected.length > 0" @click="selected = []">
+          Clear Selection
+        </p-button>
+      </template>
+
       <ResultsCount v-if="selected.length == 0" :count="total" label="Flow run" />
       <SelectedCount v-else :count="selected.length" />
       <FlowRunsDeleteButton v-if="can.delete.flow_run" :selected="selected" @delete="deleteFlowRuns" />
@@ -70,6 +79,10 @@
     interval: 30000,
     mode: 'infinite',
   })
+
+  function selectAll(): void {
+    selected.value = flowRuns.value.map((flowRun) => flowRun.id)
+  }
 
   const empty = computed(() => subscriptions.executed && flowRuns.value.length === 0)
 
