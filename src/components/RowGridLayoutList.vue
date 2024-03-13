@@ -1,13 +1,12 @@
 <template>
-  <div class="row-grid-layout-list" :class="classes.root">
-    <template v-for="item in props.items" :key="item.id">
+  <template v-if="empty">
+    <slot name="empty" />
+  </template>
+  <p-virtual-scroller v-else class="row-grid-layout-list" :items="props.items" :class="classes.root">
+    <template #default="{ item }">
       <slot :item="item" />
     </template>
-
-    <template v-if="empty">
-      <slot name="empty" />
-    </template>
-  </div>
+  </p-virtual-scroller>
 </template>
 
 <script lang="ts" setup>
