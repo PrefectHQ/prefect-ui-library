@@ -6,7 +6,7 @@
 
     <div class="notification-form__horizontal-fields">
       <p-label label="Run states">
-        <StateNameSelect v-model:selected="stateNames" empty-message="All states" />
+        <StateNameSelect v-model:selected="stateNames" empty-message="All states" multiple />
       </p-label>
 
       <p-label label="Tags (Optional)">
@@ -177,6 +177,7 @@
   const blockDocumentId = ref<string>()
 
   const submit = handleSubmit(async (values) => {
+    console.log('values', values)
     if (blockSchema.value === undefined || selectedBlockTypeId.value === undefined || data.value === undefined) {
       showToast(localization.error.submitNotification)
       return
