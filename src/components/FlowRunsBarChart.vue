@@ -1,5 +1,6 @@
 <template>
-  <div ref="chart" class="flow-runs-bar-chart" :class="classes.root" :style="styles.root" @mouseleave="close">
+  <div ref="chart" class="flow-runs-bar-chart" :class="classes.root" :style="styles.root">
+    <!-- @mouseleave="close"> -->
     <template v-for="(flowRun, index) in barFlowRuns" :key="getKey(flowRun, index)">
       <p-pop-over class="flow-runs-bar-chart__bar-container" :placement="placement" :group="group" auto-close>
         <template #target="{ open }">
