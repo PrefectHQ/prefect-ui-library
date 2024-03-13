@@ -3,7 +3,7 @@
     <article class="flow-run-popover-content">
       <FlowRunBreadCrumbs :flow-run="flowRun" />
 
-      <StateBadge :state="flowRun.state" class="max-w-min" />
+      <StateBadge :state="flowRun.state" class="max-w-fit" />
 
       <p-divider />
 

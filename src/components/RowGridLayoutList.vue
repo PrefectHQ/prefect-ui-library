@@ -1,13 +1,12 @@
 <template>
-  <div class="row-grid-layout-list" :class="classes.root">
-    <template v-for="item in props.items" :key="item.id">
+  <template v-if="empty">
+    <slot name="empty" />
+  </template>
+  <p-virtual-scroller v-else class="row-grid-layout-list" :items="props.items" :class="classes.root">
+    <template #default="{ item }">
       <slot :item="item" />
     </template>
-
-    <template v-if="empty">
-      <slot name="empty" />
-    </template>
-  </div>
+  </p-virtual-scroller>
 </template>
 
 <script lang="ts" setup>
@@ -32,21 +31,21 @@
 </script>
 
 <style>
-.row-grid-layout-list { @apply
+.row-grid-layout-list .p-virtual-scroller-chunk { @apply
   flex
   flex-col
   gap-4
   min-w-0
 }
 
-.row-grid-layout-list--grid { @apply
+.row-grid-layout-list--grid .p-virtual-scroller-chunk { @apply
   grid
   gap-4;
 
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
 }
 
-.row-grid-layout-list--rows { @apply
+.row-grid-layout-list--rows .p-virtual-scroller-chunk { @apply
   flex
   flex-col
   gap-4
