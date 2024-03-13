@@ -177,7 +177,6 @@
   const blockDocumentId = ref<string>()
 
   const submit = handleSubmit(async (values) => {
-    console.log('values', values)
     if (blockSchema.value === undefined || selectedBlockTypeId.value === undefined || data.value === undefined) {
       showToast(localization.error.submitNotification)
       return
