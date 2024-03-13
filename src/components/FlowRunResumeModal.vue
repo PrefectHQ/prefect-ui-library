@@ -104,9 +104,3 @@
     }
   }
 </script>
-
-<style>
-.flow-run-resume-modal__state-badge { @apply
-    align-middle
-}
-</style>

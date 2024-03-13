@@ -9,6 +9,7 @@ import { FlowRunsFilter, FlowRunsHistoryFilter } from '@/models/Filters'
 import { FlowRun } from '@/models/FlowRun'
 import { FlowRunInputKeyset } from '@/models/FlowRunInputKeyset'
 import { RunHistory } from '@/models/RunHistory'
+import { SchemaResponseV2, SchemaV2, SchemaValuesV2 } from '@/schemas'
 import { BatchProcessor } from '@/services/BatchProcessor'
 import { mapper } from '@/services/Mapper'
 import { WorkspaceApi } from '@/services/WorkspaceApi'
@@ -74,7 +75,11 @@ export class WorkspaceFlowRunsApi extends WorkspaceApi {
     return mapper.map('RunGraphDataResponse', data, 'RunGraphData')
   }
 
-  public async getFlowRunInputDescription(id: string, keyset: FlowRunInputKeyset): Promise <string | null> {
+  public async getFlowRunInputDescription(id: string, keyset: FlowRunInputKeyset | undefined): Promise <string | null> {
+    if (!keyset) {
+      return null
+    }
+
     try {
       const { data } = await this.get<string | null>(`/${id}/input/${keyset.description}`)
       return data
@@ -86,7 +91,14 @@ export class WorkspaceFlowRunsApi extends WorkspaceApi {
 
   public async getFlowRunInputSchema(id: string, keyset: FlowRunInputKeyset): Promise<Schema> {
     const { data } = await this.get<SchemaResponse>(`/${id}/input/${keyset.schema}`)
+
     return mapper.map('SchemaResponse', data, 'Schema')
+  }
+
+  public async getFlowRunInputSchemaV2(id: string, keyset: FlowRunInputKeyset): Promise<SchemaV2> {
+    const { data } = await this.get<SchemaResponseV2>(`/${id}/input/${keyset.schema}`)
+
+    return data
   }
 
   public retryFlowRun(id: string): Promise<void> {
@@ -107,11 +119,19 @@ export class WorkspaceFlowRunsApi extends WorkspaceApi {
   public async resumeFlowRun(id: string, values?: SchemaValues): Promise<OrchestrationResult> {
     if (values) {
       const { data } = await this.post<OrchestrationResultResponse>(`/${id}/resume`, { 'run_input': values })
+
       return mapper.map('OrchestrationResultResponse', data, 'OrchestrationResult')
     }
-    const { data } = await this.post<OrchestrationResultResponse>(`/${id}/resume`)
-    return mapper.map('OrchestrationResultResponse', data, 'OrchestrationResult')
 
+    const { data } = await this.post<OrchestrationResultResponse>(`/${id}/resume`)
+
+    return mapper.map('OrchestrationResultResponse', data, 'OrchestrationResult')
+  }
+
+  public async resumeFlowRunV2(id: string, values: SchemaValuesV2): Promise<OrchestrationResult> {
+    const { data } = await this.post<OrchestrationResultResponse>(`/${id}/resume`, { 'run_input': values })
+
+    return mapper.map('OrchestrationResultResponse', data, 'OrchestrationResult')
   }
 
   public deleteFlowRun(flowRunId: string): Promise<void> {
