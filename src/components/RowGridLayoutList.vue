@@ -31,21 +31,21 @@
 </script>
 
 <style>
-.row-grid-layout-list { @apply
+.row-grid-layout-list .p-virtual-scroller-chunk { @apply
   flex
   flex-col
   gap-4
   min-w-0
 }
 
-.row-grid-layout-list--grid { @apply
+.row-grid-layout-list--grid .p-virtual-scroller-chunk { @apply
   grid
   gap-4;
 
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
 }
 
-.row-grid-layout-list--rows { @apply
+.row-grid-layout-list--rows .p-virtual-scroller-chunk { @apply
   flex
   flex-col
   gap-4
