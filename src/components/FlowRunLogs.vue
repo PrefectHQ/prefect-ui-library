@@ -77,8 +77,10 @@
     logLevel.value = 0
   }
 
-  watch(() => flowRun.value.stateType, type => {
+  watch(() => flowRun.value.stateType, async type => {
     if (isTerminalStateType(type)) {
+      logsSubscription.refresh()
+      await new Promise((resolve) => setTimeout(resolve, 8000))
       logsSubscription.refresh()
     }
   })
