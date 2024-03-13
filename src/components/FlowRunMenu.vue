@@ -20,11 +20,14 @@
     v-model:retryingRun="retryingRun"
     :flow-run="flowRun"
   />
-  <FlowRunResumeModal
-    v-model:showModal="showResumeModal"
-    :flow-run-id="flowRunId"
-    @change="showResumeModal"
-  />
+
+  <template v-if="can.access.schemasV2">
+    <FlowRunResumeModalV2 v-model:showModal="showResumeModal" :flow-run-id="flowRunId" />
+  </template>
+  <template v-else>
+    <FlowRunResumeModal v-model:showModal="showResumeModal" :flow-run-id="flowRunId" />
+  </template>
+
   <FlowRunCancelModal
     v-model:showModal="showCancelModal"
     :flow-run-id="flowRunId"
@@ -55,6 +58,7 @@
   import { showToast } from '@prefecthq/prefect-design'
   import { computed, ref, toRefs } from 'vue'
   import { FlowRunRetryModal, FlowRunResumeModal, FlowRunCancelModal, FlowRunSuspendModal, ConfirmStateChangeModal, ConfirmDeleteModal, CopyOverflowMenuItem } from '@/components'
+  import FlowRunResumeModalV2 from '@/components/FlowRunResumeModalV2.vue'
   import { useCan, useWorkspaceApi, useShowModal, useWorkspaceRoutes, useFlowRuns, useFlowRun, useDeployment } from '@/compositions'
   import { localization } from '@/localization'
   import { FlowRunsFilter, isPausedStateType, isRunningStateType, isStuckStateType, isTerminalStateType, StateUpdateDetails } from '@/models'
