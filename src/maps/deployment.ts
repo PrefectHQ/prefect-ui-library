@@ -1,5 +1,4 @@
 import { sortStringArray } from '@prefecthq/prefect-design'
-import { readonly } from 'vue'
 import { DeploymentFlowRunCreate, DeploymentFlowRunCreateV2, DeploymentFlowRunRequest, DeploymentUpdate, DeploymentUpdateRequest, DeploymentUpdateV2, SchemaResponse } from '@/models'
 import { DeploymentResponse } from '@/models/api/DeploymentResponse'
 import { Deployment } from '@/models/Deployment'
@@ -9,10 +8,29 @@ import { MapFunction } from '@/services/Mapper'
 import { Schema } from '@/types/schemas'
 
 export const mapDeploymentResponseToDeployment: MapFunction<DeploymentResponse, Deployment> = function(source) {
-  const parameters = readonly(source.parameters)
+  // Something modifies parameters by reference (I think) if parameters, rawParameters, and parametersV2
+  // share the same object reference. Breaking all the references with structuredClone seems to fix
+  // the symptoms but is a band-aid to avoid diving into v1 schemas code which will be removed from
+  // deployments. Should retest if this is still needed after that.
+
+  // to test edit this flow in the ui to make sure the default values can be updated
+  // from typing import List, Optional
+  // from prefect import flow, tags, task, get_run_logger
+
+  // @flow(name="Common Pipeline")
+  // def run_pipeline(
+  //     pipeline_params: List[str],
+  // ) -> None:
+  //     pass
+
+  // if __name__ == "__main__":
+  //     run_pipeline.serve(__file__, parameters={ "pipeline_params": ["foo"]})
+  const parametersV2 = structuredClone(source.parameters)
+
+
   const rawSchema = source.parameter_openapi_schema ?? {}
   const schema = this.map('SchemaResponse', rawSchema as SchemaResponse, 'Schema')
-  const values = this.map('SchemaValuesResponse', { values: parameters, schema }, 'SchemaValues')
+  const values = this.map('SchemaValuesResponse', { values: source.parameters, schema }, 'SchemaValues')
   const schedules = source.schedules.map(schedule => this.map('DeploymentScheduleResponse', schedule, 'DeploymentSchedule'))
 
   return new Deployment({
@@ -28,9 +46,9 @@ export const mapDeploymentResponseToDeployment: MapFunction<DeploymentResponse, 
     paused: source.paused,
     schedules: schedules,
     parameters: values,
-    rawParameters: parameters,
+    rawParameters: source.parameters,
     rawSchema: rawSchema as Schema,
-    parametersV2: parameters,
+    parametersV2,
     parameterOpenApiSchemaV2: schemaV2Mapper.map('SchemaResponse', rawSchema as SchemaResponseV2, 'Schema'),
     tags: source.tags ? sortStringArray(source.tags) : null,
     manifestPath: source.manifest_path,
