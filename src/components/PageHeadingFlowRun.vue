@@ -12,7 +12,7 @@
         <FlowRunStartTime :flow-run="flowRun" />
         <template v-if="!isPending">
           <DurationIconText :duration="flowRun.duration" />
-          <FlowRunTaskCount :tasks-count="taskRunsCount" />
+          <IconTextCount icon="Task" :count="taskRunsCount ?? 0" label="Task run" />
         </template>
       </div>
       <div class="page-heading-flow-run__relationships">
@@ -59,9 +59,9 @@
   import FlowRunDeployment from '@/components/FlowRunDeployment.vue'
   import FlowRunFlow from '@/components/FlowRunFlow.vue'
   import FlowRunParentFlowRun from '@/components/FlowRunParentFlowRun.vue'
-  import FlowRunTaskCount from '@/components/FlowRunTaskCount.vue'
   import FlowRunWorkPool from '@/components/FlowRunWorkPool.vue'
   import FlowRunWorkQueue from '@/components/FlowRunWorkQueue.vue'
+  import IconTextCount from '@/components/IconTextCount.vue'
   import { useComponent, useFlowRun, useTaskRunsCount, useWorkspaceRoutes } from '@/compositions'
   import { isPendingStateType } from '@/models'
 
