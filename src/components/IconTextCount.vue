@@ -1,10 +1,14 @@
 <template>
   <p-icon-text :icon="icon" class="icon-text-count">
     <template v-if="count > 0">
-      {{ count }} {{ formattedLabel }}
+      <slot v-bind="{ count, formattedLabel }">
+        {{ count }} {{ formattedLabel }}
+      </slot>
     </template>
     <template v-else>
-      None
+      <slot name="empty">
+        <span class="icon-text-count__label">None</span>
+      </slot>
     </template>
   </p-icon-text>
 </template>
