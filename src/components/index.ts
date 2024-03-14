@@ -293,6 +293,7 @@ export { default as WorkPoolQueuePriorityLabel } from './WorkPoolQueuePriorityLa
 export { default as WorkPoolQueuesDeleteButton } from './WorkPoolQueuesDeleteButton.vue'
 export { default as WorkPoolQueuesTable } from './WorkPoolQueuesTable.vue'
 export { default as WorkPoolQueueStatusBadge } from './WorkPoolQueueStatusBadge.vue'
+export { default as WorkPoolQueueStatusIcon } from './WorkPoolQueueStatusIcon.vue'
 export { default as WorkPoolQueueToggle } from './WorkPoolQueueToggle.vue'
 export { default as WorkPoolQueueUpcomingFlowRunsList } from './WorkPoolQueueUpcomingFlowRunsList.vue'
 export { default as WorkPools } from './WorkPools.vue'
