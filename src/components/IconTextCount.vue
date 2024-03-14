@@ -7,7 +7,7 @@
     </template>
     <template v-else>
       <slot name="empty">
-        <span class="icon-text-count__label">None</span>
+        <span class="icon-text-count--empty">None</span>
       </slot>
     </template>
   </p-icon-text>
@@ -26,3 +26,9 @@
 
   const formattedLabel = computed(() => props.label ? toPluralString(props.label, props.count) : '')
 </script>
+
+<style>
+.icon-text-count--empty { @apply
+  text-subdued
+}
+</style>
