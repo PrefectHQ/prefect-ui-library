@@ -2,9 +2,9 @@
   <p-content class="flow-run-filtered-list">
     <p-list-header sticky>
       <template v-if="selectable">
-        <p-checkbox v-model="selectAllModel" :indeterminate="selected.length && selected.length < flowRuns.length">
-          Select All
-        </p-checkbox>
+        <p-tooltip :text="selectAllModel ? 'Deselect all' : 'Select all'">
+          <p-checkbox v-model="selectAllModel" :indeterminate="selected.length && selected.length < flowRuns.length" />
+        </p-tooltip>
       </template>
 
       <ResultsCount v-if="selected.length == 0" :count="total" label="Flow run" />
