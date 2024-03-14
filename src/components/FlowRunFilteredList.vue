@@ -2,12 +2,9 @@
   <p-content class="flow-run-filtered-list">
     <p-list-header sticky>
       <template v-if="selectable">
-        <p-button v-if="selected.length !== flowRuns.length" @click="selectAll">
+        <p-checkbox v-model="selectAllModel" :indeterminate="selected.length && selected.length < flowRuns.length">
           Select All
-        </p-button>
-        <p-button v-else-if="selected.length > 0" @click="selected = []">
-          Clear Selection
-        </p-button>
+        </p-checkbox>
       </template>
 
       <ResultsCount v-if="selected.length == 0" :count="total" label="Flow run" />
@@ -80,9 +77,16 @@
     mode: 'infinite',
   })
 
-  function selectAll(): void {
-    selected.value = flowRuns.value.map((flowRun) => flowRun.id)
-  }
+  const selectAllModel = computed({
+    get: () => selected.value.length > 0,
+    set: (value: boolean) => {
+      if (value) {
+        selected.value = flowRuns.value.map((flowRun) => flowRun.id)
+      } else {
+        selected.value = []
+      }
+    },
+  })
 
   const empty = computed(() => subscriptions.executed && flowRuns.value.length === 0)
 
