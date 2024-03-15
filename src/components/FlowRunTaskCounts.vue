@@ -21,7 +21,7 @@
     },
   }))
 
-  const subscription = useSubscription(api.ui.getTaskRunsCountByState, [filter])
+  const subscription = useSubscription(api.ui.getTaskRunsCountByState, [filter], { interval: 30000 })
   const counts = computed(() => {
     if (!subscription.response) {
       return ''
