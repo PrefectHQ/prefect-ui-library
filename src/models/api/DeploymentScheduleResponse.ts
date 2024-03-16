@@ -8,4 +8,5 @@ export type DeploymentScheduleResponse = {
   updated: DateString,
   active: boolean,
   schedule: ScheduleResponse,
+  job_variables?: Record<string, unknown> | null,
 }

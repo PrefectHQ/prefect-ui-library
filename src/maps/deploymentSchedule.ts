@@ -9,5 +9,6 @@ export const mapDeploymentScheduleResponseToDeploymentSchedule: MapFunction<Depl
     updated: this.map('string', source.updated, 'Date'),
     active: source.active,
     schedule: this.map('ScheduleResponse', source.schedule, 'Schedule'),
+    jobVariables: source.job_variables ?? {},
   })
 }

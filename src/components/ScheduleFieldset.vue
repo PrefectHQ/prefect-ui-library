@@ -6,7 +6,7 @@
 
     <template v-if="!readonly">
       <div class="schedule-fieldset__buttons">
-        <ScheduleFormModal :active="null" :schedule="internalValue" @submit="updateSchedule">
+        <ScheduleFormModal :active="null" :schedule="internalValue" :job-variables="{}" @submit="updateSchedule">
           <template #default="{ open }">
             <p-button small icon="PencilIcon" class="schedule-fieldset__button" :disabled="loading" @click="open">
               {{ internalValue ? 'Edit' : 'Add' }}

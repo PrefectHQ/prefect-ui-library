@@ -6,5 +6,6 @@ export const mapDeploymentScheduleUpdateToDeploymentScheduleUpdateRequest: MapFu
   return {
     active: source.active,
     schedule: this.map('Schedule', source.schedule, 'ScheduleRequest'),
+    job_variables: source.jobVariables,
   }
 }

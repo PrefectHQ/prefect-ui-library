@@ -51,7 +51,7 @@
         property: { ...property.value, type },
         value: asType(value, Boolean),
         state: props.state,
-        'onUpdate:modelValue': (value) => emit('update:value', asType(value, Boolean)),
+        'onUpdate:value': (value) => emit('update:value', asType(value, Boolean)),
       })
     }
 

@@ -16,6 +16,7 @@ export type {
   RunGraphFetchEventsOptions
 }
 
+export * from './artifact'
 export * from './buttons'
 export * from './ColorMode'
 export * from './css'

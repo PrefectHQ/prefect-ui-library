@@ -17,6 +17,10 @@ export function isStateType(value: unknown): value is StateType {
   return typeof value === 'string' && stateType.includes(value as StateType)
 }
 
+export function isServerStateType(value: unknown): value is ServerStateType {
+  return typeof value === 'string' && stateType.includes(value.toLowerCase() as StateType)
+}
+
 export const pendingStateType = ['scheduled', 'pending']
 export type PendingStateType = typeof pendingStateType[number]
 

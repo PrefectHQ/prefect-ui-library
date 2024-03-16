@@ -34,7 +34,7 @@
     (event: 'update'): void,
   }>()
 
-  const internalValue = ref<DeploymentScheduleCompatible>({ 'active': props.deploymentSchedule.active, 'schedule': props.deploymentSchedule.schedule })
+  const internalValue = ref<DeploymentScheduleCompatible>({ active: props.deploymentSchedule.active, schedule: props.deploymentSchedule.schedule, jobVariables: props.deploymentSchedule.jobVariables })
 
   const updateActiveStatus = (value: boolean): void => {
     internalValue.value.active = value
@@ -46,7 +46,7 @@
   }
 
   const updateInternalState = (): void => {
-    internalValue.value = { 'active': props.deploymentSchedule.active, 'schedule': props.deploymentSchedule.schedule }
+    internalValue.value = { active: props.deploymentSchedule.active, schedule: props.deploymentSchedule.schedule, jobVariables: props.deploymentSchedule.jobVariables }
   }
   watch(() => props.deploymentSchedule, updateInternalState)
 </script>
