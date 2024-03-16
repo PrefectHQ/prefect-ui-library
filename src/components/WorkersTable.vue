@@ -27,8 +27,15 @@
         <div class="workers-table__actions">
           <p-icon-button-menu>
             <CopyOverflowMenuItem label="Copy ID" :item="row.id" />
+            <p-overflow-menu-item label="Delete" @click="open" />
           </p-icon-button-menu>
         </div>
+        <ConfirmDeleteModal
+          v-model:showModal="showModal"
+          label="Worker"
+          :name="row.name"
+          @delete="deleteWorker(row.name)"
+        />
       </template>
 
       <template #empty-state>
@@ -51,13 +58,17 @@
   import { TableColumn } from '@prefecthq/prefect-design'
   import { useNow, useSubscription } from '@prefecthq/vue-compositions'
   import { computed, ref, toRefs } from 'vue'
-  import { ResultsCount, SearchInput, CopyOverflowMenuItem, WorkerStatusBadge } from '@/components'
-  import { useWorkspaceApi } from '@/compositions'
+  import { ResultsCount, SearchInput, CopyOverflowMenuItem, WorkerStatusBadge, ConfirmDeleteModal } from '@/components'
+  import { useWorkspaceApi, useShowModal } from '@/compositions'
   import { WorkPoolWorker } from '@/models'
-  import { formatDateTimeRelative } from '@/utilities'
+  import { deleteItem, formatDateTimeRelative } from '@/utilities'
 
   const props = defineProps<{
     workPoolName: string,
+  }>()
+
+  const emit = defineEmits<{
+    (event: 'delete'): void,
   }>()
 
   const api = useWorkspaceApi()
@@ -107,6 +118,13 @@
 
   function clear(): void {
     searchValue.value = ''
+  }
+
+  const { showModal, open, close } = useShowModal()
+  async function deleteWorker(workerName: string): Promise<void> {
+    close()
+    await deleteItem({ 'workPoolName': workPoolName.value, 'workerName': workerName }, api.workPoolWorkers.deleteWorker, 'Worker')
+    emit('delete')
   }
 </script>
 
