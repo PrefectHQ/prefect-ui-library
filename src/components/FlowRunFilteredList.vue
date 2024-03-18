@@ -3,7 +3,14 @@
     <p-list-header sticky>
       <template v-if="selectable">
         <p-tooltip :text="selectAllModel ? 'Deselect all' : 'Select all'">
-          <p-checkbox v-model="selectAllModel" :indeterminate="selected.length && selected.length < flowRuns.length" />
+          <p-checkbox v-model="selectAllModel" :indeterminate="selected.length && selected.length < flowRuns.length">
+            <template #label>
+              <span class="sr-only">
+                <template v-if="selectAllModel">Deselect all {{ selected.length }} flow runs</template>
+                <template v-else>Select all {{ total }} flow runs</template>
+              </span>
+            </template>
+          </p-checkbox>
         </p-tooltip>
       </template>
 
