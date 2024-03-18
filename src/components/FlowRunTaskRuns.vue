@@ -1,7 +1,10 @@
 <template>
   <p-content class="flow-run-task-runs">
     <p-list-header sticky>
-      <ResultsCount :count="count" label="Task run" />
+      <div class="flow-run-task-runs__count">
+        <ResultsCount :count="count" label="Task run" />
+        <FlowRunTaskCounts :flow-run-id="flowRunId" />
+      </div>
       <template #controls>
         <SearchInput v-model="searchTerm" placeholder="Search by run name" label="Search by run name" class="flow-run-task-runs__search" />
         <StateNameSelect v-model:selected="states" empty-message="All states" multiple />
@@ -36,6 +39,7 @@
     TaskRunList,
     TaskRunsSort
   } from '@/components'
+  import FlowRunTaskCounts from '@/components/FlowRunTaskCounts.vue'
   import { useTaskRunsCount, useTaskRunsFilter, useWorkspaceApi } from '@/compositions'
   import { usePaginatedSubscription } from '@/compositions/usePaginatedSubscription'
   import { TaskRun } from '@/models/TaskRun'
@@ -77,5 +81,11 @@
 <style>
 .flow-run-task-runs__search { @apply
   min-w-[224px]
+}
+
+.flow-run-task-runs__count { @apply
+  grid
+  grid-cols-1
+  gap-1
 }
 </style>

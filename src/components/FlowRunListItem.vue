@@ -9,7 +9,7 @@
         <FlowRunStartTime :flow-run="flowRun" />
         <DurationIconText :duration="flowRun.duration" />
         <template v-if="visible && flowRun.stateType !== 'scheduled'">
-          <FlowRunTaskCount :tasks-count="taskRunsCount" />
+          <IconTextCount icon="Task" :count="taskRunsCount ?? 0" label="Task run" />
         </template>
       </template>
       <template v-if="visible && (flowRun.deploymentId || flowRun.workQueueName)" #relationships>
@@ -35,9 +35,9 @@
   import FlowRunBreadCrumbs from '@/components/FlowRunBreadCrumbs.vue'
   import FlowRunDeployment from '@/components/FlowRunDeployment.vue'
   import FlowRunStartTime from '@/components/FlowRunStartTime.vue'
-  import FlowRunTaskCount from '@/components/FlowRunTaskCount.vue'
   import FlowRunWorkPool from '@/components/FlowRunWorkPool.vue'
   import FlowRunWorkQueue from '@/components/FlowRunWorkQueue.vue'
+  import IconTextCount from '@/components/IconTextCount.vue'
   import StateBadge from '@/components/StateBadge.vue'
   import StateListItem from '@/components/StateListItem.vue'
   import { useTaskRunsCount } from '@/compositions'
