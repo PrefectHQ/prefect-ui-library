@@ -35,6 +35,9 @@ type WithParametersEdit = BaseEdit & {
   parameters: SchemaValues,
 }
 
+/**
+ * @deprecated Use DeploymentUpdateV2
+ */
 export type DeploymentUpdate = WithoutParameters | WithParameters
 export type DeploymentEdit = WithoutParametersEdit | WithParametersEdit
 

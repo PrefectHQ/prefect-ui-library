@@ -45,6 +45,9 @@
   import { jsonSafeParse } from '@/utilities/jsonSafeParse'
 
   const props = defineProps<{
+    /**
+     * @deprecated Use SchemaFormInputV2.vue
+     */
     modelValue: SchemaValues | null | undefined,
     schema: Schema,
     inputType?: SchemaInputType,
