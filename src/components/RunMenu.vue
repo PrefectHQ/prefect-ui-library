@@ -16,8 +16,7 @@
       <DeploymentCustomRunOverflowMenuItem :deployment="deployment" />
     </p-overflow-menu>
   </p-pop-over>
-  <QuickRunParametersModal v-model:showModal="showParametersModalV1" :deployment="deployment" />
-  <QuickRunParametersModalV2 v-model:showModal="showParametersModalV2" :deployment="deployment" />
+  <QuickRunParametersModal v-model:showModal="showParametersModal" :deployment="deployment" />
 </template>
 
 <script lang="ts" setup>
@@ -28,8 +27,7 @@
     DeploymentQuickRunOverflowMenuItem,
     QuickRunParametersModal
   } from '@/components'
-  import QuickRunParametersModalV2 from '@/components/QuickRunParametersModalV2.vue'
-  import { useCan, useShowModal } from '@/compositions'
+  import { useShowModal } from '@/compositions'
   import { Deployment } from '@/models'
 
   defineProps<{
@@ -39,20 +37,8 @@
   const popOver = ref<InstanceType<typeof PPopOver>>()
   const runButton = ref<InstanceType<typeof PButton>>()
   const placement = [positions.bottomRight, positions.bottomLeft, positions.topRight, positions.topLeft]
-  const can = useCan()
 
-  const { showModal: showParametersModalV1, open: openParametersModalV1 } = useShowModal()
-  const { showModal: showParametersModalV2, open: openParametersModalV2 } = useShowModal()
-
-
-  function openParametersModal(): void {
-    if (can.access.schemasV2) {
-      openParametersModalV2()
-      return
-    }
-
-    openParametersModalV1()
-  }
+  const { showModal: showParametersModal, open: openParametersModal } = useShowModal()
 
   function close(): void {
     if (popOver.value) {

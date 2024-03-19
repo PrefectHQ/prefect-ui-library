@@ -22,8 +22,7 @@
     @delete="deleteDeployment(deployment.id)"
   />
 
-  <QuickRunParametersModal v-model:showModal="showParametersModalV1" :deployment="deployment" />
-  <QuickRunParametersModalV2 v-model:showModal="showParametersModalV2" :deployment="deployment" />
+  <QuickRunParametersModal v-model:showModal="showParametersModal" :deployment="deployment" />
 </template>
 
 <script lang="ts">
@@ -35,9 +34,9 @@
 </script>
 
 <script lang="ts" setup>
-  import { DeploymentQuickRunOverflowMenuItem, DeploymentCustomRunOverflowMenuItem, ConfirmDeleteModal, CopyOverflowMenuItem, QuickRunParametersModal } from '@/components'
-  import QuickRunParametersModalV2 from '@/components/QuickRunParametersModalV2.vue'
-  import { useWorkspaceApi, useWorkspaceRoutes, useShowModal, useCan } from '@/compositions'
+  import { DeploymentQuickRunOverflowMenuItem, DeploymentCustomRunOverflowMenuItem, ConfirmDeleteModal, CopyOverflowMenuItem } from '@/components'
+  import QuickRunParametersModal from '@/components/QuickRunParametersModal.vue'
+  import { useWorkspaceApi, useWorkspaceRoutes, useShowModal } from '@/compositions'
   import { Deployment } from '@/models'
   import { deleteItem } from '@/utilities'
 
@@ -51,21 +50,10 @@
   }>()
 
   const { showModal: showConfirmDeleteModal, open: openConfirmDeleteModal, close: closeConfirmDeleteModal } = useShowModal()
-  const { showModal: showParametersModalV1, open: openParametersModalV1 } = useShowModal()
-  const { showModal: showParametersModalV2, open: openParametersModalV2 } = useShowModal()
+  const { showModal: showParametersModal, open: openParametersModal } = useShowModal()
 
   const api = useWorkspaceApi()
   const routes = useWorkspaceRoutes()
-  const can = useCan()
-
-  function openParametersModal(): void {
-    if (can.access.schemasV2) {
-      openParametersModalV2()
-      return
-    }
-
-    openParametersModalV1()
-  }
 
   const deleteDeployment = async (id: string): Promise<void> => {
     closeConfirmDeleteModal()
