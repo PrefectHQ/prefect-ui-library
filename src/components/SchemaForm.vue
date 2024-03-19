@@ -17,6 +17,9 @@
   import { Schema, SchemaValues } from '@/types/schemas'
 
   const props = defineProps<{
+    /**
+     * @deprecated Use SchemaFormV2.vue
+     */
     modelValue?: SchemaValues,
     schema: Schema,
   }>()

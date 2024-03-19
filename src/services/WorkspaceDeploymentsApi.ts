@@ -53,6 +53,9 @@ export class WorkspaceDeploymentsApi extends WorkspaceApi {
     return data
   }
 
+  /**
+   * @deprecated Use createDeploymentFlowRunV2
+   */
   public async createDeploymentFlowRun(deploymentId: string, request: DeploymentFlowRunCreate): Promise<FlowRun> {
     const body = mapper.map('DeploymentFlowRunCreate', request, 'DeploymentFlowRunRequest')
     const { data } = await this.post<FlowRunResponse>(`/${deploymentId}/create_flow_run`, body)
@@ -67,6 +70,9 @@ export class WorkspaceDeploymentsApi extends WorkspaceApi {
     return mapper.map('FlowRunResponse', data, 'FlowRun')
   }
 
+  /**
+   * @deprecated Use updateDeploymentV2
+   */
   public updateDeployment(deploymentId: string, request: DeploymentUpdate): Promise<void> {
     const body = mapper.map('DeploymentUpdate', request, 'DeploymentUpdateRequest')
 

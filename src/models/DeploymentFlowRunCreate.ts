@@ -26,6 +26,9 @@ type WithParameters = Base & {
   parameters: SchemaValues,
 }
 
+/**
+ * @deprecated Use DeploymentFlowRunCreateV2
+ */
 export type DeploymentFlowRunCreate = WithoutParameters | WithParameters
 
 type WithParametersV2 = Base & {
