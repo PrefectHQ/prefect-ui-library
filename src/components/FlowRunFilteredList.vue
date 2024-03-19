@@ -2,13 +2,7 @@
   <p-content class="flow-run-filtered-list">
     <p-list-header sticky>
       <template v-if="selectable">
-        <p-tooltip :text="selectAllModel ? 'Deselect all' : 'Select all'">
-          <p-checkbox
-            v-model="selectAllModel"
-            :indeterminate="selected.length && selected.length < flowRuns.length"
-            :aria-label="selectAllModel ? `Deselect all ${selected.length} flow runs` : `Select all ${flowRuns.length} flow runs`"
-          />
-        </p-tooltip>
+        <p-select-all-checkbox v-model="selected" :selectable="flowRuns.map((flowRun) => flowRun.id)" item-name="flow run" />
       </template>
 
       <ResultsCount v-if="selected.length == 0" :count="total" label="Flow run" />
@@ -79,17 +73,6 @@
   const { flowRuns, total, subscriptions, next } = useFlowRuns(filter, {
     interval: 30000,
     mode: 'infinite',
-  })
-
-  const selectAllModel = computed({
-    get: () => selected.value.length > 0,
-    set: (value: boolean) => {
-      if (value) {
-        selected.value = flowRuns.value.map((flowRun) => flowRun.id)
-      } else {
-        selected.value = []
-      }
-    },
   })
 
   const empty = computed(() => subscriptions.executed && flowRuns.value.length === 0)
