@@ -1,6 +1,10 @@
 <template>
   <p-content class="flow-run-filtered-list">
     <p-list-header sticky>
+      <template v-if="selectable">
+        <p-select-all-checkbox v-model="selected" :selectable="flowRuns.map((flowRun) => flowRun.id)" item-name="flow run" />
+      </template>
+
       <ResultsCount v-if="selected.length == 0" :count="total" label="Flow run" />
       <SelectedCount v-else :count="selected.length" />
       <FlowRunsDeleteButton v-if="can.delete.flow_run" :selected="selected" @delete="deleteFlowRuns" />
