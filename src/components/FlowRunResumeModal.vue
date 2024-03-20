@@ -1,21 +1,16 @@
 <template>
-  <p-modal v-if="flowRun" v-model:showModal="internalValue" title="Resume Flow Run">
-    <div v-if="serverValidationError">
-      <p-message error>
-        {{ serverValidationError }}
-      </p-message>
-    </div>
+  <p-modal v-if="flowRun" v-model:showModal="showModal" title="Resume Flow Run">
+    <template v-if="schema">
+      <p-markdown-renderer v-if="description" :text="description" />
 
-    <div v-if="inputSchema">
-      <p-markdown-renderer v-if="inputDescription" :text="inputDescription" />
-    </div>
-    <div v-else>
+      <p-content v-if="schema">
+        <SchemaInputV2 v-model:values="parameters" :schema="schema" :errors="errors" :kinds="['none', 'json', 'workspace_variable']" />
+      </p-content>
+    </template>
+
+    <p v-else>
       Do you want to resume this flow run?
-    </div>
-
-    <p-form v-if="inputSchema" @submit="resume">
-      <SchemaInput v-model="parameters" :schema="inputSchema" disable-input-types />
-    </p-form>
+    </p>
 
     <template #actions>
       <p-button primary @click="resume">
@@ -27,48 +22,54 @@
 
 <script lang="ts" setup>
   import { showToast } from '@prefecthq/prefect-design'
-  import { useSubscription, useValidationObserver } from '@prefecthq/vue-compositions'
-  import { computed, ref } from 'vue'
-  import { SchemaInput } from '@/components'
-  import { useWorkspaceApi } from '@/compositions'
+  import { ref, watch } from 'vue'
+  import { useFlowRun, useWorkspaceApi } from '@/compositions'
   import { localization } from '@/localization'
-  import { OrchestrationResult } from '@/models/api/OrchestrationResult'
-  import { Schema, SchemaValues } from '@/types/schemas'
+  import { SchemaV2, SchemaValuesV2, SchemaInputV2, useSchemaValidationV2 } from '@/schemas'
   import { getApiErrorMessage } from '@/utilities/errors'
 
-
   const props = defineProps<{
-    showModal: boolean,
     flowRunId: string,
   }>()
 
-  const emit = defineEmits<{
-    (event: 'update:showModal', value: boolean): void,
-  }>()
-
+  const showModal = defineModel<boolean>('showModal')
   const api = useWorkspaceApi()
-  const parameters = ref<SchemaValues>({})
+  const parameters = ref<SchemaValuesV2>({})
+  const { flowRun, subscription } = useFlowRun(() => props.flowRunId)
 
-  const internalValue = computed({
-    get() {
-      return props.showModal
-    },
-    set(value: boolean) {
-      emit('update:showModal', value)
-    },
-  })
+  const description = ref<string | null>(null)
+  const schema = ref<SchemaV2 | null>(null)
 
-  const flowRunSubscription = useSubscription(api.flowRuns.getFlowRun, [props.flowRunId], { interval: 30000 })
-  const flowRun = computed(() => flowRunSubscription.response)
-  const { validate } = useValidationObserver()
+  const { errors, validate, reset } = useSchemaValidationV2(schema, parameters)
 
-  let serverValidationError: string
-  let inputDescription: string | null
-  let inputSchema: Schema
+  watch(showModal, (open) => {
+    if (!open) {
+      clear()
+      return
+    }
 
-  if (flowRun.value?.state?.stateDetails?.runInputKeyset) {
-    inputDescription = await api.flowRuns.getFlowRunInputDescription(props.flowRunId, flowRun.value.state.stateDetails.runInputKeyset)
-    inputSchema = await api.flowRuns.getFlowRunInputSchema(props.flowRunId, flowRun.value.state.stateDetails.runInputKeyset)
+    init()
+  }, { immediate: true })
+
+  async function init(): Promise<void> {
+    if (!flowRun.value?.state?.stateDetails?.runInputKeyset) {
+      return
+    }
+
+    const [descriptionValue, schemaValue] = await Promise.all([
+      api.flowRuns.getFlowRunInputDescription(props.flowRunId, flowRun.value.state.stateDetails.runInputKeyset),
+      api.flowRuns.getFlowRunInputSchemaV2(props.flowRunId, flowRun.value.state.stateDetails.runInputKeyset),
+    ])
+
+    description.value = descriptionValue
+    schema.value = schemaValue
+  }
+
+  function clear(): void {
+    description.value = null
+    schema.value = null
+    parameters.value = {}
+    reset()
   }
 
   const resume = async (): Promise<void> => {
@@ -78,29 +79,22 @@
       return
     }
 
-    let response: OrchestrationResult | null
-
     try {
-      response = await api.flowRuns.resumeFlowRun(props.flowRunId, parameters.value)
+      const response = await api.flowRuns.resumeFlowRunV2(props.flowRunId, parameters.value)
+
+      if (response.status != 'ACCEPT') {
+        showToast(response.details.reason, 'error')
+        console.log('Orchestration failed: ', response.details.reason)
+        return
+      }
+
+      subscription.refresh()
+      showModal.value = false
+      showToast(localization.success.resumeFlowRun, 'success')
     } catch (error) {
       console.error(error)
       const message = getApiErrorMessage(error, localization.error.resumeFlowRun)
       showToast(message, 'error')
-      return
-    }
-
-    if (response.status == 'ACCEPT') {
-      flowRunSubscription.refresh()
-      internalValue.value = false
-      showToast(localization.success.resumeFlowRun, 'success')
-
-      if (serverValidationError) {
-        serverValidationError = ''
-      }
-    } else {
-      showToast(localization.error.resumeFlowRun, 'error')
-      console.log('Orchestration failed: ', response.details.reason)
-      serverValidationError = response.details.reason
     }
   }
 </script>
