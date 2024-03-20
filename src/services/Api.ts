@@ -3,6 +3,8 @@ import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse, RawAxiosReques
 import { MaybeArray } from '@/types/utilities'
 import { isDefined } from '@/utilities/variables'
 
+export type AxiosInstanceSetupHook = (instance: AxiosInstance) => void
+
 export type PrefectConfig = {
   baseUrl: string,
   token?: string,
@@ -31,9 +33,11 @@ export class Api<T extends PrefectConfig = PrefectConfig> {
   protected apiHeaders: MaybeArray<ApiHeaders> = [getPrefectUIHeaders, getAuthorizationHeaders]
   protected apiBaseUrl: ApiBaseUrl = getPrefectBaseUrl
   protected routePrefix: string | undefined
+  protected instanceSetupHook: AxiosInstanceSetupHook | null
 
-  public constructor(apiConfig: T) {
+  public constructor(apiConfig: T, instanceSetupHook: AxiosInstanceSetupHook | null = null) {
     this.apiConfig = apiConfig
+    this.instanceSetupHook = instanceSetupHook
   }
 
   protected composeBaseUrl(): string {
@@ -72,7 +76,12 @@ export class Api<T extends PrefectConfig = PrefectConfig> {
       headers: this.composeHeaders(),
     }
 
-    return axios.create(config)
+    const instance = axios.create(config)
+    if (this.instanceSetupHook) {
+      this.instanceSetupHook(instance)
+    }
+
+    return instance
   }
 
   protected get<T, R = AxiosResponse<T>>(route?: string, config?: AxiosRequestConfig): Promise<R> {

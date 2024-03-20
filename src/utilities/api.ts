@@ -1,5 +1,6 @@
 import { createActions } from '@prefecthq/vue-compositions'
 import { InjectionKey } from 'vue'
+import { AxiosInstanceSetupHook } from '@/services/Api'
 import { CollectionsApi } from '@/services/CollectionsApi'
 import { HealthApi } from '@/services/HealthApi'
 import { UiApi } from '@/services/UiApi'
@@ -28,32 +29,32 @@ import { WorkspaceWorkQueuesApi } from '@/services/WorkspaceWorkQueuesApi'
 
 // We want the return type to be inferred
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-export function createApi(workspaceConfig: WorkspaceApiConfig) {
+export function createApi(workspaceConfig: WorkspaceApiConfig, instanceSetupHook: AxiosInstanceSetupHook | null = null) {
   return {
-    artifacts: createActions(new WorkspaceArtifactsApi(workspaceConfig)),
-    blockCapabilities: createActions(new WorkspaceBlockCapabilitiesApi(workspaceConfig)),
-    blockDocuments: createActions(new WorkspaceBlockDocumentsApi(workspaceConfig)),
-    blockSchemas: createActions(new WorkspaceBlockSchemasApi(workspaceConfig)),
-    blockTypes: createActions(new WorkspaceBlockTypesApi(workspaceConfig)),
-    collections: createActions(new CollectionsApi(workspaceConfig)),
-    concurrencyLimits: createActions(new WorkspaceConcurrencyLimitsApi(workspaceConfig)),
-    concurrencyV2Limits: createActions(new WorkspaceConcurrencyV2LimitsApi(workspaceConfig)),
-    deployments: createActions(new WorkspaceDeploymentsApi(workspaceConfig)),
-    deploymentSchedules: createActions(new WorkspaceDeploymentScheduleApi(workspaceConfig)),
-    flowRuns: createActions(new WorkspaceFlowRunsApi(workspaceConfig)),
-    flows: createActions(new WorkspaceFlowsApi(workspaceConfig)),
-    health: createActions(new HealthApi(workspaceConfig)),
-    logs: createActions(new WorkspaceLogsApi(workspaceConfig)),
-    notifications: createActions(new WorkspaceNotificationsApi(workspaceConfig)),
-    savedSearches: createActions(new WorkspaceSavedSearchesApi(workspaceConfig)),
-    taskRuns: createActions(new WorkspaceTaskRunsApi(workspaceConfig)),
-    ui: createActions(new UiApi(workspaceConfig)),
-    variables: createActions(new WorkspaceVariablesApi(workspaceConfig)),
-    workPoolQueues: createActions(new WorkspaceWorkPoolQueuesApi(workspaceConfig)),
-    workPools: createActions(new WorkspaceWorkPoolsApi(workspaceConfig)),
-    workPoolWorkers: createActions(new WorkspaceWorkPoolWorkersApi(workspaceConfig)),
-    workQueues: createActions(new WorkspaceWorkQueuesApi(workspaceConfig)),
-    schemas: createActions(new WorkspaceSchemasWorkspaceApi(workspaceConfig)),
+    artifacts: createActions(new WorkspaceArtifactsApi(workspaceConfig, instanceSetupHook)),
+    blockCapabilities: createActions(new WorkspaceBlockCapabilitiesApi(workspaceConfig, instanceSetupHook)),
+    blockDocuments: createActions(new WorkspaceBlockDocumentsApi(workspaceConfig, instanceSetupHook)),
+    blockSchemas: createActions(new WorkspaceBlockSchemasApi(workspaceConfig, instanceSetupHook)),
+    blockTypes: createActions(new WorkspaceBlockTypesApi(workspaceConfig, instanceSetupHook)),
+    collections: createActions(new CollectionsApi(workspaceConfig, instanceSetupHook)),
+    concurrencyLimits: createActions(new WorkspaceConcurrencyLimitsApi(workspaceConfig, instanceSetupHook)),
+    concurrencyV2Limits: createActions(new WorkspaceConcurrencyV2LimitsApi(workspaceConfig, instanceSetupHook)),
+    deployments: createActions(new WorkspaceDeploymentsApi(workspaceConfig, instanceSetupHook)),
+    deploymentSchedules: createActions(new WorkspaceDeploymentScheduleApi(workspaceConfig, instanceSetupHook)),
+    flowRuns: createActions(new WorkspaceFlowRunsApi(workspaceConfig, instanceSetupHook)),
+    flows: createActions(new WorkspaceFlowsApi(workspaceConfig, instanceSetupHook)),
+    health: createActions(new HealthApi(workspaceConfig, instanceSetupHook)),
+    logs: createActions(new WorkspaceLogsApi(workspaceConfig, instanceSetupHook)),
+    notifications: createActions(new WorkspaceNotificationsApi(workspaceConfig, instanceSetupHook)),
+    savedSearches: createActions(new WorkspaceSavedSearchesApi(workspaceConfig, instanceSetupHook)),
+    taskRuns: createActions(new WorkspaceTaskRunsApi(workspaceConfig, instanceSetupHook)),
+    ui: createActions(new UiApi(workspaceConfig, instanceSetupHook)),
+    variables: createActions(new WorkspaceVariablesApi(workspaceConfig, instanceSetupHook)),
+    workPoolQueues: createActions(new WorkspaceWorkPoolQueuesApi(workspaceConfig, instanceSetupHook)),
+    workPools: createActions(new WorkspaceWorkPoolsApi(workspaceConfig, instanceSetupHook)),
+    workPoolWorkers: createActions(new WorkspaceWorkPoolWorkersApi(workspaceConfig, instanceSetupHook)),
+    workQueues: createActions(new WorkspaceWorkQueuesApi(workspaceConfig, instanceSetupHook)),
+    schemas: createActions(new WorkspaceSchemasWorkspaceApi(workspaceConfig, instanceSetupHook)),
   }
 }
 
