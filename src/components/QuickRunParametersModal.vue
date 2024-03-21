@@ -9,7 +9,7 @@
         </p-icon-button-menu>
       </div>
 
-      <SchemaFormV2 :id="formId" v-model:values="parameters" :schema="deployment.parameterOpenApiSchemaV2" :kinds="['json']" @submit="submit" />
+      <SchemaFormV2 :id="formId" v-model:values="parameters" :schema="deployment.parameterOpenApiSchemaV2" :kinds="['json', 'workspace_variable']" @submit="submit" />
     </p-content>
 
     <template #actions>
