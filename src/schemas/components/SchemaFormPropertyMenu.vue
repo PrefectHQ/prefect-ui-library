@@ -6,7 +6,7 @@
       </template>
       <p-overflow-menu-item v-if="showKind('json')" label="Use JSON input" @click="emit('update:kind', 'json')" />
       <p-overflow-menu-item v-if="showKind('workspace_variable')" label="Select variable" @click="emit('update:kind', 'workspace_variable')" />
-      <p-overflow-menu-item v-if="showKind('jinja')" label="Create a template" @click="emit('update:kind', 'jinja')" />
+      <p-overflow-menu-item v-if="showKind('jinja')" label="Use Jinja input" @click="emit('update:kind', 'jinja')" />
     </template>
 
     <template v-if="slots.default">
