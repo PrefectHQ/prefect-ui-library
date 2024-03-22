@@ -204,7 +204,7 @@
 }
 
 .block-documents-table__delete { @apply
-  ml:4
+  ml-2
 }
 
 .block-documents-table__search {
