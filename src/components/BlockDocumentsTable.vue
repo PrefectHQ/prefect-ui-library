@@ -2,11 +2,20 @@
   <div class="block-documents-table">
     <div class="block-documents-table__filters">
       <ResultsCount label="Block" :count="total" class="block-documents-table__results" />
+      <BlocksDeleteButton v-if="selectedBlockDocuments.length > 0" class="block-documents-table__delete" :selected="selectedBlockDocuments" small @delete="onDelete" />
       <SearchInput v-model="searchTerm" placeholder="Search blocks" label="Search blocks" class="block-documents-table__search" />
       <BlockSchemaCapabilitySelect v-model:selected="capabilities" class="block-documents-table__capability" />
       <BlockTypeSelect v-model:selected="blockTypes" class="block-documents-table__type" />
     </div>
     <p-table :data="blockDocuments" :columns="columns">
+      <template #selection-heading>
+        <p-checkbox v-model="model" @update:model-value="selectAllBlockDocuments" />
+      </template>
+
+      <template #selection="{ row }">
+        <p-checkbox v-if="row.can.delete" v-model="selectedBlockDocuments" :value="row.id" />
+      </template>
+
       <template #name="{ row }: { row: BlockDocument }">
         <div class="block-documents-table__name-column">
           <LogoImage :url="row.blockType.logoUrl" class="block-documents-table__name-img" />
@@ -54,12 +63,13 @@
 </template>
 
 <script lang="ts" setup>
-  import { media, TableColumn, PEmptyResults } from '@prefecthq/prefect-design'
+  import { media, TableColumn, PEmptyResults, CheckboxModel } from '@prefecthq/prefect-design'
   import { NumberRouteParam, useDebouncedRef, useRouteQueryParam } from '@prefecthq/vue-compositions'
   import merge from 'lodash.merge'
   import { computed, ref } from 'vue'
   import BlockSchemaCapabilities from '@/components/BlockSchemaCapabilities.vue'
   import BlockSchemaCapabilitySelect from '@/components/BlockSchemaCapabilitySelect.vue'
+  import BlocksDeleteButton from '@/components/BlocksDeleteButton.vue'
   import BlockTypeSelect from '@/components/BlockTypeSelect.vue'
   import LogoImage from '@/components/LogoImage.vue'
   import ResultsCount from '@/components/ResultsCount.vue'
@@ -80,6 +90,10 @@
   const routes = useWorkspaceRoutes()
 
   const columns = computed<TableColumn<BlockDocument>[]>(() => [
+    {
+      label: 'selection',
+      width: '20px',
+    },
     {
       label: 'Name',
       property: 'name',
@@ -125,9 +139,26 @@
     blockTypes.value = []
   }
 
-  function onDelete(): void {
-    subscriptions.refresh()
+  const selectedBlockDocuments = ref<string[]>([])
+  const selectAllBlockDocuments = (allBlockDocumentsSelected: CheckboxModel): string[] => {
+    if (allBlockDocumentsSelected) {
+      return selectedBlockDocuments.value = [...blockDocuments.value.map(blockDocument => blockDocument.id)]
+    }
+    return selectedBlockDocuments.value = []
+  }
 
+  const model = computed({
+    get() {
+      return selectedBlockDocuments.value.length === blockDocuments.value.length
+    },
+    set(value: boolean) {
+      selectAllBlockDocuments(value)
+    },
+  })
+
+  function onDelete(): void {
+    selectedBlockDocuments.value = []
+    subscriptions.refresh()
     emit('delete')
   }
 </script>
