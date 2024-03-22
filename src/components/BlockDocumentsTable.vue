@@ -1,8 +1,10 @@
 <template>
   <div class="block-documents-table">
     <div class="block-documents-table__filters">
-      <ResultsCount label="Block" :count="total" class="block-documents-table__results" />
-      <BlocksDeleteButton v-if="selectedBlockDocuments.length > 0" class="block-documents-table__delete" :selected="selectedBlockDocuments" small @delete="onDelete" />
+      <span class="block-documents-table__results">
+        <ResultsCount label="Block" :count="total" />
+        <BlocksDeleteButton v-if="selectedBlockDocuments.length > 0" class="block-documents-table__delete" :selected="selectedBlockDocuments" small @delete="onDelete" />
+      </span>
       <SearchInput v-model="searchTerm" placeholder="Search blocks" label="Search blocks" class="block-documents-table__search" />
       <BlockSchemaCapabilitySelect v-model:selected="capabilities" class="block-documents-table__capability" />
       <BlockTypeSelect v-model:selected="blockTypes" class="block-documents-table__type" />
@@ -199,6 +201,10 @@
   mt-2
   md:mt-0
   md:mr-auto
+}
+
+.block-documents-table__delete { @apply
+  ml:4
 }
 
 .block-documents-table__search {
