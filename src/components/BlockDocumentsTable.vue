@@ -46,9 +46,11 @@
             </p-button>
           </template>
         </PEmptyResults>
-        <div v-else class="block-documents-table__loading">
-          Loading blocks...
-        </div>
+        <PEmptyResults v-else>
+          <template #message>
+            Loading...
+          </template>
+        </PEmptyResults>
       </template>
     </p-table>
 
