@@ -3,7 +3,7 @@
     <p-list-header sticky>
       <ResultsCount v-if="selectedFlows.length == 0" label="Flow" :count="total" />
       <SelectedCount v-else :count="selectedFlows.length" />
-      <FlowsDeleteButton v-if="can.delete.flow" :selected="selectedFlows" small @delete="deleteFlows" />
+      <FlowsDeleteButton v-if="can.delete.flow" :selected="selectedFlows.map(flow => flow.id)" small @delete="deleteFlows" />
 
       <template #controls>
         <SearchInput v-model="flowNameLike" placeholder="Flow names" label="Search flows" />
@@ -15,15 +15,7 @@
       </template>
     </p-list-header>
 
-    <p-table :data="flows" :columns="columns" class="flow-list__table">
-      <template #selection-heading>
-        <p-checkbox v-model="model" @update:model-value="selectAllFlows" />
-      </template>
-
-      <template #selection="{ row }">
-        <p-checkbox v-model="selectedFlows" :value="row.id" />
-      </template>
-
+    <p-table :selected="can.delete.flow ? selectedFlows : undefined" :data="flows" :columns="columns" class="flow-list__table" @update:selected="selectedFlows = $event">
       <template #name="{ row }">
         <div class="flow-list__name-col">
           <p-link :to="routes.flow(row.id)" class="flow-list__name">
@@ -82,11 +74,11 @@
 </template>
 
 <script lang="ts" setup>
-  import { CheckboxModel, TableColumn } from '@prefecthq/prefect-design'
+  import { TableColumn } from '@prefecthq/prefect-design'
   import { NumberRouteParam, useDebouncedRef, useRouteQueryParam } from '@prefecthq/vue-compositions'
   import { secondsInDay } from 'date-fns/constants'
   import merge from 'lodash.merge'
-  import { computed, ref } from 'vue'
+  import { ref } from 'vue'
   import {
     FlowsDeleteButton,
     LastFlowRun,
@@ -131,11 +123,6 @@
 
   const columns: TableColumn<Flow>[] = [
     {
-      label: 'selection',
-      width: '20px',
-      visible: can.delete.flow,
-    },
-    {
       property: 'name',
       label: 'Name',
     },
@@ -156,22 +143,7 @@
     },
   ]
 
-  const selectedFlows = ref<string[]>([])
-  const selectAllFlows = (allFlowsSelected: CheckboxModel): string[] => {
-    if (allFlowsSelected) {
-      return selectedFlows.value = [...flows.value.map(flow => flow.id)]
-    }
-    return selectedFlows.value = []
-  }
-
-  const model = computed({
-    get() {
-      return selectedFlows.value.length === flows.value.length
-    },
-    set(value: boolean) {
-      selectAllFlows(value)
-    },
-  })
+  const selectedFlows = ref<Flow[]>([])
 
   function refresh(): void {
     subscriptions.refresh()
