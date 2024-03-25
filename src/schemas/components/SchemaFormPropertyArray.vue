@@ -8,7 +8,7 @@
   import SchemaFormPropertyArrayList from '@/schemas/components/SchemaFormPropertyArrayList.vue'
   import { useSchema } from '@/schemas/compositions/useSchema'
   import { useSchemaProperty } from '@/schemas/compositions/useSchemaProperty'
-  import { SchemaProperty, isSchemaProperty, isSchemaPropertyPrimitiveType, isSchemaPropertyType } from '@/schemas/types/schema'
+  import { SchemaProperty, isSchemaProperty, isSchemaPropertyPrimitiveType } from '@/schemas/types/schema'
   import { SchemaValueError } from '@/schemas/types/schemaValuesValidationResponse'
   import { mergeSchemaPropertyDefinition } from '@/schemas/utilities/definitions'
   import { isNull, isNumber, isString, isBoolean, isNotNullish } from '@/utilities'
@@ -32,7 +32,7 @@
     return isNumber(value) || isString(value) || isBoolean(value) || isNull(value)
   }
 
-  function asSelectModalValue(value: unknown): SelectModelValue[] | undefined {
+  function asSelectModelValue(value: unknown): SelectModelValue[] | undefined {
     if (!Array.isArray(value)) {
       return undefined
     }
@@ -48,12 +48,12 @@
 
       if (isSchemaPropertyPrimitiveType(type) && propertyEnum) {
         return withProps(PCombobox, {
-          modelValue: asSelectModalValue(props.value),
+          modelValue: asSelectModelValue(props.value),
           emptyMessage: 'No items selected',
           state: props.state,
           options: propertyEnum.filter(isSelectModalValue).filter(isNotNullish),
           multiple: true,
-          'onUpdate:modelValue': value => emit('update:value', asSelectModalValue(value)),
+          'onUpdate:modelValue': value => emit('update:value', asSelectModelValue(value)),
         })
       }
     }
