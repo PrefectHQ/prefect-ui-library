@@ -1,8 +1,7 @@
-import merge from 'lodash.merge'
 import { ComputedRef, MaybeRefOrGetter, computed, toValue } from 'vue'
 import { useSchema } from '@/schemas/compositions/useSchema'
-import { SchemaProperty, isPropertyWith } from '@/schemas/types/schema'
-import { getSchemaDefinition } from '@/schemas/utilities/definitions'
+import { SchemaProperty } from '@/schemas/types/schema'
+import { mergeSchemaPropertyDefinition } from '@/schemas/utilities/definitions'
 
 type UseSchemaProperty = {
   property: ComputedRef<SchemaProperty>,
@@ -17,11 +16,7 @@ export function useSchemaProperty(source: MaybeRefOrGetter<SchemaProperty>, requ
   const property = computed(() => {
     const value = toValue(source)
 
-    if (isPropertyWith(value, '$ref')) {
-      return merge({}, getSchemaDefinition(schema, value.$ref), value)
-    }
-
-    return value
+    return mergeSchemaPropertyDefinition(value, schema)
   })
 
 

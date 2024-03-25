@@ -1,4 +1,5 @@
-import { Schema, SchemaDefinition, SchemaProperty } from '@/schemas/types/schema'
+import merge from 'lodash.merge'
+import { Schema, SchemaDefinition, SchemaProperty, isPropertyWith } from '@/schemas/types/schema'
 
 export function getSchemaDefinition(schema: Schema, definition: SchemaDefinition): SchemaProperty {
   const definitionKey = definition.replace('#/definitions/', '')
@@ -9,4 +10,14 @@ export function getSchemaDefinition(schema: Schema, definition: SchemaDefinition
   }
 
   return definitionSchema
+}
+
+export function mergeSchemaPropertyDefinition(property: SchemaProperty, schema: Schema): SchemaProperty {
+  if (isPropertyWith(property, '$ref')) {
+    const { $ref, ...rest } = property
+
+    return merge({}, getSchemaDefinition(schema, $ref), rest)
+  }
+
+  return property
 }
