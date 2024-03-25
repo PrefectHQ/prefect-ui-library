@@ -33,7 +33,6 @@
 
   const options = computed(() => {
     const tags = taskRuns.value.flatMap(run => run.tags ?? [])
-    console.log('tags', taskRuns.value, tags)
     return unique(tags).sort((tagA, tagB) => tagA.localeCompare(tagB))
   })
 </script>
