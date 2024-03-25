@@ -8,6 +8,7 @@
       <template #controls>
         <SearchInput v-model="searchTerm" placeholder="Search by run name" label="Search by run name" class="flow-run-task-runs__search" />
         <StateNameSelect v-model:selected="states" empty-message="All states" multiple />
+        <TaskRunTagsInput v-if="media.xl" v-model:selected="filter.taskRuns.tags.name" multiple :filter="filter" />
       </template>
       <template #sort>
         <TaskRunsSort v-model="filter.sort" />
@@ -30,6 +31,7 @@
 </template>
 
 <script lang="ts" setup>
+  import { media } from '@prefecthq/prefect-design'
   import { useDebouncedRef } from '@prefecthq/vue-compositions'
   import { computed, ref } from 'vue'
   import {
@@ -40,6 +42,7 @@
     TaskRunsSort
   } from '@/components'
   import FlowRunTaskCounts from '@/components/FlowRunTaskCounts.vue'
+  import TaskRunTagsInput from '@/components/TaskRunTagsInput.vue'
   import { useTaskRunsCount, useTaskRunsFilter, useWorkspaceApi } from '@/compositions'
   import { usePaginatedSubscription } from '@/compositions/usePaginatedSubscription'
   import { TaskRun } from '@/models/TaskRun'
@@ -62,6 +65,9 @@
       nameLike: searchTermDebounced,
       state: {
         name: states,
+      },
+      tags: {
+        name: [],
       },
     },
   })
