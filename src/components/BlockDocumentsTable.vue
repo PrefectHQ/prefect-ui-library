@@ -36,7 +36,7 @@
       </template>
 
       <template #empty-state>
-        <PEmptyResults>
+        <PEmptyResults v-if="subscriptions.executed">
           <template #message>
             No blocks
           </template>
@@ -44,6 +44,11 @@
             <p-button small @click="clear">
               Clear Filters
             </p-button>
+          </template>
+        </PEmptyResults>
+        <PEmptyResults v-else>
+          <template #message>
+            Loading...
           </template>
         </PEmptyResults>
       </template>
@@ -127,7 +132,6 @@
 
   function onDelete(): void {
     subscriptions.refresh()
-
     emit('delete')
   }
 </script>
