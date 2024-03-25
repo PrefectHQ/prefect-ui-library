@@ -3,7 +3,7 @@
     <p-list-header sticky>
       <ResultsCount v-if="selectedVariables.length == 0" :label="localization.info.variable" :count="variablesCount" />
       <SelectedCount v-else :count="selectedVariables.length" />
-      <VariablesDeleteButton v-if="can.delete.variable" :variable-ids="selectedVariables" @delete="deleteVariables" />
+      <VariablesDeleteButton v-if="can.delete.variable" :variable-ids="selectedVariables.map(variable => variable.id)" @delete="deleteVariables" />
 
       <template #controls>
         <SearchInput v-model="variableLike" :placeholder="localization.info.variablesSearch" :label="localization.info.variablesSearch" />
@@ -15,17 +15,7 @@
       </template>
     </p-list-header>
 
-    <p-table :data="variables" :columns="columns" :column-classes="columnClass">
-      <template #selection-heading>
-        <div class="variables-table__selection">
-          <p-checkbox v-if="variables.length" v-model="model" @update:model-value="selectAllVariables" />
-        </div>
-      </template>
-
-      <template #selection="{ row }">
-        <p-checkbox v-model="selectedVariables" :value="row.id" />
-      </template>
-
+    <p-table :selected="can.delete.variable ? selectedVariables : undefined" :data="variables" :columns="columns" :column-classes="columnClass" @update:selected="selectedVariables = $event">
       <template #name="{ row }">
         <div class="variables-table__name">
           {{ row.name }}
@@ -69,7 +59,7 @@
 </template>
 
 <script lang="ts" setup>
-  import { PTable, PEmptyResults, CheckboxModel, TableColumn, ClassValue } from '@prefecthq/prefect-design'
+  import { PTable, PEmptyResults, TableColumn, ClassValue } from '@prefecthq/prefect-design'
   import { useDebouncedRef, useSubscription } from '@prefecthq/vue-compositions'
   import merge from 'lodash.merge'
   import { computed, ref } from 'vue'
@@ -108,11 +98,6 @@
 
   const columns: TableColumn<Variable>[] = [
     {
-      label: 'selection',
-      width: '20px',
-      visible: can.delete.variable,
-    },
-    {
       property: 'name',
       label: 'Name',
       width: '124px',
@@ -143,22 +128,7 @@
     }
   }
 
-  const selectedVariables = ref<string[]>([])
-  const selectAllVariables = (allVariablesSelected: CheckboxModel): string[] => {
-    if (allVariablesSelected) {
-      return selectedVariables.value = [...variables.value.map(variable => variable.id)]
-    }
-    return selectedVariables.value = []
-  }
-
-  const model = computed({
-    get() {
-      return selectedVariables.value.length === variables.value.length
-    },
-    set(value: boolean) {
-      selectAllVariables(value)
-    },
-  })
+  const selectedVariables = ref<Variable[]>([])
 
   const variablesSubscription = useSubscription(api.variables.getVariables, [filter])
   const variables = computed(() => variablesSubscription.response ?? [])
@@ -204,10 +174,6 @@
 .variables-table__action { @apply
   text-right
   max-w-[42px]
-}
-
-.variables-table__selection { @apply
-  max-w-[20px]
 }
 
 .variables-table__value-td,

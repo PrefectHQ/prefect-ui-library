@@ -1,20 +1,18 @@
 <template>
   <p-content class="work-pool-queues-table">
     <p-list-header sticky>
-      <template v-if="selected">
-        <ResultsCount v-if="selected.length == 0" label="Work Queue" :count="filteredWorkPoolQueues.length" />
-        <SelectedCount v-else :count="selected.length" />
-        <p-button v-if="can.create.work_queue && !selected.length" small icon="PlusIcon" :to="routes.workPoolQueueCreate(workPoolName)" />
+      <ResultsCount v-if="selected.length == 0" label="Work Queue" :count="filteredWorkPoolQueues.length" />
+      <SelectedCount v-else :count="selected.length" />
+      <p-button v-if="can.create.work_queue && !selected.length" small icon="PlusIcon" :to="routes.workPoolQueueCreate(workPoolName)" />
 
-        <WorkPoolQueuesDeleteButton :work-pool-name="workPoolName" :work-pool-queues="selected" @delete="handleDelete" />
-      </template>
+      <WorkPoolQueuesDeleteButton v-if="can.delete.work_queue" :work-pool-name="workPoolName" :work-pool-queues="selected" @delete="handleDelete" />
 
       <template #controls>
         <SearchInput v-model="search" label="Search" placeholder="Search" />
       </template>
     </p-list-header>
 
-    <p-table v-model:selected="selected" :data="filteredWorkPoolQueues" :columns="columns">
+    <p-table :selected="can.delete.work_queue ? selected : undefined" :data="filteredWorkPoolQueues" :columns="columns" @update:selected="selected = $event">
       <template #priority-heading>
         <WorkPoolQueuePriorityLabel />
       </template>
@@ -85,7 +83,7 @@
     return workPoolQueuesData.value.filter(queue => isRecord(queue) && hasString(queue, search.value))
   })
 
-  const selected = ref<WorkPoolQueue[] | undefined>(can.delete.work_queue ? [] : undefined)
+  const selected = ref<WorkPoolQueue[]>([])
   const columns: TableColumn<WorkPoolQueue>[] = [
     {
       property: 'name',
@@ -110,7 +108,7 @@
 
   const handleDelete = async (): Promise<void> => {
     await workPoolQueuesSubscription.refresh()
-    selected.value = selected.value?.filter(queue => workPoolQueues.value.find(({ id }) => id === queue.id))
+    selected.value = []
   }
 
   function refresh(): void {

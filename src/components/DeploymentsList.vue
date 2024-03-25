@@ -3,7 +3,7 @@
     <p-list-header sticky>
       <ResultsCount v-if="selectedDeployments.length == 0" label="Deployment" :count="total" />
       <SelectedCount v-else :count="selectedDeployments.length" />
-      <DeploymentsDeleteButton v-if="can.delete.deployment" :selected="selectedDeployments" small @delete="deleteDeployments" />
+      <DeploymentsDeleteButton v-if="can.delete.deployment" :selected="selectedDeployments.map(deployment => deployment.id)" small @delete="deleteDeployments" />
 
       <template #controls>
         <SearchInput v-model="deploymentNameLike" placeholder="Deployment names" label="Search deployments" />
@@ -15,15 +15,7 @@
       </template>
     </p-list-header>
 
-    <p-table :data="deployments" :columns="columns" class="deployments-list__table">
-      <template #selection-heading>
-        <p-checkbox v-model="model" @update:model-value="selectAllDeployments" />
-      </template>
-
-      <template #selection="{ row }">
-        <p-checkbox v-model="selectedDeployments" :value="row.id" />
-      </template>
-
+    <p-table :selected="can.delete.deployment ? selectedDeployments : undefined" :data="deployments" :columns="columns" class="deployments-list__table" @update:selected="selectedDeployments = $event">
       <template #deployment-name="{ row }">
         <div class="deployment-list__name-col">
           <span class="deployment-list__name">
@@ -114,11 +106,11 @@
 </template>
 
 <script lang="ts" setup>
-  import { CheckboxModel, TableColumn, media } from '@prefecthq/prefect-design'
+  import { TableColumn, media } from '@prefecthq/prefect-design'
   import { NumberRouteParam, useDebouncedRef, useRouteQueryParam } from '@prefecthq/vue-compositions'
   import { secondsInDay } from 'date-fns/constants'
   import merge from 'lodash.merge'
-  import { computed, ref } from 'vue'
+  import { ref } from 'vue'
   import {
     DeploymentsDeleteButton,
     ResultsCount,
@@ -171,11 +163,6 @@
 
   const columns: TableColumn<Deployment>[] = [
     {
-      label: 'selection',
-      width: '20px',
-      visible: can.delete.deployment,
-    },
-    {
       property: 'name',
       label: 'Deployment name',
     },
@@ -200,22 +187,7 @@
     },
   ]
 
-  const selectedDeployments = ref<string[]>([])
-  const selectAllDeployments = (allDeploymentsSelected: CheckboxModel): string[] => {
-    if (allDeploymentsSelected) {
-      return selectedDeployments.value = [...deployments.value.map(deployment => deployment.id)]
-    }
-    return selectedDeployments.value = []
-  }
-
-  const model = computed({
-    get() {
-      return selectedDeployments.value.length === deployments.value.length
-    },
-    set(value: boolean) {
-      selectAllDeployments(value)
-    },
-  })
+  const selectedDeployments = ref<Deployment[]>([])
 
   function refresh(): void {
     subscriptions.refresh()
