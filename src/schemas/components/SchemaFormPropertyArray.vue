@@ -1,42 +1,18 @@
 <template>
-  <div class="schema-form-property-array">
-    <template v-if="empty">
-      <p class="schema-form-property-array__empty">
-        No items in this list
-      </p>
-    </template>
-    <p-draggable-list v-model="value" v-bind="{ allowCreate, generator, state }" allow-delete>
-      <template #item="{ index, handleDown, handleUp, deleteItem, moveToTop, moveToBottom }">
-        <SchemaFormPropertyArrayItem
-          v-model:value="value[index]"
-          :property="getPropertyForIndex(index)"
-          :errors="getSchemaPropertyErrors(index, errors)"
-          :is-first="isFirstIndex(index)"
-          :is-last="isLastIndex(index)"
-          @delete-item="deleteItem"
-          @handle-down="handleDown"
-          @handle-up="handleUp"
-          @move-to-top="moveToTop"
-          @move-to-bottom="moveToBottom"
-        />
-      </template>
-    </p-draggable-list>
-    <template v-if="showMaxItemsMessage">
-      <p class="schema-form-property-array__max">
-        List can only have {{ property.maxItems }} items
-      </p>
-    </template>
-  </div>
+  <component :is="input.component" v-bind="input.props" class="schema-form-property-array" />
 </template>
 
 <script lang="ts" setup>
-  import { State, isArray } from '@prefecthq/prefect-design'
+  import { PCombobox, SelectModelValue, State } from '@prefecthq/prefect-design'
   import { computed } from 'vue'
-  import SchemaFormPropertyArrayItem from '@/schemas/components/SchemaFormPropertyArrayItem.vue'
+  import SchemaFormPropertyArrayList from '@/schemas/components/SchemaFormPropertyArrayList.vue'
+  import { useSchema } from '@/schemas/compositions/useSchema'
   import { useSchemaProperty } from '@/schemas/compositions/useSchemaProperty'
-  import { SchemaProperty } from '@/schemas/types/schema'
+  import { SchemaProperty, isSchemaProperty, isSchemaPropertyPrimitiveType } from '@/schemas/types/schema'
   import { SchemaValueError } from '@/schemas/types/schemaValuesValidationResponse'
-  import { getSchemaPropertyErrors } from '@/schemas/utilities/errors'
+  import { mergeSchemaPropertyDefinition } from '@/schemas/utilities/definitions'
+  import { isNull, isNumber, isString, isBoolean, isNotNullish } from '@/utilities'
+  import { withProps } from '@/utilities/components'
 
   const props = defineProps<{
     property: SchemaProperty & { type: 'array' },
@@ -45,92 +21,49 @@
     state: State,
   }>()
 
+  const schema = useSchema()
   const { property } = useSchemaProperty(() => props.property)
-  const empty = computed(() => !props.value?.length)
 
   const emit = defineEmits<{
     'update:value': [unknown[] | undefined],
   }>()
 
-  const value = computed({
-    get() {
-      return props.value ?? []
-    },
-    set(value) {
-      if (value.length === 0) {
-        emit('update:value', undefined)
-        return
+  function isSelectModalValue(value: unknown): value is SelectModelValue {
+    return isNumber(value) || isString(value) || isBoolean(value) || isNull(value)
+  }
+
+  function asSelectModelValue(value: unknown): SelectModelValue[] | undefined {
+    if (!Array.isArray(value)) {
+      return undefined
+    }
+
+    return value.filter(isSelectModalValue)
+  }
+
+  const input = computed(() => {
+    const { items } = property.value
+
+    if (isSchemaProperty(items)) {
+      const { type, enum: propertyEnum } = mergeSchemaPropertyDefinition(items, schema)
+
+      if (isSchemaPropertyPrimitiveType(type) && propertyEnum) {
+        return withProps(PCombobox, {
+          modelValue: asSelectModelValue(props.value),
+          emptyMessage: 'No items selected',
+          state: props.state,
+          options: propertyEnum.filter(isSelectModalValue).filter(isNotNullish),
+          multiple: true,
+          'onUpdate:modelValue': value => emit('update:value', asSelectModelValue(value)),
+        })
       }
-
-      emit('update:value', value)
-    },
-  })
-
-  const allowCreate = computed(() => {
-    const max = props.property.maxItems ?? Infinity
-    const current = props.value?.length ?? 0
-
-    return current < max
-  })
-
-  const showMaxItemsMessage = computed(() => {
-    const max = props.property.maxItems ?? Infinity
-    const current = props.value?.length ?? 0
-
-    return current >= max
-  })
-
-  function getPropertyForIndex(index: number): SchemaProperty {
-    if (isArray(property.value.prefixItems)) {
-      return property.value.prefixItems[index] ?? {}
     }
 
-    if (isArray(property.value.items)) {
-      return property.value.items[index] ?? {}
-    }
-
-    return property.value.items ?? {}
-  }
-
-  function generator(): unknown {
-    const index = value.value.length
-    const property = getPropertyForIndex(index)
-
-    return property.default ?? undefined
-  }
-
-  function isFirstIndex(index: number): boolean {
-    return index === 0
-  }
-
-  function isLastIndex(index: number): boolean {
-    return index === (props.value?.length ?? 0) - 1
-  }
+    return withProps(SchemaFormPropertyArrayList, {
+      property: props.property,
+      value: props.value,
+      state: props.state,
+      errors: props.errors,
+      'onUpdate:value': value => emit('update:value', value),
+    })
+  })
 </script>
-
-<style>
-.schema-form-property-array {
-  --schema-form-property-array-item-indent: 30px;
-}
-
-.schema-form-property-array .p-draggable-list__item { @apply
-  block
-}
-
-.schema-form-property-array .p-draggable-list > .p-button {
-  margin-left: var(--schema-form-property-array-item-indent);
-}
-
-.schema-form-property-array__empty { @apply
-  text-subdued
-  text-sm
-  italic;
-  margin-left: var(--schema-form-property-array-item-indent);
-}
-
-.schema-form-property-array__max { @apply
-  text-subdued
-  text-sm;
-  margin-left: var(--schema-form-property-array-item-indent);
-}
-</style>
