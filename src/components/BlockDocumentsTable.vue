@@ -204,10 +204,4 @@
 .block-documents-table__name-img { @apply
   mr-1
 }
-
-.block-documents-table__loading { @apply
-  text-subdued
-  text-center
-  my-4
-}
 </style>
