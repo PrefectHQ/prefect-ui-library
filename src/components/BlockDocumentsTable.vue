@@ -144,7 +144,7 @@
   const selectedBlockDocuments = ref<string[]>([])
   const selectAllBlockDocuments = (allBlockDocumentsSelected: CheckboxModel): string[] => {
     if (allBlockDocumentsSelected) {
-      return selectedBlockDocuments.value = [...blockDocuments.value.map(blockDocument => blockDocument.id)]
+      return selectedBlockDocuments.value = [...blockDocuments.value.flatMap(blockDocument => blockDocument.can.delete ? [blockDocument.id] : [])]
     }
     return selectedBlockDocuments.value = []
   }
