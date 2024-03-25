@@ -62,7 +62,7 @@
   import { media, TableColumn, PEmptyResults } from '@prefecthq/prefect-design'
   import { NumberRouteParam, useDebouncedRef, useRouteQueryParam } from '@prefecthq/vue-compositions'
   import merge from 'lodash.merge'
-  import { computed, ref } from 'vue'
+  import { computed, ref, ComputedRef } from 'vue'
   import BlockSchemaCapabilities from '@/components/BlockSchemaCapabilities.vue'
   import BlockSchemaCapabilitySelect from '@/components/BlockSchemaCapabilitySelect.vue'
   import BlockTypeSelect from '@/components/BlockTypeSelect.vue'
@@ -123,6 +123,15 @@
   const { blockDocuments, total, pages, subscriptions } = useBlockDocuments(() => merge({}, props.filter, filter), {
     page,
   })
+
+  type UpdatedBlockDocument = BlockDocument & { disabled?: boolean }
+  const updatedBlockDocuments: ComputedRef<UpdatedBlockDocument[]> = computed(() => blockDocuments.value.map((blockDocument: UpdatedBlockDocument) => {
+    if (!blockDocument.can.delete) {
+      blockDocument.disabled = true
+    }
+    return blockDocument
+  },
+  ))
 
   function clear(): void {
     searchTerm.value = ''
