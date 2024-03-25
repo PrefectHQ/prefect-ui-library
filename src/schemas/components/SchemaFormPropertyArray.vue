@@ -49,6 +49,7 @@
       if (isSchemaPropertyPrimitiveType(type) && propertyEnum) {
         return withProps(PCombobox, {
           modelValue: asSelectModalValue(props.value),
+          emptyMessage: 'No items selected',
           state: props.state,
           options: propertyEnum.filter(isSelectModalValue).filter(isNotNullish),
           multiple: true,
