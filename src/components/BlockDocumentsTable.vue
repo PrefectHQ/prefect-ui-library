@@ -3,21 +3,13 @@
     <div class="block-documents-table__filters">
       <span class="block-documents-table__results">
         <ResultsCount label="Block" :count="total" />
-        <BlocksDeleteButton v-if="selectedBlockDocuments.length > 0" class="block-documents-table__delete" :selected="selectedBlockDocuments" small @delete="onDelete" />
+        <BlocksDeleteButton v-if="selectedBlockDocuments.length > 0" class="block-documents-table__delete" :selected="selectedBlockDocuments.map(blockDocument => blockDocument.id)" small @delete="onDelete" />
       </span>
       <SearchInput v-model="searchTerm" placeholder="Search blocks" label="Search blocks" class="block-documents-table__search" />
       <BlockSchemaCapabilitySelect v-model:selected="capabilities" class="block-documents-table__capability" />
       <BlockTypeSelect v-model:selected="blockTypes" class="block-documents-table__type" />
     </div>
-    <p-table :data="blockDocuments" :columns="columns">
-      <template #selection-heading>
-        <p-checkbox v-model="model" @update:model-value="selectAllBlockDocuments" />
-      </template>
-
-      <template #selection="{ row }">
-        <p-checkbox v-if="row.can.delete" v-model="selectedBlockDocuments" :value="row.id" />
-      </template>
-
+    <p-table :data="updatedBlockDocuments" :columns="columns" :selected="selectedBlockDocuments" @update:selected="selectedBlockDocuments = $event">
       <template #name="{ row }: { row: BlockDocument }">
         <div class="block-documents-table__name-column">
           <LogoImage :url="row.blockType.logoUrl" class="block-documents-table__name-img" />
@@ -97,10 +89,7 @@
   const routes = useWorkspaceRoutes()
 
   const columns = computed<TableColumn<BlockDocument>[]>(() => [
-    {
-      label: 'selection',
-      width: '20px',
-    },
+
     {
       label: 'Name',
       property: 'name',
@@ -155,24 +144,11 @@
     blockTypes.value = []
   }
 
-  const selectedBlockDocuments = ref<string[]>([])
-  const selectAllBlockDocuments = (allBlockDocumentsSelected: CheckboxModel): string[] => {
-    if (allBlockDocumentsSelected) {
-      return selectedBlockDocuments.value = [...blockDocuments.value.flatMap(blockDocument => blockDocument.can.delete ? [blockDocument.id] : [])]
-    }
-    return selectedBlockDocuments.value = []
-  }
+  const selectedBlockDocuments = ref<UpdatedBlockDocument[]>([])
 
-  const model = computed({
-    get() {
-      return selectedBlockDocuments.value.length === blockDocuments.value.length
-    },
-    set(value: boolean) {
-      selectAllBlockDocuments(value)
-    },
-  })
 
   function onDelete(): void {
+    selectedBlockDocuments.value = []
     subscriptions.refresh()
     emit('delete')
   }
