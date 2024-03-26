@@ -62,7 +62,7 @@
 </template>
 
 <script lang="ts" setup>
-  import { media, TableColumn, PEmptyResults, CheckboxModel } from '@prefecthq/prefect-design'
+  import { media, TableColumn, PEmptyResults } from '@prefecthq/prefect-design'
   import { NumberRouteParam, useDebouncedRef, useRouteQueryParam } from '@prefecthq/vue-compositions'
   import merge from 'lodash.merge'
   import { computed, ref, ComputedRef } from 'vue'
