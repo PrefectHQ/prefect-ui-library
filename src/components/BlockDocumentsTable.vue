@@ -1,12 +1,15 @@
 <template>
   <div class="block-documents-table">
     <div class="block-documents-table__filters">
-      <ResultsCount label="Block" :count="total" class="block-documents-table__results" />
+      <span class="block-documents-table__results">
+        <ResultsCount label="Block" :count="total" />
+        <BlocksDeleteButton v-if="selectedBlockDocuments.length > 0" class="block-documents-table__delete" :selected="selectedBlockDocuments.map(blockDocument => blockDocument.id)" small @delete="onDelete" />
+      </span>
       <SearchInput v-model="searchTerm" placeholder="Search blocks" label="Search blocks" class="block-documents-table__search" />
       <BlockSchemaCapabilitySelect v-model:selected="capabilities" class="block-documents-table__capability" />
       <BlockTypeSelect v-model:selected="blockTypes" class="block-documents-table__type" />
     </div>
-    <p-table :data="blockDocuments" :columns="columns">
+    <p-table :data="updatedBlockDocuments" :columns="columns" :selected="selectedBlockDocuments" @update:selected="selectedBlockDocuments = $event">
       <template #name="{ row }: { row: BlockDocument }">
         <div class="block-documents-table__name-column">
           <LogoImage :url="row.blockType.logoUrl" class="block-documents-table__name-img" />
@@ -62,9 +65,10 @@
   import { media, TableColumn, PEmptyResults } from '@prefecthq/prefect-design'
   import { NumberRouteParam, useDebouncedRef, useRouteQueryParam } from '@prefecthq/vue-compositions'
   import merge from 'lodash.merge'
-  import { computed, ref } from 'vue'
+  import { computed, ref, ComputedRef } from 'vue'
   import BlockSchemaCapabilities from '@/components/BlockSchemaCapabilities.vue'
   import BlockSchemaCapabilitySelect from '@/components/BlockSchemaCapabilitySelect.vue'
+  import BlocksDeleteButton from '@/components/BlocksDeleteButton.vue'
   import BlockTypeSelect from '@/components/BlockTypeSelect.vue'
   import LogoImage from '@/components/LogoImage.vue'
   import ResultsCount from '@/components/ResultsCount.vue'
@@ -85,6 +89,7 @@
   const routes = useWorkspaceRoutes()
 
   const columns = computed<TableColumn<BlockDocument>[]>(() => [
+
     {
       label: 'Name',
       property: 'name',
@@ -124,13 +129,26 @@
     page,
   })
 
+  type UpdatedBlockDocument = BlockDocument & { disabled?: boolean }
+  const updatedBlockDocuments: ComputedRef<UpdatedBlockDocument[]> = computed(() => blockDocuments.value.map((blockDocument: UpdatedBlockDocument) => {
+    if (!blockDocument.can.delete) {
+      blockDocument.disabled = true
+    }
+    return blockDocument
+  },
+  ))
+
   function clear(): void {
     searchTerm.value = ''
     capabilities.value = []
     blockTypes.value = []
   }
 
+  const selectedBlockDocuments = ref<UpdatedBlockDocument[]>([])
+
+
   function onDelete(): void {
+    selectedBlockDocuments.value = []
     subscriptions.refresh()
     emit('delete')
   }
@@ -172,6 +190,10 @@
   mt-2
   md:mt-0
   md:mr-auto
+}
+
+.block-documents-table__delete { @apply
+  ml-2
 }
 
 .block-documents-table__search {
