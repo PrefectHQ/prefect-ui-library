@@ -1,5 +1,6 @@
 import '@prefecthq/graphs/dist/style.css'
 
+// core functionality
 export * from './components'
 export * from './compositions'
 export * from './formatters'
@@ -11,7 +12,10 @@ export * from './router'
 export * from './services'
 export * from './types'
 export * from './utilities'
+
+// feature specific
 export * from './schemas'
+export * from './automations'
 
 import '@/styles/style.css'
 
