@@ -7,7 +7,11 @@
 <script lang="ts" setup>
   import { computed } from 'vue'
   import AutomationActionPauseDeploymentInput from '@/automations/components/AutomationActionPauseDeploymentInput.vue'
+  import AutomationActionPauseWorkPoolInput from '@/automations/components/AutomationActionPauseWorkPoolInput.vue'
+  import AutomationActionPauseWorkQueueInput from '@/automations/components/AutomationActionPauseWorkQueueInput.vue'
   import AutomationActionResumeDeploymentInput from '@/automations/components/AutomationActionResumeDeploymentInput.vue'
+  import AutomationActionResumeWorkPoolInput from '@/automations/components/AutomationActionResumeWorkPoolInput.vue'
+  import AutomationActionResumeWorkQueueInput from '@/automations/components/AutomationActionResumeWorkQueueInput.vue'
   import { AutomationAction } from '@/automations/types'
   import { withProps } from '@/utilities'
 
@@ -35,6 +39,30 @@
 
       case 'cancel-flow-run':
         return null
+
+      case 'pause-work-pool':
+        return withProps(AutomationActionPauseWorkPoolInput, {
+          action: props.action,
+          'onUpdate:action': value => emit('update:action', value),
+        })
+
+      case 'resume-work-pool':
+        return withProps(AutomationActionResumeWorkPoolInput, {
+          action: props.action,
+          'onUpdate:action': value => emit('update:action', value),
+        })
+
+      case 'pause-work-queue':
+        return withProps(AutomationActionPauseWorkQueueInput, {
+          action: props.action,
+          'onUpdate:action': value => emit('update:action', value),
+        })
+
+      case 'resume-work-queue':
+        return withProps(AutomationActionResumeWorkQueueInput, {
+          action: props.action,
+          'onUpdate:action': value => emit('update:action', value),
+        })
 
       case undefined:
         throw new Error('AutomationActionInput.vue action.type is undefined')
