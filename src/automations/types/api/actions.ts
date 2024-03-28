@@ -3,13 +3,14 @@ import { Equals } from '@/types/utilities'
 import { isRecord } from '@/utilities'
 
 export type AutomationActionResponse =
-  | AutomationActionPauseDeploymentResponse
-  | AutomationActionResumeDeploymentResponse
-  | AutomationActionCancelFlowRunResponse
-  | AutomationActionPauseWorkQueueResponse
-  | AutomationActionResumeWorkQueueResponse
-  | AutomationActionPauseWorkPoolResponse
-  | AutomationActionResumeWorkPoolResponse
+| AutomationActionCancelFlowRunResponse
+| AutomationActionSuspendFlowRunResponse
+| AutomationActionPauseDeploymentResponse
+| AutomationActionResumeDeploymentResponse
+| AutomationActionPauseWorkQueueResponse
+| AutomationActionResumeWorkQueueResponse
+| AutomationActionPauseWorkPoolResponse
+| AutomationActionResumeWorkPoolResponse
 
 export type AutomationActionRequest = AutomationActionResponse
 
@@ -22,6 +23,16 @@ const automationActionResponseHasAllActionTypes: Equals<AutomationActionResponse
 export function isAutomationActionResponse(value: unknown): value is AutomationActionResponse {
   return isRecord(value) && isAutomationActionType(value.type)
 }
+
+/*
+ * Cancel a flow run
+ */
+export type AutomationActionCancelFlowRunResponse = AutomationActionWithType<'cancel-flow-run'>
+
+/*
+ * Suspend a flow run
+ */
+export type AutomationActionSuspendFlowRunResponse = AutomationActionWithType<'suspend-flow-run'>
 
 /*
  * Pause a deployment
@@ -50,11 +61,6 @@ export type AutomationActionResumeDeploymentInferredResponse = {
 }
 
 export type AutomationActionResumeDeploymentResponse = AutomationActionWithType<'resume-deployment', AutomationActionResumeDeploymentSelectedResponse | AutomationActionResumeDeploymentInferredResponse>
-
-/*
- * Cancel a flow run
- */
-export type AutomationActionCancelFlowRunResponse = AutomationActionWithType<'cancel-flow-run'>
 
 /*
  * Pause a work queue

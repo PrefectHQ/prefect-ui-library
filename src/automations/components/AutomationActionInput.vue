@@ -37,9 +37,6 @@
           'onUpdate:action': value => emit('update:action', value),
         })
 
-      case 'cancel-flow-run':
-        return null
-
       case 'pause-work-pool':
         return withProps(AutomationActionPauseWorkPoolInput, {
           action: props.action,
@@ -63,6 +60,10 @@
           action: props.action,
           'onUpdate:action': value => emit('update:action', value),
         })
+
+      case 'cancel-flow-run':
+      case 'suspend-flow-run':
+        return null
 
       case undefined:
         throw new Error('AutomationActionInput.vue action.type is undefined')
