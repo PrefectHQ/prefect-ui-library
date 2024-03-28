@@ -5,15 +5,15 @@ export const { values: automationActionTypes, isValue: isAutomationActionType } 
   'cancel-flow-run',
   'pause-deployment',
   'resume-deployment',
-  // 'pause-work-queue',
-  // 'resume-work-queue',
+  'pause-work-queue',
+  'resume-work-queue',
+  'pause-work-pool',
+  'resume-work-pool',
   // 'run-deployment',
   // 'send-notification',
   // 'suspend-flow-run',
   // 'pause-automation',
   // 'resume-automation',
-  // 'pause-work-pool',
-  // 'resume-work-pool',
 ])
 
 export type AutomationActionType = typeof automationActionTypes[number]
@@ -22,6 +22,10 @@ export const automationActionTypeLabels = {
   'pause-deployment': 'Pause a deployment',
   'resume-deployment': 'Resume a deployment',
   'cancel-flow-run': 'Cancel a flow run',
+  'pause-work-queue': 'Pause a work queue',
+  'resume-work-queue': 'Resume a work queue',
+  'pause-work-pool': 'Pause a work pool',
+  'resume-work-pool': 'Resume a work pool',
 } as const satisfies Record<AutomationActionType, string>
 
 /**
@@ -113,33 +117,33 @@ function isAutomationActionCancelFlowRun(value: unknown): value is AutomationAct
 //   return isValidBlockDocumentId && isValidSubject && isValidBody
 // }
 
-// type AutomationActionPauseWorkQueue = AutomationActionWithType<'pause-work-queue', {
-//   workQueueId?: string | null,
-// }>
+export type AutomationActionPauseWorkQueue = AutomationActionWithType<'pause-work-queue', {
+  workQueueId?: string | null,
+}>
 
-// function isAutomationActionPauseWorkQueue(value: unknown): value is AutomationActionPauseWorkQueue {
-//   if (!isAutomationActionTypeRecord(value, 'pause-work-queue')) {
-//     return false
-//   }
+function isAutomationActionPauseWorkQueue(value: unknown): value is AutomationActionPauseWorkQueue {
+  if (!isAutomationActionTypeRecord(value, 'pause-work-queue')) {
+    return false
+  }
 
-//   const isValidWorkQueueId = isString(value.workQueueId) || isNullish(value.workQueueId)
+  const isValidWorkQueueId = isString(value.workQueueId) || isNullish(value.workQueueId)
 
-//   return isValidWorkQueueId
-// }
+  return isValidWorkQueueId
+}
 
-// type AutomationActionResumeWorkQueue = AutomationActionWithType<'resume-work-queue', {
-//   workQueueId?: string | null,
-// }>
+export type AutomationActionResumeWorkQueue = AutomationActionWithType<'resume-work-queue', {
+  workQueueId?: string | null,
+}>
 
-// function isAutomationActionResumeWorkQueue(value: unknown): value is AutomationActionResumeWorkQueue {
-//   if (!isAutomationActionTypeRecord(value, 'resume-work-queue')) {
-//     return false
-//   }
+function isAutomationActionResumeWorkQueue(value: unknown): value is AutomationActionResumeWorkQueue {
+  if (!isAutomationActionTypeRecord(value, 'resume-work-queue')) {
+    return false
+  }
 
-//   const isValidWorkQueueId = isString(value.workQueueId) || isNullish(value.workQueueId)
+  const isValidWorkQueueId = isString(value.workQueueId) || isNullish(value.workQueueId)
 
-//   return isValidWorkQueueId
-// }
+  return isValidWorkQueueId
+}
 
 // type AutomationActionPauseAutomation = AutomationActionWithType<'pause-automation', {
 //   automationId?: string | null,
@@ -169,47 +173,47 @@ function isAutomationActionCancelFlowRun(value: unknown): value is AutomationAct
 //   return isValidAutomationId
 // }
 
-// type AutomationActionPauseWorkPool = AutomationActionWithType<'pause-work-pool', {
-//   workPoolId?: string | null,
-// }>
+export type AutomationActionPauseWorkPool = AutomationActionWithType<'pause-work-pool', {
+  workPoolId?: string | null,
+}>
 
-// function isAutomationActionPauseWorkPool(value: unknown): value is AutomationActionPauseWorkPool {
-//   if (!isAutomationActionTypeRecord(value, 'pause-work-pool')) {
-//     return false
-//   }
+function isAutomationActionPauseWorkPool(value: unknown): value is AutomationActionPauseWorkPool {
+  if (!isAutomationActionTypeRecord(value, 'pause-work-pool')) {
+    return false
+  }
 
-//   const isValidWorkPoolId = isString(value.workPoolId) || isNullish(value.workPoolId)
+  const isValidWorkPoolId = isString(value.workPoolId) || isNullish(value.workPoolId)
 
-//   return isValidWorkPoolId
-// }
+  return isValidWorkPoolId
+}
 
-// type AutomationActionResumeWorkPool = AutomationActionWithType<'resume-work-pool', {
-//   workPoolId?: string | null,
-// }>
+export type AutomationActionResumeWorkPool = AutomationActionWithType<'resume-work-pool', {
+  workPoolId?: string | null,
+}>
 
-// function isAutomationActionResumeWorkPool(value: unknown): value is AutomationActionResumeWorkPool {
-//   if (!isAutomationActionTypeRecord(value, 'resume-work-pool')) {
-//     return false
-//   }
+function isAutomationActionResumeWorkPool(value: unknown): value is AutomationActionResumeWorkPool {
+  if (!isAutomationActionTypeRecord(value, 'resume-work-pool')) {
+    return false
+  }
 
-//   const isValidWorkPoolId = isString(value.workPoolId) || isNullish(value.workPoolId)
+  const isValidWorkPoolId = isString(value.workPoolId) || isNullish(value.workPoolId)
 
-//   return isValidWorkPoolId
-// }
+  return isValidWorkPoolId
+}
 
 export type AutomationAction =
   | AutomationActionCancelFlowRun
   | AutomationActionPauseDeployment
   | AutomationActionResumeDeployment
-  // | AutomationActionResumeWorkQueue
+  | AutomationActionPauseWorkQueue
+  | AutomationActionResumeWorkQueue
+  | AutomationActionPauseWorkPool
+  | AutomationActionResumeWorkPool
   // | AutomationActionPauseFlowRun
-  // | AutomationActionPauseWorkQueue
   // | AutomationActionRunDeployment
   // | AutomationActionSendNotification
   // | AutomationActionPauseAutomation
   // | AutomationActionResumeAutomation
-  // | AutomationActionPauseWorkPool
-  // | AutomationActionResumeWorkPool
 
 export type AutomationActionFields<T extends AutomationAction> = Require<Partial<T>, 'type'>
 
@@ -217,15 +221,15 @@ const actionTypeGuardMap = {
   'cancel-flow-run': isAutomationActionCancelFlowRun,
   'pause-deployment': isAutomationActionPauseDeployment,
   'resume-deployment': isAutomationActionResumeDeployment,
-  // 'pause-work-queue': isAutomationActionPauseWorkQueue,
-  // 'resume-work-queue': isAutomationActionResumeWorkQueue,
+  'pause-work-queue': isAutomationActionPauseWorkQueue,
+  'resume-work-queue': isAutomationActionResumeWorkQueue,
+  'pause-work-pool': isAutomationActionPauseWorkPool,
+  'resume-work-pool': isAutomationActionResumeWorkPool,
   // 'run-deployment': isAutomationActionRunDeployment,
   // 'send-notification': isAutomationActionSendNotification,
   // 'suspend-flow-run': isAutomationActionPauseFlowRun,
   // 'pause-automation': isAutomationActionPauseAutomation,
   // 'resume-automation': isAutomationActionResumeAutomation,
-  // 'pause-work-pool': isAutomationActionPauseWorkPool,
-  // 'resume-work-pool': isAutomationActionResumeWorkPool,
 } satisfies Record<AutomationActionType, (value: unknown) => boolean>
 
 export function isAutomationAction(value: unknown): value is AutomationAction {

@@ -33,3 +33,7 @@ export type MaybeArray<T> = T | T[]
 // this type is somewhat magical and don't wanna mess with the {}
 // eslint-disable-next-line @typescript-eslint/ban-types
 export type Simplify<T> = { [K in keyof T]: T[K] } & {}
+
+export type Equals<T, U> =
+  (<G>() => G extends T ? 1 : 2) extends
+  (<G>() => G extends U ? 1 : 2) ? true : false
