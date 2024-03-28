@@ -1,5 +1,7 @@
 <template>
-  <component :is="input.component" v-bind="input.props" class="automation-action-input" />
+  <template v-if="input">
+    <component :is="input.component" v-bind="input.props" class="automation-action-input" />
+  </template>
 </template>
 
 <script lang="ts" setup>
@@ -24,13 +26,19 @@
           action: props.action,
           'onUpdate:action': value => emit('update:action', value),
         })
+
       case 'resume-deployment':
         return withProps(AutomationActionResumeDeploymentInput, {
           action: props.action,
           'onUpdate:action': value => emit('update:action', value),
         })
+
+      case 'cancel-flow-run':
+        return null
+
       case undefined:
         throw new Error('AutomationActionInput.vue action.type is undefined')
+
       default:
         const exhaustive: never = props.action
         throw new Error(`AutomationActionInput.vue missing case for action type: ${(exhaustive as Partial<AutomationAction>).type}`)

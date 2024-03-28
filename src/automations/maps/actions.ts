@@ -8,6 +8,8 @@ export const mapAutomationActionResponseToAutomationAction: MapFunction<Automati
     case 'pause-deployment':
     case 'resume-deployment':
       return mapPauseResumeDeploymentResponse(response)
+    case 'cancel-flow-run':
+      return response
     default:
       const exhaustive: never = response
       throw new Error(`Automation action type is missing case for: ${(exhaustive as AutomationActionResponse).type}`)
@@ -19,6 +21,8 @@ export const mapAutomationActionToAutomationActionRequest: MapFunction<Automatio
     case 'pause-deployment':
     case 'resume-deployment':
       return mapPauseResumeDeploymentRequest(response)
+    case 'cancel-flow-run':
+      return response
     default:
       const exhaustive: never = response
       throw new Error(`Automation action type is missing case for: ${(exhaustive as AutomationActionResponse).type}`)
