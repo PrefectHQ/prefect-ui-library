@@ -4,6 +4,7 @@ import { isRecord } from '@/utilities'
 export type AutomationActionResponse =
   | AutomationActionPauseDeploymentResponse
   | AutomationActionResumeDeploymentResponse
+  | AutomationActionCancelFlowRunResponse
 
 export function isAutomationActionResponse(value: unknown): value is AutomationActionResponse {
   return isRecord(value) && isAutomationActionType(value.type)
@@ -32,3 +33,5 @@ export type AutomationActionResumeDeploymentInferredResponse = {
 }
 
 export type AutomationActionResumeDeploymentResponse = AutomationActionWithType<'resume-deployment', AutomationActionResumeDeploymentSelectedResponse | AutomationActionResumeDeploymentInferredResponse>
+
+export type AutomationActionCancelFlowRunResponse = AutomationActionWithType<'cancel-flow-run'>

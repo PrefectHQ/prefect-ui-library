@@ -2,7 +2,7 @@ import { Require } from '@/types/utilities'
 import { createTuple, isNullish, isRecord, isString } from '@/utilities'
 
 export const { values: automationActionTypes, isValue: isAutomationActionType } = createTuple([
-  // 'cancel-flow-run',
+  'cancel-flow-run',
   'pause-deployment',
   'resume-deployment',
   // 'pause-work-queue',
@@ -21,6 +21,7 @@ export type AutomationActionType = typeof automationActionTypes[number]
 export const automationActionTypeLabels = {
   'pause-deployment': 'Pause a deployment',
   'resume-deployment': 'Resume a deployment',
+  'cancel-flow-run': 'Cancel a flow run',
 } as const satisfies Record<AutomationActionType, string>
 
 /**
@@ -82,11 +83,11 @@ export function isAutomationActionResumeDeployment(value: unknown): value is Aut
 }
 
 
-// type AutomationActionCancelFlowRun = AutomationActionWithType<'cancel-flow-run'>
+export type AutomationActionCancelFlowRun = AutomationActionWithType<'cancel-flow-run'>
 
-// function isAutomationActionCancelFlowRun(value: unknown): value is AutomationActionCancelFlowRun {
-//   return isAutomationActionTypeRecord(value, 'cancel-flow-run')
-// }
+function isAutomationActionCancelFlowRun(value: unknown): value is AutomationActionCancelFlowRun {
+  return isAutomationActionTypeRecord(value, 'cancel-flow-run')
+}
 
 // type AutomationActionPauseFlowRun = AutomationActionWithType<'suspend-flow-run'>
 
@@ -197,7 +198,7 @@ export function isAutomationActionResumeDeployment(value: unknown): value is Aut
 // }
 
 export type AutomationAction =
-  // | AutomationActionCancelFlowRun
+  | AutomationActionCancelFlowRun
   | AutomationActionPauseDeployment
   | AutomationActionResumeDeployment
   // | AutomationActionResumeWorkQueue
@@ -213,7 +214,7 @@ export type AutomationAction =
 export type AutomationActionFields<T extends AutomationAction> = Require<Partial<T>, 'type'>
 
 const actionTypeGuardMap = {
-  // 'cancel-flow-run': isAutomationActionCancelFlowRun,
+  'cancel-flow-run': isAutomationActionCancelFlowRun,
   'pause-deployment': isAutomationActionPauseDeployment,
   'resume-deployment': isAutomationActionResumeDeployment,
   // 'pause-work-queue': isAutomationActionPauseWorkQueue,
