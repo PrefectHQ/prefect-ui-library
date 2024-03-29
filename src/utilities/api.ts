@@ -6,6 +6,7 @@ import { HealthApi } from '@/services/HealthApi'
 import { UiApi } from '@/services/UiApi'
 import { WorkspaceApiConfig } from '@/services/WorkspaceApi'
 import { WorkspaceArtifactsApi } from '@/services/WorkspaceArtifactsApi'
+import { WorkspaceAutomationsApi } from '@/services/WorkspaceAutomationsApi'
 import { WorkspaceBlockCapabilitiesApi } from '@/services/WorkspaceBlockCapabilitiesApi'
 import { WorkspaceBlockDocumentsApi } from '@/services/WorkspaceBlockDocumentsApi'
 import { WorkspaceBlockSchemasApi } from '@/services/WorkspaceBlockSchemasApi'
@@ -32,6 +33,7 @@ import { WorkspaceWorkQueuesApi } from '@/services/WorkspaceWorkQueuesApi'
 export function createApi(workspaceConfig: WorkspaceApiConfig, instanceSetupHook: AxiosInstanceSetupHook | null = null) {
   return {
     artifacts: createActions(new WorkspaceArtifactsApi(workspaceConfig, instanceSetupHook)),
+    automations: createActions(new WorkspaceAutomationsApi(workspaceConfig, instanceSetupHook)),
     blockCapabilities: createActions(new WorkspaceBlockCapabilitiesApi(workspaceConfig, instanceSetupHook)),
     blockDocuments: createActions(new WorkspaceBlockDocumentsApi(workspaceConfig, instanceSetupHook)),
     blockSchemas: createActions(new WorkspaceBlockSchemasApi(workspaceConfig, instanceSetupHook)),
