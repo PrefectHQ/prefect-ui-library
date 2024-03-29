@@ -11,6 +11,8 @@ export type AutomationActionResponse =
 | AutomationActionResumeWorkQueueResponse
 | AutomationActionPauseWorkPoolResponse
 | AutomationActionResumeWorkPoolResponse
+| AutomationActionPauseAutomationResponse
+| AutomationActionResumeAutomationResponse
 
 export type AutomationActionRequest = AutomationActionResponse
 
@@ -117,3 +119,31 @@ export type AutomationActionResumeWorkPoolInferredResponse = {
 }
 
 export type AutomationActionResumeWorkPoolResponse = AutomationActionWithType<'resume-work-pool', AutomationActionResumeWorkPoolSelectedResponse | AutomationActionResumeWorkPoolInferredResponse>
+
+/*
+ * Pause an automation
+ */
+export type AutomationActionPauseAutomationSelectedResponse = {
+  source: 'selected',
+  automation_id: string,
+}
+
+export type AutomationActionPauseAutomationInferredResponse = {
+  source: 'inferred',
+}
+
+export type AutomationActionPauseAutomationResponse = AutomationActionWithType<'pause-automation', AutomationActionPauseAutomationSelectedResponse | AutomationActionPauseAutomationInferredResponse>
+
+/*
+ * Resume an automation
+ */
+export type AutomationActionResumeAutomationSelectedResponse = {
+  source: 'selected',
+  automation_id: string,
+}
+
+export type AutomationActionResumeAutomationInferredResponse = {
+  source: 'inferred',
+}
+
+export type AutomationActionResumeAutomationResponse = AutomationActionWithType<'resume-automation', AutomationActionResumeAutomationSelectedResponse | AutomationActionResumeAutomationInferredResponse>

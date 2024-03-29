@@ -1,19 +1,23 @@
 /* eslint-disable camelcase */
 import {
   AutomationAction,
+  AutomationActionPauseAutomation,
   AutomationActionPauseDeployment,
   AutomationActionPauseWorkPool,
   AutomationActionPauseWorkQueue,
+  AutomationActionResumeAutomation,
   AutomationActionResumeDeployment,
   AutomationActionResumeWorkPool,
   AutomationActionResumeWorkQueue
 } from '@/automations/types/actions'
 import {
+  AutomationActionPauseAutomationResponse,
   AutomationActionPauseDeploymentResponse,
   AutomationActionPauseWorkPoolResponse,
   AutomationActionPauseWorkQueueResponse,
   AutomationActionRequest,
   AutomationActionResponse,
+  AutomationActionResumeAutomationResponse,
   AutomationActionResumeDeploymentResponse,
   AutomationActionResumeWorkPoolResponse,
   AutomationActionResumeWorkQueueResponse
@@ -31,6 +35,9 @@ export const mapAutomationActionResponseToAutomationAction: MapFunction<Automati
     case 'pause-work-pool':
     case 'resume-work-pool':
       return mapPauseResumeWorkPoolResponse(response)
+    case 'pause-automation':
+    case 'resume-automation':
+      return mapPauseResumeAutomationRequest(response)
     case 'cancel-flow-run':
     case 'suspend-flow-run':
       return response
@@ -51,6 +58,9 @@ export const mapAutomationActionToAutomationActionRequest: MapFunction<Automatio
     case 'pause-work-pool':
     case 'resume-work-pool':
       return mapPauseResumeWorkPoolRequest(request)
+    case 'pause-automation':
+    case 'resume-automation':
+      return mapPauseResumeAutomationRequest(request)
     case 'cancel-flow-run':
     case 'suspend-flow-run':
       return request
@@ -144,5 +154,21 @@ function mapPauseResumeWorkPoolResponse(action: AutomationActionPauseWorkPoolRes
   return {
     type: action.type,
     workPoolId: action.work_pool_id,
+  }
+}
+
+
+function mapPauseResumeAutomationRequest(action: AutomationActionPauseAutomation | AutomationActionResumeAutomation): AutomationActionPauseAutomationResponse | AutomationActionResumeAutomationResponse {
+  if (!action.automationId) {
+    return {
+      type: action.type,
+      source: 'inferred',
+    }
+  }
+
+  return {
+    type: action.type,
+    source: 'selected',
+    automation_id: action.automationId,
   }
 }
