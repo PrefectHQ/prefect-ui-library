@@ -32,6 +32,7 @@ export const mapAutomationActionResponseToAutomationAction: MapFunction<Automati
     case 'resume-work-pool':
       return mapPauseResumeWorkPoolResponse(response)
     case 'cancel-flow-run':
+    case 'suspend-flow-run':
       return response
     default:
       const exhaustive: never = response
@@ -51,6 +52,7 @@ export const mapAutomationActionToAutomationActionRequest: MapFunction<Automatio
     case 'resume-work-pool':
       return mapPauseResumeWorkPoolRequest(request)
     case 'cancel-flow-run':
+    case 'suspend-flow-run':
       return request
     default:
       const exhaustive: never = request
