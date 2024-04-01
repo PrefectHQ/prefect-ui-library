@@ -1,4 +1,4 @@
-import { createTuple } from '..'
+import { createTuple } from '@/utilities/tuples'
 
 export const { values: stateType, isValue: isStateType } = createTuple([
   'completed',
