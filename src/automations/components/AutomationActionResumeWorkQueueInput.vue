@@ -1,5 +1,5 @@
 <template>
-  <p-content class="automation-action-resume-work-queue">
+  <p-content class="automation-action-resume-work-queue-input">
     <p-label label="Work Queue To Resume">
       <template #default="{ id }">
         <AutomationWorkQueueCombobox :id="id" v-model:selected="workQueueId" allow-unset />

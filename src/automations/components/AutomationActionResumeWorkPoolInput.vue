@@ -1,5 +1,5 @@
 <template>
-  <p-content class="automation-action-resume-work-pool">
+  <p-content class="automation-action-resume-work-pool-input">
     <p-label label="Work Pool To Resume">
       <template #default="{ id }">
         <AutomationWorkPoolCombobox :id="id" v-model:selected="workPoolId" allow-unset />

@@ -1,5 +1,5 @@
 <template>
-  <p-content class="automation-action-pause-work-queue">
+  <p-content class="automation-action-pause-work-queue-input">
     <p-label label="Work Queue To Pause">
       <template #default="{ id }">
         <AutomationWorkQueueCombobox :id="id" v-model:selected="workQueueId" allow-unset />

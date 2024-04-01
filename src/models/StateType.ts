@@ -1,4 +1,6 @@
-export const stateType = [
+import { createTuple } from '..'
+
+export const { values: stateType, isValue: isStateType } = createTuple([
   'completed',
   'running',
   'scheduled',
@@ -8,14 +10,10 @@ export const stateType = [
   'cancelling',
   'crashed',
   'paused',
-] as const
+])
 
 export type StateType = typeof stateType[number]
 export type ServerStateType = Uppercase<StateType>
-
-export function isStateType(value: unknown): value is StateType {
-  return typeof value === 'string' && stateType.includes(value as StateType)
-}
 
 export function isServerStateType(value: unknown): value is ServerStateType {
   return typeof value === 'string' && stateType.includes(value.toLowerCase() as StateType)

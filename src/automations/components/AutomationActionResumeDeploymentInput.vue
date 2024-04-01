@@ -1,5 +1,5 @@
 <template>
-  <p-content class="automation-action-resume-deployment">
+  <p-content class="automation-action-resume-deployment-input">
     <p-label label="Deployment To Resume">
       <template #default="{ id }">
         <AutomationDeploymentCombobox :id="id" v-model:selected="deploymentId" />

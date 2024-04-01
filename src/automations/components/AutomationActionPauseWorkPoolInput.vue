@@ -1,5 +1,5 @@
 <template>
-  <p-content class="automation-action-pause-work-pool">
+  <p-content class="automation-action-pause-work-pool-input">
     <p-label label="Work Pool To Pause">
       <template #default="{ id }">
         <AutomationWorkPoolCombobox :id="id" v-model:selected="workPoolId" allow-unset />

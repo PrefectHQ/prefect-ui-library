@@ -6,6 +6,7 @@
 
 <script lang="ts" setup>
   import { computed } from 'vue'
+  import AutomationActionChangeFlowRunStateInput from '@/automations/components/AutomationActionChangeFlowRunStateInput.vue'
   import AutomationActionPauseAutomationInput from '@/automations/components/AutomationActionPauseAutomationInput.vue'
   import AutomationActionPauseDeploymentInput from '@/automations/components/AutomationActionPauseDeploymentInput.vue'
   import AutomationActionPauseWorkPoolInput from '@/automations/components/AutomationActionPauseWorkPoolInput.vue'
@@ -27,6 +28,11 @@
 
   const input = computed(() => {
     switch (props.action.type) {
+      case 'change-flow-run-state':
+        return withProps(AutomationActionChangeFlowRunStateInput, {
+          action: props.action,
+          'onUpdate:action': value => emit('update:action', value),
+        })
       case 'pause-deployment':
         return withProps(AutomationActionPauseDeploymentInput, {
           action: props.action,
