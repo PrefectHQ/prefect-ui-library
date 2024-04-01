@@ -10,10 +10,10 @@ export const { values: automationActionTypes, isValue: isAutomationActionType } 
   'resume-work-queue',
   'pause-work-pool',
   'resume-work-pool',
+  'pause-automation',
+  'resume-automation',
   // 'run-deployment',
   // 'send-notification',
-  // 'pause-automation',
-  // 'resume-automation',
 ])
 
 export type AutomationActionType = typeof automationActionTypes[number]
@@ -27,6 +27,8 @@ export const automationActionTypeLabels = {
   'resume-work-queue': 'Resume a work queue',
   'pause-work-pool': 'Pause a work pool',
   'resume-work-pool': 'Resume a work pool',
+  'pause-automation': 'Pause an automation',
+  'resume-automation': 'Resume an automation',
 } as const satisfies Record<AutomationActionType, string>
 
 /**
@@ -144,6 +146,9 @@ function isAutomationActionPauseWorkPool(value: unknown): value is AutomationAct
   return isValidWorkPoolId
 }
 
+/*
+ * Resume a work pool
+ */
 export type AutomationActionResumeWorkPool = AutomationActionWithType<'resume-work-pool', {
   workPoolId?: string | null,
 }>
@@ -158,6 +163,39 @@ function isAutomationActionResumeWorkPool(value: unknown): value is AutomationAc
   return isValidWorkPoolId
 }
 
+/*
+ * Pause an automation
+ */
+export type AutomationActionPauseAutomation = AutomationActionWithType<'pause-automation', {
+  automationId?: string | null,
+}>
+
+function isAutomationActionPauseAutomation(value: unknown): value is AutomationActionPauseAutomation {
+  if (!isAutomationActionTypeRecord(value, 'pause-automation')) {
+    return false
+  }
+
+  const isValidAutomationId = isString(value.automationId) || isNullish(value.automationId)
+
+  return isValidAutomationId
+}
+
+/*
+ * Resume an automation
+ */
+export type AutomationActionResumeAutomation = AutomationActionWithType<'resume-automation', {
+  automationId?: string | null,
+}>
+
+function isAutomationActionResumeAutomation(value: unknown): value is AutomationActionResumeAutomation {
+  if (!isAutomationActionTypeRecord(value, 'resume-automation')) {
+    return false
+  }
+
+  const isValidAutomationId = isString(value.automationId) || isNullish(value.automationId)
+
+  return isValidAutomationId
+}
 
 // type AutomationActionSendNotification = AutomationActionWithType<'send-notification', {
 //   blockDocumentId: string,
@@ -177,33 +215,6 @@ function isAutomationActionResumeWorkPool(value: unknown): value is AutomationAc
 //   return isValidBlockDocumentId && isValidSubject && isValidBody
 // }
 
-// type AutomationActionPauseAutomation = AutomationActionWithType<'pause-automation', {
-//   automationId?: string | null,
-// }>
-
-// function isAutomationActionPauseAutomation(value: unknown): value is AutomationActionPauseAutomation {
-//   if (!isAutomationActionTypeRecord(value, 'pause-automation')) {
-//     return false
-//   }
-
-//   const isValidAutomationId = isString(value.automationId) || isNullish(value.automationId)
-
-//   return isValidAutomationId
-// }
-
-// type AutomationActionResumeAutomation = AutomationActionWithType<'resume-automation', {
-//   automationId?: string | null,
-// }>
-
-// function isAutomationActionResumeAutomation(value: unknown): value is AutomationActionResumeAutomation {
-//   if (!isAutomationActionTypeRecord(value, 'resume-automation')) {
-//     return false
-//   }
-
-//   const isValidAutomationId = isString(value.automationId) || isNullish(value.automationId)
-
-//   return isValidAutomationId
-// }
 
 // type AutomationActionRunDeployment = AutomationActionWithType<'run-deployment', {
 //   deploymentId?: string | null,
@@ -237,11 +248,11 @@ export type AutomationAction =
   | AutomationActionResumeWorkQueue
   | AutomationActionPauseWorkPool
   | AutomationActionResumeWorkPool
+  | AutomationActionPauseAutomation
+  | AutomationActionResumeAutomation
   // | AutomationActionPauseFlowRun
   // | AutomationActionRunDeployment
   // | AutomationActionSendNotification
-  // | AutomationActionPauseAutomation
-  // | AutomationActionResumeAutomation
 
 /*
  * if this is giving you a type error you forgot to add a response type for your action to the AutomationAction
@@ -260,10 +271,10 @@ const actionTypeGuardMap = {
   'resume-work-queue': isAutomationActionResumeWorkQueue,
   'pause-work-pool': isAutomationActionPauseWorkPool,
   'resume-work-pool': isAutomationActionResumeWorkPool,
+  'pause-automation': isAutomationActionPauseAutomation,
+  'resume-automation': isAutomationActionResumeAutomation,
   // 'run-deployment': isAutomationActionRunDeployment,
   // 'send-notification': isAutomationActionSendNotification,
-  // 'pause-automation': isAutomationActionPauseAutomation,
-  // 'resume-automation': isAutomationActionResumeAutomation,
 } satisfies Record<AutomationActionType, (value: unknown) => boolean>
 
 export function isAutomationAction(value: unknown): value is AutomationAction {

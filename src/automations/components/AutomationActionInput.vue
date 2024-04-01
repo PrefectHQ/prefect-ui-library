@@ -6,9 +6,11 @@
 
 <script lang="ts" setup>
   import { computed } from 'vue'
+  import AutomationActionPauseAutomationInput from '@/automations/components/AutomationActionPauseAutomationInput.vue'
   import AutomationActionPauseDeploymentInput from '@/automations/components/AutomationActionPauseDeploymentInput.vue'
   import AutomationActionPauseWorkPoolInput from '@/automations/components/AutomationActionPauseWorkPoolInput.vue'
   import AutomationActionPauseWorkQueueInput from '@/automations/components/AutomationActionPauseWorkQueueInput.vue'
+  import AutomationActionResumeAutomationInput from '@/automations/components/AutomationActionResumeAutomationInput.vue'
   import AutomationActionResumeDeploymentInput from '@/automations/components/AutomationActionResumeDeploymentInput.vue'
   import AutomationActionResumeWorkPoolInput from '@/automations/components/AutomationActionResumeWorkPoolInput.vue'
   import AutomationActionResumeWorkQueueInput from '@/automations/components/AutomationActionResumeWorkQueueInput.vue'
@@ -57,6 +59,18 @@
 
       case 'resume-work-queue':
         return withProps(AutomationActionResumeWorkQueueInput, {
+          action: props.action,
+          'onUpdate:action': value => emit('update:action', value),
+        })
+
+      case 'pause-automation':
+        return withProps(AutomationActionPauseAutomationInput, {
+          action: props.action,
+          'onUpdate:action': value => emit('update:action', value),
+        })
+
+      case 'resume-automation':
+        return withProps(AutomationActionResumeAutomationInput, {
           action: props.action,
           'onUpdate:action': value => emit('update:action', value),
         })
