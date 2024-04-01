@@ -4,7 +4,7 @@ import {
   EventSelection as RunGraphEventSelection,
   EventsSelection as RunGraphEventsSelection,
   RunGraphEvent,
-  RunGraphFetchEventsOptions
+  RunGraphFetchEventsContext
 } from '@prefecthq/graphs'
 
 export type {
@@ -13,7 +13,7 @@ export type {
   RunGraphEvent,
   RunGraphEventSelection,
   RunGraphEventsSelection,
-  RunGraphFetchEventsOptions
+  RunGraphFetchEventsContext
 }
 
 export * from './artifact'
