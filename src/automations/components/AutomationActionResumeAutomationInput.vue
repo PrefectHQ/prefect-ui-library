@@ -1,5 +1,5 @@
 <template>
-  <p-content class="automation-action-resume-automation">
+  <p-content class="automation-action-resume-automation-input">
     <p-label label="Automation To Resume">
       <template #default="{ id }">
         <AutomationAutomationCombobox :id="id" v-model:selected="automationId" allow-unset />

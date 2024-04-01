@@ -1,5 +1,5 @@
 <template>
-  <p-content class="automation-action-pause-deployment">
+  <p-content class="automation-action-pause-deployment-input">
     <p-label label="Deployment To Pause">
       <template #default="{ id }">
         <AutomationDeploymentCombobox :id="id" v-model:selected="deploymentId" allow-unset />

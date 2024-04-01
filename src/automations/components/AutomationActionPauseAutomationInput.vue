@@ -1,5 +1,5 @@
 <template>
-  <p-content class="automation-action-pause-automation">
+  <p-content class="automation-action-pause-automation-input">
     <p-label label="Automation To Pause">
       <template #default="{ id }">
         <AutomationAutomationCombobox :id="id" v-model:selected="automationId" allow-unset />

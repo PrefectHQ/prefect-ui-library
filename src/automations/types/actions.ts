@@ -1,9 +1,11 @@
+import { ServerStateType, isServerStateType } from '@/models/StateType'
 import { Equals, Require } from '@/types/utilities'
 import { createTuple, isNullish, isRecord, isString } from '@/utilities'
 
 export const { values: automationActionTypes, isValue: isAutomationActionType } = createTuple([
   'cancel-flow-run',
   'suspend-flow-run',
+  'change-flow-run-state',
   'pause-deployment',
   'resume-deployment',
   'pause-work-queue',
@@ -21,6 +23,7 @@ export type AutomationActionType = typeof automationActionTypes[number]
 export const automationActionTypeLabels = {
   'cancel-flow-run': 'Cancel a flow run',
   'suspend-flow-run': 'Suspend a flow run',
+  'change-flow-run-state': 'Change flow run\'s state',
   'pause-deployment': 'Pause a deployment',
   'resume-deployment': 'Resume a deployment',
   'pause-work-queue': 'Pause a work queue',
@@ -60,6 +63,27 @@ export type AutomationActionSuspendFlowRun = AutomationActionWithType<'suspend-f
 
 function isAutomationActionSuspendFlowRun(value: unknown): value is AutomationActionSuspendFlowRun {
   return isAutomationActionTypeRecord(value, 'suspend-flow-run')
+}
+
+/*
+ * Change a flow run's state
+ */
+export type AutomationActionChangeFlowRunState = AutomationActionWithType<'change-flow-run-state', {
+  name?: string | null,
+  state: ServerStateType,
+  message?: string | null,
+}>
+
+export function isAutomationActionChangeFlowRunState(value: unknown): value is AutomationActionChangeFlowRunState {
+  if (!isAutomationActionTypeRecord(value, 'change-flow-run-state')) {
+    return false
+  }
+
+  const isValidName = isString(value.name) || isNullish(value.name)
+  const isValidState = isServerStateType(value.state)
+  const isValidMessage = isString(value.message) || isNullish(value.message)
+
+  return isValidName && isValidState && isValidMessage
 }
 
 /*
@@ -242,6 +266,7 @@ function isAutomationActionResumeAutomation(value: unknown): value is Automation
 export type AutomationAction =
   | AutomationActionCancelFlowRun
   | AutomationActionSuspendFlowRun
+  | AutomationActionChangeFlowRunState
   | AutomationActionPauseDeployment
   | AutomationActionResumeDeployment
   | AutomationActionPauseWorkQueue
@@ -265,6 +290,7 @@ export type AutomationActionFields<T extends AutomationAction> = Require<Partial
 const actionTypeGuardMap = {
   'cancel-flow-run': isAutomationActionCancelFlowRun,
   'suspend-flow-run': isAutomationActionSuspendFlowRun,
+  'change-flow-run-state': isAutomationActionChangeFlowRunState,
   'pause-deployment': isAutomationActionPauseDeployment,
   'resume-deployment': isAutomationActionResumeDeployment,
   'pause-work-queue': isAutomationActionPauseWorkQueue,

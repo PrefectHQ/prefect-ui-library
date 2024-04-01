@@ -1,10 +1,12 @@
 import { AutomationActionType, AutomationActionWithType, isAutomationActionType } from '@/automations/types/actions'
+import { ServerStateType } from '@/models/StateType'
 import { Equals } from '@/types/utilities'
 import { isRecord } from '@/utilities'
 
 export type AutomationActionResponse =
 | AutomationActionCancelFlowRunResponse
 | AutomationActionSuspendFlowRunResponse
+| AutomationActionChangeFlowRunStateResponse
 | AutomationActionPauseDeploymentResponse
 | AutomationActionResumeDeploymentResponse
 | AutomationActionPauseWorkQueueResponse
@@ -35,6 +37,15 @@ export type AutomationActionCancelFlowRunResponse = AutomationActionWithType<'ca
  * Suspend a flow run
  */
 export type AutomationActionSuspendFlowRunResponse = AutomationActionWithType<'suspend-flow-run'>
+
+/*
+ * Change a flow run's state
+ */
+export type AutomationActionChangeFlowRunStateResponse = AutomationActionWithType<'change-flow-run-state', {
+  name?: string | null,
+  state: ServerStateType,
+  message?: string | null,
+}>
 
 /*
  * Pause a deployment
