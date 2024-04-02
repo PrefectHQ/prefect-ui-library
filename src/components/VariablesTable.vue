@@ -18,7 +18,9 @@
     <p-table :selected="can.delete.variable ? selectedVariables : undefined" :data="variables" :columns="columns" :column-classes="columnClass" @update:selected="selectedVariables = $event">
       <template #name="{ row }">
         <div class="variables-table__name">
-          {{ row.name }}
+          <p-tooltip :text="row.name">
+            {{ row.name }}
+          </p-tooltip>
         </div>
       </template>
 
@@ -100,7 +102,7 @@
     {
       property: 'name',
       label: 'Name',
-      width: '124px',
+      width: '192px',
     },
     {
       property: 'value',
