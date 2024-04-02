@@ -3,10 +3,18 @@
     <p-list-header sticky>
       <ResultsCount v-if="selectedVariables.length == 0" :label="localization.info.variable" :count="variablesCount" />
       <SelectedCount v-else :count="selectedVariables.length" />
-      <VariablesDeleteButton v-if="can.delete.variable" :variable-ids="selectedVariables.map(variable => variable.id)" @delete="deleteVariables" />
+      <VariablesDeleteButton
+        v-if="can.delete.variable"
+        :variable-ids="selectedVariables.map(variable => variable.id)"
+        @delete="deleteVariables"
+      />
 
       <template #controls>
-        <SearchInput v-model="variableLike" :placeholder="localization.info.variablesSearch" :label="localization.info.variablesSearch" />
+        <SearchInput
+          v-model="variableLike"
+          :placeholder="localization.info.variablesSearch"
+          :label="localization.info.variablesSearch"
+        />
         <VariableTagsInput v-model:selected="filter.variables.tags.name" class="variables-table__tags-input" />
       </template>
 
@@ -15,12 +23,16 @@
       </template>
     </p-list-header>
 
-    <p-table :selected="can.delete.variable ? selectedVariables : undefined" :data="variables" :columns="columns" :column-classes="columnClass" @update:selected="selectedVariables = $event">
+    <p-table
+      :selected="can.delete.variable ? selectedVariables : undefined"
+      :data="variables"
+      :columns="columns"
+      :column-classes="columnClass"
+      @update:selected="selectedVariables = $event"
+    >
       <template #name="{ row }">
-        <div class="variables-table__name">
-          <p-tooltip :text="row.name">
-            {{ row.name }}
-          </p-tooltip>
+        <div class="variables-table__name" :title="row.name">
+          {{ row.name }}
         </div>
       </template>
 
@@ -186,6 +198,6 @@
 }
 
 .variables-table__name { @apply
-  max-w-[124px]
+  max-w-[192px]
 }
 </style>
