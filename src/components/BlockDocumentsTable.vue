@@ -2,7 +2,8 @@
   <div class="block-documents-table">
     <div class="block-documents-table__filters">
       <span class="block-documents-table__results">
-        <ResultsCount label="Block" :count="total" />
+        <ResultsCount v-if="selectedBlockDocuments.length ===0" label="Block" :count="total" />
+        <SelectedCount v-else :count="selectedBlockDocuments.length" />
         <BlocksDeleteButton v-if="selectedBlockDocuments.length > 0" class="block-documents-table__delete" :selected="selectedBlockDocuments.map(blockDocument => blockDocument.id)" small @delete="onDelete" />
       </span>
       <SearchInput v-model="searchTerm" placeholder="Search blocks" label="Search blocks" class="block-documents-table__search" />
@@ -73,6 +74,7 @@
   import LogoImage from '@/components/LogoImage.vue'
   import ResultsCount from '@/components/ResultsCount.vue'
   import SearchInput from '@/components/SearchInput.vue'
+  import SelectedCount from '@/components/SelectedCount.vue'
   import { useBlockDocuments, useBlockDocumentsFilterFromRoute, useComponent, useWorkspaceRoutes } from '@/compositions'
   import { BlockDocument } from '@/models/BlockDocument'
   import { BlockDocumentsFilter } from '@/models/Filters'
