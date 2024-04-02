@@ -9,8 +9,8 @@
       <BlockSchemaCapabilitySelect v-model:selected="capabilities" class="block-documents-table__capability" />
       <BlockTypeSelect v-model:selected="blockTypes" class="block-documents-table__type" />
     </div>
-    <p-table :data="updatedBlockDocuments" :columns="columns" :selected="selectedBlockDocuments" @update:selected="selectedBlockDocuments = $event">
-      <template #name="{ row }: { row: BlockDocument }">
+    <p-table :data="blockDocumentRows" :columns="columns" :selected="selectedBlockDocuments" @update:selected="selectedBlockDocuments = $event">
+      <template #name="{ row }">
         <div class="block-documents-table__name-column">
           <LogoImage :url="row.blockType.logoUrl" class="block-documents-table__name-img" />
           <div class="block-documents-table__name-content">
@@ -129,8 +129,8 @@
     page,
   })
 
-  type UpdatedBlockDocument = BlockDocument & { disabled?: boolean }
-  const updatedBlockDocuments: ComputedRef<UpdatedBlockDocument[]> = computed(() => blockDocuments.value.map((blockDocument: UpdatedBlockDocument) => {
+  type BlockDocumentRow = BlockDocument & { disabled?: boolean }
+  const blockDocumentRows: ComputedRef<BlockDocumentRow[]> = computed(() => blockDocuments.value.map((blockDocument: BlockDocumentRow) => {
     if (!blockDocument.can.delete) {
       blockDocument.disabled = true
     }
@@ -144,7 +144,7 @@
     blockTypes.value = []
   }
 
-  const selectedBlockDocuments = ref<UpdatedBlockDocument[]>([])
+  const selectedBlockDocuments = ref<BlockDocumentRow[]>([])
 
 
   function onDelete(): void {
