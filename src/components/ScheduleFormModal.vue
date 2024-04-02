@@ -21,7 +21,7 @@
       <IntervalScheduleForm v-model:schedule="intervalSchedule" v-model:disabled="intervalDisabled" hide-actions @submit="submit" />
     </template>
 
-    <FlowRunJobVariableOverridesLabeledInput v-model="internalJobVariables" />
+    <FlowRunJobVariableOverridesLabeledInput v-if="can.access.deploymentScheduleFlowRunInfraOverrides" v-model="internalJobVariables" />
 
     <template #actions>
       <p-button primary type="submit" :disabled="disabled" @click="submitCurrentForm">
@@ -72,7 +72,7 @@
     }
 
     let jobVariables: Record<string, unknown> | undefined
-    if (!can.access.flowRunInfraOverrides) {
+    if (!can.access.deploymentScheduleFlowRunInfraOverrides) {
       jobVariables = undefined
     } else {
       jobVariables = internalJobVariables.value ? JSON.parse(internalJobVariables.value) : undefined

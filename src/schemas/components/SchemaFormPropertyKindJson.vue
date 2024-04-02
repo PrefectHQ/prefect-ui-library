@@ -6,14 +6,19 @@
 </template>
 
 <script lang="ts" setup>
-  import { State } from '@prefecthq/prefect-design'
+  import { State, isDefined } from '@prefecthq/prefect-design'
   import { computed } from 'vue'
   import SchemaFormPropertyErrors from '@/schemas/components/SchemaFormPropertyErrors.vue'
+  import { useSchemaProperty } from '@/schemas/compositions/useSchemaProperty'
+  import { SchemaProperty } from '@/schemas/types/schema'
   import { PrefectKindJson } from '@/schemas/types/schemaValues'
   import { SchemaValueError } from '@/schemas/types/schemaValuesValidationResponse'
   import { getAllChildSchemaPropertyErrors } from '@/schemas/utilities/errors'
+  import { getSchemaPropertyDefaultValue } from '@/schemas/utilities/properties'
+  import { stringify } from '@/utilities/json'
 
   const props = defineProps<{
+    property: SchemaProperty,
     value: PrefectKindJson,
     errors: SchemaValueError[],
     state: State,
@@ -22,6 +27,10 @@
   const emit = defineEmits<{
     'update:value': [PrefectKindJson],
   }>()
+
+  const { property } = useSchemaProperty(() => props.property)
+  const defaultValue = getSchemaPropertyDefaultValue(property.value)
+  const childErrors = computed(() => getAllChildSchemaPropertyErrors(props.errors))
 
   const value = computed({
     get() {
@@ -43,5 +52,7 @@
     },
   })
 
-  const childErrors = computed(() => getAllChildSchemaPropertyErrors(props.errors))
+  if (!isDefined(value.value) && isDefined(defaultValue)) {
+    value.value = stringify(defaultValue)
+  }
 </script>

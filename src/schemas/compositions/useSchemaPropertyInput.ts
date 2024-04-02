@@ -20,7 +20,7 @@ export function useSchemaPropertyInput(schemaProperty: MaybeRefOrGetter<SchemaPr
 
     if (!isPrefectKindValue(propertyValue.value)) {
       return withProps(SchemaFormPropertyInput, {
-        property: property,
+        property,
         value: propertyValue.value,
         errors,
         state,
@@ -30,6 +30,7 @@ export function useSchemaPropertyInput(schemaProperty: MaybeRefOrGetter<SchemaPr
 
     if (isPrefectKindValue(propertyValue.value, 'json')) {
       return withProps(SchemaFormPropertyKindJson, {
+        property,
         value: propertyValue.value,
         errors,
         state,
@@ -40,6 +41,8 @@ export function useSchemaPropertyInput(schemaProperty: MaybeRefOrGetter<SchemaPr
     if (isPrefectKindValue(propertyValue.value, 'jinja')) {
       return withProps(SchemaFormPropertyKindJinja, {
         value: propertyValue.value,
+        errors,
+        state,
         'onUpdate:value': (value) => propertyValue.value = value,
       })
     }
@@ -53,7 +56,7 @@ export function useSchemaPropertyInput(schemaProperty: MaybeRefOrGetter<SchemaPr
 
     if (isPrefectKindValue(propertyValue.value, 'none')) {
       return withProps(SchemaFormPropertyInput, {
-        property: property,
+        property,
         value: propertyValue.value,
         errors,
         state,

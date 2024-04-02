@@ -1,3 +1,5 @@
+import { mapAutomationActionResponseToAutomationAction, mapAutomationActionToAutomationActionRequest } from '@/automations/maps/actions'
+import { mapAutomationResponseToAutomation } from '@/automations/maps/automations'
 import { mapArtifactCollectionResponseToArtifactCollection, mapArtifactResponseToArtifact } from '@/maps/artifact'
 import { mapBlockDocumentResponseToBlockDocument, mapBlockDocumentToSelectOption } from '@/maps/blockDocument'
 import { mapBlockDocumentCreateToBlockDocumentCreateRequest } from '@/maps/blockDocumentCreate'
@@ -78,6 +80,9 @@ export const maps = {
   ArtifactResponse: { Artifact: mapArtifactResponseToArtifact },
   ArtifactCollectionResponse: { ArtifactCollection: mapArtifactCollectionResponseToArtifactCollection },
   ArtifactsFilter: { ArtifactsFilterRequest: mapArtifactsFilter },
+  AutomationResponse: { Automation: mapAutomationResponseToAutomation },
+  AutomationActionResponse: { AutomationAction: mapAutomationActionResponseToAutomationAction },
+  AutomationAction: { AutomationActionRequest: mapAutomationActionToAutomationActionRequest },
   BlockDocument: { SelectOption: mapBlockDocumentToSelectOption },
   BlockDocumentCreate: { BlockDocumentCreateRequest: mapBlockDocumentCreateToBlockDocumentCreateRequest },
   BlockDocumentFilter: { BlockDocumentFilterRequest: mapBlockDocumentFilter },

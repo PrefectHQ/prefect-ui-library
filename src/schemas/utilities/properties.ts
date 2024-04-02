@@ -1,5 +1,5 @@
 import { isDefined } from '@prefecthq/prefect-design'
-import { Schema, SchemaProperty, SchemaPropertyType, isPropertyWith } from '@/schemas/types/schema'
+import { Schema, SchemaProperty, SchemaPropertyType, isPropertyWith, isSchemaPropertyType } from '@/schemas/types/schema'
 import { BlockDocumentReferenceValue, SchemaValue, isBlockDocumentReferenceValue } from '@/schemas/types/schemaValues'
 import { getSchemaDefinition } from '@/schemas/utilities/definitions'
 import { Require } from '@/types/utilities'
@@ -28,6 +28,28 @@ export function getSchemaPropertyLabel(property: SchemaProperty): string {
   const type = getSchemaPropertyTypeLabel(property.type)
 
   return property.title ?? property.format ?? type
+}
+
+/*
+ * This is purposefully not recursive and does not resolve definition
+ * Schemas can be circular so we just want to get the default value for one level
+ */
+export function getSchemaPropertyDefaultValue(property: SchemaProperty): SchemaValue {
+  if (isDefined(property.default)) {
+    return property.default
+  }
+
+  if (isSchemaPropertyType(property.type, 'object') && isPropertyWith(property, 'properties')) {
+    return Object.entries(property.properties).reduce<Record<string, unknown>>((value, [key, property]) => {
+      if (isDefined(property.default)) {
+        value[key] = property.default
+      }
+
+      return value
+    }, {})
+  }
+
+  return undefined
 }
 
 export function getSchemaPropertyAllOfDefinitions(property: Require<SchemaProperty, 'anyOf'>, schema: Schema): SchemaProperty[] {
