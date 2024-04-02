@@ -15,6 +15,7 @@
   import AutomationActionResumeDeploymentInput from '@/automations/components/AutomationActionResumeDeploymentInput.vue'
   import AutomationActionResumeWorkPoolInput from '@/automations/components/AutomationActionResumeWorkPoolInput.vue'
   import AutomationActionResumeWorkQueueInput from '@/automations/components/AutomationActionResumeWorkQueueInput.vue'
+  import AutomationActionRunDeploymentInput from '@/automations/components/AutomationActionRunDeploymentInput.vue'
   import { AutomationAction } from '@/automations/types'
   import { withProps } from '@/utilities'
 
@@ -33,6 +34,13 @@
           action: props.action,
           'onUpdate:action': value => emit('update:action', value),
         })
+
+      case 'run-deployment':
+        return withProps(AutomationActionRunDeploymentInput, {
+          action: props.action,
+          'onUpdate:action': value => emit('update:action', value),
+        })
+
       case 'pause-deployment':
         return withProps(AutomationActionPauseDeploymentInput, {
           action: props.action,

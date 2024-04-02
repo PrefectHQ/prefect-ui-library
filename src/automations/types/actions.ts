@@ -1,4 +1,5 @@
 import { ServerStateType, isServerStateType } from '@/models/StateType'
+import { SchemaValues } from '@/schemas/types/schemaValues'
 import { Equals, Require } from '@/types/utilities'
 import { createTuple, isNullish, isRecord, isString } from '@/utilities'
 
@@ -6,6 +7,7 @@ export const { values: automationActionTypes, isValue: isAutomationActionType } 
   'cancel-flow-run',
   'suspend-flow-run',
   'change-flow-run-state',
+  'run-deployment',
   'pause-deployment',
   'resume-deployment',
   'pause-work-queue',
@@ -14,7 +16,6 @@ export const { values: automationActionTypes, isValue: isAutomationActionType } 
   'resume-work-pool',
   'pause-automation',
   'resume-automation',
-  // 'run-deployment',
   // 'send-notification',
 ])
 
@@ -24,6 +25,7 @@ export const automationActionTypeLabels = {
   'cancel-flow-run': 'Cancel a flow run',
   'suspend-flow-run': 'Suspend a flow run',
   'change-flow-run-state': 'Change flow run\'s state',
+  'run-deployment': 'Run a deployment',
   'pause-deployment': 'Pause a deployment',
   'resume-deployment': 'Resume a deployment',
   'pause-work-queue': 'Pause a work queue',
@@ -84,6 +86,26 @@ export function isAutomationActionChangeFlowRunState(value: unknown): value is A
   const isValidMessage = isString(value.message) || isNullish(value.message)
 
   return isValidName && isValidState && isValidMessage
+}
+
+/*
+ * Pause a deployment
+ */
+export type AutomationActionRunDeployment = AutomationActionWithType<'run-deployment', {
+  deploymentId?: string | null,
+  parameters: SchemaValues | null,
+  jobVariables?: Record<string, unknown>,
+}>
+
+export function isAutomationActionRunDeployment(value: unknown): value is AutomationActionRunDeployment {
+  if (!isAutomationActionTypeRecord(value, 'run-deployment')) {
+    return false
+  }
+
+  const isValidDeploymentId = isString(value.deploymentId) || isNullish(value.deploymentId)
+  const isValidParameters = isRecord(value.parameters) || isNullish(value.parameters)
+
+  return isValidDeploymentId && isValidParameters
 }
 
 /*
@@ -240,23 +262,6 @@ function isAutomationActionResumeAutomation(value: unknown): value is Automation
 // }
 
 
-// type AutomationActionRunDeployment = AutomationActionWithType<'run-deployment', {
-//   deploymentId?: string | null,
-//   parameters: SchemaValues | null,
-//   jobVariables?: Record<string, unknown>,
-// }>
-
-// function isAutomationActionRunDeployment(value: unknown): value is AutomationActionRunDeployment {
-//   if (!isAutomationActionTypeRecord(value, 'run-deployment')) {
-//     return false
-//   }
-
-//   const isValidDeploymentId = isString(value.deploymentId) || isNullish(value.deploymentId)
-//   const isValidParameters = isRecord(value.parameters) || value.parameters === null
-
-//   return isValidDeploymentId && isValidParameters
-// }
-
 // type AutomationActionPauseFlowRun = AutomationActionWithType<'suspend-flow-run'>
 
 // function isAutomationActionPauseFlowRun(value: unknown): value is AutomationActionPauseFlowRun {
@@ -267,6 +272,7 @@ export type AutomationAction =
   | AutomationActionCancelFlowRun
   | AutomationActionSuspendFlowRun
   | AutomationActionChangeFlowRunState
+  | AutomationActionRunDeployment
   | AutomationActionPauseDeployment
   | AutomationActionResumeDeployment
   | AutomationActionPauseWorkQueue
@@ -276,7 +282,6 @@ export type AutomationAction =
   | AutomationActionPauseAutomation
   | AutomationActionResumeAutomation
   // | AutomationActionPauseFlowRun
-  // | AutomationActionRunDeployment
   // | AutomationActionSendNotification
 
 /*
@@ -291,6 +296,7 @@ const actionTypeGuardMap = {
   'cancel-flow-run': isAutomationActionCancelFlowRun,
   'suspend-flow-run': isAutomationActionSuspendFlowRun,
   'change-flow-run-state': isAutomationActionChangeFlowRunState,
+  'run-deployment': isAutomationActionRunDeployment,
   'pause-deployment': isAutomationActionPauseDeployment,
   'resume-deployment': isAutomationActionResumeDeployment,
   'pause-work-queue': isAutomationActionPauseWorkQueue,
@@ -299,7 +305,6 @@ const actionTypeGuardMap = {
   'resume-work-pool': isAutomationActionResumeWorkPool,
   'pause-automation': isAutomationActionPauseAutomation,
   'resume-automation': isAutomationActionResumeAutomation,
-  // 'run-deployment': isAutomationActionRunDeployment,
   // 'send-notification': isAutomationActionSendNotification,
 } satisfies Record<AutomationActionType, (value: unknown) => boolean>
 

@@ -1,5 +1,6 @@
 import { AutomationActionType, AutomationActionWithType, isAutomationActionType } from '@/automations/types/actions'
 import { ServerStateType } from '@/models/StateType'
+import { SchemaValues } from '@/schemas/types/schemaValues'
 import { Equals } from '@/types/utilities'
 import { isRecord } from '@/utilities'
 
@@ -7,6 +8,7 @@ export type AutomationActionResponse =
 | AutomationActionCancelFlowRunResponse
 | AutomationActionSuspendFlowRunResponse
 | AutomationActionChangeFlowRunStateResponse
+| AutomationActionRunDeploymentResponse
 | AutomationActionPauseDeploymentResponse
 | AutomationActionResumeDeploymentResponse
 | AutomationActionPauseWorkQueueResponse
@@ -46,6 +48,22 @@ export type AutomationActionChangeFlowRunStateResponse = AutomationActionWithTyp
   state: ServerStateType,
   message?: string | null,
 }>
+
+/*
+ * Run a deployment
+ */
+export type AutomationActionRunDeploymentSelectedResponse = {
+  source: 'selected',
+  deployment_id: string,
+  parameters: SchemaValues | null,
+  job_variables?: Record<string, unknown>,
+}
+
+export type AutomationActionRunDeploymentInferredResponse = {
+  source: 'inferred',
+}
+
+export type AutomationActionRunDeploymentResponse = AutomationActionWithType<'run-deployment', AutomationActionRunDeploymentSelectedResponse | AutomationActionRunDeploymentInferredResponse>
 
 /*
  * Pause a deployment
