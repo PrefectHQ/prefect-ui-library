@@ -66,7 +66,12 @@
   const initialized = ref(false)
 
   onMounted(() => {
-    initialized.value = true
+    // this components onMounted is fired before its children's onMounted. So to avoid the child with a default value
+    // overriding the default value set by this component we need to delay the initialization so that the default value "sticks"
+    // https://github.com/PrefectHQ/prefect/issues/12566
+    setTimeout(() => {
+      initialized.value = true
+    })
   })
 
   const classes = computed(() => ({
