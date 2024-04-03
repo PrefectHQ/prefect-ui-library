@@ -8,7 +8,8 @@ import {
   AutomationActionResumeAutomation,
   AutomationActionResumeDeployment,
   AutomationActionResumeWorkPool,
-  AutomationActionResumeWorkQueue
+  AutomationActionResumeWorkQueue,
+  AutomationActionRunDeployment
 } from '@/automations/types/actions'
 import {
   AutomationActionPauseAutomationResponse,
@@ -20,12 +21,15 @@ import {
   AutomationActionResumeAutomationResponse,
   AutomationActionResumeDeploymentResponse,
   AutomationActionResumeWorkPoolResponse,
-  AutomationActionResumeWorkQueueResponse
+  AutomationActionResumeWorkQueueResponse,
+  AutomationActionRunDeploymentResponse
 } from '@/automations/types/api/actions'
 import { MapFunction } from '@/services/Mapper'
 
 export const mapAutomationActionResponseToAutomationAction: MapFunction<AutomationActionResponse, AutomationAction> = function(response) {
   switch (response.type) {
+    case 'run-deployment':
+      return mapRunDeploymentResponse(response)
     case 'pause-deployment':
     case 'resume-deployment':
       return mapPauseResumeDeploymentResponse(response)
@@ -50,6 +54,8 @@ export const mapAutomationActionResponseToAutomationAction: MapFunction<Automati
 
 export const mapAutomationActionToAutomationActionRequest: MapFunction<AutomationAction, AutomationActionRequest> = function(request) {
   switch (request.type) {
+    case 'run-deployment':
+      return mapRunDeploymentRequest(request)
     case 'pause-deployment':
     case 'resume-deployment':
       return mapPauseResumeDeploymentRequest(request)
@@ -69,6 +75,41 @@ export const mapAutomationActionToAutomationActionRequest: MapFunction<Automatio
     default:
       const exhaustive: never = request
       throw new Error(`Automation action type is missing case for: ${(exhaustive as AutomationActionResponse).type}`)
+  }
+}
+
+function mapRunDeploymentRequest(action: AutomationActionRunDeployment): AutomationActionRunDeploymentResponse {
+  if (!action.deploymentId) {
+    return {
+      type: action.type,
+      source: 'inferred',
+    }
+  }
+
+  return {
+    type: action.type,
+    source: 'selected',
+    parameters: action.parameters,
+    deployment_id: action.deploymentId,
+    job_variables: action.jobVariables,
+  }
+}
+
+function mapRunDeploymentResponse(action: AutomationActionRunDeploymentResponse): AutomationActionRunDeployment {
+  if (action.source === 'inferred') {
+    return {
+      type: action.type,
+      deploymentId: null,
+      parameters: null,
+      jobVariables: undefined,
+    }
+  }
+
+  return {
+    type: action.type,
+    parameters: action.parameters,
+    deploymentId: action.deployment_id,
+    jobVariables: action.job_variables ?? {},
   }
 }
 
