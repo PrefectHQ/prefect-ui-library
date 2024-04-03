@@ -89,7 +89,7 @@ export function isAutomationActionChangeFlowRunState(value: unknown): value is A
 }
 
 /*
- * Pause a deployment
+ * Run a deployment
  */
 export type AutomationActionRunDeployment = AutomationActionWithType<'run-deployment', {
   deploymentId?: string | null,
