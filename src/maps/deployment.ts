@@ -1,7 +1,9 @@
 import { sortStringArray } from '@prefecthq/prefect-design'
 import { DeploymentFlowRunCreate, DeploymentFlowRunCreateV2, DeploymentFlowRunRequest, DeploymentUpdate, DeploymentUpdateRequest, DeploymentUpdateV2, SchemaResponse } from '@/models'
+import { DeploymentCreateRequest } from '@/models/api/DeploymentCreateRequest'
 import { DeploymentResponse } from '@/models/api/DeploymentResponse'
 import { Deployment } from '@/models/Deployment'
+import { DeploymentCreate } from '@/models/DeploymentCreate'
 import { createObjectLevelCan } from '@/models/ObjectLevelCan'
 import { SchemaResponseV2, schemaV2Mapper } from '@/schemas'
 import { MapFunction } from '@/services/Mapper'
@@ -122,5 +124,28 @@ export const mapDeploymentFlowRunCreateV2ToDeploymentFlowRunRequest: MapFunction
     empirical_policy: this.map('EmpiricalPolicy', source.empiricalPolicy, 'EmpiricalPolicyRequest'),
     work_queue_name: source.workQueueName,
     job_variables: source.jobVariables,
+  }
+}
+
+export const mapDeploymentCreateToDeploymentCreateRequest: MapFunction<DeploymentCreate, DeploymentCreateRequest> = function(source) {
+  return {
+    name: source.name,
+    description: source.description,
+    flow_id: source.flowId,
+    schedule: source.schedule,
+    is_schedule_active: source.isScheduleActive,
+    parameters: source.parameters,
+    tags: source.tags,
+    storage_document_id: source.storageDocumentId,
+    infrastructure_document_id: source.infrastructureDocumentId,
+    work_queue_name: source.workQueueName,
+    work_pool_name: source.workPoolName,
+    infra_overrides: source.infrastructureOverrides,
+    enforce_parameter_schema: source.enforceParameterSchema,
+    manifest_path: source.manifestPath,
+    path: source.path,
+    entrypoint: source.entrypoint,
+    parameter_openapi_schema: source.parameterOpenapiSchema,
+    pull_steps: source.pullSteps,
   }
 }

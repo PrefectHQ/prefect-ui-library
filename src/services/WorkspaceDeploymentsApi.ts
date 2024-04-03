@@ -1,6 +1,7 @@
 import { DeploymentResponse } from '@/models/api/DeploymentResponse'
 import { FlowRunResponse } from '@/models/api/FlowRunResponse'
 import { Deployment } from '@/models/Deployment'
+import { DeploymentCreate } from '@/models/DeploymentCreate'
 import { DeploymentFlowRunCreate, DeploymentFlowRunCreateV2 } from '@/models/DeploymentFlowRunCreate'
 import { DeploymentUpdate, DeploymentUpdateV2 } from '@/models/DeploymentUpdate'
 import { DeploymentsFilter } from '@/models/Filters'
@@ -95,5 +96,10 @@ export class WorkspaceDeploymentsApi extends WorkspaceApi {
 
   public deleteDeployment(deploymentId: string): Promise<void> {
     return this.delete(`/${deploymentId}`)
+  }
+
+  public createDeployment(request: DeploymentCreate): Promise<void> {
+    const body = mapper.map('DeploymentCreate', request, 'DeploymentCreateRequest')
+    return this.post('/', body)
   }
 }
