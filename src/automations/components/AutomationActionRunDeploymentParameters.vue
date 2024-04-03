@@ -1,6 +1,6 @@
 <template>
-  <p-content class="automation-action-run-deployment-parameters-v2">
-    <div class="automation-action-run-deployment-parameters-v2__header">
+  <p-content class="automation-action-run-deployment-parameters">
+    <div class="automation-action-run-deployment-parameters__header">
       <h3 class="deployment-form__heading">
         Parameters
       </h3>
@@ -72,7 +72,7 @@
 </script>
 
 <style>
-.automation-action-run-deployment-parameters-v2__header { @apply
+.automation-action-run-deployment-parameters__header { @apply
   flex
   items-center
   justify-between
