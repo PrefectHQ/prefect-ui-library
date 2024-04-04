@@ -9,7 +9,8 @@ import {
   AutomationActionResumeDeployment,
   AutomationActionResumeWorkPool,
   AutomationActionResumeWorkQueue,
-  AutomationActionRunDeployment
+  AutomationActionRunDeployment,
+  AutomationActionSendNotification
 } from '@/automations/types/actions'
 import {
   AutomationActionPauseAutomationResponse,
@@ -22,7 +23,8 @@ import {
   AutomationActionResumeDeploymentResponse,
   AutomationActionResumeWorkPoolResponse,
   AutomationActionResumeWorkQueueResponse,
-  AutomationActionRunDeploymentResponse
+  AutomationActionRunDeploymentResponse,
+  AutomationActionSendNotificationResponse
 } from '@/automations/types/api/actions'
 import { MapFunction } from '@/services/Mapper'
 
@@ -42,6 +44,8 @@ export const mapAutomationActionResponseToAutomationAction: MapFunction<Automati
     case 'pause-automation':
     case 'resume-automation':
       return mapPauseResumeAutomationRequest(response)
+    case 'send-notification':
+      return mapSendNotificationResponse(response)
     case 'cancel-flow-run':
     case 'suspend-flow-run':
     case 'change-flow-run-state':
@@ -68,6 +72,8 @@ export const mapAutomationActionToAutomationActionRequest: MapFunction<Automatio
     case 'pause-automation':
     case 'resume-automation':
       return mapPauseResumeAutomationRequest(request)
+    case 'send-notification':
+      return mapSendNotificationRequest(request)
     case 'cancel-flow-run':
     case 'suspend-flow-run':
     case 'change-flow-run-state':
@@ -213,5 +219,23 @@ function mapPauseResumeAutomationRequest(action: AutomationActionPauseAutomation
     type: action.type,
     source: 'selected',
     automation_id: action.automationId,
+  }
+}
+
+function mapSendNotificationRequest({ type, blockDocumentId, subject, body }: AutomationActionSendNotification): AutomationActionSendNotificationResponse {
+  return {
+    type,
+    block_document_id: blockDocumentId,
+    subject,
+    body,
+  }
+}
+
+function mapSendNotificationResponse({ type, block_document_id, subject, body }: AutomationActionSendNotificationResponse): AutomationActionSendNotification {
+  return {
+    type,
+    blockDocumentId: block_document_id,
+    subject,
+    body,
   }
 }
