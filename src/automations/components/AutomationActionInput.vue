@@ -16,6 +16,7 @@
   import AutomationActionResumeWorkPoolInput from '@/automations/components/AutomationActionResumeWorkPoolInput.vue'
   import AutomationActionResumeWorkQueueInput from '@/automations/components/AutomationActionResumeWorkQueueInput.vue'
   import AutomationActionRunDeploymentInput from '@/automations/components/AutomationActionRunDeploymentInput.vue'
+  import AutomationActionSendNotificationInput from '@/automations/components/AutomationActionSendNotificationInput.vue'
   import { AutomationAction } from '@/automations/types'
   import { withProps } from '@/utilities'
 
@@ -85,6 +86,12 @@
 
       case 'resume-automation':
         return withProps(AutomationActionResumeAutomationInput, {
+          action: props.action,
+          'onUpdate:action': value => emit('update:action', value),
+        })
+
+      case 'send-notification':
+        return withProps(AutomationActionSendNotificationInput, {
           action: props.action,
           'onUpdate:action': value => emit('update:action', value),
         })

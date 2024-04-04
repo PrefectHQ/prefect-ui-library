@@ -16,7 +16,7 @@ export const { values: automationActionTypes, isValue: isAutomationActionType } 
   'resume-work-pool',
   'pause-automation',
   'resume-automation',
-  // 'send-notification',
+  'send-notification',
 ])
 
 export type AutomationActionType = typeof automationActionTypes[number]
@@ -34,6 +34,7 @@ export const automationActionTypeLabels = {
   'resume-work-pool': 'Resume a work pool',
   'pause-automation': 'Pause an automation',
   'resume-automation': 'Resume an automation',
+  'send-notification': 'Send a notification',
 } as const satisfies Record<AutomationActionType, string>
 
 /**
@@ -243,30 +244,26 @@ function isAutomationActionResumeAutomation(value: unknown): value is Automation
   return isValidAutomationId
 }
 
-// type AutomationActionSendNotification = AutomationActionWithType<'send-notification', {
-//   blockDocumentId: string,
-//   subject: string,
-//   body: string,
-// }>
+/*
+ * Send a notification
+ */
+export type AutomationActionSendNotification = AutomationActionWithType<'send-notification', {
+  blockDocumentId: string,
+  subject: string,
+  body: string,
+}>
 
-// function isAutomationActionSendNotification(value: unknown): value is AutomationActionSendNotification {
-//   if (!isAutomationActionTypeRecord(value, 'send-notification')) {
-//     return false
-//   }
+function isAutomationActionSendNotification(value: unknown): value is AutomationActionSendNotification {
+  if (!isAutomationActionTypeRecord(value, 'send-notification')) {
+    return false
+  }
 
-//   const isValidBlockDocumentId = isString(value.blockDocumentId) || isNullish(value.blockDocumentId)
-//   const isValidSubject = isString(value.subject)
-//   const isValidBody = isString(value.body)
+  const isValidBlockDocumentId = isString(value.blockDocumentId) || isNullish(value.blockDocumentId)
+  const isValidSubject = isString(value.subject)
+  const isValidBody = isString(value.body)
 
-//   return isValidBlockDocumentId && isValidSubject && isValidBody
-// }
-
-
-// type AutomationActionPauseFlowRun = AutomationActionWithType<'suspend-flow-run'>
-
-// function isAutomationActionPauseFlowRun(value: unknown): value is AutomationActionPauseFlowRun {
-//   return isAutomationActionTypeRecord(value, 'suspend-flow-run')
-// }
+  return isValidBlockDocumentId && isValidSubject && isValidBody
+}
 
 export type AutomationAction =
   | AutomationActionCancelFlowRun
@@ -281,11 +278,10 @@ export type AutomationAction =
   | AutomationActionResumeWorkPool
   | AutomationActionPauseAutomation
   | AutomationActionResumeAutomation
-  // | AutomationActionPauseFlowRun
-  // | AutomationActionSendNotification
+  | AutomationActionSendNotification
 
 /*
- * if this is giving you a type error you forgot to add a response type for your action to the AutomationAction
+ * if this is giving you a type error you forgot to add a type for your action to the AutomationAction type
  */
 // eslint-disable-next-line @typescript-eslint/no-unused-vars, no-unused-vars
 const automationActionHasAllActionTypes: Equals<AutomationAction['type'], AutomationActionType> = true
@@ -305,7 +301,7 @@ const actionTypeGuardMap = {
   'resume-work-pool': isAutomationActionResumeWorkPool,
   'pause-automation': isAutomationActionPauseAutomation,
   'resume-automation': isAutomationActionResumeAutomation,
-  // 'send-notification': isAutomationActionSendNotification,
+  'send-notification': isAutomationActionSendNotification,
 } satisfies Record<AutomationActionType, (value: unknown) => boolean>
 
 export function isAutomationAction(value: unknown): value is AutomationAction {
