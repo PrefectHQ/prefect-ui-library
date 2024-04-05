@@ -21,7 +21,6 @@
 <script lang="ts" setup>
   import { showToast } from '@prefecthq/prefect-design'
   import { useValidation, useValidationObserver } from '@prefecthq/vue-compositions'
-  import { de } from 'date-fns/locale'
   import { computed, ref } from 'vue'
   import { useRouter } from 'vue-router'
   import { useWorkspaceApi, useWorkspaceRoutes } from '@/compositions'

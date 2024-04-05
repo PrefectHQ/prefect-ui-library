@@ -103,5 +103,6 @@ export class WorkspaceDeploymentsApi extends WorkspaceApi {
     const { data } = await this.post<DeploymentResponse>('/', body)
 
     return mapper.map('DeploymentResponse', data, 'Deployment')
+
   }
 }
