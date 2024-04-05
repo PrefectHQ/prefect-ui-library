@@ -127,12 +127,12 @@ export const mapDeploymentFlowRunCreateV2ToDeploymentFlowRunRequest: MapFunction
   }
 }
 
-export const mapDeploymentCreateToDeploymentCreateRequest: MapFunction<DeploymentCreate, DeploymentCreateRequest> = function(source) {
+export const mapDeploymentCreateToDeploymentCreateRequest: MapFunction< DeploymentCreate, DeploymentCreateRequest> = function(source) {
   return {
     name: source.name,
     description: source.description,
     flow_id: source.flowId,
-    schedule: source.schedule,
+    schedules: source.schedules,
     is_schedule_active: source.isScheduleActive,
     parameters: source.parameters,
     tags: source.tags,
@@ -145,7 +145,7 @@ export const mapDeploymentCreateToDeploymentCreateRequest: MapFunction<Deploymen
     manifest_path: source.manifestPath,
     path: source.path,
     entrypoint: source.entrypoint,
-    parameter_openapi_schema: source.parameterOpenapiSchema,
+    parameter_openapi_schema: source.parameterOpenApiSchema,
     pull_steps: source.pullSteps,
   }
 }

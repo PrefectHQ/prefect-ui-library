@@ -21,12 +21,13 @@
 <script lang="ts" setup>
   import { showToast } from '@prefecthq/prefect-design'
   import { useValidation, useValidationObserver } from '@prefecthq/vue-compositions'
+  import { de } from 'date-fns/locale'
   import { computed, ref } from 'vue'
   import { useRouter } from 'vue-router'
   import { useWorkspaceApi, useWorkspaceRoutes } from '@/compositions'
   import { localization } from '@/localization'
   import { Deployment } from '@/models'
-  import { SchemaValues } from '@/types/schemas'
+  import { DeploymentCreate } from '@/models/DeploymentCreate'
   import { getApiErrorMessage } from '@/utilities/errors'
   import { isRequired } from '@/utilities/formValidation'
 
@@ -59,20 +60,36 @@
   const { valid, pending, validate } = useValidationObserver()
   const submit = async (): Promise<void> => {
     await validate()
-    console.log(props.deployment)
     if (valid.value) {
       try {
-        await api.deployments.createDeployment(
-          // props.deployment,
-        )
+        const deployment: DeploymentCreate = {
+          name: name.value,
+          description: props.deployment.description,
+          flowId: props.deployment.flowId,
+          parameters: props.deployment.parameters,
+          tags: props.deployment.tags,
+          storageDocumentId: props.deployment.storageDocumentId,
+          infrastructureDocumentId: props.deployment.infrastructureDocumentId,
+          workQueueName: props.deployment.workQueueName,
+          workPoolName: props.deployment.workPoolName,
+          infrastructureOverrides: props.deployment.infrastructureOverrides,
+          enforceParameterSchema: props.deployment.enforceParameterSchema,
+          manifestPath: props.deployment.manifestPath,
+          path: props.deployment.path,
+          entrypoint: props.deployment.entrypoint,
+          parameterOpenApiSchema: props.deployment.parameterOpenApiSchema,
+          pullSteps: props.deployment.pullSteps,
+          isScheduleActive: false,
+        }
+        const newDeployment = await api.deployments.createDeployment(deployment)
         showToast(localization.success.duplicateDeployment, 'success')
+        name.value = ''
+        internalShowModal.value = false
+        router.push(routes.deployment(newDeployment.id))
       } catch (error) {
         console.error(error)
         const message = getApiErrorMessage(error, localization.error.duplicateDeployment)
         showToast(message, 'error')
-      } finally {
-        name.value = ''
-        internalShowModal.value = false
       }
     }
   }

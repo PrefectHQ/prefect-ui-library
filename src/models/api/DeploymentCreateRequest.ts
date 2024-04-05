@@ -1,5 +1,5 @@
-import { ScheduleResponse } from '@/models'
 import { SchemaResponse } from '@/models/api/SchemaResponse'
+import { DeploymentSchedule } from '@/models/DeploymentSchedule'
 import { SchemaResponseV2 } from '@/schemas'
 import { SchemaValues } from '@/types/schemas'
 
@@ -7,7 +7,7 @@ export type DeploymentCreateRequest = Partial<{
   name: string | null,
   description: string | null,
   flow_id: string | null,
-  schedule: ScheduleResponse | null,
+  schedules?: DeploymentSchedule[] | null,
   is_schedule_active: boolean,
   parameters: SchemaValues | null,
   tags: string[] | null,

@@ -1,6 +1,8 @@
-import { ScheduleResponse } from '@/models'
+
 import { SchemaResponse } from '@/models/api/SchemaResponse'
+import { DeploymentSchedule } from '@/models/DeploymentSchedule'
 import { SchemaResponseV2, SchemaValuesV2 } from '@/schemas'
+import { SchemaValues } from '@/types/schemas'
 
 type Base = {
   description?: string | null,
@@ -11,7 +13,7 @@ type Base = {
   enforceParameterSchema?: boolean,
   name: string | null,
   flowId: string | null,
-  schedule: ScheduleResponse | null,
+  schedules?: DeploymentSchedule[] | null,
   isScheduleActive: boolean,
   storageDocumentId: string | null,
   infrastructureDocumentId: string | null,
@@ -19,18 +21,18 @@ type Base = {
   manifestPath: string | null,
   path: string | null,
   entrypoint: string | null,
-  parameterOpenapiSchema: SchemaResponse | SchemaResponseV2 | null,
+  parameterOpenApiSchema: SchemaResponse | SchemaResponseV2 | null,
   pullSteps: unknown,
 }
 
-type WithParametersV2 = Base & {
-  parameters: SchemaValuesV2,
+type WithParametersV2Create = Base & {
+  parameters: SchemaValuesV2 | SchemaValues,
 }
 
-type WithoutParameters = Base & {
+type WithoutParametersCreate = Base & {
   schema?: never,
   parameters?: never,
 }
 
 
-export type DeploymentCreate = WithoutParameters | WithParametersV2
+export type DeploymentCreate = WithoutParametersCreate | WithParametersV2Create

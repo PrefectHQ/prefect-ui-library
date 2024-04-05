@@ -98,8 +98,10 @@ export class WorkspaceDeploymentsApi extends WorkspaceApi {
     return this.delete(`/${deploymentId}`)
   }
 
-  public createDeployment(request: DeploymentCreate): Promise<void> {
+  public async createDeployment(request: DeploymentCreate): Promise<Deployment> {
     const body = mapper.map('DeploymentCreate', request, 'DeploymentCreateRequest')
-    return this.post('/', body)
+    const { data } = await this.post<DeploymentResponse>('/', body)
+
+    return mapper.map('DeploymentResponse', data, 'Deployment')
   }
 }
