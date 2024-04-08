@@ -3,18 +3,12 @@
     Resume
   </p-button>
 
-  <template v-if="can.access.schemasV2">
-    <FlowRunResumeModalV2 v-model:showModal="showModal" :flow-run-id="flowRun.id" />
-  </template>
-  <template v-else>
-    <FlowRunResumeModal v-model:showModal="showModal" :flow-run-id="flowRun.id" />
-  </template>
+  <FlowRunResumeModal v-model:showModal="showModal" :flow-run-id="flowRun.id" />
 </template>
 
   <script lang="ts" setup>
   import { computed, useAttrs } from 'vue'
   import FlowRunResumeModal from '@/components/FlowRunResumeModal.vue'
-  import FlowRunResumeModalV2 from '@/components/FlowRunResumeModalV2.vue'
   import { useCan } from '@/compositions/useCan'
   import { useShowModal } from '@/compositions/useShowModal'
   import { FlowRun, isPausedStateType } from '@/models'

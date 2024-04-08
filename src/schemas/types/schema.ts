@@ -18,6 +18,13 @@ export function isSchemaPropertyType<T extends SchemaPropertyType | undefined>(v
   return value === type
 }
 
+export const { isValue: isSchemaPropertyPrimitiveType } = createTuple([
+  'string',
+  'boolean',
+  'integer',
+  'number',
+])
+
 export const { values: schemaStringFormat, isValue: isSchemaStringFormat } = createTuple([
   'date',
   'date-time',
@@ -45,6 +52,7 @@ export type SchemaProperty = {
   description?: string,
   enum?: unknown[],
   format?: SchemaStringFormat,
+  // SchemaProperty[] isn't valid according to the json specification but pydantic v1 will produce this for enums
   items?: SchemaProperty | SchemaProperty[],
   prefixItems?: SchemaProperty[],
   properties?: SchemaProperties,
@@ -53,6 +61,10 @@ export type SchemaProperty = {
   type?: SchemaPropertyType,
   minItems?: number,
   maxItems?: number,
+}
+
+export function isSchemaProperty(value: SchemaProperty | SchemaProperty[] | undefined): value is SchemaProperty {
+  return isDefined(value) && !Array.isArray(value)
 }
 
 export function isPropertyWith<
