@@ -1,6 +1,6 @@
 {
     "name": "@prefecthq/prefect-ui-library",
-    "version": "2.7.7",
+    "version": "2.7.10",
     "private": false,
     "repository": {
         "type": "git",
@@ -44,7 +44,7 @@
         "@types/lodash.debounce": "4.0.9",
         "@types/lodash.isequal": "^4.5.8",
         "@types/lodash.merge": "4.6.9",
-        "@types/node": "^20.11.30",
+        "@types/node": "^20.12.2",
         "@types/prismjs": "^1.26.3",
         "@vitejs/plugin-vue": "5.0.4",
         "auto-changelog": "^2.4.0",
@@ -53,13 +53,13 @@
         "lodash.camelcase": "4.3.0",
         "lodash.debounce": "4.0.8",
         "postcss": "8.4.38",
-        "tailwindcss": "3.4.1",
+        "tailwindcss": "3.4.3",
         "tsc-alias": "1.8.8",
         "typescript": "5.4.3",
-        "vite": "5.2.6",
+        "vite": "5.2.8",
         "vite-svg-loader": "^5.1.0",
         "vitest": "^1.4.0",
-        "vue-tsc": "2.0.6"
+        "vue-tsc": "2.0.7"
     },
     "peerDependencies": {
         "@prefecthq/prefect-design": "^2.6.2",

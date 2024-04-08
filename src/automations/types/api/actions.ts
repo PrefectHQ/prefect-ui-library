@@ -1,5 +1,6 @@
 import { AutomationActionType, AutomationActionWithType, isAutomationActionType } from '@/automations/types/actions'
 import { ServerStateType } from '@/models/StateType'
+import { SchemaValues } from '@/schemas/types/schemaValues'
 import { Equals } from '@/types/utilities'
 import { isRecord } from '@/utilities'
 
@@ -7,6 +8,7 @@ export type AutomationActionResponse =
 | AutomationActionCancelFlowRunResponse
 | AutomationActionSuspendFlowRunResponse
 | AutomationActionChangeFlowRunStateResponse
+| AutomationActionRunDeploymentResponse
 | AutomationActionPauseDeploymentResponse
 | AutomationActionResumeDeploymentResponse
 | AutomationActionPauseWorkQueueResponse
@@ -15,11 +17,12 @@ export type AutomationActionResponse =
 | AutomationActionResumeWorkPoolResponse
 | AutomationActionPauseAutomationResponse
 | AutomationActionResumeAutomationResponse
+| AutomationActionSendNotificationResponse
 
 export type AutomationActionRequest = AutomationActionResponse
 
 /*
- * if this is giving you a type error you forgot to add a response type for your action to the AutomationActionResponseType
+ * if this is giving you a type error you forgot to add a response type for your action to the AutomationActionResponse type
  */
 // eslint-disable-next-line @typescript-eslint/no-unused-vars, no-unused-vars
 const automationActionResponseHasAllActionTypes: Equals<AutomationActionResponse['type'], AutomationActionType> = true
@@ -46,6 +49,22 @@ export type AutomationActionChangeFlowRunStateResponse = AutomationActionWithTyp
   state: ServerStateType,
   message?: string | null,
 }>
+
+/*
+ * Run a deployment
+ */
+export type AutomationActionRunDeploymentSelectedResponse = {
+  source: 'selected',
+  deployment_id: string,
+  parameters: SchemaValues | null,
+  job_variables?: Record<string, unknown>,
+}
+
+export type AutomationActionRunDeploymentInferredResponse = {
+  source: 'inferred',
+}
+
+export type AutomationActionRunDeploymentResponse = AutomationActionWithType<'run-deployment', AutomationActionRunDeploymentSelectedResponse | AutomationActionRunDeploymentInferredResponse>
 
 /*
  * Pause a deployment
@@ -158,3 +177,12 @@ export type AutomationActionResumeAutomationInferredResponse = {
 }
 
 export type AutomationActionResumeAutomationResponse = AutomationActionWithType<'resume-automation', AutomationActionResumeAutomationSelectedResponse | AutomationActionResumeAutomationInferredResponse>
+
+/*
+ * Send a notification
+ */
+export type AutomationActionSendNotificationResponse = AutomationActionWithType<'send-notification', {
+  block_document_id: string,
+  subject: string,
+  body: string,
+}>
