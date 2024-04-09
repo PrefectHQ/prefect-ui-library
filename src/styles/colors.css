@@ -2,7 +2,7 @@
   --p-color-log-info-bg: #304A76;
   --p-color-log-info-text: var(--p-color-text-default);
 
-  --p-color-log-debug-bg: #DB6900;
+  --p-color-log-debug-bg: #1e293b;
   --p-color-log-debug-text: var(--p-color-text-default);
 
   --p-color-log-warning-bg: #F79008;
@@ -22,7 +22,7 @@
   --p-color-log-info-bg: #304A76;
   --p-color-log-info-text: var(--p-color-text-inverse);
 
-  --p-color-log-debug-bg: #DB6900;
+  --p-color-log-debug-bg: #1e293b;
   --p-color-log-debug-text: var(--p-color-text-inverse);
 
   --p-color-log-warning-bg: #F79008;
