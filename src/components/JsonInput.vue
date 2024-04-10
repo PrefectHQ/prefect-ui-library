@@ -62,9 +62,14 @@
 }
 
 .json-input__prettify-button { @apply
+  bg-code
   absolute
   right-2
   top-2;
   z-index: 1;
+}
+
+.json-input__prettify-button:hover { @apply
+  bg-transparent
 }
 </style>
