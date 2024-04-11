@@ -10,7 +10,7 @@ export const mapStateResponseToState: MapFunction<StateResponse, State> = functi
     message: source.message,
     stateDetails: this.map('StateDetailsResponse', source.state_details, 'StateDetails'),
     data: source.data,
-    timestamp: source.timestamp,
+    timestamp: this.map('string', source.timestamp, 'Date'),
     name: source.name,
   }
 }
@@ -22,7 +22,7 @@ export const mapStateToStateResponse: MapFunction<State, StateResponse> = functi
     message: source.message,
     state_details: this.map('StateDetails', source.stateDetails, 'StateDetailsResponse'),
     data: source.data,
-    timestamp: source.timestamp,
+    timestamp: this.map('Date', source.timestamp, 'string'),
     name: source.name,
   }
 }
@@ -33,7 +33,7 @@ export const mapStateCreateToStateRequest: MapFunction<StateCreate, StateRequest
     message: source.message,
     state_details: source.stateDetails ? this.map('StateDetailsCreate', source.stateDetails, 'StateDetailsRequest') : {},
     data: source.data,
-    timestamp: source.timestamp,
+    timestamp: this.map('Date', source.timestamp, 'string'),
     name: source.name,
   }
 }

@@ -5,6 +5,6 @@ export type StateCreate = {
   message?: string,
   stateDetails?: StateDetailsCreate,
   data?: Record<string, unknown>,
-  timestamp?: string,
+  timestamp?: Date,
   name?: string,
 }

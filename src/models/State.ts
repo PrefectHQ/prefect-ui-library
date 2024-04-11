@@ -7,6 +7,6 @@ export type State = {
   message: string,
   stateDetails: StateDetails | null,
   data: Record<string, unknown>,
-  timestamp: string,
+  timestamp: Date,
   name: string,
 }
