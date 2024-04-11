@@ -15,7 +15,7 @@ export const randomTaskRun: MockFunction<TaskRun, [Partial<TaskRun>?]> = functio
     estimatedStartTimeDelta: this.create('number'),
     totalRunTime: this.create('number'),
     expectedStartTime: this.create('date'),
-    nextScheduledStartTime: this.create('boolean') ? this.create('string') : null,
+    nextScheduledStartTime: this.create('boolean') ? this.create('date') : null,
     runCount: this.create('number'),
     name: this.create('runName'),
     taskInputs: {},

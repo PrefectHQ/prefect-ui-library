@@ -12,7 +12,7 @@ export const randomFlowRun: MockFunction<FlowRun, [Partial<FlowRun>?]> = functio
     flowVersion: this.create('string'),
     idempotencyKey: this.create('string'),
     expectedStartTime: this.create('date'),
-    nextScheduledStartTime: this.create('string'),
+    nextScheduledStartTime: this.create('date'),
     parameters: {},
     autoScheduled: this.create('boolean'),
     context: {},
