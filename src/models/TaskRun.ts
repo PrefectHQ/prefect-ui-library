@@ -15,7 +15,7 @@ export interface ITaskRun {
   estimatedStartTimeDelta: number | null,
   totalRunTime: number | null,
   expectedStartTime: Date | null,
-  nextScheduledStartTime: string | null,
+  nextScheduledStartTime: Date | null,
   runCount: number | null,
   name: string | null,
   taskInputs: Record<string, TaskInput[]> | null,
@@ -42,7 +42,7 @@ export class TaskRun implements ITaskRun {
   public estimatedStartTimeDelta: number | null
   public totalRunTime: number | null
   public expectedStartTime: Date | null
-  public nextScheduledStartTime: string | null
+  public nextScheduledStartTime: Date | null
   public runCount: number | null
   public name: string | null
   public taskInputs: Record<string, TaskInput[]> | null
