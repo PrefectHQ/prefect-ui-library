@@ -23,7 +23,7 @@ export const randomState: MockFunction<State, [Partial<State>?]> = function(over
       encoding: this.create('string'),
       blob: this.create('string'),
     },
-    timestamp: this.create('string'),
+    timestamp: this.create('date'),
     name: name,
     ...overrides,
   }
