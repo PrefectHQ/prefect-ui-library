@@ -14,7 +14,7 @@ export interface IFlowRun {
   flowVersion: string | null,
   idempotencyKey: string | null,
   expectedStartTime: Date | null,
-  nextScheduledStartTime: string | null,
+  nextScheduledStartTime: Date | null,
   parameters: SchemaValues,
   autoScheduled: boolean | null,
   context: unknown,
@@ -50,7 +50,7 @@ export class FlowRun extends StorageItem implements IFlowRun {
   public flowVersion: string | null
   public idempotencyKey: string | null
   public expectedStartTime: Date | null
-  public nextScheduledStartTime: string | null
+  public nextScheduledStartTime: Date | null
   public parameters: SchemaValues
   public autoScheduled: boolean | null
   public context: unknown

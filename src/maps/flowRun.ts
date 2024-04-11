@@ -11,7 +11,7 @@ export const mapFlowRunResponseToFlowRun: MapFunction<FlowRunResponse, FlowRun> 
     flowVersion: source.flow_version,
     idempotencyKey: source.idempotency_key,
     expectedStartTime: this.map('string', source.expected_start_time, 'Date'),
-    nextScheduledStartTime: source.next_scheduled_start_time,
+    nextScheduledStartTime: this.map('string', source.next_scheduled_start_time, 'Date'),
     parameters: source.parameters,
     autoScheduled: source.auto_scheduled,
     context: source.context,
