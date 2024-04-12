@@ -1,4 +1,5 @@
-import { AutomationAction } from '@/automations/types/actions'
+import { isArray } from '@prefecthq/prefect-design'
+import { AutomationAction, isAutomationAction } from '@/automations/types/actions'
 import { isRecord } from '@/utilities/object'
 
 export type CreateEventAutomationQuery = {
@@ -33,4 +34,17 @@ export type CreateAutomationTriggerQuery =
   | CreateFlowAutomationQuery
   | CreateWorkPoolQueueAutomationQuery
 
-export type CreateAutomationQuery = CreateAutomationTriggerQuery & { actions?: AutomationAction[] }
+export function isCreateAutomationTriggerQuery(value: unknown): value is CreateAutomationTriggerQuery {
+  return isCreateEventAutomationQuery(value) || isCreateFlowAutomationQuery(value) || isCreateWorkPoolQueueAutomationQuery(value)
+}
+
+export type CreateAutomationActionQuery = { actions: AutomationAction[] }
+
+export function isCreateAutomationActionQuery(value: unknown): value is CreateAutomationActionQuery {
+  return isRecord(value) && 'actions' in value && isArray(value.actions) && value.actions.every(isAutomationAction)
+}
+
+export type CreateAutomationQuery =
+  | CreateAutomationTriggerQuery
+  | CreateAutomationActionQuery
+  | CreateAutomationTriggerQuery & CreateAutomationActionQuery

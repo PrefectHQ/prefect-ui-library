@@ -12,7 +12,13 @@ export type {
 
 export type {
   CreateAutomationTriggerQuery,
+  CreateAutomationActionQuery,
   CreateAutomationQuery
+} from './createAutomationQuery'
+
+export {
+  isCreateAutomationActionQuery,
+  isCreateAutomationTriggerQuery
 } from './createAutomationQuery'
 
 export type {
