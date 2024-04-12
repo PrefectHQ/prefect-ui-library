@@ -1,6 +1,7 @@
-import { WorkPool, WorkPoolCreate, WorkPoolEdit, WorkPoolResponse, WorkerScheduledFlowRunResponse, WorkerScheduledFlowRun, WorkerScheduledFlowRuns } from '@/models'
+import { WorkPool, WorkPoolCreate, WorkPoolEdit, WorkPoolResponse, WorkerScheduledFlowRunResponse, WorkerScheduledFlowRun, WorkerScheduledFlowRuns, BatchLookupError } from '@/models'
 import { WorkPoolsFilter } from '@/models/Filters'
 import { mapper, WorkspaceApi } from '@/services'
+
 
 export class WorkspaceWorkPoolsApi extends WorkspaceApi {
 
@@ -42,8 +43,11 @@ export class WorkspaceWorkPoolsApi extends WorkspaceApi {
     }
     const request = mapper.map('WorkPoolsFilter', filter, 'WorkPoolsFilterRequest')
     const { data } = await this.post<WorkPoolResponse[]>('/filter', request)
-
-    return mapper.map('WorkPoolResponse', data[0], 'WorkPool')
+    const [workPool] = data
+    if (!workPool.id) {
+      throw new BatchLookupError(id)
+    }
+    return mapper.map('WorkPoolResponse', workPool, 'WorkPool')
   }
 
   public updateWorkPool(name: string, request: WorkPoolEdit): Promise<void> {
