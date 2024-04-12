@@ -1,5 +1,6 @@
 import { mapAutomationActionResponseToAutomationAction, mapAutomationActionToAutomationActionRequest } from '@/automations/maps/actions'
 import { mapAutomationResponseToAutomation } from '@/automations/maps/automations'
+import { mapCreateAutomationQueryToLocationQuery } from '@/automations/maps/createAutomationQuery'
 import { mapArtifactCollectionResponseToArtifactCollection, mapArtifactResponseToArtifact } from '@/maps/artifact'
 import { mapBlockDocumentResponseToBlockDocument, mapBlockDocumentToSelectOption } from '@/maps/blockDocument'
 import { mapBlockDocumentCreateToBlockDocumentCreateRequest } from '@/maps/blockDocumentCreate'
@@ -104,6 +105,7 @@ export const maps = {
   ConcurrencyV2LimitResponse: { ConcurrencyV2Limit: mapConcurrencyV2ResponseToConcurrencyV2Limit },
   ConcurrencyV2LimitCreate: { ConcurrencyV2CreateRequest: mapConcurrencyV2CreateToConcurrencyV2CreateRequest },
   ConcurrencyV2LimitUpdate: { ConcurrencyV2UpdateRequest: mapConcurrencyV2UpdateToConcurrencyV2UpdateRequest },
+  CreateAutomationQuery: { LocationQuery: mapCreateAutomationQueryToLocationQuery },
   CreatedOrUpdatedByResponse: { CreatedOrUpdatedBy: mapCreatedOrUpdatedByResponseToCreatedOrUpdatedBy },
   Date: { string: mapDateToString },
   DateRangeSelectValue: { DateRange: mapDateRangeSelectValueToDateRange },
