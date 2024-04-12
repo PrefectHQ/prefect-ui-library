@@ -34,6 +34,18 @@ export class WorkspaceWorkPoolsApi extends WorkspaceApi {
     return data
   }
 
+  public async getWorkPoolById(id: string): Promise<WorkPool> {
+    const filter = {
+      workPools: {
+        id: [id],
+      },
+    }
+    const request = mapper.map('WorkPoolsFilter', filter, 'WorkPoolsFilterRequest')
+    const { data } = await this.post<WorkPoolResponse[]>('/filter', request)
+
+    return mapper.map('WorkPoolResponse', data[0], 'WorkPool')
+  }
+
   public updateWorkPool(name: string, request: WorkPoolEdit): Promise<void> {
     const body = mapper.map('WorkPoolEdit', request, 'WorkPoolEditRequest')
     const encodedWorkPoolName = encodeURI(name)
