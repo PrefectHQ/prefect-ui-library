@@ -28,6 +28,13 @@ export class WorkspaceWorkPoolsApi extends WorkspaceApi {
     return mapper.map('WorkPoolResponse', data, 'WorkPool')
   }
 
+  public async getWorkPoolsCount(filter: WorkPoolsFilter = {}): Promise<number> {
+    const request = mapper.map('WorkPoolsFilter', filter, 'WorkPoolsFilterRequest')
+    const { data } = await this.post<number>('/count', request)
+
+    return data
+  }
+
   public async getWorkPoolById(id: string): Promise<WorkPool> {
     const filter = {
       workPools: {
