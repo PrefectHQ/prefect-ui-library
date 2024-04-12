@@ -370,5 +370,39 @@ export function createWorkspaceRouteRecords(components: Partial<WorkspaceRouteCo
         },
       ],
     },
+    {
+      path: 'automations',
+      meta: {
+        can: 'read:automation',
+      },
+      children: [
+        {
+          name: 'workspace.automations',
+          path: '',
+          component: components.automations,
+        },
+        {
+          name: 'workspace.automation.create',
+          path: 'create',
+          component: components.automationCreate,
+          meta: {
+            can: 'create:automation',
+          },
+        },
+        {
+          name: 'workspace.automation.view',
+          path: 'automation/:automationId',
+          component: components.automation,
+        },
+        {
+          name: 'workspace.automation.edit',
+          path: 'automation/:automationId/edit',
+          component: components.automationEdit,
+          meta: {
+            can: 'update:automation',
+          },
+        },
+      ],
+    },
   ]
 }

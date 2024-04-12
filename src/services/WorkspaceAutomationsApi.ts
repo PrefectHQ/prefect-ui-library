@@ -11,6 +11,12 @@ export class WorkspaceAutomationsApi extends WorkspaceApi {
 
   protected override routePrefix = '/automations'
 
+  public async getAutomation(automationId: string): Promise<Automation> {
+    const { data } = await this.get<AutomationResponse>(`/${automationId}`)
+
+    return mapper.map('AutomationResponse', data, 'Automation')
+  }
+
   public async getAutomations(filter: AutomationsFilter = {}): Promise<Automation[]> {
     const { data } = await this.post<AutomationResponse[]>('/filter', filter)
 

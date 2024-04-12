@@ -1,3 +1,6 @@
+import { CreateAutomationQuery } from '@/automations/types/createAutomationQuery'
+import { mapper } from '@/services/Mapper'
+
 type CreateWorkspaceRoutesConfig = {
   accountId: string,
   workspaceId: string,
@@ -6,6 +9,18 @@ type CreateWorkspaceRoutesConfig = {
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 export function createWorkspaceRoutes(config?: CreateWorkspaceRoutesConfig) {
   return {
+    automations: () => ({ name: 'workspace.automations', params: { ...config } }) as const,
+    automation: (automationId: string) => ({ name: 'workspace.automation.view', params: { ...config, automationId } }) as const,
+    automationCreate: (automationQuery?: CreateAutomationQuery) => {
+      const query = mapper.map('CreateAutomationQuery', automationQuery, 'LocationQuery')
+
+      return {
+        name: 'workspace.automation.create',
+        params: { ...config },
+        query,
+      } as const
+    },
+    automationEdit: (automationId: string) => ({ name: 'workspace.automation.edit', params: { ...config, automationId } }) as const,
     artifact: (artifactId: string) => ({ name: 'workspace.artifacts.artifact', params: { artifactId, ...config } }) as const,
     artifactKey: (artifactKey: string) => ({ name: 'workspace.artifacts.artifact.key', params: { artifactKey, ...config } }) as const,
     artifacts: () => ({ name: 'workspace.artifacts', params: { ...config } }) as const,
