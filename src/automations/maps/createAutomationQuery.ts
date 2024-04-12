@@ -1,14 +1,9 @@
 import { LocationQuery } from 'vue-router'
-import { CreateAutomationQuery, isCreateEventAutomationQuery, isCreateFlowAutomationQuery, isCreateWorkPoolQueueAutomationQuery } from '@/automations/types/createAutomationQuery'
+import { CreateAutomationActionQuery, CreateAutomationQuery, CreateAutomationTriggerQuery, isCreateAutomationActionQuery, isCreateAutomationTriggerQuery, isCreateEventAutomationQuery, isCreateFlowAutomationQuery, isCreateWorkPoolQueueAutomationQuery } from '@/automations/types/createAutomationQuery'
 import { MapFunction } from '@/services/Mapper'
-import { isEmptyObject } from '@/utilities/object'
 
-export const mapCreateAutomationQueryToLocationQuery: MapFunction<CreateAutomationQuery, LocationQuery> = function(source): LocationQuery {
+export const mapCreateAutomationTriggerQueryToLocationQuery: MapFunction<CreateAutomationTriggerQuery, LocationQuery> = function(source) {
   const query: LocationQuery = {}
-
-  if (source.actions) {
-    query.actions = source.actions.map(action => encodeURIComponent(JSON.stringify(action)))
-  }
 
   if (isCreateEventAutomationQuery(source)) {
     return {
@@ -35,8 +30,30 @@ export const mapCreateAutomationQueryToLocationQuery: MapFunction<CreateAutomati
     }
   }
 
-  if (isEmptyObject(query)) {
-    throw new Error(`Unable to map CreateAutomationQuery to LocationQuery: ${JSON.stringify(source)}`)
+  return query
+}
+
+export const mapCreateAutomationActionQueryToLocationQuery: MapFunction<CreateAutomationActionQuery, LocationQuery> = function(source) {
+  return {
+    actions: source.actions.map(action => encodeURIComponent(JSON.stringify(action))),
+  }
+}
+
+export const mapCreateAutomationQueryToLocationQuery: MapFunction<CreateAutomationQuery, LocationQuery> = function(source): LocationQuery {
+  let query: LocationQuery = {}
+
+  if (isCreateAutomationActionQuery(source)) {
+    query = {
+      ...query,
+      ...this.map('CreateAutomationActionQuery', source, 'LocationQuery'),
+    }
+  }
+
+  if (isCreateAutomationTriggerQuery(source)) {
+    query = {
+      ...query,
+      ...this.map('CreateAutomationTriggerQuery', source, 'LocationQuery'),
+    }
   }
 
   return query
