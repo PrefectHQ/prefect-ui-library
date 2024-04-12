@@ -28,10 +28,9 @@ export function isCreateWorkPoolQueueAutomationQuery(value: unknown): value is C
   return isRecord(value) && 'from' in value && value.from === 'workPoolQueue'
 }
 
-type CreateAutomationTriggerQuery = (
+export type CreateAutomationTriggerQuery =
   | CreateEventAutomationQuery
   | CreateFlowAutomationQuery
   | CreateWorkPoolQueueAutomationQuery
-) & { actions?: AutomationAction[] }
 
-export type CreateAutomationQuery = CreateAutomationTriggerQuery | { actions: AutomationAction[] }
+export type CreateAutomationQuery = CreateAutomationTriggerQuery & { actions?: AutomationAction[] }

@@ -11,6 +11,7 @@ export type {
 } from './api/automation'
 
 export type {
+  CreateAutomationTriggerQuery,
   CreateAutomationQuery
 } from './createAutomationQuery'
 
