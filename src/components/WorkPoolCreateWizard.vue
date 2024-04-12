@@ -14,7 +14,7 @@
 
 <script lang="ts" setup>
   import { WizardStep, showToast } from '@prefecthq/prefect-design'
-  import { useSubscription } from '@prefecthq/vue-compositions'
+  import { refreshChannel, useSubscription } from '@prefecthq/vue-compositions'
   import { computed, ref } from 'vue'
   import { useRouter } from 'vue-router'
   import { WorkPoolCreateWizardStepInformation, WorkPoolCreateWizardStepInfrastructureType, WorkPoolCreateWizardStepInfrastructureConfiguration } from '@/components'
@@ -57,6 +57,8 @@
     try {
       const { name } = await api.workPools.createWorkPool(values)
       showToast(localization.success.createWorkPool, 'success')
+      refreshChannel(api.workPools.getWorkPoolsCount, [{}])
+      refreshChannel(api.workPools.getWorkPools, [{}])
 
       router.push(routes.workPool(name))
     } catch (error) {
