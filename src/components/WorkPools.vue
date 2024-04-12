@@ -1,8 +1,6 @@
 <template>
   <div class="work-pools">
     <div class="work-pools__filters">
-      <ResultsCount label="Work pool" :count="filteredWorkPools.length" class="work-pools__results" />
-
       <SearchInput v-model="searchValue" class="work-pools__search" placeholder="Search work pools" />
     </div>
 
@@ -15,7 +13,7 @@
 <script lang="ts" setup>
   import { useSubscription } from '@prefecthq/vue-compositions'
   import { computed, ref } from 'vue'
-  import { ResultsCount, SearchInput, WorkPoolList } from '@/components'
+  import { SearchInput, WorkPoolList } from '@/components'
   import { useWorkspaceApi } from '@/compositions'
 
   const api = useWorkspaceApi()
