@@ -21,7 +21,7 @@
         "lint:fix": "eslint src --fix",
         "lint": "eslint src",
         "test": "vitest",
-        "validate:types": "vue-tsc --noEmit",
+        "validate:types": "vue-tsc",
         "version": "npm run changelog && git add CHANGELOG.md"
     },
     "main": "./dist/prefect-ui-library.umd.js",
