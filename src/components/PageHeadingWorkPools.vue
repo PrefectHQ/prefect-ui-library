@@ -19,8 +19,8 @@
   const crumbs = [{ text: 'Work Pools' }]
 
   const props = defineProps<{
-    workPoolsLimit: number | null,
-    currentWorkPools: number | null,
+    workPoolsLimit?: number | null,
+    currentWorkPools?: number | null,
   }>()
 
   const can = useCan()
