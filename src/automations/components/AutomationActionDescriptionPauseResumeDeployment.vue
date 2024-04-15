@@ -5,7 +5,7 @@
     </template>
 
     <template v-else>
-      <span>{{ pauseOrResume }} deployment inferred from the trigger</span>
+      <span>{{ pauseOrResume }} deployment inferred from the triggering event</span>
     </template>
   </div>
 </template>

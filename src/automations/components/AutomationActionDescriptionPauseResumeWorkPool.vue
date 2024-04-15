@@ -7,7 +7,7 @@
     </template>
 
     <template v-else>
-      <span>{{ pauseOrResume }} work pool inferred from the trigger</span>
+      <span>{{ pauseOrResume }} work pool inferred from the triggering event</span>
     </template>
   </div>
 </template>

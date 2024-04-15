@@ -1,6 +1,6 @@
 <template>
   <div class="automation-action-description-change-flow-run-state">
-    <span>Change the flow run's state to <StateBadge :state /> </span>
+    <span>Change the state of the flow run inferred from the triggering event to <StateBadge :state /> </span>
   </div>
 </template>
 
