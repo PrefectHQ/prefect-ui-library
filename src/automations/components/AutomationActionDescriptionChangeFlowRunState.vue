@@ -1,6 +1,6 @@
 <template>
   <div class="automation-action-description-change-flow-run-state">
-    <span>Change the state of the flow run inferred from the triggering event to <StateBadge :state /> </span>
+    Change the state of the flow run inferred from the triggering event to <StateBadge :state />
   </div>
 </template>
 
@@ -27,5 +27,10 @@
 </script>
 
 <style>
-
+.automation-action-description-change-flow-run-state { @apply
+  flex
+  flex-wrap
+  gap-1
+  items-center
+}
 </style>
