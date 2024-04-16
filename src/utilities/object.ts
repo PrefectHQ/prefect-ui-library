@@ -1,5 +1,4 @@
-/* eslint-disable @typescript-eslint/indent */
-import isDate from 'date-fns/isDate'
+import { isDate } from 'date-fns'
 import { unique } from '@/utilities/arrays'
 
 export function flip<K extends string, V extends string>(obj: Record<K, V>): Record<V, K> {
