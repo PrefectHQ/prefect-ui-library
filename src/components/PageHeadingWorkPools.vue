@@ -20,8 +20,3 @@
   const routes = useWorkspaceRoutes()
 </script>
 
-<style>
-.page-heading-work-pools__total-counter { @apply
-  text-subdued
-}
-</style>
