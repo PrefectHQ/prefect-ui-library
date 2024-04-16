@@ -25,8 +25,9 @@
 </script>
 
 <script lang="ts" setup>
+  import { refreshChannel } from '@prefecthq/vue-compositions'
   import { CopyOverflowMenuItem, ConfirmDeleteModal } from '@/components'
-  import { useCan, useShowModal, useWorkspaceApi, useWorkspaceRoutes } from '@/compositions'
+  import { useCan, useShowModal, useWorkPoolsCount, useWorkspaceApi, useWorkspaceRoutes } from '@/compositions'
   import { WorkPool } from '@/models'
   import { deleteItem } from '@/utilities'
 
@@ -42,10 +43,13 @@
   const api = useWorkspaceApi()
   const routes = useWorkspaceRoutes()
   const { showModal, open, close } = useShowModal()
+  const { subscription: workPoolsCountSubcription } = useWorkPoolsCount()
 
   async function deleteWorkPool(name: string): Promise<void> {
     close()
     await deleteItem(name, api.workPools.deleteWorkPool, 'Work pool')
+    refreshChannel(api.workPools.getWorkPools, [])
+    workPoolsCountSubcription.refresh()
     emit('delete')
   }
 </script>
