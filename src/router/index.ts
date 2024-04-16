@@ -8,7 +8,8 @@ export type Route = Exclude<RouteLocationRaw, string>
 type WorkspaceRoutes = ReturnType<typeof createWorkspaceRoutes>
 type WorkspaceRouteKey = keyof WorkspaceRoutes
 type WorkspaceRoute = ReturnType<WorkspaceRoutes[WorkspaceRouteKey]>
-type WorkspaceNamedRoute = WorkspaceRoute['name']
+
+export type WorkspaceNamedRoute = WorkspaceRoute['name']
 
 type WorkspaceRouteRecordParent = { name?: WorkspaceNamedRoute, children: WorkspaceRouteRecord[] }
 type WorkspaceRouteRecordChild = { name: WorkspaceNamedRoute }
