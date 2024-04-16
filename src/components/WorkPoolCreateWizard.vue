@@ -14,11 +14,11 @@
 
 <script lang="ts" setup>
   import { WizardStep, showToast } from '@prefecthq/prefect-design'
-  import { useSubscription } from '@prefecthq/vue-compositions'
+  import { refreshChannel, useSubscription } from '@prefecthq/vue-compositions'
   import { computed, ref } from 'vue'
   import { useRouter } from 'vue-router'
   import { WorkPoolCreateWizardStepInformation, WorkPoolCreateWizardStepInfrastructureType, WorkPoolCreateWizardStepInfrastructureConfiguration } from '@/components'
-  import { useWorkspaceApi, useWorkspaceRoutes } from '@/compositions'
+  import { useWorkPoolsCount, useWorkspaceApi, useWorkspaceRoutes } from '@/compositions'
   import { localization } from '@/localization'
   import { WorkPoolCreate, WorkPoolFormValues } from '@/models'
   import { getApiErrorMessage } from '@/utilities/errors'
@@ -43,6 +43,8 @@
     return availableWorkers.value.find((item) => item.type === workPool.value.type)?.defaultBaseJobConfiguration ?? {}
   })
 
+  const { subscription: workPoolsCountSubscription } = useWorkPoolsCount()
+
   async function submit(): Promise<void> {
     if (!workPool.value.baseJobTemplate) {
       workPool.value.baseJobTemplate = defaultBaseJobTemplate.value
@@ -57,6 +59,8 @@
     try {
       const { name } = await api.workPools.createWorkPool(values)
       showToast(localization.success.createWorkPool, 'success')
+      refreshChannel(api.workPools.getWorkPools, [])
+      workPoolsCountSubscription.refresh()
 
       router.push(routes.workPool(name))
     } catch (error) {
