@@ -39,9 +39,9 @@
 </template>
 
 <script lang="ts" setup>
-  import { useBoolean } from '@prefecthq/vue-compositions'
   import { AutomationActionRunDeployment } from '@/automations/types/actions'
   import DeploymentIconText from '@/components/DeploymentIconText.vue'
+  import { useShowModal } from '@/compositions'
   import { stringify } from '@/utilities'
 
   defineOptions({
@@ -52,8 +52,8 @@
     action: AutomationActionRunDeployment,
   }>()
 
-  const { value: showParametersModal, setTrue: openParametersModal, setFalse: closeParametersModal } = useBoolean()
-  const { value: showJobVariablesModal, setTrue: openJobVariablesModal, setFalse: closeJobVariablesModal } = useBoolean()
+  const { showModal: showParametersModal, open: openParametersModal, close: closeParametersModal } = useShowModal()
+  const { showModal: showJobVariablesModal, open: openJobVariablesModal, close: closeJobVariablesModal } = useShowModal()
 </script>
 
 <style>
