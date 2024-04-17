@@ -19,12 +19,22 @@
     </template>
   </div>
 
-  <p-modal v-model:show-modal="showParametersModal" title="Parameters">
+  <p-modal v-model:show-modal="showParametersModal" title="Parameters" auto-close>
     <p-code-highlight :text="stringify(action.parameters)" lang="json" />
+    <template #cancel>
+      <p-button @click="closeParametersModal">
+        Close
+      </p-button>
+    </template>
   </p-modal>
 
-  <p-modal v-model:show-modal="showJobVariablesModal" title="Job Variables">
+  <p-modal v-model:show-modal="showJobVariablesModal" title="Job Variables" auto-close>
     <p-code-highlight :text="stringify(action.jobVariables)" lang="json" />
+    <template #cancel>
+      <p-button @click="closeJobVariablesModal">
+        Close
+      </p-button>
+    </template>
   </p-modal>
 </template>
 
@@ -42,8 +52,8 @@
     action: AutomationActionRunDeployment,
   }>()
 
-  const { value: showParametersModal, setTrue: openParametersModal } = useBoolean()
-  const { value: showJobVariablesModal, setTrue: openJobVariablesModal } = useBoolean()
+  const { value: showParametersModal, setTrue: openParametersModal, setFalse: closeParametersModal } = useBoolean()
+  const { value: showJobVariablesModal, setTrue: openJobVariablesModal, setFalse: closeJobVariablesModal } = useBoolean()
 </script>
 
 <style>
