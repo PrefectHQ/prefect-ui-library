@@ -1,5 +1,5 @@
 import * as dateFns from 'date-fns'
-import { formatInTimeZone, getTimezoneOffset, utcToZonedTime, zonedTimeToUtc } from 'date-fns-tz'
+import { formatInTimeZone, getTimezoneOffset, toZonedTime, fromZonedTime } from 'date-fns-tz'
 import { ref, computed } from 'vue'
 import { isDate } from '@/utilities/dates'
 
@@ -20,7 +20,7 @@ export function assignTimezone(date: Date, timezone = selectedTimezone.value): D
   }
 
   if (timezone) {
-    const value = utcToZonedTime(date, timezone)
+    const value = toZonedTime(date, timezone)
 
     value.timezone = timezone
 
@@ -32,7 +32,7 @@ export function assignTimezone(date: Date, timezone = selectedTimezone.value): D
 
 export function unassignTimezone(date: Date, timezone = selectedTimezone.value): Date {
   if (timezone) {
-    const value = zonedTimeToUtc(date, timezone)
+    const value = fromZonedTime(date, timezone)
 
     value.timezone = undefined
 
