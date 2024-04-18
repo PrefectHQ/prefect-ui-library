@@ -1,7 +1,7 @@
 <template>
   <p-virtual-scroller :items="flowRuns" class="flow-run-list">
     <template #default="{ item: flowRun }">
-      <FlowRunListItem v-model:selected="model" v-bind="{ flowRun, selectable }" />
+      <FlowRunListItem v-model:selected="model" v-bind="{ hideFlowName, hideDetails, flowRun, selectable }" />
     </template>
   </p-virtual-scroller>
 </template>
@@ -15,6 +15,8 @@
     selected?: string[] | null,
     flowRuns: FlowRun[],
     selectable?: boolean,
+    hideFlowName?: boolean,
+    hideDetails?: boolean,
   }>()
 
   const emit = defineEmits<{

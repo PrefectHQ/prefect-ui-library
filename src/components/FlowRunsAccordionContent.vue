@@ -1,5 +1,5 @@
 <template>
-  <FlowRunList :flow-runs="flowRuns" :selected="null" class="flow-flow-runs-list" />
+  <FlowRunList :flow-runs="flowRuns" :selected="null" class="flow-flow-runs-list" hide-flow-name hide-details />
   <template v-if="more">
     <div class="flow-flow-runs-list__more">
       <p-button small @click="next">

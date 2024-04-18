@@ -1,6 +1,6 @@
 <template>
   <div class="flow-run-bread-crumbs">
-    <FlowRouterLink :flow-id="flowRun.flowId" class="flow-run-bread-crumbs__flow-link">
+    <FlowRouterLink v-if="!hideFlowName" :flow-id="flowRun.flowId" class="flow-run-bread-crumbs__flow-link">
       <template #after>
         <p-icon icon="ChevronRightIcon" size="small" />
       </template>
@@ -21,6 +21,7 @@
 
   const props = defineProps<{
     flowRun: FlowRun,
+    hideFlowName?: boolean,
   }>()
 
   const routes = useWorkspaceRoutes()

@@ -92,4 +92,8 @@
 .flow-runs-accordion-header__icon--selected { @apply
   rotate-180
 }
+
+.flow-runs-accordion-header__name { @apply
+  font-semibold
+}
 </style>
