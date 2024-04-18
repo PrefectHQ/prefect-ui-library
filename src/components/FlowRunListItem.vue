@@ -2,7 +2,7 @@
   <div ref="el" class="flow-run-list-item">
     <StateListItem v-model:selected="model" v-bind="{ selectable, value, tags, stateType }">
       <template #name>
-        <FlowRunBreadCrumbs :flow-run="flowRun" />
+        <FlowRunBreadCrumbs :hide-flow-name="hideFlowName" :flow-run="flowRun" />
       </template>
       <template #meta>
         <StateBadge :state="flowRun.state" />
@@ -12,7 +12,7 @@
           <IconTextCount icon="Task" :count="taskRunsCount ?? 0" label="Task run" />
         </template>
       </template>
-      <template v-if="visible && (flowRun.deploymentId || flowRun.workQueueName)" #relationships>
+      <template v-if="!hideDetails && visible && (flowRun.deploymentId || flowRun.workQueueName)" #relationships>
         <FlowRunDeployment v-if="flowRun.deploymentId" :deployment-id="flowRun.deploymentId" />
         <FlowRunWorkPool v-if="flowRun.workPoolName" :work-pool-name="flowRun.workPoolName" />
         <FlowRunWorkQueue
@@ -47,6 +47,8 @@
     selectable?: boolean,
     selected?: CheckboxModel | null,
     flowRun: FlowRun,
+    hideFlowName?: boolean,
+    hideDetails?: boolean,
   }>()
 
   const emit = defineEmits<{

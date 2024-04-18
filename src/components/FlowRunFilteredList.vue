@@ -19,7 +19,7 @@
       </template>
     </p-list-header>
 
-    <FlowRunList v-model:selected="selected" :flow-runs="flowRuns" :selectable="selectable && can.delete.flow_run" @bottom="next" />
+    <FlowRunList v-model:selected="selected" v-bind="{ hideDetails, hideFlowName }" :flow-runs="flowRuns" :selectable="selectable && can.delete.flow_run" @bottom="next" />
 
     <PEmptyResults v-if="empty">
       <template #message>
@@ -57,6 +57,8 @@
     filter?: FlowRunsFilter,
     selectable?: boolean,
     prefix?: string,
+    hideDetails?: boolean,
+    hideFlowName?: boolean,
   }>()
 
   const can = useCan()
