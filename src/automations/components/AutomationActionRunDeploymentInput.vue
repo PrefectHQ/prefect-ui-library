@@ -2,12 +2,17 @@
   <p-content class="automation-action-run-deployment">
     <p-label label="Deployment To Run">
       <template #default="{ id }">
-        <AutomationDeploymentCombobox :id="id" v-model:selected="deploymentId" />
+        <AutomationDeploymentCombobox :id="id" :selected="deploymentId" @update:selected="setDeploymentId" />
       </template>
     </p-label>
 
-    <template v-if="deployment">
-      <AutomationActionRunDeploymentParameters v-model:values="parameters" :deployment="deployment" />
+    <template v-if="deployment && deployment.id === deploymentId">
+      <!--
+        The key makes sure the same schema form doesn't get reused for different deployment.
+        If the component is reused you can end up with parameters from the last schema merging with
+        parameters from the current schema. Possibly a bug in the schemaV2 form.
+      -->
+      <AutomationActionRunDeploymentParameters :key="deploymentId" v-model:values="parameters" :deployment="deployment" />
       <FlowRunJobVariableOverridesLabeledInput v-if="can.access.flowRunInfraOverrides" :model-value="jobVariables" @update:model-value="updateJobVariables" />
     </template>
   </p-content>
@@ -19,9 +24,11 @@
   import AutomationDeploymentCombobox from '@/automations/components/AutomationDeploymentCombobox.vue'
   import { AutomationActionRunDeployment } from '@/automations/types/actions'
   import FlowRunJobVariableOverridesLabeledInput from '@/components/FlowRunJobVariableOverridesLabeledInput.vue'
-  import { useDeployment } from '@/compositions'
+  import { useWorkspaceApi } from '@/compositions'
   import { useCan } from '@/compositions/useCan'
+  import { Deployment } from '@/models/Deployment'
   import { SchemaValues } from '@/schemas/types/schemaValues'
+  import { isString } from '@/utilities'
   import { stringify } from '@/utilities/json'
 
   const props = defineProps<{
@@ -33,33 +40,32 @@
   }>()
 
   const can = useCan()
+  const api = useWorkspaceApi()
   const parametersMap = new Map<string, SchemaValues>()
 
-  const deploymentId = computed({
-    get() {
-      return props.action.deploymentId ?? null
-    },
-    set(deploymentId) {
-      const parameters = getParametersForDeployment(deploymentId)
+  const deploymentId = computed(() => props.action.deploymentId ?? null)
+  const deployment = ref<Deployment>()
 
-      emit('update:action', { ...props.action, deploymentId, parameters })
-    },
-  })
+  async function setDeploymentId(deploymentId: unknown): Promise<void> {
+    if (!isString(deploymentId)) {
+      return
+    }
+
+    deployment.value = await api.deployments.getDeployment(deploymentId)
+    const parameters = getParametersForDeployment(deploymentId) ?? { ...deployment.value.parameters }
+
+    emit('update:action', { ...props.action, deploymentId, parameters })
+  }
 
   const parameters = computed({
     get() {
       return props.action.parameters ?? {}
     },
     set(parameters) {
-      if (props.action.parameters !== parameters) {
-        setParametersForDeployment(deploymentId.value, parameters)
-        emit('update:action', { ...props.action, parameters })
-      }
+      setParametersForDeployment(deploymentId.value, parameters)
+      emit('update:action', { ...props.action, parameters })
     },
   })
-
-
-  const { deployment } = useDeployment(deploymentId)
 
   function getParametersForDeployment(deploymentId: string | null): SchemaValues | null {
     if (deploymentId !== null) {
