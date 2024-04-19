@@ -6,7 +6,7 @@ import { mapValues } from '@/utilities/object'
 
 export const mapSchemaResponseToSchema: MapFunction<SchemaResponse, Schema> = function(source) {
   return {
-    definitions: source.definitions,
+    definitions: this.map('SchemaPropertiesResponse', source.definitions, 'SchemaProperties'),
     position: source.position,
     blockTypeSlug: source.block_type_slug,
     $ref: source.$ref,
@@ -59,7 +59,7 @@ export const mapSchemaPropertyResponseToSchemaProperty: MapFunction<SchemaProper
 
 export const mapSchemaToSchemaResponse: MapFunction<Schema, SchemaResponse> = function(source) {
   return {
-    definitions: source.definitions,
+    definitions: this.map('SchemaProperties', source.definitions, 'SchemaPropertiesResponse'),
     position: source.position,
     block_type_slug: source.blockTypeSlug,
     $ref: source.$ref,

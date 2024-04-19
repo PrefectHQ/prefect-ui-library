@@ -97,7 +97,7 @@
         return property.value.default
       }
 
-      return null
+      return undefined
     },
     set(value) {
       emit('update:value', value)
