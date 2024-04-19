@@ -48,7 +48,7 @@
 
   const parameters = computed({
     get() {
-      return props.action.parameters ?? {}
+      return props.action.parameters ?? null
     },
     set(parameters) {
       if (props.action.parameters !== parameters) {

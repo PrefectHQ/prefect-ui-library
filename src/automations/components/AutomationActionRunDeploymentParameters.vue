@@ -42,7 +42,7 @@
         return props.values
       }
 
-      return {}
+      return props.deployment.parameters
     },
     set(values) {
       emit('update:values', values)
