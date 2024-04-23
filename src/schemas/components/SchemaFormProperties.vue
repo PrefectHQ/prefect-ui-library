@@ -79,7 +79,7 @@
   }
 
   function getValue(propertyKey: string): unknown {
-    return props.values?.[propertyKey] ?? undefined
+    return props.values?.[propertyKey]
   }
 
   function setValue(propertyKey: string, value: unknown): void {
