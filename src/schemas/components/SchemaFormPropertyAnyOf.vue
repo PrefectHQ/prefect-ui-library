@@ -1,4 +1,5 @@
 <template>
+<<<<<<< HEAD
   <keep-alive>
     <SchemaFormProperty :key="selectedPropertyIndexValue" :value="internalValue" v-bind="{ property, required, errors }" class="schema-form-property-any-of-input" @update:value="updateValue">
       <template #default="{ kind }">
@@ -8,6 +9,18 @@
       </template>
     </SchemaFormProperty>
   </keep-alive>
+=======
+  <SchemaFormProperty
+    :key="selectedPropertyIndex"
+    v-model:value="internalValue"
+    :property="selectedProperty"
+    :required
+    :errors
+    class="schema-form-property-any-of-input"
+  >
+    <p-button-group v-model="selectedPropertyIndex" :options="options" small class="mb-2" />
+  </SchemaFormProperty>
+>>>>>>> 98001fca (clean up some rough edges in any of properties)
 </template>
 
 <script lang="ts" setup>
@@ -94,14 +107,16 @@
     },
   })
 
-  const property = computed(() => {
+  const selectedProperty = computed(() => {
     const selectedProperty = props.property.anyOf[selectedPropertyIndex.value]
+    // eslint-disable-next-line no-unused-vars
+    const { anyOf, ...property } = props.property
 
     if (isPropertyWith(selectedProperty, '$ref')) {
-      return merge({}, getSchemaDefinition(schema, selectedProperty.$ref), props.property)
+      return merge({}, getSchemaDefinition(schema, selectedProperty.$ref), property)
     }
 
-    return merge({}, selectedProperty, props.property)
+    return merge({}, selectedProperty, property)
   })
 
   const options = computed<ButtonGroupOption[]>(() => props.property.anyOf.map((property, index) => ({
