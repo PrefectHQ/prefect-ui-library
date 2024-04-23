@@ -1,5 +1,10 @@
 <template>
-  <component :is="input.component" v-bind="input.props" class="schema-input" />
+  <p-content class="schema-input">
+    <template v-if="$slots.header">
+      <slot name="header" :schema :values :kind :set-kind />
+    </template>
+    <component :is="input.component" v-bind="input.props" />
+  </p-content>
 </template>
 
 <script lang="ts" setup>
@@ -7,6 +12,7 @@
   import { schemaInjectionKey } from '@/schemas/compositions/useSchema'
   import { schemaFormKindsInjectionKey } from '@/schemas/compositions/useSchemaFormKinds'
   import { useSchemaPropertyInput } from '@/schemas/compositions/useSchemaPropertyInput'
+  import { useSchemaValue } from '@/schemas/compositions/useSchemaValue'
   import { Schema } from '@/schemas/types/schema'
   import { PrefectKind, SchemaValues } from '@/schemas/types/schemaValues'
   import { SchemaValueError } from '@/schemas/types/schemaValuesValidationResponse'
@@ -25,6 +31,15 @@
     'update:values': [SchemaValues | undefined],
   }>()
 
+  defineSlots<{
+    header: (props: {
+      values: SchemaValues | undefined,
+      schema: Schema,
+      kind: PrefectKind,
+      setKind: (kind: PrefectKind) => void,
+    }) => unknown,
+  }>()
+
   const values = computed({
     get() {
       return props.values
@@ -35,4 +50,14 @@
   })
 
   const { input } = useSchemaPropertyInput(() => props.schema, values, () => props.errors)
+
+  const { kind } = useSchemaValue({
+    value: values,
+    property: () => props.schema,
+    schema: () => props.schema,
+  })
+
+  function setKind(value: PrefectKind): void {
+    kind.value = value
+  }
 </script>
