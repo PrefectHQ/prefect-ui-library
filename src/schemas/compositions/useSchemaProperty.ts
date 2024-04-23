@@ -1,6 +1,6 @@
 import { ComputedRef, MaybeRefOrGetter, computed, toValue } from 'vue'
 import { useSchema } from '@/schemas/compositions/useSchema'
-import { SchemaProperty } from '@/schemas/types/schema'
+import { Schema, SchemaProperty } from '@/schemas/types/schema'
 import { mergeSchemaPropertyDefinition } from '@/schemas/utilities/definitions'
 
 type UseSchemaProperty = {
@@ -10,20 +10,25 @@ type UseSchemaProperty = {
   disabled: ComputedRef<boolean>,
 }
 
-export function useSchemaProperty(source: MaybeRefOrGetter<SchemaProperty>, required?: MaybeRefOrGetter<boolean>): UseSchemaProperty {
-  const schema = useSchema()
+type UseSchemaPropertyContext = {
+  required?: MaybeRefOrGetter<boolean>,
+  schema?: MaybeRefOrGetter<Schema>,
+}
+
+export function useSchemaProperty(source: MaybeRefOrGetter<SchemaProperty>, context: UseSchemaPropertyContext = {}): UseSchemaProperty {
+  const schema = context.schema ?? useSchema()
 
   const property = computed(() => {
     const value = toValue(source)
 
-    return mergeSchemaPropertyDefinition(value, schema)
+    return mergeSchemaPropertyDefinition(value, toValue(schema))
   })
 
 
   const label = computed(() => {
     const title = property.value.title ?? ''
 
-    if (!toValue(required)) {
+    if (!toValue(context.required)) {
       return `${title} (Optional)`.trim()
     }
 

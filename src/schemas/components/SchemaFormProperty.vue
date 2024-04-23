@@ -45,14 +45,13 @@
   import { isDefined, isNotNullish } from '@prefecthq/prefect-design'
   import { computed, ref, onMounted } from 'vue'
   import SchemaFormPropertyMenu from '@/schemas/components/SchemaFormPropertyMenu.vue'
-  import { usePrefectKind } from '@/schemas/compositions/usePrefectKind'
   import { useSchemaProperty } from '@/schemas/compositions/useSchemaProperty'
   import { useSchemaPropertyInput } from '@/schemas/compositions/useSchemaPropertyInput'
+  import { useSchemaValue } from '@/schemas/compositions/useSchemaValue'
   import { SchemaProperty } from '@/schemas/types/schema'
   import { SchemaValue } from '@/schemas/types/schemaValues'
   import { SchemaValueError } from '@/schemas/types/schemaValuesValidationResponse'
   import { getSchemaPropertyError } from '@/schemas/utilities/errors'
-  import { isNullish } from '@/utilities'
 
   const props = defineProps<{
     property: SchemaProperty,
@@ -66,7 +65,9 @@
   }>()
 
   const error = computed(() => getSchemaPropertyError(props.errors))
-  const { property, label, description, disabled } = useSchemaProperty(() => props.property, () => props.required)
+  const { property, label, description, disabled } = useSchemaProperty(() => props.property, {
+    required: () => props.required,
+  })
   const omitted = ref(false)
   const omittedValue = ref<SchemaValue>(null)
   const omitLabel = computed(() => omitted.value ? 'Include value' : 'Omit value')
@@ -115,7 +116,7 @@
     emit('update:value', property.value.default)
   }
 
-  const { kind } = usePrefectKind(value)
+  const { kind } = useSchemaValue({ value, property: () => props.property })
   const { input } = useSchemaPropertyInput(property, value, () => props.errors)
 
   function toggleValue(): void {
