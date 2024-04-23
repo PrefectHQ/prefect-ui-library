@@ -2,7 +2,8 @@ import { isDefined } from '@prefecthq/prefect-design'
 import { MaybeRef, MaybeRefOrGetter, Ref, computed, ref, toValue } from 'vue'
 import { useWorkspaceApi } from '@/compositions'
 import { useSchemaProperty } from '@/schemas/compositions/useSchemaProperty'
-import { Schema, SchemaProperty } from '@/schemas/types/schema'
+import { useSchemaPropertyErrorModal } from '@/schemas/compositions/useSchemaPropertyErrorModal'
+import { SchemaProperty } from '@/schemas/types/schema'
 import { PrefectKind, PrefectKindJson, SchemaValue, isPrefectKindJson, isPrefectKindValue } from '@/schemas/types/schemaValues'
 import { stringify } from '@/utilities'
 
@@ -15,17 +16,17 @@ type UseSchemaValue = {
 type UseSchemaValueParameters = {
   value: MaybeRef<SchemaValue>,
   property: MaybeRefOrGetter<SchemaProperty>,
-  schema?: MaybeRefOrGetter<Schema>,
 }
 
 type UpdateValueResponse = { success: true, value: SchemaValue } | { success: false, message: string }
 
-export function useSchemaValue({ value, property, schema }: UseSchemaValueParameters): UseSchemaValue {
+export function useSchemaValue({ value, property }: UseSchemaValueParameters): UseSchemaValue {
   const currentValue = ref(value)
   const currentKind = ref(getPrefectKindFromValue(toValue(value)))
   const loading = ref(false)
   const api = useWorkspaceApi()
-  const { property: currentProperty } = useSchemaProperty(property, { schema })
+  const { property: currentProperty } = useSchemaProperty(property)
+  const modal = useSchemaPropertyErrorModal()
 
   const kind = computed({
     get() {
@@ -47,8 +48,8 @@ export function useSchemaValue({ value, property, schema }: UseSchemaValueParame
       const response = await updateValue(currentValue.value, currentKind.value, requestedKind)
 
       if (!response.success) {
-        throw 'failed to update value'
-        // show the modal
+        modal.open('hello world')
+        return
       }
 
       currentValue.value = response.value

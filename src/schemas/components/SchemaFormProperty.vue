@@ -34,9 +34,7 @@
         </p>
       </template>
 
-      <keep-alive>
-        <component :is="input.component" v-bind="input.props" />
-      </keep-alive>
+      <component :is="input.component" v-bind="input.props" />
     </fieldset>
   </p-label>
 </template>
@@ -64,10 +62,16 @@
     'update:value': [SchemaValue],
   }>()
 
+  defineSlots<{
+    default: () => unknown,
+  }>()
+
   const error = computed(() => getSchemaPropertyError(props.errors))
+
   const { property, label, description, disabled } = useSchemaProperty(() => props.property, {
     required: () => props.required,
   })
+
   const omitted = ref(false)
   const omittedValue = ref<SchemaValue>(null)
   const omitLabel = computed(() => omitted.value ? 'Include value' : 'Omit value')
@@ -116,7 +120,11 @@
     emit('update:value', property.value.default)
   }
 
-  const { kind } = useSchemaValue({ value, property: () => props.property })
+  const { kind } = useSchemaValue({
+    value,
+    property: () => props.property,
+  })
+
   const { input } = useSchemaPropertyInput(property, value, () => props.errors)
 
   function toggleValue(): void {
