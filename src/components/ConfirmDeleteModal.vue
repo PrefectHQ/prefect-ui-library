@@ -17,7 +17,7 @@
     </span>
     <template #actions>
       <slot name="actions">
-        <p-button dangerous primary @click="handleDeleteClick">
+        <p-button variant="destructive" @click="handleDeleteClick">
           {{ action }}
         </p-button>
       </slot>
