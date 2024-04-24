@@ -19,6 +19,8 @@
       :selected="can.delete.deployment ? selectedDeployments : undefined"
       :data="deployments"
       :columns="columns"
+      :header-classes="columnClasses"
+      :column-classes="columnClasses"
       class="deployment-list__table"
       @update:selected="selectedDeployments = $event"
     >
@@ -31,7 +33,7 @@
       </template>
 
       <template #deployment-name="{ row }">
-        <div class="deployment-list__name-col">
+        <div class="deployment-list__name-column">
           <span class="deployment-list__name">
             <p-link :to="routes.deployment(row.id)">
               {{ row.name }}
@@ -114,7 +116,7 @@
 </template>
 
 <script lang="ts" setup>
-  import { ColumnClassesMethod, TableColumn, media } from '@prefecthq/prefect-design'
+  import { TableColumn, media } from '@prefecthq/prefect-design'
   import { NumberRouteParam, useDebouncedRef, useRouteQueryParam } from '@prefecthq/vue-compositions'
   import { secondsInDay } from 'date-fns/constants'
   import merge from 'lodash.merge'
@@ -133,6 +135,7 @@
   import { useCan, useDeploymentsFilterFromRoute, useWorkspaceRoutes, useDeployments, useComponent } from '@/compositions'
   import { Deployment, isRRuleSchedule, Schedule } from '@/models'
   import { DeploymentsFilter } from '@/models/Filters'
+  import { ClassValue } from '@/types'
   import { deploymentSortOptions } from '@/types/SortOptionTypes'
   import { formatDateTimeNumeric } from '@/utilities/dates'
 
@@ -173,7 +176,7 @@
     {
       label: 'Status',
       property: 'status',
-      maxWidth: 'min-content',
+      maxWidth: '8px',
     },
     {
       property: 'name',
@@ -197,13 +200,13 @@
     },
   ]
 
-  // const headerClasses: HeaderClassesMethod<Deployment> = (column) => {
-  //   if (column.property === 'status') {
-  //     return ['deployment-list__status-column']
-  //   }
+  const columnClasses = (column: TableColumn<Deployment>): ClassValue => {
+    if (column.property === 'status') {
+      return ['deployment-list__status-column']
+    }
 
-  //   return []
-  // }
+    return []
+  }
 
   const selectedDeployments = ref<Deployment[]>([])
 
@@ -224,12 +227,13 @@
 
 <style>
 .deployment-list__activity-chart { @apply
-  h-12
+  h-8
   w-20
 }
 
 .deployment-list__status-column { @apply
   p-0
+  w-2
 }
 
 .deployment-list__action { @apply
@@ -237,7 +241,7 @@
   whitespace-nowrap
 }
 
-.deployment-list__name-col { @apply
+.deployment-list__name-column { @apply
   flex
   flex-col
 }
