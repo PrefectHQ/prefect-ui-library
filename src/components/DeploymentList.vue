@@ -32,17 +32,23 @@
         <DeploymentStatusIcon :status="row.status" />
       </template>
 
-      <template #deployment-name="{ row }">
-        <div class="deployment-list__name-column">
+      <template #deployment="{ row }">
+        <div class="deployment-list__deployment">
           <span class="deployment-list__name">
             <p-link :to="routes.deployment(row.id)">
               {{ row.name }}
             </p-link>
           </span>
-          <span class="deployment-list__created-date">Created {{ formatDateTimeNumeric(row.created) }}</span>
         </div>
       </template>
 
+      <template #updated="{ row }">
+        <RichTimestamp :timestamp="row.updated" class="deployment-list__timestamp" />
+      </template>
+
+      <template #created="{ row }">
+        <RichTimestamp :timestamp="row.created" class="deployment-list__timestamp" />
+      </template>
 
       <template #schedule="{ row }">
         <div class="deployment-list__schedules">
@@ -105,7 +111,7 @@
         </PEmptyResults>
         <PEmptyResults v-else>
           <template #message>
-            Loading...
+            <p-loading-icon />
           </template>
         </PEmptyResults>
       </template>
@@ -132,12 +138,12 @@
     DeploymentStatusIcon,
     DeploymentToggle
   } from '@/components'
+  import RichTimestamp from '@/components/RichTimestamp.vue'
   import { useCan, useDeploymentsFilterFromRoute, useWorkspaceRoutes, useDeployments, useComponent } from '@/compositions'
   import { Deployment, isRRuleSchedule, Schedule } from '@/models'
   import { DeploymentsFilter } from '@/models/Filters'
   import { ClassValue } from '@/types'
   import { deploymentSortOptions } from '@/types/SortOptionTypes'
-  import { formatDateTimeNumeric } from '@/utilities/dates'
 
   const props = defineProps<{
     filter?: DeploymentsFilter,
@@ -179,17 +185,26 @@
       maxWidth: '8px',
     },
     {
-      property: 'name',
       label: 'Deployment',
     },
     {
       label: 'Schedule',
+      property: 'schedules',
       visible: media.md,
     },
     {
       label: 'Tags',
+      property: 'tags',
       visible: media.md,
       maxWidth: '20rem',
+    },
+    {
+      label: 'Updated',
+      property: 'updated',
+    },
+    {
+      label: 'Created',
+      property: 'created',
     },
     {
       label: 'Activity',
@@ -200,13 +215,7 @@
     },
   ]
 
-  const columnClasses = (column: TableColumn<Deployment>): ClassValue => {
-    if (column.property === 'status') {
-      return ['deployment-list__status-column']
-    }
-
-    return []
-  }
+  const columnClasses = (column: TableColumn<Deployment>): ClassValue => [`deployment-list__${column.property}-column`]
 
   const selectedDeployments = ref<Deployment[]>([])
 
@@ -231,26 +240,19 @@
   w-20
 }
 
-.deployment-list__status-column { @apply
-  p-0
-  w-2
-}
-
 .deployment-list__action { @apply
   text-right
   whitespace-nowrap
 }
 
-.deployment-list__name-column { @apply
+.deployment-list__deployment { @apply
   flex
   flex-col
+  gap-0.5
 }
 
-.deployment-list__name { @apply
-  inline-flex
-  items-center
-  gap-x-1
-  font-medium
+.deployment-list__timestamp { @apply
+  text-subdued
 }
 
 .deployment-list__schedules { @apply
