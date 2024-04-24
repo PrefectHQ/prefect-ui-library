@@ -66,7 +66,6 @@
   })
 
   async function updateValue(value: unknown): Promise<void> {
-    // if its a prefect kind value like workspace_variable or json we don't need to do anything
     if (isPrefectKindValue(value)) {
       emit('update:value', value)
       return
