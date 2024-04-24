@@ -19,21 +19,21 @@
   import { formatDateTimeRelative, formatDateTimeNumeric } from '@/utilities'
 
   const props = defineProps<{
-    timestamp: Date | number | string,
+    date: Date | number | string,
     format?: 'relative' | 'numeric',
   }>()
 
   const formattedText = computed(() => {
-    const normalizedDate = new Date(props.timestamp)
+    const normalizedDate = new Date(props.date)
 
     if (normalizedDate.toString() === 'Invalid Date') {
-      console.warn('Invalid date provided to FormattedDate:', props.timestamp)
-      return props.timestamp
+      console.warn('Invalid date provided to FormattedDate:', props.date)
+      return props.date
     }
 
     if (normalizedDate.getFullYear() < 2000) {
-      console.warn('Suspiciously old date provided to FormattedDate:', props.timestamp)
-      return props.timestamp
+      console.warn('Suspiciously old date provided to FormattedDate:', props.date)
+      return props.date
     }
 
     switch (props.format) {
