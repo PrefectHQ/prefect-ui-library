@@ -16,27 +16,31 @@
     </p-list-header>
 
     <p-table :selected="can.delete.deployment ? selectedDeployments : undefined" :data="deployments" :columns="columns" class="deployments-list__table" @update:selected="selectedDeployments = $event">
+      <template #status-heading>
+        <span />
+      </template>
+
+      <template #status="{ row }">
+        <DeploymentStatusIcon :status="row.status" />
+      </template>
+
       <template #deployment-name="{ row }">
         <div class="deployment-list__name-col">
           <span class="deployment-list__name">
             <p-link :to="routes.deployment(row.id)">
               {{ row.name }}
             </p-link>
-            <DeploymentStatusIcon :status="row.status" />
           </span>
           <span class="deployment-list__created-date">Created {{ formatDateTimeNumeric(row.created) }}</span>
         </div>
       </template>
 
-      <template #flow-name="{ row }">
-        <FlowRouterLink :flow-id="row.flowId" class="deployments-list__flow-name" />
-      </template>
 
       <template #schedule="{ row }">
         <div class="deployment-list__schedules">
           <template v-for="schedule in row.schedules" :key="schedule.id">
             <p-tooltip :text="getReadableSchedule(schedule?.schedule, true)">
-              <p-tag class="deployment-list__schedule">
+              <p-tag class="deployment-list__schedule" small>
                 {{ getReadableSchedule(schedule?.schedule) }}
               </p-tag>
             </p-tooltip>
@@ -46,9 +50,7 @@
 
       <template #tags="{ row }">
         <template v-if="row.tags">
-          <div class="deployment-list__tags">
-            <p-tag-wrapper :tags="row.tags" justify="left" />
-          </div>
+          <p-tag-wrapper :tags="row.tags" small justify="left" />
         </template>
       </template>
 
@@ -163,12 +165,13 @@
 
   const columns: TableColumn<Deployment>[] = [
     {
-      property: 'name',
-      label: 'Deployment name',
+      label: 'Status',
+      property: 'status',
+      maxWidth: '4rem',
     },
     {
-      property: 'flowId',
-      label: 'Flow name',
+      property: 'name',
+      label: 'Deployment',
     },
     {
       label: 'Schedule',
@@ -177,6 +180,7 @@
     {
       label: 'Tags',
       visible: media.md,
+      maxWidth: '20rem',
     },
     {
       label: 'Activity',
@@ -238,7 +242,6 @@
 }
 
 .deployment-list__schedule { @apply
-  text-xs
   bg-neutral-500
 }
 
@@ -249,10 +252,5 @@
 
 .deployment-list__menu { @apply
   ml-2
-}
-
-.deployment-list__tags { @apply
-  max-w-80
-  min-w-0
 }
 </style>
