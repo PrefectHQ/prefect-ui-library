@@ -4,7 +4,14 @@
       <div class="schema-form-property__header">
         <span class="schema-form-property__label" :class="classes.label">{{ label }}</span>
 
-        <SchemaFormPropertyMenu v-model:kind="kind" class="ml-auto" :property="property" :disabled="omitted" flat>
+        <SchemaFormPropertyMenu
+          v-model:value="value"
+          v-model:kind="kind"
+          class="ml-auto"
+          :property
+          :disabled="omitted"
+          flat
+        >
           <template v-if="!required" #default>
             <p-overflow-menu-item :label="omitLabel" @click="toggleValue" />
           </template>
@@ -12,7 +19,7 @@
       </div>
     </template>
 
-    <slot />
+    <slot :kind />
 
     <template v-if="description" #description>
       <div class="schema-form-property__description">
