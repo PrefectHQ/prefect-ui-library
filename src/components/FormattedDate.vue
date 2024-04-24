@@ -16,11 +16,11 @@
 
 <script lang="ts" setup>
   import { computed } from 'vue'
-  import { formatDateTimeRelative, formatDateTimeNumeric } from '@/utilities'
+  import { formatDateTimeRelative, formatDateTimeNumeric, formatDate, formatDateTime } from '@/utilities'
 
   const props = defineProps<{
     date: Date | string,
-    format?: 'relative' | 'numeric',
+    format?: 'date' | 'datetime' | 'relative' | 'numeric',
   }>()
 
   const formattedText = computed(() => {
@@ -34,6 +34,10 @@
     switch (props.format) {
       case 'numeric':
         return formatDateTimeNumeric(normalizedDate)
+      case 'date':
+        return formatDate(normalizedDate)
+      case 'datetime':
+        return formatDateTime(normalizedDate)
       case 'relative':
       default:
         return formatDateTimeRelative(normalizedDate)
