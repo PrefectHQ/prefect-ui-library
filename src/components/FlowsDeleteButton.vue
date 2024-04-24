@@ -1,5 +1,5 @@
 <template>
-  <p-button v-if="selected.length > 0" v-bind="attrs" dangerous icon="TrashIcon" @click="open" />
+  <p-button v-if="selected.length > 0" v-bind="attrs" icon="TrashIcon" @click="open" />
   <ConfirmDeleteModal
     v-model:showModal="showModal"
     name="selected flows"

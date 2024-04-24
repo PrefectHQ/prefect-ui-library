@@ -1,6 +1,6 @@
 <template>
   <Transition name="work-pool-queues-delete-button-transition">
-    <p-button v-if="workPoolQueues.length > 0" dangerous icon="TrashIcon" @click="open" />
+    <p-button v-if="workPoolQueues.length > 0" icon="TrashIcon" @click="open" />
   </Transition>
   <ConfirmDeleteModal
     v-model:showModal="showModal"
