@@ -22,7 +22,7 @@
   import { computed, useSlots } from 'vue'
   import { useSchemaFormKinds } from '@/schemas/compositions/useSchemaFormKinds'
   import { SchemaProperty, isSchemaPropertyType } from '@/schemas/types/schema'
-  import { SchemaValue, PrefectKind, isPrefectKindJson, PrefectKindJson } from '@/schemas/types/schemaValues'
+  import { SchemaValue, PrefectKind, isPrefectKindJson, PrefectKindJson, isPrefectKindWorkspaceVariable, isPrefectKindJinja } from '@/schemas/types/schemaValues'
   import { isNullish, stringify } from '@/utilities'
 
   const kind = defineModel<PrefectKind>('kind', { required: true })
@@ -53,6 +53,10 @@
   const showUseDefault = computed(() => {
     if (!isDefined(props.property.default)) {
       return false
+    }
+
+    if (isPrefectKindWorkspaceVariable(value.value) || isPrefectKindJinja(value.value)) {
+      return true
     }
 
     if (isPrefectKindJson(value.value)) {
