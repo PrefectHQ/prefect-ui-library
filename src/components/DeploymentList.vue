@@ -1,5 +1,5 @@
 <template>
-  <div class="deployments-list">
+  <p-content class="deployment-list">
     <p-list-header sticky>
       <ResultsCount v-if="selectedDeployments.length == 0" label="Deployment" :count="total" />
       <SelectedCount v-else :count="selectedDeployments.length" />
@@ -15,16 +15,94 @@
       </template>
     </p-list-header>
 
-    <template v-for="deployment in deployments" :key="deployment.id">
-      <div class="deployments-list__item">
-        {{ deployment.name }}
+    <p-table :selected="can.delete.deployment ? selectedDeployments : undefined" :data="deployments" :columns="columns" class="deployments-list__table" @update:selected="selectedDeployments = $event">
+      <template #deployment-name="{ row }">
+        <div class="deployment-list__name-col">
+          <span class="deployment-list__name">
+            <p-link :to="routes.deployment(row.id)">
+              {{ row.name }}
+            </p-link>
+            <DeploymentStatusIcon :status="row.status" />
+          </span>
+          <span class="deployment-list__created-date">Created {{ formatDateTimeNumeric(row.created) }}</span>
+        </div>
+      </template>
 
-        <FlowTag :id="deployment.flowId" />
-      </div>
-    </template>
+      <template #flow-name="{ row }">
+        <FlowRouterLink :flow-id="row.flowId" class="deployments-list__flow-name" />
+      </template>
+
+      <template #schedule="{ row }">
+        <div class="deployment-list__schedules">
+          <template v-for="schedule in row.schedules" :key="schedule.id">
+            <p-tooltip :text="getReadableSchedule(schedule?.schedule, true)">
+              <p-tag class="deployment-list__schedule">
+                {{ getReadableSchedule(schedule?.schedule) }}
+              </p-tag>
+            </p-tooltip>
+          </template>
+        </div>
+      </template>
+
+      <template #tags="{ row }">
+        <template v-if="row.tags">
+          <div class="deployment-list__tags">
+            <p-tag-wrapper :tags="row.tags" justify="left" />
+          </div>
+        </template>
+      </template>
+
+      <template #applied-by="{ row }">
+        {{ row.appliedBy }}
+      </template>
+
+      <template #activity="{ row }">
+        <MiniDeploymentHistory
+          class="deployment-list__activity-chart"
+          :deployment-id="row.id"
+          :time-span-in-seconds="secondsInDay"
+        />
+      </template>
+
+      <template #action-heading>
+        <span />
+      </template>
+
+      <template #action="{ row }">
+        <div class="deployment-list__action">
+          <DeploymentToggle :deployment="row" @update="refresh" />
+          <DeploymentMenu
+            class="deployment-list__menu"
+            size="xs"
+            show-all
+            :deployment="row"
+            flat
+            @delete="refresh"
+          />
+        </div>
+      </template>
+
+      <template #empty-state>
+        <PEmptyResults v-if="subscriptions.executed">
+          <template #message>
+            No deployments
+          </template>
+          <template v-if="isCustomFilter" #actions>
+            <p-button small @click="clear">
+              Clear Filters
+            </p-button>
+          </template>
+        </PEmptyResults>
+        <PEmptyResults v-else>
+          <template #message>
+            Loading...
+          </template>
+        </PEmptyResults>
+      </template>
+    </p-table>
 
     <p-pager v-if="pages > 1" v-model:page="page" :pages="pages" />
-  </div>
+  </p-content>
 </template>
 
 <script lang="ts" setup>
@@ -44,7 +122,6 @@
     DeploymentStatusIcon,
     DeploymentToggle
   } from '@/components'
-  import FlowTag from '@/components/FlowTag.vue'
   import { useCan, useDeploymentsFilterFromRoute, useWorkspaceRoutes, useDeployments, useComponent } from '@/compositions'
   import { Deployment, isRRuleSchedule, Schedule } from '@/models'
   import { DeploymentsFilter } from '@/models/Filters'
@@ -128,17 +205,54 @@
 </script>
 
 <style>
-.deployments-list__item { @apply
-  py-4
-  pl-8
-  pr-4
-  relative
-  text-sm
-  grid
-  gap-3
-  border-b
-  border-b-divider
-  transition-colors
+.deployment-list__activity-chart { @apply
+  h-12
+  w-20
+}
+
+.deployments-list__table .p-table-data { @apply
+  whitespace-normal
+}
+
+.deployment-list__action { @apply
+  text-right
+  whitespace-nowrap
+}
+
+.deployment-list__name-col { @apply
+  flex
+  flex-col
+}
+
+.deployment-list__name { @apply
+  inline-flex
   items-center
+  gap-x-1
+  font-medium
+}
+
+.deployment-list__schedules { @apply
+  flex
+  flex-col
+  gap-0.5
+}
+
+.deployment-list__schedule { @apply
+  text-xs
+  bg-neutral-500
+}
+
+.deployment-list__created-date { @apply
+  text-subdued
+  text-xs
+}
+
+.deployment-list__menu { @apply
+  ml-2
+}
+
+.deployment-list__tags { @apply
+  max-w-80
+  min-w-0
 }
 </style>

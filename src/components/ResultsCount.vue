@@ -18,7 +18,8 @@
 <style>
 .results-count { @apply
   text-subdued
-  text-base
+  text-sm
   whitespace-nowrap
+  font-mono
 }
 </style>
