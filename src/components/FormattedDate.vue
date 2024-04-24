@@ -19,7 +19,7 @@
   import { formatDateTimeRelative, formatDateTimeNumeric } from '@/utilities'
 
   const props = defineProps<{
-    date: Date | number | string,
+    date: Date | string,
     format?: 'relative' | 'numeric',
   }>()
 
@@ -28,11 +28,6 @@
 
     if (normalizedDate.toString() === 'Invalid Date') {
       console.warn('Invalid date provided to FormattedDate:', props.date)
-      return props.date
-    }
-
-    if (normalizedDate.getFullYear() < 2000) {
-      console.warn('Suspiciously old date provided to FormattedDate:', props.date)
       return props.date
     }
 
