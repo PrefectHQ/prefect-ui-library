@@ -3,7 +3,7 @@
     <template v-if="label">
       <p-label for="search" :label="label" class="search__label" />
     </template>
-    <p-text-input v-model="internalValue" type="search" :placeholder="placeholder" class="search__input">
+    <p-text-input v-model="internalValue" type="search" :small="small" :placeholder="placeholder" class="search__input">
       <template #prepend>
         <p-icon icon="MagnifyingGlassIcon" class="search__icon" />
       </template>
@@ -19,6 +19,7 @@
     modelValue: string | null | undefined,
     placeholder?: string,
     label?: string,
+    small?: boolean,
   }>(), {
     placeholder: 'Search...',
     label: undefined,

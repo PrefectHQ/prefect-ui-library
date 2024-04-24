@@ -6,16 +6,22 @@
       <DeploymentsDeleteButton v-if="can.delete.deployment" :selected="selectedDeployments.map(deployment => deployment.id)" small @delete="deleteDeployments" />
 
       <template #controls>
-        <SearchInput v-model="deploymentNameLike" placeholder="Deployment names" label="Search deployments" />
-        <DeploymentTagsInput v-model:selected="filter.deployments.tags.name" multiple />
+        <SearchInput v-model="deploymentNameLike" small placeholder="Deployment names" label="Search deployments" />
+        <DeploymentTagsInput v-model:selected="filter.deployments.tags.name" small multiple />
       </template>
 
       <template #sort>
-        <p-select v-model="filter.sort" :options="deploymentSortOptions" />
+        <p-select v-model="filter.sort" small :options="deploymentSortOptions" />
       </template>
     </p-list-header>
 
-    <p-table :selected="can.delete.deployment ? selectedDeployments : undefined" :data="deployments" :columns="columns" class="deployments-list__table" @update:selected="selectedDeployments = $event">
+    <p-table
+      :selected="can.delete.deployment ? selectedDeployments : undefined"
+      :data="deployments"
+      :columns="columns"
+      class="deployment-list__table"
+      @update:selected="selectedDeployments = $event"
+    >
       <template #status-heading>
         <span />
       </template>
@@ -75,7 +81,7 @@
           <DeploymentToggle :deployment="row" @update="refresh" />
           <DeploymentMenu
             class="deployment-list__menu"
-            size="xs"
+            small
             show-all
             :deployment="row"
             flat
@@ -108,7 +114,7 @@
 </template>
 
 <script lang="ts" setup>
-  import { TableColumn, media } from '@prefecthq/prefect-design'
+  import { ColumnClassesMethod, TableColumn, media } from '@prefecthq/prefect-design'
   import { NumberRouteParam, useDebouncedRef, useRouteQueryParam } from '@prefecthq/vue-compositions'
   import { secondsInDay } from 'date-fns/constants'
   import merge from 'lodash.merge'
@@ -167,7 +173,7 @@
     {
       label: 'Status',
       property: 'status',
-      maxWidth: '4rem',
+      maxWidth: 'min-content',
     },
     {
       property: 'name',
@@ -190,6 +196,14 @@
       label: 'Action',
     },
   ]
+
+  // const headerClasses: HeaderClassesMethod<Deployment> = (column) => {
+  //   if (column.property === 'status') {
+  //     return ['deployment-list__status-column']
+  //   }
+
+  //   return []
+  // }
 
   const selectedDeployments = ref<Deployment[]>([])
 
@@ -214,8 +228,8 @@
   w-20
 }
 
-.deployments-list__table .p-table-data { @apply
-  whitespace-normal
+.deployment-list__status-column { @apply
+  p-0
 }
 
 .deployment-list__action { @apply
@@ -242,7 +256,7 @@
 }
 
 .deployment-list__schedule { @apply
-  bg-neutral-500
+  bg-sentiment-neutral
 }
 
 .deployment-list__created-date { @apply

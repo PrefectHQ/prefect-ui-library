@@ -1,6 +1,6 @@
 <template>
   <span v-if="isNumber(count)" class="selected-count">
-    {{ count }} {{ composedLabel }} Selected
+    {{ count }} {{ composedLabel }} selected
   </span>
 </template>
 
@@ -26,6 +26,8 @@
 <style>
 .selected-count { @apply
   text-subdued
-  text-base
+  text-sm
+  whitespace-nowrap
+  font-mono
 }
 </style>
