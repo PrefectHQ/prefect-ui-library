@@ -1,5 +1,5 @@
 <template>
-  <p-tooltip class="rich-timestamp" :disabled="tooltipDisabled">
+  <p-tooltip class="rich-timestamp">
     <template #content>
       <slot>
         <div class="rich-timestamp__tooltip">
@@ -21,10 +21,7 @@
   const props = defineProps<{
     timestamp?: Date | number | null | undefined | string,
     format?: 'relative' | 'approximate' | 'numeric',
-    disabled?: boolean,
   }>()
-
-  const tooltipDisabled = computed(() => props.disabled)
 
   const formattedText = computed(() => {
     if (isDate(props.timestamp)) {
