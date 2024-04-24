@@ -15,91 +15,15 @@
       </template>
     </p-list-header>
 
-    <p-table :selected="can.delete.deployment ? selectedDeployments : undefined" :data="deployments" :columns="columns" class="deployments-list__table" @update:selected="selectedDeployments = $event">
-      <template #deployment-name="{ row }">
-        <div class="deployment-list__name-col">
-          <span class="deployment-list__name">
-            <p-link :to="routes.deployment(row.id)">
-              {{ row.name }}
-            </p-link>
-            <DeploymentStatusIcon :status="row.status" />
-          </span>
-          <span class="deployment-list__created-date">Created {{ formatDateTimeNumeric(row.created) }}</span>
+    <template v-for="deployment in deployments" :key="deployment.id">
+      <div class="deployment-list__deployment">
+        {{ deployment.name }}
+
+        <div class="deployment-list__deployment__flow">
+          <FlowTag :id="deployment.flowId" />
         </div>
-      </template>
-
-      <template #flow-name="{ row }">
-        <FlowRouterLink :flow-id="row.flowId" class="deployments-list__flow-name" />
-      </template>
-
-      <template #schedule="{ row }">
-        <div class="deployment-list__schedules">
-          <template v-for="schedule in row.schedules" :key="schedule.id">
-            <p-tooltip :text="getReadableSchedule(schedule?.schedule, true)">
-              <div class="p-background deployments-list__schedule">
-                {{ getReadableSchedule(schedule?.schedule) }}
-              </div>
-            </p-tooltip>
-          </template>
-        </div>
-      </template>
-
-      <template #tags="{ row }">
-        <template v-if="row.tags">
-          <div class="deployment-list__tags">
-            <p-tag-wrapper :tags="row.tags" justify="left" />
-          </div>
-        </template>
-      </template>
-
-      <template #applied-by="{ row }">
-        {{ row.appliedBy }}
-      </template>
-
-      <template #activity="{ row }">
-        <MiniDeploymentHistory
-          class="deployment-list__activity-chart"
-          :deployment-id="row.id"
-          :time-span-in-seconds="secondsInDay"
-        />
-      </template>
-
-      <template #action-heading>
-        <span />
-      </template>
-
-      <template #action="{ row }">
-        <div class="deployment-list__action">
-          <DeploymentToggle :deployment="row" @update="refresh" />
-          <DeploymentMenu
-            class="deployment-list__menu"
-            size="xs"
-            show-all
-            :deployment="row"
-            flat
-            @delete="refresh"
-          />
-        </div>
-      </template>
-
-      <template #empty-state>
-        <PEmptyResults v-if="subscriptions.executed">
-          <template #message>
-            No deployments
-          </template>
-          <template v-if="isCustomFilter" #actions>
-            <p-button small @click="clear">
-              Clear Filters
-            </p-button>
-          </template>
-        </PEmptyResults>
-        <PEmptyResults v-else>
-          <template #message>
-            Loading...
-          </template>
-        </PEmptyResults>
-      </template>
-    </p-table>
+      </div>
+    </template>
 
     <p-pager v-if="pages > 1" v-model:page="page" :pages="pages" />
   </p-content>
@@ -122,6 +46,7 @@
     DeploymentStatusIcon,
     DeploymentToggle
   } from '@/components'
+  import FlowTag from '@/components/FlowTag.vue'
   import { useCan, useDeploymentsFilterFromRoute, useWorkspaceRoutes, useDeployments, useComponent } from '@/compositions'
   import { Deployment, isRRuleSchedule, Schedule } from '@/models'
   import { DeploymentsFilter } from '@/models/Filters'

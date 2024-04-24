@@ -6,7 +6,7 @@
       </span>
     </slot>
     <p-link class="flow-router-link__anchor" :to="routes.flow(flowId)">
-      {{ flowName }}
+      <slot>{{ flowName }}</slot>
     </p-link>
     <slot name="after">
       <span v-if="after">
