@@ -43,11 +43,11 @@
       </template>
 
       <template #updated="{ row }">
-        <RichTimestamp :timestamp="row.updated" class="deployment-list__timestamp" />
+        <FormattedDate :date="row.updated" class="deployment-list__timestamp" />
       </template>
 
       <template #created="{ row }">
-        <RichTimestamp :timestamp="row.created" class="deployment-list__timestamp" />
+        <FormattedDate :date="row.created" class="deployment-list__timestamp" />
       </template>
 
       <template #schedule="{ row }">
@@ -136,9 +136,9 @@
     SelectedCount,
     DeploymentTagsInput,
     DeploymentStatusIcon,
-    DeploymentToggle
+    DeploymentToggle,
+    FormattedDate
   } from '@/components'
-  import RichTimestamp from '@/components/RichTimestamp.vue'
   import { useCan, useDeploymentsFilterFromRoute, useWorkspaceRoutes, useDeployments, useComponent } from '@/compositions'
   import { Deployment, isRRuleSchedule, Schedule } from '@/models'
   import { DeploymentsFilter } from '@/models/Filters'
