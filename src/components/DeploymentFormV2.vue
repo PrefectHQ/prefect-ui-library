@@ -82,8 +82,8 @@
   import { localization } from '@/localization'
   import { Deployment, DeploymentUpdateV2 } from '@/models'
   import { SchemaInputV2 } from '@/schemas'
-  import { usePrefectKind } from '@/schemas/compositions/usePrefectKind'
   import { useSchemaValidation } from '@/schemas/compositions/useSchemaValidation'
+  import { useSchemaValue } from '@/schemas/compositions/useSchemaValue'
   import { stringify, isJson } from '@/utilities'
 
   const props = defineProps<{
@@ -99,11 +99,12 @@
   const infrastructureOverrides = ref(stringify(props.deployment.infrastructureOverrides))
   const enforceParameterSchema = ref(props.deployment.enforceParameterSchema)
   const shouldValidateParameters = ref(true)
-  const { kind } = usePrefectKind(parameters)
 
   const schema = computed(() => {
     return { ...props.deployment.parameterOpenApiSchemaV2, required: [] }
   })
+
+  const { kind } = useSchemaValue({ value: parameters, property: schema })
 
   const { validate } = useValidationObserver()
   const { errors, validate: validateParameters } = useSchemaValidation(schema, parameters)
