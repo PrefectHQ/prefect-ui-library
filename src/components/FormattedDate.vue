@@ -3,7 +3,7 @@
     <template #content>
       <slot>
         <div class="formatted-date__tooltip">
-          {{ timestamp }}
+          {{ date }}
         </div>
       </slot>
     </template>
