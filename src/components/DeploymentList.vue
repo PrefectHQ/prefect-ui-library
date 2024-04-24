@@ -135,12 +135,11 @@
   import { secondsInDay } from 'date-fns/constants'
   import { snakeCase } from 'lodash'
   import merge from 'lodash.merge'
-  import { ref } from 'vue'
+  import { computed, ref } from 'vue'
   import {
     DeploymentsDeleteButton,
     ResultsCount,
     SearchInput,
-    FlowRouterLink,
     FlowPopover,
     MiniDeploymentHistory,
     SelectedCount,
@@ -188,7 +187,7 @@
     interval: 30000,
   })
 
-  const columns: TableColumn<Deployment>[] = [
+  const columns = computed<TableColumn<Deployment>[]>(() => [
     {
       label: 'Deployment',
     },
@@ -218,7 +217,7 @@
       label: 'Action',
       width: '82px',
     },
-  ]
+  ])
 
   const columnClasses = (column: TableColumn<Deployment>): ClassValue => [`deployment-list__${snakeCase(column.label)}-column`]
 
