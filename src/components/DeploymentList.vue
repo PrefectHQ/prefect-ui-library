@@ -24,12 +24,15 @@
       class="deployment-list__table"
       @update:selected="selectedDeployments = $event"
     >
-      <template #status-heading>
+      <!--
+        <template #status-heading>
         <span />
-      </template>
+        </template>
+      -->
 
       <template #status="{ row }">
-        <DeploymentStatusIcon :status="row.status" />
+        <!-- <DeploymentStatusIcon :status="row.status" /> -->
+        <DeploymentStatusBadge :deployment="row" small />
       </template>
 
       <template #deployment="{ row }">
@@ -137,7 +140,8 @@
     DeploymentTagsInput,
     DeploymentStatusIcon,
     DeploymentToggle,
-    FormattedDate
+    FormattedDate,
+    DeploymentStatusBadge
   } from '@/components'
   import { useCan, useDeploymentsFilterFromRoute, useWorkspaceRoutes, useDeployments, useComponent } from '@/compositions'
   import { Deployment, isRRuleSchedule, Schedule } from '@/models'
@@ -180,12 +184,12 @@
 
   const columns: TableColumn<Deployment>[] = [
     {
-      label: 'Status',
-      property: 'status',
-      maxWidth: '8px',
+      label: 'Deployment',
+      maxWidth: '20rem',
     },
     {
-      label: 'Deployment',
+      label: 'Status',
+      property: 'status',
     },
     {
       label: 'Schedule',
@@ -215,7 +219,7 @@
     },
   ]
 
-  const columnClasses = (column: TableColumn<Deployment>): ClassValue => [`deployment-list__${column.property}-column`]
+  const columnClasses = (column: TableColumn<Deployment>): ClassValue => column.property ? [`deployment-list__${column.property}-column`] : []
 
   const selectedDeployments = ref<Deployment[]>([])
 
