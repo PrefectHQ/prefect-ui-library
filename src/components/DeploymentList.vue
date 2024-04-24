@@ -28,6 +28,22 @@
         <DeploymentStatusBadge :deployment="row" small />
       </template>
 
+      <template #schedules-heading="{ column }">
+        <div class="deployment-list__schedules-heading">
+          {{ column.label }}
+        </div>
+      </template>
+
+      <template #tags-heading="{ column }">
+        <div class="deployment-list__tags-heading">
+          {{ column.label }}
+        </div>
+      </template>
+
+      <template #action-heading>
+        <span />
+      </template>
+
       <template #deployment="{ row }">
         <div class="deployment-list__deployment">
           <div class="deployment-list__name">
@@ -48,9 +64,9 @@
         <FormattedDate :date="row.created" class="deployment-list__timestamp" />
       </template>
 
-      <template #schedule="{ row }">
+      <template #schedules="{ row }">
         <div class="deployment-list__schedules">
-          <p-tag-wrapper small justify="left">
+          <p-tag-wrapper small justify="right">
             <template v-for="schedule in row.schedules" :key="schedule.id">
               <p-tooltip :text="getReadableSchedule(schedule?.schedule, true)">
                 <p-tag class="deployment-list__schedule" small>
@@ -64,12 +80,8 @@
 
       <template #tags="{ row }">
         <template v-if="row.tags">
-          <p-tag-wrapper :tags="row.tags" small justify="left" />
+          <p-tag-wrapper :tags="row.tags" small justify="right" />
         </template>
-      </template>
-
-      <template #applied-by="{ row }">
-        {{ row.appliedBy }}
       </template>
 
       <template #activity="{ row }">
@@ -78,10 +90,6 @@
           :deployment-id="row.id"
           :time-span-in-seconds="secondsInDay"
         />
-      </template>
-
-      <template #action-heading>
-        <span />
       </template>
 
       <template #action="{ row }">
@@ -183,33 +191,32 @@
   const columns: TableColumn<Deployment>[] = [
     {
       label: 'Deployment',
-      width: 'calc(30% - 100px)',
     },
     {
       label: 'Status',
       property: 'status',
-      width: '100px',
+      width: '116px',
     },
     {
       label: 'Activity',
-      visible: media.md,
-      maxWidth: '20%',
-    },
-    {
-      label: 'Schedule',
-      property: 'schedules',
-      visible: media.md,
+      visible: media.lg,
       maxWidth: '15%',
     },
     {
       label: 'Tags',
       property: 'tags',
       visible: media.md,
-      maxWidth: '20%',
+      maxWidth: '15%',
+    },
+    {
+      label: 'Schedules',
+      property: 'schedules',
+      visible: media.md,
+      maxWidth: '15%',
     },
     {
       label: 'Action',
-      maxWidth: '10%',
+      width: '82px',
     },
   ]
 
@@ -238,8 +245,7 @@
   w-full
 }
 
-.deployment-list__status-column,
-.deployment-list__activity-column,
+.deployment-list__action-column,
 .deployment-list__table .p-table__checkbox-cell { @apply
   box-content
 }
@@ -257,6 +263,7 @@
 .deployment-list__action { @apply
   text-right
   whitespace-nowrap
+  w-min
 }
 
 .deployment-list__deployment { @apply
@@ -285,6 +292,11 @@
 .deployment-list__name { @apply
   max-w-full
   truncate
+}
+
+.deployment-list__schedules-heading,
+.deployment-list__tags-heading { @apply
+  text-right
 }
 
 .deployment-list__flow-name { @apply
