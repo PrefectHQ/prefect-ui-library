@@ -6,7 +6,7 @@
       <DeploymentsDeleteButton v-if="can.delete.deployment" :selected="selectedDeployments.map(deployment => deployment.id)" small @delete="deleteDeployments" />
 
       <template #controls>
-        <SearchInput v-model="deploymentNameLike" small placeholder="Deployment names" label="Search deployments" />
+        <SearchInput v-model="deploymentNameLike" small placeholder="Search deployment names..." class="deployment-list__search-input" label="Search deployments" />
         <DeploymentTagsInput v-model:selected="filter.deployments.tags.name" small multiple />
       </template>
 
@@ -24,24 +24,19 @@
       class="deployment-list__table"
       @update:selected="selectedDeployments = $event"
     >
-      <!--
-        <template #status-heading>
-        <span />
-        </template>
-      -->
-
       <template #status="{ row }">
-        <!-- <DeploymentStatusIcon :status="row.status" /> -->
         <DeploymentStatusBadge :deployment="row" small />
       </template>
 
       <template #deployment="{ row }">
         <div class="deployment-list__deployment">
-          <span class="deployment-list__name">
+          <div class="deployment-list__name">
             <p-link :to="routes.deployment(row.id)">
               {{ row.name }}
             </p-link>
-          </span>
+          </div>
+
+          <FlowPopover :flow-id="row.flowId" class="deployment-list__flow-name" />
         </div>
       </template>
 
@@ -135,10 +130,10 @@
     ResultsCount,
     SearchInput,
     FlowRouterLink,
+    FlowPopover,
     MiniDeploymentHistory,
     SelectedCount,
     DeploymentTagsInput,
-    DeploymentStatusIcon,
     DeploymentToggle,
     FormattedDate,
     DeploymentStatusBadge
@@ -185,37 +180,33 @@
   const columns: TableColumn<Deployment>[] = [
     {
       label: 'Deployment',
-      maxWidth: '20rem',
+      width: 'calc(30% - 100px)',
     },
     {
       label: 'Status',
       property: 'status',
+      maxWidth: '100px',
+    },
+    {
+      label: 'Activity',
+      visible: media.md,
+      maxWidth: '20%',
     },
     {
       label: 'Schedule',
       property: 'schedules',
       visible: media.md,
+      maxWidth: '15%',
     },
     {
       label: 'Tags',
       property: 'tags',
       visible: media.md,
-      maxWidth: '20rem',
-    },
-    {
-      label: 'Updated',
-      property: 'updated',
-    },
-    {
-      label: 'Created',
-      property: 'created',
-    },
-    {
-      label: 'Activity',
-      visible: media.md,
+      maxWidth: '20%',
     },
     {
       label: 'Action',
+      maxWidth: '10%',
     },
   ]
 
@@ -239,9 +230,22 @@
 </script>
 
 <style>
+.deployment-list__table .p-table__table { @apply
+  table-fixed
+  w-full
+}
+
+.deployment-list__table .p-table__checkbox-cell { @apply
+  box-content
+}
+
 .deployment-list__activity-chart { @apply
   h-8
   w-20
+}
+
+.deployment-list__search-input { @apply
+  w-64
 }
 
 .deployment-list__action { @apply
@@ -253,6 +257,8 @@
   flex
   flex-col
   gap-0.5
+  min-w-0
+  max-w-full
 }
 
 .deployment-list__timestamp { @apply
@@ -267,6 +273,17 @@
 
 .deployment-list__schedule { @apply
   bg-sentiment-neutral
+}
+
+.deployment-list__flow-name,
+.deployment-list__name { @apply
+  max-w-full
+  truncate
+}
+
+.deployment-list__flow-name { @apply
+  text-subdued
+  text-xs
 }
 
 .deployment-list__created-date { @apply

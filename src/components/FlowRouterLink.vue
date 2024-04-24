@@ -48,8 +48,15 @@
 </script>
 
 <style>
-  .flow-router-link { @apply
-    inline-flex
-    items-center
-  }
+.flow-router-link { @apply
+  inline-flex
+  items-center
+  max-w-full
+}
+
+.flow-router-link__anchor { @apply
+  text-default
+  max-w-full
+  truncate
+}
 </style>
