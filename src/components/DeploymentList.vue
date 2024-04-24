@@ -50,13 +50,15 @@
 
       <template #schedule="{ row }">
         <div class="deployment-list__schedules">
-          <template v-for="schedule in row.schedules" :key="schedule.id">
-            <p-tooltip :text="getReadableSchedule(schedule?.schedule, true)">
-              <p-tag class="deployment-list__schedule" small>
-                {{ getReadableSchedule(schedule?.schedule) }}
-              </p-tag>
-            </p-tooltip>
-          </template>
+          <p-tag-wrapper small justify="left">
+            <template v-for="schedule in row.schedules" :key="schedule.id">
+              <p-tooltip :text="getReadableSchedule(schedule?.schedule, true)">
+                <p-tag class="deployment-list__schedule" small>
+                  {{ getReadableSchedule(schedule?.schedule) }}
+                </p-tag>
+              </p-tooltip>
+            </template>
+          </p-tag-wrapper>
         </div>
       </template>
 
@@ -123,6 +125,7 @@
   import { TableColumn, media } from '@prefecthq/prefect-design'
   import { NumberRouteParam, useDebouncedRef, useRouteQueryParam } from '@prefecthq/vue-compositions'
   import { secondsInDay } from 'date-fns/constants'
+  import { snakeCase } from 'lodash'
   import merge from 'lodash.merge'
   import { ref } from 'vue'
   import {
@@ -185,7 +188,7 @@
     {
       label: 'Status',
       property: 'status',
-      maxWidth: '100px',
+      width: '100px',
     },
     {
       label: 'Activity',
@@ -210,7 +213,7 @@
     },
   ]
 
-  const columnClasses = (column: TableColumn<Deployment>): ClassValue => column.property ? [`deployment-list__${column.property}-column`] : []
+  const columnClasses = (column: TableColumn<Deployment>): ClassValue => [`deployment-list__${snakeCase(column.label)}-column`]
 
   const selectedDeployments = ref<Deployment[]>([])
 
@@ -235,13 +238,16 @@
   w-full
 }
 
+.deployment-list__status-column,
+.deployment-list__activity-column,
 .deployment-list__table .p-table__checkbox-cell { @apply
   box-content
 }
 
 .deployment-list__activity-chart { @apply
   h-8
-  w-20
+  pr-4
+  w-full
 }
 
 .deployment-list__search-input { @apply
