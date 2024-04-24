@@ -11,7 +11,7 @@
     </div>
 
     <template #actions>
-      <p-button dangerous primary @click="cancel">
+      <p-button variant="destructive" @click="cancel">
         Confirm
       </p-button>
     </template>
