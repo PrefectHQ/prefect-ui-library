@@ -50,7 +50,17 @@
     return props.property.type !== undefined
   })
 
-  const showUseDefault = computed(() => isDefined(props.property.default) && !isEqual(value.value, props.property.default))
+  const showUseDefault = computed(() => {
+    if (!isDefined(props.property.default)) {
+      return false
+    }
+
+    if (isPrefectKindJson(value.value)) {
+      return !isEqual(value.value.value, stringify(props.property.default))
+    }
+
+    return !isEqual(value.value, props.property.default)
+  })
 
   function showKind(value: PrefectKind): boolean {
     return kind.value !== value && (kinds.includes(value) || value === 'none')
