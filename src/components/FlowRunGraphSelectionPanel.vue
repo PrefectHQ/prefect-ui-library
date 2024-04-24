@@ -1,7 +1,7 @@
 <template>
   <div class="flow-run-graph-selection-panel">
     <div class="flex justify-end">
-      <p-button small icon="XMarkIcon" flat @click="closePanel" />
+      <p-button size="sm" icon="XMarkIcon" variant="ghost" @click="closePanel" />
     </div>
     <template v-if="selection.kind === 'task-run'">
       <FlowRunTimelineTaskDetails :task-run-id="selection.id" />

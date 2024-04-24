@@ -1,7 +1,7 @@
 <template>
   <page-heading class="page-heading-blocks" :crumbs="crumbs">
     <template v-if="can.create.block" #after-crumbs>
-      <p-button small icon="PlusIcon" :to="routes.blocksCatalog()" />
+      <p-button size="sm" icon="PlusIcon" :to="routes.blocksCatalog()" />
     </template>
   </page-heading>
 </template>

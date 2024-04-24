@@ -2,8 +2,8 @@
   <div class="copyable-wrapper">
     <slot />
     <p-button
-      small
-      flat
+      size="sm"
+      variant="ghost"
       class="copyable-wrapper__button"
       title="copy"
       icon="DocumentDuplicateIcon"

@@ -25,14 +25,14 @@
           </p-key-value>
         </div>
         <p-button
-          small
-          flat
+          size="sm"
+          variant="ghost"
           icon="ArrowTopRightOnSquareIcon"
           :to="routes.artifact(artifact.id)"
           target="_blank"
           title="Open artifact in a new tab"
         />
-        <p-button small flat icon="XMarkIcon" title="Close drawer" @click="close" />
+        <p-button size="sm" variant="ghost" icon="XMarkIcon" title="Close drawer" @click="close" />
       </div>
       <p-divider />
       <ArtifactDataView :artifact="artifact" />
