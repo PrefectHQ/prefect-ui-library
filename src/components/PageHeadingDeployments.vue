@@ -1,7 +1,7 @@
 <template>
   <page-heading class="page-heading-deployments" :crumbs="crumbs">
     <template #after-crumbs>
-      <p-button v-if="false" small icon="PlusIcon" />
+      <p-button v-if="false" size="sm" icon="PlusIcon" />
     </template>
   </page-heading>
 </template>

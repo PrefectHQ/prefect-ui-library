@@ -1,7 +1,7 @@
 <template>
   <p-code-input v-model="json" lang="json" class="json-input" v-bind="{ showLineNumbers, minLines }">
     <template v-if="showFormatButton" #append>
-      <p-button class="json-input__prettify-button" small @click="format">
+      <p-button class="json-input__prettify-button" size="sm" @click="format">
         Format
       </p-button>
     </template>

@@ -28,7 +28,7 @@
         </slot>
       </template>
       <template v-if="isCustomFilter" #actions>
-        <p-button small @click="clear">
+        <p-button size="sm" @click="clear">
           Clear Filters
         </p-button>
       </template>

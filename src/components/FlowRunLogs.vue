@@ -30,7 +30,7 @@
           </template>
 
           <template v-if="hasFilter" #actions>
-            <p-button small @click="clear">
+            <p-button size="sm" @click="clear">
               Clear Filters
             </p-button>
           </template>

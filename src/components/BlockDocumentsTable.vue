@@ -4,7 +4,7 @@
       <span class="block-documents-table__results">
         <ResultsCount v-if="selectedBlockDocuments.length ===0" label="Block" :count="total" />
         <SelectedCount v-else :count="selectedBlockDocuments.length" />
-        <BlocksDeleteButton v-if="selectedBlockDocuments.length > 0" class="block-documents-table__delete" :selected="selectedBlockDocuments.map(blockDocument => blockDocument.id)" small @delete="onDelete" />
+        <BlocksDeleteButton v-if="selectedBlockDocuments.length > 0" class="block-documents-table__delete" :selected="selectedBlockDocuments.map(blockDocument => blockDocument.id)" size="sm" @delete="onDelete" />
       </span>
       <SearchInput v-model="searchTerm" placeholder="Search blocks" label="Search blocks" class="block-documents-table__search" />
       <BlockSchemaCapabilitySelect v-model:selected="capabilities" class="block-documents-table__capability" />
@@ -45,7 +45,7 @@
             No blocks
           </template>
           <template #actions>
-            <p-button small @click="clear">
+            <p-button size="sm" @click="clear">
               Clear Filters
             </p-button>
           </template>

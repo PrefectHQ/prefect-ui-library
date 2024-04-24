@@ -3,7 +3,7 @@
     <p-list-header sticky>
       <ResultsCount v-if="selected.length == 0" label="Work Queue" :count="filteredWorkPoolQueues.length" />
       <SelectedCount v-else :count="selected.length" />
-      <p-button v-if="can.create.work_queue && !selected.length" small icon="PlusIcon" :to="routes.workPoolQueueCreate(workPoolName)" />
+      <p-button v-if="can.create.work_queue && !selected.length" size="sm" icon="PlusIcon" :to="routes.workPoolQueueCreate(workPoolName)" />
 
       <WorkPoolQueuesDeleteButton v-if="can.delete.work_queue" :work-pool-name="workPoolName" :work-pool-queues="selected" @delete="handleDelete" />
 

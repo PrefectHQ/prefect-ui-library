@@ -3,12 +3,12 @@
     <template v-if="action.deploymentId">
       <span class="automation_action-description-run-deployment__deployment">Run deployment: <DeploymentIconText :deployment-id="action.deploymentId" /></span>
 
-      <p-button small @click="openParametersModal">
+      <p-button size="sm" @click="openParametersModal">
         Show parameters
       </p-button>
 
       <template v-if="action.jobVariables">
-        <p-button small @click="openJobVariablesModal">
+        <p-button size="sm" @click="openJobVariablesModal">
           Show job variables
         </p-button>
       </template>

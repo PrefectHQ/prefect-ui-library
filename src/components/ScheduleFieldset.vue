@@ -8,7 +8,7 @@
       <div class="schedule-fieldset__buttons">
         <ScheduleFormModal :active="null" :schedule="internalValue" :job-variables="{}" @submit="updateSchedule">
           <template #default="{ open }">
-            <p-button small icon="PencilIcon" class="schedule-fieldset__button" :disabled="loading" @click="open">
+            <p-button size="sm" icon="PencilIcon" class="schedule-fieldset__button" :disabled="loading" @click="open">
               {{ internalValue ? 'Edit' : 'Add' }}
             </p-button>
           </template>
@@ -16,7 +16,7 @@
 
         <p-button
           v-if="internalValue"
-          small
+          size="sm"
           class="schedule-fieldset__button"
           icon="TrashIcon"
           :disabled="loading"

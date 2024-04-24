@@ -6,7 +6,7 @@
 
     <ScheduleFormModal v-if="deployment.can.update" :active="null" :schedule="null" :job-variables="{}" @submit="createSchedule">
       <template #default="{ open }">
-        <p-button small icon="PlusIcon" @click="open">
+        <p-button size="sm" icon="PlusIcon" @click="open">
           Schedule
         </p-button>
       </template>
