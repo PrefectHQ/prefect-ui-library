@@ -48,7 +48,10 @@ export function useSchemaValue({ value, property }: UseSchemaValueParameters): U
       const response = await updateValue(currentValue.value, currentKind.value, requestedKind)
 
       if (!response.success) {
-        modal.open('hello world')
+        modal.open({
+          to: requestedKind,
+          from: currentKind.value,
+        })
         return
       }
 

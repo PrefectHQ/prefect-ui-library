@@ -7,18 +7,21 @@
     <component :is="input.component" v-bind="input.props" />
   </p-content>
 
-  <SchemaPropertyErrorModal v-model:showModal="showModal" />
+  <template v-if="errorModalProps">
+    <SchemaPropertyErrorModal v-model:showModal="showErrorModal" v-bind="errorModalProps" />
+  </template>
 </template>
 
 <script lang="ts" setup>
-  import { computed, provide } from 'vue'
-  import { useShowModal } from '@/compositions'
+  import { isDefined } from '@prefecthq/prefect-design'
+  import { computed, provide, ref } from 'vue'
   import SchemaPropertyErrorModal from '@/schemas/components/SchemaPropertyErrorModal.vue'
   import { schemaInjectionKey } from '@/schemas/compositions/useSchema'
   import { schemaFormKindsInjectionKey } from '@/schemas/compositions/useSchemaFormKinds'
   import { schemaPropertyErrorModalKey } from '@/schemas/compositions/useSchemaPropertyErrorModal'
   import { useSchemaPropertyInput } from '@/schemas/compositions/useSchemaPropertyInput'
   import { useSchemaValue } from '@/schemas/compositions/useSchemaValue'
+  import { SchemaPropertyErrorModalProps } from '@/schemas/types/errorModal'
   import { Schema } from '@/schemas/types/schema'
   import { PrefectKind, SchemaValues } from '@/schemas/types/schemaValues'
   import { SchemaValueError } from '@/schemas/types/schemaValuesValidationResponse'
@@ -37,10 +40,21 @@
   provide(schemaInjectionKey, props.schema)
   provide(schemaFormKindsInjectionKey, props.kinds)
 
-  const { showModal, open } = useShowModal()
+  const errorModalProps = ref<SchemaPropertyErrorModalProps>()
+
+  const showErrorModal = computed({
+    get() {
+      return isDefined(errorModalProps.value)
+    },
+    set() {
+      errorModalProps.value = undefined
+    },
+  })
 
   provide(schemaPropertyErrorModalKey, {
-    open: (message: string) => open(),
+    open: (props: SchemaPropertyErrorModalProps) => {
+      errorModalProps.value = props
+    },
   })
 
   const emit = defineEmits<{

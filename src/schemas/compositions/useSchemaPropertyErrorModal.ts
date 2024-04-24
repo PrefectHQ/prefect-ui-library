@@ -1,8 +1,9 @@
 import { InjectionKey } from 'vue'
+import { SchemaPropertyErrorModalProps } from '@/schemas/types/errorModal'
 import { injectFromSelfOrAncestor } from '@/utilities/inject'
 
 export type UseSchemaPropertyErrorModal = {
-  open: (message: string) => void,
+  open: (props: SchemaPropertyErrorModalProps) => void,
 }
 
 export const schemaPropertyErrorModalKey: InjectionKey<UseSchemaPropertyErrorModal> = Symbol()
