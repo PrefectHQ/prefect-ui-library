@@ -27,12 +27,12 @@
     const normalizedDate = new Date(props.timestamp)
 
     if (normalizedDate.toString() === 'Invalid Date') {
-      console.warn('Invalid date provided to RichTimestamp:', props.timestamp)
+      console.warn('Invalid date provided to FormattedDate:', props.timestamp)
       return props.timestamp
     }
 
     if (normalizedDate.getFullYear() < 2000) {
-      console.warn('Suspiciously old date provided to RichTimestamp:', props.timestamp)
+      console.warn('Suspiciously old date provided to FormattedDate:', props.timestamp)
       return props.timestamp
     }
 
