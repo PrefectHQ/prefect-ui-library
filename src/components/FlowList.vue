@@ -15,7 +15,14 @@
       </template>
     </p-list-header>
 
-    <p-table :selected="can.delete.flow ? selectedFlows : undefined" :data="flows" :columns="columns" class="flow-list__table" @update:selected="selectedFlows = $event">
+    <p-table
+      :selected="can.delete.flow ? selectedFlows : undefined"
+      :data="flows"
+      :columns="columns"
+      :column-classes="columnClasses"
+      class="flow-list__table"
+      @update:selected="selectedFlows = $event"
+    >
       <template #name="{ row }">
         <div class="flow-list__name-col">
           <p-link :to="routes.flow(row.id)" class="flow-list__name">
@@ -79,7 +86,7 @@
 </template>
 
 <script lang="ts" setup>
-  import { TableColumn } from '@prefecthq/prefect-design'
+  import { ColumnClassesMethod, TableColumn } from '@prefecthq/prefect-design'
   import { NumberRouteParam, useDebouncedRef, useRouteQueryParam } from '@prefecthq/vue-compositions'
   import { secondsInDay } from 'date-fns/constants'
   import merge from 'lodash.merge'
@@ -100,6 +107,7 @@
   import { FlowsFilter } from '@/models/Filters'
   import { Flow } from '@/models/Flow'
   import { flowSortOptions } from '@/types/SortOptionTypes'
+  import { snakeCase } from '@/utilities'
   import { formatDateTimeNumeric } from '@/utilities/dates'
 
   const props = defineProps<{
@@ -148,6 +156,10 @@
     },
   ]
 
+  const columnClasses: ColumnClassesMethod = (column) => {
+    return [`flow-list__${snakeCase(column.label)}-column`]
+  }
+
   const selectedFlows = ref<Flow[]>([])
 
   function refresh(): void {
@@ -182,6 +194,10 @@
 .flow-list__name-col { @apply
   flex
   flex-col
+}
+
+.flow-list__activity-column { @apply
+  overflow-visible
 }
 
 .flow-list__name { @apply
