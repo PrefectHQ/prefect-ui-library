@@ -1,3 +1,4 @@
+import { DeploymentStatus } from '@/models/DeploymentStatus'
 import { ArtifactSortValues, FlowSortValues, FlowRunSortValues, TaskRunSortValues, DeploymentSortValues, LogSortValues, VariableSortValues, BlockDocumentSortValues } from '@/types'
 
 export type Operation = 'and' | 'or'
@@ -111,6 +112,10 @@ export type DeploymentFilter = {
   operator?: Operation,
   tags?: TagFilter,
   workQueueName?: string[],
+  workQueueId?: string[],
+  status?: DeploymentStatus[],
+  flowOrDeploymentNameLike?: string,
+  paused?: boolean,
 }
 
 export type WorkPoolFilter = {

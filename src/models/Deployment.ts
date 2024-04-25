@@ -3,7 +3,6 @@ import { CreatedOrUpdatedBy } from '@/models/CreatedOrUpdatedBy'
 import { DeploymentSchedule } from '@/models/DeploymentSchedule'
 import { DeploymentStatus } from '@/models/DeploymentStatus'
 import { ObjectLevelCan } from '@/models/ObjectLevelCan'
-import { Schedule } from '@/models/Schedule'
 import { SchemaV2, SchemaValuesV2 } from '@/schemas'
 import { Schema, SchemaValues } from '@/types/schemas'
 

@@ -77,6 +77,10 @@ export type DeploymentFilterRequest = {
   name?: Any & Like,
   is_schedule_active?: Equals,
   work_queue_name?: Any,
+  work_queue_id?: Any,
+  status?: Any,
+  flow_or_deployment_name_like?: Like,
+  paused?: Equals,
 }
 
 export type WorkPoolFilterRequest = {
