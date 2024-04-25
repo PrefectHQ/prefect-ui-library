@@ -42,7 +42,7 @@
 </template>
 
 <script lang="ts" setup>
-  import { isNotNullish } from '@prefecthq/prefect-design'
+  import { isDefined, isNotNullish } from '@prefecthq/prefect-design'
   import { computed, ref, onMounted } from 'vue'
   import SchemaFormPropertyMenu from '@/schemas/components/SchemaFormPropertyMenu.vue'
   import { usePrefectKind } from '@/schemas/compositions/usePrefectKind'
@@ -96,11 +96,11 @@
         return omittedValue.value
       }
 
-      if (isNotNullish(props.value)) {
+      if (isDefined(props.value)) {
         return props.value
       }
 
-      if (!initialized.value && isNotNullish(property.value.default)) {
+      if (!initialized.value && isDefined(property.value.default)) {
         return property.value.default
       }
 
@@ -111,7 +111,7 @@
     },
   })
 
-  if (isNullish(props.value) && isNotNullish(property.value.default)) {
+  if (!isDefined(props.value) && isDefined(property.value.default)) {
     emit('update:value', property.value.default)
   }
 

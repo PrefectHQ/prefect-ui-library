@@ -96,12 +96,14 @@
 
   const property = computed(() => {
     const selectedProperty = props.property.anyOf[selectedPropertyIndex.value]
+    // eslint-disable-next-line no-unused-vars
+    const { anyOf, ...property } = props.property
 
     if (isPropertyWith(selectedProperty, '$ref')) {
-      return merge({}, getSchemaDefinition(schema, selectedProperty.$ref), props.property)
+      return merge({}, getSchemaDefinition(schema, selectedProperty.$ref), property)
     }
 
-    return merge({}, selectedProperty, props.property)
+    return merge({}, selectedProperty, property)
   })
 
   const options = computed<ButtonGroupOption[]>(() => props.property.anyOf.map((property, index) => ({
