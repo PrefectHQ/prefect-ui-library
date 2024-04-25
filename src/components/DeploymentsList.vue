@@ -15,7 +15,14 @@
       </template>
     </p-list-header>
 
-    <p-table :selected="can.delete.deployment ? selectedDeployments : undefined" :data="deployments" :columns="columns" class="deployments-list__table" @update:selected="selectedDeployments = $event">
+    <p-table
+      :selected="can.delete.deployment ? selectedDeployments : undefined"
+      :data="deployments"
+      :columns="columns"
+      class="deployments-list__table"
+      :column-classes="columnClasses"
+      @update:selected="selectedDeployments = $event"
+    >
       <template #deployment-name="{ row }">
         <div class="deployments-list__name-col">
           <span class="deployments-list__name">
@@ -60,7 +67,7 @@
         <MiniDeploymentHistory
           class="deployments-list__activity-chart"
           :deployment-id="row.id"
-          :time-span-in-seconds="secondsInDay"
+          :time-span-in-seconds="secondsInWeek"
         />
       </template>
 
@@ -106,9 +113,9 @@
 </template>
 
 <script lang="ts" setup>
-  import { TableColumn, media } from '@prefecthq/prefect-design'
+  import { ColumnClassesMethod, TableColumn, media } from '@prefecthq/prefect-design'
   import { NumberRouteParam, useDebouncedRef, useRouteQueryParam } from '@prefecthq/vue-compositions'
-  import { secondsInDay } from 'date-fns/constants'
+  import { secondsInWeek } from 'date-fns/constants'
   import merge from 'lodash.merge'
   import { ref } from 'vue'
   import {
@@ -126,6 +133,7 @@
   import { Deployment, isRRuleSchedule, Schedule } from '@/models'
   import { DeploymentsFilter } from '@/models/Filters'
   import { deploymentSortOptions } from '@/types/SortOptionTypes'
+  import { snakeCase } from '@/utilities'
   import { formatDateTimeNumeric } from '@/utilities/dates'
 
   const props = defineProps<{
@@ -137,6 +145,10 @@
 
   const can = useCan()
   const routes = useWorkspaceRoutes()
+
+  const columnClasses: ColumnClassesMethod = (column) => {
+    return [`deployment-list__${snakeCase(column.label)}-column`]
+  }
 
   const deploymentNameLike = ref<string>()
   const deploymentNameLikeDebounced = useDebouncedRef(deploymentNameLike, 1200)
@@ -235,6 +247,10 @@
   flex
   flex-col
   gap-0.5
+}
+
+.deployment-list__activity-column { @apply
+  overflow-visible
 }
 
 .deployments-list__schedule { @apply
