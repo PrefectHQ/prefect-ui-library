@@ -79,7 +79,7 @@ export type DeploymentFilterRequest = {
   work_queue_name?: Any,
   work_queue_id?: Any,
   status?: Any,
-  flow_or_deployment_name_like?: Like,
+  flow_or_deployment_name?: Like,
   paused?: Equals,
 }
 

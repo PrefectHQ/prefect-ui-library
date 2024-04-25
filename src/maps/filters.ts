@@ -235,6 +235,10 @@ export const mapDeploymentFilter: MapFunction<DeploymentFilter, DeploymentFilter
     },
     is_schedule_active: toEquals(source.isScheduleActive),
     work_queue_name: toAny(source.workQueueName),
+    flow_or_deployment_name: toLike(source.flowOrDeploymentNameLike),
+    status: toAny(source.status),
+    paused: toEquals(source.paused),
+    work_queue_id: toAny(source.workQueueId),
   })
 }
 

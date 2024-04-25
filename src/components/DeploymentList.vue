@@ -172,9 +172,10 @@
 
   const nameLike = ref<string>()
   const nameLikeDebounced = useDebouncedRef(nameLike, 1200)
+
   const { filter, clear, isCustomFilter } = useDeploymentsFilterFromRoute(merge({}, props.filter, {
     deployments: {
-      nameLike: nameLikeDebounced,
+      flowOrDeploymentNameLike: nameLikeDebounced,
     },
     limit: 50,
   }), props.prefix)
