@@ -6,7 +6,7 @@
       <DeploymentsDeleteButton v-if="can.delete.deployment" :selected="selectedDeployments.map(deployment => deployment.id)" small @delete="deleteDeployments" />
 
       <template #controls>
-        <SearchInput v-model="deploymentNameLike" small placeholder="Search deployments..." class="deployment-list__search-input" label="Search deployments" />
+        <SearchInput v-model="nameLike" small placeholder="Search deployments..." class="deployment-list__search-input" label="Search deployments" />
         <DeploymentTagsInput v-model:selected="filter.deployments.tags.name" small multiple />
       </template>
 
@@ -170,11 +170,11 @@
   const can = useCan()
   const routes = useWorkspaceRoutes()
 
-  const deploymentNameLike = ref<string>()
-  const deploymentNameLikeDebounced = useDebouncedRef(deploymentNameLike, 1200)
+  const nameLike = ref<string>()
+  const nameLikeDebounced = useDebouncedRef(nameLike, 1200)
   const { filter, clear, isCustomFilter } = useDeploymentsFilterFromRoute(merge({}, props.filter, {
     deployments: {
-      nameLike: deploymentNameLikeDebounced,
+      nameLike: nameLikeDebounced,
     },
     limit: 50,
   }), props.prefix)
