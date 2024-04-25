@@ -32,7 +32,7 @@
     </template>
 
     <div class="flows-filter-group__row">
-      <p-button small :disabled="isDefaultFilter" @click="clear">
+      <p-button size="sm" :disabled="isDefaultFilter" @click="clear">
         {{ localization.info.resetFilters }}
       </p-button>
     </div>

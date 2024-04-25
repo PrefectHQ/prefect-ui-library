@@ -3,7 +3,7 @@
     <p-list-header sticky>
       <ResultsCount v-if="selectedFlows.length == 0" label="Flow" :count="total" />
       <SelectedCount v-else :count="selectedFlows.length" />
-      <FlowsDeleteButton v-if="can.delete.flow" :selected="selectedFlows.map(flow => flow.id)" small @delete="deleteFlows" />
+      <FlowsDeleteButton v-if="can.delete.flow" :selected="selectedFlows.map(flow => flow.id)" size="sm" @delete="deleteFlows" />
 
       <template #controls>
         <SearchInput v-model="flowNameLike" placeholder="Flow names" label="Search flows" />
@@ -61,7 +61,7 @@
             No flows
           </template>
           <template v-if="isCustomFilter" #actions>
-            <p-button small @click="clear">
+            <p-button size="sm" @click="clear">
               Clear Filters
             </p-button>
           </template>

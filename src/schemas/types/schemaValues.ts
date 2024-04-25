@@ -1,3 +1,4 @@
+import { isDefined } from '@prefecthq/prefect-design'
 import { isRecord, isString } from '@/utilities'
 import { createTuple } from '@/utilities/tuples'
 
@@ -49,7 +50,7 @@ export type PrefectKindJson = BasePrefectKindValue<'json', {
 }>
 
 export function isPrefectKindJson(value: unknown): value is PrefectKindJson {
-  return isPrefectKindValue(value, 'json') && isString(value.value)
+  return isPrefectKindValue(value, 'json') && (isString(value.value) || !isDefined(value.value))
 }
 
 export type PrefectKindJinja = BasePrefectKindValue<'jinja', {

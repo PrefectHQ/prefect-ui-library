@@ -1,7 +1,7 @@
 <template>
   <p-text-input v-model="name" class="flow-run-name-input">
     <template #append>
-      <p-button color="primary" icon="ArrowPathIcon" flat @click="name = generateRandomName()" />
+      <p-button color="primary" icon="ArrowPathIcon" variant="ghost" @click="name = generateRandomName()" />
     </template>
   </p-text-input>
 </template>

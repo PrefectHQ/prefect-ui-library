@@ -3,7 +3,7 @@
     <p-list-header sticky>
       <ResultsCount v-if="selectedDeployments.length == 0" label="Deployment" :count="total" />
       <SelectedCount v-else :count="selectedDeployments.length" />
-      <DeploymentsDeleteButton v-if="can.delete.deployment" :selected="selectedDeployments.map(deployment => deployment.id)" small @delete="deleteDeployments" />
+      <DeploymentsDeleteButton v-if="can.delete.deployment" :selected="selectedDeployments.map(deployment => deployment.id)" size="sm" @delete="deleteDeployments" />
 
       <template #controls>
         <SearchInput v-model="deploymentNameLike" placeholder="Deployment names" label="Search deployments" />
@@ -88,7 +88,7 @@
             No deployments
           </template>
           <template v-if="isCustomFilter" #actions>
-            <p-button small @click="clear">
+            <p-button size="sm" @click="clear">
               Clear Filters
             </p-button>
           </template>
