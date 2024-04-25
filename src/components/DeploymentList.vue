@@ -47,11 +47,9 @@
 
       <template #deployment="{ row }">
         <div class="deployment-list__deployment">
-          <div class="deployment-list__name">
-            <router-link :to="routes.deployment(row.id)">
-              {{ row.name }}
-            </router-link>
-          </div>
+          <router-link :to="routes.deployment(row.id)" class="deployment-list__name">
+            {{ row.name }}
+          </router-link>
 
           <FlowPopover :flow-id="row.flowId" class="deployment-list__flow-name" />
         </div>
