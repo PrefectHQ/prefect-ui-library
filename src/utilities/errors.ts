@@ -7,7 +7,7 @@ type ApiErrorResponse = {
   detail: string,
 }
 
-function isApiErrorResponse(error: unknown): error is Require<AxiosError<ApiErrorResponse>, 'response'> {
+export function isApiErrorResponse(error: unknown): error is Require<AxiosError<ApiErrorResponse>, 'response'> {
   if (!isAxiosError(error)) {
     return false
   }
