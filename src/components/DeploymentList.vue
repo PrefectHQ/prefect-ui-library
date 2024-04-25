@@ -309,6 +309,7 @@
 
 .deployment-list__name { @apply
   font-semibold
+  text-base
   hover:underline
 }
 
