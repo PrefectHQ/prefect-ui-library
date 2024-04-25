@@ -67,9 +67,16 @@
         <div class="deployment-list__schedules">
           <p-tag-wrapper small justify="right">
             <template v-for="schedule in row.schedules" :key="schedule.id">
-              <p-tooltip :text="getReadableSchedule(schedule, true)">
+              <p-tooltip>
+                <template #content>
+                  <span v-if="!schedule.active" class="deployment-list__schedule-paused-text">
+                    (Paused)
+                  </span>
+                  {{ schedule.schedule.toString({ verbose: true }) }}
+                </template>
+
                 <p-tag class="deployment-list__schedule" :class="classes.scheduleTag(schedule)" small>
-                  {{ getReadableSchedule(schedule) }}
+                  {{ schedule.schedule }}
                 </p-tag>
               </p-tooltip>
             </template>
@@ -171,16 +178,6 @@
     },
     limit: 50,
   }), props.prefix)
-
-  const getReadableSchedule = (schedule: DeploymentSchedule, verbose: boolean = false): string => {
-    const scheduleString = schedule.schedule.toString({ verbose })
-
-    if (verbose) {
-      return `${schedule.active ? '' : '(Paused) '}${scheduleString}`
-    }
-
-    return scheduleString
-  }
 
   const page = useRouteQueryParam('page', NumberRouteParam, 1)
   const { deployments, subscriptions, total, pages } = useDeployments(filter, {
@@ -302,7 +299,12 @@
 }
 
 .deployment-list__schedule--inactive { @apply
-  opacity-50
+  bg-opacity-50
+}
+
+.deployment-list__schedule-paused-text { @apply
+  text-subdued
+  font-semibold
 }
 
 .deployment-list__name { @apply
