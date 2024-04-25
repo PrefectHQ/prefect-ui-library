@@ -21,6 +21,7 @@
       :columns="columns"
       :header-classes="columnClasses"
       :column-classes="columnClasses"
+      :row-classes="rowClasses"
       class="deployment-list__table"
       @update:selected="selectedDeployments = $event"
     >
@@ -47,9 +48,9 @@
       <template #deployment="{ row }">
         <div class="deployment-list__deployment">
           <div class="deployment-list__name">
-            <p-link :to="routes.deployment(row.id)">
+            <router-link :to="routes.deployment(row.id)">
               {{ row.name }}
-            </p-link>
+            </router-link>
           </div>
 
           <FlowPopover :flow-id="row.flowId" class="deployment-list__flow-name" />
@@ -220,6 +221,13 @@
   ])
 
   const columnClasses = (column: TableColumn<Deployment>): ClassValue => [`deployment-list__${snakeCase(column.label)}-column`]
+  const rowClasses = (row: Deployment): ClassValue => {
+    return [
+      {
+        'deployment-list__row--subdued': row.paused,
+      },
+    ]
+  }
 
   const selectedDeployments = ref<Deployment[]>([])
 
@@ -287,6 +295,11 @@
   bg-sentiment-neutral
 }
 
+.deployment-list__name { @apply
+  font-semibold
+  hover:underline
+}
+
 .deployment-list__flow-name,
 .deployment-list__name { @apply
   max-w-full
@@ -310,5 +323,14 @@
 
 .deployment-list__menu { @apply
   ml-2
+}
+
+.deployment-list__row--subdued { @apply
+  opacity-80
+}
+
+.deployment-list__row--subdued .deployment-list__name  { @apply
+  text-subdued
+  font-normal
 }
 </style>
