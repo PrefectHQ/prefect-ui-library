@@ -5,6 +5,7 @@ export type UsePrefectKind = {
   kind: Ref<PrefectKind>,
 }
 
+// todo: delete and update references
 export function usePrefectKind(propertyValue: Ref<unknown>): UsePrefectKind {
   const kindValuesMap: Partial<Record<PrefectKind, unknown>> = {}
 

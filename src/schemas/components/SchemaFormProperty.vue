@@ -6,11 +6,12 @@
 
         <SchemaFormPropertyMenu
           v-model:value="value"
-          v-model:kind="kind"
+          :kind
           class="ml-auto"
           :property
           :disabled="omitted"
           flat
+          @update:kind="convertToKind"
         >
           <template v-if="!required" #default>
             <p-overflow-menu-item :label="omitLabel" @click="toggleValue" />
@@ -45,11 +46,10 @@
   import { isDefined, isNotNullish } from '@prefecthq/prefect-design'
   import { computed, ref, onMounted } from 'vue'
   import SchemaFormPropertyMenu from '@/schemas/components/SchemaFormPropertyMenu.vue'
-  import { usePrefectKind } from '@/schemas/compositions/usePrefectKind'
   import { useSchemaProperty } from '@/schemas/compositions/useSchemaProperty'
   import { useSchemaPropertyInput } from '@/schemas/compositions/useSchemaPropertyInput'
   import { SchemaProperty } from '@/schemas/types/schema'
-  import { SchemaValue } from '@/schemas/types/schemaValues'
+  import { PrefectKind, SchemaValue, getPrefectKindFromValue } from '@/schemas/types/schemaValues'
   import { SchemaValueError } from '@/schemas/types/schemaValuesValidationResponse'
   import { getSchemaPropertyError } from '@/schemas/utilities/errors'
 
@@ -82,6 +82,8 @@
       initialized.value = true
     })
   })
+
+  const kind = computed(() => getPrefectKindFromValue(() => props.value))
 
   const classes = computed(() => ({
     label: {
@@ -117,7 +119,6 @@
     emit('update:value', property.value.default)
   }
 
-  const { kind } = usePrefectKind(value)
   const { input } = useSchemaPropertyInput(property, value, () => props.errors)
 
   function toggleValue(): void {
@@ -132,6 +133,10 @@
     value.value = undefined
     omittedValue.value = value.value
     omitted.value = true
+  }
+
+  async function convertToKind(value: PrefectKind): Promise<void> {
+    // validate and change the value to match the requested kind
   }
 </script>
 

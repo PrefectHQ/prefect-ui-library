@@ -1,4 +1,5 @@
 import { isDefined } from '@prefecthq/prefect-design'
+import { MaybeRefOrGetter, toValue } from 'vue'
 import { isRecord, isString } from '@/utilities'
 import { createTuple } from '@/utilities/tuples'
 
@@ -13,6 +14,16 @@ export const { values: prefectKinds, isValue: isPrefectKind } = createTuple([
 ])
 
 export type PrefectKind = typeof prefectKinds[number]
+
+export function getPrefectKindFromValue(source: MaybeRefOrGetter<SchemaValue>): PrefectKind {
+  const value = toValue(source)
+
+  if (isPrefectKindValue(value)) {
+    return value.__prefect_kind
+  }
+
+  return 'none'
+}
 
 type BasePrefectKindValue<
   TKind extends PrefectKind = PrefectKind,
