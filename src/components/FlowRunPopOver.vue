@@ -78,6 +78,7 @@
   rounded-full
   overflow-hidden
   cursor-pointer
+  z-10
 }
 
 .flow-run-pop-over__trigger { @apply

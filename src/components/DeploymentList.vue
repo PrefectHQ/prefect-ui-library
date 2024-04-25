@@ -257,6 +257,10 @@
   box-content
 }
 
+.deployment-list__activity-column { @apply
+  overflow-visible
+}
+
 .deployment-list__activity-chart { @apply
   h-8
   pr-4
@@ -279,10 +283,6 @@
   gap-0.5
   min-w-0
   max-w-full
-}
-
-.deployment-list__timestamp { @apply
-  text-subdued
 }
 
 .deployment-list__schedules { @apply
@@ -325,8 +325,10 @@
   ml-2
 }
 
-.deployment-list__row--subdued { @apply
-  opacity-80
+.deployment-list__row--subdued .deployment-list__deployment-column,
+.deployment-list__row--subdued .deployment-list__tags-column,
+.deployment-list__row--subdued .deployment-list__schedules-column { @apply
+  opacity-65
 }
 
 .deployment-list__row--subdued .deployment-list__name  { @apply
