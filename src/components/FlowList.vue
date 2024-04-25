@@ -48,7 +48,7 @@
         <MiniFlowHistory
           class="flow-list__activity-chart"
           :flow-id="row.id"
-          :time-span-in-seconds="secondsInDay"
+          :time-span-in-seconds="-secondsInWeek"
         />
       </template>
 
@@ -88,7 +88,7 @@
 <script lang="ts" setup>
   import { ColumnClassesMethod, TableColumn } from '@prefecthq/prefect-design'
   import { NumberRouteParam, useDebouncedRef, useRouteQueryParam } from '@prefecthq/vue-compositions'
-  import { secondsInDay } from 'date-fns/constants'
+  import { secondsInWeek } from 'date-fns/constants'
   import merge from 'lodash.merge'
   import { ref } from 'vue'
   import {
