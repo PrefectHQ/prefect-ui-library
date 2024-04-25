@@ -1,6 +1,15 @@
 <template>
   <keep-alive>
-    <SchemaFormProperty :key="selectedPropertyIndexValue" :value="internalValue" v-bind="{ property, required, errors }" class="schema-form-property-any-of-input" @update:value="updateValue">
+    <SchemaFormProperty
+      :key="selectedPropertyIndexValue"
+      :value="internalValue"
+      :property="mergedProperty"
+      :property-for-validation="property"
+      :required
+      :errors
+      class="schema-form-property-any-of-input"
+      @update:value="updateValue"
+    >
       <template #default="{ kind }">
         <template v-if="kind === 'none'">
           <p-button-group v-model="selectedPropertyIndex" :options="options" small class="mb-2" />
@@ -94,7 +103,7 @@
     },
   })
 
-  const property = computed(() => {
+  const mergedProperty = computed(() => {
     const selectedProperty = props.property.anyOf[selectedPropertyIndex.value]
     // eslint-disable-next-line no-unused-vars
     const { anyOf, ...property } = props.property

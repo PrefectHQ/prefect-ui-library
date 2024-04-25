@@ -52,13 +52,15 @@
   import { SchemaValue } from '@/schemas/types/schemaValues'
   import { SchemaValueError } from '@/schemas/types/schemaValuesValidationResponse'
   import { getSchemaPropertyError } from '@/schemas/utilities/errors'
-  import { isNullish } from '@/utilities'
 
   const props = defineProps<{
     property: SchemaProperty,
     value: SchemaValue,
     required: boolean,
     errors: SchemaValueError[],
+    // In cases like SchemaFormPropertyAnyOf or SchemaPropertyAllOf the property is modified before being passed into this component
+    // But in order to do proper validation of the value we want to use the full unmodified property.
+    propertyForValidation?: SchemaProperty,
   }>()
 
   const emit = defineEmits<{
