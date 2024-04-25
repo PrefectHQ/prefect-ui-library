@@ -69,9 +69,9 @@
         <div class="deployment-list__schedules">
           <p-tag-wrapper small justify="right">
             <template v-for="schedule in row.schedules" :key="schedule.id">
-              <p-tooltip :text="getReadableSchedule(schedule?.schedule, true)">
-                <p-tag class="deployment-list__schedule" small>
-                  {{ getReadableSchedule(schedule?.schedule) }}
+              <p-tooltip :text="getReadableSchedule(schedule, true)">
+                <p-tag class="deployment-list__schedule" :class="classes.scheduleTag(schedule)" small>
+                  {{ getReadableSchedule(schedule) }}
                 </p-tag>
               </p-tooltip>
             </template>
@@ -150,7 +150,7 @@
     DeploymentStatusBadge
   } from '@/components'
   import { useCan, useDeploymentsFilterFromRoute, useWorkspaceRoutes, useDeployments, useComponent } from '@/compositions'
-  import { Deployment, isRRuleSchedule, Schedule } from '@/models'
+  import { Deployment, DeploymentSchedule } from '@/models'
   import { DeploymentsFilter } from '@/models/Filters'
   import { ClassValue } from '@/types'
   import { deploymentSortOptions } from '@/types/SortOptionTypes'
@@ -174,12 +174,14 @@
     limit: 50,
   }), props.prefix)
 
-  const getReadableSchedule = (schedule: Schedule | null, verbose: boolean = false): string => {
-    if (isRRuleSchedule(schedule)) {
-      return 'RRule'
+  const getReadableSchedule = (schedule: DeploymentSchedule, verbose: boolean = false): string => {
+    const scheduleString = schedule.schedule.toString({ verbose })
+
+    if (verbose) {
+      return `${schedule.active ? '' : '(Paused) '}${scheduleString}`
     }
 
-    return schedule?.toString({ verbose }) ?? ''
+    return scheduleString
   }
 
   const page = useRouteQueryParam('page', NumberRouteParam, 1)
@@ -244,6 +246,12 @@
     refresh()
     emit('delete')
   }
+
+  const classes = computed(() => ({
+    scheduleTag: (schedule: DeploymentSchedule) => ({
+      'deployment-list__schedule--inactive': !schedule.active,
+    }),
+  }))
 </script>
 
 <style>
@@ -293,6 +301,10 @@
 
 .deployment-list__schedule { @apply
   bg-sentiment-neutral
+}
+
+.deployment-list__schedule--inactive { @apply
+  opacity-50
 }
 
 .deployment-list__name { @apply
