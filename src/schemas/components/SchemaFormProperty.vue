@@ -52,10 +52,9 @@
   import { useSchemaPropertyInput } from '@/schemas/compositions/useSchemaPropertyInput'
   import { mapSchemaValue } from '@/schemas/maps/schemaValue'
   import { SchemaProperty } from '@/schemas/types/schema'
-  import { PrefectKind, PrefectKindJson, SchemaValue, getPrefectKindFromValue, isPrefectKindJinja, isPrefectKindWorkspaceVariable, isPrefectKindJson } from '@/schemas/types/schemaValues'
-  import { SchemaValueError } from '@/schemas/types/schemaValuesValidationResponse'
+  import { PrefectKind, SchemaValue, getPrefectKindFromValue, isPrefectKindJson } from '@/schemas/types/schemaValues'
+  import { SchemaValueError, SchemaValuesValidationResponse } from '@/schemas/types/schemaValuesValidationResponse'
   import { getSchemaPropertyError } from '@/schemas/utilities/errors'
-  import { stringify } from '@/utilities'
 
   const props = defineProps<{
     property: SchemaProperty,
@@ -82,8 +81,9 @@
 
   const api = useWorkspaceApi()
   const schema = useSchema()
+  const propertyErrors = ref<SchemaValueError[]>()
   const kind = computed(() => getPrefectKindFromValue(() => props.value))
-  const error = computed(() => getSchemaPropertyError(props.errors))
+  const error = computed(() => getSchemaPropertyError(propertyErrors.value ?? props.errors))
   const { property, label, description, disabled } = useSchemaProperty(() => props.property, () => props.required)
   const omitted = ref(false)
   const omittedValue = ref<SchemaValue>(null)
@@ -124,7 +124,7 @@
     emit('update:value', property.value.default)
   }
 
-  const { input } = useSchemaPropertyInput(property, value, () => props.errors)
+  const { input } = useSchemaPropertyInput(property, value, () => propertyErrors.value ?? props.errors)
 
   function toggleValue(): void {
     if (omitted.value) {
@@ -144,16 +144,21 @@
     const mapped = mapSchemaValue(props.value, to)
 
     if (isPrefectKindJson(props.value) && to === 'none') {
-      const propertySchema = props.propertyForValidation ?? props.property
-      const { valid, errors } = await api.schemas.validateSchemaValue(props.value, propertySchema, schema)
+      const { valid, errors } = await validatePropertyValue()
 
       if (!valid) {
-        console.log(errors)
+        propertyErrors.value = errors
         return
       }
     }
 
     emit('update:value', mapped)
+  }
+
+  function validatePropertyValue(): Promise<SchemaValuesValidationResponse> {
+    const propertySchema = props.propertyForValidation ?? props.property
+
+    return api.schemas.validateSchemaValue(props.value, propertySchema, schema)
   }
 </script>
 
