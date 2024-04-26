@@ -64,7 +64,7 @@
       </template>
 
       <template #schedules="{ row }">
-        <DeploymentScheduleTags :schedules="row.schedules" />
+        <DeploymentScheduleTags :schedules="row.schedules" justify="right" />
       </template>
 
       <template #tags="{ row }">
