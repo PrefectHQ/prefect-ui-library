@@ -208,11 +208,9 @@
 
   const columnClasses = (column: TableColumn<Deployment>): ClassValue => [`deployment-list__${snakeCase(column.label)}-column`]
   const rowClasses = (row: Deployment): ClassValue => {
-    return [
-      {
-        'deployment-list__row--subdued': row.paused,
-      },
-    ]
+    return {
+      'deployment-list__row--subdued': row.paused,
+    }
   }
 
   const selectedDeployments = ref<Deployment[]>([])

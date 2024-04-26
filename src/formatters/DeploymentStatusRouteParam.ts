@@ -12,6 +12,6 @@ export class DeploymentStatusRouteParam extends RouteParam<DeploymentStatus> {
   }
 
   protected override format(value: DeploymentStatus): LocationQueryValue {
-    return `${value}`
+    return value
   }
 }
