@@ -45,13 +45,16 @@
 <script lang="ts" setup>
   import { isDefined, isNotNullish } from '@prefecthq/prefect-design'
   import { computed, ref, onMounted } from 'vue'
+  import { useWorkspaceApi } from '@/compositions'
   import SchemaFormPropertyMenu from '@/schemas/components/SchemaFormPropertyMenu.vue'
+  import { useSchema } from '@/schemas/compositions/useSchema'
   import { useSchemaProperty } from '@/schemas/compositions/useSchemaProperty'
   import { useSchemaPropertyInput } from '@/schemas/compositions/useSchemaPropertyInput'
   import { SchemaProperty } from '@/schemas/types/schema'
-  import { PrefectKind, SchemaValue, getPrefectKindFromValue } from '@/schemas/types/schemaValues'
+  import { PrefectKind, PrefectKindJson, SchemaValue, getPrefectKindFromValue, isPrefectKindJinja, isPrefectKindWorkspaceVariable, isPrefectKindJson } from '@/schemas/types/schemaValues'
   import { SchemaValueError } from '@/schemas/types/schemaValuesValidationResponse'
   import { getSchemaPropertyError } from '@/schemas/utilities/errors'
+  import { stringify } from '@/utilities'
 
   const props = defineProps<{
     property: SchemaProperty,
@@ -67,13 +70,6 @@
     'update:value': [SchemaValue],
   }>()
 
-  const error = computed(() => getSchemaPropertyError(props.errors))
-  const { property, label, description, disabled } = useSchemaProperty(() => props.property, () => props.required)
-  const omitted = ref(false)
-  const omittedValue = ref<SchemaValue>(null)
-  const omitLabel = computed(() => omitted.value ? 'Include value' : 'Omit value')
-  const initialized = ref(false)
-
   onMounted(() => {
     // this components onMounted is fired before its children's onMounted. So to avoid the child with a default value
     // overriding the default value set by this component we need to delay the initialization so that the default value "sticks"
@@ -83,7 +79,15 @@
     })
   })
 
+  const api = useWorkspaceApi()
+  const schema = useSchema()
   const kind = computed(() => getPrefectKindFromValue(() => props.value))
+  const error = computed(() => getSchemaPropertyError(props.errors))
+  const { property, label, description, disabled } = useSchemaProperty(() => props.property, () => props.required)
+  const omitted = ref(false)
+  const omittedValue = ref<SchemaValue>(null)
+  const omitLabel = computed(() => omitted.value ? 'Include value' : 'Omit value')
+  const initialized = ref(false)
 
   const classes = computed(() => ({
     label: {
@@ -135,8 +139,38 @@
     omitted.value = true
   }
 
-  async function convertToKind(value: PrefectKind): Promise<void> {
-    // validate and change the value to match the requested kind
+  async function convertToKind(requestedKind: PrefectKind): Promise<void> {
+    const currentKind = getPrefectKindFromValue(() => props.value)
+
+    if (isPrefectKindJinja(props.value) || isPrefectKindWorkspaceVariable(props.value)) {
+      emit('update:value', undefined)
+      return
+    }
+
+    if (currentKind === 'none') {
+      const json: PrefectKindJson = {
+        __prefect_kind: 'json',
+        value: stringify(props.value),
+      }
+
+      emit('update:value', json)
+      return
+    }
+
+    if (isPrefectKindJson(props.value)) {
+      const propertySchema = props.propertyForValidation ?? props.property
+      const { valid, errors } = await api.schemas.validateSchemaValue(props.value, propertySchema, schema)
+
+      if (!valid) {
+        // do some stuff
+        console.log(valid, errors)
+        return
+      }
+
+      const parsed = isDefined(props.value.value) ? JSON.parse(props.value.value) : undefined
+
+      emit('update:value', parsed)
+    }
   }
 </script>
 
