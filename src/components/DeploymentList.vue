@@ -56,32 +56,15 @@
       </template>
 
       <template #updated="{ row }">
-        <FormattedDate :date="row.updated" class="deployment-list__timestamp" />
+        <FormattedDate :date="row.updated" />
       </template>
 
       <template #created="{ row }">
-        <FormattedDate :date="row.created" class="deployment-list__timestamp" />
+        <FormattedDate :date="row.created" />
       </template>
 
       <template #schedules="{ row }">
-        <div class="deployment-list__schedules">
-          <p-tag-wrapper small justify="right">
-            <template v-for="schedule in row.schedules" :key="schedule.id">
-              <p-tooltip>
-                <template #content>
-                  <span v-if="!schedule.active" class="deployment-list__schedule-paused-text">
-                    (Paused)
-                  </span>
-                  {{ schedule.schedule.toString({ verbose: true }) }}
-                </template>
-
-                <p-tag class="deployment-list__schedule" :class="classes.scheduleTag(schedule)" small>
-                  {{ schedule.schedule }}
-                </p-tag>
-              </p-tooltip>
-            </template>
-          </p-tag-wrapper>
-        </div>
+        <DeploymentScheduleTags :schedules="row.schedules" />
       </template>
 
       <template #tags="{ row }">
@@ -152,10 +135,11 @@
     DeploymentTagsInput,
     DeploymentToggle,
     FormattedDate,
-    DeploymentStatusBadge
+    DeploymentStatusBadge,
+    DeploymentScheduleTags
   } from '@/components'
   import { useCan, useDeploymentsFilterFromRoute, useWorkspaceRoutes, useDeployments, useComponent } from '@/compositions'
-  import { Deployment, DeploymentSchedule } from '@/models'
+  import { Deployment } from '@/models'
   import { DeploymentsFilter } from '@/models/Filters'
   import { ClassValue } from '@/types'
   import { deploymentSortOptions } from '@/types/SortOptionTypes'
@@ -242,12 +226,6 @@
     refresh()
     emit('delete')
   }
-
-  const classes = computed(() => ({
-    scheduleTag: (schedule: DeploymentSchedule) => ({
-      'deployment-list__schedule--inactive': !schedule.active,
-    }),
-  }))
 </script>
 
 <style>
@@ -287,25 +265,6 @@
   gap-0.5
   min-w-0
   max-w-full
-}
-
-.deployment-list__schedules { @apply
-  flex
-  flex-col
-  gap-0.5
-}
-
-.deployment-list__schedule { @apply
-  bg-sentiment-neutral
-}
-
-.deployment-list__schedule--inactive { @apply
-  bg-opacity-50
-}
-
-.deployment-list__schedule-paused-text { @apply
-  text-subdued
-  font-semibold
 }
 
 .deployment-list__name { @apply
