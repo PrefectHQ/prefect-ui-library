@@ -8,7 +8,7 @@ export class WorkspaceSchemasWorkspaceApi extends WorkspaceApi {
 
   protected override routePrefix = '/ui/schemas/'
 
-  public async validate(schema: Schema, values: SchemaValues): Promise<SchemaValuesValidationResponse> {
+  public async validateSchemaValues(schema: Schema, values: SchemaValues): Promise<SchemaValuesValidationResponse> {
     const { data } = await this.post<SchemaValuesValidationResponse>('/validate', {
       schema: mapper.map('Schema', schema, 'SchemaResponse'),
       values,
@@ -16,4 +16,5 @@ export class WorkspaceSchemasWorkspaceApi extends WorkspaceApi {
 
     return data
   }
+
 }
