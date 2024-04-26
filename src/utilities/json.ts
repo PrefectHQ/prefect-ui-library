@@ -16,3 +16,13 @@ export function isValidJsonRecord(value: unknown): value is string {
     return false
   }
 }
+
+export function isValidJson(value: unknown): value is string {
+  try {
+    JSON.parse(value as string)
+
+    return true
+  } catch {
+    return false
+  }
+}

@@ -50,6 +50,7 @@
   import { useSchema } from '@/schemas/compositions/useSchema'
   import { useSchemaProperty } from '@/schemas/compositions/useSchemaProperty'
   import { useSchemaPropertyInput } from '@/schemas/compositions/useSchemaPropertyInput'
+  import { mapSchemaValue } from '@/schemas/maps/schemaValue'
   import { SchemaProperty } from '@/schemas/types/schema'
   import { PrefectKind, PrefectKindJson, SchemaValue, getPrefectKindFromValue, isPrefectKindJinja, isPrefectKindWorkspaceVariable, isPrefectKindJson } from '@/schemas/types/schemaValues'
   import { SchemaValueError } from '@/schemas/types/schemaValuesValidationResponse'
@@ -139,38 +140,20 @@
     omitted.value = true
   }
 
-  async function convertToKind(requestedKind: PrefectKind): Promise<void> {
-    const currentKind = getPrefectKindFromValue(() => props.value)
+  async function convertToKind(to: PrefectKind): Promise<void> {
+    const mapped = mapSchemaValue(props.value, to)
 
-    if (isPrefectKindJinja(props.value) || isPrefectKindWorkspaceVariable(props.value)) {
-      emit('update:value', undefined)
-      return
-    }
-
-    if (currentKind === 'none') {
-      const json: PrefectKindJson = {
-        __prefect_kind: 'json',
-        value: stringify(props.value),
-      }
-
-      emit('update:value', json)
-      return
-    }
-
-    if (isPrefectKindJson(props.value)) {
+    if (isPrefectKindJson(props.value) && to === 'none') {
       const propertySchema = props.propertyForValidation ?? props.property
       const { valid, errors } = await api.schemas.validateSchemaValue(props.value, propertySchema, schema)
 
       if (!valid) {
-        // do some stuff
-        console.log(valid, errors)
+        console.log(errors)
         return
       }
-
-      const parsed = isDefined(props.value.value) ? JSON.parse(props.value.value) : undefined
-
-      emit('update:value', parsed)
     }
+
+    emit('update:value', mapped)
   }
 </script>
 
