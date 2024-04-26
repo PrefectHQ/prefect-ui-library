@@ -1,5 +1,5 @@
 <template>
-  <p-tag-wrapper small justify="right" class="deployment-schedule-tags">
+  <p-tag-wrapper small class="deployment-schedule-tags">
     <template v-for="schedule in schedules" :key="schedule.id">
       <p-tooltip>
         <template #content>
@@ -34,7 +34,6 @@
 
 <style>
 .deployment-schedule-tags { @apply
-  flex
   gap-0.5
 }
 
