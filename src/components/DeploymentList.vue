@@ -6,7 +6,7 @@
       <DeploymentsDeleteButton v-if="can.delete.deployment" :selected="selectedDeployments.map(deployment => deployment.id)" small @delete="deleteDeployments" />
 
       <template #controls>
-        <SearchInput v-model="nameLike" small placeholder="Search deployments..." class="deployment-list__search-input" label="Search deployments" />
+        <SearchInput v-model="nameLike" size="small" placeholder="Search deployments..." class="deployment-list__search-input" label="Search deployments" />
         <DeploymentTagsInput v-model:selected="filter.deployments.tags.name" small multiple />
       </template>
 
