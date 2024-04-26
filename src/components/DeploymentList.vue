@@ -252,9 +252,9 @@
 }
 
 .deployment-list__action { @apply
-  text-right
-  whitespace-nowrap
-  w-min
+  flex
+  justify-end
+  items-center
 }
 
 .deployment-list__deployment { @apply
