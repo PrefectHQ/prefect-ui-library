@@ -5,6 +5,7 @@ import { Ref, reactive, ComputedRef, toRef, computed, toRefs, isReactive, watch 
 import { LocationQuery } from 'vue-router'
 import { BlockDocumentSortValuesSortParam } from '@/formatters/BlockDocumentSortValuesParam'
 import { DeploymentSortValuesSortParam } from '@/formatters/DeploymentSortValuesSortParam'
+import { DeploymentStatusRouteParam } from '@/formatters/DeploymentStatusRouteParam'
 import { FlowRunSortValuesSortParam } from '@/formatters/FlowRunSortValuesSortParam'
 import { FlowSortValuesSortParam } from '@/formatters/FlowSortValuesSortParam'
 import { OperatorRouteParam } from '@/formatters/OperatorRouteParam'
@@ -268,6 +269,10 @@ export function useDeploymentFilter(defaultValue: MaybeReactive<DeploymentFilter
     isScheduleActive: toRef(defaultValueReactive, 'isScheduleActive'),
     workQueueName: toRef(defaultValueReactive, 'workQueueName'),
     tags: tags.filter,
+    workQueueId: toRef(defaultValueReactive, 'workQueueId'),
+    status: toRef(defaultValueReactive, 'status'),
+    flowOrDeploymentNameLike: toRef(defaultValueReactive, 'flowOrDeploymentNameLike'),
+    paused: toRef(defaultValueReactive, 'paused'),
   })
 
   return withFilterFunctions(filter)
@@ -281,6 +286,10 @@ const deploymentFilterSchema: RouteQueryParamsSchema<DeploymentFilter> = {
   isScheduleActive: BooleanRouteParam,
   workQueueName: [StringRouteParam],
   tags: tagFilterSchema,
+  workQueueId: [StringRouteParam],
+  status: [DeploymentStatusRouteParam],
+  flowOrDeploymentNameLike: StringRouteParam,
+  paused: BooleanRouteParam,
 }
 
 export function useWorkPoolFilter(defaultValue: MaybeReactive<WorkPoolFilter> = {}): UseFilter<WorkPoolFilter> {

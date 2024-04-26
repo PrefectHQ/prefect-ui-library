@@ -17,6 +17,7 @@
 
 .status-icon--ready { @apply
   bg-sentiment-positive
+  animate-pulse
 }
 
 .status-icon--not_ready { @apply

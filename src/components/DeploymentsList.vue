@@ -1,5 +1,5 @@
 <template>
-  <p-content class="deployment-list">
+  <p-content class="deployments-list">
     <p-list-header sticky>
       <ResultsCount v-if="selectedDeployments.length == 0" label="Deployment" :count="total" />
       <SelectedCount v-else :count="selectedDeployments.length" />
@@ -24,14 +24,14 @@
       @update:selected="selectedDeployments = $event"
     >
       <template #deployment-name="{ row }">
-        <div class="deployment-list__name-col">
-          <span class="deployment-list__name">
+        <div class="deployments-list__name-col">
+          <span class="deployments-list__name">
             <p-link :to="routes.deployment(row.id)">
               {{ row.name }}
             </p-link>
             <DeploymentStatusIcon :status="row.status" />
           </span>
-          <span class="deployment-list__created-date">Created {{ formatDateTimeNumeric(row.created) }}</span>
+          <span class="deployments-list__created-date">Created {{ formatDateTimeNumeric(row.created) }}</span>
         </div>
       </template>
 
@@ -40,7 +40,7 @@
       </template>
 
       <template #schedule="{ row }">
-        <div class="deployment-list__schedules">
+        <div class="deployments-list__schedules">
           <template v-for="schedule in row.schedules" :key="schedule.id">
             <p-tooltip :text="getReadableSchedule(schedule?.schedule, true)">
               <div class="p-background deployments-list__schedule">
@@ -53,7 +53,7 @@
 
       <template #tags="{ row }">
         <template v-if="row.tags">
-          <div class="deployment-list__tags">
+          <div class="deployments-list__tags">
             <p-tag-wrapper :tags="row.tags" justify="left" />
           </div>
         </template>
@@ -65,7 +65,7 @@
 
       <template #activity="{ row }">
         <MiniDeploymentHistory
-          class="deployment-list__activity-chart"
+          class="deployments-list__activity-chart"
           :deployment-id="row.id"
           :time-span-in-seconds="secondsInWeek"
         />
@@ -76,10 +76,10 @@
       </template>
 
       <template #action="{ row }">
-        <div class="deployment-list__action">
+        <div class="deployments-list__action">
           <DeploymentToggle :deployment="row" @update="refresh" />
           <DeploymentMenu
-            class="deployment-list__menu"
+            class="deployments-list__menu"
             size="xs"
             show-all
             :deployment="row"
@@ -217,7 +217,7 @@
 </script>
 
 <style>
-.deployment-list__activity-chart { @apply
+.deployments-list__activity-chart { @apply
   h-12
   w-20
 }
@@ -226,24 +226,24 @@
   whitespace-normal
 }
 
-.deployment-list__action { @apply
+.deployments-list__action { @apply
   text-right
   whitespace-nowrap
 }
 
-.deployment-list__name-col { @apply
+.deployments-list__name-col { @apply
   flex
   flex-col
 }
 
-.deployment-list__name { @apply
+.deployments-list__name { @apply
   inline-flex
   items-center
   gap-x-1
   font-medium
 }
 
-.deployment-list__schedules { @apply
+.deployments-list__schedules { @apply
   flex
   flex-col
   gap-0.5
@@ -258,16 +258,16 @@
   py-1
 }
 
-.deployment-list__created-date { @apply
+.deployments-list__created-date { @apply
   text-subdued
   text-xs
 }
 
-.deployment-list__menu { @apply
+.deployments-list__menu { @apply
   ml-2
 }
 
-.deployment-list__tags { @apply
+.deployments-list__tags { @apply
   max-w-80
   min-w-0
 }
