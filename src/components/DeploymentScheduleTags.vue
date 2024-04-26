@@ -35,7 +35,6 @@
 <style>
 .deployment-schedule-tags { @apply
   flex
-  flex-col
   gap-0.5
 }
 
