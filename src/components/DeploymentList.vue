@@ -149,6 +149,10 @@
     prefix?: string,
   }>()
 
+  const emit = defineEmits<{
+    (event: 'delete'): void,
+  }>()
+
   const { DeploymentMenu } = useComponent()
 
   const can = useCan()
@@ -216,10 +220,6 @@
   function refresh(): void {
     subscriptions.refresh()
   }
-
-  const emit = defineEmits<{
-    (event: 'delete'): void,
-  }>()
 
   const deleteDeployments = (): void => {
     selectedDeployments.value = []
