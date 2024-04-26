@@ -45,7 +45,7 @@
 <script lang="ts" setup>
   import { isDefined, isNotNullish } from '@prefecthq/prefect-design'
   import debounce from 'lodash.debounce'
-  import { computed, ref, onMounted, watch } from 'vue'
+  import { computed, ref, onMounted, watch, toRaw } from 'vue'
   import { useWorkspaceApi } from '@/compositions'
   import SchemaFormPropertyMenu from '@/schemas/components/SchemaFormPropertyMenu.vue'
   import { useSchema } from '@/schemas/compositions/useSchema'
@@ -92,6 +92,8 @@
   const omittedValue = ref<SchemaValue>(null)
   const omitLabel = computed(() => omitted.value ? 'Include value' : 'Omit value')
   const initialized = ref(false)
+
+  const valueMap: Partial<Record<PrefectKind, SchemaValue>> = {}
 
   const classes = computed(() => ({
     label: {
@@ -158,7 +160,19 @@
       }
     }
 
+    // store the current value for the current kind
+    const currentKind = getPrefectKindFromValue(props.value)
+
+    valueMap[currentKind] = structuredClone(toRaw(props.value))
+
+    // see if we can map the value to the new kind
     const mapped = mapSchemaValue(props.value, to)
+
+    // we cannot convert workspace variables and most jinja values so revert back to a previous value if we have one
+    if (!isDefined(mapped) && (currentKind === 'jinja' || currentKind === 'workspace_variable')) {
+      emit('update:value', valueMap[to])
+      return
+    }
 
     emit('update:value', mapped)
   }
