@@ -44,7 +44,8 @@
 
 <script lang="ts" setup>
   import { isDefined, isNotNullish } from '@prefecthq/prefect-design'
-  import { computed, ref, onMounted } from 'vue'
+  import debounce from 'lodash.debounce'
+  import { computed, ref, onMounted, watch } from 'vue'
   import { useWorkspaceApi } from '@/compositions'
   import SchemaFormPropertyMenu from '@/schemas/components/SchemaFormPropertyMenu.vue'
   import { useSchema } from '@/schemas/compositions/useSchema'
@@ -78,6 +79,8 @@
       initialized.value = true
     })
   })
+
+  // todo preserve previous values for kinds so if we're switching from another kind and we cannot map we can fallback to the previous value
 
   const api = useWorkspaceApi()
   const schema = useSchema()
@@ -141,25 +144,48 @@
   }
 
   async function convertToKind(to: PrefectKind): Promise<void> {
-    const mapped = mapSchemaValue(props.value, to)
-
     if (isPrefectKindJson(props.value) && to === 'none') {
-      const { valid, errors } = await validatePropertyValue()
+      // global form validation already has errors
+      if (props.errors.length) {
+        return
+      }
+
+      // double check this specific property doesn't have any errors
+      const { valid } = await validatePropertyValue()
 
       if (!valid) {
-        propertyErrors.value = errors
         return
       }
     }
 
+    const mapped = mapSchemaValue(props.value, to)
+
     emit('update:value', mapped)
   }
 
-  function validatePropertyValue(): Promise<SchemaValuesValidationResponse> {
+  async function validatePropertyValue(): Promise<SchemaValuesValidationResponse> {
     const propertySchema = props.propertyForValidation ?? props.property
 
-    return api.schemas.validateSchemaValue(props.value, propertySchema, schema)
+    const response = await api.schemas.validateSchemaValue(props.value, propertySchema, schema)
+
+    if (!response.valid) {
+      propertyErrors.value = response.errors
+    } else {
+      propertyErrors.value = undefined
+    }
+
+    return response
   }
+
+  const validatePropertyValueDebounced = debounce(validatePropertyValue, 1_000)
+
+  watch(propertyErrors, (errors) => {
+    if (!errors?.length) {
+      return
+    }
+
+    validatePropertyValueDebounced()
+  }, { deep: true })
 </script>
 
 <style>

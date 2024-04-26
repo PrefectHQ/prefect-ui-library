@@ -53,7 +53,7 @@ function mapSchemaValueJson(json: PrefectKindJson, to: PrefectKind): SchemaValue
     case 'json':
       return json
     case 'none':
-      return isDefined(json.value) ? JSON.parse(json.value) : undefined
+      return isDefined(json.value) && isValidJson(json.value) ? JSON.parse(json.value) : undefined
     default:
       throw new Error(`mapSchemaValueJson missing case for kind: ${to}`)
   }
