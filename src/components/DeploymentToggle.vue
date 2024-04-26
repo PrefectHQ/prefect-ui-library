@@ -1,12 +1,12 @@
 <template>
   <p-tooltip text="Pause or resume scheduling flow runs for this deployment">
-    <p-toggle v-if="deployment.can.update" v-model="internalValue" :loading="loading" :disabled="deployment.deprecated" />
+    <p-toggle v-if="deployment.can.update" v-model="internalValue" :state :disabled="deployment.deprecated" />
   </p-tooltip>
 </template>
 
 <script lang="ts" setup>
-  import { showToast } from '@prefecthq/prefect-design'
-  import { computed, ref } from 'vue'
+  import { State, showToast } from '@prefecthq/prefect-design'
+  import { computed, reactive } from 'vue'
   import { useWorkspaceApi } from '@/compositions'
   import { localization } from '@/localization'
   import { Deployment } from '@/models'
@@ -31,10 +31,10 @@
     },
   })
 
-  const loading = ref(false)
+  const state = reactive<State>({ pending: false, valid: true, validated: false })
 
   const toggleDeploymentSchedule = async (value: boolean): Promise<void> => {
-    loading.value = true
+    state.pending = true
     const message = value ? localization.success.activateDeployment : localization.success.pauseDeployment
 
     try {
@@ -50,7 +50,7 @@
 
       console.error(error)
     } finally {
-      loading.value = false
+      state.pending = false
     }
   }
 </script>
