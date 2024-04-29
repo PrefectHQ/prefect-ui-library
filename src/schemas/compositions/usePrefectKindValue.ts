@@ -69,8 +69,8 @@ export function usePrefectKindValue({ property, value: schemaValue }: UsePrefect
 
   const validatePropertyValueDebounced = debounce(validatePropertyValue, 1_000)
 
-  watch(errors, (errors, previous) => {
-    if (!errors.length || isEqual(errors, previous)) {
+  watch(schemaValue, () => {
+    if (!errors.value.length) {
       return
     }
 
