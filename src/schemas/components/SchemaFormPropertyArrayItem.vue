@@ -5,7 +5,7 @@
 
       <component :is="input.component" v-bind="input.props" />
 
-      <SchemaFormPropertyMenu v-model:value="value" v-model:kind="kind" :property="property">
+      <SchemaFormPropertyMenu v-model:value="value" :kind :property @update:kind="setKind">
         <template v-if="!isFirst">
           <p-overflow-menu-item icon="ArrowSmallUpIcon" label="Move to top" @click="emit('moveToTop')" />
         </template>
@@ -25,10 +25,10 @@
 <script lang="ts" setup>
   import { computed } from 'vue'
   import SchemaFormPropertyMenu from '@/schemas/components/SchemaFormPropertyMenu.vue'
-  import { usePrefectKind } from '@/schemas/compositions/usePrefectKind'
+  import { usePrefectKindValue } from '@/schemas/compositions/usePrefectKindValue'
   import { useSchemaPropertyInput } from '@/schemas/compositions/useSchemaPropertyInput'
   import { SchemaProperty } from '@/schemas/types/schema'
-  import { SchemaValue } from '@/schemas/types/schemaValues'
+  import { SchemaValue, getPrefectKindFromValue } from '@/schemas/types/schemaValues'
   import { SchemaValueError } from '@/schemas/types/schemaValuesValidationResponse'
   import { getAllRootSchemaPropertyErrors, getSchemaPropertyError } from '@/schemas/utilities/errors'
 
@@ -58,10 +58,13 @@
     },
   })
 
+  const kind = computed(() => getPrefectKindFromValue(() => props.value))
   const { input } = useSchemaPropertyInput(() => props.property, value, () => props.errors)
-  const { kind } = usePrefectKind(value)
+  const { errors: propertyErrors, setKind } = usePrefectKindValue({ value, property: () => props.property })
+
   const errorMessage = computed(() => {
-    const errors = getAllRootSchemaPropertyErrors(props.errors)
+    const allErrors = propertyErrors.value.length ? propertyErrors.value : props.errors
+    const errors = getAllRootSchemaPropertyErrors(allErrors)
 
     const { message } = getSchemaPropertyError(errors)
 

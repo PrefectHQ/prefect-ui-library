@@ -1,14 +1,19 @@
 <template>
-  <component :is="input.component" v-bind="input.props" class="schema-input" />
+  <p-content class="schema-input">
+    <slot :kind :set-kind />
+
+    <component :is="input.component" v-bind="input.props" />
+  </p-content>
 </template>
 
 <script lang="ts" setup>
   import { computed, provide } from 'vue'
+  import { usePrefectKindValue } from '@/schemas/compositions/usePrefectKindValue'
   import { schemaInjectionKey } from '@/schemas/compositions/useSchema'
   import { schemaFormKindsInjectionKey } from '@/schemas/compositions/useSchemaFormKinds'
   import { useSchemaPropertyInput } from '@/schemas/compositions/useSchemaPropertyInput'
   import { Schema } from '@/schemas/types/schema'
-  import { PrefectKind, SchemaValues } from '@/schemas/types/schemaValues'
+  import { PrefectKind, SchemaValues, getPrefectKindFromValue } from '@/schemas/types/schemaValues'
   import { SchemaValueError } from '@/schemas/types/schemaValuesValidationResponse'
 
   const props = defineProps<{
@@ -34,5 +39,20 @@
     },
   })
 
-  const { input } = useSchemaPropertyInput(() => props.schema, values, () => props.errors)
+  const kind = computed(() => getPrefectKindFromValue(() => props.values))
+
+  const { errors: propertyErrors, setKind } = usePrefectKindValue({
+    value: values,
+    property: () => props.schema,
+  })
+
+  const { input } = useSchemaPropertyInput(() => props.schema, values, getErrors)
+
+  function getErrors(): SchemaValueError[] {
+    if (propertyErrors.value.length) {
+      return propertyErrors.value
+    }
+
+    return props.errors
+  }
 </script>

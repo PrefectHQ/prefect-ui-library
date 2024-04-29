@@ -11,7 +11,7 @@
           :property
           :disabled="omitted"
           flat
-          @update:kind="convertToKind"
+          @update:kind="setKind"
         >
           <template v-if="!required" #default>
             <p-overflow-menu-item :label="omitLabel" @click="toggleValue" />
@@ -44,17 +44,14 @@
 
 <script lang="ts" setup>
   import { isDefined, isNotNullish } from '@prefecthq/prefect-design'
-  import debounce from 'lodash.debounce'
-  import { computed, ref, onMounted, watch, toRaw } from 'vue'
-  import { useWorkspaceApi } from '@/compositions'
+  import { computed, ref, onMounted } from 'vue'
   import SchemaFormPropertyMenu from '@/schemas/components/SchemaFormPropertyMenu.vue'
-  import { useSchema } from '@/schemas/compositions/useSchema'
+  import { usePrefectKindValue } from '@/schemas/compositions/usePrefectKindValue'
   import { useSchemaProperty } from '@/schemas/compositions/useSchemaProperty'
   import { useSchemaPropertyInput } from '@/schemas/compositions/useSchemaPropertyInput'
-  import { mapSchemaValue } from '@/schemas/maps/schemaValue'
   import { SchemaProperty } from '@/schemas/types/schema'
-  import { PrefectKind, SchemaValue, getPrefectKindFromValue, isPrefectKindJson } from '@/schemas/types/schemaValues'
-  import { SchemaValueError, SchemaValuesValidationResponse } from '@/schemas/types/schemaValuesValidationResponse'
+  import { SchemaValue, getPrefectKindFromValue } from '@/schemas/types/schemaValues'
+  import { SchemaValueError } from '@/schemas/types/schemaValuesValidationResponse'
   import { getSchemaPropertyError } from '@/schemas/utilities/errors'
 
   const props = defineProps<{
@@ -80,20 +77,13 @@
     })
   })
 
-  // todo preserve previous values for kinds so if we're switching from another kind and we cannot map we can fallback to the previous value
-
-  const api = useWorkspaceApi()
-  const schema = useSchema()
-  const propertyErrors = ref<SchemaValueError[]>()
   const kind = computed(() => getPrefectKindFromValue(() => props.value))
-  const error = computed(() => getSchemaPropertyError(propertyErrors.value ?? props.errors))
+  const error = computed(() => getSchemaPropertyError(getErrors()))
   const { property, label, description, disabled } = useSchemaProperty(() => props.property, () => props.required)
   const omitted = ref(false)
   const omittedValue = ref<SchemaValue>(null)
   const omitLabel = computed(() => omitted.value ? 'Include value' : 'Omit value')
   const initialized = ref(false)
-
-  const valueMap: Partial<Record<PrefectKind, SchemaValue>> = {}
 
   const classes = computed(() => ({
     label: {
@@ -129,7 +119,8 @@
     emit('update:value', property.value.default)
   }
 
-  const { input } = useSchemaPropertyInput(property, value, () => propertyErrors.value ?? props.errors)
+  const { errors: propertyErrors, setKind } = usePrefectKindValue({ value, property: () => props.propertyForValidation ?? props.property })
+  const { input } = useSchemaPropertyInput(property, value, getErrors)
 
   function toggleValue(): void {
     if (omitted.value) {
@@ -145,61 +136,13 @@
     omitted.value = true
   }
 
-  async function convertToKind(to: PrefectKind): Promise<void> {
-    if (isPrefectKindJson(props.value) && to === 'none') {
-      // global form validation already has errors
-      if (props.errors.length) {
-        return
-      }
-
-      // double check this specific property doesn't have any errors
-      const { valid } = await validatePropertyValue()
-
-      if (!valid) {
-        return
-      }
+  function getErrors(): SchemaValueError[] {
+    if (propertyErrors.value.length) {
+      return propertyErrors.value
     }
 
-    // store the current value for the current kind
-    const currentKind = getPrefectKindFromValue(props.value)
-
-    valueMap[currentKind] = structuredClone(toRaw(props.value))
-
-    // see if we can map the value to the new kind
-    const mapped = mapSchemaValue(props.value, to)
-
-    // we cannot convert workspace variables and most jinja values so revert back to a previous value if we have one
-    if (!isDefined(mapped) && (currentKind === 'jinja' || currentKind === 'workspace_variable')) {
-      emit('update:value', valueMap[to])
-      return
-    }
-
-    emit('update:value', mapped)
+    return props.errors
   }
-
-  async function validatePropertyValue(): Promise<SchemaValuesValidationResponse> {
-    const propertySchema = props.propertyForValidation ?? props.property
-
-    const response = await api.schemas.validateSchemaValue(props.value, propertySchema, schema)
-
-    if (!response.valid) {
-      propertyErrors.value = response.errors
-    } else {
-      propertyErrors.value = undefined
-    }
-
-    return response
-  }
-
-  const validatePropertyValueDebounced = debounce(validatePropertyValue, 1_000)
-
-  watch(propertyErrors, (errors) => {
-    if (!errors?.length) {
-      return
-    }
-
-    validatePropertyValueDebounced()
-  }, { deep: true })
 </script>
 
 <style>

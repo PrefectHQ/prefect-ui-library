@@ -22,7 +22,7 @@
 <script lang="ts" setup>
   import { ButtonGroupOption } from '@prefecthq/prefect-design'
   import merge from 'lodash.merge'
-  import { computed, onActivated, onMounted, reactive, ref } from 'vue'
+  import { computed, onActivated, reactive, ref } from 'vue'
   import { useWorkspaceApi } from '@/compositions'
   import SchemaFormProperty from '@/schemas/components/SchemaFormProperty.vue'
   import { useSchema } from '@/schemas/compositions/useSchema'

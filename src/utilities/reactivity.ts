@@ -2,7 +2,7 @@ import { isEqual } from 'lodash'
 import { WatchEffect, WatchSource, isReactive, isRef, unref, watch } from 'vue'
 import { isArray, isFunction, isRecord, mapValues } from '@/utilities'
 
-function getRawValue(value: unknown): unknown {
+export function getRawValue(value: unknown): unknown {
   if (typeof value === 'object') {
     if (isRef(value)) {
       return unref(value)
