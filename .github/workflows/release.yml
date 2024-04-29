@@ -16,12 +16,21 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Configure git user
+        run: |
+          git config user.name "$GITHUB_ACTOR"
+          git config user.email "$GITHUB_ACTOR@users.noreply.github.com"
 
       - uses: prefecthq/actions-release-ui-components@main
         id: release-ui-components
         with:
           NPM_TOKEN: ${{ secrets.PREFECT_UI_COMPONENTS_NPM_TOKEN }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.PREFECT_CONTENTS_PR_RW }}
+          RELEASE_TYPE: ${{ inputs.release_type }}
+          SKIP_BUILD: 'true'
 
       - uses: prefecthq/actions-trigger-downstream-npm-package-updates@main
         id: trigger-downstream-npm-package-update-nebula-ui
