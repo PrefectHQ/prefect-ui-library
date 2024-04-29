@@ -7,7 +7,7 @@
 </template>
 
 <script lang="ts" setup>
-  import { computed, provide } from 'vue'
+  import { VNode, computed, provide } from 'vue'
   import { usePrefectKindValue } from '@/schemas/compositions/usePrefectKindValue'
   import { schemaInjectionKey } from '@/schemas/compositions/useSchema'
   import { schemaFormKindsInjectionKey } from '@/schemas/compositions/useSchemaFormKinds'
@@ -28,6 +28,10 @@
 
   const emit = defineEmits<{
     'update:values': [SchemaValues | undefined],
+  }>()
+
+  defineSlots<{
+    default: (props: { kind: PrefectKind, setKind: (to: PrefectKind) => void }) => VNode,
   }>()
 
   const values = computed({

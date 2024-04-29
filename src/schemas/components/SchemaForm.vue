@@ -1,10 +1,12 @@
 <template>
   <p-form class="schema-form" novalidate @submit="submit">
     <p-content>
-      <slot :kind :set-kind />
-
       <template v-if="schema.properties">
-        <SchemaInput v-model:values="values" :schema="schema" :errors="errors" :kinds="kinds" />
+        <SchemaInput v-model:values="values" :schema="schema" :errors="errors" :kinds="kinds">
+          <template #default="scope">
+            <slot v-bind="scope" />
+          </template>
+        </SchemaInput>
       </template>
 
       <p-checkbox v-model="shouldValidate" label="Validate parameters before submitting" />
@@ -14,13 +16,12 @@
 
 <script lang="ts" setup>
   import { showToast } from '@prefecthq/prefect-design'
-  import { computed, ref, h } from 'vue'
+  import { computed, ref, h, VNode } from 'vue'
   import ToastParameterValidationError from '@/components/ToastParameterValidationError.vue'
   import SchemaInput from '@/schemas/components/SchemaInput.vue'
-  import { usePrefectKindValue } from '@/schemas/compositions/usePrefectKindValue'
   import { useSchemaValidation } from '@/schemas/compositions/useSchemaValidation'
   import { Schema } from '@/schemas/types/schema'
-  import { PrefectKind, SchemaValues, getPrefectKindFromValue } from '@/schemas/types/schemaValues'
+  import { PrefectKind, SchemaValues } from '@/schemas/types/schemaValues'
 
   const props = withDefaults(defineProps<{
     schema: Schema,
@@ -37,6 +38,10 @@
     'submit': [SchemaValues],
   }>()
 
+  defineSlots<{
+    default: (props: { kind: PrefectKind, setKind: (to: PrefectKind) => void }) => VNode,
+  }>()
+
   const shouldValidate = ref(true)
 
   const values = computed({
@@ -48,14 +53,7 @@
     },
   })
 
-  const kind = computed(() => getPrefectKindFromValue(() => props.values))
-  const { errors: formErrors, validate } = useSchemaValidation(() => props.schema, values)
-  const { errors: propertyErrors, setKind } = usePrefectKindValue({
-    value: values,
-    property: () => props.schema,
-  })
-
-  const errors = computed(() => propertyErrors.value.length ? propertyErrors.value : formErrors.value)
+  const { errors, validate } = useSchemaValidation(() => props.schema, values)
 
   const loadingFallback = ref(false)
   const loading = computed({

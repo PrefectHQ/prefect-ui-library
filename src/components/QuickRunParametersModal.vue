@@ -1,16 +1,16 @@
 <template>
   <p-modal v-model:showModal="internalShowModal" class="quick-run-parameters-modal-v2" title="Run Deployment">
-    <p-content>
-      <div class="quick-run-parameters-modal-v2__header">
-        <h3>{{ localization.info.parameters }}</h3>
-        <p-icon-button-menu small>
-          <p-overflow-menu-item v-if="kind === 'json'" label="Use form input" @click="kind = 'none'" />
-          <p-overflow-menu-item v-if="kind === 'none'" label="Use JSON input" @click="kind = 'json'" />
-        </p-icon-button-menu>
-      </div>
-
-      <SchemaFormV2 :id="formId" v-model:values="parameters" :schema="deployment.parameterOpenApiSchemaV2" :kinds="['json', 'workspace_variable']" @submit="submit" />
-    </p-content>
+    <SchemaFormV2 :id="formId" v-model:values="parameters" :schema="deployment.parameterOpenApiSchemaV2" :kinds="['json', 'workspace_variable']" @submit="submit">
+      <template #default="{ kind, setKind }">
+        <div class="quick-run-parameters-modal-v2__header">
+          <h3>{{ localization.info.parameters }}</h3>
+          <p-icon-button-menu small>
+            <p-overflow-menu-item v-if="kind === 'json'" label="Use form input" @click="setKind('none')" />
+            <p-overflow-menu-item v-if="kind === 'none'" label="Use JSON input" @click="setKind('json')" />
+          </p-icon-button-menu>
+        </div>
+      </template>
+    </SchemaFormV2>
 
     <template #actions>
       <slot name="actions">
@@ -31,7 +31,6 @@
   import { localization } from '@/localization'
   import { Deployment, DeploymentFlowRunCreateV2 } from '@/models'
   import { SchemaFormV2, SchemaValuesV2 } from '@/schemas'
-  import { usePrefectKind } from '@/schemas/compositions/usePrefectKind'
   import { getApiErrorMessage } from '@/utilities/errors'
 
   const props = defineProps<{
@@ -49,7 +48,6 @@
   }>()
 
   const parameters = ref<SchemaValuesV2>({ ...props.deployment.parametersV2 })
-  const { kind } = usePrefectKind(parameters)
 
   const internalShowModal = computed({
     get() {
