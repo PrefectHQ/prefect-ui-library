@@ -1,6 +1,7 @@
 import { isDefined } from '@prefecthq/prefect-design'
 import debounce from 'lodash.debounce'
-import { MaybeRefOrGetter, Ref, ref, toRaw, toValue, watch } from 'vue'
+import isEqual from 'lodash.isequal'
+import { MaybeRefOrGetter, Ref, ref, toValue, watch } from 'vue'
 import { useWorkspaceApi } from '@/compositions'
 import { useSchema } from '@/schemas/compositions/useSchema'
 import { mapSchemaValue } from '@/schemas/maps/schemaValue'
@@ -54,7 +55,6 @@ export function usePrefectKindValue({ property, value: schemaValue }: UsePrefect
     schemaValue.value = mapped
   }
 
-
   async function validatePropertyValue(): Promise<SchemaValuesValidationResponse> {
     const response = await api.schemas.validateSchemaValue(toValue(schemaValue), toValue(property), schema)
 
@@ -69,8 +69,8 @@ export function usePrefectKindValue({ property, value: schemaValue }: UsePrefect
 
   const validatePropertyValueDebounced = debounce(validatePropertyValue, 1_000)
 
-  watch(errors, (errors) => {
-    if (!errors.length) {
+  watch(errors, (errors, previous) => {
+    if (!errors.length || isEqual(errors, previous)) {
       return
     }
 
