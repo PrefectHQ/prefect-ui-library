@@ -45,6 +45,11 @@
   const propertyValues = reactive<SchemaValue[]>([])
   const selectedPropertyIndexValue = ref<number>(0)
 
+  // we need to await this during setup so that the initial default value gets populated correctly
+  // if we wait until mount when onActivated is called the child will override the value with its default value
+  await setPropertyIndexForValue()
+  propertyValues[selectedPropertyIndexValue.value] = props.value
+
   onActivated(() => {
     setPropertyIndexForValue()
     propertyValues[selectedPropertyIndexValue.value] = props.value
