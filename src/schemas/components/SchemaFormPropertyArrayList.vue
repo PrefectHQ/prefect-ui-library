@@ -96,7 +96,7 @@
     const index = value.value.length
     const property = getPropertyForIndex(index)
 
-    return property.default ?? undefined
+    return property.default
   }
 
   function isFirstIndex(index: number): boolean {
