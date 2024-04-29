@@ -43,16 +43,12 @@
   const api = useWorkspaceApi()
   const schema = useSchema()
   const propertyValues = reactive<SchemaValue[]>([])
-  const initialPropertyIndex = await getPropertyIndexForValue()
+  const selectedPropertyIndexValue = ref<number>(0)
 
-  onActivated(() => setPropertyIndexForValue())
-
-  // need to make sure we set the initial value for the selected property
-  // reactivity is handled by the computed value
-  // eslint-disable-next-line vue/no-setup-props-destructure
-  propertyValues[initialPropertyIndex] = props.value
-
-  const selectedPropertyIndexValue = ref(initialPropertyIndex)
+  onActivated(() => {
+    setPropertyIndexForValue()
+    propertyValues[selectedPropertyIndexValue.value] = props.value
+  })
 
   const emit = defineEmits<{
     'update:value': [SchemaValue],
@@ -122,7 +118,7 @@
     return getSchemaPropertyLabel(property)
   }
 
-  async function getPropertyIndexForValue(): Promise<number> {
+  async function setPropertyIndexForValue(): Promise<void> {
     const index = await getInitialIndexForSchemaPropertyAnyOfValue({
       schema,
       property: props.property,
@@ -133,12 +129,6 @@
     if (index === -1) {
       throw 'not implemented'
     }
-
-    return index
-  }
-
-  async function setPropertyIndexForValue(): Promise<void> {
-    const index = await getPropertyIndexForValue()
 
     selectedPropertyIndexValue.value = index
   }
