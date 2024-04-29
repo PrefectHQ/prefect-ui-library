@@ -22,7 +22,7 @@
 <script lang="ts" setup>
   import { ButtonGroupOption } from '@prefecthq/prefect-design'
   import merge from 'lodash.merge'
-  import { computed, reactive, ref } from 'vue'
+  import { computed, onActivated, onMounted, reactive, ref } from 'vue'
   import { useWorkspaceApi } from '@/compositions'
   import SchemaFormProperty from '@/schemas/components/SchemaFormProperty.vue'
   import { useSchema } from '@/schemas/compositions/useSchema'
@@ -43,24 +43,16 @@
   const api = useWorkspaceApi()
   const schema = useSchema()
   const propertyValues = reactive<SchemaValue[]>([])
+  const initialPropertyIndex = await getPropertyIndexForValue()
 
-  const initialSelectedPropertyIndex = await getInitialIndexForSchemaPropertyAnyOfValue({
-    schema,
-    property: props.property,
-    value: props.value,
-    api,
-  })
+  onActivated(() => setPropertyIndexForValue())
 
   // need to make sure we set the initial value for the selected property
   // reactivity is handled by the computed value
   // eslint-disable-next-line vue/no-setup-props-destructure
-  propertyValues[initialSelectedPropertyIndex] = props.value
+  propertyValues[initialPropertyIndex] = props.value
 
-  if (initialSelectedPropertyIndex === -1) {
-    throw 'not implemented'
-  }
-
-  const selectedPropertyIndexValue = ref(initialSelectedPropertyIndex)
+  const selectedPropertyIndexValue = ref(initialPropertyIndex)
 
   const emit = defineEmits<{
     'update:value': [SchemaValue],
@@ -128,5 +120,26 @@
     }
 
     return getSchemaPropertyLabel(property)
+  }
+
+  async function getPropertyIndexForValue(): Promise<number> {
+    const index = await getInitialIndexForSchemaPropertyAnyOfValue({
+      schema,
+      property: props.property,
+      value: props.value,
+      api,
+    })
+
+    if (index === -1) {
+      throw 'not implemented'
+    }
+
+    return index
+  }
+
+  async function setPropertyIndexForValue(): Promise<void> {
+    const index = await getPropertyIndexForValue()
+
+    selectedPropertyIndexValue.value = index
   }
 </script>
