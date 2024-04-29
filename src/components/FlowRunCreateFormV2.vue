@@ -9,15 +9,17 @@
         <p-divider />
 
         <p-content>
-          <div class="flow-run-create-form-v2__header">
-            <h3>{{ localization.info.parameters }}</h3>
-            <p-icon-button-menu small>
-              <p-overflow-menu-item v-if="kind === 'json'" label="Use form input" @click="kind = 'none'" />
-              <p-overflow-menu-item v-if="kind === 'none'" label="Use JSON input" @click="kind = 'json'" />
-            </p-icon-button-menu>
-          </div>
-
-          <SchemaInputV2 v-model:values="parameters" :schema="schema" :errors="errors" :kinds="['json', 'workspace_variable']" />
+          <SchemaInputV2 v-model:values="parameters" :schema="schema" :errors="errors" :kinds="['json', 'workspace_variable']">
+            <template #default="{ kind, setKind }">
+              <div class="flow-run-create-form-v2__header">
+                <h3>{{ localization.info.parameters }}</h3>
+                <p-icon-button-menu small>
+                  <p-overflow-menu-item v-if="kind === 'json'" label="Use form input" @click="setKind('none')" />
+                  <p-overflow-menu-item v-if="kind === 'none'" label="Use JSON input" @click="setKind('json')" />
+                </p-icon-button-menu>
+              </div>
+            </template>
+          </SchemaInputV2>
 
           <p-checkbox v-model="shouldValidate" label="Validate parameters before submitting" />
         </p-content>
@@ -76,7 +78,6 @@
 <script lang="ts" setup>
   import { showToast } from '@prefecthq/prefect-design'
   import { useValidation, useValidationObserver } from '@prefecthq/vue-compositions'
-  import merge from 'lodash.merge'
   import { computed, h, ref } from 'vue'
   import FlowRunCreateFormTags from '@/components/FlowRunCreateFormTags.vue'
   import FlowRunCreateFormWhen from '@/components/FlowRunCreateFormWhen.vue'
@@ -89,7 +90,6 @@
   import { Deployment } from '@/models/Deployment'
   import { DeploymentFlowRunCreateV2 } from '@/models/DeploymentFlowRunCreate'
   import { SchemaInputV2, SchemaValuesV2 } from '@/schemas'
-  import { usePrefectKind } from '@/schemas/compositions/usePrefectKind'
   import { useSchemaValidation } from '@/schemas/compositions/useSchemaValidation'
   import { SchemaValues } from '@/schemas/types/schemaValues'
   import { isEmptyObject } from '@/utilities/object'
@@ -118,7 +118,6 @@
   const { state: nameState, error: nameError } = useValidation(name, isRequired('name'))
 
   const parameters = ref<SchemaValuesV2>({ ...props.deployment.parametersV2, ...props.parameters ?? {} })
-  const { kind } = usePrefectKind(parameters)
   const scheduledTime = ref<Date | null>(null)
   const stateMessage = ref<string>('')
   const tags = ref<string[]>(props.deployment.tags ?? [])
