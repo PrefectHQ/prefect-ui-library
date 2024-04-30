@@ -69,14 +69,6 @@
     'update:value': [SchemaValue],
   }>()
 
-  const error = computed(() => getSchemaPropertyError(props.errors))
-  const { property, label, description, disabled } = useSchemaProperty(() => props.property, () => props.required)
-  const omitted = ref(false)
-  const omittedValue = ref<SchemaValue>(null)
-  const omitLabel = computed(() => omitted.value ? 'Include value' : 'Omit value')
-  const initialized = ref(false)
-
-
   const kind = computed(() => getPrefectKindFromValue(() => props.value))
   const error = computed(() => getSchemaPropertyError(getErrors()))
   const { property, label, description, disabled } = useSchemaProperty(() => props.property, () => props.required)
