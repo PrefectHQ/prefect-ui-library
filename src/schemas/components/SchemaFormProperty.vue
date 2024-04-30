@@ -1,5 +1,5 @@
 <template>
-  <p-label class="schema-form-property" :state="error.state" :message="error.message">
+  <p-label v-if="initialized" class="schema-form-property" :state="error.state" :message="error.message">
     <template #label>
       <div class="schema-form-property__header">
         <span class="schema-form-property__label" :class="classes.label">{{ label }}</span>
@@ -43,7 +43,8 @@
 
 <script lang="ts" setup>
   import { isDefined, isNotNullish } from '@prefecthq/prefect-design'
-  import { computed, ref, onMounted } from 'vue'
+  import isEqual from 'lodash.isequal'
+  import { computed, ref, watch } from 'vue'
   import SchemaFormPropertyMenu from '@/schemas/components/SchemaFormPropertyMenu.vue'
   import { usePrefectKind } from '@/schemas/compositions/usePrefectKind'
   import { useSchemaProperty } from '@/schemas/compositions/useSchemaProperty'
@@ -52,7 +53,6 @@
   import { SchemaValue } from '@/schemas/types/schemaValues'
   import { SchemaValueError } from '@/schemas/types/schemaValuesValidationResponse'
   import { getSchemaPropertyError } from '@/schemas/utilities/errors'
-  import { isNullish } from '@/utilities'
 
   const props = defineProps<{
     property: SchemaProperty,
@@ -72,14 +72,6 @@
   const omitLabel = computed(() => omitted.value ? 'Include value' : 'Omit value')
   const initialized = ref(false)
 
-  onMounted(() => {
-    // this components onMounted is fired before its children's onMounted. So to avoid the child with a default value
-    // overriding the default value set by this component we need to delay the initialization so that the default value "sticks"
-    // https://github.com/PrefectHQ/prefect/issues/12566
-    setTimeout(() => {
-      initialized.value = true
-    })
-  })
 
   const classes = computed(() => ({
     label: {
@@ -107,12 +99,25 @@
       return undefined
     },
     set(value) {
+      if (!initialized.value) {
+        return
+      }
+
       emit('update:value', value)
     },
   })
 
   if (!isDefined(props.value) && isDefined(property.value.default)) {
     emit('update:value', property.value.default)
+
+    const unwatch = watch(() => props.value, () => {
+      if (isEqual(props.value, property.value.default)) {
+        initialized.value = true
+        unwatch()
+      }
+    })
+  } else {
+    initialized.value = true
   }
 
   const { kind } = usePrefectKind(value)
