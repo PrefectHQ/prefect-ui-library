@@ -13,7 +13,7 @@
     </p>
 
     <template #actions>
-      <p-button primary @click="resume">
+      <p-button variant="default" @click="resume">
         Submit
       </p-button>
     </template>

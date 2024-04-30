@@ -8,7 +8,7 @@
       </p-link> will be run again.
     </div>
     <template #actions>
-      <p-button primary @click="retryFromFailed">
+      <p-button variant="default" @click="retryFromFailed">
         Retry
       </p-button>
     </template>

@@ -34,7 +34,7 @@
         <p-button @click="cancel">
           Cancel
         </p-button>
-        <p-button primary :disabled="disabled" type="submit">
+        <p-button variant="default" :disabled="disabled" type="submit">
           Save
         </p-button>
       </slot>

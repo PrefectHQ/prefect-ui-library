@@ -11,7 +11,7 @@
     </div>
 
     <template #actions>
-      <p-button primary :loading="isSubmitting" @click="submit">
+      <p-button variant="default" :loading="isSubmitting" @click="submit">
         Submit
       </p-button>
     </template>
