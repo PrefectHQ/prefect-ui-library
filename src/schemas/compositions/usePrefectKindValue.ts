@@ -1,10 +1,8 @@
-import { isDefined } from '@prefecthq/prefect-design'
 import debounce from 'lodash.debounce'
-import isEqual from 'lodash.isequal'
 import { MaybeRefOrGetter, Ref, ref, toValue, watch } from 'vue'
 import { useWorkspaceApi } from '@/compositions'
 import { useSchema } from '@/schemas/compositions/useSchema'
-import { mapSchemaValue } from '@/schemas/maps/schemaValue'
+import { isInvalidSchemaValueTransformationError, mapSchemaValue } from '@/schemas/maps/schemaValue'
 import { SchemaProperty } from '@/schemas/types/schema'
 import { PrefectKind, getPrefectKindFromValue, isPrefectKindJson } from '@/schemas/types/schemaValues'
 import { SchemaValueError, SchemaValuesValidationResponse } from '@/schemas/types/schemaValuesValidationResponse'
@@ -41,18 +39,30 @@ export function usePrefectKindValue({ property, value: schemaValue }: UsePrefect
     // store the current value for the current kind
     const currentKind = getPrefectKindFromValue(schemaValue.value)
 
-    valueMap[currentKind] = structuredClone(getRawValue(schemaValue.value))
-
-    // see if we can map the value to the new kind
-    const mapped = mapSchemaValue(schemaValue.value, to)
-
-    // we cannot convert workspace variables and most jinja values so revert back to a previous value if we have one
-    if (!isDefined(mapped) && (currentKind === 'jinja' || currentKind === 'workspace_variable')) {
-      schemaValue.value = valueMap[to]
-      return
+    // getRawValue removes any reactivity but doesn't necessarily guarantee all references will be broken
+    // structuredClone guarantees all references will be broken but errors if it encounters reactivity
+    try {
+      valueMap[currentKind] = structuredClone(getRawValue(schemaValue.value))
+    } catch (error) {
+      console.error(error)
     }
 
-    schemaValue.value = mapped
+    try {
+      // see if we can map the value to the new kind
+      schemaValue.value = mapSchemaValue(schemaValue.value, to)
+
+    } catch (error) {
+      if (isInvalidSchemaValueTransformationError(error)) {
+        if (to === 'none') {
+          schemaValue.value = valueMap[to]
+          return
+        }
+
+        schemaValue.value = valueMap[to] ?? { __prefect_kind: to }
+      }
+
+      throw error
+    }
   }
 
   async function validatePropertyValue(): Promise<SchemaValuesValidationResponse> {
