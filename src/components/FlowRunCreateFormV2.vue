@@ -66,7 +66,7 @@
       <p-button @click="emit('cancel')">
         Cancel
       </p-button>
-      <p-button primary type="submit">
+      <p-button variant="default" type="submit">
         Submit
       </p-button>
     </template>
