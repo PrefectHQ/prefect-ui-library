@@ -3,7 +3,7 @@
     This will reset the active task run count to 0.
     <template #actions>
       <slot name="actions">
-        <p-button primary @click="submit">
+        <p-button variant="default" @click="submit">
           Reset
         </p-button>
       </slot>

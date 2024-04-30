@@ -26,7 +26,7 @@
 
     <template #actions>
       <slot name="actions">
-        <p-button primary :loading="pending" @click="submit">
+        <p-button variant="default" :loading="pending" @click="submit">
           Create
         </p-button>
       </slot>

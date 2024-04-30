@@ -15,7 +15,7 @@
     <template #actions>
       <DocumentationButton :to="localization.docs.deployments" />
       <a :href="href" target="_blank">
-        <p-button primary icon-append="ArrowTopRightOnSquareIcon">
+        <p-button variant="default" icon-append="ArrowTopRightOnSquareIcon">
           Find Out More
         </p-button>
       </a>

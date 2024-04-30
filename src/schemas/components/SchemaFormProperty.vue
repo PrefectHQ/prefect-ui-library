@@ -1,5 +1,5 @@
 <template>
-  <p-label class="schema-form-property" :state="error.state" :message="error.message">
+  <p-label v-if="initialized" class="schema-form-property" :state="error.state" :message="error.message">
     <template #label>
       <div class="schema-form-property__header">
         <span class="schema-form-property__label" :class="classes.label">{{ label }}</span>
@@ -44,7 +44,8 @@
 
 <script lang="ts" setup>
   import { isDefined, isNotNullish } from '@prefecthq/prefect-design'
-  import { computed, ref, onMounted } from 'vue'
+  import isEqual from 'lodash.isequal'
+  import { computed, ref, watch } from 'vue'
   import SchemaFormPropertyMenu from '@/schemas/components/SchemaFormPropertyMenu.vue'
   import { usePrefectKindValue } from '@/schemas/compositions/usePrefectKindValue'
   import { useSchemaProperty } from '@/schemas/compositions/useSchemaProperty'
@@ -68,14 +69,13 @@
     'update:value': [SchemaValue],
   }>()
 
-  onMounted(() => {
-    // this components onMounted is fired before its children's onMounted. So to avoid the child with a default value
-    // overriding the default value set by this component we need to delay the initialization so that the default value "sticks"
-    // https://github.com/PrefectHQ/prefect/issues/12566
-    setTimeout(() => {
-      initialized.value = true
-    })
-  })
+  const error = computed(() => getSchemaPropertyError(props.errors))
+  const { property, label, description, disabled } = useSchemaProperty(() => props.property, () => props.required)
+  const omitted = ref(false)
+  const omittedValue = ref<SchemaValue>(null)
+  const omitLabel = computed(() => omitted.value ? 'Include value' : 'Omit value')
+  const initialized = ref(false)
+
 
   const kind = computed(() => getPrefectKindFromValue(() => props.value))
   const error = computed(() => getSchemaPropertyError(getErrors()))
@@ -111,12 +111,25 @@
       return undefined
     },
     set(value) {
+      if (!initialized.value) {
+        return
+      }
+
       emit('update:value', value)
     },
   })
 
   if (!isDefined(props.value) && isDefined(property.value.default)) {
     emit('update:value', property.value.default)
+
+    const unwatch = watch(() => props.value, () => {
+      if (isEqual(props.value, property.value.default)) {
+        initialized.value = true
+        unwatch()
+      }
+    })
+  } else {
+    initialized.value = true
   }
 
   const { errors: propertyErrors, setKind } = usePrefectKindValue({ value, property: () => props.propertyForValidation ?? props.property })

@@ -24,7 +24,7 @@
     <FlowRunJobVariableOverridesLabeledInput v-if="can.access.deploymentScheduleFlowRunInfraOverrides" v-model="internalJobVariables" />
 
     <template #actions>
-      <p-button primary type="submit" :disabled="disabled" @click="submitCurrentForm">
+      <p-button variant="default" type="submit" :disabled="disabled" @click="submitCurrentForm">
         Save
       </p-button>
     </template>
