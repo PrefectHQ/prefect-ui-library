@@ -1,3 +1,4 @@
+import { isRecord } from '@/utilities/object'
 import { createTuple } from '@/utilities/tuples'
 
 export type EventResourceLabel =
@@ -46,9 +47,8 @@ export type AutomationTriggerEventResponse = {
   within?: number,
 }
 
-export function isAutomationTriggerEventResponse(value: AutomationTriggerResponse): value is AutomationTriggerEventResponse {
-  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-  return value.type === 'event'
+export function isAutomationTriggerEventResponse(value: unknown): value is AutomationTriggerEventResponse {
+  return isRecord(value) && value.type === 'event' && isAutomationTriggerEventPosture(value.posture)
 }
 
 export type AutomationTriggerResponse = AutomationTriggerEventResponse
