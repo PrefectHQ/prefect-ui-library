@@ -39,6 +39,22 @@ export {
 } from './actions'
 
 export type {
+  AutomationTriggerResponse
+} from './api/triggers'
+
+export {
+  isAutomationTriggerEventResponse
+} from './api/triggers'
+
+export type {
+  AutomationTrigger
+} from './triggers'
+
+export {
+  isAutomationTriggerEvent
+} from './triggers'
+
+export type {
   IAutomation
 } from './automation'
 
