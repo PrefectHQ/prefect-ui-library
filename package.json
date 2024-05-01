@@ -22,7 +22,8 @@
         "lint": "eslint src",
         "test": "vitest",
         "validate:types": "vue-tsc --noEmit",
-        "version": "npm run changelog && git add CHANGELOG.md"
+        "version": "npm run changelog && git add CHANGELOG.md",
+        "release": "./prefecrt-ui-library-release"
     },
     "main": "./dist/prefect-ui-library.umd.js",
     "module": "./dist/prefect-ui-library.mjs",
@@ -77,7 +78,7 @@
         "@prefecthq/vue-charts": "^2.0.3",
         "@prefecthq/vue-compositions": "^1.11.4",
         "vee-validate": "^4.7.0",
-        "vue": "^3.4.21",
+        "vue": "^3.4.26",
         "vue-router": "^4.3.0"
     }
 }
