@@ -1,6 +1,5 @@
 import SchemaForm from '@/schemas/components/SchemaForm.vue'
 import SchemaInput from '@/schemas/components/SchemaInput.vue'
-import { usePrefectKind } from '@/schemas/compositions/usePrefectKind'
 import { useSchemaValidation } from '@/schemas/compositions/useSchemaValidation'
 import { mapper } from '@/schemas/mapper'
 import { Schema } from '@/schemas/types/schema'
@@ -11,8 +10,7 @@ export {
   SchemaForm as SchemaFormV2,
   SchemaInput as SchemaInputV2,
   mapper as schemaV2Mapper,
-  useSchemaValidation as useSchemaValidationV2,
-  usePrefectKind
+  useSchemaValidation as useSchemaValidationV2
 }
 
 export type {

@@ -26,7 +26,7 @@ export function useSchemaValidation(schema: MaybeRefOrGetter<Schema | null | und
       return true
     }
 
-    const { valid, errors: errorsResponse } = await api.schemas.validate(schemaValue, valuesValue)
+    const { valid, errors: errorsResponse } = await api.schemas.validateSchemaValues(valuesValue, schemaValue)
 
     errors.value = errorsResponse
 

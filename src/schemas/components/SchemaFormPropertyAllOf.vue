@@ -1,5 +1,5 @@
 <template>
-  <SchemaFormProperty v-model:value="value" :property="property" :required="required" :errors="errors" />
+  <SchemaFormProperty v-model:value="value" :property="mergedProperty" :required :errors :property-for-validation="property" />
 </template>
 
 <script lang="ts" setup>
@@ -35,8 +35,10 @@
 
   const schema = useSchema()
 
-  const property = computed(() => {
-    const definitions = props.property.allOf.reduce<SchemaProperty>((property, definition) => {
+  const mergedProperty = computed(() => {
+    const { allOf, ...baseProperty } = props.property
+
+    const definitions = allOf.reduce<SchemaProperty>((property, definition) => {
       if (isPropertyWith(definition, '$ref')) {
         return merge({}, getSchemaDefinition(schema, definition.$ref), property)
       }
@@ -44,6 +46,6 @@
       return merge({}, property, definition)
     }, {})
 
-    return merge({}, definitions, props.property)
+    return merge({}, definitions, baseProperty)
   })
 </script>

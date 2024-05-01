@@ -6,11 +6,12 @@
 
         <SchemaFormPropertyMenu
           v-model:value="value"
-          v-model:kind="kind"
+          :kind
           class="ml-auto"
           :property
           :disabled="omitted"
           flat
+          @update:kind="setKind"
         >
           <template v-if="!required" #default>
             <p-overflow-menu-item :label="omitLabel" @click="toggleValue" />
@@ -46,11 +47,11 @@
   import isEqual from 'lodash.isequal'
   import { computed, ref, watch } from 'vue'
   import SchemaFormPropertyMenu from '@/schemas/components/SchemaFormPropertyMenu.vue'
-  import { usePrefectKind } from '@/schemas/compositions/usePrefectKind'
+  import { usePrefectKindValue } from '@/schemas/compositions/usePrefectKindValue'
   import { useSchemaProperty } from '@/schemas/compositions/useSchemaProperty'
   import { useSchemaPropertyInput } from '@/schemas/compositions/useSchemaPropertyInput'
   import { SchemaProperty } from '@/schemas/types/schema'
-  import { SchemaValue } from '@/schemas/types/schemaValues'
+  import { SchemaValue, getPrefectKindFromValue } from '@/schemas/types/schemaValues'
   import { SchemaValueError } from '@/schemas/types/schemaValuesValidationResponse'
   import { getSchemaPropertyError } from '@/schemas/utilities/errors'
 
@@ -59,19 +60,22 @@
     value: SchemaValue,
     required: boolean,
     errors: SchemaValueError[],
+    // In cases like SchemaFormPropertyAnyOf or SchemaPropertyAllOf the property is modified before being passed into this component
+    // But in order to do proper validation of the value we want to use the full unmodified property.
+    propertyForValidation?: SchemaProperty,
   }>()
 
   const emit = defineEmits<{
     'update:value': [SchemaValue],
   }>()
 
-  const error = computed(() => getSchemaPropertyError(props.errors))
+  const kind = computed(() => getPrefectKindFromValue(() => props.value))
+  const error = computed(() => getSchemaPropertyError(getErrors()))
   const { property, label, description, disabled } = useSchemaProperty(() => props.property, () => props.required)
   const omitted = ref(false)
   const omittedValue = ref<SchemaValue>(null)
   const omitLabel = computed(() => omitted.value ? 'Include value' : 'Omit value')
   const initialized = ref(false)
-
 
   const classes = computed(() => ({
     label: {
@@ -120,8 +124,8 @@
     initialized.value = true
   }
 
-  const { kind } = usePrefectKind(value)
-  const { input } = useSchemaPropertyInput(property, value, () => props.errors)
+  const { errors: propertyErrors, setKind } = usePrefectKindValue({ value, property: () => props.propertyForValidation ?? props.property })
+  const { input } = useSchemaPropertyInput(property, value, getErrors)
 
   function toggleValue(): void {
     if (omitted.value) {
@@ -135,6 +139,14 @@
     value.value = undefined
     omittedValue.value = value.value
     omitted.value = true
+  }
+
+  function getErrors(): SchemaValueError[] {
+    if (propertyErrors.value.length) {
+      return propertyErrors.value
+    }
+
+    return props.errors
   }
 </script>
 

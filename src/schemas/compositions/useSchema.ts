@@ -1,10 +1,11 @@
-import { InjectionKey, inject } from 'vue'
+import { InjectionKey } from 'vue'
 import { Schema } from '@/schemas/types/schema'
+import { injectFromSelfOrAncestor } from '@/utilities/inject'
 
 export const schemaInjectionKey: InjectionKey<Schema> = Symbol()
 
 export function useSchema(): Schema {
-  const schema = inject(schemaInjectionKey)
+  const schema = injectFromSelfOrAncestor(schemaInjectionKey)
 
   if (!schema) {
     throw new Error('No schema was provided')
@@ -12,3 +13,4 @@ export function useSchema(): Schema {
 
   return schema
 }
+

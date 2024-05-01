@@ -1,6 +1,15 @@
 <template>
   <keep-alive>
-    <SchemaFormProperty :key="selectedPropertyIndexValue" :value="internalValue" v-bind="{ property, required, errors }" class="schema-form-property-any-of-input" @update:value="updateValue">
+    <SchemaFormProperty
+      :key="selectedPropertyIndexValue"
+      :value="internalValue"
+      :property="mergedProperty"
+      :property-for-validation="property"
+      :required
+      :errors
+      class="schema-form-property-any-of-input"
+      @update:value="updateValue"
+    >
       <template #default="{ kind }">
         <template v-if="kind === 'none'">
           <p-button-group v-model="selectedPropertyIndex" :options="options" small class="mb-2" />
@@ -13,7 +22,7 @@
 <script lang="ts" setup>
   import { ButtonGroupOption } from '@prefecthq/prefect-design'
   import merge from 'lodash.merge'
-  import { computed, reactive, ref } from 'vue'
+  import { computed, onActivated, reactive, ref } from 'vue'
   import { useWorkspaceApi } from '@/compositions'
   import SchemaFormProperty from '@/schemas/components/SchemaFormProperty.vue'
   import { useSchema } from '@/schemas/compositions/useSchema'
@@ -34,24 +43,17 @@
   const api = useWorkspaceApi()
   const schema = useSchema()
   const propertyValues = reactive<SchemaValue[]>([])
+  const selectedPropertyIndexValue = ref<number>(0)
 
-  const initialSelectedPropertyIndex = await getInitialIndexForSchemaPropertyAnyOfValue({
-    schema,
-    property: props.property,
-    value: props.value,
-    api,
+  // we need to await this during setup so that the initial default value gets populated correctly
+  // if we wait until mount when onActivated is called the child will override the value with its default value
+  await setPropertyIndexForValue()
+  propertyValues[selectedPropertyIndexValue.value] = props.value
+
+  onActivated(() => {
+    setPropertyIndexForValue()
+    propertyValues[selectedPropertyIndexValue.value] = props.value
   })
-
-  // need to make sure we set the initial value for the selected property
-  // reactivity is handled by the computed value
-  // eslint-disable-next-line vue/no-setup-props-destructure
-  propertyValues[initialSelectedPropertyIndex] = props.value
-
-  if (initialSelectedPropertyIndex === -1) {
-    throw 'not implemented'
-  }
-
-  const selectedPropertyIndexValue = ref(initialSelectedPropertyIndex)
 
   const emit = defineEmits<{
     'update:value': [SchemaValue],
@@ -94,7 +96,7 @@
     },
   })
 
-  const property = computed(() => {
+  const mergedProperty = computed(() => {
     const selectedProperty = props.property.anyOf[selectedPropertyIndex.value]
     // eslint-disable-next-line no-unused-vars
     const { anyOf, ...property } = props.property
@@ -119,5 +121,20 @@
     }
 
     return getSchemaPropertyLabel(property)
+  }
+
+  async function setPropertyIndexForValue(): Promise<void> {
+    const index = await getInitialIndexForSchemaPropertyAnyOfValue({
+      schema,
+      property: props.property,
+      value: props.value,
+      api,
+    })
+
+    if (index === -1) {
+      throw 'not implemented'
+    }
+
+    selectedPropertyIndexValue.value = index
   }
 </script>

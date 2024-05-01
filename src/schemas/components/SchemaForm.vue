@@ -1,16 +1,22 @@
 <template>
   <p-form class="schema-form" novalidate @submit="submit">
-    <template v-if="schema.properties">
-      <SchemaInput v-model:values="values" :schema="schema" :errors="errors" :kinds="kinds" />
-    </template>
+    <p-content>
+      <template v-if="schema.properties">
+        <SchemaInput v-model:values="values" :schema="schema" :errors="errors" :kinds="kinds">
+          <template #default="scope">
+            <slot v-bind="scope" />
+          </template>
+        </SchemaInput>
+      </template>
 
-    <p-checkbox v-model="shouldValidate" label="Validate parameters before submitting" />
+      <p-checkbox v-model="shouldValidate" label="Validate parameters before submitting" />
+    </p-content>
   </p-form>
 </template>
 
 <script lang="ts" setup>
   import { showToast } from '@prefecthq/prefect-design'
-  import { computed, ref, h } from 'vue'
+  import { computed, ref, h, VNode } from 'vue'
   import ToastParameterValidationError from '@/components/ToastParameterValidationError.vue'
   import SchemaInput from '@/schemas/components/SchemaInput.vue'
   import { useSchemaValidation } from '@/schemas/compositions/useSchemaValidation'
@@ -30,6 +36,10 @@
     'update:values': [SchemaValues],
     'update:loading': [boolean],
     'submit': [SchemaValues],
+  }>()
+
+  defineSlots<{
+    default: (props: { kind: PrefectKind, setKind: (to: PrefectKind) => void }) => VNode,
   }>()
 
   const shouldValidate = ref(true)

@@ -1,5 +1,6 @@
 import { isDefined } from '@prefecthq/prefect-design'
-import { isRecord, isString } from '@/utilities'
+import { MaybeRefOrGetter, toValue } from 'vue'
+import { isEmptyString, isRecord, isString } from '@/utilities'
 import { createTuple } from '@/utilities/tuples'
 
 export type SchemaValue = unknown
@@ -13,6 +14,16 @@ export const { values: prefectKinds, isValue: isPrefectKind } = createTuple([
 ])
 
 export type PrefectKind = typeof prefectKinds[number]
+
+export function getPrefectKindFromValue(source: MaybeRefOrGetter<SchemaValue>): PrefectKind {
+  const value = toValue(source)
+
+  if (isPrefectKindValue(value)) {
+    return value.__prefect_kind
+  }
+
+  return 'none'
+}
 
 type BasePrefectKindValue<
   TKind extends PrefectKind = PrefectKind,
@@ -46,7 +57,7 @@ export function isPrefectKindNull(value: unknown): value is PrefectKindNull {
 }
 
 export type PrefectKindJson = BasePrefectKindValue<'json', {
-  value: string | undefined,
+  value?: string,
 }>
 
 export function isPrefectKindJson(value: unknown): value is PrefectKindJson {
@@ -54,7 +65,7 @@ export function isPrefectKindJson(value: unknown): value is PrefectKindJson {
 }
 
 export type PrefectKindJinja = BasePrefectKindValue<'jinja', {
-  template: string,
+  template?: string,
 }>
 
 export function isPrefectKindJinja(value: unknown): value is PrefectKindJinja {
@@ -62,11 +73,11 @@ export function isPrefectKindJinja(value: unknown): value is PrefectKindJinja {
 }
 
 export type PrefectKindWorkspaceVariable = BasePrefectKindValue<'workspace_variable', {
-  variable_name: string,
+  variable_name?: string,
 }>
 
 export function isPrefectKindWorkspaceVariable(value: unknown): value is PrefectKindWorkspaceVariable {
-  return isPrefectKindValue(value, 'workspace_variable') && isString(value.variable_name)
+  return isPrefectKindValue(value, 'workspace_variable') && (isString(value.variable_name) || !isDefined(value.variable_name))
 }
 
 export type BlockDocumentReferenceValue = {
