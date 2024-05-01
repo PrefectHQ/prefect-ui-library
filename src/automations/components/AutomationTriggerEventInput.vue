@@ -6,13 +6,13 @@
   import { computed } from 'vue'
   import AutomationTriggerDeploymentStatusInput from '@/automations/components/AutomationTriggerDeploymentStatusInput.vue'
   import { AutomationTriggerEvent } from '@/automations/types/automationTriggerEvent'
-  import { AutomationTriggerTemplate } from '@/automations/types/triggerTemplates'
+  import { AutomationTriggerEventTemplate } from '@/automations/types/triggerTemplates'
   import { withProps } from '@/utilities'
 
   const trigger = defineModel<AutomationTriggerEvent>('trigger', { required: true })
 
   const { template } = defineProps<{
-    template: AutomationTriggerTemplate,
+    template: AutomationTriggerEventTemplate,
   }>()
 
   const input = computed(() => {

@@ -47,17 +47,12 @@ export {
 } from './api/triggers'
 
 export type {
-  AutomationTrigger
-} from './triggers'
-
-export {
-  isAutomationTriggerEvent
-} from './triggers'
-
-export type {
   IAutomation
 } from './automation'
 
 export {
   Automation
 } from './automation'
+
+export * from './triggers'
+export * from './triggerTemplates'
