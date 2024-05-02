@@ -57,3 +57,4 @@ export {
 export * from './triggers'
 export * from './triggerTemplates'
 export * from './automationTriggerEvent'
+export * from './deploymentStatusTrigger'

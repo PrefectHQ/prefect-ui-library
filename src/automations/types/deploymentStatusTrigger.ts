@@ -1,6 +1,6 @@
 import { isAfterResource, isExpectResource, isForEachResource, isMatchResource } from '@/automations/maps/utilities'
 import { AutomationTriggerEventPosture, DEFAULT_EVENT_TRIGGER_THRESHOLD } from '@/automations/types/automationTriggerEvent'
-import { AutomationTrigger, isAutomationTriggerEvent } from '@/automations/types/triggers'
+import { isAutomationTriggerEvent } from '@/automations/types/triggers'
 import { DeploymentStatus } from '@/models/DeploymentStatus'
 import { createTuple } from '@/utilities/tuples'
 
@@ -17,7 +17,7 @@ export type DeploymentStatusTrigger = {
 /**
  * This is used to determine if an AutomationTrigger can be mapped into a DeploymentStatusTrigger
  */
-export function isDeploymentStatusTrigger(trigger: AutomationTrigger): boolean {
+export function isDeploymentStatusTrigger(trigger: unknown): boolean {
   return isAutomationTriggerEvent(trigger) &&
          isMatchResource(trigger, prefectResourceIds => prefectResourceIds.every(value => value.startsWith('prefect.deployment'))) &&
          isForEachResource(trigger, 'prefect.resource.id') &&
