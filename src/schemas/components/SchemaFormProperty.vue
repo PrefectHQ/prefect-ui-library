@@ -60,6 +60,9 @@
     value: SchemaValue,
     required: boolean,
     errors: SchemaValueError[],
+    // For an anyOf property we don't want to keep initializing the default value each time the type is changed
+    // https://github.com/PrefectHQ/prefect-ui-library/pull/2355
+    skipDefaultValueInitialization?: boolean,
     // In cases like SchemaFormPropertyAnyOf or SchemaPropertyAllOf the property is modified before being passed into this component
     // But in order to do proper validation of the value we want to use the full unmodified property.
     propertyForValidation?: SchemaProperty,
@@ -111,7 +114,7 @@
     },
   })
 
-  if (!isDefined(props.value) && isDefined(property.value.default)) {
+  if (!props.skipDefaultValueInitialization && !isDefined(props.value) && isDefined(property.value.default)) {
     emit('update:value', property.value.default)
 
     const unwatch = watch(() => props.value, () => {

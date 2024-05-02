@@ -1,4 +1,7 @@
-export const workPoolStatus = ['ready', 'not_ready', 'paused'] as const
+import { createTuple } from '@/utilities/tuples'
 
-export type WorkPoolStatus = typeof workPoolStatus[number] | null
-export type ServerWorkPoolStatus = Uppercase<typeof workPoolStatus[number]> | null
+export const { values: workPoolStatus, isValue: isWorkPoolStatus } = createTuple(['ready', 'not_ready', 'paused'])
+export type WorkPoolStatus = typeof workPoolStatus[number]
+
+export const { values: serverWorkPoolStatus, isValue: isServerWorkPoolStatus } = createTuple(['READY', 'NOT_READY', 'PAUSED'])
+export type ServerWorkPoolStatus = typeof serverWorkPoolStatus[number]
