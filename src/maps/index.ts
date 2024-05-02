@@ -1,6 +1,8 @@
 import { mapAutomationActionResponseToAutomationAction, mapAutomationActionToAutomationActionRequest } from '@/automations/maps/actions'
 import { mapAutomationResponseToAutomation } from '@/automations/maps/automations'
 import { mapCreateAutomationActionQueryToLocationQuery, mapCreateAutomationQueryToLocationQuery, mapCreateAutomationTriggerQueryToLocationQuery } from '@/automations/maps/createAutomationQuery'
+import { mapAutomationTriggerToDeploymentStatusTrigger, mapDeploymentStatusTriggerToAutomationTrigger } from '@/automations/maps/deploymentStatusTrigger'
+import { mapAutomationTriggerResponseToAutomationTrigger, mapAutomationTriggerToAutomationTriggerRequest } from '@/automations/maps/triggers'
 import { mapArtifactCollectionResponseToArtifactCollection, mapArtifactResponseToArtifact } from '@/maps/artifact'
 import { mapBlockDocumentResponseToBlockDocument, mapBlockDocumentToSelectOption } from '@/maps/blockDocument'
 import { mapBlockDocumentCreateToBlockDocumentCreateRequest } from '@/maps/blockDocumentCreate'
@@ -241,4 +243,10 @@ export const maps = {
   },
   TaskRunHistoryStateResponse: { TaskRunHistoryState: mapTaskRunHistoryStateResponseToTaskRunHistoryState },
   TaskRunHistoryResponse: { TaskRunHistory: mapTaskRunHistoryResponseToTaskRunHistory },
+  AutomationTrigger: {
+    DeploymentStatusTrigger: mapAutomationTriggerToDeploymentStatusTrigger,
+    AutomationTriggerRequest: mapAutomationTriggerToAutomationTriggerRequest,
+  },
+  DeploymentStatusTrigger: { AutomationTrigger: mapDeploymentStatusTriggerToAutomationTrigger },
+  AutomationTriggerResponse: { AutomationTrigger: mapAutomationTriggerResponseToAutomationTrigger },
 }
