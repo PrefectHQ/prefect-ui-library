@@ -5,6 +5,7 @@
 <script lang="ts" setup>
   import { computed } from 'vue'
   import AutomationTriggerDeploymentStatusInput from '@/automations/components/AutomationTriggerDeploymentStatusInput.vue'
+  import AutomationTriggerFlowRunStateInput from '@/automations/components/AutomationTriggerFlowRunStateInput.vue'
   import { AutomationTriggerEvent } from '@/automations/types/automationTriggerEvent'
   import { AutomationTriggerEventTemplate } from '@/automations/types/triggerTemplates'
   import { withProps } from '@/utilities'
@@ -24,6 +25,10 @@
         })
 
       case 'flow-run-state':
+        return withProps(AutomationTriggerFlowRunStateInput, {
+          trigger: trigger.value,
+          'onUpdate:trigger': update,
+        })
       case 'work-pool-status':
       case 'work-queue-status':
         throw new Error(`AutomationTriggerEventInput does not support template: ${template}`)
