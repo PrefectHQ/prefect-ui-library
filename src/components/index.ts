@@ -326,3 +326,4 @@ export { default as WorkspaceVariableCombobox } from './WorkspaceVariableCombobo
 export { default as FlowRunCreateFormV2 } from './FlowRunCreateFormV2.vue'
 export { default as DeploymentStatusSelect } from './DeploymentStatusSelect.vue'
 export { default as DurationInput } from './DurationInput.vue'
+export { default as WorkPoolStatusSelect } from './WorkPoolStatusSelect.vue'
