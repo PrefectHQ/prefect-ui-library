@@ -34,7 +34,7 @@
         "./dist/style.css": "./dist/style.css"
     },
     "files": [
-        "dist"
+        "."
     ],
     "types": "./dist/types/src/index.d.ts",
     "dependencies": {

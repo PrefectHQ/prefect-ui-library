@@ -1,11 +1,10 @@
-/* eslint-disable @typescript-eslint/no-require-imports */
-/* eslint-disable @typescript-eslint/no-var-requires */
-const prefectDesignPlugin = require('@prefecthq/prefect-design/dist/tailwindPlugin.js')
-const plugin = require('tailwindcss/plugin')
+import { tailwindPlugin as prefectDesignTailwindPlugin } from '@prefecthq/prefect-design'
+import plugin from 'tailwindcss/plugin'
+import { Config, PluginCreator } from 'tailwindcss/types/config'
 
 const states = ['completed', 'failed', 'running', 'pending', 'scheduled', 'cancelled', 'crashed', 'paused']
 
-const stateColors = states.reduce((colors, state) => {
+const stateColors = states.reduce<Record<string, Record<number, string>>>((colors, state) => {
   colors[`state-${state}`] = {
     50: `var(--state-${state}-50)`,
     100: `var(--state-${state}-100)`,
@@ -22,7 +21,7 @@ const stateColors = states.reduce((colors, state) => {
   return colors
 }, {})
 
-const config = {
+const config: Config = {
   content: [
     './index.html',
     './src/**/*.{vue,js,ts,jsx,tsx}',
@@ -39,9 +38,8 @@ const config = {
       },
     },
   },
-  plugins: [prefectDesignPlugin],
+  plugins: [prefectDesignTailwindPlugin],
 }
 
-function PrefectUiLibraryPlugins() { /* noop */ }
-
-module.exports = plugin(PrefectUiLibraryPlugins, config)
+const prefectUiLibraryPlugins: PluginCreator = function() { /* noop */ }
+export const tailwindPlugin = plugin(prefectUiLibraryPlugins, config)

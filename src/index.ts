@@ -12,14 +12,15 @@ export * from './router'
 export * from './services'
 export * from './types'
 export * from './utilities'
+export { tailwindPlugin } from '@/tailwindPlugin'
 
 // feature specific
 export * from './schemas'
 export * from './automations'
 
-import '@/styles/style.css'
+import '@/styles/index.css'
 
-import { ToastPlugin } from '@prefecthq/prefect-design'
+import { ToastPlugin } from '@prefecthq/prefect-design/plugins'
 import { App, Plugin } from 'vue'
 import { clearOldCacheKeys } from '@/utilities/cache'
 
@@ -36,7 +37,7 @@ if (typeof window === 'undefined') {
 
 const plugin: Plugin = {
   install(app: App) {
-    app.use(ToastPlugin)
+    app.use(ToastPlugin as Plugin)
 
     clearOldCacheKeys()
   },
