@@ -60,6 +60,7 @@
     value: SchemaValue,
     required: boolean,
     errors: SchemaValueError[],
+    skipDefaultValueInitialization?: boolean,
     // In cases like SchemaFormPropertyAnyOf or SchemaPropertyAllOf the property is modified before being passed into this component
     // But in order to do proper validation of the value we want to use the full unmodified property.
     propertyForValidation?: SchemaProperty,
@@ -111,7 +112,7 @@
     },
   })
 
-  if (!isDefined(props.value) && isDefined(property.value.default)) {
+  if (!props.skipDefaultValueInitialization && !isDefined(props.value) && isDefined(property.value.default)) {
     emit('update:value', property.value.default)
 
     const unwatch = watch(() => props.value, () => {

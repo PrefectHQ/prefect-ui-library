@@ -7,8 +7,10 @@
       :property-for-validation="property"
       :required
       :errors
+      :skip-default-value-initialization
       class="schema-form-property-any-of-input"
       @update:value="updateValue"
+      @vnode-mounted="() => skipDefaultValueInitialization = true"
     >
       <template #default="{ kind }">
         <template v-if="kind === 'none'">
@@ -44,6 +46,7 @@
   const schema = useSchema()
   const propertyValues = reactive<SchemaValue[]>([])
   const selectedPropertyIndexValue = ref<number>(0)
+  const skipDefaultValueInitialization = ref(false)
 
   // we need to await this during setup so that the initial default value gets populated correctly
   // if we wait until mount when onActivated is called the child will override the value with its default value
@@ -76,7 +79,7 @@
     let index = await getInitialIndexForSchemaPropertyAnyOfValue({ value, property: props.property, api, schema })
 
     if (index === -1) {
-      console.error('Could not determine property index')
+      console.warn('SchemaFormPropertyAnyOf could not determine the initial index for property value')
       index = selectedPropertyIndex.value
     }
 
@@ -132,7 +135,8 @@
     })
 
     if (index === -1) {
-      throw 'not implemented'
+      console.warn('SchemaFormPropertyAnyOf could not determine the initial index for property value')
+      return
     }
 
     selectedPropertyIndexValue.value = index
