@@ -28,6 +28,7 @@
   import AutomationTriggerEventPostureSelect from '@/automations/components/AutomationTriggerEventPostureSelect.vue'
   import AutomationWithinInput from '@/automations/components/AutomationWithinInput.vue'
   import { AutomationTriggerEvent, DEFAULT_EVENT_TRIGGER_WITHIN } from '@/automations/types/automationTriggerEvent'
+  import FlowCombobox from '@/components/FlowCombobox.vue'
   import StateNameSelect from '@/components/StateNameSelect.vue'
   import { mapper } from '@/services'
 

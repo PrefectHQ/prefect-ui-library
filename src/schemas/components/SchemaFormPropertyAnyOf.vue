@@ -10,7 +10,7 @@
       :skip-default-value-initialization
       class="schema-form-property-any-of-input"
       @update:value="updateValue"
-      @vnode-mounted="() => skipDefaultValueInitialization = true"
+      @vue:mounted="() => skipDefaultValueInitialization = true"
     >
       <template #default="{ kind }">
         <template v-if="kind === 'none'">

@@ -49,6 +49,7 @@ export const mapAutomationActionResponseToAutomationAction: MapFunction<Automati
     case 'cancel-flow-run':
     case 'suspend-flow-run':
     case 'change-flow-run-state':
+    case 'do-nothing':
       return response
     default:
       const exhaustive: never = response
@@ -77,6 +78,7 @@ export const mapAutomationActionToAutomationActionRequest: MapFunction<Automatio
     case 'cancel-flow-run':
     case 'suspend-flow-run':
     case 'change-flow-run-state':
+    case 'do-nothing':
       return request
     default:
       const exhaustive: never = request

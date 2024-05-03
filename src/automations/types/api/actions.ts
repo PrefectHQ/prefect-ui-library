@@ -18,6 +18,7 @@ export type AutomationActionResponse =
 | AutomationActionPauseAutomationResponse
 | AutomationActionResumeAutomationResponse
 | AutomationActionSendNotificationResponse
+| AutomationActionDoNothingResponse
 
 export type AutomationActionRequest = AutomationActionResponse
 
@@ -186,3 +187,8 @@ export type AutomationActionSendNotificationResponse = AutomationActionWithType<
   subject: string,
   body: string,
 }>
+
+/**
+ * Do nothing
+ */
+export type AutomationActionDoNothingResponse = AutomationActionWithType<'do-nothing'>

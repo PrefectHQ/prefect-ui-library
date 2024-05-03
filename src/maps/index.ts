@@ -5,6 +5,7 @@ import { mapAutomationTriggerToDeploymentStatusTrigger, mapDeploymentStatusTrigg
 import { mapAutomationTriggerToFlowRunStateTrigger, mapFlowRunStateTriggerToAutomationTrigger } from '@/automations/maps/flowRunStateTrigger'
 import { mapAutomationTriggerResponseToAutomationTrigger, mapAutomationTriggerToAutomationTriggerRequest } from '@/automations/maps/triggers'
 import { mapAutomationTriggerToWorkPoolStatusTrigger, mapWorkPoolStatusTriggerToAutomationTrigger } from '@/automations/maps/workPoolStatusTrigger'
+import { mapAutomationTriggerToWorkQueueStatusTrigger, mapWorkQueueStatusTriggerToAutomationTrigger } from '@/automations/maps/workQueueStatusTrigger'
 import { mapArtifactCollectionResponseToArtifactCollection, mapArtifactResponseToArtifact } from '@/maps/artifact'
 import { mapBlockDocumentResponseToBlockDocument, mapBlockDocumentToSelectOption } from '@/maps/blockDocument'
 import { mapBlockDocumentCreateToBlockDocumentCreateRequest } from '@/maps/blockDocumentCreate'
@@ -79,6 +80,11 @@ import { mapWorkQueueToWorkQueueResponse, mapWorkQueueResponseToWorkQueue, mapWo
 import { mapWorkQueueFilterToWorkQueueFilterResponse, mapWorkQueueFilterResponseToWorkQueueFilter } from '@/maps/workQueueFilter'
 import { mapWorkQueueHealthPolicyResponseToWorkQueueHealthPolicy } from '@/maps/workQueueHealthPolicy'
 import { mapWorkQueueStatusResponseToWorkQueueStatus } from '@/maps/workQueueStatus'
+import { mapWorkspaceEventResponseToWorkspaceEvent } from '@/maps/workspaceEvent'
+import { mapWorkspaceEventsResponseToWorkspaceEvents } from '@/maps/workspaceEvents'
+import { mapWorkspaceEventsCountResponseToHistogramDataPoint, mapWorkspaceEventsCountResponseToWorkspaceEventsCount } from '@/maps/workspaceEventsCount'
+import { mapWorkspaceEventsFilterToWorkspaceEventsFilterRequest } from '@/maps/workspaceEventsFilter'
+import { mapEventsHistoryToEventsHistoryRequest } from '@/maps/workspaceEventsHistory'
 
 export const maps = {
   ArtifactFilter: { ArtifactFilterRequest: mapArtifactFilter },
@@ -250,9 +256,19 @@ export const maps = {
     AutomationTriggerRequest: mapAutomationTriggerToAutomationTriggerRequest,
     FlowRunStateTrigger: mapAutomationTriggerToFlowRunStateTrigger,
     WorkPoolStatusTrigger: mapAutomationTriggerToWorkPoolStatusTrigger,
+    WorkQueueStatusTrigger: mapAutomationTriggerToWorkQueueStatusTrigger,
   },
   DeploymentStatusTrigger: { AutomationTrigger: mapDeploymentStatusTriggerToAutomationTrigger },
   AutomationTriggerResponse: { AutomationTrigger: mapAutomationTriggerResponseToAutomationTrigger },
   FlowRunStateTrigger: { AutomationTrigger: mapFlowRunStateTriggerToAutomationTrigger },
   WorkPoolStatusTrigger: { AutomationTrigger: mapWorkPoolStatusTriggerToAutomationTrigger },
+  WorkQueueStatusTrigger: { AutomationTrigger: mapWorkQueueStatusTriggerToAutomationTrigger },
+  WorkspaceEventResponse: { WorkspaceEvent: mapWorkspaceEventResponseToWorkspaceEvent },
+  WorkspaceEventsResponse: { WorkspaceEvents: mapWorkspaceEventsResponseToWorkspaceEvents },
+  WorkspaceEventsCountResponse: {
+    WorkspaceEventsCount: mapWorkspaceEventsCountResponseToWorkspaceEventsCount,
+    HistogramDataPoint: mapWorkspaceEventsCountResponseToHistogramDataPoint,
+  },
+  WorkspaceEventsFilter: { WorkspaceEventsFilterRequest: mapWorkspaceEventsFilterToWorkspaceEventsFilterRequest },
+  WorkspaceEventsHistory: { WorkspaceEventsHistoryRequest: mapEventsHistoryToEventsHistoryRequest },
 }

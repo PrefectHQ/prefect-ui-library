@@ -1,8 +1,8 @@
 import { asArray } from '@prefecthq/prefect-design'
-import { AutomationTriggerMatch, EventResource, EventResourceLabel, EventResourceRole, EventResourceValue } from '@/automations/types/api/triggers'
+import { AutomationTriggerMatch, AutomationTriggerEventResource, AutomationTriggerEventResourceLabel, AutomationTriggerEventResourceRole, EventResourceValue } from '@/automations/types/api/triggers'
 import { AutomationTrigger, isAutomationTriggerEvent } from '@/automations/types/triggers'
 
-export function toResourceId(resource: EventResource, values: string[]): string | string[] {
+export function toResourceId(resource: AutomationTriggerEventResource, values: string[]): string | string[] {
   if (values.length === 0) {
     return `${resource}.*`
   }
@@ -10,7 +10,7 @@ export function toResourceId(resource: EventResource, values: string[]): string 
   return values.map(flowId => `${resource}.${flowId}`)
 }
 
-export function fromResourceId(resource: EventResource, value: EventResourceValue): string[] {
+export function fromResourceId(resource: AutomationTriggerEventResource, value: EventResourceValue): string[] {
   if (value === undefined) {
     return []
   }
@@ -26,7 +26,7 @@ export function fromResourceId(resource: EventResource, value: EventResourceValu
   })
 }
 
-export function fromResourceName(match: AutomationTriggerMatch, role: EventResourceRole): string[] {
+export function fromResourceName(match: AutomationTriggerMatch, role: AutomationTriggerEventResourceRole): string[] {
   if (role !== match['prefect.resource.role']) {
     return []
   }
@@ -61,7 +61,7 @@ export function fromStateNameEvents(events: string[]): string[] {
   })
 }
 
-export function toMatchRelatedId(role: EventResourceRole, id: string | string[]): AutomationTriggerMatch | undefined {
+export function toMatchRelatedId(role: AutomationTriggerEventResourceRole, id: string | string[]): AutomationTriggerMatch | undefined {
   const ids = asArray(id)
 
   if (ids.length === 0) {
@@ -74,7 +74,7 @@ export function toMatchRelatedId(role: EventResourceRole, id: string | string[])
   }
 }
 
-export function toMatchRelatedName(role: EventResourceRole, name: string | string[]): AutomationTriggerMatch | undefined {
+export function toMatchRelatedName(role: AutomationTriggerEventResourceRole, name: string | string[]): AutomationTriggerMatch | undefined {
   const names = asArray(name)
 
   if (names.length === 0) {
@@ -97,7 +97,7 @@ export function isMatchResource(trigger: AutomationTrigger, predicate: (resource
   return predicate(prefectResourceIds)
 }
 
-function getTriggerMatchValue(trigger: AutomationTrigger, key: EventResourceLabel): string[] {
+function getTriggerMatchValue(trigger: AutomationTrigger, key: AutomationTriggerEventResourceLabel): string[] {
   if (isAutomationTriggerEvent(trigger)) {
     const value = trigger.match[key]
 
@@ -107,7 +107,7 @@ function getTriggerMatchValue(trigger: AutomationTrigger, key: EventResourceLabe
   return []
 }
 
-export function isForEachResource(trigger: AutomationTrigger, resource: EventResourceLabel): boolean {
+export function isForEachResource(trigger: AutomationTrigger, resource: AutomationTriggerEventResourceLabel): boolean {
   if (isAutomationTriggerEvent(trigger)) {
     return trigger.forEach.every(value => value.startsWith(resource))
   }
