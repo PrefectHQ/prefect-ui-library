@@ -115,6 +115,6 @@ export class WorkspaceEvent implements IWorkspaceEvent {
   }
 }
 
-export function isEvent(value: unknown): value is WorkspaceEvent {
+export function isWorkspaceEvent(value: unknown): value is WorkspaceEvent {
   return value instanceof WorkspaceEvent
 }
