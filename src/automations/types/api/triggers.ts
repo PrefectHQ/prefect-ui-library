@@ -1,13 +1,13 @@
 import { isRecord } from '@/utilities/object'
 import { createTuple } from '@/utilities/tuples'
 
-export type EventResourceLabel =
+export type AutomationTriggerEventResourceLabel =
  | 'prefect.resource.id'
  | 'prefect.resource.role'
  | 'prefect.resource.name'
  | 'prefect-cloud.incident.severity'
 
-export type EventResource =
+export type AutomationTriggerEventResource =
  | 'prefect.deployment'
  | 'prefect.flow-run'
  | 'prefect.flow'
@@ -16,7 +16,7 @@ export type EventResource =
  | 'prefect.work-queue'
  | 'prefect-cloud.incident'
 
-export type EventResourceRole =
+export type AutomationTriggerEventResourceRole =
  | 'flow'
  | 'tag'
  | 'work-queue'
@@ -24,7 +24,7 @@ export type EventResourceRole =
 
 export type EventResourceValue = string | string[] | undefined
 
-export type AutomationTriggerMatch = Partial<Record<EventResourceLabel, EventResourceValue>>
+export type AutomationTriggerMatch = Partial<Record<AutomationTriggerEventResourceLabel, EventResourceValue>>
 
 export const { values: automationTriggerEventPosture, isValue: isAutomationTriggerEventPosture } = createTuple([
   'Reactive',
