@@ -1,7 +1,7 @@
 <template>
   <template v-if="flowIds">
     <p-accordion :sections="flowIds" class="flow-runs-accordion">
-      <template #header="{ section: flowId, id, toggle, content, selected }">
+      <template #heading="{ section: flowId, id, toggle, content, selected }">
         <FlowRunsAccordionHeader :flow="getFlow(flowId)" :filter="flowRunsFilter" v-bind="{ id, content, toggle, selected }" />
       </template>
       <template #content="{ section: flowId }">
@@ -15,7 +15,7 @@
 </template>
 
 <script lang="ts" setup>
-  import { Ref, computed, ref, toRef, watch } from 'vue'
+  import { computed, toRef } from 'vue'
   import FlowRunsAccordionContent from '@/components/FlowRunsAccordionContent.vue'
   import FlowRunsAccordionHeader from '@/components/FlowRunsAccordionHeader.vue'
   import FlowRunStateTypeEmpty from '@/components/FlowRunStateTypeEmpty.vue'

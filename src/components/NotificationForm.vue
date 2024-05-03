@@ -14,6 +14,7 @@
       </p-label>
     </div>
 
+    <!-- @vue-ignore -->
     <p-button-group v-model="selectedBlockTypeId" :options="buttonGroup" />
 
     <template v-if="blockSchema && data">
