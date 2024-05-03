@@ -3,8 +3,6 @@ import vue from '@vitejs/plugin-vue'
 import { UserConfig, defineConfig } from 'vite'
 import svgLoader from 'vite-svg-loader'
 
-
-// eslint-disable-next-line import/no-default-export
 export default defineConfig(() => {
   const baseConfig = {
     resolve: {
