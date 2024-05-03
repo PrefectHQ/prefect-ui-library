@@ -5,6 +5,7 @@ export const { values: automationTriggerEventTemplates, isValue: isAutomationTri
   'flow-run-state',
   'work-pool-status',
   'work-queue-status',
+  'custom',
 ])
 
 export type AutomationTriggerEventTemplate = typeof automationTriggerEventTemplates[number]

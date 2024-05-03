@@ -44,6 +44,9 @@
           'onUpdate:trigger': update,
         })
 
+      case 'custom':
+
+
       default:
         throw new Error(`AutomationTriggerEventInput does not support template: ${template satisfies never}`)
     }
