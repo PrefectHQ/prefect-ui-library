@@ -30,13 +30,16 @@
           trigger: trigger.value,
           'onUpdate:trigger': update,
         })
+
       case 'work-pool-status':
         return withProps(AutomationTriggerWorkPoolStatusInput, {
           trigger: trigger.value,
           'onUpdate:trigger': update,
         })
+
       case 'work-queue-status':
         throw new Error(`AutomationTriggerEventInput does not support template: ${template}`)
+
       default:
         throw new Error(`AutomationTriggerEventInput does not support template: ${template satisfies never}`)
     }
