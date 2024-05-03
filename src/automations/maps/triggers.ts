@@ -14,6 +14,7 @@ export const mapAutomationTriggerResponseToAutomationTrigger: MapFunction<Automa
       forEach: source.for_each,
       after: source.after,
       expect: source.expect,
+      within: source.within,
     })
   }
 
