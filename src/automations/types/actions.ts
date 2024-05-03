@@ -17,6 +17,7 @@ export const { values: automationActionTypes, isValue: isAutomationActionType } 
   'pause-automation',
   'resume-automation',
   'send-notification',
+  'do-nothing',
 ])
 
 export type AutomationActionType = typeof automationActionTypes[number]
@@ -35,6 +36,7 @@ export const automationActionTypeLabels = {
   'pause-automation': 'Pause an automation',
   'resume-automation': 'Resume an automation',
   'send-notification': 'Send a notification',
+  'do-nothing': 'Do nothing',
 } as const satisfies Record<AutomationActionType, string>
 
 /**
@@ -265,6 +267,16 @@ function isAutomationActionSendNotification(value: unknown): value is Automation
   return isValidBlockDocumentId && isValidSubject && isValidBody
 }
 
+/*
+ * Do nothing
+ */
+
+export type AutomationActionDoNothing = AutomationActionWithType<'do-nothing'>
+
+function isAutomationActionDoNothing(value: unknown): value is AutomationActionDoNothing {
+  return isAutomationActionTypeRecord(value, 'do-nothing')
+}
+
 export type AutomationAction =
   | AutomationActionCancelFlowRun
   | AutomationActionSuspendFlowRun
@@ -279,6 +291,7 @@ export type AutomationAction =
   | AutomationActionPauseAutomation
   | AutomationActionResumeAutomation
   | AutomationActionSendNotification
+  | AutomationActionDoNothing
 
 /*
  * if this is giving you a type error you forgot to add a type for your action to the AutomationAction type
@@ -302,6 +315,7 @@ const actionTypeGuardMap = {
   'pause-automation': isAutomationActionPauseAutomation,
   'resume-automation': isAutomationActionResumeAutomation,
   'send-notification': isAutomationActionSendNotification,
+  'do-nothing': isAutomationActionDoNothing,
 } satisfies Record<AutomationActionType, (value: unknown) => boolean>
 
 export function isAutomationAction(value: unknown): value is AutomationAction {
