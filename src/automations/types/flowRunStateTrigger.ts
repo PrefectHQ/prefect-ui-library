@@ -1,5 +1,5 @@
 import { isMatchResource, isForEachResource, isAfterResource, isExpectResource } from '@/automations/maps/utilities'
-import { EventResource, EventResourceLabel } from '@/automations/types/api/triggers'
+import { AutomationTriggerEventResource, AutomationTriggerEventResourceLabel } from '@/automations/types/api/triggers'
 import { AutomationTriggerEvent, AutomationTriggerEventPosture, DEFAULT_EVENT_TRIGGER_THRESHOLD } from '@/automations/types/automationTriggerEvent'
 import { isAutomationTriggerEvent } from '@/automations/types/triggers'
 import { asArray } from '@/utilities/arrays'
@@ -30,7 +30,7 @@ function isEmptyMatchRelated(trigger: AutomationTriggerEvent): boolean {
   return Object.keys(trigger.matchRelated).length === 0
 }
 
-function isMatchRelatedResource(trigger: AutomationTriggerEvent, resource: EventResource): boolean {
+function isMatchRelatedResource(trigger: AutomationTriggerEvent, resource: AutomationTriggerEventResource): boolean {
   const prefectResourceIds = getTriggerMatchRelatedValue(trigger, 'prefect.resource.id')
 
   if (prefectResourceIds.length === 0) {
@@ -40,7 +40,7 @@ function isMatchRelatedResource(trigger: AutomationTriggerEvent, resource: Event
   return prefectResourceIds.every(value => value.startsWith(resource))
 }
 
-function getTriggerMatchRelatedValue(trigger: AutomationTriggerEvent, key: EventResourceLabel): string[] {
+function getTriggerMatchRelatedValue(trigger: AutomationTriggerEvent, key: AutomationTriggerEventResourceLabel): string[] {
   if (isAutomationTriggerEvent(trigger)) {
     const value = trigger.matchRelated[key]
 

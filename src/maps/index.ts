@@ -80,6 +80,11 @@ import { mapWorkQueueToWorkQueueResponse, mapWorkQueueResponseToWorkQueue, mapWo
 import { mapWorkQueueFilterToWorkQueueFilterResponse, mapWorkQueueFilterResponseToWorkQueueFilter } from '@/maps/workQueueFilter'
 import { mapWorkQueueHealthPolicyResponseToWorkQueueHealthPolicy } from '@/maps/workQueueHealthPolicy'
 import { mapWorkQueueStatusResponseToWorkQueueStatus } from '@/maps/workQueueStatus'
+import { mapWorkspaceEventResponseToWorkspaceEvent } from '@/maps/workspaceEvent'
+import { mapWorkspaceEventsResponseToWorkspaceEvents } from '@/maps/workspaceEvents'
+import { mapWorkspaceEventsCountResponseToHistogramDataPoint, mapWorkspaceEventsCountResponseToWorkspaceEventsCount } from '@/maps/workspaceEventsCount'
+import { mapWorkspaceEventsFilterToWorkspaceEventsFilterRequest } from '@/maps/workspaceEventsFilter'
+import { mapEventsHistoryToEventsHistoryRequest } from '@/maps/workspaceEventsHistory'
 
 export const maps = {
   ArtifactFilter: { ArtifactFilterRequest: mapArtifactFilter },
@@ -258,4 +263,12 @@ export const maps = {
   FlowRunStateTrigger: { AutomationTrigger: mapFlowRunStateTriggerToAutomationTrigger },
   WorkPoolStatusTrigger: { AutomationTrigger: mapWorkPoolStatusTriggerToAutomationTrigger },
   WorkQueueStatusTrigger: { AutomationTrigger: mapWorkQueueStatusTriggerToAutomationTrigger },
+  WorkspaceEventResponse: { WorkspaceEvent: mapWorkspaceEventResponseToWorkspaceEvent },
+  WorkspaceEventsResponse: { WorkspaceEvents: mapWorkspaceEventsResponseToWorkspaceEvents },
+  WorkspaceEventsCountResponse: {
+    WorkspaceEventsCount: mapWorkspaceEventsCountResponseToWorkspaceEventsCount,
+    HistogramDataPoint: mapWorkspaceEventsCountResponseToHistogramDataPoint,
+  },
+  WorkspaceEventsFilter: { WorkspaceEventsFilterRequest: mapWorkspaceEventsFilterToWorkspaceEventsFilterRequest },
+  WorkspaceEventsHistory: { WorkspaceEventsHistoryRequest: mapEventsHistoryToEventsHistoryRequest },
 }
