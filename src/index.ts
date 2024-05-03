@@ -20,7 +20,7 @@ export * from './automations'
 
 import '@/styles/index.css'
 
-import { ToastPlugin } from '@prefecthq/prefect-design/plugins'
+import { ToastPlugin } from '@prefecthq/prefect-design'
 import { App, Plugin } from 'vue'
 import { clearOldCacheKeys } from '@/utilities/cache'
 
@@ -37,7 +37,7 @@ if (typeof window === 'undefined') {
 
 const plugin: Plugin = {
   install(app: App) {
-    app.use(ToastPlugin as Plugin)
+    app.use(ToastPlugin)
 
     clearOldCacheKeys()
   },
