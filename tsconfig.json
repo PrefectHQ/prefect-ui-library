@@ -20,12 +20,6 @@
       "@/*": [
         "./src/*"
       ],
-      "@prefecthq/prefect-design": [
-        "../prefect-design/src/index.ts"
-      ],
-      "@prefecthq/prefect-design/*": [
-        "../prefect-design/src/*"
-      ],
     },
     "resolveJsonModule": true,
     "skipLibCheck": true,
@@ -43,6 +37,5 @@
     "**/*.vue",
     "**/*.mts",
     "postcss.config.cjs",
-    "vite.config.mts"
   ]
 }

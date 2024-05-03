@@ -31,11 +31,10 @@
         ".": {
             "import": "./dist/prefect-ui-library.mjs",
             "require": "./dist/prefect-ui-library.umd.js"
-        },
-        "./dist/style.css": "./dist/style.css"
+        }
     },
     "files": [
-        "dist"
+        "."
     ],
     "types": "./dist/types/src/index.d.ts",
     "dependencies": {
@@ -74,7 +73,7 @@
         "vue-tsc": "^2.0.14"
     },
     "peerDependencies": {
-        "@prefecthq/prefect-design": "^2.7.15",
+        "@prefecthq/prefect-design": "file:../prefect-design",
         "@prefecthq/vue-charts": "^2.0.3",
         "@prefecthq/vue-compositions": "^1.11.4",
         "vee-validate": "^4.7.0",

@@ -1,6 +1,4 @@
-import { tailwindPlugin as prefectDesignTailwindPlugin } from '@prefecthq/prefect-design'
-import plugin from 'tailwindcss/plugin'
-import { Config, PluginCreator } from 'tailwindcss/types/config'
+import { Config } from 'tailwindcss/types/config'
 
 const states = ['completed', 'failed', 'running', 'pending', 'scheduled', 'cancelled', 'crashed', 'paused']
 
@@ -21,11 +19,8 @@ const stateColors = states.reduce<Record<string, Record<number, string>>>((color
   return colors
 }, {})
 
-const config: Config = {
-  content: [
-    './index.html',
-    './src/**/*.{vue,js,ts,jsx,tsx}',
-  ],
+export default {
+  content: ['./src/**/*.{vue,js,ts,jsx,tsx}'],
   safelist: [
     {
       pattern: /(bg|text)-state-(completed|failed|running|pending|scheduled|cancelled|crashed|paused)/,
@@ -38,8 +33,4 @@ const config: Config = {
       },
     },
   },
-  plugins: [prefectDesignTailwindPlugin],
-}
-
-const prefectUiLibraryPlugins: PluginCreator = function() { /* noop */ }
-export const tailwindPlugin = plugin(prefectUiLibraryPlugins, config)
+} satisfies Config

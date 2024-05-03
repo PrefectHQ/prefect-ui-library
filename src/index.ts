@@ -12,7 +12,6 @@ export * from './router'
 export * from './services'
 export * from './types'
 export * from './utilities'
-export { tailwindPlugin } from '@/tailwindPlugin'
 
 // feature specific
 export * from './schemas'
