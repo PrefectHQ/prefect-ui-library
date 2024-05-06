@@ -12,13 +12,12 @@
   import { endOfHour, subWeeks } from 'date-fns'
   import { computed } from 'vue'
   import { useWorkspaceApi } from '@/compositions/useWorkspaceApi'
-  import { EventsFilter } from '@/types/eventsFilter'
-  import { sortAlphabetically } from '@/utilities/sort'
+  import { WorkspaceEventsFilter } from '@/types/workspaceEventsFilter'
 
   const props = defineProps<{
     selected: string | string[] | null | undefined,
     emptyMessage?: string,
-    filter?: EventsFilter,
+    filter?: WorkspaceEventsFilter,
     multiple?: boolean,
   }>()
 
@@ -38,7 +37,7 @@
   const api = useWorkspaceApi()
   const defaultUntil = endOfHour(new Date())
   const defaultSince = subWeeks(defaultUntil, 1)
-  const filter = computed<EventsFilter>(() => ({
+  const filter = computed<WorkspaceEventsFilter>(() => ({
     ...props.filter,
     occurred: {
       since: defaultSince,
@@ -46,7 +45,7 @@
       ...props.filter?.occurred,
     },
   }))
-  const eventsSubscription = useSubscription(api.workspaceEvents.getEventsCount, ['event', filter])
+  const eventsSubscription = useSubscription(api.events.getEventsCount, ['event', filter])
   const events = computed(() => eventsSubscription.response ?? [])
 
   function getEventPrefixValues(values: string[]): string[] {
@@ -81,4 +80,8 @@
       }
     })
   })
+
+  function sortAlphabetically(optionA: string, optionB: string): number {
+    return optionA.localeCompare(optionB)
+  }
 </script>

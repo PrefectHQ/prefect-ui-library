@@ -5,7 +5,7 @@
     </p-label>
 
     <p-label label="Any event matching">
-      <EventsCombobox :selected="formData.expect" multiple @update:selected="formData.expect = asArray($event)" />
+      <EventsCombobox :selected="formData.expect" multiple @update:selected="updateExpect" />
     </p-label>
 
     <p-label label="From the following resources">
@@ -46,7 +46,7 @@
       <template #content>
         <div class="automation-trigger-custom-event-input__evaluation-options-accordion-content">
           <p-label label="Evaluate trigger only after observing an event matching">
-            <EventsCombobox :selected="formData.after" multiple @update:selected="formData.after = asArray($event)" />
+            <EventsCombobox :selected="formData.after" multiple @update:selected="updateAfter" />
           </p-label>
 
           <p-label label="Filter for events related to">
@@ -63,12 +63,19 @@
 </template>
 
 <script setup lang="ts">
-  import { useValidation } from '@prefecthq/vue-compositions'
-  import EventResourceCombobox from '@/components/EventResourceCombobox.vue'
+  import { asArray, toPluralString } from '@prefecthq/prefect-design'
+  import { ValidationRule, useValidation } from '@prefecthq/vue-compositions'
+  import { AutomationTriggerEvent } from '@/automations/types/automationTriggerEvent'
   import EventsCombobox from '@/components/EventsCombobox.vue'
-  import { isRequired, isGreaterThan } from '@/utilities/validation'
+  import { useComponent } from '@/compositions'
+  import { isEmptyArray } from '@/utilities/arrays'
+  import { isInvalidDate } from '@/utilities/dates'
+  import { isEmptyString } from '@/utilities/strings'
+  import { isDefined, isNullish } from '@/utilities/variables'
 
-  const formData = defineModel<AutomationTriggerEvent>({ required: true })
+  const formData = defineModel<AutomationTriggerEvent>('trigger', { required: true })
+
+  const { EventResourceCombobox } = useComponent()
 
   const { state: thresholdState } = useValidation(() => formData.value.threshold, 'Threshold', [isRequired, isGreaterThan(0)])
 
@@ -79,7 +86,26 @@
       delete formData.value.match['prefect.resource.id']
       return
     }
+
     formData.value.match['prefect.resource.id'] = selectedResources
+  }
+
+  function updateExpect(value: string | string[] | null | undefined): void {
+    if (isNullish(value)) {
+      formData.value.expect = []
+      return
+    }
+
+    formData.value.expect = asArray(value)
+  }
+
+  function updateAfter(value: string | string[] | null | undefined): void {
+    if (isNullish(value)) {
+      formData.value.after = []
+      return
+    }
+
+    formData.value.after = asArray(value)
   }
 
   function updateMatchRelatedResourceIds(selectedResources: string[]): void {
@@ -90,6 +116,28 @@
       return
     }
     formData.value.matchRelated['prefect.resource.id'] = selectedResources
+  }
+
+  function isRequired(value: unknown, name: string): true | string {
+    if (isNullish(value) || isEmptyArray(value) || isEmptyString(value) || isInvalidDate(value)) {
+      return `${name} is required`
+    }
+
+    return true
+  }
+
+  function isGreaterThan(min: number): ValidationRule<number> {
+    return (value, name) => {
+      if (!isDefined(value)) {
+        return true
+      }
+
+      if (value > min) {
+        return true
+      }
+
+      return `${name} must be greater than ${min}`
+    }
   }
 </script>
 

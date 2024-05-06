@@ -3,3 +3,4 @@ export { default as AutomationActionDescription } from './AutomationActionDescri
 export { default as AutomationTriggerEventPostureSelect } from './AutomationTriggerEventPostureSelect.vue'
 export { default as AutomationWithinInput } from './AutomationWithinInput.vue'
 export { default as AutomationTriggerEventInput } from './AutomationTriggerEventInput.vue'
+export { default as AutomationTriggerCustomEventInput } from './AutomationTriggerCustomEventInput.vue'

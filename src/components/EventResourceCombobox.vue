@@ -14,11 +14,12 @@
   import { computed } from 'vue'
   import { useWorkspaceApi } from '@/compositions/useWorkspaceApi'
 
-  defineProps<{
-    multiple?: boolean,
-  }>()
-
   const selected = defineModel<string | string[] | null | undefined>('selected', { required: true })
+
+  const props = defineProps<{
+    multiple?: boolean,
+    additionalOptions?: RelatedResourceGroup[],
+  }>()
 
   const api = useWorkspaceApi()
 
@@ -94,5 +95,6 @@
         type: 'work-queue',
       })),
     },
+    ...props.additionalOptions ?? [],
   ])
 </script>
