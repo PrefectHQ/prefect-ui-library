@@ -1,5 +1,5 @@
 <template>
-  <div :id="id" class="flow-runs-accordion-header">
+  <div :id="flow.id" class="flow-runs-accordion-header">
     <div class="flow-runs-accordion-header__content">
       <p-link :to="routes.flow(flow.id)" class="flow-runs-accordion-header__name">
         {{ flow.name }}
@@ -8,10 +8,10 @@
         {{ lastRunTime }}
       </span>
     </div>
-    <p-button size="sm" :aria-controls="content" @click="toggle">
+
+    <span class="flow-runs-accordion-header__count">
       {{ count }}
-      <p-icon size="small" icon="ChevronDownIcon" class="flow-runs-accordion-header__icon" :class="classes.icon" />
-    </p-button>
+    </span>
   </div>
 </template>
 
@@ -27,21 +27,11 @@
 
   const props = defineProps<{
     flow: Flow,
-    id: string,
-    selected: boolean,
-    content: string,
-    toggle: () => void,
     filter?: FlowRunsFilter,
   }>()
 
   const routes = useWorkspaceRoutes()
   const { now } = useNow({ interval: 1000 })
-
-  const classes = computed(() => ({
-    icon: {
-      'flow-runs-accordion-header__icon--selected': props.selected,
-    },
-  }))
 
   const filter = computed<FlowRunsFilter>(() => ({
     ...props.filter,
@@ -66,12 +56,11 @@
 <style>
 .flow-runs-accordion-header { @apply
   flex
-  items-start
+  flex-1
   gap-2
   justify-between
-  border-t
-  border-divider
   py-2
+  items-center
 }
 
 .flow-runs-accordion-header__content { @apply
@@ -83,6 +72,11 @@
 .flow-runs-accordion-header__time { @apply
   text-xs
   text-subdued
+  text-left
+}
+
+.flow-runs-accordion-header__count { @apply
+  text-sm mr-2
 }
 
 .flow-runs-accordion-header__icon { @apply
