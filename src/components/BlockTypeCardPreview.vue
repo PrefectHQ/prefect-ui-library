@@ -1,27 +1,29 @@
 <template>
-  <p-card class="block-type-card-preview">
-    <LogoImage :url="blockType.logoUrl" class="block-type-card-preview__logo" />
-    <p class="block-type-card-preview__name">
-      <p-link :to="routes.blocksCatalogView(blockType.slug)">
-        {{ blockType.name }}
-      </p-link>
-    </p>
-
-    <template v-if="blockType.description">
-      <p class="block-type-card-preview__description">
-        {{ blockType.description }}
+  <p-card>
+    <div class="block-type-card-preview">
+      <LogoImage :url="blockType.logoUrl" class="block-type-card-preview__logo" />
+      <p class="block-type-card-preview__name">
+        <p-link :to="routes.blocksCatalogView(blockType.slug)">
+          {{ blockType.name }}
+        </p-link>
       </p>
-    </template>
 
-    <template v-if="blockSchema">
-      <BlockSchemaCapabilities :capabilities="blockSchema.capabilities" class="block-type-card-preview__capabilities" />
-    </template>
+      <template v-if="blockType.description">
+        <p class="block-type-card-preview__description">
+          {{ blockType.description }}
+        </p>
+      </template>
 
-    <template v-if="slots.actions">
-      <div class="block-type-card-preview__action">
-        <slot name="actions" />
-      </div>
-    </template>
+      <template v-if="blockSchema">
+        <BlockSchemaCapabilities :capabilities="blockSchema.capabilities" class="block-type-card-preview__capabilities" />
+      </template>
+
+      <template v-if="slots.actions">
+        <div class="block-type-card-preview__action">
+          <slot name="actions" />
+        </div>
+      </template>
+    </div>
   </p-card>
 </template>
 
@@ -51,7 +53,6 @@
   flex
   flex-col
   gap-2
-  p-4
 }
 
 .block-type-card-preview__logo { @apply

@@ -1,10 +1,12 @@
 <template>
-  <p-card class="block-type-card-layout">
-    <div class="block-type-card-layout__content">
-      <slot />
-    </div>
+  <p-card>
+    <div class="block-type-card-layout">
+      <div class="block-type-card-layout__content">
+        <slot />
+      </div>
 
-    <BlockTypeCardPreview :block-type="blockType" class="block-type-card-layout__type" />
+      <BlockTypeCardPreview :block-type="blockType" class="block-type-card-layout__type" />
+    </div>
   </p-card>
 </template>
 

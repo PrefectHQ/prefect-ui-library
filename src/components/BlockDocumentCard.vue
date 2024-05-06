@@ -1,5 +1,5 @@
 <template>
-  <BlockTypeCardLayout :block-type="blockDocument.blockType" class="block-document-card">
+  <BlockTypeCardLayout :block-type="blockDocument.blockType">
     <PContent class="block-document-card__content">
       <template v-if="blockType.codeExample || blockType.documentationUrl">
         <p class="block-document-card__help">
@@ -38,31 +38,6 @@
 </script>
 
 <style>
-.block-document-card {
-  grid-template-areas: "type"
-                       "content";
-}
-
-@screen md {
-  .block-document-card {
-    grid-template-areas: "content type";
-  }
-}
-
-.block-document-card { @apply
-  grid
-  gap-4
-  md:grid-cols-[minmax(0,1fr)_250px]
-}
-
-.block-document-card__content { @apply
-  self-start
-}
-
-.block-document-card__content {
-  grid-area: content;
-}
-
 .block-document-card__help { @apply
   text-subdued
   text-sm
@@ -70,13 +45,5 @@
 
 .block-document-card__emphasized-section {
   @apply font-semibold
-}
-
-.block-document-card__type { @apply
-  self-start
-}
-
-.block-document-card__type {
-  grid-area: type;
 }
 </style>
