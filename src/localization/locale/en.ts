@@ -67,6 +67,8 @@ export const en = {
     updateWorkPoolQueue: 'Failed to update work queue',
     updateWorkQueue: 'Failed to update work queue',
     variableAlreadyExists: 'A variable with this name already exists',
+    automationToggle: (enabled: boolean) => enabled ? 'Sorry, something went wrong enabling your automation' : 'Sorry, something went wrong disabling your automation',
+    automationDelete: 'Sorry, something went wrong deleting your automation',
   },
   success: {
     activateDeployment: 'Deployment active',
@@ -110,6 +112,8 @@ export const en = {
     updateWorkPool: 'Work pool updated',
     updateWorkPoolQueue: 'Work queue updated',
     updateWorkQueue: 'Work queue updated',
+    automationEnable: (enabled: boolean = true) => enabled ? 'Automation enabled' : 'Automation disabled',
+    automationDelete: 'Automation deleted',
   },
   info: {
     form: 'Form',
