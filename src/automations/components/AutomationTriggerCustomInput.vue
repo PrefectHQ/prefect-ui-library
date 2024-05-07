@@ -65,6 +65,7 @@
 <script setup lang="ts">
   import { asArray, toPluralString } from '@prefecthq/prefect-design'
   import { ValidationRule, useValidation } from '@prefecthq/vue-compositions'
+  import AutomationWithinInput from '@/automations/components/AutomationWithinInput.vue'
   import { AutomationTriggerEvent } from '@/automations/types/automationTriggerEvent'
   import EventsCombobox from '@/components/EventsCombobox.vue'
   import { useComponent } from '@/compositions'
