@@ -6,3 +6,7 @@ export function isAutomationTriggerEvent(value: unknown): value is AutomationTri
 }
 
 export type AutomationTrigger = AutomationTriggerEvent
+
+export function isAutomationTrigger(value: unknown): value is AutomationTrigger {
+  return isAutomationTriggerEvent(value)
+}
