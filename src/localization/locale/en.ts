@@ -69,6 +69,8 @@ export const en = {
     variableAlreadyExists: 'A variable with this name already exists',
     automationToggle: (enabled: boolean) => enabled ? 'Sorry, something went wrong enabling your automation' : 'Sorry, something went wrong disabling your automation',
     automationDelete: 'Sorry, something went wrong deleting your automation',
+    automationCreate: 'Sorry, something went wrong creating your automation',
+    automationUpdate: 'Sorry, something went wrong updating your automation',
   },
   success: {
     activateDeployment: 'Deployment active',
@@ -114,6 +116,8 @@ export const en = {
     updateWorkQueue: 'Work queue updated',
     automationEnable: (enabled: boolean = true) => enabled ? 'Automation enabled' : 'Automation disabled',
     automationDelete: 'Automation deleted',
+    automationCreate: 'Automation created',
+    automationUpdate: 'Automation updated',
   },
   info: {
     form: 'Form',
