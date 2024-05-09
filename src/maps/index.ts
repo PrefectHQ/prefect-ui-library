@@ -3,7 +3,7 @@ import { mapAutomationResponseToAutomation } from '@/automations/maps/automation
 import { mapCreateAutomationActionQueryToLocationQuery, mapCreateAutomationQueryToLocationQuery, mapCreateAutomationTriggerQueryToLocationQuery } from '@/automations/maps/createAutomationQuery'
 import { mapAutomationTriggerToDeploymentStatusTrigger, mapDeploymentStatusTriggerToAutomationTrigger } from '@/automations/maps/deploymentStatusTrigger'
 import { mapAutomationTriggerToFlowRunStateTrigger, mapFlowRunStateTriggerToAutomationTrigger } from '@/automations/maps/flowRunStateTrigger'
-import { mapAutomationTriggerResponseToAutomationTrigger, mapAutomationTriggerToAutomationTriggerRequest } from '@/automations/maps/triggers'
+import { mapAutomationTriggerEventToWorkspaceEventFilter, mapAutomationTriggerResponseToAutomationTrigger, mapAutomationTriggerToAutomationTriggerRequest } from '@/automations/maps/triggers'
 import { mapAutomationTriggerToWorkPoolStatusTrigger, mapWorkPoolStatusTriggerToAutomationTrigger } from '@/automations/maps/workPoolStatusTrigger'
 import { mapAutomationTriggerToWorkQueueStatusTrigger, mapWorkQueueStatusTriggerToAutomationTrigger } from '@/automations/maps/workQueueStatusTrigger'
 import { mapArtifactCollectionResponseToArtifactCollection, mapArtifactResponseToArtifact } from '@/maps/artifact'
@@ -264,6 +264,7 @@ export const maps = {
     WorkPoolStatusTrigger: mapAutomationTriggerToWorkPoolStatusTrigger,
     WorkQueueStatusTrigger: mapAutomationTriggerToWorkQueueStatusTrigger,
   },
+  AutomationTriggerEvent: { WorkspaceEventsFilter: mapAutomationTriggerEventToWorkspaceEventFilter },
   DeploymentStatusTrigger: { AutomationTrigger: mapDeploymentStatusTriggerToAutomationTrigger },
   AutomationTriggerResponse: { AutomationTrigger: mapAutomationTriggerResponseToAutomationTrigger },
   FlowRunStateTrigger: { AutomationTrigger: mapFlowRunStateTriggerToAutomationTrigger },

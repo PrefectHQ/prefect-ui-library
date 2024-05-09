@@ -11,6 +11,7 @@ export const en = {
     concurrency: 'https://docs.prefect.io/concepts/tasks#task-run-concurrency-limits',
     globalConcurrency: 'https://docs.prefect.io/guides/global-concurrency-limits/',
     automations: 'https://docs.prefect.io/ui/automations/',
+    automationTriggers: 'https://docs.prefect.io/ui/automations/#triggers',
     workPools: 'https://docs.prefect.io/latest/concepts/work-pools/',
     collections: 'https://docs.prefect.io/collections/catalog/',
     resultsPersistence: 'https://docs.prefect.io/concepts/results/#persisting-results',
