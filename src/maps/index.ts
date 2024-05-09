@@ -38,7 +38,7 @@ import { mapDeploymentStatusToServerDeploymentStatus, mapServerDeploymentStatusT
 import { mapRunHistoryToDivergingBarChartItem } from '@/maps/divergingBarChartItem'
 import { mapEmpiricalPolicyToEmpiricalPolicyResponse, mapEmpiricalPolicyResponseToEmpiricalPolicy, mapEmpiricalPolicyToEmpiricalPolicyRequest } from '@/maps/empiricalPolicy'
 import { mapFlowFilter, mapDeploymentFilter, mapFlowRunFilter, mapStateFilter, mapFlowsFilter, mapDeploymentsFilter, mapFlowRunsFilter, mapTagFilter, mapTaskRunFilter, mapTaskRunsFilter, mapBlockDocumentFilter, mapBlockSchemaFilter, mapBlockTypeFilter, mapBlockDocumentsFilter, mapBlockSchemasFilter, mapBlockTypesFilter, mapWorkPoolsFilter, mapWorkPoolFilter, mapWorkPoolQueueFilter, mapFlowRunsHistoryFilter, mapLogsFilter, mapNotificationsFilter, mapSavedSearchesFilter, mapWorkQueuesFilter, mapWorkPoolWorkersFilter, mapWorkPoolQueuesFilter, mapArtifactFilter, mapArtifactsFilter, mapVariablesFilter, mapVariableFilter, mapTaskRunsHistoryFilter } from '@/maps/filters'
-import { mapFlowToFlowResponse, mapFlowResponseToFlow } from '@/maps/flow'
+import { mapFlowToFlowResponse, mapFlowResponseToFlow, mapFlowToAutomationTrigger } from '@/maps/flow'
 import { mapFlowRunResponseToFlowRun } from '@/maps/flowRun'
 import { mapRunHistoryToFlowRunHistoryResponse, mapFlowRunHistoryResponseToRunHistory } from '@/maps/flowRunHistory'
 import { mapFlowStatsFilterToFlowRunsFilter, mapFlowStatsFilterToTaskRunsFilter } from '@/maps/flowStatsFilter'
@@ -72,7 +72,7 @@ import { mapVariableResponseToVariable, mapVariableEditToVariableEditRequest, ma
 import { mapPrefectWorkerCollectionResponseToWorkerCollectionItemArray, mapWorkerSchemaValuesToWorkerSchemaValuesRequest } from '@/maps/workerCollection'
 import { mapWorkerScheduledFlowRunResponseToWorkerScheduledFlowRun, mapWorkerScheduledFlowRunsToWorkerScheduledFlowRunsRequest } from '@/maps/workerScheduledFlowRun'
 import { mapWorkPoolCreateToWorkPoolCreateRequest, mapWorkPoolEditToWorkPoolEditRequest, mapWorkPoolResponseToWorkPool, mapWorkPoolToWorkPoolResponse } from '@/maps/workPool'
-import { mapWorkPoolQueueCreateToWorkPoolQueueCreateRequest, mapWorkPoolQueueEditToWorkPoolQueueEditRequest, mapWorkPoolQueueResponseToWorkPoolQueue, mapWorkPoolQueueToWorkPoolQueueResponse } from '@/maps/workPoolQueue'
+import { mapWorkPoolQueueCreateToWorkPoolQueueCreateRequest, mapWorkPoolQueueEditToWorkPoolQueueEditRequest, mapWorkPoolQueueResponseToWorkPoolQueue, mapWorkPoolQueueToAutomationTrigger, mapWorkPoolQueueToWorkPoolQueueResponse } from '@/maps/workPoolQueue'
 import { mapServerWorkPoolStatusToWorkPoolStatus, mapWorkPoolStatusToServerWorkPoolStatus } from '@/maps/workPoolStatus'
 import { mapWorkPoolWorkerResponseToWorkPoolWorker } from '@/maps/workPoolWorker'
 import { mapWorkPoolWorkerStatusToServerWorkPoolWorkerStatus, mapServerWorkPoolWorkerStatusToWorkPoolWorkerStatus } from '@/maps/workPoolWorkerStatus'
@@ -80,10 +80,10 @@ import { mapWorkQueueToWorkQueueResponse, mapWorkQueueResponseToWorkQueue, mapWo
 import { mapWorkQueueFilterToWorkQueueFilterResponse, mapWorkQueueFilterResponseToWorkQueueFilter } from '@/maps/workQueueFilter'
 import { mapWorkQueueHealthPolicyResponseToWorkQueueHealthPolicy } from '@/maps/workQueueHealthPolicy'
 import { mapWorkQueueStatusResponseToWorkQueueStatus } from '@/maps/workQueueStatus'
-import { mapWorkspaceEventResponseToWorkspaceEvent } from '@/maps/workspaceEvent'
+import { mapWorkspaceEventResponseToWorkspaceEvent, mapWorkspaceEventToAutomationTrigger } from '@/maps/workspaceEvent'
 import { mapWorkspaceEventsResponseToWorkspaceEvents } from '@/maps/workspaceEvents'
 import { mapWorkspaceEventsCountResponseToHistogramDataPoint, mapWorkspaceEventsCountResponseToWorkspaceEventsCount } from '@/maps/workspaceEventsCount'
-import { mapWorkspaceEventsFilterToWorkspaceEventsFilterRequest } from '@/maps/workspaceEventsFilter'
+import { mapWorkspaceEventsFilterRequestToWorkspaceEventsFilter, mapWorkspaceEventsFilterToWorkspaceEventsFilterRequest } from '@/maps/workspaceEventsFilter'
 import { mapEventsHistoryToEventsHistoryRequest } from '@/maps/workspaceEventsHistory'
 
 export const maps = {
@@ -135,7 +135,10 @@ export const maps = {
   DeploymentUpdateV2: { DeploymentUpdateRequest: mapDeploymentUpdateV2ToDeploymentUpdateRequest },
   EmpiricalPolicy: { EmpiricalPolicyResponse: mapEmpiricalPolicyToEmpiricalPolicyResponse, EmpiricalPolicyRequest: mapEmpiricalPolicyToEmpiricalPolicyRequest },
   EmpiricalPolicyResponse: { EmpiricalPolicy: mapEmpiricalPolicyResponseToEmpiricalPolicy },
-  Flow: { FlowResponse: mapFlowToFlowResponse },
+  Flow: {
+    FlowResponse: mapFlowToFlowResponse,
+    AutomationTrigger: mapFlowToAutomationTrigger,
+  },
   FlowFilter: { FlowFilterRequest: mapFlowFilter },
   FlowResponse: { Flow: mapFlowResponseToFlow },
   FlowRunFilter: { FlowRunFilterRequest: mapFlowRunFilter },
@@ -222,7 +225,10 @@ export const maps = {
   WorkPoolCreate: { WorkPoolCreateRequest: mapWorkPoolCreateToWorkPoolCreateRequest },
   WorkPoolEdit: { WorkPoolEditRequest: mapWorkPoolEditToWorkPoolEditRequest },
   WorkPoolFilter: { WorkPoolFilterRequest: mapWorkPoolFilter },
-  WorkPoolQueue: { WorkPoolQueueResponse: mapWorkPoolQueueToWorkPoolQueueResponse },
+  WorkPoolQueue: {
+    WorkPoolQueueResponse: mapWorkPoolQueueToWorkPoolQueueResponse,
+    AutomationTrigger: mapWorkPoolQueueToAutomationTrigger,
+  },
   WorkPoolQueueCreate: { WorkPoolQueueCreateRequest: mapWorkPoolQueueCreateToWorkPoolQueueCreateRequest },
   WorkPoolQueueEdit: { WorkPoolQueueEditRequest: mapWorkPoolQueueEditToWorkPoolQueueEditRequest },
   WorkPoolQueueFilter: { WorkPoolQueueFilterRequest: mapWorkPoolQueueFilter },
@@ -263,6 +269,7 @@ export const maps = {
   FlowRunStateTrigger: { AutomationTrigger: mapFlowRunStateTriggerToAutomationTrigger },
   WorkPoolStatusTrigger: { AutomationTrigger: mapWorkPoolStatusTriggerToAutomationTrigger },
   WorkQueueStatusTrigger: { AutomationTrigger: mapWorkQueueStatusTriggerToAutomationTrigger },
+  WorkspaceEvent: { AutomationTrigger: mapWorkspaceEventToAutomationTrigger },
   WorkspaceEventResponse: { WorkspaceEvent: mapWorkspaceEventResponseToWorkspaceEvent },
   WorkspaceEventsResponse: { WorkspaceEvents: mapWorkspaceEventsResponseToWorkspaceEvents },
   WorkspaceEventsCountResponse: {
@@ -270,5 +277,6 @@ export const maps = {
     HistogramDataPoint: mapWorkspaceEventsCountResponseToHistogramDataPoint,
   },
   WorkspaceEventsFilter: { WorkspaceEventsFilterRequest: mapWorkspaceEventsFilterToWorkspaceEventsFilterRequest },
+  WorkspaceEventsFilterRequest: { WorkspaceEventsFilter: mapWorkspaceEventsFilterRequestToWorkspaceEventsFilter },
   WorkspaceEventsHistory: { WorkspaceEventsHistoryRequest: mapEventsHistoryToEventsHistoryRequest },
 }

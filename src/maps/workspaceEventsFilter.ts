@@ -1,6 +1,6 @@
 import { WorkspaceEventsFilterRequest } from '@/models/api/workspaceEventsFilterRequest'
 import { MapFunction } from '@/services/Mapper'
-import { WorkspaceEventsFilter } from '@/types/workspaceEventsFilter'
+import { PartialWorkspaceEventsFilter, WorkspaceEventsFilter } from '@/types/workspaceEventsFilter'
 import { removeEmptyObjects } from '@/utilities/object'
 
 export const mapWorkspaceEventsFilterToWorkspaceEventsFilterRequest: MapFunction<WorkspaceEventsFilter, WorkspaceEventsFilterRequest> = function(source) {
@@ -41,4 +41,52 @@ export const mapWorkspaceEventsFilterToWorkspaceEventsFilterRequest: MapFunction
     limit,
     filter: removeEmptyObjects(baseFilter),
   }
+}
+
+
+export const mapWorkspaceEventsFilterRequestToWorkspaceEventsFilter: MapFunction<WorkspaceEventsFilterRequest, PartialWorkspaceEventsFilter> = function(source) {
+  const { limit, filter = {} } = source
+  const { occurred, any_resource, resource, related, event, ...rest } = filter
+
+  const baseFilter: PartialWorkspaceEventsFilter = {
+    limit,
+    anyResource: {
+      id: any_resource?.id,
+      idPrefix: any_resource?.id_prefix,
+      labels: any_resource?.labels,
+    },
+    resource: {
+      id: resource?.id,
+      idPrefix: resource?.id_prefix,
+      labels: resource?.labels,
+      distinct: resource?.distinct,
+    },
+    related: {
+      id: related?.id,
+      labels: related?.labels,
+      resourcesInRoles: related?.resources_in_roles,
+      role: related?.role,
+    },
+    event: {
+      prefix: event?.prefix,
+      name: event?.name,
+      excludePrefix: event?.exclude_prefix,
+      excludeName: event?.exclude_name,
+    },
+    ...rest,
+  }
+
+  if (occurred?.since) {
+    baseFilter.occurred ??= {}
+
+    baseFilter.occurred.since = this.map('string', occurred.since, 'Date')
+  }
+
+  if (occurred?.until) {
+    baseFilter.occurred ??= {}
+
+    baseFilter.occurred.until = this.map('string', occurred.until, 'Date')
+  }
+
+  return removeEmptyObjects(baseFilter)
 }
