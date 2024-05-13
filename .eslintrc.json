@@ -36,6 +36,7 @@
     }
   },
   "rules": {
+    "import/no-default-export": "error",
     "camelcase": ["error", { "allow": ["__prefect_kind"] }]
   }
 }
