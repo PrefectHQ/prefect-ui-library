@@ -1,1 +1,1 @@
-export * from './useCreateAutomationQuery'
+export * from './useCreateAutomationQueryParams'

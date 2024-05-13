@@ -5,12 +5,12 @@ import { useWorkspaceApi } from '@/compositions'
 import { JSONRouteParam } from '@/formatters/JsonRouteParam'
 import { mapper } from '@/services/Mapper'
 
-type UseCreateAutomationQuery = {
+type UseCreateAutomationQueryParams = {
   getActions: () => Promise<AutomationAction[] | null>,
   getTrigger: () => Promise<AutomationTrigger | null>,
 }
 
-export function useCreateAutomationQuery(): UseCreateAutomationQuery {
+export function useCreateAutomationQueryParams(): UseCreateAutomationQueryParams {
   const api = useWorkspaceApi()
 
   // action
