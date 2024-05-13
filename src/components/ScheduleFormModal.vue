@@ -24,7 +24,7 @@
     <FlowRunJobVariableOverridesLabeledInput v-if="can.access.deploymentScheduleFlowRunInfraOverrides" v-model="internalJobVariables" />
 
     <p-label
-      label="Max Active Runs"
+      label="Max active runs"
       class="interval-schedule-form__column--span-3"
     >
       <p-number-input v-model="internalMaxActive" min="1" step="1" @submit="submit" />
