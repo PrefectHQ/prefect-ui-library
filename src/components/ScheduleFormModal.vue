@@ -23,6 +23,10 @@
 
     <FlowRunJobVariableOverridesLabeledInput v-if="can.access.deploymentScheduleFlowRunInfraOverrides" v-model="internalJobVariables" />
 
+    Catchup
+    <p-toggle v-model="internalCatchup" />
+
+
     <template #actions>
       <p-button variant="default" type="submit" :disabled="disabled" @click="submitCurrentForm">
         Save
@@ -55,6 +59,7 @@
   const can = useCan()
 
   const internalActive = ref<boolean>(props.active ?? true)
+  const internalCatchup = ref<boolean>(props.catchup ?? true)
 
   const { validate } = useValidationObserver()
   const internalJobVariables = ref<string | undefined>(props.jobVariables ? stringify(props.jobVariables) : undefined)

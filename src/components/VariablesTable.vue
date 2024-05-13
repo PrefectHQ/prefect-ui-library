@@ -8,7 +8,6 @@
         :variable-ids="selectedVariables.map(variable => variable.id)"
         @delete="deleteVariables"
       />
-
       <template #controls>
         <SearchInput
           v-model="variableLike"
@@ -32,7 +31,13 @@
     >
       <template #name="{ row }">
         <div class="variables-table__name" :title="row.name">
-          {{ row.name }}
+          <VariableLink :variable="row" />
+        </div>
+      </template>
+
+      <template #value="{ row }">
+        <div class="variables-table__value" :title="row.name">
+          <p-code-highlight :text="row.value" lang="json" inline />
         </div>
       </template>
 
@@ -77,8 +82,9 @@
   import { useDebouncedRef, useSubscription } from '@prefecthq/vue-compositions'
   import merge from 'lodash.merge'
   import { computed, ref } from 'vue'
-  import { VariablesDeleteButton, VariableMenu, ResultsCount, SearchInput, SelectedCount, VariableTagsInput } from '@/components'
-  import { useCan, useVariablesFilter, useWorkspaceApi } from '@/compositions'
+  import { VariablesDeleteButton, VariableMenu, ResultsCount, SearchInput, SelectedCount, VariableTagsInput, VariableEditModal } from '@/components'
+  import VariableLink from '@/components/VariableLink.vue'
+  import { useCan, useVariablesFilter, useWorkspaceApi, useShowModal } from '@/compositions'
   import { localization } from '@/localization'
   import { VariablesFilter, Variable } from '@/models'
   import { variableSortOptions } from '@/types'
@@ -88,6 +94,7 @@
 
   const props = defineProps<{
     filter?: VariablesFilter,
+    variable: Variable,
   }>()
 
   const api = useWorkspaceApi()
@@ -109,6 +116,7 @@
     },
     offset,
   }))
+
 
   const columns: TableColumn<Variable>[] = [
     {
@@ -190,12 +198,14 @@
   max-w-[42px]
 }
 
+
 .variables-table__value-td,
 .variables-table__name { @apply
   min-w-0
   max-w-0
   truncate
 }
+
 
 .variables-table__name { @apply
   max-w-[192px]

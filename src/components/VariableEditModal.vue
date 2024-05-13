@@ -7,7 +7,7 @@
         </p-label>
 
         <p-label :label="localization.info.value" :state="valueState" :message="valueErrorMessage">
-          <p-textarea v-model="value" :state="valueState" :rows="1" />
+          <JsonInput v-model="value" show-format-button />
         </p-label>
 
         <p-label :label="localization.info.tags">
@@ -29,6 +29,7 @@
   import { useValidation, useValidationObserver, ValidationRule } from '@prefecthq/vue-compositions'
   import { isNull } from 'lodash'
   import { computed, ref } from 'vue'
+  import { JsonInput } from '@/components'
   import { useWorkspaceApi } from '@/compositions'
   import { localization } from '@/localization'
   import { Variable, VariableEdit, MAX_VARIABLE_NAME_LENGTH, MAX_VARIABLE_VALUE_LENGTH } from '@/models'
