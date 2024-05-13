@@ -23,6 +23,24 @@
 
     <FlowRunJobVariableOverridesLabeledInput v-if="can.access.deploymentScheduleFlowRunInfraOverrides" v-model="internalJobVariables" />
 
+    <p-label
+      label="Max Active Runs"
+      class="interval-schedule-form__column--span-3"
+    >
+      <p-number-input v-model="internalMaxActive" min="1" step="1" @submit="submit" />
+    </p-label>
+
+    <p-label class="catchup-schedule-form__column--span-1">
+      <template #label>
+        <span>
+          Catchup
+          <CatchupDescriptionModal />
+        </span>
+      </template>
+
+      <p-toggle v-model="internalCatchup" class="inline-block" @submit="submit" />
+    </p-label>
+
     <template #actions>
       <p-button variant="default" type="submit" :disabled="disabled" @click="submitCurrentForm">
         Save
@@ -35,6 +53,7 @@
   import { ButtonGroupOption } from '@prefecthq/prefect-design'
   import { useValidationObserver } from '@prefecthq/vue-compositions'
   import { computed, ref, watch } from 'vue'
+  import CatchupDescriptionModal from '@/components/CatchupDescriptionModal.vue'
   import CronScheduleForm from '@/components/CronScheduleForm.vue'
   import FlowRunJobVariableOverridesLabeledInput from '@/components/FlowRunJobVariableOverridesLabeledInput.vue'
   import IntervalScheduleForm from '@/components/IntervalScheduleForm.vue'
@@ -55,6 +74,8 @@
   const can = useCan()
 
   const internalActive = ref<boolean>(props.active ?? true)
+  const internalCatchup = ref<boolean>(props.catchup ?? true)
+  const internalMaxActive = ref<number>(props.maxActiveRuns ?? 0)
 
   const { validate } = useValidationObserver()
   const internalJobVariables = ref<string | undefined>(props.jobVariables ? stringify(props.jobVariables) : undefined)
@@ -80,6 +101,8 @@
 
     emit('submit', {
       active: internalActive.value,
+      catchup: internalCatchup.value,
+      maxActiveRuns: internalMaxActive.value,
       schedule,
       jobVariables,
     })
@@ -118,6 +141,8 @@
     intervalSchedule.value = isIntervalSchedule(props.schedule) ? props.schedule : undefined
     internalActive.value = props.active ?? true
     internalJobVariables.value = props.jobVariables ? stringify(props.jobVariables) : undefined
+    internalCatchup.value = props.catchup ?? true
+    internalMaxActive.value = props.maxActiveRuns ?? 0
   }
   watch(() => props.schedule, updateInternalState)
 </script>
