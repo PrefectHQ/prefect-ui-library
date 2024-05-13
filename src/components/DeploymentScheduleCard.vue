@@ -28,6 +28,7 @@
   const props = defineProps<{
     deployment: Deployment,
     deploymentSchedule: DeploymentSchedule,
+    deploymentScheduleCompatible: DeploymentScheduleCompatible,
   }>()
 
   const emit = defineEmits<{
@@ -35,6 +36,7 @@
   }>()
 
   const internalValue = ref<DeploymentScheduleCompatible>({ active: props.deploymentSchedule.active, schedule: props.deploymentSchedule.schedule, jobVariables: props.deploymentSchedule.jobVariables })
+  // const internalValue = ref<DeploymentScheduleCompatible>({ active: props.deploymentSchedule.active, schedule: props.deploymentSchedule.schedule, jobVariables: props.deploymentSchedule.jobVariables, catchup: props.deploymentScheduleCompatible.catchup, maxActiveRuns: props.deploymentScheduleCompatible.maxActiveRuns })
 
   const updateActiveStatus = (value: boolean): void => {
     internalValue.value.active = value
@@ -45,8 +47,10 @@
     internalValue.value = schedule
   }
 
+
   const updateInternalState = (): void => {
     internalValue.value = { active: props.deploymentSchedule.active, schedule: props.deploymentSchedule.schedule, jobVariables: props.deploymentSchedule.jobVariables }
+    // internalValue.value = { active: props.deploymentSchedule.active, schedule: props.deploymentSchedule.schedule, jobVariables: props.deploymentSchedule.jobVariables, catchup: props.deploymentScheduleCompatible.catchup, maxActiveRuns: props.deploymentScheduleCompatible.maxActiveRuns }
   }
   watch(() => props.deploymentSchedule, updateInternalState)
 </script>
