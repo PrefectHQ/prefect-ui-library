@@ -1,3 +1,5 @@
+import { AutomationTriggerEvent } from '@/automations/types/automationTriggerEvent'
+import { AutomationTrigger } from '@/automations/types/triggers'
 import { FlowResponse } from '@/models/api/FlowResponse'
 import { Flow } from '@/models/Flow'
 import { MapFunction } from '@/services/Mapper'
@@ -20,4 +22,18 @@ export const mapFlowToFlowResponse: MapFunction<Flow, FlowResponse> = function(s
     created: this.map('Date', source.created, 'string'),
     updated: this.map('Date', source.updated, 'string'),
   }
+}
+
+export const mapFlowToAutomationTrigger: MapFunction<Flow, AutomationTrigger> = function(flow) {
+  return new AutomationTriggerEvent({
+    'posture': 'Reactive',
+    'match': {
+      'prefect.resource.id': 'prefect.flow-run.*',
+    },
+    'matchRelated': {
+      'prefect.resource.role': 'flow',
+      'prefect.resource.id': `prefect.flow.${flow.id}`,
+    },
+    'forEach': ['prefect.resource.id'],
+  })
 }

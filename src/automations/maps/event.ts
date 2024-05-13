@@ -1,25 +1,10 @@
 import { AutomationTriggerEvent } from '@/automations/types/automationTriggerEvent'
 import { AutomationTrigger } from '@/automations/types/triggers'
-import { WorkspaceEventResponse } from '@/models/api/workspaceEvents'
-import { WorkspaceEvent } from '@/models/workspaceEvent'
+import { WorkspaceEvent } from '@/models'
 import { MapFunction } from '@/services/Mapper'
 import { getPrefectResourceRole } from '@/utilities/events'
 
-export const mapWorkspaceEventResponseToWorkspaceEvent: MapFunction<WorkspaceEventResponse, WorkspaceEvent> = function(source) {
-  return new WorkspaceEvent({
-    id: source.id,
-    account: source.account,
-    event: source.event,
-    payload: source.payload,
-    related: source.related,
-    resource: source.resource,
-    workspace: source.workspace,
-    occurred: this.map('string', source.occurred, 'Date'),
-    received: this.map('string', source.received, 'Date'),
-  })
-}
-
-export const mapWorkspaceEventToAutomationTrigger: MapFunction<WorkspaceEvent, AutomationTrigger> = function(event) {
+export const mapEventToAutomationTrigger: MapFunction<WorkspaceEvent, AutomationTrigger> = function(event) {
   const role = getPrefectResourceRole(event.event)
 
   switch (role) {

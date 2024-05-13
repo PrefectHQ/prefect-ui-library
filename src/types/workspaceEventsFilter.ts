@@ -35,6 +35,6 @@ export type WorkspaceEventsFilter = {
  * All requests made should include occurred and the api endpoints guard against this by using
  * the EventsFilter type which requires both occurred.since and occurred.until.
  */
-export type PartialEventsFilter = Omit<WorkspaceEventsFilter, 'occurred'> & {
+export type PartialWorkspaceEventsFilter = Omit<WorkspaceEventsFilter, 'occurred'> & {
   occurred?: { since?: Date, until?: Date },
 }

@@ -11,6 +11,7 @@ export const en = {
     concurrency: 'https://docs.prefect.io/concepts/tasks#task-run-concurrency-limits',
     globalConcurrency: 'https://docs.prefect.io/guides/global-concurrency-limits/',
     automations: 'https://docs.prefect.io/ui/automations/',
+    automationTriggers: 'https://docs.prefect.io/ui/automations/#triggers',
     workPools: 'https://docs.prefect.io/latest/concepts/work-pools/',
     collections: 'https://docs.prefect.io/collections/catalog/',
     resultsPersistence: 'https://docs.prefect.io/concepts/results/#persisting-results',
@@ -69,6 +70,8 @@ export const en = {
     variableAlreadyExists: 'A variable with this name already exists',
     automationToggle: (enabled: boolean) => enabled ? 'Sorry, something went wrong enabling your automation' : 'Sorry, something went wrong disabling your automation',
     automationDelete: 'Sorry, something went wrong deleting your automation',
+    automationCreate: 'Sorry, something went wrong creating your automation',
+    automationUpdate: 'Sorry, something went wrong updating your automation',
   },
   success: {
     activateDeployment: 'Deployment active',
@@ -114,6 +117,8 @@ export const en = {
     updateWorkQueue: 'Work queue updated',
     automationEnable: (enabled: boolean = true) => enabled ? 'Automation enabled' : 'Automation disabled',
     automationDelete: 'Automation deleted',
+    automationCreate: 'Automation created',
+    automationUpdate: 'Automation updated',
   },
   info: {
     form: 'Form',
