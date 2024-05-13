@@ -23,6 +23,14 @@ export class WorkspaceAutomationsApi extends WorkspaceApi {
     return mapper.map('AutomationResponse', data, 'Automation')
   }
 
+  public deleteAutomation(automationId: string): Promise<void> {
+    return this.delete(`/${automationId}`)
+  }
+
+  public enableAutomation(automationId: string, enabled: boolean = true): Promise<void> {
+    return this.patch(`/${automationId}`, { enabled })
+  }
+
   public async validateTemplate(template: string): Promise<string | true> {
     try {
       await this.post('/templates/validate', template)

@@ -10,6 +10,7 @@ export const mapWorkspaceDashboardFilterToTaskRunsFilter: MapFunction<WorkspaceD
       tags: {
         name: source.tags,
       },
+      parentTaskRunIdNull: source.hideSubflows ? true : undefined,
     },
     taskRuns: {
       startTimeAfter: startDate,
@@ -29,6 +30,7 @@ export const mapWorkspaceDashboardFilterToTaskRunsHistoryFilter: MapFunction<Wor
       tags: {
         name: source.tags,
       },
+      parentTaskRunIdNull: source.hideSubflows ? true : undefined,
     },
   }
 }
@@ -43,6 +45,7 @@ export const mapWorkspaceDashboardFilterToFlowRunsFilter: MapFunction<WorkspaceD
       tags: {
         name: source.tags,
       },
+      parentTaskRunIdNull: source.hideSubflows ? true : undefined,
     },
   }
 

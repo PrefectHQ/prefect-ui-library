@@ -4,18 +4,19 @@
 
 <script lang="ts" setup>
   import { computed } from 'vue'
+  import AutomationTriggerCustomInput from '@/automations/components/AutomationTriggerCustomInput.vue'
   import AutomationTriggerDeploymentStatusInput from '@/automations/components/AutomationTriggerDeploymentStatusInput.vue'
   import AutomationTriggerFlowRunStateInput from '@/automations/components/AutomationTriggerFlowRunStateInput.vue'
   import AutomationTriggerWorkPoolStatusInput from '@/automations/components/AutomationTriggerWorkPoolStatusInput.vue'
   import AutomationTriggerWorkQueueStatusInput from '@/automations/components/AutomationTriggerWorkQueueStatusInput.vue'
   import { AutomationTriggerEvent } from '@/automations/types/automationTriggerEvent'
-  import { AutomationTriggerEventTemplate } from '@/automations/types/triggerTemplates'
+  import { AutomationTriggerTemplate } from '@/automations/types/triggerTemplates'
   import { withProps } from '@/utilities'
 
   const trigger = defineModel<AutomationTriggerEvent>('trigger', { required: true })
 
   const { template } = defineProps<{
-    template: AutomationTriggerEventTemplate,
+    template: AutomationTriggerTemplate,
   }>()
 
   const input = computed(() => {
@@ -40,6 +41,12 @@
 
       case 'work-queue-status':
         return withProps(AutomationTriggerWorkQueueStatusInput, {
+          trigger: trigger.value,
+          'onUpdate:trigger': update,
+        })
+
+      case 'custom':
+        return withProps(AutomationTriggerCustomInput, {
           trigger: trigger.value,
           'onUpdate:trigger': update,
         })

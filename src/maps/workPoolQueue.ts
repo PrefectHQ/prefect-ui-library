@@ -1,3 +1,5 @@
+import { AutomationTriggerEvent } from '@/automations/types/automationTriggerEvent'
+import { AutomationTrigger } from '@/automations/types/triggers'
 import { WorkPoolQueue, WorkPoolQueueCreate, WorkPoolQueueCreateRequest, WorkPoolQueueEdit, WorkPoolQueueEditRequest, WorkPoolQueueResponse, WorkPoolQueueResponseStatus, WorkPoolQueueStatus } from '@/models'
 import { MapFunction } from '@/services/Mapper'
 
@@ -51,4 +53,14 @@ export const mapWorkPoolQueueEditToWorkPoolQueueEditRequest: MapFunction<WorkPoo
     concurrency_limit: source.concurrencyLimit,
     priority: source.priority,
   }
+}
+export const mapWorkPoolQueueToAutomationTrigger: MapFunction<WorkPoolQueue, AutomationTrigger> = function(workPoolQueue) {
+  return new AutomationTriggerEvent({
+    'posture': 'Reactive',
+    'match': {
+      'prefect.resource.id': `prefect.work-queue.${workPoolQueue.id}`,
+    },
+    'forEach': ['prefect.resource.id'],
+    'expect': ['prefect.work-queue.not-ready'],
+  })
 }

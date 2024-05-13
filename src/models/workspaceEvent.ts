@@ -30,7 +30,6 @@ export function isPrefectResourceRole(value: unknown): value is PrefectResourceR
   return prefectResourceRoles.includes(value as PrefectResourceRole)
 }
 
-
 export type IWorkspaceEvent = {
   id: string,
   account: string,
