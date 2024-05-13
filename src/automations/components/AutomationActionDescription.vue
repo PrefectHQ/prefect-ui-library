@@ -1,5 +1,7 @@
 <template>
-  <component :is="description.component" v-bind="description.props" class="automation-action-description" />
+  <template v-if="description">
+    <component :is="description.component" v-bind="description.props" class="automation-action-description" />
+  </template>
 </template>
 
 <script lang="ts" setup>
@@ -58,6 +60,10 @@
         return withProps(AutomationActionDescriptionDefault, {
           action: props.action,
         })
+
+      case 'do-nothing':
+        return null
+
       default:
         const exhaustive: never = props.action
         throw new Error(`AutomationActionDescription has no case for type: ${(exhaustive as AutomationAction).type}`)

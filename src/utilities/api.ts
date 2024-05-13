@@ -15,6 +15,7 @@ import { WorkspaceConcurrencyLimitsApi } from '@/services/WorkspaceConcurrencyLi
 import { WorkspaceConcurrencyV2LimitsApi } from '@/services/WorkspaceConcurrencyLimitsV2API'
 import { WorkspaceDeploymentsApi } from '@/services/WorkspaceDeploymentsApi'
 import { WorkspaceDeploymentScheduleApi } from '@/services/WorkspaceDeploymentScheduleApi'
+import { WorkspaceEventsApi } from '@/services/workspaceEventsApi'
 import { WorkspaceFlowRunsApi } from '@/services/WorkspaceFlowRunsApi'
 import { WorkspaceFlowsApi } from '@/services/WorkspaceFlowsApi'
 import { WorkspaceLogsApi } from '@/services/WorkspaceLogsApi'
@@ -57,6 +58,7 @@ export function createApi(workspaceConfig: WorkspaceApiConfig, instanceSetupHook
     workPoolWorkers: createActions(new WorkspaceWorkPoolWorkersApi(workspaceConfig, instanceSetupHook)),
     workQueues: createActions(new WorkspaceWorkQueuesApi(workspaceConfig, instanceSetupHook)),
     schemas: createActions(new WorkspaceSchemasWorkspaceApi(workspaceConfig, instanceSetupHook)),
+    events: createActions(new WorkspaceEventsApi(workspaceConfig, instanceSetupHook)),
   }
 }
 

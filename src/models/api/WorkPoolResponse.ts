@@ -20,5 +20,5 @@ export type WorkPoolResponse = {
   concurrency_limit: number | null,
   default_queue_id: string,
   base_job_template: BaseJobTemplateResponse,
-  status: ServerWorkPoolStatus,
+  status: ServerWorkPoolStatus | null,
 }

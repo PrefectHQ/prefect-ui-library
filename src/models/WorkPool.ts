@@ -16,7 +16,7 @@ export interface IWorkPool {
   defaultQueueId: string,
   concurrencyLimit: number | null,
   baseJobTemplate: BaseJobTemplateRequest,
-  status: WorkPoolStatus,
+  status: WorkPoolStatus | null,
 }
 
 export class WorkPool implements IWorkPool {
@@ -32,7 +32,7 @@ export class WorkPool implements IWorkPool {
   public defaultQueueId: string
   public concurrencyLimit: number | null
   public baseJobTemplate: BaseJobTemplateRequest
-  public status: WorkPoolStatus
+  public status: WorkPoolStatus | null
 
   public constructor(workPool: IWorkPool) {
     this.id = workPool.id
