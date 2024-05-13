@@ -1,4 +1,4 @@
-import prefectDesignConfig from '@prefecthq/prefect-design/tailwind.config'
+import prefectDesignConfig from '@prefecthq/prefect-design/src/tailwind.config'
 import { Config } from 'tailwindcss/types/config'
 
 // eslint-disable-next-line no-relative-import-paths/no-relative-import-paths
