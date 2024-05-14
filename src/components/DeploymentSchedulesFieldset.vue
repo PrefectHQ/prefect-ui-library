@@ -1,7 +1,7 @@
 <template>
   <div class="deployment-schedule-fieldset">
     <template v-for="deploymentSchedule in schedules.toSorted(sortByCreated)" :key="deploymentSchedule.id">
-      <DeploymentScheduleCard :deployment="deployment" :deployment-schedule="deploymentSchedule" @update="emits('update')" />
+      <DeploymentScheduleCard :deployment-schedule-compatible="DeploymentSchedule" :deployment="deployment" :deployment-schedule="deploymentSchedule" @update="emits('update')" />
     </template>
 
     <ScheduleFormModal
