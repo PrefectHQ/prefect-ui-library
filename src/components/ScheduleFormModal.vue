@@ -74,8 +74,8 @@
   const can = useCan()
 
   const internalActive = ref<boolean>(props.active ?? true)
-  const internalCatchup = ref<boolean>(props.catchup ?? true)
-  const internalMaxActive = ref<number>(props.maxActiveRuns ?? 0)
+  const internalCatchup = ref<boolean | undefined>(props.catchup ?? true)
+  const internalMaxActive = ref<number | undefined>(props.maxActiveRuns ?? undefined)
 
   const { validate } = useValidationObserver()
   const internalJobVariables = ref<string | undefined>(props.jobVariables ? stringify(props.jobVariables) : undefined)
@@ -101,8 +101,8 @@
 
     emit('submit', {
       active: internalActive.value,
-      catchup: internalCatchup.value,
-      maxActiveRuns: internalMaxActive.value,
+      catchup: internalCatchup.value ?? true,
+      maxActiveRuns: internalMaxActive.value ?? null,
       schedule,
       jobVariables,
     })
@@ -141,8 +141,8 @@
     intervalSchedule.value = isIntervalSchedule(props.schedule) ? props.schedule : undefined
     internalActive.value = props.active ?? true
     internalJobVariables.value = props.jobVariables ? stringify(props.jobVariables) : undefined
-    internalCatchup.value = props.catchup ?? true
-    internalMaxActive.value = props.maxActiveRuns ?? 0
+    internalCatchup.value = props.catchup ?? undefined
+    internalMaxActive.value = props.maxActiveRuns ?? undefined
   }
   watch(() => props.schedule, updateInternalState)
 </script>

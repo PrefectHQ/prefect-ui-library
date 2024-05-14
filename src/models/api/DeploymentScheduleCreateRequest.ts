@@ -5,5 +5,5 @@ export type DeploymentScheduleCreateRequest = {
   schedule: ScheduleResponse,
   job_variables?: Record<string, unknown>,
   max_active_runs: number | null,
-  catchup: boolean | true,
+  catchup: boolean,
 }

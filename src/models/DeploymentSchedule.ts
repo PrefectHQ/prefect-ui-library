@@ -8,7 +8,7 @@ export interface IDeploymentSchedule {
   active: boolean,
   schedule: Schedule,
   maxActiveRuns: number | null,
-  catchup: boolean | true,
+  catchup: boolean,
   jobVariables: Record<string, unknown>,
 }
 
@@ -19,7 +19,7 @@ export class DeploymentSchedule implements IDeploymentSchedule {
   public active: boolean
   public schedule: Schedule
   public maxActiveRuns: number | null
-  public catchup: boolean | true
+  public catchup: boolean
   public jobVariables: Record<string, unknown>
 
   public constructor(deploymentSchedule: IDeploymentSchedule) {

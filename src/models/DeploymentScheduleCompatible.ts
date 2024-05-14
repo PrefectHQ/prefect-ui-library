@@ -4,6 +4,6 @@ export type DeploymentScheduleCompatible = {
   active: boolean | null,
   schedule: Schedule | null,
   maxActiveRuns: number | null,
-  catchup: boolean | true,
+  catchup: boolean,
   jobVariables: Record<string, unknown> | undefined,
 }
