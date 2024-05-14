@@ -35,8 +35,7 @@
     (event: 'update'): void,
   }>()
 
-  const internalValue = ref<DeploymentScheduleCompatible>({ active: props.deploymentSchedule.active, schedule: props.deploymentSchedule.schedule, jobVariables: props.deploymentSchedule.jobVariables })
-  // const internalValue = ref<DeploymentScheduleCompatible>({ active: props.deploymentSchedule.active, schedule: props.deploymentSchedule.schedule, jobVariables: props.deploymentSchedule.jobVariables, catchup: props.deploymentScheduleCompatible.catchup, maxActiveRuns: props.deploymentScheduleCompatible.maxActiveRuns })
+  const internalValue = ref<DeploymentScheduleCompatible>({ active: props.deploymentSchedule.active, schedule: props.deploymentSchedule.schedule, jobVariables: props.deploymentSchedule.jobVariables, catchup: props.deploymentScheduleCompatible.catchup, maxActiveRuns: props.deploymentScheduleCompatible.maxActiveRuns })
 
   const updateActiveStatus = (value: boolean): void => {
     internalValue.value.active = value
@@ -52,6 +51,7 @@
     internalValue.value = { active: props.deploymentSchedule.active, schedule: props.deploymentSchedule.schedule, jobVariables: props.deploymentSchedule.jobVariables, catchup: props.deploymentScheduleCompatible.catchup, maxActiveRuns: props.deploymentScheduleCompatible.maxActiveRuns }
   }
   watch(() => props.deploymentSchedule, updateInternalState)
+  watch(() => props.deploymentScheduleCompatible, updateInternalState)
 </script>
 
 <style>
