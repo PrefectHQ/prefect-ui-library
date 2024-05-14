@@ -25,9 +25,11 @@
 
     <p-label
       label="Max active runs"
+      :message="maxActiveRunsErrorMessage"
+      :state="maxActiveRunsState"
       class="interval-schedule-form__column--span-3"
     >
-      <p-number-input v-model="internalMaxActive" min="1" step="1" @submit="submit" />
+      <p-number-input v-model="internalMaxActive" min="0" :state="maxActiveRunsState" />
     </p-label>
 
     <p-label class="catchup-schedule-form__column--span-1">
@@ -51,7 +53,7 @@
 
 <script lang="ts" setup>
   import { ButtonGroupOption } from '@prefecthq/prefect-design'
-  import { useValidationObserver } from '@prefecthq/vue-compositions'
+  import { useValidation, useValidationObserver, ValidationRule } from '@prefecthq/vue-compositions'
   import { computed, ref, watch } from 'vue'
   import CatchupDescriptionModal from '@/components/CatchupDescriptionModal.vue'
   import CronScheduleForm from '@/components/CronScheduleForm.vue'
@@ -130,6 +132,16 @@
 
     await submit(schedule)
   }
+
+  const isGreaterThanZeroOrNull: ValidationRule<number | undefined> = (value, name) => {
+    if (value == null || value > 0) {
+      return true
+    }
+
+    return `${name} must be greater than 0`
+  }
+
+  const { error: maxActiveRunsErrorMessage, state: maxActiveRunsState } = useValidation(internalMaxActive, 'Max active runs', [isGreaterThanZeroOrNull])
 
   const cronSchedule = ref<CronSchedule | undefined>(isCronSchedule(props.schedule) ? props.schedule : undefined)
   const intervalSchedule = ref<IntervalSchedule | undefined>(isIntervalSchedule(props.schedule) ? props.schedule : undefined)
