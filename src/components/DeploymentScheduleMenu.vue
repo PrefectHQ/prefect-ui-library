@@ -48,6 +48,8 @@
 
   const compatSchedule = ref<DeploymentScheduleCompatible>({
     active: props.schedule.active,
+    catchup: props.schedule.catchup,
+    maxActiveRuns: props.schedule.maxActiveRuns,
     schedule: props.schedule.schedule,
     jobVariables: props.schedule.jobVariables,
   })

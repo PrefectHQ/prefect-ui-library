@@ -8,6 +8,8 @@ export const mapDeploymentScheduleResponseToDeploymentSchedule: MapFunction<Depl
     created: this.map('string', source.created, 'Date'),
     updated: this.map('string', source.updated, 'Date'),
     active: source.active,
+    maxActiveRuns: source.max_active_runs,
+    catchup: source.catchup,
     schedule: this.map('ScheduleResponse', source.schedule, 'Schedule'),
     jobVariables: source.job_variables ?? {},
   })
