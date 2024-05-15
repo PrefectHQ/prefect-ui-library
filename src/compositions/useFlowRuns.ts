@@ -1,6 +1,6 @@
 import { MaybeReadonly } from '@prefecthq/prefect-design'
-import { UseSubscription, useSubscriptionWithDependencies } from '@prefecthq/vue-compositions'
-import { ComputedRef, MaybeRefOrGetter, computed, toRef, toValue } from 'vue'
+import { UseSubscription, useSubscriptionWithDependencies, SubscriptionOptions } from '@prefecthq/vue-compositions'
+import { ComputedRef, MaybeRef, MaybeRefOrGetter, computed, toRef, toValue } from 'vue'
 import { useCan } from '@/compositions/useCan'
 import { useWorkspaceApi } from '@/compositions/useWorkspaceApi'
 import { FlowRun, FlowRunsFilter } from '@/models'
@@ -12,7 +12,7 @@ export type UseFlowRuns = {
   flowRuns: ComputedRef<FlowRun[]>,
 }
 
-export function useFlowRuns(filter?: MaybeRefOrGetter<MaybeReadonly<FlowRunsFilter> | null | undefined>): UseFlowRuns {
+export function useFlowRuns(filter?: MaybeRefOrGetter<MaybeReadonly<FlowRunsFilter> | null | undefined>, options?: MaybeRef<SubscriptionOptions>): UseFlowRuns {
   const api = useWorkspaceApi()
   const can = useCan()
 
@@ -31,7 +31,7 @@ export function useFlowRuns(filter?: MaybeRefOrGetter<MaybeReadonly<FlowRunsFilt
   }
 
   const parametersRef = toRef(parameters)
-  const subscription = useSubscriptionWithDependencies(api.flowRuns.getFlowRuns, parametersRef)
+  const subscription = useSubscriptionWithDependencies(api.flowRuns.getFlowRuns, parametersRef, options)
   const flowRuns = computed(() => subscription.response ?? [])
 
   return {
