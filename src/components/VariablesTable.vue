@@ -29,35 +29,60 @@
       :column-classes="columnClass"
       @update:selected="selectedVariables = $event"
     >
-      <template #name="{ row }">
+      <template #expandable-rows>
+        <p-table :data="variables" :columns="columns">
+          <template #action-heading>
+            <span />
+          </template>
+
+          <template #action="{ row }">
+            <div class="w-full flex justify-end">
+              <p-button class="ml-auto" small :icon="isExpanded(row) ? 'ChevronUpIcon' : 'ChevronDownIcon'" @click="expandRow(row)" />
+            </div>
+          </template>
+
+          <template #row-after="{ row }">
+            <PTableRow v-if="isExpanded(row)">
+              <PTableData :colspan="columns.length" class="!p-0">
+                <p-code-highlight :text="JSON.stringify(row, null, 2)" lang="json" class="!rounded-none !p-4" />
+              </PTableData>
+            </PTableRow>
+          </template>
+        </p-table>
+      </template>
+      <!--
+        <template #name="{ row }">
         <div class="variables-table__name" :title="row.name">
-          <VariableLink :variable="row" />
+        <VariableLink :variable="row" />
         </div>
-      </template>
+        </template>
 
-      <template #value="{ row }">
+
+        <template #value="{ row }">
         <div class="variables-table__value" :title="row.name">
-          <p-code-highlight :text="row.value" lang="json" inline />
+        <p-code-highlight :text="row.value" lang="json" inline />
         </div>
-      </template>
+        </template>
 
-      <template #updated="{ row }">
+
+        <template #updated="{ row }">
         {{ formatDateTimeNumeric(row.updated) }}
-      </template>
+        </template>
 
-      <template #tags="{ row }">
+        <template #tags="{ row }">
         <p-tag-wrapper class="variables-table__tags" :tags="row.tags" justify="left" />
-      </template>
+        </template>
 
-      <template #action-heading>
+        <template #action-heading>
         <span />
-      </template>
+        </template>
 
-      <template #action="{ row }">
+        <template #action="{ row }">
         <div :key="row.id" class="variables-table__action">
-          <VariableMenu :variable="row" size="xs" @delete="refreshSubscriptions" @update="handleUpdate" />
+        <VariableMenu :variable="row" size="xs" @delete="refreshSubscriptions" @update="handleUpdate" />
         </div>
-      </template>
+        </template>
+      -->
 
       <template #empty-state>
         <PEmptyResults>
@@ -84,7 +109,7 @@
   import { computed, ref } from 'vue'
   import { VariablesDeleteButton, VariableMenu, ResultsCount, SearchInput, SelectedCount, VariableTagsInput, VariableEditModal } from '@/components'
   import VariableLink from '@/components/VariableLink.vue'
-  import { useCan, useVariablesFilter, useWorkspaceApi, useShowModal } from '@/compositions'
+  import { useCan, useVariablesFilter, useWorkspaceApi } from '@/compositions'
   import { localization } from '@/localization'
   import { VariablesFilter, Variable } from '@/models'
   import { variableSortOptions } from '@/types'
@@ -181,6 +206,14 @@
   const handleUpdate = (variable: Variable): void => {
     emit('update', variable)
   }
+
+  const expandedRows = ref<Map<Variable, boolean>>(new Map())
+  function isExpanded(row: Variable): boolean {
+    return expandedRows.value.get(row) ?? false
+  }
+  function expandRow(row: Variable): void {
+    expandedRows.value.set(row.id, !isExpanded(row))
+  }
 </script>
 
 <style>
@@ -211,3 +244,4 @@
   max-w-[192px]
 }
 </style>
+
