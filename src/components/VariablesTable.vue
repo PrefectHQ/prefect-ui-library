@@ -202,14 +202,12 @@
   max-w-[42px]
 }
 
-
 .variables-table__value-td,
 .variables-table__name { @apply
   min-w-0
   max-w-0
   truncate
 }
-
 
 .variables-table__name { @apply
   max-w-[192px]
