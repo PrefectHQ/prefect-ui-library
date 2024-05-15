@@ -19,6 +19,7 @@
 
 <script lang="ts" setup>
   import { useSessionStorage } from '@prefecthq/vue-compositions'
+  import debounce from 'lodash.debounce'
   import { useField } from 'vee-validate'
   import { computed, watchEffect } from 'vue'
   import { ValidationMethodFactory, useWorkspaceApi } from '..'
@@ -54,21 +55,33 @@
     initialValues,
   })
 
+  const blockExistsWithSlug = debounce(async (testValue: string) => {
+    const documents = await api.blockDocuments.getBlockDocuments({
+      blockTypes: {
+        slug: [props.blockSchema.blockType.slug],
+      },
+      blockDocuments: {
+        name: [testValue],
+      },
+    })
+
+    return documents.length > 0
+  }, 500)
+
   const isUniqueBlockName: ValidationMethodFactory = () => async (value) => {
     if (value && typeof value === 'string') {
-      const documents = await api.blockDocuments.getBlockDocuments({
-        blockTypes: {
-          slug: [props.blockSchema.blockType.slug],
-        },
-        blockDocuments: {
-          name: [value],
-        },
-      })
+      try {
+        const isUnique = await blockExistsWithSlug(value)
 
-      if (documents.length) {
-        return 'Block document names must be unique.'
+        if (isUnique) {
+          return 'Block document names must be unique.'
+        }
+      } catch (error) {
+        console.error(error)
+
+        // let the user submit the form if we can't check for uniqueness
+        return true
       }
-
     }
 
     return true
