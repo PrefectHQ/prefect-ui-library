@@ -4,7 +4,7 @@ import { useCan } from '@/compositions/useCan'
 import { UseFlowRuns, useFlowRuns } from '@/compositions/useFlowRuns'
 import { FlowRun, FlowRunsFilter, UnionFilter } from '@/models'
 
-export type UseLastFlowRun = Pick<UseFlowRuns, 'subscriptions'> & {
+export type UseLastFlowRun = Pick<UseFlowRuns, 'subscription'> & {
   flowRun: ComputedRef<FlowRun | undefined>,
 }
 
@@ -29,11 +29,11 @@ export function useLastFlowRun(filter: MaybeRefOrGetter<UnionFilter | null | und
     return merge({}, filterValue, latestFilter)
   }
 
-  const { flowRuns, subscriptions } = useFlowRuns(getter)
+  const { flowRuns, subscription } = useFlowRuns(getter)
   const flowRun = computed(() => flowRuns.value.at(0))
 
   return {
-    subscriptions,
+    subscription,
     flowRun,
   }
 }

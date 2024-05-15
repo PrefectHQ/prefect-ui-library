@@ -1,19 +1,18 @@
 import { MaybeReadonly } from '@prefecthq/prefect-design'
-import { MaybeRefOrGetter, toValue } from 'vue'
+import { UseSubscription, useSubscriptionWithDependencies } from '@prefecthq/vue-compositions'
+import { ComputedRef, MaybeRefOrGetter, computed, toRef, toValue } from 'vue'
 import { useCan } from '@/compositions/useCan'
-import { PaginationOptions, UsePaginationEntity, usePagination } from '@/compositions/usePagination'
 import { useWorkspaceApi } from '@/compositions/useWorkspaceApi'
-import { FlowRunsFilter } from '@/models'
+import { FlowRun, FlowRunsFilter } from '@/models'
 import { WorkspaceFlowRunsApi } from '@/services'
 import { Getter } from '@/types/reactivity'
 
-export type UseFlowRuns = UsePaginationEntity<
-WorkspaceFlowRunsApi['getFlowRuns'],
-WorkspaceFlowRunsApi['getFlowRunsCount'],
-'flowRuns'
->
+export type UseFlowRuns = {
+  subscription: UseSubscription<WorkspaceFlowRunsApi['getFlowRuns']>,
+  flowRuns: ComputedRef<FlowRun[]>,
+}
 
-export function useFlowRuns(filter?: MaybeRefOrGetter<MaybeReadonly<FlowRunsFilter> | null | undefined>, options?: PaginationOptions): UseFlowRuns {
+export function useFlowRuns(filter?: MaybeRefOrGetter<MaybeReadonly<FlowRunsFilter> | null | undefined>): UseFlowRuns {
   const api = useWorkspaceApi()
   const can = useCan()
 
@@ -31,16 +30,12 @@ export function useFlowRuns(filter?: MaybeRefOrGetter<MaybeReadonly<FlowRunsFilt
     return [value]
   }
 
-  const pagination = usePagination({
-    fetchMethod: api.flowRuns.getFlowRuns,
-    fetchParameters: parameters,
-    countMethod: api.flowRuns.getFlowRunsCount,
-    countParameters: parameters,
-    options,
-  })
+  const parametersRef = toRef(parameters)
+  const subscription = useSubscriptionWithDependencies(api.flowRuns.getFlowRuns, parametersRef)
+  const flowRuns = computed(() => subscription.response ?? [])
 
   return {
-    ...pagination,
-    flowRuns: pagination.results,
+    subscription,
+    flowRuns,
   }
 }
