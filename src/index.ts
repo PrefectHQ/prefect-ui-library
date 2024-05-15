@@ -17,7 +17,7 @@ export * from './utilities'
 export * from './schemas'
 export * from './automations'
 
-import '@/styles/style.css'
+import '@/styles/index.css'
 
 import { ToastPlugin } from '@prefecthq/prefect-design'
 import { App, Plugin } from 'vue'

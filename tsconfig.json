@@ -32,12 +32,10 @@
     ]
   },
   "include": [
-    "src/**/*.ts",
-    "src/**/*.d.ts",
-    "src/**/*.vue",
-    "./*.ts",
-    "./*.d.ts",
-    "./postcss.config.js",
-    "./tailwind.config.js"
+    "**/*.ts",
+    "**/*.d.ts",
+    "**/*.vue",
+    "**/*.mts",
+    "postcss.config.cjs",
   ]
 }
