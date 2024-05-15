@@ -12,7 +12,7 @@
 <script lang="ts" setup>
   import { computed } from 'vue'
   import FlowRunList from '@/components/FlowRunList.vue'
-  import { useFlowRuns } from '@/compositions/useFlowRuns'
+  import { usePaginatedFlowRuns } from '@/compositions'
   import { FlowRunsFilter } from '@/models/Filters'
 
   const props = defineProps<{
@@ -32,7 +32,7 @@
     limit: 3,
   })
 
-  const { flowRuns, total, next } = useFlowRuns(filter, {
+  const { flowRuns, total, next } = usePaginatedFlowRuns(filter, {
     mode: 'infinite',
   })
 

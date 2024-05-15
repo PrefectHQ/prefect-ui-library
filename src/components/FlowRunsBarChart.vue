@@ -24,7 +24,6 @@
   import { StyleValue, computed, ref, toValue } from 'vue'
   import FlowRunPopoverContent from '@/components/FlowRunPopOverContent.vue'
   import { useFlowRuns } from '@/compositions/useFlowRuns'
-  import { useInterval } from '@/compositions/useInterval'
   import { FlowRunsFilter } from '@/models/Filters'
   import { FlowRun } from '@/models/FlowRun'
   import { MaybeGetter } from '@/types/reactivity'
@@ -67,8 +66,7 @@
     return merge({}, base, filter)
   }
 
-  const options = useInterval()
-  const { flowRuns } = useFlowRuns(filter, options)
+  const { flowRuns } = useFlowRuns(filter)
 
   const barFlowRuns = computed(() => organizeFlowRunsWithGaps(flowRuns.value))
 
