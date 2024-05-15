@@ -7,13 +7,13 @@ import { TaskRunsFilter } from '@/models'
 import { WorkspaceTaskRunsApi } from '@/services'
 import { Getter } from '@/types/reactivity'
 
-export type UseTaskRuns = UsePaginationEntity<
+export type UsePaginatedTaskRuns = UsePaginationEntity<
 WorkspaceTaskRunsApi['getTaskRuns'],
 WorkspaceTaskRunsApi['getTaskRunsCount'],
 'taskRuns'
 >
 
-export function usePaginatedTaskRuns(filter?: MaybeRefOrGetter<MaybeReadonly<TaskRunsFilter> | null | undefined>, options?: PaginationOptions): UseTaskRuns {
+export function usePaginatedTaskRuns(filter?: MaybeRefOrGetter<MaybeReadonly<TaskRunsFilter> | null | undefined>, options?: PaginationOptions): UsePaginatedTaskRuns {
   const api = useWorkspaceApi()
   const can = useCan()
 
