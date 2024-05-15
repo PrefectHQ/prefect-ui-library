@@ -19,6 +19,7 @@ const stateColors = states.reduce<Record<string, Record<number, string>>>((color
   return colors
 }, {})
 
+// eslint-disable-next-line import/no-default-export
 export default {
   content: ['./src/**/*.{vue,js,ts,jsx,tsx}'],
   safelist: [
