@@ -52,7 +52,7 @@ import { mapOrchestrationResultResponseToOrchestrationResult } from '@/maps/orch
 import { mapRunGraphDataResponse, mapRunGraphNodeResponse, mapRunGraphArtifactResponse, mapRunGraphStateResponse } from '@/maps/runGraphData'
 import { mapSavedSearchResponseToSavedSearch, mapSavedSearchToLocationQuery } from '@/maps/savedSearch'
 import { mapSavedSearchCreateToSavedSearchCreateRequest } from '@/maps/savedSearchCreate'
-import { mapSavedSearchFilterToFlowRunsFilter } from '@/maps/savedSearchFilter'
+import { mapSavedSearchFilterToFlowRunsFilter, mapSavedSearchFilterToTaskRunsFilter } from '@/maps/savedSearchFilter'
 import { mapUiFlowRunHistoryToScatterPlotItem } from '@/maps/scatterPlotItem'
 import { mapScheduleToScheduleResponse, mapScheduleResponseToSchedule, mapScheduleToScheduleRequest } from '@/maps/schedule'
 import { mapSchemaDefinitionsResponseToSchemaDefinitions, mapSchemaPropertiesResponseToSchemaProperties, mapSchemaPropertyResponseToSchemaProperty, mapSchemaResponseToSchema } from '@/maps/schema'
@@ -172,6 +172,7 @@ export const maps = {
   SavedSearchesFilter: { SavedSearchesFilterRequest: mapSavedSearchesFilter },
   SavedSearchFilter: {
     FlowRunsFilter: mapSavedSearchFilterToFlowRunsFilter,
+    TaskRunsFilter: mapSavedSearchFilterToTaskRunsFilter,
     LocationQuery: mapSavedSearchToLocationQuery,
   },
   SavedSearchResponse: { SavedSearch: mapSavedSearchResponseToSavedSearch },
