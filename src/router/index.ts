@@ -28,37 +28,24 @@ export function createWorkspaceRouteRecords(components: Partial<WorkspaceRouteCo
       component: components.dashboard,
     },
     {
-      path: 'flow-runs',
+      path: 'runs',
       meta: {
         can: 'read:flow_run',
       },
       children: [
         {
-          name: 'workspace.flow-runs',
+          name: 'workspace.runs',
           path: '',
-          component: () => import('@/components/FlowRunsPageWithDefaultFilter.vue'),
-          props: { component: components.flowRuns },
+          component: () => import('@/components/RunsPageWithDefaultFilter.vue'),
+          props: { component: components.runs },
         },
         {
-          name: 'workspace.flow-runs.flow-run',
+          name: 'workspace.runs.flow-run',
           path: 'flow-run/:flowRunId',
           component: components.flowRun,
         },
-      ],
-    },
-    {
-      path: 'task-runs',
-      meta: {
-        can: 'read:task_run',
-      },
-      children: [
         {
-          name: 'workspace.task-runs',
-          path: '',
-          component: components.taskRuns,
-        },
-        {
-          name: 'workspace.task-runs.task-run',
+          name: 'workspace.runs.task-run',
           path: 'task-run/:taskRunId',
           component: components.taskRun,
         },

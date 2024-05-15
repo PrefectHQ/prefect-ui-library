@@ -15,7 +15,7 @@
         v-model:showModal="showDeleteModal"
         label="Task Run"
         :name="taskRun.name!"
-        @delete="deleteTaskRun(taskRunId)"
+        @delete="() => deleteTaskRun(taskRunId)"
       />
 
       <ConfirmStateChangeModal
@@ -29,7 +29,7 @@
 </template>
 
 <script lang="ts" setup>
-  import { showToast } from '@prefecthq/prefect-design'
+  import { Crumb, showToast } from '@prefecthq/prefect-design'
   import { useSubscription, useSubscriptionWithDependencies } from '@prefecthq/vue-compositions'
   import { computed, ref } from 'vue'
   import { StateBadge, PageHeading, CopyOverflowMenuItem, ConfirmDeleteModal, ConfirmStateChangeModal } from '@/components'
@@ -56,7 +56,7 @@
   const flowRunName = computed(() => flowRunSubscription.response?.name)
 
   const crumbs = computed(() => {
-    const crumbs = []
+    const crumbs: Crumb[] = [{ text: 'Runs', to: routes.runs() }]
 
     if (flowRunId.value) {
       crumbs.push({ text: flowRunName.value ?? '', to: routes.flowRun(flowRunId.value!) })
