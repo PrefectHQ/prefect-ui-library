@@ -49,7 +49,7 @@
     FlowRunsDeleteButton
   } from '@/components'
   import SearchInput from '@/components/SearchInput.vue'
-  import { useFlowRuns, useFlowRunsFilterFromRoute } from '@/compositions'
+  import { useFlowRunsFilterFromRoute, usePaginatedFlowRuns } from '@/compositions'
   import { useCan } from '@/compositions/useCan'
   import { FlowRunsFilter } from '@/models/Filters'
 
@@ -72,7 +72,7 @@
     },
   }), props.prefix)
 
-  const { flowRuns, total, subscriptions, next } = useFlowRuns(filter, {
+  const { flowRuns, total, subscriptions, next } = usePaginatedFlowRuns(filter, {
     interval: 30000,
     mode: 'infinite',
   })

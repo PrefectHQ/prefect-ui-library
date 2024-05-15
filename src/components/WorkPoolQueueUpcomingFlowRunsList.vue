@@ -41,15 +41,15 @@
     },
   })
 
-  const { flowRuns, subscriptions } = useFlowRuns(filter)
+  const { flowRuns, subscription } = useFlowRuns(filter)
 
-  const empty = computed(() => subscriptions.executed && flowRuns.value.length === 0)
+  const empty = computed(() => subscription.executed && flowRuns.value.length === 0)
   const isPaused = computed(() => workPoolQueue.value.isPaused)
 
   // pretty sure this isn't needed but I haven't tested for sure
   // the subscription should refresh automatically because if the workPoolQueue
   // updates the filter will update which creates a new subscription
   watch(() => workPoolQueue, () => {
-    subscriptions.refresh()
+    subscription.refresh()
   })
 </script>

@@ -25,7 +25,7 @@
   const router = useRouter()
   const routes = useWorkspaceRoutes()
 
-  const { subscriptions: nextRunSubscription } = useNextFlowRun(() => ({
+  const { subscription: nextRunSubscription } = useNextFlowRun(() => ({
     deployments: {
       id: [props.deployment.id],
     },
