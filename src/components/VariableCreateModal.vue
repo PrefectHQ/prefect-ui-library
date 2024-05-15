@@ -33,7 +33,7 @@
   import { useWorkspaceApi } from '@/compositions'
   import { localization } from '@/localization'
   import { Variable, VariableCreate, MAX_VARIABLE_NAME_LENGTH, MAX_VARIABLE_VALUE_LENGTH } from '@/models'
-  import { isSnakeCase, isLessThanOrEqual, isRequired, isString } from '@/utilities'
+  import { isSnakeCase, isLessThanOrEqual, isRequired, isString, isJson } from '@/utilities'
   import { getApiErrorMessage } from '@/utilities/errors'
 
   const props = defineProps<{
@@ -97,6 +97,7 @@
     value: [
       isRequired(localization.info.value),
       isLessThanOrEqual(MAX_VARIABLE_VALUE_LENGTH)(localization.info.value),
+      isJson(localization.info.value),
     ],
   }
 

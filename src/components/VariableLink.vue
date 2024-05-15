@@ -1,9 +1,10 @@
 <template>
   <div class="variable-link" />
-  <p-link @click="openEditModal">
-    {{
-      variable.name
-    }}
+  <p-link v-if="defaultDisplay" @click="openEditModal">
+    {{ defaultDisplay }}
+  </p-link>
+  <p-link v-else @click="openEditModal">
+    {{ variable.name }}
   </p-link>
   <VariableEditModal v-model:showModal="showEditModal" :variable="variable" @update="handleUpdate" />
 </template>
@@ -16,6 +17,7 @@
 
   defineProps<{
     variable: Variable,
+    defaultDisplay?: string,
   }>()
 
   const { showModal: showEditModal, open: openEditModal } = useShowModal()
