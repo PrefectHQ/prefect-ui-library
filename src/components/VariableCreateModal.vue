@@ -7,7 +7,7 @@
         </p-label>
 
         <p-label :label="localization.info.value" :state="valueState" :message="valueErrorMessage">
-          <JsonInput v-model="value" show-format-button />
+          <JsonInput v-model="value" :state="valueState" show-format-button />
         </p-label>
 
         <p-label :label="localization.info.tags">

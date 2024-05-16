@@ -7,7 +7,7 @@
         </p-label>
 
         <p-label :label="localization.info.value" :state="valueState" :message="valueErrorMessage">
-          <JsonInput v-model="value" show-format-button />
+          <JsonInput v-model="value" :state="valueState" show-format-button />
         </p-label>
 
         <p-label :label="localization.info.tags">
@@ -33,7 +33,7 @@
   import { useWorkspaceApi } from '@/compositions'
   import { localization } from '@/localization'
   import { Variable, VariableEdit, MAX_VARIABLE_NAME_LENGTH, MAX_VARIABLE_VALUE_LENGTH } from '@/models'
-  import { isSnakeCase, isRequired, isString, isLessThanOrEqual } from '@/utilities'
+  import { isSnakeCase, isRequired, isString, isLessThanOrEqual, isJson } from '@/utilities'
   import { getApiErrorMessage } from '@/utilities/errors'
 
   const props = defineProps<{
@@ -103,6 +103,7 @@
     value: [
       isRequired(localization.info.value),
       isLessThanOrEqual(MAX_VARIABLE_VALUE_LENGTH)(localization.info.value),
+      isJson(localization.info.value),
     ],
   }
 

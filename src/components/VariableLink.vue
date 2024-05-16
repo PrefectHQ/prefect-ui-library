@@ -1,9 +1,10 @@
 <template>
   <div class="variable-link" />
-  <p-link @click="openEditModal">
-    <slot>
-      {{ variable.name }}
-    </slot>
+  <p-button v-if="defaultDisplay" size="sm" @click="openEditModal">
+    {{ defaultDisplay }}
+  </p-button>
+  <p-link v-else @click="openEditModal">
+    {{ variable.name }}
   </p-link>
   <VariableEditModal v-model:showModal="showEditModal" :variable="variable" @update="handleUpdate" />
 </template>

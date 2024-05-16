@@ -31,7 +31,7 @@
     >
       <template #name="{ row }">
         <div class="variables-table__name" :title="row.name">
-          <VariableLink :variable="row" />
+          <VariableLink :variable="row" @update="handleUpdate" />
         </div>
       </template>
 
@@ -39,7 +39,7 @@
       <template #value="{ row }">
         <div class="variables-table__value">
           <p-code-highlight v-if="row.value.length < 64" :text="row.value" lang="json" inline />
-          <VariableLink v-else :variable="row" :default-display="defaultDisplay" />
+          <VariableLink v-else :variable="row" default-display="click to view" @update="handleUpdate" />
         </div>
       </template>
 
@@ -120,7 +120,6 @@
     offset,
   }))
 
-  const defaultDisplay = 'click to view'
 
   const columns: TableColumn<Variable>[] = [
     {
