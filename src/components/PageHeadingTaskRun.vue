@@ -56,7 +56,7 @@
   const flowRunName = computed(() => flowRunSubscription.response?.name)
 
   const crumbs = computed(() => {
-    const crumbs: Crumb[] = [{ text: 'Runs', to: routes.runs() }]
+    const crumbs: Crumb[] = [{ text: 'Runs', to: routes.runs({ tab: 'task-runs' }) }]
 
     if (flowRunId.value) {
       crumbs.push({ text: flowRunName.value ?? '', to: routes.flowRun(flowRunId.value!) })

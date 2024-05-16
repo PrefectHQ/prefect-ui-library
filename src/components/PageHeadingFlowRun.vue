@@ -80,7 +80,7 @@
   // It doesn't seem like we should need to coalesce here but
   // the flow run model dictates the flow run name can be null
   const crumbs = computed(() => [
-    { text: 'Runs', to: routes.runs() },
+    { text: 'Runs', to: routes.runs({ tab: 'flow-runs' }) },
     { text: flowRun.value?.name ?? '' },
   ])
 
