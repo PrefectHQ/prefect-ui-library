@@ -1,5 +1,5 @@
 <template>
-  <p-label v-if="can.access.flowRunInfraOverrides" :message="jobVariablesError" :state="jobVariablesState">
+  <p-label :message="jobVariablesError" :state="jobVariablesState">
     <template #label>
       <span class="flow-run-job-variable-overrides-labeled-input__label">
         Job Variables (Optional)

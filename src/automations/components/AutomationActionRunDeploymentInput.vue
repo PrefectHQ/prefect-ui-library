@@ -13,7 +13,7 @@
         parameters from the current schema. Possibly a bug in the schemaV2 form.
       -->
       <AutomationActionRunDeploymentParameters :key="deploymentId" v-model:values="parameters" :deployment="deployment" />
-      <FlowRunJobVariableOverridesLabeledInput v-if="can.access.flowRunInfraOverrides" :model-value="jobVariables" @update:model-value="updateJobVariables" />
+      <FlowRunJobVariableOverridesLabeledInput :model-value="jobVariables" @update:model-value="updateJobVariables" />
     </template>
   </p-content>
 </template>
