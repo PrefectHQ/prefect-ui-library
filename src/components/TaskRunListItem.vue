@@ -4,7 +4,7 @@
       <template #name>
         <div class="task-run-list-item__breadcrumbs">
           <template v-if="showFlow && flow">
-            <p-link :to="routes.flow(flow.id)">
+            <p-link class="task-run-list-item__flow-name" :to="routes.flow(flow.id)">
               {{ flow.name }}
             </p-link>
             <p-icon icon="ChevronRightIcon" size="small" />
@@ -122,5 +122,10 @@
   flex
   items-center
   gap-1
+}
+
+.task-run-list-item__flow-name { @apply
+  text-default
+  font-semibold
 }
 </style>
