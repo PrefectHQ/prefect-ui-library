@@ -4,6 +4,7 @@ import merge from 'lodash.merge'
 import { ComputedRef, MaybeRef, Ref, computed, onScopeDispose, reactive, ref, toRef, watch } from 'vue'
 import { GLOBAL_API_LIMIT } from '@/compositions/useFilterPagination'
 import { UseSubscriptions, useSubscriptions } from '@/compositions/useSubscriptions'
+import { isDefined } from '@/utilities'
 import { repeat } from '@/utilities/arrays'
 
 type PaginationFilter = {
@@ -76,7 +77,7 @@ export function usePagination<
   const pages = computed(() => Math.ceil(total.value / getLimit()))
 
   const countSubscriptionParameters = computed(() => {
-    if (page.value) {
+    if (isDefined(page.value)) {
       const parameters = countParametersGetter()
 
       if (parameters) {
