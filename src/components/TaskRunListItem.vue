@@ -36,7 +36,7 @@
       </p-icon-text>
     </template>
 
-    <template v-if="!showFlowRun && visible" #relationships>
+    <template v-if="showFlowRun && visible" #relationships>
       <FlowRunDeployment v-if="flowRun?.deploymentId" :deployment-id="flowRun.deploymentId" />
       <FlowRunWorkPool v-if="flowRun?.workPoolName" :work-pool-name="flowRun.workPoolName" />
       <FlowRunWorkQueue
