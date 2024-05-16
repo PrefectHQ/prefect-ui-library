@@ -13,7 +13,7 @@
         parameters from the current schema. Possibly a bug in the schemaV2 form.
       -->
       <AutomationActionRunDeploymentParameters :key="deploymentId" v-model:values="parameters" :deployment="deployment" />
-      <FlowRunJobVariableOverridesLabeledInput v-if="can.access.flowRunInfraOverrides" :model-value="jobVariables" @update:model-value="updateJobVariables" />
+      <FlowRunJobVariableOverridesLabeledInput :model-value="jobVariables" @update:model-value="updateJobVariables" />
     </template>
   </p-content>
 </template>
@@ -25,7 +25,6 @@
   import { AutomationActionRunDeployment } from '@/automations/types/actions'
   import FlowRunJobVariableOverridesLabeledInput from '@/components/FlowRunJobVariableOverridesLabeledInput.vue'
   import { useWorkspaceApi } from '@/compositions'
-  import { useCan } from '@/compositions/useCan'
   import { Deployment } from '@/models/Deployment'
   import { SchemaValues } from '@/schemas/types/schemaValues'
   import { isString } from '@/utilities'
@@ -39,7 +38,6 @@
     (event: 'update:action', value: Partial<AutomationActionRunDeployment>): void,
   }>()
 
-  const can = useCan()
   const api = useWorkspaceApi()
   const parametersMap = new Map<string, SchemaValues>()
 
