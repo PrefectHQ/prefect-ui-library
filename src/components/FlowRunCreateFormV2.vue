@@ -124,7 +124,7 @@
   const workQueueName = ref<string | null>(props.deployment.workQueueName)
   const retries = ref<number | null>(null)
   const retryDelay = ref<number | null>(null)
-  const jobVariables = ref<string | undefined>(can.access.flowRunInfraOverrides ? '{}' : undefined)
+  const jobVariables = ref<string | undefined>('{}')
 
   const { errors, validate: validateParameters } = useSchemaValidation(schema, parameters)
 
