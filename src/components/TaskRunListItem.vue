@@ -2,8 +2,15 @@
   <StateListItem v-model:selected="model" v-bind="{ selectable, value, tags, stateType }" class="task-run-list-item">
     <template #name>
       <div class="task-run-list-item__breadcrumbs">
-        <template v-if="taskRun.flowRunId && !isFlowRunRoute && flowRun">
-          <p-link :to="routes.flowRun(taskRun.flowRunId)">
+        <template v-if="showFlow && flow">
+          <p-link :to="routes.flow(flow.id)">
+            {{ flow.name }}
+          </p-link>
+          <p-icon icon="ChevronRightIcon" size="small" />
+        </template>
+
+        <template v-if="showFlowRun && flowRun">
+          <p-link :to="routes.flowRun(flowRun.id)">
             {{ flowRun.name }}
           </p-link>
           <p-icon icon="ChevronRightIcon" size="small" />
@@ -28,16 +35,28 @@
         </template>
       </p-icon-text>
     </template>
+
+    <template v-if="!showFlowRun && visible" #relationships>
+      <FlowRunDeployment v-if="flowRun?.deploymentId" :deployment-id="flowRun.deploymentId" />
+      <FlowRunWorkPool v-if="flowRun?.workPoolName" :work-pool-name="flowRun.workPoolName" />
+      <FlowRunWorkQueue
+        v-if="flowRun?.workQueueName"
+        :work-queue-name="flowRun.workQueueName"
+        :work-pool-name="flowRun.workPoolName"
+        :flow-run-state="flowRun.stateType"
+      />
+    </template>
   </StateListItem>
 </template>
 
 <script lang="ts" setup>
   import { CheckboxModel } from '@prefecthq/prefect-design'
-  import { computed } from 'vue'
+  import { useIntersectionObserver } from '@prefecthq/vue-compositions'
+  import { computed, onMounted, ref } from 'vue'
   import { useRoute } from 'vue-router'
   import StateBadge from '@/components/StateBadge.vue'
   import StateListItem from '@/components/StateListItem.vue'
-  import { useFlowRun, useWorkspaceRoutes } from '@/compositions'
+  import { useFlow, useFlowRun, useWorkspaceRoutes } from '@/compositions'
   import { TaskRun } from '@/models/TaskRun'
   import { formatDateTimeNumeric } from '@/utilities/dates'
   import { secondsToApproximateString } from '@/utilities/seconds'
@@ -69,6 +88,28 @@
 
   const { flowRun } = useFlowRun(props.taskRun.flowRunId)
   const isFlowRunRoute = computed(() => route.name === routes.flowRun('').name)
+  const showFlowRun = computed(() => props.taskRun.flowRunId && !isFlowRunRoute.value)
+
+  const { flow } = useFlow(() => flowRun.value?.flowId)
+  const showFlow = computed(() => props.taskRun.flowRunId && !isFlowRunRoute.value)
+
+  const visible = ref(false)
+  const el = ref<HTMLDivElement>()
+
+  function intersect(entries: IntersectionObserverEntry[]): void {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        visible.value = true
+        disconnect()
+      }
+    })
+  }
+
+  const { observe, disconnect } = useIntersectionObserver(intersect)
+
+  onMounted(() => {
+    observe(el)
+  })
 </script>
 
 <style>
