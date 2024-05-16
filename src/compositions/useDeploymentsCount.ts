@@ -9,6 +9,7 @@ import { UseEntitySubscription } from '@/types/useEntitySubscription'
 
 export type UseDeploymentsCount = UseEntitySubscription<WorkspaceDeploymentsApi['getDeploymentsCount'], 'count'>
 
+/** @deprecated prefer to use the dedicated /ui/flows/count-deployments bulk endpoint since this is an expensive bespoke query */
 export function useDeploymentsCount(filter?: MaybeRefOrGetter<DeploymentsFilter>): UseDeploymentsCount {
   const api = useWorkspaceApi()
   const can = useCan()
