@@ -37,7 +37,7 @@
 
 
       <template #value="{ row }">
-        <div class="variables-table__value" :title="row.name">
+        <div class="variables-table__value">
           <p-code-highlight v-if="row.value.length < 64" :text="row.value" lang="json" inline />
           <VariableLink v-else :variable="row" :default-display="defaultDisplay" />
         </div>
