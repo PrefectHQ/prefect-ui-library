@@ -1,11 +1,9 @@
 <template>
   <div class="variable-link" />
-  <p-button v-if="defaultDisplay" size="sm" @click="openEditModal">
-    {{ defaultDisplay }}
+  <p-button v-if="variable.value.length > 64" size="sm" @click="openEditModal">
+    {{ valueOverflowText }}
   </p-button>
-  <p-link v-else @click="openEditModal">
-    {{ variable.name }}
-  </p-link>
+  <p-code-highlight v-else :text="variable.value" lang="json" inline />
   <VariableEditModal v-model:showModal="showEditModal" :variable="variable" @update="handleUpdate" />
 </template>
 
@@ -17,7 +15,7 @@
 
   defineProps<{
     variable: Variable,
-    defaultDisplay?: string,
+    valueOverflowText?: string,
   }>()
 
   const { showModal: showEditModal, open: openEditModal } = useShowModal()

@@ -31,15 +31,14 @@
     >
       <template #name="{ row }">
         <div class="variables-table__name" :title="row.name">
-          <VariableLink :variable="row" @update="handleUpdate" />
+          {{ row.name }}
         </div>
       </template>
 
 
       <template #value="{ row }">
         <div class="variables-table__value">
-          <p-code-highlight v-if="row.value.length < 64" :text="row.value" lang="json" inline />
-          <VariableLink v-else :variable="row" default-display="click to view" @update="handleUpdate" />
+          <VariableDisplayPreview :variable="row" value-overflow-text="click to view" @update="handleUpdate" />
         </div>
       </template>
 
@@ -87,7 +86,7 @@
   import merge from 'lodash.merge'
   import { computed, ref } from 'vue'
   import { VariablesDeleteButton, VariableMenu, ResultsCount, SearchInput, SelectedCount, VariableTagsInput, VariableEditModal } from '@/components'
-  import VariableLink from '@/components/VariableLink.vue'
+  import VariableDisplayPreview from '@/components/VariableDisplayPreview.vue'
   import { useCan, useVariablesFilter, useWorkspaceApi } from '@/compositions'
   import { localization } from '@/localization'
   import { VariablesFilter, Variable } from '@/models'
