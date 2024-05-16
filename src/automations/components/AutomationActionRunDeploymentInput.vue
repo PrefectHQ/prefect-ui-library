@@ -25,7 +25,6 @@
   import { AutomationActionRunDeployment } from '@/automations/types/actions'
   import FlowRunJobVariableOverridesLabeledInput from '@/components/FlowRunJobVariableOverridesLabeledInput.vue'
   import { useWorkspaceApi } from '@/compositions'
-  import { useCan } from '@/compositions/useCan'
   import { Deployment } from '@/models/Deployment'
   import { SchemaValues } from '@/schemas/types/schemaValues'
   import { isString } from '@/utilities'
@@ -39,7 +38,6 @@
     (event: 'update:action', value: Partial<AutomationActionRunDeployment>): void,
   }>()
 
-  const can = useCan()
   const api = useWorkspaceApi()
   const parametersMap = new Map<string, SchemaValues>()
 
