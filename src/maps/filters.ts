@@ -221,6 +221,11 @@ export const mapTaskRunFilter: MapFunction<TaskRunFilter, TaskRunFilterRequest> 
       ...toIsNull(source.startTimeNull),
     },
     subflow_runs: toExists(source.subFlowRunsExist),
+    flow_run_id: {
+      ...toOperator(source.flowRunIdOperator),
+      ...toAny(source.flowRunId),
+      ...toIsNull(source.flowRunIdNull),
+    },
   })
 }
 
