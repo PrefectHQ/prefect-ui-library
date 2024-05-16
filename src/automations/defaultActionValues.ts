@@ -58,6 +58,24 @@ Flow run URL: {{ flow_run|ui_url }}
 State message: {{ flow_run.state.message }}
 `.trim()
 
+const NOTIFICATION_BODY_CUSTOM = `
+Automation: {{ automation.name }}
+Description: {{ automation.description }}
+
+Event: {{ event.id }}
+Resource:
+{% for label, value in event.resource %}
+{{ label }}: {{ value }}
+{% endfor %}
+Related Resources:
+{% for related in event.related %}
+    Role: {{ related.role }}
+    {% for label, value in related %}
+    {{ label }}: {{ value }}
+    {% endfor %}
+{% endfor %}
+`.trim()
+
 export function getDefaultNotificationBody(template: AutomationTriggerTemplate): string {
   switch (template) {
     case 'deployment-status':
@@ -68,8 +86,11 @@ export function getDefaultNotificationBody(template: AutomationTriggerTemplate):
       return NOTIFICATION_BODY_WORK_POOL_STATUS
     case 'work-queue-status':
       return NOTIFICATION_BODY_WORK_QUEUE_STATUS
+    case 'custom':
+      return NOTIFICATION_BODY_CUSTOM
     default:
-      throw new Error(`Default notification body missing for template type: ${template}`)
+      const exhaustiveCheck: never = template
+      throw new Error(`Default notification body missing for template type: ${exhaustiveCheck}`)
   }
 }
 
@@ -83,7 +104,10 @@ export function getDefaultNotificationSubject(template: AutomationTriggerTemplat
       return 'Prefect work pool \'{{ work_pool.name }}\' has entered status \'{{ work_pool.status }}\''
     case 'work-queue-status':
       return 'Prefect work queue \'{{ work_queue.name }}\' has entered status \'{{ work_queue.status }}\''
+    case 'custom':
+      return 'A Prefect automation \'{{ automation.name }}\' was triggered'
     default:
-      throw new Error(`Default notification subject missing for template type: ${template}`)
+      const exchaustiveCheck: never = template
+      throw new Error(`Default notification subject missing for template type: ${exchaustiveCheck}`)
   }
 }
