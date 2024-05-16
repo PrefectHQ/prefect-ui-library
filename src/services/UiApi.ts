@@ -26,4 +26,11 @@ export class UiApi extends WorkspaceApi implements IUiApi {
 
     return mapper.map('UiTaskRunCountsByStateResponse', data, 'UiTaskRunCountsByState')
   }
+
+  public async getDeploymentsCountByFlow(flowIds: string[]): Promise<Record<string, number>> {
+    const request = { flowIds }
+    const { data } = await this.post<Record<string, number>>('/flows/count-deployments', request)
+
+    return data
+  }
 }
