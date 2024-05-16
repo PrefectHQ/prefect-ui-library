@@ -4,8 +4,8 @@ import merge from 'lodash.merge'
 import { ComputedRef, MaybeRef, Ref, computed, onScopeDispose, reactive, ref, toRef, watch } from 'vue'
 import { GLOBAL_API_LIMIT } from '@/compositions/useFilterPagination'
 import { UseSubscriptions, useSubscriptions } from '@/compositions/useSubscriptions'
-import { isDefined } from '@/utilities'
 import { repeat } from '@/utilities/arrays'
+import { isDefined } from '@/utilities/variables'
 
 type PaginationFilter = {
   limit?: number,
