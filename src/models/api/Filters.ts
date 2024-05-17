@@ -69,6 +69,7 @@ export type TaskRunFilterRequest = {
   state?: StateFilterRequest,
   start_time?: Before & After & IsNull,
   subflow_runs?: Exists,
+  flow_run_id?: OperatorRequest & Any & IsNull,
 }
 
 export type DeploymentFilterRequest = {
