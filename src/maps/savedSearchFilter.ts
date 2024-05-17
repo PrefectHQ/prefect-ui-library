@@ -58,8 +58,8 @@ export const mapSavedSearchFilterToTaskRunsFilter: MapFunction<SavedSearchFilter
       state: {
         name: stateNames,
       },
-      expectedStartTimeAfter: startDate,
-      expectedStartTimeBefore: endDate,
+      startTimeAfter: startDate,
+      startTimeBefore: endDate,
     },
   }
 }
