@@ -9,7 +9,8 @@ type WorkspaceRoutes = ReturnType<typeof createWorkspaceRoutes>
 type WorkspaceRouteKey = keyof WorkspaceRoutes
 type WorkspaceRoute = ReturnType<WorkspaceRoutes[WorkspaceRouteKey]>
 
-export type WorkspaceNamedRoute = WorkspaceRoute['name']
+export type DeprecatedNamedRoutes = 'workspace.flow-runs' | 'workspace.flow-runs.flow-run' | 'workspace.flow-runs.task-run'
+export type WorkspaceNamedRoute = WorkspaceRoute['name'] | DeprecatedNamedRoutes
 
 type WorkspaceRouteRecordParent = { name?: WorkspaceNamedRoute, children: WorkspaceRouteRecord[] }
 type WorkspaceRouteRecordChild = { name: WorkspaceNamedRoute }
@@ -54,7 +55,19 @@ export function createWorkspaceRouteRecords(components: Partial<WorkspaceRouteCo
     {
       path: 'flow-runs',
       name: 'workspace.flow-runs',
-      redirect: { name: 'workspace.runs' },
+      redirect: to => ({ name: 'workspace.runs', query: to.query, params: to.params }),
+      children: [
+        {
+          name: 'workspace.flow-runs.flow-run',
+          path: 'flow-run/:flowRunId',
+          redirect: to => ({ name: 'workspace.runs.flow-run', query: to.query, params: to.params }),
+        },
+        {
+          name: 'workspace.flow-runs.task-run',
+          path: 'task-run/:taskRunId',
+          redirect: to => ({ name: 'workspace.runs.task-run', query: to.query, params: to.params }),
+        },
+      ],
     },
     {
       path: 'flows',
