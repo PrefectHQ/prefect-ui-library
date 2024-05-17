@@ -41,7 +41,7 @@
       </template>
 
       <template #deployments="{ row }">
-        <DeploymentsCount :flow-id="row.id" class="flow-list__deployment-count" />
+        <DeploymentsCount :count="getDeploymentsCount(row.id)" :flow-id="row.id" class="flow-list__deployment-count" />
       </template>
 
       <template #activity="{ row }">
@@ -87,10 +87,10 @@
 
 <script lang="ts" setup>
   import { ColumnClassesMethod, TableColumn } from '@prefecthq/prefect-design'
-  import { NumberRouteParam, useDebouncedRef, useRouteQueryParam } from '@prefecthq/vue-compositions'
+  import { NumberRouteParam, useDebouncedRef, useRouteQueryParam, useSubscriptionWithDependencies } from '@prefecthq/vue-compositions'
   import { secondsInWeek } from 'date-fns/constants'
   import merge from 'lodash.merge'
-  import { ref } from 'vue'
+  import { computed, ref, toRef } from 'vue'
   import {
     FlowsDeleteButton,
     LastFlowRun,
@@ -102,10 +102,11 @@
     SelectedCount,
     FlowRunTagsInput
   } from '@/components'
-  import { useCan, useFlowsFilterFromRoute, useWorkspaceRoutes, useFlows } from '@/compositions'
+  import { useCan, useFlowsFilterFromRoute, useWorkspaceRoutes, useFlows, useWorkspaceApi } from '@/compositions'
   import { useComponent } from '@/compositions/useComponent'
   import { FlowsFilter } from '@/models/Filters'
   import { Flow } from '@/models/Flow'
+  import { Getter } from '@/types'
   import { flowSortOptions } from '@/types/SortOptionTypes'
   import { snakeCase } from '@/utilities'
   import { formatDateTimeNumeric } from '@/utilities/dates'
@@ -116,6 +117,7 @@
 
   const { FlowMenu } = useComponent()
 
+  const api = useWorkspaceApi()
   const can = useCan()
   const routes = useWorkspaceRoutes()
 
@@ -133,6 +135,21 @@
     page,
     interval: 30000,
   })
+
+  const deploymentsCountsSubscriptionGetter: Getter<[string[]] | null> = () => {
+    if (flows.value.length > 0) {
+      return [flows.value.map(flow => flow.id)]
+    }
+
+    return null
+  }
+  const deploymentsCountsSubscriptionArgs = toRef(deploymentsCountsSubscriptionGetter)
+  const deploymentsCountsSubscription = useSubscriptionWithDependencies(api.ui.getDeploymentsCountByFlow, deploymentsCountsSubscriptionArgs)
+  const deploymentsCounts = computed(() => deploymentsCountsSubscription.response)
+
+  function getDeploymentsCount(flowId: string): number {
+    return deploymentsCounts.value?.[flowId] ?? 0
+  }
 
   const columns: TableColumn<Flow>[] = [
     {

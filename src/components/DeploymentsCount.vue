@@ -11,21 +11,16 @@
 
 <script lang="ts" setup>
   import { toPluralString } from '@prefecthq/prefect-design'
-  import { useDeploymentsCount, useWorkspaceRoutes } from '@/compositions'
+  import { useWorkspaceRoutes } from '@/compositions'
   import { localization } from '@/localization'
   import { withQuery } from '@/utilities'
 
-  const props = defineProps<{
+  defineProps<{
+    count: number,
     flowId: string,
   }>()
 
   const routes = useWorkspaceRoutes()
-
-  const { count } = useDeploymentsCount(() => ({
-    flows: {
-      id: [props.flowId],
-    },
-  }))
 </script>
 
 <style>
