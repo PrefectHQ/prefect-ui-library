@@ -1,17 +1,17 @@
 import { MaybeReadonly } from '@prefecthq/prefect-design'
-import { MaybeRefOrGetter, toValue } from 'vue'
+import { UseSubscription, useSubscriptionWithDependencies } from '@prefecthq/vue-compositions'
+import { ComputedRef, MaybeRefOrGetter, computed, toRef, toValue } from 'vue'
 import { useCan } from '@/compositions/useCan'
-import { PaginationOptions, UsePaginationEntity, usePagination } from '@/compositions/usePagination'
+import { PaginationOptions } from '@/compositions/usePagination'
 import { useWorkspaceApi } from '@/compositions/useWorkspaceApi'
-import { TaskRunsFilter } from '@/models'
+import { TaskRun, TaskRunsFilter } from '@/models'
 import { WorkspaceTaskRunsApi } from '@/services'
 import { Getter } from '@/types/reactivity'
 
-export type UseTaskRuns = UsePaginationEntity<
-WorkspaceTaskRunsApi['getTaskRuns'],
-WorkspaceTaskRunsApi['getTaskRunsCount'],
-'taskRuns'
->
+export type UseTaskRuns = {
+  subscription: UseSubscription<WorkspaceTaskRunsApi['getTaskRuns']>,
+  taskRuns: ComputedRef<TaskRun[]>,
+}
 
 export function useTaskRuns(filter?: MaybeRefOrGetter<MaybeReadonly<TaskRunsFilter> | null | undefined>, options?: PaginationOptions): UseTaskRuns {
   const api = useWorkspaceApi()
@@ -31,16 +31,12 @@ export function useTaskRuns(filter?: MaybeRefOrGetter<MaybeReadonly<TaskRunsFilt
     return [value]
   }
 
-  const pagination = usePagination({
-    fetchMethod: api.taskRuns.getTaskRuns,
-    fetchParameters: parameters,
-    countMethod: api.taskRuns.getTaskRunsCount,
-    countParameters: parameters,
-    options,
-  })
+  const parametersRef = toRef(parameters)
+  const subscription = useSubscriptionWithDependencies(api.taskRuns.getTaskRuns, parametersRef, options)
+  const taskRuns = computed(() => subscription.response ?? [])
 
   return {
-    ...pagination,
-    taskRuns: pagination.results,
+    subscription,
+    taskRuns,
   }
 }

@@ -34,4 +34,5 @@ export default {
       },
     },
   },
+  presets: [],
 } satisfies Config

@@ -1,12 +1,12 @@
 <template>
-  <Transition name="flow-runs-delete-button-transition">
+  <Transition name="task-runs-delete-button-transition">
     <p-button v-if="selected.length > 0" icon="TrashIcon" small @click="open" />
   </Transition>
   <ConfirmDeleteModal
     v-model:showModal="showModal"
-    name="selected flow runs"
-    label="Flow runs"
-    @delete="() => deleteFlowRuns(selected)"
+    name="selected task runs"
+    label="Task runs"
+    @delete="() => deleteTaskRuns(selected)"
   />
 </template>
 
@@ -30,37 +30,37 @@
 
   const api = useWorkspaceApi()
 
-  const deleteFlowRuns = async (flowRuns: string[]): Promise<void> => {
+  const deleteTaskRuns = async (taskRunIds: string[]): Promise<void> => {
     const toastMessage = computed(() => {
-      if (flowRuns.length === 1) {
-        return 'Flow run deleted'
+      if (taskRunIds.length === 1) {
+        return 'Task run deleted'
       }
-      return `${flowRuns.length} flow runs deleted`
+      return `${taskRunIds.length} flow runs deleted`
     })
 
     close()
 
     try {
-      const deleteFlowRuns = flowRuns.map(api.flowRuns.deleteFlowRun)
-      await Promise.all(deleteFlowRuns)
+      const deleteTaskRuns = taskRunIds.map(api.taskRuns.deleteTaskRun)
+      await Promise.all(deleteTaskRuns)
 
       showToast(toastMessage, 'success')
       emit('delete')
     } catch (error) {
-      const message = getApiErrorMessage(error, localization.error.delete('Flow Run'))
+      const message = getApiErrorMessage(error, localization.error.delete('Task run'))
       showToast(message, 'error')
     }
   }
 </script>
 
 <style>
-.flow-runs-delete-button-transition-enter-active,
-.flow-runs-delete-button-transition-leave-active {
+.task-runs-delete-button-transition-enter-active,
+.task-runs-delete-button-transition-leave-active {
   transition: opacity 0.25s ease;
 }
 
-.flow-runs-delete-button-transition-enter-from,
-.flow-runs-delete-button-transition-leave-to {
+.task-runs-delete-button-transition-enter-from,
+.task-runs-delete-button-transition-leave-to {
   opacity: 0;
 }
 </style>

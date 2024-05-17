@@ -5,6 +5,7 @@ import { ComputedRef, MaybeRef, Ref, computed, onScopeDispose, reactive, ref, to
 import { GLOBAL_API_LIMIT } from '@/compositions/useFilterPagination'
 import { UseSubscriptions, useSubscriptions } from '@/compositions/useSubscriptions'
 import { repeat } from '@/utilities/arrays'
+import { isDefined } from '@/utilities/variables'
 
 type PaginationFilter = {
   limit?: number,
@@ -76,7 +77,7 @@ export function usePagination<
   const pages = computed(() => Math.ceil(total.value / getLimit()))
 
   const countSubscriptionParameters = computed(() => {
-    if (page.value) {
+    if (isDefined(page.value)) {
       const parameters = countParametersGetter()
 
       if (parameters) {
