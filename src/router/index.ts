@@ -52,6 +52,11 @@ export function createWorkspaceRouteRecords(components: Partial<WorkspaceRouteCo
       ],
     },
     {
+      path: 'flow-runs',
+      name: 'workspace.flow-runs',
+      redirect: { name: 'workspace.runs' },
+    },
+    {
       path: 'flows',
       meta: {
         can: 'read:flow',
