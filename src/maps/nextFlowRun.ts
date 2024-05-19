@@ -7,6 +7,7 @@ export const mapNextFlowRunResponseToNextFlowRun: MapFunction<NextFlowRunRespons
   return {
     id: source.id,
     flowId: source.flow_id,
+    name: source.name,
     stateName: source.state_name,
     stateType: this.map('ServerStateType', source.state_type, 'StateType'),
     nextScheduledStartTime: this.map('string', source.next_scheduled_start_time, 'Date'),

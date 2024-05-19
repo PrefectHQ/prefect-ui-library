@@ -53,7 +53,7 @@ export class UiApi extends WorkspaceApi implements IUiApi {
     return runs
   }
 
-  public getNextRun(flowId: string): Promise<NextFlowRun> {
+  public getNextRunByFlow(flowId: string): Promise<NextFlowRun> {
     return this.nextRunsBatcher.batch(flowId)
   }
 }
