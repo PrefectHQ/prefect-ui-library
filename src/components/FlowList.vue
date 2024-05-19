@@ -121,7 +121,7 @@
   const can = useCan()
   const routes = useWorkspaceRoutes()
 
-  const { value: limit } = useLocalStorage('list-limit', 10)
+  const { value: limit } = useLocalStorage('flow-list-limit', 10)
   const flowNameLike = ref<string>()
   const flowNameLikeDebounced = useDebouncedRef(flowNameLike, 1200)
   const { filter, clear, isCustomFilter } = useFlowsFilterFromRoute(merge({}, props.filter, {
