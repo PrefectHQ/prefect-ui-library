@@ -55,7 +55,7 @@
       </template>
 
       <template #empty-state>
-        <PEmptyResults>
+        <PEmptyResults v-if="variablesSubscription.executed">
           <template #message>
             {{ localization.info.noVariables }}
           </template>
@@ -63,6 +63,11 @@
             <p-button size="sm" @click="clear">
               Clear Filters
             </p-button>
+          </template>
+        </PEmptyResults>
+        <PEmptyResults v-else>
+          <template #message>
+            <p-loading-icon />
           </template>
         </PEmptyResults>
       </template>
