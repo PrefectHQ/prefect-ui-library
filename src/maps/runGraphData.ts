@@ -23,11 +23,22 @@ export const mapRunGraphNodeResponse: MapFunction<RunGraphNodeResponse, RunGraph
 }
 
 export const mapRunGraphArtifactResponse: MapFunction<RunGraphArtifactResponse, RunGraphArtifact> = function(source) {
+  const inputType = isKnownArtifactType(source.type) ? source.type : 'unknown'
+  if (inputType === 'progress') {
+    return {
+      id: source.id,
+      created: this.map('string', source.created, 'Date'),
+      key: source.key,
+      type: 'progress',
+      data: source.data ?? 0,
+    }
+  }
+
   return {
     id: source.id,
     created: this.map('string', source.created, 'Date'),
     key: source.key,
-    type: isKnownArtifactType(source.type) ? source.type : 'unknown',
+    type: inputType,
   }
 }
 
