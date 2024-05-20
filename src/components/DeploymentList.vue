@@ -114,13 +114,13 @@
       </template>
     </p-table>
 
-    <p-pager v-if="pages > 1" v-model:page="page" :pages="pages" />
+    <p-pager v-if="pages > 1" v-model:limit="limit" v-model:page="page" :pages="pages" />
   </p-content>
 </template>
 
 <script lang="ts" setup>
   import { TableColumn, media } from '@prefecthq/prefect-design'
-  import { NumberRouteParam, useDebouncedRef, useRouteQueryParam } from '@prefecthq/vue-compositions'
+  import { NumberRouteParam, useDebouncedRef, useLocalStorage, useRouteQueryParam } from '@prefecthq/vue-compositions'
   import { secondsInWeek } from 'date-fns/constants'
   import { snakeCase } from 'lodash'
   import merge from 'lodash.merge'
@@ -160,12 +160,13 @@
 
   const nameLike = ref<string>()
   const nameLikeDebounced = useDebouncedRef(nameLike, 1200)
+  const { value: limit } = useLocalStorage('deployment-list-limit', 10)
 
   const { filter, clear, isCustomFilter } = useDeploymentsFilterFromRoute(merge({}, props.filter, {
     deployments: {
       flowOrDeploymentNameLike: nameLikeDebounced,
     },
-    limit: 50,
+    limit,
   }), props.prefix)
 
   const page = useRouteQueryParam('page', NumberRouteParam, 1)
