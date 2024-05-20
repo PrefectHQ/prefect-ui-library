@@ -1,6 +1,6 @@
 <template>
-  <p-card>
-    <div class="work-pool-card">
+  <p-card class="work-pool-card">
+    <p-content secondary>
       <div class="work-pool-card__header">
         <div class="work-pool-card__heading">
           <div class="work-pool-card__name">
@@ -38,7 +38,7 @@
           {{ lastPolled }}
         </div>
       </div>
-    </div>
+    </p-content>
   </p-card>
 </template>
 
