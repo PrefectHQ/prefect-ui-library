@@ -70,11 +70,6 @@
 </script>
 
 <style>
-.work-pool-card { @apply
-  grid
-  gap-2
-}
-
 .work-pool-card__header { @apply
   flex
   gap-2
