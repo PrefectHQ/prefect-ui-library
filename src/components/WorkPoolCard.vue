@@ -1,42 +1,44 @@
 <template>
   <p-card class="work-pool-card">
-    <div class="work-pool-card__header">
-      <div class="work-pool-card__heading">
-        <div class="work-pool-card__name">
-          <p-link class="work-pool-card__name" :to="routes.workPool(workPool.name)">
-            {{ workPool.name }}
-          </p-link>
-          <WorkPoolStatusIcon :work-pool="workPool" />
+    <p-content secondary>
+      <div class="work-pool-card__header">
+        <div class="work-pool-card__heading">
+          <div class="work-pool-card__name">
+            <p-link class="work-pool-card__name" :to="routes.workPool(workPool.name)">
+              {{ workPool.name }}
+            </p-link>
+            <WorkPoolStatusIcon :work-pool="workPool" />
+          </div>
+          <ProcessTypeBadge :type-label="workPool.typeLabel" />
+          <WorkersLateIndicator v-if="!media.sm" :work-pool-name="workPool.name" />
         </div>
-        <ProcessTypeBadge :type-label="workPool.typeLabel" />
-        <WorkersLateIndicator v-if="!media.sm" :work-pool-name="workPool.name" />
+
+        <div class="work-pool-card__header-actions">
+          <WorkersLateIndicator v-if="media.sm" :work-pool-name="workPool.name" />
+          <WorkPoolToggle :work-pool="workPool" @update="emit('update')" />
+          <WorkPoolMenu :work-pool="workPool" @delete="emit('update')" />
+        </div>
       </div>
 
-      <div class="work-pool-card__header-actions">
-        <WorkersLateIndicator v-if="media.sm" :work-pool-name="workPool.name" />
-        <WorkPoolToggle :work-pool="workPool" @update="emit('update')" />
-        <WorkPoolMenu :work-pool="workPool" @delete="emit('update')" />
+      <template v-if="workPool.description">
+        <p class="work-pool-card__description">
+          {{ workPool.description }}
+        </p>
+      </template>
+
+      <div class="work-pool-card__details">
+        <div>
+          <span class="work-pool-card__details-label">Concurrency Limit</span>
+          {{ workPool.concurrencyLimit ? workPool.concurrencyLimit : 'Unlimited' }}
+        </div>
+
+
+        <div v-if="lastPolled">
+          <span class="work-pool-card__details-label">Last Polled</span>
+          {{ lastPolled }}
+        </div>
       </div>
-    </div>
-
-    <template v-if="workPool.description">
-      <p class="work-pool-card__description">
-        {{ workPool.description }}
-      </p>
-    </template>
-
-    <div class="work-pool-card__details">
-      <div>
-        <span class="work-pool-card__details-label">Concurrency Limit</span>
-        {{ workPool.concurrencyLimit ? workPool.concurrencyLimit : 'Unlimited' }}
-      </div>
-
-
-      <div v-if="lastPolled">
-        <span class="work-pool-card__details-label">Last Polled</span>
-        {{ lastPolled }}
-      </div>
-    </div>
+    </p-content>
   </p-card>
 </template>
 
