@@ -47,7 +47,7 @@
 
       <template #deployment="{ row }">
         <div class="deployment-list__deployment">
-          <router-link :to="routes.deployment(row.id)" class="deployment-list__name">
+          <router-link :to="routes.deployment(row.id)" class="deployment-list__name" :title="row.name">
             {{ row.name }}
           </router-link>
 
