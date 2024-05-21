@@ -43,6 +43,7 @@
   const props = defineProps<{
     resource: WorkspaceEventResource,
   }>()
+
   const { resource } = toRefs(props)
   const { role, resourceId } = useWorkspaceEventResource(resource)
   const relatedResources = useRouteQueryParam('related-resources', [])

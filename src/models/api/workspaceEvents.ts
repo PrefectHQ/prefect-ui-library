@@ -1,4 +1,4 @@
-import { WorkspaceEventResource, WorkspaceRelatedResource } from '@/models/workspaceEvent'
+import { WorkspaceEventResource, WorkspaceEventRelatedResource } from '@/models/workspaceEvent'
 
 export type WorkspaceEventResponse = {
   id: string,
@@ -7,7 +7,7 @@ export type WorkspaceEventResponse = {
   occurred: string,
   payload: unknown,
   received: string,
-  related: WorkspaceRelatedResource[],
+  related: WorkspaceEventRelatedResource[],
   resource: WorkspaceEventResource,
   workspace: string | null,
 }
