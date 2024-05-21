@@ -111,7 +111,6 @@
   const { filter, isCustomFilter, clear } = useVariablesFilter(merge({}, props.filter, {
     variables: {
       nameLike: variableLikeDebounced,
-      valueLike: variableLikeDebounced,
     },
     offset,
   }))
