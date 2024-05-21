@@ -18,14 +18,16 @@
   import { isDefined } from '@prefecthq/prefect-design'
   import { useSubscription } from '@prefecthq/vue-compositions'
   import { computed, ref, toRefs } from 'vue'
-  import ResourceLink from '@/components/ResourceLink.vue'
+  import { useComponent } from '@/compositions/useComponent'
   import { useWorkspaceApi } from '@/compositions/useWorkspaceApi'
   import { useWorkspaceEventResource } from '@/compositions/useWorkspaceEventResource'
-  import { WorkspaceEventResource } from '@/models/api/workspaceEvents'
+  import { WorkspaceEventResource } from '@/models/workspaceEvent'
 
   const props = defineProps<{
     resource: WorkspaceEventResource,
   }>()
+
+  const { ResourceLink } = useComponent()
 
   const api = useWorkspaceApi()
   const { resource } = toRefs(props)

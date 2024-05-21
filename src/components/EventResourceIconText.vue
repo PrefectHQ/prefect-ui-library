@@ -30,13 +30,12 @@
   import EventResourceFlowIconText from '@/components/EventResourceFlowIconText.vue'
   import EventResourceFlowRunIconText from '@/components/EventResourceFlowRunIconText.vue'
   import EventResourceTaskRunIconText from '@/components/EventResourceTaskRunIconText.vue'
-  import EventResourceWebhookIconText from '@/components/EventResourceWebhookIconText.vue'
   import EventResourceWorkPoolIconText from '@/components/EventResourceWorkPoolIconText.vue'
   import EventResourceWorkQueueIconText from '@/components/EventResourceWorkQueueIconText.vue'
   import { useWorkspaceEventResource } from '@/compositions/useWorkspaceEventResource'
   import { useWorkspaceRoutes } from '@/compositions/useWorkspaceRoutes'
   import { localization } from '@/localization'
-  import { WorkspaceEventResource } from '@/models/api/workspaceEvents'
+  import { WorkspaceEventResource } from '@/models/workspaceEvent'
   import { toggle } from '@/utilities/arrays'
   import { isRecord } from '@/utilities/object'
   import { withQuery } from '@/utilities/routes'
@@ -66,8 +65,6 @@
         return EventResourceTaskRunIconText
       case 'block-document':
         return EventResourceBlockDocumentIconText
-      case 'webhook':
-        return EventResourceWebhookIconText
       case 'concurrency-limit':
         return EventResourceConcurrencyLimitIconText
       default:

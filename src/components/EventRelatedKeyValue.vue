@@ -17,7 +17,7 @@
 <script lang="ts" setup>
   import { computed } from 'vue'
   import EventRelatedTags from '@/components/EventRelatedTags.vue'
-  import EventResourceIconText from '@/components/EventResourceIconText.vue'
+  import { useComponent } from '@/compositions/useComponent'
   import { WorkspaceEvent } from '@/models/workspaceEvent'
   import { separate } from '@/utilities/arrays'
   import { getResourceIdParts } from '@/utilities/events'
@@ -26,6 +26,8 @@
     event: WorkspaceEvent,
     alternate?: boolean,
   }>()
+
+  const { EventResourceIconText } = useComponent()
 
   const hasRelatedResources = computed(() => props.event.related.length > 0 ? true : null)
   const classes = computed(() => ({

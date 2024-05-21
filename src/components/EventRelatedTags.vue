@@ -23,7 +23,7 @@
   import { RouteLocationRaw, useRoute } from 'vue-router'
   import { useWorkspaceRoutes } from '@/compositions/useWorkspaceRoutes'
   import { localization } from '@/localization'
-  import { WorkspaceEventResource } from '@/models/api/workspaceEvents'
+  import { WorkspaceEventResource } from '@/models/workspaceEvent'
   import { toggle } from '@/utilities/arrays'
   import { withQuery } from '@/utilities/routes'
 

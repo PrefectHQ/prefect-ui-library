@@ -9,7 +9,7 @@
   import { RouteLocationRaw } from 'vue-router'
   import { useWorkspaceEventResource } from '@/compositions/useWorkspaceEventResource'
   import { useWorkspaceRoutes } from '@/compositions/useWorkspaceRoutes'
-  import { WorkspaceEventResource } from '@/models/api/workspaceEvents'
+  import { WorkspaceEventResource } from '@/models/workspaceEvent'
 
   const props = defineProps<{
     resource: WorkspaceEventResource,
@@ -40,8 +40,6 @@
         return routes.taskRun(id.value)
       case 'block-document':
         return routes.block(id.value)
-      case 'webhook':
-        return routes.webhook(id.value)
       case 'concurrency-limit':
         return routes.concurrencyLimit(id.value)
       case 'artifact-collection':

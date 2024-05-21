@@ -13,7 +13,7 @@
   import { computed, toRefs } from 'vue'
   import { useBlockDocument } from '@/compositions/useBlockDocument'
   import { useWorkspaceEventResource } from '@/compositions/useWorkspaceEventResource'
-  import { WorkspaceEventResource } from '@/models/api/workspaceEvents'
+  import { WorkspaceEventResource } from '@/models/workspaceEvent'
 
   const props = defineProps<{
     resource: WorkspaceEventResource,

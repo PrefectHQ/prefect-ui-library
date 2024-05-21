@@ -1,6 +1,5 @@
 import { computed, ComputedRef, ref, MaybeRef, MaybeRefOrGetter, toValue } from 'vue'
-import { WorkspaceEventResource } from '@/models/api/workspaceEvents'
-import { PrefectResourceRole, WorkspaceEvent } from '@/models/workspaceEvent'
+import { WorkspaceEventResource, PrefectResourceRole, WorkspaceEvent } from '@/models/workspaceEvent'
 import { getResourceIdParts } from '@/utilities/events'
 
 export type UseEventResource = {

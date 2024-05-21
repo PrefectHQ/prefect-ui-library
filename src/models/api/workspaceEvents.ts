@@ -1,14 +1,4 @@
-export type WorkspaceEventResource = {
-  'prefect.resource.id': string,
-  'prefect.resource.role'?: string,
-  'prefect.resource.name'?: string,
-  'prefect.name'?: string,
-  'prefect-cloud.name'?: string,
-} & Record<string, string | undefined>
-
-export type WorkspaceRelatedResource = WorkspaceEventResource & {
-  'prefect.resource.role': string,
-}
+import { WorkspaceEventResource, WorkspaceRelatedResource } from '@/models/workspaceEvent'
 
 export type WorkspaceEventResponse = {
   id: string,

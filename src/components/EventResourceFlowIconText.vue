@@ -17,14 +17,16 @@
 <script lang="ts" setup>
   import { isDefined } from '@prefecthq/prefect-design'
   import { computed, toRefs } from 'vue'
-  import ResourceLink from '@/components/ResourceLink.vue'
+  import { useComponent } from '@/compositions/useComponent'
   import { useFlow } from '@/compositions/useFlow'
   import { useWorkspaceEventResource } from '@/compositions/useWorkspaceEventResource'
-  import { WorkspaceEventResource } from '@/models/api/workspaceEvents'
+  import { WorkspaceEventResource } from '@/models/workspaceEvent'
 
   const props = defineProps<{
     resource: WorkspaceEventResource,
   }>()
+
+  const { ResourceLink } = useComponent()
 
   const { resource } = toRefs(props)
   const { id, name, resourceId } = useWorkspaceEventResource(resource)

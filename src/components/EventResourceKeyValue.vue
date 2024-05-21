@@ -7,11 +7,13 @@
 </template>
 
 <script lang="ts" setup>
-  import EventResourceIconText from '@/components/EventResourceIconText.vue'
+  import { useComponent } from '@/compositions/useComponent'
   import { WorkspaceEvent } from '@/models/workspaceEvent'
 
   defineProps<{
     event: WorkspaceEvent,
     alternate?: boolean,
   }>()
+
+  const { EventResourceIconText } = useComponent()
 </script>

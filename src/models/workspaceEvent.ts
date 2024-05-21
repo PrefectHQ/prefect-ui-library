@@ -1,5 +1,4 @@
 import { capitalize } from 'vue'
-import { WorkspaceRelatedResource, WorkspaceEventResource } from '@/models/api/workspaceEvents'
 import { formatDate, formatDateTimeNumeric, formatTimeNumeric } from '@/utilities/dates'
 import { removePrefectEventLabelPrefix } from '@/utilities/events'
 import { createTuple } from '@/utilities/tuples'
@@ -28,6 +27,18 @@ export type PrefectResourceRole = PrefectEventPrefixes extends `${string}.${infe
 
 export function isPrefectResourceRole(value: unknown): value is PrefectResourceRole {
   return prefectResourceRoles.includes(value as PrefectResourceRole)
+}
+
+export type WorkspaceEventResource = {
+  'prefect.resource.id': string,
+  'prefect.resource.role'?: string,
+  'prefect.resource.name'?: string,
+  'prefect.name'?: string,
+  'prefect-cloud.name'?: string,
+} & Record<string, string | undefined>
+
+export type WorkspaceRelatedResource = WorkspaceEventResource & {
+  'prefect.resource.role': string,
 }
 
 export type IWorkspaceEvent = {
