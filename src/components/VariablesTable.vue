@@ -55,7 +55,7 @@
       </template>
 
       <template #empty-state>
-        <PEmptyResults>
+        <PEmptyResults v-if="variablesSubscription.executed">
           <template #message>
             {{ localization.info.noVariables }}
           </template>
@@ -65,16 +65,21 @@
             </p-button>
           </template>
         </PEmptyResults>
+        <PEmptyResults v-else>
+          <template #message>
+            <p-loading-icon />
+          </template>
+        </PEmptyResults>
       </template>
     </p-table>
 
-    <p-pager v-if="variables.length" v-model:page="page" :pages="pages" />
+    <p-pager v-if="variables.length" v-model:limit="limit" v-model:page="page" :pages="pages" />
   </p-content>
 </template>
 
 <script lang="ts" setup>
   import { PTable, PEmptyResults, TableColumn, ClassValue } from '@prefecthq/prefect-design'
-  import { useDebouncedRef, useSubscription } from '@prefecthq/vue-compositions'
+  import { useDebouncedRef, useLocalStorage, useSubscription } from '@prefecthq/vue-compositions'
   import merge from 'lodash.merge'
   import { computed, ref } from 'vue'
   import { VariablesDeleteButton, VariableMenu, ResultsCount, SearchInput, SelectedCount, VariableTagsInput } from '@/components'
@@ -101,6 +106,7 @@
     return (page.value - 1) * DEFAULT_LIMIT
   })
   const pages = computed(() => Math.ceil((variablesCount.value ?? DEFAULT_LIMIT) / DEFAULT_LIMIT))
+  const { value: limit } = useLocalStorage('variables-table-limit', 10)
 
   const { filter, isCustomFilter, clear } = useVariablesFilter(merge({}, props.filter, {
     variables: {

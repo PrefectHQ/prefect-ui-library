@@ -52,19 +52,19 @@
         </PEmptyResults>
         <PEmptyResults v-else>
           <template #message>
-            Loading...
+            <p-loading-icon />
           </template>
         </PEmptyResults>
       </template>
     </p-table>
 
-    <p-pager v-if="pages > 1" v-model:page="page" :pages="pages" />
+    <p-pager v-if="pages > 1" v-model:limit="limit" v-model:page="page" :pages="pages" />
   </div>
 </template>
 
 <script lang="ts" setup>
   import { media, TableColumn, PEmptyResults } from '@prefecthq/prefect-design'
-  import { NumberRouteParam, useDebouncedRef, useRouteQueryParam } from '@prefecthq/vue-compositions'
+  import { NumberRouteParam, useDebouncedRef, useLocalStorage, useRouteQueryParam } from '@prefecthq/vue-compositions'
   import merge from 'lodash.merge'
   import { computed, ref, ComputedRef } from 'vue'
   import BlockSchemaCapabilities from '@/components/BlockSchemaCapabilities.vue'
@@ -113,7 +113,9 @@
   const searchTerm = ref('')
   const searchTermDebounced = useDebouncedRef(searchTerm, 500)
 
-  const { filter } = useBlockDocumentsFilterFromRoute({
+  const { value: limit } = useLocalStorage('block-documents-table-limit', 10)
+
+  const { filter: routeFilter } = useBlockDocumentsFilterFromRoute({
     blockSchemas: {
       blockCapabilities: capabilities,
     },
@@ -123,11 +125,11 @@
     blockTypes: {
       slug: blockTypes,
     },
-    limit: 50,
+    limit,
     sort: 'BLOCK_TYPE_AND_NAME_ASC',
   })
 
-  const { blockDocuments, total, pages, subscriptions } = useBlockDocuments(() => merge({}, props.filter, filter), {
+  const { blockDocuments, total, pages, subscriptions } = useBlockDocuments(() => merge({}, props.filter, routeFilter), {
     page,
   })
 

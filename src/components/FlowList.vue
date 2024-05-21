@@ -75,19 +75,19 @@
         </PEmptyResults>
         <PEmptyResults v-else>
           <template #message>
-            Loading...
+            <p-loading-icon />
           </template>
         </PEmptyResults>
       </template>
     </p-table>
 
-    <p-pager v-if="pages > 1" v-model:page="page" :pages="pages" />
+    <p-pager v-if="pages > 1" v-model:page="page" v-model:limit="limit" :pages="pages" />
   </p-content>
 </template>
 
 <script lang="ts" setup>
   import { ColumnClassesMethod, TableColumn } from '@prefecthq/prefect-design'
-  import { NumberRouteParam, useDebouncedRef, useRouteQueryParam, useSubscriptionWithDependencies } from '@prefecthq/vue-compositions'
+  import { NumberRouteParam, useDebouncedRef, useLocalStorage, useRouteQueryParam, useSubscriptionWithDependencies } from '@prefecthq/vue-compositions'
   import { secondsInWeek } from 'date-fns/constants'
   import merge from 'lodash.merge'
   import { computed, ref, toRef } from 'vue'
@@ -121,13 +121,14 @@
   const can = useCan()
   const routes = useWorkspaceRoutes()
 
+  const { value: limit } = useLocalStorage('flow-list-limit', 10)
   const flowNameLike = ref<string>()
   const flowNameLikeDebounced = useDebouncedRef(flowNameLike, 1200)
   const { filter, clear, isCustomFilter } = useFlowsFilterFromRoute(merge({}, props.filter, {
     flows: {
       nameLike: flowNameLikeDebounced,
     },
-    limit: 50,
+    limit,
   }))
 
   const page = useRouteQueryParam('page', NumberRouteParam, 1)
