@@ -1,5 +1,8 @@
+import { AutomationAction } from '@/automations/types/actions'
 import { CreateAutomationQuery } from '@/automations/types/createAutomationQuery'
+import { WorkspaceEvent } from '@/models'
 import { mapper } from '@/services/Mapper'
+import { formatRouteDate } from '@/utilities/dates'
 
 type CreateWorkspaceRoutesConfig = {
   accountId: string,
@@ -21,6 +24,19 @@ export function createWorkspaceRoutes(config?: CreateWorkspaceRoutesConfig) {
       } as const
     },
     automationEdit: (automationId: string) => ({ name: 'workspace.automation.edit', params: { ...config, automationId } }) as const,
+    automateEvent: (event: WorkspaceEvent, actions?: AutomationAction[]) => {
+      const query = mapper.map('CreateAutomationQuery', { from: 'event', event, actions }, 'LocationQuery')
+
+      return {
+        name: 'workspace.automation.create',
+        query,
+      } as const
+    },
+    events: () => ({ name: 'workspace.events' }) as const,
+    event: (eventId: string, eventDate: Date) => {
+
+      return { name: 'workspace.event', params: { eventId, eventDate: formatRouteDate(eventDate) } } as const
+    },
     artifact: (artifactId: string) => ({ name: 'workspace.artifacts.artifact', params: { artifactId, ...config } }) as const,
     artifactKey: (artifactKey: string) => ({ name: 'workspace.artifacts.artifact.key', params: { artifactKey, ...config } }) as const,
     artifacts: () => ({ name: 'workspace.artifacts', params: { ...config } }) as const,
