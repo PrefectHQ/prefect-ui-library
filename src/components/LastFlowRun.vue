@@ -1,5 +1,5 @@
 <template>
-  <FlowRunName :flow-run="flowRun" />
+  <FlowRunName v-if="flowRun" :flow-run-id="flowRun.id" :flow-run-name="flowRun.name" :state-type="flowRun.stateType" :state-name="flowRun?.stateName" />
 </template>
 
 <script lang="ts" setup>

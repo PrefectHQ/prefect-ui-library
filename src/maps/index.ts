@@ -44,6 +44,7 @@ import { mapRunHistoryToFlowRunHistoryResponse, mapFlowRunHistoryResponseToRunHi
 import { mapFlowStatsFilterToFlowRunsFilter, mapFlowStatsFilterToTaskRunsFilter } from '@/maps/flowStatsFilter'
 import { mapLogToLogResponse, mapLogResponseToLog } from '@/maps/logs'
 import { mapFlowRunInputKeysetResponseToFlowRunInputKeyset, mapFlowRunInputKeysetToFlowRunInputKeysetResponse } from '@/maps/mapFlowRunInputKeysetResponseToFlowRunInputKeyset'
+import { mapNextFlowRunResponseToNextFlowRun } from '@/maps/nextFlowRun'
 import { mapNotificationResponseToNotification } from '@/maps/notification'
 import { mapNotificationCreateToNotificationCreateRequest } from '@/maps/notificationCreate'
 import { mapNotificationUpdateToNotificationUpdateRequest } from '@/maps/notificationUpdate'
@@ -67,6 +68,7 @@ import { mapTaskInputToTaskInputResponse, mapTaskInputResponseToTaskInput } from
 import { mapTaskRunToTaskRunResponse, mapTaskRunResponseToTaskRun } from '@/maps/taskRun'
 import { mapTaskRunHistoryResponseToTaskRunHistory, mapTaskRunHistoryStateResponseToTaskRunHistoryState, mapTaskRunsFilterToTaskRunsHistoryFilter } from '@/maps/taskRunHistory'
 import { mapUiFlowRunHistoryResponseToUiFlowRunHistory } from '@/maps/uiFlowRunHistory'
+import { mapUiNextFlowRunByFlowResponseToUiNextFlowRunByFlow } from '@/maps/uiNextFlowRunByFlow'
 import { mapUiTaskRunCountsByStateResponseToUiTaskRunCountsByState } from '@/maps/uiTaskRunCountsByState'
 import { mapVariableResponseToVariable, mapVariableEditToVariableEditRequest, mapVariableCreateToVariableCreateRequest } from '@/maps/variable'
 import { mapPrefectWorkerCollectionResponseToWorkerCollectionItemArray, mapWorkerSchemaValuesToWorkerSchemaValuesRequest } from '@/maps/workerCollection'
@@ -156,6 +158,7 @@ export const maps = {
   Log: { LogResponse: mapLogToLogResponse },
   LogResponse: { Log: mapLogResponseToLog },
   LogsFilter: { LogsFilterRequest: mapLogsFilter },
+  NextFlowRunResponse: { NextFlowRun: mapNextFlowRunResponseToNextFlowRun },
   NotificationCreate: { NotificationCreateRequest: mapNotificationCreateToNotificationCreateRequest },
   NotificationResponse: { Notification: mapNotificationResponseToNotification },
   NotificationsFilter: { NotificationsFilterRequest: mapNotificationsFilter },
@@ -213,6 +216,7 @@ export const maps = {
   TaskRunsHistoryFilter: { TaskRunsHistoryFilterRequest: mapTaskRunsHistoryFilter },
   UiFlowRunHistory: { ScatterPlotItem: mapUiFlowRunHistoryToScatterPlotItem },
   UiFlowRunHistoryResponse: { UiFlowRunHistory: mapUiFlowRunHistoryResponseToUiFlowRunHistory },
+  UiNextFlowRunByFlowResponse: { UiNextFlowRunByFlow: mapUiNextFlowRunByFlowResponseToUiNextFlowRunByFlow },
   UiTaskRunCountsByStateResponse: { UiTaskRunCountsByState: mapUiTaskRunCountsByStateResponseToUiTaskRunCountsByState },
   VariableCreate: { VariableCreateRequest: mapVariableCreateToVariableCreateRequest },
   VariableEdit: { VariableEditRequest: mapVariableEditToVariableEditRequest },
