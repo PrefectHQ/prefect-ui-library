@@ -299,10 +299,6 @@ export const mapVariableFilter: MapFunction<VariableFilter, VariableFilterReques
       ...toAny(source.name),
       ...toLike(source.nameLike),
     },
-    value: {
-      ...toAny(source.value),
-      ...toLike(source.valueLike),
-    },
     tags: this.map('TagFilter', source.tags, 'TagFilterRequest'),
   }
 }

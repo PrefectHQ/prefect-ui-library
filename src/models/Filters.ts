@@ -95,8 +95,6 @@ export type VariableFilter = {
   id?: string[],
   name?: string[],
   nameLike?: string,
-  value?: string[],
-  valueLike?: string,
   tags?: TagFilter,
 }
 
