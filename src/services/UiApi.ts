@@ -46,7 +46,7 @@ export class UiApi extends WorkspaceApi implements IUiApi {
   }
 
   public async getNextRunsByFlow(flowIds: string[]): Promise<UiNextFlowRunByFlow> {
-    const request = { 'flow_ids': [...new Set(flowIds)] }
+    const request = { 'flow_ids': flowIds }
     const { data } = await this.post<UiNextFlowRunByFlowResponse>('/flows/next-runs', request)
     const runs = mapper.map('UiNextFlowRunByFlowResponse', data, 'UiNextFlowRunByFlow')
 
