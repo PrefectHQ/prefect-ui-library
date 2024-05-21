@@ -210,5 +210,9 @@ export const en = {
     flowRunGraphNotDisplayedHeader: 'Manual graph rendering',
     flowRunGraphNotDisplayedCopy: 'Large graphs are hidden by default. They may take time to generate and in extreme circumstances, may impact browser performance.',
     flowRunGraphNotDisplayedCta: 'Display graph',
+    removeTagFromFilter: 'Remove tag from filter',
+    filterByTag: 'Filter by tag',
+    removeResourceFromFilter: 'Remove resource from filter',
+    filterByResource: 'Filter by resource',
   },
 }

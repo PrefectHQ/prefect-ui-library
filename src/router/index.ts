@@ -410,5 +410,26 @@ export function createWorkspaceRouteRecords(components: Partial<WorkspaceRouteCo
         },
       ],
     },
+    {
+      path: 'events',
+      children: [
+        {
+          name: 'workspace.events',
+          path: '',
+          component: components.events,
+          meta: {
+            can: ['read:event'],
+          },
+        },
+        {
+          name: 'workspace.event',
+          path: 'event/:eventDate/:eventId',
+          component: components.event,
+          meta: {
+            can: 'read:event',
+          },
+        },
+      ],
+    },
   ]
 }
