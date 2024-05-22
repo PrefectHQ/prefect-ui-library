@@ -36,7 +36,7 @@
   const icon = computed<Icon | null>(() => {
     switch (role.value) {
       case 'work-queue':
-        return 'CircleStackIcon'
+        return 'CpuChipIcon'
       case 'flow-run':
         return 'FlowRun'
       case 'automation':

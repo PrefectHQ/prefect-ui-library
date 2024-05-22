@@ -1,7 +1,7 @@
 <template>
   <p-empty-state>
     <template #icon>
-      <p-icon icon="CircleStackIcon" class="work-pools-page-empty-state__icon" />
+      <p-icon icon="CpuChipIcon" class="work-pools-page-empty-state__icon" />
     </template>
 
     <template #heading>
@@ -10,11 +10,11 @@
 
     <template #description>
       Work pools allow you to prioritize and manage deployment runs
-      and control the infrastructure they run on.
+      and control the infrastructure they run on
     </template>
     <template #actions>
-      <p-button v-if="can.create.work_pool" primary icon-append="PlusIcon" :to="routes.workPoolCreate()">
-        Add Work Pool
+      <p-button v-if="can.create.work_pool" primary :to="routes.workPoolCreate()">
+        Create work pool
       </p-button>
       <DocumentationButton :to="localization.docs.workPools" />
     </template>
