@@ -70,6 +70,7 @@ export type TaskRunFilterRequest = {
   start_time?: Before & After & IsNull,
   subflow_runs?: Exists,
   flow_run_id?: OperatorRequest & Any & IsNull,
+  expected_start_time?: Before & After & IsNull,
 }
 
 export type DeploymentFilterRequest = {

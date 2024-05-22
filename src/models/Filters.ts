@@ -69,6 +69,9 @@ export type TaskRunFilter = {
   flowRunIdOperator?: Operation,
   flowRunId?: string[],
   flowRunIdNull?: boolean,
+  expectedStartTimeBefore?: Date,
+  expectedStartTimeAfter?: Date,
+  expectedStartTimeNull?: boolean,
 }
 
 export type ArtifactFilter = {
