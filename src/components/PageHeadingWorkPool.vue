@@ -34,6 +34,6 @@
   ])
 
   const handleDelete = (): void => {
-    router.back()
+    router.push(routes.workPools())
   }
 </script>

@@ -8,7 +8,6 @@
         :variable-ids="selectedVariables.map(variable => variable.id)"
         @delete="deleteVariables"
       />
-
       <template #controls>
         <SearchInput
           v-model="variableLike"
@@ -36,6 +35,14 @@
         </div>
       </template>
 
+
+      <template #value="{ row }">
+        <div class="variables-table__value">
+          <VariableDisplayPreview :variable="row" value-overflow-text="click to view" @update="handleUpdate" />
+        </div>
+      </template>
+
+
       <template #updated="{ row }">
         {{ formatDateTimeNumeric(row.updated) }}
       </template>
@@ -54,8 +61,9 @@
         </div>
       </template>
 
+
       <template #empty-state>
-        <PEmptyResults>
+        <PEmptyResults v-if="variablesSubscription.executed">
           <template #message>
             {{ localization.info.noVariables }}
           </template>
@@ -63,6 +71,11 @@
             <p-button size="sm" @click="clear">
               Clear Filters
             </p-button>
+          </template>
+        </PEmptyResults>
+        <PEmptyResults v-else>
+          <template #message>
+            <p-loading-icon />
           </template>
         </PEmptyResults>
       </template>
@@ -77,7 +90,8 @@
   import { useDebouncedRef, useLocalStorage, useSubscription } from '@prefecthq/vue-compositions'
   import merge from 'lodash.merge'
   import { computed, ref } from 'vue'
-  import { VariablesDeleteButton, VariableMenu, ResultsCount, SearchInput, SelectedCount, VariableTagsInput } from '@/components'
+  import { VariablesDeleteButton, VariableMenu, ResultsCount, SearchInput, SelectedCount, VariableTagsInput, VariableEditModal } from '@/components'
+  import VariableDisplayPreview from '@/components/VariableDisplayPreview.vue'
   import { useCan, useVariablesFilter, useWorkspaceApi } from '@/compositions'
   import { localization } from '@/localization'
   import { VariablesFilter, Variable } from '@/models'
@@ -106,10 +120,10 @@
   const { filter, isCustomFilter, clear } = useVariablesFilter(merge({}, props.filter, {
     variables: {
       nameLike: variableLikeDebounced,
-      valueLike: variableLikeDebounced,
     },
     offset,
   }))
+
 
   const columns: TableColumn<Variable>[] = [
     {
@@ -202,3 +216,4 @@
   max-w-[192px]
 }
 </style>
+

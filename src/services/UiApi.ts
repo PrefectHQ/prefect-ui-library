@@ -2,8 +2,12 @@ import { UiDeploymentsCountsByFlow } from '@/models/api/UiDeploymentsCountsByFlo
 import { UiFlowRunHistoryResponse } from '@/models/api/UiFlowRunHistoryResponse'
 import { UiTaskRunCountsByStateResponse } from '@/models/api/UiTaskRunCountsByStateResponse'
 import { FlowRunsFilter, TaskRunsFilter } from '@/models/Filters'
+import { NextFlowRun } from '@/models/NextFlowRun'
 import { UiFlowRunHistory } from '@/models/UiFlowRunHistory'
+import { UiNextFlowRunByFlow } from '@/models/UiNextFlowRunByFlow'
+import { UiNextFlowRunByFlowResponse } from '@/models/UiNextFlowRunByFlowResponse'
 import { UiTaskRunCountsByState } from '@/models/UiTaskRunCountsByState'
+import { BatchProcessor } from '@/services/BatchProcessor'
 import { mapper } from '@/services/Mapper'
 import { WorkspaceApi } from '@/services/WorkspaceApi'
 
@@ -11,8 +15,14 @@ export interface IUiApi {
   getFlowRunHistory: (filter: FlowRunsFilter) => Promise<UiFlowRunHistory[]>,
 }
 
+
 export class UiApi extends WorkspaceApi implements IUiApi {
   protected override routePrefix = '/ui'
+
+  private readonly nextRunsBatcher = new BatchProcessor<string, NextFlowRun>(async ids => {
+    const runs = await this.getNextRunsByFlow(ids)
+    return new Map(Object.entries(runs))
+  }, { maxBatchSize: 200 })
 
   public async getFlowRunHistory(filter: FlowRunsFilter): Promise<UiFlowRunHistory[]> {
     const request = mapper.map('FlowRunsFilter', filter, 'FlowRunsFilterRequest')
@@ -33,5 +43,17 @@ export class UiApi extends WorkspaceApi implements IUiApi {
     const { data } = await this.post<UiDeploymentsCountsByFlow>('/flows/count-deployments', request)
 
     return data
+  }
+
+  public async getNextRunsByFlow(flowIds: string[]): Promise<UiNextFlowRunByFlow> {
+    const request = { 'flow_ids': flowIds }
+    const { data } = await this.post<UiNextFlowRunByFlowResponse>('/flows/next-runs', request)
+    const runs = mapper.map('UiNextFlowRunByFlowResponse', data, 'UiNextFlowRunByFlow')
+
+    return runs
+  }
+
+  public getNextRunByFlow(flowId: string): Promise<NextFlowRun> {
+    return this.nextRunsBatcher.batch(flowId)
   }
 }

@@ -75,7 +75,7 @@
         </PEmptyResults>
         <PEmptyResults v-else>
           <template #message>
-            Loading...
+            <p-loading-icon />
           </template>
         </PEmptyResults>
       </template>

@@ -560,8 +560,6 @@ export function useVariableFilter(defaultValue: MaybeReactive<VariableFilter> = 
     id: toRef(defaultValueReactive, 'id'),
     name: toRef(defaultValueReactive, 'name'),
     nameLike: toRef(defaultValueReactive, 'nameLike'),
-    value: toRef(defaultValueReactive, 'value'),
-    valueLike: toRef(defaultValueReactive, 'valueLike'),
     tags: tags.filter,
   })
 

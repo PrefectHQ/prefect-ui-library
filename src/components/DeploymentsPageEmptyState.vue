@@ -3,7 +3,7 @@
     <template #icon>
       <p-icon icon="Flow" />
       <p-icon icon="EllipsisHorizontalIcon" />
-      <p-icon icon="MapPinIcon" />
+      <p-icon icon="PDeployment" />
     </template>
 
     <template #heading>
