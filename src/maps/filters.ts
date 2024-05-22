@@ -226,6 +226,11 @@ export const mapTaskRunFilter: MapFunction<TaskRunFilter, TaskRunFilterRequest> 
       ...toAny(source.flowRunId),
       ...toIsNull(source.flowRunIdNull),
     },
+    expected_start_time: {
+      ...toBefore(source.expectedStartTimeBefore),
+      ...toAfter(source.expectedStartTimeAfter),
+      ...toIsNull(source.expectedStartTimeNull),
+    },
   })
 }
 
