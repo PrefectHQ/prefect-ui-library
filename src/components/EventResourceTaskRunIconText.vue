@@ -3,7 +3,7 @@
     <template v-if="id && taskRunName">
       Task run
       <ResourceLink :resource="resource">
-        <p-icon-text icon="MapPinIcon">
+        <p-icon-text icon="PTaskRun">
           <span>{{ taskRunName }}</span>
         </p-icon-text>
       </ResourceLink>

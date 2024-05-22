@@ -3,7 +3,7 @@
     <template v-if="id && deploymentName">
       Deployment
       <ResourceLink :resource="resource">
-        <p-icon-text icon="MapPinIcon">
+        <p-icon-text icon="PDeployment">
           <span>{{ deploymentName }}</span>
         </p-icon-text>
       </ResourceLink>

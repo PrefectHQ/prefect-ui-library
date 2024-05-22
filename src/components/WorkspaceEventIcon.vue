@@ -44,7 +44,7 @@
       case 'flow':
         return 'Flow'
       case 'deployment':
-        return 'MapPinIcon'
+        return 'PDeployment'
       case 'task-run':
         return 'Task'
       case 'block-document':
