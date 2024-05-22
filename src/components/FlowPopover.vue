@@ -6,7 +6,7 @@
         <FlowRouterLink :flow-id="flowId">
           <div v-if="flow" class="flow-popover__link" v-bind="$attrs">
             <p-icon icon="PFlow" small class="flow-popover__link-icon" />
-            <span class="flow-popover__link-name">{{ flow.name }}</span>
+            <span class="flow-popover__link-name" :title="flow.name">{{ flow.name }}</span>
           </div>
         </FlowRouterLink>
       </slot>
@@ -17,7 +17,7 @@
         <FlowRouterLink :flow-id="flowId">
           <div v-if="flow" class="flow-popover__link">
             <p-icon icon="PFlow" small class="flow-popover__link-icon" />
-            <span class="flow-popover__link-name">{{ flow.name }}</span>
+            <span class="flow-popover__link-name" :title="flow.name">{{ flow.name }}</span>
           </div>
         </FlowRouterLink>
 
@@ -63,11 +63,11 @@
 }
 
 .flow-popover__link-name { @apply
-  shrink
   truncate
 }
 
 .flow-popover__link-icon { @apply
+  shrink-0
   h-3
   w-3
 }

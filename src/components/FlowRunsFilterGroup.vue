@@ -43,12 +43,12 @@
 
   const props = defineProps<{
     filter: SavedSearchFilter,
-    nameSearch: string,
+    nameSearch: string | null,
   }>()
 
   const emit = defineEmits<{
     'update:filter': [SavedSearchFilter],
-    'update:name': [string],
+    'update:name': [string | null],
   }>()
 
   const internalFilter = computed({

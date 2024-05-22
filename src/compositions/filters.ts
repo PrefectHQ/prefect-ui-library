@@ -240,6 +240,9 @@ export function useTaskRunFilter(defaultValue: MaybeReactive<TaskRunFilter> = {}
     state: state.filter,
     subFlowRunsExist: toRef(defaultValueReactive, 'subFlowRunsExist'),
     tags: tags.filter,
+    flowRunId: toRef(defaultValueReactive, 'flowRunId'),
+    flowRunIdOperator: toRef(defaultValueReactive, 'flowRunIdOperator'),
+    flowRunIdNull: toRef(defaultValueReactive, 'flowRunIdNull'),
   })
 
   return withFilterFunctions(filter)
@@ -256,6 +259,9 @@ const taskRunFilterSchema: RouteQueryParamsSchema<TaskRunFilter> = {
   startTimeAfter: DateRouteParam,
   startTimeNull: BooleanRouteParam,
   subFlowRunsExist: BooleanRouteParam,
+  flowRunIdOperator: OperatorRouteParam,
+  flowRunId: [StringRouteParam],
+  flowRunIdNull: BooleanRouteParam,
 }
 
 export function useDeploymentFilter(defaultValue: MaybeReactive<DeploymentFilter> = {}): UseFilter<DeploymentFilter> {
@@ -554,8 +560,6 @@ export function useVariableFilter(defaultValue: MaybeReactive<VariableFilter> = 
     id: toRef(defaultValueReactive, 'id'),
     name: toRef(defaultValueReactive, 'name'),
     nameLike: toRef(defaultValueReactive, 'nameLike'),
-    value: toRef(defaultValueReactive, 'value'),
-    valueLike: toRef(defaultValueReactive, 'valueLike'),
     tags: tags.filter,
   })
 

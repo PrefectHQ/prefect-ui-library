@@ -221,6 +221,11 @@ export const mapTaskRunFilter: MapFunction<TaskRunFilter, TaskRunFilterRequest> 
       ...toIsNull(source.startTimeNull),
     },
     subflow_runs: toExists(source.subFlowRunsExist),
+    flow_run_id: {
+      ...toOperator(source.flowRunIdOperator),
+      ...toAny(source.flowRunId),
+      ...toIsNull(source.flowRunIdNull),
+    },
   })
 }
 
@@ -293,10 +298,6 @@ export const mapVariableFilter: MapFunction<VariableFilter, VariableFilterReques
     name: {
       ...toAny(source.name),
       ...toLike(source.nameLike),
-    },
-    value: {
-      ...toAny(source.value),
-      ...toLike(source.valueLike),
     },
     tags: this.map('TagFilter', source.tags, 'TagFilterRequest'),
   }

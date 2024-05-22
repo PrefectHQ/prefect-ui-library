@@ -1,12 +1,12 @@
 <template>
   <Transition name="flow-runs-delete-button-transition">
-    <p-button v-if="selected.length > 0" icon="TrashIcon" @click="open" />
+    <p-button v-if="selected.length > 0" icon="TrashIcon" small @click="open" />
   </Transition>
   <ConfirmDeleteModal
     v-model:showModal="showModal"
     name="selected flow runs"
-    label="Flow Runs"
-    @delete="deleteFlowRuns(selected)"
+    label="Flow runs"
+    @delete="() => deleteFlowRuns(selected)"
   />
 </template>
 

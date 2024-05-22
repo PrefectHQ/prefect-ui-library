@@ -127,3 +127,13 @@ export function formatDateTimeRelative(value: Date | string, comparedTo: Date | 
 
   return `in ${formatted}`
 }
+
+const routeDateFormat = 'yyyy-MM-dd'
+
+export function formatRouteDate(date: Date): string {
+  return dateFunctions.format(date, routeDateFormat)
+}
+
+export function parseRouteDate(value: string): Date {
+  return dateFunctions.parse(value, routeDateFormat, new Date())
+}

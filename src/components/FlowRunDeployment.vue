@@ -12,7 +12,7 @@
     deploymentId: string,
   }>()
 
-  const { deployment } = useDeployment(props.deploymentId)
+  const { deployment } = useDeployment(() => props.deploymentId)
 </script>
 
 <style>

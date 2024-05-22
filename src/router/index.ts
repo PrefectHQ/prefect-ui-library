@@ -9,7 +9,8 @@ type WorkspaceRoutes = ReturnType<typeof createWorkspaceRoutes>
 type WorkspaceRouteKey = keyof WorkspaceRoutes
 type WorkspaceRoute = ReturnType<WorkspaceRoutes[WorkspaceRouteKey]>
 
-export type WorkspaceNamedRoute = WorkspaceRoute['name']
+export type DeprecatedNamedRoutes = 'workspace.flow-runs' | 'workspace.flow-runs.flow-run' | 'workspace.flow-runs.task-run'
+export type WorkspaceNamedRoute = WorkspaceRoute['name'] | DeprecatedNamedRoutes
 
 type WorkspaceRouteRecordParent = { name?: WorkspaceNamedRoute, children: WorkspaceRouteRecord[] }
 type WorkspaceRouteRecordChild = { name: WorkspaceNamedRoute }
@@ -28,39 +29,43 @@ export function createWorkspaceRouteRecords(components: Partial<WorkspaceRouteCo
       component: components.dashboard,
     },
     {
-      path: 'flow-runs',
+      path: 'runs',
       meta: {
         can: 'read:flow_run',
       },
       children: [
         {
-          name: 'workspace.flow-runs',
+          name: 'workspace.runs',
           path: '',
-          component: () => import('@/components/FlowRunsPageWithDefaultFilter.vue'),
-          props: { component: components.flowRuns },
+          component: () => import('@/components/RunsPageWithDefaultFilter.vue'),
+          props: { component: components.runs },
         },
         {
-          name: 'workspace.flow-runs.flow-run',
+          name: 'workspace.runs.flow-run',
           path: 'flow-run/:flowRunId',
           component: components.flowRun,
+        },
+        {
+          name: 'workspace.runs.task-run',
+          path: 'task-run/:taskRunId',
+          component: components.taskRun,
         },
       ],
     },
     {
-      path: 'task-runs',
-      meta: {
-        can: 'read:task_run',
-      },
+      path: 'flow-runs',
+      name: 'workspace.flow-runs',
+      redirect: to => ({ name: 'workspace.runs', query: to.query, params: to.params }),
       children: [
         {
-          name: 'workspace.task-runs',
-          path: '',
-          component: components.taskRuns,
+          name: 'workspace.flow-runs.flow-run',
+          path: 'flow-run/:flowRunId',
+          redirect: to => ({ name: 'workspace.runs.flow-run', query: to.query, params: to.params }),
         },
         {
-          name: 'workspace.task-runs.task-run',
+          name: 'workspace.flow-runs.task-run',
           path: 'task-run/:taskRunId',
-          component: components.taskRun,
+          redirect: to => ({ name: 'workspace.runs.task-run', query: to.query, params: to.params }),
         },
       ],
     },
@@ -401,6 +406,27 @@ export function createWorkspaceRouteRecords(components: Partial<WorkspaceRouteCo
           component: components.automationEdit,
           meta: {
             can: 'update:automation',
+          },
+        },
+      ],
+    },
+    {
+      path: 'events',
+      children: [
+        {
+          name: 'workspace.events',
+          path: '',
+          component: components.events,
+          meta: {
+            can: ['read:event'],
+          },
+        },
+        {
+          name: 'workspace.event',
+          path: 'event/:eventDate/:eventId',
+          component: components.event,
+          meta: {
+            can: 'read:event',
           },
         },
       ],

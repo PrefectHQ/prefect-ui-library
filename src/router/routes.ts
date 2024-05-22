@@ -1,5 +1,8 @@
+import { AutomationAction } from '@/automations/types/actions'
 import { CreateAutomationQuery } from '@/automations/types/createAutomationQuery'
+import { WorkspaceEvent } from '@/models'
 import { mapper } from '@/services/Mapper'
+import { formatRouteDate } from '@/utilities/dates'
 
 type CreateWorkspaceRoutesConfig = {
   accountId: string,
@@ -21,14 +24,28 @@ export function createWorkspaceRoutes(config?: CreateWorkspaceRoutesConfig) {
       } as const
     },
     automationEdit: (automationId: string) => ({ name: 'workspace.automation.edit', params: { ...config, automationId } }) as const,
+    automateEvent: (event: WorkspaceEvent, actions?: AutomationAction[]) => {
+      const query = mapper.map('CreateAutomationQuery', { from: 'event', event, actions }, 'LocationQuery')
+
+      return {
+        name: 'workspace.automation.create',
+        query,
+      } as const
+    },
+    events: () => ({ name: 'workspace.events' }) as const,
+    event: (eventId: string, eventDate: Date) => {
+
+      return { name: 'workspace.event', params: { eventId, eventDate: formatRouteDate(eventDate) } } as const
+    },
     artifact: (artifactId: string) => ({ name: 'workspace.artifacts.artifact', params: { artifactId, ...config } }) as const,
     artifactKey: (artifactKey: string) => ({ name: 'workspace.artifacts.artifact.key', params: { artifactKey, ...config } }) as const,
     artifacts: () => ({ name: 'workspace.artifacts', params: { ...config } }) as const,
     dashboard: () => ({ name: 'workspace.dashboard', params: { ...config } }) as const,
+    runs: (query?: { tab?: string }) => ({ name: 'workspace.runs', params: { ...config }, query }) as const,
+    /** @deprecated use workspace.runs instead */
     flowRuns: () => ({ name: 'workspace.flow-runs', params: { ...config } }) as const,
-    flowRun: (flowRunId: string) => ({ name: 'workspace.flow-runs.flow-run', params: { flowRunId, ...config } }) as const,
-    taskRuns: () => ({ name: 'workspace.task-runs', params: { ...config } }) as const,
-    taskRun: (taskRunId: string) => ({ name: 'workspace.task-runs.task-run', params: { taskRunId, ...config } }) as const,
+    flowRun: (flowRunId: string) => ({ name: 'workspace.runs.flow-run', params: { flowRunId, ...config } }) as const,
+    taskRun: (taskRunId: string) => ({ name: 'workspace.runs.task-run', params: { taskRunId, ...config } }) as const,
     flows: () => ({ name: 'workspace.flows', params: { ...config } }) as const,
     flow: (flowId: string) => ({ name: 'workspace.flows.flow', params: { flowId, ...config } }) as const,
     flowCollections: () => ({ name: 'workspace.flows.collections', params: { ...config } }) as const,

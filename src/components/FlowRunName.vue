@@ -1,30 +1,30 @@
 <template>
-  <span class="flow-run-name">
-    <template v-if="flowRun">
-      <FlowRunIconText :flow-run-id="flowRun.id" />
-      <template v-if="flowRun.state">
-        <p-tooltip :text="flowRun.state.name">
-          <StateIcon :state-type="flowRun.state.type" :class="stateIconClass" />
-        </p-tooltip>
-      </template>
+  <span v-if="flowRunId" class="flow-run-name">
+    <template v-if="stateType">
+      <p-tooltip :text="stateName ?? stateType">
+        <StateIcon :state-type="stateType" />
+      </p-tooltip>
     </template>
-    <template v-else>
-      <span class="flow-run-name__none">{{ localization.info.none }}</span>
-    </template>
+
+    <p-link :to="routes.flowRun(flowRunId)">
+      {{ flowRunName ?? flowRunId }}
+    </p-link>
   </span>
 </template>
 
 <script lang="ts" setup>
-  import { computed } from 'vue'
-  import { FlowRunIconText, StateIcon } from '@/components'
-  import { localization } from '@/localization'
-  import { FlowRun } from '@/models'
+  import { StateIcon } from '@/components'
+  import { useWorkspaceRoutes } from '@/compositions'
+  import { StateType } from '@/models'
+  import { PrefectStateNames } from '@/types/states'
+  const routes = useWorkspaceRoutes()
 
-  const props = defineProps<{
-    flowRun?: FlowRun,
+  defineProps<{
+    flowRunId?: string | null,
+    flowRunName?: string | null,
+    stateType?: StateType | null,
+    stateName?: PrefectStateNames | null,
   }>()
-
-  const stateIconClass = computed(() => props.flowRun?.state ? `state-text--${props.flowRun.state.type}` : '')
 </script>
 
 <style>
@@ -32,9 +32,5 @@
   inline-flex
   items-center
   gap-1
-}
-
-.flow-run-name__none { @apply
-  text-subdued
 }
 </style>
