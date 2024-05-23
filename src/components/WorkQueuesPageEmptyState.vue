@@ -3,7 +3,7 @@
     <template #icon>
       <p-icon icon="Flow" class="empty-work-queue--icon " />
       <p-icon icon="EllipsisHorizontalIcon" class="empty-work-queue--icon " />
-      <p-icon icon="CircleStackIcon" class="empty-work-queue--icon " />
+      <p-icon icon="PWorkPool" class="empty-work-queue--icon " />
     </template>
 
     <template #heading>
