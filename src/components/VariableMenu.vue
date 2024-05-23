@@ -2,7 +2,7 @@
   <p-icon-button-menu v-bind="$attrs">
     <copy-overflow-menu-item :label="localization.info.copyId" :item="variable.id" />
     <copy-overflow-menu-item :label="localization.info.copyName" :item="variable.name" />
-    <copy-overflow-menu-item :label="localization.info.copyValue" :item="variable.value" />
+    <copy-overflow-menu-item :label="localization.info.copyValue" :item="value ?? ''" />
     <p-overflow-menu-item v-if="can.update.variable" :label="localization.info.edit" @click="openEditModal" />
     <p-overflow-menu-item v-if="can.delete.variable" :label="localization.info.delete" @click="openDeleteModal" />
   </p-icon-button-menu>
@@ -27,13 +27,15 @@
 
 <script lang="ts" setup>
   import { showToast } from '@prefecthq/prefect-design'
+  import { computed, ref } from 'vue'
+  import { stringifyUnknownJson } from '..'
   import { ConfirmDeleteModal, CopyOverflowMenuItem, VariableEditModal } from '@/components'
   import { useWorkspaceApi, useCan, useShowModal } from '@/compositions'
   import { localization } from '@/localization'
   import { Variable } from '@/models'
   import { getApiErrorMessage } from '@/utilities/errors'
 
-  defineProps<{
+  const props = defineProps<{
     variable: Variable,
   }>()
 
@@ -66,4 +68,8 @@
   const handleUpdate = (variable: Variable): void => {
     emit('update', variable)
   }
+
+  const value = computed(() => {
+    return stringifyUnknownJson(props.variable.value)
+  })
 </script>

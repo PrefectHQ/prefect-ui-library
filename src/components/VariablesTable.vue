@@ -90,7 +90,7 @@
   import { useDebouncedRef, useLocalStorage, useSubscription } from '@prefecthq/vue-compositions'
   import merge from 'lodash.merge'
   import { computed, ref } from 'vue'
-  import { VariablesDeleteButton, VariableMenu, ResultsCount, SearchInput, SelectedCount, VariableTagsInput, VariableEditModal } from '@/components'
+  import { VariablesDeleteButton, VariableMenu, ResultsCount, SearchInput, SelectedCount, VariableTagsInput } from '@/components'
   import VariableDisplayPreview from '@/components/VariableDisplayPreview.vue'
   import { useCan, useVariablesFilter, useWorkspaceApi } from '@/compositions'
   import { localization } from '@/localization'

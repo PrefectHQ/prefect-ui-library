@@ -1,5 +1,5 @@
 export type VariableCreate = {
   name: string,
-  value: string,
+  value: unknown,
   tags?: string[],
 }

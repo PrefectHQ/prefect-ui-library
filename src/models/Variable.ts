@@ -1,10 +1,9 @@
-
 export interface IVariable {
   id: string,
   created: Date,
   updated: Date,
   name: string,
-  value: string,
+  value: unknown,
   tags: string[],
 }
 
@@ -16,7 +15,7 @@ export class Variable implements IVariable {
   public readonly created: Date
   public readonly updated: Date
   public name: string
-  public value: string
+  public value: unknown
   public tags: string[]
 
   public constructor(
