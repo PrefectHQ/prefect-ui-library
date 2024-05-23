@@ -29,12 +29,14 @@
   import { useValidation, useValidationObserver, ValidationRule } from '@prefecthq/vue-compositions'
   import { isNull } from 'lodash'
   import { computed, ref } from 'vue'
+  import { stringifyUnknownJson } from '..'
   import { JsonInput } from '@/components'
   import { useWorkspaceApi } from '@/compositions'
   import { localization } from '@/localization'
   import { Variable, VariableEdit, MAX_VARIABLE_NAME_LENGTH, MAX_VARIABLE_VALUE_LENGTH } from '@/models'
   import { isSnakeCase, isRequired, isString, isLessThanOrEqual, isJson } from '@/utilities'
   import { getApiErrorMessage } from '@/utilities/errors'
+
 
   const props = defineProps<{
     variable: Variable,
@@ -90,7 +92,7 @@
 
   const { validate, pending } = useValidationObserver()
   const name = ref<string>(props.variable.name)
-  const value = ref<string>(props.variable.value)
+  const value = ref<string>(stringifyUnknownJson(props.variable.value ?? '') ?? '')
   const tags = ref<string[]>(props.variable.tags)
 
   const rules: Record<string, ValidationRule<string | undefined>[]> = {
