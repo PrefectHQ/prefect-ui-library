@@ -3,7 +3,7 @@
   <p-button v-if="(value?.length ?? 0) > 64" size="sm" @click="openEditModal">
     {{ valueOverflowText }}
   </p-button>
-  <p-code-highlight v-else :text="value" lang="json" inline />
+  <p-code-highlight v-else :text="value ?? ''" lang="json" inline />
   <VariableEditModal v-model:showModal="showEditModal" :variable="variable" @update="handleUpdate" />
 </template>
 
