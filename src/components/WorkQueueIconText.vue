@@ -1,13 +1,13 @@
 <template>
   <template v-if="workPoolQueue">
     <p-link :to="routes.workPoolQueue(workPoolName, workQueueName)">
-      <p-icon-text icon="CpuChipIcon">
+      <p-icon-text icon="PWorkPool">
         {{ workQueueName }}
       </p-icon-text>
     </p-link>
   </template>
   <template v-else>
-    <p-icon-text icon="CpuChipIcon" title="Unknown work queue">
+    <p-icon-text icon="PWorkPool" title="Unknown work queue">
       {{ workQueueName }}
     </p-icon-text>
   </template>

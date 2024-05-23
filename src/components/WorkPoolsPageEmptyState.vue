@@ -1,7 +1,7 @@
 <template>
   <p-empty-state>
     <template #icon>
-      <p-icon icon="CpuChipIcon" class="work-pools-page-empty-state__icon" />
+      <p-icon icon="PWorkPool" class="work-pools-page-empty-state__icon" />
     </template>
 
     <template #heading>

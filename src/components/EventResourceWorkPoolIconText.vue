@@ -3,7 +3,7 @@
     <template v-if="name || workPoolName">
       Work pool
       <ResourceLink :resource="resource">
-        <p-icon-text icon="CpuChipIcon">
+        <p-icon-text icon="PWorkPool">
           <span>{{ workPoolName }}</span>
         </p-icon-text>
       </ResourceLink>
