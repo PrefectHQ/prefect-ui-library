@@ -19,7 +19,7 @@
 </template>
 
 <script lang="ts" setup>
-  import { computed, ref, watch } from 'vue'
+  import { computed, onMounted, ref, watch } from 'vue'
   import AutomationActionRunDeploymentParameters from '@/automations/components/AutomationActionRunDeploymentParameters.vue'
   import AutomationDeploymentCombobox from '@/automations/components/AutomationDeploymentCombobox.vue'
   import { AutomationActionRunDeployment } from '@/automations/types/actions'
@@ -94,4 +94,14 @@
       // validation for this field is handled by the FlowRunJobVariableOverridesLabeledInput component
     }
   }
+
+  onMounted(() => {
+    if (deploymentId.value) {
+      setDeploymentId(deploymentId.value)
+
+      if (props.action.parameters) {
+        setParametersForDeployment(deploymentId.value, props.action.parameters)
+      }
+    }
+  })
 </script>
