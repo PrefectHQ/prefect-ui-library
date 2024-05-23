@@ -4,6 +4,7 @@ export const artifactTypes = [
   'result',
   'markdown',
   'table',
+  'progress',
   'unknown',
 ] as const
 
@@ -14,6 +15,7 @@ export const artifactTypeIconMap = {
   markdown: 'ArtifactMarkdown',
   table: 'ArtifactTable',
   result: 'ArtifactResult',
+  progress: 'Artifact',
   unknown: 'Artifact',
 } as const satisfies Record<ArtifactType | 'default', Icon>
 

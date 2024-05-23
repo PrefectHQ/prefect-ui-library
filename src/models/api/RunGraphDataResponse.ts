@@ -29,6 +29,7 @@ export type RunGraphArtifactResponse = {
   created: string,
   key: string,
   type: string,
+  data?: number,
 }
 
 export type RunGraphStateResponse = {
