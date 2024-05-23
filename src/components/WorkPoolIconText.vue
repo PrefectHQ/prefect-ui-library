@@ -1,7 +1,7 @@
 <template>
   <template v-if="can.read.work_pool">
     <p-link :to="routes.workPool(workPoolName)" class="work-pool-icon-text">
-      <p-icon-text icon="CircleStackIcon">
+      <p-icon-text icon="PWorkPool">
         <span>{{ workPoolName }}</span>
       </p-icon-text>
     </p-link>

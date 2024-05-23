@@ -3,7 +3,7 @@
     <template v-if="id && workQueueName">
       Work queue
       <ResourceLink :resource="resource">
-        <p-icon-text icon="CircleStackIcon">
+        <p-icon-text icon="PWorkPool">
           <span v-if="workPoolName">{{ workPoolName }} > </span>
           <span>{{ workQueueName }}</span>
         </p-icon-text>
