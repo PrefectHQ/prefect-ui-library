@@ -4,6 +4,7 @@ import { MaybeRef } from '@/types/reactivity'
 export const workspaceFeatureFlags = [
   'access:deploymentStatus',
   'access:workQueueStatus',
+  'access:jsonVariables',
   'access:deploymentScheduleFlowRunInfraOverrides',
 ] as const satisfies Readonly<`access:${string}`[]>
 
