@@ -151,7 +151,7 @@ export const en = {
     artifactCreated: (key: string) => `Created __${key}__`,
     artifactTypeChanged: (type: string) => `Changed to \`${type}\` artifact`,
     newVariable: 'New variable',
-    editVariable: (name: string) => `Edit ${name}`,
+    editVariable: (name: string) => `Edit \`${name}\``,
     deployment: 'Deployment',
     close: 'Close',
     save: 'Save',

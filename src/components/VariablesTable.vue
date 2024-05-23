@@ -8,6 +8,7 @@
         :variable-ids="selectedVariables.map(variable => variable.id)"
         @delete="deleteVariables"
       />
+
       <template #controls>
         <SearchInput
           v-model="variableLike"
@@ -35,14 +36,6 @@
         </div>
       </template>
 
-
-      <template #value="{ row }">
-        <div class="variables-table__value">
-          <VariableDisplayPreview :variable="row" value-overflow-text="click to view" @update="handleUpdate" />
-        </div>
-      </template>
-
-
       <template #updated="{ row }">
         {{ formatDateTimeNumeric(row.updated) }}
       </template>
@@ -60,7 +53,6 @@
           <VariableMenu :variable="row" size="xs" @delete="refreshSubscriptions" @update="handleUpdate" />
         </div>
       </template>
-
 
       <template #empty-state>
         <PEmptyResults v-if="variablesSubscription.executed">
@@ -90,8 +82,7 @@
   import { useDebouncedRef, useLocalStorage, useSubscription } from '@prefecthq/vue-compositions'
   import merge from 'lodash.merge'
   import { computed, ref } from 'vue'
-  import { VariablesDeleteButton, VariableMenu, ResultsCount, SearchInput, SelectedCount, VariableTagsInput, VariableEditModal } from '@/components'
-  import VariableDisplayPreview from '@/components/VariableDisplayPreview.vue'
+  import { VariablesDeleteButton, VariableMenu, ResultsCount, SearchInput, SelectedCount, VariableTagsInput } from '@/components'
   import { useCan, useVariablesFilter, useWorkspaceApi } from '@/compositions'
   import { localization } from '@/localization'
   import { VariablesFilter, Variable } from '@/models'
@@ -123,7 +114,6 @@
     },
     offset,
   }))
-
 
   const columns: TableColumn<Variable>[] = [
     {
@@ -216,4 +206,3 @@
   max-w-[192px]
 }
 </style>
-
