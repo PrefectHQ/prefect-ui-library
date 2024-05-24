@@ -63,7 +63,7 @@
     return { ...schema, required }
   })
 
-  const { errors, validate: validateParameters } = useSchemaValidationV2(() => props.deployment.parameterOpenApiSchemaV2, parameters)
+  const { errors, validate: validateParameters } = useSchemaValidationV2(schema, parameters)
 
   const isValidParameters: ValidationRule<SchemaValuesV2> = async (value, label, { signal, source, previousValue }) => {
     if (value === previousValue) {
