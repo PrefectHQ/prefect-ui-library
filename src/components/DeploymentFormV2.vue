@@ -33,22 +33,23 @@
 
     <p-divider />
 
+    <template v-if="schemaHasParameters">
+      <SchemaInputV2 v-model:values="parameters" :schema="schema" :errors="errors" :kinds="['none', 'json']">
+        <template #default="{ kind, setKind }">
+          <div class="flow-run-create-form-v2__header">
+            <h3 class="deployment-form__heading">
+              {{ localization.info.parameters }}
+            </h3>
+            <p-icon-button-menu small>
+              <p-overflow-menu-item v-if="kind === 'json'" label="Use form input" @click="setKind('none')" />
+              <p-overflow-menu-item v-if="kind === 'none'" label="Use JSON input" @click="setKind('json')" />
+            </p-icon-button-menu>
+          </div>
+        </template>
+      </SchemaInputV2>
 
-    <SchemaInputV2 v-model:values="parameters" :schema="schema" :errors="errors" :kinds="['none', 'json']">
-      <template #default="{ kind, setKind }">
-        <div class="flow-run-create-form-v2__header">
-          <h3 class="deployment-form__heading">
-            {{ localization.info.parameters }}
-          </h3>
-          <p-icon-button-menu small>
-            <p-overflow-menu-item v-if="kind === 'json'" label="Use form input" @click="setKind('none')" />
-            <p-overflow-menu-item v-if="kind === 'none'" label="Use JSON input" @click="setKind('json')" />
-          </p-icon-button-menu>
-        </div>
-      </template>
-    </SchemaInputV2>
-
-    <p-checkbox v-model="shouldValidateParameters" label="Validate parameters before submitting" />
+      <p-checkbox v-model="shouldValidateParameters" label="Validate parameters before saving" />
+    </template>
 
     <p-label label="Enforce Parameter Schema">
       <p-toggle v-model="enforceParameterSchema" :disabled="!parameters" />
@@ -84,7 +85,7 @@
   import { Deployment, DeploymentUpdateV2 } from '@/models'
   import { SchemaInputV2 } from '@/schemas'
   import { useSchemaValidation } from '@/schemas/compositions/useSchemaValidation'
-  import { stringify, isJson } from '@/utilities'
+  import { stringify, isJson, isEmptyObject } from '@/utilities'
 
   const props = defineProps<{
     deployment: Deployment,
@@ -103,6 +104,8 @@
   const schema = computed(() => {
     return { ...props.deployment.parameterOpenApiSchemaV2, required: [] }
   })
+
+  const schemaHasParameters = computed(() => !isEmptyObject(schema.value.properties))
 
   const { validate } = useValidationObserver()
   const { errors, validate: validateParameters } = useSchemaValidation(schema, parameters)
