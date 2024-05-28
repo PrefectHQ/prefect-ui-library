@@ -81,7 +81,7 @@
       </template>
     </p-table>
 
-    <p-pager v-if="pages > 1" v-model:page="page" v-model:limit="limit" :pages="pages" />
+    <p-pager v-model:page="page" v-model:limit="limit" :pages="pages" />
   </p-content>
 </template>
 
