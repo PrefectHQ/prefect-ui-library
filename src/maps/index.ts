@@ -70,7 +70,7 @@ import { mapTaskRunHistoryResponseToTaskRunHistory, mapTaskRunHistoryStateRespon
 import { mapUiFlowRunHistoryResponseToUiFlowRunHistory } from '@/maps/uiFlowRunHistory'
 import { mapUiNextFlowRunByFlowResponseToUiNextFlowRunByFlow } from '@/maps/uiNextFlowRunByFlow'
 import { mapUiTaskRunCountsByStateResponseToUiTaskRunCountsByState } from '@/maps/uiTaskRunCountsByState'
-import { mapVariableResponseToVariable, mapVariableEditToVariableEditRequest, mapVariableCreateToVariableCreateRequest } from '@/maps/variable'
+import { mapVariableResponseToVariable, mapVariableEditToVariableEditRequest, mapVariableCreateToVariableCreateRequest, mapVariableV2CreateToVariableV2CreateRequest, mapVariableV2EditToVariableV2EditRequest, mapVariableV2ResponseToVariableV2 } from '@/maps/variable'
 import { mapPrefectWorkerCollectionResponseToWorkerCollectionItemArray, mapWorkerSchemaValuesToWorkerSchemaValuesRequest } from '@/maps/workerCollection'
 import { mapWorkerScheduledFlowRunResponseToWorkerScheduledFlowRun, mapWorkerScheduledFlowRunsToWorkerScheduledFlowRunsRequest } from '@/maps/workerScheduledFlowRun'
 import { mapWorkPoolCreateToWorkPoolCreateRequest, mapWorkPoolEditToWorkPoolEditRequest, mapWorkPoolResponseToWorkPool, mapWorkPoolToWorkPoolResponse } from '@/maps/workPool'
@@ -223,6 +223,9 @@ export const maps = {
   VariableFilter: { VariableFilterRequest: mapVariableFilter },
   VariablesFilter: { VariablesFilterRequest: mapVariablesFilter },
   VariableResponse: { Variable: mapVariableResponseToVariable },
+  VariableV2Create: { VariableV2CreateRequest: mapVariableV2CreateToVariableV2CreateRequest },
+  VariableV2Edit: { VariableV2EditRequest: mapVariableV2EditToVariableV2EditRequest },
+  VariableV2Response: { VariableV2: mapVariableV2ResponseToVariableV2 },
   WorkerScheduledFlowRunResponse: { WorkerScheduledFlowRun: mapWorkerScheduledFlowRunResponseToWorkerScheduledFlowRun },
   WorkerScheduledFlowRuns: { WorkerScheduledFlowRunsRequest: mapWorkerScheduledFlowRunsToWorkerScheduledFlowRunsRequest },
   WorkerSchemaProperty: { WorkerSchemaPropertyRequest: mapWorkerSchemaValuesToWorkerSchemaValuesRequest },
