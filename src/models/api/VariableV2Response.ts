@@ -1,6 +1,6 @@
 import { DateString } from '@/types'
 
-export type VariableResponse = {
+export type VariableV2Response = {
   id: string,
   name: string,
   value: unknown,

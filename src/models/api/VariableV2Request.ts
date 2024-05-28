@@ -4,7 +4,7 @@ export type VariableV2CreateRequest = Partial<{
   tags: string[] | null,
 }>
 
-export type VariableEditRequest = Partial<{
+export type VariableV2EditRequest = Partial<{
   name: string | null,
   value: unknown,
   tags: string[] | null,

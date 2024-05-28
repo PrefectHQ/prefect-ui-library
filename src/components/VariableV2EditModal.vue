@@ -29,6 +29,7 @@
   import { useValidation, useValidationObserver, ValidationRule } from '@prefecthq/vue-compositions'
   import { isNull } from 'lodash'
   import { computed, ref } from 'vue'
+  import { stringifyUnknownJson } from '..'
   import { useWorkspaceApi } from '@/compositions'
   import { localization } from '@/localization'
   import { VariableV2, VariableV2Edit, MAX_VARIABLE_NAME_LENGTH, MAX_VARIABLE_VALUE_LENGTH } from '@/models'
@@ -89,7 +90,7 @@
 
   const { validate, pending } = useValidationObserver()
   const name = ref<string>(props.variable.name)
-  const value = ref<string>(props.variable.value)
+  const value = ref<string>(stringifyUnknownJson(props.variable.value) ?? '')
   const tags = ref<string[]>(props.variable.tags)
 
   const rules: Record<string, ValidationRule<string | undefined>[]> = {
