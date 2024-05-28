@@ -1,3 +1,4 @@
+import { stringifyUnknownJson } from '@/utilities'
 
 export interface IVariableV2 {
   id: string,
@@ -15,6 +16,10 @@ export class VariableV2 implements IVariableV2 {
   public name: string
   public value: unknown
   public tags: string[]
+
+  public get valueString(): string {
+    return stringifyUnknownJson(this.value) ?? ''
+  }
 
   public constructor(
     variable: IVariableV2,

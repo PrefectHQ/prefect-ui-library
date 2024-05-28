@@ -3,11 +3,11 @@
     <p-form @submit="submit">
       <p-content>
         <p-label :label="localization.info.name" :state="nameState" :message="nameErrorMessage">
-          <JsonInput v-model="value" :state="valueState" show-format-button />
+          <p-text-input v-model="name" :state="nameState" />
         </p-label>
 
         <p-label :label="localization.info.value" :state="valueState" :message="valueErrorMessage">
-          <p-textarea v-model="value" :state="valueState" :rows="1" />
+          <JsonInput v-model="value" :state="valueState" show-format-button />
         </p-label>
 
         <p-label :label="localization.info.tags">
@@ -29,7 +29,7 @@
   import { useValidation, useValidationObserver, ValidationRule } from '@prefecthq/vue-compositions'
   import { isNull } from 'lodash'
   import { computed, ref } from 'vue'
-  import { stringifyUnknownJson } from '..'
+  import JsonInput from '@/components/JsonInput.vue'
   import { useWorkspaceApi } from '@/compositions'
   import { localization } from '@/localization'
   import { VariableV2, VariableV2Edit, MAX_VARIABLE_NAME_LENGTH, MAX_VARIABLE_VALUE_LENGTH } from '@/models'
@@ -90,7 +90,7 @@
 
   const { validate, pending } = useValidationObserver()
   const name = ref<string>(props.variable.name)
-  const value = ref<string>(stringifyUnknownJson(props.variable.value) ?? '')
+  const value = ref<string>(props.variable.valueString)
   const tags = ref<string[]>(props.variable.tags)
 
   const rules: Record<string, ValidationRule<string | undefined>[]> = {
@@ -122,7 +122,7 @@
           tags: tags.value,
         }
 
-        const variable = await api.variables.editVariable(props.variable.id, values)
+        const variable = await api.variables.editVariableV2(props.variable.id, values)
 
         showToast(localization.success.editVariable, 'success')
         internalValue.value = false

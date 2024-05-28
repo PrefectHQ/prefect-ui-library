@@ -16,7 +16,7 @@
         Add Variable
       </p-button>
       <DocumentationButton :to="localization.docs.variables" />
-      <VariableCreateModal v-model:show-modal="showModal" @create="emit('create')" />
+      <VariableV2CreateModal v-model:show-modal="showModal" @create="emit('create')" />
     </template>
   </p-empty-state>
 </template>
@@ -24,7 +24,7 @@
 <script lang="ts" setup>
   import { PEmptyState, PButton, PIcon } from '@prefecthq/prefect-design'
   import DocumentationButton from '@/components/DocumentationButton.vue'
-  import VariableCreateModal from '@/components/VariableCreateModal.vue'
+  import VariableV2CreateModal from '@/components/VariableV2CreateModal.vue'
   import { useShowModal } from '@/compositions'
   import { useCan } from '@/compositions/useCan'
   import { localization } from '@/localization'
