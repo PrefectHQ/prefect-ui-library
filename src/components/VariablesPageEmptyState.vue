@@ -9,7 +9,7 @@
     </template>
 
     <template #description>
-      Variables store non-sensitive pieces of JSON.
+      Variables store non-sensitive strings.
     </template>
     <template #actions>
       <p-button v-if="can.create.variable" primary icon-append="PlusIcon" @click="open">
