@@ -6,6 +6,7 @@
 
 <script lang="ts" setup>
   import { computed } from 'vue'
+  import ArtifactDataProgress from '@/components//ArtifactDataProgress.vue'
   import ArtifactDataMarkdown from '@/components/ArtifactDataMarkdown.vue'
   import ArtifactDataResult from '@/components/ArtifactDataResult.vue'
   import ArtifactDataTable from '@/components/ArtifactDataTable.vue'
@@ -28,6 +29,8 @@
         return ArtifactDataMarkdown
       case 'table':
         return ArtifactDataTable
+      case 'progress':
+        return ArtifactDataProgress
       case 'unknown':
       default:
         return ArtifactDataUnknown
