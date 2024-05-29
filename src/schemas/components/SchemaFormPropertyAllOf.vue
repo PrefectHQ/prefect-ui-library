@@ -6,7 +6,7 @@
   import merge from 'lodash.merge'
   import { computed } from 'vue'
   import SchemaFormProperty from '@/schemas/components/SchemaFormProperty.vue'
-  import { useSchema } from '@/schemas/compositions/useSchema'
+  import { useSchemaFormSettings } from '@/schemas/compositions/useSchemaFormSettings'
   import { SchemaProperty, isPropertyWith } from '@/schemas/types/schema'
   import { SchemaValue } from '@/schemas/types/schemaValues'
   import { SchemaValueError } from '@/schemas/types/schemaValuesValidationResponse'
@@ -33,7 +33,7 @@
     },
   })
 
-  const schema = useSchema()
+  const { schema } = useSchemaFormSettings()
 
   const mergedProperty = computed(() => {
     const { allOf, ...baseProperty } = props.property

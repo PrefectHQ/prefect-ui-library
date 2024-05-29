@@ -48,6 +48,7 @@
   import { computed, ref, watch } from 'vue'
   import SchemaFormPropertyMenu from '@/schemas/components/SchemaFormPropertyMenu.vue'
   import { usePrefectKindValue } from '@/schemas/compositions/usePrefectKindValue'
+  import { useSchemaFormSettings } from '@/schemas/compositions/useSchemaFormSettings'
   import { useSchemaProperty } from '@/schemas/compositions/useSchemaProperty'
   import { useSchemaPropertyInput } from '@/schemas/compositions/useSchemaPropertyInput'
   import { SchemaProperty } from '@/schemas/types/schema'
@@ -79,6 +80,7 @@
   const omittedValue = ref<SchemaValue>(null)
   const omitLabel = computed(() => omitted.value ? 'Include value' : 'Omit value')
   const initialized = ref(false)
+  const { skipDefaultValueInitialization: skipDefaultValueInitializationForAllProperties } = useSchemaFormSettings()
 
   const classes = computed(() => ({
     label: {
@@ -114,7 +116,7 @@
     },
   })
 
-  if (!props.skipDefaultValueInitialization && !isDefined(props.value) && isDefined(property.value.default)) {
+  if (!skipDefaultValueInitializationForAllProperties && !props.skipDefaultValueInitialization && !isDefined(props.value) && isDefined(property.value.default)) {
     emit('update:value', property.value.default)
 
     const unwatch = watch(() => props.value, () => {

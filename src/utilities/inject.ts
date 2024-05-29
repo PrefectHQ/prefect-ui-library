@@ -12,7 +12,7 @@ export function inject<T>(key: InjectionKey<T> | string): T {
 
 type ComponentInstanceWithProvide = ComponentInternalInstance & { provides: Record<string | symbol, unknown> } | null
 
-export function injectFromSelfOrAncestor<T>(key: InjectionKey<T>): T | undefined {
+export function injectFromSelfOrAncestor<T>(key: InjectionKey<T>): T {
   const vm = getCurrentInstance() as ComponentInstanceWithProvide
   const value = vm?.provides[key as symbol]
 
@@ -20,6 +20,6 @@ export function injectFromSelfOrAncestor<T>(key: InjectionKey<T>): T | undefined
     return value as T
   }
 
-  return vueInject(key, undefined)
+  return inject(key)
 }
 

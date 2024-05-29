@@ -1,5 +1,5 @@
 import { ComputedRef, MaybeRefOrGetter, computed, toValue } from 'vue'
-import { useSchema } from '@/schemas/compositions/useSchema'
+import { useSchemaFormSettings } from '@/schemas/compositions/useSchemaFormSettings'
 import { SchemaProperty } from '@/schemas/types/schema'
 import { mergeSchemaPropertyDefinition } from '@/schemas/utilities/definitions'
 
@@ -11,7 +11,7 @@ type UseSchemaProperty = {
 }
 
 export function useSchemaProperty(source: MaybeRefOrGetter<SchemaProperty>, required?: MaybeRefOrGetter<boolean>): UseSchemaProperty {
-  const schema = useSchema()
+  const { schema } = useSchemaFormSettings()
 
   const property = computed(() => {
     const value = toValue(source)

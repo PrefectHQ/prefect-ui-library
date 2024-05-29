@@ -27,7 +27,7 @@
   import { computed, onActivated, reactive, ref } from 'vue'
   import { useWorkspaceApi } from '@/compositions'
   import SchemaFormProperty from '@/schemas/components/SchemaFormProperty.vue'
-  import { useSchema } from '@/schemas/compositions/useSchema'
+  import { useSchemaFormSettings } from '@/schemas/compositions/useSchemaFormSettings'
   import { SchemaProperty, isPropertyWith } from '@/schemas/types/schema'
   import { SchemaValue, isPrefectKindValue } from '@/schemas/types/schemaValues'
   import { SchemaValueError } from '@/schemas/types/schemaValuesValidationResponse'
@@ -43,7 +43,7 @@
   }>()
 
   const api = useWorkspaceApi()
-  const schema = useSchema()
+  const { schema } = useSchemaFormSettings()
   const propertyValues = reactive<SchemaValue[]>([])
   const selectedPropertyIndexValue = ref<number>(0)
   const skipDefaultValueInitialization = ref(false)

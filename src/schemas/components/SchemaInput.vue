@@ -9,8 +9,7 @@
 <script lang="ts" setup>
   import { VNode, computed, provide } from 'vue'
   import { usePrefectKindValue } from '@/schemas/compositions/usePrefectKindValue'
-  import { schemaInjectionKey } from '@/schemas/compositions/useSchema'
-  import { schemaFormKindsInjectionKey } from '@/schemas/compositions/useSchemaFormKinds'
+  import { schemaFormSettingsInjectionKey } from '@/schemas/compositions/useSchemaFormSettings'
   import { useSchemaPropertyInput } from '@/schemas/compositions/useSchemaPropertyInput'
   import { Schema } from '@/schemas/types/schema'
   import { PrefectKind, SchemaValues, getPrefectKindFromValue } from '@/schemas/types/schemaValues'
@@ -21,10 +20,18 @@
     values: SchemaValues | undefined,
     errors: SchemaValueError[],
     kinds: PrefectKind[],
+
+    /**
+     * If `true` will not initialize the values by populating default values from the supplied schema
+     */
+    skipDefaultValueInitialization?: boolean,
   }>()
 
-  provide(schemaInjectionKey, props.schema)
-  provide(schemaFormKindsInjectionKey, props.kinds)
+  provide(schemaFormSettingsInjectionKey, {
+    schema: props.schema,
+    kinds: props.kinds,
+    skipDefaultValueInitialization: props.skipDefaultValueInitialization,
+  })
 
   const emit = defineEmits<{
     'update:values': [SchemaValues | undefined],

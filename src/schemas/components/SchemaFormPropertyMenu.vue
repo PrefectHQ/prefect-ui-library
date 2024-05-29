@@ -20,7 +20,7 @@
   import { isDefined } from '@prefecthq/prefect-design'
   import isEqual from 'lodash.isequal'
   import { computed, useSlots } from 'vue'
-  import { useSchemaFormKinds } from '@/schemas/compositions/useSchemaFormKinds'
+  import { useSchemaFormSettings } from '@/schemas/compositions/useSchemaFormSettings'
   import { SchemaProperty, isSchemaPropertyType } from '@/schemas/types/schema'
   import { SchemaValue, PrefectKind, isPrefectKindJson, PrefectKindJson, isPrefectKindWorkspaceVariable, isPrefectKindJinja } from '@/schemas/types/schemaValues'
   import { isNullish, stringify } from '@/utilities'
@@ -34,7 +34,7 @@
   }>()
 
   const slots = useSlots()
-  const kinds = useSchemaFormKinds()
+  const { kinds } = useSchemaFormSettings()
 
   const showMenu = computed(() => kinds.length || slots.default)
 
