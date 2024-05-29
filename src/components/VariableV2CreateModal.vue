@@ -3,11 +3,11 @@
     <p-form @submit="submit">
       <p-content>
         <p-label :label="localization.info.name" :state="nameState" :message="nameErrorMessage">
-          <JsonInput v-model="value" :state="valueState" show-format-button />
+          <p-text-input v-model="name" :state="nameState" />
         </p-label>
 
         <p-label :label="localization.info.value" :state="valueState" :message="valueErrorMessage">
-          <p-textarea v-model="value" :state="valueState" :rows="1" />
+          <JsonInput v-model="value" :state="valueState" show-format-button />
         </p-label>
 
         <p-label :label="localization.info.tags">
@@ -121,7 +121,7 @@
           tags: tags.value,
         }
 
-        const variable = await api.variables.createVariable(values)
+        const variable = await api.variables.createVariableV2(values)
 
         showToast(localization.success.createVariable, 'success')
         emit('create', variable)
