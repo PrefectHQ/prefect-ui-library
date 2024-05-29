@@ -1,5 +1,6 @@
-import { Variable, VariableCreate, VariableEdit, VariablesFilter } from '@/models'
+import { Variable, VariableCreate, VariableEdit, VariableV2, VariableV2Create, VariableV2Edit, VariablesFilter } from '@/models'
 import { VariableResponse } from '@/models/api/VariableResponse'
+import { VariableV2Response } from '@/models/api/VariableV2Response'
 import { mapper } from '@/services'
 import { WorkspaceApi } from '@/services/WorkspaceApi'
 
@@ -45,7 +46,28 @@ export class WorkspaceVariablesApi extends WorkspaceApi {
     return mapper.map('VariableResponse', data, 'Variable')
   }
 
+  public async getVariablesV2(filter: VariablesFilter = {}): Promise<VariableV2[]> {
+    const request = mapper.map('VariablesFilter', filter, 'VariablesFilterRequest')
+    const { data } = await this.post<VariableV2Response[]>('/filter', request)
+    return mapper.map('VariableV2Response', data, 'VariableV2')
+  }
+
+  public async createVariableV2(body: VariableV2Create): Promise<VariableV2> {
+    const requestBody = mapper.map('VariableV2Create', body, 'VariableV2CreateRequest')
+    const { data } = await this.post<VariableResponse>('/', requestBody)
+    return mapper.map('VariableV2Response', data, 'VariableV2')
+  }
+
+  public async editVariableV2(variableId: string, body: VariableV2Edit): Promise<VariableV2> {
+    const requestBody = mapper.map('VariableV2Edit', body, 'VariableV2EditRequest')
+    const { data } = await this.patch<VariableV2Response>(`/${variableId}`, requestBody)
+
+    return mapper.map('VariableV2Response', data, 'VariableV2')
+  }
+
   public deleteVariable(variableId: string): Promise<void> {
     return this.delete(`/${variableId}`)
   }
+
+
 }

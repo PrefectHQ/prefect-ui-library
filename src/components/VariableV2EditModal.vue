@@ -1,0 +1,137 @@
+<template>
+  <p-modal v-model:showModal="internalValue" :title="localization.info.editVariable(name)">
+    <p-form @submit="submit">
+      <p-content>
+        <p-label :label="localization.info.name" :state="nameState" :message="nameErrorMessage">
+          <p-text-input v-model="name" :state="nameState" />
+        </p-label>
+
+        <p-label :label="localization.info.value" :state="valueState" :message="valueErrorMessage">
+          <JsonInput v-model="value" :state="valueState" show-format-button />
+        </p-label>
+
+        <p-label :label="localization.info.tags">
+          <p-tags-input v-model="tags" />
+        </p-label>
+      </p-content>
+    </p-form>
+
+    <template #actions>
+      <p-button variant="default" :loading="pending" @click="submit">
+        {{ localization.info.save }}
+      </p-button>
+    </template>
+  </p-modal>
+</template>
+
+<script lang="ts" setup>
+  import { showToast } from '@prefecthq/prefect-design'
+  import { useValidation, useValidationObserver, ValidationRule } from '@prefecthq/vue-compositions'
+  import { isNull } from 'lodash'
+  import { computed, ref } from 'vue'
+  import JsonInput from '@/components/JsonInput.vue'
+  import { useWorkspaceApi } from '@/compositions'
+  import { localization } from '@/localization'
+  import { VariableV2, VariableV2Edit, MAX_VARIABLE_NAME_LENGTH, MAX_VARIABLE_VALUE_LENGTH } from '@/models'
+  import { isSnakeCase, isRequired, isString, isLessThanOrEqual, isJson } from '@/utilities'
+  import { getApiErrorMessage } from '@/utilities/errors'
+
+  const props = defineProps<{
+    variable: VariableV2,
+    showModal: boolean,
+  }>()
+
+  const emit = defineEmits<{
+    (event: 'update:showModal', value: boolean): void,
+    (event: 'update', value: VariableV2): void,
+  }>()
+
+  const internalValue = computed({
+    get() {
+      return props.showModal
+    },
+    set(value: boolean): void {
+      emit('update:showModal', value)
+    },
+  })
+
+  const api = useWorkspaceApi()
+
+  const nameIsUnique: ValidationRule<string | undefined> = async (value, label, { signal, source, previousValue }) => {
+    if (value === previousValue) {
+      return
+    }
+
+    if (source === 'validator') {
+      await new Promise((resolve) => setTimeout(resolve, 1000))
+    }
+
+    if (signal.aborted) {
+      return
+    }
+
+    if (isNull(value) || !isString(value)) {
+      return false
+    }
+
+    try {
+      const variable = await api.variables.getVariableByName(value)
+
+      if (variable?.id === props.variable.id) {
+        return true
+      }
+
+      return localization.error.variableAlreadyExists
+    } catch {
+      /* Variable doesn't exist: silence is golden */
+      return true
+    }
+  }
+
+  const { validate, pending } = useValidationObserver()
+  const name = ref<string>(props.variable.name)
+  const value = ref<string>(props.variable.valueString)
+  const tags = ref<string[]>(props.variable.tags)
+
+  const rules: Record<string, ValidationRule<string | undefined>[]> = {
+    name: [
+      isRequired(localization.info.name),
+      isLessThanOrEqual(MAX_VARIABLE_NAME_LENGTH)(localization.info.name),
+      isSnakeCase,
+      nameIsUnique,
+    ],
+    value: [
+      isRequired(localization.info.value),
+      isLessThanOrEqual(MAX_VARIABLE_VALUE_LENGTH)(localization.info.value),
+      isJson(localization.info.value),
+
+    ],
+  }
+
+  const { error: nameErrorMessage, state: nameState } = useValidation(name, localization.info.name, rules.name)
+  const { error: valueErrorMessage, state: valueState } = useValidation(value, localization.info.value, rules.value)
+
+  const submit = async (): Promise<void> => {
+    const valid = await validate()
+
+    if (valid) {
+      try {
+        const values: VariableV2Edit = {
+          name: name.value,
+          value: value.value,
+          tags: tags.value,
+        }
+
+        const variable = await api.variables.editVariableV2(props.variable.id, values)
+
+        showToast(localization.success.editVariable, 'success')
+        internalValue.value = false
+        emit('update', variable)
+      } catch (error) {
+        console.error(error)
+        const message = getApiErrorMessage(error, localization.error.editVariable)
+        showToast(message, 'error')
+      }
+    }
+  }
+</script>
