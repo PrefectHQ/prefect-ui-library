@@ -5,6 +5,7 @@ export const artifactTypes = [
   'markdown',
   'table',
   'progress',
+  'image',
   'unknown',
 ] as const
 
@@ -16,6 +17,7 @@ export const artifactTypeIconMap = {
   table: 'ArtifactTable',
   result: 'ArtifactResult',
   progress: 'ArtifactProgress',
+  image: 'ArtifactImage',
   unknown: 'Artifact',
 } as const satisfies Record<ArtifactType | 'default', Icon>
 
@@ -23,9 +25,10 @@ export type ResultArtifactData = Record<string, unknown>
 export type ProgressArtifactData = number
 export type MarkdownArtifactData = string
 export type TableArtifactData = string
+export type ImageArtifactData = string
 export type UnknownArtifactData = unknown
 
-export type ArtifactData = ResultArtifactData | MarkdownArtifactData | TableArtifactData | ProgressArtifactData | UnknownArtifactData
+export type ArtifactData = ResultArtifactData | MarkdownArtifactData | TableArtifactData | ProgressArtifactData | ImageArtifactData | UnknownArtifactData
 export type ArtifactMetadata = Record<string, string>
 
 export interface IArtifact {
@@ -61,6 +64,10 @@ export type ProgressArtifact = IArtifact & {
   data: ProgressArtifactData,
 }
 
+export type ImageArtifact = IArtifact & {
+  type: 'image',
+  data: ImageArtifactData,
+}
 
 export type UnknownArtifact = IArtifact & {
   type: 'unknown',
