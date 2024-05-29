@@ -1,6 +1,6 @@
 <template>
   <div class="artifact-data-image">
-    <img loading="eager" :src="artifact.data">
+    <img :src="artifact.data">
     <br>
     <p>
       <span>Image URL: </span>
