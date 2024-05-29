@@ -1,6 +1,6 @@
 <template>
   <p-content class="automation-action-run-deployment-parameters">
-    <SchemaInputV2 v-model:values="parameters" :schema :errors :kinds="['none', 'json', 'jinja', 'workspace_variable']">
+    <SchemaInputV2 v-model:values="parameters" :schema :errors :kinds="['none', 'json', 'jinja', 'workspace_variable']" skip-default-value-initialization>
       <template #default="{ kind, setKind }">
         <div class="automation-action-run-deployment-parameters__header">
           <h3 class="deployment-form__heading">

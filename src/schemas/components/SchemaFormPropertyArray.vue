@@ -6,7 +6,7 @@
   import { PCombobox, SelectModelValue, State } from '@prefecthq/prefect-design'
   import { computed } from 'vue'
   import SchemaFormPropertyArrayList from '@/schemas/components/SchemaFormPropertyArrayList.vue'
-  import { useSchema } from '@/schemas/compositions/useSchema'
+  import { useSchemaFormSettings } from '@/schemas/compositions/useSchemaFormSettings'
   import { useSchemaProperty } from '@/schemas/compositions/useSchemaProperty'
   import { SchemaProperty, isSchemaProperty, isSchemaPropertyPrimitiveType } from '@/schemas/types/schema'
   import { SchemaValueError } from '@/schemas/types/schemaValuesValidationResponse'
@@ -21,7 +21,7 @@
     state: State,
   }>()
 
-  const schema = useSchema()
+  const { schema } = useSchemaFormSettings()
   const { property } = useSchemaProperty(() => props.property)
 
   const emit = defineEmits<{
