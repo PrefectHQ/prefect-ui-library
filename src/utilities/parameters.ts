@@ -1,42 +1,5 @@
-import { Schema, SchemaProperties, SchemaValues } from '@/types/schemas'
-import { stringify } from '@/utilities/json'
+import { Schema, SchemaProperties } from '@/types/schemas'
 import { mapEntries } from '@/utilities/object'
-
-function getSchemaValuesWithDefaults(
-  values: SchemaValues,
-  schema: Schema,
-): SchemaValues {
-  return {
-    ...getSchemaDefaults(schema),
-    ...values,
-  }
-}
-
-export function getSchemaValuesWithDefaultsJson(
-  values: SchemaValues,
-  schema: Schema,
-): string {
-  const defaultValues = getSchemaValuesWithDefaults(values, schema)
-
-  return stringify(defaultValues)
-}
-
-/*
- * @deprecated use `getSchemaDefaultValues` instead
- */
-function getSchemaDefaults(schema: Schema): SchemaValues {
-  const values: SchemaValues = {}
-
-  if (schema.properties) {
-    Object.entries(schema.properties).forEach(([key, property]) => {
-      if ('default' in property!) {
-        values[key] = property.default
-      }
-    })
-  }
-
-  return values
-}
 
 function getSchemaPropertiesWithoutDefaults(
   schemaProperties: SchemaProperties = {},
