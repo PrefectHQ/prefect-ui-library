@@ -48,7 +48,7 @@ export const mapVariableV2ResponseToVariableV2: MapFunction<VariableV2Response, 
 export const mapVariableV2EditToVariableV2EditRequest: MapFunction<VariableV2Edit, VariableV2EditRequest> = function(source) {
   return {
     name: source.name,
-    value: parseUnknownJson(source.value),
+    value: JSON.parse(source.value),
     tags: source.tags,
   }
 }
@@ -56,7 +56,7 @@ export const mapVariableV2EditToVariableV2EditRequest: MapFunction<VariableV2Edi
 export const mapVariableV2CreateToVariableV2CreateRequest: MapFunction<VariableV2Create, VariableV2CreateRequest> = function(source) {
   return {
     name: source.name,
-    value: parseUnknownJson(source.value),
+    value: JSON.parse(source.value),
     tags: source.tags,
   }
 }

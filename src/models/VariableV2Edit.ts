@@ -1,5 +1,5 @@
 export type VariableV2Edit = {
   name?: string | null,
-  value?: unknown,
+  value: string,
   tags?: string[] | null,
 }
