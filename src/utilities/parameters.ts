@@ -2,7 +2,7 @@ import { Schema, SchemaProperties, SchemaValues } from '@/types/schemas'
 import { stringify } from '@/utilities/json'
 import { mapEntries } from '@/utilities/object'
 
-export function getSchemaValuesWithDefaults(
+function getSchemaValuesWithDefaults(
   values: SchemaValues,
   schema: Schema,
 ): SchemaValues {
@@ -24,7 +24,7 @@ export function getSchemaValuesWithDefaultsJson(
 /*
  * @deprecated use `getSchemaDefaultValues` instead
  */
-export function getSchemaDefaults(schema: Schema): SchemaValues {
+function getSchemaDefaults(schema: Schema): SchemaValues {
   const values: SchemaValues = {}
 
   if (schema.properties) {
@@ -38,7 +38,7 @@ export function getSchemaDefaults(schema: Schema): SchemaValues {
   return values
 }
 
-export function getSchemaPropertiesWithoutDefaults(
+function getSchemaPropertiesWithoutDefaults(
   schemaProperties: SchemaProperties = {},
 ): SchemaProperties {
   return mapEntries(schemaProperties, (key, property) => {
