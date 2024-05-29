@@ -38,7 +38,7 @@
     const message = value ? localization.success.activateDeployment : localization.success.pauseDeployment
 
     try {
-      await api.deployments.updateDeployment(props.deployment.id, { paused: !value })
+      await api.deployments.updateDeploymentV2(props.deployment.id, { paused: !value })
 
       showToast(message, 'success')
       emit('update')

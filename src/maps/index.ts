@@ -29,7 +29,7 @@ import {
 } from '@/maps/dashboard'
 import { mapStringToDate, mapDateToString } from '@/maps/date'
 import { mapDateRangeSelectValueToDateRange } from '@/maps/dateRangeSelectValue'
-import { mapDeploymentResponseToDeployment, mapDeploymentUpdateToDeploymentUpdateRequest, mapDeploymentFlowRunCreateToDeploymentFlowRunRequest, mapDeploymentFlowRunCreateV2ToDeploymentFlowRunRequest, mapDeploymentUpdateV2ToDeploymentUpdateRequest } from '@/maps/deployment'
+import { mapDeploymentResponseToDeployment, mapDeploymentFlowRunCreateV2ToDeploymentFlowRunRequest, mapDeploymentUpdateV2ToDeploymentUpdateRequest } from '@/maps/deployment'
 import { mapDeploymentScheduleResponseToDeploymentSchedule } from '@/maps/deploymentSchedule'
 import { mapDeploymentScheduleCreateToDeploymentScheduleCreateRequest } from '@/maps/deploymentScheduleCreate'
 import { mapDeploymentScheduleUpdateToDeploymentScheduleUpdateRequest } from '@/maps/deploymentScheduleUpdate'
@@ -124,7 +124,6 @@ export const maps = {
   Date: { string: mapDateToString },
   DateRangeSelectValue: { DateRange: mapDateRangeSelectValueToDateRange },
   DeploymentFilter: { DeploymentFilterRequest: mapDeploymentFilter },
-  DeploymentFlowRunCreate: { DeploymentFlowRunRequest: mapDeploymentFlowRunCreateToDeploymentFlowRunRequest },
   DeploymentFlowRunCreateV2: { DeploymentFlowRunRequest: mapDeploymentFlowRunCreateV2ToDeploymentFlowRunRequest },
   DeploymentResponse: { Deployment: mapDeploymentResponseToDeployment },
   DeploymentScheduleResponse: { DeploymentSchedule: mapDeploymentScheduleResponseToDeploymentSchedule },
@@ -133,7 +132,6 @@ export const maps = {
   DeploymentsFilter: { DeploymentsFilterRequest: mapDeploymentsFilter },
   DeploymentStatus: { ServerDeploymentStatus: mapDeploymentStatusToServerDeploymentStatus },
   DeploymentStatsFilter: { FlowRunsFilter: mapDeploymentStatsFilterToFlowRunsFilter },
-  DeploymentUpdate: { DeploymentUpdateRequest: mapDeploymentUpdateToDeploymentUpdateRequest },
   DeploymentUpdateV2: { DeploymentUpdateRequest: mapDeploymentUpdateV2ToDeploymentUpdateRequest },
   EmpiricalPolicy: { EmpiricalPolicyResponse: mapEmpiricalPolicyToEmpiricalPolicyResponse, EmpiricalPolicyRequest: mapEmpiricalPolicyToEmpiricalPolicyRequest },
   EmpiricalPolicyResponse: { EmpiricalPolicy: mapEmpiricalPolicyResponseToEmpiricalPolicy },

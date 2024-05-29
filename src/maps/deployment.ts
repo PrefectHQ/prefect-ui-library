@@ -1,5 +1,5 @@
 import { sortStringArray } from '@prefecthq/prefect-design'
-import { DeploymentFlowRunCreate, DeploymentFlowRunCreateV2, DeploymentFlowRunRequest, DeploymentUpdate, DeploymentUpdateRequest, DeploymentUpdateV2, SchemaResponse } from '@/models'
+import { DeploymentFlowRunCreateV2, DeploymentFlowRunRequest, DeploymentUpdateRequest, DeploymentUpdateV2 } from '@/models'
 import { DeploymentResponse } from '@/models/api/DeploymentResponse'
 import { Deployment } from '@/models/Deployment'
 import { createObjectLevelCan } from '@/models/ObjectLevelCan'
@@ -37,19 +37,6 @@ export const mapDeploymentResponseToDeployment: MapFunction<DeploymentResponse, 
   })
 }
 
-export const mapDeploymentUpdateToDeploymentUpdateRequest: MapFunction<DeploymentUpdate, DeploymentUpdateRequest> = function(source) {
-  return {
-    description: source.description,
-    parameters: source.parameters ? this.map('SchemaValues', { values: source.parameters, schema: source.schema }, 'SchemaValuesRequest') : undefined,
-    paused: source.paused,
-    tags: source.tags,
-    work_queue_name: source.workQueueName,
-    work_pool_name: source.workPoolName,
-    infra_overrides: source.infrastructureOverrides,
-    enforce_parameter_schema: source.enforceParameterSchema,
-  }
-}
-
 export const mapDeploymentUpdateV2ToDeploymentUpdateRequest: MapFunction<DeploymentUpdateV2, DeploymentUpdateRequest> = function(source) {
   return {
     description: source.description,
@@ -60,22 +47,6 @@ export const mapDeploymentUpdateV2ToDeploymentUpdateRequest: MapFunction<Deploym
     work_pool_name: source.workPoolName,
     infra_overrides: source.infrastructureOverrides,
     enforce_parameter_schema: source.enforceParameterSchema,
-  }
-}
-
-export const mapDeploymentFlowRunCreateToDeploymentFlowRunRequest: MapFunction<DeploymentFlowRunCreate, DeploymentFlowRunRequest> = function(source) {
-  return {
-    name: source.name,
-    parameters: source.parameters ? this.map('SchemaValues', { values: source.parameters, schema: source.schema }, 'SchemaValuesRequest') : undefined,
-    idempotency_key: source.idempotencyKey,
-    context: source.context,
-    tags: source.tags,
-    parent_task_run_id: source.parentTaskRunId,
-    infrastructure_document_id: source.infrastructureDocumentId,
-    state: this.map('StateCreate', source.state, 'StateRequest'),
-    empirical_policy: this.map('EmpiricalPolicy', source.empiricalPolicy, 'EmpiricalPolicyRequest'),
-    work_queue_name: source.workQueueName,
-    job_variables: source.jobVariables,
   }
 }
 
