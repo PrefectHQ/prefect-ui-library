@@ -18,10 +18,7 @@
   const props = defineProps<{
     flowId: string,
     filter?: FlowRunsFilter,
-    flowRunLimit?: number,
   }>()
-
-  const limit = computed(() => props.flowRunLimit ?? 3)
 
   const filter = (): FlowRunsFilter => ({
     ...props.filter,
@@ -36,7 +33,7 @@
     mode: 'infinite',
   })
 
-  const more = computed(() => total.value > limit.value)
+  const more = computed(() => total.value > flowRuns.value.length)
 
   next()
 </script>

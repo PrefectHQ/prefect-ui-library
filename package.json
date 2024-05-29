@@ -41,7 +41,7 @@
     ],
     "types": "./dist/types/src/index.d.ts",
     "dependencies": {
-        "@prefecthq/graphs": "2.3.0",
+        "@prefecthq/graphs": "2.3.1",
         "axios": "1.6.7",
         "cronstrue": "^2.50.0",
         "d3": "7.9.0",
@@ -76,7 +76,7 @@
         "vue-tsc": "^2.0.19"
     },
     "peerDependencies": {
-        "@prefecthq/prefect-design": "^2.10.11",
+        "@prefecthq/prefect-design": "^2.10.13",
         "@prefecthq/vue-charts": "^2.0.3",
         "@prefecthq/vue-compositions": "^1.11.4",
         "vee-validate": "^4.7.0",
