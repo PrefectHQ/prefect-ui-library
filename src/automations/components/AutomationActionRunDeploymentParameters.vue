@@ -30,7 +30,6 @@
   import { computed } from 'vue'
   import { Deployment } from '@/models/Deployment'
   import { SchemaValuesV2, useSchemaValidationV2, SchemaInputV2, SchemaV2 } from '@/schemas'
-  import { getCacheKey } from '@/utilities'
   import { isRecord } from '@/utilities/object'
   import { timeout } from '@/utilities/time'
 
