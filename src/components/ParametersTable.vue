@@ -47,13 +47,13 @@
 
   const searchTerm = ref('')
 
-  const properties = computed(() => props.deployment.parameterOpenApiSchemaV2.properties ?? {})
+  const properties = computed(() => props.deployment.parameterOpenApiSchema.properties ?? {})
 
   const data = computed<Parameter[]>(() => {
     return Object.entries(properties.value)
       .map(([key, value]) => ({
         key,
-        value: props.deployment.parametersV2[key],
+        value: props.deployment.parameters[key],
         defaultValue: value.default,
         type: value.type,
         position: value.position ?? 0,

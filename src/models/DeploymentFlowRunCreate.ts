@@ -20,8 +20,8 @@ type WithoutParameters = Base & {
   parameters?: never,
 }
 
-type WithParametersV2 = Base & {
+type WithParameters = Base & {
   parameters: SchemaValuesV2,
 }
 
-export type DeploymentFlowRunCreateV2 = WithoutParameters | WithParametersV2
+export type DeploymentFlowRunCreateV2 = WithoutParameters | WithParameters

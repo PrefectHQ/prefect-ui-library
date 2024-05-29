@@ -1,5 +1,5 @@
 <template>
-  <router-link :to="routes.deploymentFlowRunCreate(deployment.id, deployment.parametersV2)">
+  <router-link :to="routes.deploymentFlowRunCreate(deployment.id, deployment.parameters)">
     <p-overflow-menu-item>
       <slot>
         Custom run

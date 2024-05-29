@@ -16,8 +16,8 @@ export interface IDeployment {
   flowId: string,
   paused: boolean,
   schedules: DeploymentSchedule[],
-  parametersV2: SchemaValuesV2,
-  parameterOpenApiSchemaV2: SchemaV2,
+  parameters: SchemaValuesV2,
+  parameterOpenApiSchema: SchemaV2,
   tags: string[] | null,
   manifestPath: string | null,
   path: string | null,
@@ -45,8 +45,8 @@ export class Deployment implements IDeployment {
   public readonly flowId: string
   public paused: boolean
   public schedules: DeploymentSchedule[]
-  public parametersV2: SchemaValuesV2
-  public parameterOpenApiSchemaV2: SchemaV2
+  public parameters: SchemaValuesV2
+  public parameterOpenApiSchema: SchemaV2
   public tags: string[] | null
   public manifestPath: string | null
   public path: string | null
@@ -73,8 +73,8 @@ export class Deployment implements IDeployment {
     this.flowId = deployment.flowId
     this.paused = deployment.paused
     this.schedules = deployment.schedules
-    this.parametersV2 = deployment.parametersV2
-    this.parameterOpenApiSchemaV2 = deployment.parameterOpenApiSchemaV2
+    this.parameters = deployment.parameters
+    this.parameterOpenApiSchema = deployment.parameterOpenApiSchema
     this.tags = deployment.tags
     this.manifestPath = deployment.manifestPath
     this.path = deployment.path

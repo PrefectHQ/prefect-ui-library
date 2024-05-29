@@ -95,14 +95,14 @@
   const description = ref(props.deployment.description)
   const workPoolName = ref(props.deployment.workPoolName)
   const workQueueName = ref(props.deployment.workQueueName)
-  const parameters = ref(props.deployment.parametersV2)
+  const parameters = ref(props.deployment.parameters)
   const tags = ref(props.deployment.tags)
   const infrastructureOverrides = ref(stringify(props.deployment.infrastructureOverrides))
   const enforceParameterSchema = ref(props.deployment.enforceParameterSchema)
   const shouldValidateParameters = ref(true)
 
   const schema = computed(() => {
-    return { ...props.deployment.parameterOpenApiSchemaV2, required: [] }
+    return { ...props.deployment.parameterOpenApiSchema, required: [] }
   })
 
   const schemaHasParameters = computed(() => !isEmptyObject(schema.value.properties))

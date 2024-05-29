@@ -32,7 +32,7 @@
   }))
 
   const run = async (): Promise<void> => {
-    const requiredParameters = props.deployment.parameterOpenApiSchemaV2.required
+    const requiredParameters = props.deployment.parameterOpenApiSchema.required
 
     if (requiredParameters && requiredParameters.length > 0) {
       props.openModal()

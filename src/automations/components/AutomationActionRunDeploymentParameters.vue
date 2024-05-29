@@ -56,9 +56,9 @@
   })
 
   const schema = computed<SchemaV2>(() => {
-    const schema = props.deployment.parameterOpenApiSchemaV2
+    const schema = props.deployment.parameterOpenApiSchema
     const required: string[] = []
-    const parametersProvidedByDeployment = Object.keys(props.deployment.parametersV2)
+    const parametersProvidedByDeployment = Object.keys(props.deployment.parameters)
 
     schema.required?.forEach(parameter => {
       if (parametersProvidedByDeployment.includes(parameter)) {
