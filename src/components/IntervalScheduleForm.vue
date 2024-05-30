@@ -48,7 +48,7 @@
   import { computed, ref, watch, onMounted } from 'vue'
   import TimezoneSelect from '@/components/TimezoneSelect.vue'
   import { IntervalSchedule } from '@/models'
-  import { setTimezone, toPluralString, unsetTimezone } from '@/utilities'
+  import { toPluralString, unsetTimezone } from '@/utilities'
   import { IntervalOption, secondsToClosestIntervalOption, secondsToClosestIntervalValue, intervalOptionsToSecondsMap } from '@/utilities/timeIntervals'
   import { fieldRules, isGreaterThanOrEqual, isRequired } from '@/utilities/validation'
 

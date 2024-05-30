@@ -85,7 +85,6 @@
   import FlowRunJobVariableOverridesLabeledInput from '@/components/FlowRunJobVariableOverridesLabeledInput.vue'
   import FlowRunNameInput from '@/components/FlowRunNameInput.vue'
   import ToastParameterValidationError from '@/components/ToastParameterValidationError.vue'
-  import { useCan } from '@/compositions/useCan'
   import { localization } from '@/localization'
   import { Deployment } from '@/models/Deployment'
   import { DeploymentFlowRunCreateV2 } from '@/models/DeploymentFlowRunCreate'
@@ -105,8 +104,6 @@
     (event: 'submit', value: DeploymentFlowRunCreateV2): void,
     (event: 'cancel'): void,
   }>()
-
-  const can = useCan()
 
   const shouldValidate = ref(true)
   const schema = computed(() => props.deployment.parameterOpenApiSchema)
