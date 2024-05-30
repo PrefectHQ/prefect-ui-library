@@ -19,9 +19,14 @@
     </template>
 
     <template #empty-state>
-      <PEmptyResults>
+      <PEmptyResults v-if="loaded">
         <template #message>
           No task concurrency limits
+        </template>
+      </PEmptyResults>
+      <PEmptyResults v-else>
+        <template #message>
+          <p-loading-icon />
         </template>
       </PEmptyResults>
     </template>
@@ -29,7 +34,7 @@
 </template>
 
 <script lang="ts" setup>
-  import { TableColumn } from '@prefecthq/prefect-design'
+  import { PEmptyResults, TableColumn } from '@prefecthq/prefect-design'
   import { useSubscription } from '@prefecthq/vue-compositions'
   import { computed } from 'vue'
   import { ConcurrencyTableActiveSlots, ConcurrencyLimitMenu, ConcurrencyLimitsPageEmptyState } from '@/components'

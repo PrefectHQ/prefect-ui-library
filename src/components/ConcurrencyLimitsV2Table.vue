@@ -24,9 +24,14 @@
     </template>
 
     <template #empty-state>
-      <p-empty-results>
+      <p-empty-results v-if="loaded">
         <template #message>
           No concurrency limits
+        </template>
+      </p-empty-results>
+      <p-empty-results v-else>
+        <template #message>
+          <p-loading-icon />
         </template>
       </p-empty-results>
     </template>
