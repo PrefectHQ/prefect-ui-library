@@ -21,14 +21,11 @@
   import { isJson } from '..'
   import ExtraInfoTooltip from '@/components/ExtraInfoTooltip.vue'
   import JobVariableOverridesInput from '@/components/JobVariableOverridesInput.vue'
-  import { useCan } from '@/compositions/useCan'
 
   /** A JSON string */
   const modelValue = defineModel<string>()
 
   const { state: jobVariablesState, error: jobVariablesError } = useValidation(modelValue, isJson('Job variables'))
-
-  const can = useCan()
 </script>
 
 <style>

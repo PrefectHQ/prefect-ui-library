@@ -19,7 +19,25 @@
     </p-label>
 
     <p-message info>
-      In addition to any fields present on the triggering event, the following objects can be used in notification templates: <p-code inline>flow</p-code>, <p-code inline>deployment</p-code>, <p-code inline>flow_run</p-code>, <p-code inline>work_pool</p-code>, <p-code inline>work_queue</p-code>, and <p-code inline>metric</p-code>.
+      In addition to any fields present on the triggering event, the following objects can be used in notification templates:
+      <p-code inline>
+        flow
+      </p-code>,
+      <p-code inline>
+        deployment
+      </p-code>,
+      <p-code inline>
+        flow_run
+      </p-code>,
+      <p-code inline>
+        work_pool
+      </p-code>,
+      <p-code inline>
+        work_queue
+      </p-code>, and
+      <p-code inline>
+        metric
+      </p-code>.
     </p-message>
   </p-content>
 </template>

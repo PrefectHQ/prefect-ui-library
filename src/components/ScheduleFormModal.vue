@@ -86,10 +86,12 @@
     close()
   }
 
-  const cronDisabled = ref<boolean>()
-  const intervalDisabled = ref<boolean>()
+  const cronDisabled = ref<boolean>(false)
+  const intervalDisabled = ref<boolean>(false)
   const disabled = computed(() => {
-    return scheduleForm.value == 'rrule' || scheduleForm.value == 'cron' && cronDisabled.value || scheduleForm.value == 'interval' && intervalDisabled.value
+    return scheduleForm.value == 'rrule' ||
+      scheduleForm.value == 'cron' && cronDisabled.value ||
+      scheduleForm.value == 'interval' && intervalDisabled.value
   })
 
   const submitCurrentForm = async (): Promise<void> => {
