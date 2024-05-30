@@ -109,15 +109,15 @@
   const can = useCan()
 
   const shouldValidate = ref(true)
-  const schema = computed(() => props.deployment.parameterOpenApiSchemaV2)
-  const hasParameters = computed(() => !isEmptyObject(props.deployment.parameterOpenApiSchemaV2.properties ?? {}))
+  const schema = computed(() => props.deployment.parameterOpenApiSchema)
+  const hasParameters = computed(() => !isEmptyObject(props.deployment.parameterOpenApiSchema.properties ?? {}))
 
   const { validate } = useValidationObserver()
 
   const name = ref(props.name)
   const { state: nameState, error: nameError } = useValidation(name, isRequired('name'))
 
-  const parameters = ref<SchemaValuesV2>({ ...props.deployment.parametersV2, ...props.parameters ?? {} })
+  const parameters = ref<SchemaValuesV2>({ ...props.deployment.parameters, ...props.parameters ?? {} })
   const scheduledTime = ref<Date | null>(null)
   const stateMessage = ref<string>('')
   const tags = ref<string[]>(props.deployment.tags ?? [])

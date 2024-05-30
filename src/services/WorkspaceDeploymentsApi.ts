@@ -1,8 +1,8 @@
 import { DeploymentResponse } from '@/models/api/DeploymentResponse'
 import { FlowRunResponse } from '@/models/api/FlowRunResponse'
 import { Deployment } from '@/models/Deployment'
-import { DeploymentFlowRunCreate, DeploymentFlowRunCreateV2 } from '@/models/DeploymentFlowRunCreate'
-import { DeploymentUpdate, DeploymentUpdateV2 } from '@/models/DeploymentUpdate'
+import { DeploymentFlowRunCreateV2 } from '@/models/DeploymentFlowRunCreate'
+import { DeploymentUpdateV2 } from '@/models/DeploymentUpdate'
 import { DeploymentsFilter } from '@/models/Filters'
 import { FlowRun } from '@/models/FlowRun'
 import { BatchProcessor } from '@/services/BatchProcessor'
@@ -53,30 +53,11 @@ export class WorkspaceDeploymentsApi extends WorkspaceApi {
     return data
   }
 
-  /**
-   * @deprecated Use createDeploymentFlowRunV2
-   */
-  public async createDeploymentFlowRun(deploymentId: string, request: DeploymentFlowRunCreate): Promise<FlowRun> {
-    const body = mapper.map('DeploymentFlowRunCreate', request, 'DeploymentFlowRunRequest')
-    const { data } = await this.post<FlowRunResponse>(`/${deploymentId}/create_flow_run`, body)
-
-    return mapper.map('FlowRunResponse', data, 'FlowRun')
-  }
-
   public async createDeploymentFlowRunV2(deploymentId: string, request: DeploymentFlowRunCreateV2): Promise<FlowRun> {
     const body = mapper.map('DeploymentFlowRunCreateV2', request, 'DeploymentFlowRunRequest')
     const { data } = await this.post<FlowRunResponse>(`/${deploymentId}/create_flow_run`, body)
 
     return mapper.map('FlowRunResponse', data, 'FlowRun')
-  }
-
-  /**
-   * @deprecated Use updateDeploymentV2
-   */
-  public updateDeployment(deploymentId: string, request: DeploymentUpdate): Promise<void> {
-    const body = mapper.map('DeploymentUpdate', request, 'DeploymentUpdateRequest')
-
-    return this.patch(`/${deploymentId}`, body)
   }
 
   public updateDeploymentV2(deploymentId: string, request: DeploymentUpdateV2): Promise<void> {

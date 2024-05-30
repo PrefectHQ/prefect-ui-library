@@ -30,7 +30,6 @@
   import { computed } from 'vue'
   import { Deployment } from '@/models/Deployment'
   import { SchemaValuesV2, useSchemaValidationV2, SchemaInputV2, SchemaV2 } from '@/schemas'
-  import { getCacheKey } from '@/utilities'
   import { isRecord } from '@/utilities/object'
   import { timeout } from '@/utilities/time'
 
@@ -57,9 +56,9 @@
   })
 
   const schema = computed<SchemaV2>(() => {
-    const schema = props.deployment.parameterOpenApiSchemaV2
+    const schema = props.deployment.parameterOpenApiSchema
     const required: string[] = []
-    const parametersProvidedByDeployment = Object.keys(props.deployment.parametersV2)
+    const parametersProvidedByDeployment = Object.keys(props.deployment.parameters)
 
     schema.required?.forEach(parameter => {
       if (parametersProvidedByDeployment.includes(parameter)) {

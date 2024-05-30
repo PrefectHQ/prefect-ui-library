@@ -1,12 +1,9 @@
 import { CreatedOrUpdatedByResponse } from '@/models/api/CreatedOrUpdatedByResponse'
 import { DeploymentScheduleResponse } from '@/models/api/DeploymentScheduleResponse'
 import { ScheduleResponse } from '@/models/api/ScheduleResponse'
-import { SchemaResponse } from '@/models/api/SchemaResponse'
 import { ServerDeploymentStatus } from '@/models/DeploymentStatus'
-import { SchemaResponseV2 } from '@/schemas'
+import { SchemaResponseV2, SchemaValuesV2 } from '@/schemas'
 import { DateString } from '@/types/dates'
-import { SchemaValues } from '@/types/schemas'
-
 
 export type DeploymentResponse = {
   id: string,
@@ -22,12 +19,12 @@ export type DeploymentResponse = {
   is_schedule_active: boolean,
   paused: boolean,
   schedules: DeploymentScheduleResponse[],
-  parameters: SchemaValues,
+  parameters: SchemaValuesV2,
   tags: string[] | null,
   manifest_path: string | null,
   path: string | null,
   entrypoint: string | null,
-  parameter_openapi_schema: SchemaResponse | SchemaResponseV2 | null,
+  parameter_openapi_schema: SchemaResponseV2,
   storage_document_id: string | null,
   infrastructure_document_id: string | null,
   infra_overrides: Record<string, unknown> | null,

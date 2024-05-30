@@ -32,30 +32,33 @@
   }))
 
   const run = async (): Promise<void> => {
-    if (props.deployment.parameterOpenApiSchema.required && props.deployment.parameterOpenApiSchema.required.length > 0) {
-      props.openModal()
-    } else {
-      try {
-        const flowRun = await api.deployments.createDeploymentFlowRun(props.deployment.id, {
-          state: {
-            type: 'scheduled',
-            message: 'Run from the Prefect UI with defaults',
-          },
-        })
+    const requiredParameters = props.deployment.parameterOpenApiSchema.required
 
-        nextRunSubscription.refresh()
-        const toastMessage = h(ToastFlowRunCreate, {
-          flowRun,
-          flowRunRoute: routes.flowRun,
-          router,
-          immediate: true,
-        })
-        showToast(toastMessage, 'success')
-      } catch (error) {
-        const message = getApiErrorMessage(error, localization.error.scheduleFlowRun)
-        showToast(message, 'error')
-        console.error(error)
-      }
+    if (requiredParameters && requiredParameters.length > 0) {
+      props.openModal()
+      return
+    }
+
+    try {
+      const flowRun = await api.deployments.createDeploymentFlowRunV2(props.deployment.id, {
+        state: {
+          type: 'scheduled',
+          message: 'Run from the Prefect UI with defaults',
+        },
+      })
+
+      nextRunSubscription.refresh()
+      const toastMessage = h(ToastFlowRunCreate, {
+        flowRun,
+        flowRunRoute: routes.flowRun,
+        router,
+        immediate: true,
+      })
+      showToast(toastMessage, 'success')
+    } catch (error) {
+      const message = getApiErrorMessage(error, localization.error.scheduleFlowRun)
+      showToast(message, 'error')
+      console.error(error)
     }
   }
 </script>

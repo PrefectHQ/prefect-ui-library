@@ -74,7 +74,6 @@ export { default as DeploymentDeprecatedMessage } from './DeploymentDeprecatedMe
 export { default as DeploymentDescription } from './DeploymentDescription.vue'
 export { default as DeploymentDescriptionEmptyState } from './DeploymentDescriptionEmptyState.vue'
 export { default as DeploymentDetails } from './DeploymentDetails.vue'
-export { default as DeploymentForm } from './DeploymentForm.vue'
 export { default as DeploymentFormV2 } from './DeploymentFormV2.vue'
 export { default as DeploymentIconText } from './DeploymentIconText.vue'
 export { default as DeploymentMenu } from './DeploymentMenu.vue'

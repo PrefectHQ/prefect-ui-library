@@ -1,11 +1,8 @@
-import { SchemaResponse } from '@/models/api/SchemaResponse'
 import { CreatedOrUpdatedBy } from '@/models/CreatedOrUpdatedBy'
 import { DeploymentSchedule } from '@/models/DeploymentSchedule'
 import { DeploymentStatus } from '@/models/DeploymentStatus'
 import { ObjectLevelCan } from '@/models/ObjectLevelCan'
 import { SchemaV2, SchemaValuesV2 } from '@/schemas'
-import { Schema, SchemaValues } from '@/types/schemas'
-
 
 export interface IDeployment {
   id: string,
@@ -19,15 +16,11 @@ export interface IDeployment {
   flowId: string,
   paused: boolean,
   schedules: DeploymentSchedule[],
-  parameters: SchemaValues,
-  parameterOpenApiSchema: Schema,
-  parametersV2: SchemaValuesV2,
-  parameterOpenApiSchemaV2: SchemaV2,
+  parameters: SchemaValuesV2,
+  parameterOpenApiSchema: SchemaV2,
   tags: string[] | null,
   manifestPath: string | null,
   path: string | null,
-  rawParameters: SchemaValues,
-  rawSchema: SchemaResponse,
   entrypoint: string | null,
   storageDocumentId: string | null,
   infrastructureDocumentId: string | null,
@@ -52,12 +45,8 @@ export class Deployment implements IDeployment {
   public readonly flowId: string
   public paused: boolean
   public schedules: DeploymentSchedule[]
-  public parameters: SchemaValues
-  public parameterOpenApiSchema: Schema
-  public parametersV2: SchemaValuesV2
-  public parameterOpenApiSchemaV2: SchemaV2
-  public readonly rawParameters: SchemaValues
-  public readonly rawSchema: SchemaResponse
+  public parameters: SchemaValuesV2
+  public parameterOpenApiSchema: SchemaV2
   public tags: string[] | null
   public manifestPath: string | null
   public path: string | null
@@ -86,12 +75,8 @@ export class Deployment implements IDeployment {
     this.schedules = deployment.schedules
     this.parameters = deployment.parameters
     this.parameterOpenApiSchema = deployment.parameterOpenApiSchema
-    this.parametersV2 = deployment.parametersV2
-    this.parameterOpenApiSchemaV2 = deployment.parameterOpenApiSchemaV2
     this.tags = deployment.tags
     this.manifestPath = deployment.manifestPath
-    this.rawParameters = deployment.rawParameters
-    this.rawSchema = deployment.rawSchema
     this.path = deployment.path
     this.entrypoint = deployment.entrypoint
     this.storageDocumentId = deployment.storageDocumentId

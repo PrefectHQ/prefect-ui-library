@@ -50,7 +50,7 @@
     }
 
     deployment.value = await api.deployments.getDeployment(deploymentId)
-    const parameters = getParametersForDeployment(deploymentId) ?? { ...deployment.value.parametersV2 }
+    const parameters = getParametersForDeployment(deploymentId) ?? { ...deployment.value.parameters }
 
     emit('update:action', { ...props.action, deploymentId, parameters })
   }

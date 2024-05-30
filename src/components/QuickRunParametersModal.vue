@@ -1,6 +1,6 @@
 <template>
   <p-modal v-model:showModal="internalShowModal" class="quick-run-parameters-modal-v2" title="Run Deployment">
-    <SchemaFormV2 :id="formId" v-model:values="parameters" :schema="deployment.parameterOpenApiSchemaV2" :kinds="['json', 'workspace_variable']" @submit="submit">
+    <SchemaFormV2 :id="formId" v-model:values="parameters" :schema="deployment.parameterOpenApiSchema" :kinds="['json', 'workspace_variable']" @submit="submit">
       <template #default="{ kind, setKind }">
         <div class="quick-run-parameters-modal-v2__header">
           <h3>{{ localization.info.parameters }}</h3>
@@ -47,7 +47,7 @@
     (event: 'update:showModal', value: boolean): void,
   }>()
 
-  const parameters = ref<SchemaValuesV2>({ ...props.deployment.parametersV2 })
+  const parameters = ref<SchemaValuesV2>({ ...props.deployment.parameters })
 
   const internalShowModal = computed({
     get() {
