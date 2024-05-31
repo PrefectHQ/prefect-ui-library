@@ -5,11 +5,11 @@
     </template>
 
     <template #heading>
-      Run a flow to get started
+      Run a task or flow to get started
     </template>
 
     <template #description>
-      Flow runs store the state history for each execution of a flow.
+      Runs store the state history for each execution of a task or flow.
     </template>
 
     <template #actions>
