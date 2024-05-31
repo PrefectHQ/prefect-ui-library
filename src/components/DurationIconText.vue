@@ -12,7 +12,7 @@
     duration: number,
   }>()
 
-  const label = computed(() => props.duration == 0 ? 'None' : secondsToApproximateString(props.duration))
+  const label = computed(() => secondsToApproximateString(props.duration))
 
   const classes = computed(() => ({
     label: {
