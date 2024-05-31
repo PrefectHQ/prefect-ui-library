@@ -1,5 +1,5 @@
 <template>
-  <p-combobox v-model="internalValue" :options="timezoneOptions" :append="timestamp">
+  <p-combobox v-model="modelValue" :options="timezoneOptions" :append="timestamp">
     <template v-for="(index, name) in $slots" #[name]="data">
       <slot :name="name" v-bind="data" />
     </template>
@@ -13,27 +13,15 @@
   import { titleCase } from '@/utilities/strings'
   import { formatDateInTimezone, utcTimezone } from '@/utilities/timezone'
 
+  const modelValue = defineModel<string | null>({ required: true })
+
   const props = defineProps<{
-    modelValue: string | null,
     showTimestamp?: boolean,
     hideUnset?: boolean,
   }>()
 
-  const emit = defineEmits<{
-    (event: 'update:modelValue', value: string | null): void,
-  }>()
-
-  const internalValue = computed({
-    get() {
-      return props.modelValue ?? 'UTC'
-    },
-    set(val) {
-      emit('update:modelValue', val)
-    },
-  })
-
   const currentTime = ref(new Date())
-  const timestamp = computed(() => props.showTimestamp ? formatDateInTimezone(currentTime.value, 'hh:mm a', props.modelValue) : undefined)
+  const timestamp = computed(() => props.showTimestamp ? formatDateInTimezone(currentTime.value, 'hh:mm a', modelValue.value) : undefined)
 
   function updateCurrentTime(): void {
     currentTime.value = new Date()
