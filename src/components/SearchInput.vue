@@ -1,13 +1,14 @@
 <template>
   <div class="search">
     <template v-if="label">
-      <p-label for="search" :label="label" class="search__label" />
+      <p-label :for="inputId" :label="label" class="search__label" />
     </template>
+
     <p-text-input
+      :id="inputId"
       v-model="internalValue"
       type="search"
       :small="size === 'small'"
-      :size
       :placeholder
       class="search__input"
     >
@@ -19,14 +20,14 @@
 </template>
 
 <script lang="ts" setup>
-  import { PTextInput, PIcon, PLabel } from '@prefecthq/prefect-design'
+  import { PTextInput, PIcon, PLabel, randomId } from '@prefecthq/prefect-design'
   import { computed } from 'vue'
 
   const props = withDefaults(defineProps<{
     modelValue: string | null | undefined,
     placeholder?: string,
     label?: string,
-    size?: 'small' | 'default' | 'large',
+    size?: 'small' | 'default',
   }>(), {
     placeholder: 'Search...',
     label: undefined,
@@ -46,6 +47,8 @@
       emits('update:modelValue', value)
     },
   })
+
+  const inputId = `search-${randomId()}`
 </script>
 
 <style>
