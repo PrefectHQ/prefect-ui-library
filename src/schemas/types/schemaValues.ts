@@ -1,6 +1,6 @@
 import { isDefined } from '@prefecthq/prefect-design'
 import { MaybeRefOrGetter, toValue } from 'vue'
-import { isEmptyString, isRecord, isString } from '@/utilities'
+import { isRecord, isString } from '@/utilities'
 import { createTuple } from '@/utilities/tuples'
 
 export type SchemaValue = unknown
