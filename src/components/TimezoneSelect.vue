@@ -25,7 +25,7 @@
 
   const internalValue = computed({
     get() {
-      return props.modelValue ?? 'UTC'
+      return props.modelValue
     },
     set(val) {
       emit('update:modelValue', val)
