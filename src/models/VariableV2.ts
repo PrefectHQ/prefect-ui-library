@@ -1,5 +1,3 @@
-import { stringifyUnknownJson } from '@/utilities'
-
 export interface IVariableV2 {
   id: string,
   created: Date,
@@ -18,7 +16,7 @@ export class VariableV2 implements IVariableV2 {
   public tags: string[]
 
   public get valueString(): string {
-    return stringifyUnknownJson(this.value) ?? ''
+    return JSON.stringify(this.value)
   }
 
   public constructor(
