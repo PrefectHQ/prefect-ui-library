@@ -1,15 +1,16 @@
 <template>
   <p-tooltip
-    class="work-pool-queue-status-icon"
     :text="status.tooltip"
   >
-    <StatusIcon v-if="status.state === 'ready'" status="ready" />
-    <p-icon
-      v-if="status.state !== 'ready'"
-      :icon="status.icon"
-      size="small"
-      :class="classes"
-    />
+    <button type="button" class="work-pool-queue-status-icon">
+      <StatusIcon v-if="status.state === 'ready'" status="ready" />
+      <p-icon
+        v-if="status.state !== 'ready'"
+        :icon="status.icon"
+        size="small"
+        :class="classes"
+      />
+    </button>
   </p-tooltip>
 </template>
 

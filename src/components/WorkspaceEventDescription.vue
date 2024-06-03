@@ -1,6 +1,6 @@
 <template>
-  <p-tooltip class="workspace-event-description">
-    <div class="workspace-event-description__content">
+  <p-tooltip>
+    <div class="workspace-event-description">
       <p-link :to="routes.event(event.id, event.occurred)">
         {{ event.eventLabel }}
       </p-link>
@@ -60,9 +60,6 @@
 <style>
 .workspace-event-description { @apply
   w-fit
-}
-
-.workspace-event-description__content { @apply
   inline-flex
   flex-col
   items-start

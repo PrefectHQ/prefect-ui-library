@@ -1,17 +1,18 @@
 <template>
   <p-tooltip
     v-if="workPoolQueue && workQueueStatus && !workPool?.isPushPool"
-    class="work-pool-queue-health-icon"
     text="Work queue health is deprecated and will be removed in a future release. Please use work pool status instead."
   >
-    <StatusIcon v-if="status.state === 'healthy'" status="ready" />
-    <p-icon
-      v-if="status.state !== 'healthy'"
-      :icon="status.icon"
-      size="small"
-      class="work-pool-queue-health-icon"
-      :class="classes"
-    />
+    <button type="button" class="work-pool-queue-health-icon">
+      <StatusIcon v-if="status.state === 'healthy'" status="ready" />
+      <p-icon
+        v-if="status.state !== 'healthy'"
+        :icon="status.icon"
+        size="small"
+        class="work-pool-queue-health-icon"
+        :class="classes"
+      />
+    </button>
   </p-tooltip>
 </template>
 
