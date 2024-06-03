@@ -14,18 +14,14 @@
 <script lang="ts" setup>
   import { toPluralString } from '@prefecthq/prefect-design'
   import { computed } from 'vue'
-  import { useTaskRunsCount } from '@/compositions/useTaskRunsCount'
+  import { useFlowRunTaskCount } from '@/compositions/useFlowRunTaskCount'
   import { FlowRun } from '@/models/FlowRun'
 
   const props = defineProps<{
     flowRun: FlowRun,
   }>()
 
-  const { count: taskRunsCount } = useTaskRunsCount(() => ({
-    flowRuns: {
-      id: [props.flowRun.id],
-    },
-  }))
+  const { count: taskRunsCount } = useFlowRunTaskCount(() => props.flowRun.id)
 
   const tasksCount = computed(() => taskRunsCount.value ?? 0)
   const hasTasks = computed(() => tasksCount.value > 0)
