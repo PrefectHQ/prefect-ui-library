@@ -5,6 +5,8 @@
 
       <component :is="input.component" v-bind="input.props" />
 
+      <p-button icon="TrashIcon" size="sm" @click="emit('deleteItem')" />
+
       <SchemaFormPropertyMenu v-model:value="value" :kind :property @update:kind="setKind">
         <template v-if="!isFirst">
           <p-overflow-menu-item icon="ArrowSmallUpIcon" label="Move to top" @click="emit('moveToTop')" />
@@ -12,8 +14,6 @@
         <template v-if="!isLast">
           <p-overflow-menu-item icon="ArrowSmallDownIcon" label="Move to bottom" @click="emit('moveToBottom')" />
         </template>
-
-        <p-overflow-menu-item icon="TrashIcon" label="Delete" @click="emit('deleteItem')" />
       </SchemaFormPropertyMenu>
     </div>
     <p v-if="errorMessage" class="schema-form-property-array-item__error">
@@ -77,7 +77,7 @@
   grid
   gap-2
   items-start;
-  grid-template-columns: min-content 1fr min-content;
+  grid-template-columns: min-content 1fr min-content min-content;
 }
 
 .schema-form-property-array-item__error { @apply
