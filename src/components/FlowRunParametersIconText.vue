@@ -2,11 +2,11 @@
   <p-icon-text v-bind="$attrs" icon="AdjustmentsVerticalIcon" class="flow-run-parameters-icon-text">
     <template v-if="hasParameters">
       <button type="button" class="flow-run-parameters-icon-text__button" @click="open">
-        {{ parametersCount }} {{ toPluralString('parameter', parametersCount) }}
+        {{ parametersCount }} {{ toPluralString('Parameter', parametersCount) }}
       </button>
     </template>
     <template v-else>
-      <span class="flow-run-parameters-icon-text__none">0 parameters</span>
+      <span class="flow-run-parameters-icon-text__none">0 Parameters</span>
     </template>
   </p-icon-text>
 
