@@ -56,4 +56,23 @@ export class UiApi extends WorkspaceApi implements IUiApi {
   public getNextRunByFlow(flowId: string): Promise<NextFlowRun> {
     return this.nextRunsBatcher.batch(flowId)
   }
+
+  public async getFlowRunTaskCounts(flowRunIds: string[]): Promise<Record<string, number>> {
+    // not worth writing a mapper for this
+    // eslint-disable-next-line camelcase
+    const { data } = await this.post<Record<string, number>>('/flow_runs/count-task-runs', { flow_run_ids: flowRunIds })
+
+    return data
+  }
+
+  private readonly getFlowRunTaskCountBatcher = new BatchProcessor<string, number>(async flowRunIds => {
+    const response = await this.getFlowRunTaskCounts(flowRunIds)
+
+    return (flowRunId) => response[flowRunId]
+
+  }, { maxBatchSize: 200 })
+
+  public getFlowRunTaskCount(flowRunId: string): Promise<number> {
+    return this.getFlowRunTaskCountBatcher.batch(flowRunId)
+  }
 }
