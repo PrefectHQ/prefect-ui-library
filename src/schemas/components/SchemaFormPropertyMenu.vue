@@ -1,5 +1,5 @@
 <template>
-  <p-icon-button-menu v-if="showMenu" small class="schema-form-property-menu">
+  <p-icon-button-menu v-if="showMenu" size="sm" class="schema-form-property-menu">
     <template v-if="!disabled">
       <template v-if="showNone">
         <p-overflow-menu-item v-if="showKind('none')" label="Use form input" @click="kind = 'none'" />
