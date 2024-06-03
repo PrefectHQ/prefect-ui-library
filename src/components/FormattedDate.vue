@@ -1,5 +1,5 @@
 <template>
-  <p-tooltip class="formatted-date">
+  <p-tooltip>
     <template #content>
       <slot>
         <div class="formatted-date__tooltip">
@@ -8,9 +8,11 @@
       </slot>
     </template>
 
-    <slot name="text" v-bind="{ formattedText }">
-      {{ formattedText }}
-    </slot>
+    <button type="button" class="formatted-date">
+      <slot name="text" v-bind="{ formattedText }">
+        {{ formattedText }}
+      </slot>
+    </button>
   </p-tooltip>
 </template>
 

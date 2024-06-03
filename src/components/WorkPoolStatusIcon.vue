@@ -1,16 +1,17 @@
 <template>
   <p-tooltip
     v-if="status"
-    class="work-pool-status-icon"
     :text="tooltipText"
   >
-    <StatusIcon v-if="status !== 'paused'" :status="status" />
-    <p-icon
-      v-if="status === 'paused'"
-      icon="PauseCircleIcon"
-      size="small"
-      class="work-pool-status-icon--paused"
-    />
+    <button type="button" class="work-pool-status-icon">
+      <StatusIcon v-if="status !== 'paused'" :status="status" />
+      <p-icon
+        v-if="status === 'paused'"
+        icon="PauseCircleIcon"
+        size="small"
+        class="work-pool-status-icon--paused"
+      />
+    </button>
   </p-tooltip>
 </template>
 

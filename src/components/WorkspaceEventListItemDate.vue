@@ -1,8 +1,8 @@
 <template>
-  <p-tooltip class="workspace-event-list-item-date">
+  <p-tooltip>
     <div
-      class="workspace-event-list-item-date__occurred"
-      :classes="classes.date"
+      class="workspace-event-list-item-date workspace-event-list-item-date__occurred"
+      :class="classes.date"
       @pointerenter="onPointerEnter"
       @pointerleave="onPointerLeave"
     >
