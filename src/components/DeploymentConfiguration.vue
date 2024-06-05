@@ -18,13 +18,13 @@
 
 <script lang="ts" setup>
   import { computed } from 'vue'
+  import CopyableWrapper from '@/components/CopyableWrapper.vue'
   import { Deployment } from '@/models/Deployment'
   import { stringify } from '@/utilities/json'
 
   const props = defineProps<{
     deployment: Deployment,
   }>()
-
 
   const overrides = computed(() => props.deployment.infrastructureOverrides ? stringify(props.deployment.infrastructureOverrides) : '{}')
 
