@@ -6,7 +6,7 @@ type Base = {
   tags?: string[] | null,
   workQueueName?: string | null,
   workPoolName?: string | null,
-  infrastructureOverrides?: Record<string, unknown> | null,
+  jobVariables?: Record<string, unknown> | null,
   enforceParameterSchema?: boolean,
 }
 

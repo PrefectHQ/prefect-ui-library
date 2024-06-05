@@ -24,7 +24,7 @@ export interface IDeployment {
   entrypoint: string | null,
   storageDocumentId: string | null,
   infrastructureDocumentId: string | null,
-  infrastructureOverrides: Record<string, unknown> | null,
+  jobVariables: Record<string, unknown> | null,
   workQueueName: string | null,
   workPoolName: string | null,
   enforceParameterSchema: boolean,
@@ -53,7 +53,7 @@ export class Deployment implements IDeployment {
   public entrypoint: string | null
   public storageDocumentId: string | null
   public infrastructureDocumentId: string | null
-  public infrastructureOverrides: Record<string, unknown> | null
+  public jobVariables: Record<string, unknown> | null
   public workQueueName: string | null
   public workPoolName: string | null
   public enforceParameterSchema: boolean
@@ -81,7 +81,7 @@ export class Deployment implements IDeployment {
     this.entrypoint = deployment.entrypoint
     this.storageDocumentId = deployment.storageDocumentId
     this.infrastructureDocumentId = deployment.infrastructureDocumentId
-    this.infrastructureOverrides = deployment.infrastructureOverrides
+    this.jobVariables = deployment.jobVariables
     this.workQueueName = deployment.workQueueName
     this.workPoolName = deployment.workPoolName
     this.enforceParameterSchema = deployment.enforceParameterSchema

@@ -27,7 +27,8 @@ export type DeploymentResponse = {
   parameter_openapi_schema: SchemaResponseV2,
   storage_document_id: string | null,
   infrastructure_document_id: string | null,
-  infra_overrides: Record<string, unknown> | null,
+  /** Formerly known as infra_overrides in prefect<3 */
+  job_variables: Record<string, unknown> | null,
   work_queue_name: string | null,
   work_pool_name: string | null,
   enforce_parameter_schema: boolean,
