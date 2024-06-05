@@ -58,10 +58,10 @@
     <p-divider />
 
     <h3 class="deployment-form__heading">
-      {{ localization.info.infraOverrides }}
+      {{ localization.info.jobVariables }}
     </h3>
-    <p-label label="Infrastructure Overrides (Optional)" :message="overrideError" :state="overrideState">
-      <JobVariableOverridesInput v-model="infrastructureOverrides" :state="overrideState" />
+    <p-label label="Job Variables (Optional)" :message="overrideError" :state="overrideState">
+      <JobVariableOverridesInput v-model="jobVariables" :state="overrideState" />
     </p-label>
 
     <template #footer>
@@ -97,7 +97,7 @@
   const workQueueName = ref(props.deployment.workQueueName)
   const parameters = ref(props.deployment.parameters)
   const tags = ref(props.deployment.tags)
-  const infrastructureOverrides = ref(stringify(props.deployment.infrastructureOverrides))
+  const jobVariables = ref(stringify(props.deployment.jobVariables))
   const enforceParameterSchema = ref(props.deployment.enforceParameterSchema)
   const shouldValidateParameters = ref(true)
 
@@ -109,7 +109,7 @@
 
   const { validate } = useValidationObserver()
   const { errors, validate: validateParameters } = useSchemaValidation(schema, parameters)
-  const { state: overrideState, error: overrideError } = useValidation(infrastructureOverrides, isJson('Infrastructure overrides'))
+  const { state: overrideState, error: overrideError } = useValidation(jobVariables, isJson('Job variables'))
 
   const emit = defineEmits<{
     (event: 'submit', value: DeploymentUpdateV2): void,
@@ -144,7 +144,7 @@
       parameters: parameters.value,
       tags: tags.value,
       enforceParameterSchema: enforceParameterSchema.value,
-      infrastructureOverrides: JSON.parse(infrastructureOverrides.value),
+      jobVariables: JSON.parse(jobVariables.value),
     }
 
     emit('submit', deploymentUpdate)

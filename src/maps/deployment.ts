@@ -27,7 +27,7 @@ export const mapDeploymentResponseToDeployment: MapFunction<DeploymentResponse, 
     entrypoint: source.entrypoint,
     storageDocumentId: source.storage_document_id,
     infrastructureDocumentId: source.infrastructure_document_id,
-    infrastructureOverrides: source.infra_overrides,
+    jobVariables: source.job_variables,
     workQueueName: source.work_queue_name,
     workPoolName: source.work_pool_name,
     enforceParameterSchema: source.enforce_parameter_schema,
@@ -45,7 +45,7 @@ export const mapDeploymentUpdateV2ToDeploymentUpdateRequest: MapFunction<Deploym
     tags: source.tags,
     work_queue_name: source.workQueueName,
     work_pool_name: source.workPoolName,
-    infra_overrides: source.infrastructureOverrides,
+    job_variables: source.jobVariables,
     enforce_parameter_schema: source.enforceParameterSchema,
   }
 }

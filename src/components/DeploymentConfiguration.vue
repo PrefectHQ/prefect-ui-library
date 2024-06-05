@@ -26,7 +26,7 @@
     deployment: Deployment,
   }>()
 
-  const overrides = computed(() => props.deployment.infrastructureOverrides ? stringify(props.deployment.infrastructureOverrides) : '{}')
+  const overrides = computed(() => props.deployment.jobVariables ? stringify(props.deployment.jobVariables) : '{}')
 
   const pullSteps = computed(() => props.deployment.pullSteps ? stringify(props.deployment.pullSteps) : '[]')
 </script>

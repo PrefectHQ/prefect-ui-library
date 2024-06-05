@@ -188,7 +188,7 @@ export const en = {
     dashboardWorkPoolCardEmpty: 'There are no active work pools to show. Any work pools you do have are paused.',
     dashboardWorkPoolCardViewAll: 'View all work pools',
     percentChangeOverTimePeriod: (percent: string | number) => `${percent}% change compared to the previous time period.`,
-    infraOverrides: 'Infrastructure Overrides',
+    jobVariables: 'Job Variables',
     terminalTaskRunNoArtifacts: 'This task run did not produce any artifacts; for more information on creating artifacts, see the [documentation](https://docs.prefect.io/concepts/artifacts).',
     nonTerminalTaskRunNoArtifacts: 'This task run has not yet produced artifacts; for more information on creating artifacts, see the [documentation](https://docs.prefect.io/concepts/artifacts).',
     terminalFlowRunNoArtifacts: 'This run did not produce any artifacts; for more information on creating artifacts, see the [documentation](https://docs.prefect.io/concepts/artifacts).',
