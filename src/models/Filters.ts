@@ -1,5 +1,5 @@
 import { DeploymentStatus } from '@/models/DeploymentStatus'
-import { ArtifactSortValues, FlowSortValues, FlowRunSortValues, TaskRunSortValues, DeploymentSortValues, LogSortValues, VariableSortValues, BlockDocumentSortValues } from '@/types'
+import { ArtifactSortValues, FlowSortValues, FlowRunSortValues, TaskRunSortValues, DeploymentSortValues, LogSortValues, VariableSortValues, BlockDocumentSortValues, Require } from '@/types'
 
 export type Operation = 'and' | 'or'
 
@@ -136,6 +136,7 @@ export type WorkPoolQueueFilter = {
 }
 
 export type UnionFilterSort = FlowSortValues | FlowRunSortValues | TaskRunSortValues | DeploymentSortValues
+
 export type UnionFilter<T extends UnionFilterSort = UnionFilterSort> = {
   flows?: FlowFilter,
   flowRuns?: FlowRunFilter,
@@ -174,6 +175,22 @@ export type FlowsFilter = UnionFilter<FlowSortValues>
 export type FlowRunsFilter = UnionFilter<FlowRunSortValues>
 export type TaskRunsFilter = UnionFilter<TaskRunSortValues>
 export type DeploymentsFilter = UnionFilter<DeploymentSortValues>
+
+export type PaginationUnionFilter<T extends UnionFilterSort = UnionFilterSort> = {
+  flows?: FlowFilter,
+  flowRuns?: FlowRunFilter,
+  taskRuns?: TaskRunFilter,
+  deployments?: DeploymentFilter,
+  workPools?: WorkPoolFilter,
+  workPoolQueues?: WorkPoolQueueFilter,
+  sort?: T,
+  page?: number,
+  limit?: number,
+}
+
+export type WithPage<T extends PaginationUnionFilter> = Require<T, 'page'>
+
+export type FlowRunsPaginationFilter = PaginationUnionFilter<FlowRunSortValues>
 
 export type FlowRunsHistoryFilter = FlowRunsFilter & {
   historyStart: Date,

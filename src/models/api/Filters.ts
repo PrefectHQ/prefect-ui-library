@@ -136,6 +136,20 @@ export type FlowRunsFilterRequest = UnionFilterRequest<FlowRunSortValues>
 export type TaskRunsFilterRequest = UnionFilterRequest<TaskRunSortValues>
 export type DeploymentsFilterRequest = UnionFilterRequest<DeploymentSortValues>
 
+export type PaginationUnionFilterRequest<T> = {
+  flows?: FlowFilterRequest,
+  flow_runs?: FlowRunFilterRequest,
+  task_runs?: TaskRunFilterRequest,
+  deployments?: DeploymentFilterRequest,
+  work_pools?: WorkPoolFilterRequest,
+  work_pool_queues?: WorkPoolQueueFilterRequest,
+  sort?: T,
+  page?: number,
+  limit?: number,
+}
+
+export type FlowRunsPaginationFilterRequest = PaginationUnionFilterRequest<FlowRunSortValues>
+
 export type ArtifactFilterRequest = {
   id?: Any,
   key?: Any & Like & Exists,

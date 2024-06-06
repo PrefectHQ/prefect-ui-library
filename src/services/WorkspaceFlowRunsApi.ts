@@ -5,9 +5,10 @@ import { FlowRunResponse } from '@/models/api/FlowRunResponse'
 import { OrchestrationResult } from '@/models/api/OrchestrationResult'
 import { OrchestrationResultResponse } from '@/models/api/OrchestrationResultResponse'
 import { RunGraphDataResponse } from '@/models/api/RunGraphDataResponse'
-import { FlowRunsFilter, FlowRunsHistoryFilter } from '@/models/Filters'
+import { FlowRunsFilter, FlowRunsHistoryFilter, FlowRunsPaginationFilter } from '@/models/Filters'
 import { FlowRun } from '@/models/FlowRun'
 import { FlowRunInputKeyset } from '@/models/FlowRunInputKeyset'
+import { Paginated } from '@/models/pagination'
 import { RunHistory } from '@/models/RunHistory'
 import { SchemaResponseV2, SchemaV2, SchemaValuesV2 } from '@/schemas'
 import { BatchProcessor } from '@/services/BatchProcessor'
@@ -46,6 +47,13 @@ export class WorkspaceFlowRunsApi extends WorkspaceApi {
     const { data } = await this.post<FlowRunResponse[]>('/filter', request)
 
     return mapper.map('FlowRunResponse', data, 'FlowRun')
+  }
+
+  public async getFlowRunsPaginated(filter: FlowRunsPaginationFilter = {}): Promise<Paginated<FlowRun>> {
+    const request = mapper.map('FlowRunsPaginationFilter', filter, 'FlowRunsPaginationFilterRequest')
+    const { data } = await this.post<Paginated<FlowRunResponse>>('/paginate', request)
+
+    return mapper.map('FlowRunsPaginationResponse', data, 'FlowRunsPagination')
   }
 
   public async getFlowRunsCount(filter: FlowRunsFilter = {}): Promise<number> {
@@ -137,4 +145,5 @@ export class WorkspaceFlowRunsApi extends WorkspaceApi {
   public deleteFlowRun(flowRunId: string): Promise<void> {
     return this.delete(`/${flowRunId}`)
   }
+
 }

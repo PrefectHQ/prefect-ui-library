@@ -1,23 +1,25 @@
-import { MaybeReadonly } from '@prefecthq/prefect-design'
-import { MaybeRefOrGetter, toValue } from 'vue'
+import { SubscriptionOptions, UseSubscription, useSubscriptionWithDependencies } from '@prefecthq/vue-compositions'
+import { ComputedRef, MaybeRefOrGetter, computed, toRef, toValue } from 'vue'
 import { useCan } from '@/compositions/useCan'
-import { PaginationOptions, UsePaginationEntity, usePagination } from '@/compositions/usePagination'
 import { useWorkspaceApi } from '@/compositions/useWorkspaceApi'
-import { FlowRunsFilter } from '@/models'
+import { FlowRun, FlowRunsPaginationFilter } from '@/models'
 import { WorkspaceFlowRunsApi } from '@/services'
 import { Getter } from '@/types/reactivity'
 
-export type UsePaginatedFlowRuns = UsePaginationEntity<
-WorkspaceFlowRunsApi['getFlowRuns'],
-WorkspaceFlowRunsApi['getFlowRunsCount'],
-'flowRuns'
->
+type UsePaginatedFlowRuns = {
+  subscription: UseSubscription<WorkspaceFlowRunsApi['getFlowRunsPaginated']>,
+  flowRuns: ComputedRef<FlowRun[]>,
+  count: ComputedRef<number>,
+  limit: ComputedRef<number>,
+  pages: ComputedRef<number>,
+  page: ComputedRef<number>,
+}
 
-export function usePaginatedFlowRuns(filter?: MaybeRefOrGetter<MaybeReadonly<FlowRunsFilter> | null | undefined>, options?: PaginationOptions): UsePaginatedFlowRuns {
+export function usePaginatedFlowRuns(filter: MaybeRefOrGetter<FlowRunsPaginationFilter | null | undefined> = {}, options?: SubscriptionOptions): UsePaginatedFlowRuns {
   const api = useWorkspaceApi()
   const can = useCan()
 
-  const parameters: Getter<[FlowRunsFilter] | null> = () => {
+  const getter: Getter<[FlowRunsPaginationFilter] | null> = () => {
     if (!can.read.flow_run) {
       return null
     }
@@ -31,16 +33,21 @@ export function usePaginatedFlowRuns(filter?: MaybeRefOrGetter<MaybeReadonly<Flo
     return [value]
   }
 
-  const pagination = usePagination({
-    fetchMethod: api.flowRuns.getFlowRuns,
-    fetchParameters: parameters,
-    countMethod: api.flowRuns.getFlowRunsCount,
-    countParameters: parameters,
-    options,
-  })
+  const parameters = toRef(getter)
+  const subscription = useSubscriptionWithDependencies(api.flowRuns.getFlowRunsPaginated, parameters, options)
+
+  const flowRuns = computed(() => subscription.response?.results ?? [])
+  const pages = computed(() => subscription.response?.pages ?? 0)
+  const limit = computed(() => subscription.response?.limit ?? 0)
+  const count = computed(() => subscription.response?.count ?? 0)
+  const page = computed(() => subscription.response?.page ?? 1)
 
   return {
-    ...pagination,
-    flowRuns: pagination.results,
+    subscription,
+    flowRuns,
+    pages,
+    page,
+    limit,
+    count,
   }
 }
