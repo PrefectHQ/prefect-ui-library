@@ -15,7 +15,7 @@ type UsePaginatedFlowRuns = {
   page: ComputedRef<number>,
 }
 
-export function usePaginatedFlowRuns(filter: MaybeRefOrGetter<FlowRunsPaginationFilter | null | undefined> = {}, options?: SubscriptionOptions & { mode?: 'boolean' }): UsePaginatedFlowRuns {
+export function usePaginatedFlowRuns(filter: MaybeRefOrGetter<FlowRunsPaginationFilter | null | undefined> = {}, options?: SubscriptionOptions): UsePaginatedFlowRuns {
   const api = useWorkspaceApi()
   const can = useCan()
 
