@@ -3,7 +3,7 @@
     <page-heading class="page-heading-blocks-catalog" :crumbs="crumbs" />
 
     <p-message>
-      Can't find a block for your service? Check our
+      Can't find a block for your service? Check out the
       <p-link :to="localization.docs.collections">
         docs
       </p-link>
