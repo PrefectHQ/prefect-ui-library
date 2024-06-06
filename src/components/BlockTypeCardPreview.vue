@@ -87,7 +87,7 @@
   text-subdued
   text-xs
   overflow-auto
-  max-h-24
+  h-24
   grow
 }
 
