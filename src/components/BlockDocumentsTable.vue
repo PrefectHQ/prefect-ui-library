@@ -1,42 +1,53 @@
 <template>
-  <div class="block-documents-table">
-    <div class="block-documents-table__filters">
-      <span class="block-documents-table__results">
-        <ResultsCount v-if="selectedBlockDocuments.length ===0" label="Block" :count="total" />
-        <SelectedCount v-else :count="selectedBlockDocuments.length" />
-        <BlocksDeleteButton v-if="selectedBlockDocuments.length > 0" class="block-documents-table__delete" :selected="selectedBlockDocuments.map(blockDocument => blockDocument.id)" size="sm" @delete="onDelete" />
-      </span>
-      <SearchInput v-model="searchTerm" placeholder="Search blocks" label="Search blocks" class="block-documents-table__search" />
-      <BlockSchemaCapabilitySelect v-model:selected="capabilities" class="block-documents-table__capability" />
-      <BlockTypeSelect v-model:selected="blockTypes" class="block-documents-table__type" />
-    </div>
-    <p-table :data="blockDocumentRows" :columns="columns" :selected="selectedBlockDocuments" @update:selected="selectedBlockDocuments = $event">
-      <template #name="{ row }">
+  <p-content class="block-documents-table">
+    <p-list-header sticky>
+      <ResultsCount v-if="selectedBlockDocuments.length ===0" label="Block" :count="total" />
+      <SelectedCount v-else :count="selectedBlockDocuments.length" />
+      <BlocksDeleteButton v-if="selectedBlockDocuments.length > 0" class="block-documents-table__delete" :selected="selectedBlockDocuments.map(blockDocument => blockDocument.id)" size="sm" @delete="onDelete" />
+
+      <template #controls>
+        <SearchInput v-model="searchTerm" placeholder="Search blocks" label="Search blocks" class="block-documents-table__search" />
+        <BlockSchemaCapabilitySelect v-model:selected="capabilities" class="block-documents-table__capability" />
+        <BlockTypeSelect v-model:selected="blockTypes" class="block-documents-table__type" />
+      </template>
+    </p-list-header>
+
+    <p-table
+      class="block-documents-table__table"
+      :data="blockDocumentRows"
+      :columns="columns"
+      :selected="selectedBlockDocuments"
+      :column-classes="columnClasses"
+      @update:selected="selectedBlockDocuments = $event"
+    >
+      <template #type="{ row }">
         <div class="block-documents-table__name-column">
-          <LogoImage :url="row.blockType.logoUrl" class="block-documents-table__name-img" />
-          <div class="block-documents-table__name-content">
-            <span class="block-documents-table__crumbs">
-              {{ row.blockType.name }} /
-              <p-link :to="routes.block(row.id)">
-                {{ row.name }}
-              </p-link>
-            </span>
-            <template v-if="!media.md">
-              <BlockSchemaCapabilities :capabilities="row.blockSchema.capabilities" />
-            </template>
-          </div>
+          <LogoImage :url="row.blockType.logoUrl" class="block-documents-table__logo" />
         </div>
       </template>
 
-      <template #capabilities="{ row }">
-        <BlockSchemaCapabilities :capabilities="row.blockSchema.capabilities" wrapper />
+      <template #block="{ row }">
+        <div class="block-documents-table__block">
+          <LogoImage :url="row.blockType.logoUrl" class="block-documents-table__logo" />
+
+          <div class="block-documents-table__content">
+            <router-link :to="routes.block(row.id)" class="block-documents-table__block-name">
+              {{ row.name }}
+            </router-link>
+
+            <router-link :to="routes.blocksCatalogView(row.blockType.slug)" class="block-documents-table__block-type">
+              {{ row.blockType.name }}
+            </router-link>
+          </div>
+        </div>
       </template>
 
       <template #action-heading>
         <span />
       </template>
+
       <template #action="{ row }">
-        <BlockDocumentMenu :block-document="row" size="xs" @delete="onDelete" />
+        <BlockDocumentMenu :block-document="row" small @delete="onDelete" />
       </template>
 
       <template #empty-state>
@@ -59,15 +70,15 @@
     </p-table>
 
     <p-pager v-model:limit="limit" v-model:page="page" :pages="pages" />
-  </div>
+  </p-content>
 </template>
 
 <script lang="ts" setup>
-  import { media, TableColumn, PEmptyResults } from '@prefecthq/prefect-design'
+  import { TableColumn, PEmptyResults, ClassValue } from '@prefecthq/prefect-design'
   import { NumberRouteParam, useDebouncedRef, useLocalStorage, useRouteQueryParam } from '@prefecthq/vue-compositions'
   import merge from 'lodash.merge'
   import { computed, ref, ComputedRef } from 'vue'
-  import BlockSchemaCapabilities from '@/components/BlockSchemaCapabilities.vue'
+  import { snakeCase } from '..'
   import BlockSchemaCapabilitySelect from '@/components/BlockSchemaCapabilitySelect.vue'
   import BlocksDeleteButton from '@/components/BlocksDeleteButton.vue'
   import BlockTypeSelect from '@/components/BlockTypeSelect.vue'
@@ -90,20 +101,14 @@
   const { BlockDocumentMenu } = useComponent()
   const routes = useWorkspaceRoutes()
 
+  const columnClasses = (column: TableColumn<BlockDocument>): ClassValue => [`deployment-list__${snakeCase(column.label)}-column`]
   const columns = computed<TableColumn<BlockDocument>[]>(() => [
-
     {
-      label: 'Name',
-      property: 'name',
-      width: '300px',
-    },
-    {
-      label: 'Capabilities',
-      visible: media.md,
+      label: 'Block',
     },
     {
       label: 'Action',
-      width: '0px',
+      width: '64px',
     },
   ])
 
@@ -159,77 +164,45 @@
 </script>
 
 <style>
-.block-documents-table { @apply
-  grid
-  gap-4
+.block-documents-table .p-table__table { @apply
+  table-fixed
+  w-full
 }
 
-.block-documents-table__filters { @apply
-  grid
-  md:flex
-  gap-2
-  justify-between
+.block-documents-table__action-column,
+.block-documents-table__table .p-table__checkbox-cell { @apply
+  box-content
+}
+
+.block-documents-table__block { @apply
+  flex
+  gap-3
   items-center
 }
 
-.block-documents-table__filters {
-  grid-template-columns: minmax(0, 1fr);
-  grid-template-areas: "search"
-                       "capability"
-                       "type"
-                       "results";
-
-}
-
-@screen sm {
-  .block-documents-table__filters {
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-    grid-template-areas: "search     search"
-                        "capability type"
-                        "results    results";
-  }
-}
-
-.block-documents-table__results { @apply
-  mt-2
-  md:mt-0
-  md:mr-auto
-}
-
-.block-documents-table__delete { @apply
-  ml-2
-}
-
-.block-documents-table__search {
-  grid-area: search;
-}
-
-.block-documents-table__capability {
-  grid-area: capability;
-}
-
-.block-documents-table__type {
-  grid-area: type;
-}
-
-.block-documents-table__results {
-  grid-area: results;
-}
-
-.block-documents-table__name-column { @apply
+.block-documents-table__content { @apply
   flex
-  md:items-center
-  gap-1
-  min-w-max
+  flex-col
+  gap-0.5
+  min-w-0
+  max-w-full
 }
 
-.block-documents-table__name-content { @apply
-  grid
-  gap-2
-  flex-grow
+.block-documents-table__block-type,
+.block-documents-table__block-name { @apply
+  max-w-full
+  truncate
+  hover:underline
 }
 
-.block-documents-table__name-img { @apply
-  mr-1
+.block-documents-table__block-name { @apply
+  font-semibold
+  text-base
+}
+
+
+.block-documents-table__block-type { @apply
+  text-subdued
+  text-xs
 }
 </style>
