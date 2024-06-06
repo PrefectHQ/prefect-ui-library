@@ -23,10 +23,14 @@
 .logo-image { @apply
   bg-cover
   bg-center
-  dark:rounded-default
-  dark:p-0.5
-  dark:overflow-hidden
+  overflow-hidden
+  rounded
+  bg-black
+  bg-opacity-10
   dark:bg-white
+  dark:bg-opacity-25
+  backdrop-blur-sm
+  p-1
 }
 
 .logo-image--size-sm { @apply

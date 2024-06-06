@@ -1,13 +1,14 @@
 <template>
   <p-card class="block-type-card-preview">
     <template #header>
-      <LogoImage :url="blockType.logoUrl" class="block-type-card-preview__logo" />
-      <p class="block-type-card-preview__name">
-        <p-link :to="routes.blocksCatalogView(blockType.slug)">
-          {{ blockType.name }}
-        </p-link>
-      </p>
+      <LogoImage v-if="blockType.logoUrl" :url="blockType.logoUrl" class="block-type-card-preview__logo" size="lg" />
+      <p-icon v-else icon="PBlock" class="block-type-card-preview__icon" />
+      <!-- <img v-if="blockType.logoUrl" :src="blockType.logoUrl" class="block-type-card-preview__logo"> -->
+      <p-heading class="block-type-card-preview__name" heading="4">
+        {{ blockType.name }}
+      </p-heading>
     </template>
+
 
     <template v-if="blockType.description">
       <p-markdown-renderer :text="blockType.description" class="block-type-card-preview__description" />
@@ -41,22 +42,46 @@
 <style>
 .block-type-card-preview { @apply
   flex
+  overflow-hidden
   flex-col
+  relative
+}
+
+.block-type-card-preview .p-card-header { @apply
+  flex
+  flex-row
+  justify-start
+  items-center
+  gap-4
 }
 
 .block-type-card-preview .p-card-content { @apply
   flex
   flex-col
   grow
+  py-4
 }
 
 .block-type-card-preview__logo { @apply
-  !w-11
-  !h-11
+  shrink-0
+}
+
+.block-type-card-preview__icon { @apply
+  shrink-0
+  w-12
+  h-12
+  overflow-hidden
+  rounded
+  bg-black
+  bg-opacity-10
+  dark:bg-white
+  dark:bg-opacity-25
+  backdrop-blur-sm
+  p-1
 }
 
 .block-type-card-preview__name { @apply
-  text-base
+  grow
 }
 
 .block-type-card-preview__description { @apply
