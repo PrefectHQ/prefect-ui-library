@@ -1,6 +1,6 @@
 <template>
   <CopyableWrapper :text-to-copy="snippet" class="block-type-snippet">
-    <p-code-highlight lang="python" :text="snippet" />
+    <p-code-highlight lang="python" :text="snippet" class="block-type-snippet__code" />
   </CopyableWrapper>
 </template>
 
@@ -20,3 +20,9 @@
     return customSnippet.trim()
   })
 </script>
+
+<style>
+.block-type-snippet__code { @apply
+  p-4
+}
+</style>
