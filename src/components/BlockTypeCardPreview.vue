@@ -59,7 +59,6 @@
   flex
   flex-col
   grow
-  py-4
 }
 
 .block-type-card-preview__logo { @apply
@@ -87,7 +86,8 @@
 .block-type-card-preview__description { @apply
   text-subdued
   text-xs
-  line-clamp-5
+  overflow-auto
+  max-h-24
   grow
 }
 
