@@ -37,7 +37,7 @@ import { mapDeploymentStatsFilterToFlowRunsFilter } from '@/maps/deploymentStats
 import { mapDeploymentStatusToServerDeploymentStatus, mapServerDeploymentStatusToDeploymentStatus } from '@/maps/deploymentStatus'
 import { mapRunHistoryToDivergingBarChartItem } from '@/maps/divergingBarChartItem'
 import { mapEmpiricalPolicyToEmpiricalPolicyResponse, mapEmpiricalPolicyResponseToEmpiricalPolicy, mapEmpiricalPolicyToEmpiricalPolicyRequest } from '@/maps/empiricalPolicy'
-import { mapFlowFilter, mapDeploymentFilter, mapFlowRunFilter, mapStateFilter, mapFlowsFilter, mapDeploymentsFilter, mapFlowRunsFilter, mapTagFilter, mapTaskRunFilter, mapTaskRunsFilter, mapBlockDocumentFilter, mapBlockSchemaFilter, mapBlockTypeFilter, mapBlockDocumentsFilter, mapBlockSchemasFilter, mapBlockTypesFilter, mapWorkPoolsFilter, mapWorkPoolFilter, mapWorkPoolQueueFilter, mapFlowRunsHistoryFilter, mapLogsFilter, mapNotificationsFilter, mapSavedSearchesFilter, mapWorkQueuesFilter, mapWorkPoolWorkersFilter, mapWorkPoolQueuesFilter, mapArtifactFilter, mapArtifactsFilter, mapVariablesFilter, mapVariableFilter, mapTaskRunsHistoryFilter } from '@/maps/filters'
+import { mapFlowFilter, mapDeploymentFilter, mapFlowRunFilter, mapStateFilter, mapFlowsFilter, mapDeploymentsFilter, mapFlowRunsFilter, mapTagFilter, mapTaskRunFilter, mapTaskRunsFilter, mapBlockDocumentFilter, mapBlockSchemaFilter, mapBlockTypeFilter, mapBlockDocumentsFilter, mapBlockSchemasFilter, mapBlockTypesFilter, mapWorkPoolsFilter, mapWorkPoolFilter, mapWorkPoolQueueFilter, mapFlowRunsHistoryFilter, mapLogsFilter, mapNotificationsFilter, mapSavedSearchesFilter, mapWorkQueuesFilter, mapWorkPoolWorkersFilter, mapWorkPoolQueuesFilter, mapArtifactFilter, mapArtifactsFilter, mapVariablesFilter, mapVariableFilter, mapTaskRunsHistoryFilter, mapFlowRunsPaginationFilter } from '@/maps/filters'
 import { mapFlowToFlowResponse, mapFlowResponseToFlow, mapFlowToAutomationTrigger } from '@/maps/flow'
 import { mapFlowRunResponseToFlowRun } from '@/maps/flowRun'
 import { mapRunHistoryToFlowRunHistoryResponse, mapFlowRunHistoryResponseToRunHistory } from '@/maps/flowRunHistory'
@@ -50,6 +50,7 @@ import { mapNotificationCreateToNotificationCreateRequest } from '@/maps/notific
 import { mapNotificationUpdateToNotificationUpdateRequest } from '@/maps/notificationUpdate'
 import { mapNumberToString, mapStringToNumber } from '@/maps/number'
 import { mapOrchestrationResultResponseToOrchestrationResult } from '@/maps/orchestrationResult'
+import { mapFlowRunsPaginationResponseToFlowRunsPagination } from '@/maps/pagination'
 import { mapRunGraphDataResponse, mapRunGraphNodeResponse, mapRunGraphArtifactResponse, mapRunGraphStateResponse } from '@/maps/runGraphData'
 import { mapSavedSearchResponseToSavedSearch, mapSavedSearchToLocationQuery } from '@/maps/savedSearch'
 import { mapSavedSearchCreateToSavedSearchCreateRequest } from '@/maps/savedSearchCreate'
@@ -146,7 +147,9 @@ export const maps = {
   FlowRunInputKeyset: { FlowRunInputKeysetResponse: mapFlowRunInputKeysetResponseToFlowRunInputKeyset },
   FlowRunInputKeysetResponse: { FlowRunInputKeyset: mapFlowRunInputKeysetToFlowRunInputKeysetResponse },
   FlowRunResponse: { FlowRun: mapFlowRunResponseToFlowRun },
+  FlowRunsPaginationResponse: { FlowRunsPagination: mapFlowRunsPaginationResponseToFlowRunsPagination },
   FlowRunsFilter: { FlowRunsFilterRequest: mapFlowRunsFilter },
+  FlowRunsPaginationFilter: { FlowRunsPaginationFilterRequest: mapFlowRunsPaginationFilter },
   FlowRunsHistoryFilter: { FlowRunsHistoryFilterRequest: mapFlowRunsHistoryFilter },
   FlowsFilter: { FlowsFilterRequest: mapFlowsFilter },
   FlowStatsFilter: {

@@ -5,7 +5,7 @@
         <p-select-all-checkbox v-model="selected" :selectable="flowRuns.map((flowRun) => flowRun.id)" item-name="flow run" />
       </template>
 
-      <ResultsCount v-if="selected.length == 0" :count="total" label="Flow run" />
+      <ResultsCount v-if="selected.length == 0" :count label="Flow run" />
       <SelectedCount v-else :count="selected.length" />
       <FlowRunsDeleteButton v-if="can.delete.flow_run" :selected="selected" @delete="deleteFlowRuns" />
 
@@ -19,25 +19,31 @@
       </template>
     </p-list-header>
 
-    <FlowRunList v-model:selected="selected" v-bind="{ hideDetails, hideFlowName }" :flow-runs="flowRuns" :selectable="selectable && can.delete.flow_run" @bottom="next" />
-
-    <PEmptyResults v-if="empty">
+    <p-empty-results v-if="empty">
       <template #message>
         <slot name="empty-message">
           No runs found
         </slot>
       </template>
+
       <template v-if="isCustomFilter" #actions>
         <p-button size="sm" @click="clear">
           Clear Filters
         </p-button>
       </template>
-    </PEmptyResults>
+    </p-empty-results>
+
+
+    <template v-else>
+      <FlowRunList v-model:selected="selected" :hide-details :hide-flow-name :flow-runs :selectable="selectable && can.delete.flow_run" />
+
+      <p-pager v-model:limit="filter.limit" v-model:page="filter.page" :pages="pages" />
+    </template>
   </p-content>
 </template>
 
 <script lang="ts" setup>
-  import { useDebouncedRef } from '@prefecthq/vue-compositions'
+  import { useDebouncedRef, useLocalStorage } from '@prefecthq/vue-compositions'
   import merge from 'lodash.merge'
   import { computed, ref } from 'vue'
   import {
@@ -49,7 +55,7 @@
     FlowRunsDeleteButton
   } from '@/components'
   import SearchInput from '@/components/SearchInput.vue'
-  import { useFlowRunsFilterFromRoute, usePaginatedFlowRuns } from '@/compositions'
+  import { useFlowRunsPaginationFilterFromRoute, usePaginatedFlowRuns } from '@/compositions'
   import { useCan } from '@/compositions/useCan'
   import { FlowRunsFilter } from '@/models/Filters'
 
@@ -65,23 +71,24 @@
   const selected = ref<string[]>([])
   const searchTerm = ref('')
   const searchTermDebounced = useDebouncedRef(searchTerm, 500)
+  const { value: limit } = useLocalStorage('flow-run-list-limit', 10)
 
-  const { filter, clear, isCustomFilter } = useFlowRunsFilterFromRoute(merge({}, props.filter, {
+  const { filter, clear, isCustomFilter } = useFlowRunsPaginationFilterFromRoute(merge({}, props.filter, {
     flowRuns: {
       nameLike: searchTermDebounced,
     },
+    limit,
   }), props.prefix)
 
-  const { flowRuns, total, subscriptions, next } = usePaginatedFlowRuns(filter, {
+  const { flowRuns, count, pages, subscription } = usePaginatedFlowRuns(filter, {
     interval: 30000,
-    mode: 'infinite',
   })
 
-  const empty = computed(() => subscriptions.executed && flowRuns.value.length === 0)
+  const empty = computed(() => subscription.executed && flowRuns.value.length === 0)
 
   const deleteFlowRuns = (): void => {
     selected.value = []
-    subscriptions.refresh()
+    subscription.refresh()
   }
 </script>
 
