@@ -1,29 +1,30 @@
 <template>
-  <p-card>
-    <div class="block-type-card-preview">
+  <p-card class="block-type-card-preview">
+    <template #header>
       <LogoImage :url="blockType.logoUrl" class="block-type-card-preview__logo" />
       <p class="block-type-card-preview__name">
         <p-link :to="routes.blocksCatalogView(blockType.slug)">
           {{ blockType.name }}
         </p-link>
       </p>
+    </template>
 
-      <template v-if="blockType.description">
-        <p class="block-type-card-preview__description">
-          {{ blockType.description }}
-        </p>
-      </template>
+    <template v-if="blockType.description">
+      <p-markdown-renderer :text="blockType.description" class="block-type-card-preview__description" />
+    </template>
 
-      <template v-if="blockSchema">
-        <BlockSchemaCapabilities :capabilities="blockSchema.capabilities" class="block-type-card-preview__capabilities" />
-      </template>
+    <template v-if="blockSchema">
+      <BlockSchemaCapabilities :capabilities="blockSchema.capabilities" class="block-type-card-preview__capabilities" />
+    </template>
 
-      <template v-if="slots.actions">
-        <div class="block-type-card-preview__action">
-          <slot name="actions" />
-        </div>
-      </template>
-    </div>
+    <template v-if="slots.actions" #footer>
+      <div class="block-type-card-preview__actions">
+        <p-button size="sm" variant="ghost" :to="routes.blocksCatalogView(blockType.slug)">
+          Details
+        </p-button>
+        <slot name="actions" />
+      </div>
+    </template>
   </p-card>
 </template>
 
@@ -52,7 +53,12 @@
 .block-type-card-preview { @apply
   flex
   flex-col
-  gap-2
+}
+
+.block-type-card-preview .p-card-content { @apply
+  flex
+  flex-col
+  grow
 }
 
 .block-type-card-preview__logo { @apply
@@ -66,16 +72,19 @@
 
 .block-type-card-preview__description { @apply
   text-subdued
-  text-sm
+  text-xs
   line-clamp-5
+  grow
 }
 
 .block-type-card-preview__capabilities { @apply
   mb-2
 }
 
-.block-type-card-preview__action { @apply
-  block
-  mt-auto
+.block-type-card-preview__actions { @apply
+  flex
+  gap-2
+  justify-end
+  w-full
 }
 </style>

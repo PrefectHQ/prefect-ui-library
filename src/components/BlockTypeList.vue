@@ -3,21 +3,18 @@
     <div class="block-type-list__filters">
       <ResultsCount label="Block" :count="filteredBlockTypes.length" class="block-type-list__results" />
       <SearchInput v-model="searchTerm" class="block-type-list__search" placeholder="Search blocks" />
-      <BlockSchemaCapabilitySelect v-model:selected="selectedCapability" class="block-type-list__capability" />
     </div>
 
     <div class="block-type-list__types">
       <template v-for="blockType in filteredBlockTypes" :key="blockType.id">
         <BlockTypeCardPreview :block-type="blockType">
           <template #actions>
-            <p-button v-if="useEmit" icon-append="PlusIcon" class="block-type-list__add" @click="emit('add', blockType)">
-              Add
+            <p-button v-if="useEmit" size="sm" variant="default" @click="emit('add', blockType)">
+              Create
             </p-button>
-            <p-link v-else :to="routes.blockCreate(blockType.slug)">
-              <p-button icon-append="PlusIcon" class="block-type-list__add">
-                Add
-              </p-button>
-            </p-link>
+            <p-button size="sm" variant="default" :to="routes.blockCreate(blockType.slug)">
+              Create
+            </p-button>
           </template>
         </BlockTypeCardPreview>
       </template>
@@ -39,7 +36,6 @@
 <script lang="ts" setup>
   import { PEmptyResults } from '@prefecthq/prefect-design'
   import { computed, ref } from 'vue'
-  import BlockSchemaCapabilitySelect from '@/components/BlockSchemaCapabilitySelect.vue'
   import BlockTypeCardPreview from '@/components/BlockTypeCardPreview.vue'
   import ResultsCount from '@/components/ResultsCount.vue'
   import SearchInput from '@/components/SearchInput.vue'
@@ -127,9 +123,5 @@
   lg:grid-cols-3
   xl:grid-cols-4
   gap-2
-}
-
-.block-type-list__add { @apply
-  w-full
 }
 </style>
