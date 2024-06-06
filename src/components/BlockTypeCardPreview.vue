@@ -13,10 +13,6 @@
       <p-markdown-renderer :text="blockType.description" class="block-type-card-preview__description" />
     </template>
 
-    <template v-if="blockSchema">
-      <BlockSchemaCapabilities :capabilities="blockSchema.capabilities" class="block-type-card-preview__capabilities" />
-    </template>
-
     <template v-if="slots.actions" #footer>
       <div class="block-type-card-preview__actions">
         <p-button size="sm" variant="ghost" :to="routes.blocksCatalogView(blockType.slug)">
@@ -29,24 +25,17 @@
 </template>
 
 <script lang="ts" setup>
-  import { useSubscription } from '@prefecthq/vue-compositions'
-  import { computed, useSlots } from 'vue'
-  import BlockSchemaCapabilities from '@/components/BlockSchemaCapabilities.vue'
+  import { useSlots } from 'vue'
   import LogoImage from '@/components/LogoImage.vue'
-  import { useWorkspaceApi, useWorkspaceRoutes } from '@/compositions'
+  import { useWorkspaceRoutes } from '@/compositions'
   import { BlockType } from '@/models/BlockType'
 
-  const props = defineProps<{
+  defineProps<{
     blockType: BlockType,
   }>()
 
   const slots = useSlots()
-  const api = useWorkspaceApi()
   const routes = useWorkspaceRoutes()
-
-  const blockTypeId = computed(() => props.blockType.id)
-  const blockSchemaSubscription = useSubscription(api.blockSchemas.getBlockSchemaForBlockType, [blockTypeId])
-  const blockSchema = computed(() => blockSchemaSubscription.response)
 </script>
 
 <style>
