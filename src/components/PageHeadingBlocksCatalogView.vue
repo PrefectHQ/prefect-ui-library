@@ -17,7 +17,7 @@
 
   const crumbs = computed<BreadCrumbs>(() => [
     { text: 'Blocks', to: routes.blocks() },
-    { text: 'Choose a Block', to: routes.blocksCatalog() },
+    { text: 'Catalog', to: routes.blocksCatalog() },
     { text: props.blockType.name },
   ])
 </script>

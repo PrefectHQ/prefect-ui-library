@@ -2,7 +2,7 @@
   <div class="block-type-list">
     <div class="block-type-list__filters">
       <ResultsCount label="Block" :count="filteredBlockTypes.length" class="block-type-list__results" />
-      <SearchInput v-model="searchTerm" class="block-type-list__search" placeholder="Search blocks" />
+      <SearchInput v-model="searchTerm" class="block-type-list__search" size="small" placeholder="Search blocks" />
     </div>
 
     <div class="block-type-list__types">

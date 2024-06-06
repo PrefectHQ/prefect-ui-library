@@ -3,7 +3,6 @@
     <template #header>
       <LogoImage v-if="blockType.logoUrl" :url="blockType.logoUrl" class="block-type-card-preview__logo" size="lg" />
       <p-icon v-else icon="PBlock" class="block-type-card-preview__icon" />
-      <!-- <img v-if="blockType.logoUrl" :src="blockType.logoUrl" class="block-type-card-preview__logo"> -->
       <p-heading class="block-type-card-preview__name" heading="4">
         {{ blockType.name }}
       </p-heading>

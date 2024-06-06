@@ -22,6 +22,6 @@
 
   const crumbs: BreadCrumbs = [
     { text: 'Blocks', to: routes.blocks() },
-    { text: 'Choose a Block' },
+    { text: 'Catalog' },
   ]
 </script>
