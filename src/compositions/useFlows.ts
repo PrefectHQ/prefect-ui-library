@@ -1,4 +1,5 @@
 import { SubscriptionOptions, UseSubscription, useSubscriptionWithDependencies } from '@prefecthq/vue-compositions'
+import merge from 'lodash.merge'
 import { ComputedRef, MaybeRefOrGetter, computed, toRef, toValue } from 'vue'
 import { useCan } from '@/compositions/useCan'
 import { useWorkspaceApi } from '@/compositions/useWorkspaceApi'
@@ -30,7 +31,8 @@ export function useFlows(filter?: MaybeRefOrGetter<FlowsPaginationFilter | null 
       return null
     }
 
-    return [value]
+    // merge here is important to track changes to `filter` if it is a reactive
+    return [merge({}, value)]
   }
 
   const parameters = toRef(getter)
