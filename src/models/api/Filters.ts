@@ -148,6 +148,7 @@ export type PaginationUnionFilterRequest<T> = {
   limit?: number,
 }
 
+export type FlowsPaginationFilterRequest = PaginationUnionFilterRequest<FlowSortValues>
 export type FlowRunsPaginationFilterRequest = PaginationUnionFilterRequest<FlowRunSortValues>
 
 export type ArtifactFilterRequest = {

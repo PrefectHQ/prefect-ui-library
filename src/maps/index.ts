@@ -37,7 +37,7 @@ import { mapDeploymentStatsFilterToFlowRunsFilter } from '@/maps/deploymentStats
 import { mapDeploymentStatusToServerDeploymentStatus, mapServerDeploymentStatusToDeploymentStatus } from '@/maps/deploymentStatus'
 import { mapRunHistoryToDivergingBarChartItem } from '@/maps/divergingBarChartItem'
 import { mapEmpiricalPolicyToEmpiricalPolicyResponse, mapEmpiricalPolicyResponseToEmpiricalPolicy, mapEmpiricalPolicyToEmpiricalPolicyRequest } from '@/maps/empiricalPolicy'
-import { mapFlowFilter, mapDeploymentFilter, mapFlowRunFilter, mapStateFilter, mapFlowsFilter, mapDeploymentsFilter, mapFlowRunsFilter, mapTagFilter, mapTaskRunFilter, mapTaskRunsFilter, mapBlockDocumentFilter, mapBlockSchemaFilter, mapBlockTypeFilter, mapBlockDocumentsFilter, mapBlockSchemasFilter, mapBlockTypesFilter, mapWorkPoolsFilter, mapWorkPoolFilter, mapWorkPoolQueueFilter, mapFlowRunsHistoryFilter, mapLogsFilter, mapNotificationsFilter, mapSavedSearchesFilter, mapWorkQueuesFilter, mapWorkPoolWorkersFilter, mapWorkPoolQueuesFilter, mapArtifactFilter, mapArtifactsFilter, mapVariablesFilter, mapVariableFilter, mapTaskRunsHistoryFilter, mapFlowRunsPaginationFilter } from '@/maps/filters'
+import { mapFlowFilter, mapDeploymentFilter, mapFlowRunFilter, mapStateFilter, mapFlowsFilter, mapDeploymentsFilter, mapFlowRunsFilter, mapTagFilter, mapTaskRunFilter, mapTaskRunsFilter, mapBlockDocumentFilter, mapBlockSchemaFilter, mapBlockTypeFilter, mapBlockDocumentsFilter, mapBlockSchemasFilter, mapBlockTypesFilter, mapWorkPoolsFilter, mapWorkPoolFilter, mapWorkPoolQueueFilter, mapFlowRunsHistoryFilter, mapLogsFilter, mapNotificationsFilter, mapSavedSearchesFilter, mapWorkQueuesFilter, mapWorkPoolWorkersFilter, mapWorkPoolQueuesFilter, mapArtifactFilter, mapArtifactsFilter, mapVariablesFilter, mapVariableFilter, mapTaskRunsHistoryFilter, mapFlowRunsPaginationFilter, mapFlowsPaginationFilter } from '@/maps/filters'
 import { mapFlowToFlowResponse, mapFlowResponseToFlow, mapFlowToAutomationTrigger } from '@/maps/flow'
 import { mapFlowRunResponseToFlowRun } from '@/maps/flowRun'
 import { mapRunHistoryToFlowRunHistoryResponse, mapFlowRunHistoryResponseToRunHistory } from '@/maps/flowRunHistory'
@@ -50,7 +50,7 @@ import { mapNotificationCreateToNotificationCreateRequest } from '@/maps/notific
 import { mapNotificationUpdateToNotificationUpdateRequest } from '@/maps/notificationUpdate'
 import { mapNumberToString, mapStringToNumber } from '@/maps/number'
 import { mapOrchestrationResultResponseToOrchestrationResult } from '@/maps/orchestrationResult'
-import { mapFlowRunsPaginationResponseToFlowRunsPagination } from '@/maps/pagination'
+import { mapFlowRunsPaginationResponseToFlowRunsPagination, mapFlowsPaginationResponseToFlowRunsPagination } from '@/maps/pagination'
 import { mapRunGraphDataResponse, mapRunGraphNodeResponse, mapRunGraphArtifactResponse, mapRunGraphStateResponse } from '@/maps/runGraphData'
 import { mapSavedSearchResponseToSavedSearch, mapSavedSearchToLocationQuery } from '@/maps/savedSearch'
 import { mapSavedSearchCreateToSavedSearchCreateRequest } from '@/maps/savedSearchCreate'
@@ -142,6 +142,7 @@ export const maps = {
   },
   FlowFilter: { FlowFilterRequest: mapFlowFilter },
   FlowResponse: { Flow: mapFlowResponseToFlow },
+  FlowsPaginationResponse: { FlowsPagination: mapFlowsPaginationResponseToFlowRunsPagination },
   FlowRunFilter: { FlowRunFilterRequest: mapFlowRunFilter },
   FlowRunHistoryResponse: { RunHistory: mapFlowRunHistoryResponseToRunHistory },
   FlowRunInputKeyset: { FlowRunInputKeysetResponse: mapFlowRunInputKeysetResponseToFlowRunInputKeyset },
@@ -152,6 +153,7 @@ export const maps = {
   FlowRunsPaginationFilter: { FlowRunsPaginationFilterRequest: mapFlowRunsPaginationFilter },
   FlowRunsHistoryFilter: { FlowRunsHistoryFilterRequest: mapFlowRunsHistoryFilter },
   FlowsFilter: { FlowsFilterRequest: mapFlowsFilter },
+  FlowsPaginationFilter: { FlowsPaginationFilterRequest: mapFlowsPaginationFilter },
   FlowStatsFilter: {
     FlowRunsFilter: mapFlowStatsFilterToFlowRunsFilter,
     TaskRunsFilter: mapFlowStatsFilterToTaskRunsFilter,

@@ -1,5 +1,6 @@
 import { Flow, FlowResponse } from '@/models'
-import { FlowsFilter } from '@/models/Filters'
+import { FlowsFilter, FlowsPaginationFilter } from '@/models/Filters'
+import { Paginated } from '@/models/pagination'
 import { BatchProcessor } from '@/services/BatchProcessor'
 import { mapper } from '@/services/Mapper'
 import { WorkspaceApi } from '@/services/WorkspaceApi'
@@ -35,6 +36,13 @@ export class WorkspaceFlowsApi extends WorkspaceApi {
     const { data } = await this.post<FlowResponse[]>('filter', request)
 
     return mapper.map('FlowResponse', data, 'Flow')
+  }
+
+  public async getFlowsPaginated(filter: FlowsPaginationFilter = {}): Promise<Paginated<Flow>> {
+    const request = mapper.map('FlowsPaginationFilter', filter, 'FlowsPaginationFilterRequest')
+    const { data } = await this.post<Paginated<FlowResponse>>('/paginate', request)
+
+    return mapper.map('FlowsPaginationResponse', data, 'FlowsPagination')
   }
 
   public async getFlowsCount(filter: FlowsFilter = {}): Promise<number> {

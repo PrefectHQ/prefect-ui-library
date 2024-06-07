@@ -1,7 +1,7 @@
 <template>
   <p-content class="flow-list">
     <p-list-header sticky>
-      <ResultsCount v-if="selectedFlows.length == 0" label="Flow" :count="total" />
+      <ResultsCount v-if="selectedFlows.length == 0" label="Flow" :count />
       <SelectedCount v-else :count="selectedFlows.length" />
       <FlowsDeleteButton v-if="can.delete.flow" :selected="selectedFlows.map(flow => flow.id)" size="sm" @delete="deleteFlows" />
 
@@ -63,7 +63,7 @@
       </template>
 
       <template #empty-state>
-        <PEmptyResults v-if="subscriptions.executed">
+        <p-empty-results v-if="subscription.executed">
           <template #message>
             No flows
           </template>
@@ -72,12 +72,13 @@
               Clear Filters
             </p-button>
           </template>
-        </PEmptyResults>
-        <PEmptyResults v-else>
+        </p-empty-results>
+
+        <p-empty-results v-else>
           <template #message>
             <p-loading-icon />
           </template>
-        </PEmptyResults>
+        </p-empty-results>
       </template>
     </p-table>
 
@@ -102,7 +103,7 @@
     SelectedCount,
     FlowRunTagsInput
   } from '@/components'
-  import { useCan, useFlowsFilterFromRoute, useWorkspaceRoutes, useFlows, useWorkspaceApi } from '@/compositions'
+  import { useCan, useWorkspaceRoutes, useFlows, useWorkspaceApi, useFlowsPaginationFilterFromRoute } from '@/compositions'
   import { useComponent } from '@/compositions/useComponent'
   import { FlowsFilter } from '@/models/Filters'
   import { Flow } from '@/models/Flow'
@@ -122,18 +123,19 @@
   const routes = useWorkspaceRoutes()
 
   const { value: limit } = useLocalStorage('flow-list-limit', 10)
+  const page = useRouteQueryParam('page', NumberRouteParam, 1)
   const flowNameLike = ref<string>()
   const flowNameLikeDebounced = useDebouncedRef(flowNameLike, 1200)
-  const { filter, clear, isCustomFilter } = useFlowsFilterFromRoute(merge({}, props.filter, {
+
+  const { filter, clear, isCustomFilter } = useFlowsPaginationFilterFromRoute(merge({}, props.filter, {
     flows: {
       nameLike: flowNameLikeDebounced,
     },
     limit,
+    page,
   }))
 
-  const page = useRouteQueryParam('page', NumberRouteParam, 1)
-  const { flows, subscriptions, total, pages } = useFlows(filter, {
-    page,
+  const { flows, subscription, count, pages } = useFlows(filter, {
     interval: 30000,
   })
 
@@ -181,7 +183,7 @@
   const selectedFlows = ref<Flow[]>([])
 
   function refresh(): void {
-    subscriptions.refresh()
+    subscription.refresh()
   }
 
   const emit = defineEmits<{
