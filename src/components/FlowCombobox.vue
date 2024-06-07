@@ -1,8 +1,9 @@
 <template>
-  <p-combobox v-model="selected" v-model:search="search" :options="options" manual @bottom="next">
+  <p-combobox v-model="selected" v-model:search="search" :options manual>
     <template #combobox-options-empty>
       No flows
     </template>
+
     <template #default="scope">
       <slot v-bind="scope">
         <UseFlowSlot v-if="isString(scope.value)" :flow-id="scope.value">
@@ -12,8 +13,15 @@
         </UseFlowSlot>
       </slot>
     </template>
+
     <template #option="{ option }">
       <slot name="option" :option="option" />
+    </template>
+
+    <template v-if="count > flows.length" #bottom>
+      <p class="flow-combobox__more">
+        {{ count - flows.length }} more results. <span><p-link :to="moreLink">Browse all</p-link></span>
+      </p>
     </template>
   </p-combobox>
 </template>
@@ -23,39 +31,29 @@
   import { useDebouncedRef } from '@prefecthq/vue-compositions'
   import { computed, ref } from 'vue'
   import UseFlowSlot from '@/components/UseFlowSlot.vue'
-  import { useFlows } from '@/compositions'
-  import { FlowsFilter } from '@/models/Filters'
-  import { isString } from '@/utilities'
+  import { useFlows, useWorkspaceRoutes } from '@/compositions'
+  import { isString, withQuery } from '@/utilities'
+
+  const selected = defineModel<string | string[] | null | undefined>('selected', { required: true })
 
   const props = defineProps<{
-    selected: string | string[] | null | undefined,
     allowUnset?: boolean,
   }>()
 
-  const emit = defineEmits<{
-    (event: 'update:selected', value: string | string[] | null): void,
-  }>()
-
+  const routes = useWorkspaceRoutes()
   const search = ref('')
   const searchDebounced = useDebouncedRef(search, 500)
 
-  const selected = computed({
-    get() {
-      return props.selected ?? null
-    },
-    set(value) {
-      emit('update:selected', value)
-    },
-  })
-
-  const filter = (): FlowsFilter => ({
+  const { flows, count } = useFlows(() => ({
     flows: {
       nameLike: searchDebounced.value,
     },
-    limit: 20,
-  })
+    limit: 100,
+  }))
 
-  const { flows, next } = useFlows(filter, { mode: 'infinite' })
+  const moreLink = computed(() => withQuery(routes.flows(), {
+    'flows.nameLike': search.value,
+  }))
 
   const options = computed<SelectOption[]>(() => {
     const options: SelectOption[] = flows.value.map(flow => ({
@@ -73,3 +71,14 @@
     return options
   })
 </script>
+
+<style>
+.flow-combobox__more { @apply
+  text-sm
+  text-subdued
+  text-center
+  border-t-divider
+  border-t
+  pt-1
+}
+</style>

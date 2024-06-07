@@ -190,6 +190,7 @@ export type PaginationUnionFilter<T extends UnionFilterSort = UnionFilterSort> =
 
 export type WithPage<T extends PaginationUnionFilter> = Require<T, 'page'>
 
+export type FlowsPaginationFilter = PaginationUnionFilter<FlowSortValues>
 export type FlowRunsPaginationFilter = PaginationUnionFilter<FlowRunSortValues>
 
 export type FlowRunsHistoryFilter = FlowRunsFilter & {

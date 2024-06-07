@@ -1,23 +1,27 @@
-import { MaybeRefOrGetter, toValue } from 'vue'
+import { SubscriptionOptions, UseSubscription, useSubscriptionWithDependencies } from '@prefecthq/vue-compositions'
+import merge from 'lodash.merge'
+import { ComputedRef, MaybeRefOrGetter, computed, toRef, toValue } from 'vue'
 import { useCan } from '@/compositions/useCan'
-import { PaginationOptions, UsePaginationEntity, usePagination } from '@/compositions/usePagination'
 import { useWorkspaceApi } from '@/compositions/useWorkspaceApi'
-import { FlowsFilter } from '@/models'
+import { Flow, FlowsPaginationFilter } from '@/models'
 import { WorkspaceFlowsApi } from '@/services'
 import { Getter } from '@/types/reactivity'
 
-export type UseFlows = UsePaginationEntity<
-WorkspaceFlowsApi['getFlows'],
-WorkspaceFlowsApi['getFlowsCount'],
-'flows'
->
+type UseFlows = {
+  subscription: UseSubscription<WorkspaceFlowsApi['getFlowsPaginated']>,
+  flows: ComputedRef<Flow[]>,
+  count: ComputedRef<number>,
+  limit: ComputedRef<number>,
+  pages: ComputedRef<number>,
+  page: ComputedRef<number>,
+}
 
-export function useFlows(filter?: MaybeRefOrGetter<FlowsFilter | null | undefined>, options?: PaginationOptions): UseFlows {
+export function useFlows(filter?: MaybeRefOrGetter<FlowsPaginationFilter | null | undefined>, options?: SubscriptionOptions): UseFlows {
   const api = useWorkspaceApi()
   const can = useCan()
 
-  const parameters: Getter<[FlowsFilter?] | null> = () => {
-    if (!can.read.flow) {
+  const getter: Getter<[FlowsPaginationFilter] | null> = () => {
+    if (!can.read.flow_run) {
       return null
     }
 
@@ -27,19 +31,25 @@ export function useFlows(filter?: MaybeRefOrGetter<FlowsFilter | null | undefine
       return null
     }
 
-    return [value]
+    // merge here is important to track changes to `filter` if it is a reactive
+    return [merge({}, value)]
   }
 
-  const pagination = usePagination({
-    fetchMethod: api.flows.getFlows,
-    fetchParameters: parameters,
-    countMethod: api.flows.getFlowsCount,
-    countParameters: parameters,
-    options,
-  })
+  const parameters = toRef(getter)
+  const subscription = useSubscriptionWithDependencies(api.flows.getFlowsPaginated, parameters, options)
+
+  const flows = computed(() => subscription.response?.results ?? [])
+  const pages = computed(() => subscription.response?.pages ?? 0)
+  const limit = computed(() => subscription.response?.limit ?? 0)
+  const count = computed(() => subscription.response?.count ?? 0)
+  const page = computed(() => subscription.response?.page ?? 1)
 
   return {
-    ...pagination,
-    flows: pagination.results,
+    subscription,
+    flows,
+    pages,
+    page,
+    limit,
+    count,
   }
 }
