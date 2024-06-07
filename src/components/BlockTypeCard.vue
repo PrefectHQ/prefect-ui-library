@@ -1,59 +1,41 @@
 <template>
   <p-card class="block-type-card">
+    <template #header>
+      <LogoImage v-if="blockType.logoUrl" :url="blockType.logoUrl" class="block-type-card__logo" size="lg" />
+      <p-icon v-else icon="PBlock" class="block-type-card__icon" />
+      <p-heading class="block-type-card-preview__name" heading="3">
+        {{ blockType.name }}
+      </p-heading>
+    </template>
+
     <p-content>
-      <LogoImage :url="blockType.logoUrl" class="block-type-card__logo" />
-
-      <p-key-value label="Name" :value="blockType.name" />
-
-      <p-key-value label="Slug" :value="blockType.slug" />
-
-      <template v-if="blockSchema && hasCapabilities">
-        <p-key-value label="Capabilities">
-          <template #value>
-            <BlockSchemaCapabilities :capabilities="blockSchema.capabilities" class="block-type-card__capabilities" />
-          </template>
-        </p-key-value>
-      </template>
-
-      <template v-if="blockType.description">
-        <p-key-value label="Description" :value="blockType.description" />
-      </template>
+      <p-markdown-renderer v-if="description" :text="description" class="block-type-card__description" />
 
       <template v-if="blockType.codeExample">
-        <p-key-value label="Example">
-          <template #value>
-            <BlockTypeSnippet :snippet="blockType.codeExample" />
-          </template>
-        </p-key-value>
+        <p-heading class="block-type-card-preview__name" heading="5">
+          Example
+        </p-heading>
+        <BlockTypeSnippet :snippet="blockType.codeExample" />
       </template>
-      <div class="block-type-card__actions">
-        <template v-if="blockType.documentationUrl">
-          <a :href="blockType.documentationUrl" target="_blank">
-            <p-button icon-append="ArrowTopRightOnSquareIcon">
-              <slot>
-                View Docs
-              </slot>
-            </p-button>
-          </a>
-        </template>
+    </p-content>
 
+    <template #footer>
+      <div class="block-type-card__actions">
         <p-link :to="routes.blockCreate(blockType.slug)" class="block-type-card__action">
-          <p-button icon-append="PlusIcon" class="block-type-card__button">
-            Add Block
+          <p-button variant="default" class="block-type-card__button">
+            Create
           </p-button>
         </p-link>
       </div>
-    </p-content>
+    </template>
   </p-card>
 </template>
 
 <script lang="ts" setup>
-  import { useSubscription } from '@prefecthq/vue-compositions'
   import { computed } from 'vue'
-  import BlockSchemaCapabilities from '@/components/BlockSchemaCapabilities.vue'
   import BlockTypeSnippet from '@/components/BlockTypeSnippet.vue'
   import LogoImage from '@/components/LogoImage.vue'
-  import { useWorkspaceApi, useWorkspaceRoutes } from '@/compositions'
+  import { useWorkspaceRoutes } from '@/compositions'
   import { BlockType } from '@/models/BlockType'
 
   const props = defineProps<{
@@ -62,18 +44,56 @@
 
   const routes = useWorkspaceRoutes()
 
-  const blockTypeId = computed(() => props.blockType.id)
-  const api = useWorkspaceApi()
-  const blockSchemaSubscription = useSubscription(api.blockSchemas.getBlockSchemaForBlockType, [blockTypeId])
-  const blockSchema = computed(() => blockSchemaSubscription.response)
-  const hasCapabilities = computed(() => blockSchema.value?.capabilities.length)
+  const description = computed(() => {
+    let baseDescription = props.blockType.description
+
+    if (props.blockType.documentationUrl) {
+      baseDescription += ` [Documentation](${props.blockType.documentationUrl})`
+    }
+
+    return baseDescription
+  })
 </script>
 
 <style>
+.block-type-card .p-card-header { @apply
+  flex
+  flex-row
+  justify-start
+  items-center
+  gap-4
+}
+
+.block-type-card__description { @apply
+  text-sm
+}
+
 .block-type-card__actions { @apply
   flex
   gap-2
-  items-center
   justify-end
+  w-full
+  text-sm
+  items-center
+}
+
+.block-type-card__logo { @apply
+  shrink-0
+  w-14
+  h-14
+}
+
+.block-type-card__icon { @apply
+  shrink-0
+  w-14
+  h-14
+  overflow-hidden
+  rounded
+  bg-black
+  bg-opacity-10
+  dark:bg-white
+  dark:bg-opacity-25
+  backdrop-blur-sm
+  p-1
 }
 </style>

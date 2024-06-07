@@ -3,11 +3,11 @@
     <page-heading class="page-heading-blocks-catalog" :crumbs="crumbs" />
 
     <p-message>
-      If you don't see a block for the service you're using, check out our
+      Can't find a block for your service? Check out the
       <p-link :to="localization.docs.collections">
-        Integrations
+        docs
       </p-link>
-      to view a list of integration libraries and their corresponding blocks.
+      for a full list of integrations in the SDK.
     </p-message>
   </p-content>
 </template>
@@ -22,6 +22,6 @@
 
   const crumbs: BreadCrumbs = [
     { text: 'Blocks', to: routes.blocks() },
-    { text: 'Choose a Block' },
+    { text: 'Catalog' },
   ]
 </script>
