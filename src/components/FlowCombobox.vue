@@ -48,7 +48,7 @@
     flows: {
       nameLike: searchDebounced.value,
     },
-    limit: 20,
+    limit: 100,
   }))
 
   const moreLink = computed(() => withQuery(routes.flows(), {
