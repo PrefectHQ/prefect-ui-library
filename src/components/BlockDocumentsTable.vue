@@ -6,9 +6,8 @@
       <BlocksDeleteButton v-if="selectedBlockDocuments.length > 0" class="block-documents-table__delete" :selected="selectedBlockDocuments.map(blockDocument => blockDocument.id)" size="sm" @delete="onDelete" />
 
       <template #controls>
-        <SearchInput v-model="searchTerm" placeholder="Search blocks" label="Search blocks" class="block-documents-table__search" />
-        <BlockSchemaCapabilitySelect v-model:selected="capabilities" class="block-documents-table__capability" />
-        <BlockTypeSelect v-model:selected="blockTypes" class="block-documents-table__type" />
+        <SearchInput v-model="searchTerm" placeholder="Search blocks" size="small" label="Search blocks" class="block-documents-table__search" />
+        <BlockTypeSelect v-model:selected="blockTypes" class="block-documents-table__type" small />
       </template>
     </p-list-header>
 
@@ -20,12 +19,6 @@
       :column-classes="columnClasses"
       @update:selected="selectedBlockDocuments = $event"
     >
-      <template #type="{ row }">
-        <div class="block-documents-table__name-column">
-          <LogoImage :url="row.blockType.logoUrl" class="block-documents-table__logo" />
-        </div>
-      </template>
-
       <template #block="{ row }">
         <div class="block-documents-table__block">
           <LogoImage :url="row.blockType.logoUrl" class="block-documents-table__logo" />
@@ -76,10 +69,9 @@
 <script lang="ts" setup>
   import { TableColumn, PEmptyResults, ClassValue } from '@prefecthq/prefect-design'
   import { NumberRouteParam, useDebouncedRef, useLocalStorage, useRouteQueryParam } from '@prefecthq/vue-compositions'
+  import { snakeCase } from 'lodash'
   import merge from 'lodash.merge'
   import { computed, ref, ComputedRef } from 'vue'
-  import { snakeCase } from '..'
-  import BlockSchemaCapabilitySelect from '@/components/BlockSchemaCapabilitySelect.vue'
   import BlocksDeleteButton from '@/components/BlocksDeleteButton.vue'
   import BlockTypeSelect from '@/components/BlockTypeSelect.vue'
   import LogoImage from '@/components/LogoImage.vue'
