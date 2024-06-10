@@ -5,7 +5,9 @@
 <script lang="ts" setup>
   import { SelectOption } from '@prefecthq/prefect-design'
   import { computed } from 'vue'
-  import { AutomationTriggerEventPosture } from '@/automations/types/automationTriggerEvent'
+  import { automationTriggerEventPosture } from '@/automations/types/api/triggers'
+  import { AutomationTriggerEventPosture, getAutomationTriggerEventPostureLabel } from '@/automations/types/automationTriggerEvent'
+  import { capitalize } from '@/utilities'
 
   type PostureOption = SelectOption & {
     value: AutomationTriggerEventPosture,
@@ -19,10 +21,10 @@
     (event: 'update:selected', value: AutomationTriggerEventPosture): void,
   }>()
 
-  const options: PostureOption[] = [
-    { label: 'Enters', value: 'Reactive' },
-    { label: 'Stays in', value: 'Proactive' },
-  ]
+  const options: PostureOption[] = automationTriggerEventPosture.map(posture => ({
+    label: capitalize(getAutomationTriggerEventPostureLabel(posture)),
+    value: posture,
+  }))
 
   const internalSelected = computed({
     get() {

@@ -4,8 +4,8 @@
 
 <script lang="ts" setup>
   import { SelectOption } from '@prefecthq/prefect-design'
-  import { computed } from 'vue'
-  import { DeploymentStatus } from '@/models/DeploymentStatus'
+  import { capitalize, computed } from 'vue'
+  import { DeploymentStatus, deploymentStatus, getDeploymentStatusLabel } from '@/models/DeploymentStatus'
 
   type StatusOption = SelectOption & {
     value: DeploymentStatus,
@@ -19,10 +19,10 @@
     (event: 'update:selected', value: DeploymentStatus): void,
   }>()
 
-  const options: StatusOption[] = [
-    { label: 'Ready', value: 'ready' },
-    { label: 'Not Ready', value: 'not_ready' },
-  ]
+  const options: StatusOption[] = deploymentStatus.map(status => ({
+    label: capitalize(getDeploymentStatusLabel(status)),
+    value: status,
+  }))
 
   const internalSelected = computed({
     get() {

@@ -12,6 +12,18 @@ export const DEFAULT_EVENT_TRIGGER_THRESHOLD = 1
 
 export type AutomationTriggerEventPosture = typeof automationTriggerEventPosture[number]
 
+export function getAutomationTriggerEventPostureLabel(posture: AutomationTriggerEventPosture): string {
+  switch (posture) {
+    case 'Proactive':
+      return 'stays in'
+    case 'Reactive':
+      return 'enters'
+    default:
+      const exhaustive: never = posture
+      throw new Error(`getAutomationTriggerEventPostureLabel missing case for ${exhaustive}`)
+  }
+}
+
 export type IAutomationTriggerEvent = {
   posture: AutomationTriggerEventPosture,
   match: AutomationTriggerMatch,
