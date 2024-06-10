@@ -15,9 +15,13 @@
   }>()
 
   const api = useWorkspaceApi()
+
   const filter = computed<TaskRunsFilter>(() => ({
     flowRuns: {
       id: [props.flowRunId],
+    },
+    taskRuns: {
+      subFlowRunsExist: false,
     },
   }))
 
