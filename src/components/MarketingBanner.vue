@@ -1,11 +1,11 @@
 <template>
-  <div class="marketing-banner p-background" :class="classes">
-    <div class="marketing-banner__content">
+  <p-card class="marketing-banner" :class="classes.root">
+    <div class="marketing-banner__content" :class="classes.content">
       <slot>
         <div class="marketing-banner__message">
-          <div v-if="title" class="marketing-banner__title">
+          <p-heading v-if="title" :heading="2" class="marketing-banner__title">
             {{ title }}
-          </div>
+          </p-heading>
           <div v-if="subtitle" class="marketing-banner__subtitle">
             {{ subtitle }}
           </div>
@@ -15,7 +15,7 @@
         <slot name="actions" />
       </div>
     </div>
-  </div>
+  </p-card>
 </template>
 
 <script lang="ts" setup>
@@ -25,10 +25,16 @@
     title?: string,
     subtitle?: string,
     alternate?: boolean,
+    centered?: boolean,
   }>()
 
   const classes = computed(() => ({
-    'marketing-banner--alternate': props.alternate,
+    root: {
+      'marketing-banner--alternate': props.alternate,
+    },
+    content: {
+      'marketing-banner__content--centered': props.centered,
+    },
   }))
 </script>
 
@@ -36,7 +42,6 @@
 .marketing-banner { @apply
   relative
   overflow-hidden
-  rounded-default
   bg-[url('/marketing-banner-bg-light.svg')]
   dark:bg-[url('/marketing-banner-bg-dark.svg')];
   background-size: auto 100%;
@@ -62,11 +67,7 @@
 .marketing-banner__message { @apply
   flex
   flex-col
-  gap-1
-}
-
-.marketing-banner__title { @apply
-  text-xl
+  gap-2
 }
 
 .marketing-banner__subtitle { @apply
@@ -84,5 +85,13 @@
   text-default
   bg-floating
   shadow-lg
+}
+
+.marketing-banner__content--centered { @apply
+  text-center
+  flex-col
+  items-center
+  justify-center
+  gap-8
 }
 </style>
