@@ -56,7 +56,9 @@ export {
 
 export * from './triggers'
 export * from './triggerTemplates'
+export * from './automationTriggerCompound'
 export * from './automationTriggerEvent'
+export * from './automationTriggerSequence'
 export * from './deploymentStatusTrigger'
 export * from './flowRunStateTrigger'
 export * from './workPoolStatusTrigger'
