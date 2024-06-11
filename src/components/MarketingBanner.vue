@@ -45,7 +45,7 @@
   bg-[url('/marketing-banner-bg-light.svg')]
   dark:bg-[url('/marketing-banner-bg-dark.svg')];
   background-size: auto 100%;
-  background-position: top 0px right 0px;
+  background-position: top right;
   background-repeat: no-repeat;
 }
 
