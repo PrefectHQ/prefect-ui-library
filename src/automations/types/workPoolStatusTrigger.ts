@@ -10,7 +10,7 @@ export type WorkPoolStatusEvent = typeof workPoolStatusEvent[number]
 export type WorkPoolStatusTrigger = {
   workPools: string[],
   posture: AutomationTriggerEventPosture,
-  status: WorkPoolStatus | null,
+  status: WorkPoolStatus,
   time: number,
 }
 
