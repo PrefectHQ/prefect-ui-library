@@ -1,5 +1,19 @@
 export type WorkPoolQueueStatus = 'ready' | 'paused' | 'not_ready'
 
+export function getWorkPoolQueueStatusLabel(status: WorkPoolQueueStatus): string {
+  switch (status) {
+    case 'not_ready':
+      return 'not ready'
+    case 'paused':
+      return 'paused'
+    case 'ready':
+      return 'ready'
+    default:
+      const exhaustive: never = status
+      throw new Error(`getWorkPoolStatusLabe missing case for ${exhaustive}`)
+  }
+}
+
 export interface IWorkPoolQueue {
   readonly id: string,
   created: Date,
