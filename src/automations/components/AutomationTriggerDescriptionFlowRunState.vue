@@ -8,7 +8,7 @@
       <template v-for="(flowId, index) in trigger.flowIds" :key="flowId">
         <FlowIconText :flow-id />
 
-        <template v-if="index < trigger.flowIds.length - 1">
+        <template v-if="index === trigger.flowIds.length - 2">
           or
         </template>
       </template>

@@ -12,7 +12,7 @@
       <template v-for="(workQueue, index) in workQueues" :key="workQueue.id">
         <WorkQueueIconText :work-pool-name="workQueue.workPoolName" :work-queue-name="workQueue.name" />
 
-        <template v-if="index < trigger.workQueues.length - 1">
+        <template v-if="index === trigger.workQueues.length - 2">
           or
         </template>
       </template>
@@ -24,7 +24,7 @@
       <template v-for="(workPool, index) in workPools" :key="workPool.id">
         <WorkPoolIconText :work-pool-name="workPool.name" />
 
-        <template v-if="index < trigger.workPools.length - 1">
+        <template v-if="index === trigger.workPools.length - 2">
           or
         </template>
       </template>

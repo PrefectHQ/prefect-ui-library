@@ -9,7 +9,7 @@
   import AutomationTriggerDescriptionFlowRunState from '@/automations/components/AutomationTriggerDescriptionFlowRunState.vue'
   import AutomationTriggerDescriptionWorkPoolStatus from '@/automations/components/AutomationTriggerDescriptionWorkPoolStatus.vue'
   import AutomationTriggerDescriptionWorkQueueStatus from '@/automations/components/AutomationTriggerDescriptionWorkQueueStatus.vue'
-  import { getAutomationTriggerTemplate, getAutomationTriggerTemplateLabel } from '@/automations/types'
+  import { getAutomationTriggerTemplate } from '@/automations/types'
   import { AutomationTrigger } from '@/automations/types/triggers'
   import { mapper } from '@/services'
   import { withProps } from '@/utilities'
@@ -43,20 +43,12 @@
         })
 
       case 'custom':
-        return withProps(AutomationTriggerDescriptionCustom, {
-          trigger: props.trigger,
-        })
+        return withProps(AutomationTriggerDescriptionCustom, {})
 
       default:
         const exhaustive: never = template
         throw new Error(`AutomationTriggerDescription missing case for trigger template: ${exhaustive}`)
     }
-  })
-
-  const label = computed(() => {
-    const template = getAutomationTriggerTemplate(props.trigger)
-
-    return getAutomationTriggerTemplateLabel(template)
   })
 </script>
 

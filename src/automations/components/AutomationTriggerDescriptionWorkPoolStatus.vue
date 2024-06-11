@@ -12,7 +12,7 @@
       <template v-for="(workPool, index) in workPools" :key="workPool.id">
         <WorkPoolIconText :work-pool-name="workPool.name" />
 
-        <template v-if="index < trigger.workPools.length - 1">
+        <template v-if="index === trigger.workPools.length - 2">
           or
         </template>
       </template>

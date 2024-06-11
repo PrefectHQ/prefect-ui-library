@@ -17,7 +17,8 @@
 
       <template v-for="(deploymentId, index) in trigger.deployments" :key="deploymentId">
         <DeploymentIconText :deployment-id />
-        <template v-if="index < trigger.deployments.length - 1">
+
+        <template v-if="index === trigger.deployments.length - 2">
           or
         </template>
       </template>
