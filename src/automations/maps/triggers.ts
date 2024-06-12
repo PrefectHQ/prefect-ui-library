@@ -1,9 +1,11 @@
 /* eslint-disable camelcase */
 import { asArray } from '@prefecthq/prefect-design'
-import { AutomationTriggerMatch, AutomationTriggerResponse, EventResourceValue, isAutomationTriggerEventResponse } from '@/automations/types/api/triggers'
+import { AutomationTriggerMatch, AutomationTriggerResponse, EventResourceValue, isAutomationTriggerCompoundResponse, isAutomationTriggerEventResponse, isAutomationTriggerSequenceResponse } from '@/automations/types/api/triggers'
+import { AutomationTriggerCompound } from '@/automations/types/automationTriggerCompound'
 import { AutomationTriggerEvent } from '@/automations/types/automationTriggerEvent'
-import { AutomationTrigger } from '@/automations/types/triggers'
-import { MapFunction } from '@/schemas/mapper'
+import { AutomationTriggerSequence } from '@/automations/types/automationTriggerSequence'
+import { AutomationTrigger, isAutomationTriggerCompound, isAutomationTriggerEvent, isAutomationTriggerSequence } from '@/automations/types/triggers'
+import { MapFunction } from '@/services/Mapper'
 import { EventNameFilter, EventRelatedFilter, EventResourceFilter, WorkspaceEventsFilter } from '@/types'
 import { dateFunctions } from '@/utilities/timezone'
 
@@ -21,22 +23,59 @@ export const mapAutomationTriggerResponseToAutomationTrigger: MapFunction<Automa
     })
   }
 
+  if (isAutomationTriggerCompoundResponse(source)) {
+    return new AutomationTriggerCompound({
+      triggers: this.map('AutomationTriggerResponse', source.triggers, 'AutomationTrigger'),
+      require: source.require,
+      within: source.within,
+    })
+  }
+
+  if (isAutomationTriggerSequenceResponse(source)) {
+    return new AutomationTriggerSequence({
+      triggers: this.map('AutomationTriggerResponse', source.triggers, 'AutomationTrigger'),
+      within: source.within,
+    })
+  }
+
   const exhaustive: never = source
   throw new Error(`Trigger map is not exhaustive: ${(exhaustive as AutomationTriggerResponse).type}`)
 }
 
 export const mapAutomationTriggerToAutomationTriggerRequest: MapFunction<AutomationTrigger, AutomationTriggerResponse> = function(source) {
-  return {
-    type: 'event',
-    match: source.match,
-    match_related: source.matchRelated,
-    after: source.after,
-    expect: source.expect,
-    for_each: source.forEach,
-    posture: source.posture,
-    threshold: source.threshold,
-    within: source.within,
+  if (isAutomationTriggerEvent(source)) {
+    return {
+      type: 'event',
+      match: source.match,
+      match_related: source.matchRelated,
+      after: source.after,
+      expect: source.expect,
+      for_each: source.forEach,
+      posture: source.posture,
+      threshold: source.threshold,
+      within: source.within,
+    }
   }
+
+  if (isAutomationTriggerCompound(source)) {
+    return {
+      type: 'compound',
+      triggers: this.map('AutomationTrigger', source.triggers, 'AutomationTriggerRequest'),
+      require: source.require,
+      within: source.within,
+    }
+  }
+
+  if (isAutomationTriggerSequence(source)) {
+    return {
+      type: 'sequence',
+      triggers: this.map('AutomationTrigger', source.triggers, 'AutomationTriggerRequest'),
+      within: source.within,
+    }
+  }
+
+  const exhaustive: never = source
+  throw new Error(`No mapper for automation trigger type: ${(exhaustive as AutomationTrigger).type}`)
 }
 
 export const mapAutomationTriggerEventToWorkspaceEventFilter: MapFunction<AutomationTriggerEvent, WorkspaceEventsFilter> = (trigger) => {

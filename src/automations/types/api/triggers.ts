@@ -1,3 +1,4 @@
+import { AutomationTriggerCompoundRequire } from '@/automations/types/automationTriggerCompound'
 import { isRecord } from '@/utilities/object'
 import { createTuple } from '@/utilities/tuples'
 
@@ -51,4 +52,25 @@ export function isAutomationTriggerEventResponse(value: unknown): value is Autom
   return isRecord(value) && value.type === 'event' && isAutomationTriggerEventPosture(value.posture)
 }
 
-export type AutomationTriggerResponse = AutomationTriggerEventResponse
+export type AutomationTriggerCompoundResponse = {
+  type: 'compound',
+  triggers: AutomationTriggerResponse[],
+  within: number,
+  require: AutomationTriggerCompoundRequire,
+}
+
+export function isAutomationTriggerCompoundResponse(value: AutomationTriggerResponse): value is AutomationTriggerCompoundResponse {
+  return value.type === 'compound'
+}
+
+export type AutomationTriggerSequenceResponse = {
+  type: 'sequence',
+  triggers: AutomationTriggerResponse[],
+  within: number,
+}
+
+export function isAutomationTriggerSequenceResponse(value: AutomationTriggerResponse): value is AutomationTriggerSequenceResponse {
+  return value.type === 'sequence'
+}
+
+export type AutomationTriggerResponse = AutomationTriggerEventResponse | AutomationTriggerCompoundResponse | AutomationTriggerSequenceResponse
