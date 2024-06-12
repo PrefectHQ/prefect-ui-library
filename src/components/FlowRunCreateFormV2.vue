@@ -68,7 +68,7 @@
       <p-button @click="emit('cancel')">
         Cancel
       </p-button>
-      <p-button variant="default" type="submit">
+      <p-button variant="default" type="submit" :disabled>
         Submit
       </p-button>
     </template>
@@ -97,6 +97,7 @@
   const props = defineProps<{
     deployment: Deployment,
     parameters?: SchemaValues,
+    disabled?: boolean,
     name?: string,
   }>()
 
@@ -126,6 +127,10 @@
   const { errors, validate: validateParameters } = useSchemaValidation(schema, parameters)
 
   async function submit(): Promise<void> {
+    if (props.disabled) {
+      return
+    }
+
     if (shouldValidate.value) {
       try {
         const valid = (await Promise.all([
