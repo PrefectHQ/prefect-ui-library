@@ -4,7 +4,7 @@
 
 <script lang="ts" setup>
   import { computed } from 'vue'
-  import AutomationTriggerCustomInput from '@/automations/components/AutomationTriggerCustomInput.vue'
+  import AutomationTriggerCustomEventInput from '@/automations/components/AutomationTriggerCustomEventInput.vue'
   import AutomationTriggerDeploymentStatusInput from '@/automations/components/AutomationTriggerDeploymentStatusInput.vue'
   import AutomationTriggerFlowRunStateInput from '@/automations/components/AutomationTriggerFlowRunStateInput.vue'
   import AutomationTriggerWorkPoolStatusInput from '@/automations/components/AutomationTriggerWorkPoolStatusInput.vue'
@@ -46,7 +46,7 @@
         })
 
       case 'custom':
-        return withProps(AutomationTriggerCustomInput, {
+        return withProps(AutomationTriggerCustomEventInput, {
           trigger: trigger.value,
           'onUpdate:trigger': update,
         })
