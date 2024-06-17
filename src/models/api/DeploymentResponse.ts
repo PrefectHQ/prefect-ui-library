@@ -24,7 +24,7 @@ export type DeploymentResponse = {
   manifest_path: string | null,
   path: string | null,
   entrypoint: string | null,
-  parameter_openapi_schema: SchemaResponseV2,
+  parameter_openapi_schema: SchemaResponseV2 | null,
   storage_document_id: string | null,
   infrastructure_document_id: string | null,
   /** Formerly known as infra_overrides in prefect<3 */
