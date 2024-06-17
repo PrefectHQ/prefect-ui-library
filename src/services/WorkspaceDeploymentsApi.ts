@@ -3,8 +3,9 @@ import { FlowRunResponse } from '@/models/api/FlowRunResponse'
 import { Deployment } from '@/models/Deployment'
 import { DeploymentFlowRunCreateV2 } from '@/models/DeploymentFlowRunCreate'
 import { DeploymentUpdateV2 } from '@/models/DeploymentUpdate'
-import { DeploymentsFilter } from '@/models/Filters'
+import { DeploymentsFilter, DeploymentsPaginationFilter } from '@/models/Filters'
 import { FlowRun } from '@/models/FlowRun'
+import { Paginated } from '@/models/pagination'
 import { BatchProcessor } from '@/services/BatchProcessor'
 import { mapper } from '@/services/Mapper'
 import { WorkspaceApi } from '@/services/WorkspaceApi'
@@ -44,6 +45,13 @@ export class WorkspaceDeploymentsApi extends WorkspaceApi {
     const { data } = await this.post<DeploymentResponse[]>('/filter', request)
 
     return mapper.map('DeploymentResponse', data, 'Deployment')
+  }
+
+  public async getDeploymentsPaginated(filter: DeploymentsPaginationFilter = {}): Promise<Paginated<Deployment>> {
+    const request = mapper.map('DeploymentsPaginationFilter', filter, 'DeploymentsPaginationFilterRequest')
+    const { data } = await this.post<Paginated<DeploymentResponse>>('/filter', request)
+
+    return mapper.map('DeploymentPaginationResponse', data, 'DeploymentsPagination')
   }
 
   public async getDeploymentsCount(filter: DeploymentsFilter = {}): Promise<number> {

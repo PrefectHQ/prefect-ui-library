@@ -1,7 +1,7 @@
 /* eslint-disable camelcase */
 import { asArray } from '@prefecthq/prefect-design'
-import { Any, Like, All, IsNull, OperatorRequest, TagFilterRequest, FlowFilterRequest, FlowRunFilterRequest, NotAny, StateFilterRequest, Before, After, TaskRunFilterRequest, Exists, DeploymentFilterRequest, Equals, FlowsFilterRequest, FlowRunsFilterRequest, TaskRunsFilterRequest, DeploymentsFilterRequest, BlockTypeFilterRequest, BlockSchemaFilterRequest, BlockDocumentFilterRequest, NotificationsFilterRequest, SavedSearchesFilterRequest, LogsFilterRequest, GreaterThan, LessThan, ConcurrencyLimitsFilterRequest, BlockTypesFilterRequest, BlockSchemasFilterRequest, BlockDocumentsFilterRequest, WorkQueuesFilterRequest, StartsWith, WorkPoolFilterRequest, WorkPoolsFilterRequest, WorkPoolQueueFilterRequest, FlowRunsHistoryFilterRequest, WorkPoolWorkersFilterRequest, WorkPoolQueuesFilterRequest, ArtifactsFilterRequest, ArtifactFilterRequest, NullableEquals, VariablesFilterRequest, VariableFilterRequest, TaskRunsHistoryFilterRequest, FlowRunsPaginationFilterRequest, FlowsPaginationFilterRequest } from '@/models/api/Filters'
-import { FlowFilter, FlowRunFilter, Operation, StateFilter, TagFilter, TaskRunFilter, DeploymentFilter, FlowsFilter, FlowRunsFilter, TaskRunsFilter, DeploymentsFilter, BlockTypeFilter, BlockSchemaFilter, BlockDocumentFilter, NotificationsFilter, SavedSearchesFilter, LogsFilter, ConcurrencyLimitsFilter, BlockTypesFilter, BlockSchemasFilter, BlockDocumentsFilter, WorkQueuesFilter, WorkPoolFilter, WorkPoolsFilter, WorkPoolQueueFilter, FlowRunsHistoryFilter, WorkPoolWorkersFilter, WorkPoolQueuesFilter, ArtifactsFilter, ArtifactFilter, VariablesFilter, VariableFilter, TaskRunsHistoryFilter, FlowRunsPaginationFilter, FlowsPaginationFilter } from '@/models/Filters'
+import { Any, Like, All, IsNull, OperatorRequest, TagFilterRequest, FlowFilterRequest, FlowRunFilterRequest, NotAny, StateFilterRequest, Before, After, TaskRunFilterRequest, Exists, DeploymentFilterRequest, Equals, FlowsFilterRequest, FlowRunsFilterRequest, TaskRunsFilterRequest, DeploymentsFilterRequest, BlockTypeFilterRequest, BlockSchemaFilterRequest, BlockDocumentFilterRequest, NotificationsFilterRequest, SavedSearchesFilterRequest, LogsFilterRequest, GreaterThan, LessThan, ConcurrencyLimitsFilterRequest, BlockTypesFilterRequest, BlockSchemasFilterRequest, BlockDocumentsFilterRequest, WorkQueuesFilterRequest, StartsWith, WorkPoolFilterRequest, WorkPoolsFilterRequest, WorkPoolQueueFilterRequest, FlowRunsHistoryFilterRequest, WorkPoolWorkersFilterRequest, WorkPoolQueuesFilterRequest, ArtifactsFilterRequest, ArtifactFilterRequest, NullableEquals, VariablesFilterRequest, VariableFilterRequest, TaskRunsHistoryFilterRequest, FlowRunsPaginationFilterRequest, FlowsPaginationFilterRequest, DeploymentsPaginationFilterRequest } from '@/models/api/Filters'
+import { FlowFilter, FlowRunFilter, Operation, StateFilter, TagFilter, TaskRunFilter, DeploymentFilter, FlowsFilter, FlowRunsFilter, TaskRunsFilter, DeploymentsFilter, BlockTypeFilter, BlockSchemaFilter, BlockDocumentFilter, NotificationsFilter, SavedSearchesFilter, LogsFilter, ConcurrencyLimitsFilter, BlockTypesFilter, BlockSchemasFilter, BlockDocumentsFilter, WorkQueuesFilter, WorkPoolFilter, WorkPoolsFilter, WorkPoolQueueFilter, FlowRunsHistoryFilter, WorkPoolWorkersFilter, WorkPoolQueuesFilter, ArtifactsFilter, ArtifactFilter, VariablesFilter, VariableFilter, TaskRunsHistoryFilter, FlowRunsPaginationFilter, FlowsPaginationFilter, DeploymentsPaginationFilter } from '@/models/Filters'
 import { MapFunction } from '@/services'
 import { removeEmptyObjects } from '@/utilities'
 
@@ -358,6 +358,16 @@ export const mapFlowsPaginationFilter: MapFunction<FlowsPaginationFilter, FlowsP
 export const mapFlowRunsPaginationFilter: MapFunction<FlowRunsPaginationFilter, FlowRunsPaginationFilterRequest> = function(source) {
   // eslint-disable-next-line no-unused-vars
   const { offset, ...filter } = this.map('FlowRunsFilter', source, 'FlowRunsFilterRequest')
+
+  return {
+    ...filter,
+    page: source.page,
+  }
+}
+
+export const mapDeploymentsPaginationFilter: MapFunction<DeploymentsPaginationFilter, DeploymentsPaginationFilterRequest> = function(source) {
+  // eslint-disable-next-line no-unused-vars
+  const { offset, ...filter } = this.map('DeploymentsFilter', source, 'DeploymentsFilterRequest')
 
   return {
     ...filter,
