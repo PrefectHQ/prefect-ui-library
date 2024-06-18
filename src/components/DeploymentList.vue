@@ -1,7 +1,7 @@
 <template>
   <p-content class="deployment-list">
     <p-list-header sticky>
-      <ResultsCount v-if="selectedDeployments.length == 0" label="Deployment" :count="total" />
+      <ResultsCount v-if="selectedDeployments.length == 0" label="Deployment" :count />
       <SelectedCount v-else :count="selectedDeployments.length" />
       <DeploymentsDeleteButton v-if="can.delete.deployment" :selected="selectedDeployments.map(deployment => deployment.id)" small @delete="deleteDeployments" />
 
@@ -96,7 +96,7 @@
       </template>
 
       <template #empty-state>
-        <PEmptyResults v-if="subscriptions.executed">
+        <PEmptyResults v-if="subscription.executed">
           <template #message>
             No deployments
           </template>
@@ -138,7 +138,7 @@
     DeploymentStatusBadge,
     DeploymentScheduleTags
   } from '@/components'
-  import { useCan, useDeploymentsFilterFromRoute, useWorkspaceRoutes, useDeployments, useComponent } from '@/compositions'
+  import { useCan, useDeploymentsPaginationFilterFromRoute, useWorkspaceRoutes, useDeployments, useComponent } from '@/compositions'
   import { Deployment } from '@/models'
   import { DeploymentsFilter } from '@/models/Filters'
   import { ClassValue } from '@/types'
@@ -160,18 +160,19 @@
 
   const nameLike = ref<string>()
   const nameLikeDebounced = useDebouncedRef(nameLike, 1200)
+  const page = useRouteQueryParam('page', NumberRouteParam, 1)
   const { value: limit } = useLocalStorage('deployment-list-limit', 10)
 
-  const { filter, clear, isCustomFilter } = useDeploymentsFilterFromRoute(merge({}, props.filter, {
+  const { filter, clear, isCustomFilter } = useDeploymentsPaginationFilterFromRoute(merge({}, props.filter, {
     deployments: {
       flowOrDeploymentNameLike: nameLikeDebounced,
     },
     limit,
+    page,
   }), props.prefix)
 
-  const page = useRouteQueryParam('page', NumberRouteParam, 1)
-  const { deployments, subscriptions, total, pages } = useDeployments(filter, {
-    page,
+
+  const { deployments, subscription, count, pages } = useDeployments(filter, {
     interval: 30000,
   })
 
@@ -217,7 +218,7 @@
   const selectedDeployments = ref<Deployment[]>([])
 
   function refresh(): void {
-    subscriptions.refresh()
+    subscription.refresh()
   }
 
   const deleteDeployments = (): void => {

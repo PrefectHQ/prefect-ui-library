@@ -10,7 +10,7 @@ import { FlowRunSortValuesSortParam } from '@/formatters/FlowRunSortValuesSortPa
 import { FlowSortValuesSortParam } from '@/formatters/FlowSortValuesSortParam'
 import { OperatorRouteParam } from '@/formatters/OperatorRouteParam'
 import { TaskRunSortValuesSortParam } from '@/formatters/TaskRunSortValuesSortParam'
-import { BlockDocumentFilter, BlockDocumentsFilter, BlockSchemaFilter, BlockSchemasFilter, BlockTypeFilter, BlockTypesFilter, DeploymentFilter, DeploymentsFilter, FlowFilter, FlowRunFilter, FlowRunsFilter, FlowRunsHistoryFilter, FlowRunsPaginationFilter, FlowsFilter, FlowsPaginationFilter, PaginationUnionFilter, StateFilter, TagFilter, TaskRunFilter, TaskRunsFilter, UnionFilter, VariableFilter, VariablesFilter, WithPage, WorkPoolFilter, WorkPoolQueueFilter, WorkPoolsFilter } from '@/models/Filters'
+import { BlockDocumentFilter, BlockDocumentsFilter, BlockSchemaFilter, BlockSchemasFilter, BlockTypeFilter, BlockTypesFilter, DeploymentFilter, DeploymentsFilter, DeploymentsPaginationFilter, FlowFilter, FlowRunFilter, FlowRunsFilter, FlowRunsHistoryFilter, FlowRunsPaginationFilter, FlowsFilter, FlowsPaginationFilter, PaginationUnionFilter, StateFilter, TagFilter, TaskRunFilter, TaskRunsFilter, UnionFilter, VariableFilter, VariablesFilter, WithPage, WorkPoolFilter, WorkPoolQueueFilter, WorkPoolsFilter } from '@/models/Filters'
 import { defaultDeploymentSort, defaultFlowRunSort, defaultFlowSort, defaultTaskRunSort, defaultVariableSort } from '@/types'
 import { AnyRecord } from '@/types/any'
 import { MaybeReactive } from '@/types/reactivity'
@@ -615,6 +615,10 @@ export function useFlowsPaginationFilter(defaultValue: MaybeReactive<FlowsPagina
   return usePaginationUnionFilter<FlowsPaginationFilter>(defaultValue, defaultFlowSort)
 }
 
+export function useDeploymentsPaginationFilter(defaultValue: MaybeReactive<DeploymentsPaginationFilter> = {}): UseFilter<WithPage<DeploymentsPaginationFilter>> {
+  return usePaginationUnionFilter<DeploymentsPaginationFilter>(defaultValue, defaultDeploymentSort)
+}
+
 export function useFlowRunsPaginationFilter(defaultValue: MaybeReactive<FlowRunsPaginationFilter> = {}): UseFilter<WithPage<FlowRunsPaginationFilter>> {
   return usePaginationUnionFilter<FlowRunsPaginationFilter>(defaultValue, defaultFlowRunSort)
 }
@@ -627,6 +631,20 @@ const flowsPaginationFilterSchema: RouteQueryParamsSchema<FlowsPaginationFilter>
 export function useFlowsPaginationFilterFromRoute(defaultValue: MaybeReactive<FlowsPaginationFilter> = {}, prefix?: string): UseFilter<WithPage<FlowsPaginationFilter>> {
   const response = useFlowsPaginationFilter(defaultValue)
   const { filter: query } = usePaginationFilterFromRoute(flowsPaginationFilterSchema, defaultValue, defaultFlowSort, prefix)
+
+  syncFilterWithFilterFromRoute(response.filter, query)
+
+  return response
+}
+
+const deploymentsPaginationFilterSchema: RouteQueryParamsSchema<DeploymentsPaginationFilter> = {
+  ...paginationUnionFilterSchema,
+  sort: DeploymentSortValuesSortParam,
+}
+
+export function useDeploymentsPaginationFilterFromRoute(defaultValue: MaybeReactive<DeploymentsPaginationFilter> = {}, prefix?: string): UseFilter<WithPage<DeploymentsPaginationFilter>> {
+  const response = useDeploymentsPaginationFilter(defaultValue)
+  const { filter: query } = usePaginationFilterFromRoute(deploymentsPaginationFilterSchema, defaultValue, defaultDeploymentSort, prefix)
 
   syncFilterWithFilterFromRoute(response.filter, query)
 
