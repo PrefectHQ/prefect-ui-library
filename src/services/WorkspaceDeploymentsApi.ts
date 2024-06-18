@@ -49,7 +49,7 @@ export class WorkspaceDeploymentsApi extends WorkspaceApi {
 
   public async getDeploymentsPaginated(filter: DeploymentsPaginationFilter = {}): Promise<Paginated<Deployment>> {
     const request = mapper.map('DeploymentsPaginationFilter', filter, 'DeploymentsPaginationFilterRequest')
-    const { data } = await this.post<Paginated<DeploymentResponse>>('/filter', request)
+    const { data } = await this.post<Paginated<DeploymentResponse>>('/paginate', request)
 
     return mapper.map('DeploymentPaginationResponse', data, 'DeploymentsPagination')
   }
