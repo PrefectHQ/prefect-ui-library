@@ -46,13 +46,13 @@
 
   const { deployments, count } = useDeployments(() => ({
     deployments: {
-      nameLike: searchDebounced.value,
+      flowOrDeploymentNameLike: searchDebounced.value,
     },
     limit: 100,
   }))
 
   const moreLink = computed(() => withQuery(routes.deployments(), {
-    'deployments.nameLike': search.value,
+    'deployments.flowOrDeploymentNameLike': search.value,
   }))
 
   const options = computed<SelectOption[]>(() => {
