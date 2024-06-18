@@ -2,9 +2,9 @@ import { UseSubscription, useSubscriptionWithDependencies } from '@prefecthq/vue
 import merge from 'lodash.merge'
 import { ComputedRef, MaybeRefOrGetter, computed, toRef, toValue } from 'vue'
 import { useCan } from '@/compositions/useCan'
-import { PaginationOptions, usePagination } from '@/compositions/usePagination'
+import { PaginationOptions } from '@/compositions/usePagination'
 import { useWorkspaceApi } from '@/compositions/useWorkspaceApi'
-import { Deployment, DeploymentsFilter, DeploymentsPaginationFilter } from '@/models'
+import { Deployment, DeploymentsPaginationFilter } from '@/models'
 import { WorkspaceDeploymentsApi } from '@/services'
 import { Getter } from '@/types/reactivity'
 
