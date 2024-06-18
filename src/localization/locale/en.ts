@@ -142,7 +142,7 @@ export const en = {
     parameters: 'Parameters',
     addTagPlaceholder: 'Add tag (press enter to submit)',
     descriptionPlaceholder: 'Add a description (supports Markdown)',
-    parentFlowRun: 'Parent Run',
+    parentRun: 'Parent Run',
     flow: 'Flow',
     searchByFlowName: 'Search by flow name',
     deploymentTags: 'Deployment tags',

@@ -1,6 +1,6 @@
 <template>
   <div v-if="parentFlowRunId" class="flow-run-parent-flow-run">
-    <span>{{ localization.info.parentFlowRun }}</span> <FlowRunIconText :flow-run-id="parentFlowRunId" />
+    <span>{{ localization.info.parentRun }}</span> <FlowRunIconText :flow-run-id="parentFlowRunId" />
   </div>
 </template>
 
