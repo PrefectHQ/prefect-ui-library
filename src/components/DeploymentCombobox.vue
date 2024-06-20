@@ -30,6 +30,7 @@
   import { PCombobox, SelectOption } from '@prefecthq/prefect-design'
   import { useDebouncedRef } from '@prefecthq/vue-compositions'
   import { computed, ref } from 'vue'
+  import { DeploymentComboboxOption } from '@/components'
   import UseDeploymentSlot from '@/components/UseDeploymentSlot.vue'
   import { useDeployments, useWorkspaceRoutes } from '@/compositions'
   import { isString, withQuery } from '@/utilities'
