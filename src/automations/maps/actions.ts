@@ -43,7 +43,7 @@ export const mapAutomationActionResponseToAutomationAction: MapFunction<Automati
       return mapPauseResumeWorkPoolResponse(response)
     case 'pause-automation':
     case 'resume-automation':
-      return mapPauseResumeAutomationRequest(response)
+      return mapPauseResumeAutomationResponse(response)
     case 'send-notification':
       return mapSendNotificationResponse(response)
     case 'cancel-flow-run':
@@ -221,6 +221,20 @@ function mapPauseResumeAutomationRequest(action: AutomationActionPauseAutomation
     type: action.type,
     source: 'selected',
     automation_id: action.automationId,
+  }
+}
+
+function mapPauseResumeAutomationResponse(action: AutomationActionPauseAutomationResponse | AutomationActionResumeAutomationResponse): AutomationActionPauseAutomation | AutomationActionResumeAutomation {
+  if (action.source === 'inferred') {
+    return {
+      type: action.type,
+      automationId: null,
+    }
+  }
+
+  return {
+    type: action.type,
+    automationId: action.automation_id,
   }
 }
 
