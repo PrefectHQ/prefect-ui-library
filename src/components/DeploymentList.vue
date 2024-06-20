@@ -229,6 +229,10 @@
 </script>
 
 <style>
+.deployment-list__table { @apply
+  overflow-visible
+}
+
 .deployment-list__table .p-table__table { @apply
   table-fixed
   w-full
