@@ -25,22 +25,19 @@
 </template>
 
 <script lang="ts" setup>
-  import { useSubscription } from '@prefecthq/vue-compositions'
   import { computed } from 'vue'
   import DeploymentIconText from '@/components/DeploymentIconText.vue'
   import DurationIconText from '@/components/DurationIconText.vue'
   import FlowRunBreadCrumbs from '@/components/FlowRunBreadCrumbs.vue'
   import FlowRunStartTime from '@/components/FlowRunStartTime.vue'
   import StateBadge from '@/components/StateBadge.vue'
-  import { useWorkspaceApi } from '@/compositions'
+  import { useFlowRun } from '@/compositions'
 
   const props = defineProps<{
     flowRunId: string,
   }>()
 
-  const api = useWorkspaceApi()
-  const flowRunSubscription = useSubscription(api.flowRuns.getFlowRun, [props.flowRunId])
-  const flowRun = computed(() => flowRunSubscription.response)
+  const { flowRun } = useFlowRun(() => props.flowRunId)
   const tags = computed(() => flowRun.value?.tags ?? [])
 </script>
 
