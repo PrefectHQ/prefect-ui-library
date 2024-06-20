@@ -47,7 +47,7 @@ const defaultAutomationTriggerValues = {
     match: {
       'prefect.resource.id': ['prefect.flow-run.*'],
     },
-    forEach: ['prefect.resource.id'],
+    forEach: [],
     expect: ['prefect.flow-run.Failed'],
     threshold: 5,
     within: 60,
