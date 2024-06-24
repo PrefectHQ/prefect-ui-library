@@ -19,7 +19,7 @@
 </template>
 
 <script lang="ts" setup>
-  import { GraphItemSelection, RunGraph, RunGraphConfig, ViewportDateRange, RunGraphFetchEvents } from '@prefecthq/graphs'
+  import { GraphItemSelection, RunGraph, RunGraphConfig, ViewportDateRange, RunGraphFetchEvents, RunGraphData, RunGraphNodeKind } from '@prefecthq/graphs'
   import { useColorTheme } from '@prefecthq/prefect-design'
   import { computed, ref } from 'vue'
   import FlowRunGraphConfirmation from '@/components/FlowRunGraphConfirmation.vue'
@@ -128,6 +128,7 @@
   const taskRunCountOptions = computed(() => ({
     interval: isTerminalStateType(props.flowRun.state?.type) ? undefined : 1000,
   }))
+
   const { count, subscription } = useTaskRunsCount(() => ({
     flowRuns: {
       id: [props.flowRun.id],

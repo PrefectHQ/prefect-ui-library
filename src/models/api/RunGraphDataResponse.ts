@@ -21,6 +21,10 @@ export type RunGraphNodeResponse = {
   parents: RunGraphEdge[],
   children: RunGraphEdge[],
   artifacts?: RunGraphArtifactResponse[],
+
+  // This is used to inform the ui that a task run was nested within another task when it was called.
+  // The `id` is the task run which called this task
+  encapsulating?: RunGraphParent[],
 }
 
 export type RunGraphArtifactResponse = {
@@ -37,4 +41,8 @@ export type RunGraphStateResponse = {
   timestamp: string,
   type: StateType,
   name: string,
+}
+
+type RunGraphParent = {
+  id: string,
 }
