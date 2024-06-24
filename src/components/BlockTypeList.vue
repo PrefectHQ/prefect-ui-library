@@ -12,7 +12,7 @@
             <p-button v-if="useEmit" size="sm" variant="default" @click="emit('add', blockType)">
               Create
             </p-button>
-            <p-button size="sm" variant="default" :to="routes.blockCreate(blockType.slug)">
+            <p-button v-else size="sm" variant="default" :to="routes.blockCreate(blockType.slug)">
               Create
             </p-button>
           </template>
