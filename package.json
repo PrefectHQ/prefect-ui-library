@@ -1,6 +1,6 @@
 {
     "name": "@prefecthq/prefect-ui-library",
-    "version": "3.2.9",
+    "version": "3.2.11",
     "private": false,
     "repository": {
         "type": "git",
@@ -41,7 +41,7 @@
     ],
     "types": "./dist/types/src/index.d.ts",
     "dependencies": {
-        "@prefecthq/graphs": "2.3.2",
+        "@prefecthq/graphs": "2.4.0",
         "axios": "1.6.7",
         "cronstrue": "^2.50.0",
         "d3": "7.9.0",
