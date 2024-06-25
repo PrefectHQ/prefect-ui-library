@@ -6,19 +6,20 @@
       </span>
       <p-icon icon="ChevronRightIcon" size="small" class="deployment-combobox-option__chevron" />
     </template>
-    {{ deploymentName }}
+    {{ deploymentName ?? deployment?.name }}
   </div>
 </template>
 
 <script lang="ts" setup>
-  import { useFlow } from '@/compositions'
+  import { useDeployment, useFlow } from '@/compositions'
 
   const props = defineProps<{
-    flowId: string,
+    deploymentId: string,
     deploymentName?: string,
   }>()
 
-  const { flow } = useFlow(() => props.flowId)
+  const { deployment } = useDeployment(() => props.deploymentId)
+  const { flow } = useFlow(() => deployment.value?.flowId)
 </script>
 
 <style>

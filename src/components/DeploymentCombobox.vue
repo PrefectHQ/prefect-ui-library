@@ -6,16 +6,14 @@
 
     <template #default="scope">
       <slot v-bind="scope">
-        <UseDeploymentSlot v-if="isString(scope.value)" :deployment-id="scope.value">
-          <template #default="{ deployment }">
-            <DeploymentComboboxOption :flow-id="deployment.flowId" :deployment-name="deployment.name" />
-          </template>
-        </UseDeploymentSlot>
+        <DeploymentComboboxOption v-if="isString(scope.value)" :deployment-name="scope.label" :deployment-id="scope.value" />
       </slot>
     </template>
 
     <template #option="{ option }">
-      <slot name="option" :option="option" />
+      <slot name="option" :option="option">
+        <DeploymentComboboxOption v-if="isString(option.value)" :deployment-name="option.label" :deployment-id="option.value" />
+      </slot>
     </template>
 
     <template v-if="count > deployments.length" #bottom>
@@ -31,7 +29,6 @@
   import { useDebouncedRef } from '@prefecthq/vue-compositions'
   import { computed, ref } from 'vue'
   import { DeploymentComboboxOption } from '@/components'
-  import UseDeploymentSlot from '@/components/UseDeploymentSlot.vue'
   import { useDeployments, useWorkspaceRoutes } from '@/compositions'
   import { isString, withQuery } from '@/utilities'
 
