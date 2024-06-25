@@ -81,7 +81,7 @@ export const mapRunGraphDataResponse: MapFunction<RunGraphDataResponse, RunGraph
       throw new Error('node not found')
     }
 
-    const parentRunGraph = nested_task_run_graphs.get(parentRunId) ?? createRunGraphDataForNode(parentNode)
+    const parentRunGraph = nested_task_run_graphs.get(parentRunId) ?? createRunGraphDataForNode(parentNode, nested_task_run_graphs)
 
     parentRunGraph.nodes.set(nodeId, node)
 
@@ -118,11 +118,12 @@ export const mapRunGraphDataResponse: MapFunction<RunGraphDataResponse, RunGraph
   }
 }
 
-function createRunGraphDataForNode(node: RunGraphNode): RunGraphData {
+function createRunGraphDataForNode(node: RunGraphNode, nested_task_run_graphs: Map<string, RunGraphData>): RunGraphData {
   return {
     root_node_ids: [],
     start_time: node.start_time,
     end_time: node.end_time,
     nodes: new Map(),
+    nested_task_run_graphs,
   }
 }
