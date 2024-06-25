@@ -77,10 +77,10 @@ export class WorkspaceFlowRunsApi extends WorkspaceApi {
     return data
   }
 
-  public async getFlowRunsGraph(id: string): Promise<RunGraphData> {
-    const { data } = await this.get<RunGraphDataResponse>(`/${id}/graph-v2`)
+  public async getFlowRunsGraph(id: string, nestedTaskRunGraphs: boolean): Promise<RunGraphData> {
+    const { data: graph } = await this.get<RunGraphDataResponse>(`/${id}/graph-v2`)
 
-    return mapper.map('RunGraphDataResponse', data, 'RunGraphData')
+    return mapper.map('RunGraphDataResponse', { graph, nestedTaskRunGraphs }, 'RunGraphData')
   }
 
   public async getFlowRunInputDescription(id: string, keyset: FlowRunInputKeyset | undefined): Promise <string | null> {

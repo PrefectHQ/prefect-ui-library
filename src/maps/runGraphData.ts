@@ -51,66 +51,77 @@ export const mapRunGraphStateResponse: MapFunction<RunGraphStateResponse, RunGra
   }
 }
 
-export const mapRunGraphDataResponse: MapFunction<RunGraphDataResponse, RunGraphData> = function(source) {
-  const nodes: RunGraphNodes = new Map(source.nodes.map(([nodeId, node]) => [
+type FlowRunGraphResponseSource = {
+  graph: RunGraphDataResponse,
+  nestedTaskRunGraphs: boolean,
+}
+
+export const mapRunGraphDataResponse: MapFunction<FlowRunGraphResponseSource, RunGraphData> = function(source) {
+  const { graph, nestedTaskRunGraphs } = source
+
+  const nodes: RunGraphNodes = new Map(graph.nodes.map(([nodeId, node]) => [
     nodeId,
     this.map('RunGraphNodeResponse', node, 'RunGraphNode'),
   ]))
 
   const nested_task_run_graphs = new Map<string, RunGraphData>()
 
-  const nodesToDelete: string[] = []
+  if (nestedTaskRunGraphs) {
 
-  // separate out nested task run nodes into separate run graphs
-  for (const [nodeId, response] of source.nodes) {
-    if (response.encapsulating?.length !== 1) {
-      continue
+    const nodesToDelete: string[] = []
+
+    // separate out nested task run nodes into separate run graphs
+    for (const [nodeId, response] of graph.nodes) {
+      if (response.encapsulating?.length !== 1) {
+        continue
+      }
+
+      // if a node is nested under more than one node we skip it and just display it like a normal node
+      // this is an edge case and bill, craig, and jake decided that was the simplest solution for now.
+      const parentRunId = response.encapsulating[0].id
+      const parentNode = nodes.get(parentRunId)
+      const node = nodes.get(nodeId)
+
+      if (!parentNode) {
+        throw new Error('parent node not found')
+      }
+
+      if (!node) {
+        throw new Error('node not found')
+      }
+
+      const parentRunGraph = nested_task_run_graphs.get(parentRunId) ?? createRunGraphDataForNode(parentNode, nested_task_run_graphs)
+
+      parentRunGraph.nodes.set(nodeId, node)
+
+      if (graph.root_node_ids.includes(nodeId)) {
+        parentRunGraph.root_node_ids.push(nodeId)
+      }
+
+      nested_task_run_graphs.set(parentRunId, parentRunGraph)
+
+      // we want to remove the nested node from the root graph
+      nodesToDelete.push(nodeId)
     }
 
-    // if a node is nested under more than one node we skip it and just display it like a normal node
-    // this is an edge case and bill, craig, and jake decided that was the simplest solution for now.
-    const parentRunId = response.encapsulating[0].id
-    const parentNode = nodes.get(parentRunId)
-    const node = nodes.get(nodeId)
-
-    if (!parentNode) {
-      throw new Error('parent node not found')
+    for (const node of nodesToDelete) {
+      nodes.delete(node)
     }
 
-    if (!node) {
-      throw new Error('node not found')
-    }
-
-    const parentRunGraph = nested_task_run_graphs.get(parentRunId) ?? createRunGraphDataForNode(parentNode, nested_task_run_graphs)
-
-    parentRunGraph.nodes.set(nodeId, node)
-
-    if (source.root_node_ids.includes(nodeId)) {
-      parentRunGraph.root_node_ids.push(nodeId)
-    }
-
-    nested_task_run_graphs.set(parentRunId, parentRunGraph)
-
-    // we want to remove the nested node from the root graph
-    nodesToDelete.push(nodeId)
   }
 
-  for (const node of nodesToDelete) {
-    nodes.delete(node)
-  }
-
-  const artifacts: RunGraphArtifact[] = source.artifacts?.map(artifact => {
+  const artifacts: RunGraphArtifact[] = graph.artifacts?.map(artifact => {
     return this.map('RunGraphArtifactResponse', artifact, 'RunGraphArtifact')
   }) ?? []
 
-  const states: RunGraphStateEvent[] = source.states?.map(state => {
+  const states: RunGraphStateEvent[] = graph.states?.map(state => {
     return this.map('RunGraphStateResponse', state, 'RunGraphStateEvent')
   }) ?? []
 
   return {
-    root_node_ids: source.root_node_ids,
-    start_time: this.map('string', source.start_time, 'Date'),
-    end_time: this.map('string', source.end_time, 'Date'),
+    root_node_ids: graph.root_node_ids,
+    start_time: this.map('string', graph.start_time, 'Date'),
+    end_time: this.map('string', graph.end_time, 'Date'),
     nodes,
     artifacts,
     states,

@@ -5,6 +5,7 @@ export const workspaceFeatureFlags = [
   'access:deploymentStatus',
   'access:workQueueStatus',
   'access:deploymentScheduleFlowRunInfraOverrides',
+  'access:nestedTaskRunGraphs',
 ] as const satisfies Readonly<`access:${string}`[]>
 
 export type WorkspaceFeatureFlag = typeof workspaceFeatureFlags[number]
