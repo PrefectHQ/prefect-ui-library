@@ -14,8 +14,12 @@
       </slot>
     </template>
 
-    <template #option="{ option }">
-      <slot name="option" :option="option" />
+    <template #option="{ option }: { option: DeploymentOption }">
+      <slot name="option" :option="option">
+        <template v-if="option.flowId">
+          <DeploymentComboboxOption :flow-id="option.flowId" :deployment-name="option.label" />
+        </template>
+      </slot>
     </template>
 
     <template v-if="count > deployments.length" #bottom>
@@ -27,13 +31,15 @@
 </template>
 
 <script lang="ts" setup>
-  import { PCombobox, SelectOption } from '@prefecthq/prefect-design'
+  import { PCombobox } from '@prefecthq/prefect-design'
   import { useDebouncedRef } from '@prefecthq/vue-compositions'
   import { computed, ref } from 'vue'
   import { DeploymentComboboxOption } from '@/components'
   import UseDeploymentSlot from '@/components/UseDeploymentSlot.vue'
   import { useDeployments, useWorkspaceRoutes } from '@/compositions'
   import { isString, withQuery } from '@/utilities'
+
+  type DeploymentOption = { label: string, value: string | null, flowId?: string }
 
   const selected = defineModel<string | string[] | null | undefined>('selected', { required: true })
 
@@ -56,10 +62,11 @@
     'deployments.flowOrDeploymentNameLike': search.value,
   }))
 
-  const options = computed<SelectOption[]>(() => {
-    const options: SelectOption[] = deployments.value.map(deployment => ({
+  const options = computed<DeploymentOption[]>(() => {
+    const options: DeploymentOption[] = deployments.value.map(deployment => ({
       value: deployment.id,
       label: deployment.name,
+      flowId: deployment.flowId,
     }))
 
     if (props.allowUnset) {
