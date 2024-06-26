@@ -134,7 +134,7 @@
       return
     }
 
-    if (showValidationCheckbox && shouldValidate.value) {
+    if (shouldValidate.value) {
       try {
         const valid = (await Promise.all([
           validate(),

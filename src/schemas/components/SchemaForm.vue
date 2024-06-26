@@ -73,7 +73,7 @@
     loading.value = true
 
     try {
-      if (props.showValidationCheckbox && shouldValidate.value) {
+      if (shouldValidate.value) {
 
         const valid = await validate()
 
