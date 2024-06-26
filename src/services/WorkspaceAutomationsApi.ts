@@ -47,6 +47,11 @@ export class WorkspaceAutomationsApi extends WorkspaceApi {
     }
   }
 
+  public async getResourceAutomations(resourceId: string): Promise<Automation[]> {
+    const { data } = await this.get<AutomationResponse[]>(`related-to/${resourceId}`)
+
+    return mapper.map('AutomationResponse', data, 'Automation')
+  }
 }
 
 type InvalidAutomationTemplateError = {
