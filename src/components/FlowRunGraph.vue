@@ -23,6 +23,7 @@
   import { useColorTheme } from '@prefecthq/prefect-design'
   import { computed, ref } from 'vue'
   import FlowRunGraphConfirmation from '@/components/FlowRunGraphConfirmation.vue'
+  import { useCan } from '@/compositions'
   import { useTaskRunsCount } from '@/compositions/useTaskRunsCount'
   import { useWorkspaceApi } from '@/compositions/useWorkspaceApi'
   import { FlowRun } from '@/models/FlowRun'
@@ -45,6 +46,7 @@
   }>()
 
   const api = useWorkspaceApi()
+  const can = useCan()
   const { value: colorThemeValue } = useColorTheme()
   const load = ref(true)
 
@@ -105,7 +107,9 @@
 
   const config = computed<RunGraphConfig>(() => ({
     runId: props.flowRun.id,
-    fetch: api.flowRuns.getFlowRunsGraph,
+    fetch: (id) => {
+      return api.flowRuns.getFlowRunsGraph(id, Boolean(can.access.nestedTaskRunGraphs))
+    },
     fetchEvents: props.fetchEvents,
     styles: {
       colorMode: colorThemeValue.value,
@@ -128,6 +132,7 @@
   const taskRunCountOptions = computed(() => ({
     interval: isTerminalStateType(props.flowRun.state?.type) ? undefined : 1000,
   }))
+
   const { count, subscription } = useTaskRunsCount(() => ({
     flowRuns: {
       id: [props.flowRun.id],
