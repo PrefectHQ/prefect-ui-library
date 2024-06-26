@@ -1,5 +1,5 @@
 <template>
-  <p-modal v-model:showModal="internalShowModal" class="quick-run-parameters-modal-v2" title="Run Deployment">
+  <p-modal v-model:showModal="internalShowModal" class="quick-run-parameters-modal-v2" title="Run Deployment" :validate="deployment.enforceParameterSchema">
     <SchemaFormV2 :id="formId" v-model:values="parameters" :schema="deployment.parameterOpenApiSchema" :kinds="['json', 'workspace_variable']" @submit="submit">
       <template #default="{ kind, setKind }">
         <div class="quick-run-parameters-modal-v2__header">

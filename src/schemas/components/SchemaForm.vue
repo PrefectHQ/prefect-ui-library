@@ -8,8 +8,6 @@
           </template>
         </SchemaInput>
       </template>
-
-      <p-checkbox v-model="shouldValidate" label="Validate parameters before submitting" />
     </p-content>
   </p-form>
 </template>
@@ -28,6 +26,7 @@
     values: SchemaValues,
     kinds: PrefectKind[],
     loading?: boolean | null,
+    validate?: boolean,
   }>(), {
     loading: null,
   })
@@ -41,8 +40,6 @@
   defineSlots<{
     default: (props: { kind: PrefectKind, setKind: (to: PrefectKind) => void }) => VNode,
   }>()
-
-  const shouldValidate = ref(true)
 
   const values = computed({
     get() {
@@ -70,7 +67,7 @@
     loading.value = true
 
     try {
-      if (shouldValidate.value) {
+      if (props.validate) {
 
         const valid = await validate()
 
