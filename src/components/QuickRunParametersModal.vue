@@ -1,13 +1,6 @@
 <template>
-  <p-modal v-model:showModal="internalShowModal" class="quick-run-parameters-modal-v2" title="Run Deployment">
-    <SchemaFormV2
-      :id="formId"
-      v-model:values="parameters"
-      :schema="deployment.parameterOpenApiSchema"
-      :should-validate-initial-value="deployment.enforceParameterSchema"
-      :kinds="['json', 'workspace_variable']"
-      @submit="submit"
-    >
+  <p-modal v-model:showModal="internalShowModal" class="quick-run-parameters-modal-v2" title="Run Deployment" :validate="deployment.enforceParameterSchema">
+    <SchemaFormV2 :id="formId" v-model:values="parameters" :schema="deployment.parameterOpenApiSchema" :kinds="['json', 'workspace_variable']" @submit="submit">
       <template #default="{ kind, setKind }">
         <div class="quick-run-parameters-modal-v2__header">
           <h3>{{ localization.info.parameters }}</h3>
