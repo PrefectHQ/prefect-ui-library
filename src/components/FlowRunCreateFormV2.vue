@@ -20,6 +20,10 @@
               </div>
             </template>
           </SchemaInputV2>
+
+          <template v-if="showValidationCheckbox">
+            <p-checkbox v-model="shouldValidate" label="Validate parameters before submitting" />
+          </template>
         </p-content>
       </template>
 
@@ -104,6 +108,8 @@
     (event: 'cancel'): void,
   }>()
 
+  const showValidationCheckbox = !props.deployment.enforceParameterSchema
+  const shouldValidate = ref(true)
   const schema = computed(() => props.deployment.parameterOpenApiSchema)
   const hasParameters = computed(() => !isEmptyObject(props.deployment.parameterOpenApiSchema.properties ?? {}))
 
@@ -128,7 +134,7 @@
       return
     }
 
-    if (props.deployment.enforceParameterSchema) {
+    if (showValidationCheckbox && shouldValidate.value) {
       try {
         const valid = (await Promise.all([
           validate(),
