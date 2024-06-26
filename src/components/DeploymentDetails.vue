@@ -87,12 +87,12 @@
 
 <script lang="ts" setup>
   import { showToast } from '@prefecthq/prefect-design'
-  import { useSubscription } from '@prefecthq/vue-compositions'
   import { computed } from 'vue'
   import { AutomationAction, CreateAutomationQuery } from '..'
   import AutomationIconText from '@/automations/components/AutomationIconText.vue'
   import { BlockIconText, DeploymentStatusBadge, DeploymentSchedulesFieldset } from '@/components'
   import { useWorkspaceApi, useCan, useWorkspaceRoutes } from '@/compositions'
+  import { useAutomationsByRelatedResource } from '@/compositions/useAutomationsByRelatedResource'
   import { localization } from '@/localization'
   import { Deployment, DeploymentScheduleCompatible } from '@/models'
   import { formatDateTimeNumeric } from '@/utilities/dates'
@@ -126,9 +126,8 @@
 
   const routes = useWorkspaceRoutes()
 
-  const resourceId = computed(() => [`prefect.deployment.${props.deployment.id}`])
-  const resourceAutomationsSubscription = useSubscription(api.automations.getResourceAutomations, resourceId)
-  const relatedAutomations = computed(() => resourceAutomationsSubscription.response)
+  const resourceId = computed(() => `prefect.deployment.${props.deployment.id}`)
+  const { automations: relatedAutomations } = useAutomationsByRelatedResource(resourceId)
   const automationQuery = computed<CreateAutomationQuery>(() => {
     const deploymentAction: AutomationAction = {
       type: 'run-deployment',
