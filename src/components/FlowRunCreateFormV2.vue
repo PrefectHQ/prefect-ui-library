@@ -21,7 +21,18 @@
             </template>
           </SchemaInputV2>
 
-          <template v-if="showValidationCheckbox">
+          <template v-if="disableValidationCheckbox">
+            <p-tooltip>
+              <template #content>
+                <p>Parameters are always validated for deployments with parameter enforcement enabled.</p>
+                <p>You can disable this setting on <span><p-link :to="routes.deploymentEdit(deployment.id)">the deployment</p-link></span></p>
+              </template>
+              <div class="w-fit">
+                <p-checkbox v-model="shouldValidate" disabled label="Validate parameters before submitting" />
+              </div>
+            </p-tooltip>
+          </template>
+          <template v-else>
             <p-checkbox v-model="shouldValidate" label="Validate parameters before submitting" />
           </template>
         </p-content>
@@ -87,6 +98,7 @@
   import FlowRunJobVariableOverridesLabeledInput from '@/components/FlowRunJobVariableOverridesLabeledInput.vue'
   import FlowRunNameInput from '@/components/FlowRunNameInput.vue'
   import ToastParameterValidationError from '@/components/ToastParameterValidationError.vue'
+  import { useWorkspaceRoutes } from '@/compositions/useWorkspaceRoutes'
   import { localization } from '@/localization'
   import { Deployment } from '@/models/Deployment'
   import { DeploymentFlowRunCreateV2 } from '@/models/DeploymentFlowRunCreate'
@@ -108,7 +120,8 @@
     (event: 'cancel'): void,
   }>()
 
-  const showValidationCheckbox = !props.deployment.enforceParameterSchema
+  const routes = useWorkspaceRoutes()
+  const disableValidationCheckbox = props.deployment.enforceParameterSchema
   const shouldValidate = ref(true)
   const schema = computed(() => props.deployment.parameterOpenApiSchema)
   const hasParameters = computed(() => !isEmptyObject(props.deployment.parameterOpenApiSchema.properties ?? {}))

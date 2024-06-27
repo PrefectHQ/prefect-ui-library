@@ -4,7 +4,7 @@
       :id="formId"
       v-model:values="parameters"
       :schema="deployment.parameterOpenApiSchema"
-      :show-validation-checkbox
+      :validate
       :kinds="['json', 'workspace_variable']"
       @submit="submit"
     >
@@ -16,6 +16,23 @@
             <p-overflow-menu-item v-if="kind === 'none'" label="Use JSON input" @click="setKind('json')" />
           </p-icon-button-menu>
         </div>
+      </template>
+
+      <template #after-content>
+        <template v-if="disableValidationCheckbox">
+          <p-tooltip>
+            <template #content>
+              <p>Parameters are always validated for deployments with parameter enforcement enabled.</p>
+              <p>You can disable this setting on <span><p-link :to="routes.deploymentEdit(deployment.id)">the deployment</p-link></span></p>
+            </template>
+            <div class="w-fit">
+              <p-checkbox v-model="validate" disabled label="Validate parameters before submitting" />
+            </div>
+          </p-tooltip>
+        </template>
+        <template v-else>
+          <p-checkbox v-model="validate" label="Validate parameters before submitting" />
+        </template>
       </template>
     </SchemaFormV2>
 
@@ -54,7 +71,8 @@
     (event: 'update:showModal', value: boolean): void,
   }>()
 
-  const showValidationCheckbox = !props.deployment.enforceParameterSchema
+  const disableValidationCheckbox = props.deployment.enforceParameterSchema
+  const validate = ref(true)
   const parameters = ref<SchemaValuesV2>({ ...props.deployment.parameters })
 
   const internalShowModal = computed({
