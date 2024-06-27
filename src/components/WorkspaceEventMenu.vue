@@ -8,6 +8,7 @@
 </template>
 
 <script lang="ts" setup>
+  import CopyOverflowMenuItem from '@/components/CopyOverflowMenuItem.vue'
   import { useCan } from '@/compositions/useCan'
   import { useWorkspaceRoutes } from '@/compositions/useWorkspaceRoutes'
   import { WorkspaceEvent } from '@/models/workspaceEvent'
