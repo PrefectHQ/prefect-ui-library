@@ -67,12 +67,12 @@
   grid
   gap-0.5
   grid-cols-1
+  text-left
 }
 
 .flow-runs-accordion-header__time { @apply
   text-xs
   text-subdued
-  text-left
 }
 
 .flow-runs-accordion-header__count { @apply

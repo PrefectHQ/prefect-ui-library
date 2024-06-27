@@ -8,8 +8,10 @@
         <StatisticKeyValue label="total" :value="count" />
       </template>
     </header>
-    <FlowRunsBarChart class="workspace-dashboard-flow-runs-card__chart" :filter="flowRunsFilter" />
-    <FlowRunStateTypeTabs :filter="flowRunsFilter" />
+    <p-content>
+      <FlowRunsBarChart class="workspace-dashboard-flow-runs-card__chart" :filter="flowRunsFilter" />
+      <FlowRunStateTypeTabs :filter="flowRunsFilter" />
+    </p-content>
   </p-card>
 </template>
 

@@ -87,6 +87,7 @@
   p-3
   border-b
   border-default
+  flex-wrap
 }
 
 .dashboard-work-pool-card__name { @apply
@@ -98,13 +99,15 @@
 
 .dashboard-work-pool-card__mini-bars { @apply
   w-1/5
+  shrink-0
   h-6
 }
 
 .dashboard-work-pool-card__details { @apply
   p-3
   grid
-  grid-cols-4
+  grid-cols-2
+  sm:grid-cols-4
   gap-y-2
 }
 
