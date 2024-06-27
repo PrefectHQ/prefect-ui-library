@@ -6,7 +6,7 @@
     </router-link>
     <p-overflow-menu-item v-if="can.delete.work_pool" label="Delete" @click="open" />
 
-    <router-link :to="routes.automationCreate({ from: 'workPool', workPoolId: workPool.id })">
+    <router-link :to="routes.automateWorkPool(workPool.id)">
       <p-overflow-menu-item label="Automate" />
     </router-link>
 
