@@ -26,6 +26,9 @@ export function useCreateAutomationQueryParams(): UseCreateAutomationQueryParams
   // flow trigger
   const { value: flowId } = useRouteQueryParam('flowId')
 
+  // work pool
+  const { value: workPoolId } = useRouteQueryParam('workPoolId')
+
   // work pool queue
   const { value: workPoolQueueId } = useRouteQueryParam('workPoolQueueId')
 
@@ -35,6 +38,8 @@ export function useCreateAutomationQueryParams(): UseCreateAutomationQueryParams
         return await getEventTriggerTemplate()
       case 'flow':
         return await getFlowTriggerTemplate()
+      case 'workPool':
+        return await getWorkPoolTriggerTemplate()
       case 'workPoolQueue':
         return await getWorkPoolQueueTriggerTemplate()
       default:
@@ -74,6 +79,16 @@ export function useCreateAutomationQueryParams(): UseCreateAutomationQueryParams
     const flow = await api.flows.getFlow(flowId)
 
     return mapper.map('Flow', flow, 'AutomationTrigger')
+  }
+
+  async function getWorkPoolTriggerTemplate(): Promise<AutomationTrigger> {
+    if (!workPoolId) {
+      throw new Error('Failed creating automation trigger from work pool. Missing workPoolId query param.')
+    }
+
+    const workPool = await api.workPools.getWorkPoolById(workPoolId)
+
+    return mapper.map('WorkPool', workPool, 'AutomationTrigger')
   }
 
   async function getWorkPoolQueueTriggerTemplate(): Promise<AutomationTrigger> {

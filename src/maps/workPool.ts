@@ -1,3 +1,5 @@
+import { AutomationTriggerEvent } from '@/automations/types/automationTriggerEvent'
+import { AutomationTrigger } from '@/automations/types/triggers'
 import { WorkPool, WorkPoolCreateRequest, WorkPoolEdit, WorkPoolEditRequest, WorkPoolResponse, WorkPoolCreate } from '@/models'
 import { MapFunction } from '@/services/Mapper'
 
@@ -67,4 +69,15 @@ export const mapWorkPoolEditToWorkPoolEditRequest: MapFunction<WorkPoolEdit, Wor
     concurrency_limit: source.concurrencyLimit,
     base_job_template: baseJobTemplateSchema,
   }
+}
+
+export const mapWorkPoolToAutomationTrigger: MapFunction<WorkPool, AutomationTrigger> = function(workPool) {
+  return new AutomationTriggerEvent({
+    'posture': 'Reactive',
+    'match': {
+      'prefect.resource.id': `prefect.work-pool.${workPool.id}`,
+    },
+    'forEach': ['prefect.resource.id'],
+    'expect': ['prefect.work-pool.not-ready'],
+  })
 }

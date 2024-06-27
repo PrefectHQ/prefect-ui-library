@@ -1,5 +1,5 @@
 import { LocationQuery } from 'vue-router'
-import { CreateAutomationActionQuery, CreateAutomationQuery, CreateAutomationTriggerQuery, isCreateAutomationActionQuery, isCreateAutomationTriggerQuery, isCreateEventAutomationQuery, isCreateFlowAutomationQuery, isCreateWorkPoolQueueAutomationQuery } from '@/automations/types/createAutomationQuery'
+import { CreateAutomationActionQuery, CreateAutomationQuery, CreateAutomationTriggerQuery, isCreateAutomationActionQuery, isCreateAutomationTriggerQuery, isCreateEventAutomationQuery, isCreateFlowAutomationQuery, isCreateWorkPoolAutomationQuery, isCreateWorkPoolQueueAutomationQuery } from '@/automations/types/createAutomationQuery'
 import { MapFunction } from '@/services/Mapper'
 
 export const mapCreateAutomationTriggerQueryToLocationQuery: MapFunction<CreateAutomationTriggerQuery, LocationQuery> = function(source) {
@@ -19,6 +19,14 @@ export const mapCreateAutomationTriggerQueryToLocationQuery: MapFunction<CreateA
       ...query,
       from: 'flow',
       flowId: source.flowId,
+    }
+  }
+
+  if (isCreateWorkPoolAutomationQuery(source)) {
+    return {
+      ...query,
+      from: 'workPool',
+      workPoolId: source.workPoolId,
     }
   }
 
