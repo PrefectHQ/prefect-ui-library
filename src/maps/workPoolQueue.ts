@@ -54,6 +54,7 @@ export const mapWorkPoolQueueEditToWorkPoolQueueEditRequest: MapFunction<WorkPoo
     priority: source.priority,
   }
 }
+
 export const mapWorkPoolQueueToAutomationTrigger: MapFunction<WorkPoolQueue, AutomationTrigger> = function(workPoolQueue) {
   return new AutomationTriggerEvent({
     'posture': 'Reactive',

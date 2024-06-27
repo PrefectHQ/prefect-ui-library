@@ -20,6 +20,15 @@ export function isCreateFlowAutomationQuery(value: unknown): value is CreateFlow
   return isRecord(value) && 'from' in value && value.from === 'flow'
 }
 
+export type CreateWorkPoolAutomationQuery = {
+  from: 'workPool',
+  workPoolId: string,
+}
+
+export function isCreateWorkPoolAutomationQuery(value: unknown): value is CreateWorkPoolAutomationQuery {
+  return isRecord(value) && 'from' in value && value.from === 'workPool'
+}
+
 export type CreateWorkPoolQueueAutomationQuery = {
   from: 'workPoolQueue',
   workPoolQueueId: string,
@@ -32,10 +41,11 @@ export function isCreateWorkPoolQueueAutomationQuery(value: unknown): value is C
 export type CreateAutomationTriggerQuery =
   | CreateEventAutomationQuery
   | CreateFlowAutomationQuery
+  | CreateWorkPoolAutomationQuery
   | CreateWorkPoolQueueAutomationQuery
 
 export function isCreateAutomationTriggerQuery(value: unknown): value is CreateAutomationTriggerQuery {
-  return isCreateEventAutomationQuery(value) || isCreateFlowAutomationQuery(value) || isCreateWorkPoolQueueAutomationQuery(value)
+  return isCreateEventAutomationQuery(value) || isCreateFlowAutomationQuery(value) || isCreateWorkPoolAutomationQuery(value) || isCreateWorkPoolQueueAutomationQuery(value)
 }
 
 export type CreateAutomationActionQuery = { actions: AutomationAction[] }

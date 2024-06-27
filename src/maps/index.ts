@@ -74,7 +74,7 @@ import { mapUiTaskRunCountsByStateResponseToUiTaskRunCountsByState } from '@/map
 import { mapVariableResponseToVariable, mapVariableEditToVariableEditRequest, mapVariableCreateToVariableCreateRequest, mapVariableV2CreateToVariableV2CreateRequest, mapVariableV2EditToVariableV2EditRequest, mapVariableV2ResponseToVariableV2 } from '@/maps/variable'
 import { mapPrefectWorkerCollectionResponseToWorkerCollectionItemArray, mapWorkerSchemaValuesToWorkerSchemaValuesRequest } from '@/maps/workerCollection'
 import { mapWorkerScheduledFlowRunResponseToWorkerScheduledFlowRun, mapWorkerScheduledFlowRunsToWorkerScheduledFlowRunsRequest } from '@/maps/workerScheduledFlowRun'
-import { mapWorkPoolCreateToWorkPoolCreateRequest, mapWorkPoolEditToWorkPoolEditRequest, mapWorkPoolResponseToWorkPool, mapWorkPoolToWorkPoolResponse } from '@/maps/workPool'
+import { mapWorkPoolCreateToWorkPoolCreateRequest, mapWorkPoolEditToWorkPoolEditRequest, mapWorkPoolResponseToWorkPool, mapWorkPoolToAutomationTrigger, mapWorkPoolToWorkPoolResponse } from '@/maps/workPool'
 import { mapWorkPoolQueueCreateToWorkPoolQueueCreateRequest, mapWorkPoolQueueEditToWorkPoolQueueEditRequest, mapWorkPoolQueueResponseToWorkPoolQueue, mapWorkPoolQueueToAutomationTrigger, mapWorkPoolQueueToWorkPoolQueueResponse } from '@/maps/workPoolQueue'
 import { mapServerWorkPoolStatusToWorkPoolStatus, mapWorkPoolStatusToServerWorkPoolStatus } from '@/maps/workPoolStatus'
 import { mapWorkPoolWorkerResponseToWorkPoolWorker } from '@/maps/workPoolWorker'
@@ -234,7 +234,10 @@ export const maps = {
   WorkerScheduledFlowRunResponse: { WorkerScheduledFlowRun: mapWorkerScheduledFlowRunResponseToWorkerScheduledFlowRun },
   WorkerScheduledFlowRuns: { WorkerScheduledFlowRunsRequest: mapWorkerScheduledFlowRunsToWorkerScheduledFlowRunsRequest },
   WorkerSchemaProperty: { WorkerSchemaPropertyRequest: mapWorkerSchemaValuesToWorkerSchemaValuesRequest },
-  WorkPool: { WorkPoolResponse: mapWorkPoolToWorkPoolResponse },
+  WorkPool: {
+    WorkPoolResponse: mapWorkPoolToWorkPoolResponse,
+    AutomationTrigger: mapWorkPoolToAutomationTrigger,
+  },
   WorkPoolCreate: { WorkPoolCreateRequest: mapWorkPoolCreateToWorkPoolCreateRequest },
   WorkPoolEdit: { WorkPoolEditRequest: mapWorkPoolEditToWorkPoolEditRequest },
   WorkPoolFilter: { WorkPoolFilterRequest: mapWorkPoolFilter },
