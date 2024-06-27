@@ -32,6 +32,24 @@ export function createWorkspaceRoutes(config?: CreateWorkspaceRoutesConfig) {
         query,
       } as const
     },
+    automateFlow: (flowId: string, actions?: AutomationAction[]) => {
+      const query = mapper.map('CreateAutomationQuery', { from: 'flow', flowId, actions }, 'LocationQuery')
+
+      return {
+        name: 'workspace.automation.create',
+        params: { ...config },
+        query,
+      } as const
+    },
+    automateWorkPoolQueue: (workPoolQueueId: string, actions?: AutomationAction[]) => {
+      const query = mapper.map('CreateAutomationQuery', { from: 'workPoolQueue', workPoolQueueId, actions }, 'LocationQuery')
+
+      return {
+        name: 'workspace.automation.create',
+        params: { ...config },
+        query,
+      } as const
+    },
     events: () => ({ name: 'workspace.events' }) as const,
     event: (eventId: string, eventDate: Date) => {
 
