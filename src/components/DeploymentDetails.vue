@@ -17,7 +17,23 @@
         <DeploymentSchedulesFieldset :deployment="deployment" :schedules="deployment.schedules" @create="createDeploymentSchedule" @update="emit('update')" />
       </template>
     </p-key-value>
-    <slot />
+
+    <slot>
+      <p-key-value label="Triggers" :value="relatedAutomations">
+        <template #value>
+          <div v-for="automation in relatedAutomations" :key="automation.id" class="deployment-details-triggers__value">
+            <AutomationIconText :automation-id="automation.id" />
+          </div>
+          <p-button
+            :to="routes.automationCreate(automationQuery)"
+            icon="PlusIcon"
+            size="sm"
+          >
+            Add
+          </p-button>
+        </template>
+      </p-key-value>
+    </slot>
 
     <p-divider />
 
@@ -71,8 +87,12 @@
 
 <script lang="ts" setup>
   import { showToast } from '@prefecthq/prefect-design'
+  import { computed } from 'vue'
+  import { AutomationAction, CreateAutomationQuery } from '..'
+  import AutomationIconText from '@/automations/components/AutomationIconText.vue'
   import { BlockIconText, DeploymentStatusBadge, DeploymentSchedulesFieldset } from '@/components'
-  import { useWorkspaceApi, useCan } from '@/compositions'
+  import { useWorkspaceApi, useCan, useWorkspaceRoutes } from '@/compositions'
+  import { useAutomationsByRelatedResource } from '@/compositions/useAutomationsByRelatedResource'
   import { localization } from '@/localization'
   import { Deployment, DeploymentScheduleCompatible } from '@/models'
   import { formatDateTimeNumeric } from '@/utilities/dates'
@@ -103,6 +123,24 @@
       showToast(localization.error.updateDeploymentSchedule, 'error')
     }
   }
+
+  const routes = useWorkspaceRoutes()
+
+  const resourceId = computed(() => `prefect.deployment.${props.deployment.id}`)
+  const { automations: relatedAutomations } = useAutomationsByRelatedResource(resourceId)
+  const automationQuery = computed<CreateAutomationQuery>(() => {
+    const deploymentAction: AutomationAction = {
+      type: 'run-deployment',
+      deploymentId: props.deployment.id,
+      parameters: {},
+    }
+
+    const query: CreateAutomationQuery = {
+      actions: [deploymentAction],
+    }
+
+    return query
+  })
 </script>
 
 <style>
@@ -134,5 +172,9 @@
 
 .deployment-details__tags { @apply
   mt-1
+}
+
+.deployment-details-triggers__value { @apply
+  mb-2
 }
 </style>
