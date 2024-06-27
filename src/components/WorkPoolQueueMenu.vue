@@ -2,17 +2,17 @@
   <p-icon-button-menu v-bind="$attrs" class="work-pool-queue-menu">
     <CopyOverflowMenuItem label="Copy ID" :item="workPoolQueue.id" />
 
-    <slot v-bind="{ workPoolQueue }">
-      <router-link v-if="can.create.automation" :to="routes.automateWorkPoolQueue(workPoolQueue.id)">
-        <p-overflow-menu-item label="Automate" />
-      </router-link>
-    </slot>
-
     <router-link :to="routes.workPoolQueueEdit(workPoolName, workPoolQueue.name)">
       <p-overflow-menu-item v-if="can.update.work_queue" label="Edit" />
     </router-link>
 
     <p-overflow-menu-item v-if="showDelete" label="Delete" @click="open" />
+
+    <slot v-bind="{ workPoolQueue }">
+      <router-link v-if="can.create.automation" :to="routes.automateWorkPoolQueue(workPoolQueue.id)">
+        <p-overflow-menu-item label="Automate" />
+      </router-link>
+    </slot>
   </p-icon-button-menu>
 
   <ConfirmDeleteModal
