@@ -47,8 +47,6 @@
           </div>
         </template>
       </SchemaInputV2>
-
-      <p-checkbox v-model="shouldValidateParameters" label="Validate parameters before saving" />
     </template>
 
     <p-label label="Enforce Parameter Schema">
@@ -99,7 +97,6 @@
   const tags = ref(props.deployment.tags)
   const jobVariables = ref(stringify(props.deployment.jobVariables))
   const enforceParameterSchema = ref(props.deployment.enforceParameterSchema)
-  const shouldValidateParameters = ref(true)
 
   const schema = computed(() => {
     return { ...props.deployment.parameterOpenApiSchema, required: [] }
@@ -123,7 +120,7 @@
       return
     }
 
-    if (shouldValidateParameters.value) {
+    if (enforceParameterSchema.value) {
       try {
         const valid = await validateParameters()
 
