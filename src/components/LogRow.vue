@@ -5,11 +5,15 @@
     </div>
 
     <div class="log-row__content">
-      <!--
-        We pass the log message through an html sanitizer
-        so we can use v-html more securely
-      -->
-      <p-sanitize-html class="log-row__content--parsed" :html="message" :config="config" />
+      <template v-for="(chunk, index) in chunks" :key="index">
+        <template v-if="chunk.type === 'text'">
+          {{ chunk.value }}
+        </template>
+
+        <template v-if="chunk.type === 'link'">
+          <span><p-link :to="chunk.value" rel="noopener noreferrer">{{ chunk.value }}</p-link></span>
+        </template>
+      </template>
     </div>
 
     <div class="log-row__trailing">
@@ -38,18 +42,45 @@
     log: Log,
   }>()
 
-  const config = {
-    ALLOWED_TAGS: ['a'],
-    ALLOWED_ATTR: ['href', 'target', 'rel'],
+  type LogChunk = {
+    type: 'text' | 'link',
+    value: string,
   }
 
-  const convertUrlsToAnchors = (message: string): string => {
-    return message.replace(urlRegex, (url: string) => {
-      return `<a href="${url}" target="_blank" rel="noopener noreferrer">${url}</a>`
-    })
-  }
+  const chunks = computed(() => {
+    const output: LogChunk[] = []
+    const { message } = props.log
+    const matches = message.matchAll(urlRegex)
 
-  const message = computed(() => convertUrlsToAnchors(props.log.message))
+    let lastIndex = 0
+
+    for (const match of matches) {
+      if (lastIndex < match.index) {
+        output.push({
+          type: 'text',
+          value: message.slice(lastIndex, match.index),
+        })
+      }
+
+      const [url] = match
+
+      output.push({
+        type: 'link',
+        value: url,
+      })
+
+      lastIndex = match.index + url.length
+    }
+
+    if (lastIndex < message.length - 1) {
+      output.push({
+        type: 'text',
+        value: message.slice(lastIndex),
+      })
+    }
+
+    return output
+  })
 
   const taskRunId = computed(() => props.log.taskRunId)
   const { taskRun } = useTaskRun(taskRunId)
@@ -64,12 +95,12 @@
 }
 
 @media (max-width: 768px) {
-  .log-row { @apply
-  grid
-  py-2;
-  grid-template-columns: none;
-  grid-template-rows: 20px minmax(0, 1fr) 50px;
-}
+    .log-row { @apply
+    grid
+    py-2;
+    grid-template-columns: none;
+    grid-template-rows: 20px minmax(0, 1fr) 50px;
+  }
 }
 
 .log-row__leading { @apply
@@ -81,11 +112,6 @@
   select-auto
   whitespace-pre-wrap
   break-words
-}
-
-.log-row__content--parsed a[href] { @apply
-  hover:text-link
-  hover:underline
 }
 
 .log-row__trailing { @apply
