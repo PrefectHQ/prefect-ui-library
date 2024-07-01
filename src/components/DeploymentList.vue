@@ -23,6 +23,7 @@
       :column-classes="columnClasses"
       :row-classes="rowClasses"
       class="deployment-list__table"
+      :row-key="(deployment: Deployment) => deployment.id"
       @update:selected="selectedDeployments = $event"
     >
       <template #status="{ row }">
