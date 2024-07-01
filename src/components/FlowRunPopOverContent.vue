@@ -51,6 +51,9 @@
   max-w-xs
   w-screen
   shadow-lg
+  text-wrap
+  break-words;
+  grid-template-columns: minmax(0, 1fr);
 }
 
 .flow-run-popover-content__aside { @apply

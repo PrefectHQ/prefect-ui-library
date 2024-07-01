@@ -251,7 +251,6 @@
   h-8
   pr-4
   w-full
-  text-wrap
 }
 
 .deployment-list__search-input { @apply
