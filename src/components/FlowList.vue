@@ -20,7 +20,7 @@
       :data="flows"
       :columns="columns"
       :column-classes="columnClasses"
-      :row-key="flow => flow.id"
+      :row-key="(flow: Flow) => flow.id"
       class="flow-list__table"
       @update:selected="selectedFlows = $event"
     >
