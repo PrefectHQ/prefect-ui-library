@@ -41,11 +41,12 @@
 </template>
 
 <script lang="ts" setup>
-  import { ref, computed, toRefs, watch } from 'vue'
+  import { SubscriptionOptions, useNow } from '@prefecthq/vue-compositions'
+  import { differenceInSeconds } from 'date-fns'
+  import { ref, computed } from 'vue'
   import { LogLevelSelect, LogsContainer, LogsSort } from '@/components'
   import { useLogsSort, useWorkspaceApi } from '@/compositions'
   import { usePaginatedSubscription } from '@/compositions/usePaginatedSubscription'
-  import { useStatePolling } from '@/compositions/useStatePolling'
   import { isTerminalStateType } from '@/models'
   import { LogsFilter } from '@/models/Filters'
   import { FlowRun } from '@/models/FlowRun'
@@ -55,7 +56,6 @@
     flowRun: FlowRun,
   }>()
 
-  const { flowRun } = toRefs(props)
   const logLevel = ref<LogLevel>(0)
   const { sort: logsSort } = useLogsSort()
   const hasFilter = computed(() => logLevel.value !== 0)
@@ -67,23 +67,44 @@
     sort: logsSort.value,
   }))
 
+  const { now } = useNow({ interval: 5_000 })
+  const finishedRecently = computed(() => props.flowRun.endTime && differenceInSeconds(now.value, props.flowRun.endTime) < 30)
+
+  const options = computed<SubscriptionOptions>(() => {
+    const interval = 5_000
+
+    // sometimes there is a delay in storing and retrieving logs. So we want to poll a bit longer to make sure
+    // any logs that exist show up before we consider no logs to exist
+    if (finishedRecently.value) {
+      return { interval }
+    }
+
+    if (isTerminalStateType(props.flowRun.stateType)) {
+      return {}
+    }
+
+    return { interval }
+  })
+
   const api = useWorkspaceApi()
-  const options = useStatePolling(flowRun)
   const logsSubscription = usePaginatedSubscription(api.logs.getLogs, [logsFilter], options)
   const logs = computed<Log[]>(() => logsSubscription.response ?? [])
-  const waitingForLogs = computed(() => !isTerminalStateType(flowRun.value.stateType) || logsSubscription.loading)
+
+  const waitingForLogs = computed(() => {
+    if (logs.value.length > 0) {
+      return false
+    }
+
+    if (finishedRecently.value) {
+      return true
+    }
+
+    return !isTerminalStateType(props.flowRun.stateType)
+  })
 
   function clear(): void {
     logLevel.value = 0
   }
-
-  watch(() => flowRun.value.stateType, async type => {
-    if (isTerminalStateType(type)) {
-      logsSubscription.refresh()
-      await new Promise((resolve) => setTimeout(resolve, 8000))
-      logsSubscription.refresh()
-    }
-  })
 </script>
 
 <style>
