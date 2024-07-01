@@ -51,6 +51,8 @@
   max-w-xs
   w-screen
   shadow-lg
+  text-wrap
+  break-words
 }
 
 .flow-run-popover-content__aside { @apply
