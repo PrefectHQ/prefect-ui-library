@@ -60,12 +60,12 @@
 
     let currentClasses: string[] = []
 
-    const processText = (text: string, type: 'text' | 'link') => {
+    const processText = (text: string, type: 'text' | 'link'): void => {
       let lastIndex = 0
       const ansiMatches = text.matchAll(ansiiColorRegex)
 
       for (const match of ansiMatches) {
-        if (lastIndex < match.index!) {
+        if (lastIndex < match.index) {
           output.push({
             type,
             value: text.slice(lastIndex, match.index),
@@ -85,7 +85,7 @@
           }
         }
 
-        lastIndex = match.index! + fullMatch.length
+        lastIndex = match.index + fullMatch.length
       }
 
       if (lastIndex < text.length) {
@@ -101,14 +101,14 @@
     const urlMatches = message.matchAll(urlRegex)
 
     for (const match of urlMatches) {
-      if (lastIndex < match.index!) {
+      if (lastIndex < match.index) {
         processText(message.slice(lastIndex, match.index), 'text')
       }
 
       const [url] = match
       processText(url, 'link')
 
-      lastIndex = match.index! + url.length
+      lastIndex = match.index + url.length
     }
 
     if (lastIndex < message.length) {
