@@ -84,7 +84,6 @@
 
       <template #action="{ row }">
         <div class="deployment-list__action">
-          <DeploymentToggle :deployment="row" @update="refresh" />
           <DeploymentMenu
             class="deployment-list__menu"
             small
@@ -134,7 +133,6 @@
     MiniDeploymentHistory,
     SelectedCount,
     DeploymentTagsInput,
-    DeploymentToggle,
     FormattedDate,
     DeploymentStatusBadge,
     DeploymentScheduleTags
