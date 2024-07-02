@@ -83,17 +83,14 @@
       </template>
 
       <template #action="{ row }">
-        <div class="deployment-list__action">
-          <DeploymentToggle :deployment="row" @update="refresh" />
-          <DeploymentMenu
-            class="deployment-list__menu"
-            small
-            show-all
-            :deployment="row"
-            flat
-            @delete="refresh"
-          />
-        </div>
+        <DeploymentMenu
+          class="deployment-list__menu"
+          small
+          show-all
+          :deployment="row"
+          flat
+          @delete="refresh"
+        />
       </template>
 
       <template #empty-state>
@@ -134,7 +131,6 @@
     MiniDeploymentHistory,
     SelectedCount,
     DeploymentTagsInput,
-    DeploymentToggle,
     FormattedDate,
     DeploymentStatusBadge,
     DeploymentScheduleTags
@@ -256,12 +252,6 @@
 
 .deployment-list__search-input { @apply
   w-64
-}
-
-.deployment-list__action { @apply
-  flex
-  justify-end
-  items-center
 }
 
 .deployment-list__deployment { @apply
