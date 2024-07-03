@@ -12,7 +12,13 @@
       </template>
     </p-key-value>
 
-    <p-key-value label="Schedules" :alternate="alternate" class="items-stretch">
+    <p-key-value :alternate="alternate" class="items-stretch">
+      <template #label>
+        <div class="deployment-details__schedule-label">
+          <span>Schedules</span>
+          <DeploymentToggle v-if="can.update.deployment && deployment.schedules.length" :deployment="deployment" @update="emit('update')" />
+        </div>
+      </template>
       <template #value>
         <DeploymentSchedulesFieldset :deployment="deployment" :schedules="deployment.schedules" @create="createDeploymentSchedule" @update="emit('update')" />
       </template>
@@ -91,6 +97,7 @@
   import { AutomationAction, CreateAutomationQuery } from '..'
   import AutomationIconText from '@/automations/components/AutomationIconText.vue'
   import { BlockIconText, DeploymentStatusBadge, DeploymentSchedulesFieldset } from '@/components'
+  import DeploymentToggle from '@/components/DeploymentToggle.vue'
   import { useWorkspaceApi, useCan, useWorkspaceRoutes } from '@/compositions'
   import { useAutomationsByRelatedResource } from '@/compositions/useAutomationsByRelatedResource'
   import { localization } from '@/localization'
@@ -175,6 +182,14 @@
 }
 
 .deployment-details-triggers__value { @apply
+  mb-2
+}
+
+.deployment-details__schedule-label { @apply
+  flex
+  flex-row
+  justify-between
+  items-center
   mb-2
 }
 </style>

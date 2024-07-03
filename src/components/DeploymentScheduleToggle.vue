@@ -1,6 +1,6 @@
 <template>
   <p-tooltip text="Pause or resume this schedule">
-    <p-toggle v-if="deployment.can.update" v-model="internalValue" :disabled="loading" />
+    <p-toggle v-if="deployment.can.update" v-model="internalValue" :disabled="loading || deployment.paused" />
   </p-tooltip>
 </template>
 
