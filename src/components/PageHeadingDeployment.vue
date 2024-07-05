@@ -3,7 +3,6 @@
     <DeploymentRelationships :deployment="deployment" />
 
     <template #actions>
-      <DeploymentToggle :deployment="deployment" @update="emit('update')" />
       <RunMenu v-if="deployment.can.run && media.sm" :deployment="deployment" />
       <DeploymentMenu :deployment="deployment" :show-all="!media.sm" @delete="handleDelete" />
     </template>
@@ -14,7 +13,7 @@
   import { media } from '@prefecthq/prefect-design'
   import { computed } from 'vue'
   import { useRouter } from 'vue-router'
-  import { DeploymentRelationships, DeploymentToggle, PageHeading, RunMenu } from '@/components'
+  import { DeploymentRelationships, PageHeading, RunMenu } from '@/components'
   import { useComponent, useWorkspaceRoutes } from '@/compositions'
   import { Deployment } from '@/models'
 
@@ -30,10 +29,6 @@
     { text: 'Deployments', to: routes.deployments() },
     { text: props.deployment.name },
   ])
-
-  const emit = defineEmits<{
-    (event: 'update' | 'delete'): void,
-  }>()
 
   const handleDelete = (): void => {
     router.back()
