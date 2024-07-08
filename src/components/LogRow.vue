@@ -82,6 +82,8 @@
           currentClasses = []
         } else if (newClass) {
           if (!currentClasses.includes(newClass)) {
+            // Overrides the subdued default text color for logs with the theme default; this is to ensure that the text is readable when using ansii colors
+            currentClasses.push('text-default')
             currentClasses.push(newClass)
           }
         }
