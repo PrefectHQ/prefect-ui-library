@@ -4,9 +4,14 @@
       <p-link :to="routes.flow(flow.id)" class="flow-runs-accordion-header__name">
         {{ flow.name }}
       </p-link>
-      <span class="flow-runs-accordion-header__time">
-        {{ lastRunTime }}
-      </span>
+
+      <template v-if="lastFlowRun?.startTime">
+        <FormattedDate :date="lastFlowRun.startTime" format="relative">
+          <template #default="{ date }">
+            <span class="flow-runs-accordion-header__time ">{{ date }}</span>
+          </template>
+        </FormattedDate>
+      </template>
     </div>
 
     <span class="flow-runs-accordion-header__count">
@@ -16,14 +21,13 @@
 </template>
 
 <script lang="ts" setup>
-  import { useNow } from '@prefecthq/vue-compositions'
   import { computed } from 'vue'
+  import FormattedDate from '@/components/FormattedDate.vue'
   import { useFlowRunsCount } from '@/compositions/useFlowRunsCount'
   import { useLastFlowRun } from '@/compositions/useLastFlowRun'
   import { useWorkspaceRoutes } from '@/compositions/useWorkspaceRoutes'
   import { FlowRunsFilter } from '@/models/Filters'
   import { Flow } from '@/models/Flow'
-  import { formatDateTimeRelative } from '@/utilities/dates'
 
   const props = defineProps<{
     flow: Flow,
@@ -31,7 +35,6 @@
   }>()
 
   const routes = useWorkspaceRoutes()
-  const { now } = useNow({ interval: 1000 })
 
   const filter = computed<FlowRunsFilter>(() => ({
     ...props.filter,
@@ -40,16 +43,8 @@
       id: [props.flow.id],
     },
   }))
+
   const { flowRun: lastFlowRun } = useLastFlowRun(filter)
-
-  const lastRunTime = computed(() => {
-    if (lastFlowRun.value?.startTime) {
-      return formatDateTimeRelative(lastFlowRun.value.startTime, now.value)
-    }
-
-    return undefined
-  })
-
   const { count } = useFlowRunsCount(filter)
 </script>
 
@@ -65,13 +60,12 @@
 
 .flow-runs-accordion-header__content { @apply
   grid
-  gap-0.5
   grid-cols-1
   text-left
 }
 
 .flow-runs-accordion-header__time { @apply
-  text-xs
+  text-sm
   text-subdued
 }
 

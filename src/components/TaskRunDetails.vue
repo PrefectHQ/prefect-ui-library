@@ -7,7 +7,11 @@
     </p-key-value>
 
     <template v-if="taskRun.startTime">
-      <p-key-value label="Start Time" :alternate="alternate" :value="formatDateTimeNumeric(taskRun.startTime)" />
+      <p-key-value label="Start Time" :alternate="alternate">
+        <template #value>
+          <FormattedDate :date="taskRun.startTime" format="numeric" />
+        </template>
+      </p-key-value>
     </template>
 
     <p-key-value label="Duration" :alternate="alternate">
@@ -20,9 +24,17 @@
 
     <p-key-value label="Estimated Run Time" :value="secondsToApproximateString(taskRun.estimatedRunTime ?? 0)" :alternate="alternate" />
 
-    <p-key-value label="Created" :value="formatDateTimeNumeric(taskRun.created)" :alternate="alternate" />
+    <p-key-value label="Created" :alternate="alternate">
+      <template #value>
+        <FormattedDate :date="taskRun.created" format="numeric" />
+      </template>
+    </p-key-value>
 
-    <p-key-value label="Last Updated" :value="formatDateTimeNumeric(taskRun.updated)" :alternate="alternate" />
+    <p-key-value label="Last Updated" :alternate="alternate">
+      <template #value>
+        <FormattedDate :date="taskRun.updated" format="numeric" />
+      </template>
+    </p-key-value>
 
     <p-key-value label="Cache Key" :value="taskRun.cacheKey" :alternate="alternate" />
 
@@ -72,10 +84,10 @@
   import { computed } from 'vue'
   import DurationIconText from '@/components/DurationIconText.vue'
   import FlowRunIconText from '@/components/FlowRunIconText.vue'
+  import FormattedDate from '@/components/FormattedDate.vue'
   import { useTaskRunResult } from '@/compositions'
   import { localization } from '@/localization'
   import { TaskRun } from '@/models/TaskRun'
-  import { formatDateTimeNumeric } from '@/utilities/dates'
   import { secondsToApproximateString } from '@/utilities/seconds'
 
   const props = defineProps<{

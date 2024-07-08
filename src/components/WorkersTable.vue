@@ -12,7 +12,7 @@
       </template>
 
       <template #last-seen="{ value }">
-        <span>{{ formatDateTimeRelative(value, now) }}</span>
+        <FormattedDate :date="value" format="relative" />
       </template>
 
       <template #status="{ row }">
@@ -59,9 +59,10 @@
   import { useNow, useSubscription } from '@prefecthq/vue-compositions'
   import { computed, ref, toRefs } from 'vue'
   import { ResultsCount, SearchInput, CopyOverflowMenuItem, WorkerStatusBadge, ConfirmDeleteModal } from '@/components'
+  import FormattedDate from '@/components/FormattedDate.vue'
   import { useWorkspaceApi, useShowModal } from '@/compositions'
   import { WorkPoolWorker } from '@/models'
-  import { deleteItem, formatDateTimeRelative } from '@/utilities'
+  import { deleteItem } from '@/utilities'
 
   const props = defineProps<{
     workPoolName: string,

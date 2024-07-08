@@ -49,13 +49,21 @@
       </template>
     </p-key-value>
 
-    <p-key-value label="Created" :value="formatDateTimeNumeric(deployment.created)" :alternate="alternate" />
+    <p-key-value label="Created" :alternate="alternate">
+      <template #value>
+        <FormattedDate :date="deployment.created" format="numeric" />
+      </template>
+    </p-key-value>
 
     <template v-if="deployment.createdBy">
       <p-key-value label="Created By" :value="deployment.createdBy.displayValue" :alternate="alternate" />
     </template>
 
-    <p-key-value label="Last Updated" :value="formatDateTimeNumeric(deployment.updated)" :alternate="alternate" />
+    <p-key-value label="Last Updated" :alternate="alternate">
+      <template #value>
+        <FormattedDate :date="deployment.updated" format="numeric" />
+      </template>
+    </p-key-value>
 
     <template v-if="deployment.updatedBy">
       <p-key-value label="Updated By" :value="deployment.updatedBy.displayValue" :alternate="alternate" />
@@ -98,11 +106,11 @@
   import AutomationIconText from '@/automations/components/AutomationIconText.vue'
   import { BlockIconText, DeploymentStatusBadge, DeploymentSchedulesFieldset } from '@/components'
   import DeploymentToggle from '@/components/DeploymentToggle.vue'
+  import FormattedDate from '@/components/FormattedDate.vue'
   import { useWorkspaceApi, useCan, useWorkspaceRoutes } from '@/compositions'
   import { useAutomationsByRelatedResource } from '@/compositions/useAutomationsByRelatedResource'
   import { localization } from '@/localization'
   import { Deployment, DeploymentScheduleCompatible } from '@/models'
-  import { formatDateTimeNumeric } from '@/utilities/dates'
 
   const props = defineProps<{
     deployment: Deployment,

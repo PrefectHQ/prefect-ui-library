@@ -12,7 +12,7 @@
       </p-key-value>
       <p-key-value label="Occurred">
         <template #value>
-          {{ formatDateTimeNumeric(selection.timestamp) }}
+          <FormattedDate :date="selection.timestamp" format="numeric" />
         </template>
       </p-key-value>
     </div>
@@ -22,7 +22,7 @@
 <script lang="ts" setup>
   import { StateSelection } from '@prefecthq/graphs'
   import { FlowRunGraphPopover } from '@/components'
-  import { formatDateTimeNumeric } from '@/utilities'
+  import FormattedDate from '@/components/FormattedDate.vue'
 
   defineProps<{
     selection: StateSelection,

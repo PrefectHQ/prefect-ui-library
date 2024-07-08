@@ -1,7 +1,7 @@
 <template>
   <p-tooltip>
     <template #content>
-      <slot>
+      <slot name="tooltip">
         <div class="formatted-date__tooltip">
           {{ date }}
         </div>
@@ -9,7 +9,7 @@
     </template>
 
     <button type="button" class="formatted-date">
-      <slot name="text" v-bind="{ formattedText }">
+      <slot v-bind="{ date: formattedText }">
         {{ formattedText }}
       </slot>
     </button>
@@ -17,39 +17,38 @@
 </template>
 
 <script lang="ts" setup>
+  import { useNow } from '@prefecthq/vue-compositions'
   import { computed } from 'vue'
   import { formatDateTimeRelative, formatDateTimeNumeric, formatDate, formatDateTime } from '@/utilities'
 
   const props = defineProps<{
-    date: Date | string,
+    date: Date,
     format?: 'date' | 'datetime' | 'relative' | 'numeric',
   }>()
 
+  const { now } = useNow({ interval: 60_000 })
+
   const formattedText = computed(() => {
-    const normalizedDate = new Date(props.date)
-
-    if (normalizedDate.toString() === 'Invalid Date') {
-      console.warn('Invalid date provided to FormattedDate:', props.date)
-      return props.date
-    }
-
     switch (props.format) {
       case 'numeric':
-        return formatDateTimeNumeric(normalizedDate)
+        return formatDateTimeNumeric(props.date)
       case 'date':
-        return formatDate(normalizedDate)
+        return formatDate(props.date)
       case 'datetime':
-        return formatDateTime(normalizedDate)
+        return formatDateTime(props.date)
       case 'relative':
       default:
-        return formatDateTimeRelative(normalizedDate)
+        return formatDateTimeRelative(props.date, now.value)
     }
   })
 </script>
 
 <style>
 .formatted-date { @apply
-  font-mono
+  text-left
+  font-mono;
+  /* mono font is smaller than the sans font. This bumps whatever the font is by 2px so it matches  */
+  font-size: calc(1em + 2px)
 }
 
 .formatted-date__tooltip { @apply

@@ -16,10 +16,18 @@
 
     <p-key-value label="Flow Run Concurrency" :value="workQueue.concurrencyLimit" :alternate="alternate" />
 
-    <p-key-value label="Created" :value="formatDateTimeNumeric(workQueue.created)" :alternate="alternate" />
+    <p-key-value label="Created" :alternate="alternate">
+      <template #value>
+        <FormattedDate :date="workQueue.created" format="numeric" />
+      </template>
+    </p-key-value>
 
     <template v-if="workQueueStatus">
-      <p-key-value label="Last Polled" :value="workQueueStatus.lastPolled ? formatDateTimeNumeric(workQueueStatus.lastPolled) : null" :alternate="alternate" />
+      <p-key-value label="Last Polled" :alternate="alternate">
+        <template v-if="workQueueStatus.lastPolled" #value>
+          <FormattedDate :date="workQueueStatus.lastPolled" format="numeric" />
+        </template>
+      </p-key-value>
     </template>
 
     <template v-if="workQueue.filter">
@@ -49,9 +57,9 @@
   import { computed } from 'vue'
   import { WorkQueueStatusBadge } from '@/components'
   import DeploymentIconText from '@/components/DeploymentIconText.vue'
+  import FormattedDate from '@/components/FormattedDate.vue'
   import { useWorkQueueStatus } from '@/compositions'
   import { WorkQueue } from '@/models/WorkQueue'
-  import { formatDateTimeNumeric } from '@/utilities/dates'
 
   const props = defineProps<{
     workQueue: WorkQueue,

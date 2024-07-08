@@ -11,13 +11,21 @@
           <StateBadge :state="taskRun.state" class="flow-run-timeline-task-details__state-badge" />
         </template>
       </p-key-value>
+
       <p-key-value label="Task Run ID" :value="taskRun.id" :alternate="alternate" />
+
       <p-key-value label="Duration" :alternate="alternate">
         <template #value>
           <DurationIconText :duration="taskRun.duration" />
         </template>
       </p-key-value>
-      <p-key-value label="Created" :value="formatDateTimeNumeric(taskRun.created)" :alternate="alternate" />
+
+      <p-key-value label="Created" :alternate="alternate">
+        <template #value>
+          <FormattedDate :date="taskRun.created" format="numeric" />
+        </template>
+      </p-key-value>
+
       <p-key-value label="Tags" :alternate="alternate">
         <template v-if="taskRun.tags?.length" #value>
           <p-tags :tags="taskRun.tags!" class="flow-run-timeline-task-details__tags" />
@@ -30,8 +38,8 @@
 <script lang="ts" setup>
   import { toRefs } from 'vue'
   import { StateBadge, DurationIconText } from '@/components'
+  import FormattedDate from '@/components/FormattedDate.vue'
   import { useTaskRun, useWorkspaceRoutes } from '@/compositions'
-  import { formatDateTimeNumeric } from '@/utilities/dates'
 
   const props = defineProps<{
     taskRunId: string,
