@@ -6,13 +6,15 @@
 
     <div class="log-row__content">
       <template v-for="(chunk, index) in chunks" :key="index">
-        <template v-if="chunk.type === 'text'">
-          {{ chunk.value }}
-        </template>
+        <span :class="chunk.classes">
+          <template v-if="chunk.type === 'text'">
+            {{ chunk.value }}
+          </template>
 
-        <template v-if="chunk.type === 'link'">
-          <span><p-link :to="chunk.value" rel="noopener noreferrer">{{ chunk.value }}</p-link></span>
-        </template>
+          <template v-if="chunk.type === 'link'">
+            <p-link :to="chunk.value" rel="noopener noreferrer">{{ chunk.value }}</p-link>
+          </template>
+        </span>
       </template>
     </div>
 
@@ -36,55 +38,87 @@
   import { useTaskRun } from '@/compositions'
   import { Log } from '@/models'
   import { formatTimeNumeric } from '@/utilities/dates'
+  import { ansiiColorRegex, ansiToTailwind } from '@/utilities/logs'
   import { urlRegex } from '@/utilities/urls'
 
   const props = defineProps<{
     log: Log,
   }>()
 
+  const { taskRun } = useTaskRun(() => props.log.taskRunId)
+  const taskRunName = computed(() => taskRun.value?.name)
+
   type LogChunk = {
     type: 'text' | 'link',
     value: string,
+    classes: string[],
   }
 
   const chunks = computed(() => {
     const output: LogChunk[] = []
     const { message } = props.log
-    const matches = message.matchAll(urlRegex)
+
+    let currentClasses: string[] = []
+
+    const processText = (text: string, type: 'text' | 'link'): void => {
+      let lastIndex = 0
+      const ansiMatches = text.matchAll(ansiiColorRegex)
+
+      for (const match of ansiMatches) {
+        if (lastIndex < match.index) {
+          output.push({
+            type,
+            value: text.slice(lastIndex, match.index),
+            classes: [...currentClasses],
+          })
+        }
+
+        const [fullMatch, codeStr] = match
+        const newClass = ansiToTailwind[codeStr]
+
+        if (newClass === '') {
+          // Reset
+          currentClasses = []
+        } else if (newClass) {
+          if (!currentClasses.includes(newClass)) {
+            // Overrides the subdued default text color for logs with the theme default; this is to ensure that the text is readable when using ansii colors
+            currentClasses.push('text-default')
+            currentClasses.push(newClass)
+          }
+        }
+
+        lastIndex = match.index + fullMatch.length
+      }
+
+      if (lastIndex < text.length) {
+        output.push({
+          type,
+          value: text.slice(lastIndex),
+          classes: [...currentClasses],
+        })
+      }
+    }
 
     let lastIndex = 0
+    const urlMatches = message.matchAll(urlRegex)
 
-    for (const match of matches) {
+    for (const match of urlMatches) {
       if (lastIndex < match.index) {
-        output.push({
-          type: 'text',
-          value: message.slice(lastIndex, match.index),
-        })
+        processText(message.slice(lastIndex, match.index), 'text')
       }
 
       const [url] = match
-
-      output.push({
-        type: 'link',
-        value: url,
-      })
+      processText(url, 'link')
 
       lastIndex = match.index + url.length
     }
 
-    if (lastIndex < message.length - 1) {
-      output.push({
-        type: 'text',
-        value: message.slice(lastIndex),
-      })
+    if (lastIndex < message.length) {
+      processText(message.slice(lastIndex), 'text')
     }
 
     return output
   })
-
-  const taskRunId = computed(() => props.log.taskRunId)
-  const { taskRun } = useTaskRun(taskRunId)
-  const taskRunName = computed(() => taskRun.value?.name)
 </script>
 
 <style>
