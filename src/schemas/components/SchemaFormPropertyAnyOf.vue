@@ -76,6 +76,17 @@
       return
     }
 
+    // when an input is emptied it will emit undefined
+    // when that happens we should just update the value and skip trying to sync the property index
+    // to avoid switching back to the default index
+    // https://github.com/PrefectHQ/prefect/issues/14265
+    if (value === undefined) {
+      propertyValues[selectedPropertyIndex.value] = value
+      emit('update:value', value)
+
+      return
+    }
+
     let index = await getInitialIndexForSchemaPropertyAnyOfValue({ value, property: props.property, api, schema })
 
     if (index === -1) {
