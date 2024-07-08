@@ -143,30 +143,9 @@ export function createWorkspaceRouteRecords(components: Partial<WorkspaceRouteCo
       },
       children: [
         {
-          name: 'workspace.work-queues',
-          path: '',
-          component: components.workQueues,
-        },
-        {
-          name: 'workspace.work-queues.work-queue-create',
-          path: 'create',
-          component: components.workQueueCreate,
-          meta: {
-            can: 'create:work_queue',
-          },
-        },
-        {
           name: 'workspace.work-queues.work-queue',
           path: 'work-queue/:workQueueId',
           component: components.workQueue ?? import('@/components/WorkQueueToWorkPoolQueueRedirect.vue'),
-        },
-        {
-          name: 'workspace.work-queues.work-queue-edit',
-          path: 'work-queue/:workQueueId/edit',
-          component: components.workQueueEdit,
-          meta: {
-            can: 'update:work_queue',
-          },
         },
       ],
     },
