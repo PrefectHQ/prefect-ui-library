@@ -45,8 +45,7 @@
     log: Log,
   }>()
 
-  const taskRunId = computed(() => props.log.taskRunId)
-  const { taskRun } = useTaskRun(taskRunId)
+  const { taskRun } = useTaskRun(() => props.log.taskRunId)
   const taskRunName = computed(() => taskRun.value?.name)
 
   type LogChunk = {
