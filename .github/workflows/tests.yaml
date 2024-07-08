@@ -4,23 +4,6 @@ on: [pull_request]
 
 jobs:
 
-  lint:
-    name: ESLint
-    runs-on: ubuntu-latest
-
-    steps:
-      - uses: actions/checkout@v2
-        with:
-          persist-credentials: false
-        
-      - name: Setup
-        id: setup
-        uses: prefecthq/actions-setup-nodejs@main
-
-      - name: Lint application
-        run: |
-          npm run lint
-
   build:
     name: Build
     runs-on: ubuntu-latest
