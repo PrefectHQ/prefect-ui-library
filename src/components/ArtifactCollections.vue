@@ -15,7 +15,7 @@
               {{ localization.info.lastUpdated }}
             </template>
             <template #summary-value>
-              {{ formatDateTime(item.updated) }}
+              <FormattedDate :date="item.updated" format="datetime" />
             </template>
           </ArtifactCard>
         </router-link>
@@ -34,12 +34,12 @@
   import { ArtifactTypeSelect, ResultsCount, SearchInput } from '@/components'
   import ArtifactCard from '@/components/ArtifactCard.vue'
   import ArtifactCollectionsEmptyState from '@/components/ArtifactCollectionsEmptyState.vue'
+  import FormattedDate from '@/components/FormattedDate.vue'
   import RowGridLayoutList from '@/components/RowGridLayoutList.vue'
   import ViewModeButtonGroup from '@/components/ViewModeButtonGroup.vue'
   import { useWorkspaceApi, useWorkspaceRoutes } from '@/compositions'
   import { localization } from '@/localization'
   import { ArtifactsFilter, ArtifactType, ArtifactCollection } from '@/models'
-  import { formatDateTime } from '@/utilities'
 
   const searchTerm = ref<string>('')
   const searchTermDebounced = useDebouncedRef(searchTerm, 1200)

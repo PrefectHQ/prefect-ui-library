@@ -13,7 +13,11 @@
     </p-key-value>
 
     <template v-if="workQueueStatus">
-      <p-key-value label="Last Polled" :value="workQueueLastPolled" :alternate="alternate" />
+      <p-key-value label="Last Polled" :alternate="alternate">
+        <template v-if="workQueueLastPolled" #value>
+          <FormattedDate :date="workPoolQueue.updated" format="numeric" />
+        </template>
+      </p-key-value>
     </template>
 
     <p-key-value label="Description" :value="workPoolQueue.description" :alternate="alternate" />
@@ -26,9 +30,17 @@
 
     <p-key-value label="Flow Run Concurrency" :value="workPoolQueue.concurrencyLimit" :alternate="alternate" />
 
-    <p-key-value label="Created" :value="formatDateTimeNumeric(workPoolQueue.created)" :alternate="alternate" />
+    <p-key-value label="Created" :alternate="alternate">
+      <template #value>
+        <FormattedDate :date="workPoolQueue.created" format="numeric" />
+      </template>
+    </p-key-value>
 
-    <p-key-value label="Last Updated" :value="formatDateTimeNumeric(workPoolQueue.updated)" :alternate="alternate" />
+    <p-key-value label="Last Updated" :alternate="alternate">
+      <template #value>
+        <FormattedDate :date="workPoolQueue.updated" format="numeric" />
+      </template>
+    </p-key-value>
   </div>
 </template>
 
@@ -36,9 +48,9 @@
   import { useSubscriptionWithDependencies } from '@prefecthq/vue-compositions'
   import { toRefs, computed } from 'vue'
   import { WorkPoolIconText, WorkPoolQueueStatusBadge } from '@/components'
+  import FormattedDate from '@/components/FormattedDate.vue'
   import { useWorkspaceApi, useWorkQueueStatus } from '@/compositions'
   import { WorkPoolQueue, WorkPoolsFilter } from '@/models'
-  import { formatDateTimeNumeric } from '@/utilities/dates'
 
   const props = defineProps<{
     workPoolQueue: WorkPoolQueue,
@@ -63,7 +75,7 @@
   const workPoolsSubscription = useSubscriptionWithDependencies(api.workPools.getWorkPools, workPoolArgs)
   const workPools = computed(() => workPoolsSubscription.response ?? [])
   const workPool = computed(() => workPools.value[0])
-  const workQueueLastPolled = computed(() => workQueueStatus.value?.lastPolled ? formatDateTimeNumeric(workQueueStatus.value.lastPolled) : null)
+  const workQueueLastPolled = computed(() => workQueueStatus.value?.lastPolled ? workQueueStatus.value.lastPolled : null)
 </script>
 
 

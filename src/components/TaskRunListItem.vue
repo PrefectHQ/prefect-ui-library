@@ -27,14 +27,12 @@
         <p-icon-text icon="ClockIcon">
           {{ secondsToApproximateString(taskRun.duration) }}
         </p-icon-text>
-        <p-icon-text class="flow-run-date-icon-text" icon="CalendarIcon">
-          <template v-if="taskRun.startTime">
-            {{ formatDateTimeNumeric(taskRun.startTime) }}
-          </template>
-          <template v-else-if="taskRun.expectedStartTime">
-            {{ formatDateTimeNumeric(taskRun.expectedStartTime) }}
-          </template>
-        </p-icon-text>
+
+        <template v-if="startTime">
+          <p-icon-text class="flow-run-date-icon-text" icon="CalendarIcon">
+            <FormattedDate :date="startTime" format="numeric" />
+          </p-icon-text>
+        </template>
       </template>
 
       <template v-if="showFlowRun && visible" #relationships>
@@ -59,11 +57,11 @@
   import FlowRunDeployment from '@/components/FlowRunDeployment.vue'
   import FlowRunWorkPool from '@/components/FlowRunWorkPool.vue'
   import FlowRunWorkQueue from '@/components/FlowRunWorkQueue.vue'
+  import FormattedDate from '@/components/FormattedDate.vue'
   import StateBadge from '@/components/StateBadge.vue'
   import StateListItem from '@/components/StateListItem.vue'
   import { useFlow, useFlowRun, useWorkspaceRoutes } from '@/compositions'
   import { TaskRun } from '@/models/TaskRun'
-  import { formatDateTimeNumeric } from '@/utilities/dates'
   import { secondsToApproximateString } from '@/utilities/seconds'
 
   const props = defineProps<{
@@ -90,6 +88,7 @@
   const stateType = computed(() => props.taskRun.state?.type)
   const tags = computed(() => props.taskRun.tags)
   const value = computed(() => props.taskRun.id)
+  const startTime = computed(() => props.taskRun.startTime ?? props.taskRun.expectedStartTime)
 
   const { flowRun } = useFlowRun(props.taskRun.flowRunId)
   const isFlowRunRoute = computed(() => route.name === routes.flowRun('').name)

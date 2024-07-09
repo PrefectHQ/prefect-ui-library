@@ -2,13 +2,21 @@
   <div class="flow-run-details">
     <p-key-value label="Run Count" :value="flowRun.runCount ?? 0" :alternate="alternate" />
 
-    <p-key-value label="Created" :value="formatDateTimeNumeric(flowRun.created)" :alternate="alternate" />
+    <p-key-value label="Created" :alternate="alternate">
+      <template #value>
+        <FormattedDate :date="flowRun.created" format="numeric" />
+      </template>
+    </p-key-value>
 
     <template v-if="flowRun.createdBy">
       <p-key-value label="Created By" :value="flowRun.createdBy.displayValue" :alternate="alternate" />
     </template>
 
-    <p-key-value label="Last Updated" :value="formatDateTimeNumeric(flowRun.updated)" :alternate="alternate" />
+    <p-key-value label="Last Updated" :alternate="alternate">
+      <template #value>
+        <FormattedDate :date="flowRun.updated" format="numeric" />
+      </template>
+    </p-key-value>
 
     <template v-if="flowRun.idempotencyKey">
       <p-key-value label="Idempotency Key" :value="flowRun.idempotencyKey" :alternate="alternate" />
@@ -48,8 +56,8 @@
 <script lang="ts" setup>
   import { PKeyValue, PTags } from '@prefecthq/prefect-design'
   import { computed } from 'vue'
+  import FormattedDate from '@/components/FormattedDate.vue'
   import { FlowRun } from '@/models/FlowRun'
-  import { formatDateTimeNumeric } from '@/utilities/dates'
 
   const props = defineProps<{
     flowRun: FlowRun,

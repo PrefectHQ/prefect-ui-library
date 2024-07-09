@@ -1,13 +1,11 @@
 <template>
-  <span v-if="lastPolled" class="work-queue-last-polled">
-    {{ formatDateTimeNumeric(lastPolled) }}
-  </span>
+  <FormattedDate v-if="lastPolled" :date="lastPolled" format="numeric" class="work-queue-last-polled" />
 </template>
 
 <script lang="ts" setup>
   import { computed } from 'vue'
+  import FormattedDate from '@/components/FormattedDate.vue'
   import { useWorkQueueStatus } from '@/compositions'
-  import { formatDateTimeNumeric } from '@/utilities'
 
   const props = defineProps<{
     workQueueId: string,

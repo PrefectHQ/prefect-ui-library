@@ -14,11 +14,23 @@
 
     <p-key-value label="Concurrency Limit" :value="workPool.concurrencyLimit" :alternate="alternate" />
 
-    <p-key-value label="Created" :value="formatDateTimeNumeric(workPool.created)" :alternate="alternate" />
+    <p-key-value label="Created" :alternate="alternate">
+      <template #value>
+        <FormattedDate :date="workPool.created" format="numeric" />
+      </template>
+    </p-key-value>
 
-    <p-key-value label="Last Updated" :value="formatDateTimeNumeric(workPool.updated)" :alternate="alternate" />
+    <p-key-value label="Last Updated" :alternate="alternate">
+      <template #value>
+        <FormattedDate :date="workPool.updated" format="numeric" />
+      </template>
+    </p-key-value>
 
-    <p-key-value v-if="workPoolWorkers.length" label="Last Polled" :value="formatDateTimeNumeric(lastWorkerHeartbeat)" :alternate="alternate" />
+    <p-key-value v-if="workPoolWorkers.length" label="Last Polled" :alternate="alternate">
+      <template #value>
+        <FormattedDate :date="lastWorkerHeartbeat" format="numeric" />
+      </template>
+    </p-key-value>
 
     <template v-if="showBaseJobTemplateDetails">
       <p-divider />
@@ -34,10 +46,10 @@
   import { useSubscription } from '@prefecthq/vue-compositions'
   import { computed } from 'vue'
   import { SchemaPropertiesKeyValues, WorkPoolStatusBadge } from '@/components'
+  import FormattedDate from '@/components/FormattedDate.vue'
   import { useWorkspaceApi } from '@/compositions'
   import { WorkPool } from '@/models'
   import { getSchemaDefaultValues, mapper } from '@/services'
-  import { formatDateTimeNumeric } from '@/utilities/dates'
 
   const props = defineProps<{
     workPool: WorkPool,

@@ -20,7 +20,7 @@
             </span>
             <span class="artifact-card__summary-item-value">
               <slot name="summary-value">
-                {{ formatDateTime(artifact.created) }}
+                <FormattedDate :date="artifact.created" format="datetime" />
               </slot>
             </span>
           </div>
@@ -41,9 +41,9 @@
 
 <script lang="ts" setup>
   import { computed } from 'vue'
+  import FormattedDate from '@/components/FormattedDate.vue'
   import { localization } from '@/localization'
   import { Artifact } from '@/models'
-  import { formatDateTime } from '@/utilities'
 
   const props = defineProps<{
     artifact: Artifact,

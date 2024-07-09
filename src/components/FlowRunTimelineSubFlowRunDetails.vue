@@ -7,13 +7,21 @@
           <StateBadge :state="flowRun.state" class="timeline-task-details__state-badge" />
         </template>
       </p-key-value>
+
       <p-key-value label="Flow Run ID" :value="flowRun.id" :alternate="alternate" />
+
       <p-key-value label="Duration" :alternate="alternate">
         <template #value>
           <DurationIconText :duration="flowRun.duration" />
         </template>
       </p-key-value>
-      <p-key-value label="Created" :value="formatDateTimeNumeric(flowRun.created)" :alternate="alternate" />
+
+      <p-key-value label="Created" :alternate="alternate">
+        <template #value>
+          <FormattedDate :date="flowRun.created" format="numeric" />
+        </template>
+      </p-key-value>
+
       <p-key-value label="Tags" :alternate="alternate">
         <template v-if="flowRun.tags?.length" #value>
           <p-tags :tags="flowRun.tags!" class="flow-run-timeline-sub-flow-run-details__tags" />
@@ -27,8 +35,8 @@
   import { BreadCrumbs } from '@prefecthq/prefect-design'
   import { computed, toRefs } from 'vue'
   import { StateBadge, DurationIconText } from '@/components'
+  import FormattedDate from '@/components/FormattedDate.vue'
   import { useFlow, useFlowRun, useWorkspaceRoutes } from '@/compositions'
-  import { formatDateTimeNumeric } from '@/utilities/dates'
 
   const props = defineProps<{
     flowRunId: string,

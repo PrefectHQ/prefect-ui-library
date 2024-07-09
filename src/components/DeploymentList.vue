@@ -56,14 +56,6 @@
         </div>
       </template>
 
-      <template #updated="{ row }">
-        <FormattedDate :date="row.updated" />
-      </template>
-
-      <template #created="{ row }">
-        <FormattedDate :date="row.created" />
-      </template>
-
       <template #schedules="{ row }">
         <DeploymentScheduleTags :schedules="row.schedules" justify="right" />
       </template>

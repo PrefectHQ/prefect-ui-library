@@ -43,7 +43,11 @@
         </template>
       </p-key-value>
 
-      <p-key-value label="Created" :value="formatDateTimeNumeric(artifact.created)" :alternate="alternate" />
+      <p-key-value label="Created" :alternate="alternate">
+        <template #value>
+          <FormattedDate :date="artifact.created" format="numeric" />
+        </template>
+      </p-key-value>
     </template>
 
     <template v-if="can.read.flow_run && flowRun">
@@ -65,13 +69,21 @@
         </template>
       </p-key-value>
 
-      <p-key-value label="Created" :value="formatDateTimeNumeric(flowRun.created)" :alternate="alternate" />
+      <p-key-value label="Created" :alternate="alternate">
+        <template #value>
+          <FormattedDate :date="flowRun.created" format="numeric" />
+        </template>
+      </p-key-value>
 
       <template v-if="flowRun.createdBy">
         <p-key-value label="Created By" :value="flowRun.createdBy.displayValue" :alternate="alternate" />
       </template>
 
-      <p-key-value label="Last Updated" :value="formatDateTimeNumeric(flowRun.updated)" :alternate="alternate" />
+      <p-key-value label="Last Updated" :alternate="alternate">
+        <template #value>
+          <FormattedDate :date="flowRun.updated" format="numeric" />
+        </template>
+      </p-key-value>
 
       <p-key-value label="Tags" :alternate="alternate">
         <template v-if="flowRun.tags?.length" #value>
@@ -93,9 +105,17 @@
         Task Run
       </p-heading>
 
-      <p-key-value label="Created" :value="formatDateTimeNumeric(taskRun.created)" :alternate="alternate" />
+      <p-key-value label="Created" :alternate="alternate">
+        <template #value>
+          <FormattedDate :date="taskRun.created" format="numeric" />
+        </template>
+      </p-key-value>
 
-      <p-key-value label="Last Updated" :value="formatDateTimeNumeric(taskRun.updated)" :alternate="alternate" />
+      <p-key-value label="Last Updated" :alternate="alternate">
+        <template #value>
+          <FormattedDate :date="taskRun.updated" format="numeric" />
+        </template>
+      </p-key-value>
 
       <p-key-value label="Tags" :alternate="alternate">
         <template v-if="taskRun.tags?.length" #value>
@@ -110,9 +130,9 @@
   import { PKeyValue, PTags } from '@prefecthq/prefect-design'
   import { computed } from 'vue'
   import { FlowRunStartTime, DurationIconText, FlowRunIconText, TaskRunIconText, ArtifactKeyIconText } from '@/components'
+  import FormattedDate from '@/components/FormattedDate.vue'
   import { useCan, useFlowRun, useTaskRun } from '@/compositions'
   import { Artifact } from '@/models'
-  import { formatDateTimeNumeric } from '@/utilities/dates'
 
   const props = defineProps<{
     artifact: Artifact,

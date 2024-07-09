@@ -2,15 +2,24 @@
   <div class="flow-details">
     <p-key-value label="Flow ID" :value="flow.id" :alternate="alternate" />
 
-    <p-key-value label="Created" :value="formatDateTimeNumeric(flow.created)" :alternate="alternate" />
 
-    <p-key-value label="Updated" :value="formatDateTimeNumeric(flow.updated)" :alternate="alternate" />
+    <p-key-value label="Created" :alternate="alternate">
+      <template #value>
+        <FormattedDate :date="flow.created" format="numeric" />
+      </template>
+    </p-key-value>
+
+    <p-key-value label="Updated" :alternate="alternate">
+      <template #value>
+        <FormattedDate :date="flow.updated" format="numeric" />
+      </template>
+    </p-key-value>
   </div>
 </template>
 
 <script lang="ts" setup>
+  import FormattedDate from '@/components/FormattedDate.vue'
   import { Flow } from '@/models/Flow'
-  import { formatDateTimeNumeric } from '@/utilities/dates'
 
   defineProps<{
     flow: Flow,

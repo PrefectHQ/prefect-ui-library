@@ -29,7 +29,12 @@
           <p-link :to="routes.flow(row.id)" class="flow-list__name">
             <span>{{ row.name }}</span>
           </p-link>
-          <span class="flow-list__created-date">Created {{ formatDateTimeNumeric(row.created) }}</span>
+
+          <FormattedDate :date="row.created" format="numeric">
+            <template #default="{ date }">
+              <span class="flow-list__created-date">Created {{ date }}</span>
+            </template>
+          </FormattedDate>
         </div>
       </template>
 
@@ -104,6 +109,7 @@
     SelectedCount,
     FlowRunTagsInput
   } from '@/components'
+  import FormattedDate from '@/components/FormattedDate.vue'
   import { useCan, useWorkspaceRoutes, useFlows, useWorkspaceApi, useFlowsPaginationFilterFromRoute } from '@/compositions'
   import { useComponent } from '@/compositions/useComponent'
   import { FlowsFilter } from '@/models/Filters'
@@ -111,7 +117,6 @@
   import { Getter } from '@/types'
   import { flowSortOptions } from '@/types/SortOptionTypes'
   import { snakeCase } from '@/utilities'
-  import { formatDateTimeNumeric } from '@/utilities/dates'
 
   const props = defineProps<{
     filter?: FlowsFilter,
