@@ -5,7 +5,7 @@ import { MapFunction } from '@/services/Mapper'
 
 export const mapTaskWorkerFilterToTaskWorkerFilterRequest: MapFunction<TaskWorkerFilter, TaskWorkerFilterRequest> = function(source) {
   return {
-    task_keys: source.taskKeys,
+    task_keys: source.taskKeys ?? [],
   }
 }
 

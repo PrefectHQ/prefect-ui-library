@@ -139,10 +139,6 @@
 </script>
 
 <style>
-.task-worker-list__table { @apply
-  overflow-visible
-}
-
 .task-worker-list__table .p-table__table { @apply
   table-fixed
   w-full
