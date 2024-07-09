@@ -68,6 +68,7 @@ import { mapStateUpdateToStateUpdateRequest } from '@/maps/stateUpdate'
 import { mapTaskInputToTaskInputResponse, mapTaskInputResponseToTaskInput } from '@/maps/taskInput'
 import { mapTaskRunToTaskRunResponse, mapTaskRunResponseToTaskRun } from '@/maps/taskRun'
 import { mapTaskRunHistoryResponseToTaskRunHistory, mapTaskRunHistoryStateResponseToTaskRunHistoryState, mapTaskRunsFilterToTaskRunsHistoryFilter } from '@/maps/taskRunHistory'
+import { mapTaskWorkerFilterToTaskWorkerFilterRequest, mapTaskWorkerResponseToTaskWorker } from '@/maps/taskWorkers'
 import { mapUiFlowRunHistoryResponseToUiFlowRunHistory } from '@/maps/uiFlowRunHistory'
 import { mapUiNextFlowRunByFlowResponseToUiNextFlowRunByFlow } from '@/maps/uiNextFlowRunByFlow'
 import { mapUiTaskRunCountsByStateResponseToUiTaskRunCountsByState } from '@/maps/uiTaskRunCountsByState'
@@ -209,6 +210,8 @@ export const maps = {
   StateUpdate: { StateUpdateRequest: mapStateUpdateToStateUpdateRequest },
   string: { Date: mapStringToDate, number: mapStringToNumber },
   TagFilter: { TagFilterRequest: mapTagFilter },
+  TaskWorkerResponse: { TaskWorker: mapTaskWorkerResponseToTaskWorker },
+  TaskWorkerFilter: { TaskWorkerFilterRequest: mapTaskWorkerFilterToTaskWorkerFilterRequest },
   TaskInput: { TaskInputResponse: mapTaskInputToTaskInputResponse },
   TaskInputResponse: { TaskInput: mapTaskInputResponseToTaskInput },
   TaskRun: { TaskRunResponse: mapTaskRunToTaskRunResponse },

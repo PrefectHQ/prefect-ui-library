@@ -171,6 +171,10 @@ export type BlockDocumentFilter = {
   nameLike?: string,
 }
 
+export type TaskWorkerFilter = {
+  taskKeys?: string[],
+}
+
 export type FlowsFilter = UnionFilter<FlowSortValues>
 export type FlowRunsFilter = UnionFilter<FlowRunSortValues>
 export type TaskRunsFilter = UnionFilter<TaskRunSortValues>

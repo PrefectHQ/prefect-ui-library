@@ -277,3 +277,7 @@ export type TaskRunsHistoryFilterRequest = Pick<TaskRunsFilterRequest, 'deployme
   history_end: string,
   history_interval_seconds: number,
 }
+
+export type TaskWorkerFilterRequest = {
+  task_keys?: string[],
+}

@@ -55,6 +55,7 @@ export const workspacePermissions = [
   'read:notification_policy',
   'read:saved_search',
   'read:task_run',
+  'read:task_workers',
   'read:variable',
   'read:work_queue',
   'read:work_pool_queue',
