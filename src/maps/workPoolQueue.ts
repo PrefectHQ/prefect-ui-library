@@ -15,6 +15,7 @@ export const mapWorkPoolQueueResponseToWorkPoolQueue: MapFunction<WorkPoolQueueR
     isPaused: source.is_paused ?? false,
     concurrencyLimit: source.concurrency_limit,
     priority: source.priority,
+    lastPolled: this.map('string', source.last_polled, 'Date'),
     status: (source.status?.toLowerCase() ?? 'not_ready') as Lowercase<WorkPoolQueueResponseStatus>,
   })
 }
@@ -31,6 +32,7 @@ export const mapWorkPoolQueueToWorkPoolQueueResponse: MapFunction<WorkPoolQueue,
     is_paused: source.isPaused,
     concurrency_limit: source.concurrencyLimit,
     priority: source.priority,
+    last_polled: this.map('Date', source.lastPolled, 'string'),
     status: source.status.toUpperCase() as Uppercase<WorkPoolQueueStatus>,
   }
 }

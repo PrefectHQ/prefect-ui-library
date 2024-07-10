@@ -12,13 +12,12 @@
       </template>
     </p-key-value>
 
-    <template v-if="workQueueStatus">
-      <p-key-value label="Last Polled" :alternate="alternate">
-        <template v-if="workQueueLastPolled" #value>
-          <FormattedDate :date="workPoolQueue.updated" format="numeric" />
-        </template>
-      </p-key-value>
-    </template>
+    <p-key-value label="Last Polled" :alternate="alternate">
+      <template #value>
+        <FormattedDate v-if="workPoolQueue.lastPolled" :date="workPoolQueue.lastPolled" format="numeric" />
+        <span v-else>Never</span>
+      </template>
+    </p-key-value>
 
     <p-key-value label="Description" :value="workPoolQueue.description" :alternate="alternate" />
 
@@ -49,7 +48,7 @@
   import { toRefs, computed } from 'vue'
   import { WorkPoolIconText, WorkPoolQueueStatusBadge } from '@/components'
   import FormattedDate from '@/components/FormattedDate.vue'
-  import { useWorkspaceApi, useWorkQueueStatus } from '@/compositions'
+  import { useWorkspaceApi } from '@/compositions'
   import { WorkPoolQueue, WorkPoolsFilter } from '@/models'
 
   const props = defineProps<{
@@ -61,7 +60,6 @@
   const { workPoolName } = toRefs(props)
   const api = useWorkspaceApi()
 
-  const { workQueueStatus } = useWorkQueueStatus(props.workPoolQueue.id)
   const workPoolArgs = computed<[WorkPoolsFilter] | null>(() => {
     return [
       {
@@ -75,7 +73,6 @@
   const workPoolsSubscription = useSubscriptionWithDependencies(api.workPools.getWorkPools, workPoolArgs)
   const workPools = computed(() => workPoolsSubscription.response ?? [])
   const workPool = computed(() => workPools.value[0])
-  const workQueueLastPolled = computed(() => workQueueStatus.value?.lastPolled ? workQueueStatus.value.lastPolled : null)
 </script>
 
 
