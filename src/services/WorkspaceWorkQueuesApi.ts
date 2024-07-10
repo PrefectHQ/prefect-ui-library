@@ -1,6 +1,6 @@
-import { FlowRun, FlowRunResponse, WorkQueueCreate, WorkQueueEdit, WorkQueueResponse } from '@/models'
+import { FlowRun, FlowRunResponse, WorkQueueCreate, WorkPoolQueueEdit, WorkPoolQueueResponse } from '@/models'
 import { WorkQueuesFilter } from '@/models/Filters'
-import { WorkQueue } from '@/models/WorkQueue'
+import { WorkPoolQueue } from '@/models/WorkPoolQueue'
 import { BatchProcessor } from '@/services/BatchProcessor'
 import { mapper } from '@/services/Mapper'
 import { WorkspaceApi } from '@/services/WorkspaceApi'
@@ -10,12 +10,12 @@ export class WorkspaceWorkQueuesApi extends WorkspaceApi {
 
   protected override routePrefix = '/work_queues'
 
-  private readonly isBatcher = new BatchProcessor<string, WorkQueue>(async ids => {
+  private readonly isBatcher = new BatchProcessor<string, WorkPoolQueue>(async ids => {
     if (ids.length === 1) {
       const [id] = ids
-      const { data } = await this.get<WorkQueueResponse>(`/${id}`)
+      const { data } = await this.get<WorkPoolQueueResponse>(`/${id}`)
 
-      return () => mapper.map('WorkQueueResponse', data, 'WorkQueue')
+      return () => mapper.map('WorkPoolQueueResponse', data, 'WorkPoolQueue')
     }
 
     const workQueues = await this.getWorkQueues({
@@ -27,12 +27,12 @@ export class WorkspaceWorkQueuesApi extends WorkspaceApi {
     return toMap(workQueues, 'id')
   }, { maxBatchSize: 200 })
 
-  private readonly nameBatcher = new BatchProcessor<string, WorkQueue>(async names => {
+  private readonly nameBatcher = new BatchProcessor<string, WorkPoolQueue>(async names => {
     if (names.length === 1) {
       const [name] = names
-      const { data } = await this.get<WorkQueueResponse>(`/name/${name}`)
+      const { data } = await this.get<WorkPoolQueueResponse>(`/name/${name}`)
 
-      return () => mapper.map('WorkQueueResponse', data, 'WorkQueue')
+      return () => mapper.map('WorkPoolQueueResponse', data, 'WorkPoolQueue')
     }
 
     const workQueues = await this.getWorkQueues({
@@ -44,42 +44,47 @@ export class WorkspaceWorkQueuesApi extends WorkspaceApi {
     return toMap(workQueues, 'id')
   }, { maxBatchSize: 200 })
 
-  public getWorkQueue(workQueueId: string): Promise<WorkQueue> {
+  public getWorkQueue(workQueueId: string): Promise<WorkPoolQueue> {
     return this.isBatcher.batch(workQueueId)
   }
 
-  public getWorkQueueByName(workQueueName: string): Promise<WorkQueue> {
+  public getWorkQueueByName(workQueueName: string): Promise<WorkPoolQueue> {
     return this.nameBatcher.batch(workQueueName)
   }
 
-  public async getWorkQueues(filter: WorkQueuesFilter): Promise<WorkQueue[]> {
+  public async getWorkQueues(filter: WorkQueuesFilter): Promise<WorkPoolQueue[]> {
     const request = mapper.map('WorkQueuesFilter', filter, 'WorkQueuesFilterRequest')
-    const { data } = await this.post<WorkQueueResponse[]>('/filter', request)
+    const { data } = await this.post<WorkPoolQueueResponse[]>('/filter', request)
 
-    return mapper.map('WorkQueueResponse', data, 'WorkQueue')
+    return mapper.map('WorkPoolQueueResponse', data, 'WorkPoolQueue')
   }
 
-  public async createWorkQueue(request: WorkQueueCreate): Promise<WorkQueue> {
-    const body = mapper.map('WorkQueueCreate', request, 'WorkQueueCreateRequest')
-    const { data } = await this.post<WorkQueueResponse>('/', body)
+  /** @deprecated Prefer `WorkspaceWorkPoolQueuesApi.createWorkPoolQueue` */
+  public async createWorkQueue(request: WorkQueueCreate): Promise<WorkPoolQueue> {
+    const body = mapper.map('WorkPoolQueueCreate', request, 'WorkPoolQueueCreateRequest')
+    const { data } = await this.post<WorkPoolQueueResponse>('/', body)
 
-    return mapper.map('WorkQueueResponse', data, 'WorkQueue')
+    return mapper.map('WorkPoolQueueResponse', data, 'WorkPoolQueue')
   }
 
+  /** @deprecated Prefer `WorkspaceWorkPoolQueuesApi.pauseWorkPoolQueue` */
   public pauseWorkQueue(id: string): Promise<void> {
     return this.patch(`/${id}`, { 'is_paused': true })
   }
 
+  /** @deprecated Prefer `WorkspaceWorkPoolQueuesApi.resumeWorkPoolQueue` */
   public resumeWorkQueue(id: string): Promise<void> {
     return this.patch(`/${id}`, { 'is_paused': false })
   }
 
-  public updateWorkQueue(id: string, request: WorkQueueEdit): Promise<void> {
-    const body = mapper.map('WorkQueueEdit', request, 'WorkQueueEditRequest')
+  /** @deprecated Prefer `WorkspaceWorkPoolQueuesApi.updateWorkPoolQueue` */
+  public updateWorkQueue(id: string, request: WorkPoolQueueEdit): Promise<void> {
+    const body = mapper.map('WorkPoolQueueEdit', request, 'WorkPoolQueueEditRequest')
 
     return this.patch(`/${id}`, body)
   }
 
+  /** @deprecated Prefer `WorkspaceWorkPoolQueuesApi.deleteWorkPoolQueue` */
   public deleteWorkQueue(id: string): Promise<void> {
     return this.delete(`/${id}`)
   }
