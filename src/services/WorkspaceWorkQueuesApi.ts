@@ -89,10 +89,4 @@ export class WorkspaceWorkQueuesApi extends WorkspaceApi {
 
     return mapper.map('FlowRunResponse', data, 'FlowRun')
   }
-
-  public async getWorkQueueStatus(id: string): Promise<WorkQueueStatus> {
-    const { data } = await this.get<WorkQueueStatusResponse>(`/${id}/status`)
-
-    return mapper.map('WorkQueueStatusResponse', data, 'WorkQueueStatus')
-  }
 }
