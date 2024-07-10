@@ -1,4 +1,4 @@
-import { FlowRun, FlowRunResponse, WorkQueueCreate, WorkQueueEdit, WorkQueueResponse, WorkQueueStatus, WorkQueueStatusResponse } from '@/models'
+import { FlowRun, FlowRunResponse, WorkQueueCreate, WorkQueueEdit, WorkQueueResponse } from '@/models'
 import { WorkQueuesFilter } from '@/models/Filters'
 import { WorkQueue } from '@/models/WorkQueue'
 import { BatchProcessor } from '@/services/BatchProcessor'
