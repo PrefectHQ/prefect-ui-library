@@ -13,5 +13,6 @@ export type WorkQueueResponse = {
   priority: number,
   work_pool_id: string,
   work_pool_name?: string,
+  last_polled: DateString | null,
   status?: 'READY' | 'PAUSED' | 'NOT_READY' | null,
 }

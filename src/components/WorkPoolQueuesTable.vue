@@ -28,7 +28,7 @@
       </template>
 
       <template #status="{ row }">
-        <WorkPoolQueueStatusBadge v-if="workPool" :work-queue="row" :work-pool="workPool" />
+        <WorkPoolQueueStatusBadge v-if="workPool" :work-queue="row" />
       </template>
 
       <template #actions="{ row }">

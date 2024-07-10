@@ -1,4 +1,4 @@
-import { FlowRun, FlowRunResponse, WorkQueueCreate, WorkQueueEdit, WorkQueueResponse, WorkQueueStatus, WorkQueueStatusResponse } from '@/models'
+import { FlowRun, FlowRunResponse, WorkQueueCreate, WorkQueueEdit, WorkQueueResponse } from '@/models'
 import { WorkQueuesFilter } from '@/models/Filters'
 import { WorkQueue } from '@/models/WorkQueue'
 import { BatchProcessor } from '@/services/BatchProcessor'
@@ -88,11 +88,5 @@ export class WorkspaceWorkQueuesApi extends WorkspaceApi {
     const { data } = await this.post<FlowRunResponse[]>(`/${id}/get_runs`)
 
     return mapper.map('FlowRunResponse', data, 'FlowRun')
-  }
-
-  public async getWorkQueueStatus(id: string): Promise<WorkQueueStatus> {
-    const { data } = await this.get<WorkQueueStatusResponse>(`/${id}/status`)
-
-    return mapper.map('WorkQueueStatusResponse', data, 'WorkQueueStatus')
   }
 }

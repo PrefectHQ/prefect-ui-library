@@ -25,6 +25,7 @@ export interface IWorkPoolQueue {
   isPaused: boolean,
   concurrencyLimit: number | null,
   priority: number,
+  lastPolled: Date | null,
   status: WorkPoolQueueStatus,
 }
 
@@ -39,6 +40,7 @@ export class WorkPoolQueue implements IWorkPoolQueue {
   public isPaused: boolean
   public concurrencyLimit: number | null
   public priority: number
+  public lastPolled: Date | null
   public status: WorkPoolQueueStatus
 
   public constructor(workPoolQueue: IWorkPoolQueue) {
@@ -52,6 +54,7 @@ export class WorkPoolQueue implements IWorkPoolQueue {
     this.isPaused = workPoolQueue.isPaused
     this.concurrencyLimit = workPoolQueue.concurrencyLimit
     this.priority = workPoolQueue.priority
+    this.lastPolled = workPoolQueue.lastPolled
     this.status = workPoolQueue.status
   }
 }

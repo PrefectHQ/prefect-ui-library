@@ -3,20 +3,8 @@
     <template v-if="!showTooMany && workPoolQueues.length > 0">
       <template v-for="workQueue in workPoolQueues" :key="workQueue.id">
         <WorkPoolQueueStatusIcon
-          v-if="can.access.workQueueStatus"
           :work-pool-queue="workQueue"
         />
-        <template v-else>
-          <span v-if="workPool.isPushPool" class="work-pool-queue-status-array__none">
-            N/A
-          </span>
-          <WorkPoolQueueHealthIcon
-            v-else
-            :work-queue-name="workQueue.name"
-            :work-pool-name="workPool.name"
-            class="work-pool-queue-status-badge__icon"
-          />
-        </template>
       </template>
     </template>
     <span v-if="!showTooMany && workPoolQueues.length < 1" class="work-pool-queue-status-array__none">N/A</span>
@@ -27,16 +15,13 @@
 <script lang="ts" setup>
   import { useSubscription } from '@prefecthq/vue-compositions'
   import { computed } from 'vue'
-  import { WorkPoolQueueHealthIcon } from '@/components'
   import WorkPoolQueueStatusIcon from '@/components/WorkPoolQueueStatusIcon.vue'
-  import { useCan, useInterval, useWorkspaceApi } from '@/compositions'
+  import { useInterval, useWorkspaceApi } from '@/compositions'
   import { WorkPool } from '@/models'
 
   const props = defineProps<{
     workPool: WorkPool,
   }>()
-
-  const can = useCan()
 
   const maxWorkQueues = 50
   const api = useWorkspaceApi()
