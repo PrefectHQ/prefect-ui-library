@@ -2,7 +2,6 @@ import { InjectionKey, ref } from 'vue'
 import { MaybeRef } from '@/types/reactivity'
 
 export const workspaceFeatureFlags = [
-  'access:deploymentStatus',
   'access:deploymentScheduleFlowRunInfraOverrides',
   'access:nestedTaskRunGraphs',
 ] as const satisfies Readonly<`access:${string}`[]>
