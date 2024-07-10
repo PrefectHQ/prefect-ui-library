@@ -27,6 +27,9 @@
     const since = subMinutes(until, 5)
 
     return {
+      event: {
+        name: ['prefect-cloud.automation.action.executed', 'prefect.automation.action.executed'],
+      },
       resource: {
         idPrefix: ['prefect-cloud.automation', 'prefect.automation'],
       },
