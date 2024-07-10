@@ -75,7 +75,7 @@ import { mapVariableResponseToVariable, mapVariableEditToVariableEditRequest, ma
 import { mapPrefectWorkerCollectionResponseToWorkerCollectionItemArray, mapWorkerSchemaValuesToWorkerSchemaValuesRequest } from '@/maps/workerCollection'
 import { mapWorkerScheduledFlowRunResponseToWorkerScheduledFlowRun, mapWorkerScheduledFlowRunsToWorkerScheduledFlowRunsRequest } from '@/maps/workerScheduledFlowRun'
 import { mapWorkPoolCreateToWorkPoolCreateRequest, mapWorkPoolEditToWorkPoolEditRequest, mapWorkPoolResponseToWorkPool, mapWorkPoolToAutomationTrigger, mapWorkPoolToWorkPoolResponse } from '@/maps/workPool'
-import { mapWorkPoolQueueCreateToWorkPoolQueueCreateRequest, mapWorkPoolQueueEditToWorkPoolQueueEditRequest, mapWorkPoolQueueResponseToWorkPoolQueue, mapWorkPoolQueueToAutomationTrigger, mapWorkPoolQueueToWorkPoolQueueResponse } from '@/maps/workPoolQueue'
+import { mapWorkPoolQueueCreateToWorkPoolQueueCreateRequest, mapWorkPoolQueueEditToWorkPoolQueueEditRequest, mapWorkPoolQueueResponseToWorkPoolQueue, mapWorkPoolQueueToAutomationTrigger } from '@/maps/workPoolQueue'
 import { mapServerWorkPoolStatusToWorkPoolStatus, mapWorkPoolStatusToServerWorkPoolStatus } from '@/maps/workPoolStatus'
 import { mapWorkPoolWorkerResponseToWorkPoolWorker } from '@/maps/workPoolWorker'
 import { mapWorkPoolWorkerStatusToServerWorkPoolWorkerStatus, mapServerWorkPoolWorkerStatusToWorkPoolWorkerStatus } from '@/maps/workPoolWorkerStatus'
@@ -241,10 +241,7 @@ export const maps = {
   WorkPoolCreate: { WorkPoolCreateRequest: mapWorkPoolCreateToWorkPoolCreateRequest },
   WorkPoolEdit: { WorkPoolEditRequest: mapWorkPoolEditToWorkPoolEditRequest },
   WorkPoolFilter: { WorkPoolFilterRequest: mapWorkPoolFilter },
-  WorkPoolQueue: {
-    WorkPoolQueueResponse: mapWorkPoolQueueToWorkPoolQueueResponse,
-    AutomationTrigger: mapWorkPoolQueueToAutomationTrigger,
-  },
+  WorkPoolQueue: { AutomationTrigger: mapWorkPoolQueueToAutomationTrigger },
   WorkPoolQueueCreate: { WorkPoolQueueCreateRequest: mapWorkPoolQueueCreateToWorkPoolQueueCreateRequest },
   WorkPoolQueueEdit: { WorkPoolQueueEditRequest: mapWorkPoolQueueEditToWorkPoolQueueEditRequest },
   WorkPoolQueueFilter: { WorkPoolQueueFilterRequest: mapWorkPoolQueueFilter },

@@ -20,23 +20,6 @@ export const mapWorkPoolQueueResponseToWorkPoolQueue: MapFunction<WorkPoolQueueR
   })
 }
 
-export const mapWorkPoolQueueToWorkPoolQueueResponse: MapFunction<WorkPoolQueue, WorkPoolQueueResponse> = function(source) {
-  return {
-    id: source.id,
-    created: this.map('Date', source.created, 'string'),
-    updated: this.map('Date', source.updated, 'string'),
-    work_pool_id: source.workPoolId,
-    work_pool_name: source.workPoolName,
-    name: source.name,
-    description: source.description,
-    is_paused: source.isPaused,
-    concurrency_limit: source.concurrencyLimit,
-    priority: source.priority,
-    last_polled: this.map('Date', source.lastPolled, 'string'),
-    status: source.status.toUpperCase() as Uppercase<WorkPoolQueueStatus>,
-  }
-}
-
 export const mapWorkPoolQueueCreateToWorkPoolQueueCreateRequest: MapFunction<WorkPoolQueueCreate, WorkPoolQueueCreateRequest> = function(source) {
   return {
     name: source.name,
