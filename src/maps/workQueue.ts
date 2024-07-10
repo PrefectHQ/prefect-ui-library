@@ -14,6 +14,7 @@ export const mapWorkQueueResponseToWorkQueue: MapFunction<WorkQueueResponse, Wor
     priority: source.priority,
     workPoolId: source.work_pool_id,
     workPoolName: source.work_pool_name,
+    lastPolled: this.map('string', source.last_polled, 'Date'),
     status: (source.status?.toLowerCase() ?? 'not_ready') as Lowercase<WorkPoolQueueResponseStatus>,
   })
 }
@@ -31,6 +32,7 @@ export const mapWorkQueueToWorkQueueResponse: MapFunction<WorkQueue, WorkQueueRe
     priority: source.priority,
     work_pool_id: source.workPoolId,
     work_pool_name: source.workPoolName,
+    last_polled: this.map('Date', source.lastPolled, 'string'),
   }
 }
 

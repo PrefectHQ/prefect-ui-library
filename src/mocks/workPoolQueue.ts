@@ -13,6 +13,7 @@ export const randomWorkPoolQueue: MockFunction<WorkPoolQueue, [Partial<WorkPoolQ
     isPaused: this.create('boolean'),
     concurrencyLimit: this.create('number'),
     priority: this.create('number'),
+    lastPolled: null,
     status: 'ready',
     ...overrides,
   })
