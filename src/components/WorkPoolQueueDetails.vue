@@ -8,7 +8,7 @@
 
     <p-key-value label="Status" :alternate="alternate">
       <template #value>
-        <WorkPoolQueueStatusBadge v-if="workPool" :work-queue="workPoolQueue" :work-pool="workPool" />
+        <WorkPoolQueueStatusBadge v-if="workPool" :work-queue="workPoolQueue" />
       </template>
     </p-key-value>
 

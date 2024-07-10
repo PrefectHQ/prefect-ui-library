@@ -290,8 +290,6 @@ export { default as WorkPoolQueueCombobox } from './WorkPoolQueueCombobox.vue'
 export { default as WorkPoolQueueCreateForm } from './WorkPoolQueueCreateForm.vue'
 export { default as WorkPoolQueueDetails } from './WorkPoolQueueDetails.vue'
 export { default as WorkPoolQueueEditForm } from './WorkPoolQueueEditForm.vue'
-/** @deprecated prefer `<WorkPoolQueueStatusIcon /> */
-export { default as WorkPoolQueueHealthIcon } from './WorkPoolQueueHealthIcon.vue'
 export { default as WorkPoolQueueMenu } from './WorkPoolQueueMenu.vue'
 export { default as WorkPoolQueuePriorityLabel } from './WorkPoolQueuePriorityLabel.vue'
 export { default as WorkPoolQueuesDeleteButton } from './WorkPoolQueuesDeleteButton.vue'
