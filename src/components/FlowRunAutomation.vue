@@ -24,7 +24,7 @@
     // purposefully adding some margin around the expectedStartTime
     // because the automation being executed should happen prior to the time the run was scheduled
     const until = addMinutes(props.flowRun.expectedStartTime, 5)
-    const since = subMinutes(until, 5)
+    const since = subMinutes(props.flowRun.expectedStartTime, 5)
 
     return {
       event: {
