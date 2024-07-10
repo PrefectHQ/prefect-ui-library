@@ -43,7 +43,7 @@
 
     <p-divider />
 
-    <p-key-value v-if="can.access.deploymentStatus" label="Status" :alternate="alternate">
+    <p-key-value label="Status" :alternate="alternate">
       <template #value>
         <DeploymentStatusBadge :deployment="deployment" />
       </template>
