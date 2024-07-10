@@ -145,7 +145,7 @@ export function createWorkspaceRouteRecords(components: Partial<WorkspaceRouteCo
         {
           name: 'workspace.work-queues.work-queue',
           path: 'work-queue/:workQueueId',
-          component: components.workQueue ?? import('@/components/WorkQueueToWorkPoolQueueRedirect.vue'),
+          component: components.workQueue ?? (() => import('@/components/WorkQueueToWorkPoolQueueRedirect.vue')),
         },
       ],
     },
