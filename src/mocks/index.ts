@@ -45,7 +45,6 @@ import { randomWorkerStatus } from '@/mocks/workerStatus'
 import { randomWorkPool } from '@/mocks/workPool'
 import { randomWorkPoolQueue } from '@/mocks/workPoolQueue'
 import { randomWorkPoolStatus } from '@/mocks/workPoolStatus'
-import { randomWorkQueue } from '@/mocks/workQueue'
 
 export const mocks = {
   adjective: randomAdjective,
@@ -112,5 +111,4 @@ export const mocks = {
   workPool: randomWorkPool,
   workPoolQueue: randomWorkPoolQueue,
   workPoolStatus: randomWorkPoolStatus,
-  workQueue: randomWorkQueue,
 }
