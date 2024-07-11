@@ -1,7 +1,7 @@
 <template>
   <p-tag v-if="deployment.status" :class="classes.root" class="deployment-status-badge">
     <DeploymentStatusIcon :status="deployment.status" />
-    {{ titleCase(deployment.status) }}
+    {{ getDeploymentStatusLabel(deployment.status) }}
   </p-tag>
 </template>
 
@@ -9,7 +9,7 @@
   import { computed } from 'vue'
   import DeploymentStatusIcon from '@/components/DeploymentStatusIcon.vue'
   import { Deployment } from '@/models'
-  import { titleCase } from '@/utilities'
+  import { getDeploymentStatusLabel } from '@/models/DeploymentStatus'
 
   const props = defineProps<{
     deployment: Deployment,

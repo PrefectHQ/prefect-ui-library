@@ -4,7 +4,7 @@
 
 <script lang="ts" setup>
   import { SelectOption } from '@prefecthq/prefect-design'
-  import { capitalize, computed } from 'vue'
+  import { computed } from 'vue'
   import { DeploymentStatus, deploymentStatus, getDeploymentStatusLabel } from '@/models/DeploymentStatus'
 
   type StatusOption = SelectOption & {
@@ -20,7 +20,7 @@
   }>()
 
   const options: StatusOption[] = deploymentStatus.map(status => ({
-    label: capitalize(getDeploymentStatusLabel(status)),
+    label: getDeploymentStatusLabel(status),
     value: status,
   }))
 
