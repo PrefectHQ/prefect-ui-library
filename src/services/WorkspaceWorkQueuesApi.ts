@@ -1,4 +1,4 @@
-import { FlowRun, FlowRunResponse, WorkQueueCreate, WorkPoolQueueEdit, WorkPoolQueueResponse } from '@/models'
+import { FlowRun, FlowRunResponse, WorkPoolQueueCreate, WorkPoolQueueEdit, WorkPoolQueueResponse } from '@/models'
 import { WorkQueuesFilter } from '@/models/Filters'
 import { WorkPoolQueue } from '@/models/WorkPoolQueue'
 import { BatchProcessor } from '@/services/BatchProcessor'
@@ -60,7 +60,7 @@ export class WorkspaceWorkQueuesApi extends WorkspaceApi {
   }
 
   /** @deprecated Prefer `WorkspaceWorkPoolQueuesApi.createWorkPoolQueue` */
-  public async createWorkQueue(request: WorkQueueCreate): Promise<WorkPoolQueue> {
+  public async createWorkQueue(request: WorkPoolQueueCreate): Promise<WorkPoolQueue> {
     const body = mapper.map('WorkPoolQueueCreate', request, 'WorkPoolQueueCreateRequest')
     const { data } = await this.post<WorkPoolQueueResponse>('/', body)
 

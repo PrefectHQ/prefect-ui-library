@@ -4,12 +4,12 @@ import merge from 'lodash.merge'
 import { ComputedRef, MaybeRefOrGetter, computed, toRef, toValue } from 'vue'
 import { useCan } from '@/compositions/useCan'
 import { useWorkspaceApi } from '@/compositions/useWorkspaceApi'
-import { WorkQueue, WorkQueuesFilter } from '@/models'
+import { WorkPoolQueue, WorkQueuesFilter } from '@/models'
 import { WorkspaceWorkQueuesApi } from '@/services'
 
 type UseWorkQueues = {
   subscription: UseSubscription<WorkspaceWorkQueuesApi['getWorkQueues']>,
-  workQueues: ComputedRef<WorkQueue[]>,
+  workQueues: ComputedRef<WorkPoolQueue[]>,
 }
 
 export function useWorkQueues(filter: MaybeRefOrGetter<WorkQueuesFilter | null | undefined>, options?: SubscriptionOptions): UseWorkQueues {
