@@ -6,6 +6,19 @@ import { mapper } from '@/services/Mapper'
 import { WorkspaceApi } from '@/services/WorkspaceApi'
 import { toMap } from '@/utilities'
 
+/**
+ * API for interacting directly with work queues at a workspace level.
+ * Compared to the `WorkspaceWorkPoolQueuesApi`, this API is older and works
+ * with queues as flattened, top-level objects rather than as children of work pools.
+ * Once upon a time, work queues roamed free throughout the lands of Prefect,
+ * but everything changed when the work pools attacked.
+ *
+ * Should generally use the `WorkspaceWorkPoolQueuesApi` instead, but in case you need
+ * to interact with work queues directly (without a work pool), this API is available.
+ *
+ * For example, this API supports getting a work queue directly by id without the
+ * need to know the parent work pool.
+ */
 export class WorkspaceWorkQueuesApi extends WorkspaceApi {
 
   protected override routePrefix = '/work_queues'
