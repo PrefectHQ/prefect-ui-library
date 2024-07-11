@@ -241,7 +241,13 @@ export type BlockDocumentsFilterRequest = {
   limit?: number,
 }
 
-export type WorkQueuesFilterRequest = {
+export type WorkPoolsFilterRequest = {
+  work_pools?: WorkPoolFilterRequest,
+  offset?: number,
+  limit?: number,
+}
+
+export type WorkPoolQueuesFilterRequest = {
   work_queues?: {
     operator?: OperationRequest,
     id?: Any,
@@ -250,14 +256,6 @@ export type WorkQueuesFilterRequest = {
   offset?: number,
   limit?: number,
 }
-
-export type WorkPoolsFilterRequest = {
-  work_pools?: WorkPoolFilterRequest,
-  offset?: number,
-  limit?: number,
-}
-
-export type WorkPoolQueuesFilterRequest = WorkQueuesFilterRequest
 
 export type WorkPoolWorkersFilterRequest = {
   workers?: {

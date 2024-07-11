@@ -1,5 +1,5 @@
 import { FlowRun, FlowRunResponse, WorkPoolQueueCreate, WorkPoolQueueEdit, WorkPoolQueueResponse } from '@/models'
-import { WorkQueuesFilter } from '@/models/Filters'
+import { WorkPoolQueuesFilter } from '@/models/Filters'
 import { WorkPoolQueue } from '@/models/WorkPoolQueue'
 import { BatchProcessor } from '@/services/BatchProcessor'
 import { mapper } from '@/services/Mapper'
@@ -52,8 +52,8 @@ export class WorkspaceWorkQueuesApi extends WorkspaceApi {
     return this.nameBatcher.batch(workQueueName)
   }
 
-  public async getWorkQueues(filter: WorkQueuesFilter): Promise<WorkPoolQueue[]> {
-    const request = mapper.map('WorkQueuesFilter', filter, 'WorkQueuesFilterRequest')
+  public async getWorkQueues(filter: WorkPoolQueuesFilter): Promise<WorkPoolQueue[]> {
+    const request = mapper.map('WorkPoolQueuesFilter', filter, 'WorkPoolQueuesFilterRequest')
     const { data } = await this.post<WorkPoolQueueResponse[]>('/filter', request)
 
     return mapper.map('WorkPoolQueueResponse', data, 'WorkPoolQueue')
