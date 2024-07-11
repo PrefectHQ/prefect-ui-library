@@ -26,6 +26,7 @@
           :work-pool-name="flowRun.workPoolName"
           :flow-run-state="flowRun.stateType"
         />
+        <FlowRunAutomation :flow-run />
       </div>
     </div>
 
@@ -56,6 +57,7 @@
     FlowRunStartTime,
     DurationIconText
   } from '@/components'
+  import FlowRunAutomation from '@/components/FlowRunAutomation.vue'
   import FlowRunDeployment from '@/components/FlowRunDeployment.vue'
   import FlowRunFlow from '@/components/FlowRunFlow.vue'
   import FlowRunParentFlowRun from '@/components/FlowRunParentFlowRun.vue'
