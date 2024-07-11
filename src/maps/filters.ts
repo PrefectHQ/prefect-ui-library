@@ -554,13 +554,7 @@ export const mapWorkPoolWorkersFilter: MapFunction<WorkPoolWorkersFilter, WorkPo
   })
 }
 
-export const mapWorkPoolQueuesFilter: MapFunction<WorkPoolQueuesFilter, WorkPoolQueuesFilterRequest> = function(source) {
-  return removeEmptyObjects({
-    work_pools: this.map('WorkPoolFilter', source.workPools, 'WorkPoolFilterRequest'),
-    offset: source.offset,
-    limit: source.limit,
-  })
-}
+export const mapWorkPoolQueuesFilter: MapFunction<WorkPoolQueuesFilter, WorkPoolQueuesFilterRequest> = mapWorkQueuesFilter
 
 export const mapTaskRunsHistoryFilter: MapFunction<TaskRunsHistoryFilter, TaskRunsHistoryFilterRequest> = function(source) {
   return {

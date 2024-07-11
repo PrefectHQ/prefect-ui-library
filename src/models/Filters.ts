@@ -273,11 +273,7 @@ export type WorkPoolsFilter = {
   limit?: number,
 }
 
-export type WorkPoolQueuesFilter = {
-  workPools?: WorkPoolFilter,
-  offset?: number,
-  limit?: number,
-}
+export type WorkPoolQueuesFilter = WorkQueuesFilter
 
 export type WorkPoolWorkersFilter = {
   workers?: {
