@@ -1,7 +1,7 @@
 import { toResourceId, toMatchRelatedId, fromResourceId } from '@/automations/maps/utilities'
 import { AutomationTriggerEvent } from '@/automations/types'
 import { WorkQueueStatusEvent, WorkQueueStatusTrigger, isWorkQueueStatusEvent } from '@/automations/types/workQueueStatusTrigger'
-import { WorkPoolQueueStatus } from '@/models'
+import { WorkPoolQueueStatus, workPoolQueueStatus } from '@/models'
 import { MapFunction } from '@/services'
 
 export const mapWorkQueueStatusTriggerToAutomationTrigger: MapFunction<WorkQueueStatusTrigger, AutomationTriggerEvent> = function(source) {
@@ -43,7 +43,7 @@ function mapProactiveWorkQueueStatusTriggerToAutomationTrigger(source: WorkQueue
 }
 
 function anyStatusExcept(status: WorkPoolQueueStatus): WorkPoolQueueStatus[] {
-  return (['ready', 'not_ready', 'paused'] as const).filter(_status => _status !== status)
+  return workPoolQueueStatus.filter(_status => _status !== status)
 }
 
 export const mapAutomationTriggerToWorkQueueStatusTrigger: MapFunction<AutomationTriggerEvent, WorkQueueStatusTrigger> = function(source) {
