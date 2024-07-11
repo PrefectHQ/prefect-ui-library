@@ -56,7 +56,7 @@
   const routes = useWorkspaceRoutes()
   const { validate, pending } = useValidationObserver()
 
-  const name = ref<string>()
+  const name = ref('')
   const description = ref<string>()
   const concurrencyLimit = ref<number>()
   const queuePriority = ref<number>()

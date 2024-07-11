@@ -17,7 +17,7 @@
   import { useSubscription } from '@prefecthq/vue-compositions'
   import { computed, watch } from 'vue'
   import { useWorkspaceApi } from '@/compositions'
-  import { WorkQueue } from '@/models'
+  import { WorkPoolQueue } from '@/models'
 
   export type WorkPoolFilterByIdOrName = { id?: string[], name?: string[] }
 
@@ -54,7 +54,7 @@
   const workQueuesSubscription = useSubscription(api.workQueues.getWorkQueues, [{}])
   const workQueues = computed(() => workQueuesSubscription.response ?? [])
   const options = computed<SelectOptionGroup[]>(() => {
-    const workQueuesGroupedByWorkPool = workQueues.value.reduce<Map<string, WorkQueue[]>>((acc, workQueue) => {
+    const workQueuesGroupedByWorkPool = workQueues.value.reduce<Map<string, WorkPoolQueue[]>>((acc, workQueue) => {
       // Filter options by work pool id or name
       if (props.workPoolFilter?.id || props.workPoolFilter?.name) {
         if (!props.workPoolFilter.id?.includes(workQueue.workPoolId) && !(workQueue.workPoolName && props.workPoolFilter.name?.includes(workQueue.workPoolName))) {

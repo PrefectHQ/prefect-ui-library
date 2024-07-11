@@ -1,7 +1,7 @@
-export type WorkPoolQueueCreate = Partial<{
+export type WorkPoolQueueCreate = {
   name: string,
-  description: string | null,
-  isPaused: boolean,
-  concurrencyLimit: number | null,
-  priority: number,
-}>
+  description?: string | null,
+  isPaused?: boolean,
+  concurrencyLimit?: number | null,
+  priority?: number,
+}
