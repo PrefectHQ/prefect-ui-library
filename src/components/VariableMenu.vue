@@ -2,7 +2,7 @@
   <p-icon-button-menu v-bind="$attrs">
     <copy-overflow-menu-item :label="localization.info.copyId" :item="variable.id" />
     <copy-overflow-menu-item :label="localization.info.copyName" :item="variable.name" />
-    <copy-overflow-menu-item :label="localization.info.copyValue" :item="variable.value" />
+    <copy-overflow-menu-item :label="localization.info.copyValue" :item="variable.valueString" />
     <p-overflow-menu-item v-if="can.update.variable" :label="localization.info.edit" @click="openEditModal" />
     <p-overflow-menu-item v-if="can.delete.variable" :label="localization.info.delete" @click="openDeleteModal" />
   </p-icon-button-menu>
