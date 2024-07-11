@@ -4,27 +4,27 @@
     {{ valueOverflowText }}
   </p-button>
   <p-code-highlight v-else :text="variable.valueString" lang="json" inline />
-  <VariableV2EditModal v-model:showModal="showEditModal" :variable="variable" @update="handleUpdate" />
+  <VariableEditModal v-model:showModal="showEditModal" :variable="variable" @update="handleUpdate" />
 </template>
 
 
 <script lang="ts" setup>
-  import VariableV2EditModal from '@/components/VariableV2EditModal.vue'
+  import VariableEditModal from '@/components/VariableEditModal.vue'
   import { useShowModal } from '@/compositions/useShowModal'
-  import { VariableV2 } from '@/models/VariableV2'
+  import { Variable } from '@/models/Variable'
 
   defineProps<{
-    variable: VariableV2,
+    variable: Variable,
     valueOverflowText?: string,
   }>()
 
   const { showModal: showEditModal, open: openEditModal } = useShowModal()
 
   const emit = defineEmits<{
-    (event: 'update', value: VariableV2): void,
+    (event: 'update', value: Variable): void,
   }>()
 
-  const handleUpdate = (variable: VariableV2): void => {
+  const handleUpdate = (variable: Variable): void => {
     emit('update', variable)
   }
 </script>
