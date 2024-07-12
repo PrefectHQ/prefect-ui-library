@@ -32,7 +32,7 @@
 
     {{ getAutomationTriggerEventPostureLabel(trigger.posture) }}
 
-    {{ getWorkPoolQueueStatusLabel(trigger.status) }}
+    {{ getWorkPoolQueueStatusLabel(trigger.status).toLowerCase() }}
 
     <template v-if="trigger.posture === 'Proactive'">
       for {{ secondsToString(trigger.time) }}

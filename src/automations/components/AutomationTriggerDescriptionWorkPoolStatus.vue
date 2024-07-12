@@ -20,7 +20,7 @@
 
     {{ getAutomationTriggerEventPostureLabel(trigger.posture) }}
 
-    {{ getWorkPoolStatusLabel(trigger.status) }}
+    {{ getWorkPoolStatusLabel(trigger.status).toLowerCase() }}
 
     <template v-if="trigger.posture === 'Proactive'">
       for {{ secondsToString(trigger.time) }}
@@ -37,7 +37,6 @@
   import { useWorkPools } from '@/compositions'
   import { getWorkPoolStatusLabel } from '@/models/WorkPoolStatus'
   import { secondsToString } from '@/utilities/seconds'
-
 
   const props = defineProps<{
     trigger: WorkPoolStatusTrigger,
