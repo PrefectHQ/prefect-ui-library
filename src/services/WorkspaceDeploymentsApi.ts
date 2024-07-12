@@ -61,6 +61,13 @@ export class WorkspaceDeploymentsApi extends WorkspaceApi {
     return data
   }
 
+  public async createDeployement(deployment: Deployment): Promise<Deployment> {
+    const body = mapper.map('Deployment', deployment, 'DeploymentRequest')
+    const { data } = await this.post<DeploymentResponse>('/', body)
+
+    return mapper.map('DeploymentResponse', data, 'Deployment')
+  }
+
   public async createDeploymentFlowRunV2(deploymentId: string, request: DeploymentFlowRunCreateV2): Promise<FlowRun> {
     const body = mapper.map('DeploymentFlowRunCreateV2', request, 'DeploymentFlowRunRequest')
     const { data } = await this.post<FlowRunResponse>(`/${deploymentId}/create_flow_run`, body)
