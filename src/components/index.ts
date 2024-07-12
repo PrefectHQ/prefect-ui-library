@@ -190,6 +190,7 @@ export { default as PageHeadingConcurrencyLimit } from './PageHeadingConcurrency
 export { default as PageHeadingConcurrencyLimits } from './PageHeadingConcurrencyLimits.vue'
 export { default as PageHeadingDeployment } from './PageHeadingDeployment.vue'
 export { default as PageHeadingDeploymentEdit } from './PageHeadingDeploymentEdit.vue'
+export { default as PageHeadingDeploymentDuplicate } from './PageHeadingDeploymentDuplicate.vue'
 export { default as PageHeadingDeployments } from './PageHeadingDeployments.vue'
 export { default as PageHeadingFlow } from './PageHeadingFlow.vue'
 export { default as PageHeadingFlowCollection } from './PageHeadingFlowCollection.vue'

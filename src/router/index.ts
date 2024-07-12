@@ -127,6 +127,14 @@ export function createWorkspaceRouteRecords(components: Partial<WorkspaceRouteCo
           },
         },
         {
+          name: 'workspace.deployments.deployment-duplicate',
+          path: 'deployment/:deploymentId/duplicate',
+          component: components.deploymentDuplicate,
+          meta: {
+            can: 'create:deployment',
+          },
+        },
+        {
           name: 'workspace.deployments.deployment-flow-run-create',
           path: 'deployment/:deploymentId/run',
           component: components.deploymentFlowRunCreate,

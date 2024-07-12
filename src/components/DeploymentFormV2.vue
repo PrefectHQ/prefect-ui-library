@@ -5,7 +5,7 @@
     </h3>
 
     <p-label label="Name">
-      <p-text-input :model-value="name" disabled />
+      <p-text-input v-model="name" :disabled="!canUpdateName" />
     </p-label>
 
     <p-label label="Description (Optional)">
@@ -87,9 +87,13 @@
 
   const props = defineProps<{
     deployment: Deployment,
+    canUpdateName?: {
+      value: boolean,
+      default: false,
+    },
   }>()
 
-  const name = computed(() => props.deployment.name)
+  const name = ref(props.deployment.name)
   const description = ref(props.deployment.description)
   const workPoolName = ref(props.deployment.workPoolName)
   const workQueueName = ref(props.deployment.workQueueName)
@@ -134,17 +138,34 @@
       }
     }
 
-    const deploymentUpdate: DeploymentUpdateV2 = {
-      description: description.value,
-      workPoolName: workPoolName.value,
-      workQueueName: workQueueName.value,
-      parameters: parameters.value,
-      tags: tags.value,
-      enforceParameterSchema: enforceParameterSchema.value,
-      jobVariables: JSON.parse(jobVariables.value),
+    if (props.canUpdateName) {
+      const deploymentUpdate: DeploymentUpdateV2 = {
+        name: name.value,
+        description: description.value,
+        workPoolName: workPoolName.value,
+        workQueueName: workQueueName.value,
+        parameters: parameters.value,
+        tags: tags.value,
+        enforceParameterSchema: enforceParameterSchema.value,
+        jobVariables: JSON.parse(jobVariables.value),
+      }
+
+      emit('submit', deploymentUpdate)
+    } else {
+      const deploymentUpdate: DeploymentUpdateV2 = {
+        description: description.value,
+        workPoolName: workPoolName.value,
+        workQueueName: workQueueName.value,
+        parameters: parameters.value,
+        tags: tags.value,
+        enforceParameterSchema: enforceParameterSchema.value,
+        jobVariables: JSON.parse(jobVariables.value),
+      }
+
+      emit('submit', deploymentUpdate)
     }
 
-    emit('submit', deploymentUpdate)
+
   }
 
   const cancel = (): void => {

@@ -1,6 +1,7 @@
 import { SchemaValuesV2 } from '@/schemas'
 
 type Base = {
+  name?: string,
   description?: string | null,
   paused?: boolean,
   tags?: string[] | null,

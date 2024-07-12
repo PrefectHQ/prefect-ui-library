@@ -29,7 +29,7 @@ import {
 } from '@/maps/dashboard'
 import { mapStringToDate, mapDateToString } from '@/maps/date'
 import { mapDateRangeSelectValueToDateRange } from '@/maps/dateRangeSelectValue'
-import { mapDeploymentResponseToDeployment, mapDeploymentFlowRunCreateV2ToDeploymentFlowRunRequest, mapDeploymentUpdateV2ToDeploymentUpdateRequest, mapDeploymentToDeploymentRequest } from '@/maps/deployment'
+import { mapDeploymentResponseToDeployment, mapDeploymentFlowRunCreateV2ToDeploymentFlowRunRequest, mapDeploymentUpdateV2ToDeploymentUpdateRequest, mapDeploymentCreateToDeploymentCreateRequest } from '@/maps/deployment'
 import { mapDeploymentScheduleResponseToDeploymentSchedule } from '@/maps/deploymentSchedule'
 import { mapDeploymentScheduleCreateToDeploymentScheduleCreateRequest } from '@/maps/deploymentScheduleCreate'
 import { mapDeploymentScheduleUpdateToDeploymentScheduleUpdateRequest } from '@/maps/deploymentScheduleUpdate'
@@ -120,7 +120,7 @@ export const maps = {
   CreatedOrUpdatedByResponse: { CreatedOrUpdatedBy: mapCreatedOrUpdatedByResponseToCreatedOrUpdatedBy },
   Date: { string: mapDateToString },
   DateRangeSelectValue: { DateRange: mapDateRangeSelectValueToDateRange },
-  Deployment: { DeploymentRequest: mapDeploymentToDeploymentRequest },
+  DeploymentCreate: { DeploymentCreateRequest: mapDeploymentCreateToDeploymentCreateRequest },
   DeploymentFilter: { DeploymentFilterRequest: mapDeploymentFilter },
   DeploymentsPaginationFilter: { DeploymentsPaginationFilterRequest: mapDeploymentsPaginationFilter },
   DeploymentPaginationResponse: { DeploymentsPagination: mapDeploymentsPaginationResponseToDeploymentRunsPagination },

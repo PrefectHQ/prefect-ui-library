@@ -12,6 +12,8 @@
 
     <p-overflow-menu-item v-if="deployment.can.delete" label="Delete" @click="openConfirmDeleteModal" />
 
+    <p-overflow-menu-item label="Duplicate" :to="routes.deploymentDuplicate(deployment.id)" />
+
     <slot v-bind="{ deployment }" />
   </p-icon-button-menu>
 

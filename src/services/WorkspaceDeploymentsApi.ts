@@ -1,6 +1,7 @@
 import { DeploymentResponse } from '@/models/api/DeploymentResponse'
 import { FlowRunResponse } from '@/models/api/FlowRunResponse'
 import { Deployment } from '@/models/Deployment'
+import { DeploymentCreate } from '@/models/DeploymentCreate'
 import { DeploymentFlowRunCreateV2 } from '@/models/DeploymentFlowRunCreate'
 import { DeploymentUpdateV2 } from '@/models/DeploymentUpdate'
 import { DeploymentsFilter, DeploymentsPaginationFilter } from '@/models/Filters'
@@ -61,8 +62,8 @@ export class WorkspaceDeploymentsApi extends WorkspaceApi {
     return data
   }
 
-  public async createDeployement(deployment: Deployment): Promise<Deployment> {
-    const body = mapper.map('Deployment', deployment, 'DeploymentRequest')
+  public async createDeployement(deployment: DeploymentCreate): Promise<Deployment> {
+    const body = mapper.map('DeploymentCreate', deployment, 'DeploymentCreateRequest')
     const { data } = await this.post<DeploymentResponse>('/', body)
 
     return mapper.map('DeploymentResponse', data, 'Deployment')
