@@ -138,30 +138,19 @@
       }
     }
 
+    const deploymentUpdate: DeploymentUpdateV2 = {
+      description: description.value,
+      workPoolName: workPoolName.value,
+      workQueueName: workQueueName.value,
+      parameters: parameters.value,
+      tags: tags.value,
+      enforceParameterSchema: enforceParameterSchema.value,
+      jobVariables: JSON.parse(jobVariables.value),
+    }
+
     if (props.canUpdateName) {
-      const deploymentUpdate: DeploymentUpdateV2 = {
-        name: name.value,
-        description: description.value,
-        workPoolName: workPoolName.value,
-        workQueueName: workQueueName.value,
-        parameters: parameters.value,
-        tags: tags.value,
-        enforceParameterSchema: enforceParameterSchema.value,
-        jobVariables: JSON.parse(jobVariables.value),
-      }
-
-      emit('submit', deploymentUpdate)
+      emit('submit', { ...deploymentUpdate, name: name.value })
     } else {
-      const deploymentUpdate: DeploymentUpdateV2 = {
-        description: description.value,
-        workPoolName: workPoolName.value,
-        workQueueName: workQueueName.value,
-        parameters: parameters.value,
-        tags: tags.value,
-        enforceParameterSchema: enforceParameterSchema.value,
-        jobVariables: JSON.parse(jobVariables.value),
-      }
-
       emit('submit', deploymentUpdate)
     }
 
