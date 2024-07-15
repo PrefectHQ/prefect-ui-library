@@ -1,6 +1,6 @@
 import { DeploymentSchedule } from '@/models/DeploymentSchedule'
 import { ObjectLevelCan } from '@/models/ObjectLevelCan'
-import { SchemaV2, SchemaValuesV2 } from '@/schemas'
+import { SchemaValuesV2 } from '@/schemas'
 
 export type DeploymentCreate = {
   name: string,
