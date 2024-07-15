@@ -4,9 +4,16 @@
       General
     </h3>
 
-    <p-label label="Name">
-      <p-text-input v-model="name" :disabled="!canUpdateName" />
-    </p-label>
+    <template v-if="mode === 'duplicate'">
+      <p-label label="Name" :state="nameState" :message="nameError">
+        <p-text-input v-model="name" />
+      </p-label>
+    </template>
+    <template v-else>
+      <p-label label="Name">
+        <p-text-input :model-value="name" disabled />
+      </p-label>
+    </template>
 
     <p-label label="Description (Optional)">
       <p-code-input
@@ -85,13 +92,14 @@
   import { useSchemaValidation } from '@/schemas/compositions/useSchemaValidation'
   import { stringify, isJson, isEmptyObject } from '@/utilities'
 
-  const props = defineProps<{
+  interface Props {
     deployment: Deployment,
-    canUpdateName?: {
-      value: boolean,
-      default: false,
-    },
-  }>()
+    mode?: 'duplicate' | 'update',
+  }
+
+  const props = withDefaults(defineProps<Props>(), {
+    mode: () => 'update',
+  })
 
   const name = ref(props.deployment.name)
   const description = ref(props.deployment.description)
@@ -111,6 +119,18 @@
   const { validate } = useValidationObserver()
   const { errors, validate: validateParameters } = useSchemaValidation(schema, parameters)
   const { state: overrideState, error: overrideError } = useValidation(jobVariables, isJson('Job variables'))
+  const { state: nameState, error: nameError } = useValidation(name, (value) => {
+    if (props.mode === 'update') {
+      return true
+    }
+
+    if (!value) {
+      return 'Name is required'
+    }
+    if (props.deployment.name === value) {
+      return 'Name must be different from the original deployment'
+    }
+  })
 
   const emit = defineEmits<{
     (event: 'submit', value: DeploymentUpdateV2): void,
@@ -148,7 +168,7 @@
       jobVariables: JSON.parse(jobVariables.value),
     }
 
-    if (props.canUpdateName) {
+    if (props.mode === 'duplicate') {
       emit('submit', { ...deploymentUpdate, name: name.value })
     } else {
       emit('submit', deploymentUpdate)
