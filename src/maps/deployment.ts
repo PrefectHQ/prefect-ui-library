@@ -73,8 +73,6 @@ export const mapDeploymentCreateToDeploymentCreateRequest: MapFunction<Deploymen
     name: source.name,
     description: source.description,
     flow_id: source.flowId,
-    schedules: [],
-    // schedules: source.schedules.map(schedule => this.map('DeploymentSchedule', schedule, 'DeploymentScheduleResponse')),
     parameters: source.parameters,
     tags: source.tags,
     storage_document_id: source.storageDocumentId,

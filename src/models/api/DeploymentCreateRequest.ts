@@ -1,12 +1,9 @@
-import { ScheduleResponse } from '@/models/api/ScheduleResponse'
-import { SchemaV2 } from '@/schemas'
 import { SchemaValues } from '@/schemas/types/schemaValues'
 
 export type DeploymentCreateRequest = {
   name: string | null,
   description: string | null,
   flow_id: string | null,
-  schedules: ScheduleResponse[] | null,
   is_schedule_active?: boolean,
   parameters: SchemaValues | null,
   tags: string[] | null,

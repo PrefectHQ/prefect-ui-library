@@ -1,5 +1,4 @@
 import { DeploymentSchedule } from '@/models/DeploymentSchedule'
-import { ObjectLevelCan } from '@/models/ObjectLevelCan'
 import { SchemaValuesV2 } from '@/schemas'
 
 export type DeploymentCreate = {
@@ -22,5 +21,4 @@ export type DeploymentCreate = {
   workPoolName: string | null,
   enforceParameterSchema: boolean,
   pullSteps: unknown,
-  can: ObjectLevelCan<'deployment'>,
 }
