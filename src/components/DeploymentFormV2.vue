@@ -4,16 +4,9 @@
       General
     </h3>
 
-    <template v-if="mode === 'duplicate'">
-      <p-label label="Name" :state="nameState" :message="nameError">
+    <p-label label="Name" :state="nameState" :message="nameError" :disabled="mode === 'update'" >
         <p-text-input v-model="name" />
-      </p-label>
-    </template>
-    <template v-else>
-      <p-label label="Name">
-        <p-text-input :model-value="name" disabled />
-      </p-label>
-    </template>
+    </p-label>
 
     <p-label label="Description (Optional)">
       <p-code-input
