@@ -3,7 +3,7 @@ import { SchemaValuesV2 } from '@/schemas'
 
 export type DeploymentCreate = {
   name: string,
-  version: string,
+  version: string | null,
   description: string | null,
   flowId: string,
   paused: boolean,
