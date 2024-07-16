@@ -4,8 +4,8 @@
       General
     </h3>
 
-    <p-label label="Name" :state="nameState" :message="nameError" :disabled="mode === 'update'" >
-        <p-text-input v-model="name" />
+    <p-label label="Name" :state="nameState" :message="nameError" :disabled="mode === 'update'">
+      <p-text-input v-model="name" />
     </p-label>
 
     <p-label label="Description (Optional)">
