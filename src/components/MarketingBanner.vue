@@ -56,9 +56,6 @@
   items-start
   gap-3
   z-[2]
-  p-4
-  sm:px-8
-  sm:py-10
   sm:justify-between
   sm:items-center
   sm:flex-row
