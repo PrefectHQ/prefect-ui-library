@@ -40,6 +40,7 @@
 
 <style>
 .marketing-banner { @apply
+  p-4
   relative
   overflow-hidden
   bg-[url('/marketing-banner-bg-light.svg')]
