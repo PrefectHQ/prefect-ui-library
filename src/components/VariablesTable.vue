@@ -28,6 +28,7 @@
       :data="variables"
       :columns="columns"
       :column-classes="columnClass"
+      :row-key="(variable: Variable) => variable.id"
       @update:selected="selectedVariables = $event"
     >
       <template #name="{ row }">
