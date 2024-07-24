@@ -40,7 +40,7 @@
     }
 
     try {
-      const flowRun = await api.deployments.createDeploymentFlowRunV2(props.deployment.id, {
+      const flowRun = await api.deployments.createDeploymentFlowRun(props.deployment.id, {
         state: {
           type: 'scheduled',
           message: 'Run from the Prefect UI with defaults',
