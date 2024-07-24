@@ -21,7 +21,7 @@
             </template>
           </SchemaInputV2>
 
-          <p-checkbox v-model="enforceParameterSchema" label="Enforce parameter schema" />
+          <p-checkbox v-model="enforceParameterSchema" label="Validate parameters" />
         </p-content>
       </template>
 

@@ -19,7 +19,7 @@
       </template>
 
       <template #after-content>
-        <p-checkbox v-model="enforceParameterSchema" label="Enforce parameter schema" />
+        <p-checkbox v-model="enforceParameterSchema" label="Validate parameters" />
       </template>
     </SchemaFormV2>
 
