@@ -1,7 +1,7 @@
 <template>
   <p-content class="task-worker-list">
     <p-list-header sticky>
-      <ResultsCount label="Task workers" :count />
+      <ResultsCount label="Task worker" :count />
 
       <template #controls>
         <!--  -->
@@ -17,29 +17,26 @@
       class="task-worker-list__table"
       :row-key="(worker: TaskWorker) => worker.id"
     >
-      <template #status="{ row }">
-        <!--  -->
-      </template>
-
-      <template #task-keys="{ row }">
-        {{ row.taskKeys }}
-      </template>
-
-      <template #action-heading>
-        <span />
-      </template>
-
       <template #worker="{ row }">
         {{ row.id }}
       </template>
 
       <template #last-seen="{ row }">
+        <!-- TODO: This only updates when lastSeen updates; we can make this count up better -->
         <FormattedDate :date="row.lastSeen" />
       </template>
 
-
-      <template #action="{ row }">
-        <!--  -->
+      <template #task-keys="{ row }">
+        <!-- This sort is important to make sure the list is static when no new keys are retrieved; without it the keys will jump around whenever we re-fetch data -->
+        <p-table class="task-worker-list__task-key-table" :data="getSortedTaskKeyRows(row)" :columns="taskKeyColumns">
+          <template #task-key="{ row: _row }">
+            <p-tooltip :text="_row.taskKey">
+              <p-tag>
+                {{ _row.label }}
+              </p-tag>
+            </p-tooltip>
+          </template>
+        </p-table>
       </template>
 
       <template #empty-state>
@@ -83,7 +80,6 @@
     (event: 'delete'): void,
   }>()
 
-
   const page = useRouteQueryParam('workers-page', NumberRouteParam, 1)
   const { value: limit } = useLocalStorage('task-worker-list-limit', 10)
 
@@ -101,10 +97,6 @@
       label: 'Worker',
     },
     {
-      label: 'Status',
-      width: '116px',
-    },
-    {
       label: 'Last seen',
       maxWidth: '15%',
     },
@@ -113,11 +105,9 @@
       visible: media.md,
       maxWidth: '15%',
     },
-    {
-      label: 'Action',
-      width: '82px',
-    },
   ])
+
+  const taskKeyColumns = [{ label: 'Task key' }]
 
   const columnClasses = (column: TableColumn<TaskWorker>): ClassValue => [`task-worker-list__${snakeCase(column.label)}-column`]
   const rowClasses = (row: TaskWorker): ClassValue => {
@@ -135,6 +125,10 @@
     selectedWorkers.value = []
     refresh()
     emit('delete')
+  }
+
+  function getSortedTaskKeyRows(worker: TaskWorker): { taskKey: string, label: string }[] {
+    return worker.taskKeys.sort().map((taskKey) => ({ taskKey, label: taskKey.split('-')[0] }))
   }
 </script>
 
@@ -158,5 +152,17 @@
 .task-worker-list__name { @apply
   max-w-full
   truncate
+}
+
+.task-worker-list__task-key-table .p-table-head { @apply
+  hidden
+}
+
+.task-worker-list__task-key-table .p-table-body { @apply
+  !border-t-0
+}
+
+.task-worker-list__table .p-table-data { @apply
+  align-top
 }
 </style>
