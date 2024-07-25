@@ -4,7 +4,7 @@
       :id="formId"
       v-model:values="parameters"
       :schema="deployment.parameterOpenApiSchema"
-      :validate
+      :enforce-parameter-schema
       :kinds="['json', 'workspace_variable']"
       @submit="submit"
     >
@@ -19,20 +19,7 @@
       </template>
 
       <template #after-content>
-        <template v-if="disableValidationCheckbox">
-          <p-tooltip>
-            <template #content>
-              <p>Parameters are always validated for deployments with parameter enforcement enabled.</p>
-              <p>You can disable this setting on <span><p-link :to="routes.deploymentEdit(deployment.id)">the deployment</p-link></span></p>
-            </template>
-            <div class="w-fit">
-              <p-checkbox v-model="validate" disabled label="Validate parameters before submitting" />
-            </div>
-          </p-tooltip>
-        </template>
-        <template v-else>
-          <p-checkbox v-model="validate" label="Validate parameters before submitting" />
-        </template>
+        <p-checkbox v-model="enforceParameterSchema" label="Validate parameters" />
       </template>
     </SchemaFormV2>
 
@@ -53,7 +40,7 @@
   import { ToastFlowRunCreate } from '@/components'
   import { useWorkspaceApi, useWorkspaceRoutes } from '@/compositions'
   import { localization } from '@/localization'
-  import { Deployment, DeploymentFlowRunCreateV2 } from '@/models'
+  import { Deployment, DeploymentFlowRunCreate } from '@/models'
   import { SchemaFormV2, SchemaValuesV2 } from '@/schemas'
   import { getApiErrorMessage } from '@/utilities/errors'
 
@@ -71,8 +58,7 @@
     (event: 'update:showModal', value: boolean): void,
   }>()
 
-  const disableValidationCheckbox = props.deployment.enforceParameterSchema
-  const validate = ref(true)
+  const enforceParameterSchema = ref(props.deployment.enforceParameterSchema)
   const parameters = ref<SchemaValuesV2>({ ...props.deployment.parameters })
 
   const internalShowModal = computed({
@@ -85,16 +71,17 @@
   })
 
   async function submit(): Promise<void> {
-    const values: DeploymentFlowRunCreateV2 = {
+    const values: DeploymentFlowRunCreate = {
       state: {
         type: 'scheduled',
         message: 'Run from the Prefect UI',
       },
       parameters: parameters.value,
+      enforceParameterSchema: enforceParameterSchema.value,
     }
 
     try {
-      const flowRun = await api.deployments.createDeploymentFlowRunV2(props.deployment.id, values)
+      const flowRun = await api.deployments.createDeploymentFlowRun(props.deployment.id, values)
 
       const toastMessage = h(ToastFlowRunCreate, { flowRun, flowRunRoute: routes.flowRun, router, immediate: true })
       showToast(toastMessage, 'success')

@@ -13,4 +13,5 @@ export type DeploymentFlowRunRequest = Partial<{
   state: Partial<StateRequest>,
   work_queue_name: string | null,
   job_variables: Record<string, unknown>,
+  enforce_parameter_schema: boolean | null,
 }>
