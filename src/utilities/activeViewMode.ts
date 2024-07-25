@@ -1,6 +1,6 @@
 import { useLocalStorage } from '@prefecthq/vue-compositions'
 import { computed } from 'vue'
-import { ViewOption } from '@/types/flowRunResults'
+import { ViewOption } from '@/types/viewOption'
 import { getCacheKey } from '@/utilities/cache'
 
 const viewModeLocalStorageKey = getCacheKey('prefect-ui-library-view-mode')

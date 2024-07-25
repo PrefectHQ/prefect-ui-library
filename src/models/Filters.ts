@@ -260,17 +260,6 @@ export type BlockDocumentsFilter = {
   limit?: number,
 }
 
-export type WorkQueuesFilter = {
-  workQueues?: {
-    operator?: Operation,
-    id?: string[],
-    name?: string[],
-    nameStartsWith?: string[],
-  },
-  offset?: number,
-  limit?: number,
-}
-
 export type WorkPoolsFilter = {
   workPools?: WorkPoolFilter,
   offset?: number,
@@ -278,7 +267,12 @@ export type WorkPoolsFilter = {
 }
 
 export type WorkPoolQueuesFilter = {
-  workPools?: WorkPoolFilter,
+  workQueues?: {
+    operator?: Operation,
+    id?: string[],
+    name?: string[],
+    nameStartsWith?: string[],
+  },
   offset?: number,
   limit?: number,
 }

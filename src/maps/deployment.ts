@@ -1,7 +1,9 @@
 import { sortStringArray } from '@prefecthq/prefect-design'
 import { DeploymentFlowRunCreateV2, DeploymentFlowRunRequest, DeploymentUpdateRequest, DeploymentUpdateV2 } from '@/models'
+import { DeploymentCreateRequest } from '@/models/api/DeploymentCreateRequest'
 import { DeploymentResponse } from '@/models/api/DeploymentResponse'
 import { Deployment } from '@/models/Deployment'
+import { DeploymentCreate } from '@/models/DeploymentCreate'
 import { createObjectLevelCan } from '@/models/ObjectLevelCan'
 import { schemaV2Mapper } from '@/schemas'
 import { MapFunction } from '@/services/Mapper'
@@ -63,5 +65,28 @@ export const mapDeploymentFlowRunCreateV2ToDeploymentFlowRunRequest: MapFunction
     empirical_policy: this.map('EmpiricalPolicy', source.empiricalPolicy, 'EmpiricalPolicyRequest'),
     work_queue_name: source.workQueueName,
     job_variables: source.jobVariables,
+  }
+}
+
+export const mapDeploymentCreateToDeploymentCreateRequest: MapFunction<DeploymentCreate, DeploymentCreateRequest> = function(source) {
+  return {
+    name: source.name,
+    description: source.description,
+    flow_id: source.flowId,
+    parameters: source.parameters,
+    tags: source.tags,
+    storage_document_id: source.storageDocumentId,
+    infrastructure_document_id: source.infrastructureDocumentId,
+    work_queue_name: source.workQueueName,
+    work_pool_name: source.workPoolName,
+    job_variables: source.jobVariables,
+    enforce_parameter_schema: source.enforceParameterSchema,
+    path: source.path,
+    pull_steps: source.pullSteps,
+    manifest_path: source.manifestPath,
+    parameter_openapi_schema: source.parameterOpenApiSchema,
+    entrypoint: source.entrypoint,
+    version: source.version,
+    paused: source.paused,
   }
 }

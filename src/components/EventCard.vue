@@ -22,22 +22,17 @@
 </template>
 
 <script lang="ts" setup>
-  import { useSubscription } from '@prefecthq/vue-compositions'
-  import { computed } from 'vue'
   import { EventRelatedKeyValue, EventResourceKeyValue } from '@/components'
   import FormattedDate from '@/components/FormattedDate.vue'
   import WorkspaceEventDescription from '@/components/WorkspaceEventDescription.vue'
-  import { useWorkspaceApi } from '@/compositions/useWorkspaceApi'
+  import { useWorkspaceEvent } from '@/compositions'
 
   const props = defineProps<{
     eventId: string,
     occurred: Date,
   }>()
 
-  const api = useWorkspaceApi()
-
-  const eventSubscription = useSubscription(api.events.getEvent, [props.eventId, props.occurred])
-  const event = computed(() => eventSubscription.response)
+  const { event } = useWorkspaceEvent(() => props.eventId, () => props.occurred)
 </script>
 
 <style>

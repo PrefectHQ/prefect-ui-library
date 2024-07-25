@@ -81,6 +81,7 @@ export function createWorkspaceRoutes(config?: CreateWorkspaceRoutesConfig) {
     deployments: () => ({ name: 'workspace.deployments', params: { ...config } }) as const,
     deployment: (deploymentId: string) => ({ name: 'workspace.deployments.deployment', params: { deploymentId, ...config } }) as const,
     deploymentEdit: (deploymentId: string) => ({ name: 'workspace.deployments.deployment-edit', params: { deploymentId, ...config } }) as const,
+    deploymentDuplicate: (deploymentId: string) => ({ name: 'workspace.deployments.deployment-duplicate', params: { deploymentId, ...config } }) as const,
     deploymentFlowRunCreate: (deploymentId: string, parameters?: Record<string, unknown>) => {
       const query = parameters ? { parameters: encodeURIComponent(JSON.stringify(parameters)) } : {}
       return { name: 'workspace.deployments.deployment-flow-run-create', params: { deploymentId, ...config }, query } as const

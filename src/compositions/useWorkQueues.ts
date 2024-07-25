@@ -4,19 +4,19 @@ import merge from 'lodash.merge'
 import { ComputedRef, MaybeRefOrGetter, computed, toRef, toValue } from 'vue'
 import { useCan } from '@/compositions/useCan'
 import { useWorkspaceApi } from '@/compositions/useWorkspaceApi'
-import { WorkQueue, WorkQueuesFilter } from '@/models'
+import { WorkPoolQueue, WorkPoolQueuesFilter } from '@/models'
 import { WorkspaceWorkQueuesApi } from '@/services'
 
 type UseWorkQueues = {
   subscription: UseSubscription<WorkspaceWorkQueuesApi['getWorkQueues']>,
-  workQueues: ComputedRef<WorkQueue[]>,
+  workQueues: ComputedRef<WorkPoolQueue[]>,
 }
 
-export function useWorkQueues(filter: MaybeRefOrGetter<WorkQueuesFilter | null | undefined>, options?: SubscriptionOptions): UseWorkQueues {
+export function useWorkQueues(filter: MaybeRefOrGetter<WorkPoolQueuesFilter | null | undefined>, options?: SubscriptionOptions): UseWorkQueues {
   const api = useWorkspaceApi()
   const can = useCan()
 
-  const parameters: Getter<[WorkQueuesFilter] | null> = () => {
+  const parameters: Getter<[WorkPoolQueuesFilter] | null> = () => {
     if (!can.read.task_run) {
       return null
     }

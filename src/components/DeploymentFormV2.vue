@@ -4,8 +4,8 @@
       General
     </h3>
 
-    <p-label label="Name">
-      <p-text-input :model-value="name" disabled />
+    <p-label label="Name" :state="nameState" :message="nameError" :disabled="mode === 'update'">
+      <p-text-input v-model="name" />
     </p-label>
 
     <p-label label="Description (Optional)">
@@ -81,15 +81,21 @@
   import ToastParameterValidationError from '@/components/ToastParameterValidationError.vue'
   import { localization } from '@/localization'
   import { Deployment, DeploymentUpdateV2 } from '@/models'
+  import { DeploymentCreate } from '@/models/DeploymentCreate'
   import { SchemaInputV2 } from '@/schemas'
   import { useSchemaValidation } from '@/schemas/compositions/useSchemaValidation'
   import { stringify, isJson, isEmptyObject } from '@/utilities'
 
-  const props = defineProps<{
+  interface Props {
     deployment: Deployment,
-  }>()
+    mode?: 'duplicate' | 'update',
+  }
 
-  const name = computed(() => props.deployment.name)
+  const props = withDefaults(defineProps<Props>(), {
+    mode: () => 'update',
+  })
+
+  const name = ref(props.deployment.name)
   const description = ref(props.deployment.description)
   const workPoolName = ref(props.deployment.workPoolName)
   const workQueueName = ref(props.deployment.workQueueName)
@@ -107,9 +113,21 @@
   const { validate } = useValidationObserver()
   const { errors, validate: validateParameters } = useSchemaValidation(schema, parameters)
   const { state: overrideState, error: overrideError } = useValidation(jobVariables, isJson('Job variables'))
+  const { state: nameState, error: nameError } = useValidation(name, (value) => {
+    if (props.mode === 'update') {
+      return true
+    }
+
+    if (!value) {
+      return 'Name is required'
+    }
+    if (props.deployment.name === value) {
+      return 'Name must be different from the original deployment'
+    }
+  })
 
   const emit = defineEmits<{
-    (event: 'submit', value: DeploymentUpdateV2): void,
+    (event: 'submit', value: DeploymentUpdateV2 | DeploymentCreate): void,
     (event: 'cancel'): void,
   }>()
 
@@ -134,17 +152,43 @@
       }
     }
 
-    const deploymentUpdate: DeploymentUpdateV2 = {
-      description: description.value,
-      workPoolName: workPoolName.value,
-      workQueueName: workQueueName.value,
-      parameters: parameters.value,
-      tags: tags.value,
-      enforceParameterSchema: enforceParameterSchema.value,
-      jobVariables: JSON.parse(jobVariables.value),
+    if (props.mode === 'duplicate') {
+      const deploymentCreate: DeploymentCreate = {
+        name: name.value,
+        flowId: props.deployment.flowId,
+        description: description.value,
+        workPoolName: workPoolName.value,
+        workQueueName: workQueueName.value,
+        parameters: parameters.value,
+        tags: tags.value,
+        enforceParameterSchema: enforceParameterSchema.value,
+        jobVariables: JSON.parse(jobVariables.value),
+        parameterOpenApiSchema: props.deployment.parameterOpenApiSchema,
+        manifestPath: props.deployment.manifestPath,
+        path: props.deployment.path,
+        version: null,
+        paused: false,
+        schedules: [],
+        entrypoint: props.deployment.entrypoint,
+        storageDocumentId: props.deployment.storageDocumentId,
+        infrastructureDocumentId: props.deployment.infrastructureDocumentId,
+        pullSteps: props.deployment.pullSteps,
+      }
+      emit('submit', deploymentCreate)
+    } else {
+      const deploymentUpdate: DeploymentUpdateV2 = {
+        description: description.value,
+        workPoolName: workPoolName.value,
+        workQueueName: workQueueName.value,
+        parameters: parameters.value,
+        tags: tags.value,
+        enforceParameterSchema: enforceParameterSchema.value,
+        jobVariables: JSON.parse(jobVariables.value),
+      }
+      emit('submit', deploymentUpdate)
     }
 
-    emit('submit', deploymentUpdate)
+
   }
 
   const cancel = (): void => {

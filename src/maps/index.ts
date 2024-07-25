@@ -29,7 +29,7 @@ import {
 } from '@/maps/dashboard'
 import { mapStringToDate, mapDateToString } from '@/maps/date'
 import { mapDateRangeSelectValueToDateRange } from '@/maps/dateRangeSelectValue'
-import { mapDeploymentResponseToDeployment, mapDeploymentFlowRunCreateV2ToDeploymentFlowRunRequest, mapDeploymentUpdateV2ToDeploymentUpdateRequest } from '@/maps/deployment'
+import { mapDeploymentResponseToDeployment, mapDeploymentFlowRunCreateV2ToDeploymentFlowRunRequest, mapDeploymentUpdateV2ToDeploymentUpdateRequest, mapDeploymentCreateToDeploymentCreateRequest } from '@/maps/deployment'
 import { mapDeploymentScheduleResponseToDeploymentSchedule } from '@/maps/deploymentSchedule'
 import { mapDeploymentScheduleCreateToDeploymentScheduleCreateRequest } from '@/maps/deploymentScheduleCreate'
 import { mapDeploymentScheduleUpdateToDeploymentScheduleUpdateRequest } from '@/maps/deploymentScheduleUpdate'
@@ -37,7 +37,7 @@ import { mapDeploymentStatsFilterToFlowRunsFilter } from '@/maps/deploymentStats
 import { mapDeploymentStatusToServerDeploymentStatus, mapServerDeploymentStatusToDeploymentStatus } from '@/maps/deploymentStatus'
 import { mapRunHistoryToDivergingBarChartItem } from '@/maps/divergingBarChartItem'
 import { mapEmpiricalPolicyToEmpiricalPolicyResponse, mapEmpiricalPolicyResponseToEmpiricalPolicy, mapEmpiricalPolicyToEmpiricalPolicyRequest } from '@/maps/empiricalPolicy'
-import { mapFlowFilter, mapDeploymentFilter, mapFlowRunFilter, mapStateFilter, mapFlowsFilter, mapDeploymentsFilter, mapFlowRunsFilter, mapTagFilter, mapTaskRunFilter, mapTaskRunsFilter, mapBlockDocumentFilter, mapBlockSchemaFilter, mapBlockTypeFilter, mapBlockDocumentsFilter, mapBlockSchemasFilter, mapBlockTypesFilter, mapWorkPoolsFilter, mapWorkPoolFilter, mapWorkPoolQueueFilter, mapFlowRunsHistoryFilter, mapLogsFilter, mapNotificationsFilter, mapSavedSearchesFilter, mapWorkQueuesFilter, mapWorkPoolWorkersFilter, mapWorkPoolQueuesFilter, mapArtifactFilter, mapArtifactsFilter, mapVariablesFilter, mapVariableFilter, mapTaskRunsHistoryFilter, mapFlowRunsPaginationFilter, mapFlowsPaginationFilter, mapDeploymentsPaginationFilter } from '@/maps/filters'
+import { mapFlowFilter, mapDeploymentFilter, mapFlowRunFilter, mapStateFilter, mapFlowsFilter, mapDeploymentsFilter, mapFlowRunsFilter, mapTagFilter, mapTaskRunFilter, mapTaskRunsFilter, mapBlockDocumentFilter, mapBlockSchemaFilter, mapBlockTypeFilter, mapBlockDocumentsFilter, mapBlockSchemasFilter, mapBlockTypesFilter, mapWorkPoolsFilter, mapWorkPoolFilter, mapWorkPoolQueueFilter, mapFlowRunsHistoryFilter, mapLogsFilter, mapNotificationsFilter, mapSavedSearchesFilter, mapWorkPoolWorkersFilter, mapWorkPoolQueuesFilter, mapArtifactFilter, mapArtifactsFilter, mapVariablesFilter, mapVariableFilter, mapTaskRunsHistoryFilter, mapFlowRunsPaginationFilter, mapFlowsPaginationFilter, mapDeploymentsPaginationFilter } from '@/maps/filters'
 import { mapFlowToFlowResponse, mapFlowResponseToFlow, mapFlowToAutomationTrigger } from '@/maps/flow'
 import { mapFlowRunResponseToFlowRun } from '@/maps/flowRun'
 import { mapRunHistoryToFlowRunHistoryResponse, mapFlowRunHistoryResponseToRunHistory } from '@/maps/flowRunHistory'
@@ -72,18 +72,14 @@ import { mapTaskWorkerFilterToTaskWorkerFilterRequest, mapTaskWorkerResponseToTa
 import { mapUiFlowRunHistoryResponseToUiFlowRunHistory } from '@/maps/uiFlowRunHistory'
 import { mapUiNextFlowRunByFlowResponseToUiNextFlowRunByFlow } from '@/maps/uiNextFlowRunByFlow'
 import { mapUiTaskRunCountsByStateResponseToUiTaskRunCountsByState } from '@/maps/uiTaskRunCountsByState'
-import { mapVariableResponseToVariable, mapVariableEditToVariableEditRequest, mapVariableCreateToVariableCreateRequest, mapVariableV2CreateToVariableV2CreateRequest, mapVariableV2EditToVariableV2EditRequest, mapVariableV2ResponseToVariableV2 } from '@/maps/variable'
+import { mapVariableCreateToVariableCreateRequest, mapVariableEditToVariableEditRequest, mapVariableResponseToVariable } from '@/maps/variable'
 import { mapPrefectWorkerCollectionResponseToWorkerCollectionItemArray, mapWorkerSchemaValuesToWorkerSchemaValuesRequest } from '@/maps/workerCollection'
 import { mapWorkerScheduledFlowRunResponseToWorkerScheduledFlowRun, mapWorkerScheduledFlowRunsToWorkerScheduledFlowRunsRequest } from '@/maps/workerScheduledFlowRun'
 import { mapWorkPoolCreateToWorkPoolCreateRequest, mapWorkPoolEditToWorkPoolEditRequest, mapWorkPoolResponseToWorkPool, mapWorkPoolToAutomationTrigger, mapWorkPoolToWorkPoolResponse } from '@/maps/workPool'
-import { mapWorkPoolQueueCreateToWorkPoolQueueCreateRequest, mapWorkPoolQueueEditToWorkPoolQueueEditRequest, mapWorkPoolQueueResponseToWorkPoolQueue, mapWorkPoolQueueToAutomationTrigger, mapWorkPoolQueueToWorkPoolQueueResponse } from '@/maps/workPoolQueue'
+import { mapWorkPoolQueueCreateToWorkPoolQueueCreateRequest, mapWorkPoolQueueEditToWorkPoolQueueEditRequest, mapWorkPoolQueueResponseToWorkPoolQueue, mapWorkPoolQueueToAutomationTrigger } from '@/maps/workPoolQueue'
 import { mapServerWorkPoolStatusToWorkPoolStatus, mapWorkPoolStatusToServerWorkPoolStatus } from '@/maps/workPoolStatus'
 import { mapWorkPoolWorkerResponseToWorkPoolWorker } from '@/maps/workPoolWorker'
 import { mapWorkPoolWorkerStatusToServerWorkPoolWorkerStatus, mapServerWorkPoolWorkerStatusToWorkPoolWorkerStatus } from '@/maps/workPoolWorkerStatus'
-import { mapWorkQueueToWorkQueueResponse, mapWorkQueueResponseToWorkQueue, mapWorkQueueCreateToWorkQueueCreateRequest, mapWorkQueueEditToWorkQueueEditRequest } from '@/maps/workQueue'
-import { mapWorkQueueFilterToWorkQueueFilterResponse, mapWorkQueueFilterResponseToWorkQueueFilter } from '@/maps/workQueueFilter'
-import { mapWorkQueueHealthPolicyResponseToWorkQueueHealthPolicy } from '@/maps/workQueueHealthPolicy'
-import { mapWorkQueueStatusResponseToWorkQueueStatus } from '@/maps/workQueueStatus'
 import { mapWorkspaceEventResponseToWorkspaceEvent, mapWorkspaceEventToAutomationTrigger } from '@/maps/workspaceEvent'
 import { mapWorkspaceEventsResponseToWorkspaceEvents } from '@/maps/workspaceEvents'
 import { mapWorkspaceEventsCountResponseToHistogramDataPoint, mapWorkspaceEventsCountResponseToWorkspaceEventsCount } from '@/maps/workspaceEventsCount'
@@ -125,6 +121,7 @@ export const maps = {
   CreatedOrUpdatedByResponse: { CreatedOrUpdatedBy: mapCreatedOrUpdatedByResponseToCreatedOrUpdatedBy },
   Date: { string: mapDateToString },
   DateRangeSelectValue: { DateRange: mapDateRangeSelectValueToDateRange },
+  DeploymentCreate: { DeploymentCreateRequest: mapDeploymentCreateToDeploymentCreateRequest },
   DeploymentFilter: { DeploymentFilterRequest: mapDeploymentFilter },
   DeploymentsPaginationFilter: { DeploymentsPaginationFilterRequest: mapDeploymentsPaginationFilter },
   DeploymentPaginationResponse: { DeploymentsPagination: mapDeploymentsPaginationResponseToDeploymentRunsPagination },
@@ -226,14 +223,11 @@ export const maps = {
   UiFlowRunHistoryResponse: { UiFlowRunHistory: mapUiFlowRunHistoryResponseToUiFlowRunHistory },
   UiNextFlowRunByFlowResponse: { UiNextFlowRunByFlow: mapUiNextFlowRunByFlowResponseToUiNextFlowRunByFlow },
   UiTaskRunCountsByStateResponse: { UiTaskRunCountsByState: mapUiTaskRunCountsByStateResponseToUiTaskRunCountsByState },
-  VariableCreate: { VariableCreateRequest: mapVariableCreateToVariableCreateRequest },
-  VariableEdit: { VariableEditRequest: mapVariableEditToVariableEditRequest },
   VariableFilter: { VariableFilterRequest: mapVariableFilter },
   VariablesFilter: { VariablesFilterRequest: mapVariablesFilter },
+  VariableCreate: { VariableCreateRequest: mapVariableCreateToVariableCreateRequest },
+  VariableEdit: { VariableEditRequest: mapVariableEditToVariableEditRequest },
   VariableResponse: { Variable: mapVariableResponseToVariable },
-  VariableV2Create: { VariableV2CreateRequest: mapVariableV2CreateToVariableV2CreateRequest },
-  VariableV2Edit: { VariableV2EditRequest: mapVariableV2EditToVariableV2EditRequest },
-  VariableV2Response: { VariableV2: mapVariableV2ResponseToVariableV2 },
   WorkerScheduledFlowRunResponse: { WorkerScheduledFlowRun: mapWorkerScheduledFlowRunResponseToWorkerScheduledFlowRun },
   WorkerScheduledFlowRuns: { WorkerScheduledFlowRunsRequest: mapWorkerScheduledFlowRunsToWorkerScheduledFlowRunsRequest },
   WorkerSchemaProperty: { WorkerSchemaPropertyRequest: mapWorkerSchemaValuesToWorkerSchemaValuesRequest },
@@ -244,10 +238,7 @@ export const maps = {
   WorkPoolCreate: { WorkPoolCreateRequest: mapWorkPoolCreateToWorkPoolCreateRequest },
   WorkPoolEdit: { WorkPoolEditRequest: mapWorkPoolEditToWorkPoolEditRequest },
   WorkPoolFilter: { WorkPoolFilterRequest: mapWorkPoolFilter },
-  WorkPoolQueue: {
-    WorkPoolQueueResponse: mapWorkPoolQueueToWorkPoolQueueResponse,
-    AutomationTrigger: mapWorkPoolQueueToAutomationTrigger,
-  },
+  WorkPoolQueue: { AutomationTrigger: mapWorkPoolQueueToAutomationTrigger },
   WorkPoolQueueCreate: { WorkPoolQueueCreateRequest: mapWorkPoolQueueCreateToWorkPoolQueueCreateRequest },
   WorkPoolQueueEdit: { WorkPoolQueueEditRequest: mapWorkPoolQueueEditToWorkPoolQueueEditRequest },
   WorkPoolQueueFilter: { WorkPoolQueueFilterRequest: mapWorkPoolQueueFilter },
@@ -259,15 +250,6 @@ export const maps = {
   WorkPoolWorkerResponse: { WorkPoolWorker: mapWorkPoolWorkerResponseToWorkPoolWorker },
   WorkPoolWorkersFilter: { WorkPoolWorkersFilterRequest: mapWorkPoolWorkersFilter },
   WorkPoolWorkerStatus: { ServerWorkPoolWorkerStatus: mapWorkPoolWorkerStatusToServerWorkPoolWorkerStatus },
-  WorkQueue: { WorkQueueResponse: mapWorkQueueToWorkQueueResponse },
-  WorkQueueCreate: { WorkQueueCreateRequest: mapWorkQueueCreateToWorkQueueCreateRequest },
-  WorkQueueEdit: { WorkQueueEditRequest: mapWorkQueueEditToWorkQueueEditRequest },
-  WorkQueueFilter: { WorkQueueFilterResponse: mapWorkQueueFilterToWorkQueueFilterResponse },
-  WorkQueueFilterResponse: { WorkQueueFilter: mapWorkQueueFilterResponseToWorkQueueFilter },
-  WorkQueueHealthPolicyResponse: { WorkQueueHealthPolicy: mapWorkQueueHealthPolicyResponseToWorkQueueHealthPolicy },
-  WorkQueueResponse: { WorkQueue: mapWorkQueueResponseToWorkQueue },
-  WorkQueuesFilter: { WorkQueuesFilterRequest: mapWorkQueuesFilter },
-  WorkQueueStatusResponse: { WorkQueueStatus: mapWorkQueueStatusResponseToWorkQueueStatus },
   WorkspaceDashboardFilter: {
     TaskRunsFilter: mapWorkspaceDashboardFilterToTaskRunsFilter,
     TaskRunsHistoryFilter: mapWorkspaceDashboardFilterToTaskRunsHistoryFilter,

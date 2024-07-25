@@ -24,7 +24,7 @@
       </template>
     </template>
 
-    {{ getAutomationTriggerEventPostureLabel(trigger.posture) }} {{ getDeploymentStatusLabel(trigger.status) }}
+    {{ getAutomationTriggerEventPostureLabel(trigger.posture) }} {{ getDeploymentStatusLabel(trigger.status).toLowerCase() }}
 
     <template v-if="trigger.posture === 'Proactive'">
       for {{ secondsToString(trigger.time) }}

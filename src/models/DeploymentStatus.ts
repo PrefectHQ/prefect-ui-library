@@ -8,9 +8,9 @@ export type ServerDeploymentStatus = Uppercase<typeof deploymentStatus[number]>
 export function getDeploymentStatusLabel(status: DeploymentStatus): string {
   switch (status) {
     case 'not_ready':
-      return 'not ready'
+      return 'Not Ready'
     case 'ready':
-      return 'ready'
+      return 'Ready'
     default:
       const exhaustive: never = status
       throw new Error(`getDeploymentStatusLabel missing case for status: ${exhaustive}`)

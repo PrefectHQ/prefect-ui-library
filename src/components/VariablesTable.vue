@@ -28,6 +28,7 @@
       :data="variables"
       :columns="columns"
       :column-classes="columnClass"
+      :row-key="(variable: Variable) => variable.id"
       @update:selected="selectedVariables = $event"
     >
       <template #name="{ row }">
@@ -36,8 +37,14 @@
         </div>
       </template>
 
+      <template #value="{ row }">
+        <div class="variables-table__value">
+          <VariableDisplayPreview :variable="row" value-overflow-text="click to view" @update="handleUpdate" />
+        </div>
+      </template>
+
       <template #updated="{ row }">
-        {{ formatDateTimeNumeric(row.updated) }}
+        <FormattedDate :date="row.updated" format="numeric" />
       </template>
 
       <template #tags="{ row }">
@@ -83,11 +90,12 @@
   import merge from 'lodash.merge'
   import { computed, ref } from 'vue'
   import { VariablesDeleteButton, VariableMenu, ResultsCount, SearchInput, SelectedCount, VariableTagsInput } from '@/components'
+  import FormattedDate from '@/components/FormattedDate.vue'
+  import VariableDisplayPreview from '@/components/VariableDisplayPreview.vue'
   import { useCan, useVariablesFilter, useWorkspaceApi } from '@/compositions'
   import { localization } from '@/localization'
   import { VariablesFilter, Variable } from '@/models'
   import { variableSortOptions } from '@/types'
-  import { formatDateTimeNumeric } from '@/utilities/dates'
 
   const DEFAULT_LIMIT = 25
 

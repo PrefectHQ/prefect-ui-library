@@ -5,7 +5,7 @@
 <script lang="ts" setup>
   import { SelectOption } from '@prefecthq/prefect-design'
   import { computed } from 'vue'
-  import { WorkPoolStatus } from '@/models/WorkPoolStatus'
+  import { WorkPoolStatus, getWorkPoolStatusLabel, workPoolStatus } from '@/models/WorkPoolStatus'
 
   type StatusOption = SelectOption & {
     value: WorkPoolStatus,
@@ -19,11 +19,10 @@
     (event: 'update:selected', value: WorkPoolStatus | null): void,
   }>()
 
-  const options: StatusOption[] = [
-    { label: 'Ready', value: 'ready' },
-    { label: 'Not Ready', value: 'not_ready' },
-    { label: 'Paused', value: 'paused' },
-  ]
+  const options: StatusOption[] = workPoolStatus.map(status => ({
+    label: getWorkPoolStatusLabel(status),
+    value: status,
+  }))
 
   const internalSelected = computed({
     get() {

@@ -9,13 +9,13 @@ export type ServerWorkPoolStatus = typeof serverWorkPoolStatus[number]
 export function getWorkPoolStatusLabel(status: WorkPoolStatus): string {
   switch (status) {
     case 'not_ready':
-      return 'not ready'
+      return 'Not Ready'
     case 'paused':
-      return 'paused'
+      return 'Paused'
     case 'ready':
-      return 'ready'
+      return 'Ready'
     default:
       const exhaustive: never = status
-      throw new Error(`getWorkPoolStatusLabe missing case for ${exhaustive}`)
+      throw new Error(`getWorkPoolStatusLabel missing case for ${exhaustive}`)
   }
 }

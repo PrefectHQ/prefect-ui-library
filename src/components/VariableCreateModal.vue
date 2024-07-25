@@ -7,7 +7,7 @@
         </p-label>
 
         <p-label :label="localization.info.value" :state="valueState" :message="valueErrorMessage">
-          <p-textarea v-model="value" :state="valueState" :rows="1" />
+          <JsonInput v-model="value" :state="valueState" show-format-button />
         </p-label>
 
         <p-label :label="localization.info.tags">
@@ -29,10 +29,11 @@
   import { useValidation, useValidationObserver, ValidationRule } from '@prefecthq/vue-compositions'
   import { isNull } from 'lodash'
   import { computed, ref } from 'vue'
+  import JsonInput from '@/components/JsonInput.vue'
   import { useWorkspaceApi } from '@/compositions'
   import { localization } from '@/localization'
   import { Variable, VariableCreate, MAX_VARIABLE_NAME_LENGTH, MAX_VARIABLE_VALUE_LENGTH } from '@/models'
-  import { isSnakeCase, isLessThanOrEqual, isRequired, isString } from '@/utilities'
+  import { isSnakeCase, isLessThanOrEqual, isRequired, isString, isJson } from '@/utilities'
   import { getApiErrorMessage } from '@/utilities/errors'
 
   const props = defineProps<{
@@ -96,6 +97,7 @@
     value: [
       isRequired(localization.info.value),
       isLessThanOrEqual(MAX_VARIABLE_VALUE_LENGTH)(localization.info.value),
+      isJson(localization.info.value),
     ],
   }
 

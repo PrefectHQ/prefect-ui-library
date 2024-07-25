@@ -127,6 +127,14 @@ export function createWorkspaceRouteRecords(components: Partial<WorkspaceRouteCo
           },
         },
         {
+          name: 'workspace.deployments.deployment-duplicate',
+          path: 'deployment/:deploymentId/duplicate',
+          component: components.deploymentDuplicate,
+          meta: {
+            can: 'create:deployment',
+          },
+        },
+        {
           name: 'workspace.deployments.deployment-flow-run-create',
           path: 'deployment/:deploymentId/run',
           component: components.deploymentFlowRunCreate,
@@ -143,30 +151,9 @@ export function createWorkspaceRouteRecords(components: Partial<WorkspaceRouteCo
       },
       children: [
         {
-          name: 'workspace.work-queues',
-          path: '',
-          component: components.workQueues,
-        },
-        {
-          name: 'workspace.work-queues.work-queue-create',
-          path: 'create',
-          component: components.workQueueCreate,
-          meta: {
-            can: 'create:work_queue',
-          },
-        },
-        {
           name: 'workspace.work-queues.work-queue',
           path: 'work-queue/:workQueueId',
-          component: components.workQueue,
-        },
-        {
-          name: 'workspace.work-queues.work-queue-edit',
-          path: 'work-queue/:workQueueId/edit',
-          component: components.workQueueEdit,
-          meta: {
-            can: 'update:work_queue',
-          },
+          component: components.workQueue ?? (() => import('@/components/WorkQueueToWorkPoolQueueRedirect.vue')),
         },
       ],
     },

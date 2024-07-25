@@ -5,7 +5,7 @@
 <script lang="ts" setup>
   import { SelectOption } from '@prefecthq/prefect-design'
   import { computed } from 'vue'
-  import { WorkPoolQueueStatus } from '@/models/WorkPoolQueue'
+  import { WorkPoolQueueStatus, getWorkPoolQueueStatusLabel, workPoolQueueStatus } from '@/models/WorkPoolQueue'
 
   const props = defineProps<{
     selected: WorkPoolQueueStatus,
@@ -18,11 +18,10 @@
   type WorkQueueStatusOption = SelectOption & {
     value: WorkPoolQueueStatus,
   }
-  const options: WorkQueueStatusOption[] = [
-    { label: 'Ready', value: 'ready' },
-    { label: 'Paused', value: 'paused' },
-    { label: 'Not Ready', value: 'not_ready' },
-  ]
+  const options: WorkQueueStatusOption[] = workPoolQueueStatus.map(status => ({
+    label: getWorkPoolQueueStatusLabel(status),
+    value: status,
+  }))
 
   const internalSelected = computed({
     get() {
