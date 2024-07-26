@@ -5,7 +5,7 @@
         ref="runButton"
         class="run-menu__run-button"
         icon-append="PlayIcon"
-        :disabled="deployment.deprecated"
+        :disabled="deployment.deprecated || deployment.disabled"
         @click="toggle"
       >
         Run
