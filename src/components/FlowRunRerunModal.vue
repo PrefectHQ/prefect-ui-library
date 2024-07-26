@@ -58,7 +58,7 @@
   const rerunFromFailed = async (): Promise<void> => {
     rerunningRun.value = true
     try {
-      await api.flowRuns.retryFlowRun(props.flowRun.id)
+      await api.flowRuns.rerunFlowRun(props.flowRun.id)
       showToast(localization.success.rerunRun, 'success')
     } catch (error) {
       console.error(error)

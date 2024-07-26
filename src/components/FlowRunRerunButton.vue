@@ -1,14 +1,14 @@
 <template>
   <p-button
-    v-if="canRetry"
+    v-if="canRerun"
     icon-append="ArrowPathIcon"
-    :loading="retryingRun"
+    :loading="rerunningRun"
     @click="open"
   >
     Rerun
     <FlowRunRerunModal
       v-model:showModal="showModal"
-      v-model:retryingRun="retryingRun"
+      v-model:rerunningRun="rerunningRun"
       :flow-run="flowRun"
     />
   </p-button>
@@ -28,7 +28,7 @@
   const can = useCan()
   const { showModal, open } = useShowModal()
 
-  const canRetry = computed(() => {
+  const canRerun = computed(() => {
     if (!can.update.flow_run || !props.flowRun.stateType || !props.flowRun.deploymentId) {
       return false
     }
@@ -36,5 +36,5 @@
     return isTerminalStateType(props.flowRun.stateType)
   })
 
-  const retryingRun = ref(false)
+  const rerunningRun = ref(false)
   </script>

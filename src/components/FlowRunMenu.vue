@@ -2,7 +2,7 @@
   <p-icon-button-menu>
     <template #default>
       <p-overflow-menu-item v-if="flowRun?.deploymentId && deployment?.can.run" label="Copy to new run" :to="routes.deploymentFlowRunCreate(flowRun.deploymentId, flowRun.parameters)" />
-      <p-overflow-menu-item v-if="canRetry && showAll" label="Retry" @click="openRetryModal" />
+      <p-overflow-menu-item v-if="canRerun && showAll" label="Rerun" @click="openRerunModal" />
       <p-overflow-menu-item v-if="canResume && showAll" label="Resume" @click="openResumeModal" />
       <p-overflow-menu-item v-if="canSuspend && showAll" label="Pause" @click="openSuspendModal" />
       <p-overflow-menu-item v-if="canCancel && showAll" label="Cancel" @click="openCancelModal" />
@@ -70,7 +70,7 @@
   const routes = useWorkspaceRoutes()
   const { flowRunId } = toRefs(props)
 
-  const { showModal: showRerunModal, open: openRetryModal } = useShowModal()
+  const { showModal: showRerunModal, open: openRerunModal } = useShowModal()
   const { showModal: showResumeModal, open: openResumeModal } = useShowModal()
   const { showModal: showCancelModal, open: openCancelModal } = useShowModal()
   const { showModal: showSuspendModal, open: openSuspendModal } = useShowModal()
@@ -82,7 +82,7 @@
   const { flowRun, subscription: flowRunSubscription } = useFlowRun(flowRunId, { interval: 3000 })
   const { deployment } = useDeployment(() => flowRun.value?.deploymentId)
 
-  const canRetry = computed(() => {
+  const canRerun = computed(() => {
     if (!can.update.flow_run || !flowRun.value?.stateType || !flowRun.value.deploymentId) {
       return false
     }

@@ -35,7 +35,7 @@
         <template v-if="media.sm">
           <FlowRunSuspendButton :flow-run="flowRun" />
           <FlowRunResumeButton :flow-run="flowRun" />
-          <FlowRunRetryButton :flow-run="flowRun" />
+          <FlowRunRerunButton :flow-run="flowRun" />
           <FlowRunCancelButton :flow-run="flowRun" />
         </template>
         <FlowRunMenu :flow-run-id="flowRun.id" :show-all="!media.sm" @delete="emit('delete')" />
