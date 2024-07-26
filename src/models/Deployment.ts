@@ -31,6 +31,7 @@ export interface IDeployment {
   pullSteps: unknown,
   can: ObjectLevelCan<'deployment'>,
   status: DeploymentStatus,
+  disabled: boolean,
 }
 
 export class Deployment implements IDeployment {
@@ -60,6 +61,7 @@ export class Deployment implements IDeployment {
   public pullSteps: unknown
   public can: ObjectLevelCan<'deployment'>
   public status: DeploymentStatus
+  public disabled: boolean
 
   public constructor(deployment: IDeployment) {
     this.id = deployment.id
@@ -88,6 +90,7 @@ export class Deployment implements IDeployment {
     this.pullSteps = deployment.pullSteps
     this.can = deployment.can
     this.status = deployment.status
+    this.disabled = deployment.disabled
   }
 
   public get deprecated(): boolean {
