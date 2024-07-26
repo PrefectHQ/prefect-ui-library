@@ -50,7 +50,7 @@
   import {
     StateBadge,
     PageHeading,
-    FlowRunRetryButton,
+    FlowRunRerunButton,
     FlowRunResumeButton,
     FlowRunCancelButton,
     FlowRunSuspendButton,

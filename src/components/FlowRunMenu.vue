@@ -14,10 +14,10 @@
     </template>
   </p-icon-button-menu>
 
-  <FlowRunRetryModal
+  <FlowRunRerunModal
     v-if="flowRun"
-    v-model:showModal="showRetryModal"
-    v-model:retryingRun="retryingRun"
+    v-model:showModal="showRerunModal"
+    v-model:rerunningRun="rerunningRun"
     :flow-run="flowRun"
   />
 
@@ -52,7 +52,7 @@
 <script lang="ts" setup>
   import { showToast } from '@prefecthq/prefect-design'
   import { computed, ref, toRefs } from 'vue'
-  import { FlowRunRetryModal, FlowRunCancelModal, FlowRunSuspendModal, ConfirmStateChangeModal, ConfirmDeleteModal, CopyOverflowMenuItem } from '@/components'
+  import { FlowRunRerunModal, FlowRunCancelModal, FlowRunSuspendModal, ConfirmStateChangeModal, ConfirmDeleteModal, CopyOverflowMenuItem } from '@/components'
   import FlowRunResumeModal from '@/components/FlowRunResumeModal.vue'
   import { useCan, useWorkspaceApi, useShowModal, useWorkspaceRoutes, useFlowRuns, useFlowRun, useDeployment } from '@/compositions'
   import { localization } from '@/localization'
@@ -70,14 +70,14 @@
   const routes = useWorkspaceRoutes()
   const { flowRunId } = toRefs(props)
 
-  const { showModal: showRetryModal, open: openRetryModal } = useShowModal()
+  const { showModal: showRerunModal, open: openRetryModal } = useShowModal()
   const { showModal: showResumeModal, open: openResumeModal } = useShowModal()
   const { showModal: showCancelModal, open: openCancelModal } = useShowModal()
   const { showModal: showSuspendModal, open: openSuspendModal } = useShowModal()
   const { showModal: showStateChangeModal, open: openChangeStateModal } = useShowModal()
   const { showModal: showDeleteModal, open: openDeleteModal } = useShowModal()
 
-  const retryingRun = ref(false)
+  const rerunningRun = ref(false)
 
   const { flowRun, subscription: flowRunSubscription } = useFlowRun(flowRunId, { interval: 3000 })
   const { deployment } = useDeployment(() => flowRun.value?.deploymentId)
