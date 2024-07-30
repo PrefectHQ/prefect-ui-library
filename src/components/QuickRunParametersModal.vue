@@ -3,6 +3,7 @@
     <SchemaFormV2
       :id="formId"
       v-model:values="parameters"
+      v-model:loading="loading"
       :schema="deployment.parameterOpenApiSchema"
       :validate="enforceParameterSchema"
       :kinds="['json', 'workspace_variable']"
