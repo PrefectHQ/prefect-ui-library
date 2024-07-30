@@ -1,10 +1,10 @@
 <template>
-  <p-modal v-model:showModal="internalShowModal" class="quick-run-parameters-modal-v2" title="Run Deployment">
+  <p-modal v-model:showModal="showModal" class="quick-run-parameters-modal-v2" title="Run Deployment">
     <SchemaFormV2
       :id="formId"
       v-model:values="parameters"
       :schema="deployment.parameterOpenApiSchema"
-      :enforce-parameter-schema
+      :validate="enforceParameterSchema"
       :kinds="['json', 'workspace_variable']"
       @submit="submit"
     >
@@ -25,7 +25,7 @@
 
     <template #actions>
       <slot name="actions">
-        <p-button type="submit" primary :form="formId">
+        <p-button type="submit" :disabled="loading" primary :form="formId">
           Run
         </p-button>
       </slot>
@@ -35,7 +35,7 @@
 
 <script lang="ts" setup>
   import { PButton, randomId, showToast } from '@prefecthq/prefect-design'
-  import { computed, h, ref } from 'vue'
+  import { h, ref } from 'vue'
   import { useRouter } from 'vue-router'
   import { ToastFlowRunCreate } from '@/components'
   import { useWorkspaceApi, useWorkspaceRoutes } from '@/compositions'
@@ -44,8 +44,9 @@
   import { SchemaFormV2, SchemaValuesV2 } from '@/schemas'
   import { getApiErrorMessage } from '@/utilities/errors'
 
+  const showModal = defineModel<boolean>('showModal', { required: true })
+
   const props = defineProps<{
-    showModal: boolean,
     deployment: Deployment,
   }>()
 
@@ -53,24 +54,13 @@
   const router = useRouter()
   const routes = useWorkspaceRoutes()
   const formId = randomId()
-
-  const emit = defineEmits<{
-    (event: 'update:showModal', value: boolean): void,
-  }>()
-
+  const loading = ref(false)
   const enforceParameterSchema = ref(props.deployment.enforceParameterSchema)
   const parameters = ref<SchemaValuesV2>({ ...props.deployment.parameters })
 
-  const internalShowModal = computed({
-    get() {
-      return props.showModal
-    },
-    set(value: boolean) {
-      emit('update:showModal', value)
-    },
-  })
-
   async function submit(): Promise<void> {
+    loading.value = true
+
     const values: DeploymentFlowRunCreate = {
       state: {
         type: 'scheduled',
@@ -89,9 +79,13 @@
       const message = getApiErrorMessage(error, localization.error.scheduleFlowRun)
       showToast(message, 'error')
       console.error(error)
+
+      return
+    } finally {
+      loading.value = false
     }
 
-    internalShowModal.value = false
+    showModal.value = false
   }
 </script>
 
