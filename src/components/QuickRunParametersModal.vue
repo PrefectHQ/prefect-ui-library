@@ -26,7 +26,7 @@
 
     <template #actions>
       <slot name="actions">
-        <p-button type="submit" :disabled="loading" primary :form="formId">
+        <p-button type="submit" :loading primary :form="formId">
           Run
         </p-button>
       </slot>
