@@ -15,7 +15,7 @@
     </template>
 
     <template #action="{ row }">
-      <ConcurrencyLimitMenu size="xs" :concurrency-limit="row" @delete="concurrencyLimitSubscription.refresh" />
+      <ConcurrencyLimitMenu size="xs" :concurrency-limit="row" @delete="() => concurrencyLimitSubscription.refresh()" />
     </template>
 
     <template #empty-state>
