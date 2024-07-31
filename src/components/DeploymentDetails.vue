@@ -16,7 +16,7 @@
       <template #label>
         <div class="deployment-details__schedule-label">
           <span>Schedules</span>
-          <DeploymentToggle v-if="can.update.deployment && deployment.schedules.length" :deployment="deployment" @update="emit('update')" />
+          <DeploymentToggle v-if="can.update.deployment && deployment.schedules.length > 3" :deployment="deployment" @update="emit('update')" />
         </div>
       </template>
       <template #value>
@@ -30,7 +30,18 @@
           <div v-for="automation in relatedAutomations" :key="automation.id" class="deployment-details-triggers__value">
             <AutomationIconText :automation-id="automation.id" />
           </div>
+
+          <!-- If the button has a :to set, it doesn't seem to respect the :disabled param -->
           <p-button
+            v-if="deployment.disabled"
+            disabled
+            icon="PlusIcon"
+            size="sm"
+          >
+            Add
+          </p-button>
+          <p-button
+            v-else
             :to="routes.automationCreate(automationQuery)"
             icon="PlusIcon"
             size="sm"
