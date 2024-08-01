@@ -146,8 +146,8 @@ export class WorkspaceFlowRunsApi extends WorkspaceApi {
     return this.delete(`/${flowRunId}`)
   }
 
-  public async downloadFlowRunLogsCsv(flowRunId: string, flowRunName: string | null): Promise<void> {
-    const { data } = await this.get<string>(`/${flowRunId}/download-logs-csv`, {
+  public async downloadFlowRunLogs(flowRunId: string, flowRunName: string | null): Promise<void> {
+    const { data } = await this.get<string>(`/${flowRunId}/logs/download`, {
       responseType: 'stream',
     })
 

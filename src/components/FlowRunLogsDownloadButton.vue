@@ -21,7 +21,7 @@
     loading.value = true
 
     try {
-      await api.flowRuns.downloadFlowRunLogsCsv(flowRun.id, flowRun.name)
+      await api.flowRuns.downloadFlowRunLogs(flowRun.id, flowRun.name)
     } catch (error) {
       console.error(error)
 
