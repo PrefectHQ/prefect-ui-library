@@ -1,6 +1,6 @@
 <template>
-  <p-modal v-model:showModal="internalValue" :title="retryModalTitle">
-    This will retry flow run {{ flowRun.name }}.
+  <p-modal v-model:showModal="internalValue" :title="rerunModalTitle">
+    This will rerun flow run {{ flowRun.name }}.
     <div>
       Any task runs without a
       <p-link :to="localization.docs.resultsPersistence">
@@ -8,8 +8,8 @@
       </p-link> will be run again.
     </div>
     <template #actions>
-      <p-button variant="default" @click="retryFromFailed">
-        Retry
+      <p-button variant="default" @click="rerunFromFailed">
+        Rerun
       </p-button>
     </template>
   </p-modal>
@@ -26,11 +26,11 @@
   const props = defineProps<{
     flowRun: FlowRun,
     showModal: boolean,
-    retryingRun: boolean,
+    rerunningRun: boolean,
   }>()
 
   const emits = defineEmits<{
-    (event: 'update:showModal' | 'update:retryingRun', value: boolean): void,
+    (event: 'update:showModal' | 'update:rerunningRun', value: boolean): void,
   }>()
 
   const internalValue = computed({
@@ -42,30 +42,30 @@
     },
   })
 
-  const retryingRun = computed({
+  const rerunningRun = computed({
     get() {
-      return props.retryingRun
+      return props.rerunningRun
     },
     set(value: boolean) {
-      emits('update:retryingRun', value)
+      emits('update:rerunningRun', value)
     },
   })
 
-  const retryModalTitle = computed(() => `Retry ${props.flowRun.name}?`)
+  const rerunModalTitle = computed(() => `Rerun ${props.flowRun.name}?`)
 
   const api = useWorkspaceApi()
 
-  const retryFromFailed = async (): Promise<void> => {
-    retryingRun.value = true
+  const rerunFromFailed = async (): Promise<void> => {
+    rerunningRun.value = true
     try {
-      await api.flowRuns.retryFlowRun(props.flowRun.id)
-      showToast(localization.success.retryRun, 'success')
+      await api.flowRuns.rerunFlowRun(props.flowRun.id)
+      showToast(localization.success.rerunRun, 'success')
     } catch (error) {
       console.error(error)
-      const message = getApiErrorMessage(error, localization.error.retryRun)
+      const message = getApiErrorMessage(error, localization.error.rerunRun)
       showToast(message, 'error')
     } finally {
-      retryingRun.value = false
+      rerunningRun.value = false
       internalValue.value = false
     }
   }

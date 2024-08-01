@@ -109,7 +109,7 @@ export class WorkspaceFlowRunsApi extends WorkspaceApi {
     return data
   }
 
-  public retryFlowRun(id: string): Promise<void> {
+  public rerunFlowRun(id: string): Promise<void> {
     return this.setFlowRunState(id, {
       state: {
         type: 'scheduled',
