@@ -61,7 +61,7 @@
         "@types/prismjs": "^1.26.4",
         "@vitejs/plugin-vue": "5.1.1",
         "auto-changelog": "^2.4.0",
-        "autoprefixer": "10.4.19",
+        "autoprefixer": "10.4.20",
         "eslint": "8.57.0",
         "lodash.camelcase": "4.3.0",
         "lodash.debounce": "4.0.8",
