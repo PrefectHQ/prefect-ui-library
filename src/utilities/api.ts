@@ -28,10 +28,11 @@ import { WorkspaceWorkPoolQueuesApi } from '@/services/WorkspaceWorkPoolQueuesAp
 import { WorkspaceWorkPoolsApi } from '@/services/WorkspaceWorkPoolsApi'
 import { WorkspaceWorkPoolWorkersApi } from '@/services/WorkspaceWorkPoolWorkersApi'
 import { WorkspaceWorkQueuesApi } from '@/services/WorkspaceWorkQueuesApi'
+import { MaybeGetter } from '@/types/reactivity'
 
 // We want the return type to be inferred
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-export function createApi(workspaceConfig: WorkspaceApiConfig, instanceSetupHook: AxiosInstanceSetupHook | null = null) {
+export function createApi(workspaceConfig: MaybeGetter<WorkspaceApiConfig>, instanceSetupHook: AxiosInstanceSetupHook | null = null) {
   return {
     artifacts: createActions(new WorkspaceArtifactsApi(workspaceConfig, instanceSetupHook)),
     automations: createActions(new WorkspaceAutomationsApi(workspaceConfig, instanceSetupHook)),
