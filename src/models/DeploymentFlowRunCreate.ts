@@ -13,6 +13,7 @@ type Base = {
   state?: StateCreate,
   workQueueName?: string | null,
   jobVariables?: Record<string, unknown>,
+  enforceParameterSchema?: boolean | null,
 }
 
 type WithoutParameters = Base & {
@@ -24,4 +25,4 @@ type WithParameters = Base & {
   parameters: SchemaValuesV2,
 }
 
-export type DeploymentFlowRunCreateV2 = WithoutParameters | WithParameters
+export type DeploymentFlowRunCreate = WithoutParameters | WithParameters

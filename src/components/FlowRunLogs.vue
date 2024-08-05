@@ -3,9 +3,8 @@
     <p-list-header>
       <template #controls>
         <LogLevelSelect v-model:selected="logLevel" />
-      </template>
-      <template #sort>
         <LogsSort v-model:selected="logsSort" />
+        <FlowRunLogsDownloadButton :flow-run />
       </template>
     </p-list-header>
 
@@ -45,6 +44,7 @@
   import { differenceInSeconds } from 'date-fns'
   import { ref, computed } from 'vue'
   import { LogLevelSelect, LogsContainer, LogsSort } from '@/components'
+  import FlowRunLogsDownloadButton from '@/components/FlowRunLogsDownloadButton.vue'
   import { useLogsSort, useWorkspaceApi } from '@/compositions'
   import { usePaginatedSubscription } from '@/compositions/usePaginatedSubscription'
   import { isTerminalStateType } from '@/models'

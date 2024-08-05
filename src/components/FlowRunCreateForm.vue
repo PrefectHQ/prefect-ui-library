@@ -21,20 +21,7 @@
             </template>
           </SchemaInputV2>
 
-          <template v-if="disableValidationCheckbox">
-            <p-tooltip>
-              <template #content>
-                <p>Parameters are always validated for deployments with parameter enforcement enabled.</p>
-                <p>You can disable this setting on <span><p-link :to="routes.deploymentEdit(deployment.id)">the deployment</p-link></span></p>
-              </template>
-              <div class="w-fit">
-                <p-checkbox v-model="shouldValidate" disabled label="Validate parameters before submitting" />
-              </div>
-            </p-tooltip>
-          </template>
-          <template v-else>
-            <p-checkbox v-model="shouldValidate" label="Validate parameters before submitting" />
-          </template>
+          <p-checkbox v-model="enforceParameterSchema" label="Validate parameters" />
         </p-content>
       </template>
 
@@ -98,10 +85,9 @@
   import FlowRunJobVariableOverridesLabeledInput from '@/components/FlowRunJobVariableOverridesLabeledInput.vue'
   import FlowRunNameInput from '@/components/FlowRunNameInput.vue'
   import ToastParameterValidationError from '@/components/ToastParameterValidationError.vue'
-  import { useWorkspaceRoutes } from '@/compositions/useWorkspaceRoutes'
   import { localization } from '@/localization'
   import { Deployment } from '@/models/Deployment'
-  import { DeploymentFlowRunCreateV2 } from '@/models/DeploymentFlowRunCreate'
+  import { DeploymentFlowRunCreate } from '@/models/DeploymentFlowRunCreate'
   import { SchemaInputV2, SchemaValuesV2 } from '@/schemas'
   import { useSchemaValidation } from '@/schemas/compositions/useSchemaValidation'
   import { SchemaValues } from '@/schemas/types/schemaValues'
@@ -116,13 +102,11 @@
   }>()
 
   const emit = defineEmits<{
-    (event: 'submit', value: DeploymentFlowRunCreateV2): void,
+    (event: 'submit', value: DeploymentFlowRunCreate): void,
     (event: 'cancel'): void,
   }>()
 
-  const routes = useWorkspaceRoutes()
-  const disableValidationCheckbox = props.deployment.enforceParameterSchema
-  const shouldValidate = ref(true)
+  const enforceParameterSchema = ref(props.deployment.enforceParameterSchema)
   const schema = computed(() => props.deployment.parameterOpenApiSchema)
   const hasParameters = computed(() => !isEmptyObject(props.deployment.parameterOpenApiSchema.properties ?? {}))
 
@@ -147,7 +131,7 @@
       return
     }
 
-    if (shouldValidate.value) {
+    if (enforceParameterSchema.value) {
       try {
         const valid = (await Promise.all([
           validate(),
@@ -164,7 +148,7 @@
       }
     }
 
-    const request: DeploymentFlowRunCreateV2 = {
+    const request: DeploymentFlowRunCreate = {
       state: {
         type: 'scheduled',
         message: stateMessage.value,
@@ -183,6 +167,7 @@
       name: name.value,
       parameters: parameters.value,
       jobVariables: jobVariables.value ? JSON.parse(jobVariables.value) : undefined,
+      enforceParameterSchema: enforceParameterSchema.value,
     }
 
     emit('submit', request)

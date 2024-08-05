@@ -1,10 +1,11 @@
 <template>
-  <p-modal v-model:showModal="internalShowModal" class="quick-run-parameters-modal-v2" title="Run Deployment">
+  <p-modal v-model:showModal="showModal" class="quick-run-parameters-modal-v2" title="Run Deployment">
     <SchemaFormV2
       :id="formId"
       v-model:values="parameters"
+      v-model:loading="loading"
       :schema="deployment.parameterOpenApiSchema"
-      :validate
+      :validate="enforceParameterSchema"
       :kinds="['json', 'workspace_variable']"
       @submit="submit"
     >
@@ -19,26 +20,13 @@
       </template>
 
       <template #after-content>
-        <template v-if="disableValidationCheckbox">
-          <p-tooltip>
-            <template #content>
-              <p>Parameters are always validated for deployments with parameter enforcement enabled.</p>
-              <p>You can disable this setting on <span><p-link :to="routes.deploymentEdit(deployment.id)">the deployment</p-link></span></p>
-            </template>
-            <div class="w-fit">
-              <p-checkbox v-model="validate" disabled label="Validate parameters before submitting" />
-            </div>
-          </p-tooltip>
-        </template>
-        <template v-else>
-          <p-checkbox v-model="validate" label="Validate parameters before submitting" />
-        </template>
+        <p-checkbox v-model="enforceParameterSchema" label="Validate parameters" />
       </template>
     </SchemaFormV2>
 
     <template #actions>
       <slot name="actions">
-        <p-button type="submit" primary :form="formId">
+        <p-button type="submit" :loading primary :form="formId">
           Run
         </p-button>
       </slot>
@@ -48,17 +36,18 @@
 
 <script lang="ts" setup>
   import { PButton, randomId, showToast } from '@prefecthq/prefect-design'
-  import { computed, h, ref } from 'vue'
+  import { h, ref } from 'vue'
   import { useRouter } from 'vue-router'
   import { ToastFlowRunCreate } from '@/components'
   import { useWorkspaceApi, useWorkspaceRoutes } from '@/compositions'
   import { localization } from '@/localization'
-  import { Deployment, DeploymentFlowRunCreateV2 } from '@/models'
+  import { Deployment, DeploymentFlowRunCreate } from '@/models'
   import { SchemaFormV2, SchemaValuesV2 } from '@/schemas'
   import { getApiErrorMessage } from '@/utilities/errors'
 
+  const showModal = defineModel<boolean>('showModal', { required: true })
+
   const props = defineProps<{
-    showModal: boolean,
     deployment: Deployment,
   }>()
 
@@ -66,35 +55,24 @@
   const router = useRouter()
   const routes = useWorkspaceRoutes()
   const formId = randomId()
-
-  const emit = defineEmits<{
-    (event: 'update:showModal', value: boolean): void,
-  }>()
-
-  const disableValidationCheckbox = props.deployment.enforceParameterSchema
-  const validate = ref(true)
+  const loading = ref(false)
+  const enforceParameterSchema = ref(props.deployment.enforceParameterSchema)
   const parameters = ref<SchemaValuesV2>({ ...props.deployment.parameters })
 
-  const internalShowModal = computed({
-    get() {
-      return props.showModal
-    },
-    set(value: boolean) {
-      emit('update:showModal', value)
-    },
-  })
-
   async function submit(): Promise<void> {
-    const values: DeploymentFlowRunCreateV2 = {
+    loading.value = true
+
+    const values: DeploymentFlowRunCreate = {
       state: {
         type: 'scheduled',
         message: 'Run from the Prefect UI',
       },
       parameters: parameters.value,
+      enforceParameterSchema: enforceParameterSchema.value,
     }
 
     try {
-      const flowRun = await api.deployments.createDeploymentFlowRunV2(props.deployment.id, values)
+      const flowRun = await api.deployments.createDeploymentFlowRun(props.deployment.id, values)
 
       const toastMessage = h(ToastFlowRunCreate, { flowRun, flowRunRoute: routes.flowRun, router, immediate: true })
       showToast(toastMessage, 'success')
@@ -102,9 +80,13 @@
       const message = getApiErrorMessage(error, localization.error.scheduleFlowRun)
       showToast(message, 'error')
       console.error(error)
+
+      return
+    } finally {
+      loading.value = false
     }
 
-    internalShowModal.value = false
+    showModal.value = false
   }
 </script>
 

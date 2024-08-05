@@ -146,4 +146,20 @@ export class WorkspaceFlowRunsApi extends WorkspaceApi {
     return this.delete(`/${flowRunId}`)
   }
 
+  public async downloadFlowRunLogs(flowRunId: string, flowRunName: string | null): Promise<void> {
+    const { data } = await this.get<string>(`/${flowRunId}/logs/download`, {
+      responseType: 'stream',
+    })
+
+    const url = URL.createObjectURL(new Blob([data]))
+    const link = document.createElement('a')
+    const filename = flowRunName ?? 'logs'
+
+    link.href = url
+    link.setAttribute('download', `${filename}.csv`)
+    link.click()
+
+    URL.revokeObjectURL(url)
+  }
+
 }

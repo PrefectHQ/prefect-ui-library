@@ -1,5 +1,6 @@
 import { asArray } from '@prefecthq/prefect-design'
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse, RawAxiosRequestHeaders } from 'axios'
+import { MaybeGetter } from '@/types'
 import { MaybeArray } from '@/types/utilities'
 import { isDefined } from '@/utilities/variables'
 
@@ -29,15 +30,23 @@ export const getAuthorizationHeaders: ApiHeaders = (config) => {
 }
 
 export class Api<T extends PrefectConfig = PrefectConfig> {
-  protected readonly apiConfig: T
+  protected readonly apiConfig: MaybeGetter<T>
   protected apiHeaders: MaybeArray<ApiHeaders> = [getPrefectUIHeaders, getAuthorizationHeaders]
   protected apiBaseUrl: ApiBaseUrl = getPrefectBaseUrl
   protected routePrefix: string | undefined
   protected instanceSetupHook: AxiosInstanceSetupHook | null
 
-  public constructor(apiConfig: T, instanceSetupHook: AxiosInstanceSetupHook | null = null) {
+  public constructor(apiConfig: MaybeGetter<T>, instanceSetupHook: AxiosInstanceSetupHook | null = null) {
     this.apiConfig = apiConfig
     this.instanceSetupHook = instanceSetupHook
+  }
+
+  protected getConfig(): T {
+    if (typeof this.apiConfig === 'function') {
+      return this.apiConfig()
+    }
+
+    return this.apiConfig
   }
 
   protected composeBaseUrl(): string {
@@ -45,14 +54,14 @@ export class Api<T extends PrefectConfig = PrefectConfig> {
       return this.apiBaseUrl
     }
 
-    return this.apiBaseUrl(this.apiConfig)
+    return this.apiBaseUrl(this.getConfig())
   }
 
   protected composeHeaders(): RawAxiosRequestHeaders {
     const array = asArray(this.apiHeaders)
 
     return array.reduce<RawAxiosRequestHeaders>((headers, header) => {
-      const value = typeof header === 'function' ? header(this.apiConfig) : header
+      const value = typeof header === 'function' ? header(this.getConfig()) : header
 
       return {
         ...headers,

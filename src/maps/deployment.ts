@@ -1,5 +1,5 @@
 import { sortStringArray } from '@prefecthq/prefect-design'
-import { DeploymentFlowRunCreateV2, DeploymentFlowRunRequest, DeploymentUpdateRequest, DeploymentUpdateV2 } from '@/models'
+import { DeploymentFlowRunCreate, DeploymentFlowRunRequest, DeploymentUpdateRequest, DeploymentUpdateV2 } from '@/models'
 import { DeploymentCreateRequest } from '@/models/api/DeploymentCreateRequest'
 import { DeploymentResponse } from '@/models/api/DeploymentResponse'
 import { Deployment } from '@/models/Deployment'
@@ -53,7 +53,7 @@ export const mapDeploymentUpdateV2ToDeploymentUpdateRequest: MapFunction<Deploym
   }
 }
 
-export const mapDeploymentFlowRunCreateV2ToDeploymentFlowRunRequest: MapFunction<DeploymentFlowRunCreateV2, DeploymentFlowRunRequest> = function(source) {
+export const mapDeploymentFlowRunCreateV2ToDeploymentFlowRunRequest: MapFunction<DeploymentFlowRunCreate, DeploymentFlowRunRequest> = function(source) {
   return {
     name: source.name,
     parameters: source.parameters,
@@ -66,6 +66,7 @@ export const mapDeploymentFlowRunCreateV2ToDeploymentFlowRunRequest: MapFunction
     empirical_policy: this.map('EmpiricalPolicy', source.empiricalPolicy, 'EmpiricalPolicyRequest'),
     work_queue_name: source.workQueueName,
     job_variables: source.jobVariables,
+    enforce_parameter_schema: source.enforceParameterSchema,
   }
 }
 
