@@ -34,4 +34,5 @@ export type DeploymentResponse = {
   enforce_parameter_schema: boolean,
   pull_steps: unknown,
   status: ServerDeploymentStatus,
+  disabled?: boolean,
 }

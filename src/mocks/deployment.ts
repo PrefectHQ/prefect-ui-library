@@ -6,6 +6,7 @@ import { random } from '@/utilities/math'
 export const randomDeployment: MockFunction<Deployment, [Partial<Deployment>?]> = function(overrides = {}) {
   const paused = random() > 0.25
   const schedule = random() > 0.25 ? this.create('schedule') : null
+  const disabled = random() > 0.25
 
   return {
     id: this.create('id'),
@@ -37,6 +38,7 @@ export const randomDeployment: MockFunction<Deployment, [Partial<Deployment>?]> 
     pullSteps: [],
     can: createObjectLevelCan(),
     status: this.create('deploymentStatus'),
+    disabled: disabled,
     ...overrides,
   }
 }

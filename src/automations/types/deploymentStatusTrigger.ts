@@ -4,7 +4,7 @@ import { isAutomationTriggerEvent } from '@/automations/types/triggers'
 import { DeploymentStatus } from '@/models/DeploymentStatus'
 import { createTuple } from '@/utilities/tuples'
 
-export const { values: deploymentStatusEvent, isValue: isDeploymentStatusEvent } = createTuple(['prefect.deployment.ready', 'prefect.deployment.not-ready'])
+export const { values: deploymentStatusEvent, isValue: isDeploymentStatusEvent } = createTuple(['prefect.deployment.ready', 'prefect.deployment.not-ready', 'prefect.deployment.disabled'])
 export type DeploymentStatusEvent = typeof deploymentStatusEvent[number]
 
 export type DeploymentStatusTrigger = {

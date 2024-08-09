@@ -75,14 +75,17 @@
       </template>
 
       <template #action="{ row }">
-        <DeploymentMenu
-          class="deployment-list__menu"
-          small
-          show-all
-          :deployment="row"
-          flat
-          @delete="refresh"
-        />
+        <div class="deployment-list__action">
+          <DeploymentDisableToggle v-if="deploymentDisableToggle" :deployment="row" @update="refresh" />
+          <DeploymentMenu
+            class="deployment-list__menu"
+            small
+            show-all
+            :deployment="row"
+            flat
+            @delete="refresh"
+          />
+        </div>
       </template>
 
       <template #empty-state>
@@ -123,7 +126,7 @@
     MiniDeploymentHistory,
     SelectedCount,
     DeploymentTagsInput,
-    FormattedDate,
+    DeploymentDisableToggle,
     DeploymentStatusBadge,
     DeploymentScheduleTags
   } from '@/components'
@@ -136,6 +139,7 @@
   const props = defineProps<{
     filter?: DeploymentsFilter,
     prefix?: string,
+    deploymentDisableToggle?: boolean,
   }>()
 
   const emit = defineEmits<{
@@ -283,6 +287,12 @@
 
 .deployment-list__menu { @apply
   ml-2
+}
+
+.deployment-list__action { @apply
+  flex
+  justify-end
+  items-center
 }
 
 .deployment-list__row--subdued .deployment-list__deployment-column,

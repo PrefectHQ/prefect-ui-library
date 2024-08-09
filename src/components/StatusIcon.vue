@@ -3,7 +3,7 @@
 </template>
 
 <script setup lang="ts">
-  export type Status = 'ready' | 'not_ready'
+  export type Status = 'ready' | 'not_ready' | 'disabled'
 
   defineProps<{ status: Status }>()
 </script>
@@ -22,5 +22,9 @@
 
 .status-icon--not_ready { @apply
   bg-sentiment-negative
+}
+
+.status-icon--disabled { @apply
+  bg-sentiment-neutral
 }
 </style>

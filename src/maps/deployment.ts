@@ -36,6 +36,7 @@ export const mapDeploymentResponseToDeployment: MapFunction<DeploymentResponse, 
     pullSteps: source.pull_steps,
     can: createObjectLevelCan(),
     status: this.map('ServerDeploymentStatus', source.status, 'DeploymentStatus'),
+    disabled: source.disabled ?? false,
   })
 }
 
