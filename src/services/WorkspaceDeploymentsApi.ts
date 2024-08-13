@@ -95,10 +95,10 @@ export class WorkspaceDeploymentsApi extends WorkspaceApi {
   }
 
   public disableDeployment(deploymentId: string): Promise<void> {
-    return this.post(`/${deploymentId}/disable_deployment`)
+    return this.post(`/${deploymentId}/disable`)
   }
 
   public enableDeployment(deploymentId: string): Promise<void> {
-    return this.post(`/${deploymentId}/enable_deployment`)
+    return this.post(`/${deploymentId}/enable`)
   }
 }
