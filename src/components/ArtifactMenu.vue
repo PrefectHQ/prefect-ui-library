@@ -15,9 +15,9 @@
 
 <script lang="ts" setup>
   import CopyOverflowMenuItem from '@/components/CopyOverflowMenuItem.vue'
-  import { Artifact } from '@/models'
+  import { Artifact, ArtifactCollection } from '@/models'
 
   defineProps<{
-    artifact: Artifact,
+    artifact: Artifact | ArtifactCollection,
   }>()
 </script>

@@ -6,9 +6,9 @@
 
 <script lang="ts" setup>
   import { computed } from 'vue'
-  import { Artifact } from '@/models'
+  import { Artifact, ArtifactCollection } from '@/models'
   const props = defineProps<{
-    artifact: Artifact,
+    artifact: Artifact | ArtifactCollection,
   }>()
 
   const description = computed(() => props.artifact.description ?? '')
