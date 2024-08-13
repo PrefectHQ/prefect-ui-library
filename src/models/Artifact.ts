@@ -81,6 +81,7 @@ export class Artifact implements IArtifact {
   public readonly taskRunId: string | null
   public readonly created: Date
   public readonly updated: Date
+  public readonly kind = 'artifact'
   public type: ArtifactType
   public description: string | null
   public data: ArtifactData

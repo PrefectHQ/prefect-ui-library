@@ -47,6 +47,7 @@ export class FlowRun extends StorageItem implements IFlowRun {
   public readonly flowId: string
   public readonly deploymentId: string | null
   public readonly workQueueName: string | null
+  public readonly kind = 'flowRun'
   public flowVersion: string | null
   public idempotencyKey: string | null
   public expectedStartTime: Date | null

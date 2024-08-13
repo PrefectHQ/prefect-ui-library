@@ -18,6 +18,7 @@ export class Log implements ILog {
   public readonly id: string
   public readonly created: Date
   public readonly updated: Date
+  public readonly kind = 'log'
   public name: string
   public level: LogLevel
   public message: string
