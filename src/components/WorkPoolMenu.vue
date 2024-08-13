@@ -2,9 +2,9 @@
   <p-icon-button-menu v-bind="$attrs" class="work-pool-menu">
     <CopyOverflowMenuItem label="Copy ID" :item="workPool.id" />
     <router-link :to="routes.workPoolEdit(workPool.name)">
-      <p-overflow-menu-item v-if="can.update.work_pool" label="Edit" />
+      <p-overflow-menu-item v-if="workPool.can.update" label="Edit" />
     </router-link>
-    <p-overflow-menu-item v-if="can.delete.work_pool" label="Delete" @click="open" />
+    <p-overflow-menu-item v-if="workPool.can.delete" label="Delete" @click="open" />
 
     <router-link :to="routes.automateWorkPool(workPool.id)">
       <p-overflow-menu-item label="Automate" />

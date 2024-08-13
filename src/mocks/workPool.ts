@@ -1,4 +1,4 @@
-import { WorkPool } from '@/models'
+import { createObjectLevelCan, WorkPool } from '@/models'
 import { MockFunction } from '@/services'
 
 export const randomWorkPool: MockFunction<WorkPool, [Partial<WorkPool>?]> =
@@ -21,6 +21,7 @@ export const randomWorkPool: MockFunction<WorkPool, [Partial<WorkPool>?]> =
       defaultQueueId: this.create('id'),
       baseJobTemplate: this.create('parameters', [{}, this.create('schema')]),
       status: this.create('workPoolStatus'),
+      can: createObjectLevelCan(),
       ...overrides,
     })
   }

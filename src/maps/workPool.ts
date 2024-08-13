@@ -1,6 +1,6 @@
 import { AutomationTriggerEvent } from '@/automations/types/automationTriggerEvent'
 import { AutomationTrigger } from '@/automations/types/triggers'
-import { WorkPool, WorkPoolCreateRequest, WorkPoolEdit, WorkPoolEditRequest, WorkPoolResponse, WorkPoolCreate } from '@/models'
+import { WorkPool, WorkPoolCreateRequest, WorkPoolEdit, WorkPoolEditRequest, WorkPoolResponse, WorkPoolCreate, createObjectLevelCan } from '@/models'
 import { MapFunction } from '@/services/Mapper'
 
 export const mapWorkPoolResponseToWorkPool: MapFunction<WorkPoolResponse, WorkPool> = function(source) {
@@ -17,6 +17,7 @@ export const mapWorkPoolResponseToWorkPool: MapFunction<WorkPoolResponse, WorkPo
     concurrencyLimit: source.concurrency_limit,
     defaultQueueId: source.default_queue_id,
     baseJobTemplate: source.base_job_template,
+    can: createObjectLevelCan(),
     status: this.map('ServerWorkPoolStatus', source.status, 'WorkPoolStatus'),
   })
 }

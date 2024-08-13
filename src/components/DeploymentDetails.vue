@@ -17,7 +17,7 @@
         <div class="deployment-details__schedule-label">
           <span>Schedules</span>
           <!-- We need to display this toggle if the deployment is paused so a user can enabled it -->
-          <DeploymentToggle v-if="can.update.deployment && (deployment.schedules.length > 3 || deployment.paused)" :deployment="deployment" @update="emit('update')" />
+          <DeploymentToggle v-if="deployment.can.update && (deployment.schedules.length > 3 || deployment.paused)" :deployment="deployment" @update="emit('update')" />
         </div>
       </template>
       <template #value>

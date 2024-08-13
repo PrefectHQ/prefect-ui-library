@@ -14,6 +14,7 @@ export type ObjectLevelCan<TObjectType extends ObjectTypesWithPermissions> = {
 
 export function createObjectLevelCan<T extends ObjectTypesWithPermissions>(): ObjectLevelCan<T> {
   const knownProperties = permissionVerbs
+
   return new Proxy({} as ObjectLevelCan<T>, {
     get(_target, property) {
       // only proxy known properties so that vue doesn't think it's a ref in templates
