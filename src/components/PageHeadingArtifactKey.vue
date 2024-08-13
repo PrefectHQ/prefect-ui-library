@@ -12,10 +12,10 @@
   import PageHeading from '@/components/PageHeading.vue'
   import { useComponent, useWorkspaceRoutes } from '@/compositions'
   import { localization } from '@/localization'
-  import { Artifact } from '@/models'
+  import { Artifact, ArtifactCollection } from '@/models'
 
   const props = defineProps<{
-    artifact: Artifact,
+    artifact: Artifact | ArtifactCollection,
   }>()
 
   const routes = useWorkspaceRoutes()
