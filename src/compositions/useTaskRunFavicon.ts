@@ -1,20 +1,12 @@
 import { MaybeRefOrGetter, computed, toValue } from 'vue'
 import { useFavicon } from '@/compositions/useFavicon'
-import { useTaskRun } from '@/compositions/useTaskRun'
-import { backgroundSubscriptionManager } from '@/utilities/subscriptions'
+import { TaskRun } from '@/models'
 
-export function useTaskRunFavicon(taskRunId: MaybeRefOrGetter<string>): void {
-  const interval = 5000
-  const { taskRun, subscription } = useTaskRun(taskRunId, { interval })
-  const { taskRun: backgroundTaskRun } = useTaskRun(() => {
-    if (subscription.paused) {
-      return toValue(taskRunId)
-    }
-
-    return null
-  }, { interval, manager: backgroundSubscriptionManager })
-
-  const state = computed(() => backgroundTaskRun.value?.stateType ?? taskRun.value?.stateType)
+export function useTaskRunFavicon(taskRun: MaybeRefOrGetter<TaskRun | undefined>): void {
+  const state = computed(() => {
+    const taskRunValue = toValue(taskRun)
+    return taskRunValue?.stateType
+  })
 
   useFavicon(state)
 }
