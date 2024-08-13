@@ -1,5 +1,5 @@
 <template>
-  <p-tooltip text="Deployment enabled" side="left">
+  <p-tooltip :text="tooltipText" side="left">
     <p-toggle v-if="deployment.can.update" v-model="internalValue" :state :disabled="deployment.deprecated" />
   </p-tooltip>
 </template>
@@ -33,6 +33,10 @@
         toggleDeploymentEnabled(false)
       }
     },
+  })
+
+  const tooltipText = computed(() => {
+    return props.deployment.disabled ? localization.info.deploymentDisabled : localization.info.deploymentEnabled
   })
 
   const state = reactive<State>({ pending: false, valid: true, validated: false })

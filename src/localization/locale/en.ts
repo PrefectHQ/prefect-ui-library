@@ -131,6 +131,8 @@ export const en = {
     filtersActive: 'Filters active',
     resetFilters: 'Reset filters',
     deploymentName: 'Deployment name',
+    deploymentDisabled: 'Deployment disabled, click to enable',
+    deploymentEnabled: 'Deployment enabled, click to disable',
     searchByDeploymentName: 'Search by deployment name',
     workPools: 'Work Pools',
     all: 'All',
