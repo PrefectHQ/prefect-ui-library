@@ -8,6 +8,7 @@ export type IFlow = {
 
 export class Flow implements IFlow {
   public readonly id: string
+  public readonly kind = 'flow'
   public readonly created: Date
   public readonly updated: Date
   public name: string

@@ -34,6 +34,7 @@ export interface IWorkPoolQueue {
 
 export class WorkPoolQueue implements IWorkPoolQueue {
   public readonly id: string
+  public readonly kind = 'queue'
   public created: Date
   public updated: Date
   public workPoolId: string

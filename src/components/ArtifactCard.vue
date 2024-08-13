@@ -43,10 +43,10 @@
   import { computed } from 'vue'
   import FormattedDate from '@/components/FormattedDate.vue'
   import { localization } from '@/localization'
-  import { Artifact } from '@/models'
+  import { Artifact, ArtifactCollection } from '@/models'
 
   const props = defineProps<{
-    artifact: Artifact,
+    artifact: Artifact | ArtifactCollection,
     condense?: boolean,
     interactive?: boolean,
   }>()

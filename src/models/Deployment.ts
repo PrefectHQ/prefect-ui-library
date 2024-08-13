@@ -36,6 +36,7 @@ export interface IDeployment {
 
 export class Deployment implements IDeployment {
   public readonly id: string
+  public readonly kind = 'deployment'
   public created: Date
   public createdBy: CreatedOrUpdatedBy | null
   public updated: Date

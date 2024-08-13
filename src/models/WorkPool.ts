@@ -23,6 +23,7 @@ export interface IWorkPool {
 
 export class WorkPool implements IWorkPool {
   public readonly id: string
+  public readonly kind = 'workPool'
   public created: Date
   public updated: Date
   public name: string

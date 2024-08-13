@@ -12,6 +12,7 @@ export const MAX_VARIABLE_VALUE_LENGTH = 5000 as const
 
 export class Variable implements IVariable {
   public readonly id: string
+  public readonly kind = 'variable'
   public readonly created: Date
   public readonly updated: Date
   public name: string

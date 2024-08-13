@@ -77,6 +77,7 @@ export type UnknownArtifact = IArtifact & {
 export class Artifact implements IArtifact {
   public readonly id: string
   public readonly key: string | null
+  public readonly kind = 'artifact'
   public readonly flowRunId: string | null
   public readonly taskRunId: string | null
   public readonly created: Date

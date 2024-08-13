@@ -3,6 +3,7 @@ import { StateType } from '@/models/StateType'
 
 export type State = {
   id: string,
+  kind: 'state',
   type: StateType,
   message: string,
   stateDetails: StateDetails | null,

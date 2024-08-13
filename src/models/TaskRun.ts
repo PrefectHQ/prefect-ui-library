@@ -33,6 +33,7 @@ export interface ITaskRun {
 export class TaskRun implements ITaskRun {
   public readonly id: string
   public readonly flowRunId: string | null
+  public readonly kind = 'taskRun'
   public cacheExpiration: string | null
   public cacheKey: string | null
   public created: Date

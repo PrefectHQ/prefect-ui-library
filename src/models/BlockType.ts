@@ -12,6 +12,7 @@ export interface IBlockType {
 
 export class BlockType implements IBlockType {
   public readonly id: string
+  public readonly kind = 'blockType'
   public created: Date
   public updated: Date
   public name: string
