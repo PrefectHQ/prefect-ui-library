@@ -13,6 +13,7 @@ export class ArtifactCollection implements IArtifactCollection {
   public readonly taskRunId: string | null
   public readonly created: Date
   public readonly updated: Date
+  public readonly kind = 'artifactCollection'
   public type: ArtifactType
   public description: string | null
   public data: ArtifactData

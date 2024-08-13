@@ -32,6 +32,7 @@ export class BlockDocument implements IBlockDocument {
   public readonly created: Date
   public readonly updated: Date
   public readonly isAnonymous: boolean
+  public readonly kind = 'blockDocument'
   public name: string
   public data: SchemaValues
   public blockSchemaId: string

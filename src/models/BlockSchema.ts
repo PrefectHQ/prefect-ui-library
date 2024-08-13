@@ -16,6 +16,7 @@ export class BlockSchema implements IBlockSchema {
   public readonly id: string
   public readonly created: Date
   public readonly updated: Date
+  public readonly kind = 'blockSchema'
   public checksum: string
   public fields: Schema
   public blockTypeId: string
