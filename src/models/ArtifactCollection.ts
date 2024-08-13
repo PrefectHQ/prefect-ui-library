@@ -1,7 +1,8 @@
-import { ArtifactData, ArtifactMetadata, ArtifactType, IArtifact } from '@/models/Artifact'
+import { ArtifactData, ArtifactMetadata, ArtifactType, ArtifactKind, IArtifact } from '@/models/Artifact'
 
 export interface IArtifactCollection extends IArtifact {
   latestId: string,
+  kind: ArtifactKind,
   key: string,
 }
 
@@ -13,7 +14,7 @@ export class ArtifactCollection implements IArtifactCollection {
   public readonly taskRunId: string | null
   public readonly created: Date
   public readonly updated: Date
-  public readonly kind = 'artifactCollection'
+  public readonly kind: ArtifactKind = 'artifactCollection'
   public type: ArtifactType
   public description: string | null
   public data: ArtifactData
@@ -25,6 +26,7 @@ export class ArtifactCollection implements IArtifactCollection {
     this.created = artifact.created
     this.updated = artifact.updated
     this.key = artifact.key
+    this.kind = artifact.kind
     this.type = artifact.type
     this.description = artifact.description
     this.data = artifact.data

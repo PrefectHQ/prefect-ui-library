@@ -10,6 +10,7 @@ export const randomState: MockFunction<State, [Partial<State>?]> = function(over
   return {
     id: this.create('id'),
     type: type,
+    kind: 'state',
     message: this.create('sentence'),
     stateDetails: {
       flowRunId: this.create('id'),

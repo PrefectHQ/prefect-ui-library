@@ -7,6 +7,7 @@ export const mapStateResponseToState: MapFunction<StateResponse, State> = functi
   return {
     id: source.id,
     type: this.map('ServerStateType', source.type, 'StateType'),
+    kind: 'state',
     message: source.message,
     stateDetails: this.map('StateDetailsResponse', source.state_details, 'StateDetails'),
     data: source.data,

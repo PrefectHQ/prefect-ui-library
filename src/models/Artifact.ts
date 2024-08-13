@@ -11,6 +11,20 @@ export const artifactTypes = [
 
 export type ArtifactType = typeof artifactTypes[number]
 
+
+export const artifactKinds = [
+  'artifact',
+  'artifactCollection',
+  'artifactResult',
+  'artifactMarkdown',
+  'artifactTable',
+  'artifactProgress',
+  'artifactImage',
+  'artifactUnknown',
+] as const
+
+export type ArtifactKind = typeof artifactKinds[number]
+
 export const artifactTypeIconMap = {
   default: 'Artifact',
   markdown: 'ArtifactMarkdown',
@@ -37,6 +51,7 @@ export interface IArtifact {
   updated: Date,
   key: string | null,
   type: ArtifactType,
+  kind: ArtifactKind,
   description: string | null,
   data: ArtifactData,
   metadata: ArtifactMetadata,
@@ -46,31 +61,37 @@ export interface IArtifact {
 
 export type ResultArtifact = IArtifact & {
   type: 'result',
+  kind: 'artifactResult',
   data: ResultArtifactData,
 }
 
 export type MarkdownArtifact = IArtifact & {
   type: 'markdown',
+  kind: 'artifactMarkdown',
   data: MarkdownArtifactData,
 }
 
 export type TableArtifact = IArtifact & {
   type: 'table',
+  kind: 'artifactTable',
   data: TableArtifactData,
 }
 
 export type ProgressArtifact = IArtifact & {
   type: 'progress',
+  kind: 'artifactProgress',
   data: ProgressArtifactData,
 }
 
 export type ImageArtifact = IArtifact & {
   type: 'image',
+  kind: 'artifactImage',
   data: ImageArtifactData,
 }
 
 export type UnknownArtifact = IArtifact & {
   type: 'unknown',
+  kind: 'artifactUnknown',
   data: unknown,
 }
 
@@ -81,7 +102,7 @@ export class Artifact implements IArtifact {
   public readonly taskRunId: string | null
   public readonly created: Date
   public readonly updated: Date
-  public readonly kind = 'artifact'
+  public readonly kind: ArtifactKind = 'artifact'
   public type: ArtifactType
   public description: string | null
   public data: ArtifactData
@@ -93,6 +114,7 @@ export class Artifact implements IArtifact {
     this.updated = artifact.updated
     this.key = artifact.key
     this.type = artifact.type
+    this.kind = artifact.kind
     this.description = artifact.description
     this.data = artifact.data
     this.metadata = artifact.metadata
