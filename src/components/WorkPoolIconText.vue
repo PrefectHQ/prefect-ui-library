@@ -1,5 +1,5 @@
 <template>
-  <template v-if="can.read.work_pool">
+  <template v-if="workPool?.can.read">
     <p-link :to="routes.workPool(workPoolName)" class="work-pool-icon-text">
       <p-icon-text icon="PWorkPool">
         <span>{{ workPoolName }}</span>
@@ -9,14 +9,12 @@
 </template>
 
 <script lang="ts" setup>
-  import { toRefs } from 'vue'
-  import { useCan, useWorkspaceRoutes } from '@/compositions'
+  import { useWorkPool, useWorkspaceRoutes } from '@/compositions'
 
   const props = defineProps<{
     workPoolName: string,
   }>()
 
-  const can = useCan()
   const routes = useWorkspaceRoutes()
-  const { workPoolName } = toRefs(props)
+  const { workPool } = useWorkPool(() => props.workPoolName)
 </script>
