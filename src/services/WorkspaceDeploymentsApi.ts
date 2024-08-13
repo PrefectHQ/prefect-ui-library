@@ -93,4 +93,12 @@ export class WorkspaceDeploymentsApi extends WorkspaceApi {
   public deleteDeployment(deploymentId: string): Promise<void> {
     return this.delete(`/${deploymentId}`)
   }
+
+  public disableDeployment(deploymentId: string): Promise<void> {
+    return this.post(`/${deploymentId}/disable_deployment`)
+  }
+
+  public enableDeployment(deploymentId: string): Promise<void> {
+    return this.post(`/${deploymentId}/enable_deployment`)
+  }
 }

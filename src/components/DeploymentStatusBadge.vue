@@ -19,6 +19,7 @@
     root: {
       'deployment-status-badge--ready': props.deployment.status === 'ready',
       'deployment-status-badge--not-ready': props.deployment.status === 'not_ready',
+      'deployment-status-badge--disabled': props.deployment.status === 'disabled',
     },
   }))
 </script>
@@ -37,6 +38,11 @@
 
 .deployment-status-badge--not-ready { @apply
   bg-sentiment-warning
+  bg-opacity-10
+}
+
+.deployment-status-badge--disabled { @apply
+  bg-sentiment-neutral
   bg-opacity-10
 }
 </style>

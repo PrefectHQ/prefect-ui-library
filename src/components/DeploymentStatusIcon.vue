@@ -23,6 +23,8 @@
         return 'One or more processes are actively polling this deployment'
       case 'not_ready':
         return 'This deployment has not been polled in the past 60 seconds'
+      case 'disabled':
+        return 'This deployment is disabled and cannot be run'
       default:
         return ''
     }

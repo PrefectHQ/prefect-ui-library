@@ -73,6 +73,8 @@ function mapDeploymentStatusToEvent(status: DeploymentStatus): DeploymentStatusE
       return 'prefect.deployment.ready'
     case 'not_ready':
       return 'prefect.deployment.not-ready'
+    case 'disabled':
+      return 'prefect.deployment.disabled'
     default:
       const exhaustiveCheck: never = status
       return `prefect.deployment.${exhaustiveCheck}`
@@ -82,6 +84,7 @@ function mapDeploymentStatusToEvent(status: DeploymentStatus): DeploymentStatusE
 const statusEventToStatus: Record<DeploymentStatusEvent, DeploymentStatus> = {
   'prefect.deployment.ready': 'ready',
   'prefect.deployment.not-ready': 'not_ready',
+  'prefect.deployment.disabled': 'disabled',
 }
 
 function statusFromDeploymentStatusEvents(events: string[]): DeploymentStatus {
