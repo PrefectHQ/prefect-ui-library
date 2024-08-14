@@ -474,7 +474,10 @@ export const mapLogsFilter: MapFunction<LogsFilter, LogsFilterRequest> = functio
         ...toAfter(source.logs?.timestampAfter),
       },
       flow_run_id: toAny(source.logs?.flowRunId),
-      task_run_id: toAny(source.logs?.taskRunId),
+      task_run_id: {
+        ...toAny(source.logs?.taskRunId),
+        ...toIsNull(source.logs?.taskRunIdNull),
+      },
     },
     sort: source.sort,
     offset: source.offset,
