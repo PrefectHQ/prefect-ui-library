@@ -207,7 +207,7 @@ export type LogsFilterRequest = {
     level?: GreaterThan & LessThan,
     timestamp?: Before & After,
     flow_run_id?: Any,
-    task_run_id?: Any,
+    task_run_id?: Any & IsNull,
   },
   sort?: LogSortValues,
   offset?: number,

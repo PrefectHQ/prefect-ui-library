@@ -222,6 +222,7 @@ export type LogsFilter = {
     timestampAfter?: Date,
     flowRunId?: string[],
     taskRunId?: string[],
+    taskRunIdNull?: boolean,
   },
   sort?: LogSortValues,
   offset?: number,
