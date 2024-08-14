@@ -1,5 +1,6 @@
 import { createActions } from '@prefecthq/vue-compositions'
 import { InjectionKey } from 'vue'
+import { WorkspaceFlowRunStatesApi, WorkspaceTaskRunStatesApi } from '@/services'
 import { AxiosInstanceSetupHook } from '@/services/Api'
 import { CollectionsApi } from '@/services/CollectionsApi'
 import { HealthApi } from '@/services/HealthApi'
@@ -46,12 +47,14 @@ export function createApi(workspaceConfig: MaybeGetter<WorkspaceApiConfig>, inst
     deployments: createActions(new WorkspaceDeploymentsApi(workspaceConfig, instanceSetupHook)),
     deploymentSchedules: createActions(new WorkspaceDeploymentScheduleApi(workspaceConfig, instanceSetupHook)),
     flowRuns: createActions(new WorkspaceFlowRunsApi(workspaceConfig, instanceSetupHook)),
+    flowRunStates: createActions(new WorkspaceFlowRunStatesApi(workspaceConfig, instanceSetupHook)),
     flows: createActions(new WorkspaceFlowsApi(workspaceConfig, instanceSetupHook)),
     health: createActions(new HealthApi(workspaceConfig, instanceSetupHook)),
     logs: createActions(new WorkspaceLogsApi(workspaceConfig, instanceSetupHook)),
     notifications: createActions(new WorkspaceNotificationsApi(workspaceConfig, instanceSetupHook)),
     savedSearches: createActions(new WorkspaceSavedSearchesApi(workspaceConfig, instanceSetupHook)),
     taskRuns: createActions(new WorkspaceTaskRunsApi(workspaceConfig, instanceSetupHook)),
+    taskRunStates: createActions(new WorkspaceTaskRunStatesApi(workspaceConfig, instanceSetupHook)),
     ui: createActions(new UiApi(workspaceConfig, instanceSetupHook)),
     variables: createActions(new WorkspaceVariablesApi(workspaceConfig, instanceSetupHook)),
     workPoolQueues: createActions(new WorkspaceWorkPoolQueuesApi(workspaceConfig, instanceSetupHook)),
