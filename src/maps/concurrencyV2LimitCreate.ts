@@ -13,7 +13,6 @@ export const mapConcurrencyV2CreateToConcurrencyV2CreateRequest: MapFunction<Con
     active,
     name,
     limit,
-    active_slots: source.activeSlots,
     denied_slots: source.deniedSlots,
     slot_decay_per_second: source.slotDecayPerSecond,
   }

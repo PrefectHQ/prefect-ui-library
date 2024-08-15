@@ -14,10 +14,6 @@
           <p-number-input v-model="decay" :min="0" />
         </p-label>
 
-        <p-label label="Active Slots">
-          <p-number-input v-model="activeSlots" :min="0" />
-        </p-label>
-
         <p-label label="Active">
           <p-toggle v-model="active" />
         </p-label>
@@ -64,8 +60,6 @@
 
   const decay = ref(0)
 
-  const activeSlots = ref(0)
-
   const internalShowModal = computed({
     get() {
       return props.showModal
@@ -83,7 +77,6 @@
     limit.value = 0
     decay.value = 0
     active.value = true
-    activeSlots.value = 0
   }
 
   const { valid, pending, validate } = useValidationObserver()
@@ -96,7 +89,6 @@
           limit: limit.value,
           slotDecayPerSecond: decay.value,
           active: active.value,
-          activeSlots: activeSlots.value,
         }
         await api.concurrencyV2Limits.createConcurrencyV2Limit(concurrencyLimit)
         concurrencyLimitSubscription.refresh()
