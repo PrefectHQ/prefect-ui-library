@@ -130,7 +130,7 @@
   }))
 
   const taskRunCountOptions = computed(() => ({
-    interval: isTerminalStateType(props.flowRun.state?.type) ? undefined : 1000,
+    interval: isTerminalStateType(props.flowRun.state?.type) ? 10000 : 1000,
   }))
 
   const { count, subscription } = useTaskRunsCount(() => ({
