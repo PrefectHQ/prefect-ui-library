@@ -172,6 +172,9 @@
   const columns = computed<TableColumn<Deployment>[]>(() => [
     {
       label: 'Deployment',
+      minWidth: '200px',
+      width: '200px',
+      maxWidth: '1000px',
     },
     {
       label: 'Status',
@@ -181,19 +184,21 @@
     {
       label: 'Activity',
       visible: media.lg,
-      maxWidth: '15%',
+      width: '200px',
     },
     {
       label: 'Tags',
       property: 'tags',
       visible: media.md,
       maxWidth: '15%',
+      width: '200px',
     },
     {
       label: 'Schedules',
       property: 'schedules',
-      visible: media.md,
+      visible: media.lg,
       maxWidth: '15%',
+      width: '200px',
     },
     {
       label: 'Action',
@@ -293,6 +298,10 @@
   flex
   justify-end
   items-center
+}
+
+.p-table-header.deployment-list__deployment-column { @apply
+  resize-x
 }
 
 .deployment-list__row--subdued .deployment-list__deployment-column,
