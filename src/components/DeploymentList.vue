@@ -117,7 +117,7 @@
   import { secondsInWeek } from 'date-fns/constants'
   import { snakeCase } from 'lodash'
   import merge from 'lodash.merge'
-  import { computed, ref } from 'vue'
+  import { computed, ref, watch } from 'vue'
   import {
     DeploymentsDeleteButton,
     ResultsCount,
@@ -164,6 +164,9 @@
     page,
   }), props.prefix)
 
+  watch(limit, () => {
+    page.value = 1
+  })
 
   const { deployments, subscription, count, pages } = useDeployments(filter, {
     interval: 30000,
@@ -228,7 +231,7 @@
 
 <style>
 .deployment-list__table { @apply
-  overflow-visible
+  overflow-auto
 }
 
 .deployment-list__table .p-table__table { @apply
