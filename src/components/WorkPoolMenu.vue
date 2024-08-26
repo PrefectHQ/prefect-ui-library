@@ -1,10 +1,16 @@
 <template>
   <p-icon-button-menu v-bind="$attrs" class="work-pool-menu">
     <CopyOverflowMenuItem label="Copy ID" :item="workPool.id" />
-    <router-link :to="routes.workPoolEdit(workPool.name)">
-      <p-overflow-menu-item v-if="workPool.can.update" label="Edit" />
-    </router-link>
-    <p-overflow-menu-item v-if="workPool.can.delete" label="Delete" @click="open" />
+
+    <template v-if="workPool.can.update">
+      <router-link :to="routes.workPoolEdit(workPool.name)">
+        <p-overflow-menu-item label="Edit" />
+      </router-link>
+    </template>
+
+    <template v-if="workPool.can.delete">
+      <p-overflow-menu-item label="Delete" @click="open" />
+    </template>
 
     <router-link :to="routes.automateWorkPool(workPool.id)">
       <p-overflow-menu-item label="Automate" />
@@ -12,6 +18,7 @@
 
     <slot v-bind="{ workPool }" />
   </p-icon-button-menu>
+
   <ConfirmDeleteModal
     v-model:showModal="showModal"
     label="Work Pool"
@@ -31,7 +38,7 @@
 <script lang="ts" setup>
   import { refreshChannel } from '@prefecthq/vue-compositions'
   import { CopyOverflowMenuItem, ConfirmDeleteModal } from '@/components'
-  import { useCan, useShowModal, useWorkPoolsCount, useWorkspaceApi, useWorkspaceRoutes } from '@/compositions'
+  import { useShowModal, useWorkPoolsCount, useWorkspaceApi, useWorkspaceRoutes } from '@/compositions'
   import { WorkPool } from '@/models'
   import { deleteItem } from '@/utilities'
 
@@ -43,17 +50,16 @@
     (event: 'delete'): void,
   }>()
 
-  const can = useCan()
   const api = useWorkspaceApi()
   const routes = useWorkspaceRoutes()
   const { showModal, open, close } = useShowModal()
-  const { subscription: workPoolsCountSubcription } = useWorkPoolsCount()
+  const { subscription: workPoolsCountSubscription } = useWorkPoolsCount()
 
   async function deleteWorkPool(name: string): Promise<void> {
     close()
     await deleteItem(name, api.workPools.deleteWorkPool, 'Work pool')
     refreshChannel(api.workPools.getWorkPools, [])
-    workPoolsCountSubcription.refresh()
+    workPoolsCountSubscription.refresh()
     emit('delete')
   }
 </script>
