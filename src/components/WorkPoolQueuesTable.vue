@@ -3,9 +3,14 @@
     <p-list-header sticky>
       <ResultsCount v-if="selected.length == 0" label="Work Queue" :count="filteredWorkPoolQueues.length" />
       <SelectedCount v-else :count="selected.length" />
-      <p-button v-if="can.create.work_queue && !selected.length" size="sm" icon="PlusIcon" :to="routes.workPoolQueueCreate(workPoolName)" />
 
-      <WorkPoolQueuesDeleteButton v-if="can.delete.work_queue" :work-pool-name="workPoolName" :work-pool-queues="selected" @delete="handleDelete" />
+      <template v-if="workPool?.can.create && !selected.length">
+        <p-button size="sm" icon="PlusIcon" :to="routes.workPoolQueueCreate(workPoolName)" />
+      </template>
+
+      <template v-if="workPool?.can.delete">
+        <WorkPoolQueuesDeleteButton :work-pool-name="workPoolName" :work-pool-queues="selected" @delete="handleDelete" />
+      </template>
 
       <template #controls>
         <SearchInput v-model="search" label="Search" placeholder="Search" />
@@ -44,10 +49,10 @@
 
 <script lang="ts" setup>
   import { TableColumn } from '@prefecthq/prefect-design'
-  import { useSubscription } from '@prefecthq/vue-compositions'
   import { ref, computed } from 'vue'
   import { SearchInput, ResultsCount, SelectedCount, WorkPoolQueuesDeleteButton, WorkPoolQueuePriorityLabel, WorkersLateIndicator, WorkPoolQueueToggle, WorkPoolQueueStatusBadge } from '@/components'
-  import { useCan, useWorkspaceRoutes, useWorkspaceApi, useComponent } from '@/compositions'
+  import { useCan, useWorkspaceRoutes, useComponent, useWorkPool } from '@/compositions'
+  import { useWorkPoolQueues } from '@/compositions/useWorkPoolQueues'
   import { WorkPoolQueue, WorkPoolQueueTableData } from '@/models'
   import { hasString, isRecord } from '@/utilities'
 
@@ -55,22 +60,16 @@
     workPoolName: string,
   }>()
 
-  const api = useWorkspaceApi()
   const can = useCan()
   const routes = useWorkspaceRoutes()
   const { WorkPoolQueueMenu } = useComponent()
 
   const search = ref('')
 
-  const workPoolSubscription = useSubscription(api.workPools.getWorkPoolByName, [props.workPoolName])
-  const workPool = computed(() => {
-    return workPoolSubscription.response
-  })
-  const workPoolQueuesSubscription = useSubscription(api.workPoolQueues.getWorkPoolQueues, [props.workPoolName])
-  const workPoolQueues = computed(() => workPoolQueuesSubscription.response ?? [])
+  const { workPool, subscription: workPoolSubscription } = useWorkPool(() => props.workPoolName)
+  const { workQueues, subscription: workPoolQueuesSubscription } = useWorkPoolQueues(() => props.workPoolName)
 
-
-  const workPoolQueuesData = computed(() => workPoolQueues.value.map(queue => new WorkPoolQueueTableData({
+  const workPoolQueuesData = computed(() => workQueues.value.map(queue => new WorkPoolQueueTableData({
     ...queue,
     disabled: !workPool.value || workPool.value.defaultQueueId == queue.id,
   })))

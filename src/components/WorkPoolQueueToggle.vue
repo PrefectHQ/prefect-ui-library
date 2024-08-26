@@ -1,13 +1,15 @@
 <template>
-  <p-tooltip text="Pause or resume this work queue">
-    <p-toggle v-if="can.update.work_queue" v-model="internalValue" />
-  </p-tooltip>
+  <template v-if="workPool?.can.update">
+    <p-tooltip text="Pause or resume this work queue">
+      <p-toggle v-model="internalValue" />
+    </p-tooltip>
+  </template>
 </template>
 
 <script lang="ts" setup>
   import { PToggle, showToast } from '@prefecthq/prefect-design'
-  import { computed, toRefs } from 'vue'
-  import { useCan, useWorkspaceApi } from '@/compositions'
+  import { computed } from 'vue'
+  import { useWorkPool, useWorkspaceApi } from '@/compositions'
   import { localization } from '@/localization'
   import { WorkPoolQueue } from '@/models'
   import { getApiErrorMessage } from '@/utilities/errors'
@@ -17,15 +19,12 @@
     workPoolQueue: WorkPoolQueue,
   }>()
 
-  const { workPoolName } = toRefs(props)
-  const { workPoolQueue } = toRefs(props)
-
   const emit = defineEmits<{
     (event: 'update'): void,
   }>()
 
-  const can = useCan()
   const api = useWorkspaceApi()
+  const { workPool } = useWorkPool(() => props.workPoolName)
 
   const internalValue = computed({
     get() {
@@ -40,11 +39,11 @@
 
     try {
       if (value) {
-        await api.workPoolQueues.resumeWorkPoolQueue(workPoolName.value, workPoolQueue.value.name)
+        await api.workPoolQueues.resumeWorkPoolQueue(props.workPoolName, props.workPoolQueue.name)
 
         showToast(localization.success.activateWorkPoolQueue, 'success')
       } else {
-        await api.workPoolQueues.pauseWorkPoolQueue(workPoolName.value, workPoolQueue.value.name)
+        await api.workPoolQueues.pauseWorkPoolQueue(props.workPoolName, props.workPoolQueue.name)
 
         showToast(localization.success.pauseWorkPoolQueue, 'success')
       }

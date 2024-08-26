@@ -32,10 +32,9 @@
 </script>
 
 <script lang="ts" setup>
-  import { useSubscription } from '@prefecthq/vue-compositions'
   import { computed } from 'vue'
   import { CopyOverflowMenuItem, ConfirmDeleteModal } from '@/components'
-  import { useCan, useShowModal, useWorkspaceApi, useWorkspaceRoutes } from '@/compositions'
+  import { useCan, useShowModal, useWorkPool, useWorkspaceApi, useWorkspaceRoutes } from '@/compositions'
   import { WorkPoolQueue } from '@/models'
   import { deleteItem } from '@/utilities'
 
@@ -52,11 +51,16 @@
   const api = useWorkspaceApi()
   const routes = useWorkspaceRoutes()
   const { showModal, open, close } = useShowModal()
-  const workPoolSubscription = useSubscription(api.workPools.getWorkPoolByName, [props.workPoolName])
-  const workPool = computed(() => workPoolSubscription.response)
+  const { workPool } = useWorkPool(() => props.workPoolName)
 
   const showDelete = computed(() => {
-    return !workPool.value || workPool.value.defaultQueueId !== props.workPoolQueue.id && can.delete.work_queue
+    if (!workPool.value) {
+      return false
+    }
+
+    const isDefaultWorkQueue = workPool.value.defaultQueueId !== props.workPoolQueue.id
+
+    return !isDefaultWorkQueue && workPool.value.can.delete
   })
 
   async function deleteWorkPoolQueue(name: string): Promise<void> {
