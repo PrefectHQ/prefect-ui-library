@@ -2,11 +2,15 @@
   <p-icon-button-menu v-bind="$attrs" class="work-pool-queue-menu">
     <CopyOverflowMenuItem label="Copy ID" :item="workPoolQueue.id" />
 
-    <router-link :to="routes.workPoolQueueEdit(workPoolName, workPoolQueue.name)">
-      <p-overflow-menu-item v-if="can.update.work_queue" label="Edit" />
-    </router-link>
+    <template v-if="workPool?.can.update">
+      <router-link :to="routes.workPoolQueueEdit(workPoolName, workPoolQueue.name)">
+        <p-overflow-menu-item label="Edit" />
+      </router-link>
+    </template>
 
-    <p-overflow-menu-item v-if="showDelete" label="Delete" @click="open" />
+    <template v-if="showDelete">
+      <p-overflow-menu-item label="Delete" @click="open" />
+    </template>
 
     <slot v-bind="{ workPoolQueue }">
       <router-link v-if="can.create.automation" :to="routes.automateWorkPoolQueue(workPoolQueue.id)">

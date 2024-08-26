@@ -17,7 +17,7 @@
       </template>
     </p-list-header>
 
-    <p-table :selected="can.delete.work_queue ? selected : undefined" :data="filteredWorkPoolQueues" :columns="columns" @update:selected="selected = $event">
+    <p-table :selected="workPool?.can.delete ? selected : undefined" :data="filteredWorkPoolQueues" :columns="columns" @update:selected="selected = $event">
       <template #priority-heading>
         <WorkPoolQueuePriorityLabel />
       </template>
@@ -51,7 +51,7 @@
   import { TableColumn } from '@prefecthq/prefect-design'
   import { ref, computed } from 'vue'
   import { SearchInput, ResultsCount, SelectedCount, WorkPoolQueuesDeleteButton, WorkPoolQueuePriorityLabel, WorkersLateIndicator, WorkPoolQueueToggle, WorkPoolQueueStatusBadge } from '@/components'
-  import { useCan, useWorkspaceRoutes, useComponent, useWorkPool } from '@/compositions'
+  import { useWorkspaceRoutes, useComponent, useWorkPool } from '@/compositions'
   import { useWorkPoolQueues } from '@/compositions/useWorkPoolQueues'
   import { WorkPoolQueue, WorkPoolQueueTableData } from '@/models'
   import { hasString, isRecord } from '@/utilities'
@@ -60,7 +60,6 @@
     workPoolName: string,
   }>()
 
-  const can = useCan()
   const routes = useWorkspaceRoutes()
   const { WorkPoolQueueMenu } = useComponent()
 
