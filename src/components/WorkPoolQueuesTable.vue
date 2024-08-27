@@ -8,7 +8,7 @@
         <p-button size="sm" icon="PlusIcon" :to="routes.workPoolQueueCreate(workPoolName)" />
       </template>
 
-      <template v-if="workPool?.can.delete">
+      <template v-if="workPool?.can.update">
         <WorkPoolQueuesDeleteButton :work-pool-name="workPoolName" :work-pool-queues="selected" @delete="handleDelete" />
       </template>
 
