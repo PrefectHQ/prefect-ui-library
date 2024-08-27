@@ -37,5 +37,6 @@ export const mapFlowRunResponseToFlowRun: MapFunction<FlowRunResponse, FlowRun> 
     workPoolName: source.work_pool_name,
     workPoolQueueName: source.work_pool_queue_name,
     jobVariables: source.job_variables ?? {},
+    jobConfiguration: source.job_configuration ?? {},
   })
 }

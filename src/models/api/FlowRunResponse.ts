@@ -40,4 +40,5 @@ export type FlowRunResponse = {
   work_pool_queue_name: string | null,
   // TODO: Remove optionality when api changes are fully merged
   job_variables?: Record<string, unknown> | null,
+  job_configuration?: Record<string, unknown> | null,
 }

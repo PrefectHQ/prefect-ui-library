@@ -40,6 +40,7 @@ export interface IFlowRun {
   workPoolName: string | null,
   workPoolQueueName: string | null,
   jobVariables: Record<string, unknown>,
+  jobConfiguration: Record<string, unknown>,
 }
 
 export class FlowRun extends StorageItem implements IFlowRun {
@@ -76,6 +77,7 @@ export class FlowRun extends StorageItem implements IFlowRun {
   public workPoolName: string | null
   public workPoolQueueName: string | null
   public jobVariables: Record<string, unknown>
+  public jobConfiguration: Record<string, unknown>
 
   public constructor(flowRun: IFlowRun) {
     super()
@@ -112,6 +114,7 @@ export class FlowRun extends StorageItem implements IFlowRun {
     this.workPoolName = flowRun.workPoolName
     this.workPoolQueueName = flowRun.workPoolQueueName
     this.jobVariables = flowRun.jobVariables
+    this.jobConfiguration = flowRun.jobConfiguration
   }
 
   public get duration(): number {
