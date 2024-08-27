@@ -1,3 +1,4 @@
+import { ObjectLevelCan } from '@/models/ObjectLevelCan'
 import { createTuple } from '@/utilities'
 
 export const { values: workPoolQueueStatus, isValue: isWorkPoolQueueStatus } = createTuple(['ready', 'paused', 'not_ready'])
@@ -30,6 +31,7 @@ export interface IWorkPoolQueue {
   priority: number,
   lastPolled: Date | null,
   status: WorkPoolQueueStatus,
+  can: ObjectLevelCan<'work_pool_queue'>,
 }
 
 export class WorkPoolQueue implements IWorkPoolQueue {
@@ -46,6 +48,7 @@ export class WorkPoolQueue implements IWorkPoolQueue {
   public priority: number
   public lastPolled: Date | null
   public status: WorkPoolQueueStatus
+  public can: ObjectLevelCan<'work_pool_queue'>
 
   public constructor(workPoolQueue: IWorkPoolQueue) {
     this.id = workPoolQueue.id
@@ -60,5 +63,6 @@ export class WorkPoolQueue implements IWorkPoolQueue {
     this.priority = workPoolQueue.priority
     this.lastPolled = workPoolQueue.lastPolled
     this.status = workPoolQueue.status
+    this.can = workPoolQueue.can
   }
 }
