@@ -1,7 +1,9 @@
 <template>
-  <p-tooltip text="Pause or resume this work queue">
-    <p-toggle v-if="can.update.work_queue" v-model="internalValue" />
-  </p-tooltip>
+  <template v-if="workPoolQueue.can.update">
+    <p-tooltip text="Pause or resume this work queue">
+      <p-toggle v-model="internalValue" />
+    </p-tooltip>
+  </template>
 </template>
 
 <script lang="ts" setup>

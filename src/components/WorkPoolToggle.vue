@@ -1,13 +1,15 @@
 <template>
-  <p-tooltip text="Pause or resume this work pool">
-    <p-toggle v-if="workPool.can.update" v-model="internalValue" />
-  </p-tooltip>
+  <template v-if="workPool.can.update">
+    <p-tooltip text="Pause or resume this work pool">
+      <p-toggle v-model="internalValue" />
+    </p-tooltip>
+  </template>
 </template>
 
 <script lang="ts" setup>
   import { PToggle, showToast } from '@prefecthq/prefect-design'
   import { computed } from 'vue'
-  import { useCan, useWorkspaceApi } from '@/compositions'
+  import { useWorkspaceApi } from '@/compositions'
   import { localization } from '@/localization'
   import { WorkPool } from '@/models'
   import { getApiErrorMessage } from '@/utilities/errors'
@@ -20,7 +22,6 @@
     (event: 'update'): void,
   }>()
 
-  const can = useCan()
   const api = useWorkspaceApi()
 
   const internalValue = computed({

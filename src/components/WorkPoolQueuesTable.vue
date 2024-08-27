@@ -3,9 +3,14 @@
     <p-list-header sticky>
       <ResultsCount v-if="selected.length == 0" label="Work Queue" :count="filteredWorkPoolQueues.length" />
       <SelectedCount v-else :count="selected.length" />
-      <p-button v-if="can.create.work_queue && !selected.length" size="sm" icon="PlusIcon" :to="routes.workPoolQueueCreate(workPoolName)" />
 
-      <WorkPoolQueuesDeleteButton v-if="can.delete.work_queue" :work-pool-name="workPoolName" :work-pool-queues="selected" @delete="handleDelete" />
+      <template v-if="workPool?.can.update && !selected.length">
+        <p-button size="sm" icon="PlusIcon" :to="routes.workPoolQueueCreate(workPoolName)" />
+      </template>
+
+      <template v-if="workPool?.can.update">
+        <WorkPoolQueuesDeleteButton :work-pool-name="workPoolName" :work-pool-queues="selected" @delete="handleDelete" />
+      </template>
 
       <template #controls>
         <SearchInput v-model="search" label="Search" placeholder="Search" />
@@ -47,7 +52,7 @@
   import { useSubscription } from '@prefecthq/vue-compositions'
   import { ref, computed } from 'vue'
   import { SearchInput, ResultsCount, SelectedCount, WorkPoolQueuesDeleteButton, WorkPoolQueuePriorityLabel, WorkersLateIndicator, WorkPoolQueueToggle, WorkPoolQueueStatusBadge } from '@/components'
-  import { useCan, useWorkspaceRoutes, useWorkspaceApi, useComponent } from '@/compositions'
+  import { useCan, useWorkspaceRoutes, useWorkspaceApi, useComponent, useWorkPool } from '@/compositions'
   import { WorkPoolQueue, WorkPoolQueueTableData } from '@/models'
   import { hasString, isRecord } from '@/utilities'
 
@@ -62,13 +67,9 @@
 
   const search = ref('')
 
-  const workPoolSubscription = useSubscription(api.workPools.getWorkPoolByName, [props.workPoolName])
-  const workPool = computed(() => {
-    return workPoolSubscription.response
-  })
+  const { workPool, subscription: workPoolSubscription } = useWorkPool(() => props.workPoolName)
   const workPoolQueuesSubscription = useSubscription(api.workPoolQueues.getWorkPoolQueues, [props.workPoolName])
   const workPoolQueues = computed(() => workPoolQueuesSubscription.response ?? [])
-
 
   const workPoolQueuesData = computed(() => workPoolQueues.value.map(queue => new WorkPoolQueueTableData({
     ...queue,
