@@ -1,6 +1,6 @@
 import { AutomationTriggerEvent } from '@/automations/types/automationTriggerEvent'
 import { AutomationTrigger } from '@/automations/types/triggers'
-import { WorkPoolQueue, WorkPoolQueueCreate, WorkPoolQueueCreateRequest, WorkPoolQueueEdit, WorkPoolQueueEditRequest, WorkPoolQueueResponse, WorkPoolQueueResponseStatus, WorkPoolQueueStatus } from '@/models'
+import { createObjectLevelCan, WorkPoolQueue, WorkPoolQueueCreate, WorkPoolQueueCreateRequest, WorkPoolQueueEdit, WorkPoolQueueEditRequest, WorkPoolQueueResponse, WorkPoolQueueResponseStatus, WorkPoolQueueStatus } from '@/models'
 import { MapFunction } from '@/services/Mapper'
 
 export const mapWorkPoolQueueResponseToWorkPoolQueue: MapFunction<WorkPoolQueueResponse, WorkPoolQueue> = function(source) {
@@ -17,6 +17,7 @@ export const mapWorkPoolQueueResponseToWorkPoolQueue: MapFunction<WorkPoolQueueR
     priority: source.priority,
     lastPolled: this.map('string', source.last_polled, 'Date'),
     status: (source.status?.toLowerCase() ?? 'not_ready') as Lowercase<WorkPoolQueueResponseStatus>,
+    can: createObjectLevelCan(),
   })
 }
 

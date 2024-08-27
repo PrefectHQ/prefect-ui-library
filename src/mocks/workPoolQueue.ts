@@ -1,4 +1,4 @@
-import { WorkPoolQueue } from '@/models'
+import { createObjectLevelCan, WorkPoolQueue } from '@/models'
 import { MockFunction } from '@/services'
 
 export const randomWorkPoolQueue: MockFunction<WorkPoolQueue, [Partial<WorkPoolQueue>?]> = function(overrides = {}) {
@@ -15,6 +15,7 @@ export const randomWorkPoolQueue: MockFunction<WorkPoolQueue, [Partial<WorkPoolQ
     priority: this.create('number'),
     lastPolled: null,
     status: 'ready',
+    can: createObjectLevelCan(),
     ...overrides,
   })
 }

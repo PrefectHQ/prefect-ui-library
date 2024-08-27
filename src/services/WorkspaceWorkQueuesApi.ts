@@ -23,7 +23,7 @@ export class WorkspaceWorkQueuesApi extends WorkspaceApi {
 
   protected override routePrefix = '/work_queues'
 
-  private readonly isBatcher = new BatchProcessor<string, WorkPoolQueue>(async ids => {
+  protected readonly idBatcher = new BatchProcessor<string, WorkPoolQueue>(async ids => {
     if (ids.length === 1) {
       const [id] = ids
       const { data } = await this.get<WorkPoolQueueResponse>(`/${id}`)
@@ -40,7 +40,7 @@ export class WorkspaceWorkQueuesApi extends WorkspaceApi {
     return toMap(workQueues, 'id')
   }, { maxBatchSize: 200 })
 
-  private readonly nameBatcher = new BatchProcessor<string, WorkPoolQueue>(async names => {
+  protected readonly nameBatcher = new BatchProcessor<string, WorkPoolQueue>(async names => {
     if (names.length === 1) {
       const [name] = names
       const { data } = await this.get<WorkPoolQueueResponse>(`/name/${name}`)
@@ -58,7 +58,7 @@ export class WorkspaceWorkQueuesApi extends WorkspaceApi {
   }, { maxBatchSize: 200 })
 
   public getWorkQueue(workQueueId: string): Promise<WorkPoolQueue> {
-    return this.isBatcher.batch(workQueueId)
+    return this.idBatcher.batch(workQueueId)
   }
 
   public getWorkQueueByName(workQueueName: string): Promise<WorkPoolQueue> {
