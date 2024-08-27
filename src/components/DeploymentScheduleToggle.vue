@@ -1,6 +1,6 @@
 <template>
-  <p-tooltip text="Pause or resume this schedule" side="left">
-    <p-toggle v-if="deployment.can.update" v-model="internalValue" :disabled="loading || deployment.paused || deployment.disabled" />
+  <p-tooltip :text="tooltipText" side="left">
+    <p-toggle v-model="internalValue" :disabled="loading || deployment.paused || deployment.disabled || !deployment.can.update" />
   </p-tooltip>
 </template>
 
@@ -33,6 +33,13 @@
   })
 
   const loading = ref(false)
+
+  const tooltipText = computed(() => {
+    if (!props.deployment.can.update) {
+      return localization.info.deploymentUpdateDisabled
+    }
+    return 'Pause or resume this schedule'
+  })
 
   const updateSchedule = async (value: boolean): Promise<void> => {
     loading.value = true

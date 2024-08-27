@@ -133,6 +133,7 @@ export const en = {
     deploymentName: 'Deployment name',
     deploymentDisabled: 'Deployment disabled, click to enable',
     deploymentEnabled: 'Deployment enabled, click to disable',
+    deploymentUpdateDisabled: 'You do not have the right permissions to update this deployment',
     searchByDeploymentName: 'Search by deployment name',
     workPools: 'Work Pools',
     all: 'All',

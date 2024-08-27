@@ -1,6 +1,6 @@
 <template>
-  <p-tooltip text="Pause or resume all schedules" side="left">
-    <p-toggle v-if="deployment.can.update" v-model="internalValue" :state :disabled="deployment.deprecated || deployment.disabled" />
+  <p-tooltip :text="tooltipText" side="left">
+    <p-toggle v-model="internalValue" :state :disabled="deployment.deprecated || deployment.disabled || !deployment.can.update" />
   </p-tooltip>
 </template>
 
@@ -32,6 +32,13 @@
   })
 
   const state = reactive<State>({ pending: false, valid: true, validated: false })
+
+  const tooltipText = computed(() => {
+    if (!props.deployment.can.update) {
+      return localization.info.deploymentUpdateDisabled
+    }
+    return 'Pause or resume all schedules'
+  })
 
   const toggleDeploymentSchedule = async (value: boolean): Promise<void> => {
     state.pending = true

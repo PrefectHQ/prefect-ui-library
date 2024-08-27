@@ -1,6 +1,6 @@
 <template>
   <p-tooltip :text="tooltipText" side="left">
-    <p-toggle v-if="deployment.can.update" v-model="internalValue" :state :disabled="deployment.deprecated" />
+    <p-toggle v-model="internalValue" :state :disabled="deployment.deprecated || !deployment.can.update" />
   </p-tooltip>
 </template>
 
@@ -36,6 +36,9 @@
   })
 
   const tooltipText = computed(() => {
+    if (!props.deployment.can.update) {
+      return localization.info.deploymentUpdateDisabled
+    }
     return props.deployment.disabled ? localization.info.deploymentDisabled : localization.info.deploymentEnabled
   })
 
