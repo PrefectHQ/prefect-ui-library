@@ -2,11 +2,15 @@
   <p-icon-button-menu v-bind="$attrs" class="work-pool-queue-menu">
     <CopyOverflowMenuItem label="Copy ID" :item="workPoolQueue.id" />
 
-    <router-link :to="routes.workPoolQueueEdit(workPoolName, workPoolQueue.name)">
-      <p-overflow-menu-item v-if="can.update.work_queue" label="Edit" />
-    </router-link>
+    <template v-if="workPoolQueue.can.update">
+      <router-link :to="routes.workPoolQueueEdit(workPoolName, workPoolQueue.name)">
+        <p-overflow-menu-item label="Edit" />
+      </router-link>
+    </template>
 
-    <p-overflow-menu-item v-if="showDelete" label="Delete" @click="open" />
+    <template v-if="showDelete">
+      <p-overflow-menu-item label="Delete" @click="open" />
+    </template>
 
     <slot v-bind="{ workPoolQueue }">
       <router-link v-if="can.create.automation" :to="routes.automateWorkPoolQueue(workPoolQueue.id)">
@@ -32,10 +36,9 @@
 </script>
 
 <script lang="ts" setup>
-  import { useSubscription } from '@prefecthq/vue-compositions'
   import { computed } from 'vue'
   import { CopyOverflowMenuItem, ConfirmDeleteModal } from '@/components'
-  import { useCan, useShowModal, useWorkspaceApi, useWorkspaceRoutes } from '@/compositions'
+  import { useCan, useShowModal, useWorkPool, useWorkspaceApi, useWorkspaceRoutes } from '@/compositions'
   import { WorkPoolQueue } from '@/models'
   import { deleteItem } from '@/utilities'
 
@@ -52,11 +55,16 @@
   const api = useWorkspaceApi()
   const routes = useWorkspaceRoutes()
   const { showModal, open, close } = useShowModal()
-  const workPoolSubscription = useSubscription(api.workPools.getWorkPoolByName, [props.workPoolName])
-  const workPool = computed(() => workPoolSubscription.response)
+  const { workPool } = useWorkPool(() => props.workPoolName)
 
   const showDelete = computed(() => {
-    return !workPool.value || workPool.value.defaultQueueId !== props.workPoolQueue.id && can.delete.work_queue
+    if (!workPool.value) {
+      return false
+    }
+
+    const isDefaultWorkQueue = workPool.value.defaultQueueId === props.workPoolQueue.id
+
+    return !isDefaultWorkQueue && props.workPoolQueue.can.delete
   })
 
   async function deleteWorkPoolQueue(name: string): Promise<void> {
