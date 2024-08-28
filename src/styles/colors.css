@@ -227,6 +227,17 @@
   --state-cancelling-700: #354145;
   --state-cancelling-800: #1E2729;
   --state-cancelling-900: #070D0D;
+
+  --state-crashed-50: #F9F9F9;
+  --state-crashed-100: #F0F0F0;
+  --state-crashed-200: #DADADA;
+  --state-crashed-300: #C0C0C0;
+  --state-crashed-400: #A1A1A1;
+  --state-crashed-500: #8E8E8E;
+  --state-crashed-600: #7C7C7C;
+  --state-crashed-700: #656565;
+  --state-crashed-800: #4E4E4E;
+  --state-crashed-900: #3F3F3F;
 }
 
 .color-mode-protaponia {
@@ -317,6 +328,17 @@
   --state-cancelling-700: #1E2F4B;
   --state-cancelling-800: #0F1A2C;
   --state-cancelling-900: #00050D;
+
+  --state-crashed-50: #FFF9F2;
+  --state-crashed-100: #FFF3E0;
+  --state-crashed-200: #FFE3B8;
+  --state-crashed-300: #FFCF87;
+  --state-crashed-400: #FFB654;
+  --state-crashed-500: #FFA12F;
+  --state-crashed-600: #F08B1C;
+  --state-crashed-700: #C77016;
+  --state-crashed-800: #9E5A11;
+  --state-crashed-900: #7F490E;
 }
 
 .color-mode-protanomaly {
@@ -407,6 +429,17 @@
   --state-cancelling-700: #293D5E;
   --state-cancelling-800: #1E2E47;
   --state-cancelling-900: #141F30;
+
+  --state-crashed-50: #FFF8EF;
+  --state-crashed-100: #FFF0DB;
+  --state-crashed-200: #FEDDB1;
+  --state-crashed-300: #FEC27D;
+  --state-crashed-400: #FCA148;
+  --state-crashed-500: #FB8722;
+  --state-crashed-600: #ED6E15;
+  --state-crashed-700: #C45811;
+  --state-crashed-800: #9C4712;
+  --state-crashed-900: #7E3A10;
 }
 
 .color-mode-deuteranopia {
@@ -497,6 +530,17 @@
   --state-cancelling-700: #294260;
   --state-cancelling-800: #1E3249;
   --state-cancelling-900: #142232;
+
+  --state-crashed-50: #FFF9F2;
+  --state-crashed-100: #FFF3E1;
+  --state-crashed-200: #FFE4BA;
+  --state-crashed-300: #FFD18A;
+  --state-crashed-400: #FFB957;
+  --state-crashed-500: #FFA42F;
+  --state-crashed-600: #F18E1C;
+  --state-crashed-700: #C87316;
+  --state-crashed-800: #9F5C11;
+  --state-crashed-900: #804B0E;
 }
 
 .color-mode-deuteranomaly {
@@ -587,6 +631,17 @@
   --state-cancelling-700: #293F5B;
   --state-cancelling-800: #1E3045;
   --state-cancelling-900: #14212F;
+
+  --state-crashed-50: #FFF8EF;
+  --state-crashed-100: #FFF0DB;
+  --state-crashed-200: #FEDDB2;
+  --state-crashed-300: #FEC280;
+  --state-crashed-400: #FCA24A;
+  --state-crashed-500: #FB8A23;
+  --state-crashed-600: #ED7016;
+  --state-crashed-700: #C45A11;
+  --state-crashed-800: #9C4812;
+  --state-crashed-900: #7E3B10;
 }
 
 .color-mode-tritanopia {
@@ -677,6 +732,17 @@
   --state-cancelling-700: #294460;
   --state-cancelling-800: #1E3449;
   --state-cancelling-900: #142432;
+
+  --state-crashed-50: #FFF7F7;
+  --state-crashed-100: #FFECEC;
+  --state-crashed-200: #FFD4D4;
+  --state-crashed-300: #FFB5B5;
+  --state-crashed-400: #FF8A8A;
+  --state-crashed-500: #FF6B6B;
+  --state-crashed-600: #F04F4F;
+  --state-crashed-700: #C73A3A;
+  --state-crashed-800: #9E2E2E;
+  --state-crashed-900: #7F2626;
 }
 
 .color-mode-tritanomaly {
@@ -767,4 +833,15 @@
   --state-cancelling-700: #29435E;
   --state-cancelling-800: #1E3347;
   --state-cancelling-900: #142230;
+
+  --state-crashed-50: #FFF7F1;
+  --state-crashed-100: #FFEFDD;
+  --state-crashed-200: #FFDBB6;
+  --state-crashed-300: #FEC185;
+  --state-crashed-400: #FCA150;
+  --state-crashed-500: #FB8A2A;
+  --state-crashed-600: #ED711C;
+  --state-crashed-700: #C55B16;
+  --state-crashed-800: #9C4913;
+  --state-crashed-900: #7E3C10;
 }
