@@ -96,10 +96,6 @@ export function getSchemaPropertyAttrs(property: SchemaProperty): SchemaProperty
     attrs.step = property.multipleOf
   }
 
-  if (property.format === 'password') {
-    attrs.type = 'password'
-  }
-
   return attrs
 }
 
