@@ -1,6 +1,6 @@
 import { Config } from 'tailwindcss/types/config'
 
-const states = ['completed', 'failed', 'running', 'pending', 'scheduled', 'cancelled', 'crashed', 'paused']
+const states = ['completed', 'failed', 'running', 'pending', 'scheduled', 'cancelled', 'cancelling', 'crashed', 'paused']
 
 const stateColors = states.reduce<Record<string, Record<number, string>>>((colors, state) => {
   colors[`state-${state}`] = {
