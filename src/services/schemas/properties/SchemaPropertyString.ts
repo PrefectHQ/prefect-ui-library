@@ -1,17 +1,27 @@
-import { PNumberInput, PCombobox, PTextInput, PDateInput } from '@prefecthq/prefect-design'
+import { PNumberInput, PCombobox, PTextarea, PDateInput } from '@prefecthq/prefect-design'
 import { format, isValid, parseISO } from 'date-fns'
 import DateInput from '@/components/DateInput.vue'
 import JsonInput from '@/components/JsonInput.vue'
 import { InvalidSchemaValueError } from '@/models'
 import { SchemaPropertyService } from '@/services/schemas/properties/SchemaPropertyService'
 import { SchemaPropertyComponentWithProps } from '@/services/schemas/utilities'
-import { SchemaValue } from '@/types/schemas'
+import { SchemaPropertyInputAttrs, SchemaValue } from '@/types/schemas'
 import { isDate } from '@/utilities/dates'
 import { stringifyUnknownJson } from '@/utilities/stringifyUnknownJson'
 import { isString } from '@/utilities/strings'
 import { isEmail, isJson, ValidationMethodFactory } from '@/utilities/validation'
 
 export class SchemaPropertyString extends SchemaPropertyService {
+
+  protected override get attrs(): SchemaPropertyInputAttrs {
+    if (this.componentIs(PTextarea)) {
+      return {
+        rows: 1,
+      }
+    }
+
+    return {}
+  }
 
   protected override get component(): SchemaPropertyComponentWithProps {
     if (this.has('enum')) {
@@ -32,7 +42,7 @@ export class SchemaPropertyString extends SchemaPropertyService {
       case 'time-delta':
         return this.withProps(PNumberInput)
       default:
-        return this.withProps(PTextInput)
+        return this.withProps(PTextarea)
     }
   }
 

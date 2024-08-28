@@ -3,7 +3,7 @@
 </template>
 
 <script lang="ts" setup>
-  import { PCombobox, PCodeInput, PTextInput, State } from '@prefecthq/prefect-design'
+  import { PCombobox, PCodeInput, PTextarea, State } from '@prefecthq/prefect-design'
   import { computed } from 'vue'
   import SchemaFormPropertyDate from '@/schemas/components/SchemaFormPropertyDate.vue'
   import SchemaFormPropertyDateTime from '@/schemas/components/SchemaFormPropertyDateTime.vue'
@@ -43,15 +43,6 @@
       })
     }
 
-    if (format === 'password') {
-      return withProps(PTextInput, {
-        type: 'password',
-        modelValue: props.value,
-        state: props.state,
-        'onUpdate:modelValue': update,
-      })
-    }
-
     if (format === 'json-string') {
       return withProps(PCodeInput, {
         lang: 'json',
@@ -70,9 +61,10 @@
       })
     }
 
-    return withProps(PTextInput, {
+    return withProps(PTextarea, {
       modelValue: props.value,
       state: props.state,
+      rows: 1,
       'onUpdate:modelValue': update,
     })
   })
