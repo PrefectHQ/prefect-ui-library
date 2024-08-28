@@ -75,6 +75,17 @@
   dark:text-state-cancelled-600
 }
 
+.state--cancelling { @apply
+  bg-state-cancelled-100
+  text-state-cancelled-600
+  dark:bg-state-cancelled-600
+  dark:text-state-cancelled-100
+}
+.state-text--cancelling { @apply
+  text-state-cancelled-100
+  dark:text-state-cancelled-600
+}
+
 .state--crashed { @apply
   bg-state-crashed-50
   text-state-crashed-600

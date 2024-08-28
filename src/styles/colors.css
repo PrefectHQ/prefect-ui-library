@@ -116,6 +116,17 @@
   --state-cancelled-800: #1E1E1E;
   --state-cancelled-900: #141414;
 
+  --state-cancelling-50: #DEE1E6;
+  --state-cancelling-100: #CCD2DB;
+  --state-cancelling-200: #A8B3C2;
+  --state-cancelling-300: #8494A9;
+  --state-cancelling-400: #617590;
+  --state-cancelling-500: #3D5677;
+  --state-cancelling-600: #334863;
+  --state-cancelling-700: #293A4F;
+  --state-cancelling-800: #1E2C3B;
+  --state-cancelling-900: #141D27;
+
   --state-crashed-50: #FFF7ED;
   --state-crashed-100: #FFEDD5;
   --state-crashed-200: #FED7AA;
@@ -205,6 +216,17 @@
   --state-cancelled-700: #353535;
   --state-cancelled-800: #1E1E1E;
   --state-cancelled-900: #070707;
+
+  --state-cancelling-50: #F7F8FA;
+  --state-cancelling-100: #E5E8ED;
+  --state-cancelling-200: #C1C7D1;
+  --state-cancelling-300: #9EA7B5;
+  --state-cancelling-400: #7A8699;
+  --state-cancelling-500: #63707D;
+  --state-cancelling-600: #4C5A61;
+  --state-cancelling-700: #354145;
+  --state-cancelling-800: #1E2729;
+  --state-cancelling-900: #070D0D;
 }
 
 .color-mode-protaponia {
@@ -284,6 +306,17 @@
   --state-cancelled-700: #1E1E1E;
   --state-cancelled-800: #0F0F0F;
   --state-cancelled-900: #000000;
+
+  --state-cancelling-50: #F5F7FA;
+  --state-cancelling-100: #E0E5ED;
+  --state-cancelling-200: #B7C2D4;
+  --state-cancelling-300: #8F9FBB;
+  --state-cancelling-400: #667CA2;
+  --state-cancelling-500: #3D5989;
+  --state-cancelling-600: #2E446A;
+  --state-cancelling-700: #1E2F4B;
+  --state-cancelling-800: #0F1A2C;
+  --state-cancelling-900: #00050D;
 }
 
 .color-mode-protanomaly {
@@ -363,6 +396,17 @@
   --state-cancelled-700: #292929;
   --state-cancelled-800: #1E1E1E;
   --state-cancelled-900: #141414;
+
+  --state-cancelling-50: #DEE3EB;
+  --state-cancelling-100: #CCD3E0;
+  --state-cancelling-200: #A8B5CB;
+  --state-cancelling-300: #8497B6;
+  --state-cancelling-400: #6179A1;
+  --state-cancelling-500: #3D5B8C;
+  --state-cancelling-600: #334C75;
+  --state-cancelling-700: #293D5E;
+  --state-cancelling-800: #1E2E47;
+  --state-cancelling-900: #141F30;
 }
 
 .color-mode-deuteranopia {
@@ -442,6 +486,17 @@
   --state-cancelled-700: #292929;
   --state-cancelled-800: #1E1E1E;
   --state-cancelled-900: #141414;
+
+  --state-cancelling-50: #DEE5EC;
+  --state-cancelling-100: #CCD6E2;
+  --state-cancelling-200: #A8B9CD;
+  --state-cancelling-300: #849CB8;
+  --state-cancelling-400: #617FA3;
+  --state-cancelling-500: #3D628E;
+  --state-cancelling-600: #335277;
+  --state-cancelling-700: #294260;
+  --state-cancelling-800: #1E3249;
+  --state-cancelling-900: #142232;
 }
 
 .color-mode-deuteranomaly {
@@ -521,6 +576,17 @@
   --state-cancelled-700: #292929;
   --state-cancelled-800: #1E1E1E;
   --state-cancelled-900: #141414;
+
+  --state-cancelling-50: #DEE4EA;
+  --state-cancelling-100: #CCD5DF;
+  --state-cancelling-200: #A8B7C9;
+  --state-cancelling-300: #8499B3;
+  --state-cancelling-400: #617B9D;
+  --state-cancelling-500: #3D5D87;
+  --state-cancelling-600: #334E71;
+  --state-cancelling-700: #293F5B;
+  --state-cancelling-800: #1E3045;
+  --state-cancelling-900: #14212F;
 }
 
 .color-mode-tritanopia {
@@ -600,6 +666,17 @@
   --state-cancelled-700: #292929;
   --state-cancelled-800: #1E1E1E;
   --state-cancelled-900: #141414;
+
+  --state-cancelling-50: #DEE6EC;
+  --state-cancelling-100: #CCD8E2;
+  --state-cancelling-200: #A8BBCD;
+  --state-cancelling-300: #849EB8;
+  --state-cancelling-400: #6181A3;
+  --state-cancelling-500: #3D648E;
+  --state-cancelling-600: #335477;
+  --state-cancelling-700: #294460;
+  --state-cancelling-800: #1E3449;
+  --state-cancelling-900: #142432;
 }
 
 .color-mode-tritanomaly {
@@ -679,4 +756,15 @@
   --state-cancelled-700: #292929;
   --state-cancelled-800: #1E1E1E;
   --state-cancelled-900: #141414;
+
+  --state-cancelling-50: #DEE5EB;
+  --state-cancelling-100: #CCD7E0;
+  --state-cancelling-200: #A8BACB;
+  --state-cancelling-300: #849DB6;
+  --state-cancelling-400: #6180A1;
+  --state-cancelling-500: #3D638C;
+  --state-cancelling-600: #335375;
+  --state-cancelling-700: #29435E;
+  --state-cancelling-800: #1E3347;
+  --state-cancelling-900: #142230;
 }
