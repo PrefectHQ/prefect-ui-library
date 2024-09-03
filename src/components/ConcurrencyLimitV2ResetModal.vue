@@ -1,5 +1,5 @@
 <template>
-  <p-modal v-model:showModal="internalShowModal" class="concurrency-limit-reset-modal" :title="resetTitle">
+  <p-modal v-model:showModal="showModal" class="concurrency-limit-reset-modal" :title="resetTitle">
     This will reset the active slots count to 0.
     <template #actions>
       <slot name="actions">
@@ -21,21 +21,10 @@
   import { getApiErrorMessage } from '@/utilities/errors'
 
   const props = defineProps<{
-    showModal: boolean,
     concurrencyLimit: ConcurrencyV2Limit,
   }>()
-  const emit = defineEmits<{
-    (event: 'update:showModal', value: boolean): void,
-  }>()
 
-  const internalShowModal = computed({
-    get() {
-      return props.showModal
-    },
-    set(value: boolean) {
-      emit('update:showModal', value)
-    },
-  })
+  const showModal = defineModel<boolean>('showModal')
 
   const resetTitle = computed(() => {
     return `Reset concurrency limit ${props.concurrencyLimit.name}?`
@@ -58,7 +47,7 @@
       const message = getApiErrorMessage(error, localization.error.resetConcurrencyLimit)
       showToast(message, 'error')
     } finally {
-      internalShowModal.value = false
+      showModal.value = false
     }
   }
 </script>
