@@ -43,6 +43,7 @@ export { default as ConcurrencyLimitActiveRuns } from './ConcurrencyLimitActiveR
 export { default as ConcurrencyLimitDetails } from './ConcurrencyLimitDetails.vue'
 export { default as ConcurrencyLimitMenu } from './ConcurrencyLimitMenu.vue'
 export { default as ConcurrencyLimitResetModal } from '@/components/ConcurrencyLimitResetModal.vue'
+export { default as ConcurrencyLimitV2ResetModal } from '@/components/ConcurrencyLimitV2ResetModal.vue'
 export { default as ConcurrencyLimitsCreateModal } from './ConcurrencyLimitsCreateModal.vue'
 export { default as ConcurrencyLimitsPageEmptyState } from './ConcurrencyLimitsPageEmptyState.vue'
 export { default as ConcurrencyLimitsTable } from './ConcurrencyLimitsTable.vue'
