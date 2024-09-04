@@ -40,6 +40,7 @@ export const randomDeployment: MockFunction<Deployment, [Partial<Deployment>?]> 
     can: createObjectLevelCan(),
     status: this.create('deploymentStatus'),
     disabled: disabled,
+    concurrencyLimit: null,
     ...overrides,
   }
 }

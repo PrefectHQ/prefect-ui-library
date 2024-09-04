@@ -8,6 +8,7 @@ type Base = {
   workPoolName?: string | null,
   jobVariables?: Record<string, unknown> | null,
   enforceParameterSchema?: boolean,
+  concurrencyLimit?: number | null,
 }
 
 type WithoutParameters = Base & {
@@ -20,3 +21,4 @@ type WithParameters = Base & {
 }
 
 export type DeploymentUpdateV2 = WithoutParameters | WithParameters
+export type DeploymentUpdate = DeploymentUpdateV2

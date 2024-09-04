@@ -35,4 +35,5 @@ export type DeploymentResponse = {
   pull_steps: unknown,
   status: ServerDeploymentStatus,
   disabled?: boolean,
+  concurrency_limit: number | null,
 }

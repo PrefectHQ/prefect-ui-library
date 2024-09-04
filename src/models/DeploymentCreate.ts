@@ -21,4 +21,5 @@ export type DeploymentCreate = {
   workPoolName: string | null,
   enforceParameterSchema: boolean,
   pullSteps: unknown,
+  concurrencyLimit: number | null,
 }
