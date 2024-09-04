@@ -31,8 +31,8 @@
       <p-tags-input v-model="tags" empty-message="Add tags" />
     </p-label>
 
-    <p-label label="Concurrency Limit (Optional)" :state="concucurrencyLimitState" :message="concucurrencyLimitError">
-      <p-number-input v-model="concurrencyLimit" :state="concucurrencyLimitState" />
+    <p-label label="Concurrency Limit (Optional)" :state="concurrencyLimitState" :message="concurrencyLimitError">
+      <p-number-input v-model="concurrencyLimit" :state="concurrencyLimitState" />
     </p-label>
 
     <p-divider />
@@ -130,7 +130,7 @@
       return 'Name must be different from the original deployment'
     }
   })
-  const { state: concucurrencyLimitState, error: concucurrencyLimitError } = useValidation(concurrencyLimit, (value) => {
+  const { state: concurrencyLimitState, error: concurrencyLimitError } = useValidation(concurrencyLimit, (value) => {
     if (value != null && value < 1) {
       return 'Concurrency limit must be greater than 0. To unset, leave the field empty.'
     }
