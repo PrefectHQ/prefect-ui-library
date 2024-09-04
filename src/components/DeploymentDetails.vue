@@ -85,6 +85,8 @@
 
     <p-key-value label="Path" :value="deployment.path" :alternate="alternate" />
 
+    <p-key-value label="Concurrency Limit" :value="deployment.concurrencyLimit" :alternate="alternate" />
+
     <p-divider />
 
     <template v-if="can.read.flow">
