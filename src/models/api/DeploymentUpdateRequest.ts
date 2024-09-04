@@ -15,4 +15,5 @@ export type DeploymentUpdateRequest = Partial<{
   work_pool_name: string | null,
   job_variables: Record<string, unknown> | null,
   enforce_parameter_schema: boolean,
+  concurrency_limit: number | null,
 }>

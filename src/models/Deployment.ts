@@ -32,6 +32,7 @@ export interface IDeployment {
   can: ObjectLevelCan<'deployment'>,
   status: DeploymentStatus,
   disabled: boolean,
+  concurrencyLimit: number | null,
 }
 
 export class Deployment implements IDeployment {
@@ -63,6 +64,7 @@ export class Deployment implements IDeployment {
   public can: ObjectLevelCan<'deployment'>
   public status: DeploymentStatus
   public disabled: boolean
+  public concurrencyLimit: number | null
 
   public constructor(deployment: IDeployment) {
     this.id = deployment.id
@@ -92,6 +94,7 @@ export class Deployment implements IDeployment {
     this.can = deployment.can
     this.status = deployment.status
     this.disabled = deployment.disabled
+    this.concurrencyLimit = deployment.concurrencyLimit
   }
 
   public get deprecated(): boolean {

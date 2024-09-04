@@ -37,6 +37,7 @@ export const mapDeploymentResponseToDeployment: MapFunction<DeploymentResponse, 
     can: createObjectLevelCan(),
     status: this.map('ServerDeploymentStatus', source.status, 'DeploymentStatus'),
     disabled: source.disabled ?? false,
+    concurrencyLimit: source.concurrency_limit,
   })
 }
 
@@ -50,6 +51,7 @@ export const mapDeploymentUpdateV2ToDeploymentUpdateRequest: MapFunction<Deploym
     work_pool_name: source.workPoolName,
     job_variables: source.jobVariables,
     enforce_parameter_schema: source.enforceParameterSchema,
+    concurrency_limit: source.concurrencyLimit,
   }
 }
 
@@ -90,5 +92,6 @@ export const mapDeploymentCreateToDeploymentCreateRequest: MapFunction<Deploymen
     entrypoint: source.entrypoint,
     version: source.version,
     paused: source.paused,
+    concurrency_limit: source.concurrencyLimit,
   }
 }

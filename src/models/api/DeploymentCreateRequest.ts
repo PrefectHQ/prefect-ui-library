@@ -20,4 +20,5 @@ export type DeploymentCreateRequest = {
   entrypoint: string | null,
   version: string | null,
   paused: boolean,
+  concurrency_limit: number | null,
 }

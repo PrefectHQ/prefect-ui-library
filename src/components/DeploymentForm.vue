@@ -31,6 +31,10 @@
       <p-tags-input v-model="tags" empty-message="Add tags" />
     </p-label>
 
+    <p-label label="Concurrency Limit (Optional)" :state="concucurrencyLimitState" :message="concucurrencyLimitError">
+      <p-number-input v-model="concurrencyLimit" :state="concucurrencyLimitState" />
+    </p-label>
+
     <p-divider />
 
     <template v-if="schemaHasParameters">
@@ -99,6 +103,7 @@
   const description = ref(props.deployment.description)
   const workPoolName = ref(props.deployment.workPoolName)
   const workQueueName = ref(props.deployment.workQueueName)
+  const concurrencyLimit = ref(props.deployment.concurrencyLimit)
   const parameters = ref(props.deployment.parameters)
   const tags = ref(props.deployment.tags)
   const jobVariables = ref(stringify(props.deployment.jobVariables))
@@ -124,6 +129,13 @@
     if (props.deployment.name === value) {
       return 'Name must be different from the original deployment'
     }
+  })
+  const { state: concucurrencyLimitState, error: concucurrencyLimitError } = useValidation(concurrencyLimit, (value) => {
+    if (value != null && value < 1) {
+      return 'Concurrency limit must be greater than 0. To unset, leave the field empty.'
+    }
+
+    return true
   })
 
   const emit = defineEmits<{
@@ -173,6 +185,7 @@
         storageDocumentId: props.deployment.storageDocumentId,
         infrastructureDocumentId: props.deployment.infrastructureDocumentId,
         pullSteps: props.deployment.pullSteps,
+        concurrencyLimit: concurrencyLimit.value,
       }
       emit('submit', deploymentCreate)
     } else {
@@ -184,6 +197,7 @@
         tags: tags.value,
         enforceParameterSchema: enforceParameterSchema.value,
         jobVariables: JSON.parse(jobVariables.value),
+        concurrencyLimit: concurrencyLimit.value,
       }
       emit('submit', deploymentUpdate)
     }

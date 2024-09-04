@@ -8,6 +8,7 @@ type Base = {
   workPoolName?: string | null,
   jobVariables?: Record<string, unknown> | null,
   enforceParameterSchema?: boolean,
+  concurrencyLimit?: number | null,
 }
 
 type WithoutParameters = Base & {
