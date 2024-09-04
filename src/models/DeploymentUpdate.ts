@@ -21,3 +21,4 @@ type WithParameters = Base & {
 }
 
 export type DeploymentUpdateV2 = WithoutParameters | WithParameters
+export type DeploymentUpdate = DeploymentUpdateV2
