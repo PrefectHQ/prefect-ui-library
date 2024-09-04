@@ -32,7 +32,7 @@
     </p-label>
 
     <p-label label="Concurrency Limit (Optional)" :state="concurrencyLimitState" :message="concurrencyLimitError">
-      <p-number-input v-model="concurrencyLimit" :state="concurrencyLimitState" />
+      <p-number-input v-model="concurrencyLimit" :state="concurrencyLimitState" placeholder="Unlimited" />
     </p-label>
 
     <p-divider />
