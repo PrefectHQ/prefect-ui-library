@@ -1,1 +1,1 @@
-export const urlRegex = /((?:https?|ftp):\/\/[^\s/$.?#].[^\s]*)/g
+export const urlRegex = /((?:https?|ftp):\/\/[^\s/$.?#].[^\s)"(]*)/g
