@@ -66,7 +66,7 @@ export function useSchemaPropertyInput(schemaProperty: MaybeRefOrGetter<SchemaPr
     const exhaustive: never = propertyValue.value
     console.error(new Error(`SchemaFormProperty input is not exhaustive: ${JSON.stringify(exhaustive)}`))
 
-    return { component: null, props: {} }
+    return withProps(() => ({ template: '' }))
   })
 
   return { input }
