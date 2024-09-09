@@ -1,3 +1,3 @@
 <template>
-  <p>Resume a flow run</p>
+  <p>Resume a flow run inferred from the triggering event</p>
 </template>
