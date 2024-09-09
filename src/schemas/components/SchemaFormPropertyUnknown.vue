@@ -1,5 +1,5 @@
 <template>
-  <component :is="input?.component" v-bind="input?.props" class="schema-form-property-string" />
+  <component :is="input.component" v-bind="input.props" class="schema-form-property-string" />
 </template>
 
 <script lang="ts" setup>
@@ -59,6 +59,6 @@
       })
     }
 
-    return { component: null, props: {} }
+    return withProps(() => ({ template: '' }))
   })
 </script>

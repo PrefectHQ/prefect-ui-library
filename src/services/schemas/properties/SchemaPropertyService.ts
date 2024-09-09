@@ -1,4 +1,5 @@
 import { SelectOption } from '@prefecthq/prefect-design'
+import { Component } from 'vue'
 import { JsonInput } from '@/components'
 import { InvalidSchemaValueError } from '@/models/InvalidSchemaValueError'
 import { getSchemaPropertyAttrs, getSchemaPropertyComponentWithDefaultProps, getSchemaPropertyDefaultValidators, schemaPropertyComponentWithProps, SchemaPropertyComponentWithProps } from '@/services/schemas/utilities'
@@ -6,7 +7,6 @@ import { schemaHas, SchemaProperty, SchemaPropertyInputAttrs, SchemaPropertyMeta
 import { Require } from '@/types/utilities'
 import { sameValue } from '@/utilities'
 import { isNumberArray, isStringArray } from '@/utilities/arrays'
-import { ComponentDefinition } from '@/utilities/components'
 import { fieldRules, isJson, ValidationMethod, ValidationMethodFactory } from '@/utilities/validation'
 
 export type SchemaPropertyServiceSource = {
@@ -131,7 +131,7 @@ export abstract class SchemaPropertyService {
     }
   }
 
-  protected componentIs(component: ComponentDefinition): boolean {
+  protected componentIs(component: Component): boolean {
     return this.component?.component === component
   }
 
