@@ -7,6 +7,7 @@ export function getDefaultValueForAction(type: AutomationActionType, template: A
       return getDefaultValueForSendNotification(template)
     case 'cancel-flow-run':
     case 'suspend-flow-run':
+    case 'resume-flow-run':
     case 'change-flow-run-state':
     case 'run-deployment':
     case 'pause-deployment':

@@ -98,6 +98,7 @@
 
       case 'cancel-flow-run':
       case 'suspend-flow-run':
+      case 'resume-flow-run':
       case 'do-nothing':
         return null
 

@@ -7,6 +7,7 @@ import { isRecord } from '@/utilities'
 export type AutomationActionResponse =
 | AutomationActionCancelFlowRunResponse
 | AutomationActionSuspendFlowRunResponse
+| AutomationActionResumeFlowRunResponse
 | AutomationActionChangeFlowRunStateResponse
 | AutomationActionRunDeploymentResponse
 | AutomationActionPauseDeploymentResponse
@@ -50,6 +51,12 @@ export type AutomationActionChangeFlowRunStateResponse = AutomationActionWithTyp
   state: ServerStateType,
   message?: string | null,
 }>
+
+/*
+ * Resume a paused flow run
+ */
+export type AutomationActionResumeFlowRunResponse = AutomationActionWithType<'resume-flow-run'>
+
 
 /*
  * Run a deployment

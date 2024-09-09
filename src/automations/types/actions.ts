@@ -6,6 +6,7 @@ import { createTuple, isNullish, isRecord, isString } from '@/utilities'
 export const { values: automationActionTypes, isValue: isAutomationActionType } = createTuple([
   'cancel-flow-run',
   'suspend-flow-run',
+  'resume-flow-run',
   'change-flow-run-state',
   'run-deployment',
   'pause-deployment',
@@ -25,6 +26,7 @@ export type AutomationActionType = typeof automationActionTypes[number]
 export const automationActionTypeLabels = {
   'cancel-flow-run': 'Cancel a flow run',
   'suspend-flow-run': 'Suspend a flow run',
+  'resume-flow-run': 'Resume a flow run',
   'change-flow-run-state': 'Change flow run\'s state',
   'run-deployment': 'Run a deployment',
   'pause-deployment': 'Pause a deployment',
@@ -69,6 +71,16 @@ export type AutomationActionSuspendFlowRun = AutomationActionWithType<'suspend-f
 function isAutomationActionSuspendFlowRun(value: unknown): value is AutomationActionSuspendFlowRun {
   return isAutomationActionTypeRecord(value, 'suspend-flow-run')
 }
+
+/*
+ * Resume a paused flow run
+ */
+export type AutomationActionResumeFlowRun = AutomationActionWithType<'resume-flow-run'>
+
+function isAutomationActionResumeFlowRun(value: unknown): value is AutomationActionResumeFlowRun {
+  return isAutomationActionTypeRecord(value, 'resume-flow-run')
+}
+
 
 /*
  * Change a flow run's state
@@ -281,6 +293,7 @@ export type AutomationAction =
   | AutomationActionCancelFlowRun
   | AutomationActionSuspendFlowRun
   | AutomationActionChangeFlowRunState
+  | AutomationActionResumeFlowRun
   | AutomationActionRunDeployment
   | AutomationActionPauseDeployment
   | AutomationActionResumeDeployment
@@ -304,6 +317,7 @@ export type AutomationActionFields<T extends AutomationAction> = Require<Partial
 const actionTypeGuardMap = {
   'cancel-flow-run': isAutomationActionCancelFlowRun,
   'suspend-flow-run': isAutomationActionSuspendFlowRun,
+  'resume-flow-run': isAutomationActionResumeFlowRun,
   'change-flow-run-state': isAutomationActionChangeFlowRunState,
   'run-deployment': isAutomationActionRunDeployment,
   'pause-deployment': isAutomationActionPauseDeployment,
