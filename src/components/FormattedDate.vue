@@ -1,5 +1,5 @@
 <template>
-  <p-tooltip>
+  <p-tooltip avoid-collisions>
     <template #content>
       <slot name="tooltip">
         <div class="formatted-date__tooltip">
