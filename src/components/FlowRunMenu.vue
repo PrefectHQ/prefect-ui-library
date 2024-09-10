@@ -54,14 +54,15 @@
   import { computed, ref, toRefs } from 'vue'
   import { FlowRunRetryModal, FlowRunCancelModal, FlowRunSuspendModal, ConfirmStateChangeModal, ConfirmDeleteModal, CopyOverflowMenuItem } from '@/components'
   import FlowRunResumeModal from '@/components/FlowRunResumeModal.vue'
-  import { useCan, useWorkspaceApi, useShowModal, useWorkspaceRoutes, useFlowRuns, useFlowRun, useDeployment } from '@/compositions'
+  import { useCan, useWorkspaceApi, useShowModal, useWorkspaceRoutes, useFlowRuns, useDeployment } from '@/compositions'
   import { localization } from '@/localization'
-  import { FlowRunsFilter, isPausedStateType, isRunningStateType, isStuckStateType, isTerminalStateType, StateUpdateDetails } from '@/models'
+  import { FlowRun, FlowRunsFilter, isPausedStateType, isRunningStateType, isStuckStateType, isTerminalStateType, StateUpdateDetails } from '@/models'
   import { deleteItem } from '@/utilities'
   import { getApiErrorMessage } from '@/utilities/errors'
 
   const props = defineProps<{
     flowRunId: string,
+    flowRun: FlowRun,
     showAll?: boolean,
   }>()
 
@@ -79,32 +80,31 @@
 
   const retryingRun = ref(false)
 
-  const { flowRun, subscription: flowRunSubscription } = useFlowRun(flowRunId, { interval: 3000 })
-  const { deployment } = useDeployment(() => flowRun.value?.deploymentId)
+  const { deployment } = useDeployment(() => props.flowRun.deploymentId)
 
   const canRetry = computed(() => {
-    if (!can.update.flow_run || !flowRun.value?.stateType || !flowRun.value.deploymentId) {
+    if (!can.update.flow_run || !props.flowRun.stateType || !props.flowRun.deploymentId) {
       return false
     }
-    return isTerminalStateType(flowRun.value.stateType)
+    return isTerminalStateType(props.flowRun.stateType)
   })
 
   const canResume = computed(() => {
-    if (!can.update.flow_run || !flowRun.value?.stateType) {
+    if (!can.update.flow_run || !props.flowRun.stateType) {
       return false
     }
 
-    return isPausedStateType(flowRun.value.stateType)
+    return isPausedStateType(props.flowRun.stateType)
   })
 
   const flowRunFilter = (): FlowRunsFilter | null => {
-    if (!flowRun.value?.parentTaskRunId) {
+    if (!props.flowRun.parentTaskRunId) {
       return null
     }
 
     return {
       taskRuns: {
-        id: [flowRun.value.parentTaskRunId],
+        id: [props.flowRun.parentTaskRunId],
       },
     }
   }
@@ -117,31 +117,31 @@
     return value.id
   })
   const canCancel = computed(() => {
-    if (!can.update.flow_run || !flowRun.value?.stateType || parentFlowRunId.value) {
+    if (!can.update.flow_run || !props.flowRun.stateType || parentFlowRunId.value) {
       return false
     }
-    return isStuckStateType(flowRun.value.stateType)
+    return isStuckStateType(props.flowRun.stateType)
   })
 
   const canSuspend = computed(() => {
-    if (!can.update.flow_run || !flowRun.value?.stateType || !flowRun.value.deploymentId) {
+    if (!can.update.flow_run || !props.flowRun.stateType || !props.flowRun.deploymentId) {
       return false
     }
 
-    return isRunningStateType(flowRun.value.stateType)
+    return isRunningStateType(props.flowRun.stateType)
   })
 
   const canChangeState = computed(() => {
-    if (!can.update.flow_run || !flowRun.value?.stateType) {
+    if (!can.update.flow_run || !props.flowRun.stateType) {
       return false
     }
-    return isTerminalStateType(flowRun.value.stateType)
+    return isTerminalStateType(props.flowRun.stateType)
   })
 
   const changeFlowRunState = async (values: StateUpdateDetails): Promise<void> => {
     try {
       await api.flowRuns.setFlowRunState(props.flowRunId, { state: values })
-      flowRunSubscription.refresh()
+      emit('update')
       showToast(localization.success.changeFlowRunState, 'success')
     } catch (error) {
       console.error(error)
@@ -150,7 +150,7 @@
     }
   }
 
-  const emit = defineEmits(['delete'])
+  const emit = defineEmits(['delete', 'update'])
 
   const deleteFlowRun = async (id: string): Promise<void> => {
     await deleteItem(id, api.flowRuns.deleteFlowRun, 'Flow run')
