@@ -12,6 +12,7 @@
   import AutomationActionDescriptionPauseResumeDeployment from '@/automations/components/AutomationActionDescriptionPauseResumeDeployment.vue'
   import AutomationActionDescriptionPauseResumeWorkPool from '@/automations/components/AutomationActionDescriptionPauseResumeWorkPool.vue'
   import AutomationActionDescriptionPauseResumeWorkQueue from '@/automations/components/AutomationActionDescriptionPauseResumeWorkQueue.vue'
+  import AutomationActionDescriptionResumeFlowRun from '@/automations/components/AutomationActionDescriptionResumeFlowRun.vue'
   import AutomationActionDescriptionRunDeployment from '@/automations/components/AutomationActionDescriptionRunDeployment.vue'
   import AutomationActionDescriptionSuspendCancelFlowRun from '@/automations/components/AutomationActionDescriptionSuspendCancelFlowRun.vue'
   import { AutomationAction } from '@/automations/types/actions'
@@ -50,6 +51,10 @@
       case 'suspend-flow-run':
       case 'cancel-flow-run':
         return withProps(AutomationActionDescriptionSuspendCancelFlowRun, {
+          action: props.action,
+        })
+      case 'resume-flow-run':
+        return withProps(AutomationActionDescriptionResumeFlowRun, {
           action: props.action,
         })
       case 'run-deployment':
