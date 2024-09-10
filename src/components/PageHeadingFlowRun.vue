@@ -33,12 +33,12 @@
     <template #actions>
       <template v-if="flowRun">
         <template v-if="media.sm">
-          <FlowRunSuspendButton :flow-run="flowRun" />
-          <FlowRunResumeButton :flow-run="flowRun" />
-          <FlowRunRetryButton :flow-run="flowRun" />
-          <FlowRunCancelButton :flow-run="flowRun" />
+          <FlowRunSuspendButton :flow-run />
+          <FlowRunResumeButton :flow-run />
+          <FlowRunRetryButton :flow-run />
+          <FlowRunCancelButton :flow-run />
         </template>
-        <FlowRunMenu :flow-run-id="flowRun.id" :show-all="!media.sm" @delete="emit('delete')" />
+        <FlowRunMenu :flow-run :show-all="!media.sm" @delete="emit('delete')" />
       </template>
     </template>
   </page-heading>
@@ -86,7 +86,7 @@
     { text: flowRun.value?.name ?? '' },
   ])
 
-  const { flowRun } = useFlowRun(() => props.flowRunId, { interval: 30000 })
+  const { flowRun } = useFlowRun(() => props.flowRunId, { interval: 30_000 })
 
   const isPending = computed(() => flowRun.value?.stateType ? isPendingStateType(flowRun.value.stateType) : true)
 
