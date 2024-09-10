@@ -7,7 +7,7 @@
       <p-overflow-menu-item v-if="canSuspend && showAll" label="Pause" @click="openSuspendModal" />
       <p-overflow-menu-item v-if="canCancel && showAll" label="Cancel" @click="openCancelModal" />
       <p-overflow-menu-item v-if="canChangeState" label="Change state" @click="openChangeStateModal" />
-      <copy-overflow-menu-item label="Copy ID" :item="flowRunId" />
+      <copy-overflow-menu-item label="Copy ID" :item="flowRun.id" />
       <p-overflow-menu-item v-if="can.delete.flow_run" label="Delete" @click="openDeleteModal" />
 
       <slot v-bind="{ flowRun }" />
@@ -21,16 +21,16 @@
     :flow-run="flowRun"
   />
 
-  <FlowRunResumeModal v-model:showModal="showResumeModal" :flow-run-id="flowRunId" />
+  <FlowRunResumeModal v-model:showModal="showResumeModal" :flow-run-id="flowRun.id" />
 
   <FlowRunCancelModal
     v-model:showModal="showCancelModal"
-    :flow-run-id="flowRunId"
+    :flow-run-id="flowRun.id"
     @change="showCancelModal"
   />
   <FlowRunSuspendModal
     v-model:showModal="showSuspendModal"
-    :flow-run-id="flowRunId"
+    :flow-run-id="flowRun.id"
     @change="showSuspendModal"
   />
   <ConfirmStateChangeModal
@@ -45,13 +45,13 @@
     v-model:showModal="showDeleteModal"
     label="Flow Run"
     :name="flowRun.name!"
-    @delete="deleteFlowRun(flowRunId)"
+    @delete="deleteFlowRun(flowRun.id)"
   />
 </template>
 
 <script lang="ts" setup>
   import { showToast } from '@prefecthq/prefect-design'
-  import { computed, ref, toRefs } from 'vue'
+  import { computed, ref } from 'vue'
   import { FlowRunRetryModal, FlowRunCancelModal, FlowRunSuspendModal, ConfirmStateChangeModal, ConfirmDeleteModal, CopyOverflowMenuItem } from '@/components'
   import FlowRunResumeModal from '@/components/FlowRunResumeModal.vue'
   import { useCan, useWorkspaceApi, useShowModal, useWorkspaceRoutes, useFlowRuns, useDeployment } from '@/compositions'
@@ -61,7 +61,6 @@
   import { getApiErrorMessage } from '@/utilities/errors'
 
   const props = defineProps<{
-    flowRunId: string,
     flowRun: FlowRun,
     showAll?: boolean,
   }>()
@@ -69,7 +68,6 @@
   const can = useCan()
   const api = useWorkspaceApi()
   const routes = useWorkspaceRoutes()
-  const { flowRunId } = toRefs(props)
 
   const { showModal: showRetryModal, open: openRetryModal } = useShowModal()
   const { showModal: showResumeModal, open: openResumeModal } = useShowModal()
@@ -140,7 +138,7 @@
 
   const changeFlowRunState = async (values: StateUpdateDetails): Promise<void> => {
     try {
-      await api.flowRuns.setFlowRunState(props.flowRunId, { state: values })
+      await api.flowRuns.setFlowRunState(props.flowRun.id, { state: values })
       emit('update')
       showToast(localization.success.changeFlowRunState, 'success')
     } catch (error) {
