@@ -1,7 +1,10 @@
 import { InjectionKey, ref } from 'vue'
 import { MaybeRef } from '@/types/reactivity'
 
-export const workspaceFeatureFlags = ['access:deploymentScheduleFlowRunInfraOverrides'] as const satisfies Readonly<`access:${string}`[]>
+export const workspaceFeatureFlags = [
+  'access:deploymentScheduleFlowRunInfraOverrides',
+  'access:nestedTaskRunGraphs',
+] as const satisfies Readonly<`access:${string}`[]>
 
 export type WorkspaceFeatureFlag = typeof workspaceFeatureFlags[number]
 

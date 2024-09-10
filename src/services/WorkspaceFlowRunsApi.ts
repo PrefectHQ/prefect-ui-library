@@ -17,10 +17,6 @@ import { WorkspaceApi } from '@/services/WorkspaceApi'
 import { Schema, SchemaValues } from '@/types/schemas'
 import { toMap } from '@/utilities'
 
-type GetFlowRunGraphOptions = {
-  nestedTaskRunGraphs: boolean,
-}
-
 export class WorkspaceFlowRunsApi extends WorkspaceApi {
 
   protected override routePrefix = '/flow_runs'
@@ -81,7 +77,7 @@ export class WorkspaceFlowRunsApi extends WorkspaceApi {
     return data
   }
 
-  public async getFlowRunsGraph(id: string, { nestedTaskRunGraphs }: GetFlowRunGraphOptions): Promise<RunGraphData> {
+  public async getFlowRunsGraph(id: string, nestedTaskRunGraphs: boolean): Promise<RunGraphData> {
     const { data: graph } = await this.get<RunGraphDataResponse>(`/${id}/graph-v2`)
 
     return mapper.map('RunGraphDataResponse', { graph, nestedTaskRunGraphs }, 'RunGraphData')
