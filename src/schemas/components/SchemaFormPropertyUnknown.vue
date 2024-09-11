@@ -59,6 +59,6 @@
       })
     }
 
-    return withProps(() => ({ template: '' }))
+    return withProps(() => '')
   })
 </script>
