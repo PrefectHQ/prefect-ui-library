@@ -125,6 +125,7 @@ export { default as FlowRunJobVariableOverridesLabeledInput } from './FlowRunJob
 export { default as FlowRunList } from './FlowRunList.vue'
 export { default as FlowRunListItem } from './FlowRunListItem.vue'
 export { default as FlowRunLogs } from './FlowRunLogs.vue'
+export { default as FlowRunLogsDownloadButton } from './FlowRunLogsDownloadButton.vue'
 export { default as FlowRunMenu } from './FlowRunMenu.vue'
 export { default as FlowRunName } from './FlowRunName.vue'
 export { default as FlowRunPopOver } from './FlowRunPopOver.vue'
