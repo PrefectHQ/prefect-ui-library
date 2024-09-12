@@ -167,7 +167,7 @@ export class WorkspaceFlowRunsApi extends WorkspaceApi {
   }
 
   public async getFlowRunJobConfig(flowRunId: string): Promise<Record<string, unknown>> {
-    const { data } = await this.get<{ config: Record<string, unknown> }>(`${flowRunId}/job/config`)
-    return data.config
+    const { data } = await this.get<Record<string, unknown>>(`${flowRunId}/job/config`)
+    return data
   }
 }
