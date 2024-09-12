@@ -166,4 +166,8 @@ export class WorkspaceFlowRunsApi extends WorkspaceApi {
     URL.revokeObjectURL(url)
   }
 
+  public async getFlowRunJobConfig(flowRunId: string): Promise<Record<string, unknown>> {
+    const { data } = await this.get<{ config: Record<string, unknown> }>(`${flowRunId}/job/config`)
+    return data.config
+  }
 }
