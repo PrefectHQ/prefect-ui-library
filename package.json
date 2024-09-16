@@ -60,7 +60,7 @@
         "@types/node": "^22.5.4",
         "@types/prismjs": "^1.26.4",
         "@vitejs/plugin-vue": "5.1.3",
-        "auto-changelog": "^2.4.0",
+        "auto-changelog": "^2.5.0",
         "autoprefixer": "10.4.20",
         "eslint": "8.57.0",
         "lodash.camelcase": "4.3.0",
