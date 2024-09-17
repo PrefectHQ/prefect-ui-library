@@ -3,7 +3,7 @@
     <LogoImage v-if="blockType" :url="blockType.logoUrl" />
 
     <template v-if="blockDocuments.length">
-      <BlockDocumentCombobox v-model:selected="model" v-bind="{ blockDocuments }" class="block-document-input__select" />
+      <BlockDocumentCombobox v-model:selected="model" :required="required" v-bind="{ blockDocuments }" class="block-document-input__select" />
     </template>
     <p-button v-if="blockTypeSlug" icon-append="PlusIcon" @click="open">
       Add
@@ -25,6 +25,7 @@
   const props = defineProps<{
     modelValue: string | null | undefined,
     blockTypeSlug: string,
+    required?: boolean,
   }>()
 
   const emit = defineEmits<{
