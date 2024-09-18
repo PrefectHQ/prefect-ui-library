@@ -163,6 +163,7 @@
         retryDelay: retryDelay.value,
         maxRetries: null,
         retryDelaySeconds: null,
+        retryJitterFactor: null,
       },
       name: name.value,
       parameters: parameters.value,

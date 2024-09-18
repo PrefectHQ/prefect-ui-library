@@ -60,16 +60,9 @@
 
     <p-key-value label="Version" :value="taskRun.taskVersion" :alternate="alternate" />
 
-    <div v-if="taskRun.empiricalPolicy?.maxRetries">
-      <p-key-value label="Max Retries" :value="taskRun.empiricalPolicy?.maxRetries" :alternate="alternate" />
-
-      <p-key-value label="Retry Delay" :value="secondsToApproximateString(taskRun.empiricalPolicy?.retryDelaySeconds ?? 0)" :alternate="alternate" />
-    </div>
-    <div v-else>
-      <p-key-value label="Retries" :value="taskRun.empiricalPolicy?.retries" :alternate="alternate" />
-
-      <p-key-value label="Retry Delay" :value="secondsToApproximateString(taskRun.empiricalPolicy?.retryDelay ?? 0)" :alternate="alternate" />
-    </div>
+    <p-key-value label="Retries" :value="taskRun.empiricalPolicy?.retries" :alternate="alternate" />
+    <p-key-value label="Retry Delay" :value="secondsToApproximateString(taskRun.empiricalPolicy?.retryDelay ?? 0)" :alternate="alternate" />
+    <p-key-value label="Retry Jitter Factor" :value="taskRun.empiricalPolicy?.retryJitterFactor" :alternate="alternate" />
 
     <p-key-value label="Tags" :alternate="alternate">
       <template v-if="taskRun.tags?.length" #value>

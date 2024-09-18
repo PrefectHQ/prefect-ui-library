@@ -8,6 +8,7 @@ export const mapEmpiricalPolicyResponseToEmpiricalPolicy: MapFunction<EmpiricalP
     retries: source.retries,
     retryDelay: source.retry_delay,
     maxRetries: source.max_retries,
+    retryJitterFactor: source.retry_jitter_factor,
     retryDelaySeconds: source.retry_delay_seconds,
   })
 }
@@ -17,6 +18,7 @@ export const mapEmpiricalPolicyToEmpiricalPolicyResponse: MapFunction<EmpiricalP
     retries: source.retries,
     retry_delay: source.retryDelay,
     max_retries: source.maxRetries,
+    retry_jitter_factor: source.retryJitterFactor,
     retry_delay_seconds: source.retryDelaySeconds,
   }
 }
