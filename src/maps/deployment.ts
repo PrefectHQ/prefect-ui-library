@@ -37,7 +37,7 @@ export const mapDeploymentResponseToDeployment: MapFunction<DeploymentResponse, 
     can: createObjectLevelCan(),
     status: this.map('ServerDeploymentStatus', source.status, 'DeploymentStatus'),
     disabled: source.disabled ?? false,
-    concurrencyLimit: source.concurrency_limit,
+    concurrencyLimit: source.concurrency_limit ?? source.global_concurrency_limit?.limit ?? null,
   })
 }
 

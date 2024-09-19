@@ -1,3 +1,4 @@
+import { ConcurrencyV2Response } from '@/models/api/ConcurrencyV2Response'
 import { CreatedOrUpdatedByResponse } from '@/models/api/CreatedOrUpdatedByResponse'
 import { DeploymentScheduleResponse } from '@/models/api/DeploymentScheduleResponse'
 import { ScheduleResponse } from '@/models/api/ScheduleResponse'
@@ -36,4 +37,5 @@ export type DeploymentResponse = {
   status: ServerDeploymentStatus,
   disabled?: boolean,
   concurrency_limit: number | null,
+  global_concurrency_limit: ConcurrencyV2Response | null,
 }
