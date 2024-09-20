@@ -1,4 +1,4 @@
-import { DeploymentApiConcurrencyOptions } from '@/models/api/DeploymentResponse'
+import { DeploymentApiConcurrencyOptions } from '@/models/api/DeploymentApiConcurrencyOptions'
 import { SchemaValues } from '@/schemas/types/schemaValues'
 
 export type DeploymentCreateRequest = {

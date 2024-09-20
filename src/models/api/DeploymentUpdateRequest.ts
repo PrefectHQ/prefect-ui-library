@@ -1,4 +1,5 @@
-import { DeploymentApiConcurrencyOptions, ScheduleResponse } from '@/models'
+import { ScheduleResponse } from '@/models'
+import { DeploymentApiConcurrencyOptions } from '@/models/api/DeploymentApiConcurrencyOptions'
 import { SchemaValues } from '@/types/schemas'
 
 export type DeploymentUpdateRequest = Partial<{

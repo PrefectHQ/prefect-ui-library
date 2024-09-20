@@ -36,7 +36,7 @@
     </p-label>
 
     <p-label label="Concurrency Limit Collision Strategy (Optional)" description="Configure behavior for runs once the concurrency limit is reached.">
-      <p-select v-model="concurrencyLimitCollisionStrategy" :options="concurrencyLimitCollisionStrategyOptions" empty-message="ENQUEUE" />
+      <p-select v-model="concurrencyLimitCollisionStrategy" :options="deploymentCollisionStrategies" empty-message="ENQUEUE" />
     </p-label>
 
     <p-divider />
@@ -88,7 +88,7 @@
   import { JobVariableOverridesInput, WorkPoolCombobox, WorkPoolQueueCombobox } from '@/components'
   import ToastParameterValidationError from '@/components/ToastParameterValidationError.vue'
   import { localization } from '@/localization'
-  import { Deployment, DeploymentConcurrencyOptions, DeploymentUpdateV2 } from '@/models'
+  import { Deployment, deploymentCollisionStrategies, DeploymentUpdateV2 } from '@/models'
   import { DeploymentCreate } from '@/models/DeploymentCreate'
   import { SchemaInputV2 } from '@/schemas'
   import { useSchemaValidation } from '@/schemas/compositions/useSchemaValidation'
@@ -109,7 +109,6 @@
   const workQueueName = ref(props.deployment.workQueueName)
   const concurrencyLimit = ref(props.deployment.concurrencyLimit)
   const concurrencyLimitCollisionStrategy = ref(props.deployment.concurrencyOptions?.collisionStrategy)
-  const concurrencyLimitCollisionStrategyOptions: DeploymentConcurrencyOptions['collisionStrategy'][] = ['ENQUEUE', 'CANCEL_NEW']
   const parameters = ref(props.deployment.parameters)
   const tags = ref(props.deployment.tags)
   const jobVariables = ref(stringify(props.deployment.jobVariables))

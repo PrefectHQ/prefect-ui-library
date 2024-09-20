@@ -1,14 +1,11 @@
 import { ConcurrencyV2Response } from '@/models/api/ConcurrencyV2Response'
 import { CreatedOrUpdatedByResponse } from '@/models/api/CreatedOrUpdatedByResponse'
+import { DeploymentApiConcurrencyOptions } from '@/models/api/DeploymentApiConcurrencyOptions'
 import { DeploymentScheduleResponse } from '@/models/api/DeploymentScheduleResponse'
 import { ScheduleResponse } from '@/models/api/ScheduleResponse'
 import { ServerDeploymentStatus } from '@/models/DeploymentStatus'
 import { SchemaResponseV2, SchemaValuesV2 } from '@/schemas'
 import { DateString } from '@/types/dates'
-
-export type DeploymentApiConcurrencyOptions = {
-  collision_strategy: 'ENQUEUE' | 'CANCEL_NEW',
-}
 
 export type DeploymentResponse = {
   id: string,

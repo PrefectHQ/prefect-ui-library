@@ -4,9 +4,13 @@ import { DeploymentSchedule } from '@/models/DeploymentSchedule'
 import { DeploymentStatus } from '@/models/DeploymentStatus'
 import { ObjectLevelCan } from '@/models/ObjectLevelCan'
 import { SchemaV2, SchemaValuesV2 } from '@/schemas'
+import { createTuple } from '@/utilities'
+
+export const { values: deploymentCollisionStrategies, isValue: isDeploymentCollisionStrategy } = createTuple(['ENQUEUE', 'CANCEL_NEW'])
+export type DeploymentCollisionStrategy = typeof deploymentCollisionStrategies[number]
 
 export type DeploymentConcurrencyOptions = {
-  collisionStrategy: 'ENQUEUE' | 'CANCEL_NEW',
+  collisionStrategy: DeploymentCollisionStrategy,
 }
 
 export interface IDeployment {
