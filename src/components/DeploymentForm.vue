@@ -32,6 +32,12 @@
     </p-label>
 
     <p-label label="Concurrency Limit (Optional)" :state="concurrencyLimitState" :message="concurrencyLimitError">
+      <template #label>
+        <div class="flex gap-1 items-center">
+          Concurrency Limit (Optional)
+          <DeploymentConcurrencyVersionTooltip />
+        </div>
+      </template>
       <p-number-input v-model="concurrencyLimit" :state="concurrencyLimitState" placeholder="Unlimited" />
     </p-label>
 
@@ -86,6 +92,7 @@
   import { useValidation, useValidationObserver } from '@prefecthq/vue-compositions'
   import { computed, h, ref } from 'vue'
   import { JobVariableOverridesInput, WorkPoolCombobox, WorkPoolQueueCombobox } from '@/components'
+  import DeploymentConcurrencyVersionTooltip from '@/components/DeploymentConcurrencyVersionTooltip.vue'
   import ToastParameterValidationError from '@/components/ToastParameterValidationError.vue'
   import { localization } from '@/localization'
   import { Deployment, deploymentCollisionStrategies, DeploymentUpdateV2 } from '@/models'
