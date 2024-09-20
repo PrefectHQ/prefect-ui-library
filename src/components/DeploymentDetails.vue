@@ -85,7 +85,14 @@
 
     <p-key-value label="Path" :value="deployment.path" :alternate="alternate" />
 
-    <p-key-value label="Concurrency Limit" :value="deployment.concurrencyLimit" :alternate="alternate" />
+    <p-key-value :value="deployment.concurrencyLimit" :alternate="alternate">
+      <template #label>
+        <div class="flex gap-1 items-center">
+          <span>Concurrency Limit</span>
+          <DeploymentConcurrencyVersionTooltip />
+        </div>
+      </template>
+    </p-key-value>
 
     <p-divider />
 
@@ -119,6 +126,7 @@
   import { AutomationAction, CreateAutomationQuery } from '..'
   import AutomationIconText from '@/automations/components/AutomationIconText.vue'
   import { BlockIconText, DeploymentStatusBadge, DeploymentSchedulesFieldset } from '@/components'
+  import DeploymentConcurrencyVersionTooltip from '@/components/DeploymentConcurrencyVersionTooltip.vue'
   import DeploymentToggle from '@/components/DeploymentToggle.vue'
   import FormattedDate from '@/components/FormattedDate.vue'
   import { useWorkspaceApi, useCan, useWorkspaceRoutes } from '@/compositions'
