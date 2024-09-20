@@ -37,7 +37,6 @@ export interface IDeployment {
   can: ObjectLevelCan<'deployment'>,
   status: DeploymentStatus,
   disabled: boolean,
-  concurrencyLimit: number | null,
   globalConcurrencyLimit: ConcurrencyV2Limit | null,
   concurrencyOptions: DeploymentConcurrencyOptions | null,
 }
@@ -71,8 +70,6 @@ export class Deployment implements IDeployment {
   public can: ObjectLevelCan<'deployment'>
   public status: DeploymentStatus
   public disabled: boolean
-  /** @deprecated Prefer `globalConcurrencyLimit?.limit` */
-  public concurrencyLimit: number | null
   public globalConcurrencyLimit: ConcurrencyV2Limit | null
   public concurrencyOptions: DeploymentConcurrencyOptions | null
 
@@ -104,9 +101,12 @@ export class Deployment implements IDeployment {
     this.can = deployment.can
     this.status = deployment.status
     this.disabled = deployment.disabled
-    this.concurrencyLimit = deployment.concurrencyLimit
     this.globalConcurrencyLimit = deployment.globalConcurrencyLimit
     this.concurrencyOptions = deployment.concurrencyOptions
+  }
+
+  public get concurrencyLimit(): number | null {
+    return this.globalConcurrencyLimit?.limit ?? null
   }
 
   public get deprecated(): boolean {
