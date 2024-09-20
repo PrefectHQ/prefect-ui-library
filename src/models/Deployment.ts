@@ -1,3 +1,4 @@
+import { ConcurrencyV2Limit } from '@/models/ConcurrencyV2Limit'
 import { CreatedOrUpdatedBy } from '@/models/CreatedOrUpdatedBy'
 import { DeploymentSchedule } from '@/models/DeploymentSchedule'
 import { DeploymentStatus } from '@/models/DeploymentStatus'
@@ -33,6 +34,7 @@ export interface IDeployment {
   status: DeploymentStatus,
   disabled: boolean,
   concurrencyLimit: number | null,
+  globalConcurrencyLimit: ConcurrencyV2Limit | null,
 }
 
 export class Deployment implements IDeployment {
@@ -64,7 +66,9 @@ export class Deployment implements IDeployment {
   public can: ObjectLevelCan<'deployment'>
   public status: DeploymentStatus
   public disabled: boolean
+  /** @deprecated Prefer `globalConcurrencyLimit?.limit` */
   public concurrencyLimit: number | null
+  public globalConcurrencyLimit: ConcurrencyV2Limit | null
 
   public constructor(deployment: IDeployment) {
     this.id = deployment.id
@@ -95,6 +99,7 @@ export class Deployment implements IDeployment {
     this.status = deployment.status
     this.disabled = deployment.disabled
     this.concurrencyLimit = deployment.concurrencyLimit
+    this.globalConcurrencyLimit = deployment.globalConcurrencyLimit
   }
 
   public get deprecated(): boolean {

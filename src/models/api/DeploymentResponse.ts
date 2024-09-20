@@ -36,6 +36,7 @@ export type DeploymentResponse = {
   pull_steps: unknown,
   status: ServerDeploymentStatus,
   disabled?: boolean,
+  /** @deprecated Prefer `global_concurrency_limit */
   concurrency_limit: number | null,
   global_concurrency_limit: ConcurrencyV2Response | null,
 }

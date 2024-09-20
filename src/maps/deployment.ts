@@ -38,6 +38,7 @@ export const mapDeploymentResponseToDeployment: MapFunction<DeploymentResponse, 
     status: this.map('ServerDeploymentStatus', source.status, 'DeploymentStatus'),
     disabled: source.disabled ?? false,
     concurrencyLimit: source.concurrency_limit ?? source.global_concurrency_limit?.limit ?? null,
+    globalConcurrencyLimit: this.map('ConcurrencyV2LimitResponse', source.global_concurrency_limit, 'ConcurrencyV2Limit'),
   })
 }
 
