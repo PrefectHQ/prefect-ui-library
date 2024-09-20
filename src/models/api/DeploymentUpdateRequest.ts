@@ -1,4 +1,5 @@
 import { ScheduleResponse } from '@/models'
+import { DeploymentApiConcurrencyOptions } from '@/models/api/DeploymentApiConcurrencyOptions'
 import { SchemaValues } from '@/types/schemas'
 
 export type DeploymentUpdateRequest = Partial<{
@@ -16,4 +17,5 @@ export type DeploymentUpdateRequest = Partial<{
   job_variables: Record<string, unknown> | null,
   enforce_parameter_schema: boolean,
   concurrency_limit: number | null,
+  concurrency_options: DeploymentApiConcurrencyOptions | null,
 }>

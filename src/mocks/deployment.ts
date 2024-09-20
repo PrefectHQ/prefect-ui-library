@@ -41,6 +41,8 @@ export const randomDeployment: MockFunction<Deployment, [Partial<Deployment>?]> 
     status: this.create('deploymentStatus'),
     disabled: disabled,
     concurrencyLimit: null,
+    globalConcurrencyLimit: null,
+    concurrencyOptions: null,
     ...overrides,
   }
 }

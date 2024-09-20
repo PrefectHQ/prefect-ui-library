@@ -1,5 +1,6 @@
 import { ConcurrencyV2Response } from '@/models/api/ConcurrencyV2Response'
 import { CreatedOrUpdatedByResponse } from '@/models/api/CreatedOrUpdatedByResponse'
+import { DeploymentApiConcurrencyOptions } from '@/models/api/DeploymentApiConcurrencyOptions'
 import { DeploymentScheduleResponse } from '@/models/api/DeploymentScheduleResponse'
 import { ScheduleResponse } from '@/models/api/ScheduleResponse'
 import { ServerDeploymentStatus } from '@/models/DeploymentStatus'
@@ -36,6 +37,8 @@ export type DeploymentResponse = {
   pull_steps: unknown,
   status: ServerDeploymentStatus,
   disabled?: boolean,
+  /** @deprecated Prefer `global_concurrency_limit */
   concurrency_limit: number | null,
   global_concurrency_limit: ConcurrencyV2Response | null,
+  concurrency_options: DeploymentApiConcurrencyOptions | null,
 }

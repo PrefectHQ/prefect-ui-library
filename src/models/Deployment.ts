@@ -1,8 +1,17 @@
+import { ConcurrencyV2Limit } from '@/models/ConcurrencyV2Limit'
 import { CreatedOrUpdatedBy } from '@/models/CreatedOrUpdatedBy'
 import { DeploymentSchedule } from '@/models/DeploymentSchedule'
 import { DeploymentStatus } from '@/models/DeploymentStatus'
 import { ObjectLevelCan } from '@/models/ObjectLevelCan'
 import { SchemaV2, SchemaValuesV2 } from '@/schemas'
+import { createTuple } from '@/utilities'
+
+export const { values: deploymentCollisionStrategies, isValue: isDeploymentCollisionStrategy } = createTuple(['ENQUEUE', 'CANCEL_NEW'])
+export type DeploymentCollisionStrategy = typeof deploymentCollisionStrategies[number]
+
+export type DeploymentConcurrencyOptions = {
+  collisionStrategy: DeploymentCollisionStrategy,
+}
 
 export interface IDeployment {
   id: string,
@@ -32,7 +41,8 @@ export interface IDeployment {
   can: ObjectLevelCan<'deployment'>,
   status: DeploymentStatus,
   disabled: boolean,
-  concurrencyLimit: number | null,
+  globalConcurrencyLimit: ConcurrencyV2Limit | null,
+  concurrencyOptions: DeploymentConcurrencyOptions | null,
 }
 
 export class Deployment implements IDeployment {
@@ -64,7 +74,8 @@ export class Deployment implements IDeployment {
   public can: ObjectLevelCan<'deployment'>
   public status: DeploymentStatus
   public disabled: boolean
-  public concurrencyLimit: number | null
+  public globalConcurrencyLimit: ConcurrencyV2Limit | null
+  public concurrencyOptions: DeploymentConcurrencyOptions | null
 
   public constructor(deployment: IDeployment) {
     this.id = deployment.id
@@ -94,7 +105,12 @@ export class Deployment implements IDeployment {
     this.can = deployment.can
     this.status = deployment.status
     this.disabled = deployment.disabled
-    this.concurrencyLimit = deployment.concurrencyLimit
+    this.globalConcurrencyLimit = deployment.globalConcurrencyLimit
+    this.concurrencyOptions = deployment.concurrencyOptions
+  }
+
+  public get concurrencyLimit(): number | null {
+    return this.globalConcurrencyLimit?.limit ?? null
   }
 
   public get deprecated(): boolean {
