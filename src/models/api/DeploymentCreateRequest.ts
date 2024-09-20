@@ -1,3 +1,4 @@
+import { DeploymentApiConcurrencyOptions } from '@/models/api/DeploymentResponse'
 import { SchemaValues } from '@/schemas/types/schemaValues'
 
 export type DeploymentCreateRequest = {
@@ -21,4 +22,5 @@ export type DeploymentCreateRequest = {
   version: string | null,
   paused: boolean,
   concurrency_limit: number | null,
+  concurrency_options: DeploymentApiConcurrencyOptions | null,
 }

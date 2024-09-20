@@ -1,3 +1,4 @@
+import { DeploymentConcurrencyOptions } from '@/models/Deployment'
 import { SchemaValuesV2 } from '@/schemas'
 
 type Base = {
@@ -9,6 +10,7 @@ type Base = {
   jobVariables?: Record<string, unknown> | null,
   enforceParameterSchema?: boolean,
   concurrencyLimit?: number | null,
+  concurrencyOptions?: DeploymentConcurrencyOptions | null,
 }
 
 type WithoutParameters = Base & {

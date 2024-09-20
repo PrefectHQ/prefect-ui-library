@@ -1,3 +1,4 @@
+import { DeploymentConcurrencyOptions } from '@/models/Deployment'
 import { DeploymentSchedule } from '@/models/DeploymentSchedule'
 import { SchemaValuesV2 } from '@/schemas'
 
@@ -22,4 +23,5 @@ export type DeploymentCreate = {
   enforceParameterSchema: boolean,
   pullSteps: unknown,
   concurrencyLimit: number | null,
+  concurrencyOptions: DeploymentConcurrencyOptions | null,
 }

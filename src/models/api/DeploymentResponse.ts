@@ -6,6 +6,10 @@ import { ServerDeploymentStatus } from '@/models/DeploymentStatus'
 import { SchemaResponseV2, SchemaValuesV2 } from '@/schemas'
 import { DateString } from '@/types/dates'
 
+export type DeploymentApiConcurrencyOptions = {
+  collision_strategy: 'ENQUEUE' | 'CANCEL_NEW',
+}
+
 export type DeploymentResponse = {
   id: string,
   created: DateString,
@@ -39,4 +43,5 @@ export type DeploymentResponse = {
   /** @deprecated Prefer `global_concurrency_limit */
   concurrency_limit: number | null,
   global_concurrency_limit: ConcurrencyV2Response | null,
+  concurrency_options: DeploymentApiConcurrencyOptions | null,
 }

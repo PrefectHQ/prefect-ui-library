@@ -1,8 +1,8 @@
 import { sortStringArray } from '@prefecthq/prefect-design'
 import { DeploymentFlowRunCreate, DeploymentFlowRunRequest, DeploymentUpdateRequest, DeploymentUpdateV2 } from '@/models'
 import { DeploymentCreateRequest } from '@/models/api/DeploymentCreateRequest'
-import { DeploymentResponse } from '@/models/api/DeploymentResponse'
-import { Deployment } from '@/models/Deployment'
+import { DeploymentApiConcurrencyOptions, DeploymentResponse } from '@/models/api/DeploymentResponse'
+import { Deployment, DeploymentConcurrencyOptions } from '@/models/Deployment'
 import { DeploymentCreate } from '@/models/DeploymentCreate'
 import { createObjectLevelCan } from '@/models/ObjectLevelCan'
 import { schemaV2Mapper } from '@/schemas'
@@ -39,7 +39,14 @@ export const mapDeploymentResponseToDeployment: MapFunction<DeploymentResponse, 
     disabled: source.disabled ?? false,
     concurrencyLimit: source.concurrency_limit ?? source.global_concurrency_limit?.limit ?? null,
     globalConcurrencyLimit: this.map('ConcurrencyV2LimitResponse', source.global_concurrency_limit, 'ConcurrencyV2Limit'),
+    concurrencyOptions: source.concurrency_options == null ? null : mapDeploymentApiConcurrencyOptionsToDeploymentConcurrencyOptions(source.concurrency_options),
   })
+}
+
+function mapDeploymentApiConcurrencyOptionsToDeploymentConcurrencyOptions(source: DeploymentApiConcurrencyOptions): DeploymentConcurrencyOptions {
+  return {
+    collisionStrategy: source.collision_strategy,
+  }
 }
 
 export const mapDeploymentUpdateV2ToDeploymentUpdateRequest: MapFunction<DeploymentUpdateV2, DeploymentUpdateRequest> = function(source) {
@@ -53,6 +60,7 @@ export const mapDeploymentUpdateV2ToDeploymentUpdateRequest: MapFunction<Deploym
     job_variables: source.jobVariables,
     enforce_parameter_schema: source.enforceParameterSchema,
     concurrency_limit: source.concurrencyLimit,
+    concurrency_options: source.concurrencyOptions == null ? null : mapDeploymentConcurrencyOptionsToDeploymentApiConcurrencyOptions(source.concurrencyOptions),
   }
 }
 
@@ -94,5 +102,12 @@ export const mapDeploymentCreateToDeploymentCreateRequest: MapFunction<Deploymen
     version: source.version,
     paused: source.paused,
     concurrency_limit: source.concurrencyLimit,
+    concurrency_options: source.concurrencyOptions == null ? null : mapDeploymentConcurrencyOptionsToDeploymentApiConcurrencyOptions(source.concurrencyOptions),
+  }
+}
+
+function mapDeploymentConcurrencyOptionsToDeploymentApiConcurrencyOptions(source: DeploymentConcurrencyOptions): DeploymentApiConcurrencyOptions {
+  return {
+    collision_strategy: source.collisionStrategy,
   }
 }

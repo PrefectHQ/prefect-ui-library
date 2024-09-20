@@ -5,6 +5,10 @@ import { DeploymentStatus } from '@/models/DeploymentStatus'
 import { ObjectLevelCan } from '@/models/ObjectLevelCan'
 import { SchemaV2, SchemaValuesV2 } from '@/schemas'
 
+export type DeploymentConcurrencyOptions = {
+  collisionStrategy: 'ENQUEUE' | 'CANCEL_NEW',
+}
+
 export interface IDeployment {
   id: string,
   created: Date,
@@ -35,6 +39,7 @@ export interface IDeployment {
   disabled: boolean,
   concurrencyLimit: number | null,
   globalConcurrencyLimit: ConcurrencyV2Limit | null,
+  concurrencyOptions: DeploymentConcurrencyOptions | null,
 }
 
 export class Deployment implements IDeployment {
@@ -69,6 +74,7 @@ export class Deployment implements IDeployment {
   /** @deprecated Prefer `globalConcurrencyLimit?.limit` */
   public concurrencyLimit: number | null
   public globalConcurrencyLimit: ConcurrencyV2Limit | null
+  public concurrencyOptions: DeploymentConcurrencyOptions | null
 
   public constructor(deployment: IDeployment) {
     this.id = deployment.id
@@ -100,6 +106,7 @@ export class Deployment implements IDeployment {
     this.disabled = deployment.disabled
     this.concurrencyLimit = deployment.concurrencyLimit
     this.globalConcurrencyLimit = deployment.globalConcurrencyLimit
+    this.concurrencyOptions = deployment.concurrencyOptions
   }
 
   public get deprecated(): boolean {
