@@ -7,4 +7,3 @@ export { default as AutomationTriggerEventInput } from './AutomationTriggerEvent
 export { default as AutomationTriggerCustomInput } from './AutomationTriggerCustomInput.vue'
 export { default as AutomationsPageEmptyState } from './AutomationsPageEmptyState.vue'
 export { default as AutomationToggle } from './AutomationToggle.vue'
-export { default as AutomationMenu } from './AutomationMenu.vue'
