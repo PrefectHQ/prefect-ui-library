@@ -1,5 +1,5 @@
 <template>
-  <p-toggle v-if="can.update.automation" v-model="internalValue" :state="state" />
+  <p-toggle v-model="internalValue" :disabled="!can.update.automation" :state="state" />
 </template>
 
 <script lang="ts" setup>
