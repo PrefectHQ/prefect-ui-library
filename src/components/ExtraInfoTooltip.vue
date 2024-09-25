@@ -1,5 +1,5 @@
 <template>
-  <p-tooltip :text="description">
+  <p-tooltip :text="description" avoid-collisions>
     <p-icon icon="InformationCircleIcon" class="extra-info-tooltip__icon" />
     <template #content>
       <slot />
@@ -9,7 +9,7 @@
 
 <script lang="ts" setup>
   defineProps<{
-    description: string,
+    description?: string,
   }>()
 </script>
 
