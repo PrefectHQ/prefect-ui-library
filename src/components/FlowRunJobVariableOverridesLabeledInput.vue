@@ -3,7 +3,7 @@
     <template #label>
       <span class="flow-run-job-variable-overrides-labeled-input__label">
         Job Variables (Optional)
-        <ExtraInfoTooltip>
+        <ExtraInfoTooltip description="what">
           To use flow run job variables, make sure your workers are using
           <p-code inline>
             prefect>=2.16.4
