@@ -186,6 +186,11 @@ export const mapFlowRunFilter: MapFunction<FlowRunFilter, FlowRunFilterRequest> 
       ...toAfter(source.startTimeAfter),
       ...toIsNull(source.startTimeNull),
     },
+    end_time: {
+      ...toBefore(source.endTimeBefore),
+      ...toAfter(source.endTimeAfter),
+      ...toIsNull(source.endTimeNull),
+    },
     expected_start_time: {
       ...toBefore(source.expectedStartTimeBefore),
       ...toAfter(source.expectedStartTimeAfter),
