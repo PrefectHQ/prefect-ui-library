@@ -55,6 +55,7 @@ export type FlowRunFilterRequest = {
   state?: StateFilterRequest,
   flow_version?: Any,
   start_time?: Before & After & IsNull,
+  end_time?: Before & After & IsNull,
   expected_start_time?: Before & After,
   next_scheduled_start_time?: Before & After,
   parent_task_run_id?: OperatorRequest & Any & IsNull,
