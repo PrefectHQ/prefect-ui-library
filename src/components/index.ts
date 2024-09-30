@@ -179,7 +179,6 @@ export { default as NotificationStatusSelect } from './NotificationStatusSelect.
 export { default as NotificationToggle } from './NotificationToggle.vue'
 export { default as PageHeading } from './PageHeading.vue'
 export { default as PageHeadingAccountSettings } from './PageHeadingAccountSettings.vue'
-export { default as PageHeadingAutomation } from './PageHeadingAutomation.vue'
 export { default as PageHeadingApiKeys } from './PageHeadingApiKeys.vue'
 export { default as PageHeadingArtifact } from './PageHeadingArtifact.vue'
 export { default as PageHeadingArtifactKey } from './PageHeadingArtifactKey.vue'
