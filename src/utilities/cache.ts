@@ -7,6 +7,12 @@ export function getCacheKey(label: string): string {
   return `${cacheKeyPrefix}:${label}`
 }
 
+type CacheKeyFunction = (key: string) => string
+
+export function createCacheKeyFunction(version: number, prefix: string): CacheKeyFunction {
+  return (key: string) => `${cachePrefix}-${cacheVersion}-${prefix}-${version}-${key}`
+}
+
 export function isCacheKey(key: string): boolean {
   return key.startsWith(cachePrefix)
 }
