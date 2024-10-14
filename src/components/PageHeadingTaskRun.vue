@@ -3,104 +3,38 @@
     <template #after-crumbs>
       <StateBadge :state="taskRun.state" />
     </template>
-    <template #actions>
-      <p-icon-button-menu>
-        <template #default>
-          <p-overflow-menu-item v-if="showChangeStateMenuItemButton" label="Change state" @click="openChangeStateModal" />
-          <copy-overflow-menu-item label="Copy ID" :item="taskRun.id" />
-          <p-overflow-menu-item v-if="can.delete.task_run" label="Delete" @click="openDeleteModal" />
-        </template>
-      </p-icon-button-menu>
-      <ConfirmDeleteModal
-        v-model:showModal="showDeleteModal"
-        label="Task Run"
-        :name="taskRun.name!"
-        @delete="() => deleteTaskRun(taskRunId)"
-      />
 
-      <ConfirmStateChangeModal
-        v-model:showModal="showStateChangeModal"
-        :run="taskRun"
-        label="Task Run"
-        @change="changeTaskRunState"
-      />
+    <template #actions>
+      <TaskRunMenu :task-run @delete="emit('delete')" @update="taskRunSubscription.refresh" />
     </template>
   </page-heading>
 </template>
 
 <script lang="ts" setup>
-  import { Crumb, showToast } from '@prefecthq/prefect-design'
-  import { useSubscription, useSubscriptionWithDependencies } from '@prefecthq/vue-compositions'
-  import { computed, ref } from 'vue'
-  import { StateBadge, PageHeading, CopyOverflowMenuItem, ConfirmDeleteModal, ConfirmStateChangeModal } from '@/components'
-  import { useWorkspaceApi, useWorkspaceRoutes } from '@/compositions'
-  import { useCan } from '@/compositions/useCan'
-  import { localization } from '@/localization'
-  import { isTerminalStateType, StateUpdateDetails } from '@/models'
-  import { deleteItem } from '@/utilities'
-  import { getApiErrorMessage } from '@/utilities/errors'
+  import { Crumb } from '@prefecthq/prefect-design'
+  import { computed } from 'vue'
+  import { StateBadge, PageHeading, TaskRunMenu } from '@/components'
+  import { useFlowRun, useTaskRun, useWorkspaceRoutes } from '@/compositions'
 
   const props = defineProps<{
     taskRunId: string,
   }>()
 
-  const can = useCan()
-  const api = useWorkspaceApi()
-  const routes = useWorkspaceRoutes()
-  const taskRunSubscription = useSubscription(api.taskRuns.getTaskRun, [props.taskRunId])
-  const taskRun = computed(() => taskRunSubscription.response)
+  const emit = defineEmits(['delete'])
 
-  const flowRunId = computed(() => taskRun.value?.flowRunId)
-  const flowRunIdArgs = computed<[string] | null>(() => flowRunId.value ? [flowRunId.value] : null)
-  const flowRunSubscription = useSubscriptionWithDependencies(api.flowRuns.getFlowRun, flowRunIdArgs)
-  const flowRunName = computed(() => flowRunSubscription.response?.name)
+  const routes = useWorkspaceRoutes()
+  const { taskRun, subscription: taskRunSubscription } = useTaskRun(() => props.taskRunId)
+  const { flowRun } = useFlowRun(() => taskRun.value?.flowRunId)
 
   const crumbs = computed(() => {
     const crumbs: Crumb[] = [{ text: 'Runs', to: routes.runs({ tab: 'task-runs' }) }]
 
-    if (flowRunId.value) {
-      crumbs.push({ text: flowRunName.value ?? '', to: routes.flowRun(flowRunId.value!) })
+    if (flowRun.value) {
+      crumbs.push({ text: flowRun.value.name ?? '', to: routes.flowRun(flowRun.value.id) })
     }
 
     crumbs.push({ text: taskRun.value?.name ?? '' })
 
     return crumbs
   })
-
-  const showChangeStateMenuItemButton = computed(() => {
-    if (can.update.task_run && taskRun.value?.stateType && isTerminalStateType(taskRun.value.stateType)) {
-      return true
-    }
-
-    return false
-  })
-
-  const showStateChangeModal = ref(false)
-  const openChangeStateModal = (): void => {
-    showStateChangeModal.value = true
-  }
-
-  const showDeleteModal = ref(false)
-  const openDeleteModal = (): void => {
-    showDeleteModal.value = true
-  }
-
-  const emit = defineEmits(['delete'])
-
-  const deleteTaskRun = async (id: string): Promise<void> => {
-    await deleteItem(id, api.taskRuns.deleteTaskRun, 'Task run')
-    emit('delete', id)
-  }
-
-  const changeTaskRunState = async (values: StateUpdateDetails): Promise<void> => {
-    try {
-      await api.taskRuns.setTaskRunState(props.taskRunId, { state: values })
-      taskRunSubscription.refresh()
-      showToast(localization.success.changeTaskRunState, 'success')
-    } catch (error) {
-      console.error(error)
-      const message = getApiErrorMessage(error, localization.error.changeTaskRunState)
-      showToast(message, 'error')
-    }
-  }
 </script>
