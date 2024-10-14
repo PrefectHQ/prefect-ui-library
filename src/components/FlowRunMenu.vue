@@ -1,5 +1,5 @@
 <template>
-  <p-icon-button-menu>
+  <p-icon-button-menu class="flow-run-menu" v-bind="$attrs">
     <template #default>
       <p-overflow-menu-item v-if="flowRun?.deploymentId && deployment?.can.run" label="Copy to new run" :to="routes.deploymentFlowRunCreate(flowRun.deploymentId, flowRun.parameters)" />
       <p-overflow-menu-item v-if="canRetry && showAll" label="Retry" @click="openRetryModal" />
@@ -59,6 +59,10 @@
   import { FlowRun, FlowRunsFilter, isPausedStateType, isRunningStateType, isStuckStateType, isTerminalStateType, StateUpdateDetails } from '@/models'
   import { deleteItem } from '@/utilities'
   import { getApiErrorMessage } from '@/utilities/errors'
+
+  defineOptions({
+    inheritAttrs: false,
+  })
 
   const props = defineProps<{
     flowRun: FlowRun,
