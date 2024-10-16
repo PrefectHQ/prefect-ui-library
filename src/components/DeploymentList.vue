@@ -144,7 +144,6 @@
   import { ClassValue } from '@/types'
   import { deploymentSortOptions } from '@/types/SortOptionTypes'
 
-
   const props = defineProps<{
     filter?: DeploymentsFilter,
     prefix?: string,
