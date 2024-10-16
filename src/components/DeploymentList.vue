@@ -45,7 +45,7 @@
       <template #activity-heading="{ column }">
         <div class="flex items-center gap-1">
           {{ column.label }}
-          <ExtraInfoTooltip description="Runs from the past week." size="small" />
+          <ExtraInfoTooltip description="Runs from the past week" size="small" />
         </div>
       </template>
 
