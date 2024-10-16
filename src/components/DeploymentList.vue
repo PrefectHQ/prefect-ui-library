@@ -42,6 +42,13 @@
         </div>
       </template>
 
+      <template #activity-heading="{ column }">
+        <div class="flex items-center gap-1">
+          {{ column.label }}
+          <ExtraInfoTooltip description="Runs from the past week." size="small" />
+        </div>
+      </template>
+
       <template #action-heading>
         <span />
       </template>
@@ -128,13 +135,15 @@
     DeploymentTagsInput,
     DeploymentDisableToggle,
     DeploymentStatusBadge,
-    DeploymentScheduleTags
+    DeploymentScheduleTags,
+    ExtraInfoTooltip
   } from '@/components'
   import { useCan, useDeploymentsPaginationFilterFromRoute, useWorkspaceRoutes, useDeployments, useComponent } from '@/compositions'
   import { Deployment } from '@/models'
   import { DeploymentsFilter } from '@/models/Filters'
   import { ClassValue } from '@/types'
   import { deploymentSortOptions } from '@/types/SortOptionTypes'
+
 
   const props = defineProps<{
     filter?: DeploymentsFilter,
