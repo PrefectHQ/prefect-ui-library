@@ -2,7 +2,6 @@
 const globalCacheVersion = 4
 const globalCachePrefix = 'cache-key'
 const globalCacheKeyPrefix = `${globalCachePrefix}-${globalCacheVersion}`
-const cacheKeyPrefixes = new Set<string>()
 
 export function getCacheKey(label: string): string {
   return `${globalCacheKeyPrefix}:${label}`
@@ -11,11 +10,31 @@ export function getCacheKey(label: string): string {
 type CacheKeyFunction = (key: string) => string
 
 export function createCacheKeyFunction(version: number, prefix: string): CacheKeyFunction {
-  const cachePrefix = `${globalCacheKeyPrefix}-${prefix}-${version}`
+  const cachePrefix = `${globalCacheKeyPrefix}-${prefix}`
+  const cachePrefixWithVersion = `${cachePrefix}-${version}`
 
-  cacheKeyPrefixes.add(cachePrefix)
+  clearOldFeatureCacheKeys(cachePrefix, cachePrefixWithVersion)
 
-  return (key: string) => `${cachePrefix}-${key}`
+  return (key: string) => `${cachePrefixWithVersion}-${key}`
+}
+
+function clearOldFeatureCacheKeys(prefix: string, prefixWithVersion: string): void {
+  const isOldFeatureCacheKey = (key: string): boolean => {
+    return key.startsWith(prefix) && !key.startsWith(prefixWithVersion)
+  }
+
+  Object.keys(sessionStorage).forEach(key => {
+    if (isOldFeatureCacheKey(key)) {
+      sessionStorage.removeItem(key)
+    }
+  })
+
+  Object.keys(localStorage).forEach(key => {
+    if (isOldFeatureCacheKey(key)) {
+      localStorage.removeItem(key)
+    }
+  })
+
 }
 
 export function isCacheKey(key: string): boolean {
@@ -27,15 +46,7 @@ export function isOldCacheKey(key: string): boolean {
     return false
   }
 
-  const matchesGlobalKeyPrefix = key.startsWith(globalCacheKeyPrefix)
-
-  if (!matchesGlobalKeyPrefix) {
-    return true
-  }
-
-  const matchesCacheKey = Array.from(cacheKeyPrefixes.values()).some(prefix => key.startsWith(prefix))
-
-  return !matchesCacheKey
+  return !key.startsWith(globalCacheKeyPrefix)
 }
 
 export function clearOldCacheKeys(): void {
