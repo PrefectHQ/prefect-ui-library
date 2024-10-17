@@ -1,19 +1,19 @@
 <template>
   <p-list-item class="deployment-schedule-card">
-    <p-tooltip :text="internalValue.schedule?.toString({ verbose: true })">
+    <p-tooltip :text="deploymentSchedule.schedule.toString({ verbose: true })">
       <div class="deployment-schedule-card__content">
-        {{ internalValue.schedule?.toString({ verbose: false }) }}
+        {{ deploymentSchedule.schedule.toString({ verbose: false }) }}
       </div>
     </p-tooltip>
     <div class="deployment-schedule-card__action">
-      <DeploymentScheduleToggle :deployment="deployment" :schedule="deploymentSchedule" @update="updateActiveStatus" />
+      <DeploymentScheduleToggle :deployment="deployment" :schedule="deploymentSchedule" @update="$emit('update')" />
       <DeploymentScheduleMenu
         class="deployment-schedule__menu"
         small
         :deployment="deployment"
         :schedule="deploymentSchedule"
-        @update="scheduleUpdated"
-        @delete="emit('update')"
+        @update="$emit('update')"
+        @delete="$emit('update')"
       />
     </div>
   </p-list-item>
@@ -21,34 +21,17 @@
 
 
 <script lang="ts" setup>
-  import { ref, watch } from 'vue'
   import { DeploymentScheduleMenu, DeploymentScheduleToggle } from '@/components'
-  import { Deployment, DeploymentSchedule, DeploymentScheduleCompatible } from '@/models'
+  import { Deployment, DeploymentSchedule } from '@/models'
 
-  const props = defineProps<{
+  defineProps<{
     deployment: Deployment,
     deploymentSchedule: DeploymentSchedule,
   }>()
 
-  const emit = defineEmits<{
+  defineEmits<{
     (event: 'update'): void,
   }>()
-
-  const internalValue = ref<DeploymentScheduleCompatible>({ active: props.deploymentSchedule.active, schedule: props.deploymentSchedule.schedule, jobVariables: props.deploymentSchedule.jobVariables })
-
-  const updateActiveStatus = (value: boolean): void => {
-    internalValue.value.active = value
-    emit('update')
-  }
-
-  const scheduleUpdated = (schedule: DeploymentScheduleCompatible): void => {
-    internalValue.value = schedule
-  }
-
-  const updateInternalState = (): void => {
-    internalValue.value = { active: props.deploymentSchedule.active, schedule: props.deploymentSchedule.schedule, jobVariables: props.deploymentSchedule.jobVariables }
-  }
-  watch(() => props.deploymentSchedule, updateInternalState)
 </script>
 
 <style>

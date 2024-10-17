@@ -5,7 +5,7 @@
     <p-overflow-menu-item v-if="deployment.can.delete" label="Delete" @click="openConfirmDeleteModal" />
   </p-icon-button-menu>
 
-  <ScheduleFormModal ref="scheduleFormModalRef" v-bind="compatSchedule" @submit="updateSchedule" />
+  <ScheduleFormModal ref="scheduleFormModalRef" v-bind="schedule" @submit="updateSchedule" />
 
   <ConfirmDeleteModal
     v-model:showModal="showConfirmDeleteModal"
@@ -45,12 +45,6 @@
   }>()
 
   const api = useWorkspaceApi()
-
-  const compatSchedule = ref<DeploymentScheduleCompatible>({
-    active: props.schedule.active,
-    schedule: props.schedule.schedule,
-    jobVariables: props.schedule.jobVariables,
-  })
 
   const { showModal: showConfirmDeleteModal, open: openConfirmDeleteModal, close: closeConfirmDeleteModal } = useShowModal()
 
