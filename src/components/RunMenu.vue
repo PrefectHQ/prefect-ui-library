@@ -2,9 +2,11 @@
   <p-pop-over ref="popOver" class="run-menu" auto-close :placement="placement" @keydown.esc="esc">
     <template #target="{ toggle }">
       <p-button
+        v-bind="$attrs"
         ref="runButton"
         class="run-menu__run-button"
         icon-append="PlayIcon"
+        solid
         :disabled="deployment.deprecated || deployment.disabled"
         @click="toggle"
       >
@@ -29,6 +31,10 @@
   } from '@/components'
   import { useShowModal } from '@/compositions'
   import { Deployment } from '@/models'
+
+  defineOptions({
+    inheritAttrs: false,
+  })
 
   defineProps<{
     deployment: Deployment,
