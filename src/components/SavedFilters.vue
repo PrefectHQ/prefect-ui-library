@@ -1,7 +1,7 @@
 <template>
   <div class="saved-filters">
-    <p-select v-model="selectedSearchName" :options="options" class="saved-filters__select" />
-    <SavedFiltersMenu v-model:saved-search="selectedSearch" />
+    <p-select v-model="selectedSearchName" :small :options="options" class="saved-filters__select" />
+    <SavedFiltersMenu v-model:saved-search="selectedSearch" :size="small && 'sm'" />
   </div>
 </template>
 
@@ -15,6 +15,7 @@
 
   const props = defineProps<{
     filter: SavedSearchFilter,
+    small?: boolean,
   }>()
 
   const emit = defineEmits<{
