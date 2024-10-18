@@ -212,6 +212,5 @@
   flex-row
   justify-between
   items-center
-  mb-2
 }
 </style>
