@@ -1,10 +1,17 @@
 <template>
   <template v-if="deployment?.can.read">
-    <p-link :to="routes.deployment(deploymentId)" class="deployment-icon-text">
-      <p-icon-text icon="PDeployment">
-        <span>{{ deploymentName }}</span>
-      </p-icon-text>
-    </p-link>
+    <template v-if="deployment">
+      <p-link :to="routes.deployment(deploymentId)" class="deployment-icon-text">
+        <p-icon-text icon="PDeployment">
+          <span>{{ deploymentName }}</span>
+        </p-icon-text>
+      </p-link>
+    </template>
+    <template v-else-if="subscription.executed">
+      <span>
+        Deployment not found
+      </span>
+    </template>
   </template>
   <template v-else>
     <span>
@@ -24,6 +31,6 @@
 
   const routes = useWorkspaceRoutes()
   const deploymentId = computed(() => props.deploymentId)
-  const { deployment } = useDeployment(deploymentId)
+  const { deployment, subscription } = useDeployment(deploymentId)
   const deploymentName = computed(() => deployment.value?.name)
 </script>
