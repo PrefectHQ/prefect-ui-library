@@ -6,6 +6,11 @@
       </p-icon-text>
     </p-link>
   </template>
+  <template v-else>
+    <span>
+      No access
+    </span>
+  </template>
 </template>
 
 <script lang="ts" setup>
