@@ -58,7 +58,7 @@
         "@types/lodash.isequal": "^4.5.8",
         "@types/lodash.merge": "4.6.9",
         "@types/node": "^22.7.7",
-        "@types/prismjs": "^1.26.4",
+        "@types/prismjs": "^1.26.5",
         "@vitejs/plugin-vue": "5.1.4",
         "auto-changelog": "^2.5.0",
         "autoprefixer": "10.4.20",
