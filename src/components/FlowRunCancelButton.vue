@@ -1,5 +1,5 @@
 <template>
-  <p-tooltip v-if="disableCancel" :text="localization.info.disableFlowRunCancel">
+  <p-tooltip v-if="disableCancel" :text="localization.info.disableFlowRunCancel" v-bind="$attrs">
     <p-button
       disabled
       dangerous
@@ -14,6 +14,7 @@
   >
     Cancel
   </p-button>
+
   <FlowRunCancelModal
     v-model:showModal="showModal"
     :flow-run-id="flowRun.id"
@@ -28,6 +29,10 @@
   import { useShowModal } from '@/compositions/useShowModal'
   import { localization } from '@/localization'
   import { FlowRun, isStuckStateType } from '@/models'
+
+  defineOptions({
+    inheritAttrs: false,
+  })
 
   const props = defineProps<{
     flowRun: FlowRun,
