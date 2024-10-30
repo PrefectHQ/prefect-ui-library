@@ -91,7 +91,7 @@ export function isTaskRunSortValue(value: MaybeRef<unknown>): value is MaybeRef<
 
 export type TaskRunSortOptions = { label: string, value: TaskRunSortValues }[]
 
-const logSortValues = ['TIMESTAMP_ASC', 'TIMESTAMP_DESC', 'LEVEL_ASC', 'LEVEL_DESC', 'FLOW_RUN_ID_ASC', 'FLOW_RUN_ID_DESC', 'TASK_RUN_ID_ASC', 'TASK_RUN_ID_DESC']
+const logSortValues = ['TIMESTAMP_ASC', 'TIMESTAMP_DESC', 'LEVEL_ASC', 'LEVEL_DESC', 'FLOW_RUN_ID_ASC', 'FLOW_RUN_ID_DESC', 'TASK_RUN_ID_ASC', 'TASK_RUN_ID_DESC'] as const
 export type LogSortValues = typeof logSortValues[number]
 export const defaultLogSort: LogSortValues = 'TIMESTAMP_ASC'
 
