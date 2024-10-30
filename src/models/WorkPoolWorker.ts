@@ -31,7 +31,7 @@ export class WorkPoolWorker implements IWorkPoolWorker {
   }
 }
 
-export type WorkPoolWorkersPagination = {
+export type PaginatedWorkPoolWorkers = {
   workers: WorkPoolWorker[],
   count: number,
   limit: number,

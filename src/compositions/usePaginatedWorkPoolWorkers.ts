@@ -3,7 +3,7 @@ import merge from 'lodash.merge'
 import { ComputedRef, MaybeRefOrGetter, computed, toRef, toValue } from 'vue'
 import { useCan } from '@/compositions/useCan'
 import { useWorkspaceApi } from '@/compositions/useWorkspaceApi'
-import { WorkPoolWorker, WorkPoolWorkersPaginationFilter } from '@/models'
+import { WorkPoolWorker, WorkPoolWorkersPagination } from '@/models'
 import { WorkspaceWorkPoolWorkersApi } from '@/services'
 import { Getter } from '@/types/reactivity'
 
@@ -16,11 +16,11 @@ type UsePaginatedWorkPoolWorkers = {
   page: ComputedRef<number>,
 }
 
-export function usePaginatedWorkPoolWorkers(workPoolName: MaybeRefOrGetter<string>, filter: MaybeRefOrGetter<WorkPoolWorkersPaginationFilter | null | undefined> = {}, options?: SubscriptionOptions): UsePaginatedWorkPoolWorkers {
+export function usePaginatedWorkPoolWorkers(workPoolName: MaybeRefOrGetter<string>, filter: MaybeRefOrGetter<WorkPoolWorkersPagination | null | undefined> = {}, options?: SubscriptionOptions): UsePaginatedWorkPoolWorkers {
   const api = useWorkspaceApi()
   const can = useCan()
 
-  const getter: Getter<[string, WorkPoolWorkersPaginationFilter] | null> = () => {
+  const getter: Getter<[string, WorkPoolWorkersPagination] | null> = () => {
     if (!can.read.work_pool) {
       return null
     }

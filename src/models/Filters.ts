@@ -288,14 +288,14 @@ export type WorkersFilter = {
   status?: WorkPoolWorkerStatus,
 }
 
-export type WorkPoolWorkersFilterEndpoint = {
+export type WorkPoolWorkersFilter = {
   workers?: WorkersFilter,
   sort?: WorkPoolWorkerSortValues,
   limit?: number,
   offset?: number,
 }
 
-export type WorkPoolWorkersPaginationFilter = {
+export type WorkPoolWorkersPagination = {
   workers?: WorkersFilter,
   sort?: WorkPoolWorkerSortValues,
   page?: number,

@@ -1,4 +1,4 @@
-import { WorkPoolWorker, WorkPoolWorkersPagination } from '@/models'
+import { PaginatedWorkPoolWorkers, WorkPoolWorker } from '@/models'
 import { WorkPoolWorkerPaginationResponse, WorkPoolWorkerResponse } from '@/models/api/WorkPoolWorkerResponse'
 import { MapFunction } from '@/services/Mapper'
 
@@ -14,7 +14,7 @@ export const mapWorkPoolWorkerResponseToWorkPoolWorker: MapFunction<WorkPoolWork
   })
 }
 
-export const mapWorkPoolWorkerPaginationResponseToWorkPoolWorkersPagination: MapFunction<WorkPoolWorkerPaginationResponse, WorkPoolWorkersPagination> = function(source) {
+export const mapWorkPoolWorkerPaginationResponseToPaginatedWorkPoolWorkers: MapFunction<WorkPoolWorkerPaginationResponse, PaginatedWorkPoolWorkers> = function(source) {
   return {
     workers: source.results.map((item: WorkPoolWorkerResponse) => this.map('WorkPoolWorkerResponse', item, 'WorkPoolWorker')),
     count: source.count,

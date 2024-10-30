@@ -267,13 +267,13 @@ export type WorkersFilterRequest = {
   status?: ServerWorkPoolWorkerStatus,
 }
 
-export type WorkPoolWorkersFilterEndpointRequest = {
+export type WorkPoolWorkersFilterRequest = {
   workers?: WorkersFilterRequest,
   limit?: number,
   offset?: number,
 }
 
-export type WorkPoolWorkersPaginationFilterRequest = {
+export type WorkPoolWorkersPaginationRequest = {
   workers?: WorkersFilterRequest,
   sort?: WorkPoolWorkerSortValues,
   page?: number,
