@@ -1,14 +1,19 @@
 import { SubscriptionOptions, UseSubscription, useSubscriptionWithDependencies } from '@prefecthq/vue-compositions'
 import merge from 'lodash.merge'
-import { MaybeRefOrGetter, computed, toRef, toValue } from 'vue'
+import { ComputedRef, MaybeRefOrGetter, computed, toRef, toValue } from 'vue'
 import { useCan } from '@/compositions/useCan'
 import { useWorkspaceApi } from '@/compositions/useWorkspaceApi'
-import { WorkPoolPagination, WorkPoolWorkersPaginationFilter } from '@/models'
+import { WorkPoolWorker, WorkPoolWorkersPaginationFilter } from '@/models'
 import { WorkspaceWorkPoolWorkersApi } from '@/services'
 import { Getter } from '@/types/reactivity'
 
-type UsePaginatedWorkPoolWorkers = WorkPoolPagination & {
+type UsePaginatedWorkPoolWorkers = {
   subscription: UseSubscription<WorkspaceWorkPoolWorkersApi['getWorkersPaginated']>,
+  workers: ComputedRef<WorkPoolWorker[]>,
+  count: ComputedRef<number>,
+  limit: ComputedRef<number>,
+  pages: ComputedRef<number>,
+  page: ComputedRef<number>,
 }
 
 export function usePaginatedWorkPoolWorkers(workPoolName: MaybeRefOrGetter<string>, filter: MaybeRefOrGetter<WorkPoolWorkersPaginationFilter | null | undefined> = {}, options?: SubscriptionOptions): UsePaginatedWorkPoolWorkers {
