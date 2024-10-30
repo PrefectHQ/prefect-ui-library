@@ -112,3 +112,13 @@ export function isBlockDocumentSortValue(value: Ref<unknown>): value is Ref<Bloc
 export function isBlockDocumentSortValue(value: MaybeRef<unknown>): value is MaybeRef<BlockDocumentSortValues> {
   return blockDocumentSortValues.includes(toValue(value) as BlockDocumentSortValues)
 }
+
+const workPoolWorkerSortValues = ['LAST_HEARTBEAT_ASC', 'LAST_HEARTBEAT_DESC', 'NAME_ASC', 'NAME_DESC', 'CLIENT_VERSION_ASC', 'CLIENT_VERSION_DESC', 'STATUS_ASC', 'STATUS_DESC'] as const
+export type WorkPoolWorkerSortValues = typeof workPoolWorkerSortValues[number]
+export const defaultWorkPoolWorkersSort: WorkPoolWorkerSortValues = 'LAST_HEARTBEAT_DESC'
+
+export function isWorkPoolWorkerSortValue(value: unknown): value is WorkPoolWorkerSortValues
+export function isWorkPoolWorkerSortValue(value: Ref<unknown>): value is Ref<WorkPoolWorkerSortValues>
+export function isWorkPoolWorkerSortValue(value: MaybeRef<unknown>): value is MaybeRef<WorkPoolWorkerSortValues> {
+  return workPoolWorkerSortValues.includes(toValue(value) as WorkPoolWorkerSortValues)
+}

@@ -1,5 +1,5 @@
-import { WorkPoolWorker } from '@/models'
-import { WorkPoolWorkerResponse } from '@/models/api/WorkPoolWorkerResponse'
+import { WorkPoolWorker, WorkPoolWorkersPagination } from '@/models'
+import { WorkPoolWorkerPaginationResponse, WorkPoolWorkerResponse } from '@/models/api/WorkPoolWorkerResponse'
 import { MapFunction } from '@/services/Mapper'
 
 export const mapWorkPoolWorkerResponseToWorkPoolWorker: MapFunction<WorkPoolWorkerResponse, WorkPoolWorker> = function(source) {
@@ -12,4 +12,14 @@ export const mapWorkPoolWorkerResponseToWorkPoolWorker: MapFunction<WorkPoolWork
     lastHeartbeatTime: this.map('string', source.last_heartbeat_time, 'Date'),
     status: this.map('ServerWorkPoolWorkerStatus', source.status, 'WorkPoolWorkerStatus'),
   })
+}
+
+export const mapWorkPoolWorkerPaginationResponseToWorkPoolWorkersPagination: MapFunction<WorkPoolWorkerPaginationResponse, WorkPoolWorkersPagination> = function(source) {
+  return {
+    workers: source.results.map((item: WorkPoolWorkerResponse) => this.map('WorkPoolWorkerResponse', item, 'WorkPoolWorker')),
+    count: source.count,
+    limit: source.limit,
+    page: source.page,
+    pages: source.pages,
+  }
 }

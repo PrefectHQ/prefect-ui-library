@@ -1,7 +1,7 @@
 /* eslint-disable camelcase */
 import { asArray } from '@prefecthq/prefect-design'
-import { Any, Like, All, IsNull, OperatorRequest, TagFilterRequest, FlowFilterRequest, FlowRunFilterRequest, NotAny, StateFilterRequest, Before, After, TaskRunFilterRequest, Exists, DeploymentFilterRequest, Equals, FlowsFilterRequest, FlowRunsFilterRequest, TaskRunsFilterRequest, DeploymentsFilterRequest, BlockTypeFilterRequest, BlockSchemaFilterRequest, BlockDocumentFilterRequest, NotificationsFilterRequest, SavedSearchesFilterRequest, LogsFilterRequest, GreaterThan, LessThan, ConcurrencyLimitsFilterRequest, BlockTypesFilterRequest, BlockSchemasFilterRequest, BlockDocumentsFilterRequest, StartsWith, WorkPoolFilterRequest, WorkPoolsFilterRequest, WorkPoolQueueFilterRequest, FlowRunsHistoryFilterRequest, WorkPoolWorkersFilterRequest, WorkPoolQueuesFilterRequest, ArtifactsFilterRequest, ArtifactFilterRequest, NullableEquals, VariablesFilterRequest, VariableFilterRequest, TaskRunsHistoryFilterRequest, FlowRunsPaginationFilterRequest, FlowsPaginationFilterRequest, DeploymentsPaginationFilterRequest } from '@/models/api/Filters'
-import { FlowFilter, FlowRunFilter, Operation, StateFilter, TagFilter, TaskRunFilter, DeploymentFilter, FlowsFilter, FlowRunsFilter, TaskRunsFilter, DeploymentsFilter, BlockTypeFilter, BlockSchemaFilter, BlockDocumentFilter, NotificationsFilter, SavedSearchesFilter, LogsFilter, ConcurrencyLimitsFilter, BlockTypesFilter, BlockSchemasFilter, BlockDocumentsFilter, WorkPoolFilter, WorkPoolsFilter, WorkPoolQueueFilter, FlowRunsHistoryFilter, WorkPoolWorkersFilter, WorkPoolQueuesFilter, ArtifactsFilter, ArtifactFilter, VariablesFilter, VariableFilter, TaskRunsHistoryFilter, FlowRunsPaginationFilter, FlowsPaginationFilter, DeploymentsPaginationFilter } from '@/models/Filters'
+import { Any, Like, All, IsNull, OperatorRequest, TagFilterRequest, FlowFilterRequest, FlowRunFilterRequest, NotAny, StateFilterRequest, Before, After, TaskRunFilterRequest, Exists, DeploymentFilterRequest, Equals, FlowsFilterRequest, FlowRunsFilterRequest, TaskRunsFilterRequest, DeploymentsFilterRequest, BlockTypeFilterRequest, BlockSchemaFilterRequest, BlockDocumentFilterRequest, NotificationsFilterRequest, SavedSearchesFilterRequest, LogsFilterRequest, GreaterThan, LessThan, ConcurrencyLimitsFilterRequest, BlockTypesFilterRequest, BlockSchemasFilterRequest, BlockDocumentsFilterRequest, StartsWith, WorkPoolFilterRequest, WorkPoolsFilterRequest, WorkPoolQueueFilterRequest, FlowRunsHistoryFilterRequest, WorkPoolWorkersFilterRequest, WorkPoolQueuesFilterRequest, ArtifactsFilterRequest, ArtifactFilterRequest, NullableEquals, VariablesFilterRequest, VariableFilterRequest, TaskRunsHistoryFilterRequest, FlowRunsPaginationFilterRequest, FlowsPaginationFilterRequest, DeploymentsPaginationFilterRequest, WorkPoolWorkersFilterEndpointRequest, WorkPoolWorkersPaginationFilterRequest } from '@/models/api/Filters'
+import { FlowFilter, FlowRunFilter, Operation, StateFilter, TagFilter, TaskRunFilter, DeploymentFilter, FlowsFilter, FlowRunsFilter, TaskRunsFilter, DeploymentsFilter, BlockTypeFilter, BlockSchemaFilter, BlockDocumentFilter, NotificationsFilter, SavedSearchesFilter, LogsFilter, ConcurrencyLimitsFilter, BlockTypesFilter, BlockSchemasFilter, BlockDocumentsFilter, WorkPoolFilter, WorkPoolsFilter, WorkPoolQueueFilter, FlowRunsHistoryFilter, WorkPoolWorkersFilter, WorkPoolQueuesFilter, ArtifactsFilter, ArtifactFilter, VariablesFilter, VariableFilter, TaskRunsHistoryFilter, FlowRunsPaginationFilter, FlowsPaginationFilter, DeploymentsPaginationFilter, WorkPoolWorkersFilterEndpoint, WorkPoolWorkersPaginationFilter } from '@/models/Filters'
 import { MapFunction } from '@/services'
 import { removeEmptyObjects } from '@/utilities'
 
@@ -535,15 +535,30 @@ export const mapWorkPoolsFilter: MapFunction<WorkPoolsFilter, WorkPoolsFilterReq
 
 export const mapWorkPoolWorkersFilter: MapFunction<WorkPoolWorkersFilter, WorkPoolWorkersFilterRequest> = function(source) {
   return removeEmptyObjects({
-    workers: {
-      ...toOperator(source.workers?.operator),
-      last_heartbeat_time: {
-        ...toAfter(source.workers?.lastHeartbeatTimeAfter),
-        ...toBefore(source.workers?.lastHeartbeatTimeBefore),
-      },
+    ...toOperator(source.operator),
+    last_heartbeat_time: {
+      ...toAfter(source.lastHeartbeatTime?.after),
+      ...toBefore(source.lastHeartbeatTime?.before),
     },
+    name: toLike(source.name),
+    status: this.map('WorkPoolWorkerStatus', source.status, 'ServerWorkPoolWorkerStatus'),
+  })
+}
+
+export const mapWorkPoolWorkersFilterEndpoint: MapFunction<WorkPoolWorkersFilterEndpoint, WorkPoolWorkersFilterEndpointRequest> = function(source) {
+  return removeEmptyObjects({
+    workers: this.map('WorkPoolWorkersFilter', source.workers, 'WorkPoolWorkersFilterRequest'),
     limit: source.limit,
     offset: source.offset,
+  })
+}
+
+export const mapWorkPoolWorkersPaginationFilter: MapFunction<WorkPoolWorkersPaginationFilter, WorkPoolWorkersPaginationFilterRequest> = function(source) {
+  return removeEmptyObjects({
+    workers: this.map('WorkPoolWorkersFilter', source.workers, 'WorkPoolWorkersFilterRequest'),
+    sort: source.sort,
+    page: source.page,
+    limit: source.limit,
   })
 }
 

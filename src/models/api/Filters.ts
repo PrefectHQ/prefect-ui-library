@@ -1,4 +1,5 @@
-import { ArtifactSortValues, DeploymentSortValues, FlowRunSortValues, FlowSortValues, LogSortValues, TaskRunSortValues, VariableSortValues } from '@/types/SortOptionTypes'
+import { ServerWorkPoolWorkerStatus } from '@/models/WorkPoolWorkerStatus'
+import { ArtifactSortValues, DeploymentSortValues, FlowRunSortValues, FlowSortValues, LogSortValues, TaskRunSortValues, VariableSortValues, WorkPoolWorkerSortValues } from '@/types/SortOptionTypes'
 
 /** A list where results will be returned only if they match all the values in the list */
 export type All = { all_?: string[] }
@@ -258,13 +259,25 @@ export type WorkPoolQueuesFilterRequest = {
   limit?: number,
 }
 
+
 export type WorkPoolWorkersFilterRequest = {
-  workers?: {
-    operator?: OperationRequest,
-    last_heartbeat_time?: Before & After,
-  },
+  operator?: OperationRequest,
+  last_heartbeat_time?: Before & After,
+  name?: Like,
+  status?: ServerWorkPoolWorkerStatus,
+}
+
+export type WorkPoolWorkersFilterEndpointRequest = {
+  workers?: WorkPoolWorkersFilterRequest,
   limit?: number,
   offset?: number,
+}
+
+export type WorkPoolWorkersPaginationFilterRequest = {
+  workers?: WorkPoolWorkersFilterRequest,
+  sort?: WorkPoolWorkerSortValues,
+  page?: number,
+  limit?: number,
 }
 
 export type TaskRunsHistoryFilterRequest = Pick<TaskRunsFilterRequest, 'deployments' | 'flow_runs' | 'task_runs' | 'flows'> & {
