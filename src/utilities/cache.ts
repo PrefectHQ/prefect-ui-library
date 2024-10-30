@@ -1,5 +1,5 @@
 // this can be used to cache bust between releases. Incrementing this will remove all caches using the previous version
-const globalCacheVersion = 4
+const globalCacheVersion = 5
 const globalCachePrefix = 'cache-key'
 const globalCacheKeyPrefix = `${globalCachePrefix}-${globalCacheVersion}`
 
@@ -10,7 +10,7 @@ export function getCacheKey(label: string): string {
 type CacheKeyFunction = (key: string) => string
 
 export function createCacheKeyFunction(version: number, prefix: string): CacheKeyFunction {
-  const cachePrefix = `${globalCacheKeyPrefix}-${prefix}`
+  const cachePrefix = `${globalCacheKeyPrefix}-${prefix}___`
   const cachePrefixWithVersion = `${cachePrefix}-${version}`
 
   clearOldFeatureCacheKeys(cachePrefix, cachePrefixWithVersion)
