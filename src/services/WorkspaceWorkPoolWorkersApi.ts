@@ -1,5 +1,4 @@
-import { WorkPoolWorker } from '@/models'
-import { WorkPoolWorkerResponse } from '@/models/api/WorkPoolWorkerResponse'
+import { PaginatedWorkPoolWorkers, WorkPoolWorker, WorkPoolWorkerPaginationResponse, WorkPoolWorkerResponse, WorkPoolWorkersPagination } from '@/models'
 import { WorkPoolWorkersFilter } from '@/models/Filters'
 import { mapper, WorkspaceApi } from '@/services'
 
@@ -17,6 +16,14 @@ export class WorkspaceWorkPoolWorkersApi extends WorkspaceApi {
     const { data } = await this.post<WorkPoolWorkerResponse[]>(`/${encodedWorkPoolName}/workers/filter`, request)
 
     return mapper.map('WorkPoolWorkerResponse', data, 'WorkPoolWorker')
+  }
+
+  public async getWorkersPaginated(workPoolName: string, filter: WorkPoolWorkersPagination = {}): Promise<PaginatedWorkPoolWorkers> {
+    const request = mapper.map('WorkPoolWorkersPagination', filter, 'WorkPoolWorkersPaginationRequest')
+    const encodedWorkPoolName = encodeURI(workPoolName)
+    const { data } = await this.post<WorkPoolWorkerPaginationResponse>(`/${encodedWorkPoolName}/workers/paginate`, request)
+
+    return mapper.map('WorkPoolWorkersPaginationResponse', data, 'PaginatedWorkPoolWorkers')
   }
 
   public deleteWorker(arg: WorkerDeleteArg): Promise<void> {

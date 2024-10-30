@@ -30,3 +30,11 @@ export class WorkPoolWorker implements IWorkPoolWorker {
     this.status = workPoolWorker.status
   }
 }
+
+export type PaginatedWorkPoolWorkers = {
+  workers: WorkPoolWorker[],
+  count: number,
+  limit: number,
+  page: number,
+  pages: number,
+}

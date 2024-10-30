@@ -1,5 +1,6 @@
 import { DeploymentStatus } from '@/models/DeploymentStatus'
-import { ArtifactSortValues, FlowSortValues, FlowRunSortValues, TaskRunSortValues, DeploymentSortValues, LogSortValues, VariableSortValues, BlockDocumentSortValues, Require } from '@/types'
+import { WorkPoolWorkerStatus } from '@/models/WorkPoolWorkerStatus'
+import { ArtifactSortValues, FlowSortValues, FlowRunSortValues, TaskRunSortValues, DeploymentSortValues, LogSortValues, VariableSortValues, BlockDocumentSortValues, Require, WorkPoolWorkerSortValues } from '@/types'
 
 export type Operation = 'and' | 'or'
 
@@ -277,14 +278,26 @@ export type WorkPoolQueuesFilter = {
   limit?: number,
 }
 
+export type WorkersFilter = {
+  operator?: Operation,
+  lastHeartbeatTimeBefore?: Date,
+  lastHeartbeatTimeAfter?: Date,
+  name?: string,
+  status?: WorkPoolWorkerStatus,
+}
+
 export type WorkPoolWorkersFilter = {
-  workers?: {
-    operator?: Operation,
-    lastHeartbeatTimeBefore?: Date,
-    lastHeartbeatTimeAfter?: Date,
-  },
+  workers?: WorkersFilter,
+  sort?: WorkPoolWorkerSortValues,
   limit?: number,
   offset?: number,
+}
+
+export type WorkPoolWorkersPagination = {
+  workers?: WorkersFilter,
+  sort?: WorkPoolWorkerSortValues,
+  page?: number,
+  limit?: number,
 }
 
 export type TaskRunsHistoryFilter = Pick<TaskRunsFilter, 'deployments' | 'flows' | 'flowRuns' | 'taskRuns'> & {

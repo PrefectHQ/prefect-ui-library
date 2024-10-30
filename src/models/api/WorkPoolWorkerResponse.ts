@@ -11,3 +11,11 @@ export type WorkPoolWorkerResponse = {
   last_heartbeat_time: DateString,
   status: ServerWorkPoolWorkerStatus,
 }
+
+export type WorkPoolWorkerPaginationResponse = {
+  results: WorkPoolWorkerResponse[],
+  count: number,
+  limit: number,
+  page: number,
+  pages: number,
+}

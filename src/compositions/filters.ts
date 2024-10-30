@@ -10,8 +10,8 @@ import { FlowRunSortValuesSortParam } from '@/formatters/FlowRunSortValuesSortPa
 import { FlowSortValuesSortParam } from '@/formatters/FlowSortValuesSortParam'
 import { OperatorRouteParam } from '@/formatters/OperatorRouteParam'
 import { TaskRunSortValuesSortParam } from '@/formatters/TaskRunSortValuesSortParam'
-import { BlockDocumentFilter, BlockDocumentsFilter, BlockSchemaFilter, BlockSchemasFilter, BlockTypeFilter, BlockTypesFilter, DeploymentFilter, DeploymentsFilter, DeploymentsPaginationFilter, FlowFilter, FlowRunFilter, FlowRunsFilter, FlowRunsHistoryFilter, FlowRunsPaginationFilter, FlowsFilter, FlowsPaginationFilter, PaginationUnionFilter, StateFilter, TagFilter, TaskRunFilter, TaskRunsFilter, UnionFilter, VariableFilter, VariablesFilter, WithPage, WorkPoolFilter, WorkPoolQueueFilter, WorkPoolsFilter } from '@/models/Filters'
-import { defaultDeploymentSort, defaultFlowRunSort, defaultFlowSort, defaultTaskRunSort, defaultVariableSort } from '@/types'
+import { BlockDocumentFilter, BlockDocumentsFilter, BlockSchemaFilter, BlockSchemasFilter, BlockTypeFilter, BlockTypesFilter, DeploymentFilter, DeploymentsFilter, DeploymentsPaginationFilter, FlowFilter, FlowRunFilter, FlowRunsFilter, FlowRunsHistoryFilter, FlowRunsPaginationFilter, FlowsFilter, FlowsPaginationFilter, PaginationUnionFilter, StateFilter, TagFilter, TaskRunFilter, TaskRunsFilter, UnionFilter, VariableFilter, VariablesFilter, WithPage, WorkersFilter, WorkPoolFilter, WorkPoolQueueFilter, WorkPoolsFilter, WorkPoolWorkersPagination } from '@/models/Filters'
+import { defaultDeploymentSort, defaultFlowRunSort, defaultFlowSort, defaultTaskRunSort, defaultVariableSort, defaultWorkPoolWorkersSort } from '@/types'
 import { AnyRecord } from '@/types/any'
 import { MaybeReactive } from '@/types/reactivity'
 import { merge } from '@/utilities/object'
@@ -820,3 +820,30 @@ export function useFlowRunsHistoryFilterFromRoute(defaultValue: MaybeReactive<Fl
 
   return response
 }
+
+export function useWorkersFilter(defaultValue: MaybeReactive<WorkersFilter> = {}): UseFilter<WorkersFilter> {
+  const defaultValueReactive = reactive(defaultValue)
+  const filter: Filter<WorkersFilter> = reactive({
+    operator: toRef(defaultValueReactive, 'operator'),
+    lastHeartbeatTimeAfter: toRef(defaultValueReactive, 'lastHeartbeatTimeAfter'),
+    lastHeartbeatTimeBefore: toRef(defaultValueReactive, 'lastHeartbeatTimeBefore'),
+    status: toRef(defaultValueReactive, 'status'),
+    name: toRef(defaultValueReactive, 'name'),
+  })
+
+  return withFilterFunctions(filter)
+}
+
+export function useWorkPoolWorkerPaginationFilter(defaultValue: MaybeReactive<WorkPoolWorkersPagination> = {}): UseFilter<WorkPoolWorkersPagination> {
+  const defaultValueReactive = getDefaultValueWithDefaultSort(defaultValue, defaultWorkPoolWorkersSort)
+
+  const filter: Filter<WorkPoolWorkersPagination> = reactive({
+    workers: useWorkersFilter(defaultValueReactive.workers).filter,
+    limit: defaultValueReactive.limit,
+    sort: defaultValueReactive.sort,
+    page: defaultValueReactive.page,
+  })
+
+  return withFilterFunctions(filter)
+}
+
