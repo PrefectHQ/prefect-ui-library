@@ -537,8 +537,8 @@ export const mapWorkersFilter: MapFunction<WorkersFilter, WorkersFilterRequest> 
   return removeEmptyObjects({
     ...toOperator(source.operator),
     last_heartbeat_time: {
-      ...toAfter(source.lastHeartbeatTime?.after),
-      ...toBefore(source.lastHeartbeatTime?.before),
+      ...toAfter(source.lastHeartbeatTimeAfter),
+      ...toBefore(source.lastHeartbeatTimeBefore),
     },
     name: toLike(source.name),
     status: this.map('WorkPoolWorkerStatus', source.status, 'ServerWorkPoolWorkerStatus'),

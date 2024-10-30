@@ -280,10 +280,8 @@ export type WorkPoolQueuesFilter = {
 
 export type WorkersFilter = {
   operator?: Operation,
-  lastHeartbeatTime?: {
-    before?: Date,
-    after?: Date,
-  },
+  lastHeartbeatTimeBefore?: Date,
+  lastHeartbeatTimeAfter?: Date,
   name?: string,
   status?: WorkPoolWorkerStatus,
 }
