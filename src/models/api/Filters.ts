@@ -260,7 +260,7 @@ export type WorkPoolQueuesFilterRequest = {
 }
 
 
-export type WorkPoolWorkersFilterRequest = {
+export type WorkersFilterRequest = {
   operator?: OperationRequest,
   last_heartbeat_time?: Before & After,
   name?: Like,
@@ -268,13 +268,13 @@ export type WorkPoolWorkersFilterRequest = {
 }
 
 export type WorkPoolWorkersFilterEndpointRequest = {
-  workers?: WorkPoolWorkersFilterRequest,
+  workers?: WorkersFilterRequest,
   limit?: number,
   offset?: number,
 }
 
 export type WorkPoolWorkersPaginationFilterRequest = {
-  workers?: WorkPoolWorkersFilterRequest,
+  workers?: WorkersFilterRequest,
   sort?: WorkPoolWorkerSortValues,
   page?: number,
   limit?: number,

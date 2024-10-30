@@ -278,7 +278,7 @@ export type WorkPoolQueuesFilter = {
   limit?: number,
 }
 
-export type WorkPoolWorkersFilter = {
+export type WorkersFilter = {
   operator?: Operation,
   lastHeartbeatTime?: {
     before?: Date,
@@ -289,14 +289,14 @@ export type WorkPoolWorkersFilter = {
 }
 
 export type WorkPoolWorkersFilterEndpoint = {
-  workers?: WorkPoolWorkersFilter,
+  workers?: WorkersFilter,
   sort?: WorkPoolWorkerSortValues,
   limit?: number,
   offset?: number,
 }
 
 export type WorkPoolWorkersPaginationFilter = {
-  workers?: WorkPoolWorkersFilter,
+  workers?: WorkersFilter,
   sort?: WorkPoolWorkerSortValues,
   page?: number,
   limit?: number,

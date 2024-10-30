@@ -1,4 +1,4 @@
-import { FlowRunsFilter, TaskRunsFilter, TaskRunsHistoryFilter, WorkPoolWorkersFilter } from '@/models/Filters'
+import { FlowRunsFilter, TaskRunsFilter, TaskRunsHistoryFilter, WorkersFilter } from '@/models/Filters'
 import { MapFunction } from '@/services/Mapper'
 import { WorkspaceDashboardFilter } from '@/types/dashboard'
 
@@ -52,7 +52,7 @@ export const mapWorkspaceDashboardFilterToFlowRunsFilter: MapFunction<WorkspaceD
   return filter
 }
 
-export const mapWorkspaceDashboardFilterToWorkPoolWorkersFilter: MapFunction<WorkspaceDashboardFilter, WorkPoolWorkersFilter> = function(source) {
+export const mapWorkspaceDashboardFilterToWorkersFilter: MapFunction<WorkspaceDashboardFilter, WorkersFilter> = function(source) {
   const { startDate, endDate } = this.map('DateRangeSelectValue', source.range, 'DateRange')
 
   return {
