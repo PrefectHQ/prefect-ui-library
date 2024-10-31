@@ -10,6 +10,7 @@ export const randomWorker: MockFunction<WorkPoolWorker, [Partial<WorkPoolWorker>
     name: this.create('noun'),
     lastHeartbeatTime: this.create('date'),
     status: this.create('workerStatus'),
+    clientVersion: this.create('string'),
     ...overrides,
   })
 }
