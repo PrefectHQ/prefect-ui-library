@@ -11,6 +11,7 @@ export const mapWorkPoolWorkerResponseToWorkPoolWorker: MapFunction<WorkPoolWork
     workPoolId: source.work_pool_id,
     lastHeartbeatTime: this.map('string', source.last_heartbeat_time, 'Date'),
     status: this.map('ServerWorkPoolWorkerStatus', source.status, 'WorkPoolWorkerStatus'),
+    clientVersion: source.client_version ? source.client_version : null,
   })
 }
 

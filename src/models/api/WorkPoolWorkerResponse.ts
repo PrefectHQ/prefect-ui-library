@@ -10,6 +10,7 @@ export type WorkPoolWorkerResponse = {
   work_pool_id: string,
   last_heartbeat_time: DateString,
   status: ServerWorkPoolWorkerStatus,
+  client_version?: string | null,
 }
 
 export type WorkPoolWorkerPaginationResponse = {

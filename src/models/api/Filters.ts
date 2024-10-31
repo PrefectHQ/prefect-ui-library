@@ -264,7 +264,7 @@ export type WorkersFilterRequest = {
   operator?: OperationRequest,
   last_heartbeat_time?: Before & After,
   name?: Like,
-  status?: ServerWorkPoolWorkerStatus,
+  status?: Any,
 }
 
 export type WorkPoolWorkersFilterRequest = {
