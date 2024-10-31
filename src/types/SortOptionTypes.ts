@@ -122,3 +122,5 @@ export function isWorkPoolWorkerSortValue(value: Ref<unknown>): value is Ref<Wor
 export function isWorkPoolWorkerSortValue(value: MaybeRef<unknown>): value is MaybeRef<WorkPoolWorkerSortValues> {
   return workPoolWorkerSortValues.includes(toValue(value) as WorkPoolWorkerSortValues)
 }
+
+export type WorkPoolWorkerSortOptions = { label: string, value: WorkPoolWorkerSortValues }[]
