@@ -541,7 +541,9 @@ export const mapWorkersFilter: MapFunction<WorkersFilter, WorkersFilterRequest> 
       ...toBefore(source.lastHeartbeatTimeBefore),
     },
     name: toLike(source.name),
-    status: this.map('WorkPoolWorkerStatus', source.status, 'ServerWorkPoolWorkerStatus'),
+    status: toAny(
+      source.status ? [this.map('WorkPoolWorkerStatus', source.status, 'ServerWorkPoolWorkerStatus')] : undefined,
+    ),
   })
 }
 
