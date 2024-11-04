@@ -26,6 +26,13 @@ export class WorkspaceWorkPoolWorkersApi extends WorkspaceApi {
     return mapper.map('WorkPoolWorkersPaginationResponse', data, 'PaginatedWorkPoolWorkers')
   }
 
+  public async getWorker(workPoolName: string, workerId: string): Promise<WorkPoolWorker> {
+    const encodedWorkPoolName = encodeURI(workPoolName)
+    const { data } = await this.get<WorkPoolWorkerResponse>(`/${encodedWorkPoolName}/workers/${workerId}`)
+
+    return mapper.map('WorkPoolWorkerResponse', data, 'WorkPoolWorker')
+  }
+
   public deleteWorker(arg: WorkerDeleteArg): Promise<void> {
     const encodedWorkPoolName = encodeURI(arg.workPoolName)
     const encodedWorkerName = encodeURI(arg.workerName)
