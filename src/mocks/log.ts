@@ -17,6 +17,7 @@ export const randomLog: MockFunction<Log, [Partial<Log>?]> = function(overrides 
     timestamp: this.create('date'),
     flowRunId: this.create('id'),
     taskRunId: this.create('id'),
+    workerId: this.create('id'),
     ...overrides,
   })
 }
