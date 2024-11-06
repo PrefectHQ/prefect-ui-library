@@ -10,4 +10,5 @@ export type LogResponse = {
   timestamp: string,
   flow_run_id: string,
   task_run_id: string | null,
+  worker_id: string | null,
 }
