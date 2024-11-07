@@ -1,4 +1,3 @@
-import { ServerWorkPoolWorkerStatus } from '@/models/WorkPoolWorkerStatus'
 import { ArtifactSortValues, DeploymentSortValues, FlowRunSortValues, FlowSortValues, LogSortValues, TaskRunSortValues, VariableSortValues, WorkPoolWorkerSortValues } from '@/types/SortOptionTypes'
 
 /** A list where results will be returned only if they match all the values in the list */
@@ -210,6 +209,7 @@ export type LogsFilterRequest = {
     timestamp?: Before & After,
     flow_run_id?: Any,
     task_run_id?: Any & IsNull,
+    worker_id?: Any,
   },
   sort?: LogSortValues,
   offset?: number,
