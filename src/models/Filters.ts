@@ -227,6 +227,7 @@ export type LogsFilter = {
     flowRunId?: string[],
     taskRunId?: string[],
     taskRunIdNull?: boolean,
+    workerId?: string[],
   },
   sort?: LogSortValues,
   offset?: number,

@@ -45,7 +45,7 @@
         "axios": "1.7.4",
         "cronstrue": "^2.51.0",
         "d3": "7.9.0",
-        "date-fns": "3.6.0",
+        "date-fns": "4.1.0",
         "date-fns-tz": "3.2.0",
         "lodash.isequal": "4.5.0",
         "lodash.merge": "4.6.2"
