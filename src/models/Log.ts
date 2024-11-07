@@ -12,6 +12,7 @@ export interface ILog {
   timestamp: Date,
   flowRunId: string,
   taskRunId: string | null,
+  workerId: string | null,
 }
 
 export class Log implements ILog {
@@ -25,6 +26,7 @@ export class Log implements ILog {
   public timestamp: Date
   public flowRunId: string
   public taskRunId: string | null
+  public workerId: string | null
 
   public constructor(log: ILog) {
     this.id = log.id
@@ -36,5 +38,6 @@ export class Log implements ILog {
     this.timestamp = log.timestamp
     this.flowRunId = log.flowRunId
     this.taskRunId = log.taskRunId
+    this.workerId = log.workerId
   }
 }
