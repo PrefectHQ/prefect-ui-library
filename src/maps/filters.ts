@@ -483,6 +483,7 @@ export const mapLogsFilter: MapFunction<LogsFilter, LogsFilterRequest> = functio
         ...toAny(source.logs?.taskRunId),
         ...toIsNull(source.logs?.taskRunIdNull),
       },
+      worker_id: toAny(source.logs?.workerId),
     },
     sort: source.sort,
     offset: source.offset,

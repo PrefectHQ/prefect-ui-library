@@ -13,6 +13,7 @@ export const mapLogResponseToLog: MapFunction<LogResponse, Log> = function(sourc
     timestamp: this.map('string', source.timestamp, 'Date'),
     flowRunId: source.flow_run_id,
     taskRunId: source.task_run_id,
+    workerId: source.worker_id,
   })
 }
 
@@ -27,5 +28,6 @@ export const mapLogToLogResponse: MapFunction<Log, LogResponse> = function(sourc
     timestamp: this.map('Date', source.timestamp, 'string'),
     flow_run_id: source.flowRunId,
     task_run_id: source.taskRunId,
+    worker_id: source.workerId,
   }
 }

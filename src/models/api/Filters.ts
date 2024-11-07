@@ -209,6 +209,7 @@ export type LogsFilterRequest = {
     timestamp?: Before & After,
     flow_run_id?: Any,
     task_run_id?: Any & IsNull,
+    worker_id?: Any,
   },
   sort?: LogSortValues,
   offset?: number,
