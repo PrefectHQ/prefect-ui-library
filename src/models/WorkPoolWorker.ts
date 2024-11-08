@@ -8,7 +8,9 @@ export interface IWorkPoolWorker {
   workPoolId: string,
   lastHeartbeatTime: Date,
   status: WorkPoolWorkerStatus,
+  heartbeatIntervalSeconds: number,
   clientVersion: string | null,
+  metadata: Record<string, unknown> | null,
 }
 
 export class WorkPoolWorker implements IWorkPoolWorker {
@@ -20,7 +22,9 @@ export class WorkPoolWorker implements IWorkPoolWorker {
   public workPoolId: string
   public lastHeartbeatTime: Date
   public status: WorkPoolWorkerStatus
+  public heartbeatIntervalSeconds: number
   public clientVersion: string | null
+  public metadata: Record<string, unknown> | null
 
   public constructor(workPoolWorker: IWorkPoolWorker) {
     this.id = workPoolWorker.id
@@ -30,7 +34,9 @@ export class WorkPoolWorker implements IWorkPoolWorker {
     this.workPoolId = workPoolWorker.workPoolId
     this.lastHeartbeatTime = workPoolWorker.lastHeartbeatTime
     this.status = workPoolWorker.status
+    this.heartbeatIntervalSeconds = workPoolWorker.heartbeatIntervalSeconds
     this.clientVersion = workPoolWorker.clientVersion
+    this.metadata = workPoolWorker.metadata
   }
 }
 
