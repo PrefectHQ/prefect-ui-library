@@ -12,6 +12,7 @@ export const randomWorker: MockFunction<WorkPoolWorker, [Partial<WorkPoolWorker>
     status: this.create('workerStatus'),
     clientVersion: this.create('string'),
     metadata: { 'integrations': [this.create('string'), this.create('string')] },
+    heartbeatIntervalSeconds: this.create('number'),
     ...overrides,
   })
 }

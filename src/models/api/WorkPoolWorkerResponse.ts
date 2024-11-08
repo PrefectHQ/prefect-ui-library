@@ -11,6 +11,7 @@ export type WorkPoolWorkerResponse = {
   last_heartbeat_time: DateString,
   status: ServerWorkPoolWorkerStatus,
   client_version?: string | null,
+  heartbeat_interval_seconds: number,
   metadata_: Record<string, unknown> | null,
 }
 

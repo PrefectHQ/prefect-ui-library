@@ -12,6 +12,7 @@ export const mapWorkPoolWorkerResponseToWorkPoolWorker: MapFunction<WorkPoolWork
     lastHeartbeatTime: this.map('string', source.last_heartbeat_time, 'Date'),
     status: this.map('ServerWorkPoolWorkerStatus', source.status, 'WorkPoolWorkerStatus'),
     clientVersion: source.client_version ? source.client_version : null,
+    heartbeatIntervalSeconds: source.heartbeat_interval_seconds,
     metadata: source.metadata_ ? source.metadata_ : null,
   })
 }
