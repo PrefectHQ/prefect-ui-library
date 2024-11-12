@@ -1,7 +1,7 @@
 import { WorkPoolWorkerStatus } from '@/models/WorkPoolWorkerStatus'
 
-type Integration = { name: string, version: string }
-type Metadata = Record<string, unknown> & { integrations?: Integration[] }
+export type Integration = { name: string, version: string }
+export type Metadata = { integrations?: Integration[] } & Record<string, unknown>
 
 export interface IWorkPoolWorker {
   readonly id: string,
@@ -27,7 +27,7 @@ export class WorkPoolWorker implements IWorkPoolWorker {
   public status: WorkPoolWorkerStatus
   public heartbeatIntervalSeconds: number
   public clientVersion: string | null
-  public metadata: Record<string, unknown> | null
+  public metadata: Metadata | null
 
   public constructor(workPoolWorker: IWorkPoolWorker) {
     this.id = workPoolWorker.id
