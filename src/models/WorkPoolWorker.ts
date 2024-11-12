@@ -1,5 +1,8 @@
 import { WorkPoolWorkerStatus } from '@/models/WorkPoolWorkerStatus'
 
+type Integration = { name: string, version: string }
+type Metadata = Record<string, unknown> & { integrations?: Integration[] }
+
 export interface IWorkPoolWorker {
   readonly id: string,
   created: Date,
@@ -10,7 +13,7 @@ export interface IWorkPoolWorker {
   status: WorkPoolWorkerStatus,
   heartbeatIntervalSeconds: number,
   clientVersion: string | null,
-  metadata: Record<string, unknown> | null,
+  metadata: Metadata | null,
 }
 
 export class WorkPoolWorker implements IWorkPoolWorker {
