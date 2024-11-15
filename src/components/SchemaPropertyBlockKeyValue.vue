@@ -13,7 +13,7 @@
 </template>
 
 <script lang="ts" setup>
-  import { PKeyValue, PLink } from '@prefecthq/prefect-design'
+  import { PKeyValue } from '@prefecthq/prefect-design'
   import { useSubscriptionWithDependencies } from '@prefecthq/vue-compositions'
   import { computed } from 'vue'
   import { useWorkspaceApi, useWorkspaceRoutes } from '@/compositions'
