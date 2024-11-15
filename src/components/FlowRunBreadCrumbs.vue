@@ -12,7 +12,6 @@
 </template>
 
 <script lang="ts" setup>
-  import { PLink } from '@prefecthq/prefect-design'
   import { useRouteParam } from '@prefecthq/vue-compositions'
   import { computed } from 'vue'
   import FlowRouterLink from '@/components/FlowRouterLink.vue'
@@ -33,7 +32,7 @@
       return 'span'
     }
 
-    return PLink
+    return 'p-link'
   })
 </script>
 
