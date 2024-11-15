@@ -65,7 +65,7 @@
         "eslint": "8.57.1",
         "lodash.camelcase": "4.3.0",
         "lodash.debounce": "4.0.8",
-        "postcss": "8.4.47",
+        "postcss": "8.4.49",
         "tailwindcss": "3.4.14",
         "tsc-alias": "1.8.10",
         "typescript": "5.6.3",
