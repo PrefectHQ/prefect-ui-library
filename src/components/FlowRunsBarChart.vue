@@ -57,6 +57,10 @@
       return null
     }
 
+    if (barsDebounced.value === 0) {
+      return null
+    }
+
     const base = toValue(props.filter)
     const filter: FlowRunsFilter = {
       limit: barsDebounced.value,
@@ -68,7 +72,12 @@
 
   const { flowRuns } = useFlowRuns(filter)
 
-  const barFlowRuns = computed(() => organizeFlowRunsWithGaps(flowRuns.value))
+  const barFlowRuns = computed(() => {
+    const runsWithGaps = organizeFlowRunsWithGaps(flowRuns.value)
+
+    // organizeFlowRunsWithGaps can return more values than the number of bars requested
+    return runsWithGaps.slice(-bars.value)
+  })
 
   const maxDuration = computed(() => flowRuns.value.reduce((max, flowRun) => {
     if (flowRun.duration > max) {
@@ -144,7 +153,7 @@
       })
       : flowRuns
 
-    // const bucketStepper = expectedStartTimeBefore.getTime() > new Date().getTime() ? 1 : -1
+
     function getEmptyBucket(index: number): number | null {
       if (index < 0) {
         return null
