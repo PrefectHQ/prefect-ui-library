@@ -43,7 +43,7 @@
     "dependencies": {
         "@prefecthq/graphs": "2.4.1",
         "axios": "1.7.4",
-        "cronstrue": "^2.51.0",
+        "cronstrue": "^2.52.0",
         "d3": "7.9.0",
         "date-fns": "4.1.0",
         "date-fns-tz": "3.2.0",
@@ -57,9 +57,9 @@
         "@types/lodash.debounce": "4.0.9",
         "@types/lodash.isequal": "^4.5.8",
         "@types/lodash.merge": "4.6.9",
-        "@types/node": "^22.9.0",
+        "@types/node": "^22.10.1",
         "@types/prismjs": "^1.26.5",
-        "@vitejs/plugin-vue": "5.2.0",
+        "@vitejs/plugin-vue": "5.2.1",
         "auto-changelog": "^2.5.0",
         "autoprefixer": "10.4.20",
         "eslint": "8.57.1",
@@ -71,7 +71,7 @@
         "typescript": "5.6.3",
         "vite": "5.4.11",
         "vite-svg-loader": "^5.1.0",
-        "vitest": "^2.1.5",
+        "vitest": "^2.1.8",
         "vue-tsc": "^2.1.10"
     },
     "peerDependencies": {
