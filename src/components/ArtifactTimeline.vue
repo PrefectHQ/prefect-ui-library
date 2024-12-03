@@ -126,13 +126,22 @@
     getArtifacts()
   })
 
-
-  type ArtifactTimelineItem = TimelineItem & {
-    icon?: Icon,
+  type ArtifactTimelineArtifactItem = TimelineItem & {
+    data: Artifact,
     id: string,
-    data: Artifact | string,
-    type: 'artifact' | 'message',
+    type: 'artifact',
   }
+
+  type ArtifactTimelineMessageItem = TimelineItem & {
+    id: string,
+    data: string,
+    icon: Icon,
+    type: 'message',
+  }
+
+  type ArtifactTimelineItem = ArtifactTimelineArtifactItem | ArtifactTimelineMessageItem
+
+
   const items = computed<ArtifactTimelineItem[]>(() => {
     const items: ArtifactTimelineItem[] = []
 
