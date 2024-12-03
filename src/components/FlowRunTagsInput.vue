@@ -1,5 +1,5 @@
 <template>
-  <p-tags-input v-model="internalValue" class="flow-run-tags-input" placeholder="Search or enter new tag" v-bind="{ options, emptyMessage }" />
+  <p-tags-input v-model="internalValue" class="flow-run-tags-input" options-class="flow-run-tags-input__options" placeholder="Search or enter new tag" v-bind="{ options, emptyMessage }" />
 </template>
 
 <script lang="ts" setup>
@@ -41,5 +41,9 @@
 <style>
 .flow-run-tags-input {
   min-width: 128px;
+}
+
+.flow-run-tags-input__options {
+  min-width: 185px !important; /* magic number to match the placeholder */
 }
 </style>
