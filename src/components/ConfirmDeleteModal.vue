@@ -1,5 +1,5 @@
 <template>
-  <p-modal v-model:showModal="internalValue">
+  <p-modal v-model:showModal="show">
     <template #icon>
       <p-icon icon="ExclamationCircleIcon" class="delete-modal__icon" />
     </template>
@@ -17,7 +17,7 @@
     </span>
     <template #actions>
       <slot name="actions">
-        <p-button variant="destructive" @click="handleDeleteClick">
+        <p-button variant="destructive" :loading @click="handleDeleteClick">
           {{ action }}
         </p-button>
       </slot>
@@ -27,12 +27,12 @@
 
 
 <script lang="ts" setup>
-  import { computed } from 'vue'
+  const show = defineModel<boolean>('showModal', { required: true })
 
-  const props = withDefaults(defineProps<{
-    showModal: boolean,
+  withDefaults(defineProps<{
     label?: string,
     name?: string,
+    loading?: boolean,
     action?: 'Delete' | 'Remove',
   }>(), {
     name: '',
@@ -41,22 +41,12 @@
   })
 
   const emits = defineEmits<{
-    (event: 'update:showModal', value: boolean): void,
     (event: 'delete'): void,
   }>()
 
-  const internalValue = computed({
-    get() {
-      return props.showModal
-    },
-    set(value: boolean) {
-      emits('update:showModal', value)
-    },
-  })
-
   const handleDeleteClick = (): void => {
     emits('delete')
-    internalValue.value = false
+    show.value = false
   }
 </script>
 
