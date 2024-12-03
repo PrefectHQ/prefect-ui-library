@@ -34,7 +34,7 @@ export type LessThan = { le_?: number }
 export type OperationRequest = 'and_' | 'or_'
 export type OperatorRequest = { operator?: OperationRequest }
 
-export type TagFilterRequest = OperatorRequest & All & IsNull
+export type TagFilterRequest = OperatorRequest & All & IsNull & Any
 
 export type StateFilterRequest = OperatorRequest & { type?: Any } & { name?: Any }
 

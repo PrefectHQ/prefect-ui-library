@@ -8,8 +8,7 @@ export const mapWorkspaceDashboardFilterToTaskRunsFilter: MapFunction<WorkspaceD
   return {
     flowRuns: {
       tags: {
-        operator: 'or',
-        name: source.tags,
+        anyName: source.tags,
       },
       parentTaskRunIdNull: source.hideSubflows ? true : undefined,
     },
@@ -29,8 +28,7 @@ export const mapWorkspaceDashboardFilterToTaskRunsHistoryFilter: MapFunction<Wor
     historyIntervalSeconds: timeSpanInSeconds / 20,
     flowRuns: {
       tags: {
-        operator: 'or',
-        name: source.tags,
+        anyName: source.tags,
       },
       parentTaskRunIdNull: source.hideSubflows ? true : undefined,
     },
@@ -45,8 +43,7 @@ export const mapWorkspaceDashboardFilterToFlowRunsFilter: MapFunction<WorkspaceD
       expectedStartTimeAfter: startDate,
       expectedStartTimeBefore: endDate,
       tags: {
-        operator: 'or',
-        name: source.tags,
+        anyName: source.tags,
       },
       parentTaskRunIdNull: source.hideSubflows ? true : undefined,
     },

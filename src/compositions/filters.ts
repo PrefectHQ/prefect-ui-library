@@ -111,6 +111,7 @@ export function useTagFilter(defaultValue: MaybeReactive<TagFilter> = {}): UseFi
   const filter: Filter<TagFilter> = reactive({
     operator: toRef(defaultValueReactive, 'operator'),
     name: toRef(defaultValueReactive, 'name'),
+    anyName: toRef(defaultValueReactive, 'anyName'),
     isNull: toRef(defaultValueReactive, 'isNull'),
   })
 
@@ -120,6 +121,7 @@ export function useTagFilter(defaultValue: MaybeReactive<TagFilter> = {}): UseFi
 const tagFilterSchema: RouteQueryParamsSchema<TagFilter> = {
   operator: OperatorRouteParam,
   name: [StringRouteParam],
+  anyName: [StringRouteParam],
   isNull: BooleanRouteParam,
 }
 
