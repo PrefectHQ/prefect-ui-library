@@ -3,11 +3,6 @@
 </template>
 
 <script lang="ts">
-  import { defineComponent, shallowRef, watch } from 'vue'
-  import { NavigationGuard, RouteComponent } from 'vue-router'
-  import { isEmptyObject, mapper, isFunction } from '..'
-  import { useDefaultSavedSearchFilter } from '@/compositions/useDefaultSavedSearchFilter'
-
   const setDefaultFlowRunsFilterQueryIfEmpty: NavigationGuard = (to) => {
     const { value: defaultFlowRunsSavedSearchFilter, isCustom } = useDefaultSavedSearchFilter()
 
@@ -23,16 +18,21 @@
 
     return true
   }
-
-  export default defineComponent({
-    expose: [],
-    beforeRouteEnter: setDefaultFlowRunsFilterQueryIfEmpty,
-    beforeRouteUpdate: setDefaultFlowRunsFilterQueryIfEmpty,
-  })
 </script>
 
 <script setup lang="ts">
+  import { shallowRef, watch } from 'vue'
+  import { NavigationGuard, RouteComponent } from 'vue-router'
+  import { isEmptyObject, mapper, isFunction } from '..'
+  import { useDefaultSavedSearchFilter } from '@/compositions/useDefaultSavedSearchFilter'
+
   type LazilyLoadedRouteComponent = () => Promise<{ default: RouteComponent }>
+
+  defineOptions({
+    beforeRouteEnter: setDefaultFlowRunsFilterQueryIfEmpty,
+    beforeRouteUpdate: setDefaultFlowRunsFilterQueryIfEmpty,
+  })
+
   const props = defineProps<{
     component: RouteComponent | LazilyLoadedRouteComponent,
   }>()
