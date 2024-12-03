@@ -29,16 +29,12 @@
 <script lang="ts" setup>
   const show = defineModel<boolean>('showModal', { required: true })
 
-  withDefaults(defineProps<{
+  const { label, name, loading, action = 'Delete' } = defineProps<{
     label?: string,
     name?: string,
     loading?: boolean,
     action?: 'Delete' | 'Remove',
-  }>(), {
-    name: '',
-    label: undefined,
-    action: 'Delete',
-  })
+  }>()
 
   const emits = defineEmits<{
     (event: 'delete'): void,
