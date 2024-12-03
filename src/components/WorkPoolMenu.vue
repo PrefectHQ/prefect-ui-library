@@ -27,20 +27,16 @@
   />
 </template>
 
-<script lang="ts">
-  export default {
-    name: 'WorkPoolMenu',
-    expose: [],
-    inheritAttrs: false,
-  }
-</script>
-
 <script lang="ts" setup>
   import { refreshChannel } from '@prefecthq/vue-compositions'
   import { CopyOverflowMenuItem, ConfirmDeleteModal } from '@/components'
   import { useShowModal, useWorkPoolsCount, useWorkspaceApi, useWorkspaceRoutes } from '@/compositions'
   import { WorkPool } from '@/models'
   import { deleteItem } from '@/utilities'
+
+  defineOptions({
+    inheritAttrs: false,
+  })
 
   defineProps<{
     workPool: WorkPool,

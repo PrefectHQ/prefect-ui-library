@@ -259,72 +259,59 @@
   </div>
 </template>
 
-<script lang="ts">
-  import { defineComponent } from 'vue'
-  export default defineComponent({
-    name: 'NotFound',
-    data() {
-      return {
-        circles: [],
-        interval: 0,
-      }
-    },
+<script setup lang="ts">
+  import { ref, onMounted, onBeforeUnmount } from 'vue'
 
-    mounted() {
-      this.circles = this.$el.querySelectorAll('.four-zero-four__circle')
-      this.startAnimation()
-    },
+  const circles = ref<Element[]>([])
+  const interval = ref<number>(0)
 
-    beforeUnmount() {
-      window.clearInterval(this.interval)
-    },
+  const randomNumber = (min: number, max: number): number => {
+    return Math.floor(Math.random() * (max - min + 1) + min)
+  }
 
-    expose: [],
-    methods: {
-      startAnimation() {
-        const delay = this.randomNumber(3, 4) * 1000
-        this.interval = window.setTimeout(() => {
-          this.animateRandomCircles()
-          this.startAnimation()
-        }, delay)
+  const uniqueElementFilter = (value: Element, index: number, array: Element[]): boolean => {
+    return array.indexOf(value) === index
+  }
+
+  const animateCircle = (circle: Element): void => {
+    const animationClass = 'four-zero-four__circle--animate'
+    circle.addEventListener(
+      'animationend',
+      () => {
+        circle.classList.remove(animationClass)
       },
+      { once: true },
+    )
+    circle.classList.add(animationClass)
+  }
 
-      animateRandomCircles() {
-        const circles: Element[] = []
-        while (circles.length < 3) {
-          const index = this.randomNumber(0, this.circles.length - 1)
-          const circle = this.circles[index]
-          circles.push(circle)
-        }
-        circles
-          .filter(this.uniqueElementFilter)
-          .forEach(this.animateCircle)
-      },
+  const animateRandomCircles = (): void => {
+    const selectedCircles: Element[] = []
+    while (selectedCircles.length < 3) {
+      const index = randomNumber(0, circles.value.length - 1)
+      const circle = circles.value[index]
+      selectedCircles.push(circle)
+    }
+    selectedCircles
+      .filter(uniqueElementFilter)
+      .forEach(animateCircle)
+  }
 
-      animateCircle(circle: Element) {
-        const animationClass = 'four-zero-four__circle--animate'
-        circle.addEventListener(
-          'animationend',
-          () => {
-            circle.classList.remove(animationClass)
-          },
-          { once: true },
-        )
-        circle.classList.add(animationClass)
-      },
+  const startAnimation = (): void => {
+    const delay = randomNumber(3, 4) * 1000
+    interval.value = window.setTimeout(() => {
+      animateRandomCircles()
+      startAnimation()
+    }, delay)
+  }
 
-      randomNumber(min: number, max: number) {
-        return Math.floor(Math.random() * (max - min + 1) + min)
-      },
+  onMounted(() => {
+    circles.value = Array.from(document.querySelectorAll('.four-zero-four__circle'))
+    startAnimation()
+  })
 
-      uniqueElementFilter(
-        value: Element,
-        index: number,
-        array: Element[],
-      ) {
-        return array.indexOf(value) === index
-      },
-    },
+  onBeforeUnmount(() => {
+    window.clearInterval(interval.value)
   })
 </script>
 

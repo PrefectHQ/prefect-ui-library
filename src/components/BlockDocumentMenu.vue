@@ -15,14 +15,6 @@
   />
 </template>
 
-<script lang="ts">
-  export default {
-    name: 'BlockDocumentMenu',
-    expose: [],
-    inheritAttrs: false,
-  }
-</script>
-
 <script lang="ts" setup>
   import { PIconButtonMenu, POverflowMenuItem } from '@prefecthq/prefect-design'
   import { useRouter } from 'vue-router'
@@ -32,6 +24,10 @@
   import { useShowModal } from '@/compositions/useShowModal'
   import { BlockDocument } from '@/models'
   import { deleteItem } from '@/utilities'
+
+  defineOptions({
+    inheritAttrs: false,
+  })
 
   const props = defineProps<{
     blockDocument: BlockDocument,

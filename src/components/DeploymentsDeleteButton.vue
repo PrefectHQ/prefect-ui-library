@@ -8,14 +8,6 @@
   />
 </template>
 
-<script lang="ts">
-  export default {
-    name: 'DeploymentsDeleteButton',
-    expose: [],
-    inheritAttrs: false,
-  }
-</script>
-
 <script lang="ts" setup>
   import { showToast } from '@prefecthq/prefect-design'
   import { computed, useAttrs } from 'vue'
@@ -23,6 +15,10 @@
   import { useShowModal, useWorkspaceApi } from '@/compositions'
   import { localization } from '@/localization'
   import { getApiErrorMessage } from '@/utilities/errors'
+
+  defineOptions({
+    inheritAttrs: false,
+  })
 
   defineProps<{
     selected: string[],

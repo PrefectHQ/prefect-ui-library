@@ -27,14 +27,6 @@
   </div>
 </template>
 
-<script lang="ts">
-  export default {
-    name: 'BlockCapabilityBlockDocumentInput',
-    expose: [],
-    inheritAttrs: false,
-  }
-</script>
-
 <script lang="ts" setup>
   import { SelectOptionGroup, useAttrsStylesClassesAndListeners } from '@prefecthq/prefect-design'
   import { useSubscription, useSubscriptionWithDependencies } from '@prefecthq/vue-compositions'
@@ -47,6 +39,10 @@
   import { BlockDocumentsFilter, BlockTypesFilter } from '@/models/Filters'
   import { mapper } from '@/services'
   import { withQuery } from '@/utilities'
+
+  defineOptions({
+    inheritAttrs: false,
+  })
 
   const props = defineProps<{
     modelValue: string | null | undefined,

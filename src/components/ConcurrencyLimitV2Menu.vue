@@ -15,19 +15,15 @@
   />
 </template>
 
-<script lang="ts">
-  export default {
-    name: 'ConcurrencyV2LimitsMenu',
-    expose: [],
-    inheritAttrs: false,
-  }
-</script>
-
 <script lang="ts" setup>
   import { CopyOverflowMenuItem, ConcurrencyLimitV2ResetModal, ConfirmDeleteModal, ConcurrencyLimitsV2UpdateModal } from '@/components'
   import { useShowModal, useCan, useWorkspaceApi } from '@/compositions'
   import { ConcurrencyV2Limit } from '@/models'
   import { deleteItem } from '@/utilities'
+
+  defineOptions({
+    inheritAttrs: false,
+  })
 
   defineProps<{
     concurrencyLimit: ConcurrencyV2Limit,

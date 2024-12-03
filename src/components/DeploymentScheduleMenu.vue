@@ -15,14 +15,6 @@
   />
 </template>
 
-<script lang="ts">
-  export default {
-    name: 'DeploymentScheduleMenu',
-    expose: [],
-    inheritAttrs: false,
-  }
-</script>
-
 <script lang="ts" setup>
   import { showToast } from '@prefecthq/prefect-design'
   import { ref } from 'vue'
@@ -33,6 +25,9 @@
   import { Deployment, DeploymentSchedule, DeploymentScheduleCompatible } from '@/models'
   import { deleteItem } from '@/utilities'
 
+  defineOptions({
+    inheritAttrs: false,
+  })
 
   const props = defineProps<{
     deployment: Deployment,
