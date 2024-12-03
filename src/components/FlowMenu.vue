@@ -22,20 +22,16 @@
   />
 </template>
 
-<script lang="ts">
-  export default {
-    name: 'FlowMenu',
-    expose: [],
-    inheritAttrs: false,
-  }
-</script>
-
 <script lang="ts" setup>
   import CopyOverflowMenuItem from '@/components/CopyOverflowMenuItem.vue'
   import { ConfirmDeleteModal } from '@/components/index'
   import { useCan, useShowModal, useWorkspaceApi, useWorkspaceRoutes } from '@/compositions'
   import { Flow } from '@/models'
   import { deleteItem } from '@/utilities'
+
+  defineOptions({
+    inheritAttrs: false,
+  })
 
   defineProps<{
     flow: Flow,

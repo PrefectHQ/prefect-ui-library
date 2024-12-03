@@ -28,14 +28,6 @@
   </template>
 </template>
 
-<script lang="ts">
-  export default {
-    name: 'SavedFiltersMenu',
-    expose: [],
-    inheritAttrs: false,
-  }
-</script>
-
 <script lang="ts" setup>
   import { computed, useAttrs } from 'vue'
   import { useRoute } from 'vue-router'
@@ -48,6 +40,10 @@
   import { SavedFlowRunsSearch } from '@/compositions/useSavedFlowRunsSearches'
   import { SavedSearch } from '@/models/SavedSearch'
   import { customPartialSearch, unsavedPartialSearch } from '@/utilities/savedFilters'
+
+  defineOptions({
+    inheritAttrs: false,
+  })
 
   const props = defineProps<{
     savedSearch: SavedFlowRunsSearch | null,

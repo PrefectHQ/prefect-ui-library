@@ -27,20 +27,16 @@
   <QuickRunParametersModal v-model:showModal="showParametersModal" :deployment="deployment" />
 </template>
 
-<script lang="ts">
-  export default {
-    name: 'DeploymentMenu',
-    expose: [],
-    inheritAttrs: false,
-  }
-</script>
-
 <script lang="ts" setup>
   import { DeploymentQuickRunOverflowMenuItem, DeploymentCustomRunOverflowMenuItem, ConfirmDeleteModal, CopyOverflowMenuItem } from '@/components'
   import QuickRunParametersModal from '@/components/QuickRunParametersModal.vue'
   import { useWorkspaceApi, useWorkspaceRoutes, useShowModal } from '@/compositions'
   import { Deployment } from '@/models'
   import { deleteItem } from '@/utilities'
+
+  defineOptions({
+    inheritAttrs: false,
+  })
 
   defineProps<{
     deployment: Deployment,

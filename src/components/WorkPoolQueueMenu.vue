@@ -27,20 +27,16 @@
   />
 </template>
 
-<script lang="ts">
-  export default {
-    name: 'WorkPoolQueueMenu',
-    expose: [],
-    inheritAttrs: false,
-  }
-</script>
-
 <script lang="ts" setup>
   import { computed } from 'vue'
   import { CopyOverflowMenuItem, ConfirmDeleteModal } from '@/components'
   import { useCan, useShowModal, useWorkPool, useWorkspaceApi, useWorkspaceRoutes } from '@/compositions'
   import { WorkPoolQueue } from '@/models'
   import { deleteItem } from '@/utilities'
+
+  defineOptions({
+    inheritAttrs: false,
+  })
 
   const props = defineProps<{
     workPoolName: string,

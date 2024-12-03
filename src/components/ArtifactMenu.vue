@@ -5,17 +5,13 @@
   </p-icon-button-menu>
 </template>
 
-<script lang="ts">
-  export default {
-    name: 'ArtifactMenu',
-    expose: [],
-    inheritAttrs: false,
-  }
-</script>
-
 <script lang="ts" setup>
   import CopyOverflowMenuItem from '@/components/CopyOverflowMenuItem.vue'
   import { Artifact, ArtifactCollection } from '@/models'
+
+  defineOptions({
+    inheritAttrs: false,
+  })
 
   defineProps<{
     artifact: Artifact | ArtifactCollection,

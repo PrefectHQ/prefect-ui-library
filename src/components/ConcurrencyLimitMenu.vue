@@ -13,19 +13,15 @@
   <ConcurrencyLimitResetModal v-model:showModal="showResetModal" :concurrency-limit="concurrencyLimit" />
 </template>
 
-<script lang="ts">
-  export default {
-    name: 'ConcurrencyLimitsMenu',
-    expose: [],
-    inheritAttrs: false,
-  }
-</script>
-
 <script lang="ts" setup>
   import { CopyOverflowMenuItem, ConfirmDeleteModal, ConcurrencyLimitResetModal } from '@/components'
   import { useShowModal, useCan, useWorkspaceApi } from '@/compositions'
   import { ConcurrencyLimit } from '@/models'
   import { deleteItem } from '@/utilities'
+
+  defineOptions({
+    inheritAttrs: false,
+  })
 
   defineProps<{
     concurrencyLimit: ConcurrencyLimit,
