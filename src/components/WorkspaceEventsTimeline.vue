@@ -19,15 +19,17 @@
 </template>
 
 <script lang="ts" setup>
-  import { TimelineLayout, media } from '@prefecthq/prefect-design'
+  import { TimelineItem, TimelineLayout, media } from '@prefecthq/prefect-design'
   import { computed } from 'vue'
   import WorkspaceEventIcon from '@/components/WorkspaceEventIcon.vue'
   import WorkspaceEventListItemDate from '@/components/WorkspaceEventListItemDate.vue'
   import WorkspaceEventsTimelineContent from '@/components/WorkspaceEventsTimelineContent.vue'
   import { WorkspaceEvent, isWorkspaceEvent } from '@/models/workspaceEvent'
 
+  type WorkspaceEventTimelineItem = TimelineItem & WorkspaceEvent
+
   const props = defineProps<{
-    events: WorkspaceEvent[],
+    events: WorkspaceEventTimelineItem[],
     startDate: Date,
     endDate: Date,
     layout?: TimelineLayout,
