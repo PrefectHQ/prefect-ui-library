@@ -4,20 +4,16 @@
   </p-tag>
 </template>
 
-<script lang="ts">
-  export default {
-    name: 'WorkersLateIndicator',
-    expose: [],
-    inheritAttrs: false,
-  }
-</script>
-
 <script lang="ts" setup>
   import { useSubscription } from '@prefecthq/vue-compositions'
   import { computed } from 'vue'
   import { useWorkspaceApi } from '@/compositions'
   import { FlowRunsFilter } from '@/models'
   import { toPluralString } from '@/utilities'
+
+  defineOptions({
+    inheritAttrs: false,
+  })
 
   const props = defineProps<{
     workPoolName: string,

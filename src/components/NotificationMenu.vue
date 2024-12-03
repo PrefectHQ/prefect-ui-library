@@ -15,14 +15,6 @@
   />
 </template>
 
-<script lang="ts">
-  export default {
-    name: 'NotificationMenu',
-    expose: [],
-    inheritAttrs: false,
-  }
-</script>
-
 <script lang="ts" setup>
   import ConfirmDeleteModal from '@/components/ConfirmDeleteModal.vue'
   import { useWorkspaceApi, useWorkspaceRoutes } from '@/compositions'
@@ -30,6 +22,10 @@
   import { useShowModal } from '@/compositions/useShowModal'
   import { Notification } from '@/models'
   import { deleteItem } from '@/utilities'
+
+  defineOptions({
+    inheritAttrs: false,
+  })
 
   defineProps<{
     notification: Notification,

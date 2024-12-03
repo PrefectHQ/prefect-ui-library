@@ -17,14 +17,6 @@
   />
 </template>
 
-<script lang="ts">
-  export default {
-    name: 'VariableMenu',
-    expose: [],
-    inheritAttrs: false,
-  }
-</script>
-
 <script lang="ts" setup>
   import { showToast } from '@prefecthq/prefect-design'
   import { ConfirmDeleteModal, CopyOverflowMenuItem, VariableEditModal } from '@/components'
@@ -32,6 +24,10 @@
   import { localization } from '@/localization'
   import { Variable } from '@/models'
   import { getApiErrorMessage } from '@/utilities/errors'
+
+  defineOptions({
+    inheritAttrs: false,
+  })
 
   defineProps<{
     variable: Variable,
