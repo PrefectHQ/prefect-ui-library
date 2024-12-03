@@ -11,6 +11,7 @@ export function isOperation(value: string): value is Operation {
 export type TagFilter = {
   operator?: Operation,
   name?: string[],
+  anyName?: string[],
   isNull?: boolean,
 }
 

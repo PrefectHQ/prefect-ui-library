@@ -133,6 +133,7 @@ export const mapTagFilter: MapFunction<TagFilter, TagFilterRequest> = function(s
   return {
     ...toOperator(source.operator),
     ...toAll(source.name),
+    ...toAny(source.anyName),
     ...toIsNull(source.isNull),
   }
 }
