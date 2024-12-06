@@ -1,5 +1,6 @@
 <template>
   <slot :open="open" :close="close" />
+
   <p-modal v-model:showModal="showModal" :title="schedule ? 'Edit schedule' : 'Add schedule'" @update:show-modal="resetIfFalse">
     <p-label label="Schedule type">
       <p-button-group v-model="scheduleForm" :options="scheduleFormOptions" small />
@@ -43,6 +44,10 @@
   import { useCan, useShowModal } from '@/compositions'
   import { DeploymentScheduleCompatible, getScheduleType, Schedule, ScheduleType, isCronSchedule, isIntervalSchedule, CronSchedule, IntervalSchedule } from '@/models'
   import { stringify } from '@/utilities'
+
+  defineOptions({
+    inheritAttrs: false,
+  })
 
   const { showModal, open, close } = useShowModal()
 
