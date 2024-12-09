@@ -111,7 +111,7 @@ export function getSchemaPropertyPlaceholder(property: SchemaProperty): string |
   }
 
   if (isArray(placeholder) && property.meta?.component !== JsonInput) {
-    return placeholder.join(', ')
+    return `"${placeholder.join(', ')}"`
   }
 
   return stringify(placeholder)
