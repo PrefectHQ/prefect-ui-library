@@ -51,7 +51,7 @@
   const { validate } = useValidationObserver()
   const { state, error } = useValidation(name, 'Work pool name', value => {
     if (value?.toLowerCase().startsWith('prefect')) {
-      return 'Name cannot start with "prefect"'
+      return 'Work pools starting with "prefect" are reserved for internal use.'
     }
 
     if (value) {
