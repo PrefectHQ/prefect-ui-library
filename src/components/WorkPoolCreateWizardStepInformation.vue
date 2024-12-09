@@ -50,6 +50,10 @@
   const { defineValidate } = useWizardStep()
   const { validate } = useValidationObserver()
   const { state, error } = useValidation(name, 'Work pool name', value => {
+    if (value?.toLowerCase().startsWith('prefect')) {
+      return 'Work pools starting with "prefect" are reserved for internal use.'
+    }
+
     if (value) {
       return true
     }
