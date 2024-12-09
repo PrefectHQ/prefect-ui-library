@@ -50,6 +50,10 @@
   const { defineValidate } = useWizardStep()
   const { validate } = useValidationObserver()
   const { state, error } = useValidation(name, 'Work pool name', value => {
+    if (value?.toLowerCase().startsWith('prefect')) {
+      return 'Name cannot start with "prefect"'
+    }
+
     if (value) {
       return true
     }
