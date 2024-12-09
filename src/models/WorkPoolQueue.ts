@@ -31,7 +31,7 @@ export interface IWorkPoolQueue {
   priority: number,
   lastPolled: Date | null,
   status: WorkPoolQueueStatus,
-  can: ObjectLevelCan<'work_pool_queue'>,
+  can: ObjectLevelCan<'work_queue'>,
 }
 
 export class WorkPoolQueue implements IWorkPoolQueue {
@@ -48,7 +48,7 @@ export class WorkPoolQueue implements IWorkPoolQueue {
   public priority: number
   public lastPolled: Date | null
   public status: WorkPoolQueueStatus
-  public can: ObjectLevelCan<'work_pool_queue'>
+  public can: ObjectLevelCan<'work_queue'>
 
   public constructor(workPoolQueue: IWorkPoolQueue) {
     this.id = workPoolQueue.id
