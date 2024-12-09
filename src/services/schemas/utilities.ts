@@ -107,10 +107,17 @@ export function getSchemaPropertyPlaceholder(property: SchemaProperty): string |
   }
 
   if (typeof placeholder === 'string') {
+    if (property.format === 'json-string') {
+      return `"${placeholder}"`
+    }
     return placeholder
   }
 
   if (isArray(placeholder) && property.meta?.component !== JsonInput) {
+    if (property.format === 'json-string') {
+      return `"${placeholder.join(', ')}"`
+    }
+
     return placeholder.join(', ')
   }
 
