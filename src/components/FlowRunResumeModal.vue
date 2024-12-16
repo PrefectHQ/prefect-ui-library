@@ -23,19 +23,22 @@
 <script lang="ts" setup>
   import { showToast } from '@prefecthq/prefect-design'
   import { ref, watch } from 'vue'
-  import { useFlowRun, useWorkspaceApi } from '@/compositions'
+  import { useWorkspaceApi } from '@/compositions'
   import { localization } from '@/localization'
+  import { FlowRun } from '@/models'
   import { SchemaV2, SchemaValuesV2, SchemaInputV2, useSchemaValidationV2 } from '@/schemas'
   import { getApiErrorMessage } from '@/utilities/errors'
 
-  const props = defineProps<{
-    flowRunId: string,
+  const showModal = defineModel<boolean>('showModal')
+
+  const { flowRun } = defineProps<{
+    flowRun: FlowRun,
   }>()
 
-  const showModal = defineModel<boolean>('showModal')
+  const emit = defineEmits(['update'])
+
   const api = useWorkspaceApi()
   const parameters = ref<SchemaValuesV2>({})
-  const { flowRun, subscription } = useFlowRun(() => props.flowRunId)
 
   const description = ref<string | null>(null)
   const schema = ref<SchemaV2 | null>(null)
@@ -52,13 +55,13 @@
   }, { immediate: true })
 
   async function init(): Promise<void> {
-    if (!flowRun.value?.state?.stateDetails?.runInputKeyset) {
+    if (!flowRun.state?.stateDetails?.runInputKeyset) {
       return
     }
 
     const [descriptionValue, schemaValue] = await Promise.all([
-      api.flowRuns.getFlowRunInputDescription(props.flowRunId, flowRun.value.state.stateDetails.runInputKeyset),
-      api.flowRuns.getFlowRunInputSchemaV2(props.flowRunId, flowRun.value.state.stateDetails.runInputKeyset),
+      api.flowRuns.getFlowRunInputDescription(flowRun.id, flowRun.state.stateDetails.runInputKeyset),
+      api.flowRuns.getFlowRunInputSchemaV2(flowRun.id, flowRun.state.stateDetails.runInputKeyset),
     ])
 
     description.value = descriptionValue
@@ -80,7 +83,7 @@
     }
 
     try {
-      const response = await api.flowRuns.resumeFlowRunV2(props.flowRunId, parameters.value)
+      const response = await api.flowRuns.resumeFlowRunV2(flowRun.id, parameters.value)
 
       if (response.status != 'ACCEPT') {
         showToast(response.details.reason, 'error')
@@ -88,7 +91,7 @@
         return
       }
 
-      subscription.refresh()
+      emit('update')
       showModal.value = false
       showToast(localization.success.resumeFlowRun, 'success')
     } catch (error) {

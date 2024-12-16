@@ -17,8 +17,8 @@
 
   <FlowRunCancelModal
     v-model:showModal="showModal"
-    :flow-run-id="flowRun.id"
-    @change="showModal"
+    :flow-run="flowRun"
+    @update="emit('update')"
   />
 </template>
 
@@ -34,22 +34,24 @@
     inheritAttrs: false,
   })
 
-  const props = defineProps<{
+  const { flowRun } = defineProps<{
     flowRun: FlowRun,
   }>()
+
+  const emit = defineEmits(['update'])
 
   const can = useCan()
   const { showModal, open } = useShowModal()
 
   const canCancel = computed(() => {
-    if (!can.update.flow_run || !props.flowRun.stateType) {
+    if (!can.update.flow_run || !flowRun.stateType) {
       return false
     }
-    return isStuckStateType(props.flowRun.stateType)
+    return isStuckStateType(flowRun.stateType)
   })
 
   const disableCancel = computed(() => {
-    if (!props.flowRun.deploymentId && canCancel.value) {
+    if (!flowRun.deploymentId && canCancel.value) {
       return true
     }
     return false

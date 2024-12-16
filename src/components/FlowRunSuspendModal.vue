@@ -1,5 +1,5 @@
 <template>
-  <p-modal v-if="flowRun" v-model:showModal="internalValue" title="Suspend Flow Run">
+  <p-modal v-if="flowRun" v-model:showModal="showModal" title="Suspend Flow Run">
     <p-label label="Current Flow Run State">
       <StateBadge :state="flowRun.state" />
     </p-label>
@@ -20,22 +20,24 @@
 
 <script lang="ts" setup>
   import { showToast } from '@prefecthq/prefect-design'
-  import { useSubscription } from '@prefecthq/vue-compositions'
   import { addSeconds } from 'date-fns'
   import { useField } from 'vee-validate'
-  import { computed, ref } from 'vue'
+  import { ref } from 'vue'
   import StateBadge from '@/components/StateBadge.vue'
   import { useForm, useWorkspaceApi } from '@/compositions'
   import { localization } from '@/localization'
-  import { StateUpdateDetails } from '@/models'
+  import { FlowRun, StateUpdateDetails } from '@/models'
   import { fieldRules, isGreaterThan, isRequired } from '@/utilities'
   import { getApiErrorMessage } from '@/utilities/errors'
   import { secondsToApproximateString } from '@/utilities/seconds'
 
+  const showModal = defineModel<boolean>('showModal', { required: true })
+
   const props = defineProps<{
-    showModal: boolean,
-    flowRunId: string,
+    flowRun: FlowRun,
   }>()
+
+  const emit = defineEmits(['update'])
 
   const defaultTimeout = ref<number>(300)
 
@@ -43,23 +45,8 @@
 
   const { value: timeout, meta: timeoutState, errorMessage: timeoutErrorMessage } = useField<number>('timeout', fieldRules('Limit', isRequired, isGreaterThan(4)), { initialValue: defaultTimeout })
 
-  const emit = defineEmits<{
-    (event: 'update:showModal', value: boolean): void,
-  }>()
-
   const api = useWorkspaceApi()
 
-  const internalValue = computed({
-    get() {
-      return props.showModal
-    },
-    set(value: boolean) {
-      emit('update:showModal', value)
-    },
-  })
-
-  const flowRunSubscription = useSubscription(api.flowRuns.getFlowRun, [props.flowRunId])
-  const flowRun = computed(() => flowRunSubscription.response)
 
   const submit = handleSubmit(async (formValues): Promise<void> => {
     try {
@@ -72,9 +59,9 @@
           pauseReschedule: true,
         },
       }
-      await api.flowRuns.setFlowRunState(props.flowRunId, { state: values })
-      flowRunSubscription.refresh()
-      internalValue.value = false
+      await api.flowRuns.setFlowRunState(props.flowRun.id, { state: values })
+      emit('update')
+      showModal.value = false
       showToast(localization.success.suspendFlowRun, 'success')
     } catch (error) {
       console.error(error)

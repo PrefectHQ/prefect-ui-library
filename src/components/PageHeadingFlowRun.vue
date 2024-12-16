@@ -33,10 +33,10 @@
     <template #actions>
       <template v-if="flowRun">
         <template v-if="media.sm">
-          <FlowRunSuspendButton :flow-run />
-          <FlowRunResumeButton :flow-run />
-          <FlowRunRetryButton :flow-run />
-          <FlowRunCancelButton :flow-run />
+          <FlowRunSuspendButton :flow-run @update="refresh" />
+          <FlowRunResumeButton :flow-run @update="refresh" />
+          <FlowRunRetryButton :flow-run @update="refresh" />
+          <FlowRunCancelButton :flow-run @update="refresh" />
         </template>
         <FlowRunMenu :flow-run :show-all="!media.sm" @delete="emit('delete')" />
       </template>
@@ -75,9 +75,7 @@
 
   const routes = useWorkspaceRoutes()
 
-  const emit = defineEmits<{
-    (event: 'delete'): void,
-  }>()
+  const emit = defineEmits(['delete'])
 
   // It doesn't seem like we should need to coalesce here but
   // the flow run model dictates the flow run name can be null
@@ -86,7 +84,7 @@
     { text: flowRun.value?.name ?? '' },
   ])
 
-  const { flowRun } = useFlowRun(() => props.flowRunId, { interval: 30_000 })
+  const { flowRun, subscription } = useFlowRun(() => props.flowRunId, { interval: 30_000 })
 
   const isPending = computed(() => flowRun.value?.stateType ? isPendingStateType(flowRun.value.stateType) : true)
 
@@ -95,6 +93,10 @@
       id: [props.flowRunId],
     },
   }))
+
+  function refresh(): void {
+    subscription.refresh()
+  }
 </script>
 
 <style>
