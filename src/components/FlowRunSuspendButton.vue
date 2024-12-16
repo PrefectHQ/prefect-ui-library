@@ -7,8 +7,8 @@
     Suspend
     <FlowRunSuspendModal
       v-model:showModal="showModal"
-      :flow-run-id="flowRun.id"
-      @change="showModal"
+      :flow-run="flowRun"
+      @update="emit('update')"
     />
   </p-button>
 </template>
@@ -19,18 +19,20 @@
   import { useCan, useShowModal } from '@/compositions'
   import { FlowRun, isRunningStateType } from '@/models'
 
-  const props = defineProps<{
+  const { flowRun } = defineProps<{
     flowRun: FlowRun,
   }>()
+
+  const emit = defineEmits(['update'])
 
   const can = useCan()
   const { showModal, open } = useShowModal()
 
   const canSuspend = computed(() => {
-    if (!can.update.flow_run || !props.flowRun.stateType || !props.flowRun.deploymentId) {
+    if (!can.update.flow_run || !flowRun.stateType || !flowRun.deploymentId) {
       return false
     }
 
-    return isRunningStateType(props.flowRun.stateType)
+    return isRunningStateType(flowRun.stateType)
   })
 </script>

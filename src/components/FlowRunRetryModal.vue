@@ -1,5 +1,5 @@
 <template>
-  <p-modal v-model:showModal="internalValue" :title="retryModalTitle">
+  <p-modal v-model:showModal="showModal" :title="`Retry ${flowRun.name}?`">
     This will retry flow run {{ flowRun.name }}.
     <div>
       Any task runs without a
@@ -17,56 +17,36 @@
 
   <script lang="ts" setup>
   import { showToast, PButton } from '@prefecthq/prefect-design'
-  import { computed } from 'vue'
   import { useWorkspaceApi } from '@/compositions'
   import { localization } from '@/localization'
   import { FlowRun } from '@/models'
   import { getApiErrorMessage } from '@/utilities/errors'
 
-  const props = defineProps<{
+  const showModal = defineModel<boolean>('showModal', { required: true })
+  const retryingRun = defineModel<boolean>('retryingRun', { required: true })
+
+  const { flowRun } = defineProps<{
     flowRun: FlowRun,
-    showModal: boolean,
-    retryingRun: boolean,
   }>()
 
-  const emits = defineEmits<{
-    (event: 'update:showModal' | 'update:retryingRun', value: boolean): void,
-  }>()
-
-  const internalValue = computed({
-    get() {
-      return props.showModal
-    },
-    set(value: boolean) {
-      emits('update:showModal', value)
-    },
-  })
-
-  const retryingRun = computed({
-    get() {
-      return props.retryingRun
-    },
-    set(value: boolean) {
-      emits('update:retryingRun', value)
-    },
-  })
-
-  const retryModalTitle = computed(() => `Retry ${props.flowRun.name}?`)
+  const emits = defineEmits(['update'])
 
   const api = useWorkspaceApi()
 
   const retryFromFailed = async (): Promise<void> => {
     retryingRun.value = true
+
     try {
-      await api.flowRuns.retryFlowRun(props.flowRun.id)
+      await api.flowRuns.retryFlowRun(flowRun.id)
       showToast(localization.success.retryRun, 'success')
+      emits('update')
+      showModal.value = false
     } catch (error) {
       console.error(error)
       const message = getApiErrorMessage(error, localization.error.retryRun)
       showToast(message, 'error')
     } finally {
       retryingRun.value = false
-      internalValue.value = false
     }
   }
   </script>

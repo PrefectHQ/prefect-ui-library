@@ -9,7 +9,8 @@
     <FlowRunRetryModal
       v-model:showModal="showModal"
       v-model:retryingRun="retryingRun"
-      :flow-run="flowRun"
+      :flow-run
+      @update="emit('update')"
     />
   </p-button>
 </template>
@@ -21,19 +22,21 @@
   import { useShowModal } from '@/compositions/useShowModal'
   import { FlowRun, isTerminalStateType } from '@/models'
 
-  const props = defineProps<{
+  const { flowRun } = defineProps<{
     flowRun: FlowRun,
   }>()
+
+  const emit = defineEmits(['update'])
 
   const can = useCan()
   const { showModal, open } = useShowModal()
 
   const canRetry = computed(() => {
-    if (!can.update.flow_run || !props.flowRun.stateType || !props.flowRun.deploymentId) {
+    if (!can.update.flow_run || !flowRun.stateType || !flowRun.deploymentId) {
       return false
     }
 
-    return isTerminalStateType(props.flowRun.stateType)
+    return isTerminalStateType(flowRun.stateType)
   })
 
   const retryingRun = ref(false)

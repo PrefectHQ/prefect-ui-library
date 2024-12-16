@@ -3,7 +3,7 @@
     Resume
   </p-button>
 
-  <FlowRunResumeModal v-model:showModal="showModal" :flow-run-id="flowRun.id" />
+  <FlowRunResumeModal v-model:showModal="showModal" :flow-run @update="emit('update')" />
 </template>
 
   <script lang="ts" setup>
@@ -17,19 +17,21 @@
     inheritAttrs: false,
   })
 
-  const props = defineProps<{
+  const { flowRun } = defineProps<{
     flowRun: FlowRun,
   }>()
+
+  const emit = defineEmits(['update'])
 
   const attrs = useAttrs()
   const can = useCan()
   const { showModal, open } = useShowModal()
 
   const canResume = computed(() => {
-    if (!can.update.flow_run || !props.flowRun.stateType) {
+    if (!can.update.flow_run || !flowRun.stateType) {
       return false
     }
 
-    return isPausedStateType(props.flowRun.stateType)
+    return isPausedStateType(flowRun.stateType)
   })
   </script>

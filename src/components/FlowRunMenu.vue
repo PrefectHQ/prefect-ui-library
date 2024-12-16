@@ -15,33 +15,37 @@
   </p-icon-button-menu>
 
   <FlowRunRetryModal
-    v-if="flowRun"
     v-model:showModal="showRetryModal"
     v-model:retryingRun="retryingRun"
     :flow-run="flowRun"
   />
 
-  <FlowRunResumeModal v-model:showModal="showResumeModal" :flow-run-id="flowRun.id" />
+  <FlowRunResumeModal
+    v-model:showModal="showResumeModal"
+    :flow-run="flowRun"
+    @update="emit('update')"
+  />
 
   <FlowRunCancelModal
     v-model:showModal="showCancelModal"
-    :flow-run-id="flowRun.id"
-    @change="showCancelModal"
+    :flow-run="flowRun"
+    @update="emit('update')"
   />
+
   <FlowRunSuspendModal
     v-model:showModal="showSuspendModal"
-    :flow-run-id="flowRun.id"
-    @change="showSuspendModal"
+    :flow-run="flowRun"
+    @update="emit('update')"
   />
+
   <ConfirmStateChangeModal
-    v-if="flowRun"
     v-model:showModal="showStateChangeModal"
     :run="flowRun"
     label="Flow Run"
     @change="changeFlowRunState"
   />
+
   <ConfirmDeleteModal
-    v-if="flowRun"
     v-model:showModal="showDeleteModal"
     label="Flow Run"
     :name="flowRun.name!"
@@ -56,7 +60,7 @@
   import FlowRunResumeModal from '@/components/FlowRunResumeModal.vue'
   import { useCan, useWorkspaceApi, useShowModal, useWorkspaceRoutes, useFlowRuns, useDeployment } from '@/compositions'
   import { localization } from '@/localization'
-  import { FlowRun, FlowRunsFilter, isPausedStateType, isRunningStateType, isStuckStateType, isTerminalStateType, StateUpdateDetails } from '@/models'
+  import { FlowRun, isPausedStateType, isRunningStateType, isStuckStateType, isTerminalStateType, StateUpdateDetails } from '@/models'
   import { deleteItem } from '@/utilities'
   import { getApiErrorMessage } from '@/utilities/errors'
 
@@ -64,10 +68,12 @@
     inheritAttrs: false,
   })
 
-  const props = defineProps<{
+  const { flowRun } = defineProps<{
     flowRun: FlowRun,
     showAll?: boolean,
   }>()
+
+  const emit = defineEmits(['delete', 'update'])
 
   const can = useCan()
   const api = useWorkspaceApi()
@@ -82,35 +88,35 @@
 
   const retryingRun = ref(false)
 
-  const { deployment } = useDeployment(() => props.flowRun.deploymentId)
+  const { deployment } = useDeployment(() => flowRun.deploymentId)
 
   const canRetry = computed(() => {
-    if (!can.update.flow_run || !props.flowRun.stateType || !props.flowRun.deploymentId) {
+    if (!can.update.flow_run || !flowRun.stateType || !flowRun.deploymentId) {
       return false
     }
-    return isTerminalStateType(props.flowRun.stateType)
+    return isTerminalStateType(flowRun.stateType)
   })
 
   const canResume = computed(() => {
-    if (!can.update.flow_run || !props.flowRun.stateType) {
+    if (!can.update.flow_run || !flowRun.stateType) {
       return false
     }
 
-    return isPausedStateType(props.flowRun.stateType)
+    return isPausedStateType(flowRun.stateType)
   })
 
-  const flowRunFilter = (): FlowRunsFilter | null => {
-    if (!props.flowRun.parentTaskRunId) {
+  const { flowRuns: parentFlowRunList } = useFlowRuns(() => {
+    if (!flowRun.parentTaskRunId) {
       return null
     }
 
     return {
       taskRuns: {
-        id: [props.flowRun.parentTaskRunId],
+        id: [flowRun.parentTaskRunId],
       },
     }
-  }
-  const { flowRuns: parentFlowRunList } = useFlowRuns(flowRunFilter)
+  })
+
   const parentFlowRunId = computed(() => {
     if (!parentFlowRunList.value.length) {
       return
@@ -118,31 +124,32 @@
     const [value] = parentFlowRunList.value
     return value.id
   })
+
   const canCancel = computed(() => {
-    if (!can.update.flow_run || !props.flowRun.stateType || parentFlowRunId.value) {
+    if (!can.update.flow_run || !flowRun.stateType || parentFlowRunId.value) {
       return false
     }
-    return isStuckStateType(props.flowRun.stateType)
+    return isStuckStateType(flowRun.stateType)
   })
 
   const canSuspend = computed(() => {
-    if (!can.update.flow_run || !props.flowRun.stateType || !props.flowRun.deploymentId) {
+    if (!can.update.flow_run || !flowRun.stateType || !flowRun.deploymentId) {
       return false
     }
 
-    return isRunningStateType(props.flowRun.stateType)
+    return isRunningStateType(flowRun.stateType)
   })
 
   const canChangeState = computed(() => {
-    if (!can.update.flow_run || !props.flowRun.stateType) {
+    if (!can.update.flow_run || !flowRun.stateType) {
       return false
     }
-    return isTerminalStateType(props.flowRun.stateType)
+    return isTerminalStateType(flowRun.stateType)
   })
 
   const changeFlowRunState = async (values: StateUpdateDetails): Promise<void> => {
     try {
-      await api.flowRuns.setFlowRunState(props.flowRun.id, { state: values })
+      await api.flowRuns.setFlowRunState(flowRun.id, { state: values })
       emit('update')
       showToast(localization.success.changeFlowRunState, 'success')
     } catch (error) {
@@ -151,8 +158,6 @@
       showToast(message, 'error')
     }
   }
-
-  const emit = defineEmits(['delete', 'update'])
 
   const deleteFlowRun = async (id: string): Promise<void> => {
     await deleteItem(id, api.flowRuns.deleteFlowRun, 'Flow run')
