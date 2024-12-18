@@ -58,7 +58,7 @@
   import { computed, ref } from 'vue'
   import { FlowRunRetryModal, FlowRunCancelModal, FlowRunSuspendModal, ConfirmStateChangeModal, ConfirmDeleteModal, CopyOverflowMenuItem } from '@/components'
   import FlowRunResumeModal from '@/components/FlowRunResumeModal.vue'
-  import { useCan, useWorkspaceApi, useShowModal, useWorkspaceRoutes, useFlowRuns, useDeployment } from '@/compositions'
+  import { useCan, useWorkspaceApi, useShowModal, useWorkspaceRoutes, useDeployment } from '@/compositions'
   import { localization } from '@/localization'
   import { FlowRun, isPausedStateType, isRunningStateType, isStuckStateType, isTerminalStateType, StateUpdateDetails } from '@/models'
   import { deleteItem } from '@/utilities'
@@ -105,28 +105,8 @@
     return isPausedStateType(flowRun.stateType)
   })
 
-  const { flowRuns: parentFlowRunList } = useFlowRuns(() => {
-    if (!flowRun.parentTaskRunId) {
-      return null
-    }
-
-    return {
-      taskRuns: {
-        id: [flowRun.parentTaskRunId],
-      },
-    }
-  })
-
-  const parentFlowRunId = computed(() => {
-    if (!parentFlowRunList.value.length) {
-      return
-    }
-    const [value] = parentFlowRunList.value
-    return value.id
-  })
-
   const canCancel = computed(() => {
-    if (!can.update.flow_run || !flowRun.stateType || parentFlowRunId.value) {
+    if (!can.update.flow_run || !flowRun.stateType) {
       return false
     }
     return isStuckStateType(flowRun.stateType)
