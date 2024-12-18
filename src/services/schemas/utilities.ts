@@ -110,10 +110,6 @@ export function getSchemaPropertyPlaceholder(property: SchemaProperty): string |
     return placeholder
   }
 
-  if (isArray(placeholder) && property.meta?.component !== JsonInput) {
-    return `"${placeholder.join(', ')}"`
-  }
-
   return stringify(placeholder)
 }
 
