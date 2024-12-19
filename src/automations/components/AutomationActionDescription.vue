@@ -7,13 +7,13 @@
 <script lang="ts" setup>
   import { computed } from 'vue'
   import AutomationActionDescriptionChangeFlowRunState from '@/automations/components/AutomationActionDescriptionChangeFlowRunState.vue'
-  import AutomationActionDescriptionDefault from '@/automations/components/AutomationActionDescriptionDefault.vue'
   import AutomationActionDescriptionPauseResumeAutomation from '@/automations/components/AutomationActionDescriptionPauseResumeAutomation.vue'
   import AutomationActionDescriptionPauseResumeDeployment from '@/automations/components/AutomationActionDescriptionPauseResumeDeployment.vue'
   import AutomationActionDescriptionPauseResumeWorkPool from '@/automations/components/AutomationActionDescriptionPauseResumeWorkPool.vue'
   import AutomationActionDescriptionPauseResumeWorkQueue from '@/automations/components/AutomationActionDescriptionPauseResumeWorkQueue.vue'
   import AutomationActionDescriptionResumeFlowRun from '@/automations/components/AutomationActionDescriptionResumeFlowRun.vue'
   import AutomationActionDescriptionRunDeployment from '@/automations/components/AutomationActionDescriptionRunDeployment.vue'
+  import AutomationActionSendNotification from '@/automations/components/AutomationActionDescriptionSendNotification.vue'
   import AutomationActionDescriptionSuspendCancelFlowRun from '@/automations/components/AutomationActionDescriptionSuspendCancelFlowRun.vue'
   import { AutomationAction } from '@/automations/types/actions'
   import { withProps } from '@/utilities'
@@ -62,7 +62,7 @@
           action: props.action,
         })
       case 'send-notification':
-        return withProps(AutomationActionDescriptionDefault, {
+        return withProps(AutomationActionSendNotification, {
           action: props.action,
         })
 
