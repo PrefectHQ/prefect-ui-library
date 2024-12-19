@@ -2,11 +2,12 @@
   <div class="automation-action-description-send-notification" v-bind="$attrs">
     Send {{ indefiniteArticle() }} {{ blockDocument?.blockType.name.toLocaleLowerCase() ?? '' }} notification using
     <BlockIconText :block-document-id="blockDocumentId" />
-    {{ recipients() }}
+    {{ recipients }}
   </div>
 </template>
 
 <script lang="ts" setup>
+  import { computed } from 'vue'
   import { AutomationActionSendNotification } from '@/automations/types/actions'
   import { BlockIconText } from '@/components'
   import { useBlockDocument } from '@/compositions'
@@ -29,7 +30,7 @@
     return ['a', 'e', 'i', 'o', 'u'].includes(blockDocument.value?.blockType.name[0].toLowerCase() ?? '') ? 'an' : 'a'
   }
 
-  const recipients = (): string => {
+  const recipients = computed(() => {
     if (blockDocument.value?.blockType.name === 'Email') {
       try {
         return `to ${JSON.parse(blockDocument.value.data.emails as string).join(', ')}`
@@ -38,7 +39,7 @@
       }
     }
     return ''
-  }
+  })
 </script>
 
 <style>
