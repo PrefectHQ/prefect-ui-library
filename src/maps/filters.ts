@@ -180,6 +180,11 @@ export const mapFlowRunFilter: MapFunction<FlowRunFilter, FlowRunFilterRequest> 
       ...toAny(source.workQueueName),
       ...toIsNull(source.workQueueNameIsNull),
     },
+    work_queue_id: {
+      ...toOperator(source.workQueueIdOperator),
+      ...toAny(source.workQueueId),
+      ...toIsNull(source.workQueueIdNull),
+    },
     state: this.map('StateFilter', source.state, 'StateFilterRequest'),
     flow_version: toAny(source.flowVersion),
     start_time: {
