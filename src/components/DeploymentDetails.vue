@@ -51,6 +51,12 @@
           </p-button>
         </template>
       </p-key-value>
+
+      <p-key-value v-if="serviceLevelAgreements" class="w-full" label="Service Level Agreements" :value="serviceLevelAgreements">
+        <template #value>
+          <DeploymentServiceLevelAgreementCard v-for="sla in slas" :key="sla.id" class="deployment-details__sla-cards" :service-level-agreement="sla" />
+        </template>
+      </p-key-value>
     </slot>
 
     <p-divider />
@@ -119,16 +125,19 @@
   import { AutomationAction, CreateAutomationQuery } from '..'
   import AutomationIconText from '@/automations/components/AutomationIconText.vue'
   import { BlockIconText, DeploymentStatusBadge, DeploymentSchedulesFieldset } from '@/components'
+  import DeploymentServiceLevelAgreementCard from '@/components/DeploymentServiceLevelAgreementCard.vue'
   import DeploymentToggle from '@/components/DeploymentToggle.vue'
   import FormattedDate from '@/components/FormattedDate.vue'
   import { useWorkspaceApi, useCan, useWorkspaceRoutes } from '@/compositions'
   import { useAutomationsByRelatedResource } from '@/compositions/useAutomationsByRelatedResource'
   import { localization } from '@/localization'
   import { Deployment, DeploymentScheduleCompatible } from '@/models'
+  import { ServiceLevelAgreement } from '@/models/ServiceLevelAgreement'
 
   const props = defineProps<{
     deployment: Deployment,
     alternate?: boolean,
+    slas?: ServiceLevelAgreement[] | null,
   }>()
 
   const emit = defineEmits<{
@@ -137,6 +146,7 @@
 
   const can = useCan()
   const api = useWorkspaceApi()
+  const serviceLevelAgreements = computed(() => props.slas)
 
   const createDeploymentSchedule = async (updatedSchedule: DeploymentScheduleCompatible): Promise<void> => {
     if (updatedSchedule.active === null || !updatedSchedule.schedule) {
@@ -212,5 +222,9 @@
   flex-row
   justify-between
   items-center
+}
+
+.deployment-details__sla-cards { @apply
+  my-1
 }
 </style>
