@@ -52,7 +52,7 @@
         </template>
       </p-key-value>
 
-      <p-key-value v-if="slas" label="Service Level Agreements" :value="slas">
+      <p-key-value v-if="slas" class="deployment-details__slas" label="Service Level Agreements">
         <template #value>
           <DeploymentServiceLevelAgreementCard v-for="sla in slas" :key="sla.id" class="deployment-details__sla-cards" :service-level-agreement="sla" />
         </template>
@@ -225,5 +225,11 @@
 
 .deployment-details__sla-cards { @apply
   my-1
+}
+
+.deployment-details__slas {
+  .p-key-value__value { @apply
+    w-full
+  }
 }
 </style>
