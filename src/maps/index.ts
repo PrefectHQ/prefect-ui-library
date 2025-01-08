@@ -60,6 +60,7 @@ import { mapScheduleToScheduleResponse, mapScheduleResponseToSchedule, mapSchedu
 import { mapSchemaDefinitionsResponseToSchemaDefinitions, mapSchemaPropertiesResponseToSchemaProperties, mapSchemaPropertyResponseToSchemaProperty, mapSchemaResponseToSchema } from '@/maps/schema'
 import { mapSchemaValuesToSchemaValuesRequest } from '@/maps/schemaValuesRequest'
 import { mapSchemaValuesResponseToSchemaValues } from '@/maps/schemaValuesResponse'
+import { mapServiceLevelAgreementResponseToServiceLevelAgreement } from '@/maps/serviceLevelAgreements'
 import { mapStateResponseToState, mapStateToStateResponse, mapStateCreateToStateRequest } from '@/maps/state'
 import { mapStateDetailsCreateToStateDetailsRequest, mapStateDetailsResponseToStateDetails, mapStateDetailsToStateDetailsRequest, mapStateDetailsToStateDetailsResponse } from '@/maps/stateDetails'
 import { mapStateHistoryToStateHistoryResponse, mapStateHistoryResponseToStateHistory } from '@/maps/stateHistory'
@@ -193,6 +194,7 @@ export const maps = {
   ServerStateType: { StateType: mapServerStateTypeToStateType },
   ServerWorkPoolStatus: { WorkPoolStatus: mapServerWorkPoolStatusToWorkPoolStatus },
   ServerWorkPoolWorkerStatus: { WorkPoolWorkerStatus: mapServerWorkPoolWorkerStatusToWorkPoolWorkerStatus },
+  ServiceLevelAgreementResponse: { ServiceLevelAgreement: mapServiceLevelAgreementResponseToServiceLevelAgreement },
   State: { StateResponse: mapStateToStateResponse },
   StateCreate: { StateRequest: mapStateCreateToStateRequest },
   StateDetails: { StateDetailsResponse: mapStateDetailsToStateDetailsResponse, StateDetailsRequest: mapStateDetailsToStateDetailsRequest },
