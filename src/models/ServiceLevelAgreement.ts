@@ -2,6 +2,10 @@ import { AutomationTrigger } from '@/automations'
 
 export type ServiceLevelAgreementSeverity = 'minor' | 'low' | 'moderate' | 'high' | 'critical'
 
+export enum ServiceLevelAgreementType {
+  TimeToCompletion = 'Time to Completion'
+}
+
 export interface IServiceLevelAgreement {
   id: string,
   name: string,
@@ -58,5 +62,9 @@ export class ServiceLevelAgreement implements IServiceLevelAgreement {
 
   public durationInSeconds(): number {
     return this.trigger.within
+  }
+
+  public getSlaType(): string {
+    return ServiceLevelAgreementType.TimeToCompletion
   }
 }
