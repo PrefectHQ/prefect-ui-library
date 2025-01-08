@@ -52,7 +52,7 @@
         </template>
       </p-key-value>
 
-      <p-key-value v-if="serviceLevelAgreements" class="w-full" label="Service Level Agreements" :value="serviceLevelAgreements">
+      <p-key-value v-if="slas" label="Service Level Agreements" :value="slas">
         <template #value>
           <DeploymentServiceLevelAgreementCard v-for="sla in slas" :key="sla.id" class="deployment-details__sla-cards" :service-level-agreement="sla" />
         </template>
@@ -146,7 +146,6 @@
 
   const can = useCan()
   const api = useWorkspaceApi()
-  const serviceLevelAgreements = computed(() => props.slas)
 
   const createDeploymentSchedule = async (updatedSchedule: DeploymentScheduleCompatible): Promise<void> => {
     if (updatedSchedule.active === null || !updatedSchedule.schedule) {
