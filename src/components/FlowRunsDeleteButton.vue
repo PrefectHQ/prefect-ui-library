@@ -59,6 +59,7 @@
       return
     }
 
+    loading.value = false
     showToast(toastMessage, 'success')
     emit('delete')
     close()

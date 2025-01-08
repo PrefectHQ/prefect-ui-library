@@ -1,5 +1,5 @@
 <template>
-  <p-modal v-if="flowRun" v-model:showModal="internalValue" title="Cancel Flow Run">
+  <p-modal v-if="flowRun" v-model:showModal="showModal" title="Cancel Flow Run">
     <template #icon>
       <p-icon icon="ExclamationCircleIcon" class="flow-run-cancel-modal__icon" />
     </template>
@@ -21,38 +21,21 @@
 
 <script lang="ts" setup>
   import { showToast } from '@prefecthq/prefect-design'
-  import { useSubscription } from '@prefecthq/vue-compositions'
-  import { computed } from 'vue'
   import StateBadge from '@/components/StateBadge.vue'
   import { useWorkspaceApi } from '@/compositions'
   import { localization } from '@/localization'
-  import { StateUpdateDetails } from '@/models'
+  import { FlowRun, StateUpdateDetails } from '@/models'
   import { getApiErrorMessage } from '@/utilities/errors'
 
-  const props = defineProps<{
-    showModal: boolean,
-    flowRunId: string,
+  const showModal = defineModel<boolean>('showModal', { required: true })
+
+  const { flowRun } = defineProps<{
+    flowRun: FlowRun,
   }>()
 
-
-  const emit = defineEmits<{
-    (event: 'update:showModal', value: boolean): void,
-    (event: 'cancel'): void,
-  }>()
+  const emit = defineEmits(['update'])
 
   const api = useWorkspaceApi()
-
-  const internalValue = computed({
-    get() {
-      return props.showModal
-    },
-    set(value: boolean) {
-      emit('update:showModal', value)
-    },
-  })
-
-  const flowRunSubscription = useSubscription(api.flowRuns.getFlowRun, [props.flowRunId], { interval: 30000 })
-  const flowRun = computed(() => flowRunSubscription.response)
 
   const cancel = async (): Promise<void> => {
     try {
@@ -60,10 +43,9 @@
         type: 'cancelling',
         name: 'Cancelling',
       }
-      await api.flowRuns.setFlowRunState(props.flowRunId, { state: values })
-      flowRunSubscription.refresh()
-      internalValue.value = false
-      emit('cancel')
+      await api.flowRuns.setFlowRunState(flowRun.id, { state: values })
+      emit('update')
+      showModal.value = false
       showToast(localization.success.cancelFlowRun, 'success')
     } catch (error) {
       console.error(error)

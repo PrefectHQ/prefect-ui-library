@@ -52,6 +52,7 @@ export type FlowRunFilterRequest = {
   tags?: TagFilterRequest,
   deployment_id?: OperatorRequest & Any & IsNull,
   work_queue_name?: OperatorRequest & Any & IsNull,
+  work_queue_id?: OperatorRequest & Any & IsNull,
   state?: StateFilterRequest,
   flow_version?: Any,
   start_time?: Before & After & IsNull,

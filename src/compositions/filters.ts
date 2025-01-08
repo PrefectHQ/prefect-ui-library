@@ -197,6 +197,9 @@ export function useFlowRunFilter(defaultValue: MaybeReactive<FlowRunFilter> = {}
     workQueueName: toRef(defaultValueReactive, 'workQueueName'),
     workQueueNameIsNull: toRef(defaultValueReactive, 'workQueueNameIsNull'),
     workQueueNameOperator: toRef(defaultValueReactive, 'workQueueNameOperator'),
+    workQueueId: toRef(defaultValueReactive, 'workQueueId'),
+    workQueueIdNull: toRef(defaultValueReactive, 'workQueueIdNull'),
+    workQueueIdOperator: toRef(defaultValueReactive, 'workQueueIdOperator'),
   })
 
   return withFilterFunctions(filter)
@@ -215,6 +218,9 @@ const flowRunFilterSchema: RouteQueryParamsSchema<FlowRunFilter> = {
   workQueueNameOperator: OperatorRouteParam,
   workQueueName: [StringRouteParam],
   workQueueNameIsNull: BooleanRouteParam,
+  workQueueIdOperator: OperatorRouteParam,
+  workQueueId: [StringRouteParam],
+  workQueueIdNull: BooleanRouteParam,
   state: stateFilterSchema,
   flowVersion: [StringRouteParam],
   expectedStartTimeBefore: DateRouteParam,
