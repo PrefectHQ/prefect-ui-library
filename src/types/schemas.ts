@@ -69,6 +69,7 @@ export type SchemaProperty = {
   multipleOf?: number,
   pattern?: string,
   properties?: SchemaProperties,
+  additionalProperties?: SchemaProperty | boolean,
   required?: string[],
   title?: string,
   type?: SchemaType,
