@@ -7,7 +7,11 @@
     <p-button-group v-model="selected" :options="options" small />
 
     <p-label class="schema-form-property-any-of__fields p-background" :description="description">
-      <template v-if="isObject">
+      <template v-if="displayedDefinition.meta && displayedDefinition.meta.component">
+        <SchemaFormProperty :property="displayedDefinition" :prop-key="propKey" />
+      </template>
+
+      <template v-else-if="isObject">
         <p-content>
           <template v-for="(subProperty, key) in displayedDefinition.properties" :key="key">
             <SchemaFormProperty :prop-key="`${propKey}.${key}`" :property="subProperty!" />

@@ -280,6 +280,13 @@ function findObjectDefinitionIndex(definitions: Schema[], value: object | null):
   }, [0, 0])
 
   if (keysInCommon === 0) {
+    const indexOfDefinitionWithAdditionalProperties = definitions.findIndex(definition => definition.additionalProperties)
+
+    // Since we were unable to find a definition with a matching set of keys, we'll use the definition with additionalProperties if one exists.
+    if (indexOfDefinitionWithAdditionalProperties !== -1) {
+      return indexOfDefinitionWithAdditionalProperties
+    }
+
     return null
   }
 
