@@ -67,7 +67,26 @@ export const deploymentSortOptions = [
   { label: 'Z to A', value: 'NAME_DESC' },
 ]
 
-export const flowRunSortValues = ['ID_DESC', 'END_TIME_DESC', 'CREATED_DESC', 'NAME_DESC', 'NAME_ASC', 'EXPECTED_START_TIME_DESC', 'EXPECTED_START_TIME_ASC', 'NEXT_SCHEDULED_START_TIME_ASC', 'START_TIME_DESC', 'START_TIME_ASC'] as const
+export const flowRunSortValues = [
+  'ID_DESC',
+  'END_TIME_DESC',
+  'CREATED_DESC',
+  'NAME_DESC',
+  'NAME_ASC',
+  'EXPECTED_START_TIME_DESC',
+  'EXPECTED_START_TIME_ASC',
+  'NEXT_SCHEDULED_START_TIME_ASC',
+  'START_TIME_DESC',
+  'START_TIME_ASC',
+  /**
+   * Only supported by cloud
+   */
+  'DURATION_DESC',
+  /**
+   * Only supported by cloud
+   */
+  'LATENESS_DESC',
+] as const
 export type FlowRunSortValues = typeof flowRunSortValues[number]
 export const defaultFlowRunSort: FlowRunSortValues = 'START_TIME_DESC'
 
