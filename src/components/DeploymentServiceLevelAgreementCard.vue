@@ -1,11 +1,11 @@
 <template>
-  <p-card class="deployment-service-level-agreement-card">
+  <p-list-item class="deployment-service-level-agreement-card">
     <p-key-value class="deployment-service-level-agreement-card__item" label="Name" :value="serviceLevelAgreement.name" />
     <p-key-value class="deployment-service-level-agreement-card__item" label="Type" :value="serviceLevelAgreement.getSlaType()" />
     <p-key-value class="deployment-service-level-agreement-card__item" label="Severity" :value="uppercase(serviceLevelAgreement.severity)" />
     <p-key-value v-if="serviceLevelAgreement.description" class="deployment-service-level-agreement-card__item" label="Description" :value="serviceLevelAgreement.description" />
     <p-key-value class="deployment-service-level-agreement-card__item" label="Duration" :value="secondsToString(serviceLevelAgreement.durationInSeconds())" />
-  </p-card>
+  </p-list-item>
 </template>
 
 
