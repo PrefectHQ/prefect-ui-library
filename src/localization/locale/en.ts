@@ -26,6 +26,7 @@ export const en = {
     activateWorkPoolQueue: 'Failed to activate work queue',
     activateWorkQueue: 'Failed to activate work queue',
     cancelFlowRun: 'Failed to cancel flow run',
+    cancelFlowRuns: (count: number) => `Failed to cancel ${count} sub flow runs`,
     changeFlowRunState: 'Failed to change flow run state',
     changeTaskRunState: 'Failed to change task run state',
     createBlock: 'Failed to create block',
