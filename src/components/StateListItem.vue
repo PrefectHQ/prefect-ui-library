@@ -19,16 +19,16 @@
             </slot>
           </div>
 
-          <template v-if="slots.action">
+          <template v-if="$slots.action">
             <div class="state-list-item__action">
               <slot name="action" />
             </div>
           </template>
         </div>
-        <div v-if="slots.meta" class="state-list-item__meta">
+        <div v-if="$slots.meta" class="state-list-item__meta">
           <slot name="meta" />
         </div>
-        <template v-if="slots.relationships">
+        <template v-if="$slots.relationships">
           <div class="state-list-item__relationships">
             <slot name="relationships" />
           </div>
@@ -42,7 +42,7 @@
 
 <script lang="ts" setup>
   import { PListItemInput, CheckboxModel, media, PListItem } from '@prefecthq/prefect-design'
-  import { computed, useSlots } from 'vue'
+  import { computed } from 'vue'
   import { StateType } from '@/models/StateType'
 
   const props = defineProps<{
@@ -64,8 +64,6 @@
   const emit = defineEmits<{
     (event: 'update:selected', value: CheckboxModel): void,
   }>()
-
-  const slots = useSlots()
 
   const model = computed({
     get() {

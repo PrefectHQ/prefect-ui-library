@@ -56,7 +56,6 @@ export { default as ConcurrencyLimitV2ResetModal } from '@/components/Concurrenc
 export { default as ConcurrencyLimitV2Toggle } from './ConcurrencyLimitV2Toggle.vue'
 export { default as ConcurrencyTableActiveSlots } from './ConcurrencyTableActiveSlots.vue'
 export { default as ConfirmDeleteModal } from './ConfirmDeleteModal.vue'
-export { default as ConfirmDeleteModalWithSlot } from './ConfirmDeleteModalWithSlot.vue'
 export { default as ConfirmStateChangeModal } from './ConfirmStateChangeModal.vue'
 export { default as CopyableWrapper } from './CopyableWrapper.vue'
 export { default as CopyOverflowMenuItem } from './CopyOverflowMenuItem.vue'
