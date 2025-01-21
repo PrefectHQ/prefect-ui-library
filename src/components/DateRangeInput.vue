@@ -4,8 +4,8 @@
     v-model:endDate="adjustedEndDate"
     v-model:viewingDate="adjustedViewingDate"
   >
-    <template v-for="(index, name) in $slots" #[name]="data">
-      <slot :name="name" v-bind="data" />
+    <template #date="{ date }">
+      <slot :date="date" />
     </template>
   </p-date-range-input>
 </template>

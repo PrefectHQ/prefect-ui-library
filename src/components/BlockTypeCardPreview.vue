@@ -13,7 +13,7 @@
       <p-markdown-renderer :text="blockType.description" class="block-type-card-preview__description" />
     </template>
 
-    <template v-if="slots.actions" #footer>
+    <template v-if="$slots.actions" #footer>
       <div class="block-type-card-preview__actions">
         <p-button size="sm" variant="ghost" :to="routes.blocksCatalogView(blockType.slug)">
           Details
@@ -25,7 +25,6 @@
 </template>
 
 <script lang="ts" setup>
-  import { useSlots } from 'vue'
   import LogoImage from '@/components/LogoImage.vue'
   import { useWorkspaceRoutes } from '@/compositions'
   import { BlockType } from '@/models/BlockType'
@@ -34,7 +33,6 @@
     blockType: BlockType,
   }>()
 
-  const slots = useSlots()
   const routes = useWorkspaceRoutes()
 </script>
 

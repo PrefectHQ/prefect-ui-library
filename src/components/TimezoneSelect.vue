@@ -1,9 +1,5 @@
 <template>
-  <p-combobox v-model="modelValue" :options="timezoneOptions" :append="timestamp">
-    <template v-for="(index, name) in $slots" #[name]="data">
-      <slot :name="name" v-bind="data" />
-    </template>
-  </p-combobox>
+  <p-combobox v-model="modelValue" :options="timezoneOptions" :append="timestamp" />
 </template>
 
 <script lang="ts" setup>

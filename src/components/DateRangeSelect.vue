@@ -1,9 +1,5 @@
 <template>
-  <p-date-range-select v-model="adjustedModelValue">
-    <template v-for="(index, name) in $slots" #[name]="data">
-      <slot :name="name" v-bind="data" />
-    </template>
-  </p-date-range-select>
+  <p-date-range-select v-model="adjustedModelValue" />
 </template>
 
 <script lang="ts" setup>
