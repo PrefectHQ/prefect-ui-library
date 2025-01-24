@@ -52,6 +52,9 @@ export type SchemaProperty = {
   anyOf?: Schema[],
   allOf?: Schema[],
   example?: string,
+  // swagger says this should be an object, but our block schemas are string[] currently
+  // https://swagger.io/docs/specification/v3_0/adding-examples/
+  examples?: string[],
   alias?: string,
   default?: unknown,
   description?: string,
