@@ -100,7 +100,7 @@ export function getSchemaPropertyAttrs(property: SchemaProperty): SchemaProperty
 }
 
 export function getSchemaPropertyPlaceholder(property: SchemaProperty): string | undefined {
-  const placeholder = property.default ?? property.example
+  const placeholder = property.default ?? property.example ?? property.examples?.at(0)
 
   if (!placeholder) {
     return undefined
