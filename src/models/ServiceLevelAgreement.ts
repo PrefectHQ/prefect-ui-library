@@ -1,20 +1,20 @@
-import { AutomationTrigger } from '@/automations'
+import { AutomationTriggerEvent } from '@/automations'
 import { createTuple, secondsToString } from '@/utilities'
 
 export type ServiceLevelAgreementSeverity = 'minor' | 'low' | 'moderate' | 'high' | 'critical'
 
-export const { values: ServiceLevelAgreementType, isValue: isServiceLevelAgreementType } = createTuple(['FrequencySla', 'FreshnessSla', 'LatenessSla', 'TimeToCompletionSla'])
+export const { values: ServiceLevelAgreementType, isValue: isServiceLevelAgreementType } = createTuple(['FrequencySla', 'LatenessSla', 'TimeToCompletionSla'])
 
 export type ServiceLevelAgreementType = typeof ServiceLevelAgreementType[number]
 
-export type ServiceLevelAgreementDisplayType = 'Frequency' | 'Freshness' | 'Lateness' | 'Time to Completion'
+export type ServiceLevelAgreementDisplayType = 'Frequency' | 'Lateness' | 'Time to Completion'
 
 export interface IServiceLevelAgreement {
   id: string,
   name: string,
   description: string,
   enabled: boolean,
-  trigger: AutomationTrigger,
+  trigger: AutomationTriggerEvent,
   severity: ServiceLevelAgreementSeverity,
   type: ServiceLevelAgreementType,
   created: Date,
@@ -34,7 +34,7 @@ export class ServiceLevelAgreement implements IServiceLevelAgreement {
   public readonly name: string
   public readonly description: string
   public readonly enabled: boolean
-  public readonly trigger: AutomationTrigger
+  public readonly trigger: AutomationTriggerEvent
   public readonly severity: ServiceLevelAgreementSeverity
   public readonly type: ServiceLevelAgreementType
   public readonly created: Date
@@ -67,7 +67,7 @@ export class ServiceLevelAgreement implements IServiceLevelAgreement {
     return this.trigger.within
   }
 
-  public getSlaDefinitionKeyValuePairs(): { key: string, value: string }[] {
+  public getSlaDefinitionKeyValuePairs(): { key: string, value: unknown }[] {
     switch (this.type) {
       case 'FrequencySla':
         return [{ key: 'Stale After', value: secondsToString(this.trigger.within) }]
@@ -84,8 +84,6 @@ export class ServiceLevelAgreement implements IServiceLevelAgreement {
     switch (this.type) {
       case 'FrequencySla':
         return 'Frequency'
-      case 'FreshnessSla':
-        return 'Freshness'
       case 'LatenessSla':
         return 'Lateness'
       case 'TimeToCompletionSla':
