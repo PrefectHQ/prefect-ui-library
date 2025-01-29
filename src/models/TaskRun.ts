@@ -26,6 +26,7 @@ export interface ITaskRun {
   endTime: Date | null,
   stateId: string | null,
   stateType: StateType | null,
+  stateName: string | null,
   state: State | null,
   tags: string[] | null,
 }
@@ -54,6 +55,7 @@ export class TaskRun implements ITaskRun {
   public endTime: Date | null
   public stateId: string | null
   public stateType: StateType | null
+  public stateName: string | null
   public state: State | null
   public tags: string[] | null
 
@@ -80,6 +82,7 @@ export class TaskRun implements ITaskRun {
     this.endTime = taskRun.endTime
     this.stateId = taskRun.stateId
     this.stateType = taskRun.stateType
+    this.stateName = taskRun.stateName
     this.state = taskRun.state
     this.tags = taskRun.tags
   }
