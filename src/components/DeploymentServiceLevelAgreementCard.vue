@@ -4,7 +4,9 @@
     <p-key-value class="deployment-service-level-agreement-card__item" label="Type" :value="serviceLevelAgreement.getDisplaySlaType()" />
     <p-key-value class="deployment-service-level-agreement-card__item" label="Severity" :value="uppercase(serviceLevelAgreement.severity)" />
     <p-key-value v-if="serviceLevelAgreement.description" class="deployment-service-level-agreement-card__item" label="Description" :value="serviceLevelAgreement.description" />
-    <p-key-value class="deployment-service-level-agreement-card__item" label="Duration" :value="secondsToString(serviceLevelAgreement.durationInSeconds())" />
+    <template v-for="kv in serviceLevelAgreement.getSlaDefinitionKeyValuePairs()" :key="kv.key">
+      <p-key-value class="deployment-service-level-agreement-card__item" :label="kv.key" :value="kv.value" />
+    </template>
   </p-list-item>
 </template>
 
@@ -12,7 +14,6 @@
 <script lang="ts" setup>
   import { ServiceLevelAgreement } from '@/models/ServiceLevelAgreement'
   import { uppercase } from '@/utilities'
-  import { secondsToString } from '@/utilities/seconds'
 
   defineProps<{
     serviceLevelAgreement: ServiceLevelAgreement,

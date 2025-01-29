@@ -1,5 +1,5 @@
 import { AutomationTrigger } from '@/automations'
-import { createTuple } from '@/utilities'
+import { createTuple, secondsToString } from '@/utilities'
 
 export type ServiceLevelAgreementSeverity = 'minor' | 'low' | 'moderate' | 'high' | 'critical'
 
@@ -65,6 +65,19 @@ export class ServiceLevelAgreement implements IServiceLevelAgreement {
 
   public durationInSeconds(): number {
     return this.trigger.within
+  }
+
+  public getSlaDefinitionKeyValuePairs(): { key: string, value: string }[] {
+    switch (this.type) {
+      case 'FrequencySla':
+        return [{ key: 'Stale After', value: secondsToString(this.trigger.within) }]
+      case 'LatenessSla':
+        return [{ key: 'Within', value: secondsToString(this.trigger.within) }]
+      case 'TimeToCompletionSla':
+        return [{ key: 'Duration', value: secondsToString(this.trigger.within) }]
+      default:
+        return []
+    }
   }
 
   public getDisplaySlaType(): ServiceLevelAgreementDisplayType {
