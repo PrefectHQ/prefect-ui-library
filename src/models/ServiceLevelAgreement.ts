@@ -1,4 +1,4 @@
-import { AutomationTriggerEvent } from '@/automations'
+import { AutomationTrigger } from '@/automations'
 import { createTuple, secondsToString } from '@/utilities'
 
 export type ServiceLevelAgreementSeverity = 'minor' | 'low' | 'moderate' | 'high' | 'critical'
@@ -14,7 +14,7 @@ export interface IServiceLevelAgreement {
   name: string,
   description: string,
   enabled: boolean,
-  trigger: AutomationTriggerEvent,
+  trigger: AutomationTrigger,
   severity: ServiceLevelAgreementSeverity,
   type: ServiceLevelAgreementType,
   created: Date,
@@ -34,7 +34,7 @@ export class ServiceLevelAgreement implements IServiceLevelAgreement {
   public readonly name: string
   public readonly description: string
   public readonly enabled: boolean
-  public readonly trigger: AutomationTriggerEvent
+  public readonly trigger: AutomationTrigger
   public readonly severity: ServiceLevelAgreementSeverity
   public readonly type: ServiceLevelAgreementType
   public readonly created: Date
