@@ -20,6 +20,7 @@ export type TaskRunResponse = {
   state_id: string | null,
   task_inputs: Record<string, TaskInputResponse[]> | null,
   state_type: ServerStateType | null,
+  state_name: string | null,
   run_count: number | null,
   expected_start_time: DateString | null,
   next_scheduled_start_time: DateString | null,
