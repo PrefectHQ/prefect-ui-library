@@ -1,6 +1,8 @@
+import { FlowRun, FlowRunResponse } from '@/models'
 import { TaskRunHistoryResponse } from '@/models/api/TaskRunHistoryResponse'
 import { TaskRunResponse } from '@/models/api/TaskRunResponse'
-import { TaskRunsFilter, TaskRunsHistoryFilter } from '@/models/Filters'
+import { FlowRunsPaginationFilter, TaskRunsFilter, TaskRunsHistoryFilter, TaskRunsPaginationFilter } from '@/models/Filters'
+import { Paginated } from '@/models/pagination'
 import { StateUpdate } from '@/models/StateUpdate'
 import { TaskRun } from '@/models/TaskRun'
 import { TaskRunHistory } from '@/models/TaskRunHistory'
@@ -39,6 +41,13 @@ export class WorkspaceTaskRunsApi extends WorkspaceApi {
     const { data } = await this.post<TaskRunResponse[]>('/filter', request)
 
     return mapper.map('TaskRunResponse', data, 'TaskRun')
+  }
+
+  public async getTaskRunsPaginated(filter: TaskRunsPaginationFilter = {}): Promise<Paginated<TaskRun>> {
+    const request = mapper.map('TaskRunsPaginationFilter', filter, 'TaskRunsPaginationFilterRequest')
+    const { data } = await this.post<Paginated<TaskRunResponse>>('/paginate', request)
+
+    return mapper.map('TaskRunsPaginationResponse', data, 'TaskRunsPagination')
   }
 
   public async getTaskRunsCount(filter: TaskRunsFilter = {}): Promise<number> {
