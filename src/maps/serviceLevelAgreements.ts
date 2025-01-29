@@ -1,5 +1,5 @@
 import { ServiceLevelAgreementResponse } from '@/models/api/ServiceLevelAgreementResponse'
-import { ServiceLevelAgreement } from '@/models/ServiceLevelAgreement'
+import { ServiceLevelAgreement, ServiceLevelAgreementType } from '@/models/ServiceLevelAgreement'
 import { MapFunction } from '@/services/Mapper'
 
 export const mapServiceLevelAgreementResponseToServiceLevelAgreement: MapFunction<ServiceLevelAgreementResponse, ServiceLevelAgreement> = function(source) {
@@ -9,7 +9,7 @@ export const mapServiceLevelAgreementResponseToServiceLevelAgreement: MapFunctio
     description: source.description,
     enabled: source.enabled,
     trigger: this.map('AutomationTriggerResponse', source.trigger, 'AutomationTrigger'),
-    labels: source.labels,
+    type: ServiceLevelAgreementType[source.type],
     severity: source.severity,
     created: this.map('string', source.created, 'Date'),
     updated: this.map('string', source.updated, 'Date'),

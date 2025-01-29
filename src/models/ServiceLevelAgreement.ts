@@ -3,7 +3,10 @@ import { AutomationTrigger } from '@/automations'
 export type ServiceLevelAgreementSeverity = 'minor' | 'low' | 'moderate' | 'high' | 'critical'
 
 export enum ServiceLevelAgreementType {
-  TimeToCompletion = 'Time to Completion'
+  FrequencySla = 'Frequency',
+  FreshnessSla = 'Freshness',
+  LatenessSla = 'Lateness',
+  TimeToCompletionSla = 'Time to Completion'
 }
 
 export interface IServiceLevelAgreement {
@@ -12,8 +15,8 @@ export interface IServiceLevelAgreement {
   description: string,
   enabled: boolean,
   trigger: AutomationTrigger,
-  labels: Record<string, string>[],
   severity: ServiceLevelAgreementSeverity,
+  type: ServiceLevelAgreementType,
   created: Date,
   updated: Date,
   account: string,
@@ -32,8 +35,8 @@ export class ServiceLevelAgreement implements IServiceLevelAgreement {
   public readonly description: string
   public readonly enabled: boolean
   public readonly trigger: AutomationTrigger
-  public readonly labels: Record<string, string>[]
   public readonly severity: ServiceLevelAgreementSeverity
+  public readonly type: ServiceLevelAgreementType
   public readonly created: Date
   public readonly updated: Date
   public readonly account: string
@@ -51,20 +54,16 @@ export class ServiceLevelAgreement implements IServiceLevelAgreement {
     this.description = serviceLevelAgreement.description
     this.enabled = serviceLevelAgreement.enabled
     this.trigger = serviceLevelAgreement.trigger
-    this.labels = serviceLevelAgreement.labels
     this.created = serviceLevelAgreement.created
     this.updated = serviceLevelAgreement.updated
     this.account = serviceLevelAgreement.account
     this.workspace = serviceLevelAgreement.workspace
     this.actor = serviceLevelAgreement.actor
     this.severity = serviceLevelAgreement.severity
+    this.type = serviceLevelAgreement.type
   }
 
   public durationInSeconds(): number {
     return this.trigger.within
-  }
-
-  public getSlaType(): string {
-    return ServiceLevelAgreementType.TimeToCompletion
   }
 }
