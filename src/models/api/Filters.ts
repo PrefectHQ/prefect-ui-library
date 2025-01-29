@@ -152,6 +152,7 @@ export type PaginationUnionFilterRequest<T> = {
 
 export type FlowsPaginationFilterRequest = PaginationUnionFilterRequest<FlowSortValues>
 export type FlowRunsPaginationFilterRequest = PaginationUnionFilterRequest<FlowRunSortValues>
+export type TaskRunsPaginationFilterRequest = PaginationUnionFilterRequest<TaskRunSortValues>
 export type DeploymentsPaginationFilterRequest = PaginationUnionFilterRequest<DeploymentSortValues>
 
 export type ArtifactFilterRequest = {
