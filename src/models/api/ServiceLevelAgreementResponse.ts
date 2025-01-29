@@ -9,7 +9,7 @@ export type ServiceLevelAgreementResponse = {
   enabled: boolean,
   trigger: AutomationTriggerResponse,
   actions_on_resolve: AutomationActionResponse[],
-  type: keyof typeof ServiceLevelAgreementType,
+  type: ServiceLevelAgreementType,
   severity: ServiceLevelAgreementSeverity,
   id: string,
   created: string,

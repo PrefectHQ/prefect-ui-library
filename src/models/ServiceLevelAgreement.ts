@@ -1,13 +1,13 @@
 import { AutomationTrigger } from '@/automations'
+import { createTuple } from '@/utilities'
 
 export type ServiceLevelAgreementSeverity = 'minor' | 'low' | 'moderate' | 'high' | 'critical'
 
-export enum ServiceLevelAgreementType {
-  FrequencySla = 'Frequency',
-  FreshnessSla = 'Freshness',
-  LatenessSla = 'Lateness',
-  TimeToCompletionSla = 'Time to Completion'
-}
+export const { values: ServiceLevelAgreementType, isValue: isServiceLevelAgreementType } = createTuple(['FrequencySla', 'FreshnessSla', 'LatenessSla', 'TimeToCompletionSla'])
+
+export type ServiceLevelAgreementType = typeof ServiceLevelAgreementType[number]
+
+export type ServiceLevelAgreementDisplayType = 'Frequency' | 'Freshness' | 'Lateness' | 'Time to Completion'
 
 export interface IServiceLevelAgreement {
   id: string,
@@ -65,5 +65,20 @@ export class ServiceLevelAgreement implements IServiceLevelAgreement {
 
   public durationInSeconds(): number {
     return this.trigger.within
+  }
+
+  public getDisplaySlaType(): ServiceLevelAgreementDisplayType {
+    switch (this.type) {
+      case 'FrequencySla':
+        return 'Frequency'
+      case 'FreshnessSla':
+        return 'Freshness'
+      case 'LatenessSla':
+        return 'Lateness'
+      case 'TimeToCompletionSla':
+        return 'Time to Completion'
+      default:
+        return 'Time to Completion'
+    }
   }
 }
