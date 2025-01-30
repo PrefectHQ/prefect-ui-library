@@ -8,6 +8,7 @@ export const mapFlowRunResponseToFlowRun: MapFunction<FlowRunResponse, FlowRun> 
     id: source.id,
     deploymentId: source.deployment_id,
     flowId: source.flow_id,
+    flowName: source.flow_name,
     flowVersion: source.flow_version,
     idempotencyKey: source.idempotency_key,
     expectedStartTime: this.map('string', source.expected_start_time, 'Date'),

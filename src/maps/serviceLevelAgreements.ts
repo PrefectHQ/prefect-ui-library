@@ -9,7 +9,7 @@ export const mapServiceLevelAgreementResponseToServiceLevelAgreement: MapFunctio
     description: source.description,
     enabled: source.enabled,
     trigger: this.map('AutomationTriggerResponse', source.trigger, 'AutomationTrigger'),
-    labels: source.labels,
+    type: source.type,
     severity: source.severity,
     created: this.map('string', source.created, 'Date'),
     updated: this.map('string', source.updated, 'Date'),

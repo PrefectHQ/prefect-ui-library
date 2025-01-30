@@ -1,6 +1,6 @@
 import { AutomationActionResponse } from '@/automations/types/api/actions'
 import { AutomationTriggerResponse } from '@/automations/types/api/triggers'
-import { ServiceLevelAgreementSeverity } from '@/models/ServiceLevelAgreement'
+import { ServiceLevelAgreementSeverity, ServiceLevelAgreementType } from '@/models/ServiceLevelAgreement'
 
 
 export type ServiceLevelAgreementResponse = {
@@ -9,7 +9,7 @@ export type ServiceLevelAgreementResponse = {
   enabled: boolean,
   trigger: AutomationTriggerResponse,
   actions_on_resolve: AutomationActionResponse[],
-  labels: Record<string, string>[],
+  type: ServiceLevelAgreementType,
   severity: ServiceLevelAgreementSeverity,
   id: string,
   created: string,

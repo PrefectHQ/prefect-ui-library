@@ -10,6 +10,7 @@ import { secondsToApproximateString } from '@/utilities/seconds'
 export interface IFlowRun {
   id: string,
   flowId: string,
+  flowName: string | null,
   deploymentId: string | null,
   flowVersion: string | null,
   idempotencyKey: string | null,
@@ -45,6 +46,7 @@ export interface IFlowRun {
 export class FlowRun extends StorageItem implements IFlowRun {
   public readonly id: string
   public readonly flowId: string
+  public readonly flowName: string | null
   public readonly deploymentId: string | null
   public readonly workQueueName: string | null
   public readonly kind = 'flowRun'
@@ -83,6 +85,7 @@ export class FlowRun extends StorageItem implements IFlowRun {
     this.id = flowRun.id
     this.deploymentId = flowRun.deploymentId
     this.flowId = flowRun.flowId
+    this.flowName = flowRun.flowName
     this.flowVersion = flowRun.flowVersion
     this.idempotencyKey = flowRun.idempotencyKey
     this.expectedStartTime = flowRun.expectedStartTime
