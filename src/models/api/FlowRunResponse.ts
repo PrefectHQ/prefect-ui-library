@@ -13,6 +13,7 @@ export type FlowRunResponse = {
   updated: DateString,
   name: string | null,
   flow_id: string,
+  flow_name: string | null,
   state_id: string | null,
   deployment_id: string | null,
   flow_version: string | null,
