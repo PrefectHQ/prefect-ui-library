@@ -27,6 +27,7 @@ export const mapTaskRunResponseToTaskRun: MapFunction<TaskRunResponse, TaskRun> 
     endTime: this.map('string', source.end_time, 'Date'),
     stateId: source.state_id,
     stateType: this.map('ServerStateType', source.state_type, 'StateType'),
+    stateName: source.state_name,
     state: this.map('StateResponse', source.state, 'State'),
     tags: source.tags ? sortStringArray(source.tags) : null,
   })
@@ -56,6 +57,7 @@ export const mapTaskRunToTaskRunResponse: MapFunction<TaskRun, TaskRunResponse> 
     end_time: this.map('Date', source.endTime, 'string'),
     state_id: source.stateId,
     state_type: this.map('StateType', source.stateType, 'ServerStateType'),
+    state_name: source.stateName,
     state: this.map('State', source.state, 'StateResponse'),
     tags: source.tags,
   }

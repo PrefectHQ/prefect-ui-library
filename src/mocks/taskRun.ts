@@ -26,6 +26,7 @@ export const randomTaskRun: MockFunction<TaskRun, [Partial<TaskRun>?]> = functio
     endTime: this.create('date'),
     stateId: state.id,
     stateType: state.type,
+    stateName: state.name,
     state: state,
     tags: this.createMany('noun', this.create('number', [0, 10])),
     ...overrides,

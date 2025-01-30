@@ -1,10 +1,13 @@
 import { AutomationTrigger } from '@/automations'
+import { createTuple, secondsToString } from '@/utilities'
 
 export type ServiceLevelAgreementSeverity = 'minor' | 'low' | 'moderate' | 'high' | 'critical'
 
-export enum ServiceLevelAgreementType {
-  TimeToCompletion = 'Time to Completion'
-}
+export const { values: ServiceLevelAgreementType, isValue: isServiceLevelAgreementType } = createTuple(['FrequencySla', 'LatenessSla', 'TimeToCompletionSla'])
+
+export type ServiceLevelAgreementType = typeof ServiceLevelAgreementType[number]
+
+export type ServiceLevelAgreementDisplayType = 'Frequency' | 'Lateness' | 'Time to Completion'
 
 export interface IServiceLevelAgreement {
   id: string,
@@ -12,8 +15,8 @@ export interface IServiceLevelAgreement {
   description: string,
   enabled: boolean,
   trigger: AutomationTrigger,
-  labels: Record<string, string>[],
   severity: ServiceLevelAgreementSeverity,
+  type: ServiceLevelAgreementType,
   created: Date,
   updated: Date,
   account: string,
@@ -32,8 +35,8 @@ export class ServiceLevelAgreement implements IServiceLevelAgreement {
   public readonly description: string
   public readonly enabled: boolean
   public readonly trigger: AutomationTrigger
-  public readonly labels: Record<string, string>[]
   public readonly severity: ServiceLevelAgreementSeverity
+  public readonly type: ServiceLevelAgreementType
   public readonly created: Date
   public readonly updated: Date
   public readonly account: string
@@ -51,20 +54,42 @@ export class ServiceLevelAgreement implements IServiceLevelAgreement {
     this.description = serviceLevelAgreement.description
     this.enabled = serviceLevelAgreement.enabled
     this.trigger = serviceLevelAgreement.trigger
-    this.labels = serviceLevelAgreement.labels
     this.created = serviceLevelAgreement.created
     this.updated = serviceLevelAgreement.updated
     this.account = serviceLevelAgreement.account
     this.workspace = serviceLevelAgreement.workspace
     this.actor = serviceLevelAgreement.actor
     this.severity = serviceLevelAgreement.severity
+    this.type = serviceLevelAgreement.type
   }
 
   public durationInSeconds(): number {
     return this.trigger.within
   }
 
-  public getSlaType(): string {
-    return ServiceLevelAgreementType.TimeToCompletion
+  public getSlaDefinitionKeyValuePairs(): { key: string, value: unknown }[] {
+    switch (this.type) {
+      case 'FrequencySla':
+        return [{ key: 'Stale After', value: secondsToString(this.trigger.within) }]
+      case 'LatenessSla':
+        return [{ key: 'Within', value: secondsToString(this.trigger.within) }]
+      case 'TimeToCompletionSla':
+        return [{ key: 'Duration', value: secondsToString(this.trigger.within) }]
+      default:
+        return []
+    }
+  }
+
+  public getDisplaySlaType(): ServiceLevelAgreementDisplayType {
+    switch (this.type) {
+      case 'FrequencySla':
+        return 'Frequency'
+      case 'LatenessSla':
+        return 'Lateness'
+      case 'TimeToCompletionSla':
+        return 'Time to Completion'
+      default:
+        return 'Time to Completion'
+    }
   }
 }
