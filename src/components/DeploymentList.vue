@@ -1,7 +1,8 @@
 <template>
   <p-content class="deployment-list">
     <p-list-header sticky>
-      <ResultsCount v-if="selectedDeployments.length == 0" label="Deployment" :count />
+      <ResultsCount v-if="selectedDeployments.length == 0 && !deploymentLimit" label="Deployment" :count />
+      <ResultsCount v-else-if="selectedDeployments.length == 0 && deploymentLimit" label="Deployment" :count="deploymentLimit" :limit="deploymentLimit" />
       <SelectedCount v-else :count="selectedDeployments.length" />
       <DeploymentsDeleteButton v-if="can.delete.deployment" :selected="selectedDeployments.map(deployment => deployment.id)" small @delete="deleteDeployments" />
 
@@ -148,6 +149,7 @@
     filter?: DeploymentsFilter,
     prefix?: string,
     deploymentDisableToggle?: boolean,
+    deploymentLimit?: number,
   }>()
 
   const emit = defineEmits<{
