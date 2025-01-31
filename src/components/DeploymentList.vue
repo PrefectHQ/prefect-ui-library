@@ -1,9 +1,9 @@
 <template>
   <p-content class="deployment-list">
     <p-list-header sticky>
-      <ResultsCount v-if="selectedDeployments.length == 0 && !deploymentLimit" label="Deployment" :count />
-      <ResultsCount v-else-if="selectedDeployments.length == 0 && deploymentLimit" label="Deployment" :count="deploymentLimit" :limit="deploymentLimit" />
-      <SelectedCount v-else :count="selectedDeployments.length" />
+      <SelectedCount v-if="selectedDeployments.length > 0" :count="selectedDeployments.length" />
+      <ResultsCount v-else-if="deploymentLimit" label="Deployment" :count :limit="deploymentLimit" />
+      <ResultsCount v-else label="Deployment" :count />
       <DeploymentsDeleteButton v-if="can.delete.deployment" :selected="selectedDeployments.map(deployment => deployment.id)" small @delete="deleteDeployments" />
 
       <template #controls>
