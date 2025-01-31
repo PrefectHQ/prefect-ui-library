@@ -1,6 +1,6 @@
 <template>
   <span v-if="isNumber(count)" class="results-count">
-    {{ count.toLocaleString() }} {{ toPluralString(label, count) }}
+    {{ count.toLocaleString() }}{{ isNumber(limit) ? ` / ${limit.toLocaleString()}` : '' }} {{ toPluralString(label, count) }}
   </span>
 </template>
 
@@ -10,8 +10,10 @@
   withDefaults(defineProps<{
     count: number | null | undefined,
     label?: string,
+    limit?: number | null | undefined,
   }>(), {
     label: 'result',
+    limit: undefined,
   })
 </script>
 
