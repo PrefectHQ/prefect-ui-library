@@ -2,11 +2,7 @@
   <p-content class="deployment-list">
     <p-list-header sticky>
       <ResultsCount v-if="selectedDeployments.length == 0 && !deploymentLimit" label="Deployment" :count />
-      <template v-else-if="selectedDeployments.length == 0 && deploymentLimit">
-        <span v-if="isNumber(count)" class="results-count">
-          {{ count.toLocaleString() }} / {{ deploymentLimit }} {{ toPluralString("Deployment", deploymentLimit) }}
-        </span>
-      </template>
+      <ResultsCount v-else-if="selectedDeployments.length == 0 && deploymentLimit" label="Deployment" :count="deploymentLimit" :limit="deploymentLimit" />
       <SelectedCount v-else :count="selectedDeployments.length" />
       <DeploymentsDeleteButton v-if="can.delete.deployment" :selected="selectedDeployments.map(deployment => deployment.id)" small @delete="deleteDeployments" />
 
@@ -148,7 +144,6 @@
   import { DeploymentsFilter } from '@/models/Filters'
   import { ClassValue } from '@/types'
   import { deploymentSortOptions } from '@/types/SortOptionTypes'
-  import { toPluralString, isNumber } from '@/utilities'
 
   const props = defineProps<{
     filter?: DeploymentsFilter,

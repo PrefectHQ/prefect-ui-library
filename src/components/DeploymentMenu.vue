@@ -12,7 +12,7 @@
 
     <p-overflow-menu-item v-if="deployment.can.delete" label="Delete" @click="openConfirmDeleteModal" />
 
-    <p-overflow-menu-item label="Duplicate" :to="routes.deploymentDuplicate(deployment.id)" />
+    <p-overflow-menu-item v-if="allowDuplicate" label="Duplicate" :to="routes.deploymentDuplicate(deployment.id)" />
 
     <slot v-bind="{ deployment }" />
   </p-icon-button-menu>
@@ -41,6 +41,7 @@
   defineProps<{
     deployment: Deployment,
     showAll?: boolean,
+    allowDuplicate?: boolean,
   }>()
 
   const emits = defineEmits<{
