@@ -29,17 +29,18 @@
     <p-divider />
 
     <template v-if="schemaHasParameters">
-      <SchemaInputV2 v-model:values="parameters" :schema="schema" :errors="errors" :kinds="['none', 'json']">
+      <SchemaInputV2 v-model:values="internalParameters" :schema="internalSchema" :errors="errors" :kinds="['none', 'json']">
         <template #default="{ kind, setKind }">
           <div class="schedule-form-modal__parameters-container">
             <h3>
-              {{ localization.info.parameters }}
+              {{ localization.info.parameterOverrides }}
             </h3>
             <p-icon-button-menu small>
               <p-overflow-menu-item v-if="kind === 'json'" label="Use form input" @click="setKind('none')" />
               <p-overflow-menu-item v-if="kind === 'none'" label="Use JSON input" @click="setKind('json')" />
             </p-icon-button-menu>
           </div>
+          <p-combobox v-model="selectedProperties" :options="propertyNames" empty-message="Select parameters to override for this schedule" />
         </template>
       </SchemaInputV2>
     </template>
@@ -61,9 +62,10 @@
   import { CronSchedule, DeploymentScheduleCompatible, IntervalSchedule, Schedule, ScheduleType, getScheduleType, isCronSchedule, isIntervalSchedule } from '@/models'
   import { SchemaInputV2, SchemaV2, SchemaValuesV2 } from '@/schemas'
   import { useSchemaValidation } from '@/schemas/compositions/useSchemaValidation'
-  import { isEmptyObject, stringify } from '@/utilities'
+  import { isEmptyObject, omit, stringify } from '@/utilities'
   import { ButtonGroupOption } from '@prefecthq/prefect-design'
   import { useValidationObserver } from '@prefecthq/vue-compositions'
+  import merge from 'lodash.merge'
   import { computed, ref, watch } from 'vue'
 
 
@@ -85,7 +87,6 @@
     jobVariables: Record<string, unknown> | undefined,
     parameters: SchemaValuesV2,
     parameterOpenApiSchema: SchemaV2,
-    enforceParameterSchema: boolean | null,
   }>()
 
   const can = useCan()
@@ -100,14 +101,33 @@
   }>()
 
   // Parameters-related refs and compositions
-  const parameters = ref(props.parameters)
-  const schema = computed(() => {
-    return { ...props.parameterOpenApiSchema, required: [] }
+  const selectedProperties = ref<string[]>([])
+  const properties = computed(() => props.parameterOpenApiSchema.properties ?? {})
+  const propertyNames = computed(() => Object.keys(properties.value))
+  const propertiesToOmit = computed(() => propertyNames.value.filter(name => !selectedProperties.value.includes(name)))
+  const internalSchema = computed(() => {
+    return { ...props.parameterOpenApiSchema, required: [], properties: omit(properties.value, propertiesToOmit.value) }
+  })
+  const internalParameters = ref()
+
+  // Reset values to the initial values when the modal is opened
+  watch(showModal, () => {
+    if (showModal.value) {
+      internalParameters.value = {}
+      selectedProperties.value = []
+    }
   })
 
-  const schemaHasParameters = computed(() => !isEmptyObject(schema.value.properties))
+  // When the properties to omit change, we need add/remove properties to stay in sync
+  watch(propertiesToOmit, () => {
+    const newParameters = omit(internalParameters.value, propertiesToOmit.value)
+    const partialDefaultParameters = omit(props.parameters, propertiesToOmit.value)
+    internalParameters.value = merge(partialDefaultParameters, newParameters)
+  })
 
-  const { errors, validate: validateParameters } = useSchemaValidation(schema, parameters)
+  const schemaHasParameters = computed(() => !isEmptyObject(props.parameterOpenApiSchema.properties))
+
+  const { errors, validate: validateParameters } = useSchemaValidation(props.parameterOpenApiSchema, internalParameters)
 
 
   async function submit(schedule: Schedule | null): Promise<void> {
@@ -115,14 +135,6 @@
 
     if (!valid) {
       return
-    }
-
-    if (props.enforceParameterSchema) {
-      const valid = await validateParameters()
-
-      if (!valid) {
-        return
-      }
     }
 
     let jobVariables: Record<string, unknown> | undefined
@@ -136,7 +148,7 @@
       active: internalActive.value,
       schedule,
       jobVariables,
-      parameters: parameters.value,
+      parameters: internalParameters.value,
     })
     close()
   }

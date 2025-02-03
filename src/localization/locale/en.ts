@@ -150,6 +150,7 @@ export const en = {
     artifacts: 'Artifacts',
     artifactsEmptyState: 'Artifacts are byproducts of your runs; they can be anything from a markdown string to a table.',
     parameters: 'Parameters',
+    parameterOverrides: 'Parameter Overrides',
     addTagPlaceholder: 'Add tag (press enter to submit)',
     descriptionPlaceholder: 'Add a description (supports Markdown)',
     parentRun: 'Parent Run',
