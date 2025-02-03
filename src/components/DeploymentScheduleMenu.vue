@@ -5,7 +5,14 @@
     <p-overflow-menu-item v-if="deployment.can.delete" label="Delete" @click="openConfirmDeleteModal" />
   </p-icon-button-menu>
 
-  <ScheduleFormModal ref="scheduleFormModalRef" v-bind="schedule" @submit="updateSchedule" />
+  <ScheduleFormModal
+    ref="scheduleFormModalRef"
+    v-bind="schedule"
+    :parameters="parameters"
+    :parameter-open-api-schema="deployment.parameterOpenApiSchema"
+    :enforce-parameter-schema="deployment.enforceParameterSchema"
+    @submit="updateSchedule"
+  />
 
   <ConfirmDeleteModal
     v-model:showModal="showConfirmDeleteModal"
@@ -16,14 +23,14 @@
 </template>
 
 <script lang="ts" setup>
-  import { showToast } from '@prefecthq/prefect-design'
-  import { ref } from 'vue'
   import { ConfirmDeleteModal, CopyOverflowMenuItem, ScheduleFormModal } from '@/components'
   import { ScheduleFormModalMethods } from '@/components/ScheduleFormModal.vue'
-  import { useWorkspaceApi, useShowModal } from '@/compositions'
+  import { useShowModal, useWorkspaceApi } from '@/compositions'
   import { localization } from '@/localization'
   import { Deployment, DeploymentSchedule, DeploymentScheduleCompatible } from '@/models'
   import { deleteItem } from '@/utilities'
+  import { showToast } from '@prefecthq/prefect-design'
+  import { computed, ref } from 'vue'
 
   defineOptions({
     inheritAttrs: false,
@@ -44,6 +51,8 @@
   const { showModal: showConfirmDeleteModal, open: openConfirmDeleteModal, close: closeConfirmDeleteModal } = useShowModal()
 
   const scheduleFormModalRef = ref<ScheduleFormModalMethods | null>(null)
+
+  const parameters = computed(() => props.schedule.parameters ?? props.deployment.parameters)
 
   const openEditModal = (): void => {
     scheduleFormModalRef.value?.publicOpen?.()

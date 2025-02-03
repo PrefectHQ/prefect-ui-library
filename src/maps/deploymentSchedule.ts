@@ -1,5 +1,5 @@
-import { DeploymentScheduleResponse } from '@/models/api/DeploymentScheduleResponse'
 import { DeploymentSchedule } from '@/models/DeploymentSchedule'
+import { DeploymentScheduleResponse } from '@/models/api/DeploymentScheduleResponse'
 import { MapFunction } from '@/services/Mapper'
 
 export const mapDeploymentScheduleResponseToDeploymentSchedule: MapFunction<DeploymentScheduleResponse, DeploymentSchedule> = function(source) {
@@ -10,5 +10,6 @@ export const mapDeploymentScheduleResponseToDeploymentSchedule: MapFunction<Depl
     active: source.active,
     schedule: this.map('ScheduleResponse', source.schedule, 'Schedule'),
     jobVariables: source.job_variables ?? {},
+    parameters: source.parameters ?? {},
   })
 }

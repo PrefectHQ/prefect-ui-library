@@ -26,6 +26,24 @@
 
     <FlowRunJobVariableOverridesLabeledInput v-if="can.access.deploymentScheduleFlowRunInfraOverrides" v-model="internalJobVariables" />
 
+    <p-divider />
+
+    <template v-if="schemaHasParameters">
+      <SchemaInputV2 v-model:values="parameters" :schema="schema" :errors="errors" :kinds="['none', 'json']">
+        <template #default="{ kind, setKind }">
+          <div class="schedule-form-modal__parameters-container">
+            <h3>
+              {{ localization.info.parameters }}
+            </h3>
+            <p-icon-button-menu small>
+              <p-overflow-menu-item v-if="kind === 'json'" label="Use form input" @click="setKind('none')" />
+              <p-overflow-menu-item v-if="kind === 'none'" label="Use JSON input" @click="setKind('json')" />
+            </p-icon-button-menu>
+          </div>
+        </template>
+      </SchemaInputV2>
+    </template>
+
     <template #actions>
       <p-button variant="default" type="submit" :disabled="disabled" @click="submitCurrentForm">
         Save
@@ -35,15 +53,19 @@
 </template>
 
 <script lang="ts" setup>
-  import { ButtonGroupOption } from '@prefecthq/prefect-design'
-  import { useValidationObserver } from '@prefecthq/vue-compositions'
-  import { computed, ref, watch } from 'vue'
   import CronScheduleForm from '@/components/CronScheduleForm.vue'
   import FlowRunJobVariableOverridesLabeledInput from '@/components/FlowRunJobVariableOverridesLabeledInput.vue'
   import IntervalScheduleForm from '@/components/IntervalScheduleForm.vue'
   import { useCan, useShowModal } from '@/compositions'
-  import { DeploymentScheduleCompatible, getScheduleType, Schedule, ScheduleType, isCronSchedule, isIntervalSchedule, CronSchedule, IntervalSchedule } from '@/models'
-  import { stringify } from '@/utilities'
+  import { localization } from '@/localization'
+  import { CronSchedule, DeploymentScheduleCompatible, IntervalSchedule, Schedule, ScheduleType, getScheduleType, isCronSchedule, isIntervalSchedule } from '@/models'
+  import { SchemaInputV2, SchemaV2, SchemaValuesV2 } from '@/schemas'
+  import { useSchemaValidation } from '@/schemas/compositions/useSchemaValidation'
+  import { isEmptyObject, stringify } from '@/utilities'
+  import { ButtonGroupOption } from '@prefecthq/prefect-design'
+  import { useValidationObserver } from '@prefecthq/vue-compositions'
+  import { computed, ref, watch } from 'vue'
+
 
   defineOptions({
     inheritAttrs: false,
@@ -57,7 +79,14 @@
 
   defineExpose({ publicOpen })
 
-  const props = defineProps<DeploymentScheduleCompatible>()
+  const props = defineProps<{
+    active: boolean | null,
+    schedule: Schedule | null,
+    jobVariables: Record<string, unknown> | undefined,
+    parameters: SchemaValuesV2,
+    parameterOpenApiSchema: SchemaV2,
+    enforceParameterSchema: boolean | null,
+  }>()
 
   const can = useCan()
 
@@ -70,12 +99,30 @@
     (event: 'submit', value: DeploymentScheduleCompatible): void,
   }>()
 
+  // Parameters-related refs and compositions
+  const parameters = ref(props.parameters)
+  const schema = computed(() => {
+    return { ...props.parameterOpenApiSchema, required: [] }
+  })
+
+  const schemaHasParameters = computed(() => !isEmptyObject(schema.value.properties))
+
+  const { errors, validate: validateParameters } = useSchemaValidation(schema, parameters)
+
 
   async function submit(schedule: Schedule | null): Promise<void> {
     const valid = await validate()
 
     if (!valid) {
       return
+    }
+
+    if (props.enforceParameterSchema) {
+      const valid = await validateParameters()
+
+      if (!valid) {
+        return
+      }
     }
 
     let jobVariables: Record<string, unknown> | undefined
@@ -89,6 +136,7 @@
       active: internalActive.value,
       schedule,
       jobVariables,
+      parameters: parameters.value,
     })
     close()
   }
@@ -142,3 +190,11 @@
     publicOpen: () => void,
   }
 </script>
+
+<style>
+.schedule-form-modal__parameters-container { @apply
+  flex
+  items-center
+  justify-between
+}
+</style>
