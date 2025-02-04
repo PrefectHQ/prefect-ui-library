@@ -101,7 +101,7 @@
   }>()
 
   // Parameters-related refs and compositions
-  const selectedProperties = ref<string[]>([])
+  const selectedProperties = ref<string[]>(Object.keys(props.parameters))
   const properties = computed(() => props.parameterOpenApiSchema.properties ?? {})
   const propertyNames = computed(() => Object.keys(properties.value))
   const propertiesToOmit = computed(() => propertyNames.value.filter(name => !selectedProperties.value.includes(name)))
@@ -127,13 +127,19 @@
 
   const schemaHasParameters = computed(() => !isEmptyObject(props.parameterOpenApiSchema.properties))
 
-  const { errors, validate: validateParameters } = useSchemaValidation(props.parameterOpenApiSchema, internalParameters)
+  const { errors, validate: validateParameters } = useSchemaValidation(internalSchema, internalParameters)
 
 
   async function submit(schedule: Schedule | null): Promise<void> {
     const valid = await validate()
 
     if (!valid) {
+      return
+    }
+
+    const validParameters = await validateParameters()
+
+    if (!validParameters) {
       return
     }
 
@@ -144,21 +150,25 @@
       jobVariables = internalJobVariables.value ? JSON.parse(internalJobVariables.value) : undefined
     }
 
-    emit('submit', {
+    const parameters = isEmptyObject(internalParameters.value) ? undefined : internalParameters.value
+
+    const deploymentSchedule: DeploymentScheduleCompatible = {
       active: internalActive.value,
       schedule,
       jobVariables,
-      parameters: internalParameters.value,
-    })
+      parameters,
+    }
+
+    emit('submit', deploymentSchedule)
     close()
   }
 
   const cronDisabled = ref<boolean>(false)
   const intervalDisabled = ref<boolean>(false)
   const disabled = computed(() => {
-    return scheduleForm.value == 'rrule' ||
-      scheduleForm.value == 'cron' && cronDisabled.value ||
-      scheduleForm.value == 'interval' && intervalDisabled.value
+    return scheduleForm.value === 'rrule' ||
+      scheduleForm.value === 'cron' && cronDisabled.value ||
+      scheduleForm.value === 'interval' && intervalDisabled.value
   })
 
   const submitCurrentForm = async (): Promise<void> => {
@@ -168,9 +178,9 @@
       return
     }
 
-    if (scheduleForm.value == 'cron' && cronSchedule.value) {
+    if (scheduleForm.value === 'cron' && cronSchedule.value) {
       schedule = cronSchedule.value
-    } else if (scheduleForm.value == 'interval' && intervalSchedule.value) {
+    } else if (scheduleForm.value === 'interval' && intervalSchedule.value) {
       schedule = intervalSchedule.value
     }
 

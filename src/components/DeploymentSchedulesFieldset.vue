@@ -9,9 +9,8 @@
       :active="null"
       :schedule="null"
       :job-variables="{}"
-      :parameters="deployment.parameters"
+      :parameters="{}"
       :parameter-open-api-schema="deployment.parameterOpenApiSchema"
-      :enforce-parameter-schema="deployment.enforceParameterSchema"
       @submit="createSchedule"
     >
       <template #default="{ open }">

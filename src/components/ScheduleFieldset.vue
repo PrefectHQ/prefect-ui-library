@@ -12,7 +12,6 @@
           :job-variables="{}"
           :parameters="{}"
           :parameter-open-api-schema="{}"
-          :enforce-parameter-schema="null"
           @submit="updateSchedule"
         >
           <template #default="{ open }">

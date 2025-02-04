@@ -52,7 +52,7 @@
 
   const scheduleFormModalRef = ref<ScheduleFormModalMethods | null>(null)
 
-  const parameters = computed(() => props.schedule.parameters ?? props.deployment.parameters)
+  const parameters = computed(() => props.schedule.parameters ?? {})
 
   const openEditModal = (): void => {
     scheduleFormModalRef.value?.publicOpen?.()
@@ -71,7 +71,16 @@
     }
 
     try {
-      await api.deploymentSchedules.updateDeploymentSchedule(props.deployment.id, props.schedule.id, { active: updatedSchedule.active, schedule: updatedSchedule.schedule, jobVariables: updatedSchedule.jobVariables })
+      await api.deploymentSchedules.updateDeploymentSchedule(
+        props.deployment.id,
+        props.schedule.id,
+        {
+          active: updatedSchedule.active,
+          schedule: updatedSchedule.schedule,
+          jobVariables: updatedSchedule.jobVariables,
+          parameters: updatedSchedule.parameters,
+        },
+      )
       showToast(localization.success.updateDeploymentSchedule, 'success')
       emit('update', updatedSchedule)
     } catch (error) {

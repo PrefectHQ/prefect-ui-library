@@ -5,5 +5,5 @@ export type DeploymentScheduleCompatible = {
   active: boolean | null,
   schedule: Schedule | null,
   jobVariables: Record<string, unknown> | undefined,
-  parameters: SchemaValuesV2,
+  parameters?: SchemaValuesV2,
 }

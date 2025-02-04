@@ -120,19 +120,19 @@
 </template>
 
 <script lang="ts" setup>
-  import { showToast } from '@prefecthq/prefect-design'
-  import { computed } from 'vue'
-  import { AutomationAction, CreateAutomationQuery } from '..'
   import AutomationIconText from '@/automations/components/AutomationIconText.vue'
-  import { BlockIconText, DeploymentStatusBadge, DeploymentSchedulesFieldset } from '@/components'
+  import { BlockIconText, DeploymentSchedulesFieldset, DeploymentStatusBadge } from '@/components'
   import DeploymentServiceLevelAgreementCard from '@/components/DeploymentServiceLevelAgreementCard.vue'
   import DeploymentToggle from '@/components/DeploymentToggle.vue'
   import FormattedDate from '@/components/FormattedDate.vue'
-  import { useWorkspaceApi, useCan, useWorkspaceRoutes } from '@/compositions'
+  import { useCan, useWorkspaceApi, useWorkspaceRoutes } from '@/compositions'
   import { useAutomationsByRelatedResource } from '@/compositions/useAutomationsByRelatedResource'
   import { localization } from '@/localization'
   import { Deployment, DeploymentScheduleCompatible } from '@/models'
   import { ServiceLevelAgreement } from '@/models/ServiceLevelAgreement'
+  import { showToast } from '@prefecthq/prefect-design'
+  import { computed } from 'vue'
+  import { AutomationAction, CreateAutomationQuery } from '..'
 
   const props = defineProps<{
     deployment: Deployment,
@@ -154,7 +154,12 @@
     }
 
     try {
-      await api.deploymentSchedules.createDeploymentSchedule(props.deployment.id, { active: updatedSchedule.active, schedule: updatedSchedule.schedule, jobVariables: updatedSchedule.jobVariables, parameters: updatedSchedule.parameters })
+      await api.deploymentSchedules.createDeploymentSchedule(props.deployment.id, {
+        active: updatedSchedule.active,
+        schedule: updatedSchedule.schedule,
+        jobVariables: updatedSchedule.jobVariables,
+        parameters: updatedSchedule.parameters,
+      })
       showToast(localization.success.updateDeploymentSchedule, 'success')
       emit('update')
     } catch (error) {
