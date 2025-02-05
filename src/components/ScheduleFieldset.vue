@@ -6,7 +6,15 @@
 
     <template v-if="!readonly">
       <div class="schedule-fieldset__buttons">
-        <ScheduleFormModal :active="null" :schedule="internalValue" :job-variables="{}" @submit="updateSchedule">
+        <ScheduleFormModal
+          :active="null"
+          :schedule="internalValue"
+          :job-variables="{}"
+          :deployment-parameters="{}"
+          :schedule-parameters="{}"
+          :parameter-open-api-schema="{}"
+          @submit="updateSchedule"
+        >
           <template #default="{ open }">
             <p-button size="sm" icon="PencilIcon" class="schedule-fieldset__button" :disabled="loading" @click="open">
               {{ internalValue ? 'Edit' : 'Add' }}
@@ -30,9 +38,9 @@
 </template>
 
 <script lang="ts" setup>
-  import { computed } from 'vue'
   import ScheduleFormModal from '@/components/ScheduleFormModal.vue'
   import { DeploymentScheduleCompatible, Schedule } from '@/models'
+  import { computed } from 'vue'
 
   const props = defineProps<{
     modelValue: Schedule | null,

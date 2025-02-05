@@ -1,5 +1,5 @@
-import { Schedule } from '@/models/Schedule'
-
+import type { Schedule } from '@/models/Schedule'
+import type { SchemaValuesV2 } from '@/schemas'
 
 export interface IDeploymentSchedule {
   id: string,
@@ -8,6 +8,7 @@ export interface IDeploymentSchedule {
   active: boolean,
   schedule: Schedule,
   jobVariables: Record<string, unknown>,
+  parameters: SchemaValuesV2 | null,
 }
 
 export class DeploymentSchedule implements IDeploymentSchedule {
@@ -17,6 +18,7 @@ export class DeploymentSchedule implements IDeploymentSchedule {
   public active: boolean
   public schedule: Schedule
   public jobVariables: Record<string, unknown>
+  public parameters: SchemaValuesV2 | null
 
   public constructor(deploymentSchedule: IDeploymentSchedule) {
     this.id = deploymentSchedule.id
@@ -25,6 +27,7 @@ export class DeploymentSchedule implements IDeploymentSchedule {
     this.active = deploymentSchedule.active
     this.schedule = deploymentSchedule.schedule
     this.jobVariables = deploymentSchedule.jobVariables
+    this.parameters = deploymentSchedule.parameters
   }
 
 }

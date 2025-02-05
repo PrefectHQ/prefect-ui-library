@@ -14,6 +14,7 @@ export const randomDeploymentSchedules: MockFunction<DeploymentSchedule[], [Part
       active: random() > 0.25,
       schedule: this.create('schedule'),
       jobVariables: {},
+      parameters: {},
       ...overrides,
     }
   }

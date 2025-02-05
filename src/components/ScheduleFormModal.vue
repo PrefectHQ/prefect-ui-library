@@ -26,6 +26,25 @@
 
     <FlowRunJobVariableOverridesLabeledInput v-if="can.access.deploymentScheduleFlowRunInfraOverrides" v-model="internalJobVariables" />
 
+    <p-divider />
+
+    <template v-if="schemaHasParameters">
+      <SchemaInputV2 v-model:values="internalParameters" :schema="internalSchema" :errors="errors" :kinds="['none', 'json']">
+        <template #default="{ kind, setKind }">
+          <div class="schedule-form-modal__parameters-container">
+            <h3>
+              {{ localization.info.parameterOverrides }}
+            </h3>
+            <p-icon-button-menu small>
+              <p-overflow-menu-item v-if="kind === 'json'" label="Use form input" @click="setKind('none')" />
+              <p-overflow-menu-item v-if="kind === 'none'" label="Use JSON input" @click="setKind('json')" />
+            </p-icon-button-menu>
+          </div>
+          <p-combobox v-if="kind !== 'json'" v-model="selectedProperties" :options="propertyNames" empty-message="Select parameters to override for this schedule" />
+        </template>
+      </SchemaInputV2>
+    </template>
+
     <template #actions>
       <p-button variant="default" type="submit" :disabled="disabled" @click="submitCurrentForm">
         Save
@@ -35,15 +54,28 @@
 </template>
 
 <script lang="ts" setup>
-  import { ButtonGroupOption } from '@prefecthq/prefect-design'
-  import { useValidationObserver } from '@prefecthq/vue-compositions'
-  import { computed, ref, watch } from 'vue'
   import CronScheduleForm from '@/components/CronScheduleForm.vue'
   import FlowRunJobVariableOverridesLabeledInput from '@/components/FlowRunJobVariableOverridesLabeledInput.vue'
   import IntervalScheduleForm from '@/components/IntervalScheduleForm.vue'
   import { useCan, useShowModal } from '@/compositions'
-  import { DeploymentScheduleCompatible, getScheduleType, Schedule, ScheduleType, isCronSchedule, isIntervalSchedule, CronSchedule, IntervalSchedule } from '@/models'
-  import { stringify } from '@/utilities'
+  import { localization } from '@/localization'
+  import {
+    CronSchedule,
+    DeploymentScheduleCompatible,
+    IntervalSchedule,
+    Schedule,
+    ScheduleType,
+    getScheduleType,
+    isCronSchedule,
+    isIntervalSchedule
+  } from '@/models'
+  import { SchemaInputV2, SchemaV2, SchemaValuesV2 } from '@/schemas'
+  import { useSchemaValidation } from '@/schemas/compositions/useSchemaValidation'
+  import { isEmptyObject, omit, stringify } from '@/utilities'
+  import { ButtonGroupOption } from '@prefecthq/prefect-design'
+  import { useValidationObserver } from '@prefecthq/vue-compositions'
+  import merge from 'lodash.merge'
+  import { computed, reactive, ref, watch } from 'vue'
 
   defineOptions({
     inheritAttrs: false,
@@ -57,19 +89,73 @@
 
   defineExpose({ publicOpen })
 
-  const props = defineProps<DeploymentScheduleCompatible>()
+  const props = defineProps<{
+    active: boolean | null,
+    schedule: Schedule | null,
+    jobVariables: Record<string, unknown> | undefined,
+    deploymentParameters: SchemaValuesV2,
+    scheduleParameters?: SchemaValuesV2 | null,
+    parameterOpenApiSchema: SchemaV2,
+  }>()
 
   const can = useCan()
 
   const internalActive = ref<boolean>(props.active ?? true)
 
   const { validate } = useValidationObserver()
-  const internalJobVariables = ref<string | undefined>(props.jobVariables ? stringify(props.jobVariables) : undefined)
+  const internalJobVariables = ref<string | undefined>(
+    props.jobVariables ? stringify(props.jobVariables) : undefined,
+  )
 
   const emit = defineEmits<{
     (event: 'submit', value: DeploymentScheduleCompatible): void,
   }>()
 
+  // Parameters-related refs and compositions
+  const internalParameters = ref<SchemaValuesV2>(props.scheduleParameters ?? { })
+  const selectedProperties = ref<string[]>(Object.keys(internalParameters.value))
+  const properties = computed(
+    () => props.parameterOpenApiSchema.properties ?? {},
+  )
+  const propertyNames = computed(() => Object.keys(properties.value))
+  const propertiesToOmit = computed(() => propertyNames.value.filter(
+    (name) => !selectedProperties.value.includes(name),
+  ),
+  )
+  const internalSchema = computed(() => {
+    return {
+      ...props.parameterOpenApiSchema,
+      required: [],
+      properties: omit(properties.value, propertiesToOmit.value),
+    }
+  })
+
+  // Reset values to the initial values when the modal is opened
+  watch(showModal, () => {
+    if (showModal.value) {
+      internalParameters.value = props.scheduleParameters ?? { }
+      selectedProperties.value = Object.keys(internalParameters.value)
+    }
+  })
+
+  // When the properties to omit change, we need add/remove properties to stay in sync
+  watch(propertiesToOmit, () => {
+    const newParameters = omit(internalParameters.value, propertiesToOmit.value)
+    const partialDefaultParameters = omit(
+      props.deploymentParameters,
+      propertiesToOmit.value,
+    )
+    internalParameters.value = merge(partialDefaultParameters, newParameters)
+  })
+
+  const schemaHasParameters = computed(
+    () => !isEmptyObject(props.parameterOpenApiSchema.properties),
+  )
+
+  const { errors, validate: validateParameters } = useSchemaValidation(
+    internalSchema,
+    internalParameters,
+  )
 
   async function submit(schedule: Schedule | null): Promise<void> {
     const valid = await validate()
@@ -78,27 +164,44 @@
       return
     }
 
+    const validParameters = await validateParameters()
+
+    if (!validParameters) {
+      return
+    }
+
     let jobVariables: Record<string, unknown> | undefined
     if (!can.access.deploymentScheduleFlowRunInfraOverrides) {
       jobVariables = undefined
     } else {
-      jobVariables = internalJobVariables.value ? JSON.parse(internalJobVariables.value) : undefined
+      jobVariables = internalJobVariables.value
+        ? JSON.parse(internalJobVariables.value)
+        : undefined
     }
 
-    emit('submit', {
+    const parameters = isEmptyObject(internalParameters.value)
+      ? undefined
+      : internalParameters.value
+
+    const deploymentSchedule: DeploymentScheduleCompatible = {
       active: internalActive.value,
       schedule,
       jobVariables,
-    })
+      parameters,
+    }
+
+    emit('submit', deploymentSchedule)
     close()
   }
 
   const cronDisabled = ref<boolean>(false)
   const intervalDisabled = ref<boolean>(false)
   const disabled = computed(() => {
-    return scheduleForm.value == 'rrule' ||
-      scheduleForm.value == 'cron' && cronDisabled.value ||
-      scheduleForm.value == 'interval' && intervalDisabled.value
+    return (
+      scheduleForm.value === 'rrule' ||
+      scheduleForm.value === 'cron' && cronDisabled.value ||
+      scheduleForm.value === 'interval' && intervalDisabled.value
+    )
   })
 
   const submitCurrentForm = async (): Promise<void> => {
@@ -108,25 +211,41 @@
       return
     }
 
-    if (scheduleForm.value == 'cron' && cronSchedule.value) {
+    if (scheduleForm.value === 'cron' && cronSchedule.value) {
       schedule = cronSchedule.value
-    } else if (scheduleForm.value == 'interval' && intervalSchedule.value) {
+    } else if (scheduleForm.value === 'interval' && intervalSchedule.value) {
       schedule = intervalSchedule.value
     }
 
     await submit(schedule)
   }
 
-  const cronSchedule = ref<CronSchedule | undefined>(isCronSchedule(props.schedule) ? props.schedule : undefined)
-  const intervalSchedule = ref<IntervalSchedule | undefined>(isIntervalSchedule(props.schedule) ? props.schedule : undefined)
-  const scheduleForm = ref<ScheduleType>(getScheduleType(props.schedule) ?? 'interval')
-  const scheduleFormOptions: ButtonGroupOption[] = [{ label: 'Interval', value: 'interval' }, { label: 'Cron', value: 'cron' }, { label: 'RRule', value: 'rrule' }]
+  const cronSchedule = ref<CronSchedule | undefined>(
+    isCronSchedule(props.schedule) ? props.schedule : undefined,
+  )
+  const intervalSchedule = ref<IntervalSchedule | undefined>(
+    isIntervalSchedule(props.schedule) ? props.schedule : undefined,
+  )
+  const scheduleForm = ref<ScheduleType>(
+    getScheduleType(props.schedule) ?? 'interval',
+  )
+  const scheduleFormOptions: ButtonGroupOption[] = [
+    { label: 'Interval', value: 'interval' },
+    { label: 'Cron', value: 'cron' },
+    { label: 'RRule', value: 'rrule' },
+  ]
 
   const updateInternalState = (): void => {
-    cronSchedule.value = isCronSchedule(props.schedule) ? props.schedule : undefined
-    intervalSchedule.value = isIntervalSchedule(props.schedule) ? props.schedule : undefined
+    cronSchedule.value = isCronSchedule(props.schedule)
+      ? props.schedule
+      : undefined
+    intervalSchedule.value = isIntervalSchedule(props.schedule)
+      ? props.schedule
+      : undefined
     internalActive.value = props.active ?? true
-    internalJobVariables.value = props.jobVariables ? stringify(props.jobVariables) : undefined
+    internalJobVariables.value = props.jobVariables
+      ? stringify(props.jobVariables)
+      : undefined
   }
   watch(() => props.schedule, updateInternalState)
 
@@ -142,3 +261,11 @@
     publicOpen: () => void,
   }
 </script>
+
+<style>
+.schedule-form-modal__parameters-container { @apply
+  flex
+  items-center
+  justify-between
+}
+</style>
