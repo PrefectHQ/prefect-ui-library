@@ -8,9 +8,9 @@
   <ScheduleFormModal
     ref="scheduleFormModalRef"
     v-bind="schedule"
-    :parameters="parameters"
+    :deployment-parameters="deployment.parameters"
+    :schedule-parameters="schedule.parameters"
     :parameter-open-api-schema="deployment.parameterOpenApiSchema"
-    :enforce-parameter-schema="deployment.enforceParameterSchema"
     @submit="updateSchedule"
   />
 
@@ -51,8 +51,6 @@
   const { showModal: showConfirmDeleteModal, open: openConfirmDeleteModal, close: closeConfirmDeleteModal } = useShowModal()
 
   const scheduleFormModalRef = ref<ScheduleFormModalMethods | null>(null)
-
-  const parameters = computed(() => props.schedule.parameters ?? {})
 
   const openEditModal = (): void => {
     scheduleFormModalRef.value?.publicOpen?.()

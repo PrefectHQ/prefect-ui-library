@@ -9,7 +9,8 @@
       :active="null"
       :schedule="null"
       :job-variables="{}"
-      :parameters="{}"
+      :deployment-parameters="deployment.parameters"
+      :schedule-parameters="{}"
       :parameter-open-api-schema="deployment.parameterOpenApiSchema"
       @submit="createSchedule"
     >

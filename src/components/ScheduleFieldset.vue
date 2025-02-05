@@ -10,7 +10,8 @@
           :active="null"
           :schedule="internalValue"
           :job-variables="{}"
-          :parameters="{}"
+          :deployment-parameters="{}"
+          :schedule-parameters="{}"
           :parameter-open-api-schema="{}"
           @submit="updateSchedule"
         >
