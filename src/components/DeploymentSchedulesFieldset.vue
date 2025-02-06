@@ -13,6 +13,7 @@
       :deployment-parameters="deployment.parameters"
       :schedule-parameters="{}"
       :parameter-open-api-schema="deployment.parameterOpenApiSchema"
+      :deployment="deployment"
       @submit="createSchedule"
     >
       <template #default="{ open }">

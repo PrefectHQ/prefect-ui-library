@@ -12,6 +12,8 @@
     :deployment-parameters="deployment.parameters"
     :schedule-parameters="schedule.parameters"
     :parameter-open-api-schema="deployment.parameterOpenApiSchema"
+    :deployment="deployment"
+    :deployment-schedule-id="schedule.id"
     @submit="updateSchedule"
   />
 
