@@ -1,10 +1,10 @@
-import { isDateAfter, isDateAfterOrEqual, isDateBefore, isDateBeforeOrEqual, isNotNullish } from '@prefecthq/prefect-design'
-import { ValidationRule } from '@prefecthq/vue-compositions'
 import { localization } from '@/localization'
 import { isEmptyArray } from '@/utilities/arrays'
-import { isDate, isInvalidDate, formatDate, formatDateTimeNumeric } from '@/utilities/dates'
+import { formatDate, formatDateTimeNumeric, isDate, isInvalidDate } from '@/utilities/dates'
 import { isEmptyString, isString, isValidEmailAddress } from '@/utilities/strings'
 import { isNullish } from '@/utilities/variables'
+import { isDateAfter, isDateAfterOrEqual, isDateBefore, isDateBeforeOrEqual, isNotNullish } from '@prefecthq/prefect-design'
+import { ValidationRule } from '@prefecthq/vue-compositions'
 
 export type ValidationMethod = (value: unknown) => true | string | Promise<true | string>
 export type ValidationMethodFactory = (property: string) => ValidationMethod
@@ -275,4 +275,18 @@ const SNAKE_CASE_REGEX = /^[a-z0-9]+(_+[a-z0-9]+)*$/
 
 export const isSnakeCase: ValidationRule<unknown> = (value, field) => {
   return isNotNullish(value) && isString(value) && SNAKE_CASE_REGEX.test(value) || localization.error.mustBeSnakeCase(field)
+}
+
+const SLUG_REGEX = /^[a-z0-9]+([_-]+[a-z0-9]+)*$/
+
+export const isSlug: ValidationRule<unknown> = (value, field) => {
+  if (isNullish(value) || isEmptyString(value)) {
+    return true
+  }
+
+  if (typeof value === 'string' && SLUG_REGEX.test(value)) {
+    return true
+  }
+
+  return localization.error.mustBeSlug(field)
 }

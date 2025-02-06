@@ -7,6 +7,7 @@
     <template v-if="!readonly">
       <div class="schedule-fieldset__buttons">
         <ScheduleFormModal
+          :slug="null"
           :active="null"
           :schedule="internalValue"
           :job-variables="{}"

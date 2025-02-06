@@ -2,6 +2,10 @@
   <slot :open="open" :close="close" />
 
   <p-modal v-model:showModal="showModal" :title="schedule ? 'Edit schedule' : 'Add schedule'" @update:show-modal="resetIfFalse">
+    <p-label label="Slug (Optional)" :message="slugError" :state="slugState">
+      <p-text-input v-model="internalSlug" placeholder="Enter a unique identifier for this schedule" :state="slugState" />
+    </p-label>
+
     <p-label label="Schedule type">
       <p-button-group v-model="scheduleForm" :options="scheduleFormOptions" small />
     </p-label>
@@ -57,10 +61,11 @@
   import CronScheduleForm from '@/components/CronScheduleForm.vue'
   import FlowRunJobVariableOverridesLabeledInput from '@/components/FlowRunJobVariableOverridesLabeledInput.vue'
   import IntervalScheduleForm from '@/components/IntervalScheduleForm.vue'
-  import { useCan, useShowModal } from '@/compositions'
+  import { useCan, useShowModal, useWorkspaceApi } from '@/compositions'
   import { localization } from '@/localization'
   import {
     CronSchedule,
+    Deployment,
     DeploymentScheduleCompatible,
     IntervalSchedule,
     Schedule,
@@ -71,11 +76,15 @@
   } from '@/models'
   import { SchemaInputV2, SchemaV2, SchemaValuesV2 } from '@/schemas'
   import { useSchemaValidation } from '@/schemas/compositions/useSchemaValidation'
-  import { isEmptyObject, omit, stringify } from '@/utilities'
+  import { isEmptyObject, isEmptyString, isNull, isSlug, omit, stringify, timeout } from '@/utilities'
   import { ButtonGroupOption } from '@prefecthq/prefect-design'
-  import { useValidationObserver } from '@prefecthq/vue-compositions'
+  import {
+    ValidationRule,
+    useValidation,
+    useValidationObserver
+  } from '@prefecthq/vue-compositions'
   import merge from 'lodash.merge'
-  import { computed, reactive, ref, watch } from 'vue'
+  import { computed, ref, watch } from 'vue'
 
   defineOptions({
     inheritAttrs: false,
@@ -90,19 +99,47 @@
   defineExpose({ publicOpen })
 
   const props = defineProps<{
+    slug: string | null,
     active: boolean | null,
     schedule: Schedule | null,
     jobVariables: Record<string, unknown> | undefined,
     deploymentParameters: SchemaValuesV2,
     scheduleParameters?: SchemaValuesV2 | null,
     parameterOpenApiSchema: SchemaV2,
+    deployment?: Deployment,
+    deploymentScheduleId?: string,
   }>()
 
   const can = useCan()
 
+  const internalSlug = ref<string | null>(props.slug)
   const internalActive = ref<boolean>(props.active ?? true)
 
   const { validate } = useValidationObserver()
+
+  const slugIsUniqueForDeployment: ValidationRule<string | null> = async (value) => {
+    if (isNull(value) || isEmptyString(value)) {
+      return true
+    }
+
+    if (!props.deployment) {
+      return true
+    }
+
+    return props.deployment.schedules.some(
+      (schedule) => schedule.slug !== null &&
+        props.deploymentScheduleId !== schedule.id &&
+        schedule.slug === value,
+    )
+      ? localization.error.scheduleSlugAlreadyExists
+      : true
+  }
+
+  const { state: slugState, error: slugError } = useValidation(
+    internalSlug,
+    'Slug',
+    [isSlug, slugIsUniqueForDeployment],
+  )
   const internalJobVariables = ref<string | undefined>(
     props.jobVariables ? stringify(props.jobVariables) : undefined,
   )
@@ -112,7 +149,7 @@
   }>()
 
   // Parameters-related refs and compositions
-  const internalParameters = ref<SchemaValuesV2>(props.scheduleParameters ?? { })
+  const internalParameters = ref<SchemaValuesV2>(props.scheduleParameters ?? {})
   const selectedProperties = ref<string[]>(Object.keys(internalParameters.value))
   const properties = computed(
     () => props.parameterOpenApiSchema.properties ?? {},
@@ -133,8 +170,9 @@
   // Reset values to the initial values when the modal is opened
   watch(showModal, () => {
     if (showModal.value) {
-      internalParameters.value = props.scheduleParameters ?? { }
+      internalParameters.value = props.scheduleParameters ?? {}
       selectedProperties.value = Object.keys(internalParameters.value)
+      internalSlug.value = props.slug ?? null
     }
   })
 
@@ -188,6 +226,7 @@
       schedule,
       jobVariables,
       parameters,
+      slug: internalSlug.value ?? null,
     }
 
     emit('submit', deploymentSchedule)

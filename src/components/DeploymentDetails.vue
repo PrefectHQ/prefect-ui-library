@@ -159,6 +159,7 @@
         schedule: updatedSchedule.schedule,
         jobVariables: updatedSchedule.jobVariables,
         parameters: updatedSchedule.parameters,
+        slug: updatedSchedule.slug,
       })
       showToast(localization.success.updateDeploymentSchedule, 'success')
       emit('update')
