@@ -2,7 +2,7 @@
   <p-list-item class="deployment-schedule-card">
     <p-tooltip :text="deploymentSchedule.schedule.toString({ verbose: true })">
       <div class="deployment-schedule-card__content">
-        {{ deploymentSchedule.schedule.toString({ verbose: false }) }}
+        {{ scheduleDisplay }}
       </div>
     </p-tooltip>
     <div class="deployment-schedule-card__action">
@@ -23,8 +23,9 @@
 <script lang="ts" setup>
   import { DeploymentScheduleMenu, DeploymentScheduleToggle } from '@/components'
   import { Deployment, DeploymentSchedule } from '@/models'
+  import { computed } from 'vue'
 
-  defineProps<{
+  const props = defineProps<{
     deployment: Deployment,
     deploymentSchedule: DeploymentSchedule,
   }>()
@@ -32,6 +33,14 @@
   defineEmits<{
     (event: 'update'): void,
   }>()
+
+  const scheduleDisplay = computed(() => {
+    if (props.deploymentSchedule.slug) {
+      return props.deploymentSchedule.slug
+    }
+
+    return props.deploymentSchedule.schedule.toString({ verbose: false })
+  })
 </script>
 
 <style>

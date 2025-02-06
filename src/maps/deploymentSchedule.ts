@@ -7,6 +7,7 @@ export const mapDeploymentScheduleResponseToDeploymentSchedule: MapFunction<Depl
     id: source.id,
     created: this.map('string', source.created, 'Date'),
     updated: this.map('string', source.updated, 'Date'),
+    slug: source.slug ?? null,
     active: source.active,
     schedule: this.map('ScheduleResponse', source.schedule, 'Schedule'),
     jobVariables: source.job_variables ?? {},

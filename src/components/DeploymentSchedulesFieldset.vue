@@ -6,6 +6,7 @@
 
     <ScheduleFormModal
       v-if="deployment.can.update"
+      :slug="null"
       :active="null"
       :schedule="null"
       :job-variables="{}"

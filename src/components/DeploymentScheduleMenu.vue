@@ -8,6 +8,7 @@
   <ScheduleFormModal
     ref="scheduleFormModalRef"
     v-bind="schedule"
+    :slug="schedule.slug"
     :deployment-parameters="deployment.parameters"
     :schedule-parameters="schedule.parameters"
     :parameter-open-api-schema="deployment.parameterOpenApiSchema"
@@ -77,6 +78,7 @@
           schedule: updatedSchedule.schedule,
           jobVariables: updatedSchedule.jobVariables,
           parameters: updatedSchedule.parameters,
+          slug: updatedSchedule.slug,
         },
       )
       showToast(localization.success.updateDeploymentSchedule, 'success')

@@ -6,4 +6,5 @@ export type DeploymentScheduleCompatible = {
   schedule: Schedule | null,
   jobVariables: Record<string, unknown> | undefined,
   parameters?: SchemaValuesV2,
+  slug?: string | null,
 }

@@ -7,6 +7,7 @@ export type DeploymentScheduleResponse = {
   id: string,
   created: DateString,
   updated: DateString,
+  slug: string | null,
   active: boolean,
   schedule: ScheduleResponse,
   job_variables?: Record<string, unknown> | null,

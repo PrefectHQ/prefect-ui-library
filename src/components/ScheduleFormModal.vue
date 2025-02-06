@@ -2,6 +2,10 @@
   <slot :open="open" :close="close" />
 
   <p-modal v-model:showModal="showModal" :title="schedule ? 'Edit schedule' : 'Add schedule'" @update:show-modal="resetIfFalse">
+    <p-label label="Slug (Optional)">
+      <p-text-input v-model="internalSlug" placeholder="Enter a unique identifier for this schedule" />
+    </p-label>
+
     <p-label label="Schedule type">
       <p-button-group v-model="scheduleForm" :options="scheduleFormOptions" small />
     </p-label>
@@ -75,7 +79,7 @@
   import { ButtonGroupOption } from '@prefecthq/prefect-design'
   import { useValidationObserver } from '@prefecthq/vue-compositions'
   import merge from 'lodash.merge'
-  import { computed, reactive, ref, watch } from 'vue'
+  import { computed, ref, watch } from 'vue'
 
   defineOptions({
     inheritAttrs: false,
@@ -90,6 +94,7 @@
   defineExpose({ publicOpen })
 
   const props = defineProps<{
+    slug: string | null,
     active: boolean | null,
     schedule: Schedule | null,
     jobVariables: Record<string, unknown> | undefined,
@@ -100,6 +105,7 @@
 
   const can = useCan()
 
+  const internalSlug = ref<string | null>(props.slug)
   const internalActive = ref<boolean>(props.active ?? true)
 
   const { validate } = useValidationObserver()
@@ -135,6 +141,7 @@
     if (showModal.value) {
       internalParameters.value = props.scheduleParameters ?? { }
       selectedProperties.value = Object.keys(internalParameters.value)
+      internalSlug.value = props.slug ?? null
     }
   })
 
@@ -188,6 +195,7 @@
       schedule,
       jobVariables,
       parameters,
+      slug: internalSlug.value ?? null,
     }
 
     emit('submit', deploymentSchedule)

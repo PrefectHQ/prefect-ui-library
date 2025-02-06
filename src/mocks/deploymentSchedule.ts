@@ -11,6 +11,7 @@ export const randomDeploymentSchedules: MockFunction<DeploymentSchedule[], [Part
       id: this.create('id'),
       created: this.create('date'),
       updated: this.create('date'),
+      slug: random() > 0.25 ? this.create('string') : null,
       active: random() > 0.25,
       schedule: this.create('schedule'),
       jobVariables: {},
