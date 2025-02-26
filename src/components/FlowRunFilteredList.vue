@@ -21,9 +21,16 @@
 
     <p-empty-results v-if="empty">
       <template #message>
-        <slot name="empty-message">
-          No runs found
-        </slot>
+        <template v-if="errored">
+          <slot name="error-message">
+            {{ localization.error.readFlowRuns }}
+          </slot>
+        </template>
+        <template v-else>
+          <slot name="empty-message">
+            No runs found
+          </slot>
+        </template>
       </template>
 
       <template v-if="isCustomFilter" #actions>
@@ -57,6 +64,7 @@
   import SearchInput from '@/components/SearchInput.vue'
   import { useFlowRunsPaginationFilterFromRoute, usePaginatedFlowRuns } from '@/compositions'
   import { useCan } from '@/compositions/useCan'
+  import { localization } from '@/localization'
   import { FlowRunsFilter } from '@/models/Filters'
 
   const props = defineProps<{
@@ -80,7 +88,7 @@
     limit,
   }), props.prefix)
 
-  const { flowRuns, count, pages, subscription } = usePaginatedFlowRuns(filter, {
+  const { flowRuns, count, pages, subscription, errored } = usePaginatedFlowRuns(filter, {
     interval: 30000,
   })
 
