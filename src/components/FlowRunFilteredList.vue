@@ -22,7 +22,7 @@
     <p-empty-results v-if="empty">
       <template #message>
         <template v-if="errored">
-          <slot name="error-message">
+          <slot name="error-message" v-bind="{ error }">
             {{ localization.error.readFlowRuns }}
           </slot>
         </template>
@@ -88,7 +88,7 @@
     limit,
   }), props.prefix)
 
-  const { flowRuns, count, pages, subscription, errored } = usePaginatedFlowRuns(filter, {
+  const { flowRuns, count, pages, subscription, errored, error } = usePaginatedFlowRuns(filter, {
     interval: 30000,
   })
 
