@@ -1,6 +1,6 @@
 import { SubscriptionOptions, UseSubscription, useSubscriptionWithDependencies } from '@prefecthq/vue-compositions'
 import merge from 'lodash.merge'
-import { ComputedRef, MaybeRefOrGetter, computed, toRef, toValue, watch, watchEffect } from 'vue'
+import { ComputedRef, MaybeRefOrGetter, computed, toRef, toValue } from 'vue'
 import { useCan } from '@/compositions/useCan'
 import { useWorkspaceApi } from '@/compositions/useWorkspaceApi'
 import { FlowRun, FlowRunsPaginationFilter } from '@/models'
@@ -14,6 +14,8 @@ type UsePaginatedFlowRuns = {
   limit: ComputedRef<number>,
   pages: ComputedRef<number>,
   page: ComputedRef<number>,
+  error: ComputedRef<unknown | null>,
+  errored: ComputedRef<boolean>,
 }
 
 export function usePaginatedFlowRuns(filter: MaybeRefOrGetter<FlowRunsPaginationFilter | null | undefined> = {}, options?: SubscriptionOptions): UsePaginatedFlowRuns {
@@ -43,6 +45,8 @@ export function usePaginatedFlowRuns(filter: MaybeRefOrGetter<FlowRunsPagination
   const limit = computed(() => subscription.response?.limit ?? 0)
   const count = computed(() => subscription.response?.count ?? 0)
   const page = computed(() => subscription.response?.page ?? 1)
+  const error = computed(() => subscription.error)
+  const errored = computed(() => subscription.errored)
 
   return {
     subscription,
@@ -51,5 +55,7 @@ export function usePaginatedFlowRuns(filter: MaybeRefOrGetter<FlowRunsPagination
     page,
     limit,
     count,
+    error,
+    errored,
   }
 }

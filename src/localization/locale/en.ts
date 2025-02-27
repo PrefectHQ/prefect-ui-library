@@ -30,6 +30,7 @@ export const en = {
     changeFlowRunState: 'Failed to change flow run state',
     changeTaskRunState: 'Failed to change task run state',
     createBlock: 'Failed to create block',
+    readFlowRuns: 'Something went wrong loading flow runs, please try again.',
     createConcurrencyLimit: 'Failed to create concurrency limit',
     resetConcurrencyLimit: 'Failed to reset concurrency limit',
     resetConcurrencyV2Limit: 'Failed to reset concurrency limit',
