@@ -83,12 +83,12 @@
 
   watch(props.action, () => jobVariables.value = stringify(props.action.jobVariables ?? {}))
 
-  function updateJobVariables(value: string): void {
+  function updateJobVariables(value: string | undefined): void {
     // always update the controlled state so that the user can see the content they entered
     // and validation will trigger
-    jobVariables.value = value
+    jobVariables.value = value ?? '{}'
     try {
-      const parsedJobVariables = JSON.parse(value)
+      const parsedJobVariables = JSON.parse(value ?? '{}')
       emit('update:action', { ...props.action, jobVariables: parsedJobVariables })
     } catch (error) {
       // validation for this field is handled by the FlowRunJobVariableOverridesLabeledInput component
