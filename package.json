@@ -41,7 +41,7 @@
     ],
     "types": "./dist/types/src/index.d.ts",
     "dependencies": {
-        "@prefecthq/graphs": "2.4.1",
+        "@prefecthq/graphs": "3.0.5",
         "axios": "1.7.4",
         "cronstrue": "^2.54.0",
         "d3": "7.9.0",
