@@ -12,6 +12,7 @@ export interface IFlowRun {
   flowId: string,
   flowName: string | null,
   deploymentId: string | null,
+  deploymentVersionId: string | null,
   flowVersion: string | null,
   idempotencyKey: string | null,
   expectedStartTime: Date | null,
@@ -48,6 +49,7 @@ export class FlowRun extends StorageItem implements IFlowRun {
   public readonly flowId: string
   public readonly flowName: string | null
   public readonly deploymentId: string | null
+  public readonly deploymentVersionId: string | null
   public readonly workQueueName: string | null
   public readonly kind = 'flowRun'
   public flowVersion: string | null
@@ -85,6 +87,7 @@ export class FlowRun extends StorageItem implements IFlowRun {
     this.id = flowRun.id
     this.deploymentId = flowRun.deploymentId
     this.flowId = flowRun.flowId
+    this.deploymentVersionId = flowRun.deploymentVersionId
     this.flowName = flowRun.flowName
     this.flowVersion = flowRun.flowVersion
     this.idempotencyKey = flowRun.idempotencyKey
