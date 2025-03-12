@@ -16,6 +16,7 @@ export type FlowRunResponse = {
   flow_name: string | null,
   state_id: string | null,
   deployment_id: string | null,
+  deployment_version_id: string | null,
   flow_version: string | null,
   parameters: SchemaValues,
   idempotency_key: string | null,

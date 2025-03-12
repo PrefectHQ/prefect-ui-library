@@ -10,6 +10,7 @@ export const randomFlowRun: MockFunction<FlowRun, [Partial<FlowRun>?]> = functio
     flowId: this.create('id'),
     flowName: random() > 0.7 ? this.create('noun') : null,
     deploymentId: random() > 0.7 ? this.create('id') : null,
+    deploymentVersionId: random() > 0.7 ? this.create('id') : null,
     flowVersion: this.create('string'),
     idempotencyKey: this.create('string'),
     expectedStartTime: this.create('date'),

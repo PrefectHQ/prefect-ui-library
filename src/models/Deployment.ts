@@ -2,6 +2,7 @@ import { ConcurrencyV2Limit } from '@/models/ConcurrencyV2Limit'
 import { CreatedOrUpdatedBy } from '@/models/CreatedOrUpdatedBy'
 import { DeploymentSchedule } from '@/models/DeploymentSchedule'
 import { DeploymentStatus } from '@/models/DeploymentStatus'
+import { DeploymentVersionInfo } from '@/models/DeploymentVersionInfo'
 import { ObjectLevelCan } from '@/models/ObjectLevelCan'
 import { SchemaV2, SchemaValuesV2 } from '@/schemas'
 import { createTuple } from '@/utilities'
@@ -21,6 +22,7 @@ export interface IDeployment {
   updatedBy: CreatedOrUpdatedBy | null,
   name: string,
   version: string,
+  versionInfo: DeploymentVersionInfo | null,
   description: string | null,
   flowId: string,
   versionId: string | null,
@@ -55,6 +57,7 @@ export class Deployment implements IDeployment {
   public updatedBy: CreatedOrUpdatedBy | null
   public name: string
   public version: string
+  public versionInfo: DeploymentVersionInfo | null
   public description: string | null
   public readonly flowId: string
   public readonly versionId: string | null
@@ -90,6 +93,7 @@ export class Deployment implements IDeployment {
     this.description = deployment.description
     this.flowId = deployment.flowId
     this.versionId = deployment.versionId
+    this.versionInfo = deployment.versionInfo
     this.paused = deployment.paused
     this.schedules = deployment.schedules
     this.parameters = deployment.parameters
