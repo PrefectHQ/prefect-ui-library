@@ -17,6 +17,7 @@ export type DeploymentResponse = {
   version: string,
   description: string | null,
   flow_id: string,
+  version_id: string | null,
   schedule: ScheduleResponse | null,
   is_schedule_active: boolean,
   paused: boolean,
