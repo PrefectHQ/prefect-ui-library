@@ -2,6 +2,7 @@ import { ConcurrencyV2Response } from '@/models/api/ConcurrencyV2Response'
 import { CreatedOrUpdatedByResponse } from '@/models/api/CreatedOrUpdatedByResponse'
 import { DeploymentApiConcurrencyOptions } from '@/models/api/DeploymentApiConcurrencyOptions'
 import { DeploymentScheduleResponse } from '@/models/api/DeploymentScheduleResponse'
+import { DeploymentVersionInfoResponse } from '@/models/api/DeploymentVersionResponse'
 import { ScheduleResponse } from '@/models/api/ScheduleResponse'
 import { ServerDeploymentStatus } from '@/models/DeploymentStatus'
 import { SchemaResponseV2, SchemaValuesV2 } from '@/schemas'
@@ -18,6 +19,7 @@ export type DeploymentResponse = {
   description: string | null,
   flow_id: string,
   version_id: string | null,
+  version_info: DeploymentVersionInfoResponse | null,
   schedule: ScheduleResponse | null,
   is_schedule_active: boolean,
   paused: boolean,

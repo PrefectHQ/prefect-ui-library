@@ -1,13 +1,16 @@
 import { sortStringArray } from '@prefecthq/prefect-design'
-import { DeploymentFlowRunCreate, DeploymentFlowRunRequest, DeploymentUpdateRequest, DeploymentUpdateV2 } from '@/models'
+import { DeploymentFlowRunCreate, DeploymentFlowRunRequest, DeploymentUpdateRequest, DeploymentUpdateV2, DeploymentVersionInfoResponse, DeploymentVersionResponse } from '@/models'
 import { DeploymentApiConcurrencyOptions } from '@/models/api/DeploymentApiConcurrencyOptions'
 import { DeploymentCreateRequest } from '@/models/api/DeploymentCreateRequest'
 import { DeploymentResponse } from '@/models/api/DeploymentResponse'
 import { Deployment, DeploymentConcurrencyOptions } from '@/models/Deployment'
 import { DeploymentCreate } from '@/models/DeploymentCreate'
+import { DeploymentVersion } from '@/models/DeploymentVersion'
+import { DeploymentVersionInfo } from '@/models/DeploymentVersionInfo'
 import { createObjectLevelCan } from '@/models/ObjectLevelCan'
 import { schemaV2Mapper } from '@/schemas'
 import { MapFunction } from '@/services/Mapper'
+import { camelCase } from '@/utilities'
 
 export const mapDeploymentResponseToDeployment: MapFunction<DeploymentResponse, Deployment> = function(source) {
   return new Deployment({
@@ -18,6 +21,7 @@ export const mapDeploymentResponseToDeployment: MapFunction<DeploymentResponse, 
     updatedBy: this.map('CreatedOrUpdatedByResponse', source.updated_by, 'CreatedOrUpdatedBy'),
     name: source.name,
     version: source.version,
+    versionInfo: source.version_info == null ? null : this.map('DeploymentVersionInfoResponse', source.version_info, 'DeploymentVersionInfo'),
     description: source.description,
     flowId: source.flow_id,
     versionId: source.version_id,
@@ -111,4 +115,45 @@ function mapDeploymentConcurrencyOptionsToDeploymentApiConcurrencyOptions(source
   return {
     collision_strategy: source.collisionStrategy,
   }
+}
+
+
+export const mapDeploymentVersionResponseToDeploymentVersion: MapFunction<DeploymentVersionResponse, DeploymentVersion> = function(source) {
+  return new DeploymentVersion({
+    id: source.id,
+    created: this.map('string', source.created, 'Date'),
+    createdBy: this.map('CreatedOrUpdatedByResponse', source.created_by, 'CreatedOrUpdatedBy'),
+    updated: this.map('string', source.updated, 'Date'),
+    updatedBy: this.map('CreatedOrUpdatedByResponse', source.updated_by, 'CreatedOrUpdatedBy'),
+    name: source.name,
+    versionInfo: this.map('DeploymentVersionInfoResponse', source.version_info, 'DeploymentVersionInfo'),
+    description: source.description,
+    flowId: source.flow_id,
+    deploymentId: source.deployment_id,
+    paused: source.paused,
+    parameters: source.parameters,
+    parameterOpenApiSchema: schemaV2Mapper.map('SchemaResponse', source.parameter_openapi_schema ?? {}, 'Schema'),
+    tags: source.tags ? sortStringArray(source.tags) : null,
+    manifestPath: source.manifest_path,
+    path: source.path,
+    entrypoint: source.entrypoint,
+    storageDocumentId: source.storage_document_id,
+    infrastructureDocumentId: source.infrastructure_document_id,
+    jobVariables: source.job_variables,
+    workQueueName: source.work_queue_name,
+    workPoolName: source.work_pool_name,
+    enforceParameterSchema: source.enforce_parameter_schema,
+    pullSteps: source.pull_steps,
+    can: createObjectLevelCan(),
+    status: this.map('ServerDeploymentStatus', source.status, 'DeploymentStatus'),
+    disabled: source.disabled ?? false,
+    globalConcurrencyLimit: this.map('ConcurrencyV2LimitResponse', source.global_concurrency_limit, 'ConcurrencyV2Limit'),
+    concurrencyOptions: source.concurrency_options == null ? null : mapDeploymentApiConcurrencyOptionsToDeploymentConcurrencyOptions(source.concurrency_options),
+  })
+}
+
+export const mapDeploymentVersionInfoResponseToDeploymentVersionInfo: MapFunction<DeploymentVersionInfoResponse, DeploymentVersionInfo> = function(source) {
+  return Object.fromEntries(
+    Object.entries(source).map(([key, value]) => [camelCase(key), value]),
+  ) as DeploymentVersionInfo
 }
