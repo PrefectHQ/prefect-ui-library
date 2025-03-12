@@ -10,7 +10,7 @@ import { DeploymentVersionInfo } from '@/models/DeploymentVersionInfo'
 import { createObjectLevelCan } from '@/models/ObjectLevelCan'
 import { schemaV2Mapper } from '@/schemas'
 import { MapFunction } from '@/services/Mapper'
-import { camelCase } from '@/utilities'
+import { camelCase, mapKeys } from '@/utilities'
 
 export const mapDeploymentResponseToDeployment: MapFunction<DeploymentResponse, Deployment> = function(source) {
   return new Deployment({
@@ -153,7 +153,5 @@ export const mapDeploymentVersionResponseToDeploymentVersion: MapFunction<Deploy
 }
 
 export const mapDeploymentVersionInfoResponseToDeploymentVersionInfo: MapFunction<DeploymentVersionInfoResponse, DeploymentVersionInfo> = function(source) {
-  return Object.fromEntries(
-    Object.entries(source).map(([key, value]) => [camelCase(key), value]),
-  ) as DeploymentVersionInfo
+  return mapKeys(source, (key) => camelCase(key)) as DeploymentVersionInfo
 }
