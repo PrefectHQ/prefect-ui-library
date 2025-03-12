@@ -31,7 +31,7 @@ In prefect-ui-library (this repo):
 
 `npm run dev`
 
-In [ui](https://github.com/PrefectHQ/prefect/tree/main/UI):
+In [ui](https://github.com/PrefectHQ/prefect/tree/main/ui):
 
 `npm run serve`
 
