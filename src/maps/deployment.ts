@@ -117,7 +117,6 @@ function mapDeploymentConcurrencyOptionsToDeploymentApiConcurrencyOptions(source
   }
 }
 
-
 export const mapDeploymentVersionResponseToDeploymentVersion: MapFunction<DeploymentVersionResponse, DeploymentVersion> = function(source) {
   return new DeploymentVersion({
     id: source.id,
@@ -126,29 +125,19 @@ export const mapDeploymentVersionResponseToDeploymentVersion: MapFunction<Deploy
     updated: this.map('string', source.updated, 'Date'),
     updatedBy: this.map('CreatedOrUpdatedByResponse', source.updated_by, 'CreatedOrUpdatedBy'),
     name: source.name,
-    versionInfo: this.map('DeploymentVersionInfoResponse', source.version_info, 'DeploymentVersionInfo'),
-    description: source.description,
-    flowId: source.flow_id,
     deploymentId: source.deployment_id,
-    paused: source.paused,
+    description: source.description,
+    versionInfo: this.map('DeploymentVersionInfoResponse', source.version_info, 'DeploymentVersionInfo'),
+    tags: source.tags ? sortStringArray(source.tags) : null,
+    labels: source.labels,
+    entrypoint: source.entrypoint,
+    pullSteps: source.pull_steps,
     parameters: source.parameters,
     parameterOpenApiSchema: schemaV2Mapper.map('SchemaResponse', source.parameter_openapi_schema ?? {}, 'Schema'),
-    tags: source.tags ? sortStringArray(source.tags) : null,
-    manifestPath: source.manifest_path,
-    path: source.path,
-    entrypoint: source.entrypoint,
-    storageDocumentId: source.storage_document_id,
-    infrastructureDocumentId: source.infrastructure_document_id,
     jobVariables: source.job_variables,
     workQueueName: source.work_queue_name,
     workPoolName: source.work_pool_name,
     enforceParameterSchema: source.enforce_parameter_schema,
-    pullSteps: source.pull_steps,
-    can: createObjectLevelCan(),
-    status: this.map('ServerDeploymentStatus', source.status, 'DeploymentStatus'),
-    disabled: source.disabled ?? false,
-    globalConcurrencyLimit: this.map('ConcurrencyV2LimitResponse', source.global_concurrency_limit, 'ConcurrencyV2Limit'),
-    concurrencyOptions: source.concurrency_options == null ? null : mapDeploymentApiConcurrencyOptionsToDeploymentConcurrencyOptions(source.concurrency_options),
   })
 }
 
