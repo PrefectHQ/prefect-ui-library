@@ -31,3 +31,11 @@ export type DeploymentVersionResponse = {
   enforce_parameter_schema: boolean,
   pull_steps: unknown,
 }
+
+export type DeploymentVersionPaginationResponse = {
+  results: DeploymentVersionResponse[],
+  count: number,
+  limit: number,
+  pages: number,
+  page: number,
+}
