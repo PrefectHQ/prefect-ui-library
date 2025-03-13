@@ -1,3 +1,4 @@
+import { randomDeploymentVersion } from './deploymentVersion'
 import { randomAny } from '@/mocks/any'
 import { randomArtifact } from '@/mocks/artifact'
 import { randomBlockDocument } from '@/mocks/blockDocument'
@@ -68,6 +69,7 @@ export const mocks = {
   deployment: randomDeployment,
   deploymentSchedules: randomDeploymentSchedules,
   deploymentStatus: randomDeploymentStatus,
+  deploymentVersion: randomDeploymentVersion,
   email: randomEmail,
   flow: randomFlow,
   flowResponse: randomFlowResponse,
