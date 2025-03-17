@@ -71,7 +71,7 @@
         "typescript": "5.8.2",
         "vite": "6.2.1",
         "vite-svg-loader": "^5.1.0",
-        "vitest": "^3.0.8",
+        "vitest": "^3.0.9",
         "vue-tsc": "^2.2.8"
     },
     "peerDependencies": {
