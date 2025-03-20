@@ -12,7 +12,7 @@
         </p-label>
 
         <p-label label="Interval">
-          <p-select v-model="intervalOption" :options="intervalOptions" />
+          <p-select v-model="intervalOption" :options="intervalOptions" data-testid="interval-select" />
         </p-label>
       </div>
 
