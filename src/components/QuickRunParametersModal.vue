@@ -39,7 +39,7 @@
   import { h, ref } from 'vue'
   import { useRouter } from 'vue-router'
   import { ToastFlowRunCreate } from '@/components'
-  import { useWorkspaceApi, useWorkspaceRoutes } from '@/compositions'
+  import { useWorkspaceApi, useWorkspaceRoutes, useNextFlowRun } from '@/compositions'
   import { localization } from '@/localization'
   import { Deployment, DeploymentFlowRunCreate } from '@/models'
   import { SchemaFormV2, SchemaValuesV2 } from '@/schemas'
@@ -59,6 +59,12 @@
   const enforceParameterSchema = ref(props.deployment.enforceParameterSchema)
   const parameters = ref<SchemaValuesV2>({ ...props.deployment.parameters })
 
+  const { subscription: nextRunSubscription } = useNextFlowRun(() => ({
+    deployments: {
+      id: [props.deployment.id],
+    },
+  }))
+
   async function submit(): Promise<void> {
     loading.value = true
 
@@ -73,7 +79,7 @@
 
     try {
       const flowRun = await api.deployments.createDeploymentFlowRun(props.deployment.id, values)
-
+      nextRunSubscription.refresh()
       const toastMessage = h(ToastFlowRunCreate, { flowRun, flowRunRoute: routes.flowRun, router, immediate: true })
       showToast(toastMessage, 'success')
     } catch (error) {
