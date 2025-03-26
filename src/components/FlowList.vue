@@ -64,7 +64,7 @@
 
       <template #action="{ row }">
         <div class="flow-list__action">
-          <FlowMenu size="xs" :flow="row" flat @delete="refresh" />
+          <FlowMenu size="xs" :flow="row" flat @delete="refresh(row.id)" />
         </div>
       </template>
 
@@ -188,8 +188,11 @@
 
   const selectedFlows = ref<Flow[]>([])
 
-  function refresh(): void {
-    subscription.refresh()
+  function refresh(flowId?: string): void {
+    if (flowId) {
+      selectedFlows.value = selectedFlows.value.filter(flow => flow.id !== flowId)
+    }
+ subscription.refresh()
   }
 
   const emit = defineEmits<{
