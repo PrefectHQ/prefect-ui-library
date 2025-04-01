@@ -79,3 +79,15 @@ export function isValidEmailAddress(value: unknown): boolean {
 export function removeWhitespace(value: string): string {
   return value.replace(/\s/g, '')
 }
+
+export function removeUnquotedWhitespace(value: string): string {
+  // Split into quoted segments and non-quoted segments
+  return (value ?? '').split(/(\"[^"]*\")/g).map(segment => {
+      
+    if (segment.startsWith('"') && segment.endsWith('"')) {
+      return segment
+    }
+    // Remove whitespace from non-quoted parts
+    return segment.replace(/\s+/g, '')
+  }).join('')
+}
