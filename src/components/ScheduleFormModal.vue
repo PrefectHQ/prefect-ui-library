@@ -58,10 +58,16 @@
 </template>
 
 <script lang="ts" setup>
+  import { ButtonGroupOption } from '@prefecthq/prefect-design'
+  import {
+    ValidationRule,
+    useValidation,
+    useValidationObserver
+  } from '@prefecthq/vue-compositions'
   import CronScheduleForm from '@/components/CronScheduleForm.vue'
   import FlowRunJobVariableOverridesLabeledInput from '@/components/FlowRunJobVariableOverridesLabeledInput.vue'
   import IntervalScheduleForm from '@/components/IntervalScheduleForm.vue'
-  import { useCan, useShowModal, useWorkspaceApi } from '@/compositions'
+  import { useCan, useShowModal } from '@/compositions'
   import { localization } from '@/localization'
   import {
     CronSchedule,
@@ -77,12 +83,6 @@
   import { SchemaInputV2, SchemaV2, SchemaValuesV2 } from '@/schemas'
   import { useSchemaValidation } from '@/schemas/compositions/useSchemaValidation'
   import { isEmptyObject, isEmptyString, isNull, isSlug, omit, stringify, timeout } from '@/utilities'
-  import { ButtonGroupOption } from '@prefecthq/prefect-design'
-  import {
-    ValidationRule,
-    useValidation,
-    useValidationObserver
-  } from '@prefecthq/vue-compositions'
   import merge from 'lodash.merge'
   import { computed, ref, watch } from 'vue'
 
@@ -105,7 +105,7 @@
     jobVariables: Record<string, unknown> | undefined,
     deploymentParameters: SchemaValuesV2,
     scheduleParameters?: SchemaValuesV2 | null,
-    parameterOpenApiSchema: SchemaV2,
+    parameterOpenApiSchema?: SchemaV2 | null,
     deployment?: Deployment,
     deploymentScheduleId?: string,
   }>()
@@ -152,7 +152,7 @@
   const internalParameters = ref<SchemaValuesV2>(props.scheduleParameters ?? {})
   const selectedProperties = ref<string[]>(Object.keys(internalParameters.value))
   const properties = computed(
-    () => props.parameterOpenApiSchema.properties ?? {},
+    () => props.parameterOpenApiSchema?.properties ?? {},
   )
   const propertyNames = computed(() => Object.keys(properties.value))
   const propertiesToOmit = computed(() => propertyNames.value.filter(
@@ -187,7 +187,7 @@
   })
 
   const schemaHasParameters = computed(
-    () => !isEmptyObject(props.parameterOpenApiSchema.properties),
+    () => !isEmptyObject(props.parameterOpenApiSchema?.properties ?? {}),
   )
 
   const { errors, validate: validateParameters } = useSchemaValidation(
