@@ -30,9 +30,9 @@
 
     <FlowRunJobVariableOverridesLabeledInput v-if="can.access.deploymentScheduleFlowRunInfraOverrides" v-model="internalJobVariables" />
 
-    <p-divider />
-
     <template v-if="schemaHasParameters">
+      <p-divider />
+
       <SchemaInputV2 v-model:values="internalParameters" :schema="internalSchema" :errors="errors" :kinds="['none', 'json']">
         <template #default="{ kind, setKind }">
           <div class="schedule-form-modal__parameters-container">
@@ -64,6 +64,8 @@
     useValidation,
     useValidationObserver
   } from '@prefecthq/vue-compositions'
+  import merge from 'lodash.merge'
+  import { computed, ref, watch } from 'vue'
   import CronScheduleForm from '@/components/CronScheduleForm.vue'
   import FlowRunJobVariableOverridesLabeledInput from '@/components/FlowRunJobVariableOverridesLabeledInput.vue'
   import IntervalScheduleForm from '@/components/IntervalScheduleForm.vue'
@@ -83,8 +85,6 @@
   import { SchemaInputV2, SchemaV2, SchemaValuesV2 } from '@/schemas'
   import { useSchemaValidation } from '@/schemas/compositions/useSchemaValidation'
   import { isEmptyObject, isEmptyString, isNull, isSlug, omit, stringify, timeout } from '@/utilities'
-  import merge from 'lodash.merge'
-  import { computed, ref, watch } from 'vue'
 
   defineOptions({
     inheritAttrs: false,
