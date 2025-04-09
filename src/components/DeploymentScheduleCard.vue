@@ -21,9 +21,9 @@
 
 
 <script lang="ts" setup>
+  import { computed } from 'vue'
   import { DeploymentScheduleMenu, DeploymentScheduleToggle } from '@/components'
   import { Deployment, DeploymentSchedule } from '@/models'
-  import { computed } from 'vue'
 
   const props = defineProps<{
     deployment: Deployment,
@@ -50,6 +50,7 @@
   py-2
   flex
   flex-row
+  gap-2
   text-sm
   w-full
   justify-between
