@@ -44,7 +44,7 @@
   const updateSchedule = async (value: boolean): Promise<void> => {
     loading.value = true
     try {
-      await api.deploymentSchedules.updateDeploymentSchedule(props.deployment.id, props.schedule.id, { active: value })
+      await api.deploymentSchedules.updateDeploymentSchedule(props.deployment.id, props.schedule.id, { slug: props.schedule.slug, active: value })
       showToast(value ? localization.success.activateDeploymentSchedule : localization.success.pauseDeploymentSchedule, 'success')
       emit('update', value)
     } catch (error) {
