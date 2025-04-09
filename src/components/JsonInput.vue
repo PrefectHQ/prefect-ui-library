@@ -15,7 +15,7 @@
    */
   import { ref, watch } from 'vue'
   import { stringify } from '@/utilities/json'
-  import { removeWhitespace } from '@/utilities/strings'
+  import { removeUnquotedWhitespace } from '@/utilities/strings'
 
   const props = defineProps<{
     minLines?: number,
@@ -43,7 +43,7 @@
   })
 
   function matches(valueA: string | undefined, valueB: string | undefined): boolean {
-    return removeWhitespace(valueA ?? '') === removeWhitespace(valueB ?? '')
+    return removeUnquotedWhitespace(valueA ?? '') === removeUnquotedWhitespace(valueB ?? '')
   }
 
   const format = (): void => {
