@@ -5,13 +5,13 @@
 <script lang="ts" setup>
   import { computed } from 'vue'
   import SchemaFormPropertyNull from '@/schemas/components/SchemaFormPropertyNull.vue'
-  import SchemaFormPropertyUnknown from '@/schemas/components/SchemaFormPropertyUnknown.vue'
   import SchemaPropertyViewArray from '@/schemas/components/SchemaPropertyViewArray.vue'
   import SchemaPropertyViewBlockDocument from '@/schemas/components/SchemaPropertyViewBlockDocument.vue'
   import SchemaPropertyViewBoolean from '@/schemas/components/SchemaPropertyViewBoolean.vue'
   import SchemaPropertyViewNumber from '@/schemas/components/SchemaPropertyViewNumber.vue'
   import SchemaPropertyViewObject from '@/schemas/components/SchemaPropertyViewObject.vue'
   import SchemaPropertyViewString from '@/schemas/components/SchemaPropertyViewString.vue'
+  import SchemaPropertyViewUnknown from '@/schemas/components/SchemaPropertyViewUnknown.vue'
   import { useSchemaProperty } from '@/schemas/compositions/useSchemaProperty'
   import { SchemaProperty, isPropertyWith, isSchemaPropertyType } from '@/schemas/types/schema'
   import { SchemaValue, asBlockDocumentReferenceValue } from '@/schemas/types/schemaValues'
@@ -78,7 +78,7 @@
     }
 
     if (isSchemaPropertyType(type, undefined)) {
-      return withProps(SchemaFormPropertyUnknown, {
+      return withProps(SchemaPropertyViewUnknown, {
         property: { ...schemaProperty.value, type },
         value: value,
       })
