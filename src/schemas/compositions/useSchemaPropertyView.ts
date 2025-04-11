@@ -22,26 +22,26 @@ export function useSchemaPropertyView(schemaProperty: MaybeRefOrGetter<SchemaPro
       })
     }
 
-    // if (isPrefectKindValue(value, 'json')) {
-    //   return withProps(SchemaPropertyViewKindJson, {
-    //     value,
-    //   })
-    // }
+    if (isPrefectKindValue(value, 'json')) {
+      return withProps(SchemaPropertyViewKindJson, {
+        value,
+      })
+    }
 
-    // if (isPrefectKindValue(value, 'jinja')) {
-    //   return withProps(SchemaPropertyViewKindJinja, {
-    //     value,
-    //   })
-    // }
+    if (isPrefectKindValue(value, 'jinja')) {
+      return withProps(SchemaPropertyViewKindJinja, {
+        value,
+      })
+    }
 
-    // if (isPrefectKindValue(value, 'workspace_variable')) {
-    //   return withProps(SchemaPropertyViewKindWorkspaceVariable, {
-    //     value,
-    //   })
-    // }
+    if (isPrefectKindValue(value, 'workspace_variable')) {
+      return withProps(SchemaPropertyViewKindWorkspaceVariable, {
+        value,
+      })
+    }
 
-    // const exhaustive: never = value
-    // console.error(new Error(`SchemaFormProperty view is not exhaustive: ${JSON.stringify(exhaustive)}`))
+    const exhaustive: never = value
+    console.error(new Error(`SchemaFormProperty view is not exhaustive: ${JSON.stringify(exhaustive)}`))
 
     return withProps(() => '')
   })
