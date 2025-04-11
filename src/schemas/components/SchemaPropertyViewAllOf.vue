@@ -6,7 +6,7 @@
   import merge from 'lodash.merge'
   import { computed } from 'vue'
   import SchemaPropertyView from '@/schemas/components/SchemaPropertyView.vue'
-  import { useSchemaFormSettings } from '@/schemas/compositions/useSchemaFormSettings'
+  import { useSchemaViewSettings } from '@/schemas/compositions/useSchemaViewSettings'
   import { SchemaProperty, isPropertyWith } from '@/schemas/types/schema'
   import { SchemaValue } from '@/schemas/types/schemaValues'
   import { getSchemaDefinition } from '@/schemas/utilities/definitions'
@@ -18,7 +18,7 @@
     required: boolean,
   }>()
 
-  const { schema } = useSchemaFormSettings()
+  const { schema } = useSchemaViewSettings()
 
   const mergedProperty = computed(() => {
     const { allOf, ...baseProperty } = property

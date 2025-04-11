@@ -21,7 +21,7 @@
   import merge from 'lodash.merge'
   import { computed, reactive, ref } from 'vue'
   import SchemaPropertyView from '@/schemas/components/SchemaPropertyView.vue'
-  import { useSchemaFormSettings } from '@/schemas/compositions/useSchemaFormSettings'
+  import { useSchemaViewSettings } from '@/schemas/compositions/useSchemaViewSettings'
   import { SchemaProperty, isPropertyWith } from '@/schemas/types/schema'
   import { SchemaValue, isPrefectKindValue } from '@/schemas/types/schemaValues'
   import { getSchemaDefinition } from '@/schemas/utilities/definitions'
@@ -34,7 +34,7 @@
     required: boolean,
   }>()
 
-  const { schema } = useSchemaFormSettings()
+  const { schema } = useSchemaViewSettings()
   const propertyValues = reactive<SchemaValue[]>([])
   const selectedPropertyIndexValue = ref<number>(0)
 

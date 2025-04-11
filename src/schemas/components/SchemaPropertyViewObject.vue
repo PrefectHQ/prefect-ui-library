@@ -1,7 +1,6 @@
 <template>
   <component :is="element" class="schema-property-view-object">
-    <!-- <SchemaFormProperties v-model:values="values" :parent="property" :properties="property.properties ?? {}" :errors="errors" /> -->
-    <SchemaPropertyViewProperties :properties="property.properties ?? {}" :parent="property" :values="values" />
+    <SchemaPropertyViewProperties :properties="property.properties ?? {}" :parent="property" :values />
   </component>
 </template>
 
