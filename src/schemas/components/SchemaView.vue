@@ -1,33 +1,32 @@
 <template>
-  <p-content class="schema-view">
-    <slot :kind />
+  <p-content>
+    <template v-if="schema.properties">
+      <SchemaProperty :values :schema :kinds>
+        <template #default="scope">
+          <slot v-bind="scope" />
+        </template>
+      </SchemaProperty>
+    </template>
 
-    <component :is="view.component" v-bind="view.props" />
+    <slot name="after-content" />
   </p-content>
 </template>
 
 <script lang="ts" setup>
-  import { VNode, computed, provide } from 'vue'
-  import { useSchemaPropertyView } from '@/schemas/compositions/useSchemaPropertyView'
-  import { schemaViewSettingsInjectionKey } from '@/schemas/compositions/useSchemaViewSettings'
+  import { VNode } from 'vue'
+  import SchemaProperty from '@/schemas/components/SchemaProperty.vue'
   import { Schema } from '@/schemas/types/schema'
-  import { PrefectKind, SchemaValues, getPrefectKindFromValue } from '@/schemas/types/schemaValues'
+  import { PrefectKind, SchemaValues } from '@/schemas/types/schemaValues'
 
   const { schema, values, kinds } = defineProps<{
     schema: Schema,
-    values: SchemaValues | undefined,
+    values: SchemaValues,
     kinds: PrefectKind[],
   }>()
 
-  provide(schemaViewSettingsInjectionKey, {
-    schema,
-    kinds,
-  })
 
   defineSlots<{
     default: (props: { kind: PrefectKind }) => VNode,
+    'after-content': () => VNode,
   }>()
-
-  const { view } = useSchemaPropertyView(() => schema, () => values)
-  const kind = computed(() => getPrefectKindFromValue(() => values))
 </script>
