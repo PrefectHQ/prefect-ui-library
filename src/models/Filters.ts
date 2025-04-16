@@ -29,6 +29,34 @@ export type FlowFilter = {
   tags?: TagFilter,
 }
 
+export type DeploymentVersionInfo = {
+  type: string,
+  version: string,
+  [key: string]: unknown,
+}
+
+export function isDeploymentVersionInfo(value: unknown): value is DeploymentVersionInfo {
+  return typeof value === 'object' && value !== null && 'type' in value && 'version' in value
+}
+
+export type DeploymentVersionInfoFilter = {
+  operator?: Operation,
+  /**
+   * This is actually required but we don't have a way to express that in the type system
+   */
+  deploymentId?: string,
+  versionInfo?: DeploymentVersionInfo[],
+}
+
+export type DeploymentVersionIdFilter = {
+  operator?: Operation,
+  /**
+   * This is actually required but we don't have a way to express that in the type system
+   */
+  deploymentId?: string,
+  versionId?: string[],
+}
+
 export type FlowRunFilter = {
   operator?: Operation,
   id?: string[],
@@ -39,6 +67,8 @@ export type FlowRunFilter = {
   deploymentIdOperator?: Operation,
   deploymentId?: string[],
   deploymentIdNull?: boolean,
+  deploymentVersionId?: DeploymentVersionIdFilter,
+  deploymentVersionInfo?: DeploymentVersionInfoFilter,
   workQueueNameOperator?: Operation,
   workQueueName?: string[],
   workQueueNameIsNull?: boolean,

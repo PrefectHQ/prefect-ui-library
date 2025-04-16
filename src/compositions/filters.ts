@@ -6,11 +6,12 @@ import { LocationQuery } from 'vue-router'
 import { BlockDocumentSortValuesSortParam } from '@/formatters/BlockDocumentSortValuesParam'
 import { DeploymentSortValuesSortParam } from '@/formatters/DeploymentSortValuesSortParam'
 import { DeploymentStatusRouteParam } from '@/formatters/DeploymentStatusRouteParam'
+import { DeploymentVersionInfoRouteParam } from '@/formatters/DeploymentVersionInfoRouteParam'
 import { FlowRunSortValuesSortParam } from '@/formatters/FlowRunSortValuesSortParam'
 import { FlowSortValuesSortParam } from '@/formatters/FlowSortValuesSortParam'
 import { OperatorRouteParam } from '@/formatters/OperatorRouteParam'
 import { TaskRunSortValuesSortParam } from '@/formatters/TaskRunSortValuesSortParam'
-import { BlockDocumentFilter, BlockDocumentsFilter, BlockSchemaFilter, BlockSchemasFilter, BlockTypeFilter, BlockTypesFilter, DeploymentFilter, DeploymentsFilter, DeploymentsPaginationFilter, FlowFilter, FlowRunFilter, FlowRunsFilter, FlowRunsHistoryFilter, FlowRunsPaginationFilter, FlowsFilter, FlowsPaginationFilter, PaginationUnionFilter, StateFilter, TagFilter, TaskRunFilter, TaskRunsFilter, UnionFilter, VariableFilter, VariablesFilter, WithPage, WorkersFilter, WorkPoolFilter, WorkPoolQueueFilter, WorkPoolsFilter, WorkPoolWorkersPagination } from '@/models/Filters'
+import { BlockDocumentFilter, BlockDocumentsFilter, BlockSchemaFilter, BlockSchemasFilter, BlockTypeFilter, BlockTypesFilter, DeploymentFilter, DeploymentVersionInfo, DeploymentsFilter, DeploymentsPaginationFilter, DeploymentVersionIdFilter, DeploymentVersionInfoFilter, FlowFilter, FlowRunFilter, FlowRunsFilter, FlowRunsHistoryFilter, FlowRunsPaginationFilter, FlowsFilter, FlowsPaginationFilter, PaginationUnionFilter, StateFilter, TagFilter, TaskRunFilter, TaskRunsFilter, UnionFilter, VariableFilter, VariablesFilter, WithPage, WorkersFilter, WorkPoolFilter, WorkPoolQueueFilter, WorkPoolsFilter, WorkPoolWorkersPagination } from '@/models/Filters'
 import { defaultDeploymentSort, defaultFlowRunSort, defaultFlowSort, defaultTaskRunSort, defaultVariableSort, defaultWorkPoolWorkersSort } from '@/types'
 import { AnyRecord } from '@/types/any'
 import { MaybeReactive } from '@/types/reactivity'
@@ -125,6 +126,42 @@ const tagFilterSchema: RouteQueryParamsSchema<TagFilter> = {
   isNull: BooleanRouteParam,
 }
 
+export function useDeploymentVersionIdFilter(defaultValue: MaybeReactive<Partial<DeploymentVersionIdFilter>> = {}): UseFilter<DeploymentVersionIdFilter> {
+  const defaultValueReactive = reactive(defaultValue)
+
+  const filter: Filter<DeploymentVersionIdFilter> = reactive({
+    operator: toRef(defaultValueReactive, 'operator'),
+    deploymentId: toRef(defaultValueReactive, 'deploymentId'),
+    versionId: toRef(defaultValueReactive, 'versionId'),
+  })
+
+  return withFilterFunctions(filter)
+}
+
+const deploymentVersionIdFilterSchema: RouteQueryParamsSchema<DeploymentVersionIdFilter> = {
+  operator: OperatorRouteParam,
+  deploymentId: StringRouteParam,
+  versionId: [StringRouteParam],
+}
+
+export function useDeploymentVersionInfoFilter(defaultValue: MaybeReactive<DeploymentVersionInfoFilter> = {}): UseFilter<DeploymentVersionInfoFilter> {
+  const defaultValueReactive = reactive(defaultValue)
+
+  const filter: Filter<DeploymentVersionInfoFilter> = reactive({
+    operator: toRef(defaultValueReactive, 'operator'),
+    deploymentId: toRef(defaultValueReactive, 'deploymentId'),
+    versionInfo: toRef(defaultValueReactive, 'versionInfo'),
+  })
+
+  return withFilterFunctions(filter)
+}
+
+const deploymentVersionInfoFilterSchema: RouteQueryParamsSchema<DeploymentVersionInfoFilter> = {
+  operator: OperatorRouteParam,
+  deploymentId: StringRouteParam,
+  versionInfo: [DeploymentVersionInfoRouteParam],
+}
+
 export function useStateFilter(defaultValue: MaybeReactive<StateFilter> = {}): UseFilter<StateFilter> {
   const defaultValueReactive = reactive(defaultValue)
   const filter: Filter<StateFilter> = reactive({
@@ -168,10 +205,15 @@ export function useFlowRunFilter(defaultValue: MaybeReactive<FlowRunFilter> = {}
   const defaultValueReactive = reactive(defaultValue)
   const state = useStateFilter(defaultValueReactive.state)
   const tags = useTagFilter(defaultValueReactive.tags)
+  const deploymentVersionId = useDeploymentVersionIdFilter(defaultValueReactive.deploymentVersionId)
+  const deploymentVersionInfo = useDeploymentVersionInfoFilter(defaultValueReactive.deploymentVersionInfo)
+
   const filter: Filter<FlowRunFilter> = reactive({
     deploymentId: toRef(defaultValueReactive, 'deploymentId'),
     deploymentIdNull: toRef(defaultValueReactive, 'deploymentIdNull'),
     deploymentIdOperator: toRef(defaultValueReactive, 'deploymentIdOperator'),
+    deploymentVersionId: deploymentVersionId.filter,
+    deploymentVersionInfo: deploymentVersionInfo.filter,
     expectedStartTimeAfter: toRef(defaultValueReactive, 'expectedStartTimeAfter'),
     expectedStartTimeBefore: toRef(defaultValueReactive, 'expectedStartTimeBefore'),
     flowVersion: toRef(defaultValueReactive, 'flowVersion'),
@@ -215,6 +257,8 @@ const flowRunFilterSchema: RouteQueryParamsSchema<FlowRunFilter> = {
   deploymentIdOperator: OperatorRouteParam,
   deploymentId: [StringRouteParam],
   deploymentIdNull: BooleanRouteParam,
+  deploymentVersionId: deploymentVersionIdFilterSchema,
+  deploymentVersionInfo: deploymentVersionInfoFilterSchema,
   workQueueNameOperator: OperatorRouteParam,
   workQueueName: [StringRouteParam],
   workQueueNameIsNull: BooleanRouteParam,
