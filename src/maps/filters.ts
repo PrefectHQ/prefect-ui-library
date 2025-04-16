@@ -203,8 +203,8 @@ export const mapFlowRunFilter: MapFunction<FlowRunFilter, FlowRunFilterRequest> 
       ...toAny(source.deploymentId),
       ...toIsNull(source.deploymentIdNull),
     },
-    deployment_version_id: this.map('DeploymentVersionIdFilter', source.deploymentVersionId, 'DeploymentVersionIdFilterRequest'),
-    deployment_version_info: this.map('DeploymentVersionInfoFilter', source.deploymentVersionInfo, 'DeploymentVersionInfoFilterRequest'),
+    deployment_version_id: source.deploymentVersionId ? this.map('DeploymentVersionIdFilter', source.deploymentVersionId, 'DeploymentVersionIdFilterRequest') : undefined,
+    deployment_version_info: source.deploymentVersionInfo ? this.map('DeploymentVersionInfoFilter', source.deploymentVersionInfo, 'DeploymentVersionInfoFilterRequest') : undefined,
     work_queue_name: {
       ...toOperator(source.workQueueNameOperator),
       ...toAny(source.workQueueName),
