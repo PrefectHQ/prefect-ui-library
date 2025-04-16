@@ -1,7 +1,7 @@
 /* eslint-disable camelcase */
 import { asArray } from '@prefecthq/prefect-design'
-import { Any, Like, All, IsNull, OperatorRequest, TagFilterRequest, FlowFilterRequest, FlowRunFilterRequest, NotAny, StateFilterRequest, Before, After, TaskRunFilterRequest, Exists, DeploymentFilterRequest, Equals, FlowsFilterRequest, FlowRunsFilterRequest, TaskRunsFilterRequest, DeploymentsFilterRequest, BlockTypeFilterRequest, BlockSchemaFilterRequest, BlockDocumentFilterRequest, NotificationsFilterRequest, SavedSearchesFilterRequest, LogsFilterRequest, GreaterThan, LessThan, ConcurrencyLimitsFilterRequest, BlockTypesFilterRequest, BlockSchemasFilterRequest, BlockDocumentsFilterRequest, StartsWith, WorkPoolFilterRequest, WorkPoolsFilterRequest, WorkPoolQueueFilterRequest, FlowRunsHistoryFilterRequest, WorkersFilterRequest, WorkPoolQueuesFilterRequest, ArtifactsFilterRequest, ArtifactFilterRequest, NullableEquals, VariablesFilterRequest, VariableFilterRequest, TaskRunsHistoryFilterRequest, FlowRunsPaginationFilterRequest, FlowsPaginationFilterRequest, DeploymentsPaginationFilterRequest, WorkPoolWorkersFilterRequest, WorkPoolWorkersPaginationRequest, TaskRunsPaginationFilterRequest } from '@/models/api/Filters'
-import { FlowFilter, FlowRunFilter, Operation, StateFilter, TagFilter, TaskRunFilter, DeploymentFilter, FlowsFilter, FlowRunsFilter, TaskRunsFilter, DeploymentsFilter, BlockTypeFilter, BlockSchemaFilter, BlockDocumentFilter, NotificationsFilter, SavedSearchesFilter, LogsFilter, ConcurrencyLimitsFilter, BlockTypesFilter, BlockSchemasFilter, BlockDocumentsFilter, WorkPoolFilter, WorkPoolsFilter, WorkPoolQueueFilter, FlowRunsHistoryFilter, WorkersFilter, WorkPoolQueuesFilter, ArtifactsFilter, ArtifactFilter, VariablesFilter, VariableFilter, TaskRunsHistoryFilter, FlowRunsPaginationFilter, FlowsPaginationFilter, DeploymentsPaginationFilter, WorkPoolWorkersFilter, WorkPoolWorkersPagination, TaskRunsPaginationFilter } from '@/models/Filters'
+import { Any, Like, All, IsNull, OperatorRequest, TagFilterRequest, FlowFilterRequest, FlowRunFilterRequest, NotAny, StateFilterRequest, Before, After, TaskRunFilterRequest, Exists, DeploymentFilterRequest, Equals, FlowsFilterRequest, FlowRunsFilterRequest, TaskRunsFilterRequest, DeploymentsFilterRequest, BlockTypeFilterRequest, BlockSchemaFilterRequest, BlockDocumentFilterRequest, NotificationsFilterRequest, SavedSearchesFilterRequest, LogsFilterRequest, GreaterThan, LessThan, ConcurrencyLimitsFilterRequest, BlockTypesFilterRequest, BlockSchemasFilterRequest, BlockDocumentsFilterRequest, StartsWith, WorkPoolFilterRequest, WorkPoolsFilterRequest, WorkPoolQueueFilterRequest, FlowRunsHistoryFilterRequest, WorkersFilterRequest, WorkPoolQueuesFilterRequest, ArtifactsFilterRequest, ArtifactFilterRequest, NullableEquals, VariablesFilterRequest, VariableFilterRequest, TaskRunsHistoryFilterRequest, FlowRunsPaginationFilterRequest, FlowsPaginationFilterRequest, DeploymentsPaginationFilterRequest, WorkPoolWorkersFilterRequest, WorkPoolWorkersPaginationRequest, TaskRunsPaginationFilterRequest, DeploymentVersionIdFilterRequest, DeploymentVersionInfoFilterRequest } from '@/models/api/Filters'
+import { FlowFilter, FlowRunFilter, Operation, StateFilter, TagFilter, TaskRunFilter, DeploymentFilter, FlowsFilter, FlowRunsFilter, TaskRunsFilter, DeploymentsFilter, BlockTypeFilter, BlockSchemaFilter, BlockDocumentFilter, NotificationsFilter, SavedSearchesFilter, LogsFilter, ConcurrencyLimitsFilter, BlockTypesFilter, BlockSchemasFilter, BlockDocumentsFilter, WorkPoolFilter, WorkPoolsFilter, WorkPoolQueueFilter, FlowRunsHistoryFilter, WorkersFilter, WorkPoolQueuesFilter, ArtifactsFilter, ArtifactFilter, VariablesFilter, VariableFilter, TaskRunsHistoryFilter, FlowRunsPaginationFilter, FlowsPaginationFilter, DeploymentsPaginationFilter, WorkPoolWorkersFilter, WorkPoolWorkersPagination, TaskRunsPaginationFilter, DeploymentVersionIdFilter, DeploymentVersionInfoFilter } from '@/models/Filters'
 import { MapFunction } from '@/services'
 import { removeEmptyObjects } from '@/utilities'
 
@@ -158,6 +158,36 @@ export const mapFlowFilter: MapFunction<FlowFilter, FlowFilterRequest> = functio
   })
 }
 
+export const mapDeploymentVersionIdFilter: MapFunction<DeploymentVersionIdFilter, DeploymentVersionIdFilterRequest> = function(source) {
+  if (!source.deploymentId) {
+    throw new Error('Deployment ID is required for deployment version ID filter')
+  }
+
+  return removeEmptyObjects({
+    ...toOperator(source.operator),
+    deployment_id: source.deploymentId,
+    version_id: toAny(source.versionId),
+  })
+}
+
+export const mapDeploymentVersionInfoFilter: MapFunction<DeploymentVersionInfoFilter, DeploymentVersionInfoFilterRequest> = function(source) {
+  if (!source.deploymentId) {
+    throw new Error('Deployment ID is required for deployment version info filter')
+  }
+
+  return removeEmptyObjects({
+    ...toOperator(source.operator),
+    deployment_id: source.deploymentId,
+    version_info: {
+      any_: source.versionInfo?.map(versionInfo => ({
+        ...versionInfo,
+        type: versionInfo.type,
+        version: versionInfo.version,
+      })),
+    },
+  })
+}
+
 export const mapFlowRunFilter: MapFunction<FlowRunFilter, FlowRunFilterRequest> = function(source) {
   return removeEmptyObjects({
     ...toOperator(source.operator),
@@ -175,6 +205,8 @@ export const mapFlowRunFilter: MapFunction<FlowRunFilter, FlowRunFilterRequest> 
       ...toAny(source.deploymentId),
       ...toIsNull(source.deploymentIdNull),
     },
+    deployment_version_id: this.map('DeploymentVersionIdFilter', source.deploymentVersionId, 'DeploymentVersionIdFilterRequest'),
+    deployment_version_info: this.map('DeploymentVersionInfoFilter', source.deploymentVersionInfo, 'DeploymentVersionInfoFilterRequest'),
     work_queue_name: {
       ...toOperator(source.workQueueNameOperator),
       ...toAny(source.workQueueName),

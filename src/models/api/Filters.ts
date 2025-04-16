@@ -45,12 +45,34 @@ export type FlowFilterRequest = {
   tags?: TagFilterRequest,
 }
 
+export type DeploymentVersionIdFilterRequest = {
+  operator?: OperationRequest,
+  deployment_id: string,
+  version_id?: Any,
+}
+
+export type DeploymentVersionInfoRequest = {
+  type: string,
+  version: string,
+  [key: string]: unknown,
+}
+
+export type DeploymentVersionInfoFilterRequest = {
+  operator?: OperationRequest,
+  deployment_id: string,
+  version_info?: {
+    any_?: DeploymentVersionInfoRequest[],
+  },
+}
+
 export type FlowRunFilterRequest = {
   operator?: OperationRequest,
   id?: Any & NotAny,
   name?: Any & Like,
   tags?: TagFilterRequest,
   deployment_id?: OperatorRequest & Any & IsNull,
+  deployment_version_id?: DeploymentVersionIdFilterRequest,
+  deployment_version_info?: DeploymentVersionInfoFilterRequest,
   work_queue_name?: OperatorRequest & Any & IsNull,
   work_queue_id?: OperatorRequest & Any & IsNull,
   state?: StateFilterRequest,

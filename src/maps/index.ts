@@ -37,7 +37,7 @@ import { mapDeploymentStatsFilterToFlowRunsFilter } from '@/maps/deploymentStats
 import { mapDeploymentStatusToServerDeploymentStatus, mapServerDeploymentStatusToDeploymentStatus } from '@/maps/deploymentStatus'
 import { mapRunHistoryToDivergingBarChartItem } from '@/maps/divergingBarChartItem'
 import { mapEmpiricalPolicyToEmpiricalPolicyResponse, mapEmpiricalPolicyResponseToEmpiricalPolicy, mapEmpiricalPolicyToEmpiricalPolicyRequest } from '@/maps/empiricalPolicy'
-import { mapFlowFilter, mapDeploymentFilter, mapFlowRunFilter, mapStateFilter, mapFlowsFilter, mapDeploymentsFilter, mapFlowRunsFilter, mapTagFilter, mapTaskRunFilter, mapTaskRunsFilter, mapBlockDocumentFilter, mapBlockSchemaFilter, mapBlockTypeFilter, mapBlockDocumentsFilter, mapBlockSchemasFilter, mapBlockTypesFilter, mapWorkPoolsFilter, mapWorkPoolFilter, mapWorkPoolQueueFilter, mapFlowRunsHistoryFilter, mapLogsFilter, mapNotificationsFilter, mapSavedSearchesFilter, mapWorkersFilter, mapWorkPoolQueuesFilter, mapArtifactFilter, mapArtifactsFilter, mapVariablesFilter, mapVariableFilter, mapTaskRunsHistoryFilter, mapFlowRunsPaginationFilter, mapFlowsPaginationFilter, mapDeploymentsPaginationFilter, mapWorkPoolWorkersFilter, mapWorkPoolWorkersPagination, mapTaskRunsPaginationFilter } from '@/maps/filters'
+import { mapFlowFilter, mapDeploymentFilter, mapFlowRunFilter, mapStateFilter, mapFlowsFilter, mapDeploymentsFilter, mapFlowRunsFilter, mapTagFilter, mapTaskRunFilter, mapTaskRunsFilter, mapBlockDocumentFilter, mapBlockSchemaFilter, mapBlockTypeFilter, mapBlockDocumentsFilter, mapBlockSchemasFilter, mapBlockTypesFilter, mapWorkPoolsFilter, mapWorkPoolFilter, mapWorkPoolQueueFilter, mapFlowRunsHistoryFilter, mapLogsFilter, mapNotificationsFilter, mapSavedSearchesFilter, mapWorkersFilter, mapWorkPoolQueuesFilter, mapArtifactFilter, mapArtifactsFilter, mapVariablesFilter, mapVariableFilter, mapTaskRunsHistoryFilter, mapFlowRunsPaginationFilter, mapFlowsPaginationFilter, mapDeploymentsPaginationFilter, mapWorkPoolWorkersFilter, mapWorkPoolWorkersPagination, mapTaskRunsPaginationFilter, mapDeploymentVersionInfoFilter, mapDeploymentVersionIdFilter } from '@/maps/filters'
 import { mapFlowToFlowResponse, mapFlowResponseToFlow, mapFlowToAutomationTrigger } from '@/maps/flow'
 import { mapFlowRunResponseToFlowRun } from '@/maps/flowRun'
 import { mapRunHistoryToFlowRunHistoryResponse, mapFlowRunHistoryResponseToRunHistory } from '@/maps/flowRunHistory'
@@ -134,6 +134,8 @@ export const maps = {
   DeploymentStatus: { ServerDeploymentStatus: mapDeploymentStatusToServerDeploymentStatus },
   DeploymentStatsFilter: { FlowRunsFilter: mapDeploymentStatsFilterToFlowRunsFilter },
   DeploymentUpdateV2: { DeploymentUpdateRequest: mapDeploymentUpdateV2ToDeploymentUpdateRequest },
+  DeploymentVersionIdFilter: { DeploymentVersionIdFilterRequest: mapDeploymentVersionIdFilter },
+  DeploymentVersionInfoFilter: { DeploymentVersionInfoFilterRequest: mapDeploymentVersionInfoFilter },
   DeploymentVersionResponse: { DeploymentVersion: mapDeploymentVersionResponseToDeploymentVersion },
   DeploymentVersionInfoResponse: { DeploymentVersionInfo: mapDeploymentVersionInfoResponseToDeploymentVersionInfo },
   EmpiricalPolicy: { EmpiricalPolicyResponse: mapEmpiricalPolicyToEmpiricalPolicyResponse, EmpiricalPolicyRequest: mapEmpiricalPolicyToEmpiricalPolicyRequest },
