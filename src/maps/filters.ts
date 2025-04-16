@@ -158,9 +158,11 @@ export const mapFlowFilter: MapFunction<FlowFilter, FlowFilterRequest> = functio
   })
 }
 
-export const mapDeploymentVersionIdFilter: MapFunction<DeploymentVersionIdFilter, DeploymentVersionIdFilterRequest> = function(source) {
+export const mapDeploymentVersionIdFilter: MapFunction<DeploymentVersionIdFilter, DeploymentVersionIdFilterRequest | undefined> = function(source) {
   if (!source.deploymentId) {
-    throw new Error('Deployment ID is required for deployment version ID filter')
+    console.warn('Deployment ID is required for deployment version ID filter')
+
+    return undefined
   }
 
   return removeEmptyObjects({
@@ -170,9 +172,11 @@ export const mapDeploymentVersionIdFilter: MapFunction<DeploymentVersionIdFilter
   })
 }
 
-export const mapDeploymentVersionInfoFilter: MapFunction<DeploymentVersionInfoFilter, DeploymentVersionInfoFilterRequest> = function(source) {
+export const mapDeploymentVersionInfoFilter: MapFunction<DeploymentVersionInfoFilter, DeploymentVersionInfoFilterRequest | undefined> = function(source) {
   if (!source.deploymentId) {
-    throw new Error('Deployment ID is required for deployment version info filter')
+    console.warn('Deployment ID is required for deployment version info filter')
+
+    return undefined
   }
 
   return removeEmptyObjects({
@@ -203,8 +207,8 @@ export const mapFlowRunFilter: MapFunction<FlowRunFilter, FlowRunFilterRequest> 
       ...toAny(source.deploymentId),
       ...toIsNull(source.deploymentIdNull),
     },
-    deployment_version_id: source.deploymentVersionId ? this.map('DeploymentVersionIdFilter', source.deploymentVersionId, 'DeploymentVersionIdFilterRequest') : undefined,
-    deployment_version_info: source.deploymentVersionInfo ? this.map('DeploymentVersionInfoFilter', source.deploymentVersionInfo, 'DeploymentVersionInfoFilterRequest') : undefined,
+    deployment_version_id: this.map('DeploymentVersionIdFilter', source.deploymentVersionId, 'DeploymentVersionIdFilterRequest'),
+    deployment_version_info: this.map('DeploymentVersionInfoFilter', source.deploymentVersionInfo, 'DeploymentVersionInfoFilterRequest'),
     work_queue_name: {
       ...toOperator(source.workQueueNameOperator),
       ...toAny(source.workQueueName),
