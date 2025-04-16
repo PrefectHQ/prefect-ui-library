@@ -166,7 +166,7 @@ export const mapDeploymentVersionIdFilter: MapFunction<DeploymentVersionIdFilter
   return removeEmptyObjects({
     ...toOperator(source.operator),
     deployment_id: source.deploymentId,
-    version_id: toAny(source.versionId),
+    ...toAny(source.versionId),
   })
 }
 
@@ -178,13 +178,11 @@ export const mapDeploymentVersionInfoFilter: MapFunction<DeploymentVersionInfoFi
   return removeEmptyObjects({
     ...toOperator(source.operator),
     deployment_id: source.deploymentId,
-    version_info: {
-      any_: source.versionInfo?.map(versionInfo => ({
-        ...versionInfo,
-        type: versionInfo.type,
-        version: versionInfo.version,
-      })),
-    },
+    any_: source.versionInfo?.map(versionInfo => ({
+      ...versionInfo,
+      type: versionInfo.type,
+      version: versionInfo.version,
+    })),
   })
 }
 

@@ -29,13 +29,13 @@ export type FlowFilter = {
   tags?: TagFilter,
 }
 
-export type DeploymentVersionInfo = {
+export type VersionInfoFilter = {
   type: string,
   version: string,
   [key: string]: unknown,
 }
 
-export function isDeploymentVersionInfo(value: unknown): value is DeploymentVersionInfo {
+export function isVersionInfoFilter(value: unknown): value is VersionInfoFilter {
   return typeof value === 'object' && value !== null && 'type' in value && 'version' in value
 }
 
@@ -45,7 +45,7 @@ export type DeploymentVersionInfoFilter = {
    * This is actually required but we don't have a way to express that in the type system
    */
   deploymentId?: string,
-  versionInfo?: DeploymentVersionInfo[],
+  versionInfo?: VersionInfoFilter[],
 }
 
 export type DeploymentVersionIdFilter = {

@@ -48,8 +48,7 @@ export type FlowFilterRequest = {
 export type DeploymentVersionIdFilterRequest = {
   operator?: OperationRequest,
   deployment_id: string,
-  version_id?: Any,
-}
+} & Any
 
 export type DeploymentVersionInfoRequest = {
   type: string,
@@ -60,9 +59,7 @@ export type DeploymentVersionInfoRequest = {
 export type DeploymentVersionInfoFilterRequest = {
   operator?: OperationRequest,
   deployment_id: string,
-  version_info?: {
-    any_?: DeploymentVersionInfoRequest[],
-  },
+  any_?: DeploymentVersionInfoRequest[],
 }
 
 export type FlowRunFilterRequest = {
