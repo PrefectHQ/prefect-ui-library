@@ -13,11 +13,11 @@ export const randomDeploymentVersion: MockFunction<DeploymentVersion, [Partial<D
     updatedBy: this.create('createdOrUpdatedBy'),
     name: this.create('noun'),
     versionInfo: {
-      type: 'vcs:github',
+      type: 'vcs:github' as const,
       version: this.create('string'),
-      base: this.create('string'),
       branch: this.create('string'),
       url: this.create('url'),
+      repository: this.create('string'),
     },
     tags: this.createMany('noun', this.create('number', [0, 5])),
     labels: {},
