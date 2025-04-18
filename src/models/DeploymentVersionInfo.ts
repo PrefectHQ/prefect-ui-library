@@ -32,4 +32,4 @@ type DockerVersionInfo = {
   image: string,
 }
 
-export type DeploymentVersionInfo = SimpleVersionInfo | GithubVersionInfo | GitVersionInfo | DockerVersionInfo
+export type DeploymentVersionInfo = (SimpleVersionInfo | GithubVersionInfo | GitVersionInfo | DockerVersionInfo) & Record<string, unknown>
