@@ -2,15 +2,15 @@
   <p-icon-button-menu v-bind="$attrs">
     <copy-overflow-menu-item label="Copy ID" :item="flow.id" />
 
-    <template v-if="can.delete.flow">
-      <p-overflow-menu-item label="Delete" :value="flow.id" @click="openDeleteModal" />
-    </template>
-
     <slot v-bind="{ flow }">
       <router-link v-if="can.create.automation" :to="routes.automateFlow(flow.id)">
         <p-overflow-menu-item label="Automate" />
       </router-link>
     </slot>
+
+    <template v-if="can.delete.flow">
+      <p-overflow-menu-item label="Delete" :value="flow.id" @click="openDeleteModal" />
+    </template>
   </p-icon-button-menu>
 
   <ConfirmDeleteModal

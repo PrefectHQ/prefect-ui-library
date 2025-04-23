@@ -1,13 +1,13 @@
 <template>
   <p-icon-button-menu class="flow-run-menu" v-bind="$attrs">
     <template #default>
+      <copy-overflow-menu-item label="Copy ID" :item="flowRun.id" />
       <p-overflow-menu-item v-if="flowRun?.deploymentId && deployment?.can.run" label="Copy to new run" :to="routes.deploymentFlowRunCreate(flowRun.deploymentId, flowRun.parameters)" />
       <p-overflow-menu-item v-if="canRetry && showAll" label="Retry" @click="openRetryModal" />
       <p-overflow-menu-item v-if="canResume && showAll" label="Resume" @click="openResumeModal" />
       <p-overflow-menu-item v-if="canSuspend && showAll" label="Pause" @click="openSuspendModal" />
       <p-overflow-menu-item v-if="canCancel && showAll" label="Cancel" @click="openCancelModal" />
       <p-overflow-menu-item v-if="canChangeState" label="Change state" @click="openChangeStateModal" />
-      <copy-overflow-menu-item label="Copy ID" :item="flowRun.id" />
       <p-overflow-menu-item v-if="can.delete.flow_run" label="Delete" @click="openDeleteModal" />
 
       <slot v-bind="{ flowRun }" />

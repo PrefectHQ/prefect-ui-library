@@ -1,18 +1,18 @@
 <template>
   <p-icon-button-menu v-bind="$attrs">
+    <copy-overflow-menu-item label="Copy ID" :item="deployment.id" />
+
+    <p-overflow-menu-item v-if="allowDuplicate" label="Duplicate" :to="routes.deploymentDuplicate(deployment.id)" />
+
     <DeploymentQuickRunOverflowMenuItem v-if="deployment.can.run && showAll" :deployment="deployment" :open-modal="openParametersModal" />
 
     <DeploymentCustomRunOverflowMenuItem v-if="deployment.can.run && showAll" :deployment="deployment" />
-
-    <copy-overflow-menu-item label="Copy ID" :item="deployment.id" />
 
     <router-link v-if="!deployment.deprecated && deployment.can.update" :to="routes.deploymentEdit(deployment.id)">
       <p-overflow-menu-item label="Edit" />
     </router-link>
 
     <p-overflow-menu-item v-if="deployment.can.delete" label="Delete" @click="openConfirmDeleteModal" />
-
-    <p-overflow-menu-item v-if="allowDuplicate" label="Duplicate" :to="routes.deploymentDuplicate(deployment.id)" />
 
     <slot v-bind="{ deployment }" />
   </p-icon-button-menu>

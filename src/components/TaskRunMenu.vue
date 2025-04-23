@@ -1,8 +1,8 @@
 <template>
   <p-icon-button-menu class="task-run-menu" v-bind="$attrs">
     <template #default>
-      <p-overflow-menu-item v-if="showChangeStateMenuItemButton" label="Change state" @click="openStateChangeModal" />
       <copy-overflow-menu-item label="Copy ID" :item="taskRun.id" />
+      <p-overflow-menu-item v-if="showChangeStateMenuItemButton" label="Change state" @click="openStateChangeModal" />
       <p-overflow-menu-item v-if="can.delete.task_run" label="Delete" @click="openDeleteModal" />
     </template>
   </p-icon-button-menu>

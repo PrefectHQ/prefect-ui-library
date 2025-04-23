@@ -4,10 +4,6 @@
     <p-overflow-menu-item v-if="canSave" @click="openSaveModal">
       Save View
     </p-overflow-menu-item>
-    <p-overflow-menu-item v-if="canDelete" inset @click="openDeleteModal">
-      Delete View
-    </p-overflow-menu-item>
-
     <p-overflow-menu-item v-if="canToggleDefault" inset @click="toggleDefault">
       <template v-if="savedSearch?.isDefault">
         Remove as default
@@ -16,6 +12,9 @@
       <template v-else>
         Set as default
       </template>
+    </p-overflow-menu-item>
+    <p-overflow-menu-item v-if="canDelete" inset @click="openDeleteModal">
+      Delete View
     </p-overflow-menu-item>
   </p-icon-button-menu>
 

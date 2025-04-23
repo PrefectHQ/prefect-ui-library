@@ -1,9 +1,9 @@
 <template>
   <p-icon-button-menu class="workspace-event-menu">
+    <CopyOverflowMenuItem label="Copy ID" :item="event.id" />
     <router-link v-if="can.create.automation" :to="routes.automateEvent(event)">
       <p-overflow-menu-item label="Automate" />
     </router-link>
-    <CopyOverflowMenuItem label="Copy ID" :item="event.id" />
   </p-icon-button-menu>
 </template>
 
