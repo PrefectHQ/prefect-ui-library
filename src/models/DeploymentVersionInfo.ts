@@ -6,15 +6,19 @@ type SimpleVersionInfo = {
   url?: string | null,
 }
 
-type GitVersionInfo = {
-  type: 'vcs:git',
+type GitVersionInfoBase = {
+  type: 'vcs:git' | 'vcs:github',
   version: string,
   branch: string,
   url: string,
   repository: string,
 }
 
-type GithubVersionInfo = GitVersionInfo & {
+type GitVersionInfo = GitVersionInfoBase & {
+  type: 'vcs:git',
+}
+
+type GithubVersionInfo = GitVersionInfoBase & {
   type: 'vcs:github',
 }
 
