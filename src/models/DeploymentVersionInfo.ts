@@ -7,7 +7,7 @@ type SimpleVersionInfo = {
 }
 
 type GitVersionInfoBase = {
-  type: 'vcs:git' | 'vcs:github',
+  type: string,
   version: string,
   branch: string,
   url: string,
