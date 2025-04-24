@@ -173,7 +173,6 @@ export const mapDeploymentVersionIdFilter: MapFunction<DeploymentVersionIdFilter
 }
 
 export const mapDeploymentVersionInfoFilter: MapFunction<DeploymentVersionInfoFilter, DeploymentVersionInfoFilterRequest | undefined> = function(source) {
-  console.log(source)
   if (!source.deploymentId) {
     console.warn('Deployment ID is required for deployment version info filter')
 
