@@ -173,6 +173,7 @@ export const mapDeploymentVersionIdFilter: MapFunction<DeploymentVersionIdFilter
 }
 
 export const mapDeploymentVersionInfoFilter: MapFunction<DeploymentVersionInfoFilter, DeploymentVersionInfoFilterRequest | undefined> = function(source) {
+  console.log(source)
   if (!source.deploymentId) {
     console.warn('Deployment ID is required for deployment version info filter')
 
@@ -207,8 +208,8 @@ export const mapFlowRunFilter: MapFunction<FlowRunFilter, FlowRunFilterRequest> 
       ...toAny(source.deploymentId),
       ...toIsNull(source.deploymentIdNull),
     },
-    deployment_version_id: source.deploymentVersionId ? this.map('DeploymentVersionIdFilter', source.deploymentVersionId, 'DeploymentVersionIdFilterRequest') : undefined,
-    deployment_version_info: source.deploymentVersionInfo ? this.map('DeploymentVersionInfoFilter', source.deploymentVersionInfo, 'DeploymentVersionInfoFilterRequest') : undefined,
+    deployment_version_id: Object.keys(removeEmptyObjects(source.deploymentVersionId ?? {})).length > 0 ? this.map('DeploymentVersionIdFilter', source.deploymentVersionId, 'DeploymentVersionIdFilterRequest') : undefined,
+    deployment_version_info: Object.keys(removeEmptyObjects(source.deploymentVersionInfo ?? {})).length > 0 ? this.map('DeploymentVersionInfoFilter', source.deploymentVersionInfo, 'DeploymentVersionInfoFilterRequest') : undefined,
     work_queue_name: {
       ...toOperator(source.workQueueNameOperator),
       ...toAny(source.workQueueName),
