@@ -9,7 +9,7 @@ type SimpleVersionInfo = {
 type GitVersionInfoBase = {
   type: string,
   version: string,
-  commit_sha: string,
+  commitSha: string,
   message: string,
   branch: string,
   url: string,
@@ -36,4 +36,4 @@ type AzureDevopsVersionInfo = GitVersionInfoBase & {
   type: 'vcs:azuredevops',
 }
 
-export type DeploymentVersionInfo = (SimpleVersionInfo | GithubVersionInfo | GitVersionInfo | GitlabVersionInfo | BitbucketVersionInfo | AzureDevopsVersionInfo) & Record<string, unknown>
+export type DeploymentVersionInfo = (SimpleVersionInfo | GitVersionInfo | GithubVersionInfo | GitlabVersionInfo | BitbucketVersionInfo | AzureDevopsVersionInfo) & Record<string, unknown>

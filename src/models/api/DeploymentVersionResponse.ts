@@ -4,10 +4,12 @@ import { DateString } from '@/types/dates'
 
 export type DeploymentVersionInfoResponse = {
   type: string,
-  base: string | null,
-  branch: string | null,
   version: string,
-  url: string | null,
+  branch?: string | null,
+  url?: string | null,
+  commit_sha?: string | null,
+  message?: string | null,
+  repository?: string | null,
 } & Record<string, unknown>
 
 export type DeploymentVersionResponse = {
