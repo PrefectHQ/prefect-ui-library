@@ -6,30 +6,20 @@ type SimpleVersionInfo = {
   url?: string | null,
 }
 
-type GithubVersionInfo = {
-  type: 'vcs:github',
+type GitVersionInfoBase = {
+  type: string,
   version: string,
   branch: string,
   url: string,
   repository: string,
 }
 
-type GitVersionInfo = {
+type GitVersionInfo = GitVersionInfoBase & {
   type: 'vcs:git',
-  version: string,
-  branch: string,
-  url: string,
-  repository: string,
 }
 
-type DockerVersionInfo = {
-  type: 'container:docker',
-  version: string,
-  branch: string,
-  url: string,
-  imageName: string,
-  registry: string,
-  image: string,
+type GithubVersionInfo = GitVersionInfoBase & {
+  type: 'vcs:github',
 }
 
-export type DeploymentVersionInfo = (SimpleVersionInfo | GithubVersionInfo | GitVersionInfo | DockerVersionInfo) & Record<string, unknown>
+export type DeploymentVersionInfo = (SimpleVersionInfo | GithubVersionInfo | GitVersionInfo) & Record<string, unknown>
