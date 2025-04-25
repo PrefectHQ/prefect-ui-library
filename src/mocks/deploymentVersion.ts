@@ -18,6 +18,8 @@ export const randomDeploymentVersion: MockFunction<DeploymentVersion, [Partial<D
       branch: this.create('string'),
       url: this.create('url'),
       repository: this.create('string'),
+      commitSha: this.create('string'),
+      message: this.create('string'),
     },
     tags: this.createMany('noun', this.create('number', [0, 5])),
     labels: {},
