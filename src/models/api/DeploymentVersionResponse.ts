@@ -18,6 +18,7 @@ export type DeploymentVersionResponse = {
   created_by: CreatedOrUpdatedByResponse | null,
   updated: DateString,
   updated_by: CreatedOrUpdatedByResponse | null,
+  last_active: DateString | null,
   name: string,
   deployment_id: string,
   description: string | null,
