@@ -11,6 +11,7 @@ export const randomDeploymentVersion: MockFunction<DeploymentVersion, [Partial<D
     createdBy: this.create('createdOrUpdatedBy'),
     updated: this.create('date'),
     updatedBy: this.create('createdOrUpdatedBy'),
+    lastActive: this.create('date'),
     name: this.create('noun'),
     versionInfo: {
       type: 'vcs:github' as const,

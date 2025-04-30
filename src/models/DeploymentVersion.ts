@@ -8,6 +8,7 @@ export type IDeploymentVersion = {
   createdBy: CreatedOrUpdatedBy | null,
   updated: Date,
   updatedBy: CreatedOrUpdatedBy | null,
+  lastActive: Date | null,
   name: string,
   deploymentId: string,
   description: string | null,
@@ -32,6 +33,7 @@ export class DeploymentVersion implements IDeploymentVersion {
   public readonly createdBy: CreatedOrUpdatedBy | null
   public readonly updated: Date
   public readonly updatedBy: CreatedOrUpdatedBy | null
+  public readonly lastActive: Date | null
   public readonly name: string
   public readonly description: string | null
   public readonly versionInfo: DeploymentVersionInfo
@@ -53,6 +55,7 @@ export class DeploymentVersion implements IDeploymentVersion {
     this.createdBy = deploymentVersion.createdBy
     this.updated = deploymentVersion.updated
     this.updatedBy = deploymentVersion.updatedBy
+    this.lastActive = deploymentVersion.lastActive
     this.name = deploymentVersion.name
     this.description = deploymentVersion.description
     this.versionInfo = deploymentVersion.versionInfo

@@ -124,6 +124,7 @@ export const mapDeploymentVersionResponseToDeploymentVersion: MapFunction<Deploy
     createdBy: this.map('CreatedOrUpdatedByResponse', source.created_by, 'CreatedOrUpdatedBy'),
     updated: this.map('string', source.updated, 'Date'),
     updatedBy: this.map('CreatedOrUpdatedByResponse', source.updated_by, 'CreatedOrUpdatedBy'),
+    lastActive: this.map('string', source.last_active, 'Date'),
     name: source.name,
     deploymentId: source.deployment_id,
     description: source.description,
