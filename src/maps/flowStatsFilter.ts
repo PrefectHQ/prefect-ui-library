@@ -12,8 +12,8 @@ export const mapFlowStatsFilterToFlowRunsFilter: MapFunction<FlowStatsFilter, Fl
       id: [source.flowId],
     },
     flowRuns: {
-      expectedStartTimeAfter: startDate,
-      expectedStartTimeBefore: endDate,
+      startTimeAfter: startDate,
+      startTimeBefore: endDate,
     },
   }
 
