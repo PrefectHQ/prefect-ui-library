@@ -12,7 +12,7 @@
   import { Deployment, DeploymentSchedule } from '@/models'
   import { getApiErrorMessage } from '@/utilities/errors'
 
-  const props = defineProps<{
+  const { deployment, schedule } = defineProps<{
     deployment: Deployment,
     schedule: DeploymentSchedule,
   }>()
@@ -25,7 +25,7 @@
 
   const internalValue = computed({
     get() {
-      return !!props.schedule.active
+      return !!schedule.active
     },
     set(value: boolean) {
       updateSchedule(value)
@@ -35,7 +35,7 @@
   const loading = ref(false)
 
   const tooltipText = computed(() => {
-    if (!props.deployment.can.update) {
+    if (!deployment.can.update) {
       return localization.info.deploymentUpdateDisabled
     }
     return 'Pause or resume this schedule'
@@ -44,7 +44,16 @@
   const updateSchedule = async (value: boolean): Promise<void> => {
     loading.value = true
     try {
-      await api.deploymentSchedules.updateDeploymentSchedule(props.deployment.id, props.schedule.id, { slug: props.schedule.slug, active: value })
+      await api.deploymentSchedules.updateDeploymentSchedule(
+        deployment.id,
+        schedule.id,
+        {
+          slug: schedule.slug,
+          schedule: schedule.schedule,
+          parameters: schedule.parameters ?? undefined,
+          active: value,
+        },
+      )
       showToast(value ? localization.success.activateDeploymentSchedule : localization.success.pauseDeploymentSchedule, 'success')
       emit('update', value)
     } catch (error) {
