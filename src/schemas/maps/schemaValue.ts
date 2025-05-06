@@ -1,5 +1,6 @@
 import { isDefined } from '@prefecthq/prefect-design'
-import { PrefectKind, PrefectKindJinja, PrefectKindJson, PrefectKindWorkspaceVariable, SchemaValue, getPrefectKindFromValue, isPrefectKindJinja, isPrefectKindJson, isPrefectKindNull, isPrefectKindWorkspaceVariable } from '@/schemas/types/schemaValues'
+import { PrefectKind, PrefectKindJinja, PrefectKindJson, PrefectKindWorkspaceVariable, SchemaValue, getPrefectKindFromValue, isPrefectKindJinja, isPrefectKindJson, isPrefectKindNull, isPrefectKindWorkspaceVariable, isPrefectKindValue } from '@/schemas/types/schemaValues'
+import { isRecord, mapValues, parseUnknownJson } from '@/utilities'
 import { isValidJson, stringify } from '@/utilities/json'
 
 export class InvalidSchemaValueTransformation extends Error {
@@ -103,9 +104,15 @@ function mapSchemaValueNone(none: unknown, to: PrefectKind): SchemaValue {
       } satisfies PrefectKindWorkspaceVariable
 
     case 'json':
+      let normalizedMappedValue: SchemaValue = value
+
+      if (isDefined(value) && isRecord(value)) {
+        normalizedMappedValue = mapValues(value, (key, value) => mapSchemaValue(value, 'none'))
+      }
+
       return {
         __prefect_kind: 'json',
-        value: stringify(value),
+        value: stringify(normalizedMappedValue),
       } satisfies PrefectKindJson
 
     case 'none':
