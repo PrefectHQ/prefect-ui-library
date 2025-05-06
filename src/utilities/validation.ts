@@ -1,10 +1,10 @@
 import { isDateAfter, isDateAfterOrEqual, isDateBefore, isDateBeforeOrEqual, isNotNullish } from '@prefecthq/prefect-design'
+import { ValidationRule } from '@prefecthq/vue-compositions'
 import { localization } from '@/localization'
 import { isEmptyArray } from '@/utilities/arrays'
 import { formatDate, formatDateTimeNumeric, isDate, isInvalidDate } from '@/utilities/dates'
 import { isEmptyString, isString, isValidEmailAddress } from '@/utilities/strings'
 import { isNullish } from '@/utilities/variables'
-import { ValidationRule } from '@prefecthq/vue-compositions'
 
 export type ValidationMethod = (value: unknown) => true | string | Promise<true | string>
 export type ValidationMethodFactory = (property: string) => ValidationMethod
@@ -289,8 +289,4 @@ export const isSlug: ValidationRule<unknown> = (value, field) => {
   }
 
   return localization.error.mustBeSlug(field)
-}
-
-export const isSnakeCaseOrSlug: ValidationRule<unknown> = (value, field, meta) => {
-  return isSnakeCase(value, field, meta) ?? isSlug(value, field, meta)
 }
