@@ -11,6 +11,9 @@
       <p v-if="!hasGraphNodes" class="flow-run-graph__no-nodes-message">
         {{ emptyMessage }}
       </p>
+      <p v-if="failed" class="flow-run-graph__no-nodes-message">
+        Failed to load graph: {{ errorMessage }}
+      </p>
     </template>
     <template v-else>
       <FlowRunGraphConfirmation @confirm="confirm" />
@@ -27,6 +30,7 @@
   import { useWorkspaceApi } from '@/compositions/useWorkspaceApi'
   import { FlowRun } from '@/models/FlowRun'
   import { ServerStateType, isTerminalStateType } from '@/models/StateType'
+  import { getApiErrorMessage } from '@/utilities/errors'
 
   const NODE_COUNT_TO_REQUIRED_OPT_IN = 2000
 
@@ -47,6 +51,8 @@
   const api = useWorkspaceApi()
   const { value: colorThemeValue } = useColorTheme()
   const load = ref(true)
+  const failed = ref(false)
+  const errorMessage = ref('')
 
   const viewport = computed({
     get() {
@@ -105,8 +111,14 @@
 
   const config = computed<RunGraphConfig>(() => ({
     runId: props.flowRun.id,
-    fetch: (id) => {
-      return api.flowRuns.getFlowRunsGraph(id, { nestedTaskRunGraphs: true })
+    fetch: async (id) => {
+      try {
+        return await api.flowRuns.getFlowRunsGraph(id, { nestedTaskRunGraphs: true })
+      } catch (error) {
+        failed.value = true
+        errorMessage.value = getApiErrorMessage(error, 'An error occurred retrieving graph data')
+        throw error
+      }
     },
     fetchEvents: props.fetchEvents,
     styles: {
