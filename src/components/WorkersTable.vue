@@ -24,17 +24,10 @@
       </template>
 
       <template #action="{ row }">
-        <div class="workers-table__actions">
-          <p-icon-button-menu>
-            <CopyOverflowMenuItem label="Copy ID" :item="row.id" />
-            <p-overflow-menu-item label="Delete" @click="open" />
-          </p-icon-button-menu>
-        </div>
-        <ConfirmDeleteModal
-          v-model:showModal="showModal"
-          label="Worker"
-          :name="row.name"
-          @delete="deleteWorker(row.name)"
+        <WorkerMenu
+          :worker="row"
+          :work-pool-name="workPoolName"
+          @delete="() => workPoolWorkersSubscription.refresh()"
         />
       </template>
 
@@ -56,13 +49,13 @@
 
 <script lang="ts" setup>
   import { TableColumn } from '@prefecthq/prefect-design'
-  import { useNow, useSubscription } from '@prefecthq/vue-compositions'
+  import { useSubscription } from '@prefecthq/vue-compositions'
   import { computed, ref, toRefs } from 'vue'
-  import { ResultsCount, SearchInput, CopyOverflowMenuItem, WorkerStatusBadge, ConfirmDeleteModal } from '@/components'
+  import { ResultsCount, SearchInput, WorkerStatusBadge, WorkerMenu } from '@/components'
   import FormattedDate from '@/components/FormattedDate.vue'
-  import { useWorkspaceApi, useShowModal } from '@/compositions'
+  import { useWorkspaceApi } from '@/compositions'
   import { WorkPoolWorker } from '@/models'
-  import { deleteItem } from '@/utilities'
+
 
   const props = defineProps<{
     workPoolName: string,
@@ -76,7 +69,6 @@
   const subscriptionOptions = {
     interval: 30000,
   }
-  const { now } = useNow({ interval: 1000 })
 
   const { workPoolName } = toRefs(props)
 
@@ -119,13 +111,6 @@
 
   function clear(): void {
     searchValue.value = ''
-  }
-
-  const { showModal, open, close } = useShowModal()
-  async function deleteWorker(workerName: string): Promise<void> {
-    close()
-    await deleteItem({ 'workPoolName': workPoolName.value, 'workerName': workerName }, api.workPoolWorkers.deleteWorker, 'Worker')
-    emit('delete')
   }
 </script>
 

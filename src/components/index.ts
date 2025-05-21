@@ -288,6 +288,7 @@ export { default as VariablesPageEmptyState } from './VariablesPageEmptyState.vu
 export { default as VariablesTable } from './VariablesTable.vue'
 export { default as VariableTagsInput } from './VariableTagsInput.vue'
 export { default as ViewModeButtonGroup } from './ViewModeButtonGroup.vue'
+export { default as WorkerMenu } from './WorkerMenu.vue'
 export { default as WorkersLateIndicator } from './WorkersLateIndicator.vue'
 export { default as WorkersTable } from './WorkersTable.vue'
 export { default as WorkerStatusBadge } from './WorkerStatusBadge.vue'
