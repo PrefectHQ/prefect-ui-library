@@ -182,8 +182,8 @@ export function getSchemaValueDefinition(property: SchemaProperty, value: Schema
   if (property.allOf) {
     return getSchemaValueAllOfDefinition(property as SchemaPropertyAllOf, value)
   }
-
-  throw new Error('Schema property missing allOf and anyOf definitions')
+  console.error('Schema property missing allOf and anyOf definitions', property, value)
+  return null
 }
 
 /*
