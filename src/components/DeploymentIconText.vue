@@ -3,7 +3,7 @@
     <template v-if="deployment">
       <p-link :to="routes.deployment(deploymentId)" class="deployment-icon-text">
         <p-icon-text icon="PDeployment">
-          <span>{{ deploymentName }}</span>
+          <span class="deployment-icon-name">{{ deploymentName }}</span>
         </p-icon-text>
       </p-link>
     </template>
@@ -34,3 +34,11 @@
   const { deployment, subscription } = useDeployment(deploymentId)
   const deploymentName = computed(() => deployment.value?.name)
 </script>
+
+<style>
+.deployment-icon-name { @apply
+  truncate
+  max-w-48
+  block
+}
+</style>
