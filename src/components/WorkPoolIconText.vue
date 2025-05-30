@@ -3,7 +3,7 @@
     <template v-if="workPool">
       <p-link :to="routes.workPool(workPoolName)" class="work-pool-icon-text">
         <p-icon-text icon="PWorkPool">
-          <span>{{ workPoolName }}</span>
+          <span class="work-pool-icon-name">{{ workPoolName }}</span>
         </p-icon-text>
       </p-link>
     </template>
