@@ -15,11 +15,11 @@
         </template>
       </template>
 
-      <template v-if="!hideDetails && visible && (flowRun.deploymentId || flowRun.workQueueName)" #relationships>
+      <template v-if="visible && (flowRun.deploymentId || flowRun.workQueueName)" #relationships>
         <FlowRunDeployment v-if="flowRun.deploymentId" :deployment-id="flowRun.deploymentId" />
         <FlowRunWorkPool v-if="flowRun.workPoolName" :work-pool-name="flowRun.workPoolName" />
         <FlowRunWorkQueue
-          v-if="flowRun.workQueueName"
+          v-if="flowRun.workQueueName && !hideDetails"
           :work-queue-name="flowRun.workQueueName"
           :work-pool-name="flowRun.workPoolName"
           :flow-run-state="flowRun.stateType"

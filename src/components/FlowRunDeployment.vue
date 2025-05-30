@@ -18,5 +18,7 @@
 <style>
 .flow-run-deployment { @apply
   flex gap-1
+  max-w-96
+  truncate
 }
 </style>
