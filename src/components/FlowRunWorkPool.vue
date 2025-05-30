@@ -15,7 +15,5 @@
 <style>
 .flow-run-work-pool { @apply
   flex gap-1
-  max-w-96
-  truncate
 }
 </style>
