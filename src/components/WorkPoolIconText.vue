@@ -3,9 +3,7 @@
     <template v-if="workPool">
       <p-link :to="routes.workPool(workPoolName)" class="work-pool-icon-text">
         <p-icon-text icon="PWorkPool">
-          <div class="work-pool-icon-name">
-            {{ workPoolName }}
-          </div>
+          <span class="work-pool-icon-name">{{ workPoolName }}</span>
         </p-icon-text>
       </p-link>
     </template>
@@ -32,11 +30,3 @@
   const routes = useWorkspaceRoutes()
   const { workPool, subscription } = useWorkPool(() => props.workPoolName)
 </script>
-
-<style>
-.work-pool-icon-name { @apply
-  truncate
-  max-w-48
-  block
-}
-</style>

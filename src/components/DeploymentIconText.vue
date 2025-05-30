@@ -34,11 +34,3 @@
   const { deployment, subscription } = useDeployment(deploymentId)
   const deploymentName = computed(() => deployment.value?.name)
 </script>
-
-<style>
-.deployment-icon-name { @apply
-  truncate
-  max-w-48
-  block
-}
-</style>
