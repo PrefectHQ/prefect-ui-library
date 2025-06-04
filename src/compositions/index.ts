@@ -1,6 +1,7 @@
 export * from './filters'
 export * from './useArtifact'
 export * from './useArtifactCollection'
+export * from './useAutomationsByRelatedResource'
 export * from './useBlockDocument'
 export * from './useBlockDocuments'
 export * from './useBlockSchema'
