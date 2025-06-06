@@ -57,7 +57,12 @@
 
       <template #action="{ row }">
         <div :key="row.id" class="variables-table__action">
-          <VariableMenu :variable="row" size="xs" @delete="refreshSubscriptions" @update="handleUpdate" />
+          <VariableMenu 
+            :variable="row" 
+            size="xs" 
+            @delete="refreshSubscriptions" 
+            @update="handleUpdate" 
+            @create="handleDuplicate"/>
         </div>
       </template>
 
@@ -175,6 +180,7 @@
   const emit = defineEmits<{
     (event: 'delete'): void,
     (event: 'update', value: Variable): void,
+    (event: 'create', value: Variable): void,
   }>()
 
   const deleteVariables = (): void => {
@@ -185,6 +191,12 @@
 
   const handleUpdate = (variable: Variable): void => {
     emit('update', variable)
+  }
+
+  const handleDuplicate = (variable: Variable): void => {
+    selectedVariables.value = []
+    refreshSubscriptions()
+    emit('create', variable)
   }
 </script>
 
