@@ -101,20 +101,8 @@
     const timezones = Intl.supportedValuesOf('timeZone')
 
     const matchingTimezone = timezones.find(tz => {
-      const tzDate = new Date()
-      const tzOffset = tzDate.toLocaleString('en-US', { timeZone: tz, timeZoneName: 'short' })
-      const tzOffsetMatch = tzOffset.match(TIMEZONE_OFFSET_REGEX)
-      if (!tzOffsetMatch) {
-        return false
-      }
-
-      const [tzOffsetStr] = tzOffsetMatch
-      if (tzOffsetStr === 'Z') {
-        return offsetMinutes === 0
-      }
-
-      const [tzHours, tzMinutes] = tzOffsetStr.replace('+', '').split(':').map(Number)
-      const tzOffsetMinutes = tzHours * 60 + (tzHours >= 0 ? tzMinutes : -tzMinutes)
+      const tzOffsetMs = getTimezoneOffset(tz)
+      const tzOffsetMinutes = Math.round(tzOffsetMs / millisecondsInMinute)
 
       return tzOffsetMinutes === offsetMinutes
     })
