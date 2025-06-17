@@ -13,9 +13,10 @@
 <script lang="ts" setup>
   import { isNotNullish } from '@prefecthq/prefect-design'
   import { formatDate } from 'date-fns'
+  import { getTimezoneOffset } from 'date-fns-tz'
   import { computed, onBeforeMount, ref, watchEffect } from 'vue'
   import { TimezoneSelect } from '@/components'
-  import { isInvalidDate } from '@/utilities'
+  import { selectedTimezone, isInvalidDate, millisecondsInMinute, minutesInHour } from '@/utilities'
 
   const props = defineProps<{
     value: string | null | undefined,
@@ -25,9 +26,9 @@
     'update:value': [string | null | undefined],
   }>()
 
-  const DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss'Z'"
+  const DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss"
 
-  // Note that this handles fractional seconds
+  // Note: this is probably a lil more complex than necessary cause it's handling some edge cases around things like fractional seconds
   const TIMEZONE_REGEX = /(\.\d{1,9})?([+-]\d{2}:?\d{2}|Z)$/
 
   const timezone = ref<string>('UTC')
@@ -39,7 +40,7 @@
 
   onBeforeMount(() => {
     if (isNotNullish(props.value)) {
-      timezone.value = getTimezoneNameFromString(props.value) ?? 'UTC'
+      timezone.value = getTimezoneNameFromString(props.value) ?? selectedTimezone.value ?? 'UTC'
     }
   })
 
@@ -80,12 +81,26 @@
       return null
     }
 
+    // TODO: map local string timezone to intl format
     return date.toLocaleString('en-US', { timeZoneName: 'short' }).split(' ')[3]
   }
 
+  function getTimezoneOffsetString(): string {
+    if (timezone.value == 'UTC' || !timezone.value) {
+      return 'Z'
+    }
+
+    const offsetInMinutes = getTimezoneOffset(timezone.value) / millisecondsInMinute
+    const offsetSign = offsetInMinutes >= 0 ? '+' : '-'
+    const offsetHours = Math.floor(offsetInMinutes / minutesInHour)
+    const offsetMinutes = offsetInMinutes % minutesInHour
+    return `${offsetSign}${offsetHours}:${offsetMinutes}`
+  }
+
   function getNormalizedValue(value: Date | string | null | undefined): string | null | undefined {
+    const offset = getTimezoneOffsetString()
     if (value instanceof Date) {
-      return formatDate(value, DATE_FORMAT)
+      return formatDate(value, DATE_FORMAT) + offset
     }
 
     if (isNotNullish(value)) {
@@ -96,7 +111,7 @@
         return undefined
       }
 
-      return formatDate(parsed, DATE_FORMAT)
+      return formatDate(parsed, DATE_FORMAT) + offset
     }
 
     return value
