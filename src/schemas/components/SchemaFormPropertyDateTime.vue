@@ -14,7 +14,7 @@
   import { isNotNullish } from '@prefecthq/prefect-design'
   import { formatDate } from 'date-fns'
   import { getTimezoneOffset } from 'date-fns-tz'
-  import { computed, onBeforeMount, ref, watchEffect } from 'vue'
+  import { computed, onBeforeMount, ref } from 'vue'
   import { TimezoneSelect } from '@/components'
   import { selectedTimezone, isInvalidDate, millisecondsInMinute, minutesInHour } from '@/utilities'
 
@@ -33,10 +33,6 @@
 
   const timezone = ref<string>('UTC')
   const normalizedValue = computed(() => getNormalizedValue(props.value))
-
-  watchEffect(() => {
-    console.log('timezone', timezone.value)
-  })
 
   onBeforeMount(() => {
     if (isNotNullish(props.value)) {
