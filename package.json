@@ -1,6 +1,6 @@
 {
     "name": "@prefecthq/prefect-ui-library",
-    "version": "3.12.15",
+    "version": "3.12.16",
     "private": false,
     "repository": {
         "type": "git",
