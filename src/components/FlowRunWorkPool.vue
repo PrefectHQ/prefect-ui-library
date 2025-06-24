@@ -1,6 +1,7 @@
 <template>
   <div class="flow-run-work-pool">
-    <span>Work Pool</span> <WorkPoolIconText :work-pool-name="workPoolName" />
+    <span>Work Pool</span>
+    <WorkPoolIconText :work-pool-name="workPoolName" />
   </div>
 </template>
 
