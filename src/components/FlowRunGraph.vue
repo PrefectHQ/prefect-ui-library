@@ -29,13 +29,14 @@
   import { useTaskRunsCount } from '@/compositions/useTaskRunsCount'
   import { useWorkspaceApi } from '@/compositions/useWorkspaceApi'
   import { FlowRun } from '@/models/FlowRun'
-  import { ServerStateType, isTerminalStateType } from '@/models/StateType'
+  import { ServerStateType, StateType, isTerminalStateType } from '@/models/StateType'
   import { getApiErrorMessage } from '@/utilities/errors'
 
   const NODE_COUNT_TO_REQUIRED_OPT_IN = 2000
 
   const props = defineProps<{
     flowRun: FlowRun,
+    flowRunStateTypeOverride?: StateType,
     fullscreen: boolean,
     selected: GraphItemSelection | null,
     viewport?: ViewportDateRange,
@@ -47,6 +48,8 @@
     'update:fullscreen': [boolean],
     'update:selected': [GraphItemSelection | null],
   }>()
+
+  const flowRunStateType = computed(() => props.flowRunStateTypeOverride ?? props.flowRun.state?.type)
 
   const api = useWorkspaceApi()
   const { value: colorThemeValue } = useColorTheme()
@@ -82,7 +85,7 @@
   })
 
   const emptyMessage = computed(() => {
-    if (isTerminalStateType(props.flowRun.state?.type)) {
+    if (isTerminalStateType(flowRunStateType)) {
       return 'This flow run did not generate any task or subflow runs'
     }
 
@@ -140,7 +143,7 @@
   }))
 
   const taskRunCountOptions = computed(() => ({
-    interval: isTerminalStateType(props.flowRun.state?.type) ? 10000 : 1000,
+    interval: isTerminalStateType(flowRunStateType) ? 10000 : 1000,
   }))
 
   const { count, subscription } = useTaskRunsCount(() => ({
