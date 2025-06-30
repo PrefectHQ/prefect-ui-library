@@ -3,7 +3,7 @@
     <template v-if="deployment">
       <p-link :to="routes.deployment(deploymentId)" class="deployment-icon-text">
         <p-icon-text icon="PDeployment">
-          <span>{{ deploymentName }}</span>
+          <span class="deployment-icon-name">{{ deploymentName }}</span>
         </p-icon-text>
       </p-link>
     </template>
