@@ -8,10 +8,10 @@
         :config="config"
         class="flow-run-graph__graph p-background"
       />
-      <p v-if="!hasGraphNodes" class="flow-run-graph__no-nodes-message">
+      <p v-if="!hasGraphNodes && !isCollapsed" class="flow-run-graph__no-nodes-message">
         {{ emptyMessage }}
       </p>
-      <p v-if="failed" class="flow-run-graph__no-nodes-message">
+      <p v-if="failed && !isCollapsed" class="flow-run-graph__no-nodes-message">
         Failed to load graph: {{ errorMessage }}
       </p>
     </template>
@@ -37,6 +37,7 @@
   const props = defineProps<{
     flowRun: FlowRun,
     fullscreen: boolean,
+    isCollapsed?: boolean,
     selected: GraphItemSelection | null,
     viewport?: ViewportDateRange,
     fetchEvents?: RunGraphFetchEvents,
