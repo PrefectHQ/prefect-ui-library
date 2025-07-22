@@ -169,6 +169,9 @@
       }
     }
 
+    // nb: job variables are optional. If inputted as empty, set to {}
+    const jobVariablesJSON = jobVariables.value ? JSON.parse(jobVariables.value) : {}
+
     if (props.mode === 'duplicate') {
       const deploymentCreate: DeploymentCreate = {
         name: name.value,
@@ -179,7 +182,7 @@
         parameters: parameters.value,
         tags: tags.value,
         enforceParameterSchema: enforceParameterSchema.value,
-        jobVariables: JSON.parse(jobVariables.value),
+        jobVariables: jobVariablesJSON,
         parameterOpenApiSchema: props.deployment.parameterOpenApiSchema,
         manifestPath: props.deployment.manifestPath,
         path: props.deployment.path,
@@ -195,6 +198,8 @@
       }
       emit('submit', deploymentCreate)
     } else {
+
+
       const deploymentUpdate: DeploymentUpdateV2 = {
         description: description.value,
         workPoolName: workPoolName.value,
@@ -202,7 +207,7 @@
         parameters: parameters.value,
         tags: tags.value,
         enforceParameterSchema: enforceParameterSchema.value,
-        jobVariables: JSON.parse(jobVariables.value),
+        jobVariables: jobVariablesJSON,
         concurrencyLimit: concurrencyLimit.value,
         concurrencyOptions: concurrencyLimitCollisionStrategy.value ? { collisionStrategy: concurrencyLimitCollisionStrategy.value } : null,
       }
