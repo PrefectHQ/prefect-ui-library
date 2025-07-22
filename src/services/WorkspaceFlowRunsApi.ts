@@ -120,12 +120,12 @@ export class WorkspaceFlowRunsApi extends WorkspaceApi {
         name: 'AwaitingRetry',
         message: 'Retry from the UI',
       },
-    })
+    }, false)
   }
 
-  public setFlowRunState(id: string, body: StateUpdate): Promise<void> {
+  public setFlowRunState(id: string, body: StateUpdate, force = true): Promise<void> {
     const requestBody = mapper.map('StateUpdate', body, 'StateUpdateRequest')
-    return this.post(`/${id}/set_state`, { state: requestBody.state, force: true })
+    return this.post(`/${id}/set_state`, { state: requestBody.state, force })
   }
 
   public async resumeFlowRun(id: string, values?: SchemaValues): Promise<OrchestrationResult> {
