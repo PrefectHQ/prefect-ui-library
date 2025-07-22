@@ -15,15 +15,17 @@
         </template>
       </template>
 
-      <template v-if="!hideDetails && visible && (flowRun.deploymentId || flowRun.workQueueName)" #relationships>
-        <FlowRunDeployment v-if="flowRun.deploymentId" :deployment-id="flowRun.deploymentId" />
-        <FlowRunWorkPool v-if="flowRun.workPoolName" :work-pool-name="flowRun.workPoolName" />
-        <FlowRunWorkQueue
-          v-if="flowRun.workQueueName"
-          :work-queue-name="flowRun.workQueueName"
-          :work-pool-name="flowRun.workPoolName"
-          :flow-run-state="flowRun.stateType"
-        />
+      <template v-if="visible && (flowRun.deploymentId || flowRun.workQueueName)" #relationships>
+        <div class="flow-run-relationships" :class="[{ 'flow-run-relationships--compact': hideDetails }]">
+          <FlowRunDeployment v-if="flowRun.deploymentId" :deployment-id="flowRun.deploymentId" />
+          <FlowRunWorkPool v-if="flowRun.workPoolName" :work-pool-name="flowRun.workPoolName" />
+          <FlowRunWorkQueue
+            v-if="flowRun.workQueueName && !hideDetails"
+            :work-queue-name="flowRun.workQueueName"
+            :work-pool-name="flowRun.workPoolName"
+            :flow-run-state="flowRun.stateType"
+          />
+        </div>
       </template>
 
       <slot name="after" :flow-run />
@@ -94,5 +96,17 @@
 <style>
 .flow-run-list-item__relation { @apply
   flex gap-1
+}
+
+.flow-run-relationships { @apply
+  flex
+  gap-1
+}
+
+.flow-run-relationships--compact .work-pool-icon-name,
+.flow-run-relationships--compact .deployment-icon-name { @apply
+  truncate
+  block
+  max-w-96
 }
 </style>
