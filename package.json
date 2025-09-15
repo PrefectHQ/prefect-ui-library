@@ -41,9 +41,9 @@
     ],
     "types": "./dist/types/src/index.d.ts",
     "dependencies": {
-        "@prefecthq/graphs": "2.4.1",
+        "@prefecthq/graphs": "3.0.5",
         "axios": "1.8.2",
-        "cronstrue": "^3.2.0",
+        "cronstrue": "^3.3.0",
         "d3": "7.9.0",
         "date-fns": "4.1.0",
         "date-fns-tz": "3.2.0",
@@ -57,9 +57,9 @@
         "@types/lodash.debounce": "4.0.9",
         "@types/lodash.isequal": "^4.5.8",
         "@types/lodash.merge": "4.6.9",
-        "@types/node": "^24.3.1",
+        "@types/node": "^24.4.0",
         "@types/prismjs": "^1.26.5",
-        "@vitejs/plugin-vue": "5.2.4",
+        "@vitejs/plugin-vue": "6.0.1",
         "auto-changelog": "^2.5.0",
         "autoprefixer": "10.4.21",
         "eslint": "8.57.1",
@@ -68,11 +68,11 @@
         "postcss": "8.5.6",
         "tailwindcss": "3.4.17",
         "tsc-alias": "1.8.16",
-        "typescript": "5.8.3",
-        "vite": "6.3.5",
+        "typescript": "5.9.2",
+        "vite": "7.1.5",
         "vite-svg-loader": "^5.1.0",
         "vitest": "^3.2.4",
-        "vue-tsc": "^3.0.6"
+        "vue-tsc": "^3.0.7"
     },
     "peerDependencies": {
         "@prefecthq/prefect-design": "^2.14.18",
