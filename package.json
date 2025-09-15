@@ -72,7 +72,7 @@
         "vite": "6.3.5",
         "vite-svg-loader": "^5.1.0",
         "vitest": "^3.2.4",
-        "vue-tsc": "^2.2.10"
+        "vue-tsc": "^3.0.6"
     },
     "peerDependencies": {
         "@prefecthq/prefect-design": "^2.14.18",
