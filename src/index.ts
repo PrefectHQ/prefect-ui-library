@@ -1,5 +1,3 @@
-import '@prefecthq/graphs/dist/style.css'
-
 // core functionality
 export * from './components'
 export * from './compositions'

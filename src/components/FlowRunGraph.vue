@@ -26,6 +26,7 @@
   import { useColorTheme } from '@prefecthq/prefect-design'
   import { computed, ref } from 'vue'
   import FlowRunGraphConfirmation from '@/components/FlowRunGraphConfirmation.vue'
+  import RunGraph from '@/components/RunGraph.vue'
   import { useTaskRunsCount } from '@/compositions/useTaskRunsCount'
   import { useWorkspaceApi } from '@/compositions/useWorkspaceApi'
   import { FlowRun } from '@/models/FlowRun'
