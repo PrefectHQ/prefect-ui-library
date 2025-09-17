@@ -48,8 +48,8 @@
     },
     "typescript.tsdk": "node_modules/typescript/lib",
     "files.exclude": {
-        // "node_modules": true,
-        // "dist": true
+        "node_modules": true,
+        "dist": true
     },
     "css.customData": [
         "./.vscode/css-data.json"
