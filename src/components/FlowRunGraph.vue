@@ -22,10 +22,11 @@
 </template>
 
 <script lang="ts" setup>
-  import { GraphItemSelection, RunGraph, RunGraphConfig, ViewportDateRange, RunGraphFetchEvents } from '@prefecthq/graphs'
+  import { GraphItemSelection, RunGraphConfig, ViewportDateRange, RunGraphFetchEvents, RunGraphNode, RunGraphStyles, RunGraphStateEvent } from '@prefecthq/graphs'
   import { useColorTheme } from '@prefecthq/prefect-design'
   import { computed, ref } from 'vue'
   import FlowRunGraphConfirmation from '@/components/FlowRunGraphConfirmation.vue'
+  import RunGraph from '@/components/RunGraph.vue'
   import { useTaskRunsCount } from '@/compositions/useTaskRunsCount'
   import { useWorkspaceApi } from '@/compositions/useWorkspaceApi'
   import { FlowRun } from '@/models/FlowRun'
@@ -112,7 +113,7 @@
 
   const config = computed<RunGraphConfig>(() => ({
     runId: props.flowRun.id,
-    fetch: async (id) => {
+    fetch: async (id: string) => {
       try {
         return await api.flowRuns.getFlowRunsGraph(id, { nestedTaskRunGraphs: true })
       } catch (error) {
@@ -122,8 +123,7 @@
       }
     },
     fetchEvents: props.fetchEvents,
-    styles: {
-      colorMode: colorThemeValue.value,
+    styles: (): RunGraphStyles => ({
       textDefault: getColorToken('--p-color-text-default'),
       textInverse: getColorToken('--p-color-text-inverse'),
       nodeToggleBorderColor: getColorToken('--p-color-button-default-border'),
@@ -131,13 +131,14 @@
       edgeColor: getColorToken('--p-color-flow-run-graph-edge'),
       guideLineColor: getColorToken('--p-color-divider'),
       guideTextColor: getColorToken('--p-color-text-subdued'),
-      node: node => ({
+      node: (node: RunGraphNode) => ({
         background: stateTypeColors[node.state_type],
       }),
-      state: state => ({
+      state: (state: RunGraphStateEvent) => ({
         background: stateTypeColors[state.type],
       }),
-    },
+    }),
+    theme: colorThemeValue.value,
   }))
 
   const taskRunCountOptions = computed(() => ({
