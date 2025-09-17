@@ -68,7 +68,7 @@
         "postcss": "8.5.6",
         "tailwindcss": "3.4.17",
         "tsc-alias": "1.8.16",
-        "typescript": "5.9.2",
+        "typescript": "^5.9.2",
         "vite": "7.1.5",
         "vite-svg-loader": "^5.1.0",
         "vitest": "^3.2.4",
@@ -76,7 +76,7 @@
     },
     "peerDependencies": {
         "@prefecthq/prefect-design": "^2.16.2",
-        "@prefecthq/vue-charts": "^2.1.0",
+        "@prefecthq/vue-charts": "^2.1.1",
         "@prefecthq/vue-compositions": "^1.12.1",
         "vee-validate": "^4.7.0",
         "vue": "^3.5.0",
