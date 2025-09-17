@@ -41,8 +41,8 @@
     ],
     "types": "./dist/types/src/index.d.ts",
     "dependencies": {
-        "@prefecthq/graphs": "3.0.5",
-        "axios": "1.8.2",
+        "@prefecthq/graphs": "^3.0.6",
+        "axios": "^1.12.2",
         "cronstrue": "^3.3.0",
         "d3": "7.9.0",
         "date-fns": "4.1.0",
@@ -77,7 +77,7 @@
     "peerDependencies": {
         "@prefecthq/prefect-design": "^2.14.18",
         "@prefecthq/vue-charts": "^2.0.6",
-        "@prefecthq/vue-compositions": "^1.11.4",
+        "@prefecthq/vue-compositions": "^1.12.1",
         "vee-validate": "^4.7.0",
         "vue": "^3.5.0",
         "vue-router": "^4.3.0"
