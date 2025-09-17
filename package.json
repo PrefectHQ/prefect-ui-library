@@ -14,8 +14,9 @@
         "prefect 2.0",
         "vue3"
     ],
+    "type": "module",
     "scripts": {
-        "build": "vue-tsc && tsc-alias && vite build",
+        "build": "vite build && vue-tsc && tsc-alias",
         "changelog": "auto-changelog --package --commit-limit 0",
         "dev": "vue-tsc -w & tsc-alias -w & vite build -w",
         "lint:fix": "eslint src --fix",
@@ -25,13 +26,17 @@
         "version": "npm run changelog && git add CHANGELOG.md",
         "release": "./prefect-ui-library-release"
     },
-    "main": "./dist/prefect-ui-library.umd.js",
-    "module": "./dist/prefect-ui-library.mjs",
+    "main": "./dist/prefect-ui-library.js",
+    "module": "./dist/prefect-ui-library.js",
+    "types": "./dist/src/index.d.ts",
     "exports": {
         "./src/*": "./src/*",
         "./dist/*": "./dist/*",
+        "./prefect-ui-library.css": "./dist/prefect-ui-library.css",
+        "./tailwind.config": "./src/tailwind.config.ts",
         ".": {
-            "import": "./dist/prefect-ui-library.mjs",
+            "types": "./dist/src/index.d.ts",
+            "import": "./dist/prefect-ui-library.js",
             "require": "./dist/prefect-ui-library.umd.js"
         }
     },
@@ -39,7 +44,6 @@
         "dist",
         "src"
     ],
-    "types": "./dist/types/src/index.d.ts",
     "dependencies": {
         "@prefecthq/graphs": "^3.0.6",
         "axios": "^1.12.2",

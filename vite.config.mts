@@ -20,10 +20,11 @@ export default defineConfig(() => {
       environment: 'jsdom',
     },
     build: {
-      emptyOutDir: false,
+      emptyOutDir: true,
+      outDir: 'dist',
       sourcemap: true,
       lib: {
-        entry: resolve(__dirname, 'src/index.ts'),
+        entry: 'src/index.ts',
         name: 'prefect-ui-library',
       },
       rollupOptions: {
