@@ -61,7 +61,7 @@
         "@types/lodash.debounce": "4.0.9",
         "@types/lodash.isequal": "^4.5.8",
         "@types/lodash.merge": "4.6.9",
-        "@types/node": "^24.4.0",
+        "@types/node": "^24.5.2",
         "@types/prismjs": "^1.26.5",
         "@vitejs/plugin-vue": "6.0.1",
         "auto-changelog": "^2.5.0",
@@ -73,10 +73,10 @@
         "tailwindcss": "3.4.17",
         "tsc-alias": "1.8.16",
         "typescript": "^5.9.2",
-        "vite": "7.1.5",
+        "vite": "7.1.7",
         "vite-svg-loader": "^5.1.0",
         "vitest": "^3.2.4",
-        "vue-tsc": "^3.0.7"
+        "vue-tsc": "^3.0.8"
     },
     "peerDependencies": {
         "@prefecthq/prefect-design": "^2.16.2",
