@@ -31,6 +31,12 @@
         <DeploymentStatusBadge :deployment="row" small />
       </template>
 
+      <template #deployment-heading="{ column }">
+        <div ref="deploymentColumnRef">
+          {{ column.label }}
+        </div>
+      </template>
+
       <template #schedules-heading="{ column }">
         <div class="deployment-list__schedules-heading">
           {{ column.label }}
@@ -38,7 +44,7 @@
       </template>
 
       <template #tags-heading="{ column }">
-        <div class="deployment-list__tags-heading">
+        <div ref="tagsColumnRef" class="deployment-list__tags-heading">
           {{ column.label }}
         </div>
       </template>
@@ -121,11 +127,11 @@
 
 <script lang="ts" setup>
   import { TableColumn, media } from '@prefecthq/prefect-design'
-  import { NumberRouteParam, useDebouncedRef, useLocalStorage, useRouteQueryParam } from '@prefecthq/vue-compositions'
+  import { NumberRouteParam, useDebouncedRef, useElementRect, useLocalStorage, useRouteQueryParam } from '@prefecthq/vue-compositions'
   import { secondsInWeek } from 'date-fns/constants'
   import { snakeCase } from 'lodash'
   import merge from 'lodash.merge'
-  import { computed, ref } from 'vue'
+  import { computed, ref, unref, watchEffect } from 'vue'
   import {
     DeploymentsDeleteButton,
     ResultsCount,
@@ -166,6 +172,29 @@
   const page = useRouteQueryParam('page', NumberRouteParam, 1)
   const { value: limit } = useLocalStorage('deployment-list-limit', 10)
 
+  const deploymentColumnRef = ref<HTMLElement>()
+  const tagsColumnRef = ref<HTMLElement>()
+
+  const { width: deploymentColumnWidth } = useElementRect(deploymentColumnRef)
+  const { width: tagsColumnWidth } = useElementRect(tagsColumnRef)
+
+  const { value: savedDeploymentWidth } = useLocalStorage<number>('deployment-list-deployment-width', 0)
+  const unrefedSavedDeploymentWidth = ref<number>(unref(savedDeploymentWidth))
+  const { value: savedTagsWidth } = useLocalStorage<number>('deployment-list-tags-width', 0)
+  const unrefedSavedTagsWidth = ref<number>(unref(savedTagsWidth))
+
+  watchEffect(() => {
+    if (deploymentColumnWidth.value > 0) {
+      savedDeploymentWidth.value = deploymentColumnWidth.value
+    }
+  })
+
+  watchEffect(() => {
+    if (tagsColumnWidth.value > 0) {
+      savedTagsWidth.value = tagsColumnWidth.value
+    }
+  })
+
   const { filter, clear, isCustomFilter } = useDeploymentsPaginationFilterFromRoute(merge({}, props.filter, {
     deployments: {
       flowOrDeploymentNameLike: nameLikeDebounced,
@@ -182,6 +211,7 @@
   const columns = computed<TableColumn<Deployment>[]>(() => [
     {
       label: 'Deployment',
+      width: unrefedSavedDeploymentWidth.value > 0 ? `${unrefedSavedDeploymentWidth.value}px` : undefined,
     },
     {
       label: 'Status',
@@ -198,6 +228,7 @@
       property: 'tags',
       visible: media.md,
       maxWidth: '15%',
+      width: unrefedSavedTagsWidth.value > 0 ? `${unrefedSavedTagsWidth.value}px` : undefined,
     },
     {
       label: 'Schedules',
@@ -241,6 +272,12 @@
   w-full
 }
 
+th.deployment-list__tags-column,
+th.deployment-list__deployment-column { @apply
+  resize-x
+  !max-w-screen-lg
+}
+
 .deployment-list__action-column,
 .deployment-list__table .p-table__checkbox-cell { @apply
   box-content
@@ -280,8 +317,7 @@
   truncate
 }
 
-.deployment-list__schedules-heading,
-.deployment-list__tags-heading { @apply
+.deployment-list__schedules-heading { @apply
   text-right
 }
 
