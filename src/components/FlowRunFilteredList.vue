@@ -52,7 +52,7 @@
 <script lang="ts" setup>
   import { useDebouncedRef, useLocalStorage } from '@prefecthq/vue-compositions'
   import merge from 'lodash.merge'
-  import { computed, ref } from 'vue'
+  import { computed, ref, watch } from 'vue'
   import {
     ResultsCount,
     StateNameSelect,
@@ -87,6 +87,19 @@
     },
     limit,
   }), props.prefix)
+
+  // Reset pagination to page 1 whenever the flow run state filter changes.
+  // This prevents showing an empty or incorrect page when the result set changes.
+  watch(
+    () => filter.flowRuns?.state?.name,
+    (newState, oldState) => {
+    // Use JSON.stringify for deep comparison since the value may be an array.
+      if (JSON.stringify(newState) !== JSON.stringify(oldState)) {
+        filter.page = 1
+      }
+    },
+  { deep: true }
+  )
 
   const { flowRuns, count, pages, subscription, errored, error } = usePaginatedFlowRuns(filter, {
     interval: 30000,
