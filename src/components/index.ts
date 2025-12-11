@@ -5,6 +5,7 @@ export { default as ArtifactCollectionsEmptyState } from './ArtifactCollectionsE
 export { default as ArtifactDataMarkdown } from './ArtifactDataMarkdown.vue'
 export { default as ArtifactDataRaw } from './ArtifactDataRaw.vue'
 export { default as ArtifactDataResult } from './ArtifactDataResult.vue'
+export { default as ArtifactDataRich } from './ArtifactDataRich.vue'
 export { default as ArtifactDataUnknown } from './ArtifactDataUnknown.vue'
 export { default as ArtifactDataView } from './ArtifactDataView.vue'
 export { default as ArtifactDescription } from './ArtifactDescription.vue'
