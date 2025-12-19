@@ -81,11 +81,13 @@ export function isPrefectKindWorkspaceVariable(value: unknown): value is Prefect
 }
 
 export type BlockDocumentReferenceValue = {
-  $ref: string,
+  $ref: {
+    block_document_id: string,
+  },
 }
 
 export function isBlockDocumentReferenceValue(value: unknown): value is BlockDocumentReferenceValue {
-  return isRecord(value) && isString(value.$ref)
+  return isRecord(value) && isRecord(value.$ref) && isString(value.$ref.block_document_id)
 }
 
 export function asBlockDocumentReferenceValue(value: unknown): BlockDocumentReferenceValue | undefined {
