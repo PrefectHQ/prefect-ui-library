@@ -23,7 +23,7 @@
 
   const value = computed({
     get() {
-      return props.value?.$ref ?? null
+      return props.value?.$ref?.block_document_id ?? null
     },
     set(value) {
       if (isNullish(value)) {
@@ -32,7 +32,9 @@
       }
 
       emit('update:value', {
-        $ref: value,
+        $ref: {
+          block_document_id: value,
+        },
       })
     },
   })

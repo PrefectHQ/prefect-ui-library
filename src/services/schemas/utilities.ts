@@ -2,7 +2,7 @@ import { JsonInput } from '@/components'
 import { isBlockDocumentReferenceValue, isBlockDocumentValue } from '@/models'
 import { schemaPropertyServiceFactory } from '@/services/schemas/properties'
 import { SchemaProperty, SchemaPropertyInputAttrs, Schema, SchemaValues, SchemaValue, schemaHas, SchemaPropertyAnyOf, SchemaPropertyAllOf } from '@/types/schemas'
-import { isArray } from '@/utilities'
+import { isArray, isString } from '@/utilities'
 import { withPropsWithoutExcludedFactory } from '@/utilities/components'
 import { stringify } from '@/utilities/json'
 import { isRecord } from '@/utilities/object'
@@ -249,6 +249,10 @@ export function getSchemaValueDefinitionIndex(definitions: Schema[], value: Sche
   }
 }
 
+function isPartialBlockDocumentValue(value: object): value is { blockDocumentId: string | null } {
+  return isRecord(value) && 'blockDocumentId' in value && (isString(value.blockDocumentId) || value.blockDocumentId === null)
+}
+
 function findObjectDefinitionIndex(definitions: Schema[], value: object | null): number | null {
   if (value === null) {
     return null
@@ -256,6 +260,11 @@ function findObjectDefinitionIndex(definitions: Schema[], value: object | null):
 
   if (isBlockDocumentValue(value)) {
     return definitions.findIndex(definition => definition.blockTypeSlug === value.blockTypeSlug)
+  }
+
+  // Handle partial block document value (only has blockDocumentId, from SchemaFormInput.vue)
+  if (isPartialBlockDocumentValue(value)) {
+    return definitions.findIndex(definition => definition.type === 'block')
   }
 
   if (Array.isArray(value)) {
