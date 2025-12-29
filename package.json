@@ -45,7 +45,7 @@
         "src"
     ],
     "dependencies": {
-        "@prefecthq/graphs": "^3.0.6",
+        "@prefecthq/graphs": "^3.0.8",
         "axios": "^1.12.2",
         "cronstrue": "^3.3.0",
         "d3": "7.9.0",
