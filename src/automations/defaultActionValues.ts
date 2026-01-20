@@ -1,10 +1,12 @@
-import { AutomationAction, AutomationActionSendNotification, AutomationActionType } from '@/automations/types/actions'
+import { AutomationAction, AutomationActionCallWebhook, AutomationActionSendNotification, AutomationActionType } from '@/automations/types/actions'
 import { AutomationTriggerTemplate } from '@/automations/types/triggerTemplates'
 
 export function getDefaultValueForAction(type: AutomationActionType, template: AutomationTriggerTemplate): Partial<AutomationAction> {
   switch (type) {
     case 'send-notification':
       return getDefaultValueForSendNotification(template)
+    case 'call-webhook':
+      return getDefaultValueForCallWebhook(template)
     case 'cancel-flow-run':
     case 'suspend-flow-run':
     case 'resume-flow-run':
@@ -30,6 +32,13 @@ export function getDefaultValueForSendNotification(template: AutomationTriggerTe
     type: 'send-notification',
     subject: getDefaultNotificationSubject(template),
     body: getDefaultNotificationBody(template),
+  }
+}
+
+export function getDefaultValueForCallWebhook(template: AutomationTriggerTemplate): Partial<AutomationActionCallWebhook> {
+  return {
+    type: 'call-webhook',
+    payload: getDefaultWebhookPayload(template),
   }
 }
 
@@ -76,6 +85,62 @@ Related Resources:
     {% endfor %}
 {% endfor %}
 `.trim()
+
+const WEBHOOK_PAYLOAD_DEPLOYMENT_STATUS = `{
+  "flow_name": "{{ flow.name }}",
+  "deployment_name": "{{ deployment.name }}",
+  "deployment_status": "{{ deployment.status }}",
+  "deployment_url": "{{ deployment|ui_url }}"
+}`.trim()
+
+const WEBHOOK_PAYLOAD_WORK_POOL_STATUS = `{
+  "work_pool_name": "{{ work_pool.name }}",
+  "work_pool_status": "{{ work_pool.status }}",
+  "work_pool_url": "{{ work_pool|ui_url }}"
+}`.trim()
+
+const WEBHOOK_PAYLOAD_WORK_QUEUE_STATUS = `{
+  "work_queue_name": "{{ work_queue.name }}",
+  "work_queue_status": "{{ work_queue.status }}",
+  "work_queue_url": "{{ work_queue|ui_url }}"
+}`.trim()
+
+const WEBHOOK_PAYLOAD_FLOW_RUN_STATE = `{
+  "flow_name": "{{ flow.name }}",
+  "flow_run_name": "{{ flow_run.name }}",
+  "flow_run_id": "{{ flow_run.id }}",
+  "flow_run_state_type": "{{ flow_run.state.type }}",
+  "flow_run_state_name": "{{ flow_run.state.name }}",
+  "flow_run_state_timestamp": "{{ flow_run.state.timestamp }}",
+  "flow_run_state_message": "{{ flow_run.state.message }}",
+  "flow_run_url": "{{ flow_run|ui_url }}"
+}`.trim()
+
+const WEBHOOK_PAYLOAD_CUSTOM = `{
+  "automation_name": "{{ automation.name }}",
+  "automation_description": "{{ automation.description }}",
+  "event_id": "{{ event.id }}",
+  "event_resource": {{ event.resource|tojson }},
+  "event_related": {{ event.related|tojson }}
+}`.trim()
+
+export function getDefaultWebhookPayload(template: AutomationTriggerTemplate): string {
+  switch (template) {
+    case 'deployment-status':
+      return WEBHOOK_PAYLOAD_DEPLOYMENT_STATUS
+    case 'flow-run-state':
+      return WEBHOOK_PAYLOAD_FLOW_RUN_STATE
+    case 'work-pool-status':
+      return WEBHOOK_PAYLOAD_WORK_POOL_STATUS
+    case 'work-queue-status':
+      return WEBHOOK_PAYLOAD_WORK_QUEUE_STATUS
+    case 'custom':
+      return WEBHOOK_PAYLOAD_CUSTOM
+    default:
+      const exhaustiveCheck: never = template
+      throw new Error(`Default webhook payload missing for template type: ${exhaustiveCheck}`)
+  }
+}
 
 export function getDefaultNotificationBody(template: AutomationTriggerTemplate): string {
   switch (template) {

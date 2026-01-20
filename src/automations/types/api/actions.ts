@@ -19,6 +19,7 @@ export type AutomationActionResponse =
 | AutomationActionPauseAutomationResponse
 | AutomationActionResumeAutomationResponse
 | AutomationActionSendNotificationResponse
+| AutomationActionCallWebhookResponse
 | AutomationActionDoNothingResponse
 
 export type AutomationActionRequest = AutomationActionResponse
@@ -193,6 +194,14 @@ export type AutomationActionSendNotificationResponse = AutomationActionWithType<
   block_document_id: string,
   subject: string,
   body: string,
+}>
+
+/*
+ * Call a webhook
+ */
+export type AutomationActionCallWebhookResponse = AutomationActionWithType<'call-webhook', {
+  block_document_id: string,
+  payload: string,
 }>
 
 /**

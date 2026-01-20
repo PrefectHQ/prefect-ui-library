@@ -6,6 +6,7 @@
 
 <script lang="ts" setup>
   import { computed } from 'vue'
+  import AutomationActionDescriptionCallWebhook from '@/automations/components/AutomationActionDescriptionCallWebhook.vue'
   import AutomationActionDescriptionChangeFlowRunState from '@/automations/components/AutomationActionDescriptionChangeFlowRunState.vue'
   import AutomationActionDescriptionPauseResumeAutomation from '@/automations/components/AutomationActionDescriptionPauseResumeAutomation.vue'
   import AutomationActionDescriptionPauseResumeDeployment from '@/automations/components/AutomationActionDescriptionPauseResumeDeployment.vue'
@@ -63,6 +64,10 @@
         })
       case 'send-notification':
         return withProps(AutomationActionSendNotification, {
+          action: props.action,
+        })
+      case 'call-webhook':
+        return withProps(AutomationActionDescriptionCallWebhook, {
           action: props.action,
         })
 

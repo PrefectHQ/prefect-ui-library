@@ -6,6 +6,7 @@
 
 <script lang="ts" setup>
   import { computed } from 'vue'
+  import AutomationActionCallWebhookInput from '@/automations/components/AutomationActionCallWebhookInput.vue'
   import AutomationActionChangeFlowRunStateInput from '@/automations/components/AutomationActionChangeFlowRunStateInput.vue'
   import AutomationActionPauseAutomationInput from '@/automations/components/AutomationActionPauseAutomationInput.vue'
   import AutomationActionPauseDeploymentInput from '@/automations/components/AutomationActionPauseDeploymentInput.vue'
@@ -92,6 +93,12 @@
 
       case 'send-notification':
         return withProps(AutomationActionSendNotificationInput, {
+          action: props.action,
+          'onUpdate:action': value => emit('update:action', value),
+        })
+
+      case 'call-webhook':
+        return withProps(AutomationActionCallWebhookInput, {
           action: props.action,
           'onUpdate:action': value => emit('update:action', value),
         })
