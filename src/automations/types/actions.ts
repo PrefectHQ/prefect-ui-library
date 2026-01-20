@@ -18,6 +18,7 @@ export const { values: automationActionTypes, isValue: isAutomationActionType } 
   'pause-automation',
   'resume-automation',
   'send-notification',
+  'call-webhook',
   'do-nothing',
 ])
 
@@ -38,6 +39,7 @@ export const automationActionTypeLabels = {
   'pause-automation': 'Pause an automation',
   'resume-automation': 'Resume an automation',
   'send-notification': 'Send a notification',
+  'call-webhook': 'Call a webhook',
   'do-nothing': 'Do nothing',
 } as const satisfies Record<AutomationActionType, string>
 
@@ -280,6 +282,25 @@ function isAutomationActionSendNotification(value: unknown): value is Automation
 }
 
 /*
+ * Call a webhook
+ */
+export type AutomationActionCallWebhook = AutomationActionWithType<'call-webhook', {
+  blockDocumentId: string,
+  payload: string,
+}>
+
+function isAutomationActionCallWebhook(value: unknown): value is AutomationActionCallWebhook {
+  if (!isAutomationActionTypeRecord(value, 'call-webhook')) {
+    return false
+  }
+
+  const isValidBlockDocumentId = isString(value.blockDocumentId) || isNullish(value.blockDocumentId)
+  const isValidPayload = isString(value.payload)
+
+  return isValidBlockDocumentId && isValidPayload
+}
+
+/*
  * Do nothing
  */
 
@@ -304,6 +325,7 @@ export type AutomationAction =
   | AutomationActionPauseAutomation
   | AutomationActionResumeAutomation
   | AutomationActionSendNotification
+  | AutomationActionCallWebhook
   | AutomationActionDoNothing
 
 /*
@@ -329,6 +351,7 @@ const actionTypeGuardMap = {
   'pause-automation': isAutomationActionPauseAutomation,
   'resume-automation': isAutomationActionResumeAutomation,
   'send-notification': isAutomationActionSendNotification,
+  'call-webhook': isAutomationActionCallWebhook,
   'do-nothing': isAutomationActionDoNothing,
 } satisfies Record<AutomationActionType, (value: unknown) => boolean>
 

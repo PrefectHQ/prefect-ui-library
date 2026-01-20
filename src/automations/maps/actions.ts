@@ -1,6 +1,7 @@
 /* eslint-disable camelcase */
 import {
   AutomationAction,
+  AutomationActionCallWebhook,
   AutomationActionPauseAutomation,
   AutomationActionPauseDeployment,
   AutomationActionPauseWorkPool,
@@ -13,6 +14,7 @@ import {
   AutomationActionSendNotification
 } from '@/automations/types/actions'
 import {
+  AutomationActionCallWebhookResponse,
   AutomationActionPauseAutomationResponse,
   AutomationActionPauseDeploymentResponse,
   AutomationActionPauseWorkPoolResponse,
@@ -46,6 +48,8 @@ export const mapAutomationActionResponseToAutomationAction: MapFunction<Automati
       return mapPauseResumeAutomationResponse(response)
     case 'send-notification':
       return mapSendNotificationResponse(response)
+    case 'call-webhook':
+      return mapCallWebhookResponse(response)
     case 'cancel-flow-run':
     case 'suspend-flow-run':
     case 'resume-flow-run':
@@ -76,6 +80,8 @@ export const mapAutomationActionToAutomationActionRequest: MapFunction<Automatio
       return mapPauseResumeAutomationRequest(request)
     case 'send-notification':
       return mapSendNotificationRequest(request)
+    case 'call-webhook':
+      return mapCallWebhookRequest(request)
     case 'cancel-flow-run':
     case 'suspend-flow-run':
     case 'change-flow-run-state':
@@ -255,5 +261,21 @@ function mapSendNotificationResponse({ type, block_document_id, subject, body }:
     blockDocumentId: block_document_id,
     subject,
     body,
+  }
+}
+
+function mapCallWebhookRequest({ type, blockDocumentId, payload }: AutomationActionCallWebhook): AutomationActionCallWebhookResponse {
+  return {
+    type,
+    block_document_id: blockDocumentId,
+    payload,
+  }
+}
+
+function mapCallWebhookResponse({ type, block_document_id, payload }: AutomationActionCallWebhookResponse): AutomationActionCallWebhook {
+  return {
+    type,
+    blockDocumentId: block_document_id,
+    payload,
   }
 }
