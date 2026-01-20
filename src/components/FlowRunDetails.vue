@@ -47,7 +47,7 @@
 
       <template v-if="flowRun.empiricalPolicy">
         <p-key-value label="Retries" :value="flowRun.empiricalPolicy.retries" :alternate="alternate" />
-        <p-key-value label="Retry Delay" :value="`${flowRun.empiricalPolicy.retryDelaySeconds}s`" :alternate="alternate" />
+        <p-key-value label="Retry Delay" :value="`${flowRun.empiricalPolicy.retryDelay}s`" :alternate="alternate" />
       </template>
     </template>
   </div>
