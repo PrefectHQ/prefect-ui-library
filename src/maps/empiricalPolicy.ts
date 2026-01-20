@@ -6,7 +6,7 @@ import { MapFunction } from '@/services/Mapper'
 export const mapEmpiricalPolicyResponseToEmpiricalPolicy: MapFunction<EmpiricalPolicyResponse, EmpiricalPolicy> = function(source) {
   return new EmpiricalPolicy({
     retries: source.retries,
-    retryDelay: source.retry_delay,
+    retryDelay: source.retry_delay ?? source.retry_delay_seconds,
     maxRetries: source.max_retries,
     retryJitterFactor: source.retry_jitter_factor,
     retryDelaySeconds: source.retry_delay_seconds,
