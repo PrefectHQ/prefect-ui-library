@@ -8,7 +8,7 @@
 
       <template #controls>
         <SearchInput v-model="nameLike" size="small" placeholder="Search deployments..." class="deployment-list__search-input" label="Search deployments" />
-        <DeploymentTagsInput v-model:selected="filter.deployments.tags.name" small multiple />
+        <DeploymentTagsInput v-model:selected="filter.deployments.tags.name" :deployments="deployments" small multiple />
       </template>
 
       <template #sort>

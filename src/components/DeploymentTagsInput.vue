@@ -5,6 +5,7 @@
 <script lang="ts" setup>
   import { computed } from 'vue'
   import { useDeployments } from '@/compositions'
+  import { Deployment } from '@/models'
   import { DeploymentsFilter } from '@/models/Filters'
   import { unique } from '@/utilities/arrays'
 
@@ -12,6 +13,8 @@
     selected: string[] | null | undefined,
     emptyMessage?: string,
     filter?: DeploymentsFilter,
+    /** When provided, tags are extracted from these deployments instead of making an API call */
+    deployments?: Deployment[],
   }>()
 
   const emits = defineEmits<{
@@ -29,10 +32,18 @@
     },
   })
 
-  const { deployments } = useDeployments(() => props.filter ?? {})
+  // Only fetch deployments if not provided via props
+  const { deployments: fetchedDeployments } = useDeployments(() => {
+    if (props.deployments) {
+      return null
+    }
+    return props.filter ?? {}
+  })
+
+  const allDeployments = computed(() => props.deployments ?? fetchedDeployments.value)
 
   const options = computed(() => {
-    const tags = deployments.value.flatMap(deployment => deployment.tags ?? [])
+    const tags = allDeployments.value.flatMap(deployment => deployment.tags ?? [])
 
     return unique(tags).sort((tagA, tagB) => tagA.localeCompare(tagB))
   })
