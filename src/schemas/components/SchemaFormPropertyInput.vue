@@ -76,7 +76,8 @@
     if (isSchemaPropertyType(type, 'number')) {
       return withProps(PNumberInput, {
         modelValue: asType(value, Number),
-        step: '0.01',
+        // Allow any float precision (fixed 0.01 blocks high-precision defaults; PrefectHQ/prefect#19416)
+        step: 'any',
         state: props.state,
         'onUpdate:modelValue': (value) => emit('update:value', asType(value, Number)),
       })
