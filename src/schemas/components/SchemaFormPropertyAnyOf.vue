@@ -32,7 +32,7 @@
   import { SchemaValue, isPrefectKindValue } from '@/schemas/types/schemaValues'
   import { SchemaValueError } from '@/schemas/types/schemaValuesValidationResponse'
   import { getSchemaDefinition } from '@/schemas/utilities/definitions'
-  import { getInitialIndexForSchemaPropertyAnyOfValue, getSchemaPropertyLabel } from '@/schemas/utilities/properties'
+  import { getInitialIndexForSchemaPropertyAnyOfValue, getSchemaPropertyDefaultValue, getSchemaPropertyLabel } from '@/schemas/utilities/properties'
   import { Require } from '@/types/utilities'
 
   const props = defineProps<{
@@ -106,6 +106,11 @@
     },
     set(index) {
       selectedPropertyIndexValue.value = index
+
+      if (propertyValues[index] === undefined) {
+        propertyValues[index] = getSchemaPropertyDefaultValue(mergedProperty.value)
+      }
+
       emit('update:value', propertyValues[index])
     },
   })
