@@ -1,4 +1,5 @@
 import { isDefined } from '@prefecthq/prefect-design'
+import isEqual from 'lodash.isequal'
 import { Schema, SchemaProperty, SchemaPropertyType, isPropertyWith, isSchemaPropertyType } from '@/schemas/types/schema'
 import { BlockDocumentReferenceValue, SchemaValue, isBlockDocumentReferenceValue } from '@/schemas/types/schemaValues'
 import { getSchemaDefinition } from '@/schemas/utilities/definitions'
@@ -84,6 +85,13 @@ export async function getInitialIndexForSchemaPropertyAnyOfValue({ value, proper
   // to determine the block type
   if (isBlockDocumentReferenceValue(valueOrDefaultValue)) {
     return await getBlockDocumentReferenceDefinitionIndex(valueOrDefaultValue, definitions, api)
+  }
+
+  // a definition with a const accepts only that value, so an exact match wins over a type match
+  const constIndex = definitions.findIndex(definition => isEqual(definition.const, valueOrDefaultValue))
+
+  if (constIndex !== -1) {
+    return constIndex
   }
 
   switch (typeof valueOrDefaultValue) {
