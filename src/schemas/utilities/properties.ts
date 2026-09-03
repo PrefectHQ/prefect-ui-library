@@ -1,4 +1,5 @@
 import { isDefined } from '@prefecthq/prefect-design'
+import isEqual from 'lodash.isequal'
 import { Schema, SchemaProperty, SchemaPropertyType, isPropertyWith, isSchemaPropertyType } from '@/schemas/types/schema'
 import { BlockDocumentReferenceValue, SchemaValue, isBlockDocumentReferenceValue } from '@/schemas/types/schemaValues'
 import { getSchemaDefinition } from '@/schemas/utilities/definitions'
@@ -86,13 +87,23 @@ export async function getInitialIndexForSchemaPropertyAnyOfValue({ value, proper
     return await getBlockDocumentReferenceDefinitionIndex(valueOrDefaultValue, definitions, api)
   }
 
+  // a definition with a const accepts only that value, so an exact match wins over a type match
+  const constIndex = definitions.findIndex(definition => isEqual(definition.const, valueOrDefaultValue))
+
+  if (constIndex !== -1) {
+    return constIndex
+  }
+
+  // a definition with a const accepts only that value, and it didn't match, so it isn't a match for the type of the value either
+  const withoutConst = (matchesType: (definition: SchemaProperty) => boolean) => (definition: SchemaProperty): boolean => matchesType(definition) && !('const' in definition)
+
   switch (typeof valueOrDefaultValue) {
     case 'string':
-      return definitions.findIndex(definition => definition.type == 'string')
+      return definitions.findIndex(withoutConst(definition => definition.type == 'string'))
     case 'number':
-      return definitions.findIndex(definition => definition.type == 'number' || definition.type === 'integer')
+      return definitions.findIndex(withoutConst(definition => definition.type == 'number' || definition.type === 'integer'))
     case 'boolean':
-      return definitions.findIndex(definition => definition.type == 'boolean')
+      return definitions.findIndex(withoutConst(definition => definition.type == 'boolean'))
     case 'object':
       return getObjectDefinitionIndex(valueOrDefaultValue, definitions)
     default:

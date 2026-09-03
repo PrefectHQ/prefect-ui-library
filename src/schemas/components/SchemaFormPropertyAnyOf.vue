@@ -106,18 +106,15 @@
     },
     set(index) {
       selectedPropertyIndexValue.value = index
+      propertyValues[index] = getValueForPropertyIndex(index)
       emit('update:value', propertyValues[index])
     },
   })
 
   const mergedProperty = computed(() => {
-    const selectedProperty = props.property.anyOf[selectedPropertyIndex.value]
+    const selectedProperty = getDefinition(props.property.anyOf[selectedPropertyIndex.value])
     // eslint-disable-next-line no-unused-vars
     const { anyOf, ...property } = props.property
-
-    if (isPropertyWith(selectedProperty, '$ref')) {
-      return merge({}, getSchemaDefinition(schema, selectedProperty.$ref), property)
-    }
 
     return merge({}, selectedProperty, property)
   })
@@ -128,13 +125,26 @@
   })))
 
   function getOptionLabelForProperty(property: SchemaProperty): string {
-    if (property.$ref) {
-      const definition = getSchemaDefinition(schema, property.$ref)
+    return getSchemaPropertyLabel(getDefinition(property))
+  }
 
-      return getSchemaPropertyLabel(definition)
+  function getDefinition(property: SchemaProperty): SchemaProperty {
+    if (isPropertyWith(property, '$ref')) {
+      return getSchemaDefinition(schema, property.$ref)
     }
 
-    return getSchemaPropertyLabel(property)
+    return property
+  }
+
+  // a definition with a const has exactly one valid value. The user cannot type it, so the const is the value for that definition
+  function getValueForPropertyIndex(index: number): SchemaValue {
+    const definition = getDefinition(props.property.anyOf[index])
+
+    if ('const' in definition) {
+      return definition.const
+    }
+
+    return propertyValues[index]
   }
 
   async function setPropertyIndexForValue(): Promise<void> {

@@ -76,6 +76,8 @@
   const kind = computed(() => getPrefectKindFromValue(() => props.value))
   const error = computed(() => getSchemaPropertyError(getErrors()))
   const { property, label, description, disabled } = useSchemaProperty(() => props.property, () => props.required)
+  // a property with a const has exactly one valid value. The user cannot type it, so the const is the default value
+  const defaultValue = computed(() => isDefined(property.value.const) ? property.value.const : property.value.default)
   const omitted = ref(false)
   const omittedValue = ref<SchemaValue>(null)
   const omitLabel = computed(() => omitted.value ? 'Include value' : 'Omit value')
@@ -101,8 +103,8 @@
         return props.value
       }
 
-      if (!initialized.value && isDefined(property.value.default)) {
-        return property.value.default
+      if (!initialized.value && isDefined(defaultValue.value)) {
+        return defaultValue.value
       }
 
       return undefined
@@ -116,11 +118,11 @@
     },
   })
 
-  if (!skipDefaultValueInitializationForAllProperties && !props.skipDefaultValueInitialization && !isDefined(props.value) && isDefined(property.value.default)) {
-    emit('update:value', property.value.default)
+  if (!skipDefaultValueInitializationForAllProperties && !props.skipDefaultValueInitialization && !isDefined(props.value) && isDefined(defaultValue.value)) {
+    emit('update:value', defaultValue.value)
 
     const unwatch = watch(() => props.value, () => {
-      if (isEqual(props.value, property.value.default)) {
+      if (isEqual(props.value, defaultValue.value)) {
         initialized.value = true
         unwatch()
       }
