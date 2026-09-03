@@ -22,7 +22,7 @@
 </template>
 
 <script lang="ts" setup>
-  import { ButtonGroupOption, isDefined } from '@prefecthq/prefect-design'
+  import { ButtonGroupOption } from '@prefecthq/prefect-design'
   import merge from 'lodash.merge'
   import { computed, onActivated, reactive, ref } from 'vue'
   import { useWorkspaceApi } from '@/compositions'
@@ -138,15 +138,13 @@
 
   // a definition with a const has exactly one valid value. The user cannot type it, so the const is the value for that definition
   function getValueForPropertyIndex(index: number): SchemaValue {
-    const value = propertyValues[index]
+    const definition = getDefinition(props.property.anyOf[index])
 
-    if (isDefined(value)) {
-      return value
+    if ('const' in definition) {
+      return definition.const
     }
 
-    const { const: constValue } = getDefinition(props.property.anyOf[index])
-
-    return isDefined(constValue) ? constValue : value
+    return propertyValues[index]
   }
 
   async function setPropertyIndexForValue(): Promise<void> {
