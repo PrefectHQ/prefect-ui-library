@@ -108,8 +108,6 @@ export function isRecord(item: unknown): item is Record<PropertyKey, unknown> {
   return item !== null && typeof item === 'object' && !Array.isArray(item) && !isDate(item)
 }
 
-const unsafeMergeKeys = ['__proto__', 'constructor', 'prototype']
-
 /**
  * @deprecated Please use lodash.merge instead.
  */
@@ -123,12 +121,13 @@ export function merge<T extends Record<PropertyKey, unknown>>(target: T, ...sour
   const keys = unique([...Object.keys(target), ...Object.keys(source)])
 
   for (const key of keys) {
-    // Recursing into these keys would let a source object write to Object.prototype.
-    if (unsafeMergeKeys.includes(key)) {
+    // Assigning or recursing through __proto__ would write to Object.prototype.
+    if (key === '__proto__') {
       continue
     }
 
-    const targetValue: unknown = target[key]
+    // Only recurse into own properties so an inherited object is never merged into.
+    const targetValue: unknown = Object.prototype.hasOwnProperty.call(target, key) ? target[key] : undefined
     const sourceValue: unknown = source[key]
 
     if (targetValue === sourceValue) {
