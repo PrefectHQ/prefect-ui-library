@@ -108,8 +108,6 @@ export function isRecord(item: unknown): item is Record<PropertyKey, unknown> {
   return item !== null && typeof item === 'object' && !Array.isArray(item) && !isDate(item)
 }
 
-const unsafeMergeKeys = ['__proto__', 'constructor', 'prototype']
-
 /**
  * @deprecated Please use lodash.merge instead.
  */
@@ -123,13 +121,15 @@ export function merge<T extends Record<PropertyKey, unknown>>(target: T, ...sour
   const keys = unique([...Object.keys(target), ...Object.keys(source)])
 
   for (const key of keys) {
-    // Recursing into these keys would let a source object write to Object.prototype.
-    if (unsafeMergeKeys.includes(key)) {
+    // Assigning or recursing through __proto__ would write to Object.prototype.
+    if (key === '__proto__') {
       continue
     }
 
-    const targetValue: unknown = target[key]
-    const sourceValue: unknown = source[key]
+    // Only read own properties so inherited values (like Object.prototype.constructor) are never merged or copied.
+    const targetValue: unknown = Object.prototype.hasOwnProperty.call(target, key) ? target[key] : undefined
+    const sourceHasKey = Object.prototype.hasOwnProperty.call(source, key)
+    const sourceValue: unknown = sourceHasKey ? source[key] : undefined
 
     if (targetValue === sourceValue) {
       continue
@@ -140,14 +140,14 @@ export function merge<T extends Record<PropertyKey, unknown>>(target: T, ...sour
       continue
     }
 
-    if (isRecord(targetValue) && isRecord(source) && !(key in source)) {
+    if (isRecord(targetValue) && isRecord(source) && !sourceHasKey) {
       merge(targetValue, { [key]: {} })
       continue
     }
 
     // this is really sloppy typescript...
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    target[key as keyof T] = source[key] as any
+    target[key as keyof T] = sourceValue as any
   }
 
   return merge(target, ...rest)
