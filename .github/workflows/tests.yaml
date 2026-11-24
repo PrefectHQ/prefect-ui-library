@@ -15,7 +15,7 @@ jobs:
 
       - name: Setup
         id: setup
-        uses: prefecthq/actions-setup-nodejs@main
+        uses: prefecthq/actions-setup-nodejs@fe3b01032f80f98445bebff95116921bea23aae1 # main
 
       - name: Build package
         run: npm run build
@@ -31,7 +31,7 @@ jobs:
 
       - name: Setup
         id: setup
-        uses: prefecthq/actions-setup-nodejs@main
+        uses: prefecthq/actions-setup-nodejs@fe3b01032f80f98445bebff95116921bea23aae1 # main
 
       - name: Run tests
         run: npm run test
