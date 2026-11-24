@@ -33,4 +33,15 @@ describe('merge', () => {
     expect(({} as Record<string, unknown>).second).toBeUndefined()
     expect(({} as Record<string, unknown>).name).toBeUndefined()
   })
+
+  it.each([
+    ['constructor'],
+    ['toString'],
+    ['hasOwnProperty'],
+  ])('treats %s like any other key the source omits', (key) => {
+    const result = merge<Record<string, unknown>>({ [key]: 'value' }, {})
+
+    expect(Object.prototype.hasOwnProperty.call(result, key)).toBe(true)
+    expect(result[key]).toBeUndefined()
+  })
 })

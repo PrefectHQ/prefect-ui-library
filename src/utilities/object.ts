@@ -126,9 +126,10 @@ export function merge<T extends Record<PropertyKey, unknown>>(target: T, ...sour
       continue
     }
 
-    // Only recurse into own properties so an inherited object is never merged into.
+    // Only read own properties so inherited values (like Object.prototype.constructor) are never merged or copied.
     const targetValue: unknown = Object.prototype.hasOwnProperty.call(target, key) ? target[key] : undefined
-    const sourceValue: unknown = source[key]
+    const sourceHasKey = Object.prototype.hasOwnProperty.call(source, key)
+    const sourceValue: unknown = sourceHasKey ? source[key] : undefined
 
     if (targetValue === sourceValue) {
       continue
@@ -139,14 +140,14 @@ export function merge<T extends Record<PropertyKey, unknown>>(target: T, ...sour
       continue
     }
 
-    if (isRecord(targetValue) && isRecord(source) && !(key in source)) {
+    if (isRecord(targetValue) && isRecord(source) && !sourceHasKey) {
       merge(targetValue, { [key]: {} })
       continue
     }
 
     // this is really sloppy typescript...
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    target[key as keyof T] = source[key] as any
+    target[key as keyof T] = sourceValue as any
   }
 
   return merge(target, ...rest)
